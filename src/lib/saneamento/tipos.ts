@@ -341,7 +341,7 @@ export type Conferencia = {
   valores: Record<string, number | null>;
   conclusao: string;
   /** Só na conferência das contagens de água: datas das duas planilhas e as comparações que não fecham. */
-  datas?: { base_municipal: string; consolidado_uf: string };
+  datas?: { municipal_publicacao: string; municipal_retificacao: string | null; consolidado_uf_publicacao: string; consolidado_uf_retificacao: string | null };
   detalhe?: DivergenciaContagem[];
 };
 

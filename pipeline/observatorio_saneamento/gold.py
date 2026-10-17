@@ -1006,10 +1006,28 @@ def construir():
     detalhe_cont.sort(key=lambda d: (d["uf"], d["codigo"]))
     ufs_div = sorted({d["uf"] for d in detalhe_cont})
     pm, pu = manifesto["planilhas"]["agua_tecnica_municipio"], manifesto["planilhas"]["agua_tecnica_uf"]
+
+    def data_do_cabecalho(planilha_manifesto, rotulo):
+        """Data que a própria planilha declara no cabeçalho ("Data de publicação: dd/mm/aaaa"), em ISO; nulo se não declara."""
+        for linha in planilha_manifesto["cabecalho"]:
+            m = re.match(rf"\s*{rotulo}:\s*(\d{{2}})/(\d{{2}})/(\d{{4}})", str(linha))
+            if m:
+                return f"{m.group(3)}-{m.group(2)}-{m.group(1)}"
+        return None
+
+    datas_ret = {
+        "municipal_publicacao": data_do_cabecalho(pm, "Data de publicação"),
+        "municipal_retificacao": data_do_cabecalho(pm, "Data de retificação"),
+        "consolidado_uf_publicacao": data_do_cabecalho(pu, "Data de publicação"),
+        "consolidado_uf_retificacao": data_do_cabecalho(pu, "Data de retificação"),
+    }
     br_data = lambda iso: "/".join(reversed(iso.split("-")))  # noqa: E731
-    texto_datas = (f"A planilha técnica municipal é de {br_data(pm['data_no_zip'])}"
-                   f"{' (arquivo de retificação)' if 'Retificação' in pm['arquivo'] else ''} e a consolidada por UF é de "
-                   f"{br_data(pu['data_no_zip'])}{' (arquivo de retificação)' if 'Retificação' in pu['arquivo'] else ', sem retificação'}.")
+    texto_datas = (
+        f"A planilha técnica municipal declara publicação em {br_data(datas_ret['municipal_publicacao'])}"
+        + (f" e retificação em {br_data(datas_ret['municipal_retificacao'])}" if datas_ret["municipal_retificacao"] else "")
+        + f"; a consolidada por UF declara publicação em {br_data(datas_ret['consolidado_uf_publicacao'])}"
+        + (f" e retificação em {br_data(datas_ret['consolidado_uf_retificacao'])}." if datas_ret["consolidado_uf_retificacao"] else ", sem data de retificação.")
+    )
     conferencias.append({
         "id": "agua_retificacao_contagens",
         "descricao": "Ligações, economias e domicílios de água (GTA0003 a GTA0018): soma dos municípios (base retificada) "
@@ -1021,7 +1039,7 @@ def construir():
             "ufs_com_diferenca": len(ufs_div),
             "maior_diferenca_relativa_pct": max((abs(d["diferenca_pct"]) for d in detalhe_cont if d["diferenca_pct"] is not None), default=0),
         },
-        "datas": {"base_municipal": pm["data_no_zip"], "consolidado_uf": pu["data_no_zip"]},
+        "datas": datas_ret,
         "detalhe": detalhe_cont,
         "conclusao": (f"{texto_datas} Em {len(detalhe_cont)} das {comparacoes_cont} comparações por UF e coluna a soma dos "
                       f"municípios difere do consolidado, todas em {', '.join(ufs_div)}; nas demais as somas coincidem. "

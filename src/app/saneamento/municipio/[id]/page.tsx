@@ -228,10 +228,10 @@ export default function Pagina({ params }: { params: { id: string } }) {
             {retificacao.length > 0 && retificacaoDatas && (
               <>
                 {" "}
-                Em {uf?.nome ?? m.uf}, o consolidado da UF (planilha de {data(retificacaoDatas.consolidado_uf)}) não traz a retificação da base municipal
-                de água ({data(retificacaoDatas.base_municipal)}): em {inteiro(retificacao.length)} colunas de ligações e economias, a soma dos municípios
-                difere do consolidado em até {numero(Math.max(...retificacao.map((r) => Math.abs(r.diferenca_pct ?? 0))), 1)}%. O efeito sobre os
-                indicadores da UF não foi medido.
+                Em {uf?.nome ?? m.uf}, o consolidado da UF (publicação de {data(retificacaoDatas.consolidado_uf_publicacao)}, sem data de retificação) não
+                fecha com a base municipal de água, retificada em {data(retificacaoDatas.municipal_retificacao)}: em {inteiro(retificacao.length)} colunas
+                de ligações e economias, a soma dos municípios difere do consolidado em até{" "}
+                {numero(Math.max(...retificacao.map((r) => Math.abs(r.diferenca_pct ?? 0))), 1)}%. O efeito sobre os indicadores da UF não foi medido.
               </>
             )}
           </Nota>

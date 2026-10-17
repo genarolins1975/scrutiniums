@@ -220,17 +220,17 @@ describe("Itens abertos da revisão 1.11 (c e f)", () => {
     const com = lista.find((m) => ufsComDiferenca.has(m.uf))!;
     const sem = lista.find((m) => !ufsComDiferenca.has(m.uf))!;
     const n = conf.detalhe!.filter((d) => d.uf === com.uf).length;
-    const aviso = `não traz a retificação da base municipal de água (25/05/2026): em ${inteiro(n)} colunas de ligações e economias`;
+    const aviso = `(publicação de 18/12/2025, sem data de retificação) não fecha com a base municipal de água, retificada em 25/05/2026: em ${inteiro(n)} colunas de ligações e economias`;
     expect(texto(html(com.id))).toContain(aviso);
     expect(texto(html(com.id))).toContain("O efeito sobre os indicadores da UF não foi medido.");
-    expect(texto(html(sem.id))).not.toContain("não traz a retificação da base municipal");
+    expect(texto(html(sem.id))).not.toContain("não fecha com a base municipal de água");
   });
 
   it("d: a metodologia lista as colunas que não fecham e a conclusão cita as datas das duas planilhas", () => {
     const conf = meta()!.conferencias.find((c) => c.id === "agua_retificacao_contagens")!;
     const t = texto(renderToStaticMarkup(createElement(MetodologiaPage)));
-    expect(t).toContain("A planilha técnica municipal é de 25/05/2026");
-    expect(t).toContain("consolidada por UF é de 02/04/2026");
+    expect(t).toContain("A planilha técnica municipal declara publicação em 18/12/2025 e retificação em 25/05/2026");
+    expect(t).toContain("a consolidada por UF declara publicação em 18/12/2025, sem data de retificação");
     for (const d of conf.detalhe!) expect(t).toContain(`${d.uf}, ${d.codigo}: ${d.nome}`);
     const pop = meta()!.conferencias.find((c) => c.id === "agua_retificacao")!;
     expect(pop.valores.diferenca).toBe(0);

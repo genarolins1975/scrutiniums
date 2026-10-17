@@ -34,7 +34,8 @@ class ObservatorioSaneamento(unittest.TestCase):
         self.assertEqual(v["comparacoes_com_diferenca"], len(c["detalhe"]))
         self.assertEqual(v["ufs_com_diferenca"], len({d["uf"] for d in c["detalhe"]}))
         self.assertGreater(v["comparacoes_uf_coluna"], v["colunas_comparadas"])
-        self.assertEqual(c["datas"], {"base_municipal": "2026-05-25", "consolidado_uf": "2026-04-02"})
+        self.assertEqual(c["datas"], {"municipal_publicacao": "2025-12-18", "municipal_retificacao": "2026-05-25",
+                                      "consolidado_uf_publicacao": "2025-12-18", "consolidado_uf_retificacao": None})
         # cada divergência publicada reproduz-se da soma dos municípios e do consolidado do seed
         _, mun = gold.planilha("agua_tecnica_municipio")
         _, cons = gold.planilha("agua_tecnica_uf")
