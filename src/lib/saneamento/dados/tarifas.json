@@ -2980,12 +2980,12 @@
    "prestador": "Companhia Riograndense de Saneamento (CORSAN)",
    "prestadorSinisa": "corsan-companhia-riograndense-de-saneamento",
    "uf": "RS",
-   "regulador": "AGERGS e outras agências",
+   "regulador": "AGERGS, AGESAN e outras agências",
    "modelo": "Serviço básico por economia mais água medida pelo preço-base vezes o consumo elevado a um expoente por faixa, sem consumo mínimo na ligação com hidrômetro; esgoto a 70% do preço-base por m³ de água (tratado)",
    "ato": "Tabela I do Anexo 5 da Corsan (estrutura tarifária em vigor desde 01/07/2026); revisão de 5,76% pela Resolução Decisória AGERGS RED nº 892/2026, de 09/06/2026",
    "vigencia": "Desde 01/07/2026 (Anexo 5 e comunicado da Corsan de 12/06/2026); a RED 892/2026 não foi lida",
    "ultimoReajuste": "5,76% sobre a tabela de janeiro de 2026, que já trazia 4,68% sobre a de janeiro de 2025 (valores reproduzidos nas três tabelas)",
-   "area": "298 municípios do Apêndice 1 do Anexo 5; Erechim, Santa Cruz do Sul, Canoas, Esteio e 15 municípios da AGESAN têm tabela própria e ficam de fora",
+   "area": "298 municípios do Apêndice 1 do Anexo 5 e 15 municípios da AGESAN (Anexo 4, mesma Tabela I); Erechim, Santa Cruz do Sul, Canoas e Esteio têm tabela própria, em entradas à parte",
    "fontes": [
     {
      "rotulo": "Corsan, Anexo 5: Tabela Tarifária de julho de 2026 (PDF)",
@@ -3022,6 +3022,12 @@
      "url": "https://corsan.com.br/wp-content/uploads/2026/06/AGERGS_2026_TABELA-TARIFARIA-249-MUNICIPIOS_TABELA-I.pdf",
      "sha256": "9a274a17a7382f9ca86d9fcefcfd6a892bade4316eb9a27456287514e74d2951",
      "localizador": "Tabela I, valores idênticos aos do Anexo 5"
+    },
+    {
+     "rotulo": "Corsan, Anexo 4: Tabela Tarifária dos 15 municípios da AGESAN, agosto de 2026 (PDF em imagem)",
+     "url": "https://www.corsan.com.br/wp-content/uploads/2026/10/ANEXO-4-AGESAN_AGOSTO-2026.pdf",
+     "sha256": "877d82dc9805c3f95f38965c0e442c52623cbb12a4af0abb025deee77f8cb00c",
+     "localizador": "Tabela I, página 1: valores iguais aos do Anexo 5 (conferidos visualmente, o PDF não tem texto); a lista dos 15 municípios vem do título do Anexo 4 na página Sistema Tarifário"
     },
     {
      "rotulo": "Corsan, página Sistema Tarifário",
@@ -3200,9 +3206,173 @@
        }
       ]
      }
+    },
+    "social": {
+     "rotulo": "Residencial social (tarifa social federal, Lei 14.898/2024)",
+     "consumoMaximo": 15,
+     "consumoInteiro": true,
+     "agua": {
+      "fixo": 21.7,
+      "faixas": [],
+      "exponencial": {
+       "preco": 4.58,
+       "minimoM3": 0,
+       "degraus": [
+        {
+         "de": 1,
+         "n": 1.0
+        },
+        {
+         "de": 10,
+         "n": 1.0
+        },
+        {
+         "de": 11,
+         "n": 1.0
+        },
+        {
+         "de": 12,
+         "n": 1.0
+        },
+        {
+         "de": 13,
+         "n": 1.0
+        },
+        {
+         "de": 14,
+         "n": 1.0
+        },
+        {
+         "de": 15,
+         "n": 1.0
+        },
+        {
+         "de": 16,
+         "n": 1.0
+        },
+        {
+         "de": 17,
+         "n": 1.0
+        },
+        {
+         "de": 18,
+         "n": 1.0
+        },
+        {
+         "de": 19,
+         "n": 1.0
+        },
+        {
+         "de": 20,
+         "n": 1.0
+        },
+        {
+         "de": 21,
+         "n": 1.01
+        },
+        {
+         "de": 22,
+         "n": 1.02
+        },
+        {
+         "de": 23,
+         "n": 1.03
+        },
+        {
+         "de": 24,
+         "n": 1.04
+        },
+        {
+         "de": 25,
+         "n": 1.05
+        },
+        {
+         "de": 26,
+         "n": 1.06
+        },
+        {
+         "de": 27,
+         "n": 1.07
+        },
+        {
+         "de": 28,
+         "n": 1.08
+        },
+        {
+         "de": 29,
+         "n": 1.08
+        },
+        {
+         "de": 30,
+         "n": 1.09
+        },
+        {
+         "de": 31,
+         "n": 1.09
+        },
+        {
+         "de": 36,
+         "n": 1.1
+        },
+        {
+         "de": 41,
+         "n": 1.1
+        },
+        {
+         "de": 46,
+         "n": 1.11
+        },
+        {
+         "de": 51,
+         "n": 1.11
+        },
+        {
+         "de": 101,
+         "n": 1.13
+        },
+        {
+         "de": 151,
+         "n": 1.1287
+        },
+        {
+         "de": 201,
+         "n": 1.1275
+        },
+        {
+         "de": 301,
+         "n": 1.125
+        },
+        {
+         "de": 501,
+         "n": 1.12
+        },
+        {
+         "de": 1001,
+         "n": 1.11
+        },
+        {
+         "de": 2001,
+         "n": 1.1
+        },
+        {
+         "de": 9001,
+         "n": 1.0858
+        }
+       ]
+      }
+     },
+     "esgoto": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": null,
+        "preco": 3.2
+       }
+      ]
+     }
     }
    },
-   "metodoNaoVerificado": "A fórmula da água (serviço básico mais preço-base vezes o consumo elevado ao expoente) foi conferida nas tarifas mínimas oficiais, mas duas leituras não foram verificadas em conta ou exemplo oficial: o expoente de um consumo que não coincide com uma linha da tabela (de 32 a 35 m³ usa-se a linha de 31; usar a de 36 somaria R$ 15,96 à água de 35 m³) e o esgoto cobrado pelo preço impresso de R$ 6,40 por m³ de água medida. Até 31 m³ a primeira leitura não pesa.",
+   "metodoNaoVerificado": "A fórmula da água (serviço básico mais preço-base vezes o consumo elevado ao expoente) foi conferida nas tarifas mínimas oficiais, mas duas leituras não foram verificadas em conta ou exemplo oficial: o expoente de um consumo que não coincide com uma linha da tabela (de 32 a 35 m³ usa-se a linha de 31; usar a de 36 somaria R$ 15,96 à água de 35 m³) e o esgoto cobrado pelo preço impresso de R$ 6,40 por m³ de água medida. Até 31 m³ a primeira leitura não pesa. Na tarifa social da Lei 14.898/2024, a mínima publicada (R$ 67,44) é metade da mínima da Residencial B (R$ 134,89 ÷ 2 = R$ 67,445) e não fecha com o serviço básico mais 10 m³ aos preços impressos (R$ 21,70 + 10 × R$ 4,58 = R$ 67,50); a simulação usa os preços impressos e fica R$ 0,06 acima da mínima publicada a 10 m³.",
    "observacoes": [
     "Água: serviço básico mais o preço-base do m³ vezes o consumo elevado ao expoente da faixa (PB × C^n). A tabela publica a tarifa mínima de R$ 134,89 para a Residencial B (R$ 43,39 mais 10 m³ a R$ 9,15), que é a da ligação sem hidrômetro e coincide com a conta medida de exatamente 10 m³. A fórmula foi conferida em números oficiais: a tarifa mínima de cada categoria nas tabelas de janeiro de 2025, janeiro de 2026 e julho de 2026 é reproduzida ao centavo, inclusive a industrial, que só fecha com o expoente 1,03 da coluna IND no consumo de 30 m³ (R$ 547,66 em julho de 2026; com 1,02 seriam R$ 534,52).",
     "Ligação com hidrômetro: o Regulamento da AGERGS manda cobrar o serviço básico mais o consumo medido (art. 92, alínea a) e reserva a demanda mínima de consumo às economias não hidrometradas (art. 69), por isso a simulação não aplica mínimo de 10 m³: com consumo zero a conta é só o serviço básico, e a 5 m³ são R$ 121,14. A coluna \"tarifa mínima sem HD\" vale para a ligação sem hidrômetro, não simulada.",
@@ -3211,8 +3381,9 @@
     "Consumo em metros cúbicos inteiros: o Regulamento da AGERGS manda desprezar as frações de metro cúbico na leitura (art. 67), e a simulação trunca o consumo informado.",
     "Arredondamento não verificado: os preços impressos têm duas casas, mas o preço-base de julho parece vir de 8,65 vezes 1,0576 (9,148...) e o esgoto, de 70% desse valor (6,404...); a simulação usa os valores impressos. Com o valor sem arredondar, a água cairia até R$ 0,29 e o esgoto subiria até R$ 0,38 a 100 m³, com efeito líquido de poucos centavos (R$ 0,08 a 100 m³ e R$ 0,06 a 200 m³; conta minha).",
     "A tabela oficial faz o valor da água cair ao passar de 200 para 201 m³ (de R$ 3.662,43 para R$ 3.659,77) e nos degraus seguintes (300, 500, 1.000, 2.000 e 9.000 m³), porque o expoente diminui em consumos altos; a simulação reproduz a tabela como está (conta minha).",
-    "Cobertura: a Tabela I vale, segundo o Anexo 5, para os 298 municípios do Apêndice 1, todos casados com o IBGE e com o prestador no SINISA 2024. O comunicado de 12/06/2026 cita a RED 892/2026 da AGERGS e lista 247 municípios (o arquivo se chama 249); os outros 51 do Apêndice 1 não estão nessa lista, o Anexo 5 cita resoluções da AGESAN, e o ato do regulador deles não foi localizado.",
-    "Outras categorias da Tabela I (bica pública, residencial social, social da Lei 14.898/2024, comercial, pública e industrial) não foram simuladas. Na social da Lei 14.898/2024, a tarifa mínima publicada (R$ 67,44) não fecha com o serviço básico mais 10 m³ ao preço-base impresso (R$ 67,50), e não há regra publicada de como o preço-base da Residencial B, cobrado acima de 15 m³, se combina com o expoente.",
+    "Cobertura: a Tabela I vale, segundo o Anexo 5, para os 298 municípios do Apêndice 1, todos casados com o IBGE e com o prestador no SINISA 2024, e, pelo Anexo 4 (agosto de 2026, mesma Tabela I), para os 15 municípios da AGESAN, também casados e sem sobreposição com os 298. O comunicado de 12/06/2026 cita a RED 892/2026 da AGERGS e lista 247 municípios (o arquivo se chama 249); os outros 51 do Apêndice 1 não estão nessa lista. A RED 892/2026 e as Resoluções CSR AGESAN 05/2026 e 11/2026 não foram lidas.",
+    "Residencial social da Lei 14.898/2024: água até 15 m³ a R$ 21,70 de serviço básico mais R$ 4,58 por m³ (expoente 1,0 até 20 m³ em todas as colunas da Tabela de Exponenciais) e esgoto tratado a R$ 3,20 por m³. Os preços impressos são metade dos da Residencial B (a mínima, R$ 67,44, é metade de R$ 134,89 com arredondamento de centavos). A tabela cobra o excedente de 15 m³ ao preço-base da Residencial B (R$ 9,15), sem dizer como isso se combina com o expoente; por isso a categoria só vai até 15 m³ e acima disso o simulador não calcula. Os descontos da categoria valem a partir das faturas de agosto de 2026, segundo o comunicado de 12/06/2026; a elegibilidade (art. 2º da Lei 14.898/2024) não é verificada.",
+    "Outras categorias da Tabela I (bica pública, residencial social anterior, comercial, pública e industrial) não foram simuladas.",
     "A revisão de 5,76% de julho de 2026 e o reajuste de 4,68% de janeiro de 2026 são reproduzidos nos valores (preço-base, serviço básico e esgoto em todas as categorias, com diferença de até R$ 0,01 em esgoto tratado); os atos da AGERGS não foram lidos, e a RED 892/2026 consta só como citada pela Corsan."
    ],
    "exemplos": {
@@ -3235,6 +3406,12 @@
      "150": 3636.11,
      "151": 3645.1,
      "200": 4942.43
+    },
+    "social": {
+     "0": 21.7,
+     "5": 60.6,
+     "10": 99.5,
+     "15": 138.4
     }
    },
    "acessado": "2026-10-17",
@@ -3290,14 +3467,17 @@
     "4303673",
     "4303707",
     "4303806",
+    "4303905",
     "4304002",
     "4304101",
     "4304200",
     "4304309",
+    "4304408",
     "4304507",
     "4304630",
     "4304663",
     "4304671",
+    "4304689",
     "4304705",
     "4304804",
     "4304903",
@@ -3342,6 +3522,7 @@
     "4307401",
     "4307500",
     "4307559",
+    "4307609",
     "4307807",
     "4307864",
     "4307906",
@@ -3369,6 +3550,7 @@
     "4309803",
     "4309902",
     "4310009",
+    "4310108",
     "4310207",
     "4310306",
     "4310330",
@@ -3416,10 +3598,12 @@
     "4312906",
     "4313003",
     "4313037",
+    "4313060",
     "4313102",
     "4313201",
     "4313300",
     "4313359",
+    "4313375",
     "4313508",
     "4313607",
     "4313656",
@@ -3428,6 +3612,7 @@
     "4313904",
     "4313953",
     "4314001",
+    "4314050",
     "4314068",
     "4314100",
     "4314159",
@@ -3439,6 +3624,7 @@
     "4314548",
     "4314605",
     "4314704",
+    "4314803",
     "4315008",
     "4315107",
     "4315206",
@@ -3448,8 +3634,10 @@
     "4315552",
     "4315602",
     "4315701",
+    "4315750",
     "4315800",
     "4315909",
+    "4316006",
     "4316105",
     "4316204",
     "4316402",
@@ -3493,6 +3681,8 @@
     "4319604",
     "4319703",
     "4319802",
+    "4319901",
+    "4320008",
     "4320107",
     "4320206",
     "4320230",
@@ -3516,7 +3706,9 @@
     "4321436",
     "4321477",
     "4321501",
+    "4321600",
     "4321667",
+    "4321709",
     "4321808",
     "4321907",
     "4321956",
@@ -3537,6 +3729,1059 @@
     "4323507",
     "4323705",
     "4323804"
+   ]
+  },
+  {
+   "id": "corsan-canoas-esteio-2026",
+   "prestador": "Companhia Riograndense de Saneamento (CORSAN)",
+   "prestadorSinisa": "corsan-companhia-riograndense-de-saneamento",
+   "uf": "RS",
+   "regulador": "AGERGS (pelo comunicado da Corsan de 12/06/2026; ato não lido)",
+   "modelo": "Serviço básico por economia mais água medida pelo preço-base vezes o consumo elevado a um expoente por faixa, sem consumo mínimo na ligação com hidrômetro; esgoto a 70% do preço-base por m³ de água (tratado)",
+   "ato": "Tabela I de Canoas e Esteio da Corsan (estrutura tarifária em vigor desde 01/07/2026); revisão de 5,76% divulgada no comunicado de 12/06/2026",
+   "vigencia": "Desde 01/07/2026 (Anexo 3 da página Sistema Tarifário e Anexo 1 do comunicado de 12/06/2026, com a mesma Tabela I)",
+   "ultimoReajuste": "5,76% sobre a tabela de janeiro de 2026 (preço-base e serviço básico de todas as categorias reproduzidos ao centavo; a tarifa mínima difere em até R$ 0,04 por vir de valores sem arredondar)",
+   "area": "Canoas e Esteio (tabela própria; não vale para os 298 municípios do Anexo 5)",
+   "fontes": [
+    {
+     "rotulo": "Corsan, Anexo 3: Tabela Tarifária de Canoas e Esteio, agosto de 2026 (PDF)",
+     "url": "https://www.corsan.com.br/wp-content/uploads/2026/10/ANEXO-3-CANOAS-E-ESTEIO_AGOSTO-2026.pdf",
+     "sha256": "c7b35ca7b31955d25d3ba8d2dc65101a3ff589fc10b63dd3f4aac26213f9987b",
+     "localizador": "Tabela I: Residencial B R$ 41,20 de serviço básico e R$ 8,68 de preço-base; social Lei 14.898/24 R$ 20,60 e R$ 4,34"
+    },
+    {
+     "rotulo": "Corsan, Anexo 1 do comunicado de revisão tarifária de 12/06/2026: Canoas e Esteio (PDF)",
+     "url": "https://www.corsan.com.br/wp-content/uploads/2026/06/ANEXO-1_COMUNICADO-REVISAO-TARIFARIA_CANOAS-E-ESTEIO.pdf",
+     "sha256": "e759d2ea0b1e501e143033a216181db8fea0356d3f3edde20abbffc03d0088df",
+     "localizador": "Tabela I, a partir de 01 de julho de 2026: igual à do Anexo 3"
+    },
+    {
+     "rotulo": "Corsan, Tabela Tarifária de Canoas e Esteio, janeiro de 2026 (PDF)",
+     "url": "https://www.corsan.com.br/wp-content/uploads/2025/11/Tabela-Tarifaria-Canoas-e-Esteio_2026-x.pdf",
+     "sha256": "99195fb10b6b767c87b81b13eb53266bfd98353c0ab44aa0dac1aa01b4f5c556",
+     "localizador": "Tabela I de janeiro de 2026 (base da conferência do reajuste de julho)"
+    },
+    {
+     "rotulo": "Corsan, Tabela de Exponenciais (PDF)",
+     "url": "https://corsan.com.br/wp-content/uploads/2025/11/16095743-tabela-exponenciais.pdf",
+     "sha256": "17a7825765898491fdb6c46e767746326bab78cb89f9b8f349dd63c4e1022b03",
+     "localizador": "coluna BASICA (Residencial B); conferida na imagem"
+    },
+    {
+     "rotulo": "Corsan, página Sistema Tarifário",
+     "url": "https://www.corsan.com.br/sistematarifario/",
+     "sha256": "dd7e69fd5683a37e4d26a10e3e1d7765eddd3e55f3f9b52b810d47098e7294de",
+     "localizador": "forma de cobrança: serviço básico mais consumo medido com o exponencial de cada faixa"
+    },
+    {
+     "rotulo": "AGERGS, Regulamento dos Serviços de Água e Esgoto da Corsan (RSAE 2008)",
+     "url": "https://agergs.rs.gov.br/upload/arquivo1974.pdf",
+     "sha256": "517289235820d3db0ffb65bc7e92765c416aaeeee1b0a2fcdc76e9815e879309",
+     "localizador": "itens 3.31 e 3.32, arts. 67 (frações de m³ desprezadas), 92 e 93"
+    }
+   ],
+   "unidade": "por economia",
+   "categorias": {
+    "residencial": {
+     "rotulo": "Residencial (categoria básica)",
+     "consumoInteiro": true,
+     "agua": {
+      "fixo": 41.2,
+      "faixas": [],
+      "exponencial": {
+       "preco": 8.68,
+       "minimoM3": 0,
+       "degraus": [
+        {
+         "de": 1,
+         "n": 1.0
+        },
+        {
+         "de": 10,
+         "n": 1.0
+        },
+        {
+         "de": 11,
+         "n": 1.0
+        },
+        {
+         "de": 12,
+         "n": 1.0
+        },
+        {
+         "de": 13,
+         "n": 1.0
+        },
+        {
+         "de": 14,
+         "n": 1.0
+        },
+        {
+         "de": 15,
+         "n": 1.0
+        },
+        {
+         "de": 16,
+         "n": 1.0
+        },
+        {
+         "de": 17,
+         "n": 1.0
+        },
+        {
+         "de": 18,
+         "n": 1.0
+        },
+        {
+         "de": 19,
+         "n": 1.0
+        },
+        {
+         "de": 20,
+         "n": 1.0
+        },
+        {
+         "de": 21,
+         "n": 1.01
+        },
+        {
+         "de": 22,
+         "n": 1.02
+        },
+        {
+         "de": 23,
+         "n": 1.03
+        },
+        {
+         "de": 24,
+         "n": 1.04
+        },
+        {
+         "de": 25,
+         "n": 1.05
+        },
+        {
+         "de": 26,
+         "n": 1.06
+        },
+        {
+         "de": 27,
+         "n": 1.07
+        },
+        {
+         "de": 28,
+         "n": 1.08
+        },
+        {
+         "de": 29,
+         "n": 1.08
+        },
+        {
+         "de": 30,
+         "n": 1.09
+        },
+        {
+         "de": 31,
+         "n": 1.09
+        },
+        {
+         "de": 36,
+         "n": 1.1
+        },
+        {
+         "de": 41,
+         "n": 1.1
+        },
+        {
+         "de": 46,
+         "n": 1.11
+        },
+        {
+         "de": 51,
+         "n": 1.11
+        },
+        {
+         "de": 101,
+         "n": 1.13
+        },
+        {
+         "de": 151,
+         "n": 1.1287
+        },
+        {
+         "de": 201,
+         "n": 1.1275
+        },
+        {
+         "de": 301,
+         "n": 1.125
+        },
+        {
+         "de": 501,
+         "n": 1.12
+        },
+        {
+         "de": 1001,
+         "n": 1.11
+        },
+        {
+         "de": 2001,
+         "n": 1.1
+        },
+        {
+         "de": 9001,
+         "n": 1.0858
+        }
+       ]
+      }
+     },
+     "esgoto": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": null,
+        "preco": 6.07
+       }
+      ]
+     }
+    },
+    "social": {
+     "rotulo": "Residencial social (tarifa social federal, Lei 14.898/2024)",
+     "consumoMaximo": 15,
+     "consumoInteiro": true,
+     "agua": {
+      "fixo": 20.6,
+      "faixas": [],
+      "exponencial": {
+       "preco": 4.34,
+       "minimoM3": 0,
+       "degraus": [
+        {
+         "de": 1,
+         "n": 1.0
+        },
+        {
+         "de": 10,
+         "n": 1.0
+        },
+        {
+         "de": 11,
+         "n": 1.0
+        },
+        {
+         "de": 12,
+         "n": 1.0
+        },
+        {
+         "de": 13,
+         "n": 1.0
+        },
+        {
+         "de": 14,
+         "n": 1.0
+        },
+        {
+         "de": 15,
+         "n": 1.0
+        },
+        {
+         "de": 16,
+         "n": 1.0
+        },
+        {
+         "de": 17,
+         "n": 1.0
+        },
+        {
+         "de": 18,
+         "n": 1.0
+        },
+        {
+         "de": 19,
+         "n": 1.0
+        },
+        {
+         "de": 20,
+         "n": 1.0
+        },
+        {
+         "de": 21,
+         "n": 1.01
+        },
+        {
+         "de": 22,
+         "n": 1.02
+        },
+        {
+         "de": 23,
+         "n": 1.03
+        },
+        {
+         "de": 24,
+         "n": 1.04
+        },
+        {
+         "de": 25,
+         "n": 1.05
+        },
+        {
+         "de": 26,
+         "n": 1.06
+        },
+        {
+         "de": 27,
+         "n": 1.07
+        },
+        {
+         "de": 28,
+         "n": 1.08
+        },
+        {
+         "de": 29,
+         "n": 1.08
+        },
+        {
+         "de": 30,
+         "n": 1.09
+        },
+        {
+         "de": 31,
+         "n": 1.09
+        },
+        {
+         "de": 36,
+         "n": 1.1
+        },
+        {
+         "de": 41,
+         "n": 1.1
+        },
+        {
+         "de": 46,
+         "n": 1.11
+        },
+        {
+         "de": 51,
+         "n": 1.11
+        },
+        {
+         "de": 101,
+         "n": 1.13
+        },
+        {
+         "de": 151,
+         "n": 1.1287
+        },
+        {
+         "de": 201,
+         "n": 1.1275
+        },
+        {
+         "de": 301,
+         "n": 1.125
+        },
+        {
+         "de": 501,
+         "n": 1.12
+        },
+        {
+         "de": 1001,
+         "n": 1.11
+        },
+        {
+         "de": 2001,
+         "n": 1.1
+        },
+        {
+         "de": 9001,
+         "n": 1.0858
+        }
+       ]
+      }
+     },
+     "esgoto": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": null,
+        "preco": 3.03
+       }
+      ]
+     }
+    }
+   },
+   "metodoNaoVerificado": "A fórmula da água (serviço básico mais preço-base vezes o consumo elevado ao expoente) foi conferida nas tarifas mínimas oficiais desta tabela, mas duas leituras não foram verificadas em conta ou exemplo oficial: o expoente de um consumo que não coincide com uma linha da Tabela de Exponenciais (de 32 a 35 m³ usa-se a linha de 31) e o esgoto cobrado pelo preço impresso por m³ de água medida. Até 31 m³ a primeira leitura não pesa.",
+   "observacoes": [
+    "Regras da água, do esgoto, do consumo inteiro e da ligação com hidrômetro iguais às da tabela dos 298 municípios (ver a ficha da Corsan, RS): serviço básico mais preço-base × C^n sem mínimo na ligação medida; esgoto tratado a R$ 6,07 por m³ de água (70% do preço-base); fração de metro cúbico desprezada (art. 67 do RSAE). A Tabela de Exponenciais é a mesma publicada pela Corsan para todas as tabelas: as tabelas próprias a citam \"em anexo\" sem reproduzi-la, e o Observatório assume que vale a mesma (a coluna social é igual à básica).",
+    "Conferência: a tarifa mínima de cada categoria é reproduzida ao centavo em julho de 2026, inclusive a social da Lei 14.898/2024 (R$ 20,60 + 10 × R$ 4,34 = R$ 64,00, que também é metade da mínima de R$ 128,00 da Residencial B); em janeiro de 2026 só a industrial difere em R$ 0,01, por vir de valores sem arredondar.",
+    "Residencial social da Lei 14.898/2024: água até 15 m³ a R$ 20,60 de serviço básico mais R$ 4,34 por m³ e esgoto tratado a R$ 3,03 por m³, metade dos preços da Residencial B. O excedente de 15 m³ é cobrado ao preço-base da Residencial B (R$ 8,68), sem regra publicada de como isso se combina com o expoente; por isso a categoria só vai até 15 m³. A elegibilidade (art. 2º da Lei 14.898/2024) não é verificada.",
+    "Cobertura: a tabela vale para Canoas e Esteio, casados com o IBGE e com a Corsan no SINISA 2024. O PDF cita a Resolução Normativa 74/2026 da AGERGS e a Resolução CSR 05/2026 da AGESAN só para a disponibilidade do esgoto e não nomeia o regulador nem o ato da tabela; o comunicado de 12/06/2026 divulga a revisão de 5,76% de Canoas e Esteio junto com a da RED 892/2026 da AGERGS, e o ato específico não foi lido.",
+    "Reajuste: a tabela de julho de 2026 é a de janeiro de 2026 vezes 1,0576 em preço-base e serviço básico de todas as categorias, ao centavo; a tabela de janeiro de 2025 de Canoas e Esteio não foi lida.",
+    "Outras categorias (bica pública, residencial social anterior, comercial, pública e industrial) não foram simuladas."
+   ],
+   "exemplos": {
+    "residencial": {
+     "0": 41.2,
+     "5": 114.95,
+     "10": 188.7,
+     "15": 262.45,
+     "20": 336.2,
+     "25": 447.84,
+     "30": 576.96,
+     "40": 786.09,
+     "50": 1012.08
+    },
+    "social": {
+     "0": 20.6,
+     "5": 57.45,
+     "10": 94.3,
+     "15": 131.15
+    }
+   },
+   "acessado": "2026-10-17",
+   "recorte": "Canoas e Esteio",
+   "variante": true,
+   "municipios": [
+    "4304606",
+    "4307708"
+   ]
+  },
+  {
+   "id": "corsan-santa-cruz-2026",
+   "prestador": "Companhia Riograndense de Saneamento (CORSAN)",
+   "prestadorSinisa": "corsan-companhia-riograndense-de-saneamento",
+   "uf": "RS",
+   "regulador": "AGERST (nomeada no PDF da tabela; ato não lido)",
+   "modelo": "Serviço básico por economia mais água medida pelo preço-base vezes o consumo elevado a um expoente por faixa, sem consumo mínimo na ligação com hidrômetro; esgoto a 70% do preço-base por m³ de água (tratado)",
+   "ato": "Tabela I de Santa Cruz do Sul da Corsan (estrutura tarifária a partir de 18/09/2026)",
+   "vigencia": "Desde 18/09/2026 (Anexo 2 da página Sistema Tarifário)",
+   "ultimoReajuste": "Tabela de 18/09/2026 sobre a de janeiro de 2026: 2,00% no serviço básico (38,25 ÷ 37,50) e 2,02% no preço-base (8,07 ÷ 7,91); o ato que a aprovou não foi lido",
+   "area": "Santa Cruz do Sul (tabela própria; não vale para os 298 municípios do Anexo 5)",
+   "fontes": [
+    {
+     "rotulo": "Corsan, Anexo 2: Tabela Tarifária de Santa Cruz do Sul, a partir de 18/09/2026 (PDF)",
+     "url": "https://www.corsan.com.br/wp-content/uploads/2026/10/AGERST_Tabela_Tarifaria_Santa_Cruz_do_Sul_2026.pdf",
+     "sha256": "50de8bace66a70e21fe869be6e83b2aabbe19b1ded426015729017c7f11c1039",
+     "localizador": "Tabela I: Residencial B R$ 38,25 de serviço básico e R$ 8,07 de preço-base; social Lei 14.898/24 R$ 19,13 e R$ 4,03"
+    },
+    {
+     "rotulo": "Corsan, Tabela Tarifária de Santa Cruz do Sul, janeiro de 2026 (PDF)",
+     "url": "https://www.corsan.com.br/wp-content/uploads/2025/11/Tabela-Tarifaria-Santa-Cruz-do-Sul_2026-x.pdf",
+     "sha256": "a45e991b918116e473060be17599b5a5691c188ab1c39085818e7b6f93681f74",
+     "localizador": "Tabela I de janeiro de 2026 (comunicado de 30/11/2025: reajuste de 4,68%)"
+    },
+    {
+     "rotulo": "Corsan, Tabela de Exponenciais (PDF)",
+     "url": "https://corsan.com.br/wp-content/uploads/2025/11/16095743-tabela-exponenciais.pdf",
+     "sha256": "17a7825765898491fdb6c46e767746326bab78cb89f9b8f349dd63c4e1022b03",
+     "localizador": "coluna BASICA (Residencial B); conferida na imagem"
+    },
+    {
+     "rotulo": "Corsan, página Sistema Tarifário",
+     "url": "https://www.corsan.com.br/sistematarifario/",
+     "sha256": "dd7e69fd5683a37e4d26a10e3e1d7765eddd3e55f3f9b52b810d47098e7294de",
+     "localizador": "forma de cobrança: serviço básico mais consumo medido com o exponencial de cada faixa"
+    },
+    {
+     "rotulo": "AGERGS, Regulamento dos Serviços de Água e Esgoto da Corsan (RSAE 2008)",
+     "url": "https://agergs.rs.gov.br/upload/arquivo1974.pdf",
+     "sha256": "517289235820d3db0ffb65bc7e92765c416aaeeee1b0a2fcdc76e9815e879309",
+     "localizador": "itens 3.31 e 3.32, arts. 67 (frações de m³ desprezadas), 92 e 93"
+    }
+   ],
+   "unidade": "por economia",
+   "categorias": {
+    "residencial": {
+     "rotulo": "Residencial (categoria básica)",
+     "consumoInteiro": true,
+     "agua": {
+      "fixo": 38.25,
+      "faixas": [],
+      "exponencial": {
+       "preco": 8.07,
+       "minimoM3": 0,
+       "degraus": [
+        {
+         "de": 1,
+         "n": 1.0
+        },
+        {
+         "de": 10,
+         "n": 1.0
+        },
+        {
+         "de": 11,
+         "n": 1.0
+        },
+        {
+         "de": 12,
+         "n": 1.0
+        },
+        {
+         "de": 13,
+         "n": 1.0
+        },
+        {
+         "de": 14,
+         "n": 1.0
+        },
+        {
+         "de": 15,
+         "n": 1.0
+        },
+        {
+         "de": 16,
+         "n": 1.0
+        },
+        {
+         "de": 17,
+         "n": 1.0
+        },
+        {
+         "de": 18,
+         "n": 1.0
+        },
+        {
+         "de": 19,
+         "n": 1.0
+        },
+        {
+         "de": 20,
+         "n": 1.0
+        },
+        {
+         "de": 21,
+         "n": 1.01
+        },
+        {
+         "de": 22,
+         "n": 1.02
+        },
+        {
+         "de": 23,
+         "n": 1.03
+        },
+        {
+         "de": 24,
+         "n": 1.04
+        },
+        {
+         "de": 25,
+         "n": 1.05
+        },
+        {
+         "de": 26,
+         "n": 1.06
+        },
+        {
+         "de": 27,
+         "n": 1.07
+        },
+        {
+         "de": 28,
+         "n": 1.08
+        },
+        {
+         "de": 29,
+         "n": 1.08
+        },
+        {
+         "de": 30,
+         "n": 1.09
+        },
+        {
+         "de": 31,
+         "n": 1.09
+        },
+        {
+         "de": 36,
+         "n": 1.1
+        },
+        {
+         "de": 41,
+         "n": 1.1
+        },
+        {
+         "de": 46,
+         "n": 1.11
+        },
+        {
+         "de": 51,
+         "n": 1.11
+        },
+        {
+         "de": 101,
+         "n": 1.13
+        },
+        {
+         "de": 151,
+         "n": 1.1287
+        },
+        {
+         "de": 201,
+         "n": 1.1275
+        },
+        {
+         "de": 301,
+         "n": 1.125
+        },
+        {
+         "de": 501,
+         "n": 1.12
+        },
+        {
+         "de": 1001,
+         "n": 1.11
+        },
+        {
+         "de": 2001,
+         "n": 1.1
+        },
+        {
+         "de": 9001,
+         "n": 1.0858
+        }
+       ]
+      }
+     },
+     "esgoto": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": null,
+        "preco": 5.64
+       }
+      ]
+     }
+    },
+    "social": {
+     "rotulo": "Residencial social (tarifa social federal, Lei 14.898/2024)",
+     "consumoMaximo": 15,
+     "consumoInteiro": true,
+     "agua": {
+      "fixo": 19.13,
+      "faixas": [],
+      "exponencial": {
+       "preco": 4.03,
+       "minimoM3": 0,
+       "degraus": [
+        {
+         "de": 1,
+         "n": 1.0
+        },
+        {
+         "de": 10,
+         "n": 1.0
+        },
+        {
+         "de": 11,
+         "n": 1.0
+        },
+        {
+         "de": 12,
+         "n": 1.0
+        },
+        {
+         "de": 13,
+         "n": 1.0
+        },
+        {
+         "de": 14,
+         "n": 1.0
+        },
+        {
+         "de": 15,
+         "n": 1.0
+        },
+        {
+         "de": 16,
+         "n": 1.0
+        },
+        {
+         "de": 17,
+         "n": 1.0
+        },
+        {
+         "de": 18,
+         "n": 1.0
+        },
+        {
+         "de": 19,
+         "n": 1.0
+        },
+        {
+         "de": 20,
+         "n": 1.0
+        },
+        {
+         "de": 21,
+         "n": 1.01
+        },
+        {
+         "de": 22,
+         "n": 1.02
+        },
+        {
+         "de": 23,
+         "n": 1.03
+        },
+        {
+         "de": 24,
+         "n": 1.04
+        },
+        {
+         "de": 25,
+         "n": 1.05
+        },
+        {
+         "de": 26,
+         "n": 1.06
+        },
+        {
+         "de": 27,
+         "n": 1.07
+        },
+        {
+         "de": 28,
+         "n": 1.08
+        },
+        {
+         "de": 29,
+         "n": 1.08
+        },
+        {
+         "de": 30,
+         "n": 1.09
+        },
+        {
+         "de": 31,
+         "n": 1.09
+        },
+        {
+         "de": 36,
+         "n": 1.1
+        },
+        {
+         "de": 41,
+         "n": 1.1
+        },
+        {
+         "de": 46,
+         "n": 1.11
+        },
+        {
+         "de": 51,
+         "n": 1.11
+        },
+        {
+         "de": 101,
+         "n": 1.13
+        },
+        {
+         "de": 151,
+         "n": 1.1287
+        },
+        {
+         "de": 201,
+         "n": 1.1275
+        },
+        {
+         "de": 301,
+         "n": 1.125
+        },
+        {
+         "de": 501,
+         "n": 1.12
+        },
+        {
+         "de": 1001,
+         "n": 1.11
+        },
+        {
+         "de": 2001,
+         "n": 1.1
+        },
+        {
+         "de": 9001,
+         "n": 1.0858
+        }
+       ]
+      }
+     },
+     "esgoto": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": null,
+        "preco": 2.82
+       }
+      ]
+     }
+    }
+   },
+   "metodoNaoVerificado": "A fórmula da água (serviço básico mais preço-base vezes o consumo elevado ao expoente) foi conferida nas tarifas mínimas oficiais desta tabela, mas duas leituras não foram verificadas em conta ou exemplo oficial: o expoente de um consumo que não coincide com uma linha da Tabela de Exponenciais (de 32 a 35 m³ usa-se a linha de 31) e o esgoto cobrado pelo preço impresso por m³ de água medida. Até 31 m³ a primeira leitura não pesa. Na tarifa social da Lei 14.898/2024, a mínima publicada (R$ 59,48) é metade da mínima da Residencial B (R$ 118,95 ÷ 2 = R$ 59,475) e não fecha com o serviço básico mais 10 m³ aos preços impressos (R$ 19,13 + 10 × R$ 4,03 = R$ 59,43); a simulação usa os preços impressos e fica R$ 0,05 abaixo da mínima publicada a 10 m³.",
+   "observacoes": [
+    "Regras da água, do esgoto, do consumo inteiro e da ligação com hidrômetro iguais às da tabela dos 298 municípios (ver a ficha da Corsan, RS): serviço básico mais preço-base × C^n sem mínimo na ligação medida; esgoto tratado a R$ 5,64 por m³ de água (70% do preço-base); fração de metro cúbico desprezada (art. 67 do RSAE). A Tabela de Exponenciais é a mesma publicada pela Corsan para todas as tabelas: as tabelas próprias a citam \"em anexo\" sem reproduzi-la, e o Observatório assume que vale a mesma (a coluna social é igual à básica).",
+    "Conferência: a tarifa mínima de cada categoria é reproduzida ao centavo na tabela de setembro de 2026, exceto a social da Lei 14.898/2024 (ver o aviso do método); em janeiro de 2026 só a industrial difere em R$ 0,01, por vir de valores sem arredondar.",
+    "Residencial social da Lei 14.898/2024: água até 15 m³ a R$ 19,13 de serviço básico mais R$ 4,03 por m³ e esgoto tratado a R$ 2,82 por m³, metade dos preços da Residencial B com arredondamento de centavos. O excedente de 15 m³ é cobrado ao preço-base da Residencial B (R$ 8,07), sem regra publicada de como isso se combina com o expoente; por isso a categoria só vai até 15 m³. A elegibilidade (art. 2º da Lei 14.898/2024) não é verificada.",
+    "Cobertura: a tabela vale para Santa Cruz do Sul, casado com o IBGE e com a Corsan no SINISA 2024. O PDF cita resoluções da AGERST (a nº 12/2018, sobre a disponibilidade do esgoto, e a Resolução Normativa 92/2026, sobre a tarifa social), mas não nomeia o ato que aprovou a tabela, e nenhum dos atos citados foi lido.",
+    "Outras categorias (bica pública, residencial social anterior, comercial, pública e industrial) não foram simuladas."
+   ],
+   "exemplos": {
+    "residencial": {
+     "0": 38.25,
+     "5": 106.8,
+     "10": 175.35,
+     "15": 243.9,
+     "20": 312.45,
+     "25": 416.23,
+     "30": 536.25,
+     "40": 730.66,
+     "50": 940.73
+    },
+    "social": {
+     "0": 19.13,
+     "5": 53.38,
+     "10": 87.63,
+     "15": 121.88
+    }
+   },
+   "acessado": "2026-10-17",
+   "recorte": "Santa Cruz do Sul",
+   "variante": true,
+   "municipios": [
+    "4316808"
+   ]
+  },
+  {
+   "id": "corsan-erechim-2026",
+   "prestador": "Companhia Riograndense de Saneamento (CORSAN)",
+   "prestadorSinisa": "corsan-companhia-riograndense-de-saneamento",
+   "uf": "RS",
+   "regulador": "não identificado nas fontes lidas",
+   "modelo": "Serviço básico por economia mais água medida pelo preço-base vezes o consumo elevado a um expoente por faixa, sem consumo mínimo na ligação com hidrômetro; esgoto a 70% do preço-base por m³ de água (tratado)",
+   "ato": "Tabela I de Erechim da Corsan (estrutura tarifária a partir de 01/01/2026); reajuste de 5,34% divulgado no comunicado de 30/11/2025",
+   "vigencia": "Desde 01/01/2026 (Anexo 1 da página Sistema Tarifário); não foi localizada tabela posterior",
+   "ultimoReajuste": "5,34% em janeiro de 2026, segundo o comunicado da Corsan de 30/11/2025; a tabela de janeiro de 2025 de Erechim não foi lida, e o percentual não foi reproduzido",
+   "area": "Erechim (tabela própria; não vale para os 298 municípios do Anexo 5)",
+   "fontes": [
+    {
+     "rotulo": "Corsan, Anexo 1: Tabela Tarifária de Erechim, a partir de 01/01/2026 (PDF)",
+     "url": "https://www.corsan.com.br/wp-content/uploads/2025/11/Tabela-Tarifaria-Erechim_2026-x.pdf",
+     "sha256": "d4975dff86cf22cd2b1001e01785d4ec44c8495bc250a2880ef6430b39e59f41",
+     "localizador": "Tabela I: Residencial B R$ 32,95 de serviço básico e R$ 6,95 de preço-base"
+    },
+    {
+     "rotulo": "Corsan, Tabela de Exponenciais (PDF)",
+     "url": "https://corsan.com.br/wp-content/uploads/2025/11/16095743-tabela-exponenciais.pdf",
+     "sha256": "17a7825765898491fdb6c46e767746326bab78cb89f9b8f349dd63c4e1022b03",
+     "localizador": "coluna BASICA (Residencial B); conferida na imagem"
+    },
+    {
+     "rotulo": "Corsan, página Sistema Tarifário",
+     "url": "https://www.corsan.com.br/sistematarifario/",
+     "sha256": "dd7e69fd5683a37e4d26a10e3e1d7765eddd3e55f3f9b52b810d47098e7294de",
+     "localizador": "forma de cobrança: serviço básico mais consumo medido com o exponencial de cada faixa"
+    },
+    {
+     "rotulo": "AGERGS, Regulamento dos Serviços de Água e Esgoto da Corsan (RSAE 2008)",
+     "url": "https://agergs.rs.gov.br/upload/arquivo1974.pdf",
+     "sha256": "517289235820d3db0ffb65bc7e92765c416aaeeee1b0a2fcdc76e9815e879309",
+     "localizador": "itens 3.31 e 3.32, arts. 67 (frações de m³ desprezadas), 92 e 93"
+    }
+   ],
+   "unidade": "por economia",
+   "categorias": {
+    "residencial": {
+     "rotulo": "Residencial (categoria básica)",
+     "consumoInteiro": true,
+     "agua": {
+      "fixo": 32.95,
+      "faixas": [],
+      "exponencial": {
+       "preco": 6.95,
+       "minimoM3": 0,
+       "degraus": [
+        {
+         "de": 1,
+         "n": 1.0
+        },
+        {
+         "de": 10,
+         "n": 1.0
+        },
+        {
+         "de": 11,
+         "n": 1.0
+        },
+        {
+         "de": 12,
+         "n": 1.0
+        },
+        {
+         "de": 13,
+         "n": 1.0
+        },
+        {
+         "de": 14,
+         "n": 1.0
+        },
+        {
+         "de": 15,
+         "n": 1.0
+        },
+        {
+         "de": 16,
+         "n": 1.0
+        },
+        {
+         "de": 17,
+         "n": 1.0
+        },
+        {
+         "de": 18,
+         "n": 1.0
+        },
+        {
+         "de": 19,
+         "n": 1.0
+        },
+        {
+         "de": 20,
+         "n": 1.0
+        },
+        {
+         "de": 21,
+         "n": 1.01
+        },
+        {
+         "de": 22,
+         "n": 1.02
+        },
+        {
+         "de": 23,
+         "n": 1.03
+        },
+        {
+         "de": 24,
+         "n": 1.04
+        },
+        {
+         "de": 25,
+         "n": 1.05
+        },
+        {
+         "de": 26,
+         "n": 1.06
+        },
+        {
+         "de": 27,
+         "n": 1.07
+        },
+        {
+         "de": 28,
+         "n": 1.08
+        },
+        {
+         "de": 29,
+         "n": 1.08
+        },
+        {
+         "de": 30,
+         "n": 1.09
+        },
+        {
+         "de": 31,
+         "n": 1.09
+        },
+        {
+         "de": 36,
+         "n": 1.1
+        },
+        {
+         "de": 41,
+         "n": 1.1
+        },
+        {
+         "de": 46,
+         "n": 1.11
+        },
+        {
+         "de": 51,
+         "n": 1.11
+        },
+        {
+         "de": 101,
+         "n": 1.13
+        },
+        {
+         "de": 151,
+         "n": 1.1287
+        },
+        {
+         "de": 201,
+         "n": 1.1275
+        },
+        {
+         "de": 301,
+         "n": 1.125
+        },
+        {
+         "de": 501,
+         "n": 1.12
+        },
+        {
+         "de": 1001,
+         "n": 1.11
+        },
+        {
+         "de": 2001,
+         "n": 1.1
+        },
+        {
+         "de": 9001,
+         "n": 1.0858
+        }
+       ]
+      }
+     },
+     "esgoto": {
+      "faixas": [
+       {
+        "de": 0,
+        "ate": null,
+        "preco": 4.86
+       }
+      ]
+     }
+    }
+   },
+   "metodoNaoVerificado": "A fórmula da água (serviço básico mais preço-base vezes o consumo elevado ao expoente) foi conferida nas tarifas mínimas oficiais desta tabela, mas duas leituras não foram verificadas em conta ou exemplo oficial: o expoente de um consumo que não coincide com uma linha da Tabela de Exponenciais (de 32 a 35 m³ usa-se a linha de 31) e o esgoto cobrado pelo preço impresso por m³ de água medida. Até 31 m³ a primeira leitura não pesa.",
+   "observacoes": [
+    "Regras da água, do esgoto, do consumo inteiro e da ligação com hidrômetro iguais às da tabela dos 298 municípios (ver a ficha da Corsan, RS): serviço básico mais preço-base × C^n sem mínimo na ligação medida; esgoto tratado a R$ 4,86 por m³ de água (70% do preço-base); fração de metro cúbico desprezada (art. 67 do RSAE). A Tabela de Exponenciais é a mesma publicada pela Corsan para todas as tabelas: as tabelas próprias a citam \"em anexo\" sem reproduzi-la, e o Observatório assume que vale a mesma (a coluna social é igual à básica).",
+    "Conferência: a tarifa mínima de cada categoria é reproduzida ao centavo, exceto a industrial, que difere em R$ 0,01 por vir de valores sem arredondar.",
+    "A tabela de janeiro de 2026 não traz a linha da Residencial Social da Lei 14.898/2024, que nas tabelas de julho de 2026 lidas (298 municípios, AGESAN, Canoas e Esteio e Santa Cruz do Sul) aparece; por isso só a Residencial B é simulada e Erechim não entra nas comparações da tarifa social. Se houve revisão de Erechim em meados de 2026, ela não consta nas fontes lidas.",
+    "Cobertura: a tabela vale para Erechim, casado com o IBGE e com a Corsan no SINISA 2024. O PDF não nomeia o regulador.",
+    "Outras categorias (bica pública, residencial social anterior, comercial, pública e industrial) não foram simuladas."
+   ],
+   "exemplos": {
+    "residencial": {
+     "0": 32.95,
+     "5": 92.0,
+     "10": 151.05,
+     "15": 210.1,
+     "20": 269.15,
+     "25": 358.54,
+     "30": 461.92,
+     "40": 629.37,
+     "50": 810.32
+    }
+   },
+   "acessado": "2026-10-17",
+   "recorte": "Erechim",
+   "variante": true,
+   "municipios": [
+    "4307005"
    ]
   }
  ]

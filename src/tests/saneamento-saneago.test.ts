@@ -57,8 +57,14 @@ describe("Saneago: cálculo da conta", () => {
     expect(leituras(t, "residencial", 20).m3Adicional).toBe(16.9); // 8,45 + 8,45
   });
 
-  it("nenhuma outra tabela tem teto de consumo", () => {
-    for (const t of TARIFAS) for (const [k, c] of Object.entries(t.categorias)) expect(c.consumoMaximo != null, `${t.id} ${k}`).toBe(t.id === ID && k === "social");
+  it("só a social da Saneago (20 m³) e a social da Corsan (15 m³, três tabelas) têm teto de consumo", () => {
+    for (const t of TARIFAS) {
+      for (const [k, c] of Object.entries(t.categorias)) {
+        const comTeto = k === "social" && (t.id === ID || (t.id.startsWith("corsan-") && t.categorias.social != null));
+        expect(c.consumoMaximo != null, `${t.id} ${k}`).toBe(comTeto);
+      }
+    }
+    expect(TARIFAS.filter((t) => t.categorias.social?.consumoMaximo === 15).map((t) => t.id)).toEqual(["corsan-2026", "corsan-canoas-esteio-2026", "corsan-santa-cruz-2026"]);
   });
 });
 
@@ -81,7 +87,9 @@ describe("Saneago: exportação CSV das contas simuladas", () => {
     const a20 = social.find((l) => l[col("consumo_m3")] === 20)!;
     expect(a20[col("total_R$")]).toBe(129.23);
     expect(a20[col("situacao")]).toBe("calculada");
-    expect(linhas.filter((l) => l[col("situacao")] !== "calculada")).toHaveLength(1);
+    // uma linha da Saneago (30 m³) e duas de cada social da Corsan (20 e 30 m³, três tabelas)
+    expect(linhas.filter((l) => l[col("situacao")] !== "calculada")).toHaveLength(1 + 3 * 2);
+    expect(linhas.filter((l) => l[col("situacao")] === "sem preço no ato acima de 15 m³")).toHaveLength(3 * 2);
   });
 
   it("no arquivo, a célula vazia é ausência e a situação aparece na linha", () => {
