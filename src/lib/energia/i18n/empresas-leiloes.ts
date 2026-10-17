@@ -375,6 +375,45 @@ export const DEFINICAO_LISTADAS_EN: Tabela = {
     "Average daily traded value of the stock, standard lot in the cash market, over the trading sessions of the last 3 months.",
 };
 
+/** Segmento de listagem da B3 (iee.segmento_nome). */
+export const SEGMENTO_B3_EN: Tabela = {
+  "Novo Mercado": "Novo Mercado", // i18n: dado (nome próprio do segmento da B3)
+  "Nível 1": "Level 1",
+  "Nível 2": "Level 2",
+};
+
+/** Rótulos dos downloads da gold de Listadas (downloads[].rotulo). */
+export const DOWNLOAD_LISTADAS_EN: Tabela = {
+  "Companhias, comparação (CSV)": "Companies, comparison (CSV)",
+  "Usinas sob controle (CSV)": "Plants under control (CSV)",
+  "Transmissão sob controle (CSV)": "Transmission under control (CSV)",
+  "Acionistas diretos (CSV)": "Direct shareholders (CSV)",
+  "Cotações e índices diários (CSV)": "Daily quotes and indices (CSV)",
+  "Eventos aplicados às séries (CSV)": "Events applied to the series (CSV)",
+  "Fatos relevantes, 24 meses (CSV)": "Material facts, 24 months (CSV)",
+  "Carteira do IEE (CSV)": "IEE portfolio (CSV)",
+};
+
+/** Motivo de ausência de símbolo no manifesto de logos (logos[].ausencia.motivo). */
+export const AUSENCIA_LOGO_EN: Tabela = {
+  "O site de RI (ri.engie.com.br) respondeu 502 e os arquivos do site institucional (www.engie.com.br) responderam 403 a pedidos identificados do observatório em 16/10/2026; nenhum arquivo oficial foi obtido.":
+    // i18n: dado (forma inglesa; "de"/"total" casam por acaso com palavras portuguesas)
+    "The investor relations site (ri.engie.com.br) responded 502 and the files on the corporate site (www.engie.com.br) responded 403 to identified requests from the observatory on Oct 16, 2026; no official file was obtained.",
+};
+
+/** Notas da série de cotações de cada papel (bolsa.notas[]), no idioma da página; sem forma conhecida, o texto como veio. */
+export function notaBolsa(texto: string, idioma: Idioma = idiomaEnergia()): string {
+  if (idioma === "pt") return texto;
+  let m = /^Em (.+) a cotação traz a marca de ex-bonificação ou ex-grupamento \(EB ou EDB\), mas a B3 não publica o fator desses eventos na base de eventos usada: a série não é comparável antes e depois deles e começa em (\S+)\.$/.exec(texto);
+  if (m)
+    return `On ${m[1].replace(/ e /g, " and ")} the quote carries the ex-bonus or ex-reverse-split mark (EB or EDB), but B3 does not publish the factor of these events in the event database used: the series is not comparable before and after them and starts on ${m[2]}.`;
+  m = /^Na mesma data com \((\S+)\) a B3 registra resgate total de outra classe \((\w+)\) sem valor na base de proventos usada: se houve pagamento em dinheiro, ele não entra no retorno total\.$/.exec(texto);
+  if (m)
+    // i18n: dado (forma inglesa; "de"/"total" casam por acaso com palavras portuguesas)
+    return `On the same cum date (${m[1]}) B3 records a full redemption of another class (${m[2]}) with no amount in the distributions database used: if there was a cash payment, it is not in the total return.`;
+  return texto;
+}
+
 /* ---------------------------------------------------------------- Leilões */
 
 /** Categorias de fonte dos leilões (leiloes.categorias[].rotulo e por_categoria[].rotulo). */
