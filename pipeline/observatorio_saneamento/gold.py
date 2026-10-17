@@ -853,7 +853,7 @@ def construir():
     # --- agregados: Censo (tabulação do IBGE em cada nível) + SINISA consolidado oficial
     _, ag_uf_ind = planilha("agua_indicadores_uf")
     _, es_uf_ind = planilha("esgoto_indicadores_uf")
-    _, ag_uf_tec = planilha("agua_tecnica_uf")
+    meta_ag_uf_tec, ag_uf_tec = planilha("agua_tecnica_uf")
     _, es_uf_tec = planilha("esgoto_tecnica_uf")
     _, ag_uf_fin = planilha("agua_financeira_uf")
     _, es_uf_fin = planilha("esgoto_financeira_uf")
@@ -958,18 +958,77 @@ def construir():
         "A soma não reproduz o consolidado; divergência mantida em aberto.",
     })
     pop_at_mun = soma_mun("ag_pop_at")
+    pop_at_br = br["sinisa"]["agua"]["pop_atendida"]
+    dif_pop = None if pop_at_mun is None or pop_at_br is None else pop_at_mun - pop_at_br
     conferencias.append({
         "id": "agua_retificacao",
-        "descricao": "População atendida com rede de água: soma da base municipal retificada (25/05/2026) "
-                     "versus consolidado Brasil publicado antes da retificação.",
+        "descricao": "População atendida com rede de água (GTA0001 + GTA0002): soma da base municipal retificada "
+                     "contra o consolidado Brasil.",
         "valores": {
             "soma_municipal_retificada": pop_at_mun,
-            "consolidado_brasil": br["sinisa"]["agua"]["pop_atendida"],
-            "diferenca": None if pop_at_mun is None or br["sinisa"]["agua"]["pop_atendida"] is None
-            else pop_at_mun - br["sinisa"]["agua"]["pop_atendida"],
+            "consolidado_brasil": pop_at_br,
+            "diferenca": dif_pop,
         },
-        "conclusao": "UF, região e Brasil usam o consolidado oficial; municípios usam a base retificada. "
-                     "A diferença é publicada e não é redistribuída.",
+        "conclusao": "A soma municipal reproduz o consolidado Brasil, sem diferença. As colunas de ligações e economias "
+                     "têm conferência própria, logo abaixo; UF, região e Brasil usam o consolidado oficial e os "
+                     "municípios usam a base retificada."
+        if dif_pop == 0 else
+        "A soma municipal difere do consolidado Brasil. UF, região e Brasil usam o consolidado oficial; municípios "
+        "usam a base retificada. A diferença é publicada e não é redistribuída.",
+    })
+
+    # Contagens de ligações e economias: soma dos municípios (base retificada) contra o consolidado por UF, coluna a coluna.
+    unid_tec = {c["codigo"]: c["unidade"] for c in meta_ag_uf_tec["colunas"]}
+    nome_tec = {c["codigo"]: c["nome"] for c in meta_ag_uf_tec["colunas"]}
+    cols_cont = [c for c, u in unid_tec.items() if u in ("Ligações", "economias")]
+    por_uf_col = defaultdict(list)
+    for cod, l in ag_tec.items():
+        uf_m = UF_COD.get(cod[:2])
+        for c in cols_cont:
+            v = num(l.get(c))
+            if v is not None:
+                por_uf_col[(uf_m, c)].append(v)
+    detalhe_cont, comparacoes_cont = [], 0
+    for tid, l in sorted(ag_uf_tec.items()):
+        if tid not in UF_NOME:
+            continue
+        for c in cols_cont:
+            cons = num(l.get(c))
+            if cons is None:
+                continue
+            comparacoes_cont += 1
+            soma_m = somar(por_uf_col.get((tid, c), []))
+            if abs(soma_m - cons) >= 1:
+                detalhe_cont.append({
+                    "uf": tid, "codigo": c, "nome": nome_tec[c], "soma_municipal": soma_m, "consolidado_uf": cons,
+                    "diferenca_pct": r2((soma_m - cons) / cons * 100, 2) if cons else None,
+                })
+    detalhe_cont.sort(key=lambda d: (d["uf"], d["codigo"]))
+    ufs_div = sorted({d["uf"] for d in detalhe_cont})
+    pm, pu = manifesto["planilhas"]["agua_tecnica_municipio"], manifesto["planilhas"]["agua_tecnica_uf"]
+    br_data = lambda iso: "/".join(reversed(iso.split("-")))  # noqa: E731
+    texto_datas = (f"A planilha técnica municipal é de {br_data(pm['data_no_zip'])}"
+                   f"{' (arquivo de retificação)' if 'Retificação' in pm['arquivo'] else ''} e a consolidada por UF é de "
+                   f"{br_data(pu['data_no_zip'])}{' (arquivo de retificação)' if 'Retificação' in pu['arquivo'] else ', sem retificação'}.")
+    conferencias.append({
+        "id": "agua_retificacao_contagens",
+        "descricao": "Ligações, economias e domicílios de água (GTA0003 a GTA0018): soma dos municípios (base retificada) "
+                     "contra o consolidado de cada UF.",
+        "valores": {
+            "colunas_comparadas": len(cols_cont),
+            "comparacoes_uf_coluna": comparacoes_cont,
+            "comparacoes_com_diferenca": len(detalhe_cont),
+            "ufs_com_diferenca": len(ufs_div),
+            "maior_diferenca_relativa_pct": max((abs(d["diferenca_pct"]) for d in detalhe_cont if d["diferenca_pct"] is not None), default=0),
+        },
+        "datas": {"base_municipal": pm["data_no_zip"], "consolidado_uf": pu["data_no_zip"]},
+        "detalhe": detalhe_cont,
+        "conclusao": (f"{texto_datas} Em {len(detalhe_cont)} das {comparacoes_cont} comparações por UF e coluna a soma dos "
+                      f"municípios difere do consolidado, todas em {', '.join(ufs_div)}; nas demais as somas coincidem. "
+                      "UF e Brasil usam o consolidado oficial; os municípios usam a base retificada. A diferença é "
+                      "publicada e não é redistribuída.")
+        if detalhe_cont else
+        f"{texto_datas} As somas municipais coincidem com o consolidado de todas as UF nas {comparacoes_cont} comparações.",
     })
     inv_mun = soma_mun("inv_ag")
     inv_cons = br["sinisa"]["agua"]["investimento"]["total"] if br["sinisa"]["agua"]["investimento"] else None

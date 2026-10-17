@@ -334,7 +334,16 @@ export type ReguladorCatalogo = {
 
 export type EteCatalogo = Ete & { municipio: string; uf: string; prestador: string; corpo_receptor?: string | null; linha: number };
 
-export type Conferencia = { id: string; descricao: string; valores: Record<string, number | null>; conclusao: string };
+export type DivergenciaContagem = { uf: string; codigo: string; nome: string; soma_municipal: number; consolidado_uf: number; diferenca_pct: number | null };
+export type Conferencia = {
+  id: string;
+  descricao: string;
+  valores: Record<string, number | null>;
+  conclusao: string;
+  /** Só na conferência das contagens de água: datas das duas planilhas e as comparações que não fecham. */
+  datas?: { base_municipal: string; consolidado_uf: string };
+  detalhe?: DivergenciaContagem[];
+};
 
 /** Contadores [com o resultado medido, com resultado válido]. */
 export type ParSisagua = [number, number];

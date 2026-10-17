@@ -46,9 +46,9 @@ ACRESCIMOS = [
      "vigencia": "publicação", "url": "https://www.arpe.pe.gov.br/resolucao-arpe-n-347", "verificado": True,
      "obs": "Desconto de leilão citado na imprensa não verificado em ato."},
     {"prestador": "SABESP", "area": "Contrato de Concessão 01/2024, URAE-1", "regulador": "ARSESP", "tipo": "estrutura (Residencial Social II, Lei 14.898/2024)", "pedido": "não se aplica",
-     "decisao": "50% de desconto sobre a tarifa residencial até 15 m³", "ato": "Deliberação 1.699/2025", "data": "2025",
-     "vigencia": "01/06/2025", "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/ldl16992025.pdf", "verificado": True,
-     "obs": "Conferido nos valores da Tabela 1 de 2026: 20,21 = 40,42 ÷ 2 e 3,20 = 6,40 ÷ 2."},
+     "decisao": "50% de desconto sobre a tarifa residencial até 15 m³", "ato": "Deliberação 1.699, 01/08/2025", "data": "2025-08-01",
+     "vigencia": "01/06/2025 (efeitos retroativos)", "url": "https://www.arsesp.sp.gov.br/LegislacaoArquivos/ldl16992025.pdf", "verificado": True,
+     "obs": "Data e vigência lidas no PDF (cabeçalho: \"de 01 de Agosto de 2025\"; art. 5º: vigor na publicação, com efeitos retroativos a 1º de junho de 2025). Conferido nos valores da Tabela 1 de 2026: 20,21 = 40,42 ÷ 2 e 3,20 = 6,40 ÷ 2."},
     # Saneago (AGR): reajustes anuais lidos nos atos publicados no site da prestadora, em 17/10/2026.
     {"prestador": "SANEAGO", "area": "Municípios atendidos pela Saneago em Goiás", "regulador": "AGR", "tipo": "reajuste", "pedido": "Nota Técnica Conjunta 4/2023 (processo 202200052000382)",
      "decisao": "7,02% sobre a tabela de fevereiro de 2022, para as tarifas de água e esgoto e para a tarifa básica", "ato": "Resolução Normativa AGR 203, 27/02/2023", "data": "2023-02-27",

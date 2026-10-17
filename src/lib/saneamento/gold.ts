@@ -4,6 +4,7 @@ import type {
   Agregado,
   CompanhiaAberta,
   ControleSocietario,
+  Ete,
   EteCatalogo,
   FichaMunicipio,
   JmpPaises,
@@ -141,6 +142,19 @@ export function reguladores(): ReguladorCatalogo[] {
 
 export function etes(): EteCatalogo[] {
   return ler<EteCatalogo[]>("etes.json") ?? [];
+}
+
+/** 1 l/s durante um ano = 31,536 mil m³: a mesma conversão com que a gold calcula a utilização (pipeline/observatorio_saneamento/gold.py). */
+const MIL_M3_ANO_POR_LS = 31.536;
+
+/**
+ * Volume tratado acima da capacidade nominal anual, comparado sem arredondar: `utilizacao_pct` é publicado com uma casa e leva
+ * 100,0127% e 100,0012% a "100,0", que um teste `> 100` deixaria de contar. Nulo quando falta volume ou capacidade.
+ */
+export function acimaDaCapacidade(e: Pick<Ete, "capacidade_nominal_ls" | "volume_tratado_mil_m3">): boolean | null {
+  const { capacidade_nominal_ls: cap, volume_tratado_mil_m3: vol } = e;
+  if (cap == null || cap <= 0 || vol == null) return null;
+  return vol > cap * MIL_M3_ANO_POR_LS;
 }
 
 /** Todas as fichas municipais, lidas UF a UF (só no build das páginas que precisam do detalhe técnico). */
