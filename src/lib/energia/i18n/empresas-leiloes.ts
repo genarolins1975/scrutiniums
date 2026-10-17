@@ -261,6 +261,42 @@ export function motivoTarifaTraduzido(texto: string): boolean {
   return motivoTarifa(texto, "en") !== texto;
 }
 
+/** Regras de tratamento das demonstrações da CVM e decisões de método do painel de finanças (financas.revisoes, financas.exclusoes, decisoes_metodo P038). */
+export const FINANCAS_REGRA_EN: Tabela = {
+  "Reapresentação = valor do exercício como publicado no comparativo da DFP seguinte diferente do valor original em mais de R$ 1 mil, depois da correção de escala (a troca de MIL por UNIDADE entre os dois documentos não é reapresentação: conta em inversoes_de_escala_resolvidas). Versões = versões distintas de cada documento no índice da CVM.":
+    // i18n: dado (inglês com os valores literais da marca de escala da CVM)
+    "Restatement = value of the fiscal year as published in the comparative of the following DFP that differs from the original value by more than R$ 1 thousand, after the scale correction (the swap of MIL for UNIDADE between the two documents is not a restatement: it counts in inversoes_de_escala_resolvidas). Versions = distinct versions of each document in the CVM index.",
+  "Coluna de demonstração (CNPJ, escopo, exercício corrente ou comparativo, data) com ativo total igual a zero: a CVM preenche com zero as tabelas do escopo que a companhia não apresentou (em geral o consolidado de quem deixou de ter controladas). Todos os valores da coluna viram ausência, nunca zero.":
+    // i18n: dado (forma inglesa; "total" é palavra inglesa)
+    "Financial statement column (CNPJ, scope, current or comparative fiscal year, date) with total assets equal to zero: the CVM fills with zero the tables of the scope the company did not present (usually the consolidated statement of companies that no longer have subsidiaries). All the values in the column become missing, never zero.",
+  "Coluna não preenchida pela companhia, com prova no próprio arquivo: (1) coluna_nao_preenchida = todos os valores 0 ou ±1 na unidade do documento enquanto o outro escopo da mesma coluna tem valores de pelo menos 1.000 unidades (o modelo preenchido com 1); (2) fluxos_nao_preenchidos = DFC com todas as contas lidas iguais a zero enquanto o arquivo mostra caixa (saldo final do exercício anterior, caixa no balanço ou patrimônio líquido variando com DRE e DFC zeradas), levando junto a DRE zerada do mesmo documento e escopo. Os valores viram ausência, nunca zero.":
+    "Column not filled in by the company, with proof in the file itself: (1) coluna_nao_preenchida = all values 0 or ±1 in the document's unit while the other scope of the same column has values of at least 1,000 units (the template filled with 1); (2) fluxos_nao_preenchidos = cash flow statement (DFC) with all the accounts read equal to zero while the file shows cash (closing balance of the previous fiscal year, cash on the balance sheet or shareholders' equity changing with the income statement (DRE) and the DFC zeroed), taking along the zeroed DRE of the same document and scope. The values become missing, never zero.",
+  "Troca de escala: o mesmo número publicado em dois documentos da companhia (DFP do ano e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR seguinte; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) entre os valores convertidos, em ao menos duas contas e por maioria: a marca ESCALA_MOEDA de um dos documentos está errada. Os documentos ligados assim recebem níveis relativos; a DFP mais recente do componente define a escala e os demais valores são convertidos para ela (natureza ESTIMADO, nota em cada valor dos CSV; lista em empresas_financas_ajustes.csv).":
+    "Scale swap: the same number published in two of the company's documents (the year's DFP and the comparative of the following DFP; the Dec 31 balance sheet and the comparative of the following ITR; a quarter and the comparative of the following year's ITR) with a ratio of 1,000 (±0.1%) between the converted values, in at least two accounts and by majority: the ESCALA_MOEDA flag of one of the documents is wrong. The documents linked this way receive relative levels; the most recent DFP of the component defines the scale and the other values are converted to it (estimated nature, a note on each value in the CSVs; list in empresas_financas_ajustes.csv).",
+  "DT_INI_EXERC diferente de 1º de janeiro num exercício encerrado em 31/12 é aceito como exercício de 12 meses quando o comparativo do mesmo documento tem balanço positivo no fim do ano anterior (a companhia já existia); senão é exercício curto de fato e fica fora da série.":
+    "A DT_INI_EXERC other than January 1 in a fiscal year ending on Dec 31 is accepted as a 12-month fiscal year when the comparative of the same document has a positive balance sheet at the end of the previous year (the company already existed); otherwise it is in fact a short fiscal year and is left out of the series.",
+  "Ativo total que muda 300 vezes ou mais entre exercícios consecutivos depois da correção de escala: publicado como a fonte entregou (sem comparativo exato que prove troca de escala), para conferência; inclui constituição de fato (ativo inicial de R$ 1 mil, por exemplo).":
+    // i18n: dado (forma inglesa; "total" é palavra inglesa)
+    "Total assets that change 300 times or more between consecutive fiscal years after the scale correction: published as the source delivered them (with no exact comparative proving a scale swap), for checking; includes actual incorporations (initial assets of R$ 1 thousand, for example).",
+  "EBITDA não é publicado nesta fase; publica-se a conta 3.05 (resultado antes do resultado financeiro e dos tributos), rotulada como tal.":
+    "EBITDA is not published in this phase; account 3.05 (earnings before financial result and taxes) is published, labeled as such.",
+  "A DFP e o ITR não têm conta de EBITDA, mas a depreciação, amortização e exaustão é conta fixa da Demonstração do Valor Adicionado (7.04.01; na DVA consolidada da CEMIG de 2025, R$ -1.533.416 mil). 3.05 menos 7.04.01 daria um EBITDA calculado pelo observatório.":
+    "The DFP and the ITR have no EBITDA account, but depreciation, amortization and depletion is a fixed account of the Statement of Value Added (7.04.01; in CEMIG's 2025 consolidated DVA, R$ -1,533,416 thousand). 3.05 minus 7.04.01 would give an EBITDA calculated by the observatory.",
+  "O módulo não lê a DVA nesta fase, e um EBITDA calculado assim pode diferir do divulgado pela companhia (ajustes e itens não recorrentes nos releases); publicá-lo exige rótulo de medida calculada pelo observatório e conferência com os valores divulgados.":
+    "The module does not read the DVA in this phase, and an EBITDA calculated this way can differ from the one disclosed by the company (adjustments and non-recurring items in the releases); publishing it requires a label of a measure calculated by the observatory and a check against the disclosed values.",
+  "Ler a conta 7.04.01 da DVA no mesmo processamento da DFP e do ITR e publicar 'resultado antes do resultado financeiro, dos tributos e da depreciação (calculado)' com natureza CALCULADO.":
+    "Read account 7.04.01 of the DVA in the same processing as the DFP and the ITR and publish 'earnings before financial result, taxes and depreciation (calculated)' with calculated nature.",
+};
+
+/** Conversão de escala por companhia ("01543032000104 individual: 13 documentos convertidos para a escala da DFP de 2025-12-31 (MIL)"), no idioma da página. */
+export function escalaPorCompanhia(texto: string, idioma: Idioma = idiomaEnergia()): string {
+  if (idioma === "pt") return texto;
+  const m = /^(\d{14}) (individual|consolidado): (\d+) documentos? convertidos? para a escala da DFP de (\S+) \((\w+)\)$/.exec(texto);
+  if (!m) return texto;
+  const escopo = m[2] === "consolidado" ? "consolidated" : "individual"; // i18n: dado (valor publicado pela gold)
+  return `${m[1]} ${escopo}: ${m[3]} ${m[3] === "1" ? "document" : "documents"} converted to the scale of the DFP of ${m[4]} (${m[5]})`;
+}
+
 /* ---------------------------------------------------------------- Listadas (IEE) */
 
 /** Espécie de controle declarada no FCA (controle.especie_fca). */
