@@ -202,7 +202,7 @@ export const TIPOS_LIGACAO: Record<TipoLigacao, { rotulo: string; definicao: str
   operacao: { get rotulo() { return tx("Decisão de operação", "Operating decision"); }, get definicao() { return tx("o ONS usa a informação para programar e despachar o sistema.", "ONS uses the information to schedule and dispatch the system."); }, traco: "10 6", espessura: 2, ponta: "seta-aberta" },
   mercado: { get rotulo() { return tx("Regra de mercado", "Market rule"); }, get definicao() { return tx("uma regra de comercialização transforma uma grandeza em valor a liquidar.", "a trading rule turns a quantity into an amount to be settled."); }, traco: "12 4 2 4", espessura: 2, ponta: "losango" },
   custo: { get rotulo() { return tx("Componente de custo", "Cost component"); }, get definicao() { return tx("o custo de um elo vira parcela de uma tarifa ou de uma conta, por regra regulatória.", "the cost of one link becomes part of a tariff or a bill, under a regulatory rule."); }, traco: "1.5 4.5", espessura: 3, ponta: "quadrado" },
-  associacao: { get rotulo() { return tx("Associação analítica", "Analytical association"); }, get definicao() { return tx("as grandezas costumam variar juntas; a associação não prova causa.", "the quantities tend to vary together; the association does not prove cause."); }, traco: "3 3", espessura: 1.6, ponta: "circulo" },
+  associacao: { get rotulo() { return tx("Associação analítica", "Analytical association"); }, get definicao() { return tx("as grandezas costumam variar juntas; a associação não prova causa.", "the quantities tend to vary together; the association is no proof that one drives the other."); }, traco: "3 3", espessura: 1.6, ponta: "circulo" },
 };
 
 export type IdNo = "recursos" | "geracao" | "rede" | "consumo" | "operacao" | "contratos" | "pessoas";
@@ -284,7 +284,7 @@ export const NOS_MAPA: NoMapa[] = [
     get explicacao() {
       return tx(
         "Dois grupos entram aqui: as usinas centralizadas (hidrelétricas, eólicas, solares e térmicas), cuja geração o ONS verifica hora a hora, e a micro e minigeração distribuída, instalada em casas e empresas e ligada à rede de distribuição, que a ANEEL cadastra e o ONS estima. O observatório mostra quanto cada fonte entregou, por que as térmicas foram acionadas, quanta energia eólica e solar deixou de ser gerada por restrição e como a geração mexe nas emissões.",
-        "Two groups come in here: centralized plants (hydropower, wind, solar and thermal), whose generation ONS verifies hour by hour, and distributed micro and mini generation (MMGD), installed in homes and businesses and connected to the distribution grid, which ANEEL registers and ONS estimates. The observatory shows how much each source delivered, why thermal plants were dispatched, how much wind and solar energy was not generated because of restrictions, and how generation affects emissions.",
+        "Two groups come in here: centralized plants (hydropower, wind, solar and thermal), whose generation ONS verifies hour by hour, and distributed micro and mini generation (MMGD), installed in homes and businesses and connected to the distribution grid, which ANEEL registers and ONS estimates. The observatory shows how much each source delivered, why thermal plants were dispatched, how much wind and solar energy was not generated due to restrictions, and how generation affects emissions.",
       );
     },
     destinos: ["geracao", "transicao"],
@@ -439,7 +439,7 @@ export const LIGACOES: Ligacao[] = [
     de: "recursos",
     para: "consumo",
     tipo: "associacao",
-    get texto() { return tx("Temperatura e calendário costumam acompanhar o consumo; o observatório mede a associação sem afirmar causa.", "Temperature and the calendar tend to move with consumption; the observatory measures the association without claiming cause."); },
+    get texto() { return tx("Temperatura e calendário costumam acompanhar o consumo; o observatório mede a associação sem afirmar causa.", "Temperature and the calendar tend to move with consumption; the observatory measures the association without claiming that one drives the other."); },
   },
 ];
 
@@ -452,7 +452,7 @@ export const O_QUE_O_MAPA_NAO_DIZ: string[] = frasesNoIdioma([
     ),
   () => tx("O PLD não é tarifa: é o preço das diferenças liquidadas no mercado de curto prazo.", "The PLD is not a tariff: it is the price of the differences settled in the short-term market."),
   () => tx("Diferença de preço entre submercados não prova congestionamento da rede.", "A price difference between submarkets does not prove grid congestion."),
-  () => tx("Associação entre clima e consumo não é causa provada.", "An association between climate and consumption is not proven cause."),
+  () => tx("Associação entre clima e consumo não é causa provada.", "An association between climate and consumption does not prove that one drives the other."),
 ]);
 
 export const TRANSVERSAIS: { titulo: string; texto: string; destinos: string[] }[] = [
@@ -525,7 +525,7 @@ export const CARTOES: Record<string, CartaoDestino> = {
     conceito: { slug: "ear", get rotulo() { return tx("o que é EAR", "what EAR is"); } },
   },
   geracao: {
-    get utilidade() { return tx("Ver quanto cada fonte entregou, por que as térmicas foram acionadas e quanta energia eólica e solar deixou de ser gerada por restrição.", "See how much each source delivered, why thermal plants were dispatched and how much wind and solar energy was not generated because of restrictions."); },
+    get utilidade() { return tx("Ver quanto cada fonte entregou, por que as térmicas foram acionadas e quanta energia eólica e solar deixou de ser gerada por restrição.", "See how much each source delivered, why thermal plants were dispatched and how much wind and solar energy was not generated due to restrictions."); },
     encontra: [
       { get texto() { return tx("Matriz efetiva por fonte, com e sem a micro e minigeração estimada", "Actual mix by source, with and without estimated micro and mini generation"); }, href: "/setor-eletrico/geracao" },
       { get texto() { return tx("Despacho térmico pelos motivos declarados pelo ONS", "Thermal dispatch by the reasons declared by ONS"); }, href: "/setor-eletrico/geracao/termica#p022" },
@@ -748,7 +748,7 @@ export const PERGUNTAS_COTIDIANAS: PerguntaCotidiana[] = [
   },
   {
     get pergunta() { return tx("Por que a conta de luz subiu?", "Why did the electricity bill go up?"); },
-    get resposta() { return tx("Conta de luz mostra o que mudou em cada componente da tarifa, a bandeira de cada mês e os subsídios. A página separa as mudanças; não atribui causa automaticamente.", "Electricity bill shows what changed in each tariff component, the tariff flag of each month and the subsidies. The page separates the changes; it does not attribute cause automatically."); },
+    get resposta() { return tx("Conta de luz mostra o que mudou em cada componente da tarifa, a bandeira de cada mês e os subsídios. A página separa as mudanças; não atribui causa automaticamente.", "Electricity bill shows what changed in each tariff component, the tariff flag of each month and the subsidies. The page separates the changes; it does not automatically attribute the reasons."); },
     destinos: [{ get rotulo() { return tx("Reajustes, bandeiras e subsídios", "Tariff adjustments, tariff flags and subsidies"); }, href: "/setor-eletrico/conta-de-luz/reajustes-e-subsidios#reajustes" }],
   },
   {
