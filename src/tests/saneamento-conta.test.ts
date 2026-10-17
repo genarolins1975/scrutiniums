@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { TARIFAS, tarifa, prestadorComTarifa } from "@/lib/saneamento/tarifas";
-import { acimaDoLimite, calcularConta, diferencaDeArredondamento, leituras } from "@/lib/saneamento/conta";
+import { acimaDoLimite, arredondamentoDifere, calcularConta, leituras, somasExibidas } from "@/lib/saneamento/conta";
 
 const conta = (id: string, cat: string, c: number) => calcularConta(tarifa(id)!.categorias[cat], c).total;
 
@@ -105,17 +105,34 @@ describe("Saneamento: arredondamento do simulador (revisão 1.11, item i)", () =
       ),
     );
 
-  it("o total difere da soma das parcelas exibidas em no máximo R$ 0,01, e a diferença existe em consumo inteiro e fracionado", () => {
+  it("o total difere das somas exibidas só pelo arredondamento de cada valor, e a diferença existe em consumo inteiro e fracionado", () => {
     const linhas = todas();
-    const difs = linhas.map((x) => ({ ...x, d: diferencaDeArredondamento(x.r) }));
-    for (const x of difs) expect(Math.abs(x.d), `${x.t.id} ${x.cid} ${x.c}`).toBeLessThanOrEqual(0.01);
-    expect(difs.some((x) => x.d !== 0 && Number.isInteger(x.c))).toBe(true);
-    expect(difs.some((x) => x.d !== 0 && !Number.isInteger(x.c))).toBe(true);
+    for (const x of linhas) {
+      const s = somasExibidas(x.r);
+      // cada valor exibido erra até meio centavo, e o total também: n linhas somam até (n + 1) meios centavos de diferença
+      expect(Math.abs(s.linhas - x.r.total), `${x.t.id} ${x.cid} ${x.c} (linhas)`).toBeLessThanOrEqual(0.005 * (x.r.linhas.length + 1) + 1e-9);
+      expect(Math.abs(s.servicos - x.r.total), `${x.t.id} ${x.cid} ${x.c} (serviços)`).toBeLessThanOrEqual(0.005 * 4 + 1e-9);
+    }
+    expect(linhas.some((x) => arredondamentoDifere(x.r) && Number.isInteger(x.c))).toBe(true);
+    expect(linhas.some((x) => arredondamentoDifere(x.r) && !Number.isInteger(x.c))).toBe(true);
   });
 
-  it("sem diferença, água mais esgoto mais adicionais é exatamente o total", () => {
+  it("COPASA residencial a 7,5 m³: as linhas somam R$ 91,39, os subtotais R$ 91,40 e o total R$ 91,40, e o aviso vale pelas linhas", () => {
+    const r = calcularConta(tarifa("copasa-2026")!.categorias.residencial, 7.5);
+    const s = somasExibidas(r);
+    expect(s.linhas).toBe(91.39);
+    expect(s.servicos).toBe(91.4);
+    expect(r.total).toBe(91.4);
+    expect(arredondamentoDifere(r)).toBe(true);
+  });
+
+  it("sem diferença, as linhas e os subtotais somam exatamente o total", () => {
     for (const x of todas()) {
-      if (diferencaDeArredondamento(x.r) === 0) expect(Math.round((x.r.agua + (x.r.esgoto ?? 0) + x.r.adicionais) * 100) / 100).toBe(x.r.total);
+      if (!arredondamentoDifere(x.r)) {
+        const s = somasExibidas(x.r);
+        expect(Math.round(s.linhas * 100)).toBe(Math.round(x.r.total * 100));
+        expect(Math.round(s.servicos * 100)).toBe(Math.round(x.r.total * 100));
+      }
     }
   });
 

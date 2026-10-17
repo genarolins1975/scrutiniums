@@ -113,13 +113,24 @@ export function calcularConta(cat: Categoria, consumo: number, adicionais: { rot
   };
 }
 
+const centavos = (x: number) => Math.round(x * 100);
+
 /**
- * Total menos a soma das parcelas exibidas (água, esgoto, adicionais), em reais. A regra única arredonda cada valor e o total
- * separadamente, e nenhum ato consultado define o arredondamento; a diferença, de no máximo alguns centavos, é dita ao leitor
- * em vez de escondida por uma regra que o ato não traz.
+ * Somas, em reais, do que o leitor vê: as linhas da tabela de decomposição e os subtotais de água, esgoto e adicionais. A regra
+ * única arredonda cada valor e o total separadamente, e nenhum ato consultado define o arredondamento; as somas podem diferir do
+ * total em alguns centavos, e isso é dito ao leitor em vez de escondido por uma regra que o ato não traz.
  */
-export function diferencaDeArredondamento(c: Conta): number {
-  return Math.round((c.total - (c.agua + (c.esgoto ?? 0) + c.adicionais)) * 100) / 100;
+export function somasExibidas(c: Conta): { linhas: number; servicos: number } {
+  return {
+    linhas: c.linhas.reduce((s, l) => s + centavos(l.valor), 0) / 100,
+    servicos: (centavos(c.agua) + centavos(c.esgoto ?? 0) + centavos(c.adicionais)) / 100,
+  };
+}
+
+/** Verdadeiro quando alguma das somas exibidas difere do total em pelo menos um centavo. */
+export function arredondamentoDifere(c: Conta): boolean {
+  const s = somasExibidas(c);
+  return centavos(s.linhas) !== centavos(c.total) || centavos(s.servicos) !== centavos(c.total);
 }
 
 export const CONSUMOS_EXPORTACAO = [5, 10, 15, 20, 30];

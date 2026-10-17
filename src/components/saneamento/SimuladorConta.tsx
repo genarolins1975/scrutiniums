@@ -6,7 +6,7 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { TARIFAS, type TarifaVerificada } from "@/lib/saneamento/tarifas";
-import { CABECALHO_EXPORTACAO, acimaDoLimite, calcularConta, diferencaDeArredondamento, leituras, linhasExportacao } from "@/lib/saneamento/conta";
+import { CABECALHO_EXPORTACAO, acimaDoLimite, arredondamentoDifere, calcularConta, leituras, linhasExportacao, somasExibidas } from "@/lib/saneamento/conta";
 import { baixarCsv } from "@/lib/saneamento/csv";
 import { numero, reais } from "@/lib/saneamento/formato";
 
@@ -50,6 +50,15 @@ export function SimuladorConta() {
   // volume faturado pela tabela escolhida (inteiro quando o prestador despreza a fração de m³) e o que é mostrado ao leitor
   const efetivo = conta?.consumo ?? consumo;
   const fmtC = (x: number) => numero(x, x % 1 ? 1 : 0);
+  // somas que o leitor vê (linhas da tabela e subtotais) e quais delas não fecham com o total
+  const somas = conta ? somasExibidas(conta) : null;
+  const partesQueDiferem =
+    conta && somas && arredondamentoDifere(conta)
+      ? [
+          Math.round(somas.linhas * 100) !== Math.round(conta.total * 100) ? `as linhas da tabela somam ${reais(somas.linhas)}` : null,
+          Math.round(somas.servicos * 100) !== Math.round(conta.total * 100) ? `água, esgoto e adicionais somam ${reais(somas.servicos)}` : null,
+        ].filter((x): x is string => x != null)
+      : [];
   const algumaInteira = TARIFAS.some((x) => Object.values(x.categorias).some((c) => c.consumoInteiro));
 
   const comparacao = useMemo(
@@ -196,11 +205,10 @@ export function SimuladorConta() {
             </table>
           </div>
           )}
-          {conta && diferencaDeArredondamento(conta) !== 0 && (
+          {conta && somas && partesQueDiferem.length > 0 && (
             <p className="mt-3 text-xs leading-relaxed text-carvao-muted">
-              Cada valor é arredondado ao centavo e o total é arredondado uma só vez, sobre a soma sem arredondar: aqui as parcelas somam{" "}
-              {reais(Math.round((conta.agua + (conta.esgoto ?? 0) + conta.adicionais) * 100) / 100)} e o total é {reais(conta.total)}. Nenhum ato
-              consultado define a regra de arredondamento.
+              Cada valor é arredondado ao centavo e o total é arredondado uma só vez, sobre a soma sem arredondar: aqui {partesQueDiferem.join(" e ")},
+              e o total é {reais(conta.total)}. Nenhum ato consultado define a regra de arredondamento.
             </p>
           )}
           {cat.esgotoNaoVerificado && <p className="mt-3 border-l-2 border-aviso pl-3 text-sm text-carvao-muted">{cat.esgotoNaoVerificado}</p>}
