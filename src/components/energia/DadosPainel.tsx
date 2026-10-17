@@ -8,6 +8,7 @@ import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { carimbo } from "@/lib/energia/formato";
 import { PAGINAS_DADOS, type IdPaginaDados } from "@/lib/energia/dados";
+import { tx } from "@/lib/energia/idioma";
 
 /**
  * Peças de servidor das páginas de Dados e de Metodologia (P067 a P071): navegação local de cada módulo, linha de referência, resposta
@@ -28,13 +29,19 @@ const itensDoModulo = (modulo: ModuloDados): ItemLocal[] =>
 /** A página que abre cada módulo: nela não há faixa, porque os capítulos mostram os mesmos destinos depois da figura principal. */
 const ABERTURA: Record<ModuloDados, IdPaginaDados> = { dados: "catalogo", metodologia: "regras" };
 
-const moduloDe = (id: IdPaginaDados): ModuloDados => PAGINAS_DADOS.find((p) => p.id === id)?.modulo ?? "dados";
+const moduloDe = (id: IdPaginaDados): ModuloDados => PAGINAS_DADOS.find((p) => p.id === id)?.modulo ?? "dados"; // i18n: dado
 
 /** Faixa de páginas irmãs nas páginas filhas de cada módulo; a abertura do módulo não leva faixa. */
 export function DadosNavegacao({ atual }: { atual: IdPaginaDados }) {
   const modulo = moduloDe(atual);
   if (atual === ABERTURA[modulo]) return null;
-  return <NavegacaoLocal rotulo={modulo === "dados" ? "Páginas de Dados" : "Páginas de Metodologia"} itens={itensDoModulo(modulo)} atual={atual} />;
+  return (
+    <NavegacaoLocal
+      rotulo={modulo === "dados" ? tx("Páginas de Dados", "Data pages") : tx("Páginas de Metodologia", "Methodology pages")}
+      itens={itensDoModulo(modulo)}
+      atual={atual}
+    />
+  );
 }
 
 /** Capítulos da abertura de cada módulo: as outras páginas, cada uma com a pergunta que responde. */
@@ -42,11 +49,11 @@ export function DadosCapitulos({ atual }: { atual: IdPaginaDados }) {
   const modulo = moduloDe(atual);
   return (
     <NavegacaoLocal
-      rotulo={modulo === "dados" ? "Capítulos de Dados" : "Capítulos de Metodologia"}
+      rotulo={modulo === "dados" ? tx("Capítulos de Dados", "Data chapters") : tx("Capítulos de Metodologia", "Methodology chapters")}
       itens={itensDoModulo(modulo)}
       atual={atual}
       variante="capitulos"
-      titulo={modulo === "dados" ? "Outras perguntas sobre os dados" : "Outra pergunta sobre o método"}
+      titulo={modulo === "dados" ? tx("Outras perguntas sobre os dados", "Other questions about the data") : tx("Outra pergunta sobre o método", "Another question about the method")}
       nivelTitulo={3}
     />
   );
@@ -63,13 +70,17 @@ export function ReferenciaDados({ processadoEm, geradoEm, referencia, manifestoE
   if (processadoEm === undefined) {
     return (
       <>
-        {referencia ? <>Data de referência da publicação: {referencia}. </> : null}Publicação processada em {carimbo(geradoEm)}. {extra}
+        {referencia ? tx(<>Data de referência da publicação: {referencia}. </>, <>Reference date of the publication: {referencia}. </>) : null}
+        {tx(<>Publicação processada em {carimbo(geradoEm)}. </>, <>Publication processed on {carimbo(geradoEm)}. </>)}
+        {extra}
       </>
     );
   }
   return (
     <>
-      {referencia ? <>Data de referência dos dados: {referencia}. </> : null}Catálogo e saúde processados em {carimbo(processadoEm)}. {manifestoEm ? <>Lista de arquivos gerada em {carimbo(manifestoEm)}. </> : null}
+      {referencia ? tx(<>Data de referência dos dados: {referencia}. </>, <>Reference date of the data: {referencia}. </>) : null}
+      {tx(<>Catálogo e saúde processados em {carimbo(processadoEm)}. </>, <>Catalog and health processed on {carimbo(processadoEm)}. </>)}
+      {manifestoEm ? tx(<>Lista de arquivos gerada em {carimbo(manifestoEm)}. </>, <>File list generated on {carimbo(manifestoEm)}. </>) : null}
       {extra}
     </>
   );
@@ -103,15 +114,15 @@ export function DadosRecorte({ periodo, universo, unidade }: { periodo: ReactNod
   return (
     <dl className="grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-3">
       <div>
-        <dt className="rotulo text-mineral">Período</dt>
+        <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
         <dd className="mt-0.5 leading-relaxed">{periodo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Universo</dt>
+        <dt className="rotulo text-mineral">{tx("Universo", "Scope")}</dt>
         <dd className="mt-0.5 leading-relaxed">{universo}</dd>
       </div>
       <div>
-        <dt className="rotulo text-mineral">Unidade</dt>
+        <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
         <dd className="mt-0.5 leading-relaxed">{unidade}</dd>
       </div>
     </dl>
@@ -150,7 +161,7 @@ export function DadosLimitacoes({ itens, tecnicas = [] }: { itens: readonly Reac
   if (!itens.length && !tecnicas.length) return null;
   return (
     <div>
-      <p className="rotulo text-mineral">Limitações declaradas</p>
+      <p className="rotulo text-mineral">{tx("Limitações declaradas", "Declared limitations")}</p>
       <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-carvao-muted">
         {itens.map((l, i) => (
           <li key={i}>{l}</li>
@@ -178,12 +189,18 @@ export function DadosIndisponivel({ atual, motivo }: { atual: "dados" | "metodol
       <CabecalhoEnergia atual={atual} />
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
-          titulo="Dados indisponíveis nesta publicação"
-          motivo={motivo ?? "As golds do módulo Dados (catalogo.json, publicacao.json, manifesto.json) não foram geradas ou não passaram na validação; a última publicação válida é mantida quando existe."}
+          titulo={tx("Dados indisponíveis nesta publicação", "Data unavailable in this publication")}
+          motivo={
+            motivo ??
+            tx(
+              "As golds do módulo Dados (catalogo.json, publicacao.json, manifesto.json) não foram geradas ou não passaram na validação; a última publicação válida é mantida quando existe.",
+              "The gold files of the Data module (catalogo.json, publicacao.json, manifesto.json) were not generated or did not pass validation; the last valid publication is kept when it exists.",
+            )
+          }
         />
         <p className="mt-6 text-sm">
           <Link href="/setor-eletrico" className="text-energia-dark underline underline-offset-4">
-            Voltar ao mapa do observatório
+            {tx("Voltar ao mapa do observatório", "Back to the observatory map")}
           </Link>
         </p>
       </main>

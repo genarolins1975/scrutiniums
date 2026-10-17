@@ -7,7 +7,9 @@ import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR, reais } from "@/lib/energia/formato";
+import { formatos } from "@/lib/energia/formato";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import { Nome } from "@/components/i18n/Nome";
 import { CAMPOS_LIMITE, COLUNAS_LIMITES, COR_LIMITE, NOME_LIMITE, SERIES_LIMITES, type LinhaLimites } from "@/lib/energia/regulacao";
 
 /**
@@ -56,20 +58,27 @@ export function RegulacaoLimites({
   /** Avisos que mudam a leitura da figura (valores lidos fora do texto do ato). */
   avisos?: ReactNode;
 }) {
+  const tx = useTx();
+  const idioma = useIdioma();
+  const { dataBR, reais } = formatos(idioma);
   const anos = useMemo(() => linhas.map((l) => l.id), [linhas]);
+  // i18n: dado
   const esquema = useMemo(() => ({ ano: campo(tiposUrl.opcao(anos), anoPadrao, { param: "ano" }) }), [anos.join(","), anoPadrao]); // eslint-disable-line react-hooks/exhaustive-deps
   const [v, definir] = useEstadoUrl(esquema);
   const ano = v.ano;
   const selecionar = (id: string | null) => definir({ ano: id ?? anoPadrao });
   const porId = useMemo(() => new Map(linhas.map((l) => [l.id, l])), [linhas]);
-  const entidades = useMemo(() => linhas.map((l) => ({ id: l.id, rotulo: l.rotulo, detalhe: `vigência de ${dataBR(l.inicio)} a ${dataBR(l.fim)}` })), [linhas]);
+  const entidades = useMemo(
+    () => linhas.map((l) => ({ id: l.id, rotulo: l.rotulo, detalhe: tx(`vigência de ${dataBR(l.inicio)} a ${dataBR(l.fim)}`, `in force from ${dataBR(l.inicio)} to ${dataBR(l.fim)}`) })),
+    [linhas, idioma], // eslint-disable-line react-hooks/exhaustive-deps
+  );
   const padraoComparacao = useMemo(() => (anos.length > 1 ? [anos[0], anos[anos.length - 1]] : anos), [anos]);
 
   return (
     <div className="space-y-6">
       <div className="grid gap-x-8 gap-y-3 lg:grid-cols-[auto_minmax(0,1fr)] lg:items-start">
         <label className="flex flex-wrap items-center gap-3 text-sm text-carvao">
-          <span className="rotulo text-mineral">Ano</span>
+          <span className="rotulo text-mineral">{tx("Ano", "Year")}</span>
           <select
             value={ano}
             onChange={(e) => selecionar(e.currentTarget.value)}
@@ -87,14 +96,18 @@ export function RegulacaoLimites({
           atributo="data-resposta-ano"
           vivo
           tamanho="sm"
-          veredito={ano === anoPadrao ? "Este é o ano da data de referência. Escolha outro ano para ver os limites e o ato dele." : vereditos[ano]}
+          veredito={
+            ano === anoPadrao
+              ? tx("Este é o ano da data de referência. Escolha outro ano para ver os limites e o ato dele.", "This is the year of the reference date. Choose another year to see its limits and act.")
+              : vereditos[ano]
+          }
         >
           {respostas[ano]}
         </RespostaCurta>
       </div>
 
       <GraficoBarras
-        titulo="Piso, teto estrutural e teto horário do PLD por ano"
+        titulo={tx("Piso, teto estrutural e teto horário do PLD por ano", "PLD floor, structural ceiling and hourly ceiling by year")}
         dados={linhas}
         chaveCategoria="id"
         chaveRotulo="rotulo"
@@ -110,17 +123,22 @@ export function RegulacaoLimites({
 
       <section aria-labelledby="detalhe-ano-titulo" className="space-y-3 border-t border-linha pt-5" data-detalhe-ano={ano}>
         <h3 id="detalhe-ano-titulo" className="ed-h3 font-serif text-carvao">
-          O que cada ato de {porId.get(ano)?.rotulo ?? ano} fixou, quando saiu e desde quando vale?
+          {tx(
+            <>O que cada ato de {porId.get(ano)?.rotulo ?? ano} fixou, quando saiu e desde quando vale?</>,
+            <>What did each act of {porId.get(ano)?.rotulo ?? ano} set, when was it published and since when does it apply?</>,
+          )}
         </h3>
         <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          Publicação é a data em que o ato saiu no Diário Oficial da União (DOU). Vigência é o período em que o ato passa a valer. As duas datas são diferentes e
-          aparecem separadas.
+          {tx(
+            "Publicação é a data em que o ato saiu no Diário Oficial da União (DOU). Vigência é o período em que o ato passa a valer. As duas datas são diferentes e aparecem separadas.",
+            "Publication is the date the act appeared in the Official Gazette of the Union (DOU). Validity is the period in which the act applies. The two dates are different and are shown separately.",
+          )}
         </p>
         <div className="grid gap-x-8 gap-y-5 lg:grid-cols-2">{detalhes[ano]}</div>
       </section>
 
       <TabelaInterativa
-        titulo="Tabela de vigências dos limites do PLD"
+        titulo={tx("Tabela de vigências dos limites do PLD", "Table of periods in force of the PLD limits")}
         colunas={COLUNAS_LIMITES}
         linhas={linhas}
         chaveLinha="id"
@@ -131,7 +149,10 @@ export function RegulacaoLimites({
         chaveUrl="lim"
         selecionado={ano}
         onSelecionar={(id) => id && selecionar(id)}
-        nota="Publicação no Diário Oficial e início de vigência são colunas distintas. Data de publicação vazia quer dizer que o extrato do ato não pôde ser lido; nunca é a data de captura."
+        nota={tx(
+          "Publicação no Diário Oficial e início de vigência são colunas distintas. Data de publicação vazia quer dizer que o extrato do ato não pôde ser lido; nunca é a data de captura.",
+          "Publication in the Official Gazette and start of validity are separate columns. An empty publication date means the summary of the act could not be read; it is never the capture date.",
+        )}
       />
 
       {resposta}
@@ -141,22 +162,25 @@ export function RegulacaoLimites({
 
       <section data-nivel="analisar" aria-labelledby="comparar-anos-titulo" className="space-y-3 border-t border-linha pt-6">
         <h3 id="comparar-anos-titulo" className="ed-h3 font-serif text-carvao">
-          Comparar até quatro anos na mesma escala
+          {tx("Comparar até quatro anos na mesma escala", "Compare up to four years on the same scale")}
         </h3>
         <p className="max-w-prose2 text-sm text-carvao-muted">
-          Valores nominais, como escritos nos atos. Os tetos de cada ano são o teto do ano anterior atualizado pela inflação (IPCA), por isso a diferença entre anos não
-          é aumento real; o piso segue a tarifa de otimização das hidrelétricas e pode cair.
+          {tx(
+            "Valores nominais, como escritos nos atos. Os tetos de cada ano são o teto do ano anterior atualizado pela inflação (IPCA), por isso a diferença entre anos não é aumento real; o piso segue a tarifa de otimização das hidrelétricas e pode cair.",
+            "Nominal values, as written in the acts. Each year's ceilings are the previous year's ceiling updated for inflation (IPCA), so the difference between years is not a real increase; the floor follows the hydropower optimization tariff and can fall.",
+          )}
         </p>
         <Comparador
-          rotulo="Anos para comparar (até 4)"
+          rotulo={tx("Anos para comparar (até 4)", "Years to compare (up to 4)")}
           entidades={entidades}
           padrao={padraoComparacao}
+          // i18n: dado
           chaveUrl="anos"
           valores={(id) => CAMPOS_LIMITE.map((c) => porId.get(id)?.[c] ?? null)}
           zeroNaEscala
           unidade="R$/MWh"
-          dicaBusca="Digite o ano"
-          vazio="Nenhum ano escolhido. Escolha até quatro para comparar os três limites lado a lado."
+          dicaBusca={tx("Digite o ano", "Type the year")}
+          vazio={tx("Nenhum ano escolhido. Escolha até quatro para comparar os três limites lado a lado.", "No year chosen. Choose up to four to compare the three limits side by side.")}
           renderizarItem={(e, ctx) => {
             const l = porId.get(e.id);
             const d = ctx.dominio;
@@ -171,7 +195,7 @@ export function RegulacaoLimites({
                       <div key={c}>
                         <dt className="flex justify-between gap-2 text-xs text-carvao-muted">
                           <span>{NOME_LIMITE[c]}</span>
-                          <span className="tabular-nums text-carvao">{val === null ? "sem valor" : `${reais(val, 2)}/MWh`}</span>
+                          <span className="tabular-nums text-carvao">{val === null ? tx("sem valor", "no value") : `${reais(val, 2)}/MWh`}</span>
                         </dt>
                         <dd className="mt-0.5 h-3 w-full bg-papel" aria-hidden="true">
                           {val === null ? (
@@ -188,7 +212,8 @@ export function RegulacaoLimites({
                   })}
                 </dl>
                 <p className="mt-2 text-xs text-carvao-muted">
-                  Piso: {l?.ato_pld_min ?? "sem ato"}. Tetos: {l?.ato_tetos ?? "sem ato"}.
+                  {tx("Piso", "Floor")}: {l?.ato_pld_min ? <Nome>{l.ato_pld_min}</Nome> : tx("sem ato", "no act")}. {tx("Tetos", "Ceilings")}:{" "}
+                  {l?.ato_tetos ? <Nome>{l.ato_tetos}</Nome> : tx("sem ato", "no act")}.
                 </p>
               </figure>
             );

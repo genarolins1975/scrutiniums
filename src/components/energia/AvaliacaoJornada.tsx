@@ -4,6 +4,8 @@ import { useEffect, useState, type ReactNode } from "react";
 import { carregaJson } from "@/lib/energia/carregaJson";
 import { URL_AVALIACAO, textoCitado } from "@/lib/energia/avaliacao";
 import type { AvaliacaoGold, PassoJornada } from "@/lib/energia/tipos-avaliacao";
+import { useTx } from "@/lib/energia/useIdioma";
+import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 
 /**
  * Uma jornada da avaliação (P071). O resumo, o título, os atritos e o limite vêm prontos do servidor;
@@ -11,6 +13,7 @@ import type { AvaliacaoGold, PassoJornada } from "@/lib/energia/tipos-avaliacao"
  * para o HTML da página ficar abaixo da meta de peso.
  */
 export function JornadaDetalhe({ id, resumo, children }: { id: string; resumo: ReactNode; children: ReactNode }) {
+  const tx = useTx();
   const [aberto, setAberto] = useState(false);
   const [passos, setPassos] = useState<PassoJornada[] | null>(null);
   const [falhou, setFalhou] = useState(false);
@@ -37,18 +40,22 @@ export function JornadaDetalhe({ id, resumo, children }: { id: string; resumo: R
       {aberto && (
         <div className="mt-2" data-passos={id}>
           {falhou ? (
-            <p className="text-xs text-carvao-muted">Os passos não puderam ser lidos agora. Estão em avaliacao.json, campo jornadas.</p>
+            <p className="text-xs text-carvao-muted">
+              {tx("Os passos não puderam ser lidos agora. Estão em avaliacao.json, campo jornadas.", "The steps could not be read now. They are in avaliacao.json, field jornadas.")}
+            </p>
           ) : !passos ? (
             <p className="text-xs text-carvao-muted" role="status">
-              Lendo os passos da jornada.
+              {tx("Lendo os passos da jornada.", "Reading the journey steps.")}
             </p>
           ) : (
             <ol className="list-decimal space-y-1 pl-5 text-xs leading-relaxed text-carvao-muted">
               {passos.map((s, i) => (
                 <li key={`${i}-${s.descricao}`}>
-                  {s.resultado === "ok" ? "" : s.resultado === "falhou" ? "Falhou: " : "Não executado: "}
-                  {textoCitado(s.descricao)}
-                  {s.observado ? ` (${textoCitado(s.observado)})` : ""}
+                  {s.resultado === "ok" ? "" : s.resultado === "falhou" ? tx("Falhou: ", "Failed: ") : tx("Não executado: ", "Not run: ")}
+                  <TrechoPortugues regiao="avaliacao-passo">
+                    {textoCitado(s.descricao)}
+                    {s.observado ? ` (${textoCitado(s.observado)})` : ""}
+                  </TrechoPortugues>
                 </li>
               ))}
             </ol>
