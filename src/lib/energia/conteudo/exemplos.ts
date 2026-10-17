@@ -28,7 +28,7 @@ const t = (texto: string, natureza?: Natureza): TrechoExemplo => ({ texto, natur
  * Dec 2, 2025"); fora desse formato, volta como veio.
  */
 function portariaEmIngles(p: string): string {
-  const m = /^Portaria ANEEL nº ([\d.]+), de (\d{1,2})º? de (\p{L}+) de (\d{4})$/u.exec(p);
+  const m = /^Portaria ANEEL nº ([\d.]+), de (\d{1,2})º? de ([a-zç]+) de (\d{4})$/i.exec(p);
   if (!m) return p;
   const mes = Array.from({ length: 12 }, (_, i) => nomeMes(i + 1, "pt", true)).indexOf(m[3].toLowerCase()) + 1;
   return mes ? `ANEEL Ordinance No. ${m[1]} of ${nomeMes(mes, "en")} ${Number(m[2])}, ${m[4]}` : p;
