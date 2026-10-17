@@ -2,7 +2,8 @@
 
 import { useId, useSyncExternalStore } from "react";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
-import { hrefNoIdioma } from "@/lib/i18n-href";
+import Link from "@/components/i18n/LinkIdioma";
+import { linkDistribuidoraNoIdioma } from "@/lib/energia/i18n/conta-inclusao";
 
 /**
  * "Sua distribuidora" da página inicial (seção 6.2 D): a pessoa escolhe a distribuidora uma vez, no alto das seis perguntas, e as três
@@ -164,16 +165,19 @@ export function LinkPorDistribuidora({
   const tem = !!escolha && comDado.includes(escolha.cnpj);
   const parcial = !!escolha && emParte.includes(escolha.cnpj);
   const aberta = tem || parcial;
-  const href = hrefNoIdioma(`${destino}${aberta ? `?${parametro}=${escolha!.cnpj}` : ""}#${ancora}`, idioma);
-  const aviso = escolha && !aberta ? semDado : escolha && parcial ? emParteTexto : null;
+  // LinkIdioma leva à irmã /en quando a página tem tradução publicada
+  const href = `${destino}${aberta ? `?${parametro}=${escolha!.cnpj}` : ""}#${ancora}`;
+  // os textos chegam da página inicial em português; em inglês saem da tabela exata (o que já chega em inglês passa como veio)
+  const t = (s: string) => linkDistribuidoraNoIdioma(s, idioma);
+  const aviso = escolha && !aberta ? t(semDado) : escolha && parcial && emParteTexto ? t(emParteTexto) : null;
   return (
     <>
-      <a href={href} className={className} data-por-distribuidora={aberta ? escolha!.cnpj : undefined}>
-        {aberta ? rotuloEscolhida.replace("{sigla}", escolha!.sigla) : rotuloPadrao}
+      <Link href={href} className={className} data-por-distribuidora={aberta ? escolha!.cnpj : undefined}>
+        {aberta ? t(rotuloEscolhida).replace("{sigla}", escolha!.sigla) : t(rotuloPadrao)}
         <span aria-hidden="true" className="ml-1.5">
           →
         </span>
-      </a>
+      </Link>
       {aviso && escolha && <p className="text-xs leading-snug text-carvao-muted">{aviso.replace("{sigla}", escolha.sigla)}</p>}
     </>
   );
