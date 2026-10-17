@@ -38,7 +38,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
   return (
     <header className="obs-identidade border-b border-linha bg-superficie">
       <div className="ed-pagina flex flex-wrap items-center justify-between gap-x-6">
-        <div className="flex min-w-0 items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3 max-sm:order-first">
           <Link href="/" aria-label={tx("Scrutiniums: página inicial", "Scrutiniums: home page")} className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-2.5 sm:justify-start">
             <LogoMark size={20} />
             {/* // i18n: dado (marca, igual nos dois idiomas) */}
@@ -48,7 +48,8 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
           <SwitcherObservatorio atual="energia" />
         </div>
         <NavegacaoObservatorios atual="energia" />
-        <div className="flex items-center gap-4 sm:gap-5">
+        {/* no celular este grupo se desfaz (contents): a conta sobe para a linha da marca e o idioma ocupa a linha de baixo */}
+        <div className="flex items-center gap-4 max-sm:contents sm:gap-5">
           <Link
             href="/setor-eletrico/dados"
             aria-current={atual === "dados" ? "page" : undefined}
@@ -64,7 +65,9 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
             {tx("Metodologia", "Methodology")}
           </Link>
           <SeletorIdiomaPublico idioma={tx("pt", "en")} />
-          <AcessoConta destino="/setor-eletrico" />
+          <span className="max-sm:order-first">
+            <AcessoConta destino="/setor-eletrico" />
+          </span>
         </div>
       </div>
       <nav aria-label={tx("Navegação do Observatório do Setor Elétrico", "Setor Elétrico observatory navigation")} className="border-t border-linha">
