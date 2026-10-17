@@ -348,6 +348,7 @@ export default function LeiloesTransmissaoPage() {
                   <TabelaDados
                     titulo={tx("Vencedores com mais lotes contratados", "Winners with the most lots contracted")}
                     colunas={[tx("Vencedor publicado", "Published winner"), tx("Lotes", "Lots"), tx(`RAP vencedora de ${ipca} (R$ mi por ano)`, `Winning RAP of ${ipca} (R$ mn per year)`)]}
+                    idiomaTexto={["nome"]}
                     linhas={t.vencedores.map((x) => [x.nome ?? tx("sem nome", "unnamed"), x.lotes, x.rap_vencedora_real_rs_mi])}
                     casas={[null, 0, 1]}
                   />

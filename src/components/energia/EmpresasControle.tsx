@@ -74,6 +74,7 @@ export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvo
   return (
     <div className="space-y-6">
       <GraficoBarras
+        rotulosSaoNomes
         titulo={tx("Os maiores grupos: capacidade proporcional e capacidade sob controle", "The largest groups: proportional capacity and capacity under control")}
         dados={barras}
         chaveCategoria="id"

@@ -620,6 +620,7 @@ export default function LeiloesAcrPage() {
                   <TabelaDados
                     titulo={tx("Vencedoras como publicadas pela ANEEL, pelas 20 maiores em energia contratada", "Winners as published by ANEEL, the 20 largest by energy contracted")}
                     colunas={[tx("Vencedora publicada", "Published winner"), tx("Contratos", "Contracts"), tx("Leilões", "Auctions"), tx("Energia (MWmédio)", "Energy (MWavg)"), tx("Fontes", "Sources")]}
+                    idiomaTexto={["nome"]}
                     linhas={g.vencedoras.maiores.map((x) => [x.nome ?? tx("sem nome", "unnamed"), x.empreendimentos, x.leiloes, x.energia_mwmed, x.categorias.map((c) => CURTO_CATEGORIA[c]).join(", ")])}
                     casas={[null, 0, 0, 1, null]}
                   />
@@ -757,6 +758,7 @@ export default function LeiloesAcrPage() {
                   <TabelaDados
                     titulo={tx("Conferência das unidades nos leilões estruturantes", "Check of the units in the structuring auctions")}
                     colunas={[tx("Empreendimento", "Project"), tx("Leilão", "Auction"), tx("Energia vendida (MWmédio)", "Energy sold (MWavg)"), tx("Garantia física (MWmédio)", "Physical guarantee (MWavg)")]}
+                    idiomaTexto={["nome"]}
                     linhas={g.conferencias.estruturantes_mwmed.map((x) => [x.empreendimento, numeroAneel(x.leilao), x.energia_mwmed, x.garantia_fisica_mwmed])}
                     casas={[null, null, 1, 1]}
                   />

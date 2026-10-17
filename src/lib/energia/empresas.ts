@@ -475,6 +475,7 @@ export function linhasRegimes(a: Ativos, idioma: Idioma = idiomaEnergia()): Linh
 export const COLUNAS_SEM_VINCULO: ColunaTabela[] = [
   {
     id: "nome",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Usina", "Plant");
     },
@@ -556,6 +557,7 @@ export function linhasSemVinculo(a: Ativos, idioma: Idioma = idiomaEnergia()): L
 export const COLUNAS_PROPRIETARIOS: ColunaTabela[] = [
   {
     id: "nome",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Proprietário direto", "Direct owner");
     },
@@ -598,6 +600,7 @@ export const COLUNAS_PROPRIETARIOS: ColunaTabela[] = [
   },
   {
     id: "grupo",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Grupo (topo da cadeia declarada)", "Group (top of the declared chain)");
     },
@@ -641,6 +644,7 @@ export function grupoDoProprietario(p: Pick<Proprietario, "cnpj" | "grupo">): st
 export const COLUNAS_TRANSMISSAO: ColunaTabela[] = [
   {
     id: "nome",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Concessionária", "Concession holder");
     },
@@ -714,6 +718,7 @@ export const COLUNAS_TRANSMISSAO: ColunaTabela[] = [
   },
   {
     id: "grupo",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Grupo", "Group");
     },
@@ -740,6 +745,7 @@ export function linhasTransmissao(t: Transmissao, idioma: Idioma = idiomaEnergia
 export const COLUNAS_GRUPOS_TRANSMISSAO: ColunaTabela[] = [
   {
     id: "nome",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Grupo", "Group");
     },
@@ -1011,6 +1017,7 @@ export function linhasAtivos(j: AtivosMapa, indices: readonly number[], idioma: 
 export const COLUNAS_ATIVOS: ColunaTabela[] = [
   {
     id: "nome",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Usina", "Plant");
     },
@@ -1162,6 +1169,7 @@ export function tarifaVigente(t: ReferenciaTarifa | null): number | null {
 export const COLUNAS_DISTRIBUIDORAS: ColunaTabela[] = [
   {
     id: "sigla",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Distribuidora", "Distribution utility");
     },
@@ -1169,6 +1177,7 @@ export const COLUNAS_DISTRIBUIDORAS: ColunaTabela[] = [
   },
   {
     id: "nome",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Razão social", "Legal name");
     },
@@ -1247,6 +1256,7 @@ export const COLUNAS_DISTRIBUIDORAS: ColunaTabela[] = [
   },
   {
     id: "controlador",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Controlador no topo da cadeia", "Controlling shareholder at the top of the chain");
     },
@@ -1800,6 +1810,7 @@ export function respostaFinancas(f: Financas, idioma: Idioma = idiomaEnergia()):
 export const COLUNAS_COMPANHIAS: ColunaTabela[] = [
   {
     id: "nome",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Companhia", "Company");
     },
@@ -2174,6 +2185,7 @@ export function linhasContas(contas: readonly DefinicaoConta[], idioma: Idioma =
 export const COLUNAS_NAO_APRESENTADAS: ColunaTabela[] = [
   {
     id: "companhia",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Companhia", "Company");
     },
@@ -2229,6 +2241,7 @@ export function linhasNaoApresentadas(f: Financas, idioma: Idioma = idiomaEnergi
 export const COLUNAS_SALTOS: ColunaTabela[] = [
   {
     id: "companhia",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Companhia", "Company");
     },
@@ -2564,6 +2577,7 @@ export const ROTULO_MOTIVO: Readonly<Record<MotivoParada, string>> = {
 export const COLUNAS_GRUPOS: ColunaTabela[] = [
   {
     id: "nome",
+    idiomaTexto: "nome",
     get rotulo() {
       return tx("Grupo (topo da cadeia)", "Group (top of the chain)");
     },

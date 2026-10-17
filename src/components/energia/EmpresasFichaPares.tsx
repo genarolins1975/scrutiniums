@@ -48,6 +48,7 @@ export function EmpresasFichaPares({ slug, sigla, perdas, qualidade }: { slug: s
       )}
       {perdas && janelaPerdas && (
         <GraficoBarras
+          rotulosSaoNomes
           titulo={tx(`Perdas totais das ${perdas.regra}, com a ${sigla} acesa`, `Total losses of ${perdas.regra}, with ${sigla} highlighted`)}
           dados={janelaPerdas.crescente ? barras : barras.slice().reverse()}
           chaveCategoria="id"
@@ -64,6 +65,7 @@ export function EmpresasFichaPares({ slug, sigla, perdas, qualidade }: { slug: s
       )}
       {qualidade && janelaDec && (
         <GraficoPontos
+          rotulosSaoNomes
           titulo={tx(`DEC diante do limite nas ${qualidade.regra}`, `DEC against the limit in ${qualidade.regra}`)}
           itens={qualidade.itens.map((i) => ({ id: i.id, rotulo: i.rotulo, valor: i.valor, referencia: i.referencia }))}
           unidade="h"

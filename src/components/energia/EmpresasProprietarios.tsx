@@ -44,6 +44,7 @@ export function EmpresasProprietarios({
   return (
     <div className="space-y-4">
       <GraficoBarras
+        rotulosSaoNomes
         titulo={tx("Capacidade proporcional e capacidade sob controle direto dos 10 maiores proprietários diretos", "Proportional capacity and capacity under direct control of the 10 largest direct owners")}
         dados={barras}
         chaveCategoria="id"

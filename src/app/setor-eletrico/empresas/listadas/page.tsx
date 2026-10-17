@@ -429,6 +429,7 @@ export default function ListadasPage() {
             >
               <div className="space-y-6">
                 <GraficoBarras
+                  rotulosSaoNomes
                   titulo={r12 ? `Retorno em 12 meses, até ${dataBR(r12.ate)}` : "Retorno em 12 meses"}
                   dados={barras12}
                   chaveCategoria="papel"
@@ -530,6 +531,7 @@ export default function ListadasPage() {
             >
               <div className="space-y-6">
                 <GraficoBarras
+                  rotulosSaoNomes
                   titulo={`Fatos relevantes por companhia, desde ${dataBR(g.datas.ipe_desde)}`}
                   dados={barrasFatos}
                   chaveCategoria="papel"

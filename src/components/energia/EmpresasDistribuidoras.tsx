@@ -90,6 +90,7 @@ export function EmpresasComparador({ entidades, padrao, comparacao, referenciaPe
       {dados.length > 0 && (
         <div className="grid gap-6 lg:grid-cols-2">
           <GraficoBarras
+            rotulosSaoNomes
             titulo={tx("Perdas totais sobre a energia injetada", "Total losses over the energy injected")}
             dados={dados}
             chaveCategoria="id"
@@ -102,6 +103,7 @@ export function EmpresasComparador({ entidades, padrao, comparacao, referenciaPe
             referencias={referenciaPerdas ? [referenciaPerdas] : []}
           />
           <GraficoBarras
+            rotulosSaoNomes
             titulo={tx("Tarifa residencial B1 vigente, sem tributos", "Residential B1 tariff in force, excluding taxes")}
             dados={dados}
             chaveCategoria="id"
@@ -113,6 +115,7 @@ export function EmpresasComparador({ entidades, padrao, comparacao, referenciaPe
             rotulosValor
           />
           <GraficoPontos
+            rotulosSaoNomes
             titulo={tx("DEC apurado diante do limite de cada distribuidora", "Measured DEC against each distribution utility's limit")}
             itens={dados.map((d) => ({ id: d.id, rotulo: d.rotulo, valor: d.dec, referencia: d.dec_limite }))}
             unidade="h"
@@ -122,6 +125,7 @@ export function EmpresasComparador({ entidades, padrao, comparacao, referenciaPe
             zeroNoEixo
           />
           <GraficoPontos
+            rotulosSaoNomes
             titulo={tx("FEC apurado diante do limite de cada distribuidora", "Measured FEC against each distribution utility's limit")}
             itens={dados.map((d) => ({ id: d.id, rotulo: d.rotulo, valor: d.fec, referencia: d.fec_limite }))}
             unidade={tx("interrupções", "interruptions")}

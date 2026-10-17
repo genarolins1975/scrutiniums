@@ -408,7 +408,7 @@ export default function PaginaP037() {
 
                 <EmpresasSeguir
                   ancora="p037"
-                  proximo={{ href: perdasDestino?.href ?? "/setor-eletrico/perdas", pergunta: tx(perdasDestino?.pergunta ?? "Onde a energia se perde?", "Where is energy lost?") }}
+                  proximo={{ href: perdasDestino?.href ?? "/setor-eletrico/perdas", pergunta: perdasDestino?.pergunta ?? tx("Onde a energia se perde?", "Where is energy lost?") }}
                   downloads={downloadsDe(g.downloads, ["/energia/series/empresas_distribuidoras.csv"])}
                 />
               </div>

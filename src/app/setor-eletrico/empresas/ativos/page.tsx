@@ -429,6 +429,7 @@ export default function PaginaP036() {
                       </p>
                     )}
                     <GraficoBarras
+                      rotulosSaoNomes
                       titulo={tx(
                         `As ${t.maiores.length} maiores concessionárias por km de circuito em operação, SIGET de ${dataTexto(t.data)}`,
                         `The ${t.maiores.length} largest concession holders by circuit km in operation, SIGET as of ${dataTexto(t.data)}`,
