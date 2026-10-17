@@ -59,6 +59,8 @@ try{
   check('Protegido sem sessão: '+path,response.status()===307&&response.headers().location.includes('/entrar'));
  }
  check('Método acessível sem sessão',(await anonymous.request.get(origin+PREFIX+'/metodos')).status()===200);
+ check('Seletor exige sessão',(await anonymous.request.get(origin+'/app/observatorios',{maxRedirects:0})).status()===307);
+ check('Escolha do Judiciário exige sessão',(await anonymous.request.post(origin+'/app/observatorios/entrar',{form:{d:'judiciario'},headers:{origin},maxRedirects:0})).status()===307);
  await anonymous.close();
  const context=await browser.newContext({acceptDownloads:true,viewport:{width:1440,height:1000}});
  await context.addCookies([{name:'scrutiniums_session',value:cookie,url:origin,httpOnly:true,sameSite:'Lax',secure:false}]);
@@ -67,6 +69,29 @@ try{
  const page=await context.newPage();page.on('pageerror',e=>errors.push(page.url()+': '+e.message));
  page.on('console',message=>{if(message.type()==='error')errors.push('Console: '+message.text());});
  const axe=await readFile(require.resolve('axe-core/axe.min.js'),'utf8');
+ for(const width of [320,390,768,1440]){
+  await page.setViewportSize({width,height:1000});
+  await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
+  const card=page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true});
+  check('Cartão próprio do Judiciário '+width+'px',await card.isVisible()&&await card.getByRole('button',{name:/Explorar Judiciário/}).isVisible());
+  check('Sete observatórios e Judiciário no seletor '+width+'px',await page.locator('input[name="d"]').count()===observatoryRoots.length+1);
+  await card.locator('summary').click();
+  check('Fonte e cobertura reais no cartão '+width+'px',(await card.innerText()).includes('57 tribunais')&&(await card.innerText()).includes('2009–2025'));
+  await page.addScriptTag({content:axe});
+  const violations=await page.evaluate(async()=>{const r=await axe.run(document.querySelector('main'),{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}});return r.violations.map(v=>v.id);});
+  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
+  check('Seletor acessível e sem overflow '+width+'px',!overflow&&violations.length===0);
+  screens.push({slug:'seletor-observatorios',width,status:200,overflow,violations});
+  await page.screenshot({path:join(out,'seletor-'+width+'.png'),fullPage:true});
+ }
+ const choice=page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true});
+ await choice.getByRole('button',{name:/Explorar Judiciário/}).focus();await page.keyboard.press('Enter');
+ await page.waitForURL('**'+PREFIX);
+ check('Cartão abre o Judiciário por teclado',new URL(page.url()).pathname===PREFIX);
+ check('Escolha preserva a sessão',(await context.request.get(origin+'/api/auth/eu')).status()===204);
+ check('Cookie guarda o Judiciário',(await context.cookies()).some(c=>c.name==='scrutiniums_observatorio'&&c.value==='judiciario'&&c.httpOnly));
+ await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
+ check('Último acesso identifica o cartão do Judiciário',await page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true}).getByText('Último acesso',{exact:true}).isVisible());
  const slugs=['','panorama','recursos','tempo','filas','entrega','acesso','comparar','metodos','tribunais/tjsp','tribunais/tjdft','tribunais/trf3','tribunais/trt3'];
  for(const width of [320,390,768,1440]){
   await page.setViewportSize({width,height:1000});

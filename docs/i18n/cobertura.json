@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "babd92c791425489e2dea65ecd86ed977a1283f433fbeedae6771a9f2a3d45e2",
-    "arquivos_analisados": 1067,
-    "fontes_sha256": "83f172298573dfdfbfe6d5012e009771d3e19d48fe5dd31350fac1d94f96659f",
-    "pendencias_sha256": "c82eed9f049ad388202ce32627077e49848a7e16edc91551488149313de358e6",
+    "arquivos_analisados": 1068,
+    "fontes_sha256": "614f243b4e11caae283f22780b68519dc97ee91d9c68194c5ec68442538e0854",
+    "pendencias_sha256": "cf82b74dc3b1af40cfc8476d9cd9731167cc1890842c5a63a76ab0d8b6fa474a",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -133,20 +133,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 207,
+        "arquivos": 208,
         "candidatos": {
           "jsx_text": 569,
-          "atributos": 182,
+          "atributos": 187,
           "props": 634,
-          "outros_literais": 3281,
-          "templates": 385,
-          "expressoes_nao_resolvidas": 2134,
-          "chaves_objetos": 2497
+          "outros_literais": 3316,
+          "templates": 388,
+          "expressoes_nao_resolvidas": 2140,
+          "chaves_objetos": 2518
         },
         "exclusoes": {
-          "importacoes": 870,
+          "importacoes": 873,
           "atributos_tecnicos": 1154,
-          "tipos": 199
+          "tipos": 201
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -155,7 +155,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 9682,
+        "candidatos_nao_catalogados": 9752,
         "percentual_traduzido": null
       },
       "rotas": {

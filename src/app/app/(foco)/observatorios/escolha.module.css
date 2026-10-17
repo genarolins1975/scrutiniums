@@ -11,6 +11,7 @@
 .cartao{--acento:#78542f;--suave:#f3ede4;display:flex;flex-direction:column;height:100%;background:var(--cor-superficie);border:1px solid var(--obs-regra);border-top:4px solid var(--acento);transition:border-color .15s ease}
 .energia{--acento:#00697f;--suave:#e9f0f1}
 .eficiencia{--acento:#3f635c;--suave:#eaf0eb}
+.judiciario{--acento:#3f635c;--suave:#eaf0eb}
 .estados{--acento:#3f635c;--suave:#eaf0eb}
 .contas{--acento:#245365;--suave:#e9eff1}
 .gas{--acento:#35598a;--suave:#e8edf4}

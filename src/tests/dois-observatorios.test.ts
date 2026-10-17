@@ -67,7 +67,7 @@ describe("registro de domínios", () => {
     const rota = DOMINIOS[2].rotaRaiz;
     expect(ler("src/components/home/SecaoObservatorios.tsx")).toContain("DOMINIOS.map");
     expect(ler("src/components/layout/SwitcherObservatorio.tsx")).toContain("DOMINIOS.map");
-    expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("DOMINIOS.map");
+    expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("OPCOES_OBSERVATORIOS.map");
     expect(ler("src/components/layout/PublicHeader.tsx")).toContain("<AbasCabecalho");
     expect(ler("src/components/layout/navCabecalho.ts")).toContain("ABAS_OBSERVATORIOS");
     expect(ler("src/components/observatorios/NavegacaoObservatorios.tsx")).toContain(`href: "${rota}"`);
