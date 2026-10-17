@@ -147,7 +147,11 @@ export default function EmpresasPage() {
           siglas={["CNPJ", "SIGA", "SIGET", "CVM", "DFP", "ITR", "HHI", "CADE"]}
           titulo="Quem atua no setor elétrico?"
           lead="Quem gera, transmite e distribui a energia do país, quem controla essas empresas e como as companhias abertas se saem. Comece pelas listadas na bolsa, pelo mapa do setor ou pela busca."
-          recorte={`Dados de ${dataSiga} (usinas) a ${integra(listadas) ? dataTexto(listadas.datas.carteira_iee) : dataTexto(datas.cadastro_agentes)} (bolsa); cada número traz a sua data`}
+          recorte={
+            integra(listadas)
+              ? `Dados de ${dataSiga} (usinas) a ${dataTexto(listadas.datas.carteira_iee)} (bolsa); cada número traz a sua data`
+              : `Usinas do SIGA de ${dataSiga}; cada número traz a sua data`
+          }
           fonte="ANEEL (cadastros de geração, transmissão e agentes), CVM (demonstrações) e B3 (carteira do IEE e cotações)"
           referencia={
             <>
@@ -212,7 +216,7 @@ export default function EmpresasPage() {
                 formato="num"
                 casas={0}
                 unidade="distribuidoras"
-                periodo={`índice de ${dataTexto(datas.cadastro_agentes)}`}
+                periodo={`índice de ${dataTexto(g.gerado_em.slice(0, 10))}`}
                 nota={
                   ucs.ucs !== null
                     ? `${num(ucs.ucs / 1e6, 1)} milhões de unidades consumidoras em ${ucs.ano}, nas ${inteiro(ucs.distribuidoras)} com continuidade publicada.`
