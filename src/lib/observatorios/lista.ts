@@ -77,6 +77,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     nome: "Observatório das Contas Públicas",
     nomeCurto: "Contas Públicas",
     pergunta: "De onde vem e para onde vai o dinheiro dos impostos?",
+    entrada: "/observatorios/contas-publicas",
     acento: "energia",
     colecoes: [
       { id: "federais", nome: "Contas Federais", href: "/contas-publicas" },
@@ -89,6 +90,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     nome: "Observatório de Energia e Infraestrutura",
     nomeCurto: "Energia e Infraestrutura",
     pergunta: "De onde vêm a energia e a água, e quanto custam?",
+    entrada: "/observatorios/energia-e-infraestrutura",
     acento: "energia",
     colecoes: [
       { id: "setor-eletrico", nome: "Setor Elétrico", href: "/setor-eletrico" },
@@ -103,6 +105,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     nome: "Observatório da Economia",
     nomeCurto: "Economia",
     pergunta: "O que o Brasil produz, vende ao mundo e financia?",
+    entrada: "/observatorios/economia",
     acento: "gas",
     colecoes: [
       { id: "credito", nome: "Crédito e sistema financeiro", href: "/observatorio" },

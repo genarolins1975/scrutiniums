@@ -185,13 +185,11 @@ tratam do mesmo tema; precisa de comparação de conteúdo antes de decidir).
 |---|---|
 | 1. Registro único | Em produção desde 18/10/2026 (PR #271): `src/lib/observatorios/lista.ts` e `registro.ts`, com testes de posse |
 | 2. Camada aberta | Em produção desde 18/10/2026 (PR #271): home com os seis observatórios e `/perguntas/<observatório>` |
-| 3. Cabeçalho e escolha pós login | Cabeçalho público em produção (PR #271); escolha pós login pelos seis observatórios no PR #272 |
-| 4. Entradas com conta | PR #272: `/observatorios/familias`, `/observatorios/servicos-publicos` e `/observatorios/territorio-e-clima`. Contas Públicas, Energia e Infraestrutura e Economia usam as entradas das coleções existentes |
-| 5. Duplicatas | Decididas em 18/10/2026 (seção abaixo) |
-| 6. Menu interno do Crédito | Pendente |
-| 7. Blocos "Para ir além" | Pendente |
-
-Também pendentes: barras de navegação dentro dos painéis (`NavegacaoObservatorios` e a barra da aplicação do Crédito) e o rodapé, que ainda listam as oito coleções.
+| 3. Cabeçalho e escolha pós login | Em produção (PRs #271 e #272): cabeçalho público, escolha pós login pelos seis observatórios, com último acesso e telemetria também nos atalhos de coleção |
+| 4. Entradas com conta | Famílias, Serviços Públicos e Território e Clima em produção (PR #272). Contas Públicas ("Do imposto ao resultado"), Energia e Infraestrutura ("Da origem à sua casa") e Economia ("Do juro básico ao atraso") no PR seguinte. As entradas das coleções seguem como estão; `/observatorio-do-credito` não muda (decisão de 18/10/2026) |
+| 5. Duplicatas | Decididas e em produção (PR #272; seção abaixo) |
+| 6. Menu interno do Crédito | Em produção (PR #272): o menu de oito grupos fica; cada aba de Famílias ou Contas Públicas diz a que observatório pertence, com link para a entrada |
+| 7. Blocos "Para ir além" | Em produção (PR #272), no layout de toda coleção com páginas Next; barras dos painéis e rodapé pelos seis observatórios |
 
 ## Duplicatas: decisões de 18/10/2026
 
@@ -204,5 +202,9 @@ Comparação de conteúdo feita sobre as páginas, os componentes e as golds de 
 | Energia: `/eficiencia-estatal/energia-conectividade` × `/setor-eletrico/inclusao-energetica` | Dono: Setor Elétrico para acesso, Tarifa Social, qualidade e tarifas (aviso nas abas de energia). O uso da internet fica na Eficiência Estatal | A Eficiência Estatal lê as mesmas golds do Setor Elétrico | Nenhuma |
 | Crédito rural: `/observatorio/rural-credit` × `/agronegocio/apoio` | Os dois ficam, complementares: o Crédito é dono do volume contratado; o Agro, dos juros por programa e das subvenções | Medidas diferentes do mesmo tema | O valor mensal contratado nos microdados do Sicor (Agro, R$ 21,60 bi em jul/2026) difere da MDCR (Crédito, R$ 20,99 bi). O link do Agro para `/observatorio/rural`, rota inexistente, foi corrigido para `/observatorio/rural-credit`, e um teste passa a conferir todo link escrito para abas do Crédito |
 
-Pendências de dado, fora do escopo do reagrupamento: atualizar a gold de emprego do Crédito (um mês atrás da Eficiência Estatal) e documentar, no Agro, a diferença entre Sicor e MDCR.
+Pendências de dado, situação em 18/10/2026:
+
+- **Emprego do Crédito um mês atrás:** o pipeline do Crédito já gera ago/2026, idêntico à Eficiência Estatal nos 36 meses em comum (conferido sobre o estado de produção de 17/10). O mês não chega ao site porque a publicação diária da gold do Crédito (`.github/workflows/atualizar-dados.yml`) está retida desde 24/09/2026: qualquer teste de conteúdo reprovado em outro tema segura a gold inteira. Atualizar só `emprego.json` quebraria a coerência com `sectors.json` e `ufs.json`. A Eficiência Estatal não tem captura agendada de emprego.
+- **Sicor × MDCR:** documentado em `/agronegocio/apoio`, junto à tabela de juros, com os dois valores do mesmo mês fechado.
+- **Captura do Inep (Contas Estaduais):** cadeia TLS incompleta no servidor e conexão reiniciada na primeira tentativa; corrigido com o intermediário oficial versionado e novas tentativas (`docs/contas-publicas-estaduais/FASE_4A_EDUCACAO.md`).
 

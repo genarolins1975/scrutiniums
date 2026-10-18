@@ -30,6 +30,24 @@ export function Numero({ n, grande = false }: Readonly<{ n: NumeroPorta; grande?
   );
 }
 
+/** Painéis à vista em cada coleção; os demais ficam em "Mais painéis", no HTML. */
+const VISIVEIS = 8;
+
+function ListaPaineis({ paineis }: Readonly<{ paineis: ColecaoEntrada["paineis"] }>) {
+  return (
+    <ul className="mt-3 space-y-1">
+      {paineis.map((p) => (
+        <li key={p.href}>
+          <Link href={p.href} prefetch={false} className="group flex min-h-[44px] items-baseline justify-between gap-3 border-t border-linha py-2 text-sm text-carvao">
+            <span className="group-hover:underline">{p.titulo}</span>
+            {p.origem && <span className="shrink-0 text-xs text-mineral">{p.origem}</span>}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 /**
  * Entrada com conta de um observatório que reúne várias coleções, pelo
  * checklist de página de entrada: pergunta e escala na primeira tela,
@@ -110,16 +128,16 @@ export function EntradaObservatorio({
                 <h3 id={`colecao-${c.id}`} className="font-serif text-xl leading-snug text-carvao">
                   <Link href={c.href} prefetch={false} className="hover:underline">{c.nome}</Link>
                 </h3>
-                <ul className="mt-3 space-y-1">
-                  {c.paineis.map((p) => (
-                    <li key={p.href}>
-                      <Link href={p.href} prefetch={false} className="group flex min-h-[44px] items-baseline justify-between gap-3 border-t border-linha py-2 text-sm text-carvao">
-                        <span className="group-hover:underline">{p.titulo}</span>
-                        {p.origem && <span className="shrink-0 text-xs text-mineral">{p.origem}</span>}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <ListaPaineis paineis={c.paineis.slice(0, VISIVEIS)} />
+                {c.paineis.length > VISIVEIS && (
+                  <details className="group/mais">
+                    <summary className="flex min-h-[44px] cursor-pointer items-center border-t border-linha text-sm text-carvao-muted hover:text-carvao">
+                      <span className="group-open/mais:hidden">Mais {c.paineis.length - VISIVEIS} painéis</span>
+                      <span className="hidden group-open/mais:inline">Menos painéis</span>
+                    </summary>
+                    <ListaPaineis paineis={c.paineis.slice(VISIVEIS)} />
+                  </details>
+                )}
               </section>
             ))}
           </div>

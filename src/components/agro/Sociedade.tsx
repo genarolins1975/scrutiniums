@@ -125,6 +125,9 @@ export function ApoioAgro({ dados, e }: { dados: SnapshotAgro; e: EconomiaAgro }
     const rotuloMes = meses.map(m => mesCurtoAgro(m.mes));
     const colsJ = ['Mês', 'Geral, % a.a.', 'Pronaf', 'Pronamp', 'Demais', 'Equalizada', 'Controlada sem equalização', 'Livre ou não controlada', 'Selic, % a.a.', 'Valor contratado, R$', 'Parcela do valor na média, %'];
     const linhasJ = meses.map(m => [m.mes, m.geral, m.pronaf, m.pronamp, m.demais, m.equalizada, m.controlada, m.livre, m.selic, m.valor, 100 * m.coberturaTaxa]);
+    // Mesmo mês fechado nas duas bases: microdados do Sicor (tabela de juros) e MDCR (volumes do crédito rural).
+    const comum = [...meses].reverse().find(m => c.serie.some(x => x.mes === m.mes && !x.parcial));
+    const mdcr = comum ? c.serie.find(x => x.mes === comum.mes) : undefined;
     const acoes = Object.entries(pag.acoes).filter(([k]) => fechados.some(a => (a.acoes[k] ?? 0) !== 0));
     const colsP = ['Ano', 'Total, R$', ...acoes.map(([, n]) => n + ', R$')], linhasP = pag.anos.map(a => [a.ano === anoAberto ? `${a.ano} (até ${mesCurtoAgro(pag.ultimoMesPagamento)})` : String(a.ano), a.total, ...acoes.map(([k]) => a.acoes[k] ?? 0)]);
     return <>
@@ -141,6 +144,7 @@ export function ApoioAgro({ dados, e }: { dados: SnapshotAgro; e: EconomiaAgro }
             <details className={s.sourceDetails}><summary>Ver todos os meses</summary><div><TabelaAgro titulo="Juros do crédito rural · média ponderada por valor" colunas={colsJ} linhas={linhasJ}/></div></details>
             <div className={s.actions}><ExportarAgro nome="agro-juros-credito-rural.csv" colunas={[...colsJ, 'Fonte']} linhas={linhasJ.map(r => [...r, url(dados, 'sicor')])}/></div>
             <FonteAgro dados={dados} id="sicor" periodo={`${meses[0].mes} a ${ult.mes}`} nota={capturado(dados, 'sicor')}/>
+            {comum && mdcr && <LimiteAgro titulo="Dois números para o valor contratado">O valor contratado desta tabela vem dos microdados do Sicor, uma linha por operação, pela data de emissão. Os volumes de crédito rural deste observatório e do <Link href="/observatorio/rural-credit" prefetch={false}>painel do Crédito</Link> vêm da MDCR, a matriz agregada que o Banco Central publica a partir do mesmo registro, capturada em {c.capturaOriginal.slice(0, 10).split('-').reverse().join('/')}. Em {mesAgro(comum.mes)}: R$ {numeroAgro(comum.valor / 1e9, 2)} bi em {numeroAgro(comum.contratos, 0)} linhas nos microdados e R$ {numeroAgro(mdcr.valor / 1e9, 2)} bi em {numeroAgro(mdcr.contratos, 0)} contratos na MDCR. Causas prováveis, não conferidas linha a linha: datas de captura diferentes, porque o Sicor recebe revisões, e a unidade de contagem. Os dois não se misturam: para quanto foi contratado, vale a MDCR; os microdados servem à taxa por programa.</LimiteAgro>}
         </SecaoAgro>
         <SecaoAgro titulo="Quanto o Tesouro paga para o juro ser menor?" texto={`Os pagamentos de subvenção ao crédito rural somaram R$ ${numeroAgro(ultFechado.total / 1e9, 1)} bilhões em ${ultFechado.ano}. Eles se referem a contratos de safras anteriores e oscilam com a Selic, que define o custo de captação dos bancos.`}>
             <span className={s.status}>Dado observado · Tesouro Transparente</span>

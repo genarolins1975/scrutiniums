@@ -1,16 +1,31 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { OBSERVATORIOS, donoDaRota, rotasDoObservatorio } from "@/lib/observatorios/registro";
 import { escalaFamilias, orcamentoFamilia } from "@/lib/observatorios/entradas/familias";
 import { escalaServicos, recursoAoResultado } from "@/lib/observatorios/entradas/servicos";
 import { escalaTerritorio, frentesTerritorio } from "@/lib/observatorios/entradas/territorio";
+import { escalaContas, fluxoImposto } from "@/lib/observatorios/entradas/contas";
+import { cadeias, escalaEnergia } from "@/lib/observatorios/entradas/energia";
+import { circuitoCredito, escalaEconomia } from "@/lib/observatorios/entradas/economia";
+import type { ObservatorioId } from "@/lib/observatorios/lista";
+import type { NumeroPorta } from "@/lib/perguntas/tipos";
+import { mesAno } from "@/lib/perguntas/leitura";
+
+/** Número lido da base, com fonte e período, apontando para painel do próprio observatório ou atalho dele. */
+function conferir(n: NumeroPorta, id: ObservatorioId) {
+  expect(n.valor, n.rotulo).not.toBeNull();
+  expect(n.valor, n.rotulo).not.toMatch(/NaN|undefined|Infinity/);
+  expect(n.periodo, n.rotulo).not.toMatch(/indisponível|NaN|undefined/);
+  expect(n.fonte.trim(), n.rotulo).not.toBe("");
+  expect(rotasDoObservatorio(id).has(n.href) || donoDaRota(n.href)?.observatorio === id, `${n.rotulo}: ${n.href}`).toBe(true);
+}
 import { ehRotaPublica } from "@/lib/rotasPublicas";
 
 describe("entradas com conta dos observatórios", () => {
   it("toda entrada declarada no registro é rota fechada e tem página", () => {
     const comEntrada = OBSERVATORIOS.filter((o) => o.entrada);
-    expect(comEntrada.map((o) => o.id)).toEqual(["familias", "servicos-publicos", "territorio-e-clima"]);
+    expect(comEntrada.map((o) => o.id)).toEqual(OBSERVATORIOS.map((o) => o.id));
     for (const o of comEntrada) {
       expect(o.entrada).toBe(`/observatorios/${o.id}`);
       expect(ehRotaPublica(o.entrada as string), o.entrada).toBe(false);
@@ -84,5 +99,55 @@ describe("entradas com conta dos observatórios", () => {
     for (const p of frentes.flatMap((f) => f.paineis)) {
       expect(permitidas.has(p.href) || donoDaRota(p.href)?.observatorio === "territorio-e-clima", p.href).toBe(true);
     }
+  });
+
+  it("Contas Públicas: escala e modelo do imposto ao resultado fecham as identidades do RTN", () => {
+    const escala = escalaContas();
+    expect(escala.length).toBeLessThanOrEqual(4);
+    for (const n of escala) conferir(n, "contas-publicas");
+    const f = fluxoImposto();
+    expect(f).not.toBeNull();
+    const etapa = (id: string) => f!.etapas.find((e) => e.id === id)!;
+    expect(f!.etapas.map((e) => e.id)).toEqual(["arrecadacao", "transferencias", "liquida", "despesa", "resultado"]);
+    expect(etapa("arrecadacao").porCem).toBe(100);
+    expect(etapa("arrecadacao").porCem - etapa("transferencias").porCem).toBeCloseTo(etapa("liquida").porCem, 6);
+    expect(etapa("liquida").porCem - etapa("despesa").porCem).toBeCloseTo(etapa("resultado").porCem, 6);
+    expect(etapa("despesa").partes!.reduce((s, p) => s + p.bilhoes, 0)).toBeCloseTo(etapa("despesa").bilhoes, 3);
+    conferir(f!.juros, "contas-publicas");
+  });
+
+  it("Energia e Infraestrutura: escala e cadeias de luz, gás e água lidas das bases", () => {
+    const escala = escalaEnergia();
+    expect(escala.length).toBeLessThanOrEqual(4);
+    for (const n of escala) conferir(n, "energia-e-infraestrutura");
+    const c = cadeias();
+    expect(c.map((x) => x.id)).toEqual(["luz", "gas", "agua"]);
+    for (const x of c) {
+      expect(x.elos).toHaveLength(4);
+      for (const e of x.elos) {
+        expect(e.texto.trim(), e.titulo).not.toBe("");
+        if (e.numero) conferir(e.numero, "energia-e-infraestrutura");
+      }
+      for (const p of x.paineis) expect(donoDaRota(p.href)?.observatorio, p.href).toBe("energia-e-infraestrutura");
+    }
+    // medida combinada na nota com janela própria leva o próprio período
+    const imp = JSON.parse(readFileSync(join(process.cwd(), "public", "gas", "gold", "importacao.json"), "utf-8")).indicadores;
+    const importado = c.find((x) => x.id === "gas")!.elos[2].numero!;
+    if (imp.gnl_participacao_massa_12m.periodo !== imp.participacao_12m.periodo) {
+      expect(importado.nota).toContain(`(${imp.gnl_participacao_massa_12m.periodo.split(" a ").map(mesAno).join(" a ")})`);
+    }
+  });
+
+  it("Economia: escala e circuito do crédito lidos das séries do Banco Central, com código da série na fonte", () => {
+    const escala = escalaEconomia();
+    expect(escala.length).toBeLessThanOrEqual(4);
+    for (const n of escala) conferir(n, "economia");
+    const c = circuitoCredito();
+    expect(c.passos.map((p) => p.id)).toEqual(["juro", "preco", "volume", "risco"]);
+    for (const n of [...c.passos.flatMap((p) => p.numeros), ...c.trilhos, ...c.producao]) {
+      conferir(n, "economia");
+      if (n.fonte.startsWith("Banco Central, SGS")) expect(n.fonte, n.rotulo).toMatch(/SGS série \d+$/);
+    }
+    for (const p of c.passos) expect(donoDaRota(p.href)?.observatorio, p.href).toBe("economia");
   });
 });

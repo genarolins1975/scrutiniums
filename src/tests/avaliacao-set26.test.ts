@@ -234,8 +234,9 @@ describe("2.2/2.3 — sem alert(), fontes do meta derivadas, uma metodologia", (
     // 0.112.0: Copiar citação e Incorporar em todo rodapé de gráfico
     // 0.113.0: seletor de observatório na barra da marca no celular (fecha como o da barra lateral)
     // 0.114.0: seis observatórios na barra e nos seletores; abas de outros observatórios dizem a que observatório pertencem
-    expect(app).toContain('const APP_VERSION = "0.114.0";');
-    expect(html).toContain("app.min.js?v=0.114.0");
+    // 0.115.0: as abas de Contas Públicas levam à entrada própria do observatório
+    expect(app).toContain('const APP_VERSION = "0.115.0";');
+    expect(html).toContain("app.min.js?v=0.115.0");
     expect(html).not.toContain("?v=0.106.0");
     expect(html).not.toContain("?v=0.86.0");
   });

@@ -12,7 +12,7 @@ import type { NumeroPorta } from "@/lib/perguntas/tipos";
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- leitura de gold JSON sem tipos gerados */
 
-function serieCredito(chave: string): { v: number; ref: string; codigo: string } {
+export function serieCredito(chave: string): { v: number; ref: string; codigo: string } {
   const s = lerPublico("obs", "data", "gold", "pulse.json").series[chave];
   if (s.tipo !== "DADO OBSERVADO") throw new Error(`série ${chave} não observada`);
   const u = s.obs[s.obs.length - 1];

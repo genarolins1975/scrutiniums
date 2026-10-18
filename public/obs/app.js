@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.114.0";
+const APP_VERSION = "0.115.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -3133,7 +3133,7 @@ const VIEW_OBSERVATORIO = {
 };
 const OBSERVATORIOS_DESTINO = {
   familias: ["Observatório das Famílias", "/observatorios/familias"],
-  "contas-publicas": ["Observatório das Contas Públicas", "/app/observatorios#obs-contas-publicas"],
+  "contas-publicas": ["Observatório das Contas Públicas", "/observatorios/contas-publicas"],
 };
 function linhaObservatorio(view) {
   const id = VIEW_OBSERVATORIO[view];
