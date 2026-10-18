@@ -71,7 +71,13 @@ que exigem distinguir verificação de acesso de conteúdo têm prova em
 `config/gold-testes-excecoes.json`; exceção para teste inexistente é erro.
 
 A unidade de proteção é o **arquivo de teste**: reprovar uma asserção retém todos
-os grupos lidos por esse arquivo. A análise é conservadora para módulos leitores
+os grupos lidos por esse arquivo, com uma exceção para o envelope `meta`. Muitos
+testes chegam a `meta.json` só por import transitivo (por exemplo, `estados-data`
+via `observatorioHead.ts`, para a data do Dataset). Como a publicação parcial já
+remonta o `meta` a partir da base e só troca as datas dos grupos publicados, a
+reprovação de um teste que protege `meta` e outros grupos retém apenas os outros;
+o `meta` só é retido, e com ele todos os grupos, quando o teste reprovado protege
+somente o `meta`. A composição resultante passa de novo pelas três suítes. A análise é conservadora para módulos leitores
 importados: pode proteger também arquivos de outros ramos do mesmo módulo.
 Enumerações de catálogo/linhagem protegem o inventário todo. Teste ausente ou
 pulado não aprova um grupo que deveria proteger. Não são adicionados skips nem

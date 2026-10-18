@@ -117,7 +117,12 @@ def selecionar(manifesto, mapa, resultados, retidos=None, inconclusivo=False):
                 continue
             estado = resultados.get(teste, {}).get('estado', 'ausente')
             if estado != 'passed':
-                for g in protecao['grupos']:
+                # meta é envelope: na publicação parcial, compor() o remonta a partir da
+                # base e só troca as datas dos grupos publicados. Um teste que também lê
+                # outros grupos retém esses grupos; meta só é retido pelo teste que protege
+                # somente meta (o próprio envelope reprovado), o que retém tudo abaixo.
+                alvo = [g for g in protecao['grupos'] if g != 'meta'] or protecao['grupos']
+                for g in alvo:
                     motivos.setdefault(g, []).append(f'{teste}: {estado}')
         # Falha de teste não inventariado não pode ser silenciosamente ignorada.
         desconhecidos = set(resultados) - mapa.keys()
