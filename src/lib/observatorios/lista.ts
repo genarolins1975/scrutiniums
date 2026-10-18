@@ -147,3 +147,16 @@ export function destinoObservatorio(o: Observatorio): string {
   return o.entrada ?? `/app/observatorios#obs-${o.id}`;
 }
 
+/**
+ * Allowlist da escolha por observatório na tela pós login: a coleção pedida
+ * ou, sem coleção, a entrada própria do observatório. Nunca aceita destino
+ * arbitrário; sem correspondência no registro, devolve undefined.
+ */
+export function escolhaObservatorio(obs: unknown, colecao: unknown): { observatorio: Observatorio; href: string } | undefined {
+  const o = typeof obs === "string" ? OBSERVATORIOS.find((x) => x.id === obs) : undefined;
+  if (!o) return undefined;
+  if (colecao === null || colecao === undefined || colecao === "") return o.entrada ? { observatorio: o, href: o.entrada } : undefined;
+  const c = typeof colecao === "string" ? o.colecoes.find((x) => x.id === colecao) : undefined;
+  return c ? { observatorio: o, href: c.href } : undefined;
+}
+

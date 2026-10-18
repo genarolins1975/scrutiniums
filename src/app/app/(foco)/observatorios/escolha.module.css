@@ -7,18 +7,19 @@
 .introducao{font-size:17px;line-height:1.6;color:#52626b}
 .metodo{border-left:1px solid var(--obs-regra);padding:8px 0 8px 24px;flex-shrink:0;font-size:14px;line-height:1.8;color:#52626b}
 .observatorio{border-top:1px solid var(--obs-regra);padding:28px 0 36px}
-.cabecalhoObservatorio{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px 40px;margin-bottom:24px}
+.cabecalhoObservatorio{--acento:#78542f;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px 40px;margin-bottom:24px}
 .cabecalhoObservatorio h2{font-family:var(--font-serif),Georgia,serif;font-size:clamp(26px,2.4vw,34px);font-weight:400;line-height:1.15;letter-spacing:-.02em;margin:6px 0 8px}
 .cabecalhoObservatorio .rotulo{color:#52626b}
 .pergunta{font-size:16px;line-height:1.55;color:#42545d;max-width:44ch}
 .colecoes ul{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:10px 0 14px}
-.colecoes li a{display:inline-flex;align-items:center;min-height:44px;padding:6px 14px;border:1px solid var(--obs-regra);background:var(--cor-superficie);font-size:14px;line-height:1.4;color:var(--obs-tinta)}
-.colecoes li a:hover{border-color:var(--obs-tinta)}
-.entrar{display:flex;align-items:center;justify-content:space-between;gap:12px;width:fit-content;min-height:48px;margin:0 0 6px;padding:10px 16px;background:var(--obs-tinta);color:white;font-size:14px;font-weight:600}
+.colecoes li button{font:inherit;cursor:pointer;text-align:left}
+.colecoes li a,.colecoes li button{display:inline-flex;align-items:center;min-height:44px;padding:6px 14px;border:1px solid var(--obs-regra);background:var(--cor-superficie);font-size:14px;line-height:1.4;color:var(--obs-tinta)}
+.colecoes li a:hover,.colecoes li button:hover{border-color:var(--obs-tinta)}
+.entrar{font:inherit;cursor:pointer;border:0;display:flex;align-items:center;justify-content:space-between;gap:12px;width:fit-content;min-height:48px;margin:0 0 6px;padding:10px 16px;background:var(--obs-tinta);color:white;font-size:14px;font-weight:600}
 .entrar:hover{background:#78542f}
 .entrar:focus-visible{outline:3px solid #00697f;outline-offset:3px}
 .resumo{display:inline-flex;align-items:center;gap:10px;min-height:44px;font-size:14px;font-weight:600;color:#00697f;text-decoration:underline;text-underline-offset:5px}
-.colecoes a:focus-visible{outline:3px solid #00697f;outline-offset:3px}
+.colecoes a:focus-visible,.colecoes button:focus-visible{outline:3px solid #00697f;outline-offset:3px}
 .grade{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;list-style:none;padding:0;margin:0}
 .grade>li{min-width:0}
 .cartao{--acento:#78542f;--suave:#f3ede4;display:flex;flex-direction:column;height:100%;background:var(--cor-superficie);border:1px solid var(--obs-regra);border-top:4px solid var(--acento);transition:border-color .15s ease}

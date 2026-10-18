@@ -119,18 +119,33 @@ export default async function EscolhaObservatorioPage() {
             <section key={o.id} aria-labelledby={`obs-${o.id}`} className={styles.observatorio}>
               <header className={styles.cabecalhoObservatorio}>
                 <div>
-                  <p className={styles.rotulo}>Observatório</p>
+                  <div className="flex flex-wrap items-start gap-2">
+                    <p className={styles.rotulo}>Observatório</p>
+                    {ultimo === o.id && <span className={styles.selo}>Último acesso</span>}
+                  </div>
                   <h2 id={`obs-${o.id}`}>{o.nomeCurto}</h2>
                   <p className={styles.pergunta}>{o.pergunta}</p>
                 </div>
                 <nav aria-label={`Coleções do ${o.nome}`} className={styles.colecoes}>
                   <p className={styles.rotulo}>Coleções</p>
+                  {/* POST, como nos cartões: guarda o último acesso e registra a escolha. */}
                   <ul>
                     {o.colecoes.map((c) => (
-                      <li key={c.id}><Link href={c.href} prefetch={false}>{c.nome}</Link></li>
+                      <li key={c.id}>
+                        <form method="post" action="/app/observatorios/entrar">
+                          <input type="hidden" name="o" value={o.id} />
+                          <input type="hidden" name="c" value={c.id} />
+                          <button type="submit">{c.nome}</button>
+                        </form>
+                      </li>
                     ))}
                   </ul>
-                  {o.entrada && <Link href={o.entrada} prefetch={false} className={styles.entrar}>Entrar no {o.nome} <span aria-hidden="true">→</span></Link>}
+                  {o.entrada && (
+                    <form method="post" action="/app/observatorios/entrar">
+                      <input type="hidden" name="o" value={o.id} />
+                      <button type="submit" className={styles.entrar}>Entrar no {o.nome} <span aria-hidden="true">→</span></button>
+                    </form>
+                  )}
                   <Link href={rotaPorta(o.id)} className={styles.resumo}>Resumo aberto do observatório <span aria-hidden="true">→</span></Link>
                 </nav>
               </header>
