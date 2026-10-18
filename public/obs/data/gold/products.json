@@ -1,18 +1,8 @@
 {
- "gerado_em": "2026-09-24T15:25:01+00:00",
+ "gerado_em": "2026-10-18T15:09:27+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
-  "201503",
-  "201506",
-  "201509",
-  "201512",
-  "201603",
-  "201606",
-  "201609",
-  "201612",
-  "201703",
-  "201706",
   "201709",
   "201712",
   "201803",
@@ -59,18 +49,18 @@
   "disponivel": true,
   "modelo": "est(i,p) = phi_i × beta × m_p × atraso15(i,p) — piso 0, teto de sanidade 100",
   "sem_intercepto": "MQO pela origem, de propósito: um intercepto de nível dominava os produtos de atraso baixo e o teto virava a estimativa. Migração: atraso zero ⇒ estimado zero.",
-  "beta": 1.106,
-  "r2_nao_centrado": 0.822,
-  "ep_beta": 0.0166,
+  "beta": 1.111,
+  "r2_nao_centrado": 0.825,
+  "ep_beta": 0.0165,
   "n_ifs": 957,
   "m_produtos": {
-   "capital-de-giro-pj": 1.07,
-   "cartao-de-credito-pf": 0.7,
-   "comercio-exterior-pj": 0.27,
-   "consignado-pf": 1.49,
-   "credito-pessoal-pf": 0.91,
-   "recebiveis-pj": 0.69,
-   "veiculos-pf": 1.17
+   "capital-de-giro-pj": 1.02,
+   "cartao-de-credito-pf": 0.77,
+   "comercio-exterior-pj": 0.31,
+   "consignado-pf": 1.47,
+   "credito-pessoal-pf": 0.92,
+   "recebiveis-pj": 0.67,
+   "veiculos-pf": 1.14
   },
   "phi_winsorizados": 39,
   "phi_limites": [
@@ -79,7 +69,7 @@
   ],
   "estimativas": 6012,
   "estimativas_baixa_cobertura": 19,
-  "estimativas_teto_sanidade": 61,
+  "estimativas_teto_sanidade": 64,
   "reconciliacao": "a média ponderada por carteira das estimativas de cada IF reproduz o >90d TOTAL observado da instituição — exata, exceto onde o phi foi winsorizado (contado)",
   "conceito_atraso": "o \"vencido >=15d\" dos rel. 123/128 comporta-se empiricamente como banda curta (consignado do BB: 0,45% vs banda 15-90 do SCR 0,42%) — por isso a estimativa de >90d PODE exceder o atraso do produto: é a migração acumulada no estoque, não uma fração do atraso corrente.",
   "hipoteses": "(1) dentro da IF, a migração relativa entre produtos segue o perfil do sistema (SCR); (2) o perfil do SCR (arrastada ÷ banda 15-90) vale como razão ENTRE produtos, nunca como nível; (3) produtos sem par no SCR recebem perfil neutro 1,0, sinalizado por linha.",
@@ -534,8 +524,8 @@
     },
     {
      "anomes": "202509",
-     "total_brl": 1274553170128.53,
-     "n_inst": 122
+     "total_brl": 1274561575760.37,
+     "n_inst": 123
     },
     {
      "anomes": "202512",
@@ -573,7 +563,7 @@
      {
       "anomes": "202509",
       "agg_pct": 0.23,
-      "n": 122
+      "n": 123
      },
      {
       "anomes": "202512",
@@ -1059,8 +1049,8 @@
     },
     {
      "anomes": "202509",
-     "total_brl": 315240940770.49,
-     "n_inst": 640
+     "total_brl": 315270450357.52,
+     "n_inst": 641
     },
     {
      "anomes": "202512",
@@ -1098,7 +1088,7 @@
      {
       "anomes": "202509",
       "agg_pct": 0.98,
-      "n": 640
+      "n": 641
      },
      {
       "anomes": "202512",

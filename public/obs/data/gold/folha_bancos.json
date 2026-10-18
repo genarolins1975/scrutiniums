@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-24T15:24:28+00:00",
+ "gerado_em": "2026-10-18T15:09:03+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,51 +131,51 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 349,
-  "total_editais": 1154,
-  "backfill_completo": true,
+  "total_contratos_if": 188,
+  "total_editais": 532,
+  "backfill_completo": false,
   "ranking": [
    {
     "cnpj8": "00360305",
     "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 131,
-    "ufs": 21,
-    "como_receita": 18
+    "contratos": 61,
+    "ufs": 19,
+    "como_receita": 10
    },
    {
     "cnpj8": "60746948",
     "banco": "BANCO BRADESCO S.A.",
-    "contratos": 78,
-    "ufs": 15,
-    "como_receita": 25
+    "contratos": 49,
+    "ufs": 16,
+    "como_receita": 16
    },
    {
     "cnpj8": "90400888",
     "banco": "BANCO SANTANDER (BRASIL) S.A.",
-    "contratos": 30,
-    "ufs": 10,
-    "como_receita": 13
-   },
-   {
-    "cnpj8": "60701190",
-    "banco": "ITAU UNIBANCO S.A.",
     "contratos": 17,
-    "ufs": 6,
-    "como_receita": 2
+    "ufs": 7,
+    "como_receita": 6
    },
    {
     "cnpj8": "00000000",
     "banco": "BANCO DO BRASIL SA",
-    "contratos": 16,
-    "ufs": 8,
+    "contratos": 13,
+    "ufs": 7,
+    "como_receita": 1
+   },
+   {
+    "cnpj8": "60701190",
+    "banco": "ITAU UNIBANCO S.A.",
+    "contratos": 5,
+    "ufs": 4,
     "como_receita": 1
    },
    {
     "cnpj8": "92702067",
     "banco": "BANCO DO ESTADO DO RIO GRANDE DO SUL SA",
-    "contratos": 5,
+    "contratos": 4,
     "ufs": 1,
-    "como_receita": 2
+    "como_receita": 1
    },
    {
     "cnpj8": "25404542",
@@ -185,36 +185,15 @@
     "como_receita": 1
    },
    {
-    "cnpj8": "22724710",
-    "banco": "COOP. DE CRÉD LTDA- SICOOB CREDIVERTENTES",
-    "contratos": 3,
-    "ufs": 1,
-    "como_receita": 1
-   },
-   {
-    "cnpj8": "03965737",
-    "banco": "COOP. DE CREDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA - VANGUARDA CRESOL VANGUARDA",
+    "cnpj8": "25606237",
+    "banco": "COOPERATIVA DE POUPANCA E CREDITO DO VALE DO RIO DOCE LTDA. - SICOOB CREDIRIODOCE",
     "contratos": 2,
     "ufs": 1,
     "como_receita": 0
    },
    {
-    "cnpj8": "07512780",
-    "banco": "COOPERATIVA DE CREDITO COM INTERACAO SOLIDARIA DO VALE EUROPEU - CRESOL VALE EUROPEU",
-    "contratos": 2,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "22656789",
-    "banco": "COOPERATIVA DE CREDITO CREDISUDESTE LTDA.-SICOOB CREDISUDESTE",
-    "contratos": 2,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "01604998",
-    "banco": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DO SUL DE MINAS LTDA. - SICOOB CREDIVASS",
+    "cnpj8": "81099491",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO VALE DO PIQUIRI ABCD - SICREDI VALE DO PIQUIRI ABCD",
     "contratos": 2,
     "ufs": 1,
     "como_receita": 0
@@ -227,53 +206,46 @@
     "como_receita": 0
    },
    {
-    "cnpj8": "87733770",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CO",
+    "cnpj8": "22724710",
+    "banco": "COOP. DE CRÉD LTDA- SICOOB CREDIVERTENTES",
     "contratos": 2,
     "ufs": 1,
     "como_receita": 1
    },
    {
-    "cnpj8": "87900601",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMEN",
-    "contratos": 2,
+    "cnpj8": "33136888",
+    "banco": "Brb Credito Financiamento E Investimento S A",
+    "contratos": 1,
     "ufs": 1,
     "como_receita": 0
    },
    {
-    "cnpj8": "81099491",
-    "banco": "COOPERATIVA DE CREDITO  POUPANCA E INVESTIMENTO VALE DO PIQUIRI ABCD   SICREDI VALE DO PIQUIRI ABCDP",
-    "contratos": 2,
+    "cnpj8": "81466286",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CAMPOS GERAIS, GRANDE CURITIBA, VALE DO RIBEIRA E FORCA DOS VENTOS",
+    "contratos": 1,
     "ufs": 1,
     "como_receita": 0
    },
    {
-    "cnpj8": "89990501",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO DE IBIRAIARAS - SICREDI IBIRAIARAS RS/MG",
-    "contratos": 2,
-    "ufs": 2,
-    "como_receita": 1
-   },
-   {
-    "cnpj8": "00000208",
-    "banco": "Brb - Banco De Brasilia S/a",
-    "contratos": 2,
-    "ufs": 2,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "02173447",
-    "banco": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DO CENTRO NORDESTE",
-    "contratos": 2,
+    "cnpj8": "03965737",
+    "banco": "COOP. DE CREDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA - VANGUARDA CRESOL VANGUARDA",
+    "contratos": 1,
     "ufs": 1,
     "como_receita": 0
    },
    {
-    "cnpj8": "03065046",
-    "banco": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO NOROESTE DO ESTADO DE SÃO PAULO - SICREDI NOROEST",
-    "contratos": 2,
+    "cnpj8": "22656789",
+    "banco": "COOPERATIVA DE CREDITO CREDISUDESTE LTDA.-SICOOB CREDISUDESTE",
+    "contratos": 1,
     "ufs": 1,
-    "como_receita": 1
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "07512780",
+    "banco": "COOPERATIVA DE CREDITO COM INTERACAO SOLIDARIA DO VALE EUROPEU - CRESOL VALE EUROPEU",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
    },
    {
     "cnpj8": "25395435",
@@ -290,8 +262,8 @@
     "como_receita": 0
    },
    {
-    "cnpj8": "25606237",
-    "banco": "COOPERATIVA DE POUPANCA E CREDITO DO VALE DO RIO DOCE LTDA. - SICOOB CREDIRIODOCE",
+    "cnpj8": "01604998",
+    "banco": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DO SUL DE MINAS LTDA. - SICOOB CREDIVASS",
     "contratos": 1,
     "ufs": 1,
     "como_receita": 0
@@ -323,6 +295,13 @@
     "contratos": 1,
     "ufs": 1,
     "como_receita": 0
+   },
+   {
+    "cnpj8": "87733770",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CO",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 1
    },
    {
     "cnpj8": "05231945",
@@ -395,39 +374,11 @@
     "como_receita": 0
    },
    {
-    "cnpj8": "03320525",
-    "banco": "COOPERATIVA DE CREDITO ARACOOP LTDA - SICOOB ARACOOP",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 1
-   },
-   {
-    "cnpj8": "02843443",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO DO NORTE E NORDESTE DE SANTA CATARINA - SICREDI NORTE SC",
+    "cnpj8": "87900601",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMEN",
     "contratos": 1,
     "ufs": 1,
     "como_receita": 0
-   },
-   {
-    "cnpj8": "10736214",
-    "banco": "Cooperativa De Credito, Poupanca E Investimento Do Planalto Central - Sicredi Planalto Central",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "27098060",
-    "banco": "Banco Digio S.A.",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "25536764",
-    "banco": "COOPERATIVA DE CREDITO CREDPLUS LTDA. - SICOO",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 1
    },
    {
     "cnpj8": "73398646",
@@ -437,50 +388,8 @@
     "como_receita": 0
    },
    {
-    "cnpj8": "22749014",
-    "banco": "Cooperativa De Credito Da Regiao Central De Minas Ltda. - Sicoob Uniao Central",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "03459850",
-    "banco": "COOPERATIVA DE CREDITO SICOOB METROPOLITANO",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "37076205",
-    "banco": "SICOOB JUDICIARIO",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "11478534",
-    "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 1
-   },
-   {
     "cnpj8": "79086997",
     "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO PARANAPANEMA SERRANA PR/SP/RJ -",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "87780268",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO UNIAO DE ESTADOS RIO GRANDE DO SUL, SANTA CATARINA E MINAS GERAIS - SICREDI UNIESTADOS",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "10664513",
-    "banco": "BANCO AGIBANK S.A",
     "contratos": 1,
     "ufs": 1,
     "como_receita": 0
@@ -491,79 +400,249 @@
     "contratos": 1,
     "ufs": 1,
     "como_receita": 0
-   },
-   {
-    "cnpj8": "31895683",
-    "banco": "Banco Industrial do Brasil S.A",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "38588174",
-    "banco": "COOPERATIVA DE CREDITO CREDICOPE LTDA. - SICOOB CREDICOPE",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "17361536",
-    "banco": "COOPERATIVA DE CREDITO DA REGIAO E COLAR METROPOLITANO DO VALE DO ACO LTDA - SICOOB COSMIPA",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "08742188",
-    "banco": "SICOOB INTEGRAÇÃO COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO UNIÃO E NEGÓCIOS - SICOOB INTEGRAÇÃO",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "00971300",
-    "banco": "COOPERATIVA DE CREDITO RURAL COM INTERAÇÃO SOLIDARIA PIONEIR",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "87784088",
-    "banco": "COOPERATIVA DE CRÉDITO POUPANÇA E INVESTIMENTO SUL MINAS DO RS E MG - SICREDI SUL MINAS RS/MG",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "79342069",
-    "banco": "SICREDI UNIÃO PRSP",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "25798596",
-    "banco": "COOPERATIVA DE CREDITO CREDIVAR LTDA. - SICOOB CRE",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "90608712",
-    "banco": "COOPERATIVA DE CREDITO SICREDI SERRANA RS/ES",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "91586982",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO SICREDI PIONEIRA RS - SICREDI PIONEIRA RS",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 1
    }
   ],
   "recentes": [
+   {
+    "controle": "87849923000109-2-001153/2026",
+    "ente": "MUNICIPIO DE BENTO GONCALVES",
+    "esfera": "Municipal",
+    "municipio": "Bento Gonçalves",
+    "uf": "RS",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-10-13",
+    "vig_fim": "2031-10-14",
+    "valor": 9200000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/87849923000109/2026/1153"
+   },
+   {
+    "controle": "02382836000123-2-000135/2026",
+    "ente": "MUNICIPIO DE RUBIATABA",
+    "esfera": "Municipal",
+    "municipio": "Rubiataba",
+    "uf": "GO",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-10-08",
+    "vig_fim": "2031-10-08",
+    "valor": 1000000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL - (IMOVEL)",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/02382836000123/2026/135"
+   },
+   {
+    "controle": "87366159000102-2-000474/2026",
+    "ente": "MUNICIPIO DE SAPIRANGA",
+    "esfera": "Municipal",
+    "municipio": "Sapiranga",
+    "uf": "RS",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-10-06",
+    "vig_fim": "2031-10-05",
+    "valor": 5000000.0,
+    "receita": true,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/87366159000102/2026/474"
+   },
+   {
+    "controle": "18307462000111-2-000074/2026",
+    "ente": "MUNICIPIO DE SANTA EFIGENIA DE MINAS",
+    "esfera": "Municipal",
+    "municipio": "Santa Efigênia de Minas",
+    "uf": "MG",
+    "modalidade": "Credenciamento",
+    "assinatura": "2026-10-01",
+    "vig_fim": "2026-10-01",
+    "valor": 0.0,
+    "receita": false,
+    "banco": "Banco Bradesco SA",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/18307462000111/2026/74"
+   },
+   {
+    "controle": "07598618000144-2-000217/2026",
+    "ente": "MUNICIPIO DE COREAU",
+    "esfera": "Municipal",
+    "municipio": "Coreaú",
+    "uf": "CE",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-30",
+    "vig_fim": "2031-09-30",
+    "valor": 960010.0,
+    "receita": false,
+    "banco": "BANCO BRADESCO S.A.",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/07598618000144/2026/217"
+   },
+   {
+    "controle": "82765488000102-2-000534/2026",
+    "ente": "MUNICIPIO DE TAIO",
+    "esfera": "Municipal",
+    "municipio": "Taió",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-09-29",
+    "vig_fim": "2031-09-29",
+    "valor": 1100000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/82765488000102/2026/534"
+   },
+   {
+    "controle": "02292266000180-2-000255/2026",
+    "ente": "GOIAS TRIBUNAL DE JUSTICA DO ESTADO DE GOIAS",
+    "esfera": "Estadual",
+    "municipio": "Goiânia",
+    "uf": "GO",
+    "modalidade": "Credenciamento",
+    "assinatura": "2026-09-29",
+    "vig_fim": "2031-09-28",
+    "valor": 0.0,
+    "receita": false,
+    "banco": "Brb Credito Financiamento E Investimento S A",
+    "cnpj8": "33136888",
+    "url": "https://pncp.gov.br/contratos/02292266000180/2026/255"
+   },
+   {
+    "controle": "18307462000111-2-000075/2026",
+    "ente": "MUNICIPIO DE SANTA EFIGENIA DE MINAS",
+    "esfera": "Municipal",
+    "municipio": "Santa Efigênia de Minas",
+    "uf": "MG",
+    "modalidade": "Credenciamento",
+    "assinatura": "2026-09-25",
+    "vig_fim": "2027-09-25",
+    "valor": 0.0,
+    "receita": false,
+    "banco": "COOPERATIVA DE POUPANCA E CREDITO DO VALE DO RIO DOCE LTDA. - SICOOB CREDIRIODOCE",
+    "cnpj8": "25606237",
+    "url": "https://pncp.gov.br/contratos/18307462000111/2026/75"
+   },
+   {
+    "controle": "44880060000111-2-002968/2026",
+    "ente": "MUNICIPIO DE DRACENA",
+    "esfera": "Municipal",
+    "municipio": "Dracena",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-24",
+    "vig_fim": "2031-10-11",
+    "valor": 3035302.0,
+    "receita": true,
+    "banco": "BANCO SANTANDER (BRASIL) S.A.",
+    "cnpj8": "90400888",
+    "url": "https://pncp.gov.br/contratos/44880060000111/2026/2968"
+   },
+   {
+    "controle": "88814181000130-2-000192/2026",
+    "ente": "MUNICIPIO DE OSORIO",
+    "esfera": "Municipal",
+    "municipio": "Osório",
+    "uf": "RS",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-23",
+    "vig_fim": "2031-09-23",
+    "valor": 900000.0,
+    "receita": false,
+    "banco": "BANCO DO ESTADO DO RIO GRANDE DO SUL SA",
+    "cnpj8": "92702067",
+    "url": "https://pncp.gov.br/contratos/88814181000130/2026/192"
+   },
+   {
+    "controle": "01612444000140-2-000105/2026",
+    "ente": "MUNICIPIO DE PEROBAL",
+    "esfera": "Municipal",
+    "municipio": "Perobal",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-23",
+    "vig_fim": "2031-09-23",
+    "valor": 69000.0,
+    "receita": false,
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO VALE DO PIQUIRI ABCD - SICREDI VALE DO PIQUIRI ABCD",
+    "cnpj8": "81099491",
+    "url": "https://pncp.gov.br/contratos/01612444000140/2026/105"
+   },
+   {
+    "controle": "46634317000180-2-000067/2026",
+    "ente": "MUNICIPIO DE BARRA DO TURVO",
+    "esfera": "Municipal",
+    "municipio": "Barra do Turvo",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-21",
+    "vig_fim": "2031-09-22",
+    "valor": 50000.0,
+    "receita": false,
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CAMPOS GERAIS, GRANDE CURITIBA, VALE DO RIBEIRA E FORCA DOS VENTOS",
+    "cnpj8": "81466286",
+    "url": "https://pncp.gov.br/contratos/46634317000180/2026/67"
+   },
+   {
+    "controle": "18715383000140-2-002052/2026",
+    "ente": "MUNICIPIO DE BELO HORIZONTE",
+    "esfera": "Municipal",
+    "municipio": "Belo Horizonte",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-18",
+    "vig_fim": "2031-12-15",
+    "valor": 282103241.93,
+    "receita": true,
+    "banco": "BRADESCO EST UNIF",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/18715383000140/2026/2052"
+   },
+   {
+    "controle": "07963259000187-2-000161/2026",
+    "ente": "MUNICIPIO DE CANINDE",
+    "esfera": "Municipal",
+    "municipio": "Canindé",
+    "uf": "CE",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-17",
+    "vig_fim": "2031-09-17",
+    "valor": 105096.6,
+    "receita": true,
+    "banco": "BANCO BRADESCO S/A",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/07963259000187/2026/161"
+   },
+   {
+    "controle": "07963259000187-2-000160/2026",
+    "ente": "MUNICIPIO DE CANINDE",
+    "esfera": "Municipal",
+    "municipio": "Canindé",
+    "uf": "CE",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-17",
+    "vig_fim": "2031-09-17",
+    "valor": 847779.24,
+    "receita": true,
+    "banco": "BANCO BRADESCO S/A",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/07963259000187/2026/160"
+   },
+   {
+    "controle": "07963259000187-2-000159/2026",
+    "ente": "MUNICIPIO DE CANINDE",
+    "esfera": "Municipal",
+    "municipio": "Canindé",
+    "uf": "CE",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-17",
+    "vig_fim": "2031-09-17",
+    "valor": 4051724.16,
+    "receita": true,
+    "banco": "BANCO BRADESCO S/A",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/07963259000187/2026/159"
+   },
    {
     "controle": "18715490000178-2-000060/2026",
     "ente": "MUNICIPIO DE IBIRITE",
@@ -578,21 +657,6 @@
     "banco": "CAIXA ECONOMICA FEDERAL",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/18715490000178/2026/60"
-   },
-   {
-    "controle": "82804212000196-2-000840/2026",
-    "ente": "MUNICIPIO DE AGUAS DE CHAPECO",
-    "esfera": "Municipal",
-    "municipio": "Águas de Chapecó",
-    "uf": "SC",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-09-14",
-    "vig_fim": "2031-09-13",
-    "valor": 419772.16,
-    "receita": false,
-    "banco": "COOP. DE CREDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA - VANGUARDA CRESOL VANGUARDA",
-    "cnpj8": "03965737",
-    "url": "https://pncp.gov.br/contratos/82804212000196/2026/840"
    },
    {
     "controle": "06116743000108-2-000113/2026",
@@ -610,19 +674,19 @@
     "url": "https://pncp.gov.br/contratos/06116743000108/2026/113"
    },
    {
-    "controle": "83102350000196-2-001199/2026",
-    "ente": "MUNICIPIO DE BOTUVERA",
+    "controle": "82804212000196-2-000840/2026",
+    "ente": "MUNICIPIO DE AGUAS DE CHAPECO",
     "esfera": "Municipal",
-    "municipio": "Botuverá",
+    "municipio": "Águas de Chapecó",
     "uf": "SC",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-09-10",
-    "vig_fim": "2027-09-09",
-    "valor": 0.01,
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-14",
+    "vig_fim": "2031-09-13",
+    "valor": 419772.16,
     "receita": false,
-    "banco": "COOPERATIVA DE CREDITO COM INTERACAO SOLIDARIA DO VALE EUROPEU - CRESOL VALE EUROPEU",
-    "cnpj8": "07512780",
-    "url": "https://pncp.gov.br/contratos/83102350000196/2026/1199"
+    "banco": "COOP. DE CREDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA - VANGUARDA CRESOL VANGUARDA",
+    "cnpj8": "03965737",
+    "url": "https://pncp.gov.br/contratos/82804212000196/2026/840"
    },
    {
     "controle": "01616271000139-2-000052/2026",
@@ -640,19 +704,19 @@
     "url": "https://pncp.gov.br/contratos/01616271000139/2026/52"
    },
    {
-    "controle": "83509547000144-2-000096/2026",
-    "ente": "CAMARA DE VEREADORES DO MUNICIPIO DE LAGES",
+    "controle": "83102350000196-2-001199/2026",
+    "ente": "MUNICIPIO DE BOTUVERA",
     "esfera": "Municipal",
-    "municipio": "Lages",
+    "municipio": "Botuverá",
     "uf": "SC",
     "modalidade": "Dispensa",
-    "assinatura": "2026-09-09",
-    "vig_fim": "2031-09-15",
-    "valor": 84000.0,
+    "assinatura": "2026-09-10",
+    "vig_fim": "2027-09-09",
+    "valor": 0.01,
     "receita": false,
-    "banco": "CAIXA ECONOMICA FEDERAL",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/83509547000144/2026/96"
+    "banco": "COOPERATIVA DE CREDITO COM INTERACAO SOLIDARIA DO VALE EUROPEU - CRESOL VALE EUROPEU",
+    "cnpj8": "07512780",
+    "url": "https://pncp.gov.br/contratos/83102350000196/2026/1199"
    },
    {
     "controle": "18392522000141-2-000085/2026",
@@ -668,6 +732,21 @@
     "banco": "COOPERATIVA DE CRÃ‰DITO CREDICAF LTDA - SICOOB CRED",
     "cnpj8": "25395435",
     "url": "https://pncp.gov.br/contratos/18392522000141/2026/85"
+   },
+   {
+    "controle": "83509547000144-2-000096/2026",
+    "ente": "CAMARA DE VEREADORES DO MUNICIPIO DE LAGES",
+    "esfera": "Municipal",
+    "municipio": "Lages",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-09-09",
+    "vig_fim": "2031-09-15",
+    "valor": 84000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/83509547000144/2026/96"
    },
    {
     "controle": "75741330000137-2-000118/2026",
@@ -700,21 +779,6 @@
     "url": "https://pncp.gov.br/contratos/45276128000110/2026/913"
    },
    {
-    "controle": "83102350000196-2-001165/2026",
-    "ente": "MUNICIPIO DE BOTUVERA",
-    "esfera": "Municipal",
-    "municipio": "Botuverá",
-    "uf": "SC",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-09-02",
-    "vig_fim": "2031-09-02",
-    "valor": 200000.0,
-    "receita": false,
-    "banco": "COOPERATIVA DE CREDITO COM INTERACAO SOLIDARIA DO VALE EUROPEU - CRESOL VALE EUROPEU",
-    "cnpj8": "07512780",
-    "url": "https://pncp.gov.br/contratos/83102350000196/2026/1165"
-   },
-   {
     "controle": "03576220000156-2-000095/2026",
     "ente": "MUNICIPIO DE BATAGUASSU",
     "esfera": "Municipal",
@@ -728,6 +792,21 @@
     "banco": "BANCO BRADESCO S.A.",
     "cnpj8": "60746948",
     "url": "https://pncp.gov.br/contratos/03576220000156/2026/95"
+   },
+   {
+    "controle": "01223916000173-2-000433/2026",
+    "ente": "MUNICIPIO DE JARAGUA",
+    "esfera": "Municipal",
+    "municipio": "Jaraguá",
+    "uf": "GO",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-01",
+    "vig_fim": "2031-09-01",
+    "valor": 3795512.01,
+    "receita": false,
+    "banco": "BANCO BRADESCO S.A.",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/01223916000173/2026/433"
    },
    {
     "controle": "22646525000131-2-000108/2026",
@@ -745,21 +824,6 @@
     "url": "https://pncp.gov.br/contratos/22646525000131/2026/108"
    },
    {
-    "controle": "76105535000199-2-000497/2026",
-    "ente": "MUNICIPIO DE ARAUCARIA",
-    "esfera": "Municipal",
-    "municipio": "Araucária",
-    "uf": "PR",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-08-26",
-    "vig_fim": "2031-08-26",
-    "valor": 15000000.0,
-    "receita": false,
-    "banco": "CAIXA ECONOMICA FEDERAL",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/76105535000199/2026/497"
-   },
-   {
     "controle": "08088254000115-2-000066/2026",
     "ente": "MUNICIPIO DE CARNAUBA DOS DANTAS",
     "esfera": "Municipal",
@@ -775,6 +839,21 @@
     "url": "https://pncp.gov.br/contratos/08088254000115/2026/66"
    },
    {
+    "controle": "76105535000199-2-000497/2026",
+    "ente": "MUNICIPIO DE ARAUCARIA",
+    "esfera": "Municipal",
+    "municipio": "Araucária",
+    "uf": "PR",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-08-26",
+    "vig_fim": "2031-08-26",
+    "valor": 15000000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/76105535000199/2026/497"
+   },
+   {
     "controle": "35607532000176-2-000025/2026",
     "ente": "AUTARQUIA MUNICIPAL DE MOBILIDADE, TRANSITO E CIDADANIA - TRANSITAR",
     "esfera": "Municipal",
@@ -788,6 +867,36 @@
     "banco": "CAIXA ECONOMICA FEDERAL",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/35607532000176/2026/25"
+   },
+   {
+    "controle": "01612770000158-2-000113/2026",
+    "ente": "MUNICIPIO DE RIACHAO",
+    "esfera": "Municipal",
+    "municipio": "Riachão",
+    "uf": "PB",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-08-21",
+    "vig_fim": "2031-08-21",
+    "valor": 70200.0,
+    "receita": false,
+    "banco": "BANCO BRADESCO S/A",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/01612770000158/2026/113"
+   },
+   {
+    "controle": "83102830000157-2-001215/2026",
+    "ente": "MUNICIPIO DE BARRA VELHA",
+    "esfera": "Municipal",
+    "municipio": "Barra Velha",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-08-20",
+    "vig_fim": "2031-08-20",
+    "valor": 2000000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL-CEF",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/83102830000157/2026/1215"
    },
    {
     "controle": "78200482000110-2-000100/2026",
@@ -893,386 +1002,116 @@
     "banco": "CAIXA ECONOMICA FEDERAL",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/08109126000100/2026/482"
-   },
-   {
-    "controle": "07387343000108-2-000014/2026",
-    "ente": "MUNICIPIO DE BATURITE",
-    "esfera": "Municipal",
-    "municipio": "Baturité",
-    "uf": "CE",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-08-05",
-    "vig_fim": "2027-08-25",
-    "valor": 2792400.0,
-    "receita": false,
-    "banco": "BANCO BRADESCO SA",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/07387343000108/2026/14"
-   },
-   {
-    "controle": "07615750000117-2-000067/2026",
-    "ente": "MUNICIPIO DE JAGUARUANA",
-    "esfera": "Municipal",
-    "municipio": "Jaguaruana",
-    "uf": "CE",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-07-30",
-    "vig_fim": "2027-07-30",
-    "valor": 1200100.0,
-    "receita": false,
-    "banco": "BANCO BRADESCO SA",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/07615750000117/2026/67"
-   },
-   {
-    "controle": "18675975000185-2-000239/2026",
-    "ente": "MUNICIPIO DE CAMBUI",
-    "esfera": "Municipal",
-    "municipio": "Cambuí",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-07-30",
-    "vig_fim": "2031-07-30",
-    "valor": 2160000.0,
-    "receita": true,
-    "banco": "ITAU UNIBANCO S.A.",
-    "cnpj8": "60701190",
-    "url": "https://pncp.gov.br/contratos/18675975000185/2026/239"
-   },
-   {
-    "controle": "06769798000117-2-000342/2026",
-    "ente": "MUNICIPIO DE BARRA DO CORDA",
-    "esfera": "Municipal",
-    "municipio": "Barra do Corda",
-    "uf": "MA",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-07-27",
-    "vig_fim": "2031-07-27",
-    "valor": 6200000.0,
-    "receita": false,
-    "banco": "CAIXA ECONOMICA FEDERAL",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/06769798000117/2026/342"
-   },
-   {
-    "controle": "18125146000129-2-000268/2026",
-    "ente": "MUNICIPIO DE BURITIS",
-    "esfera": "Municipal",
-    "municipio": "Buritis",
-    "uf": "MG",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-07-24",
-    "vig_fim": "2031-07-24",
-    "valor": 1400000.0,
-    "receita": true,
-    "banco": "Caixa Economica Federal",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/18125146000129/2026/268"
-   },
-   {
-    "controle": "08349045000188-2-000001/2026",
-    "ente": "MUNICIPIO DE LUCRECIA",
-    "esfera": "Municipal",
-    "municipio": "Lucrécia",
-    "uf": "RN",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-07-21",
-    "vig_fim": "2031-07-16",
-    "valor": 30100.0,
-    "receita": true,
-    "banco": "BANCO BRADESCO SA",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/08349045000188/2026/1"
-   },
-   {
-    "controle": "44567014000167-2-000045/2026",
-    "ente": "MUNICIPIO DE SAO PEDRO DO TURVO",
-    "esfera": "Municipal",
-    "municipio": "São Pedro do Turvo",
-    "uf": "SP",
-    "modalidade": "Credenciamento",
-    "assinatura": "2026-07-16",
-    "vig_fim": "2027-07-16",
-    "valor": 0.1,
-    "receita": false,
-    "banco": "BRADESCO S A",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/44567014000167/2026/45"
-   },
-   {
-    "controle": "83102830000157-2-001215/2026",
-    "ente": "MUNICIPIO DE BARRA VELHA",
-    "esfera": "Municipal",
-    "municipio": "Barra Velha",
-    "uf": "SC",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-07-13",
-    "vig_fim": "2031-07-13",
-    "valor": 2000000.0,
-    "receita": false,
-    "banco": "CAIXA ECONOMICA FEDERAL-CEF",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/83102830000157/2026/1215"
-   },
-   {
-    "controle": "17912015000129-2-000034/2026",
-    "ente": "MUNICIPIO DE ALBERTINA",
-    "esfera": "Municipal",
-    "municipio": "Albertina",
-    "uf": "MG",
-    "modalidade": "Pregão - Presencial",
-    "assinatura": "2026-07-08",
-    "vig_fim": "2031-07-09",
-    "valor": 50000.0,
-    "receita": false,
-    "banco": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DO SUL DE MINAS LTDA. - SICOOB CREDIVASS",
-    "cnpj8": "01604998",
-    "url": "https://pncp.gov.br/contratos/17912015000129/2026/34"
-   },
-   {
-    "controle": "79373767000116-2-000633/2026",
-    "ente": "MUNICIPIO DE APIUNA",
-    "esfera": "Municipal",
-    "municipio": "Apiúna",
-    "uf": "SC",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-07-08",
-    "vig_fim": "2031-07-08",
-    "valor": 0.01,
-    "receita": false,
-    "banco": "BANCO DO BRASIL SA",
-    "cnpj8": "00000000",
-    "url": "https://pncp.gov.br/contratos/79373767000116/2026/633"
-   },
-   {
-    "controle": "18715409000150-2-000128/2026",
-    "ente": "MUNICIPIO DE SANTA LUZIA",
-    "esfera": "Municipal",
-    "municipio": "Santa Luzia",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-07-07",
-    "vig_fim": "2027-07-06",
-    "valor": 7826529.0,
-    "receita": false,
-    "banco": "ITAU UNIBANCO S.A.",
-    "cnpj8": "60701190",
-    "url": "https://pncp.gov.br/contratos/18715409000150/2026/128"
-   },
-   {
-    "controle": "01612351000116-2-000010/2026",
-    "ente": "MUNICIPIO DE MARCACAO",
-    "esfera": "Municipal",
-    "municipio": "Marcação",
-    "uf": "PB",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-07-07",
-    "vig_fim": "2031-07-07",
-    "valor": 50500.0,
-    "receita": false,
-    "banco": "BANCO BRADESCO S.A.",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/01612351000116/2026/10"
-   },
-   {
-    "controle": "07248660000135-2-000170/2026",
-    "ente": "DEFENSORIA PUBLICA DO ESTADO DO TOCANTINS",
-    "esfera": "Estadual",
-    "municipio": "Palmas",
-    "uf": "TO",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-07-03",
-    "vig_fim": "2031-09-07",
-    "valor": 2412548.11,
-    "receita": true,
-    "banco": "BANCO BRADESCO S.A.",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/07248660000135/2026/170"
-   },
-   {
-    "controle": "18017392000167-2-000152/2026",
-    "ente": "MUNICIPIO DE JANAUBA",
-    "esfera": "Municipal",
-    "municipio": "Janaúba",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-07-02",
-    "vig_fim": "2031-07-02",
-    "valor": 4000000.0,
-    "receita": false,
-    "banco": "BANCO SANTANDER BRASIL S.A.",
-    "cnpj8": "90400888",
-    "url": "https://pncp.gov.br/contratos/18017392000167/2026/152"
-   },
-   {
-    "controle": "78121878000172-2-000087/2026",
-    "ente": "MUNICIPIO DE CAFELANDIA",
-    "esfera": "Municipal",
-    "municipio": "Cafelândia",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-07-01",
-    "vig_fim": "2031-06-30",
-    "valor": 550535.0,
-    "receita": false,
-    "banco": "COOP. DE CREDITO E INVEST. COM INTERACAO SOLIDARIA PROGRESSO - CRESOL PROGRESSO",
-    "cnpj8": "02448310",
-    "url": "https://pncp.gov.br/contratos/78121878000172/2026/87"
-   },
-   {
-    "controle": "01612501000191-2-000037/2026",
-    "ente": "MUNICIPIO DE SERRANOPOLIS DE MINAS",
-    "esfera": "Municipal",
-    "municipio": "Serranópolis de Minas",
-    "uf": "MG",
-    "modalidade": "Credenciamento",
-    "assinatura": "2026-07-01",
-    "vig_fim": "2031-07-01",
-    "valor": 1.0,
-    "receita": true,
-    "banco": "COOPERATIVA DE CREDITO CREDIVAG LTDA. -",
-    "cnpj8": "25404542",
-    "url": "https://pncp.gov.br/contratos/01612501000191/2026/37"
-   },
-   {
-    "controle": "03442597000112-2-000119/2026",
-    "ente": "MUNICIPIO DE MARACAJU",
-    "esfera": "Municipal",
-    "municipio": "Maracaju",
-    "uf": "MS",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-06-27",
-    "vig_fim": "2031-06-01",
-    "valor": 2800000.0,
-    "receita": false,
-    "banco": "CEF - CAIXA ECONOMICA FEDERAL",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/03442597000112/2026/119"
-   },
-   {
-    "controle": "03073673000160-2-000051/2026",
-    "ente": "MUNICIPIO DE BONITO",
-    "esfera": "Municipal",
-    "municipio": "Bonito",
-    "uf": "MS",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-06-26",
-    "vig_fim": "2031-06-25",
-    "valor": 1600000.0,
-    "receita": true,
-    "banco": "Caixa Economica Federal",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/03073673000160/2026/51"
    }
   ],
   "editais_recentes": [
    {
-    "ente": "MUNICIPIO DE VALE DE SAO DOMINGOS",
-    "municipio": "Vale de São Domingos",
-    "uf": "MT",
-    "modalidade": "Credenciamento",
+    "ente": "MUNICIPIO DE DOM FELICIANO",
+    "municipio": "Dom Feliciano",
+    "uf": "RS",
+    "modalidade": "Concorrência - Eletrônica",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-24",
-    "url": "https://pncp.gov.br/compras/04215993000170/2026/58"
+    "publicacao": "2026-10-16",
+    "url": "https://pncp.gov.br/compras/88601943000110/2026/307"
    },
    {
-    "ente": "CAMARA MUNICIPAL DE BARRA MANSA",
-    "municipio": "Barra Mansa",
-    "uf": "RJ",
+    "ente": "MUNICIPIO DE CASTANHAL",
+    "municipio": "Castanhal",
+    "uf": "PA",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-22",
-    "url": "https://pncp.gov.br/compras/29052875000119/2026/25"
+    "publicacao": "2026-10-16",
+    "url": "https://pncp.gov.br/compras/05121991000184/2026/109"
    },
    {
-    "ente": "MUNICIPIO DE CAMBUI",
-    "municipio": "Cambuí",
-    "uf": "MG",
-    "modalidade": "Inexigibilidade",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-21",
-    "url": "https://pncp.gov.br/compras/18675975000185/2026/133"
-   },
-   {
-    "ente": "MUNICIPIO DE CALDAS NOVAS",
-    "municipio": "Caldas Novas",
-    "uf": "GO",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-21",
-    "url": "https://pncp.gov.br/compras/01787506000155/2026/182"
-   },
-   {
-    "ente": "MUNICIPIO DE JARAGUA",
-    "municipio": "Jaraguá",
-    "uf": "GO",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-18",
-    "url": "https://pncp.gov.br/compras/01223916000173/2026/88"
-   },
-   {
-    "ente": "MUNICIPIO DE SAO JOSE DO VALE DO RIO PRETO",
-    "municipio": "São José do Vale do Rio Preto",
-    "uf": "RJ",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-18",
-    "url": "https://pncp.gov.br/compras/32001836000105/2026/217"
-   },
-   {
-    "ente": "MUNICIPIO DE CASTRO",
-    "municipio": "Castro",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-17",
-    "url": "https://pncp.gov.br/compras/77001311000108/2026/558"
-   },
-   {
-    "ente": "MUNICIPIO DE CASTRO",
-    "municipio": "Castro",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-17",
-    "url": "https://pncp.gov.br/compras/77001311000108/2026/557"
-   },
-   {
-    "ente": "MUNICIPIO DE ADRIANOPOLIS",
-    "municipio": "Adrianópolis",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-17",
-    "url": "https://pncp.gov.br/compras/76105642000117/2026/27"
-   },
-   {
-    "ente": "MUNICIPIO DE SANTA EFIGENIA DE MINAS",
-    "municipio": "Santa Efigênia de Minas",
-    "uf": "MG",
-    "modalidade": "Credenciamento",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-17",
-    "url": "https://pncp.gov.br/compras/18307462000111/2026/29"
-   },
-   {
-    "ente": "MUNICIPIO DE INDAIABIRA",
-    "municipio": "Indaiabira",
+    "ente": "MUNICIPIO DE UBA",
+    "municipio": "Ubá",
     "uf": "MG",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-17",
-    "url": "https://pncp.gov.br/compras/01614599000116/2026/11"
+    "publicacao": "2026-10-16",
+    "url": "https://pncp.gov.br/compras/18128207000101/2026/287"
    },
    {
-    "ente": "MUNICIPIO DE PORTALEGRE",
-    "municipio": "Portalegre",
-    "uf": "RN",
+    "ente": "MUNICIPIO DE IBIUNA",
+    "municipio": "Ibiúna",
+    "uf": "SP",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-16",
-    "url": "https://pncp.gov.br/compras/08358053000190/2026/156"
+    "publicacao": "2026-10-15",
+    "url": "https://pncp.gov.br/compras/46634531000137/2026/320"
+   },
+   {
+    "ente": "MUNICIPIO DE VERTENTE DO LERIO",
+    "municipio": "Vertente do Lério",
+    "uf": "PE",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-15",
+    "url": "https://pncp.gov.br/compras/40893646000160/2026/48"
+   },
+   {
+    "ente": "MUNICIPIO DE ITUBERA",
+    "municipio": "Ituberá",
+    "uf": "BA",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-15",
+    "url": "https://pncp.gov.br/compras/14195333000128/2026/112"
+   },
+   {
+    "ente": "MUNICIPIO DE PRESIDENTE DUTRA",
+    "municipio": "Presidente Dutra",
+    "uf": "MA",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-14",
+    "url": "https://pncp.gov.br/compras/06138366000108/2026/28"
+   },
+   {
+    "ente": "MUNICIPIO DE SEVERINIA",
+    "municipio": "Severínia",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-09",
+    "url": "https://pncp.gov.br/compras/46596235000199/2026/104"
+   },
+   {
+    "ente": "MUNICIPIO DE CURRAL DE DENTRO",
+    "municipio": "Curral de Dentro",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-07",
+    "url": "https://pncp.gov.br/compras/01613076000155/2026/35"
+   },
+   {
+    "ente": "MUNICIPIO DE ITAPISSUMA",
+    "municipio": "Itapissuma",
+    "uf": "PE",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-07",
+    "url": "https://pncp.gov.br/compras/08637399000128/2026/9"
+   },
+   {
+    "ente": "COMPANHIA MUNICIPAL DE TRANSITO -CMT",
+    "municipio": "Cubatão",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-07",
+    "url": "https://pncp.gov.br/compras/55670822000171/2026/31"
+   },
+   {
+    "ente": "MUNICIPIO DE RIBEIRA DO AMPARO",
+    "municipio": "Ribeira do Amparo",
+    "uf": "BA",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-06",
+    "url": "https://pncp.gov.br/compras/13809405000117/2026/85"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

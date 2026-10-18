@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-09-24T15:24:29+00:00",
+ "gerado_em": "2026-10-18T15:09:04+00:00",
  "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
  "paginas": [
   {
@@ -13,14 +13,14 @@
     "codigo_bcb": "C0010069",
     "tipo_tcb": "B1",
     "sede": "São Paulo/SP",
-    "segmento_prudencial": "S1",
-    "grupo_pares": "S1 — grandes (≥10% do PIB ou atividade internacional)",
+    "segmento_prudencial": null,
+    "grupo_pares": null,
     "conglomerado_prudencial": "C0080099",
     "capital": "aberto",
     "modelo": "banco universal",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T2",
-    "atualizado_em": "2026-09-24T15:24:29+00:00",
+    "atualizado_em": "2026-10-18T15:09:04+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -34,46 +34,6 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
-      {
-       "p": "2015-T1",
-       "v": 1206461770401.34
-      },
-      {
-       "p": "2015-T2",
-       "v": 1144469128667.85
-      },
-      {
-       "p": "2015-T3",
-       "v": 1264095531013.12
-      },
-      {
-       "p": "2015-T4",
-       "v": 1285393163372.74
-      },
-      {
-       "p": "2016-T1",
-       "v": 1204787151004.34
-      },
-      {
-       "p": "2016-T2",
-       "v": 1324027104146.97
-      },
-      {
-       "p": "2016-T3",
-       "v": 1319086106911.59
-      },
-      {
-       "p": "2016-T4",
-       "v": 1331840736743.03
-      },
-      {
-       "p": "2017-T1",
-       "v": 1318016842946.84
-      },
-      {
-       "p": "2017-T2",
-       "v": 1350470686758.3
-      },
       {
        "p": "2017-T3",
        "v": 1363806931887.43
@@ -219,7 +179,7 @@
        "v": 2845762304464.61
       }
      ],
-     "mediana_pares": 2043928672730.85,
+     "mediana_pares": 43137599153.21,
      "percentil_pares": 100.0
     },
     {
@@ -232,46 +192,6 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
-      {
-       "p": "2015-T1",
-       "v": 103149275965.08
-      },
-      {
-       "p": "2015-T2",
-       "v": 106688590325.21
-      },
-      {
-       "p": "2015-T3",
-       "v": 109100446373.25
-      },
-      {
-       "p": "2015-T4",
-       "v": 111806212002.14
-      },
-      {
-       "p": "2016-T1",
-       "v": 111716405102.56
-      },
-      {
-       "p": "2016-T2",
-       "v": 126874289752.61
-      },
-      {
-       "p": "2016-T3",
-       "v": 130758955004.96
-      },
-      {
-       "p": "2016-T4",
-       "v": 129934937761.19
-      },
-      {
-       "p": "2017-T1",
-       "v": 128774490315.29
-      },
-      {
-       "p": "2017-T2",
-       "v": 132275483280.95
-      },
       {
        "p": "2017-T3",
        "v": 136983583857.03
@@ -417,7 +337,7 @@
        "v": 216426188543.37
       }
      ],
-     "mediana_pares": 118367792299.28,
+     "mediana_pares": 5783617635.4,
      "percentil_pares": 100.0
     },
     {
@@ -430,46 +350,6 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
-      {
-       "p": "2015-T1",
-       "v": 468049346346.84
-      },
-      {
-       "p": "2015-T2",
-       "v": 457359181899.53
-      },
-      {
-       "p": "2015-T3",
-       "v": 479671677840.51
-      },
-      {
-       "p": "2015-T4",
-       "v": 477943044559.81
-      },
-      {
-       "p": "2016-T1",
-       "v": 450043801798.85
-      },
-      {
-       "p": "2016-T2",
-       "v": 503045915846.49
-      },
-      {
-       "p": "2016-T3",
-       "v": 500175678905.55
-      },
-      {
-       "p": "2016-T4",
-       "v": 498307138722.37
-      },
-      {
-       "p": "2017-T1",
-       "v": 486453518565.87
-      },
-      {
-       "p": "2017-T2",
-       "v": 489887177965.91
-      },
       {
        "p": "2017-T3",
        "v": 479027591884.02
@@ -615,8 +495,8 @@
        "v": 1190712067284.91
       }
      ],
-     "mediana_pares": 928041484636.07,
-     "percentil_pares": 85.7
+     "mediana_pares": 20556574853.42,
+     "percentil_pares": 97.6
     },
     {
      "nome": "Lucro líquido (acumulado no ano IF.data — não é 12m móvel)",
@@ -628,46 +508,6 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
-      {
-       "p": "2015-T1",
-       "v": 5783161671.05
-      },
-      {
-       "p": "2015-T2",
-       "v": 11089205840.7
-      },
-      {
-       "p": "2015-T3",
-       "v": 5945441427.62
-      },
-      {
-       "p": "2015-T4",
-       "v": 10938678413.02
-      },
-      {
-       "p": "2016-T1",
-       "v": 4463212697.42
-      },
-      {
-       "p": "2016-T2",
-       "v": 9338480506.97
-      },
-      {
-       "p": "2016-T3",
-       "v": 4959767566.74
-      },
-      {
-       "p": "2016-T4",
-       "v": 9743077225.96
-      },
-      {
-       "p": "2017-T1",
-       "v": 5736905514.9
-      },
-      {
-       "p": "2017-T2",
-       "v": 10942825765.44
-      },
       {
        "p": "2017-T3",
        "v": 5813206810.36
@@ -813,7 +653,7 @@
        "v": 24035566659.77
       }
      ],
-     "mediana_pares": 7524653494.37,
+     "mediana_pares": 315732800.46,
      "percentil_pares": 100.0
     },
     {
@@ -851,8 +691,8 @@
        "v": 15.3516
       }
      ],
-     "mediana_pares": 15.4543,
-     "percentil_pares": 40.0
+     "mediana_pares": 16.0422,
+     "percentil_pares": 34.1
     },
     {
      "nome": "Capital principal",
@@ -889,8 +729,8 @@
        "v": 12.3087
       }
      ],
-     "mediana_pares": 11.5869,
-     "percentil_pares": 80.0
+     "mediana_pares": 12.3935,
+     "percentil_pares": 47.5
     },
     {
      "nome": "Razão de alavancagem",
@@ -927,8 +767,8 @@
        "v": 6.7532
       }
      ],
-     "mediana_pares": 6.9719,
-     "percentil_pares": 20.0
+     "mediana_pares": 8.4208,
+     "percentil_pares": 25.6
     },
     {
      "nome": "Ativos ponderados pelo risco (RWA)",
@@ -965,7 +805,7 @@
        "v": 1343828469030.03
       }
      ],
-     "mediana_pares": 1027578063175.31,
+     "mediana_pares": 22563318542.9,
      "percentil_pares": 100.0
     }
    ],
@@ -1081,17 +921,17 @@
      "tipo": "CENÁRIO",
      "cenario": "severamente adverso",
      "delta_inad_pp": [
-      0.18,
-      1.29
+      0.21,
+      1.31
      ],
      "impacto_basileia_pp": [
-      -0.51,
-      -0.07
+      -0.52,
+      -0.08
      ],
      "basileia_atual_pct": 15.35,
      "basileia_pos_choque_pct": [
-      14.84,
-      15.28
+      14.83,
+      15.27
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
@@ -1127,52 +967,52 @@
     "dimensoes": {
      "capital_basileia": {
       "valor": 15.35,
-      "percentil_pares": 40.0,
-      "mediana_pares": 15.4,
-      "q1_pares": 15.34,
-      "q3_pares": 15.53
+      "percentil_pares": 35.0,
+      "mediana_pares": 16.04,
+      "q1_pares": 14.21,
+      "q3_pares": 21.59
      },
      "rentabilidade": {
       "valor": 11.11,
-      "percentil_pares": 71.4,
-      "mediana_pares": 7.02,
-      "q1_pares": 5.08,
-      "q3_pares": 11.29
+      "percentil_pares": 80.5,
+      "mediana_pares": 6.2,
+      "q1_pares": 4.74,
+      "q3_pares": 8.43
      },
      "alavancagem": {
       "valor": 13.15,
-      "percentil_pares": 42.9,
-      "mediana_pares": 13.16,
-      "q1_pares": 11.07,
-      "q3_pares": 15.46
+      "percentil_pares": 56.1,
+      "mediana_pares": 11.33,
+      "q1_pares": 6.66,
+      "q3_pares": 15.36
      },
      "concentracao_credito": {
       "valor": 41.84,
-      "percentil_pares": 57.1,
-      "mediana_pares": 41.47,
-      "q1_pares": 14.85,
-      "q3_pares": 44.11
+      "percentil_pares": 39.0,
+      "mediana_pares": 45.34,
+      "q1_pares": 20.58,
+      "q3_pares": 58.6
      },
      "dependencia_captacoes": {
       "valor": 77.88,
-      "percentil_pares": 57.1,
-      "mediana_pares": 77.63,
-      "q1_pares": 55.65,
-      "q3_pares": 78.74
+      "percentil_pares": 53.7,
+      "mediana_pares": 76.98,
+      "q1_pares": 68.78,
+      "q3_pares": 83.28
      },
      "concentracao_setorial": {
       "valor": 1645,
-      "percentil_pares": 100.0,
-      "mediana_pares": 1576.0,
-      "q1_pares": 1437.0,
-      "q3_pares": 1597.0
+      "percentil_pares": 20.8,
+      "mediana_pares": 2267.0,
+      "q1_pares": 1746.0,
+      "q3_pares": 2654.0
      }
     },
     "regra_editorial": "regra_nominal_v1"
    },
    "openfinance": {
     "organisation": "ITAÚ UNIBANCO",
-    "chamadas_semana": 6796990138.0,
+    "chamadas_semana": 7053022596.0,
     "share_pct": 8.6,
     "familias_api": null,
     "papeis": null,
@@ -1220,7 +1060,7 @@
     {
      "severidade": "atencao",
      "indicador": "Crescimento da carteira (4 trim.)",
-     "valor": 154.4,
+     "valor": 148.6,
      "benchmark": 30,
      "periodo": "12m",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
@@ -1229,7 +1069,7 @@
    ],
    "sintese": [
     {
-     "frase": "Itaú Unibanco é um conglomerado prudencial S1 — grandes (≥10% do PIB ou atividade internacional) com ativos de R$ 2845.8 bi e carteira de R$ 1190.7 bi (2026-T2).",
+     "frase": "Itaú Unibanco é um conglomerado prudencial None com ativos de R$ 2845.8 bi e carteira de R$ 1190.7 bi (2026-T2).",
      "base": "IF.data 202606; observado regulatório",
      "status": "observado regulatório"
     },
@@ -1249,7 +1089,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 14.84% e 15.28% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 14.83% e 15.27% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
     },
@@ -1295,14 +1135,14 @@
     "codigo_bcb": "C0051987",
     "tipo_tcb": "B1",
     "sede": "São Paulo/SP",
-    "segmento_prudencial": "S3",
-    "grupo_pares": "S3 — porte entre 0,1% e 1% do PIB",
+    "segmento_prudencial": null,
+    "grupo_pares": null,
     "conglomerado_prudencial": "C0081744",
     "capital": "fechado",
     "modelo": "banco médio (crédito a empresas e consignado)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T2",
-    "atualizado_em": "2026-09-24T15:24:29+00:00",
+    "atualizado_em": "2026-10-18T15:09:04+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -1316,34 +1156,6 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
-      {
-       "p": "2015-T4",
-       "v": 22049028875.73
-      },
-      {
-       "p": "2016-T1",
-       "v": 20423820849.34
-      },
-      {
-       "p": "2016-T2",
-       "v": 20668857221.42
-      },
-      {
-       "p": "2016-T3",
-       "v": 21002027787.79
-      },
-      {
-       "p": "2016-T4",
-       "v": 21909571696.09
-      },
-      {
-       "p": "2017-T1",
-       "v": 22548560146.26
-      },
-      {
-       "p": "2017-T2",
-       "v": 23475707797.11
-      },
       {
        "p": "2017-T3",
        "v": 23814012632.33
@@ -1489,8 +1301,8 @@
        "v": 107666101778.98
       }
      ],
-     "mediana_pares": 24178316109.3,
-     "percentil_pares": 92.6
+     "mediana_pares": 43137599153.21,
+     "percentil_pares": 65.9
     },
     {
      "nome": "Patrimônio líquido",
@@ -1502,34 +1314,6 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
-      {
-       "p": "2015-T4",
-       "v": 2786751477.7
-      },
-      {
-       "p": "2016-T1",
-       "v": 2830928714.49
-      },
-      {
-       "p": "2016-T2",
-       "v": 2854889703.04
-      },
-      {
-       "p": "2016-T3",
-       "v": 2537474775.12
-      },
-      {
-       "p": "2016-T4",
-       "v": 2657437886.15
-      },
-      {
-       "p": "2017-T1",
-       "v": 2741797413.44
-      },
-      {
-       "p": "2017-T2",
-       "v": 2827657960.24
-      },
       {
        "p": "2017-T3",
        "v": 2922944823.31
@@ -1675,8 +1459,8 @@
        "v": 7655721350.67
       }
      ],
-     "mediana_pares": 3078957488.52,
-     "percentil_pares": 90.7
+     "mediana_pares": 5783617635.4,
+     "percentil_pares": 65.9
     },
     {
      "nome": "Carteira de crédito",
@@ -1688,34 +1472,6 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
-      {
-       "p": "2015-T4",
-       "v": 13678173546.9
-      },
-      {
-       "p": "2016-T1",
-       "v": 12743449681.54
-      },
-      {
-       "p": "2016-T2",
-       "v": 12960648157.8
-      },
-      {
-       "p": "2016-T3",
-       "v": 12958284629.81
-      },
-      {
-       "p": "2016-T4",
-       "v": 13832380705.59
-      },
-      {
-       "p": "2017-T1",
-       "v": 12887968901.29
-      },
-      {
-       "p": "2017-T2",
-       "v": 13208392103.84
-      },
       {
        "p": "2017-T3",
        "v": 13310853362.78
@@ -1861,8 +1617,8 @@
        "v": 63321103247.21
       }
      ],
-     "mediana_pares": 10952866893.46,
-     "percentil_pares": 94.4
+     "mediana_pares": 20556574853.42,
+     "percentil_pares": 80.5
     },
     {
      "nome": "Lucro líquido (acumulado no ano IF.data — não é 12m móvel)",
@@ -1874,34 +1630,6 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
-      {
-       "p": "2015-T4",
-       "v": 251136836.32
-      },
-      {
-       "p": "2016-T1",
-       "v": 85232271.66
-      },
-      {
-       "p": "2016-T2",
-       "v": 154459376.78
-      },
-      {
-       "p": "2016-T3",
-       "v": 90564645.89
-      },
-      {
-       "p": "2016-T4",
-       "v": 252411464.66
-      },
-      {
-       "p": "2017-T1",
-       "v": 122318943.45
-      },
-      {
-       "p": "2017-T2",
-       "v": 247877988.35
-      },
       {
        "p": "2017-T3",
        "v": 143635281.7
@@ -2047,8 +1775,8 @@
        "v": 901620603.12
       }
      ],
-     "mediana_pares": 154450871.54,
-     "percentil_pares": 92.6
+     "mediana_pares": 315732800.46,
+     "percentil_pares": 73.2
     },
     {
      "nome": "Índice de Basileia",
@@ -2085,8 +1813,8 @@
        "v": 12.8353
       }
      ],
-     "mediana_pares": 16.1796,
-     "percentil_pares": 7.7
+     "mediana_pares": 16.0422,
+     "percentil_pares": 7.3
     },
     {
      "nome": "Capital principal",
@@ -2123,8 +1851,8 @@
        "v": 9.3461
       }
      ],
-     "mediana_pares": 13.9035,
-     "percentil_pares": 7.7
+     "mediana_pares": 12.3935,
+     "percentil_pares": 12.5
     },
     {
      "nome": "Razão de alavancagem",
@@ -2161,8 +1889,8 @@
        "v": 8.8563
       }
      ],
-     "mediana_pares": 9.8646,
-     "percentil_pares": 39.6
+     "mediana_pares": 8.4208,
+     "percentil_pares": 53.8
     },
     {
      "nome": "Ativos ponderados pelo risco (RWA)",
@@ -2199,8 +1927,8 @@
        "v": 64341903318.41
       }
      ],
-     "mediana_pares": 12617009908.02,
-     "percentil_pares": 96.2
+     "mediana_pares": 22563318542.9,
+     "percentil_pares": 75.6
     }
    ],
    "calculados": [
@@ -2315,17 +2043,17 @@
      "tipo": "CENÁRIO",
      "cenario": "severamente adverso",
      "delta_inad_pp": [
-      0.18,
-      1.29
+      0.21,
+      1.31
      ],
      "impacto_basileia_pp": [
-      -0.57,
-      -0.08
+      -0.58,
+      -0.09
      ],
      "basileia_atual_pct": 12.84,
      "basileia_pos_choque_pct": [
-      12.27,
-      12.75
+      12.26,
+      12.74
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
@@ -2361,45 +2089,45 @@
     "dimensoes": {
      "capital_basileia": {
       "valor": 12.84,
-      "percentil_pares": 7.8,
-      "mediana_pares": 16.34,
-      "q1_pares": 13.89,
-      "q3_pares": 22.37
+      "percentil_pares": 7.5,
+      "mediana_pares": 16.04,
+      "q1_pares": 14.21,
+      "q3_pares": 21.59
      },
      "rentabilidade": {
       "valor": 11.78,
-      "percentil_pares": 87.0,
-      "mediana_pares": 5.01,
-      "q1_pares": 2.51,
-      "q3_pares": 9.26
+      "percentil_pares": 87.8,
+      "mediana_pares": 6.2,
+      "q1_pares": 4.74,
+      "q3_pares": 8.43
      },
      "alavancagem": {
       "valor": 14.06,
-      "percentil_pares": 70.4,
-      "mediana_pares": 9.56,
-      "q1_pares": 5.95,
-      "q3_pares": 15.24
+      "percentil_pares": 63.4,
+      "mediana_pares": 11.33,
+      "q1_pares": 6.66,
+      "q3_pares": 15.36
      },
      "concentracao_credito": {
       "valor": 58.81,
-      "percentil_pares": 68.5,
-      "mediana_pares": 48.08,
-      "q1_pares": 18.11,
-      "q3_pares": 64.85
+      "percentil_pares": 75.6,
+      "mediana_pares": 45.34,
+      "q1_pares": 20.58,
+      "q3_pares": 58.6
      },
      "dependencia_captacoes": {
       "valor": 83.39,
-      "percentil_pares": 79.6,
-      "mediana_pares": 73.35,
-      "q1_pares": 41.97,
-      "q3_pares": 81.88
+      "percentil_pares": 75.6,
+      "mediana_pares": 76.98,
+      "q1_pares": 68.78,
+      "q3_pares": 83.28
      },
      "concentracao_setorial": {
       "valor": 1508,
-      "percentil_pares": 3.3,
-      "mediana_pares": 2426.0,
-      "q1_pares": 1981.0,
-      "q3_pares": 3559.5
+      "percentil_pares": 12.5,
+      "mediana_pares": 2267.0,
+      "q1_pares": 1746.0,
+      "q3_pares": 2654.0
      }
     },
     "regra_editorial": "regra_nominal_v1"
@@ -2456,7 +2184,7 @@
     {
      "severidade": "atencao",
      "indicador": "Crescimento da carteira (4 trim.)",
-     "valor": 362.9,
+     "valor": 375.7,
      "benchmark": 30,
      "periodo": "12m",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
@@ -2465,7 +2193,7 @@
    ],
    "sintese": [
     {
-     "frase": "Banco Daycoval é um conglomerado prudencial S3 — porte entre 0,1% e 1% do PIB com ativos de R$ 107.7 bi e carteira de R$ 63.3 bi (2026-T2).",
+     "frase": "Banco Daycoval é um conglomerado prudencial None com ativos de R$ 107.7 bi e carteira de R$ 63.3 bi (2026-T2).",
      "base": "IF.data 202606; observado regulatório",
      "status": "observado regulatório"
     },
@@ -2485,7 +2213,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.27% e 12.75% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.26% e 12.74% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
     },
@@ -2526,14 +2254,14 @@
     "codigo_bcb": "59109165",
     "tipo_tcb": "B2",
     "sede": "São Paulo/SP",
-    "segmento_prudencial": "S3",
-    "grupo_pares": "S3 — porte entre 0,1% e 1% do PIB",
+    "segmento_prudencial": null,
+    "grupo_pares": null,
     "conglomerado_prudencial": "C0080202",
     "capital": "fechado",
     "modelo": "financeira de montadora (financiamento de veículos)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T2",
-    "atualizado_em": "2026-09-24T15:24:29+00:00",
+    "atualizado_em": "2026-10-18T15:09:04+00:00",
     "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
    },
    "indicadores": [
@@ -2547,46 +2275,6 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
-      {
-       "p": "2015-T1",
-       "v": 25946245183.1
-      },
-      {
-       "p": "2015-T2",
-       "v": 23747831632.37
-      },
-      {
-       "p": "2015-T3",
-       "v": 23206502935.97
-      },
-      {
-       "p": "2015-T4",
-       "v": 23098689891.43
-      },
-      {
-       "p": "2016-T1",
-       "v": 21578912539.2
-      },
-      {
-       "p": "2016-T2",
-       "v": 19678319957.25
-      },
-      {
-       "p": "2016-T3",
-       "v": 19179161723.65
-      },
-      {
-       "p": "2016-T4",
-       "v": 17514094659.11
-      },
-      {
-       "p": "2017-T1",
-       "v": 16518295556.76
-      },
-      {
-       "p": "2017-T2",
-       "v": 16060535070.67
-      },
       {
        "p": "2017-T3",
        "v": 15401533537.02
@@ -2728,8 +2416,8 @@
        "v": 61250495431.21
       }
      ],
-     "mediana_pares": 24178316109.3,
-     "percentil_pares": 85.2
+     "mediana_pares": 43137599153.21,
+     "percentil_pares": 61.0
     },
     {
      "nome": "Patrimônio líquido",
@@ -2741,46 +2429,6 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
-      {
-       "p": "2015-T1",
-       "v": 2708088428.07
-      },
-      {
-       "p": "2015-T2",
-       "v": 2783367883.28
-      },
-      {
-       "p": "2015-T3",
-       "v": 2958758960.98
-      },
-      {
-       "p": "2015-T4",
-       "v": 2602070349.85
-      },
-      {
-       "p": "2016-T1",
-       "v": 2596829648.49
-      },
-      {
-       "p": "2016-T2",
-       "v": 2620628733.91
-      },
-      {
-       "p": "2016-T3",
-       "v": 2663467061.61
-      },
-      {
-       "p": "2016-T4",
-       "v": 2629873894.3
-      },
-      {
-       "p": "2017-T1",
-       "v": 2740090478.8
-      },
-      {
-       "p": "2017-T2",
-       "v": 2861217395.2
-      },
       {
        "p": "2017-T3",
        "v": 2962174597.72
@@ -2922,8 +2570,8 @@
        "v": 5264244028.71
       }
      ],
-     "mediana_pares": 3078957488.52,
-     "percentil_pares": 72.2
+     "mediana_pares": 5783617635.4,
+     "percentil_pares": 46.3
     },
     {
      "nome": "Carteira de crédito",
@@ -2935,46 +2583,6 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
-      {
-       "p": "2015-T1",
-       "v": 21752278745.11
-      },
-      {
-       "p": "2015-T2",
-       "v": 20715346999.75
-      },
-      {
-       "p": "2015-T3",
-       "v": 19948150204.61
-      },
-      {
-       "p": "2015-T4",
-       "v": 19271838538.13
-      },
-      {
-       "p": "2016-T1",
-       "v": 18264107430.99
-      },
-      {
-       "p": "2016-T2",
-       "v": 17025077133.32
-      },
-      {
-       "p": "2016-T3",
-       "v": 15887480013.57
-      },
-      {
-       "p": "2016-T4",
-       "v": 15126575132.97
-      },
-      {
-       "p": "2017-T1",
-       "v": 14185617812.95
-      },
-      {
-       "p": "2017-T2",
-       "v": 13681561710.3
-      },
       {
        "p": "2017-T3",
        "v": 12990128889.29
@@ -3116,8 +2724,8 @@
        "v": 50345581739.39
       }
      ],
-     "mediana_pares": 10952866893.46,
-     "percentil_pares": 92.6
+     "mediana_pares": 20556574853.42,
+     "percentil_pares": 75.6
     },
     {
      "nome": "Lucro líquido (acumulado no ano IF.data — não é 12m móvel)",
@@ -3129,46 +2737,6 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
-      {
-       "p": "2015-T1",
-       "v": 86718433.9
-      },
-      {
-       "p": "2015-T2",
-       "v": 161997889.11
-      },
-      {
-       "p": "2015-T3",
-       "v": 175391077.7
-      },
-      {
-       "p": "2015-T4",
-       "v": 268702466.57
-      },
-      {
-       "p": "2016-T1",
-       "v": -5240701.36
-      },
-      {
-       "p": "2016-T2",
-       "v": 18558384.06
-      },
-      {
-       "p": "2016-T3",
-       "v": 42838327.7
-      },
-      {
-       "p": "2016-T4",
-       "v": 124245160.39
-      },
-      {
-       "p": "2017-T1",
-       "v": 110216584.5
-      },
-      {
-       "p": "2017-T2",
-       "v": 231343500.9
-      },
       {
        "p": "2017-T3",
        "v": 100957202.52
@@ -3310,8 +2878,8 @@
        "v": -203091130.15
       }
      ],
-     "mediana_pares": 154450871.54,
-     "percentil_pares": 1.9
+     "mediana_pares": 315732800.46,
+     "percentil_pares": 0.0
     },
     {
      "nome": "Índice de Basileia",
@@ -3348,8 +2916,8 @@
        "v": 12.4903
       }
      ],
-     "mediana_pares": 16.1796,
-     "percentil_pares": 3.8
+     "mediana_pares": 16.0422,
+     "percentil_pares": 2.4
     },
     {
      "nome": "Capital principal",
@@ -3386,8 +2954,8 @@
        "v": 10.9296
       }
      ],
-     "mediana_pares": 13.9035,
-     "percentil_pares": 21.2
+     "mediana_pares": 12.3935,
+     "percentil_pares": 30.0
     },
     {
      "nome": "Razão de alavancagem",
@@ -3424,8 +2992,8 @@
        "v": 8.4208
       }
      ],
-     "mediana_pares": 9.8646,
-     "percentil_pares": 35.4
+     "mediana_pares": 8.4208,
+     "percentil_pares": 51.3
     },
     {
      "nome": "Ativos ponderados pelo risco (RWA)",
@@ -3462,8 +3030,8 @@
        "v": 43438113256.41
       }
      ],
-     "mediana_pares": 12617009908.02,
-     "percentil_pares": 88.5
+     "mediana_pares": 22563318542.9,
+     "percentil_pares": 65.9
     }
    ],
    "calculados": [
@@ -3574,17 +3142,17 @@
      "tipo": "CENÁRIO",
      "cenario": "severamente adverso",
      "delta_inad_pp": [
-      0.18,
-      1.29
+      0.21,
+      1.31
      ],
      "impacto_basileia_pp": [
-      -0.67,
-      -0.1
+      -0.68,
+      -0.11
      ],
      "basileia_atual_pct": 12.49,
      "basileia_pos_choque_pct": [
-      11.82,
-      12.39
+      11.81,
+      12.38
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
@@ -3620,45 +3188,45 @@
     "dimensoes": {
      "capital_basileia": {
       "valor": 12.49,
-      "percentil_pares": 3.9,
-      "mediana_pares": 16.34,
-      "q1_pares": 13.89,
-      "q3_pares": 22.37
+      "percentil_pares": 2.5,
+      "mediana_pares": 16.04,
+      "q1_pares": 14.21,
+      "q3_pares": 21.59
      },
      "rentabilidade": {
       "valor": -3.86,
-      "percentil_pares": 5.6,
-      "mediana_pares": 5.01,
-      "q1_pares": 2.51,
-      "q3_pares": 9.26
+      "percentil_pares": 2.4,
+      "mediana_pares": 6.2,
+      "q1_pares": 4.74,
+      "q3_pares": 8.43
      },
      "alavancagem": {
       "valor": 11.64,
-      "percentil_pares": 59.3,
-      "mediana_pares": 9.56,
-      "q1_pares": 5.95,
-      "q3_pares": 15.24
+      "percentil_pares": 53.7,
+      "mediana_pares": 11.33,
+      "q1_pares": 6.66,
+      "q3_pares": 15.36
      },
      "concentracao_credito": {
       "valor": 82.2,
-      "percentil_pares": 88.9,
-      "mediana_pares": 48.08,
-      "q1_pares": 18.11,
-      "q3_pares": 64.85
+      "percentil_pares": 92.7,
+      "mediana_pares": 45.34,
+      "q1_pares": 20.58,
+      "q3_pares": 58.6
      },
      "dependencia_captacoes": {
       "valor": 78.23,
-      "percentil_pares": 66.7,
-      "mediana_pares": 73.35,
-      "q1_pares": 41.97,
-      "q3_pares": 81.88
+      "percentil_pares": 56.1,
+      "mediana_pares": 76.98,
+      "q1_pares": 68.78,
+      "q3_pares": 83.28
      },
      "concentracao_setorial": {
       "valor": 1746,
-      "percentil_pares": 10.0,
-      "mediana_pares": 2426.0,
-      "q1_pares": 1981.0,
-      "q3_pares": 3559.5
+      "percentil_pares": 25.0,
+      "mediana_pares": 2267.0,
+      "q1_pares": 1746.0,
+      "q3_pares": 2654.0
      }
     },
     "regra_editorial": "regra_nominal_v1"
@@ -3706,7 +3274,7 @@
     {
      "severidade": "atencao",
      "indicador": "Crescimento da carteira (4 trim.)",
-     "valor": 131.4,
+     "valor": 287.6,
      "benchmark": 30,
      "periodo": "12m",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
@@ -3715,7 +3283,7 @@
    ],
    "sintese": [
     {
-     "frase": "Banco Volkswagen é um conglomerado prudencial S3 — porte entre 0,1% e 1% do PIB com ativos de R$ 61.3 bi e carteira de R$ 50.3 bi (2026-T2).",
+     "frase": "Banco Volkswagen é um conglomerado prudencial None com ativos de R$ 61.3 bi e carteira de R$ 50.3 bi (2026-T2).",
      "base": "IF.data 202606; observado regulatório",
      "status": "observado regulatório"
     },
@@ -3735,7 +3303,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 11.82% e 12.39% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 11.81% e 12.38% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
     },

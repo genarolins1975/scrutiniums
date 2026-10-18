@@ -1,21 +1,11 @@
 {
- "cod": "23069867",
- "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO NOVELIS DO BRASIL E HINDALCO DO BRASIL LTDA. - COOPA",
+ "cod": "55586562",
+ "nome": "8B SERVICOS FINANCEIROS INSTITUICAO DE PAGAMENTO S/A",
  "sr": null,
- "tcb": "B3S",
+ "tcb": "N4",
  "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
-  "201503",
-  "201506",
-  "201509",
-  "201512",
-  "201603",
-  "201606",
-  "201609",
-  "201612",
-  "201703",
-  "201706",
   "201709",
   "201712",
   "201803",
@@ -55,27 +45,21 @@
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
-  "ativo_total": {
-   "201503": 1413319.05
+  "indice_basileia": {
+   "202509": 363.636365763826,
+   "202512": 362.759080261684,
+   "202606": 254.75123524804602
   },
-  "patrimonio_liquido": {
-   "201503": 1351071.87
+  "patrimonio_referencia": {
+   "202509": 2020022.23,
+   "202512": 2014616.18,
+   "202606": 2066061.05
   },
-  "carteira_credito": {
-   "201503": 638536.55
-  },
-  "captacoes": {
-   "201503": 0.0
-  },
-  "lucro_liquido": {
-   "201503": 591.819999999981
-  },
-  "roe_periodo": {
-   "201503": 0.043803739322911144
-  },
-  "cart_ativo_pct": {
-   "201503": 45.179929471692894
+  "rwa": {
+   "202509": 555506.11,
+   "202512": 555359.27,
+   "202606": 811011.2
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-18T15:09:19+00:00"
 }
