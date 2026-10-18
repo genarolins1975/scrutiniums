@@ -2,8 +2,9 @@
  * Entrada com conta do Observatório do Território e Clima.
  *
  * Números lidos do PRODES (INPE, pela gold do Agronegócio), do SINISA
- * (Ministério das Cidades, pelas golds da Eficiência Estatal e do Saneamento)
- * e do ONS (pela gold do Setor Elétrico). O modelo didático agrupa onde as
+ * (Ministério das Cidades, pelas golds da Eficiência Estatal e do Saneamento),
+ * do ONS (pela gold do Setor Elétrico) e do Programa Queimadas do INPE (pela gold
+ * do próprio observatório). O modelo didático agrupa onde as
  * mudanças no território são medidas; ele não atribui causa ao clima.
  */
 import { dataBr, lerPublico, num, numero } from "@/lib/perguntas/leitura";
@@ -60,9 +61,24 @@ const racionamento = () => numero(
   },
 );
 
+const focos = () => numero(
+  { rotulo: "Focos de calor no Brasil", unidade: "focos", fonte: "INPE, Programa Queimadas, satélite de referência", href: "/territorio/queimadas", nota: "Foco é um pixel com fogo ativo, não um incêndio nem área queimada." },
+  () => {
+    const g = lerPublico("territorio", "gold", "queimadas.json");
+    const a = (g.anual as { ano: number; focos: number | null; parcial: boolean }[]).filter((x) => !x.parcial && x.focos !== null).at(-1)!;
+    const c = g.comparacao as { periodoAtual: { inicio: string; fim: string }; focosAtual: number; variacaoPct: number } | null;
+    const ini = (iso: string) => `${["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][Number(iso.slice(5, 7)) - 1]}/${iso.slice(0, 4)}`;
+    return {
+      valor: num(a.focos as number, 0),
+      periodo: String(a.ano),
+      nota: c ? `De ${ini(c.periodoAtual.inicio)} a ${ini(c.periodoAtual.fim)}: ${num(c.focosAtual, 0)} focos, ${c.variacaoPct > 0 ? "+" : "−"}${num(Math.abs(c.variacaoPct), 1)}% sobre os mesmos meses do ano anterior (preliminar).` : undefined,
+    };
+  },
+);
+
 /** Até quatro números de escala do tema. */
 export function escalaTerritorio(): NumeroPorta[] {
-  return [amazonia(), inundacao(), racionamento(), cerrado()];
+  return [amazonia(), focos(), inundacao(), racionamento()];
 }
 
 export type FrenteTerritorio = { id: string; titulo: string; pergunta: string; texto: string; numeros: NumeroPorta[]; paineis: { titulo: string; href: string }[] };
@@ -100,10 +116,10 @@ export function frentesTerritorio(): FrenteTerritorio[] {
   );
   return [
     {
-      id: "floresta", titulo: "Floresta e uso da terra", pergunta: "Quanto da vegetação nativa se perde?",
-      texto: "Desmatamento medido por satélite na Amazônia Legal e no Cerrado, com o ano do PRODES (agosto a julho).",
-      numeros: [amazonia(), cerrado()],
-      paineis: [{ titulo: "Desmatamento e emissões", href: "/agronegocio/ambiente" }, { titulo: "Transição e ambiente da energia", href: "/setor-eletrico/transicao" }],
+      id: "floresta", titulo: "Floresta, fogo e uso da terra", pergunta: "Quanto da vegetação nativa se perde e onde há fogo?",
+      texto: "Desmatamento medido por satélite na Amazônia Legal e no Cerrado, com o ano do PRODES (agosto a julho), e focos de calor do satélite de referência do INPE.",
+      numeros: [amazonia(), cerrado(), focos()],
+      paineis: [{ titulo: "Desmatamento e emissões", href: "/agronegocio/ambiente" }, { titulo: "Queimadas e focos de calor", href: "/territorio/queimadas" }, { titulo: "Transição e ambiente da energia", href: "/setor-eletrico/transicao" }],
     },
     {
       id: "cidades", titulo: "Cidades", pergunta: "As cidades estão preparadas para chuvas e resíduos?",

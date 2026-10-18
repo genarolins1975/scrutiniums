@@ -17,8 +17,8 @@ export function FrentesTerritorio({ frentes }: Readonly<{ frentes: FrenteTerrito
         </h2>
         <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
           Três frentes em que o território é medido: a floresta, as cidades e a água. O modelo agrupa onde as mudanças são
-          registradas; ele não atribui causa ao clima, e as frentes não se somam. Emissões pelo inventário oficial,
-          queimadas e desastres da Defesa Civil ainda não estão integrados.
+          registradas; ele não atribui causa ao clima, e as frentes não se somam. Emissões pelo inventário oficial e
+          desastres da Defesa Civil ainda não estão integrados.
         </p>
         <ol className="mt-10 grid gap-px border border-linha bg-linha lg:grid-cols-3">
           {frentes.map((f, i) => (
@@ -59,7 +59,7 @@ export function MetodoTerritorio() {
     <>
       <p>
         Desmatamento: PRODES do INPE, ano de agosto a julho; a taxa da Amazônia Legal e o incremento mapeado do Cerrado
-        são medidas diferentes. Cidades e água: SINISA do Ministério das Cidades, declarado por municípios e
+        são medidas diferentes. Fogo: focos de calor do satélite de referência do Programa Queimadas do INPE. Cidades e água: SINISA do Ministério das Cidades, declarado por municípios e
         prestadores que responderam a cada módulo. Reservatórios: ONS.
       </p>
       <p>

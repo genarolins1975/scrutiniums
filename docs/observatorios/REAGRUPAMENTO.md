@@ -190,6 +190,7 @@ tratam do mesmo tema; precisa de comparação de conteúdo antes de decidir).
 | 5. Duplicatas | Decididas e em produção (PR #272; seção abaixo) |
 | 6. Menu interno do Crédito | Em produção (PR #272): o menu de oito grupos fica; cada aba de Famílias ou Contas Públicas diz a que observatório pertence, com link para a entrada |
 | 7. Blocos "Para ir além" | Em produção (PR #272), no layout de toda coleção com páginas Next; barras dos painéis e rodapé pelos seis observatórios |
+| Território e Clima, adensamento | Queimadas com pipeline e gold próprios (`/territorio/queimadas`, `docs/territorio/README.md`); desastres (Atlas Digital) e emissões oficiais (MCTI) nos próximos PRs |
 
 ## Duplicatas: decisões de 18/10/2026
 

@@ -188,8 +188,15 @@ export const ATALHOS: Atalho[] = [
  * do Setor Elétrico seguem o idioma da página que pergunta (navegacao.ts), e
  * guardar a primeira leitura vazaria títulos em inglês para páginas em português.
  */
+/** Painéis mantidos pelo próprio Observatório do Território e Clima, com pipeline e gold próprios (public/territorio). */
+function paineisTerritorio(): Painel[] {
+  return [
+    { rota: "/territorio/queimadas", titulo: "Queimadas e focos de calor", observatorio: "territorio-e-clima", colecao: "fogo", origem: null },
+  ];
+}
+
 export function paineis(): Painel[] {
-  return [...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras()];
+  return [...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras(), ...paineisTerritorio()];
 }
 
 export function observatorio(id: ObservatorioId): Observatorio {
@@ -224,7 +231,7 @@ export function rotasDoObservatorio(id: ObservatorioId): Set<string> {
 
 /** Domínios de origem que alimentam um observatório (para dizer de onde vêm as coleções). */
 export function origensDoObservatorio(id: ObservatorioId): DominioId[] {
-  return Array.from(new Set(paineis().filter((p) => p.observatorio === id).map((p) => p.origem)));
+  return Array.from(new Set(paineis().filter((p) => p.observatorio === id).flatMap((p) => (p.origem ? [p.origem] : []))));
 }
 
 /** Observatórios que recebem painéis de um domínio de origem (o Crédito alimenta mais de um). */
