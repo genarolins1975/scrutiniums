@@ -67,8 +67,11 @@ describe("O Brasil em perguntas", () => {
     }
   });
 
-  it("todo caminho nomeia o domínio de origem e a coleção do registro", () => {
-    const nomes = new Set(DOMINIOS.map((d) => d.nomeCurto));
+  it("todo caminho nomeia o domínio de origem (ou o observatório que mantém o painel) e a coleção do registro", async () => {
+    const { paineis } = await import("@/lib/observatorios/registro");
+    // painel sem domínio de origem é mantido pelo próprio observatório (Território e Clima)
+    const proprios = new Set(paineis().filter((p) => p.origem === null).map((p) => p.observatorio));
+    const nomes = new Set([...DOMINIOS.map((d) => d.nomeCurto), ...OBSERVATORIOS.filter((o) => proprios.has(o.id)).map((o) => o.nomeCurto)]);
     const colecoes = new Set(OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => c.nome)));
     for (const p of todas) for (const c of p.caminhos) {
       expect(nomes.has(c.observatorio), c.observatorio).toBe(true);

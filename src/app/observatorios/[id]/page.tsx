@@ -51,7 +51,7 @@ function colecoesDe(id: ObservatorioId): ColecaoEntrada[] {
     const proprios = daColecao.filter((p) => !(p.duplicataDe && rotas.has(p.duplicataDe))).map((p) => ({ titulo: p.titulo, href: p.rota }));
     const atalhos = ATALHOS.filter((x) => x.observatorio === id && x.colecao === c.id).flatMap((x) => {
       const dono = todos.find((p) => p.rota === x.rota);
-      return dono ? [{ titulo: dono.titulo, href: dono.rota, origem: dominio(dono.origem).nomeCurto }] : [];
+      return dono ? [{ titulo: dono.titulo, href: dono.rota, origem: dono.origem ? dominio(dono.origem).nomeCurto : observatorio(dono.observatorio).nomeCurto }] : [];
     });
     return { id: c.id, nome: c.nome, href: c.href, paineis: [...proprios, ...atalhos] };
   });
@@ -72,7 +72,7 @@ const CONTEUDO: Record<ObservatorioId, () => { descricao: string; escala: Return
     metodo: <MetodoServicos />,
   }),
   "territorio-e-clima": () => ({
-    descricao: "Desmatamento medido por satélite, cidades expostas a inundações e municípios onde a água falta, a partir do INPE, do Ministério das Cidades e do ONS. Cada número traz o período e o universo da sua fonte.",
+    descricao: "Desmatamento e focos de calor medidos por satélite, cidades expostas a inundações e municípios onde a água falta, a partir do INPE, do Ministério das Cidades e do ONS. Cada número traz o período e o universo da sua fonte.",
     escala: escalaTerritorio(),
     artefato: <FrentesTerritorio frentes={frentesTerritorio()} />,
     metodo: <MetodoTerritorio />,

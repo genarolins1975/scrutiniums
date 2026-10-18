@@ -39,7 +39,7 @@ export default function PortaPage({ params }: { params: { porta: string } }) {
   const todos = paineis();
   const colecoes = observatorio(porta.id).colecoes.map((c) => {
     const proprios = todos.filter((p) => p.observatorio === porta.id && p.colecao === c.id);
-    const origens = Array.from(new Set(proprios.map((p) => dominio(p.origem).nomeCurto)));
+    const origens = Array.from(new Set(proprios.map((p) => (p.origem ? dominio(p.origem).nomeCurto : observatorio(porta.id).nomeCurto))));
     const destaques = proprios.filter((p) => p.rota !== c.href).map((p) => p.titulo);
     return { id: c.id, nome: c.nome, href: c.href, destaques: destaques.slice(0, 4), mais: destaques.length > 4, origens: `vem de ${origens.join(" e ")}` };
   });
