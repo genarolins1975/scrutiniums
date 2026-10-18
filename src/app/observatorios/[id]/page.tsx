@@ -6,19 +6,24 @@ import { EntradaObservatorio, type ColecaoEntrada } from "@/components/observato
 import { MetodoFamilias, OrcamentoFamilia } from "@/components/observatorios/OrcamentoFamilia";
 import { MetodoServicos, RecursoResultado } from "@/components/observatorios/RecursoResultado";
 import { FrentesTerritorio, MetodoTerritorio } from "@/components/observatorios/FrentesTerritorio";
+import { ImpostoResultado, MetodoContas } from "@/components/observatorios/ImpostoResultado";
+import { CadeiasInfra, MetodoEnergia } from "@/components/observatorios/CadeiasInfra";
+import { CircuitoCredito, MetodoEconomia } from "@/components/observatorios/CircuitoCredito";
 import { ATALHOS, OBSERVATORIOS, observatorio, paineis, type ObservatorioId } from "@/lib/observatorios/registro";
 import { dominio } from "@/lib/dominios";
 import { escalaFamilias, orcamentoFamilia } from "@/lib/observatorios/entradas/familias";
 import { escalaServicos, recursoAoResultado } from "@/lib/observatorios/entradas/servicos";
 import { escalaTerritorio, frentesTerritorio } from "@/lib/observatorios/entradas/territorio";
+import { escalaContas, fluxoImposto } from "@/lib/observatorios/entradas/contas";
+import { cadeias, escalaEnergia } from "@/lib/observatorios/entradas/energia";
+import { circuitoCredito, escalaEconomia } from "@/lib/observatorios/entradas/economia";
 import { portas } from "@/lib/perguntas/portas";
 
 /**
- * Entradas com conta dos observatórios que reúnem várias coleções. Rota
- * fechada: não consta de src/lib/rotasPublicas.ts. Estática, lida das golds
- * no build. Famílias, Serviços Públicos e Território e Clima, que reúnem
- * coleções novas, têm entrada própria; Contas Públicas, Energia e
- * Infraestrutura e Economia seguem pelas entradas das coleções.
+ * Entradas com conta dos seis observatórios, cada um reunindo várias
+ * coleções. Rota fechada: não consta de src/lib/rotasPublicas.ts. Estática,
+ * lida das golds no build. As entradas das coleções (Setor Elétrico,
+ * Crédito, Contas Federais e as demais) seguem como estão.
  */
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -40,7 +45,10 @@ export function generateMetadata({ params }: { params: { id: string } }): Metada
 function colecoesDe(id: ObservatorioId): ColecaoEntrada[] {
   const todos = paineis();
   return observatorio(id).colecoes.map((c) => {
-    const proprios = todos.filter((p) => p.observatorio === id && p.colecao === c.id).map((p) => ({ titulo: p.titulo, href: p.rota }));
+    const daColecao = todos.filter((p) => p.observatorio === id && p.colecao === c.id);
+    const rotas = new Set(daColecao.map((p) => p.rota));
+    // duplicata sai só quando o painel dono do tema está na mesma lista
+    const proprios = daColecao.filter((p) => !(p.duplicataDe && rotas.has(p.duplicataDe))).map((p) => ({ titulo: p.titulo, href: p.rota }));
     const atalhos = ATALHOS.filter((x) => x.observatorio === id && x.colecao === c.id).flatMap((x) => {
       const dono = todos.find((p) => p.rota === x.rota);
       return dono ? [{ titulo: dono.titulo, href: dono.rota, origem: dominio(dono.origem).nomeCurto }] : [];
@@ -50,7 +58,7 @@ function colecoesDe(id: ObservatorioId): ColecaoEntrada[] {
 }
 
 /** Conteúdo próprio de cada entrada: descrição, escala, modelo didático e método. */
-const CONTEUDO: Partial<Record<ObservatorioId, () => { descricao: string; escala: ReturnType<typeof escalaFamilias>; artefato: React.ReactNode; metodo: React.ReactNode }>> = {
+const CONTEUDO: Record<ObservatorioId, () => { descricao: string; escala: ReturnType<typeof escalaFamilias>; artefato: React.ReactNode; metodo: React.ReactNode }> = {
   familias: () => ({
     descricao: "Renda, gastos essenciais, dívidas e proteção social das famílias brasileiras, reunidos a partir das coleções de Crédito, Eficiência Estatal, Agronegócio, Gás Natural, Setor Elétrico e Saneamento. Cada número vem da fonte oficial do seu tema, com o próprio período.",
     escala: escalaFamilias(),
@@ -69,12 +77,30 @@ const CONTEUDO: Partial<Record<ObservatorioId, () => { descricao: string; escala
     artefato: <FrentesTerritorio frentes={frentesTerritorio()} />,
     metodo: <MetodoTerritorio />,
   }),
+  "contas-publicas": () => ({
+    descricao: "Arrecadação, despesas e resultado do governo federal, a execução do orçamento e as contas dos 27 estados, a partir do Tesouro Nacional, do SIOP e do Siconfi. Valores nominais, cada um com o período do seu demonstrativo.",
+    escala: escalaContas(),
+    artefato: <ImpostoResultado fluxo={fluxoImposto()} />,
+    metodo: <MetodoContas />,
+  }),
+  "energia-e-infraestrutura": () => ({
+    descricao: "Eletricidade, gás, água e esgoto, mobilidade e conectividade: oferta, preço regulado e acesso, a partir do ONS, da ANEEL, da ANP, do IBGE e do SINISA. Cada número traz o período e o universo da sua fonte.",
+    escala: escalaEnergia(),
+    artefato: <CadeiasInfra cadeias={cadeias()} />,
+    metodo: <MetodoEnergia />,
+  }),
+  economia: () => ({
+    descricao: "Crédito, juros e inadimplência, os pagamentos e o agronegócio, a partir do Banco Central, do IBGE e do Comex Stat. Estoque e fluxo, taxa e spread aparecem separados, cada um com a série de origem.",
+    escala: escalaEconomia(),
+    artefato: <CircuitoCredito circuito={circuitoCredito()} />,
+    metodo: <MetodoEconomia />,
+  }),
 };
 
 export default function EntradaObservatorioPage({ params }: { params: { id: string } }) {
   const id = params.id as ObservatorioId;
+  if (!ENTRADAS.includes(id)) notFound();
   const conteudo = CONTEUDO[id];
-  if (!ENTRADAS.includes(id) || !conteudo) notFound();
   const o = observatorio(id);
   const c = conteudo();
   const porta = portas().find((p) => p.id === id);

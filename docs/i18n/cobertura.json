@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1263,
-    "fontes_sha256": "15740274d31b2132d3e7fa3d2e9d094d9d218aa1e545b24fabe0ab31cb4bdddf",
+    "arquivos_analisados": 1269,
+    "fontes_sha256": "9f562ed4b86b82ebfeb8c96fa573bea10030ed38bfe22eb7aa94a6a3d5db3e0f",
     "pendencias_sha256": "b026960e02fda747a2f0cd6acf74c6a9f671955660f1f8aae05aa8759335b0b4",
     "nao_classificadas": [
       {
@@ -143,20 +143,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 235,
+        "arquivos": 241,
         "candidatos": {
-          "jsx_text": 639,
-          "atributos": 224,
-          "props": 721,
-          "outros_literais": 4588,
-          "templates": 473,
-          "expressoes_nao_resolvidas": 2670,
-          "chaves_objetos": 3482
+          "jsx_text": 686,
+          "atributos": 228,
+          "props": 747,
+          "outros_literais": 4933,
+          "templates": 512,
+          "expressoes_nao_resolvidas": 2818,
+          "chaves_objetos": 3845
         },
         "exclusoes": {
-          "importacoes": 1025,
-          "atributos_tecnicos": 1466,
-          "tipos": 223
+          "importacoes": 1052,
+          "atributos_tecnicos": 1576,
+          "tipos": 228
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -165,7 +165,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 12797,
+        "candidatos_nao_catalogados": 13769,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -482,12 +482,12 @@
       "interface": {
         "arquivos": 54,
         "candidatos": {
-          "jsx_text": 466,
+          "jsx_text": 475,
           "atributos": 272,
-          "props": 829,
-          "outros_literais": 2897,
+          "props": 831,
+          "outros_literais": 2899,
           "templates": 230,
-          "expressoes_nao_resolvidas": 2147,
+          "expressoes_nao_resolvidas": 2154,
           "chaves_objetos": 1761
         },
         "exclusoes": {
@@ -502,7 +502,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 8602,
+        "candidatos_nao_catalogados": 8622,
         "percentual_traduzido": null
       },
       "rotas": {
