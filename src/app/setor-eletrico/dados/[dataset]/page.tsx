@@ -11,6 +11,7 @@ import { DadosArquivos, itensDeArquivos } from "@/components/energia/DadosArquiv
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { gold } from "@/lib/energia/gold";
+import { capturasDoConjunto } from "@/lib/energia/capturas-servidor";
 import { carimbo, dataBR, plural } from "@/lib/energia/formato";
 import { tx } from "@/lib/energia/idioma";
 import { LICENCA_EN, PAINEIS_EN, codigo, identificadorDaFicha, marcado, rotuloDado, traduzido } from "@/lib/energia/i18n/regulacao-dados-metodo";
@@ -102,7 +103,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
   const oficial = urlDoConjunto(e);
   const paginaInicial = eApenasPaginaInicial(oficial);
   const cadencias = integr.flatMap((c) => c.frequencia?.cadencias ?? []).filter((c, i, a) => a.indexOf(c) === i);
-  const capturas = f?.historico?.length ? f.historico : (f?.capturas ?? []).map((x) => ({ ...x, vigente: true }));
+  const capturas = capturasDoConjunto(f, d.interno);
   const notasDeQuebra = integr.length ? notasDeQuebraPosterior(e.quebras, integr[0]) : [];
   const quebrasEn = integr.length ? quebrasPosteriores(e.quebras, integr[0]) : [];
   // indicadores publicados que listam este conjunto entre as fontes (metricas.json)
@@ -520,6 +521,21 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                       "Each file downloaded with new content is stored unchanged; a download identical to one already stored does not create a new record. The table lists all the captures, including those that a later capture of the same file replaced.",
                     )}
                   </p>
+                  {f?.resumo_capturas && (
+                    <p className="max-w-prose2 text-sm text-carvao-muted" data-resumo-capturas="true">
+                      {tx(
+                        `${plural(f.resumo_capturas.total_historico, "captura integrada", "capturas integradas")}, das quais ${plural(f.resumo_capturas.total_capturas, "vigente", "vigentes")}.`,
+                        `${plural(f.resumo_capturas.total_historico, "integrated capture", "integrated captures")}; current: ${f.resumo_capturas.total_capturas}.`,
+                      )}
+                      {f.resumo_capturas.primeira && f.resumo_capturas.ultima && <> {tx(
+                        `Capturas de ${carimbo(f.resumo_capturas.primeira)} a ${carimbo(f.resumo_capturas.ultima)}.`,
+                        `Captures from ${carimbo(f.resumo_capturas.primeira)} to ${carimbo(f.resumo_capturas.ultima)}.`,
+                      )}</>}{" "}
+                      <a className="underline underline-offset-4" href={f.historico_csv} download>
+                        {tx("Baixar histórico completo de todos os conjuntos (CSV)", "Download full history of all datasets (CSV)")}
+                      </a>
+                    </p>
+                  )}
                   {capturas.length === 0 ? (
                     <p className="border border-linha bg-papel p-3 text-sm text-carvao" data-sem-capturas="true">
                       {ultimaCaptura

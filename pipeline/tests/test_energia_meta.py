@@ -1,0 +1,247 @@
+"""Estado meta fora do cache e histórico completo fora do JSON (dados sintéticos)."""
+import csv
+import io
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import tarfile
+import tempfile
+import unittest
+from unittest.mock import patch
+
+from pipeline.energia import base
+
+RAIZ = Path(__file__).resolve().parents[2]
+
+
+def passos():
+    texto = (RAIZ / '.github/workflows/atualizar-energia.yml').read_text()
+    resultado = {}
+    for bloco in texto.split('\n      - name: ')[1:]:
+        nome, resto = bloco.split('\n', 1)
+        cabecalho, _, corpo = resto.partition('        run: |\n')
+        resultado[nome] = (cabecalho, '\n'.join(l[10:] if l.startswith('          ') else l
+                                                 for l in corpo.splitlines()))
+    return resultado
+
+
+class TestEstadoMeta(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.raiz = Path(self.tmp.name)
+        self.repo = self.raiz / 'repo'
+        self.assets = self.raiz / 'assets'
+        self.assets.mkdir()
+        pacote = self.repo / 'pipeline/energia'
+        pacote.mkdir(parents=True)
+        for p in (self.repo / 'pipeline/__init__.py', pacote / '__init__.py'):
+            p.touch()
+        helper = RAIZ / 'pipeline/energia/estado_meta.py'
+        if helper.exists():
+            shutil.copyfile(helper, pacote / helper.name)
+        self.bin = self.raiz / 'bin'
+        self.bin.mkdir()
+        gh = self.bin / 'gh'
+        gh.write_text('''#!/usr/bin/env python3
+import os, pathlib, shutil, sys
+a = sys.argv[1:]
+with open(os.environ['FAKE_LOG'], 'a') as f:
+    f.write(' '.join(a) + '\\n')
+assets = pathlib.Path(os.environ['FAKE_ASSETS'])
+if a[:2] == ['release', 'download']:
+    encontrados = list(assets.glob(a[a.index('--pattern') + 1]))
+    if not encontrados: sys.exit(1)
+    dest = pathlib.Path(a[a.index('--dir') + 1])
+    dest.mkdir(parents=True, exist_ok=True)
+    for p in encontrados: shutil.copyfile(p, dest / p.name)
+elif a[:2] == ['release', 'upload']:
+    p = pathlib.Path(a[3])
+    if p.name.startswith('energia-meta-') and os.environ.get('FALHAR_META'): sys.exit(1)
+    shutil.copyfile(p, assets / p.name)
+elif a[:2] == ['release', 'view'] and '--json' in a:
+    print('\\n'.join(p.name for p in assets.glob('energia-meta-*.tar.gz')))
+elif a[0] == 'api':
+    print('\\n'.join(p.name for p in assets.glob('energia-meta-*.tar.gz') if p.name != os.environ.get('FAKE_STARTER')))
+elif a[:2] == ['release', 'delete-asset']:
+    (assets / a[3]).unlink()
+''')
+        gh.chmod(0o755)
+        self.env = {**os.environ, 'PATH': f'{self.bin}:{os.environ["PATH"]}',
+                    'PYTHONPATH': str(self.repo), 'FAKE_ASSETS': str(self.assets),
+                    'FAKE_LOG': str(self.raiz / 'gh.log'), 'GITHUB_REPOSITORY': 'teste/energia',
+                    'GITHUB_RUN_ID': '123', 'GITHUB_RUN_ATTEMPT': '1', 'RUN_URL': 'https://teste/run'}
+
+    def executar(self, nome):
+        cab, shell = passos()[nome]
+        self.assertIn('continue-on-error: true', cab)
+        shell = shell.replace('/tmp', str(self.raiz / 'temporarios'))
+        (self.raiz / 'temporarios').mkdir(exist_ok=True)
+        return subprocess.run(['bash', '-eo', 'pipefail', '-c', shell], cwd=self.repo,
+                              env=self.env, text=True, capture_output=True, timeout=30)
+
+    def asset(self, geracao, arquivos):
+        with tarfile.open(self.assets / f'energia-meta-{geracao}.tar.gz', 'w:gz') as tar:
+            for nome, conteudo in arquivos.items():
+                b = conteudo.encode()
+                item = tarfile.TarInfo(nome)
+                item.size = len(b)
+                tar.addfile(item, io.BytesIO(b))
+
+    def test_restauracao_cache_ausente_e_parcial_preserva_bytes_e_escolhe_geracao(self):
+        self.asset('20261017T000000Z', {'_meta_ons.json': 'antigo'})
+        self.asset('20261018T000000Z', {'_meta_ons.json': 'fonte', '_ckan_ons.json': 'catalogo',
+                                        '_conferencia_bronze.json': 'conferencia'})
+        # Falha de upload mais nova não pode esconder a última geração completa.
+        self.env['FAKE_STARTER'] = 'energia-meta-20261019T000000Z.tar.gz'
+        (self.assets / self.env['FAKE_STARTER']).write_bytes(b'upload interrompido')
+        for parcial in (False, True):
+            with self.subTest(parcial=parcial):
+                pasta = self.repo / 'data/energia/meta'
+                shutil.rmtree(pasta, ignore_errors=True)
+                if parcial:
+                    pasta.mkdir(parents=True)
+                    (pasta / '_meta_ons.json').write_bytes(b'cache recente\n')
+                r = self.executar('Restaurar metadados da cópia durável')
+                self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+                self.assertEqual((pasta / '_meta_ons.json').read_bytes(), b'cache recente\n' if parcial else b'fonte')
+                self.assertEqual((pasta / '_ckan_ons.json').read_bytes(), b'catalogo')
+                self.assertEqual((pasta / '_conferencia_bronze.json').read_bytes(), b'conferencia')
+
+    def test_falha_copia_meta_nao_impede_silver_nem_apaga_geracao_anterior(self):
+        self.asset('20261017T000000Z', {'_meta_ons.json': 'anterior'})
+        silver = self.repo / 'data/energia/silver'
+        silver.mkdir(parents=True)
+        (silver / 'energia.db').write_bytes(b'silver principal')
+        (silver / 'familia.db').write_bytes(b'silver familia')
+        meta = self.repo / 'data/energia/meta'
+        meta.mkdir()
+        (meta / '_meta_ons.json').write_text('nova')
+        nomes = list(passos())
+        ps = 'Cópia durável do silver (release energia-estado)'
+        pm = 'Cópia durável dos metadados (release energia-estado)'
+        self.assertLess(nomes.index(ps), nomes.index(pm))
+        self.assertNotIn('estado_meta', passos()[ps][1])
+        self.assertEqual(self.executar(ps).returncode, 0)
+        self.env['FALHAR_META'] = '1'
+        self.assertNotEqual(self.executar(pm).returncode, 0)
+        self.assertTrue((self.assets / 'energia-silver.db.gz').is_file())
+        self.assertTrue((self.assets / 'energia-silver-familias.tar.gz').is_file())
+        self.assertTrue((self.assets / 'energia-meta-20261017T000000Z.tar.gz').is_file())
+        alerta = passos()['Alertar falha na cópia durável dos metadados']
+        self.assertIn("steps.meta_duravel.outcome == 'failure'", alerta[0])
+        self.assertIn('::warning::', alerta[1])
+        self.assertIn('gh issue create', alerta[1])
+        r = self.executar('Alertar falha na cópia durável dos metadados')
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn('::warning::', r.stdout)
+        self.assertIn('issue create', (self.raiz / 'gh.log').read_text())
+
+    def test_copia_bem_sucedida_sem_clobber_limpa_so_meta_antigo(self):
+        self.asset('20000101T000000Z', {'_meta_ds.json': 'velha'})
+        (self.assets / 'energia-bronze-manifesto.json').write_text('preservar')
+        pasta = self.repo / 'data/energia/meta'
+        pasta.mkdir(parents=True)
+        (pasta / '_meta_ds.json').write_bytes(b'conteudo\n')
+        r = self.executar('Cópia durável dos metadados (release energia-estado)')
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        assets = list(self.assets.glob('energia-meta-*.tar.gz'))
+        self.assertEqual(len(assets), 1)
+        self.assertNotIn('20000101', assets[0].name)
+        self.assertNotIn('--clobber', (self.raiz / 'gh.log').read_text())
+        self.assertTrue((self.assets / 'energia-bronze-manifesto.json').exists())
+        with tarfile.open(assets[0]) as tar:
+            self.assertEqual(tar.extractfile('_meta_ds.json').read(), b'conteudo\n')
+
+    def test_asset_invalido_nao_altera_cache_e_step_falha_com_alerta(self):
+        self.asset('20261018T000000Z', {'_meta_ok.json': 'novo', '../fora.json': 'recusado'})
+        pasta = self.repo / 'data/energia/meta'
+        pasta.mkdir(parents=True)
+        (pasta / '_meta_cache.json').write_bytes(b'cache')
+        r = self.executar('Restaurar metadados da cópia durável')
+        self.assertNotEqual(r.returncode, 0)
+        self.assertEqual(list(p.name for p in pasta.iterdir()), ['_meta_cache.json'])
+        self.assertEqual((pasta / '_meta_cache.json').read_bytes(), b'cache')
+        cab, shell = passos()['Alertar falha na restauração dos metadados']
+        self.assertIn("steps.meta_restaurada.outcome == 'failure'", cab)
+        self.assertIn('::warning::', shell)
+
+    def test_asset_acima_do_limite_e_pasta_ausente_nao_sobem(self):
+        from pipeline.energia import estado_meta
+        with self.assertRaisesRegex(ValueError, 'ausente ou vazia'):
+            estado_meta.guardar(self.raiz / 'vazio.tar.gz', pasta=self.raiz / 'ausente')
+        pasta = self.raiz / 'meta'
+        pasta.mkdir()
+        (pasta / 'fonte.json').write_text('fonte')
+        with patch.object(estado_meta, 'LIMITE_ASSET', 1):
+            with self.assertRaisesRegex(ValueError, 'excede'):
+                estado_meta.guardar(self.raiz / 'grande.tar.gz', pasta=pasta)
+
+
+class TestHistoricoCompacto(unittest.TestCase):
+    def fontes(self, quantidade):
+        historico = [{'recurso': f'recurso;"{i % 30}\n', 'sha256': f'{i:064x}',
+                      'capturado_em': f'2026-{1 + i // 28:02d}-{1 + i % 28:02d}T00:00:00Z',
+                      'publicado_em': None, 'origem': 'coleta_direta', 'vigente': i >= quantidade - 30}
+                     for i in range(quantidade)]
+        capturas = [{k: v for k, v in h.items() if k != 'vigente'} for h in historico if h['vigente']]
+        return {'ds': {'capturas': capturas, 'historico': historico, 'recapturas_sem_mudanca': 7}}
+
+    def test_json_limitado_csv_completo_sem_perda_de_colunas_ou_linhas(self):
+        from pipeline.energia import metadados as m
+        with tempfile.TemporaryDirectory() as tmp, patch.object(base, 'SERIES', tmp):
+            for n in (60, 280):
+                fontes = self.fontes(n)
+                original = json.loads(json.dumps(fontes))
+                self.assertGreater(len(json.dumps(original).encode()), 15000 * len(fontes),
+                                   'a forma anterior excedia o teto no mesmo fixture')
+                resultado = m.publicar_historico(fontes)
+                self.assertEqual(fontes, original, 'não mutilar snapshots internos')
+                base.escreve_gold('meta.json', {'fontes': resultado, 'golds': {}, 'regressoes': [],
+                                              'builders_falhos': [], 'coleta_executada': False}, destino=tmp)
+                self.assertLess((Path(tmp) / 'meta.json').stat().st_size, 15000 * len(fontes))
+                f = resultado['ds']
+                self.assertLessEqual(len(f['capturas']), m.LIMITE_RECENTES)
+                self.assertLessEqual(len(f['historico']), m.LIMITE_RECENTES)
+                self.assertEqual(f['historico'], original['ds']['historico'][-m.LIMITE_RECENTES:][::-1])
+                self.assertEqual(f['capturas'], original['ds']['capturas'][-m.LIMITE_RECENTES:][::-1])
+                resumo = f['resumo_capturas']
+                self.assertEqual(resumo['total_historico'], n)
+                self.assertEqual(resumo['total_capturas'], 30)
+                self.assertEqual(resumo['recapturas_sem_mudanca'], 7)
+                self.assertEqual(resumo['primeira'], original['ds']['historico'][0]['capturado_em'])
+                self.assertEqual(resumo['ultima'], original['ds']['historico'][-1]['capturado_em'])
+                with open(Path(tmp) / m.NOME_CSV, newline='') as arquivo:
+                    reader = csv.DictReader(arquivo, delimiter=';')
+                    linhas = list(reader)
+                    self.assertEqual(reader.fieldnames, list(m.COLUNAS))
+                self.assertEqual(len(linhas), n)
+                self.assertEqual(sum(x['vigente'] == 'true' for x in linhas), 30)
+                for antes, depois in zip(original['ds']['historico'], linhas):
+                    self.assertEqual(depois, {'dataset': 'ds', **{k: '' if v is None else str(v).lower() if isinstance(v, bool) else v for k, v in antes.items()}})
+                self.assertEqual(f['historico_csv'], m.URL_CSV)
+                self.assertIn(m.URL_CSV, m.dicionario_historico())
+
+    def test_csv_fecha_com_soma_dos_resumos_de_todas_as_fontes(self):
+        from pipeline.energia import metadados as m
+        fontes = {'ds': self.fontes(280)['ds'], 'outro': self.fontes(60)['ds']}
+        with tempfile.TemporaryDirectory() as tmp, patch.object(base, 'SERIES', tmp):
+            resultado = m.publicar_historico(fontes)
+            with open(Path(tmp) / m.NOME_CSV, newline='') as arquivo:
+                linhas = list(csv.DictReader(arquivo, delimiter=';'))
+            self.assertEqual(len(linhas), sum(f['resumo_capturas']['total_historico'] for f in resultado.values()))
+            self.assertEqual(sum(l['vigente'] == 'true' for l in linhas),
+                             sum(f['resumo_capturas']['total_capturas'] for f in resultado.values()))
+            for ds, f in resultado.items():
+                self.assertEqual(sum(l['dataset'] == ds for l in linhas), f['resumo_capturas']['total_historico'])
+
+    def test_ausencia_continua_ausencia_e_csv_so_com_cabecalho(self):
+        from pipeline.energia import metadados as m
+        with tempfile.TemporaryDirectory() as tmp, patch.object(base, 'SERIES', tmp):
+            f = m.publicar_historico({'vazio': {'capturas': [], 'historico': [], 'recapturas_sem_mudanca': None}})['vazio']
+            self.assertIsNone(f['resumo_capturas']['primeira'])
+            self.assertIsNone(f['resumo_capturas']['ultima'])
+            self.assertIsNone(f['resumo_capturas']['recapturas_sem_mudanca'])
+            self.assertEqual((Path(tmp) / m.NOME_CSV).read_text().count('\n'), 1)

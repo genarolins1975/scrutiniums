@@ -1,0 +1,76 @@
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { capturasDoConjunto } from "../lib/energia/capturas-servidor";
+import type { MetaGold } from "../lib/energia/tipos";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import DatasetPage from "../app/setor-eletrico/dados/[dataset]/page";
+import { DATASETS_INTEGRADOS, catalogoDados } from "../lib/energia/datasets";
+import { gold } from "../lib/energia/gold";
+import * as capturasServidor from "../lib/energia/capturas-servidor";
+
+const temporarios: string[] = [];
+afterEach(() => { vi.restoreAllMocks(); for (const p of temporarios.splice(0)) rmSync(p, { recursive: true }); });
+
+function fixture(csv: string) {
+  const raiz = mkdtempSync(join(tmpdir(), "energia-capturas-"));
+  temporarios.push(raiz);
+  mkdirSync(join(raiz, "energia/series"), { recursive: true });
+  writeFileSync(join(raiz, "energia/series/capturas_fontes.csv"), csv);
+  const fonte: MetaGold["fontes"][string] = {
+    ultima_captura: "2026-10-18T00:00:00Z", snapshot: "ds@captura", snapshot_sha256: "hash",
+    ultima_tentativa: null, capturas: [], historico: [],
+    historico_csv: "/energia/series/capturas_fontes.csv",
+    resumo_capturas: { total_capturas: 1, total_historico: 2, primeira: "2026-10-17T00:00:00Z", ultima: "2026-10-18T00:00:00Z", recapturas_sem_mudanca: 0, limite_recentes: 10 },
+  };
+  return { raiz, fonte };
+}
+
+const CSV = 'dataset;recurso;sha256;capturado_em;publicado_em;origem;vigente\nds;"recurso; com ""aspas""";antigo;2026-10-17T00:00:00Z;;coleta_direta;false\nds;"recurso; com ""aspas""";atual;2026-10-18T00:00:00Z;2026-10-17T23:00:00Z;coleta_direta;true\noutro;recurso;hash;2026-10-18T00:00:00Z;;seed;true\n';
+
+describe("histórico completo na ficha, além da amostra do JSON", () => {
+  it("lê todas as linhas do conjunto, preserva ausência e aspas e exclui outros conjuntos", () => {
+    const { raiz, fonte } = fixture(CSV);
+    const linhas = capturasDoConjunto(fonte, "ds", raiz);
+    expect(linhas).toHaveLength(2);
+    expect(linhas[0]).toEqual({ recurso: 'recurso; com "aspas"', sha256: "antigo", capturado_em: "2026-10-17T00:00:00Z", publicado_em: null, origem: "coleta_direta", vigente: false });
+    expect(linhas[1].vigente).toBe(true);
+    expect(linhas[1].publicado_em).toBe("2026-10-17T23:00:00Z");
+  });
+
+  it("recusa CSV incompleto, vigência inválida e endereço fora do contrato", () => {
+    for (const csv of [CSV.replace(/\nds;.*false\n/, "\n"), CSV.replace(";true", ";desconhecida")]) {
+      const { raiz, fonte } = fixture(csv);
+      expect(() => capturasDoConjunto(fonte, "ds", raiz)).toThrow();
+    }
+    const { raiz, fonte } = fixture(CSV);
+    expect(() => capturasDoConjunto({ ...fonte, historico_csv: "/outro.csv" }, "ds", raiz)).toThrow();
+    rmSync(join(raiz, "energia/series/capturas_fontes.csv"));
+    expect(() => capturasDoConjunto(fonte, "ds", raiz)).toThrow();
+  });
+
+  it("continua lendo o histórico da publicação anterior até a nova gold sair", () => {
+    expect(capturasDoConjunto(undefined, "ausente")).toEqual([]);
+    const { fonte } = fixture(CSV);
+    const h = { recurso: "recurso", sha256: "hash", capturado_em: "2026-10-17T00:00:00Z", publicado_em: null, origem: "seed", vigente: true };
+    expect(capturasDoConjunto({ ...fonte, resumo_capturas: undefined, historico: [h] }, "ds")).toEqual([h]);
+  });
+
+  it("a ficha mostra os totais e a tabela integral do CSV mesmo com amostra JSON vazia", () => {
+    const d = DATASETS_INTEGRADOS.find((x) => catalogoDados()?.entradas.some((e) => e.id === x.catalogoId))!;
+    const { raiz, fonte } = fixture(CSV.replaceAll("\nds;", `\n${d.interno};`));
+    const meta = gold.meta()!;
+    vi.spyOn(gold, "meta").mockReturnValue({ ...meta, fontes: { ...meta.fontes, [d.interno]: fonte } });
+    const original = capturasServidor.capturasDoConjunto;
+    const leitura = vi.spyOn(capturasServidor, "capturasDoConjunto").mockImplementation((f, ds) => original(f, ds, raiz));
+    const html = renderToStaticMarkup(createElement(DatasetPage, { params: { dataset: d.slug } }));
+    expect(leitura).toHaveBeenCalledWith(fonte, d.interno);
+    expect(html).toContain("2 capturas integradas, das quais 1 vigente.");
+    expect(html).toContain('href="/energia/series/capturas_fontes.csv"');
+    expect(html).toContain("antigo");
+    expect(html).toContain("atual");
+    expect(html).not.toContain('data-sem-capturas="true"');
+  });
+});

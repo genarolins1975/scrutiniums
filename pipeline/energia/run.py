@@ -17,7 +17,7 @@ import traceback
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from pipeline.energia import base, catalogo, metricas, modulos, validacoes  # noqa: E402
+from pipeline.energia import base, catalogo, metadados, metricas, modulos, validacoes  # noqa: E402
 from pipeline.energia.fontes import ccee, ons  # noqa: E402
 from pipeline.energia.gold import carga, cmo, geracao, hidrologia, modelos, pld, rede  # noqa: E402
 from pipeline.energia.gold import comum as c  # noqa: E402
@@ -132,7 +132,7 @@ def main(argv):
             con_f.close()
     status_coleta["modulos"] = status_modulos
     # dicionário dos arquivos baixáveis dos módulos (REGISTRO["arquivos"]: url → colunas)
-    arquivos = {}
+    arquivos = metadados.dicionario_historico()
     for mod in modulos.descobrir():
         for url, desc in (mod.REGISTRO.get("arquivos") or {}).items():
             arquivos[url] = {"colunas": desc, "modulo": mod.REGISTRO["id"], "gold": mod.REGISTRO["gold"]}
@@ -165,7 +165,7 @@ def main(argv):
     meta = {
         **c.cabecalho("meta.json"),
         "golds": {k: {"disponivel": _integro(v), "gerado_em": (v or {}).get("gerado_em")} for k, v in g.items()},
-        "fontes": fontes,
+        "fontes": metadados.publicar_historico(fontes),
         "regressoes": regressoes,
         "builders_falhos": falhas,
         "duracao_s": round(time.time() - t0, 1),

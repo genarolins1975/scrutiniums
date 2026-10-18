@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { lerCsvComAspas } from "../lib/energia/dados-servidor";
+import type { CapturaEnergia, CapturaHistoricaEnergia, MetaGold } from "../lib/energia/tipos";
 
 /**
  * Regressões apontadas na reauditoria independente: proveniência de cada número
@@ -138,12 +140,61 @@ describe("auditoria final: regressões", () => {
   it("revisões distinguem captura única de recaptura idêntica, e a página do conjunto lista todas as vintages", () => {
     const p = JSON.parse(ler("public/energia/gold/pld.json"));
     expect(typeof p.proveniencia.horario.revisoes_conhecidas.recapturas_sem_mudanca).toBe("number");
-    const m = JSON.parse(ler("public/energia/gold/meta.json"));
-    for (const [ds, f] of Object.entries(m.fontes) as [string, { historico: { vigente: boolean }[]; capturas: unknown[] }][]) {
-      expect(f.historico.length, ds).toBeGreaterThanOrEqual(f.capturas.length);
-      expect(f.historico.filter((x) => x.vigente).length, ds).toBe(f.capturas.length);
+    const m = JSON.parse(ler("public/energia/gold/meta.json")) as MetaGold;
+    const dicionario = JSON.parse(ler("public/energia/gold/arquivos.json")).arquivos;
+    const assinatura = (cpt: CapturaEnergia) => JSON.stringify([cpt.recurso, cpt.sha256, cpt.capturado_em, cpt.publicado_em, cpt.origem]);
+    const csvPorFonte = new Map<string, CapturaHistoricaEnergia[]>();
+    if (Object.values(m.fontes).some((f) => f.resumo_capturas)) {
+      // Ler/parsear uma vez; as fontes compartilham o mesmo arquivo completo.
+      const [cols, ...linhas] = lerCsvComAspas(ler("public/energia/series/capturas_fontes.csv"));
+      expect(cols).toEqual(["dataset", "recurso", "sha256", "capturado_em", "publicado_em", "origem", "vigente"]);
+      for (const x of linhas) {
+        expect(x.length, x[0]).toBe(cols.length);
+        expect(["true", "false"], x[0]).toContain(x[6]);
+        expect(m.fontes[x[0]]?.resumo_capturas, x[0]).toBeTruthy();
+        const lista = csvPorFonte.get(x[0]) ?? [];
+        lista.push({ recurso: x[1], sha256: x[2], capturado_em: x[3], publicado_em: x[4] || null, origem: x[5], vigente: x[6] === "true" });
+        csvPorFonte.set(x[0], lista);
+      }
+      expect(linhas.length).toBe(Object.values(m.fontes).reduce((n, f) => n + (f.resumo_capturas?.total_historico ?? 0), 0));
     }
-    expect(ler("src/app/setor-eletrico/dados/[dataset]/page.tsx")).toContain("f?.historico");
+    for (const [ds, f] of Object.entries(m.fontes)) {
+      expect(Array.isArray(f.capturas), ds).toBe(true);
+      expect(Array.isArray(f.historico), ds).toBe(true);
+      let historico = f.historico ?? [];
+      let capturas = f.capturas;
+      if (f.resumo_capturas) {
+        expect(f.historico_csv, ds).toBe("/energia/series/capturas_fontes.csv");
+        expect(dicionario["/energia/series/capturas_fontes.csv"]?.gold, ds).toBe("meta.json");
+        historico = csvPorFonte.get(ds) ?? [];
+        // Vigência conferida contra a captura mais recente de CADA recurso,
+        // independentemente da flag exportada; não basta contar a amostra JSON.
+        const ultimas = new Map<string, CapturaHistoricaEnergia>();
+        for (const h of historico) {
+          const anterior = ultimas.get(h.recurso);
+          if (!anterior || h.capturado_em > anterior.capturado_em) ultimas.set(h.recurso, h);
+        }
+        capturas = [...ultimas.values()].map((h) => ({ recurso: h.recurso, sha256: h.sha256, capturado_em: h.capturado_em, publicado_em: h.publicado_em, origem: h.origem }));
+        for (const h of historico) expect(h.vigente, `${ds}: ${h.recurso}`).toBe(h.sha256 === ultimas.get(h.recurso)?.sha256);
+        expect(historico.length, ds).toBe(f.resumo_capturas.total_historico);
+        expect(capturas.length, ds).toBe(f.resumo_capturas.total_capturas);
+        const datas = historico.map((x) => x.capturado_em).sort();
+        expect(f.resumo_capturas.primeira, ds).toBe(datas[0] ?? null);
+        expect(f.resumo_capturas.ultima, ds).toBe(datas.at(-1) ?? null);
+        expect(f.resumo_capturas.recapturas_sem_mudanca, ds).toBe(f.recapturas_sem_mudanca);
+        expect(f.capturas.length, ds).toBeLessThanOrEqual(f.resumo_capturas.limite_recentes);
+        expect(f.historico?.length, ds).toBeLessThanOrEqual(f.resumo_capturas.limite_recentes);
+        const atuais = new Set(capturas.map(assinatura));
+        const todas = new Set(historico.map((h) => `${assinatura(h)}:${h.vigente}`));
+        for (const cpt of f.capturas) expect(atuais.has(assinatura(cpt)), ds).toBe(true);
+        for (const h of f.historico ?? []) expect(todas.has(`${assinatura(h)}:${h.vigente}`), ds).toBe(true);
+      }
+      expect(historico.length, ds).toBeGreaterThanOrEqual(capturas.length);
+      expect(historico.filter((x) => x.vigente).length, ds).toBe(capturas.length);
+      // Igualdade integral (inclui multiplicidade), sem busca quadrática por linha.
+      expect(historico.filter((h) => h.vigente).map(assinatura).sort(), ds).toEqual(capturas.map(assinatura).sort());
+    }
+    expect(ler("src/app/setor-eletrico/dados/[dataset]/page.tsx")).toContain("capturasDoConjunto(f, d.interno)");
     expect(ler("src/components/evidencia/SobreEsteDado.tsx")).toContain("recapturas_sem_mudanca");
   });
 

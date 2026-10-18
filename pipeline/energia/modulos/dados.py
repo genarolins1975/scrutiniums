@@ -278,6 +278,8 @@ def dicionario_arquivos():
     """{url: descrição} dos arquivos para download: REGISTRO de todos os módulos
     (arquivos.json é derivado deles) e as golds de operação (catalogo.ARQUIVOS_OPERACAO)."""
     out = dict(catalogo.ARQUIVOS_OPERACAO)
+    from pipeline.energia.metadados import dicionario_historico
+    out.update({url: item['colunas'] for url, item in dicionario_historico().items()})
     for m in catalogo.modulos_validos():
         for url, desc in (m.REGISTRO.get("arquivos") or {}).items():
             out[url] = desc
