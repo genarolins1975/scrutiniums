@@ -189,7 +189,7 @@ class TestHistoricoCompacto(unittest.TestCase):
                       'publicado_em': None, 'origem': 'coleta_direta', 'vigente': i >= quantidade - 30}
                      for i in range(quantidade)]
         capturas = [{k: v for k, v in h.items() if k != 'vigente'} for h in historico if h['vigente']]
-        return {'ds': {'capturas': capturas, 'historico': historico, 'recapturas_sem_mudanca': 7}}
+        return {'ds': {'dataset': 'ds', 'familia': 'energia', 'capturas': capturas, 'historico': historico, 'recapturas_sem_mudanca': 7}}
 
     def test_json_limitado_csv_completo_sem_perda_de_colunas_ou_linhas(self):
         from pipeline.energia import metadados as m
@@ -207,8 +207,8 @@ class TestHistoricoCompacto(unittest.TestCase):
                 f = resultado['ds']
                 self.assertLessEqual(len(f['capturas']), m.LIMITE_RECENTES)
                 self.assertLessEqual(len(f['historico']), m.LIMITE_RECENTES)
-                self.assertEqual(f['historico'], original['ds']['historico'][-m.LIMITE_RECENTES:][::-1])
-                self.assertEqual(f['capturas'], original['ds']['capturas'][-m.LIMITE_RECENTES:][::-1])
+                self.assertEqual(f['historico'], [{**h, 'familia': 'energia'} for h in original['ds']['historico'][-m.LIMITE_RECENTES:][::-1]])
+                self.assertEqual(f['capturas'], [{**h, 'familia': 'energia'} for h in original['ds']['capturas'][-m.LIMITE_RECENTES:][::-1]])
                 resumo = f['resumo_capturas']
                 self.assertEqual(resumo['total_historico'], n)
                 self.assertEqual(resumo['total_capturas'], 30)
@@ -222,13 +222,13 @@ class TestHistoricoCompacto(unittest.TestCase):
                 self.assertEqual(len(linhas), n)
                 self.assertEqual(sum(x['vigente'] == 'true' for x in linhas), 30)
                 for antes, depois in zip(original['ds']['historico'], linhas):
-                    self.assertEqual(depois, {'dataset': 'ds', **{k: '' if v is None else str(v).lower() if isinstance(v, bool) else v for k, v in antes.items()}})
+                    self.assertEqual(depois, {'dataset': 'ds', 'familia': 'energia', **{k: '' if v is None else str(v).lower() if isinstance(v, bool) else v for k, v in antes.items()}})
                 self.assertEqual(f['historico_csv'], m.URL_CSV)
                 self.assertIn(m.URL_CSV, m.dicionario_historico())
 
     def test_csv_fecha_com_soma_dos_resumos_de_todas_as_fontes(self):
         from pipeline.energia import metadados as m
-        fontes = {'ds': self.fontes(280)['ds'], 'outro': self.fontes(60)['ds']}
+        fontes = {'ds': self.fontes(280)['ds'], 'outro': {**self.fontes(60)['ds'], 'dataset': 'outro'}}
         with tempfile.TemporaryDirectory() as tmp, patch.object(base, 'SERIES', tmp):
             resultado = m.publicar_historico(fontes)
             with open(Path(tmp) / m.NOME_CSV, newline='') as arquivo:
@@ -242,7 +242,7 @@ class TestHistoricoCompacto(unittest.TestCase):
     def test_ausencia_continua_ausencia_e_csv_so_com_cabecalho(self):
         from pipeline.energia import metadados as m
         with tempfile.TemporaryDirectory() as tmp, patch.object(base, 'SERIES', tmp):
-            f = m.publicar_historico({'vazio': {'capturas': [], 'historico': [], 'recapturas_sem_mudanca': None}})['vazio']
+            f = m.publicar_historico({'vazio': {'dataset': 'vazio', 'familia': 'energia', 'capturas': [], 'historico': [], 'recapturas_sem_mudanca': None}})['vazio']
             self.assertIsNone(f['resumo_capturas']['primeira'])
             self.assertIsNone(f['resumo_capturas']['ultima'])
             self.assertIsNone(f['resumo_capturas']['recapturas_sem_mudanca'])
@@ -250,6 +250,37 @@ class TestHistoricoCompacto(unittest.TestCase):
 
 
 class TestHistoricoAntesDaValidacao(unittest.TestCase):
+    def test_mesmo_dataset_em_duas_familias_preserva_todas_as_vintages_e_vigencias(self):
+        from pipeline.energia import metadados as m
+        with tempfile.TemporaryDirectory() as tmp, patch.multiple(base, SERIES=tmp, SILVER=tmp):
+            fontes = {}
+            for familia, dias in (('familia_a', (16, 17)), ('familia_b', (18,))):
+                con = base.conecta_familia(familia)
+                for dia in dias:
+                    sha = base.sha256_bytes(f'{familia}-{dia}'.encode())
+                    base.registra_vintage(con, 'comum', 'mesmo_recurso', 'https://fonte.test', f'2026-10-{dia}T00:00:00Z',
+                                          None, sha, 1, 'coleta_direta', 'bronze-teste')
+                con.commit()
+                fontes.update(m.fontes_do_modulo(con, {'id': familia, 'familia': familia, 'datasets': [{'dataset_silver': 'comum'}]}))
+                con.close()
+            self.assertEqual(set(fontes), {'familia_a/comum', 'familia_b/comum'})
+            resultado = m.publicar_historico(fontes, limiar_parquet=1)['comum']
+            self.assertEqual(resultado['resumo_capturas']['total_historico'], 3)
+            self.assertEqual(resultado['resumo_capturas']['total_capturas'], 2)
+            self.assertIsNone(resultado['resumo_capturas']['recapturas_sem_mudanca'], 'não estimar downloads únicos entre famílias')
+            self.assertIsNone(resultado['snapshot'])
+            self.assertIsNone(resultado['snapshot_sha256'])
+            self.assertEqual({f['familia'] for f in resultado['snapshots_familias']}, {'familia_a', 'familia_b'})
+            self.assertTrue(all(f['snapshot_sha256'] for f in resultado['snapshots_familias']))
+            with open(Path(tmp) / m.NOME_CSV, newline='') as f:
+                linhas = list(csv.DictReader(f, delimiter=';'))
+            self.assertEqual(len(linhas), 3)
+            self.assertEqual({(l['familia'], l['capturado_em'][-12:-10]) for l in linhas if l['vigente'] == 'true'},
+                             {('familia_a', '17'), ('familia_b', '18')})
+            # Uma contagem ausente de recapturas não pode virar zero na soma.
+            fontes['familia_a/comum']['recapturas_sem_mudanca'] = None
+            self.assertIsNone(m.publicar_historico(fontes)['comum']['resumo_capturas']['recapturas_sem_mudanca'])
+
     def test_todas_as_fontes_antes_de_dados_e_visao_depois(self):
         from pipeline.energia import modulos
         mods = modulos.descobrir()
@@ -279,7 +310,7 @@ class TestHistoricoAntesDaValidacao(unittest.TestCase):
                 vintage(con, 'tema', 'anterior', '17')
                 con.commit()
                 if anterior:
-                    m.publicar_historico({'tema': m.fonte_de(con, 'tema')})
+                    m.publicar_historico({'tema': m.fonte_de(con, 'tema', familia='tema')})
                     pub.exporta_parquet(str(series), limiar=1)
                 con.close()
                 observados = []

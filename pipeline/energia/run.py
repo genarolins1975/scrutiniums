@@ -94,7 +94,7 @@ def main(argv):
     # uma gold cada, com a mesma sentinela de regressão das golds de operação
     status_modulos = {}
     fontes_modulos = {}
-    fontes = {ds: metadados.fonte_de(con, ds) for ds in list(ons.DATASETS) + [ccee.DATASET]}
+    fontes = {f"energia/{ds}": metadados.fonte_de(con, ds, familia="energia") for ds in list(ons.DATASETS) + [ccee.DATASET]}
     fontes_publicadas = None
     ctx = {"hoje": c.hoje_brasilia(), "golds": g, "con_principal": con, "sem_rede": sem_coleta}
     for mod in modulos.descobrir():

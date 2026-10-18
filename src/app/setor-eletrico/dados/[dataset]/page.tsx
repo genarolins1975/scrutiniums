@@ -515,17 +515,33 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                       )}
                     </dl>
                   )}
+                  {(f?.snapshots_familias?.length ?? 0) > 1 && (
+                    <div className="space-y-3" data-snapshots-familias="true">
+                      <p className="max-w-prose2 text-sm text-carvao-muted">
+                        {tx("As contagens distinguem famílias de armazenamento. Uma mesma captura pode ter registros em mais de uma família; cada versão é identificada abaixo.", "Counts distinguish storage families. The same capture can have records in more than one family; each version is identified below.")}
+                      </p>
+                      {f!.snapshots_familias!.map((s) => (
+                        <dl key={s.familia} className="border-l border-linha pl-3 text-xs text-carvao-muted [overflow-wrap:anywhere]">
+                          <dt>{tx("Família", "Family")}</dt><dd>{codigo(s.familia)}</dd>
+                          <dt>{tx("Snapshot", "Snapshot")}</dt><dd>{s.snapshot ? codigo(s.snapshot) : tx("não informado", "not reported")}</dd>
+                          <dt>sha256</dt><dd>{s.snapshot_sha256 ? codigo(s.snapshot_sha256) : tx("não informado", "not reported")}</dd>
+                          <dt>{tx("Downloads idênticos posteriores", "Later identical downloads")}</dt>
+                          <dd>{s.recapturas_sem_mudanca ?? tx("não informados", "not reported")}</dd>
+                        </dl>
+                      ))}
+                    </div>
+                  )}
                   <p className="max-w-prose2 text-sm text-carvao-muted">
                     {tx(
-                      "Cada arquivo baixado com conteúdo novo é guardado sem alteração; um download idêntico a um já guardado não cria registro novo. A tabela lista todas as capturas, inclusive as que uma captura posterior do mesmo arquivo substituiu.",
-                      "Each file downloaded with new content is stored unchanged; a download identical to one already stored does not create a new record. The table lists all the captures, including those that a later capture of the same file replaced.",
+                      "Cada família registra as versões capturadas de cada recurso. Uma recaptura idêntica não cria uma versão nova nessa família. A tabela inclui versões vigentes e substituídas.",
+                      "Each family records the captured versions of each resource. An identical recapture does not create a new version within that family. The table includes current and replaced versions.",
                     )}
                   </p>
                   {f?.resumo_capturas && (
                     <p className="max-w-prose2 text-sm text-carvao-muted" data-resumo-capturas="true">
                       {tx(
-                        `${plural(f.resumo_capturas.total_historico, "captura integrada", "capturas integradas")}, das quais ${plural(f.resumo_capturas.total_capturas, "vigente", "vigentes")}.`,
-                        `${plural(f.resumo_capturas.total_historico, "integrated capture", "integrated captures")}; current: ${f.resumo_capturas.total_capturas}.`,
+                        `${plural(f.resumo_capturas.total_historico, "registro de captura", "registros de captura")}, dos quais ${plural(f.resumo_capturas.total_capturas, "vigente", "vigentes")}.`,
+                        `${plural(f.resumo_capturas.total_historico, "capture record", "capture records")}; current: ${f.resumo_capturas.total_capturas}.`,
                       )}
                       {f.resumo_capturas.primeira && f.resumo_capturas.ultima && <> {tx(
                         `Capturas de ${carimbo(f.resumo_capturas.primeira)} a ${carimbo(f.resumo_capturas.ultima)}.`,
@@ -550,13 +566,13 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                     </p>
                   ) : (
                     <div className="tabela-scroll" tabIndex={0} role="region" aria-label={tx("Capturas do conjunto (tabela rolável)", "Captures of the dataset (scrollable table)")}>
-                      <table className="w-full min-w-[50rem] border-collapse text-xs">
-                        <caption className="sr-only">{tx("Todas as capturas integradas, por recurso", "All integrated captures, by resource")}</caption>
+                      <table className="w-full min-w-[60rem] border-collapse text-xs">
+                        <caption className="sr-only">{tx("Todos os registros de captura, por família e recurso", "All capture records, by family and resource")}</caption>
                         <thead>
                           <tr className="text-left text-mineral">
                             {tx(
-                              ["Recurso", "Capturado em", "Publicado pela fonte (metadado)", "Origem", "Situação", "sha256"],
-                              ["Resource", "Captured on", "Published by the source (metadata)", "Origin", "Status", "sha256"],
+                              ["Família", "Recurso", "Capturado em", "Publicado pela fonte (metadado)", "Origem", "Situação na família", "sha256"],
+                              ["Family", "Resource", "Captured on", "Published by the source (metadata)", "Origin", "Status within the family", "sha256"],
                             ).map((c) => (
                               <th key={c} scope="col" className="border-b border-linha px-2 py-2 font-medium">
                                 {c}
@@ -566,7 +582,8 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                         </thead>
                         <tbody>
                           {capturas.map((cpt) => (
-                            <tr key={`${cpt.recurso}:${cpt.sha256}`} className="border-b border-linha">
+                            <tr key={`${cpt.familia}:${cpt.recurso}:${cpt.sha256}`} className="border-b border-linha">
+                              <td className="px-2 py-1.5 text-carvao">{codigo(cpt.familia ?? "energia")}</td>
                               <td className="px-2 py-1.5 text-carvao">{codigo(cpt.recurso)}</td>
                               <td className="px-2 py-1.5 text-carvao">{carimbo(cpt.capturado_em)}</td>
                               <td className="px-2 py-1.5 text-carvao-muted">{dataFonte(cpt.publicado_em)}</td>

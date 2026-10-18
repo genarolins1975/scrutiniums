@@ -142,18 +142,19 @@ describe("auditoria final: regressões", () => {
     expect(typeof p.proveniencia.horario.revisoes_conhecidas.recapturas_sem_mudanca).toBe("number");
     const m = JSON.parse(ler("public/energia/gold/meta.json")) as MetaGold;
     const dicionario = JSON.parse(ler("public/energia/gold/arquivos.json")).arquivos;
-    const assinatura = (cpt: CapturaEnergia) => JSON.stringify([cpt.recurso, cpt.sha256, cpt.capturado_em, cpt.publicado_em, cpt.origem]);
+    const assinatura = (cpt: CapturaEnergia) => JSON.stringify([cpt.familia, cpt.recurso, cpt.sha256, cpt.capturado_em, cpt.publicado_em, cpt.origem]);
     const csvPorFonte = new Map<string, CapturaHistoricaEnergia[]>();
     if (Object.values(m.fontes).some((f) => f.resumo_capturas)) {
       // Ler/parsear uma vez; as fontes compartilham o mesmo arquivo completo.
       const [cols, ...linhas] = lerCsvComAspas(ler("public/energia/series/capturas_fontes.csv"));
-      expect(cols).toEqual(["dataset", "recurso", "sha256", "capturado_em", "publicado_em", "origem", "vigente"]);
+      expect(cols).toEqual(["dataset", "familia", "recurso", "sha256", "capturado_em", "publicado_em", "origem", "vigente"]);
       for (const x of linhas) {
         expect(x.length, x[0]).toBe(cols.length);
-        expect(["true", "false"], x[0]).toContain(x[6]);
+        expect(["true", "false"], x[0]).toContain(x[7]);
+        expect(x[1], x[0]).not.toBe("");
         expect(m.fontes[x[0]]?.resumo_capturas, x[0]).toBeTruthy();
         const lista = csvPorFonte.get(x[0]) ?? [];
-        lista.push({ recurso: x[1], sha256: x[2], capturado_em: x[3], publicado_em: x[4] || null, origem: x[5], vigente: x[6] === "true" });
+        lista.push({ familia: x[1], recurso: x[2], sha256: x[3], capturado_em: x[4], publicado_em: x[5] || null, origem: x[6], vigente: x[7] === "true" });
         csvPorFonte.set(x[0], lista);
       }
       expect(linhas.length).toBe(Object.values(m.fontes).reduce((n, f) => n + (f.resumo_capturas?.total_historico ?? 0), 0));
@@ -167,15 +168,24 @@ describe("auditoria final: regressões", () => {
         expect(f.historico_csv, ds).toBe("/energia/series/capturas_fontes.csv");
         expect(dicionario["/energia/series/capturas_fontes.csv"]?.gold, ds).toBe("meta.json");
         historico = csvPorFonte.get(ds) ?? [];
-        // Vigência conferida contra a captura mais recente de CADA recurso,
+        const familias = new Set((f.snapshots_familias ?? []).map((x) => x.familia));
+        expect(familias.size, ds).toBeGreaterThan(0);
+        for (const h of historico) expect(familias.has(h.familia!), `${ds}: ${h.familia}`).toBe(true);
+        if (familias.size > 1) {
+          expect(f.snapshot, ds).toBeNull();
+          expect(f.snapshot_sha256, ds).toBeNull();
+          expect(f.resumo_capturas.recapturas_sem_mudanca, ds).toBeNull();
+        }
+        // Vigência conferida contra a captura mais recente de CADA família/recurso,
         // independentemente da flag exportada; não basta contar a amostra JSON.
         const ultimas = new Map<string, CapturaHistoricaEnergia>();
         for (const h of historico) {
-          const anterior = ultimas.get(h.recurso);
-          if (!anterior || h.capturado_em > anterior.capturado_em) ultimas.set(h.recurso, h);
+          const chave = JSON.stringify([h.familia, h.recurso]);
+          const anterior = ultimas.get(chave);
+          if (!anterior || h.capturado_em > anterior.capturado_em) ultimas.set(chave, h);
         }
-        capturas = [...ultimas.values()].map((h) => ({ recurso: h.recurso, sha256: h.sha256, capturado_em: h.capturado_em, publicado_em: h.publicado_em, origem: h.origem }));
-        for (const h of historico) expect(h.vigente, `${ds}: ${h.recurso}`).toBe(h.sha256 === ultimas.get(h.recurso)?.sha256);
+        capturas = [...ultimas.values()].map((h) => ({ familia: h.familia, recurso: h.recurso, sha256: h.sha256, capturado_em: h.capturado_em, publicado_em: h.publicado_em, origem: h.origem }));
+        for (const h of historico) expect(h.vigente, `${ds}: ${h.familia}/${h.recurso}`).toBe(h.sha256 === ultimas.get(JSON.stringify([h.familia, h.recurso]))?.sha256);
         expect(historico.length, ds).toBe(f.resumo_capturas.total_historico);
         expect(capturas.length, ds).toBe(f.resumo_capturas.total_capturas);
         const datas = historico.map((x) => x.capturado_em).sort();

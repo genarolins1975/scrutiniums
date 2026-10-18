@@ -11,12 +11,13 @@ NOME_CSV = 'capturas_fontes.csv'
 URL_CSV = f'/energia/series/{NOME_CSV}'
 COLUNAS = {
     'dataset': 'Identificador do conjunto no silver; chave de fontes em meta.json.',
+    'familia': 'Família do silver; vigência é determinada por (família, recurso). Uma captura pode ter registros em mais de uma família.',
     'recurso': 'Identificador do recurso na fonte.',
     'sha256': 'SHA-256 do conteúdo capturado, sem alteração.',
     'capturado_em': 'Data e hora UTC da captura integrada (ISO 8601).',
     'publicado_em': 'Data de publicação informada pela fonte; vazio quando ausente.',
     'origem': 'Origem da captura, como registrada no silver.',
-    'vigente': 'true se a captura é vigente para o recurso; false se substituída.',
+    'vigente': 'true se a captura é vigente para (família, recurso); false se substituída.',
 }
 
 
@@ -25,16 +26,17 @@ def dicionario_historico():
     return {URL_CSV: {'colunas': descricao, 'modulo': 'dados', 'gold': 'meta.json'}}
 
 
-def fonte_de(con, dataset, **atributos):
+def fonte_de(con, dataset, *, familia, **atributos):
     snap = c.snapshot_de(con, dataset)
-    return {**atributos, 'ultima_captura': c.ultima_captura(snap), 'snapshot': snap.get('id'),
+    return {'dataset': dataset, 'familia': familia, **atributos,
+            'ultima_captura': c.ultima_captura(snap), 'snapshot': snap.get('id'),
             'snapshot_sha256': snap.get('sha256'), 'ultima_tentativa': base.ultima_coleta(con, dataset),
             'capturas': snap.get('capturas', []), 'historico': snap.get('historico', []),
             'recapturas_sem_mudanca': (snap.get('revisoes') or {}).get('recapturas_sem_mudanca')}
 
 
 def fontes_do_modulo(con, registro):
-    return {d['dataset_silver']: fonte_de(con, d['dataset_silver'], modulo=registro['id'], familia=registro['familia'])
+    return {f"{registro['familia']}/{d['dataset_silver']}": fonte_de(con, d['dataset_silver'], modulo=registro['id'], familia=registro['familia'])
             for d in registro['datasets'] if d.get('dataset_silver')}
 
 
@@ -45,24 +47,43 @@ def publicar_historico(fontes, limiar_parquet=None):
     capturas do histórico, nunca a execução atual; recapturas idênticas vêm do
     log de coletas, pois não criam vintage nem linha nova.
     """
-    resultado = {}
+    resultado, grupos = {}, {}
     linhas = []
-    for ds, fonte in fontes.items():
-        historico = fonte.get('historico', [])
-        capturas = fonte.get('capturas', [])
+    for fonte in fontes.values():
+        ds, familia = fonte['dataset'], fonte['familia']
+        familias = grupos.setdefault(ds, {})
+        if familia in familias:
+            raise ValueError(f'fonte repetida: {familia}/{ds}')
+        familias[familia] = fonte
+    for ds, familias in grupos.items():
+        historico, capturas, snapshots = [], [], []
+        for familia, fonte in familias.items():
+            historico.extend({**h, 'familia': familia} for h in fonte.get('historico', []))
+            capturas.extend({**h, 'familia': familia} for h in fonte.get('capturas', []))
+            snapshots.append({**{k: v for k, v in fonte.items() if k not in ('capturas', 'historico')},
+                              'familia': familia})
+        # Logs podem ter sido copiados entre silvers: não estimar quantos
+        # downloads únicos representam. Manter as contagens por família.
+        recapturas = next(iter(familias.values())).get('recapturas_sem_mudanca') if len(familias) == 1 else None
+        # Não inventar snapshot ou última tentativa que represente famílias
+        # distintas. Cada identificação original fica em snapshots_familias.
+        fonte = dict(next(iter(familias.values()))) if len(familias) == 1 else {
+            'dataset': ds, 'familia': None, 'snapshot': None, 'snapshot_sha256': None, 'ultima_tentativa': None}
         datas = [x['capturado_em'] for x in historico]
         resumo = {
             'total_capturas': len(capturas),
             'total_historico': len(historico),
             'primeira': min(datas) if datas else None,
             'ultima': max(datas) if datas else None,
-            'recapturas_sem_mudanca': fonte.get('recapturas_sem_mudanca'),
+            'recapturas_sem_mudanca': recapturas,
             'limite_recentes': LIMITE_RECENTES,
         }
         def recentes(lista):
-            return sorted(lista, key=lambda x: (x['capturado_em'], x['recurso'], x['sha256']),
+            return sorted(lista, key=lambda x: (x['capturado_em'], x['familia'], x['recurso'], x['sha256']),
                           reverse=True)[:LIMITE_RECENTES]
-        resultado[ds] = {**fonte, 'capturas': recentes(capturas), 'historico': recentes(historico),
+        resultado[ds] = {**fonte, 'ultima_captura': max(datas) if datas else None,
+                         'recapturas_sem_mudanca': recapturas, 'snapshots_familias': snapshots,
+                         'capturas': recentes(capturas), 'historico': recentes(historico),
                          'resumo_capturas': resumo, 'historico_csv': URL_CSV}
         for h in historico:
             linhas.append([ds] + [('true' if h[k] else 'false') if k == 'vigente' else h[k]
