@@ -104,19 +104,20 @@ function unidadeFederacao(sigla: string): UfGold | null {
   return ufCache.get(sigla.toUpperCase()) ?? null;
 }
 
-let geradoEmCache: string | null | undefined;
-function geradoEm(): string | null {
+type MetaGold = {
+  gerado_em?: string | null;
+  grupos?: Record<string, { gerado_em?: string | null; arquivos?: string[] }>;
+};
+let geradoEmCache: MetaGold | null | undefined;
+function geradoEm(arquivo: string): string | null {
   if (geradoEmCache === undefined) {
     try {
-      const meta = JSON.parse(
-        readFileSync(join(process.cwd(), "public", "obs", "data", "gold", "meta.json"), "utf-8"),
-      );
-      geradoEmCache = typeof meta.gerado_em === "string" ? (meta.gerado_em as string) : null;
-    } catch {
-      geradoEmCache = null;
-    }
+      geradoEmCache = JSON.parse(readFileSync(join(process.cwd(), "public", "obs", "data", "gold", "meta.json"), "utf-8")) as MetaGold;
+    } catch { geradoEmCache = null; }
   }
-  return geradoEmCache ?? null;
+  const grupo = Object.values(geradoEmCache?.grupos ?? {}).find(g =>
+    g.arquivos?.some(p => p === arquivo || (p.includes("*") && arquivo.startsWith(p.split("*")[0]))));
+  return grupo ? grupo.gerado_em ?? null : geradoEmCache?.gerado_em ?? null;
 }
 
 function escapeHtml(v: string): string {
@@ -238,7 +239,7 @@ function jsonLd(meta: MetaObservatorio): string {
       },
     ],
   };
-  const quando = geradoEm();
+  const quando = geradoEm(meta.gold);
   if (quando) dataset.dateModified = quando;
   // "<" escapado impede fechamento prematuro da tag <script> pelo conteúdo.
   const json = JSON.stringify(dataset).replaceAll("<", "\\u003c");

@@ -91,7 +91,7 @@ export function atualizacaoObservatorio(id: OpcaoObservatorioId): { rotulo: stri
       const linhas = [];
       if (meta?.vintages?.sgs) linhas.push(`Crédito do SFN (BCB/SGS): data-base ${mesAno(meta.vintages.sgs)}`);
       if (meta?.vintages?.ifdata) linhas.push(`Instituições (IF.data): data-base ${mesAno(meta.vintages.ifdata)}`);
-      if (meta?.gerado_em) linhas.push(`Processado em ${carimbo(meta.gerado_em)}`);
+      if (meta?.gerado_em) linhas.push(`${meta.grupos ? "Processamento mais antigo entre os grupos" : "Processado em"}: ${carimbo(meta.gerado_em)}`);
       return { rotulo: "Último dado disponível", linhas: linhas.length ? linhas : ["Data-base indisponível no momento."] };
     } catch {
       return { rotulo: "Último dado disponível", linhas: ["Data-base indisponível no momento."] };

@@ -1,0 +1,700 @@
+{
+  "versao": 1,
+  "descricao": "Contratos de publicação do Crédito. Cada arquivo pertence a um único grupo. Padrões somente para famílias de entidades de um mesmo builder.",
+  "grupos": {
+    "alerts": {
+      "arquivos": [
+        "alerts.json"
+      ],
+      "depende_de": [
+        "regimes-series"
+      ],
+      "evidencia": "pipeline/gold.py: alert_list recebe as quebras de regimes[series]",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "ampliado": {
+      "arquivos": [
+        "ampliado.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "antecedentes": {
+      "arquivos": [
+        "antecedentes.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "bets": {
+      "arquivos": [
+        "bets.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "bndes": {
+      "arquivos": [
+        "bndes.json"
+      ],
+      "depende_de": [
+        "penetracao"
+      ],
+      "evidencia": "pipeline/bndes.py: build lê penetracao e penetracao_mun",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "central-alertas": {
+      "arquivos": [
+        "alertas_central.json",
+        "alerts.xml"
+      ],
+      "depende_de": [
+        "alerts",
+        "panorama",
+        "openfinance",
+        "leading",
+        "operacional"
+      ],
+      "evidencia": "pipeline/central_alertas.py: EXTRATORES e build leem as cinco famílias",
+      "produtores": [
+        "pipeline/central_alertas.py",
+        "pipeline/gold.py"
+      ]
+    },
+    "cobranca": {
+      "arquivos": [
+        "cobranca.json"
+      ],
+      "depende_de": [
+        "panorama",
+        "emprego-setores-ufs"
+      ],
+      "evidencia": "pipeline/cobranca.py: build lê panorama.json e usa ufs.json como reserva",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "comparador": {
+      "arquivos": [
+        "compare.json",
+        "cmp/*.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/compare.py"
+      ]
+    },
+    "conduta": {
+      "arquivos": [
+        "conduta.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "consignado": {
+      "arquivos": [
+        "consignado.json",
+        "consignado_mun.json"
+      ],
+      "depende_de": [
+        "juros"
+      ],
+      "evidencia": "pipeline/consignado.py: _instituicoes lê juros.json",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "consorcios": {
+      "arquivos": [
+        "consorcios.json"
+      ],
+      "depende_de": [
+        "emprego-setores-ufs"
+      ],
+      "evidencia": "pipeline/consorcios.py: common.populacao_uf; pipeline/common.py: reserva de população lê ufs.json quando geo_uf está incompleta",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "custos-ti": {
+      "arquivos": [
+        "custos_ti.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "desenrola": {
+      "arquivos": [
+        "desenrola.json"
+      ],
+      "depende_de": [
+        "panorama"
+      ],
+      "evidencia": "pipeline/desenrola.py: build lê panorama.json para a carteira por UF",
+      "produtores": [
+        "pipeline/desenrola.py"
+      ]
+    },
+    "emprego-setores-ufs": {
+      "arquivos": [
+        "emprego.json",
+        "sectors.json",
+        "ufs.json"
+      ],
+      "depende_de": [],
+      "evidencia": "src/tests/emprego-data.test.ts: sectors.emprego_ref = emprego.mes; ufs.datas.emprego = emprego.ufs_mes. pipeline/gold.py: build_sector_stress recebe r_emp.",
+      "produtores": [
+        "pipeline/gold.py"
+      ],
+      "recompor": {
+        "arquivo": "ufs.json",
+        "builder": "pipeline.ufs.build",
+        "insumos": [
+          "panorama",
+          "penetracao",
+          "presenca-mun",
+          "pix",
+          "moradia",
+          "consignado",
+          "rural",
+          "bndes",
+          "pgfn",
+          "emprego-setores-ufs",
+          "consorcios",
+          "cobranca",
+          "prazo",
+          "subnacional"
+        ],
+        "evidencia": "pipeline/ufs.py: build lê 16 arquivos; reconstruir com as versões selecionadas quando algum insumo ficar retido, depois testar novamente."
+      }
+    },
+    "epae": {
+      "arquivos": [
+        "epae.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/epae.py"
+      ]
+    },
+    "exposures": {
+      "arquivos": [
+        "exposures.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "fase2-observacoes": {
+      "arquivos": [
+        "fase2_observacoes.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "fidc": {
+      "arquivos": [
+        "fidc.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "folha": {
+      "arquivos": [
+        "folha_bancos.json",
+        "folha_balanco.json",
+        "folha_leiloes.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/folha_bancos.py",
+        "pipeline/gold.py"
+      ]
+    },
+    "fraudes": {
+      "arquivos": [
+        "fraudes.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "funding": {
+      "arquivos": [
+        "funding.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "guidance": {
+      "arquivos": [
+        "guidance.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py",
+        "pipeline/guidance_bancos.py"
+      ]
+    },
+    "ibcc": {
+      "arquivos": [
+        "ibcc.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "instituicoes": {
+      "arquivos": [
+        "institutions.json",
+        "inst_pages.json",
+        "inst_index.json",
+        "inst/*.json"
+      ],
+      "depende_de": [
+        "openfinance"
+      ],
+      "evidencia": "pipeline/gold.py: inst_pages.build e inst_pages_all.build recebem inst e of",
+      "produtores": [
+        "pipeline/gold.py",
+        "pipeline/inst_pages_all.py"
+      ]
+    },
+    "judicial": {
+      "arquivos": [
+        "judicial.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/judicial.py"
+      ]
+    },
+    "juros": {
+      "arquivos": [
+        "juros.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/juros.py"
+      ]
+    },
+    "leading": {
+      "arquivos": [
+        "leading.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/leading.py"
+      ]
+    },
+    "lineage": {
+      "arquivos": [
+        "lineage.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "market": {
+      "arquivos": [
+        "market.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/market.py"
+      ]
+    },
+    "meta": {
+      "arquivos": [
+        "meta.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "method": {
+      "arquivos": [
+        "method.json"
+      ],
+      "depende_de": [
+        "pulse",
+        "ibcc",
+        "instituicoes",
+        "emprego-setores-ufs"
+      ],
+      "evidencia": "pipeline/gold.py: build_model_cards, dicionario_indicadores, score_cards",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "moradia": {
+      "arquivos": [
+        "moradia.json",
+        "moradia_mun.json"
+      ],
+      "depende_de": [
+        "penetracao"
+      ],
+      "evidencia": "pipeline/gold.py: Moradia roda depois da Penetração para usar a mesma exclusão de data-base ESTBAN subcoletada; src/tests/moradia-data.test.ts lê a malha do grupo penetracao",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "npl": {
+      "arquivos": [
+        "npl.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "openfinance": {
+      "arquivos": [
+        "openfinance.json"
+      ],
+      "depende_de": [
+        "instituicoes"
+      ],
+      "evidencia": "pipeline/gold.py: build_openfinance_real(con, inst); pipeline/indicators.py: relacao_credito usa carteira_brl de inst_gold",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "operacional": {
+      "arquivos": [
+        "operacional.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "overview": {
+      "arquivos": [
+        "overview.json"
+      ],
+      "depende_de": [
+        "ibcc",
+        "emprego-setores-ufs",
+        "pulse",
+        "rj",
+        "central-alertas",
+        "regimes",
+        "recordes",
+        "guidance"
+      ],
+      "evidencia": "pipeline/gold.py: build_diagnosis, ibcc_posicao e projecoes_resumo; pipeline/overview.py: build_novidades",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "panorama": {
+      "arquivos": [
+        "panorama.json",
+        "explorer.json",
+        "pano/*.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/panorama.py"
+      ]
+    },
+    "penetracao": {
+      "arquivos": [
+        "penetracao.json",
+        "penetracao_mun.json",
+        "penetracao_malha.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py",
+        "pipeline/penetracao.py"
+      ]
+    },
+    "pgfn": {
+      "arquivos": [
+        "pgfn.json"
+      ],
+      "depende_de": [
+        "panorama"
+      ],
+      "evidencia": "pipeline/pgfn.py: build lê panorama.json para a carteira por UF",
+      "produtores": [
+        "pipeline/pgfn.py"
+      ]
+    },
+    "pilar3": {
+      "arquivos": [
+        "pilar3.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/pilar3_gold.py"
+      ]
+    },
+    "pix": {
+      "arquivos": [
+        "pix.json",
+        "pix_mun.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py",
+        "pipeline/pix.py"
+      ]
+    },
+    "prazo": {
+      "arquivos": [
+        "prazo.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "presenca-mun": {
+      "arquivos": [
+        "presenca_mun.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py",
+        "pipeline/presenca.py"
+      ]
+    },
+    "prestamista": {
+      "arquivos": [
+        "prestamista.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "produtos": {
+      "arquivos": [
+        "products.json",
+        "prod/*.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/products.py"
+      ]
+    },
+    "pulse": {
+      "arquivos": [
+        "pulse.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "quality": {
+      "arquivos": [
+        "quality.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "recordes": {
+      "arquivos": [
+        "recordes.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/recordes.py"
+      ]
+    },
+    "regimes": {
+      "arquivos": [
+        "regimes.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/regimes_gold.py"
+      ]
+    },
+    "regimes-series": {
+      "arquivos": [
+        "regimes_series.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "regulacao": {
+      "arquivos": [
+        "regulacao.json",
+        "timeline_regulatoria.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py",
+        "pipeline/regulacao.py"
+      ]
+    },
+    "report": {
+      "arquivos": [
+        "report.html"
+      ],
+      "depende_de": [
+        "overview",
+        "pulse",
+        "emprego-setores-ufs",
+        "instituicoes",
+        "rj",
+        "alerts",
+        "scenario",
+        "quality"
+      ],
+      "evidencia": "pipeline/gold.py: report_mod.build recebe os oito objetos",
+      "produtores": [
+        "pipeline/report.py"
+      ]
+    },
+    "rj": {
+      "arquivos": [
+        "rj.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "rural": {
+      "arquivos": [
+        "rural.json",
+        "rural_mun.json"
+      ],
+      "depende_de": [
+        "penetracao"
+      ],
+      "evidencia": "pipeline/rural.py: build lê penetracao e penetracao_mun",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "scenario": {
+      "arquivos": [
+        "scenario.json"
+      ],
+      "depende_de": [
+        "pulse"
+      ],
+      "evidencia": "pipeline/gold.py: scenario.base_forecast_inad_total e base_forecasts reutilizam forecasts já publicados em pulse.previsoes",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "screener": {
+      "arquivos": [
+        "screener.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/market.py"
+      ]
+    },
+    "sfn": {
+      "arquivos": [
+        "sfn.json"
+      ],
+      "depende_de": [
+        "regimes"
+      ],
+      "evidencia": "pipeline/sfn.py: _regimes lê regimes.json",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "subnacional": {
+      "arquivos": [
+        "subnacional.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/gold.py"
+      ]
+    },
+    "trends": {
+      "arquivos": [
+        "trends.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "produtores": [
+        "pipeline/trends.py"
+      ]
+    }
+  }
+}
