@@ -248,6 +248,7 @@ jobs:
         run: |
           git config user.name "pipeline-observatorio[bot]"
           git config user.email "pipeline@scrutiniums.com"
+          BASE_GOLD=$(git rev-parse HEAD:public/obs/data/gold)
           git add public/obs/data
           if git diff --cached --quiet; then
             echo "Sem mudanças nos dados publicados."
@@ -259,7 +260,15 @@ jobs:
             # rebase e push no MESMO ramo que disparou a execução (main no agendamento;
             # o ramo do PR no disparo manual de validação)
             for tentativa in 1 2 3 4; do
-              git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
+              if git fetch origin "$GITHUB_REF_NAME"; then
+                # A composição foi testada com esta base. Rebase sobre outra gold
+                # poderia trocar uma fonte retida sem reconstruir UFs: não publicar.
+                if [ "$(git rev-parse FETCH_HEAD:public/obs/data/gold)" != "$BASE_GOLD" ]; then
+                  echo "::error::a gold publicada mudou durante a execução; repetir o ciclo sobre a nova base antes de publicar"
+                  exit 1
+                fi
+                git rebase FETCH_HEAD && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
+              fi
               echo "push falhou (tentativa $tentativa); nova tentativa em $((tentativa * 5))s"
               sleep $((tentativa * 5))
             done

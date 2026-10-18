@@ -155,7 +155,7 @@ issue existente com grupos retidos, motivos/testes e geração anterior, e grupo
 publicados com sua geração. Depois do commit, qualquer retenção deixa o job
 vermelho; falhas sem gold também deixam vermelho e são identificadas separadamente.
 O artefato preserva todos os JSONs/logs, inclusive primeiras tentativas inconclusivas
-e os resultados das composições retestadas. O diagnóstico antigo continua disponível sem atribuir
+e os resultados das composições retestadas. O retry de push aceita avanços de código no ramo, mas compara a árvore Git da gold remota com a base testada: se a publicação mudou durante o ciclo, aborta antes de fazer rebase/push e exige nova execução, para não trocar por dentro uma fonte retida de UFs. O diagnóstico antigo continua disponível sem atribuir
 falha de infraestrutura a Python.
 
 A execução agendada precisa confirmar coleta real do dia, restauração do silver,
