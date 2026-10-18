@@ -115,11 +115,11 @@ Fonte das referências: `dias_referencia`/`referencias` das golds versionadas e 
 
 Resultados dos comandos desta sessão, sem alterar testes existentes:
 
-- `python3 -m unittest discover -s pipeline/tests -t .`: **2.002 testes**, verde, com seis skips existentes; pyarrow disponível no ambiente Python.
+- `python3 -m unittest discover -s pipeline/tests -t .`: verde, com seis skips existentes; pyarrow disponível no ambiente Python.
 - `test_energia_bronze_orfao`: **20 testes novos** aprovados, incluindo as reproduções de Água, Expansão e Mercado, recaptura, fallback sem mistura de vintages, bytes preservados, divisão de assets, corrupção e seeds versionados.
 - `npx tsc --noEmit`, `npm run lint` e `npm run build`: verdes.
 - `npx vitest run --maxWorkers=2`: **316 arquivos**, **7.878 testes aprovados**, um skip existente; Chromium local indicado por `I18N_CHROMIUM_EXECUTABLE`.
-- `node scripts/cobertura-i18n.mjs --check`: verde, inventário sem mudança necessária.
+- `node scripts/cobertura-i18n.mjs --check`: verde; inventário regenerado pela ferramenta após a atualização do `main`.
 - Workflow carregado como YAML; cada bloco `run` conferido com `bash -n`: verdes.
 - Empacotamento executado sobre o silver real da release: passou. Por ser a restauração local sem bronze, seus arquivos ausentes aparecem no manifesto, em vez de interromper a cópia; os seeds existentes ficam separados.
 
