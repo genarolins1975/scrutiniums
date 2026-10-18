@@ -920,6 +920,20 @@ def bloco_mensal(diaria, dia_ref, meses=36):
     return out
 
 
+# A lista de revisões cresce a cada recaptura que o ONS revisa (33 linhas em 30/09/2026,
+# 269 em 18/10/2026) e já sai inteira em carga_revisoes.csv: a gold leva o resumo, calculado
+# sobre todas, e só as mais recentes, para a tabela da página não crescer sem limite.
+LIMITE_REVISOES_GOLD = 50
+
+
+def revisoes_para_gold(revis):
+    """Resumo inteiro e as LIMITE_REVISOES_GOLD revisões mais recentes (captura, depois dia), na ordem original."""
+    todas = revis["linhas"]
+    recentes = set(sorted(range(len(todas)), key=lambda i: (todas[i]["capturado_em"], todas[i]["dia"]), reverse=True)[:LIMITE_REVISOES_GOLD])
+    return {**revis, "linhas": [x for i, x in enumerate(todas) if i in recentes], "linhas_so_no_csv": len(todas) - len(recentes),
+            "arquivo": _u(CSV["revisoes"])}
+
+
 def bloco_revisoes(con_p, dados):
     """Revisões da carga diária entre as vintages do silver principal, e a diferença
     entre a curva horária (captura mais nova) e a carga diária nos últimos dias."""
@@ -952,6 +966,7 @@ def bloco_revisoes(con_p, dados):
         "revisoes_com_percentual": len(difs),
         "mediana_abs_pct": c.r(statistics.median(difs), 4) if difs else None,
         "max_abs_pct": c.r(max(difs), 3) if difs else None,
+        "correcoes_fora_do_dominio": sum(1 for x in linhas if x["situacao"] == "correcao_de_valor_fora_do_dominio"),
         "linhas": linhas,
         "curva_contra_diaria": {"dias_comparados": n_comuns, "dias_diferentes": len(curva_vs),
                                 "tolerancia": "0,01 MWmed", "exemplos": curva_vs[-40:],
@@ -1323,6 +1338,15 @@ def bloco_a07(con_p, dados, temps, res):
         cmp_ = comparacao(_soma_sin(s), dias_a, dias_b, "mesmas_datas")
         linha["variacao_pct"] = cmp_["variacao_pct"] if cmp_ else None
         linha["janela_completa"] = cmp_ is not None
+        # o arquivo do ano é recapturado todo dia; captura que repete os valores da janela
+        # da anterior não traz informação nova e vira contagem (a lista não cresce sem limite)
+        ant = por_captura[-1] if por_captura else None
+        if ant and (ant["dias"], ant["variacao_pct"], ant["janela_completa"]) == (linha["dias"], linha["variacao_pct"], linha["janela_completa"]):
+            ant["capturas_identicas"] += 1
+            ant["ultima_captura_identica"] = v["capturado_em"]
+            continue
+        linha["capturas_identicas"] = 0
+        linha["ultima_captura_identica"] = None
         por_captura.append(linha)
     # 3) comparações equivalentes com a série vigente (validada)
     comps = []
@@ -1777,7 +1801,7 @@ def evidencias(con, con_p, dados, a07, comps, p026, p027, dia_ref):
             numerador={"descricao": "média do SIN de 22 a 28/09/2026 (MWmed)", "valor": rep["media"]},
             denominador={"descricao": "média do SIN de 22 a 28/09/2025 (MWmed)", "valor": rep["media_ant"]},
             cobertura="7 de 7 dias nos dois períodos, quatro subsistemas", tratamento_ausencia="janela com dia ausente não tem variação",
-            revisoes=f"{len(a07['por_captura_2026'])} capturas do arquivo de 2026 comparadas; a de 29/09/2026 não tinha a janela completa e trazia −668,879 MWmed no NE em 26/09.",
+            revisoes=f"{sum(1 + x['capturas_identicas'] for x in a07['por_captura_2026'])} capturas do arquivo de 2026 comparadas; a de 29/09/2026 não tinha a janela completa e trazia −668,879 MWmed no NE em 26/09.",
             testes=[ev.teste("mesmo regime metodológico", "aprovado" if rep["mesmo_regime"] else "reprovado", "as duas janelas estão depois de 01/05/2023 (inclusão da MMGD observada nos dados; declarada para 29/04/2023)"),
                     ev.teste("mesmos dias da semana", "aprovado" if rep["calendario_equivalente"] else "ressalva", "sete dias seguidos em cada janela"),
                     ev.teste("feriados", "aprovado" if not rep["eventos"] and not rep["eventos_ant"] else "ressalva", "nenhum feriado nacional nem ponto facultativo nas janelas")],
@@ -1980,6 +2004,7 @@ def construir(con, ctx):
     p027 = bloco_p027(res, temps, dia_ref)
     a07 = bloco_a07(con_p, dados, temps, res)
     escreve_csvs(dados, temps, res, comps_csv, revis, range(2003, int(dia_ref[:4]) + 2))
+    revis = revisoes_para_gold(revis)
 
     snap_d = c.snapshot_de(con_p, DS_DIARIA)
     snap_c = c.snapshot_de(con, DS_CURVA)

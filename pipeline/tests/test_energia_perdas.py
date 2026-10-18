@@ -828,7 +828,14 @@ class GoldPublicada(unittest.TestCase):
 
     def test_disponivel_e_dentro_do_orcamento(self):
         self.assertTrue(self.gold["disponivel"])
-        self.assertLessEqual(self.tamanho, 420 * 1024)
+        # Orçamento: 420 KB mais a lista de exemplos de revisão de cada ficha, que nasce vazia
+        # (gold de 30/09/2026: 12 exemplos) e enche quando a fonte revisa dados (18/10/2026: 117
+        # exemplos em 6 fichas, 1.661 bytes por 20 exemplos, cerca de 83 bytes cada). A lista
+        # tem teto de 20 por ficha (comum.revisoes_do_dataset), então a folga é limitada.
+        fichas = [p for p in self.gold["proveniencia"].values() if isinstance(p, dict) and "natureza" in p]
+        exemplos = [len((p.get("revisoes_conhecidas") or {}).get("exemplos") or []) for p in fichas]
+        self.assertTrue(all(n <= 20 for n in exemplos), exemplos)
+        self.assertLessEqual(self.tamanho, 420 * 1024 + 100 * sum(exemplos))
 
     def test_evidencias_validas(self):
         from pipeline.energia import evidencia
@@ -842,16 +849,27 @@ class GoldPublicada(unittest.TestCase):
         # escreve. 2004: 55 concessionárias com os 12 meses, fora Manaus Energia e COCEL (fornecida
         # maior que a injetada, resíduo de −201% e −93%): 39.100.473.197 kWh ÷ 259.141.951.677 kWh =
         # 15,088%. Só sem a Manaus seriam 15,082%; com ela, 15,58% (o valor publicado antes da
-        # correção). 2025: conferência do verificador, 90.355.796 MWh ÷ 612.653.776 MWh = 14,748%.
+        # correção). 2025: a conferência do verificador na gold de 30/09/2026 (90.355.796 MWh ÷
+        # 612.653.776 MWh = 14,748%) mudou com a revisão do SAMP registrada na ficha (18/10/2026:
+        # 90.444.804 ÷ 612.720.584); o ano mais recente é conferido pela soma das linhas por
+        # distribuidora no CSV de download, outro caminho até o mesmo agregado.
         nac = {x["ano"]: x for x in self.gold["nacional"]}
         self.assertTrue(all(x["universo"] == "concessionarias" for x in self.gold["nacional"]))
         self.assertEqual((nac[2004]["n_distribuidoras"], nac[2004]["perdas_totais_mwh"], nac[2004]["injetada_mwh"]),
                          (55, 39_100_473, 259_141_952))
         self.assertEqual(nac[2004]["taxa_total_pct"], 15.09)
         self.assertEqual(nac[2004]["excluidos"].get("fornecida_maior_que_injetada"), 2)
-        self.assertEqual((nac[2025]["n_distribuidoras"], nac[2025]["perdas_totais_mwh"]), (51, 90_355_796))
-        self.assertLessEqual(abs(nac[2025]["injetada_mwh"] - 612_653_776), 1)
-        self.assertEqual(nac[2025]["taxa_total_pct"], 14.75)
+        with open(self._serie("perdas_distribuidoras.csv"), encoding="utf-8") as f:
+            linhas_25 = [r for r in csv.DictReader(f, delimiter=";")
+                         if r["ano"] == "2025" and r["classificacao"] == "Concessionária" and r["completo"] == "1"
+                         and not any(k in r["alertas"] for k in nac[2025]["excluidos"])]
+        perdas_25 = sum(float(r["perdas_totais_mwh"]) for r in linhas_25)
+        injetada_25 = sum(float(r["injetada_referencia_mwh"]) for r in linhas_25)
+        self.assertEqual(nac[2025]["n_distribuidoras"], len(linhas_25))
+        self.assertGreaterEqual(len(linhas_25), 45)  # 51 em 30/09 e em 18/10/2026
+        self.assertLessEqual(abs(nac[2025]["perdas_totais_mwh"] - perdas_25), 1)
+        self.assertLessEqual(abs(nac[2025]["injetada_mwh"] - injetada_25), 1)
+        self.assertEqual(nac[2025]["taxa_total_pct"], round(100 * perdas_25 / injetada_25, 2))
         # a Manaus Energia fica publicada com alerta nos seis anos completos, fora do agregado
         with open(self._serie("perdas_distribuidoras.csv"), encoding="utf-8") as f:
             manaus = {r["ano"]: r for r in csv.DictReader(f, delimiter=";") if r["cnpj"] == MANAUS}
@@ -873,8 +891,14 @@ class GoldPublicada(unittest.TestCase):
             self.assertAlmostEqual(e["valor_calculo"], x, places=5, msg=nome)
             conferidas += 1
         self.assertGreater(conferidas, 100)
-        # os seis casos que o arredondamento duplo trocava de casa decimal
-        self.assertEqual(self.gold["evidencias"]["taxa_nacional"]["valor_exibido"], "14,7%")
+        # os casos que o arredondamento duplo trocava de casa decimal. A taxa nacional de 2025
+        # na gold de 30/09/2026 (14,748%: duas casas dariam 14,75 e uma casa depois, 14,8) mudou
+        # com a revisão do SAMP; o caso fica conferido na função que escreve o valor exibido,
+        # e a evidência publicada, pelo laço acima
+        self.assertEqual(mod._pct_br(100 * 90_355_796 / 612_653_776, 1), "14,7%")
+        self.assertEqual(mod._pct_br(round(100 * 90_355_796 / 612_653_776, 2), 1), "14,8%")
+        tn = self.gold["evidencias"]["taxa_nacional"]
+        self.assertEqual(tn["valor_exibido"], mod._pct_br(100 * tn["numerador"]["valor"] / tn["denominador"]["valor"], 1))
         sig = {d["sigla"]: d["cnpj"] for d in self.gold["distribuidoras"]}
         for s, txt in (("CRERAL", "9,9%"), ("ELETROPAULO", "12,4%"), ("CELETRO", "16,8%"), ("CERCOS", "12,5%"),
                        ("CERTREL", "4,7%"), ("DMED", "4,1%")):
@@ -921,8 +945,18 @@ class GoldPublicada(unittest.TestCase):
                 self.assertEqual(t["situacao"], "vigencia_encerrada")
                 self.assertLess(t["fim"], hoje)
                 encerradas += 1
+        # CEDRI na gold de 30/09/2026: REH 3.531/2025 vigente até 29/09/2026, consultada em 01/10, sem o
+        # processo seguinte no arquivo; em 18/10/2026 o processo seguinte já estava publicado. A
+        # situação de cada distribuidora segue as datas (laço acima) e o caso da CEDRI fica conferido
+        # na regra, com os dois estados do arquivo
         cedri = next(d for d in self.gold["distribuidoras"] if d["cnpj"] == CEDRI)
-        self.assertEqual((cedri["tarifa"]["fim"], cedri["tarifa"]["situacao"]), ("2026-09-29", "vigencia_encerrada"))
+        fim = cedri["tarifa"]["fim"]
+        self.assertEqual(cedri["tarifa"]["situacao"], "vigente" if fim is None or fim >= hoje else "vigencia_encerrada")
+        reh_2025 = {"resumo": {"x": 1}, "inicio": "2026-01-01", "fim": "2026-09-29"}
+        reh_2026 = {"resumo": {"x": 1}, "inicio": "2026-09-30", "fim": "2027-09-29"}
+        self.assertEqual(ap.tarifa_vigente([reh_2025], "2026-10-01"), (reh_2025, "vigencia_encerrada"))
+        self.assertEqual(ap.tarifa_vigente([reh_2025, reh_2026], "2026-10-01"), (reh_2026, "vigente"))
+        self.assertEqual(ap.tarifa_vigente([reh_2025], "2026-09-29"), (reh_2025, "vigente"))
         self.assertGreater(encerradas, 0)
 
     def test_mudancas_de_universo_na_serie_anual(self):

@@ -2978,8 +2978,10 @@ def _bloco_acesso(con, ctx):
                             "https://dados.ons.org.br (busca por 'isolados': nenhum conjunto)",
                             fl.URL_DATASET + " (integrado)"],
     }
+    # a ficha do Luz para Todos fica só em acesso.proveniencia: a cópia dentro do bloco
+    # duplicava cerca de 4,6 KB na gold e ninguém a lê ali
     prov_acesso = {"pnad": prov_p, **({"isolados": isolados["proveniencia"]} if isolados else {}),
-                   **({"luz_para_todos": lpt["proveniencia"]} if lpt else {})}
+                   **({"luz_para_todos": lpt.pop("proveniencia")} if lpt else {})}
     return {
         "pergunta": "Quem ainda precisa de acesso adequado?",
         "ano_referencia": ult,

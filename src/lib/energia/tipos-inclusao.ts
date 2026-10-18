@@ -529,7 +529,8 @@ export type LuzParaTodos = {
     homologacao_mais_recente: string | null;
   } | Record<string, never>;
   evidencia_total: Evidencia;
-  proveniencia: Proveniencia;
+  /** Só nas golds anteriores a 18/10/2026; a ficha está em `Acesso.proveniencia.luz_para_todos`. */
+  proveniencia?: Proveniencia;
 };
 
 export type Universalizacao = {
