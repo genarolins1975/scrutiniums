@@ -103,7 +103,16 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
   const oficial = urlDoConjunto(e);
   const paginaInicial = eApenasPaginaInicial(oficial);
   const cadencias = integr.flatMap((c) => c.frequencia?.cadencias ?? []).filter((c, i, a) => a.indexOf(c) === i);
-  const capturas = capturasDoConjunto(f, d.interno);
+  // divergência entre o resumo de meta.json e o CSV de capturas é falha de contrato que os testes retêm antes
+  // da publicação; aqui ela não derruba o build do site inteiro (review #283): a ficha diz que o histórico
+  // ficou indisponível, sem mostrar amostra como se fosse o total
+  let capturas: ReturnType<typeof capturasDoConjunto> = [];
+  let capturasIndisponiveis = false;
+  try {
+    capturas = capturasDoConjunto(f, d.interno);
+  } catch {
+    capturasIndisponiveis = true;
+  }
   const notasDeQuebra = integr.length ? notasDeQuebraPosterior(e.quebras, integr[0]) : [];
   const quebrasEn = integr.length ? quebrasPosteriores(e.quebras, integr[0]) : [];
   // indicadores publicados que listam este conjunto entre as fontes (metricas.json)
@@ -559,7 +568,14 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                       </a>
                     </p>
                   )}
-                  {capturas.length === 0 ? (
+                  {capturasIndisponiveis ? (
+                    <p className="border border-linha bg-papel p-3 text-sm text-carvao" data-capturas-indisponiveis="true">
+                      {tx(
+                        "O histórico de capturas deste conjunto está indisponível nesta publicação: o resumo e o arquivo completo não conferem. Nenhuma lista parcial é mostrada no lugar.",
+                        "The capture history of this dataset is unavailable in this release: the summary and the full file do not match. No partial list is shown instead.",
+                      )}
+                    </p>
+                  ) : capturas.length === 0 ? (
                     <p className="border border-linha bg-papel p-3 text-sm text-carvao" data-sem-capturas="true">
                       {ultimaCaptura
                         ? tx(

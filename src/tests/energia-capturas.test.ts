@@ -74,6 +74,22 @@ describe("histórico completo na ficha, além da amostra do JSON", () => {
     expect(html).not.toContain('data-sem-capturas="true"');
   });
 
+  it("resumo e CSV divergentes: a ficha diz que o histórico está indisponível, sem derrubar o build nem mostrar amostra", () => {
+    const d = DATASETS_INTEGRADOS.find((x) => catalogoDados()?.entradas.some((e) => e.id === x.catalogoId))!;
+    const { raiz, fonte } = fixture(CSV.replaceAll("\nds;", `\n${d.interno};`));
+    fonte.resumo_capturas = { ...fonte.resumo_capturas!, total_historico: 5 };
+    const meta = gold.meta()!;
+    vi.spyOn(gold, "meta").mockReturnValue({ ...meta, fontes: { ...meta.fontes, [d.interno]: fonte } });
+    const original = capturasServidor.capturasDoConjunto;
+    expect(() => original(fonte, d.interno, raiz)).toThrow();
+    vi.spyOn(capturasServidor, "capturasDoConjunto").mockImplementation((f, ds) => original(f, ds, raiz));
+    const html = renderToStaticMarkup(createElement(DatasetPage, { params: { dataset: d.slug } }));
+    expect(html).toContain('data-capturas-indisponiveis="true"');
+    expect(html).toContain("histórico de capturas deste conjunto está indisponível");
+    expect(html).not.toContain("antigo");
+    expect(html).not.toContain('data-sem-capturas="true"');
+  });
+
   it("mantém duas famílias com o mesmo recurso e mostra suas versões separadamente", () => {
     const d = DATASETS_INTEGRADOS.find((x) => catalogoDados()?.entradas.some((e) => e.id === x.catalogoId))!;
     const adicional = 'ds;familia_b;"recurso; com ""aspas""";antigo;2026-10-16T00:00:00Z;;reuso:aneel_geracao;true\n';

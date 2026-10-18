@@ -47,15 +47,20 @@ class TestEstadoMeta(unittest.TestCase):
         self.assertIn('if: always()', ps['Repor metadados no diretório de trabalho da previsão'][0])
         self.assertNotIn('meta_cache', ps['Commit do arquivo de emissões (e da gold, se os testes passaram)'][0])
 
-    def test_cache_novo_da_energia_so_apos_copia_duravel_confirmada(self):
+    def test_cache_da_energia_e_gravado_mesmo_se_uma_copia_duravel_falhar(self):
+        """Review #283: o cache é a única cópia das vintages da execução até a próxima cópia durável.
+        Falha do pipeline ou do upload de silver ou meta não pode descartá-las; meta se regenera na coleta."""
         ps = passos()
         nomes = list(ps)
         copia = 'Cópia durável dos metadados (release energia-estado)'
         for nome in ('Liberar a cópia anterior do estado antes de gravar',
                      'Guardar estado', 'Manter só a cópia mais recente do estado'):
             self.assertLess(nomes.index(copia), nomes.index(nome))
-            self.assertIn("steps.meta_duravel.outcome == 'success'", ps[nome][0])
-            self.assertIn("steps.silver_duravel.outcome == 'success'", ps[nome][0])
+            self.assertNotIn('meta_duravel', ps[nome][0])
+            self.assertNotIn('silver_duravel', ps[nome][0])
+        self.assertIn('if: always()\n', ps['Guardar estado'][0])
+        for nome in ('Liberar a cópia anterior do estado antes de gravar', 'Manter só a cópia mais recente do estado'):
+            self.assertIn("if: always() && steps.restaurar.outputs.cache-matched-key != ''", ps[nome][0])
         self.assertLess(nomes.index('Cópia durável do silver (release energia-estado)'), nomes.index(copia))
 
     def setUp(self):
@@ -172,7 +177,7 @@ elif a[:2] == ['release', 'delete-asset']:
         self.assertIn('::warning::', r.stdout)
         self.assertIn('issue create', (self.raiz / 'gh.log').read_text())
 
-    def test_falha_silver_mesmo_com_meta_salva_nao_libera_substituicao_do_cache(self):
+    def test_falha_no_silver_nao_impede_copia_de_meta_nem_gravacao_do_cache(self):
         silver = self.repo / 'data/energia/silver'
         silver.mkdir(parents=True)
         (silver / 'energia.db').write_bytes(b'vintage nova so no cache')
@@ -185,11 +190,11 @@ elif a[:2] == ['release', 'delete-asset']:
         self.assertEqual(self.executar('Cópia durável dos metadados (release energia-estado)').returncode, 0)
         self.assertTrue(list(self.assets.glob('energia-meta-*.tar.gz')))
         self.assertFalse((self.assets / 'energia-silver.db.gz').exists())
-        # O guard real de cada operação exige ambas as cópias, não só a meta verde.
+        # Falha de uma cópia não segura a gravação do cache, que guarda as vintages da execução.
         for nome in ('Liberar a cópia anterior do estado antes de gravar',
                      'Guardar estado', 'Manter só a cópia mais recente do estado'):
-            self.assertIn("steps.silver_duravel.outcome == 'success'", passos()[nome][0])
-            self.assertIn("steps.meta_duravel.outcome == 'success'", passos()[nome][0])
+            self.assertNotIn('silver_duravel', passos()[nome][0])
+            self.assertNotIn('meta_duravel', passos()[nome][0])
 
     def test_copia_bem_sucedida_sem_clobber_limpa_so_meta_antigo(self):
         self.asset('20000101T000000Z', {'_meta_ds.json': 'velha'})
@@ -409,6 +414,54 @@ class TestHistoricoAntesDaValidacao(unittest.TestCase):
             if any(d.get('dataset_silver') for d in m.REGISTRO['datasets']):
                 self.assertLessEqual(i, dados, m.REGISTRO['id'])
         self.assertLess(dados, ids.index('visao'))
+
+    def test_falha_no_historico_de_capturas_nao_derruba_a_execucao(self):
+        """Review #283: publicar_historico roda fora da construção das golds. Uma exceção ali (CSV ou
+        Parquet divergente) não pode abortar run.py: os arquivos voltam ao que eram, meta.json mantém
+        as fontes da publicação anterior e a regressão fica registrada."""
+        from pipeline.energia import metadados as m, run
+        from pipeline.energia.modulos import dados
+        with tempfile.TemporaryDirectory() as tmp, ExitStack() as stack:
+            raiz = Path(tmp)
+            silver, gold, series = raiz / 'silver', raiz / 'public/energia/gold', raiz / 'public/energia/series'
+            for pasta in (silver, gold, series):
+                pasta.mkdir(parents=True)
+            stack.enter_context(patch.multiple(base, RAIZ=tmp, SILVER=str(silver), GOLD=str(gold),
+                                               SERIES=str(series), DB_PATH=str(silver / 'energia.db')))
+            (series / m.NOME_CSV).write_bytes(b'csv anterior\n')
+            fontes_antes = {'tema': {'dataset': 'tema', 'capturas': [], 'historico': []}}
+            base.escreve_gold('meta.json', {'disponivel': True, 'fontes': fontes_antes})
+            construidas = []
+
+            def modulo(id_, ordem, familia, dataset):
+                return SimpleNamespace(REGISTRO={'id': id_, 'ordem': ordem, 'gold': f'{id_}.json' if id_ != 'dados' else 'publicacao.json',
+                                                 'familia': familia, 'datasets': [{'dataset_silver': dataset}] if dataset else [],
+                                                 'arquivos': {}}, construir=None, coletar=None)
+            mods = [modulo('tema', 97, 'tema', 'tema'), modulo('dados', dados.REGISTRO['ordem'], 'catalogos', 'catalogo'),
+                    modulo('visao', 98, 'visao', None)]
+            stack.enter_context(patch.object(run.modulos, 'descobrir', return_value=mods))
+            stack.enter_context(patch.object(run.ons, 'DATASETS', {}))
+            for obj, attr, retorno in ((run.ons, 'coleta', {}), (run.ccee, 'coleta_direta', {}),
+                                        (run.ccee, 'importa_seed', {}), (run.catalogo, 'colhe', {}),
+                                        (run.metricas, 'todas', []), (run.validacoes, 'viola_horizonte', []),
+                                        (run.modelos, 'construir', ({'disponivel': True}, {'disponivel': True})),
+                                        (run.catalogo, 'construir', {'disponivel': True})):
+                stack.enter_context(patch.object(obj, attr, return_value=retorno))
+
+            def falha(*a, **k):
+                (series / m.NOME_CSV).write_bytes(b'csv pela metade')
+                raise ValueError('histórico de capturas: CSV divergente das vintages de origem')
+            stack.enter_context(patch.object(run.metadados, 'publicar_historico', side_effect=falha))
+            stack.enter_context(patch.object(run, 'construir', side_effect=lambda nome, fn, *a: construidas.append(nome) or {'disponivel': True}))
+            self.assertEqual(run.main(['--sem-coleta']), 0)
+            # as golds depois de Dados continuam sendo construídas
+            self.assertIn('visao.json', construidas)
+            self.assertEqual((series / m.NOME_CSV).read_bytes(), b'csv anterior\n')
+            meta = json.loads((gold / 'meta.json').read_text())
+            self.assertEqual(meta['fontes'], fontes_antes)
+            reg = [r for r in meta['regressoes'] if r['gold'] == 'meta.json']
+            self.assertEqual(len(reg), 1)
+            self.assertIn('CSV divergente', reg[0]['motivo'])
 
     def test_primeira_publicacao_e_csv_antigo_validam_e_exportam_parquet_da_versao_final(self):
         from pipeline.energia import metadados as m, run

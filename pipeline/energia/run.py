@@ -39,6 +39,11 @@ def publicar(nome, novo, regressoes, falhas):
     return novo
 
 
+def _fontes_anteriores():
+    """Fontes da meta.json publicada, para quando o histórico desta execução não pôde ser validado."""
+    return (base.le_gold("meta.json") or {}).get("fontes") or {}
+
+
 def construir(nome, fn, *args):
     try:
         return fn(*args)
@@ -117,8 +122,20 @@ def main(argv):
                 # histórico depois dela e de TODOS os temas, antes de validar os
                 # CSV e gerar seus Parquets. meta.json reutiliza este exato resumo.
                 fontes_modulos.update(metadados.fontes_do_modulo(con_f, reg))
-                fontes_publicadas = metadados.publicar_historico(
-                    {**fontes, **fontes_modulos}, limiar_parquet=modulo_dados.LIMIAR_PARQUET)
+                # falha no histórico de capturas não derruba a execução (review #283): os arquivos
+                # voltam ao que eram, meta.json mantém as fontes da publicação anterior e a
+                # regressão fica registrada, como nas golds
+                arquivos_hist = [metadados.URL_CSV, metadados.URL_CSV[:-len(".csv")] + ".parquet"]
+                guardado_hist = base.guarda_arquivos(arquivos_hist)
+                try:
+                    fontes_publicadas = metadados.publicar_historico(
+                        {**fontes, **fontes_modulos}, limiar_parquet=modulo_dados.LIMIAR_PARQUET)
+                except Exception as e:
+                    traceback.print_exc()
+                    base.restaura_arquivos(guardado_hist)
+                    regressoes.append({"gold": "meta.json", "motivo": f"histórico de capturas: {e}"[:300],
+                                       "arquivos_restaurados": [os.path.basename(u) for u in arquivos_hist]})
+                    fontes_publicadas = _fontes_anteriores()
             print(f"[energia] gold {nome}", flush=True)
             # os CSV do módulo são gravados durante a construção, antes da validação da gold: se a construção regredir e a
             # sentinela mantiver a gold anterior, os arquivos baixáveis voltam ao que eram (mesma publicação nos dois)
@@ -158,7 +175,8 @@ def main(argv):
         base.escreve_gold("catalogo.json", catalogo.construir(brutos_catalogo))
 
     if fontes_publicadas is None:
-        raise RuntimeError("módulo Dados não executado; histórico de capturas sem validação")
+        regressoes.append({"gold": "meta.json", "motivo": "módulo Dados não executado; histórico de capturas sem validação"})
+        fontes_publicadas = _fontes_anteriores()
     meta = {
         **c.cabecalho("meta.json"),
         "golds": {k: {"disponivel": _integro(v), "gerado_em": (v or {}).get("gerado_em")} for k, v in g.items()},
