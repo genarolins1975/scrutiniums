@@ -4,6 +4,7 @@ Não limita snapshot_de: builders continuam recebendo todas as vintages. A redu�
 acontece apenas ao montar meta.json, depois de construir os módulos.
 """
 from pipeline.energia import base
+from pipeline.energia.gold import comum as c
 
 LIMITE_RECENTES = 10  # por fonte e por lista; custo do JSON independe dos dias coletados
 NOME_CSV = 'capturas_fontes.csv'
@@ -22,6 +23,19 @@ COLUNAS = {
 def dicionario_historico():
     descricao = '; '.join(f'{nome}: {texto}' for nome, texto in COLUNAS.items())
     return {URL_CSV: {'colunas': descricao, 'modulo': 'dados', 'gold': 'meta.json'}}
+
+
+def fonte_de(con, dataset, **atributos):
+    snap = c.snapshot_de(con, dataset)
+    return {**atributos, 'ultima_captura': c.ultima_captura(snap), 'snapshot': snap.get('id'),
+            'snapshot_sha256': snap.get('sha256'), 'ultima_tentativa': base.ultima_coleta(con, dataset),
+            'capturas': snap.get('capturas', []), 'historico': snap.get('historico', []),
+            'recapturas_sem_mudanca': (snap.get('revisoes') or {}).get('recapturas_sem_mudanca')}
+
+
+def fontes_do_modulo(con, registro):
+    return {d['dataset_silver']: fonte_de(con, d['dataset_silver'], modulo=registro['id'], familia=registro['familia'])
+            for d in registro['datasets'] if d.get('dataset_silver')}
 
 
 def publicar_historico(fontes):

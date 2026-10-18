@@ -94,10 +94,14 @@ def main(argv):
     # uma gold cada, com a mesma sentinela de regressão das golds de operação
     status_modulos = {}
     fontes_modulos = {}
+    fontes = {ds: metadados.fonte_de(con, ds) for ds in list(ons.DATASETS) + [ccee.DATASET]}
+    fontes_publicadas = None
     ctx = {"hoje": c.hoje_brasilia(), "golds": g, "con_principal": con, "sem_rede": sem_coleta}
     for mod in modulos.descobrir():
         reg = mod.REGISTRO
         nome = reg["gold"]
+        if fontes_publicadas is not None and any(d.get("dataset_silver") for d in reg["datasets"]):
+            raise RuntimeError(f"fonte {reg['id']} depois da validação dos CSV; ajuste REGISTRO['ordem']")
         con_f = base.conecta_familia(reg["familia"])
         try:
             if not sem_coleta and callable(getattr(mod, "coletar", None)):
@@ -108,6 +112,12 @@ def main(argv):
                     traceback.print_exc()
                     status_modulos[reg["id"]] = {"ok": False, "erro": str(e)[:300]}
                 con_f.commit()
+            if reg["id"] == "dados":
+                # A própria coleta de catálogos também cria vintages. Congelar o
+                # histórico depois dela e de TODOS os temas, antes de validar os
+                # CSV e gerar seus Parquets. meta.json reutiliza este exato resumo.
+                fontes_modulos.update(metadados.fontes_do_modulo(con_f, reg))
+                fontes_publicadas = metadados.publicar_historico({**fontes, **fontes_modulos})
             print(f"[energia] gold {nome}", flush=True)
             # os CSV do módulo são gravados durante a construção, antes da validação da gold: se a construção regredir e a
             # sentinela mantiver a gold anterior, os arquivos baixáveis voltam ao que eram (mesma publicação nos dois)
@@ -118,16 +128,8 @@ def main(argv):
                 refeitos = base.restaura_arquivos(guardados)
                 if refeitos:
                     regressoes[-1]["arquivos_restaurados"] = [os.path.basename(x) for x in refeitos]
-            for d in reg["datasets"]:
-                ds = d.get("dataset_silver")
-                if not ds:
-                    continue
-                snap = c.snapshot_de(con_f, ds)
-                fontes_modulos[ds] = {"modulo": reg["id"], "familia": reg["familia"],
-                                      "ultima_captura": c.ultima_captura(snap), "snapshot": snap.get("id"),
-                                      "snapshot_sha256": snap.get("sha256"), "ultima_tentativa": base.ultima_coleta(con_f, ds),
-                                      "capturas": snap.get("capturas", []), "historico": snap.get("historico", []),
-                                      "recapturas_sem_mudanca": (snap.get("revisoes") or {}).get("recapturas_sem_mudanca")}
+            if reg["id"] != "dados":
+                fontes_modulos.update(metadados.fontes_do_modulo(con_f, reg))
         finally:
             con_f.close()
     status_coleta["modulos"] = status_modulos
@@ -154,18 +156,12 @@ def main(argv):
     if sem_publicacao and (any(b.get("resultado") for b in brutos_catalogo.values()) or not base.le_gold("catalogo.json")):
         base.escreve_gold("catalogo.json", catalogo.construir(brutos_catalogo))
 
-    fontes = {}
-    for ds in list(ons.DATASETS) + [ccee.DATASET]:
-        snap = c.snapshot_de(con, ds)
-        fontes[ds] = {"ultima_captura": c.ultima_captura(snap), "snapshot": snap.get("id"),
-                      "snapshot_sha256": snap.get("sha256"), "ultima_tentativa": base.ultima_coleta(con, ds),
-                      "capturas": snap.get("capturas", []), "historico": snap.get("historico", []),
-                      "recapturas_sem_mudanca": (snap.get("revisoes") or {}).get("recapturas_sem_mudanca")}
-    fontes.update(fontes_modulos)
+    if fontes_publicadas is None:
+        raise RuntimeError("módulo Dados não executado; histórico de capturas sem validação")
     meta = {
         **c.cabecalho("meta.json"),
         "golds": {k: {"disponivel": _integro(v), "gerado_em": (v or {}).get("gerado_em")} for k, v in g.items()},
-        "fontes": metadados.publicar_historico(fontes),
+        "fontes": fontes_publicadas,
         "regressoes": regressoes,
         "builders_falhos": falhas,
         "duracao_s": round(time.time() - t0, 1),

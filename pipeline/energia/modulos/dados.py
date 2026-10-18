@@ -129,7 +129,9 @@ REGISTRO = {
     "id": "dados",
     "gold": GOLD,
     "familia": FAMILIA,
-    "ordem": 95,
+    # Depois de todas as fontes temáticas, inclusive Minha região (97), e antes
+    # da Visão geral (98, id "visao"): valida os CSV finais desta execução.
+    "ordem": 98,
     "datasets": [
         {"orgao": "ONS", "nome": "api-package-search", "slug": "ons-catalogo-ckan", "dataset_silver": "catalogo_ckan_ons",
          "titulo": "Listagem dos conjuntos do portal de dados abertos do ONS (API CKAN package_search)",

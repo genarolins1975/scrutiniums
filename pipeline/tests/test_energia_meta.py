@@ -10,6 +10,8 @@ import tarfile
 import tempfile
 import unittest
 from unittest.mock import patch
+from contextlib import ExitStack
+from types import SimpleNamespace
 
 from pipeline.energia import base
 
@@ -245,3 +247,88 @@ class TestHistoricoCompacto(unittest.TestCase):
             self.assertIsNone(f['resumo_capturas']['ultima'])
             self.assertIsNone(f['resumo_capturas']['recapturas_sem_mudanca'])
             self.assertEqual((Path(tmp) / m.NOME_CSV).read_text().count('\n'), 1)
+
+
+class TestHistoricoAntesDaValidacao(unittest.TestCase):
+    def test_todas_as_fontes_antes_de_dados_e_visao_depois(self):
+        from pipeline.energia import modulos
+        mods = modulos.descobrir()
+        ids = [m.REGISTRO['id'] for m in mods]
+        dados = ids.index('dados')
+        for i, m in enumerate(mods):
+            if any(d.get('dataset_silver') for d in m.REGISTRO['datasets']):
+                self.assertLessEqual(i, dados, m.REGISTRO['id'])
+        self.assertLess(dados, ids.index('visao'))
+
+    def test_primeira_publicacao_e_csv_antigo_validam_e_exportam_parquet_da_versao_final(self):
+        from pipeline.energia import metadados as m, run
+        from pipeline.energia.fontes import publicacao_dados as pub
+        from pipeline.energia.modulos import dados
+        for anterior in (False, True):
+            with self.subTest(csv_anterior=anterior), tempfile.TemporaryDirectory() as tmp, ExitStack() as stack:
+                raiz = Path(tmp)
+                silver, gold, series = [raiz / n for n in ('silver', 'gold', 'series')]
+                for pasta in (silver, gold, series):
+                    pasta.mkdir()
+                stack.enter_context(patch.multiple(base, RAIZ=tmp, SILVER=str(silver), GOLD=str(gold),
+                                                   SERIES=str(series), DB_PATH=str(silver / 'energia.db')))
+                def vintage(con, ds, rec, dia):
+                    base.registra_vintage(con, ds, rec, 'https://fonte.test', f'2026-10-{dia}T00:00:00Z',
+                                          None, base.sha256_bytes(rec.encode()), 1, 'coleta_direta', 'bronze-teste')
+                con = base.conecta_familia('tema')
+                vintage(con, 'tema', 'anterior', '17')
+                con.commit()
+                if anterior:
+                    m.publicar_historico({'tema': m.fonte_de(con, 'tema')})
+                    pub.exporta_parquet(str(series), limiar=1)
+                con.close()
+                observados = []
+                def validar(con, ctx):
+                    arquivo = series / m.NOME_CSV
+                    if not arquivo.exists():
+                        observados.append(None)
+                        return {'disponivel': True}
+                    with arquivo.open(newline='') as f:
+                        linhas = list(csv.DictReader(f, delimiter=';'))
+                    observados.append([(l['dataset'], l['recurso']) for l in linhas])
+                    # Mesmas funções que Dados usa: CSV válido e Parquet relido
+                    # célula a célula, forçando o limiar no cenário sintético.
+                    validados = dados.valida_csvs(dados.val.hoje_brasilia(), dados.dicionario_arquivos())
+                    self.assertNotEqual(validados[m.NOME_CSV]['veredito'], 'reprovado')
+                    pub.exporta_parquet(str(series), limiar=1)
+                    return {'disponivel': True, 'linhas_historico': len(linhas)}
+                def modulo(id_, ordem, familia, dataset, construir, coletar=None):
+                    return SimpleNamespace(REGISTRO={'id': id_, 'ordem': ordem, 'gold': f'{id_}.json' if id_ != 'dados' else 'publicacao.json',
+                                                     'familia': familia, 'datasets': [{'dataset_silver': dataset}] if dataset else [],
+                                                     'arquivos': {}}, construir=construir, coletar=coletar)
+                tema = modulo('ultimo_tema', 97, 'tema', 'tema', lambda con, ctx: {'disponivel': True},
+                               lambda con, ctx: vintage(con, 'tema', 'recente', '18'))
+                controle = modulo('dados', dados.REGISTRO['ordem'], 'catalogos', 'catalogo', validar,
+                                   lambda con, ctx: vintage(con, 'catalogo', 'captura_catalogo', '18'))
+                visao = modulo('visao', 98, 'visao', None, lambda con, ctx: {'disponivel': True})
+                mods = sorted([controle, tema, visao], key=lambda x: (x.REGISTRO['ordem'], x.REGISTRO['id']))
+                stack.enter_context(patch.object(run.modulos, 'descobrir', return_value=mods))
+                stack.enter_context(patch.object(run.ons, 'DATASETS', {}))
+                for obj, attr, retorno in ((run.ons, 'coleta', {}), (run.ccee, 'coleta_direta', {}),
+                                            (run.ccee, 'importa_seed', {}), (run.catalogo, 'colhe', {}),
+                                            (run.metricas, 'todas', []), (run.validacoes, 'viola_horizonte', []),
+                                            (run.modelos, 'construir', ({'disponivel': True}, {'disponivel': True})),
+                                            (run.modulo_dados, 'escreve_manifesto', None),
+                                            (run.catalogo, 'construir', {'disponivel': True})):
+                    stack.enter_context(patch.object(obj, attr, return_value=retorno))
+                def construir(nome, fn, *args):
+                    return fn(*args) if nome == 'publicacao.json' else {'disponivel': True}
+                stack.enter_context(patch.object(run, 'construir', side_effect=construir))
+                self.assertEqual(run.main([]), 0)
+                esperado = {('tema', 'anterior'), ('tema', 'recente'), ('catalogo', 'captura_catalogo')}
+                self.assertEqual(len(observados), 1)
+                self.assertIsNotNone(observados[0], 'primeiro CSV não foi validado')
+                self.assertEqual(set(observados[0]), esperado, 'Dados validou a versão anterior do CSV')
+                csv_path = str(series / m.NOME_CSV)
+                parquet_path = str(series / m.NOME_CSV.replace('.csv', '.parquet'))
+                equivalente, detalhe, n, diverg, _ = pub.confere_parquet(csv_path, parquet_path)
+                self.assertTrue(equivalente, detalhe)
+                self.assertEqual((n, diverg), (3, 0))
+                meta = json.loads((gold / 'meta.json').read_text())
+                self.assertEqual(sum(f['resumo_capturas']['total_historico'] for f in meta['fontes'].values()), 3)
+                self.assertEqual(json.loads((gold / 'publicacao.json').read_text())['linhas_historico'], 3)
