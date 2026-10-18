@@ -113,7 +113,8 @@ def guardar(destino, limite=LIMITE_ASSET):
                         continue
                     rel = arquivo.relative_to(Path(base.RAIZ).resolve()).as_posix()
                     recursos.append({**item, "vintage_id": v["vintage_id"], "arquivo": rel,
-                                     "capturado_em": v["capturado_em"], "sha256": v["sha256"]})
+                                     "capturado_em": v["capturado_em"], "sha256": v["sha256"],
+                                     "bytes": arquivo.stat().st_size})
                     caminhos.add(rel)
     partes = _Partes(destino, limite)
     try:
@@ -198,7 +199,15 @@ def necessita_restaurar(origem):
     manifesto = json.loads((Path(origem) / MANIFESTO).read_text())
     if manifesto["versao"] != 1:
         raise ValueError("versão do manifesto de bronze desconhecida")
-    return any(not base.bronze_disponivel(r) for r in manifesto["recursos"])
+    return any(not _bronze_integro(r) for r in manifesto["recursos"])
+
+
+def _bronze_integro(recurso):
+    """Arquivo presente e, quando o manifesto registra o tamanho, com o tamanho empacotado:
+    um bronze truncado no cache também pede a restauração (review #278)."""
+    if not base.bronze_disponivel(recurso):
+        return False
+    return recurso.get("bytes") is None or os.path.getsize(base.caminho_bronze(recurso["arquivo"])) == recurso["bytes"]
 
 
 def main():

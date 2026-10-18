@@ -309,6 +309,19 @@ class TestSelecaoEBronzeDuravel(unittest.TestCase):
         self.assertFalse(base.bronze_disponivel(v))
         self.assertEqual(os.listdir(caminho.parent), [])
 
+    def test_bronze_truncado_no_cache_pede_restauracao(self):
+        from pathlib import Path
+        from pipeline.energia import estado_bronze as estado
+        v = self.vintage("ds", "a", b"bronze completo " * 50)
+        destino = os.path.join(self.raiz, "backup")
+        man = estado.guardar(destino, limite=1024)
+        caminho = Path(base.caminho_bronze(v["arquivo"]))
+        self.assertEqual(man["recursos"][0]["bytes"], caminho.stat().st_size)
+        self.assertFalse(estado.necessita_restaurar(destino))
+        caminho.write_bytes(caminho.read_bytes()[:10])
+        self.assertTrue(base.bronze_disponivel(v))  # o arquivo existe: só o tamanho denuncia
+        self.assertTrue(estado.necessita_restaurar(destino))
+
     def test_seed_versionado_fora_do_bronze_nao_interrompe_backup(self):
         from pathlib import Path
         from pipeline.energia import estado_bronze as estado
@@ -460,6 +473,12 @@ class TestRestauracaoDeCacheParcial(unittest.TestCase):
                 con.commit()
                 con.close()
                 man = estado.guardar(assets, limite=1024)
+            # cada geração publica o manifesto com nome próprio; um anterior, que aponta para uma
+            # parte já removida, fica na release e não pode ser o escolhido
+            manifesto_publicado = "energia-bronze-manifesto-20261018T014500Z.json"
+            (assets / estado.MANIFESTO).rename(assets / manifesto_publicado)
+            (assets / "energia-bronze-manifesto-20261017T014500Z.json").write_text(json.dumps(
+                {**man, "partes": [{"nome": "energia-bronze.parte-0000-removida", "bytes": 1, "sha256": "0" * 64}]}))
             bruto_original = (repo / arquivo).read_bytes()
             antigo = tmp / "aneel-antigo.db"
             antigo.write_bytes(b"familia antiga da release")
@@ -479,17 +498,18 @@ class TestRestauracaoDeCacheParcial(unittest.TestCase):
 import os, pathlib, shutil, sys
 args = sys.argv[1:]
 assert args[:2] == ['release', 'download'], args
-nome = args[args.index('--pattern') + 1]
-origem = pathlib.Path(os.environ['ENERGIA_FAKE_RELEASE']) / nome
-if not origem.is_file():
+padrao = args[args.index('--pattern') + 1]
+origens = sorted(pathlib.Path(os.environ['ENERGIA_FAKE_RELEASE']).glob(padrao))
+if not origens:
     sys.exit(1)
 destino = pathlib.Path(args[args.index('--dir') + 1])
 destino.mkdir(parents=True, exist_ok=True)
-if (destino / nome).exists():
-    sys.exit(1)
-shutil.copyfile(origem, destino / nome)
-with open(os.environ['ENERGIA_FAKE_LOG'], 'a') as f:
-    f.write(nome + '\\n')
+for origem in origens:
+    if (destino / origem.name).exists():
+        sys.exit(1)
+    shutil.copyfile(origem, destino / origem.name)
+    with open(os.environ['ENERGIA_FAKE_LOG'], 'a') as f:
+        f.write(origem.name + '\\n')
 ''')
             gh.chmod(0o755)
             texto = (raiz_codigo / ".github/workflows/atualizar-energia.yml").read_text()
@@ -524,7 +544,7 @@ with open(os.environ['ENERGIA_FAKE_LOG'], 'a') as f:
                 # Segunda passagem baixa só o manifesto; arquivos já recuperados não
                 # fazem baixar novamente bancos ou partes grandes.
                 self.assertEqual(downloads.count("energia-silver-familias.tar.gz"), 1)
-                self.assertEqual(downloads.count(estado.MANIFESTO), rodada)
+                self.assertEqual(downloads.count(manifesto_publicado), rodada)
                 for parte in man["partes"]:
                     self.assertEqual(downloads.count(parte["nome"]), 1)
 
@@ -569,7 +589,11 @@ class TestCopiaDuravelNoWorkflow(unittest.TestCase):
         linha_upload = next(l for l in bronze.splitlines() if 'gh release upload energia-estado "$parte"' in l)
         self.assertNotIn("--clobber", linha_upload)
         self.assertIn('select(.state == "uploaded")', bronze)
-        self.assertLess(bronze.index("energia-bronze.parte-*"), bronze.index("energia-bronze-manifesto.json"))
+        upload_manifesto = next(l for l in bronze.splitlines() if 'gh release upload energia-estado "/tmp/energia-bronze-duravel/$MANIFESTO_NOVO"' in l)
+        self.assertNotIn("--clobber", upload_manifesto, "o gh apaga o asset antes de subir o substituto")
+        self.assertIn('MANIFESTO_NOVO="energia-bronze-manifesto-$(date -u', bronze)
+        self.assertLess(bronze.index("energia-bronze.parte-*"), bronze.index(upload_manifesto))
+        self.assertLess(bronze.index(upload_manifesto), bronze.index("gh release delete-asset"))
 
     def test_falha_na_restauracao_do_bronze_abre_alerta(self):
         passos = self.passos()

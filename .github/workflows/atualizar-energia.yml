@@ -94,7 +94,11 @@ jobs:
           # Nesse primeiro ciclo, os coletores recapturam órfãs e os blocos opcionais
           # sem bronze ficam indisponíveis com motivo (nunca zero nem data de hoje).
           mkdir -p /tmp/energia-bronze-restaurado
-          if gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-bronze-manifesto.json" --dir /tmp/energia-bronze-restaurado; then
+          # Cada geração publica um manifesto com nome próprio (energia-bronze-manifesto-<UTC>.json);
+          # vale o mais recente, e as partes dele subiram antes dele.
+          if gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-bronze-manifesto-*.json" --dir /tmp/energia-bronze-restaurado; then
+            ULTIMO=$(ls /tmp/energia-bronze-restaurado/energia-bronze-manifesto-*.json | sort | tail -n 1)
+            mv "$ULTIMO" /tmp/energia-bronze-restaurado/energia-bronze-manifesto.json
             NECESSARIO=$(python3 -m pipeline.energia.estado_bronze necessario /tmp/energia-bronze-restaurado)
             if [ "$NECESSARIO" = "sim" ]; then
               python3 - <<'PYBRONZE' > /tmp/energia-bronze-partes.txt
@@ -259,13 +263,23 @@ jobs:
               gh release upload energia-estado "$parte" --repo "$GITHUB_REPOSITORY"
             fi
           done
-          gh release upload energia-estado /tmp/energia-bronze-duravel/energia-bronze-manifesto.json --repo "$GITHUB_REPOSITORY" --clobber
-          # Depois do manifesto novo, as partes antigas deixam de ser necessárias.
+          # Manifesto com nome novo, sem --clobber: o gh apaga o asset antes de subir o substituto,
+          # e uma falha no upload deixaria a release sem manifesto (review #278). O anterior só
+          # sai depois de confirmado o novo; com set -e, falha no upload encerra antes das remoções.
+          MANIFESTO_NOVO="energia-bronze-manifesto-$(date -u +%Y%m%dT%H%M%SZ).json"
+          cp /tmp/energia-bronze-duravel/energia-bronze-manifesto.json "/tmp/energia-bronze-duravel/$MANIFESTO_NOVO"
+          gh release upload energia-estado "/tmp/energia-bronze-duravel/$MANIFESTO_NOVO" --repo "$GITHUB_REPOSITORY"
+          # Depois do manifesto novo, os manifestos anteriores e as partes que ele não referencia saem.
           gh release view energia-estado --repo "$GITHUB_REPOSITORY" --json assets \
-            --jq '.assets[].name | select(startswith("energia-bronze.parte-"))' > /tmp/energia-bronze-assets.txt
-          while IFS= read -r parte; do
-            if [ ! -f "/tmp/energia-bronze-duravel/$parte" ]; then
-              gh release delete-asset energia-estado "$parte" --repo "$GITHUB_REPOSITORY" --yes
+            --jq '.assets[].name | select(startswith("energia-bronze"))' > /tmp/energia-bronze-assets.txt
+          while IFS= read -r nome; do
+            case "$nome" in
+              energia-bronze-manifesto*.json) OBSOLETO=$([ "$nome" != "$MANIFESTO_NOVO" ] && echo sim || true) ;;
+              energia-bronze.parte-*) OBSOLETO=$([ ! -f "/tmp/energia-bronze-duravel/$nome" ] && echo sim || true) ;;
+              *) OBSOLETO= ;;
+            esac
+            if [ "$OBSOLETO" = "sim" ]; then
+              gh release delete-asset energia-estado "$nome" --repo "$GITHUB_REPOSITORY" --yes
             fi
           done < /tmp/energia-bronze-assets.txt
           rm -rf /tmp/energia-bronze-duravel
