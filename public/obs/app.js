@@ -293,6 +293,20 @@ const VIEW_DATA = {
   fidc: ["fidc"],
   subnacional: ["subnacional"],
 };
+/* Datas e vintages pertencem à publicação de cada grupo. O carimbo global
+   é o mais antigo do conjunto: só serve para visão transversal/legado. */
+function metaDaPagina(view = currentView()) {
+  const meta = state.data.meta || {};
+  if (!meta.grupos) return meta;
+  const primarios = { alerts: ["alertas_central", "pulse"], research: ["pulse", "overview", "antecedentes", "regimes_series", "sectors", "exposures", "scenario", "rj", "quality"] };
+  const nomes = view === "overview" ? ["overview", "pulse", "ibcc", ...Object.values(OV_BLOCO_DATA).flat()] : [view, ...(VIEW_DATA[view] || []), ...(primarios[view] || [])];
+  const arquivos = (nomes.length ? nomes : [view]).map(n => n + ".json");
+  const registros = Object.values(meta.grupos).filter(g => (g.arquivos || []).some(p => arquivos.includes(p)));
+  if (!registros.length) return meta;
+  const datas = registros.map(g => g.gerado_em);
+  const primeiro = registros.slice().sort((a, b) => String(a.gerado_em || "").localeCompare(String(b.gerado_em || "")))[0];
+  return { ...meta, ...(primeiro.meta || {}), ...primeiro, gerado_em: datas.every(Boolean) ? datas.slice().sort()[0] : null };
+}
 /* Gold que falhou no carregamento fica marcado como null (e o motivo em
    GOLD_FALHAS): quem chama distingue "ainda não pedido" (undefined) de "pediu e
    não veio" (null) e NÃO refaz a chamada a cada render. Um 404 devolve HTML,
@@ -794,7 +808,7 @@ window.grafLink = (el, modo) => {
     texto = embedSnippet(`${location.origin}/obs/embed.html?g=${v}${alvo ? "." + alvo : ""}`, u.toString(), titulo);
   } else if (modo === 2) {
     const pe = el.closest(".chartfoot");
-    const m = state.data.meta || {};
+    const m = metaDaPagina();
     texto = citacaoGrafico({ titulo, fonte: pe && pe.dataset.fonte, periodo: pe && pe.dataset.periodo, processado: (m.gerado_em || "").slice(0, 10), url: u.toString() });
   } else {
     texto = u.toString();
@@ -2599,7 +2613,7 @@ function mapaLink(v, extra) {
 }
 function renderMapa() {
   const el = document.getElementById("view-mapa");
-  const meta = state.data.meta || {};
+  const meta = metaDaPagina();
   const vs = meta.vintages || {};
   const noMenu = Array.from(document.querySelectorAll("#tabs button[data-view]")).map(b => b.dataset.view);
   const abas = noMenu.filter(v => v !== "mapa");
@@ -2665,7 +2679,7 @@ const VIEW_VINTAGE = { mapa: "sgs", overview: "sgs", pulse: "sgs", leading: "sgs
   products: "ifdata", product: "ifdata", compare: "ifdata", research: "ifdata",
   market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes", estados: "scr", estado: "scr", sfn: "ifdata", conduta: "bcb_pas", emprego: "caged", funding: "ifdata", consorcios: "consorcios", prazo: "scr", fidc: "fidc", cobranca: "cobranca", subnacional: "sadipem" };
 function pageVintage(view) {
-  const vs = (state.data.meta || {}).vintages || {};
+  const vs = metaDaPagina(view).vintages || {};
   return vs[VIEW_VINTAGE[view]] || null;
 }
 const INAD_DEFS = {
@@ -2675,7 +2689,7 @@ const INAD_DEFS = {
   if90: "IF >90d",
 };
 function inadChip(tipo) {
-  const c = (state.data.meta || {}).inad_conceitos || {};
+  const c = (metaDaPagina()).inad_conceitos || {};
   const defs = {
     sgs: (c.sgs || {}).def || "parcelas em atraso >90 dias ÷ carteira do crédito referencial (BCB/SGS 21082).",
     scr: (c.scr || {}).def || "inadimplência arrastada: operações com parcela vencida >90d contadas por inteiro ÷ carteira ativa (SCR.data).",
@@ -3092,7 +3106,7 @@ function tabelasDaPagina(view) {
 window.exportarPagina = () => {
   const view = currentView();
   const tabelas = tabelasDaPagina(view);
-  const meta = state.data.meta || {};
+  const meta = metaDaPagina();
   const g = GUIA[view] || {};
   const vintage = ULTIMO_HEAD.vintage || pageVintage(view) || "";
   const sobre = [
@@ -3143,7 +3157,7 @@ function linhaObservatorio(view) {
 }
 function pageHead(o) {
   ULTIMO_HEAD = o || {};
-  const meta = state.data.meta || {};
+  const meta = metaDaPagina();
   const upd = meta.gerado_em ? meta.gerado_em.slice(0, 16).replace("T", " ") + " UTC" : "–";
   return `<div class="pagehead">
     <div class="ph-left">
@@ -3284,7 +3298,7 @@ const VIEW_COLETORES = {
   pulse: ["bcb_sgs"], overview: ["bcb_sgs"], scenarios: ["bcb_sgs", "focus"], rural: ["sicor"], ampliado: ["bcb_sgs", "cvm_ofertas", "cvm_securit"], bndes: ["bndes", "bcb_sgs"], sfn: ["sfn_cadastro", "ifdata", "regimes"], conduta: ["bcb_pas", "cvm_pas", "reclamacoes"], emprego: ["bcb_sgs", "ipea_caged"], funding: ["bcb_sgs", "ifdata_passivo", "cvm_cda"], consorcios: ["bcb_consorcios"], cobranca: ["datajud_cobranca"],
 };
 function fontesEmPane(view) {
-  const st = (state.data.meta || {}).fontes_status || {};
+  const st = (metaDaPagina()).fontes_status || {};
   return (VIEW_COLETORES[view] || []).filter(k => {
     const f = st[k];
     if (!f || (f.ok || 0) > 0 || !(f.falhas || []).length) return false;
@@ -3294,7 +3308,7 @@ function fontesEmPane(view) {
 function fontePane(view) {
   const ks = fontesEmPane(view);
   if (!ks.length) return "";
-  const gerado = ((state.data.meta || {}).gerado_em || "").slice(0, 10);
+  const gerado = ((metaDaPagina()).gerado_em || "").slice(0, 10);
   return `<div class="note warn pane" role="status"><b>Fonte em pane:</b> a coleta de <b>${ks.join(", ")}</b> falhou na execução de ${gerado}. Os números desta aba são os da última coleta íntegra (data-base declarada em cada bloco); a recoleta é diária. <a href="/observatorio/methodology" onclick="nav('method');return false">estado das fontes</a></div>`;
 }
 const dica = txt => `<span class="src" title="${attr(txt)}" style="cursor:help">ⓘ</span>`;
@@ -3531,7 +3545,7 @@ function renderOverview() {
   const pos = seg === "total" ? overview.ibcc_posicao : ibccPositionFrom(ibcc);
   const diag = overview.diagnostico;
   const chg = overview.mudancas;
-  const meta = state.data.meta || {};
+  const meta = metaDaPagina();
   const npl = state.data.npl;
   const P = state.data.products;
   const ofr = state.data.openfinance && (state.data.openfinance.demo === false ? state.data.openfinance : null);
@@ -3546,7 +3560,7 @@ function renderOverview() {
     </div>
     ${phActions(`<button class="btn ghost small" onclick="ovTogglePersonalizar()" aria-expanded="${ovPersonalizando}">personalizar página</button>
       <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>aviso('URL copiada — filtros incluídos'))">copiar URL</button>
-      <button class="btn ghost small" onclick="dlFile('overview_'+(state.data.meta&&state.data.meta.gerado_em||'').slice(0,10)+'.json', JSON.stringify({extraido_em:new Date().toISOString(), seg: state.filters.seg, overview: state.data.overview, npl_sistema: state.data.npl && state.data.npl.sistema}, null, 1), 'application/json')">baixar JSON</button>
+      <button class="btn ghost small" onclick="dlFile('overview_'+(metaDaPagina('overview').gerado_em||'').slice(0,10)+'.json', JSON.stringify({extraido_em:new Date().toISOString(), seg: state.filters.seg, overview: state.data.overview, npl_sistema: state.data.npl && state.data.npl.sistema}, null, 1), 'application/json')">baixar JSON</button>
       <button class="btn ghost small" onclick="window.print()" title="usar 'Salvar como PDF' na impressão">PDF</button>
       <button class="btn ghost small" onclick="ovSaveView()">salvar visão</button>
       ${(loadLS("obc_views", []).length ? `<select onchange="ovLoadView(this.value)" aria-label="visões salvas"><option value="">visões salvas…</option>${loadLS("obc_views", []).map((vx, i) => `<option value="${i}">${vx.nome}</option>`).join("")}</select>` : "")}
@@ -3645,7 +3659,7 @@ function renderOverview() {
       <details class="decomp"><summary>decomposição por componente (contribuições atuais)</summary>
         ${ibcc.atual ? Object.entries(ibcc.atual.contribuicoes).map(([c, v]) => contribBar(ibcc.componentes[c] ? ibcc.componentes[c].label : c, v)).join("") : ""}
       </details>
-      ${chartFooter({ fonte: "Séries BCB/SGS + IBGE (insumos observados); índice calculado", periodo: ibcc.serie ? `${fmt.my(ibcc.serie[0].ref)}–${fmt.my(ibcc.serie[ibcc.serie.length - 1].ref)}` : "–", atualizado: meta.gerado_em ? meta.gerado_em.slice(0, 10) : "–", unidade: "índice (100 = média)", nota: ibcc.metodo })}
+      ${chartFooter({ fonte: "Séries BCB/SGS + IBGE (insumos observados); índice calculado", periodo: ibcc.serie ? `${fmt.my(ibcc.serie[0].ref)}–${fmt.my(ibcc.serie[ibcc.serie.length - 1].ref)}` : "–", atualizado: (metaDaPagina("ibcc").gerado_em || "–").slice(0, 10), unidade: "índice (100 = média)", nota: ibcc.metodo })}
     </div>
     <div class="card">
       <h4>Principais mudanças <span class="src">(vs. mês anterior)</span> ${badge("calculado", "Δ mensal normalizado pelo desvio-padrão histórico")}</h4>
@@ -3796,7 +3810,7 @@ function renderOverview() {
           `<div class="src" style="margin-top:4px"><b>Quadrantes:</b> acima-direita = expansão acelerada com inadimplência alta (acompanhar de perto) · acima-esquerda = expansão com carteira saudável · abaixo-direita = inadimplência alta sem crescimento (estoque problemático) · abaixo-esquerda = conservador.</div>`;
       })()}
       <div class="legend">${[...new Set(pts.map(p => p.grp))].sort().map(gx => `<span><span class="sw" style="background:${ccol(SR_COLORS[gx] || "#64748b")};height:8px;border-radius:4px"></span>${gx}</span>`).join("")}<span class="src">área ∝ carteira · corte de relevância: carteira ≥ R$ 5 bi (declarado) · ${pts.length} instituições</span></div>
-      ${chartFooter({ fonte: "BCB IF.data " + npl.data_base, periodo: fmtTri ? "" : "", atualizado: meta.gerado_em ? meta.gerado_em.slice(0, 10) : "–", unidade: "% × %", nota: npl.metodo })}
+      ${chartFooter({ fonte: "BCB IF.data " + npl.data_base, periodo: fmtTri ? "" : "", atualizado: (metaDaPagina("npl").gerado_em || "–").slice(0, 10), unidade: "% × %", nota: npl.metodo })}
       <div class="src"><a href="/observatorio/compare" onclick="nav('compare');return false">comparar instituições →</a> · <a href="/observatorio/institutions" onclick="nav('institutions');return false">painel de instituições →</a></div></div>`;
   }
 
@@ -4421,7 +4435,7 @@ function renderSectorPage() {
   <div class="grid g2" style="margin-top:12px">
     <div class="card"><h4>${PPESQ.medida} (nível) ${badge("observado")}</h4>
       ${lineChart({ series: [{ pts: s.serie_obs.map(o => ({ x: o.ref, y: o.v })), color: "#1d4e89", label: PPESQ.medida.toLowerCase() }], h: 160, unit: "índice 2022=100", fonte: PPESQ.fonte, status: "observado" })}
-      ${chartFooter({ fonte: PPESQ.cod_fonte, periodo: `${fmt.my(s.serie_obs[0].ref)}–${fmt.my(s.ref)}`, atualizado: state.data.meta ? state.data.meta.gerado_em.slice(0, 10) : "–", unidade: "índice 2022=100", nota: "sem ajuste sazonal" })}</div>
+      ${chartFooter({ fonte: PPESQ.cod_fonte, periodo: `${fmt.my(s.serie_obs[0].ref)}–${fmt.my(s.ref)}`, atualizado: (metaDaPagina().gerado_em || "–").slice(0, 10), unidade: "índice 2022=100", nota: "sem ajuste sazonal" })}</div>
     <div class="card"><h4>Crescimento interanual ${badge("calculado")}</h4>
       ${lineChart({ series: [{ pts: s.serie_yoy.map(o => ({ x: o.ref, y: o.v })), color: "#0e7c7b", label: "crescimento a/a" }], h: 160, hlines: [{ y: 0, color: "#aaa" }], unit: "%", fonte: `${PPESQ.fonte} (calculado)`, status: "calculado" })}
       ${chartFooter({ fonte: `${PPESQ.fonte} (calculado)`, periodo: "var. % vs. mesmo mês do ano anterior", atualizado: "", unidade: "%", nota: "yoy mitiga sazonalidade" })}</div>
@@ -5037,7 +5051,7 @@ function renderScenarios() {
     <h4>Inadimplência ${segName()}: base ${badge("previsao")} vs. cenário ${badge("cenario")}</h4>
     <div class="legend"><span><span class="sw" style="background:var(--c-line1)"></span>observado / base (tracejada)</span><span><span class="sw" style="background:var(--c-forecast)"></span>cenário</span><span><span class="sw" style="background:var(--c-band);height:10px"></span>banda do cenário</span></div>
     ${chart}
-    ${chartFooter({ fonte: "BCB/SGS 21082 + elasticidades documentadas", periodo: "36m observados + 12m", atualizado: state.data.meta ? state.data.meta.gerado_em.slice(0, 10) : "–", unidade: "%", nota: scenario.nota })}
+    ${chartFooter({ fonte: "BCB/SGS 21082 + elasticidades documentadas", periodo: "36m observados + 12m", atualizado: (metaDaPagina().gerado_em || "–").slice(0, 10), unidade: "%", nota: scenario.nota })}
   </div>
   <h3>Cadeia de transmissão do choque</h3>
   ${transmissionChain()}
@@ -6663,7 +6677,7 @@ function buildReport() {
   const hdr = document.createElement("div");
   hdr.className = "printonly";
   hdr.id = "reportHeader";
-  const m = state.data.meta;
+  const m = metaDaPagina();
   hdr.innerHTML = `<h1 style="font-family:var(--serif)">${m ? m.plataforma.name : ""} — Relatório</h1>
   <p>Gerado em ${new Date().toLocaleString("pt-BR")} · ${m ? m.plataforma.disclaimer : ""}</p>
   <p>Fontes: ${m ? (m.fontes_reais || []).join(", ") : ""}.</p><hr>`;
@@ -6830,7 +6844,7 @@ function renderInstitutions() {
   ${regimesSecao()}
   ${coopSecao(inst)}
   ${interconexaoSecao(inst)}
-  ${chartFooter({ fonte: `BCB IF.data (Olinda), conglomerados prudenciais, ${inst.anomes}`, periodo: inst.anomes + (inst.anomes_anterior ? ` (Δ vs. ${inst.anomes_anterior})` : ""), atualizado: state.data.meta ? state.data.meta.gerado_em.slice(0, 10) : "–", unidade: "R$", nota: inst.metodo })}`;
+  ${chartFooter({ fonte: `BCB IF.data (Olinda), conglomerados prudenciais, ${inst.anomes}`, periodo: inst.anomes + (inst.anomes_anterior ? ` (Δ vs. ${inst.anomes_anterior})` : ""), atualizado: (metaDaPagina().gerado_em || "–").slice(0, 10), unidade: "R$", nota: inst.metodo })}`;
   INST_POR_COD = Object.fromEntries(list.map(i => [i.cod_inst, i]));
   el.querySelectorAll("details[data-inst]").forEach(d => d.addEventListener("toggle", () => {
     if (!d.open || d.dataset.pronto) return;
@@ -13855,7 +13869,7 @@ function renderCompare() {
   if (m) {
     document.getElementById("brandName").textContent = m.plataforma.name;
     document.title = m.plataforma.name;
-    document.getElementById("updatedAt").textContent = "pipeline: " + (m.gerado_em || "").slice(0, 16).replace("T", " ") + " UTC";
+    document.getElementById("updatedAt").textContent = "publicação mais antiga: " + (m.gerado_em || "").slice(0, 16).replace("T", " ") + " UTC";
     document.getElementById("footDisclaimer").textContent = m.plataforma.disclaimer;
   }
   updateAlertBadge();

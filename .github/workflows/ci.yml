@@ -66,6 +66,10 @@ jobs:
       - name: Tipos
         run: npx tsc --noEmit
 
+      - name: Contrato de grupos e publicação seletiva da gold
+        # Stdlib, fixtures sintéticas; um arquivo novo sem grupo bloqueia o PR.
+        run: python3 -m unittest pipeline.tests.test_publicar_gold
+
       - name: Módulos Python compilam
         # sem instalar dependências: o pipeline é stdlib + pypdf, e aqui só
         # interessa pegar erro de sintaxe/import antes do agendamento das 6h

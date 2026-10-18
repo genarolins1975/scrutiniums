@@ -181,7 +181,7 @@ export function fmtSinal(v: number, casas = 2, mostrarMais = false): string {
   return v < 0 ? `−${s}` : mostrarMais ? `+${s}` : s;
 }
 
-/** `gerado_em` do meta.json publicado: base do selo de frescor, calculado no navegador. */
+/** Carimbo mais antigo entre grupos: limite conservador do frescor do conjunto. */
 export function geradoEmPublicado(): string | null {
   try {
     const g = lerGold("meta").gerado_em;
@@ -264,7 +264,7 @@ export function resumoDiario(): ResumoDiario | null {
     interpretacao: r.interpretacao,
   });
   return {
-    geradoEm: meta?.gerado_em ?? o.gerado_em,
+    geradoEm: o.gerado_em ?? meta?.gerado_em,
     frase: o.diagnostico.frase,
     refDiagnostico: o.diagnostico.ref,
     confianca: o.diagnostico.confianca,

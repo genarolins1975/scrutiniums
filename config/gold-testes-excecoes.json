@@ -1,0 +1,105 @@
+{
+  "src/tests/i18n-url.test.ts": {
+    "somente": [],
+    "motivo": "As referências /obs/data/gold são URLs/contratos de acesso ou cache; não lê conteúdo de gold."
+  },
+  "src/tests/i18n-acesso-sitemap.test.ts": {
+    "somente": [],
+    "motivo": "As referências /obs/data/gold são URLs/contratos de acesso ou cache; não lê conteúdo de gold."
+  },
+  "src/tests/i18n-vitrines-acesso-sitemap.test.ts": {
+    "somente": [],
+    "motivo": "As referências /obs/data/gold são URLs/contratos de acesso ou cache; não lê conteúdo de gold."
+  },
+  "src/tests/i18n-publicas-dinamicas-acesso-sitemap.test.ts": {
+    "somente": [],
+    "motivo": "As referências /obs/data/gold são URLs/contratos de acesso ou cache; não lê conteúdo de gold."
+  },
+  "src/tests/rotas-publicas.test.ts": {
+    "somente": [],
+    "motivo": "As referências /obs/data/gold são URLs/contratos de acesso ou cache; não lê conteúdo de gold."
+  },
+  "src/tests/p1-tecnico.test.ts": {
+    "somente": [],
+    "motivo": "As referências /obs/data/gold são URLs/contratos de acesso ou cache; não lê conteúdo de gold."
+  },
+  "src/tests/consignado-data.test.ts": {
+    "adicionar": [
+      "consignado"
+    ],
+    "motivo": "ARQ.replace(.json, _mun.json) / loader municipal: ambos os arquivos pertencem ao mesmo grupo."
+  },
+  "src/tests/moradia-data.test.ts": {
+    "adicionar": [
+      "moradia"
+    ],
+    "motivo": "ARQ.replace(.json, _mun.json) / loader municipal: ambos os arquivos pertencem ao mesmo grupo."
+  },
+  "src/tests/rural-data.test.ts": {
+    "adicionar": [
+      "rural"
+    ],
+    "motivo": "ARQ.replace(.json, _mun.json) / loader municipal: ambos os arquivos pertencem ao mesmo grupo."
+  },
+  "src/tests/citacao-incorporacao.test.ts": {
+    "motivo": "Enumera toda a pasta ou o catálogo docs/api/contrato-gold.json; protege todos os grupos.",
+    "todos": true
+  },
+  "src/tests/linhagem-mapa.test.ts": {
+    "motivo": "Enumera toda a pasta ou o catálogo docs/api/contrato-gold.json; protege todos os grupos.",
+    "todos": true
+  },
+  "src/tests/observatorio-publico.test.ts": {
+    "motivo": "Enumera abas e verifica existência de todo aba.gold (observatorioAbas); também lê golds institucionais/municipais/imprensa.",
+    "todos": true
+  },
+  "pipeline/tests/test_report.py": {
+    "adicionar": [
+      "overview",
+      "pulse",
+      "emprego-setores-ufs",
+      "instituicoes",
+      "rj",
+      "alerts",
+      "scenario",
+      "quality",
+      "report"
+    ],
+    "motivo": "NECESSARIOS e _ler(nome) carregam os oito objetos publicados para report.build."
+  },
+  "pipeline/tests/test_reclamacoes_consig.py": {
+    "adicionar": [
+      "consignado"
+    ],
+    "motivo": "Testa agregação das reclamações de consignado em pipeline.sources.bcb_reclamacoes."
+  },
+  "pipeline/tests/test_sicor_rural.py": {
+    "adicionar": [
+      "rural"
+    ],
+    "motivo": "Testa os recursos SICOR consumidos pelo builder rural."
+  },
+  "pesquisa/tests/test_fatos_conjuntura.py": {
+    "adicionar": [
+      "pulse",
+      "meta"
+    ],
+    "motivo": "GOLD=fc.GOLD_PUBLICADA e construir/verificar sem argumento leem pulse.json e meta.json (pesquisa/fatos_conjuntura.py)."
+  },
+  "src/tests/i18n-home-fluxo.test.ts": {
+    "somente": [],
+    "motivo": "Verifica idioma, navegação e identidade de componentes/vitrines; não valida conteúdo numérico da gold. Import transitivo ou de tipo não decide publicação."
+  },
+  "src/tests/i18n-home-indice.test.ts": {
+    "somente": [],
+    "motivo": "Verifica idioma, navegação e identidade de componentes/vitrines; não valida conteúdo numérico da gold. Import transitivo ou de tipo não decide publicação."
+  },
+  "src/tests/i18n-vitrine.test.ts": {
+    "somente": [],
+    "motivo": "Verifica idioma, navegação e identidade de componentes/vitrines; não valida conteúdo numérico da gold. Import transitivo ou de tipo não decide publicação."
+  },
+  "pipeline/tests/test_publicar_gold.py": {
+    "todos": true,
+    "motivo": "Valida o inventário integral, atomicidade, dependências, recomposição e bloqueio por infraestrutura; falha compromete o mecanismo de seleção inteiro."
+  }
+}

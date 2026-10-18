@@ -164,78 +164,87 @@ jobs:
             gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
           fi
 
-      - name: Publicar gold no site
-        run: |
-          rsync -a --delete data/gold/ public/obs/data/gold/
-          git status --porcelain public/obs/data | head -20
-
-      # Até 24/09/2026 os testes de conteúdo só rodavam DEPOIS do push (ci.yml via
-      # workflow_run): número errado com cara de número ia ao ar e era acusado horas
-      # depois. Agora a gold do dia passa pela suíte inteira ANTES do commit; reprovada,
-      # nada é publicado, a última publicação íntegra segue no ar e a issue abaixo acusa.
+      # Até 24/09/2026 os testes só rodavam DEPOIS do push: número errado ia ao ar.
+      # Continuam antes do commit. Desde 18/10, cada grupo tem decisão própria;
+      # a composição final (inclusive UFs reconstruídas com fontes retidas) é retestada.
       - name: Node para os testes de conteúdo
         uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: npm
 
-      # As três suítes rodam sempre, e o passo reprova se qualquer uma reprovar. Até
-      # 13/10/2026 o `bash -e` parava no primeiro erro do vitest e as suítes Python não
-      # rodaram em nenhuma das execuções retidas. A lista de testes reprovados vai para
-      # a issue: a causa muda de um dia para outro e a issue precisa dizer qual é.
-      - name: Testes de conteúdo sobre a gold do dia (antes de publicar)
+      # As três suítes continuam completas, mesmo quando uma reprova: em 13/10/2026
+      # bash -e impediu as suítes Python de rodar depois do vitest. O orquestrador
+      # registra cada teste e captura cada código, sem interromper as outras suítes.
+      # Em 16/10, ENOBUFS abortou o vitest e a issue culpou Python indevidamente;
+      # em 17/10 o Chromium não carregou. Agora esses casos são INCONCLUSIVOS:
+      # uma repetição da suíte; reincidência bloqueia todos os grupos, com log.
+      - name: Publicar gold no site — testes completos e seleção antes do commit
         id: testes
         continue-on-error: true
         run: |
           set +e
-          npm ci || exit 1
-          # o vitest inclui testes de navegador que exigem Chromium (conta-cpf-browser, desde
-          # 15/10/2026); em 17/10/2026 ele falhou ao carregar e reteve a gold. Mesmo passo do ci.yml
-          npx --no-install playwright install --with-deps chromium || exit 1
-          node scripts/minify-obs.mjs || exit 1
-          npx vitest run --reporter=default --reporter=json --outputFile.json=vitest-resultado.json
+          python3 scripts/validar_publicar_gold.py
+          RESULTADO=$?
+          # Compatibilidade: códigos reais e logs permanecem disponíveis ao relatório
+          # anterior. A decisão usa resultado.json, não interpreta texto do terminal.
+          python3 scripts/testes_reprovados.py --suite vitest
           V=$?
-          # a saída do unittest também vai para arquivo: a issue de retenção lista os testes
-          # Python reprovados, e os códigos de saída dizem qual das três suítes falhou. Em
-          # 16/10/2026 a issue culpou as suítes Python (que passaram) por um vitest abortado
-          python3 -m unittest discover -s pipeline/tests -t . 2>&1 | tee pipeline-testes.log
+          python3 scripts/testes_reprovados.py --suite pipeline 2>&1 | tee pipeline-testes.log
           P=${PIPESTATUS[0]}
-          python3 -m unittest discover -s pesquisa/tests -t . 2>&1 | tee pesquisa-testes.log
+          python3 scripts/testes_reprovados.py --suite pesquisa 2>&1 | tee pesquisa-testes.log
           Q=${PIPESTATUS[0]}
           echo "vitest=$V pipeline=$P pesquisa=$Q" | tee testes-codigos.txt
-          [ "$V$P$Q" = "000" ]
+          if [ "$RESULTADO" -le 1 ] && [ -f .gold-publicacao/resultado.json ]; then
+            echo "publicacao_segura=1" >> "$GITHUB_OUTPUT"
+          fi
+          exit "$RESULTADO"
 
-      - name: Reter publicação reprovada
+      - name: Reter publicação reprovada — relatório dos grupos
         id: reter
-        if: steps.testes.outcome == 'failure'
+        if: steps.testes.outcome == 'failure' && steps.testes.outputs.publicacao_segura == '1'
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          git checkout -- public/obs/data
-          git clean -fdq public/obs/data
+          # Não desfaz os grupos aprovados: os retidos já mantêm os bytes da base.
           echo "retida=1" >> "$GITHUB_OUTPUT"
-          REPROVADOS=$(python3 scripts/testes_reprovados.py vitest-resultado.json testes-codigos.txt pipeline-testes.log pesquisa-testes.log)
-          ULTIMA=$(python3 -c "import json;print(json.load(open('public/obs/data/gold/meta.json'))['gerado_em'][:16])")
+          python3 scripts/testes_reprovados.py --publicacao .gold-publicacao/resultado.json > .gold-publicacao/relatorio.md
+          # O relatório anterior segue como diagnóstico adicional (incidente 16/10).
+          python3 scripts/testes_reprovados.py vitest-resultado.json testes-codigos.txt pipeline-testes.log pesquisa-testes.log > .gold-publicacao/diagnostico-legado.md
+          python3 - <<'PYBODY'
+          import os
+          from pathlib import Path
+          texto = Path('.gold-publicacao/relatorio.md').read_text()
+          texto = texto[:55000] + ('\n\nRelatório completo no artefato gold-publicacao.' if len(texto) > 55000 else '')
+          Path('.gold-publicacao/issue.md').write_text('Execução: ' + os.environ['RUN_URL'] + '\n\n' + texto)
+          PYBODY
           TITULO="Testes de conteúdo reprovaram a gold do dia: publicação retida"
-          CORPO="Execução de $(date -u +%d/%m/%Y\ %H:%M) UTC: ${RUN_URL}
-
-          A gold reconstruída hoje não passou na suíte de testes de conteúdo e NÃO foi
-          publicada. O site segue servindo a última publicação aprovada, gerada em ${ULTIMA} UTC.
-
-          Testes reprovados nesta execução:
-          ${REPROVADOS}"
           EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
             --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
           if [ -n "$EXISTENTE" ]; then
-            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "$CORPO"
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body-file .gold-publicacao/issue.md
           else
-            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO" \
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body-file .gold-publicacao/issue.md \
               --assignee "$GITHUB_REPOSITORY_OWNER"
           fi
 
+      - name: Guardar decisões, mapa de testes e logs de todas as tentativas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gold-publicacao
+          include-hidden-files: true
+          path: |
+            .gold-publicacao/
+            vitest-resultado.json
+            testes-codigos.txt
+            pipeline-testes.log
+            pesquisa-testes.log
+          retention-days: 30
+
       - name: Commit e push das atualizações
-        if: steps.testes.outcome == 'success'
+        if: always() && steps.testes.outputs.publicacao_segura == '1'
         run: |
           git config user.name "pipeline-observatorio[bot]"
           git config user.email "pipeline@scrutiniums.com"
@@ -263,9 +272,9 @@ jobs:
       # Actions mostrou 18 dias de sucesso com o gold parado. A issue já foi aberta ou
       # comentada no passo anterior; o job `alertar` não duplica.
       - name: Sinalizar publicação retida
-        if: steps.reter.outputs.retida == '1'
+        if: always() && steps.testes.outcome == 'failure'
         run: |
-          echo "::error::gold do dia retida pelos testes de conteúdo; ver a issue 'Testes de conteúdo reprovaram a gold do dia'"
+          echo "::error::há retenção, falha de infraestrutura ou teste sem gold reprovado; ver o relatório e a issue 'Testes de conteúdo reprovaram a gold do dia'"
           exit 1
 
   # A falha de 03-06/08 ficou quatro dias invisível: o pipeline morria em

@@ -233,7 +233,7 @@ export function montarResumoEmail(agora: Date): { edicao: string; subject: strin
     "Resumo do crédito no Brasil · Scrutiniums",
     `Publicação de ${f?.publicadoEm ?? edicao} (Brasília) · referência ${fmtRefMes(r.refDiagnostico)} · confiança ${r.confianca}`,
     ...(f?.atrasado
-      ? ["", `ATENÇÃO: esta é a última publicação disponível, feita ${f.idade}. O processamento diário não publicou dados novos desde então.`]
+      ? ["", `ATENÇÃO: esta é a última publicação disponível no carimbo conservador do conjunto, feita ${f.idade}. Alguns grupos podem ter publicação mais recente; consulte a referência de cada indicador.`]
       : []),
     "",
     "DIAGNÓSTICO (dado calculado, frase montada por regras)",

@@ -125,5 +125,71 @@ def main(caminho, arq_codigos=None, *logs):
     return 0
 
 
+def publicacao(caminho):
+    """Relatório auditável da seleção; não atribui infra a reprovação de dado."""
+    r = json.loads(Path(caminho).read_text(encoding="utf-8"))
+    print("## Publicação por grupo\n")
+    if r.get("inconclusivo"):
+        print("**Infraestrutura: execução inconclusiva após uma repetição. Nada publicado.**\n")
+    print("### Grupos retidos\n")
+    for g, motivos in sorted(r.get("retidos", {}).items()):
+        data = r.get("datas_anteriores", {}).get(g) or "data não informada"
+        print(f"- **{g}** — última geração publicada: {data}")
+        for m in sorted(set(motivos)):
+            print(f"  - {m}")
+    if not r.get("retidos"):
+        print("Nenhum.\n")
+    print("\n### Grupos publicados\n")
+    for g in r.get("publicados", []):
+        print(f"- **{g}** — geração: {r['datas_publicadas'].get(g) or 'data não informada'}")
+    if not r.get("publicados"):
+        print("Nenhum.\n")
+    print("\n### Execução das suítes\n")
+    for rodada, suites in enumerate(r.get("execucoes", [])):
+        for nome, suite in suites.items():
+            print(f"- Rodada {rodada}, {nome}: saída {suite['codigo']}; {len(suite['tentativas'])} tentativa(s)")
+            for tentativa in suite['tentativas']:
+                if tentativa.get("inconclusivo"):
+                    print(f"\nInfraestrutura: {tentativa['motivo']}\n\n```text\n{tentativa['trecho_log']}\n```\n")
+                for arquivo, resultado in tentativa.get('resultados', {}).items():
+                    if resultado['estado'] == 'failed':
+                        print(f"  - `{arquivo}`: {resultado.get('detalhe', '')[:1600]}")
+    for preparo in r.get("preparo", []):
+        for tentativa in preparo['tentativas']:
+            if tentativa.get('inconclusivo'):
+                print(f"\nInfraestrutura no preparo: {tentativa['motivo']}\n\n```text\n{tentativa['trecho_log']}\n```\n")
+    print("\n### Falhas de testes sem leitura de gold (não decidem aprovação de grupo)\n")
+    for nome, resultado in r.get("falhas_sem_gold", {}).items():
+        print(f"- `{nome}`: {resultado.get('detalhe', '')[:1000]}")
+    print("\nMapa de proteção, resultados individuais e logs de todas as tentativas: artefato `gold-publicacao` desta execução.")
+    return 0
+
+
+def suite_legada(nome, pasta=".gold-publicacao"):
+    """Mantém códigos e logs usados pelo relatório anterior, sem simular sucesso."""
+    pasta = Path(pasta)
+    if nome == 'vitest':
+        Path('vitest-resultado.json').unlink(missing_ok=True)
+    r = json.loads((pasta / 'resultado.json').read_text())
+    rodadas = r.get('execucoes', [])
+    if not rodadas:
+        print('Infraestrutura: suíte não executada; ver preparo em resultado.json')
+        return 2
+    s = rodadas[-1][nome]
+    rodada = pasta / f'rodada-{len(rodadas)-1}'
+    tentativa = len(s['tentativas'])
+    print(_ler(rodada / f'{nome}-{tentativa}.log'))
+    if nome == 'vitest':
+        relatorio = rodada / f'{nome}-{tentativa}.json'
+        Path('vitest-resultado.json').unlink(missing_ok=True)
+        if relatorio.exists():
+            Path('vitest-resultado.json').write_bytes(relatorio.read_bytes())
+    return s['codigo']
+
+
 if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == '--publicacao':
+        sys.exit(publicacao(sys.argv[2]))
+    if len(sys.argv) > 1 and sys.argv[1] == '--suite':
+        sys.exit(suite_legada(sys.argv[2]))
     sys.exit(main(*(sys.argv[1:] or ["vitest-resultado.json"])))
