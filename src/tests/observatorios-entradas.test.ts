@@ -4,12 +4,13 @@ import { describe, expect, it } from "vitest";
 import { OBSERVATORIOS, donoDaRota, rotasDoObservatorio } from "@/lib/observatorios/registro";
 import { escalaFamilias, orcamentoFamilia } from "@/lib/observatorios/entradas/familias";
 import { escalaServicos, recursoAoResultado } from "@/lib/observatorios/entradas/servicos";
+import { escalaTerritorio, frentesTerritorio } from "@/lib/observatorios/entradas/territorio";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
 
 describe("entradas com conta dos observatórios", () => {
   it("toda entrada declarada no registro é rota fechada e tem página", () => {
     const comEntrada = OBSERVATORIOS.filter((o) => o.entrada);
-    expect(comEntrada.map((o) => o.id)).toEqual(["familias", "servicos-publicos"]);
+    expect(comEntrada.map((o) => o.id)).toEqual(["familias", "servicos-publicos", "territorio-e-clima"]);
     for (const o of comEntrada) {
       expect(o.entrada).toBe(`/observatorios/${o.id}`);
       expect(ehRotaPublica(o.entrada as string), o.entrada).toBe(false);
@@ -68,6 +69,20 @@ describe("entradas com conta dos observatórios", () => {
     for (const t of recursoAoResultado()) {
       expect(donoDaRota(t.href)?.observatorio, t.href).toBe("servicos-publicos");
       for (const e of [t.recursos, t.atendimento, t.resultados]) expect(e.texto.trim(), t.id).not.toBe("");
+    }
+  });
+
+  it("Território e Clima: escala e frentes lidas das bases, com destinos do próprio observatório ou atalhos", () => {
+    const permitidas = rotasDoObservatorio("territorio-e-clima");
+    const frentes = frentesTerritorio();
+    expect(frentes.map((f) => f.id)).toEqual(["floresta", "cidades", "agua"]);
+    for (const n of [...escalaTerritorio(), ...frentes.flatMap((f) => f.numeros)]) {
+      expect(n.valor, n.rotulo).not.toBeNull();
+      expect(n.periodo, n.rotulo).not.toMatch(/indisponível/);
+      expect(permitidas.has(n.href) || donoDaRota(n.href)?.observatorio === "territorio-e-clima", n.href).toBe(true);
+    }
+    for (const p of frentes.flatMap((f) => f.paineis)) {
+      expect(permitidas.has(p.href) || donoDaRota(p.href)?.observatorio === "territorio-e-clima", p.href).toBe(true);
     }
   });
 });

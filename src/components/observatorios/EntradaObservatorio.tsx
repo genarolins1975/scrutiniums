@@ -131,8 +131,9 @@ export function EntradaObservatorio({
       <section aria-labelledby="caminhos-titulo" className="mx-auto max-w-page px-6 py-14 md:py-16">
         <h2 id="caminhos-titulo" className="font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao">Perguntas para começar</h2>
         <ul className="mt-6 grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-3">
-          {caminhos.map((c) => (
-            <li key={c.href} className="bg-papel">
+          {caminhos.map((c, i) => (
+            // o último item ocupa o que sobra da linha, em duas e em três colunas, para não deixar célula vazia
+            <li key={c.href} className={`bg-papel ${i === caminhos.length - 1 ? `${caminhos.length % 2 === 1 ? "sm:col-span-2" : ""} ${caminhos.length % 3 === 2 ? "lg:col-span-2" : caminhos.length % 3 === 1 ? "lg:col-span-3" : "lg:col-span-1"}` : ""}`}>
               <Link href={c.href} prefetch={false} className="group flex h-full min-h-[44px] flex-col p-5">
                 <span className="rotulo text-mineral">{c.colecao}</span>
                 <span className={`mt-2 font-serif text-lg leading-snug text-carvao ${a.hover}`}>{c.pergunta}</span>

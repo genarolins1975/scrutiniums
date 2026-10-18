@@ -116,6 +116,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     nome: "Observatório do Território e Clima",
     nomeCurto: "Território e Clima",
     pergunta: "O que está mudando no ambiente e quem sente primeiro?",
+    entrada: "/observatorios/territorio-e-clima",
     acento: "obee",
     colecoes: [
       { id: "desmatamento", nome: "Desmatamento e emissões", href: "/agronegocio/ambiente" },

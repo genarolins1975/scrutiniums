@@ -5,17 +5,20 @@ import { Footer } from "@/components/layout/Footer";
 import { EntradaObservatorio, type ColecaoEntrada } from "@/components/observatorios/EntradaObservatorio";
 import { MetodoFamilias, OrcamentoFamilia } from "@/components/observatorios/OrcamentoFamilia";
 import { MetodoServicos, RecursoResultado } from "@/components/observatorios/RecursoResultado";
+import { FrentesTerritorio, MetodoTerritorio } from "@/components/observatorios/FrentesTerritorio";
 import { ATALHOS, OBSERVATORIOS, observatorio, paineis, type ObservatorioId } from "@/lib/observatorios/registro";
 import { dominio } from "@/lib/dominios";
 import { escalaFamilias, orcamentoFamilia } from "@/lib/observatorios/entradas/familias";
 import { escalaServicos, recursoAoResultado } from "@/lib/observatorios/entradas/servicos";
+import { escalaTerritorio, frentesTerritorio } from "@/lib/observatorios/entradas/territorio";
 import { portas } from "@/lib/perguntas/portas";
 
 /**
  * Entradas com conta dos observatórios que reúnem várias coleções. Rota
  * fechada: não consta de src/lib/rotasPublicas.ts. Estática, lida das golds
- * no build. Famílias e Serviços Públicos têm entrada própria nesta etapa; os
- * demais seguem pela página aberta e pelas coleções.
+ * no build. Famílias, Serviços Públicos e Território e Clima, que reúnem
+ * coleções novas, têm entrada própria; Contas Públicas, Energia e
+ * Infraestrutura e Economia seguem pelas entradas das coleções.
  */
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -59,6 +62,12 @@ const CONTEUDO: Partial<Record<ObservatorioId, () => { descricao: string; escala
     escala: escalaServicos(),
     artefato: <RecursoResultado temas={recursoAoResultado()} />,
     metodo: <MetodoServicos />,
+  }),
+  "territorio-e-clima": () => ({
+    descricao: "Desmatamento medido por satélite, cidades expostas a inundações e municípios onde a água falta, a partir do INPE, do Ministério das Cidades e do ONS. Cada número traz o período e o universo da sua fonte.",
+    escala: escalaTerritorio(),
+    artefato: <FrentesTerritorio frentes={frentesTerritorio()} />,
+    metodo: <MetodoTerritorio />,
   }),
 };
 
