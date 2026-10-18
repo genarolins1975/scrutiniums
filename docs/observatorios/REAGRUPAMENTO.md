@@ -1,7 +1,7 @@
 # Reagrupamento da plataforma em seis observatórios
 
-Proposta de 17/10/2026 para validação do dono da plataforma. Nada aqui está
-implementado. Inventário lido dos catálogos do código em `main` nessa data:
+Proposta de 17/10/2026, aprovada pelo dono da plataforma na mesma data.
+Situação da implementação no fim deste documento. Inventário lido dos catálogos do código em `main` nessa data:
 `src/lib/data/observatorioAbas.ts`, `src/lib/energia/navegacao.ts`,
 `src/lib/saneamento/capitulos.ts`, `src/lib/gas/navegacao.ts`,
 `src/lib/contas-publicas/catalogo.ts`, `src/lib/eficiencia/dimensoes.ts`,
@@ -178,3 +178,18 @@ tratam do mesmo tema; precisa de comparação de conteúdo antes de decidir).
 5. **Duplicatas** resolvidas uma a uma, com comparação de conteúdo.
 6. **Menu interno do Crédito** dividido entre Famílias e Economia.
 7. **Blocos "Para ir além"** no fim de cada painel, lidos do registro.
+
+## Situação da implementação (18/10/2026)
+
+| Etapa | Situação |
+|---|---|
+| 1. Registro único | Em produção desde 18/10/2026 (PR #271): `src/lib/observatorios/lista.ts` e `registro.ts`, com testes de posse |
+| 2. Camada aberta | Em produção desde 18/10/2026 (PR #271): home com os seis observatórios e `/perguntas/<observatório>` |
+| 3. Cabeçalho e escolha pós login | Cabeçalho público em produção (PR #271); escolha pós login pelos seis observatórios no PR #272 |
+| 4. Entradas com conta | PR #272: `/observatorios/familias`, `/observatorios/servicos-publicos` e `/observatorios/territorio-e-clima`. Contas Públicas, Energia e Infraestrutura e Economia usam as entradas das coleções existentes |
+| 5. Duplicatas | Comparação de conteúdo em andamento |
+| 6. Menu interno do Crédito | Pendente |
+| 7. Blocos "Para ir além" | Pendente |
+
+Também pendentes: barras de navegação dentro dos painéis (`NavegacaoObservatorios` e a barra da aplicação do Crédito) e o rodapé, que ainda listam as oito coleções.
+
