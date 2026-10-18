@@ -15,6 +15,7 @@ de Desastres no Brasil, Sedec/MIDR) e emissões (inventário oficial do MCTI, SI
 import argparse
 import json
 import os
+import re
 import sys
 import tempfile
 from datetime import date
@@ -141,6 +142,19 @@ def validar_emissoes(dados):
             raise ValueError(f'Original sem sha256 ou bytes: {o.get("setor")}')
 
 
+def _ordem_edicao(dados):
+    m = re.match(r'NIR (\d{4})', dados['edicao'])
+    if not m:
+        raise ValueError(f"emissoes: edição sem ano reconhecível: {dados['edicao']!r}")
+    return (int(m.group(1)), dados['anoFinal'])
+
+
+def nao_retroceder_emissoes(novo, anterior):
+    """Recusa a coleta que traria edição anterior à versionada (ex.: descoberta do painel fora do ar, caindo nas URLs fixas)."""
+    if anterior is not None and _ordem_edicao(novo) < _ordem_edicao(anterior):
+        raise ValueError(f"emissoes: coleta trouxe {novo['edicao']}, anterior à edição versionada {anterior['edicao']}; seed mantido")
+
+
 def gold_emissoes(seed):
     validar_emissoes(seed)
     por_ano = {a['ano']: a for a in seed['anos']}
@@ -178,6 +192,8 @@ def coletar(fonte, hoje, cache):
         from datetime import datetime, timezone
         seed = emissoes.coletar(pasta, datetime.now(timezone.utc).isoformat(timespec='seconds'))
         validar_emissoes(seed)
+        atual = SEED / 'emissoes.json'
+        nao_retroceder_emissoes(seed, json.loads(atual.read_text(encoding='utf-8')) if atual.exists() else None)
         return seed
     pasta = os.path.join(cache, 'desastres') if cache else tempfile.mkdtemp(prefix='territorio-desastres-')
     originais, bloqueios = desastres.coletar(pasta)

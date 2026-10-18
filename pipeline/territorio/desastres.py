@@ -231,7 +231,7 @@ def montar(originais, bloqueios, dir_originais, hoje):
             'licenca': 'Não declarada na página de downloads; dado público oficial (Lei de Acesso à Informação). Citar Sedec/MIDR, Atlas Digital de Desastres no Brasil.',
             'cobertura_eventos': {'inicio': '1991-01-01', 'fim': max_evento.isoformat()},
             'ultimo_registro_na_base': max_registro.isoformat(),
-            'cadencia': 'Atualização anual declarada pela Sedec (versão v1.1 de 06/08/2026 cobre 1991 a 2025).',
+            'cadencia': f'Atualização anual declarada pela Sedec; a base capturada cobre ocorrências de 1991 a {max_evento.year}.',
         },
         'originais': originais,
         'bloqueios': bloqueios,

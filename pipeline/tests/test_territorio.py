@@ -181,6 +181,10 @@ class TestDesastres(unittest.TestCase):
             run.validar_desastres(d)
         d['serie_anual'] = [x for x in d['serie_anual'] if x['ano'] == 2025]
         run.validar_desastres(d)
+        # a cobertura declarada sai da base coletada, não de texto fixo
+        self.assertIn('1991 a 2025', d['fonte']['cadencia'])
+        d2027 = self._montar([('PE-F-1', '10/03/2027', 'PE', '2600054', '14110', 'Reconhecido', 0)], hoje=date(2028, 3, 1))
+        self.assertIn('1991 a 2027', d2027['fonte']['cadencia'])
 
     def test_protocolo_repetido_falha(self):
         with self.assertRaises(RuntimeError):
@@ -221,6 +225,28 @@ class TestEmissoes(unittest.TestCase):
         seed['anos'] = [a for a in seed['anos'] if a['ano'] >= 2006]
         with self.assertRaises(ValueError):
             run.validar_emissoes(seed)
+
+    def test_edicao_anterior_a_versionada_e_recusada(self):
+        anterior = self._seed()
+        novo = dict(anterior, edicao='NIR 2026 (1990-2024)', anoFinal=2024)
+        run.nao_retroceder_emissoes(novo, anterior)
+        run.nao_retroceder_emissoes(anterior, anterior)
+        run.nao_retroceder_emissoes(anterior, None)
+        # painel de descoberta fora do ar depois de coletada uma edição nova: as URLs fixas trariam a antiga
+        with self.assertRaises(ValueError):
+            run.nao_retroceder_emissoes(anterior, novo)
+
+    def test_coleta_que_retrocede_nao_grava_o_seed(self):
+        from pipeline.territorio import emissoes
+        versionado = self._seed()
+        mais_novo = dict(versionado, edicao='NIR 2026 (1990-2024)', anoFinal=2024)
+        with tempfile.TemporaryDirectory() as d:
+            seed_dir = Path(d)
+            (seed_dir / 'emissoes.json').write_text(json.dumps(mais_novo), encoding='utf-8')
+            with mock.patch.object(run, 'SEED', seed_dir), mock.patch.object(emissoes, 'coletar', return_value=versionado), mock.patch.object(run, 'validar_emissoes'):
+                with self.assertRaises(ValueError):
+                    run.main(['--coleta', 'emissoes', '--cache', d])
+            self.assertEqual(json.loads((seed_dir / 'emissoes.json').read_text(encoding='utf-8'))['edicao'], 'NIR 2026 (1990-2024)')
 
     def test_tabela_le_celula_vazia_como_nulo(self):
         from pipeline.territorio import emissoes

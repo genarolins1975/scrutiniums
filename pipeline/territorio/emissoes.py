@@ -279,7 +279,7 @@ def coletar(pasta, capturado_em):
     try:
         achados, _ = descobrir()
         urls.update({s: u for s, u in achados.items() if s in urls})
-    except Exception as e:  # painel indisponível: as URLs fixas da edição conhecida continuam válidas
+    except Exception as e:  # painel indisponível: URLs fixas da edição conhecida; run.py recusa se forem anteriores ao seed
         print(f'emissoes: painel do SIRENE indisponível ({e}); usando as URLs fixas', file=sys.stderr)
     arquivos, originais = {}, {}
     for s, u in urls.items():
