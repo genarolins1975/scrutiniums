@@ -248,6 +248,15 @@ class TestHistoricoCompacto(unittest.TestCase):
             self.assertIsNone(f['resumo_capturas']['recapturas_sem_mudanca'])
             self.assertEqual((Path(tmp) / m.NOME_CSV).read_text().count('\n'), 1)
 
+    def test_gate_proprio_recusa_csv_com_linha_perdida_antes_de_publicar(self):
+        from pipeline.energia import metadados as m
+        escrever = base.escreve_csv
+        def perder_linha(nome, colunas, linhas):
+            return escrever(nome, colunas, list(linhas)[:-1])
+        with tempfile.TemporaryDirectory() as tmp, patch.object(base, 'SERIES', tmp), patch.object(base, 'escreve_csv', side_effect=perder_linha):
+            with self.assertRaisesRegex(ValueError, 'CSV divergente'):
+                m.publicar_historico(self.fontes(60))
+
 
 class TestHistoricoAntesDaValidacao(unittest.TestCase):
     def test_mesmo_dataset_em_duas_familias_preserva_todas_as_vintages_e_vigencias(self):
@@ -314,6 +323,10 @@ class TestHistoricoAntesDaValidacao(unittest.TestCase):
                     pub.exporta_parquet(str(series), limiar=1)
                 con.close()
                 observados = []
+                anterior_publicacao = None
+                if not controle_disponivel:
+                    base.escreve_gold('publicacao.json', {'disponivel': True, 'gerado_em': '2026-10-17T00:00:00Z', 'linhas_historico': 1})
+                    anterior_publicacao = (gold / 'publicacao.json').read_bytes()
                 stack.enter_context(patch.object(dados, 'LIMIAR_PARQUET', 1))
                 def validar(con, ctx):
                     arquivo = series / m.NOME_CSV
@@ -369,4 +382,6 @@ class TestHistoricoAntesDaValidacao(unittest.TestCase):
                 if controle_disponivel:
                     self.assertEqual(publicacao['linhas_historico'], 3)
                 else:
-                    self.assertFalse(publicacao['disponivel'])
+                    self.assertEqual((gold / 'publicacao.json').read_bytes(), anterior_publicacao)
+                    self.assertEqual(meta['golds']['publicacao.json']['gerado_em'], '2026-10-17T00:00:00Z')
+                    self.assertTrue(any(r['gold'] == 'publicacao.json' for r in meta['regressoes']))

@@ -1,7 +1,7 @@
 """Histórico integral auditável em CSV; meta.json só carrega resumo e amostra.
 
 Não limita snapshot_de: builders continuam recebendo todas as vintages. A redução
-acontece apenas ao montar meta.json, depois de construir os módulos.
+acontece na representação pública, depois das coletas e antes da validação de Dados.
 """
 from pipeline.energia import base
 from pipeline.energia.gold import comum as c
@@ -89,11 +89,20 @@ def publicar_historico(fontes, limiar_parquet=None):
             linhas.append([ds] + [('true' if h[k] else 'false') if k == 'vigente' else h[k]
                                   for k in COLUNAS if k != 'dataset'])
     base.escreve_csv(NOME_CSV, COLUNAS, linhas)
+    # Gate próprio do artefato: não depende de Dados chegar à validação geral.
+    # Releitura estrita confere cabeçalho, todas as células e multiplicidade,
+    # inclusive CSV só com cabeçalho quando não há captura (não inventar linha).
+    import csv
+    from pathlib import Path
+    csv_path = Path(base.SERIES) / NOME_CSV
+    with csv_path.open(encoding='utf-8', newline='') as arquivo:
+        lidas = list(csv.reader(arquivo, delimiter=';', strict=True))
+    esperadas = [list(COLUNAS)] + [['' if v is None else str(v) for v in linha] for linha in linhas]
+    if lidas != esperadas:
+        raise ValueError('histórico de capturas: CSV divergente das vintages de origem')
     # Dados pode retornar stub antes de exportar arquivos (catálogos ausentes).
     # Mesmo nesse caso nunca deixar Parquet de ontem ao lado do CSV de hoje.
-    from pathlib import Path
     from pipeline.energia.fontes import publicacao_dados as pub
-    csv_path = Path(base.SERIES) / NOME_CSV
     parquet_path = csv_path.with_suffix('.parquet')
     limite = pub.LIMIAR_PARQUET_BYTES if limiar_parquet is None else limiar_parquet
     if csv_path.stat().st_size >= limite:
