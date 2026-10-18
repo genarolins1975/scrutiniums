@@ -305,7 +305,7 @@ function metaDaPagina(view = currentView()) {
   if (!registros.length) return meta;
   const datas = registros.map(g => g.gerado_em);
   const primeiro = registros.slice().sort((a, b) => String(a.gerado_em || "").localeCompare(String(b.gerado_em || "")))[0];
-  return { ...meta, ...(primeiro.meta || {}), ...primeiro, gerado_em: datas.every(Boolean) ? datas.slice().sort()[0] : null };
+  return { ...meta, ...((meta.snapshots || {})[primeiro.snapshot] || primeiro.meta || {}), ...primeiro, gerado_em: datas.every(Boolean) ? datas.slice().sort()[0] : null };
 }
 /* Gold que falhou no carregamento fica marcado como null (e o motivo em
    GOLD_FALHAS): quem chama distingue "ainda não pedido" (undefined) de "pediu e

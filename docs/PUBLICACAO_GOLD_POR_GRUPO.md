@@ -63,9 +63,9 @@ Instituições e Open Finance têm dependência recíproca: a relação explorat
 ## Quem protege cada grupo
 
 `scripts/mapear-testes-gold.mjs` usa a AST do TypeScript já instalado para extrair
-literais, templates, imports e linhas, sem tratar comentários como dados.
+literais, templates, imports estáticos/dinâmicos e linhas, sem tratar comentários como dados.
 `scripts/mapa_testes_gold.py` resolve nomes de gold, famílias enumeradas, listas
-de nomes usadas por leitores e imports dos módulos leitores. Python usa AST de
+de nomes usadas por leitores e imports dos módulos leitores, incluindo wrappers relativos transitivos (com proteção contra ciclos). Python usa AST de
 imports dos builders e referências diretas à publicação. Os casos dinâmicos ou
 que exigem distinguir verificação de acesso de conteúdo têm prova em
 `config/gold-testes-excecoes.json`; exceção para teste inexistente é erro.
@@ -99,7 +99,7 @@ Path('/tmp/gold-mapa.json').write_text(json.dumps(mapa, ensure_ascii=False, inde
 PYMAPA
 ```
 
-Na base deste PR, as 73 menções diretas em arquivos TS correspondem a 67 leitores de conteúdo e seis testes de URL/cache/acesso. Há mais um leitor indireto (`dados-publicos.test.ts`): 68 protetores TS, mais sete arquivos Python. Esses números são inventário da revisão, não limites fixos do algoritmo.
+Na base deste PR, as 73 menções diretas em arquivos TS correspondem a 67 leitores de conteúdo e seis testes de URL/cache/acesso. Há mais dois leitores indiretos (`dados-publicos.test.ts` e `boletim.test.ts`, este por `import()`): 69 protetores TS, mais sete arquivos Python. Esses números são inventário da revisão, não limites fixos do algoritmo.
 
 O mapa efetivo de cada run, com linhas e exceções, é `mapa-testes.json` no artefato
 `gold-publicacao`. Resultado de teste não inventariado falha fechado. Cada suíte
@@ -124,8 +124,10 @@ atômico do Git: grupos aprovados entram juntos, grupos retidos ficam iguais à 
 
 ## Datas e auditoria de `gerado_em`
 
-Cada `meta.grupos[id]` guarda `gerado_em`, padrões de arquivos, vintages e um
-snapshot dos demais metadados da geração. O snapshot retido vem da publicação
+Cada `meta.grupos[id]` guarda `gerado_em`, padrões de arquivos, vintages e uma
+referência por hash a `meta.snapshots`. Cada snapshot contém apenas os conceitos
+numéricos compartilhados de inadimplência/carteira e contagens de IF, serializados
+uma única vez por versão. Logs e cadastros de fontes não são replicados por grupo. O snapshot retido vem da publicação
 anterior; na primeira execução, a publicação integral antiga usa seu carimbo
 global como base comprovada. Não se infere uma data ausente. O `gerado_em` global
 é o **mais antigo** dos grupos selecionados (ou nulo se faltar alguma data).

@@ -58,16 +58,39 @@ def validar(pasta, manifesto, exigir_todos=True):
     return donos
 
 
+CAMPOS_COMPARTILHADOS = ('inad_conceitos', 'carteira_conceitos', 'if_contagens')
+
+
+def compartilhados(meta):
+    """Só os números transversais usados nos painéis, sem replicar logs/fontes."""
+    return {k: meta[k] for k in CAMPOS_COMPARTILHADOS if k in meta}
+
+
 def metadados_grupos(pasta, manifesto):
     meta = ler_json(Path(pasta) / 'meta.json')
     anteriores = meta.get('grupos', {})
-    return {g: anteriores.get(g, {
-        'gerado_em': meta.get('gerado_em') if any(any(Path(pasta).glob(p)) for p in c['arquivos']) else None,
-        'arquivos': c['arquivos'],
-        'vintages': meta.get('vintages', {}),
-        'fontes_status': meta.get('fontes_status', {}),
-        'meta': {k: v for k, v in meta.items() if k != 'grupos'},
-    }) for g, c in manifesto['grupos'].items()}
+    registros = {}
+    for g, c in manifesto['grupos'].items():
+        registro = dict(anteriores.get(g, {}))
+        if not registro:
+            registro = {'gerado_em': meta.get('gerado_em') if any(any(Path(pasta).glob(p)) for p in c['arquivos']) else None,
+                        'arquivos': c['arquivos'], 'vintages': meta.get('vintages', {})}
+        snapshot = meta.get('snapshots', {}).get(registro.get('snapshot'), registro.get('meta', meta))
+        registro['meta'] = compartilhados(snapshot)
+        registros[g] = registro
+    return registros
+
+
+def empacotar_meta(meta, registros):
+    """Referências por hash: cada snapshot numérico é serializado uma só vez."""
+    grupos, snapshots = {}, {}
+    for grupo, registro in registros.items():
+        valores = compartilhados(registro['meta'])
+        codigo = hashlib.sha256(json.dumps(valores, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+        snapshots[codigo] = valores
+        grupos[grupo] = {k: v for k, v in registro.items() if k not in ('meta', 'fontes_status', 'snapshot')}
+        grupos[grupo]['snapshot'] = codigo
+    return {**meta, 'grupos': grupos, 'snapshots': snapshots}
 
 
 def preparar_meta(candidata, manifesto):
@@ -75,14 +98,12 @@ def preparar_meta(candidata, manifesto):
     validar(candidata, manifesto)
     caminho = Path(candidata) / 'meta.json'
     meta = ler_json(caminho)
-    # Nunca reutilizar snapshots da execução anterior numa geração nova.
     meta.pop('grupos', None)
-    meta['grupos'] = {g: {'gerado_em': meta.get('gerado_em'), 'arquivos': c['arquivos'],
-                          'vintages': meta.get('vintages', {}),
-                          'fontes_status': meta.get('fontes_status', {}),
-                          'meta': dict(meta)}
-                      for g, c in manifesto['grupos'].items()}
-    gravar_json(caminho, meta)
+    meta.pop('snapshots', None)
+    registros = {g: {'gerado_em': meta.get('gerado_em'), 'arquivos': c['arquivos'],
+                     'vintages': meta.get('vintages', {}), 'meta': compartilhados(meta)}
+                 for g, c in manifesto['grupos'].items()}
+    gravar_json(caminho, empacotar_meta(meta, registros))
 
 
 def selecionar(manifesto, mapa, resultados, retidos=None, inconclusivo=False):
@@ -183,14 +204,14 @@ def compor(candidata, anterior, destino, manifesto, decisao, recompositor=recomp
         # Metadados compartilhados contêm números de vários temas (conceitos de
         # inadimplência/carteira, contagens de IF). Num lote parcial, um grupo
         # aprovado não pode vazar por esse snapshot números de uma fonte retida.
-        compartilhados = {k: v for k, v in base.items() if k != 'grupos'}
+        valores_base = compartilhados(base)
         for g in publicados:
-            meta['grupos'][g] = {**meta['grupos'][g], 'meta': compartilhados}
+            meta['grupos'][g] = {**meta['grupos'][g], 'meta': valores_base}
         datas = [v['gerado_em'] for v in meta['grupos'].values()]
         # Ausência continua ausência. O global é deliberadamente conservador.
         meta = {**base, 'grupos': meta['grupos'],
                 'gerado_em': min(datas) if all(datas) else None}
-        gravar_json(destino / 'meta.json', meta)
+        gravar_json(destino / 'meta.json', empacotar_meta(meta, meta['grupos']))
     validar(destino, manifesto, exigir_todos=False)
     conferir_retidos(anterior, destino, manifesto, decisao['retidos'])
     return destino

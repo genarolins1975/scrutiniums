@@ -9,7 +9,7 @@ O mapa completo, com evidências/linhas, é artefato de cada execução.
 import ast
 import json
 from pathlib import Path
-import re
+import posixpath
 from scripts.publicar_gold import corresponde, validar
 
 
@@ -22,23 +22,36 @@ def gerar(raiz, pasta_gold, manifesto, inventario):
             aliases.setdefault(alias, set()).add(grupo)
     stems = {Path(a).stem for a in donos if '/' not in a}
     excecoes = json.loads((raiz / 'config/gold-testes-excecoes.json').read_text())
+    def leitores(nome, vistos=None):
+        vistos = set() if vistos is None else vistos
+        if nome in vistos or nome not in inventario:
+            return []
+        vistos.add(nome)
+        fonte = inventario[nome]
+        ts = fonte['strings']
+        leitura = fonte['le_fs'] and (any('public/obs/data/gold' in s['texto'] for s in ts)
+                                     or all(any(s['texto'] == p for s in ts) for p in ('public', 'obs', 'data', 'gold')))
+        fontes = [(nome, ts)] if leitura else []
+        for imp in fonte['imports']:
+            if imp.startswith('@/'):
+                base = imp.replace('@/', 'src/', 1)
+            elif imp.startswith('.'):
+                base = posixpath.normpath(posixpath.join(posixpath.dirname(nome), imp))
+            else:
+                continue
+            for sufixo in ('.ts', '.tsx', '/index.ts', '/index.tsx'):
+                modulo = base + sufixo
+                if modulo in inventario:
+                    fontes.extend(leitores(modulo, vistos))
+                    break
+        return fontes
+
     saida = {}
     for nome, fonte in sorted(inventario.items()):
-        if not nome.startswith('src/tests/'):
+        if not nome.startswith('src/tests/') or not nome.endswith('.test.ts'):
             continue
-        textos = fonte['strings']
-        # Acesso separado por argumentos de join também é reconhecido.
-        leitura = fonte['le_fs'] and (any('public/obs/data/gold' in s['texto'] for s in textos)
-                                     or all(any(s['texto'] == p for s in textos) for p in ('public', 'obs', 'data', 'gold')))
-        fontes = [(nome, textos)] if leitura else []
-        # Leitores indiretos. Conservador: protege todas as gold lidas pelo módulo.
-        for imp in fonte['imports']:
-            modulo = imp.replace('@/', 'src/') + '.ts'
-            dados = inventario.get(modulo, {})
-            ts = dados.get('strings', [])
-            if dados.get('le_fs') and (any('public/obs/data/gold' in s['texto'] for s in ts)
-                                      or all(any(s['texto'] == p for s in ts) for p in ('public', 'obs', 'data', 'gold'))):
-                fontes.append((modulo, ts))
+        # Import estático ou import() literal; acompanha também wrappers relativos.
+        fontes = leitores(nome)
         grupos, provas = set(), []
         for origem, literais in fontes:
             for s in literais:

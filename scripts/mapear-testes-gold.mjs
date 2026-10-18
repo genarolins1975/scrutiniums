@@ -25,6 +25,8 @@ for (const file of [...walk(join(root, 'src/tests')), ...walk(join(root, 'src/li
       strings.push({ texto: n.text, nome_gold: nomeGold, assertion: assertion && !nomeGold, linha: ast.getLineAndCharacterOfPosition(n.getStart(ast)).line + 1 });
     }
     if (ts.isImportDeclaration(n) && !n.importClause?.isTypeOnly) imports.push(n.moduleSpecifier.text);
+    if (ts.isCallExpression(n) && n.expression.kind === ts.SyntaxKind.ImportKeyword
+        && n.arguments[0] && ts.isStringLiteralLike(n.arguments[0])) imports.push(n.arguments[0].text);
     ts.forEachChild(n, visit);
   }
   visit(ast);

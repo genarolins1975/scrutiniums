@@ -33,7 +33,7 @@ class PublicacaoPorGrupo(unittest.TestCase):
         }
         for pasta, mes, valor in ((self.base, '2026-07', 1), (self.nova, '2026-08', 999)):
             docs = {
-                'meta.json': {'gerado_em': mes + '-28T09:00:00+00:00', 'vintages': {'caged': mes}, 'numero_compartilhado': valor},
+                'meta.json': {'gerado_em': mes + '-28T09:00:00+00:00', 'vintages': {'caged': mes}, 'inad_conceitos': {'sgs': {'v': valor}}},
                 'emprego.json': {'mes': mes, 'ufs_mes': mes, 'ufs': [{'uf': 'SP', 'mes': mes, 'saldo_mes': valor}]},
                 'sectors.json': {'emprego_ref': mes},
                 'ufs.json': {'datas': {'emprego': mes}, 'consignado_nao_validado': valor},
@@ -167,8 +167,8 @@ class PublicacaoPorGrupo(unittest.TestCase):
         self.assertEqual(m['grupos']['consignado']['vintages']['caged'], '2026-07')
         self.assertEqual(m['grupos']['emprego-setores-ufs']['vintages']['caged'], '2026-08')
         self.assertEqual(m['gerado_em'], '2026-07-28T09:00:00+00:00')
-        self.assertEqual(m['grupos']['emprego-setores-ufs']['meta']['numero_compartilhado'], 1)
-        self.assertEqual(pg.ler_json(self.nova / 'meta.json')['numero_compartilhado'], 999)
+        self.assertEqual(m['snapshots'][m['grupos']['emprego-setores-ufs']['snapshot']]['inad_conceitos']['sgs']['v'], 1)
+        self.assertEqual(pg.ler_json(self.nova / 'meta.json')['inad_conceitos']['sgs']['v'], 999)
         self.assertEqual(r['datas_anteriores']['consignado'], m['gerado_em'])
         from contextlib import redirect_stdout
         from io import StringIO
@@ -189,6 +189,19 @@ class PublicacaoPorGrupo(unittest.TestCase):
                 with self.assertRaisesRegex(RuntimeError, 'erro'):
                     self.rodar(['src/tests/consignado-data.test.ts'])
         self.assertEqual(self.hashes(self.base), self.antes)
+
+    def test_snapshot_compartilhado_serializado_uma_so_vez(self):
+        import gzip
+        # Mesmo um log grande não é multiplicado por grupo.
+        meta = pg.ler_json(self.nova / 'meta.json')
+        meta['fontes_status'] = {'coletor': {'log': list(range(10000))}}
+        pg.gravar_json(self.nova / 'meta.json', meta)
+        original = len(gzip.compress((self.nova / 'meta.json').read_bytes()))
+        pg.preparar_meta(self.nova, self.man)
+        novo = pg.ler_json(self.nova / 'meta.json')
+        self.assertEqual(len(novo['snapshots']), 1)
+        self.assertTrue(all('meta' not in g and 'fontes_status' not in g for g in novo['grupos'].values()))
+        self.assertLess(len(gzip.compress((self.nova / 'meta.json').read_bytes())), original * 1.2)
 
     def test_sentinela_retem_grupo_inteiro(self):
         m = pg.ler_json(self.nova / 'meta.json')
@@ -298,9 +311,14 @@ class MapaDeProtecao(unittest.TestCase):
                     {'texto': 'consignado.json', 'linha': 3}]},
                 'src/tests/componente.test.ts': {'le_fs': False, 'imports': [], 'strings': []},
             }
+            inventario['src/tests/importacao.test.ts'] = {'le_fs': False, 'imports': ['@/lib/wrapper'], 'strings': []}
+            inventario['src/lib/wrapper.ts'] = {'le_fs': False, 'imports': ['./leitor'], 'strings': []}
+            inventario['src/lib/leitor.ts'] = {'le_fs': True, 'imports': ['./wrapper'], 'strings': [
+                {'texto': 'public/obs/data/gold/emprego.json', 'linha': 7}]}
             mapa = gerar(raiz, raiz / 'gold', man, inventario)
             self.assertEqual(mapa['src/tests/misto.test.ts']['grupos'], ['consignado', 'emprego'])
             self.assertEqual(mapa['src/tests/componente.test.ts']['grupos'], [])
+            self.assertEqual(mapa['src/tests/importacao.test.ts']['grupos'], ['emprego'])
             self.assertIn(':2:', mapa['src/tests/misto.test.ts']['evidencias'][0])
             inventario['src/tests/misto.test.ts']['strings'] = [{'texto': 'public/obs/data/gold', 'linha': 1}]
             with self.assertRaisesRegex(ValueError, 'Leitura dinâmica.*sem classificação'):

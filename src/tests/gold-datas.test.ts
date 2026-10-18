@@ -5,14 +5,14 @@ import { describe, expect, it } from "vitest";
 // A função real da SPA recebe metadados sintéticos: nenhuma gold é alterada.
 const app = readFileSync("public/obs/app.js", "utf-8");
 const codigo = app.slice(app.indexOf("function metaDaPagina("), app.indexOf("/* Gold que falhou"));
-function resolver(view: string, grupos: Record<string, unknown> | undefined) {
+function resolver(view: string, grupos: Record<string, unknown> | undefined, snapshots: Record<string, unknown> = {}) {
   const contexto = {
-    state: { data: { meta: { gerado_em: "2026-09-24", grupos } } },
+    state: { data: { meta: { gerado_em: "2026-09-24", grupos, snapshots } } },
     currentView: () => view,
     VIEW_DATA: { consignado: ["consignado", "regulacao"], emprego: ["emprego"], pulse: ["regimes_series"] },
     OV_BLOCO_DATA: { npl: ["npl"] },
   };
-  return runInNewContext(`${codigo}\nmetaDaPagina()`, contexto) as { gerado_em: string | null; vintages?: { caged: string } };
+  return runInNewContext(`${codigo}\nmetaDaPagina()`, contexto) as { gerado_em: string | null; vintages?: { caged: string }; inad_conceitos?: { sgs: { v: number } } };
 }
 const grupos = {
   consignado: { arquivos: ["consignado.json"], gerado_em: "2026-09-24", meta: { vintages: { caged: "2026-07" } } },
@@ -47,6 +47,13 @@ describe("datas honestas da publicação seletiva", () => {
       overview: { arquivos: ["overview.json"], gerado_em: "2026-10-18" },
     }).gerado_em).toBe("2026-09-24");
 
+  });
+  it("resolve o snapshot compartilhado sem copiar o meta em cada grupo", () => {
+    const m = resolver("emprego", {
+      emprego: { arquivos: ["emprego.json"], gerado_em: "2026-10-18", snapshot: "anterior" },
+    }, { anterior: { inad_conceitos: { sgs: { v: 1.25 } } } });
+    expect(m.gerado_em).toBe("2026-10-18");
+    expect(m.inad_conceitos?.sgs.v).toBe(1.25);
   });
   it("data ausente segue ausente", () => {
     expect(resolver("emprego", { emprego: { arquivos: ["emprego.json"], gerado_em: null } }).gerado_em).toBeNull();
