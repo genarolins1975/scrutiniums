@@ -6,6 +6,7 @@ Painéis mantidos pelo próprio observatório, com pipeline em `pipeline/territo
 
 - **Fonte:** INPE, Programa Queimadas, servidor de dados abertos COIDS (`https://dataserver-coids.inpe.br/queimadas/queimadas/`). Dados públicos e gratuitos, citação obrigatória ("INPE, Banco de Dados de Queimadas"); licença formal de redistribuição não declarada.
 - **Medida:** focos de calor do satélite de referência AQUA_M-T (MODIS, início da tarde), o único comparável entre anos. Série anual consolidada de 2003 em diante (`anual/Brasil_sat_ref`); ano em curso pelos arquivos mensais de todos os satélites, filtrados para o AQUA_M-T (`mensal/Brasil`).
+- **Por município:** focos do último ano completo, do acumulado do ano em curso e dos mesmos meses do ano anterior, numa gold própria (`public/territorio/gold/queimadas_municipios.json`, linhas compactas). O anual de referência traz o nome do município e do estado, não o código; o nome é casado com a lista oficial e atual do IBGE (`pipeline/territorio/referencia/municipios_ibge_2022.json`: API de localidades, 5.571 municípios, com a área do Censo 2022 da SIDRA tabela 4714 e o sha256 de cada original). Boa Esperança do Norte (MT), instalado depois do Censo, fica sem área e marcado em `semCoberturaNaFonte`: a malha do INPE atribui seus focos aos municípios de origem, então a busca mostra "indisponível", nunca zero. Dez grafias antigas ou divergentes estão em `EQUIVALENCIAS` (`pipeline/territorio/queimadas.py`); seis delas aparecem nos mensais do próprio INPE com o código IBGE ao lado. O que não casa vai para `semMunicipio`, com o nome da fonte, e entra só no total do país; acima de 1% dos focos de um período, a coleta é retida, porque indica coluna renomeada ou malha nova na fonte. As colunas `municipio` (anual e mensal) e `municipio_id` (mensal) são exigidas. Os mensais trazem o código IBGE e não dependem do casamento. Em 18/10/2026, os 136.393 focos de 2025 foram todos atribuídos a um município, e os 24.373 focos de set/2026 casados por nome tiveram o mesmo código que o INPE informa.
 - **Área queimada:** AQ1km Coleção 2 por bioma, em km², produto que o INPE classifica como provisório. Outra medida, que não se compara com a contagem de focos.
 - **Ressalvas que vão para a página:** foco não é incêndio nem área queimada; só o satélite de referência compara anos; o número é uma fração das ocorrências; dias sem imageamento do AQUA reduzem a contagem; ano e mês em curso são preliminares e podem ser regerados pelo INPE.
 - **Conferência em 18/10/2026:** 2025 inteiro (12 meses, 27 UFs, 6 biomas) e ago e set de 2026 batem com o Painel do Fogo do INPE. Jan a mar de 2026 diferem em poucas unidades, porque o INPE regerou os arquivos mensais depois do painel.
@@ -34,12 +35,14 @@ python3 -m pipeline.territorio.run              # reconstrói a gold a partir do
 python3 -m pipeline.territorio.run --check      # confere se a gold versionada é a do seed
 python3 -m pipeline.territorio.run --coleta     # recoleta todas as fontes (cerca de 640 MB) e reconstrói
 python3 -m pipeline.territorio.run --coleta desastres   # recoleta só uma fonte
+python3 -m pipeline.territorio.run --referencia-ibge   # refaz a lista de municípios com a área do Censo 2022 (raro)
 python3 -m unittest pipeline.tests.test_territorio
 ```
 
-O workflow `atualizar-territorio.yml` recoleta nos dias 2 e 16 de cada mês, cada fonte em passo separado (falha de uma mantém o seed anterior dela, com aviso), e publica no `main` só com os testes verdes. Validações que bloqueiam a publicação: satélite de referência ausente no arquivo mensal, foco fora do mês ou do ano do arquivo, série anual com ano faltando ou repetido, estados e biomas que não somam o total, original sem sha256, área queimada por bioma que não soma o total anual.
+O workflow `atualizar-territorio.yml` recoleta nos dias 2 e 16 de cada mês, cada fonte em passo separado (falha de uma mantém o seed anterior dela, com aviso), e publica no `main` só com os testes verdes. Validações que bloqueiam a publicação: satélite de referência ausente no arquivo mensal, foco fora do mês ou do ano do arquivo, série anual com ano faltando ou repetido, estados, biomas ou municípios que não somam o total, original sem sha256, área queimada por bioma que não soma o total anual.
 
 ## Lacunas conhecidas
 
 - **Ano corrente dos desastres:** depende do S2iD, que só aceita conexões de endereços no Brasil.
 - **Emissões por estado:** os links do painel por UF do SIRENE respondem 404.
+- **Área queimada por estado e por município:** o INPE publica a tabela do AQ1km só por bioma; o recorte por estado exigiria cruzar os mapas mensais do produto (shapefile ou raster) com a malha estadual.

@@ -15,9 +15,15 @@ CAB_ANUAL = 'id_bdq,foco_id,lat,lon,data_pas,pais,estado,municipio,bioma\n'
 CAB_MENSAL = 'id,lat,lon,data_hora_gmt,satelite,municipio,estado,pais,municipio_id,estado_id,pais_id,numero_dias_sem_chuva,precipitacao,risco_fogo,bioma,frp\n'
 
 
+# Município padrão das linhas sintéticas: a capital do estado (as contagens municipais
+# precisam casar com a lista do IBGE; um nome fictício cai em "sem município").
+CAPITAL = {'PARÁ': 'BELÉM', 'MARANHÃO': 'SÃO LUÍS', 'BAHIA': 'SALVADOR', 'TOCANTINS': 'PALMAS',
+           'MATO GROSSO': 'CUIABÁ', 'PIAUÍ': 'TERESINA', 'AMAZONAS': 'MANAUS', 'GOIÁS': 'GOIÂNIA'}
+
+
 def _anual(linhas):
-    """Zip anual do satélite de referência com as linhas (data, estado, bioma)."""
-    corpo = CAB_ANUAL + ''.join(f'{i},{i},0,0,{d} 15:00:00,Brasil,{e},X,{b}\n' for i, (d, e, b) in enumerate(linhas))
+    """Zip anual do satélite de referência com as linhas (data, estado, bioma[, município])."""
+    corpo = CAB_ANUAL + ''.join(f'{i},{i},0,0,{l[0]} 15:00:00,Brasil,{l[1]},{l[3] if len(l) > 3 else CAPITAL[l[1]]},{l[2]}\n' for i, l in enumerate(linhas))
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, 'w') as z:
         z.writestr('focos.csv', corpo)
@@ -25,8 +31,11 @@ def _anual(linhas):
 
 
 def _mensal(linhas):
-    """CSV mensal de todos os satélites com as linhas (data, satélite, estado, bioma)."""
-    return (CAB_MENSAL + ''.join(f'{i},0,0,{d} 15:00:00,{s},X,{e},Brasil,1,1,33,0,0,0,{b},1\n' for i, (d, s, e, b) in enumerate(linhas))).encode()
+    """CSV mensal de todos os satélites com as linhas (data, satélite, estado, bioma[, município, código IBGE])."""
+    def linha(i, l):
+        m, cod = (l[4], l[5]) if len(l) > 5 else (CAPITAL[l[2]], '1')
+        return f'{i},0,0,{l[0]} 15:00:00,{l[1]},{m},{l[2]},Brasil,{cod},1,33,0,0,0,{l[3]},1\n'
+    return (CAB_MENSAL + ''.join(linha(i, l) for i, l in enumerate(linhas))).encode()
 
 
 class FonteFalsa:
@@ -52,6 +61,89 @@ def _montar(anuais, mensais, hoje):
     f = FonteFalsa(anuais, mensais)
     with mock.patch.object(queimadas, 'listar', f.listar), mock.patch.object(queimadas, 'baixar', f.baixar):
         return queimadas.montar(hoje, cache='x')  # cache evita apagar os arquivos falsos
+
+
+class TestMunicipios(unittest.TestCase):
+    def test_nome_do_anual_casa_com_o_ibge_e_equivalencias_declaradas(self):
+        _, por_id, por_nome = queimadas.referencia_ibge()
+        # lista atual do IBGE: os 5.570 do Censo 2022 mais Boa Esperança do Norte, sem área
+        self.assertEqual(len(por_id), 5571)
+        self.assertEqual([c for c, m in por_id.items() if m['areaKm2'] is None], ['5101837'])
+        cont = {'PA|SÃO FÉLIX DO XINGU': 5, "RO|ALTA FLORESTA D'OESTE": 2, 'RN|AÇU': 3, 'id:1500602': 4, 'PA|LUGAR INEXISTENTE': 1, '': 2}
+        focos, sem, usadas = queimadas.resolver_municipios(cont, por_id, por_nome)
+        self.assertEqual(focos['1507300'], 5)  # São Félix do Xingu
+        self.assertEqual(focos['1100015'], 2)  # apóstrofo normalizado
+        self.assertEqual(focos['2400208'], 3)  # Açu -> Assú, por equivalência
+        self.assertEqual(focos['1500602'], 4)  # código vindo do mensal
+        self.assertEqual(usadas, ['RN|ACU'])
+        # o que não casa fica declarado com o nome da fonte; nada some
+        self.assertEqual(sem, {'PA|LUGAR INEXISTENTE': 1, queimadas.SEM: 2})
+        self.assertEqual(sum(focos.values()) + sum(sem.values()), sum(cont.values()))
+
+    def test_toda_equivalencia_aponta_para_municipio_da_mesma_uf(self):
+        _, por_id, por_nome = queimadas.referencia_ibge()
+        for chave, cod in queimadas.EQUIVALENCIAS.items():
+            self.assertEqual(por_id[cod]['uf'], chave.split('|')[0], chave)
+            self.assertNotIn(chave, por_nome, f'{chave} já casa direto; a equivalência é desnecessária')
+
+    def test_municipios_por_periodo_reconciliam_e_ausencia_e_nula(self):
+        anuais = {'focos_br_ref_2025.zip': _anual([
+            ('2025-01-10', 'PARÁ', 'Amazônia', 'ALTAMIRA'), ('2025-01-11', 'PARÁ', 'Amazônia', 'ALTAMIRA'),
+            ('2025-02-03', 'MARANHÃO', 'Cerrado', 'MIRADOR'), ('2025-08-03', 'BAHIA', 'Caatinga', 'NOME SEM PAR'),
+        ])}
+        mensais = {
+            'focos_mensal_br_202601.csv': _mensal([('2026-01-05', 'AQUA_M-T', 'PARÁ', 'Amazônia', 'ALTAMIRA', '1500602'),
+                                                   ('2026-01-06', 'NOAA-20', 'PARÁ', 'Amazônia', 'ALTAMIRA', '1500602')]),
+            'focos_mensal_br_202602.csv': _mensal([('2026-02-05', 'AQUA_M-T', 'TOCANTINS', 'Cerrado', 'PALMAS', '1721000')]),
+            'focos_mensal_br_202603.csv': _mensal([('2026-03-02', 'AQUA_M-T', 'BAHIA', 'Caatinga', 'SALVADOR', '2927408')]),
+        }
+        # um foco sem par em quatro passaria do limite de 1% da coleta real; aqui o teste é a declaração
+        with mock.patch.object(queimadas, 'LIMITE_SEM_MUNICIPIO', 0.5):
+            d = _montar(anuais, mensais, date(2026, 3, 15))
+        m = d['municipios']
+        linhas = {l[0]: dict(zip(m['campos'], l)) for l in m['linhas']}
+        self.assertEqual(linhas['1500602']['focos_ultimoAnoCompleto'], 2)
+        self.assertEqual(linhas['1500602']['focos_acumuladoAnoCorrente'], 1)  # outro satélite não entra
+        self.assertEqual(linhas['1500602']['focos_mesmoPeriodoAnoAnterior'], 2)
+        self.assertEqual(linhas['1721000']['focos_ultimoAnoCompleto'], 0)  # arquivo lido inteiro: zero observado
+        self.assertNotIn('2927408', linhas)  # março é o mês corrente, fora do acumulado
+        self.assertEqual(m['semMunicipio']['ultimoAnoCompleto'], {'focos': 1, 'nomesNaFonte': {'BA|NOME SEM PAR': 1}})
+        self.assertEqual(m['linhas'][0][0], '1500602')  # ordenado pelo último ano completo
+        run.validar_queimadas(d)
+        g = run.gold_queimadas_municipios(d)
+        self.assertEqual(g['gold'], 'queimadas_municipios')
+        self.assertNotIn('municipios', run.gold_queimadas(d))
+        # mexer numa contagem quebra a reconciliação e bloqueia a publicação
+        m['linhas'][0][4] += 1
+        with self.assertRaises(ValueError):
+            run.validar_queimadas(d)
+
+    def test_coluna_de_municipio_ausente_retem_a_coleta(self):
+        sem_coluna = io.BytesIO()
+        with zipfile.ZipFile(sem_coluna, 'w') as z:
+            z.writestr('focos.csv', 'id_bdq,foco_id,lat,lon,data_pas,pais,estado,bioma\n1,1,0,0,2025-01-10 15:00:00,Brasil,PARÁ,Amazônia\n')
+        with self.assertRaisesRegex(ValueError, 'municipio'):
+            _montar({'focos_br_ref_2025.zip': sem_coluna.getvalue()}, {}, date(2026, 1, 10))
+        mensal = (CAB_MENSAL.replace(',municipio_id', '') + '1,0,0,2026-01-05 15:00:00,AQUA_M-T,ALTAMIRA,PARÁ,Brasil,1,33,0,0,0,Amazônia,1\n').encode()
+        with self.assertRaisesRegex(ValueError, 'municipio_id'):
+            _montar({'focos_br_ref_2025.zip': _anual([('2025-01-10', 'PARÁ', 'Amazônia', 'ALTAMIRA')])}, {'focos_mensal_br_202601.csv': mensal}, date(2026, 2, 10))
+
+    def test_muitos_focos_sem_municipio_retem_a_coleta(self):
+        # malha ou grafia nova na fonte: a seção municipal não sai com a maioria em "sem município"
+        anuais = {'focos_br_ref_2025.zip': _anual([('2025-01-10', 'PARÁ', 'Amazônia', 'NOME NOVO')] * 3 + [('2025-01-11', 'PARÁ', 'Amazônia', 'ALTAMIRA')])}
+        with self.assertRaisesRegex(ValueError, 'sem município'):
+            _montar(anuais, {}, date(2026, 1, 10))
+
+    def test_periodo_sem_arquivo_fica_nulo_nos_municipios(self):
+        anuais = {'focos_br_ref_2025.zip': _anual([('2025-01-10', 'PARÁ', 'Amazônia', 'ALTAMIRA')])}
+        mensais = {'focos_mensal_br_202602.csv': _mensal([('2026-02-05', 'AQUA_M-T', 'PARÁ', 'Amazônia', 'ALTAMIRA', '1500602')])}
+        d = _montar(anuais, mensais, date(2026, 3, 10))
+        m = d['municipios']
+        self.assertIsNone(m['periodos']['acumuladoAnoCorrente'])
+        self.assertIsNone(m['semMunicipio']['acumuladoAnoCorrente'])
+        col = m['campos'].index('focos_acumuladoAnoCorrente')
+        self.assertTrue(all(l[col] is None for l in m['linhas']))
+        run.validar_queimadas(d)
 
 
 class TestQueimadas(unittest.TestCase):

@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1279,
-    "fontes_sha256": "5d604722dc0420bef551002f2ec47a3c0bbd45bf80827632f0eea6092679f187",
+    "arquivos_analisados": 1281,
+    "fontes_sha256": "5c0b8992292468f889f63f92c8e7e02d8a3c3dc608e2d0c4862995d1d3e2eea6",
     "pendencias_sha256": "b026960e02fda747a2f0cd6acf74c6a9f671955660f1f8aae05aa8759335b0b4",
     "nao_classificadas": [
       {
@@ -143,20 +143,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 251,
+        "arquivos": 253,
         "candidatos": {
-          "jsx_text": 868,
+          "jsx_text": 910,
           "atributos": 269,
-          "props": 776,
-          "outros_literais": 5246,
-          "templates": 586,
-          "expressoes_nao_resolvidas": 3481,
-          "chaves_objetos": 4074
+          "props": 777,
+          "outros_literais": 5285,
+          "templates": 595,
+          "expressoes_nao_resolvidas": 3566,
+          "chaves_objetos": 4092
         },
         "exclusoes": {
-          "importacoes": 1088,
-          "atributos_tecnicos": 1952,
-          "tipos": 234
+          "importacoes": 1096,
+          "atributos_tecnicos": 2009,
+          "tipos": 237
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -165,7 +165,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 15300,
+        "candidatos_nao_catalogados": 15494,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -537,11 +537,11 @@
           "templates": 2610,
           "expressoes_nao_resolvidas": 8869,
           "chaves_objetos": 5036,
-          "textos": 173
+          "textos": 176
         },
         "exclusoes": {
           "importacoes": 21,
-          "atributos_tecnicos": 503,
+          "atributos_tecnicos": 504,
           "tipos": 0,
           "estilos": 1,
           "comentarios": 2
@@ -557,7 +557,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 29740,
+        "candidatos_nao_catalogados": 29743,
         "percentual_traduzido": null
       },
       "rotas": {

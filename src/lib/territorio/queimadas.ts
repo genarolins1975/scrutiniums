@@ -4,8 +4,12 @@
  * INPE (AQUA_M-T) e área queimada AQ1km (provisória). Lida no build; nenhum número é
  * recalculado aqui além de ordenações e somas que o próprio arquivo confere.
  */
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import type { GoldQueimadasMunicipios } from "./queimadasMunicipios";
+
+export { municipiosDeFocos, municipiosParaMetade, PISO_FOCOS_DENSIDADE, URL_QUEIMADAS_MUNICIPIOS } from "./queimadasMunicipios";
+export type { FocosMunicipio, GoldQueimadasMunicipios, PeriodoMunicipal } from "./queimadasMunicipios";
 
 export type Recorte = {
   rotulo: "ultimoAnoCompleto" | "acumuladoAnoCorrente" | "mesmoPeriodoAnoAnterior";
@@ -64,3 +68,14 @@ export const NOME_UF: Record<string, string> = {
   PE: "Pernambuco", PI: "Piauí", RJ: "Rio de Janeiro", RN: "Rio Grande do Norte", RS: "Rio Grande do Sul", RO: "Rondônia", RR: "Roraima",
   SC: "Santa Catarina", SP: "São Paulo", SE: "Sergipe", TO: "Tocantins",
 };
+
+let cacheMunicipios: GoldQueimadasMunicipios | null | undefined;
+
+/** Gold municipal, lida no build; null quando o seed ainda não tem a contagem por município. */
+export function lerQueimadasMunicipios(): GoldQueimadasMunicipios | null {
+  if (cacheMunicipios === undefined) {
+    const caminho = join(process.cwd(), "public", "territorio", "gold", "queimadas_municipios.json");
+    cacheMunicipios = existsSync(caminho) ? (JSON.parse(readFileSync(caminho, "utf-8")) as GoldQueimadasMunicipios) : null;
+  }
+  return cacheMunicipios;
+}

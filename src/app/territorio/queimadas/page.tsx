@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { lerQueimadas, recorte, NOME_UF } from "@/lib/territorio/queimadas";
-import { BarrasComparadas, DoSateliteAoFoco, Figura, MesAMes, SerieAnual, TabelaAnual, TabelaMensal, TabelaUF, dataBr, mesAno, n } from "@/components/territorio/Queimadas";
+import { lerQueimadas, lerQueimadasMunicipios, municipiosDeFocos, municipiosParaMetade, recorte, NOME_UF, PISO_FOCOS_DENSIDADE } from "@/lib/territorio/queimadas";
+import { FocosNoMunicipio } from "@/components/territorio/FocosNoMunicipio";
+import { BarrasComparadas, DoSateliteAoFoco, Figura, MesAMes, SerieAnual, TabelaAnual, TabelaMensal, TabelaMunicipios, TabelaUF, dataBr, mesAno, n } from "@/components/territorio/Queimadas";
 
 export const dynamic = "force-static";
 
@@ -44,6 +45,16 @@ export default function PaginaQueimadas() {
   }));
   const biomas = (atual?.porBioma ?? []).map((b) => ({ id: b.id, atual: b.focos, anterior: anterior?.porBioma?.find((x) => x.id === b.id)?.focos ?? null }));
   const semUF = (atual?.porUF ?? []).filter((u) => !NOME_UF[u.id]);
+
+  // Municípios: último ano completo, satélite de referência, área do Censo 2022.
+  const gm = lerQueimadasMunicipios();
+  const anoMun = gm?.periodos.ultimoAnoCompleto ? Number(gm.periodos.ultimoAnoCompleto.periodo.inicio.slice(0, 4)) : null;
+  const munis = gm && anoMun ? municipiosDeFocos(gm).filter((m) => (m.focos.ultimoAnoCompleto ?? 0) > 0) : [];
+  const totalMun = gm?.periodos.ultimoAnoCompleto?.focos ?? 0;
+  const topFocos = munis.slice(0, 15);
+  const topArea = munis.filter((m) => (m.focos.ultimoAnoCompleto ?? 0) >= PISO_FOCOS_DENSIDADE && m.porMilKm2 != null).sort((a, b) => (b.porMilKm2 as number) - (a.porMilKm2 as number)).slice(0, 15);
+  const metade = municipiosParaMetade(munis, totalMun);
+  const semMun = gm?.semMunicipio.ultimoAnoCompleto?.focos ?? 0;
 
   const numeros = [
     { rotulo: `Focos de calor em ${ultimo.ano}`, valor: n(ultimo.focos as number), unidade: "focos", periodo: ultimo.preliminar ? `${ultimo.ano}, preliminar: o consolidado anual do INPE ainda não saiu` : `${ultimo.ano}, ano fechado`, nota: "Satélite de referência; é o número comparável entre anos." },
@@ -151,6 +162,38 @@ export default function PaginaQueimadas() {
         </div>
       </section>
 
+      {gm && anoMun && munis.length > 0 && (
+        <section aria-labelledby="municipios-titulo" className="border-t border-linha bg-marfim">
+          <div className="mx-auto max-w-page px-6 py-12 md:py-14">
+            <h2 id="municipios-titulo" className="font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao">Município a município</h2>
+            <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+              Em {anoMun}, {n(munis.length)} dos {n(gm.municipiosIbge)} municípios do país tiveram ao menos um foco de calor detectado pelo satélite de
+              referência{metade ? <>, e metade de todos os focos do ano ocorreu em {n(metade)} deles</> : null}. Municípios grandes acumulam mais focos;
+              por isso, a segunda lista divide a contagem pela área.
+            </p>
+            <div className="mt-8"><FocosNoMunicipio ano={anoMun} /></div>
+            <div className="mt-12 grid gap-12 lg:grid-cols-2">
+              <div className="min-w-0">
+                <h3 className="font-serif text-xl leading-snug text-carvao">Mais focos em {anoMun}</h3>
+                <p className="mt-1 text-sm text-carvao-muted">Os 15 municípios com mais focos no ano.</p>
+                <div className="mt-4"><TabelaMunicipios itens={topFocos} ano={anoMun} rotuloOrdem={`Os 15 municípios com mais focos de calor em ${anoMun}`} /></div>
+              </div>
+              <div className="min-w-0">
+                <h3 className="font-serif text-xl leading-snug text-carvao">Mais focos por área em {anoMun}</h3>
+                <p className="mt-1 text-sm text-carvao-muted">Focos por 1.000 km², entre municípios com pelo menos {PISO_FOCOS_DENSIDADE} focos no ano, para que poucos focos num município pequeno não dominem a lista.</p>
+                <div className="mt-4"><TabelaMunicipios itens={topArea} ano={anoMun} rotuloOrdem={`Os 15 municípios com mais focos de calor por 1.000 km² em ${anoMun}`} /></div>
+              </div>
+            </div>
+            <p className="mt-6 max-w-prose2 text-xs leading-relaxed text-mineral">
+              {FONTE}, arquivo anual de {anoMun}. Área territorial: {gm.fonteArea.fonte}. O arquivo anual traz o nome do município, não o código: o nome foi
+              casado com a lista oficial do IBGE, com {Object.keys(gm.equivalenciasUsadas).length} grafias antigas ou divergentes resolvidas uma a uma (por
+              exemplo, Açu para Assú).{" "}
+              {semMun > 0 ? `${n(semMun)} focos ficaram sem município identificado e entram só no total do país.` : "Todos os focos do ano foram atribuídos a um município."}
+            </p>
+          </div>
+        </section>
+      )}
+
       {aq && aqFechado && (
         <section aria-labelledby="area-titulo" className="border-t border-linha">
           <div className="mx-auto max-w-page px-6 py-12 md:py-14">
@@ -212,6 +255,7 @@ export default function PaginaQueimadas() {
             <ul className="list-disc space-y-2 pl-5">
               {g.ressalvas.map((r) => <li key={r}>{r}</li>)}
               {aq?.ressalvas.map((r) => <li key={r}>Área queimada: {r}</li>)}
+              {gm?.ressalvas.map((r) => <li key={r}>Municípios: {r}</li>)}
             </ul>
             <p>
               Captura em {dataBr(g.capturadoEm)}, com data de referência {dataBr(g.dataReferencia)}. Cada arquivo original tem sha256 e tamanho
@@ -220,6 +264,16 @@ export default function PaginaQueimadas() {
             </p>
             <p>
               <a href="/territorio/gold/queimadas.json" className="inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4">Baixar os dados deste painel (JSON)</a>
+              {gm && (
+                <>
+                  {" · "}
+                  <a href="/territorio/gold/queimadas_municipios.json" className="inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4">Baixar os focos por município (JSON)</a>
+                </>
+              )}
+            </p>
+            <p>
+              Área queimada por estado e por município não está neste painel: o INPE publica a tabela do AQ1km só por bioma, e o recorte por
+              estado exigiria processar os mapas mensais do produto.
             </p>
           </div>
         </details>

@@ -3,7 +3,7 @@
  "gold": "queimadas",
  "versaoPipeline": "territorio-1.0.0",
  "id": "queimadas_focos_referencia",
- "capturadoEm": "2026-10-18T09:55:50+00:00",
+ "capturadoEm": "2026-10-18T15:24:56+00:00",
  "dataReferencia": "2026-10-18",
  "fonte": {
   "nome": "INPE, Programa Queimadas, focos de calor (servidor de dados abertos COIDS)",
@@ -1156,7 +1156,7 @@
   "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202610.csv": {
    "sha256": "da4a545a16c24de86ababddd56868ae96da1260690ae808d845ed2398e691213",
    "bytes": 94737590,
-   "lastModified": "Sun, 18 Oct 2026 08:56:20 GMT"
+   "lastModified": "Sun, 18 Oct 2026 11:56:21 GMT"
   }
  },
  "ressalvas": [
