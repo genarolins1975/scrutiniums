@@ -385,9 +385,16 @@ export function respostaP044(g: Pick<GoldRegulacao, "limites_pld" | "data_refere
         ` The integrated series covers ${anos[0]} to ${anos[anos.length - 1]}, with ${nAtos} ${nAtos === 1 ? "act" : "acts"} read.`,
       )
     : "";
-  const nRev = g.limites_em_revisao.length;
-  const listaRev = g.limites_em_revisao.map((a) => tx(`${a.codigo}, prevista para ${a.ano_previsto}`, `${a.codigo}, planned for ${a.ano_previsto}`)).join("; ");
-  const rev = nRev
+  const emRevisao = g.limites_em_revisao ?? [];
+  const nRev = emRevisao.length;
+  const listaRev = emRevisao.map((a) => tx(`${a.codigo}, prevista para ${a.ano_previsto}`, `${a.codigo}, planned for ${a.ano_previsto}`)).join("; ");
+  // Agenda não lida: a resposta diz que não há como saber, em vez de calar como se nenhuma atividade revisasse os limites
+  const rev = g.limites_em_revisao === null
+    ? tx(
+        " A Agenda Regulatória não foi lida nesta publicação: não há como dizer se alguma atividade revisa a metodologia dos limites.",
+        " The regulatory agenda was not read in this publication: it is not possible to say whether any activity reviews the methodology of the limits.",
+      )
+    : nRev
     ? tx(
         ` ${nRev} ${pl(nRev, "atividade", "atividades")} da Agenda Regulatória ${pl(nRev, "revisa", "revisam")} a metodologia dos limites (${listaRev}).`,
         ` ${nRev} ${pl(nRev, "activity", "activities")} on the regulatory agenda ${pl(nRev, "reviews", "review")} the methodology of the limits (${listaRev}).`,
@@ -433,7 +440,10 @@ export function oQueMudouLimites(g: Pick<GoldRegulacao, "limites_pld">): string 
 export function avisoToleranciaIpca(g: Pick<GoldRegulacao, "limites_pld" | "regras_limites">): string | null {
   const det = g.limites_pld.conferencias_detalhe;
   const tol = Array.from(new Set(det.filter((c) => c.conferencia === "regra_ipca" && c.tolerancia).map((c) => c.tolerancia)));
-  const literal = det.some((c) => c.conferencia === "art23_literal");
+  const lit = det.filter((c) => c.conferencia === "art23_literal");
+  // só a conferência executada sustenta "não reproduz os valores"; sem o texto do ato, a página diz que não foi feita
+  const literal = lit.some((c) => c.resultado !== "nao_executada");
+  const doAto = g.regras_limites ? tx(`, da ${abreviarAto(g.regras_limites.ato)}`, `, of ${abreviarAto(g.regras_limites.ato)}`) : "";
   const partes: string[] = [];
   if (tol.length)
     partes.push(
@@ -445,8 +455,15 @@ export function avisoToleranciaIpca(g: Pick<GoldRegulacao, "limites_pld" | "regr
   if (literal)
     partes.push(
       tx(
-        `A aplicação literal do art. 23, § 1º${g.regras_limites ? `, da ${abreviarAto(g.regras_limites.ato)}` : ""}, aparece só como conferência informativa, porque não reproduz os valores publicados.`,
-        `The literal application of art. 23, § 1º${g.regras_limites ? `, of ${abreviarAto(g.regras_limites.ato)}` : ""}, appears only as an informative check, as it does not reproduce the published values.`,
+        `A aplicação literal do art. 23, § 1º${doAto}, aparece só como conferência informativa, porque não reproduz os valores publicados.`,
+        `The literal application of art. 23, § 1º${doAto}, appears only as an informative check, as it does not reproduce the published values.`,
+      ),
+    );
+  else if (lit.length)
+    partes.push(
+      tx(
+        `A aplicação literal do art. 23, § 1º${doAto}, não foi conferida nesta publicação, porque o texto do ato não foi lido.`,
+        `The literal application of art. 23, § 1º${doAto}, was not checked in this publication, as the text of the act was not read.`,
       ),
     );
   return partes.length ? partes.join(" ") : null;
@@ -1471,12 +1488,13 @@ export const COLUNAS_AGENDA: ColunaTabela[] = [
   { id: "consultas", get rotulo() { return tx("Consultas que citam o código", "Consultations citing the code"); }, tipo: "texto", idiomaTexto: "nome" },
 ];
 
-export function respostaAgenda(a: GoldRegulacao["agenda"], limites: GoldRegulacao["limites_em_revisao"]): string {
+export function respostaAgenda(a: GoldRegulacao["agenda"], lim: GoldRegulacao["limites_em_revisao"]): string {
   if (!a.disponivel)
     return tx(
-      `A Agenda Regulatória não está disponível nesta publicação: ${a.motivo ?? "motivo não informado"}.`,
-      `The regulatory agenda is not available in this publication: ${a.motivo ?? "reason not reported"}.`,
+      `A Agenda Regulatória não está disponível nesta publicação: ${a.motivo ?? "motivo não informado"}. As atividades previstas e as que tratam dos limites do PLD ficam sem informação, e não como zero.`,
+      `The regulatory agenda is not available in this publication: ${a.motivo ?? "reason not reported"}. The planned activities and those dealing with the PLD limits are left without information, not as zero.`,
     );
+  const limites = lim ?? [];
   const anos = Object.entries(a.por_ano ?? {}).sort(([x], [y]) => x.localeCompare(y));
   const comConsulta = a.itens.filter((i) => i.consultas.length).length;
   const portaria = a.portaria ?? tx("portaria da Agenda Regulatória", "regulatory agenda ordinance");
@@ -1769,13 +1787,10 @@ export function textoMudancaDeAbertas(itens: readonly Consulta[], referencia: st
  * de leitura (o ano é previsão).
  */
 export function vereditoAgenda(a: GoldRegulacao["agenda"], limites: GoldRegulacao["limites_em_revisao"]): string {
-  if (!a.disponivel)
-    return tx(
-      `A Agenda Regulatória não está disponível nesta publicação: ${a.motivo ?? "motivo não informado"}.`,
-      `The regulatory agenda is not available in this publication: ${a.motivo ?? "reason not reported"}.`,
-    );
+  // o motivo fica na resposta completa; o veredito só diz que a Agenda não foi lida
+  if (!a.disponivel) return tx("A Agenda Regulatória não está disponível nesta publicação.", "The regulatory agenda is not available in this publication.");
   const n = a.itens.length;
-  const k = limites.length;
+  const k = (limites ?? []).length;
   return tx(
     `A ${nomeAgenda(a)} prevê ${num(n, 0)} ${pl(n, "atividade", "atividades")}; ${num(k, 0)} ${pl(k, "trata", "tratam")} dos limites do PLD. O ano de cada uma é uma previsão da ANEEL, que pode mudar.`,
     `The ${nomeAgenda(a)} plans ${num(n, 0)} ${pl(n, "activity", "activities")}; ${num(k, 0)} ${pl(k, "deals", "deal")} with the PLD limits. The year of each one is an ANEEL forecast, which may change.`,

@@ -27,6 +27,7 @@ próprio balanço do ONS, o campo GNRa publicado pelo ONS, as colunas de total d
 somas feitas à parte com laços simples sobre as amostras (registradas no documento do módulo).
 A classe GoldPublicada confere a gold contra números lidos da fonte por outro código
 (registrados no documento) e, como controle interno, contra os CSV publicados."""
+import calendar
 import csv
 import json
 import os
@@ -363,6 +364,82 @@ class ImportacaoEManifesto(unittest.TestCase):
         self.assertAlmostEqual(sem_filtro, 14987.696 + 9984.5, delta=0.01)
 
 
+class ManifestoComReferencias(unittest.TestCase):
+    """Restrição reclassificada pela fonte num dia: a série segue no arquivo (outros dias) e o
+    valor antigo do dia não pode continuar somado (caso real: eólica, 05/09/2026, 319,698 MWh)."""
+
+    DS, REC = "ons_coff_eolica", "RESTRICAO_COFF_EOLICA_2026_09"
+
+    def setUp(self):
+        self.con = base.conecta(":memory:")
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+
+    def _importa(self, capturado, sha, obs, refs=True, bronze=True):
+        caminho = os.path.join(self.tmp.name, f"{sha[:8]}.parquet.gz")
+        if bronze:
+            with open(caminho, "wb") as f:
+                f.write(b"x")
+        v = _vintage_em(self.con, self.DS, self.REC, caminho, capturado, sha)
+        base.grava_observacoes(self.con, self.DS, v["vintage_id"], obs)
+        gd._marca_importado(self.con, v["vintage_id"], {"linhas": len(obs)}, {s_ for s_, _, _ in obs},
+                            refs=obs if refs else None)
+        self.con.commit()
+        return v
+
+    def _soma(self, refs):
+        tudo = gd.filtra_manifesto(gd.vigentes(self.con, self.DS), gd.manifestos(self.con, self.DS),
+                                   gd.manifestos_refs(self.con, self.DS) if refs else None)
+        return round(sum(v for (s_, _), v in tudo.items() if s_.startswith("e|")), 3)
+
+    def _cenario(self, refs_na_recaptura=True):
+        self._importa("2026-10-02T04:10:28Z", "a" * 64, [("e|NE|REL|SIS", "2026-09-05", 319.698),
+                                                          ("e|NE|REL|SIS", "2026-09-06", 10.0),
+                                                          ("e|NE|ENE|SIS", "2026-09-05", 50000.0)])
+        # recaptura: o corte do dia 05 passou de REL para ENE; REL segue no arquivo no dia 06
+        return self._importa("2026-10-03T03:32:47Z", "b" * 64, [("e|NE|REL|SIS", "2026-09-06", 10.0),
+                                                                 ("e|NE|ENE|SIS", "2026-09-05", 50319.698)],
+                             refs=refs_na_recaptura)
+
+    def test_dia_reclassificado_nao_soma_o_valor_antigo(self):
+        self._cenario()
+        self.assertEqual(self._soma(refs=True), 50329.698)
+        # só com o manifesto de séries, o valor antigo do dia 05 continuava somado
+        self.assertEqual(self._soma(refs=False), 50649.396)
+
+    def test_vintage_sem_registro_de_referencias_mantem_o_filtro_por_series(self):
+        self._cenario(refs_na_recaptura=False)
+        self.assertEqual(gd.manifestos_refs(self.con, self.DS), {})
+        self.assertEqual(self._soma(refs=True), self._soma(refs=False))
+
+    def test_importacao_antiga_e_relida_uma_vez_so_quando_o_bronze_existe(self):
+        from unittest import mock
+        chamadas = []
+
+        def importa(con, k, v, periodo):
+            chamadas.append((k, v["vintage_id"], periodo))
+            gd._marca_importado(con, v["vintage_id"], {"linhas": 0}, set(), refs=[])
+            return {"linhas": 0}
+
+        v = self._importa("2026-10-16T01:42:31Z", "c" * 64, [("e|NE|ENE|SIS", "2026-09-05", 1.0)], refs=False)
+        with mock.patch.object(gd, "_importa_coff", importa), mock.patch.object(gd, "_espera_memoria", lambda: None):
+            st = {"importacoes": {}, "falhas": []}
+            gd.importa_pendentes(self.con, "coff_eolica", {}, st)
+            self.assertEqual(chamadas, [("coff_eolica", v["vintage_id"], "2026-09")])
+            gd.importa_pendentes(self.con, "coff_eolica", {}, st)  # já tem o registro: não relê
+            self.assertEqual(len(chamadas), 1)
+            self.assertEqual(st["falhas"], [])
+
+    def test_importacao_antiga_sem_bronze_nao_e_relida(self):
+        from unittest import mock
+        self._importa("2026-10-16T01:42:31Z", "d" * 64, [("e|NE|ENE|SIS", "2026-09-05", 1.0)], refs=False, bronze=False)
+        with mock.patch.object(gd, "_importa_coff", side_effect=AssertionError("não deveria reler")), \
+                mock.patch.object(gd, "_espera_memoria", lambda: None):
+            st = {"importacoes": {}, "falhas": []}
+            gd.importa_pendentes(self.con, "coff_eolica", {}, st)
+        self.assertEqual(st["falhas"], [])
+
+
 def _vintage_em(con, ds, recurso, caminho, capturado, sha):
     vid, _ = base.registra_vintage(con, ds, recurso, "x", capturado, None, sha, 1, "coleta_direta", caminho)
     return base.ultima_vintage(con, ds, recurso) | {"vintage_id": vid}
@@ -559,6 +636,15 @@ class SequenciasDeZero(unittest.TestCase):
         self.assertEqual(gd.sequencias_zero_rotulo({k: set(meses)}, mwh2, {k: ("biomassa", "verificada")}, U, cad), [])
 
 
+def _meses_entre(ini, fim):
+    """Meses AAAA-MM de ini a fim, inclusive."""
+    out, a, m = [], int(ini[:4]), int(ini[5:7])
+    while f"{a:04d}-{m:02d}" <= fim:
+        out.append(f"{a:04d}-{m:02d}")
+        a, m = (a + 1, 1) if m == 12 else (a, m + 1)
+    return out
+
+
 class GoldPublicada(unittest.TestCase):
     """Contrato da gold publicada. Os testes de equivalência gold × CSV são controles internos
     (o CSV sai do mesmo código); os de conferência usam números lidos da fonte por outro código."""
@@ -691,11 +777,25 @@ class GoldPublicada(unittest.TestCase):
         u = self.g["matriz"]["universo"]["identificadores_por_categoria"]
         self.assertEqual(u["biomassa"][u["meses"].index("2025-08")], 63)
         self.assertEqual(u["biomassa"][u["meses"].index("2026-08")], 17)
+        # cada janela: o maior número dos 12 meses antes do início e o número do último mês, relidos da série de identificadores
+        def meses_antes(mes, n):
+            a, m = int(mes[:4]), int(mes[5:7])
+            out = []
+            for _ in range(n):
+                m -= 1
+                if m == 0:
+                    a, m = a - 1, 12
+                out.append(f"{a:04d}-{m:02d}")
+            return out
+        serie = dict(zip(u["meses"], u["biomassa"]))
         for nome in ("dia", "7d", "30d", "12m"):
-            r = self.g["matriz"]["janelas"]["SIN"][nome]["ressalvas_universo"]
+            j = self.g["matriz"]["janelas"]["SIN"][nome]
+            r = j["ressalvas_universo"]
             self.assertIn("universo_reduzido", r["biomassa"]["motivos"], nome)
-            self.assertEqual(r["biomassa"]["maior_numero_12_meses_antes"], 63)
-        self.assertEqual(self.g["matriz"]["janelas"]["SIN"]["30d"]["ressalvas_universo"]["biomassa"]["identificadores_com_valor_no_ultimo_mes"], 17)
+            nmax = max(serie.get(m_, 0) or 0 for m_ in meses_antes(j["inicio"][:7], 12))
+            self.assertEqual(r["biomassa"]["maior_numero_12_meses_antes"], nmax, nome)
+            self.assertEqual(r["biomassa"]["identificadores_com_valor_no_ultimo_mes"], serie[j["fim"][:7]], nome)
+            self.assertLessEqual(serie[j["fim"][:7]], 0.75 * nmax, nome)
         self.assertNotIn("hidraulica", self.g["matriz"]["janelas"]["SIN"]["30d"]["ressalvas_universo"])
         anos = {a["ano"]: a for a in self.g["matriz"]["anual_sin"]}
         self.assertIn("biomassa", anos[2026]["ressalvas_universo"])
@@ -731,12 +831,20 @@ class GoldPublicada(unittest.TestCase):
         self.assertEqual(ctl[0]["resultado"], "ressalva")
 
     def test_outros_decomposto_pelo_ceg(self):
-        o = {x["codigo_ceg"]: x for x in self.g["matriz"]["outros_por_ceg"]["itens"]}
+        bloco = self.g["matriz"]["outros_por_ceg"]
+        o = {x["codigo_ceg"]: x for x in bloco["itens"]}
         self.assertIn("licor negro", o["FL"]["fonte_aneel"])
-        # releitura da GU de 09/2025 a 08/2026: FL 173,4 MWmed; CM 396,9 + PE 56,3 (a Do Atlântico
-        # antes da troca do CEG, aqui somada ao CEG atual UTE.CM)
-        self.assertAlmostEqual(o["FL"]["mwmed"], 173.4, delta=0.1)
-        self.assertAlmostEqual(o["CM"]["mwmed"], 396.9 + 56.3, delta=0.15)
+        # cada item: MWmed = MWh ÷ horas dos meses do período, e as partes somam 100% da categoria
+        horas = sum(calendar.monthrange(a_, m_)[1] * 24 for a_, m_ in
+                    ((int(x[:4]), int(x[5:7])) for x in _meses_entre(bloco["inicio"], bloco["fim"])))
+        for x in bloco["itens"]:
+            self.assertAlmostEqual(x["mwmed"], x["mwh"] / horas, delta=0.051, msg=x["codigo_ceg"])
+        self.assertAlmostEqual(sum(x["pct_da_categoria"] for x in bloco["itens"]), 100, delta=0.05)
+        # releitura da GU de 09/2025 a 08/2026 (conferência de 01/10/2026): FL 173,4 MWmed; CM 396,9 + PE 56,3 (a Do
+        # Atlântico antes da troca do CEG, aqui somada ao CEG atual UTE.CM). Vale para a janela conferida.
+        if (bloco["inicio"], bloco["fim"]) == ("2025-09", "2026-08"):
+            self.assertAlmostEqual(o["FL"]["mwmed"], 173.4, delta=0.1)
+            self.assertAlmostEqual(o["CM"]["mwmed"], 396.9 + 56.3, delta=0.15)
         self.assertIn("licor negro", next(c_["rotulo"] for c_ in self.g["categorias"] if c_["id"] == "outros"))
 
     def test_ciclo_combinado_no_gas_e_potencia_coerente_com_o_fc(self):
@@ -757,8 +865,14 @@ class GoldPublicada(unittest.TestCase):
         atl = [u for u in t["usinas_12m"] if "UTE.PE.RJ.029587-6.01" in u["chaves_na_fonte"]]
         self.assertEqual(len(atl), 1)
         self.assertEqual(atl[0]["categoria"], "outros")
-        # releitura da TD 09/2025 a 08/2026: 2.041.706,9 MWh sob UTE.CM e 483.460,4 sob UTE.PE
-        self.assertAlmostEqual(atl[0]["mwh"], 2041706.9 + 483460.4, delta=0.2)
+        # a lista completa por usina e mês (CSV) soma a mesma energia nos 12 meses, sob a identidade que liga os dois CEGs
+        u12 = t["ultimos_12m"]
+        linhas = [r for r in self._csv("/energia/series/geracao_termica_usina_mensal.csv")
+                  if r["usina"] == atl[0]["id"] and u12["inicio"] <= r["mes"] <= u12["fim"]]
+        self.assertAlmostEqual(sum(float(r["total_mwh"] or 0) for r in linhas), atl[0]["mwh"], delta=0.2)
+        # releitura da TD 09/2025 a 08/2026 (conferência de 01/10/2026): 2.041.706,9 MWh sob UTE.CM e 483.460,4 sob UTE.PE
+        if (u12["inicio"], u12["fim"]) == ("2025-09", "2026-08"):
+            self.assertAlmostEqual(atl[0]["mwh"], 2041706.9 + 483460.4, delta=0.2)
         self.assertEqual(t["mapa_combustivel"]["nao_identificadas_mwh_12m"], 0.0)
         mc = t["mensal_combustivel"]
         for m in ("2022-07", "2024-01", "2025-10", "2025-11"):
@@ -771,8 +885,15 @@ class GoldPublicada(unittest.TestCase):
         self.assertEqual(sorted(cv["cobertura"]["sem_par"]), sorted(["UTE MANAUS", "ST.CRUZ 34", "BARCARENA", "AZULAO", "PALMAPLAN"]))
         m4 = next(u for u in self.g["termica"]["usinas_12m"] if u["id"] == "UTE.GN.MA.030202-3.01")
         p0 = next(p_ for p_ in m4["parcelas"] if p_["cod"] == 36)
-        self.assertEqual(p0["cvu_semana_vigente"], 180.51)                        # MARANHAOIV, semana de 26/09/2026
-        self.assertEqual(m4["cvu_semana_vigente"], 180.51)
+        # o CVU da parcela é o da semana vigente no CSV semanal (código 36), e com uma parcela só a usina tem o mesmo CVU
+        sem = self.g["termica"]["cvu"]["semana"]
+        do_csv = [float(r["cvu_rs_mwh"]) for r in self._csv("/energia/series/geracao_cvu_semanal.csv")
+                  if r["cod_usina"] == "36" and r["semana_inicio"] == sem["inicio"]]
+        self.assertEqual(len(do_csv), 1)
+        self.assertEqual(p0["cvu_semana_vigente"], do_csv[0])
+        self.assertEqual(m4["cvu_semana_vigente"], p0["cvu_semana_vigente"])
+        if sem["inicio"] == "2026-09-26":
+            self.assertEqual(p0["cvu_semana_vigente"], 180.51)                    # MARANHAOIV, semana de 26/09/2026 (deck do PMO)
         jl = next(u for u in self.g["termica"]["usinas_12m"] if u["id"] == "UTE.CM.SC.001260-2.01")
         self.assertIsNone(jl["cvu_semana_vigente"])                              # duas parcelas com CVU: um por parcela
         self.assertEqual({p_["cod"]: p_["cvu_semana_vigente"] for p_ in jl["parcelas"]}, {26: 518.9, 27: 416.39})
@@ -791,8 +912,20 @@ class GoldPublicada(unittest.TestCase):
     def test_textos_e_descricoes_conferem_com_o_dado(self):
         with open(os.path.join(RAIZ, "docs", "observatorios", "energia", "modulos", "geracao.md"), encoding="utf-8") as f:
             doc = f.read()
-        cob = self.g["termica"]["usinas_12m_resumo"]["cobertura_da_energia_pct"]
-        self.assertIn(f"{cob:.1f}".replace(".", ",") + "% da energia", doc)
+        # cobertura das usinas publicadas refeita na lista completa (CSV): energia delas sobre a de todas, nos 12 meses
+        t = self.g["termica"]
+        u12, res = t["ultimos_12m"], t["usinas_12m_resumo"]
+        por_usina = defaultdict(float)
+        for r in self._csv(res["lista_completa"]):
+            if u12["inicio"] <= r["mes"] <= u12["fim"]:
+                por_usina[r["usina"]] += float(r["total_mwh"] or 0)
+        publicadas = sum(por_usina[u["id"]] for u in t["usinas_12m"])
+        self.assertAlmostEqual(100 * publicadas / sum(por_usina.values()), res["cobertura_da_energia_pct"], delta=0.01)
+        # o estado registrado no documento é o da janela que ele declara; com a mesma janela, a mesma cobertura
+        janela_doc = f"Despacho térmico, {u12['inicio'][5:]}/{u12['inicio'][:4]} a {u12['fim'][5:]}/{u12['fim'][:4]}:"
+        if janela_doc in doc:
+            cob = res["cobertura_da_energia_pct"]
+            self.assertIn(f"{cob:.1f}".replace(".", ",") + "% da energia", doc)
         # colunas declaradas da reconciliação = cabeçalho do CSV
         desc = gd.REGISTRO["arquivos"][gd.CSV["reconciliacao"]]
         cab = list(self._csv(gd.CSV["reconciliacao"])[0].keys())

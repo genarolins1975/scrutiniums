@@ -16,6 +16,7 @@ import PaginaP012 from "@/app/setor-eletrico/pld/diferencas-regionais/page";
 import PaginaModelos from "@/app/setor-eletrico/pld/modelos/page";
 import PaginaFicha, { generateStaticParams as paramsFicha } from "@/app/setor-eletrico/pld/modelos/[modelo]/page";
 import PaginaPrevisoes from "@/app/setor-eletrico/pld/previsoes/page";
+import { PrevisoesAtual } from "@/components/energia/PrevisoesAtual";
 import { NOS_FORMACAO } from "@/lib/energia/conteudo/pld";
 import { dataBR } from "@/lib/energia/formato";
 import {
@@ -487,7 +488,8 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
   });
 
   it("(2) PLD já publicado no corte (07h a 23h) e média das 24 horas do dia na página PLD: janelas diferentes do mesmo dia", () => {
-    const dia = D.referencia.dia;
+    // o dia é o de origem da última rodada de previsões; as médias saem do CSV horário (outro arquivo)
+    const dia = P.previsao_atual!.ja_publicado_no_corte!.origem;
     const horas = horario.filter((r) => r.data_hora_local.startsWith(dia));
     expect(horas).toHaveLength(24);
     const media = (rs: Record<string, string>[]) => rs.reduce((s, r) => s + Number(r.PLD_SE), 0) / rs.length;
@@ -495,8 +497,29 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
     expect(apos).toHaveLength(17);
     const t = textoEntender(html.previsoes);
     expect(t).toContain(plano(reaisBr(media(apos))));
-    expect(t).toContain(plano(`A página PLD mostra a média das 24 horas do dia, ${reaisBr(media(horas))}/MWh; aqui entram só as 17 horas depois do corte.`));
-    expect(textoEntender(html.pld)).toContain(plano(reaisBr(media(horas))));
+    const frase = plano(`A página PLD mostra a média das 24 horas do dia, ${reaisBr(media(horas))}/MWh; aqui entram só as 17 horas depois do corte.`);
+    // a comparação com a página PLD só vale quando as duas páginas falam do mesmo dia; em outro dia a frase não aparece
+    if (D.referencia.dia === dia) {
+      expect(t).toContain(frase);
+      expect(textoEntender(html.pld)).toContain(plano(reaisBr(media(horas))));
+    } else {
+      expect(t).not.toContain("A página PLD mostra a média das 24 horas do dia");
+    }
+    // o ramo do mesmo dia fica testado no componente, com a média das 24 horas do CSV no lugar da que a página PLD passaria
+    const pub = P.previsao_atual!.ja_publicado_no_corte!;
+    const mesmoDia = renderToStaticMarkup(
+      createElement(PrevisoesAtual, {
+        linhas: [],
+        origem: dia,
+        evidencias: {},
+        publicado: { origem: pub.origem, submercados: pub.submercados },
+        fonte: "",
+        versao: "",
+        endereco: "",
+        mediaDiaPaginaPld: { SE: media(horas) },
+      }),
+    );
+    expect(textoEntender(mesmoDia)).toContain(frase);
   });
 
   it("(2) percentil do cartão (todas as médias diárias desde 2021) e do Histórico (mesmo mês de anos anteriores): universos diferentes", () => {
@@ -511,7 +534,8 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
     expect(p1).not.toBe(p2);
     const t = textoEntender(html.pld);
     expect(t).toContain(`compara a média do dia com as ${br(todos.length, 0)} médias diárias desde 2021, de todos os meses`);
-    expect(t).toContain(`com os ${br(mesmoMes.length, 0)} dias de setembro de anos anteriores`);
+    const nomeMes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"][Number(dia.slice(5, 7)) - 1];
+    expect(t).toContain(`com os ${br(mesmoMes.length, 0)} dias de ${nomeMes} de anos anteriores`);
     expect(t).toContain(`percentil ${br(p1, 1)} nos cartões e ${br(p2, 1)} no Histórico`);
     expect(t).toContain(`percentil ${br(p1, 1)} de ${br(todos.length, 0)} dias`);
     // o veredito do Histórico diz a fração que o CSV confirma
@@ -519,7 +543,15 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
   });
 
   it("(2) 55 horas dos últimos 30 dias acima de R$ 1,00/MWh: a página PLD e a linha Últimos 30 dias da página de diferenças dão o mesmo número", () => {
-    const ultimas = horario.filter((r) => r.data_hora_local >= "2026-09-01");
+    // as duas janelas terminam na última hora do CSV horário: 30 dias e um ano (o mesmo dia do ano anterior, mais um dia), contados aqui
+    const ultimaHora = horario.map((r) => r.data_hora_local).sort().at(-1)!;
+    const fimDia = ultimaHora.slice(0, 10);
+    const ini30 = new Date(Date.parse(`${fimDia}T00:00:00Z`) - 29 * 86_400_000).toISOString().slice(0, 10);
+    const ini12 = new Date(Date.UTC(Number(fimDia.slice(0, 4)) - 1, Number(fimDia.slice(5, 7)) - 1, Number(fimDia.slice(8, 10)) + 1)).toISOString().slice(0, 10);
+    const per = (id: string) => D.regional.periodos.find((x) => x.id === id)!;
+    expect([per("30d").inicio, per("30d").fim]).toEqual([`${ini30}T00:00`, ultimaHora]);
+    expect([per("12m").inicio, per("12m").fim]).toEqual([`${ini12}T00:00`, ultimaHora]);
+    const ultimas = horario.filter((r) => r.data_hora_local >= ini30);
     expect(ultimas).toHaveLength(720);
     const acima = (rs: Record<string, string>[], limiar: number) =>
       rs.filter((r) => {
@@ -527,14 +559,17 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
         return Math.max(...v) - Math.min(...v) > limiar;
       }).length;
     const n30 = acima(ultimas, 1);
-    const n12 = acima(horario.filter((r) => r.data_hora_local >= "2025-10-01"), 1);
+    const n12 = acima(horario.filter((r) => r.data_hora_local >= ini12), 1);
     expect(textoEntender(html.pld)).toContain(plano(`Nos últimos 30 dias, ${n30} horas tiveram diferença acima de ${reaisBr(1)}/MWh`));
     expect(textoEntender(html.regionais)).toContain(`Mesmo limiar da página PLD, que conta ${n30} horas nos últimos 30 dias`);
     expect(html.regionais).toContain(br(n12, 0));
   });
 
   it("veredito do P012: fração de horas separadas e diferença média dos últimos 12 meses relidas das 8.760 horas do CSV", () => {
-    const doze = horario.filter((r) => r.data_hora_local >= "2025-10-01");
+    // um ano que termina na última hora do CSV: do mesmo dia do ano anterior, mais um dia, contado aqui
+    const fimDia = horario.map((r) => r.data_hora_local).sort().at(-1)!.slice(0, 10);
+    const ini12 = new Date(Date.UTC(Number(fimDia.slice(0, 4)) - 1, Number(fimDia.slice(5, 7)) - 1, Number(fimDia.slice(8, 10)) + 1)).toISOString().slice(0, 10);
+    const doze = horario.filter((r) => r.data_hora_local >= ini12);
     expect(doze).toHaveLength(8760);
     const dif = doze.map((r) => {
       const v = [r.PLD_SE, r.PLD_S, r.PLD_NE, r.PLD_N].map(Number);
@@ -590,18 +625,33 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
   });
 
   it("(2) cartões de ago/2026 e resposta de set/2026: a página diz por que o mês muda e quantas horas de carga faltam", () => {
-    const set = csv("public/energia/series/pld_mensal.csv").find((r) => r.mes === "2026-09" && r.sm === "SE")!;
+    // o mês das três médias é o último em que as ponderadas usam as mesmas horas da temporal (com e sem MMGD), lido do CSV mensal;
+    // o último mês do CSV pode ser outro (parcial ou com carga incompleta), e então a página diz por que o mês muda
+    const mesAbrev = (m: string) => `${["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][Number(m.slice(5, 7)) - 1]}/${m.slice(0, 4)}`;
+    const se = csv("public/energia/series/pld_mensal.csv").filter((r) => r.sm === "SE").sort((a, b) => a.mes.localeCompare(b.mes));
+    const fichas = se.filter((r) => r.mesmas_horas === "1" && r.mesmas_horas_sem_mmgd === "1").at(-1)!;
+    const ultimo = se.at(-1)!;
+    expect(fichas.mes).toBe(D.historico.ponderacao.sensibilidade_peso!.mes);
     const t = textoEntender(html.historico);
-    expect(Number(set.horas_com_carga)).toBeLessThan(Number(set.horas));
-    // a faixa de medidas substituiu os cartões: o texto diz "as três médias mensais" e continua dizendo o mês e as horas de carga
-    expect(t).toContain("As três médias mensais usam ago/2026");
-    expect(t).toContain(`a carga do balanço tem ${br(Number(set.horas_com_carga), 0)} das ${br(Number(set.horas), 0)} horas do mês`);
+    if (fichas.mes !== ultimo.mes) {
+      // a faixa de medidas substituiu os cartões: o texto diz "as três médias mensais" e continua dizendo o mês e as horas de carga
+      expect(t).toContain(`As três médias mensais usam ${mesAbrev(fichas.mes)}`);
+      if (Number(ultimo.horas_com_carga) < Number(ultimo.horas)) expect(t).toContain(`a carga do balanço tem ${br(Number(ultimo.horas_com_carga), 0)} das ${br(Number(ultimo.horas), 0)} horas do mês`);
+      else expect(t).toContain("ainda não tem as três médias calculadas nas mesmas horas");
+    } else {
+      expect(html.historico).not.toContain("data-troca-de-mes");
+    }
   });
 });
 
 describe("mapas de calor: sem número nas células, o maior e o menor valor vão escritos junto do mapa", () => {
   it("a matriz de separação diz o par de maior e o de menor fração, lidos do CSV diário de separação", () => {
-    const linhas = csv("public/energia/series/pld_separacao_diaria.csv").filter((r) => r.data >= "2025-10-01");
+    // a matriz é a do período de 12 meses da gold; o CSV diário é filtrado pelo primeiro dia desse período
+    const per = D.regional.periodos.find((x) => x.id === D.regional.matriz.periodo)!;
+    expect(per.inicio && per.fim).toBeTruthy();
+    const [ini, fim] = [per.inicio!.slice(0, 10), per.fim!.slice(0, 10)];
+    const linhas = csv("public/energia/series/pld_separacao_diaria.csv").filter((r) => r.data >= ini && r.data <= fim);
+    expect(new Set(linhas.map((r) => r.data)).size).toBe(per.horas / 24);
     const porPar = new Map<string, { h: number; s: number }>();
     for (const r of linhas) {
       const x = porPar.get(r.par) ?? { h: 0, s: 0 };

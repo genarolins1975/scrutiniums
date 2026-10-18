@@ -126,7 +126,7 @@ def main(argv):
                 fontes_modulos[ds] = {"modulo": reg["id"], "familia": reg["familia"],
                                       "ultima_captura": c.ultima_captura(snap), "snapshot": snap.get("id"),
                                       "snapshot_sha256": snap.get("sha256"), "ultima_tentativa": base.ultima_coleta(con_f, ds),
-                                      "capturas": snap.get("capturas", []),
+                                      "capturas": snap.get("capturas", []), "historico": snap.get("historico", []),
                                       "recapturas_sem_mudanca": (snap.get("revisoes") or {}).get("recapturas_sem_mudanca")}
         finally:
             con_f.close()
@@ -147,7 +147,11 @@ def main(argv):
     if brutos_catalogo is None:
         pasta = os.path.join(base.DADOS, "meta")
         brutos_catalogo = {o: base.le_gold(f"_ckan_{o}.json", destino=pasta) or {"resultado": []} for o in catalogo.PORTAIS}
-    if any(b.get("resultado") for b in brutos_catalogo.values()) or not base.le_gold("catalogo.json"):
+    # com publicacao.json íntegra (construída agora ou mantida pela sentinela), o catálogo no disco é o que o módulo dados
+    # gravou junto com ela: reconstruí-lo aqui com outra listagem faria o catálogo e a saúde contarem universos diferentes
+    # (18/10/2026: 423 conjuntos no catálogo contra 415 na publicacao.json mantida). Sem publicacao.json, vale o catálogo daqui.
+    sem_publicacao = not _integro(g.get("publicacao.json"))
+    if sem_publicacao and (any(b.get("resultado") for b in brutos_catalogo.values()) or not base.le_gold("catalogo.json")):
         base.escreve_gold("catalogo.json", catalogo.construir(brutos_catalogo))
 
     fontes = {}

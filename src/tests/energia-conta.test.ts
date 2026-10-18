@@ -78,6 +78,7 @@ import {
   mudancaComposicaoEm,
   mudancaSubsidios,
   mudancaTarifa,
+  notaArredondamentoSimulacao,
   notaFaixaTarifa,
   referenciasDoPerfil,
   remover,
@@ -826,9 +827,17 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
     };
     const a = medida(ContaDeLuzPage as () => unknown, html);
     const b = medida(ContaReajustesPage as () => unknown, htmlP050);
-    // nenhum componente de cliente leva a lista inteira de distribuidoras em objetos: as listas grandes viajam em tuplas
-    for (const nome of ["ContaFaixa", "ContaTarifas", "ContaComposicao", "ContaSimulador", "ContaHistorico"]) expect(a.porComponente.get(nome) ?? 0, nome).toBeLessThan(30_000);
-    expect(a.total).toBeLessThan(LIMITE_PESO_PRINCIPAL);
+    // nenhum componente de cliente leva a lista inteira de distribuidoras em objetos: as listas grandes viajam em tuplas. O teto de 30 mil
+    // bytes foi calibrado com 81 distribuidoras no ranking (30/09/2026); a lista em tuplas cresce com o ranking (13.980 bytes com 81 e 17.915
+    // com 103, 174 bytes por distribuidora em 18/10/2026), e o teto acompanha na mesma proporção. Em objetos, cada linha repetiria os 14
+    // nomes de campo (cerca de 150 bytes a mais por distribuidora), o que passaria do teto com qualquer tamanho de ranking.
+    const tetoPorComponente = 30_000 * Math.max(1, gold.tarifas.vigentes.length / 81);
+    for (const nome of ["ContaFaixa", "ContaTarifas", "ContaComposicao", "ContaSimulador", "ContaHistorico"]) expect(a.porComponente.get(nome) ?? 0, nome).toBeLessThan(tetoPorComponente);
+    // o teto da página principal também foi calibrado com 81 distribuidoras no ranking. Cada distribuidora a mais acrescenta um ponto na
+    // faixa, uma barra e uma linha nas tuplas do ranking, do simulador e da composição: medido em 18/10/2026 com o mesmo código, 103
+    // distribuidoras pesaram 398.581 bytes contra 384.266 com as 81 de 30/09/2026 (651 bytes por distribuidora). O teto acompanha o
+    // ranking em 700 bytes por distribuidora acima de 81; crescimento de código, com o mesmo ranking, continua barrado.
+    expect(a.total).toBeLessThan(LIMITE_PESO_PRINCIPAL + 700 * Math.max(0, gold.tarifas.vigentes.length - 81));
     expect(b.total).toBeLessThan(LIMITE_PESO_REAJUSTES);
   });
 });
@@ -1197,7 +1206,8 @@ describe.skipIf(!disponivel)("redesenho: primeira tela, níveis de profundidade 
       if (ate) expect(i, rotulo).toBeLessThan(painel(ate));
     };
     dentro("Variação mediana da tarifa B1 em 12 meses", "reajustes", "bandeiras");
-    dentro("Adicional de amarela em set/2026", "bandeiras", "subsidios");
+    const vig = gold.bandeiras.vigente;
+    dentro(vig?.bandeira ? `Adicional de ${minuscula(vig.bandeira)} em ${mesAno(`${vig.mes}-01`)}` : "Adicional de bandeira em mês não publicado", "bandeiras", "subsidios");
     dentro("Subsídios tarifários em 2025", "subsidios", null);
     dentro("Quotas nas receitas da CDE, orçamento de 2026", "subsidios", null);
     // o resumo da página principal é o caminho até a página filha (capítulos), uma vez só
@@ -1208,7 +1218,18 @@ describe.skipIf(!disponivel)("redesenho: primeira tela, níveis de profundidade 
     const e = textoEntenderDe(html);
     expect(e).toContain("Memória de cálculo");
     expect(e).toContain(`A lista começa pela distribuidora mais barata e segue até a mais cara (${vigentes.length} no total)`);
-    expect(e).toContain("As parcelas somam R$ 126,01 e o total é R$ 126,00");
+    // a nota do centavo aparece quando as parcelas arredondadas não fecham com o total do caso padrão (150 kWh, residencial, monofásico, na
+    // distribuidora de referência, com a bandeira do mês); em 30/09/2026 eram R$ 126,01 contra R$ 126,00
+    const s = gold.simulador;
+    const alvo = s.distribuidoras.find((d) => d.cnpj === s.casos_referencia.cnpj)!;
+    const vig = gold.bandeiras.vigente;
+    const r = simular(alvo.tarifas, CASO_EVIDENCIA_SIMULADOR.classe, CASO_EVIDENCIA_SIMULADOR.kwh, CASO_EVIDENCIA_SIMULADOR.ligacao, vig?.rs_mwh ?? null, s.regras);
+    expect(r.disponivel).toBe(true);
+    if (!r.disponivel) return;
+    const nota = notaArredondamentoSimulacao([...r.linhas.map((l) => l.valor), vig?.bandeira && vig.rs_mwh !== null ? r.bandeira : 0], r.total);
+    if (nota) expect(semEspacoDuro(e)).toContain(semEspacoDuro(nota));
+    else expect(e).not.toContain("As parcelas somam");
+    expect(semEspacoDuro(notaArredondamentoSimulacao([123.18, 2.83], 126.0) ?? "")).toContain("As parcelas somam R$ 126,01 e o total é R$ 126,00");
   });
 
   it("os destaques de ContaFaixa sem ficha são só os três do perfil, e a tarifa mediana leva a evidência da gold", () => {
@@ -1230,6 +1251,7 @@ describe.skipIf(!disponivel)("redesenho: primeira tela, níveis de profundidade 
 const historico = JSON.parse(ler("public/energia/series/conta_historico_b1.json")) as HistoricoB1;
 const qualidadeGold = JSON.parse(ler("public/energia/gold/qualidade.json")) as { distribuidoras: { cnpj: string; classificacao?: string; ucs?: number; ano?: number }[] };
 const territorioGold = JSON.parse(ler("public/energia/gold/territorio.json")) as { distribuidoras: { cnpj: string; area?: { ufs?: string[] } }[] };
+const perdasGold = JSON.parse(ler("public/energia/gold/perdas.json")) as { distribuidoras: { cnpj: string; grupo?: string | null }[] };
 
 /** Mediana escrita aqui por outro caminho (ordenação e meio da lista), sem o código da página. */
 function medianaDeFora(xs: number[]): number {
@@ -1293,7 +1315,15 @@ describe.skipIf(!disponivel)("aritmética e medianas novas", () => {
     for (const j of gold.reajustes.comparacao_inflacao!.janelas) {
       const xs = j.distribuidoras.map((d) => d[2]).filter((x): x is number => x !== null);
       expect(xs.length, `${j.meses}`).toBe(j.n);
-      expect(arredondar(mediana(xs) as number, 2), `${j.meses}`).toBe(j.mediana_pct);
+      // as linhas publicadas vêm com duas casas e o pipeline tira a mediana das variações sem arredondar: quando a mediana das linhas cai
+      // exatamente no meio centavo (n par, média de dois valores a um centavo ímpar de distância), o publicado pode ficar R$ 0,01 abaixo ou
+      // acima (janela de 120 meses em 18/10/2026: mediana das linhas 80,905 contra 80,9 publicado). Fora desse caso, o valor é idêntico.
+      const exata = mediana(xs) as number;
+      if (arredondar(exata, 2) !== j.mediana_pct) {
+        const meioCentavo = Math.abs(exata * 1000 - Math.round(exata * 1000)) < 1e-6 && Math.round(exata * 1000) % 10 === 5;
+        expect(meioCentavo, `${j.meses}`).toBe(true);
+        expect(Math.abs(arredondar(exata, 2) - (j.mediana_pct as number)), `${j.meses}`).toBeLessThanOrEqual(0.0100001);
+      }
     }
   });
 });
@@ -1301,33 +1331,52 @@ describe.skipIf(!disponivel)("aritmética e medianas novas", () => {
 describe.skipIf(!disponivel)("a mesma base de comparação: mediana nas distribuidoras com tarifa nas duas datas", () => {
   const evolucao = linhasEvolucao(gold.tarifas.evolucao);
   const c = compararMesmoConjunto({ vigentes: gold.tarifas.vigentes, semVigente: gold.tarifas.sem_vigente, historico: historico.distribuidoras, evolucao, dataReferencia: gold.data_referencia })!;
+  // o mesmo dia com saídas do conjunto, para o ramo das saídas seguir testado quando o arquivo do dia não tem nenhuma (18/10/2026): as
+  // três primeiras vigentes que já tinham tarifa na data de partida saem do ranking
+  const vigentesComSaidas = (() => {
+    const tinham = new Set(Object.entries(historico.distribuidoras).filter(([, d]) => tarifaDeFora(d.vigencias, c.de) !== null).map(([k]) => k));
+    const tirar = new Set(gold.tarifas.vigentes.filter((v) => tinham.has(v.cnpj)).slice(0, 3).map((v) => v.cnpj));
+    return gold.tarifas.vigentes.filter((v) => !tirar.has(v.cnpj));
+  })();
+  const cComSaidas = compararMesmoConjunto({ vigentes: vigentesComSaidas, semVigente: gold.tarifas.sem_vigente, historico: historico.distribuidoras, evolucao, dataReferencia: gold.data_referencia })!;
+
+  /** Refaz a comparação por um laço próprio sobre a linha do tempo e confere cada campo. */
+  function conferePeloLaco(cmp: NonNullable<typeof c>, vigentes: readonly { cnpj: string; total: number }[]) {
+    const ult = [...evolucao].reverse().find((p) => p.mediana !== null)!;
+    expect(cmp.de).toBe(`${ult.m}-01`);
+    expect(cmp.ate).toBe(gold.data_referencia);
+    const emDe = new Map<string, number>();
+    for (const [cnpj, d] of Object.entries(historico.distribuidoras)) {
+      const t = tarifaDeFora(d.vigencias, cmp.de);
+      if (t !== null) emDe.set(cnpj, t);
+    }
+    const vig = new Map(vigentes.map((v) => [v.cnpj, v.total]));
+    const comuns = vigentes.filter((v) => emDe.has(v.cnpj));
+    const saidos = Array.from(emDe.keys()).filter((k) => !vig.has(k));
+    expect(cmp.nDe).toBe(emDe.size);
+    expect(cmp.nAte).toBe(vigentes.length);
+    expect(cmp.nComum).toBe(comuns.length);
+    expect(cmp.saidas.n).toBe(saidos.length);
+    // nde = comuns + saídas: ninguém sai e entra ao mesmo tempo
+    expect(cmp.nDe).toBe(cmp.nComum + cmp.saidas.n);
+    expect(cmp.medianaDeTodas).toBe(ult.mediana);
+    expect(cmp.medianaDeComum).toBe(arredondar(medianaDeFora(comuns.map((v) => emDe.get(v.cnpj) as number)), 2));
+    expect(cmp.medianaAteComum).toBe(arredondar(medianaDeFora(comuns.map((v) => v.total)), 2));
+    // sem saídas não há mediana delas: ausência, nunca zero
+    expect(cmp.saidas.mediana).toBe(saidos.length ? arredondar(medianaDeFora(saidos.map((k) => emDe.get(k) as number)), 2) : null);
+    expect(cmp.variacaoPct).toBe(arredondar((medianaDeFora(comuns.map((v) => v.total)) / medianaDeFora(comuns.map((v) => emDe.get(v.cnpj) as number)) - 1) * 100, 2));
+  }
 
   it("conjuntos e medianas batem com o laço próprio sobre a linha do tempo", () => {
     expect(c).toBeTruthy();
-    const ult = [...evolucao].reverse().find((p) => p.mediana !== null)!;
-    expect(c.de).toBe(`${ult.m}-01`);
-    expect(c.ate).toBe(gold.data_referencia);
-    const emDe = new Map<string, number>();
-    for (const [cnpj, d] of Object.entries(historico.distribuidoras)) {
-      const t = tarifaDeFora(d.vigencias, c.de);
-      if (t !== null) emDe.set(cnpj, t);
-    }
-    const vig = new Map(gold.tarifas.vigentes.map((v) => [v.cnpj, v.total]));
-    const comuns = gold.tarifas.vigentes.filter((v) => emDe.has(v.cnpj));
-    const saidos = Array.from(emDe.keys()).filter((k) => !vig.has(k));
-    expect(c.nDe).toBe(emDe.size);
     expect(c.nAte).toBe(gold.tarifas.resumo.n);
-    expect(c.nComum).toBe(comuns.length);
-    expect(c.saidas.n).toBe(saidos.length);
-    // nde = comuns + saídas: ninguém sai e entra ao mesmo tempo
-    expect(c.nDe).toBe(c.nComum + c.saidas.n);
-    expect(c.medianaDeTodas).toBe(ult.mediana);
-    expect(c.medianaDeComum).toBe(arredondar(medianaDeFora(comuns.map((v) => emDe.get(v.cnpj) as number)), 2));
-    expect(c.medianaAteComum).toBe(arredondar(medianaDeFora(comuns.map((v) => v.total)), 2));
-    expect(c.saidas.mediana).toBe(arredondar(medianaDeFora(saidos.map((k) => emDe.get(k) as number)), 2));
-    expect(c.variacaoPct).toBe(arredondar((medianaDeFora(comuns.map((v) => v.total)) / medianaDeFora(comuns.map((v) => emDe.get(v.cnpj) as number)) - 1) * 100, 2));
+    conferePeloLaco(c, gold.tarifas.vigentes);
     // quando todas as vigentes tinham tarifa na data de partida, a mediana final do conjunto comum é a publicada no ranking
     if (c.nComum === gold.tarifas.resumo.n) expect(c.medianaAteComum).toBe(gold.tarifas.resumo.mediana);
+    // o ramo com saídas, no mesmo dia com três vigentes a menos
+    expect(cComSaidas.saidas.n).toBe(c.saidas.n + 3);
+    expect(cComSaidas.saidas.mediana).not.toBeNull();
+    conferePeloLaco(cComSaidas, vigentesComSaidas);
   });
 
   it("os números da avaliação de 09/10/2026 (102 e 81 distribuidoras, 819,75 e 0,17%, 21 que saíram com 746,92) saem dos dados", () => {
@@ -1339,20 +1388,28 @@ describe.skipIf(!disponivel)("a mesma base de comparação: mediana nas distribu
   });
 
   it("o texto diz a variação no mesmo conjunto, quem saiu e o limite, sem causalidade nem tempo relativo", () => {
-    const t = textoComparacaoMesmoConjunto(c);
-    expect(t).toContain(`Nas mesmas ${c.nComum} distribuidoras`);
-    for (const v of [c.medianaDeComum, c.medianaAteComum, c.medianaDeTodas, c.saidas.mediana]) expect(t).toContain(num(v, 2));
-    expect(t).toContain(`as ${c.saidas.n} que ficaram fora do ranking`);
-    expect(t).toContain("mistura conjuntos diferentes");
-    expect(t).not.toMatch(/\b(hoje|agora|atual|porque|por isso)\b/i);
-    expect(t).not.toMatch(/—|–/);
-    // sem ninguém fora, só a frase da variação
-    expect(textoComparacaoMesmoConjunto({ ...c, saidas: { ...c.saidas, n: 0 } })).not.toContain("mistura conjuntos");
+    // o texto do dia e o do mesmo dia com saídas: cada um diz o que o seu conjunto tem
+    for (const cmp of [c, cComSaidas]) {
+      const t = textoComparacaoMesmoConjunto(cmp);
+      expect(t).toContain(`Nas mesmas ${cmp.nComum} distribuidoras`);
+      for (const v of [cmp.medianaDeComum, cmp.medianaAteComum]) expect(t).toContain(num(v, 2));
+      if (cmp.saidas.n > 0) {
+        for (const v of [cmp.medianaDeTodas, cmp.saidas.mediana]) expect(t).toContain(num(v, 2));
+        expect(t).toContain(`as ${cmp.saidas.n} que ficaram fora do ranking`);
+        expect(t).toContain("mistura conjuntos diferentes");
+        expect(notaFaixaTarifa(gold.tarifas.resumo, cmp)).toContain(`eram ${cmp.nDe}: ${cmp.saidas.n} saíram do conjunto`);
+      } else {
+        expect(t).not.toContain("mistura conjuntos");
+        expect(t).not.toContain("ficaram fora do ranking");
+      }
+      expect(t).not.toMatch(/\b(hoje|agora|atual|porque|por isso)\b/i);
+      expect(t).not.toMatch(/—|–/);
+      // sem ninguém fora, só a frase da variação
+      expect(textoComparacaoMesmoConjunto({ ...cmp, saidas: { ...cmp.saidas, n: 0 } })).not.toContain("mistura conjuntos");
+      expect(notaFaixaTarifa(gold.tarifas.resumo, { ...cmp, saidas: { ...cmp.saidas, n: 0 } })).toBe(notaFaixaTarifa(gold.tarifas.resumo));
+    }
     // a mudança do painel e a ressalva da faixa leem a mesma comparação
-    const m = mudancaTarifa(gold.data_referencia, gold.tarifas.resumo, evolucao, c);
-    expect(m).toContain(t);
-    expect(notaFaixaTarifa(gold.tarifas.resumo, c)).toContain(`eram ${c.nDe}: ${c.saidas.n} saíram do conjunto`);
-    expect(notaFaixaTarifa(gold.tarifas.resumo, { ...c, saidas: { ...c.saidas, n: 0 } })).toBe(notaFaixaTarifa(gold.tarifas.resumo));
+    expect(mudancaTarifa(gold.data_referencia, gold.tarifas.resumo, evolucao, c)).toContain(textoComparacaoMesmoConjunto(c));
   });
 
   it("sem mês com mediana publicada, não há comparação", () => {
@@ -1367,7 +1424,9 @@ describe.skipIf(!disponivel)("três valores típicos: o que cada um é e em que 
     expect(t).toContain(`${num(m.total_rs_mwh, 2)} R$/MWh`);
     expect(t).toContain(num(gold.composicao.mediana.mediana_do_total_rs_mwh, 2));
     expect(t).toContain(num(gold.tarifas.resumo.mediana, 2));
-    expect(t).toContain(`${m.n} distribuidoras têm componentes publicadas e ${gold.tarifas.resumo.n} têm tarifa vigente`);
+    // conjuntos diferentes: a frase diz o tamanho de cada um (com o ranking do dia ou, se os dois coincidem, com um ranking de uma a mais)
+    const resumoOutro = gold.tarifas.resumo.n !== m.n ? gold.tarifas.resumo : { ...gold.tarifas.resumo, n: m.n + 1 };
+    expect(textoTresValoresTipicos(gold.composicao, resumoOutro)).toContain(`${m.n} distribuidoras têm componentes publicadas e ${resumoOutro.n} têm tarifa vigente`);
     expect(t).not.toMatch(/\b(hoje|agora|atual|porque)\b/i);
     // no mesmo conjunto, a frase diz que as medianas coincidem em conjunto
     expect(textoTresValoresTipicos(gold.composicao, { ...gold.tarifas.resumo, n: m.n })).toContain(`as duas medianas usam o mesmo conjunto de ${m.n}`);
@@ -1377,20 +1436,35 @@ describe.skipIf(!disponivel)("três valores típicos: o que cada um é e em que 
 
 describe.skipIf(!disponivel)("UF, tipo e UCs de cada distribuidora, grupos de pares e filtro por UF", () => {
   const cnpjs = gold.tarifas.vigentes.map((v) => v.cnpj);
-  const info = infoDistribuidoras(cnpjs, qualidadeGold.distribuidoras, territorioGold.distribuidoras);
+  const info = infoDistribuidoras(cnpjs, qualidadeGold.distribuidoras, territorioGold.distribuidoras, perdasGold.distribuidoras);
+  const naQualidade = new Set(qualidadeGold.distribuidoras.map((x) => x.cnpj));
 
   it("todas as distribuidoras do ranking têm tipo, UCs e UF, lidos das golds de Qualidade e de Território", () => {
     for (const cnpj of cnpjs) {
       const i = info[cnpj];
       expect(i.tipo, cnpj).not.toBeNull();
-      expect(i.ucs, cnpj).toBeGreaterThan(0);
       expect(i.uf, cnpj).toMatch(/^[A-Z]{2}(, [A-Z]{2})*$/);
-      const q = qualidadeGold.distribuidoras.find((x) => x.cnpj === cnpj)!;
-      expect(ROTULO_TIPO[i.tipo!]).toBe(q.classificacao);
-      expect(i.ucs).toBe(q.ucs);
-      expect(i.anoUcs).toBe(q.ano);
       expect(i.uf!.split(", ")).toEqual([...territorioGold.distribuidoras.find((x) => x.cnpj === cnpj)!.area!.ufs!].sort());
+      const q = qualidadeGold.distribuidoras.find((x) => x.cnpj === cnpj);
+      if (q) {
+        expect(i.ucs, cnpj).toBeGreaterThan(0);
+        expect(ROTULO_TIPO[i.tipo!]).toBe(q.classificacao);
+        expect(i.ucs).toBe(q.ucs);
+        expect(i.anoUcs).toBe(q.ano);
+      } else {
+        // fora da Qualidade (sem conjuntos de DEC, como a CODESAM em 18/10/2026): o tipo vem do cadastro do SAMP e as UCs ficam ausentes
+        expect(i.tipo, cnpj).toBe(perdasGold.distribuidoras.find((x) => x.cnpj === cnpj)!.grupo);
+        expect(i.ucs, cnpj).toBeNull();
+        expect(i.anoUcs, cnpj).toBeNull();
+      }
     }
+    // a Qualidade manda quando tem a distribuidora; o cadastro só completa o tipo de quem falta nela
+    const um = qualidadeGold.distribuidoras[0];
+    expect(infoDistribuidoras([um.cnpj], [um], null, [{ cnpj: um.cnpj, grupo: um.classificacao === "Concessionária" ? "permissionaria" : "concessionaria" }])[um.cnpj].tipo).toBe(
+      um.classificacao === "Concessionária" ? "concessionaria" : "permissionaria",
+    );
+    expect(infoDistribuidoras(["9"], [], null, [{ cnpj: "9", grupo: "permissionaria" }])["9"]).toEqual({ uf: null, tipo: "permissionaria", ucs: null, anoUcs: null });
+    expect(infoDistribuidoras(["9"], [], null, [{ cnpj: "9", grupo: "outro" }])["9"].tipo).toBeNull();
   });
 
   it("ausência continua ausência: sem a gold, nada é inventado", () => {
@@ -1401,7 +1475,9 @@ describe.skipIf(!disponivel)("UF, tipo e UCs de cada distribuidora, grupos de pa
 
   it("as linhas do ranking levam UF, tipo e UCs, e as colunas da tabela as nomeiam (a exportação segue o CSV publicado)", () => {
     const linhas = linhasRanking(gold.tarifas.vigentes, 200, info);
-    expect(linhas.every((l) => l.uf && l.tipo && l.ucs)).toBe(true);
+    expect(linhas.every((l) => l.uf && l.tipo)).toBe(true);
+    // UCs em toda linha que a Qualidade cobre; vazia, e não zero, em quem não está nela
+    for (const l of linhas) expect(l.ucs === null ? !naQualidade.has(l.id) : l.ucs > 0, l.id).toBe(true);
     expect(COLUNAS_RANKING.map((c) => c.id).slice(0, 5)).toEqual(["posicao", "sigla", "uf", "tipo", "ucs"]);
     const exportado = lerCsv(gerarCsv(COLUNAS_RANKING, linhas));
     expect(exportado[0]["UF"]).toBe(linhas[0].uf);
@@ -1853,13 +1929,21 @@ describe.skipIf(!disponivel)("segunda passada: o que as páginas dizem e mostram
   it("a mediana da primeira tela traz a variação nas mesmas distribuidoras e a ressalva diz quantas saíram do conjunto", () => {
     const antes = semEspacoDuro(textoCompletoDe(ateAProfundidade(html).replace(/<details[\s\S]*?<\/details>/g, " ")));
     expect(antes).toContain(`nas mesmas ${cmp.nComum} distribuidoras, de ${dataBR(cmp.de)} a ${dataBR(cmp.ate)}`);
-    expect(antes).toContain(`+${num(cmp.variacaoPct, 2)}%`);
-    expect(antes).toContain(`Em ${dataBR(cmp.de)} eram ${cmp.nDe}: ${cmp.saidas.n} saíram do conjunto`);
+    // a variação com o sinal escrito (+ ou −), e sem sinal quando arredonda a zero
+    const v2 = Number((cmp.variacaoPct as number).toFixed(2));
+    expect(antes).toContain(`${v2 > 0 ? "+" : v2 < 0 ? "−" : ""}${num(Math.abs(v2), 2)}%`);
     // o painel diz o mesmo com as medianas do mesmo conjunto e o limite de leitura
     expect(entender).toContain(`Nas mesmas ${cmp.nComum} distribuidoras, a mediana`);
     expect(entender).toContain(num(cmp.medianaDeComum, 2));
-    expect(entender).toContain(num(cmp.saidas.mediana, 2));
-    expect(entender).toContain("mistura conjuntos diferentes");
+    if (cmp.saidas.n > 0) {
+      expect(antes).toContain(`Em ${dataBR(cmp.de)} eram ${cmp.nDe}: ${cmp.saidas.n} saíram do conjunto`);
+      expect(entender).toContain(num(cmp.saidas.mediana, 2));
+      expect(entender).toContain("mistura conjuntos diferentes");
+    } else {
+      // ninguém saiu: nem a contagem de saídas nem o aviso de conjuntos misturados
+      expect(antes).not.toContain("saíram do conjunto");
+      expect(entender).not.toContain("mistura conjuntos diferentes");
+    }
   });
 
   it("três valores típicos numa frase, e o destaque da composição é o agregado, com a distribuidora de exemplo rotulada como exemplo", () => {
@@ -1878,7 +1962,16 @@ describe.skipIf(!disponivel)("segunda passada: o que as páginas dizem e mostram
     for (const x of ["Tipo de distribuidora", "Estado (UF)", "Buscar pelo município", "Não sabe qual é a sua distribuidora? O nome dela está no alto da fatura de luz"]) expect(entender, x).toContain(x);
     expect(html).toContain('role="combobox"');
     expect(html).toContain("data-selecionadas");
-    for (const x of ["Concessionárias (51)", "Permissionárias (30)", "Todas (81)"]) expect(entender, x).toContain(x);
+    // as contagens dos filtros, por outro caminho: o tipo de cada distribuidora do ranking na Qualidade ou, sem ela, no cadastro de Perdas
+    const tipoDe = (cnpj: string) => {
+      const q = qualidadeGold.distribuidoras.find((x) => x.cnpj === cnpj);
+      if (q) return q.classificacao === "Concessionária" ? "concessionaria" : q.classificacao === "Permissionária" ? "permissionaria" : null;
+      return perdasGold.distribuidoras.find((x) => x.cnpj === cnpj)?.grupo ?? null;
+    };
+    const nCon = gold.tarifas.vigentes.filter((v) => tipoDe(v.cnpj) === "concessionaria").length;
+    const nPer = gold.tarifas.vigentes.filter((v) => tipoDe(v.cnpj) === "permissionaria").length;
+    expect(nCon + nPer).toBe(gold.tarifas.resumo.n);
+    for (const x of [`Concessionárias (${nCon})`, `Permissionárias (${nPer})`, `Todas (${gold.tarifas.resumo.n})`]) expect(entender, x).toContain(x);
     // a tabela do ranking (que abre ao pedido) tem as colunas novas, e a UF aparece no nome das barras
     expect(COLUNAS_RANKING.map((c) => c.rotulo)).toEqual(expect.arrayContaining(["Consumidores (UCs)", "UF", "Tipo", "Posição pela base econômica", "Aplicação contra a base"]));
     expect(html).toMatch(/DMED · MG/);
@@ -1919,7 +2012,9 @@ describe.skipIf(!disponivel)("segunda passada: o que as páginas dizem e mostram
     expect(src).toContain('data-nota="classe-igual-residencial"');
     expect(src).toContain("O desconto rural não está incluído neste cálculo.");
     expect(src).toContain('aria-invalid={kwhInvalido || undefined}');
-    expect(entender).toContain("Bandeira do mês publicado: amarela de set/2026, a última que consta nos dados de 30/09/2026");
+    const vig = gold.bandeiras.vigente;
+    expect(vig?.bandeira).toBeTruthy();
+    if (vig?.bandeira) expect(entender).toContain(`Bandeira do mês publicado: ${minuscula(vig.bandeira)} de ${mesAno(`${vig.mes}-01`)}, a última que consta nos dados de ${dataBR(gold.data_referencia)}`);
   });
 
   it("Entender não traz identificador técnico, comando interno nem texto de bastidor em nenhuma das duas páginas", () => {
@@ -2211,11 +2306,49 @@ describe.skipIf(!disponivel)("rodada 2: cobertura, extremos, mediana ponderada e
   const qualidade = JSON.parse(ler("public/energia/gold/qualidade.json")) as { distribuidoras: { cnpj: string; classificacao?: string; ucs?: number; ano?: number }[] };
   const territorio = JSON.parse(ler("public/energia/gold/territorio.json")) as { distribuidoras: { cnpj: string; area?: { ufs?: string[] } }[] };
   const cnpjs = [...t.vigentes.map((v) => v.cnpj), ...t.sem_vigente.map((x) => x.cnpj)];
-  const info = infoDistribuidoras(cnpjs, qualidade.distribuidoras, territorio.distribuidoras);
+  const info = infoDistribuidoras(cnpjs, qualidade.distribuidoras, territorio.distribuidoras, perdasGold.distribuidoras);
   const fora = foraDoRanking(t.sem_vigente, historico.distribuidoras);
   const cob = coberturaDoRanking({ vigentes: t.vigentes, fora, info });
+  const ehEncerrada = (f: { situacao: string; custos: unknown }) => f.situacao === "encerrada" && !!f.custos;
+
+  /**
+   * As tarifas do dia com vigências encerradas há até 90 dias. Quando o arquivo do dia já as tem (30/09/2026: 22), é ele mesmo; quando não
+   * tem nenhuma (18/10/2026), é o mesmo arquivo com a mais barata, a mais cara e a de mais UCs tiradas do ranking na véspera da data de
+   * referência, para os ramos que só existem com encerradas (o que mudaria nos extremos, a linha de Entender) seguirem testados.
+   */
+  const tComEncerradas: typeof t = (() => {
+    if (fora.some(ehEncerrada)) return t;
+    const ordem = [...t.vigentes].sort((a, b) => a.posicao - b.posicao);
+    const maisUcs = [...t.vigentes].sort((a, b) => (info[b.cnpj]?.ucs ?? 0) - (info[a.cnpj]?.ucs ?? 0))[0];
+    const tirar = new Set([ordem[0].cnpj, ordem[ordem.length - 1].cnpj, maisUcs.cnpj]);
+    const vespera = new Date(`${gold.data_referencia}T12:00:00Z`);
+    vespera.setUTCDate(vespera.getUTCDate() - 1);
+    const fim = vespera.toISOString().slice(0, 10);
+    const saem = t.vigentes.filter((v) => tirar.has(v.cnpj));
+    const vigentes = t.vigentes.filter((v) => !tirar.has(v.cnpj)).map((v, i) => ({ ...v, posicao: i + 1 }));
+    return {
+      ...t,
+      vigentes,
+      resumo: { ...t.resumo, n: vigentes.length, fora_vigencia_recente: t.resumo.fora_vigencia_recente + saem.length },
+      sem_vigente: [
+        ...saem.map((v) => ({ cnpj: v.cnpj, sigla: v.sigla, nome: v.nome, ultima_vigencia: { inicio: v.inicio, fim, ato: v.ato }, dias_sem_tarifa: 1, motivo: "vigência encerrada", incorporada_por: null })),
+        ...t.sem_vigente,
+      ],
+    } as typeof t;
+  })();
+  const foraE = foraDoRanking(tComEncerradas.sem_vigente, historico.distribuidoras);
+  const cobE = coberturaDoRanking({ vigentes: tComEncerradas.vigentes, fora: foraE, info });
 
   it("a cobertura conta distribuidoras e UCs do universo (as vigentes mais as de vigência encerrada há até 90 dias), contra o piso de 99% das UCs", () => {
+    expect(foraE.some(ehEncerrada)).toBe(true);
+    for (const [tt, ff, cc] of [
+      [t, fora, cob],
+      [tComEncerradas, foraE, cobE],
+    ] as const)
+      conferirCobertura(tt, ff, cc);
+  });
+
+  function conferirCobertura(t: typeof tComEncerradas, fora: typeof foraE, cob: typeof cobE) {
     expect(cob.n).toBe(t.resumo.n);
     expect(cob.universo).toBe(t.resumo.n + t.resumo.fora_vigencia_recente);
     expect(cob.nFora).toBe(t.resumo.fora_vigencia_recente);
@@ -2230,22 +2363,33 @@ describe.skipIf(!disponivel)("rodada 2: cobertura, extremos, mediana ponderada e
     expect(cob.piso).toBe(PISO_COBERTURA_UCS);
     expect(cob.atingePiso).toBe((cob.pctUcs as number) >= 99);
     // o que mudaria nos extremos com a última tarifa das de fora: vem do histórico, e é o mínimo e o máximo das que ficaram de fora
-    const custos = fora.filter((f) => f.situacao === "encerrada" && f.custos).map((f) => ({ s: f.sigla, c: f.custos![1] as number }));
+    const custos = fora.filter(ehEncerrada).map((f) => ({ s: f.sigla, c: f.custos![1] as number }));
+    if (!custos.length) {
+      // sem encerradas, não há o que mudaria: ausência, não zero
+      expect(cob.seMantidas["200"]).toEqual({ menor: null, maior: null });
+      return;
+    }
     expect(cob.seMantidas["200"].menor!.valor).toBe(Math.min(...custos.map((x) => x.c)));
     expect(cob.seMantidas["200"].maior!.valor).toBe(Math.max(...custos.map((x) => x.c)));
     // cada custo é o do perfil pela última vigência do arquivo de histórico
-    const um = fora.find((f) => f.situacao === "encerrada" && f.custos)!;
+    const um = fora.find(ehEncerrada)!;
     const vig = historico.distribuidoras[um.id].vigencias.find((v) => v[0] === t.sem_vigente.find((x) => x.cnpj === um.id)!.ultima_vigencia.inicio)!;
     expect(um.custos![1]).toBe(custoDoPerfil(vig[5], 200));
-  });
+  }
 
   it("o texto da cobertura diz distribuidoras, UCs, piso e o que muda no menor e no maior; abaixo do piso, diz que os extremos valem só para as que têm tarifa", () => {
+    // com as encerradas (as do dia ou, sem elas, as tiradas do ranking na véspera): é o caso em que há o que mudaria nos extremos
+    const t = tComEncerradas;
+    const fora = foraE;
+    const cob = cobE;
     const ref = referenciasDoPerfil(t.vigentes, t.resumo, 200);
     const extremos = { menor: ref.menor!.valor, maior: ref.maior!.valor, siglaMenor: ref.menor!.sigla, siglaMaior: ref.maior!.sigla };
     const txt = semEspacoDuro(textoCobertura(cob, 200, extremos));
     expect(txt).toContain(`${cob.n} de ${cob.universo} distribuidoras (${num(cob.pctDistribuidoras, 1)}%) e ${num(cob.pctUcs, 2)}% das UCs`);
     expect(txt).toContain(cob.atingePiso ? "acima do piso de 99% das UCs que Qualidade usa" : "Cobertura abaixo do piso de 99% das UCs");
     const se = cob.seMantidas["200"];
+    // o caso montado tira a mais barata do ranking: o menor custo mudaria
+    if (t !== gold.tarifas) expect(se.menor!.valor).toBeLessThan(ref.menor!.valor);
     if (se.menor!.valor < ref.menor!.valor) expect(txt).toContain(semEspacoDuro(`o menor custo de 200 kWh seria ${reais(se.menor!.valor)} (${se.menor!.sigla}), e não ${reais(ref.menor!.valor)} (${ref.menor!.sigla})`));
     expect(txt).not.toMatch(/\b(hoje|agora|atual|porque|bom|ruim|melhor|pior)\b/i);
     // abaixo do piso: as distribuidoras de fora passam a pesar mais de 1% das UCs
@@ -2268,11 +2412,14 @@ describe.skipIf(!disponivel)("rodada 2: cobertura, extremos, mediana ponderada e
     expect(medianaPonderada([[1, null], [2, 0]])).toBeNull();
     expect(medianaPonderada([])).toBeNull();
     const r = medianaPonderadaDoPerfil(t.vigentes, info, 200);
-    expect(r.semUcs).toBe(0);
+    // as sem UCs publicadas na Qualidade ficam fora do peso, contadas por outro caminho (CODESAM em 18/10/2026)
+    const ucsQ = new Map(qualidade.distribuidoras.map((d) => [d.cnpj, d.ucs ?? 0]));
+    const comUcs = t.vigentes.filter((v) => (ucsQ.get(v.cnpj) ?? 0) > 0);
+    expect(r.semUcs).toBe(t.vigentes.length - comUcs.length);
     expect(r.valor).not.toBeNull();
     expect(r.valor).not.toBe(t.resumo.perfis_mediana["200"]);
     // por outro caminho: ordenar e somar os pesos até a metade
-    const pares = t.vigentes.map((v) => [v.perfis["200"] as number, info[v.cnpj].ucs as number] as const).sort((a, b) => a[0] - b[0]);
+    const pares = comUcs.map((v) => [v.perfis["200"] as number, ucsQ.get(v.cnpj) as number] as const).sort((a, b) => a[0] - b[0]);
     const total = pares.reduce((s, p) => s + p[1], 0);
     let acc = 0;
     let esperado = pares[pares.length - 1][0];
@@ -2284,8 +2431,15 @@ describe.skipIf(!disponivel)("rodada 2: cobertura, extremos, mediana ponderada e
       }
     }
     expect(r.valor).toBe(esperado);
-    const nota = semEspacoDuro(notaFaixaTarifa(t.resumo, null, { perfil: 200, ponderada: r.valor, cobertura: cob, extremos: { menor: 1, maior: 2 } }));
+    const nota = semEspacoDuro(notaFaixaTarifa(t.resumo, null, { perfil: 200, ponderada: r.valor, semUcs: r.semUcs, cobertura: cob, extremos: { menor: 1, maior: 2 } }));
     expect(nota).toContain(semEspacoDuro(`Ponderada pelas UCs de cada distribuidora, a mediana de 200 kWh é ${reais(r.valor)} (a simples é ${reais(t.resumo.perfis_mediana["200"])})`));
+    // quem fica fora do peso é dito ao lado da ponderada; com todas pesando, nada é dito
+    const comUma = semEspacoDuro(notaFaixaTarifa(t.resumo, null, { perfil: 200, ponderada: r.valor, semUcs: 1, cobertura: cob, extremos: { menor: 1, maior: 2 } }));
+    expect(comUma).toContain("A ponderada deixa de fora 1 distribuidora sem UCs publicadas na Qualidade.");
+    expect(semEspacoDuro(notaFaixaTarifa(t.resumo, null, { perfil: 200, ponderada: r.valor, semUcs: 3, cobertura: cob, extremos: { menor: 1, maior: 2 } }))).toContain("deixa de fora 3 distribuidoras sem UCs");
+    expect(semEspacoDuro(notaFaixaTarifa(t.resumo, null, { perfil: 200, ponderada: r.valor, semUcs: 0, cobertura: cob, extremos: { menor: 1, maior: 2 } }))).not.toContain("deixa de fora");
+    if (r.semUcs > 0) expect(nota).toContain("A ponderada deixa de fora");
+    else expect(nota).not.toContain("deixa de fora");
   });
 
   it("a abertura rotula menor e maior como 'entre as N com tarifa vigente', com o peso em UCs de cada um, e a nota traz a cobertura", () => {
@@ -2342,7 +2496,13 @@ describe.skipIf(!disponivel)("rodada 2: cobertura, extremos, mediana ponderada e
     expect(r.semTarifa).toBe(t.resumo.fora_sem_tarifa_ha_mais_de_90_dias - r.incorporadas);
     const linha = textoForaDoRankingLinha(r)!;
     expect(linha).toContain(`Fora do ranking: ${r.total} distribuidoras.`);
-    expect(linha).toContain(`${r.encerradas} tiveram a vigência encerrada em ${dataBR(r.dataEncerramento!)} e a tarifa seguinte ainda não está no arquivo`);
+    // a parte das encerradas só aparece quando há encerradas (nunca "0 tiveram"); com elas, diz quantas e quando
+    if (r.encerradas > 1) expect(linha).toContain(`${r.encerradas} tiveram a vigência encerrada em ${dataBR(r.dataEncerramento!)} e a tarifa seguinte ainda não está no arquivo`);
+    else if (r.encerradas === 1) expect(linha).toContain(`1 teve a vigência encerrada em ${dataBR(r.dataEncerramento!)}`);
+    else expect(linha).not.toMatch(/vigência encerrada|\b0 tiveram/);
+    const rE = resumoForaDoRanking(foraE);
+    expect(rE.encerradas).toBeGreaterThan(1);
+    expect(textoForaDoRankingLinha(rE)).toContain(`${rE.encerradas} tiveram a vigência encerrada em ${dataBR(rE.dataEncerramento!)} e a tarifa seguinte ainda não está no arquivo`);
     expect(linha).toContain("foram incorporadas por outra distribuidora");
     expect(textoForaDoRankingLinha(resumoForaDoRanking([]))).toBeNull();
     const html = renderToStaticMarkup(createElement(ContaDeLuzPage));
@@ -2352,8 +2512,8 @@ describe.skipIf(!disponivel)("rodada 2: cobertura, extremos, mediana ponderada e
     const naoIncorporadas = fora.filter((f) => f.situacao !== "incorporada");
     expect(html).toContain(`<optgroup label="Sem tarifa vigente na data (${naoIncorporadas.length})">`);
     for (const f of naoIncorporadas.slice(0, 3)) expect(html).toContain(`>${f.sigla}</option>`);
-    // a distribuidora escolhida que está fora diz o motivo e o custo pela última tarifa
-    const escolhida = fora.find((f) => f.situacao === "encerrada" && f.custos)!;
+    // a distribuidora escolhida que está fora diz o motivo e o custo pela última tarifa (uma encerrada do dia ou, sem elas, do caso montado)
+    const escolhida = (fora.find(ehEncerrada) ?? foraE.find(ehEncerrada))!;
     const frase = textoForaDoRanking(expandirFora(compactarFora([escolhida]))[0], 200, gold.data_referencia);
     expect(semEspacoDuro(frase)).toContain(`${escolhida.sigla} não está no ranking: a vigência da tarifa B1 terminou em ${dataBR(escolhida.fim)} e a tarifa seguinte ainda não consta no arquivo de ${dataBR(gold.data_referencia)}`);
     expect(semEspacoDuro(frase)).toContain(semEspacoDuro(`Pela última tarifa que teve, 200 kWh custavam ${reais(escolhida.custos![1])}; esse valor não entra no ranking nem na mediana.`));

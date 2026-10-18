@@ -155,18 +155,33 @@ describe("Visão geral: veredito à vista e resposta completa por trás", () => 
 
   it("o veredito lê os mesmos campos da resposta completa: mudar o estado das regras muda o texto", () => {
     const g = clone(G);
+    // estado de partida sem alerta nem observação, qualquer que seja o dia da gold
+    const desliga = () =>
+      g.observar.forEach((o) => {
+        o.ativo = false;
+        o.estado = o.tipo === "evento" ? "evento" : "normal";
+      });
+    desliga();
     expect(vereditoSistema(g)).toContain("Nenhuma regra sobre o sistema está em alerta");
     const sistema = g.observar.find((o) => o.assunto === "sistema" && o.tipo === "regra")!;
     sistema.ativo = true;
     sistema.estado = "ativo";
     expect(vereditoSistema(g)).toContain(`Uma regra sobre o sistema está em alerta: ${sistema.titulo.charAt(0).toLowerCase()}${sistema.titulo.slice(1)}`);
     expect(vereditoObservar(g.observar)).toContain("Uma regra sobre o sistema está em alerta");
-    g.observar.forEach((o) => {
-      o.ativo = false;
-      o.estado = o.tipo === "evento" ? "evento" : "normal";
-    });
+    desliga();
     expect(vereditoObservar(g.observar)).toBe("Nenhuma regra sobre o sistema está em alerta.");
     expect(vereditoSistema(g)).not.toContain("Sobre os próprios dados");
+    // com todas as regras em alerta ao mesmo tempo, os vereditos continuam no limite: os nomes saem e a contagem fica
+    const regras = g.observar.filter((o) => o.tipo !== "evento");
+    regras.forEach((o) => {
+      o.ativo = true;
+      o.estado = "ativo";
+    });
+    const nSistema = regras.filter((o) => o.assunto === "sistema").length;
+    for (const v of [vereditoSistema(g), vereditoObservar(g.observar)]) {
+      expect(palavras(v)).toBeLessThanOrEqual(40);
+      expect(v).toContain(`${nSistema} regras sobre o sistema estão em alerta`);
+    }
   });
 
   it("o veredito dos determinantes cita a comparação da carga com o ano anterior e diz que a rede não é comparada com limites", () => {
@@ -229,7 +244,10 @@ describe("Visão geral: veredito à vista e resposta completa por trás", () => 
     for (const b of botoes) {
       expect(b).not.toMatch(/Visão geral, (frase|determinante)|Regra '|_/);
     }
-    expect(botoes.some((b) => /Reservatórios, 61,6% da energia armazenável máxima/.test(b))).toBe(true);
+    // o nome do número com o valor relido de outra gold (hidrologia.json, EAR do SIN)
+    const earSin = json<{ subsistemas: { sm: string; ear: { valor: number } }[] }>("public/energia/gold/hidrologia.json").subsistemas.find((x) => x.sm === "SIN")!.ear.valor;
+    const ear = earSin.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    expect(botoes.some((b) => b.includes(`Reservatórios, ${ear}% da energia armazenável máxima`)), ear).toBe(true);
   });
 
   it("o rodapé fica dentro do seletor de profundidade, para a base e a versão do código só aparecerem em Analisar", () => {
@@ -257,18 +275,24 @@ describe("Visão geral: veredito à vista e resposta completa por trás", () => 
 
 /* ---------- conciliações da Visão geral ---------- */
 
-describe("Visão geral: carga em duas janelas (10,5% e 14,6%), classificação 2", () => {
+describe("Visão geral: carga em duas janelas (7 dias e o dia), classificação 2", () => {
   const serie = csv("public/energia/series/carga_diaria.csv");
   const sin = new Map(serie.map((l) => [l.data, Number(l.SIN_calculado)]));
   const dia = (iso: string, d: number) => new Date(Date.parse(iso) + d * 86_400_000).toISOString().slice(0, 10);
   const media = (ini: string, n: number) => Array.from({ length: n }, (_, i) => sin.get(dia(ini, i))!).reduce((a, b) => a + b, 0) / n;
 
-  it("relendo a série diária publicada: 7 dias contra as mesmas datas dá 10,5%; o dia contra o mesmo dia da semana dá 14,6%", () => {
+  it("relendo a série diária publicada: 7 dias contra as mesmas datas e o dia contra o mesmo dia da semana dão os percentuais da gold", () => {
     const fim = G.multiplos!.datas_referencia.carga!;
     const sete = (100 * (media(dia(fim, -6), 7) / media(dia(fim, -6 - 365), 7) - 1)).toFixed(1).replace(".", ",");
     const um = (100 * (sin.get(fim)! / sin.get(dia(fim, -364))! - 1)).toFixed(1).replace(".", ",");
-    expect(sete).toBe("10,5");
-    expect(um).toBe("14,6");
+    // a série diária relida dá os mesmos percentuais que a gold publica: a frase (7 dias) e o painel de determinantes (o dia)
+    const f1 = (x: number) => Math.abs(x).toFixed(1).replace(".", ",");
+    const v7 = G.frases.find((f) => f.id === "carga")!.valores.variacao_pct!.valor as number;
+    const painel = G.multiplos!.paineis.find((p) => p.id === "carga")!;
+    const ano = G.multiplos!.dados.find((l) => l.d === painel.data_referencia)!.carga_ano_anterior as number;
+    expect(painel.data_referencia).toBe(fim);
+    expect(sete.replace("-", "")).toBe(f1(v7));
+    expect(um.replace("-", "")).toBe(f1(100 * (painel.valor_atual.valor! / ano - 1)));
     const nota = notaCarga(G)!;
     expect(nota).toContain(`${sete}%`);
     expect(nota).toContain(`${um}%`);
@@ -338,21 +362,42 @@ describe("Visão geral: Tarifa Social em mai/2025 e jun/2025, classificação 2"
   });
 });
 
-describe("Visão geral: CMO do Norte (R$ 461,46 contra R$ 42,43), classificação 2", () => {
-  it("relendo o CSV semanal do ONS: o Norte difere de cada um dos outros três nesta semana, em 23 semanas seguidas, e a nota diz que o motivo não está no dado", () => {
+describe("Visão geral: CMO do Norte contra os outros três subsistemas, classificação 2", () => {
+  const brl = (v: number) => `R$ ${v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}/MWh`;
+  const difere = (x: { SE: number; S: number; NE: number; N: number }) => [x.SE, x.S, x.NE].every((v) => Math.abs(x.N - v) > 0.005);
+
+  it("relendo o CSV semanal do ONS: quando o Norte difere de cada um dos outros três na semana, a nota diz os valores, as semanas seguidas e que o motivo não está no dado", () => {
     const l = csv("public/energia/series/cmo_semanal.csv").map((x) => ({ s: x.semana_operativa, SE: +x.SE_semanal, S: +x.S_semanal, NE: +x.NE_semanal, N: +x.N_semanal }));
     const ult = l[l.length - 1];
-    expect(ult).toMatchObject({ SE: 42.43, S: 42.43, NE: 42.43, N: 461.46 });
+    const nota = notaCmoNorte(l, ult.s);
+    if (!difere(ult)) {
+      expect(nota).toBeNull();
+      return;
+    }
     let n = 0;
-    for (let i = l.length - 1; i >= 0 && [l[i].SE, l[i].S, l[i].NE].every((v) => Math.abs(l[i].N - v) > 0.005); i--) n++;
-    expect(n).toBeGreaterThan(10);
-    const nota = notaCmoNorte(l, ult.s)!;
-    expect(nota).toContain("R$ 461,46/MWh");
-    expect(nota).toContain("R$ 42,43/MWh");
-    expect(nota).toContain(`${n} semanas seguidas`);
+    for (let i = l.length - 1; i >= 0 && difere(l[i]); i--) n++;
+    expect(nota).not.toBeNull();
+    expect(nota).toContain(`o Norte (${brl(ult.N)})`);
+    for (const v of [ult.SE, ult.S, ult.NE]) expect(nota).toContain(brl(v));
+    if (n >= 2) expect(nota).toContain(`${n} semanas seguidas`);
+    else expect(nota).not.toContain("semanas seguidas");
     expect(nota).toContain("não informa o motivo");
     expect(nota).not.toMatch(/porque|devido|causa(do)? por/i);
     expect(pagina.visao()).toContain('data-nota-regra="cmo_semana"');
+  });
+
+  it("série sintética: três semanas seguidas com o Norte à parte dão a contagem e a data de início", () => {
+    const serie = [
+      { s: "2026-01-02", SE: 10, S: 10, NE: 10, N: 10 },
+      { s: "2026-01-09", SE: 10, S: 10, NE: 10, N: 400 },
+      { s: "2026-01-16", SE: 20, S: 20, NE: 21, N: 400 },
+      { s: "2026-01-23", SE: 42.43, S: 42.43, NE: 42.43, N: 461.46 },
+    ];
+    const nota = notaCmoNorte(serie, "2026-01-23")!;
+    expect(nota).toContain("o Norte (R$ 461,46/MWh)");
+    expect(nota).toContain("R$ 42,43/MWh");
+    expect(nota).toContain("3 semanas seguidas, desde a semana de 09/01/2026");
+    expect(nota).toContain("não informa o motivo");
   });
 
   it("semana sem diferença do Norte, nenhuma nota", () => {
@@ -378,11 +423,15 @@ describe("Visão geral: bastidor e unidades dos cartões", () => {
     const [p25, p75] = tarifa.complementos[0].valor as number[];
     const t = textoComplemento(tarifa.complementos[0]);
     expect(t).toBe(`R$ ${(p25 / 1000).toLocaleString("pt-BR", { minimumFractionDigits: 4 })}/kWh a R$ ${(p75 / 1000).toLocaleString("pt-BR", { minimumFractionDigits: 4 })}/kWh`);
-    expect(textoComplemento(tarifa.complementos[1])).toMatch(/^R\$ 164,24 por mês$/);
+    // 200 kWh na tarifa mediana: a mediana em R$/MWh vezes 0,2 MWh, com duas casas
+    const custo200 = ((tarifa.valor as number) * 0.2).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    expect(textoComplemento(tarifa.complementos[1])).toBe(`R$ ${custo200} por mês`);
     const perdas = G.sociedade.itens.find((i) => i.id === "perdas")!;
     expect(textoComplemento(perdas.complementos[0])).toMatch(/\d%/);
     expect(textoComplemento(perdas.complementos[0])).not.toMatch(/\d %/);
-    expect(texto(pagina.visao())).not.toMatch(/759,75|903,29/);
+    // os quartis em R$/MWh (o valor bruto da gold) não aparecem na página: o cartão mostra R$/kWh
+    const brutos = [p25, p75].map((v) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+    for (const b of brutos) expect(texto(pagina.visao()), b).not.toContain(b);
   });
 
   it("o identificador do conjunto atrasado sai do texto do leitor pelo título do painel de saúde dos dados", () => {
@@ -421,9 +470,15 @@ describe("Página inicial: contagens de distribuidoras (123, 102, 51 e 49), clas
   it("o seletor único lista só quem tem dado em alguma das três páginas e diz quantas são em cada uma; as extintas e as siglas repetidas saem", () => {
     const t = texto(h);
     // as contagens seguem à vista, na frase sob o seletor: a da Qualidade fecha com os 98 da Visão geral e põe à parte os 4 de parte do ano
-    expect(t).toContain("Perdas: 103 com dado de 2025.");
-    expect(t).toContain("Qualidade: 98 com DEC anual de 2025, mais 4 com dado de parte do ano e sem DEC anual.");
-    expect(t).toContain("Conta de luz: 81 com tarifa em vigor.");
+    // contagens refeitas sobre o índice de empresas.json com as regras do seletor (perdas no ano da gold de Perdas, DEC anual no ano
+    // mais recente do índice, tarifa vigente na data); a conferência da tarifa contra conta.json fica em energia-inicial
+    const idx = (emp.distribuidoras.indice as unknown as { perdas: { ano: number | null } | null; qualidade: { ano: number | null; dec?: number | null } | null; tarifa?: { vigente?: boolean } | null }[]);
+    const anoQ = Math.max(...idx.map((d) => d.qualidade?.ano ?? -Infinity));
+    const comQ = idx.filter((d) => d.qualidade?.ano === anoQ);
+    const decAnual = comQ.filter((d) => d.qualidade?.dec != null).length;
+    expect(t).toContain(`Perdas: ${idx.filter((d) => d.perdas?.ano === perdas.referencia.ano).length} com dado de ${perdas.referencia.ano}.`);
+    expect(t).toContain(`Qualidade: ${decAnual} com DEC anual de ${anoQ}${comQ.length > decAnual ? `, mais ${comQ.length - decAnual} com dado de parte do ano e sem DEC anual` : ""}.`);
+    expect(t).toContain(`Conta de luz: ${idx.filter((d) => d.tarifa?.vigente === true).length} com tarifa em vigor.`);
     expect(t).not.toContain("com dados)");
     expect(h.match(/<select/g)).toHaveLength(1);
     // CELESC, RGE e CPFL Santa Cruz aparecem no máximo uma vez no seletor
@@ -569,18 +624,25 @@ describe("Verbetes: números que parecem divergir, relidos de outro artefato", (
     expect(c).toContain("São dois resultados do mesmo mês e da mesma geração: só a garantia física do denominador muda.");
   });
 
-  it("EAR: 61,5% em 29/09 contra 61,6% em 28/09 na Visão geral (classificação 2: captura mais recente, que revisou o dia 28/09 para 61,7%)", () => {
+  it("EAR: a Visão geral (base de hidrologia) e o exemplo (captura mais recente do painel de Água) explicam a diferença de dia e a revisão do ONS (classificação 2)", () => {
     const dias = csv("public/energia/series/agua_subsistemas_diario.csv").filter((l) => l.recorte === "SIN");
-    const d28 = dias.find((l) => l.data === "2026-09-28")!;
-    const d29 = dias.find((l) => l.data === "2026-09-29")!;
-    expect(Number(d29.ear_pct).toFixed(1)).toBe("61.5");
-    expect(Number(d28.ear_pct).toFixed(1)).toBe("61.7");
     const hid = json<{ subsistemas: { sm: string; ear: { valor: number; dia: string } }[] }>("public/energia/gold/hidrologia.json").subsistemas.find((s) => s.sm === "SIN")!.ear;
-    expect(hid.dia).toBe("2026-09-28");
-    expect(hid.valor).toBe(61.6);
+    // o cartão de água da Visão geral é o mesmo número da base de hidrologia
+    expect(G.multiplos!.paineis.find((p) => p.id === "agua")!.valor_atual.valor).toBe(hid.valor);
+    const diaAgua = json<{ armazenamento: { subsistemas: { sm: string; dia: string }[] } }>("public/energia/gold/agua_detalhe.json").armazenamento.subsistemas.find((s) => s.sm === "SIN")!.dia;
+    const f1 = (v: number) => v.toFixed(1).replace(".", ",");
+    const br = (iso: string) => iso.split("-").reverse().join("/");
     const c = exemploComEvidencia("ear")!.complemento!;
-    expect(c).toContain("A Visão geral traz 61,6% em 28/09/2026");
-    expect(c).toContain("dá 61,7% para o próprio 28/09");
+    if (Date.parse(diaAgua) > Date.parse(hid.dia)) {
+      expect(c).toContain(`A Visão geral traz ${f1(hid.valor)}% em ${br(hid.dia)}`);
+      // o mesmo dia relido na série diária da captura mais recente: a frase só fala em revisão quando o valor mudou
+      const rev = dias.find((l) => l.data === hid.dia);
+      if (rev && f1(Number(rev.ear_pct)) !== f1(hid.valor)) expect(c).toContain(`dá ${f1(Number(rev.ear_pct))}% para o próprio ${br(hid.dia).slice(0, 5)}`);
+      else expect(c).not.toContain("para o próprio");
+    } else {
+      // a captura do painel de Água não é mais recente que a da hidrologia: não há ponte a explicar
+      expect(c).not.toContain("A Visão geral traz");
+    }
   });
 
   it("EAR: a mediana para a data nos anos completos desde 2001 volta ao exemplo, no mesmo escopo (SIN)", () => {

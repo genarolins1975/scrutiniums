@@ -99,6 +99,22 @@ const periodos = periodosDisponiveis(g);
 const pRef = periodos.find((p) => p.referencia)!;
 const rotulos = Object.fromEntries(g.distribuidoras.map((d) => [d.cnpj, rotuloDistribuidora(d)]));
 const leves = g.distribuidoras.map(leve);
+/** CSV do pipeline (separador ";"), relido aqui por outro código que o dos módulos, para os textos conferirem com o arquivo publicado. */
+const csvPublicado = (nome: string): Record<string, string>[] => {
+  const [cab, ...linhas] = readFileSync(join(raiz, "public/energia/series", nome), "utf-8").trim().split(/\r?\n/);
+  const cols = cab.split(";");
+  return linhas.map((l) => Object.fromEntries(l.split(";").map((v, i) => [cols[i], v])));
+};
+const nacionalCsv = csvPublicado("perdas_nacional.csv");
+const nacConcRef = nacionalCsv.find((l) => l.ano === String(ref) && l.universo === "concessionarias")!;
+const br = (v: number, casas: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
+/** "subiu de 14,74% para 14,75%", "caiu de ...", "ficou igual (...)": a mudança entre duas taxas de duas casas, como a página escreve. */
+const mudanca = (antes: string, depois: string) => {
+  const a = Number(antes);
+  const d = Number(depois);
+  const x = Math.round((d - a) * 100);
+  return x === 0 ? `ficou igual (${br(a, 2)}%)` : `${x > 0 ? "subiu" : "caiu"} de ${br(a, 2)}% para ${br(d, 2)}%`;
+};
 
 describe("contrato da gold de perdas", () => {
   it("cabeçalho íntegro, referência temporal coerente e arquivos declarados existentes", () => {
@@ -147,9 +163,11 @@ describe("contrato da gold de perdas", () => {
     for (const [k, ev] of Object.entries(evTecnica.evidencias)) expect(problemasEvidencia(ev as Evidencia), `técnica ${k}`).toEqual([]);
     expect(g.evidencias.associacao).not.toBeNull();
     expect(g.evidencias.associacao!.valor_exibido).toBe("−0,606");
-    // valor exibido sai do valor sem arredondamento, com um só arredondamento
-    expect(g.evidencias.taxa_nacional.valor_exibido).toBe("14,7%");
-    expect(g.evidencias.taxa_nacional.valor_calculo).toBeCloseTo(14.748264, 6);
+    // valor exibido sai do valor sem arredondamento, com um só arredondamento (14,748264 virava 14,7%, e não 14,75 e depois 14,8, em
+    // 30/09/2026); o valor de cálculo é a taxa nacional do CSV antes do arredondamento de duas casas
+    const calc = g.evidencias.taxa_nacional.valor_calculo as number;
+    expect(Math.abs(calc - Number(nacConcRef.taxa_total_pct))).toBeLessThanOrEqual(0.005 + 1e-9);
+    expect(g.evidencias.taxa_nacional.valor_exibido).toBe(`${br(Math.round(calc * 10) / 10, 1)}%`);
     expect(evDist.evidencias[CEMIG].valor_exibido).toBe("12,1%");
   });
 
@@ -338,8 +356,9 @@ describe("mapa, tabela e exportação com as mesmas linhas e números", () => {
     for (const l of custo) expect(Math.abs(l.pt + l.pnt + l.rede_basica - l.perdas), l.rotulo).toBeLessThanOrEqual(0.011);
     const cemig = custo.find((l) => l.id === CEMIG)!;
     expect([cemig.pt, cemig.pnt, cemig.rede_basica, cemig.perdas, cemig.participacao_perdas_pct, cemig.situacao]).toEqual([43.51, 16.77, 5.16, 65.44, 7.74, "vigente"]);
-    const cedri = custo.find((l) => l.rotulo === "CEDRI");
-    if (cedri) expect(cedri.situacao).toBe("vigencia_encerrada");
+    // vigente é o processo cuja vigência cobre a data da consulta (a CEDRI estava encerrada em 30/09/2026 e voltou com processo novo)
+    const data = g.referencia.tarifa_consultada_em;
+    for (const l of custo) expect(l.situacao, l.rotulo).toBe(l.inicio <= data && (l.fim === null || data <= l.fim) ? "vigente" : "vigencia_encerrada");
   });
 
   it("degraus do percentual técnico: valor só nos meses dos trechos, lacuna no mês de troca", () => {
@@ -361,7 +380,7 @@ describe("mapa, tabela e exportação com as mesmas linhas e números", () => {
     const linhas = serieComparacao(ids, anual, g.nacional);
     const l2025 = linhas.find((l) => l.ano === "2025")!;
     expect(l2025[CEMIG]).toBe(12.12);
-    expect(l2025.brasil).toBe(14.75);
+    expect(l2025.brasil).toBe(Number(nacConcRef.taxa_total_pct));
     expect(linhas.find((l) => l.ano === "2026")).toBeUndefined(); // 2026 é ano aberto: nenhum ano completo
   });
 });
@@ -369,9 +388,18 @@ describe("mapa, tabela e exportação com as mesmas linhas e números", () => {
 describe("textos derivados dos números", () => {
   it("resposta geral: volume, taxa, comparação nas mesmas e acumulado", () => {
     const t = respostaGeral(g);
-    expect(t).toContain("Em 2025, as 51 concessionárias com o ano completo e sem alerta perderam 90,4 TWh, 14,75% da energia injetada de referência.");
-    expect(t).toContain("Nas mesmas 51 concessionárias, a taxa subiu de 14,74% para 14,75% de 2024 para 2025.");
-    expect(t).toContain("De janeiro a julho de 2026, nas 49 concessionárias comparáveis, a taxa foi 14,77%, contra 14,74% no mesmo período de 2025.");
+    // cada número relido em perdas_nacional.csv e perdas_acumulado_ano.csv (em 30/09/2026: 51 concessionárias, 90,4 TWh, 14,75%; nas
+    // mesmas 51, de 14,74% para 14,75%; de janeiro a julho de 2026, 49 comparáveis, 14,77% contra 14,74%)
+    const n = nacConcRef;
+    expect(t).toContain(`Em ${ref}, as ${n.n_distribuidoras} concessionárias com o ano completo e sem alerta perderam ${br(Number(n.perdas_totais_mwh) / 1e6, 1)} TWh, ${br(Number(n.taxa_total_pct), 2)}% da energia injetada de referência.`);
+    expect(t).toContain(`Nas mesmas ${n.n_mesmas_total} concessionárias, a taxa ${mudanca(n.taxa_total_pct_mesmas_ano_anterior, n.taxa_total_pct_mesmas)} de ${ref - 1} para ${ref}.`);
+    const acum = csvPublicado("perdas_acumulado_ano.csv")
+      .filter((l) => l.nivel === "universo" && l.chave === "concessionarias")
+      .reduce((m, l) => (Number(l.ano) * 100 + Number(l.mes_fim) > Number(m.ano) * 100 + Number(m.mes_fim) ? l : m));
+    const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+    expect(t).toContain(
+      `De janeiro a ${MESES[Number(acum.mes_fim) - 1]} de ${acum.ano}, nas ${acum.meses_ou_n} concessionárias comparáveis, a taxa foi ${br(Number(acum.taxa_total_pct), 2)}%, contra ${br(Number(acum.taxa_total_pct_ano_anterior), 2)}% no mesmo período de ${Number(acum.ano) - 1}.`,
+    );
     expect(t).not.toMatch(/—/);
   });
 
@@ -386,16 +414,20 @@ describe("textos derivados dos números", () => {
     expect(t).toContain(
       `Em 2025, ${validos.length} distribuidoras entram na comparação: a taxa de perdas totais vai de ${textoNumero(validos[0].v, MEDIDAS.taxa)} (${validos[0].s}) a ${textoNumero(validos.at(-1)!.v, MEDIDAS.taxa)} (${validos.at(-1)!.s}) da energia injetada de referência.`,
     );
-    expect(t).toContain("Em 2025, 83 distribuidoras entram na comparação: a taxa de perdas totais vai de 3,25% (EFLUL) a 43,19% (ÂMBAR AMAZONAS)");
-    expect(t).toContain("20 distribuidoras publicaram valores que ficam fora da comparação");
-    expect(t).toContain("Somadas, as 51 concessionárias válidas perderam 14,75% da energia injetada.");
+    // a contagem de quem entra é a do CSV nacional (todas as distribuidoras comparáveis: 83 em 30/09/2026, de 3,25% da EFLUL a 43,19% da
+    // ÂMBAR AMAZONAS), e as que publicaram mas ficam fora são as demais com balanço no ano (20 em 30/09/2026)
+    const nacTodas = nacionalCsv.find((l) => l.ano === String(ref) && l.universo === "todas")!;
+    expect(validos.length).toBe(Number(nacTodas.n_distribuidoras));
+    const foraDaComparacao = g.distribuidoras.filter((d) => d.referencia && !validos.some((v) => v.s === (d.sigla ?? d.nome))).length;
+    expect(t).toContain(`${foraDaComparacao} distribuidoras publicaram valores que ficam fora da comparação`);
+    expect(t).toContain(`Somadas, as ${nacConcRef.n_distribuidoras} concessionárias válidas perderam ${br(Number(nacConcRef.taxa_total_pct), 2)}% da energia injetada.`);
     // variação: contagem de altas e quedas conferida pelo campo publicado
     const vv = valoresDoPeriodo(leves, recortesDoPeriodo(leves, pRef, null)!, "variacao", pRef);
     const tv = respostaMapa({ periodo: pRef, medida: MEDIDAS.variacao, valores: vv, rotulos, nacional: g.nacional.find((l) => l.ano === ref)!, acumulado: g.acumulado });
     const comp = g.distribuidoras.filter((d) => d.variacao?.comparavel && d.variacao.taxa_total_pp !== null && d.referencia && d.referencia.completo && !d.referencia.alertas.length);
     const sobe = comp.filter((d) => Math.round(d.variacao!.taxa_total_pp! * 100) > 0).length;
     expect(tv).toContain(`subiu em ${sobe},`);
-    expect(tv).toContain("Nas mesmas 51 concessionárias válidas nos dois anos, a taxa agregada subiu de 14,74% para 14,75%.");
+    expect(tv).toContain(`Nas mesmas ${nacConcRef.n_mesmas_total} concessionárias válidas nos dois anos, a taxa agregada ${mudanca(nacConcRef.taxa_total_pct_mesmas_ano_anterior, nacConcRef.taxa_total_pct_mesmas)}.`);
   });
 
   it("distribuidora escolhida: grande, encerrada, com alerta e sem comparação", () => {
@@ -412,8 +444,26 @@ describe("textos derivados dos números", () => {
 
   it("composição, regulatório, custo, associação e evolução", () => {
     const c = respostaComposicao(g);
-    expect(c).toContain("Em 2025, 18 das 51 concessionárias válidas publicaram a perda técnica nos 12 meses (32,6% da energia injetada); nelas, a técnica foi 7,16% da energia injetada.");
-    expect(c).toContain("Nas mesmas 16 concessionárias de 2023 a 2025, a não técnica passou de 14,35% para 15,01% do mercado de baixa tensão.");
+    // relidos em perdas_nacional.csv (em 30/09/2026: 18 das 51, 32,6% da energia, técnica de 7,16%)
+    const n = nacConcRef;
+    expect(c).toContain(
+      `Em ${ref}, ${n.n_com_tecnica} das ${n.n_distribuidoras} concessionárias válidas publicaram a perda técnica nos 12 meses (${br(Number(n.cobertura_tecnica_pct), 1)}% da energia injetada); nelas, a técnica foi ${br(Number(n.taxa_tecnica_pct), 2)}% da energia injetada.`,
+    );
+    // universo fixo (16 concessionárias, de 14,35% para 15,01% em 30/09/2026): a não técnica de cada ano refeita pela soma das linhas
+    // por distribuidora do arquivo anual, só com os CNPJs do universo
+    const uf = g.universo_fixo;
+    const porAno = (ano: number) => {
+      const ls = csvPublicado("perdas_distribuidoras.csv").filter((l) => l.ano === String(ano) && uf.cnpjs.includes(l.cnpj));
+      expect(ls.length, String(ano)).toBe(uf.n_distribuidoras);
+      return (100 * ls.reduce((a, l) => a + Number(l.pnt_mwh), 0)) / ls.reduce((a, l) => a + Number(l.mercado_bt_mwh), 0);
+    };
+    const [a0, a1] = [uf.anos[0], uf.anos[uf.anos.length - 1]];
+    const [p0, p1] = [porAno(a0), porAno(a1)];
+    expect(Math.abs(p0 - uf.linhas[0].pnt_bt_pct!)).toBeLessThanOrEqual(0.006);
+    expect(Math.abs(p1 - uf.linhas[uf.linhas.length - 1].pnt_bt_pct!)).toBeLessThanOrEqual(0.006);
+    expect(c).toContain(
+      `Nas mesmas ${uf.n_distribuidoras} concessionárias de ${a0} a ${a1}, a não técnica passou de ${br(uf.linhas[0].pnt_bt_pct!, 2)}% para ${br(uf.linhas[uf.linhas.length - 1].pnt_bt_pct!, 2)}% do mercado de baixa tensão.`,
+    );
     const reg = linhasRegulatorio(g.distribuidoras);
     const r = respostaRegulatorio(reg);
     // o aviso de bloqueio saiu da resposta: a caixa da página o diz uma vez só (r8)
@@ -422,12 +472,20 @@ describe("textos derivados dos números", () => {
     expect(respostaRegulatorio([])).toBe("Nenhum percentual técnico regulatório foi identificado na série do SAMP.");
     const custo = linhasCusto(g.distribuidoras);
     const enc = custo.filter((l) => l.situacao === "vigencia_encerrada").length;
+    // ativas só com processo encerrado: 23 em 30/09/2026 (conferido no documento do módulo: 21 permissionárias, ELFSM e CERNHE); a contagem
+    // da gold e a das linhas do gráfico são a mesma, e a frase só existe quando há alguma
     const encAtivas = g.distribuidoras.filter((d) => d.ativa && d.tarifa?.situacao === "vigencia_encerrada").length;
-    expect(encAtivas).toBe(23); // conferido no documento do módulo (21 permissionárias, ELFSM e CERNHE)
-    const tc = respostaCusto(custo, "2026-09-30");
+    expect(custo.filter((l) => l.situacao === "vigencia_encerrada" && l.ativa).length).toBe(encAtivas);
+    const tc = respostaCusto(custo, g.referencia.tarifa_consultada_em);
     expect(tc).toContain(`em ${custo.length - enc} distribuidoras`);
-    expect(tc).toContain("23 distribuidoras ativas só têm processo com vigência encerrada no arquivo da fonte");
-    expect(tc).toContain(`Outras ${enc - 23} têm o último processo encerrado`);
+    if (encAtivas > 1) expect(tc).toContain(`${encAtivas} distribuidoras ativas só têm processo com vigência encerrada no arquivo da fonte`);
+    else if (encAtivas === 1) expect(tc).toContain("1 distribuidora ativa só tem processo com vigência encerrada no arquivo da fonte");
+    else expect(tc).not.toMatch(/ativas? só t[eê]m? processo/);
+    if (enc > encAtivas) expect(tc).toContain(`Outras ${enc - encAtivas} têm o último processo encerrado`);
+    // o ramo das ativas encerradas, com duas ativas vigentes passadas a encerradas no mesmo arquivo
+    const duas = new Set(custo.filter((l) => l.ativa && l.situacao === "vigente").slice(0, 2).map((l) => l.id));
+    const comEncerradas = custo.map((l) => (duas.has(l.id) ? { ...l, situacao: "vigencia_encerrada" as const } : l));
+    expect(respostaCusto(comEncerradas, g.referencia.tarifa_consultada_em)).toContain(`${encAtivas + 2} distribuidoras ativas só têm processo com vigência encerrada no arquivo da fonte`);
     const ta = respostaAssociacao(g.associacao);
     expect(ta).toContain("a associação é forte (ρ de Spearman = −0,606, 52 concessionárias): renda média maior aparece com valores menores.");
     expect(ta).toContain("a associação é moderada (ρ de Spearman = −0,377, 46 concessionárias)");
@@ -631,8 +689,12 @@ describe("revisão de interface: anos, ligações e ausência", () => {
     expect(marcaLeiauteSeparacao(g.nacional, "tecnica")).toEqual([{ x: "2024", rotulo: "2024: leiaute novo; 32 de 51 publicam a técnica" }]);
     expect(marcaLeiauteSeparacao(g.nacional, "pnt_bt")).toEqual([{ x: "2024", rotulo: "2024: leiaute novo; 31 de 51 com a separação fechando" }]);
     // contagens publicadas no lugar de "cerca de metade"
+    // relidas em perdas_nacional.csv (em 30/09/2026: "em 2023, 48 de 50 ... e 46, na da não técnica; em 2024, 32 de 51 e 31; em 2025, 18 de 51 e 18")
+    const contagem = (ano: number) => nacionalCsv.find((l) => l.ano === String(ano) && l.universo === "concessionarias")!;
+    const [c0, c1, c2] = [ref - 2, ref - 1, ref].map(contagem);
     expect(fraseCoberturaSeparacao(g.nacional, ref)).toBe(
-      "em 2023, 48 de 50 concessionárias válidas entram na soma da técnica e 46, na da não técnica; em 2024, 32 de 51 e 31; em 2025, 18 de 51 e 18.",
+      `em ${ref - 2}, ${c0.n_com_tecnica} de ${c0.n_distribuidoras} concessionárias válidas entram na soma da técnica e ${c0.n_com_pnt_bt}, na da não técnica; ` +
+        `em ${ref - 1}, ${c1.n_com_tecnica} de ${c1.n_distribuidoras} e ${c1.n_com_pnt_bt}; em ${ref}, ${c2.n_com_tecnica} de ${c2.n_distribuidoras} e ${c2.n_com_pnt_bt}.`,
     );
     // o texto da página diz as contagens; "cerca de metade" só resta na limitação escrita pelo pipeline na gold
     const comp = paginas["/setor-eletrico/perdas/composicao"].replace(/<[^>]+>/g, "");

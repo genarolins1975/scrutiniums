@@ -1674,6 +1674,8 @@ def _evidencia_kpis(con, lista, cat, agora, hoje, todas=(), golds_res=None):
                 "capturado_em": max((x["capturas"]["ultima"] for x in lista if x["capturas"]["ultima"]), default=None),
                 "publicado_em": None},
             chaves_origem=[x["id"] for x in atrasados],
+            # com zero atrasados a lista de chaves fica vazia: a consulta diz como selecionar as linhas no CSV publicado
+            consulta=f"linhas de {CSV['conjuntos']} com situacao = ATRASADO",
             formula="contagem de conjuntos com hoje > prazo_proximo (regra de SLA por cadência declarada, casos A a E)",
             cobertura="conjuntos com frequência declarada em metadado legível; sem ela, SEM SLA (não entram)",
             tratamento_ausencia="sem frequência declarada: SEM SLA; sem período nem data de publicação da fonte: SEM DADO",
@@ -1889,6 +1891,8 @@ def _evidencia_publicacao(lista, afirm, parquets, chk_parquet, todas, agora, hoj
                    "url": pub.REPOSITORIO + "/blob/main/pipeline/energia/validacoes.py", "arquivo": None, "sha256": None,
                    "capturado_em": None, "publicado_em": None, "arquivos": arquivos},
             chaves_origem=[k["id"] for k in reprov],
+            # com zero reprovadas a lista de chaves fica vazia: a consulta diz como selecionar as linhas no CSV publicado
+            consulta=f"linhas de {CSV['validacoes']} com resultado = reprovado",
             formula="contagem de checagens com resultado reprovado; o veredito de um alvo é o pior resultado das suas checagens",
             cobertura="golds de public/energia/gold, CSV de public/energia/series, identidades de agregação declaradas, Parquet e conjuntos",
             tratamento_ausencia="checagem sem aplicação ao alvo é não aplicável, nunca aprovada",
@@ -2128,12 +2132,20 @@ def construir(con, ctx):
     fichas, _ = _evidencia_kpis(con, lista, cat, agora, hoje, todas=todas, golds_res=golds_res)
     g["evidencias"] = fichas
     escreve_csvs(lista, todas, cal_linhas, cat, eixos_linhas, descricoes=_descricoes(brutos, seeds))
+    # se a construção falhar depois daqui, a sentinela mantém a publicacao.json anterior: o catálogo volta ao anterior
+    # junto (os CSV do módulo a sentinela restaura), para catálogo e saúde não contarem universos diferentes
+    cat_anterior = base.le_gold("catalogo.json")
     base.escreve_gold("catalogo.json", cat)
-    # fichas de P069 e P070: depois de gravar catálogo e CSV, para que os testes releiam os arquivos gravados
-    g["evidencias"].update(_evidencia_publicacao(lista, g["afirmacoes"], parquets, chk_parquet, todas, agora, hoje))
-    g["proveniencia"]["reproducao"] = proveniencia_reproducao(parquets, agora, hoje)
-    g["resumo"]["duracao_s"] = round(time.time() - t0, 1)
-    g["resumo"]["tempos_s"] = tempos
-    corpo = pub.serializa_gold(g)
-    escreve_manifesto(final=False, publicacao_bytes=corpo)
+    try:
+        # fichas de P069 e P070: depois de gravar catálogo e CSV, para que os testes releiam os arquivos gravados
+        g["evidencias"].update(_evidencia_publicacao(lista, g["afirmacoes"], parquets, chk_parquet, todas, agora, hoje))
+        g["proveniencia"]["reproducao"] = proveniencia_reproducao(parquets, agora, hoje)
+        g["resumo"]["duracao_s"] = round(time.time() - t0, 1)
+        g["resumo"]["tempos_s"] = tempos
+        corpo = pub.serializa_gold(g)
+        escreve_manifesto(final=False, publicacao_bytes=corpo)
+    except Exception:
+        if cat_anterior is not None:
+            base.escreve_gold("catalogo.json", cat_anterior)
+        raise
     return g

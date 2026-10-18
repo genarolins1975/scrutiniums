@@ -795,6 +795,24 @@ class TestConfereAfirmacoes(unittest.TestCase):
         self.assertTrue(any("não está no catálogo gravado" in p for p in prob))
 
 
+# ---------------------------------------------------------------- fichas com contagem zero
+
+
+class TestFichaComContagemZero(unittest.TestCase):
+    """Publicação de 18/10/2026: sem checagem reprovada, a ficha de P070 ficava sem chaves_origem e sem consulta, a
+    validação da evidência derrubava publicacao.json e a sentinela mantinha a publicação anterior. Zero é um resultado
+    publicável: a ficha diz como selecionar as linhas no CSV."""
+
+    def test_zero_checagens_reprovadas_publica_a_ficha_com_consulta(self):
+        todas = [{"id": "pld.json:esquema", "resultado": "aprovado", "alvo": "/energia/gold/pld.json"}]
+        f = dados._evidencia_publicacao([], [], [], [], todas, "2026-10-18T01:00:00Z", date(2026, 10, 18))
+        e = f["checagens_reprovadas"]
+        self.assertEqual(e["valor_calculo"], 0.0)
+        self.assertEqual(e["chaves_origem"], [])
+        self.assertIn("dados_validacoes.csv", e["consulta"])
+        self.assertEqual(ev.validar(e), [])
+
+
 # ---------------------------------------------------------------- métricas
 
 

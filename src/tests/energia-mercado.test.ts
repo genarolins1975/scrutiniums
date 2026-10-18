@@ -54,10 +54,24 @@ describe("mercado: ACL sem exportação (P032)", () => {
   });
 
   it("consumo contabilizado conferido com 'O consumo contabilizou' do InfoMercado, não com 'Consumo/Geração'", () => {
-    const jul = g.livre_regulado.reconciliacao.infomercado.find((x) => x.medida === "consumo_contabilizado_mwmed" && x.mes === "2026-07")!;
-    expect(jul.publicado).toBe(70238);
-    expect(jul.calculado!).toBeCloseTo(70235.7, 1);
-    expect(jul.resultado).toBe("aprovado");
+    const consumo = g.livre_regulado.reconciliacao.infomercado.filter((x) => x.medida === "consumo_contabilizado_mwmed");
+    expect(consumo.length).toBeGreaterThan(0);
+    // cada edição conferida: o boletim publica MW médio inteiro e o calculado fica dentro da tolerância de 5,5 MW médios
+    for (const c of consumo) {
+      expect(Number.isInteger(c.publicado), c.numero).toBe(true);
+      expect(c.diferenca!, c.numero).toBeCloseTo(c.calculado! - c.publicado!, 3);
+      expect(Math.abs(c.diferenca!), c.numero).toBeLessThanOrEqual(5.5);
+      expect(c.resultado, c.numero).toBe("aprovado");
+    }
+    // a edição mais recente sempre entra na conferência
+    const ultimo = consumo.reduce((a, b) => (Number(b.numero) > Number(a.numero) ? b : a));
+    expect(ultimo.mes).toBe(g.mre_gsf.reconciliacao_infomercado.reduce((a, b) => (Number(b.numero) > Number(a.numero) ? b : a)).mes);
+    // conferência independente do documento do módulo (InfoMercado Nº 229, jul/2026), enquanto a edição estiver na gold
+    const n229 = consumo.find((x) => x.numero === "229");
+    if (n229) {
+      expect(n229.publicado).toBe(70238);
+      expect(n229.calculado!).toBeCloseTo(70235.7, 1);
+    }
     expect(g.livre_regulado.reconciliacao.infomercado.some((x) => x.medida.startsWith("consumo_geracao"))).toBe(false);
   });
 
@@ -69,13 +83,22 @@ describe("mercado: ACL sem exportação (P032)", () => {
 });
 
 describe("mercado: SAMP com completude por medida (P032/P033)", () => {
-  it("julho de 2026 incompleto (ELEKTRO e EQUATORIAL PA sem linhas LIVRE) e reconciliação em junho", () => {
-    const jul = g.livre_regulado.samp_nacional_mensal.find((x) => x.mes === "2026-07")!;
-    expect(jul.completo).toBe(false);
-    expect(jul.ocorrencias.some((o) => o.startsWith("ELEKTRO sem linhas LIVRE"))).toBe(true);
+  it("meses finais incompletos dizem por quê, e a reconciliação com a EPE usa o último mês completo", () => {
+    const serie = g.livre_regulado.samp_nacional_mensal;
+    // os meses incompletos do fim da série, cada um com a ocorrência que o tira da comparação
+    let i = serie.length - 1;
+    const finais: typeof serie = [];
+    while (i >= 0 && !serie[i].completo) finais.unshift(serie[i--]);
+    const ultimoCompleto = serie[i];
+    expect(ultimoCompleto?.completo).toBe(true);
+    for (const m of finais) expect(m.ocorrencias.length, m.mes).toBeGreaterThan(0);
     const rec = g.agentes_migracao.kpis.ucs_livres!.evidencia.reconciliacao!;
-    expect(rec.descricao).toContain("2026-06");
-    expect(rec.descricao).toContain("98,2%");
+    expect(rec.descricao).toContain(`em ${ultimoCompleto.mes}, último mês completo`);
+    for (const m of finais) expect(rec.descricao, m.mes).toContain(`${m.mes}:`);
+    // o percentual dito é a razão entre as duas contagens da própria frase
+    const [, sampTxt, pctTxt, epeTxt] = /: ([\d.]+), ([\d,]+)% das ([\d.]+) da EPE/.exec(rec.descricao)!;
+    const n = (t: string) => Number(t.replace(/\./g, "").replace(",", "."));
+    expect(n(pctTxt)).toBeCloseTo((100 * n(sampTxt)) / n(epeTxt), 1);
   });
 });
 
@@ -115,9 +138,16 @@ describe("mercado: GSF de 12 meses e InfoMercado (P034)", () => {
     const p = g.paineis.find((x) => x.id === "P034")!;
     const v = p.verificacoes.find((x) => x.nome.startsWith("GSF de 12 meses"))!;
     expect(v.resultado).toBe("ressalva");
-    expect(v.detalhe).toContain("229: 92,55% publicado");
-    expect(v.detalhe).toContain("80,43%");
-    expect(g.mre_gsf.reconciliacao_infomercado.some((c) => c.numero === "229" && c.resultado === "ressalva")).toBe(true);
+    // a verificação cita a edição divergente com o publicado e a razão de energias, lidos da reconciliação
+    const dois = (x: number) => x.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const div = g.mre_gsf.reconciliacao_infomercado.filter((c) => c.medida === "gsf_12m_pct" && c.resultado === "ressalva");
+    expect(div.length).toBeGreaterThan(0);
+    const ult = div.reduce((a, b) => (Number(b.numero) > Number(a.numero) ? b : a));
+    expect(v.detalhe).toContain(`${ult.numero}: ${dois(ult.publicado!)}% publicado`);
+    expect(v.detalhe).toContain(`${dois(ult.calculado!)}%`);
+    // conferência independente do documento do módulo (Nº 229), enquanto a edição estiver na gold
+    const n229 = div.find((c) => c.numero === "229");
+    if (n229) expect([n229.publicado, dois(n229.calculado!)]).toEqual([92.55, "80,43"]);
     const k = g.mre_gsf.kpis.gsf_12m!;
     if (k.infomercado_12m) {
       expect(k.infomercado_12m.resultado).toBe("ressalva");

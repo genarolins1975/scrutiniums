@@ -15,6 +15,7 @@ import PaginaControle from "@/app/setor-eletrico/empresas/controle/page";
 import PaginaDistribuidoras from "@/app/setor-eletrico/empresas/distribuidoras/page";
 import PaginaFinancas from "@/app/setor-eletrico/empresas/financas/page";
 import Ficha from "@/app/setor-eletrico/empresas/[entidade]/page";
+import { RegulacaoConsultas } from "@/components/energia/RegulacaoConsultas";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
 import * as E from "@/lib/energia/empresas";
 import { num } from "@/lib/energia/formato";
@@ -441,8 +442,24 @@ describe("P046: situações sem consulta, siglas CP e AP, agenda em resumo e dec
     expect(texto(e)).not.toContain("Atividades da Agenda Regulatória");
   });
   it("as ementas das decisões de abertura sem resultado formal ficam em Analisar", () => {
-    expect(h).toContain("data-decisoes-sem-resultado");
-    expect(e).not.toContain("data-decisoes-sem-resultado");
+    // na página publicada, a seção existe só quando há decisão pendente (na gold de 01/10/2026, as duas de 29/09/2026)
+    if ((GR.consultas.decisoes_sem_resultado_formal ?? []).length) {
+      expect(h).toContain("data-decisoes-sem-resultado");
+      expect(e).not.toContain("data-decisoes-sem-resultado");
+    } else expect(h).not.toContain("data-decisoes-sem-resultado");
+    // o ramo das pendentes fica conferido sempre, no mesmo componente da página com um clone que traz uma decisão
+    const d = GR.consultas.data_referencia;
+    const fim = new Date(Date.parse(`${d}T12:00:00Z`) + 45 * 864e5).toISOString().slice(0, 10);
+    const clone = {
+      ...GR.consultas,
+      decisoes_sem_resultado_formal: [{
+        data: d, reuniao: "sintética", processos: ["48500.000000/2026-00"], assunto: "Proposta de abertura de Consulta Pública",
+        decisao: "decisão sintética", inicio: d, fim, janela_origem: null, situacao_se_confirmada: null,
+      }],
+    };
+    const c = renderToStaticMarkup(createElement(RegulacaoConsultas, { consultas: clone, dataServidor: d, fonte: "ANEEL", versao: d }));
+    expect(c).toContain("data-decisoes-sem-resultado");
+    expect(entender(c)).not.toContain("data-decisoes-sem-resultado");
   });
   it("o p046 abre com o veredito antes do recorte e dos cartões", () => {
     const iVeredito = h.indexOf('data-resposta="p046"');
@@ -460,18 +477,22 @@ describe("conciliação (i): consultas abertas, 8 no cartão e 7 no parágrafo (
   const rotulo = (l: Record<string, string>) => `${l.modalidade} nº ${l.numero}/${l.ano}`;
   const dataBR = (d: string) => d.split("-").reverse().join("/");
 
-  it("no CSV, 8 estavam abertas na data de referência e, 7 dias depois, a de prazo até 02/10/2026 saiu da contagem", () => {
+  it("no CSV, as abertas na data de referência são as do cartão e, 7 dias depois, as de prazo vencido saem da contagem (na gold de 01/10/2026: 8, e a CP 30/2026, prazo até 02/10/2026, saiu)", () => {
     const abertasRef = linhas.filter((l) => l.situacao === "aberta" && l.data_referencia === ref);
     expect(abertasRef.length).toBe(GR.evidencias.consultas_abertas!.valor_calculo);
-    const d2 = "2026-10-08";
+    // a data de comparação anda com a publicação: 7 dias depois da data de referência
+    const d2 = new Date(Date.parse(`${ref}T12:00:00Z`) + 7 * 864e5).toISOString().slice(0, 10);
     const aindaAbertas = abertasRef.filter((l) => l.fim >= d2);
-    const fecharam = abertasRef.filter((l) => l.fim < d2);
-    expect(fecharam.map(rotulo)).toEqual(["Consulta Pública nº 30/2026"]);
-    expect(fecharam[0].fim).toBe("2026-10-02");
+    // as que estavam a abrir na data de referência e começam até d2 também contam depois
+    const abrem = linhas.filter((l) => l.situacao === "a_abrir" && l.data_referencia === ref && l.inicio <= d2 && l.fim >= d2);
+    const depois = aindaAbertas.length + abrem.length;
+    const fecharam = abertasRef.filter((l) => l.fim < d2).sort((a, b) => a.fim.localeCompare(b.fim));
+    for (const l of fecharam) expect(l.fim >= ref && l.fim < d2, rotulo(l)).toBe(true);
 
     const t = R.textoMudancaDeAbertas(GR.consultas.itens, ref, d2);
-    expect(t).toContain(`Em ${dataBR(ref)} eram ${abertasRef.length} abertas; em ${dataBR(d2)}, são ${aindaAbertas.length}.`);
-    expect(t).toContain(`Encerrou o prazo no intervalo: ${rotulo(fecharam[0])}, prazo até ${dataBR(fecharam[0].fim)}.`);
+    expect(t).toContain(`Em ${dataBR(ref)} eram ${abertasRef.length} abertas; em ${dataBR(d2)}, ${depois === 1 ? "é" : "são"} ${depois}.`);
+    for (const l of fecharam) expect(t).toContain(`${rotulo(l)}, prazo até ${dataBR(l.fim)}`);
+    if (fecharam.length === 1) expect(t).toContain(`Encerrou o prazo no intervalo: ${rotulo(fecharam[0])}, prazo até ${dataBR(fecharam[0].fim)}.`);
     expect(R.textoMudancaDeAbertas(GR.consultas.itens, ref, ref)).toBe("");
   });
 
@@ -560,20 +581,23 @@ describe("conciliação (iii): 22.798 usinas e 220.658,9 MW contra 22.665 e 220.
 });
 
 describe("conciliação (iv): 14,7% e 14,75% (mesma medida, uma regra de casas: duas)", () => {
-  it("a taxa nacional do módulo Perdas, 14,748264, aparece com duas casas no cartão, na ficha de prova e na legenda do gráfico", () => {
-    // a ficha de prova do módulo Perdas guarda 14,748264: com uma casa seria 14,7 e com duas, 14,75 (a página usa duas, como o gráfico)
-    const bruto = json<{ evidencias: { taxa_nacional: { valor_calculo: number; valor_exibido: string } } }>("public/energia/gold/perdas.json").evidencias.taxa_nacional;
-    expect(bruto.valor_calculo.toFixed(2)).toBe("14.75");
-    expect(bruto.valor_calculo.toFixed(1)).toBe("14.7");
-    expect(bruto.valor_exibido).toBe("14,7%");
-    expect(NACIONAL).toBe(14.75);
+  it("a taxa nacional do módulo Perdas aparece com duas casas no cartão, na ficha de prova e na legenda do gráfico (na gold de 30/09/2026, 14,748264: 14,7 com uma casa e 14,75 com duas)", () => {
+    // a ficha de prova do módulo Perdas guarda a taxa com seis casas e exibe uma; a página usa duas, como o gráfico. O valor muda a
+    // cada publicação do SAMP: a regra de casas é conferida sobre o valor publicado, não sobre o número de uma data
+    const bruto = json<{ evidencias: { taxa_nacional: { valor_calculo: number; valor_exibido: string; universo: string } } }>("public/energia/gold/perdas.json").evidencias.taxa_nacional;
+    const v = bruto.valor_calculo;
+    const dois = num(v, 2);
+    expect(bruto.valor_exibido).toBe(`${num(v, 1)}%`);
+    expect(NACIONAL).toBe(Number(v.toFixed(2)));
+    const umaCasa = new RegExp(`${num(v, 1).replace(/[.,]/g, "\\$&")}%(?!\\d)`);
     for (const k of ["sintese", "p037"] as const) {
       const t = textoEntender(htmlEmp[k]);
-      expect(t, k).toContain("14,75% da energia injetada");
-      expect(t, k).toContain("Taxa de perdas totais na distribuição, 14,75%");
-      expect(t, k).not.toMatch(/14,7%(?!\d)/);
+      expect(t, k).toContain(`${dois}% da energia injetada`);
+      expect(t, k).toContain(`Taxa de perdas totais na distribuição, ${dois}%`);
+      if (num(v, 1) !== dois) expect(t, k).not.toMatch(umaCasa);
     }
-    expect(texto(htmlEmp.p037)).toContain("Brasil, 51 concessionárias com os 12 meses de 2025 e sem alerta: 14,75%");
+    expect(texto(htmlEmp.p037)).toContain(`Brasil, ${bruto.universo}: ${dois}%`);
+    expect(bruto.universo).toMatch(/^\d+ concessionárias com os 12 meses de \d{4} e sem alerta$/);
   });
 
   it("a potência vinculada tem duas casas no texto, no cartão e na ficha de prova (99,91%)", () => {
