@@ -101,6 +101,33 @@ class TestGoldComBronzeOrfao(unittest.TestCase):
         self.assertIsNone(gold["conferencias"]["ralie_csv_x_parquet"]["ugs_parquet"])
         self.assertGreater(gold["estagios"]["ralie"]["ugs"], 0)
 
+    def test_coortes_exigem_calendarios_iguais_tambem_no_passado(self):
+        import hashlib
+        import pyarrow as pa
+        import pyarrow.compute as pc
+        import pyarrow.parquet as pq
+        from pipeline.tests.test_energia_expansao import DADOS
+        con = _silver_dos_recortes()
+        self.addCleanup(con.close)
+        tabela = pq.read_table(os.path.join(DADOS, "ralie_ug_historico_recorte.parquet"))
+        primeira = pc.min(tabela["DatRalie"]).as_py()
+        tabela = tabela.filter(pc.not_equal(tabela["DatRalie"], pa.scalar(primeira, type=tabela["DatRalie"].type)))
+        arquivo = os.path.join(base.BRONZE, "historico-sem-primeira-fotografia.parquet")
+        pq.write_table(tabela, arquivo)
+        with open(arquivo, "rb") as f:
+            sha = hashlib.sha256(f.read()).hexdigest()
+        base.registra_vintage(con, expansao.DS_RALIE, "ralie-unidade-geradora-historico.parquet", "fixture sintética",
+                              "2026-10-01T00:00:00Z", None, sha, os.path.getsize(arquivo), "teste_sintetico", arquivo)
+        with patch.object(expansao, "_valida", return_value=([], [])):
+            gold = expansao.construir(con, {"hoje": date(2026, 10, 2)})
+        self.assertTrue(gold["cronograma"]["historico_fonte"]["disponivel"])
+        self.assertGreater(len(gold["estagios"]["historico_mensal"]), 0)
+        self.assertEqual(gold["referencias"]["ralie"], "2026-09-18")
+        self.assertEqual(gold["cronograma"]["historico_fonte"]["ultima_fotografia"], "2026-09-18")
+        self.assertEqual(gold["estagios"]["coortes"], [])
+        self.assertFalse(gold["estagios"]["coortes_status"]["disponivel"])
+        self.assertIsNone(gold["estagios"]["coortes_peso"]["usinas_que_ja_operavam"])
+
     def test_epe_recaptura_orfa_mesmo_com_coleta_ok_recente(self):
         from datetime import datetime, timezone
         for camada in ("existente", "planejada"):

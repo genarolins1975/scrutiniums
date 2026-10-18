@@ -2428,9 +2428,9 @@ def construir(con, ctx):
         historico_disponivel = bool(datas_hist)
     if not historico_disponivel:
         ressalvas.append("Histórico do RALIE indisponível: bronze de unidades e usinas ausente ou sem fotografias comuns; análises históricas não calculadas.")
-    coortes_disponiveis = bool(historico_disponivel and datas_ug[-1] == datas_us[-1] == data_ralie)
+    coortes_disponiveis = bool(historico_disponivel and datas_ug == datas_us and datas_ug[-1] == data_ralie)
     if historico_disponivel and not coortes_disponiveis:
-        ressalvas.append("Desfecho das coortes indisponível: o bronze histórico não cobre a fotografia corrente do RALIE; histórico anterior preservado com suas próprias datas.")
+        ressalvas.append("Desfecho das coortes indisponível: calendários de unidades e usinas diferentes entre si ou sem a fotografia corrente do RALIE; séries históricas preservadas nas fotografias comuns.")
     if historico_disponivel:
         mensais = ax.ultimo_por_mes(datas_hist)
         ralie_kw_hist = ax.potencias_outorgadas_historicas(pf_us)
@@ -2488,7 +2488,7 @@ def construir(con, ctx):
     desf = _desfechos(trajs, prim, lib_idx, siga, encerramentos, datas_hist[-1], lib_primeira, pares_atipicos) if coortes_disponiveis else {}
     estagios["coortes"] = _bloco_coortes(desf, datas_hist[0]) if coortes_disponiveis else []
     estagios["coortes_status"] = {"disponivel": coortes_disponiveis,
-                                 "motivo": None if coortes_disponiveis else "Bronze histórico sem a fotografia corrente do RALIE"}
+                                 "motivo": None if coortes_disponiveis else "Bronze histórico ausente ou com calendário incompatível com a fotografia corrente do RALIE"}
     estagios["desfechos_definicao"] = DESFECHOS
     estagios["coortes_peso"] = {
         "regra": REGRA_PESO_COORTES,
