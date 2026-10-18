@@ -47,6 +47,16 @@ class TestEstadoMeta(unittest.TestCase):
         self.assertIn('if: always()', ps['Repor metadados no diretório de trabalho da previsão'][0])
         self.assertNotIn('meta_cache', ps['Commit do arquivo de emissões (e da gold, se os testes passaram)'][0])
 
+    def test_cache_novo_da_energia_so_apos_copia_duravel_confirmada(self):
+        ps = passos()
+        nomes = list(ps)
+        copia = 'Cópia durável dos metadados (release energia-estado)'
+        for nome in ('Liberar a cópia anterior do estado antes de gravar',
+                     'Guardar estado', 'Manter só a cópia mais recente do estado'):
+            self.assertLess(nomes.index(copia), nomes.index(nome))
+            self.assertIn("steps.meta_duravel.outcome == 'success'", ps[nome][0])
+        self.assertLess(nomes.index('Cópia durável do silver (release energia-estado)'), nomes.index(copia))
+
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)

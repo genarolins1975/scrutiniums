@@ -224,44 +224,6 @@ jobs:
           REG=$(grep '^REGRESSOES_ENERGIA=' energia.log | sed 's/^REGRESSOES_ENERGIA=//' || true)
           echo "regressoes=${REG}" >> "$GITHUB_OUTPUT"
 
-      # Uma cópia do estado da energia tem ~7,2 GB (15/10/2026) e o limite de cache do
-      # repositório é 10 GB: gravar a nova com a anterior ainda lá passa do limite, e o
-      # GitHub despeja o que foi acessado há mais tempo, o estado do crédito, em 03/10 e
-      # 15/10/2026. A anterior sai ANTES de gravar, e só quando o estado completo foi
-      # restaurado: o que será gravado contém tudo o que ela tinha. Se a gravação falhar,
-      # o silver e o bronze vigente voltam da release energia-estado (issue #116).
-      - name: Liberar a cópia anterior do estado antes de gravar
-        if: always() && steps.restaurar.outputs.cache-matched-key != ''
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          TAM=$(du -sb data/energia | cut -f1)
-          echo "Estado da energia: $((TAM / 1048576)) MB"
-          if [ "$TAM" -gt 8589934592 ]; then
-            echo "::warning::estado da energia com $((TAM / 1073741824)) GB, perto do limite de 10 GB do cache do repositório"
-          fi
-          scripts/podar_cache.sh energia-estado- 0
-
-      - name: Guardar estado
-        if: always()
-        uses: actions/cache/save@v4
-        with:
-          path: data/energia
-          key: energia-estado-${{ github.run_id }}
-
-      # A energia (cron das 23h40 UTC, às vezes horas atrasado, ou disparo manual) e a
-      # previsão do PLD têm filas próprias: a previsão não pode esperar a energia e perder
-      # o corte das 07h. Se as duas podarem e gravarem ao mesmo tempo, duas cópias
-      # coexistem; podar de novo logo depois de gravar, mantendo só a mais recente,
-      # limita essa sobreposição a minutos.
-      - name: Manter só a cópia mais recente do estado
-        if: always() && steps.restaurar.outputs.cache-matched-key != ''
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: scripts/podar_cache.sh energia-estado- 1
-
       - name: Cópia durável do silver (release energia-estado)
         if: steps.pipeline.outcome == 'success'
         continue-on-error: true
@@ -322,6 +284,47 @@ jobs:
           else
             gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
           fi
+
+      # Só expor cache novo depois de confirmar a cópia durável de meta: a previsão
+      # pode restaurá-lo imediatamente e omite meta de seu próprio payload. Se o
+      # upload falhar, conservar o cache anterior; o silver já teve seu passo próprio.
+      # Uma cópia do estado da energia tem ~7,2 GB (15/10/2026) e o limite de cache do
+      # repositório é 10 GB: gravar a nova com a anterior ainda lá passa do limite, e o
+      # GitHub despeja o que foi acessado há mais tempo, o estado do crédito, em 03/10 e
+      # 15/10/2026. A anterior sai ANTES de gravar, e só quando o estado completo foi
+      # restaurado: o que será gravado contém tudo o que ela tinha. Se a gravação falhar,
+      # o silver, meta e o bronze vigente voltam da release energia-estado (issue #116).
+      - name: Liberar a cópia anterior do estado antes de gravar
+        if: always() && steps.meta_duravel.outcome == 'success' && steps.restaurar.outputs.cache-matched-key != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAM=$(du -sb data/energia | cut -f1)
+          echo "Estado da energia: $((TAM / 1048576)) MB"
+          if [ "$TAM" -gt 8589934592 ]; then
+            echo "::warning::estado da energia com $((TAM / 1073741824)) GB, perto do limite de 10 GB do cache do repositório"
+          fi
+          scripts/podar_cache.sh energia-estado- 0
+
+      - name: Guardar estado
+        if: always() && steps.meta_duravel.outcome == 'success'
+        uses: actions/cache/save@v4
+        with:
+          path: data/energia
+          key: energia-estado-${{ github.run_id }}
+
+      # A energia (cron das 23h40 UTC, às vezes horas atrasado, ou disparo manual) e a
+      # previsão do PLD têm filas próprias: a previsão não pode esperar a energia e perder
+      # o corte das 07h. Se as duas podarem e gravarem ao mesmo tempo, duas cópias
+      # coexistem; podar de novo logo depois de gravar, mantendo só a mais recente,
+      # limita essa sobreposição a minutos.
+      - name: Manter só a cópia mais recente do estado
+        if: always() && steps.meta_duravel.outcome == 'success' && steps.restaurar.outputs.cache-matched-key != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/podar_cache.sh energia-estado- 1
 
       # Depois do silver e em passo próprio: uma falha aqui (disco, SQLite, upload)
       # nunca impede a cópia do silver, que é o ativo que não se recupera (review #278).
