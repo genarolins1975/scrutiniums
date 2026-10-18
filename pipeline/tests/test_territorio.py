@@ -103,6 +103,26 @@ class TestQueimadas(unittest.TestCase):
         with self.assertRaises(ValueError):
             _montar(anuais, mensais, date(2026, 2, 10))
 
+    def test_janeiro_sem_consolidado_do_ano_anterior(self):
+        """Antes de o INPE publicar o consolidado, o ano encerrado sai dos mensais, preliminar, sem buraco na série."""
+        anuais = {'focos_br_ref_2025.zip': _anual([('2025-05-10', 'PARÁ', 'Amazônia')])}
+        mensais = {f'focos_mensal_br_2026{m:02d}.csv': _mensal([(f'2026-{m:02d}-05', 'AQUA_M-T', 'MATO GROSSO', 'Cerrado')] * m) for m in range(1, 13)}
+        mensais['focos_mensal_br_202701.csv'] = _mensal([('2027-01-03', 'AQUA_M-T', 'PARÁ', 'Amazônia')])
+        d = _montar(anuais, mensais, date(2027, 1, 20))
+        anual = {a['ano']: a for a in d['anual']}
+        self.assertEqual(sorted(anual), [2025, 2026, 2027])
+        self.assertEqual(anual[2026]['focos'], sum(range(1, 13)))
+        self.assertTrue(anual[2026]['preliminar'])
+        self.assertFalse(anual[2026]['parcial'])
+        self.assertEqual([m['focos'] for m in d['mensal']['2026']], list(range(1, 13)))
+        run.validar_queimadas(d)
+
+    def test_janeiro_sem_consolidado_e_sem_um_mensal_retem(self):
+        anuais = {'focos_br_ref_2025.zip': _anual([('2025-05-10', 'PARÁ', 'Amazônia')])}
+        mensais = {f'focos_mensal_br_2026{m:02d}.csv': _mensal([(f'2026-{m:02d}-05', 'AQUA_M-T', 'PARÁ', 'Amazônia')]) for m in range(1, 12)}
+        with self.assertRaises(ValueError):
+            _montar(anuais, mensais, date(2027, 1, 20))
+
     def test_seed_e_gold_versionados(self):
         """A gold publicada é exatamente a do seed, e o seed respeita as invariantes."""
         self.assertEqual(run.main(['--check']), 0)

@@ -178,6 +178,20 @@ def ler_mensal(caminho, satelite=SATELITE_REFERENCIA):
 
 # ---------------------------------------------------------------- montagem
 
+def _juntar(contagens):
+    """Soma contagens de meses distintos num só conjunto."""
+    t = Contagem()
+    for c in contagens:
+        t.total += c.total
+        for alvo, origem in ((t.mes, c.mes), (t.uf, c.uf), (t.bioma, c.bioma), (t.estranhos, c.estranhos)):
+            for k, v in origem.items():
+                alvo[k] = alvo.get(k, 0) + v
+        if c.dia_min:
+            t.dia_min = c.dia_min if t.dia_min is None or c.dia_min < t.dia_min else t.dia_min
+            t.dia_max = c.dia_max if t.dia_max is None or c.dia_max > t.dia_max else t.dia_max
+    return t
+
+
 def _lista(contagens, nomes=None):
     itens = [{'id': k, 'focos': v} for k, v in contagens.items()]
     if nomes:
@@ -266,8 +280,33 @@ def montar(hoje, cache=None, anos=None):
         anual.append({'ano': ano, 'focos': c.total, 'parcial': False, 'primeiroDia': c.dia_min, 'ultimoDia': c.dia_max,
                       'origem': 'anual_sat_ref', 'arquivo': info['url'], 'estranhos': c.estranhos or None})
 
-    # 2) Ano corrente: arquivos mensais de todos os satélites, filtrados.
     mensais = {it['nome']: it for it in listar(MENSAL)}
+
+    # 1b) Em janeiro e início de fevereiro o consolidado do ano recém-encerrado ainda não existe
+    # (o de 2025 saiu em 11/02/2026): o ano é montado dos 12 arquivos mensais filtrados para o
+    # satélite de referência e marcado como preliminar, em vez de deixar a série com um buraco.
+    meses_anterior_cont = None
+    if ultimo_ano_completo not in disponiveis and disponiveis and max(disponiveis) == ultimo_ano_completo - 1:
+        meses_anterior_cont = []
+        for m in range(1, 13):
+            nome = f'focos_mensal_br_{ultimo_ano_completo}{m:02d}.csv'
+            if nome not in mensais:
+                raise ValueError(f'Consolidado de {ultimo_ano_completo} ausente e mês {m:02d} sem arquivo mensal: série retida')
+            caminho, info = baixar(MENSAL + nome, cache)
+            c, _ = ler_mensal(caminho)
+            if not cache:
+                os.unlink(caminho)
+            originais[info['url']] = {k: info[k] for k in ('sha256', 'bytes', 'lastModified')}
+            if set(c.mes) - {f'{ultimo_ano_completo}-{m:02d}'}:
+                raise ValueError(f'Arquivo mensal {ultimo_ano_completo}-{m:02d} com focos de outro mês')
+            meses_anterior_cont.append(c)
+        c = _juntar(meses_anterior_cont)
+        por_ano[ultimo_ano_completo] = c
+        anual.append({'ano': ultimo_ano_completo, 'focos': c.total, 'parcial': False, 'preliminar': True,
+                      'primeiroDia': c.dia_min, 'ultimoDia': c.dia_max, 'origem': 'mensal_todos_sats_filtrado',
+                      'nota': 'Consolidado anual do INPE ainda não publicado: soma dos 12 arquivos mensais filtrados para o satélite de referência; pode mudar quando o consolidado sair.'})
+
+    # 2) Ano corrente: arquivos mensais de todos os satélites, filtrados.
     corrente = Contagem()
     meses_corrente = []
     satelites_vistos = {}
@@ -298,10 +337,11 @@ def montar(hoje, cache=None, anos=None):
 
     # Meses do ano anterior, do arquivo anual consolidado.
     anterior = por_ano.get(ultimo_ano_completo)
+    origem_anterior = 'mensal_todos_sats_filtrado' if meses_anterior_cont is not None else 'anual_sat_ref'
     meses_anterior = None
     if anterior:
         meses_anterior = [{'mes': f'{ultimo_ano_completo}-{m:02d}', 'focos': anterior.mes.get(f'{ultimo_ano_completo}-{m:02d}', 0), 'parcial': False,
-                           'origem': 'anual_sat_ref'} for m in range(1, 13)]
+                           'origem': origem_anterior} for m in range(1, 13)]
 
     completos = [x for x in meses_corrente if not x['parcial']]
     lacuna = any(x['focos'] is None for x in completos)
@@ -322,7 +362,12 @@ def montar(hoje, cache=None, anos=None):
     # UF e bioma do ano anterior no mesmo período exigem recontagem por mês; a Contagem
     # anual guarda só totais por UF, então refazemos a leitura com filtro de mês.
     uf_mesmo, bioma_mesmo = None, None
-    if anterior and ultimo_mes_completo >= 1:
+    if anterior and ultimo_mes_completo >= 1 and meses_anterior_cont is not None:
+        cm = _juntar(meses_anterior_cont[:ultimo_mes_completo])
+        if cm.total != mesmo_periodo:
+            raise ValueError('Mesmo período do ano anterior não reconcilia')
+        uf_mesmo, bioma_mesmo = cm.uf, cm.bioma
+    elif anterior and ultimo_mes_completo >= 1:
         caminho, _ = baixar(ANUAL_REF + disponiveis[ultimo_ano_completo]['nome'], cache)
         cm = Contagem()
         with zipfile.ZipFile(caminho) as z:
@@ -348,7 +393,7 @@ def montar(hoje, cache=None, anos=None):
     recortes = []
     if anterior:
         recortes.append(bloco('ultimoAnoCompleto', {'inicio': f'{ultimo_ano_completo}-01-01', 'fim': f'{ultimo_ano_completo}-12-31'},
-                              anterior.total, anterior.uf, anterior.bioma, 'anual_sat_ref'))
+                              anterior.total, anterior.uf, anterior.bioma, origem_anterior))
     if ultimo_mes_completo >= 1:
         fim = date(ano_corrente, ultimo_mes_completo + 1, 1).toordinal() - 1
         recortes.append(bloco('acumuladoAnoCorrente', {'inicio': f'{ano_corrente}-01-01', 'fim': date.fromordinal(fim).isoformat()},
@@ -356,7 +401,7 @@ def montar(hoje, cache=None, anos=None):
         if uf_mesmo is not None:
             fim_a = date(ultimo_ano_completo, ultimo_mes_completo + 1, 1).toordinal() - 1
             recortes.append(bloco('mesmoPeriodoAnoAnterior', {'inicio': f'{ultimo_ano_completo}-01-01', 'fim': date.fromordinal(fim_a).isoformat()},
-                                  mesmo_periodo, uf_mesmo, bioma_mesmo, 'anual_sat_ref'))
+                                  mesmo_periodo, uf_mesmo, bioma_mesmo, origem_anterior))
 
     return {
         'id': 'queimadas_focos_referencia',

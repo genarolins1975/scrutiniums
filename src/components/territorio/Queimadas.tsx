@@ -96,7 +96,7 @@ export function TabelaAnual({ g }: Readonly<{ g: GoldQueimadas }>) {
           <tr key={a.ano}>
             <td className={td}>{a.ano}</td>
             <td className={`${td} text-right`}>{a.focos === null ? "Indisponível" : n(a.focos)}</td>
-            <td className={`${td} text-carvao-muted`}>{a.parcial ? `Parcial, até ${a.ultimoDia ? dataBr(a.ultimoDia) : "a captura"}` : "Ano fechado"}</td>
+            <td className={`${td} text-carvao-muted`}>{a.parcial ? `Parcial, até ${a.ultimoDia ? dataBr(a.ultimoDia) : "a captura"}` : a.preliminar ? "Ano encerrado, preliminar (arquivos mensais; consolidado do INPE ainda não publicado)" : "Ano fechado"}</td>
           </tr>
         ))}
       </tbody>

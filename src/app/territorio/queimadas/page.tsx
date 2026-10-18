@@ -30,7 +30,9 @@ export default function PaginaQueimadas() {
   const biomaLider = atual?.porBioma?.[0];
   const aq = g.areaQueimada;
   const aqFechado = aq?.anual.filter((a) => !a.parcial).at(-1);
-  const aqParcial = aq?.anual.find((a) => a.parcial);
+  // o ano parcial da tabela é o mais recente (a série também começa parcial, em set/2002)
+  const aqParcial = aq?.anual.filter((a) => a.parcial && aqFechado && a.ano > aqFechado.ano).at(-1);
+  const aqUltimoMes = aqParcial ? aq?.mensal.filter((m) => m.mes.startsWith(String(aqParcial.ano))).at(-1)?.mes : undefined;
   const periodoAtual = c ? `${mesAno(c.periodoAtual.inicio)} a ${mesAno(c.periodoAtual.fim)}` : null;
   const periodoAnterior = c ? `${mesAno(c.periodoAnterior.inicio)} a ${mesAno(c.periodoAnterior.fim)}` : null;
 
@@ -44,7 +46,7 @@ export default function PaginaQueimadas() {
   const semUF = (atual?.porUF ?? []).filter((u) => !NOME_UF[u.id]);
 
   const numeros = [
-    { rotulo: `Focos de calor em ${ultimo.ano}`, valor: n(ultimo.focos as number), unidade: "focos", periodo: `${ultimo.ano}, ano fechado`, nota: "Satélite de referência; é o número comparável entre anos." },
+    { rotulo: `Focos de calor em ${ultimo.ano}`, valor: n(ultimo.focos as number), unidade: "focos", periodo: ultimo.preliminar ? `${ultimo.ano}, preliminar: o consolidado anual do INPE ainda não saiu` : `${ultimo.ano}, ano fechado`, nota: "Satélite de referência; é o número comparável entre anos." },
     c && { rotulo: `Focos de ${periodoAtual}`, valor: n(c.focosAtual), unidade: "focos", periodo: `${c.variacaoPct > 0 ? "+" : "−"}${n(Math.abs(c.variacaoPct), 1)}% sobre ${periodoAnterior}`, nota: "Ano em curso, preliminar: o INPE pode regerar os arquivos mensais." },
     biomaLider && atual && { rotulo: `Bioma com mais focos em ${periodoAtual ?? "o ano em curso"}`, valor: biomaLider.id, unidade: `${n(biomaLider.focos)} focos`, periodo: `${n((100 * biomaLider.focos) / (atual.focos as number), 1)}% do total do período`, nota: "Bioma atribuído pelo INPE a cada foco." },
     aqFechado && { rotulo: `Área queimada mapeada em ${aqFechado.ano}`, valor: n(aqFechado.totalKm2), unidade: "km²", periodo: `${aqFechado.ano}, produto provisório`, nota: "Outra medida, de outro produto do INPE (AQ1km): não se compara com a contagem de focos." },
@@ -188,7 +190,7 @@ export default function PaginaQueimadas() {
               </table>
             </div>
             <p className="mt-3 text-xs leading-relaxed text-mineral">
-              km² de área queimada mapeada. INPE, AQ1km Coleção 2, produto provisório{aqParcial ? `; ${aqParcial.ano} até o mês ${aqParcial.meses}` : ""}. Sem recorte por estado na fonte.
+              km² de área queimada mapeada. INPE, AQ1km Coleção 2, produto provisório{aqParcial && aqUltimoMes ? `; ${aqParcial.ano} até ${mesAno(aqUltimoMes)}` : ""}. Sem recorte por estado na fonte.
             </p>
           </div>
         </section>

@@ -22,7 +22,8 @@ export type GoldQueimadas = {
   fonte: { nome: string; url: string; portal: string; licenca: string };
   sateliteReferencia: { id: string; sensor: string; desde: string; antes: string };
   unidade: string;
-  anual: { ano: number; focos: number | null; parcial: boolean; primeiroDia: string; ultimoDia: string | null; nota?: string }[];
+  /** preliminar: ano encerrado montado dos arquivos mensais, antes do consolidado anual do INPE. */
+  anual: { ano: number; focos: number | null; parcial: boolean; preliminar?: boolean; primeiroDia: string; ultimoDia: string | null; nota?: string }[];
   mensal: Record<string, { mes: string; focos: number | null; parcial: boolean; ultimoDiaComFoco?: string; motivo?: string }[] | null>;
   recortes: Recorte[];
   originais: Record<string, { sha256: string; bytes: number; lastModified: string | null }>;
@@ -31,6 +32,7 @@ export type GoldQueimadas = {
     url: string;
     unidade: string;
     maturidade: string;
+    mensal: { mes: string; km2: Record<string, number>; totalKm2: number }[];
     anual: { ano: number; km2: Record<string, number>; totalKm2: number; parcial: boolean; meses: number }[];
     ressalvas: string[];
   };
