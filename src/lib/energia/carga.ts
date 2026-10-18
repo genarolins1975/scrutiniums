@@ -788,10 +788,19 @@ export function textoRevisoes(r: P025["revisoes"], idioma: Idioma = idiomaEnergi
           idioma,
         );
   const corr = r.correcoes_fora_do_dominio ?? r.linhas.filter((l) => l.situacao === "correcao_de_valor_fora_do_dominio").length;
+  // dias_revisados conta pares (subsistema, dia): dito como "dias", exagerava o alcance (110 contra 39 datas em 17/10/2026)
+  const onde =
+    r.datas_revisadas == null
+      ? tx(`em ${plural(r.dias_revisados, "combinação", "combinações")} de subsistema e dia`, `across ${plural(r.dias_revisados, "subsystem-day pair", "subsystem-day pairs", "en")}`, idioma)
+      : tx(
+          `em ${plural(r.datas_revisadas, "data", "datas")} (${plural(r.dias_revisados, "combinação", "combinações")} de subsistema e dia)`,
+          `on ${plural(r.datas_revisadas, "date", "dates", "en")} (${plural(r.dias_revisados, "subsystem-day pair", "subsystem-day pairs", "en")})`,
+          idioma,
+        );
   return tx(
-    `Entre ${plural(r.capturas_diaria.length, "captura", "capturas")} da carga diária, ${plural(r.total, "valor foi revisado", "valores foram revisados")} em ${plural(r.dias_revisados, "dia", "dias")}: ${mag}` +
+    `Entre ${plural(r.capturas_diaria.length, "captura", "capturas")} da carga diária, ${plural(r.total, "valor foi revisado", "valores foram revisados")} ${onde}: ${mag}` +
       (corr ? `; ${plural(corr, "correção", "correções")} de valor fora do domínio (não positivo) fica à parte.` : "."),
-    `Across ${plural(r.capturas_diaria.length, "capture", "captures", "en")} of the daily load, ${plural(r.total, "value was revised", "values were revised", "en")} on ${plural(r.dias_revisados, "day", "days", "en")}: ${mag}` +
+    `Across ${plural(r.capturas_diaria.length, "capture", "captures", "en")} of the daily load, ${plural(r.total, "value was revised", "values were revised", "en")} ${onde}: ${mag}` +
       (corr ? `; ${plural(corr, "correction", "corrections", "en")} of an out-of-domain value (not positive) ${corr === 1 ? "is" : "are"} kept apart.` : "."),
     idioma,
   );

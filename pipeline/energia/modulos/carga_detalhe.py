@@ -961,6 +961,8 @@ def bloco_revisoes(con_p, dados):
     return {
         "capturas_diaria": caps,
         "total": len(linhas), "dias_revisados": len({(x["sm"], x["dia"]) for x in linhas}),
+        # dias_revisados conta pares (subsistema, dia); o texto ao leitor fala de datas distintas
+        "datas_revisadas": len({x["dia"] for x in linhas}),
         # resumo das revisões com percentual (valor anterior positivo): mediana de verdade,
         # com n par = média dos dois valores centrais
         "revisoes_com_percentual": len(difs),
