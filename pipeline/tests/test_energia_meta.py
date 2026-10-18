@@ -264,8 +264,8 @@ class TestHistoricoAntesDaValidacao(unittest.TestCase):
         from pipeline.energia import metadados as m, run
         from pipeline.energia.fontes import publicacao_dados as pub
         from pipeline.energia.modulos import dados
-        for anterior in (False, True):
-            with self.subTest(csv_anterior=anterior), tempfile.TemporaryDirectory() as tmp, ExitStack() as stack:
+        for anterior, controle_disponivel in ((False, True), (True, True), (True, False)):
+            with self.subTest(csv_anterior=anterior, dados_disponivel=controle_disponivel), tempfile.TemporaryDirectory() as tmp, ExitStack() as stack:
                 raiz = Path(tmp)
                 silver, gold, series = [raiz / n for n in ('silver', 'gold', 'series')]
                 for pasta in (silver, gold, series):
@@ -283,6 +283,7 @@ class TestHistoricoAntesDaValidacao(unittest.TestCase):
                     pub.exporta_parquet(str(series), limiar=1)
                 con.close()
                 observados = []
+                stack.enter_context(patch.object(dados, 'LIMIAR_PARQUET', 1))
                 def validar(con, ctx):
                     arquivo = series / m.NOME_CSV
                     if not arquivo.exists():
@@ -291,6 +292,8 @@ class TestHistoricoAntesDaValidacao(unittest.TestCase):
                     with arquivo.open(newline='') as f:
                         linhas = list(csv.DictReader(f, delimiter=';'))
                     observados.append([(l['dataset'], l['recurso']) for l in linhas])
+                    if not controle_disponivel:
+                        return {'disponivel': False, 'motivo': 'Listagens ausentes no cenário sintético'}
                     # Mesmas funções que Dados usa: CSV válido e Parquet relido
                     # célula a célula, forçando o limiar no cenário sintético.
                     validados = dados.valida_csvs(dados.val.hoje_brasilia(), dados.dicionario_arquivos())
@@ -331,4 +334,8 @@ class TestHistoricoAntesDaValidacao(unittest.TestCase):
                 self.assertEqual((n, diverg), (3, 0))
                 meta = json.loads((gold / 'meta.json').read_text())
                 self.assertEqual(sum(f['resumo_capturas']['total_historico'] for f in meta['fontes'].values()), 3)
-                self.assertEqual(json.loads((gold / 'publicacao.json').read_text())['linhas_historico'], 3)
+                publicacao = json.loads((gold / 'publicacao.json').read_text())
+                if controle_disponivel:
+                    self.assertEqual(publicacao['linhas_historico'], 3)
+                else:
+                    self.assertFalse(publicacao['disponivel'])

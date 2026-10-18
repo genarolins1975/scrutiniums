@@ -38,7 +38,7 @@ def fontes_do_modulo(con, registro):
             for d in registro['datasets'] if d.get('dataset_silver')}
 
 
-def publicar_historico(fontes):
+def publicar_historico(fontes, limiar_parquet=None):
     """Uma linha por vintage; vigentes representam exatamente a lista capturas.
 
     Resumo distingue recursos vigentes de vintages históricas. As datas são as
@@ -68,4 +68,18 @@ def publicar_historico(fontes):
             linhas.append([ds] + [('true' if h[k] else 'false') if k == 'vigente' else h[k]
                                   for k in COLUNAS if k != 'dataset'])
     base.escreve_csv(NOME_CSV, COLUNAS, linhas)
+    # Dados pode retornar stub antes de exportar arquivos (catálogos ausentes).
+    # Mesmo nesse caso nunca deixar Parquet de ontem ao lado do CSV de hoje.
+    from pathlib import Path
+    from pipeline.energia.fontes import publicacao_dados as pub
+    csv_path = Path(base.SERIES) / NOME_CSV
+    parquet_path = csv_path.with_suffix('.parquet')
+    limite = pub.LIMIAR_PARQUET_BYTES if limiar_parquet is None else limiar_parquet
+    if csv_path.stat().st_size >= limite:
+        pub.csv_para_parquet(str(csv_path), str(parquet_path), URL_CSV)
+        ok, detalhe, *_ = pub.confere_parquet(str(csv_path), str(parquet_path))
+        if not ok:
+            raise ValueError(f'histórico de capturas: Parquet divergente do CSV: {detalhe}')
+    elif parquet_path.exists() and pub.metadados_parquet(str(parquet_path)):
+        parquet_path.unlink()
     return resultado

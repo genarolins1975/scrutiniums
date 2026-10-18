@@ -117,7 +117,8 @@ def main(argv):
                 # histórico depois dela e de TODOS os temas, antes de validar os
                 # CSV e gerar seus Parquets. meta.json reutiliza este exato resumo.
                 fontes_modulos.update(metadados.fontes_do_modulo(con_f, reg))
-                fontes_publicadas = metadados.publicar_historico({**fontes, **fontes_modulos})
+                fontes_publicadas = metadados.publicar_historico(
+                    {**fontes, **fontes_modulos}, limiar_parquet=modulo_dados.LIMIAR_PARQUET)
             print(f"[energia] gold {nome}", flush=True)
             # os CSV do módulo são gravados durante a construção, antes da validação da gold: se a construção regredir e a
             # sentinela mantiver a gold anterior, os arquivos baixáveis voltam ao que eram (mesma publicação nos dois)
