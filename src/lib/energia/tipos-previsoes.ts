@@ -316,7 +316,11 @@ export type Rotina = {
   falhas: number;
   dias_sem_rodada: string[];
   dias_sem_rodada_total: number;
+  /** Janela da comprovação (últimos 30 dias vencidos); ausente nas golds anteriores a 18/10/2026. */
+  janela_comprovacao?: { dias: number; inicio: string; fim: string; no_prazo: number; dias_sem_rodada: number } | null;
   comprovada: boolean;
+  /** Períodos em que as execuções agendadas não registraram a rodada, com motivo, fonte e correção. */
+  incidentes?: { de: string; ate: string; execucoes: number; motivo: string; fonte: string; correcao: string }[];
   leitura: string;
   criterio_comprovacao: string;
 };
