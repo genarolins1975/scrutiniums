@@ -78,6 +78,12 @@ try{
  for(const path of observatoryRoots)check('Observatório com sessão: '+path,(await context.request.get(origin+path)).status()===200);
  const page=await context.newPage();page.on('pageerror',e=>errors.push(page.url()+': '+e.message));
  page.on('console',message=>{if(message.type()==='error')errors.push('Console: '+message.text());});
+ // O Next pré-carrega links visíveis em fila, depois do networkidle; navegar no meio da fila aborta o pré-carregamento
+ // e o framework registra erro no console. Esperar a fila esvaziar antes de navegar ou recarregar mantém a checagem de erros estrita.
+ let pendentes=0;page.on('request',()=>pendentes++);page.on('requestfinished',()=>pendentes--);page.on('requestfailed',()=>pendentes--);
+ const ocioso=async()=>{for(let quieto=0,i=0;quieto<6&&i<160;i++){await page.waitForTimeout(125);quieto=pendentes>0?0:quieto+1;}};
+ const captura=async opcoes=>{await page.screenshot(opcoes);await ocioso();};
+ for(const metodo of ['goto','reload']){const original=page[metodo].bind(page);page[metodo]=async(...args)=>{await ocioso();return original(...args);};}
  const axe=await readFile(require.resolve('axe-core/axe.min.js'),'utf8');
  for(const width of [320,390,768,1440]){
   await page.setViewportSize({width,height:width===390?844:1000});
@@ -92,19 +98,19 @@ try{
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
   check('Seletor acessível e sem overflow '+width+'px',!overflow&&violations.length===0);
   screens.push({slug:'seletor-observatorios',width,status:200,overflow,violations});
-  await page.screenshot({path:join(out,'seletor-'+width+'.png'),fullPage:true});
+  await captura({path:join(out,'seletor-'+width+'.png'),fullPage:true});
  }
  const choice=page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true});
  await choice.getByRole('button',{name:/Explorar Judiciário/}).focus();
  const navigation=page.waitForNavigation({waitUntil:'networkidle',timeout:20000});
  await page.keyboard.press('Enter');await navigation;
- await page.screenshot({path:join(out,'seletor-destino.png'),fullPage:true});
+ await captura({path:join(out,'seletor-destino.png'),fullPage:true});
  check('Cartão abre o Judiciário por teclado',new URL(page.url()).pathname===PREFIX);
  check('Escolha preserva a sessão',(await context.request.get(origin+'/api/auth/eu')).status()===204);
  check('Cookie guarda o Judiciário',(await context.cookies()).some(c=>c.name==='scrutiniums_observatorio'&&c.value==='judiciario'&&c.httpOnly));
  await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
  check('Último acesso identifica o cartão do Judiciário',await page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true}).getByText('Último acesso',{exact:true}).isVisible());
- const slugs=['','panorama','internacional','recursos','tempo','filas','entrega','acesso','comparar','metodos','tribunais/tjsp','tribunais/tjdft','tribunais/trf3','tribunais/trt3'];
+ const slugs=['','panorama','internacional','recursos','tempo','filas','entrega','consistencia','criminal','acesso','comparar','metodos','tribunais/tjsp','tribunais/tjdft','tribunais/trf3','tribunais/trt3'];
  for(const width of [320,390,768,1440]){
   await page.setViewportSize({width,height:width===390?844:1000});
   for(const slug of slugs){
@@ -112,14 +118,14 @@ try{
    await page.evaluate(()=>document.fonts.ready);
    if(slug===''){
     check('Entrada mostra as duas medidas dos 27 TJs '+width+'px',await page.locator('#endereco ol li').count()===27&&await page.locator('#endereco [data-serie="1"]').count()>=27);
-    if([390,1440].includes(width))await page.screenshot({path:join(out,'entrada-primeira-tela-'+width+'.png')});
+    if([390,1440].includes(width))await captura({path:join(out,'entrada-primeira-tela-'+width+'.png')});
    }
    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
    await page.addScriptTag({content:axe});
    const violations=await page.evaluate(async()=>{const result=await axe.run(document.querySelector('main'),{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}});return result.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)}));});
    const row={slug:slug||'entrada',width,status:response.status(),overflow,h1:await page.locator('h1').count(),violations};screens.push(row);
    check(`Tela ${row.slug} ${width}px`,row.status===200&&!overflow&&row.h1===1&&violations.length===0);
-   if([390,1440].includes(width))await page.screenshot({path:join(out,`${(slug||'entrada').replaceAll('/','-')}-${width}.png`),fullPage:true});
+   if([390,1440].includes(width))await captura({path:join(out,`${(slug||'entrada').replaceAll('/','-')}-${width}.png`),fullPage:true});
   }
  }
  await page.goto(origin+PREFIX,{waitUntil:'networkidle'});
@@ -154,7 +160,7 @@ try{
  await page.getByLabel('Tribunal 2',{exact:true}).selectOption('tjpe');
  await page.getByLabel('Tribunal 3',{exact:true}).selectOption('tjac');
  await page.getByLabel('Medida dos tribunais',{exact:true}).selectOption('idadePendentes');
- await page.screenshot({path:join(out,'comparacao-tres-tribunais.png'),fullPage:true});
+ await captura({path:join(out,'comparacao-tres-tribunais.png'),fullPage:true});
  const shared=page.url();check('Seleção compartilhável',shared.includes('t1=tjsp')&&shared.includes('t3=tjac')&&shared.includes('medida=idadePendentes'));
  await page.reload({waitUntil:'networkidle'});
  check('Reload preserva recorte',await page.getByLabel('Tribunal 2',{exact:true}).inputValue()==='tjpe'&&await page.getByLabel('Medida dos tribunais',{exact:true}).inputValue()==='idadePendentes');
@@ -246,7 +252,7 @@ try{
   const overflowInternacional=await page.evaluate(()=>({documento:document.documentElement.scrollWidth,janela:innerWidth,elementos:[...document.querySelectorAll('main *')].filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&(r.right>innerWidth+1||r.left< -1);}).slice(0,8).map(e=>({tag:e.tagName,classe:e.className,html:e.outerHTML.slice(0,500)}))}));
   if(issues.length||overflowInternacional.documento>overflowInternacional.janela+1)console.error('Diagnóstico internacional '+width+'px: '+JSON.stringify({issues,overflow:overflowInternacional}));
   check('Histórico e controles internacionais acessíveis '+width+'px',issues.length===0&&overflowInternacional.documento<=overflowInternacional.janela+1);
-  await page.screenshot({path:join(out,'internacional-historico-'+width+'.png'),fullPage:true});
+  await captura({path:join(out,'internacional-historico-'+width+'.png'),fullPage:true});
   await page.goto(origin+PREFIX+'/internacional?referencia=selecionados&p1=&p2=&p3=',{waitUntil:'networkidle'});
   check('Referência vazia permanece ausência, sem overflow '+width+'px',await page.getByText('Selecione ao menos um país estrangeiro para formar esta referência.',{exact:true}).isVisible()&&await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   await page.goto(origin+PREFIX+'/internacional?referencia=selecionados&p1=PRT&p2=PRT&p3=',{waitUntil:'networkidle'});

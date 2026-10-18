@@ -21,8 +21,8 @@ from xml.etree import ElementTree as ET
 ROOT = Path(__file__).resolve().parents[2]
 URL = 'https://bibliotecadigital.cnj.jus.br/bitstream/123456789/1126/1/relatorio_justica_em_numeros2026_1.pdf'
 PDF_SHA = '7aafbf664cbd3edadf46492151988468e154fe9cb131b460fe7dde335c3dca19'
-PAGES = [22,23,24,40,41,62,63,64,70,71,110,111,113,118,132,133,139,157,158,165,214,229,
-         232,233,234,310,311,312,313,333,351,353,372,383,384,397,407,438,439,440,459,473]
+PAGES = [22,23,24,40,41,51,62,63,64,70,71,110,111,113,118,132,133,139,157,158,165,214,221,229,231,
+         232,233,234,286,303,310,311,312,313,329,333,340,351,353,372,383,384,394,397,400,407,438,439,440,455,459,465,473]
 # Limites dos gráficos, na geometria original do PDF. Fora deles estão eixo,
 # narrativa e notas. A ordenação por x recupera os 17 anos rotulados na figura.
 SERIES = {'nacional':(63,320,450), 'estadual':(111,300,450),

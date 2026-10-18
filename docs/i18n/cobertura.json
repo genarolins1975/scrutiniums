@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1248,
-    "fontes_sha256": "91abba0f3af90d34da41089222d024d224788ba881e87aa1dbb66d11875570d9",
-    "pendencias_sha256": "ffb8a50b65776fc82e60fe0d7e98acbddc31d50cb609ba1a14cd4f6fa4ed2714",
+    "arquivos_analisados": 1251,
+    "fontes_sha256": "979c26118d4116a2631539a072681e1dc69b2d8193b2be63d5b3de45acfdcaf3",
+    "pendencias_sha256": "a8085bc81b412339e403ab12ad54d6d96c1ba5b43e3381af84f0f7f732e8b0cb",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -143,18 +143,18 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 222,
+        "arquivos": 223,
         "candidatos": {
-          "jsx_text": 581,
+          "jsx_text": 580,
           "atributos": 220,
-          "props": 691,
-          "outros_literais": 4284,
+          "props": 685,
+          "outros_literais": 4293,
           "templates": 449,
-          "expressoes_nao_resolvidas": 2462,
-          "chaves_objetos": 3084
+          "expressoes_nao_resolvidas": 2466,
+          "chaves_objetos": 3099
         },
         "exclusoes": {
-          "importacoes": 971,
+          "importacoes": 974,
           "atributos_tecnicos": 1305,
           "tipos": 221
         },
@@ -165,7 +165,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 11771,
+        "candidatos_nao_catalogados": 11792,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -336,20 +336,20 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 224,
+        "arquivos": 226,
         "candidatos": {
-          "jsx_text": 2868,
-          "atributos": 989,
-          "props": 1213,
-          "outros_literais": 7273,
-          "templates": 693,
-          "expressoes_nao_resolvidas": 7268,
-          "chaves_objetos": 4444
+          "jsx_text": 2941,
+          "atributos": 1021,
+          "props": 1282,
+          "outros_literais": 7446,
+          "templates": 726,
+          "expressoes_nao_resolvidas": 7568,
+          "chaves_objetos": 4600
         },
         "exclusoes": {
-          "importacoes": 853,
-          "atributos_tecnicos": 3151,
-          "tipos": 420
+          "importacoes": 865,
+          "atributos_tecnicos": 3184,
+          "tipos": 424
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -358,7 +358,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 24748,
+        "candidatos_nao_catalogados": 25584,
         "percentual_traduzido": null
       },
       "rotas": {

@@ -9,7 +9,7 @@ export type PerguntaEntrada={tema:TemaFiguraJudiciario;pergunta:string;valor:str
 
 /** Caminhos por pergunta: cada cartão traz a resposta curta, o número que a prova e sua fonte. */
 export function PerguntasJudiciario({itens}:{itens:PerguntaEntrada[]}){
- return <section className={s.questionPaths} aria-labelledby="perguntas-titulo"><div className={s.sectionIntro}><p className={s.eyebrow}>Comece pela sua pergunta</p><h2 id="perguntas-titulo">Seis perguntas.<br/>Uma resposta curta para cada.</h2><p>Cada resposta tem número, ano e página da fonte. O capítulo mostra a distribuição, a tabela e os limites.</p></div>
+ return <section className={s.questionPaths} aria-labelledby="perguntas-titulo"><div className={s.sectionIntro}><p className={s.eyebrow}>Comece pela sua pergunta</p><h2 id="perguntas-titulo">Perguntas da sociedade.<br/>Uma resposta curta para cada.</h2><p>Cada resposta tem número, ano e página da fonte. O capítulo mostra a distribuição, a tabela e os limites.</p></div>
  <div className={s.questionGrid}>{itens.map(i=><article key={i.pergunta} className={s.questionCard}><IconeJudiciario tema={i.tema}/><h3>{i.pergunta}</h3><p className={s.questionValue}>{i.valor}</p><p>{i.resposta}</p><p className={s.questionSource}>{i.fonte}</p><Link href={i.href}>{i.acao}<SetaJudiciario/></Link></article>)}</div></section>;
 }
 

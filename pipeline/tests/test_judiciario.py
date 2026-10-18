@@ -66,6 +66,30 @@ class JudiciarioTest(unittest.TestCase):
         bad['tribunais'][0]['despesaPorHabitante']=None
         with self.assertRaises(ValueError): validate(bad)
 
+    def test_second_wave_fields_as_published(self):
+        d=self.data
+        rows={r['sigla']:r for r in d['tribunais']}
+        self.assertEqual((rows['TJAM']['execucaoBaixados'],rows['TJAM']['execucaoPendentes']),(87,42))
+        self.assertEqual((rows['TRF3']['execucaoBaixados'],rows['TRF3']['execucaoPendentes']),(81,81))
+        self.assertEqual((rows['TRT4']['execucaoBaixados'],rows['TRT4']['execucaoPendentes']),(33,58))
+        self.assertEqual((rows['TJPI']['recorribilidadeInterna'],rows['TJPI']['recorribilidadeExterna']),(0.0,31.4))
+        self.assertEqual(rows['TRF4']['recorribilidadeExterna'],43.8)
+        self.assertEqual(rows['TJRJ']['justicaGratuita'],62.0)
+        self.assertIsNone(rows['TRT2']['justicaGratuita'])
+        self.assertEqual(d['magistrados']['porCemMil'],8.95)
+        self.assertEqual(d['justicaGratuita']['percentual'],30.4)
+        self.assertEqual(d['criminal']['execucoesPenaisPendentesMilhoes'],2.6)
+        self.assertEqual({l['indicador']:l['brasil'] for l in d['comparacaoEuropa']['linhas']}['Tempo de Giro do Acervo'],'1a e 8m')
+
+    def test_history_keeps_publication_and_absence(self):
+        d=self.data
+        rows={r['sigla']:r for r in d['tribunais']}
+        self.assertEqual(d['historicoTempos']['anos'],[2021,2022,2023,2024,2025])
+        self.assertEqual([(h['tempoBaixados'],h['idadePendentes']) for h in rows['TJAM']['historico']],[(16,39),(17,42),(14,40),(16,52),(47,24)])
+        self.assertIsNone(rows['TRF6']['historico'][0]['tempoBaixados'])
+        self.assertIn('TRT9 2022',d['historicoTempos']['ausentes'])
+        self.assertTrue(all(r['historico'][-1]['tempoBaixados']==r['tempoBaixados'] for r in d['tribunais']))
+
     def test_no_silent_missing_or_zero_denominator(self):
         for a, b in [(None, 1), (1, None), (1, 0), (1, -1), (float('nan'), 1), (True, 1)]:
             self.assertIsNone(divide(a, b))

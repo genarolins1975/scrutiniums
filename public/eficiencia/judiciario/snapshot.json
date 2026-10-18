@@ -18,7 +18,7 @@
     }
   },
   "ano": 2025,
-  "calculo": "judiciario-3",
+  "calculo": "judiciario-4",
   "capturadoEm": "2026-10-17",
   "cobertura": {
     "anosFinanceiros": [
@@ -49,6 +49,47 @@
     "tribunaisEstaduais": 27,
     "tribunaisFederais": 6,
     "tribunaisTrabalho": 24
+  },
+  "comparacaoEuropa": {
+    "linhas": [
+      {
+        "brasil": "19,18",
+        "indicador": "Casos Novos por cem habitantes",
+        "uniaoEuropeia": "4,44"
+      },
+      {
+        "brasil": "35,39",
+        "indicador": "Casos Pendentes por cem habitantes",
+        "uniaoEuropeia": "2,58"
+      },
+      {
+        "brasil": "110,4%",
+        "indicador": "Índice de Atendimento à Demanda",
+        "uniaoEuropeia": "100,9%"
+      },
+      {
+        "brasil": "1a e 8m",
+        "indicador": "Tempo de Giro do Acervo",
+        "uniaoEuropeia": "7m"
+      },
+      {
+        "brasil": "9",
+        "indicador": "Magistrados(as) por cem mil habitantes",
+        "uniaoEuropeia": "18"
+      },
+      {
+        "brasil": "2.144",
+        "indicador": "Casos Novos por Magistrado(a)",
+        "uniaoEuropeia": "249"
+      },
+      {
+        "brasil": "2.366",
+        "indicador": "Processos Baixados por Magistrado(a)",
+        "uniaoEuropeia": "252"
+      }
+    ],
+    "nota": "Comparação feita pelo CNJ com dados da CEPEJ; para comparabilidade, o CNJ soma todas as instâncias e usa cargos providos.",
+    "pagina": 231
   },
   "conciliacaoSerie": [
     {
@@ -96,6 +137,17 @@
       "valor": 11.2
     }
   ],
+  "criminal": {
+    "alternativasMil": 781.2,
+    "alternativasPercentual": 29.9,
+    "casosNovosEstadualMilhoes": 3.8,
+    "estadualPercentualCriminal": 94.1,
+    "execucoesPenaisIniciadasMil": 645.8,
+    "execucoesPenaisPendentesMilhoes": 2.6,
+    "pagina": 286,
+    "privativasMilhoes": 1.8,
+    "privativasPercentual": 70.1
+  },
   "edicao": 2026,
   "financeiro": {
     "convencao": "Séries corrigidas pelo CNJ pelo IPCA para 2025; o trecho metodológico não informa mês-base ou média anual. A Scrutiniums reproduz a série publicada, sem recalcular a deflação.",
@@ -798,10 +850,84 @@
     "sha256": "7aafbf664cbd3edadf46492151988468e154fe9cb131b460fe7dde335c3dca19",
     "url": "https://bibliotecadigital.cnj.jus.br/bitstream/123456789/1126/1/relatorio_justica_em_numeros2026_1.pdf"
   },
+  "historicoTempos": {
+    "anos": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "ausentes": [
+      "TRF6 2021",
+      "TRT17 2022",
+      "TRT7 2022",
+      "TRT9 2022"
+    ],
+    "edicoes": [
+      {
+        "ano": 2021,
+        "edicao": 2022,
+        "paginas": [
+          215
+        ],
+        "sha256": "963f667b6eca7ca2b6f855b034b42b213049e7e57f49f154e56c2011b4db696c",
+        "url": "https://www.cnj.jus.br/wp-content/uploads/2022/09/justica-em-numeros-2022-1.pdf"
+      },
+      {
+        "ano": 2022,
+        "edicao": 2023,
+        "paginas": [
+          215
+        ],
+        "sha256": "ca9e514c5213636fac8b421e97387c9f0f74f259f7380520ada2b74a9aab6494",
+        "url": "https://www.cnj.jus.br/wp-content/uploads/2024/02/justica-em-numeros-2023-16022024.pdf"
+      },
+      {
+        "ano": 2023,
+        "edicao": 2024,
+        "paginas": [
+          282
+        ],
+        "sha256": "837b3016f1b56077152bcd827d3bba759e984c52fcb98e10263fb99b116b93ca",
+        "url": "https://www.cnj.jus.br/wp-content/uploads/2025/04/justica-em-numeros-2024.pdf"
+      },
+      {
+        "ano": 2024,
+        "edicao": 2025,
+        "paginas": [
+          371,
+          437,
+          500
+        ],
+        "sha256": "190f48e6a9a7a11bda354e8fa3c0427d005853159da2c8f9b254848cb118bd02",
+        "url": "https://www.cnj.jus.br/wp-content/uploads/2025/11/justica-em-numeros-2025.pdf"
+      }
+    ],
+    "nota": "Cada edição publica médias calculadas com os dados disponíveis à época; anos anteriores não são revisados. Mudanças de cadastro e de sistemas no DataJud podem alterar a série. Ausência significa valor não legível no texto da figura ou tribunal ainda não instalado (TRF6, criado em 2022), não zero."
+  },
   "integridadeSementes": {
-    "ampliado": "1a07e1696473b187234809b3887172a387fd72b056a6f7196f49208efc149ec6",
+    "ampliado": "dea4d493d2f7ba0cb2818f90ff708ec8d6913ca9ecd8a53e4b7d85d4e51562e8",
+    "historico": "8588a6fe3b850a285bf273d962bdc09f2b996a87f3e9b024fafaf8ce3627db6b",
     "recorte": "fe0164e193c577560f697012cdad38113d175ab1c6d3f9c8cddfee7a4fca58ef",
     "texto": "d60a87ae35dea2511f714798eaf2234696642eb7b6821b6061e6e29fa4b3bedb"
+  },
+  "justicaGratuita": {
+    "definicao": "Processos arquivados definitivamente com assistência judiciária gratuita sobre o total arquivado, sem ações criminais e Juizados Especiais.",
+    "pagina": 221,
+    "percentual": 30.4,
+    "variacaoPontos": 5.5
+  },
+  "magistrados": {
+    "nota": "Cargos de magistrado providos por cem mil habitantes, como publicados.",
+    "pagina": 51,
+    "porCemMil": 8.95,
+    "porRamo": {
+      "Justiça Estadual": 6.21,
+      "Justiça Federal": 0.97,
+      "Justiça do Trabalho": 1.7,
+      "Tribunais Superiores": 0.04
+    }
   },
   "nacional": {
     "ano": 2025,
@@ -969,9 +1095,9 @@
     }
   ],
   "revisao": {
-    "nota": "PDF integral da Biblioteca Digital baixado em 17/10/2026; checksum idêntico ao original identificado. Portal principal retorna 403; edição mais recente não confirmada. Variações e pessoal do sumário p. 22 não utilizados por inconsistência de ano.",
+    "nota": "PDF integral da Biblioteca Digital e cópia do portal do CNJ (www.cnj.jus.br) baixados em 17/10/2026, com checksum idêntico; o portal lista a edição 2026 como a mais recente. Variações e pessoal do sumário p. 22 não utilizados por inconsistência de ano.",
     "originalBaixadoConferido": true,
-    "portalRevalidado": false
+    "portalRevalidado": true
   },
   "tribunais": [
     {
@@ -982,10 +1108,47 @@
       "despesaPorHabitanteSemInativos": 413.1,
       "despesaTotal": 20451533751,
       "estruturaPagina": 40,
+      "execucaoBaixados": 66,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 64,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 64,
+          "tempoBaixados": 26
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 64,
+          "tempoBaixados": 33
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 68,
+          "tempoBaixados": 50
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 65,
+          "tempoBaixados": 44
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 58,
+          "tempoBaixados": 47
+        }
+      ],
       "id": "tjsp",
       "idadePendentes": 58,
       "ipcJus": 63.0,
       "ipcPagina": 353,
+      "justicaGratuita": 37.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 3015,
       "novos": 6828558,
       "pagina": 333,
@@ -993,6 +1156,9 @@
       "porHabitantePagina": 113,
       "porte": "Grande",
       "ramo": "estadual",
+      "recorribilidadeExterna": 29.3,
+      "recorribilidadeInterna": 0.0,
+      "recorribilidadePagina": 329,
       "servidores": 58771,
       "sigla": "TJSP",
       "tempoBaixados": 47,
@@ -1006,10 +1172,47 @@
       "despesaPorHabitanteSemInativos": 308.2,
       "despesaTotal": 5862577519,
       "estruturaPagina": 40,
+      "execucaoBaixados": 25,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 67,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 53,
+          "tempoBaixados": 22
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 59,
+          "tempoBaixados": 29
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 54,
+          "tempoBaixados": 26
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 54,
+          "tempoBaixados": 31
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 50,
+          "tempoBaixados": 23
+        }
+      ],
       "id": "tjba",
       "idadePendentes": 50,
       "ipcJus": 100.0,
       "ipcPagina": 353,
+      "justicaGratuita": 4.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 680,
       "novos": 1913400,
       "pagina": 333,
@@ -1017,6 +1220,9 @@
       "porHabitantePagina": 113,
       "porte": "Grande",
       "ramo": "estadual",
+      "recorribilidadeExterna": 22.1,
+      "recorribilidadeInterna": 12.0,
+      "recorribilidadePagina": 329,
       "servidores": 14420,
       "sigla": "TJBA",
       "tempoBaixados": 23,
@@ -1030,10 +1236,47 @@
       "despesaPorHabitanteSemInativos": 688.2,
       "despesaTotal": 11853549455,
       "estruturaPagina": 40,
+      "execucaoBaixados": 53,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 59,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 68,
+          "tempoBaixados": 61
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 61,
+          "tempoBaixados": 47
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 52,
+          "tempoBaixados": 48
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 46,
+          "tempoBaixados": 45
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 45,
+          "tempoBaixados": 35
+        }
+      ],
       "id": "tjrj",
       "idadePendentes": 45,
       "ipcJus": 70.0,
       "ipcPagina": 353,
+      "justicaGratuita": 62.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 903,
       "novos": 2238416,
       "pagina": 333,
@@ -1041,6 +1284,9 @@
       "porHabitantePagina": 113,
       "porte": "Grande",
       "ramo": "estadual",
+      "recorribilidadeExterna": 19.9,
+      "recorribilidadeInterna": 0.2,
+      "recorribilidadePagina": 329,
       "servidores": 27095,
       "sigla": "TJRJ",
       "tempoBaixados": 35,
@@ -1054,10 +1300,47 @@
       "despesaPorHabitanteSemInativos": 390.6,
       "despesaTotal": 6557093361,
       "estruturaPagina": 40,
+      "execucaoBaixados": 39,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 55,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 47,
+          "tempoBaixados": 27
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 50,
+          "tempoBaixados": 28
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 47,
+          "tempoBaixados": 29
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 43,
+          "tempoBaixados": 27
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 40,
+          "tempoBaixados": 24
+        }
+      ],
       "id": "tjrs",
       "idadePendentes": 40,
       "ipcJus": 100.0,
       "ipcPagina": 353,
+      "justicaGratuita": 4.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 842,
       "novos": 2175107,
       "pagina": 333,
@@ -1065,6 +1348,9 @@
       "porHabitantePagina": 113,
       "porte": "Grande",
       "ramo": "estadual",
+      "recorribilidadeExterna": 27.3,
+      "recorribilidadeInterna": 0.0,
+      "recorribilidadePagina": 329,
       "servidores": 16813,
       "sigla": "TJRS",
       "tempoBaixados": 24,
@@ -1078,10 +1364,47 @@
       "despesaPorHabitanteSemInativos": 417.8,
       "despesaTotal": 5705983310,
       "estruturaPagina": 40,
+      "execucaoBaixados": 38,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 47,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 36,
+          "tempoBaixados": 22
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 39,
+          "tempoBaixados": 27
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 37,
+          "tempoBaixados": 23
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 37,
+          "tempoBaixados": 23
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 37,
+          "tempoBaixados": 24
+        }
+      ],
       "id": "tjpr",
       "idadePendentes": 37,
       "ipcJus": 70.0,
       "ipcPagina": 353,
+      "justicaGratuita": 21.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 954,
       "novos": 1652014,
       "pagina": 333,
@@ -1089,6 +1412,9 @@
       "porHabitantePagina": 113,
       "porte": "Grande",
       "ramo": "estadual",
+      "recorribilidadeExterna": 24.6,
+      "recorribilidadeInterna": 14.9,
+      "recorribilidadePagina": 329,
       "servidores": 20054,
       "sigla": "TJPR",
       "tempoBaixados": 24,
@@ -1102,10 +1428,47 @@
       "despesaPorHabitanteSemInativos": 451.8,
       "despesaTotal": 12435928378,
       "estruturaPagina": 40,
+      "execucaoBaixados": 32,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 41,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 45,
+          "tempoBaixados": 29
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 39,
+          "tempoBaixados": 29
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 28,
+          "tempoBaixados": 24
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 34,
+          "tempoBaixados": 24
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 31,
+          "tempoBaixados": 22
+        }
+      ],
       "id": "tjmg",
       "idadePendentes": 31,
       "ipcJus": 55.0,
       "ipcPagina": 353,
+      "justicaGratuita": 18.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 1102,
       "novos": 2097973,
       "pagina": 333,
@@ -1113,6 +1476,9 @@
       "porHabitantePagina": 113,
       "porte": "Grande",
       "ramo": "estadual",
+      "recorribilidadeExterna": 20.1,
+      "recorribilidadeInterna": 12.0,
+      "recorribilidadePagina": 329,
       "servidores": 32868,
       "sigla": "TJMG",
       "tempoBaixados": 22,
@@ -1126,10 +1492,47 @@
       "despesaPorHabitanteSemInativos": 1152.3,
       "despesaTotal": 4233907405,
       "estruturaPagina": 40,
+      "execucaoBaixados": 48,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 70,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 65,
+          "tempoBaixados": 13
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 59,
+          "tempoBaixados": 20
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 54,
+          "tempoBaixados": 23
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 52,
+          "tempoBaixados": 20
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 48,
+          "tempoBaixados": 22
+        }
+      ],
       "id": "tjdft",
       "idadePendentes": 48,
       "ipcJus": 100.0,
       "ipcPagina": 353,
+      "justicaGratuita": 23.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 374,
       "novos": 554781,
       "pagina": 333,
@@ -1137,6 +1540,9 @@
       "porHabitantePagina": 113,
       "porte": "Médio",
       "ramo": "estadual",
+      "recorribilidadeExterna": 21.0,
+      "recorribilidadeInterna": 10.2,
+      "recorribilidadePagina": 329,
       "servidores": 9849,
       "sigla": "TJDFT",
       "tempoBaixados": 22,
@@ -1150,10 +1556,47 @@
       "despesaPorHabitanteSemInativos": 351.2,
       "despesaTotal": 3104034164,
       "estruturaPagina": 40,
+      "execucaoBaixados": 47,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 63,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 56,
+          "tempoBaixados": 45
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 50,
+          "tempoBaixados": 46
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 48,
+          "tempoBaixados": 31
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 44,
+          "tempoBaixados": 30
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 40,
+          "tempoBaixados": 30
+        }
+      ],
       "id": "tjpa",
       "idadePendentes": 40,
       "ipcJus": 57.0,
       "ipcPagina": 353,
+      "justicaGratuita": 55.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 407,
       "novos": 547698,
       "pagina": 333,
@@ -1161,6 +1604,9 @@
       "porHabitantePagina": 113,
       "porte": "Médio",
       "ramo": "estadual",
+      "recorribilidadeExterna": 18.5,
+      "recorribilidadeInterna": 6.1,
+      "recorribilidadePagina": 329,
       "servidores": 7302,
       "sigla": "TJPA",
       "tempoBaixados": 30,
@@ -1174,10 +1620,47 @@
       "despesaPorHabitanteSemInativos": 485.1,
       "despesaTotal": 4813459510,
       "estruturaPagina": 40,
+      "execucaoBaixados": 54,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 50,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 72,
+          "tempoBaixados": 38
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 50,
+          "tempoBaixados": 31
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 44,
+          "tempoBaixados": 28
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 43,
+          "tempoBaixados": 30
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 40,
+          "tempoBaixados": 32
+        }
+      ],
       "id": "tjsc",
       "idadePendentes": 40,
       "ipcJus": 85.0,
       "ipcPagina": 353,
+      "justicaGratuita": 25.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 582,
       "novos": 1439569,
       "pagina": 333,
@@ -1185,6 +1668,9 @@
       "porHabitantePagina": 113,
       "porte": "Médio",
       "ramo": "estadual",
+      "recorribilidadeExterna": 22.9,
+      "recorribilidadeInterna": 0.0,
+      "recorribilidadePagina": 329,
       "servidores": 13049,
       "sigla": "TJSC",
       "tempoBaixados": 32,
@@ -1198,10 +1684,47 @@
       "despesaPorHabitanteSemInativos": 318.3,
       "despesaTotal": 3076697070,
       "estruturaPagina": 40,
+      "execucaoBaixados": 34,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 54,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 45,
+          "tempoBaixados": 30
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 44,
+          "tempoBaixados": 28
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 42,
+          "tempoBaixados": 26
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 37,
+          "tempoBaixados": 31
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 37,
+          "tempoBaixados": 27
+        }
+      ],
       "id": "tjpe",
       "idadePendentes": 37,
       "ipcJus": 62.0,
       "ipcPagina": 353,
+      "justicaGratuita": 7.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 532,
       "novos": 728027,
       "pagina": 333,
@@ -1209,6 +1732,9 @@
       "porHabitantePagina": 113,
       "porte": "Médio",
       "ramo": "estadual",
+      "recorribilidadeExterna": 20.3,
+      "recorribilidadeInterna": 9.1,
+      "recorribilidadePagina": 329,
       "servidores": 10610,
       "sigla": "TJPE",
       "tempoBaixados": 27,
@@ -1222,10 +1748,47 @@
       "despesaPorHabitanteSemInativos": 378.0,
       "despesaTotal": 2056821903,
       "estruturaPagina": 40,
+      "execucaoBaixados": 41,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 46,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 47,
+          "tempoBaixados": 33
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 44,
+          "tempoBaixados": 35
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 45,
+          "tempoBaixados": 30
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 41,
+          "tempoBaixados": 28
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 34,
+          "tempoBaixados": 29
+        }
+      ],
       "id": "tjes",
       "idadePendentes": 34,
       "ipcJus": 58.0,
       "ipcPagina": 353,
+      "justicaGratuita": 54.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 277,
       "novos": 464233,
       "pagina": 333,
@@ -1233,6 +1796,9 @@
       "porHabitantePagina": 113,
       "porte": "Médio",
       "ramo": "estadual",
+      "recorribilidadeExterna": 18.0,
+      "recorribilidadeInterna": 10.9,
+      "recorribilidadePagina": 329,
       "servidores": 6326,
       "sigla": "TJES",
       "tempoBaixados": 29,
@@ -1246,10 +1812,47 @@
       "despesaPorHabitanteSemInativos": 705.4,
       "despesaTotal": 3323354232,
       "estruturaPagina": 40,
+      "execucaoBaixados": 27,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 40,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 42,
+          "tempoBaixados": 24
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 39,
+          "tempoBaixados": 27
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 31,
+          "tempoBaixados": 22
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 31,
+          "tempoBaixados": 21
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 29,
+          "tempoBaixados": 18
+        }
+      ],
       "id": "tjmt",
       "idadePendentes": 29,
       "ipcJus": 98.0,
       "ipcPagina": 353,
+      "justicaGratuita": 35.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 319,
       "novos": 645336,
       "pagina": 333,
@@ -1257,6 +1860,9 @@
       "porHabitantePagina": 113,
       "porte": "Médio",
       "ramo": "estadual",
+      "recorribilidadeExterna": 25.1,
+      "recorribilidadeInterna": 12.2,
+      "recorribilidadePagina": 329,
       "servidores": 8211,
       "sigla": "TJMT",
       "tempoBaixados": 18,
@@ -1270,10 +1876,47 @@
       "despesaPorHabitanteSemInativos": 236.2,
       "despesaTotal": 2483073855,
       "estruturaPagina": 40,
+      "execucaoBaixados": 31,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 35,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 47,
+          "tempoBaixados": 34
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 48,
+          "tempoBaixados": 33
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 42,
+          "tempoBaixados": 30
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 30,
+          "tempoBaixados": 25
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 29,
+          "tempoBaixados": 23
+        }
+      ],
       "id": "tjce",
       "idadePendentes": 29,
       "ipcJus": 64.0,
       "ipcPagina": 353,
+      "justicaGratuita": 0.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 474,
       "novos": 694172,
       "pagina": 333,
@@ -1281,6 +1924,9 @@
       "porHabitantePagina": 113,
       "porte": "Médio",
       "ramo": "estadual",
+      "recorribilidadeExterna": 23.2,
+      "recorribilidadeInterna": 6.0,
+      "recorribilidadePagina": 329,
       "servidores": 10069,
       "sigla": "TJCE",
       "tempoBaixados": 23,
@@ -1294,10 +1940,47 @@
       "despesaPorHabitanteSemInativos": 323.8,
       "despesaTotal": 2272474658,
       "estruturaPagina": 40,
+      "execucaoBaixados": 26,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 43,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 42,
+          "tempoBaixados": 29
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 41,
+          "tempoBaixados": 28
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 40,
+          "tempoBaixados": 26
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 31,
+          "tempoBaixados": 23
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 28,
+          "tempoBaixados": 20
+        }
+      ],
       "id": "tjma",
       "idadePendentes": 28,
       "ipcJus": 79.0,
       "ipcPagina": 353,
+      "justicaGratuita": 84.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 355,
       "novos": 720886,
       "pagina": 333,
@@ -1305,6 +1988,9 @@
       "porHabitantePagina": 113,
       "porte": "Médio",
       "ramo": "estadual",
+      "recorribilidadeExterna": 28.4,
+      "recorribilidadeInterna": 7.5,
+      "recorribilidadePagina": 329,
       "servidores": 7233,
       "sigla": "TJMA",
       "tempoBaixados": 20,
@@ -1318,10 +2004,47 @@
       "despesaPorHabitanteSemInativos": 558.9,
       "despesaTotal": 4388295334,
       "estruturaPagina": 40,
+      "execucaoBaixados": 20,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 34,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 48,
+          "tempoBaixados": 31
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 45,
+          "tempoBaixados": 37
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 37,
+          "tempoBaixados": 30
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 29,
+          "tempoBaixados": 23
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 26,
+          "tempoBaixados": 16
+        }
+      ],
       "id": "tjgo",
       "idadePendentes": 26,
       "ipcJus": 100.0,
       "ipcPagina": 353,
+      "justicaGratuita": 19.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 476,
       "novos": 1300975,
       "pagina": 333,
@@ -1329,6 +2052,9 @@
       "porHabitantePagina": 113,
       "porte": "Médio",
       "ramo": "estadual",
+      "recorribilidadeExterna": 21.6,
+      "recorribilidadeInterna": 10.5,
+      "recorribilidadePagina": 329,
       "servidores": 14663,
       "sigla": "TJGO",
       "tempoBaixados": 16,
@@ -1342,10 +2068,47 @@
       "despesaPorHabitanteSemInativos": 607.4,
       "despesaTotal": 1776400151,
       "estruturaPagina": 40,
+      "execucaoBaixados": 67,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 53,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 62,
+          "tempoBaixados": 25
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 57,
+          "tempoBaixados": 35
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 52,
+          "tempoBaixados": 23
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 47,
+          "tempoBaixados": 22
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 40,
+          "tempoBaixados": 36
+        }
+      ],
       "id": "tjms",
       "idadePendentes": 40,
       "ipcJus": 68.0,
       "ipcPagina": 353,
+      "justicaGratuita": 35.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 217,
       "novos": 522465,
       "pagina": 333,
@@ -1353,6 +2116,9 @@
       "porHabitantePagina": 113,
       "porte": "Pequeno",
       "ramo": "estadual",
+      "recorribilidadeExterna": 21.8,
+      "recorribilidadeInterna": 10.1,
+      "recorribilidadePagina": 329,
       "servidores": 5838,
       "sigla": "TJMS",
       "tempoBaixados": 36,
@@ -1366,10 +2132,47 @@
       "despesaPorHabitanteSemInativos": 637.4,
       "despesaTotal": 1036402354,
       "estruturaPagina": 40,
+      "execucaoBaixados": 36,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 45,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 37,
+          "tempoBaixados": 21
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 33,
+          "tempoBaixados": 23
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 37,
+          "tempoBaixados": 22
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 34,
+          "tempoBaixados": 21
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 34,
+          "tempoBaixados": 22
+        }
+      ],
       "id": "tjto",
       "idadePendentes": 34,
       "ipcJus": 53.0,
       "ipcPagina": 353,
+      "justicaGratuita": 13.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 143,
       "novos": 240677,
       "pagina": 333,
@@ -1377,6 +2180,9 @@
       "porHabitantePagina": 113,
       "porte": "Pequeno",
       "ramo": "estadual",
+      "recorribilidadeExterna": 20.5,
+      "recorribilidadeInterna": 0.0,
+      "recorribilidadePagina": 329,
       "servidores": 3462,
       "sigla": "TJTO",
       "tempoBaixados": 22,
@@ -1390,10 +2196,47 @@
       "despesaPorHabitanteSemInativos": 389.0,
       "despesaTotal": 1404374839,
       "estruturaPagina": 40,
+      "execucaoBaixados": 13,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 51,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 41,
+          "tempoBaixados": 23
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 42,
+          "tempoBaixados": 13
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 42,
+          "tempoBaixados": 29
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 37,
+          "tempoBaixados": 20
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 33,
+          "tempoBaixados": 15
+        }
+      ],
       "id": "tjal",
       "idadePendentes": 33,
       "ipcJus": 66.0,
       "ipcPagina": 353,
+      "justicaGratuita": 14.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 179,
       "novos": 467301,
       "pagina": 333,
@@ -1401,6 +2244,9 @@
       "porHabitantePagina": 113,
       "porte": "Pequeno",
       "ramo": "estadual",
+      "recorribilidadeExterna": 24.8,
+      "recorribilidadeInterna": 0.0,
+      "recorribilidadePagina": 329,
       "servidores": 3234,
       "sigla": "TJAL",
       "tempoBaixados": 15,
@@ -1414,10 +2260,47 @@
       "despesaPorHabitanteSemInativos": 460.4,
       "despesaTotal": 498505717,
       "estruturaPagina": 40,
+      "execucaoBaixados": 25,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 43,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 32,
+          "tempoBaixados": 15
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 38,
+          "tempoBaixados": 20
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 38,
+          "tempoBaixados": 20
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 32,
+          "tempoBaixados": 19
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 32,
+          "tempoBaixados": 16
+        }
+      ],
       "id": "tjac",
       "idadePendentes": 32,
       "ipcJus": 93.0,
       "ipcPagina": 353,
+      "justicaGratuita": 55.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 90,
       "novos": 93433,
       "pagina": 333,
@@ -1425,6 +2308,9 @@
       "porHabitantePagina": 113,
       "porte": "Pequeno",
       "ramo": "estadual",
+      "recorribilidadeExterna": 18.9,
+      "recorribilidadeInterna": 6.5,
+      "recorribilidadePagina": 329,
       "servidores": 2093,
       "sigla": "TJAC",
       "tempoBaixados": 16,
@@ -1438,10 +2324,47 @@
       "despesaPorHabitanteSemInativos": 427.2,
       "despesaTotal": 1004224462,
       "estruturaPagina": 40,
+      "execucaoBaixados": 19,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 36,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 27,
+          "tempoBaixados": 12
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 32,
+          "tempoBaixados": 14
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 32,
+          "tempoBaixados": 14
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 28,
+          "tempoBaixados": 14
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 26,
+          "tempoBaixados": 14
+        }
+      ],
       "id": "tjse",
       "idadePendentes": 26,
       "ipcJus": 82.0,
       "ipcPagina": 353,
+      "justicaGratuita": 4.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 156,
       "novos": 338779,
       "pagina": 333,
@@ -1449,6 +2372,9 @@
       "porHabitantePagina": 113,
       "porte": "Pequeno",
       "ramo": "estadual",
+      "recorribilidadeExterna": 22.0,
+      "recorribilidadeInterna": 9.3,
+      "recorribilidadePagina": 329,
       "servidores": 4229,
       "sigla": "TJSE",
       "tempoBaixados": 14,
@@ -1462,10 +2388,47 @@
       "despesaPorHabitanteSemInativos": 426.9,
       "despesaTotal": 1475139223,
       "estruturaPagina": 40,
+      "execucaoBaixados": 29,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 37,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 47,
+          "tempoBaixados": 25
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 37,
+          "tempoBaixados": 25
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 30,
+          "tempoBaixados": 20
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 29,
+          "tempoBaixados": 20
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 26,
+          "tempoBaixados": 20
+        }
+      ],
       "id": "tjrn",
       "idadePendentes": 26,
       "ipcJus": 79.0,
       "ipcPagina": 353,
+      "justicaGratuita": 8.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 224,
       "novos": 492822,
       "pagina": 333,
@@ -1473,6 +2436,9 @@
       "porHabitantePagina": 113,
       "porte": "Pequeno",
       "ramo": "estadual",
+      "recorribilidadeExterna": 26.4,
+      "recorribilidadeInterna": 8.3,
+      "recorribilidadePagina": 329,
       "servidores": 5298,
       "sigla": "TJRN",
       "tempoBaixados": 20,
@@ -1486,10 +2452,47 @@
       "despesaPorHabitanteSemInativos": 319.8,
       "despesaTotal": 1331983794,
       "estruturaPagina": 40,
+      "execucaoBaixados": 16,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 31,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 46,
+          "tempoBaixados": 30
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 42,
+          "tempoBaixados": 29
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 37,
+          "tempoBaixados": 20
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 28,
+          "tempoBaixados": 23
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 26,
+          "tempoBaixados": 16
+        }
+      ],
       "id": "tjpb",
       "idadePendentes": 26,
       "ipcJus": 78.0,
       "ipcPagina": 353,
+      "justicaGratuita": 11.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 257,
       "novos": 438271,
       "pagina": 333,
@@ -1497,6 +2500,9 @@
       "porHabitantePagina": 113,
       "porte": "Pequeno",
       "ramo": "estadual",
+      "recorribilidadeExterna": 27.1,
+      "recorribilidadeInterna": 0.0,
+      "recorribilidadePagina": 329,
       "servidores": 5029,
       "sigla": "TJPB",
       "tempoBaixados": 16,
@@ -1510,10 +2516,47 @@
       "despesaPorHabitanteSemInativos": 336.2,
       "despesaTotal": 1213425689,
       "estruturaPagina": 40,
+      "execucaoBaixados": 18,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 39,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 35,
+          "tempoBaixados": 27
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 31,
+          "tempoBaixados": 26
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 32,
+          "tempoBaixados": 25
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 28,
+          "tempoBaixados": 23
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 25,
+          "tempoBaixados": 21
+        }
+      ],
       "id": "tjpi",
       "idadePendentes": 25,
       "ipcJus": 81.0,
       "ipcPagina": 353,
+      "justicaGratuita": 84.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 189,
       "novos": 421247,
       "pagina": 333,
@@ -1521,6 +2564,9 @@
       "porHabitantePagina": 113,
       "porte": "Pequeno",
       "ramo": "estadual",
+      "recorribilidadeExterna": 31.4,
+      "recorribilidadeInterna": 0.0,
+      "recorribilidadePagina": 329,
       "servidores": 4392,
       "sigla": "TJPI",
       "tempoBaixados": 21,
@@ -1534,10 +2580,47 @@
       "despesaPorHabitanteSemInativos": 243.7,
       "despesaTotal": 1087737874,
       "estruturaPagina": 40,
+      "execucaoBaixados": 87,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 42,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 39,
+          "tempoBaixados": 16
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 42,
+          "tempoBaixados": 17
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 40,
+          "tempoBaixados": 14
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 52,
+          "tempoBaixados": 16
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 24,
+          "tempoBaixados": 47
+        }
+      ],
       "id": "tjam",
       "idadePendentes": 24,
       "ipcJus": 100.0,
       "ipcPagina": 353,
+      "justicaGratuita": 0.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 193,
       "novos": 721639,
       "pagina": 333,
@@ -1545,6 +2628,9 @@
       "porHabitantePagina": 113,
       "porte": "Pequeno",
       "ramo": "estadual",
+      "recorribilidadeExterna": 29.9,
+      "recorribilidadeInterna": 9.2,
+      "recorribilidadePagina": 329,
       "servidores": 4657,
       "sigla": "TJAM",
       "tempoBaixados": 47,
@@ -1558,10 +2644,47 @@
       "despesaPorHabitanteSemInativos": 802.2,
       "despesaTotal": 1610007955,
       "estruturaPagina": 40,
+      "execucaoBaixados": 18,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 33,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 30,
+          "tempoBaixados": 17
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 27,
+          "tempoBaixados": 20
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 25,
+          "tempoBaixados": 14
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 24,
+          "tempoBaixados": 14
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 23,
+          "tempoBaixados": 13
+        }
+      ],
       "id": "tjro",
       "idadePendentes": 23,
       "ipcJus": 90.0,
       "ipcPagina": 353,
+      "justicaGratuita": 4.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 182,
       "novos": 322891,
       "pagina": 333,
@@ -1569,6 +2692,9 @@
       "porHabitantePagina": 113,
       "porte": "Pequeno",
       "ramo": "estadual",
+      "recorribilidadeExterna": 23.2,
+      "recorribilidadeInterna": 7.1,
+      "recorribilidadePagina": 329,
       "servidores": 4543,
       "sigla": "TJRO",
       "tempoBaixados": 13,
@@ -1582,10 +2708,47 @@
       "despesaPorHabitanteSemInativos": 654.6,
       "despesaTotal": 490772240,
       "estruturaPagina": 40,
+      "execucaoBaixados": 11,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 27,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 23,
+          "tempoBaixados": 15
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 24,
+          "tempoBaixados": 13
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 17,
+          "tempoBaixados": 9
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 19,
+          "tempoBaixados": 9
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 21,
+          "tempoBaixados": 10
+        }
+      ],
       "id": "tjrr",
       "idadePendentes": 21,
       "ipcJus": 100.0,
       "ipcPagina": 353,
+      "justicaGratuita": 30.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 54,
       "novos": 89481,
       "pagina": 333,
@@ -1593,6 +2756,9 @@
       "porHabitantePagina": 113,
       "porte": "Pequeno",
       "ramo": "estadual",
+      "recorribilidadeExterna": 16.6,
+      "recorribilidadeInterna": 9.0,
+      "recorribilidadePagina": 329,
       "servidores": 1686,
       "sigla": "TJRR",
       "tempoBaixados": 10,
@@ -1606,10 +2772,47 @@
       "despesaPorHabitanteSemInativos": 720.9,
       "despesaTotal": 588302681,
       "estruturaPagina": 40,
+      "execucaoBaixados": 12,
+      "execucaoPagina": 340,
+      "execucaoPendentes": 17,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 21,
+          "tempoBaixados": 19
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 22,
+          "tempoBaixados": 18
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 26,
+          "tempoBaixados": 17
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 18,
+          "tempoBaixados": 18
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 16,
+          "tempoBaixados": 11
+        }
+      ],
       "id": "tjap",
       "idadePendentes": 16,
       "ipcJus": 91.0,
       "ipcPagina": 353,
+      "justicaGratuita": 0.0,
+      "justicaGratuitaPagina": 303,
       "magistrados": 79,
       "novos": 138165,
       "pagina": 333,
@@ -1617,6 +2820,9 @@
       "porHabitantePagina": 113,
       "porte": "Pequeno",
       "ramo": "estadual",
+      "recorribilidadeExterna": 16.5,
+      "recorribilidadeInterna": 6.7,
+      "recorribilidadePagina": 329,
       "servidores": 1606,
       "sigla": "TJAP",
       "tempoBaixados": 11,
@@ -1630,10 +2836,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": null,
       "estruturaPagina": null,
+      "execucaoBaixados": 81,
+      "execucaoPagina": 400,
+      "execucaoPendentes": 81,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 86,
+          "tempoBaixados": 39
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 34,
+          "tempoBaixados": 80
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 72,
+          "tempoBaixados": 55
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 64,
+          "tempoBaixados": 73
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 61,
+          "tempoBaixados": 46
+        }
+      ],
       "id": "trf3",
       "idadePendentes": 61,
       "ipcJus": 80.0,
       "ipcPagina": 407,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": null,
       "novos": null,
       "pagina": 397,
@@ -1641,6 +2884,9 @@
       "porHabitantePagina": null,
       "porte": null,
       "ramo": "federal",
+      "recorribilidadeExterna": 19.7,
+      "recorribilidadeInterna": 5.3,
+      "recorribilidadePagina": 394,
       "servidores": null,
       "sigla": "TRF3",
       "tempoBaixados": 46,
@@ -1654,10 +2900,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": null,
       "estruturaPagina": null,
+      "execucaoBaixados": 25,
+      "execucaoPagina": 400,
+      "execucaoPendentes": 56,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 52,
+          "tempoBaixados": 26
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 42,
+          "tempoBaixados": 31
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 38,
+          "tempoBaixados": 25
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 39,
+          "tempoBaixados": 24
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 38,
+          "tempoBaixados": 20
+        }
+      ],
       "id": "trf2",
       "idadePendentes": 38,
       "ipcJus": 55.0,
       "ipcPagina": 407,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": null,
       "novos": null,
       "pagina": 397,
@@ -1665,6 +2948,9 @@
       "porHabitantePagina": null,
       "porte": null,
       "ramo": "federal",
+      "recorribilidadeExterna": 26.3,
+      "recorribilidadeInterna": 7.6,
+      "recorribilidadePagina": 394,
       "servidores": null,
       "sigla": "TRF2",
       "tempoBaixados": 20,
@@ -1678,10 +2964,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": null,
       "estruturaPagina": null,
+      "execucaoBaixados": 21,
+      "execucaoPagina": 400,
+      "execucaoPendentes": 64,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 58,
+          "tempoBaixados": 19
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 58,
+          "tempoBaixados": 26
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 46,
+          "tempoBaixados": 24
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 40,
+          "tempoBaixados": 23
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 37,
+          "tempoBaixados": 19
+        }
+      ],
       "id": "trf1",
       "idadePendentes": 37,
       "ipcJus": 76.0,
       "ipcPagina": 407,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": null,
       "novos": null,
       "pagina": 397,
@@ -1689,6 +3012,9 @@
       "porHabitantePagina": null,
       "porte": null,
       "ramo": "federal",
+      "recorribilidadeExterna": 22.0,
+      "recorribilidadeInterna": 5.4,
+      "recorribilidadePagina": 394,
       "servidores": null,
       "sigla": "TRF1",
       "tempoBaixados": 19,
@@ -1702,10 +3028,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": null,
       "estruturaPagina": null,
+      "execucaoBaixados": 16,
+      "execucaoPagina": 400,
+      "execucaoPendentes": 49,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 39,
+          "tempoBaixados": 16
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 33,
+          "tempoBaixados": 17
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 35,
+          "tempoBaixados": 15
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 38,
+          "tempoBaixados": 26
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 35,
+          "tempoBaixados": 16
+        }
+      ],
       "id": "trf4",
       "idadePendentes": 35,
       "ipcJus": 77.0,
       "ipcPagina": 407,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": null,
       "novos": null,
       "pagina": 397,
@@ -1713,6 +3076,9 @@
       "porHabitantePagina": null,
       "porte": null,
       "ramo": "federal",
+      "recorribilidadeExterna": 43.8,
+      "recorribilidadeInterna": 0.0,
+      "recorribilidadePagina": 394,
       "servidores": null,
       "sigla": "TRF4",
       "tempoBaixados": 16,
@@ -1726,10 +3092,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": null,
       "estruturaPagina": null,
+      "execucaoBaixados": 55,
+      "execucaoPagina": 400,
+      "execucaoPendentes": 38,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": null,
+          "tempoBaixados": null
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 64,
+          "tempoBaixados": 34
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 59,
+          "tempoBaixados": 46
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 57,
+          "tempoBaixados": 44
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 31,
+          "tempoBaixados": 31
+        }
+      ],
       "id": "trf6",
       "idadePendentes": 31,
       "ipcJus": 65.0,
       "ipcPagina": 407,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": null,
       "novos": null,
       "pagina": 397,
@@ -1737,6 +3140,9 @@
       "porHabitantePagina": null,
       "porte": null,
       "ramo": "federal",
+      "recorribilidadeExterna": 22.1,
+      "recorribilidadeInterna": 6.8,
+      "recorribilidadePagina": 394,
       "servidores": null,
       "sigla": "TRF6",
       "tempoBaixados": 31,
@@ -1750,10 +3156,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": null,
       "estruturaPagina": null,
+      "execucaoBaixados": 13,
+      "execucaoPagina": 400,
+      "execucaoPendentes": 48,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 53,
+          "tempoBaixados": 14
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 29,
+          "tempoBaixados": 14
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 30,
+          "tempoBaixados": 15
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 33,
+          "tempoBaixados": 16
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 26,
+          "tempoBaixados": 11
+        }
+      ],
       "id": "trf5",
       "idadePendentes": 26,
       "ipcJus": 82.0,
       "ipcPagina": 407,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": null,
       "novos": null,
       "pagina": 397,
@@ -1761,6 +3204,9 @@
       "porHabitantePagina": null,
       "porte": null,
       "ramo": "federal",
+      "recorribilidadeExterna": 21.5,
+      "recorribilidadeInterna": 7.6,
+      "recorribilidadePagina": 394,
       "servidores": null,
       "sigla": "TRF5",
       "tempoBaixados": 11,
@@ -1774,10 +3220,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 2269634276,
       "estruturaPagina": 41,
+      "execucaoBaixados": 33,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 58,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 52,
+          "tempoBaixados": 18
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 43,
+          "tempoBaixados": 25
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 42,
+          "tempoBaixados": 24
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 43,
+          "tempoBaixados": 20
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 37,
+          "tempoBaixados": 22
+        }
+      ],
       "id": "trt4",
       "idadePendentes": 37,
       "ipcJus": 69.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 290,
       "novos": 361921,
       "pagina": 459,
@@ -1785,6 +3268,9 @@
       "porHabitantePagina": null,
       "porte": "Grande",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 42.7,
+      "recorribilidadeInterna": 16.6,
+      "recorribilidadePagina": 455,
       "servidores": 3915,
       "sigla": "TRT4",
       "tempoBaixados": 22,
@@ -1798,10 +3284,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 2959059132,
       "estruturaPagina": 41,
+      "execucaoBaixados": 26,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 48,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 32,
+          "tempoBaixados": 18
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 37,
+          "tempoBaixados": 22
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 36,
+          "tempoBaixados": 29
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 33,
+          "tempoBaixados": 23
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 32,
+          "tempoBaixados": 19
+        }
+      ],
       "id": "trt1",
       "idadePendentes": 32,
       "ipcJus": 91.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 310,
       "novos": 521070,
       "pagina": 459,
@@ -1809,6 +3332,9 @@
       "porHabitantePagina": null,
       "porte": "Grande",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 37.4,
+      "recorribilidadeInterna": 22.1,
+      "recorribilidadePagina": 455,
       "servidores": 4463,
       "sigla": "TRT1",
       "tempoBaixados": 19,
@@ -1822,10 +3348,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 3930854389,
       "estruturaPagina": 41,
+      "execucaoBaixados": 18,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 41,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 20,
+          "tempoBaixados": 12
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 51,
+          "tempoBaixados": 31
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 44,
+          "tempoBaixados": 37
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 41,
+          "tempoBaixados": 21
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 29,
+          "tempoBaixados": 14
+        }
+      ],
       "id": "trt2",
       "idadePendentes": 29,
       "ipcJus": 100.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 604,
       "novos": 995551,
       "pagina": 459,
@@ -1833,6 +3396,9 @@
       "porHabitantePagina": null,
       "porte": "Grande",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 32.5,
+      "recorribilidadeInterna": 15.0,
+      "recorribilidadePagina": 455,
       "servidores": 6597,
       "sigla": "TRT2",
       "tempoBaixados": 14,
@@ -1846,10 +3412,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 2432368215,
       "estruturaPagina": 41,
+      "execucaoBaixados": 21,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 41,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 22,
+          "tempoBaixados": 18
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 28,
+          "tempoBaixados": 21
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 26,
+          "tempoBaixados": 17
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 27,
+          "tempoBaixados": 15
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 27,
+          "tempoBaixados": 15
+        }
+      ],
       "id": "trt15",
       "idadePendentes": 27,
       "ipcJus": 96.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 367,
       "novos": 663711,
       "pagina": 459,
@@ -1857,6 +3460,9 @@
       "porHabitantePagina": null,
       "porte": "Grande",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 38.5,
+      "recorribilidadeInterna": 16.2,
+      "recorribilidadePagina": 455,
       "servidores": 4474,
       "sigla": "TRT15",
       "tempoBaixados": 15,
@@ -1870,10 +3476,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 2740899249,
       "estruturaPagina": 41,
+      "execucaoBaixados": 12,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 33,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 26,
+          "tempoBaixados": 16
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 27,
+          "tempoBaixados": 15
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 24,
+          "tempoBaixados": 12
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 22,
+          "tempoBaixados": 10
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 21,
+          "tempoBaixados": 8
+        }
+      ],
       "id": "trt3",
       "idadePendentes": 21,
       "ipcJus": 100.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 317,
       "novos": 475282,
       "pagina": 459,
@@ -1881,6 +3524,9 @@
       "porHabitantePagina": null,
       "porte": "Grande",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 35.8,
+      "recorribilidadeInterna": 16.4,
+      "recorribilidadePagina": 455,
       "servidores": 4849,
       "sigla": "TRT3",
       "tempoBaixados": 8,
@@ -1894,10 +3540,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 855086098,
       "estruturaPagina": 41,
+      "execucaoBaixados": 35,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 73,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 59,
+          "tempoBaixados": 24
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 59,
+          "tempoBaixados": 33
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 56,
+          "tempoBaixados": 28
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 56,
+          "tempoBaixados": 27
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 51,
+          "tempoBaixados": 22
+        }
+      ],
       "id": "trt10",
       "idadePendentes": 51,
       "ipcJus": 68.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 103,
       "novos": 117202,
       "pagina": 459,
@@ -1905,6 +3588,9 @@
       "porHabitantePagina": null,
       "porte": "Médio",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 35.7,
+      "recorribilidadeInterna": 20.2,
+      "recorribilidadePagina": 455,
       "servidores": 1589,
       "sigla": "TRT10",
       "tempoBaixados": 22,
@@ -1918,10 +3604,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 1523835138,
       "estruturaPagina": 41,
+      "execucaoBaixados": 22,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 65,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 45,
+          "tempoBaixados": 20
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": null,
+          "tempoBaixados": null
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 51,
+          "tempoBaixados": 22
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 48,
+          "tempoBaixados": 16
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 46,
+          "tempoBaixados": 15
+        }
+      ],
       "id": "trt9",
       "idadePendentes": 46,
       "ipcJus": 86.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 209,
       "novos": 303071,
       "pagina": 459,
@@ -1929,6 +3652,9 @@
       "porHabitantePagina": null,
       "porte": "Médio",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 28.7,
+      "recorribilidadeInterna": 15.3,
+      "recorribilidadePagina": 455,
       "servidores": 2907,
       "sigla": "TRT9",
       "tempoBaixados": 15,
@@ -1942,10 +3668,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 1605416839,
       "estruturaPagina": 41,
+      "execucaoBaixados": 26,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 50,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 37,
+          "tempoBaixados": 23
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 42,
+          "tempoBaixados": 30
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 41,
+          "tempoBaixados": 29
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 37,
+          "tempoBaixados": 21
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 36,
+          "tempoBaixados": 17
+        }
+      ],
       "id": "trt5",
       "idadePendentes": 36,
       "ipcJus": 58.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 204,
       "novos": 226555,
       "pagina": 459,
@@ -1953,6 +3716,9 @@
       "porHabitantePagina": null,
       "porte": "Médio",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 39.9,
+      "recorribilidadeInterna": 25.8,
+      "recorribilidadePagina": 455,
       "servidores": 2835,
       "sigla": "TRT5",
       "tempoBaixados": 17,
@@ -1966,10 +3732,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 627116127,
       "estruturaPagina": 41,
+      "execucaoBaixados": 22,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 46,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 44,
+          "tempoBaixados": 21
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": null,
+          "tempoBaixados": null
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 39,
+          "tempoBaixados": 24
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 37,
+          "tempoBaixados": 17
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 32,
+          "tempoBaixados": 14
+        }
+      ],
       "id": "trt7",
       "idadePendentes": 32,
       "ipcJus": 78.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 82,
       "novos": 135271,
       "pagina": 459,
@@ -1977,6 +3780,9 @@
       "porHabitantePagina": null,
       "porte": "Médio",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 30.6,
+      "recorribilidadeInterna": 13.2,
+      "recorribilidadePagina": 455,
       "servidores": 1453,
       "sigla": "TRT7",
       "tempoBaixados": 14,
@@ -1990,10 +3796,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 1117831034,
       "estruturaPagina": 41,
+      "execucaoBaixados": 17,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 47,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 36,
+          "tempoBaixados": 25
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 39,
+          "tempoBaixados": 21
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 33,
+          "tempoBaixados": 16
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 30,
+          "tempoBaixados": 16
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 28,
+          "tempoBaixados": 12
+        }
+      ],
       "id": "trt12",
       "idadePendentes": 28,
       "ipcJus": 88.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 130,
       "novos": 201282,
       "pagina": 459,
@@ -2001,6 +3844,9 @@
       "porHabitantePagina": null,
       "porte": "Médio",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 29.2,
+      "recorribilidadeInterna": 11.1,
+      "recorribilidadePagina": 455,
       "servidores": 1823,
       "sigla": "TRT12",
       "tempoBaixados": 12,
@@ -2014,10 +3860,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 1169074599,
       "estruturaPagina": 41,
+      "execucaoBaixados": 16,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 38,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 28,
+          "tempoBaixados": 18
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 28,
+          "tempoBaixados": 20
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 29,
+          "tempoBaixados": 16
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 27,
+          "tempoBaixados": 15
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 27,
+          "tempoBaixados": 11
+        }
+      ],
       "id": "trt6",
       "idadePendentes": 27,
       "ipcJus": 88.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 150,
       "novos": 200682,
       "pagina": 459,
@@ -2025,6 +3908,9 @@
       "porHabitantePagina": null,
       "porte": "Médio",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 29.6,
+      "recorribilidadeInterna": 16.4,
+      "recorribilidadePagina": 455,
       "servidores": 2123,
       "sigla": "TRT6",
       "tempoBaixados": 11,
@@ -2038,10 +3924,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 865314069,
       "estruturaPagina": 41,
+      "execucaoBaixados": 25,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 40,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 50,
+          "tempoBaixados": 24
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 45,
+          "tempoBaixados": 20
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 41,
+          "tempoBaixados": 15
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 33,
+          "tempoBaixados": 14
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 25,
+          "tempoBaixados": 15
+        }
+      ],
       "id": "trt8",
       "idadePendentes": 25,
       "ipcJus": 100.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 114,
       "novos": 130832,
       "pagina": 459,
@@ -2049,6 +3972,9 @@
       "porHabitantePagina": null,
       "porte": "Médio",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 26.5,
+      "recorribilidadeInterna": 9.7,
+      "recorribilidadePagina": 455,
       "servidores": 1707,
       "sigla": "TRT8",
       "tempoBaixados": 15,
@@ -2062,10 +3988,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 803522796,
       "estruturaPagina": 41,
+      "execucaoBaixados": 12,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 34,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 26,
+          "tempoBaixados": 20
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 30,
+          "tempoBaixados": 17
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 27,
+          "tempoBaixados": 15
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 24,
+          "tempoBaixados": 10
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 22,
+          "tempoBaixados": 9
+        }
+      ],
       "id": "trt18",
       "idadePendentes": 22,
       "ipcJus": 95.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 100,
       "novos": 169871,
       "pagina": 459,
@@ -2073,6 +4036,9 @@
       "porHabitantePagina": null,
       "porte": "Médio",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 27.2,
+      "recorribilidadeInterna": 11.5,
+      "recorribilidadePagina": 455,
       "servidores": 1880,
       "sigla": "TRT18",
       "tempoBaixados": 9,
@@ -2086,10 +4052,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 343786822,
       "estruturaPagina": 41,
+      "execucaoBaixados": 47,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 56,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 68,
+          "tempoBaixados": 32
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 72,
+          "tempoBaixados": 35
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 62,
+          "tempoBaixados": 49
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 57,
+          "tempoBaixados": 39
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 44,
+          "tempoBaixados": 32
+        }
+      ],
       "id": "trt19",
       "idadePendentes": 44,
       "ipcJus": 86.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 51,
       "novos": 49876,
       "pagina": 459,
@@ -2097,6 +4100,9 @@
       "porHabitantePagina": null,
       "porte": "Pequeno",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 25.9,
+      "recorribilidadeInterna": 13.9,
+      "recorribilidadePagina": 455,
       "servidores": 712,
       "sigla": "TRT19",
       "tempoBaixados": 32,
@@ -2110,10 +4116,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 267948315,
       "estruturaPagina": 41,
+      "execucaoBaixados": 24,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 45,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 34,
+          "tempoBaixados": 19
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 39,
+          "tempoBaixados": 23
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 38,
+          "tempoBaixados": 21
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 37,
+          "tempoBaixados": 17
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 32,
+          "tempoBaixados": 15
+        }
+      ],
       "id": "trt20",
       "idadePendentes": 32,
       "ipcJus": 63.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 37,
       "novos": 43001,
       "pagina": 459,
@@ -2121,6 +4164,9 @@
       "porHabitantePagina": null,
       "porte": "Pequeno",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 36.1,
+      "recorribilidadeInterna": 23.2,
+      "recorribilidadePagina": 455,
       "servidores": 635,
       "sigla": "TRT20",
       "tempoBaixados": 15,
@@ -2134,10 +4180,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 491758182,
       "estruturaPagina": 41,
+      "execucaoBaixados": 15,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 41,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 30,
+          "tempoBaixados": 11
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 31,
+          "tempoBaixados": 15
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 31,
+          "tempoBaixados": 14
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 32,
+          "tempoBaixados": 12
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 31,
+          "tempoBaixados": 10
+        }
+      ],
       "id": "trt14",
       "idadePendentes": 31,
       "ipcJus": 90.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 63,
       "novos": 49152,
       "pagina": 459,
@@ -2145,6 +4228,9 @@
       "porHabitantePagina": null,
       "porte": "Pequeno",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 34.7,
+      "recorribilidadeInterna": 12.3,
+      "recorribilidadePagina": 455,
       "servidores": 961,
       "sigla": "TRT14",
       "tempoBaixados": 10,
@@ -2158,10 +4244,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 336874334,
       "estruturaPagina": 41,
+      "execucaoBaixados": 27,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 40,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 34,
+          "tempoBaixados": 29
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 35,
+          "tempoBaixados": 29
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 36,
+          "tempoBaixados": 24
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 33,
+          "tempoBaixados": 25
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 29,
+          "tempoBaixados": 18
+        }
+      ],
       "id": "trt16",
       "idadePendentes": 29,
       "ipcJus": 76.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 52,
       "novos": 64216,
       "pagina": 459,
@@ -2169,6 +4292,9 @@
       "porHabitantePagina": null,
       "porte": "Pequeno",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 22.0,
+      "recorribilidadeInterna": 13.2,
+      "recorribilidadePagina": 455,
       "servidores": 817,
       "sigla": "TRT16",
       "tempoBaixados": 18,
@@ -2182,10 +4308,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 662619705,
       "estruturaPagina": 41,
+      "execucaoBaixados": 14,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 38,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 39,
+          "tempoBaixados": 24
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 37,
+          "tempoBaixados": 19
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 31,
+          "tempoBaixados": 14
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 28,
+          "tempoBaixados": 10
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 26,
+          "tempoBaixados": 8
+        }
+      ],
       "id": "trt13",
       "idadePendentes": 26,
       "ipcJus": 84.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 69,
       "novos": 76719,
       "pagina": 459,
@@ -2193,6 +4356,9 @@
       "porHabitantePagina": null,
       "porte": "Pequeno",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 41.8,
+      "recorribilidadeInterna": 20.5,
+      "recorribilidadePagina": 455,
       "servidores": 1101,
       "sigla": "TRT13",
       "tempoBaixados": 8,
@@ -2206,10 +4372,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 483791837,
       "estruturaPagina": 41,
+      "execucaoBaixados": 12,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 34,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 23,
+          "tempoBaixados": 16
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 26,
+          "tempoBaixados": 17
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 23,
+          "tempoBaixados": 13
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 23,
+          "tempoBaixados": 9
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 23,
+          "tempoBaixados": 9
+        }
+      ],
       "id": "trt23",
       "idadePendentes": 23,
       "ipcJus": 72.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 80,
       "novos": 82103,
       "pagina": 459,
@@ -2217,6 +4420,9 @@
       "porHabitantePagina": null,
       "porte": "Pequeno",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 25.0,
+      "recorribilidadeInterna": 13.6,
+      "recorribilidadePagina": 455,
       "servidores": 1003,
       "sigla": "TRT23",
       "tempoBaixados": 9,
@@ -2230,10 +4436,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 463311113,
       "estruturaPagina": 41,
+      "execucaoBaixados": 16,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 35,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 21,
+          "tempoBaixados": 19
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": null,
+          "tempoBaixados": null
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 22,
+          "tempoBaixados": 16
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 22,
+          "tempoBaixados": 13
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 23,
+          "tempoBaixados": 11
+        }
+      ],
       "id": "trt17",
       "idadePendentes": 23,
       "ipcJus": 72.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 67,
       "novos": 84539,
       "pagina": 459,
@@ -2241,6 +4484,9 @@
       "porHabitantePagina": null,
       "porte": "Pequeno",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 45.5,
+      "recorribilidadeInterna": 23.0,
+      "recorribilidadePagina": 455,
       "servidores": 1023,
       "sigla": "TRT17",
       "tempoBaixados": 11,
@@ -2254,10 +4500,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 431976478,
       "estruturaPagina": 41,
+      "execucaoBaixados": 18,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 32,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 37,
+          "tempoBaixados": 22
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 38,
+          "tempoBaixados": 27
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 33,
+          "tempoBaixados": 18
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 29,
+          "tempoBaixados": 17
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 23,
+          "tempoBaixados": 11
+        }
+      ],
       "id": "trt21",
       "idadePendentes": 23,
       "ipcJus": 70.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 55,
       "novos": 59223,
       "pagina": 459,
@@ -2265,6 +4548,9 @@
       "porHabitantePagina": null,
       "porte": "Pequeno",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 32.2,
+      "recorribilidadeInterna": 18.4,
+      "recorribilidadePagina": 455,
       "servidores": 957,
       "sigla": "TRT21",
       "tempoBaixados": 11,
@@ -2278,10 +4564,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 361813499,
       "estruturaPagina": 41,
+      "execucaoBaixados": 14,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 35,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 38,
+          "tempoBaixados": 31
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 31,
+          "tempoBaixados": 26
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 28,
+          "tempoBaixados": 15
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 25,
+          "tempoBaixados": 12
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 22,
+          "tempoBaixados": 10
+        }
+      ],
       "id": "trt24",
       "idadePendentes": 22,
       "ipcJus": 82.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 60,
       "novos": 65040,
       "pagina": 459,
@@ -2289,6 +4612,9 @@
       "porHabitantePagina": null,
       "porte": "Pequeno",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 27.9,
+      "recorribilidadeInterna": 14.9,
+      "recorribilidadePagina": 455,
       "servidores": 779,
       "sigla": "TRT24",
       "tempoBaixados": 10,
@@ -2302,10 +4628,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 679598298,
       "estruturaPagina": 41,
+      "execucaoBaixados": 11,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 30,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 42,
+          "tempoBaixados": 19
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 22,
+          "tempoBaixados": 13
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 20,
+          "tempoBaixados": 10
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 19,
+          "tempoBaixados": 8
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 19,
+          "tempoBaixados": 8
+        }
+      ],
       "id": "trt11",
       "idadePendentes": 19,
       "ipcJus": 92.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 69,
       "novos": 79909,
       "pagina": 459,
@@ -2313,6 +4676,9 @@
       "porHabitantePagina": null,
       "porte": "Pequeno",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 27.0,
+      "recorribilidadeInterna": 11.2,
+      "recorribilidadePagina": 455,
       "servidores": 1218,
       "sigla": "TRT11",
       "tempoBaixados": 8,
@@ -2326,10 +4692,47 @@
       "despesaPorHabitanteSemInativos": null,
       "despesaTotal": 241503574,
       "estruturaPagina": 41,
+      "execucaoBaixados": 17,
+      "execucaoPagina": 465,
+      "execucaoPendentes": 29,
+      "historico": [
+        {
+          "ano": 2021,
+          "edicao": 2022,
+          "idadePendentes": 23,
+          "tempoBaixados": 26
+        },
+        {
+          "ano": 2022,
+          "edicao": 2023,
+          "idadePendentes": 26,
+          "tempoBaixados": 16
+        },
+        {
+          "ano": 2023,
+          "edicao": 2024,
+          "idadePendentes": 22,
+          "tempoBaixados": 21
+        },
+        {
+          "ano": 2024,
+          "edicao": 2025,
+          "idadePendentes": 21,
+          "tempoBaixados": 12
+        },
+        {
+          "ano": 2025,
+          "edicao": 2026,
+          "idadePendentes": 18,
+          "tempoBaixados": 12
+        }
+      ],
       "id": "trt22",
       "idadePendentes": 18,
       "ipcJus": 86.0,
       "ipcPagina": 473,
+      "justicaGratuita": null,
+      "justicaGratuitaPagina": null,
       "magistrados": 36,
       "novos": 40456,
       "pagina": 459,
@@ -2337,6 +4740,9 @@
       "porHabitantePagina": null,
       "porte": "Pequeno",
       "ramo": "trabalho",
+      "recorribilidadeExterna": 34.6,
+      "recorribilidadeInterna": 16.3,
+      "recorribilidadePagina": 455,
       "servidores": 650,
       "sigla": "TRT22",
       "tempoBaixados": 12,
@@ -2358,13 +4764,18 @@
     "despesaPorHabitanteSemInativos": "R$ por habitante, nominais de 2025",
     "despesaTotal": "R$ nominais de 2025",
     "execucao": "meses",
+    "execucaoBaixados": "meses",
+    "execucaoPendentes": "meses",
     "iadOficial": "%",
     "idadePendente": "meses",
     "idadePendentes": "meses",
     "ipcJus": "%",
+    "justicaGratuita": "%",
     "magistrados": "pessoas",
     "novos": "processos",
     "pendentes": "processos",
+    "recorribilidadeExterna": "%",
+    "recorribilidadeInterna": "%",
     "servidores": "pessoas",
     "tempoBaixados": "meses"
   },
