@@ -773,6 +773,43 @@ class Rotina(unittest.TestCase):
         self.assertTrue(r["comprovada"])                       # 7 no prazo, 1 atrasada, nenhum dia faltante
         self.assertEqual(r["atrasadas"], 1)
 
+    def test_rodadas_perdidas_de_outubro_contam_como_faltantes(self):
+        """De 02 a 18/10/2026 as execuções agendadas emitiram e não registraram (#282): sem rodada registrada,
+        a contagem começa na primeira execução agendada, e esses dias aparecem como faltantes."""
+        r = mod._rotina([], _utc(2026, 10, 18, 12))
+        self.assertEqual(r["inicio_operacao_agendada"], "2026-10-02")
+        self.assertEqual(r["dias_sem_rodada_total"], 17)
+        self.assertEqual((r["dias_sem_rodada"][0], r["dias_sem_rodada"][-1]), ("2026-10-02", "2026-10-18"))
+        self.assertFalse(r["comprovada"])
+        self.assertIn("17 dias sem rodada", r["leitura"])
+        self.assertEqual([(x["de"], x["ate"], x["execucoes"]) for x in r["incidentes"]], [("2026-10-02", "2026-10-18", 84)])
+        # antes da primeira execução agendada não há início nem incidente
+        r = mod._rotina([], _utc(2026, 9, 30, 12))
+        self.assertEqual((r["inicio_operacao_agendada"], r["dias_sem_rodada_total"], r["incidentes"]), (None, 0, []))
+
+    def test_comprovacao_olha_os_ultimos_30_dias_e_o_total_guarda_o_historico(self):
+        def rodadas(de, ate):
+            d, out = de, []
+            while d <= ate:
+                out.append({"origem": d.isoformat(), "modo": "agendada", "no_prazo": True, "falha": False})
+                d += timedelta(days=1)
+            return out
+        # sete rodadas no prazo logo depois da falha: os dias de outubro ainda estão na janela
+        r = mod._rotina(rodadas(date(2026, 10, 19), date(2026, 10, 25)), _utc(2026, 10, 25, 12))
+        self.assertEqual(r["no_prazo"], 7)
+        self.assertEqual(r["janela_comprovacao"]["dias_sem_rodada"], 17)
+        self.assertFalse(r["comprovada"])
+        # um mês de rodadas no prazo depois: a janela já não alcança 02 a 18/10, o total continua com os 17 dias
+        r = mod._rotina(rodadas(date(2026, 10, 19), date(2026, 11, 20)), _utc(2026, 11, 20, 12))
+        self.assertEqual(r["janela_comprovacao"], {"dias": 30, "inicio": "2026-10-22", "fim": "2026-11-20",
+                                                   "no_prazo": 30, "dias_sem_rodada": 0})
+        self.assertTrue(r["comprovada"])
+        self.assertEqual(r["dias_sem_rodada_total"], 17)
+        self.assertIn("17 dias sem rodada", r["leitura"])
+        # um dia faltante dentro da janela volta a impedir
+        sem_um = [x for x in rodadas(date(2026, 10, 19), date(2026, 11, 20)) if x["origem"] != "2026-11-10"]
+        self.assertFalse(mod._rotina(sem_um, _utc(2026, 11, 20, 12))["comprovada"])
+
     def test_dia_ainda_no_prazo_nao_conta_como_faltante(self):
         """Às 07h30 de Brasília de 09/10 (10h30 UTC) a rodada de 09/10 ainda está no prazo:
         não é dia faltante. Às 21h30 de Brasília de 08/10 (00h30 UTC de 09/10) a data UTC já

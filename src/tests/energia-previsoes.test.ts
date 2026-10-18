@@ -278,7 +278,9 @@ const ROTINA = {
   falhas: true,
   dias_sem_rodada: true,
   dias_sem_rodada_total: true,
+  janela_comprovacao: false,
   comprovada: true,
+  incidentes: false,
   leitura: true,
   criterio_comprovacao: true,
 } satisfies Mapa<Rotina>;
