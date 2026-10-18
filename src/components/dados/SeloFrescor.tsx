@@ -44,8 +44,8 @@ export function ConteudoFrescor({
       <div role="status" data-frescor="atrasado" className={`border border-erro bg-papel px-4 py-3 text-sm text-carvao ${className}`}>
         <p className="rotulo text-erro">Atualização atrasada</p>
         <p className="mt-1 leading-relaxed">
-          A última publicação destes dados é de {s.publicadoEm} (Brasília), {s.idade}. Os números desta página valem para
-          essa publicação. O processamento diário não publicou dados novos desde então.
+          O carimbo mais antigo entre os grupos é de {s.publicadoEm} (Brasília), {s.idade}. Há grupos sem nova publicação
+          desde essa data. Outros podem ter atualizações mais recentes; consulte a referência de cada indicador.
         </p>
       </div>
     );
@@ -53,7 +53,7 @@ export function ConteudoFrescor({
 
   return (
     <p className={`text-xs text-mineral ${className}`} data-frescor={s ? "em-dia" : "calculando"}>
-      Última publicação: {s ? s.publicadoEm : publicadoEmBrasilia(geradoEm)} (Brasília){s ? `, ${s.idade}` : ""}. {PROMESSA_ATUALIZACAO}
+      Publicação mais antiga entre os grupos: {s ? s.publicadoEm : publicadoEmBrasilia(geradoEm)} (Brasília){s ? `, ${s.idade}` : ""}. {PROMESSA_ATUALIZACAO}
     </p>
   );
 }
