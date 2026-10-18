@@ -121,7 +121,12 @@ def selecionar(manifesto, mapa, resultados, retidos=None, inconclusivo=False):
                 # base e só troca as datas dos grupos publicados. Um teste que também lê
                 # outros grupos retém esses grupos; meta só é retido pelo teste que protege
                 # somente meta (o próprio envelope reprovado), o que retém tudo abaixo.
-                alvo = [g for g in protecao['grupos'] if g != 'meta'] or protecao['grupos']
+                # Se os outros grupos do teste já estavam retidos (reteste da composição,
+                # com os bytes da base), a falha não vem deles: meta também é retido, e a
+                # rodada não pode ser dada como estável com o teste vermelho.
+                alvo = [g for g in protecao['grupos'] if g != 'meta']
+                if not alvo or all(g in (retidos or {}) for g in alvo):
+                    alvo = protecao['grupos']
                 for g in alvo:
                     motivos.setdefault(g, []).append(f'{teste}: {estado}')
         # Falha de teste não inventariado não pode ser silenciosamente ignorada.

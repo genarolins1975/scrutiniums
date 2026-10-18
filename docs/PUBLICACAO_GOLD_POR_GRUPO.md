@@ -77,7 +77,9 @@ via `observatorioHead.ts`, para a data do Dataset). Como a publicação parcial 
 remonta o `meta` a partir da base e só troca as datas dos grupos publicados, a
 reprovação de um teste que protege `meta` e outros grupos retém apenas os outros;
 o `meta` só é retido, e com ele todos os grupos, quando o teste reprovado protege
-somente o `meta`. A composição resultante passa de novo pelas três suítes. A análise é conservadora para módulos leitores
+somente o `meta`. A composição resultante passa de novo pelas três suítes; se o
+mesmo teste continuar reprovado com os outros grupos já retidos (bytes da base), a
+falha vem do envelope e o `meta` é retido, sem instalar nada com o teste vermelho. A análise é conservadora para módulos leitores
 importados: pode proteger também arquivos de outros ramos do mesmo módulo.
 Enumerações de catálogo/linhagem protegem o inventário todo. Teste ausente ou
 pulado não aprova um grupo que deveria proteger. Não são adicionados skips nem
