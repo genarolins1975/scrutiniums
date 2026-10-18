@@ -2287,7 +2287,7 @@ def _conferencias(con, ralie_ug, pf_ug, data_ralie, lib_linhas):
     unidade (potência e previsão); (2) liberações do arquivo detalhado somadas por ano e tipo
     contra o resumo anual oficial, desde 2014 (antes disso o detalhado não cobre toda a
     potência, segundo o dicionário, e o resumo está em MW)."""
-    if pf_ug is not None:
+    if pf_ug is not None and data_ralie in ax.datas_ralie(pf_ug):
         t = ax.ug_mensal(pf_ug, [data_ralie])
         hist = {}
         for r in t.to_pylist():
@@ -2305,7 +2305,7 @@ def _conferencias(con, ralie_ug, pf_ug, data_ralie, lib_linhas):
     else:
         ralie = {"fotografia": data_ralie, "ugs_csv": len(ralie_ug), "ugs_parquet": None,
                  "ugs_iguais": None, "mw_csv": _r(_mw(sum(x.get("kw") or 0 for x in ralie_ug.values())), 3),
-                 "mw_parquet": None, "resultado": "nao_executada", "motivo": "Bronze histórico do RALIE ausente"}
+                 "mw_parquet": None, "resultado": "nao_executada", "motivo": "Bronze histórico ausente ou sem a fotografia corrente do RALIE"}
 
     det = defaultdict(float)
     for x in lib_linhas:
@@ -2418,12 +2418,20 @@ def construir(con, ctx):
             vig[DS_RALIE][rec] = v
         else:
             vig[DS_RALIE].pop(rec, None)
-    if not historico_disponivel:
-        ressalvas.append("Histórico do RALIE indisponível: nenhum bronze completo de unidades e usinas; coortes, confiabilidade e revisões históricas não calculadas.")
+    datas_ug, datas_us = [], []
     if historico_disponivel:
         pf_ug = ax.abre_parquet(_bytes_bronze(v_ug_hist))
         pf_us = ax.abre_parquet(_bytes_bronze(v_us_hist))
-        datas_hist = ax.datas_ralie(pf_us)
+        datas_ug, datas_us = ax.datas_ralie(pf_ug), ax.datas_ralie(pf_us)
+        # Uma fotografia sem o outro recurso não é uma observação de zero.
+        datas_hist = sorted(set(datas_ug) & set(datas_us))
+        historico_disponivel = bool(datas_hist)
+    if not historico_disponivel:
+        ressalvas.append("Histórico do RALIE indisponível: bronze de unidades e usinas ausente ou sem fotografias comuns; análises históricas não calculadas.")
+    coortes_disponiveis = bool(historico_disponivel and datas_ug[-1] == datas_us[-1] == data_ralie)
+    if historico_disponivel and not coortes_disponiveis:
+        ressalvas.append("Desfecho das coortes indisponível: o bronze histórico não cobre a fotografia corrente do RALIE; histórico anterior preservado com suas próprias datas.")
+    if historico_disponivel:
         mensais = ax.ultimo_por_mes(datas_hist)
         ralie_kw_hist = ax.potencias_outorgadas_historicas(pf_us)
         # unidades com potência fora de escala no Parquet histórico (soma das unidades 10 vezes
@@ -2470,15 +2478,17 @@ def construir(con, ctx):
                                           "ultima_fotografia": datas_hist[-1] if datas_hist else None,
                                           "disponivel": historico_disponivel,
                                           "motivo": None if historico_disponivel else "Bronze histórico do RALIE ausente"})
-    trajs = ax.trajetorias_usinas(pf_ug, pf_us) if historico_disponivel else {}
-    prim = ax.ugs_da_primeira_aparicao(pf_ug) if historico_disponivel else {}
+    trajs = ax.trajetorias_usinas(pf_ug, pf_us) if coortes_disponiveis else {}
+    prim = ax.ugs_da_primeira_aparicao(pf_ug) if coortes_disponiveis else {}
     del pf_ug
     lib_primeira = {}
     for x in lib_linhas:
         if x["realizado"] and (x["nucleo"] not in lib_primeira or x["realizado"] < lib_primeira[x["nucleo"]]):
             lib_primeira[x["nucleo"]] = x["realizado"]
-    desf = _desfechos(trajs, prim, lib_idx, siga, encerramentos, datas_hist[-1], lib_primeira, pares_atipicos) if historico_disponivel else {}
-    estagios["coortes"] = _bloco_coortes(desf, datas_hist[0]) if historico_disponivel else []
+    desf = _desfechos(trajs, prim, lib_idx, siga, encerramentos, datas_hist[-1], lib_primeira, pares_atipicos) if coortes_disponiveis else {}
+    estagios["coortes"] = _bloco_coortes(desf, datas_hist[0]) if coortes_disponiveis else []
+    estagios["coortes_status"] = {"disponivel": coortes_disponiveis,
+                                 "motivo": None if coortes_disponiveis else "Bronze histórico sem a fotografia corrente do RALIE"}
     estagios["desfechos_definicao"] = DESFECHOS
     estagios["coortes_peso"] = {
         "regra": REGRA_PESO_COORTES,
@@ -2502,10 +2512,11 @@ def construir(con, ctx):
         con, mensais, atipicas["casos"],
         (v_ug_hist or {}).get("capturado_em"), (v_us_hist or {}).get("capturado_em"))
     estagios["unidades_atipicas"] = _bloco_atipicas(atipicas, mensais)
-    if not historico_disponivel:
+    if not coortes_disponiveis:
         for chave in estagios["coortes_peso"]:
             if chave != "regra":
                 estagios["coortes_peso"][chave] = None
+    if not historico_disponivel:
         for chave in ("pares", "usinas", "mw_ugs_publicado_nos_casos"):
             estagios["unidades_atipicas"][chave] = None
         estagios["unidades_atipicas"].update(disponivel=False, motivo="Bronze histórico do RALIE ausente")
@@ -2618,10 +2629,13 @@ def construir(con, ctx):
     gold["cronograma"]["historico_fonte"]["capturas"] = [
         {k: v[k] for k in ("recurso", "capturado_em", "sha256")} for v in hist_vintages]
     for chave in ("coortes", "confiabilidade"):
-        snap = c.snapshot_de(con, DS_RALIE, hist_vintages if historico_disponivel else [])
+        disponivel = coortes_disponiveis if chave == "coortes" else historico_disponivel
+        snap = c.snapshot_de(con, DS_RALIE, hist_vintages if disponivel else [])
         gold["proveniencia"][chave].update(
             capturado_em=c.ultima_captura(snap), snapshot={k: snap[k] for k in ("id", "sha256")},
             publicado_pela_fonte_em=c.publicacao_mais_recente(snap))
+    if not coortes_disponiveis:
+        gold["proveniencia"]["coortes"].update(periodo_referencia=None, cobertura_historica=None, download=None)
     gold["evidencias"] = _evidencias(gold, vig, siga, ralie_ug, desf, conf_bruta, emp_siget, lotes, pde_obs)
     gold["downloads"] = [{"rotulo": r, "url": DOWNLOADS[k]} for k, r in (
         ("usinas", "Usinas do SIGA com estágio, potência e coordenadas (CSV)"),
@@ -2638,7 +2652,8 @@ def construir(con, ctx):
         ("contratos", "Contratos de concessão de transmissão por data de assinatura (CSV)"),
         ("rede_epe", "Linhas de transmissão existentes e planejadas do WebMap da EPE (JSON)"),
         ("pde", "PDE 2035: figuras usadas (CSV)"))
-        if not (k == "rede_epe" and not rede_epe) and not (k in ("trajetorias", "confiabilidade") and not historico_disponivel)]
+        if not (k == "rede_epe" and not rede_epe) and not (k == "trajetorias" and not coortes_disponiveis)
+        and not (k == "confiabilidade" and not historico_disponivel)]
     return gold
 
 
