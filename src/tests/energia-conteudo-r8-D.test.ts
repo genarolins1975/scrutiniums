@@ -155,18 +155,23 @@ describe("P067 a P070: veredito em duas camadas", () => {
   });
 
   it("os números do veredito conferem com os artefatos publicados (CSV e JSON), não com a fórmula do código", () => {
-    // P067: 415 conjuntos e 126 publicados, lidos de dados_catalogo.csv
-    expect(linhasCat.length).toBe(415);
+    // P067: conjuntos e publicados lidos de dados_catalogo.csv; o CSV tem uma linha por entrada de catalogo.json
+    expect(linhasCat.length).toBe(cat.total);
     const publicados = linhasCat.filter((l) => l[cCat.estado] === "PUBLICADO").length;
     expect(casos[0].veredito).toContain(`${linhasCat.length} conjuntos`);
     expect(casos[0].veredito).toContain(`${publicados} chegaram`);
     // P068: o maior atraso e o número de integrações com revisão, lidos de dados_conjuntos.csv
     const atrasadas = linhasConj.filter((l) => l[cConj.situacao] === "ATRASADO");
-    expect(atrasadas.length).toBe(1);
-    expect(casos[1].veredito).toContain(`${atrasadas[0][cConj.dias_atraso]} dias além do prazo`);
+    const dias = (n: number) => `${n} ${n === 1 ? "dia" : "dias"} além do prazo`;
+    if (atrasadas.length === 0) expect(casos[1].veredito).toContain("nenhuma integração estava atrasada");
+    else if (atrasadas.length === 1) expect(casos[1].veredito).toContain(`só uma integração estava atrasada`);
+    else expect(casos[1].veredito).toContain(`${atrasadas.length} integrações estavam atrasadas`);
+    if (atrasadas.length) expect(casos[1].veredito).toContain(dias(Math.max(...atrasadas.map((l) => Number(l[cConj.dias_atraso])))));
     const comRevisao = linhasConj.filter((l) => Number(l[cConj.revisoes_observacoes] || 0) > 0).length;
-    expect(casos[1].veredito).toContain(`Em ${comRevisao} integrações`);
-    expect(casos[1].veredito).toContain("não prova erro");
+    if (comRevisao) {
+      expect(casos[1].veredito).toContain(`Em ${comRevisao} ${comRevisao === 1 ? "integração" : "integrações"} a fonte revisou`);
+      expect(casos[1].veredito).toContain("não prova erro");
+    } else expect(casos[1].veredito).toContain("Nenhuma revisão de valores já publicados foi detectada.");
     expect(casos[1].veredito).toContain("sem prazo declarado não entram");
     // P069: o número de arquivos do manifesto publicado
     const arquivos = json<{ arquivos: unknown[] }>("public/energia/gold/manifesto.json").arquivos.length;
@@ -612,7 +617,7 @@ describe("ficha de conjunto: licença, página oficial, formatos e arquivos", ()
 
 /* ---------------------------------------------------------------- conciliações */
 
-describe("conciliação 1: 415 conjuntos de 18 órgãos no catálogo e 151 integrações de 13 órgãos no rodapé", () => {
+describe("conciliação 1: conjuntos e órgãos do catálogo contra integrações e órgãos do rodapé", () => {
   const conc = conciliarCatalogoEIntegracoes(cat, pub);
 
   it("as contagens do catálogo e da saúde batem com dados_catalogo.csv e dados_conjuntos.csv", () => {
@@ -644,25 +649,29 @@ describe("conciliação 1: 415 conjuntos de 18 órgãos no catálogo e 151 integ
     for (const o of conc.orgaosSoNoCatalogo) expect(t).toContain(o);
     expect(entender(paginas.catalogo)).toContain(t);
     expect(entender(paginas.saude)).toContain(t);
-    expect(conc.conjuntos).toBe(415);
-    expect(conc.orgaos).toBe(18);
-    expect(conc.integracoes).toBe(151);
-    expect(conc.orgaosComIntegracao).toBe(13);
+    // as quatro contagens relidas das golds (outro artefato que os CSV do teste anterior)
+    expect(conc.conjuntos).toBe(cat.total);
+    expect(conc.orgaos).toBe(new Set(cat.entradas.map((e) => e.orgao)).size);
+    expect(conc.integracoes).toBe(pub.conjuntos.length);
+    expect(conc.orgaosComIntegracao).toBe(new Set(pub.conjuntos.map((c) => c.orgao)).size);
   });
 
   it("a Saúde chama de integração o que conta (cartões e gráfico)", () => {
     const t = entender(paginas.saude);
+    const n = linhasConj.length;
     expect(t).toContain("Integrações em dia");
-    expect(t).toContain("de 151 integrações");
-    expect(t).not.toMatch(/de 151 integrados|conjuntos em dia/i);
+    expect(t).toContain(`de ${n} integrações`);
+    expect(t).not.toMatch(new RegExp(`de ${n} integrados|conjuntos em dia`, "i"));
   });
 
   it("o texto que o rodapé precisaria: integrações no lugar de conjuntos, com a ponte para o catálogo", () => {
     const orgaos = Array.from(new Set(linhasConj.map((l) => l[cConj.orgao])));
     const r = textoRodapeDasFontes(conc, orgaos);
-    expect(r.resumo).toBe("13 órgãos, 151 integrações");
-    expect(r.detalhe).toContain("em 151 integrações de conjuntos (132 dos 415 conjuntos do catálogo)");
-    expect(r.detalhe).toContain("O catálogo traz 18 órgãos.");
+    const comIntegracao = linhasCat.filter((l) => l[cCat.integracoes]).length;
+    const orgaosCat = new Set(linhasCat.map((l) => l[cCat.orgao])).size;
+    expect(r.resumo).toBe(`${orgaos.length} órgãos, ${linhasConj.length} integrações`);
+    expect(r.detalhe).toContain(`em ${linhasConj.length} integrações de conjuntos (${comIntegracao} dos ${linhasCat.length} conjuntos do catálogo)`);
+    expect(r.detalhe).toContain(`O catálogo traz ${orgaosCat} órgãos.`);
   });
 });
 

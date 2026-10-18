@@ -31,6 +31,7 @@ grupos de MMGD. O dicionário da Geração por Usina declara que os grupos de pe
 ("Solar MMGD, estimativa do ONS"), separada da solar centralizada; comparações que
 atravessam a data usam o perímetro sem MMGD, que este conjunto permite montar.
 """
+import base64
 import json
 import math
 import os
@@ -39,6 +40,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import zlib
 from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta, timezone
 
@@ -158,7 +160,9 @@ REGISTRO = {
     "id": "geracao",
     "gold": GOLD,
     "familia": FAMILIA,
-    "ordem": 22,
+    # depois de Expansão (30) e Transição (31): o contexto da capacidade lê expansao.json e transicao.json
+    # da mesma execução (run.py só põe no ctx as golds já construídas)
+    "ordem": 32,
     "datasets": [
         _dataset_registro("usina", "UTILIZADO EM INDICADOR", [CSV["matriz_diaria"], CSV["matriz_horaria"], CSV["rotulos"], CSV["a11"],
                                                               CSV["reconciliacao"], CSV["capacidade_usina"]],
@@ -310,11 +314,31 @@ def _importado(ctrl, vid):
     return bool(ctrl.get(vid, {}).get(_campo(vid, "importado")))
 
 
-def _marca_importado(con, vid, relatorio, manifesto=None):
+# Conjuntos cujo manifesto também registra as referências de cada série. O manifesto só de
+# séries não basta quando a fonte reclassifica um dia: a série continua no arquivo (outros
+# dias), e o valor antigo daquele dia, que a recaptura não traz mais, seguia vigente. Foi o
+# caso da restrição eólica de 05/09/2026 (e|NE|REL|SIS, 319,698 MWh), capturada em 02/10 e
+# reclassificada em 03/10: o total do SIN ficou 319,7 MWh acima da soma por usina.
+CONJUNTOS_MANIFESTO_REFS = ("coff_eolica", "coff_solar")
+
+
+def _marca_importado(con, vid, relatorio, manifesto=None, refs=None):
+    """refs: (serie, ref, valor) gravados pela importação; valor None não entra (ausência)."""
     linhas = [(vid, _campo(vid, "importado"), json.dumps(relatorio, ensure_ascii=False, sort_keys=True, default=str))]
     if manifesto is not None:
         linhas.append((vid, _campo(vid, "manifesto"), json.dumps(sorted(manifesto), ensure_ascii=False)))
+    if refs is not None:
+        por_serie = defaultdict(set)
+        for s_, r_, v_ in refs:
+            if v_ is not None:
+                por_serie[s_].add(r_)
+        bruto = json.dumps({s_: sorted(rs) for s_, rs in sorted(por_serie.items())}, ensure_ascii=False).encode("utf-8")
+        linhas.append((vid, _campo(vid, "manifesto_refs"), base64.b64encode(zlib.compress(bruto, 9)).decode("ascii")))
     base.grava_registros(con, DS_CONTROLE, vid, linhas)
+
+
+def _tem_manifesto_refs(ctrl, vid):
+    return bool(ctrl.get(vid, {}).get(_campo(vid, "manifesto_refs")))
 
 
 def _parquet_temporario(vintage):
@@ -489,7 +513,7 @@ def _importa_coff(con, k, v, periodo):
     base.grava_registros(con, ds, v["vintage_id"], regs)
     rel = {**a["rel"], "periodo": periodo, "observacoes": len(obs), "novas": novas, "revisoes": revs,
            "usinas": len(a["cadastro"])}
-    _marca_importado(con, v["vintage_id"], rel, manif)
+    _marca_importado(con, v["vintage_id"], rel, manif, refs=obs)
     return rel
 
 
@@ -684,7 +708,12 @@ def importa_pendentes(con, k, alvo, status):
     vig = ckan.vintages_vigentes(con, ds)
     for recurso, v in sorted(vig.items(), key=lambda x: og.periodo_do_arquivo(x[0] + ".parquet") or ""):
         if _importado(ctrl, v["vintage_id"]):
-            continue
+            # importada antes do manifesto de referências: relê uma vez, se o bronze existe;
+            # sem bronze, segue com o manifesto de séries (o comportamento anterior)
+            if (k not in CONJUNTOS_MANIFESTO_REFS or _tem_manifesto_refs(ctrl, v["vintage_id"])
+                    or not os.path.isfile(base.caminho_bronze(v["arquivo"]) if hasattr(base, "caminho_bronze")
+                                          else os.path.join(base.RAIZ, v["arquivo"]))):
+                continue
         if not cfg.get("arquivo") and recurso not in alvo and alvo:
             continue  # arquivo que saiu da seleção (ex.: detalhamento mais antigo)
         periodo = og.periodo_do_arquivo(recurso + ".parquet")
@@ -862,16 +891,34 @@ def manifestos(con, ds):
     return out
 
 
-def filtra_manifesto(obs, man):
+def manifestos_refs(con, ds):
+    """{periodo do arquivo: {serie: set(refs)}} das vintages vigentes que registram as
+    referências (CONJUNTOS_MANIFESTO_REFS); período sem esse registro fica de fora."""
+    ctrl = _controle(con)
+    out = {}
+    for recurso, v in ckan.vintages_vigentes(con, ds).items():
+        bruto = ctrl.get(v["vintage_id"], {}).get(_campo(v["vintage_id"], "manifesto_refs"))
+        per = og.periodo_do_arquivo(recurso + ".parquet")
+        if bruto and per:
+            out[per] = {s_: set(rs) for s_, rs in json.loads(zlib.decompress(base64.b64decode(bruto))).items()}
+    return out
+
+
+def filtra_manifesto(obs, man, refs=None):
     """Mantém (serie, ref) só quando a série consta do manifesto do arquivo que cobre a
-    referência (arquivo mensal AAAA-MM, senão o anual AAAA)."""
+    referência (arquivo mensal AAAA-MM, senão o anual AAAA). Com `refs` (manifestos_refs)
+    para o período, exige também a referência: um dia que a recaptura não traz mais sai."""
+    refs = refs or {}
     out = {}
     for (serie, ref), v in obs.items():
-        m = man.get(ref[:7])
-        if m is None:
-            m = man.get(ref[:4])
-        if m is not None and serie in m:
-            out[(serie, ref)] = v
+        per = ref[:7] if ref[:7] in man else ref[:4]
+        m = man.get(per)
+        if m is None or serie not in m:
+            continue
+        r = refs.get(per)
+        if r is not None and ref not in r.get(serie, ()):
+            continue
+        out[(serie, ref)] = v
     return out
 
 
@@ -2298,7 +2345,7 @@ RAZOES = ("REL", "CNF", "ENE", "PAR", "SEM")
 def bloco_restricao(con, k, k_det, fc_cad, hoje):
     ds = _ds(k)
     man = manifestos(con, ds)
-    tudo = filtra_manifesto(vigentes(con, ds), man)
+    tudo = filtra_manifesto(vigentes(con, ds), man, manifestos_refs(con, ds))
     if not tudo:
         return None
     cad = base.registros_como_estavam_em(con, ds)

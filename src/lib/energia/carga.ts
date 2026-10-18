@@ -787,7 +787,7 @@ export function textoRevisoes(r: P025["revisoes"], idioma: Idioma = idiomaEnergi
           `in the ${plural(r.revisoes_com_percentual, "revision", "revisions", "en")} with a positive previous value, a median of ${num(r.mediana_abs_pct, 4, "en")}% and a maximum of ${num(r.max_abs_pct, 2, "en")}% in absolute value`,
           idioma,
         );
-  const corr = r.linhas.filter((l) => l.situacao === "correcao_de_valor_fora_do_dominio").length;
+  const corr = r.correcoes_fora_do_dominio ?? r.linhas.filter((l) => l.situacao === "correcao_de_valor_fora_do_dominio").length;
   return tx(
     `Entre ${plural(r.capturas_diaria.length, "captura", "capturas")} da carga diária, ${plural(r.total, "valor foi revisado", "valores foram revisados")} em ${plural(r.dias_revisados, "dia", "dias")}: ${mag}` +
       (corr ? `; ${plural(corr, "correção", "correções")} de valor fora do domínio (não positivo) fica à parte.` : "."),

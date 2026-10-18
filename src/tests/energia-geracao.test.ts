@@ -64,6 +64,7 @@ import {
   rotaPainel,
   situacaoMensal,
   textoDozeMeses,
+  curtoCategoria,
 } from "@/lib/energia/geracao";
 import type { GoldGeracaoDetalhe } from "@/lib/energia/tipos-geracao";
 
@@ -224,20 +225,49 @@ describe("textos e navegação da Geração", () => {
   it("variação de 12 meses: com categorias suprimidas, o total das demais acompanha o total completo (o sinal pode inverter)", () => {
     const c = G.matriz.comparacao_12m!;
     expect(Object.keys(c.variacao_suprimida).length).toBeGreaterThan(0);
+    const sinal = (v: number) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${num(Math.abs(v), 1)}%`;
     const texto = textoDozeMeses(c);
-    expect(texto).toContain("−0,6%");
-    expect(texto).toContain("Só com as demais categorias, o total varia +0,5%.");
+    expect(texto).toContain(`contra os 365 dias anteriores: ${sinal(c.variacao_total_sem_mmgd_pct!)}.`);
+    expect(texto).toContain(`Só com as demais categorias, o total varia ${sinal(c.variacao_total_comparavel_pct!)}.`);
+    // o sinal pode inverter: total completo negativo e o das demais positivo, cada um com o seu sinal no texto
+    const inv = textoDozeMeses({ ...c, variacao_total_sem_mmgd_pct: -0.6, variacao_total_comparavel_pct: 0.5 });
+    expect(inv).toContain("anteriores: −0,6%.");
+    expect(inv).toContain("Só com as demais categorias, o total varia +0,5%.");
     // sem categoria suprimida, o total completo já é o comparável e o texto não repete
     expect(textoDozeMeses({ ...c, variacao_suprimida: {} })).not.toContain("Só com as demais categorias");
-    // a gold publica o total comparável e ele sai das mesmas médias (sem MMGD, sem as suprimidas)
-    expect(c.variacao_total_comparavel_pct).toBe(0.5);
+    // a gold publica o total comparável e ele sai das mesmas médias (sem MMGD, sem as suprimidas): refeito pelas
+    // médias da janela anterior e pelas variações publicadas (arredondadas a 0,1 ponto, daí a tolerância)
+    const cats = (Object.keys(c.variacao_pct) as (keyof typeof c.variacao_pct)[])
+      .filter((k) => k !== "solar_mmgd" && !c.variacao_suprimida[k] && c.variacao_pct[k] !== null && c.anterior_mwmed[k] !== null);
+    expect(cats.length).toBeGreaterThan(3);
+    const ant = cats.reduce((s, k) => s + c.anterior_mwmed[k]!, 0);
+    const at = cats.reduce((s, k) => s + c.anterior_mwmed[k]! * (1 + c.variacao_pct[k]! / 100), 0);
+    expect(Math.abs(c.variacao_total_comparavel_pct! - (100 * at / ant - 100))).toBeLessThanOrEqual(0.1);
   });
 
   it("inflexibilidade térmica: a nuclear é quase toda inflexível e pesa na parcela; sem ela a parcela cai", () => {
-    const r = inflexibilidadeSemNuclear(G.termica!.ultimos_12m)!;
+    const u12 = G.termica!.ultimos_12m;
+    const r = inflexibilidadeSemNuclear(u12)!;
     expect(r.nuclearInflexivelPct).toBeGreaterThan(99);
-    expect(r.nuclearNaInflexibilidadePct).toBeCloseTo(35.1, 1);
-    expect(r.semNuclearPct).toBeCloseTo(50.6, 1);
+    // outro caminho: os CSV mensais por motivo (linha SIN) e por usina (categoria nuclear) somados nos mesmos 12 meses
+    const somaCsv = (arq: string, filtro: (c: Record<string, string>) => boolean, col: string) => {
+      const [cab, ...linhas] = readFileSync(join(raiz, "public/energia/series", arq), "utf-8").trim().split("\n");
+      const nomes = cab.split(";");
+      return linhas.map((l) => Object.fromEntries(l.split(";").map((v, i) => [nomes[i], v])))
+        .filter((c) => c.mes >= u12.inicio && c.mes <= u12.fim && filtro(c))
+        .reduce((s, c) => s + (Number(c[col]) || 0), 0);
+    };
+    const sin = (c: Record<string, string>) => c.regiao === "SIN";
+    const nuclear = (c: Record<string, string>) => c.categoria === "nuclear";
+    const total = somaCsv("geracao_termica_motivo_mensal.csv", sin, "total_mwh");
+    const infl = somaCsv("geracao_termica_motivo_mensal.csv", sin, "inflexibilidade_mwh");
+    const nucTotal = somaCsv("geracao_termica_usina_mensal.csv", nuclear, "total_mwh");
+    const nucInfl = somaCsv("geracao_termica_usina_mensal.csv", nuclear, "inflexibilidade_mwh");
+    expect(total).toBeCloseTo(u12.total_mwh!, -1);
+    expect(r.nuclearNaInflexibilidadePct).toBeCloseTo((100 * nucInfl) / infl, 1);
+    expect(r.semNuclearPct).toBeCloseTo((100 * (infl - nucInfl)) / (total - nucTotal), 1);
+    // a nuclear pesa na parcela: mais de um quinto de toda a inflexibilidade
+    expect(r.nuclearNaInflexibilidadePct).toBeGreaterThan(20);
     const pct = G.termica!.ultimos_12m.por_motivo.find((m) => m.motivo === "inflexibilidade")!.pct!;
     expect(r.semNuclearPct).toBeLessThan(pct);
     expect(inflexibilidadeSemNuclear({ total_mwh: null, por_motivo: [], por_combustivel: [] })).toBeNull();
@@ -854,8 +884,22 @@ describe("páginas com as correções das avaliações independentes", () => {
     expect(x).toContain("Participação por ano, sem a MMGD, e a MMGD estimada à parte");
     // a tabela diz 'sem ressalva' em vez de 'sem dado' nas colunas de ressalva e de presença
     expect(x).toContain("Ressalva de universo");
-    // a lacuna das categorias comparáveis ao lado da comparação de 365 dias
-    expect(x).toContain("a geração delas em ago/2025 dá a ordem de grandeza da lacuna");
+    // a lacuna das categorias comparáveis ao lado da comparação de 365 dias: cada categoria com variação publicada e
+    // geração no mesmo mês do ano anterior das usinas sem dado, em GWh, da maior para a menor (lida da gold, não da função da página)
+    const m = G.matriz;
+    const lac = m.universo.lacuna_ultimo_mes;
+    const curto = curtoCategoria("pt");
+    const esperadas = lac
+      ? Object.entries(lac.detalhe_por_categoria)
+          .map(([k, d]) => ({ k: k as keyof typeof curto, gwh: (d?.mwh_dos_ausentes_mesmo_mes_ano_anterior ?? 0) / 1000 }))
+          .filter(({ k, gwh }) => gwh > 0 && m.comparacao_12m!.variacao_pct[k] !== null && !m.comparacao_12m!.variacao_suprimida[k])
+          .sort((a, b) => b.gwh - a.gwh)
+      : [];
+    if (esperadas.length) {
+      expect(x).toContain(`a geração delas em ${mesAno(lac!.mes_ano_anterior)} dá a ordem de grandeza da lacuna: ${esperadas.map((e) => `${minusculaPalavras(curto[e.k])} ${num(e.gwh, 1)} GWh`).join("; ")}.`);
+    } else {
+      expect(x).not.toContain("dá a ordem de grandeza da lacuna");
+    }
   });
 
   it("abertura: a janela de um dia e a de 7 dias só existem para o SIN; para subsistema ficam desativadas com o motivo (aviso só fora do SIN)", () => {
@@ -899,7 +943,10 @@ describe("páginas com as correções das avaliações independentes", () => {
     expect(x).toContain("alterações posteriores indicadas em fontes secundárias (Lei 15.269/2025; Portaria Normativa MME 140/2026) não foram verificadas aqui");
     expect(x).not.toContain("regra lida (REN");
     expect(x).toContain("Compensação: pela norma lida em cópia de 08/01/2025, só a razão elétrica (indisponibilidade externa) dá direito ao ESS");
-    expect(x).toContain("Universos e períodos diferentes: eólicas, 157 usinas e conjuntos, série desde");
+    const re = G.restricoes;
+    expect(x).toContain(
+      `Universos e períodos diferentes: eólicas, ${num(re.eolica!.ultimos_12m!.usinas_no_universo, 0)} usinas e conjuntos, série desde ${mesAno(re.eolica!.primeiro_mes)} e fotovoltaicas, ${num(re.solar!.ultimos_12m!.usinas_no_universo, 0)} usinas e conjuntos, série desde ${mesAno(re.solar!.primeiro_mes)}.`,
+    );
     expect(x).toContain("As duas taxas não se comparam como se fossem do mesmo conjunto");
     expect(restricoes).toContain("data-referencia-corte");
     expect(x).toContain("Para ler o maior corte: a potência em operação comercial era de");
@@ -927,12 +974,28 @@ describe("páginas com as correções das avaliações independentes", () => {
     expect(x).toContain(`O fator de capacidade das eólicas em ${mesAno(ultimo)}:`);
     expect(x).toContain("pontos percentuais");
     expect(x).toContain("A potência eólica em operação comercial, média do mês, em");
-    expect(x).toContain("A capacidade fiscalizada da ANEEL (SIGA) é outro universo");
-    expect(x).toContain("biomassa, 18.050,9 MW na ANEEL contra 4.211,9 MW no ONS");
-    expect(x).toContain("Fator de capacidade com parte da potência: biomassa 16,8% usa 1.794,2 MW");
-    expect(x).toContain("Fator de capacidade acima de 100% numa usina num mês aparece em 228 usina-meses");
+    // ANEEL contra ONS: cada categoria em que o SIGA difere em mais de 25% da potência do retrato do ONS, lida das duas partes da gold
+    const rotulo = Object.fromEntries(linhasCapacidade(cap).map((l) => [l.id, l.categoria.toLowerCase()]));
+    const siga = cap.contexto.siga?.por_categoria_mw ?? {};
+    const divergentes = cap.retrato.por_categoria.filter((r) => r.mw && siga[r.categoria] && Math.abs(siga[r.categoria]! / r.mw - 1) > 0.25);
+    if (divergentes.length) {
+      expect(x).toContain("A capacidade fiscalizada da ANEEL (SIGA) é outro universo");
+      for (const r of divergentes) expect(x, r.categoria).toContain(`${rotulo[r.categoria]}, ${num(siga[r.categoria]!, 1)} MW na ANEEL contra ${num(r.mw!, 1)} MW no ONS`);
+    } else {
+      expect(x).not.toContain("A capacidade fiscalizada da ANEEL (SIGA) é outro universo");
+    }
+    // fator com parte da potência: denominador abaixo de 90% da potência média em operação
+    const parte = cap.ultimos_12m!.por_categoria.filter((u) => u.fator_capacidade_pct !== null && u.capacidade_hora_media_mw && u.potencia_media_12m_mw && u.capacidade_hora_media_mw / u.potencia_media_12m_mw < 0.9);
+    for (const u of parte) expect(x, u.categoria).toContain(`${rotulo[u.categoria]} ${num(u.fator_capacidade_pct!, 1)}% usa ${num(u.capacidade_hora_media_mw!, 1)} MW`);
+    if (parte.length) expect(x).toContain("Fator de capacidade com parte da potência:");
+    else expect(x).not.toContain("Fator de capacidade com parte da potência:");
+    const acima = cap.pareamento.fc_acima_de_100;
+    expect(x).toContain(`Fator de capacidade acima de 100% numa usina num mês aparece em ${num(acima.n, 0)} usina-meses da série (${num(acima.ultimos_12m, 0)} nos 12 meses)`);
     expect(x).toContain(`Potência em operação comercial, média de cada mês, a partir do retrato de ${dataBR(cap.retrato.data)}`);
-    expect(x).toContain("Entram só as usinas e conjuntos pareados com a Capacidade Instalada do ONS nos 12 meses: 149 nesta categoria, de 1.059 usinas no retrato de capacidade");
+    // a distribuição abre na eólica: pareadas nos 12 meses e usinas da eólica no retrato
+    const eolicaFc = cap.ultimos_12m!.por_categoria.find((u) => u.categoria === "eolica")!;
+    const eolicaRetrato = cap.retrato.por_categoria.find((r) => r.categoria === "eolica")!;
+    expect(x).toContain(`Entram só as usinas e conjuntos pareados com a Capacidade Instalada do ONS nos 12 meses: ${num(eolicaFc.distribuicao_usinas!.n, 0)} nesta categoria, de ${num(eolicaRetrato.usinas, 0)} usinas no retrato de capacidade`);
   });
 });
 

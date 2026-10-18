@@ -313,8 +313,11 @@ describe("P004: respostas e tabelas derivadas das frases", () => {
   });
   it("mudar os destaques muda a resposta", () => {
     const g = clone(G);
-    g.destaques.itens = [{ ...(g.destaques.itens[0] ?? { regra: "ear_faixa", titulo: "Reservatórios em nível extremo", texto: "x", tipo: "fato", estado: "ativo", desde: "2026-09-01", confirmado_em: "2026-09-08", dias: 10, dias_desde_confirmacao: 3, referencia: "2026-09-28", normaliza_quando: "", frequencia_historica_pct: 1, historico_avaliavel_desde: "2021-01-01", dias_avaliados: 100, valor: null, evidencia_caminho: "", evidencia: null, hipoteses_a_verificar: [], nao_implica: "", href: "/setor-eletrico/agua-e-clima" }) }];
+    g.destaques.itens = [{ ...(g.destaques.itens[0] ?? { regra: "ear_faixa", titulo: "Reservatórios em nível extremo", texto: "x", tipo: "fato", estado: "ativo", desde: "2026-09-01", confirmado_em: "2026-09-08", dias: 10, dias_desde_confirmacao: 3, referencia: "2026-09-28", normaliza_quando: "", frequencia_historica_pct: 1, historico_avaliavel_desde: "2021-01-01", dias_avaliados: 100, valor: null, evidencia_caminho: "", evidencia: null, hipoteses_a_verificar: [], nao_implica: "", href: "/setor-eletrico/agua-e-clima" }), titulo: "Reservatórios em nível extremo" }];
     expect(respostaSistema(g)).toContain("Um destaque de regra sobre o sistema: reservatórios em nível extremo");
+    // com dois destaques, a contagem e os dois títulos
+    g.destaques.itens = [g.destaques.itens[0], { ...g.destaques.itens[0], titulo: "Carga diária entre as mais altas do ano" }];
+    expect(respostaSistema(g)).toContain("2 destaques de regra sobre o sistema: reservatórios em nível extremo; carga diária entre as mais altas do ano");
   });
   it("as tabelas têm uma linha por frase e uma por valor, com caminho e sha256", () => {
     expect(linhasFrases(G.frases).map((l) => l.id)).toEqual(G.frases.map((f) => f.id));

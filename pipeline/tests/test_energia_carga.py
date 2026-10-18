@@ -720,8 +720,14 @@ class GoldPublicada(unittest.TestCase):
 
     def test_revisoes_mediana_e_leis_e_natureza(self):
         r = self.g["p025"]["revisoes"]
-        d = sorted(abs(x["diferenca_pct"]) for x in r["linhas"] if x["diferenca_pct"] is not None)
+        # o resumo vale para todas as revisões, que estão no CSV; a gold de antes de 18/10/2026 trazia todas também
+        with open(os.path.join(base.SERIES, "carga_revisoes.csv"), encoding="utf-8") as f:
+            todas = list(csv.DictReader(f, delimiter=";"))
+        self.assertEqual(len(todas), r["total"])
+        d = sorted(abs(float(x["diferenca_pct"])) for x in todas if x["diferenca_pct"] != "")
         self.assertEqual(r["revisoes_com_percentual"], len(d))
+        self.assertEqual(r.get("correcoes_fora_do_dominio", sum(x["situacao"] == "correcao_de_valor_fora_do_dominio" for x in todas)),
+                         sum(x["situacao"] == "correcao_de_valor_fora_do_dominio" for x in todas))
         if len(d) % 2 == 0:  # mediana de n par = média dos dois centrais (arredondamento das linhas: 0,001)
             self.assertAlmostEqual(r["mediana_abs_pct"], (d[len(d) // 2 - 1] + d[len(d) // 2]) / 2, delta=0.001)
         leis = {x["id"]: x for x in self.g["calendario"]["leis"]}
@@ -730,6 +736,38 @@ class GoldPublicada(unittest.TestCase):
         self.assertTrue(all("conferida" not in x for x in leis.values()))
         nat = {x["serie"]: x["natureza"] for x in self.g["proveniencia"]["api"]["natureza_por_serie"]}
         self.assertEqual(nat, {"mmgd": "ESTIMADO", "liquida": "OBSERVADO", "global": "OBSERVADO"})
+
+    def test_revisoes_na_gold_sao_as_mais_recentes_do_csv(self):
+        r = self.g["p025"]["revisoes"]
+        with open(os.path.join(base.SERIES, "carga_revisoes.csv"), encoding="utf-8") as f:
+            todas = [(x["serie"].split(".")[-1], x["ref"], x["capturado_em"]) for x in csv.DictReader(f, delimiter=";")]
+        na_gold = [(x["sm"], x["dia"], x["capturado_em"]) for x in r["linhas"]]
+        self.assertLessEqual(len(na_gold), mod.LIMITE_REVISOES_GOLD)
+        self.assertEqual(len(na_gold), min(len(todas), mod.LIMITE_REVISOES_GOLD))
+        self.assertEqual(r.get("linhas_so_no_csv", 0), len(todas) - len(na_gold))
+        self.assertTrue(set(na_gold) <= set(todas))
+        mais_recentes = sorted(todas, key=lambda x: (x[2], x[1]), reverse=True)[:len(na_gold)]
+        self.assertEqual(sorted(na_gold), sorted(mais_recentes))
+        # o recorte não muda o resumo: a mesma função sobre uma lista sintética longa
+        modelo = {"sm": "SE", "valor": 1.0, "valor_ant": 1.0, "diferenca": 0.0, "diferenca_pct": 0.0, "situacao": "revisao"}
+        sint = {**r, "linhas": [{**modelo, "capturado_em": f"2026-10-{1 + i % 28:02d}T00:00:00Z", "dia": f"2026-09-{1 + i % 28:02d}"}
+                                for i in range(3 * mod.LIMITE_REVISOES_GOLD)]}
+        rec = mod.revisoes_para_gold(sint)
+        self.assertEqual(len(rec["linhas"]), mod.LIMITE_REVISOES_GOLD)
+        self.assertEqual(rec["linhas_so_no_csv"], 2 * mod.LIMITE_REVISOES_GOLD)
+        self.assertEqual((rec["total"], rec["mediana_abs_pct"]), (r["total"], r["mediana_abs_pct"]))
+
+    def test_capturas_do_a07_sem_repeticao_consecutiva(self):
+        caps = self.g["a07"]["por_captura_2026"]
+        self.assertTrue(caps)
+        for ant, cap in zip(caps, caps[1:]):
+            self.assertNotEqual((ant["dias"], ant["variacao_pct"], ant["janela_completa"]),
+                                (cap["dias"], cap["variacao_pct"], cap["janela_completa"]), cap["capturado_em"])
+        for cap in caps:
+            n, ult = cap.get("capturas_identicas", 0), cap.get("ultima_captura_identica")
+            self.assertEqual(n > 0, ult is not None, cap["capturado_em"])
+            if ult:
+                self.assertGreater(ult, cap["capturado_em"])
 
     def test_backtest_periodo_e_cobertura(self):
         p = self.g["p027"]

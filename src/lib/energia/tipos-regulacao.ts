@@ -536,7 +536,8 @@ export type ResumoRegulacao = {
   eventos_linha_do_tempo: number;
   consultas_abertas: number;
   consultas_na_janela: number;
-  atividades_agenda: number;
+  /** null quando o texto da portaria da Agenda não foi lido: agenda não lida não é agenda vazia. */
+  atividades_agenda: number | null;
 };
 
 export type GoldRegulacao = Cabecalho & {
@@ -545,8 +546,8 @@ export type GoldRegulacao = Cabecalho & {
   paineis: ["P044", "P045", "P046"];
   resumo: ResumoRegulacao;
   limites_pld: LimitesPld;
-  /** Atividades da Agenda Regulatória que podem mudar os limites do PLD. */
-  limites_em_revisao: AtividadeResumo[];
+  /** Atividades da Agenda Regulatória que podem mudar os limites do PLD; null quando a Agenda não foi lida. */
+  limites_em_revisao: AtividadeResumo[] | null;
   regras_limites: RegrasLimites;
   bandeiras: Bandeiras;
   procedimentos: Procedimentos;

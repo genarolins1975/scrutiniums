@@ -1,6 +1,6 @@
 import { readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { infoDistribuidoras, lerIpcaCsv, type FonteQualidade, type FonteTerritorio, type InfoDistribuidora } from "@/lib/energia/conta";
+import { infoDistribuidoras, lerIpcaCsv, type FonteCadastro, type FonteQualidade, type FonteTerritorio, type InfoDistribuidora } from "@/lib/energia/conta";
 import { lerGold } from "@/lib/energia/gold";
 import type { HistoricoB1 } from "@/lib/energia/tipos-conta";
 
@@ -39,9 +39,10 @@ export function lerIpca(): { mes: string; indice: number }[] | null {
   return lerSerie("conta_ipca.csv", lerIpcaCsv);
 }
 
-/** UF, tipo e UCs de cada CNPJ, das golds de Território e de Qualidade; sem a gold, cada campo fica null. */
+/** UF, tipo e UCs de cada CNPJ, das golds de Território e de Qualidade (tipo do cadastro de Perdas quando falta na Qualidade); sem a gold, cada campo fica null. */
 export function infoDasDistribuidoras(cnpjs: readonly string[]): Record<string, InfoDistribuidora> {
   const q = lerGold<{ distribuidoras?: FonteQualidade[] }>("qualidade.json");
   const t = lerGold<{ distribuidoras?: FonteTerritorio[] }>("territorio.json");
-  return infoDistribuidoras(cnpjs, q?.distribuidoras ?? null, t?.distribuidoras ?? null);
+  const p = lerGold<{ distribuidoras?: FonteCadastro[] }>("perdas.json");
+  return infoDistribuidoras(cnpjs, q?.distribuidoras ?? null, t?.distribuidoras ?? null, p?.distribuidoras ?? null);
 }

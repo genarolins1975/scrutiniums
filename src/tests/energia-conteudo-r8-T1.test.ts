@@ -40,6 +40,22 @@ const GC = json<ContaGold>("public/energia/gold/conta.json");
 const GQ = json<QualidadeGold>("public/energia/gold/qualidade.json");
 const GI = json<InclusaoGold>("public/energia/gold/inclusao.json");
 
+const MESES_LONGOS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+
+/** A linha do acumulado do ano aberto das concessionárias com o último mês publicado (o arquivo pode trazer também meses anteriores). */
+function acumuladoMaisRecente(): Record<string, string> {
+  const linhas = csv("public/energia/series/perdas_acumulado_ano.csv").filter((l) => l.nivel === "universo" && l.chave === "concessionarias");
+  return linhas.reduce((m, l) => (Number(l.ano) * 100 + Number(l.mes_fim) > Number(m.ano) * 100 + Number(m.mes_fim) ? l : m));
+}
+
+/** Concessionárias comparáveis no acumulado, contadas nas linhas por distribuidora do mesmo período (classificação do arquivo anual). */
+function concessionariasComparaveisNoAcumulado(acum: Record<string, string>): number {
+  const classe = new Map(csv("public/energia/series/perdas_distribuidoras.csv").map((l) => [l.cnpj, l.classificacao]));
+  return csv("public/energia/series/perdas_acumulado_ano.csv").filter(
+    (l) => l.nivel === "distribuidora" && l.ano === acum.ano && l.mes_fim === acum.mes_fim && l.comparavel === "1" && (classe.get(l.chave) ?? "").startsWith("Concession"),
+  ).length;
+}
+
 /** CSV do pipeline (separador ";"), lido aqui por outro código que o dos módulos. */
 function csv(p: string): Record<string, string>[] {
   const [cab, ...linhas] = ler(p).trim().split(/\r?\n/);
@@ -180,9 +196,15 @@ describe("r8 T1: vereditos (no máximo 50 palavras e 8 números), com a resposta
   });
 
   it("p049 (simulação): veredito com a estimativa e a resposta completa na segunda camada", () => {
-    expect(ENTENDER.conta).toMatch(/Para 150 kWh no mês na CERIPa, a estimativa é de R\$ 126,00, sem tributos e sem iluminação pública\./);
-    expect(COMPLETO.conta).toContain("Para 150 kWh no mês na CERIPa, classe residencial");
-    expect(ENTENDER.conta).not.toContain("Para 150 kWh no mês na CERIPa, classe residencial");
+    // o caso padrão (150 kWh, residencial) na distribuidora de referência, refeito pelo CSV de tarifas vigentes e pela bandeira do mês:
+    // em 30/09/2026, CERIPa com amarela, R$ 126,00
+    const ref = GC.simulador.casos_referencia;
+    const tarifa = csv("public/energia/series/conta_tarifas_b1_vigentes.csv").find((l) => l.cnpj === ref.cnpj)!;
+    const c2 = (v: number) => Math.round(v * 100) / 100;
+    const total = c2((150 * Number(tarifa.total_rs_mwh)) / 1000 + (150 * (GC.bandeiras.vigente?.rs_mwh ?? 0)) / 1000);
+    expect(ENTENDER.conta).toContain(`Para 150 kWh no mês na ${ref.sigla}, a estimativa é de R$ ${total.toFixed(2).replace(".", ",")}, sem tributos e sem iluminação pública.`);
+    expect(COMPLETO.conta).toContain(`Para 150 kWh no mês na ${ref.sigla}, classe residencial`);
+    expect(ENTENDER.conta).not.toContain(`Para 150 kWh no mês na ${ref.sigla}, classe residencial`);
   });
 
   it("o veredito do mapa de Perdas cobre as cinco medidas e os dois tipos de período", () => {
@@ -208,7 +230,10 @@ describe("r8 T1: vereditos (no máximo 50 palavras e 8 números), com a resposta
     const nac = csv("public/energia/series/perdas_nacional.csv").find((l) => l.ano === String(per.ref) && l.universo === "concessionarias")!;
     const taxa = Number(nac.taxa_total_pct);
     expect(P.vereditoGeral(GP)).toContain(`${taxa.toFixed(2).replace(".", ",")}%`);
-    expect(P.vereditoGeral(GP)).toContain("0,01 ponto percentual a mais que em 2024");
+    // a diferença nas mesmas concessionárias, das duas colunas do CSV (0,01 ponto a mais em 30/09/2026)
+    const dif = Math.round((Number(nac.taxa_total_pct_mesmas) - Number(nac.taxa_total_pct_mesmas_ano_anterior)) * 100) / 100;
+    const pontos = `${Math.abs(dif).toFixed(2).replace(".", ",")} ${Math.abs(dif) > 1 ? "pontos percentuais" : "ponto percentual"}`;
+    expect(P.vereditoGeral(GP)).toContain(dif === 0 ? `o mesmo valor de ${per.ref - 1}` : `${pontos} ${dif > 0 ? "a mais" : "a menos"} que em ${per.ref - 1}`);
     // Qualidade: o DEC do Brasil de 2025 cai contra 2024 em qualidade_brasil.csv
     const br = csv("public/energia/series/qualidade_brasil.csv");
     const dec = (ano: number) => Number(br.find((l) => l.periodo === String(ano) && l.tipo === "anual")!.dec_h);
@@ -310,29 +335,33 @@ describe("r8 T1: Perdas", () => {
 
   it("arredondamento: a taxa de perdas totais tem duas casas no destaque, no texto e na variação (14,75%, 14,77%)", () => {
     const nac = csv("public/energia/series/perdas_nacional.csv").find((l) => l.ano === String(per.ref) && l.universo === "concessionarias")!;
-    const acum = csv("public/energia/series/perdas_acumulado_ano.csv").find((l) => l.nivel === "universo" && l.chave === "concessionarias")!;
+    const acum = acumuladoMaisRecente();
     const f = (v: string) => Number(v).toFixed(2).replace(".", ",");
-    expect(f(nac.taxa_total_pct)).toBe("14,75");
-    expect(ENTENDER.perdas).toMatch(/Perdas totais das concessionárias, 2025 14,75%/);
-    expect(ENTENDER.perdas).toMatch(/Perdas totais, 2026, janeiro a julho \(acumulado\) 14,77%/);
-    expect(ENTENDER.perdas).not.toMatch(/Perdas totais das concessionárias, 2025 14,7%/);
-    expect(Number(acum.meses_ou_n)).toBe(49);
+    // 14,75% e 14,77% em 30/09/2026; o destaque leva as duas casas, nunca a taxa com uma casa
+    expect(ENTENDER.perdas).toContain(`Perdas totais das concessionárias, ${per.ref} ${f(nac.taxa_total_pct)}%`);
+    expect(ENTENDER.perdas).toContain(`Perdas totais, ${acum.ano}, janeiro a ${MESES_LONGOS[Number(acum.mes_fim) - 1]} (acumulado) ${f(acum.taxa_total_pct)}%`);
+    expect(ENTENDER.perdas).not.toContain(`Perdas totais das concessionárias, ${per.ref} ${Number(nac.taxa_total_pct).toFixed(1).replace(".", ",")}%`);
+    // as concessionárias do acumulado (49 em 30/09/2026) são as comparáveis do mesmo período nas linhas por distribuidora
+    expect(Number(acum.meses_ou_n)).toBe(concessionariasComparaveisNoAcumulado(acum));
   });
 
   it("51 e 49 concessionárias, 83, 103 e 123 distribuidoras: cada universo tem a razão dita no ponto de uso", () => {
+    // as contagens de 30/09/2026 entre parênteses; cada uma relida do seu arquivo
     const anual = csv("public/energia/series/perdas_distribuidoras.csv");
-    const todas = new Set(anual.map((l) => l.cnpj));
-    const de2025 = anual.filter((l) => l.ano === "2025");
-    expect(todas.size).toBe(123);
-    expect(de2025.length).toBe(103);
-    const nac = csv("public/energia/series/perdas_nacional.csv").find((l) => l.ano === "2025" && l.universo === "concessionarias")!;
-    const acum = csv("public/energia/series/perdas_acumulado_ano.csv").find((l) => l.nivel === "universo" && l.chave === "concessionarias")!;
-    expect(Number(nac.n_distribuidoras)).toBe(51);
-    expect(Number(acum.meses_ou_n)).toBe(49);
-    expect(COMPLETO.perdas).toContain("123 distribuidoras com balanço no SAMP em algum ano; 103 com valor publicado neste período, 83 delas comparáveis nesta medida; a soma nacional usa só as 51 concessionárias comparáveis");
-    expect(COMPLETO.perdas).toContain("As 49 são as que têm os mesmos meses publicados nos dois anos; 51 têm o ano de 2025 completo.");
+    const todas = new Set(anual.map((l) => l.cnpj)); // 123
+    const doAno = anual.filter((l) => l.ano === String(per.ref)); // 103
+    const nacAno = csv("public/energia/series/perdas_nacional.csv").filter((l) => l.ano === String(per.ref));
+    const nac = nacAno.find((l) => l.universo === "concessionarias")!; // 51
+    const nacTodas = nacAno.find((l) => l.universo === "todas")!; // 83 comparáveis
+    const acum = acumuladoMaisRecente(); // 49
+    expect(Number(nacTodas.n_publicadas)).toBe(doAno.length);
+    expect(Number(acum.meses_ou_n)).toBe(concessionariasComparaveisNoAcumulado(acum));
+    expect(COMPLETO.perdas).toContain(
+      `${todas.size} distribuidoras com balanço no SAMP em algum ano; ${doAno.length} com valor publicado neste período, ${nacTodas.n_distribuidoras} delas comparáveis nesta medida; a soma nacional usa só as ${nac.n_distribuidoras} concessionárias comparáveis`,
+    );
+    expect(COMPLETO.perdas).toContain(`As ${acum.meses_ou_n} são as que têm os mesmos meses publicados nos dois anos; ${nac.n_distribuidoras} têm o ano de ${per.ref} completo.`);
     // composição: a linha tracejada é das 51 concessionárias; as 19 barras misturam concessionárias e permissionárias
-    const grupo = new Map(anual.filter((l) => l.ano === "2025").map((l) => [l.cnpj, l.classificacao]));
+    const grupo = new Map(anual.filter((l) => l.ano === String(per.ref)).map((l) => [l.cnpj, l.classificacao]));
     const barras = P.linhasComposicao(GP.distribuidoras).linhas;
     const nConc = barras.filter((b) => grupo.get(b.id) === "Concessionária").length;
     // singular quando a contagem é 1 ("1 permissionária"): a página concorda o número com o substantivo
@@ -340,27 +369,36 @@ describe("r8 T1: Perdas", () => {
     expect(COMPLETO.composicao).toContain(
       `as ${barras.length} barras são as distribuidoras com a decomposição fechando (${pl(nConc, "concessionária", "concessionárias")} e ${pl(barras.length - nConc, "permissionária", "permissionárias")}), outro conjunto`,
     );
-    expect(COMPLETO.composicao).toContain("A linha tracejada é a taxa das 51 concessionárias válidas");
+    expect(COMPLETO.composicao).toContain(`A linha tracejada é a taxa das ${nac.n_distribuidoras} concessionárias válidas`);
   });
 
   it("14,64 e 14,65 (CERPRO): a barra soma as componentes arredondadas e a tabela soma antes de arredondar", () => {
-    const linhas = csv("public/energia/series/perdas_tarifa_b1.csv").filter((l) => l.sigla === "CERPRO" && l.base === "Base Econômica");
-    const vigente = linhas[linhas.length - 1];
+    // o caso em que a barra e a tabela diferem em um centavo (CERPRO em 30/09/2026: 14,64 na barra, 14,65 na tabela), relido no CSV
+    const d = P.divergenciaArredondamentoCusto(linhasCusto);
+    expect(d.n).toBeGreaterThan(0);
+    expect(d.de).toBe(linhasCusto.filter((l) => l.situacao === "vigente").length);
+    const ex = d.exemplo!;
+    const linha = linhasCusto.find((l) => l.rotulo === ex.rotulo)!;
+    const doCsv = csv("public/energia/series/perdas_tarifa_b1.csv").filter((l) => l.cnpj === linha.id && l.base === "Base Econômica");
+    const vigente = doCsv.find((l) => l.inicio_vigencia === linha.inicio)!;
     const bruto = Number(vigente.tusd_pt) + Number(vigente.tusd_pnt) + Number(vigente.tusd_per_rb_d) + Number(vigente.te_per_rb);
     const arred = (v: number) => Math.round(v * 100) / 100;
     const barra = arred(Number(vigente.tusd_pt)) + arred(Number(vigente.tusd_pnt)) + arred(Number(vigente.tusd_per_rb_d) + Number(vigente.te_per_rb));
-    expect(arred(bruto)).toBe(14.65);
-    expect(Math.round(barra * 100) / 100).toBe(14.64);
+    expect(arred(bruto)).toBe(ex.tabela);
+    expect(Math.round(barra * 100) / 100).toBe(ex.barra);
+    expect(ex.barra).not.toBe(ex.tabela);
     expect(Number(vigente.perdas)).toBeCloseTo(bruto, 3);
-    expect(P.vereditoCusto(linhasCusto, GP.referencia.tarifa_consultada_em)).toContain("14,65 R$/MWh (CERPRO)");
-    // um valor só para o mesmo item: a barra desenha o total da tabela (14,65) e nenhuma nota explica dois valores
-    expect(ENTENDER.custo).not.toContain("14,64 na barra");
-    const cerpro = linhasCusto.find((l) => l.rotulo === "CERPRO")!;
-    const desenho = P.componentesParaBarra(cerpro);
-    expect(arred(desenho.pt + desenho.pnt + desenho.rede_basica)).toBe(14.65);
-    const d = P.divergenciaArredondamentoCusto(linhasCusto);
-    expect(d.n).toBeGreaterThan(0);
-    expect(d.de).toBe(80);
+    // um valor só para o mesmo item: a barra desenha o total da tabela e nenhuma nota explica dois valores
+    const fmt = (v: number) => v.toFixed(2).replace(".", ",");
+    expect(ENTENDER.custo).not.toContain(`${fmt(ex.barra)} na barra`);
+    const desenho = P.componentesParaBarra(linha);
+    expect(arred(desenho.pt + desenho.pnt + desenho.rede_basica)).toBe(ex.tabela);
+    // o veredito cita o menor e o maior da tabela (CERPRO, 14,65, era o menor em 30/09/2026), procurados no CSV pela vigência da data
+    const ref = GP.referencia.tarifa_consultada_em;
+    const naData = csv("public/energia/series/perdas_tarifa_b1.csv").filter((l) => l.base === "Base Econômica" && l.inicio_vigencia <= ref && ref <= l.fim_vigencia);
+    const menor = naData.reduce((m, l) => (Number(l.perdas) < Number(m.perdas) ? l : m));
+    const rotuloMenor = linhasCusto.find((l) => l.id === menor.cnpj)!.rotulo;
+    expect(P.vereditoCusto(linhasCusto, ref)).toContain(`${fmt(arred(Number(menor.perdas)))} R$/MWh (${rotuloMenor})`);
   });
 
   it("o link de prova da associação não usa ρ (a classe do rótulo o põe em maiúscula e vira P)", () => {
@@ -376,8 +414,9 @@ describe("r8 T1: Conta de luz", () => {
   it("87 de 102 acima do IPCA: a contagem do veredito confere com conta_reajuste_vs_ipca.csv", () => {
     const linhas = csv("public/energia/series/conta_reajuste_vs_ipca.csv").filter((l) => l.janela_meses === "12");
     const acima = linhas.filter((l) => Number(l.variacao_pct) > Number(l.ipca_pct)).length;
-    expect(linhas.length).toBe(102);
-    expect(acima).toBe(87);
+    // 87 de 102 em 30/09/2026: as contagens do CSV são as da janela publicada
+    expect(linhas.length).toBe(j12.n);
+    expect(acima).toBe(j12.acima_ipca);
     expect(C.vereditoReajustes(j12)).toContain(`em ${acima} de ${linhas.length} distribuidoras`);
     expect(ENTENDER.reajustes).toContain(`${linhas.length - acima} distribuidoras ficaram abaixo da inflação ou iguais a ela, e ${acima} ficaram acima`);
     // as primeiras barras (as menores variações) ficam todas à esquerda do IPCA: é isso que a nota explica
@@ -396,15 +435,23 @@ describe("r8 T1: Conta de luz", () => {
   });
 
   it("126,00 e 126,01: as parcelas arredondadas somam um centavo a mais que o total, e a página diz por quê", () => {
-    const tarifa = csv("public/energia/series/conta_tarifas_b1_vigentes.csv").find((l) => l.sigla === "CERIPa")!;
+    // o caso padrão do simulador (150 kWh, residencial) na distribuidora de referência, relido no CSV de tarifas vigentes; em 30/09/2026,
+    // CERIPa com bandeira amarela: 123,18 + 2,83 = 126,01 contra o total de 126,00
+    const ref = GC.simulador.casos_referencia;
+    const tarifa = csv("public/energia/series/conta_tarifas_b1_vigentes.csv").find((l) => l.cnpj === ref.cnpj)!;
     const energia = (150 * Number(tarifa.total_rs_mwh)) / 1000;
-    const bandeira = (150 * GC.bandeiras.vigente!.rs_mwh!) / 1000;
+    const bandeira = (150 * (GC.bandeiras.vigente?.rs_mwh ?? 0)) / 1000;
     const c2 = (v: number) => Math.round(v * 100) / 100;
-    expect(c2(energia)).toBe(123.18);
-    expect(c2(bandeira)).toBe(2.83);
-    expect(c2(energia + bandeira)).toBe(126.0);
-    expect(c2(c2(energia) + c2(bandeira))).toBe(126.01);
-    expect(ENTENDER.conta).toContain("As parcelas somam R$ 126,01 e o total é R$ 126,00");
+    const total = c2(energia + bandeira);
+    const parcelas = c2(c2(energia) + c2(bandeira));
+    const fmt = (v: number) => v.toFixed(2).replace(".", ",");
+    if (parcelas !== total) {
+      expect(Math.abs(parcelas - total)).toBeLessThanOrEqual(0.0100001);
+      expect(ENTENDER.conta).toContain(`As parcelas somam R$ ${fmt(parcelas)} e o total é R$ ${fmt(total)}`);
+    } else {
+      expect(ENTENDER.conta).not.toContain("As parcelas somam");
+    }
+    expect(norm(C.notaArredondamentoSimulacao([123.18, 2.83], 126.0)!)).toContain("As parcelas somam R$ 126,01 e o total é R$ 126,00");
     expect(C.notaArredondamentoSimulacao([123.18, 2.83], 126.0)).toContain("R$ 0,01");
     expect(C.notaArredondamentoSimulacao([100, 20], 120)).toBeNull();
   });
@@ -427,10 +474,15 @@ describe("r8 T1: Conta de luz", () => {
 
   it("o IPCA 'desde a mudança anterior' traz os meses e coincide com o de 12 meses porque a mudança anterior foi 12 meses antes", () => {
     const ultimo = GC.reajustes.ultimos.reduce((m, u) => (u[2] > m[2] ? u : m));
-    expect(ultimo[6]).toBe(j12.ipca_meses[0]);
-    expect(ultimo[7]).toBe(j12.ipca_meses[1]);
-    expect(ultimo[5]).toBe(j12.ipca_pct);
-    expect(COMPLETO.reajustes).toContain("o IPCA desde a mudança anterior (ago/2025 a ago/2026) foi 4,22%");
+    // o IPCA de cada janela é a razão dos índices do mês final e do inicial, relida na série publicada do IPCA
+    const indice = new Map(csv("public/energia/series/conta_ipca.csv").map((l) => [l.mes, Number(l.indice)]));
+    const razao = (de: string, ate: string) => (indice.get(ate)! / indice.get(de)! - 1) * 100;
+    expect(Math.abs((ultimo[5] as number) - razao(ultimo[6], ultimo[7]))).toBeLessThanOrEqual(0.005 + 1e-9);
+    expect(Math.abs(j12.ipca_pct! - razao(j12.ipca_meses[0], j12.ipca_meses[1]))).toBeLessThanOrEqual(0.005 + 1e-9);
+    // quando a mudança anterior foi 12 meses antes (ELFSM em 30/09/2026, ago/2025 a ago/2026), os dois IPCA são o mesmo número
+    if (ultimo[6] === j12.ipca_meses[0] && ultimo[7] === j12.ipca_meses[1]) expect(ultimo[5]).toBe(j12.ipca_pct);
+    const mes = (m: string) => `${["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][Number(m.slice(5, 7)) - 1]}/${m.slice(0, 4)}`;
+    expect(COMPLETO.reajustes).toContain(`o IPCA desde a mudança anterior (${mes(ultimo[6])} a ${mes(ultimo[7])}) foi ${(ultimo[5] as number).toFixed(2).replace(".", ",")}%`);
   });
 });
 

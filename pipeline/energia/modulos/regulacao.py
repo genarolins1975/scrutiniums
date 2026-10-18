@@ -210,6 +210,26 @@ def _bytes_bronze(arquivo):
         return None
 
 
+def _bronze_legivel(v):
+    """A vintage tem o arquivo no bronze (ou cópia de mesmo sha256 na pasta)? O silver pode voltar
+    da cópia durável sem o bronze; nesse caso o documento precisa ser baixado de novo, e não
+    dado como já capturado só porque o sha256 da vintage confere."""
+    if not v or not v.get("arquivo"):
+        return False
+    try:
+        with base.abre_bronze(v["arquivo"]):
+            return True
+    except OSError:
+        return False
+
+
+def _bronze_orfao(con, ds, rec):
+    """A última vintage do recurso existe mas o arquivo dela sumiu do bronze: força o download,
+    em vez de esperar a idade máxima de reaproveitamento vencer."""
+    ult = base.ultima_vintage(con, ds, rec)
+    return bool(ult) and not _bronze_legivel(ult)
+
+
 def _processados(con):
     con.execute("CREATE TABLE IF NOT EXISTS regulacao_processados(dataset TEXT, marca TEXT, processado_em TEXT,"
                 " PRIMARY KEY(dataset, marca))")
@@ -253,7 +273,7 @@ def _coleta_documentos(con, status):
         ult = base.ultima_vintage(con, DS_DOCS, rec)
         esperado = doc.get("sha256")
         if doc["formato"] == "pdf":
-            if ult and esperado and ult["sha256"] == esperado:
+            if ult and esperado and ult["sha256"] == esperado and _bronze_legivel(ult):
                 st["iguais"] += 1
                 continue
             url = doc.get("copia_publica")
@@ -272,7 +292,7 @@ def _coleta_documentos(con, status):
                 st["novos" if res["status"] == "nova" else "iguais"] += 1
         else:
             res = ckan.baixar_recurso(con, orgao="SENADO", dataset=DS_DOCS, recurso=rec, url=doc["url_oficial"], ext="html",
-                                      publicado_em=None, max_idade_dias=30)
+                                      publicado_em=None, max_idade_dias=30, forcar=_bronze_orfao(con, DS_DOCS, rec))
             if res["status"] == "falha":
                 st["falhas"].append(f"{rec}: {res['detalhe']}")
             else:
@@ -280,7 +300,8 @@ def _coleta_documentos(con, status):
             # metadados abertos do Senado (XML): a data da publicação original no DOU, conferida na gold
             if doc.get("metadados"):
                 res = ckan.baixar_recurso(con, orgao="SENADO", dataset=DS_DOCS, recurso=rec + SUFIXO_METADADOS,
-                                          url=doc["metadados"], ext="xml", publicado_em=None, max_idade_dias=30)
+                                          url=doc["metadados"], ext="xml", publicado_em=None, max_idade_dias=30,
+                                          forcar=_bronze_orfao(con, DS_DOCS, rec + SUFIXO_METADADOS))
                 if res["status"] == "falha":
                     st["falhas"].append(f"{rec}{SUFIXO_METADADOS}: {res['detalhe']}")
     con.commit()
@@ -455,7 +476,7 @@ def coletar(con, ctx):
     st_pag = {}
     for rec, url in PAGINAS.items():
         res = ckan.baixar_recurso(con, orgao="ANEEL", dataset=DS_PAG, recurso=rec, url=url, ext="html",
-                                  publicado_em=None, max_idade_dias=6)
+                                  publicado_em=None, max_idade_dias=6, forcar=_bronze_orfao(con, DS_PAG, rec))
         st_pag[rec] = res["status"] if res["status"] != "falha" else f"falha: {res['detalhe']}"
         v = res.get("vintage")
         if v and res["status"] in ("nova", "identica", "pulada") and not _ja(con, DS_PAG, v["vintage_id"]):
@@ -471,13 +492,14 @@ def coletar(con, ctx):
     url_rev = _url_revisao_agenda(con)
     if url_rev:
         res = ckan.baixar_recurso(con, orgao="ANEEL", dataset=DS_PAG, recurso=REC_REVISAO_AGENDA, url=url_rev, ext="html",
-                                  publicado_em=None, max_idade_dias=6)
+                                  publicado_em=None, max_idade_dias=6, forcar=_bronze_orfao(con, DS_PAG, REC_REVISAO_AGENDA))
         st_pag[REC_REVISAO_AGENDA] = res["status"] if res["status"] != "falha" else f"falha: {res['detalhe']}"
         con.commit()
     status[DS_PAG] = st_pag
 
     res = ckan.baixar_recurso(con, orgao="IBGE", dataset=DS_IPCA, recurso="ipca_numero_indice", url=URL_SIDRA,
-                              ext="json", publicado_em=None, max_idade_dias=10)
+                              ext="json", publicado_em=None, max_idade_dias=10,
+                              forcar=_bronze_orfao(con, DS_IPCA, "ipca_numero_indice"))
     status[DS_IPCA] = res["status"]
     v = res.get("vintage")
     if v and not _ja(con, DS_IPCA, v["vintage_id"]):
@@ -492,6 +514,18 @@ def coletar(con, ctx):
 
 
 # ======================================================================= leitura do silver
+
+# por que o texto de um documento não foi lido, em palavras de leitor (o status técnico fica no silver)
+MOTIVO_SEM_TEXTO = {
+    "sem_arquivo": "o documento ainda não foi baixado",
+    "bronze_ausente": "a cópia guardada do documento não estava disponível nesta execução; ela é baixada de novo na coleta seguinte",
+    "sem_extrator": "o extrator de texto de PDF não estava instalado nesta execução",
+}
+
+
+def _motivo_sem_texto(t):
+    return MOTIVO_SEM_TEXTO.get(t.get("status"), "o documento não foi registrado")
+
 
 def _texto_documento(con, doc):
     """{vintage, textos:[...], paginado, layout, status} do documento no bronze. Usa só a
@@ -684,13 +718,23 @@ def _conferencias_limites(atos, conf, docs, textos, atas, ipca):
     # (os atos encadeiam o teto publicado do ano anterior); a diferença fica registrada.
     lit = _base_art23(textos)
     for ano in sorted(vig):
-        if not lit or ano < 2021:
+        if ano < 2021:
             continue
-        i1, i0 = ipca.get(f"{ano - 1}-11"), ipca.get(lit["mes_base"])
+        i1, i0 = ipca.get(f"{ano - 1}-11"), (ipca.get(lit["mes_base"]) if lit else None)
         for campo in ("pld_max_estrutural", "pld_max_horario"):
             atual = vig[ano][campo]
             a_ref = next((x for x in atos if x["ato"] == vig[ano][f"ato_{campo}"] and x["ano"] == ano), None)
-            if atual is None or lit.get(campo) is None:
+            if atual is None:
+                continue
+            if not lit:
+                # texto da REN nº 1.032/2022 não lido: a conferência fica registrada como não executada,
+                # em vez de sumir da gold e da página como se não existisse
+                add("art23_literal", a_ref, campo, atual, None, "informativa", "nao_executada",
+                    "trecho do art. 23, § 1º, não encontrado no texto da REN nº 1.032/2022"
+                    if (textos.get("ren20221032") or {}).get("status") == "ok" else
+                    f"texto da REN nº 1.032/2022 não lido: {_motivo_sem_texto(textos.get('ren20221032') or {})}")
+                continue
+            if lit.get(campo) is None:
                 continue
             if i1 is None or i0 is None:
                 add("art23_literal", a_ref, campo, atual, None, "informativa", "nao_executada", "IPCA ausente no silver")
@@ -1120,7 +1164,7 @@ def _conferencia_publicacao(con, e, d, t):
                 "detalhe": f"metadados abertos do Senado (sha256 {v['sha256'][:12]}): {pub['dispositivo']}"
                            + ("" if ok else f"; a curadoria registra {e['data_publicacao']}")}
     if t.get("status") != "ok":
-        return {"resultado": "nao_executada", "detalhe": f"texto do documento indisponível ({t.get('status', 'sem registro')})",
+        return {"resultado": "nao_executada", "detalhe": f"texto do documento indisponível: {_motivo_sem_texto(t)}",
                 "fonte": d.get("url_oficial")}
     formas = (f"{dp.day:02d}.{dp.month:02d}.{dp.year}", f"{dp.day:02d}/{dp.month:02d}/{dp.year}")
     achou = next((f for f in formas if any(f in x for x in t["textos"])), None)
@@ -1387,7 +1431,7 @@ def _bloco_agenda(con, ctx, docs, textos, cons_todos):
                "pagina": PAGINAS["agenda"], "url_texto": _url_revisao_agenda(con),
                "texto_lido": False, "tentativa": tentativa}
     if t.get("status") != "ok" or not t.get("layout"):
-        return {"disponivel": False, "motivo": f"texto da Portaria nº 7.030/2025 indisponível ({t.get('status', 'sem registro')})",
+        return {"disponivel": False, "motivo": f"o texto da Portaria nº 7.030/2025 não foi lido: {_motivo_sem_texto(t)}",
                 "itens": [], "revisao": revisao}
     try:
         itens = ar.agenda_do_anexo(t["layout"])
@@ -1640,7 +1684,8 @@ def construir(con, ctx):
                    if (agenda.get("revisao") or {}).get("tentativa") else "; a tentativa de leitura ainda não foi registrada."),
                 "Cronograma referencial de etapas (portalrelatorios.aneel.gov.br) não respondeu; o eixo temático não é extraído.",
                 "Ano previsto é previsão da agência, reprogramável; não é compromisso nem data de decisão."],
-            download=_u(CSV_AGENDA)),
+            # agenda não lida: o CSV da publicação anterior não é oferecido como se fosse desta
+            download=_u(CSV_AGENDA) if agenda.get("disponivel") else None),
     }
 
     # evidência do número de consultas abertas (P046)
@@ -1737,10 +1782,12 @@ def construir(con, ctx):
             "eventos_linha_do_tempo": len(lt["eventos"]),
             "consultas_abertas": len(abertas),
             "consultas_na_janela": len(cons.get("itens", [])),
-            "atividades_agenda": len(agenda.get("itens", [])),
+            # agenda não lida não é agenda vazia: sem o texto da portaria, contagem e lista ficam nulas
+            "atividades_agenda": len(agenda["itens"]) if agenda.get("disponivel") else None,
         },
         "limites_pld": {k: v for k, v in bl.items() if k != "reprovadas"},
-        "limites_em_revisao": [{"codigo": i["codigo"], "atividade": i["atividade"], "ano_previsto": i["ano_previsto"]} for i in em_revisao],
+        "limites_em_revisao": ([{"codigo": i["codigo"], "atividade": i["atividade"], "ano_previsto": i["ano_previsto"]} for i in em_revisao]
+                               if agenda.get("disponivel") else None),
         "regras_limites": next(({"ato": e["ato"], "dispositivo": e["dispositivo"], "resumo": e["resumo"], "trecho": e["trecho"],
                                  "vigencia_inicio": e["vigencia_inicio"], "documento": e["documento"], "url_oficial": e["url_oficial"],
                                  "pratica_dos_atos": _pratica_dos_atos(bl)}
@@ -1758,7 +1805,8 @@ def construir(con, ctx):
         "downloads": [{"rotulo": r, "url": _u(n)} for r, n in (
             ("Atos de limites do PLD", CSV_ATOS), ("Limites vigentes por período", CSV_VIG), ("Conferências dos limites", CSV_CONF),
             ("Adicionais das bandeiras", CSV_BAND), ("Procedimentos vigentes (PRODIST e PRORET)", CSV_PROC),
-            ("Linha do tempo", CSV_LT), ("Consultas e audiências públicas (histórico)", CSV_CONS), ("Agenda Regulatória 2026-2027", CSV_AGENDA))],
+            ("Linha do tempo", CSV_LT), ("Consultas e audiências públicas (histórico)", CSV_CONS), ("Agenda Regulatória 2026-2027", CSV_AGENDA))
+            if n != CSV_AGENDA or agenda.get("disponivel")],
         "limitacoes": [
             "Os atos da ANEEL foram lidos em cópias públicas do Internet Archive porque a origem oficial exige navegador; cada PDF é aceito só com o sha256 registrado.",
             "O Diário Oficial da União (www.in.gov.br) não respondeu; datas de publicação vêm da linha 'publicado no D.O.' impressa pela ANEEL no próprio ato.",

@@ -175,6 +175,8 @@ function diagnosticosDaAtribuicao(): string[] {
 }
 
 const gold = JSON.parse(readFileSync(GOLD, "utf-8")) as PldDetalheGold;
+/** "2026-08" → "ago/2026", escrito aqui sem o formatador da página. */
+const mesAbrev = (m: string) => `${["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][Number(m.slice(5, 7)) - 1]}/${m.slice(0, 4)}`;
 
 describe("pld_detalhe.json: tipos espelham a gold publicada", () => {
   it("gold, fichas, mapa hora × dia e janela horária atribuíveis aos tipos sem campo a mais nem a menos", () => {
@@ -826,7 +828,14 @@ describe("abertura do PLD: o preço antes da aula (página renderizada)", () => 
     expect(faixa).toContain(escHtml(`${reais(e.maior.valor)}`));
     expect(faixa).toContain(escHtml(`${reais(e.distancia)}`));
     expect(faixa).toContain(nomesDosSubmercados(e.maior.submercados));
-    if (e.maior.submercados.length > 1) expect(faixa).toContain("mesmo valor");
+    // empate entre parte dos submercados é dito como "mesmo valor"; com os quatro iguais (distância zero) o nome já diz
+    // "os quatro submercados" e a distância de R$ 0,00 diz o resto, sem repetir o empate em cada medida
+    if (e.maior.submercados.length > 1 && e.distancia > 0) expect(faixa).toContain("mesmo valor");
+    if (e.distancia === 0) {
+      expect(e.maior.submercados.length).toBe(linhas.length);
+      expect(faixa).toContain("os quatro submercados");
+      expect(faixa).not.toContain("mesmo valor");
+    }
     expect(faixa).toContain(dataBR(dia));
   });
 
@@ -1034,7 +1043,9 @@ describe("páginas filhas do PLD no sistema editorial", () => {
     expect(h).toContain("Os valores são nominais, sem correção pela inflação, e de anos com limites diferentes");
     expect(h).toMatch(/o piso foi de R\$\s*49,77 a R\$\s*69,04\/MWh e o teto horário teve 6 valores diferentes/);
     expect(h).toMatch(/em 3 anos \(2022, 2023 e 2024\), de 63,6% a 98,3% das horas do Sudeste\/Centro-Oeste ficaram no piso/);
-    expect(h).toMatch(/O IPCA acumulou cerca de 37% de jan\/2021 a ago\/2026/);
+    // a inflação do período sai das duas séries mensais da gold (conferida no teste seguinte); o texto da página traz o mesmo número e os mesmos meses
+    const inf = inflacaoAcumulada(gold.historico.mensal)!;
+    expect(h).toContain(`O IPCA acumulou cerca de ${Math.round(inf.frac * 100)}% de ${mesAbrev(inf.de)} a ${mesAbrev(inf.ate)}`);
     expect(h).toContain("A série semanal do PLD de 2001 a 2020, que a CCEE também publica, tem outra granularidade e ainda não está integrada");
     expect(h).toContain("Média diária frente ao mesmo mês e à mesma semana de anos anteriores");
     expect(h).toContain("As três médias mensais usam");
@@ -1331,8 +1342,8 @@ describe("histórico: marcas numeradas, regimes de limites, inflação e a base 
     // depois do último mês com as duas séries, nenhum mês tem as duas
     for (let k = k1 + 1; k < m.meses.length; k++) expect(typeof m.SE.real[k] === "number" && typeof m.SE.temporal[k] === "number").toBe(false);
     const t = textoInflacao(i)!;
-    expect(t).toContain(`O IPCA acumulou cerca de ${num(Math.round(i.frac * 100), 0)}% de jan/2021 a ago/2026`);
-    expect(t).toContain(`R$ 100/MWh nominais de jan/2021 equivalem a cerca de R$ ${num(Math.round(100 * (1 + i.frac)), 0)}/MWh em ago/2026.`);
+    expect(t).toContain(`O IPCA acumulou cerca de ${num(Math.round(i.frac * 100), 0)}% de ${mesAbrev(i.de)} a ${mesAbrev(i.ate)}`);
+    expect(t).toContain(`R$ 100/MWh nominais de ${mesAbrev(i.de)} equivalem a cerca de R$ ${num(Math.round(100 * (1 + i.frac)), 0)}/MWh em ${mesAbrev(i.ate)}.`);
     // conta de exemplo: preços 40% menores em moeda constante no primeiro mês e iguais no último
     const sintetica = { meses: ["2021-01", "2026-08"], SE: { real: [140, 100], temporal: [100, 100] } } as unknown as Parameters<typeof inflacaoAcumulada>[0];
     expect(inflacaoAcumulada(sintetica)!.frac).toBeCloseTo(0.4, 12);
@@ -1436,8 +1447,19 @@ describe("limites vigentes diante dos valores: pico do gráfico, CMO acima dos t
       expect(item, k).toContain(`distância de ${reais(Math.max(...v) - Math.min(...v))}/MWh`);
       expect(item).not.toMatch(/vezes|×|razão/);
     }
-    // os que empatam no extremo aparecem juntos, com "mesmo valor"
-    expect(p.itens[0]).toContain("(SE/CO, Sul e Nordeste, mesmo valor)");
+    // os que empatam no extremo aparecem juntos, com "mesmo valor" (empate de parte dos submercados; os quatro iguais têm frase própria)
+    for (const [k, rotulo] of [["decomp", "O CMO semanal do DECOMP"], ["dessem", "A média do CMO do DESSEM"], ["pld", "A média do PLD"]] as const) {
+      const item = p.itens.find((x) => x.startsWith(rotulo))!;
+      const cent = sem.por_sm.map((x) => Math.round((x[k] as number) * 100));
+      for (const alvo of [Math.min(...cent), Math.max(...cent)]) {
+        const ids = sem.por_sm.filter((_, i) => cent[i] === alvo).map((x) => x.sm);
+        if (ids.length > 1 && ids.length < sem.por_sm.length) expect(item, k).toContain(`(${nomesDosSubmercados(ids)}, mesmo valor)`);
+        if (ids.length === 1) expect(item, k).toContain(`(${nomesDosSubmercados(ids)})`);
+      }
+    }
+    // o ramo do empate fica testado num clone em que três submercados empatam no menor CMO do DECOMP
+    const empate = { ...sem, por_sm: sem.por_sm.map((x) => ({ ...x, decomp: x.sm === "N" ? 20 : 10 })) };
+    expect(partesDistanciaSemanal(empate)!.itens[0]).toContain("(SE/CO, Sul e Nordeste, mesmo valor)");
     expect(p.ressalva).toContain("não dizem por que os valores diferem");
     expect(textoDistanciaSemanal(sem)).toBe(`${p.introducao} ${p.itens.join(" ")} ${p.ressalva}`);
     expect(`${p.introducao} ${p.itens.join(" ")} ${p.ressalva}`).not.toMatch(SEM_TRAVESSAO);
@@ -1531,7 +1553,8 @@ describe("geração do Balanço do ONS no diagrama e na ideia central: a MMGD es
 });
 
 describe("fluxo por hora no dia do mapa: o sentido de cada fronteira, só com as horas publicadas", () => {
-  const dia = "2026-09-28";
+  // o dia do mapa é o dia de referência da gold de rede, o mesmo que a página usa
+  const dia = redeGold.dia_referencia;
   const conta = (fronteira: "N_NE" | "N_SE" | "NE_SE" | "S_SE") => {
     let no_sentido = 0;
     let contrario = 0;
@@ -1554,6 +1577,8 @@ describe("fluxo por hora no dia do mapa: o sentido de cada fronteira, só com as
       expect(x.horas).toBe(x.no_sentido + x.contrario + x.nulo);
       expect(x.horas).toBeLessThanOrEqual(24);
     }
+    // o dia do mapa tem horas publicadas no recorte horário: a conferência não passa no vazio
+    expect(s.reduce((a, x) => a + x.horas, 0)).toBeGreaterThan(0);
     const sSe = s.find((x) => x.fronteira === "S_SE")!;
     expect(textoSentidoNoDia(sSe)).toBe(`Sul para SE/CO: ${sSe.no_sentido} de ${sSe.horas} horas; SE/CO para Sul: ${sSe.contrario}${sSe.nulo ? `; fluxo nulo: ${sSe.nulo}` : ""}`);
   });

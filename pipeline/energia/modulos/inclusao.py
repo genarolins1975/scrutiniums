@@ -1864,10 +1864,12 @@ def _bloco_tarifa_social(con, scs):
                     "Faturas de cancelamento e refaturamento (tipos 2 a 4) não entram na contagem; entram no desconto líquido do mês, que só soma as subclasses 3.2 a 3.6. Linhas SubsBaixaRenda de outras subclasses (iluminação pública, industrial, comercial) ficam fora e aparecem à parte como diagnóstico.",
                     "O arquivo mais recente pode não trazer todas as distribuidoras; o mês do mapa é o mais recente com cobertura de pelo menos 99,5% das UC do SCS. Meses sondados abaixo desse mínimo não guardam o original e publicam só a cobertura.",
                     "Linhas com código de município em formato inválido ou inexistente na lista de municípios do IBGE entram no total nacional mas não no mapa.",
-                    "A série mensal da CDE começa no último mês completo do SCS (mai/2025) e vai até o mês do mapa; meses anteriores não foram processados (o SCS cobre o período)."]
+                    "A série mensal da CDE começa no último mês completo do SCS (mai/2025) e vai até o mês do mapa; meses anteriores não foram processados (o SCS cobre o período).",
+                    "O arquivo desta ficha traz o mapa por município; a série mensal por UF está em /energia/series/inclusao_cde_mensal_uf.csv."]
                    + ([_texto_maiores_diferencas(reconc, mes_conf)] if reconc and reconc.get("diferenca_pct") is not None else []),
-        # a ficha cobre o mapa por município e a série mensal por UF: os dois arquivos, cada um com o que o nome diz
-        download=["/energia/series/inclusao_municipios.csv", "/energia/series/inclusao_cde_mensal_uf.csv"])
+        # o contrato da ficha é um arquivo só (download: string); o mapa é o recorte principal e a série
+        # mensal por UF vai citada nas limitações, com o caminho, para não sumir da ficha
+        download="/energia/series/inclusao_municipios.csv")
     base.escreve_csv("inclusao_tsee_mensal.csv",
                      ["mes", "distribuidoras", "completo", "distribuidoras_faltantes", "uc_tsee_faltantes_ultimo_informe",
                       "uc_tsee", *[f"uc_{m}" for m in MODS], "uc_residencial",
@@ -2976,8 +2978,10 @@ def _bloco_acesso(con, ctx):
                             "https://dados.ons.org.br (busca por 'isolados': nenhum conjunto)",
                             fl.URL_DATASET + " (integrado)"],
     }
+    # a ficha do Luz para Todos fica só em acesso.proveniencia: a cópia dentro do bloco
+    # duplicava cerca de 4,6 KB na gold e ninguém a lê ali
     prov_acesso = {"pnad": prov_p, **({"isolados": isolados["proveniencia"]} if isolados else {}),
-                   **({"luz_para_todos": lpt["proveniencia"]} if lpt else {})}
+                   **({"luz_para_todos": lpt.pop("proveniencia")} if lpt else {})}
     return {
         "pergunta": "Quem ainda precisa de acesso adequado?",
         "ano_referencia": ult,

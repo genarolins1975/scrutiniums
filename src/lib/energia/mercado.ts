@@ -816,8 +816,9 @@ export function notaEssMme(g: Pick<MercadoGold, "encargos">): string {
 }
 
 /**
- * Nota do GSF de 12 meses: três valores em três recortes. O do cartão é do observatório na janela mais recente; o do
- * boletim da CCEE (InfoMercado) tem a janela dele, que termina um mês antes; o terceiro é o do observatório nessa janela.
+ * Nota do GSF de 12 meses. Quando o boletim da CCEE (InfoMercado) termina antes da janela do cartão, são três valores em
+ * três recortes: o do cartão (observatório, janela mais recente), o do boletim e o do observatório na janela do boletim.
+ * Quando o boletim já cobre a janela do cartão, são dois valores no mesmo recorte: o publicado e o do cartão.
  */
 export function notaGsfDozeMeses(g: Pick<MercadoGold, "mre_gsf">): string {
   const k = g.mre_gsf.kpis;
@@ -826,13 +827,23 @@ export function notaGsfDozeMeses(g: Pick<MercadoGold, "mre_gsf">): string {
   if (!div || div.publicado === null || div.calculado === null || div.diferenca === null) return base;
   const inicio = mesAno(mesesAntes(div.mes, 11));
   const janela = tx(`${inicio} a ${mesAno(div.mes)}`, `${inicio} to ${mesAno(div.mes)}`);
+  const lado = div.diferenca < 0 ? tx("abaixo", "lower") : tx("acima", "higher");
+  const pp = num(Math.abs(div.diferenca), 2);
+  if (k.gsf_12m && k.gsf_12m.periodo.fim === div.mes) {
+    return tx(
+      `${base}. Dois valores, o mesmo recorte (${janela}): o InfoMercado Nº ${div.numero}, boletim mensal da CCEE, publica ${num(div.publicado, 2)}% para o ajuste médio de 12 meses; ` +
+        `a razão de energias do observatório, que é o valor do cartão, dá ${num(div.calculado, 2)}%, ${pp} pontos percentuais ${lado}, diferença que a fonte não explica`,
+      `${base}. Two values, the same cut (${janela}): InfoMercado No. ${div.numero}, CCEE's monthly bulletin, publishes ${num(div.publicado, 2)}% for the average 12-month adjustment; ` +
+        `the observatory's energy ratio, which is the card value, gives ${num(div.calculado, 2)}%, ${pp} percentage points ${lado}, a difference the source does not explain`,
+    );
+  }
   const cartao = k.gsf_12m ? tx(`${pct(k.gsf_12m.valor_pct, 1)}, de ${textoPeriodoMes(k.gsf_12m.periodo)}`, `${pct(k.gsf_12m.valor_pct, 1)}, for ${textoPeriodoMes(k.gsf_12m.periodo)}`) : "";
   return tx(
     `${base}. Três valores, três recortes: o InfoMercado Nº ${div.numero}, boletim mensal da CCEE, publica ${num(div.publicado, 2)}% para o ajuste médio de 12 meses até ${mesAno(div.mes)}; ` +
-      `na mesma janela (${janela}) a razão de energias do observatório dá ${num(div.calculado, 2)}%, ${num(Math.abs(div.diferenca), 2)} pontos percentuais abaixo, diferença que a fonte não explica` +
+      `na mesma janela (${janela}) a razão de energias do observatório dá ${num(div.calculado, 2)}%, ${pp} pontos percentuais ${lado}, diferença que a fonte não explica` +
       (cartao ? `; o cartão mostra ${cartao}. O valor do cartão é o da janela mais recente` : ""),
     `${base}. Three values, three cuts: InfoMercado No. ${div.numero}, CCEE's monthly bulletin, publishes ${num(div.publicado, 2)}% for the average 12-month adjustment to ${mesAno(div.mes)}; ` +
-      `in the same window (${janela}) the observatory's energy ratio gives ${num(div.calculado, 2)}%, ${num(Math.abs(div.diferenca), 2)} percentage points lower, a difference the source does not explain` +
+      `in the same window (${janela}) the observatory's energy ratio gives ${num(div.calculado, 2)}%, ${pp} percentage points ${lado}, a difference the source does not explain` +
       (cartao ? `; the card shows ${cartao}. The card value is for the most recent window` : ""),
   );
 }

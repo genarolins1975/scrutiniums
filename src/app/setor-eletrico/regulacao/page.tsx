@@ -339,7 +339,7 @@ export default function RegulacaoPage() {
                           )}
                         </RegulacaoAviso>
                       )}
-                      {g.limites_em_revisao.length > 0 && (
+                      {g.limites_em_revisao && g.limites_em_revisao.length > 0 && (
                         <RegulacaoAviso>
                           {tx("Em revisão na Agenda Regulatória: ", "Under review on the regulatory agenda: ")}
                           {g.limites_em_revisao.map((a, i) => (
@@ -533,7 +533,14 @@ export default function RegulacaoPage() {
                   )}
                   <div>
                     <p className="rotulo text-mineral">{tx("Limites em revisão na Agenda Regulatória", "Limits under review on the regulatory agenda")}</p>
-                    {g.limites_em_revisao.length ? (
+                    {g.limites_em_revisao === null ? (
+                      <p className="mt-1 text-sm text-carvao-muted">
+                        {tx(
+                          "A Agenda Regulatória não foi lida nesta publicação; as atividades que tratam dos limites do PLD ficam sem informação.",
+                          "The regulatory agenda was not read in this publication; the activities dealing with the PLD limits are left without information.",
+                        )}
+                      </p>
+                    ) : g.limites_em_revisao.length ? (
                       <ul className="mt-1 space-y-1 text-sm text-carvao">
                         {g.limites_em_revisao.map((a) => (
                           <li key={a.codigo}>

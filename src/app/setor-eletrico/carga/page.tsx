@@ -139,6 +139,8 @@ export default function CargaPage() {
   const ROTULO_AUSENCIA = rotuloAusencia();
   const p = g.p025;
   const a = g.a07;
+  // captura que repete os valores da janela vira contagem na gold; o título conta todas
+  const capturasA07 = a.por_captura_2026.reduce((t, cap) => t + 1 + (cap.capturas_identicas ?? 0), 0);
   const atual = situacaoAtualidade(g.dia_referencia, g.gerado_em);
   const ev = g.evidencias;
   const versao = g.dia_referencia;
@@ -424,8 +426,8 @@ export default function CargaPage() {
                   id="a07-capturas"
                   nivel="auditar"
                   titulo={tx(
-                    `${a.por_captura_2026.length === 1 ? "A captura" : `As ${num(a.por_captura_2026.length, 0)} capturas`} do arquivo de ${a.referencia.fim.slice(0, 4)} usadas na variação de 7 dias`,
-                    `${a.por_captura_2026.length === 1 ? "The capture" : `The ${num(a.por_captura_2026.length, 0)} captures`} of the ${a.referencia.fim.slice(0, 4)} file used in the 7-day change`,
+                    `${capturasA07 === 1 ? "A captura" : `As ${num(capturasA07, 0)} capturas`} do arquivo de ${a.referencia.fim.slice(0, 4)} usadas na variação de 7 dias`,
+                    `${capturasA07 === 1 ? "The capture" : `The ${num(capturasA07, 0)} captures`} of the ${a.referencia.fim.slice(0, 4)} file used in the 7-day change`,
                   )}
                 >
                   {a.por_captura_2026.map((cap) => (
@@ -436,12 +438,18 @@ export default function CargaPage() {
                           {cap.janela_completa && cap.variacao_pct !== null
                             ? `janela completa, variação de ${sinal(cap.variacao_pct, 2)}% sobre as mesmas datas de ${a.referencia.inicio_anterior.slice(0, 4)}.`
                             : "janela incompleta ou com valor fora do domínio: a variação não existe com esta captura."}
+                          {cap.capturas_identicas && cap.ultima_captura_identica
+                            ? ` ${plural(cap.capturas_identicas, "captura seguinte repetiu", "capturas seguintes repetiram")} os mesmos valores da janela, até ${carimbo(cap.ultima_captura_identica)}.`
+                            : ""}
                         </>,
                         <>
                           Capture of {carimbo(cap.capturado_em)} (sha256 <code>{cap.sha256.slice(0, 12)}…</code>):{" "}
                           {cap.janela_completa && cap.variacao_pct !== null
                             ? `complete window, change of ${sinal(cap.variacao_pct, 2)}% over the same dates of ${a.referencia.inicio_anterior.slice(0, 4)}.`
                             : "incomplete window or with an out-of-domain value: the change does not exist with this capture."}
+                          {cap.capturas_identicas && cap.ultima_captura_identica
+                            ? ` ${plural(cap.capturas_identicas, "later capture repeated", "later captures repeated", "en")} the same window values, until ${carimbo(cap.ultima_captura_identica)}.`
+                            : ""}
                         </>,
                       )}
                     </p>
@@ -467,7 +475,14 @@ export default function CargaPage() {
                 <SecaoDoPainel id="revisoes" nivel="auditar" titulo={tx("Revisões da fonte entre capturas", "Source revisions between captures")}>
                   <p className="text-sm text-carvao-muted">{textoRevisoes(p.revisoes)}</p>
                   <TabelaInterativa
-                    titulo={tx("Valores revisados pela fonte", "Values revised by the source")}
+                    titulo={
+                      p.revisoes.linhas_so_no_csv
+                        ? tx(
+                            `As ${num(p.revisoes.linhas.length, 0)} revisões mais recentes, de ${num(p.revisoes.total, 0)}; todas estão no CSV de revisões`,
+                            `The ${num(p.revisoes.linhas.length, 0)} most recent revisions, of ${num(p.revisoes.total, 0)}; all are in the revisions CSV`,
+                          )
+                        : tx("Valores revisados pela fonte", "Values revised by the source")
+                    }
                     colunas={colunasRevisoes()}
                     linhas={paraTabela(
                       p.revisoes.linhas.map((l) => ({

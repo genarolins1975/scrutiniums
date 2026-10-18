@@ -309,16 +309,33 @@ export function regrasEmObservacao<T extends Pick<RegraObservar, "tipo" | "assun
  * condição já está presente e só falta a duração mínima para virar alerta.
  */
 export function vereditoSistema(g: Pick<SinteseVisaoGold, "frases" | "observar">, idioma: Idioma = idiomaEnergia()): string {
+  // o veredito cabe em LIMITE_PALAVRAS_VEREDITO: com muitas regras ativas, os nomes saem primeiro dos dados, depois das regras em
+  // observação e por fim das regras em alerta (a contagem fica, e os nomes continuam na resposta completa e na lista abaixo)
+  const niveis: [boolean, boolean, boolean][] = [[true, true, true], [true, true, false], [true, false, false], [false, false, false]];
+  let v = "";
+  for (const [sis, obs, dad] of niveis) {
+    v = textoVereditoSistema(g, idioma, sis, obs, dad);
+    if (contaPalavras(v) <= LIMITE_PALAVRAS_VEREDITO) break;
+  }
+  return v;
+}
+
+/** Limite de palavras do veredito à vista (o roteiro da Visão geral). */
+export const LIMITE_PALAVRAS_VEREDITO = 40;
+
+const contaPalavras = (t: string) => t.trim().split(/\s+/).filter(Boolean).length;
+
+function textoVereditoSistema(g: Pick<SinteseVisaoGold, "frases" | "observar">, idioma: Idioma, comNomesSistema: boolean, comNomesObs: boolean, comNomesDados: boolean): string {
   const regras = g.observar.filter((o) => o.tipo !== "evento");
   const sistema = regras.filter((o) => o.assunto === "sistema" && o.ativo);
   const observacao = regrasEmObservacao(regras);
   const dados = regras.filter((o) => o.assunto === "dados" && o.ativo);
   const partes: string[] = [];
-  const nomesObs = observacao.length ? nomesNoVeredito(observacao, false, idioma) : null;
+  const nomesObs = observacao.length && comNomesObs ? nomesNoVeredito(observacao, false, idioma) : null;
   const sufixoObs = nomesObs ? `: ${nomesObs}` : "";
   const n = (x: number) => num(x, 0, idioma);
   if (sistema.length) {
-    const nomes = nomesNoVeredito(sistema, false, idioma);
+    const nomes = comNomesSistema ? nomesNoVeredito(sistema, false, idioma) : null;
     partes.push(
       tx(
         `${sistema.length === 1 ? "Uma regra sobre o sistema está" : `${n(sistema.length)} regras sobre o sistema estão`} em alerta${nomes ? `: ${nomes}` : ""}.`,
@@ -345,7 +362,7 @@ export function vereditoSistema(g: Pick<SinteseVisaoGold, "frases" | "observar">
     partes.push(tx(`Nenhuma regra sobre o sistema está em alerta${obs}.`, `No rule about the system is in alert${obs}.`, idioma));
   }
   if (dados.length) {
-    const nomes = nomesNoVeredito(dados, true, idioma);
+    const nomes = comNomesDados ? nomesNoVeredito(dados, true, idioma) : null;
     partes.push(
       tx(
         `Sobre os próprios dados, ${dados.length === 1 ? "1 regra está" : `${n(dados.length)} regras estão`} em alerta${nomes ? `: ${nomes}` : ""}.`,
@@ -775,6 +792,12 @@ export function respostaDeterminantes(m: MultiplosVisao, idioma: Idioma = idioma
  * Os mesmos campos e a mesma posição de leituraDeterminante; os valores e as datas de cada painel ficam na resposta completa.
  */
 export function vereditoDeterminantes(m: MultiplosVisao, idioma: Idioma = idiomaEnergia()): string {
+  // com vários painéis fora da faixa, a forma curta mantém cada painel e a sua posição dentro do limite de palavras
+  const longo = textoVereditoDeterminantes(m, idioma, false);
+  return contaPalavras(longo) <= LIMITE_PALAVRAS_VEREDITO ? longo : textoVereditoDeterminantes(m, idioma, true);
+}
+
+function textoVereditoDeterminantes(m: MultiplosVisao, idioma: Idioma, curto: boolean): string {
   const dentro: string[] = [];
   const fora: string[] = [];
   const semDado: string[] = [];
@@ -806,8 +829,8 @@ export function vereditoDeterminantes(m: MultiplosVisao, idioma: Idioma = idioma
     const lista = listaNoIdioma(dentro.map((x, i) => (i === 0 ? x : minuscula(x))), idioma);
     partes.push(
       tx(
-        `${lista} ${dentro.length === 1 ? "está" : "estão"} dentro da faixa de referência ${dentro.length === 1 ? "do painel" : "de cada painel"}.`,
-        `${lista} ${dentro.length === 1 ? "is" : "are"} within the reference range of ${dentro.length === 1 ? "the panel" : "each panel"}.`,
+        curto ? `${lista}: dentro da faixa de referência.` : `${lista} ${dentro.length === 1 ? "está" : "estão"} dentro da faixa de referência ${dentro.length === 1 ? "do painel" : "de cada painel"}.`,
+        curto ? `${lista}: within the reference range.` : `${lista} ${dentro.length === 1 ? "is" : "are"} within the reference range of ${dentro.length === 1 ? "the panel" : "each panel"}.`,
         idioma,
       ),
     );
@@ -816,8 +839,8 @@ export function vereditoDeterminantes(m: MultiplosVisao, idioma: Idioma = idioma
   if (sentido.length)
     partes.push(
       tx(
-        `${sentido.join(", ")}: o painel mostra só o sentido do fluxo, sem comparação com limites de intercâmbio.`,
-        `${sentido.join(", ")}: the panel shows only the direction of the flow, with no comparison with interchange limits.`,
+        curto ? `${sentido.join(", ")}: só o sentido do fluxo, sem comparação com limites de intercâmbio.` : `${sentido.join(", ")}: o painel mostra só o sentido do fluxo, sem comparação com limites de intercâmbio.`,
+        curto ? `${sentido.join(", ")}: only the direction of the flow, with no comparison with interchange limits.` : `${sentido.join(", ")}: the panel shows only the direction of the flow, with no comparison with interchange limits.`,
         idioma,
       ),
     );
@@ -1578,6 +1601,17 @@ export function respostaObservar(observar: readonly RegraObservar[], idioma: Idi
  * de respostaObservar.
  */
 export function vereditoObservar(observar: readonly RegraObservar[], idioma: Idioma = idiomaEnergia()): string {
+  // mesmo limite do veredito do P004: os nomes das regras em observação saem antes dos das regras em alerta
+  const niveis: [boolean, boolean][] = [[true, true], [true, false], [false, false]];
+  let v = "";
+  for (const [sis, obs] of niveis) {
+    v = textoVereditoObservar(observar, idioma, sis, obs);
+    if (contaPalavras(v) <= LIMITE_PALAVRAS_VEREDITO) break;
+  }
+  return v;
+}
+
+function textoVereditoObservar(observar: readonly RegraObservar[], idioma: Idioma, comNomesSistema: boolean, comNomesObs: boolean): string {
   const regras = observar.filter((o) => o.tipo !== "evento");
   const alerta = regras.filter((o) => o.ativo);
   const sistema = alerta.filter((o) => o.assunto === "sistema");
@@ -1586,7 +1620,7 @@ export function vereditoObservar(observar: readonly RegraObservar[], idioma: Idi
   const n = (x: number) => num(x, 0, idioma);
   const partes: string[] = [];
   if (sistema.length) {
-    const nomes = nomesNoVeredito(sistema, false, idioma);
+    const nomes = comNomesSistema ? nomesNoVeredito(sistema, false, idioma) : null;
     partes.push(
       tx(
         `${sistema.length === 1 ? "Uma regra sobre o sistema está" : `${n(sistema.length)} regras sobre o sistema estão`} em alerta${nomes ? `: ${nomes}` : ""}.`,
@@ -1596,7 +1630,7 @@ export function vereditoObservar(observar: readonly RegraObservar[], idioma: Idi
     );
   } else partes.push(tx("Nenhuma regra sobre o sistema está em alerta.", "No rule about the system is in alert.", idioma));
   if (obs.length) {
-    const nomes = nomesNoVeredito(obs, false, idioma);
+    const nomes = comNomesObs ? nomesNoVeredito(obs, false, idioma) : null;
     partes.push(
       tx(
         `${obs.length === 1 ? "Uma regra está" : `${n(obs.length)} regras estão`} em observação, ainda sem a duração mínima para virar alerta${nomes ? `: ${nomes}` : ""}.`,

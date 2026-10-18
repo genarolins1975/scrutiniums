@@ -78,6 +78,9 @@ import { dataBR, mesAno, num, sinal } from "@/lib/energia/formato";
 import { problemasEvidencia, type Evidencia } from "@/lib/energia/evidencia";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { matrizExportacao } from "@/lib/energia/tabela";
+
+/** Data ISO n dias antes, pelo calendário UTC (independente de deslocaDias). */
+const diasAntes = (d: string, n: number) => new Date(Date.parse(`${d}T00:00:00Z`) - n * 86_400_000).toISOString().slice(0, 10);
 import type { CargaGold } from "@/lib/energia/tipos";
 import type { CargaDetalheGold } from "@/lib/energia/tipos-carga";
 
@@ -252,7 +255,9 @@ describe("P025: gráfico, tabela e exportação usam as mesmas linhas", () => {
     for (const sm of ["SIN", "NE"] as const) {
       const s = serieComReferencia(col, sm);
       const ult = s[s.length - 1];
-      const ref = diario.get("2025-09-29")!;
+      // o par é o dia 364 dias antes do último, calculado aqui pelo calendário UTC (outro caminho que o da biblioteca)
+      const ref = diario.get(diasAntes(C.dia_referencia, 364))!;
+      expect(ref, `${sm}: par de ${C.dia_referencia} no CSV`).toBeTruthy();
       expect(ult.d).toBe(C.dia_referencia);
       // carga.json arredonda a MWmed inteiro; o CSV tem quatro casas
       expect(Math.abs(ult.ref364! - n(sm === "SIN" ? ref.SIN_calculado : ref[sm])!), sm).toBeLessThanOrEqual(0.5);
@@ -260,9 +265,14 @@ describe("P025: gráfico, tabela e exportação usam as mesmas linhas", () => {
       expect(s[0].ref364).toBeNull();
     }
     // um dia ausente no meio não desloca o par: a busca é por data
-    const furada = serieColunar(C.serie.filter((p) => p.d !== "2026-01-15"));
+    // o furo fica entre o último dia e o seu par de 364 dias antes; o par não pode mudar
+    const furo = diasAntes(C.dia_referencia, 182);
+    expect(C.serie.some((p) => p.d === furo), furo).toBe(true);
+    const furada = serieColunar(C.serie.filter((p) => p.d !== furo));
+    expect(furada.d.length).toBe(C.serie.length - 1);
     const s2 = serieComReferencia(furada, "SIN");
-    const alvo = s2.find((p) => p.d === "2027-01-14" || p.d === "2026-09-28")!;
+    const alvo = s2.find((p) => p.d === C.dia_referencia)!;
+    expect(alvo.ref364).not.toBeNull();
     expect(alvo.ref364).toBe(serieComReferencia(col, "SIN").find((p) => p.d === alvo.d)!.ref364);
   });
 
@@ -551,11 +561,28 @@ describe("P027: gráfico, tabela e exportação usam as mesmas linhas", () => {
 describe("textos derivados dos números (mudar o número muda o texto)", () => {
   it("resposta do P025: média, variação com duas casas (sem arredondar duas vezes), datas e calendário", () => {
     const t = respostaNivel(G.p025, "SIN", "7d", "equivalente");
-    expect(t).toContain("83.771 MWmed");
-    expect(t).toContain("+11,45%");
-    expect(t).not.toContain("+11,5%");
-    expect(t).toContain("de 23/09/2025 a 29/09/2025");
-    expect(t).toContain("mesma composição de calendário: 5 dias úteis, 1 sábado e 1 domingo ou feriado");
+    // números lidos do CSV de comparações (outro arquivo) e escritos aqui em pt-BR, sem o formatador da página
+    const r = csv("carga_comparacoes.csv").find((x) => x.submercado === "SIN" && x.janela === "7d" && x.tipo === "equivalente")!;
+    expect(r).toBeTruthy();
+    const ptBR = (v: number, casas: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
+    const v = n(r.variacao_pct)!;
+    expect(t).toContain(`${ptBR(n(r.media_mwmed)!, 0)} MWmed`);
+    expect(t).toContain(`${v < 0 ? "−" : "+"}${ptBR(Math.abs(v), 2)}%`);
+    // duas casas: a variação nunca reaparece arredondada de novo para uma casa
+    expect(t).not.toContain(`${v < 0 ? "−" : "+"}${ptBR(Math.abs(v), 1)}%`);
+    const br = (iso: string) => iso.split("-").reverse().join("/");
+    expect(t).toContain(`de ${br(r.inicio_ant)} a ${br(diasAntes(r.inicio_ant, -6))}`);
+    // composição do calendário: o ramo publicado hoje e o outro, num clone que só muda o calendário
+    const j7 = G.p025.comparacoes.janelas.find((x) => x.id === "7d")!;
+    const igual = clone(G.p025);
+    const ji = igual.comparacoes.janelas.find((x) => x.id === "7d")!;
+    ji.calendario_equivalente_364d = true;
+    ji.classes_equivalente = { ...ji.classes };
+    const tIgual = respostaNivel(igual, "SIN", "7d", "equivalente");
+    expect(tIgual).toContain(`mesma composição de calendário: ${textoClasses(j7.classes)}`);
+    expect(tIgual).not.toContain("não têm a mesma composição");
+    if (j7.calendario_equivalente_364d) expect(t).toContain(`mesma composição de calendário: ${textoClasses(j7.classes)}`);
+    else expect(t).toContain(`não têm a mesma composição de calendário: ${textoClasses(j7.classes)} nesta, ${textoClasses(j7.classes_equivalente)}`);
     const p = clone(G.p025);
     const sin = p.comparacoes.subsistemas.find((s) => s.sm === "SIN")!;
     sin.janelas["7d"].equivalente!.variacao_pct = -2.31;
@@ -564,6 +591,7 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
     expect(respostaNivel(p, "SIN", "7d", "equivalente")).toContain("não é publicada como variação");
     sin.janelas["7d"].equivalente = null;
     expect(respostaNivel(p, "SIN", "7d", "equivalente")).toContain("falta dia aceito pela validação física");
+    p.comparacoes.janelas[0].classes = { util: 5, sabado: 1, domingo_feriado: 1, sem_classe: 0 };
     p.comparacoes.janelas[0].calendario_equivalente_364d = false;
     p.comparacoes.janelas[0].classes_equivalente = { util: 4, sabado: 1, domingo_feriado: 2, sem_classe: 0 };
     sin.janelas["7d"].equivalente = clone(G.p025.comparacoes.subsistemas.find((s) => s.sm === "SIN")!.janelas["7d"].equivalente);
@@ -591,7 +619,31 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
   it("revisões: magnitude e alcance, não só contagem", () => {
     const t = textoRevisoes(G.p025.revisoes);
     expect(t).toContain(`${G.p025.revisoes.total} valores foram revisados`);
-    expect(t).toMatch(/mediana de 0,0191% e máximo de 4,07%/);
+    // magnitude recalculada das linhas publicadas (cada uma com a diferença em três casas): a mediana confere até o
+    // arredondamento das linhas, o máximo confere exato, e o texto escreve os dois valores da gold
+    const rv = G.p025.revisoes;
+    // todas as revisões estão no CSV; a gold leva as mais recentes (até 50) e o resumo de todas
+    const todas = csv("carga_revisoes.csv");
+    expect(todas.length).toBe(rv.total);
+    const pcts = todas
+      .filter((l) => n(l.diferenca_pct) !== null && n(l.valor_anterior) !== null && n(l.valor_anterior)! > 0)
+      .map((l) => Math.abs(n(l.diferenca_pct)!))
+      .sort((a, b) => a - b);
+    expect(pcts.length).toBe(rv.revisoes_com_percentual);
+    const meio = pcts.length / 2;
+    const mediana = pcts.length % 2 ? pcts[Math.floor(meio)] : (pcts[meio - 1] + pcts[meio]) / 2;
+    expect(Math.abs(mediana - rv.mediana_abs_pct!)).toBeLessThanOrEqual(0.0005 + 1e-9);
+    expect(Math.max(...pcts)).toBe(rv.max_abs_pct);
+    const ptBR = (v: number, casas: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
+    expect(t).toContain(`mediana de ${ptBR(rv.mediana_abs_pct!, 4)}% e máximo de ${ptBR(rv.max_abs_pct!, 2)}%`);
+    expect(rv.dias_revisados).toBe(new Set(todas.map((l) => `${l.serie.split(".").pop()}|${l.ref}`)).size);
+    // as linhas da gold são as mais recentes do CSV, e a contagem das que ficaram só no CSV fecha
+    const chave = (sm: string, dia: string, cap: string) => `${sm}|${dia}|${cap}`;
+    const doCsv = todas.map((l) => ({ k: chave(l.serie.split(".").pop()!, l.ref, l.capturado_em), cap: l.capturado_em, dia: l.ref }));
+    const recentes = [...doCsv].sort((a, b) => (b.cap + b.dia).localeCompare(a.cap + a.dia)).slice(0, rv.linhas.length).map((x) => x.k);
+    expect(rv.linhas.length).toBe(Math.min(todas.length, 50));
+    expect(rv.linhas.map((l) => chave(l.sm, l.dia, l.capturado_em)).sort()).toEqual(recentes.sort());
+    expect(rv.linhas_so_no_csv ?? 0).toBe(todas.length - rv.linhas.length);
     const r = clone(G.p025.revisoes);
     r.total = 0;
     expect(textoRevisoes(r)).toContain("Nenhum valor revisado");
@@ -635,14 +687,33 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
   it("resposta do P027: erro, referência ingênua e cobertura diante da nominal", () => {
     const p = G.p027!;
     const t = respostaClima(p, "SIN");
-    expect(t).toContain("2,08%");
-    expect(t).toContain("4,80%");
-    expect(t).toContain("abaixo do nominal");
+    const m = p.metricas.SIN!;
+    // o erro médio é a média das origens ponderada pelos dias previstos, relida do CSV do backtest (outro arquivo, 3 casas)
+    const bt = csv("carga_decomposicao_backtest.csv").filter((r) => r.variante === "principal" && r.submercado === "SIN");
+    expect(bt.length).toBe(m.origens);
+    const dias = bt.reduce((a, r) => a + n(r.dias_previstos)!, 0);
+    expect(dias).toBe(m.dias);
+    expect(Math.abs(bt.reduce((a, r) => a + n(r.mape_pct)! * n(r.dias_previstos)!, 0) / dias - m.mape_pct)).toBeLessThan(0.001);
+    const ptBR = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    expect(t).toContain(`errou em média ${ptBR(m.mape_pct)}%`);
+    expect(t).toContain(`errou ${ptBR(m.mape_referencia_364d_pct!)}%`);
+    // a decomposição erra menos que a referência ingênua nas duas publicações conferidas; o texto não decide isso por ela
+    expect(m.mape_pct).toBeLessThan(m.mape_referencia_364d_pct!);
+    if (m.cobertura_80_pct! < 80 || m.cobertura_95_pct! < 95) expect(t).toContain("abaixo do nominal");
+    else expect(t).toContain("no nível nominal ou acima");
+    const baixa = clone(p);
+    baixa.metricas.SIN.cobertura_80_pct = 71;
+    expect(respostaClima(baixa, "SIN")).toContain("abaixo do nominal");
     const q = clone(p);
     q.metricas.SIN.cobertura_80_pct = 81;
     q.metricas.SIN.cobertura_95_pct = 96;
     expect(respostaClima(q, "SIN")).toContain("no nível nominal ou acima");
-    expect(textoDefasagemTemperatura(p, G.dia_referencia)).toContain("1 dia antes do último dia de carga");
+    // defasagem em dias contada aqui pelo calendário: a temperatura chega depois da carga
+    const defasagem = Math.round((Date.parse(`${G.dia_referencia}T00:00:00Z`) - Date.parse(`${p.periodo_avaliacao.fim}T00:00:00Z`)) / 86_400_000);
+    expect(defasagem).toBeGreaterThan(0);
+    expect(diasAntes(G.dia_referencia, defasagem)).toBe(p.periodo_avaliacao.fim);
+    expect(textoDefasagemTemperatura(p, G.dia_referencia)).toContain(`${defasagem} ${defasagem === 1 ? "dia" : "dias"} antes do último dia de carga`);
+    expect(textoDefasagemTemperatura(p, diasAntes(p.periodo_avaliacao.fim, -1))).toContain("1 dia antes do último dia de carga");
     expect(textoDefasagemTemperatura(p, p.periodo_avaliacao.fim)).toContain("cobre até");
     expect(respostaUltimoDia(p)).toContain(p.recente_sin[p.recente_sin.length - 1].d.split("-").reverse().join("/"));
   });
@@ -946,7 +1017,11 @@ describe("revisão de interface: nada de data, contagem ou afirmação sobre os 
   it("perfil comparado entre anos e hora do pico da API: mês, tipo de dia e contagens vêm da gold; ausência não vira zero", () => {
     const ev = recorteEvolucao(G.p026)!;
     expect(ev.desde).toBe(G.p026.perfil_evolucao[0].mes.slice(0, 4));
-    expect(ev.mes).toBe("agosto");
+    // o mês do recorte é o mesmo em todos os anos e é o último mês completo da série; o nome vem dele
+    const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+    const meses = new Set(G.p026.perfil_evolucao.map((x) => x.mes.slice(5, 7)));
+    expect(meses.size).toBe(1);
+    expect(ev.mes).toBe(MESES[Number([...meses][0]) - 1]);
     const P = clone(G.p026);
     P.perfil_evolucao.forEach((x) => (x.mes = `${x.mes.slice(0, 4)}-07`));
     expect(recorteEvolucao(P)!.mes).toBe("julho");
@@ -970,7 +1045,8 @@ describe("revisão de interface: nada de data, contagem ou afirmação sobre os 
     expect(h026).not.toMatch(/sobretudo à noite|mais à noite/);
     expect(h026).toContain(textoDiferencaHoraria(G.p026.compatibilidade.por_hora_sin_365d)!.slice(0, 40));
     expect(h026).toContain(`Pico de cada dia nos últimos ${G.p026.picos_90d.length} dias`);
-    expect(h026).toContain(`Como o dia útil de agosto mudou desde ${G.p026.perfil_evolucao[0].mes.slice(0, 4)}`);
+    const mesEvolucao = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"][Number(G.p026.perfil_evolucao[0].mes.slice(5, 7)) - 1];
+    expect(h026).toContain(`Como o dia útil de ${mesEvolucao} mudou desde ${G.p026.perfil_evolucao[0].mes.slice(0, 4)}`);
     expect(h027).toContain(`A janela de ${dataBR(ref.inicio)} a ${dataBR(ref.fim)} contra um ano antes, decomposta`);
     expect(h027).toContain(`Últimos ${G.p027!.recente_sin.length} dias previstos`);
     const principal = decomposicaoEscolhida(G.a07, "SIN", "principal", "equivalente")!;
