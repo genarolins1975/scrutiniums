@@ -21,6 +21,8 @@ export type Observatorio = {
   nomeCurto: string;
   /** Pergunta que o observatório responde, usada na home, na página aberta e na escolha pós login. */
   pergunta: string;
+  /** Entrada com conta do observatório, quando ele já tem uma (src/app/observatorios/[id]). */
+  entrada?: string;
   acento: Dominio["acento"];
   colecoes: Colecao[];
 };
@@ -44,6 +46,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     nome: "Observatório das Famílias",
     nomeCurto: "Famílias",
     pergunta: "Quanto custa viver e quanto pesa a dívida das famílias?",
+    entrada: "/observatorios/familias",
     acento: "bronze",
     colecoes: [
       { id: "renda", nome: "Renda e trabalho", href: "/eficiencia-estatal/trabalho-renda" },

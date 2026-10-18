@@ -143,6 +143,7 @@ export default async function EscolhaObservatorioPage() {
                       <li key={c.id}><Link href={c.href} prefetch={false}>{c.nome}</Link></li>
                     ))}
                   </ul>
+                  {o.entrada && <Link href={o.entrada} prefetch={false} className={styles.entrar}>Entrar no {o.nome} <span aria-hidden="true">→</span></Link>}
                   <Link href={rotaPorta(o.id)} className={styles.resumo}>Resumo aberto do observatório <span aria-hidden="true">→</span></Link>
                 </nav>
               </header>

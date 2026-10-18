@@ -8,52 +8,14 @@
  * Os destinos levam aos painéis dos observatórios (com conta) e as páginas de
  * método são públicas.
  */
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import { dominio, type DominioId } from "@/lib/dominios";
 import { donoDaRota, observatorio, type ObservatorioId } from "@/lib/observatorios/registro";
 import contasFederais from "@/lib/contas-publicas/snapshots/dados.json";
 import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
-import type { CaminhoPorta, NumeroPorta, Porta } from "./tipos";
+import type { CaminhoPorta, Porta } from "./tipos";
+import { comSinal, dataBr, lerPublico, mesAno, num, numero } from "./leitura";
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- leitura de gold JSON sem tipos gerados */
-function lerPublico(...partes: string[]): any {
-  return JSON.parse(readFileSync(join(process.cwd(), "public", ...partes), "utf-8"));
-}
-
-const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-
-/** "2026-07" ou "2026-07-01" → "jul/2026". */
-function mesAno(iso: string): string {
-  return `${MESES[Number(iso.slice(5, 7)) - 1]}/${iso.slice(0, 4)}`;
-}
-
-/** "2026-09-29" → "29/09/2026". */
-function dataBr(iso: string): string {
-  return iso.slice(0, 10).split("-").reverse().join("/");
-}
-
-function num(v: number, casas: number): string {
-  return v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
-}
-
-/** Número com sinal tipográfico de menos, como no resto da plataforma. */
-function comSinal(v: number, casas: number): string {
-  return v < 0 ? `−${num(Math.abs(v), casas)}` : num(v, casas);
-}
-
-type Leitura = { valor: string; periodo: string; nota?: string };
-
-/** Lê um número; qualquer falha vira ausência declarada, nunca zero. */
-function numero(def: Omit<NumeroPorta, "valor" | "periodo">, ler: () => Leitura): NumeroPorta {
-  try {
-    const l = ler();
-    return { ...def, valor: l.valor, periodo: l.periodo, nota: l.nota ?? def.nota };
-  } catch {
-    return { ...def, valor: null, periodo: "indisponível nesta publicação" };
-  }
-}
-
 /** Destino com o domínio de origem e a coleção do registro a que pertence. */
 function caminho(obs: DominioId, pergunta: string, resumo: string, href: string): CaminhoPorta {
   const dono = donoDaRota(href);
