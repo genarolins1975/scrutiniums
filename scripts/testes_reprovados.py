@@ -139,7 +139,10 @@ def publicacao(caminho):
             print(f"  - {m}")
     if not r.get("retidos"):
         print("Nenhum.\n")
-    print("\n### Grupos publicados\n")
+    confirmado = r.get("publicacao_remota_confirmada") is not False
+    print("\n### Grupos publicados\n" if confirmado else "\n### Grupos aprovados — publicação remota não confirmada\n")
+    if not confirmado:
+        print("O push falhou ou não foi concluído; consulte o passo Commit e push. As datas abaixo são as gerações aprovadas, sem confirmação de publicação remota.\n")
     for g in r.get("publicados", []):
         print(f"- **{g}** — geração: {r['datas_publicadas'].get(g) or 'data não informada'}")
     if not r.get("publicados"):

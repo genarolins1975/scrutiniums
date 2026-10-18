@@ -151,8 +151,8 @@ contagens do meta são atualizados por dentro de um painel retido.
 ## Visibilidade e limites da verificação local
 
 O workflow publica grupos aprovados mesmo se houver retenções, abre/comenta a
-issue existente com grupos retidos, motivos/testes e geração anterior, e grupos
-publicados com sua geração. Depois do commit, qualquer retenção deixa o job
+issue existente depois da tentativa de commit/push, com grupos retidos, motivos/testes e geração anterior, e grupos
+publicados com sua geração. Se o push falhar, os aprovados aparecem como publicação remota não confirmada. Depois do commit, qualquer retenção deixa o job
 vermelho; falhas sem gold também deixam vermelho e são identificadas separadamente.
 O artefato preserva todos os JSONs/logs, inclusive primeiras tentativas inconclusivas
 e os resultados das composições retestadas. O retry de push aceita avanços de código no ramo, mas compara a árvore Git da gold remota com a base testada: se a publicação mudou durante o ciclo, aborta antes de fazer rebase/push e exige nova execução, para não trocar por dentro uma fonte retida de UFs. O diagnóstico antigo continua disponível sem atribuir

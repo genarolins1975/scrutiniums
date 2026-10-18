@@ -200,14 +200,58 @@ jobs:
           fi
           exit "$RESULTADO"
 
+      - name: Commit e push das atualizações
+        id: commit
+        if: always() && steps.testes.outputs.publicacao_segura == '1'
+        run: |
+          git config user.name "pipeline-observatorio[bot]"
+          git config user.email "pipeline@scrutiniums.com"
+          BASE_GOLD=$(git rev-parse HEAD:public/obs/data/gold)
+          git add public/obs/data
+          if git diff --cached --quiet; then
+            echo "Sem mudanças nos dados publicados."
+          else
+            git commit -m "Atualiza dados do Observatório (pipeline automático)"
+            # a execução leva mais de uma hora: é normal que main tenha andado
+            # nesse intervalo. Sem o rebase, o push é rejeitado e o dia inteiro
+            # de coleta se perde — foi o que aconteceu em 03/08.
+            # rebase e push no MESMO ramo que disparou a execução (main no agendamento;
+            # o ramo do PR no disparo manual de validação)
+            for tentativa in 1 2 3 4; do
+              if git fetch origin "$GITHUB_REF_NAME"; then
+                # A composição foi testada com esta base. Rebase sobre outra gold
+                # poderia trocar uma fonte retida sem reconstruir UFs: não publicar.
+                if [ "$(git rev-parse FETCH_HEAD:public/obs/data/gold)" != "$BASE_GOLD" ]; then
+                  echo "::error::a gold publicada mudou durante a execução; repetir o ciclo sobre a nova base antes de publicar"
+                  exit 1
+                fi
+                git rebase FETCH_HEAD && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
+              fi
+              echo "push falhou (tentativa $tentativa); nova tentativa em $((tentativa * 5))s"
+              sleep $((tentativa * 5))
+            done
+            echo "::error::não foi possível publicar os dados após 4 tentativas"
+            exit 1
+          fi
+
       - name: Reter publicação reprovada — relatório dos grupos
         id: reter
-        if: steps.testes.outcome == 'failure' && steps.testes.outputs.publicacao_segura == '1'
+        if: always() && steps.testes.outcome == 'failure' && steps.testes.outputs.publicacao_segura == '1'
         env:
+          PUSH_CONFIRMADO: ${{ steps.commit.outcome == 'success' }}
           GH_TOKEN: ${{ github.token }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           # Não desfaz os grupos aprovados: os retidos já mantêm os bytes da base.
+          # Relata publicação só depois do push; falha de push fica explícita.
+          python3 - <<'PYSTATUS'
+          import json, os
+          from pathlib import Path
+          p = Path('.gold-publicacao/resultado.json')
+          r = json.loads(p.read_text())
+          r['publicacao_remota_confirmada'] = os.environ['PUSH_CONFIRMADO'] == 'true'
+          p.write_text(json.dumps(r, ensure_ascii=False, indent=2) + '\n')
+          PYSTATUS
           echo "retida=1" >> "$GITHUB_OUTPUT"
           python3 scripts/testes_reprovados.py --publicacao .gold-publicacao/resultado.json > .gold-publicacao/relatorio.md
           # O relatório anterior segue como diagnóstico adicional (incidente 16/10).
@@ -242,39 +286,6 @@ jobs:
             pipeline-testes.log
             pesquisa-testes.log
           retention-days: 30
-
-      - name: Commit e push das atualizações
-        if: always() && steps.testes.outputs.publicacao_segura == '1'
-        run: |
-          git config user.name "pipeline-observatorio[bot]"
-          git config user.email "pipeline@scrutiniums.com"
-          BASE_GOLD=$(git rev-parse HEAD:public/obs/data/gold)
-          git add public/obs/data
-          if git diff --cached --quiet; then
-            echo "Sem mudanças nos dados publicados."
-          else
-            git commit -m "Atualiza dados do Observatório (pipeline automático)"
-            # a execução leva mais de uma hora: é normal que main tenha andado
-            # nesse intervalo. Sem o rebase, o push é rejeitado e o dia inteiro
-            # de coleta se perde — foi o que aconteceu em 03/08.
-            # rebase e push no MESMO ramo que disparou a execução (main no agendamento;
-            # o ramo do PR no disparo manual de validação)
-            for tentativa in 1 2 3 4; do
-              if git fetch origin "$GITHUB_REF_NAME"; then
-                # A composição foi testada com esta base. Rebase sobre outra gold
-                # poderia trocar uma fonte retida sem reconstruir UFs: não publicar.
-                if [ "$(git rev-parse FETCH_HEAD:public/obs/data/gold)" != "$BASE_GOLD" ]; then
-                  echo "::error::a gold publicada mudou durante a execução; repetir o ciclo sobre a nova base antes de publicar"
-                  exit 1
-                fi
-                git rebase FETCH_HEAD && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
-              fi
-              echo "push falhou (tentativa $tentativa); nova tentativa em $((tentativa * 5))s"
-              sleep $((tentativa * 5))
-            done
-            echo "::error::não foi possível publicar os dados após 4 tentativas"
-            exit 1
-          fi
 
       # Retenção deixa a execução VERMELHA. De 25/09 a 12/10/2026 todas as execuções
       # retidas terminaram verdes (o passo de testes tem continue-on-error), e a aba

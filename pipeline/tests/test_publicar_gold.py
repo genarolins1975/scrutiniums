@@ -168,6 +168,17 @@ class PublicacaoPorGrupo(unittest.TestCase):
         self.assertEqual(m['grupos']['emprego-setores-ufs']['vintages']['caged'], '2026-08')
         self.assertEqual(m['gerado_em'], '2026-07-28T09:00:00+00:00')
         self.assertEqual(r['datas_anteriores']['consignado'], m['gerado_em'])
+        from contextlib import redirect_stdout
+        from io import StringIO
+        from scripts.testes_reprovados import publicacao
+        r['publicacao_remota_confirmada'] = False
+        caminho = self.raiz / 'resultado.json'
+        pg.gravar_json(caminho, r)
+        saida = StringIO()
+        with redirect_stdout(saida):
+            publicacao(caminho)
+        self.assertIn('publicação remota não confirmada', saida.getvalue())
+        self.assertNotIn('### Grupos publicados', saida.getvalue())
 
     def test_erro_na_composicao_ou_reteste_restaura_base(self):
         with patch.object(pg, 'recompor_ufs', side_effect=RuntimeError('erro')):
