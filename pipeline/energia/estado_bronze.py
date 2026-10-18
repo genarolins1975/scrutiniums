@@ -9,7 +9,9 @@ import argparse
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
+import shutil
 import sqlite3
 import tarfile
 
@@ -148,13 +150,34 @@ def restaurar(origem):
         if caminho.stat().st_size != parte["bytes"] or _sha(caminho) != parte["sha256"]:
             raise ValueError(f"parte de bronze inválida: {nome}")
         caminhos.append(caminho)
+    extraidos = preservados = 0
     with _LePartes(caminhos) as leitor, tarfile.open(fileobj=leitor, mode="r|") as tar:
         for membro in tar:
             p = Path(membro.name)
             if (not membro.isfile() or p.is_absolute() or ".." in p.parts
                     or p.parts[:3] != ("data", "energia", "bronze")):
                 raise ValueError(f"arquivo fora do bronze: {membro.name}")
-            tar.extract(membro, base.RAIZ, filter="data")
+            destino = Path(base.RAIZ) / p
+            # O bronze é imutável: arquivo do cache com o tamanho do pacote fica como está
+            # (mesmo inode). Os demais são gravados ao lado e trocados por rename atômico,
+            # depois de conferido o tamanho; uma interrupção nunca deixa arquivo truncado
+            # com o nome que bronze_disponivel procura.
+            if destino.is_file() and destino.stat().st_size == membro.size:
+                preservados += 1
+                continue
+            destino.parent.mkdir(parents=True, exist_ok=True)
+            temporario = destino.with_name(f".{destino.name}.restaurando")
+            try:
+                with tar.extractfile(membro) as origem_f, open(temporario, "wb") as f:
+                    shutil.copyfileobj(origem_f, f)
+                if temporario.stat().st_size != membro.size:
+                    raise ValueError(f"extração incompleta: {membro.name}")
+                os.utime(temporario, (membro.mtime, membro.mtime))
+                os.replace(temporario, destino)
+            finally:
+                temporario.unlink(missing_ok=True)
+            extraidos += 1
+    print(f"Bronze restaurado: {extraidos} arquivos extraídos; {preservados} já presentes preservados")
     return manifesto
 
 

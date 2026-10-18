@@ -263,6 +263,52 @@ class TestSelecaoEBronzeDuravel(unittest.TestCase):
         self.assertEqual(Path(base.caminho_bronze(anterior["arquivo"])).read_bytes(), antes)
         self.assertFalse(base.bronze_disponivel(nova))
 
+    def test_restauracao_preserva_bronze_do_cache_e_troca_truncado_por_rename(self):
+        from pathlib import Path
+        from pipeline.energia import estado_bronze as estado
+        bom = self.vintage("ds", "a", b"bronze do cache " * 50)
+        truncado = self.vintage("ds", "b", b"bronze completo " * 50)
+        ausente = self.vintage("ds", "c", b"bronze perdido " * 50)
+        caminhos = {k: Path(base.caminho_bronze(v["arquivo"])) for k, v in
+                    (("bom", bom), ("truncado", truncado), ("ausente", ausente))}
+        completos = {k: c.read_bytes() for k, c in caminhos.items()}
+        destino = os.path.join(self.raiz, "backup")
+        estado.guardar(destino, limite=1024)
+        inode_bom = caminhos["bom"].stat().st_ino
+        os.utime(caminhos["bom"], (1_000_000_000, 1_000_000_000))  # marca: reescrita mudaria a data
+        caminhos["truncado"].write_bytes(completos["truncado"][:10])
+        os.remove(caminhos["ausente"])
+        estado.restaurar(destino)
+        self.assertEqual(caminhos["bom"].stat().st_ino, inode_bom)
+        self.assertEqual(caminhos["bom"].stat().st_mtime, 1_000_000_000)
+        for k, c in caminhos.items():
+            self.assertEqual(c.read_bytes(), completos[k], k)
+        restos = [n for _, _, ns in os.walk(self.bronze) for n in ns if n.endswith(".restaurando")]
+        self.assertEqual(restos, [])
+
+    def test_restauracao_interrompida_nao_deixa_arquivo_truncado_com_nome_do_bronze(self):
+        from pathlib import Path
+        from unittest import mock
+        from pipeline.energia import estado_bronze as estado
+        v = self.vintage("ds", "a", b"bronze perdido " * 50)
+        caminho = Path(base.caminho_bronze(v["arquivo"]))
+        destino = os.path.join(self.raiz, "backup")
+        estado.guardar(destino, limite=1024)
+        os.remove(caminho)
+
+        def copia_pela_metade(origem, f, *args, **kwargs):
+            f.write(origem.read(7))
+            raise OSError("disco cheio")
+
+        import shutil
+        import tarfile
+        with mock.patch.object(shutil, "copyfileobj", copia_pela_metade), \
+                mock.patch.object(tarfile, "copyfileobj", copia_pela_metade):
+            with self.assertRaises(OSError):
+                estado.restaurar(destino)
+        self.assertFalse(base.bronze_disponivel(v))
+        self.assertEqual(os.listdir(caminho.parent), [])
+
     def test_seed_versionado_fora_do_bronze_nao_interrompe_backup(self):
         from pathlib import Path
         from pipeline.energia import estado_bronze as estado
@@ -447,11 +493,19 @@ with open(os.environ['ENERGIA_FAKE_LOG'], 'a') as f:
 ''')
             gh.chmod(0o755)
             texto = (raiz_codigo / ".github/workflows/atualizar-energia.yml").read_text()
-            bloco = texto.split("      - name: Completar estado durável (cache ausente ou parcial)\n", 1)[1].split("\n      - name:", 1)[0]
-            cabecalho, corpo = bloco.split("        run: |\n", 1)
-            self.assertFalse(any(l.startswith("        if:") for l in cabecalho.splitlines()),
-                             "cache encontrado também pode ser parcial")
-            shell = "\n".join(l[10:] if l.startswith("          ") else l for l in corpo.splitlines())
+            # silver e bronze em passos próprios (review #278): a falha do bronze não se
+            # confunde com o silver restaurado; a sequência dos dois é o que o runner executa
+            shells = []
+            for passo in ("Completar estado durável (cache ausente ou parcial)", "Restaurar bronze vigente da cópia durável"):
+                bloco = texto.split(f"      - name: {passo}\n", 1)[1].split("\n      - name:", 1)[0]
+                cabecalho, corpo = bloco.split("        run: |\n", 1)
+                self.assertFalse(any(l.startswith("        if:") for l in cabecalho.splitlines()),
+                                 f"{passo}: cache encontrado também pode ser parcial")
+                self.assertIn("        continue-on-error: true", cabecalho.splitlines(), passo)
+                shells.append("\n".join(l[10:] if l.startswith("          ") else l for l in corpo.splitlines()))
+            for trecho in ("estado_bronze restaurar", "estado_bronze necessario", "energia-bronze"):
+                self.assertNotIn(trecho, shells[0], "o passo do silver não pode depender do bronze")
+            shell = "\n".join(shells)
             shell = shell.replace("/tmp", str(tmp / "temporarios"))
             env = {**os.environ, "PATH": f"{binarios}:{os.environ['PATH']}", "PYTHONPATH": str(repo),
                    "GITHUB_REPOSITORY": "teste/energia", "GITHUB_OUTPUT": str(tmp / "outputs"),
@@ -473,3 +527,55 @@ with open(os.environ['ENERGIA_FAKE_LOG'], 'a') as f:
                 self.assertEqual(downloads.count(estado.MANIFESTO), rodada)
                 for parte in man["partes"]:
                     self.assertEqual(downloads.count(parte["nome"]), 1)
+
+
+class TestCopiaDuravelNoWorkflow(unittest.TestCase):
+    """Review #278: a cópia do silver não pode depender do bronze, e partes publicadas
+    não são substituídas (o manifesto vigente continua utilizável durante o upload)."""
+
+    def passos(self):
+        """Passos do job em ordem, lidos do texto (sem PyYAML, ausente no CI)."""
+        from pathlib import Path
+        texto = (Path(__file__).resolve().parents[2] / ".github/workflows/atualizar-energia.yml").read_text()
+        out = []
+        for bloco in texto.split("\n      - name: ")[1:]:
+            nome, resto = bloco.split("\n", 1)
+            cabecalho, _, corpo = resto.partition("        run: |\n")
+            passo = {"name": nome.strip(), "run": corpo}
+            for linha in cabecalho.splitlines():
+                chave, sep, valor = linha.strip().partition(": ")
+                if sep and linha.startswith("        ") and not linha.startswith("         "):
+                    passo[chave] = valor
+            passo["continue-on-error"] = passo.get("continue-on-error") == "true"
+            out.append(passo)
+        return out
+
+    def test_silver_sobe_antes_e_em_passo_sem_bronze(self):
+        passos = self.passos()
+        nomes = [p.get("name") for p in passos]
+        i_silver = nomes.index("Cópia durável do silver (release energia-estado)")
+        i_bronze = nomes.index("Cópia durável do bronze vigente (release energia-estado)")
+        self.assertLess(i_silver, i_bronze)
+        silver, bronze = passos[i_silver], passos[i_bronze]
+        self.assertNotIn("estado_bronze", silver["run"])
+        self.assertIn("energia-silver.db.gz", silver["run"])
+        self.assertIn("estado_bronze guardar", bronze["run"])
+        self.assertTrue(silver.get("continue-on-error") and bronze.get("continue-on-error"))
+        alerta = next(p for p in passos if p.get("if") == "steps.bronze_duravel.outcome == 'failure'")
+        self.assertIn("gh issue", alerta["run"])
+
+    def test_partes_nao_sao_substituidas_nem_reenviadas(self):
+        bronze = next(p for p in self.passos() if p.get("id") == "bronze_duravel")["run"]
+        linha_upload = next(l for l in bronze.splitlines() if 'gh release upload energia-estado "$parte"' in l)
+        self.assertNotIn("--clobber", linha_upload)
+        self.assertIn('select(.state == "uploaded")', bronze)
+        self.assertLess(bronze.index("energia-bronze.parte-*"), bronze.index("energia-bronze-manifesto.json"))
+
+    def test_falha_na_restauracao_do_bronze_abre_alerta(self):
+        passos = self.passos()
+        restauracao = next(p for p in passos if p.get("id") == "bronze")
+        self.assertTrue(restauracao.get("continue-on-error"))
+        self.assertIn("estado_bronze restaurar", restauracao["run"])
+        alerta = next(p for p in passos if p.get("if") == "steps.bronze.outcome == 'failure'")
+        self.assertIn("::warning::", alerta["run"])
+        self.assertIn("gh issue", alerta["run"])
