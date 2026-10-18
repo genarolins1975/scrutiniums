@@ -19,6 +19,8 @@ export type Observatorio = {
   id: ObservatorioId;
   nome: string;
   nomeCurto: string;
+  /** Pergunta que o observatório responde, usada na home, na página aberta e na escolha pós login. */
+  pergunta: string;
   acento: Dominio["acento"];
   colecoes: Colecao[];
 };
@@ -41,6 +43,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     id: "familias",
     nome: "Observatório das Famílias",
     nomeCurto: "Famílias",
+    pergunta: "Quanto custa viver e quanto pesa a dívida das famílias?",
     acento: "bronze",
     colecoes: [
       { id: "renda", nome: "Renda e trabalho", href: "/eficiencia-estatal/trabalho-renda" },
@@ -54,6 +57,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     id: "servicos-publicos",
     nome: "Observatório dos Serviços Públicos",
     nomeCurto: "Serviços Públicos",
+    pergunta: "Escola, saúde, segurança e justiça chegam a quem precisa?",
     acento: "obee",
     colecoes: [
       { id: "educacao", nome: "Educação", href: "/eficiencia-estatal/educacao-municipal-capitais" },
@@ -68,6 +72,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     id: "contas-publicas",
     nome: "Observatório das Contas Públicas",
     nomeCurto: "Contas Públicas",
+    pergunta: "De onde vem e para onde vai o dinheiro dos impostos?",
     acento: "energia",
     colecoes: [
       { id: "federais", nome: "Contas Federais", href: "/contas-publicas" },
@@ -79,6 +84,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     id: "energia-e-infraestrutura",
     nome: "Observatório de Energia e Infraestrutura",
     nomeCurto: "Energia e Infraestrutura",
+    pergunta: "De onde vêm a energia e a água, e quanto custam?",
     acento: "energia",
     colecoes: [
       { id: "setor-eletrico", nome: "Setor Elétrico", href: "/setor-eletrico" },
@@ -92,6 +98,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     id: "economia",
     nome: "Observatório da Economia",
     nomeCurto: "Economia",
+    pergunta: "O que o Brasil produz, vende ao mundo e financia?",
     acento: "gas",
     colecoes: [
       { id: "credito", nome: "Crédito e sistema financeiro", href: "/observatorio" },
@@ -104,6 +111,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     id: "territorio-e-clima",
     nome: "Observatório do Território e Clima",
     nomeCurto: "Território e Clima",
+    pergunta: "O que está mudando no ambiente e quem sente primeiro?",
     acento: "obee",
     colecoes: [
       { id: "desmatamento", nome: "Desmatamento e emissões", href: "/agronegocio/ambiente" },

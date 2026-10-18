@@ -71,7 +71,9 @@ describe("registro de domínios", () => {
     const rota = DOMINIOS[2].rotaRaiz;
     expect(ler("src/components/home/SecaoObservatorios.tsx")).toContain("DOMINIOS.map");
     expect(ler("src/components/layout/SwitcherObservatorio.tsx")).toContain("DOMINIOS.map");
-    expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("OPCOES_OBSERVATORIOS.map");
+    // a escolha pós login agrupa os cartões das coleções pelos seis observatórios
+    expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("OBSERVATORIOS.map");
+    expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("OPCOES_OBSERVATORIOS.filter");
     expect(ler("src/components/layout/PublicHeader.tsx")).toContain("<AbasCabecalho");
     // o cabeçalho público lista os seis observatórios; a Eficiência Estatal chega por eles (src/lib/observatorios/registro.ts)
     expect(ler("src/components/layout/navCabecalho.ts")).toContain("OBSERVATORIOS");
