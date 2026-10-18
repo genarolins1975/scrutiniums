@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1251,
-    "fontes_sha256": "979c26118d4116a2631539a072681e1dc69b2d8193b2be63d5b3de45acfdcaf3",
-    "pendencias_sha256": "a8085bc81b412339e403ab12ad54d6d96c1ba5b43e3381af84f0f7f732e8b0cb",
+    "arquivos_analisados": 1260,
+    "fontes_sha256": "f768d1a78ea320e2f71565cbb4a9f3070700d7d03b8dc3aa001ddf2ba5e2641d",
+    "pendencias_sha256": "385bdd3f4bc3b486f1b4db7b088c2230b7b99f5e59d6b799e8b7e31fbeaf5310",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -143,20 +143,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 223,
+        "arquivos": 232,
         "candidatos": {
-          "jsx_text": 580,
-          "atributos": 220,
-          "props": 685,
-          "outros_literais": 4293,
-          "templates": 449,
-          "expressoes_nao_resolvidas": 2466,
-          "chaves_objetos": 3099
+          "jsx_text": 629,
+          "atributos": 221,
+          "props": 715,
+          "outros_literais": 4588,
+          "templates": 471,
+          "expressoes_nao_resolvidas": 2636,
+          "chaves_objetos": 3469
         },
         "exclusoes": {
-          "importacoes": 974,
-          "atributos_tecnicos": 1305,
-          "tipos": 221
+          "importacoes": 1013,
+          "atributos_tecnicos": 1441,
+          "tipos": 222
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -165,16 +165,16 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 11792,
+        "candidatos_nao_catalogados": 12729,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 29,
+        "paginas_pt": 30,
         "paginas_en": 12,
         "handlers": 29,
-        "templates_com_parametros": 2,
+        "templates_com_parametros": 3,
         "paginas_pt_literais": 24,
-        "paginas_pt_fora_do_adaptador": 5,
+        "paginas_pt_fora_do_adaptador": 6,
         "paginas_pt_literais_sem_irma": 12,
         "pares_estruturais": 12,
         "fallbacks_declarados": 8,
