@@ -55,6 +55,7 @@ class TestEstadoMeta(unittest.TestCase):
                      'Guardar estado', 'Manter só a cópia mais recente do estado'):
             self.assertLess(nomes.index(copia), nomes.index(nome))
             self.assertIn("steps.meta_duravel.outcome == 'success'", ps[nome][0])
+            self.assertIn("steps.silver_duravel.outcome == 'success'", ps[nome][0])
         self.assertLess(nomes.index('Cópia durável do silver (release energia-estado)'), nomes.index(copia))
 
     def setUp(self):
@@ -89,6 +90,7 @@ if a[:2] == ['release', 'download']:
 elif a[:2] == ['release', 'upload']:
     p = pathlib.Path(a[3])
     if p.name.startswith('energia-meta-') and os.environ.get('FALHAR_META'): sys.exit(1)
+    if p.name.startswith('energia-silver') and os.environ.get('FALHAR_SILVER'): sys.exit(1)
     shutil.copyfile(p, assets / p.name)
 elif a[:2] == ['release', 'view'] and '--json' in a:
     print('\\n'.join(p.name for p in assets.glob('energia-meta-*.tar.gz')))
@@ -168,6 +170,25 @@ elif a[:2] == ['release', 'delete-asset']:
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertIn('::warning::', r.stdout)
         self.assertIn('issue create', (self.raiz / 'gh.log').read_text())
+
+    def test_falha_silver_mesmo_com_meta_salva_nao_libera_substituicao_do_cache(self):
+        silver = self.repo / 'data/energia/silver'
+        silver.mkdir(parents=True)
+        (silver / 'energia.db').write_bytes(b'vintage nova so no cache')
+        pasta = self.repo / 'data/energia/meta'
+        pasta.mkdir()
+        (pasta / '_meta_ons.json').write_bytes(b'metadado novo')
+        self.env['FALHAR_SILVER'] = '1'
+        r = self.executar('Cópia durável do silver (release energia-estado)')
+        self.assertNotEqual(r.returncode, 0)
+        self.assertEqual(self.executar('Cópia durável dos metadados (release energia-estado)').returncode, 0)
+        self.assertTrue(list(self.assets.glob('energia-meta-*.tar.gz')))
+        self.assertFalse((self.assets / 'energia-silver.db.gz').exists())
+        # O guard real de cada operação exige ambas as cópias, não só a meta verde.
+        for nome in ('Liberar a cópia anterior do estado antes de gravar',
+                     'Guardar estado', 'Manter só a cópia mais recente do estado'):
+            self.assertIn("steps.silver_duravel.outcome == 'success'", passos()[nome][0])
+            self.assertIn("steps.meta_duravel.outcome == 'success'", passos()[nome][0])
 
     def test_copia_bem_sucedida_sem_clobber_limpa_so_meta_antigo(self):
         self.asset('20000101T000000Z', {'_meta_ds.json': 'velha'})

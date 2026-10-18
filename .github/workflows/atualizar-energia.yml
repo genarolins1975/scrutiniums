@@ -225,6 +225,7 @@ jobs:
           echo "regressoes=${REG}" >> "$GITHUB_OUTPUT"
 
       - name: Cópia durável do silver (release energia-estado)
+        id: silver_duravel
         if: steps.pipeline.outcome == 'success'
         continue-on-error: true
         env:
@@ -287,7 +288,7 @@ jobs:
 
       # Só expor cache novo depois de confirmar a cópia durável de meta: a previsão
       # pode restaurá-lo imediatamente e omite meta de seu próprio payload. Se o
-      # upload falhar, conservar o cache anterior; o silver já teve seu passo próprio.
+      # upload do silver ou de meta falhar, conservar o cache anterior.
       # Uma cópia do estado da energia tem ~7,2 GB (15/10/2026) e o limite de cache do
       # repositório é 10 GB: gravar a nova com a anterior ainda lá passa do limite, e o
       # GitHub despeja o que foi acessado há mais tempo, o estado do crédito, em 03/10 e
@@ -295,7 +296,7 @@ jobs:
       # restaurado: o que será gravado contém tudo o que ela tinha. Se a gravação falhar,
       # o silver, meta e o bronze vigente voltam da release energia-estado (issue #116).
       - name: Liberar a cópia anterior do estado antes de gravar
-        if: always() && steps.meta_duravel.outcome == 'success' && steps.restaurar.outputs.cache-matched-key != ''
+        if: always() && steps.silver_duravel.outcome == 'success' && steps.meta_duravel.outcome == 'success' && steps.restaurar.outputs.cache-matched-key != ''
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
@@ -308,7 +309,7 @@ jobs:
           scripts/podar_cache.sh energia-estado- 0
 
       - name: Guardar estado
-        if: always() && steps.meta_duravel.outcome == 'success'
+        if: always() && steps.silver_duravel.outcome == 'success' && steps.meta_duravel.outcome == 'success'
         uses: actions/cache/save@v4
         with:
           path: data/energia
@@ -320,7 +321,7 @@ jobs:
       # coexistem; podar de novo logo depois de gravar, mantendo só a mais recente,
       # limita essa sobreposição a minutos.
       - name: Manter só a cópia mais recente do estado
-        if: always() && steps.meta_duravel.outcome == 'success' && steps.restaurar.outputs.cache-matched-key != ''
+        if: always() && steps.silver_duravel.outcome == 'success' && steps.meta_duravel.outcome == 'success' && steps.restaurar.outputs.cache-matched-key != ''
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
