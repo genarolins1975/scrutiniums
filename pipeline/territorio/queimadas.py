@@ -66,9 +66,9 @@ def listar(url):
     return [{'nome': n, 'modificado': m.strip(), 'tamanho': t.strip()} for n, m, t in linhas]
 
 
-def baixar(url, cache=None, tentativas=5):
+def baixar(url, cache=None, tentativas=5, nome=None):
     """Baixa para arquivo (temporário ou cache), calcula sha256 e bytes do original."""
-    nome = url.rsplit('/', 1)[1]
+    nome = nome or url.rsplit('/', 1)[1]
     if cache:
         destino = os.path.join(cache, nome)
         meta = destino + '.meta.json'
@@ -119,8 +119,9 @@ class Contagem:
         self.dia_min = None
         self.dia_max = None
         self.estranhos = {}
+        self.mun = {}
 
-    def somar(self, data, estado, bioma, pais):
+    def somar(self, data, estado, bioma, pais, municipio=None):
         if pais not in ('Brasil', 'BRASIL'):
             self.estranhos['pais:' + pais] = self.estranhos.get('pais:' + pais, 0) + 1
         dia = data[:10]
@@ -136,6 +137,8 @@ class Contagem:
         if b not in BIOMAS and b != SEM:
             self.estranhos['bioma:' + b] = self.estranhos.get('bioma:' + b, 0) + 1
         self.bioma[b] = self.bioma.get(b, 0) + 1
+        if municipio is not None:
+            self.mun[municipio] = self.mun.get(municipio, 0) + 1
         self.dia_min = dia if self.dia_min is None or dia < self.dia_min else self.dia_min
         self.dia_max = dia if self.dia_max is None or dia > self.dia_max else self.dia_max
 
@@ -153,7 +156,7 @@ def ler_anual_ref(caminho):
             if faltam:
                 raise ValueError(f'Colunas ausentes no anual: {faltam}')
             for linha in leitor:
-                c.somar(linha['data_pas'], linha['estado'], linha['bioma'], linha['pais'].strip())
+                c.somar(linha['data_pas'], linha['estado'], linha['bioma'], linha['pais'].strip(), chave_anual(linha))
     return c
 
 
@@ -170,10 +173,112 @@ def ler_mensal(caminho, satelite=SATELITE_REFERENCIA):
             s = linha['satelite']
             satelites[s] = satelites.get(s, 0) + 1
             if s == satelite:
-                c.somar(linha['data_hora_gmt'], linha['estado'], linha['bioma'], linha['pais'].strip())
+                c.somar(linha['data_hora_gmt'], linha['estado'], linha['bioma'], linha['pais'].strip(), chave_mensal(linha))
     if satelite not in satelites and satelites:
         raise ValueError('Satélite de referência ausente do arquivo mensal; verificar mudança de referência')
     return c, satelites
+
+
+def chave_anual(linha):
+    """O anual de referência traz só o nome do município e do estado: chave 'UF|NOME'."""
+    nome = (linha.get('municipio') or '').strip()
+    return f"{UFS.get(linha['estado'].strip().upper(), '?')}|{nome.upper()}" if nome else ''
+
+
+def chave_mensal(linha):
+    """O mensal traz o código IBGE do município: chave 'id:NNNNNNN' (nome como reserva)."""
+    cod = (linha.get('municipio_id') or '').strip()
+    if re.fullmatch(r'\d{7}', cod):
+        return 'id:' + cod
+    return chave_anual(linha)
+
+
+# ---------------------------------------------------------------- municípios
+
+AREA_IBGE = 'https://servicodados.ibge.gov.br/api/v3/agregados/4714/periodos/2022/variaveis/6318?localidades=N6%5Ball%5D'
+REFERENCIA_IBGE = os.path.join(os.path.dirname(__file__), 'referencia', 'municipios_ibge_2022.json')
+
+# Grafias do INPE que diferem do nome atual no IBGE. As seis primeiras aparecem nos
+# arquivos mensais do próprio INPE com o código IBGE ao lado (conferido em set/2026);
+# as quatro últimas são variações de grafia com um único candidato na mesma UF.
+EQUIVALENCIAS = {
+    'MT|SANTO ANTONIO DO LEVERGER': '5107800',  # Santo Antônio de Leverger
+    'RR|SAO LUIZ': '1400605',                   # São Luiz do Anauá
+    'RN|ACU': '2400208',                        # Assú
+    'RN|ARES': '2401206',                       # Arez
+    'RN|AUGUSTO SEVERO': '2401305',             # Campo Grande
+    'TO|FORTALEZA DO TABOCAO': '1708254',       # Tabocão
+    'MG|BARAO DE MONTE ALTO': '3105509',        # Barão do Monte Alto
+    'MG|SAO THOME DAS LETRAS': '3165206',       # São Tomé das Letras
+    'MG|DONA EUSEBIA': '3122900',               # Dona Euzébia
+    'SE|GRACHO CARDOSO': '2802601',             # Graccho Cardoso
+}
+
+
+def normalizar(nome):
+    import unicodedata
+    s = unicodedata.normalize('NFKD', nome).encode('ascii', 'ignore').decode().upper()
+    s = re.sub(r"[’'`´\-]", ' ', s)
+    return re.sub(r'\s+', ' ', s).strip()
+
+
+def atualizar_referencia_ibge(destino=REFERENCIA_IBGE):
+    """Grava a lista oficial de municípios com a área territorial do Censo 2022 (SIDRA,
+    tabela 4714, variável 6318). A área não muda entre coletas: o arquivo é versionado e
+    só é refeito por este comando, com o sha256 do original."""
+    caminho, info = baixar(AREA_IBGE, nome='ibge_4714_6318_2022.json')
+    bruto = open(caminho, 'rb').read()
+    os.unlink(caminho)
+    if bruto[:2] == b'\x1f\x8b':  # o IBGE responde em gzip mesmo sem Accept-Encoding
+        import gzip
+        bruto = gzip.decompress(bruto)
+    dados = json.loads(bruto.decode('utf-8'))
+    serie = dados[0]['resultados'][0]['series']
+    linhas = []
+    for x in serie:
+        nome, uf = x['localidade']['nome'].rsplit(' - ', 1)
+        linhas.append([x['localidade']['id'], nome, uf, float(x['serie']['2022'])])
+    if len(linhas) != 5570 or len({l[0] for l in linhas}) != 5570:
+        raise ValueError(f'Lista do IBGE com {len(linhas)} municípios; esperados 5.570 distintos')
+    os.makedirs(os.path.dirname(destino), exist_ok=True)
+    ref = {'fonte': 'IBGE, Censo Demográfico 2022, SIDRA tabela 4714, variável 6318 (Área da unidade territorial)',
+           'unidade': 'km²', 'url': AREA_IBGE, 'sha256': info['sha256'], 'bytes': info['bytes'], 'capturadoEm': info['baixadoEm'],
+           'campos': ['id', 'nome', 'uf', 'areaKm2'], 'linhas': sorted(linhas)}
+    with open(destino, 'w', encoding='utf-8') as f:
+        json.dump(ref, f, ensure_ascii=False, indent=0)
+        f.write('\n')
+    return ref
+
+
+def referencia_ibge(caminho=REFERENCIA_IBGE):
+    with open(caminho, encoding='utf-8') as f:
+        ref = json.load(f)
+    por_id = {l[0]: {'nome': l[1], 'uf': l[2], 'areaKm2': l[3]} for l in ref['linhas']}
+    por_nome = {f'{l[2]}|{normalizar(l[1])}': l[0] for l in ref['linhas']}
+    return ref, por_id, por_nome
+
+
+def resolver_municipios(contagem, por_id, por_nome):
+    """Chaves de município ('id:...' ou 'UF|NOME') em código IBGE. O que não casa fica
+    declarado em semMunicipio, com o nome como veio da fonte; nada é descartado."""
+    focos, sem, usadas = {}, {}, set()
+    for chave, v in contagem.items():
+        cod = None
+        if chave.startswith('id:'):
+            cod = chave[3:] if chave[3:] in por_id else None
+        elif chave:
+            uf, nome = chave.split('|', 1)
+            k = f'{uf}|{normalizar(nome)}'
+            cod = por_nome.get(k)
+            if cod is None and k in EQUIVALENCIAS:
+                cod = EQUIVALENCIAS[k]
+                usadas.add(k)
+        if cod is None:
+            rotulo = chave or SEM
+            sem[rotulo] = sem.get(rotulo, 0) + v
+        else:
+            focos[cod] = focos.get(cod, 0) + v
+    return focos, sem, sorted(usadas)
 
 
 # ---------------------------------------------------------------- montagem
@@ -183,7 +288,7 @@ def _juntar(contagens):
     t = Contagem()
     for c in contagens:
         t.total += c.total
-        for alvo, origem in ((t.mes, c.mes), (t.uf, c.uf), (t.bioma, c.bioma), (t.estranhos, c.estranhos)):
+        for alvo, origem in ((t.mes, c.mes), (t.uf, c.uf), (t.bioma, c.bioma), (t.estranhos, c.estranhos), (t.mun, c.mun)):
             for k, v in origem.items():
                 alvo[k] = alvo.get(k, 0) + v
         if c.dia_min:
@@ -203,6 +308,46 @@ def _lista(contagens, nomes=None):
 
 
 AQ1KM_CSV = 'https://dataserver-coids.inpe.br/queimadas/queimadas/area_queimada/colecao2/csv/aq1km_biomas_v2.csv'
+
+
+PERIODOS_MUN = ['ultimoAnoCompleto', 'acumuladoAnoCorrente', 'mesmoPeriodoAnoAnterior']
+
+
+def montar_municipios(recortes, contagens):
+    """Focos por município (código IBGE) em cada recorte disponível, com a área do Censo
+    2022. Município fora da lista num período disponível não teve foco detectado pelo
+    satélite de referência (o arquivo foi lido inteiro); período indisponível é nulo."""
+    ref, por_id, por_nome = referencia_ibge()
+    periodos, focos, sem, equivalencias = {}, {}, {}, set()
+    por_rotulo = {r['rotulo']: r for r in recortes}
+    for p in PERIODOS_MUN:
+        r = por_rotulo.get(p)
+        cont = contagens.get(p)
+        if r is None or r.get('focos') is None or cont is None:
+            periodos[p] = None
+            continue
+        f, s, usadas = resolver_municipios(cont, por_id, por_nome)
+        if sum(f.values()) + sum(s.values()) != r['focos']:
+            raise ValueError(f'Focos por município não reconciliam com o total em {p}')
+        periodos[p] = {'periodo': r['periodo'], 'origem': r['origem'], 'focos': r['focos']}
+        focos[p], sem[p] = f, s
+        equivalencias.update(usadas)
+    ids = sorted({c for f in focos.values() for c in f})
+    linhas = []
+    for c in ids:
+        m = por_id[c]
+        linhas.append([c, m['nome'], m['uf'], m['areaKm2']] + [(focos[p].get(c, 0) if periodos[p] else None) for p in PERIODOS_MUN])
+    chave = PERIODOS_MUN.index('ultimoAnoCompleto') + 4
+    linhas.sort(key=lambda l: (-(l[chave] or 0), l[0]))
+    return {
+        'periodos': periodos,
+        'campos': ['id', 'nome', 'uf', 'areaKm2'] + ['focos_' + p for p in PERIODOS_MUN],
+        'linhas': linhas,
+        'semMunicipio': {p: ({'focos': sum(sem[p].values()), 'nomesNaFonte': dict(sorted(sem[p].items()))} if periodos[p] else None) for p in PERIODOS_MUN},
+        'equivalenciasUsadas': {k: EQUIVALENCIAS[k] for k in sorted(equivalencias)},
+        'municipiosIbge': len(por_id),
+        'fonteArea': {k: ref[k] for k in ('fonte', 'unidade', 'url', 'sha256', 'bytes', 'capturadoEm')},
+    }
 
 
 def area_queimada(hoje, cache=None):
@@ -332,6 +477,8 @@ def montar(hoje, cache=None, anos=None):
                 corrente.uf[k] = corrente.uf.get(k, 0) + v
             for k, v in c.bioma.items():
                 corrente.bioma[k] = corrente.bioma.get(k, 0) + v
+            for k, v in c.mun.items():
+                corrente.mun[k] = corrente.mun.get(k, 0) + v
             corrente.total += c.total
         corrente.estranhos.update({f'{chave}:{k}': v for k, v in c.estranhos.items()})
 
@@ -361,12 +508,12 @@ def montar(hoje, cache=None, anos=None):
 
     # UF e bioma do ano anterior no mesmo período exigem recontagem por mês; a Contagem
     # anual guarda só totais por UF, então refazemos a leitura com filtro de mês.
-    uf_mesmo, bioma_mesmo = None, None
+    uf_mesmo, bioma_mesmo, mun_mesmo = None, None, None
     if anterior and ultimo_mes_completo >= 1 and meses_anterior_cont is not None:
         cm = _juntar(meses_anterior_cont[:ultimo_mes_completo])
         if cm.total != mesmo_periodo:
             raise ValueError('Mesmo período do ano anterior não reconcilia')
-        uf_mesmo, bioma_mesmo = cm.uf, cm.bioma
+        uf_mesmo, bioma_mesmo, mun_mesmo = cm.uf, cm.bioma, cm.mun
     elif anterior and ultimo_mes_completo >= 1:
         caminho, _ = baixar(ANUAL_REF + disponiveis[ultimo_ano_completo]['nome'], cache)
         cm = Contagem()
@@ -375,12 +522,12 @@ def montar(hoje, cache=None, anos=None):
             with z.open(n) as f:
                 for linha in csv.DictReader(io.TextIOWrapper(f, encoding='utf-8', newline='')):
                     if int(linha['data_pas'][5:7]) <= ultimo_mes_completo:
-                        cm.somar(linha['data_pas'], linha['estado'], linha['bioma'], linha['pais'].strip())
+                        cm.somar(linha['data_pas'], linha['estado'], linha['bioma'], linha['pais'].strip(), chave_anual(linha))
         if not cache:
             os.unlink(caminho)
         if cm.total != mesmo_periodo:
             raise ValueError('Mesmo período do ano anterior não reconcilia')
-        uf_mesmo, bioma_mesmo = cm.uf, cm.bioma
+        uf_mesmo, bioma_mesmo, mun_mesmo = cm.uf, cm.bioma, cm.mun
 
     def bloco(rotulo, periodo, total, uf, bioma, origem):
         if total is None:
@@ -403,6 +550,12 @@ def montar(hoje, cache=None, anos=None):
             recortes.append(bloco('mesmoPeriodoAnoAnterior', {'inicio': f'{ultimo_ano_completo}-01-01', 'fim': date.fromordinal(fim_a).isoformat()},
                                   mesmo_periodo, uf_mesmo, bioma_mesmo, origem_anterior))
 
+    municipios = montar_municipios(recortes, {
+        'ultimoAnoCompleto': anterior.mun if anterior else None,
+        'acumuladoAnoCorrente': corrente.mun if acumulado is not None else None,
+        'mesmoPeriodoAnoAnterior': mun_mesmo,
+    })
+
     return {
         'id': 'queimadas_focos_referencia',
         'capturadoEm': capturado,
@@ -419,6 +572,7 @@ def montar(hoje, cache=None, anos=None):
         'anual': anual,
         'mensal': {str(ultimo_ano_completo): meses_anterior, str(ano_corrente): meses_corrente},
         'recortes': recortes,
+        'municipios': municipios,
         'satelitesNoArquivoMensal': satelites_vistos,
         'originais': originais,
         'ressalvas': [

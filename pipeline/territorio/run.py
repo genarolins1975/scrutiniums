@@ -61,11 +61,35 @@ def validar_queimadas(dados):
     for url, o in dados['originais'].items():
         if len(o.get('sha256') or '') != 64 or not o.get('bytes'):
             raise ValueError(f'Original sem sha256 ou bytes: {url}')
+    mun = dados.get('municipios')
+    if mun:
+        validar_municipios(dados, mun)
     aq = dados.get('areaQueimada')
     if aq:
         for a in aq['anual']:
             if abs(sum(a['km2'].values()) - a['totalKm2']) > 1:
                 raise ValueError(f'Área queimada por bioma não soma o total em {a["ano"]}')
+
+
+def validar_municipios(dados, mun):
+    """Cada período disponível reconcilia com o total do recorte; códigos IBGE únicos."""
+    campos = mun['campos']
+    ids = [l[0] for l in mun['linhas']]
+    if len(set(ids)) != len(ids) or any(not (isinstance(i, str) and len(i) == 7 and i.isdigit()) for i in ids):
+        raise ValueError('Municípios com código IBGE repetido ou inválido')
+    for p, info in mun['periodos'].items():
+        col = campos.index('focos_' + p)
+        if info is None:
+            if any(l[col] is not None for l in mun['linhas']) or mun['semMunicipio'][p] is not None:
+                raise ValueError(f'Período {p} indisponível com valores')
+            continue
+        r = _recorte(dados, p)
+        if r is None or r.get('focos') != info['focos']:
+            raise ValueError(f'Período {p} dos municípios difere do recorte')
+        if any(not isinstance(l[col], int) or l[col] < 0 for l in mun['linhas']):
+            raise ValueError(f'Contagem municipal inválida em {p}')
+        if sum(l[col] for l in mun['linhas']) + mun['semMunicipio'][p]['focos'] != info['focos']:
+            raise ValueError(f'Municípios não somam o total em {p}')
 
 
 def gold_queimadas(seed):
@@ -81,7 +105,24 @@ def gold_queimadas(seed):
             'variacaoPct': round(100 * (atual['focos'] - anterior['focos']) / anterior['focos'], 1),
             'nota': 'Mesmos meses completos nos dois anos, satélite de referência. O ano corrente é preliminar: o INPE pode regerar os arquivos mensais.',
         }
-    return {'dominio': 'territorio', 'gold': 'queimadas', 'versaoPipeline': VERSAO, **seed, 'comparacao': comparacao}
+    resto = {k: v for k, v in seed.items() if k != 'municipios'}
+    return {'dominio': 'territorio', 'gold': 'queimadas', 'versaoPipeline': VERSAO, **resto, 'comparacao': comparacao}
+
+
+def gold_queimadas_municipios(seed):
+    """Focos por município numa gold própria: a lista é grande e só a busca do painel a usa inteira."""
+    validar_queimadas(seed)
+    mun = seed.get('municipios')
+    if not mun:
+        return None
+    return {'dominio': 'territorio', 'gold': 'queimadas_municipios', 'versaoPipeline': VERSAO,
+            'capturadoEm': seed['capturadoEm'], 'dataReferencia': seed['dataReferencia'], 'fonte': seed['fonte'],
+            'sateliteReferencia': seed['sateliteReferencia']['id'], 'unidade': seed['unidade'], **mun,
+            'ressalvas': [
+                'Município fora da lista num período disponível não teve foco detectado pelo satélite de referência; isso não significa ausência de fogo (queimadas pequenas, rasteiras ou sob nuvem não aparecem).',
+                'Municípios grandes acumulam mais focos: compare também focos por 1.000 km², calculados com a área do Censo 2022.',
+                'O anual de referência traz o nome do município, não o código IBGE; o nome é casado com a lista oficial e as grafias divergentes estão em equivalenciasUsadas. O que não casa fica em semMunicipio, com o nome como veio da fonte.',
+            ]}
 
 
 GRUPOS_DESASTRES = desastres.GRUPOS
@@ -174,6 +215,7 @@ def gold_emissoes(seed):
 
 FONTES = {
     'queimadas': {'gold': gold_queimadas},
+    'queimadas_municipios': {'gold': gold_queimadas_municipios, 'seed': 'queimadas'},
     'desastres': {'gold': gold_desastres},
     'emissoes': {'gold': gold_emissoes},
 }
@@ -220,20 +262,27 @@ def main(argv=None):
     ap.add_argument('--check', action='store_true')
     ap.add_argument('--cache')
     ap.add_argument('--hoje', help='data de referência AAAA-MM-DD (padrão: hoje)')
+    ap.add_argument('--referencia-ibge', action='store_true', help='refaz a lista de municípios com a área do Censo 2022')
     a = ap.parse_args(argv)
+    if a.referencia_ibge:
+        ref = queimadas.atualizar_referencia_ibge()
+        print(f"Referência IBGE gravada: {len(ref['linhas'])} municípios, sha256 {ref['sha256'][:12]}")
     if a.coleta:
         hoje = date.fromisoformat(a.hoje) if a.hoje else date.today()
-        fontes = list(FONTES) if a.coleta == 'todas' else a.coleta.split(',')
+        coletaveis = [f for f, cfg in FONTES.items() if 'seed' not in cfg]
+        fontes = coletaveis if a.coleta == 'todas' else a.coleta.split(',')
         for f in fontes:
-            if f not in FONTES:
+            if f not in coletaveis:
                 ap.error(f'fonte desconhecida: {f}')
             _gravar(SEED / f'{f}.json', coletar(f, hoje, a.cache))
     falhou = False
     for f, cfg in FONTES.items():
-        caminho_seed = SEED / f'{f}.json'
+        caminho_seed = SEED / f"{cfg.get('seed', f)}.json"
         if not caminho_seed.exists():
             continue
         gold = cfg['gold'](json.loads(caminho_seed.read_text(encoding='utf-8')))
+        if gold is None:
+            continue
         if a.check:
             atual = (GOLD / f'{f}.json').read_text(encoding='utf-8') if (GOLD / f'{f}.json').exists() else None
             if atual != _texto(gold):

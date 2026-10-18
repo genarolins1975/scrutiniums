@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { GoldQueimadas } from "@/lib/territorio/queimadas";
+import type { FocosMunicipio, GoldQueimadas } from "@/lib/territorio/queimadas";
 import { NOME_UF } from "@/lib/territorio/queimadas";
 
 const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
@@ -267,5 +267,33 @@ export function DoSateliteAoFoco() {
         </p>
       </div>
     </section>
+  );
+}
+
+/** Ranking de municípios por focos no último ano completo, com a densidade por área ao lado; cabe na largura do celular. */
+export function TabelaMunicipios({ itens, ano, rotuloOrdem }: Readonly<{ itens: FocosMunicipio[]; ano: number; rotuloOrdem: string }>) {
+  const c = "border-b border-linha px-2 py-2 md:px-3";
+  return (
+    <table className="w-full text-sm">
+      <caption className="sr-only">{rotuloOrdem}</caption>
+      <thead>
+        <tr>
+          <th className={`${c} w-8 text-left font-medium text-carvao`}>#</th>
+          <th className={`${c} text-left font-medium text-carvao`}>Município</th>
+          <th className={`${c} text-right font-medium text-carvao`}>Focos em {ano}</th>
+          <th className={`${c} text-right font-medium text-carvao`}>Por 1.000 km²</th>
+        </tr>
+      </thead>
+      <tbody>
+        {itens.map((m, i) => (
+          <tr key={m.id}>
+            <td className={`${c} tabular-nums text-carvao-muted`}>{i + 1}</td>
+            <td className={`${c} text-carvao`}>{m.nome} <span className="whitespace-nowrap text-carvao-muted">({m.uf})</span></td>
+            <td className={`${c} text-right tabular-nums text-carvao`}>{n(m.focos.ultimoAnoCompleto ?? 0)}</td>
+            <td className={`${c} text-right tabular-nums text-carvao`}>{m.porMilKm2 == null ? "Indisponível" : n(m.porMilKm2, 1)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
