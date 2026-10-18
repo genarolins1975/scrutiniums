@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-24T15:25:01+00:00",
+ "gerado_em": "2026-10-18T15:09:28+00:00",
  "data_base_credito": "2026-06",
  "datas_credito": [
   "2026-06",
@@ -15,14 +15,9 @@
   "2025-09",
   "2025-08",
   "2025-07",
-  "2025-06",
-  "2025-05",
-  "2025-04",
-  "2025-03"
+  "2025-06"
  ],
  "eixo_serie": [
-  "2025-04",
-  "2025-05",
   "2025-06",
   "2025-07",
   "2025-08",
@@ -53,19 +48,19 @@
   "sem_saldo_estban": 2668,
   "com_dependencia_sem_saldo": 2,
   "adultos_sem_estban": 14626099.0,
-  "elegiveis_ranking": 1225,
+  "elegiveis_ranking": 1226,
   "min_adultos": 20000,
   "min_renda_anual": 200000000.0
  },
  "totais": {
-  "credito": 12739913423862.0,
+  "credito": 12739898480534.0,
   "renda_anual": 3971531442318.6,
   "adultos": 154346198.0,
-  "cred_adulto_br": 82541.15,
+  "cred_adulto_br": 82541.06,
   "penetracao_br": 320.78,
-  "gap_estimado": 822772400215.29,
-  "municipios_abaixo": 544,
-  "adultos_abaixo": 66490594.0
+  "gap_estimado": 822819278141.41,
+  "municipios_abaixo": 545,
+  "adultos_abaixo": 66511446.0
  },
  "modelo": {
   "especificacao": "ln(crédito) = β₀ + β₁·ln(população 18+) + β₂·ln(renda domiciliar per capita) + β₃·urbanização + efeitos fixos de região",
@@ -111,14 +106,14 @@
     "cred_adulto": 56406.96,
     "penetracao": 137.995,
     "meses_renda": 16.56,
-    "gap_abs_modelo": 90734200886.79,
+    "gap_abs_modelo": 90734193421.48,
     "gap_rel_modelo": 58.87,
     "gap_abs_pares": 4876309921.99,
     "gap_rel_pares": 7.14,
     "residuo_padronizado": -0.913,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 97.25
+    "escore_oportunidade": 97.23
    },
    {
     "cod": "2927408",
@@ -134,14 +129,14 @@
     "cred_adulto": 23352.44,
     "penetracao": 87.878,
     "meses_renda": 10.55,
-    "gap_abs_modelo": 45140042176.59,
+    "gap_abs_modelo": 45140038236.57,
     "gap_rel_modelo": 50.12,
     "gap_abs_pares": 7638865165.25,
     "gap_rel_pares": 14.53,
     "residuo_padronizado": -0.714,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 96.44
+    "escore_oportunidade": 96.41
    },
    {
     "cod": "4106902",
@@ -157,14 +152,14 @@
     "cred_adulto": 58508.82,
     "penetracao": 125.311,
     "meses_renda": 15.04,
-    "gap_abs_modelo": 41124053260.37,
+    "gap_abs_modelo": 41124047385.72,
     "gap_rel_modelo": 33.05,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -46.45,
     "residuo_padronizado": -0.412,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 92.9
+    "escore_oportunidade": 92.88
    },
    {
     "cod": "2611606",
@@ -180,14 +175,14 @@
     "cred_adulto": 36061.81,
     "penetracao": 104.046,
     "meses_renda": 12.49,
-    "gap_abs_modelo": 39274521614.48,
+    "gap_abs_modelo": 39274518167.98,
     "gap_rel_modelo": 48.22,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -1.19,
     "residuo_padronizado": -0.676,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.89
+    "escore_oportunidade": 95.87
    },
    {
     "cod": "2304400",
@@ -203,14 +198,14 @@
     "cred_adulto": 26507.75,
     "penetracao": 102.928,
     "meses_renda": 12.35,
-    "gap_abs_modelo": 28935908077.04,
+    "gap_abs_modelo": 28935904709.43,
     "gap_rel_modelo": 36.7,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -0.1,
     "residuo_padronizado": -0.47,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 93.63
+    "escore_oportunidade": 93.61
    },
    {
     "cod": "5002704",
@@ -226,14 +221,14 @@
     "cred_adulto": 40396.92,
     "penetracao": 122.454,
     "meses_renda": 14.69,
-    "gap_abs_modelo": 27293062463.94,
+    "gap_abs_modelo": 27293060260.9,
     "gap_rel_modelo": 49.96,
     "gap_abs_pares": 5839573139.25,
     "gap_rel_pares": 17.6,
     "residuo_padronizado": -0.711,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.86
+    "escore_oportunidade": 95.84
    },
    {
     "cod": "3303302",
@@ -249,14 +244,14 @@
     "cred_adulto": 19580.92,
     "penetracao": 37.729,
     "meses_renda": 4.53,
-    "gap_abs_modelo": 25901291672.93,
+    "gap_abs_modelo": 25901290309.47,
     "gap_rel_modelo": 76.93,
     "gap_abs_pares": 7102887371.69,
     "gap_rel_pares": 47.76,
     "residuo_padronizado": -1.506,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 98.1
+    "escore_oportunidade": 98.07
    },
    {
     "cod": "3509502",
@@ -272,14 +267,14 @@
     "cred_adulto": 29466.09,
     "penetracao": 73.433,
     "meses_renda": 8.81,
-    "gap_abs_modelo": 24131533073.16,
+    "gap_abs_modelo": 24131530786.15,
     "gap_rel_modelo": 47.4,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -1.68,
     "residuo_padronizado": -0.66,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.46
+    "escore_oportunidade": 95.43
    },
    {
     "cod": "4205407",
@@ -295,14 +290,14 @@
     "cred_adulto": 48635.95,
     "penetracao": 91.61,
     "meses_renda": 10.99,
-    "gap_abs_modelo": 20922638220.76,
+    "gap_abs_modelo": 20922636633.14,
     "gap_rel_modelo": 49.57,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -7.07,
     "residuo_padronizado": -0.703,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.21
+    "escore_oportunidade": 95.19
    },
    {
     "cod": "5103403",
@@ -318,14 +313,14 @@
     "cred_adulto": 60603.44,
     "penetracao": 157.347,
     "meses_renda": 18.88,
-    "gap_abs_modelo": 19974650564.79,
+    "gap_abs_modelo": 19974648613.51,
     "gap_rel_modelo": 40.25,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -5.88,
     "residuo_padronizado": -0.529,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 93.47
+    "escore_oportunidade": 93.45
    },
    {
     "cod": "3547809",
@@ -341,14 +336,14 @@
     "cred_adulto": 14579.17,
     "penetracao": 39.807,
     "meses_renda": 4.78,
-    "gap_abs_modelo": 18454873626.37,
+    "gap_abs_modelo": 18454872551.54,
     "gap_rel_modelo": 67.79,
     "gap_abs_pares": 7139479908.53,
     "gap_rel_pares": 44.88,
     "residuo_padronizado": -1.164,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 97.61
+    "escore_oportunidade": 97.58
    },
    {
     "cod": "3548500",
@@ -364,14 +359,14 @@
     "cred_adulto": 26831.39,
     "penetracao": 57.086,
     "meses_renda": 6.85,
-    "gap_abs_modelo": 14586167913.51,
+    "gap_abs_modelo": 14586167014.85,
     "gap_rel_modelo": 61.22,
     "gap_abs_pares": 2450247675.93,
     "gap_rel_pares": 20.96,
     "residuo_padronizado": -0.973,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 96.22
+    "escore_oportunidade": 96.19
    },
    {
     "cod": "2408102",
@@ -387,14 +382,14 @@
     "cred_adulto": 32339.88,
     "penetracao": 103.081,
     "meses_renda": 12.37,
-    "gap_abs_modelo": 11304092047.21,
+    "gap_abs_modelo": 11304091021.08,
     "gap_rel_modelo": 37.35,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -0.25,
     "residuo_padronizado": -0.48,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 93.06
+    "escore_oportunidade": 93.04
    },
    {
     "cod": "5201405",
@@ -410,14 +405,14 @@
     "cred_adulto": 11989.32,
     "penetracao": 53.214,
     "meses_renda": 6.39,
-    "gap_abs_modelo": 9803114766.32,
+    "gap_abs_modelo": 9803114342.47,
     "gap_rel_modelo": 67.45,
     "gap_abs_pares": null,
     "gap_rel_pares": null,
     "residuo_padronizado": -1.153,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 97.01
+    "escore_oportunidade": 96.98
    },
    {
     "cod": "3525904",
@@ -433,14 +428,14 @@
     "cred_adulto": 24965.61,
     "penetracao": 59.904,
     "meses_renda": 7.19,
-    "gap_abs_modelo": 9334098366.27,
+    "gap_abs_modelo": 9334097698.88,
     "gap_rel_modelo": 51.47,
     "gap_abs_pares": 1809478679.95,
     "gap_rel_pares": 17.06,
     "residuo_padronizado": -0.743,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.1
+    "escore_oportunidade": 95.08
    },
    {
     "cod": "3518800",
@@ -456,14 +451,14 @@
     "cred_adulto": 13650.72,
     "penetracao": 52.933,
     "meses_renda": 6.35,
-    "gap_abs_modelo": 9323622666.13,
+    "gap_abs_modelo": 9323621785.03,
     "gap_rel_modelo": 41.01,
     "gap_abs_pares": 4887203465.79,
     "gap_rel_pares": 26.71,
     "residuo_padronizado": -0.542,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 94.04
+    "escore_oportunidade": 94.02
    },
    {
     "cod": "2507507",
@@ -479,14 +474,14 @@
     "cred_adulto": 30005.33,
     "penetracao": 102.713,
     "meses_renda": 12.33,
-    "gap_abs_modelo": 9288580578.42,
+    "gap_abs_modelo": 9288579622.58,
     "gap_rel_modelo": 32.64,
     "gap_abs_pares": 20036806.28,
     "gap_rel_pares": 0.1,
     "residuo_padronizado": -0.406,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 92.05
+    "escore_oportunidade": 92.03
    },
    {
     "cod": "3548807",
@@ -502,14 +497,14 @@
     "cred_adulto": 23962.62,
     "penetracao": 42.058,
     "meses_renda": 5.05,
-    "gap_abs_modelo": 8168900311.85,
+    "gap_abs_modelo": 8168899959.99,
     "gap_rel_modelo": 71.65,
     "gap_abs_pares": 1251895002.05,
     "gap_rel_pares": 27.92,
     "residuo_padronizado": -1.295,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 93.88
+    "escore_oportunidade": 93.86
    },
    {
     "cod": "3205200",
@@ -525,14 +520,14 @@
     "cred_adulto": 12930.94,
     "penetracao": 38.861,
     "meses_renda": 4.66,
-    "gap_abs_modelo": 8119008929.22,
+    "gap_abs_modelo": 8119008492.35,
     "gap_rel_modelo": 62.97,
     "gap_abs_pares": 4098537519.69,
     "gap_rel_pares": 46.19,
     "residuo_padronizado": -1.02,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 96.46
+    "escore_oportunidade": 96.44
    },
    {
     "cod": "2704302",
@@ -548,14 +543,14 @@
     "cred_adulto": 23037.96,
     "penetracao": 90.811,
     "meses_renda": 10.9,
-    "gap_abs_modelo": 7905097842.37,
+    "gap_abs_modelo": 7905097040.85,
     "gap_rel_modelo": 32.18,
     "gap_abs_pares": 2203683040.67,
     "gap_rel_pares": 11.68,
     "residuo_padronizado": -0.399,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 91.92
+    "escore_oportunidade": 91.9
    },
    {
     "cod": "3144805",
@@ -571,14 +566,14 @@
     "cred_adulto": 9009.91,
     "penetracao": 13.643,
     "meses_renda": 1.64,
-    "gap_abs_modelo": 7509121379.4,
+    "gap_abs_modelo": 7509121146.91,
     "gap_rel_modelo": 90.55,
     "gap_abs_pares": 2566257941.11,
     "gap_rel_pares": 76.62,
     "residuo_padronizado": -2.424,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 91.78
+    "escore_oportunidade": 91.76
    },
    {
     "cod": "2111300",
@@ -594,14 +589,14 @@
     "cred_adulto": 24668.37,
     "penetracao": 98.964,
     "meses_renda": 11.88,
-    "gap_abs_modelo": 7300645147.26,
+    "gap_abs_modelo": 7300644243.61,
     "gap_rel_modelo": 27.21,
     "gap_abs_pares": 761217135.54,
     "gap_rel_pares": 3.75,
     "residuo_padronizado": -0.326,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 90.64
+    "escore_oportunidade": 90.62
    },
    {
     "cod": "3547304",
@@ -617,14 +612,14 @@
     "cred_adulto": 6626.07,
     "penetracao": 11.881,
     "meses_renda": 1.43,
-    "gap_abs_modelo": 6879686772.87,
+    "gap_abs_modelo": 6879686559.47,
     "gap_rel_modelo": 90.05,
     "gap_abs_pares": 2971654784.29,
     "gap_rel_pares": 79.64,
     "residuo_padronizado": -2.371,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 93.63
+    "escore_oportunidade": 93.61
    },
    {
     "cod": "4209102",
@@ -640,14 +635,14 @@
     "cred_adulto": 26002.77,
     "penetracao": 74.539,
     "meses_renda": 8.94,
-    "gap_abs_modelo": 6789050322.61,
+    "gap_abs_modelo": 6789049693.69,
     "gap_rel_modelo": 35.35,
     "gap_abs_pares": 1836831411.16,
     "gap_rel_pares": 12.89,
     "residuo_padronizado": -0.448,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 92.0
+    "escore_oportunidade": 91.98
    },
    {
     "cod": "2800308",
@@ -663,14 +658,14 @@
     "cred_adulto": 37493.07,
     "penetracao": 116.161,
     "meses_renda": 13.94,
-    "gap_abs_modelo": 6615891892.51,
+    "gap_abs_modelo": 6615891124.22,
     "gap_rel_modelo": 27.45,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -12.97,
     "residuo_padronizado": -0.33,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 90.12
+    "escore_oportunidade": 90.1
    }
   ],
   "gap_relativo": [
@@ -688,14 +683,14 @@
     "cred_adulto": 36.82,
     "penetracao": 0.293,
     "meses_renda": 0.04,
-    "gap_abs_modelo": 115938872.87,
+    "gap_abs_modelo": 115938873.49,
     "gap_rel_modelo": 99.18,
     "gap_abs_pares": 181201392.89,
     "gap_rel_pares": 99.47,
     "residuo_padronizado": -4.928,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 65.52
+    "escore_oportunidade": 65.55
    },
    {
     "cod": "2607752",
@@ -711,14 +706,14 @@
     "cred_adulto": 83.17,
     "penetracao": 0.82,
     "meses_renda": 0.1,
-    "gap_abs_modelo": 102855809.98,
+    "gap_abs_modelo": 102855811.33,
     "gap_rel_modelo": 98.32,
     "gap_abs_pares": 117163106.0,
     "gap_rel_pares": 98.52,
     "residuo_padronizado": -4.196,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 58.83
+    "escore_oportunidade": 58.86
    },
    {
     "cod": "1300607",
@@ -734,14 +729,14 @@
     "cred_adulto": 60.18,
     "penetracao": 0.498,
     "meses_renda": 0.06,
-    "gap_abs_modelo": 55728538.61,
+    "gap_abs_modelo": 55728539.08,
     "gap_rel_modelo": 97.73,
     "gap_abs_pares": 136042029.34,
     "gap_rel_pares": 99.06,
     "residuo_padronizado": -3.889,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.93
+    "escore_oportunidade": 57.97
    },
    {
     "cod": "2108306",
@@ -757,14 +752,14 @@
     "cred_adulto": 56.27,
     "penetracao": 0.542,
     "meses_renda": 0.07,
-    "gap_abs_modelo": 47361107.0,
+    "gap_abs_modelo": 47361106.99,
     "gap_rel_modelo": 97.54,
     "gap_abs_pares": 100736338.14,
     "gap_rel_pares": 98.83,
     "residuo_padronizado": -3.805,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.01
+    "escore_oportunidade": 57.04
    },
    {
     "cod": "2309409",
@@ -780,14 +775,14 @@
     "cred_adulto": 119.03,
     "penetracao": 0.971,
     "meses_renda": 0.12,
-    "gap_abs_modelo": 84696762.6,
+    "gap_abs_modelo": 84696762.44,
     "gap_rel_modelo": 97.16,
     "gap_abs_pares": 115263215.26,
     "gap_rel_pares": 97.9,
     "residuo_padronizado": -3.66,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.52
+    "escore_oportunidade": 57.53
    },
    {
     "cod": "2112407",
@@ -803,14 +798,37 @@
     "cred_adulto": 62.69,
     "penetracao": 0.631,
     "meses_renda": 0.08,
-    "gap_abs_modelo": 49739494.46,
+    "gap_abs_modelo": 49739494.18,
     "gap_rel_modelo": 96.98,
     "gap_abs_pares": 112073244.69,
     "gap_rel_pares": 98.64,
     "residuo_padronizado": -3.594,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 61.69
+    "escore_oportunidade": 61.72
+   },
+   {
+    "cod": "2112605",
+    "nome": "Urbano Santos",
+    "uf": "MA",
+    "regiao": "Nordeste",
+    "adultos": 20852.0,
+    "pop_total": 32812.0,
+    "renda_anual": 217478710.56,
+    "renda_pc": 552.47,
+    "urbanizacao": 60.05,
+    "credito": 1799354.0,
+    "cred_adulto": 86.29,
+    "penetracao": 0.827,
+    "meses_renda": 0.1,
+    "gap_abs_modelo": 46944805.41,
+    "gap_rel_modelo": 96.31,
+    "gap_abs_pares": 98810099.86,
+    "gap_rel_pares": 98.21,
+    "residuo_padronizado": -3.389,
+    "confianca": "media",
+    "no_estban": true,
+    "escore_oportunidade": 56.09
    },
    {
     "cod": "2101004",
@@ -826,14 +844,14 @@
     "cred_adulto": 155.36,
     "penetracao": 1.287,
     "meses_renda": 0.15,
-    "gap_abs_modelo": 77724153.02,
+    "gap_abs_modelo": 77724153.06,
     "gap_rel_modelo": 95.95,
     "gap_abs_pares": 114799849.24,
     "gap_rel_pares": 97.22,
     "residuo_padronizado": -3.292,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 58.04
+    "escore_oportunidade": 58.05
    },
    {
     "cod": "2310308",
@@ -849,7 +867,7 @@
     "cred_adulto": 129.65,
     "penetracao": 1.258,
     "meses_renda": 0.15,
-    "gap_abs_modelo": 68227460.09,
+    "gap_abs_modelo": 68227460.02,
     "gap_rel_modelo": 95.73,
     "gap_abs_pares": 109013951.9,
     "gap_rel_pares": 97.28,
@@ -872,14 +890,14 @@
     "cred_adulto": 119.19,
     "penetracao": 1.091,
     "meses_renda": 0.13,
-    "gap_abs_modelo": 50213692.02,
+    "gap_abs_modelo": 50213691.67,
     "gap_rel_modelo": 95.43,
     "gap_abs_pares": 99619872.13,
     "gap_rel_pares": 97.64,
     "residuo_padronizado": -3.169,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 55.18
+    "escore_oportunidade": 55.17
    },
    {
     "cod": "3544103",
@@ -895,7 +913,7 @@
     "cred_adulto": 657.27,
     "penetracao": 3.363,
     "meses_renda": 0.4,
-    "gap_abs_modelo": 249155323.85,
+    "gap_abs_modelo": 249155323.03,
     "gap_rel_modelo": 91.91,
     "gap_abs_pares": 343114254.69,
     "gap_rel_pares": 93.99,
@@ -918,14 +936,14 @@
     "cred_adulto": 2774.46,
     "penetracao": 11.611,
     "meses_renda": 1.39,
-    "gap_abs_modelo": 4356740855.66,
+    "gap_abs_modelo": 4356740763.75,
     "gap_rel_modelo": 91.6,
     "gap_abs_pares": 2701704751.66,
     "gap_rel_pares": 87.11,
     "residuo_padronizado": -2.544,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 94.42
+    "escore_oportunidade": 94.4
    },
    {
     "cod": "1508126",
@@ -941,7 +959,7 @@
     "cred_adulto": 363.23,
     "penetracao": 3.04,
     "meses_renda": 0.36,
-    "gap_abs_modelo": 98522722.09,
+    "gap_abs_modelo": 98522722.15,
     "gap_rel_modelo": 90.88,
     "gap_abs_pares": 91933476.32,
     "gap_rel_pares": 90.29,
@@ -964,14 +982,14 @@
     "cred_adulto": 9009.91,
     "penetracao": 13.643,
     "meses_renda": 1.64,
-    "gap_abs_modelo": 7509121379.4,
+    "gap_abs_modelo": 7509121146.91,
     "gap_rel_modelo": 90.55,
     "gap_abs_pares": 2566257941.11,
     "gap_rel_pares": 76.62,
     "residuo_padronizado": -2.424,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 91.78
+    "escore_oportunidade": 91.76
    },
    {
     "cod": "3504602",
@@ -987,14 +1005,14 @@
     "cred_adulto": 1534.93,
     "penetracao": 5.451,
     "meses_renda": 0.65,
-    "gap_abs_modelo": 293076922.13,
+    "gap_abs_modelo": 293076921.13,
     "gap_rel_modelo": 90.1,
     "gap_abs_pares": 348680274.91,
     "gap_rel_pares": 91.55,
     "residuo_padronizado": -2.376,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 61.55
+    "escore_oportunidade": 61.56
    },
    {
     "cod": "3502903",
@@ -1010,7 +1028,7 @@
     "cred_adulto": 1834.44,
     "penetracao": 6.108,
     "meses_renda": 0.73,
-    "gap_abs_modelo": 427257300.86,
+    "gap_abs_modelo": 427257296.74,
     "gap_rel_modelo": 90.05,
     "gap_abs_pares": 451028457.28,
     "gap_rel_pares": 90.53,
@@ -1033,14 +1051,14 @@
     "cred_adulto": 6626.07,
     "penetracao": 11.881,
     "meses_renda": 1.43,
-    "gap_abs_modelo": 6879686772.87,
+    "gap_abs_modelo": 6879686559.47,
     "gap_rel_modelo": 90.05,
     "gap_abs_pares": 2971654784.29,
     "gap_rel_pares": 79.64,
     "residuo_padronizado": -2.371,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 93.63
+    "escore_oportunidade": 93.61
    },
    {
     "cod": "3301876",
@@ -1056,7 +1074,7 @@
     "cred_adulto": 1217.25,
     "penetracao": 5.237,
     "meses_renda": 0.63,
-    "gap_abs_modelo": 230031773.55,
+    "gap_abs_modelo": 230031773.59,
     "gap_rel_modelo": 89.57,
     "gap_abs_pares": 259385817.46,
     "gap_rel_pares": 90.64,
@@ -1079,14 +1097,14 @@
     "cred_adulto": 436.91,
     "penetracao": 3.666,
     "meses_renda": 0.44,
-    "gap_abs_modelo": 262400304.65,
+    "gap_abs_modelo": 262400303.84,
     "gap_rel_modelo": 89.27,
     "gap_abs_pares": null,
     "gap_rel_pares": null,
     "residuo_padronizado": -2.292,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 83.67
+    "escore_oportunidade": 83.66
    },
    {
     "cod": "3302601",
@@ -1102,14 +1120,14 @@
     "cred_adulto": 1473.02,
     "penetracao": 6.423,
     "meses_renda": 0.77,
-    "gap_abs_modelo": 329233688.35,
+    "gap_abs_modelo": 329233686.41,
     "gap_rel_modelo": 87.35,
     "gap_abs_pares": 367619304.2,
     "gap_rel_pares": 88.52,
     "residuo_padronizado": -2.124,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 73.2
+    "escore_oportunidade": 73.19
    },
    {
     "cod": "5209705",
@@ -1125,14 +1143,14 @@
     "cred_adulto": 3818.16,
     "penetracao": 14.632,
     "meses_renda": 1.76,
-    "gap_abs_modelo": 506615728.48,
+    "gap_abs_modelo": 506615724.23,
     "gap_rel_modelo": 86.54,
     "gap_abs_pares": 690036518.03,
     "gap_rel_pares": 89.75,
     "residuo_padronizado": -2.06,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 62.34
+    "escore_oportunidade": 62.32
    },
    {
     "cod": "2111201",
@@ -1148,14 +1166,14 @@
     "cred_adulto": 2013.86,
     "penetracao": 10.79,
     "meses_renda": 1.29,
-    "gap_abs_modelo": 2231857913.92,
+    "gap_abs_modelo": 2231857876.92,
     "gap_rel_modelo": 86.15,
     "gap_abs_pares": 2150649415.24,
     "gap_rel_pares": 85.7,
     "residuo_padronizado": -2.03,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 94.26
+    "escore_oportunidade": 94.24
    },
    {
     "cod": "2600500",
@@ -1171,7 +1189,7 @@
     "cred_adulto": 564.64,
     "penetracao": 4.844,
     "meses_renda": 0.58,
-    "gap_abs_modelo": 83815398.06,
+    "gap_abs_modelo": 83815398.11,
     "gap_rel_modelo": 83.97,
     "gap_abs_pares": 136846739.81,
     "gap_rel_pares": 89.53,
@@ -1194,7 +1212,7 @@
     "cred_adulto": 1592.15,
     "penetracao": 8.418,
     "meses_renda": 1.01,
-    "gap_abs_modelo": 250605836.26,
+    "gap_abs_modelo": 250605835.27,
     "gap_rel_modelo": 80.08,
     "gap_abs_pares": 286856800.19,
     "gap_rel_pares": 82.15,
@@ -1217,37 +1235,14 @@
     "cred_adulto": 2286.77,
     "penetracao": 10.397,
     "meses_renda": 1.25,
-    "gap_abs_modelo": 269347731.06,
+    "gap_abs_modelo": 269347729.47,
     "gap_rel_modelo": 77.28,
     "gap_abs_pares": 279918635.16,
     "gap_rel_pares": 77.95,
     "residuo_padronizado": -1.522,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 73.77
-   },
-   {
-    "cod": "3303302",
-    "nome": "Niterói",
-    "uf": "RJ",
-    "regiao": "Sudeste",
-    "adultos": 396765.0,
-    "pop_total": 481749.0,
-    "renda_anual": 20591798002.56,
-    "renda_pc": 3577.32,
-    "urbanizacao": 100.0,
-    "credito": 7769023704.0,
-    "cred_adulto": 19580.92,
-    "penetracao": 37.729,
-    "meses_renda": 4.53,
-    "gap_abs_modelo": 25901291672.93,
-    "gap_rel_modelo": 76.93,
-    "gap_abs_pares": 7102887371.69,
-    "gap_rel_pares": 47.76,
-    "residuo_padronizado": -1.506,
-    "confianca": "alta",
-    "no_estban": true,
-    "escore_oportunidade": 98.1
+    "escore_oportunidade": 73.76
    }
   ],
   "menor_credito_adulto": [
@@ -1265,14 +1260,14 @@
     "cred_adulto": 36.82,
     "penetracao": 0.293,
     "meses_renda": 0.04,
-    "gap_abs_modelo": 115938872.87,
+    "gap_abs_modelo": 115938873.49,
     "gap_rel_modelo": 99.18,
     "gap_abs_pares": 181201392.89,
     "gap_rel_pares": 99.47,
     "residuo_padronizado": -4.928,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 65.52
+    "escore_oportunidade": 65.55
    },
    {
     "cod": "2108306",
@@ -1288,14 +1283,14 @@
     "cred_adulto": 56.27,
     "penetracao": 0.542,
     "meses_renda": 0.07,
-    "gap_abs_modelo": 47361107.0,
+    "gap_abs_modelo": 47361106.99,
     "gap_rel_modelo": 97.54,
     "gap_abs_pares": 100736338.14,
     "gap_rel_pares": 98.83,
     "residuo_padronizado": -3.805,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.01
+    "escore_oportunidade": 57.04
    },
    {
     "cod": "1300607",
@@ -1311,14 +1306,14 @@
     "cred_adulto": 60.18,
     "penetracao": 0.498,
     "meses_renda": 0.06,
-    "gap_abs_modelo": 55728538.61,
+    "gap_abs_modelo": 55728539.08,
     "gap_rel_modelo": 97.73,
     "gap_abs_pares": 136042029.34,
     "gap_rel_pares": 99.06,
     "residuo_padronizado": -3.889,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.93
+    "escore_oportunidade": 57.97
    },
    {
     "cod": "2112407",
@@ -1334,14 +1329,14 @@
     "cred_adulto": 62.69,
     "penetracao": 0.631,
     "meses_renda": 0.08,
-    "gap_abs_modelo": 49739494.46,
+    "gap_abs_modelo": 49739494.18,
     "gap_rel_modelo": 96.98,
     "gap_abs_pares": 112073244.69,
     "gap_rel_pares": 98.64,
     "residuo_padronizado": -3.594,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 61.69
+    "escore_oportunidade": 61.72
    },
    {
     "cod": "2607752",
@@ -1357,14 +1352,37 @@
     "cred_adulto": 83.17,
     "penetracao": 0.82,
     "meses_renda": 0.1,
-    "gap_abs_modelo": 102855809.98,
+    "gap_abs_modelo": 102855811.33,
     "gap_rel_modelo": 98.32,
     "gap_abs_pares": 117163106.0,
     "gap_rel_pares": 98.52,
     "residuo_padronizado": -4.196,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 58.83
+    "escore_oportunidade": 58.86
+   },
+   {
+    "cod": "2112605",
+    "nome": "Urbano Santos",
+    "uf": "MA",
+    "regiao": "Nordeste",
+    "adultos": 20852.0,
+    "pop_total": 32812.0,
+    "renda_anual": 217478710.56,
+    "renda_pc": 552.47,
+    "urbanizacao": 60.05,
+    "credito": 1799354.0,
+    "cred_adulto": 86.29,
+    "penetracao": 0.827,
+    "meses_renda": 0.1,
+    "gap_abs_modelo": 46944805.41,
+    "gap_rel_modelo": 96.31,
+    "gap_abs_pares": 98810099.86,
+    "gap_rel_pares": 98.21,
+    "residuo_padronizado": -3.389,
+    "confianca": "media",
+    "no_estban": true,
+    "escore_oportunidade": 56.09
    },
    {
     "cod": "2309409",
@@ -1380,14 +1398,14 @@
     "cred_adulto": 119.03,
     "penetracao": 0.971,
     "meses_renda": 0.12,
-    "gap_abs_modelo": 84696762.6,
+    "gap_abs_modelo": 84696762.44,
     "gap_rel_modelo": 97.16,
     "gap_abs_pares": 115263215.26,
     "gap_rel_pares": 97.9,
     "residuo_padronizado": -3.66,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.52
+    "escore_oportunidade": 57.53
    },
    {
     "cod": "2603207",
@@ -1403,14 +1421,14 @@
     "cred_adulto": 119.19,
     "penetracao": 1.091,
     "meses_renda": 0.13,
-    "gap_abs_modelo": 50213692.02,
+    "gap_abs_modelo": 50213691.67,
     "gap_rel_modelo": 95.43,
     "gap_abs_pares": 99619872.13,
     "gap_rel_pares": 97.64,
     "residuo_padronizado": -3.169,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 55.18
+    "escore_oportunidade": 55.17
    },
    {
     "cod": "2310308",
@@ -1426,7 +1444,7 @@
     "cred_adulto": 129.65,
     "penetracao": 1.258,
     "meses_renda": 0.15,
-    "gap_abs_modelo": 68227460.09,
+    "gap_abs_modelo": 68227460.02,
     "gap_rel_modelo": 95.73,
     "gap_abs_pares": 109013951.9,
     "gap_rel_pares": 97.28,
@@ -1449,14 +1467,14 @@
     "cred_adulto": 155.36,
     "penetracao": 1.287,
     "meses_renda": 0.15,
-    "gap_abs_modelo": 77724153.02,
+    "gap_abs_modelo": 77724153.06,
     "gap_rel_modelo": 95.95,
     "gap_abs_pares": 114799849.24,
     "gap_rel_pares": 97.22,
     "residuo_padronizado": -3.292,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 58.04
+    "escore_oportunidade": 58.05
    },
    {
     "cod": "1508126",
@@ -1472,7 +1490,7 @@
     "cred_adulto": 363.23,
     "penetracao": 3.04,
     "meses_renda": 0.36,
-    "gap_abs_modelo": 98522722.09,
+    "gap_abs_modelo": 98522722.15,
     "gap_rel_modelo": 90.88,
     "gap_abs_pares": 91933476.32,
     "gap_rel_pares": 90.29,
@@ -1495,14 +1513,14 @@
     "cred_adulto": 436.91,
     "penetracao": 3.666,
     "meses_renda": 0.44,
-    "gap_abs_modelo": 262400304.65,
+    "gap_abs_modelo": 262400303.84,
     "gap_rel_modelo": 89.27,
     "gap_abs_pares": null,
     "gap_rel_pares": null,
     "residuo_padronizado": -2.292,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 83.67
+    "escore_oportunidade": 83.66
    },
    {
     "cod": "2600500",
@@ -1518,7 +1536,7 @@
     "cred_adulto": 564.64,
     "penetracao": 4.844,
     "meses_renda": 0.58,
-    "gap_abs_modelo": 83815398.06,
+    "gap_abs_modelo": 83815398.11,
     "gap_rel_modelo": 83.97,
     "gap_abs_pares": 136846739.81,
     "gap_rel_pares": 89.53,
@@ -1541,7 +1559,7 @@
     "cred_adulto": 657.27,
     "penetracao": 3.363,
     "meses_renda": 0.4,
-    "gap_abs_modelo": 249155323.85,
+    "gap_abs_modelo": 249155323.03,
     "gap_rel_modelo": 91.91,
     "gap_abs_pares": 343114254.69,
     "gap_rel_pares": 93.99,
@@ -1564,14 +1582,14 @@
     "cred_adulto": 1003.55,
     "penetracao": 11.006,
     "meses_renda": 1.32,
-    "gap_abs_modelo": 28236350.28,
+    "gap_abs_modelo": 28236349.35,
     "gap_rel_modelo": 41.81,
     "gap_abs_pares": 148382806.31,
     "gap_rel_pares": 79.06,
     "residuo_padronizado": -0.556,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 65.58
+    "escore_oportunidade": 65.55
    },
    {
     "cod": "1500859",
@@ -1587,14 +1605,14 @@
     "cred_adulto": 1049.66,
     "penetracao": 7.362,
     "meses_renda": 0.88,
-    "gap_abs_modelo": 57197900.79,
+    "gap_abs_modelo": 57197900.48,
     "gap_rel_modelo": 72.87,
     "gap_abs_pares": 69297383.54,
     "gap_rel_pares": 76.49,
     "residuo_padronizado": -1.34,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 55.07
+    "escore_oportunidade": 55.06
    },
    {
     "cod": "2602605",
@@ -1610,7 +1628,7 @@
     "cred_adulto": 1141.99,
     "penetracao": 10.108,
     "meses_renda": 1.21,
-    "gap_abs_modelo": 100805770.86,
+    "gap_abs_modelo": 100805771.3,
     "gap_rel_modelo": 71.68,
     "gap_abs_pares": 181835873.78,
     "gap_rel_pares": 82.03,
@@ -1633,14 +1651,14 @@
     "cred_adulto": 1191.27,
     "penetracao": 9.277,
     "meses_renda": 1.11,
-    "gap_abs_modelo": 39024970.25,
+    "gap_abs_modelo": 39024969.93,
     "gap_rel_modelo": 62.05,
     "gap_abs_pares": 56695359.77,
     "gap_rel_pares": 70.37,
     "residuo_padronizado": -0.995,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 52.54
+    "escore_oportunidade": 52.5
    },
    {
     "cod": "1508308",
@@ -1656,14 +1674,14 @@
     "cred_adulto": 1197.31,
     "penetracao": 12.304,
     "meses_renda": 1.48,
-    "gap_abs_modelo": 32113486.8,
+    "gap_abs_modelo": 32113486.49,
     "gap_rel_modelo": 41.85,
     "gap_abs_pares": 145975180.0,
     "gap_rel_pares": 76.59,
     "residuo_padronizado": -0.557,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 65.03
+    "escore_oportunidade": 65.01
    },
    {
     "cod": "3301876",
@@ -1679,7 +1697,7 @@
     "cred_adulto": 1217.25,
     "penetracao": 5.237,
     "meses_renda": 0.63,
-    "gap_abs_modelo": 230031773.55,
+    "gap_abs_modelo": 230031773.59,
     "gap_rel_modelo": 89.57,
     "gap_abs_pares": 259385817.46,
     "gap_rel_pares": 90.64,
@@ -1702,14 +1720,14 @@
     "cred_adulto": 1247.87,
     "penetracao": 13.638,
     "meses_renda": 1.64,
-    "gap_abs_modelo": 17917552.62,
+    "gap_abs_modelo": 17917552.39,
     "gap_rel_modelo": 32.39,
     "gap_abs_pares": 48482650.11,
     "gap_rel_pares": 56.45,
     "residuo_padronizado": -0.402,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.85
+    "escore_oportunidade": 57.83
    },
    {
     "cod": "1300300",
@@ -1725,14 +1743,14 @@
     "cred_adulto": 1258.7,
     "penetracao": 9.978,
     "meses_renda": 1.2,
-    "gap_abs_modelo": 41652780.31,
+    "gap_abs_modelo": 41652779.89,
     "gap_rel_modelo": 56.34,
     "gap_abs_pares": 69023369.21,
     "gap_rel_pares": 68.14,
     "residuo_padronizado": -0.851,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 59.62
+    "escore_oportunidade": 59.6
    },
    {
     "cod": "2613107",
@@ -1748,14 +1766,14 @@
     "cred_adulto": 1276.26,
     "penetracao": 11.211,
     "meses_renda": 1.35,
-    "gap_abs_modelo": 77686758.71,
+    "gap_abs_modelo": 77686759.26,
     "gap_rel_modelo": 69.07,
     "gap_abs_pares": 137257052.7,
     "gap_rel_pares": 79.78,
     "residuo_padronizado": -1.205,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 64.05
+    "escore_oportunidade": 64.06
    },
    {
     "cod": "2609402",
@@ -1771,14 +1789,14 @@
     "cred_adulto": 1426.96,
     "penetracao": 11.539,
     "meses_renda": 1.38,
-    "gap_abs_modelo": 180472229.49,
+    "gap_abs_modelo": 180472230.14,
     "gap_rel_modelo": 75.12,
     "gap_abs_pares": 231579898.2,
     "gap_rel_pares": 79.49,
     "residuo_padronizado": -1.429,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 75.65
+    "escore_oportunidade": 75.64
    },
    {
     "cod": "3302601",
@@ -1794,37 +1812,14 @@
     "cred_adulto": 1473.02,
     "penetracao": 6.423,
     "meses_renda": 0.77,
-    "gap_abs_modelo": 329233688.35,
+    "gap_abs_modelo": 329233686.41,
     "gap_rel_modelo": 87.35,
     "gap_abs_pares": 367619304.2,
     "gap_rel_pares": 88.52,
     "residuo_padronizado": -2.124,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 73.2
-   },
-   {
-    "cod": "2600708",
-    "nome": "Aliança",
-    "uf": "PE",
-    "regiao": "Nordeste",
-    "adultos": 26282.0,
-    "pop_total": 35741.0,
-    "renda_anual": 295706527.2,
-    "renda_pc": 690.2,
-    "urbanizacao": 80.47,
-    "credito": 39625581.0,
-    "cred_adulto": 1507.71,
-    "penetracao": 13.4,
-    "meses_renda": 1.61,
-    "gap_abs_modelo": 66491614.6,
-    "gap_rel_modelo": 62.66,
-    "gap_abs_pares": 124318855.0,
-    "gap_rel_pares": 75.83,
-    "residuo_padronizado": -1.012,
-    "confianca": "media",
-    "no_estban": true,
-    "escore_oportunidade": 62.31
+    "escore_oportunidade": 73.19
    }
   ],
   "menor_penetracao": [
@@ -1842,14 +1837,14 @@
     "cred_adulto": 36.82,
     "penetracao": 0.293,
     "meses_renda": 0.04,
-    "gap_abs_modelo": 115938872.87,
+    "gap_abs_modelo": 115938873.49,
     "gap_rel_modelo": 99.18,
     "gap_abs_pares": 181201392.89,
     "gap_rel_pares": 99.47,
     "residuo_padronizado": -4.928,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 65.52
+    "escore_oportunidade": 65.55
    },
    {
     "cod": "1300607",
@@ -1865,14 +1860,14 @@
     "cred_adulto": 60.18,
     "penetracao": 0.498,
     "meses_renda": 0.06,
-    "gap_abs_modelo": 55728538.61,
+    "gap_abs_modelo": 55728539.08,
     "gap_rel_modelo": 97.73,
     "gap_abs_pares": 136042029.34,
     "gap_rel_pares": 99.06,
     "residuo_padronizado": -3.889,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.93
+    "escore_oportunidade": 57.97
    },
    {
     "cod": "2108306",
@@ -1888,14 +1883,14 @@
     "cred_adulto": 56.27,
     "penetracao": 0.542,
     "meses_renda": 0.07,
-    "gap_abs_modelo": 47361107.0,
+    "gap_abs_modelo": 47361106.99,
     "gap_rel_modelo": 97.54,
     "gap_abs_pares": 100736338.14,
     "gap_rel_pares": 98.83,
     "residuo_padronizado": -3.805,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.01
+    "escore_oportunidade": 57.04
    },
    {
     "cod": "2112407",
@@ -1911,14 +1906,14 @@
     "cred_adulto": 62.69,
     "penetracao": 0.631,
     "meses_renda": 0.08,
-    "gap_abs_modelo": 49739494.46,
+    "gap_abs_modelo": 49739494.18,
     "gap_rel_modelo": 96.98,
     "gap_abs_pares": 112073244.69,
     "gap_rel_pares": 98.64,
     "residuo_padronizado": -3.594,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 61.69
+    "escore_oportunidade": 61.72
    },
    {
     "cod": "2607752",
@@ -1934,14 +1929,37 @@
     "cred_adulto": 83.17,
     "penetracao": 0.82,
     "meses_renda": 0.1,
-    "gap_abs_modelo": 102855809.98,
+    "gap_abs_modelo": 102855811.33,
     "gap_rel_modelo": 98.32,
     "gap_abs_pares": 117163106.0,
     "gap_rel_pares": 98.52,
     "residuo_padronizado": -4.196,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 58.83
+    "escore_oportunidade": 58.86
+   },
+   {
+    "cod": "2112605",
+    "nome": "Urbano Santos",
+    "uf": "MA",
+    "regiao": "Nordeste",
+    "adultos": 20852.0,
+    "pop_total": 32812.0,
+    "renda_anual": 217478710.56,
+    "renda_pc": 552.47,
+    "urbanizacao": 60.05,
+    "credito": 1799354.0,
+    "cred_adulto": 86.29,
+    "penetracao": 0.827,
+    "meses_renda": 0.1,
+    "gap_abs_modelo": 46944805.41,
+    "gap_rel_modelo": 96.31,
+    "gap_abs_pares": 98810099.86,
+    "gap_rel_pares": 98.21,
+    "residuo_padronizado": -3.389,
+    "confianca": "media",
+    "no_estban": true,
+    "escore_oportunidade": 56.09
    },
    {
     "cod": "2309409",
@@ -1957,14 +1975,14 @@
     "cred_adulto": 119.03,
     "penetracao": 0.971,
     "meses_renda": 0.12,
-    "gap_abs_modelo": 84696762.6,
+    "gap_abs_modelo": 84696762.44,
     "gap_rel_modelo": 97.16,
     "gap_abs_pares": 115263215.26,
     "gap_rel_pares": 97.9,
     "residuo_padronizado": -3.66,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.52
+    "escore_oportunidade": 57.53
    },
    {
     "cod": "2603207",
@@ -1980,14 +1998,14 @@
     "cred_adulto": 119.19,
     "penetracao": 1.091,
     "meses_renda": 0.13,
-    "gap_abs_modelo": 50213692.02,
+    "gap_abs_modelo": 50213691.67,
     "gap_rel_modelo": 95.43,
     "gap_abs_pares": 99619872.13,
     "gap_rel_pares": 97.64,
     "residuo_padronizado": -3.169,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 55.18
+    "escore_oportunidade": 55.17
    },
    {
     "cod": "2310308",
@@ -2003,7 +2021,7 @@
     "cred_adulto": 129.65,
     "penetracao": 1.258,
     "meses_renda": 0.15,
-    "gap_abs_modelo": 68227460.09,
+    "gap_abs_modelo": 68227460.02,
     "gap_rel_modelo": 95.73,
     "gap_abs_pares": 109013951.9,
     "gap_rel_pares": 97.28,
@@ -2026,14 +2044,14 @@
     "cred_adulto": 155.36,
     "penetracao": 1.287,
     "meses_renda": 0.15,
-    "gap_abs_modelo": 77724153.02,
+    "gap_abs_modelo": 77724153.06,
     "gap_rel_modelo": 95.95,
     "gap_abs_pares": 114799849.24,
     "gap_rel_pares": 97.22,
     "residuo_padronizado": -3.292,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 58.04
+    "escore_oportunidade": 58.05
    },
    {
     "cod": "1508126",
@@ -2049,7 +2067,7 @@
     "cred_adulto": 363.23,
     "penetracao": 3.04,
     "meses_renda": 0.36,
-    "gap_abs_modelo": 98522722.09,
+    "gap_abs_modelo": 98522722.15,
     "gap_rel_modelo": 90.88,
     "gap_abs_pares": 91933476.32,
     "gap_rel_pares": 90.29,
@@ -2072,7 +2090,7 @@
     "cred_adulto": 657.27,
     "penetracao": 3.363,
     "meses_renda": 0.4,
-    "gap_abs_modelo": 249155323.85,
+    "gap_abs_modelo": 249155323.03,
     "gap_rel_modelo": 91.91,
     "gap_abs_pares": 343114254.69,
     "gap_rel_pares": 93.99,
@@ -2095,14 +2113,14 @@
     "cred_adulto": 436.91,
     "penetracao": 3.666,
     "meses_renda": 0.44,
-    "gap_abs_modelo": 262400304.65,
+    "gap_abs_modelo": 262400303.84,
     "gap_rel_modelo": 89.27,
     "gap_abs_pares": null,
     "gap_rel_pares": null,
     "residuo_padronizado": -2.292,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 83.67
+    "escore_oportunidade": 83.66
    },
    {
     "cod": "2600500",
@@ -2118,7 +2136,7 @@
     "cred_adulto": 564.64,
     "penetracao": 4.844,
     "meses_renda": 0.58,
-    "gap_abs_modelo": 83815398.06,
+    "gap_abs_modelo": 83815398.11,
     "gap_rel_modelo": 83.97,
     "gap_abs_pares": 136846739.81,
     "gap_rel_pares": 89.53,
@@ -2141,7 +2159,7 @@
     "cred_adulto": 1217.25,
     "penetracao": 5.237,
     "meses_renda": 0.63,
-    "gap_abs_modelo": 230031773.55,
+    "gap_abs_modelo": 230031773.59,
     "gap_rel_modelo": 89.57,
     "gap_abs_pares": 259385817.46,
     "gap_rel_pares": 90.64,
@@ -2164,14 +2182,14 @@
     "cred_adulto": 1534.93,
     "penetracao": 5.451,
     "meses_renda": 0.65,
-    "gap_abs_modelo": 293076922.13,
+    "gap_abs_modelo": 293076921.13,
     "gap_rel_modelo": 90.1,
     "gap_abs_pares": 348680274.91,
     "gap_rel_pares": 91.55,
     "residuo_padronizado": -2.376,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 61.55
+    "escore_oportunidade": 61.56
    },
    {
     "cod": "3502903",
@@ -2187,7 +2205,7 @@
     "cred_adulto": 1834.44,
     "penetracao": 6.108,
     "meses_renda": 0.73,
-    "gap_abs_modelo": 427257300.86,
+    "gap_abs_modelo": 427257296.74,
     "gap_rel_modelo": 90.05,
     "gap_abs_pares": 451028457.28,
     "gap_rel_pares": 90.53,
@@ -2210,14 +2228,14 @@
     "cred_adulto": 1473.02,
     "penetracao": 6.423,
     "meses_renda": 0.77,
-    "gap_abs_modelo": 329233688.35,
+    "gap_abs_modelo": 329233686.41,
     "gap_rel_modelo": 87.35,
     "gap_abs_pares": 367619304.2,
     "gap_rel_pares": 88.52,
     "residuo_padronizado": -2.124,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 73.2
+    "escore_oportunidade": 73.19
    },
    {
     "cod": "1500859",
@@ -2233,14 +2251,14 @@
     "cred_adulto": 1049.66,
     "penetracao": 7.362,
     "meses_renda": 0.88,
-    "gap_abs_modelo": 57197900.79,
+    "gap_abs_modelo": 57197900.48,
     "gap_rel_modelo": 72.87,
     "gap_abs_pares": 69297383.54,
     "gap_rel_pares": 76.49,
     "residuo_padronizado": -1.34,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 55.07
+    "escore_oportunidade": 55.06
    },
    {
     "cod": "3301850",
@@ -2256,7 +2274,7 @@
     "cred_adulto": 1592.15,
     "penetracao": 8.418,
     "meses_renda": 1.01,
-    "gap_abs_modelo": 250605836.26,
+    "gap_abs_modelo": 250605835.27,
     "gap_rel_modelo": 80.08,
     "gap_abs_pares": 286856800.19,
     "gap_rel_pares": 82.15,
@@ -2279,14 +2297,14 @@
     "cred_adulto": 1191.27,
     "penetracao": 9.277,
     "meses_renda": 1.11,
-    "gap_abs_modelo": 39024970.25,
+    "gap_abs_modelo": 39024969.93,
     "gap_rel_modelo": 62.05,
     "gap_abs_pares": 56695359.77,
     "gap_rel_pares": 70.37,
     "residuo_padronizado": -0.995,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 52.54
+    "escore_oportunidade": 52.5
    },
    {
     "cod": "1300300",
@@ -2302,14 +2320,14 @@
     "cred_adulto": 1258.7,
     "penetracao": 9.978,
     "meses_renda": 1.2,
-    "gap_abs_modelo": 41652780.31,
+    "gap_abs_modelo": 41652779.89,
     "gap_rel_modelo": 56.34,
     "gap_abs_pares": 69023369.21,
     "gap_rel_pares": 68.14,
     "residuo_padronizado": -0.851,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 59.62
+    "escore_oportunidade": 59.6
    },
    {
     "cod": "2602605",
@@ -2325,7 +2343,7 @@
     "cred_adulto": 1141.99,
     "penetracao": 10.108,
     "meses_renda": 1.21,
-    "gap_abs_modelo": 100805770.86,
+    "gap_abs_modelo": 100805771.3,
     "gap_rel_modelo": 71.68,
     "gap_abs_pares": 181835873.78,
     "gap_rel_pares": 82.03,
@@ -2348,14 +2366,14 @@
     "cred_adulto": 2286.77,
     "penetracao": 10.397,
     "meses_renda": 1.25,
-    "gap_abs_modelo": 269347731.06,
+    "gap_abs_modelo": 269347729.47,
     "gap_rel_modelo": 77.28,
     "gap_abs_pares": 279918635.16,
     "gap_rel_pares": 77.95,
     "residuo_padronizado": -1.522,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 73.77
+    "escore_oportunidade": 73.76
    },
    {
     "cod": "2111201",
@@ -2371,37 +2389,14 @@
     "cred_adulto": 2013.86,
     "penetracao": 10.79,
     "meses_renda": 1.29,
-    "gap_abs_modelo": 2231857913.92,
+    "gap_abs_modelo": 2231857876.92,
     "gap_rel_modelo": 86.15,
     "gap_abs_pares": 2150649415.24,
     "gap_rel_pares": 85.7,
     "residuo_padronizado": -2.03,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 94.26
-   },
-   {
-    "cod": "1500206",
-    "nome": "Acará",
-    "uf": "PA",
-    "regiao": "Norte",
-    "adultos": 39162.0,
-    "pop_total": 59023.0,
-    "renda_anual": 357094476.48,
-    "renda_pc": 505.33,
-    "urbanizacao": 22.16,
-    "credito": 39300857.0,
-    "cred_adulto": 1003.55,
-    "penetracao": 11.006,
-    "meses_renda": 1.32,
-    "gap_abs_modelo": 28236350.28,
-    "gap_rel_modelo": 41.81,
-    "gap_abs_pares": 148382806.31,
-    "gap_rel_pares": 79.06,
-    "residuo_padronizado": -0.556,
-    "confianca": "alta",
-    "no_estban": true,
-    "escore_oportunidade": 65.58
+    "escore_oportunidade": 94.24
    }
   ],
   "oportunidade_escala": [
@@ -2419,14 +2414,14 @@
     "cred_adulto": 19580.92,
     "penetracao": 37.729,
     "meses_renda": 4.53,
-    "gap_abs_modelo": 25901291672.93,
+    "gap_abs_modelo": 25901290309.47,
     "gap_rel_modelo": 76.93,
     "gap_abs_pares": 7102887371.69,
     "gap_rel_pares": 47.76,
     "residuo_padronizado": -1.506,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 98.1
+    "escore_oportunidade": 98.07
    },
    {
     "cod": "3547809",
@@ -2442,14 +2437,14 @@
     "cred_adulto": 14579.17,
     "penetracao": 39.807,
     "meses_renda": 4.78,
-    "gap_abs_modelo": 18454873626.37,
+    "gap_abs_modelo": 18454872551.54,
     "gap_rel_modelo": 67.79,
     "gap_abs_pares": 7139479908.53,
     "gap_rel_pares": 44.88,
     "residuo_padronizado": -1.164,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 97.61
+    "escore_oportunidade": 97.58
    },
    {
     "cod": "2607901",
@@ -2465,14 +2460,14 @@
     "cred_adulto": 4438.47,
     "penetracao": 24.677,
     "meses_renda": 2.96,
-    "gap_abs_modelo": 6184448769.73,
+    "gap_abs_modelo": 6184448567.51,
     "gap_rel_modelo": 74.0,
     "gap_abs_pares": 4470020519.69,
     "gap_rel_pares": 67.29,
     "residuo_padronizado": -1.384,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 97.55
+    "escore_oportunidade": 97.53
    },
    {
     "cod": "5208707",
@@ -2488,14 +2483,14 @@
     "cred_adulto": 56406.96,
     "penetracao": 137.995,
     "meses_renda": 16.56,
-    "gap_abs_modelo": 90734200886.79,
+    "gap_abs_modelo": 90734193421.48,
     "gap_rel_modelo": 58.87,
     "gap_abs_pares": 4876309921.99,
     "gap_rel_pares": 7.14,
     "residuo_padronizado": -0.913,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 97.25
+    "escore_oportunidade": 97.23
    },
    {
     "cod": "5201405",
@@ -2511,14 +2506,14 @@
     "cred_adulto": 11989.32,
     "penetracao": 53.214,
     "meses_renda": 6.39,
-    "gap_abs_modelo": 9803114766.32,
+    "gap_abs_modelo": 9803114342.47,
     "gap_rel_modelo": 67.45,
     "gap_abs_pares": null,
     "gap_rel_pares": null,
     "residuo_padronizado": -1.153,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 97.01
+    "escore_oportunidade": 96.98
    },
    {
     "cod": "3205200",
@@ -2534,14 +2529,14 @@
     "cred_adulto": 12930.94,
     "penetracao": 38.861,
     "meses_renda": 4.66,
-    "gap_abs_modelo": 8119008929.22,
+    "gap_abs_modelo": 8119008492.35,
     "gap_rel_modelo": 62.97,
     "gap_abs_pares": 4098537519.69,
     "gap_rel_pares": 46.19,
     "residuo_padronizado": -1.02,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 96.46
+    "escore_oportunidade": 96.44
    },
    {
     "cod": "2927408",
@@ -2557,14 +2552,14 @@
     "cred_adulto": 23352.44,
     "penetracao": 87.878,
     "meses_renda": 10.55,
-    "gap_abs_modelo": 45140042176.59,
+    "gap_abs_modelo": 45140038236.57,
     "gap_rel_modelo": 50.12,
     "gap_abs_pares": 7638865165.25,
     "gap_rel_pares": 14.53,
     "residuo_padronizado": -0.714,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 96.44
+    "escore_oportunidade": 96.41
    },
    {
     "cod": "3304904",
@@ -2580,14 +2575,14 @@
     "cred_adulto": 5130.45,
     "penetracao": 28.275,
     "meses_renda": 3.39,
-    "gap_abs_modelo": 5333873470.22,
+    "gap_abs_modelo": 5333873188.07,
     "gap_rel_modelo": 59.21,
     "gap_abs_pares": 1039417515.5,
     "gap_rel_pares": 22.05,
     "residuo_padronizado": -0.921,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 96.35
+    "escore_oportunidade": 96.33
    },
    {
     "cod": "3548500",
@@ -2603,14 +2598,14 @@
     "cred_adulto": 26831.39,
     "penetracao": 57.086,
     "meses_renda": 6.85,
-    "gap_abs_modelo": 14586167913.51,
+    "gap_abs_modelo": 14586167014.85,
     "gap_rel_modelo": 61.22,
     "gap_abs_pares": 2450247675.93,
     "gap_rel_pares": 20.96,
     "residuo_padronizado": -0.973,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 96.22
+    "escore_oportunidade": 96.19
    },
    {
     "cod": "2609600",
@@ -2626,14 +2621,14 @@
     "cred_adulto": 5260.08,
     "penetracao": 26.724,
     "meses_renda": 3.21,
-    "gap_abs_modelo": 3844155639.36,
+    "gap_abs_modelo": 3844155535.59,
     "gap_rel_modelo": 72.87,
     "gap_abs_pares": 2609985092.99,
     "gap_rel_pares": 64.58,
     "residuo_padronizado": -1.34,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 96.03
+    "escore_oportunidade": 96.0
    },
    {
     "cod": "3510609",
@@ -2649,14 +2644,14 @@
     "cred_adulto": 4222.81,
     "penetracao": 18.601,
     "meses_renda": 2.23,
-    "gap_abs_modelo": 3187222303.02,
+    "gap_abs_modelo": 3187222193.57,
     "gap_rel_modelo": 72.04,
     "gap_abs_pares": 1175274757.96,
     "gap_rel_pares": 48.72,
     "residuo_padronizado": -1.309,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.95
+    "escore_oportunidade": 95.92
    },
    {
     "cod": "2610707",
@@ -2672,14 +2667,14 @@
     "cred_adulto": 4019.51,
     "penetracao": 21.57,
     "meses_renda": 2.59,
-    "gap_abs_modelo": 3447740991.08,
+    "gap_abs_modelo": 3447740907.93,
     "gap_rel_modelo": 76.51,
     "gap_abs_pares": 2644033585.3,
     "gap_rel_pares": 71.41,
     "residuo_padronizado": -1.488,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.89
+    "escore_oportunidade": 95.87
    },
    {
     "cod": "2611606",
@@ -2695,14 +2690,14 @@
     "cred_adulto": 36061.81,
     "penetracao": 104.046,
     "meses_renda": 12.49,
-    "gap_abs_modelo": 39274521614.48,
+    "gap_abs_modelo": 39274518167.98,
     "gap_rel_modelo": 48.22,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -1.19,
     "residuo_padronizado": -0.676,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.89
+    "escore_oportunidade": 95.87
    },
    {
     "cod": "5002704",
@@ -2718,14 +2713,14 @@
     "cred_adulto": 40396.92,
     "penetracao": 122.454,
     "meses_renda": 14.69,
-    "gap_abs_modelo": 27293062463.94,
+    "gap_abs_modelo": 27293060260.9,
     "gap_rel_modelo": 49.96,
     "gap_abs_pares": 5839573139.25,
     "gap_rel_pares": 17.6,
     "residuo_padronizado": -0.711,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.86
+    "escore_oportunidade": 95.84
    },
    {
     "cod": "3509502",
@@ -2741,14 +2736,14 @@
     "cred_adulto": 29466.09,
     "penetracao": 73.433,
     "meses_renda": 8.81,
-    "gap_abs_modelo": 24131533073.16,
+    "gap_abs_modelo": 24131530786.15,
     "gap_rel_modelo": 47.4,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -1.68,
     "residuo_padronizado": -0.66,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.46
+    "escore_oportunidade": 95.43
    },
    {
     "cod": "2403251",
@@ -2764,14 +2759,14 @@
     "cred_adulto": 9181.14,
     "penetracao": 31.924,
     "meses_renda": 3.83,
-    "gap_abs_modelo": 5279664204.75,
+    "gap_abs_modelo": 5279664053.39,
     "gap_rel_modelo": 74.74,
     "gap_abs_pares": 3962523282.44,
     "gap_rel_pares": 68.95,
     "residuo_padronizado": -1.413,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.29
+    "escore_oportunidade": 95.27
    },
    {
     "cod": "4205407",
@@ -2787,14 +2782,14 @@
     "cred_adulto": 48635.95,
     "penetracao": 91.61,
     "meses_renda": 10.99,
-    "gap_abs_modelo": 20922638220.76,
+    "gap_abs_modelo": 20922636633.14,
     "gap_rel_modelo": 49.57,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -7.07,
     "residuo_padronizado": -0.703,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.21
+    "escore_oportunidade": 95.19
    },
    {
     "cod": "3525904",
@@ -2810,14 +2805,14 @@
     "cred_adulto": 24965.61,
     "penetracao": 59.904,
     "meses_renda": 7.19,
-    "gap_abs_modelo": 9334098366.27,
+    "gap_abs_modelo": 9334097698.88,
     "gap_rel_modelo": 51.47,
     "gap_abs_pares": 1809478679.95,
     "gap_rel_pares": 17.06,
     "residuo_padronizado": -0.743,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.1
+    "escore_oportunidade": 95.08
    },
    {
     "cod": "3513009",
@@ -2833,14 +2828,14 @@
     "cred_adulto": 10060.53,
     "penetracao": 27.639,
     "meses_renda": 3.32,
-    "gap_abs_modelo": 4731941797.77,
+    "gap_abs_modelo": 4731941603.74,
     "gap_rel_modelo": 69.62,
     "gap_abs_pares": 3331379503.15,
     "gap_rel_pares": 61.73,
     "residuo_padronizado": -1.224,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.05
+    "escore_oportunidade": 95.02
    },
    {
     "cod": "3300456",
@@ -2856,14 +2851,14 @@
     "cred_adulto": 2326.05,
     "penetracao": 16.058,
     "meses_renda": 1.93,
-    "gap_abs_modelo": 1651129752.57,
+    "gap_abs_modelo": 1651129700.7,
     "gap_rel_modelo": 65.98,
     "gap_abs_pares": null,
     "gap_rel_pares": null,
     "residuo_padronizado": -1.107,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.02
+    "escore_oportunidade": 95.0
    },
    {
     "cod": "5221858",
@@ -2879,14 +2874,14 @@
     "cred_adulto": 2774.46,
     "penetracao": 11.611,
     "meses_renda": 1.39,
-    "gap_abs_modelo": 4356740855.66,
+    "gap_abs_modelo": 4356740763.75,
     "gap_rel_modelo": 91.6,
     "gap_abs_pares": 2701704751.66,
     "gap_rel_pares": 87.11,
     "residuo_padronizado": -2.544,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 94.42
+    "escore_oportunidade": 94.4
    },
    {
     "cod": "2111201",
@@ -2902,14 +2897,14 @@
     "cred_adulto": 2013.86,
     "penetracao": 10.79,
     "meses_renda": 1.29,
-    "gap_abs_modelo": 2231857913.92,
+    "gap_abs_modelo": 2231857876.92,
     "gap_rel_modelo": 86.15,
     "gap_abs_pares": 2150649415.24,
     "gap_rel_pares": 85.7,
     "residuo_padronizado": -2.03,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 94.26
+    "escore_oportunidade": 94.24
    },
    {
     "cod": "3154606",
@@ -2925,14 +2920,14 @@
     "cred_adulto": 3037.27,
     "penetracao": 17.289,
     "meses_renda": 2.07,
-    "gap_abs_modelo": 1590029728.43,
+    "gap_abs_modelo": 1590029681.43,
     "gap_rel_modelo": 67.82,
     "gap_abs_pares": 828448454.22,
     "gap_rel_pares": 52.34,
     "residuo_padronizado": -1.165,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 94.12
+    "escore_oportunidade": 94.1
    },
    {
     "cod": "3518800",
@@ -2948,14 +2943,14 @@
     "cred_adulto": 13650.72,
     "penetracao": 52.933,
     "meses_renda": 6.35,
-    "gap_abs_modelo": 9323622666.13,
+    "gap_abs_modelo": 9323621785.03,
     "gap_rel_modelo": 41.01,
     "gap_abs_pares": 4887203465.79,
     "gap_rel_pares": 26.71,
     "residuo_padronizado": -0.542,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 94.04
+    "escore_oportunidade": 94.02
    },
    {
     "cod": "3548807",
@@ -2971,14 +2966,14 @@
     "cred_adulto": 23962.62,
     "penetracao": 42.058,
     "meses_renda": 5.05,
-    "gap_abs_modelo": 8168900311.85,
+    "gap_abs_modelo": 8168899959.99,
     "gap_rel_modelo": 71.65,
     "gap_abs_pares": 1251895002.05,
     "gap_rel_pares": 27.92,
     "residuo_padronizado": -1.295,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 93.88
+    "escore_oportunidade": 93.86
    }
   ],
   "maior_penetracao": [
@@ -2992,9 +2987,9 @@
     "renda_anual": 370996128197.76,
     "renda_pc": 2713.36,
     "urbanizacao": 99.85,
-    "credito": 1995849618932.0,
-    "cred_adulto": 219937.15,
-    "penetracao": 537.97,
+    "credito": 1995842147268.0,
+    "cred_adulto": 219936.33,
+    "penetracao": 537.968,
     "meses_renda": 64.56,
     "gap_abs_modelo": 0.0,
     "gap_rel_modelo": -174.55,
@@ -3026,7 +3021,7 @@
     "residuo_padronizado": 1.007,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 6.53
+    "escore_oportunidade": 6.55
    },
    {
     "cod": "4314902",
@@ -3072,7 +3067,7 @@
     "residuo_padronizado": 1.066,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 38.97
+    "escore_oportunidade": 38.96
    },
    {
     "cod": "2101400",
@@ -3095,7 +3090,7 @@
     "residuo_padronizado": 1.581,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 40.33
+    "escore_oportunidade": 40.32
    },
    {
     "cod": "5005400",
@@ -3118,7 +3113,7 @@
     "residuo_padronizado": 0.778,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 18.07
+    "escore_oportunidade": 18.08
    },
    {
     "cod": "3520509",
@@ -3187,7 +3182,7 @@
     "residuo_padronizado": 0.373,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 39.84
+    "escore_oportunidade": 39.83
    },
    {
     "cod": "3127107",
@@ -3210,7 +3205,7 @@
     "residuo_padronizado": 1.539,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 28.08
+    "escore_oportunidade": 28.09
    },
    {
     "cod": "5107958",
@@ -3279,7 +3274,7 @@
     "residuo_padronizado": 0.921,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 8.3
+    "escore_oportunidade": 8.32
    },
    {
     "cod": "5105259",
@@ -3325,7 +3320,7 @@
     "residuo_padronizado": 0.954,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 9.39
+    "escore_oportunidade": 9.41
    },
    {
     "cod": "1505502",
@@ -3348,7 +3343,7 @@
     "residuo_padronizado": 1.494,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 41.8
+    "escore_oportunidade": 41.79
    },
    {
     "cod": "3106200",
@@ -3371,7 +3366,7 @@
     "residuo_padronizado": 0.33,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 54.12
+    "escore_oportunidade": 54.11
    },
    {
     "cod": "3162104",
@@ -3394,7 +3389,7 @@
     "residuo_padronizado": 1.502,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 20.41
+    "escore_oportunidade": 20.42
    },
    {
     "cod": "5218003",
@@ -3417,7 +3412,7 @@
     "residuo_padronizado": 0.658,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 18.5
+    "escore_oportunidade": 18.52
    },
    {
     "cod": "2919553",
@@ -3463,7 +3458,7 @@
     "residuo_padronizado": 1.667,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 23.18
+    "escore_oportunidade": 23.19
    },
    {
     "cod": "5105622",
@@ -3486,7 +3481,7 @@
     "residuo_padronizado": 0.773,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 4.22
+    "escore_oportunidade": 4.21
    },
    {
     "cod": "2903201",
@@ -3509,7 +3504,7 @@
     "residuo_padronizado": 0.984,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 41.55
+    "escore_oportunidade": 41.54
    },
    {
     "cod": "5210208",
@@ -3532,7 +3527,7 @@
     "residuo_padronizado": 0.455,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 18.72
+    "escore_oportunidade": 18.73
    },
    {
     "cod": "3543402",
@@ -3555,7 +3550,7 @@
     "residuo_padronizado": 0.548,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 44.49
+    "escore_oportunidade": 44.48
    }
   ],
   "mais_atipicos": [
@@ -3573,14 +3568,14 @@
     "cred_adulto": 36.82,
     "penetracao": 0.293,
     "meses_renda": 0.04,
-    "gap_abs_modelo": 115938872.87,
+    "gap_abs_modelo": 115938873.49,
     "gap_rel_modelo": 99.18,
     "gap_abs_pares": 181201392.89,
     "gap_rel_pares": 99.47,
     "residuo_padronizado": -4.928,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 65.52
+    "escore_oportunidade": 65.55
    },
    {
     "cod": "2607752",
@@ -3596,14 +3591,14 @@
     "cred_adulto": 83.17,
     "penetracao": 0.82,
     "meses_renda": 0.1,
-    "gap_abs_modelo": 102855809.98,
+    "gap_abs_modelo": 102855811.33,
     "gap_rel_modelo": 98.32,
     "gap_abs_pares": 117163106.0,
     "gap_rel_pares": 98.52,
     "residuo_padronizado": -4.196,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 58.83
+    "escore_oportunidade": 58.86
    },
    {
     "cod": "1300607",
@@ -3619,14 +3614,14 @@
     "cred_adulto": 60.18,
     "penetracao": 0.498,
     "meses_renda": 0.06,
-    "gap_abs_modelo": 55728538.61,
+    "gap_abs_modelo": 55728539.08,
     "gap_rel_modelo": 97.73,
     "gap_abs_pares": 136042029.34,
     "gap_rel_pares": 99.06,
     "residuo_padronizado": -3.889,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.93
+    "escore_oportunidade": 57.97
    },
    {
     "cod": "2108306",
@@ -3642,14 +3637,14 @@
     "cred_adulto": 56.27,
     "penetracao": 0.542,
     "meses_renda": 0.07,
-    "gap_abs_modelo": 47361107.0,
+    "gap_abs_modelo": 47361106.99,
     "gap_rel_modelo": 97.54,
     "gap_abs_pares": 100736338.14,
     "gap_rel_pares": 98.83,
     "residuo_padronizado": -3.805,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.01
+    "escore_oportunidade": 57.04
    },
    {
     "cod": "2309409",
@@ -3665,14 +3660,14 @@
     "cred_adulto": 119.03,
     "penetracao": 0.971,
     "meses_renda": 0.12,
-    "gap_abs_modelo": 84696762.6,
+    "gap_abs_modelo": 84696762.44,
     "gap_rel_modelo": 97.16,
     "gap_abs_pares": 115263215.26,
     "gap_rel_pares": 97.9,
     "residuo_padronizado": -3.66,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.52
+    "escore_oportunidade": 57.53
    },
    {
     "cod": "2112407",
@@ -3688,14 +3683,37 @@
     "cred_adulto": 62.69,
     "penetracao": 0.631,
     "meses_renda": 0.08,
-    "gap_abs_modelo": 49739494.46,
+    "gap_abs_modelo": 49739494.18,
     "gap_rel_modelo": 96.98,
     "gap_abs_pares": 112073244.69,
     "gap_rel_pares": 98.64,
     "residuo_padronizado": -3.594,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 61.69
+    "escore_oportunidade": 61.72
+   },
+   {
+    "cod": "2112605",
+    "nome": "Urbano Santos",
+    "uf": "MA",
+    "regiao": "Nordeste",
+    "adultos": 20852.0,
+    "pop_total": 32812.0,
+    "renda_anual": 217478710.56,
+    "renda_pc": 552.47,
+    "urbanizacao": 60.05,
+    "credito": 1799354.0,
+    "cred_adulto": 86.29,
+    "penetracao": 0.827,
+    "meses_renda": 0.1,
+    "gap_abs_modelo": 46944805.41,
+    "gap_rel_modelo": 96.31,
+    "gap_abs_pares": 98810099.86,
+    "gap_rel_pares": 98.21,
+    "residuo_padronizado": -3.389,
+    "confianca": "media",
+    "no_estban": true,
+    "escore_oportunidade": 56.09
    },
    {
     "cod": "2101004",
@@ -3711,14 +3729,14 @@
     "cred_adulto": 155.36,
     "penetracao": 1.287,
     "meses_renda": 0.15,
-    "gap_abs_modelo": 77724153.02,
+    "gap_abs_modelo": 77724153.06,
     "gap_rel_modelo": 95.95,
     "gap_abs_pares": 114799849.24,
     "gap_rel_pares": 97.22,
     "residuo_padronizado": -3.292,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 58.04
+    "escore_oportunidade": 58.05
    },
    {
     "cod": "2310308",
@@ -3734,7 +3752,7 @@
     "cred_adulto": 129.65,
     "penetracao": 1.258,
     "meses_renda": 0.15,
-    "gap_abs_modelo": 68227460.09,
+    "gap_abs_modelo": 68227460.02,
     "gap_rel_modelo": 95.73,
     "gap_abs_pares": 109013951.9,
     "gap_rel_pares": 97.28,
@@ -3757,14 +3775,14 @@
     "cred_adulto": 119.19,
     "penetracao": 1.091,
     "meses_renda": 0.13,
-    "gap_abs_modelo": 50213692.02,
+    "gap_abs_modelo": 50213691.67,
     "gap_rel_modelo": 95.43,
     "gap_abs_pares": 99619872.13,
     "gap_rel_pares": 97.64,
     "residuo_padronizado": -3.169,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 55.18
+    "escore_oportunidade": 55.17
    },
    {
     "cod": "3544103",
@@ -3780,7 +3798,7 @@
     "cred_adulto": 657.27,
     "penetracao": 3.363,
     "meses_renda": 0.4,
-    "gap_abs_modelo": 249155323.85,
+    "gap_abs_modelo": 249155323.03,
     "gap_rel_modelo": 91.91,
     "gap_abs_pares": 343114254.69,
     "gap_rel_pares": 93.99,
@@ -3803,14 +3821,14 @@
     "cred_adulto": 2774.46,
     "penetracao": 11.611,
     "meses_renda": 1.39,
-    "gap_abs_modelo": 4356740855.66,
+    "gap_abs_modelo": 4356740763.75,
     "gap_rel_modelo": 91.6,
     "gap_abs_pares": 2701704751.66,
     "gap_rel_pares": 87.11,
     "residuo_padronizado": -2.544,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 94.42
+    "escore_oportunidade": 94.4
    },
    {
     "cod": "1508126",
@@ -3826,7 +3844,7 @@
     "cred_adulto": 363.23,
     "penetracao": 3.04,
     "meses_renda": 0.36,
-    "gap_abs_modelo": 98522722.09,
+    "gap_abs_modelo": 98522722.15,
     "gap_rel_modelo": 90.88,
     "gap_abs_pares": 91933476.32,
     "gap_rel_pares": 90.29,
@@ -3849,14 +3867,14 @@
     "cred_adulto": 9009.91,
     "penetracao": 13.643,
     "meses_renda": 1.64,
-    "gap_abs_modelo": 7509121379.4,
+    "gap_abs_modelo": 7509121146.91,
     "gap_rel_modelo": 90.55,
     "gap_abs_pares": 2566257941.11,
     "gap_rel_pares": 76.62,
     "residuo_padronizado": -2.424,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 91.78
+    "escore_oportunidade": 91.76
    },
    {
     "cod": "3504602",
@@ -3872,14 +3890,14 @@
     "cred_adulto": 1534.93,
     "penetracao": 5.451,
     "meses_renda": 0.65,
-    "gap_abs_modelo": 293076922.13,
+    "gap_abs_modelo": 293076921.13,
     "gap_rel_modelo": 90.1,
     "gap_abs_pares": 348680274.91,
     "gap_rel_pares": 91.55,
     "residuo_padronizado": -2.376,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 61.55
+    "escore_oportunidade": 61.56
    },
    {
     "cod": "3502903",
@@ -3895,7 +3913,7 @@
     "cred_adulto": 1834.44,
     "penetracao": 6.108,
     "meses_renda": 0.73,
-    "gap_abs_modelo": 427257300.86,
+    "gap_abs_modelo": 427257296.74,
     "gap_rel_modelo": 90.05,
     "gap_abs_pares": 451028457.28,
     "gap_rel_pares": 90.53,
@@ -3918,14 +3936,14 @@
     "cred_adulto": 6626.07,
     "penetracao": 11.881,
     "meses_renda": 1.43,
-    "gap_abs_modelo": 6879686772.87,
+    "gap_abs_modelo": 6879686559.47,
     "gap_rel_modelo": 90.05,
     "gap_abs_pares": 2971654784.29,
     "gap_rel_pares": 79.64,
     "residuo_padronizado": -2.371,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 93.63
+    "escore_oportunidade": 93.61
    },
    {
     "cod": "3301876",
@@ -3941,7 +3959,7 @@
     "cred_adulto": 1217.25,
     "penetracao": 5.237,
     "meses_renda": 0.63,
-    "gap_abs_modelo": 230031773.55,
+    "gap_abs_modelo": 230031773.59,
     "gap_rel_modelo": 89.57,
     "gap_abs_pares": 259385817.46,
     "gap_rel_pares": 90.64,
@@ -3964,14 +3982,14 @@
     "cred_adulto": 436.91,
     "penetracao": 3.666,
     "meses_renda": 0.44,
-    "gap_abs_modelo": 262400304.65,
+    "gap_abs_modelo": 262400303.84,
     "gap_rel_modelo": 89.27,
     "gap_abs_pares": null,
     "gap_rel_pares": null,
     "residuo_padronizado": -2.292,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 83.67
+    "escore_oportunidade": 83.66
    },
    {
     "cod": "3302601",
@@ -3987,14 +4005,14 @@
     "cred_adulto": 1473.02,
     "penetracao": 6.423,
     "meses_renda": 0.77,
-    "gap_abs_modelo": 329233688.35,
+    "gap_abs_modelo": 329233686.41,
     "gap_rel_modelo": 87.35,
     "gap_abs_pares": 367619304.2,
     "gap_rel_pares": 88.52,
     "residuo_padronizado": -2.124,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 73.2
+    "escore_oportunidade": 73.19
    },
    {
     "cod": "5209705",
@@ -4010,14 +4028,14 @@
     "cred_adulto": 3818.16,
     "penetracao": 14.632,
     "meses_renda": 1.76,
-    "gap_abs_modelo": 506615728.48,
+    "gap_abs_modelo": 506615724.23,
     "gap_rel_modelo": 86.54,
     "gap_abs_pares": 690036518.03,
     "gap_rel_pares": 89.75,
     "residuo_padronizado": -2.06,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 62.34
+    "escore_oportunidade": 62.32
    },
    {
     "cod": "1200609",
@@ -4040,7 +4058,7 @@
     "residuo_padronizado": 2.032,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 26.04
+    "escore_oportunidade": 26.05
    },
    {
     "cod": "2111201",
@@ -4056,14 +4074,14 @@
     "cred_adulto": 2013.86,
     "penetracao": 10.79,
     "meses_renda": 1.29,
-    "gap_abs_modelo": 2231857913.92,
+    "gap_abs_modelo": 2231857876.92,
     "gap_rel_modelo": 86.15,
     "gap_abs_pares": 2150649415.24,
     "gap_rel_pares": 85.7,
     "residuo_padronizado": -2.03,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 94.26
+    "escore_oportunidade": 94.24
    },
    {
     "cod": "2600500",
@@ -4079,7 +4097,7 @@
     "cred_adulto": 564.64,
     "penetracao": 4.844,
     "meses_renda": 0.58,
-    "gap_abs_modelo": 83815398.06,
+    "gap_abs_modelo": 83815398.11,
     "gap_rel_modelo": 83.97,
     "gap_abs_pares": 136846739.81,
     "gap_rel_pares": 89.53,
@@ -4110,29 +4128,6 @@
     "confianca": "alta",
     "no_estban": true,
     "escore_oportunidade": 31.73
-   },
-   {
-    "cod": "2702900",
-    "nome": "Girau do Ponciano",
-    "uf": "AL",
-    "regiao": "Nordeste",
-    "adultos": 25422.0,
-    "pop_total": 36102.0,
-    "renda_anual": 257244307.2,
-    "renda_pc": 607.35,
-    "urbanizacao": 33.99,
-    "credito": 323335707.0,
-    "cred_adulto": 12718.74,
-    "penetracao": 125.692,
-    "meses_renda": 15.08,
-    "gap_abs_modelo": 0.0,
-    "gap_rel_modelo": -407.21,
-    "gap_abs_pares": 0.0,
-    "gap_rel_pares": -171.7,
-    "residuo_padronizado": 1.668,
-    "confianca": "alta",
-    "no_estban": true,
-    "escore_oportunidade": 19.43
    }
   ],
   "gap_absoluto_sem_corte": [
@@ -4150,14 +4145,14 @@
     "cred_adulto": 56406.96,
     "penetracao": 137.995,
     "meses_renda": 16.56,
-    "gap_abs_modelo": 90734200886.79,
+    "gap_abs_modelo": 90734193421.48,
     "gap_rel_modelo": 58.87,
     "gap_abs_pares": 4876309921.99,
     "gap_rel_pares": 7.14,
     "residuo_padronizado": -0.913,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 97.25
+    "escore_oportunidade": 97.23
    },
    {
     "cod": "2927408",
@@ -4173,14 +4168,14 @@
     "cred_adulto": 23352.44,
     "penetracao": 87.878,
     "meses_renda": 10.55,
-    "gap_abs_modelo": 45140042176.59,
+    "gap_abs_modelo": 45140038236.57,
     "gap_rel_modelo": 50.12,
     "gap_abs_pares": 7638865165.25,
     "gap_rel_pares": 14.53,
     "residuo_padronizado": -0.714,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 96.44
+    "escore_oportunidade": 96.41
    },
    {
     "cod": "4106902",
@@ -4196,14 +4191,14 @@
     "cred_adulto": 58508.82,
     "penetracao": 125.311,
     "meses_renda": 15.04,
-    "gap_abs_modelo": 41124053260.37,
+    "gap_abs_modelo": 41124047385.72,
     "gap_rel_modelo": 33.05,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -46.45,
     "residuo_padronizado": -0.412,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 92.9
+    "escore_oportunidade": 92.88
    },
    {
     "cod": "2611606",
@@ -4219,14 +4214,14 @@
     "cred_adulto": 36061.81,
     "penetracao": 104.046,
     "meses_renda": 12.49,
-    "gap_abs_modelo": 39274521614.48,
+    "gap_abs_modelo": 39274518167.98,
     "gap_rel_modelo": 48.22,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -1.19,
     "residuo_padronizado": -0.676,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.89
+    "escore_oportunidade": 95.87
    },
    {
     "cod": "2304400",
@@ -4242,14 +4237,14 @@
     "cred_adulto": 26507.75,
     "penetracao": 102.928,
     "meses_renda": 12.35,
-    "gap_abs_modelo": 28935908077.04,
+    "gap_abs_modelo": 28935904709.43,
     "gap_rel_modelo": 36.7,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -0.1,
     "residuo_padronizado": -0.47,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 93.63
+    "escore_oportunidade": 93.61
    },
    {
     "cod": "5002704",
@@ -4265,14 +4260,14 @@
     "cred_adulto": 40396.92,
     "penetracao": 122.454,
     "meses_renda": 14.69,
-    "gap_abs_modelo": 27293062463.94,
+    "gap_abs_modelo": 27293060260.9,
     "gap_rel_modelo": 49.96,
     "gap_abs_pares": 5839573139.25,
     "gap_rel_pares": 17.6,
     "residuo_padronizado": -0.711,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.86
+    "escore_oportunidade": 95.84
    },
    {
     "cod": "3303302",
@@ -4288,14 +4283,14 @@
     "cred_adulto": 19580.92,
     "penetracao": 37.729,
     "meses_renda": 4.53,
-    "gap_abs_modelo": 25901291672.93,
+    "gap_abs_modelo": 25901290309.47,
     "gap_rel_modelo": 76.93,
     "gap_abs_pares": 7102887371.69,
     "gap_rel_pares": 47.76,
     "residuo_padronizado": -1.506,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 98.1
+    "escore_oportunidade": 98.07
    },
    {
     "cod": "3509502",
@@ -4311,14 +4306,14 @@
     "cred_adulto": 29466.09,
     "penetracao": 73.433,
     "meses_renda": 8.81,
-    "gap_abs_modelo": 24131533073.16,
+    "gap_abs_modelo": 24131530786.15,
     "gap_rel_modelo": 47.4,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -1.68,
     "residuo_padronizado": -0.66,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.46
+    "escore_oportunidade": 95.43
    },
    {
     "cod": "4205407",
@@ -4334,14 +4329,14 @@
     "cred_adulto": 48635.95,
     "penetracao": 91.61,
     "meses_renda": 10.99,
-    "gap_abs_modelo": 20922638220.76,
+    "gap_abs_modelo": 20922636633.14,
     "gap_rel_modelo": 49.57,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -7.07,
     "residuo_padronizado": -0.703,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.21
+    "escore_oportunidade": 95.19
    },
    {
     "cod": "5103403",
@@ -4357,14 +4352,14 @@
     "cred_adulto": 60603.44,
     "penetracao": 157.347,
     "meses_renda": 18.88,
-    "gap_abs_modelo": 19974650564.79,
+    "gap_abs_modelo": 19974648613.51,
     "gap_rel_modelo": 40.25,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -5.88,
     "residuo_padronizado": -0.529,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 93.47
+    "escore_oportunidade": 93.45
    },
    {
     "cod": "3547809",
@@ -4380,14 +4375,14 @@
     "cred_adulto": 14579.17,
     "penetracao": 39.807,
     "meses_renda": 4.78,
-    "gap_abs_modelo": 18454873626.37,
+    "gap_abs_modelo": 18454872551.54,
     "gap_rel_modelo": 67.79,
     "gap_abs_pares": 7139479908.53,
     "gap_rel_pares": 44.88,
     "residuo_padronizado": -1.164,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 97.61
+    "escore_oportunidade": 97.58
    },
    {
     "cod": "3548500",
@@ -4403,14 +4398,14 @@
     "cred_adulto": 26831.39,
     "penetracao": 57.086,
     "meses_renda": 6.85,
-    "gap_abs_modelo": 14586167913.51,
+    "gap_abs_modelo": 14586167014.85,
     "gap_rel_modelo": 61.22,
     "gap_abs_pares": 2450247675.93,
     "gap_rel_pares": 20.96,
     "residuo_padronizado": -0.973,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 96.22
+    "escore_oportunidade": 96.19
    },
    {
     "cod": "2408102",
@@ -4426,14 +4421,14 @@
     "cred_adulto": 32339.88,
     "penetracao": 103.081,
     "meses_renda": 12.37,
-    "gap_abs_modelo": 11304092047.21,
+    "gap_abs_modelo": 11304091021.08,
     "gap_rel_modelo": 37.35,
     "gap_abs_pares": 0.0,
     "gap_rel_pares": -0.25,
     "residuo_padronizado": -0.48,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 93.06
+    "escore_oportunidade": 93.04
    },
    {
     "cod": "5201405",
@@ -4449,14 +4444,14 @@
     "cred_adulto": 11989.32,
     "penetracao": 53.214,
     "meses_renda": 6.39,
-    "gap_abs_modelo": 9803114766.32,
+    "gap_abs_modelo": 9803114342.47,
     "gap_rel_modelo": 67.45,
     "gap_abs_pares": null,
     "gap_rel_pares": null,
     "residuo_padronizado": -1.153,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 97.01
+    "escore_oportunidade": 96.98
    },
    {
     "cod": "3525904",
@@ -4472,14 +4467,14 @@
     "cred_adulto": 24965.61,
     "penetracao": 59.904,
     "meses_renda": 7.19,
-    "gap_abs_modelo": 9334098366.27,
+    "gap_abs_modelo": 9334097698.88,
     "gap_rel_modelo": 51.47,
     "gap_abs_pares": 1809478679.95,
     "gap_rel_pares": 17.06,
     "residuo_padronizado": -0.743,
     "confianca": "alta",
     "no_estban": true,
-    "escore_oportunidade": 95.1
+    "escore_oportunidade": 95.08
    }
   ],
   "menor_credito_adulto_sem_corte": [
@@ -4497,7 +4492,7 @@
     "cred_adulto": 13.72,
     "penetracao": 0.127,
     "meses_renda": 0.02,
-    "gap_abs_modelo": 48301268.23,
+    "gap_abs_modelo": 48301267.98,
     "gap_rel_modelo": 99.49,
     "gap_abs_pares": 90749733.53,
     "gap_rel_pares": 99.73,
@@ -4520,7 +4515,7 @@
     "cred_adulto": 21.12,
     "penetracao": 0.205,
     "meses_renda": 0.02,
-    "gap_abs_modelo": 26879992.32,
+    "gap_abs_modelo": 26879992.63,
     "gap_rel_modelo": 98.89,
     "gap_abs_pares": 16936213.58,
     "gap_rel_pares": 98.25,
@@ -4543,7 +4538,7 @@
     "cred_adulto": 22.83,
     "penetracao": 0.217,
     "meses_renda": 0.03,
-    "gap_abs_modelo": 34984124.15,
+    "gap_abs_modelo": 34984124.29,
     "gap_rel_modelo": 98.82,
     "gap_abs_pares": 60091955.1,
     "gap_rel_pares": 99.31,
@@ -4566,7 +4561,7 @@
     "cred_adulto": 25.2,
     "penetracao": 0.198,
     "meses_renda": 0.02,
-    "gap_abs_modelo": 28834350.26,
+    "gap_abs_modelo": 28834350.47,
     "gap_rel_modelo": 98.97,
     "gap_abs_pares": 17443121.11,
     "gap_rel_pares": 98.31,
@@ -4589,7 +4584,7 @@
     "cred_adulto": 28.46,
     "penetracao": 0.252,
     "meses_renda": 0.03,
-    "gap_abs_modelo": 37498730.02,
+    "gap_abs_modelo": 37498730.46,
     "gap_rel_modelo": 98.9,
     "gap_abs_pares": 22959197.58,
     "gap_rel_pares": 98.22,
@@ -4612,14 +4607,14 @@
     "cred_adulto": 36.82,
     "penetracao": 0.293,
     "meses_renda": 0.04,
-    "gap_abs_modelo": 115938872.87,
+    "gap_abs_modelo": 115938873.49,
     "gap_rel_modelo": 99.18,
     "gap_abs_pares": 181201392.89,
     "gap_rel_pares": 99.47,
     "residuo_padronizado": -4.928,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 65.52
+    "escore_oportunidade": 65.55
    },
    {
     "cod": "1304104",
@@ -4635,7 +4630,7 @@
     "cred_adulto": 38.32,
     "penetracao": 0.37,
     "meses_renda": 0.04,
-    "gap_abs_modelo": 23737870.95,
+    "gap_abs_modelo": 23737871.15,
     "gap_rel_modelo": 98.07,
     "gap_abs_pares": 14393223.26,
     "gap_rel_pares": 96.85,
@@ -4658,7 +4653,7 @@
     "cred_adulto": 40.25,
     "penetracao": 0.335,
     "meses_renda": 0.04,
-    "gap_abs_modelo": 67117883.78,
+    "gap_abs_modelo": 67117884.05,
     "gap_rel_modelo": 98.84,
     "gap_abs_pares": 108259732.99,
     "gap_rel_pares": 99.27,
@@ -4681,7 +4676,7 @@
     "cred_adulto": 50.86,
     "penetracao": 0.434,
     "meses_renda": 0.05,
-    "gap_abs_modelo": 44474695.29,
+    "gap_abs_modelo": 44474695.74,
     "gap_rel_modelo": 98.28,
     "gap_abs_pares": 24565802.18,
     "gap_rel_pares": 96.93,
@@ -4704,7 +4699,7 @@
     "cred_adulto": 55.23,
     "penetracao": 0.405,
     "meses_renda": 0.05,
-    "gap_abs_modelo": 32177027.45,
+    "gap_abs_modelo": 32177027.88,
     "gap_rel_modelo": 98.36,
     "gap_abs_pares": 18178159.91,
     "gap_rel_pares": 97.13,
@@ -4727,14 +4722,14 @@
     "cred_adulto": 56.27,
     "penetracao": 0.542,
     "meses_renda": 0.07,
-    "gap_abs_modelo": 47361107.0,
+    "gap_abs_modelo": 47361106.99,
     "gap_rel_modelo": 97.54,
     "gap_abs_pares": 100736338.14,
     "gap_rel_pares": 98.83,
     "residuo_padronizado": -3.805,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.01
+    "escore_oportunidade": 57.04
    },
    {
     "cod": "1304302",
@@ -4750,7 +4745,7 @@
     "cred_adulto": 57.92,
     "penetracao": 0.464,
     "meses_renda": 0.06,
-    "gap_abs_modelo": 39224279.32,
+    "gap_abs_modelo": 39224279.64,
     "gap_rel_modelo": 98.21,
     "gap_abs_pares": 17339097.03,
     "gap_rel_pares": 96.05,
@@ -4773,7 +4768,7 @@
     "cred_adulto": 58.29,
     "penetracao": 0.517,
     "meses_renda": 0.06,
-    "gap_abs_modelo": 46642488.81,
+    "gap_abs_modelo": 46642488.84,
     "gap_rel_modelo": 98.29,
     "gap_abs_pares": 61733628.69,
     "gap_rel_pares": 98.7,
@@ -4796,14 +4791,14 @@
     "cred_adulto": 60.18,
     "penetracao": 0.498,
     "meses_renda": 0.06,
-    "gap_abs_modelo": 55728538.61,
+    "gap_abs_modelo": 55728539.08,
     "gap_rel_modelo": 97.73,
     "gap_abs_pares": 136042029.34,
     "gap_rel_pares": 99.06,
     "residuo_padronizado": -3.889,
     "confianca": "media",
     "no_estban": true,
-    "escore_oportunidade": 57.93
+    "escore_oportunidade": 57.97
    },
    {
     "cod": "1302306",
@@ -4819,7 +4814,7 @@
     "cred_adulto": 61.6,
     "penetracao": 0.491,
     "meses_renda": 0.06,
-    "gap_abs_modelo": 29804681.38,
+    "gap_abs_modelo": 29804681.66,
     "gap_rel_modelo": 97.28,
     "gap_abs_pares": 19113148.49,
     "gap_rel_pares": 95.82,
@@ -4840,11 +4835,11 @@
    "ressalva": "Saldo do ESTBAN é o contabilizado nas dependências do município, não o crédito dos residentes."
   },
   {
-   "texto": "Os 544 municípios abaixo do esperado pelo modelo concentram cerca de R$ 822.8 bilhões de gap estimado, e neles vivem 66.5 milhões de adultos.",
+   "texto": "Os 545 municípios abaixo do esperado pelo modelo concentram cerca de R$ 822.8 bilhões de gap estimado, e neles vivem 66.5 milhões de adultos.",
    "selo": "estimado",
    "filtro": "≥ 20.000 adultos e renda anual ≥ R$ 200 mi",
    "periodo": "2026-06",
-   "universo": "1225 municípios elegíveis",
+   "universo": "1226 municípios elegíveis",
    "ressalva": "Gap é contrafactual do modelo, não demanda comprovada nem dinheiro que falta."
   },
   {
@@ -4880,170 +4875,170 @@
   "linhas": [
    {
     "uf": "DF",
-    "estban": 6791389543305.0,
-    "scr": 179129638267.11,
-    "razao": 37.913
+    "estban": 6791382071641.0,
+    "scr": 179763893735.82,
+    "razao": 37.779
    },
    {
     "uf": "SP",
-    "estban": 3396224650619.0,
-    "scr": 2295152975805.18,
-    "razao": 1.48
+    "estban": 3396217178955.0,
+    "scr": 2296076564824.66,
+    "razao": 1.479
    },
    {
     "uf": "RJ",
     "estban": 384831826840.0,
-    "scr": 575104238688.6,
+    "scr": 575468986956.06,
     "razao": 0.669
    },
    {
     "uf": "RS",
     "estban": 339136076789.0,
-    "scr": 533189084893.05,
+    "scr": 533452635943.17,
     "razao": 0.636
    },
    {
     "uf": "RR",
     "estban": 10066730097.0,
-    "scr": 16722521658.76,
-    "razao": 0.602
+    "scr": 16777604934.09,
+    "razao": 0.6
    },
    {
     "uf": "TO",
     "estban": 36093827211.0,
-    "scr": 60049577643.54,
-    "razao": 0.601
+    "scr": 60132166847.73,
+    "razao": 0.6
    },
    {
     "uf": "SE",
     "estban": 27043914404.0,
-    "scr": 47797731099.06,
-    "razao": 0.566
+    "scr": 47847156036.54,
+    "razao": 0.565
    },
    {
     "uf": "MG",
     "estban": 376132445781.0,
-    "scr": 675153153138.25,
+    "scr": 675546708308.34,
     "razao": 0.557
    },
    {
     "uf": "PI",
     "estban": 35280248066.0,
-    "scr": 68687424371.22,
-    "razao": 0.514
+    "scr": 68762931092.35,
+    "razao": 0.513
    },
    {
     "uf": "RO",
     "estban": 31909377927.0,
-    "scr": 64553598468.83,
+    "scr": 64647983439.14,
     "razao": 0.494
    },
    {
     "uf": "GO",
     "estban": 170054067587.0,
-    "scr": 345675845656.52,
-    "razao": 0.492
+    "scr": 346404894672.03,
+    "razao": 0.491
    },
    {
     "uf": "RN",
     "estban": 35366290710.0,
-    "scr": 72268254136.36,
+    "scr": 72337943812.6,
     "razao": 0.489
    },
    {
     "uf": "AP",
     "estban": 9476198643.0,
-    "scr": 19552566582.63,
-    "razao": 0.485
+    "scr": 19646659077.04,
+    "razao": 0.482
    },
    {
     "uf": "AC",
     "estban": 9536325989.0,
-    "scr": 19795934089.74,
-    "razao": 0.482
+    "scr": 19824091338.55,
+    "razao": 0.481
    },
    {
     "uf": "PA",
     "estban": 78662593238.0,
-    "scr": 167792665691.73,
+    "scr": 167890911150.2,
     "razao": 0.469
    },
    {
     "uf": "MS",
     "estban": 64391576946.0,
-    "scr": 141938036596.9,
-    "razao": 0.454
+    "scr": 142020504163.56,
+    "razao": 0.453
    },
    {
     "uf": "PB",
     "estban": 35371640800.0,
-    "scr": 78082421040.78,
-    "razao": 0.453
+    "scr": 78170815031.03,
+    "razao": 0.452
    },
    {
     "uf": "CE",
     "estban": 78280831234.0,
-    "scr": 174979190427.76,
+    "scr": 175150814339.62,
     "razao": 0.447
    },
    {
     "uf": "MA",
     "estban": 50670434223.0,
-    "scr": 114343086665.34,
+    "scr": 114428197181.08,
     "razao": 0.443
    },
    {
     "uf": "PE",
     "estban": 76191490677.0,
-    "scr": 173495283969.09,
+    "scr": 173644314499.68,
     "razao": 0.439
    },
    {
     "uf": "AL",
     "estban": 26109006756.0,
-    "scr": 60101526027.3,
+    "scr": 60167361481.08,
     "razao": 0.434
    },
    {
     "uf": "PR",
     "estban": 241272987544.0,
-    "scr": 564851943143.68,
+    "scr": 565008895058.72,
     "razao": 0.427
    },
    {
     "uf": "MT",
     "estban": 111101784627.0,
-    "scr": 262967486195.37,
-    "razao": 0.422
+    "scr": 262918348371.44,
+    "razao": 0.423
    },
    {
     "uf": "AM",
     "estban": 32879661196.0,
-    "scr": 80313214423.75,
-    "razao": 0.409
+    "scr": 80188017926.02,
+    "razao": 0.41
    },
    {
     "uf": "BA",
     "estban": 117312663014.0,
-    "scr": 298755544458.82,
-    "razao": 0.393
+    "scr": 298977979243.5,
+    "razao": 0.392
    },
    {
     "uf": "ES",
     "estban": 47031776533.0,
-    "scr": 131989228004.81,
+    "scr": 132054808601.87,
     "razao": 0.356
    },
    {
     "uf": "SC",
     "estban": 128095453106.0,
-    "scr": 414650689128.54,
+    "scr": 414935419186.23,
     "razao": 0.309
    }
   ],
-  "total_estban": 12739913423862.0,
-  "total_scr": 7637092860272.72,
-  "razao_br": 1.668,
+  "total_estban": 12739898480534.0,
+  "total_scr": 7642246607252.15,
+  "razao_br": 1.667,
   "nota": "Razão entre o saldo contabilizado no ESTBAN e a exposição de crédito do SCR na mesma UF. Não é erro de medição nem controle de qualidade: são conceitos diferentes. O ESTBAN registra onde o saldo foi contabilizado; o SCR, a exposição dos clientes daquela UF. Razão muito acima de 1 indica UF que contabiliza operações de tomadores de outros estados — é o mesmo fenômeno que, no nível municipal, gera o selo de confiabilidade.",
   "aviso_data": null
  },

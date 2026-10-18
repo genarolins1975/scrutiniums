@@ -9,7 +9,7 @@
   "sede": "São Paulo/SP",
   "segmento": "S1",
   "grupo_pares": "S1 — grandes (≥10% do PIB ou atividade internacional)",
-  "n_pares": 10,
+  "n_pares": 5,
   "conglomerado_prudencial": "C0080185",
   "capital": "não classificado",
   "modelo": null,
@@ -17,16 +17,21 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-24T15:24:40+00:00",
+  "atualizado_em": "2026-10-18T15:09:12+00:00",
   "aviso_pares": null,
   "cnpj": "90.400.888/0001-42 (companhia listada/holding)"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
-   "texto": "Capitalização abaixo da mediana do grupo S1, rentabilidade do período acima da mediana.",
+   "texto": "Capitalização acima da mediana do grupo S1, rentabilidade do período acima da mediana.",
    "base": "BCB IF.data (Informações de Capital) + medianas do grupo S1"
   },
   "pontos_fortes": [
+   {
+    "tipo": "ok",
+    "texto": "Basileia de 15.3% (acima da mediana do grupo S1: 15.3%).",
+    "base": "BCB IF.data (Informações de Capital)"
+   },
    {
     "tipo": "ok",
     "texto": "Carteira cresceu 4.3% em 4 trimestres.",
@@ -43,13 +48,7 @@
     "base": "BCB rdrweb"
    }
   ],
-  "pontos_atencao": [
-   {
-    "tipo": "warn",
-    "texto": "Basileia de 15.3% (abaixo da mediana do grupo S1: 15.5%).",
-    "base": "BCB IF.data (Informações de Capital)"
-   }
-  ],
+  "pontos_atencao": [],
   "mudancas_recentes": [],
   "limitacoes_informacionais": [
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -63,31 +62,11 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 10,
+  "quantidade": 5,
   "maiores_membros": [
-   {
-    "cod": "C0010069",
-    "nome": "ITAU"
-   },
-   {
-    "cod": "C0049906",
-    "nome": "BB"
-   },
-   {
-    "cod": "C0051626",
-    "nome": "CAIXA ECONÔMICA FEDERAL"
-   },
-   {
-    "cod": "C0010045",
-    "nome": "BRADESCO"
-   },
    {
     "cod": "C0030379",
     "nome": "SANTANDER"
-   },
-   {
-    "cod": "C0049944",
-    "nome": "BTG PACTUAL"
    },
    {
     "cod": "01425787",
@@ -202,8 +181,8 @@
  ],
  "destaques": [
   {
-   "tipo": "warn",
-   "texto": "Basileia de 15.3% (abaixo da mediana do grupo S1: 15.5%).",
+   "tipo": "ok",
+   "texto": "Basileia de 15.3% (acima da mediana do grupo S1: 15.3%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -228,9 +207,9 @@
    "valor": 15.34,
    "unit": "%",
    "d_tri": 0.18,
-   "vs_pares": "abaixo",
-   "mediana_grupo": 15.45,
-   "percentil": 20.0
+   "vs_pares": "na média",
+   "mediana_grupo": 15.34,
+   "percentil": 0.0
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -238,8 +217,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 13.15,
-   "percentil": 66.7
+   "mediana_grupo": 4.38,
+   "percentil": 75.0
   },
   {
    "indicador": "ROE do período",
@@ -247,8 +226,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 6.53,
-   "percentil": 66.7
+   "mediana_grupo": 3.63,
+   "percentil": 75.0
   }
  ],
  "carteira": {
@@ -331,536 +310,440 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "2015-T3",
+    "p": "2017-T3",
     "v": 100.0
    },
    {
-    "p": "2015-T4",
-    "v": 96.4
-   },
-   {
-    "p": "2016-T1",
-    "v": 95.5
-   },
-   {
-    "p": "2016-T2",
-    "v": 93.3
-   },
-   {
-    "p": "2016-T3",
-    "v": 93.9
-   },
-   {
-    "p": "2016-T4",
-    "v": 99.7
-   },
-   {
-    "p": "2017-T1",
-    "v": 101.1
-   },
-   {
-    "p": "2017-T2",
-    "v": 92.8
-   },
-   {
-    "p": "2017-T3",
-    "v": 95.9
-   },
-   {
     "p": "2017-T4",
-    "v": 95.4
+    "v": 99.4
    },
    {
     "p": "2018-T1",
-    "v": 100.4
+    "v": 104.8
    },
    {
     "p": "2018-T2",
-    "v": 103.0
+    "v": 107.4
    },
    {
     "p": "2018-T3",
-    "v": 107.0
+    "v": 111.6
    },
    {
     "p": "2018-T4",
-    "v": 111.3
+    "v": 116.1
    },
    {
     "p": "2019-T1",
-    "v": 111.5
+    "v": 116.3
    },
    {
     "p": "2019-T2",
-    "v": 116.0
+    "v": 121.0
    },
    {
     "p": "2019-T3",
-    "v": 117.4
+    "v": 122.5
    },
    {
     "p": "2019-T4",
-    "v": 120.2
+    "v": 125.3
    },
    {
     "p": "2020-T1",
-    "v": 143.1
+    "v": 149.2
    },
    {
     "p": "2020-T2",
-    "v": 141.8
+    "v": 147.9
    },
    {
     "p": "2020-T3",
-    "v": 140.2
+    "v": 146.3
    },
    {
     "p": "2020-T4",
-    "v": 141.9
+    "v": 148.0
    },
    {
     "p": "2021-T1",
-    "v": 141.0
+    "v": 147.1
    },
    {
     "p": "2021-T2",
-    "v": 135.9
+    "v": 141.7
    },
    {
     "p": "2021-T3",
-    "v": 139.8
+    "v": 145.8
    },
    {
     "p": "2021-T4",
-    "v": 140.6
+    "v": 146.6
    },
    {
     "p": "2022-T1",
-    "v": 139.5
+    "v": 145.4
    },
    {
     "p": "2022-T2",
-    "v": 142.9
+    "v": 149.1
    },
    {
     "p": "2022-T3",
-    "v": 146.4
+    "v": 152.7
    },
    {
     "p": "2022-T4",
-    "v": 152.2
+    "v": 158.7
    },
    {
     "p": "2023-T1",
-    "v": 152.3
+    "v": 158.9
    },
    {
     "p": "2023-T2",
-    "v": 159.3
+    "v": 166.1
    },
    {
     "p": "2023-T3",
-    "v": 168.0
+    "v": 175.2
    },
    {
     "p": "2023-T4",
-    "v": 166.0
+    "v": 173.2
    },
    {
     "p": "2024-T1",
-    "v": 168.4
+    "v": 175.6
    },
    {
     "p": "2024-T2",
-    "v": 179.8
+    "v": 187.5
    },
    {
     "p": "2024-T3",
-    "v": 184.2
+    "v": 192.1
    },
    {
     "p": "2024-T4",
-    "v": 193.5
+    "v": 201.8
    },
    {
     "p": "2025-T1",
-    "v": 177.2
+    "v": 184.8
    },
    {
     "p": "2025-T2",
-    "v": 176.2
+    "v": 183.8
    },
    {
     "p": "2025-T3",
-    "v": 180.4
+    "v": 188.1
    },
    {
     "p": "2025-T4",
-    "v": 181.1
+    "v": 188.9
    },
    {
     "p": "2026-T1",
-    "v": 184.7
+    "v": 192.7
    },
    {
     "p": "2026-T2",
-    "v": 186.3
+    "v": 194.3
    }
   ],
   "Carteira": [
    {
-    "p": "2015-T3",
+    "p": "2017-T3",
     "v": 100.0
    },
    {
-    "p": "2015-T4",
-    "v": 99.6
-   },
-   {
-    "p": "2016-T1",
-    "v": 94.7
-   },
-   {
-    "p": "2016-T2",
-    "v": 93.3
-   },
-   {
-    "p": "2016-T3",
-    "v": 94.4
-   },
-   {
-    "p": "2016-T4",
-    "v": 98.1
-   },
-   {
-    "p": "2017-T1",
-    "v": 98.2
-   },
-   {
-    "p": "2017-T2",
-    "v": 98.0
-   },
-   {
-    "p": "2017-T3",
-    "v": 100.4
-   },
-   {
     "p": "2017-T4",
-    "v": 104.0
+    "v": 103.6
    },
    {
     "p": "2018-T1",
-    "v": 107.0
+    "v": 106.6
    },
    {
     "p": "2018-T2",
-    "v": 110.9
+    "v": 110.4
    },
    {
     "p": "2018-T3",
-    "v": 113.9
+    "v": 113.4
    },
    {
     "p": "2018-T4",
-    "v": 116.4
+    "v": 116.0
    },
    {
     "p": "2019-T1",
-    "v": 118.5
+    "v": 118.1
    },
    {
     "p": "2019-T2",
-    "v": 121.1
+    "v": 120.7
    },
    {
     "p": "2019-T3",
-    "v": 126.2
+    "v": 125.7
    },
    {
     "p": "2019-T4",
-    "v": 134.4
+    "v": 133.8
    },
    {
     "p": "2020-T1",
-    "v": 144.6
+    "v": 144.0
    },
    {
     "p": "2020-T2",
-    "v": 146.4
+    "v": 145.8
    },
    {
     "p": "2020-T3",
-    "v": 152.1
+    "v": 151.5
    },
    {
     "p": "2020-T4",
-    "v": 157.3
+    "v": 156.7
    },
    {
     "p": "2021-T1",
-    "v": 161.9
+    "v": 161.3
    },
    {
     "p": "2021-T2",
-    "v": 167.6
+    "v": 167.0
    },
    {
     "p": "2021-T3",
-    "v": 171.7
+    "v": 171.0
    },
    {
     "p": "2021-T4",
-    "v": 176.6
+    "v": 175.9
    },
    {
     "p": "2022-T1",
-    "v": 173.8
+    "v": 173.2
    },
    {
     "p": "2022-T2",
-    "v": 178.8
+    "v": 178.1
    },
    {
     "p": "2022-T3",
-    "v": 184.8
+    "v": 184.1
    },
    {
     "p": "2022-T4",
-    "v": 186.7
+    "v": 186.0
    },
    {
     "p": "2023-T1",
-    "v": 190.7
+    "v": 190.0
    },
    {
     "p": "2023-T2",
-    "v": 189.6
+    "v": 188.8
    },
    {
     "p": "2023-T3",
-    "v": 192.2
+    "v": 191.4
    },
    {
     "p": "2023-T4",
-    "v": 195.6
+    "v": 194.8
    },
    {
     "p": "2024-T1",
-    "v": 198.9
+    "v": 198.2
    },
    {
     "p": "2024-T2",
-    "v": 204.1
+    "v": 203.3
    },
    {
     "p": "2024-T3",
-    "v": 202.9
+    "v": 202.2
    },
    {
     "p": "2024-T4",
-    "v": 206.8
+    "v": 206.0
    },
    {
     "p": "2025-T1",
-    "v": 200.4
+    "v": 199.6
    },
    {
     "p": "2025-T2",
-    "v": 198.6
+    "v": 197.8
    },
    {
     "p": "2025-T3",
-    "v": 202.0
+    "v": 201.3
    },
    {
     "p": "2025-T4",
-    "v": 207.6
+    "v": 206.8
    },
    {
     "p": "2026-T1",
-    "v": 205.5
+    "v": 204.7
    },
    {
     "p": "2026-T2",
-    "v": 207.0
+    "v": 206.2
    }
   ],
   "PL": [
    {
-    "p": "2015-T3",
+    "p": "2017-T3",
     "v": 100.0
    },
    {
-    "p": "2015-T4",
+    "p": "2017-T4",
     "v": 95.3
    },
    {
-    "p": "2016-T1",
-    "v": 100.7
-   },
-   {
-    "p": "2016-T2",
-    "v": 103.7
-   },
-   {
-    "p": "2016-T3",
-    "v": 106.5
-   },
-   {
-    "p": "2016-T4",
-    "v": 100.5
-   },
-   {
-    "p": "2017-T1",
-    "v": 105.5
-   },
-   {
-    "p": "2017-T2",
-    "v": 106.0
-   },
-   {
-    "p": "2017-T3",
-    "v": 108.5
-   },
-   {
-    "p": "2017-T4",
-    "v": 103.4
-   },
-   {
     "p": "2018-T1",
-    "v": 108.1
+    "v": 99.7
    },
    {
     "p": "2018-T2",
-    "v": 110.1
+    "v": 101.5
    },
    {
     "p": "2018-T3",
-    "v": 114.0
+    "v": 105.0
    },
    {
     "p": "2018-T4",
-    "v": 113.4
+    "v": 104.5
    },
    {
     "p": "2019-T1",
-    "v": 118.8
+    "v": 109.5
    },
    {
     "p": "2019-T2",
-    "v": 122.8
+    "v": 113.2
    },
    {
     "p": "2019-T3",
-    "v": 128.1
+    "v": 118.1
    },
    {
     "p": "2019-T4",
-    "v": 121.3
+    "v": 111.8
    },
    {
     "p": "2020-T1",
-    "v": 125.9
+    "v": 116.1
    },
    {
     "p": "2020-T2",
-    "v": 129.7
+    "v": 119.5
    },
    {
     "p": "2020-T3",
-    "v": 132.6
+    "v": 122.2
    },
    {
     "p": "2020-T4",
-    "v": 136.2
+    "v": 125.5
    },
    {
     "p": "2021-T1",
-    "v": 134.5
+    "v": 123.9
    },
    {
     "p": "2021-T2",
-    "v": 136.9
+    "v": 126.2
    },
    {
     "p": "2021-T3",
-    "v": 136.6
+    "v": 125.9
    },
    {
     "p": "2021-T4",
-    "v": 136.0
+    "v": 125.4
    },
    {
     "p": "2022-T1",
-    "v": 136.9
+    "v": 126.2
    },
    {
     "p": "2022-T2",
-    "v": 138.9
+    "v": 128.0
    },
    {
     "p": "2022-T3",
-    "v": 142.4
+    "v": 131.3
    },
    {
     "p": "2022-T4",
-    "v": 141.6
+    "v": 130.5
    },
    {
     "p": "2023-T1",
-    "v": 143.0
+    "v": 131.8
    },
    {
     "p": "2023-T2",
-    "v": 143.1
+    "v": 131.9
    },
    {
     "p": "2023-T3",
-    "v": 144.8
+    "v": 133.5
    },
    {
     "p": "2023-T4",
-    "v": 146.2
+    "v": 134.7
    },
    {
     "p": "2024-T1",
-    "v": 147.7
+    "v": 136.1
    },
    {
     "p": "2024-T2",
-    "v": 149.2
+    "v": 137.5
    },
    {
     "p": "2024-T3",
-    "v": 150.7
+    "v": 138.9
    },
    {
     "p": "2024-T4",
-    "v": 153.2
+    "v": 141.2
    },
    {
     "p": "2025-T1",
-    "v": 153.1
+    "v": 141.1
    },
    {
     "p": "2025-T2",
-    "v": 156.1
+    "v": 143.9
    },
    {
     "p": "2025-T3",
-    "v": 159.2
+    "v": 146.8
    },
    {
     "p": "2025-T4",
-    "v": 161.6
+    "v": 148.9
    },
    {
     "p": "2026-T1",
-    "v": 165.1
+    "v": 152.2
    },
    {
     "p": "2026-T2",
-    "v": 167.8
+    "v": 154.6
    }
   ]
  },
@@ -868,92 +751,77 @@
  "comparacao_grupo": {
   "roe": {
    "valores": [
-    6.53,
-    11.11,
     7.52,
-    3.57,
-    11.85,
     3.63,
     13.83,
-    5.56,
     2.09,
     -81.74
    ],
    "meu": 7.52,
-   "mediana": 6.53
+   "mediana": 3.63
   },
   "basileia": {
    "valores": [
-    15.56,
-    15.35,
-    15.34,
-    13.91,
-    16.04,
-    15.45
+    15.34
    ],
    "meu": 15.34,
-   "mediana": 15.45
+   "mediana": 15.34
   },
   "alav": {
    "valores": [
-    11.0,
-    13.15,
     13.16,
-    14.15,
-    11.1,
     4.33,
     19.4,
-    20.01,
     1.0,
     4.38
    ],
    "meu": 13.16,
-   "mediana": 13.15
+   "mediana": 4.38
   }
  },
  "comparacao_pares": {
   "dimensoes": {
    "capital_basileia": {
     "valor": 15.34,
-    "percentil_pares": 20.0,
-    "mediana_pares": 15.4,
-    "q1_pares": 15.34,
-    "q3_pares": 15.53
+    "percentil_pares": 33.0,
+    "mediana_pares": 16.14,
+    "q1_pares": 14.66,
+    "q3_pares": 21.62
    },
    "rentabilidade": {
     "valor": 7.52,
-    "percentil_pares": 57.1,
-    "mediana_pares": 7.02,
-    "q1_pares": 5.08,
-    "q3_pares": 11.29
+    "percentil_pares": 66.7,
+    "mediana_pares": 6.2,
+    "q1_pares": 3.28,
+    "q3_pares": 9.14
    },
    "alavancagem": {
     "valor": 13.16,
-    "percentil_pares": 57.1,
-    "mediana_pares": 13.16,
-    "q1_pares": 11.07,
-    "q3_pares": 15.46
+    "percentil_pares": 62.6,
+    "mediana_pares": 10.92,
+    "q1_pares": 6.89,
+    "q3_pares": 15.73
    },
    "concentracao_credito": {
     "valor": 41.1,
-    "percentil_pares": 42.9,
-    "mediana_pares": 41.47,
-    "q1_pares": 14.85,
-    "q3_pares": 44.11
+    "percentil_pares": 43.4,
+    "mediana_pares": 45.43,
+    "q1_pares": 14.94,
+    "q3_pares": 58.82
    },
    "dependencia_captacoes": {
     "valor": 77.39,
-    "percentil_pares": 42.9,
-    "mediana_pares": 77.63,
-    "q1_pares": 55.65,
-    "q3_pares": 78.74
+    "percentil_pares": 60.6,
+    "mediana_pares": 73.68,
+    "q1_pares": 51.47,
+    "q3_pares": 82.12
    },
    "concentracao_setorial": {
     "valor": 1576,
-    "percentil_pares": 50.0,
-    "mediana_pares": 1576.0,
-    "q1_pares": 1437.0,
-    "q3_pares": 1597.0
+    "percentil_pares": 9.3,
+    "mediana_pares": 2283.0,
+    "q1_pares": 1790.5,
+    "q3_pares": 3180.0
    }
   },
   "dimensoes_disponiveis": "6/6",
@@ -961,17 +829,17 @@
    "tipo": "CENÁRIO",
    "cenario": "severamente adverso",
    "delta_inad_pp": [
-    0.18,
-    1.29
+    0.21,
+    1.31
    ],
    "impacto_basileia_pp": [
-    -0.49,
-    -0.07
+    -0.5,
+    -0.08
    ],
    "basileia_atual_pct": 15.34,
    "basileia_pos_choque_pct": [
-    14.85,
-    15.27
+    14.84,
+    15.25
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },
