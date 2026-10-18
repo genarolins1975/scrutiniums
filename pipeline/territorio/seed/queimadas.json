@@ -1,0 +1,5006 @@
+{
+ "id": "queimadas_focos_referencia",
+ "capturadoEm": "2026-10-18T09:55:50+00:00",
+ "dataReferencia": "2026-10-18",
+ "fonte": {
+  "nome": "INPE, Programa Queimadas, focos de calor (servidor de dados abertos COIDS)",
+  "url": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/",
+  "portal": "https://terrabrasilis.dpi.inpe.br/queimadas/portal/pages/secao_downloads/dados-abertos/",
+  "licenca": "Dados públicos e gratuitos (FAQ 3 do Programa Queimadas); citação obrigatória conforme FAQ 36 (INPE, Banco de Dados de Queimadas). Licença formal de redistribuição não declarada no servidor."
+ },
+ "sateliteReferencia": {
+  "id": "AQUA_M-T",
+  "sensor": "MODIS, passagem do início da tarde",
+  "desde": "2002-07-04",
+  "antes": "NOAA-12 (AVHRR, fim da tarde), 1998-06-01 a 2002-07-03; série anual de referência aberta começa em 2003"
+ },
+ "unidade": "focos (pixels com fogo ativo detectados pelo satélite de referência; contagem, não área nem número de incêndios)",
+ "anual": [
+  {
+   "ano": 2003,
+   "focos": 341237,
+   "parcial": false,
+   "primeiroDia": "2003-01-01",
+   "ultimoDia": "2003-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2003.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2004,
+   "focos": 380445,
+   "parcial": false,
+   "primeiroDia": "2004-01-01",
+   "ultimoDia": "2004-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2004.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2005,
+   "focos": 362563,
+   "parcial": false,
+   "primeiroDia": "2005-01-01",
+   "ultimoDia": "2005-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2005.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2006,
+   "focos": 249179,
+   "parcial": false,
+   "primeiroDia": "2006-01-01",
+   "ultimoDia": "2006-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2006.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2007,
+   "focos": 393915,
+   "parcial": false,
+   "primeiroDia": "2007-01-01",
+   "ultimoDia": "2007-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2007.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2008,
+   "focos": 211933,
+   "parcial": false,
+   "primeiroDia": "2008-01-01",
+   "ultimoDia": "2008-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2008.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2009,
+   "focos": 155102,
+   "parcial": false,
+   "primeiroDia": "2009-01-01",
+   "ultimoDia": "2009-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2009.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2010,
+   "focos": 319383,
+   "parcial": false,
+   "primeiroDia": "2010-01-01",
+   "ultimoDia": "2010-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2010.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2011,
+   "focos": 158099,
+   "parcial": false,
+   "primeiroDia": "2011-01-01",
+   "ultimoDia": "2011-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2011.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2012,
+   "focos": 217234,
+   "parcial": false,
+   "primeiroDia": "2012-01-01",
+   "ultimoDia": "2012-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2012.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2013,
+   "focos": 128145,
+   "parcial": false,
+   "primeiroDia": "2013-01-01",
+   "ultimoDia": "2013-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2013.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2014,
+   "focos": 175892,
+   "parcial": false,
+   "primeiroDia": "2014-01-01",
+   "ultimoDia": "2014-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2014.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2015,
+   "focos": 216778,
+   "parcial": false,
+   "primeiroDia": "2015-01-01",
+   "ultimoDia": "2015-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2015.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2016,
+   "focos": 184217,
+   "parcial": false,
+   "primeiroDia": "2016-01-01",
+   "ultimoDia": "2016-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2016.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2017,
+   "focos": 207508,
+   "parcial": false,
+   "primeiroDia": "2017-01-01",
+   "ultimoDia": "2017-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2017.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2018,
+   "focos": 132870,
+   "parcial": false,
+   "primeiroDia": "2018-01-01",
+   "ultimoDia": "2018-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2018.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2019,
+   "focos": 197632,
+   "parcial": false,
+   "primeiroDia": "2019-01-01",
+   "ultimoDia": "2019-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2019.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2020,
+   "focos": 222797,
+   "parcial": false,
+   "primeiroDia": "2020-01-01",
+   "ultimoDia": "2020-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2020.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2021,
+   "focos": 184081,
+   "parcial": false,
+   "primeiroDia": "2021-01-01",
+   "ultimoDia": "2021-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2021.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2022,
+   "focos": 200763,
+   "parcial": false,
+   "primeiroDia": "2022-01-01",
+   "ultimoDia": "2022-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2022.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2023,
+   "focos": 189901,
+   "parcial": false,
+   "primeiroDia": "2023-01-01",
+   "ultimoDia": "2023-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2023.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2024,
+   "focos": 278299,
+   "parcial": false,
+   "primeiroDia": "2024-01-01",
+   "ultimoDia": "2024-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2024.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2025,
+   "focos": 136393,
+   "parcial": false,
+   "primeiroDia": "2025-01-01",
+   "ultimoDia": "2025-12-31",
+   "origem": "anual_sat_ref",
+   "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2025.zip",
+   "estranhos": null
+  },
+  {
+   "ano": 2026,
+   "focos": 89163,
+   "parcial": true,
+   "primeiroDia": "2026-01-01",
+   "ultimoDia": "2026-10-17",
+   "origem": "mensal_todos_sats_filtrado",
+   "nota": "Ano em curso: soma dos meses disponíveis, inclusive o mês corrente incompleto. Não comparar com anos fechados."
+  }
+ ],
+ "mensal": {
+  "2025": [
+   {
+    "mes": "2025-01",
+    "focos": 3137,
+    "parcial": false,
+    "origem": "anual_sat_ref"
+   },
+   {
+    "mes": "2025-02",
+    "focos": 1819,
+    "parcial": false,
+    "origem": "anual_sat_ref"
+   },
+   {
+    "mes": "2025-03",
+    "focos": 2357,
+    "parcial": false,
+    "origem": "anual_sat_ref"
+   },
+   {
+    "mes": "2025-04",
+    "focos": 1641,
+    "parcial": false,
+    "origem": "anual_sat_ref"
+   },
+   {
+    "mes": "2025-05",
+    "focos": 4263,
+    "parcial": false,
+    "origem": "anual_sat_ref"
+   },
+   {
+    "mes": "2025-06",
+    "focos": 6060,
+    "parcial": false,
+    "origem": "anual_sat_ref"
+   },
+   {
+    "mes": "2025-07",
+    "focos": 9803,
+    "parcial": false,
+    "origem": "anual_sat_ref"
+   },
+   {
+    "mes": "2025-08",
+    "focos": 18451,
+    "parcial": false,
+    "origem": "anual_sat_ref"
+   },
+   {
+    "mes": "2025-09",
+    "focos": 28214,
+    "parcial": false,
+    "origem": "anual_sat_ref"
+   },
+   {
+    "mes": "2025-10",
+    "focos": 28678,
+    "parcial": false,
+    "origem": "anual_sat_ref"
+   },
+   {
+    "mes": "2025-11",
+    "focos": 21301,
+    "parcial": false,
+    "origem": "anual_sat_ref"
+   },
+   {
+    "mes": "2025-12",
+    "focos": 10669,
+    "parcial": false,
+    "origem": "anual_sat_ref"
+   }
+  ],
+  "2026": [
+   {
+    "mes": "2026-01",
+    "focos": 4560,
+    "parcial": false,
+    "ultimoDiaComFoco": "2026-01-31",
+    "origem": "mensal_todos_sats_filtrado",
+    "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202601.csv"
+   },
+   {
+    "mes": "2026-02",
+    "focos": 1860,
+    "parcial": false,
+    "ultimoDiaComFoco": "2026-02-28",
+    "origem": "mensal_todos_sats_filtrado",
+    "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202602.csv"
+   },
+   {
+    "mes": "2026-03",
+    "focos": 1967,
+    "parcial": false,
+    "ultimoDiaComFoco": "2026-03-31",
+    "origem": "mensal_todos_sats_filtrado",
+    "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202603.csv"
+   },
+   {
+    "mes": "2026-04",
+    "focos": 2035,
+    "parcial": false,
+    "ultimoDiaComFoco": "2026-04-30",
+    "origem": "mensal_todos_sats_filtrado",
+    "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202604.csv"
+   },
+   {
+    "mes": "2026-05",
+    "focos": 3831,
+    "parcial": false,
+    "ultimoDiaComFoco": "2026-05-31",
+    "origem": "mensal_todos_sats_filtrado",
+    "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202605.csv"
+   },
+   {
+    "mes": "2026-06",
+    "focos": 5209,
+    "parcial": false,
+    "ultimoDiaComFoco": "2026-06-30",
+    "origem": "mensal_todos_sats_filtrado",
+    "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202606.csv"
+   },
+   {
+    "mes": "2026-07",
+    "focos": 6284,
+    "parcial": false,
+    "ultimoDiaComFoco": "2026-07-31",
+    "origem": "mensal_todos_sats_filtrado",
+    "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202607.csv"
+   },
+   {
+    "mes": "2026-08",
+    "focos": 20222,
+    "parcial": false,
+    "ultimoDiaComFoco": "2026-08-31",
+    "origem": "mensal_todos_sats_filtrado",
+    "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202608.csv"
+   },
+   {
+    "mes": "2026-09",
+    "focos": 24382,
+    "parcial": false,
+    "ultimoDiaComFoco": "2026-09-30",
+    "origem": "mensal_todos_sats_filtrado",
+    "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202609.csv"
+   },
+   {
+    "mes": "2026-10",
+    "focos": 18813,
+    "parcial": true,
+    "ultimoDiaComFoco": "2026-10-17",
+    "origem": "mensal_todos_sats_filtrado",
+    "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202610.csv"
+   }
+  ]
+ },
+ "recortes": [
+  {
+   "rotulo": "ultimoAnoCompleto",
+   "periodo": {
+    "inicio": "2025-01-01",
+    "fim": "2025-12-31"
+   },
+   "focos": 136393,
+   "origem": "anual_sat_ref",
+   "porUF": [
+    {
+     "id": "MA",
+     "focos": 24300
+    },
+    {
+     "id": "PA",
+     "focos": 18367
+    },
+    {
+     "id": "BA",
+     "focos": 12089
+    },
+    {
+     "id": "PI",
+     "focos": 11806
+    },
+    {
+     "id": "TO",
+     "focos": 11548
+    },
+    {
+     "id": "MT",
+     "focos": 11061
+    },
+    {
+     "id": "MG",
+     "focos": 8716
+    },
+    {
+     "id": "CE",
+     "focos": 7852
+    },
+    {
+     "id": "GO",
+     "focos": 4878
+    },
+    {
+     "id": "AM",
+     "focos": 4545
+    },
+    {
+     "id": "SP",
+     "focos": 2376
+    },
+    {
+     "id": "PE",
+     "focos": 2335
+    },
+    {
+     "id": "AC",
+     "focos": 2184
+    },
+    {
+     "id": "RO",
+     "focos": 1879
+    },
+    {
+     "id": "MS",
+     "focos": 1844
+    },
+    {
+     "id": "PR",
+     "focos": 1812
+    },
+    {
+     "id": "RS",
+     "focos": 1620
+    },
+    {
+     "id": "RR",
+     "focos": 1539
+    },
+    {
+     "id": "SC",
+     "focos": 1478
+    },
+    {
+     "id": "PB",
+     "focos": 1061
+    },
+    {
+     "id": "AP",
+     "focos": 948
+    },
+    {
+     "id": "RN",
+     "focos": 639
+    },
+    {
+     "id": "RJ",
+     "focos": 512
+    },
+    {
+     "id": "ES",
+     "focos": 385
+    },
+    {
+     "id": "DF",
+     "focos": 234
+    },
+    {
+     "id": "AL",
+     "focos": 228
+    },
+    {
+     "id": "SE",
+     "focos": 157
+    }
+   ],
+   "porBioma": [
+    {
+     "id": "Cerrado",
+     "focos": 56058
+    },
+    {
+     "id": "Amazônia",
+     "focos": 43131
+    },
+    {
+     "id": "Caatinga",
+     "focos": 23424
+    },
+    {
+     "id": "Mata Atlântica",
+     "focos": 12352
+    },
+    {
+     "id": "Pantanal",
+     "focos": 724
+    },
+    {
+     "id": "Pampa",
+     "focos": 704
+    }
+   ]
+  },
+  {
+   "rotulo": "acumuladoAnoCorrente",
+   "periodo": {
+    "inicio": "2026-01-01",
+    "fim": "2026-09-30"
+   },
+   "focos": 70350,
+   "origem": "mensal_todos_sats_filtrado",
+   "porUF": [
+    {
+     "id": "PA",
+     "focos": 11718
+    },
+    {
+     "id": "MT",
+     "focos": 9399
+    },
+    {
+     "id": "TO",
+     "focos": 7633
+    },
+    {
+     "id": "MA",
+     "focos": 7126
+    },
+    {
+     "id": "BA",
+     "focos": 7054
+    },
+    {
+     "id": "AM",
+     "focos": 6257
+    },
+    {
+     "id": "PI",
+     "focos": 3876
+    },
+    {
+     "id": "MG",
+     "focos": 3454
+    },
+    {
+     "id": "RR",
+     "focos": 1975
+    },
+    {
+     "id": "GO",
+     "focos": 1872
+    },
+    {
+     "id": "AC",
+     "focos": 1461
+    },
+    {
+     "id": "CE",
+     "focos": 1369
+    },
+    {
+     "id": "RO",
+     "focos": 1040
+    },
+    {
+     "id": "MS",
+     "focos": 920
+    },
+    {
+     "id": "SC",
+     "focos": 695
+    },
+    {
+     "id": "PE",
+     "focos": 651
+    },
+    {
+     "id": "RS",
+     "focos": 629
+    },
+    {
+     "id": "PR",
+     "focos": 608
+    },
+    {
+     "id": "SP",
+     "focos": 575
+    },
+    {
+     "id": "ES",
+     "focos": 402
+    },
+    {
+     "id": "AP",
+     "focos": 360
+    },
+    {
+     "id": "RJ",
+     "focos": 256
+    },
+    {
+     "id": "RN",
+     "focos": 255
+    },
+    {
+     "id": "AL",
+     "focos": 254
+    },
+    {
+     "id": "PB",
+     "focos": 252
+    },
+    {
+     "id": "SE",
+     "focos": 149
+    },
+    {
+     "id": "DF",
+     "focos": 110
+    }
+   ],
+   "porBioma": [
+    {
+     "id": "Amazônia",
+     "focos": 29580
+    },
+    {
+     "id": "Cerrado",
+     "focos": 27407
+    },
+    {
+     "id": "Caatinga",
+     "focos": 6760
+    },
+    {
+     "id": "Mata Atlântica",
+     "focos": 5856
+    },
+    {
+     "id": "Pantanal",
+     "focos": 486
+    },
+    {
+     "id": "Pampa",
+     "focos": 261
+    }
+   ]
+  },
+  {
+   "rotulo": "mesmoPeriodoAnoAnterior",
+   "periodo": {
+    "inicio": "2025-01-01",
+    "fim": "2025-09-30"
+   },
+   "focos": 75745,
+   "origem": "anual_sat_ref",
+   "porUF": [
+    {
+     "id": "MA",
+     "focos": 10582
+    },
+    {
+     "id": "MT",
+     "focos": 9171
+    },
+    {
+     "id": "TO",
+     "focos": 8190
+    },
+    {
+     "id": "BA",
+     "focos": 7445
+    },
+    {
+     "id": "PA",
+     "focos": 6321
+    },
+    {
+     "id": "MG",
+     "focos": 6102
+    },
+    {
+     "id": "PI",
+     "focos": 5453
+    },
+    {
+     "id": "GO",
+     "focos": 3547
+    },
+    {
+     "id": "AM",
+     "focos": 3282
+    },
+    {
+     "id": "SP",
+     "focos": 2045
+    },
+    {
+     "id": "AC",
+     "focos": 1592
+    },
+    {
+     "id": "PR",
+     "focos": 1528
+    },
+    {
+     "id": "RS",
+     "focos": 1454
+    },
+    {
+     "id": "MS",
+     "focos": 1423
+    },
+    {
+     "id": "RO",
+     "focos": 1387
+    },
+    {
+     "id": "CE",
+     "focos": 1349
+    },
+    {
+     "id": "SC",
+     "focos": 1250
+    },
+    {
+     "id": "RR",
+     "focos": 1060
+    },
+    {
+     "id": "PE",
+     "focos": 731
+    },
+    {
+     "id": "RJ",
+     "focos": 395
+    },
+    {
+     "id": "PB",
+     "focos": 334
+    },
+    {
+     "id": "ES",
+     "focos": 315
+    },
+    {
+     "id": "RN",
+     "focos": 230
+    },
+    {
+     "id": "DF",
+     "focos": 200
+    },
+    {
+     "id": "SE",
+     "focos": 136
+    },
+    {
+     "id": "AL",
+     "focos": 126
+    },
+    {
+     "id": "AP",
+     "focos": 97
+    }
+   ],
+   "porBioma": [
+    {
+     "id": "Cerrado",
+     "focos": 37315
+    },
+    {
+     "id": "Amazônia",
+     "focos": 20657
+    },
+    {
+     "id": "Mata Atlântica",
+     "focos": 9352
+    },
+    {
+     "id": "Caatinga",
+     "focos": 7427
+    },
+    {
+     "id": "Pampa",
+     "focos": 632
+    },
+    {
+     "id": "Pantanal",
+     "focos": 362
+    }
+   ]
+  }
+ ],
+ "satelitesNoArquivoMensal": {
+  "2026-01": {
+   "GOES-19": 8970,
+   "METOP-B": 1059,
+   "METOP-C": 640,
+   "TERRA_M-M": 1258,
+   "NOAA-20": 22626,
+   "NOAA-21": 22029,
+   "NPP-375D": 5126,
+   "AQUA_M-M": 198,
+   "TERRA_M-T": 1277,
+   "NPP-375": 18310,
+   "AQUA_M-T": 4560
+  },
+  "2026-02": {
+   "GOES-19": 4746,
+   "TERRA_M-M": 649,
+   "NPP-375D": 2725,
+   "NOAA-20": 11281,
+   "NOAA-21": 11288,
+   "AQUA_M-M": 108,
+   "TERRA_M-T": 565,
+   "NPP-375": 9202,
+   "AQUA_M-T": 1860,
+   "METOP-B": 312,
+   "METOP-C": 159
+  },
+  "2026-03": {
+   "GOES-19": 6867,
+   "TERRA_M-M": 711,
+   "NOAA-21": 10565,
+   "NPP-375D": 3237,
+   "NOAA-20": 10645,
+   "AQUA_M-M": 149,
+   "TERRA_M-T": 494,
+   "NPP-375": 7922,
+   "AQUA_M-T": 1967,
+   "METOP-B": 233,
+   "METOP-C": 164
+  },
+  "2026-04": {
+   "TERRA_M-M": 548,
+   "METOP-B": 252,
+   "METOP-C": 167,
+   "NOAA-20": 8751,
+   "NOAA-21": 8547,
+   "NPP-375D": 1995,
+   "TERRA_M-T": 530,
+   "NPP-375": 5674,
+   "AQUA_M-T": 2035,
+   "GOES-19": 3123,
+   "AQUA_M-M": 114
+  },
+  "2026-05": {
+   "GOES-19": 15254,
+   "METOP-B": 993,
+   "TERRA_M-M": 1233,
+   "METOP-C": 547,
+   "NOAA-21": 19433,
+   "NPP-375D": 5749,
+   "NOAA-20": 19778,
+   "MSG-03": 439,
+   "AQUA_M-M": 201,
+   "TERRA_M-T": 1026,
+   "NPP-375": 13974,
+   "AQUA_M-T": 3831
+  },
+  "2026-06": {
+   "GOES-19": 35622,
+   "METOP-C": 950,
+   "TERRA_M-M": 2060,
+   "NOAA-21": 27278,
+   "NOAA-20": 28219,
+   "AQUA_M-M": 441,
+   "AQUA_M-T": 5209,
+   "METOP-B": 1733,
+   "TERRA_M-T": 1478,
+   "NPP-375": 18839,
+   "MSG-03": 1788,
+   "NPP-375D": 9155
+  },
+  "2026-07": {
+   "GOES-19": 39203,
+   "TERRA_M-M": 2035,
+   "METOP-B": 1661,
+   "METOP-C": 1694,
+   "NOAA-20": 37719,
+   "NOAA-21": 36244,
+   "NPP-375D": 8511,
+   "AQUA_M-M": 357,
+   "NPP-375": 24353,
+   "AQUA_M-T": 6284,
+   "TERRA_M-T": 1674,
+   "MSG-03": 199
+  },
+  "2026-08": {
+   "GOES-19": 201755,
+   "MSG-03": 2019,
+   "METOP-B": 5229,
+   "METOP-C": 4507,
+   "NPP-375D": 38218,
+   "NOAA-20": 137400,
+   "NOAA-21": 128747,
+   "AQUA_M-M": 1567,
+   "TERRA_M-T": 4339,
+   "NPP-375": 100685,
+   "AQUA_M-T": 20222,
+   "TERRA_M-M": 6555
+  },
+  "2026-09": {
+   "GOES-19": 195794,
+   "METOP-C": 9179,
+   "MSG-03": 3159,
+   "TERRA_M-M": 8650,
+   "NOAA-21": 170374,
+   "NPP-375D": 48855,
+   "NOAA-20": 170398,
+   "AQUA_M-M": 2202,
+   "TERRA_M-T": 7216,
+   "NPP-375": 128329,
+   "AQUA_M-T": 24382,
+   "METOP-B": 8676
+  },
+  "2026-10": {
+   "GOES-19": 125173,
+   "TERRA_M-M": 7318,
+   "MSG-03": 2716,
+   "METOP-B": 10654,
+   "NOAA-21": 138502,
+   "NPP-375D": 46487,
+   "NOAA-20": 147475,
+   "AQUA_M-M": 2297,
+   "TERRA_M-T": 8392,
+   "NPP-375": 94942,
+   "AQUA_M-T": 18813,
+   "METOP-C": 9797
+  }
+ },
+ "originais": {
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2003.zip": {
+   "sha256": "6c0a71c0f35e5a02739b73b5544f69da73b7f95310558383ecf4ed0a60f9abc9",
+   "bytes": 6704985,
+   "lastModified": "Wed, 09 Aug 2023 15:38:12 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2004.zip": {
+   "sha256": "69b9f74ac8d86f4f18564f949440738f825550de36747bdd8432a32f5dca96e7",
+   "bytes": 7436286,
+   "lastModified": "Wed, 09 Aug 2023 15:38:12 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2005.zip": {
+   "sha256": "ebacf95a4489d7f5ef2ff3fd722f28b7b9547171e168b88f42cfd52693cf2b4e",
+   "bytes": 6979318,
+   "lastModified": "Wed, 09 Aug 2023 15:38:14 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2006.zip": {
+   "sha256": "9925ac3675b160653df44556b301389f44ffc9486b589527624595526db177fe",
+   "bytes": 4969215,
+   "lastModified": "Wed, 09 Aug 2023 15:38:14 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2007.zip": {
+   "sha256": "f61aa2ee5c3451a4e739416d8c863c598e1440c0d1d4a9d088fc2bde99d35901",
+   "bytes": 7677362,
+   "lastModified": "Wed, 09 Aug 2023 15:38:15 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2008.zip": {
+   "sha256": "1b68a545148d759f05fefa635a1b7db09e389549e29faca540f8e676b6d67615",
+   "bytes": 4214792,
+   "lastModified": "Wed, 09 Aug 2023 15:38:15 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2009.zip": {
+   "sha256": "9bc43627ab1c25910fbd76060f1753dcb9b01f915b91cf9c5a2d11324a5f9dd1",
+   "bytes": 3146137,
+   "lastModified": "Wed, 09 Aug 2023 15:38:15 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2010.zip": {
+   "sha256": "4537c5cdeee56e50ca6e7fa614eba77ea1eed5079394a8428f7d3ea75746c785",
+   "bytes": 6113841,
+   "lastModified": "Wed, 09 Aug 2023 15:28:24 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2011.zip": {
+   "sha256": "7b14ce9a8c98411bf8152de32892af25066a718a5c1c7bfe7928a885aca2f3e4",
+   "bytes": 3193268,
+   "lastModified": "Wed, 09 Aug 2023 15:28:23 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2012.zip": {
+   "sha256": "cf8378a7dec65f869315cc9dded0e35e0dce54957a82ed11b12d69c1635359e7",
+   "bytes": 4242791,
+   "lastModified": "Wed, 09 Aug 2023 15:28:24 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2013.zip": {
+   "sha256": "33cf264244d05ccc1b2bcbf1e62079a69582ad639b7c238d23011e3c622776a9",
+   "bytes": 2575630,
+   "lastModified": "Wed, 09 Aug 2023 15:28:24 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2014.zip": {
+   "sha256": "db34a8c4bc4c1c77769a186f7d384bc0f866ce3699fa739c7cd34e2cd2048792",
+   "bytes": 3712702,
+   "lastModified": "Wed, 09 Aug 2023 15:28:25 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2015.zip": {
+   "sha256": "72d1aac5db423d5226e0ba2efadb457c25df99fc3fdb5a3e7c271ebb69560d5e",
+   "bytes": 4469819,
+   "lastModified": "Wed, 09 Aug 2023 15:28:25 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2016.zip": {
+   "sha256": "aa26dc356923f573eb80bb5bef1bfa9ff27423cd382e2cc240ab0cf2ee9be73b",
+   "bytes": 3782229,
+   "lastModified": "Wed, 09 Aug 2023 15:28:25 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2017.zip": {
+   "sha256": "f1300f35c866ca7c2d699a3f806eba533d80272ab479a436005aa98451684d3c",
+   "bytes": 4088867,
+   "lastModified": "Wed, 09 Aug 2023 15:28:25 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2018.zip": {
+   "sha256": "f6d6168071d365073a3ba7e277f9464739f3f502cc411c9f64399c4ea740390d",
+   "bytes": 5278250,
+   "lastModified": "Wed, 09 Aug 2023 15:28:26 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2019.zip": {
+   "sha256": "58a6fe69d282d087822aade262826bf2139f2554781d0e37b672567369e4f733",
+   "bytes": 7766490,
+   "lastModified": "Wed, 09 Aug 2023 15:28:27 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2020.zip": {
+   "sha256": "fba793aa304863445dad6d434dd57bd0e904d97f50d9652a729c30ddf8fb7686",
+   "bytes": 8786351,
+   "lastModified": "Wed, 09 Aug 2023 15:28:28 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2021.zip": {
+   "sha256": "9edeb229c078b98df37d17b460bed74a0d13bd0688a530386ca815ba2f8a68e6",
+   "bytes": 7623094,
+   "lastModified": "Wed, 09 Aug 2023 15:28:28 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2022.zip": {
+   "sha256": "75538cbfb99bbbe543cb786d7b8f7650537a1333327f8bf17cda7178c01878ea",
+   "bytes": 8256945,
+   "lastModified": "Wed, 09 Aug 2023 15:28:29 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2023.zip": {
+   "sha256": "4cc635d1adf1a7f59d18640ff13a8779cb3b0f2aecbc867dacc86959d892b880",
+   "bytes": 7458410,
+   "lastModified": "Fri, 12 Jul 2024 17:53:24 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2024.zip": {
+   "sha256": "a2cec2f67483a4a95956a471d5cbdb7b3cbd93b21c9b87c845a649ef89abf4e1",
+   "bytes": 10727110,
+   "lastModified": "Fri, 06 Jun 2025 13:13:55 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/anual/Brasil_sat_ref/focos_br_ref_2025.zip": {
+   "sha256": "63b144c47279991dca0f2007e23e15b4a932355b6c93d033d81a245a8eab56ca",
+   "bytes": 5906397,
+   "lastModified": "Wed, 11 Feb 2026 18:32:07 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202601.csv": {
+   "sha256": "d497f7c85bcd0c3a3efa3b4ed2309734fa12b5128b8850127d2ef544a889bf71",
+   "bytes": 13586384,
+   "lastModified": "Fri, 17 Jul 2026 14:51:14 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202602.csv": {
+   "sha256": "62dab291af922c71f2bb1378148ef4b8949863ac312832deacd693a29c2f94e1",
+   "bytes": 6747588,
+   "lastModified": "Fri, 17 Jul 2026 14:52:59 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202603.csv": {
+   "sha256": "c5253b7f00be76ca5d9d4e56bfd3544f5607dc1bfd6d9532ad79aa85bbcd83a7",
+   "bytes": 6832706,
+   "lastModified": "Fri, 17 Jul 2026 14:54:23 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202604.csv": {
+   "sha256": "f5f148015c66e6af18b8878f535b8b3d35556a56a77df955b896c478594f999c",
+   "bytes": 5032753,
+   "lastModified": "Fri, 17 Jul 2026 14:55:34 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202605.csv": {
+   "sha256": "352d625a68a75c2857e48ddc279a19f5ee29668ecfe874e52d32ceb7e8993754",
+   "bytes": 13082300,
+   "lastModified": "Tue, 21 Jul 2026 19:26:46 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202606.csv": {
+   "sha256": "cc446e981774db3e3ac61dc7efcace43af22c754da035b572244b8f4451c57da",
+   "bytes": 21025265,
+   "lastModified": "Tue, 21 Jul 2026 19:28:03 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202607.csv": {
+   "sha256": "8ef86ddfe417b9fb719f34a0ddb7efdca10425dddffdc9aa84c337b9cfe784d9",
+   "bytes": 25345226,
+   "lastModified": "Sat, 01 Aug 2026 23:56:11 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202608.csv": {
+   "sha256": "4574013b15b785f42078fe72dfa73b0b48a773666e88025ebe5ef440cc3694da",
+   "bytes": 103708076,
+   "lastModified": "Tue, 01 Sep 2026 23:56:24 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202609.csv": {
+   "sha256": "69ecef072d0e0db63698f7e3adc101cd68f593294eefc3dcd97eeaf554bd0248",
+   "bytes": 123024987,
+   "lastModified": "Thu, 01 Oct 2026 23:56:29 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202610.csv": {
+   "sha256": "da4a545a16c24de86ababddd56868ae96da1260690ae808d845ed2398e691213",
+   "bytes": 94737590,
+   "lastModified": "Sun, 18 Oct 2026 08:56:20 GMT"
+  }
+ },
+ "ressalvas": [
+  "Foco não é área queimada nem número de incêndios: um foco indica fogo ativo em um pixel (cerca de 1 km no MODIS); um incêndio grande gera vários focos e queimadas pequenas, rasteiras ou sob nuvem não são detectadas (FAQ 9 a 11 do INPE).",
+  "Só o satélite de referência permite comparar anos e regiões; somar todos os satélites conta o mesmo fogo várias vezes e muda com a constelação disponível (FAQ 7, 16 e 17).",
+  "O número indica uma fração das ocorrências reais; serve para tendência, não como medida absoluta (FAQ 10).",
+  "O AQUA está muito além da vida útil prevista e teve dias sem imageamento de parte da América do Sul (por exemplo 10/07, 22/07 e 12/08/2026, aviso do INPE); nesses dias não há dado de referência para as áreas afetadas, o que reduz a contagem sem significar ausência de fogo.",
+  "Ano e mês em curso são parciais; arquivos mensais podem ser regenerados pelo INPE (os de 2024 e do primeiro semestre de 2026 foram refeitos depois), então números recentes são preliminares.",
+  "UF e bioma vêm da própria fonte (malha IBGE usada pelo INPE); focos sem bioma informado aparecem à parte, sem descarte."
+ ],
+ "areaQueimada": {
+  "id": "aq1km_colecao2_biomas",
+  "url": "https://dataserver-coids.inpe.br/queimadas/queimadas/area_queimada/colecao2/csv/aq1km_biomas_v2.csv",
+  "original": {
+   "sha256": "4ea3d9e9d1afc866ba3eed802f06f50c15dcda5c9683cd157ac98d647778f371",
+   "bytes": 13729,
+   "lastModified": "Fri, 02 Oct 2026 16:28:50 GMT"
+  },
+  "unidade": "km² de área queimada mapeada (pixel de 1 km, MODIS AQUA e TERRA)",
+  "maturidade": "Provisório (INPE): sujeito a revisão; publicações devem indicar a qualidade provisória",
+  "mensal": [
+   {
+    "mes": "2002-09",
+    "km2": {
+     "Amazônia": 60039.0,
+     "Caatinga": 12640.0,
+     "Cerrado": 73926.0,
+     "Mata Atlântica": 9016.0,
+     "Pampa": 307.0,
+     "Pantanal": 6724.0
+    },
+    "totalKm2": 162652.0
+   },
+   {
+    "mes": "2002-10",
+    "km2": {
+     "Amazônia": 40759.0,
+     "Caatinga": 15474.0,
+     "Cerrado": 43892.0,
+     "Mata Atlântica": 8649.0,
+     "Pampa": 27.0,
+     "Pantanal": 7444.0
+    },
+    "totalKm2": 116245.0
+   },
+   {
+    "mes": "2002-11",
+    "km2": {
+     "Amazônia": 32800.0,
+     "Caatinga": 16708.0,
+     "Cerrado": 8794.0,
+     "Mata Atlântica": 3285.0,
+     "Pampa": 33.0,
+     "Pantanal": 5822.0
+    },
+    "totalKm2": 67442.0
+   },
+   {
+    "mes": "2002-12",
+    "km2": {
+     "Amazônia": 12736.0,
+     "Caatinga": 7430.0,
+     "Cerrado": 3248.0,
+     "Mata Atlântica": 2673.0,
+     "Pampa": 24.0,
+     "Pantanal": 1117.0
+    },
+    "totalKm2": 27228.0
+   },
+   {
+    "mes": "2003-01",
+    "km2": {
+     "Amazônia": 5767.0,
+     "Caatinga": 2071.0,
+     "Cerrado": 902.0,
+     "Mata Atlântica": 2185.0,
+     "Pampa": 53.0,
+     "Pantanal": 338.0
+    },
+    "totalKm2": 11316.0
+   },
+   {
+    "mes": "2003-02",
+    "km2": {
+     "Amazônia": 3135.0,
+     "Caatinga": 299.0,
+     "Cerrado": 985.0,
+     "Mata Atlântica": 1028.0,
+     "Pampa": 15.0,
+     "Pantanal": 77.0
+    },
+    "totalKm2": 5539.0
+   },
+   {
+    "mes": "2003-03",
+    "km2": {
+     "Amazônia": 4856.0,
+     "Caatinga": 272.0,
+     "Cerrado": 831.0,
+     "Mata Atlântica": 1248.0,
+     "Pampa": 31.0,
+     "Pantanal": 74.0
+    },
+    "totalKm2": 7312.0
+   },
+   {
+    "mes": "2003-04",
+    "km2": {
+     "Amazônia": 2131.0,
+     "Caatinga": 421.0,
+     "Cerrado": 2211.0,
+     "Mata Atlântica": 1683.0,
+     "Pampa": 80.0,
+     "Pantanal": 83.0
+    },
+    "totalKm2": 6609.0
+   },
+   {
+    "mes": "2003-05",
+    "km2": {
+     "Amazônia": 3085.0,
+     "Caatinga": 214.0,
+     "Cerrado": 6003.0,
+     "Mata Atlântica": 3253.0,
+     "Pampa": 201.0,
+     "Pantanal": 238.0
+    },
+    "totalKm2": 12994.0
+   },
+   {
+    "mes": "2003-06",
+    "km2": {
+     "Amazônia": 8295.0,
+     "Caatinga": 324.0,
+     "Cerrado": 16524.0,
+     "Mata Atlântica": 4933.0,
+     "Pampa": 100.0,
+     "Pantanal": 324.0
+    },
+    "totalKm2": 30500.0
+   },
+   {
+    "mes": "2003-07",
+    "km2": {
+     "Amazônia": 18142.0,
+     "Caatinga": 847.0,
+     "Cerrado": 26363.0,
+     "Mata Atlântica": 6923.0,
+     "Pampa": 782.0,
+     "Pantanal": 671.0
+    },
+    "totalKm2": 53728.0
+   },
+   {
+    "mes": "2003-08",
+    "km2": {
+     "Amazônia": 42487.0,
+     "Caatinga": 3168.0,
+     "Cerrado": 33188.0,
+     "Mata Atlântica": 14097.0,
+     "Pampa": 963.0,
+     "Pantanal": 1482.0
+    },
+    "totalKm2": 95385.0
+   },
+   {
+    "mes": "2003-09",
+    "km2": {
+     "Amazônia": 57603.0,
+     "Caatinga": 15344.0,
+     "Cerrado": 69060.0,
+     "Mata Atlântica": 17788.0,
+     "Pampa": 516.0,
+     "Pantanal": 3198.0
+    },
+    "totalKm2": 163509.0
+   },
+   {
+    "mes": "2003-10",
+    "km2": {
+     "Amazônia": 31659.0,
+     "Caatinga": 19578.0,
+     "Cerrado": 30120.0,
+     "Mata Atlântica": 12176.0,
+     "Pampa": 161.0,
+     "Pantanal": 1576.0
+    },
+    "totalKm2": 95270.0
+   },
+   {
+    "mes": "2003-11",
+    "km2": {
+     "Amazônia": 24773.0,
+     "Caatinga": 16567.0,
+     "Cerrado": 6879.0,
+     "Mata Atlântica": 3135.0,
+     "Pampa": 70.0,
+     "Pantanal": 863.0
+    },
+    "totalKm2": 52287.0
+   },
+   {
+    "mes": "2003-12",
+    "km2": {
+     "Amazônia": 17707.0,
+     "Caatinga": 9353.0,
+     "Cerrado": 3214.0,
+     "Mata Atlântica": 2282.0,
+     "Pampa": 43.0,
+     "Pantanal": 122.0
+    },
+    "totalKm2": 32721.0
+   },
+   {
+    "mes": "2004-01",
+    "km2": {
+     "Amazônia": 3946.0,
+     "Caatinga": 830.0,
+     "Cerrado": 721.0,
+     "Mata Atlântica": 803.0,
+     "Pampa": 65.0,
+     "Pantanal": 394.0
+    },
+    "totalKm2": 6759.0
+   },
+   {
+    "mes": "2004-02",
+    "km2": {
+     "Amazônia": 1895.0,
+     "Caatinga": 129.0,
+     "Cerrado": 586.0,
+     "Mata Atlântica": 740.0,
+     "Pampa": 95.0,
+     "Pantanal": 265.0
+    },
+    "totalKm2": 3710.0
+   },
+   {
+    "mes": "2004-03",
+    "km2": {
+     "Amazônia": 2218.0,
+     "Caatinga": 138.0,
+     "Cerrado": 1487.0,
+     "Mata Atlântica": 1094.0,
+     "Pampa": 238.0,
+     "Pantanal": 253.0
+    },
+    "totalKm2": 5428.0
+   },
+   {
+    "mes": "2004-04",
+    "km2": {
+     "Amazônia": 1679.0,
+     "Caatinga": 144.0,
+     "Cerrado": 1908.0,
+     "Mata Atlântica": 1004.0,
+     "Pampa": 275.0,
+     "Pantanal": 157.0
+    },
+    "totalKm2": 5167.0
+   },
+   {
+    "mes": "2004-05",
+    "km2": {
+     "Amazônia": 4479.0,
+     "Caatinga": 214.0,
+     "Cerrado": 7375.0,
+     "Mata Atlântica": 429.0,
+     "Pampa": 85.0,
+     "Pantanal": 54.0
+    },
+    "totalKm2": 12636.0
+   },
+   {
+    "mes": "2004-06",
+    "km2": {
+     "Amazônia": 11214.0,
+     "Caatinga": 254.0,
+     "Cerrado": 16587.0,
+     "Mata Atlântica": 2629.0,
+     "Pampa": 344.0,
+     "Pantanal": 500.0
+    },
+    "totalKm2": 31528.0
+   },
+   {
+    "mes": "2004-07",
+    "km2": {
+     "Amazônia": 21595.0,
+     "Caatinga": 475.0,
+     "Cerrado": 23294.0,
+     "Mata Atlântica": 2653.0,
+     "Pampa": 391.0,
+     "Pantanal": 797.0
+    },
+    "totalKm2": 49205.0
+   },
+   {
+    "mes": "2004-08",
+    "km2": {
+     "Amazônia": 48323.0,
+     "Caatinga": 2091.0,
+     "Cerrado": 37928.0,
+     "Mata Atlântica": 8423.0,
+     "Pampa": 486.0,
+     "Pantanal": 2726.0
+    },
+    "totalKm2": 99977.0
+   },
+   {
+    "mes": "2004-09",
+    "km2": {
+     "Amazônia": 78252.0,
+     "Caatinga": 7024.0,
+     "Cerrado": 86968.0,
+     "Mata Atlântica": 10405.0,
+     "Pampa": 215.0,
+     "Pantanal": 10070.0
+    },
+    "totalKm2": 192934.0
+   },
+   {
+    "mes": "2004-10",
+    "km2": {
+     "Amazônia": 34940.0,
+     "Caatinga": 11230.0,
+     "Cerrado": 31658.0,
+     "Mata Atlântica": 6891.0,
+     "Pampa": 300.0,
+     "Pantanal": 3946.0
+    },
+    "totalKm2": 88965.0
+   },
+   {
+    "mes": "2004-11",
+    "km2": {
+     "Amazônia": 36353.0,
+     "Caatinga": 14080.0,
+     "Cerrado": 12573.0,
+     "Mata Atlântica": 3965.0,
+     "Pampa": 76.0,
+     "Pantanal": 711.0
+    },
+    "totalKm2": 67758.0
+   },
+   {
+    "mes": "2004-12",
+    "km2": {
+     "Amazônia": 24194.0,
+     "Caatinga": 12202.0,
+     "Cerrado": 4265.0,
+     "Mata Atlântica": 2418.0,
+     "Pampa": 97.0,
+     "Pantanal": 424.0
+    },
+    "totalKm2": 43600.0
+   },
+   {
+    "mes": "2005-01",
+    "km2": {
+     "Amazônia": 6040.0,
+     "Caatinga": 2223.0,
+     "Cerrado": 934.0,
+     "Mata Atlântica": 1832.0,
+     "Pampa": 162.0,
+     "Pantanal": 26.0
+    },
+    "totalKm2": 11217.0
+   },
+   {
+    "mes": "2005-02",
+    "km2": {
+     "Amazônia": 1722.0,
+     "Caatinga": 356.0,
+     "Cerrado": 1436.0,
+     "Mata Atlântica": 1183.0,
+     "Pampa": 71.0,
+     "Pantanal": 172.0
+    },
+    "totalKm2": 4940.0
+   },
+   {
+    "mes": "2005-03",
+    "km2": {
+     "Amazônia": 1523.0,
+     "Caatinga": 234.0,
+     "Cerrado": 1053.0,
+     "Mata Atlântica": 1424.0,
+     "Pampa": 355.0,
+     "Pantanal": 191.0
+    },
+    "totalKm2": 4780.0
+   },
+   {
+    "mes": "2005-04",
+    "km2": {
+     "Amazônia": 2009.0,
+     "Caatinga": 95.0,
+     "Cerrado": 2639.0,
+     "Mata Atlântica": 1127.0,
+     "Pampa": 78.0,
+     "Pantanal": 340.0
+    },
+    "totalKm2": 6288.0
+   },
+   {
+    "mes": "2005-05",
+    "km2": {
+     "Amazônia": 3083.0,
+     "Caatinga": 103.0,
+     "Cerrado": 5246.0,
+     "Mata Atlântica": 2294.0,
+     "Pampa": 117.0,
+     "Pantanal": 764.0
+    },
+    "totalKm2": 11607.0
+   },
+   {
+    "mes": "2005-06",
+    "km2": {
+     "Amazônia": 5267.0,
+     "Caatinga": 225.0,
+     "Cerrado": 10115.0,
+     "Mata Atlântica": 2182.0,
+     "Pampa": 196.0,
+     "Pantanal": 2135.0
+    },
+    "totalKm2": 20120.0
+   },
+   {
+    "mes": "2005-07",
+    "km2": {
+     "Amazônia": 21111.0,
+     "Caatinga": 753.0,
+     "Cerrado": 19307.0,
+     "Mata Atlântica": 3065.0,
+     "Pampa": 249.0,
+     "Pantanal": 2995.0
+    },
+    "totalKm2": 47480.0
+   },
+   {
+    "mes": "2005-08",
+    "km2": {
+     "Amazônia": 73154.0,
+     "Caatinga": 1597.0,
+     "Cerrado": 42442.0,
+     "Mata Atlântica": 8005.0,
+     "Pampa": 320.0,
+     "Pantanal": 12775.0
+    },
+    "totalKm2": 138293.0
+   },
+   {
+    "mes": "2005-09",
+    "km2": {
+     "Amazônia": 83712.0,
+     "Caatinga": 6992.0,
+     "Cerrado": 59019.0,
+     "Mata Atlântica": 3912.0,
+     "Pampa": 157.0,
+     "Pantanal": 6179.0
+    },
+    "totalKm2": 159971.0
+   },
+   {
+    "mes": "2005-10",
+    "km2": {
+     "Amazônia": 39240.0,
+     "Caatinga": 19651.0,
+     "Cerrado": 53471.0,
+     "Mata Atlântica": 9363.0,
+     "Pampa": 55.0,
+     "Pantanal": 1962.0
+    },
+    "totalKm2": 123742.0
+   },
+   {
+    "mes": "2005-11",
+    "km2": {
+     "Amazônia": 26964.0,
+     "Caatinga": 15518.0,
+     "Cerrado": 9230.0,
+     "Mata Atlântica": 3301.0,
+     "Pampa": 110.0,
+     "Pantanal": 367.0
+    },
+    "totalKm2": 55490.0
+   },
+   {
+    "mes": "2005-12",
+    "km2": {
+     "Amazônia": 9083.0,
+     "Caatinga": 8065.0,
+     "Cerrado": 2746.0,
+     "Mata Atlântica": 1344.0,
+     "Pampa": 82.0,
+     "Pantanal": 133.0
+    },
+    "totalKm2": 21453.0
+   },
+   {
+    "mes": "2006-01",
+    "km2": {
+     "Amazônia": 3098.0,
+     "Caatinga": 1366.0,
+     "Cerrado": 1874.0,
+     "Mata Atlântica": 1146.0,
+     "Pampa": 56.0,
+     "Pantanal": 42.0
+    },
+    "totalKm2": 7582.0
+   },
+   {
+    "mes": "2006-02",
+    "km2": {
+     "Amazônia": 1309.0,
+     "Caatinga": 580.0,
+     "Cerrado": 701.0,
+     "Mata Atlântica": 1480.0,
+     "Pampa": 60.0,
+     "Pantanal": 84.0
+    },
+    "totalKm2": 4214.0
+   },
+   {
+    "mes": "2006-03",
+    "km2": {
+     "Amazônia": 1684.0,
+     "Caatinga": 310.0,
+     "Cerrado": 969.0,
+     "Mata Atlântica": 1154.0,
+     "Pampa": 160.0,
+     "Pantanal": 55.0
+    },
+    "totalKm2": 4332.0
+   },
+   {
+    "mes": "2006-04",
+    "km2": {
+     "Amazônia": 1545.0,
+     "Caatinga": 120.0,
+     "Cerrado": 1322.0,
+     "Mata Atlântica": 1211.0,
+     "Pampa": 168.0,
+     "Pantanal": 35.0
+    },
+    "totalKm2": 4401.0
+   },
+   {
+    "mes": "2006-05",
+    "km2": {
+     "Amazônia": 1618.0,
+     "Caatinga": 74.0,
+     "Cerrado": 3852.0,
+     "Mata Atlântica": 3241.0,
+     "Pampa": 344.0,
+     "Pantanal": 174.0
+    },
+    "totalKm2": 9303.0
+   },
+   {
+    "mes": "2006-06",
+    "km2": {
+     "Amazônia": 3489.0,
+     "Caatinga": 109.0,
+     "Cerrado": 9460.0,
+     "Mata Atlântica": 4310.0,
+     "Pampa": 169.0,
+     "Pantanal": 341.0
+    },
+    "totalKm2": 17878.0
+   },
+   {
+    "mes": "2006-07",
+    "km2": {
+     "Amazônia": 9044.0,
+     "Caatinga": 314.0,
+     "Cerrado": 18659.0,
+     "Mata Atlântica": 7713.0,
+     "Pampa": 388.0,
+     "Pantanal": 925.0
+    },
+    "totalKm2": 37043.0
+   },
+   {
+    "mes": "2006-08",
+    "km2": {
+     "Amazônia": 39430.0,
+     "Caatinga": 1323.0,
+     "Cerrado": 35381.0,
+     "Mata Atlântica": 11349.0,
+     "Pampa": 476.0,
+     "Pantanal": 2383.0
+    },
+    "totalKm2": 90342.0
+   },
+   {
+    "mes": "2006-09",
+    "km2": {
+     "Amazônia": 65611.0,
+     "Caatinga": 5803.0,
+     "Cerrado": 41644.0,
+     "Mata Atlântica": 8037.0,
+     "Pampa": 257.0,
+     "Pantanal": 2542.0
+    },
+    "totalKm2": 123894.0
+   },
+   {
+    "mes": "2006-10",
+    "km2": {
+     "Amazônia": 24931.0,
+     "Caatinga": 8650.0,
+     "Cerrado": 13775.0,
+     "Mata Atlântica": 2897.0,
+     "Pampa": 94.0,
+     "Pantanal": 604.0
+    },
+    "totalKm2": 50951.0
+   },
+   {
+    "mes": "2006-11",
+    "km2": {
+     "Amazônia": 22089.0,
+     "Caatinga": 9999.0,
+     "Cerrado": 7290.0,
+     "Mata Atlântica": 1877.0,
+     "Pampa": 78.0,
+     "Pantanal": 751.0
+    },
+    "totalKm2": 42084.0
+   },
+   {
+    "mes": "2006-12",
+    "km2": {
+     "Amazônia": 11319.0,
+     "Caatinga": 8291.0,
+     "Cerrado": 2568.0,
+     "Mata Atlântica": 1197.0,
+     "Pampa": 35.0,
+     "Pantanal": 47.0
+    },
+    "totalKm2": 23457.0
+   },
+   {
+    "mes": "2007-01",
+    "km2": {
+     "Amazônia": 3634.0,
+     "Caatinga": 1871.0,
+     "Cerrado": 1185.0,
+     "Mata Atlântica": 813.0,
+     "Pampa": 24.0,
+     "Pantanal": 14.0
+    },
+    "totalKm2": 7541.0
+   },
+   {
+    "mes": "2007-02",
+    "km2": {
+     "Amazônia": 3757.0,
+     "Caatinga": 189.0,
+     "Cerrado": 674.0,
+     "Mata Atlântica": 839.0,
+     "Pampa": 35.0,
+     "Pantanal": 25.0
+    },
+    "totalKm2": 5519.0
+   },
+   {
+    "mes": "2007-03",
+    "km2": {
+     "Amazônia": 3190.0,
+     "Caatinga": 94.0,
+     "Cerrado": 2198.0,
+     "Mata Atlântica": 1130.0,
+     "Pampa": 21.0,
+     "Pantanal": 60.0
+    },
+    "totalKm2": 6693.0
+   },
+   {
+    "mes": "2007-04",
+    "km2": {
+     "Amazônia": 1461.0,
+     "Caatinga": 170.0,
+     "Cerrado": 2654.0,
+     "Mata Atlântica": 1216.0,
+     "Pampa": 78.0,
+     "Pantanal": 152.0
+    },
+    "totalKm2": 5731.0
+   },
+   {
+    "mes": "2007-05",
+    "km2": {
+     "Amazônia": 1957.0,
+     "Caatinga": 328.0,
+     "Cerrado": 8078.0,
+     "Mata Atlântica": 1446.0,
+     "Pampa": 89.0,
+     "Pantanal": 209.0
+    },
+    "totalKm2": 12107.0
+   },
+   {
+    "mes": "2007-06",
+    "km2": {
+     "Amazônia": 4846.0,
+     "Caatinga": 973.0,
+     "Cerrado": 19066.0,
+     "Mata Atlântica": 3873.0,
+     "Pampa": 224.0,
+     "Pantanal": 511.0
+    },
+    "totalKm2": 29493.0
+   },
+   {
+    "mes": "2007-07",
+    "km2": {
+     "Amazônia": 8945.0,
+     "Caatinga": 2016.0,
+     "Cerrado": 33944.0,
+     "Mata Atlântica": 3979.0,
+     "Pampa": 356.0,
+     "Pantanal": 845.0
+    },
+    "totalKm2": 50085.0
+   },
+   {
+    "mes": "2007-08",
+    "km2": {
+     "Amazônia": 52964.0,
+     "Caatinga": 3619.0,
+     "Cerrado": 82579.0,
+     "Mata Atlântica": 8683.0,
+     "Pampa": 309.0,
+     "Pantanal": 3706.0
+    },
+    "totalKm2": 151860.0
+   },
+   {
+    "mes": "2007-09",
+    "km2": {
+     "Amazônia": 91485.0,
+     "Caatinga": 9769.0,
+     "Cerrado": 129374.0,
+     "Mata Atlântica": 12056.0,
+     "Pampa": 278.0,
+     "Pantanal": 10932.0
+    },
+    "totalKm2": 253894.0
+   },
+   {
+    "mes": "2007-10",
+    "km2": {
+     "Amazônia": 41821.0,
+     "Caatinga": 15789.0,
+     "Cerrado": 55807.0,
+     "Mata Atlântica": 11085.0,
+     "Pampa": 64.0,
+     "Pantanal": 2783.0
+    },
+    "totalKm2": 127349.0
+   },
+   {
+    "mes": "2007-11",
+    "km2": {
+     "Amazônia": 24934.0,
+     "Caatinga": 15967.0,
+     "Cerrado": 12998.0,
+     "Mata Atlântica": 6045.0,
+     "Pampa": 84.0,
+     "Pantanal": 592.0
+    },
+    "totalKm2": 60620.0
+   },
+   {
+    "mes": "2007-12",
+    "km2": {
+     "Amazônia": 6444.0,
+     "Caatinga": 6952.0,
+     "Cerrado": 2567.0,
+     "Mata Atlântica": 1726.0,
+     "Pampa": 58.0,
+     "Pantanal": 108.0
+    },
+    "totalKm2": 17855.0
+   },
+   {
+    "mes": "2008-01",
+    "km2": {
+     "Amazônia": 1814.0,
+     "Caatinga": 1419.0,
+     "Cerrado": 754.0,
+     "Mata Atlântica": 982.0,
+     "Pampa": 77.0,
+     "Pantanal": 33.0
+    },
+    "totalKm2": 5079.0
+   },
+   {
+    "mes": "2008-02",
+    "km2": {
+     "Amazônia": 1053.0,
+     "Caatinga": 500.0,
+     "Cerrado": 582.0,
+     "Mata Atlântica": 1111.0,
+     "Pampa": 71.0,
+     "Pantanal": 38.0
+    },
+    "totalKm2": 3355.0
+   },
+   {
+    "mes": "2008-03",
+    "km2": {
+     "Amazônia": 1571.0,
+     "Caatinga": 232.0,
+     "Cerrado": 682.0,
+     "Mata Atlântica": 954.0,
+     "Pampa": 67.0,
+     "Pantanal": 53.0
+    },
+    "totalKm2": 3559.0
+   },
+   {
+    "mes": "2008-04",
+    "km2": {
+     "Amazônia": 1237.0,
+     "Caatinga": 126.0,
+     "Cerrado": 1234.0,
+     "Mata Atlântica": 809.0,
+     "Pampa": 212.0,
+     "Pantanal": 69.0
+    },
+    "totalKm2": 3687.0
+   },
+   {
+    "mes": "2008-05",
+    "km2": {
+     "Amazônia": 867.0,
+     "Caatinga": 95.0,
+     "Cerrado": 3198.0,
+     "Mata Atlântica": 2062.0,
+     "Pampa": 300.0,
+     "Pantanal": 92.0
+    },
+    "totalKm2": 6614.0
+   },
+   {
+    "mes": "2008-06",
+    "km2": {
+     "Amazônia": 2393.0,
+     "Caatinga": 155.0,
+     "Cerrado": 7567.0,
+     "Mata Atlântica": 1513.0,
+     "Pampa": 137.0,
+     "Pantanal": 125.0
+    },
+    "totalKm2": 11890.0
+   },
+   {
+    "mes": "2008-07",
+    "km2": {
+     "Amazônia": 8015.0,
+     "Caatinga": 255.0,
+     "Cerrado": 14158.0,
+     "Mata Atlântica": 6808.0,
+     "Pampa": 389.0,
+     "Pantanal": 627.0
+    },
+    "totalKm2": 30252.0
+   },
+   {
+    "mes": "2008-08",
+    "km2": {
+     "Amazônia": 27548.0,
+     "Caatinga": 1123.0,
+     "Cerrado": 26076.0,
+     "Mata Atlântica": 5472.0,
+     "Pampa": 145.0,
+     "Pantanal": 1360.0
+    },
+    "totalKm2": 61724.0
+   },
+   {
+    "mes": "2008-09",
+    "km2": {
+     "Amazônia": 35640.0,
+     "Caatinga": 5410.0,
+     "Cerrado": 42377.0,
+     "Mata Atlântica": 7000.0,
+     "Pampa": 125.0,
+     "Pantanal": 4024.0
+    },
+    "totalKm2": 94576.0
+   },
+   {
+    "mes": "2008-10",
+    "km2": {
+     "Amazônia": 33706.0,
+     "Caatinga": 15501.0,
+     "Cerrado": 44706.0,
+     "Mata Atlântica": 6934.0,
+     "Pampa": 112.0,
+     "Pantanal": 3001.0
+    },
+    "totalKm2": 103960.0
+   },
+   {
+    "mes": "2008-11",
+    "km2": {
+     "Amazônia": 21023.0,
+     "Caatinga": 15406.0,
+     "Cerrado": 10876.0,
+     "Mata Atlântica": 3865.0,
+     "Pampa": 79.0,
+     "Pantanal": 735.0
+    },
+    "totalKm2": 51984.0
+   },
+   {
+    "mes": "2008-12",
+    "km2": {
+     "Amazônia": 8202.0,
+     "Caatinga": 7555.0,
+     "Cerrado": 2469.0,
+     "Mata Atlântica": 2029.0,
+     "Pampa": 87.0,
+     "Pantanal": 1440.0
+    },
+    "totalKm2": 21782.0
+   },
+   {
+    "mes": "2009-01",
+    "km2": {
+     "Amazônia": 1565.0,
+     "Caatinga": 1702.0,
+     "Cerrado": 1256.0,
+     "Mata Atlântica": 1311.0,
+     "Pampa": 97.0,
+     "Pantanal": 802.0
+    },
+    "totalKm2": 6733.0
+   },
+   {
+    "mes": "2009-02",
+    "km2": {
+     "Amazônia": 1002.0,
+     "Caatinga": 259.0,
+     "Cerrado": 737.0,
+     "Mata Atlântica": 741.0,
+     "Pampa": 30.0,
+     "Pantanal": 282.0
+    },
+    "totalKm2": 3051.0
+   },
+   {
+    "mes": "2009-03",
+    "km2": {
+     "Amazônia": 1150.0,
+     "Caatinga": 484.0,
+     "Cerrado": 935.0,
+     "Mata Atlântica": 1073.0,
+     "Pampa": 47.0,
+     "Pantanal": 192.0
+    },
+    "totalKm2": 3881.0
+   },
+   {
+    "mes": "2009-04",
+    "km2": {
+     "Amazônia": 920.0,
+     "Caatinga": 130.0,
+     "Cerrado": 1177.0,
+     "Mata Atlântica": 1782.0,
+     "Pampa": 323.0,
+     "Pantanal": 935.0
+    },
+    "totalKm2": 5267.0
+   },
+   {
+    "mes": "2009-05",
+    "km2": {
+     "Amazônia": 1947.0,
+     "Caatinga": 33.0,
+     "Cerrado": 2346.0,
+     "Mata Atlântica": 1796.0,
+     "Pampa": 626.0,
+     "Pantanal": 1792.0
+    },
+    "totalKm2": 8540.0
+   },
+   {
+    "mes": "2009-06",
+    "km2": {
+     "Amazônia": 2072.0,
+     "Caatinga": 127.0,
+     "Cerrado": 4850.0,
+     "Mata Atlântica": 1705.0,
+     "Pampa": 171.0,
+     "Pantanal": 657.0
+    },
+    "totalKm2": 9582.0
+   },
+   {
+    "mes": "2009-07",
+    "km2": {
+     "Amazônia": 3842.0,
+     "Caatinga": 342.0,
+     "Cerrado": 12328.0,
+     "Mata Atlântica": 1760.0,
+     "Pampa": 210.0,
+     "Pantanal": 705.0
+    },
+    "totalKm2": 19187.0
+   },
+   {
+    "mes": "2009-08",
+    "km2": {
+     "Amazônia": 12083.0,
+     "Caatinga": 700.0,
+     "Cerrado": 19554.0,
+     "Mata Atlântica": 6710.0,
+     "Pampa": 496.0,
+     "Pantanal": 1650.0
+    },
+    "totalKm2": 41193.0
+   },
+   {
+    "mes": "2009-09",
+    "km2": {
+     "Amazônia": 26295.0,
+     "Caatinga": 6179.0,
+     "Cerrado": 26178.0,
+     "Mata Atlântica": 2982.0,
+     "Pampa": 57.0,
+     "Pantanal": 3179.0
+    },
+    "totalKm2": 64870.0
+   },
+   {
+    "mes": "2009-10",
+    "km2": {
+     "Amazônia": 27792.0,
+     "Caatinga": 5938.0,
+     "Cerrado": 10314.0,
+     "Mata Atlântica": 3575.0,
+     "Pampa": 101.0,
+     "Pantanal": 2840.0
+    },
+    "totalKm2": 50560.0
+   },
+   {
+    "mes": "2009-11",
+    "km2": {
+     "Amazônia": 28180.0,
+     "Caatinga": 9587.0,
+     "Cerrado": 6740.0,
+     "Mata Atlântica": 1755.0,
+     "Pampa": 2.0,
+     "Pantanal": 939.0
+    },
+    "totalKm2": 47203.0
+   },
+   {
+    "mes": "2009-12",
+    "km2": {
+     "Amazônia": 10581.0,
+     "Caatinga": 6579.0,
+     "Cerrado": 1885.0,
+     "Mata Atlântica": 1291.0,
+     "Pampa": 17.0,
+     "Pantanal": 109.0
+    },
+    "totalKm2": 20462.0
+   },
+   {
+    "mes": "2010-01",
+    "km2": {
+     "Amazônia": 2668.0,
+     "Caatinga": 893.0,
+     "Cerrado": 1008.0,
+     "Mata Atlântica": 958.0,
+     "Pampa": 46.0,
+     "Pantanal": 80.0
+    },
+    "totalKm2": 5653.0
+   },
+   {
+    "mes": "2010-02",
+    "km2": {
+     "Amazônia": 2192.0,
+     "Caatinga": 430.0,
+     "Cerrado": 1371.0,
+     "Mata Atlântica": 1197.0,
+     "Pampa": 26.0,
+     "Pantanal": 120.0
+    },
+    "totalKm2": 5336.0
+   },
+   {
+    "mes": "2010-03",
+    "km2": {
+     "Amazônia": 1844.0,
+     "Caatinga": 448.0,
+     "Cerrado": 1623.0,
+     "Mata Atlântica": 821.0,
+     "Pampa": 68.0,
+     "Pantanal": 106.0
+    },
+    "totalKm2": 4910.0
+   },
+   {
+    "mes": "2010-04",
+    "km2": {
+     "Amazônia": 1415.0,
+     "Caatinga": 125.0,
+     "Cerrado": 3742.0,
+     "Mata Atlântica": 1128.0,
+     "Pampa": 138.0,
+     "Pantanal": 209.0
+    },
+    "totalKm2": 6757.0
+   },
+   {
+    "mes": "2010-05",
+    "km2": {
+     "Amazônia": 2222.0,
+     "Caatinga": 399.0,
+     "Cerrado": 8179.0,
+     "Mata Atlântica": 1157.0,
+     "Pampa": 74.0,
+     "Pantanal": 123.0
+    },
+    "totalKm2": 12154.0
+   },
+   {
+    "mes": "2010-06",
+    "km2": {
+     "Amazônia": 3365.0,
+     "Caatinga": 418.0,
+     "Cerrado": 19037.0,
+     "Mata Atlântica": 3100.0,
+     "Pampa": 53.0,
+     "Pantanal": 891.0
+    },
+    "totalKm2": 26864.0
+   },
+   {
+    "mes": "2010-07",
+    "km2": {
+     "Amazônia": 8723.0,
+     "Caatinga": 1485.0,
+     "Cerrado": 38433.0,
+     "Mata Atlântica": 4890.0,
+     "Pampa": 146.0,
+     "Pantanal": 1320.0
+    },
+    "totalKm2": 54997.0
+   },
+   {
+    "mes": "2010-08",
+    "km2": {
+     "Amazônia": 57101.0,
+     "Caatinga": 4051.0,
+     "Cerrado": 85492.0,
+     "Mata Atlântica": 10830.0,
+     "Pampa": 397.0,
+     "Pantanal": 2766.0
+    },
+    "totalKm2": 160637.0
+   },
+   {
+    "mes": "2010-09",
+    "km2": {
+     "Amazônia": 60881.0,
+     "Caatinga": 9815.0,
+     "Cerrado": 133657.0,
+     "Mata Atlântica": 9649.0,
+     "Pampa": 153.0,
+     "Pantanal": 7237.0
+    },
+    "totalKm2": 221392.0
+   },
+   {
+    "mes": "2010-10",
+    "km2": {
+     "Amazônia": 24474.0,
+     "Caatinga": 15730.0,
+     "Cerrado": 34013.0,
+     "Mata Atlântica": 4763.0,
+     "Pampa": 150.0,
+     "Pantanal": 3020.0
+    },
+    "totalKm2": 82150.0
+   },
+   {
+    "mes": "2010-11",
+    "km2": {
+     "Amazônia": 14519.0,
+     "Caatinga": 10200.0,
+     "Cerrado": 6384.0,
+     "Mata Atlântica": 1920.0,
+     "Pampa": 106.0,
+     "Pantanal": 841.0
+    },
+    "totalKm2": 33970.0
+   },
+   {
+    "mes": "2010-12",
+    "km2": {
+     "Amazônia": 6621.0,
+     "Caatinga": 2276.0,
+     "Cerrado": 2605.0,
+     "Mata Atlântica": 1022.0,
+     "Pampa": 126.0,
+     "Pantanal": 1766.0
+    },
+    "totalKm2": 14416.0
+   },
+   {
+    "mes": "2011-01",
+    "km2": {
+     "Amazônia": 1791.0,
+     "Caatinga": 324.0,
+     "Cerrado": 739.0,
+     "Mata Atlântica": 630.0,
+     "Pampa": 39.0,
+     "Pantanal": 260.0
+    },
+    "totalKm2": 3783.0
+   },
+   {
+    "mes": "2011-02",
+    "km2": {
+     "Amazônia": 833.0,
+     "Caatinga": 207.0,
+     "Cerrado": 538.0,
+     "Mata Atlântica": 693.0,
+     "Pampa": 17.0,
+     "Pantanal": 31.0
+    },
+    "totalKm2": 2319.0
+   },
+   {
+    "mes": "2011-03",
+    "km2": {
+     "Amazônia": 677.0,
+     "Caatinga": 257.0,
+     "Cerrado": 612.0,
+     "Mata Atlântica": 637.0,
+     "Pampa": 69.0,
+     "Pantanal": 5.0
+    },
+    "totalKm2": 2257.0
+   },
+   {
+    "mes": "2011-04",
+    "km2": {
+     "Amazônia": 1073.0,
+     "Caatinga": 180.0,
+     "Cerrado": 1654.0,
+     "Mata Atlântica": 515.0,
+     "Pampa": 105.0,
+     "Pantanal": 6.0
+    },
+    "totalKm2": 3533.0
+   },
+   {
+    "mes": "2011-05",
+    "km2": {
+     "Amazônia": 1295.0,
+     "Caatinga": 173.0,
+     "Cerrado": 3915.0,
+     "Mata Atlântica": 1298.0,
+     "Pampa": 125.0,
+     "Pantanal": 40.0
+    },
+    "totalKm2": 6846.0
+   },
+   {
+    "mes": "2011-06",
+    "km2": {
+     "Amazônia": 1939.0,
+     "Caatinga": 591.0,
+     "Cerrado": 9290.0,
+     "Mata Atlântica": 1909.0,
+     "Pampa": 157.0,
+     "Pantanal": 100.0
+    },
+    "totalKm2": 13986.0
+   },
+   {
+    "mes": "2011-07",
+    "km2": {
+     "Amazônia": 3883.0,
+     "Caatinga": 671.0,
+     "Cerrado": 15061.0,
+     "Mata Atlântica": 4690.0,
+     "Pampa": 178.0,
+     "Pantanal": 250.0
+    },
+    "totalKm2": 24733.0
+   },
+   {
+    "mes": "2011-08",
+    "km2": {
+     "Amazônia": 12097.0,
+     "Caatinga": 2074.0,
+     "Cerrado": 33062.0,
+     "Mata Atlântica": 6481.0,
+     "Pampa": 207.0,
+     "Pantanal": 655.0
+    },
+    "totalKm2": 54576.0
+   },
+   {
+    "mes": "2011-09",
+    "km2": {
+     "Amazônia": 25412.0,
+     "Caatinga": 5839.0,
+     "Cerrado": 68466.0,
+     "Mata Atlântica": 11749.0,
+     "Pampa": 324.0,
+     "Pantanal": 2064.0
+    },
+    "totalKm2": 113854.0
+   },
+   {
+    "mes": "2011-10",
+    "km2": {
+     "Amazônia": 14456.0,
+     "Caatinga": 7964.0,
+     "Cerrado": 16071.0,
+     "Mata Atlântica": 3625.0,
+     "Pampa": 56.0,
+     "Pantanal": 1247.0
+    },
+    "totalKm2": 43419.0
+   },
+   {
+    "mes": "2011-11",
+    "km2": {
+     "Amazônia": 11799.0,
+     "Caatinga": 6433.0,
+     "Cerrado": 4046.0,
+     "Mata Atlântica": 1406.0,
+     "Pampa": 108.0,
+     "Pantanal": 1892.0
+    },
+    "totalKm2": 25684.0
+   },
+   {
+    "mes": "2011-12",
+    "km2": {
+     "Amazônia": 11723.0,
+     "Caatinga": 4722.0,
+     "Cerrado": 2268.0,
+     "Mata Atlântica": 999.0,
+     "Pampa": 78.0,
+     "Pantanal": 1435.0
+    },
+    "totalKm2": 21225.0
+   },
+   {
+    "mes": "2012-01",
+    "km2": {
+     "Amazônia": 2671.0,
+     "Caatinga": 1497.0,
+     "Cerrado": 734.0,
+     "Mata Atlântica": 803.0,
+     "Pampa": 116.0,
+     "Pantanal": 400.0
+    },
+    "totalKm2": 6221.0
+   },
+   {
+    "mes": "2012-02",
+    "km2": {
+     "Amazônia": 849.0,
+     "Caatinga": 396.0,
+     "Cerrado": 1034.0,
+     "Mata Atlântica": 927.0,
+     "Pampa": 77.0,
+     "Pantanal": 211.0
+    },
+    "totalKm2": 3494.0
+   },
+   {
+    "mes": "2012-03",
+    "km2": {
+     "Amazônia": 982.0,
+     "Caatinga": 707.0,
+     "Cerrado": 1746.0,
+     "Mata Atlântica": 1320.0,
+     "Pampa": 137.0,
+     "Pantanal": 216.0
+    },
+    "totalKm2": 5108.0
+   },
+   {
+    "mes": "2012-04",
+    "km2": {
+     "Amazônia": 1020.0,
+     "Caatinga": 700.0,
+     "Cerrado": 2583.0,
+     "Mata Atlântica": 978.0,
+     "Pampa": 82.0,
+     "Pantanal": 126.0
+    },
+    "totalKm2": 5489.0
+   },
+   {
+    "mes": "2012-05",
+    "km2": {
+     "Amazônia": 1908.0,
+     "Caatinga": 1211.0,
+     "Cerrado": 5745.0,
+     "Mata Atlântica": 1419.0,
+     "Pampa": 452.0,
+     "Pantanal": 211.0
+    },
+    "totalKm2": 10946.0
+   },
+   {
+    "mes": "2012-06",
+    "km2": {
+     "Amazônia": 3434.0,
+     "Caatinga": 1400.0,
+     "Cerrado": 12026.0,
+     "Mata Atlântica": 1045.0,
+     "Pampa": 342.0,
+     "Pantanal": 212.0
+    },
+    "totalKm2": 18459.0
+   },
+   {
+    "mes": "2012-07",
+    "km2": {
+     "Amazônia": 4850.0,
+     "Caatinga": 1979.0,
+     "Cerrado": 25574.0,
+     "Mata Atlântica": 2246.0,
+     "Pampa": 382.0,
+     "Pantanal": 911.0
+    },
+    "totalKm2": 35942.0
+   },
+   {
+    "mes": "2012-08",
+    "km2": {
+     "Amazônia": 24791.0,
+     "Caatinga": 4009.0,
+     "Cerrado": 61044.0,
+     "Mata Atlântica": 5110.0,
+     "Pampa": 300.0,
+     "Pantanal": 4723.0
+    },
+    "totalKm2": 99977.0
+   },
+   {
+    "mes": "2012-09",
+    "km2": {
+     "Amazônia": 34775.0,
+     "Caatinga": 8059.0,
+     "Cerrado": 87991.0,
+     "Mata Atlântica": 6209.0,
+     "Pampa": 102.0,
+     "Pantanal": 5096.0
+    },
+    "totalKm2": 142232.0
+   },
+   {
+    "mes": "2012-10",
+    "km2": {
+     "Amazônia": 22303.0,
+     "Caatinga": 12585.0,
+     "Cerrado": 51873.0,
+     "Mata Atlântica": 5938.0,
+     "Pampa": 63.0,
+     "Pantanal": 2013.0
+    },
+    "totalKm2": 94775.0
+   },
+   {
+    "mes": "2012-11",
+    "km2": {
+     "Amazônia": 21360.0,
+     "Caatinga": 4524.0,
+     "Cerrado": 4122.0,
+     "Mata Atlântica": 1951.0,
+     "Pampa": 71.0,
+     "Pantanal": 410.0
+    },
+    "totalKm2": 32438.0
+   },
+   {
+    "mes": "2012-12",
+    "km2": {
+     "Amazônia": 7236.0,
+     "Caatinga": 3888.0,
+     "Cerrado": 3384.0,
+     "Mata Atlântica": 1598.0,
+     "Pampa": 24.0,
+     "Pantanal": 271.0
+    },
+    "totalKm2": 16401.0
+   },
+   {
+    "mes": "2013-01",
+    "km2": {
+     "Amazônia": 3441.0,
+     "Caatinga": 712.0,
+     "Cerrado": 929.0,
+     "Mata Atlântica": 1109.0,
+     "Pampa": 47.0,
+     "Pantanal": 201.0
+    },
+    "totalKm2": 6439.0
+   },
+   {
+    "mes": "2013-02",
+    "km2": {
+     "Amazônia": 640.0,
+     "Caatinga": 419.0,
+     "Cerrado": 1326.0,
+     "Mata Atlântica": 1033.0,
+     "Pampa": 80.0,
+     "Pantanal": 176.0
+    },
+    "totalKm2": 3674.0
+   },
+   {
+    "mes": "2013-03",
+    "km2": {
+     "Amazônia": 1438.0,
+     "Caatinga": 434.0,
+     "Cerrado": 1421.0,
+     "Mata Atlântica": 1011.0,
+     "Pampa": 107.0,
+     "Pantanal": 249.0
+    },
+    "totalKm2": 4660.0
+   },
+   {
+    "mes": "2013-04",
+    "km2": {
+     "Amazônia": 958.0,
+     "Caatinga": 289.0,
+     "Cerrado": 1471.0,
+     "Mata Atlântica": 801.0,
+     "Pampa": 106.0,
+     "Pantanal": 115.0
+    },
+    "totalKm2": 3740.0
+   },
+   {
+    "mes": "2013-05",
+    "km2": {
+     "Amazônia": 1958.0,
+     "Caatinga": 222.0,
+     "Cerrado": 4193.0,
+     "Mata Atlântica": 1064.0,
+     "Pampa": 63.0,
+     "Pantanal": 113.0
+    },
+    "totalKm2": 7613.0
+   },
+   {
+    "mes": "2013-06",
+    "km2": {
+     "Amazônia": 3046.0,
+     "Caatinga": 392.0,
+     "Cerrado": 7074.0,
+     "Mata Atlântica": 713.0,
+     "Pampa": 45.0,
+     "Pantanal": 53.0
+    },
+    "totalKm2": 11323.0
+   },
+   {
+    "mes": "2013-07",
+    "km2": {
+     "Amazônia": 3950.0,
+     "Caatinga": 642.0,
+     "Cerrado": 12944.0,
+     "Mata Atlântica": 2442.0,
+     "Pampa": 192.0,
+     "Pantanal": 222.0
+    },
+    "totalKm2": 20392.0
+   },
+   {
+    "mes": "2013-08",
+    "km2": {
+     "Amazônia": 12654.0,
+     "Caatinga": 1571.0,
+     "Cerrado": 25833.0,
+     "Mata Atlântica": 4144.0,
+     "Pampa": 261.0,
+     "Pantanal": 668.0
+    },
+    "totalKm2": 45131.0
+   },
+   {
+    "mes": "2013-09",
+    "km2": {
+     "Amazônia": 22210.0,
+     "Caatinga": 5949.0,
+     "Cerrado": 40282.0,
+     "Mata Atlântica": 5097.0,
+     "Pampa": 167.0,
+     "Pantanal": 2798.0
+    },
+    "totalKm2": 76503.0
+   },
+   {
+    "mes": "2013-10",
+    "km2": {
+     "Amazônia": 13835.0,
+     "Caatinga": 5657.0,
+     "Cerrado": 20464.0,
+     "Mata Atlântica": 2407.0,
+     "Pampa": 93.0,
+     "Pantanal": 1455.0
+    },
+    "totalKm2": 43911.0
+   },
+   {
+    "mes": "2013-11",
+    "km2": {
+     "Amazônia": 8674.0,
+     "Caatinga": 4842.0,
+     "Cerrado": 4491.0,
+     "Mata Atlântica": 1180.0,
+     "Pampa": 69.0,
+     "Pantanal": 1254.0
+    },
+    "totalKm2": 20510.0
+   },
+   {
+    "mes": "2013-12",
+    "km2": {
+     "Amazônia": 9772.0,
+     "Caatinga": 3006.0,
+     "Cerrado": 2652.0,
+     "Mata Atlântica": 987.0,
+     "Pampa": 66.0,
+     "Pantanal": 503.0
+    },
+    "totalKm2": 16986.0
+   },
+   {
+    "mes": "2014-01",
+    "km2": {
+     "Amazônia": 3101.0,
+     "Caatinga": 633.0,
+     "Cerrado": 1345.0,
+     "Mata Atlântica": 824.0,
+     "Pampa": 42.0,
+     "Pantanal": 159.0
+    },
+    "totalKm2": 6104.0
+   },
+   {
+    "mes": "2014-02",
+    "km2": {
+     "Amazônia": 1160.0,
+     "Caatinga": 166.0,
+     "Cerrado": 704.0,
+     "Mata Atlântica": 837.0,
+     "Pampa": 27.0,
+     "Pantanal": 131.0
+    },
+    "totalKm2": 3025.0
+   },
+   {
+    "mes": "2014-03",
+    "km2": {
+     "Amazônia": 2057.0,
+     "Caatinga": 232.0,
+     "Cerrado": 950.0,
+     "Mata Atlântica": 553.0,
+     "Pampa": 48.0,
+     "Pantanal": 38.0
+    },
+    "totalKm2": 3878.0
+   },
+   {
+    "mes": "2014-04",
+    "km2": {
+     "Amazônia": 1255.0,
+     "Caatinga": 205.0,
+     "Cerrado": 2013.0,
+     "Mata Atlântica": 591.0,
+     "Pampa": 79.0,
+     "Pantanal": 135.0
+    },
+    "totalKm2": 4278.0
+   },
+   {
+    "mes": "2014-05",
+    "km2": {
+     "Amazônia": 1672.0,
+     "Caatinga": 223.0,
+     "Cerrado": 4427.0,
+     "Mata Atlântica": 871.0,
+     "Pampa": 82.0,
+     "Pantanal": 22.0
+    },
+    "totalKm2": 7297.0
+   },
+   {
+    "mes": "2014-06",
+    "km2": {
+     "Amazônia": 3175.0,
+     "Caatinga": 668.0,
+     "Cerrado": 10352.0,
+     "Mata Atlântica": 1231.0,
+     "Pampa": 70.0,
+     "Pantanal": 85.0
+    },
+    "totalKm2": 15581.0
+   },
+   {
+    "mes": "2014-07",
+    "km2": {
+     "Amazônia": 4654.0,
+     "Caatinga": 1189.0,
+     "Cerrado": 18114.0,
+     "Mata Atlântica": 1848.0,
+     "Pampa": 189.0,
+     "Pantanal": 155.0
+    },
+    "totalKm2": 26149.0
+   },
+   {
+    "mes": "2014-08",
+    "km2": {
+     "Amazônia": 25096.0,
+     "Caatinga": 2191.0,
+     "Cerrado": 44192.0,
+     "Mata Atlântica": 6152.0,
+     "Pampa": 373.0,
+     "Pantanal": 362.0
+    },
+    "totalKm2": 78366.0
+   },
+   {
+    "mes": "2014-09",
+    "km2": {
+     "Amazônia": 28543.0,
+     "Caatinga": 4950.0,
+     "Cerrado": 49427.0,
+     "Mata Atlântica": 5986.0,
+     "Pampa": 67.0,
+     "Pantanal": 721.0
+    },
+    "totalKm2": 89694.0
+   },
+   {
+    "mes": "2014-10",
+    "km2": {
+     "Amazônia": 20475.0,
+     "Caatinga": 6022.0,
+     "Cerrado": 44895.0,
+     "Mata Atlântica": 7582.0,
+     "Pampa": 59.0,
+     "Pantanal": 1003.0
+    },
+    "totalKm2": 80036.0
+   },
+   {
+    "mes": "2014-11",
+    "km2": {
+     "Amazônia": 17782.0,
+     "Caatinga": 4498.0,
+     "Cerrado": 5934.0,
+     "Mata Atlântica": 924.0,
+     "Pampa": 53.0,
+     "Pantanal": 339.0
+    },
+    "totalKm2": 29530.0
+   },
+   {
+    "mes": "2014-12",
+    "km2": {
+     "Amazônia": 11550.0,
+     "Caatinga": 2483.0,
+     "Cerrado": 2431.0,
+     "Mata Atlântica": 725.0,
+     "Pampa": 34.0,
+     "Pantanal": 80.0
+    },
+    "totalKm2": 17303.0
+   },
+   {
+    "mes": "2015-01",
+    "km2": {
+     "Amazônia": 3848.0,
+     "Caatinga": 920.0,
+     "Cerrado": 2400.0,
+     "Mata Atlântica": 1334.0,
+     "Pampa": 31.0,
+     "Pantanal": 234.0
+    },
+    "totalKm2": 8767.0
+   },
+   {
+    "mes": "2015-02",
+    "km2": {
+     "Amazônia": 2244.0,
+     "Caatinga": 245.0,
+     "Cerrado": 822.0,
+     "Mata Atlântica": 883.0,
+     "Pampa": 36.0,
+     "Pantanal": 117.0
+    },
+    "totalKm2": 4347.0
+   },
+   {
+    "mes": "2015-03",
+    "km2": {
+     "Amazônia": 1303.0,
+     "Caatinga": 214.0,
+     "Cerrado": 1208.0,
+     "Mata Atlântica": 751.0,
+     "Pampa": 88.0,
+     "Pantanal": 68.0
+    },
+    "totalKm2": 3632.0
+   },
+   {
+    "mes": "2015-04",
+    "km2": {
+     "Amazônia": 1654.0,
+     "Caatinga": 311.0,
+     "Cerrado": 1614.0,
+     "Mata Atlântica": 784.0,
+     "Pampa": 234.0,
+     "Pantanal": 78.0
+    },
+    "totalKm2": 4675.0
+   },
+   {
+    "mes": "2015-05",
+    "km2": {
+     "Amazônia": 1005.0,
+     "Caatinga": 311.0,
+     "Cerrado": 3000.0,
+     "Mata Atlântica": 653.0,
+     "Pampa": 362.0,
+     "Pantanal": 90.0
+    },
+    "totalKm2": 5421.0
+   },
+   {
+    "mes": "2015-06",
+    "km2": {
+     "Amazônia": 2480.0,
+     "Caatinga": 710.0,
+     "Cerrado": 8810.0,
+     "Mata Atlântica": 1203.0,
+     "Pampa": 161.0,
+     "Pantanal": 502.0
+    },
+    "totalKm2": 13866.0
+   },
+   {
+    "mes": "2015-07",
+    "km2": {
+     "Amazônia": 4563.0,
+     "Caatinga": 974.0,
+     "Cerrado": 13583.0,
+     "Mata Atlântica": 902.0,
+     "Pampa": 76.0,
+     "Pantanal": 386.0
+    },
+    "totalKm2": 20484.0
+   },
+   {
+    "mes": "2015-08",
+    "km2": {
+     "Amazônia": 25368.0,
+     "Caatinga": 3026.0,
+     "Cerrado": 33004.0,
+     "Mata Atlântica": 4157.0,
+     "Pampa": 183.0,
+     "Pantanal": 2198.0
+    },
+    "totalKm2": 67936.0
+   },
+   {
+    "mes": "2015-09",
+    "km2": {
+     "Amazônia": 41744.0,
+     "Caatinga": 8630.0,
+     "Cerrado": 62163.0,
+     "Mata Atlântica": 5347.0,
+     "Pampa": 180.0,
+     "Pantanal": 2788.0
+    },
+    "totalKm2": 120852.0
+   },
+   {
+    "mes": "2015-10",
+    "km2": {
+     "Amazônia": 32893.0,
+     "Caatinga": 9007.0,
+     "Cerrado": 56326.0,
+     "Mata Atlântica": 5358.0,
+     "Pampa": 63.0,
+     "Pantanal": 1470.0
+    },
+    "totalKm2": 105117.0
+   },
+   {
+    "mes": "2015-11",
+    "km2": {
+     "Amazônia": 30986.0,
+     "Caatinga": 7859.0,
+     "Cerrado": 13067.0,
+     "Mata Atlântica": 3501.0,
+     "Pampa": 23.0,
+     "Pantanal": 690.0
+    },
+    "totalKm2": 56126.0
+   },
+   {
+    "mes": "2015-12",
+    "km2": {
+     "Amazônia": 25187.0,
+     "Caatinga": 5335.0,
+     "Cerrado": 7520.0,
+     "Mata Atlântica": 2261.0,
+     "Pampa": 32.0,
+     "Pantanal": 1065.0
+    },
+    "totalKm2": 41400.0
+   },
+   {
+    "mes": "2016-01",
+    "km2": {
+     "Amazônia": 9185.0,
+     "Caatinga": 492.0,
+     "Cerrado": 681.0,
+     "Mata Atlântica": 882.0,
+     "Pampa": 63.0,
+     "Pantanal": 78.0
+    },
+    "totalKm2": 11381.0
+   },
+   {
+    "mes": "2016-02",
+    "km2": {
+     "Amazônia": 3030.0,
+     "Caatinga": 191.0,
+     "Cerrado": 2022.0,
+     "Mata Atlântica": 758.0,
+     "Pampa": 39.0,
+     "Pantanal": 79.0
+    },
+    "totalKm2": 6119.0
+   },
+   {
+    "mes": "2016-03",
+    "km2": {
+     "Amazônia": 4954.0,
+     "Caatinga": 194.0,
+     "Cerrado": 1844.0,
+     "Mata Atlântica": 991.0,
+     "Pampa": 42.0,
+     "Pantanal": 38.0
+    },
+    "totalKm2": 8063.0
+   },
+   {
+    "mes": "2016-04",
+    "km2": {
+     "Amazônia": 2351.0,
+     "Caatinga": 202.0,
+     "Cerrado": 4074.0,
+     "Mata Atlântica": 1592.0,
+     "Pampa": 24.0,
+     "Pantanal": 99.0
+    },
+    "totalKm2": 8342.0
+   },
+   {
+    "mes": "2016-05",
+    "km2": {
+     "Amazônia": 2373.0,
+     "Caatinga": 320.0,
+     "Cerrado": 5767.0,
+     "Mata Atlântica": 898.0,
+     "Pampa": 56.0,
+     "Pantanal": 144.0
+    },
+    "totalKm2": 9558.0
+   },
+   {
+    "mes": "2016-06",
+    "km2": {
+     "Amazônia": 3290.0,
+     "Caatinga": 502.0,
+     "Cerrado": 9561.0,
+     "Mata Atlântica": 1941.0,
+     "Pampa": 421.0,
+     "Pantanal": 207.0
+    },
+    "totalKm2": 15922.0
+   },
+   {
+    "mes": "2016-07",
+    "km2": {
+     "Amazônia": 8394.0,
+     "Caatinga": 1330.0,
+     "Cerrado": 22381.0,
+     "Mata Atlântica": 6674.0,
+     "Pampa": 338.0,
+     "Pantanal": 1178.0
+    },
+    "totalKm2": 40295.0
+   },
+   {
+    "mes": "2016-08",
+    "km2": {
+     "Amazônia": 26056.0,
+     "Caatinga": 2828.0,
+     "Cerrado": 39879.0,
+     "Mata Atlântica": 6308.0,
+     "Pampa": 596.0,
+     "Pantanal": 2225.0
+    },
+    "totalKm2": 77892.0
+   },
+   {
+    "mes": "2016-09",
+    "km2": {
+     "Amazônia": 28157.0,
+     "Caatinga": 4149.0,
+     "Cerrado": 42886.0,
+     "Mata Atlântica": 6346.0,
+     "Pampa": 318.0,
+     "Pantanal": 5134.0
+    },
+    "totalKm2": 86990.0
+   },
+   {
+    "mes": "2016-10",
+    "km2": {
+     "Amazônia": 19622.0,
+     "Caatinga": 9206.0,
+     "Cerrado": 23707.0,
+     "Mata Atlântica": 2378.0,
+     "Pampa": 125.0,
+     "Pantanal": 2973.0
+    },
+    "totalKm2": 58011.0
+   },
+   {
+    "mes": "2016-11",
+    "km2": {
+     "Amazônia": 17028.0,
+     "Caatinga": 7743.0,
+     "Cerrado": 8442.0,
+     "Mata Atlântica": 1476.0,
+     "Pampa": 72.0,
+     "Pantanal": 585.0
+    },
+    "totalKm2": 35346.0
+   },
+   {
+    "mes": "2016-12",
+    "km2": {
+     "Amazônia": 7356.0,
+     "Caatinga": 3287.0,
+     "Cerrado": 2096.0,
+     "Mata Atlântica": 1054.0,
+     "Pampa": 98.0,
+     "Pantanal": 220.0
+    },
+    "totalKm2": 14111.0
+   },
+   {
+    "mes": "2017-01",
+    "km2": {
+     "Amazônia": 1313.0,
+     "Caatinga": 661.0,
+     "Cerrado": 1055.0,
+     "Mata Atlântica": 1017.0,
+     "Pampa": 24.0,
+     "Pantanal": 512.0
+    },
+    "totalKm2": 4582.0
+   },
+   {
+    "mes": "2017-02",
+    "km2": {
+     "Amazônia": 741.0,
+     "Caatinga": 167.0,
+     "Cerrado": 888.0,
+     "Mata Atlântica": 785.0,
+     "Pampa": 45.0,
+     "Pantanal": 140.0
+    },
+    "totalKm2": 2766.0
+   },
+   {
+    "mes": "2017-03",
+    "km2": {
+     "Amazônia": 1207.0,
+     "Caatinga": 204.0,
+     "Cerrado": 1643.0,
+     "Mata Atlântica": 623.0,
+     "Pampa": 58.0,
+     "Pantanal": 164.0
+    },
+    "totalKm2": 3899.0
+   },
+   {
+    "mes": "2017-04",
+    "km2": {
+     "Amazônia": 1162.0,
+     "Caatinga": 136.0,
+     "Cerrado": 1799.0,
+     "Mata Atlântica": 436.0,
+     "Pampa": 59.0,
+     "Pantanal": 61.0
+    },
+    "totalKm2": 3653.0
+   },
+   {
+    "mes": "2017-05",
+    "km2": {
+     "Amazônia": 1653.0,
+     "Caatinga": 204.0,
+     "Cerrado": 4154.0,
+     "Mata Atlântica": 397.0,
+     "Pampa": 89.0,
+     "Pantanal": 118.0
+    },
+    "totalKm2": 6615.0
+   },
+   {
+    "mes": "2017-06",
+    "km2": {
+     "Amazônia": 2740.0,
+     "Caatinga": 284.0,
+     "Cerrado": 7078.0,
+     "Mata Atlântica": 1010.0,
+     "Pampa": 160.0,
+     "Pantanal": 220.0
+    },
+    "totalKm2": 11492.0
+   },
+   {
+    "mes": "2017-07",
+    "km2": {
+     "Amazônia": 9778.0,
+     "Caatinga": 542.0,
+     "Cerrado": 13678.0,
+     "Mata Atlântica": 4431.0,
+     "Pampa": 626.0,
+     "Pantanal": 1124.0
+    },
+    "totalKm2": 30179.0
+   },
+   {
+    "mes": "2017-08",
+    "km2": {
+     "Amazônia": 29241.0,
+     "Caatinga": 1683.0,
+     "Cerrado": 29372.0,
+     "Mata Atlântica": 5255.0,
+     "Pampa": 350.0,
+     "Pantanal": 2312.0
+    },
+    "totalKm2": 68213.0
+   },
+   {
+    "mes": "2017-09",
+    "km2": {
+     "Amazônia": 53893.0,
+     "Caatinga": 3385.0,
+     "Cerrado": 71108.0,
+     "Mata Atlântica": 8427.0,
+     "Pampa": 95.0,
+     "Pantanal": 5249.0
+    },
+    "totalKm2": 142157.0
+   },
+   {
+    "mes": "2017-10",
+    "km2": {
+     "Amazônia": 23989.0,
+     "Caatinga": 9309.0,
+     "Cerrado": 39939.0,
+     "Mata Atlântica": 3993.0,
+     "Pampa": 77.0,
+     "Pantanal": 1393.0
+    },
+    "totalKm2": 78700.0
+   },
+   {
+    "mes": "2017-11",
+    "km2": {
+     "Amazônia": 22828.0,
+     "Caatinga": 4883.0,
+     "Cerrado": 4977.0,
+     "Mata Atlântica": 1192.0,
+     "Pampa": 89.0,
+     "Pantanal": 395.0
+    },
+    "totalKm2": 34364.0
+   },
+   {
+    "mes": "2017-12",
+    "km2": {
+     "Amazônia": 14817.0,
+     "Caatinga": 3756.0,
+     "Cerrado": 2843.0,
+     "Mata Atlântica": 747.0,
+     "Pampa": 108.0,
+     "Pantanal": 50.0
+    },
+    "totalKm2": 22321.0
+   },
+   {
+    "mes": "2018-01",
+    "km2": {
+     "Amazônia": 3043.0,
+     "Caatinga": 722.0,
+     "Cerrado": 1062.0,
+     "Mata Atlântica": 466.0,
+     "Pampa": 68.0,
+     "Pantanal": 38.0
+    },
+    "totalKm2": 5399.0
+   },
+   {
+    "mes": "2018-02",
+    "km2": {
+     "Amazônia": 2149.0,
+     "Caatinga": 110.0,
+     "Cerrado": 489.0,
+     "Mata Atlântica": 466.0,
+     "Pampa": 107.0,
+     "Pantanal": 15.0
+    },
+    "totalKm2": 3336.0
+   },
+   {
+    "mes": "2018-03",
+    "km2": {
+     "Amazônia": 3108.0,
+     "Caatinga": 137.0,
+     "Cerrado": 2014.0,
+     "Mata Atlântica": 711.0,
+     "Pampa": 123.0,
+     "Pantanal": 32.0
+    },
+    "totalKm2": 6125.0
+   },
+   {
+    "mes": "2018-04",
+    "km2": {
+     "Amazônia": 1403.0,
+     "Caatinga": 91.0,
+     "Cerrado": 1435.0,
+     "Mata Atlântica": 854.0,
+     "Pampa": 108.0,
+     "Pantanal": 48.0
+    },
+    "totalKm2": 3939.0
+   },
+   {
+    "mes": "2018-05",
+    "km2": {
+     "Amazônia": 1673.0,
+     "Caatinga": 205.0,
+     "Cerrado": 4376.0,
+     "Mata Atlântica": 1446.0,
+     "Pampa": 125.0,
+     "Pantanal": 75.0
+    },
+    "totalKm2": 7900.0
+   },
+   {
+    "mes": "2018-06",
+    "km2": {
+     "Amazônia": 2914.0,
+     "Caatinga": 596.0,
+     "Cerrado": 7610.0,
+     "Mata Atlântica": 1451.0,
+     "Pampa": 55.0,
+     "Pantanal": 113.0
+    },
+    "totalKm2": 12739.0
+   },
+   {
+    "mes": "2018-07",
+    "km2": {
+     "Amazônia": 6698.0,
+     "Caatinga": 1370.0,
+     "Cerrado": 12376.0,
+     "Mata Atlântica": 3796.0,
+     "Pampa": 76.0,
+     "Pantanal": 379.0
+    },
+    "totalKm2": 24695.0
+   },
+   {
+    "mes": "2018-08",
+    "km2": {
+     "Amazônia": 13432.0,
+     "Caatinga": 2865.0,
+     "Cerrado": 20214.0,
+     "Mata Atlântica": 3445.0,
+     "Pampa": 288.0,
+     "Pantanal": 708.0
+    },
+    "totalKm2": 40952.0
+   },
+   {
+    "mes": "2018-09",
+    "km2": {
+     "Amazônia": 28987.0,
+     "Caatinga": 6471.0,
+     "Cerrado": 34149.0,
+     "Mata Atlântica": 4017.0,
+     "Pampa": 101.0,
+     "Pantanal": 1721.0
+    },
+    "totalKm2": 75446.0
+   },
+   {
+    "mes": "2018-10",
+    "km2": {
+     "Amazônia": 16476.0,
+     "Caatinga": 5102.0,
+     "Cerrado": 12298.0,
+     "Mata Atlântica": 2340.0,
+     "Pampa": 71.0,
+     "Pantanal": 260.0
+    },
+    "totalKm2": 36547.0
+   },
+   {
+    "mes": "2018-11",
+    "km2": {
+     "Amazônia": 13033.0,
+     "Caatinga": 4643.0,
+     "Cerrado": 3257.0,
+     "Mata Atlântica": 905.0,
+     "Pampa": 53.0,
+     "Pantanal": 53.0
+    },
+    "totalKm2": 21944.0
+   },
+   {
+    "mes": "2018-12",
+    "km2": {
+     "Amazônia": 2929.0,
+     "Caatinga": 2006.0,
+     "Cerrado": 2437.0,
+     "Mata Atlântica": 1170.0,
+     "Pampa": 55.0,
+     "Pantanal": 398.0
+    },
+    "totalKm2": 8995.0
+   },
+   {
+    "mes": "2019-01",
+    "km2": {
+     "Amazônia": 3316.0,
+     "Caatinga": 620.0,
+     "Cerrado": 2403.0,
+     "Mata Atlântica": 1297.0,
+     "Pampa": 36.0,
+     "Pantanal": 744.0
+    },
+    "totalKm2": 8416.0
+   },
+   {
+    "mes": "2019-02",
+    "km2": {
+     "Amazônia": 2890.0,
+     "Caatinga": 136.0,
+     "Cerrado": 1311.0,
+     "Mata Atlântica": 990.0,
+     "Pampa": 52.0,
+     "Pantanal": 736.0
+    },
+    "totalKm2": 6115.0
+   },
+   {
+    "mes": "2019-03",
+    "km2": {
+     "Amazônia": 7413.0,
+     "Caatinga": 128.0,
+     "Cerrado": 1875.0,
+     "Mata Atlântica": 1134.0,
+     "Pampa": 129.0,
+     "Pantanal": 202.0
+    },
+    "totalKm2": 10881.0
+   },
+   {
+    "mes": "2019-04",
+    "km2": {
+     "Amazônia": 3742.0,
+     "Caatinga": 76.0,
+     "Cerrado": 1898.0,
+     "Mata Atlântica": 525.0,
+     "Pampa": 84.0,
+     "Pantanal": 169.0
+    },
+    "totalKm2": 6494.0
+   },
+   {
+    "mes": "2019-05",
+    "km2": {
+     "Amazônia": 1624.0,
+     "Caatinga": 245.0,
+     "Cerrado": 4443.0,
+     "Mata Atlântica": 450.0,
+     "Pampa": 40.0,
+     "Pantanal": 131.0
+    },
+    "totalKm2": 6933.0
+   },
+   {
+    "mes": "2019-06",
+    "km2": {
+     "Amazônia": 2902.0,
+     "Caatinga": 388.0,
+     "Cerrado": 9787.0,
+     "Mata Atlântica": 1542.0,
+     "Pampa": 173.0,
+     "Pantanal": 463.0
+    },
+    "totalKm2": 15255.0
+   },
+   {
+    "mes": "2019-07",
+    "km2": {
+     "Amazônia": 7467.0,
+     "Caatinga": 1091.0,
+     "Cerrado": 14002.0,
+     "Mata Atlântica": 3360.0,
+     "Pampa": 540.0,
+     "Pantanal": 992.0
+    },
+    "totalKm2": 27452.0
+   },
+   {
+    "mes": "2019-08",
+    "km2": {
+     "Amazônia": 37225.0,
+     "Caatinga": 3214.0,
+     "Cerrado": 36318.0,
+     "Mata Atlântica": 7439.0,
+     "Pampa": 640.0,
+     "Pantanal": 4147.0
+    },
+    "totalKm2": 88983.0
+   },
+   {
+    "mes": "2019-09",
+    "km2": {
+     "Amazônia": 30506.0,
+     "Caatinga": 5936.0,
+     "Cerrado": 62692.0,
+     "Mata Atlântica": 7419.0,
+     "Pampa": 367.0,
+     "Pantanal": 6461.0
+    },
+    "totalKm2": 113381.0
+   },
+   {
+    "mes": "2019-10",
+    "km2": {
+     "Amazônia": 13215.0,
+     "Caatinga": 12581.0,
+     "Cerrado": 22844.0,
+     "Mata Atlântica": 4380.0,
+     "Pampa": 134.0,
+     "Pantanal": 5496.0
+    },
+    "totalKm2": 58650.0
+   },
+   {
+    "mes": "2019-11",
+    "km2": {
+     "Amazônia": 15992.0,
+     "Caatinga": 10297.0,
+     "Cerrado": 8035.0,
+     "Mata Atlântica": 2928.0,
+     "Pampa": 52.0,
+     "Pantanal": 2911.0
+    },
+    "totalKm2": 40215.0
+   },
+   {
+    "mes": "2019-12",
+    "km2": {
+     "Amazônia": 5166.0,
+     "Caatinga": 5712.0,
+     "Cerrado": 3850.0,
+     "Mata Atlântica": 1228.0,
+     "Pampa": 144.0,
+     "Pantanal": 530.0
+    },
+    "totalKm2": 16630.0
+   },
+   {
+    "mes": "2020-01",
+    "km2": {
+     "Amazônia": 2412.0,
+     "Caatinga": 628.0,
+     "Cerrado": 1478.0,
+     "Mata Atlântica": 1138.0,
+     "Pampa": 66.0,
+     "Pantanal": 650.0
+    },
+    "totalKm2": 6372.0
+   },
+   {
+    "mes": "2020-02",
+    "km2": {
+     "Amazônia": 3149.0,
+     "Caatinga": 143.0,
+     "Cerrado": 1374.0,
+     "Mata Atlântica": 877.0,
+     "Pampa": 138.0,
+     "Pantanal": 261.0
+    },
+    "totalKm2": 5942.0
+   },
+   {
+    "mes": "2020-03",
+    "km2": {
+     "Amazônia": 3415.0,
+     "Caatinga": 55.0,
+     "Cerrado": 2376.0,
+     "Mata Atlântica": 955.0,
+     "Pampa": 369.0,
+     "Pantanal": 1258.0
+    },
+    "totalKm2": 8428.0
+   },
+   {
+    "mes": "2020-04",
+    "km2": {
+     "Amazônia": 1618.0,
+     "Caatinga": 77.0,
+     "Cerrado": 2883.0,
+     "Mata Atlântica": 1477.0,
+     "Pampa": 966.0,
+     "Pantanal": 1409.0
+    },
+    "totalKm2": 8430.0
+   },
+   {
+    "mes": "2020-05",
+    "km2": {
+     "Amazônia": 1499.0,
+     "Caatinga": 111.0,
+     "Cerrado": 3641.0,
+     "Mata Atlântica": 1525.0,
+     "Pampa": 643.0,
+     "Pantanal": 584.0
+    },
+    "totalKm2": 8003.0
+   },
+   {
+    "mes": "2020-06",
+    "km2": {
+     "Amazônia": 3612.0,
+     "Caatinga": 181.0,
+     "Cerrado": 8403.0,
+     "Mata Atlântica": 1604.0,
+     "Pampa": 214.0,
+     "Pantanal": 881.0
+    },
+    "totalKm2": 14895.0
+   },
+   {
+    "mes": "2020-07",
+    "km2": {
+     "Amazônia": 8217.0,
+     "Caatinga": 654.0,
+     "Cerrado": 13279.0,
+     "Mata Atlântica": 2351.0,
+     "Pampa": 148.0,
+     "Pantanal": 3319.0
+    },
+    "totalKm2": 27968.0
+   },
+   {
+    "mes": "2020-08",
+    "km2": {
+     "Amazônia": 34030.0,
+     "Caatinga": 1813.0,
+     "Cerrado": 25076.0,
+     "Mata Atlântica": 6140.0,
+     "Pampa": 530.0,
+     "Pantanal": 10340.0
+    },
+    "totalKm2": 77929.0
+   },
+   {
+    "mes": "2020-09",
+    "km2": {
+     "Amazônia": 47014.0,
+     "Caatinga": 5639.0,
+     "Cerrado": 59770.0,
+     "Mata Atlântica": 7186.0,
+     "Pampa": 121.0,
+     "Pantanal": 14989.0
+    },
+    "totalKm2": 134719.0
+   },
+   {
+    "mes": "2020-10",
+    "km2": {
+     "Amazônia": 27714.0,
+     "Caatinga": 11560.0,
+     "Cerrado": 38397.0,
+     "Mata Atlântica": 4634.0,
+     "Pampa": 136.0,
+     "Pantanal": 6304.0
+    },
+    "totalKm2": 88745.0
+   },
+   {
+    "mes": "2020-11",
+    "km2": {
+     "Amazônia": 9300.0,
+     "Caatinga": 5094.0,
+     "Cerrado": 5879.0,
+     "Mata Atlântica": 1279.0,
+     "Pampa": 71.0,
+     "Pantanal": 1923.0
+    },
+    "totalKm2": 23546.0
+   },
+   {
+    "mes": "2020-12",
+    "km2": {
+     "Amazônia": 4540.0,
+     "Caatinga": 4205.0,
+     "Cerrado": 3033.0,
+     "Mata Atlântica": 735.0,
+     "Pampa": 66.0,
+     "Pantanal": 631.0
+    },
+    "totalKm2": 13210.0
+   },
+   {
+    "mes": "2021-01",
+    "km2": {
+     "Amazônia": 1245.0,
+     "Caatinga": 1143.0,
+     "Cerrado": 1501.0,
+     "Mata Atlântica": 645.0,
+     "Pampa": 84.0,
+     "Pantanal": 106.0
+    },
+    "totalKm2": 4724.0
+   },
+   {
+    "mes": "2021-02",
+    "km2": {
+     "Amazônia": 1634.0,
+     "Caatinga": 586.0,
+     "Cerrado": 1319.0,
+     "Mata Atlântica": 853.0,
+     "Pampa": 64.0,
+     "Pantanal": 84.0
+    },
+    "totalKm2": 4540.0
+   },
+   {
+    "mes": "2021-03",
+    "km2": {
+     "Amazônia": 1213.0,
+     "Caatinga": 562.0,
+     "Cerrado": 1938.0,
+     "Mata Atlântica": 1391.0,
+     "Pampa": 97.0,
+     "Pantanal": 110.0
+    },
+    "totalKm2": 5311.0
+   },
+   {
+    "mes": "2021-04",
+    "km2": {
+     "Amazônia": 1245.0,
+     "Caatinga": 292.0,
+     "Cerrado": 2162.0,
+     "Mata Atlântica": 1171.0,
+     "Pampa": 212.0,
+     "Pantanal": 188.0
+    },
+    "totalKm2": 5270.0
+   },
+   {
+    "mes": "2021-05",
+    "km2": {
+     "Amazônia": 2087.0,
+     "Caatinga": 478.0,
+     "Cerrado": 6765.0,
+     "Mata Atlântica": 1807.0,
+     "Pampa": 435.0,
+     "Pantanal": 271.0
+    },
+    "totalKm2": 11843.0
+   },
+   {
+    "mes": "2021-06",
+    "km2": {
+     "Amazônia": 4092.0,
+     "Caatinga": 1179.0,
+     "Cerrado": 10631.0,
+     "Mata Atlântica": 1079.0,
+     "Pampa": 57.0,
+     "Pantanal": 315.0
+    },
+    "totalKm2": 17353.0
+   },
+   {
+    "mes": "2021-07",
+    "km2": {
+     "Amazônia": 6718.0,
+     "Caatinga": 1631.0,
+     "Cerrado": 17318.0,
+     "Mata Atlântica": 4867.0,
+     "Pampa": 366.0,
+     "Pantanal": 1003.0
+    },
+    "totalKm2": 31903.0
+   },
+   {
+    "mes": "2021-08",
+    "km2": {
+     "Amazônia": 32232.0,
+     "Caatinga": 4153.0,
+     "Cerrado": 40671.0,
+     "Mata Atlântica": 8698.0,
+     "Pampa": 329.0,
+     "Pantanal": 3487.0
+    },
+    "totalKm2": 89570.0
+   },
+   {
+    "mes": "2021-09",
+    "km2": {
+     "Amazônia": 23764.0,
+     "Caatinga": 11519.0,
+     "Cerrado": 56896.0,
+     "Mata Atlântica": 9152.0,
+     "Pampa": 58.0,
+     "Pantanal": 7759.0
+    },
+    "totalKm2": 109148.0
+   },
+   {
+    "mes": "2021-10",
+    "km2": {
+     "Amazônia": 17186.0,
+     "Caatinga": 10432.0,
+     "Cerrado": 18251.0,
+     "Mata Atlântica": 2653.0,
+     "Pampa": 163.0,
+     "Pantanal": 5043.0
+    },
+    "totalKm2": 53728.0
+   },
+   {
+    "mes": "2021-11",
+    "km2": {
+     "Amazônia": 7270.0,
+     "Caatinga": 7912.0,
+     "Cerrado": 2858.0,
+     "Mata Atlântica": 1039.0,
+     "Pampa": 124.0,
+     "Pantanal": 516.0
+    },
+    "totalKm2": 19719.0
+   },
+   {
+    "mes": "2021-12",
+    "km2": {
+     "Amazônia": 2075.0,
+     "Caatinga": 2703.0,
+     "Cerrado": 1731.0,
+     "Mata Atlântica": 790.0,
+     "Pampa": 103.0,
+     "Pantanal": 415.0
+    },
+    "totalKm2": 7817.0
+   },
+   {
+    "mes": "2022-01",
+    "km2": {
+     "Amazônia": 2812.0,
+     "Caatinga": 280.0,
+     "Cerrado": 1674.0,
+     "Mata Atlântica": 1117.0,
+     "Pampa": 519.0,
+     "Pantanal": 172.0
+    },
+    "totalKm2": 6574.0
+   },
+   {
+    "mes": "2022-02",
+    "km2": {
+     "Amazônia": 1293.0,
+     "Caatinga": 266.0,
+     "Cerrado": 1707.0,
+     "Mata Atlântica": 852.0,
+     "Pampa": 306.0,
+     "Pantanal": 96.0
+    },
+    "totalKm2": 4520.0
+   },
+   {
+    "mes": "2022-03",
+    "km2": {
+     "Amazônia": 804.0,
+     "Caatinga": 233.0,
+     "Cerrado": 1807.0,
+     "Mata Atlântica": 622.0,
+     "Pampa": 111.0,
+     "Pantanal": 109.0
+    },
+    "totalKm2": 3686.0
+   },
+   {
+    "mes": "2022-04",
+    "km2": {
+     "Amazônia": 1159.0,
+     "Caatinga": 198.0,
+     "Cerrado": 3198.0,
+     "Mata Atlântica": 544.0,
+     "Pampa": 80.0,
+     "Pantanal": 87.0
+    },
+    "totalKm2": 5266.0
+   },
+   {
+    "mes": "2022-05",
+    "km2": {
+     "Amazônia": 3111.0,
+     "Caatinga": 369.0,
+     "Cerrado": 8293.0,
+     "Mata Atlântica": 739.0,
+     "Pampa": 75.0,
+     "Pantanal": 433.0
+    },
+    "totalKm2": 13020.0
+   },
+   {
+    "mes": "2022-06",
+    "km2": {
+     "Amazônia": 4149.0,
+     "Caatinga": 720.0,
+     "Cerrado": 11582.0,
+     "Mata Atlântica": 1103.0,
+     "Pampa": 45.0,
+     "Pantanal": 240.0
+    },
+    "totalKm2": 17839.0
+   },
+   {
+    "mes": "2022-07",
+    "km2": {
+     "Amazônia": 7536.0,
+     "Caatinga": 1067.0,
+     "Cerrado": 17561.0,
+     "Mata Atlântica": 2741.0,
+     "Pampa": 28.0,
+     "Pantanal": 502.0
+    },
+    "totalKm2": 29435.0
+   },
+   {
+    "mes": "2022-08",
+    "km2": {
+     "Amazônia": 36767.0,
+     "Caatinga": 2518.0,
+     "Cerrado": 30443.0,
+     "Mata Atlântica": 3934.0,
+     "Pampa": 93.0,
+     "Pantanal": 292.0
+    },
+    "totalKm2": 74047.0
+   },
+   {
+    "mes": "2022-09",
+    "km2": {
+     "Amazônia": 53033.0,
+     "Caatinga": 6823.0,
+     "Cerrado": 38078.0,
+     "Mata Atlântica": 3347.0,
+     "Pampa": 95.0,
+     "Pantanal": 602.0
+    },
+    "totalKm2": 101978.0
+   },
+   {
+    "mes": "2022-10",
+    "km2": {
+     "Amazônia": 20701.0,
+     "Caatinga": 12194.0,
+     "Cerrado": 26980.0,
+     "Mata Atlântica": 1986.0,
+     "Pampa": 103.0,
+     "Pantanal": 98.0
+    },
+    "totalKm2": 62062.0
+   },
+   {
+    "mes": "2022-11",
+    "km2": {
+     "Amazônia": 15560.0,
+     "Caatinga": 4370.0,
+     "Cerrado": 4081.0,
+     "Mata Atlântica": 1027.0,
+     "Pampa": 91.0,
+     "Pantanal": 388.0
+    },
+    "totalKm2": 25517.0
+   },
+   {
+    "mes": "2022-12",
+    "km2": {
+     "Amazônia": 3701.0,
+     "Caatinga": 3554.0,
+     "Cerrado": 2269.0,
+     "Mata Atlântica": 687.0,
+     "Pampa": 210.0,
+     "Pantanal": 553.0
+    },
+    "totalKm2": 10974.0
+   },
+   {
+    "mes": "2023-01",
+    "km2": {
+     "Amazônia": 1773.0,
+     "Caatinga": 862.0,
+     "Cerrado": 1102.0,
+     "Mata Atlântica": 639.0,
+     "Pampa": 145.0,
+     "Pantanal": 56.0
+    },
+    "totalKm2": 4577.0
+   },
+   {
+    "mes": "2023-02",
+    "km2": {
+     "Amazônia": 1608.0,
+     "Caatinga": 394.0,
+     "Cerrado": 1440.0,
+     "Mata Atlântica": 559.0,
+     "Pampa": 205.0,
+     "Pantanal": 17.0
+    },
+    "totalKm2": 4223.0
+   },
+   {
+    "mes": "2023-03",
+    "km2": {
+     "Amazônia": 2517.0,
+     "Caatinga": 334.0,
+     "Cerrado": 1857.0,
+     "Mata Atlântica": 944.0,
+     "Pampa": 157.0,
+     "Pantanal": 44.0
+    },
+    "totalKm2": 5853.0
+   },
+   {
+    "mes": "2023-04",
+    "km2": {
+     "Amazônia": 1847.0,
+     "Caatinga": 459.0,
+     "Cerrado": 2663.0,
+     "Mata Atlântica": 584.0,
+     "Pampa": 202.0,
+     "Pantanal": 37.0
+    },
+    "totalKm2": 5792.0
+   },
+   {
+    "mes": "2023-05",
+    "km2": {
+     "Amazônia": 2591.0,
+     "Caatinga": 405.0,
+     "Cerrado": 6609.0,
+     "Mata Atlântica": 1080.0,
+     "Pampa": 215.0,
+     "Pantanal": 87.0
+    },
+    "totalKm2": 10987.0
+   },
+   {
+    "mes": "2023-06",
+    "km2": {
+     "Amazônia": 4792.0,
+     "Caatinga": 750.0,
+     "Cerrado": 12959.0,
+     "Mata Atlântica": 1277.0,
+     "Pampa": 88.0,
+     "Pantanal": 119.0
+    },
+    "totalKm2": 19985.0
+   },
+   {
+    "mes": "2023-07",
+    "km2": {
+     "Amazônia": 7049.0,
+     "Caatinga": 1678.0,
+     "Cerrado": 17818.0,
+     "Mata Atlântica": 2421.0,
+     "Pampa": 91.0,
+     "Pantanal": 353.0
+    },
+    "totalKm2": 29410.0
+   },
+   {
+    "mes": "2023-08",
+    "km2": {
+     "Amazônia": 21913.0,
+     "Caatinga": 3737.0,
+     "Cerrado": 21133.0,
+     "Mata Atlântica": 3867.0,
+     "Pampa": 209.0,
+     "Pantanal": 290.0
+    },
+    "totalKm2": 51149.0
+   },
+   {
+    "mes": "2023-09",
+    "km2": {
+     "Amazônia": 36577.0,
+     "Caatinga": 12712.0,
+     "Cerrado": 41151.0,
+     "Mata Atlântica": 3462.0,
+     "Pampa": 19.0,
+     "Pantanal": 916.0
+    },
+    "totalKm2": 94837.0
+   },
+   {
+    "mes": "2023-10",
+    "km2": {
+     "Amazônia": 36876.0,
+     "Caatinga": 21707.0,
+     "Cerrado": 25120.0,
+     "Mata Atlântica": 2228.0,
+     "Pampa": 70.0,
+     "Pantanal": 2524.0
+    },
+    "totalKm2": 88525.0
+   },
+   {
+    "mes": "2023-11",
+    "km2": {
+     "Amazônia": 28233.0,
+     "Caatinga": 14165.0,
+     "Cerrado": 10400.0,
+     "Mata Atlântica": 2939.0,
+     "Pampa": 28.0,
+     "Pantanal": 7431.0
+    },
+    "totalKm2": 63196.0
+   },
+   {
+    "mes": "2023-12",
+    "km2": {
+     "Amazônia": 9162.0,
+     "Caatinga": 7990.0,
+     "Cerrado": 6013.0,
+     "Mata Atlântica": 2173.0,
+     "Pampa": 26.0,
+     "Pantanal": 930.0
+    },
+    "totalKm2": 26294.0
+   },
+   {
+    "mes": "2024-01",
+    "km2": {
+     "Amazônia": 4893.0,
+     "Caatinga": 1336.0,
+     "Cerrado": 2401.0,
+     "Mata Atlântica": 1012.0,
+     "Pampa": 18.0,
+     "Pantanal": 648.0
+    },
+    "totalKm2": 10308.0
+   },
+   {
+    "mes": "2024-02",
+    "km2": {
+     "Amazônia": 6566.0,
+     "Caatinga": 370.0,
+     "Cerrado": 1818.0,
+     "Mata Atlântica": 769.0,
+     "Pampa": 46.0,
+     "Pantanal": 227.0
+    },
+    "totalKm2": 9796.0
+   },
+   {
+    "mes": "2024-03",
+    "km2": {
+     "Amazônia": 6514.0,
+     "Caatinga": 427.0,
+     "Cerrado": 4691.0,
+     "Mata Atlântica": 1138.0,
+     "Pampa": 31.0,
+     "Pantanal": 315.0
+    },
+    "totalKm2": 13116.0
+   },
+   {
+    "mes": "2024-04",
+    "km2": {
+     "Amazônia": 2052.0,
+     "Caatinga": 237.0,
+     "Cerrado": 2509.0,
+     "Mata Atlântica": 682.0,
+     "Pampa": 28.0,
+     "Pantanal": 132.0
+    },
+    "totalKm2": 5640.0
+   },
+   {
+    "mes": "2024-05",
+    "km2": {
+     "Amazônia": 2676.0,
+     "Caatinga": 435.0,
+     "Cerrado": 10093.0,
+     "Mata Atlântica": 1725.0,
+     "Pampa": 8.0,
+     "Pantanal": 410.0
+    },
+    "totalKm2": 15347.0
+   },
+   {
+    "mes": "2024-06",
+    "km2": {
+     "Amazônia": 4467.0,
+     "Caatinga": 827.0,
+     "Cerrado": 17213.0,
+     "Mata Atlântica": 3720.0,
+     "Pampa": 36.0,
+     "Pantanal": 4277.0
+    },
+    "totalKm2": 30540.0
+   },
+   {
+    "mes": "2024-07",
+    "km2": {
+     "Amazônia": 12730.0,
+     "Caatinga": 1412.0,
+     "Cerrado": 17725.0,
+     "Mata Atlântica": 4398.0,
+     "Pampa": 87.0,
+     "Pantanal": 1970.0
+    },
+    "totalKm2": 38322.0
+   },
+   {
+    "mes": "2024-08",
+    "km2": {
+     "Amazônia": 48462.0,
+     "Caatinga": 3361.0,
+     "Cerrado": 48719.0,
+     "Mata Atlântica": 12283.0,
+     "Pampa": 173.0,
+     "Pantanal": 8376.0
+    },
+    "totalKm2": 121374.0
+   },
+   {
+    "mes": "2024-09",
+    "km2": {
+     "Amazônia": 62925.0,
+     "Caatinga": 8309.0,
+     "Cerrado": 80029.0,
+     "Mata Atlântica": 13044.0,
+     "Pampa": 78.0,
+     "Pantanal": 5202.0
+    },
+    "totalKm2": 169587.0
+   },
+   {
+    "mes": "2024-10",
+    "km2": {
+     "Amazônia": 31377.0,
+     "Caatinga": 21807.0,
+     "Cerrado": 29767.0,
+     "Mata Atlântica": 4797.0,
+     "Pampa": 55.0,
+     "Pantanal": 5402.0
+    },
+    "totalKm2": 93205.0
+   },
+   {
+    "mes": "2024-11",
+    "km2": {
+     "Amazônia": 29709.0,
+     "Caatinga": 17636.0,
+     "Cerrado": 9217.0,
+     "Mata Atlântica": 1485.0,
+     "Pampa": 43.0,
+     "Pantanal": 381.0
+    },
+    "totalKm2": 58471.0
+   },
+   {
+    "mes": "2024-12",
+    "km2": {
+     "Amazônia": 11611.0,
+     "Caatinga": 9944.0,
+     "Cerrado": 4030.0,
+     "Mata Atlântica": 1689.0,
+     "Pampa": 33.0,
+     "Pantanal": 56.0
+    },
+    "totalKm2": 27363.0
+   },
+   {
+    "mes": "2025-01",
+    "km2": {
+     "Amazônia": 2834.0,
+     "Caatinga": 1700.0,
+     "Cerrado": 1232.0,
+     "Mata Atlântica": 1083.0,
+     "Pampa": 118.0,
+     "Pantanal": 94.0
+    },
+    "totalKm2": 7061.0
+   },
+   {
+    "mes": "2025-02",
+    "km2": {
+     "Amazônia": 771.0,
+     "Caatinga": 497.0,
+     "Cerrado": 1419.0,
+     "Mata Atlântica": 1005.0,
+     "Pampa": 108.0,
+     "Pantanal": 38.0
+    },
+    "totalKm2": 3838.0
+   },
+   {
+    "mes": "2025-03",
+    "km2": {
+     "Amazônia": 1617.0,
+     "Caatinga": 937.0,
+     "Cerrado": 2079.0,
+     "Mata Atlântica": 963.0,
+     "Pampa": 125.0,
+     "Pantanal": 24.0
+    },
+    "totalKm2": 5745.0
+   },
+   {
+    "mes": "2025-04",
+    "km2": {
+     "Amazônia": 595.0,
+     "Caatinga": 1406.0,
+     "Cerrado": 1825.0,
+     "Mata Atlântica": 693.0,
+     "Pampa": 238.0,
+     "Pantanal": 19.0
+    },
+    "totalKm2": 4776.0
+   },
+   {
+    "mes": "2025-05",
+    "km2": {
+     "Amazônia": 1417.0,
+     "Caatinga": 993.0,
+     "Cerrado": 6613.0,
+     "Mata Atlântica": 687.0,
+     "Pampa": 110.0,
+     "Pantanal": 40.0
+    },
+    "totalKm2": 9860.0
+   },
+   {
+    "mes": "2025-06",
+    "km2": {
+     "Amazônia": 3927.0,
+     "Caatinga": 1776.0,
+     "Cerrado": 15683.0,
+     "Mata Atlântica": 646.0,
+     "Pampa": 16.0,
+     "Pantanal": 70.0
+    },
+    "totalKm2": 22118.0
+   },
+   {
+    "mes": "2025-07",
+    "km2": {
+     "Amazônia": 3578.0,
+     "Caatinga": 2980.0,
+     "Cerrado": 18172.0,
+     "Mata Atlântica": 2628.0,
+     "Pampa": 72.0,
+     "Pantanal": 73.0
+    },
+    "totalKm2": 27503.0
+   },
+   {
+    "mes": "2025-08",
+    "km2": {
+     "Amazônia": 10179.0,
+     "Caatinga": 4991.0,
+     "Cerrado": 33404.0,
+     "Mata Atlântica": 5391.0,
+     "Pampa": 134.0,
+     "Pantanal": 188.0
+    },
+    "totalKm2": 54287.0
+   },
+   {
+    "mes": "2025-09",
+    "km2": {
+     "Amazônia": 14536.0,
+     "Caatinga": 14705.0,
+     "Cerrado": 60976.0,
+     "Mata Atlântica": 7876.0,
+     "Pampa": 77.0,
+     "Pantanal": 553.0
+    },
+    "totalKm2": 98723.0
+   },
+   {
+    "mes": "2025-10",
+    "km2": {
+     "Amazônia": 18931.0,
+     "Caatinga": 30972.0,
+     "Cerrado": 62121.0,
+     "Mata Atlântica": 6514.0,
+     "Pampa": 57.0,
+     "Pantanal": 736.0
+    },
+    "totalKm2": 119331.0
+   },
+   {
+    "mes": "2025-11",
+    "km2": {
+     "Amazônia": 26658.0,
+     "Caatinga": 24934.0,
+     "Cerrado": 19505.0,
+     "Mata Atlântica": 1866.0,
+     "Pampa": 41.0,
+     "Pantanal": 330.0
+    },
+    "totalKm2": 73334.0
+   },
+   {
+    "mes": "2025-12",
+    "km2": {
+     "Amazônia": 10966.0,
+     "Caatinga": 9411.0,
+     "Cerrado": 4178.0,
+     "Mata Atlântica": 1882.0,
+     "Pampa": 60.0,
+     "Pantanal": 285.0
+    },
+    "totalKm2": 26782.0
+   },
+   {
+    "mes": "2026-01",
+    "km2": {
+     "Amazônia": 3821.0,
+     "Caatinga": 3107.0,
+     "Cerrado": 1935.0,
+     "Mata Atlântica": 1747.0,
+     "Pampa": 27.0,
+     "Pantanal": 427.0
+    },
+    "totalKm2": 11064.0
+   },
+   {
+    "mes": "2026-02",
+    "km2": {
+     "Amazônia": 2767.0,
+     "Caatinga": 961.0,
+     "Cerrado": 650.0,
+     "Mata Atlântica": 966.0,
+     "Pampa": 60.0,
+     "Pantanal": 50.0
+    },
+    "totalKm2": 5454.0
+   },
+   {
+    "mes": "2026-03",
+    "km2": {
+     "Amazônia": 2788.0,
+     "Caatinga": 503.0,
+     "Cerrado": 1011.0,
+     "Mata Atlântica": 1214.0,
+     "Pampa": 58.0,
+     "Pantanal": 21.0
+    },
+    "totalKm2": 5595.0
+   },
+   {
+    "mes": "2026-04",
+    "km2": {
+     "Amazônia": 932.0,
+     "Caatinga": 630.0,
+     "Cerrado": 2768.0,
+     "Mata Atlântica": 802.0,
+     "Pampa": 38.0,
+     "Pantanal": 82.0
+    },
+    "totalKm2": 5252.0
+   },
+   {
+    "mes": "2026-05",
+    "km2": {
+     "Amazônia": 2464.0,
+     "Caatinga": 912.0,
+     "Cerrado": 7584.0,
+     "Mata Atlântica": 360.0,
+     "Pampa": 33.0,
+     "Pantanal": 62.0
+    },
+    "totalKm2": 11415.0
+   },
+   {
+    "mes": "2026-06",
+    "km2": {
+     "Amazônia": 3366.0,
+     "Caatinga": 961.0,
+     "Cerrado": 8209.0,
+     "Mata Atlântica": 521.0,
+     "Pampa": 10.0,
+     "Pantanal": 55.0
+    },
+    "totalKm2": 13122.0
+   },
+   {
+    "mes": "2026-07",
+    "km2": {
+     "Amazônia": 3673.0,
+     "Caatinga": 2255.0,
+     "Cerrado": 12259.0,
+     "Mata Atlântica": 1079.0,
+     "Pampa": 79.0,
+     "Pantanal": 83.0
+    },
+    "totalKm2": 19428.0
+   },
+   {
+    "mes": "2026-08",
+    "km2": {
+     "Amazônia": 21292.0,
+     "Caatinga": 5481.0,
+     "Cerrado": 34334.0,
+     "Mata Atlântica": 2052.0,
+     "Pampa": 26.0,
+     "Pantanal": 303.0
+    },
+    "totalKm2": 63488.0
+   },
+   {
+    "mes": "2026-09",
+    "km2": {
+     "Amazônia": 39054.0,
+     "Caatinga": 13173.0,
+     "Cerrado": 44768.0,
+     "Mata Atlântica": 3875.0,
+     "Pampa": 27.0,
+     "Pantanal": 459.0
+    },
+    "totalKm2": 101356.0
+   }
+  ],
+  "anual": [
+   {
+    "ano": 2002,
+    "km2": {
+     "Amazônia": 146334.0,
+     "Caatinga": 52252.0,
+     "Cerrado": 129860.0,
+     "Mata Atlântica": 23623.0,
+     "Pampa": 391.0,
+     "Pantanal": 21107.0
+    },
+    "totalKm2": 373567.0,
+    "parcial": true,
+    "meses": 4
+   },
+   {
+    "ano": 2003,
+    "km2": {
+     "Amazônia": 219640.0,
+     "Caatinga": 68458.0,
+     "Cerrado": 196280.0,
+     "Mata Atlântica": 70731.0,
+     "Pampa": 3015.0,
+     "Pantanal": 9046.0
+    },
+    "totalKm2": 567170.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2004,
+    "km2": {
+     "Amazônia": 269088.0,
+     "Caatinga": 48811.0,
+     "Cerrado": 225350.0,
+     "Mata Atlântica": 41454.0,
+     "Pampa": 2667.0,
+     "Pantanal": 20297.0
+    },
+    "totalKm2": 607667.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2005,
+    "km2": {
+     "Amazônia": 272908.0,
+     "Caatinga": 55812.0,
+     "Cerrado": 207638.0,
+     "Mata Atlântica": 39032.0,
+     "Pampa": 1952.0,
+     "Pantanal": 28039.0
+    },
+    "totalKm2": 605381.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2006,
+    "km2": {
+     "Amazônia": 185167.0,
+     "Caatinga": 36939.0,
+     "Cerrado": 137495.0,
+     "Mata Atlântica": 45612.0,
+     "Pampa": 2285.0,
+     "Pantanal": 7983.0
+    },
+    "totalKm2": 415481.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2007,
+    "km2": {
+     "Amazônia": 245438.0,
+     "Caatinga": 57737.0,
+     "Cerrado": 351124.0,
+     "Mata Atlântica": 52891.0,
+     "Pampa": 1620.0,
+     "Pantanal": 19937.0
+    },
+    "totalKm2": 728747.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2008,
+    "km2": {
+     "Amazônia": 143069.0,
+     "Caatinga": 47777.0,
+     "Cerrado": 154679.0,
+     "Mata Atlântica": 39539.0,
+     "Pampa": 1801.0,
+     "Pantanal": 11597.0
+    },
+    "totalKm2": 398462.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2009,
+    "km2": {
+     "Amazônia": 117429.0,
+     "Caatinga": 32060.0,
+     "Cerrado": 88300.0,
+     "Mata Atlântica": 26481.0,
+     "Pampa": 2177.0,
+     "Pantanal": 14082.0
+    },
+    "totalKm2": 280529.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2010,
+    "km2": {
+     "Amazônia": 186025.0,
+     "Caatinga": 46270.0,
+     "Cerrado": 335544.0,
+     "Mata Atlântica": 41435.0,
+     "Pampa": 1483.0,
+     "Pantanal": 18479.0
+    },
+    "totalKm2": 629236.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2011,
+    "km2": {
+     "Amazônia": 86978.0,
+     "Caatinga": 29435.0,
+     "Cerrado": 155722.0,
+     "Mata Atlântica": 34632.0,
+     "Pampa": 1463.0,
+     "Pantanal": 7985.0
+    },
+    "totalKm2": 316215.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2012,
+    "km2": {
+     "Amazônia": 126179.0,
+     "Caatinga": 40955.0,
+     "Cerrado": 257856.0,
+     "Mata Atlântica": 29544.0,
+     "Pampa": 2148.0,
+     "Pantanal": 14800.0
+    },
+    "totalKm2": 471482.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2013,
+    "km2": {
+     "Amazônia": 82576.0,
+     "Caatinga": 24135.0,
+     "Cerrado": 123080.0,
+     "Mata Atlântica": 21988.0,
+     "Pampa": 1296.0,
+     "Pantanal": 7807.0
+    },
+    "totalKm2": 260882.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2014,
+    "km2": {
+     "Amazônia": 120520.0,
+     "Caatinga": 23460.0,
+     "Cerrado": 184784.0,
+     "Mata Atlântica": 28124.0,
+     "Pampa": 1123.0,
+     "Pantanal": 3230.0
+    },
+    "totalKm2": 361241.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2015,
+    "km2": {
+     "Amazônia": 173275.0,
+     "Caatinga": 37542.0,
+     "Cerrado": 203517.0,
+     "Mata Atlântica": 27134.0,
+     "Pampa": 1469.0,
+     "Pantanal": 9686.0
+    },
+    "totalKm2": 452623.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2016,
+    "km2": {
+     "Amazônia": 131796.0,
+     "Caatinga": 30444.0,
+     "Cerrado": 163340.0,
+     "Mata Atlântica": 31298.0,
+     "Pampa": 2192.0,
+     "Pantanal": 12960.0
+    },
+    "totalKm2": 372030.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2017,
+    "km2": {
+     "Amazônia": 163362.0,
+     "Caatinga": 25214.0,
+     "Cerrado": 178534.0,
+     "Mata Atlântica": 28313.0,
+     "Pampa": 1780.0,
+     "Pantanal": 11738.0
+    },
+    "totalKm2": 408941.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2018,
+    "km2": {
+     "Amazônia": 95845.0,
+     "Caatinga": 24318.0,
+     "Cerrado": 101717.0,
+     "Mata Atlântica": 21067.0,
+     "Pampa": 1230.0,
+     "Pantanal": 3840.0
+    },
+    "totalKm2": 248017.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2019,
+    "km2": {
+     "Amazônia": 131458.0,
+     "Caatinga": 40424.0,
+     "Cerrado": 169458.0,
+     "Mata Atlântica": 32692.0,
+     "Pampa": 2391.0,
+     "Pantanal": 22982.0
+    },
+    "totalKm2": 399405.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2020,
+    "km2": {
+     "Amazônia": 146520.0,
+     "Caatinga": 30160.0,
+     "Cerrado": 165589.0,
+     "Mata Atlântica": 29901.0,
+     "Pampa": 3468.0,
+     "Pantanal": 42549.0
+    },
+    "totalKm2": 418187.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2021,
+    "km2": {
+     "Amazônia": 100761.0,
+     "Caatinga": 42590.0,
+     "Cerrado": 162041.0,
+     "Mata Atlântica": 34145.0,
+     "Pampa": 2092.0,
+     "Pantanal": 19297.0
+    },
+    "totalKm2": 360926.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2022,
+    "km2": {
+     "Amazônia": 150626.0,
+     "Caatinga": 32592.0,
+     "Cerrado": 147673.0,
+     "Mata Atlântica": 18699.0,
+     "Pampa": 1756.0,
+     "Pantanal": 3572.0
+    },
+    "totalKm2": 354918.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2023,
+    "km2": {
+     "Amazônia": 154938.0,
+     "Caatinga": 65193.0,
+     "Cerrado": 148265.0,
+     "Mata Atlântica": 22173.0,
+     "Pampa": 1455.0,
+     "Pantanal": 12804.0
+    },
+    "totalKm2": 404828.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2024,
+    "km2": {
+     "Amazônia": 223982.0,
+     "Caatinga": 66101.0,
+     "Cerrado": 228212.0,
+     "Mata Atlântica": 46742.0,
+     "Pampa": 636.0,
+     "Pantanal": 27396.0
+    },
+    "totalKm2": 593069.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2025,
+    "km2": {
+     "Amazônia": 96009.0,
+     "Caatinga": 95302.0,
+     "Cerrado": 227207.0,
+     "Mata Atlântica": 31234.0,
+     "Pampa": 1156.0,
+     "Pantanal": 2450.0
+    },
+    "totalKm2": 453358.0,
+    "parcial": false,
+    "meses": 12
+   },
+   {
+    "ano": 2026,
+    "km2": {
+     "Amazônia": 80157.0,
+     "Caatinga": 27983.0,
+     "Cerrado": 113518.0,
+     "Mata Atlântica": 12616.0,
+     "Pampa": 358.0,
+     "Pantanal": 1542.0
+    },
+    "totalKm2": 236174.0,
+    "parcial": true,
+    "meses": 9
+   }
+  ],
+  "ressalvas": [
+   "Estimativa ampla em resolução de 1 km; o INPE recomenda produtos de 30 m para precisão geográfica.",
+   "Sem recorte por UF no CSV; por UF exigiria cruzar shapefile mensal com a malha estadual.",
+   "Não comparável diretamente com MapBiomas Fogo ou MCD64 (métodos e resoluções diferentes).",
+   "Coleção 2 (fev/2026) reprocessou toda a série; números diferem da Coleção 1."
+  ]
+ }
+}

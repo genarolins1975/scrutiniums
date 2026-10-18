@@ -32,8 +32,8 @@ export type Painel = {
   titulo: string;
   observatorio: ObservatorioId;
   colecao: string;
-  /** Domínio de origem, que mantém a rota, a gold e o cabeçalho. */
-  origem: DominioId;
+  /** Domínio de origem, que mantém a rota, a gold e o cabeçalho; null quando o próprio observatório mantém o painel (Território e Clima). */
+  origem: DominioId | null;
   /** Outro painel que trata do mesmo tema; a escolha do dono depende de comparar os conteúdos. */
   duplicataDe?: string;
 };
@@ -124,6 +124,8 @@ export const OBSERVATORIOS: Observatorio[] = [
     colecoes: [
       { id: "desmatamento", nome: "Desmatamento e emissões", href: "/agronegocio/ambiente" },
       { id: "cidades-clima", nome: "Cidades e clima", href: "/eficiencia-estatal/meio-ambiente-clima" },
+      { id: "fogo", nome: "Fogo e queimadas", href: "/territorio/queimadas" },
+      { id: "desastres", nome: "Desastres", href: "/territorio/desastres" },
     ],
   },
 ];
