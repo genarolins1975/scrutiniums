@@ -124,7 +124,10 @@ export type RevisaoLinha = {
 export type Revisoes = {
   capturas_diaria: string[];
   total: number;
+  /** Pares (subsistema, dia) com revisão. */
   dias_revisados: number;
+  /** Datas distintas com revisão; ausente nas golds anteriores a 18/10/2026. */
+  datas_revisadas?: number;
   /** Revisões com valor anterior positivo, as que entram na mediana e no máximo. */
   revisoes_com_percentual: number;
   /** Mediana verdadeira (n par: média dos dois valores centrais), sem arredondar as linhas. */

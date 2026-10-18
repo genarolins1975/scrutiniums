@@ -637,6 +637,15 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
     const ptBR = (v: number, casas: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
     expect(t).toContain(`mediana de ${ptBR(rv.mediana_abs_pct!, 4)}% e máximo de ${ptBR(rv.max_abs_pct!, 2)}%`);
     expect(rv.dias_revisados).toBe(new Set(todas.map((l) => `${l.serie.split(".").pop()}|${l.ref}`)).size);
+    // alcance: "dias" no texto são datas distintas; os pares (subsistema, dia) aparecem com esse nome, nunca como dias
+    const datas = new Set(todas.map((l) => l.ref)).size;
+    const comDatas = { ...clone(rv), datas_revisadas: datas };
+    expect(textoRevisoes(comDatas)).toContain(`em ${datas === 1 ? "1 data" : `${datas} datas`} (`);
+    expect(textoRevisoes(comDatas)).toMatch(/combinaç(ão|ões) de subsistema e dia\)/);
+    const semDatas = { ...clone(rv), datas_revisadas: undefined };
+    expect(textoRevisoes(semDatas)).toMatch(/em [\d.]+ combinaç(ão|ões) de subsistema e dia/);
+    for (const x of [comDatas, semDatas]) expect(textoRevisoes(x)).not.toMatch(/revisados? em [\d.]+ dias?\b/);
+    if (rv.datas_revisadas != null) expect(rv.datas_revisadas).toBe(datas);
     // as linhas da gold são as mais recentes do CSV, e a contagem das que ficaram só no CSV fecha
     const chave = (sm: string, dia: string, cap: string) => `${sm}|${dia}|${cap}`;
     const doCsv = todas.map((l) => ({ k: chave(l.serie.split(".").pop()!, l.ref, l.capturado_em), cap: l.capturado_em, dia: l.ref }));

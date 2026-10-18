@@ -221,8 +221,17 @@ jobs:
             exit 0
           fi
           git commit -m "Previsão do PLD: rodada de $(TZ=America/Sao_Paulo date +%d/%m/%Y) ($MODO)"
+          # o que a rodada não publica (metricas.json, arquivos.json e o manifesto, reescritos por
+          # executar_modulo, e qualquer outro derivado) sai da árvore antes do rebase: com eles, o
+          # pull --rebase recusava ("You have unstaged changes") e nenhuma das 84 execuções de 02 a
+          # 18/10/2026 registrou a rodada. Rebase em conflito é abortado antes da tentativa seguinte.
+          git stash push --include-untracked --quiet -m "derivados que a rodada não publica"
           for tentativa in 1 2 3 4 5; do
-            git pull --rebase origin main && git push && exit 0
+            if git pull --rebase origin main; then
+              git push && exit 0
+            else
+              git rebase --abort 2>/dev/null || true
+            fi
             sleep $((tentativa * 5))
           done
           echo "::error::não foi possível registrar a rodada após 5 tentativas"
