@@ -4,7 +4,8 @@ name: Atualizar dados do Setor Elétrico
 # CCEE direta (acesso automatizado instável; o seed versionado com sha256 garante o
 # PLD até a última captura), reconstrói a gold em public/energia e publica.
 # O histórico de vintages (silver) fica no cache do Actions e, como cópia durável,
-# num asset da release "energia-estado"; sem os dois, o alerta abre issue. Separado do workflow do Crédito: falha de um domínio
+# na release "energia-estado", junto do bronze vigente em partes menores que 2 GB;
+# sem os dois, o alerta abre issue. Separado do workflow do Crédito: falha de um domínio
 # não atrasa o outro. O ONS atualiza os conjuntos às 12h e às 19h de Brasília.
 on:
   schedule:
@@ -73,7 +74,30 @@ jobs:
           if gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver-familias.tar.gz" --dir /tmp; then
             tar -xzf /tmp/energia-silver-familias.tar.gz -C data/energia/silver
           fi
+          # Uma falha posterior no bronze não significa perda do silver já restaurado.
           echo "restaurado=sim" >> "$GITHUB_OUTPUT"
+          # A release anterior à correção da issue #116 pode conter só o silver.
+          # Nesse primeiro ciclo, os coletores recapturam órfãs e os blocos opcionais
+          # sem bronze ficam indisponíveis com motivo (nunca zero nem data de hoje).
+          mkdir -p /tmp/energia-bronze-restaurado
+          if gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-bronze-manifesto.json" --dir /tmp/energia-bronze-restaurado; then
+            python3 - <<'PYBRONZE' > /tmp/energia-bronze-partes.txt
+          import json
+          from pathlib import Path
+          doc = json.loads(Path("/tmp/energia-bronze-restaurado/energia-bronze-manifesto.json").read_text())
+          for parte in doc["partes"]:
+              nome = parte["nome"]
+              if Path(nome).name != nome or not nome.startswith("energia-bronze.parte-"):
+                  raise ValueError(f"parte de bronze inválida: {nome}")
+              print(nome)
+          PYBRONZE
+            while IFS= read -r parte; do
+              gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "$parte" --dir /tmp/energia-bronze-restaurado
+            done < /tmp/energia-bronze-partes.txt
+            python3 -m pipeline.energia.estado_bronze restaurar /tmp/energia-bronze-restaurado
+          else
+            echo "::warning::release sem bronze durável; recursos órfãos serão recapturados ou declarados indisponíveis"
+          fi
 
       - name: Alertar perda do histórico de vintages
         if: steps.restaurar.outputs.cache-matched-key == '' && steps.duravel.outputs.restaurado != 'sim'
@@ -121,7 +145,7 @@ jobs:
       # GitHub despeja o que foi acessado há mais tempo, o estado do crédito, em 03/10 e
       # 15/10/2026. A anterior sai ANTES de gravar, e só quando o estado completo foi
       # restaurado: o que será gravado contém tudo o que ela tinha. Se a gravação falhar,
-      # o silver volta da release energia-estado.
+      # o silver e o bronze vigente voltam da release energia-estado (issue #116).
       - name: Liberar a cópia anterior do estado antes de gravar
         if: always() && steps.restaurar.outputs.cache-matched-key != ''
         continue-on-error: true
@@ -154,12 +178,15 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: scripts/podar_cache.sh energia-estado- 1
 
-      - name: Cópia durável do silver (release energia-estado)
+      - name: Cópia durável do silver e do bronze vigente (release energia-estado)
         if: steps.pipeline.outcome == 'success'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # Não entra em data/energia nem no cache do Actions. Cada asset de bronze
+          # tem no máximo 1.900.000.000 bytes; o manifesto é publicado por último.
+          python3 -m pipeline.energia.estado_bronze guardar /tmp/energia-bronze-duravel
           gzip -c data/energia/silver/energia.db > /tmp/energia-silver.db.gz
           FAMILIAS=$(cd data/energia/silver && ls *.db 2>/dev/null | grep -v '^energia.db$' || true)
           if [ -n "$FAMILIAS" ]; then
@@ -167,11 +194,23 @@ jobs:
           fi
           gh release view energia-estado --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
             gh release create energia-estado --repo "$GITHUB_REPOSITORY" --title "Estado do pipeline de energia" \
-              --notes "Cópia durável do silver com vintages (uso interno do pipeline). Não é dado publicado." --prerelease
+              --notes "Cópia durável do silver com vintages e do bronze vigente (uso interno). Não é dado publicado." --prerelease
           gh release upload energia-estado /tmp/energia-silver.db.gz --repo "$GITHUB_REPOSITORY" --clobber
           if [ -f /tmp/energia-silver-familias.tar.gz ]; then
             gh release upload energia-estado /tmp/energia-silver-familias.tar.gz --repo "$GITHUB_REPOSITORY" --clobber
           fi
+          for parte in /tmp/energia-bronze-duravel/energia-bronze.parte-*; do
+            gh release upload energia-estado "$parte" --repo "$GITHUB_REPOSITORY" --clobber
+          done
+          gh release upload energia-estado /tmp/energia-bronze-duravel/energia-bronze-manifesto.json --repo "$GITHUB_REPOSITORY" --clobber
+          # Depois do manifesto novo, as partes antigas deixam de ser necessárias.
+          gh release view energia-estado --repo "$GITHUB_REPOSITORY" --json assets \
+            --jq '.assets[].name | select(startswith("energia-bronze.parte-"))' > /tmp/energia-bronze-assets.txt
+          while IFS= read -r parte; do
+            if [ ! -f "/tmp/energia-bronze-duravel/$parte" ]; then
+              gh release delete-asset energia-estado "$parte" --repo "$GITHUB_REPOSITORY" --yes
+            fi
+          done < /tmp/energia-bronze-assets.txt
 
       - name: Alertar regressão
         if: steps.pipeline.outputs.regressoes != ''
@@ -200,6 +239,9 @@ jobs:
         continue-on-error: true
         run: |
           npm ci
+          # Issue #116: em 18/10/2026 os testes também retiveram a publicação
+          # porque o executável do Chromium não existia. Mesma instalação do CI.
+          npx --no-install playwright install --with-deps chromium
           node scripts/minify-obs.mjs
           npx vitest run
           python3 -m unittest discover -s pipeline/tests -t .

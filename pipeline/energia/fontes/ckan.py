@@ -100,7 +100,7 @@ def baixar_recurso(con, *, orgao, dataset, recurso, url, publicado_em=None, ext=
     agora = agora or datetime.now(timezone.utc)
     publicado_em = _normaliza_publicacao(publicado_em)
     ultima = base.ultima_vintage(con, dataset, recurso)
-    if ultima and not forcar:
+    if base.bronze_disponivel(ultima) and not forcar:
         ok_em = _ultima_coleta_ok(con, dataset, recurso)
         mesma_publicacao = (publicado_em is None) or (ultima.get("publicado_em") == publicado_em)
         if ok_em and mesma_publicacao and agora - ok_em < timedelta(days=max_idade_dias):

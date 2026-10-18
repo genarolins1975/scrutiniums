@@ -2751,11 +2751,13 @@ def bloqueios(con, hoje):
     silver (captura, sha256) e as alternativas tentadas."""
     out = []
     pastas = []
+    disponiveis = base.vintages_com_bronze(con, DS_MME)
     for ano in range(ANO_PASTAS_MME, hoje.year):
-        v = base.ultima_vintage(con, DS_MME, f"pasta-{ano}")
+        v = disponiveis.get(f"pasta-{ano}")
         if not v:
             pastas.append({"ano": str(ano), "url": f"{URL_MME}/{ano}", "capturado_em": None, "sha256": None,
-                           "pdfs_encontrados": None, "redireciona_login": None})
+                           "pdfs_encontrados": None, "redireciona_login": None,
+                           "motivo": "página não relida: bronze ausente ou ainda não coletado"})
             continue
         with base.abre_bronze(v["arquivo"]) as f:
             html = f.read().decode("utf-8", errors="replace")
@@ -2773,7 +2775,8 @@ def bloqueios(con, hoje):
                       "observacao": (f"Acesso restrito por login: as páginas das pastas de {', '.join(restritas)} devolvem o formulário de login do portal "
                                      "(acl_users/credentials_cookie_auth/require_login, com came_from apontando para a própria pasta), sem nenhum PDF; "
                                      "o acesso não foi tentado por outro caminho. A página índice lista as pastas de 2011 a 2022 (formato antigo) e a de 2026.")
-                      if restritas else "As páginas das pastas anteriores não listam PDF de boletim.",
+                      if restritas else ("Páginas não relidas por ausência do bronze; quantidade de PDFs e exigência de login desconhecidas."
+                                         if any(p.get("motivo") for p in pastas) else "As páginas das pastas anteriores não listam PDF de boletim."),
                       "pastas": pastas},
         "alternativas": [f"Boletim especial 'Consolidação {hoje.year - 1}' do MME (página pública, PDF capturado"
                          + (f" em {consol['capturado_em']}" if consol else "") + "): integrado para a conferência anual do ESS e da participação do ACL",
@@ -2997,8 +3000,14 @@ def construir(con, ctx):
 
     per_ag, nota_ag = periodo_de(("agentes por classe", agentes["agentes_por_classe_mensal"]), ("lista de associados", agentes["associados_fluxos"]),
                                  ("parcelas de carga", agentes["parcelas_mensal"]))
+    # Sem resposta da CCEE, periodo_de não produz uma nota. A ausência não vira
+    # string numérica nem impede a publicação dos outros blocos (issue #116).
+    if nota_ag is None:
+        nota_ag = "Séries mensais de agentes, associados e parcelas indisponíveis."
+        per_ag = {"inicio": None, "fim": None}
     desl = agentes["desligamentos_por_ano"]
-    cob_ag = {"inicio": min([per_ag["inicio"]] + [f"{x['ano']}-01" for x in desl]), "fim": per_ag["fim"]}
+    cob_ag = {"inicio": min(([per_ag["inicio"]] if per_ag["inicio"] else []) + [f"{x['ano']}-01" for x in desl], default=None),
+              "fim": per_ag["fim"] or max((x["ultima_data"][:7] for x in desl), default=None)}
     if desl:
         nota_ag += (f" Desligamentos: {desl[0]['ano']} a {desl[-1]['ano']} (ano {desl[-1]['ano']} parcial, até {desl[-1]['ultima_data']})."
                     if not desl[-1]["completo"] else f" Desligamentos: {desl[0]['ano']} a {desl[-1]['ano']}.")

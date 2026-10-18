@@ -316,7 +316,7 @@ def _baixa_conjunto(con, cj, baixar_meta=http_get, baixador=http_download, agora
         achados.add(arq)
         ultima = base.ultima_vintage(con, ds, arq)
         ok_em = _ultima_coleta_ok(con, ds, arq)
-        if ultima and ok_em and agora - ok_em < timedelta(days=cj["intervalo_dias"]):
+        if base.bronze_disponivel(ultima) and ok_em and agora - ok_em < timedelta(days=cj["intervalo_dias"]):
             st["puladas"] += 1
             continue
         ext = arq.rsplit(".", 1)[-1].lower()
@@ -365,7 +365,7 @@ def _baixa_rede_epe(con, baixar=http_get, agora=None, intervalo_dias=30):
         rec = f"linhas-transmissao-{camada}.geojson"
         ultima = base.ultima_vintage(con, DS_REDE_EPE, rec)
         ok_em = _ultima_coleta_ok(con, DS_REDE_EPE, rec)
-        if ultima and ok_em and agora - ok_em < timedelta(days=intervalo_dias):
+        if base.bronze_disponivel(ultima) and ok_em and agora - ok_em < timedelta(days=intervalo_dias):
             st["puladas"] += 1
             continue
         try:
@@ -775,6 +775,8 @@ def _pct(num, den, casas=1):
 
 def _milhar(v, casas=0):
     """1234567.8 → '1.234.568' (casas=0) ou '1.234.567,8': formato brasileiro do texto exibido."""
+    if v is None:
+        return "indisponível"
     txt = f"{v:,.{casas}f}"
     return txt.replace(",", "§").replace(".", ",").replace("§", ".")
 
@@ -1371,17 +1373,22 @@ def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, 
         por_cron[u.get("situacao_cronograma") or "(vazio)"]["usinas"] += 1
         por_cron[u.get("situacao_cronograma") or "(vazio)"]["kw"] += u.get("kw_outorgado") or 0
     # ---- histórico da fonte (Parquet): confiabilidade e revisões
-    lib_tab = ax.tabela_liberacoes(lib_idx)
-    ugm = ax.ug_mensal(pf_ug, mensais)
-    n_antes = ugm.num_rows
-    # unidades de usina com potência fora de escala na fotografia (erro da fonte) não pesam
-    ugm = ax.exclui_pares(ugm, {p for p in pares_atipicos if p[0] in set(mensais)})
-    ugs_atipicas_excluidas = n_antes - ugm.num_rows
-    conf = ax.confiabilidade_previsoes(ugm, lib_tab, mensais, data_lib, horizonte_dias=365, folga_dias=15)
-    blocos_hist = ax.datas_em_bloco(ugm, mensais)
-    desl = ax.deslizamento_previsoes(ugm, mensais, meses=MESES_JANELA,
-                                     blocos={d: set(v) for d, v in blocos_hist.items()})
-    del ugm
+    if pf_ug is not None:
+        lib_tab = ax.tabela_liberacoes(lib_idx)
+        ugm = ax.ug_mensal(pf_ug, mensais)
+        n_antes = ugm.num_rows
+        # unidades de usina com potência fora de escala na fotografia (erro da fonte) não pesam
+        ugm = ax.exclui_pares(ugm, {p for p in pares_atipicos if p[0] in set(mensais)})
+        ugs_atipicas_excluidas = n_antes - ugm.num_rows
+        conf = ax.confiabilidade_previsoes(ugm, lib_tab, mensais, data_lib, horizonte_dias=365, folga_dias=15)
+        blocos_hist = ax.datas_em_bloco(ugm, mensais)
+        desl = ax.deslizamento_previsoes(ugm, mensais, meses=MESES_JANELA,
+                                         blocos={d: set(v) for d, v in blocos_hist.items()})
+        del ugm
+    else:
+        conf, blocos_hist, desl = [], {}, []
+        ugs_atipicas_excluidas = None
+
     confiab = [{"ralie": x["ralie"], "fim_janela": x["fim_janela"], "ugs": x["ugs"],
                 "mw_prometido": _r(_mw(x["kw_prometido"])), "mw_no_prazo": _r(_mw(x["kw_no_prazo"])),
                 "mw_depois": _r(_mw(x["kw_depois"])), "mw_nao_liberado": _r(_mw(x["kw_nao_liberado"])),
@@ -1452,7 +1459,7 @@ def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, 
            GROUP BY chave HAVING COUNT(DISTINCT valor) > 1)""", (DS_RALIE,)).fetchone()[0]
     return {
         "data_ralie": data_ralie,
-        "historico_fonte": {"primeira_fotografia": None, "fotografias": None, "fotografias_mensais": len(mensais),
+        "historico_fonte": {"primeira_fotografia": None, "fotografias": None, "fotografias_mensais": len(mensais) if pf_ug is not None else None,
                             "ugs_atipicas_excluidas_das_fotografias_mensais": ugs_atipicas_excluidas},
         "historico_proprio": {"primeira_captura": caps[0][0] if caps else None, "capturas": len(caps),
                               "ugs_com_previsao_revisada": revisadas},
@@ -2161,10 +2168,10 @@ def _bloco_cenarios(con, pde_obs, siga, ralie_us, ralie_ug, html_pagina, vint_pd
 
 # ================================================================== gold
 
-def _series(con, ds, prefixo):
+def _series(con, ds, prefixo, ate_captura=None):
     rows = con.execute("SELECT DISTINCT serie FROM observacoes WHERE dataset=? AND serie LIKE ?",
                        (ds, prefixo + "%")).fetchall()
-    return {s: base.serie_vigente(con, ds, s) for (s,) in rows}
+    return {s: base.como_estava_em(con, ds, s, ate_captura) for (s,) in rows}
 
 
 def _agregados(con):
@@ -2181,13 +2188,13 @@ def _agregados(con):
     return {"cap_uf": cap, "cap_uf_refs": sorted(cap), "emp_op": emp, "emp_op_refs": sorted(emp)}
 
 
-def _historico_mensal(con, mensais, atipicos=()):
+def _historico_mensal(con, mensais, atipicos=(), captura_ug=None, captura_us=None):
     """Série mensal do RALIE (última fotografia de cada mês) a partir do silver. As
     unidades das usinas com potência fora de escala na fotografia (ax.unidades_atipicas)
     saem dos campos por unidade, com a potência excluída e o número de usinas publicados:
     o silver guarda o que a fonte publicou; a série não carrega o erro."""
-    ug = _series(con, DS_RALIE, "ug.")
-    us = _series(con, DS_RALIE, "usina.")
+    ug = _series(con, DS_RALIE, "ug.", captura_ug)
+    us = _series(con, DS_RALIE, "usina.", captura_us)
     ugd = {s: dict(p) for s, p in ug.items()}
     usd = {s: dict(p) for s, p in us.items()}
     exc = defaultdict(lambda: defaultdict(lambda: {"kw": 0.0, "n": 0, "kw_sem_previsao": 0.0, "usinas": 0}))
@@ -2280,20 +2287,26 @@ def _conferencias(con, ralie_ug, pf_ug, data_ralie, lib_linhas):
     unidade (potência e previsão); (2) liberações do arquivo detalhado somadas por ano e tipo
     contra o resumo anual oficial, desde 2014 (antes disso o detalhado não cobre toda a
     potência, segundo o dicionário, e o resumo está em MW)."""
-    t = ax.ug_mensal(pf_ug, [data_ralie])
-    hist = {}
-    for r in t.to_pylist():
-        prev = r["DatPrevisaoOpComercialSFG"]
-        hist[f"{r['IdeNucleoCEG']}:{r['NumUgUsina']}"] = (r["MdaPotenciaUnitaria"], prev.isoformat() if prev else None)
-    del t
-    iguais = sum(1 for k, x in ralie_ug.items()
-                 if k in hist and hist[k][1] == (x.get("previsao_sfg") or None)
-                 and abs((hist[k][0] or 0) - (x.get("kw") or 0)) < 1e-6)
-    kw_csv = sum(x.get("kw") or 0 for x in ralie_ug.values())
-    kw_pq = sum(v[0] or 0 for v in hist.values())
-    ralie = {"fotografia": data_ralie, "ugs_csv": len(ralie_ug), "ugs_parquet": len(hist), "ugs_iguais": iguais,
-             "mw_csv": _r(_mw(kw_csv), 3), "mw_parquet": _r(_mw(kw_pq), 3),
-             "resultado": "aprovada" if iguais == len(ralie_ug) == len(hist) else "divergente"}
+    if pf_ug is not None:
+        t = ax.ug_mensal(pf_ug, [data_ralie])
+        hist = {}
+        for r in t.to_pylist():
+            prev = r["DatPrevisaoOpComercialSFG"]
+            hist[f"{r['IdeNucleoCEG']}:{r['NumUgUsina']}"] = (r["MdaPotenciaUnitaria"], prev.isoformat() if prev else None)
+        del t
+        iguais = sum(1 for k, x in ralie_ug.items()
+                     if k in hist and hist[k][1] == (x.get("previsao_sfg") or None)
+                     and abs((hist[k][0] or 0) - (x.get("kw") or 0)) < 1e-6)
+        kw_csv = sum(x.get("kw") or 0 for x in ralie_ug.values())
+        kw_pq = sum(v[0] or 0 for v in hist.values())
+        ralie = {"fotografia": data_ralie, "ugs_csv": len(ralie_ug), "ugs_parquet": len(hist), "ugs_iguais": iguais,
+                 "mw_csv": _r(_mw(kw_csv), 3), "mw_parquet": _r(_mw(kw_pq), 3),
+                 "resultado": "aprovada" if iguais == len(ralie_ug) == len(hist) else "divergente"}
+    else:
+        ralie = {"fotografia": data_ralie, "ugs_csv": len(ralie_ug), "ugs_parquet": None,
+                 "ugs_iguais": None, "mw_csv": _r(_mw(sum(x.get("kw") or 0 for x in ralie_ug.values())), 3),
+                 "mw_parquet": None, "resultado": "nao_executada", "motivo": "Bronze histórico do RALIE ausente"}
+
     det = defaultdict(float)
     for x in lib_linhas:
         if x["realizado"] and x["realizado"][:4] >= "2014":
@@ -2367,6 +2380,10 @@ def construir(con, ctx):
         return c.stub(GOLD, "SIGA ausente no silver da família aneel_geracao")
     vig = {ds: ckan.vintages_vigentes(con, ds) for ds in (DS_SIGA, DS_RALIE, DS_LIB, DS_ATOS, DS_LEILOES, DS_SIGET, DS_AGREG, DS_PDE,
                                                           DS_REDE_EPE)}
+    # Rede EPE é independente do SIGA/RALIE/SIGET; a perda do bronze não derruba
+    # os demais blocos. A captura selecionada (e sua data) acompanha a gold.
+    rede_registrada = vig[DS_REDE_EPE]
+    vig[DS_REDE_EPE] = base.vintages_com_bronze(con, DS_REDE_EPE)
     meta_siga = _meta(con, DS_SIGA, "siga-empreendimentos-geracao-diario.csv")
     data_siga = meta_siga.get("data_geracao")
     ralie_us = _estado(con, DS_RALIE, "usina:")
@@ -2391,18 +2408,34 @@ def construir(con, ctx):
     agreg = _agregados(con)
     v_ug_hist = vig[DS_RALIE].get("ralie-unidade-geradora-historico.parquet")
     v_us_hist = vig[DS_RALIE].get("ralie-usina-historico.parquet")
-    if not v_ug_hist or not v_us_hist:
-        return c.stub(GOLD, "histórico do RALIE ausente no bronze")
-    pf_ug = ax.abre_parquet(_bytes_bronze(v_ug_hist))
-    pf_us = ax.abre_parquet(_bytes_bronze(v_us_hist))
-    datas_hist = ax.datas_ralie(pf_us)
-    mensais = ax.ultimo_por_mes(datas_hist)
-    ralie_kw_hist = ax.potencias_outorgadas_historicas(pf_us)
-    # unidades com potência fora de escala no Parquet histórico (soma das unidades 10 vezes
-    # a outorga da usina ou mais, na mesma fotografia): conferidas no próprio arquivo contra
-    # as fotografias vizinhas da usina, excluídas das séries e análises por unidade
-    atipicas = ax.unidades_atipicas(pf_ug, pf_us)
-    pares_atipicos = {(x["ralie"], x["nucleo"]) for x in atipicas["casos"]}
+    disponiveis = base.vintages_com_bronze(con, DS_RALIE)
+    v_ug_hist = disponiveis.get("ralie-unidade-geradora-historico.parquet")
+    v_us_hist = disponiveis.get("ralie-usina-historico.parquet")
+    historico_disponivel = bool(v_ug_hist and v_us_hist)
+    for rec, v in (("ralie-unidade-geradora-historico.parquet", v_ug_hist),
+                   ("ralie-usina-historico.parquet", v_us_hist)):
+        if v:
+            vig[DS_RALIE][rec] = v
+        else:
+            vig[DS_RALIE].pop(rec, None)
+    if not historico_disponivel:
+        ressalvas.append("Histórico do RALIE indisponível: nenhum bronze completo de unidades e usinas; coortes, confiabilidade e revisões históricas não calculadas.")
+    if historico_disponivel:
+        pf_ug = ax.abre_parquet(_bytes_bronze(v_ug_hist))
+        pf_us = ax.abre_parquet(_bytes_bronze(v_us_hist))
+        datas_hist = ax.datas_ralie(pf_us)
+        mensais = ax.ultimo_por_mes(datas_hist)
+        ralie_kw_hist = ax.potencias_outorgadas_historicas(pf_us)
+        # unidades com potência fora de escala no Parquet histórico (soma das unidades 10 vezes
+        # a outorga da usina ou mais, na mesma fotografia): conferidas no próprio arquivo contra
+        # as fotografias vizinhas da usina, excluídas das séries e análises por unidade
+        atipicas = ax.unidades_atipicas(pf_ug, pf_us)
+        pares_atipicos = {(x["ralie"], x["nucleo"]) for x in atipicas["casos"]}
+    else:
+        pf_ug = pf_us = None
+        datas_hist, mensais, ralie_kw_hist = [], [], None
+        atipicas = {"casos": [], "entre_atencao_e_fator": {"pares": None, "usinas": None, "exemplos": []}}
+        pares_atipicos = set()
 
     conferencias = _conferencias(con, ralie_ug, pf_ug, data_ralie, lib_linhas)
     capacidade = _bloco_capacidade(siga, agreg, lib_linhas, data_siga, data_lib)
@@ -2415,7 +2448,9 @@ def construir(con, ctx):
         ressalvas.append(f"Reconciliação com o agregado oficial por UF ({rec_ref['referencia_uf']}) com resíduo acima de "
                          f"{TOLERANCIA_RESIDUO_PCT:g}% em: {', '.join(fora['ufs'])} (diferença não explicada pelas liberações do intervalo; valores da fonte mantidos).")
     for nome, x in conferencias.items():
-        if x["resultado"] != "aprovada":
+        if x["resultado"] == "nao_executada":
+            ressalvas.append(f"Conferência {nome.replace('_', ' ')} não executada: {x['motivo']}.")
+        elif x["resultado"] != "aprovada":
             ressalvas.append(f"Conferência {nome.replace('_', ' ')} divergente: ver conferencias.{nome}.")
     estagios = _bloco_estagios(siga, encerramentos, ralie_us, ralie_ug, ralie_lei, data_siga, data_ralie, ralie_kw_hist)
     del ralie_kw_hist
@@ -2430,17 +2465,20 @@ def construir(con, ctx):
     # arquivo publicada pela ANEEL (last_modified do recurso)
     cronograma = _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, data_lib_arquivo, pf_ug, mensais,
                                    pares_atipicos)
-    cronograma["historico_fonte"].update({"primeira_fotografia": datas_hist[0], "fotografias": len(datas_hist),
-                                          "ultima_fotografia": datas_hist[-1]})
-    trajs = ax.trajetorias_usinas(pf_ug, pf_us)
-    prim = ax.ugs_da_primeira_aparicao(pf_ug)
+    cronograma["historico_fonte"].update({"primeira_fotografia": datas_hist[0] if datas_hist else None,
+                                          "fotografias": len(datas_hist) if historico_disponivel else None,
+                                          "ultima_fotografia": datas_hist[-1] if datas_hist else None,
+                                          "disponivel": historico_disponivel,
+                                          "motivo": None if historico_disponivel else "Bronze histórico do RALIE ausente"})
+    trajs = ax.trajetorias_usinas(pf_ug, pf_us) if historico_disponivel else {}
+    prim = ax.ugs_da_primeira_aparicao(pf_ug) if historico_disponivel else {}
     del pf_ug
     lib_primeira = {}
     for x in lib_linhas:
         if x["realizado"] and (x["nucleo"] not in lib_primeira or x["realizado"] < lib_primeira[x["nucleo"]]):
             lib_primeira[x["nucleo"]] = x["realizado"]
-    desf = _desfechos(trajs, prim, lib_idx, siga, encerramentos, datas_hist[-1], lib_primeira, pares_atipicos)
-    estagios["coortes"] = _bloco_coortes(desf, datas_hist[0])
+    desf = _desfechos(trajs, prim, lib_idx, siga, encerramentos, datas_hist[-1], lib_primeira, pares_atipicos) if historico_disponivel else {}
+    estagios["coortes"] = _bloco_coortes(desf, datas_hist[0]) if historico_disponivel else []
     estagios["desfechos_definicao"] = DESFECHOS
     estagios["coortes_peso"] = {
         "regra": REGRA_PESO_COORTES,
@@ -2460,8 +2498,17 @@ def construir(con, ctx):
             sd[k]["kw"] += x.get("kw_primeira") or 0
     estagios["sem_desfecho_no_siga"] = [{"situacao_siga": k, "usinas": v["usinas"], "mw_outorgado": _r(_mw(v["kw"]))}
                                         for k, v in sorted(sd.items(), key=lambda kv: -kv[1]["usinas"])]
-    estagios["historico_mensal"] = _historico_mensal(con, mensais, atipicas["casos"])
+    estagios["historico_mensal"] = _historico_mensal(
+        con, mensais, atipicas["casos"],
+        (v_ug_hist or {}).get("capturado_em"), (v_us_hist or {}).get("capturado_em"))
     estagios["unidades_atipicas"] = _bloco_atipicas(atipicas, mensais)
+    if not historico_disponivel:
+        for chave in estagios["coortes_peso"]:
+            if chave != "regra":
+                estagios["coortes_peso"][chave] = None
+        for chave in ("pares", "usinas", "mw_ugs_publicado_nos_casos"):
+            estagios["unidades_atipicas"][chave] = None
+        estagios["unidades_atipicas"].update(disponivel=False, motivo="Bronze histórico do RALIE ausente")
     if atipicas["casos"]:
         ressalvas.append(_ressalva_atipicas(atipicas, mensais))
     leiloes = _bloco_leiloes(lotes, (vig[DS_LEILOES].get("resultado-leiloes-transmissao.csv") or {}).get("publicado_em"))
@@ -2473,6 +2520,10 @@ def construir(con, ctx):
     contratos = _bloco_contratos(contratos_siget, epds, lts, eqps, leiloes["periodo"]["fim"], data_siget) \
         if contratos_siget else None
     rede_epe = _bloco_rede_epe(vig[DS_REDE_EPE])
+    if not rede_epe:
+        ressalvas.append("Rede EPE indisponível: bronze das camadas existente e/ou planejada ausente; sem estimativa de km.")
+    elif any(v["vintage_id"] != rede_registrada[r]["vintage_id"] for r, v in vig[DS_REDE_EPE].items()):
+        ressalvas.append("Rede EPE: última vintage com bronze disponível; datas originais em transmissao.rede_epe.")
     conf_bruta = cronograma.pop("_conf")
     bloco_atual = cronograma.pop("_bloco_atual")
 
@@ -2530,8 +2581,10 @@ def construir(con, ctx):
 
     html_pde = None
     v_html = vig[DS_PDE].get("pde2035_pagina.html")
-    if v_html:
+    if base.bronze_disponivel(v_html):
         html_pde = _bytes_bronze(v_html).decode("utf-8", errors="replace")
+    elif v_html:
+        ressalvas.append("Aprovação do PDE: texto não relido porque o bronze da página da EPE está ausente; séries preservadas no silver.")
     pde_obs = _series(con, DS_PDE, "pde2035.")
     cenarios = _bloco_cenarios(con, pde_obs, siga, ralie_us, ralie_ug, html_pde,
                                vig[DS_PDE].get("pde2035_dados_relatorio_final.zip"))
@@ -2540,7 +2593,7 @@ def construir(con, ctx):
 
     gold = {
         **c.cabecalho(GOLD),
-        "referencias": {"siga": data_siga, "ralie": data_ralie, "ralie_historico_desde": datas_hist[0],
+        "referencias": {"siga": data_siga, "ralie": data_ralie, "ralie_historico_desde": datas_hist[0] if datas_hist else None,
                         "liberacoes_arquivo": data_lib_arquivo, "liberacoes_ultima_data": data_lib,
                         "atos": ((vig[DS_ATOS].get("atos-outorgas-aneel.csv") or {}).get("publicado_em") or "")[:10] or None,
                         "leiloes_transmissao": leiloes["periodo"]["fim"],
@@ -2559,6 +2612,16 @@ def construir(con, ctx):
         "conferencias": conferencias,
     }
     gold["proveniencia"] = _proveniencias(con, gold, vig)
+    # A geração da gold não é a data da fonte. As análises históricas usam
+    # somente os Parquet selecionados e publicam suas capturas originais.
+    hist_vintages = [v for v in (v_ug_hist, v_us_hist) if v]
+    gold["cronograma"]["historico_fonte"]["capturas"] = [
+        {k: v[k] for k in ("recurso", "capturado_em", "sha256")} for v in hist_vintages]
+    for chave in ("coortes", "confiabilidade"):
+        snap = c.snapshot_de(con, DS_RALIE, hist_vintages if historico_disponivel else [])
+        gold["proveniencia"][chave].update(
+            capturado_em=c.ultima_captura(snap), snapshot={k: snap[k] for k in ("id", "sha256")},
+            publicado_pela_fonte_em=c.publicacao_mais_recente(snap))
     gold["evidencias"] = _evidencias(gold, vig, siga, ralie_ug, desf, conf_bruta, emp_siget, lotes, pde_obs)
     gold["downloads"] = [{"rotulo": r, "url": DOWNLOADS[k]} for k, r in (
         ("usinas", "Usinas do SIGA com estágio, potência e coordenadas (CSV)"),
@@ -2574,7 +2637,8 @@ def construir(con, ctx):
         ("obras", "Empreendimentos de transmissão do SIGET (CSV)"),
         ("contratos", "Contratos de concessão de transmissão por data de assinatura (CSV)"),
         ("rede_epe", "Linhas de transmissão existentes e planejadas do WebMap da EPE (JSON)"),
-        ("pde", "PDE 2035: figuras usadas (CSV)"))]
+        ("pde", "PDE 2035: figuras usadas (CSV)"))
+        if not (k == "rede_epe" and not rede_epe) and not (k in ("trajetorias", "confiabilidade") and not historico_disponivel)]
     return gold
 
 
@@ -2684,8 +2748,8 @@ FONTE_PDE = {"orgao": "EPE", "dataset": "Plano Decenal de Expansão de Energia 2
              "url_dataset": URL_PDE_PAGINA, "url_primaria": URL_PDE_DADOS, "licenca": LICENCA_EPE}
 
 
-def _prov(con, ds, fonte, **kw):
-    snap = c.snapshot_de(con, ds)
+def _prov(con, ds, fonte, vintages=None, **kw):
+    snap = c.snapshot_de(con, ds, vintages)
     f = {**fonte, "url_primaria": fonte.get("url_primaria") or fonte["url_dataset"]}
     return c.proveniencia(fonte=f, snapshot=snap, capturado_em=c.ultima_captura(snap), **kw)
 
@@ -2704,7 +2768,8 @@ def _proveniencias(con, g, vig):
         "A previsão é da fiscalização da ANEEL (SFG) e muda a cada fotografia; datas atribuídas em bloco a milhares de unidades sem licença de instalação ou sem acesso contratado indicam previsão convencional, não cronograma de obra.",
         "Outorga não é capacidade que certamente entrará; MW outorgado não é energia firme.",
         "O dicionário do recurso de unidades geradoras (versão 1.0, 16/06/2026) tem descrições deslocadas uma linha (ex.: DatLiberOpTesteRealizado descrito como descida do rotor); a leitura segue o nome do campo: DatUGInicioOpComerOutorgado é a data outorgada de operação comercial e DatPrevisaoOpComercialSFG a previsão da fiscalização.",
-        f"O Parquet histórico de unidades tem {g['estagios']['unidades_atipicas']['pares']} pares (fotografia, usina) com a soma das unidades {ax.FATOR_ATIPICO:g} vezes a outorga ou mais (erro de ordem de grandeza da fonte, conferido contra as fotografias vizinhas): excluídos das análises por unidade e listados em estagios.unidades_atipicas.",
+        (f"O Parquet histórico de unidades tem {g['estagios']['unidades_atipicas']['pares']} pares (fotografia, usina) com a soma das unidades {ax.FATOR_ATIPICO:g} vezes a outorga ou mais (erro de ordem de grandeza da fonte, conferido contra as fotografias vizinhas): excluídos das análises por unidade e listados em estagios.unidades_atipicas."
+         if hist["primeira_fotografia"] else "Conferência de unidades atípicas indisponível: bronze histórico ausente; nenhuma contagem estimada."),
     ]
     return {
         "capacidade": _prov(con, DS_SIGA, FONTE_SIGA, indicador="Capacidade instalada em operação por tipo, origem e UF",
@@ -2740,7 +2805,8 @@ def _proveniencias(con, g, vig):
                                            "O ano corrente é parcial."],
                                download=DOWNLOADS["encerramentos"]),
         "ralie": _prov(con, DS_RALIE, FONTE_RALIE, indicador="Carteira em implantação (RALIE atual)", natureza="CALCULADO",
-                       unidade="MW e usinas", frequencia=f"mensal segundo o dicionário; {hist['fotografias']} fotografias publicadas entre {c.data_br(hist['primeira_fotografia'])} e {c.data_br(hist['ultima_fotografia'])}",
+                       unidade="MW e usinas", frequencia=(f"mensal segundo o dicionário; {hist['fotografias']} fotografias publicadas entre {c.data_br(hist['primeira_fotografia'])} e {c.data_br(hist['ultima_fotografia'])}"
+                                   if hist["primeira_fotografia"] else "mensal segundo o dicionário; bronze histórico indisponível"),
                        periodo={"inicio": ref["ralie"], "fim": ref["ralie"]},
                        cobertura={"inicio": ref["ralie_historico_desde"], "fim": ref["ralie"]},
                        transformacoes=["soma da potência outorgada por usina e da potência unitária das unidades listadas",
@@ -2857,6 +2923,7 @@ def _proveniencias(con, g, vig):
                                           "O campo Extensao da camada planejada tem valores fora de escala (em metros em parte das feições): o comprimento publicado é o da geometria.",
                                           "km por feição (traçado), não km de circuito do SIGET: as duas medidas não se somam.",
                                           "Sem chave comum com o SIGET ou com os leilões: a ligação é territorial (UF), não por empreendimento."],
+                              vintages=vig[DS_REDE_EPE].values(),
                               download=DOWNLOADS["rede_epe"])} if g["transmissao"].get("rede_epe") else {}),
         "cenarios": _prov(con, DS_PDE, FONTE_PDE, indicador="PDE 2035: capacidade, expansão indicativa, transmissão e geração",
                           natureza="CENARIO", unidade="GW, MW, km, MVA, R$ bilhões e TWh (por figura)", frequencia="por edição",
@@ -2878,8 +2945,8 @@ def _linhas_e_chaves(vintage):
     """Linhas e chaves (núcleo, unidade) distintas do CSV atual de unidades do RALIE,
     relido do bronze: confere que a fonte não repete unidade (repetição seria
     sobrescrita na leitura e somaria uma vez só)."""
-    if not vintage:
-        return 0, 0
+    if not base.bronze_disponivel(vintage):
+        return None, None
     linhas, chaves = 0, set()
     for r in ckan.le_csv_bronze(vintage["arquivo"]):
         linhas += 1
@@ -2993,14 +3060,16 @@ def _evidencias(g, vig, siga, ralie_ug, desf, conf_bruta, emp_siget, lotes, pde_
         cobertura="usinas em implantação acompanhadas pela fiscalização; unidades já liberadas para operação comercial deixam o relatório",
         tratamento_ausencia="unidade sem potência não soma; unidade sem previsão da fiscalização é contada à parte, com a justificativa publicada",
         revisoes=prov["ralie"]["revisoes_conhecidas"],
-        testes=[ev.teste("chave única por unidade", "aprovado" if linhas_ug == chaves_ug else "ressalva",
-                         f"{_milhar(linhas_ug)} linhas no arquivo e {_milhar(chaves_ug)} chaves (IdeNucleoCEG, NumUgUsina) distintas"),
+        testes=[ev.teste("chave única por unidade", "aprovado" if linhas_ug is not None and linhas_ug == chaves_ug else "ressalva",
+                         (f"{_milhar(linhas_ug)} linhas no arquivo e {_milhar(chaves_ug)} chaves (IdeNucleoCEG, NumUgUsina) distintas"
+                          if linhas_ug is not None else "Conferência não executada: bronze do CSV atual ausente; valores do silver preservados")),
                 ev.teste("potência não negativa", "aprovado" if all((x.get("kw") or 0) >= 0 for x in ralie_ug.values()) else "reprovado",
                          "potência unitária de todas as unidades conferida")],
         reconciliacao=ev.reconciliacao(
             f"mesma fotografia no Parquet histórico (recurso independente): {_milhar(g['conferencias']['ralie_csv_x_parquet']['ugs_iguais'])} de "
             f"{_milhar(g['conferencias']['ralie_csv_x_parquet']['ugs_csv'])} unidades com potência e previsão idênticas",
-            "aprovado" if g["conferencias"]["ralie_csv_x_parquet"]["resultado"] == "aprovada" else "reprovado",
+            ("aprovado" if g["conferencias"]["ralie_csv_x_parquet"]["resultado"] == "aprovada" else
+             "ressalva" if g["conferencias"]["ralie_csv_x_parquet"]["resultado"] == "nao_executada" else "reprovado"),
             "0 kW e 0 dia por unidade (mesmo registro nos dois recursos)"),
         download=[{"rotulo": "Unidades geradoras do RALIE (CSV)", "url": DOWNLOADS["unidades"]},
                   {"rotulo": "Carteira do RALIE por usina (CSV)", "url": DOWNLOADS["carteira"]}],
