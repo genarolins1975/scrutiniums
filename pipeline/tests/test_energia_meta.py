@@ -18,8 +18,8 @@ from pipeline.energia import base
 RAIZ = Path(__file__).resolve().parents[2]
 
 
-def passos():
-    texto = (RAIZ / '.github/workflows/atualizar-energia.yml').read_text()
+def passos(workflow="atualizar-energia.yml"):
+    texto = (RAIZ / ".github/workflows" / workflow).read_text()
     resultado = {}
     for bloco in texto.split('\n      - name: ')[1:]:
         nome, resto = bloco.split('\n', 1)
@@ -30,7 +30,7 @@ def passos():
 
 
 class TestEstadoMeta(unittest.TestCase):
-    def test_workflows_do_mesmo_estado_nao_se_sobrepoem_nem_cancelam_em_curso(self):
+    def test_previsao_mantem_fila_propria_e_cache_so_apos_proteger_meta(self):
         import re
         grupos = []
         for nome in ('atualizar-energia.yml', 'previsao-pld.yml'):
@@ -38,7 +38,14 @@ class TestEstadoMeta(unittest.TestCase):
             bloco = texto.split('\nconcurrency:\n', 1)[1].split('\njobs:', 1)[0]
             grupos.append(re.search(r'^  group: (.+)$', bloco, re.MULTILINE).group(1))
             self.assertRegex(bloco, r'cancel-in-progress: false')
-        self.assertEqual(grupos[0], grupos[1], 'cache e release compartilhados precisam de um único escritor')
+        self.assertNotEqual(grupos[0], grupos[1], 'previsão não espera nem substitui energia pendente')
+        ps = passos('previsao-pld.yml')
+        for nome in ('Liberar a cópia anterior do estado antes de gravar',
+                     'Guardar estado (vintages coletadas antes do corte)'):
+            self.assertIn("steps.meta_cache.outcome == 'success'", ps[nome][0])
+        self.assertIn("steps.guardar.outcome == 'success'", ps['Manter só a cópia mais recente do estado'][0])
+        self.assertIn('if: always()', ps['Repor metadados no diretório de trabalho da previsão'][0])
+        self.assertNotIn('meta_cache', ps['Commit do arquivo de emissões (e da gold, se os testes passaram)'][0])
 
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
@@ -84,11 +91,12 @@ elif a[:2] == ['release', 'delete-asset']:
         self.env = {**os.environ, 'PATH': f'{self.bin}:{os.environ["PATH"]}',
                     'PYTHONPATH': str(self.repo), 'FAKE_ASSETS': str(self.assets),
                     'FAKE_LOG': str(self.raiz / 'gh.log'), 'GITHUB_REPOSITORY': 'teste/energia',
-                    'GITHUB_RUN_ID': '123', 'GITHUB_RUN_ATTEMPT': '1', 'RUN_URL': 'https://teste/run'}
+                    'GITHUB_OUTPUT': str(self.raiz / 'output'), 'GITHUB_RUN_ID': '123', 'GITHUB_RUN_ATTEMPT': '1', 'RUN_URL': 'https://teste/run'}
 
-    def executar(self, nome):
-        cab, shell = passos()[nome]
-        self.assertIn('continue-on-error: true', cab)
+    def executar(self, nome, workflow="atualizar-energia.yml"):
+        cab, shell = passos(workflow)[nome]
+        if workflow == "atualizar-energia.yml":
+            self.assertIn('continue-on-error: true', cab)
         shell = shell.replace('/tmp', str(self.raiz / 'temporarios'))
         (self.raiz / 'temporarios').mkdir(exist_ok=True)
         return subprocess.run(['bash', '-eo', 'pipefail', '-c', shell], cwd=self.repo,
@@ -179,6 +187,60 @@ elif a[:2] == ['release', 'delete-asset']:
         cab, shell = passos()['Alertar falha na restauração dos metadados']
         self.assertIn("steps.meta_restaurada.outcome == 'failure'", cab)
         self.assertIn('::warning::', shell)
+
+    def test_cache_da_previsao_nao_promove_meta_antiga_e_trabalho_preserva_bytes(self):
+        self.asset('20261017T000000Z', {'_meta_ons.json': 'antigo'})
+        pasta = self.repo / 'data/energia/meta'
+        pasta.mkdir(parents=True)
+        (pasta / '_meta_ons.json').write_bytes(b'cache antigo\n')
+        silver = self.repo / 'data/energia/silver/energia.db'
+        silver.parent.mkdir()
+        silver.write_bytes(b'vintage coletada pela previsao')
+        r = self.executar('Proteger metadados antes do cache da previsão', 'previsao-pld.yml')
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        # Snapshot efetivo dos mesmos paths que actions/cache/save usa.
+        cache = self.raiz / 'cache_previsao'
+        shutil.copytree(self.repo / 'data/energia', cache)
+        self.assertFalse((cache / 'meta').exists())
+        self.assertEqual((cache / 'silver/energia.db').read_bytes(), silver.read_bytes())
+        self.assertEqual(self.executar('Repor metadados no diretório de trabalho da previsão', 'previsao-pld.yml').returncode, 0)
+        self.assertEqual((pasta / '_meta_ons.json').read_bytes(), b'cache antigo\n')
+        # A energia terminou depois da restauração da previsão e antes do novo cache.
+        self.asset('20261018T000000Z', {'_meta_ons.json': 'coleta noturna nova'})
+        shutil.rmtree(self.repo / 'data/energia')
+        shutil.copytree(cache, self.repo / 'data/energia')
+        self.assertEqual(self.executar('Restaurar metadados da cópia durável').returncode, 0)
+        self.assertEqual((pasta / '_meta_ons.json').read_bytes(), b'coleta noturna nova')
+
+    def test_primeira_previsao_preserva_unica_meta_antes_de_excluir_do_cache(self):
+        pasta = self.repo / 'data/energia/meta'
+        pasta.mkdir(parents=True)
+        (pasta / '_meta_ons.json').write_bytes(b'unica copia\n')
+        r = self.executar('Proteger metadados antes do cache da previsão', 'previsao-pld.yml')
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        assets = list(self.assets.glob('energia-meta-0-bootstrap-*.tar.gz'))
+        self.assertEqual(len(assets), 1)
+        with tarfile.open(assets[0]) as tar:
+            self.assertEqual(tar.extractfile('_meta_ons.json').read(), b'unica copia\n')
+        self.assertNotIn('--clobber', (self.raiz / 'gh.log').read_text())
+        self.assertFalse(pasta.exists())
+        # Bootstrap nunca ultrapassa uma geração real, mesmo com upload atrasado.
+        self.asset('20261018T000000Z', {'_meta_ons.json': 'fonte nova'})
+        self.assertEqual(self.executar('Restaurar metadados da cópia durável').returncode, 0)
+        self.assertEqual((pasta / '_meta_ons.json').read_bytes(), b'fonte nova')
+
+    def test_falha_bootstrap_nao_retira_unica_meta_nem_libera_poda_cache(self):
+        pasta = self.repo / 'data/energia/meta'
+        pasta.mkdir(parents=True)
+        (pasta / '_meta_ons.json').write_bytes(b'unica copia')
+        self.env['FALHAR_META'] = '1'
+        r = self.executar('Proteger metadados antes do cache da previsão', 'previsao-pld.yml')
+        self.assertNotEqual(r.returncode, 0)
+        self.assertEqual((pasta / '_meta_ons.json').read_bytes(), b'unica copia')
+        self.assertFalse(list(self.assets.iterdir()))
+        self.assertNotIn('delete', (self.raiz / 'gh.log').read_text())
+        # GitHub avalia o guard antes dos passos destrutivos; a emissão segue independente.
+        self.test_previsao_mantem_fila_propria_e_cache_so_apos_proteger_meta()
 
     def test_asset_acima_do_limite_e_pasta_ausente_nao_sobem(self):
         from pipeline.energia import estado_meta
