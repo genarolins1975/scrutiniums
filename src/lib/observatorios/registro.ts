@@ -65,8 +65,6 @@ function paineisCredito(): Painel[] {
     const [observatorio, colecao] = destino;
     return {
       rota: `/observatorio${a.caminho}`, titulo: a.titulo, observatorio, colecao, origem: "credito",
-      ...(a.caminho === "/formal-employment" ? { duplicataDe: "/eficiencia-estatal/trabalho-renda/emprego-formal" } : {}),
-      ...(a.caminho === "/rural-credit" ? { duplicataDe: "/agronegocio/apoio" } : {}),
     };
   })];
 }
@@ -105,6 +103,11 @@ function paineisEficiencia(): Painel[] {
     { rota: "/eficiencia-estatal", titulo: "Comparação entre capitais", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
     { rota: "/eficiencia-estatal/laboratorio-cesta", titulo: "Índice experimental de resultados", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
     { rota: "/eficiencia-estatal/judiciario", titulo: "Judiciário: filas e tempos", observatorio: "servicos-publicos", colecao: "justica", origem: "eficiencia" },
+    // duplicatas resolvidas em 18/10/2026 (REAGRUPAMENTO.md): a página fica publicada e avisa qual é o painel dono
+    { rota: "/eficiencia-estatal/trabalho-renda/emprego-formal", titulo: "Emprego formal nacional", observatorio: "familias", colecao: "renda", origem: "eficiencia", duplicataDe: "/observatorio/formal-employment" },
+    // resíduos e drenagem só existem aqui e tratam de cidades e clima
+    { rota: "/eficiencia-estatal/saneamento/residuos", titulo: "Resíduos sólidos", observatorio: "territorio-e-clima", colecao: "cidades-clima", origem: "eficiencia" },
+    { rota: "/eficiencia-estatal/saneamento/drenagem", titulo: "Drenagem e risco de inundação", observatorio: "territorio-e-clima", colecao: "cidades-clima", origem: "eficiencia" },
     ...temas,
   ];
 }
@@ -130,7 +133,6 @@ function paineisAgro(): Painel[] {
     const [observatorio, colecao] = destino(slug);
     return {
       rota: `/agronegocio${slug ? `/${slug}` : ""}`, titulo, observatorio, colecao, origem: "agro" as const,
-      ...(slug === "apoio" ? { duplicataDe: "/observatorio/rural-credit" } : {}),
     };
   });
 }
@@ -181,12 +183,13 @@ export const ATALHOS: Atalho[] = [
   { rota: "/setor-eletrico/transicao", observatorio: "territorio-e-clima", colecao: "desmatamento" },
 ];
 
-let cache: Painel[] | null = null;
-
-/** Todos os painéis com dono, na ordem dos observatórios. */
+/**
+ * Todos os painéis com dono, na ordem dos observatórios. Sem cache: os títulos
+ * do Setor Elétrico seguem o idioma da página que pergunta (navegacao.ts), e
+ * guardar a primeira leitura vazaria títulos em inglês para páginas em português.
+ */
 export function paineis(): Painel[] {
-  cache ??= [...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras()];
-  return cache;
+  return [...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras()];
 }
 
 export function observatorio(id: ObservatorioId): Observatorio {

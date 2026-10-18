@@ -187,9 +187,22 @@ tratam do mesmo tema; precisa de comparação de conteúdo antes de decidir).
 | 2. Camada aberta | Em produção desde 18/10/2026 (PR #271): home com os seis observatórios e `/perguntas/<observatório>` |
 | 3. Cabeçalho e escolha pós login | Cabeçalho público em produção (PR #271); escolha pós login pelos seis observatórios no PR #272 |
 | 4. Entradas com conta | PR #272: `/observatorios/familias`, `/observatorios/servicos-publicos` e `/observatorios/territorio-e-clima`. Contas Públicas, Energia e Infraestrutura e Economia usam as entradas das coleções existentes |
-| 5. Duplicatas | Comparação de conteúdo em andamento |
+| 5. Duplicatas | Decididas em 18/10/2026 (seção abaixo) |
 | 6. Menu interno do Crédito | Pendente |
 | 7. Blocos "Para ir além" | Pendente |
 
 Também pendentes: barras de navegação dentro dos painéis (`NavegacaoObservatorios` e a barra da aplicação do Crédito) e o rodapé, que ainda listam as oito coleções.
+
+## Duplicatas: decisões de 18/10/2026
+
+Comparação de conteúdo feita sobre as páginas, os componentes e as golds de cada par. Nenhuma página foi removida: a que vira atalho continua publicada e mostra o aviso "Painel mais completo" (`src/components/observatorios/PainelMaisCompleto.tsx`).
+
+| Par | Decisão | Motivo | Divergência encontrada |
+|---|---|---|---|
+| Emprego formal: `/observatorio/formal-employment` × `/eficiencia-estatal/trabalho-renda/emprego-formal` | Dono: Crédito. A página da Eficiência Estatal fica com aviso | Mesma fonte (SGS 28763); o Crédito tem série mais longa, ajuste sazonal, admissões e desligamentos, 21 seções e 27 UFs | Capturas em datas diferentes: estoque de jul/2026 de 48.082.866 no Crédito (`public/obs/data/gold/emprego.json`) e 48.078.869 na Eficiência Estatal (`public/eficiencia/trabalho-renda/snapshot.json`); a Eficiência Estatal já tem ago/2026. A Eficiência Estatal chama a medida de variação do estoque, não de saldo |
+| Saneamento: `/eficiencia-estatal/saneamento` × `/saneamento` | Dono: Saneamento para água, esgoto e recursos (avisos em `agua`, `esgoto` e `recursos`). Resíduos e drenagem, que só existem na Eficiência Estatal, passam ao Observatório do Território e Clima | Mesmos indicadores do SINISA, com diferença zero em 361 valores conferidos; o Saneamento é municipal e mais profundo | Investimento por habitante: a Eficiência Estatal separa água (R$ 70,56) e esgoto (R$ 72,68), cada um com o seu denominador; o Saneamento soma os dois. Construções diferentes, não erro |
+| Energia: `/eficiencia-estatal/energia-conectividade` × `/setor-eletrico/inclusao-energetica` | Dono: Setor Elétrico para acesso, Tarifa Social, qualidade e tarifas (aviso nas abas de energia). O uso da internet fica na Eficiência Estatal | A Eficiência Estatal lê as mesmas golds do Setor Elétrico | Nenhuma |
+| Crédito rural: `/observatorio/rural-credit` × `/agronegocio/apoio` | Os dois ficam, complementares: o Crédito é dono do volume contratado; o Agro, dos juros por programa e das subvenções | Medidas diferentes do mesmo tema | O valor mensal contratado nos microdados do Sicor (Agro, R$ 21,60 bi em jul/2026) difere da MDCR (Crédito, R$ 20,99 bi). O link do Agro para `/observatorio/rural`, rota inexistente, foi corrigido para `/observatorio/rural-credit`, e um teste passa a conferir todo link escrito para abas do Crédito |
+
+Pendências de dado, fora do escopo do reagrupamento: atualizar a gold de emprego do Crédito (um mês atrás da Eficiência Estatal) e documentar, no Agro, a diferença entre Sicor e MDCR.
 
