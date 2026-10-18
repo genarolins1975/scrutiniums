@@ -15,7 +15,9 @@ export type GoldQueimadasMunicipios = {
   semMunicipio: Record<PeriodoMunicipal, { focos: number; nomesNaFonte: Record<string, number> } | null>;
   equivalenciasUsadas: Record<string, string>;
   municipiosIbge: number;
-  fonteArea: { fonte: string; unidade: string; url: string; sha256: string; bytes: number; capturadoEm: string };
+  /** Instalados depois do Censo 2022, fora da malha da fonte: indisponíveis, nunca zero. */
+  semCoberturaNaFonte: { ids: string[]; motivo: string };
+  fonteArea: { fonte: string; unidade: string; url: string; sha256: string; bytes: number; capturadoEm: string; lista?: { url: string; sha256: string; bytes: number; capturadoEm: string } };
   ressalvas: string[];
 };
 

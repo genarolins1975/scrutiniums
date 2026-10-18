@@ -58,7 +58,9 @@ describe("queimadas do Território e Clima", () => {
   it("focos por município: códigos IBGE únicos, cada período reconcilia com o recorte e a área vem do Censo 2022", () => {
     const gm = lerQueimadasMunicipios()!;
     expect(gm).not.toBeNull();
-    expect(gm.municipiosIbge).toBe(5570);
+    // lista atual do IBGE (5.571, com Boa Esperança do Norte, instalado depois do Censo 2022)
+    expect(gm.municipiosIbge).toBe(5571);
+    expect(gm.semCoberturaNaFonte.ids).toContain("5101837");
     const lista = municipiosDeFocos(gm);
     expect(new Set(lista.map((m) => m.id)).size).toBe(lista.length);
     for (const m of lista) expect(m.id, m.nome).toMatch(/^\d{7}$/);
@@ -77,6 +79,8 @@ describe("queimadas do Território e Clima", () => {
     const fonte = readFileSync(join(process.cwd(), "src", "app", "territorio", "queimadas", "page.tsx"), "utf-8");
     expect(fonte).toContain("Mais focos por área em");
     expect(fonte).toContain("<FocosNoMunicipio");
+    const busca = readFileSync(join(process.cwd(), "src", "components", "territorio", "FocosNoMunicipio.tsx"), "utf-8");
+    expect(busca).toContain("semCoberturaNaFonte");
     const porta = portas().find((p) => p.id === "territorio-e-clima")!;
     expect(porta.lacunas.join(" ")).not.toMatch(/Focos de calor por município/);
     expect(porta.lacunas.join(" ")).toMatch(/Área queimada por estado/);

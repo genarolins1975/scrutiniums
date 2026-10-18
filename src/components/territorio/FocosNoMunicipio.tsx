@@ -76,6 +76,14 @@ function Retrato({ it, carga, ano }: Readonly<{ it: ItemIndice; carga: Carga; an
   const acum = periodos.acumuladoAnoCorrente;
   const mesmo = periodos.mesmoPeriodoAnoAnterior;
   const titulo = `${it[1]} (${it[2]})`;
+  if (!m && carga.g.semCoberturaNaFonte.ids.includes(it[0])) {
+    return (
+      <div>
+        <p className="font-serif text-xl text-carvao">{titulo}</p>
+        <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao">Indisponível. {carga.g.semCoberturaNaFonte.motivo}</p>
+      </div>
+    );
+  }
   if (!m && !periodos.ultimoAnoCompleto) {
     return <p className="text-sm text-carvao">{titulo}: a contagem por município de {ano} está indisponível nesta publicação.</p>;
   }

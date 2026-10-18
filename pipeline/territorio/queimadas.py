@@ -152,7 +152,7 @@ def ler_anual_ref(caminho):
             raise ValueError(f'Zip anual com {len(csvs)} CSVs')
         with z.open(csvs[0]) as f:
             leitor = csv.DictReader(io.TextIOWrapper(f, encoding='utf-8', newline=''))
-            faltam = {'data_pas', 'estado', 'bioma', 'pais'} - set(leitor.fieldnames or [])
+            faltam = {'data_pas', 'estado', 'municipio', 'bioma', 'pais'} - set(leitor.fieldnames or [])
             if faltam:
                 raise ValueError(f'Colunas ausentes no anual: {faltam}')
             for linha in leitor:
@@ -166,7 +166,7 @@ def ler_mensal(caminho, satelite=SATELITE_REFERENCIA):
     satelites = {}
     with open(caminho, encoding='utf-8', newline='') as f:
         leitor = csv.DictReader(f)
-        faltam = {'data_hora_gmt', 'satelite', 'estado', 'bioma', 'pais'} - set(leitor.fieldnames or [])
+        faltam = {'data_hora_gmt', 'satelite', 'estado', 'municipio', 'municipio_id', 'bioma', 'pais'} - set(leitor.fieldnames or [])
         if faltam:
             raise ValueError(f'Colunas ausentes no mensal: {faltam}')
         for linha in leitor:
@@ -196,6 +196,10 @@ def chave_mensal(linha):
 # ---------------------------------------------------------------- municípios
 
 AREA_IBGE = 'https://servicodados.ibge.gov.br/api/v3/agregados/4714/periodos/2022/variaveis/6318?localidades=N6%5Ball%5D'
+LISTA_IBGE = 'https://servicodados.ibge.gov.br/api/v1/localidades/municipios?view=nivelado'
+# Fração máxima de focos sem município antes de reter a coleta: acima disso, o formato
+# da fonte mudou (coluna renomeada, malha nova) e a seção municipal não pode ser publicada.
+LIMITE_SEM_MUNICIPIO = 0.01
 REFERENCIA_IBGE = os.path.join(os.path.dirname(__file__), 'referencia', 'municipios_ibge_2022.json')
 
 # Grafias do INPE que diferem do nome atual no IBGE. As seis primeiras aparecem nos
@@ -222,28 +226,39 @@ def normalizar(nome):
     return re.sub(r'\s+', ' ', s).strip()
 
 
-def atualizar_referencia_ibge(destino=REFERENCIA_IBGE):
-    """Grava a lista oficial de municípios com a área territorial do Censo 2022 (SIDRA,
-    tabela 4714, variável 6318). A área não muda entre coletas: o arquivo é versionado e
-    só é refeito por este comando, com o sha256 do original."""
-    caminho, info = baixar(AREA_IBGE, nome='ibge_4714_6318_2022.json')
+def _json_ibge(url, nome):
+    caminho, info = baixar(url, nome=nome)
     bruto = open(caminho, 'rb').read()
     os.unlink(caminho)
     if bruto[:2] == b'\x1f\x8b':  # o IBGE responde em gzip mesmo sem Accept-Encoding
         import gzip
         bruto = gzip.decompress(bruto)
-    dados = json.loads(bruto.decode('utf-8'))
-    serie = dados[0]['resultados'][0]['series']
-    linhas = []
-    for x in serie:
-        nome, uf = x['localidade']['nome'].rsplit(' - ', 1)
-        linhas.append([x['localidade']['id'], nome, uf, float(x['serie']['2022'])])
-    if len(linhas) != 5570 or len({l[0] for l in linhas}) != 5570:
-        raise ValueError(f'Lista do IBGE com {len(linhas)} municípios; esperados 5.570 distintos')
+    return json.loads(bruto.decode('utf-8')), info
+
+
+def atualizar_referencia_ibge(destino=REFERENCIA_IBGE):
+    """Grava a lista oficial e atual de municípios (API de localidades do IBGE) com a área
+    territorial do Censo 2022 (SIDRA, tabela 4714, variável 6318). Município instalado
+    depois do Censo fica com área nula, nunca estimada. O arquivo é versionado e só é
+    refeito por este comando, com o sha256 de cada original."""
+    area_json, info_area = _json_ibge(AREA_IBGE, 'ibge_4714_6318_2022.json')
+    lista_json, info_lista = _json_ibge(LISTA_IBGE, 'ibge_localidades_municipios.json')
+    area = {}
+    for x in area_json[0]['resultados'][0]['series']:
+        area[x['localidade']['id']] = float(x['serie']['2022'])
+    linhas = {}
+    for m in lista_json:
+        cod = str(m['municipio-id'])
+        linhas[cod] = [cod, m['municipio-nome'], m['UF-sigla'], area.get(cod)]
+    if len(area) != 5570:
+        raise ValueError(f'Área do Censo 2022 com {len(area)} municípios; esperados 5.570')
+    if set(area) - set(linhas):
+        raise ValueError('Município do Censo 2022 ausente da lista atual do IBGE: ' + ', '.join(sorted(set(area) - set(linhas))))
     os.makedirs(os.path.dirname(destino), exist_ok=True)
-    ref = {'fonte': 'IBGE, Censo Demográfico 2022, SIDRA tabela 4714, variável 6318 (Área da unidade territorial)',
-           'unidade': 'km²', 'url': AREA_IBGE, 'sha256': info['sha256'], 'bytes': info['bytes'], 'capturadoEm': info['baixadoEm'],
-           'campos': ['id', 'nome', 'uf', 'areaKm2'], 'linhas': sorted(linhas)}
+    ref = {'fonte': 'IBGE: lista atual de municípios (API de localidades) e área territorial do Censo Demográfico 2022 (SIDRA tabela 4714, variável 6318)',
+           'unidade': 'km²', 'url': AREA_IBGE, 'sha256': info_area['sha256'], 'bytes': info_area['bytes'], 'capturadoEm': info_area['baixadoEm'],
+           'lista': {'url': LISTA_IBGE, 'sha256': info_lista['sha256'], 'bytes': info_lista['bytes'], 'capturadoEm': info_lista['baixadoEm']},
+           'campos': ['id', 'nome', 'uf', 'areaKm2'], 'linhas': sorted(linhas.values())}
     with open(destino, 'w', encoding='utf-8') as f:
         json.dump(ref, f, ensure_ascii=False, indent=0)
         f.write('\n')
@@ -329,6 +344,8 @@ def montar_municipios(recortes, contagens):
         f, s, usadas = resolver_municipios(cont, por_id, por_nome)
         if sum(f.values()) + sum(s.values()) != r['focos']:
             raise ValueError(f'Focos por município não reconciliam com o total em {p}')
+        if r['focos'] and sum(s.values()) > LIMITE_SEM_MUNICIPIO * r['focos']:
+            raise ValueError(f'{sum(s.values())} de {r["focos"]} focos sem município em {p}: formato ou malha da fonte mudou; coleta retida')
         periodos[p] = {'periodo': r['periodo'], 'origem': r['origem'], 'focos': r['focos']}
         focos[p], sem[p] = f, s
         equivalencias.update(usadas)
@@ -346,7 +363,13 @@ def montar_municipios(recortes, contagens):
         'semMunicipio': {p: ({'focos': sum(sem[p].values()), 'nomesNaFonte': dict(sorted(sem[p].items()))} if periodos[p] else None) for p in PERIODOS_MUN},
         'equivalenciasUsadas': {k: EQUIVALENCIAS[k] for k in sorted(equivalencias)},
         'municipiosIbge': len(por_id),
-        'fonteArea': {k: ref[k] for k in ('fonte', 'unidade', 'url', 'sha256', 'bytes', 'capturadoEm')},
+        # Instalados depois do Censo 2022: sem área oficial e fora da malha usada pela
+        # fonte, que atribui seus focos aos municípios de origem. Ausência na lista não é zero.
+        'semCoberturaNaFonte': {
+            'ids': sorted(c for c, m in por_id.items() if m['areaKm2'] is None and c not in ids),
+            'motivo': 'Município instalado depois do Censo 2022: sem área oficial nesta referência, e a fonte atribui seus focos aos municípios de origem.',
+        },
+        'fonteArea': {**{k: ref[k] for k in ('fonte', 'unidade', 'url', 'sha256', 'bytes', 'capturadoEm')}, 'lista': ref.get('lista')},
     }
 
 

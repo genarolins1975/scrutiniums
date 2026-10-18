@@ -1,6 +1,6 @@
 {
  "id": "queimadas_focos_referencia",
- "capturadoEm": "2026-10-18T14:37:11+00:00",
+ "capturadoEm": "2026-10-18T15:24:56+00:00",
  "dataReferencia": "2026-10-18",
  "fonte": {
   "nome": "INPE, Programa Queimadas, focos de calor (servidor de dados abertos COIDS)",
@@ -42009,14 +42009,26 @@
    "SE|GRACHO CARDOSO": "2802601",
    "TO|FORTALEZA DO TABOCAO": "1708254"
   },
-  "municipiosIbge": 5570,
+  "municipiosIbge": 5571,
+  "semCoberturaNaFonte": {
+   "ids": [
+    "5101837"
+   ],
+   "motivo": "Município instalado depois do Censo 2022: sem área oficial nesta referência, e a fonte atribui seus focos aos municípios de origem."
+  },
   "fonteArea": {
-   "fonte": "IBGE, Censo Demográfico 2022, SIDRA tabela 4714, variável 6318 (Área da unidade territorial)",
+   "fonte": "IBGE: lista atual de municípios (API de localidades) e área territorial do Censo Demográfico 2022 (SIDRA tabela 4714, variável 6318)",
    "unidade": "km²",
    "url": "https://servicodados.ibge.gov.br/api/v3/agregados/4714/periodos/2022/variaveis/6318?localidades=N6%5Ball%5D",
-   "sha256": "0387873142fc3468e40376e78397258b48dd4e064cceadabe0fe3f741ce24bb9",
-   "bytes": 96257,
-   "capturadoEm": "2026-10-18T14:37:01+00:00"
+   "sha256": "1279819b8ed97b147edf7c45a67edcb2e631cd27d53339d59516731729630259",
+   "bytes": 703753,
+   "capturadoEm": "2026-10-18T15:24:44+00:00",
+   "lista": {
+    "url": "https://servicodados.ibge.gov.br/api/v1/localidades/municipios?view=nivelado",
+    "sha256": "38317b93ca8ee41270cc785339182fff28b952b5c54401deef0892255c7d967f",
+    "bytes": 112459,
+    "capturadoEm": "2026-10-18T15:24:45+00:00"
+   }
   }
  },
  "satelitesNoArquivoMensal": {
