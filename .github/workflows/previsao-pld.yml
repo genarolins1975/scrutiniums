@@ -221,13 +221,6 @@ jobs:
           path: data/energia
           key: energia-estado-previsao-${{ github.run_id }}
 
-      - name: Repor metadados no diretório de trabalho da previsão
-        if: always() && steps.feita.outputs.sim == '0' && steps.verificar.outputs.coletou == '1'
-        run: |
-          if [ -d /tmp/energia-meta-previsao/pasta ]; then
-            mv /tmp/energia-meta-previsao/pasta data/energia/meta
-          fi
-
       # A energia (cron das 23h40 UTC, às vezes horas atrasado, ou disparo manual) e a
       # previsão do PLD têm filas próprias: a previsão não pode esperar a energia e perder
       # o corte das 07h. Se as duas podarem e gravarem ao mesmo tempo, duas cópias
@@ -239,6 +232,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: scripts/podar_cache.sh energia-estado- 1
+
+      - name: Repor metadados no diretório de trabalho da previsão
+        if: always() && steps.feita.outputs.sim == '0' && steps.verificar.outputs.coletou == '1'
+        run: |
+          if [ -d /tmp/energia-meta-previsao/pasta ]; then
+            mv /tmp/energia-meta-previsao/pasta data/energia/meta
+          fi
 
       - name: Commit do arquivo de emissões (e da gold, se os testes passaram)
         if: always() && steps.feita.outputs.sim == '0' && steps.emitir.outputs.pular != '1'
