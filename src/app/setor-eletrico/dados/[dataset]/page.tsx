@@ -527,6 +527,13 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                           <dt>sha256</dt><dd>{s.snapshot_sha256 ? codigo(s.snapshot_sha256) : tx("não informado", "not reported")}</dd>
                           <dt>{tx("Downloads idênticos posteriores", "Later identical downloads")}</dt>
                           <dd>{s.recapturas_sem_mudanca ?? tx("não informados", "not reported")}</dd>
+                          <dt>{tx("Última tentativa de coleta direta", "Latest direct collection attempt")}</dt>
+                          <dd data-tentativa-familia={s.familia}>
+                            {s.ultima_tentativa ? <>
+                              {`${carimbo(s.ultima_tentativa.tentado_em)} · ${s.ultima_tentativa.ok ? "ok" : tx("falhou", "failed")} · `}
+                              <TrechoPortugues regiao="ficha-tentativa-familia">{s.ultima_tentativa.detalhe}</TrechoPortugues>
+                            </> : tx("não registrada", "not recorded")}
+                          </dd>
                         </dl>
                       ))}
                     </div>
@@ -587,7 +594,10 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                               <td className="px-2 py-1.5 text-carvao">{codigo(cpt.recurso)}</td>
                               <td className="px-2 py-1.5 text-carvao">{carimbo(cpt.capturado_em)}</td>
                               <td className="px-2 py-1.5 text-carvao-muted">{dataFonte(cpt.publicado_em)}</td>
-                              <td className="px-2 py-1.5 text-carvao-muted">{cpt.origem === "seed" ? tx("captura primária versionada", "versioned primary capture") : tx("coleta direta", "direct collection")}</td>
+                              <td className="px-2 py-1.5 text-carvao-muted">{["seed", "seed_versionado"].includes(cpt.origem)
+                                ? tx("captura primária versionada", "versioned primary capture")
+                                : cpt.origem === "coleta_direta" ? tx("coleta direta", "direct collection")
+                                : cpt.origem ? codigo(cpt.origem) : tx("não informada", "not reported")}</td>
                               <td className="px-2 py-1.5 text-carvao-muted">{cpt.vigente ? tx("vigente", "current") : tx("substituída", "replaced")}</td>
                               <td className="break-all px-2 py-1.5 font-mono text-xs text-mineral">{codigo(cpt.sha256)}</td>
                             </tr>

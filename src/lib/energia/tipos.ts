@@ -479,7 +479,11 @@ export type MetaGold = Cabecalho & {
   golds: Record<string, { disponivel: boolean; gerado_em: string | null }>;
   fontes: Record<string, {
     familia?: string | null;
-    snapshots_familias?: { familia: string; snapshot: string | null; snapshot_sha256: string | null; ultima_captura: string | null; recapturas_sem_mudanca?: number | null }[];
+    snapshots_familias?: {
+      familia: string; snapshot: string | null; snapshot_sha256: string | null; ultima_captura: string | null;
+      recapturas_sem_mudanca?: number | null;
+      ultima_tentativa?: { tentado_em: string; ok: boolean; detalhe: string } | null;
+    }[];
     ultima_captura: string | null;
     snapshot: string | null;
     snapshot_sha256: string | null;

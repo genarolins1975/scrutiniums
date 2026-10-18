@@ -76,15 +76,17 @@ describe("histórico completo na ficha, além da amostra do JSON", () => {
 
   it("mantém duas famílias com o mesmo recurso e mostra suas versões separadamente", () => {
     const d = DATASETS_INTEGRADOS.find((x) => catalogoDados()?.entradas.some((e) => e.id === x.catalogoId))!;
-    const adicional = 'ds;familia_b;"recurso; com ""aspas""";antigo;2026-10-16T00:00:00Z;;coleta_direta;true\n';
+    const adicional = 'ds;familia_b;"recurso; com ""aspas""";antigo;2026-10-16T00:00:00Z;;reuso:aneel_geracao;true\n';
     const { raiz, fonte } = fixture((CSV + adicional).replaceAll("\nds;", `\n${d.interno};`));
     fonte.snapshot = null;
     fonte.snapshot_sha256 = null;
     fonte.recapturas_sem_mudanca = null;
     fonte.resumo_capturas = { ...fonte.resumo_capturas!, total_historico: 3, total_capturas: 2, primeira: "2026-10-16T00:00:00Z", recapturas_sem_mudanca: null };
     fonte.snapshots_familias = [
-      { familia: "energia", snapshot: "ds@2026-10-18", snapshot_sha256: "sha-energia", ultima_captura: "2026-10-18T00:00:00Z", recapturas_sem_mudanca: 3 },
-      { familia: "familia_b", snapshot: "ds@2026-10-16", snapshot_sha256: "sha-b", ultima_captura: "2026-10-16T00:00:00Z", recapturas_sem_mudanca: null },
+      { familia: "energia", snapshot: "ds@2026-10-18", snapshot_sha256: "sha-energia", ultima_captura: "2026-10-18T00:00:00Z", recapturas_sem_mudanca: 3,
+        ultima_tentativa: { tentado_em: "2026-10-18T12:00:00Z", ok: true, detalhe: "conteúdo idêntico conferido" } },
+      { familia: "familia_b", snapshot: "ds@2026-10-16", snapshot_sha256: "sha-b", ultima_captura: "2026-10-16T00:00:00Z", recapturas_sem_mudanca: null,
+        ultima_tentativa: { tentado_em: "2026-10-18T13:00:00Z", ok: false, detalhe: "HTTP 503 na fonte" } },
     ];
     const original = capturasServidor.capturasDoConjunto;
     expect(original(fonte, d.interno, raiz).filter((h) => h.vigente).map((h) => h.familia).sort()).toEqual(["energia", "familia_b"]);
@@ -97,5 +99,10 @@ describe("histórico completo na ficha, além da amostra do JSON", () => {
     expect(html).toContain("sha-energia");
     expect(html).toContain("sha-b");
     expect(html).toContain("Situação na família");
+    expect(html).toMatch(/data-tentativa-familia="energia"[^>]*>[^<]*ok/);
+    expect(html).toContain("conteúdo idêntico conferido");
+    expect(html).toMatch(/data-tentativa-familia="familia_b"[^>]*>[^<]*falhou/);
+    expect(html).toContain("HTTP 503 na fonte");
+    expect(html).toContain("reuso:aneel_geracao");
   });
 });

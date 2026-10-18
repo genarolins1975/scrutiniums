@@ -269,6 +269,8 @@ class TestHistoricoAntesDaValidacao(unittest.TestCase):
                     sha = base.sha256_bytes(f'{familia}-{dia}'.encode())
                     base.registra_vintage(con, 'comum', 'mesmo_recurso', 'https://fonte.test', f'2026-10-{dia}T00:00:00Z',
                                           None, sha, 1, 'coleta_direta', 'bronze-teste')
+                base.registra_coleta(con, 'comum', 'mesmo_recurso', familia == 'familia_a',
+                                     'coleta conferida' if familia == 'familia_a' else 'HTTP 503 na fonte')
                 con.commit()
                 fontes.update(m.fontes_do_modulo(con, {'id': familia, 'familia': familia, 'datasets': [{'dataset_silver': 'comum'}]}))
                 con.close()
@@ -281,6 +283,10 @@ class TestHistoricoAntesDaValidacao(unittest.TestCase):
             self.assertIsNone(resultado['snapshot_sha256'])
             self.assertEqual({f['familia'] for f in resultado['snapshots_familias']}, {'familia_a', 'familia_b'})
             self.assertTrue(all(f['snapshot_sha256'] for f in resultado['snapshots_familias']))
+            tentativas = {f['familia']: f['ultima_tentativa'] for f in resultado['snapshots_familias']}
+            self.assertTrue(tentativas['familia_a']['ok'])
+            self.assertFalse(tentativas['familia_b']['ok'])
+            self.assertEqual(tentativas['familia_b']['detalhe'], 'HTTP 503 na fonte')
             with open(Path(tmp) / m.NOME_CSV, newline='') as f:
                 linhas = list(csv.DictReader(f, delimiter=';'))
             self.assertEqual(len(linhas), 3)
