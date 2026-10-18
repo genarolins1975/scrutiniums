@@ -2,28 +2,26 @@ import Link from "next/link";
 import type { DominioId } from "@/lib/dominios";
 import { Nome } from "@/components/i18n/Nome";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { hrefNoIdioma } from "@/lib/i18n-href";
+import { OBSERVATORIOS, OBSERVATORIO_PRINCIPAL, destinoObservatorio, type ObservatorioId } from "@/lib/observatorios/lista";
 
 /**
- * Abas dos observatórios: mesmos destinos e rótulos da barra de Crédito
- * (public/obs/index.html), dos cabeçalhos de cada observatório e do cabeçalho
- * público. Fonte única para que as abas não divirjam entre as páginas. Os rótulos são nomes próprios dos observatórios: em inglês
- * ficam em português, marcados com Nome, e o link leva à irmã /en quando ela existe.
+ * Abas dos seis observatórios nos cabeçalhos dos painéis: as mesmas do
+ * cabeçalho público e da barra da aplicação do Crédito (public/obs/index.html).
+ * Dentro dos painéis, quem tem conta vai à entrada do observatório ou à sua
+ * seção na escolha pós login. A aba destacada é o observatório em que está o
+ * núcleo da coleção corrente. Os nomes são nomes próprios: em inglês ficam em
+ * português, marcados com Nome.
  */
-export const ABAS_OBSERVATORIOS: { id: DominioId; href: string; rotulo: string }[] = [
-  { id: "credito", href: "/observatorio", rotulo: "Crédito" }, // i18n: dado (nome próprio)
-  { id: "energia", href: "/setor-eletrico", rotulo: "Setor Elétrico" }, // i18n: dado (nome próprio)
-  { id: "eficiencia", href: "/eficiencia-estatal", rotulo: "Eficiência Estatal" }, // i18n: dado (nome próprio)
-  { id: "contas", href: "/contas-publicas", rotulo: "Contas Federais" },
-  { id: "estados", href: "/contas-publicas-estaduais", rotulo: "Contas Estaduais" },
-  { id: "saneamento", href: "/saneamento", rotulo: "Saneamento" }, // i18n: dado (nome próprio)
-  { id: "gas", href: "/gas-natural", rotulo: "Gás Natural" }, // i18n: dado (nome próprio)
-  { id: "agro", href: "/agronegocio", rotulo: "Agronegócio" }, // i18n: dado (nome próprio)
-];
+export const ABAS_OBSERVATORIOS: { id: ObservatorioId; href: string; rotulo: string }[] = OBSERVATORIOS.map((o) => ({
+  id: o.id,
+  href: destinoObservatorio(o),
+  rotulo: o.nomeCurto,
+}));
 
 export function NavegacaoObservatorios({ atual }: { atual: DominioId }) {
   const idioma = idiomaEnergia();
+  const corrente = OBSERVATORIO_PRINCIPAL[atual];
   return <nav aria-label={tx("Observatórios da Scrutiniums", "Scrutiniums observatories", idioma)} className="obs-dominios">
-    {ABAS_OBSERVATORIOS.map(({ id, href, rotulo }) => <Link key={id} href={hrefNoIdioma(href, idioma)} prefetch={false} aria-current={atual === id ? "true" : undefined}><Nome>{rotulo}</Nome></Link>)}
+    {ABAS_OBSERVATORIOS.map(({ id, href, rotulo }) => <Link key={id} href={href} prefetch={false} aria-current={corrente === id ? "true" : undefined}><Nome>{rotulo}</Nome></Link>)}
   </nav>;
 }

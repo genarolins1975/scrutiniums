@@ -102,6 +102,8 @@ html:not([data-theme="dark"]) .observatorio-credito { --bg:var(--obs-papel); --s
 .observatorio-credito .obs-trocar-menu p { margin:0; padding:8px 12px 4px; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
 .observatorio-credito .obs-trocar-menu a { display:flex; align-items:center; min-height:44px; padding:8px 12px; font-size:14px; line-height:1.35; color:var(--text); text-decoration:none; }
 .observatorio-credito .obs-trocar-menu a[aria-current] { font-weight:600; }
+.observatorio-credito .obs-trocar-menu .obs-trocar-obs { margin-top:4px; border-top:1px solid var(--border); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
+.observatorio-credito .obs-trocar-menu .obs-trocar-obs:first-child { margin-top:0; border-top:0; }
 .observatorio-credito .obs-trocar-menu .obs-trocar-conta { border-top:1px solid var(--border); margin-top:4px; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
 @media(max-width:639px) { .observatorio-credito .obs-brandbar { z-index:52; flex-wrap:nowrap; } .observatorio-credito .obs-trocar { display:block; } }
 @media print { .obs-brandbar, .obs-index-search, .obs-dominios, .obs-primary { display:none!important; } .obs-hero { background:white; color:black; padding:0; } .obs-hero a, .obs-hero p, .obs-credit-hero>div>p:not(.obs-eyebrow) { color:black; } }

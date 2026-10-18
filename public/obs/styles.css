@@ -1508,6 +1508,10 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 }
 .obs-switcher-menu a:hover { background: var(--bg); }
 .obs-switcher-menu a[aria-current="page"] { font-weight: var(--fw-bold); }
+.ph-obs { margin: 4px 0 0; font-size: var(--fs-xs); color: var(--text-2); }
+.ph-obs a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.obs-switcher-menu .obs-switcher-obs { border-top: 1px solid var(--border); color: var(--text-3); font-size: var(--fs-2xs); letter-spacing: var(--tr-caps); text-transform: uppercase; }
+.obs-switcher-menu .obs-switcher-obs:first-child { border-top: 0; }
 .obs-switcher-menu .obs-switcher-conta { border-top: 1px solid var(--border); color: var(--text-2); font-size: var(--fs-2xs); letter-spacing: var(--tr-caps); text-transform: uppercase; }
 .obs-dot { width: 8px; height: 8px; flex: none; }
 .obs-dot-credito { background: var(--accent); }

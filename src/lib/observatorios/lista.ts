@@ -124,3 +124,26 @@ export const OBSERVATORIOS: Observatorio[] = [
     ],
   },
 ];
+
+/**
+ * Observatório em que está o núcleo de cada domínio de origem. O Crédito
+ * alimenta também Famílias e Contas Públicas, e o Agronegócio também Famílias
+ * e Território e Clima (registro.ts); aqui fica onde a coleção inteira é
+ * apresentada: cabeçalhos dos painéis, seletor e escolha pós login.
+ */
+export const OBSERVATORIO_PRINCIPAL: Record<DominioId, ObservatorioId> = {
+  credito: "economia",
+  agro: "economia",
+  energia: "energia-e-infraestrutura",
+  gas: "energia-e-infraestrutura",
+  saneamento: "energia-e-infraestrutura",
+  eficiencia: "servicos-publicos",
+  contas: "contas-publicas",
+  estados: "contas-publicas",
+};
+
+/** Destino de um observatório para quem tem conta: a entrada própria ou a sua seção na escolha pós login. */
+export function destinoObservatorio(o: Observatorio): string {
+  return o.entrada ?? `/app/observatorios#obs-${o.id}`;
+}
+

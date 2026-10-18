@@ -70,26 +70,27 @@ describe("registro de domínios", () => {
   it("a Eficiência Estatal está na home, no seletor, na escolha pós login, no cabeçalho, no rodapé e na SPA do Crédito", () => {
     const rota = DOMINIOS[2].rotaRaiz;
     expect(ler("src/components/home/SecaoObservatorios.tsx")).toContain("DOMINIOS.map");
-    expect(ler("src/components/layout/SwitcherObservatorio.tsx")).toContain("DOMINIOS.map");
+    expect(ler("src/components/layout/SwitcherObservatorio.tsx")).toContain("DOMINIOS.filter");
     // a escolha pós login agrupa os cartões das coleções pelos seis observatórios
     expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("OBSERVATORIOS.map");
     expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("OPCOES_OBSERVATORIOS.filter");
     expect(ler("src/components/layout/PublicHeader.tsx")).toContain("<AbasCabecalho");
     // o cabeçalho público lista os seis observatórios; a Eficiência Estatal chega por eles (src/lib/observatorios/registro.ts)
     expect(ler("src/components/layout/navCabecalho.ts")).toContain("OBSERVATORIOS");
-    expect(ler("src/components/observatorios/NavegacaoObservatorios.tsx")).toContain(`href: "${rota}"`);
+    // a barra dos painéis lista os seis observatórios; a coleção chega pelo seletor
+    expect(ler("src/components/observatorios/NavegacaoObservatorios.tsx")).toContain("OBSERVATORIOS.map");
     expect(ler("src/components/layout/Footer.tsx")).toContain(rota);
     expect(ler("public/obs/index.html")).toContain(`href="${rota}"`);
   });
 
-  it("todas as barras de abas listam os observatórios do registro, com os mesmos destinos", () => {
-    const abas = ler("src/components/observatorios/NavegacaoObservatorios.tsx");
+  it("todas as barras de abas listam os seis observatórios do registro, com os mesmos destinos", async () => {
+    const { ABAS_OBSERVATORIOS } = await import("@/components/observatorios/NavegacaoObservatorios");
+    const { OBSERVATORIOS, destinoObservatorio } = await import("@/lib/observatorios/lista");
     const spa = ler("public/obs/index.html");
     const barraSpa = spa.slice(spa.indexOf('class="obs-dominios"'), spa.indexOf("</nav>", spa.indexOf('class="obs-dominios"')));
-    for (const d of DOMINIOS) {
-      expect(abas, d.id).toContain(`{ id: "${d.id}", href: "${d.rotaRaiz}"`);
-      expect(barraSpa, d.id).toContain(`href="${d.rotaRaiz}"`);
-    }
+    expect(ABAS_OBSERVATORIOS.map((a) => a.href)).toEqual(OBSERVATORIOS.map(destinoObservatorio));
+    for (const o of OBSERVATORIOS) expect(barraSpa, o.id).toContain(`<a href="${destinoObservatorio(o)}"`);
+    expect(barraSpa).toContain('aria-current="true">Economia</a>');
   });
 
   it("os textos públicos da plataforma não falam mais em dois observatórios", () => {

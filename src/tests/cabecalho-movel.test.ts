@@ -5,6 +5,7 @@ import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { DOMINIOS } from "@/lib/dominios";
 import { OBSERVATORIOS } from "@/lib/observatorios/registro";
+import { OBSERVATORIO_PRINCIPAL, destinoObservatorio } from "@/lib/observatorios/lista";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 
 vi.mock("next/navigation", async () => ({
@@ -66,20 +67,27 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
     expect(conferidos).toBeGreaterThanOrEqual(6);
   });
 
-  it("o seletor de observatório lista os oito observatórios do registro", () => {
-    expect(ler("src/components/layout/SwitcherObservatorio.tsx")).toContain("DOMINIOS.map");
+  it("o seletor lista as oito coleções agrupadas pelos seis observatórios do registro", () => {
+    const c = ler("src/components/layout/SwitcherObservatorio.tsx");
+    expect(c).toContain("OBSERVATORIOS.map");
+    expect(c).toContain("OBSERVATORIO_PRINCIPAL[d.id] === o.id");
     expect(DOMINIOS).toHaveLength(8);
+    for (const d of DOMINIOS) expect(OBSERVATORIOS.some((o) => o.id === OBSERVATORIO_PRINCIPAL[d.id]), d.id).toBe(true);
   });
 
-  it("na SPA do Crédito, o seletor da barra da marca e o da barra lateral listam os oito observatórios com o nome do registro", () => {
+  it("na SPA do Crédito, os dois seletores listam os seis observatórios e as oito coleções com os nomes do registro", () => {
     const spa = ler("public/obs/index.html");
     const trocar = bloco(spa, 'class="obs-trocar"', "</details>");
     const lateral = bloco(spa, 'class="obs-switcher"', "</details>");
+    for (const o of OBSERVATORIOS) {
+      expect(trocar, o.id).toContain(`<a class="obs-trocar-obs" href="${destinoObservatorio(o)}">${o.nomeCurto}</a>`);
+      expect(lateral, o.id).toContain(`<a class="obs-switcher-obs" href="${destinoObservatorio(o)}">${o.nomeCurto}</a>`);
+    }
     for (const d of DOMINIOS) {
       expect(trocar, d.id).toContain(`<a href="${d.rotaRaiz}"`);
-      expect(trocar, d.id).toContain(d.nome);
+      expect(trocar, d.id).toContain(d.nomeCurto);
       expect(lateral, d.id).toContain(`<a href="${d.rotaRaiz}"`);
-      expect(lateral, d.id).toContain(d.nome);
+      expect(lateral, d.id).toContain(d.nomeCurto);
     }
     // os dois fecham com Esc, toque fora e perda de foco
     expect(ler("public/obs/app.js")).toContain('["obsSwitcher", "obsTrocar"].forEach');

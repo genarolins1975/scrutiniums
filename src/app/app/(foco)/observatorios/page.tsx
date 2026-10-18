@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
 import { COOKIE_OBSERVATORIO } from "@/lib/dominios";
 import { OPCOES_OBSERVATORIOS, type OpcaoObservatorio, type OpcaoObservatorioId } from "@/lib/opcoesObservatorios";
-import { OBSERVATORIOS, type ObservatorioId } from "@/lib/observatorios/lista";
+import { OBSERVATORIOS, OBSERVATORIO_PRINCIPAL, type ObservatorioId } from "@/lib/observatorios/lista";
 import { rotaPorta } from "@/lib/perguntas/rotas";
 import { atualizacaoObservatorio } from "@/lib/atualizacaoObservatorios";
 import styles from "./escolha.module.css";
@@ -56,22 +56,9 @@ const GUIAS: Record<OpcaoObservatorioId, { chamada: string; temas: [string, stri
   },
 };
 
-/**
- * Observatório em que cada coleção aparece com cartão próprio. O Crédito
- * alimenta também Famílias e Contas Públicas, que o mostram pelas coleções
- * (src/lib/observatorios/registro.ts); o cartão fica onde está o seu núcleo.
- */
-const OBSERVATORIO_DO_CARTAO: Record<OpcaoObservatorioId, ObservatorioId> = {
-  credito: "economia",
-  agro: "economia",
-  energia: "energia-e-infraestrutura",
-  gas: "energia-e-infraestrutura",
-  saneamento: "energia-e-infraestrutura",
-  eficiencia: "servicos-publicos",
-  judiciario: "servicos-publicos",
-  contas: "contas-publicas",
-  estados: "contas-publicas",
-};
+/** Observatório em que cada cartão aparece: o principal do domínio; o Judiciário fica com a Eficiência Estatal. */
+const OBSERVATORIO_DO_CARTAO = (id: OpcaoObservatorioId): ObservatorioId =>
+  id === "judiciario" ? OBSERVATORIO_PRINCIPAL.eficiencia : OBSERVATORIO_PRINCIPAL[id];
 
 /** Símbolos temáticos: identidade de cada área, sem representar dados. */
 function Simbolo({ id }: { id: OpcaoObservatorioId }) {
@@ -127,7 +114,7 @@ export default async function EscolhaObservatorioPage() {
         </section>
 
         {OBSERVATORIOS.map((o) => {
-          const cartoes = OPCOES_OBSERVATORIOS.filter((d) => OBSERVATORIO_DO_CARTAO[d.id] === o.id);
+          const cartoes = OPCOES_OBSERVATORIOS.filter((d) => OBSERVATORIO_DO_CARTAO(d.id) === o.id);
           return (
             <section key={o.id} aria-labelledby={`obs-${o.id}`} className={styles.observatorio}>
               <header className={styles.cabecalhoObservatorio}>
