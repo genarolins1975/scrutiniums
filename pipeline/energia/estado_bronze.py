@@ -158,12 +158,35 @@ def restaurar(origem):
     return manifesto
 
 
+def familias_ausentes(familias=None):
+    """Cache da previsão pode conter só energia.db; preserva bancos já presentes."""
+    if familias is None:
+        from pipeline.energia import modulos
+        familias = {m.REGISTRO["familia"] for m in modulos.descobrir()}
+    return sorted(f for f in familias if not (Path(base.SILVER) / f"{f}.db").is_file())
+
+
+def necessita_restaurar(origem):
+    """Manifesto é pequeno: baixar as partes só se algum bronze dele estiver ausente.
+
+    A decisão depende dos arquivos, não da chave do cache: uma chave encontrada
+    pode ter vindo de previsao-pld.yml após restauração de apenas silver.
+    """
+    manifesto = json.loads((Path(origem) / MANIFESTO).read_text())
+    if manifesto["versao"] != 1:
+        raise ValueError("versão do manifesto de bronze desconhecida")
+    return any(not base.bronze_disponivel(r) for r in manifesto["recursos"])
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("acao", choices=("guardar", "restaurar"))
+    p.add_argument("acao", choices=("guardar", "restaurar", "necessario"))
     p.add_argument("pasta")
     args = p.parse_args()
-    (guardar if args.acao == "guardar" else restaurar)(args.pasta)
+    if args.acao == "necessario":
+        print("sim" if necessita_restaurar(args.pasta) else "nao")
+    else:
+        (guardar if args.acao == "guardar" else restaurar)(args.pasta)
 
 
 if __name__ == "__main__":

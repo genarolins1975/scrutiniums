@@ -59,20 +59,26 @@ jobs:
           restore-keys: |
             energia-estado-
 
-      - name: Restaurar silver da cópia durável (cache ausente)
+      # A previsão do PLD usa o mesmo prefixo e pode salvar só energia.db depois
+      # de um cache miss. Chave encontrada não prova estado completo (review #278).
+      - name: Completar estado durável (cache ausente ou parcial)
         id: duravel
-        if: steps.restaurar.outputs.cache-matched-key == ''
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p data/energia/silver
-          gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver.db.gz" --dir /tmp
-          gunzip -c /tmp/energia-silver.db.gz > data/energia/silver/energia.db
-          # silvers das famílias dos módulos temáticos (ANEEL, IBGE, CVM...): opcional,
-          # ausente na primeira execução depois da criação dos módulos
-          if gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver-familias.tar.gz" --dir /tmp; then
-            tar -xzf /tmp/energia-silver-familias.tar.gz -C data/energia/silver
+          if [ ! -s data/energia/silver/energia.db ]; then
+            gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver.db.gz" --dir /tmp
+            gunzip -c /tmp/energia-silver.db.gz > data/energia/silver/energia.db
+          fi
+          # Completa só famílias ausentes; nunca sobrescreve um banco mais recente
+          # já restaurado do cache, inclusive o principal coletado pela previsão.
+          FALTANTES=$(python3 -c 'from pipeline.energia.estado_bronze import familias_ausentes; print("\n".join(familias_ausentes()))')
+          if [ -n "$FALTANTES" ]; then
+            if gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver-familias.tar.gz" --dir /tmp; then
+              tar -xzf /tmp/energia-silver-familias.tar.gz -C data/energia/silver --skip-old-files
+            fi
           fi
           # Uma falha posterior no bronze não significa perda do silver já restaurado.
           echo "restaurado=sim" >> "$GITHUB_OUTPUT"
@@ -81,7 +87,9 @@ jobs:
           # sem bronze ficam indisponíveis com motivo (nunca zero nem data de hoje).
           mkdir -p /tmp/energia-bronze-restaurado
           if gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-bronze-manifesto.json" --dir /tmp/energia-bronze-restaurado; then
-            python3 - <<'PYBRONZE' > /tmp/energia-bronze-partes.txt
+            NECESSARIO=$(python3 -m pipeline.energia.estado_bronze necessario /tmp/energia-bronze-restaurado)
+            if [ "$NECESSARIO" = "sim" ]; then
+              python3 - <<'PYBRONZE' > /tmp/energia-bronze-partes.txt
           import json
           from pathlib import Path
           doc = json.loads(Path("/tmp/energia-bronze-restaurado/energia-bronze-manifesto.json").read_text())
@@ -91,10 +99,13 @@ jobs:
                   raise ValueError(f"parte de bronze inválida: {nome}")
               print(nome)
           PYBRONZE
-            while IFS= read -r parte; do
-              gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "$parte" --dir /tmp/energia-bronze-restaurado
-            done < /tmp/energia-bronze-partes.txt
-            python3 -m pipeline.energia.estado_bronze restaurar /tmp/energia-bronze-restaurado
+              while IFS= read -r parte; do
+                gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "$parte" --dir /tmp/energia-bronze-restaurado
+              done < /tmp/energia-bronze-partes.txt
+              python3 -m pipeline.energia.estado_bronze restaurar /tmp/energia-bronze-restaurado
+            else
+              echo "Bronze do manifesto já presente no cache; partes não baixadas."
+            fi
           else
             echo "::warning::release sem bronze durável; recursos órfãos serão recapturados ou declarados indisponíveis"
           fi

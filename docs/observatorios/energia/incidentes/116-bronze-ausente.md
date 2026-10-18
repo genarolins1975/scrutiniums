@@ -82,6 +82,12 @@ A recaptura com conteúdo idêntico pode recuperar um caminho por sha256; ela n�
 
 `gerado_em` permanece a data de construção do documento. Emissão, captura, referência e indisponibilidade estão nos blocos e nas proveniências. Não há mudança de navegação ou de interface; os formatadores de Expansão já aceitam `null` para datas e contagens.
 
+### Cache parcial da previsão do PLD
+
+O código de [`previsao-pld.yml` em d0f184cab](https://github.com/genarolins1975/scrutiniums/blob/d0f184cab7886f1b915b57cdd07f0e5ecdc934ea/.github/workflows/previsao-pld.yml#L95), conferido em 18/10/2026, restaura somente o silver principal quando perde o cache e pode salvá-lo sob `energia-estado-previsao-*`. Esse prefixo também é aceito pelo workflow noturno. A existência de uma chave encontrada não comprova, portanto, a presença das famílias ou do bronze. Isso é uma possibilidade comprovada pelo código, não uma nova atribuição causal para a execução de 16/10.
+
+A complementação durável agora independe de `cache-matched-key`: preserva o principal já presente, restaura somente famílias ausentes com `--skip-old-files` e consulta o manifesto do bronze. As partes grandes só são baixadas se algum arquivo do manifesto faltar. O teste de integração executa o bloco shell real com uma release sintética e verifica bancos recentes preservados byte a byte, família e bronze recuperados e ausência de downloads grandes na passagem seguinte com cache completo.
+
 ## Regeneração e números
 
 Em 18/10/2026 foram executados, com o silver real da release:
@@ -109,8 +115,8 @@ Fonte das referências: `dias_referencia`/`referencias` das golds versionadas e 
 
 Resultados dos comandos desta sessão, sem alterar testes existentes:
 
-- `python3 -m unittest discover -s pipeline/tests -t .`: **1.999 testes**, verde, com seis skips existentes; pyarrow disponível no ambiente Python.
-- `test_energia_bronze_orfao`: **17 testes novos** aprovados, incluindo as reproduções de Água, Expansão e Mercado, recaptura, fallback sem mistura de vintages, bytes preservados, divisão de assets, corrupção e seeds versionados.
+- `python3 -m unittest discover -s pipeline/tests -t .`: **2.000 testes**, verde, com seis skips existentes; pyarrow disponível no ambiente Python.
+- `test_energia_bronze_orfao`: **18 testes novos** aprovados, incluindo as reproduções de Água, Expansão e Mercado, recaptura, fallback sem mistura de vintages, bytes preservados, divisão de assets, corrupção e seeds versionados.
 - `npx tsc --noEmit`, `npm run lint` e `npm run build`: verdes.
 - `npx vitest run --maxWorkers=2`: **316 arquivos**, **7.878 testes aprovados**, um skip existente; Chromium local indicado por `I18N_CHROMIUM_EXECUTABLE`.
 - `node scripts/cobertura-i18n.mjs --check`: verde, inventário sem mudança necessária.

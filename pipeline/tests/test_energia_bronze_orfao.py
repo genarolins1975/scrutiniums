@@ -330,3 +330,101 @@ class TestSelecaoEBronzeDuravel(unittest.TestCase):
         self.assertIsNone(prev)
         self.assertIn("desatualizada", motivo)
         self.assertIn("2000-01-01", motivo)
+
+
+class TestRestauracaoDeCacheParcial(unittest.TestCase):
+    def test_workflow_completa_cache_parcial_sem_sobrescrever_bancos_recentes(self):
+        import gzip
+        from pathlib import Path
+        import shutil
+        import subprocess
+        import tarfile
+        from pipeline.energia import estado_bronze as estado
+        raiz_codigo = Path(__file__).resolve().parents[2]
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            repo, assets, binarios = tmp / "repo", tmp / "release", tmp / "bin"
+            assets.mkdir()
+            binarios.mkdir()
+            pacote = repo / "pipeline/energia"
+            pacote.mkdir(parents=True)
+            (repo / "pipeline/__init__.py").write_text("")
+            (pacote / "__init__.py").write_text("")
+            for arquivo in ("base.py", "estado_bronze.py"):
+                shutil.copyfile(raiz_codigo / "pipeline/energia" / arquivo, pacote / arquivo)
+            modulos = pacote / "modulos"
+            modulos.mkdir()
+            (modulos / "__init__.py").write_text(
+                "from types import SimpleNamespace\n"
+                "def descobrir():\n"
+                "    return [SimpleNamespace(REGISTRO={'familia': f}) for f in ('ons_hidrologia', 'aneel_geracao')]\n")
+            silver = repo / "data/energia/silver"
+            bronze = repo / "data/energia/bronze"
+            silver.mkdir(parents=True)
+            with patch.multiple(base, RAIZ=str(repo), SILVER=str(silver), BRONZE=str(bronze)):
+                con = base.conecta(str(silver / "ons_hidrologia.db"))
+                arquivo, sha = base.salva_bronze("fonte", "ds", "rec", b"original", "json", "2026-10-01T00:00:00Z")
+                base.registra_vintage(con, "ds", "rec", "https://fonte.test", "2026-10-01T00:00:00Z",
+                                      None, sha, 8, "coleta_direta", arquivo)
+                con.commit()
+                con.close()
+                man = estado.guardar(assets, limite=1024)
+            bruto_original = (repo / arquivo).read_bytes()
+            antigo = tmp / "aneel-antigo.db"
+            antigo.write_bytes(b"familia antiga da release")
+            with tarfile.open(assets / "energia-silver-familias.tar.gz", "w:gz") as tar:
+                tar.add(silver / "ons_hidrologia.db", arcname="ons_hidrologia.db")
+                tar.add(antigo, arcname="aneel_geracao.db")
+            with gzip.open(assets / "energia-silver.db.gz", "wb") as f:
+                f.write(b"principal antigo da release")
+            # Simula energia-estado-previsao-*: principal recente e parte das famílias,
+            # mas sem bronze e sem o silver hidrológico. Não pode voltar ao principal antigo.
+            shutil.rmtree(bronze)
+            (silver / "ons_hidrologia.db").unlink()
+            (silver / "energia.db").write_bytes(b"principal recente do cache")
+            (silver / "aneel_geracao.db").write_bytes(b"familia recente do cache")
+            gh = binarios / "gh"
+            gh.write_text('''#!/usr/bin/env python3
+import os, pathlib, shutil, sys
+args = sys.argv[1:]
+assert args[:2] == ['release', 'download'], args
+nome = args[args.index('--pattern') + 1]
+origem = pathlib.Path(os.environ['ENERGIA_FAKE_RELEASE']) / nome
+if not origem.is_file():
+    sys.exit(1)
+destino = pathlib.Path(args[args.index('--dir') + 1])
+destino.mkdir(parents=True, exist_ok=True)
+if (destino / nome).exists():
+    sys.exit(1)
+shutil.copyfile(origem, destino / nome)
+with open(os.environ['ENERGIA_FAKE_LOG'], 'a') as f:
+    f.write(nome + '\\n')
+''')
+            gh.chmod(0o755)
+            texto = (raiz_codigo / ".github/workflows/atualizar-energia.yml").read_text()
+            bloco = texto.split("      - name: Completar estado durável (cache ausente ou parcial)\n", 1)[1].split("\n      - name:", 1)[0]
+            cabecalho, corpo = bloco.split("        run: |\n", 1)
+            self.assertFalse(any(l.startswith("        if:") for l in cabecalho.splitlines()),
+                             "cache encontrado também pode ser parcial")
+            shell = "\n".join(l[10:] if l.startswith("          ") else l for l in corpo.splitlines())
+            shell = shell.replace("/tmp", str(tmp / "temporarios"))
+            env = {**os.environ, "PATH": f"{binarios}:{os.environ['PATH']}", "PYTHONPATH": str(repo),
+                   "GITHUB_REPOSITORY": "teste/energia", "GITHUB_OUTPUT": str(tmp / "outputs"),
+                   "ENERGIA_FAKE_RELEASE": str(assets), "ENERGIA_FAKE_LOG": str(tmp / "downloads")}
+            for rodada in (1, 2):
+                if rodada == 2:
+                    shutil.rmtree(tmp / "temporarios")  # runner novo, cache agora completo
+                p = subprocess.run(["bash", "-eo", "pipefail", "-c", shell], cwd=repo, env=env,
+                                   text=True, capture_output=True, timeout=30)
+                self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+                self.assertEqual((silver / "energia.db").read_bytes(), b"principal recente do cache")
+                self.assertEqual((silver / "aneel_geracao.db").read_bytes(), b"familia recente do cache")
+                self.assertTrue((silver / "ons_hidrologia.db").is_file())
+                self.assertEqual((repo / arquivo).read_bytes(), bruto_original)
+                downloads = (tmp / "downloads").read_text().splitlines()
+                # Segunda passagem baixa só o manifesto; arquivos já recuperados não
+                # fazem baixar novamente bancos ou partes grandes.
+                self.assertEqual(downloads.count("energia-silver-familias.tar.gz"), 1)
+                self.assertEqual(downloads.count(estado.MANIFESTO), rodada)
+                for parte in man["partes"]:
+                    self.assertEqual(downloads.count(parte["nome"]), 1)
