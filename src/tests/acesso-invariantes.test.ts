@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
-import { DOMINIOS } from "@/lib/dominios";
+import { OBSERVATORIOS } from "@/lib/observatorios/lista";
 import { ACESSO, N_OBSERVATORIOS, listaObservatorios, observatoriosPorExtenso } from "@/lib/acesso";
 
 /**
@@ -92,9 +92,10 @@ describe("acesso: uma promessa", () => {
 
 describe("escopo: a contagem vem do registro", () => {
   it("a fonte única conta o registro", () => {
-    expect(N_OBSERVATORIOS).toBe(DOMINIOS.length);
-    for (const d of DOMINIOS) expect(listaObservatorios()).toContain(d.nomeCurto);
-    expect(EXTENSO[observatoriosPorExtenso().split(" ")[0]]).toBe(DOMINIOS.length);
+    // seis observatórios (src/lib/observatorios/lista.ts); os oito domínios são coleções dentro deles
+    expect(N_OBSERVATORIOS).toBe(OBSERVATORIOS.length);
+    for (const o of OBSERVATORIOS) expect(listaObservatorios()).toContain(o.nomeCurto);
+    expect(EXTENSO[observatoriosPorExtenso().split(" ")[0]]).toBe(OBSERVATORIOS.length);
   });
 
   it("nenhum texto visível traz contagem de observatórios divergente do registro", () => {
@@ -103,7 +104,7 @@ describe("escopo: a contagem vem do registro", () => {
     for (const p of FONTES)
       for (const { l, n } of linhasVisiveis(p))
         for (const m of l.matchAll(re))
-          if (EXTENSO[m[1].toLowerCase()] !== DOMINIOS.length) achados.push(`${p}:${n}: ${m[0]}`);
+          if (EXTENSO[m[1].toLowerCase()] !== OBSERVATORIOS.length) achados.push(`${p}:${n}: ${m[0]}`);
     expect(achados).toEqual([]);
   });
 

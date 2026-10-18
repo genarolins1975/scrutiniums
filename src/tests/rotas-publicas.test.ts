@@ -51,31 +51,19 @@ describe("rotas públicas", () => {
 });
 
 describe("abas do cabeçalho", () => {
-  it("visitante vai à seção pública do observatório na home; quem tem conta vai ao painel", async () => {
+  it("cada aba leva à página aberta de um dos seis observatórios, logado ou não", async () => {
     const { navCabecalho } = await import("@/components/layout/navCabecalho");
-    const { DOMINIOS } = await import("@/lib/dominios");
-    const { readFileSync } = await import("node:fs");
-    const secao = readFileSync(`${process.cwd()}/src/components/home/SecaoObservatorios.tsx`, "utf-8");
-    expect(secao).toContain("id={`obs-${d.id}`}");
-    const visitante = navCabecalho(false);
-    for (const d of DOMINIOS) expect(visitante.map((n) => n.href)).toContain(`/#obs-${d.id}`);
-    for (const n of visitante) expect(ehRotaPublica(n.href.split("#")[0] || "/"), n.href).toBe(true);
-    const logado = navCabecalho(true).map((n) => n.href);
-    for (const d of DOMINIOS) expect(logado).toContain(d.rotaRaiz);
+    const { OBSERVATORIOS } = await import("@/lib/observatorios/registro");
+    const abas = navCabecalho();
+    expect(abas.map((n) => n.href)).toEqual([...OBSERVATORIOS.map((o) => `/perguntas/${o.id}`), "/imprensa"]);
+    expect(abas.map((n) => n.label).slice(0, 6)).toEqual(OBSERVATORIOS.map((o) => o.nomeCurto));
+    for (const n of abas) expect(ehRotaPublica(n.href), n.href).toBe(true);
   });
-});
 
-describe("abas em páginas estáticas", () => {
-  it("o cliente consulta a sessão e troca as abas para os painéis quando há sessão", async () => {
+  it("as abas não consultam a sessão no navegador: o destino é o mesmo para todos", async () => {
     const { readFileSync } = await import("node:fs");
     const c = readFileSync(`${process.cwd()}/src/components/layout/AbasCabecalho.tsx`, "utf-8");
-    expect(c).toMatch(/^"use client";/);
-    expect(c).toContain('fetch("/api/auth/eu"');
-    expect(c).toContain("r.status === 204");
-    expect(c).toContain("navCabecalho(logado, idioma)");
-    // a rota consultada responde 204 com sessão e 401 sem, sem cache
-    const rota = readFileSync(`${process.cwd()}/src/app/api/auth/eu/route.ts`, "utf-8");
-    expect(rota).toContain("user ? 204 : 401");
-    expect(rota).toContain('"Cache-Control": "no-store"');
+    expect(c).not.toMatch(/^"use client";/);
+    expect(c).not.toContain("/api/auth/eu");
   });
 });

@@ -142,6 +142,7 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
       { id: "home-titulo", estado: "traduzido", chaves: ["home.hero.titulo_inicio", "home.hero.titulo_destaque"] },
       { id: "home-acoes", estado: "traduzido", chaves: ["acesso.criar_conta", "home.hero.ja_cadastrado"] },
       { id: "home-cabecalho", estado: "portugues_marcado" },
+      { id: "home-perguntas", estado: "portugues_marcado" },
       { id: "home-rotulo", estado: "traduzido", chaves: ["home.hero.rotulo"] },
       { id: "home-introducao", estado: "traduzido", chaves: ["home.hero.introducao"] },
       { id: "home-beneficios", estado: "traduzido", chaves: [
@@ -169,15 +170,15 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
     expect(usoReal).toMatchObject({
       schema_version: 1, rotas_parciais_declaradas: 1,
       chaves_en_declaradas_em_uso: 18, ocorrencias_en_declaradas: 18,
-      regioes_pt_nao_catalogadas: 3, html_verificado_pelo_inventario: false,
+      regioes_pt_nao_catalogadas: 4, html_verificado_pelo_inventario: false,
     });
     expect(usoReal?.rotas).toHaveLength(1);
     expect(usoReal?.rotas[0]).toMatchObject({ pt: "/", en: "/en", dominio: "plataforma" });
-    expect(usoReal?.rotas[0].regioes).toHaveLength(9);
+    expect(usoReal?.rotas[0].regioes).toHaveLength(10);
     expect(usoReal?.rotas[0].regioes.filter((regiao) => regiao.estado === "traduzido").map((regiao) => regiao.id))
       .toEqual(["home-acoes", "home-beneficios", "home-indice", "home-introducao", "home-rotulo", "home-titulo"]);
     expect(usoReal?.rotas[0].regioes.filter((regiao) => regiao.estado === "portugues_marcado").map((regiao) => regiao.id))
-      .toEqual(["home-cabecalho", "home-rodape", "home-secoes"]);
+      .toEqual(["home-cabecalho", "home-perguntas", "home-rodape", "home-secoes"]);
   });
 });
 

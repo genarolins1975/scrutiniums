@@ -1,3 +1,17 @@
+/** Golds lidas por src/lib/perguntas/portas.ts em tempo de requisição. */
+const GOLDS_DAS_PORTAS = [
+  "./public/obs/data/gold/pulse.json",
+  "./public/gas/gold/gas-de-cozinha.json",
+  "./public/agro/gold/snapshot.json",
+  "./public/saneamento/gold/agregados.json",
+  "./public/eficiencia/judiciario/snapshot.json",
+  "./public/eficiencia/gold/educacao_capitais.json",
+  "./public/eficiencia/gold/saude_capitais.json",
+  "./public/eficiencia/saneamento/snapshot.json",
+  "./public/energia/gold/agua_detalhe.json",
+  "./public/energia/gold/conta.json",
+];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -9,6 +23,9 @@ const nextConfig = {
       "/eficiencia-estatal/laboratorio-cesta": [
         "./docs/obee/resultados/revisao-interativa-v3.html",
       ],
+      // a home é dinâmica (sessão) e lê as golds das portas a cada instância (src/lib/perguntas/portas.ts);
+      // as páginas abertas são estáticas e as leem no build. src/tests/perguntas-portas.test.ts confere esta lista
+      "/": GOLDS_DAS_PORTAS,
       "/saneamento/municipio/[id]": ["./public/saneamento/gold/**/*.json"],
       "/saneamento/prestadores/[id]": ["./public/saneamento/gold/*.json"],
       "/observatorio/[[...rota]]": [

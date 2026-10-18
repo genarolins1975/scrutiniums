@@ -324,7 +324,7 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         trecho.value = valor;
       };
       const adulteracoes: [string, (doc: No) => void][] = [
-        ["rótulo em português", (doc) => substituirTexto(rotulo(doc), "Observatórios de dados públicos")],
+        ["rótulo em português", (doc) => substituirTexto(rotulo(doc), "As coleções de dados")],
         ["chave aparente no rótulo", (doc) => substituirTexto(rotulo(doc), "home.hero.rotulo")],
         ["benefício trocado por outro", (doc) => substituirTexto(itens(doc)[0], "Free, with no subscription")],
         ["texto de benefício omitido", (doc) => substituirTexto(itens(doc)[1], "")],
@@ -371,11 +371,11 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         no.value = no.value.replace(antes, depois);
       };
       const adulteracoes: [string, (doc: No) => void][] = [
-        ["quantidade por extenso divergente do registro", (doc) => substituirTrecho(doc, "Eight observatories", "Nine observatories")],
-        ["quantidade numérica divergente do registro", (doc) => substituirTrecho(doc, "Eight observatories", "9 observatories")],
+        ["quantidade por extenso divergente do registro", (doc) => substituirTrecho(doc, "Six observatories", "Nine observatories")],
+        ["quantidade numérica divergente do registro", (doc) => substituirTrecho(doc, "Six observatories", "9 observatories")],
         ["última frase omitida", (doc) => substituirTrecho(doc,
           " Each dashboard identifies the data source, the reference period and what the data cannot establish.", "")],
-        ["placeholder não resolvido", (doc) => substituirTrecho(doc, "Eight observatories", "{observatorios}")],
+        ["placeholder não resolvido", (doc) => substituirTrecho(doc, "Six observatories", "{observatorios}")],
         ["classe da introdução alterada", (doc) => {
           const classe = introducao(doc).attrs.find((a) => a.name === "class");
           if (!classe) throw new Error("Introdução sem classes");
@@ -386,7 +386,8 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         ["introdução movida antes do título", (doc) => {
           const paragrafo = introducao(doc), pai = paragrafo.parentNode;
           if (!pai || !("childNodes" in pai)) throw new Error("Introdução sem pai");
-          const titulo = tag(pai, "h1");
+          // o título do índice das coleções é H2: o H1 da página é a abertura por perguntas
+          const titulo = tag(pai, "h2");
           pai.childNodes = pai.childNodes.filter((no) => no !== paragrafo);
           const posicao = pai.childNodes.indexOf(titulo);
           expect(posicao).toBeGreaterThanOrEqual(0);
@@ -490,7 +491,7 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
           nav.childNodes = nav.childNodes.filter((no) => no !== ressalva);
         }],
         ["ressalva alterada", (doc) => substituirTexto(tag(indice(doc), "p"), () => "The illustrations represent specific places.")],
-        ["nome acessível português", (doc) => atributo(indice(doc), "aria-label", "Índice dos observatórios")],
+        ["nome acessível português", (doc) => atributo(indice(doc), "aria-label", "Índice das coleções")],
         ["índice escondido", (doc) => atributo(indice(doc), "hidden", "")],
         ["nome escondido", (doc) => atributo(cartao(doc).nome, "hidden", "")],
         ["quantidade escondida", (doc) => atributo(cartao(doc).valor, "hidden", "")],

@@ -25,6 +25,7 @@ Prioridade declarada por ele: **clareza > narrativa > didatismo > credibilidade 
 - **Não vender o que não existe.** Nada planejado, incompleto, simulado ou fictício aparece como funcionalidade; ausência não vira zero nem estimativa silenciosa.
 - **Coerência entre observatórios.** O de Crédito é a referência de página inicial didática ("um mapa geral do observatório"); um erro corrigido num painel é procurado e corrigido nos demais.
 - **O trabalho só termina em produção**, com links das rotas entregues (seção 13).
+- **Aberto é aperitivo, fechado é profundidade** (decisão de 17/10/2026). A camada aberta ("O Brasil em perguntas", `/perguntas/*`, e a home) mostra só amostras do tema: poucos números com fonte e período, uma frase de contexto e o convite para o painel. Séries, comparações, fichas, downloads e artefatos interativos ficam nos painéis com conta, que devem ter grau de profundidade e beleza muito maior que a página aberta. Não transformar a página aberta em painel.
 
 ## 1. Contrato editorial inegociável
 

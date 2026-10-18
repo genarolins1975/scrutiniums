@@ -145,7 +145,7 @@ describe("metadados das entradas da home", () => {
         absolute: "Scrutiniums: Crédito, Setor Elétrico, Eficiência Estatal, Contas Públicas Federais, Contas Públicas Estaduais, Saneamento, Gás Natural e Agronegócio",
         template: null,
       },
-      description: "Oito observatórios, a mesma filosofia de evidência: dados oficiais, fonte e data em cada número, metodologia aberta. Gratuito. Painéis com cadastro gratuito.",
+      description: "Seis observatórios, a mesma filosofia de evidência: dados oficiais, fonte e data em cada número, metodologia aberta. Gratuito. Painéis com cadastro gratuito.",
       siteName: "Scrutiniums", locale: "pt_BR", type: "website", url: null,
       images: [{
         url: "https://scrutiniums.com/opengraph-image?b5ad3ed804227d3b",
@@ -160,7 +160,7 @@ describe("metadados das entradas da home", () => {
     const resultado = await metadataPt({}, parent);
 
     expect(resultado).toEqual({
-      description: "Da informação dispersa ao conhecimento verificável. Uma plataforma, observatórios de Crédito, Setor Elétrico, Eficiência Estatal, Contas Públicas Federais, Contas Públicas Estaduais, Saneamento, Gás Natural e Agronegócio, com bases públicas, registros oficiais e método declarado. Gratuita. Painéis com cadastro gratuito.",
+      description: "Da informação dispersa ao conhecimento verificável. Uma plataforma, observatórios de Famílias, Serviços Públicos, Contas Públicas, Energia e Infraestrutura, Economia e Território e Clima, com bases públicas, registros oficiais e método declarado. Gratuita. Painéis com cadastro gratuito.",
       alternates: { canonical: "/", languages: { "pt-BR": "/", en: "/en", "x-default": "/" } },
       openGraph: { ...antes, title: { absolute: antes.title.absolute }, url: "/", locale: "pt_BR", alternateLocale: "en_US" },
     });

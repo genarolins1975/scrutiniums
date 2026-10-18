@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { DOMINIOS } from "@/lib/dominios";
-import { ABAS_OBSERVATORIOS } from "@/components/observatorios/NavegacaoObservatorios";
+import { OBSERVATORIOS } from "@/lib/observatorios/registro";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 
 vi.mock("next/navigation", async () => ({
@@ -90,7 +90,7 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
     const seletor = bloco(html, "<details", "</details>");
     expect(seletor).toContain("Observatórios");
     const destinos = [...seletor.matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
-    expect(destinos).toEqual(ABAS_OBSERVATORIOS.map((a) => `/#obs-${a.id}`));
+    expect(destinos).toEqual(OBSERVATORIOS.map((o) => `/perguntas/${o.id}`));
     expect(seletor).not.toContain("/imprensa");
     const nav = bloco(html, 'aria-label="Navegação principal"', "</nav>");
     expect(nav).toContain('href="/imprensa"');

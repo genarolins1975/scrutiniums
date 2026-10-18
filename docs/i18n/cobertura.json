@@ -10,9 +10,9 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "2b025680cd1d60990a0c71bb68d6288caaff6ca39d1079f72cec33919209c4b5",
-    "arquivos_analisados": 1241,
-    "fontes_sha256": "83d32978bf3fb1b7cf85b308020691d96633ca85d0cc9e22e557519d52948ef7",
+    "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
+    "arquivos_analisados": 1251,
+    "fontes_sha256": "979c26118d4116a2631539a072681e1dc69b2d8193b2be63d5b3de45acfdcaf3",
     "pendencias_sha256": "a8085bc81b412339e403ab12ad54d6d96c1ba5b43e3381af84f0f7f732e8b0cb",
     "nao_classificadas": [
       {
@@ -143,20 +143,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 213,
+        "arquivos": 223,
         "candidatos": {
-          "jsx_text": 540,
-          "atributos": 206,
-          "props": 678,
-          "outros_literais": 3616,
-          "templates": 417,
-          "expressoes_nao_resolvidas": 2317,
-          "chaves_objetos": 2605
+          "jsx_text": 580,
+          "atributos": 220,
+          "props": 685,
+          "outros_literais": 4293,
+          "templates": 449,
+          "expressoes_nao_resolvidas": 2466,
+          "chaves_objetos": 3099
         },
         "exclusoes": {
-          "importacoes": 922,
-          "atributos_tecnicos": 1171,
-          "tipos": 211
+          "importacoes": 974,
+          "atributos_tecnicos": 1305,
+          "tipos": 221
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -165,16 +165,16 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 10379,
+        "candidatos_nao_catalogados": 11792,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 28,
+        "paginas_pt": 29,
         "paginas_en": 12,
         "handlers": 29,
-        "templates_com_parametros": 1,
+        "templates_com_parametros": 2,
         "paginas_pt_literais": 24,
-        "paginas_pt_fora_do_adaptador": 4,
+        "paginas_pt_fora_do_adaptador": 5,
         "paginas_pt_literais_sem_irma": 12,
         "pares_estruturais": 12,
         "fallbacks_declarados": 8,
@@ -724,11 +724,11 @@
     "arquivos": {
       "pt": {
         "path": "src/i18n/pt.ts",
-        "sha256": "612f526d13b1303952b3ff4d875b1158b461b7a53e0a9d5b7e2d8588ef7cba20"
+        "sha256": "188c9ad6224a2c1c58987d3520fbaf885e55a15662bb5038684f192e905701b9"
       },
       "en": {
         "path": "src/i18n/en.ts",
-        "sha256": "5de5b80a143e4a23f4a5e56a264ba5c00282c7fa5e8abbdbae7756bdbc510ed2"
+        "sha256": "8703cc0f6e2679e53f9621e77f798f16e10fb9cbdc2511d3f291325b62dd2e72"
       }
     },
     "chaves": 22,
@@ -738,7 +738,7 @@
   },
   "terminologia_catalogo": {
     "path": "config/i18n-terminologia.json",
-    "sha256": "0cdffa515973e4cbe1d7f76ad2c1aa4ead0e82e614f43f9fa60d77d3b3966bc0",
+    "sha256": "4157c9c20d5a0f0d550caf7fb37a13a68a5a5071fa042d86e36a6bb809f648d0",
     "schema_version": 1,
     "mensagens": 22,
     "mensagens_vinculadas": 3,
@@ -1830,6 +1830,10 @@
             ]
           },
           {
+            "id": "home-perguntas",
+            "estado": "portugues_marcado"
+          },
+          {
             "id": "home-rodape",
             "estado": "portugues_marcado"
           },
@@ -1858,7 +1862,7 @@
     "rotas_parciais_declaradas": 1,
     "chaves_en_declaradas_em_uso": 18,
     "ocorrencias_en_declaradas": 18,
-    "regioes_pt_nao_catalogadas": 3,
+    "regioes_pt_nao_catalogadas": 4,
     "html_verificado_pelo_inventario": false
   }
 }

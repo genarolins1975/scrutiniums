@@ -4,10 +4,13 @@ import { ACENTO } from "@/components/home/acentos";
 import { DOMINIOS, type DominioId } from "@/lib/dominios";
 import { atualizacaoObservatorio } from "@/lib/atualizacaoObservatorios";
 import type { Vitrine } from "@/lib/vitrine";
+import { observatoriosDaOrigem } from "@/lib/observatorios/registro";
+import { rotaPorta } from "@/lib/perguntas/rotas";
 
 /**
- * Um capítulo por observatório: pergunta, situação, atualidade lida das golds
- * e os painéis publicados, com fontes ao pé. A situação (piloto, capítulos sem
+ * Um capítulo por coleção (os oito domínios, que desde 17/10/2026 vivem dentro
+ * dos seis observatórios): a que observatório pertence, pergunta, situação,
+ * atualidade lida das golds e os painéis publicados, com fontes ao pé. A situação (piloto, capítulos sem
  * dados, ausência de notas) fica junto do nome, nunca em nota de rodapé.
  */
 export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, Vitrine> }) {
@@ -16,16 +19,17 @@ export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, V
       <div className="mx-auto max-w-page px-6 pb-8 pt-20 md:pt-28">
         <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-7">
-            <p className="rotulo text-mineral">Os observatórios</p>
+            <p className="rotulo text-mineral">As coleções</p>
             <h2
               id="observatorios-titulo"
               className="mt-6 font-serif text-[clamp(2rem,4.4vw,3.1rem)] leading-[1.1] text-carvao [text-wrap:balance]"
             >
-              O que cada observatório já publica
+              O que cada coleção já publica
             </h2>
           </div>
           <p className="max-w-prose2 leading-relaxed text-carvao-muted lg:col-span-5 lg:self-end">
-            Painéis em produção, as fontes que os alimentam e a data do dado mais recente. O que ainda é piloto ou
+            Cada observatório reúne coleções de painéis construídas sobre as mesmas bases. Aqui estão as coleções, com
+            os painéis em produção, as fontes que os alimentam e a data do dado mais recente. O que ainda é piloto ou
             método proposto aparece identificado como tal. Os painéis abrem com a conta gratuita; depois de entrar,
             você segue direto para o painel escolhido.
           </p>
@@ -36,6 +40,7 @@ export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, V
             const v = vitrines[d.id];
             const a = ACENTO[d.acento];
             const at = atualizacaoObservatorio(d.id);
+            const donos = observatoriosDaOrigem(d.id);
             return (
               <article
                 key={d.id}
@@ -46,14 +51,25 @@ export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, V
                 <div className="lg:col-span-4 lg:pr-4">
                   <p className="rotulo flex items-center gap-3 text-mineral">
                     <span aria-hidden="true" className={`h-[3px] w-8 ${a.filete}`} />
-                    Observatório {String(i + 1).padStart(2, "0")}
+                    Coleção {String(i + 1).padStart(2, "0")}
                   </p>
                   <h3
                     id={`obs-${d.id}-titulo`}
                     className="mt-5 font-serif text-[1.65rem] leading-snug text-carvao md:text-[1.85rem]"
                   >
-                    {d.nome}
+                    {d.nomeCurto}
                   </h3>
+                  <p className="mt-3 text-sm text-carvao-muted">
+                    {donos.length > 1 ? "Nos observatórios " : "No "}
+                    {donos.map((o, j) => (
+                      <span key={o.id}>
+                        {j > 0 && (j === donos.length - 1 ? " e " : ", ")}
+                        <Link href={rotaPorta(o.id)} className="text-carvao underline decoration-linha underline-offset-4 hover:text-bronze-dark">
+                          {donos.length > 1 ? o.nomeCurto : o.nome}
+                        </Link>
+                      </span>
+                    ))}
+                  </p>
                   <p className={`mt-4 font-serif text-lg italic leading-relaxed ${a.texto}`}>{d.pergunta}</p>
 
                   {v.situacao && (

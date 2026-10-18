@@ -18,7 +18,8 @@ function partesIntroducaoHero(idioma: Idioma) {
 }
 
 /**
- * Abertura: promessa curta e, na mesma dobra, o índice dos observatórios.
+ * Índice das coleções, logo depois das perguntas (HeroPerguntas, que
+ * leva o H1 da página): promessa curta e as lâminas de cada observatório.
  * Cada lâmina usa a gravura editorial do próprio observatório e traz a
  * contagem lida do registro do domínio, na unidade que ele publica.
  */
@@ -35,13 +36,13 @@ export function Hero({ vitrines, idioma = "pt" }: { vitrines: Record<DominioId, 
             <p data-i18n-regiao={idioma === "en" ? "home-rotulo" : undefined} className="rotulo text-mineral">
               {idioma === "en" ? en["home.hero.rotulo"].texto : pt["home.hero.rotulo"]}
             </p>
-            <h1
+            <h2
               id="hero-titulo"
               data-i18n-regiao={idioma === "en" ? "home-titulo" : undefined}
-              className="mt-6 max-w-4xl font-serif text-[clamp(2.4rem,5.4vw,4.25rem)] leading-[1.06] tracking-[-0.015em] text-carvao [text-wrap:balance]"
+              className="mt-6 max-w-4xl font-serif text-[clamp(2rem,4.2vw,3.1rem)] leading-[1.08] tracking-[-0.01em] text-carvao [text-wrap:balance]"
             >
               {tituloInicio}<span className="text-bronze">{tituloDestaque}</span>.
-            </h1>
+            </h2>
             <p data-i18n-regiao={idioma === "en" ? "home-introducao" : undefined} className="mt-7 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">
               {introducao.observatorios}{introducao.restante}
             </p>

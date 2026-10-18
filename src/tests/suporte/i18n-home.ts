@@ -4,6 +4,7 @@ import { pt as catalogoPt } from "@/i18n/pt";
 import { en as catalogoEn } from "@/i18n/en";
 import { ACESSO, listaObservatorios, observatoriosPorExtenso } from "@/lib/acesso";
 import { DOMINIOS, type DominioId } from "@/lib/dominios";
+import { OBSERVATORIOS } from "@/lib/observatorios/lista";
 import { formatadorNumero } from "@/lib/format";
 import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
@@ -14,13 +15,13 @@ import { CAPITULOS as CAPITULOS_SANEAMENTO } from "@/lib/saneamento/capitulos";
 import { PAGINAS_GAS } from "@/lib/gas/navegacao";
 import { attr, conteudo, elementos, filhos, meta, oculto, tag, texto, unico, vazamentos, type Elemento, type Forma, type No } from "./i18n-dom";
 
-const REGIOES_PT = ["home-cabecalho", "home-secoes", "home-rodape"];
+const REGIOES_PT = ["home-cabecalho", "home-perguntas", "home-secoes", "home-rodape"];
 const REGIOES_EN = ["home-titulo", "home-acoes", "home-rotulo", "home-introducao", "home-beneficios", "home-indice"];
 
 /** Esperados integrais independentes do formatador e do adaptador do Hero. */
 export const INTRODUCAO_HOME = {
-  pt: "Oito observatórios sobre crédito, setor elétrico, agronegócio, gás natural, saneamento, serviços públicos e contas da União e dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o que o dado não permite afirmar.",
-  en: "Eight observatories on credit, the power sector, agribusiness, natural gas, basic sanitation, public services and the public accounts of the União (Brazil's federal government) and the states, built on official databases. Each dashboard identifies the data source, the reference period and what the data cannot establish.",
+  pt: "Seis observatórios sobre crédito, setor elétrico, agronegócio, gás natural, saneamento, serviços públicos e contas da União e dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o que o dado não permite afirmar.",
+  en: "Six observatories on credit, the power sector, agribusiness, natural gas, basic sanitation, public services and the public accounts of the União (Brazil's federal government) and the states, built on official databases. Each dashboard identifies the data source, the reference period and what the data cannot establish.",
 } as const;
 const CHAVES = {
   titulo: ["home.hero.titulo_inicio", "home.hero.titulo_destaque"],
@@ -71,9 +72,9 @@ function verificarIndiceHome(indicePt: Elemento, indiceEn: Elemento, corpoPt: El
   expect(INDICE_HOME.map((d) => d.id)).toEqual(["credito", "energia", "eficiencia", "contas", "estados", "saneamento", "gas", "agro"]);
   expect(indicePt.tagName).toBe("nav");
   expect(indiceEn.tagName).toBe("nav");
-  expect(attr(indicePt, "aria-label")).toBe("Índice dos observatórios");
-  expect(catalogoPt["home.indice.rotulo"]).toBe("Índice dos observatórios");
-  expect(inglesa("home.indice.rotulo")).toBe("Observatory index");
+  expect(attr(indicePt, "aria-label")).toBe("Índice das coleções");
+  expect(catalogoPt["home.indice.rotulo"]).toBe("Índice das coleções");
+  expect(inglesa("home.indice.rotulo")).toBe("Collection index");
   const esperado = forma(indicePt);
   const rotulo = esperado.atributos.find(([nome]) => nome === "aria-label");
   if (!rotulo) throw new Error("Índice PT sem nome acessível");
@@ -89,9 +90,9 @@ function verificarIndiceHome(indicePt: Elemento, indiceEn: Elemento, corpoPt: El
   expect(lista.tag).toBe("ol");
   expect(lista.filhos).toHaveLength(8);
   expect(ressalva.tag).toBe("p");
-  expect(ressalva.filhos).toEqual(["Ilustrações editoriais de cada observatório. Não representam dados nem lugares específicos."]);
+  expect(ressalva.filhos).toEqual(["Ilustrações editoriais de cada coleção. Não representam dados nem lugares específicos."]);
   expect(catalogoPt["home.indice.ilustracoes"]).toBe(ressalva.filhos[0]);
-  expect(inglesa("home.indice.ilustracoes")).toBe("Editorial illustrations for each observatory. They do not represent data or specific places.");
+  expect(inglesa("home.indice.ilustracoes")).toBe("Editorial illustrations for each collection. They do not represent data or specific places.");
   ressalva.filhos = [inglesa("home.indice.ilustracoes")];
   for (const [i, esperadoCartao] of INDICE_HOME.entries()) {
     const item = objeto(lista.filhos[i], `cartão ${esperadoCartao.id} sem li`);
@@ -186,7 +187,7 @@ export function verificarHeadHome(pt: No, en: No): void {
 export function verificarHomeParcial(pt: No, en: No): void {
   const declaracao = inventario.uso_interface.rotas.find((rota) => rota.pt === "/");
   expect(declaracao, "declaração da home parcial").toBeDefined();
-  expect(declaracao!.regioes).toHaveLength(9);
+  expect(declaracao!.regioes).toHaveLength(10);
   const traduzidas = declaracao!.regioes.filter((regiao) => regiao.estado === "traduzido");
   expect(traduzidas).toEqual([
     { id: "home-titulo", estado: "traduzido", chaves: CHAVES.titulo },
@@ -201,34 +202,39 @@ export function verificarHomeParcial(pt: No, en: No): void {
   const corpoPt = tag(pt, "body");
   const corpoEn = tag(en, "body");
   const heroPt = unico(corpoPt, (e) => attr(e, "aria-labelledby") === "hero-titulo", "Hero PT");
-  const tituloPt = tag(heroPt, "h1");
-  const rotuloPt = unico(heroPt, (e) => e.tagName === "p" && texto(e) === "Observatórios de dados públicos", "rótulo PT");
+  // O H1 da página é a pergunta da abertura (HeroPerguntas); o índice dos observatórios leva H2.
+  const tituloPt = tag(heroPt, "h2");
+  const rotuloPt = unico(heroPt, (e) => e.tagName === "p" && texto(e) === "As coleções de dados", "rótulo PT");
   const beneficiosPt = tag(heroPt, "ul");
   const indicePt = tag(heroPt, "nav");
   const irmaosTitulo = filhos(tituloPt.parentNode!).filter(elemento);
   const introducaoPt = irmaosTitulo[irmaosTitulo.indexOf(tituloPt) + 1];
   expect(introducaoPt.tagName).toBe("p");
-  expect(DOMINIOS, "a quantidade por extenso deve corresponder aos oito observatórios publicados").toHaveLength(8);
+  expect(OBSERVATORIOS, "a quantidade por extenso deve corresponder aos seis observatórios publicados").toHaveLength(6);
   expect(conteudo(introducaoPt), "texto PT completo, com espaços e quantidade preservados").toEqual([INTRODUCAO_HOME.pt]);
-  expect(catalogoPt[CHAVES.introducao[0]].replace("{observatorios}", "Oito observatórios")).toBe(INTRODUCAO_HOME.pt);
-  expect(inglesa(CHAVES.introducao[0]).replace("{observatorios}", "Eight observatories")).toBe(INTRODUCAO_HOME.en);
+  expect(catalogoPt[CHAVES.introducao[0]].replace("{observatorios}", "Seis observatórios")).toBe(INTRODUCAO_HOME.pt);
+  expect(inglesa(CHAVES.introducao[0]).replace("{observatorios}", "Six observatories")).toBe(INTRODUCAO_HOME.en);
   const acoesPt = unico(heroPt, (e) => e.tagName === "div" && filhos(e).filter(elemento).length === 2
     && filhos(e).filter(elemento).every((a) => a.tagName === "a")
     && filhos(e).filter(elemento).some((a) => attr(a, "href") === "/cadastro"), "ações PT");
   const mainPt = tag(corpoPt, "main");
-  const secoesPt = filhos(mainPt).filter(elemento).filter((e) => e !== heroPt);
+  const perguntasPt = unico(corpoPt, (e) => attr(e, "aria-labelledby") === "perguntas-titulo", "Perguntas PT");
+  expect(filhos(mainPt).filter(elemento)[0], "a abertura por perguntas vem antes do índice").toBe(perguntasPt);
+  expect(tag(perguntasPt, "h1")).toBeDefined();
+  const secoesPt = filhos(mainPt).filter(elemento).filter((e) => e !== heroPt && e !== perguntasPt);
   expect(secoesPt).toHaveLength(4);
   expect(secoesPt.map((e) => attr(e, "aria-labelledby"))).toEqual(["observatorios-titulo", "plataforma-titulo", "recursos-titulo", "acesso-titulo"]);
   const originais: Record<string, Forma[]> = {
     "home-cabecalho": [forma(tag(corpoPt, "header"))],
+    "home-perguntas": [forma(perguntasPt)],
     "home-secoes": secoesPt.map(forma),
     "home-rodape": [forma(tag(corpoPt, "footer"))],
   };
   const ids = elementos(corpoEn).filter((e) => attr(e, "data-i18n-regiao") !== undefined).map((e) => attr(e, "data-i18n-regiao"));
-  expect(new Set(ids).size, "nove regiões únicas").toBe(9);
+  expect(new Set(ids).size, "dez regiões únicas").toBe(10);
   expect(ids.sort()).toEqual([...REGIOES_PT, ...REGIOES_EN].sort());
-  expect(elementos(corpoEn).filter((e) => attr(e, "data-i18n-aviso") !== undefined)).toHaveLength(3);
-  expect(elementos(corpoEn).filter((e) => attr(e, "data-i18n-estado") !== undefined)).toHaveLength(3);
+  expect(elementos(corpoEn).filter((e) => attr(e, "data-i18n-aviso") !== undefined)).toHaveLength(4);
+  expect(elementos(corpoEn).filter((e) => attr(e, "data-i18n-estado") !== undefined)).toHaveLength(4);
   for (const regiao of preservadas) {
     const ilha = unico(corpoEn, (e) => attr(e, "data-i18n-regiao") === regiao.id, regiao.id);
     expect(attr(ilha, "data-i18n-estado")).toBe("portugues_marcado");
@@ -244,7 +250,7 @@ export function verificarHomeParcial(pt: No, en: No): void {
   const indice = unico(corpoEn, (e) => attr(e, "data-i18n-regiao") === "home-indice", "índice traduzido");
   expect(introducao.parentNode).toBe(titulo.parentNode);
   const irmaosTituloEn = filhos(titulo.parentNode!).filter(elemento);
-  expect(irmaosTituloEn[irmaosTituloEn.indexOf(titulo) + 1], "introdução imediatamente após o H1").toBe(introducao);
+  expect(irmaosTituloEn[irmaosTituloEn.indexOf(titulo) + 1], "introdução imediatamente após o título").toBe(introducao);
   for (const regiao of [titulo, acoes, rotulo, introducao, beneficios, indice]) {
     expect(oculto(regiao)).toBe(false);
     expect(attr(regiao, "data-i18n-estado")).toBeUndefined();

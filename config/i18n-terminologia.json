@@ -43,8 +43,8 @@
     },
     "home.hero.rotulo": {
       "classificacao": "sem_termos_tecnicos",
-      "sha256_revisado": "0b86934ecf4514211b4173d969d73f0b383125959639b6bc7f40848b1e593920",
-      "justificativa": "Descrição comum de observatórios de dados públicos; não afirma licença de dados abertos nem categoria estatística formal."
+      "sha256_revisado": "83c00237b823b40b198fd6de136c33efe3fb2eda127877831c3eb3e3295995c8",
+      "justificativa": "Rótulo da seção que lista as coleções de dados da plataforma; coleção significa conjunto de painéis, não categoria estatística formal."
     },
     "home.hero.introducao": {
       "classificacao": "vinculada",
@@ -136,12 +136,12 @@
     },
     "home.indice.rotulo": {
       "classificacao": "sem_termos_tecnicos",
-      "sha256_revisado": "4d735a45f1dc813fff226175d30e70ea39371cc14de85076193b9993a2da7e2e",
-      "justificativa": "Nome acessível da navegação que reúne os observatórios; índice significa lista de destinos, não índice estatístico ou indicador de domínio."
+      "sha256_revisado": "7a1de98513bf4ac7bdc3535c8aae6b18b8ab0732d93dcd785551784fe9910112",
+      "justificativa": "Nome acessível da navegação que reúne as coleções; índice significa lista de destinos, não índice estatístico ou indicador de domínio."
     },
     "home.indice.ilustracoes": {
       "classificacao": "sem_termos_tecnicos",
-      "sha256_revisado": "bc8ea4bc7fcc7207254f43c5ae425b3e67550f71fc0967b437273cf171a6fed2",
+      "sha256_revisado": "d0d938b70a6ef2519e31784aba94af1f922f66e84c9f5965961e3510b80d0d36",
       "justificativa": "Ressalva editorial sobre imagens decorativas; dados e lugares descrevem aquilo que as ilustrações não representam, sem definir categoria estatística, fonte ou recorte territorial."
     },
     "home.indice.paginas_tematicas": {
