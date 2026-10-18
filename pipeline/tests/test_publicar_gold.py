@@ -264,6 +264,11 @@ class Infraestrutura(unittest.TestCase):
         r = fluxo.classificar(1, '1 teste reprovado', rel, 'vitest')
         self.assertFalse(r['inconclusivo'])
         self.assertEqual(r['resultados']['src/tests/emprego-data.test.ts']['estado'], 'failed')
+        rel['success'] = True
+        rel['numPassedTests'], rel['numFailedTests'] = 1, 0
+        rel['testResults'][0]['status'] = 'passed'
+        rel['testResults'][0]['assertionResults'] = [{'status': 'passed'}]
+        self.assertFalse(fluxo.classificar(0, 'teste da proteção contra ENOBUFS passou', rel, 'vitest')['inconclusivo'])
 
     def test_erro_de_setup_de_classe_atribuido_ao_arquivo_de_dado(self):
         from io import StringIO

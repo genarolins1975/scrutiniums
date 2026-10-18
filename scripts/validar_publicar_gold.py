@@ -65,7 +65,7 @@ def classificar(codigo, texto, relatorio, suite):
     resultados = {}
     if codigo in (124, 134, 137, 139, 143) or codigo < 0:
         motivo = f'processo interrompido/tempo esgotado (saída {codigo})'
-    achado = INFRA.search(texto)
+    achado = INFRA.search(texto) if codigo else None
     if achado:
         motivo = achado.group(0)
     if suite == 'preparo':
