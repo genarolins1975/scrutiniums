@@ -129,18 +129,19 @@ elif a[:2] == ['release', 'delete-asset']:
         # Falha de upload mais nova não pode esconder a última geração completa.
         self.env['FAKE_STARTER'] = 'energia-meta-20261019T000000Z.tar.gz'
         (self.assets / self.env['FAKE_STARTER']).write_bytes(b'upload interrompido')
-        for parcial in (False, True):
-            with self.subTest(parcial=parcial):
-                pasta = self.repo / 'data/energia/meta'
-                shutil.rmtree(pasta, ignore_errors=True)
-                if parcial:
-                    pasta.mkdir(parents=True)
-                    (pasta / '_meta_ons.json').write_bytes(b'cache recente\n')
-                r = self.executar('Restaurar metadados da cópia durável')
-                self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
-                self.assertEqual((pasta / '_meta_ons.json').read_bytes(), b'cache recente\n' if parcial else b'fonte')
-                self.assertEqual((pasta / '_ckan_ons.json').read_bytes(), b'catalogo')
-                self.assertEqual((pasta / '_conferencia_bronze.json').read_bytes(), b'conferencia')
+        for workflow in ("atualizar-energia.yml", "previsao-pld.yml"):
+            for parcial in (False, True):
+                with self.subTest(workflow=workflow, parcial=parcial):
+                    pasta = self.repo / 'data/energia/meta'
+                    shutil.rmtree(pasta, ignore_errors=True)
+                    if parcial:
+                        pasta.mkdir(parents=True)
+                        (pasta / '_meta_ons.json').write_bytes(b'cache recente\n')
+                    r = self.executar('Restaurar metadados da cópia durável', workflow)
+                    self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+                    self.assertEqual((pasta / '_meta_ons.json').read_bytes(), b'cache recente\n' if parcial else b'fonte')
+                    self.assertEqual((pasta / '_ckan_ons.json').read_bytes(), b'catalogo')
+                    self.assertEqual((pasta / '_conferencia_bronze.json').read_bytes(), b'conferencia')
 
     def test_falha_copia_meta_nao_impede_silver_nem_apaga_geracao_anterior(self):
         self.asset('20261017T000000Z', {'_meta_ons.json': 'anterior'})

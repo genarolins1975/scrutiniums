@@ -102,6 +102,34 @@ jobs:
           gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver.db.gz" --dir /tmp
           gunzip -c /tmp/energia-silver.db.gz > data/energia/silver/energia.db
 
+      - name: Restaurar metadados da cópia durável
+        id: meta_restaurada
+        if: steps.feita.outputs.sim == '0'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/energia-meta-restaurada
+          # Upload interrompido pode deixar asset em state=starter: só vale uploaded.
+          if gh api "repos/$GITHUB_REPOSITORY/releases/tags/energia-estado" \
+            --jq '.assets[] | select(.state == "uploaded" and (.name | startswith("energia-meta-") and endswith(".tar.gz"))) | .name' > /tmp/energia-meta-geracoes.txt; then
+            ULTIMO=$(sort /tmp/energia-meta-geracoes.txt | tail -n 1)
+            if [ -n "$ULTIMO" ]; then
+              gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "$ULTIMO" --dir /tmp/energia-meta-restaurada
+              python3 -m pipeline.energia.estado_meta restaurar "/tmp/energia-meta-restaurada/$ULTIMO"
+            else
+              echo "::warning::release sem metadados duráveis; primeira cópia será criada após a coleta"
+            fi
+          else
+            echo "::warning::não foi possível consultar a cópia durável dos metadados"
+            exit 1
+          fi
+          rm -rf /tmp/energia-meta-restaurada
+
+      - name: Avisar falha na restauração dos metadados da previsão
+        if: steps.meta_restaurada.outcome == 'failure'
+        run: echo "::warning::metadados duráveis não restaurados; arquivos existentes foram preservados"
+
       - name: Verificação e retentativa antes do corte
         id: verificar
         if: steps.feita.outputs.sim == '0'
