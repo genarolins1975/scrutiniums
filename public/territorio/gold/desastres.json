@@ -1,0 +1,1409 @@
+{
+ "dominio": "territorio",
+ "gold": "desastres",
+ "versaoPipeline": "territorio-1.0.0",
+ "modulo": "territorio/desastres",
+ "capturadoEm": "2026-10-18T10:36:01+00:00",
+ "dataReferencia": "2026-10-18",
+ "fonte": {
+  "nome": "Atlas Digital de Desastres no Brasil, base consolidada (Sedec/MIDR e Ceped/UFSC), extraída do S2iD",
+  "pagina": "https://atlasdigital.mdr.gov.br/paginas/downloads.xhtml",
+  "manual": "https://atlasdigital.mdr.gov.br/arquivos/Atlas_Digital_Desastres_Manual_Aplicacao.pdf",
+  "painel_oficial": "https://atlasdigital.mdr.gov.br/paginas/graficos.xhtml",
+  "licenca": "Não declarada na página de downloads; dado público oficial (Lei de Acesso à Informação). Citar Sedec/MIDR, Atlas Digital de Desastres no Brasil.",
+  "cobertura_eventos": {
+   "inicio": "1991-01-01",
+   "fim": "2025-12-31"
+  },
+  "ultimo_registro_na_base": "2026-03-24",
+  "cadencia": "Atualização anual declarada pela Sedec; a base capturada cobre ocorrências de 1991 a 2025."
+ },
+ "originais": {
+  "atlas_csv": {
+   "url": "https://atlasdigital.mdr.gov.br/arquivos/2026/BD_Atlas_1991_2025_v1.1_2026.08.06_Consolidado.csv",
+   "arquivo": "BD_Atlas_1991_2025_v1.1_2026.08.06_Consolidado.csv",
+   "sha256": "78f7efd2d853021678ff4af891e938375b9fd0ce77026cbe052a53dae12bf425",
+   "bytes": 86134318,
+   "last_modified": "Fri, 07 Aug 2026 14:38:42 GMT",
+   "capturado_em": "2026-10-18T10:36:01+00:00"
+  },
+  "atlas_manual": {
+   "url": "https://atlasdigital.mdr.gov.br/arquivos/Atlas_Digital_Desastres_Manual_Aplicacao.pdf",
+   "arquivo": "Atlas_Digital_Desastres_Manual_Aplicacao.pdf",
+   "sha256": "2287740926d28205c3f3c58ae5d0b0ae5e16daa8e8bb565e613077e61d9af808",
+   "bytes": 6927029,
+   "last_modified": "Wed, 27 May 2026 21:38:24 GMT",
+   "capturado_em": "2026-10-18T10:36:18+00:00"
+  },
+  "atlas_log_correcoes": {
+   "url": "https://atlasdigital.mdr.gov.br/arquivos/2026/2026.08-logs-correcoes.xlsx",
+   "arquivo": "2026.08-logs-correcoes.xlsx",
+   "sha256": "fafdf50cfd5f0a185e6fe01b13caed45995446a67cf85e9f354b10ade1e24115",
+   "bytes": 158903,
+   "last_modified": "Fri, 07 Aug 2026 14:38:40 GMT",
+   "capturado_em": "2026-10-18T10:36:20+00:00"
+  }
+ },
+ "bloqueios": [
+  {
+   "url": "https://s2id.mi.gov.br/paginas/relatorios/",
+   "situacao": "HTTP 403 em https://s2id.mi.gov.br/paginas/relatorios/: Acesso bloqueado por localizacao geografica. O acesso a este servico foi permitido somente a partir de enderecos IP localizados no Brasil. Caso considere este bloqueio indevido, entre em contato com o"
+  }
+ ],
+ "unidade": "Registro municipal de desastre: um protocolo do S2iD (ou documento histórico digitalizado) para um município, uma data de ocorrência e uma tipologia COBRADE. \"Reconhecido\" indica que o protocolo obteve reconhecimento federal de situação de emergência ou estado de calamidade pública. Não é contagem de portarias, de decretos nem de eventos físicos: uma mesma chuva em 300 municípios gera 300 registros.",
+ "ano_de_referencia": "Ano da data de ocorrência do desastre (Data_Evento), não da publicação da portaria.",
+ "grupos": {
+  "secas_estiagens": "Secas e estiagens (COBRADE 1.4.1.1.0 e 1.4.1.2.0)",
+  "chuvas_inundacoes_enxurradas_alagamentos": "Chuvas intensas, inundações, enxurradas e alagamentos (1.2.1.0.0, 1.2.2.0.0, 1.2.3.0.0, 1.3.2.1.4)",
+  "movimentos_de_massa": "Movimentos de massa: quedas, deslizamentos, corridas, subsidências (1.1.3.x)",
+  "outros": "Outros: vendaval, granizo, erosão, incêndio florestal, onda de frio ou calor, doenças, tecnológicos etc."
+ },
+ "tipos_documento": {
+  "F": "FIDE (S2iD, 2012 em diante)",
+  "A": "AVADAN",
+  "N": "NOPRED",
+  "P": "Portaria",
+  "D": "Decreto",
+  "J": "Jornal",
+  "R": "Relatório",
+  "C": "não documentado no manual",
+  "O": "Outros"
+ },
+ "serie_anual": [
+  {
+   "ano": 1991,
+   "registros_municipais": 403,
+   "registros_reconhecidos": null,
+   "por_grupo_reconhecidos": null,
+   "municipios_distintos_com_reconhecimento": null,
+   "municipios_distintos_com_registro": 378,
+   "tipo_documento_de_origem": {
+    "D": 272,
+    "J": 9,
+    "O": 2,
+    "P": 103,
+    "R": 17
+   }
+  },
+  {
+   "ano": 1992,
+   "registros_municipais": 590,
+   "registros_reconhecidos": null,
+   "por_grupo_reconhecidos": null,
+   "municipios_distintos_com_reconhecimento": null,
+   "municipios_distintos_com_registro": 544,
+   "tipo_documento_de_origem": {
+    "A": 1,
+    "D": 82,
+    "J": 5,
+    "P": 456,
+    "R": 46
+   }
+  },
+  {
+   "ano": 1993,
+   "registros_municipais": 1324,
+   "registros_reconhecidos": null,
+   "por_grupo_reconhecidos": null,
+   "municipios_distintos_com_reconhecimento": null,
+   "municipios_distintos_com_registro": 1300,
+   "tipo_documento_de_origem": {
+    "D": 57,
+    "J": 2,
+    "P": 1236,
+    "R": 29
+   }
+  },
+  {
+   "ano": 1994,
+   "registros_municipais": 231,
+   "registros_reconhecidos": null,
+   "por_grupo_reconhecidos": null,
+   "municipios_distintos_com_reconhecimento": null,
+   "municipios_distintos_com_registro": 222,
+   "tipo_documento_de_origem": {
+    "D": 53,
+    "J": 8,
+    "P": 169,
+    "R": 1
+   }
+  },
+  {
+   "ano": 1995,
+   "registros_municipais": 818,
+   "registros_reconhecidos": null,
+   "por_grupo_reconhecidos": null,
+   "municipios_distintos_com_reconhecimento": null,
+   "municipios_distintos_com_registro": 766,
+   "tipo_documento_de_origem": {
+    "A": 21,
+    "D": 323,
+    "J": 9,
+    "N": 4,
+    "P": 419,
+    "R": 42
+   }
+  },
+  {
+   "ano": 1996,
+   "registros_municipais": 490,
+   "registros_reconhecidos": null,
+   "por_grupo_reconhecidos": null,
+   "municipios_distintos_com_reconhecimento": null,
+   "municipios_distintos_com_registro": 469,
+   "tipo_documento_de_origem": {
+    "A": 25,
+    "D": 98,
+    "J": 16,
+    "N": 9,
+    "P": 339,
+    "R": 3
+   }
+  },
+  {
+   "ano": 1997,
+   "registros_municipais": 748,
+   "registros_reconhecidos": null,
+   "por_grupo_reconhecidos": null,
+   "municipios_distintos_com_reconhecimento": null,
+   "municipios_distintos_com_registro": 705,
+   "tipo_documento_de_origem": {
+    "A": 43,
+    "D": 180,
+    "J": 20,
+    "N": 55,
+    "P": 448,
+    "R": 2
+   }
+  },
+  {
+   "ano": 1998,
+   "registros_municipais": 1178,
+   "registros_reconhecidos": null,
+   "por_grupo_reconhecidos": null,
+   "municipios_distintos_com_reconhecimento": null,
+   "municipios_distintos_com_registro": 1095,
+   "tipo_documento_de_origem": {
+    "A": 148,
+    "D": 616,
+    "J": 10,
+    "N": 84,
+    "O": 2,
+    "P": 315,
+    "R": 3
+   }
+  },
+  {
+   "ano": 1999,
+   "registros_municipais": 741,
+   "registros_reconhecidos": null,
+   "por_grupo_reconhecidos": null,
+   "municipios_distintos_com_reconhecimento": null,
+   "municipios_distintos_com_registro": 735,
+   "tipo_documento_de_origem": {
+    "A": 90,
+    "C": 3,
+    "D": 197,
+    "J": 1,
+    "N": 21,
+    "O": 2,
+    "P": 426,
+    "R": 1
+   }
+  },
+  {
+   "ano": 2000,
+   "registros_municipais": 595,
+   "registros_reconhecidos": null,
+   "por_grupo_reconhecidos": null,
+   "municipios_distintos_com_reconhecimento": null,
+   "municipios_distintos_com_registro": 549,
+   "tipo_documento_de_origem": {
+    "A": 177,
+    "D": 53,
+    "J": 10,
+    "N": 30,
+    "O": 1,
+    "P": 324
+   }
+  },
+  {
+   "ano": 2001,
+   "registros_municipais": 1824,
+   "registros_reconhecidos": null,
+   "por_grupo_reconhecidos": null,
+   "municipios_distintos_com_reconhecimento": null,
+   "municipios_distintos_com_registro": 1679,
+   "tipo_documento_de_origem": {
+    "A": 566,
+    "C": 13,
+    "D": 152,
+    "J": 3,
+    "N": 36,
+    "P": 1049,
+    "R": 5
+   }
+  },
+  {
+   "ano": 2002,
+   "registros_municipais": 1816,
+   "registros_reconhecidos": null,
+   "por_grupo_reconhecidos": null,
+   "municipios_distintos_com_reconhecimento": null,
+   "municipios_distintos_com_registro": 1587,
+   "tipo_documento_de_origem": {
+    "A": 1148,
+    "C": 9,
+    "D": 141,
+    "N": 36,
+    "P": 482
+   }
+  },
+  {
+   "ano": 2003,
+   "registros_municipais": 1606,
+   "registros_reconhecidos": 643,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 315,
+    "chuvas_inundacoes_enxurradas_alagamentos": 253,
+    "movimentos_de_massa": 8,
+    "outros": 67
+   },
+   "municipios_distintos_com_reconhecimento": 623,
+   "municipios_distintos_com_registro": 1465,
+   "tipo_documento_de_origem": {
+    "A": 1181,
+    "C": 39,
+    "D": 177,
+    "J": 1,
+    "N": 54,
+    "P": 152,
+    "R": 2
+   }
+  },
+  {
+   "ano": 2004,
+   "registros_municipais": 2424,
+   "registros_reconhecidos": 1216,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 567,
+    "chuvas_inundacoes_enxurradas_alagamentos": 595,
+    "movimentos_de_massa": 1,
+    "outros": 53
+   },
+   "municipios_distintos_com_reconhecimento": 1157,
+   "municipios_distintos_com_registro": 1935,
+   "tipo_documento_de_origem": {
+    "A": 1485,
+    "C": 46,
+    "D": 93,
+    "J": 1,
+    "N": 64,
+    "P": 732,
+    "R": 3
+   }
+  },
+  {
+   "ano": 2005,
+   "registros_municipais": 2314,
+   "registros_reconhecidos": 1209,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 1054,
+    "chuvas_inundacoes_enxurradas_alagamentos": 127,
+    "movimentos_de_massa": 2,
+    "outros": 26
+   },
+   "municipios_distintos_com_reconhecimento": 1187,
+   "municipios_distintos_com_registro": 2095,
+   "tipo_documento_de_origem": {
+    "A": 1636,
+    "C": 66,
+    "D": 44,
+    "J": 1,
+    "N": 66,
+    "P": 499,
+    "R": 2
+   }
+  },
+  {
+   "ano": 2006,
+   "registros_municipais": 1580,
+   "registros_reconhecidos": 613,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 488,
+    "chuvas_inundacoes_enxurradas_alagamentos": 89,
+    "movimentos_de_massa": 2,
+    "outros": 34
+   },
+   "municipios_distintos_com_reconhecimento": 592,
+   "municipios_distintos_com_registro": 1366,
+   "tipo_documento_de_origem": {
+    "A": 1167,
+    "C": 198,
+    "D": 18,
+    "J": 2,
+    "N": 33,
+    "P": 162
+   }
+  },
+  {
+   "ano": 2007,
+   "registros_municipais": 1831,
+   "registros_reconhecidos": 913,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 522,
+    "chuvas_inundacoes_enxurradas_alagamentos": 278,
+    "movimentos_de_massa": 10,
+    "outros": 103
+   },
+   "municipios_distintos_com_reconhecimento": 869,
+   "municipios_distintos_com_registro": 1642,
+   "tipo_documento_de_origem": {
+    "A": 1607,
+    "C": 110,
+    "D": 16,
+    "J": 11,
+    "N": 40,
+    "P": 43,
+    "R": 4
+   }
+  },
+  {
+   "ano": 2008,
+   "registros_municipais": 1921,
+   "registros_reconhecidos": 715,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 423,
+    "chuvas_inundacoes_enxurradas_alagamentos": 225,
+    "movimentos_de_massa": 0,
+    "outros": 67
+   },
+   "municipios_distintos_com_reconhecimento": 680,
+   "municipios_distintos_com_registro": 1616,
+   "tipo_documento_de_origem": {
+    "A": 1615,
+    "C": 131,
+    "D": 35,
+    "J": 46,
+    "N": 60,
+    "P": 33,
+    "R": 1
+   }
+  },
+  {
+   "ano": 2009,
+   "registros_municipais": 3005,
+   "registros_reconhecidos": 1898,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 676,
+    "chuvas_inundacoes_enxurradas_alagamentos": 915,
+    "movimentos_de_massa": 13,
+    "outros": 294
+   },
+   "municipios_distintos_com_reconhecimento": 1549,
+   "municipios_distintos_com_registro": 2246,
+   "tipo_documento_de_origem": {
+    "A": 2186,
+    "C": 191,
+    "D": 56,
+    "J": 73,
+    "N": 58,
+    "P": 439,
+    "R": 2
+   }
+  },
+  {
+   "ano": 2010,
+   "registros_municipais": 2086,
+   "registros_reconhecidos": 1162,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 431,
+    "chuvas_inundacoes_enxurradas_alagamentos": 588,
+    "movimentos_de_massa": 21,
+    "outros": 122
+   },
+   "municipios_distintos_com_reconhecimento": 1084,
+   "municipios_distintos_com_registro": 1714,
+   "tipo_documento_de_origem": {
+    "A": 1270,
+    "C": 123,
+    "D": 70,
+    "J": 113,
+    "N": 65,
+    "P": 444,
+    "R": 1
+   }
+  },
+  {
+   "ano": 2011,
+   "registros_municipais": 1740,
+   "registros_reconhecidos": 931,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 120,
+    "chuvas_inundacoes_enxurradas_alagamentos": 714,
+    "movimentos_de_massa": 17,
+    "outros": 80
+   },
+   "municipios_distintos_com_reconhecimento": 758,
+   "municipios_distintos_com_registro": 1298,
+   "tipo_documento_de_origem": {
+    "A": 1115,
+    "C": 77,
+    "D": 27,
+    "J": 61,
+    "N": 25,
+    "P": 422,
+    "R": 13
+   }
+  },
+  {
+   "ano": 2012,
+   "registros_municipais": 2325,
+   "registros_reconhecidos": 1684,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 1330,
+    "chuvas_inundacoes_enxurradas_alagamentos": 256,
+    "movimentos_de_massa": 19,
+    "outros": 79
+   },
+   "municipios_distintos_com_reconhecimento": 1614,
+   "municipios_distintos_com_registro": 2122,
+   "tipo_documento_de_origem": {
+    "A": 1353,
+    "C": 70,
+    "D": 121,
+    "F": 54,
+    "J": 83,
+    "N": 19,
+    "O": 6,
+    "P": 613,
+    "R": 6
+   }
+  },
+  {
+   "ano": 2013,
+   "registros_municipais": 2911,
+   "registros_reconhecidos": 1978,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 1418,
+    "chuvas_inundacoes_enxurradas_alagamentos": 460,
+    "movimentos_de_massa": 18,
+    "outros": 82
+   },
+   "municipios_distintos_com_reconhecimento": 1895,
+   "municipios_distintos_com_registro": 2453,
+   "tipo_documento_de_origem": {
+    "A": 10,
+    "C": 15,
+    "D": 1,
+    "F": 2650,
+    "J": 42,
+    "N": 1,
+    "P": 57,
+    "R": 135
+   }
+  },
+  {
+   "ano": 2014,
+   "registros_municipais": 2505,
+   "registros_reconhecidos": 1633,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 1045,
+    "chuvas_inundacoes_enxurradas_alagamentos": 540,
+    "movimentos_de_massa": 5,
+    "outros": 43
+   },
+   "municipios_distintos_com_reconhecimento": 1593,
+   "municipios_distintos_com_registro": 2179,
+   "tipo_documento_de_origem": {
+    "F": 2319,
+    "P": 186
+   }
+  },
+  {
+   "ano": 2015,
+   "registros_municipais": 2113,
+   "registros_reconhecidos": 1150,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 711,
+    "chuvas_inundacoes_enxurradas_alagamentos": 332,
+    "movimentos_de_massa": 6,
+    "outros": 101
+   },
+   "municipios_distintos_com_reconhecimento": 1087,
+   "municipios_distintos_com_registro": 1707,
+   "tipo_documento_de_origem": {
+    "F": 2113
+   }
+  },
+  {
+   "ano": 2016,
+   "registros_municipais": 2352,
+   "registros_reconhecidos": 1374,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 1114,
+    "chuvas_inundacoes_enxurradas_alagamentos": 206,
+    "movimentos_de_massa": 6,
+    "outros": 48
+   },
+   "municipios_distintos_com_reconhecimento": 1287,
+   "municipios_distintos_com_registro": 1963,
+   "tipo_documento_de_origem": {
+    "F": 2352
+   }
+  },
+  {
+   "ano": 2017,
+   "registros_municipais": 3089,
+   "registros_reconhecidos": 1902,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 1223,
+    "chuvas_inundacoes_enxurradas_alagamentos": 490,
+    "movimentos_de_massa": 6,
+    "outros": 183
+   },
+   "municipios_distintos_com_reconhecimento": 1804,
+   "municipios_distintos_com_registro": 2267,
+   "tipo_documento_de_origem": {
+    "F": 3089
+   }
+  },
+  {
+   "ano": 2018,
+   "registros_municipais": 2560,
+   "registros_reconhecidos": 1369,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 1002,
+    "chuvas_inundacoes_enxurradas_alagamentos": 272,
+    "movimentos_de_massa": 3,
+    "outros": 92
+   },
+   "municipios_distintos_com_reconhecimento": 1311,
+   "municipios_distintos_com_registro": 1807,
+   "tipo_documento_de_origem": {
+    "F": 2560
+   }
+  },
+  {
+   "ano": 2019,
+   "registros_municipais": 2538,
+   "registros_reconhecidos": 1357,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 971,
+    "chuvas_inundacoes_enxurradas_alagamentos": 288,
+    "movimentos_de_massa": 9,
+    "outros": 89
+   },
+   "municipios_distintos_com_reconhecimento": 1315,
+   "municipios_distintos_com_registro": 1785,
+   "tipo_documento_de_origem": {
+    "F": 2538
+   }
+  },
+  {
+   "ano": 2020,
+   "registros_municipais": 3880,
+   "registros_reconhecidos": 2174,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 1214,
+    "chuvas_inundacoes_enxurradas_alagamentos": 441,
+    "movimentos_de_massa": 3,
+    "outros": 516
+   },
+   "municipios_distintos_com_reconhecimento": 1952,
+   "municipios_distintos_com_registro": 2482,
+   "tipo_documento_de_origem": {
+    "F": 3880
+   }
+  },
+  {
+   "ano": 2021,
+   "registros_municipais": 3556,
+   "registros_reconhecidos": 1786,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 1062,
+    "chuvas_inundacoes_enxurradas_alagamentos": 591,
+    "movimentos_de_massa": 2,
+    "outros": 131
+   },
+   "municipios_distintos_com_reconhecimento": 1573,
+   "municipios_distintos_com_registro": 2218,
+   "tipo_documento_de_origem": {
+    "F": 3556
+   }
+  },
+  {
+   "ano": 2022,
+   "registros_municipais": 5020,
+   "registros_reconhecidos": 2551,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 1218,
+    "chuvas_inundacoes_enxurradas_alagamentos": 1182,
+    "movimentos_de_massa": 18,
+    "outros": 133
+   },
+   "municipios_distintos_com_reconhecimento": 2156,
+   "municipios_distintos_com_registro": 2776,
+   "tipo_documento_de_origem": {
+    "F": 5020
+   }
+  },
+  {
+   "ano": 2023,
+   "registros_municipais": 5115,
+   "registros_reconhecidos": 2820,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 1348,
+    "chuvas_inundacoes_enxurradas_alagamentos": 1244,
+    "movimentos_de_massa": 7,
+    "outros": 221
+   },
+   "municipios_distintos_com_reconhecimento": 2155,
+   "municipios_distintos_com_registro": 2803,
+   "tipo_documento_de_origem": {
+    "F": 5115
+   }
+  },
+  {
+   "ano": 2024,
+   "registros_municipais": 4699,
+   "registros_reconhecidos": 2275,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 1003,
+    "chuvas_inundacoes_enxurradas_alagamentos": 879,
+    "movimentos_de_massa": 8,
+    "outros": 385
+   },
+   "municipios_distintos_com_reconhecimento": 1922,
+   "municipios_distintos_com_registro": 2676,
+   "tipo_documento_de_origem": {
+    "F": 4699
+   }
+  },
+  {
+   "ano": 2025,
+   "registros_municipais": 4262,
+   "registros_reconhecidos": 2253,
+   "por_grupo_reconhecidos": {
+    "secas_estiagens": 1325,
+    "chuvas_inundacoes_enxurradas_alagamentos": 697,
+    "movimentos_de_massa": 7,
+    "outros": 224
+   },
+   "municipios_distintos_com_reconhecimento": 1907,
+   "municipios_distintos_com_registro": 2551,
+   "tipo_documento_de_origem": {
+    "F": 4262
+   }
+  }
+ ],
+ "por_uf": {
+  "ultimo_ano_completo": {
+   "ano": 2025,
+   "ufs": {
+    "AC": {
+     "registros_reconhecidos": 40,
+     "municipios_distintos": 22,
+     "por_grupo": {
+      "secas_estiagens": 22,
+      "chuvas_inundacoes_enxurradas_alagamentos": 17,
+      "movimentos_de_massa": 0,
+      "outros": 1
+     }
+    },
+    "AL": {
+     "registros_reconhecidos": 38,
+     "municipios_distintos": 38,
+     "por_grupo": {
+      "secas_estiagens": 32,
+      "chuvas_inundacoes_enxurradas_alagamentos": 5,
+      "movimentos_de_massa": 0,
+      "outros": 1
+     }
+    },
+    "AM": {
+     "registros_reconhecidos": 54,
+     "municipios_distintos": 42,
+     "por_grupo": {
+      "secas_estiagens": 9,
+      "chuvas_inundacoes_enxurradas_alagamentos": 42,
+      "movimentos_de_massa": 0,
+      "outros": 3
+     }
+    },
+    "AP": {
+     "registros_reconhecidos": 27,
+     "municipios_distintos": 12,
+     "por_grupo": {
+      "secas_estiagens": 5,
+      "chuvas_inundacoes_enxurradas_alagamentos": 3,
+      "movimentos_de_massa": 0,
+      "outros": 19
+     }
+    },
+    "BA": {
+     "registros_reconhecidos": 195,
+     "municipios_distintos": 181,
+     "por_grupo": {
+      "secas_estiagens": 149,
+      "chuvas_inundacoes_enxurradas_alagamentos": 43,
+      "movimentos_de_massa": 1,
+      "outros": 2
+     }
+    },
+    "CE": {
+     "registros_reconhecidos": 53,
+     "municipios_distintos": 48,
+     "por_grupo": {
+      "secas_estiagens": 44,
+      "chuvas_inundacoes_enxurradas_alagamentos": 8,
+      "movimentos_de_massa": 0,
+      "outros": 1
+     }
+    },
+    "ES": {
+     "registros_reconhecidos": 13,
+     "municipios_distintos": 12,
+     "por_grupo": {
+      "secas_estiagens": 0,
+      "chuvas_inundacoes_enxurradas_alagamentos": 13,
+      "movimentos_de_massa": 0,
+      "outros": 0
+     }
+    },
+    "GO": {
+     "registros_reconhecidos": 19,
+     "municipios_distintos": 18,
+     "por_grupo": {
+      "secas_estiagens": 9,
+      "chuvas_inundacoes_enxurradas_alagamentos": 6,
+      "movimentos_de_massa": 0,
+      "outros": 4
+     }
+    },
+    "MA": {
+     "registros_reconhecidos": 55,
+     "municipios_distintos": 47,
+     "por_grupo": {
+      "secas_estiagens": 24,
+      "chuvas_inundacoes_enxurradas_alagamentos": 26,
+      "movimentos_de_massa": 0,
+      "outros": 5
+     }
+    },
+    "MG": {
+     "registros_reconhecidos": 307,
+     "municipios_distintos": 253,
+     "por_grupo": {
+      "secas_estiagens": 143,
+      "chuvas_inundacoes_enxurradas_alagamentos": 144,
+      "movimentos_de_massa": 3,
+      "outros": 17
+     }
+    },
+    "MS": {
+     "registros_reconhecidos": 11,
+     "municipios_distintos": 11,
+     "por_grupo": {
+      "secas_estiagens": 0,
+      "chuvas_inundacoes_enxurradas_alagamentos": 0,
+      "movimentos_de_massa": 0,
+      "outros": 11
+     }
+    },
+    "MT": {
+     "registros_reconhecidos": 21,
+     "municipios_distintos": 20,
+     "por_grupo": {
+      "secas_estiagens": 2,
+      "chuvas_inundacoes_enxurradas_alagamentos": 15,
+      "movimentos_de_massa": 0,
+      "outros": 4
+     }
+    },
+    "PA": {
+     "registros_reconhecidos": 118,
+     "municipios_distintos": 87,
+     "por_grupo": {
+      "secas_estiagens": 23,
+      "chuvas_inundacoes_enxurradas_alagamentos": 77,
+      "movimentos_de_massa": 0,
+      "outros": 18
+     }
+    },
+    "PB": {
+     "registros_reconhecidos": 136,
+     "municipios_distintos": 136,
+     "por_grupo": {
+      "secas_estiagens": 130,
+      "chuvas_inundacoes_enxurradas_alagamentos": 5,
+      "movimentos_de_massa": 0,
+      "outros": 1
+     }
+    },
+    "PE": {
+     "registros_reconhecidos": 121,
+     "municipios_distintos": 118,
+     "por_grupo": {
+      "secas_estiagens": 112,
+      "chuvas_inundacoes_enxurradas_alagamentos": 7,
+      "movimentos_de_massa": 0,
+      "outros": 2
+     }
+    },
+    "PI": {
+     "registros_reconhecidos": 136,
+     "municipios_distintos": 133,
+     "por_grupo": {
+      "secas_estiagens": 133,
+      "chuvas_inundacoes_enxurradas_alagamentos": 2,
+      "movimentos_de_massa": 0,
+      "outros": 1
+     }
+    },
+    "PR": {
+     "registros_reconhecidos": 106,
+     "municipios_distintos": 91,
+     "por_grupo": {
+      "secas_estiagens": 15,
+      "chuvas_inundacoes_enxurradas_alagamentos": 24,
+      "movimentos_de_massa": 0,
+      "outros": 67
+     }
+    },
+    "RJ": {
+     "registros_reconhecidos": 9,
+     "municipios_distintos": 7,
+     "por_grupo": {
+      "secas_estiagens": 0,
+      "chuvas_inundacoes_enxurradas_alagamentos": 5,
+      "movimentos_de_massa": 1,
+      "outros": 3
+     }
+    },
+    "RN": {
+     "registros_reconhecidos": 128,
+     "municipios_distintos": 128,
+     "por_grupo": {
+      "secas_estiagens": 127,
+      "chuvas_inundacoes_enxurradas_alagamentos": 1,
+      "movimentos_de_massa": 0,
+      "outros": 0
+     }
+    },
+    "RO": {
+     "registros_reconhecidos": 3,
+     "municipios_distintos": 3,
+     "por_grupo": {
+      "secas_estiagens": 1,
+      "chuvas_inundacoes_enxurradas_alagamentos": 2,
+      "movimentos_de_massa": 0,
+      "outros": 0
+     }
+    },
+    "RR": {
+     "registros_reconhecidos": 3,
+     "municipios_distintos": 3,
+     "por_grupo": {
+      "secas_estiagens": 2,
+      "chuvas_inundacoes_enxurradas_alagamentos": 1,
+      "movimentos_de_massa": 0,
+      "outros": 0
+     }
+    },
+    "RS": {
+     "registros_reconhecidos": 517,
+     "municipios_distintos": 368,
+     "por_grupo": {
+      "secas_estiagens": 308,
+      "chuvas_inundacoes_enxurradas_alagamentos": 187,
+      "movimentos_de_massa": 0,
+      "outros": 22
+     }
+    },
+    "SC": {
+     "registros_reconhecidos": 91,
+     "municipios_distintos": 77,
+     "por_grupo": {
+      "secas_estiagens": 24,
+      "chuvas_inundacoes_enxurradas_alagamentos": 41,
+      "movimentos_de_massa": 0,
+      "outros": 26
+     }
+    },
+    "SE": {
+     "registros_reconhecidos": 11,
+     "municipios_distintos": 11,
+     "por_grupo": {
+      "secas_estiagens": 10,
+      "chuvas_inundacoes_enxurradas_alagamentos": 1,
+      "movimentos_de_massa": 0,
+      "outros": 0
+     }
+    },
+    "SP": {
+     "registros_reconhecidos": 40,
+     "municipios_distintos": 40,
+     "por_grupo": {
+      "secas_estiagens": 0,
+      "chuvas_inundacoes_enxurradas_alagamentos": 22,
+      "movimentos_de_massa": 2,
+      "outros": 16
+     }
+    },
+    "TO": {
+     "registros_reconhecidos": 1,
+     "municipios_distintos": 1,
+     "por_grupo": {
+      "secas_estiagens": 1,
+      "chuvas_inundacoes_enxurradas_alagamentos": 0,
+      "movimentos_de_massa": 0,
+      "outros": 0
+     }
+    }
+   }
+  },
+  "ano_corrente": {
+   "ano": 2026,
+   "disponivel": false,
+   "motivo": "A base do Atlas termina em 2025-12-31. Reconhecimentos de 2026 existem no S2iD, mas não nesta fonte; não são zero.",
+   "ufs": null
+  }
+ },
+ "danos_humanos": {
+  "publicar": "Só óbitos, desabrigados e desalojados, de 2013 em diante (FIDE no S2iD), como soma de registros e com a ressalva de que zero na base também significa campo não informado. Não publicar \"afetados\".",
+  "serie": [
+   {
+    "ano": 1991,
+    "registros": 403,
+    "registros_sem_nenhum_dano_humano_informado": 375,
+    "registros_total_diferente_da_soma": 0,
+    "obitos": 36,
+    "desabrigados": 15556,
+    "desalojados": 5291,
+    "desaparecidos": 0,
+    "total_danos_humanos_diretos": 21435,
+    "publicavel": false
+   },
+   {
+    "ano": 1992,
+    "registros": 590,
+    "registros_sem_nenhum_dano_humano_informado": 538,
+    "registros_total_diferente_da_soma": 8,
+    "obitos": 14,
+    "desabrigados": 27475,
+    "desalojados": 36193,
+    "desaparecidos": 2,
+    "total_danos_humanos_diretos": 63989,
+    "publicavel": false
+   },
+   {
+    "ano": 1993,
+    "registros": 1324,
+    "registros_sem_nenhum_dano_humano_informado": 1293,
+    "registros_total_diferente_da_soma": 4,
+    "obitos": 16,
+    "desabrigados": 5015,
+    "desalojados": 6014,
+    "desaparecidos": 0,
+    "total_danos_humanos_diretos": 11050,
+    "publicavel": false
+   },
+   {
+    "ano": 1994,
+    "registros": 231,
+    "registros_sem_nenhum_dano_humano_informado": 222,
+    "registros_total_diferente_da_soma": 0,
+    "obitos": 4,
+    "desabrigados": 6660,
+    "desalojados": 0,
+    "desaparecidos": 2,
+    "total_danos_humanos_diretos": 6666,
+    "publicavel": false
+   },
+   {
+    "ano": 1995,
+    "registros": 818,
+    "registros_sem_nenhum_dano_humano_informado": 753,
+    "registros_total_diferente_da_soma": 10,
+    "obitos": 35,
+    "desabrigados": 32556,
+    "desalojados": 54149,
+    "desaparecidos": 9,
+    "total_danos_humanos_diretos": 87440,
+    "publicavel": false
+   },
+   {
+    "ano": 1996,
+    "registros": 490,
+    "registros_sem_nenhum_dano_humano_informado": 454,
+    "registros_total_diferente_da_soma": 8,
+    "obitos": 14,
+    "desabrigados": 5692,
+    "desalojados": 3461,
+    "desaparecidos": 3,
+    "total_danos_humanos_diretos": 9321,
+    "publicavel": false
+   },
+   {
+    "ano": 1997,
+    "registros": 748,
+    "registros_sem_nenhum_dano_humano_informado": 672,
+    "registros_total_diferente_da_soma": 21,
+    "obitos": 13,
+    "desabrigados": 6223,
+    "desalojados": 14094,
+    "desaparecidos": 23,
+    "total_danos_humanos_diretos": 21088,
+    "publicavel": false
+   },
+   {
+    "ano": 1998,
+    "registros": 1178,
+    "registros_sem_nenhum_dano_humano_informado": 1052,
+    "registros_total_diferente_da_soma": 56,
+    "obitos": 10,
+    "desabrigados": 28770,
+    "desalojados": 33860,
+    "desaparecidos": 0,
+    "total_danos_humanos_diretos": 63484,
+    "publicavel": false
+   },
+   {
+    "ano": 1999,
+    "registros": 741,
+    "registros_sem_nenhum_dano_humano_informado": 686,
+    "registros_total_diferente_da_soma": 24,
+    "obitos": 107,
+    "desabrigados": 8467,
+    "desalojados": 7109,
+    "desaparecidos": 1,
+    "total_danos_humanos_diretos": 25687,
+    "publicavel": false
+   },
+   {
+    "ano": 2000,
+    "registros": 595,
+    "registros_sem_nenhum_dano_humano_informado": 466,
+    "registros_total_diferente_da_soma": 54,
+    "obitos": 61,
+    "desabrigados": 42067,
+    "desalojados": 70400,
+    "desaparecidos": 214,
+    "total_danos_humanos_diretos": 133202,
+    "publicavel": false
+   },
+   {
+    "ano": 2001,
+    "registros": 1824,
+    "registros_sem_nenhum_dano_humano_informado": 1617,
+    "registros_total_diferente_da_soma": 115,
+    "obitos": 67,
+    "desabrigados": 22743,
+    "desalojados": 63237,
+    "desaparecidos": 31,
+    "total_danos_humanos_diretos": 103958,
+    "publicavel": false
+   },
+   {
+    "ano": 2002,
+    "registros": 1816,
+    "registros_sem_nenhum_dano_humano_informado": 1516,
+    "registros_total_diferente_da_soma": 133,
+    "obitos": 95,
+    "desabrigados": 59375,
+    "desalojados": 110974,
+    "desaparecidos": 62,
+    "total_danos_humanos_diretos": 255963,
+    "publicavel": false
+   },
+   {
+    "ano": 2003,
+    "registros": 1606,
+    "registros_sem_nenhum_dano_humano_informado": 1133,
+    "registros_total_diferente_da_soma": 233,
+    "obitos": 134,
+    "desabrigados": 31575,
+    "desalojados": 107636,
+    "desaparecidos": 73,
+    "total_danos_humanos_diretos": 237720,
+    "publicavel": false
+   },
+   {
+    "ano": 2004,
+    "registros": 2424,
+    "registros_sem_nenhum_dano_humano_informado": 1528,
+    "registros_total_diferente_da_soma": 483,
+    "obitos": 195,
+    "desabrigados": 144495,
+    "desalojados": 246536,
+    "desaparecidos": 133,
+    "total_danos_humanos_diretos": 535342,
+    "publicavel": false
+   },
+   {
+    "ano": 2005,
+    "registros": 2314,
+    "registros_sem_nenhum_dano_humano_informado": 1713,
+    "registros_total_diferente_da_soma": 358,
+    "obitos": 145,
+    "desabrigados": 61443,
+    "desalojados": 192124,
+    "desaparecidos": 109,
+    "total_danos_humanos_diretos": 592787,
+    "publicavel": false
+   },
+   {
+    "ano": 2006,
+    "registros": 1580,
+    "registros_sem_nenhum_dano_humano_informado": 1011,
+    "registros_total_diferente_da_soma": 271,
+    "obitos": 175,
+    "desabrigados": 55632,
+    "desalojados": 119828,
+    "desaparecidos": 164,
+    "total_danos_humanos_diretos": 429009,
+    "publicavel": false
+   },
+   {
+    "ano": 2007,
+    "registros": 1831,
+    "registros_sem_nenhum_dano_humano_informado": 1090,
+    "registros_total_diferente_da_soma": 426,
+    "obitos": 122,
+    "desabrigados": 36672,
+    "desalojados": 171376,
+    "desaparecidos": 138,
+    "total_danos_humanos_diretos": 690126,
+    "publicavel": false
+   },
+   {
+    "ano": 2008,
+    "registros": 1921,
+    "registros_sem_nenhum_dano_humano_informado": 932,
+    "registros_total_diferente_da_soma": 708,
+    "obitos": 207,
+    "desabrigados": 134578,
+    "desalojados": 521571,
+    "desaparecidos": 113,
+    "total_danos_humanos_diretos": 936930,
+    "publicavel": false
+   },
+   {
+    "ano": 2009,
+    "registros": 3005,
+    "registros_sem_nenhum_dano_humano_informado": 1557,
+    "registros_total_diferente_da_soma": 1174,
+    "obitos": 282,
+    "desabrigados": 235035,
+    "desalojados": 806242,
+    "desaparecidos": 258,
+    "total_danos_humanos_diretos": 1234650,
+    "publicavel": false
+   },
+   {
+    "ano": 2010,
+    "registros": 2086,
+    "registros_sem_nenhum_dano_humano_informado": 1104,
+    "registros_total_diferente_da_soma": 630,
+    "obitos": 357,
+    "desabrigados": 105935,
+    "desalojados": 382151,
+    "desaparecidos": 167,
+    "total_danos_humanos_diretos": 923275,
+    "publicavel": false
+   },
+   {
+    "ano": 2011,
+    "registros": 1740,
+    "registros_sem_nenhum_dano_humano_informado": 922,
+    "registros_total_diferente_da_soma": 561,
+    "obitos": 957,
+    "desabrigados": 85188,
+    "desalojados": 467625,
+    "desaparecidos": 497,
+    "total_danos_humanos_diretos": 652431,
+    "publicavel": false
+   },
+   {
+    "ano": 2012,
+    "registros": 2325,
+    "registros_sem_nenhum_dano_humano_informado": 1742,
+    "registros_total_diferente_da_soma": 329,
+    "obitos": 98,
+    "desabrigados": 64272,
+    "desalojados": 298885,
+    "desaparecidos": 5,
+    "total_danos_humanos_diretos": 520329,
+    "publicavel": false
+   },
+   {
+    "ano": 2013,
+    "registros": 2911,
+    "registros_sem_nenhum_dano_humano_informado": 1251,
+    "registros_total_diferente_da_soma": 528,
+    "obitos": 230,
+    "desabrigados": 155812,
+    "desalojados": 432184,
+    "desaparecidos": 97,
+    "total_danos_humanos_diretos": 5945642,
+    "publicavel": true
+   },
+   {
+    "ano": 2014,
+    "registros": 2505,
+    "registros_sem_nenhum_dano_humano_informado": 1146,
+    "registros_total_diferente_da_soma": 645,
+    "obitos": 89,
+    "desabrigados": 110611,
+    "desalojados": 340396,
+    "desaparecidos": 27,
+    "total_danos_humanos_diretos": 4150910,
+    "publicavel": true
+   },
+   {
+    "ano": 2015,
+    "registros": 2113,
+    "registros_sem_nenhum_dano_humano_informado": 637,
+    "registros_total_diferente_da_soma": 576,
+    "obitos": 86,
+    "desabrigados": 79331,
+    "desalojados": 402456,
+    "desaparecidos": 51,
+    "total_danos_humanos_diretos": 7108353,
+    "publicavel": true
+   },
+   {
+    "ano": 2016,
+    "registros": 2352,
+    "registros_sem_nenhum_dano_humano_informado": 599,
+    "registros_total_diferente_da_soma": 445,
+    "obitos": 74,
+    "desabrigados": 15676,
+    "desalojados": 115303,
+    "desaparecidos": 4,
+    "total_danos_humanos_diretos": 12456847,
+    "publicavel": true
+   },
+   {
+    "ano": 2017,
+    "registros": 3089,
+    "registros_sem_nenhum_dano_humano_informado": 662,
+    "registros_total_diferente_da_soma": 995,
+    "obitos": 141,
+    "desabrigados": 39565,
+    "desalojados": 257560,
+    "desaparecidos": 10,
+    "total_danos_humanos_diretos": 19399977,
+    "publicavel": true
+   },
+   {
+    "ano": 2018,
+    "registros": 2560,
+    "registros_sem_nenhum_dano_humano_informado": 544,
+    "registros_total_diferente_da_soma": 695,
+    "obitos": 88,
+    "desabrigados": 22337,
+    "desalojados": 85389,
+    "desaparecidos": 7,
+    "total_danos_humanos_diretos": 12869619,
+    "publicavel": true
+   },
+   {
+    "ano": 2019,
+    "registros": 2538,
+    "registros_sem_nenhum_dano_humano_informado": 591,
+    "registros_total_diferente_da_soma": 734,
+    "obitos": 134,
+    "desabrigados": 67088,
+    "desalojados": 215706,
+    "desaparecidos": 38,
+    "total_danos_humanos_diretos": 11604297,
+    "publicavel": true
+   },
+   {
+    "ano": 2020,
+    "registros": 3880,
+    "registros_sem_nenhum_dano_humano_informado": 1227,
+    "registros_total_diferente_da_soma": 946,
+    "obitos": 231,
+    "desabrigados": 82753,
+    "desalojados": 299198,
+    "desaparecidos": 53,
+    "total_danos_humanos_diretos": 10136671,
+    "publicavel": true
+   },
+   {
+    "ano": 2021,
+    "registros": 3556,
+    "registros_sem_nenhum_dano_humano_informado": 1048,
+    "registros_total_diferente_da_soma": 1007,
+    "obitos": 82,
+    "desabrigados": 76372,
+    "desalojados": 350508,
+    "desaparecidos": 377,
+    "total_danos_humanos_diretos": 8085979,
+    "publicavel": true
+   },
+   {
+    "ano": 2022,
+    "registros": 5020,
+    "registros_sem_nenhum_dano_humano_informado": 1442,
+    "registros_total_diferente_da_soma": 1692,
+    "obitos": 567,
+    "desabrigados": 120400,
+    "desalojados": 757961,
+    "desaparecidos": 163,
+    "total_danos_humanos_diretos": 8735677,
+    "publicavel": true
+   },
+   {
+    "ano": 2023,
+    "registros": 5115,
+    "registros_sem_nenhum_dano_humano_informado": 1454,
+    "registros_total_diferente_da_soma": 1862,
+    "obitos": 193,
+    "desabrigados": 87583,
+    "desalojados": 594110,
+    "desaparecidos": 13,
+    "total_danos_humanos_diretos": 11670552,
+    "publicavel": true
+   },
+   {
+    "ano": 2024,
+    "registros": 4699,
+    "registros_sem_nenhum_dano_humano_informado": 1615,
+    "registros_total_diferente_da_soma": 1702,
+    "obitos": 306,
+    "desabrigados": 142423,
+    "desalojados": 982908,
+    "desaparecidos": 64,
+    "total_danos_humanos_diretos": 11373261,
+    "publicavel": true
+   },
+   {
+    "ano": 2025,
+    "registros": 4262,
+    "registros_sem_nenhum_dano_humano_informado": 849,
+    "registros_total_diferente_da_soma": 1637,
+    "obitos": 87,
+    "desabrigados": 46274,
+    "desalojados": 363941,
+    "desaparecidos": 5,
+    "total_danos_humanos_diretos": 13363170,
+    "publicavel": true
+   }
+  ]
+ },
+ "ressalvas": [
+  "Ausência vira zero na própria fonte: os campos de danos não têm vazio; antes de 2013 entre 48% e 95% dos registros de cada ano têm todos os danos humanos iguais a zero.",
+  "Quebra de série em 2012/2013: o FIDE no S2iD substituiu AVADAN e NOPRED; o total de danos humanos diretos salta de 0,5 milhão (2012) para 5,9 milhões (2013).",
+  "O total de danos humanos diretos não bate com a soma das categorias em cerca de um quarto dos registros; o log oficial lista 242 protocolos de 2024 com população afetada acima da população do município.",
+  "Danos refletem o momento do registro; não há atualização posterior (um desaparecido que morre não vira óbito).",
+  "O Atlas retirou os registros de Covid-19, os FIDEs estaduais que somam vários municípios e duplicidades evidentes (inclusive secas renovadas a cada 180 dias, mantendo o de maior dano), por isso não coincide com as contagens brutas do S2iD.",
+  "Reconhecimento federal depende de pedido do município ou estado e de análise da Sedec; ausência de reconhecimento não significa ausência de desastre. O status \"Registro\" junta não pedidos, negados e pendentes.",
+  "Critérios mudaram: IN MI 01/2012, IN MI 02/2016, IN MDR 36/2020 e Portaria MDR 260/2022 (alterada pela 3.646/2022). Comparações longas medem também mudança de regra e de adesão ao sistema.",
+  "Status \"Reconhecido\" só aparece a partir de 2003 (início da série histórica de reconhecimentos do S2iD); antes disso a contagem de reconhecidos não existe e não é zero.",
+  "O ano mais recente pode ser revisado: registros de eventos de dezembro ainda podiam ser incluídos ou reconhecidos depois da data de corte da base."
+ ]
+}

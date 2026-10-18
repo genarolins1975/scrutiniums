@@ -192,6 +192,8 @@ export const ATALHOS: Atalho[] = [
 function paineisTerritorio(): Painel[] {
   return [
     { rota: "/territorio/queimadas", titulo: "Queimadas e focos de calor", observatorio: "territorio-e-clima", colecao: "fogo", origem: null },
+    { rota: "/territorio/desastres", titulo: "Desastres reconhecidos", observatorio: "territorio-e-clima", colecao: "desastres", origem: null },
+    { rota: "/territorio/emissoes", titulo: "Emissões pelo inventário oficial", observatorio: "territorio-e-clima", colecao: "desmatamento", origem: null },
   ];
 }
 

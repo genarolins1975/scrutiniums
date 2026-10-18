@@ -9,7 +9,7 @@ from datetime import date
 from pathlib import Path
 from unittest import mock
 
-from pipeline.territorio import queimadas, run
+from pipeline.territorio import desastres, queimadas, run
 
 CAB_ANUAL = 'id_bdq,foco_id,lat,lon,data_pas,pais,estado,municipio,bioma\n'
 CAB_MENSAL = 'id,lat,lon,data_hora_gmt,satelite,municipio,estado,pais,municipio_id,estado_id,pais_id,numero_dias_sem_chuva,precipitacao,risco_fogo,bioma,frp\n'
@@ -135,6 +135,125 @@ class TestQueimadas(unittest.TestCase):
             if r['focos'] is not None:
                 self.assertEqual(len(r['porUF']), 27 + (1 if any(x['id'] == queimadas.SEM for x in r['porUF']) else 0))
         self.assertIn('Provisório', seed['areaQueimada']['maturidade'])
+
+
+COLS_DANOS = list(desastres.DANOS.values())
+CAB_ATLAS = ['Protocolo_S2iD', 'Data_Evento', 'Data_Registro', 'Sigla_UF', 'Cod_IBGE_Mun', 'Cod_Cobrade', 'Status'] + COLS_DANOS
+
+
+def _atlas(linhas, pasta):
+    """CSV do Atlas (separador ;, latin1) com linhas (protocolo, data, uf, município, cobrade, status, óbitos)."""
+    corpo = ';'.join(CAB_ATLAS) + '\n'
+    for prot, dia, uf, mun, cob, status, obitos in linhas:
+        danos = [str(obitos)] + ['0'] * (len(COLS_DANOS) - 1)
+        corpo += ';'.join([prot, dia, dia, uf, mun, cob, status] + danos) + '\n'
+    caminho = os.path.join(pasta, 'BD_Atlas_teste.csv')
+    Path(caminho).write_bytes(corpo.encode('latin-1'))
+    return caminho
+
+
+class TestDesastres(unittest.TestCase):
+    def _montar(self, linhas, hoje=date(2026, 10, 18)):
+        pasta = tempfile.mkdtemp()
+        caminho = _atlas(linhas, pasta)
+        originais = {'atlas_csv': {'url': 'x', 'arquivo': os.path.basename(caminho), 'sha256': 'b' * 64, 'bytes': 10, 'last_modified': None, 'capturado_em': '2026-10-18T00:00:00+00:00'}}
+        return desastres.montar(originais, [], pasta, hoje)
+
+    def test_unidade_grupos_e_municipios_distintos(self):
+        d = self._montar([
+            ('PE-F-1', '10/03/2025', 'PE', '2600054', '14110', 'Reconhecido', 0),
+            ('PE-F-2', '20/05/2025', 'PE', '2600054', '12100', 'Reconhecido', 2),
+            ('RS-F-3', '01/06/2025', 'RS', '4300034', '11321', 'Reconhecido', 0),
+            ('RS-F-4', '30/12/2025', 'RS', '4300042', '13310', 'Registro', 1),
+            ('BA-F-5', '05/02/2002', 'BA', '2900108', '14110', 'Registro', 0),
+        ])
+        a = {x['ano']: x for x in d['serie_anual']}
+        self.assertEqual(a[2025]['registros_reconhecidos'], 3)
+        self.assertEqual(a[2025]['municipios_distintos_com_reconhecimento'], 2)
+        self.assertEqual(a[2025]['por_grupo_reconhecidos'], {'secas_estiagens': 1, 'chuvas_inundacoes_enxurradas_alagamentos': 1, 'movimentos_de_massa': 1, 'outros': 0})
+        # antes de 2003 a contagem de reconhecidos não existe: nulo, nunca zero
+        self.assertIsNone(a[2002]['registros_reconhecidos'])
+        # o ano corrente fora da base fica indisponível com motivo
+        self.assertFalse(d['por_uf']['ano_corrente']['disponivel'])
+        self.assertIsNone(d['por_uf']['ano_corrente']['ufs'])
+        # a série sintética pula de 2002 para 2025: a validação recusa o buraco em vez de supor zero
+        with self.assertRaises(ValueError):
+            run.validar_desastres(d)
+        d['serie_anual'] = [x for x in d['serie_anual'] if x['ano'] == 2025]
+        run.validar_desastres(d)
+        # a cobertura declarada sai da base coletada, não de texto fixo
+        self.assertIn('1991 a 2025', d['fonte']['cadencia'])
+        d2027 = self._montar([('PE-F-1', '10/03/2027', 'PE', '2600054', '14110', 'Reconhecido', 0)], hoje=date(2028, 3, 1))
+        self.assertIn('1991 a 2027', d2027['fonte']['cadencia'])
+
+    def test_protocolo_repetido_falha(self):
+        with self.assertRaises(RuntimeError):
+            self._montar([('PE-F-1', '10/03/2025', 'PE', '2600054', '14110', 'Reconhecido', 0)] * 2)
+
+    def test_status_desconhecido_falha(self):
+        with self.assertRaises(RuntimeError):
+            self._montar([('PE-F-1', '10/03/2025', 'PE', '2600054', '14110', 'Pendente', 0)])
+
+    def test_seed_versionado(self):
+        seed = json.loads((run.SEED / 'desastres.json').read_text(encoding='utf-8'))
+        run.validar_desastres(seed)
+        self.assertEqual(seed['serie_anual'][0]['ano'], 1991)
+        self.assertTrue(all(x['registros_reconhecidos'] is None for x in seed['serie_anual'] if x['ano'] < 2003))
+
+
+
+class TestEmissoes(unittest.TestCase):
+    def _seed(self):
+        return json.loads((run.SEED / 'emissoes.json').read_text(encoding='utf-8'))
+
+    def test_seed_versionado(self):
+        seed = self._seed()
+        run.validar_emissoes(seed)
+        self.assertEqual(seed['anoInicial'], 1990)
+        self.assertIn('GWP AR5', seed['metrica'])
+        g = run.gold_emissoes(seed)
+        self.assertEqual(round(sum(g['derivados']['participacaoUltimoAnoPct'].values())), 100)
+
+    def test_setores_que_nao_somam_o_total_bloqueiam(self):
+        seed = self._seed()
+        seed['anos'][5]['setores']['energia'] += 5000
+        with self.assertRaises(ValueError):
+            run.validar_emissoes(seed)
+
+    def test_serie_sem_2005_bloqueia(self):
+        seed = self._seed()
+        seed['anos'] = [a for a in seed['anos'] if a['ano'] >= 2006]
+        with self.assertRaises(ValueError):
+            run.validar_emissoes(seed)
+
+    def test_edicao_anterior_a_versionada_e_recusada(self):
+        anterior = self._seed()
+        novo = dict(anterior, edicao='NIR 2026 (1990-2024)', anoFinal=2024)
+        run.nao_retroceder_emissoes(novo, anterior)
+        run.nao_retroceder_emissoes(anterior, anterior)
+        run.nao_retroceder_emissoes(anterior, None)
+        # painel de descoberta fora do ar depois de coletada uma edição nova: as URLs fixas trariam a antiga
+        with self.assertRaises(ValueError):
+            run.nao_retroceder_emissoes(anterior, novo)
+
+    def test_coleta_que_retrocede_nao_grava_o_seed(self):
+        from pipeline.territorio import emissoes
+        versionado = self._seed()
+        mais_novo = dict(versionado, edicao='NIR 2026 (1990-2024)', anoFinal=2024)
+        with tempfile.TemporaryDirectory() as d:
+            seed_dir = Path(d)
+            (seed_dir / 'emissoes.json').write_text(json.dumps(mais_novo), encoding='utf-8')
+            with mock.patch.object(run, 'SEED', seed_dir), mock.patch.object(emissoes, 'coletar', return_value=versionado), mock.patch.object(run, 'validar_emissoes'):
+                with self.assertRaises(ValueError):
+                    run.main(['--coleta', 'emissoes', '--cache', d])
+            self.assertEqual(json.loads((seed_dir / 'emissoes.json').read_text(encoding='utf-8'))['edicao'], 'NIR 2026 (1990-2024)')
+
+    def test_tabela_le_celula_vazia_como_nulo(self):
+        from pipeline.territorio import emissoes
+        _, anos, corpo = emissoes.tabela([['Emissões (kt)', '1990', '1991'], ['Total', '10', ''], ['1. Energia', 'NO', '3']])
+        self.assertEqual(anos, [1990, 1991])
+        self.assertIsNone(corpo[0][1][1991])
+        self.assertIsNone(corpo[1][1][1990])
 
 
 if __name__ == '__main__':

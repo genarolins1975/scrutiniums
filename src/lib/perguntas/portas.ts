@@ -475,15 +475,17 @@ function porta_territorio(): Porta {
     caminhos: [
       caminho("agro", "Quanto se desmata e quanto se emite?", "Desmatamento por bioma, emissões estimadas e uso da terra.", "/agronegocio/ambiente"),
       caminho("territorio-e-clima", "Onde e quanto o fogo aparece?", "Focos de calor desde 2003, o ano em curso, estados, biomas e área queimada.", "/territorio/queimadas"),
+      caminho("territorio-e-clima", "Quanto o Brasil emite de gases de efeito estufa?", "Inventário oficial de 1990 ao último ano publicado, por setor, com 2005 como referência.", "/territorio/emissoes"),
+      caminho("territorio-e-clima", "Onde os desastres atingem os municípios?", "Secas, chuvas e deslizamentos reconhecidos pela União desde 2003, por tipo e estado.", "/territorio/desastres"),
       caminho("eficiencia", "As cidades estão preparadas para chuvas e resíduos?", "Drenagem, risco de inundação, coleta seletiva e destino do lixo.", "/eficiencia-estatal/meio-ambiente-clima"),
       caminho("saneamento", "Onde falta água nas torneiras?", "Interrupções, racionamento e colapso do abastecimento declarados pelos prestadores.", "/saneamento/resiliencia"),
       caminho("energia", "Como o clima afeta a energia?", "Chuvas, vazões e armazenamento das bacias das hidrelétricas.", "/setor-eletrico/agua-e-clima"),
       caminho("energia", "Como a matriz elétrica está mudando?", "Micro e minigeração distribuída no território e intensidade de emissões da geração.", "/setor-eletrico/transicao"),
     ],
     lacunas: [
-      "Emissões pelo inventário oficial do governo (as disponíveis são estimativas da sociedade civil).",
+      "Emissões oficiais dos anos mais recentes (o inventário do governo sai a cada dois anos).",
       "Focos de calor por município e área queimada por estado.",
-      "Desastres e pessoas afetadas registrados pela Defesa Civil.",
+      "Desastres reconhecidos no ano em curso (a base consolidada vai até o ano anterior).",
     ],
     metodos: [
       { rotulo: "Agronegócio: método", href: "/agronegocio/metodologia" },

@@ -1,8 +1,10 @@
 name: Atualizar dados do Território e Clima
 
 # Observatório do Território e Clima: recoleta os focos de calor do satélite de
-# referência e a área queimada do INPE (servidor de dados abertos COIDS), grava o
-# seed com o sha256 de cada original, reconstrói a gold em public/territorio e
+# referência e a área queimada do INPE (servidor de dados abertos COIDS) e a base do
+# Atlas Digital de Desastres (Sedec/MIDR, atualização anual) e o inventário oficial de
+# emissões do MCTI (SIRENE, edição bienal), grava o seed com o
+# sha256 de cada original, reconstrói a gold em public/territorio e
 # publica só se os testes do pipeline passarem. O arquivo mensal do INPE fecha o mês
 # nos primeiros dias do mês seguinte e o do mês em curso muda todo dia; duas
 # execuções por mês bastam para os meses completos. Separado dos outros domínios:
@@ -38,13 +40,37 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Coletar e reconstruir
+      # Cada fonte é coletada à parte: se uma estiver fora do ar, o seed dela fica como estava
+      # (com aviso visível) e a outra segue. A gold é sempre reconstruída a partir dos seeds.
+      - name: Coletar queimadas (INPE)
+        if: inputs.sem_coleta != true
+        id: queimadas
+        continue-on-error: true
+        run: python3 -m pipeline.territorio.run --coleta queimadas
+
+      - name: Coletar desastres (Atlas Digital, Sedec/MIDR)
+        if: inputs.sem_coleta != true
+        id: desastres
+        continue-on-error: true
+        run: python3 -m pipeline.territorio.run --coleta desastres
+
+      # o firewall do gov.br recusa o urllib; o módulo usa o curl do sistema como alternativa
+      - name: Coletar emissões (inventário oficial do MCTI)
+        if: inputs.sem_coleta != true
+        id: emissoes
+        continue-on-error: true
+        run: python3 -m pipeline.territorio.run --coleta emissoes
+
+      - name: Avisar coleta que falhou
+        if: steps.queimadas.outcome == 'failure' || steps.desastres.outcome == 'failure' || steps.emissoes.outcome == 'failure'
         run: |
-          if [ "${{ inputs.sem_coleta }}" = "true" ]; then
-            python3 -m pipeline.territorio.run
-          else
-            python3 -m pipeline.territorio.run --coleta
-          fi
+          [ "${{ steps.queimadas.outcome }}" = "failure" ] && echo "::warning title=Queimadas não coletadas::o seed anterior foi mantido; ver o log do passo"
+          [ "${{ steps.desastres.outcome }}" = "failure" ] && echo "::warning title=Desastres não coletados::o seed anterior foi mantido; ver o log do passo"
+          [ "${{ steps.emissoes.outcome }}" = "failure" ] && echo "::warning title=Emissões não coletadas::o seed anterior foi mantido; ver o log do passo"
+          true
+
+      - name: Reconstruir a gold
+        run: python3 -m pipeline.territorio.run
 
       - name: Testes do pipeline
         id: testes

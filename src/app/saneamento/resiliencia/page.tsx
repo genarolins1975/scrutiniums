@@ -67,8 +67,8 @@ export default function Pagina() {
           texto={
             <p>
               Seca e escassez aparecem no SINISA de forma indireta: o motivo declarado para o racionamento e os dias em que o sistema ficou em colapso.
-              É o que existe de público e municipal sobre o tema no sistema nacional. Mananciais, bacias e eventos registrados pela Defesa Civil ainda
-              não foram integrados.
+              É o que existe de público e municipal sobre o tema no sistema nacional. Mananciais e bacias ainda não foram integrados; os desastres
+              reconhecidos pela União, como secas e estiagens, estão no <a href="/territorio/desastres" className="underline decoration-linha underline-offset-4">painel de desastres</a> do Território e Clima, por estado e tipo.
             </p>
           }
           recorte={<>{inteiro(c?.municipios_participantes)} municípios do módulo de água do SINISA 2024; motivo informado só por quem declarou interrupção sistemática.</>}
@@ -205,8 +205,9 @@ export default function Pagina() {
         <Secao id="lacunas" titulo="O que ainda não está aqui">
           <Indisponivel titulo="Mananciais, eventos extremos e contingência">
             <p>
-              Disponibilidade hídrica dos mananciais (ANA), decretos de situação de emergência por estiagem e inundação (Defesa Civil), alertas do
-              Cemaden e planos de contingência dos prestadores ainda não foram integrados. Sem eles, o capítulo não mede exposição nem preparo; mostra
+              Disponibilidade hídrica dos mananciais (ANA), alertas do Cemaden e planos de contingência dos prestadores ainda não foram integrados.
+              Os reconhecimentos de situação de emergência por estiagem e inundação estão no painel de desastres do Território e Clima, por estado, sem
+              cruzamento com o município de cada prestador. Sem eles, o capítulo não mede exposição nem preparo; mostra
               apenas os eventos que os prestadores declararam.
             </p>
           </Indisponivel>
