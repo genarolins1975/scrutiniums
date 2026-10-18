@@ -46,7 +46,11 @@ permissions:
   actions: write # apagar a cópia anterior do estado antes de gravar a nova
 
 concurrency:
-  group: previsao-pld
+  # Os dois workflows restauram/gravam data/energia e podam o mesmo prefixo de
+  # cache. Serializar desde a restauração evita que uma previsão iniciada sobre
+  # estado antigo termine depois da energia e volte a salvar meta obsoleta.
+  # Mesmo grupo de atualizar-energia.yml; não cancelar a execução em curso.
+  group: atualizar-energia
   cancel-in-progress: false
 
 jobs:

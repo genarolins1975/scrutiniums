@@ -30,6 +30,8 @@ Sem a pasta auxiliar, um silver íntegro não basta para reproduzir notas e cat�
 
 O workflow restaura a geração completa mais recente (`state=uploaded`) de `energia-meta-<UTC>-<run_id>-<attempt>.tar.gz`. Upload interrompido (`starter`) não encobre a última geração completa. `estado_meta.py` valida entradas regulares e caminhos antes de extrair; acrescenta somente arquivos ausentes. Cada arquivo é publicado atomicamente e sem sobrescrever bytes do cache.
 
+Os workflows de energia e previsão do PLD usam o mesmo grupo de concorrência, com cancelamento em curso desativado. Ambos restauram/gravam e podam o mesmo cache; a exclusão mútua impede uma previsão iniciada com cópia antiga de terminar depois da energia e promover novamente os metadados antigos. Isso preserva a exigência de completar somente ausentes na restauração. Os crons regulares estão em janelas distintas; se execução manual ou atraso do agendador coincidir, aguarda na fila compartilhada. O prazo da previsão continua sendo aferido e atrasos não são disfarçados. Execuções já criadas com definição anterior não adquirem retroativamente esse grupo.
+
 A gravação tem passo próprio, depois do silver. O asset recebe nome novo, sem `--clobber`; só após o upload confirmado são removidas as gerações antigas de meta. Falha em meta produz warning e issue e preserva o silver já salvo. O arquivo temporário fica fora de `data/energia`; os caminhos do cache permanecem iguais. O limite preventivo é **1.900.000.000 bytes por asset**, declarado em `estado_meta.py`, abaixo do [limite de 2 GiB do GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases), consultado em 18/10/2026. Pasta ausente ou vazia não substitui a geração anterior.
 
 ### Histórico publicado

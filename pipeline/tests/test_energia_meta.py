@@ -30,6 +30,16 @@ def passos():
 
 
 class TestEstadoMeta(unittest.TestCase):
+    def test_workflows_do_mesmo_estado_nao_se_sobrepoem_nem_cancelam_em_curso(self):
+        import re
+        grupos = []
+        for nome in ('atualizar-energia.yml', 'previsao-pld.yml'):
+            texto = (RAIZ / '.github/workflows' / nome).read_text()
+            bloco = texto.split('\nconcurrency:\n', 1)[1].split('\njobs:', 1)[0]
+            grupos.append(re.search(r'^  group: (.+)$', bloco, re.MULTILINE).group(1))
+            self.assertRegex(bloco, r'cancel-in-progress: false')
+        self.assertEqual(grupos[0], grupos[1], 'cache e release compartilhados precisam de um único escritor')
+
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
