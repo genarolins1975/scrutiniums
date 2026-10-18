@@ -182,10 +182,34 @@ def abre_bronze(caminho_relativo):
     Se o arquivo registrado na vintage não existe (silver restaurado da cópia durável sem o
     bronze, e o recurso recapturado com o mesmo conteúdo noutro instante), abre a cópia da
     mesma pasta com o mesmo sha256 no nome: o conteúdo é idêntico por construção."""
-    caminho = caminho_relativo if os.path.isabs(caminho_relativo) else os.path.join(RAIZ, caminho_relativo)
-    if not os.path.exists(caminho):
-        caminho = _bronze_mesmo_conteudo(caminho) or caminho
+    caminho = caminho_bronze(caminho_relativo)
     return gzip.open(caminho, "rb") if caminho.endswith(".gz") else open(caminho, "rb")
+
+
+def caminho_bronze(arquivo):
+    """Resolve a referência exata ou uma cópia idêntica, nunca outro conteúdo.
+
+    A seleção de uma vintage anterior pertence ao consumidor, que publica sua data.
+    """
+    caminho = arquivo if os.path.isabs(arquivo) else os.path.join(RAIZ, arquivo)
+    return caminho if os.path.isfile(caminho) else (_bronze_mesmo_conteudo(caminho) or caminho)
+
+
+def bronze_disponivel(vintage):
+    return bool(vintage and vintage.get("arquivo") and os.path.isfile(caminho_bronze(vintage["arquivo"])))
+
+
+def vintages_com_bronze(con, dataset):
+    """Última vintage com bronze disponível por recurso, preservando data e sha256.
+
+    O silver continua append-only. Consultas de observações devem respeitar a captura
+    selecionada para não misturar valores posteriores com um manifesto mais antigo.
+    """
+    out = {}
+    for v in vintages_do_dataset(con, dataset):
+        if bronze_disponivel(v):
+            out[v["recurso"]] = v
+    return out
 
 
 def _bronze_mesmo_conteudo(caminho):

@@ -361,9 +361,12 @@ def _marca_importado(con, vid, colunas, extra=None):
     base.grava_registros(con, DS_CONTROLE, vid, linhas)
 
 
-def _series_glob(con, ds, padrao, desde=None):
+def _series_glob(con, ds, padrao, desde=None, ate_captura=None):
     """{serie: {ref: valor}} vigente de todas as séries do dataset que casam com o GLOB."""
     filtro, extra = ("AND o.ref >= ?", (desde,)) if desde else ("", ())
+    if ate_captura:
+        filtro += " AND v.capturado_em <= ?"
+        extra += (ate_captura,)
     out = defaultdict(dict)
     for s, ref, v in con.execute(
             f"""SELECT o.serie, o.ref, o.valor FROM observacoes o JOIN vintages v ON v.vintage_id=o.vintage_id
@@ -788,7 +791,7 @@ def camada_bacias(bacias, vint, origem=None):
 
 
 def _camada_bacias(con):
-    v = base.ultima_vintage(con, DS_SHP, "Bacias_Hidrograficas_SIN")
+    v = base.vintages_com_bronze(con, DS_SHP).get("Bacias_Hidrograficas_SIN")
     if not v:
         return None
     return camada_bacias(cl.bacias_do_zip(_le_bronze(v)), v)
@@ -1171,7 +1174,7 @@ def _coleta_previsao(con, pontos, celulas, st, hoje_utc=None):
     for cand in (hoje_utc, hoje_utc - timedelta(days=1)):
         rodada = cand.isoformat()
         rid = f"{cand:%Y%m%d}T0000Z"
-        if base.ultima_vintage(con, DS_PREV, f"previsao_{rid}"):
+        if base.bronze_disponivel(base.ultima_vintage(con, DS_PREV, f"previsao_{rid}")):
             st["rodada"], st["ja_agregada"] = f"{rodada}T00:00Z", True
             return
         valores, arquivos, erro = {}, [], None
@@ -2391,9 +2394,9 @@ def _previsao(con, d):
     (inicialização do modelo), a disponibilidade e a captura. Ao lado, a média
     climatológica 2001 a 2025 dos mesmos dias do calendário pela estimativa observada
     (IMERG e MERRA-2): produtos diferentes, a comparação é de ordem de grandeza."""
-    vs = sorted(base.vintages_do_dataset(con, DS_PREV), key=lambda v: v["capturado_em"])
+    vs = sorted(base.vintages_com_bronze(con, DS_PREV).values(), key=lambda v: v["capturado_em"])
     if not vs:
-        return None, "previsão ainda não coletada"
+        return None, "previsão indisponível: nenhuma rodada tem bronze disponível (ausente ou ainda não coletado)"
     v = vs[-1]
     with base.abre_bronze(v["arquivo"]) as f:
         man = json.loads(f.read().decode("utf-8"))
@@ -2405,7 +2408,7 @@ def _previsao(con, d):
     dias = man["dias"]
     if not dias:
         return None, "rodada sem dias completos"
-    prev = _series_glob(con, DS_PREV, "prev_*", desde=dias[0])
+    prev = _series_glob(con, DS_PREV, "prev_*", desde=dias[0], ate_captura=v["capturado_em"])
     a0, a1 = BASE_CLIMA
     pr = d.get("_precip", {})
     t2m = (d.get("_temp") or ({}, {}, {}))[0]
@@ -2430,6 +2433,7 @@ def _previsao(con, d):
                      "t_media_7d_c": c.r(sum(t[:7]) / 7, 2) if len(t) >= 7 and None not in t[:7] else None,
                      "merra2_media_7d_c": c.r(c7, 2), "anos_climatologia": n7})
     d["_previsao"] = {"emitida_em": rod["inicializacao"], "dias": dias, "bacias": bac, "temperatura": temp}
+    d["_previsao_vintage"] = v
     return {
         "natureza": "PREVISTO", "modelo": "ECMWF IFS 0,25° (dados abertos do ECMWF), rodada de 00Z pela API de rodadas individuais do Open-Meteo",
         "emitida_em": rod["inicializacao"],
@@ -3251,7 +3255,7 @@ def _proveniencias_e_evidencias(con, con_p, d, downloads):
                                     download="/energia/series/clima_diario.csv")
     pv = (d.get("clima") or {}).get("previsao")
     if pv:
-        snap_prev = c.snapshot_de(con, DS_PREV)
+        snap_prev = c.snapshot_de(con, DS_PREV, [d["_previsao_vintage"]])
         prov["previsao"] = _prov(
             "Previsão de chuva por bacia e de temperatura por subsistema", "PREVISTO",
             {"orgao": "Open-Meteo (modelo do ECMWF)", "dataset": "API de previsão, modelo ecmwf_ifs025 (ECMWF IFS 0,25°)",
