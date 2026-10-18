@@ -130,7 +130,7 @@ anterior; na primeira execução, a publicação integral antiga usa seu carimbo
 global como base comprovada. Não se infere uma data ausente. O `gerado_em` global
 é o **mais antigo** dos grupos selecionados (ou nulo se faltar alguma data).
 Em publicação parcial, os demais campos globais conservam a base anterior;
-os painéis recebem o snapshot de seu grupo. Assim, nem conceitos numéricos e
+os painéis recebem as datas/vintages do próprio grupo. Os campos numéricos compartilhados do snapshot (conceitos de carteira/inadimplência, contagens de IF) conservam a base anterior em todos os grupos quando o lote é parcial: não podem carregar por dentro valores de uma fonte retida. Assim, nem conceitos numéricos e
 contagens do meta são atualizados por dentro de um painel retido.
 
 | Uso | Tratamento |

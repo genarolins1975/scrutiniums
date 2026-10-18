@@ -33,7 +33,7 @@ class PublicacaoPorGrupo(unittest.TestCase):
         }
         for pasta, mes, valor in ((self.base, '2026-07', 1), (self.nova, '2026-08', 999)):
             docs = {
-                'meta.json': {'gerado_em': mes + '-28T09:00:00+00:00', 'vintages': {'caged': mes}},
+                'meta.json': {'gerado_em': mes + '-28T09:00:00+00:00', 'vintages': {'caged': mes}, 'numero_compartilhado': valor},
                 'emprego.json': {'mes': mes, 'ufs_mes': mes, 'ufs': [{'uf': 'SP', 'mes': mes, 'saldo_mes': valor}]},
                 'sectors.json': {'emprego_ref': mes},
                 'ufs.json': {'datas': {'emprego': mes}, 'consignado_nao_validado': valor},
@@ -167,6 +167,8 @@ class PublicacaoPorGrupo(unittest.TestCase):
         self.assertEqual(m['grupos']['consignado']['vintages']['caged'], '2026-07')
         self.assertEqual(m['grupos']['emprego-setores-ufs']['vintages']['caged'], '2026-08')
         self.assertEqual(m['gerado_em'], '2026-07-28T09:00:00+00:00')
+        self.assertEqual(m['grupos']['emprego-setores-ufs']['meta']['numero_compartilhado'], 1)
+        self.assertEqual(pg.ler_json(self.nova / 'meta.json')['numero_compartilhado'], 999)
         self.assertEqual(r['datas_anteriores']['consignado'], m['gerado_em'])
         from contextlib import redirect_stdout
         from io import StringIO

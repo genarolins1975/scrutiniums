@@ -180,6 +180,12 @@ def compor(candidata, anterior, destino, manifesto, decisao, recompositor=recomp
         datas_antigas = metadados_grupos(anterior, manifesto)
         meta['grupos'] = {g: (datas_novas if g in publicados else datas_antigas)[g]
                           for g in manifesto['grupos']}
+        # Metadados compartilhados contêm números de vários temas (conceitos de
+        # inadimplência/carteira, contagens de IF). Num lote parcial, um grupo
+        # aprovado não pode vazar por esse snapshot números de uma fonte retida.
+        compartilhados = {k: v for k, v in base.items() if k != 'grupos'}
+        for g in publicados:
+            meta['grupos'][g] = {**meta['grupos'][g], 'meta': compartilhados}
         datas = [v['gerado_em'] for v in meta['grupos'].values()]
         # Ausência continua ausência. O global é deliberadamente conservador.
         meta = {**base, 'grupos': meta['grupos'],
