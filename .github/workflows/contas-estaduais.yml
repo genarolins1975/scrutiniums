@@ -53,18 +53,23 @@ jobs:
   educacao:
     needs: contratos
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    # A Sinopse 2025 tem 232 MB; três tentativas com espera precisam de folga.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      # Em PR, Inep inacessível após as tentativas vira aviso; TLS reprovado, HTTP 4xx e
+      # pacote inválido continuam falhando. Execução manual não tolera indisponibilidade.
       - name: Capturar pacotes oficiais de educação de 2025
-        run: python3 -m pipeline.contas_estaduais.capturar_educacao --destino evidencia/educacao
+        run: python3 -m pipeline.contas_estaduais.capturar_educacao --destino evidencia/educacao --tentativas 3 ${{ github.event_name == 'pull_request' && '--tolerar-indisponivel' || '' }}
+      # Em PR sobe só o manifesto (url, bytes, sha256 e membros de cada pacote); os pacotes
+      # completos (a Sinopse tem 232 MB) ficam para a execução manual.
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: contas-estaduais-educacao-fontes
-          path: evidencia/educacao/
+          path: ${{ github.event_name == 'pull_request' && 'evidencia/educacao/manifesto.json' || 'evidencia/educacao/' }}
           retention-days: 30
           if-no-files-found: error
