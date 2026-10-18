@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
+import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { Footer } from "@/components/layout/Footer";
 import { MarcaRolagem } from "@/components/energia/MarcaRolagem";
 import { RodapeEnergia } from "@/components/energia/RodapeEnergia";
@@ -31,6 +33,7 @@ export default function SetorEletricoLayout({ children }: { children: React.Reac
       <MarcaRolagem />
       <div className="flex-1">{children}</div>
       <RodapeEnergia />
+      <ParaIrAlem mapa={mapaParaIrAlem()} />
       <Footer compacto />
     </div>
   );

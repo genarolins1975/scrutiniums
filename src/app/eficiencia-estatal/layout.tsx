@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
+import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
@@ -24,6 +26,7 @@ export default function EficienciaLayout({ children }: { children: React.ReactNo
         Pular para o conteúdo
       </a>
       <div className="flex-1">{children}</div>
+      <ParaIrAlem mapa={mapaParaIrAlem()} />
       <Footer />
     </div>
   );
