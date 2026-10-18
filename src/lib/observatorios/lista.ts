@@ -61,6 +61,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     nome: "Observatório dos Serviços Públicos",
     nomeCurto: "Serviços Públicos",
     pergunta: "Escola, saúde, segurança e justiça chegam a quem precisa?",
+    entrada: "/observatorios/servicos-publicos",
     acento: "obee",
     colecoes: [
       { id: "educacao", nome: "Educação", href: "/eficiencia-estatal/educacao-municipal-capitais" },
