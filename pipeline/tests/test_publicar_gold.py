@@ -151,6 +151,42 @@ class PublicacaoPorGrupo(unittest.TestCase):
         self.assertEqual(set(r['retidos']), {'outro', 'panorama'})
         self.assertIn('emprego-setores-ufs', r['publicados'])
 
+    def test_falha_multigrupo_com_meta_retem_os_outros_grupos_e_remonta_o_meta(self):
+        # Ex.: estados-data.test.ts lê ufs.json e chega a meta.json via observatorioHead.ts.
+        self.mapa['src/tests/estados.test.ts'] = {'grupos': ['emprego-setores-ufs', 'meta']}
+        falhas = ['src/tests/estados.test.ts']
+        def observar(rodada):
+            if rodada == 2:
+                falhas.clear()  # com o emprego da base, o teste volta a passar
+        r, chamadas = self.rodar(falhas, observar)
+        self.assertEqual(set(r['retidos']), {'emprego-setores-ufs'})
+        self.assertIn('meta', r['publicados'])
+        self.assertEqual(len(chamadas), 2)  # a composição com o meta remontado é retestada
+        meta = pg.ler_json(self.base / 'meta.json')
+        self.assertEqual(meta['grupos']['outro']['gerado_em'], '2026-08-28T09:00:00+00:00')
+        self.assertEqual(meta['grupos']['emprego-setores-ufs']['gerado_em'], '2026-07-28T09:00:00+00:00')
+        self.assertEqual(meta['gerado_em'], '2026-07-28T09:00:00+00:00')  # global conservador
+        for n in ('emprego.json', 'sectors.json', 'ufs.json'):
+            self.assertEqual(self.hashes(self.base)[n], self.antes[n])
+        self.assertEqual(pg.ler_json(self.base / 'outro.json')['valor'], 999)
+
+    def test_falha_mista_que_persiste_no_reteste_retem_o_meta_e_tudo(self):
+        # Se o teste segue vermelho com os bytes da base nos outros grupos, a falha vem do
+        # envelope remontado: nada é instalado com o teste reprovado.
+        self.mapa['src/tests/estados.test.ts'] = {'grupos': ['emprego-setores-ufs', 'meta']}
+        r, chamadas = self.rodar(['src/tests/estados.test.ts'])
+        self.assertEqual(set(r['retidos']), set(self.man['grupos']))
+        self.assertEqual(r['publicados'], [])
+        self.assertEqual(len(chamadas), 2)
+        self.assertEqual(self.hashes(self.base), self.antes)
+
+    def test_teste_que_protege_so_o_meta_retem_tudo(self):
+        self.mapa['src/tests/meta.test.ts'] = {'grupos': ['meta']}
+        r, _ = self.rodar(['src/tests/meta.test.ts'])
+        self.assertEqual(set(r['retidos']), set(self.man['grupos']))
+        self.assertEqual(r['publicados'], [])
+        self.assertEqual(self.hashes(self.base), self.antes)
+
     def test_dependencia_reprovada_retem_consumidor(self):
         self.man['grupos']['outro']['depende_de'] = ['consignado']
         self.man['grupos']['consignado']['depende_de'] = ['outro']  # ciclo: saem ou ficam juntos
