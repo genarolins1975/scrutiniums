@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { OBSERVATORIOS, donoDaRota, rotasDoObservatorio } from "@/lib/observatorios/registro";
@@ -10,6 +10,7 @@ import { cadeias, escalaEnergia } from "@/lib/observatorios/entradas/energia";
 import { circuitoCredito, escalaEconomia } from "@/lib/observatorios/entradas/economia";
 import type { ObservatorioId } from "@/lib/observatorios/lista";
 import type { NumeroPorta } from "@/lib/perguntas/tipos";
+import { mesAno } from "@/lib/perguntas/leitura";
 
 /** Número lido da base, com fonte e período, apontando para painel do próprio observatório ou atalho dele. */
 function conferir(n: NumeroPorta, id: ObservatorioId) {
@@ -128,6 +129,12 @@ describe("entradas com conta dos observatórios", () => {
         if (e.numero) conferir(e.numero, "energia-e-infraestrutura");
       }
       for (const p of x.paineis) expect(donoDaRota(p.href)?.observatorio, p.href).toBe("energia-e-infraestrutura");
+    }
+    // medida combinada na nota com janela própria leva o próprio período
+    const imp = JSON.parse(readFileSync(join(process.cwd(), "public", "gas", "gold", "importacao.json"), "utf-8")).indicadores;
+    const importado = c.find((x) => x.id === "gas")!.elos[2].numero!;
+    if (imp.gnl_participacao_massa_12m.periodo !== imp.participacao_12m.periodo) {
+      expect(importado.nota).toContain(`(${imp.gnl_participacao_massa_12m.periodo.split(" a ").map(mesAno).join(" a ")})`);
     }
   });
 

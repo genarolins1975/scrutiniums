@@ -14,6 +14,11 @@ import { serieCredito } from "./familias";
 
 const bcb = (codigo: string) => `Banco Central, SGS série ${codigo}`;
 
+/** Mês de uma série combinada na nota, quando difere do mês do número principal. */
+function seOutro(principal: { ref: string }, outra: { ref: string }): string {
+  return outra.ref.slice(0, 7) === principal.ref.slice(0, 7) ? "" : ` (${mesAno(outra.ref)})`;
+}
+
 function pix(): any {
   const p = lerPublico("obs", "data", "gold", "pix.json");
   if (!p.disponivel) throw new Error("pix indisponível");
@@ -97,7 +102,7 @@ export function circuitoCredito(): CircuitoCredito {
       const t = serieCredito("taxa_total");
       const pf = serieCredito("taxa_pf");
       const pj = serieCredito("taxa_pj");
-      return { valor: num(t.v, 2), periodo: mesAno(t.ref), nota: `Operações contratadas no mês. Famílias ${num(pf.v, 2)}% e empresas ${num(pj.v, 2)}% ao ano.` };
+      return { valor: num(t.v, 2), periodo: mesAno(t.ref), nota: `Operações contratadas no mês. Famílias ${num(pf.v, 2)}%${seOutro(t, pf)} e empresas ${num(pj.v, 2)}%${seOutro(t, pj)} ao ano.` };
     },
   );
   const spread = numero(
@@ -113,7 +118,7 @@ export function circuitoCredito(): CircuitoCredito {
       const t = serieCredito("saldo_total");
       const pf = serieCredito("saldo_pf");
       const pj = serieCredito("saldo_pj");
-      return { valor: num(t.v / 1e6, 2), periodo: mesAno(t.ref), nota: `Famílias R$ ${num(pf.v / 1e6, 2)} tri e empresas R$ ${num(pj.v / 1e6, 2)} tri. Estoque: tudo o que está emprestado.` };
+      return { valor: num(t.v / 1e6, 2), periodo: mesAno(t.ref), nota: `Famílias R$ ${num(pf.v / 1e6, 2)} tri${seOutro(t, pf)} e empresas R$ ${num(pj.v / 1e6, 2)} tri${seOutro(t, pj)}. Estoque: tudo o que está emprestado.` };
     },
   );
   const concessoes = numero(
@@ -129,7 +134,7 @@ export function circuitoCredito(): CircuitoCredito {
       const t = serieCredito("inad_total");
       const pf = serieCredito("inad_pf");
       const pj = serieCredito("inad_pj");
-      return { valor: num(t.v, 2), periodo: mesAno(t.ref), nota: `Famílias ${num(pf.v, 2)}% e empresas ${num(pj.v, 2)}%.` };
+      return { valor: num(t.v, 2), periodo: mesAno(t.ref), nota: `Famílias ${num(pf.v, 2)}%${seOutro(t, pf)} e empresas ${num(pj.v, 2)}%${seOutro(t, pj)}.` };
     },
   );
   const valorPix = numero(

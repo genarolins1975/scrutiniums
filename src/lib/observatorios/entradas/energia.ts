@@ -27,6 +27,11 @@ function periodoGas(p: string): string {
   return p.split(" a ").map(mesAno).join(" a ");
 }
 
+/** Período de uma medida combinada na nota, quando difere do período do número principal. */
+function seOutro(principal: { periodo: string }, outra: { periodo: string }): string {
+  return outra.periodo === principal.periodo ? "" : ` (${periodoGas(outra.periodo)})`;
+}
+
 function censo(): any {
   return (lerPublico("saneamento", "gold", "agregados.json") as any[]).find((x) => x.id === "BR");
 }
@@ -67,7 +72,7 @@ const botijao = () =>
     () => {
       const p = indicadorGas("gas-de-cozinha", "medio_mes");
       const n = indicadorGas("gas-de-cozinha", "postos_mes");
-      return { valor: `R$ ${num(p.valor, 2)}`, periodo: periodoGas(p.periodo), nota: `Média de ${num(n.valor, 0)} revendas pesquisadas no mês.` };
+      return { valor: `R$ ${num(p.valor, 2)}`, periodo: periodoGas(p.periodo), nota: `Média de ${num(n.valor, 0)} revendas pesquisadas no mês${seOutro(p, n)}.` };
     },
   );
 
@@ -121,7 +126,7 @@ export function cadeias(): Cadeia[] {
     () => {
       const p = indicadorGas("producao", "producao_12m");
       const mar = indicadorGas("producao", "mar_pct_12m");
-      return { valor: num(p.valor, 1), periodo: periodoGas(p.periodo), nota: `Média de 12 meses; ${num(mar.valor, 1)}% vem do mar.` };
+      return { valor: num(p.valor, 1), periodo: periodoGas(p.periodo), nota: `Média de 12 meses; ${num(mar.valor, 1)}% vem do mar${seOutro(p, mar)}.` };
     },
   );
   const disponivel = numero(
@@ -129,7 +134,7 @@ export function cadeias(): Cadeia[] {
     () => {
       const d = indicadorGas("aproveitamento", "disponivel");
       const r = indicadorGas("aproveitamento", "reinjecao");
-      return { valor: num(d.valor, 1), periodo: periodoGas(d.periodo), nota: `${num(r.valor, 1)}% é reinjetado nos poços; o restante é consumido na produção ou queimado.` };
+      return { valor: num(d.valor, 1), periodo: periodoGas(d.periodo), nota: `${num(r.valor, 1)}% é reinjetado nos poços${seOutro(d, r)}; o restante é consumido na produção ou queimado.` };
     },
   );
   const importado = numero(
@@ -137,7 +142,7 @@ export function cadeias(): Cadeia[] {
     () => {
       const p = indicadorGas("importacao", "participacao_12m");
       const g = indicadorGas("importacao", "gnl_participacao_massa_12m");
-      return { valor: num(p.valor, 1), periodo: periodoGas(p.periodo), nota: `Soma do importado com o disponível nacional. O gás liquefeito (GNL) foi ${num(g.valor, 1)}% da massa importada.` };
+      return { valor: num(p.valor, 1), periodo: periodoGas(p.periodo), nota: `Soma do importado com o disponível nacional. O gás liquefeito (GNL) foi ${num(g.valor, 1)}% da massa importada${seOutro(p, g)}.` };
     },
   );
   const semAgua = numero(
