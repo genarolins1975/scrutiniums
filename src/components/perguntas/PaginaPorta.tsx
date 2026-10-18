@@ -27,7 +27,7 @@ function Cadeado() {
 /** Coleção com até quatro painéis de exemplo; sem contagem, porque subpáginas não entram no registro. */
 export type ColecaoPorta = { id: string; nome: string; href: string; destaques: string[]; mais: boolean; origens: string };
 
-export function PaginaPorta({ porta, outras, colecoes }: Readonly<{ porta: Porta; outras: Porta[]; colecoes: ColecaoPorta[] }>) {
+export function PaginaPorta({ porta, outras, colecoes, entrada }: Readonly<{ porta: Porta; outras: Porta[]; colecoes: ColecaoPorta[]; entrada?: string }>) {
   const a = ACENTO[porta.acento];
   return (
     <main className="bg-papel">
@@ -104,6 +104,16 @@ export function PaginaPorta({ porta, outras, colecoes }: Readonly<{ porta: Porta
               entrar, você segue direto para o painel escolhido.
             </p>
             <ConviteConta />
+            {entrada && (
+              <p className="mt-6 border-t border-linha pt-4 text-sm leading-relaxed text-carvao-muted">
+                O observatório tem uma entrada completa, com os números de escala, o modelo do orçamento doméstico e todas
+                as coleções:{" "}
+                <Link href={entrada} prefetch={false} className="inline-flex items-center gap-1 text-carvao underline decoration-linha underline-offset-4">
+                  entrar no {porta.nomeCompleto} <Cadeado />
+                </Link>
+                .
+              </p>
+            )}
           </div>
           <ul className="border-t border-linha lg:col-span-8">
             {porta.caminhos.map((c) => (

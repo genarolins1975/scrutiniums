@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.113.0";
+const APP_VERSION = "0.114.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -3123,6 +3123,24 @@ window.exportarPagina = () => {
   URL.revokeObjectURL(a.href);
 };
 
+/* Abas do Crédito que pertencem a outro observatório (src/lib/observatorios/registro.ts,
+   DESTINO_ABAS_CREDITO): o cabeçalho diz a que observatório a página pertence e leva à
+   entrada dele. As demais abas são do Observatório da Economia. */
+const VIEW_OBSERVATORIO = {
+  consignado: "familias", moradia: "familias", emprego: "familias", desenrola: "familias", cobranca: "familias",
+  conduta: "familias", judicial: "familias", bets: "familias", fraudes: "familias",
+  subnacional: "contas-publicas", pgfn: "contas-publicas",
+};
+const OBSERVATORIOS_DESTINO = {
+  familias: ["Observatório das Famílias", "/observatorios/familias"],
+  "contas-publicas": ["Observatório das Contas Públicas", "/app/observatorios#obs-contas-publicas"],
+};
+function linhaObservatorio(view) {
+  const id = VIEW_OBSERVATORIO[view];
+  if (!id) return "";
+  const [nome, href] = OBSERVATORIOS_DESTINO[id];
+  return `<p class="ph-obs">Este painel faz parte do <a href="${href}">${nome}</a>, além da coleção Crédito.</p>`;
+}
 function pageHead(o) {
   ULTIMO_HEAD = o || {};
   const meta = state.data.meta || {};
@@ -3130,6 +3148,7 @@ function pageHead(o) {
   return `<div class="pagehead">
     <div class="ph-left">
       <h2>${o.title}${o.seals ? " " + o.seals : ""}</h2>
+      ${linhaObservatorio(currentView())}
       ${o.desc ? `<p class="viewdesc">${o.desc}</p>` : ""}
       <div class="ph-meta">${(o.vintage || pageVintage(currentView())) ? `Dados até <b>${o.vintage || pageVintage(currentView())}</b> · processado em ${upd}` : `Última atualização: ${upd}`}${o.fontes ? " · fontes: " + o.fontes : ""} · <a href="/observatorio/methodology" onclick="nav('method');return false">metodologia e fontes</a></div>
     </div>

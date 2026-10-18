@@ -1,4 +1,5 @@
 import { getDb, newId, schema } from "./db";
+import type { ObservatorioId } from "./observatorios/lista";
 
 /**
  * Eventos de produto não sensíveis.
@@ -32,6 +33,8 @@ export type ProductEventName =
   | "observatorio_escolhido:saneamento"
   | "observatorio_escolhido:gas"
   | "observatorio_escolhido:agro"
+  // coleção ou entrada aberta pelo bloco de um dos seis observatórios
+  | `observatorio_aberto:${ObservatorioId}`
   | "agro_simulacao_calculada"
   | "agro_exportacao_solicitada"
   | "agro_percurso_trocado";

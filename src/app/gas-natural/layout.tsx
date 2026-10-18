@@ -1,4 +1,6 @@
 import "./gas.css";
+import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
+import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import type { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
 import { RodapeGas } from "@/components/gas/RodapeGas";
@@ -27,6 +29,7 @@ export default function GasNaturalLayout({ children }: { children: React.ReactNo
       </a>
       <div className="flex-1">{children}</div>
       <RodapeGas />
+      <ParaIrAlem mapa={mapaParaIrAlem()} />
       <Footer />
     </div>
   );

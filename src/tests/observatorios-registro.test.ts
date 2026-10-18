@@ -111,4 +111,19 @@ describe("registro dos seis observatórios", () => {
     expect(donoDaRota("/observatorio/states/PE")?.observatorio).toBe("economia");
     expect(donoDaRota("/termos")).toBeNull();
   });
+
+  it("o bloco Para ir além está no layout de toda coleção com páginas Next e nomeia só o que existe no registro", async () => {
+    const { mapaParaIrAlem } = await import("@/lib/observatorios/mapaParaIrAlem");
+    const mapa = mapaParaIrAlem();
+    for (const p of [...mapa.paineis, ...mapa.atalhos]) {
+      const o = mapa.observatorios.find((x) => x.id === p.observatorio);
+      expect(o?.colecoes.some((c) => c.id === p.colecao), `${p.rota}`).toBe(true);
+    }
+    const { readFileSync } = await import("node:fs");
+    for (const raiz of RAIZES) {
+      const layout = readFileSync(join(process.cwd(), "src", "app", raiz, "layout.tsx"), "utf-8");
+      expect(layout, raiz).toContain("<ParaIrAlem mapa={mapaParaIrAlem()} />");
+    }
+  });
 });
+

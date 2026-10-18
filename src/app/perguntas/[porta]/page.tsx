@@ -46,7 +46,7 @@ export default function PortaPage({ params }: { params: { porta: string } }) {
   return (
     <>
       <PublicHeader />
-      <PaginaPorta porta={porta} outras={todas.filter((x) => x.id !== porta.id)} colecoes={colecoes} />
+      <PaginaPorta porta={porta} outras={todas.filter((x) => x.id !== porta.id)} colecoes={colecoes} entrada={observatorio(porta.id).entrada} />
       <Footer />
     </>
   );

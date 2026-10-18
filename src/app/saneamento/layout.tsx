@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
+import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { Footer } from "@/components/layout/Footer";
 import { MarcaRolagem } from "@/components/energia/MarcaRolagem";
 
@@ -28,6 +30,7 @@ export default function SaneamentoLayout({ children }: { children: React.ReactNo
       </a>
       <MarcaRolagem />
       <div className="flex-1">{children}</div>
+      <ParaIrAlem mapa={mapaParaIrAlem()} />
       <Footer compacto />
     </div>
   );

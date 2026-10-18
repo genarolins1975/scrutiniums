@@ -63,3 +63,55 @@ describe("entrada do Judiciário no seletor", () => {
     expect(trackEvent).not.toHaveBeenCalled();
   });
 });
+
+describe("escolha pelos blocos dos seis observatórios", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  function abrir(campos: Record<string, string>) {
+    return POST(new Request("https://scrutiniums.com/app/observatorios/entrar", {
+      method: "POST",
+      headers: { origin: "https://scrutiniums.com" },
+      body: new URLSearchParams(campos),
+    }));
+  }
+
+  it("cada coleção abre sua entrada, guarda o observatório e registra a escolha", async () => {
+    const { OBSERVATORIOS } = await import("@/lib/observatorios/lista");
+    for (const o of OBSERVATORIOS) {
+      for (const c of o.colecoes) {
+        vi.clearAllMocks();
+        const response = await abrir({ o: o.id, c: c.id });
+        expect(response.status).toBe(303);
+        expect(response.headers.get("location")).toBe(new URL(c.href, "https://scrutiniums.com").href);
+        expect(response.cookies.get(COOKIE_OBSERVATORIO)?.value).toBe(o.id);
+        expect(trackEvent).toHaveBeenCalledExactlyOnceWith(`observatorio_aberto:${o.id}`, "seletor-teste");
+      }
+    }
+  });
+
+  it("sem coleção, abre a entrada do observatório que tem uma", async () => {
+    const { OBSERVATORIOS } = await import("@/lib/observatorios/lista");
+    for (const o of OBSERVATORIOS) {
+      const response = await abrir({ o: o.id });
+      if (o.entrada) {
+        expect(response.headers.get("location")).toBe("https://scrutiniums.com" + o.entrada);
+        expect(response.cookies.get(COOKIE_OBSERVATORIO)?.value).toBe(o.id);
+      } else {
+        expect(response.headers.get("location")).toBe("https://scrutiniums.com/app/observatorios");
+        expect(response.cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
+      }
+    }
+  });
+
+  it.each([
+    { o: "familias", c: "https://externo.invalid" },
+    { o: "familias", c: "inexistente" },
+    { o: "inexistente", c: "credito" },
+    { o: "//externo.invalid" },
+  ] as Record<string, string>[])("recusa combinação fora do registro: %o", async (campos) => {
+    const response = await abrir(campos);
+    expect(response.headers.get("location")).toBe("https://scrutiniums.com/app/observatorios");
+    expect(response.cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
+    expect(trackEvent).not.toHaveBeenCalled();
+  });
+});

@@ -8,52 +8,14 @@
  * Os destinos levam aos painéis dos observatórios (com conta) e as páginas de
  * método são públicas.
  */
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import { dominio, type DominioId } from "@/lib/dominios";
 import { donoDaRota, observatorio, type ObservatorioId } from "@/lib/observatorios/registro";
 import contasFederais from "@/lib/contas-publicas/snapshots/dados.json";
 import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
-import type { CaminhoPorta, NumeroPorta, Porta } from "./tipos";
+import type { CaminhoPorta, Porta } from "./tipos";
+import { comSinal, dataBr, lerPublico, mesAno, num, numero } from "./leitura";
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- leitura de gold JSON sem tipos gerados */
-function lerPublico(...partes: string[]): any {
-  return JSON.parse(readFileSync(join(process.cwd(), "public", ...partes), "utf-8"));
-}
-
-const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-
-/** "2026-07" ou "2026-07-01" → "jul/2026". */
-function mesAno(iso: string): string {
-  return `${MESES[Number(iso.slice(5, 7)) - 1]}/${iso.slice(0, 4)}`;
-}
-
-/** "2026-09-29" → "29/09/2026". */
-function dataBr(iso: string): string {
-  return iso.slice(0, 10).split("-").reverse().join("/");
-}
-
-function num(v: number, casas: number): string {
-  return v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
-}
-
-/** Número com sinal tipográfico de menos, como no resto da plataforma. */
-function comSinal(v: number, casas: number): string {
-  return v < 0 ? `−${num(Math.abs(v), casas)}` : num(v, casas);
-}
-
-type Leitura = { valor: string; periodo: string; nota?: string };
-
-/** Lê um número; qualquer falha vira ausência declarada, nunca zero. */
-function numero(def: Omit<NumeroPorta, "valor" | "periodo">, ler: () => Leitura): NumeroPorta {
-  try {
-    const l = ler();
-    return { ...def, valor: l.valor, periodo: l.periodo, nota: l.nota ?? def.nota };
-  } catch {
-    return { ...def, valor: null, periodo: "indisponível nesta publicação" };
-  }
-}
-
 /** Destino com o domínio de origem e a coleção do registro a que pertence. */
 function caminho(obs: DominioId, pergunta: string, resumo: string, href: string): CaminhoPorta {
   const dono = donoDaRota(href);
@@ -64,7 +26,7 @@ function caminho(obs: DominioId, pergunta: string, resumo: string, href: string)
 /** Identidade da porta lida do registro dos observatórios. */
 function identidade(id: ObservatorioId) {
   const o = observatorio(id);
-  return { id, nome: o.nomeCurto, nomeCompleto: o.nome, acento: o.acento };
+  return { id, nome: o.nomeCurto, nomeCompleto: o.nome, pergunta: o.pergunta, acento: o.acento };
 }
 
 // ------------------------------------------------------------------ Bolso
@@ -72,7 +34,6 @@ function identidade(id: ObservatorioId) {
 function porta_familias(): Porta {
   return {
     ...identidade("familias"),
-    pergunta: "Quanto custa viver e quanto pesa a dívida das famílias?",
     resumo:
       "Renda, dívidas, proteção social, moradia e os preços que entram no orçamento doméstico, cada um medido pela fonte oficial do seu tema.",
     numeros: [
@@ -142,7 +103,6 @@ function porta_familias(): Porta {
 function porta_servicos(): Porta {
   return {
     ...identidade("servicos-publicos"),
-    pergunta: "Escola, saúde, segurança e justiça chegam a quem precisa?",
     resumo:
       "Recursos, atendimento e resultados dos serviços públicos, com a mesma régua para cada capital e o volume e o tempo dos processos na Justiça, cada medida com o universo da sua fonte.",
     numeros: [
@@ -227,7 +187,6 @@ function porta_dinheiro(): Porta {
   const anoCompleto = () => rtn.filter((r) => /^\d{4}$/.test(r.periodo)).reduce((a, b) => (b.periodo > a.periodo ? b : a));
   return {
     ...identidade("contas-publicas"),
-    pergunta: "De onde vem e para onde vai o dinheiro dos impostos?",
     resumo:
       "Receitas e despesas do governo federal, o resultado das contas e a dívida dos estados, com valores nominais e o período de cada demonstrativo.",
     numeros: [
@@ -311,7 +270,6 @@ function porta_dinheiro(): Porta {
 function porta_energia(): Porta {
   return {
     ...identidade("energia-e-infraestrutura"),
-    pergunta: "De onde vêm a energia e a água, e quanto custam?",
     resumo:
       "Eletricidade, gás, água e esgoto e transporte: oferta, preço regulado e acesso, a partir dos dados abertos do ONS, da ANEEL, da ANP, do IBGE e do SINISA.",
     numeros: [
@@ -387,7 +345,6 @@ function porta_energia(): Porta {
 function porta_economia(): Porta {
   return {
     ...identidade("economia"),
-    pergunta: "O que o Brasil produz, vende ao mundo e financia?",
     resumo:
       "O peso da agropecuária na economia e nas exportações, o sistema financeiro e os pagamentos, a partir das contas nacionais, do comércio exterior e do Banco Central.",
     numeros: [
@@ -461,7 +418,6 @@ function trimestre(p: string): string {
 function porta_territorio(): Porta {
   return {
     ...identidade("territorio-e-clima"),
-    pergunta: "O que está mudando no ambiente e quem sente primeiro?",
     resumo:
       "Desmatamento medido por satélite, cidades expostas a inundações e municípios com falta de água declarada pelos prestadores, cada dado com o período da sua fonte.",
     numeros: [

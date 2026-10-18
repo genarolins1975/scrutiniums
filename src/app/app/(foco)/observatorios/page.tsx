@@ -4,7 +4,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
 import { COOKIE_OBSERVATORIO } from "@/lib/dominios";
-import { OPCOES_OBSERVATORIOS, type OpcaoObservatorioId } from "@/lib/opcoesObservatorios";
+import { OPCOES_OBSERVATORIOS, type OpcaoObservatorio, type OpcaoObservatorioId } from "@/lib/opcoesObservatorios";
+import { OBSERVATORIOS, OBSERVATORIO_PRINCIPAL, type ObservatorioId } from "@/lib/observatorios/lista";
+import { rotaPorta } from "@/lib/perguntas/rotas";
 import { atualizacaoObservatorio } from "@/lib/atualizacaoObservatorios";
 import styles from "./escolha.module.css";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -54,6 +56,10 @@ const GUIAS: Record<OpcaoObservatorioId, { chamada: string; temas: [string, stri
   },
 };
 
+/** Observatório em que cada cartão aparece: o principal do domínio; o Judiciário fica com a Eficiência Estatal. */
+const OBSERVATORIO_DO_CARTAO = (id: OpcaoObservatorioId): ObservatorioId =>
+  id === "judiciario" ? OBSERVATORIO_PRINCIPAL.eficiencia : OBSERVATORIO_PRINCIPAL[id];
+
 /** Símbolos temáticos: identidade de cada área, sem representar dados. */
 function Simbolo({ id }: { id: OpcaoObservatorioId }) {
   return (
@@ -102,63 +108,55 @@ export default async function EscolhaObservatorioPage() {
           <div>
             <p className={styles.rotulo}>Seu espaço de análise</p>
             <h1 id="titulo-escolha">O Brasil, sob diferentes perspectivas.</h1>
-            <p className={styles.introducao}>Escolha seu observatório e explore o tema que importa para você.</p>
+            <p className={styles.introducao}>Seis observatórios, cada um com uma pergunta e as coleções de painéis que a respondem.</p>
           </div>
           <p className={styles.metodo}>Dados públicos. Método transparente.<br />Fontes e limites à vista, em cada análise.</p>
         </section>
 
-        <ul className={styles.grade} aria-label="Escolha seu observatório">
-          {OPCOES_OBSERVATORIOS.map((d) => {
-            const at = atualizacaoObservatorio(d.id);
-            const guia = GUIAS[d.id];
-            const recente = ultimo === d.id;
-            return (
-              <li key={d.id}>
-                <article aria-label={d.nome} className={`${styles.cartao} ${styles[d.id]} ${recente ? styles.recente : ""}`}>
-                  <div className={styles.capa}>
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <p className={styles.rotulo}>Observatório brasileiro</p>
-                      {recente && <span className={styles.selo}>Último acesso</span>}
-                    </div>
-                    <div className={styles.identidade}>
-                      <h2>{d.nomeCurto}</h2>
-                      <Simbolo id={d.id} />
-                    </div>
-                    <p className={styles.chamada}>{guia.chamada}</p>
+        {OBSERVATORIOS.map((o) => {
+          const cartoes = OPCOES_OBSERVATORIOS.filter((d) => OBSERVATORIO_DO_CARTAO(d.id) === o.id);
+          return (
+            <section key={o.id} aria-labelledby={`obs-${o.id}`} className={styles.observatorio}>
+              <header className={styles.cabecalhoObservatorio}>
+                <div>
+                  <div className="flex flex-wrap items-start gap-2">
+                    <p className={styles.rotulo}>Observatório</p>
+                    {ultimo === o.id && <span className={styles.selo}>Último acesso</span>}
                   </div>
-                  <div className={styles.temas}>
-                    <p className={styles.rotulo}>O que você encontra</p>
-                    <ul>
-                      {guia.temas.map(([titulo, detalhe]) => (
-                        <li key={titulo}>
-                          <span aria-hidden="true" className={styles.ponto} />
-                          <div><h3>{titulo}</h3><p>{detalhe}</p></div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  {/* POST preserva cookie e evento sem disparar a escolha pelo prefetch. */}
-                  <form method="post" action="/app/observatorios/entrar" className={styles.entrada}>
-                    <input type="hidden" name="d" value={d.id} />
-                    <button type="submit">
-                      {recente ? "Continuar" : "Explorar"} {d.nomeCurto}
-                      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M4 16 16 4M4 4h12v12" /></svg>
-                      <span className="sr-only"> — entrar no {d.nome}</span>
-                    </button>
-                  </form>
-                  <details className={styles.atualizacao}>
-                    <summary>Fontes e atualização <span aria-hidden="true">+</span></summary>
-                    <div>
-                      <p>{d.descricaoCurta}</p>
-                      <p className={styles.rotulo}>{at.rotulo}</p>
-                      <ul>{at.linhas.map((l) => <li key={l}>{l}</li>)}</ul>
-                    </div>
-                  </details>
-                </article>
-              </li>
-            );
-          })}
-        </ul>
+                  <h2 id={`obs-${o.id}`}>{o.nomeCurto}</h2>
+                  <p className={styles.pergunta}>{o.pergunta}</p>
+                </div>
+                <nav aria-label={`Coleções do ${o.nome}`} className={styles.colecoes}>
+                  <p className={styles.rotulo}>Coleções</p>
+                  {/* POST, como nos cartões: guarda o último acesso e registra a escolha. */}
+                  <ul>
+                    {o.colecoes.map((c) => (
+                      <li key={c.id}>
+                        <form method="post" action="/app/observatorios/entrar">
+                          <input type="hidden" name="o" value={o.id} />
+                          <input type="hidden" name="c" value={c.id} />
+                          <button type="submit">{c.nome}</button>
+                        </form>
+                      </li>
+                    ))}
+                  </ul>
+                  {o.entrada && (
+                    <form method="post" action="/app/observatorios/entrar">
+                      <input type="hidden" name="o" value={o.id} />
+                      <button type="submit" className={styles.entrar}>Entrar no {o.nome} <span aria-hidden="true">→</span></button>
+                    </form>
+                  )}
+                  <Link href={rotaPorta(o.id)} className={styles.resumo}>Resumo aberto do observatório <span aria-hidden="true">→</span></Link>
+                </nav>
+              </header>
+              {cartoes.length > 0 && (
+                <ul className={styles.grade} aria-label={`Coleções com painel de entrada no ${o.nome}`}>
+                  {cartoes.map((d) => <Cartao key={d.id} d={d} recente={ultimo === d.id} />)}
+                </ul>
+              )}
+            </section>
+          );
+        })}
 
         <aside className={styles.conta} aria-label="Sua conta na plataforma">
           <div><h2>Uma conta. Todos os observatórios.</h2><p>Sua sessão e suas preferências acompanham você. Troque de tema pelo seletor no cabeçalho.</p></div>
@@ -166,5 +164,56 @@ export default async function EscolhaObservatorioPage() {
         </aside>
       </div>
     </div>
+  );
+}
+
+/** Cartão de entrada de uma coleção, com escolha registrada por POST. */
+function Cartao({ d, recente }: { d: OpcaoObservatorio; recente: boolean }) {
+  const at = atualizacaoObservatorio(d.id);
+  const guia = GUIAS[d.id];
+  return (
+    <li>
+      <article aria-label={d.nome} className={`${styles.cartao} ${styles[d.id]} ${recente ? styles.recente : ""}`}>
+        <div className={styles.capa}>
+          <div className="flex flex-wrap items-start justify-between gap-2">
+            <p className={styles.rotulo}>Coleção</p>
+            {recente && <span className={styles.selo}>Último acesso</span>}
+          </div>
+          <div className={styles.identidade}>
+            <h3>{d.nomeCurto}</h3>
+            <Simbolo id={d.id} />
+          </div>
+          <p className={styles.chamada}>{guia.chamada}</p>
+        </div>
+        <div className={styles.temas}>
+          <p className={styles.rotulo}>O que você encontra</p>
+          <ul>
+            {guia.temas.map(([titulo, detalhe]) => (
+              <li key={titulo}>
+                <span aria-hidden="true" className={styles.ponto} />
+                <div><h4>{titulo}</h4><p>{detalhe}</p></div>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* POST preserva cookie e evento sem disparar a escolha pelo prefetch. */}
+        <form method="post" action="/app/observatorios/entrar" className={styles.entrada}>
+          <input type="hidden" name="d" value={d.id} />
+          <button type="submit">
+            {recente ? "Continuar" : "Explorar"} {d.nomeCurto}
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M4 16 16 4M4 4h12v12" /></svg>
+            <span className="sr-only">: entrar na coleção {d.nomeCurto}</span>
+          </button>
+        </form>
+        <details className={styles.atualizacao}>
+          <summary>Fontes e atualização <span aria-hidden="true">+</span></summary>
+          <div>
+            <p>{d.descricaoCurta}</p>
+            <p className={styles.rotulo}>{at.rotulo}</p>
+            <ul>{at.linhas.map((l) => <li key={l}>{l}</li>)}</ul>
+          </div>
+        </details>
+      </article>
+    </li>
   );
 }

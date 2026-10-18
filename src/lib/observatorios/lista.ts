@@ -19,6 +19,10 @@ export type Observatorio = {
   id: ObservatorioId;
   nome: string;
   nomeCurto: string;
+  /** Pergunta que o observatório responde, usada na home, na página aberta e na escolha pós login. */
+  pergunta: string;
+  /** Entrada com conta do observatório, quando ele já tem uma (src/app/observatorios/[id]). */
+  entrada?: string;
   acento: Dominio["acento"];
   colecoes: Colecao[];
 };
@@ -41,6 +45,8 @@ export const OBSERVATORIOS: Observatorio[] = [
     id: "familias",
     nome: "Observatório das Famílias",
     nomeCurto: "Famílias",
+    pergunta: "Quanto custa viver e quanto pesa a dívida das famílias?",
+    entrada: "/observatorios/familias",
     acento: "bronze",
     colecoes: [
       { id: "renda", nome: "Renda e trabalho", href: "/eficiencia-estatal/trabalho-renda" },
@@ -54,6 +60,8 @@ export const OBSERVATORIOS: Observatorio[] = [
     id: "servicos-publicos",
     nome: "Observatório dos Serviços Públicos",
     nomeCurto: "Serviços Públicos",
+    pergunta: "Escola, saúde, segurança e justiça chegam a quem precisa?",
+    entrada: "/observatorios/servicos-publicos",
     acento: "obee",
     colecoes: [
       { id: "educacao", nome: "Educação", href: "/eficiencia-estatal/educacao-municipal-capitais" },
@@ -68,6 +76,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     id: "contas-publicas",
     nome: "Observatório das Contas Públicas",
     nomeCurto: "Contas Públicas",
+    pergunta: "De onde vem e para onde vai o dinheiro dos impostos?",
     acento: "energia",
     colecoes: [
       { id: "federais", nome: "Contas Federais", href: "/contas-publicas" },
@@ -79,6 +88,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     id: "energia-e-infraestrutura",
     nome: "Observatório de Energia e Infraestrutura",
     nomeCurto: "Energia e Infraestrutura",
+    pergunta: "De onde vêm a energia e a água, e quanto custam?",
     acento: "energia",
     colecoes: [
       { id: "setor-eletrico", nome: "Setor Elétrico", href: "/setor-eletrico" },
@@ -92,6 +102,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     id: "economia",
     nome: "Observatório da Economia",
     nomeCurto: "Economia",
+    pergunta: "O que o Brasil produz, vende ao mundo e financia?",
     acento: "gas",
     colecoes: [
       { id: "credito", nome: "Crédito e sistema financeiro", href: "/observatorio" },
@@ -104,6 +115,8 @@ export const OBSERVATORIOS: Observatorio[] = [
     id: "territorio-e-clima",
     nome: "Observatório do Território e Clima",
     nomeCurto: "Território e Clima",
+    pergunta: "O que está mudando no ambiente e quem sente primeiro?",
+    entrada: "/observatorios/territorio-e-clima",
     acento: "obee",
     colecoes: [
       { id: "desmatamento", nome: "Desmatamento e emissões", href: "/agronegocio/ambiente" },
@@ -111,3 +124,39 @@ export const OBSERVATORIOS: Observatorio[] = [
     ],
   },
 ];
+
+/**
+ * Observatório em que está o núcleo de cada domínio de origem. O Crédito
+ * alimenta também Famílias e Contas Públicas, e o Agronegócio também Famílias
+ * e Território e Clima (registro.ts); aqui fica onde a coleção inteira é
+ * apresentada: cabeçalhos dos painéis, seletor e escolha pós login.
+ */
+export const OBSERVATORIO_PRINCIPAL: Record<DominioId, ObservatorioId> = {
+  credito: "economia",
+  agro: "economia",
+  energia: "energia-e-infraestrutura",
+  gas: "energia-e-infraestrutura",
+  saneamento: "energia-e-infraestrutura",
+  eficiencia: "servicos-publicos",
+  contas: "contas-publicas",
+  estados: "contas-publicas",
+};
+
+/** Destino de um observatório para quem tem conta: a entrada própria ou a sua seção na escolha pós login. */
+export function destinoObservatorio(o: Observatorio): string {
+  return o.entrada ?? `/app/observatorios#obs-${o.id}`;
+}
+
+/**
+ * Allowlist da escolha por observatório na tela pós login: a coleção pedida
+ * ou, sem coleção, a entrada própria do observatório. Nunca aceita destino
+ * arbitrário; sem correspondência no registro, devolve undefined.
+ */
+export function escolhaObservatorio(obs: unknown, colecao: unknown): { observatorio: Observatorio; href: string } | undefined {
+  const o = typeof obs === "string" ? OBSERVATORIOS.find((x) => x.id === obs) : undefined;
+  if (!o) return undefined;
+  if (colecao === null || colecao === undefined || colecao === "") return o.entrada ? { observatorio: o, href: o.entrada } : undefined;
+  const c = typeof colecao === "string" ? o.colecoes.find((x) => x.id === colecao) : undefined;
+  return c ? { observatorio: o, href: c.href } : undefined;
+}
+

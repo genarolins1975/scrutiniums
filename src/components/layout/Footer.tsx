@@ -9,6 +9,8 @@ import type { Idioma } from "@/lib/idioma";
 import { Nome } from "@/components/i18n/Nome";
 import LinkIdioma from "@/components/i18n/LinkIdioma";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import { OBSERVATORIOS } from "@/lib/observatorios/lista";
+import { rotaPorta } from "@/lib/perguntas/rotas";
 
 export function Footer({ compacto = false, idioma = "pt" }: { compacto?: boolean; idioma?: Idioma }) {
   if (compacto) return <FooterCompacto />;
@@ -16,8 +18,8 @@ export function Footer({ compacto = false, idioma = "pt" }: { compacto?: boolean
   const h = (href: string) => hrefNoIdioma(href, idioma);
   return (
     <footer className="border-t border-linha-escura bg-carvao text-marfim">
-      <div className="mx-auto grid grid-cols-1 max-w-page gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="min-w-0 [overflow-wrap:anywhere] [&>span>span]:min-w-0">
+      <div className="mx-auto grid grid-cols-1 max-w-page gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="min-w-0 sm:col-span-2 lg:col-span-1 [overflow-wrap:anywhere] [&>span>span]:min-w-0">
           <LogoWordmark onDark />
           <p className="mt-4 max-w-sm text-sm text-mineral-soft">
             {t.plataforma}
@@ -27,6 +29,15 @@ export function Footer({ compacto = false, idioma = "pt" }: { compacto?: boolean
             {t.gratuito}
           </p>
         </div>
+        {/* os seis observatórios levam às páginas abertas; as colunas seguintes são as coleções com seus métodos e glossários */}
+        <nav aria-label={t.observatorios}>
+          <p className="rotulo mb-4 text-mineral-soft">{t.observatorios}</p>
+          <ul className="space-y-2 text-sm">
+            {OBSERVATORIOS.map((o) => (
+              <li key={o.id}><Link href={h(rotaPorta(o.id))} prefetch={prefetchDoLink(h(rotaPorta(o.id)))} className="hover:text-bronze-soft"><Nome>{o.nomeCurto}</Nome></Link></li>
+            ))}
+          </ul>
+        </nav>
         <nav aria-label="Observatório Brasileiro de Crédito">
           <p className="rotulo mb-4 text-mineral-soft">Crédito</p>
           <ul className="space-y-2 text-sm">
