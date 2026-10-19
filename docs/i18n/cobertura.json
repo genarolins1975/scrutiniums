@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1283,
-    "fontes_sha256": "c22a808df529a4eb54c0f8717841756042a0cc3495ada3450cab856184cf3b27",
+    "arquivos_analisados": 1287,
+    "fontes_sha256": "7b8fe5c72255b7f6df73193527e317ae641c8c805e5a00e6de1d7957654d0db5",
     "pendencias_sha256": "d5494fb5c8aa01ce9c79f7dfaba9cbe458d0e72e9b52b041654eaae6dc404700",
     "nao_classificadas": [
       {
@@ -143,20 +143,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 253,
+        "arquivos": 257,
         "candidatos": {
-          "jsx_text": 910,
-          "atributos": 269,
-          "props": 777,
-          "outros_literais": 5290,
-          "templates": 595,
-          "expressoes_nao_resolvidas": 3566,
-          "chaves_objetos": 4097
+          "jsx_text": 974,
+          "atributos": 286,
+          "props": 785,
+          "outros_literais": 5351,
+          "templates": 628,
+          "expressoes_nao_resolvidas": 3751,
+          "chaves_objetos": 4227
         },
         "exclusoes": {
-          "importacoes": 1096,
-          "atributos_tecnicos": 2009,
-          "tipos": 237
+          "importacoes": 1121,
+          "atributos_tecnicos": 2193,
+          "tipos": 247
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -165,17 +165,17 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 15504,
+        "candidatos_nao_catalogados": 16002,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 33,
+        "paginas_pt": 35,
         "paginas_en": 12,
         "handlers": 29,
         "templates_com_parametros": 3,
-        "paginas_pt_literais": 27,
+        "paginas_pt_literais": 29,
         "paginas_pt_fora_do_adaptador": 6,
-        "paginas_pt_literais_sem_irma": 15,
+        "paginas_pt_literais_sem_irma": 17,
         "pares_estruturais": 12,
         "fallbacks_declarados": 8,
         "paridade_verificada": false,

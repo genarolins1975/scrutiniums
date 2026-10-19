@@ -81,6 +81,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/contas-publicas/metodologia", 0.5, "monthly"),
     rota("/contas-publicas/glossario", 0.5, "monthly"),
     rota("/saneamento/metodologia", 0.6, "monthly"),
+    rota("/territorio/metodologia", 0.6, "monthly"),
     rota("/gas-natural", 0.8, "monthly"),
     ...PAGINAS_GAS.map((p) => rota(p.href, 0.6, "monthly")),
     rota("/cadastro", 0.6, "yearly"),

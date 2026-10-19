@@ -228,7 +228,11 @@ export function TabelaUF({ g, linhas }: Readonly<{ g: GoldQueimadas; linhas: { i
 }
 
 /** Modelo didático: o que um foco de calor é e o que ele deixa de ver. */
-export function DoSateliteAoFoco() {
+/**
+ * Modelo didático do foco de calor. No painel, a introdução fala "deste painel"; na
+ * entrada do observatório, ela recebe outro texto (introducao) e a ligação ao painel.
+ */
+export function DoSateliteAoFoco({ introducao }: Readonly<{ introducao?: ReactNode }> = {}) {
   const casos = [
     { id: "um", titulo: "Fogo ativo num pixel", texto: "Na passagem do satélite, um pixel de cerca de 1 km com fogo ativo vira 1 foco, mesmo que o fogo ocupe só parte dele.", pixels: [[1, 1]], nuvem: false, focos: 1 },
     { id: "grande", titulo: "Um incêndio grande", texto: "Uma frente de fogo que cobre vários pixels gera vários focos. Foco não é incêndio: um único incêndio pode somar dezenas.", pixels: [[0, 1], [1, 1], [2, 1], [1, 0], [2, 0]], nuvem: false, focos: 5 },
@@ -240,8 +244,12 @@ export function DoSateliteAoFoco() {
         <p className="rotulo text-mineral">Modelo didático</p>
         <h2 id="didatico-titulo" className="mt-3 max-w-3xl font-serif text-[clamp(1.5rem,2.8vw,2rem)] leading-tight text-carvao">Do satélite ao foco de calor</h2>
         <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          Os números deste painel contam focos: pixels com fogo ativo vistos pelo satélite de referência do INPE. O esquema mostra
-          por que foco não é área queimada nem número de incêndios. É uma ilustração, sem escala nem dado real.
+          {introducao ?? (
+            <>
+              Os números deste painel contam focos: pixels com fogo ativo vistos pelo satélite de referência do INPE. O esquema mostra
+              por que foco não é área queimada nem número de incêndios. É uma ilustração, sem escala nem dado real.
+            </>
+          )}
         </p>
         <ol className="mt-8 grid gap-px border border-linha bg-linha md:grid-cols-3">
           {casos.map((c, i) => (

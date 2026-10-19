@@ -23,6 +23,16 @@ vi.mock("@/lib/session", () => ({ getSessionUser: vi.fn() }));
 const raiz = process.cwd();
 const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
 
+/**
+ * Destino a que um href da SPA do Crédito leva: ele mesmo ou o redirecionamento do
+ * next.config.mjs. O endereço antigo da entrada do Território e Clima
+ * (/observatorios/territorio-e-clima) continua na SPA e redireciona para /territorio.
+ */
+async function destinoFinal(href: string | undefined): Promise<string | undefined> {
+  const config = (await import("../../next.config.mjs")).default as { redirects: () => Promise<{ source: string; destination: string }[]> };
+  return (await config.redirects()).find((r) => r.source === href)?.destination ?? href;
+}
+
 function fontes(dir: string, out: string[] = []): string[] {
   for (const n of readdirSync(dir)) {
     const p = join(dir, n);
@@ -75,13 +85,15 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
     for (const d of DOMINIOS) expect(OBSERVATORIOS.some((o) => o.id === OBSERVATORIO_PRINCIPAL[d.id]), d.id).toBe(true);
   });
 
-  it("na SPA do Crédito, os dois seletores listam os seis observatórios e as oito coleções com os nomes do registro", () => {
+  it("na SPA do Crédito, os dois seletores listam os seis observatórios e as oito coleções com os nomes do registro", async () => {
     const spa = ler("public/obs/index.html");
     const trocar = bloco(spa, 'class="obs-trocar"', "</details>");
     const lateral = bloco(spa, 'class="obs-switcher"', "</details>");
     for (const o of OBSERVATORIOS) {
-      expect(trocar, o.id).toContain(`<a class="obs-trocar-obs" href="${destinoObservatorio(o)}">${o.nomeCurto}</a>`);
-      expect(lateral, o.id).toContain(`<a class="obs-switcher-obs" href="${destinoObservatorio(o)}">${o.nomeCurto}</a>`);
+      const hrefTrocar = trocar.match(new RegExp(`<a class="obs-trocar-obs" href="([^"]+)">${o.nomeCurto}</a>`))?.[1];
+      const hrefLateral = lateral.match(new RegExp(`<a class="obs-switcher-obs" href="([^"]+)">${o.nomeCurto}</a>`))?.[1];
+      expect(await destinoFinal(hrefTrocar), o.id).toBe(destinoObservatorio(o));
+      expect(await destinoFinal(hrefLateral), o.id).toBe(destinoObservatorio(o));
     }
     for (const d of DOMINIOS) {
       expect(trocar, d.id).toContain(`<a href="${d.rotaRaiz}"`);

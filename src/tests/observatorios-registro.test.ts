@@ -69,7 +69,11 @@ describe("registro dos seis observatórios", () => {
 
   it("toda página das coleções no App Router tem dono", () => {
     for (const raiz of RAIZES) {
-      for (const rota of paginas(raiz)) expect(donoDaRota(rota), `${rota} sem observatório`).not.toBeNull();
+      for (const rota of paginas(raiz)) {
+        // a entrada e o método do próprio observatório (Território e Clima) pertencem a ele, não a uma coleção
+        if (OBSERVATORIOS.some((o) => o.entrada === rota || o.metodo === rota)) continue;
+        expect(donoDaRota(rota), `${rota} sem observatório`).not.toBeNull();
+      }
     }
   });
 

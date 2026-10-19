@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { SETORES, lerEmissoes } from "@/lib/territorio/emissoes";
 import { donoDaRota } from "@/lib/observatorios/registro";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
-import { frentesTerritorio } from "@/lib/observatorios/entradas/territorio";
+import { cartoesTerritorio } from "@/lib/observatorios/entradas/territorio";
 
 describe("emissões do Território e Clima", () => {
   const g = lerEmissoes();
@@ -33,6 +33,6 @@ describe("emissões do Território e Clima", () => {
     const fonte = readFileSync(join(process.cwd(), "src", "app", "territorio", "emissoes", "page.tsx"), "utf-8");
     expect(fonte).toContain("O inventário oficial vai até");
     expect(fonte).toContain("não se mistura com esta série");
-    expect(frentesTerritorio().find((f) => f.id === "floresta")!.paineis.map((p) => p.href)).toContain("/territorio/emissoes");
+    expect(cartoesTerritorio().map((c) => c.href)).toContain("/territorio/emissoes");
   });
 });

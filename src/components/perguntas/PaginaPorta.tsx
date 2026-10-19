@@ -106,7 +106,7 @@ export function PaginaPorta({ porta, outras, colecoes, entrada }: Readonly<{ por
             <ConviteConta />
             {entrada && (
               <p className="mt-6 border-t border-linha pt-4 text-sm leading-relaxed text-carvao-muted">
-                O observatório tem uma entrada completa, com os números de escala, o modelo do orçamento doméstico e todas
+                O observatório tem uma entrada completa, com os números de escala, o modelo didático do tema e todas
                 as coleções:{" "}
                 <Link href={entrada} prefetch={false} className="inline-flex items-center gap-1 text-carvao underline decoration-linha underline-offset-4">
                   entrar no {porta.nomeCompleto} <Cadeado />

@@ -42,6 +42,7 @@ const PREFIXOS = [
   "/gas-natural/metodologia",
   "/agronegocio/metodologia",
   "/agronegocio/glossario",
+  "/territorio/metodologia",
   // camada aberta "O Brasil em perguntas" (decisão de 17/10/2026): a resposta curta é pública, os painéis seguem com conta
   "/perguntas",
 ];

@@ -3,14 +3,9 @@ import { ACENTO } from "@/components/home/acentos";
 import type { NumeroPorta } from "@/lib/perguntas/tipos";
 import type { ReactNode } from "react";
 import type { Dominio } from "@/lib/dominios";
+import type { ColecaoEntrada } from "@/lib/observatorios/colecoes";
 
-export type ColecaoEntrada = {
-  id: string;
-  nome: string;
-  href: string;
-  /** Painéis que a coleção mantém e atalhos para painéis de outro observatório, com a coleção de origem. */
-  paineis: { titulo: string; href: string; origem?: string }[];
-};
+export type { ColecaoEntrada } from "@/lib/observatorios/colecoes";
 
 export function Numero({ n, grande = false }: Readonly<{ n: NumeroPorta; grande?: boolean }>) {
   return (
