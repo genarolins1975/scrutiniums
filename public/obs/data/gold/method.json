@@ -78,7 +78,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Ensemble univariado — inad_pf",
@@ -96,7 +96,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Ensemble univariado — inad_pj",
@@ -114,7 +114,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Ensemble univariado — concessoes_total",
@@ -132,7 +132,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Ensemble univariado — concessoes_pf",
@@ -150,7 +150,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Ensemble univariado — concessoes_pj",
@@ -168,7 +168,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Ensemble univariado — saldo_total",
@@ -186,7 +186,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Ensemble univariado — saldo_pf",
@@ -204,7 +204,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Ensemble univariado — saldo_pj",
@@ -222,7 +222,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Ensemble univariado — spread_total",
@@ -240,7 +240,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Ensemble univariado — spread_pf",
@@ -258,7 +258,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Ensemble univariado — spread_pj",
@@ -276,7 +276,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Ensemble univariado — taxa_total",
@@ -294,7 +294,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Ensemble univariado — taxa_pf",
@@ -312,7 +312,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Ensemble univariado — taxa_pj",
@@ -330,7 +330,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "IBCC",
@@ -345,7 +345,7 @@
    "incerteza": "Sensível à janela histórica; pesos fixos",
    "limitacoes": "Pesos iguais entre componentes (versão explicável); PCA/fatores dinâmicos previstos na Fase 2. Sujeito a revisões das séries de origem.",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Score de instituições",
@@ -361,7 +361,7 @@
    "incerteza": "Sem Basileia/liquidez; ROE não anualizado",
    "limitacoes": "Sem liquidez, inadimplência por IF ou qualidade de resultado (Fase 3b). ROE acumulado do período IF.data, não anualizado. Score relativo ao grupo, não absoluto. Instituições sem capital reportado têm a dimensão omitida (nunca imputada; nº de dimensões exibido). Vulnerabilidade usa choque agregado uniforme — sem heterogeneidade de carteira. Custo de captação é estimativa (fórmula declarada por instituição): estoque de pontas, não saldo médio diário; DRE do IF.data acumula por semestre (mar/set=3m, jun/dez=6m).",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Estresse setorial",
@@ -376,7 +376,7 @@
    "incerteza": "1 de 4 componentes demonstrativo (estresse empresarial (RJ)), com peso zero",
    "limitacoes": "As três pesquisas medem VOLUME de atividade, não inadimplência setorial (indisponível nas fontes públicas). Condições de crédito ainda sem corte setorial (usa agregado PJ). Emprego entra por seção CNAE, não por divisão: as 24 divisões da transformação recebem o mesmo z; grupos da PMS que cruzam seções recebem a média das seções listadas. Universos distintos por pesquisa — os scores são comparáveis na régua (z-score da própria história), não nos níveis absolutos entre pesquisas. O componente de RJ está em construção e FORA do score. Normalização por nº de empresas/estoque de crédito setorial entra com o SCR (Fase 4).",
    "versao": "0.2.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Protocolo de indicadores antecedentes",
@@ -391,7 +391,7 @@
    "incerteza": "F aproximado por qui-quadrado; sem correção de múltiplos testes formal; sem vintages em tempo real ainda",
    "limitacoes": "Ganho medido em h=1; integração ao ensemble de previsão na Fase 2b",
    "versao": "0.3.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Detector de regimes",
@@ -406,7 +406,7 @@
    "incerteza": "Univariado; uma quebra por busca; sensível a revisões",
    "limitacoes": "Bai-Perron múltiplo e Markov-switching na Fase 2b",
    "versao": "0.3.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   },
   {
    "nome": "Elasticidades de cenário (empíricas)",
@@ -421,7 +421,7 @@
    "incerteza": "Sem HAC (incerteza subestimada com dados sobrepostos); associação, não causalidade",
    "limitacoes": "Identificação causal e heterogeneidade por segmento na Fase 2b",
    "versao": "0.3.0",
-   "atualizado_em": "2026-10-18T15:09:04+00:00"
+   "atualizado_em": "2026-10-19T18:01:25+00:00"
   }
  ],
  "score_cards": [
@@ -653,66 +653,10 @@
  ],
  "fontes_status": {
   "bcb_sgs": {
-   "ok": 0,
+   "ok": 136,
    "falhas": [
     {
-     "key": "saldo_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "saldo_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "saldo_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "concessoes_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "concessoes_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "concessoes_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "taxa_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "taxa_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "taxa_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "spread_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "spread_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "spread_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
      "key": "inad_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "inad_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "inad_pf",
      "erro": "Expecting value: line 1 column 1 (char 0)"
     },
     {
@@ -720,159 +664,7 @@
      "erro": "Expecting value: line 1 column 1 (char 0)"
     },
     {
-     "key": "endividamento",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "comprometimento",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "selic_meta",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "ipca",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "ibc_br",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "ivgr",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_saldo",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_conc",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_taxa",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_prazo_conc",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_prazo_cart",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_atraso",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_inad",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_icc",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_priv_saldo",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_priv_inad",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_pub_saldo",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_pub_inad",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_total_saldo",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_total_inad",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_total_taxa",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_gov",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pib",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef_sfn",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef_osf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef_fg",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef_tit",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
      "key": "amp_ef_sec",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef_ext",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef_pib",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj_sfn",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj_osf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj_fg",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj_tit",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj_sec",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj_ext",
      "erro": "Expecting value: line 1 column 1 (char 0)"
     },
     {
@@ -880,371 +672,35 @@
      "erro": "Expecting value: line 1 column 1 (char 0)"
     },
     {
-     "key": "amp_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pf_sfn",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pf_osf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pf_fg",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
      "key": "amp_pf_sec",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pf_ext",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pf_pib",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_saldo_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_saldo_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_saldo_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_saldo_pj_bndes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_saldo_pf_bndes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_conc_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_conc_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_conc_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_conc_pj_bndes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_taxa_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_taxa_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_taxa_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_taxa_pj_bndes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_inad_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_inad_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_inad_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_inad_pj_bndes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_prazo_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_prazo_pj_bndes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "desemprego",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "cambio_ptax",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_A",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_A",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_B",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_B",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_C",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_C",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_SIUP",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_SIUP",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_D",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_D",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_E",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_E",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_F",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_F",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_G",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_G",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_SERV",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_SERV",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_H",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_H",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_I",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_I",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_J",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_J",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_K",
      "erro": "Expecting value: line 1 column 1 (char 0)"
     },
     {
      "key": "emp_sa_K",
      "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_L",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_L",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_M",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_M",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_N",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_N",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_O",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_O",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_P",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_P",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_Q",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_Q",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_S",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_S",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_vista",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_poupanca",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_poupanca_sbpe",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_prazo",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_lf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_letras_credito",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_outros_titulos",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_titulos_privados",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_m2",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_fundos_monetarios",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_compromissadas",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_m3",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_titulos_federais",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_m4",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_nao_residentes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_papel_moeda",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
     }
    ],
-   "segundos": 2685
+   "segundos": 427
   },
   "ibge": {
    "ok": 4,
    "falhas": [],
-   "segundos": 4
+   "segundos": 3
   },
   "ipeadata": {
    "ok": 2,
    "falhas": [],
-   "segundos": 48
+   "segundos": 47
   },
   "ifdata": {
    "ok": 14,
    "falhas": [],
-   "segundos": 224
+   "segundos": 197
   },
   "ifdata_ui": {
    "ok": 5,
    "falhas": [],
-   "segundos": 5
+   "segundos": 6
   },
   "ifdata_carteiras": {
    "ok": 5,
@@ -1294,35 +750,35 @@
    "falhas": [
     {
      "key": "credores_TJSP",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-08-20&dataDisponibilizacaoFim=2026-10-19: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJRJ",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-08-20&dataDisponibilizacaoFim=2026-10-19: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJMG",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-08-20&dataDisponibilizacaoFim=2026-10-19: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJRS",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-08-20&dataDisponibilizacaoFim=2026-10-19: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJPR",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-08-20&dataDisponibilizacaoFim=2026-10-19: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJSC",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-08-20&dataDisponibilizacaoFim=2026-10-19: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJBA",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-08-20&dataDisponibilizacaoFim=2026-10-19: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJGO",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-08-20&dataDisponibilizacaoFim=2026-10-19: HTTP Error 403: Forbidden"
     }
    ],
    "segundos": 97
@@ -1330,22 +786,22 @@
   "openfinance": {
    "ok": 18,
    "falhas": [],
-   "segundos": 31
+   "segundos": 29
   },
   "reclamacoes": {
    "ok": 4,
    "falhas": [],
-   "segundos": 7
+   "segundos": 8
   },
   "txjuros": {
    "ok": 20,
    "falhas": [],
-   "segundos": 76
+   "segundos": 90
   },
   "b3_market": {
    "ok": 22,
    "falhas": [],
-   "segundos": 154
+   "segundos": 110
   },
   "fidc": {
    "ok": 0,
@@ -1365,7 +821,7 @@
   "scr_data": {
    "ok": 2,
    "falhas": [],
-   "segundos": 41
+   "segundos": 5
   },
   "geo_ibge": {
    "ok": 1,
@@ -1375,7 +831,7 @@
   "pix_bcb": {
    "ok": 11,
    "falhas": [],
-   "segundos": 81
+   "segundos": 69
   },
   "pgfn": {
    "ok": 3,
@@ -1405,7 +861,7 @@
   "mercado_imobiliario": {
    "ok": 1,
    "falhas": [],
-   "segundos": 17
+   "segundos": 18
   },
   "previdencia": {
    "ok": 4,
@@ -1413,14 +869,9 @@
    "segundos": 0
   },
   "reclamacoes_consig": {
-   "ok": 10,
-   "falhas": [
-    {
-     "key": "reclamacoes_consig:2026-09",
-     "erro": "Falha ao coletar https://www.consumidor.gov.br/pages/publicacao/externo/20261000000011035/download: HTTP Error 503: Service Unavailable"
-    }
-   ],
-   "segundos": 605
+   "ok": 1,
+   "falhas": [],
+   "segundos": 97
   },
   "operacional": {
    "ok": 2,
@@ -1450,15 +901,15 @@
   "pncp_folha": {
    "ok": 2,
    "falhas": [],
-   "segundos": 141
+   "segundos": 98
   },
   "ifdata_funding": {
    "ok": 5,
    "falhas": [],
-   "segundos": 1
+   "segundos": 0
   },
   "pilar3": {
-   "ok": 11,
+   "ok": 10,
    "falhas": [
     {
      "key": "pilar3:17184037",
@@ -1545,6 +996,10 @@
      "erro": "HTTP Error 404: Not Found"
     },
     {
+     "key": "pilar3:33987793",
+     "erro": "HTTP Error 404: Not Found"
+    },
+    {
      "key": "pilar3:43818780",
      "erro": "trimestreReferencia fora do padrão: ''"
     },
@@ -1585,7 +1040,7 @@
      "erro": "HTTP Error 520: <none>"
     }
    ],
-   "segundos": 220
+   "segundos": 148
   },
   "regimes": {
    "ok": 1,
@@ -1605,17 +1060,17 @@
   "cvm_ofertas": {
    "ok": 1,
    "falhas": [],
-   "segundos": 0
+   "segundos": 3
   },
   "cvm_securit": {
    "ok": 4,
    "falhas": [],
-   "segundos": 1
+   "segundos": 4
   },
   "bndes": {
    "ok": 18,
    "falhas": [],
-   "segundos": 31
+   "segundos": 38
   },
   "focus": {
    "ok": 6,
@@ -1625,12 +1080,12 @@
   "sfn_cadastro": {
    "ok": 4,
    "falhas": [],
-   "segundos": 13
+   "segundos": 27
   },
   "bcb_pas": {
    "ok": 3,
    "falhas": [],
-   "segundos": 9
+   "segundos": 8
   },
   "cvm_pas": {
    "ok": 1,
@@ -1640,12 +1095,12 @@
   "ifdata_passivo": {
    "ok": 10,
    "falhas": [],
-   "segundos": 79
+   "segundos": 88
   },
   "cvm_cda": {
    "ok": 4,
    "falhas": [],
-   "segundos": 13
+   "segundos": 15
   },
   "bcb_consorcios": {
    "ok": 1,
@@ -1655,36 +1110,52 @@
   "susep_ses": {
    "ok": 1,
    "falhas": [],
-   "segundos": 1
+   "segundos": 40
   },
   "sadipem": {
    "ok": 1,
    "falhas": [],
-   "segundos": 11
+   "segundos": 10
   },
   "siconfi_rgf": {
    "ok": 1,
    "falhas": [],
-   "segundos": 110
+   "segundos": 75
   },
   "tesouro_garantias": {
    "ok": 1,
    "falhas": [],
-   "segundos": 4
+   "segundos": 3
   },
   "sicor": {
-   "ok": 40,
+   "ok": 21,
    "falhas": [],
-   "segundos": 1002
+   "segundos": 1335
   },
   "ipea_caged": {
    "ok": 2,
    "falhas": [],
-   "segundos": 0
+   "segundos": 195
   },
   "datajud": {
-   "ok": 8,
+   "ok": 4,
    "falhas": [
+    {
+     "key": "falencia_tjsp",
+     "erro": "DataJud POST falhou: HTTP Error 429: Too Many Requests"
+    },
+    {
+     "key": "falencia_tjmg",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "recuperacao_judicial_tjrs",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "falencia_tjrs",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
     {
      "key": "recuperacao_judicial_tjpr",
      "erro": "orçamento de 900 s esgotado; volta na próxima execução"
@@ -1750,12 +1221,12 @@
      "erro": "orçamento de 900 s esgotado; volta na próxima execução"
     }
    ],
-   "segundos": 998
+   "segundos": 977
   },
   "datajud_cobranca": {
    "ok": 9,
    "falhas": [],
-   "segundos": 453
+   "segundos": 1775
   },
   "judicial": {
    "ok": 2,
@@ -1765,12 +1236,12 @@
      "erro": "bloqueio WAF do TST (HTTP 202, desafio JavaScript da AWS): a página só abre em navegador"
     }
    ],
-   "segundos": 603
+   "segundos": 635
   },
   "cvm_dfp": {
    "ok": 3,
    "falhas": [],
-   "segundos": 6
+   "segundos": 9
   }
  }
 }
