@@ -29,26 +29,54 @@ export function AcessoConta({ destino }: { destino: string }) {
       .then((j: { logado?: boolean }) => setLogado(j.logado === true))
       .catch(() => setLogado(false));
   }, [caminho]);
+  const aqui = () => `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  return (
+    <EstadoConta
+      logado={logado}
+      hrefEntrar={entrar(volta)}
+      rotulos={{ conta: tx("Minha conta", "My account"), entrar: tx("Entrar", "Sign in") }}
+      onAtualiza={() => setVolta(aqui())}
+      onEntrar={() => window.location.assign(entrar(aqui()))}
+    />
+  );
+}
+
+/**
+ * O que a barra mostra para cada estado da sessão (separado para os testes de com e sem sessão): enquanto a resposta não
+ * chega, um espaço reservado e nenhum link; com sessão, só "Minha conta"; sem sessão, só "Entrar", com volta à página.
+ */
+export function EstadoConta({
+  logado,
+  hrefEntrar,
+  rotulos,
+  onAtualiza,
+  onEntrar,
+}: {
+  logado: boolean | null;
+  hrefEntrar: string;
+  rotulos: { conta: string; entrar: string };
+  onAtualiza?: () => void;
+  onEntrar?: () => void;
+}) {
   const classe = "rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-energia-dark";
   if (logado === null) return <span aria-hidden="true" className="inline-block min-h-[44px] w-20" />;
-  const atualiza = () => setVolta(`${window.location.pathname}${window.location.search}${window.location.hash}`);
   return logado ? (
     <Link href="/app/conta" className={classe}>
-      {tx("Minha conta", "My account")}
+      {rotulos.conta}
     </Link>
   ) : (
     <a
-      href={entrar(volta)}
+      href={hrefEntrar}
       className={classe}
-      onMouseEnter={atualiza}
-      onFocus={atualiza}
+      onMouseEnter={onAtualiza}
+      onFocus={onAtualiza}
       onClick={(e) => {
-        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        if (!onEntrar || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
         e.preventDefault();
-        window.location.assign(entrar(`${window.location.pathname}${window.location.search}${window.location.hash}`));
+        onEntrar();
       }}
     >
-      {tx("Entrar", "Sign in")}
+      {rotulos.entrar}
     </a>
   );
 }

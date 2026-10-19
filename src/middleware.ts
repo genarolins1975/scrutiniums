@@ -16,8 +16,9 @@ import type { Idioma } from "@/lib/idioma";
  *
  * Os painéis dos observatórios exigem conta (decisão de produto de
  * 13/10/2026). Ficam abertas só as rotas listadas em src/lib/rotasPublicas.ts:
- * página inicial, apresentação do Crédito, método, glossário, institucionais
- * e o fluxo de entrada e cadastro. Rota nova nasce fechada.
+ * página inicial, apresentação do Crédito, método, glossário, institucionais,
+ * o fluxo de entrada e cadastro e, desde 19/10/2026, as consultas pessoais da
+ * leva 1 ("aberto e com conta"). Rota nova nasce fechada.
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

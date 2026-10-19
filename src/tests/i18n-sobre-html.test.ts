@@ -487,8 +487,10 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         ["nome com elemento adicional", (doc) => cartao(doc).nome.childNodes.push(...parseFragment("<span>Additional text</span>").childNodes)],
         ["texto extra no índice", (doc) => indice(doc).childNodes.push(...parseFragment("<p>Additional sentence.</p>").childNodes)],
         ["ressalva omitida", (doc) => {
+          // desde a home recolhida (banca de 19/10/2026) a ressalva fica dentro do details do índice
           const nav = indice(doc), ressalva = tag(nav, "p");
-          nav.childNodes = nav.childNodes.filter((no) => no !== ressalva);
+          const pai = [nav, ...elementos(nav)].find((e) => e.childNodes.includes(ressalva))!;
+          pai.childNodes = pai.childNodes.filter((no) => no !== ressalva);
         }],
         ["ressalva alterada", (doc) => substituirTexto(tag(indice(doc), "p"), () => "The illustrations represent specific places.")],
         ["nome acessível português", (doc) => atributo(indice(doc), "aria-label", "Índice das coleções")],

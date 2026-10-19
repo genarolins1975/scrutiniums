@@ -1,6 +1,9 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
+import { aoEntrarComRecorte, hrefEntrar } from "@/components/acesso/sessao";
 import { Comparador } from "@/components/energia/Comparador";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -79,11 +82,16 @@ function colunasEventos(idioma: Idioma): ColunaTabela[] {
   ];
 }
 
+/** Erro de quem não tem sessão: o arquivo do histórico está em caminho fechado (src/lib/rotasPublicas.ts). */
+const SEM_CONTA = "sem-conta";
+
 // uma só requisição por visita, compartilhada por todas as instâncias
 let promessa: Promise<HistoricoB1> | null = null;
 function carregar(url: string): Promise<HistoricoB1> {
   if (!promessa) {
     promessa = fetch(url).then((r) => {
+      // sem sessão, o arquivo (caminho fechado) responde com o login: o histórico por distribuidora fica com conta
+      if (r.status === 401 || (r.redirected && /\/entrar\/?$/.test(new URL(r.url).pathname))) throw new Error(SEM_CONTA);
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       return r.json() as Promise<HistoricoB1>;
     });
@@ -107,6 +115,7 @@ export type ContaHistoricoProps = {
 export function ContaHistorico({ evolucao, entidades: compactas, historicoUrl, ultimoIpca, fonte, dataReferencia }: ContaHistoricoProps) {
   const idioma = useIdioma();
   const tx = useTx();
+  const caminho = usePathname() ?? "/setor-eletrico/conta-de-luz";
   const entidades = useMemo(() => expandirEntidades(compactas, idioma), [compactas, idioma]);
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const [hist, setHist] = useState<HistoricoB1 | null>(null);
@@ -226,7 +235,19 @@ export function ContaHistorico({ evolucao, entidades: compactas, historicoUrl, u
           )}
         </p>
       )}
-      {erro && (
+      {erro === SEM_CONTA && (
+        <p role="status" data-historico-com-conta="" className="border-l-2 border-energia bg-papel px-4 py-3 text-sm leading-relaxed text-carvao">
+          {tx(
+            "O histórico de cada distribuidora (vigências e mudanças da tarifa B1) fica com a conta gratuita. Sem conta, o gráfico mostra a mediana nacional e a faixa entre quartis.",
+            "Each distribution utility's history (B1 tariff validity periods and changes) is kept for the free account. Without an account, the chart shows the national median and the interquartile band.",
+          )}{" "}
+          <a href={hrefEntrar(caminho)} onClick={aoEntrarComRecorte} className="text-energia-dark underline underline-offset-4">
+            {tx("Entrar ou criar conta gratuita", "Sign in or create a free account")}
+            <SeloComConta sempre />
+          </a>
+        </p>
+      )}
+      {erro && erro !== SEM_CONTA && (
         <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
           {tx(
             <>Não foi possível carregar o histórico ({erro}). O gráfico mostra só a mediana; o arquivo completo está em</>,
@@ -234,6 +255,7 @@ export function ContaHistorico({ evolucao, entidades: compactas, historicoUrl, u
           )}{" "}
           <a href={historicoUrl} download className="text-energia-dark underline underline-offset-4">
             {tx("histórico da tarifa B1 por distribuidora (JSON)", "B1 tariff history by distribution utility (JSON)")}
+            <SeloComConta href={historicoUrl} />
           </a>
           .
         </p>

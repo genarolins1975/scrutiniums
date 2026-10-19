@@ -3,14 +3,9 @@ import { ACENTO } from "@/components/home/acentos";
 import type { NumeroPorta } from "@/lib/perguntas/tipos";
 import type { ReactNode } from "react";
 import type { Dominio } from "@/lib/dominios";
+import type { ColecaoEntrada } from "@/lib/observatorios/colecoes";
 
-export type ColecaoEntrada = {
-  id: string;
-  nome: string;
-  href: string;
-  /** Painéis que a coleção mantém e atalhos para painéis de outro observatório, com a coleção de origem. */
-  paineis: { titulo: string; href: string; origem?: string }[];
-};
+export type { ColecaoEntrada } from "@/lib/observatorios/colecoes";
 
 export function Numero({ n, grande = false }: Readonly<{ n: NumeroPorta; grande?: boolean }>) {
   return (
@@ -55,7 +50,7 @@ function ListaPaineis({ paineis }: Readonly<{ paineis: ColecaoEntrada["paineis"]
  * pergunta e método recolhido no fim.
  */
 export function EntradaObservatorio({
-  nomeCurto, nomeCompleto, acento, pergunta, descricao, escala, colecoes, artefato, caminhos, metodo,
+  nomeCurto, nomeCompleto, acento, pergunta, descricao, escala, colecoes, artefato, caminhos, metodo, frescor = null, frescorMetodo = null,
 }: Readonly<{
   nomeCurto: string;
   nomeCompleto: string;
@@ -67,11 +62,16 @@ export function EntradaObservatorio({
   artefato: ReactNode;
   caminhos: { pergunta: string; resumo: string; href: string; colecao: string }[];
   metodo: ReactNode;
+  /** Faixa de frescor da primeira tela (FaixaFrescor, variante "linha"). */
+  frescor?: ReactNode;
+  /** Frescor por fonte no rodapé de método (FaixaFrescor, variante "metodo"). */
+  frescorMetodo?: ReactNode;
 }>) {
   const a = ACENTO[acento];
   return (
     <main className="bg-papel">
       <section aria-labelledby="entrada-titulo" className="border-b border-linha bg-marfim">
+        {frescor}
         <div className="mx-auto max-w-page px-6 pb-12 pt-10 md:pb-16 md:pt-14">
           <nav aria-label="Trilha" className="text-sm text-carvao-muted">
             <Link href="/app/observatorios" className="underline decoration-linha underline-offset-4 hover:text-carvao">
@@ -164,6 +164,7 @@ export function EntradaObservatorio({
         <details className="mt-12 border-t border-linha pt-4">
           <summary className="rotulo flex min-h-[44px] cursor-pointer items-center text-carvao-muted hover:text-carvao">Método e fontes</summary>
           <div className="mt-2 max-w-prose2 space-y-3 text-sm leading-relaxed text-carvao-muted">{metodo}</div>
+          {frescorMetodo && <div className="mt-6">{frescorMetodo}</div>}
         </details>
       </section>
     </main>

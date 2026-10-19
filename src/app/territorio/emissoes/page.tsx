@@ -38,7 +38,7 @@ export default function PaginaEmissoes() {
       <section aria-labelledby="emissoes-titulo" className="border-b border-linha bg-marfim">
         <div className="mx-auto max-w-page px-6 pb-12 pt-10 md:pb-14 md:pt-14">
           <nav aria-label="Trilha" className="text-sm text-carvao-muted">
-            <Link href="/observatorios/territorio-e-clima" className="underline decoration-linha underline-offset-4 hover:text-carvao">Território e Clima</Link>
+            <Link href="/territorio" className="underline decoration-linha underline-offset-4 hover:text-carvao">Território e Clima</Link>
             <span aria-hidden="true" className="mx-2 text-mineral">/</span>
             <span aria-current="page">Emissões</span>
           </nav>

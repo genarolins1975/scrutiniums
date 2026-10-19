@@ -38,6 +38,17 @@ export type CaminhoPorta = {
   colecao: string;
 };
 
+/**
+ * Consulta pessoal aberta, sem conta (estratégia "aberto e com conta", leva 1, 19/10/2026): o curioso
+ * consulta o próprio caso (minha distribuidora, meu município, minha capital, meu estado). Só rotas abertas.
+ */
+export type ConsultaAberta = {
+  pergunta: string;
+  /** O que a consulta mostra, em uma frase. */
+  resumo: string;
+  href: string;
+};
+
 export type Porta = {
   id: PortaId;
   /** Nome curto do observatório, como aparece no cartão da home. */
@@ -51,6 +62,8 @@ export type Porta = {
   /** Até três números; o primeiro é o destaque do cartão da home. */
   numeros: NumeroPorta[];
   caminhos: CaminhoPorta[];
+  /** Consultas abertas do tema ("Para o seu caso"); os caminhos acima levam aos painéis com conta. */
+  paraOSeuCaso: ConsultaAberta[];
   /** Perguntas da porta que a plataforma ainda não responde. */
   lacunas: string[];
   /** Páginas públicas de método dos observatórios que alimentam a porta. */

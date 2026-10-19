@@ -18,8 +18,9 @@ vi.mock("next/headers", () => ({
 
 const COOKIE = "scrutiniums_session";
 const CONFIRMADO = new Date("2026-01-01T12:00:00Z");
-const INICIAL = Object.freeze({ orgType: "outra", orgArea: "outra", orgRole: "outro", uf: "SP" });
-const ALTERADO = Object.freeze({ orgType: "academia", orgArea: "pesquisa", orgRole: "professor", uf: "EX" });
+// Perfis de uso profissionais: instituição, área e cargo são exigidos e gravados.
+const INICIAL = Object.freeze({ perfilUso: "empresa", orgType: "outra", orgArea: "outra", orgRole: "outro", uf: "SP" });
+const ALTERADO = Object.freeze({ perfilUso: "pesquisa_academica", orgType: "academia", orgArea: "pesquisa", orgRole: "professor", uf: "EX" });
 type EstadoUsuario = Partial<Pick<User, "phoneE164" | "phoneVerifiedAt" | "cpf">> & { onboardingStatus?: OnboardingStatus };
 
 let db: Awaited<ReturnType<typeof import("@/lib/db").getDb>>;
@@ -170,7 +171,7 @@ describe("Conta: prop de CPF vem do telefone persistido e confirmado", () => {
     const user = await usuario(estado);
     await sessao.createSession(user.id);
     expect(await propsPerfil()).toEqual({
-      orgTypeInicial: "outra", orgAreaInicial: "outra", orgRoleInicial: "outro", ufInicial: "SP",
+      perfilUsoInicial: "empresa", orgTypeInicial: "outra", orgAreaInicial: "outra", orgRoleInicial: "outro", ufInicial: "SP",
       cpfObrigatorio: obrigatorio, temCpf,
     });
   });

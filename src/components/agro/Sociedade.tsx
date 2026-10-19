@@ -162,7 +162,7 @@ export function ApoioAgro({ dados, e }: { dados: SnapshotAgro; e: EconomiaAgro }
 
 // ---------------------------------------------------------------- 7. Ambiente
 
-export function AmbienteAgro({ dados, e }: { dados: SnapshotAgro; e: EconomiaAgro }) {
+export function AmbienteAgro({ dados, e, serieOficial }: { dados: SnapshotAgro; e: EconomiaAgro; serieOficial?: React.ReactNode }) {
     const pr = e.ambiente.prodes, taxa = pr.taxaAmazoniaLegal, fechada = taxa.filter(t => !t.estimada).at(-1)!, estimada = taxa.find(t => t.estimada) ?? null, pico = taxa.reduce((a, b) => b.km2 > a.km2 ? b : a), minimo = taxa.filter(t => !t.estimada).reduce((a, b) => b.km2 < a.km2 ? b : a);
     const em = e.ambiente.emissoes.anos, ultEm = em.at(-1)!, uso = e.ambiente.usoTerra.anos, ultUso = uso.at(-1)!, priUso = uso[0];
     const ano = (p: { inicio: number; fim: number }) => `${p.inicio}/${String(p.fim).slice(2)}`;
@@ -192,6 +192,7 @@ export function AmbienteAgro({ dados, e }: { dados: SnapshotAgro; e: EconomiaAgr
         </SecaoAgro>
         <SecaoAgro titulo="Quanto o campo emite?" texto={`Em ${ultEm.ano}, a agropecuária respondeu por ${numeroAgro(ultEm.agropecuaria / 1e6, 0)} milhões de toneladas de CO2 equivalente, sobretudo pela fermentação entérica do gado e pelos solos manejados. A mudança de uso da terra, que inclui o desmatamento, emitiu ${numeroAgro(ultEm.mudancaUsoTerra / 1e6, 0)} milhões em termos brutos.`}>
             <span className={s.status}>Estimativa · SEEG, Observatório do Clima</span>
+            {serieOficial}
             <LinhasAgro titulo="Emissões brutas por setor" unidade="milhões de t CO2e (GWP-AR5)" casas={0} rotulos={em.map(r => String(r.ano))} series={[{ nome: 'Agropecuária', valores: em.map(r => r.agropecuaria / 1e6) }, { nome: 'Mudança de uso da terra', valores: em.map(r => r.mudancaUsoTerra / 1e6), referencia: true }]} nota={`Estimativa da sociedade civil, não o inventário oficial do governo. A mudança de uso da terra inclui desmatamento por qualquer causa e tem remoções (${numeroAgro((ultEm.mudancaUsoTerraRemocao ?? 0) / 1e6, 0)} Mt em ${ultEm.ano}) que não aparecem no gráfico.`}/>
             <details className={s.sourceDetails}><summary>Ver todos os anos</summary><div><TabelaAgro titulo="Emissões SEEG · Brasil" colunas={colsE} linhas={linhasE}/></div></details>
             <div className={s.actions}><ExportarAgro nome="agro-emissoes-seeg.csv" colunas={[...colsE, 'Fonte']} linhas={linhasE.map(r => [...r, url(dados, 'seeg')])}/></div>

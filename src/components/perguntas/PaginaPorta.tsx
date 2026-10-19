@@ -20,9 +20,11 @@ function Cadeado() {
 
 /**
  * Página aberta de uma pergunta: um aperitivo do tema (poucos números com
- * prova) e o convite para os painéis, onde ficam a profundidade, as séries e
- * os interativos. Não vira painel: nada de série, filtro ou download aqui.
- * Fecha com o que a plataforma ainda não responde e o método recolhido.
+ * prova), as consultas abertas do tema para o caso de quem pergunta ("Para o
+ * seu caso", leva 1 de 19/10/2026) e o convite para os painéis, onde ficam a
+ * profundidade, as séries e os interativos. Não vira painel: nada de série,
+ * filtro ou download aqui. Fecha com o que a plataforma ainda não responde e
+ * o método recolhido.
  */
 /** Coleção com até quatro painéis de exemplo; sem contagem, porque subpáginas não entram no registro. */
 export type ColecaoPorta = { id: string; nome: string; href: string; destaques: string[]; mais: boolean; origens: string };
@@ -92,6 +94,36 @@ export function PaginaPorta({ porta, outras, colecoes, entrada }: Readonly<{ por
         </div>
       </section>
 
+      {porta.paraOSeuCaso.length > 0 && (
+        <section aria-labelledby="seu-caso-titulo" data-para-o-seu-caso="" className="border-b border-linha">
+          <div className="mx-auto grid max-w-page gap-6 px-6 py-10 md:py-12 lg:grid-cols-12 lg:gap-8">
+            <div className="lg:col-span-4">
+              <h2 id="seu-caso-titulo" className="font-serif text-[clamp(1.5rem,2.6vw,1.9rem)] leading-tight text-carvao">
+                Para o seu caso
+              </h2>
+              <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+                Consultas abertas, sem conta, para o caso de quem pergunta. Cada uma mostra o número com fonte e período; as
+                séries completas, as comparações amplas e os arquivos ficam nos painéis.
+              </p>
+            </div>
+            <ul className={`grid gap-px border border-linha bg-linha lg:col-span-8 ${porta.paraOSeuCaso.length > 1 ? "sm:grid-cols-2" : ""}`}>
+              {porta.paraOSeuCaso.map((c, i, todas) => (
+                // com quantidade ímpar, a última consulta ocupa a linha inteira em vez de deixar uma célula vazia
+                <li key={c.href} className={`bg-papel ${todas.length > 1 && i === todas.length - 1 && todas.length % 2 === 1 ? "sm:col-span-2" : ""}`}>
+                  <Link href={c.href} prefetch={prefetchDoLink(c.href)} className="group flex h-full min-h-[44px] flex-col p-4 md:p-5">
+                    <span className={`flex items-baseline justify-between gap-3 font-serif text-lg leading-snug text-carvao ${a.hover}`}>
+                      {c.pergunta}
+                      <span aria-hidden="true" className="font-sans text-sm text-mineral transition-transform group-hover:translate-x-0.5">→</span>
+                    </span>
+                    <span className="mt-1 text-sm leading-relaxed text-carvao-muted">{c.resumo}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       <section aria-labelledby="caminhos-titulo" className="mx-auto max-w-page px-6 py-14 md:py-20">
         <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-4">
@@ -106,7 +138,7 @@ export function PaginaPorta({ porta, outras, colecoes, entrada }: Readonly<{ por
             <ConviteConta />
             {entrada && (
               <p className="mt-6 border-t border-linha pt-4 text-sm leading-relaxed text-carvao-muted">
-                O observatório tem uma entrada completa, com os números de escala, o modelo do orçamento doméstico e todas
+                O observatório tem uma entrada completa, com os números de escala, o modelo didático do tema e todas
                 as coleções:{" "}
                 <Link href={entrada} prefetch={false} className="inline-flex items-center gap-1 text-carvao underline decoration-linha underline-offset-4">
                   entrar no {porta.nomeCompleto} <Cadeado />

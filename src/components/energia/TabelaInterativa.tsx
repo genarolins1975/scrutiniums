@@ -1,5 +1,6 @@
 "use client";
 
+import { ExportacaoComConta } from "@/components/acesso/ExportacaoComConta";
 import { comNomes } from "@/components/i18n/comNomes";
 import { useDeferredValue, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { campo, tiposUrl, type Esquema } from "@/lib/energia/estadoUrl";
@@ -479,20 +480,23 @@ export function TabelaInterativa({
           <span className="font-medium tabular-nums text-carvao">{num(filtradas.length, 0)}</span> {tx("de", "of")} {num(linhas.length, 0)}{" "}
           {tx(linhas.length === 1 ? "linha" : "linhas", linhas.length === 1 ? "row" : "rows")}
         </p>
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs text-carvao-muted">{tx("Linhas mostradas:", "Rows shown:")}</span>
-          {(["csv", "xlsx"] as const).map((f) => (
-            <button
-              key={f}
-              type="button"
-              onClick={() => exportar(f)}
-              aria-disabled={semResultado || undefined}
-              className={botaoPagina}
-            >
-              {tx("Baixar", "Download")} {f.toUpperCase()}
-            </button>
-          ))}
-        </div>
+        {/* exportação montada no navegador: na página aberta, só com sessão */}
+        <ExportacaoComConta rotulo={tx("Baixar as linhas mostradas (CSV, XLSX)", "Download the rows shown (CSV, XLSX)")}>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs text-carvao-muted">{tx("Linhas mostradas:", "Rows shown:")}</span>
+            {(["csv", "xlsx"] as const).map((f) => (
+              <button
+                key={f}
+                type="button"
+                onClick={() => exportar(f)}
+                aria-disabled={semResultado || undefined}
+                className={botaoPagina}
+              >
+                {tx("Baixar", "Download")} {f.toUpperCase()}
+              </button>
+            ))}
+          </div>
+        </ExportacaoComConta>
       </div>
 
       {selecionadaFora && (

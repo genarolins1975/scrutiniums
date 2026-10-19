@@ -1,11 +1,12 @@
 import type {Metadata} from 'next';
+import {PainelPrincipal} from '@/components/observatorios/PainelPrincipal';
 import Link from 'next/link';
 import {Abertura,Nota,Numeros,Secao,Fonte} from '@/components/eficiencia/saneamento/Editoria';
 import {indicador,brasil,cobertura} from '@/lib/eficiencia/saneamento/dados';
 import {ROTA,n,formatar} from '@/lib/eficiencia/saneamento/modelo';
 export const dynamic='force-static';
 export const metadata:Metadata={title:'Saneamento — panorama',alternates:{canonical:ROTA}};
-export default function Pagina(){return <><Abertura numero="01" titulo="Da água que chega ao destino dos resíduos." texto="Saneamento reúne serviços com redes, operações e universos próprios. Este capítulo acompanha acesso, funcionamento, destino e recursos declarados, com referências territoriais e limites de comparação."/>
+export default function Pagina(){return <><Abertura numero="01" titulo="Da água que chega ao destino dos resíduos." texto="Saneamento reúne serviços com redes, operações e universos próprios. Este capítulo acompanha acesso, funcionamento, destino e recursos declarados, com referências territoriais e limites de comparação."/><PainelPrincipal rota="/eficiencia-estatal/saneamento"/>
 <Numeros itens={['IAG0001','IES0001','IAP0002'].map(id=>({titulo:indicador(id).nome,valor:formatar(brasil(id),indicador(id)),nota:'Brasil, 2024. '+indicador(id).base}))}/><Fonte/>
 <Nota>Os três percentuais têm denominadores diferentes. Não formam uma nota de saneamento nem medem isoladamente a eficiência de um governo.</Nota>
 <Secao titulo="Quatro serviços, perguntas diferentes." texto="Escolha uma etapa para examinar os indicadores, as comparações territoriais e os arquivos de dados."><div className="grid gap-x-10 md:grid-cols-2">{[['agua','Água','Quem está conectado à rede? Como se medem volumes, perdas e interrupções?'],['esgoto','Esgoto','Qual é o alcance da coleta e quanto do volume é tratado?'],['residuos','Resíduos','Onde há coleta seletiva? Quanto se recupera e qual é a destinação?'],['drenagem','Drenagem','Que infraestrutura está declarada e qual exposição foi identificada?']].map(([slug,title,desc])=><article key={slug} className="border-b border-linha py-6"><h3 className="font-serif text-2xl"><Link className="text-obee-dark underline decoration-1 underline-offset-4" href={ROTA+'/'+slug}>{title} →</Link></h3><p className="mt-3 text-sm leading-relaxed">{desc}</p></article>)}</div></Secao>

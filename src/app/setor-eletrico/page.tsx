@@ -23,6 +23,8 @@ import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
 import { conjuntoLegivel, descreverVariacao, valorDestaque } from "@/lib/energia/evidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import { LINKEDIN_URL } from "@/lib/contato";
 import { conceito, conceitos } from "@/lib/energia/conteudo/conceitos";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
@@ -798,6 +800,8 @@ export default function MapaDoObservatorio() {
       <MarcaVisita secao="energia:mapa" />
       <RedirecionaAncoraAntiga ancoras={ANCORAS_VISAO_GERAL} destino="/setor-eletrico/visao-geral" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina energia-atlas-inicial pb-12">
+        {/* frescor dos dados diários na primeira tela: em 19/10/2026 a entrada mostrava o PLD de 30/09 sem dizer que a publicação estava parada */}
+        <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/setor-eletrico"]} idioma={idiomaEnergia()} />
         {/* hero: a proposta, a busca e os quatro caminhos, tudo na primeira tela */}
         <header id="proposito" className="scroll-mt-24 pb-8 pt-6 md:pb-10 md:pt-10">
           <div className="energia-cenario">
@@ -1510,6 +1514,7 @@ export default function MapaDoObservatorio() {
             "The latest period of each main source, on the source's own calendar. Nothing here is real time: each source publishes at its own pace.",
           )}
         >
+          <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/setor-eletrico"]} variante="metodo" idioma={idiomaEnergia()} className="mb-8" />
           <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-4" data-resumo-atualidade="">
             {pubFontes && (
               <div>

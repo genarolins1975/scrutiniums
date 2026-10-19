@@ -1,9 +1,9 @@
 /**
  * Frescor da publicação do crédito: quantos dias se passaram desde o `gerado_em`
  * do meta.json publicado. Fonte única do limite e da promessa de atualização,
- * usada pelo selo das páginas públicas. O limite é o mesmo da vigília
- * (scripts/vigilancia.py, LIMITE_DIAS): a partir de 2 dias o leitor vê o aviso
- * de atraso e o repositório recebe a issue.
+ * usada pelo selo das páginas públicas. O limite é o da cadência diária em
+ * limiares.json, lido também pela vigília (scripts/vigilancia.py, LIMITE_DIAS):
+ * a partir dele o leitor vê o aviso de atraso e o repositório recebe a issue.
  *
  * O cálculo roda no navegador do leitor. As páginas são force-static: um cálculo
  * feito no build congelaria "em dia" para sempre, que foi exatamente o que
@@ -11,7 +11,9 @@
  * seguiram dizendo "atualizado diariamente".
  */
 
-export const LIMITE_ATRASO_DIAS = 2;
+import limiares from "./limiares.json";
+
+export const LIMITE_ATRASO_DIAS: number = limiares.cadencias.diaria.limite;
 
 /** O que o sistema garante, em uma frase. Usada no selo e nas páginas que prometem atualização. */
 export const PROMESSA_ATUALIZACAO =

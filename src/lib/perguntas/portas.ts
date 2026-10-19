@@ -12,7 +12,7 @@ import { dominio, type DominioId } from "@/lib/dominios";
 import { OBSERVATORIOS, donoDaRota, observatorio, type ObservatorioId } from "@/lib/observatorios/registro";
 import contasFederais from "@/lib/contas-publicas/snapshots/dados.json";
 import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
-import type { CaminhoPorta, Porta } from "./tipos";
+import type { CaminhoPorta, ConsultaAberta, Porta } from "./tipos";
 import { comSinal, dataBr, lerPublico, mesAno, num, numero } from "./leitura";
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- leitura de gold JSON sem tipos gerados */
@@ -23,6 +23,38 @@ function caminho(obs: DominioId | ObservatorioId, pergunta: string, resumo: stri
   const nome = OBSERVATORIOS.some((o) => o.id === obs) ? observatorio(obs as ObservatorioId).nomeCurto : dominio(obs as DominioId).nomeCurto;
   return { pergunta, resumo, href, observatorio: nome, colecao: colecao ?? nome };
 }
+
+/**
+ * Consultas pessoais abertas (leva 1, 19/10/2026; src/lib/rotasPublicas.ts). Cada uma responde ao caso de quem
+ * pergunta, sem conta; séries completas, comparações amplas e downloads seguem nos painéis.
+ */
+const CONSULTAS = {
+  botijao: {
+    pergunta: "Quanto custa o botijão no meu estado?",
+    resumo: "Preço médio do botijão de 13 kg em cada estado, no mapa e na tabela, pela pesquisa de preços da ANP.",
+    href: "/gas-natural/gas-de-cozinha",
+  },
+  luz: {
+    pergunta: "Quanto custa a minha conta de luz?",
+    resumo: "A tarifa da sua distribuidora, do que ela é feita e a conta estimada para o seu consumo, sem tributos.",
+    href: "/setor-eletrico/conta-de-luz",
+  },
+  agua: {
+    pergunta: "Quanto eu pagaria de água e esgoto?",
+    resumo: "A conta do mês calculada com as tabelas verificadas nos atos dos reguladores, numa amostra declarada de prestadores.",
+    href: "/saneamento/preco-regulado/simulador",
+  },
+  municipio: {
+    pergunta: "Como está o saneamento no meu município?",
+    resumo: "A ficha do município: quem está sem água e esgoto, prestador, regulador e comparação com o estado.",
+    href: "/saneamento/municipio",
+  },
+  capital: {
+    pergunta: "Como se vive na minha capital?",
+    resumo: "Sete perguntas sobre a vida dos moradores e o que a prefeitura aplica, com a posição entre as 26 capitais.",
+    href: "/eficiencia-estatal",
+  },
+} satisfies Record<string, ConsultaAberta>;
 
 /** Identidade da porta lida do registro dos observatórios. */
 function identidade(id: ObservatorioId) {
@@ -86,6 +118,7 @@ function porta_familias(): Porta {
       caminho("eficiencia", "Falta moradia ou falta moradia adequada?", "Déficit habitacional, peso do aluguel na renda e inadequação dos domicílios.", "/eficiencia-estatal/habitacao"),
       caminho("agro", "Por que a comida subiu?", "Inflação de alimentos, itens da cesta e segurança alimentar dos domicílios.", "/agronegocio/prato"),
     ],
+    paraOSeuCaso: [CONSULTAS.botijao, CONSULTAS.luz, CONSULTAS.agua],
     lacunas: [
       "Inflação de todos os itens do orçamento, por região metropolitana.",
       "Quanto cada família paga de impostos sobre o consumo.",
@@ -167,8 +200,8 @@ function porta_servicos(): Porta {
       caminho("eficiencia", "Quanto tempo a Justiça leva?", "Despesas, filas e tempos em 57 tribunais, sem nota própria de eficiência.", "/eficiencia-estatal/judiciario"),
       caminho("eficiencia", "A Justiça é acessível a quem precisa?", "Cobertura das defensorias, tempo de resposta e conciliação.", "/eficiencia-estatal/acesso-justica"),
       caminho("eficiencia", "Que violência é registrada no país?", "Indicadores nacionais de violência, crimes patrimoniais, desaparecimentos e recursos por esfera de governo.", "/eficiencia-estatal/seguranca-publica"),
-      caminho("eficiencia", "Como as capitais se comparam nos serviços?", "Duas capitais lado a lado em educação, saúde, renda e mobilidade, com a mesma régua.", "/eficiencia-estatal"),
     ],
+    paraOSeuCaso: [CONSULTAS.capital],
     lacunas: [
       "Filas e tempo de espera no SUS.",
       "Educação e saúde nos municípios que não são capitais.",
@@ -253,6 +286,7 @@ function porta_dinheiro(): Porta {
       caminho("estados", "Como está a dívida do meu estado?", "Execução, receitas, despesas e dívida das 27 unidades da Federação lado a lado.", "/contas-publicas-estaduais"),
       caminho("credito", "Quem deve à União?", "Dívida ativa da União inscrita na Procuradoria da Fazenda, por tipo de devedor.", "/observatorio/federal-tax-debt"),
     ],
+    paraOSeuCaso: [],
     lacunas: [
       "Despesa federal por área (saúde, educação, previdência) no orçamento executado.",
       "Previdência e INSS em detalhe: benefícios, quem recebe e o resultado do sistema.",
@@ -322,11 +356,10 @@ function porta_energia(): Porta {
     caminhos: [
       caminho("energia", "Os reservatórios estão cheios ou vazios?", "Armazenamento e chuvas por região, comparados ao histórico da mesma época.", "/setor-eletrico/agua-e-clima"),
       caminho("energia", "Quais fontes geram a energia do país?", "Geração por fonte e por usina, com solar distribuída separada.", "/setor-eletrico/geracao"),
-      caminho("energia", "Por que a conta de luz muda?", "Tarifas por distribuidora e o que cada parcela remunera.", "/setor-eletrico/conta-de-luz"),
       caminho("gas", "Quanto gás o Brasil produz e importa?", "Produção por estado, gás reinjetado e queimado, importação por origem.", "/gas-natural/producao"),
-      caminho("saneamento", "Quem está sem água e esgoto no meu município?", "Ficha de cada um dos 5.570 municípios, com prestador, regulador e comparação com o estado.", "/saneamento/municipio"),
       caminho("eficiencia", "Como as pessoas se deslocam nas cidades?", "Oferta e uso do transporte público nos recortes disponíveis.", "/eficiencia-estatal/mobilidade-transporte"),
     ],
+    paraOSeuCaso: [CONSULTAS.luz, CONSULTAS.municipio, CONSULTAS.agua, CONSULTAS.botijao],
     lacunas: [
       "Valor final da conta de luz com tributos e bandeira tarifária.",
       "Preço da gasolina e do diesel nos postos.",
@@ -398,6 +431,7 @@ function porta_economia(): Porta {
       caminho("credito", "Os juros e os atrasos estão subindo?", "Concessões, saldo, taxas e inadimplência por segmento, com a série histórica.", "/observatorio/credit"),
       caminho("credito", "Como o Pix mudou os pagamentos?", "Pix comparado a cartões, TED e boleto, com geografia municipal.", "/observatorio/pix"),
     ],
+    paraOSeuCaso: [],
     lacunas: [
       "Indústria e serviços: produção, emprego e investimento por setor.",
       "Produção agrícola por estado e por cadeia.",
@@ -482,14 +516,17 @@ function porta_territorio(): Porta {
       caminho("energia", "Como o clima afeta a energia?", "Chuvas, vazões e armazenamento das bacias das hidrelétricas.", "/setor-eletrico/agua-e-clima"),
       caminho("energia", "Como a matriz elétrica está mudando?", "Micro e minigeração distribuída no território e intensidade de emissões da geração.", "/setor-eletrico/transicao"),
     ],
+    paraOSeuCaso: [],
     lacunas: [
       "Emissões oficiais dos anos mais recentes (o inventário do governo sai a cada dois anos).",
       "Área queimada por estado e por município (o INPE publica a tabela só por bioma).",
+      "Emissões oficiais por estado (o inventário nacional não traz recorte por UF).",
       "Desastres reconhecidos no ano em curso (a base consolidada vai até o ano anterior).",
     ],
     metodos: [
       { rotulo: "Agronegócio: método", href: "/agronegocio/metodologia" },
       { rotulo: "Saneamento: método", href: "/saneamento/metodologia" },
+      { rotulo: "Território e Clima: método", href: "/territorio/metodologia" },
     ],
   };
 }

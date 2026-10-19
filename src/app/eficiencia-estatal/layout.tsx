@@ -13,8 +13,9 @@ export const metadata: Metadata = {
 };
 
 /**
- * Casca do domínio OBEE. Público para leitura, como os demais observatórios
- * (o middleware só protege /app). Na etapa inicial há um único painel.
+ * Casca do domínio OBEE. Os painéis exigem conta, como nos demais observatórios;
+ * a entrada (retrato das capitais) e as páginas de método são abertas
+ * (src/lib/rotasPublicas.ts).
  */
 export default function EficienciaLayout({ children }: { children: React.ReactNode }) {
   return (

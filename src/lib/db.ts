@@ -83,6 +83,9 @@ async function migrate(db: Db): Promise<void> {
     `ALTER TABLE users ADD COLUMN IF NOT EXISTS org_role TEXT`,
     `ALTER TABLE users ADD COLUMN IF NOT EXISTS uf TEXT`,
     `CREATE UNIQUE INDEX IF NOT EXISTS idx_users_cpf ON users(cpf) WHERE cpf IS NOT NULL`,
+    // Perfil de uso (19/10/2026): coluna anulável, sem default. Contas
+    // anteriores ficam com NULL e continuam válidas; o cadastro novo exige.
+    `ALTER TABLE users ADD COLUMN IF NOT EXISTS perfil_uso TEXT`,
     `CREATE TABLE IF NOT EXISTS verification_tokens (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,

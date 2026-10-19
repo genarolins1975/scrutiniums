@@ -5,6 +5,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { ConteudoFrescor } from "@/components/dados/SeloFrescor";
 import { LIMITE_ATRASO_DIAS, PROMESSA_ATUALIZACAO, publicadoEmBrasilia, situacaoFrescor } from "@/lib/frescor";
+import limiares from "@/lib/frescor/limiares.json";
 
 /**
  * Selo de frescor do crédito. De 24/09 a 13/10/2026 a publicação ficou retida
@@ -38,9 +39,10 @@ describe("situação de frescor", () => {
     expect(situacaoFrescor("não é data", new Date())).toBeNull();
   });
 
-  it("o limite é o mesmo da vigília de frescor do repositório", () => {
-    const m = ler("scripts/vigilancia.py").match(/^LIMITE_DIAS = (\d+)/m);
-    expect(Number(m?.[1])).toBe(LIMITE_ATRASO_DIAS);
+  it("o limite é o mesmo da vigília de frescor do repositório: os dois leem a cadência diária de limiares.json", () => {
+    // até 19/10/2026 o número estava escrito nos dois lados; agora há uma fonte só
+    expect(LIMITE_ATRASO_DIAS).toBe(limiares.cadencias.diaria.limite);
+    expect(ler("scripts/vigilancia.py")).toMatch(/^LIMITE_DIAS = json\.loads\(\(RAIZ \/ "src" \/ "lib" \/ "frescor" \/ "limiares\.json"\)[^\n]*\["cadencias"\]\["diaria"\]\["limite"\]/m);
   });
 });
 

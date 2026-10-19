@@ -21,8 +21,14 @@ export type Observatorio = {
   nomeCurto: string;
   /** Pergunta que o observatório responde, usada na home, na página aberta e na escolha pós login. */
   pergunta: string;
-  /** Entrada com conta do observatório, quando ele já tem uma (src/app/observatorios/[id]). */
+  /**
+   * Entrada com conta do observatório, quando ele já tem uma: a genérica
+   * (src/app/observatorios/[id]) ou, no Território e Clima, que mantém os próprios
+   * painéis, /territorio (src/app/territorio/page.tsx).
+   */
   entrada?: string;
+  /** Página aberta de método do próprio observatório, quando ele mantém painéis com pipeline próprio. */
+  metodo?: string;
   acento: Dominio["acento"];
   colecoes: Colecao[];
 };
@@ -34,7 +40,7 @@ export type Painel = {
   colecao: string;
   /** Domínio de origem, que mantém a rota, a gold e o cabeçalho; null quando o próprio observatório mantém o painel (Território e Clima). */
   origem: DominioId | null;
-  /** Outro painel que trata do mesmo tema; a escolha do dono depende de comparar os conteúdos. */
+  /** Painel principal do mesmo tema (copias.ts); a página avisa com <PainelPrincipal>. */
   duplicataDe?: string;
 };
 
@@ -119,7 +125,8 @@ export const OBSERVATORIOS: Observatorio[] = [
     nome: "Observatório do Território e Clima",
     nomeCurto: "Território e Clima",
     pergunta: "O que está mudando no ambiente e quem sente primeiro?",
-    entrada: "/observatorios/territorio-e-clima",
+    entrada: "/territorio",
+    metodo: "/territorio/metodologia",
     acento: "obee",
     colecoes: [
       { id: "desmatamento", nome: "Desmatamento e emissões", href: "/agronegocio/ambiente" },

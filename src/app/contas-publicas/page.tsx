@@ -5,6 +5,8 @@ import {TrilhasEstado} from '@/components/observatorios/TrilhasEstado';
 import {CemReaisPagos} from '@/components/contas-publicas/artefatos/CemReaisPagos';
 import {RespostasIniciais} from '@/components/contas-publicas/artefatos/RespostasIniciais';
 import Link from 'next/link';
+import {FaixaFrescor} from '@/components/frescor/FaixaFrescor';
+import {FRESCOR_DAS_COLECOES} from '@/lib/frescor/entradas';
 import { CAPITULOS, INDICADORES } from '@/lib/contas-publicas/catalogo';
 import { coberturaCapitulo } from '@/lib/contas-publicas/cobertura';
 
@@ -24,6 +26,7 @@ const CICLO = ([
   destino: CAPITULOS.find((c) => c.id === preferido && comDados(c.id)) ?? CAPITULOS.find((c) => c.etapa === t && comDados(c.id)) ?? null,
 }));
 export default function Page(){return <main id="conteudo-contas" className="cp-wrap cp-main cp-home">
+ <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/contas-publicas"]} className="-mt-2 mb-6"/>
  <AberturaFederal/>
  <TrilhasEstado tema="federal" itens={[
   {titulo:'Acompanhe os recursos',texto:'Orçamento, resultado fiscal e compromissos que ficam para depois.',href:'/contas-publicas/panorama'},
@@ -41,4 +44,5 @@ export default function Page(){return <main id="conteudo-contas" className="cp-w
  <section className="cp-section" id="capitulos" aria-labelledby="titulo-capitulos"><div className="cp-section-head"><div><p className="cp-eyebrow">Mapa completo</p><h2 id="titulo-capitulos">Uma pergunta para cada dimensão</h2><p>Abra um capítulo para conhecer suas medidas, fontes candidatas e condições de comparação.</p></div><Link className="cp-button" href="/contas-publicas/dados">Consultar os indicadores</Link></div><IndiceFederal/></section>
  <GuiaLeitura/>
  <section className="cp-section cp-split" aria-label="Interpretação e conexão"><article className="cp-method"><p className="cp-eyebrow">Leitura responsável</p><h2>Gastar, entregar e transformar são medidas diferentes.</h2><p>Execução não comprova eficiência. Metas cumpridas não comprovam impacto. Cada indicador explicita o que pode responder e seus limites.</p><Link href="/contas-publicas/metodologia">Entender as regras de comparação →</Link></article><article className="cp-method"><p className="cp-eyebrow">Conexão com o OBEE</p><h2>Quem financia e quem presta o serviço?</h2><p>Contas Públicas acompanha a gestão federal. O OBEE permite explorar acesso, resposta e qualidade dos serviços, considerando as responsabilidades compartilhadas entre esferas.</p><Link href="/eficiencia-estatal">Consultar serviços ao cidadão →</Link></article></section>
+ <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/contas-publicas"]} variante="metodo" className="cp-section"/>
  </main>}

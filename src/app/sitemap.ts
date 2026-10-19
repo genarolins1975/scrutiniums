@@ -30,6 +30,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   try {municipios = JSON.parse(readFileSync(join(process.cwd(), "public", "obs", "data", "gold", "presenca_mun.json"), "utf-8")).municipios;} catch {municipios = [];}
   let ufs: { uf: string }[] = [];
   try {ufs = JSON.parse(readFileSync(join(process.cwd(), "public", "obs", "data", "gold", "ufs.json"), "utf-8")).ufs;} catch {ufs = [];}
+  // fichas do saneamento por município (consulta aberta desde 19/10/2026): o mesmo índice da busca
+  let municipiosSaneamento: string[] = [];
+  try {municipiosSaneamento = (JSON.parse(readFileSync(join(process.cwd(), "public", "saneamento", "gold", "indice.json"), "utf-8")) as [string, string, string][]).map((m) => m[0]);} catch {municipiosSaneamento = [];}
   let modelosEnergia: string[] = [];
   try {modelosEnergia = JSON.parse(readFileSync(join(process.cwd(), "public", "energia", "gold", "modelos.json"), "utf-8")).modelos.map((m: { id: string }) => m.id);} catch {modelosEnergia = [];}
   const entradas: MetadataRoute.Sitemap = [
@@ -81,6 +84,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/contas-publicas/metodologia", 0.5, "monthly"),
     rota("/contas-publicas/glossario", 0.5, "monthly"),
     rota("/saneamento/metodologia", 0.6, "monthly"),
+    rota("/territorio/metodologia", 0.6, "monthly"),
+    rota("/saneamento/municipio", 0.8, "monthly"),
+    ...municipiosSaneamento.map((id) => rota(`/saneamento/municipio/${id}`, 0.5, "yearly")),
+    rota("/saneamento/preco-regulado/simulador", 0.7, "monthly"),
     rota("/gas-natural", 0.8, "monthly"),
     ...PAGINAS_GAS.map((p) => rota(p.href, 0.6, "monthly")),
     rota("/cadastro", 0.6, "yearly"),

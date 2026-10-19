@@ -7,6 +7,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { meta, municipios } from "@/lib/saneamento/gold";
 import { ROTA } from "@/lib/saneamento/capitulos";
 import { inteiro } from "@/lib/saneamento/formato";
+import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ export default function Pagina() {
   return (
     <>
       <Cabecalho atual="municipio" />
+      <AvisoConsultaAberta className="ed-pagina" comConta="A comparação entre municípios, o atlas, as fichas dos prestadores e os demais capítulos do observatório" />
       <MarcaVisita secao="saneamento:municipio-busca" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">
         <Abertura

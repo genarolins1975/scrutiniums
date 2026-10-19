@@ -26,6 +26,7 @@ import { PAGINAS_GAS } from "@/lib/gas/navegacao";
 import { CAPITULOS as CAPITULOS_CONTAS } from "@/lib/contas-publicas/catalogo";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from "@/lib/agro/modelo";
+import { COPIAS } from "./copias";
 
 export type { Atalho, Colecao, Observatorio, ObservatorioId, Painel } from "./lista";
 export { OBSERVATORIOS } from "./lista";
@@ -95,8 +96,6 @@ function paineisEficiencia(): Painel[] {
     const [observatorio, colecao] = destino;
     return {
       rota: d.href as string, titulo: d.titulo, observatorio, colecao, origem: "eficiencia" as const,
-      ...(d.id === "saneamento" ? { duplicataDe: "/saneamento" } : {}),
-      ...(d.id === "energia" ? { duplicataDe: "/setor-eletrico/inclusao-energetica" } : {}),
     };
   });
   return [
@@ -104,9 +103,9 @@ function paineisEficiencia(): Painel[] {
     { rota: "/eficiencia-estatal/indice-de-resultados", titulo: "Índice de resultados das capitais", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
     { rota: "/eficiencia-estatal/laboratorio-cesta", titulo: "Laboratório do índice (revisão v3)", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
     { rota: "/eficiencia-estatal/judiciario", titulo: "Judiciário: filas e tempos", observatorio: "servicos-publicos", colecao: "justica", origem: "eficiencia" },
-    // duplicatas resolvidas em 18/10/2026 (REAGRUPAMENTO.md): a página fica publicada e avisa qual é o painel dono
-    { rota: "/eficiencia-estatal/trabalho-renda/emprego-formal", titulo: "Emprego formal nacional", observatorio: "familias", colecao: "renda", origem: "eficiencia", duplicataDe: "/observatorio/formal-employment" },
-    // resíduos e drenagem só existem aqui e tratam de cidades e clima
+    // duplicata resolvida em 18/10/2026 (REAGRUPAMENTO.md): a página fica publicada e avisa qual é o painel principal (copias.ts)
+    { rota: "/eficiencia-estatal/trabalho-renda/emprego-formal", titulo: "Emprego formal nacional", observatorio: "familias", colecao: "renda", origem: "eficiencia" },
+    // resíduos e drenagem tratam de cidades e clima; o painel principal é Meio ambiente e clima (copias.ts)
     { rota: "/eficiencia-estatal/saneamento/residuos", titulo: "Resíduos sólidos", observatorio: "territorio-e-clima", colecao: "cidades-clima", origem: "eficiencia" },
     { rota: "/eficiencia-estatal/saneamento/drenagem", titulo: "Drenagem e risco de inundação", observatorio: "territorio-e-clima", colecao: "cidades-clima", origem: "eficiencia" },
     ...temas,
@@ -198,8 +197,15 @@ function paineisTerritorio(): Painel[] {
   ];
 }
 
+/**
+ * Painel registrado que é cópia integral de outro (copias.ts) leva `duplicataDe`.
+ * Cópia parcial, uma seção da página, não: o resto da página é próprio e continua nas listas.
+ */
+const PRINCIPAL_DA_COPIA = new Map(COPIAS.filter((c) => !c.parcial).map((c) => [c.rota, c.principal]));
+
 export function paineis(): Painel[] {
-  return [...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras(), ...paineisTerritorio()];
+  return [...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras(), ...paineisTerritorio()]
+    .map((p) => (PRINCIPAL_DA_COPIA.has(p.rota) ? { ...p, duplicataDe: PRINCIPAL_DA_COPIA.get(p.rota) } : p));
 }
 
 export function observatorio(id: ObservatorioId): Observatorio {

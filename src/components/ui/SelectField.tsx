@@ -34,7 +34,7 @@ export const SelectField = forwardRef<
         id={fieldId}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy}
-        className={`min-h-[44px] border bg-papel px-3 py-2 text-base text-carvao focus:border-bronze ${
+        className={`min-h-[44px] w-full min-w-0 border bg-papel px-3 py-2 text-base text-carvao focus:border-bronze ${
           error ? "border-erro" : "border-linha"
         } ${className}`}
         {...props}

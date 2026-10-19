@@ -1,0 +1,148 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
+import { ExportacaoComConta } from "@/components/acesso/ExportacaoComConta";
+import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
+
+/**
+ * Estratégia "aberto e com conta", leva 1 (decisão do dono de 19/10/2026, docs/BANCA_2026-10-19.md): nas cinco
+ * consultas abertas, o visitante vê antes do clique o que exige conta (selo "com conta"), a exportação montada no
+ * navegador sai da versão aberta e a faixa diz o que fica com a conta gratuita.
+ */
+const caminho = vi.hoisted(() => ({ atual: "/" }));
+vi.mock("next/navigation", async () => ({
+  ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
+  usePathname: () => caminho.atual,
+}));
+
+const raiz = process.cwd();
+const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
+
+
+const html = (el: Parameters<typeof renderToStaticMarkup>[0]) => renderToStaticMarkup(el);
+
+describe("selo com conta", () => {
+  beforeEach(() => {
+    caminho.atual = "/";
+  });
+
+  it("aparece na página aberta para destino fechado, e só nele", () => {
+    caminho.atual = "/saneamento/municipio/2611606";
+    expect(html(createElement(SeloComConta, { href: "/saneamento/comparar?m=2611606" }))).toContain("com conta");
+    expect(html(createElement(SeloComConta, { href: "/gas/series/preco-glp-por-uf.csv" }))).toContain("com conta");
+    expect(html(createElement(SeloComConta, { href: "/saneamento/preco-regulado/simulador?t=x" }))).toBe("");
+    expect(html(createElement(SeloComConta, { href: "/saneamento/metodologia" }))).toBe("");
+    expect(html(createElement(SeloComConta, { sempre: true }))).toContain("com conta");
+  });
+
+  it("não aparece nas páginas fechadas, onde todos já têm sessão", () => {
+    for (const p of ["/saneamento/acesso", "/setor-eletrico/conta-de-luz/reajustes-e-subsidios", "/gas-natural/dados"]) {
+      caminho.atual = p;
+      expect(html(createElement(SeloComConta, { href: "/gas/series/preco-glp-por-uf.csv" })), p).toBe("");
+    }
+  });
+
+  it("fala inglês na irmã inglesa da Conta de luz", () => {
+    caminho.atual = "/en/setor-eletrico/conta-de-luz";
+    const h = html(createElement(SeloComConta, { href: "/setor-eletrico/conta-de-luz/reajustes-e-subsidios" }));
+    expect(h).toContain("account required");
+    expect(h).not.toContain("com conta");
+  });
+});
+
+describe("exportação montada no navegador", () => {
+  it("sai da versão aberta: no HTML do servidor fica o convite para entrar, com o retorno à página", () => {
+    caminho.atual = "/saneamento/preco-regulado/simulador";
+    const h = html(createElement(ExportacaoComConta, { rotulo: "Baixar CSV" }, createElement("button", { type: "button" }, "exportar")));
+    expect(h).not.toContain("<button");
+    expect(h).toContain('href="/entrar?de=%2Fsaneamento%2Fpreco-regulado%2Fsimulador"');
+    expect(h).toContain("com conta");
+  });
+
+  it("segue igual nas páginas fechadas", () => {
+    caminho.atual = "/setor-eletrico/conta-de-luz/reajustes-e-subsidios";
+    const h = html(createElement(ExportacaoComConta, { rotulo: "Baixar CSV" }, createElement("button", { type: "button" }, "exportar")));
+    expect(h).toBe('<button type="button">exportar</button>');
+  });
+
+  it("as tabelas e o simulador passam pela guarda; a entrada da Eficiência Estatal não gera mais CSV no navegador", () => {
+    for (const p of ["src/components/energia/TabelaInterativa.tsx", "src/components/energia/ListaConsultavel.tsx", "src/components/saneamento/SimuladorConta.tsx"]) {
+      expect(ler(p), p).toMatch(/<ExportacaoComConta[\s\S]*onClick=\{\(\) => exportar\(f\)\}|<ExportacaoComConta[\s\S]*onClick=\{exportar\}/);
+    }
+    const atlas = ler("src/components/eficiencia/AtlasCidadao.tsx");
+    expect(atlas).not.toMatch(/createObjectURL|new Blob|csv\(/);
+    expect(atlas).toContain("'/eficiencia-estatal/retrato-26-capitais.csv'");
+  });
+});
+
+describe("CSV das 26 capitais", () => {
+  it("sai do servidor, numa rota fechada, com o mesmo conteúdo que a entrada gerava", async () => {
+    const { ehRotaPublica } = await import("@/lib/rotasPublicas");
+    expect(ehRotaPublica("/eficiencia-estatal/retrato-26-capitais.csv")).toBe(false);
+    const { GET } = await import("@/app/eficiencia-estatal/retrato-26-capitais.csv/route");
+    const { montarRetrato } = await import("@/lib/eficiencia/entrada");
+    const { csv } = await import("@/lib/eficiencia/entrada-nucleo");
+    const r = GET();
+    expect(r.headers.get("content-type")).toMatch(/^text\/csv/);
+    expect(r.headers.get("content-disposition")).toContain("obee-retrato-26-capitais.csv");
+    // com a marca de ordem de bytes, que o Excel usa para ler UTF-8 (Response.text() a descartaria)
+    const texto = new TextDecoder("utf-8", { ignoreBOM: true }).decode(await r.arrayBuffer());
+    expect(texto).toBe("﻿" + csv(montarRetrato()));
+    expect(texto.trim().split("\r\n")).toHaveLength(27);
+  });
+
+  it("o retrato que vai ao HTML aberto não leva a nota composta nem os cenários do índice", async () => {
+    const { montarRetrato } = await import("@/lib/eficiencia/entrada");
+    const json = JSON.stringify(montarRetrato());
+    for (const campo of ['"score"', '"band"', '"contributions"', '"sensitivity"', '"scenario_scores"', '"weights"']) expect(json, campo).not.toContain(campo);
+  });
+});
+
+describe("faixa da consulta aberta", () => {
+  it("diz o que fica com conta e leva ao login com retorno à página", () => {
+    caminho.atual = "/gas-natural/gas-de-cozinha";
+    const h = html(createElement(AvisoConsultaAberta, { comConta: "Os arquivos para baixar" }));
+    expect(h).toContain("Consulta aberta, sem conta.");
+    expect(h).toContain("Os arquivos para baixar");
+    expect(h).toContain('href="/entrar?de=%2Fgas-natural%2Fgas-de-cozinha"');
+  });
+
+  it("está nas cinco consultas, e só nelas", () => {
+    const paginas = [
+      "src/app/setor-eletrico/conta-de-luz/page.tsx",
+      "src/app/saneamento/municipio/page.tsx",
+      "src/app/saneamento/municipio/[id]/page.tsx",
+      "src/app/saneamento/preco-regulado/simulador/page.tsx",
+      "src/app/eficiencia-estatal/page.tsx",
+      "src/app/gas-natural/gas-de-cozinha/page.tsx",
+    ];
+    for (const p of paginas) expect(ler(p), p).toContain("<AvisoConsultaAberta");
+    expect(ler("src/app/setor-eletrico/conta-de-luz/reajustes-e-subsidios/page.tsx")).not.toContain("AvisoConsultaAberta");
+  });
+});
+
+describe("convite ao login leva o recorte da consulta na volta", () => {
+  it("o clique monta o destino com query e âncora, e respeita abrir em nova aba", async () => {
+    const { aoEntrarComRecorte } = await import("@/components/acesso/sessao");
+    const indo: string[] = [];
+    const original = (globalThis as { window?: unknown }).window;
+    (globalThis as { window?: unknown }).window = {
+      location: { pathname: "/eficiencia-estatal", search: "?territorio=2611606&comparador=4106902", hash: "#perguntas", assign: (u: string) => indo.push(u) },
+    };
+    try {
+      let impedido = false;
+      aoEntrarComRecorte({ metaKey: false, ctrlKey: false, shiftKey: false, button: 0, preventDefault: () => { impedido = true; } });
+      expect(impedido).toBe(true);
+      expect(indo).toEqual([`/entrar?de=${encodeURIComponent("/eficiencia-estatal?territorio=2611606&comparador=4106902#perguntas")}`]);
+      impedido = false;
+      aoEntrarComRecorte({ metaKey: true, ctrlKey: false, shiftKey: false, button: 0, preventDefault: () => { impedido = true; } });
+      expect(impedido).toBe(false);
+      expect(indo).toHaveLength(1);
+    } finally {
+      (globalThis as { window?: unknown }).window = original;
+    }
+  });
+});

@@ -1,6 +1,6 @@
 # Etapa 2 — dados oficiais e painéis
 
-Integração de recortes estáticos, sem atualização automática no build. A interface oferece seleção de exercício SIOP, estágio da composição e período RTN. Não atribui nota de gestão.
+Integração de recortes estáticos, sem atualização automática no build. Desde 19/10/2026 a execução orçamentária do SIOP é recoletada toda terça por `.github/workflows/atualizar-contas-publicas.yml` (`importar.py --so-siop`, que mantém o RTN do snapshot e grava a captura do SIOP em `capturaSIOP`), com publicação só se os testes do painel passarem; edição nova do RTN segue manual e o mesmo workflow abre a issue quando o Tesouro a publica. A interface oferece seleção de exercício SIOP, estágio da composição e período RTN. Não atribui nota de gestão.
 
 ## Cobertura
 
