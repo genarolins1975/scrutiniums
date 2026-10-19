@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 /** Golds lidas por src/lib/perguntas/portas.ts em tempo de requisição. */
 const GOLDS_DAS_PORTAS = [
   "./public/obs/data/gold/pulse.json",
@@ -11,6 +13,21 @@ const GOLDS_DAS_PORTAS = [
   "./public/energia/gold/agua_detalhe.json",
   "./public/energia/gold/conta.json",
 ];
+
+/**
+ * Arquivos que o "Citar" e o disparo dos alertas leem em tempo de requisição (src/lib/conta/metadados.ts): as datas de
+ * cada fonte em src/lib/frescor/limiares.json e os manifestos com id de publicação. O teste conta-ferramentas confere
+ * esta lista contra arquivosLidos().
+ */
+const LIMIARES_FRESCOR = JSON.parse(readFileSync(new URL("./src/lib/frescor/limiares.json", import.meta.url), "utf-8"));
+const ARQUIVOS_DAS_FONTES = [
+  ...new Set([
+    ...Object.values(LIMIARES_FRESCOR.dominios).flatMap((d) =>
+      [...d.publicacao, ...(d.partes ?? []), ...d.referencia].map((o) => `./${o.arquivo}`),
+    ),
+    "./public/energia/gold/manifesto.json",
+  ]),
+].sort();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -44,6 +61,9 @@ const nextConfig = {
         "./public/obs/data/gold/pulse.json",
         "./public/obs/data/gold/meta.json",
       ],
+      "/api/conta/citacao": ARQUIVOS_DAS_FONTES,
+      "/api/conta/alertas": ARQUIVOS_DAS_FONTES,
+      "/api/alertas/enviar": ARQUIVOS_DAS_FONTES,
       "/eficiencia-estatal/mobilidade-transporte/[[...painel]]": [
         "./data/eficiencia_mobilidade/aop/resumo.json",
         "./data/eficiencia_mobilidade/aop/resumo.sha256",

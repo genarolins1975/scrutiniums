@@ -27,7 +27,7 @@ export default function TerritorioLayout({ children }: { children: React.ReactNo
         Pular para o conteúdo
       </a>
       <header className="grade-pagina">
-        <CabecalhoPlataforma observatorio="territorio-e-clima" destinoConta="/observatorios/territorio-e-clima" />
+        <CabecalhoPlataforma observatorio="territorio-e-clima" destinoConta="/observatorios/territorio-e-clima" fontes={["territorio"]} />
       </header>
       <div id="conteudo" className="flex-1">{children}</div>
       <ParaIrAlem mapa={mapaParaIrAlem()} />

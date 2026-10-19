@@ -118,4 +118,35 @@ export const assinaturasResumo = pgTable("assinaturas_resumo", {
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull(),
 });
 
+/**
+ * Recortes salvos pela conta (Onda 2, "o que a conta precisa ganhar"): o
+ * endereço interno da página com a consulta e a âncora, um título dado pela
+ * pessoa e o observatório de origem. O link compartilhável é o próprio caminho;
+ * quem não tem conta passa pelo login e volta a ele. Limite por conta em
+ * src/lib/conta/recortes.ts.
+ */
+export const recortesSalvos = pgTable("recortes_salvos", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  titulo: text("titulo").notNull(),
+  caminho: text("caminho").notNull(),
+  observatorio: text("observatorio").notNull(),
+  criadoEm: timestamp("criado_em", { withTimezone: true, mode: "date" }).notNull(),
+});
+
+/**
+ * Alertas de atualização por domínio de dados (as fontes de src/lib/frescor/limiares.json).
+ * `referenciaAvisada` guarda a data de referência que a pessoa já conhece: a do
+ * momento da assinatura e, depois, a do último aviso. O envio só sai quando a
+ * referência publicada avança (src/lib/conta/alertas.ts).
+ */
+export const alertasAtualizacao = pgTable("alertas_atualizacao", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  dominio: text("dominio").notNull(),
+  referenciaAvisada: text("referencia_avisada"),
+  ultimoEnvioEm: timestamp("ultimo_envio_em", { withTimezone: true, mode: "date" }),
+  criadoEm: timestamp("criado_em", { withTimezone: true, mode: "date" }).notNull(),
+});
+
 export type User = typeof users.$inferSelect;

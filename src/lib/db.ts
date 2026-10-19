@@ -56,8 +56,8 @@ async function createDb(): Promise<Db> {
   return db;
 }
 
-/** Migração idempotente (CREATE TABLE IF NOT EXISTS) aplicada na primeira conexão. */
-async function migrate(db: Db): Promise<void> {
+/** Migração idempotente (CREATE TABLE IF NOT EXISTS) aplicada na primeira conexão; exportada para o teste de reaplicação. */
+export async function migrate(db: Db): Promise<void> {
   const statements = [
     `CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
@@ -141,6 +141,26 @@ async function migrate(db: Db): Promise<void> {
       ultima_edicao TEXT,
       created_at TIMESTAMPTZ NOT NULL
     )`,
+    // Recursos da conta (Onda 2): recortes salvos e alertas de atualização por domínio.
+    `CREATE TABLE IF NOT EXISTS recortes_salvos (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      titulo TEXT NOT NULL,
+      caminho TEXT NOT NULL,
+      observatorio TEXT NOT NULL,
+      criado_em TIMESTAMPTZ NOT NULL
+    )`,
+    `CREATE INDEX IF NOT EXISTS idx_recortes_user ON recortes_salvos(user_id, criado_em)`,
+    `CREATE TABLE IF NOT EXISTS alertas_atualizacao (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      dominio TEXT NOT NULL,
+      referencia_avisada TEXT,
+      ultimo_envio_em TIMESTAMPTZ,
+      criado_em TIMESTAMPTZ NOT NULL
+    )`,
+    `CREATE UNIQUE INDEX IF NOT EXISTS idx_alertas_user_dominio ON alertas_atualizacao(user_id, dominio)`,
+    `CREATE INDEX IF NOT EXISTS idx_alertas_dominio ON alertas_atualizacao(dominio)`,
     // Fim do acesso antecipado por código: contas paradas na etapa do código
     // ou na lista de espera são promovidas a acesso completo (idempotente).
     `UPDATE users SET onboarding_status = 'COMPLETE'

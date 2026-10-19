@@ -21,6 +21,13 @@ export type ProductEventName =
   | "resumo_assinatura_confirmada"
   | "resumo_assinatura_cancelada"
   | "resumo_enviado"
+  // recursos da conta (Onda 2): só o fato, nunca o endereço salvo
+  | "recorte_salvo"
+  | "alerta_assinado"
+  | "alerta_cancelado"
+  | "alerta_enviado"
+  // cada execução autorizada do disparo dos alertas: prova de que a verificação diária está rodando
+  | "alertas_verificacao"
   | "onboarding_completed"
   | "verification_failed"
   | "onboarding_abandoned"
