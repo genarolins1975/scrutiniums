@@ -108,14 +108,22 @@ silver em cache: o estado é o seed versionado, e as correções de cache (5, 10
 se aplicam.
 
 **O que só a primeira execução real comprova.** Alcance das fontes a partir dos runners
-do GitHub (o firewall do gov.br já recusou o `urllib` no Território; o SINISA respondeu
-403 a uma consulta HEAD feita desta sessão, pelo proxy do ambiente, em 19/10/2026), o tempo da coleta do SISAGUA (cerca de 40
-arquivos de 100 a 200 MB) e do Siconfi do OBEE (cerca de 1.100 consultas), a criação das
-issues pelo `GITHUB_TOKEN` e o push no `main`. Medido nesta sessão em 19/10/2026: o SIOP
-respondeu e a recoleta passou nos testes (base de 17/10/2026); a conferência estadual
-achou 81 de 81 respostas conferíveis, uma divergente (SC, RGF do 1º quadrimestre de 2026:
-60 linhas arquivadas, 0 servidas hoje) e o RGF do 2º quadrimestre de 2026 disponível para
-as 27 UFs; o vigia do RTN acusou o boletim de agosto de 2026, ainda não integrado.
+do GitHub (o firewall do gov.br já recusou o `urllib` no Território), o tempo da coleta do
+SISAGUA (cerca de 40 arquivos de 100 a 200 MB, não rodada nesta sessão), a criação das
+issues pelo `GITHUB_TOKEN` e o push no `main`. O ciclo rodou de ponta a ponta nesta sessão
+em 19/10/2026, sem publicar (o commit ficou fora do `main`):
+- Contas Federais: o SIOP respondeu, a base de 17/10/2026 passou nos testes e o grupo seria
+  publicado;
+- Saneamento: SINISA (86 s), CadÚnico, JMP e ODS sem número novo; a CVM trouxe a versão 7
+  do Formulário de Referência da COPASA (BlackRock com 5,005%) e o grupo seria publicado com
+  os testes verdes; o DATASUS revisou contagens do SIH fora da janela publicada e só a
+  proveniência seria publicada;
+- Eficiência Estatal: Siconfi da Educação (452 s) e Siconfi e SIOPS da Saúde (491 s) sem
+  nenhum `hash_dados` novo: nada a publicar, árvore limpa;
+- Contas Estaduais: 81 de 81 respostas conferidas, uma divergente (SC, RGF do 1º
+  quadrimestre de 2026: 60 linhas arquivadas, 0 servidas hoje) e o RGF do 2º quadrimestre
+  de 2026 disponível para as 27 UFs;
+- o vigia do RTN acusou o boletim de agosto de 2026, ainda não integrado.
 
 ### O que permanece manual nesses quatro domínios, com fonte e motivo
 
