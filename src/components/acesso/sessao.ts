@@ -1,6 +1,5 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { hrefNoIdioma } from "@/lib/i18n-href";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
 
 /* Sem "use client": módulo de hooks, importado por componentes de cliente. */
@@ -43,7 +42,8 @@ export function usePaginaAberta(): boolean {
 /** Entrada com retorno para a página atual; em /en, a irmã inglesa do login. */
 export function hrefEntrar(caminho: string): string {
   const en = caminho === "/en" || caminho.startsWith("/en/");
-  return hrefNoIdioma(`/entrar?de=${encodeURIComponent(caminho)}`, en ? "en" : "pt");
+  // a irmã inglesa do login existe (/en/entrar); com query, hrefNoIdioma não traduz o endereço
+  return en ? `/en/entrar?de=${encodeURIComponent(caminho)}` : `/entrar?de=${encodeURIComponent(caminho)}`;
 }
 
 /** Rótulos do acesso no idioma do endereço (inglês só nas irmãs /en declaradas). */
