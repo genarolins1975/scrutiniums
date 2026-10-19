@@ -30,6 +30,8 @@ A data da posição é publicada no gold: pular dias não esconde nada do leitor
 | portão de testes (no diário) | a cada execução | gold do dia reprovada pelas suítes vitest, pipeline e pesquisa | issue "Testes de conteúdo reprovaram a gold do dia", com a lista dos testes reprovados; execução **vermelha** |
 | `vigilancia.yml frescor` | após cada execução do diário | gold do main com 2 dias ou mais; produção servindo gold mais antigo que o main | issue "gold publicado está defasado", atribuída ao mantenedor |
 | selo de frescor (no site) | a cada leitura | publicação com 2 dias ou mais, calculada no navegador | aviso "Atualização atrasada" em /resumo, /dados, /dados/[slug] e /observatorio-do-credito |
+| `vigilancia.yml dominios` | diário, 20:00 UTC | cada observatório (Crédito, Setor Elétrico, Gás, Saneamento, Agro, Território, Contas federais e estaduais, Eficiência) além do limiar da sua cadência em `src/lib/frescor/limiares.json` (diária 2 dias, quinzenal 20, mensal 45, anual 400), publicação retida em parte ou sem data | uma issue por domínio, "Vigília de frescor: <nome>", atribuída ao mantenedor; comenta a aberta e a fecha quando o domínio volta a ficar em dia |
+| faixa de frescor (no site) | a cada leitura | os mesmos limiares, calculados no navegador | linha "Atualização dos dados" no topo e lista por fonte no método das entradas com conta (/setor-eletrico, /gas-natural, /saneamento, /eficiencia-estatal, /contas-publicas, /agronegocio e /observatorios/*) |
 | `vigilancia.yml fontes` | segunda 9:30 UTC | documento novo nas fontes manuais (SPA/MF) | issue "documento novo em fonte manual" |
 | CI (`ci.yml`) | todo PR/push | regressão de código, dado ou invariante editorial | check vermelho no PR |
 

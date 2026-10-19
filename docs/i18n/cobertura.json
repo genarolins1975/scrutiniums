@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1283,
-    "fontes_sha256": "c22a808df529a4eb54c0f8717841756042a0cc3495ada3450cab856184cf3b27",
+    "arquivos_analisados": 1289,
+    "fontes_sha256": "a1b1465621c3a70547fd2deecac12e0154c5ad55eed470619684ab1b8a56ad40",
     "pendencias_sha256": "d5494fb5c8aa01ce9c79f7dfaba9cbe458d0e72e9b52b041654eaae6dc404700",
     "nao_classificadas": [
       {
@@ -143,20 +143,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 253,
+        "arquivos": 259,
         "candidatos": {
-          "jsx_text": 910,
-          "atributos": 269,
-          "props": 777,
-          "outros_literais": 5290,
-          "templates": 595,
-          "expressoes_nao_resolvidas": 3566,
-          "chaves_objetos": 4097
+          "jsx_text": 914,
+          "atributos": 292,
+          "props": 779,
+          "outros_literais": 5425,
+          "templates": 617,
+          "expressoes_nao_resolvidas": 3677,
+          "chaves_objetos": 4174
         },
         "exclusoes": {
-          "importacoes": 1096,
-          "atributos_tecnicos": 2009,
-          "tipos": 237
+          "importacoes": 1115,
+          "atributos_tecnicos": 2044,
+          "tipos": 243
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -165,7 +165,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 15504,
+        "candidatos_nao_catalogados": 15878,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -196,14 +196,14 @@
         "candidatos": {
           "jsx_text": 7496,
           "atributos": 2846,
-          "props": 18490,
+          "props": 18494,
           "outros_literais": 50630,
           "templates": 12519,
-          "expressoes_nao_resolvidas": 54417,
+          "expressoes_nao_resolvidas": 54421,
           "chaves_objetos": 35703
         },
         "exclusoes": {
-          "importacoes": 4862,
+          "importacoes": 4864,
           "atributos_tecnicos": 8485,
           "tipos": 3710
         },
@@ -214,7 +214,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 182101,
+        "candidatos_nao_catalogados": 182109,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -244,14 +244,14 @@
         "candidatos": {
           "jsx_text": 287,
           "atributos": 23,
-          "props": 705,
+          "props": 709,
           "outros_literais": 539,
           "templates": 74,
-          "expressoes_nao_resolvidas": 708,
+          "expressoes_nao_resolvidas": 710,
           "chaves_objetos": 813
         },
         "exclusoes": {
-          "importacoes": 153,
+          "importacoes": 155,
           "atributos_tecnicos": 298,
           "tipos": 17
         },
@@ -262,7 +262,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 3149,
+        "candidatos_nao_catalogados": 3155,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -292,14 +292,14 @@
         "candidatos": {
           "jsx_text": 1230,
           "atributos": 345,
-          "props": 1786,
+          "props": 1791,
           "outros_literais": 3238,
           "templates": 418,
-          "expressoes_nao_resolvidas": 2995,
+          "expressoes_nao_resolvidas": 2997,
           "chaves_objetos": 4392
         },
         "exclusoes": {
-          "importacoes": 451,
+          "importacoes": 453,
           "atributos_tecnicos": 1648,
           "tipos": 177
         },
@@ -310,7 +310,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 14404,
+        "candidatos_nao_catalogados": 14411,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -340,14 +340,14 @@
         "candidatos": {
           "jsx_text": 2942,
           "atributos": 1022,
-          "props": 1304,
+          "props": 1309,
           "outros_literais": 7465,
           "templates": 727,
-          "expressoes_nao_resolvidas": 7576,
+          "expressoes_nao_resolvidas": 7578,
           "chaves_objetos": 4604
         },
         "exclusoes": {
-          "importacoes": 878,
+          "importacoes": 880,
           "atributos_tecnicos": 3192,
           "tipos": 424
         },
@@ -358,7 +358,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 25640,
+        "candidatos_nao_catalogados": 25647,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -388,14 +388,14 @@
         "candidatos": {
           "jsx_text": 576,
           "atributos": 110,
-          "props": 72,
+          "props": 77,
           "outros_literais": 1275,
           "templates": 68,
-          "expressoes_nao_resolvidas": 870,
+          "expressoes_nao_resolvidas": 872,
           "chaves_objetos": 632
         },
         "exclusoes": {
-          "importacoes": 186,
+          "importacoes": 188,
           "atributos_tecnicos": 482,
           "tipos": 43
         },
@@ -406,7 +406,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 3603,
+        "candidatos_nao_catalogados": 3610,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -482,16 +482,16 @@
       "interface": {
         "arquivos": 54,
         "candidatos": {
-          "jsx_text": 475,
+          "jsx_text": 474,
           "atributos": 272,
-          "props": 831,
-          "outros_literais": 2899,
+          "props": 835,
+          "outros_literais": 2897,
           "templates": 230,
           "expressoes_nao_resolvidas": 2154,
-          "chaves_objetos": 1761
+          "chaves_objetos": 1760
         },
         "exclusoes": {
-          "importacoes": 277,
+          "importacoes": 279,
           "atributos_tecnicos": 81,
           "tipos": 97
         },

@@ -6,6 +6,8 @@ import { DiagramaSistema } from "@/components/saneamento/DiagramaSistema";
 import { FaixaMundo } from "@/components/saneamento/ReferenciaMundial";
 import { SeloSituacao } from "@/components/saneamento/Editorial";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import { agregado, meta } from "@/lib/saneamento/gold";
 import { EIXOS, FERRAMENTAS, ROTA, rotaCapitulo } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
@@ -61,6 +63,7 @@ export default function Pagina() {
       <Cabecalho atual="" />
       <MarcaVisita secao="saneamento:inicio" />
       <main id="conteudo" className="pb-20">
+        <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/saneamento"]} conteiner="ed-pagina" />
         <section className="ed-pagina grid grid-cols-1 gap-10 pb-12 pt-10 lg:grid-cols-12 lg:gap-12 lg:pt-14">
           <div className="lg:col-span-7">
             <p className="rotulo text-obee-dark">Observatório Brasileiro do Saneamento</p>
@@ -245,6 +248,7 @@ export default function Pagina() {
               </dd>
             </div>
           </dl>
+          <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/saneamento"]} variante="metodo" className="mt-8" />
           <p className="mt-6">
             <Link href={`${ROTA}/metodologia`} className="inline-flex min-h-[44px] items-center border border-obee px-4 text-sm font-medium text-obee-dark hover:bg-obee-fundo">
               Método, conferências entre bases e downloads
