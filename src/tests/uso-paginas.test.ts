@@ -340,4 +340,10 @@ describe("seção do painel de administração", () => {
     expect(componente).toContain("usePathname");
     expect(componente).not.toMatch(/useSearchParams|document\.cookie|localStorage|sessionStorage/);
   });
+
+  it("as páginas de autenticação ficam fora da coleta, também nas irmãs /en", async () => {
+    const { FORA_DA_MEDICAO } = await import("@/components/telemetria/MedeUso");
+    for (const r of ["/entrar", "/entrar/sms", "/entrar/sms/verificar", "/cadastro", "/en/entrar", "/en/cadastro"]) expect(FORA_DA_MEDICAO.test(r), r).toBe(true);
+    for (const r of ["/", "/entrarx", "/setor-eletrico", "/en/setor-eletrico", "/app/conta"]) expect(FORA_DA_MEDICAO.test(r), r).toBe(false);
+  });
 });

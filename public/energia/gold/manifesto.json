@@ -1,18 +1,18 @@
 {
  "dominio": "energia",
  "gold": "manifesto.json",
- "gerado_em": "2026-10-19T22:09:53Z",
+ "gerado_em": "2026-10-19T17:52:07Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "6e4b9c360a8c",
+ "versao_codigo": "d2c80a075035+alterado",
  "disponivel": true,
- "id_publicacao": "0055cfb8915b5f7e15db11d86cbfe108253fb8f87249f0f6fe71bb3d0330c17d",
+ "id_publicacao": "01858ed9d50fa70f37ee62156f03e4bea8a06641675cf96916dc7fd9b83b29ff",
  "regra_id": "sha256 da lista JSON [caminho, bytes, sha256] de todos os arquivos listados, em ordem de caminho (separadores sem espaço, UTF-8): o mesmo conjunto de bytes tem o mesmo id.",
  "completo": true,
  "fora_do_manifesto": [],
  "repositorio": "https://github.com/genarolins1975/scrutiniums",
  "totais": {
   "arquivos": 288,
-  "bytes": 213548959,
+  "bytes": 213406179,
   "geometrias": 2,
   "golds": 33,
   "series": 228,
@@ -42,9 +42,9 @@
   {
    "caminho": "/energia/gold/arquivos.json",
    "tipo": "gold",
-   "bytes": 134720,
-   "sha256": "1c5c4e2b235d074773c1c42cda6f45ee921c42813e27277a24722d261ad7112f",
-   "gerado_em": "2026-10-19T22:09:52Z",
+   "bytes": 134729,
+   "sha256": "e68cc3e2a219840cb90d3239b308bed2896e572e68e66f5b8f1cb833ce32f51e",
+   "gerado_em": "2026-10-19T17:52:05Z",
    "disponivel": true
   },
   {
@@ -90,9 +90,9 @@
   {
    "caminho": "/energia/gold/conta.json",
    "tipo": "gold",
-   "bytes": 425941,
-   "sha256": "07beb557842309453df37f56e062988b4d434b5dd900d3ce548e16082ffea66b",
-   "gerado_em": "2026-10-19T22:09:40Z",
+   "bytes": 399085,
+   "sha256": "ff27dc2b8ad250c47c38e0933aa8c28d61e726f8bc443f139ef936111dc7190e",
+   "gerado_em": "2026-09-30T23:56:57Z",
    "disponivel": true
   },
   {
@@ -138,9 +138,9 @@
   {
    "caminho": "/energia/gold/inclusao.json",
    "tipo": "gold",
-   "bytes": 478584,
-   "sha256": "c48acc545865878e063796c4d67b877f26509d9faf13a636bd3745896edda584",
-   "gerado_em": "2026-10-19T22:09:51Z",
+   "bytes": 475944,
+   "sha256": "926cff1b0300be45736ea8a1d80658d7da03506376cedcadaf229a8de62bf5f4",
+   "gerado_em": "2026-10-01T00:28:44Z",
    "disponivel": true
   },
   {
@@ -178,9 +178,9 @@
   {
    "caminho": "/energia/gold/metricas.json",
    "tipo": "gold",
-   "bytes": 639983,
-   "sha256": "15ec9c3158093ec6a5f220bba7c3cf070c5425138cda91d80a94d73985e773b7",
-   "gerado_em": "2026-10-19T22:09:51Z",
+   "bytes": 639992,
+   "sha256": "2141cf15149a1acc308b714e2aa6eee8e5b379d0d621db50c00ef89e6a2ed517",
+   "gerado_em": "2026-10-19T17:52:04Z",
    "disponivel": true
   },
   {
@@ -921,8 +921,8 @@
   {
    "caminho": "/energia/series/conta_bandeiras.csv",
    "tipo": "serie",
-   "bytes": 4346,
-   "sha256": "8b2f4fc791b131787fbc357eb9cda9b97476bd6b334446cd3c44e7401761dc12",
+   "bytes": 4320,
+   "sha256": "9c33e4f0742f819f2fd4ad3ebd5c7a3f75a1b6f76764030245cabb6982b1bf35",
    "colunas": [
     "mes",
     "bandeira",
@@ -930,7 +930,7 @@
     "adicional_tabela_rs_mwh",
     "confere"
    ],
-   "linhas": 142,
+   "linhas": 141,
    "dicionario": true,
    "parquet": null
   },
@@ -953,8 +953,8 @@
   {
    "caminho": "/energia/series/conta_composicao_b1.csv",
    "tipo": "serie",
-   "bytes": 546145,
-   "sha256": "34fea57a5744132d6d2e138474a527e232a6f08740567587ccff41408e0df90d",
+   "bytes": 539043,
+   "sha256": "ce4298815948ef6c3e9fb197f567048b7f64f453662c1455c94be5f03fdadc84",
    "colunas": [
     "cnpj",
     "sigla",
@@ -1003,15 +1003,15 @@
     "TE_Liminar",
     "TUSD_OUTROS"
    ],
-   "linhas": 1932,
+   "linhas": 1907,
    "dicionario": true,
    "parquet": null
   },
   {
    "caminho": "/energia/series/conta_conflitos_fonte.csv",
    "tipo": "serie",
-   "bytes": 53099,
-   "sha256": "8f594ff3e563291f8ecfa6f8013c25c13107b9266528a4d012435d791ce5c959",
+   "bytes": 49351,
+   "sha256": "f893cc9461ca653e8f389ef6c323b9daf92fdbd7f1d362702519fb8b20228f28",
    "colunas": [
     "cnpj",
     "sigla",
@@ -1027,35 +1027,35 @@
     "escolhido_tusd",
     "alternativas"
    ],
-   "linhas": 294,
+   "linhas": 274,
    "dicionario": true,
    "parquet": null
   },
   {
    "caminho": "/energia/series/conta_historico_b1.json",
    "tipo": "serie",
-   "bytes": 339381,
-   "sha256": "05c602428ba56d56191fcfe71c34f8f4743786f6658e61373e9bb3993f318ceb"
+   "bytes": 335686,
+   "sha256": "dd232a1d658568b40a5c86df4b5c8ad6638aab65328981a4449762d47b569a38"
   },
   {
    "caminho": "/energia/series/conta_ipca.csv",
    "tipo": "serie",
-   "bytes": 11649,
-   "sha256": "76fc22f4d498ec98532bf6dc3d082ade7964d88ba9b4461c1257e003beb34eba",
+   "bytes": 11628,
+   "sha256": "1f840db6db225c8e455adff886f6ece96c2d305af7178cc49556a319d2fdf34b",
    "colunas": [
     "mes",
     "indice",
     "variacao_12m_pct_publicada"
    ],
-   "linhas": 562,
+   "linhas": 561,
    "dicionario": true,
    "parquet": null
   },
   {
    "caminho": "/energia/series/conta_reajuste_vs_ipca.csv",
    "tipo": "serie",
-   "bytes": 33604,
-   "sha256": "b0687e4a0ac6ff27b7d0892f1f08a53b56a9e8cb8825245ed99a5ea4e1f32fd2",
+   "bytes": 33215,
+   "sha256": "84eb58252d90663c37b0275b88f4c3b4cef48398b0b66682fb32c4012d6e6e98",
    "colunas": [
     "janela_meses",
     "de",
@@ -1070,15 +1070,15 @@
     "ipca_pct",
     "variacao_real_pct"
    ],
-   "linhas": 288,
+   "linhas": 285,
    "dicionario": true,
    "parquet": null
   },
   {
    "caminho": "/energia/series/conta_reajustes_b1.csv",
    "tipo": "serie",
-   "bytes": 205903,
-   "sha256": "404babd7c0313e93cfcd914053575dd413c23fbddc0a780ac8e7751a60c27e43",
+   "bytes": 203549,
+   "sha256": "bc93931dc95ecdf95b1f7a43887cc66ad96a2329d0d2a3f7af53bab5568e6446",
    "colunas": [
     "cnpj",
     "sigla",
@@ -1094,15 +1094,15 @@
     "meses_ipca",
     "mudanca_perimetro"
    ],
-   "linhas": 1895,
+   "linhas": 1873,
    "dicionario": true,
    "parquet": null
   },
   {
    "caminho": "/energia/series/conta_subsidios_anual.csv",
    "tipo": "serie",
-   "bytes": 664695,
-   "sha256": "29d224eb478ee79f6f12bb9057eda300d884cce5d92ce6154c98a94cd3eebeeb",
+   "bytes": 625236,
+   "sha256": "d78bf258646a8c47b57fef179dc8f138ac99940881f24bc7db1aed2fa01a7eaf",
    "colunas": [
     "ano",
     "cnpj",
@@ -1110,8 +1110,7 @@
     "categoria",
     "montante",
     "valor_rs",
-    "meses",
-    "eh_total"
+    "meses"
    ],
    "linhas": 9789,
    "dicionario": true,
@@ -1120,8 +1119,8 @@
   {
    "caminho": "/energia/series/conta_tarifas_b1_vigentes.csv",
    "tipo": "serie",
-   "bytes": 18099,
-   "sha256": "27a8d2bc463aeb45ed225b18794677dd96ad1d43f04634df2a317f7d4f6ea9ca",
+   "bytes": 14172,
+   "sha256": "e0c9e6ee9663637279da21d849fe773757e55f559879475c824342287ee887a9",
    "colunas": [
     "cnpj",
     "sigla",
@@ -1140,15 +1139,15 @@
     "custo_300kwh_rs",
     "posicao"
    ],
-   "linhas": 103,
+   "linhas": 81,
    "dicionario": true,
    "parquet": null
   },
   {
    "caminho": "/energia/series/conta_tarifas_bt_historico.csv",
    "tipo": "serie",
-   "bytes": 2853068,
-   "sha256": "5b9458474d99de26e0bcd66786a9cf28c72456e31adc927759f9f0d0832cabd4",
+   "bytes": 2801039,
+   "sha256": "9e029c44ed8368d8823d80fa7093146fb632e8ae3235a327b3eee9f08b23144b",
    "colunas": [
     "cnpj",
     "sigla",
@@ -1161,7 +1160,7 @@
     "te_rs_mwh",
     "tusd_rs_mwh"
    ],
-   "linhas": 27601,
+   "linhas": 27121,
    "dicionario": true,
    "parquet": "/energia/series/conta_tarifas_bt_historico.parquet"
   },
@@ -2510,7 +2509,7 @@
    "caminho": "/energia/series/inclusao_cde_mensal_uf.json",
    "tipo": "serie",
    "bytes": 9709,
-   "sha256": "e53647a4450658fd8a21c98e37efa2ce13e7e5afae7c3c160140b6cd5bafd337"
+   "sha256": "38557da7566e11443c0e212debef037933d464318e46d39539835af9da18a681"
   },
   {
    "caminho": "/energia/series/inclusao_cobertura_mensal.csv",
@@ -2533,28 +2532,28 @@
    "caminho": "/energia/series/inclusao_cobertura_mensal.json",
    "tipo": "serie",
    "bytes": 24609,
-   "sha256": "923ce0d99faec52a13dc91404ac5250c4e5914563d208e704e2970a2d34f7476"
+   "sha256": "5ee454491374e14396843bff4bb787506b596a180b1ea545950c5a860982d7ad"
   },
   {
    "caminho": "/energia/series/inclusao_luz_para_todos_mensal.csv",
    "tipo": "serie",
-   "bytes": 106279,
-   "sha256": "938cf6a19d648f1f4c5e71c2aaf7431097ec04e095d91eaf9ff1e00a8f90c4b1",
+   "bytes": 106160,
+   "sha256": "ac0a4f868ab49bce0a32b9c81993c72951a44b040c9ee0891c1e207d29f91b6b",
    "colunas": [
     "uf",
     "programa",
     "mes",
     "domicilios"
    ],
-   "linhas": 4461,
+   "linhas": 4456,
    "dicionario": true,
    "parquet": null
   },
   {
    "caminho": "/energia/series/inclusao_luz_para_todos_municipios.csv",
    "tipo": "serie",
-   "bytes": 2066837,
-   "sha256": "23da4d3b92f7ff9b238834eb36a0235b9ce4cd4c2fae7a213f406b0f143c67b9",
+   "bytes": 2066434,
+   "sha256": "0f659501af8e7617e6d466855948dc715c47471818a1f8b5cc9896a728dcf909",
    "colunas": [
     "cod_ibge6",
     "municipio",
@@ -2563,15 +2562,15 @@
     "ano",
     "domicilios"
    ],
-   "linhas": 49984,
+   "linhas": 49975,
    "dicionario": true,
    "parquet": null
   },
   {
    "caminho": "/energia/series/inclusao_luz_para_todos_recursos.csv",
    "tipo": "serie",
-   "bytes": 63288,
-   "sha256": "27f0260fe9804cf6728a9ebad9cc925118623f0b666120b6f40cbe7319b92f4b",
+   "bytes": 63258,
+   "sha256": "b3999f2e0f322db8cc3c5c4b1456cf0d88e3e1a6c49644d971ddb92891c30e12",
    "colunas": [
     "uf",
     "contrato",
@@ -2594,7 +2593,7 @@
    "caminho": "/energia/series/inclusao_municipios.csv",
    "tipo": "serie",
    "bytes": 456976,
-   "sha256": "bdefe7dbea3e5e0830a480975e54d8537c7aeb3f77b683eb3969b5c9adc999f8",
+   "sha256": "8d7c8567a55a8b7f017f5e153fa6c2f38583b81ecbc2b6135dc3a234f3ffe8e5",
    "colunas": [
     "cod_ibge6",
     "municipio",
@@ -2659,7 +2658,7 @@
    "caminho": "/energia/series/inclusao_sistemas_isolados_pontos.json",
    "tipo": "serie",
    "bytes": 24040,
-   "sha256": "e76d1922a8a926cb9b3f866f297d7baef9c9e45c108355dc84ce51eb9f515073"
+   "sha256": "9693b35bdb58be2d3752f22188d25f029066bc63d101380bf28e2b05593b5da7"
   },
   {
    "caminho": "/energia/series/inclusao_tsee_antiga.csv",
@@ -2682,7 +2681,7 @@
    "caminho": "/energia/series/inclusao_tsee_distribuidoras.csv",
    "tipo": "serie",
    "bytes": 1314231,
-   "sha256": "029b324984cbd7a5447605f62a548b059d1ca50b723190bfe215f8f31c90fecb",
+   "sha256": "20f7035a438c64ae572ed7c4ad5747281328df23689cece742e69dc2de7f3f50",
    "colunas": [
     "cnpj",
     "sigla",

@@ -83,13 +83,13 @@ export function fraseBandeira(s: SituacaoBandeira, idioma: Idioma): string {
   if (s.estado === "mes_ausente") {
     const mu = mesAno(`${s.ultima.mes}-01`, idioma);
     return tx(
-      `A bandeira de ${mc} ainda não está no arquivo da ANEEL; a última registrada é a de ${mu} (${nomeMinusculo(s.ultima.bandeira, idioma)}).${anunciada}`,
-      `The tariff flag for ${mc} is not yet in ANEEL's file; the latest recorded is the one for ${mu} (${nomeMinusculo(s.ultima.bandeira, idioma)}).${anunciada}`,
+      `A bandeira de ${mc} não está no arquivo da ANEEL lido pelo observatório; a última registrada é a de ${mu} (${nomeMinusculo(s.ultima.bandeira, idioma)}).${anunciada}`,
+      `The tariff flag for ${mc} is not in the ANEEL file read by the observatory; the latest recorded is the one for ${mu} (${nomeMinusculo(s.ultima.bandeira, idioma)}).${anunciada}`,
     );
   }
   return tx(
-    `A bandeira de ${mc} não está no arquivo da ANEEL, e não há bandeira registrada antes dele nesta publicação.${anunciada}`,
-    `The tariff flag for ${mc} is not in ANEEL's file, and no earlier tariff flag is recorded in this publication.${anunciada}`,
+    `A bandeira de ${mc} não está no arquivo da ANEEL lido pelo observatório, e não há bandeira registrada antes dele nesta publicação.${anunciada}`,
+    `The tariff flag for ${mc} is not in the ANEEL file read by the observatory, and no earlier tariff flag is recorded in this publication.${anunciada}`,
   );
 }
 
@@ -102,8 +102,8 @@ export function rotuloBandeira(s: SituacaoBandeira, idioma: Idioma): string {
   if (s.estado === "mes_ausente") {
     const mu = mesAno(`${s.ultima.mes}-01`, idioma);
     return tx(
-      `${mc} ainda não está no arquivo; a última registrada é a de ${mu} (${nomeMinusculo(s.ultima.bandeira, idioma)})`,
-      `${mc} not yet in the file; the latest recorded is ${mu} (${nomeMinusculo(s.ultima.bandeira, idioma)})`,
+      `${mc} não está no arquivo lido; a última registrada é a de ${mu} (${nomeMinusculo(s.ultima.bandeira, idioma)})`,
+      `${mc} not in the file read; the latest recorded is ${mu} (${nomeMinusculo(s.ultima.bandeira, idioma)})`,
     );
   }
   return tx(`${mc} sem bandeira no arquivo`, `${mc} has no tariff flag in the file`);

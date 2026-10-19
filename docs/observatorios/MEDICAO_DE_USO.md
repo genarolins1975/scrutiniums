@@ -67,7 +67,8 @@ Precedência igual à do Next: segmento fixo vence parâmetro, que vence o resto
 - Bloqueadores de conteúdo podem barrar o envio; a contagem é piso, não censo.
 - Pré-carregamento de links (`prefetch`) não conta: só a página efetivamente aberta.
 - Em desenvolvimento, o modo estrito do React repete efeitos; o componente ignora a repetição do mesmo caminho.
-- Sem conta, só são visitáveis as rotas abertas (`src/lib/rotasPublicas.ts`); quem tenta um painel fechado é levado a `/entrar` e conta como visita a `/entrar`.
+- Sem conta, só são visitáveis as rotas abertas (`src/lib/rotasPublicas.ts`); quem tenta um painel fechado é levado a `/entrar`, que não é contado.
+- **Fora por decisão: as páginas de autenticação** (`/entrar`, `/entrar/sms`, `/entrar/sms/verificar`, `/cadastro` e as irmãs `/en`). Nelas nenhuma requisição além do próprio formulário sai do navegador (testes `i18n-auth-browser` e `i18n-sms-browser`), e o funil de cadastro já tem seção própria no painel (`FORA_DA_MEDICAO` em `src/components/telemetria/MedeUso.tsx`).
 
 ## 5. Retenção proposta
 

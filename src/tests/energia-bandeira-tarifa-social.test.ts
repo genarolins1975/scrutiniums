@@ -32,6 +32,25 @@ const lerJson = <T,>(rel: string): T | null => {
 const conta = lerJson<ContaGold>("public/energia/gold/conta.json");
 const inclusao = lerJson<InclusaoGold>("public/energia/gold/inclusao.json");
 
+/**
+ * Os campos novos (situação da bandeira e regra da Tarifa Social) nascem com a versão do pipeline de 19/10/2026. A gold publicada antes
+ * disso não os tem, e a publicação noturna do Setor Elétrico estava retida desde 30/09/2026: refazer só a Conta de luz e a Inclusão
+ * deixaria a inicial e a Visão geral com outra data para os mesmos números. Gold gerada a partir desta versão tem de trazer os campos;
+ * gold anterior a ela é conferida pelo ramo "gold antiga" dos testes de componente acima.
+ */
+const VERSAO_DOS_CAMPOS = "2026-10-19";
+const geradaComOsCampos = (g: { gerado_em?: string } | null) => !!g?.gerado_em && g.gerado_em.slice(0, 10) >= VERSAO_DOS_CAMPOS;
+
+it("gold anterior à versão dos campos novos não os inventa, e gold posterior não pode faltar com eles", () => {
+  if (conta?.disponivel) {
+    const v = conta.simulador.bandeira_vigente;
+    expect(v?.mes_referencia !== undefined, `conta.json gerado em ${conta.gerado_em}`).toBe(geradaComOsCampos(conta));
+  }
+  if (inclusao?.disponivel) {
+    expect(inclusao.tarifa_social.regra_vigente !== undefined, `inclusao.json gerado em ${inclusao.gerado_em}`).toBe(geradaComOsCampos(inclusao));
+  }
+});
+
 const OUTUBRO: BandeiraVigente = {
   mes: "2026-10",
   bandeira: "Verde",
@@ -68,8 +87,8 @@ describe("bandeira do mês corrente", () => {
     const s = situacaoBandeira(OUTUBRO, "2026-11");
     expect(s.estado).toBe("mes_ausente");
     expect(bandeiraUsada(s)?.mes).toBe("2026-10");
-    expect(fraseBandeira(s, "pt")).toBe("A bandeira de nov/2026 ainda não está no arquivo da ANEEL; a última registrada é a de out/2026 (verde).");
-    expect(fraseBandeira(s, "en")).toBe("The tariff flag for Nov 2026 is not yet in ANEEL's file; the latest recorded is the one for Oct 2026 (green).");
+    expect(fraseBandeira(s, "pt")).toBe("A bandeira de nov/2026 não está no arquivo da ANEEL lido pelo observatório; a última registrada é a de out/2026 (verde).");
+    expect(fraseBandeira(s, "en")).toBe("The tariff flag for Nov 2026 is not in the ANEEL file read by the observatory; the latest recorded is the one for Oct 2026 (green).");
     expect(rotuloBandeira(s, "pt")).not.toContain("corrente (");
     expect(fraseBandeira(s, "pt")).not.toMatch(/vigente/);
   });
@@ -104,7 +123,7 @@ describe("bandeira do mês corrente", () => {
   it("componente: HTML estático com o mês da geração, estado e mês marcados", () => {
     const ausente = renderToStaticMarkup(createElement(BandeiraDoMes, { vigente: OUTUBRO, mesInicial: "2026-11", forma: "frase" }));
     expect(ausente).toContain('data-bandeira-estado="mes_ausente"');
-    expect(ausente).toContain("A bandeira de nov/2026 ainda não está no arquivo da ANEEL; a última registrada é a de out/2026 (verde).");
+    expect(ausente).toContain("A bandeira de nov/2026 não está no arquivo da ANEEL lido pelo observatório; a última registrada é a de out/2026 (verde).");
     expect(ausente).toContain("Fonte: ANEEL, Bandeiras Tarifárias");
     const corrente = renderToStaticMarkup(createElement(BandeiraDoMes, { vigente: OUTUBRO, mesInicial: "2026-10", forma: "rotulo" }));
     expect(corrente).toContain('data-bandeira-estado="corrente"');
@@ -112,7 +131,7 @@ describe("bandeira do mês corrente", () => {
   });
 });
 
-describe.skipIf(!conta?.disponivel)("bandeira na gold e na página da Conta de luz", () => {
+describe.skipIf(!conta?.disponivel || !geradaComOsCampos(conta))("bandeira na gold e na página da Conta de luz", () => {
   it("a gold traz a situação do mês de referência, os meses recentes e a fonte com data", () => {
     const v = conta!.simulador.bandeira_vigente!;
     expect(v.mes_referencia).toBe(conta!.data_referencia.slice(0, 7));
@@ -143,7 +162,7 @@ describe.skipIf(!conta?.disponivel)("bandeira na gold e na página da Conta de l
     const html = renderToStaticMarkup(createElement(ContaDeLuzPage));
     expect(html).toContain('data-bandeira-estado="mes_ausente"');
     expect(html).not.toContain('data-bandeira-estado="corrente"');
-    expect(html).toContain("ainda não está no arquivo da ANEEL; a última registrada é a de");
+    expect(html).toContain("não está no arquivo da ANEEL lido pelo observatório; a última registrada é a de");
   });
 });
 
@@ -242,7 +261,7 @@ describe("Tarifa Social: regra vigente e períodos", () => {
   });
 });
 
-describe.skipIf(!inclusao?.disponivel)("Tarifa Social na gold e na página", () => {
+describe.skipIf(!inclusao?.disponivel || !geradaComOsCampos(inclusao))("Tarifa Social na gold e na página", () => {
   it("a gold tem a regra vigente e a referência posterior a ela (ou a ausência declarada)", () => {
     const ts = inclusao!.tarifa_social;
     const r = ts.regra_vigente!;

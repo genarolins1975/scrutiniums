@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "inclusao.json",
- "gerado_em": "2026-10-19T22:09:51Z",
+ "gerado_em": "2026-10-01T00:28:44Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "6e4b9c360a8c",
+ "versao_codigo": "6d3bc3a2f759+alterado",
  "disponivel": true,
  "referencias": {
   "scs_mes_referencia": "2025-05",
@@ -38,9 +38,9 @@
       "conjunto": "SCS: Sistema de Controle de Subvenções e Programas Sociais",
       "recurso": "sistema-controle-subvencoes-programas-sociais.csv",
       "url": "https://dadosabertos.aneel.gov.br/dataset/942de3e1-0b52-4e41-a6c1-eff9f3b7c7d6/resource/87764789-84c3-4592-a845-cb2b317f6142/download/sistema-controle-subvencoes-programas-sociais.csv",
-      "arquivo": "data/energia/bronze/aneel/aneel_scs/sistema-controle-subvencoes-programas-sociais.csv/20261002T044413Z.a38971c65e8f.csv.gz",
+      "arquivo": "data/energia/bronze/aneel/aneel_scs/sistema-controle-subvencoes-programas-sociais.csv/20260930T223055Z.a38971c65e8f.csv.gz",
       "sha256": "a38971c65e8fb8f5f9fa0a1bb0ec98eb4d3e3813d12f63444ab71187c7022b67",
-      "capturado_em": "2026-10-02T04:44:13Z",
+      "capturado_em": "2026-09-30T22:30:55Z",
       "publicado_em": "2026-09-20T04:01:05Z"
      },
      "extracao_pdf": null,
@@ -59,10 +59,10 @@
      "tratamento_ausencia": "Ausência na fonte não vira zero: o item fica sem valor e fora das somas.",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "6e4b9c360a8c",
-      "publicacao": "2026-10-19T22:09:48Z"
+      "codigo": "6d3bc3a2f759+alterado",
+      "publicacao": "2026-10-01T00:28:42Z"
      },
-     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-19.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
       {
        "nome": "cinco faixas de consumo em cada despacho vigente",
@@ -106,7 +106,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py inclusao --sem-coleta (silver data/energia/silver/aneel_social.db)",
-     "citacao": "SCRUTINIUMS. Unidades consumidoras com Tarifa Social: 17.246.524 unidades consumidoras, Brasil, 05/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SCS: Sistema de Controle de Subvenções e Programas Sociais (recurso sistema-controle-subvencoes-programas-sociais.csv, capturado em 02/10/2026). Versão energia-0.1.0, código 6e4b9c360a8c, publicada em 19/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Unidades consumidoras com Tarifa Social: 17.246.524 unidades consumidoras, Brasil, 05/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SCS: Sistema de Controle de Subvenções e Programas Sociais (recurso sistema-controle-subvencoes-programas-sociais.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "participacao_pct": {
@@ -130,9 +130,9 @@
       "conjunto": "SCS: Sistema de Controle de Subvenções e Programas Sociais",
       "recurso": "sistema-controle-subvencoes-programas-sociais.csv",
       "url": "https://dadosabertos.aneel.gov.br/dataset/942de3e1-0b52-4e41-a6c1-eff9f3b7c7d6/resource/87764789-84c3-4592-a845-cb2b317f6142/download/sistema-controle-subvencoes-programas-sociais.csv",
-      "arquivo": "data/energia/bronze/aneel/aneel_scs/sistema-controle-subvencoes-programas-sociais.csv/20261002T044413Z.a38971c65e8f.csv.gz",
+      "arquivo": "data/energia/bronze/aneel/aneel_scs/sistema-controle-subvencoes-programas-sociais.csv/20260930T223055Z.a38971c65e8f.csv.gz",
       "sha256": "a38971c65e8fb8f5f9fa0a1bb0ec98eb4d3e3813d12f63444ab71187c7022b67",
-      "capturado_em": "2026-10-02T04:44:13Z",
+      "capturado_em": "2026-09-30T22:30:55Z",
       "publicado_em": "2026-09-20T04:01:05Z"
      },
      "extracao_pdf": null,
@@ -157,10 +157,10 @@
      "tratamento_ausencia": "Ausência na fonte não vira zero: o item fica sem valor e fora das somas.",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "6e4b9c360a8c",
-      "publicacao": "2026-10-19T22:09:48Z"
+      "codigo": "6d3bc3a2f759+alterado",
+      "publicacao": "2026-10-01T00:28:42Z"
      },
-     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-19.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
       {
        "nome": "cinco faixas de consumo em cada despacho vigente",
@@ -200,7 +200,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py inclusao --sem-coleta (silver data/energia/silver/aneel_social.db)",
-     "citacao": "SCRUTINIUMS. Participação da Tarifa Social nas UC residenciais: 21,1%, Brasil, 05/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SCS: Sistema de Controle de Subvenções e Programas Sociais (recurso sistema-controle-subvencoes-programas-sociais.csv, capturado em 02/10/2026). Versão energia-0.1.0, código 6e4b9c360a8c, publicada em 19/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Participação da Tarifa Social nas UC residenciais: 21,1%, Brasil, 05/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SCS: Sistema de Controle de Subvenções e Programas Sociais (recurso sistema-controle-subvencoes-programas-sociais.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "dmr_mes_reais": {
@@ -224,9 +224,9 @@
       "conjunto": "SCS: Sistema de Controle de Subvenções e Programas Sociais",
       "recurso": "sistema-controle-subvencoes-programas-sociais.csv",
       "url": "https://dadosabertos.aneel.gov.br/dataset/942de3e1-0b52-4e41-a6c1-eff9f3b7c7d6/resource/87764789-84c3-4592-a845-cb2b317f6142/download/sistema-controle-subvencoes-programas-sociais.csv",
-      "arquivo": "data/energia/bronze/aneel/aneel_scs/sistema-controle-subvencoes-programas-sociais.csv/20261002T044413Z.a38971c65e8f.csv.gz",
+      "arquivo": "data/energia/bronze/aneel/aneel_scs/sistema-controle-subvencoes-programas-sociais.csv/20260930T223055Z.a38971c65e8f.csv.gz",
       "sha256": "a38971c65e8fb8f5f9fa0a1bb0ec98eb4d3e3813d12f63444ab71187c7022b67",
-      "capturado_em": "2026-10-02T04:44:13Z",
+      "capturado_em": "2026-09-30T22:30:55Z",
       "publicado_em": "2026-09-20T04:01:05Z"
      },
      "extracao_pdf": null,
@@ -245,10 +245,10 @@
      "tratamento_ausencia": "Ausência na fonte não vira zero: o item fica sem valor e fora das somas.",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "6e4b9c360a8c",
-      "publicacao": "2026-10-19T22:09:48Z"
+      "codigo": "6d3bc3a2f759+alterado",
+      "publicacao": "2026-10-01T00:28:42Z"
      },
-     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-19.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
       {
        "nome": "cinco faixas de consumo em cada despacho vigente",
@@ -288,7 +288,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py inclusao --sem-coleta (silver data/energia/silver/aneel_social.db)",
-     "citacao": "SCRUTINIUMS. Diferença Mensal de Receita da Tarifa Social: 542.423.515 R$ correntes, Brasil, 05/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SCS: Sistema de Controle de Subvenções e Programas Sociais (recurso sistema-controle-subvencoes-programas-sociais.csv, capturado em 02/10/2026). Versão energia-0.1.0, código 6e4b9c360a8c, publicada em 19/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Diferença Mensal de Receita da Tarifa Social: 542.423.515 R$ correntes, Brasil, 05/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SCS: Sistema de Controle de Subvenções e Programas Sociais (recurso sistema-controle-subvencoes-programas-sociais.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "dmr_12m_reais": {
@@ -336,9 +336,9 @@
       "conjunto": "Beneficiários da CDE",
       "recurso": "cde-beneficiarios-01mar2026.zip",
       "url": "https://dadosabertos.aneel.gov.br/dataset/a7191647-b187-4893-b20a-8954d57ff89c/resource/879116ac-6de8-43ae-bc9d-baf41d265983/download/cde-beneficiarios-01mar2026.zip",
-      "arquivo": "data/energia/bronze/aneel/aneel_cde_beneficiarios/cde-beneficiarios-01mar2026.zip/20261002T045157Z.436dfb6088a4.zip.gz",
+      "arquivo": "data/energia/bronze/aneel/aneel_cde_beneficiarios/cde-beneficiarios-01mar2026.zip/20260930T225346Z.436dfb6088a4.zip.gz",
       "sha256": "436dfb6088a49829aaa2da198a16a6a2345d5c7983ace502b4ebeaaa7bae0daf",
-      "capturado_em": "2026-10-02T04:51:57Z",
+      "capturado_em": "2026-09-30T22:53:46Z",
       "publicado_em": "2026-07-24T17:34:18Z"
      },
      "extracao_pdf": null,
@@ -361,8 +361,8 @@
      "tratamento_ausencia": "Ausência na fonte não vira zero: o item fica sem valor e fora das somas.",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "6e4b9c360a8c",
-      "publicacao": "2026-10-19T22:09:48Z"
+      "codigo": "6d3bc3a2f759+alterado",
+      "publicacao": "2026-10-01T00:28:42Z"
      },
      "revisoes": "Detecção de revisões não disponível para este número.",
      "testes": [
@@ -394,7 +394,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py inclusao --sem-coleta (silver data/energia/silver/aneel_social.db)",
-     "citacao": "SCRUTINIUMS. Faturas com desconto da Tarifa Social: 17.155.135 faturas, Brasil, 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Beneficiários da CDE (recurso cde-beneficiarios-01mar2026.zip, capturado em 02/10/2026). Versão energia-0.1.0, código 6e4b9c360a8c, publicada em 19/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Faturas com desconto da Tarifa Social: 17.155.135 faturas, Brasil, 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Beneficiários da CDE (recurso cde-beneficiarios-01mar2026.zip, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    }
   },
@@ -4367,7 +4367,7 @@
     "participacao_pct": 8.3,
     "dmr_reais": 28329.67,
     "dmr_por_uc_reais": 64.98,
-    "kwh_por_uc": 162.3,
+    "kwh_por_uc": 162.2,
     "variacao_12m_pct": 63.91,
     "despacho": "1979/2025",
     "ufs_mapa": [
@@ -6391,7 +6391,7 @@
     "status_http": "302",
     "location": "https://dadosabertos.aneel.gov.br/dataset/0ffe45bc-b0bc-4c18-99ab-e97e94841418/resource/e6cb4eb6-3ddb-4fc7-8780-29645f9b35cf/download/tarifasocial.csv",
     "conclusao": "laço de redirecionamento: o recurso aponta para a própria URL",
-    "testado_em": "2026-10-03T03:53:21Z"
+    "testado_em": "2026-09-30T22:41:17Z"
    },
    "copia_usada": "https://web.archive.org/web/20240729194517id_/https://dadosabertos.aneel.gov.br/dataset/0ffe45bc-b0bc-4c18-99ab-e97e94841418/resource/e6cb4eb6-3ddb-4fc7-8780-29645f9b35cf/download/tarifasocial.csv",
    "linhas_por_regiao": 145,
@@ -6653,8 +6653,8 @@
      "fim": "2019-03"
     },
     "publicado_pela_fonte_em": "2021-11-30T19:18:37Z",
-    "capturado_em": "2026-10-03T03:53:22Z",
-    "validado_em": "2026-10-19T22:09:48Z",
+    "capturado_em": "2026-09-30T22:41:34Z",
+    "validado_em": "2026-10-01T00:28:42Z",
     "cobertura_historica": {
      "inicio": "2012-03",
      "fim": "2019-03"
@@ -6662,18 +6662,18 @@
     "transformacoes": [],
     "formula": null,
     "snapshot": {
-     "id": "aneel_tarifa_social_antiga@2026-10-03T03:53:22Z",
+     "id": "aneel_tarifa_social_antiga@2026-09-30T22:41:34Z",
      "sha256": "415abe32c1f66975896fc565d949a06b379b7a5600578cc91925774fe66f7867"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "6e4b9c360a8c",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-19T22:09:48Z",
+     "detectado_em": "2026-10-01T00:28:42Z",
      "total": 0,
      "vintages_comparadas": 1,
      "arquivos": 1,
      "recapturas_sem_mudanca": 1,
-     "ultimo_download_ok": "2026-10-03T03:53:22Z",
+     "ultimo_download_ok": "2026-09-30T22:41:34Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -6846,9 +6846,9 @@
      "inicio": "2013",
      "fim": "2026"
     },
-    "publicado_pela_fonte_em": "2026-10-01T05:01:18Z",
-    "capturado_em": "2026-10-03T03:53:25Z",
-    "validado_em": "2026-10-19T22:09:48Z",
+    "publicado_pela_fonte_em": "2026-09-01T05:02:45Z",
+    "capturado_em": "2026-09-30T22:41:44Z",
+    "validado_em": "2026-10-01T00:28:42Z",
     "cobertura_historica": {
      "inicio": "2013",
      "fim": "2026"
@@ -6856,18 +6856,18 @@
     "transformacoes": [],
     "formula": null,
     "snapshot": {
-     "id": "aneel_cde_custeio@2026-10-03T03:53:25Z",
-     "sha256": "79a3c75e4e5390fcd5266be674b5396e8ea7506bbddf7580a318dcf2e91c760e"
+     "id": "aneel_cde_custeio@2026-09-30T22:41:44Z",
+     "sha256": "540e4c7bcf29348da1f4d206d62b7f07c0c4dbaab9d5fcb66f9282c9658bcc84"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "6e4b9c360a8c",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-19T22:09:48Z",
+     "detectado_em": "2026-10-01T00:28:42Z",
      "total": 0,
      "vintages_comparadas": 2,
      "arquivos": 2,
-     "recapturas_sem_mudanca": 2,
-     "ultimo_download_ok": "2026-10-16T02:05:59Z",
+     "recapturas_sem_mudanca": 0,
+     "ultimo_download_ok": "2026-09-30T22:41:44Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -6923,8 +6923,8 @@
      "fim": "2025-05"
     },
     "publicado_pela_fonte_em": "2026-09-20T04:01:05Z",
-    "capturado_em": "2026-10-02T04:44:13Z",
-    "validado_em": "2026-10-19T22:09:48Z",
+    "capturado_em": "2026-09-30T22:30:55Z",
+    "validado_em": "2026-10-01T00:28:42Z",
     "cobertura_historica": {
      "inicio": "2011-12",
      "fim": "2025-06"
@@ -6936,18 +6936,18 @@
     ],
     "formula": null,
     "snapshot": {
-     "id": "aneel_scs@2026-10-02T04:44:13Z",
+     "id": "aneel_scs@2026-09-30T22:30:55Z",
      "sha256": "8e9078e0839af6228cffebe07a5f1f574b11b6a48d5fdd1abe005c21ba79bdf8"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "6e4b9c360a8c",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-19T22:09:48Z",
+     "detectado_em": "2026-10-01T00:28:42Z",
      "total": 0,
      "vintages_comparadas": 2,
      "arquivos": 2,
-     "recapturas_sem_mudanca": 2,
-     "ultimo_download_ok": "2026-10-16T02:05:46Z",
+     "recapturas_sem_mudanca": 0,
+     "ultimo_download_ok": "2026-09-30T22:30:56Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -6957,7 +6957,7 @@
      "A DMR é a receita que a distribuidora deixa de cobrar e recebe da CDE; não é o desconto por família."
     ],
     "download": "/energia/series/inclusao_tsee_mensal.csv",
-    "notas_fonte": null
+    "notas_fonte": "As distribuidoras de energia elétrica devem mensalmente encaminhar relatório solicitando a aprovação dos valores de Diferença Mensal de Receita - DMR referentes aos descontos na tarifa de energia elétrica concedidos aos consumidores da subclasse residencial baixa renda."
    },
    "participacao": {
     "indicador": "Participação da Tarifa Social nas UC residenciais",
@@ -6977,8 +6977,8 @@
      "fim": "2025-05"
     },
     "publicado_pela_fonte_em": "2026-09-20T04:01:05Z",
-    "capturado_em": "2026-10-02T04:44:13Z",
-    "validado_em": "2026-10-19T22:09:48Z",
+    "capturado_em": "2026-09-30T22:30:55Z",
+    "validado_em": "2026-10-01T00:28:42Z",
     "cobertura_historica": {
      "inicio": "2011-12",
      "fim": "2025-06"
@@ -6989,18 +6989,18 @@
     ],
     "formula": "participação = 100 × Σ UC com Tarifa Social ÷ Σ UC residenciais, somente distribuidoras com total residencial consistente no mês",
     "snapshot": {
-     "id": "aneel_scs@2026-10-02T04:44:13Z",
+     "id": "aneel_scs@2026-09-30T22:30:55Z",
      "sha256": "8e9078e0839af6228cffebe07a5f1f574b11b6a48d5fdd1abe005c21ba79bdf8"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "6e4b9c360a8c",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-19T22:09:48Z",
+     "detectado_em": "2026-10-01T00:28:42Z",
      "total": 0,
      "vintages_comparadas": 2,
      "arquivos": 2,
-     "recapturas_sem_mudanca": 2,
-     "ultimo_download_ok": "2026-10-16T02:05:46Z",
+     "recapturas_sem_mudanca": 0,
+     "ultimo_download_ok": "2026-09-30T22:30:56Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -7031,8 +7031,8 @@
      "fim": "2026-03"
     },
     "publicado_pela_fonte_em": "2026-07-24T17:39:16Z",
-    "capturado_em": "2026-10-03T03:53:10Z",
-    "validado_em": "2026-10-19T22:09:49Z",
+    "capturado_em": "2026-10-01T00:09:07Z",
+    "validado_em": "2026-10-01T00:28:43Z",
     "cobertura_historica": {
      "inicio": "2025-05",
      "fim": "2026-05"
@@ -7044,18 +7044,18 @@
     ],
     "formula": "faturas = número de linhas com DscTipoSubsidio = SubsBaixaRenda, IdcTipoFaturamento = 1 e subclasse 3.2 a 3.6, por município; desconto = soma de VlrSubsidio dessas linhas; desconto líquido = soma de VlrSubsidio das subclasses 3.2 a 3.6 nos tipos 1 a 4; desconto médio por fatura = desconto ÷ faturas",
     "snapshot": {
-     "id": "aneel_cde_beneficiarios@2026-10-03T03:53:10Z",
+     "id": "aneel_cde_beneficiarios@2026-10-01T00:09:07Z",
      "sha256": "965e05f285472ac12f491672f3fc181811bdc49f25721cf9dbc4579a99a7357a"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "6e4b9c360a8c",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-19T22:09:49Z",
+     "detectado_em": "2026-10-01T00:28:43Z",
      "total": 0,
      "vintages_comparadas": 14,
      "arquivos": 14,
      "recapturas_sem_mudanca": 0,
-     "ultimo_download_ok": "2026-10-03T03:53:16Z",
+     "ultimo_download_ok": "2026-10-01T00:09:14Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -7064,7 +7064,6 @@
      "O arquivo mais recente pode não trazer todas as distribuidoras; o mês do mapa é o mais recente com cobertura de pelo menos 99,5% das UC do SCS. Meses sondados abaixo desse mínimo não guardam o original e publicam só a cobertura.",
      "Linhas com código de município em formato inválido ou inexistente na lista de municípios do IBGE entram no total nacional mas não no mapa.",
      "A série mensal da CDE começa no último mês completo do SCS (mai/2025) e vai até o mês do mapa; meses anteriores não foram processados (o SCS cobre o período).",
-     "O arquivo desta ficha traz o mapa por município; a série mensal por UF está em /energia/series/inclusao_cde_mensal_uf.csv.",
      "Faturas não são UC: em mai/2025 o arquivo tem 2,12% de diferença nas faturas contra as UC do SCS das mesmas distribuidoras. Maior diferença entre distribuidoras com 1.000 UC ou mais: CEMIG-D, 12,35%. Entre as menores, CERES, 299,08% (436 UC no SCS e 1.740 faturas)."
     ],
     "download": "/energia/series/inclusao_municipios.csv",
@@ -7088,8 +7087,8 @@
      "fim": "2019-03"
     },
     "publicado_pela_fonte_em": "2021-11-30T19:18:37Z",
-    "capturado_em": "2026-10-03T03:53:22Z",
-    "validado_em": "2026-10-19T22:09:48Z",
+    "capturado_em": "2026-09-30T22:41:34Z",
+    "validado_em": "2026-10-01T00:28:42Z",
     "cobertura_historica": {
      "inicio": "2012-03",
      "fim": "2019-03"
@@ -7097,18 +7096,18 @@
     "transformacoes": [],
     "formula": null,
     "snapshot": {
-     "id": "aneel_tarifa_social_antiga@2026-10-03T03:53:22Z",
+     "id": "aneel_tarifa_social_antiga@2026-09-30T22:41:34Z",
      "sha256": "415abe32c1f66975896fc565d949a06b379b7a5600578cc91925774fe66f7867"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "6e4b9c360a8c",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-19T22:09:48Z",
+     "detectado_em": "2026-10-01T00:28:42Z",
      "total": 0,
      "vintages_comparadas": 1,
      "arquivos": 1,
      "recapturas_sem_mudanca": 1,
-     "ultimo_download_ok": "2026-10-03T03:53:22Z",
+     "ultimo_download_ok": "2026-09-30T22:41:34Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -7136,9 +7135,9 @@
      "inicio": "2013",
      "fim": "2026"
     },
-    "publicado_pela_fonte_em": "2026-10-01T05:01:18Z",
-    "capturado_em": "2026-10-03T03:53:25Z",
-    "validado_em": "2026-10-19T22:09:48Z",
+    "publicado_pela_fonte_em": "2026-09-01T05:02:45Z",
+    "capturado_em": "2026-09-30T22:41:44Z",
+    "validado_em": "2026-10-01T00:28:42Z",
     "cobertura_historica": {
      "inicio": "2013",
      "fim": "2026"
@@ -7146,18 +7145,18 @@
     "transformacoes": [],
     "formula": null,
     "snapshot": {
-     "id": "aneel_cde_custeio@2026-10-03T03:53:25Z",
-     "sha256": "79a3c75e4e5390fcd5266be674b5396e8ea7506bbddf7580a318dcf2e91c760e"
+     "id": "aneel_cde_custeio@2026-09-30T22:41:44Z",
+     "sha256": "540e4c7bcf29348da1f4d206d62b7f07c0c4dbaab9d5fcb66f9282c9658bcc84"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "6e4b9c360a8c",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-19T22:09:48Z",
+     "detectado_em": "2026-10-01T00:28:42Z",
      "total": 0,
      "vintages_comparadas": 2,
      "arquivos": 2,
-     "recapturas_sem_mudanca": 2,
-     "ultimo_download_ok": "2026-10-16T02:05:59Z",
+     "recapturas_sem_mudanca": 0,
+     "ultimo_download_ok": "2026-09-30T22:41:44Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -7168,80 +7167,6 @@
     "download": "/energia/series/inclusao_cde_custeio.csv",
     "notas_fonte": null
    }
-  },
-  "regra_vigente": {
-   "rotulo": "Gratuidade até 80 kWh por mês",
-   "descricao": "Desconto de 100% sobre a parcela do consumo até 80 kWh por mês e nenhum desconto sobre a parcela acima disso.",
-   "ato": "Medida Provisória nº 1.300, de 21 de maio de 2025",
-   "ato_curto": "MPV nº 1.300/2025",
-   "ato_data": "2025-05-21",
-   "vigencia": "2025-07-05",
-   "vigencia_texto": "faturas emitidas a partir de 5 de julho de 2025",
-   "lei": "Lei nº 15.235, de 8 de outubro de 2025",
-   "lei_data": "2025-10-08",
-   "lei_url": "https://www2.camara.leg.br/legin/fed/lei/2025/lei-15235-8-outubro-2025-798121-publicacaooriginal-176682-pl.html",
-   "fonte": "https://www.gov.br/aneel/pt-br/assuntos/tarifas/tarifa-social",
-   "regra_anterior": "Descontos progressivos: 65% até 30 kWh, 40% de 31 a 100 kWh, 10% de 101 a 220 kWh e nenhum acima de 220 kWh; para indígenas e quilombolas, 100% até 50 kWh e 40% nos 50 kWh seguintes.",
-   "conferencia": [
-    {
-     "norma": "lei_15235_2025",
-     "titulo": "Lei nº 15.235, de 8 de outubro de 2025 (publicação original)",
-     "estado": "CONFERIDA",
-     "conferido_em": "2026-10-02T04:43:59Z",
-     "url": "https://www2.camara.leg.br/legin/fed/lei/2025/lei-15235-8-outubro-2025-798121-publicacaooriginal-176682-pl.html"
-    },
-    {
-     "norma": "aneel_tarifa_social",
-     "titulo": "ANEEL: página Tarifa Social",
-     "estado": "CONFERIDA",
-     "conferido_em": "2026-10-16T02:04:53Z",
-     "url": "https://www.gov.br/aneel/pt-br/assuntos/tarifas/tarifa-social"
-    }
-   ],
-   "mes_transicao": "2025-07",
-   "primeiro_mes_inteiro": "2025-08"
-  },
-  "periodos_da_regra": {
-   "antes": {
-    "fonte": "SCS",
-    "unidade": "UC",
-    "mes": "2025-05",
-    "uc_tsee": 17246524.0,
-    "dmr_reais": 542423514.83
-   },
-   "antes_cde": {
-    "fonte": "Beneficiários da CDE",
-    "unidade": "faturas",
-    "mes": "2025-06",
-    "recurso": "Beneficiários da CDE - jun/25",
-    "distribuidoras": 103,
-    "faturas_tsee": 17622377.0,
-    "desconto_faturas_reais": 446029082.41,
-    "desconto_medio_por_fatura_reais": 25.31
-   },
-   "transicao": {
-    "mes": "2025-07",
-    "no_arquivo": true,
-    "nota": "O arquivo deste mês mistura faturas emitidas antes e depois da mudança e não entra em nenhum dos dois lados."
-   },
-   "depois": {
-    "fonte": "Beneficiários da CDE",
-    "unidade": "faturas",
-    "mes": "2026-03",
-    "recurso": "cde-beneficiarios-01mar2026.zip",
-    "distribuidoras": 103,
-    "faturas_tsee": 17155135.0,
-    "desconto_faturas_reais": 787959101.55,
-    "desconto_medio_por_fatura_reais": 45.93,
-    "meses_completos_depois": [
-     "2025-08",
-     "2025-11",
-     "2025-12",
-     "2026-03"
-    ]
-   },
-   "mes_referencia_pos_regra": "2026-03",
-   "motivo_sem_depois": null
   }
  },
  "cobertura": {
@@ -7307,23 +7232,23 @@
      "conjunto": "Beneficiários da CDE (numerador) e Cadastro Único por município, MI Social (denominador)",
      "recurso": "cde-beneficiarios-01mar2026.zip",
      "url": "https://dadosabertos.aneel.gov.br/dataset/beneficiarios-da-cde",
-     "arquivo": "data/energia/bronze/aneel/aneel_cde_beneficiarios/cde-beneficiarios-01mar2026.zip/20261002T045157Z.436dfb6088a4.zip.gz",
+     "arquivo": "data/energia/bronze/aneel/aneel_cde_beneficiarios/cde-beneficiarios-01mar2026.zip/20260930T225346Z.436dfb6088a4.zip.gz",
      "sha256": "436dfb6088a49829aaa2da198a16a6a2345d5c7983ace502b4ebeaaa7bae0daf",
-     "capturado_em": "2026-10-02T04:51:57Z",
+     "capturado_em": "2026-09-30T22:53:46Z",
      "publicado_em": "2026-07-24T17:34:18Z",
      "arquivos": [
       {
        "recurso": "cde-beneficiarios-01mar2026.zip",
-       "arquivo": "data/energia/bronze/aneel/aneel_cde_beneficiarios/cde-beneficiarios-01mar2026.zip/20261002T045157Z.436dfb6088a4.zip.gz",
+       "arquivo": "data/energia/bronze/aneel/aneel_cde_beneficiarios/cde-beneficiarios-01mar2026.zip/20260930T225346Z.436dfb6088a4.zip.gz",
        "sha256": "436dfb6088a49829aaa2da198a16a6a2345d5c7983ace502b4ebeaaa7bae0daf",
-       "capturado_em": "2026-10-02T04:51:57Z",
+       "capturado_em": "2026-09-30T22:53:46Z",
        "publicado_em": "2026-07-24T17:34:18Z"
       },
       {
        "recurso": "municipios_2026-03",
-       "arquivo": "data/energia/bronze/mds/mds_cadunico/municipios_2026-03/20261003T035345Z.fa58c31ef321.csv.gz",
-       "sha256": "fa58c31ef321dd0301e62affdd252e477632fc69623fac9c5dbaa1ca950a2a7d",
-       "capturado_em": "2026-10-03T03:53:45Z",
+       "arquivo": "data/energia/bronze/mds/mds_cadunico/municipios_2026-03/20260930T225413Z.713be3fb0895.csv.gz",
+       "sha256": "713be3fb089591da7e23cd977d36faf9b8a889e78218126f25f7e380db1f9b9b",
+       "capturado_em": "2026-09-30T22:54:13Z",
        "publicado_em": null
       }
      ]
@@ -7354,8 +7279,8 @@
     "tratamento_ausencia": "Ausência na fonte não vira zero: o item fica sem valor e fora das somas.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "6e4b9c360a8c",
-     "publicacao": "2026-10-19T22:09:50Z"
+     "codigo": "6d3bc3a2f759+alterado",
+     "publicacao": "2026-10-01T00:28:44Z"
     },
     "revisoes": "Detecção de revisões não disponível para este número.",
     "testes": [
@@ -7387,7 +7312,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py inclusao --sem-coleta (silver data/energia/silver/aneel_social.db)",
-    "citacao": "SCRUTINIUMS. Razão entre faturas com desconto da Tarifa Social e famílias elegíveis pela renda (proxy de cobertura): 67,8 faturas com desconto da Tarifa Social por 100 famílias elegíveis pelo critério de renda, Brasil, 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL e MDS, Beneficiários da CDE (numerador) e Cadastro Único por município, MI Social (denominador) (recurso cde-beneficiarios-01mar2026.zip, capturado em 02/10/2026). Versão energia-0.1.0, código 6e4b9c360a8c, publicada em 19/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Razão entre faturas com desconto da Tarifa Social e famílias elegíveis pela renda (proxy de cobertura): 67,8 faturas com desconto da Tarifa Social por 100 famílias elegíveis pelo critério de renda, Brasil, 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL e MDS, Beneficiários da CDE (numerador) e Cadastro Único por município, MI Social (denominador) (recurso cde-beneficiarios-01mar2026.zip, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   "ufs": [
@@ -7792,8 +7717,8 @@
      "fim": "2026-03"
     },
     "publicado_pela_fonte_em": null,
-    "capturado_em": "2026-10-16T02:06:12Z",
-    "validado_em": "2026-10-19T22:09:50Z",
+    "capturado_em": "2026-09-30T22:54:18Z",
+    "validado_em": "2026-10-01T00:28:44Z",
     "cobertura_historica": {
      "inicio": "2015-04",
      "fim": "2025-05"
@@ -7806,18 +7731,18 @@
     ],
     "formula": "razão = 100 × UC (ou faturas) com Tarifa Social ÷ famílias do Cadastro Único com renda per capita até ½ salário mínimo (atualizadas; faixa de sensibilidade com todas as cadastradas)",
     "snapshot": {
-     "id": "mds_cadunico@2026-10-16T02:06:12Z",
-     "sha256": "1a53183fb3fc228e10757a0ef11cb2e8a95f6e3d65c931d86cabae2c29f590f8"
+     "id": "mds_cadunico@2026-09-30T22:54:18Z",
+     "sha256": "34ec19cfbcb0e3bb67a606af56299dd90144f5a375325baa46d1b8e5793ef63a"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "6e4b9c360a8c",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-19T22:09:50Z",
+     "detectado_em": "2026-10-01T00:28:44Z",
      "total": 0,
-     "vintages_comparadas": 3,
-     "arquivos": 2,
+     "vintages_comparadas": 5,
+     "arquivos": 5,
      "recapturas_sem_mudanca": 0,
-     "ultimo_download_ok": "2026-10-16T02:06:12Z",
+     "ultimo_download_ok": "2026-09-30T22:54:18Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -13634,23 +13559,23 @@
      "conjunto": "POF 2017-2018, microdados",
      "recurso": "Dados_20230713.zip",
      "url": "https://ftp.ibge.gov.br/Orcamentos_Familiares/Pesquisa_de_Orcamentos_Familiares_2017_2018/Microdados/Dados_20230713.zip",
-     "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Dados_20230713.zip/20261003T035401Z.f5b71f854523.zip.gz",
+     "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Dados_20230713.zip/20260930T225430Z.f5b71f854523.zip.gz",
      "sha256": "f5b71f85452345e6e82caee15c70578c948981d8a8e5f99bd90ec60fac5b7932",
-     "capturado_em": "2026-10-03T03:54:01Z",
+     "capturado_em": "2026-09-30T22:54:30Z",
      "publicado_em": null,
      "arquivos": [
       {
        "recurso": "Dados_20230713.zip",
-       "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Dados_20230713.zip/20261003T035401Z.f5b71f854523.zip.gz",
+       "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Dados_20230713.zip/20260930T225430Z.f5b71f854523.zip.gz",
        "sha256": "f5b71f85452345e6e82caee15c70578c948981d8a8e5f99bd90ec60fac5b7932",
-       "capturado_em": "2026-10-03T03:54:01Z",
+       "capturado_em": "2026-09-30T22:54:30Z",
        "publicado_em": null
       },
       {
        "recurso": "Tradutores_20230713.zip",
-       "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Tradutores_20230713.zip/20261003T035407Z.7589e60701db.zip.gz",
+       "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Tradutores_20230713.zip/20260930T225437Z.7589e60701db.zip.gz",
        "sha256": "7589e60701db494e70af87a98459904df7f70adef8d3be1de05ed54b0610d430",
-       "capturado_em": "2026-10-03T03:54:07Z",
+       "capturado_em": "2026-09-30T22:54:37Z",
        "publicado_em": null
       }
      ]
@@ -13674,8 +13599,8 @@
     "tratamento_ausencia": "Estimativa com coeficiente de variação acima de 30% é suprimida (fica sem valor); entre 15% e 30% é publicada com aviso.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "6e4b9c360a8c",
-     "publicacao": "2026-10-19T22:09:50Z"
+     "codigo": "6d3bc3a2f759+alterado",
+     "publicacao": "2026-10-01T00:28:44Z"
     },
     "revisoes": "Microdados de 13/07/2023; revisões anteriores do IBGE não são reconstituídas.",
     "testes": [
@@ -13712,7 +13637,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py inclusao --sem-coleta (silver data/energia/silver/aneel_social.db)",
-    "citacao": "SCRUTINIUMS. Peso da energia no orçamento (POF 2017-2018): 6,9%, Brasil, famílias com rendimento total até R$ 1.908 (valores de 15/01/2018), 07/2017 a 07/2018. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: IBGE, POF 2017-2018, microdados (recurso Dados_20230713.zip, capturado em 03/10/2026). Versão energia-0.1.0, código 6e4b9c360a8c, publicada em 19/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Peso da energia no orçamento (POF 2017-2018): 6,9%, Brasil, famílias com rendimento total até R$ 1.908 (valores de 15/01/2018), 07/2017 a 07/2018. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: IBGE, POF 2017-2018, microdados (recurso Dados_20230713.zip, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "media_razoes_desp_brasil": {
     "indicador": "Peso da energia no orçamento (POF 2017-2018)",
@@ -13731,23 +13656,23 @@
      "conjunto": "POF 2017-2018, microdados",
      "recurso": "Dados_20230713.zip",
      "url": "https://ftp.ibge.gov.br/Orcamentos_Familiares/Pesquisa_de_Orcamentos_Familiares_2017_2018/Microdados/Dados_20230713.zip",
-     "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Dados_20230713.zip/20261003T035401Z.f5b71f854523.zip.gz",
+     "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Dados_20230713.zip/20260930T225430Z.f5b71f854523.zip.gz",
      "sha256": "f5b71f85452345e6e82caee15c70578c948981d8a8e5f99bd90ec60fac5b7932",
-     "capturado_em": "2026-10-03T03:54:01Z",
+     "capturado_em": "2026-09-30T22:54:30Z",
      "publicado_em": null,
      "arquivos": [
       {
        "recurso": "Dados_20230713.zip",
-       "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Dados_20230713.zip/20261003T035401Z.f5b71f854523.zip.gz",
+       "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Dados_20230713.zip/20260930T225430Z.f5b71f854523.zip.gz",
        "sha256": "f5b71f85452345e6e82caee15c70578c948981d8a8e5f99bd90ec60fac5b7932",
-       "capturado_em": "2026-10-03T03:54:01Z",
+       "capturado_em": "2026-09-30T22:54:30Z",
        "publicado_em": null
       },
       {
        "recurso": "Tradutores_20230713.zip",
-       "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Tradutores_20230713.zip/20261003T035407Z.7589e60701db.zip.gz",
+       "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Tradutores_20230713.zip/20260930T225437Z.7589e60701db.zip.gz",
        "sha256": "7589e60701db494e70af87a98459904df7f70adef8d3be1de05ed54b0610d430",
-       "capturado_em": "2026-10-03T03:54:07Z",
+       "capturado_em": "2026-09-30T22:54:37Z",
        "publicado_em": null
       }
      ]
@@ -13771,8 +13696,8 @@
     "tratamento_ausencia": "Estimativa com coeficiente de variação acima de 30% é suprimida (fica sem valor); entre 15% e 30% é publicada com aviso.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "6e4b9c360a8c",
-     "publicacao": "2026-10-19T22:09:50Z"
+     "codigo": "6d3bc3a2f759+alterado",
+     "publicacao": "2026-10-01T00:28:44Z"
     },
     "revisoes": "Microdados de 13/07/2023; revisões anteriores do IBGE não são reconstituídas.",
     "testes": [
@@ -13804,7 +13729,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py inclusao --sem-coleta (silver data/energia/silver/aneel_social.db)",
-    "citacao": "SCRUTINIUMS. Peso da energia no orçamento (POF 2017-2018): 3,8%, Brasil, todas as famílias, 07/2017 a 07/2018. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: IBGE, POF 2017-2018, microdados (recurso Dados_20230713.zip, capturado em 03/10/2026). Versão energia-0.1.0, código 6e4b9c360a8c, publicada em 19/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Peso da energia no orçamento (POF 2017-2018): 3,8%, Brasil, todas as famílias, 07/2017 a 07/2018. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: IBGE, POF 2017-2018, microdados (recurso Dados_20230713.zip, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "razao_medias_brasil": {
     "indicador": "Peso da energia no orçamento (POF 2017-2018)",
@@ -13823,23 +13748,23 @@
      "conjunto": "POF 2017-2018, microdados",
      "recurso": "Dados_20230713.zip",
      "url": "https://ftp.ibge.gov.br/Orcamentos_Familiares/Pesquisa_de_Orcamentos_Familiares_2017_2018/Microdados/Dados_20230713.zip",
-     "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Dados_20230713.zip/20261003T035401Z.f5b71f854523.zip.gz",
+     "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Dados_20230713.zip/20260930T225430Z.f5b71f854523.zip.gz",
      "sha256": "f5b71f85452345e6e82caee15c70578c948981d8a8e5f99bd90ec60fac5b7932",
-     "capturado_em": "2026-10-03T03:54:01Z",
+     "capturado_em": "2026-09-30T22:54:30Z",
      "publicado_em": null,
      "arquivos": [
       {
        "recurso": "Dados_20230713.zip",
-       "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Dados_20230713.zip/20261003T035401Z.f5b71f854523.zip.gz",
+       "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Dados_20230713.zip/20260930T225430Z.f5b71f854523.zip.gz",
        "sha256": "f5b71f85452345e6e82caee15c70578c948981d8a8e5f99bd90ec60fac5b7932",
-       "capturado_em": "2026-10-03T03:54:01Z",
+       "capturado_em": "2026-09-30T22:54:30Z",
        "publicado_em": null
       },
       {
        "recurso": "Tradutores_20230713.zip",
-       "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Tradutores_20230713.zip/20261003T035407Z.7589e60701db.zip.gz",
+       "arquivo": "data/energia/bronze/ibge/ibge_pof_microdados/Tradutores_20230713.zip/20260930T225437Z.7589e60701db.zip.gz",
        "sha256": "7589e60701db494e70af87a98459904df7f70adef8d3be1de05ed54b0610d430",
-       "capturado_em": "2026-10-03T03:54:07Z",
+       "capturado_em": "2026-09-30T22:54:37Z",
        "publicado_em": null
       }
      ]
@@ -13861,8 +13786,8 @@
     "tratamento_ausencia": "Estimativa com coeficiente de variação acima de 30% é suprimida (fica sem valor); entre 15% e 30% é publicada com aviso.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "6e4b9c360a8c",
-     "publicacao": "2026-10-19T22:09:50Z"
+     "codigo": "6d3bc3a2f759+alterado",
+     "publicacao": "2026-10-01T00:28:44Z"
     },
     "revisoes": "Microdados de 13/07/2023; revisões anteriores do IBGE não são reconstituídas.",
     "testes": [
@@ -13894,7 +13819,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py inclusao --sem-coleta (silver data/energia/silver/aneel_social.db)",
-    "citacao": "SCRUTINIUMS. Peso da energia no orçamento (POF 2017-2018): 2,5%, Brasil, todas as famílias, 07/2017 a 07/2018. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: IBGE, POF 2017-2018, microdados (recurso Dados_20230713.zip, capturado em 03/10/2026). Versão energia-0.1.0, código 6e4b9c360a8c, publicada em 19/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Peso da energia no orçamento (POF 2017-2018): 2,5%, Brasil, todas as famílias, 07/2017 a 07/2018. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: IBGE, POF 2017-2018, microdados (recurso Dados_20230713.zip, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   "sensibilidade_media_razoes_renda": {
@@ -13982,8 +13907,8 @@
      "fim": "2018-07"
     },
     "publicado_pela_fonte_em": null,
-    "capturado_em": "2026-10-03T03:53:48Z",
-    "validado_em": "2026-10-19T22:09:50Z",
+    "capturado_em": "2026-09-30T22:54:19Z",
+    "validado_em": "2026-10-01T00:28:44Z",
     "cobertura_historica": {
      "inicio": "2017-07",
      "fim": "2018-07"
@@ -13993,18 +13918,18 @@
     ],
     "formula": null,
     "snapshot": {
-     "id": "ibge_pof_6715@2026-10-03T03:53:48Z",
+     "id": "ibge_pof_6715@2026-09-30T22:54:19Z",
      "sha256": "5ade2c1272a31df9609ae0dc8d6bb8b80f0122c71e0b8a6c69e103f23faa76b5"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "6e4b9c360a8c",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-19T22:09:50Z",
+     "detectado_em": "2026-10-01T00:28:44Z",
      "total": 0,
      "vintages_comparadas": 1,
      "arquivos": 1,
      "recapturas_sem_mudanca": 0,
-     "ultimo_download_ok": "2026-10-03T03:53:48Z",
+     "ultimo_download_ok": "2026-09-30T22:54:19Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -14033,8 +13958,8 @@
      "fim": "2018-07"
     },
     "publicado_pela_fonte_em": null,
-    "capturado_em": "2026-10-03T03:54:07Z",
-    "validado_em": "2026-10-19T22:09:50Z",
+    "capturado_em": "2026-09-30T22:54:37Z",
+    "validado_em": "2026-10-01T00:28:44Z",
     "cobertura_historica": {
      "inicio": "2017-07",
      "fim": "2018-07"
@@ -14046,18 +13971,18 @@
     ],
     "formula": "despesa da família = Σ valor deflacionado × fator de anualização (× meses nos quadros mensais) ÷ 12, códigos do tradutor da despesa geral; média das razões = Σ w·(energia ÷ despesa) ÷ Σ w; razão de médias = Σ w·energia ÷ Σ w·despesa; erro-padrão por linearização com estrato e UPA",
     "snapshot": {
-     "id": "ibge_pof_microdados@2026-10-03T03:54:07Z",
+     "id": "ibge_pof_microdados@2026-09-30T22:54:37Z",
      "sha256": "21458bdd8bd23554815fcf0a7c12e60bf1388dcc62f404904c66912021d45adc"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "6e4b9c360a8c",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-19T22:09:50Z",
+     "detectado_em": "2026-10-01T00:28:44Z",
      "total": 0,
      "vintages_comparadas": 2,
      "arquivos": 2,
      "recapturas_sem_mudanca": 0,
-     "ultimo_download_ok": "2026-10-03T03:54:07Z",
+     "ultimo_download_ok": "2026-09-30T22:54:37Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -16353,23 +16278,23 @@
     "conjunto": "PNAD Contínua anual, tabelas 6731 e 6737",
     "recurso": "tabela_6737",
     "url": "https://apisidra.ibge.gov.br/values/t/6737/n1/all/n2/all/n3/all/v/5157,5160,5074,5077/p/all/c1/all/c827/all",
-    "arquivo": "data/energia/bronze/ibge/ibge_pnadc_energia/tabela_6737/20261003T035425Z.6373254dc8ff.json.gz",
+    "arquivo": "data/energia/bronze/ibge/ibge_pnadc_energia/tabela_6737/20260930T224146Z.6373254dc8ff.json.gz",
     "sha256": "6373254dc8ff21cb59fe497c90020b20d9ac28b38188b46eb52e8faa835fd5f2",
-    "capturado_em": "2026-10-03T03:54:25Z",
+    "capturado_em": "2026-09-30T22:41:46Z",
     "publicado_em": null,
     "arquivos": [
      {
       "recurso": "tabela_6737",
-      "arquivo": "data/energia/bronze/ibge/ibge_pnadc_energia/tabela_6737/20261003T035425Z.6373254dc8ff.json.gz",
+      "arquivo": "data/energia/bronze/ibge/ibge_pnadc_energia/tabela_6737/20260930T224146Z.6373254dc8ff.json.gz",
       "sha256": "6373254dc8ff21cb59fe497c90020b20d9ac28b38188b46eb52e8faa835fd5f2",
-      "capturado_em": "2026-10-03T03:54:25Z",
+      "capturado_em": "2026-09-30T22:41:46Z",
       "publicado_em": null
      },
      {
       "recurso": "tabela_6731",
-      "arquivo": "data/energia/bronze/ibge/ibge_pnadc_energia/tabela_6731/20261003T035428Z.45ead625a313.json.gz",
+      "arquivo": "data/energia/bronze/ibge/ibge_pnadc_energia/tabela_6731/20260930T224150Z.45ead625a313.json.gz",
       "sha256": "45ead625a313da7ee4e31e15710e7c078cf150107d0e9a82bcef91f3eecd6f4b",
-      "capturado_em": "2026-10-03T03:54:28Z",
+      "capturado_em": "2026-09-30T22:41:50Z",
       "publicado_em": null
      }
     ]
@@ -16391,8 +16316,8 @@
    "tratamento_ausencia": "Diferença entre duas estimativas publicadas em mil domicílios; sem erro-padrão publicado para a diferença.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6e4b9c360a8c",
-    "publicacao": "2026-10-19T22:09:50Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:28:44Z"
    },
    "revisoes": "Reponderações do IBGE não são reconstituídas: vale a tabela vigente no SIDRA na data da captura.",
    "testes": [
@@ -16415,7 +16340,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py inclusao --sem-coleta (silver data/energia/silver/aneel_social.db)",
-   "citacao": "SCRUTINIUMS. Domicílios sem energia elétrica: 135 mil domicílios, Brasil, 2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: IBGE, PNAD Contínua anual, tabelas 6731 e 6737 (recurso tabela_6737, capturado em 03/10/2026). Versão energia-0.1.0, código 6e4b9c360a8c, publicada em 19/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Domicílios sem energia elétrica: 135 mil domicílios, Brasil, 2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: IBGE, PNAD Contínua anual, tabelas 6731 e 6737 (recurso tabela_6737, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "sistemas_isolados": {
    "ciclo": "2025",
@@ -16891,9 +16816,9 @@
    "conferencia_pdf": {
     "documento": "EPE, Planejamento do Atendimento aos Sistemas Isolados, Ciclo 2025 (caderno em PDF)",
     "url": "https://www.epe.gov.br/sites-pt/publicacoes-dados-abertos/publicacoes/PublicacoesArquivos/publicacao-942/Caderno_Planejamento%20SISOL_2025_FINAL.pdf",
-    "arquivo": "data/energia/bronze/epe/epe_pasi_localidades/caderno_planejamento_sisol_ciclo_2025.pdf/20261003T035440Z.24db9c3ae0ea.pdf.gz",
+    "arquivo": "data/energia/bronze/epe/epe_pasi_localidades/caderno_planejamento_sisol_ciclo_2025.pdf/20260930T225550Z.24db9c3ae0ea.pdf.gz",
     "sha256": "24db9c3ae0eac20a6b9e332ca56715b5cad9a28ca570bf93f471d9bd655a6d5b",
-    "capturado_em": "2026-10-03T03:54:40Z",
+    "capturado_em": "2026-09-30T22:55:50Z",
     "pagina": 11,
     "extracao": "pdftotext -layout; expressões regulares sobre o texto ('totaliza N ... (M localidades)' e o quadro TOTAL ... milhões de pessoas)",
     "localidades_pdf": 160,
@@ -16922,9 +16847,9 @@
      "conjunto": "PASI: Localização Geográfica das localidades isoladas",
      "recurso": "localizacao_ciclo_2025",
      "url": "https://pasi.epe.gov.br/Downloads/ExportarDadosLocalizacaoLocalidades?codCicloColeta=9&codUF=&codDistribuidora=&codLocalidade=",
-     "arquivo": "data/energia/bronze/epe/epe_pasi_localidades/localizacao_ciclo_2025/20261016T020630Z.bda796c7bc3f.xlsx.gz",
-     "sha256": "bda796c7bc3f284b8fca6c5abbf0980b0927ddcdc3364ff71100e0cc43ebe813",
-     "capturado_em": "2026-10-16T02:06:30Z",
+     "arquivo": "data/energia/bronze/epe/epe_pasi_localidades/localizacao_ciclo_2025/20260930T224155Z.ec0cc3f607e8.xlsx.gz",
+     "sha256": "ec0cc3f607e82c611a7ce68135c4521d9d84ac9416d7365c234e4f0e98874c19",
+     "capturado_em": "2026-09-30T22:41:55Z",
      "publicado_em": null
     },
     "extracao_pdf": null,
@@ -16946,10 +16871,10 @@
     "tratamento_ausencia": "Localidade sem população na fonte fica fora da soma e é contada à parte; o total nunca a trata como zero.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "6e4b9c360a8c",
-     "publicacao": "2026-10-19T22:09:50Z"
+     "codigo": "6d3bc3a2f759+alterado",
+     "publicacao": "2026-10-01T00:28:44Z"
     },
-    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-19.",
+    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
     "testes": [
      {
       "nome": "soma das UF igual ao total do ciclo",
@@ -16974,7 +16899,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py inclusao --sem-coleta (silver data/energia/silver/aneel_social.db)",
-    "citacao": "SCRUTINIUMS. População das localidades atendidas por sistemas isolados: 1.964.825 pessoas, Brasil, sistemas isolados, 2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, PASI: Localização Geográfica das localidades isoladas (recurso localizacao_ciclo_2025, capturado em 15/10/2026). Versão energia-0.1.0, código 6e4b9c360a8c, publicada em 19/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. População das localidades atendidas por sistemas isolados: 1.964.825 pessoas, Brasil, sistemas isolados, 2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, PASI: Localização Geográfica das localidades isoladas (recurso localizacao_ciclo_2025, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "proveniencia": {
     "indicador": "Localidades e população dos sistemas isolados (PASI)",
@@ -16994,8 +16919,8 @@
      "fim": "2025"
     },
     "publicado_pela_fonte_em": null,
-    "capturado_em": "2026-10-16T02:06:30Z",
-    "validado_em": "2026-10-19T22:09:50Z",
+    "capturado_em": "2026-09-30T22:55:50Z",
+    "validado_em": "2026-10-01T00:28:44Z",
     "cobertura_historica": {
      "inicio": "2023",
      "fim": "2025"
@@ -17003,18 +16928,18 @@
     "transformacoes": [],
     "formula": null,
     "snapshot": {
-     "id": "epe_pasi_localidades@2026-10-16T02:06:30Z",
-     "sha256": "b8436372337afe83d39003e8d7f471f0a89e309a51d8364102a35f89fdfd94e6"
+     "id": "epe_pasi_localidades@2026-09-30T22:55:50Z",
+     "sha256": "71593bf860920b20cc005b33368fad673ad87d24f560d78fe93551118b337d26"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "6e4b9c360a8c",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-19T22:09:50Z",
+     "detectado_em": "2026-10-01T00:28:44Z",
      "total": 0,
-     "vintages_comparadas": 7,
+     "vintages_comparadas": 4,
      "arquivos": 4,
      "recapturas_sem_mudanca": 0,
-     "ultimo_download_ok": "2026-10-16T02:06:30Z",
+     "ultimo_download_ok": "2026-09-30T22:55:50Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -17199,10 +17124,10 @@
      },
      {
       "ano": "2023",
-      "rural": 44078.0,
+      "rural": 44075.0,
       "regioes_remotas": 24817.0,
       "recurso_distribuidora": null,
-      "total": 68895.0,
+      "total": 68892.0,
       "parcial": false
      },
      {
@@ -17215,18 +17140,18 @@
      },
      {
       "ano": "2025",
-      "rural": 31950.0,
-      "regioes_remotas": 24971.0,
+      "rural": 31843.0,
+      "regioes_remotas": 24868.0,
       "recurso_distribuidora": null,
-      "total": 56921.0,
+      "total": 56711.0,
       "parcial": false
      },
      {
       "ano": "2026",
-      "rural": 7840.0,
-      "regioes_remotas": 15119.0,
+      "rural": 7830.0,
+      "regioes_remotas": 11516.0,
       "recurso_distribuidora": null,
-      "total": 22959.0,
+      "total": 19346.0,
       "parcial": true
      }
     ],
@@ -17245,10 +17170,10 @@
       "uf": "PA",
       "nome": "Pará",
       "regiao": "RG-N",
-      "total": 608395.0,
-      "desde_2023": 119287.0,
+      "total": 604689.0,
+      "desde_2023": 115581.0,
       "rural": 436017.0,
-      "regioes_remotas": 78570.0,
+      "regioes_remotas": 74864.0,
       "recurso_distribuidora": 93808.0
      },
      {
@@ -17425,9 +17350,9 @@
       "uf": "GO",
       "nome": "Goiás",
       "regiao": "RG-CO",
-      "total": 58015.0,
-      "desde_2023": 3.0,
-      "rural": 55404.0,
+      "total": 58012.0,
+      "desde_2023": null,
+      "rural": 55401.0,
       "regioes_remotas": null,
       "recurso_distribuidora": 2611.0
      },
@@ -17485,9 +17410,9 @@
       "uf": "AP",
       "nome": "Amapá",
       "regiao": "RG-N",
-      "total": 19819.0,
-      "desde_2023": 9858.0,
-      "rural": 13131.0,
+      "total": 19702.0,
+      "desde_2023": 9741.0,
+      "rural": 13014.0,
       "regioes_remotas": 6688.0,
       "recurso_distribuidora": null
      }
@@ -17497,31 +17422,31 @@
       "cod": "150180",
       "municipio": "Breves",
       "uf": "PA",
-      "domicilios": 14183.0
+      "domicilios": 14182.0
      },
      {
       "cod": "150530",
       "municipio": "Oriximiná",
       "uf": "PA",
-      "domicilios": 6626.0
+      "domicilios": 6569.0
      },
      {
       "cod": "150680",
       "municipio": "Santarém",
       "uf": "PA",
-      "domicilios": 6309.0
+      "domicilios": 6306.0
      },
      {
       "cod": "150310",
       "municipio": "Gurupá",
       "uf": "PA",
-      "domicilios": 6234.0
+      "domicilios": 5030.0
      },
      {
       "cod": "150490",
       "municipio": "Muaná",
       "uf": "PA",
-      "domicilios": 4353.0
+      "domicilios": 4351.0
      },
      {
       "cod": "150210",
@@ -17536,16 +17461,16 @@
       "domicilios": 4137.0
      },
      {
-      "cod": "150390",
-      "municipio": "Juruti",
-      "uf": "PA",
-      "domicilios": 3959.0
-     },
-     {
       "cod": "150020",
       "municipio": "Acará",
       "uf": "PA",
       "domicilios": 3889.0
+     },
+     {
+      "cod": "150390",
+      "municipio": "Juruti",
+      "uf": "PA",
+      "domicilios": 3742.0
      },
      {
       "cod": "150510",
@@ -17563,7 +17488,7 @@
       "cod": "150520",
       "municipio": "Oeiras do Pará",
       "uf": "PA",
-      "domicilios": 3350.0
+      "domicilios": 3344.0
      },
      {
       "cod": "150030",
@@ -17572,16 +17497,16 @@
       "domicilios": 3238.0
      },
      {
-      "cod": "160030",
-      "municipio": "Macapá",
-      "uf": "AP",
-      "domicilios": 3135.0
-     },
-     {
       "cod": "150470",
       "municipio": "Moju",
       "uf": "PA",
       "domicilios": 3105.0
+     },
+     {
+      "cod": "160030",
+      "municipio": "Macapá",
+      "uf": "AP",
+      "domicilios": 3026.0
      },
      {
       "cod": "120060",
@@ -17738,11 +17663,11 @@
       "nome": "Pará",
       "contratos": 23,
       "agente_executor_contratado_reais": 1337725480.96,
-      "agente_executor_pago_reais": 1107931627.12,
+      "agente_executor_pago_reais": 1076690315.14,
       "caixa_outras_contratado_reais": 37774080.0,
       "caixa_outras_pago_reais": 33996672.0,
       "cde_contratado_reais": 7909601085.45,
-      "cde_pago_reais": 6350968541.75,
+      "cde_pago_reais": 6069796745.75,
       "rgr_contratado_reais": 200706320.0,
       "rgr_pago_reais": 179079461.18
      },
@@ -17803,11 +17728,11 @@
       "nome": "Minas Gerais",
       "contratos": 15,
       "agente_executor_contratado_reais": 292600908.82,
-      "agente_executor_pago_reais": 254820839.15,
+      "agente_executor_pago_reais": 253121606.15,
       "caixa_outras_contratado_reais": 0.0,
       "caixa_outras_pago_reais": 0.0,
       "cde_contratado_reais": 760061160.0,
-      "cde_pago_reais": 656681945.96,
+      "cde_pago_reais": 649885010.96,
       "rgr_contratado_reais": 625097280.0,
       "rgr_pago_reais": 550305063.48
      },
@@ -17816,11 +17741,11 @@
       "nome": "Mato Grosso",
       "contratos": 10,
       "agente_executor_contratado_reais": 308832985.7,
-      "agente_executor_pago_reais": 282157898.26,
+      "agente_executor_pago_reais": 282522433.49,
       "caixa_outras_contratado_reais": 0.0,
       "caixa_outras_pago_reais": 0.0,
       "cde_contratado_reais": 803831455.66,
-      "cde_pago_reais": 725012395.92,
+      "cde_pago_reais": 728293214.99,
       "rgr_contratado_reais": 372988150.0,
       "rgr_pago_reais": 340635688.05
      },
@@ -18073,20 +17998,20 @@
      }
     ],
     "diagnostico": {
-     "linhas": 619054,
-     "linhas_usadas": 619054,
+     "linhas": 619018,
+     "linhas_usadas": 619018,
      "quantidade_invalida": 0,
      "data_invalida": 0,
      "estado_desconhecido": {},
      "programa_desconhecido": {},
      "cabecalho_faltando": [],
-     "domicilios": 3867244,
-     "homologacao_mais_recente": "2026-09-03"
+     "domicilios": 3863418,
+     "homologacao_mais_recente": "2026-08-25"
     },
     "evidencia_total": {
      "indicador": "Domicílios atendidos pelo Luz para Todos",
-     "valor_exibido": "3.867.244",
-     "valor_calculo": 3867244.0,
+     "valor_exibido": "3.863.418",
+     "valor_calculo": 3863418.0,
      "unidade": "domicílios atendidos",
      "periodo": {
       "inicio": "2004-04",
@@ -18100,10 +18025,10 @@
       "conjunto": "Luz para Todos (dados abertos do MME)",
       "recurso": "domicilios_atendidos.csv",
       "url": "https://dadosabertos.mme.gov.br/dataset/418de37c-1689-46b7-832d-8eb5b5df9987/resource/3e832dfa-9985-4c5f-a36b-cc72479217fb/download/domicilios_atendidos.csv",
-      "arquivo": "data/energia/bronze/mme/mme_luz_para_todos/domicilios_atendidos.csv/20261006T054634Z.10a66d282716.csv.gz",
-      "sha256": "10a66d282716f99e95b24d4d85260352314cdc9874c229dc52d35b2bbc5aff52",
-      "capturado_em": "2026-10-06T05:46:34Z",
-      "publicado_em": "2026-10-05T11:01:03Z"
+      "arquivo": "data/energia/bronze/mme/mme_luz_para_todos/domicilios_atendidos.csv/20260930T225559Z.844f5be17690.csv.gz",
+      "sha256": "844f5be176909a341a8ae2c9ce26e2bdb40fcfb7094da3d5f10ef607927038a5",
+      "capturado_em": "2026-09-30T22:55:59Z",
+      "publicado_em": "2026-09-20T11:02:02Z"
      },
      "extracao_pdf": null,
      "chaves_origem": [
@@ -18121,25 +18046,25 @@
      "tratamento_ausencia": "Ausência na fonte não vira zero: o item fica sem valor e fora das somas.",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "6e4b9c360a8c",
-      "publicacao": "2026-10-19T22:09:51Z"
+      "codigo": "6d3bc3a2f759+alterado",
+      "publicacao": "2026-10-01T00:28:44Z"
      },
-     "revisoes": "34 observações revisadas pela fonte entre as capturas integradas. Mais recentes: R|MG|ECO  Eletrobras Contrato Específico de Operacionalização ECO-044/2026|1.vlrpago em total; R|MG|ECO  Eletrobras Contrato Específico de Operacionalização ECO-044/2026|1.vlrpagocde em total; R|MT|ECM - Contrato Específico de Operacionalização MLA ECM-009/2022|1.vlrpago em total; R|MT|ECM - Contrato Específico de Operacionalização MLA ECM-009/2022|1.vlrpagocde em total; R|PA|ECO  Eletrobras Contrato Específico de Operacionalização ECO-028/2024|1.vlrpago em total. Verificação em 2026-10-19.",
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
       {
        "nome": "soma por UF igual ao total nacional",
        "resultado": "aprovado",
-       "detalhe": "3.867.244 somando as UF; 3.867.244 no total"
+       "detalhe": "3.863.418 somando as UF; 3.863.418 no total"
       },
       {
        "nome": "soma por município igual ao total nacional",
        "resultado": "aprovado",
-       "detalhe": "3.867.244 somando os municípios"
+       "detalhe": "3.863.418 somando os municípios"
       },
       {
        "nome": "linhas do arquivo com quantidade, data, estado ou programa inválidos",
        "resultado": "aprovado",
-       "detalhe": "619.054 linhas; 619.054 usadas"
+       "detalhe": "619.018 linhas; 619.018 usadas"
       },
       {
        "nome": "municípios com código IBGE pelo nome exato na UF",
@@ -18159,7 +18084,63 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py inclusao --sem-coleta (silver data/energia/silver/aneel_social.db)",
-     "citacao": "SCRUTINIUMS. Domicílios atendidos pelo Luz para Todos: 3.867.244 domicílios atendidos, Brasil, 04/2004 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MME, Luz para Todos (dados abertos do MME) (recurso domicilios_atendidos.csv, capturado em 06/10/2026). Versão energia-0.1.0, código 6e4b9c360a8c, publicada em 19/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Domicílios atendidos pelo Luz para Todos: 3.863.418 domicílios atendidos, Brasil, 04/2004 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MME, Luz para Todos (dados abertos do MME) (recurso domicilios_atendidos.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    },
+    "proveniencia": {
+     "indicador": "Domicílios atendidos pelo Luz para Todos e recursos por contrato",
+     "natureza": "OBSERVADO",
+     "fonte": {
+      "orgao": "MME",
+      "dataset": "Luz para Todos",
+      "recurso": "domicilios_atendidos.csv; recursos_aplicados.csv",
+      "url_dataset": "https://dadosabertos.mme.gov.br/dataset/luz-para-todos",
+      "url_primaria": "https://dadosabertos.mme.gov.br/dataset/418de37c-1689-46b7-832d-8eb5b5df9987/resource/3e832dfa-9985-4c5f-a36b-cc72479217fb/download/domicilios_atendidos.csv",
+      "licenca": "Outra (Aberta), conforme o campo de licença do portal de dados abertos do MME"
+     },
+     "unidade": "domicílios; R$ correntes",
+     "frequencia": "atualização do portal (sem calendário declarado)",
+     "periodo_referencia": {
+      "inicio": "2004-04",
+      "fim": "2026-08"
+     },
+     "publicado_pela_fonte_em": "2026-09-20T11:02:02Z",
+     "capturado_em": "2026-09-30T22:56:07Z",
+     "validado_em": "2026-10-01T00:28:44Z",
+     "cobertura_historica": {
+      "inicio": "2004-04",
+      "fim": "2026-08"
+     },
+     "transformacoes": [
+      "soma de qtddomicilios por UF, programa e mês de atendimento",
+      "soma por município e ano",
+      "código IBGE do município pelo nome exato na UF (lista do Cadastro Único)",
+      "recursos somados por UF e fonte (CDE, RGR, Caixa ou outras, agente executor)"
+     ],
+     "formula": null,
+     "snapshot": {
+      "id": "mme_luz_para_todos@2026-09-30T22:56:07Z",
+      "sha256": "580454fe44d8f9db78d16969644ea773a054b05a06a810bc4b8d262fd656cfc2"
+     },
+     "versao_pipeline": "energia-0.1.0",
+     "versao_codigo": "6d3bc3a2f759+alterado",
+     "revisoes_conhecidas": {
+      "detectado_em": "2026-10-01T00:28:44Z",
+      "total": 0,
+      "vintages_comparadas": 3,
+      "arquivos": 3,
+      "recapturas_sem_mudanca": 0,
+      "ultimo_download_ok": "2026-09-30T22:56:07Z",
+      "exemplos": []
+     },
+     "limitacoes": [
+      "Domicílio atendido é ligação nova registrada pelo programa; não é pessoa, não é unidade consumidora com benefício e não mede a qualidade do fornecimento depois da ligação.",
+      "O ano de 2026 está incompleto (último mês de atendimento no arquivo: ago/2026).",
+      "Atendimentos entram pela data do atendimento; a homologação pode vir meses depois e o arquivo muda quando novas homologações chegam.",
+      "O dicionário do MME descreve vlrpagocaixa como valor pago da RGR e vlrpago como participação do agente executor; o módulo segue a correspondência com os campos contratados.",
+      "Linha removida numa atualização da fonte não é apagada do silver: vale a última captura de cada município, programa e período."
+     ],
+     "download": "/energia/series/inclusao_luz_para_todos_mensal.csv",
+     "notas_fonte": null
     }
    },
    "luz_para_todos_cde": [
@@ -18306,8 +18287,8 @@
      "fim": "2025"
     },
     "publicado_pela_fonte_em": null,
-    "capturado_em": "2026-10-03T03:54:28Z",
-    "validado_em": "2026-10-19T22:09:50Z",
+    "capturado_em": "2026-09-30T22:41:50Z",
+    "validado_em": "2026-10-01T00:28:44Z",
     "cobertura_historica": {
      "inicio": "2016",
      "fim": "2025"
@@ -18318,18 +18299,18 @@
     ],
     "formula": null,
     "snapshot": {
-     "id": "ibge_pnadc_energia@2026-10-03T03:54:28Z",
+     "id": "ibge_pnadc_energia@2026-09-30T22:41:50Z",
      "sha256": "73192ada56d733cdc4b4efd8d8dcb43b2ac1590effd660d51a3d356fb1f262fc"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "6e4b9c360a8c",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-19T22:09:50Z",
+     "detectado_em": "2026-10-01T00:28:44Z",
      "total": 0,
      "vintages_comparadas": 3,
      "arquivos": 3,
-     "recapturas_sem_mudanca": 3,
-     "ultimo_download_ok": "2026-10-16T02:06:18Z",
+     "recapturas_sem_mudanca": 0,
+     "ultimo_download_ok": "2026-09-30T22:41:50Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -18360,8 +18341,8 @@
      "fim": "2025"
     },
     "publicado_pela_fonte_em": null,
-    "capturado_em": "2026-10-16T02:06:30Z",
-    "validado_em": "2026-10-19T22:09:50Z",
+    "capturado_em": "2026-09-30T22:55:50Z",
+    "validado_em": "2026-10-01T00:28:44Z",
     "cobertura_historica": {
      "inicio": "2023",
      "fim": "2025"
@@ -18369,18 +18350,18 @@
     "transformacoes": [],
     "formula": null,
     "snapshot": {
-     "id": "epe_pasi_localidades@2026-10-16T02:06:30Z",
-     "sha256": "b8436372337afe83d39003e8d7f471f0a89e309a51d8364102a35f89fdfd94e6"
+     "id": "epe_pasi_localidades@2026-09-30T22:55:50Z",
+     "sha256": "71593bf860920b20cc005b33368fad673ad87d24f560d78fe93551118b337d26"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "6e4b9c360a8c",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-19T22:09:50Z",
+     "detectado_em": "2026-10-01T00:28:44Z",
      "total": 0,
-     "vintages_comparadas": 7,
+     "vintages_comparadas": 4,
      "arquivos": 4,
      "recapturas_sem_mudanca": 0,
-     "ultimo_download_ok": "2026-10-16T02:06:30Z",
+     "ultimo_download_ok": "2026-09-30T22:55:50Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -18408,9 +18389,9 @@
      "inicio": "2004-04",
      "fim": "2026-08"
     },
-    "publicado_pela_fonte_em": "2026-10-05T11:01:13Z",
-    "capturado_em": "2026-10-06T05:46:43Z",
-    "validado_em": "2026-10-19T22:09:51Z",
+    "publicado_pela_fonte_em": "2026-09-20T11:02:02Z",
+    "capturado_em": "2026-09-30T22:56:07Z",
+    "validado_em": "2026-10-01T00:28:44Z",
     "cobertura_historica": {
      "inicio": "2004-04",
      "fim": "2026-08"
@@ -18423,120 +18404,19 @@
     ],
     "formula": null,
     "snapshot": {
-     "id": "mme_luz_para_todos@2026-10-06T05:46:43Z",
-     "sha256": "304f8265791b8ac9b0821b7904d0afd8c6db80ee5be90f73947c8855a2fbd4d5"
+     "id": "mme_luz_para_todos@2026-09-30T22:56:07Z",
+     "sha256": "580454fe44d8f9db78d16969644ea773a054b05a06a810bc4b8d262fd656cfc2"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "6e4b9c360a8c",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-19T22:09:51Z",
-     "total": 34,
-     "vintages_comparadas": 5,
+     "detectado_em": "2026-10-01T00:28:44Z",
+     "total": 0,
+     "vintages_comparadas": 3,
      "arquivos": 3,
-     "recapturas_sem_mudanca": 3,
-     "ultimo_download_ok": "2026-10-16T02:06:39Z",
-     "exemplos": [
-      {
-       "serie": "R|MG|ECO  Eletrobras Contrato Específico de Operacionalização ECO-044/2026|1.vlrpago",
-       "ref": "total",
-       "valores": 2
-      },
-      {
-       "serie": "R|MG|ECO  Eletrobras Contrato Específico de Operacionalização ECO-044/2026|1.vlrpagocde",
-       "ref": "total",
-       "valores": 2
-      },
-      {
-       "serie": "R|MT|ECM - Contrato Específico de Operacionalização MLA ECM-009/2022|1.vlrpago",
-       "ref": "total",
-       "valores": 2
-      },
-      {
-       "serie": "R|MT|ECM - Contrato Específico de Operacionalização MLA ECM-009/2022|1.vlrpagocde",
-       "ref": "total",
-       "valores": 2
-      },
-      {
-       "serie": "R|PA|ECO  Eletrobras Contrato Específico de Operacionalização ECO-028/2024|1.vlrpago",
-       "ref": "total",
-       "valores": 2
-      },
-      {
-       "serie": "R|PA|ECO  Eletrobras Contrato Específico de Operacionalização ECO-028/2024|1.vlrpagocde",
-       "ref": "total",
-       "valores": 2
-      },
-      {
-       "serie": "PA.regioes_remotas",
-       "ref": "2026-08",
-       "valores": 2
-      },
-      {
-       "serie": "PA.regioes_remotas",
-       "ref": "2026-07",
-       "valores": 2
-      },
-      {
-       "serie": "PA.regioes_remotas",
-       "ref": "2026-06",
-       "valores": 2
-      },
-      {
-       "serie": "PA.regioes_remotas",
-       "ref": "2026-04",
-       "valores": 2
-      },
-      {
-       "serie": "M|PA|AVEIRO|regioes_remotas",
-       "ref": "2026",
-       "valores": 2
-      },
-      {
-       "serie": "M|PA|BREVES|regioes_remotas",
-       "ref": "2026",
-       "valores": 2
-      },
-      {
-       "serie": "M|PA|GURUPA|regioes_remotas",
-       "ref": "2026",
-       "valores": 2
-      },
-      {
-       "serie": "M|PA|MUANA|regioes_remotas",
-       "ref": "2026",
-       "valores": 2
-      },
-      {
-       "serie": "M|PA|ORIXIMINA|regioes_remotas",
-       "ref": "2026",
-       "valores": 2
-      },
-      {
-       "serie": "M|PA|SANTAREM|regioes_remotas",
-       "ref": "2026",
-       "valores": 2
-      },
-      {
-       "serie": "AP.rural",
-       "ref": "2025-11",
-       "valores": 2
-      },
-      {
-       "serie": "PA.regioes_remotas",
-       "ref": "2025-10",
-       "valores": 2
-      },
-      {
-       "serie": "AP.rural",
-       "ref": "2025-09",
-       "valores": 2
-      },
-      {
-       "serie": "PA.regioes_remotas",
-       "ref": "2025-08",
-       "valores": 2
-      }
-     ]
+     "recapturas_sem_mudanca": 0,
+     "ultimo_download_ok": "2026-09-30T22:56:07Z",
+     "exemplos": []
     },
     "limitacoes": [
      "Domicílio atendido é ligação nova registrada pelo programa; não é pessoa, não é unidade consumidora com benefício e não mede a qualidade do fornecimento depois da ligação.",
@@ -18551,12 +18431,9 @@
   }
  },
  "validacao": {
-  "executada_em": "2026-10-19T22:09:51Z",
+  "executada_em": "2026-10-01T00:28:44Z",
   "criticos": [],
-  "ressalvas": [
-   "ES: desconto negativo no arquivo da CDE de 2026-03 (-11456619.05); mantido como publicado, sem correção",
-   "ES: desconto médio por fatura negativo no arquivo da CDE de 2026-03 (-41.84); mantido como publicado, sem correção"
-  ]
+  "ressalvas": []
  },
  "downloads": [
   {
