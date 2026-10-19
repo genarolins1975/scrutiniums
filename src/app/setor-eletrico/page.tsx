@@ -1,4 +1,3 @@
-import { GravuraEnergia } from "@/components/energia/GravuraEnergia";
 import { DuasCamadasEnergia } from "@/components/energia/ComercializacaoDidatica";
 import { LeiturasIntegradas } from "@/components/energia/LeiturasIntegradas";
 import Image from "next/image";
@@ -24,6 +23,7 @@ import { Unidade } from "@/components/evidencia/Unidade";
 import { conjuntoLegivel, descreverVariacao, valorDestaque } from "@/lib/energia/evidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { ParaVoce } from "@/components/observatorios/ParaVoce";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import { LINKEDIN_URL } from "@/lib/contato";
 import { conceito, conceitos } from "@/lib/energia/conteudo/conceitos";
@@ -961,42 +961,11 @@ export default function MapaDoObservatorio() {
           </dl>
           </details>
         </header>
+        {/* "Para você" (Onda 2): as perguntas do leitor sobre o próprio caso, a um clique, logo depois das medidas de abertura; substitui os dois cartões "Qual pergunta você quer responder?" */}
+        <ParaVoce entrada="/setor-eletrico" idioma={idiomaEnergia()} conteiner="" />
         <PercursoVisualEnergia />
         <DuasCamadasEnergia compacto />
         <LeiturasIntegradas />
-        <section className="energia-portas" aria-labelledby="energia-portas-titulo">
-          <h2 id="energia-portas-titulo">{tx("Qual pergunta você quer responder?", "Which question do you want to answer?")}</h2>
-          <div className="energia-portas-grade">
-            <Link href="/setor-eletrico/conta-de-luz" className="energia-porta energia-porta-conta">
-              <div>
-                <h3>{tx("Por que minha conta tem esse valor?", "Why is my bill this amount?")}</h3>
-                <p>
-                  {tx(
-                    "Explore TE e TUSD, tributos e bandeiras. Simule o consumo em kWh e veja o efeito de cada hipótese na conta.",
-                    "Explore the TE and TUSD (energy tariff and distribution system use tariff), taxes and tariff flags. Simulate consumption in kWh and see the effect of each assumption on the bill.",
-                  )}
-                </p>
-                <small>{tx("Tarifa homologada não é o valor final da fatura. A página mostra fontes, vigência e hipóteses.", "The approved tariff is not the final amount on the bill. The page shows sources, validity periods and assumptions.")}</small>
-                <span>{tx("Entender e simular a conta ↗", "Understand and simulate the bill ↗")}</span>
-              </div>
-              <Image src="/energia/arte/conta-gravura-v1.webp" alt="" width={720} height={720} sizes="(max-width: 480px) 100vw, 280px" />
-            </Link>
-            <Link href="/setor-eletrico/territorio" className="energia-porta energia-porta-regiao">
-              <div>
-                <h3>{tx("Como é o serviço na minha região?", "What is the service like in my region?")}</h3>
-                <p>
-                  {tx(
-                    "Localize seu município ou estado, identifique distribuidoras e usinas e siga para tarifas e qualidade do serviço.",
-                    "Find your municipality or state, identify distribution utilities and power plants, and go on to tariffs and quality of supply.",
-                  )}
-                </p>
-                <small>{tx("Os indicadores têm recortes próprios; a localização não estima o serviço de uma residência.", "The indicators have their own scopes; the location does not estimate the service of a household.")}</small>
-                <span>{tx("Explorar minha região ↗", "Explore my region ↗")}</span>
-              </div>
-              <GravuraEnergia etapa="distribuicao" className="energia-porta-arte" />
-            </Link>
-          </div>
-        </section>
         <div className="obs-home-search">              <div>
                 <BuscaObservatorio
                   itens={busca}

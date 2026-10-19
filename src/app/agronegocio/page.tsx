@@ -10,12 +10,15 @@ import { ExploradorCadeiaAgro } from '@/components/agro/ExploradorCadeia';
 import s from '@/components/agro/Agro.module.css';
 import { FaixaFrescor } from '@/components/frescor/FaixaFrescor';
 import { FRESCOR_DAS_COLECOES } from '@/lib/frescor/entradas';
+import { ParaVoce } from '@/components/observatorios/ParaVoce';
 export const dynamic = 'force-static';
 export const metadata: Metadata = { title: { absolute: 'Observatório do Agronegócio Brasileiro · Scrutiniums' }, description: 'Como está o agronegócio brasileiro: tamanho na economia, safra, custo dos insumos e destino das exportações, com dados oficiais, fonte e período em cada número.', alternates: { canonical: '/agronegocio' } };
 export default function InicioAgro() {
     const d = dadosAgro, c = d.credito, f = d.trabalho.formal, e = d.economia;
     return <><FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/agronegocio"]} /><section className={s.intro}><p className={s.eyebrow}>Observatório do Agronegócio Brasileiro</p><h1>Como está o agronegócio brasileiro?</h1><p>O tamanho do setor na economia, o ritmo da safra, quanto custam os insumos importados e para quem o país vende. Dados oficiais com fonte, período e limite em cada número.</p><p className={s.sourceLine}>Crédito rural, trabalho e alimentação vêm de recortes preservados, cada um com seu período. A data da coleta mais recente e a situação da atualização estão na faixa acima.</p></section>
  {e && <DestaquesAgro e={e}/>}
+ {/* "Para você" (Onda 2): a comida em casa e o que o estado do leitor produz, a um clique, logo depois dos números de abertura */}
+ <ParaVoce entrada="/agronegocio" conteiner=""/>
  {e && <SecaoAgro titulo="Oito perguntas para entender o setor." texto="Cada página responde a uma pergunta com dados observados, mostra como o número é feito e o que ele não permite concluir."><PerguntasAgro e={e}/></SecaoAgro>}
  <nav className={s.destinations} aria-label="Outros caminhos pelo Agronegócio"><Link href="/agronegocio/panorama" prefetch={false}><IconeAgro tema="campo"/><h2>Panorama Brasil</h2><p>Crédito rural, emprego formal e segurança alimentar, cada um no seu universo.</p></Link><Link href="/agronegocio/cadeias" prefetch={false}><IconeAgro tema="industria"/><h2>Doze cadeias</h2><p>Da soja à celulose: quanto se produz em cada estado, quanto se exporta e para quem.</p></Link><Link href="/agronegocio/atlas" prefetch={false}><IconeAgro tema="atlas"/><h2>Atlas territorial</h2><p>A produção de cada cadeia por estado, no mapa, ao lado do crédito rural e das ocupações.</p></Link></nav>
  <SecaoAgro titulo="Um sistema. Caminhos diferentes." texto="Escolha uma cadeia e reconheça o que muda entre o campo, a transformação e o uso. As setas explicam etapas; não medem transações."><ExploradorCadeiaAgro /></SecaoAgro>

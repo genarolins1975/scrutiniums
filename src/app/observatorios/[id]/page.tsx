@@ -18,6 +18,8 @@ import { circuitoCredito, escalaEconomia } from "@/lib/observatorios/entradas/ec
 import { portas } from "@/lib/perguntas/portas";
 import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
 import { FRESCOR_DOS_OBSERVATORIOS } from "@/lib/frescor/entradas";
+import { ParaVoce } from "@/components/observatorios/ParaVoce";
+import { ehEntradaParaVoce } from "@/lib/observatorios/paraVoce";
 
 /**
  * Entradas com conta dos seis observatórios, cada um reunindo várias
@@ -98,6 +100,7 @@ export default function EntradaObservatorioPage({ params }: { params: { id: stri
         pergunta={o.pergunta}
         descricao={c.descricao}
         escala={c.escala}
+        paraVoce={o.entrada && ehEntradaParaVoce(o.entrada) ? <ParaVoce entrada={o.entrada} /> : null}
         colecoes={colecoesDe(id)}
         artefato={c.artefato}
         caminhos={porta?.caminhos ?? []}

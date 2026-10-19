@@ -29,10 +29,10 @@ function selectionFromUrl(ids: string[]): Selection {
 }
 
 /**
- * Entrada do OBEE organizada por perguntas. `retrato` chega do servidor. A entrada mostra
+ * Entrada do OBEE organizada por perguntas. `retrato` e `paraVoce` chegam do servidor. A entrada mostra
  * só as posições; a nota experimental fica no painel do índice (decisão do dono de 19/10/2026).
  */
-export function AtlasCidadao({retrato, cobertura = null}: {retrato: RetratoDados; cobertura?: React.ReactNode}) {
+export function AtlasCidadao({retrato, cobertura = null, paraVoce = null}: {retrato: RetratoDados; cobertura?: React.ReactNode; paraVoce?: React.ReactNode}) {
   const ids = retrato.capitais.map(c => c.id);
   const [selection, setSelection] = useState<Selection>(DEFAULT);
   useEffect(() => {
@@ -58,6 +58,8 @@ export function AtlasCidadao({retrato, cobertura = null}: {retrato: RetratoDados
     <RetratoCapital a={a} b={b} condicoes={retrato.condicoes} capitais={retrato.capitais}
       onSelect={(campo, id) => select(campo === 'territorio' ? {...selection, place: id} : {...selection, reference: id})}
       fonteContornos={retrato.fonteContornos} fontePopulacao={retrato.fontePopulacao}/>
+    {/* "Para você" (Onda 2), montado no servidor: as perguntas do leitor sobre a própria capital e o próprio município, logo depois do retrato */}
+    {paraVoce}
     <div className={entrada.wrap}>
 
     <PerguntasCapital id="perguntas" eyebrow="01 · A vida na capital" titulo={`Sete perguntas sobre a vida ${naCapital(a.nome)}`}

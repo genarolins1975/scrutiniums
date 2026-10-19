@@ -12,7 +12,7 @@ import { dominio, type DominioId } from "@/lib/dominios";
 import { OBSERVATORIOS, donoDaRota, observatorio, type ObservatorioId } from "@/lib/observatorios/registro";
 import contasFederais from "@/lib/contas-publicas/snapshots/dados.json";
 import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
-import type { CaminhoPorta, ConsultaAberta, Porta } from "./tipos";
+import type { CaminhoPorta, ConsultaAberta, NumeroPorta, Porta } from "./tipos";
 import { comSinal, dataBr, lerPublico, mesAno, num, numero } from "./leitura";
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- leitura de gold JSON sem tipos gerados */
@@ -28,7 +28,7 @@ function caminho(obs: DominioId | ObservatorioId, pergunta: string, resumo: stri
  * Consultas pessoais abertas (leva 1, 19/10/2026; src/lib/rotasPublicas.ts). Cada uma responde ao caso de quem
  * pergunta, sem conta; séries completas, comparações amplas e downloads seguem nos painéis.
  */
-const CONSULTAS = {
+export const CONSULTAS = {
   botijao: {
     pergunta: "Quanto custa o botijão no meu estado?",
     resumo: "Preço médio do botijão de 13 kg em cada estado, no mapa e na tabela, pela pesquisa de preços da ANP.",
@@ -56,6 +56,151 @@ const CONSULTAS = {
   },
 } satisfies Record<string, ConsultaAberta>;
 
+// ------------------------------------------------- Números compartilhados
+
+/*
+ * Números que a camada aberta e o bloco "Para você" das entradas (src/lib/observatorios/paraVoce.ts) mostram:
+ * um leitor só por número, para que os dois lugares nunca divirjam.
+ */
+
+const rtn = contasFederais.rtnAnual as { periodo: string; despesa: number; previdencia: number; resultado: number }[];
+/** O último ano completo do Resultado do Tesouro Nacional. */
+const anoCompleto = () => rtn.filter((r) => /^\d{4}$/.test(r.periodo)).reduce((a, b) => (b.periodo > a.periodo ? b : a));
+
+/** Preço médio do botijão de 13 kg no Brasil, o mesmo da consulta aberta /gas-natural/gas-de-cozinha. */
+export const numeroBotijao = (): NumeroPorta =>
+  numero(
+    {
+      rotulo: "Preço médio do botijão de gás de 13 kg",
+      unidade: "por botijão",
+      fonte: "ANP, Levantamento de Preços de Combustíveis",
+      href: "/gas-natural/gas-de-cozinha",
+    },
+    () => {
+      const m = lerPublico("gas", "gold", "gas-de-cozinha.json").indicadores.medio_mes;
+      return { valor: `R$ ${num(m.valor, 2)}`, periodo: mesAno(m.periodo), nota: "Média das revendas pesquisadas no mês, Brasil." };
+    },
+  );
+
+/** Inflação da alimentação no domicílio em 12 meses (IPCA), a mesma do painel /agronegocio/prato. */
+export const numeroComidaEmCasa = (): NumeroPorta =>
+  numero(
+    {
+      rotulo: "Inflação da comida em casa, em 12 meses",
+      unidade: "%",
+      fonte: "IBGE, IPCA, alimentação no domicílio",
+      href: "/agronegocio/prato",
+    },
+    () => {
+      const meses = lerPublico("agro", "gold", "snapshot.json").economia.prato.meses;
+      const u = meses[meses.length - 1];
+      return { valor: num(u.domicilio, 2), periodo: `12 meses até ${mesAno(u.mes)}`, nota: `IPCA geral no mesmo período: ${num(u.geral, 2)}%.` };
+    },
+  );
+
+/** Crédito das famílias com atraso acima de 90 dias, do pulso do Crédito. */
+export const numeroAtrasoFamilias = (): NumeroPorta =>
+  numero(
+    {
+      rotulo: "Crédito das famílias com atraso acima de 90 dias",
+      unidade: "% da carteira",
+      fonte: "Banco Central, SGS série 21084",
+      href: "/observatorio/credit",
+      nota: "Só dívidas com bancos e financeiras; não inclui crediário informal nem contas de consumo.",
+    },
+    () => {
+      const s = lerPublico("obs", "data", "gold", "pulse.json").series.inad_pf;
+      const u = s.obs[s.obs.length - 1];
+      return { valor: num(u.v, 2), periodo: mesAno(u.ref) };
+    },
+  );
+
+/** Ideb dos anos iniciais nas redes municipais das capitais (mediana), do painel de Educação. */
+export const numeroIdebCapitais = (): NumeroPorta =>
+  numero(
+    {
+      rotulo: "Ideb do 1º ao 5º ano nas escolas municipais das capitais (mediana)",
+      unidade: "de 0 a 10",
+      fonte: "INEP, Ideb",
+      href: "/eficiencia-estatal/educacao-municipal-capitais",
+    },
+    () => {
+      const e = lerPublico("eficiencia", "gold", "educacao_capitais.json");
+      const refs = (e.referencias as any[]).filter(
+        (r) => r.indicador === "edu.ideb.rede_municipal" && r.componente === "ideb" && r.etapa === "anos_iniciais" && r.grupo === "todas",
+      );
+      const r = refs.reduce((a, b) => (b.ano > a.ano ? b : a));
+      return {
+        valor: num(r.mediana, 2),
+        periodo: String(r.ano),
+        nota: `${r.n} capitais, de ${num(r.minimo, 1)} a ${num(r.maximo, 1)}. Mediana: metade das capitais está acima, metade abaixo.`,
+      };
+    },
+  );
+
+/** Despesa municipal com saúde por morador (mediana das capitais), do painel de Saúde. */
+export const numeroSaudeCapitais = (): NumeroPorta =>
+  numero(
+    {
+      rotulo: "Despesa da prefeitura com saúde por morador (mediana das capitais)",
+      unidade: "por habitante no ano",
+      fonte: "Tesouro Nacional, Siconfi, e IBGE, população",
+      href: "/eficiencia-estatal/saude-capitais",
+      nota: "Despesa liquidada pelo município; não inclui o gasto da União e do estado no território. Valores nominais.",
+    },
+    () => {
+      const g = lerPublico("eficiencia", "gold", "saude_capitais.json");
+      const refs = (g.referencias as any[]).filter(
+        (r) => r.indicador === "sau.despesa.por_habitante" && r.componente === "nominal" && r.grupo === "todas" && typeof r.mediana === "number",
+      );
+      const r = refs.reduce((a, b) => (b.ano > a.ano ? b : a));
+      return { valor: `R$ ${num(r.mediana, 0)}`, periodo: `${r.ano}, ${r.n} capitais com dado` };
+    },
+  );
+
+/** Parte da despesa primária federal que vai para benefícios da Previdência, do Resultado do Tesouro. */
+export const numeroPrevidencia = (): NumeroPorta =>
+  numero(
+    {
+      rotulo: "Parte da despesa primária federal que vai para benefícios da Previdência",
+      unidade: "a cada R$ 100",
+      fonte: "Tesouro Nacional, Resultado do Tesouro Nacional",
+      href: "/contas-publicas/panorama",
+      nota: "Calculado: benefícios previdenciários sobre a despesa primária total do governo central. Não inclui juros da dívida.",
+    },
+    () => {
+      const r = anoCompleto();
+      return { valor: `R$ ${num((100 * r.previdencia) / r.despesa, 2)}`, periodo: r.periodo };
+    },
+  );
+
+/** Estados com dívida consolidada líquida acima da receita corrente líquida (RGF, 3º quadrimestre). */
+export const numeroEstadosDivida = (): NumeroPorta =>
+  numero(
+    {
+      rotulo: "Estados com dívida maior que a receita corrente líquida",
+      unidade: "de 27 UFs",
+      fonte: "Tesouro Nacional, Siconfi (RGF, Anexo 2)",
+      href: "/contas-publicas-estaduais",
+      nota: "Dívida consolidada líquida acima de 100% da receita corrente líquida, como declarada por cada estado.",
+    },
+    () => {
+      const rgf = primariosEstaduais.rgf as { uf: string; ano: number; periodo: number; status: string; valores: { percentual_declarado: number | null } }[];
+      const conferidos = rgf.filter((r) => r.status === "fonte_primaria_conferida" && r.periodo === 3);
+      const ano = Math.max(...conferidos.map((r) => r.ano));
+      const doAno = conferidos.filter((r) => r.ano === ano);
+      if (doAno.length !== 27) throw new Error("cobertura incompleta");
+      const pct = (r: (typeof doAno)[number]) => r.valores.percentual_declarado ?? 0;
+      const acima = doAno.filter((r) => pct(r) > 100);
+      const teto = doAno.filter((r) => pct(r) > 200).map((r) => r.uf);
+      return {
+        valor: String(acima.length),
+        periodo: `${ano}, 3º quadrimestre`,
+        nota: `${acima.map((r) => r.uf).join(", ")}. O limite fixado pelo Senado para os estados é 200%${teto.length ? `; acima dele: ${teto.join(", ")}` : ""}.`,
+      };
+    },
+  );
+
 /** Identidade da porta lida do registro dos observatórios. */
 function identidade(id: ObservatorioId) {
   const o = observatorio(id);
@@ -70,45 +215,9 @@ function porta_familias(): Porta {
     resumo:
       "Renda, dívidas, proteção social, moradia e os preços que entram no orçamento doméstico, cada um medido pela fonte oficial do seu tema.",
     numeros: [
-      numero(
-        {
-          rotulo: "Preço médio do botijão de gás de 13 kg",
-          unidade: "por botijão",
-          fonte: "ANP, Levantamento de Preços de Combustíveis",
-          href: "/gas-natural/gas-de-cozinha",
-        },
-        () => {
-          const m = lerPublico("gas", "gold", "gas-de-cozinha.json").indicadores.medio_mes;
-          return { valor: `R$ ${num(m.valor, 2)}`, periodo: mesAno(m.periodo), nota: "Média das revendas pesquisadas no mês, Brasil." };
-        },
-      ),
-      numero(
-        {
-          rotulo: "Inflação da comida em casa, em 12 meses",
-          unidade: "%",
-          fonte: "IBGE, IPCA, alimentação no domicílio",
-          href: "/agronegocio/prato",
-        },
-        () => {
-          const meses = lerPublico("agro", "gold", "snapshot.json").economia.prato.meses;
-          const u = meses[meses.length - 1];
-          return { valor: num(u.domicilio, 2), periodo: `12 meses até ${mesAno(u.mes)}`, nota: `IPCA geral no mesmo período: ${num(u.geral, 2)}%.` };
-        },
-      ),
-      numero(
-        {
-          rotulo: "Crédito das famílias com atraso acima de 90 dias",
-          unidade: "% da carteira",
-          fonte: "Banco Central, SGS série 21084",
-          href: "/observatorio/credit",
-          nota: "Só dívidas com bancos e financeiras; não inclui crediário informal nem contas de consumo.",
-        },
-        () => {
-          const s = lerPublico("obs", "data", "gold", "pulse.json").series.inad_pf;
-          const u = s.obs[s.obs.length - 1];
-          return { valor: num(u.v, 2), periodo: mesAno(u.ref) };
-        },
-      ),
+      numeroBotijao(),
+      numeroComidaEmCasa(),
+      numeroAtrasoFamilias(),
     ],
     caminhos: [
       caminho("eficiencia", "Quanto as famílias ganham com o trabalho?", "Rendimento, ocupação, emprego formal e Cadastro Único nos recortes de cada fonte.", "/eficiencia-estatal/trabalho-renda"),
@@ -156,43 +265,8 @@ function porta_servicos(): Porta {
           };
         },
       ),
-      numero(
-        {
-          rotulo: "Ideb do 1º ao 5º ano nas escolas municipais das capitais (mediana)",
-          unidade: "de 0 a 10",
-          fonte: "INEP, Ideb",
-          href: "/eficiencia-estatal/educacao-municipal-capitais",
-        },
-        () => {
-          const e = lerPublico("eficiencia", "gold", "educacao_capitais.json");
-          const refs = (e.referencias as any[]).filter(
-            (r) => r.indicador === "edu.ideb.rede_municipal" && r.componente === "ideb" && r.etapa === "anos_iniciais" && r.grupo === "todas",
-          );
-          const r = refs.reduce((a, b) => (b.ano > a.ano ? b : a));
-          return {
-            valor: num(r.mediana, 2),
-            periodo: String(r.ano),
-            nota: `${r.n} capitais, de ${num(r.minimo, 1)} a ${num(r.maximo, 1)}. Mediana: metade das capitais está acima, metade abaixo.`,
-          };
-        },
-      ),
-      numero(
-        {
-          rotulo: "Despesa da prefeitura com saúde por morador (mediana das capitais)",
-          unidade: "por habitante no ano",
-          fonte: "Tesouro Nacional, Siconfi, e IBGE, população",
-          href: "/eficiencia-estatal/saude-capitais",
-          nota: "Despesa liquidada pelo município; não inclui o gasto da União e do estado no território. Valores nominais.",
-        },
-        () => {
-          const g = lerPublico("eficiencia", "gold", "saude_capitais.json");
-          const refs = (g.referencias as any[]).filter(
-            (r) => r.indicador === "sau.despesa.por_habitante" && r.componente === "nominal" && r.grupo === "todas" && typeof r.mediana === "number",
-          );
-          const r = refs.reduce((a, b) => (b.ano > a.ano ? b : a));
-          return { valor: `R$ ${num(r.mediana, 0)}`, periodo: `${r.ano}, ${r.n} capitais com dado` };
-        },
-      ),
+      numeroIdebCapitais(),
+      numeroSaudeCapitais(),
     ],
     caminhos: [
       caminho("eficiencia", "Como estão as escolas municipais das capitais?", "Despesa por matrícula, alunos por turma, aprovação, Ideb e Saeb nas 26 capitais.", "/eficiencia-estatal/educacao-municipal-capitais"),
@@ -217,26 +291,12 @@ function porta_servicos(): Porta {
 // --------------------------------------------------------- Dinheiro público
 
 function porta_dinheiro(): Porta {
-  const rtn = contasFederais.rtnAnual as { periodo: string; despesa: number; previdencia: number; resultado: number }[];
-  const anoCompleto = () => rtn.filter((r) => /^\d{4}$/.test(r.periodo)).reduce((a, b) => (b.periodo > a.periodo ? b : a));
   return {
     ...identidade("contas-publicas"),
     resumo:
       "Receitas e despesas do governo federal, o resultado das contas e a dívida dos estados, com valores nominais e o período de cada demonstrativo.",
     numeros: [
-      numero(
-        {
-          rotulo: "Parte da despesa primária federal que vai para benefícios da Previdência",
-          unidade: "a cada R$ 100",
-          fonte: "Tesouro Nacional, Resultado do Tesouro Nacional",
-          href: "/contas-publicas/panorama",
-          nota: "Calculado: benefícios previdenciários sobre a despesa primária total do governo central. Não inclui juros da dívida.",
-        },
-        () => {
-          const r = anoCompleto();
-          return { valor: `R$ ${num((100 * r.previdencia) / r.despesa, 2)}`, periodo: r.periodo };
-        },
-      ),
+      numeroPrevidencia(),
       numero(
         {
           rotulo: "Resultado primário do governo central",
@@ -253,30 +313,7 @@ function porta_dinheiro(): Porta {
           };
         },
       ),
-      numero(
-        {
-          rotulo: "Estados com dívida maior que a receita corrente líquida",
-          unidade: "de 27 UFs",
-          fonte: "Tesouro Nacional, Siconfi (RGF, Anexo 2)",
-          href: "/contas-publicas-estaduais",
-          nota: "Dívida consolidada líquida acima de 100% da receita corrente líquida, como declarada por cada estado.",
-        },
-        () => {
-          const rgf = primariosEstaduais.rgf as { uf: string; ano: number; periodo: number; status: string; valores: { percentual_declarado: number | null } }[];
-          const conferidos = rgf.filter((r) => r.status === "fonte_primaria_conferida" && r.periodo === 3);
-          const ano = Math.max(...conferidos.map((r) => r.ano));
-          const doAno = conferidos.filter((r) => r.ano === ano);
-          if (doAno.length !== 27) throw new Error("cobertura incompleta");
-          const pct = (r: (typeof doAno)[number]) => r.valores.percentual_declarado ?? 0;
-          const acima = doAno.filter((r) => pct(r) > 100);
-          const teto = doAno.filter((r) => pct(r) > 200).map((r) => r.uf);
-          return {
-            valor: String(acima.length),
-            periodo: `${ano}, 3º quadrimestre`,
-            nota: `${acima.map((r) => r.uf).join(", ")}. O limite fixado pelo Senado para os estados é 200%${teto.length ? `; acima dele: ${teto.join(", ")}` : ""}.`,
-          };
-        },
-      ),
+      numeroEstadosDivida(),
     ],
     caminhos: [
       caminho("contas", "O governo fechou as contas no azul ou no vermelho?", "Receitas, despesas e resultado primário do governo central desde 1997.", "/contas-publicas/panorama"),
