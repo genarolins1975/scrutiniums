@@ -25,7 +25,13 @@ Prioridade declarada por ele: **clareza > narrativa > didatismo > credibilidade 
 - **Não vender o que não existe.** Nada planejado, incompleto, simulado ou fictício aparece como funcionalidade; ausência não vira zero nem estimativa silenciosa.
 - **Coerência entre observatórios.** O de Crédito é a referência de página inicial didática ("um mapa geral do observatório"); um erro corrigido num painel é procurado e corrigido nos demais.
 - **O trabalho só termina em produção**, com links das rotas entregues (seção 13).
-- **Aberto é aperitivo, fechado é profundidade** (decisão de 17/10/2026). A camada aberta ("O Brasil em perguntas", `/perguntas/*`, e a home) mostra só amostras do tema: poucos números com fonte e período, uma frase de contexto e o convite para o painel. Séries, comparações, fichas, downloads e artefatos interativos ficam nos painéis com conta, que devem ter grau de profundidade e beleza muito maior que a página aberta. Não transformar a página aberta em painel.
+- **Aberto responde ao curioso sobre o seu caso; com conta é profundidade** (decisão de 17/10/2026, revista em 19/10/2026). A camada aberta ("O Brasil em perguntas", `/perguntas/*`, e a home) mostra poucos números do tema com fonte e período, uma frase de contexto e o convite para o painel. Além disso, podem ser abertas, rota por rota e só com aprovação do dono, as consultas pessoais em modo de consulta: minha cidade, minha distribuidora, meu estado, meu banco, minha capital (lista de candidatas em `docs/BANCA_2026-10-19.md`, seção "Estratégia aberto e com conta"). Séries completas, comparações entre muitas entidades, fichas completas, downloads, API, cenários, previsões, recortes salvos e alertas ficam com conta, que deve ter grau de profundidade e beleza muito maior que a página aberta. Numa rota aberta, todo recurso fechado aparece com o selo "com conta"; exportação gerada no navegador sai da versão aberta. Não transformar a página aberta em painel.
+- **Decisões do dono de 19/10/2026** (registro completo em `docs/BANCA_2026-10-19.md`):
+  - Retrato das capitais: a nota composta de 0 a 100 sai da entrada da Eficiência Estatal e fica no painel; a entrada mostra só as posições.
+  - Cadastro: as informações básicas continuam obrigatórias (email, celular verificado, CPF, UF e perfil de uso); a melhoria é de clareza e de etapa, não de retirar dado. Tipo de instituição, área e cargo só para perfis profissionais.
+  - Inglês na 1.0: só a home e o Setor Elétrico. Fora desse escopo, não prometer inglês.
+  - Gravuras: melhorar quando a revisão julgar necessário; o layout tem de estar perfeito, sem imagem quebrada, cortada ou sem função.
+  - Expansão: não há congelamento. Painel novo entra pelo valor agregado, sem duplicar tema sem painel canônico, com atualização agendada, consulta pessoal aberta quando houver e o critério de conclusão do documento da banca.
 
 ## 1. Contrato editorial inegociável
 
