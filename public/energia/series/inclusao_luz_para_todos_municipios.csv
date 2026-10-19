@@ -2079,6 +2079,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 160023;Ferreira Gomes;AP;rural;2011;274.0
 160023;Ferreira Gomes;AP;rural;2024;74.0
 160023;Ferreira Gomes;AP;rural;2025;7.0
+160023;Ferreira Gomes;AP;rural;2026;7.0
 160025;Itaubal;AP;regioes_remotas;2025;74.0
 160025;Itaubal;AP;regioes_remotas;2026;427.0
 160025;Itaubal;AP;rural;2011;586.0
@@ -2101,9 +2102,9 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 160030;Macapá;AP;rural;2011;1669.0
 160030;Macapá;AP;rural;2012;651.0
 160030;Macapá;AP;rural;2013;286.0
-160030;Macapá;AP;rural;2023;171.0
+160030;Macapá;AP;rural;2023;174.0
 160030;Macapá;AP;rural;2024;171.0
-160030;Macapá;AP;rural;2025;137.0
+160030;Macapá;AP;rural;2025;243.0
 160040;Mazagão;AP;regioes_remotas;2023;45.0
 160040;Mazagão;AP;regioes_remotas;2024;393.0
 160040;Mazagão;AP;regioes_remotas;2025;792.0
@@ -2130,7 +2131,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 160053;Porto Grande;AP;rural;2012;352.0
 160053;Porto Grande;AP;rural;2023;46.0
 160053;Porto Grande;AP;rural;2024;268.0
-160053;Porto Grande;AP;rural;2025;20.0
+160053;Porto Grande;AP;rural;2025;21.0
 160053;Porto Grande;AP;rural;2026;1.0
 160055;Pracuúba;AP;rural;2008;17.0
 160055;Pracuúba;AP;rural;2009;119.0
@@ -12932,6 +12933,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 520552;Colinas do Sul;GO;rural;2015;1.0
 520552;Colinas do Sul;GO;rural;2020;1.0
 520552;Colinas do Sul;GO;rural;2021;1.0
+520552;Colinas do Sul;GO;rural;2026;1.0
 520570;Córrego do Ouro;GO;recurso_distribuidora;2008;17.0
 520570;Córrego do Ouro;GO;rural;2005;1.0
 520570;Córrego do Ouro;GO;rural;2007;59.0
@@ -12964,6 +12966,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 520620;Cristalina;GO;rural;2020;61.0
 520620;Cristalina;GO;rural;2021;64.0
 520620;Cristalina;GO;rural;2022;27.0
+520620;Cristalina;GO;rural;2026;1.0
 520630;Cristianópolis;GO;rural;2006;10.0
 520630;Cristianópolis;GO;rural;2007;12.0
 520630;Cristianópolis;GO;rural;2009;1.0
@@ -13575,6 +13578,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 521350;Monte Alegre de Goiás;GO;rural;2020;127.0
 521350;Monte Alegre de Goiás;GO;rural;2021;44.0
 521350;Monte Alegre de Goiás;GO;rural;2022;2.0
+521350;Monte Alegre de Goiás;GO;rural;2026;1.0
 521370;Montes Claros de Goiás;GO;recurso_distribuidora;2008;10.0
 521370;Montes Claros de Goiás;GO;rural;2005;1.0
 521370;Montes Claros de Goiás;GO;rural;2006;6.0
@@ -25961,7 +25965,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 510320;Colíder;MT;rural;2011;75.0
 510320;Colíder;MT;rural;2012;23.0
 510325;Colniza;MT;recurso_distribuidora;2008;31.0
-510325;Colniza;MT;regioes_remotas;2024;250.0
+510325;Colniza;MT;regioes_remotas;2024;251.0
 510325;Colniza;MT;rural;2006;149.0
 510325;Colniza;MT;rural;2008;165.0
 510325;Colniza;MT;rural;2009;336.0
@@ -26087,8 +26091,8 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 510360;Dom Aquino;MT;rural;2011;22.0
 510360;Dom Aquino;MT;rural;2015;2.0
 510370;Feliz Natal;MT;recurso_distribuidora;2008;4.0
-510370;Feliz Natal;MT;regioes_remotas;2023;28.0
-510370;Feliz Natal;MT;regioes_remotas;2024;204.0
+510370;Feliz Natal;MT;regioes_remotas;2023;24.0
+510370;Feliz Natal;MT;regioes_remotas;2024;203.0
 510370;Feliz Natal;MT;rural;2005;9.0
 510370;Feliz Natal;MT;rural;2006;484.0
 510370;Feliz Natal;MT;rural;2007;182.0
@@ -26629,7 +26633,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 510637;Pedra Preta;MT;rural;2011;133.0
 510637;Pedra Preta;MT;rural;2012;3.0
 510642;Peixoto de Azevedo;MT;recurso_distribuidora;2008;110.0
-510642;Peixoto de Azevedo;MT;regioes_remotas;2024;28.0
+510642;Peixoto de Azevedo;MT;regioes_remotas;2024;30.0
 510642;Peixoto de Azevedo;MT;rural;2004;651.0
 510642;Peixoto de Azevedo;MT;rural;2005;599.0
 510642;Peixoto de Azevedo;MT;rural;2006;389.0
@@ -26752,8 +26756,8 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 510704;Primavera do Leste;MT;rural;2011;128.0
 510704;Primavera do Leste;MT;rural;2012;3.0
 510706;Querência;MT;recurso_distribuidora;2008;67.0
-510706;Querência;MT;regioes_remotas;2023;101.0
-510706;Querência;MT;regioes_remotas;2024;93.0
+510706;Querência;MT;regioes_remotas;2023;105.0
+510706;Querência;MT;regioes_remotas;2024;94.0
 510706;Querência;MT;rural;2005;9.0
 510706;Querência;MT;rural;2006;139.0
 510706;Querência;MT;rural;2007;331.0
@@ -26926,7 +26930,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 510780;Santo Antônio do Leverger;MT;rural;2019;1.0
 510785;São Félix do Araguaia;MT;recurso_distribuidora;2008;0.0
 510785;São Félix do Araguaia;MT;regioes_remotas;2023;1.0
-510785;São Félix do Araguaia;MT;regioes_remotas;2024;65.0
+510785;São Félix do Araguaia;MT;regioes_remotas;2024;64.0
 510785;São Félix do Araguaia;MT;rural;2005;1.0
 510785;São Félix do Araguaia;MT;rural;2006;5.0
 510785;São Félix do Araguaia;MT;rural;2007;564.0
@@ -26963,7 +26967,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 510730;São José do Rio Claro;MT;rural;2019;61.0
 510730;São José do Rio Claro;MT;rural;2020;5.0
 510735;São José do Xingu;MT;recurso_distribuidora;2008;0.0
-510735;São José do Xingu;MT;regioes_remotas;2024;41.0
+510735;São José do Xingu;MT;regioes_remotas;2024;39.0
 510735;São José do Xingu;MT;rural;2005;13.0
 510735;São José do Xingu;MT;rural;2006;67.0
 510735;São José do Xingu;MT;rural;2007;404.0
@@ -27355,7 +27359,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 150095;Aurora do Pará;PA;rural;2017;143.0
 150100;Aveiro;PA;recurso_distribuidora;2007;241.0
 150100;Aveiro;PA;recurso_distribuidora;2010;100.0
-150100;Aveiro;PA;regioes_remotas;2026;149.0
+150100;Aveiro;PA;regioes_remotas;2026;167.0
 150100;Aveiro;PA;rural;2005;77.0
 150100;Aveiro;PA;rural;2007;402.0
 150100;Aveiro;PA;rural;2009;18.0
@@ -27579,7 +27583,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 150180;Breves;PA;regioes_remotas;2023;5800.0
 150180;Breves;PA;regioes_remotas;2024;7072.0
 150180;Breves;PA;regioes_remotas;2025;767.0
-150180;Breves;PA;regioes_remotas;2026;3.0
+150180;Breves;PA;regioes_remotas;2026;4.0
 150180;Breves;PA;rural;2005;246.0
 150180;Breves;PA;rural;2006;51.0
 150180;Breves;PA;rural;2008;21.0
@@ -27921,7 +27925,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 150310;Gurupá;PA;recurso_distribuidora;2010;15.0
 150310;Gurupá;PA;regioes_remotas;2024;361.0
 150310;Gurupá;PA;regioes_remotas;2025;2603.0
-150310;Gurupá;PA;regioes_remotas;2026;1353.0
+150310;Gurupá;PA;regioes_remotas;2026;2557.0
 150310;Gurupá;PA;rural;2007;90.0
 150310;Gurupá;PA;rural;2010;90.0
 150310;Gurupá;PA;rural;2011;6.0
@@ -28078,7 +28082,8 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 150390;Juruti;PA;recurso_distribuidora;2009;2.0
 150390;Juruti;PA;regioes_remotas;2023;121.0
 150390;Juruti;PA;regioes_remotas;2024;541.0
-150390;Juruti;PA;regioes_remotas;2025;2.0
+150390;Juruti;PA;regioes_remotas;2025;104.0
+150390;Juruti;PA;regioes_remotas;2026;115.0
 150390;Juruti;PA;rural;2007;444.0
 150390;Juruti;PA;rural;2008;99.0
 150390;Juruti;PA;rural;2009;136.0
@@ -28093,6 +28098,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 150390;Juruti;PA;rural;2026;145.0
 150400;Limoeiro do Ajuru;PA;recurso_distribuidora;2007;70.0
 150400;Limoeiro do Ajuru;PA;recurso_distribuidora;2008;5.0
+150400;Limoeiro do Ajuru;PA;regioes_remotas;2026;905.0
 150400;Limoeiro do Ajuru;PA;rural;2005;2.0
 150400;Limoeiro do Ajuru;PA;rural;2007;117.0
 150400;Limoeiro do Ajuru;PA;rural;2008;6.0
@@ -28274,7 +28280,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 150490;Muaná;PA;recurso_distribuidora;2010;69.0
 150490;Muaná;PA;regioes_remotas;2024;1370.0
 150490;Muaná;PA;regioes_remotas;2025;2814.0
-150490;Muaná;PA;regioes_remotas;2026;6.0
+150490;Muaná;PA;regioes_remotas;2026;8.0
 150490;Muaná;PA;rural;2005;1.0
 150490;Muaná;PA;rural;2010;409.0
 150490;Muaná;PA;rural;2015;576.0
@@ -28389,6 +28395,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 150520;Oeiras do Pará;PA;recurso_distribuidora;2010;1.0
 150520;Oeiras do Pará;PA;regioes_remotas;2023;1928.0
 150520;Oeiras do Pará;PA;regioes_remotas;2024;948.0
+150520;Oeiras do Pará;PA;regioes_remotas;2026;6.0
 150520;Oeiras do Pará;PA;rural;2006;54.0
 150520;Oeiras do Pará;PA;rural;2007;794.0
 150520;Oeiras do Pará;PA;rural;2008;555.0
@@ -28402,7 +28409,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 150530;Oriximiná;PA;regioes_remotas;2023;1551.0
 150530;Oriximiná;PA;regioes_remotas;2024;3195.0
 150530;Oriximiná;PA;regioes_remotas;2025;347.0
-150530;Oriximiná;PA;regioes_remotas;2026;439.0
+150530;Oriximiná;PA;regioes_remotas;2026;496.0
 150530;Oriximiná;PA;rural;2009;194.0
 150530;Oriximiná;PA;rural;2011;2.0
 150530;Oriximiná;PA;rural;2012;6.0
@@ -28562,6 +28569,8 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 150580;Portel;PA;regioes_remotas;2021;621.0
 150580;Portel;PA;regioes_remotas;2022;5350.0
 150580;Portel;PA;regioes_remotas;2023;7.0
+150580;Portel;PA;regioes_remotas;2025;1.0
+150580;Portel;PA;regioes_remotas;2026;1292.0
 150580;Portel;PA;rural;2007;124.0
 150580;Portel;PA;rural;2014;600.0
 150580;Portel;PA;rural;2018;133.0
@@ -28826,7 +28835,7 @@ cod_ibge6;municipio;uf;programa;ano;domicilios
 150680;Santarém;PA;recurso_distribuidora;2010;378.0
 150680;Santarém;PA;regioes_remotas;2024;1857.0
 150680;Santarém;PA;regioes_remotas;2025;707.0
-150680;Santarém;PA;regioes_remotas;2026;352.0
+150680;Santarém;PA;regioes_remotas;2026;355.0
 150680;Santarém;PA;rural;2004;370.0
 150680;Santarém;PA;rural;2005;277.0
 150680;Santarém;PA;rural;2006;398.0

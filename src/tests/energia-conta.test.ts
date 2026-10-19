@@ -133,6 +133,8 @@ import { lerEstado } from "@/lib/energia/estadoUrl";
 import { dataBR, mesAno, num, pct, reais } from "@/lib/energia/formato";
 import { gerarCsv } from "@/lib/energia/tabela";
 import type { ContaGold, HistoricoB1, JanelaInflacao } from "@/lib/energia/tipos-conta";
+import { fraseBandeira, mesCorrenteBrasilia, situacaoBandeira } from "@/lib/energia/bandeira-do-mes";
+import { bandeiraNoIdioma } from "@/lib/energia/i18n/conta-inclusao";
 
 /**
  * Módulo Conta de luz (P047 a P050), lado da interface. O que este teste protege:
@@ -2014,7 +2016,15 @@ describe.skipIf(!disponivel)("segunda passada: o que as páginas dizem e mostram
     expect(src).toContain('aria-invalid={kwhInvalido || undefined}');
     const vig = gold.bandeiras.vigente;
     expect(vig?.bandeira).toBeTruthy();
-    if (vig?.bandeira) expect(entender).toContain(`Bandeira do mês publicado: ${minuscula(vig.bandeira)} de ${mesAno(`${vig.mes}-01`)}, a última que consta nos dados de ${dataBR(gold.data_referencia)}`);
+    // banca de 19/10/2026: a nota diz a bandeira do mês corrente de quem lê, ou que ele ainda não está no arquivo e qual é a última
+    // registrada (com mês e cor); nunca chama a de um mês anterior de vigente. O HTML estático sai com o mês da geração da página.
+    if (vig?.bandeira) {
+      const frase = fraseBandeira(situacaoBandeira(vig, mesCorrenteBrasilia()), "pt");
+      expect(entender).toContain(frase);
+      expect(frase).toContain(minuscula(bandeiraNoIdioma(vig.bandeira, "pt")));
+      expect(frase).toContain(mesAno(`${vig.mes}-01`));
+      expect(html).toContain('data-nota="bandeira-publicada"');
+    }
   });
 
   it("Entender não traz identificador técnico, comando interno nem texto de bastidor em nenhuma das duas páginas", () => {

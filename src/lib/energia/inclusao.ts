@@ -49,7 +49,7 @@ import type {
 import type { EventoRegulatorio, GoldRegulacao } from "./tipos-regulacao";
 import { campo, tiposUrl } from "./estadoUrl";
 import { quebrasFixas, quebrasQuantis, type Classificacao } from "./escalas";
-import { mesAno, num, pct, reais } from "./formato";
+import { dataBR, mesAno, num, pct, reais } from "./formato";
 import { idiomaEnergia } from "./idioma";
 import { dadoTexto, txEm } from "./i18n/conta-inclusao";
 import { LIMITE_COMPARACAO, type ColunaTabela } from "./tabela";
@@ -641,6 +641,91 @@ export function vereditoTarifaSocial(t: TarifaSocial, idioma: Idioma = idiomaEne
     `Em ${mes(k.uc_tsee.mes)}, ${inteiro(k.uc_tsee.valor)} unidades consumidoras${part} tinham Tarifa Social${variacao}.`,
     `In ${mes(k.uc_tsee.mes)}, ${inteiro(k.uc_tsee.valor)} consumer units${part} had the Tarifa Social${variacao}.`,
   );
+}
+
+/**
+ * Regra vigente da Tarifa Social e o que é anterior e posterior a ela (banca de 19/10/2026). Tudo vem da gold (`regra_vigente` e
+ * `periodos_da_regra`); gold anterior a esses campos devolve null e a página não afirma nada sobre a regra além dos eventos.
+ */
+export type TextosRegraTarifaSocial = {
+  regra: string;
+  anterior: string;
+  conferencia: string;
+  antes: string;
+  depois: string;
+  /** true quando nenhuma fonte lida tem mês completo posterior à regra: `depois` é a declaração da ausência. */
+  depoisAusente: boolean;
+  transicao: string | null;
+  vigencia: string;
+  mesPosRegra: string | null;
+};
+
+export function textosRegraTarifaSocial(t: TarifaSocial, idioma: Idioma = idiomaEnergia()): TextosRegraTarifaSocial | null {
+  const r = t.regra_vigente;
+  const p = t.periodos_da_regra;
+  if (!r || !p) return null;
+  const { tx, mes, inteiro, reaisTexto } = em(idioma);
+  const d = (iso: string | null | undefined) => (iso ? dataBR(iso.slice(0, 10), idioma) : semDado(idioma));
+  const vigencia = d(r.vigencia);
+  const regra = tx(
+    `Regra vigente: gratuidade até 80 kWh por mês. Desconto de 100% sobre a parcela do consumo até 80 kWh e nenhum desconto acima disso, nas faturas emitidas a partir de ${vigencia} (Medida Provisória nº 1.300, de ${d(r.ato_data)}; regra mantida na Lei nº 15.235, de ${d(r.lei_data)}).`,
+    `Rule in force: free of charge up to 80 kWh a month. A 100% discount on the part of consumption up to 80 kWh and no discount above that, on bills issued from ${vigencia} onwards (Provisional Measure No. 1,300 of ${d(r.ato_data)}; rule kept in Law No. 15,235 of ${d(r.lei_data)}).`,
+  );
+  const anterior = tx(
+    `Antes de ${vigencia}, os descontos eram progressivos: 65% até 30 kWh, 40% de 31 a 100 kWh, 10% de 101 a 220 kWh e nenhum acima de 220 kWh; para indígenas e quilombolas, 100% até 50 kWh e 40% nos 50 kWh seguintes.`,
+    `Before ${vigencia}, the discounts were progressive: 65% up to 30 kWh, 40% from 31 to 100 kWh, 10% from 101 to 220 kWh and none above 220 kWh; for Indigenous and quilombola families, 100% up to 50 kWh and 40% on the next 50 kWh.`,
+  );
+  const conferidas = r.conferencia.filter((c) => c.estado === "CONFERIDA" && c.conferido_em);
+  const conferencia =
+    conferidas.length === r.conferencia.length && conferidas.length > 0
+      ? tx(
+          `Texto da regra conferido na página da ANEEL e na lei na última captura (${conferidas.map((c) => d(c.conferido_em)).join(" e ")}); a data de início vem da página da ANEEL.`,
+          `Rule text checked against ANEEL's page and the law at the latest capture (${conferidas.map((c) => d(c.conferido_em)).join(" and ")}); the start date comes from ANEEL's page.`,
+        )
+      : tx(
+          "O texto da regra não foi reconferido nesta publicação; a regra segue a página da ANEEL e a lei citadas.",
+          "The rule text was not rechecked in this publication; the rule follows the cited ANEEL page and law.",
+        );
+  const partesAntes: string[] = [];
+  if (p.antes)
+    partesAntes.push(
+      tx(
+        `${inteiro(p.antes.uc_tsee)} unidades consumidoras com Tarifa Social em ${mes(p.antes.mes)} (SCS da ANEEL, o último mês completo desse sistema)`,
+        `${inteiro(p.antes.uc_tsee)} consumer units with the Tarifa Social in ${mes(p.antes.mes)} (ANEEL's SCS, the latest complete month of that system)`,
+      ),
+    );
+  if (p.antes_cde)
+    partesAntes.push(
+      tx(
+        `${inteiro(p.antes_cde.faturas_tsee)} faturas com desconto em ${mes(p.antes_cde.mes)}, com desconto médio de ${reaisTexto(p.antes_cde.desconto_medio_por_fatura_reais)} por fatura (Beneficiários da CDE)`,
+        `${inteiro(p.antes_cde.faturas_tsee)} bills with a discount in ${mes(p.antes_cde.mes)}, with an average discount of ${reaisTexto(p.antes_cde.desconto_medio_por_fatura_reais)} per bill (CDE Beneficiaries)`,
+      ),
+    );
+  const antes = partesAntes.length
+    ? `${partesAntes.join("; ")}.`
+    : tx("Nenhum mês completo anterior à regra nesta publicação.", "No complete month before the rule in this publication.");
+  // sem lado posterior, o último mês completo (SCS ou CDE) é anterior ao primeiro mês inteiro sob a regra
+  const ultimoCompleto =
+    [p.antes?.mes, ...t.cde_meses.filter((m) => m.completo && m.original_no_bronze && m.faturas_tsee !== null).map((m) => m.mes)]
+      .filter((m): m is string => !!m)
+      .sort()
+      .at(-1) ?? null;
+  const depois = p.depois
+    ? tx(
+        `${inteiro(p.depois.faturas_tsee)} faturas com desconto em ${mes(p.depois.mes)}, o último mês completo dos arquivos de Beneficiários da CDE, com desconto médio de ${reaisTexto(p.depois.desconto_medio_por_fatura_reais)} por fatura (${p.depois.distribuidoras ?? semDado(idioma)} distribuidoras).`,
+        `${inteiro(p.depois.faturas_tsee)} bills with a discount in ${mes(p.depois.mes)}, the latest complete month of the CDE Beneficiaries files, with an average discount of ${reaisTexto(p.depois.desconto_medio_por_fatura_reais)} per bill (${p.depois.distribuidoras ?? semDado(idioma)} distribution utilities).`,
+      )
+    : tx(
+        `Nenhuma fonte oficial lida publicou mês completo posterior à regra de ${vigencia}: o dado mais recente é de ${mes(ultimoCompleto)}, anterior ao primeiro mês inteiro sob ela (${mes(r.primeiro_mes_inteiro)}). Nada é estimado para os meses seguintes.`,
+        `No official source read has published a complete month after the rule of ${vigencia}: the most recent figure is for ${mes(ultimoCompleto)}, before the first full month under it (${mes(r.primeiro_mes_inteiro)}). Nothing is estimated for the following months.`,
+      );
+  const transicao = p.transicao
+    ? tx(
+        `${mes(p.transicao.mes)} mistura faturas emitidas antes e depois de ${vigencia} e fica fora dos dois lados.`,
+        `${mes(p.transicao.mes)} mixes bills issued before and after ${vigencia} and is left out of both sides.`,
+      )
+    : null;
+  return { regra, anterior, conferencia, antes, depois, depoisAusente: !p.depois, transicao, vigencia, mesPosRegra: p.mes_referencia_pos_regra };
 }
 
 /**

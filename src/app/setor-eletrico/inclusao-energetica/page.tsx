@@ -7,7 +7,7 @@ import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { InclusaoCapitulos, InclusaoDatas, InclusaoIndisponivel, InclusaoRecorte, InclusaoSeguir } from "@/components/energia/InclusaoPagina";
-import { OrcamentoComoInterpretar, OrcamentoNaoConcluir, OrcamentoPorQueImporta } from "@/components/energia/InclusaoTextos";
+import { OrcamentoComoInterpretar, OrcamentoNaoConcluir, OrcamentoPorQueImporta, TarifaSocialRegraVigente } from "@/components/energia/InclusaoTextos";
 import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
@@ -327,6 +327,7 @@ export default function InclusaoEnergeticaPage() {
                   endereco={`${rotaPainel("p059")}#p059`}
                 />
               </FaixaMetricas>
+              <TarifaSocialRegraVigente t={t} />
               <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
                 {tx(
                   <>
