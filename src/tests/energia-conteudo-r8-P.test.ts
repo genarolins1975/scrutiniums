@@ -56,7 +56,7 @@ import {
   vereditoP016,
 } from "@/lib/energia/previsoes";
 import { lerCsvPrevisoes } from "@/lib/energia/previsoes-arquivos";
-import type { ModelosGold } from "@/lib/energia/tipos";
+import type { ModelosGold, PrevisoesGold } from "@/lib/energia/tipos";
 import type { PldDetalheGold } from "@/lib/energia/tipos-pld";
 import type { PrevisoesDesempenhoGold } from "@/lib/energia/tipos-previsoes";
 
@@ -482,46 +482,42 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
     expect(textoEntender(html.pld)).toContain(`Histórico de previsões (${texto})`);
     expect(textoEntender(html.previsoes)).toContain(`arquivo com ${texto}`);
     expect(textoEntender(html.pld)).not.toMatch(/\d+ registros, \d+ publicações/);
-    // e a última execução é a referência experimental, não uma rodada interna (a data vem do arquivo: muda a cada rodada)
-    const ult = json<{ atual: { ultima_execucao: { tipo: string; origem: string } } }>("public/energia/gold/previsoes.json").atual.ultima_execucao;
+    // e a última execução é a referência experimental, não uma rodada interna (data e modelo lidos da gold de previsões)
+    const ult = json<PrevisoesGold>("public/energia/gold/previsoes.json").atual.ultima_execucao!;
     expect(ult.tipo).toBe("REFERENCIA_EXPERIMENTAL");
-    const [a, m, d] = ult.origem.split("-");
-    expect(textoEntender(html.pld)).toContain(`Referência experimental de ${d}/${m}/${a}, com o modelo B0`);
+    expect(textoEntender(html.pld)).toContain(`Referência experimental de ${dataBR(ult.origem)}, com o modelo ${ult.modelo}`);
     expect(linhas.filter((l) => l.previsao !== "").length).toBe(P.prospectivo.apuracoes.length);
   });
 
   it("(2) PLD já publicado no corte (07h a 23h) e média das 24 horas do dia na página PLD: janelas diferentes do mesmo dia", () => {
     // o dia é o de origem da última rodada de previsões; as médias saem do CSV horário (outro arquivo)
-    const pub = P.previsao_atual!.ja_publicado_no_corte!;
-    const dia = pub.origem;
+    const dia = P.previsao_atual!.ja_publicado_no_corte!.origem;
     const horas = horario.filter((r) => r.data_hora_local.startsWith(dia));
     const media = (rs: Record<string, string>[]) => rs.reduce((s, r) => s + Number(r.PLD_SE), 0) / rs.length;
+    const fraseCom = (m: number) => plano(`A página PLD mostra a média das 24 horas do dia, ${reaisBr(m)}/MWh; aqui entram só as 17 horas depois do corte.`);
     const t = textoEntender(html.previsoes);
-    // a gold do PLD e a das previsões têm rodadas próprias: o CSV horário publicado pode ainda não chegar ao dia de origem
-    // da rodada. Nesse caso a página de previsões mostra a média do corte que a própria rodada capturou e não compara
-    // com a página PLD, que fala de outro dia.
-    const temDiaNoCsv = horas.length > 0;
-    if (temDiaNoCsv) {
+    // A rodada de previsões é publicada todo dia; o CSV horário só quando a gold do PLD passa. Com a gold do PLD
+    // atrasada, o dia da rodada ainda não está no CSV: não há o que conciliar e a página não compara com a página PLD.
+    if (horas.length === 0) {
+      expect(D.referencia.dia < dia).toBe(true);
+      expect(t).not.toContain("A página PLD mostra a média das 24 horas do dia");
+    } else {
       expect(horas).toHaveLength(24);
       const apos = horas.filter((r) => Number(r.data_hora_local.slice(11, 13)) >= 7);
       expect(apos).toHaveLength(17);
       expect(t).toContain(plano(reaisBr(media(apos))));
-    } else {
-      expect(D.referencia.dia < dia).toBe(true);
-      expect(pub.submercados.SE.horas).toBe(17);
-      expect(pub.submercados.SE.media).not.toBeNull();
-      expect(t).toContain(plano(reaisBr(pub.submercados.SE.media!)));
+      // a comparação com a página PLD só vale quando as duas páginas falam do mesmo dia; em outro dia a frase não aparece
+      if (D.referencia.dia === dia) {
+        expect(t).toContain(fraseCom(media(horas)));
+        expect(textoEntender(html.pld)).toContain(plano(reaisBr(media(horas))));
+      } else {
+        expect(t).not.toContain("A página PLD mostra a média das 24 horas do dia");
+      }
     }
-    const mediaDia = temDiaNoCsv ? media(horas) : pub.submercados.SE.media!;
-    const frase = plano(`A página PLD mostra a média das 24 horas do dia, ${reaisBr(mediaDia)}/MWh; aqui entram só as 17 horas depois do corte.`);
-    // a comparação com a página PLD só vale quando as duas páginas falam do mesmo dia; em outro dia a frase não aparece
-    if (D.referencia.dia === dia) {
-      expect(t).toContain(frase);
-      expect(textoEntender(html.pld)).toContain(plano(reaisBr(media(horas))));
-    } else {
-      expect(t).not.toContain("A página PLD mostra a média das 24 horas do dia");
-    }
-    // o ramo do mesmo dia fica testado no componente, com a média das 24 horas do CSV (ou, sem o dia no CSV, a do corte) no lugar da que a página PLD passaria
+    // o ramo do mesmo dia fica sempre testado no componente: com a média das 24 horas do CSV quando o dia está
+    // publicado e, sem ele, com uma média sintética independente no lugar da que a página PLD passaria
+    const mediaDia = horas.length > 0 ? media(horas) : 123.45;
+    const pub = P.previsao_atual!.ja_publicado_no_corte!;
     const mesmoDia = renderToStaticMarkup(
       createElement(PrevisoesAtual, {
         linhas: [],
@@ -534,7 +530,7 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
         mediaDiaPaginaPld: { SE: mediaDia },
       }),
     );
-    expect(textoEntender(mesmoDia)).toContain(frase);
+    expect(textoEntender(mesmoDia)).toContain(fraseCom(mediaDia));
   });
 
   it("(2) percentil do cartão (todas as médias diárias desde 2021) e do Histórico (mesmo mês de anos anteriores): universos diferentes", () => {
