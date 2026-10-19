@@ -70,6 +70,7 @@ export default async function ContaPage() {
             </div>
           </dl>
           <PerfilForm
+            perfilUsoInicial={user.perfilUso ?? ""}
             orgTypeInicial={user.orgType ?? ""}
             orgAreaInicial={user.orgArea ?? ""}
             orgRoleInicial={user.orgRole ?? ""}
@@ -105,7 +106,8 @@ export default async function ContaPage() {
             <p>
               Pedimos apenas o necessário: o e-mail é seu dado de contato; o telefone valida, dá
               acesso e protege a conta; o CPF garante uma conta por pessoa e nunca é exibido
-              integralmente; o perfil (instituição, área, cargo e UF) contextualiza o uso. Nada
+              integralmente; o perfil (perfil de uso, UF e, nos perfis profissionais, instituição,
+              área e cargo) contextualiza o uso. Nada
               disso é exibido publicamente, e CPF, telefone, e-mail e códigos nunca são enviados a
               ferramentas de analytics. Os detalhes estão na{" "}
               <Link

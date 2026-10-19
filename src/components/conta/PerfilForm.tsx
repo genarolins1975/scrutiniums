@@ -6,15 +6,20 @@ import { SelectField } from "@/components/ui/SelectField";
 import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
 import { formatCpf, isValidCpf, normalizeCpf } from "@/lib/cpf";
-import { AREAS_ATUACAO, NIVEIS_CARGO, TIPOS_INSTITUICAO, UFS } from "@/lib/perfilOpcoes";
+import { AREAS_ATUACAO, NIVEIS_CARGO, TIPOS_INSTITUICAO, UFS, corpoPerfil, ehPerfilProfissional, errosPerfil } from "@/lib/perfilOpcoes";
+import { CampoPerfilUso } from "@/components/onboarding/CampoPerfilUso";
 
 /**
  * Edição do perfil ESTRUTURADO (listas fechadas, sem texto livre)
  * → POST /api/conta/perfil. Contas sem CPF podem incluí-lo uma única vez;
  * para telefone estrangeiro verificado, o preenchimento é opcional.
  * Depois disso o campo some (alteração de CPF só pelo canal de privacidade).
+ * Mesma regra do cadastro (errosPerfil): perfil de uso e UF obrigatórios;
+ * instituição, área e cargo só aparecem e só são enviados nos perfis de uso
+ * profissionais. Conta anterior ao perfil de uso escolhe um ao salvar.
  */
 export function PerfilForm({
+  perfilUsoInicial = "",
   orgTypeInicial,
   orgAreaInicial,
   orgRoleInicial,
@@ -22,6 +27,7 @@ export function PerfilForm({
   temCpf,
   cpfObrigatorio = true,
 }: {
+  perfilUsoInicial?: string;
   orgTypeInicial: string;
   orgAreaInicial: string;
   orgRoleInicial: string;
@@ -29,6 +35,7 @@ export function PerfilForm({
   temCpf: boolean;
   cpfObrigatorio?: boolean;
 }) {
+  const [perfilUso, setPerfilUso] = useState(perfilUsoInicial);
   const [orgType, setOrgType] = useState(orgTypeInicial);
   const [orgArea, setOrgArea] = useState(orgAreaInicial);
   const [orgRole, setOrgRole] = useState(orgRoleInicial);
@@ -41,10 +48,7 @@ export function PerfilForm({
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const novos: Record<string, string | undefined> = {
-      orgType: orgType ? undefined : "Selecione o tipo de instituição.",
-      orgArea: orgArea ? undefined : "Selecione sua área de atuação.",
-      orgRole: orgRole ? undefined : "Selecione seu nível de cargo.",
-      uf: uf ? undefined : "Selecione sua UF.",
+      ...errosPerfil({ perfilUso, orgType, orgArea, orgRole, uf }),
       cpf: temCpf || !cpf || isValidCpf(cpf) ? undefined : "CPF inválido. Confira os dígitos.",
     };
     if (!temCpf && cpfObrigatorio && !cpf) novos.cpf = "Informe seu CPF para completar o cadastro.";
@@ -53,7 +57,7 @@ export function PerfilForm({
 
     setStatus("salvando");
     try {
-      const corpo: Record<string, string> = { orgType, orgArea, orgRole, uf };
+      const corpo: Record<string, string> = corpoPerfil({ perfilUso, orgType, orgArea, orgRole, uf });
       if (!temCpf && cpf) corpo.cpf = normalizeCpf(cpf);
       const res = await fetch("/api/conta/perfil", {
         method: "POST",
@@ -92,30 +96,43 @@ export function PerfilForm({
         />
       )}
       <div className="grid gap-5 sm:grid-cols-2">
-        <SelectField
-          label="Tipo de instituição"
-          name="org-type"
-          opcoes={TIPOS_INSTITUICAO}
-          value={orgType}
-          onChange={(e) => setOrgType(e.target.value)}
-          error={erros.orgType}
-        />
-        <SelectField
-          label="Área de atuação"
-          name="org-area"
-          opcoes={AREAS_ATUACAO}
-          value={orgArea}
-          onChange={(e) => setOrgArea(e.target.value)}
-          error={erros.orgArea}
-        />
-        <SelectField
-          label="Nível de cargo"
-          name="org-role"
-          opcoes={NIVEIS_CARGO}
-          value={orgRole}
-          onChange={(e) => setOrgRole(e.target.value)}
-          error={erros.orgRole}
-        />
+        <div className="sm:col-span-2">
+          <CampoPerfilUso
+            value={perfilUso}
+            onChange={setPerfilUso}
+            error={erros.perfilUso}
+            grade="grid-cols-2 lg:grid-cols-4"
+            hint={perfilUsoInicial ? undefined : "Novo no cadastro: escolha o que melhor descreve seu uso. Setor público, mercado financeiro, empresa e pesquisa acadêmica pedem também instituição, área e cargo."}
+          />
+        </div>
+        {ehPerfilProfissional(perfilUso) && (
+          <>
+            <SelectField
+              label="Tipo de instituição"
+              name="org-type"
+              opcoes={TIPOS_INSTITUICAO}
+              value={orgType}
+              onChange={(e) => setOrgType(e.target.value)}
+              error={erros.orgType}
+            />
+            <SelectField
+              label="Área de atuação"
+              name="org-area"
+              opcoes={AREAS_ATUACAO}
+              value={orgArea}
+              onChange={(e) => setOrgArea(e.target.value)}
+              error={erros.orgArea}
+            />
+            <SelectField
+              label="Nível de cargo"
+              name="org-role"
+              opcoes={NIVEIS_CARGO}
+              value={orgRole}
+              onChange={(e) => setOrgRole(e.target.value)}
+              error={erros.orgRole}
+            />
+          </>
+        )}
         <SelectField
           label="UF"
           name="uf"

@@ -30,6 +30,7 @@ const corpo = () =>
     body: JSON.stringify({
       password: "senha-forte-123",
       cpf: "529.982.247-25",
+      perfilUso: "mercado_financeiro",
       orgType: [...TIPOS_SET][0],
       orgArea: [...AREAS_SET][0],
       orgRole: [...NIVEIS_SET][0],
