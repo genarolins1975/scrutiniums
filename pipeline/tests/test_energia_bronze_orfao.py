@@ -230,7 +230,7 @@ class TestSelecaoEBronzeDuravel(unittest.TestCase):
         self.con = base.conecta(os.path.join(self.silver, "familia.db"))
         self.addCleanup(self.con.close)
         # orçamento de recaptura de órfãs zerado a cada teste (estado do processo em base._ORFAS)
-        p = patch.dict(base._ORFAS, {"gasto_s": 0.0, "recapturadas": 0, "adiadas": 0})
+        p = patch.dict(base._ORFAS, {"gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "adiadas_prazo": 0})
         p.start()
         self.addCleanup(p.stop)
 
@@ -397,34 +397,53 @@ class TestSelecaoEBronzeDuravel(unittest.TestCase):
 
     def test_orcamento_esgotado_adia_recaptura_de_orfa(self):
         """19/10/2026: as recapturas de órfãs passaram do limite de 150 min do job e nada foi
-        publicado. Esgotado o orçamento da execução, a órfã com captura recente fica para a
-        próxima, com a vintage vigente; a recaptura anterior a isso conta no orçamento."""
+        publicado. Esgotado o orçamento da execução, a órfã fica para a próxima; a recaptura
+        anterior a isso conta no orçamento. A adiada volta sem vintage (review #286): os
+        consumidores abrem o arquivo de qualquer vintage não nula."""
         self._orfa_recente("a")
-        anterior_b = self._orfa_recente("b")
+        self._orfa_recente("b")
         chamadas = []
         with patch.object(base, "ORCAMENTO_ORFAS_S", 10.0), \
-                patch("pipeline.energia.fontes.ckan.time.monotonic", side_effect=[0.0, 15.0]):
+                patch.object(base, "relogio", side_effect=[0.0, 15.0]):
             r_a = self._baixa("a", chamadas)
             r_b = self._baixa("b", chamadas)
             resumo = base.resumo_orfas()
         self.assertEqual(r_a["status"], "nova")
-        self.assertEqual(r_b["status"], "pulada")
+        self.assertEqual((r_b["status"], r_b["vintage"]), ("pulada", None))
         self.assertIn("orçamento", r_b["detalhe"])
-        self.assertEqual(r_b["vintage"], anterior_b)
         self.assertEqual(chamadas, ["https://fonte.test/a"])
-        self.assertEqual(resumo, {"orcamento_s": 10, "gasto_s": 15.0, "recapturadas": 1, "adiadas": 1})
+        self.assertEqual((resumo["gasto_s"], resumo["recapturadas"], resumo["adiadas"]), (15.0, 1, 1))
 
-    def test_orcamento_nao_segura_recoleta_devida_nem_coleta_forcada(self):
-        """Fora do orçamento continuam a recoleta devida pela política (captura antiga) e a forçada."""
-        self._orfa_recente("forcada")
+    def test_orfa_com_coleta_vencida_tambem_usa_orcamento(self):
+        """Review #286: a NASA e a Open-Meteo falhavam por bronze ausente desde 06/10; a última
+        coleta ok é antiga e a recoleta já é devida. Órfã devida também entra no orçamento."""
         antiga = self.vintage("ds", "antiga")
-        os.remove(base.caminho_bronze(antiga["arquivo"]))
+        os.remove(base.caminho_bronze(antiga["arquivo"]))  # nenhuma coleta ok registrada
         chamadas = []
         with patch.object(base, "ORCAMENTO_ORFAS_S", 0.0):
-            r_forcada = self._baixa("forcada", chamadas, forcar=True)
-            r_antiga = self._baixa("antiga", chamadas)  # nenhuma coleta ok registrada: recoleta devida
-        self.assertEqual((r_forcada["status"], r_antiga["status"]), ("nova", "nova"))
-        self.assertEqual(len(chamadas), 2)
+            r = self._baixa("antiga", chamadas, max_idade_dias=1)
+        self.assertEqual((r["status"], r["vintage"], chamadas), ("pulada", None, []))
+
+    def test_prazo_de_coleta_adia_recoleta_devida_e_preserva_vintage_com_bronze(self):
+        disponivel = self.vintage("ds", "disp")  # bronze presente, nenhuma coleta ok: recoleta devida
+        chamadas = []
+        with patch.object(base, "PRAZO_COLETA_S", 0.0):
+            r = self._baixa("disp", chamadas, max_idade_dias=1)
+            nova = self._baixa("inedito", chamadas)  # recurso sem vintage não espera
+            resumo = base.resumo_orfas()
+        self.assertEqual((r["status"], r["vintage"]), ("pulada", disponivel))
+        self.assertIn("prazo", r["detalhe"])
+        self.assertEqual(nova["status"], "nova")
+        self.assertEqual(chamadas, ["https://fonte.test/inedito"])
+        self.assertEqual(resumo["adiadas_prazo"], 1)
+
+    def test_coleta_forcada_nao_espera_orcamento_nem_prazo(self):
+        self._orfa_recente("forcada")
+        chamadas = []
+        with patch.object(base, "ORCAMENTO_ORFAS_S", 0.0), patch.object(base, "PRAZO_COLETA_S", 0.0):
+            r = self._baixa("forcada", chamadas, forcar=True)
+        self.assertEqual(r["status"], "nova")
+        self.assertEqual(len(chamadas), 1)
         self.assertEqual(base.resumo_orfas()["recapturadas"], 0)
 
     def test_recaptura_identica_religa_bronze_sem_alterar_data_da_vintage(self):

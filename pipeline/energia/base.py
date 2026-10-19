@@ -19,6 +19,7 @@ import json
 import os
 import sqlite3
 import subprocess
+import time
 from datetime import datetime, timezone
 from decimal import ROUND_HALF_UP, Decimal, InvalidOperation
 
@@ -201,13 +202,20 @@ def bronze_disponivel(vintage):
 
 # Vintage órfã: a última captura está no silver, mas o bronze não está no disco (cache despejado
 # ou podado). Desde o #278 ela é recapturada. Na primeira execução com essa regra (19/10/2026),
-# as recapturas passaram do limite de 150 min do job (água 30 min; carga mais de 108 min, com as
-# séries da NASA) e nada foi publicado. As recapturas que a política de recoleta dispensaria
-# passam a ter um orçamento de tempo por execução; o que exceder fica para a próxima, com a
-# vintage vigente, como antes do #278. Recoleta devida pela política e coleta forçada não usam
-# o orçamento.
+# as recapturas passaram do limite de 150 min do job (água 30 min; carga mais de 107 min: as
+# séries da NASA e da Open-Meteo, cuja coleta falhava por bronze ausente desde 06/10) e nada foi
+# publicado. A recaptura de órfãs passa a ter um orçamento de tempo por execução, e toda recoleta
+# não forçada, um prazo contado do início do processo: o que exceder fica para a próxima execução.
+# Coleta forçada e recurso sem nenhuma vintage não esperam.
 ORCAMENTO_ORFAS_S = float(os.environ.get("ENERGIA_ORCAMENTO_ORFAS_MIN", "40")) * 60
-_ORFAS = {"gasto_s": 0.0, "recapturadas": 0, "adiadas": 0}
+PRAZO_COLETA_S = float(os.environ.get("ENERGIA_PRAZO_COLETA_MIN", "80")) * 60
+_INICIO = time.monotonic()
+_ORFAS = {"gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "adiadas_prazo": 0}
+
+
+def relogio():
+    """Relógio monotônico das recapturas (separado para os testes)."""
+    return time.monotonic()
 
 
 def vintage_orfa(vintage):
@@ -216,6 +224,10 @@ def vintage_orfa(vintage):
 
 def orcamento_orfas_disponivel():
     return _ORFAS["gasto_s"] < ORCAMENTO_ORFAS_S
+
+
+def prazo_coleta_vencido():
+    return time.monotonic() - _INICIO >= PRAZO_COLETA_S
 
 
 def registra_recaptura_orfa(segundos):
@@ -227,9 +239,14 @@ def registra_orfa_adiada():
     _ORFAS["adiadas"] += 1
 
 
+def registra_adiada_prazo():
+    _ORFAS["adiadas_prazo"] += 1
+
+
 def resumo_orfas():
     return {"orcamento_s": round(ORCAMENTO_ORFAS_S), "gasto_s": round(_ORFAS["gasto_s"], 1),
-            "recapturadas": _ORFAS["recapturadas"], "adiadas": _ORFAS["adiadas"]}
+            "recapturadas": _ORFAS["recapturadas"], "adiadas": _ORFAS["adiadas"],
+            "prazo_coleta_s": round(PRAZO_COLETA_S), "adiadas_prazo": _ORFAS["adiadas_prazo"]}
 
 
 def vintages_com_bronze(con, dataset):

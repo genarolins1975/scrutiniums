@@ -105,16 +105,21 @@ def baixar_recurso(con, *, orgao, dataset, recurso, url, publicado_em=None, ext=
     if ultima and not forcar:
         ok_em = _ultima_coleta_ok(con, dataset, recurso)
         mesma_publicacao = (publicado_em is None) or (ultima.get("publicado_em") == publicado_em)
-        if ok_em and mesma_publicacao and agora - ok_em < timedelta(days=max_idade_dias):
-            if not orfa:
-                return {"status": "pulada", "vintage": ultima, "detalhe": "recurso inalterado e captura recente"}
-            # bronze ausente: recaptura só dentro do orçamento da execução (base.ORCAMENTO_ORFAS_S)
-            if not base.orcamento_orfas_disponivel():
-                base.registra_orfa_adiada()
-                return {"status": "pulada", "vintage": ultima,
-                        "detalhe": "bronze ausente; recaptura adiada pelo orçamento de órfãs desta execução"}
-            recaptura_orfa = True
-    inicio = time.monotonic()
+        recente = ok_em and mesma_publicacao and agora - ok_em < timedelta(days=max_idade_dias)
+        if recente and not orfa:
+            return {"status": "pulada", "vintage": ultima, "detalhe": "recurso inalterado e captura recente"}
+        # adiada: a vintage só volta ao chamador se o bronze dela existe; órfã volta como None,
+        # porque os consumidores abrem o arquivo de qualquer vintage não nula
+        if orfa and not base.orcamento_orfas_disponivel():
+            base.registra_orfa_adiada()
+            return {"status": "pulada", "vintage": None,
+                    "detalhe": "bronze ausente; recaptura adiada pelo orçamento de órfãs desta execução"}
+        if base.prazo_coleta_vencido():
+            base.registra_adiada_prazo()
+            return {"status": "pulada", "vintage": None if orfa else ultima,
+                    "detalhe": "prazo de coleta desta execução vencido; recoleta adiada"}
+        recaptura_orfa = orfa
+    inicio = base.relogio()
     fd, tmp = tempfile.mkstemp(prefix="energia-", suffix="." + ext)
     os.close(fd)
     try:
@@ -137,7 +142,7 @@ def baixar_recurso(con, *, orgao, dataset, recurso, url, publicado_em=None, ext=
         return {"status": "nova", "vintage": base.ultima_vintage(con, dataset, recurso), "detalhe": f"{nbytes} bytes"}
     finally:
         if recaptura_orfa:
-            base.registra_recaptura_orfa(time.monotonic() - inicio)
+            base.registra_recaptura_orfa(base.relogio() - inicio)
         try:
             os.remove(tmp)
         except OSError:
