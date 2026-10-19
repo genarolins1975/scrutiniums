@@ -24,7 +24,7 @@ let changeStart: typeof import("@/app/api/conta/telefone/start/route").POST;
 let changeCheck: typeof import("@/app/api/conta/telefone/check/route").POST;
 let completeProfile: typeof import("@/lib/onboarding").completeProfile;
 let serial = 0;
-const dados = { password: "senha-de-teste-123", orgType: "outra", orgArea: "outra", orgRole: "outro", uf: "EX" };
+const dados = { password: "senha-de-teste-123", perfilUso: "empresa", orgType: "outra", orgArea: "outra", orgRole: "outro", uf: "EX" };
 const req = (body: unknown) => new Request("http://localhost/api/teste", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
 
 beforeAll(async () => {

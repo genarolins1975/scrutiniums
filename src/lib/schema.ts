@@ -30,7 +30,16 @@ export const users = pgTable("users", {
   jobTitle: text("job_title"),
   /** CPF normalizado (11 dígitos). Finalidade única: uma conta por pessoa. Nunca exibido integralmente. */
   cpf: text("cpf").unique(),
-  /** Perfil estruturado (allowlists em perfilOpcoes.ts; sem texto livre). */
+  /**
+   * Perfil de uso (PERFIS_USO em perfilOpcoes.ts), obrigatório no cadastro
+   * desde 19/10/2026. Null nas contas anteriores, que continuam válidas.
+   */
+  perfilUso: text("perfil_uso"),
+  /**
+   * Perfil estruturado (allowlists em perfilOpcoes.ts; sem texto livre).
+   * Tipo de instituição, área e cargo só nos perfis de uso profissionais;
+   * null nos demais.
+   */
   orgType: text("org_type"),
   orgArea: text("org_area"),
   orgRole: text("org_role"),

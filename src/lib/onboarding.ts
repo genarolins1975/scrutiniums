@@ -244,7 +244,7 @@ export async function updateUser(
 /** Gravação condicional: uma requisição antiga não conclui perfil de outro telefone. */
 export async function completeProfile(
   user: User,
-  values: Pick<typeof schema.users.$inferInsert, "passwordHash" | "cpf" | "orgType" | "orgArea" | "orgRole" | "uf">,
+  values: Pick<typeof schema.users.$inferInsert, "passwordHash" | "cpf" | "perfilUso" | "orgType" | "orgArea" | "orgRole" | "uf">,
 ): Promise<boolean> {
   const exigeCpf = cpfObrigatorioParaTelefone(user);
   if (exigeCpf === null || !user.phoneE164 || !user.phoneVerifiedAt) return false;

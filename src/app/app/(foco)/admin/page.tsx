@@ -5,7 +5,7 @@ import { isAdmin } from "@/lib/admin";
 import { fmtDate, fmtDateTime, fmtNumber } from "@/lib/format";
 import { getAdminStats } from "@/lib/adminStats";
 import { sectionLabel } from "@/lib/telemetry";
-import { AREAS_ATUACAO, NIVEIS_CARGO, TIPOS_INSTITUICAO, rotuloDe } from "@/lib/perfilOpcoes";
+import { AREAS_ATUACAO, NIVEIS_CARGO, PERFIS_USO, TIPOS_INSTITUICAO, rotuloDe } from "@/lib/perfilOpcoes";
 import { PageTitle, SectionHeading } from "@/components/ui/SectionHeading";
 import { EmptyState } from "@/components/ui/States";
 import { BarrasRanking, ColunasDiarias, Funil, Indicador } from "@/components/admin/Graficos";
@@ -186,6 +186,22 @@ export default async function AdminPage() {
 
         <section aria-label="Usuários recentes" className="border border-linha bg-papel p-8">
           <SectionHeading number="05" label="Contas" title="Usuários recentes" />
+          {stats.perfisUso.length > 0 && (
+            <div className="mb-10">
+              <h3 className="mb-4 font-serif text-xl text-carvao">Perfil de uso das contas completas</h3>
+              <BarrasRanking
+                itens={stats.perfisUso.map((p) => ({
+                  rotulo: p.perfilUso ? rotuloDe(PERFIS_USO, p.perfilUso) : "Sem registro (conta anterior à pergunta)",
+                  valor: p.contas,
+                  detalhe: `${fmtNumber((p.contas / stats.visaoGeral.acessoCompleto) * 100, 1)}%`,
+                }))}
+              />
+              <p className="mt-4 text-xs text-mineral">
+                Contas com cadastro completo, por perfil de uso declarado. Contas concluídas antes de o
+                cadastro perguntar o perfil de uso aparecem sem registro, não em outra categoria.
+              </p>
+            </div>
+          )}
           {stats.usuariosRecentes.length === 0 ? (
             <EmptyState title="Nenhuma conta criada ainda" description="Os cadastros aparecem aqui." />
           ) : (
@@ -195,6 +211,7 @@ export default async function AdminPage() {
                   <tr className="border-b border-linha">
                     <Th>E-mail</Th>
                     <Th>Situação</Th>
+                    <Th>Perfil de uso</Th>
                     <Th>Instituição</Th>
                     <Th>Atuação</Th>
                     <Th>Cadastro em</Th>
@@ -212,9 +229,11 @@ export default async function AdminPage() {
                         </span>
                       </td>
                       <td className="px-3 py-3 text-carvao-muted">
-                        {u.orgType
-                          ? `${rotuloDe(TIPOS_INSTITUICAO, u.orgType)}${u.uf ? ` · ${u.uf}` : ""}`
-                          : u.company || "—"}
+                        {u.perfilUso ? rotuloDe(PERFIS_USO, u.perfilUso) : u.status === "COMPLETE" ? "Sem registro" : "—"}
+                        {u.uf ? ` · ${u.uf}` : ""}
+                      </td>
+                      <td className="px-3 py-3 text-carvao-muted">
+                        {u.orgType ? rotuloDe(TIPOS_INSTITUICAO, u.orgType) : u.company || "—"}
                       </td>
                       <td className="px-3 py-3 text-carvao-muted">
                         {u.orgArea

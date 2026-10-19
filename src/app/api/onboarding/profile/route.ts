@@ -7,7 +7,7 @@ import { COOKIE_DESTINO } from "@/lib/rotasPublicas";
 import { hashPassword, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from "@/lib/password";
 import { cpfObrigatorioParaTelefone } from "@/lib/cpf-telefone";
 import { isValidCpf, normalizeCpf } from "@/lib/cpf";
-import { AREAS_SET, NIVEIS_SET, TIPOS_SET, UFS_SET } from "@/lib/perfilOpcoes";
+import { camposPerfil, comPerfilNormalizado, mensagemPerfil } from "@/lib/perfilServidor";
 import { trackEvent } from "@/lib/events";
 
 export const runtime = "nodejs";
@@ -18,23 +18,25 @@ export const runtime = "nodejs";
  * - CPF: exigido apenas para telefone +55 verificado, validado e único.
  *   Finalidade única: uma conta por pessoa. Nunca é logado nem exibido
  *   integralmente. Duplicidade responde erro específico sem revelar dados.
- * - Perfil: tipo de instituição, área, nível de cargo e UF, validados
- *   contra as allowlists de perfilOpcoes.ts (mesma lista do cliente).
+ * - Perfil: perfil de uso e UF sempre; tipo de instituição, área e nível
+ *   de cargo só nos perfis de uso profissionais (null nos demais). Mesma
+ *   regra do formulário (errosPerfil em perfilOpcoes.ts), aplicada aqui.
  * Etapa FINAL do cadastro: perfil completo conclui o onboarding (COMPLETE)
  * e entra direto no Observatório — não existe mais código de acesso.
  */
 
-const bodySchema = z.object({
+const camposBase = {
   password: z.string().min(PASSWORD_MIN_LENGTH).max(PASSWORD_MAX_LENGTH),
   cpf: z
     .string()
     .transform(normalizeCpf)
     .refine(isValidCpf, { message: "CPF inválido" }),
-  orgType: z.string().refine((v) => TIPOS_SET.has(v)),
-  orgArea: z.string().refine((v) => AREAS_SET.has(v)),
-  orgRole: z.string().refine((v) => NIVEIS_SET.has(v)),
-  uf: z.string().refine((v) => UFS_SET.has(v)),
-});
+  ...camposPerfil,
+};
+const schemaComCpf = z.object(camposBase).transform(comPerfilNormalizado);
+const schemaSemCpf = z
+  .object({ ...camposBase, cpf: z.literal("").nullish().transform(() => null) })
+  .transform(comPerfilNormalizado);
 
 export async function POST(req: Request) {
   const user = await getSessionUser();
@@ -52,12 +54,12 @@ export async function POST(req: Request) {
   if (exigeCpf === null) {
     return NextResponse.json({ error: "Confirme seu telefone antes de concluir o perfil." }, { status: 401 });
   }
-  const schemaPerfil = exigeCpf ? bodySchema : bodySchema.extend({ cpf: z.literal("").nullish().transform(() => null) });
+  const schemaPerfil = exigeCpf ? schemaComCpf : schemaSemCpf;
   const parsed = schemaPerfil.safeParse(json);
   if (!parsed.success) {
     const cpfInvalido = parsed.error.issues.some((i) => i.path[0] === "cpf");
     return NextResponse.json(
-      { error: cpfInvalido ? "CPF inválido. Confira os dígitos." : "Dados inválidos." },
+      { error: cpfInvalido ? "CPF inválido. Confira os dígitos." : mensagemPerfil(parsed.error.issues) ?? "Dados inválidos." },
       { status: 400 },
     );
   }
@@ -77,6 +79,7 @@ export async function POST(req: Request) {
     const atualizado = await completeProfile(user, {
       passwordHash,
       cpf: parsed.data.cpf,
+      perfilUso: parsed.data.perfilUso,
       orgType: parsed.data.orgType,
       orgArea: parsed.data.orgArea,
       orgRole: parsed.data.orgRole,
