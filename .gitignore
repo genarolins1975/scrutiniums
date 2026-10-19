@@ -37,3 +37,5 @@ __pycache__/
 /pesquisa-testes.log
 /dist/
 /.gold-publicacao/
+# Trabalho da atualização agendada por grupo (scripts/atualizacao_por_grupo.py)
+/.atualizacao/

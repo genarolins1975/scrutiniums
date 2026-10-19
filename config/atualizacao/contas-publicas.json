@@ -1,0 +1,42 @@
+{
+  "dominio": "contas-publicas",
+  "titulo": "Contas Públicas Federais",
+  "descricao": "Recoleta semanal da execução orçamentária do SIOP (consulta SPARQL pública) para os exercícios integrados. A edição do RTN, o IPCA, os restos a pagar, as metas físicas, os custos e os denominadores do IBGE são integrados por edição, à mão (OPERACOES.md).",
+  "codigo": [
+    "scripts/contas-publicas/importar.py",
+    "scripts/contas-publicas/esferas.rq",
+    "scripts/contas-publicas/gnd.rq",
+    "src/lib/contas-publicas",
+    "src/tests/contas-publicas*.test.ts"
+  ],
+  "reconstruir": [],
+  "saidas": [],
+  "sinal_de_mudanca": [
+    {"arquivo": "src/lib/contas-publicas/snapshots/dados.json", "json_sem": ["capturaSIOP"]},
+    {"caminho": "data/contas-publicas/fontes"}
+  ],
+  "testes": [
+    {
+      "nome": "importadores (Python)",
+      "comando": ["python3", "-m", "unittest", "discover", "-s", "scripts/contas-publicas", "-p", "test_*.py"],
+      "timeout_min": 5
+    },
+    {
+      "nome": "contratos do painel e das entradas (vitest)",
+      "comando": ["npx", "vitest", "run", "--testTimeout=60000", "src/tests/contas-publicas", "src/tests/entradas-estado.test.ts", "src/tests/observatorios-entradas.test.ts", "src/tests/perguntas-portas.test.ts"],
+      "timeout_min": 15
+    }
+  ],
+  "grupos": [
+    {
+      "id": "siop",
+      "nome": "SIOP: execução orçamentária da União (esferas e GND, exercícios integrados)",
+      "coleta": [["python3", "scripts/contas-publicas/importar.py", "--so-siop"]],
+      "caminhos": [
+        "src/lib/contas-publicas/snapshots/dados.json",
+        "data/contas-publicas/fontes"
+      ],
+      "timeout_min": 15
+    }
+  ]
+}

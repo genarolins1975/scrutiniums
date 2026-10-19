@@ -1,0 +1,130 @@
+name: Conferir dados das Contas Públicas Estaduais
+
+# Contas Públicas Estaduais: conferência mensal agendada contra o Siconfi (API pública, sem
+# credencial). A base publicada (src/lib/contas-estaduais/primarios.json) é reproduzida só das
+# respostas arquivadas em public/contas-estaduais/evidencias, e promover captura nova é uma alteração
+# de dados revisada (docs/contas-publicas-estaduais/FASE_1.md, passo 3). Por isso este workflow NÃO
+# publica: ele (1) confirma que a base publicada ainda se reproduz dos bytes arquivados e passa nos
+# contratos, (2) refaz as 81 consultas arquivadas e acusa conteúdo diferente (retificação) e (3)
+# acusa período novo disponível (RGF quadrimestral, RREO do 6º bimestre) para as 27 UFs.
+#
+# Cadência pela fonte: o RGF sai 30 dias depois de cada quadrimestre (30/05, 30/09 e 30/01) e o RREO,
+# 30 dias depois de cada bimestre; a homologação no Siconfi leva mais alguns dias. Uma execução por
+# mês, no dia 5, alcança cada prazo. O snapshot herdado da dívida (snapshot.json, CE-11) é fixado por
+# blob Git e fica fora, por decisão (FASE_1.md). O workflow contas-estaduais.yml continua cuidando
+# dos contratos e da captura de evidência em PR.
+on:
+  schedule:
+    - cron: "29 11 5 * *" # dia 5, 08:29 em São Paulo
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: atualizar-contas-estaduais
+  cancel-in-progress: false
+
+env:
+  TITULO_ISSUE: "Contas Públicas Estaduais: Siconfi com retificação ou período novo a integrar"
+  TITULO_FALHA: "Conferência agendada das Contas Públicas Estaduais falhou"
+
+jobs:
+  conferir:
+    runs-on: ubuntu-latest
+    # 81 consultas arquivadas e até 108 sondagens, com 1 s de pausa entre elas (coletar.requisitar)
+    timeout-minutes: 45
+    outputs:
+      relatado: ${{ steps.falha.outcome == 'success' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Contratos e reprodução da base publicada
+        id: contratos
+        continue-on-error: true
+        run: |
+          python3 -m unittest pipeline.contas_estaduais.test_contratos pipeline.contas_estaduais.test_primarios pipeline.contas_estaduais.test_educacao pipeline.contas_estaduais.test_capturar_educacao pipeline.contas_estaduais.test_transporte pipeline.contas_estaduais.test_financiamento pipeline.contas_estaduais.test_despesas pipeline.tests.test_contas_estaduais_conferir -v
+          python3 -m pipeline.contas_estaduais.consolidar --check
+
+      - name: Conferir contra o Siconfi
+        id: conferir
+        continue-on-error: true
+        run: |
+          set +e
+          python3 -u -m pipeline.contas_estaduais.conferir --destino evidencia/respostas --resumo evidencia/resumo.json > evidencia-corpo.md
+          CODIGO=$?
+          set -e
+          cat evidencia-corpo.md
+          echo "codigo=$CODIGO" >> "$GITHUB_OUTPUT"
+          [ "$CODIGO" = "0" ] || [ "$CODIGO" = "3" ]
+
+      # Retificação ou período novo: pendência de integração manual, não pane. A execução fica verde
+      # e a issue registra o que mudou; a mesma situação no mês seguinte não gera comentário repetido.
+      - name: Abrir ou comentar a issue de integração pendente
+        if: steps.conferir.outputs.codigo == '3'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          printf '\nExecução: %s/%s/actions/runs/%s\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" >> evidencia-corpo.md
+          scripts/issue_dedup.sh "$TITULO_ISSUE" evidencia-corpo.md
+
+      - name: Guardar as respostas de hoje e o resumo
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: contas-estaduais-conferencia
+          path: |
+            evidencia/
+            evidencia-corpo.md
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Abrir ou comentar a issue de falha
+        id: falha
+        if: always() && (steps.contratos.outcome != 'success' || steps.conferir.outcome != 'success')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CONTRATOS: ${{ steps.contratos.outcome }}
+          CODIGO: ${{ steps.conferir.outputs.codigo }}
+        run: |
+          {
+            printf 'Execução: %s/%s/actions/runs/%s\n\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID"
+            [ "$CONTRATOS" = "success" ] || printf -- '- Os contratos ou a reprodução da base publicada (`consolidar --check`) reprovaram: a página pode estar servindo dado que não se reproduz dos bytes arquivados.\n'
+            case "$CODIGO" in
+              0|3) ;;
+              1) printf -- '- Nenhuma resposta arquivada pôde ser conferida (Siconfi inacessível): conferência cega.\n' ;;
+              *) printf -- '- A conferência quebrou (código %s). Ver o log do passo *Conferir contra o Siconfi*.\n' "${CODIGO:-ausente}" ;;
+            esac
+          } > /tmp/falha.md
+          cat evidencia-corpo.md >> /tmp/falha.md 2>/dev/null || true
+          scripts/issue_dedup.sh "$TITULO_FALHA" /tmp/falha.md
+
+      - name: Sinalizar falha
+        if: always() && (steps.contratos.outcome != 'success' || steps.conferir.outcome != 'success')
+        run: |
+          echo "::error::contratos reprovados ou conferência cega/quebrada; ver a issue '$TITULO_FALHA'"
+          exit 1
+
+  alertar:
+    runs-on: ubuntu-latest
+    needs: conferir
+    if: always() && needs.conferir.outputs.relatado != 'true' && (needs.conferir.result == 'failure' || needs.conferir.result == 'cancelled')
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Abrir ou comentar issue de interrupção
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULTADO: ${{ needs.conferir.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          printf 'Execução de %s UTC terminou com **%s** antes do relatório (tempo esgotado, cancelamento ou falha de preparo): %s\n' \
+            "$(date -u +%d/%m/%Y\ %H:%M)" "$RESULTADO" "$RUN_URL" > /tmp/corpo.md
+          scripts/issue_dedup.sh "$TITULO_FALHA" /tmp/corpo.md

@@ -1,0 +1,151 @@
+name: Atualizar dados do Saneamento
+
+# Observatório do Saneamento: recoleta mensal das fontes com coletor automatizável e publicação
+# por grupo de fontes (scripts/atualizacao_por_grupo.py, config/atualizacao/saneamento.json).
+# Cada grupo é coletado à parte; a gold é reconstruída do seed e os testes do domínio decidem a
+# publicação de cada grupo sobre a composição já aprovada. Grupo reprovado mantém no ar a
+# publicação anterior, abre ou comenta issue e deixa a execução vermelha.
+#
+# Cadência pela fonte: o SINISA sai uma vez por ano (dezembro) e é retificado sem aviso (a base
+# municipal de água foi retificada em 25/05/2026); o Ministério da Saúde reescreve os arquivos do
+# SISAGUA todo mês; a CVM recebe versões do Formulário de Referência o ano todo; o JMP atualiza uma
+# vez por ano ou a cada dois; a base dos ODS da ONU, por trimestre. Uma execução por mês cobre todas.
+# Resposta idêntica não gera commit; arquivo reescrito com os mesmos números publica só a
+# proveniência nova (assim a vigília semanal de vigilancia.yml não acusa de novo o que já foi visto).
+#
+# Fica de fora, por ser integração manual por decisão (OPERACOES.md): edição nova do SINISA (URLs
+# novas em fontes.py), mês novo do CadÚnico, ano novo do SISAGUA, Censo (decenal), atos tarifários
+# dos reguladores (curadoria de documentos) e o capítulo de saneamento da Eficiência Estatal.
+on:
+  schedule:
+    - cron: "23 11 6 * *" # dia 6, 08:23 em São Paulo
+  workflow_dispatch:
+    inputs:
+      sem_coleta:
+        description: "Pular a coleta e só reconstruir a gold a partir do seed (publica se mudou e os testes passarem)"
+        type: boolean
+        default: false
+      grupos:
+        description: "Coletar só estes grupos (ids separados por vírgula; vazio = todos)"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: atualizar-saneamento
+  cancel-in-progress: false
+
+env:
+  CONFIG: config/atualizacao/saneamento.json
+  TITULO_ISSUE: "Atualização agendada do Saneamento: publicação retida ou coleta com falha"
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    # o SISAGUA baixa e agrega em fluxo cerca de 40 arquivos de 100 a 200 MB (2014 a 2025); os outros
+    # grupos levam minutos. Cada comando tem teto próprio na configuração.
+    timeout-minutes: 300
+    outputs:
+      relatado: ${{ steps.issue.outcome == 'success' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # openpyxl: planilhas do SINISA e do JMP (só os coletores; a gold usa a biblioteca padrão)
+      - name: Dependências da coleta
+        run: pip install openpyxl
+
+      - name: Node para os testes de contrato
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Dependências da interface
+        run: npm ci
+
+      - name: Coletar, reconstruir e decidir a publicação por grupo
+        id: ciclo
+        continue-on-error: true
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          SEM_COLETA: ${{ inputs.sem_coleta }}
+          GRUPOS: ${{ inputs.grupos }}
+        run: |
+          ARGS=()
+          if [ "$SEM_COLETA" = "true" ]; then ARGS+=(--sem-coleta); fi
+          if [ -n "$GRUPOS" ]; then ARGS+=(--grupos "$GRUPOS"); fi
+          python3 -u scripts/atualizacao_por_grupo.py ciclo "$CONFIG" "${ARGS[@]}"
+
+      # Só os grupos aprovados e a gold, com rebase sobre o ramo e quatro tentativas. Se a gold ou o
+      # seed do saneamento mudaram no ramo durante a execução, não publica (a composição foi testada
+      # sobre outra base); se o código mudou, reconstrói e testa com o código novo antes de empurrar.
+      - name: Commit e push dos grupos aprovados
+        id: publicar
+        if: always() && steps.ciclo.outputs.publicavel == '1'
+        run: |
+          git config user.name "pipeline-observatorio[bot]"
+          git config user.email "pipeline@scrutiniums.com"
+          python3 -u scripts/atualizacao_por_grupo.py publicar "$CONFIG" --ramo "$GITHUB_REF_NAME"
+
+      - name: Abrir ou comentar a issue de retenção
+        id: issue
+        if: always() && (steps.ciclo.outcome != 'success' || steps.publicar.outcome == 'failure')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PUBLICACAO: ${{ steps.publicar.outcome }}
+        run: |
+          CORPO=.atualizacao/saneamento/relatorio.md
+          mkdir -p .atualizacao/saneamento
+          if [ ! -s "$CORPO" ]; then
+            printf 'Execução: %s\n\nO ciclo terminou sem relatório (falha antes de gravar). Ver o log do passo *Coletar, reconstruir e decidir*.\n' "$RUN_URL" > "$CORPO"
+          fi
+          if [ "$PUBLICACAO" = "failure" ]; then
+            printf '\n**A publicação dos grupos aprovados falhou** (passo *Commit e push*): nada foi empurrado.\n' >> "$CORPO"
+          fi
+          scripts/issue_dedup.sh "$TITULO_ISSUE" "$CORPO"
+
+      - name: Guardar resultado, relatório e logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atualizacao-saneamento
+          include-hidden-files: true
+          path: .atualizacao/saneamento/
+          if-no-files-found: warn
+          retention-days: 30
+
+      # Retenção deixa a execução VERMELHA: de 25/09 a 12/10/2026 o Crédito reteve a gold com o
+      # workflow verde e ninguém viu (OPERACOES.md, terceira memória).
+      - name: Sinalizar publicação retida
+        if: always() && (steps.ciclo.outcome != 'success' || steps.publicar.outcome == 'failure')
+        run: |
+          echo "::error::grupo retido, coleta com falha ou publicação não concluída; ver a issue '$TITULO_ISSUE'"
+          exit 1
+
+  # Tempo esgotado ou cancelamento não chegam ao passo da issue: este job cobre esses casos.
+  alertar:
+    runs-on: ubuntu-latest
+    needs: pipeline
+    if: always() && needs.pipeline.outputs.relatado != 'true' && (needs.pipeline.result == 'failure' || needs.pipeline.result == 'cancelled')
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Abrir ou comentar issue de interrupção
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULTADO: ${{ needs.pipeline.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          printf 'Execução de %s UTC terminou com **%s** antes do relatório (tempo esgotado, cancelamento ou falha de preparo): %s\n\nNada foi publicado.\n' \
+            "$(date -u +%d/%m/%Y\ %H:%M)" "$RESULTADO" "$RUN_URL" > /tmp/corpo.md
+          scripts/issue_dedup.sh "$TITULO_ISSUE" /tmp/corpo.md

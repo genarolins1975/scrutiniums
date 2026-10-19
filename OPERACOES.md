@@ -65,6 +65,86 @@ novas viram comentários nela. Um cheque de vigília que quebre (código ≠ 0 e
   Sem o item 1, os workflows falham com mensagem explícita; sem o item 2, a
   rota responde 403.
 
+## Atualização agendada por domínio
+
+Cada domínio tem workflow próprio: falha de um não atrasa o outro. Horários em UTC
+(São Paulo = UTC−3).
+
+| Workflow | Domínio | Agenda (UTC) | O que coleta | O que bloqueia a publicação |
+|---|---|---|---|---|
+| `atualizar-dados.yml` | Crédito | todo dia, 09:00 | ~30 fontes (BCB, IBGE, Ipeadata, CNJ...) | três suítes, por grupo da gold (`docs/PUBLICACAO_GOLD_POR_GRUPO.md`) |
+| `atualizar-energia.yml` | Setor Elétrico | todo dia, 23:40 | ONS, CCEE, ANEEL | testes da energia |
+| `previsao-pld.yml` | Setor Elétrico, previsão do PLD | todo dia, cinco horários entre 08:47 e 10:37 | rodada da previsão | testes da rodada |
+| `atualizar-gas.yml` | Gás Natural | dias 3 e 18, 12:17 | ANP, IBGE, BCB, Comex Stat, Banco Mundial | `pipeline.tests.test_gas` (tudo ou nada) |
+| `atualizar-territorio.yml` | Território e Clima | dias 2 e 16, 11:41 | INPE, Atlas de Desastres, SIRENE | `pipeline.tests.test_territorio` (tudo ou nada) |
+| `atualizar-agro.yml` | Agronegócio | dias 9 e 24, 11:41 | IBGE, Comex Stat, BCB, Tesouro, INPE, SEEG, MapBiomas | `pipeline.tests.test_agro` (tudo ou nada) |
+| `atualizar-saneamento.yml` | Saneamento | dia 6, 11:23 | SINISA, CadÚnico, SISAGUA, DATASUS, CVM, JMP, ODS | por grupo de fonte: testes Python do saneamento e contratos vitest da gold |
+| `atualizar-contas-publicas.yml` | Contas Públicas Federais | terças, 10:19 | SIOP (execução orçamentária) e vigia de edição do RTN | por grupo: testes dos importadores e contratos vitest do painel |
+| `atualizar-contas-estaduais.yml` | Contas Públicas Estaduais | dia 5, 11:29 | conferência das 81 respostas do Siconfi e sondagem de período novo | não publica (promoção revisada); contratos e `consolidar --check` deixam a execução vermelha |
+| `atualizar-eficiencia.yml` | Eficiência Estatal (Educação e Saúde nas capitais) | dia 12, 10:53 | Siconfi (DCA, RREO, MSC), IPCA e SIOPS | por grupo: testes Python do OBEE, conferências derivadas do `ci.yml` e contratos vitest |
+
+**Motor comum dos três novos que publicam** (`scripts/atualizacao_por_grupo.py`,
+configuração em `config/atualizacao/<domínio>.json`). Cada grupo de fontes é coletado à
+parte; coleta que falha, ou que troca dado íntegro por erro (guarda
+`manifesto_sem_erro_novo` do OBEE), devolve o seed do grupo ao commit e não para os
+outros. A gold é reconstruída do seed publicado: se não se reproduz com o código atual,
+a reprodução é testada como grupo próprio. Depois cada grupo coletado é aplicado sobre os
+já aprovados, reconstruído e testado; reprovado, volta ao estado anterior. Dado igual não
+publica (o sinal de mudança ignora a data de captura e, no OBEE, olha só o `hash_dados`).
+No saneamento, arquivo reescrito pela fonte com os mesmos números publica só a
+proveniência nova, para a vigília semanal não acusar de novo. Mudanças são comparadas
+por conteúdo, nunca pelo cache de stat do Git: no mesmo segundo e com o mesmo tamanho, o
+Git dá o arquivo por inalterado e o commit sairia sem ele (medido no teste do motor).
+
+**As correções permanentes dos incidentes, aplicadas aos novos workflows.** Push com
+rebase e quatro tentativas, sem publicar se os dados do domínio mudaram no `main`
+durante a execução e retestando se o código mudou (pane de 03/08); concorrência por
+domínio sem cancelamento e teto de tempo por job e por comando; retenção deixa a
+execução **vermelha** e abre ou comenta a issue do domínio, atribuída ao mantenedor, com
+a lista dos testes reprovados e a saída de cada um (correção 4 de 13/10); o job `alertar`
+cobre tempo esgotado e cancelamento, que não chegam ao passo da issue; todas as suítes do
+domínio rodam até o fim, sem `bash -e` interrompendo a seguinte (correção 4); o vitest
+roda com `--testTimeout=60000`, porque três testes do OBEE estouraram o limite padrão de
+5 s sob carga em 19/10/2026 sem nenhuma asserção reprovada. Esses domínios não têm
+silver em cache: o estado é o seed versionado, e as correções de cache (5, 10 e 11) não
+se aplicam.
+
+**O que só a primeira execução real comprova.** Alcance das fontes a partir dos runners
+do GitHub (o firewall do gov.br já recusou o `urllib` no Território), o tempo da coleta do
+SISAGUA (cerca de 40 arquivos de 100 a 200 MB, não rodada nesta sessão), a criação das
+issues pelo `GITHUB_TOKEN` e o push no `main`. O ciclo rodou de ponta a ponta nesta sessão
+em 19/10/2026, sem publicar (o commit ficou fora do `main`):
+- Contas Federais: o SIOP respondeu, a base de 17/10/2026 passou nos testes e o grupo seria
+  publicado;
+- Saneamento: SINISA (86 s), CadÚnico, JMP e ODS sem número novo; a CVM trouxe a versão 7
+  do Formulário de Referência da COPASA (BlackRock com 5,005%) e o grupo seria publicado com
+  os testes verdes; o DATASUS revisou contagens do SIH fora da janela publicada e só a
+  proveniência seria publicada;
+- Eficiência Estatal: Siconfi da Educação (452 s) e Siconfi e SIOPS da Saúde (491 s) sem
+  nenhum `hash_dados` novo: nada a publicar, árvore limpa;
+- Contas Estaduais: 81 de 81 respostas conferidas, uma divergente (SC, RGF do 1º
+  quadrimestre de 2026: 60 linhas arquivadas, 0 servidas hoje) e o RGF do 2º quadrimestre
+  de 2026 disponível para as 27 UFs;
+- o vigia do RTN acusou o boletim de agosto de 2026, ainda não integrado.
+
+### O que permanece manual nesses quatro domínios, com fonte e motivo
+
+| Domínio | O que | Fonte | Por que é manual |
+|---|---|---|---|
+| Saneamento | Edição nova do SINISA | Ministério das Cidades, página de resultados do SINISA | URLs e nomes de planilha mudam a cada edição (`pipeline/observatorio_saneamento/fontes.py`) e a edição muda o ano de referência de todo o painel; a vigília semanal acusa a página nova |
+| Saneamento | Mês novo do CadÚnico e ano novo do SISAGUA | MDS (API MI Social); Ministério da Saúde (S3 do SISAGUA) | Meses e anos são fixados no código (`fontes.CADUNICO`, `sisagua.ANOS_SERIE`) e mudam o período do painel; a vigília acusa |
+| Saneamento | Censo 2022 e 2010, estimativa de população e desigualdades | IBGE, SIDRA | Edições fechadas (decenal); recoletar não traz dado novo |
+| Saneamento | Tabelas tarifárias e atos dos reguladores | ARSESP, ARSAE-MG, AGEPAR, ARPE, ADASA e outros (PDFs) | Curadoria de documentos com localizador por página (`curadoria/`, `tarifas.py`); não há API |
+| Contas Federais | Edição nova do RTN | Tesouro Transparente (boletim e CKAN) | Muda a base de preços do IPCA, o aviso de atualidade e os testes da edição; o vigia do workflow abre a issue "edição nova do RTN aguardando integração" |
+| Contas Federais | IPCA, denominadores do IBGE, restos a pagar, metas físicas (AFFO), custos (RFC) | IBGE (SIDRA); Tesouro (relatório de RAP, RFC); SIOP (AFFO) | Integração por edição com hash fixado (`importar-ipca.py`, `importar-escala.py`, `importar-etapa3.py`, `importar-custos.py`) |
+| Contas Federais | Exercício novo do SIOP | SIOP | `ANOS_SIOP` em `importar.py` e a leitura do painel mudam junto |
+| Contas Estaduais | Promoção de captura nova (retificação ou período novo) | Siconfi (API pública) | A base publicada reproduz só bytes arquivados e a promoção é alteração revisada (`docs/contas-publicas-estaduais/FASE_1.md`, passo 3); o workflow acusa e guarda a evidência |
+| Contas Estaduais | Dívida consolidada (CE-11, `snapshot.json`) | gold do Crédito em commit fixado | Snapshot herdado por decisão, fixado por blob Git |
+| Eficiência Estatal | Exercício novo (2026 em diante) | Siconfi, SIOPS | `ANOS_FINANCEIROS` e fichas de indicador mudam junto (CONTINUIDADE.md, T1) |
+| Eficiência Estatal | Pacotes do INEP (Censo Escolar, ATU, rendimento, Ideb, Sinopse) | INEP | Até 540 MB cada, baixados à mão; o coletor só extrai (`run.py --inep`) |
+| Eficiência Estatal | CNES, Relatório APS, RIPSA, OCDE, SIOPE e os demais capítulos (assistência, alimentar, trabalho, mobilidade, cultura, habitação, justiça, judiciário, segurança, saneamento, resultados, escores) | Ministério da Saúde, OCDE, FNDE, MDS, IBGE, CNJ, Ipea | Fixados por edição, com transcrição conferida ou referência congelada que exige revisão antes de regenerar |
+| Eficiência Estatal | Derivados que fixam a gold da Saúde por hash | `src/lib/eficiencia/panorama-atlas.json`, `docs/obee/resultados/piloto-2022.json` | Mudança real na gold da Saúde é retida pelos testes até a regeneração revisada desses derivados |
+
 ## O que permanece manual, o que deixou de ser, e por quê
 
 1. **Portão da Fase 2** (clientes, quadro de pessoal, custos de TI, folha e
