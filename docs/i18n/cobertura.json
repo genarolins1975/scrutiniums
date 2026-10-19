@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1309,
-    "fontes_sha256": "875dd0b8dfade13e190d6e5aba2108c1998de255746786e2a40f478a94a91cb7",
+    "arquivos_analisados": 1312,
+    "fontes_sha256": "68f9b52819484b2861baf7d6a44c37a6645c47bbbd1b24bcbbf3a7c369cb4964",
     "pendencias_sha256": "a5f33966fa56b57d86ad2ac3e3576d5272c2b721dd584737cea8eb19785566d4",
     "nao_classificadas": [
       {
@@ -192,20 +192,20 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 561,
+        "arquivos": 564,
         "candidatos": {
-          "jsx_text": 7495,
-          "atributos": 2847,
-          "props": 18502,
-          "outros_literais": 50633,
-          "templates": 12518,
-          "expressoes_nao_resolvidas": 54443,
-          "chaves_objetos": 35706
+          "jsx_text": 7494,
+          "atributos": 2855,
+          "props": 18504,
+          "outros_literais": 50688,
+          "templates": 12564,
+          "expressoes_nao_resolvidas": 54574,
+          "chaves_objetos": 35732
         },
         "exclusoes": {
-          "importacoes": 4873,
-          "atributos_tecnicos": 8481,
-          "tipos": 3710
+          "importacoes": 4890,
+          "atributos_tecnicos": 8496,
+          "tipos": 3717
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -214,7 +214,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 182144,
+        "candidatos_nao_catalogados": 182411,
         "percentual_traduzido": null
       },
       "rotas": {

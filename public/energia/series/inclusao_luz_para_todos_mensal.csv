@@ -4072,7 +4072,7 @@ AC;regioes_remotas;2023-12;212.0
 AC;rural;2023-12;89.0
 AM;rural;2023-12;309.0
 AP;regioes_remotas;2023-12;399.0
-AP;rural;2023-12;163.0
+AP;rural;2023-12;166.0
 BA;rural;2023-12;269.0
 MA;regioes_remotas;2023-12;341.0
 MA;rural;2023-12;115.0
@@ -4284,7 +4284,7 @@ RO;rural;2025-03;323.0
 RR;regioes_remotas;2025-03;1.0
 AC;rural;2025-04;26.0
 AP;regioes_remotas;2025-04;8.0
-AP;rural;2025-04;126.0
+AP;rural;2025-04;127.0
 BA;rural;2025-04;388.0
 MA;rural;2025-04;31.0
 PA;regioes_remotas;2025-04;1349.0
@@ -4335,7 +4335,7 @@ AP;regioes_remotas;2025-08;524.0
 AP;rural;2025-08;41.0
 BA;rural;2025-08;439.0
 MA;rural;2025-08;88.0
-PA;regioes_remotas;2025-08;1303.0
+PA;regioes_remotas;2025-08;1308.0
 PA;rural;2025-08;1298.0
 PB;rural;2025-08;20.0
 PI;rural;2025-08;66.0
@@ -4343,7 +4343,7 @@ RO;rural;2025-08;300.0
 AC;regioes_remotas;2025-09;369.0
 AC;rural;2025-09;362.0
 AP;regioes_remotas;2025-09;675.0
-AP;rural;2025-09;2.0
+AP;rural;2025-09;3.0
 BA;rural;2025-09;383.0
 MA;regioes_remotas;2025-09;378.0
 MA;rural;2025-09;85.0
@@ -4361,7 +4361,7 @@ AP;rural;2025-10;2.0
 BA;rural;2025-10;307.0
 MA;regioes_remotas;2025-10;537.0
 MA;rural;2025-10;246.0
-PA;regioes_remotas;2025-10;1445.0
+PA;regioes_remotas;2025-10;1543.0
 PA;rural;2025-10;1246.0
 PB;rural;2025-10;20.0
 PI;rural;2025-10;127.0
@@ -4371,7 +4371,7 @@ RR;rural;2025-10;28.0
 AC;regioes_remotas;2025-11;340.0
 AC;rural;2025-11;58.0
 AP;regioes_remotas;2025-11;56.0
-AP;rural;2025-11;95.0
+AP;rural;2025-11;200.0
 BA;rural;2025-11;70.0
 MA;rural;2025-11;646.0
 PA;regioes_remotas;2025-11;2692.0
@@ -4393,6 +4393,7 @@ PI;rural;2025-12;91.0
 RO;rural;2025-12;557.0
 RR;regioes_remotas;2025-12;146.0
 AC;rural;2026-01;79.0
+AP;rural;2026-01;7.0
 BA;rural;2026-01;19.0
 MA;regioes_remotas;2026-01;197.0
 MA;rural;2026-01;375.0
@@ -4406,6 +4407,7 @@ AC;rural;2026-02;41.0
 AP;regioes_remotas;2026-02;1111.0
 AP;rural;2026-02;1.0
 BA;rural;2026-02;4.0
+GO;rural;2026-02;1.0
 MA;regioes_remotas;2026-02;229.0
 MA;rural;2026-02;100.0
 PA;regioes_remotas;2026-02;2121.0
@@ -4416,6 +4418,7 @@ RR;rural;2026-02;212.0
 AC;rural;2026-03;22.0
 AP;regioes_remotas;2026-03;234.0
 AP;rural;2026-03;1.0
+GO;rural;2026-03;1.0
 MA;regioes_remotas;2026-03;63.0
 MA;rural;2026-03;149.0
 PA;regioes_remotas;2026-03;860.0
@@ -4426,13 +4429,14 @@ RR;rural;2026-03;255.0
 AC;rural;2026-04;10.0
 AP;regioes_remotas;2026-04;27.0
 MA;rural;2026-04;46.0
-PA;regioes_remotas;2026-04;1489.0
+PA;regioes_remotas;2026-04;1588.0
 PA;rural;2026-04;455.0
 PI;rural;2026-04;60.0
 RR;rural;2026-04;147.0
 AC;rural;2026-05;2.0
 AP;regioes_remotas;2026-05;284.0
 MA;rural;2026-05;57.0
+PA;regioes_remotas;2026-05;424.0
 PA;rural;2026-05;622.0
 PI;rural;2026-05;59.0
 RJ;rural;2026-05;2.0
@@ -4441,17 +4445,18 @@ RR;rural;2026-05;108.0
 AC;rural;2026-06;1.0
 AP;regioes_remotas;2026-06;230.0
 AP;rural;2026-06;2.0
+GO;rural;2026-06;1.0
 MA;rural;2026-06;57.0
-PA;regioes_remotas;2026-06;571.0
+PA;regioes_remotas;2026-06;1558.0
 PA;rural;2026-06;601.0
 PI;rural;2026-06;28.0
 RJ;rural;2026-06;2.0
 RR;rural;2026-06;95.0
 AP;regioes_remotas;2026-07;503.0
 MA;rural;2026-07;16.0
-PA;regioes_remotas;2026-07;1101.0
+PA;regioes_remotas;2026-07;3188.0
 PA;rural;2026-07;373.0
 PI;rural;2026-07;29.0
 RJ;rural;2026-07;10.0
 RR;rural;2026-07;161.0
-PA;regioes_remotas;2026-08;843.0
+PA;regioes_remotas;2026-08;849.0
