@@ -141,6 +141,17 @@ async function migrate(db: Db): Promise<void> {
       ultima_edicao TEXT,
       created_at TIMESTAMPTZ NOT NULL
     )`,
+    // Medição de uso agregada (Onda 2, Q3): um contador por dia, modelo de rota
+    // e presença de conta, sem nenhuma coluna que identifique pessoa. A chave
+    // primária começa pelo dia e serve à janela de 30 dias do painel.
+    `CREATE TABLE IF NOT EXISTS uso_paginas_dia (
+      dia DATE NOT NULL,
+      rota TEXT NOT NULL,
+      observatorio TEXT NOT NULL,
+      com_conta BOOLEAN NOT NULL,
+      visitas INTEGER NOT NULL DEFAULT 0,
+      PRIMARY KEY (dia, rota, com_conta)
+    )`,
     // Fim do acesso antecipado por código: contas paradas na etapa do código
     // ou na lista de espera são promovidas a acesso completo (idempotente).
     `UPDATE users SET onboarding_status = 'COMPLETE'
