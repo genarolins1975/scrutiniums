@@ -1,16 +1,15 @@
 import Link from "next/link";
-import { NavegacaoObservatorios } from "@/components/observatorios/NavegacaoObservatorios";
-import { LogoMark } from "@/components/ui/Logo";
-import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { DetalhesFechaveis } from "@/components/layout/DetalhesFechaveis";
-import { AcessoConta } from "@/components/energia/AcessoConta";
 import { EIXOS, ROTA, ROTULO_SITUACAO, rotaCapitulo, type Capitulo } from "@/lib/saneamento/capitulos";
 
 /**
- * Cabeçalho do Observatório Brasileiro do Saneamento: marca, seletor de
- * observatório, abas da plataforma, atalhos (Meu município, Método) e a
- * navegação pelos cinco eixos. Cada eixo abre a lista dos capítulos com a
- * situação de cada um; capítulo em preparação não vira link.
+ * Cabeçalho do Observatório Brasileiro do Saneamento: a barra comum da
+ * plataforma (CabecalhoPlataforma: marca, seletor de observatório, abas dos
+ * seis observatórios e conta) e, abaixo dela, a navegação pelos cinco eixos,
+ * com os atalhos (Meu município, Brasil no mundo, Método) à direita. Cada eixo
+ * abre a lista dos capítulos com a situação de cada um; capítulo em preparação
+ * não vira link.
  *
  * `atual` é o slug da página (ex.: "acesso", "preco-regulado/simulador").
  */
@@ -18,42 +17,8 @@ export function Cabecalho({ atual }: { atual: string }) {
   const eixoAtual = EIXOS.find((e) => e.capitulos.some((c) => atual === c.slug || atual.startsWith(c.slug + "/")));
   return (
     <header className="border-b border-linha bg-superficie">
-      <div className="ed-pagina flex flex-wrap items-center justify-between gap-x-6">
-        <div className="flex min-w-0 items-center gap-3">
-          <Link href="/" aria-label="Scrutiniums: página inicial" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-2.5 sm:justify-start">
-            <LogoMark size={20} />
-            <span className="hidden font-serif text-base uppercase tracking-wide2 text-carvao sm:inline">Scrutiniums</span>
-          </Link>
-          <span aria-hidden="true" className="h-5 w-px bg-linha" />
-          <SwitcherObservatorio atual="saneamento" />
-        </div>
-        <NavegacaoObservatorios atual="saneamento" />
-        <div className="flex items-center gap-4 sm:gap-5">
-          <Link
-            href={`${ROTA}/municipio`}
-            aria-current={atual === "municipio" ? "page" : undefined}
-            className="rotulo hidden min-h-[44px] items-center text-carvao-muted hover:text-obee-dark md:inline-flex"
-          >
-            Meu município
-          </Link>
-          <Link
-            href={`${ROTA}/internacional`}
-            aria-current={atual === "internacional" ? "page" : undefined}
-            className="rotulo hidden min-h-[44px] items-center text-carvao-muted hover:text-obee-dark md:inline-flex"
-          >
-            Brasil no mundo
-          </Link>
-          <Link
-            href={`${ROTA}/metodologia`}
-            aria-current={atual === "metodologia" ? "page" : undefined}
-            className="rotulo hidden min-h-[44px] items-center text-carvao-muted hover:text-obee-dark md:inline-flex"
-          >
-            Método e fontes
-          </Link>
-          <AcessoConta destino={ROTA} />
-        </div>
-      </div>
-      <nav aria-label="Navegação do Observatório do Saneamento" className="border-t border-linha">
+      <CabecalhoPlataforma colecao="saneamento" destinoConta={ROTA} />
+      <nav aria-label="Navegação do Observatório do Saneamento">
         <div className="ed-pagina relative">
           <ul className="hidden flex-wrap gap-x-1 lg:flex">
             <li>
@@ -105,6 +70,9 @@ export function Cabecalho({ atual }: { atual: string }) {
                 Comparar
               </Link>
             </li>
+            <li className="ml-auto flex items-center gap-4 sm:gap-5">
+              <Atalhos atual={atual} />
+            </li>
           </ul>
           <div className="flex min-h-[44px] items-center gap-3 lg:hidden">
             <DetalhesFechaveis className="group shrink-0">
@@ -146,10 +114,42 @@ export function Cabecalho({ atual }: { atual: string }) {
                 {eixoAtual.rotulo}
               </p>
             )}
+            <div className="ml-auto hidden shrink-0 items-center gap-5 md:flex">
+              <Atalhos atual={atual} />
+            </div>
           </div>
         </div>
       </nav>
     </header>
+  );
+}
+
+/** Atalhos à direita da navegação do observatório (de 768 px em diante; no celular estão no Menu). */
+function Atalhos({ atual }: { atual: string }) {
+  return (
+    <>
+      <Link
+        href={`${ROTA}/municipio`}
+        aria-current={atual === "municipio" ? "page" : undefined}
+        className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-obee-dark"
+      >
+        Meu município
+      </Link>
+      <Link
+        href={`${ROTA}/internacional`}
+        aria-current={atual === "internacional" ? "page" : undefined}
+        className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-obee-dark"
+      >
+        Brasil no mundo
+      </Link>
+      <Link
+        href={`${ROTA}/metodologia`}
+        aria-current={atual === "metodologia" ? "page" : undefined}
+        className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-obee-dark"
+      >
+        Método e fontes
+      </Link>
+    </>
   );
 }
 
