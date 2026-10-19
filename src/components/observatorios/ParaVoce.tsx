@@ -52,10 +52,12 @@ export function ParaVoce({
           {perguntas.map((p) => (
             <li key={p.id} data-para-voce-pergunta={p.id} className="min-w-0 bg-papel">
               <Link href={p.href} prefetch={prefetchDoLink(p.href)} className="group flex h-full min-h-[44px] flex-col p-5 md:p-6">
-                <span className="font-serif text-lg leading-snug text-carvao [text-wrap:balance] group-hover:underline group-hover:decoration-linha group-hover:underline-offset-4">
+                <span className="font-serif text-lg leading-snug text-carvao group-hover:underline group-hover:decoration-linha group-hover:underline-offset-4">
                   {p.pergunta}
                 </span>
                 <span className="mt-2 text-sm leading-relaxed text-carvao-muted">{p.resposta}</span>
+                {/* o espaço sobra acima do número: os números dos cartões ficam na mesma linha */}
+                <span aria-hidden="true" className="grow" />
                 {p.numero && (
                   <span className="mt-4 block border-t border-linha pt-3" data-para-voce-numero="">
                     <span className="block text-xs leading-snug text-carvao-muted">{p.numero.rotulo}</span>
@@ -72,7 +74,7 @@ export function ParaVoce({
                     </span>
                   </span>
                 )}
-                <span className="mt-auto flex flex-wrap items-center gap-x-1 pt-4 text-sm text-carvao">
+                <span className="flex flex-wrap items-center gap-x-1 pt-4 text-sm text-carvao">
                   <span className="underline decoration-linha underline-offset-4 group-hover:decoration-carvao">{t("Ver a resposta", "See the answer")}</span>
                   <span aria-hidden="true" className="text-mineral transition-transform group-hover:translate-x-0.5">
                     →
