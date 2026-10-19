@@ -204,7 +204,13 @@ def _br(v, casas=1):
 
 
 def _vigente(con, ds, recurso=None):
+    """Vintage vigente com bronze no disco: se a última é órfã (recaptura adiada), a anterior
+    mais recente com bronze, que já foi processada ou é processada pela própria vintage_id."""
     vs = ckan.vintages_vigentes(con, ds)
+    if any(base.vintage_orfa(v) for v in vs.values()):
+        legiveis = base.vintages_com_bronze(con, ds)
+        vs = {r: (v if not base.vintage_orfa(v) else legiveis.get(r)) for r, v in vs.items()}
+        vs = {r: v for r, v in vs.items() if v}
     return vs.get(recurso) if recurso is not None else vs
 
 

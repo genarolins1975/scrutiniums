@@ -249,6 +249,15 @@ def resumo_orfas():
             "prazo_coleta_s": round(PRAZO_COLETA_S), "adiadas_prazo": _ORFAS["adiadas_prazo"]}
 
 
+def vintage_legivel(con, dataset, recurso):
+    """Última vintage do recurso com bronze no disco: a mais recente, ou a anterior mais recente
+    com bronze quando a última é órfã (recaptura adiada). None se nenhuma tem bronze."""
+    ultima = ultima_vintage(con, dataset, recurso)
+    if not vintage_orfa(ultima):
+        return ultima
+    return vintages_com_bronze(con, dataset).get(recurso)
+
+
 def vintages_com_bronze(con, dataset):
     """Última vintage com bronze disponível por recurso, preservando data e sha256.
 

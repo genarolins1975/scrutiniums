@@ -446,6 +446,26 @@ class TestSelecaoEBronzeDuravel(unittest.TestCase):
         self.assertEqual(len(chamadas), 1)
         self.assertEqual(base.resumo_orfas()["recapturadas"], 0)
 
+    def test_releitura_depois_de_orfa_adiada_usa_vintage_legivel(self):
+        """Review #286: consumidores que releem o silver depois do download (centroides da carga,
+        _vigente das listadas) recebem a vintage anterior com bronze, não a órfã adiada."""
+        from pipeline.energia.modulos import carga_detalhe, listadas
+        from pipeline.energia.fontes import clima_carga as clima
+        uf, (cod, _) = next(iter(clima.CAPITAIS.items()))
+        rec = f"centroide_{cod}"
+        corpo = json.dumps({"centroide": {"latitude": -10.0, "longitude": -50.0}}).encode()
+        anterior = self.vintage(carga_detalhe.DS_IBGE_GEO, rec, corpo)
+        orfa = self.vintage(carga_detalhe.DS_IBGE_GEO, rec, corpo + b" ", "2026-10-07T00:00:00Z")
+        os.remove(base.caminho_bronze(orfa["arquivo"]))
+        self.assertEqual(base.vintage_legivel(self.con, carga_detalhe.DS_IBGE_GEO, rec), anterior)
+        with patch.object(clima, "parse_centroide", return_value=(-10.0, -50.0)):
+            pontos = carga_detalhe.centroides(self.con)
+        self.assertEqual(pontos[uf][4], anterior)
+        self.assertEqual(listadas._vigente(self.con, carga_detalhe.DS_IBGE_GEO, rec), anterior)
+        os.remove(base.caminho_bronze(anterior["arquivo"]))
+        self.assertIsNone(base.vintage_legivel(self.con, carga_detalhe.DS_IBGE_GEO, rec))
+        self.assertIsNone(listadas._vigente(self.con, carga_detalhe.DS_IBGE_GEO, rec))
+
     def test_recaptura_identica_religa_bronze_sem_alterar_data_da_vintage(self):
         from pipeline.energia.fontes import ckan
         anterior = self.vintage("ds", "rec")
