@@ -101,7 +101,8 @@ function paineisEficiencia(): Painel[] {
   });
   return [
     { rota: "/eficiencia-estatal", titulo: "Comparação entre capitais", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
-    { rota: "/eficiencia-estatal/laboratorio-cesta", titulo: "Índice experimental de resultados", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
+    { rota: "/eficiencia-estatal/indice-de-resultados", titulo: "Índice de resultados das capitais", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
+    { rota: "/eficiencia-estatal/laboratorio-cesta", titulo: "Laboratório do índice (revisão v3)", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
     { rota: "/eficiencia-estatal/judiciario", titulo: "Judiciário: filas e tempos", observatorio: "servicos-publicos", colecao: "justica", origem: "eficiencia" },
     // duplicatas resolvidas em 18/10/2026 (REAGRUPAMENTO.md): a página fica publicada e avisa qual é o painel dono
     { rota: "/eficiencia-estatal/trabalho-renda/emprego-formal", titulo: "Emprego formal nacional", observatorio: "familias", colecao: "renda", origem: "eficiencia", duplicataDe: "/observatorio/formal-employment" },
