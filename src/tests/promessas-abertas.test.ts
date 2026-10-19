@@ -1,9 +1,15 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import ObservatorioPublicoPage from "@/app/observatorio-do-credito/page";
 import { SecaoRecursos } from "@/components/home/SecaoRecursos";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
+
+// o selo "com conta" (SeloComConta) lê o endereço da página: aqui, a página aberta do Crédito
+vi.mock("next/navigation", async () => ({
+  ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
+  usePathname: () => "/observatorio-do-credito",
+}));
 
 /**
  * Banca de 19/10/2026 (achado A6): página aberta não anuncia como público um

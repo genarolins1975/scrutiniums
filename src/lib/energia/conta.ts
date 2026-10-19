@@ -52,6 +52,7 @@ import { AUSENTE, formatos, valorExibidoNoIdioma } from "./formato";
 import { idiomaEnergia } from "./idioma";
 import { LIMITE_COMPARACAO, type ColunaTabela } from "./tabela";
 import { bandeiraNoIdioma, dadoTexto, txEm } from "./i18n/conta-inclusao";
+import { fraseBandeira, situacaoBandeira } from "./bandeira-do-mes";
 import type { Idioma } from "@/lib/idioma";
 
 /* ---------- identidade visual (só tokens; cor nunca é o único portador) ---------- */
@@ -1026,7 +1027,11 @@ export function respostaReajustes(j: JanelaInflacao, idioma: Idioma = idiomaEner
 }
 
 /** P050: bandeira do mês e quantos meses publicados tiveram acréscimo. */
-export function respostaBandeira(b: Bandeiras, idioma: Idioma = idiomaEnergia()): string {
+/**
+ * Resposta do P050 (bandeiras). `mesCorrente` ('AAAA-MM') é o mês em que a página foi gerada; sem ele, vale o mês de referência da gold.
+ * Quando o mês corrente ainda não está no arquivo, a resposta diz isso e qual é a última registrada (nunca chama a anterior de vigente).
+ */
+export function respostaBandeira(b: Bandeiras, idioma: Idioma = idiomaEnergia(), mesCorrente?: string): string {
   const tx = txEm(idioma);
   const { mesAno } = formatos(idioma);
   const v = b.vigente;
@@ -1043,7 +1048,8 @@ export function respostaBandeira(b: Bandeiras, idioma: Idioma = idiomaEnergia())
     : "";
   if (!v || !v.bandeira) return tx(`O conjunto de bandeiras não traz acionamento publicado.${historico}`, `The tariff flag dataset has no published activation.${historico}`);
   const valor = v.bandeira === "Verde" ? tx("sem acréscimo", "no surcharge") : tx(`acréscimo de ${rsKwh(v.rs_mwh, 5, idioma)} consumido`, `a surcharge of ${rsKwh(v.rs_mwh, 5, idioma)} consumed`); // i18n: dado
-  const aviso = v.aviso ? ` ${dadoTexto(v.aviso, idioma)}` : "";
+  const situacao = situacaoBandeira(v, mesCorrente ?? v.mes_referencia ?? v.mes);
+  const aviso = situacao.estado === "corrente" ? "" : ` ${fraseBandeira(situacao, idioma)}`;
   const nome = minuscula(bandeiraNoIdioma(v.bandeira, idioma));
   return tx(
     `A bandeira de ${mesAno(`${v.mes}-01`)} é ${nome}: ${valor}, fora dos sistemas isolados.${historico}${aviso}`,

@@ -12,3 +12,4 @@
 | [PLD_ARQUITETURA_DIDATICA.md](./PLD_ARQUITETURA_DIDATICA.md) | Página do PLD em três modos |
 | [PLD_GOVERNANCA_PREVISAO.md](./PLD_GOVERNANCA_PREVISAO.md) | Estados de modelo, gates, arquivo imutável |
 | [PLANO_IMPLEMENTACAO.md](./PLANO_IMPLEMENTACAO.md) | Fases, aceite, riscos |
+| [MEDICAO_DE_USO.md](./MEDICAO_DE_USO.md) | Medição de uso agregada, painel, retenção e base legal LGPD para decisão do dono |

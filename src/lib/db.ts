@@ -56,8 +56,8 @@ async function createDb(): Promise<Db> {
   return db;
 }
 
-/** Migração idempotente (CREATE TABLE IF NOT EXISTS) aplicada na primeira conexão. */
-async function migrate(db: Db): Promise<void> {
+/** Migração idempotente (CREATE TABLE IF NOT EXISTS) aplicada na primeira conexão; exportada para o teste de reaplicação. */
+export async function migrate(db: Db): Promise<void> {
   const statements = [
     `CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
@@ -140,6 +140,37 @@ async function migrate(db: Db): Promise<void> {
       ultimo_envio_em TIMESTAMPTZ,
       ultima_edicao TEXT,
       created_at TIMESTAMPTZ NOT NULL
+    )`,
+    // Recursos da conta (Onda 2): recortes salvos e alertas de atualização por domínio.
+    `CREATE TABLE IF NOT EXISTS recortes_salvos (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      titulo TEXT NOT NULL,
+      caminho TEXT NOT NULL,
+      observatorio TEXT NOT NULL,
+      criado_em TIMESTAMPTZ NOT NULL
+    )`,
+    `CREATE INDEX IF NOT EXISTS idx_recortes_user ON recortes_salvos(user_id, criado_em)`,
+    `CREATE TABLE IF NOT EXISTS alertas_atualizacao (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      dominio TEXT NOT NULL,
+      referencia_avisada TEXT,
+      ultimo_envio_em TIMESTAMPTZ,
+      criado_em TIMESTAMPTZ NOT NULL
+    )`,
+    `CREATE UNIQUE INDEX IF NOT EXISTS idx_alertas_user_dominio ON alertas_atualizacao(user_id, dominio)`,
+    `CREATE INDEX IF NOT EXISTS idx_alertas_dominio ON alertas_atualizacao(dominio)`,
+    // Medição de uso agregada (Onda 2, Q3): um contador por dia, modelo de rota
+    // e presença de conta, sem nenhuma coluna que identifique pessoa. A chave
+    // primária começa pelo dia e serve à janela de 30 dias do painel.
+    `CREATE TABLE IF NOT EXISTS uso_paginas_dia (
+      dia DATE NOT NULL,
+      rota TEXT NOT NULL,
+      observatorio TEXT NOT NULL,
+      com_conta BOOLEAN NOT NULL,
+      visitas INTEGER NOT NULL DEFAULT 0,
+      PRIMARY KEY (dia, rota, com_conta)
     )`,
     // Fim do acesso antecipado por código: contas paradas na etapa do código
     // ou na lista de espera são promovidas a acesso completo (idempotente).

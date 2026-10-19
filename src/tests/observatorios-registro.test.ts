@@ -129,5 +129,13 @@ describe("registro dos seis observatórios", () => {
       expect(layout, raiz).toContain("<ParaIrAlem mapa={mapaParaIrAlem()} />");
     }
   });
+
+  it("o bloco Para ir além marca com o selo 'com conta' cada link, porque também aparece nas consultas abertas", async () => {
+    const { readFileSync } = await import("node:fs");
+    const fonte = readFileSync(join(process.cwd(), "src", "components", "observatorios", "ParaIrAlem.tsx"), "utf-8");
+    const links = fonte.match(/<Link\b[\s\S]*?<\/Link>/g) ?? [];
+    expect(links.length).toBeGreaterThan(0);
+    for (const l of links) expect(l, l).toMatch(/<SeloComConta href=\{[^}]+\} \/>/);
+  });
 });
 

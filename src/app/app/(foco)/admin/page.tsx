@@ -9,6 +9,8 @@ import { AREAS_ATUACAO, NIVEIS_CARGO, PERFIS_USO, TIPOS_INSTITUICAO, rotuloDe } 
 import { PageTitle, SectionHeading } from "@/components/ui/SectionHeading";
 import { EmptyState } from "@/components/ui/States";
 import { BarrasRanking, ColunasDiarias, Funil, Indicador } from "@/components/admin/Graficos";
+import { UsoPaginas } from "@/components/admin/UsoPaginas";
+import { getUsoDoPeriodo } from "@/lib/uso/painel";
 
 /**
  * A checagem de admin também roda aqui: generateMetadata resolve antes do
@@ -63,7 +65,8 @@ function Th({ children }: { children: React.ReactNode }) {
 
 /**
  * Painel de administração (restrito a ADMIN_EMAILS): visão geral de uso,
- * atividade diária, seções mais visitadas, funil de onboarding, usuários,
+ * atividade diária, uso agregado por observatório e por página (inclusive sem
+ * conta, quando ligado), seções mais visitadas, funil de onboarding, usuários,
  * sugestões e auditoria. Usuário autenticado que não é admin recebe 404 —
  * a rota não é revelada.
  */
@@ -72,7 +75,7 @@ export default async function AdminPage() {
   if (!user) redirect("/entrar");
   if (!isAdmin(user)) notFound();
 
-  const stats = await getAdminStats();
+  const [stats, uso] = await Promise.all([getAdminStats(), getUsoDoPeriodo()]);
   const vg = stats.visaoGeral;
 
   return (
@@ -150,8 +153,10 @@ export default async function AdminPage() {
           </p>
         </section>
 
+        <UsoPaginas uso={uso} numero="03" />
+
         <section aria-label="Seções mais visitadas" className="border border-linha bg-papel p-8">
-          <SectionHeading number="03" label="Navegação" title="Seções mais visitadas" />
+          <SectionHeading number="04" label="Navegação" title="Seções mais visitadas" />
           {stats.ranking.length === 0 ? (
             <EmptyState
               title="Ainda não há visitas registradas"
@@ -176,7 +181,7 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Funil de onboarding" className="border border-linha bg-papel p-8">
-          <SectionHeading number="04" label="Aquisição" title="Funil de onboarding" />
+          <SectionHeading number="05" label="Aquisição" title="Funil de onboarding" />
           <Funil etapas={stats.funil} />
           <p className="mt-6 text-xs text-mineral">
             Eventos acumulados desde o lançamento. {fmtNumber(stats.falhasVerificacao30d)} falha
@@ -186,7 +191,7 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Usuários recentes" className="border border-linha bg-papel p-8">
-          <SectionHeading number="05" label="Contas" title="Usuários recentes" />
+          <SectionHeading number="06" label="Contas" title="Usuários recentes" />
           {stats.perfisUso.length > 0 && (
             <div className="mb-10">
               <h3 className="mb-4 font-serif text-xl text-carvao">Perfil de uso das contas completas</h3>
@@ -278,7 +283,7 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Sugestões" className="border border-linha bg-papel p-8">
-          <SectionHeading number="06" label="Feedback" title="Sugestões dos usuários" />
+          <SectionHeading number="07" label="Feedback" title="Sugestões dos usuários" />
           {stats.sugestoesRecentes.length === 0 ? (
             <EmptyState
               title="Nenhuma sugestão ainda"
@@ -309,7 +314,7 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Auditoria" className="border border-linha bg-papel p-8">
-          <SectionHeading number="07" label="Segurança" title="Auditoria de mudanças sensíveis" />
+          <SectionHeading number="08" label="Segurança" title="Auditoria de mudanças sensíveis" />
           {stats.auditoria.length === 0 ? (
             <EmptyState
               title="Nenhum registro de auditoria"

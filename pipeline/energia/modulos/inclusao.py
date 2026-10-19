@@ -101,6 +101,29 @@ FTP_POF = "https://ftp.ibge.gov.br/Orcamentos_Familiares/Pesquisa_de_Orcamentos_
 URL_POF_TABELAS = FTP_POF + "/Primeiros_resultados/tabelas_despesas/tabelas_despesas_xls_20191108.zip"
 URL_POF_MICRO_DIR = FTP_POF + "/Microdados/"
 URL_ANEEL_TSEE = "https://www.gov.br/aneel/pt-br/assuntos/tarifas/tarifa-social"
+URL_LEI_15235 = ("https://www2.camara.leg.br/legin/fed/lei/2025/"
+                 "lei-15235-8-outubro-2025-798121-publicacaooriginal-176682-pl.html")
+
+# Regra vigente da Tarifa Social (banca de 19/10/2026: "a Tarifa Social tem referência anterior à regra dos
+# 80 kWh"). Parâmetro regulatório lido na página da ANEEL (modificada em 04/07/2025, lida em 19/10/2026) e
+# no texto da Lei nº 15.235/2025; o conteúdo da regra (100% até 80 kWh, 0% acima) é reconferido a cada coleta
+# pelo módulo Conta de luz (normas lei_15235_2025 e aneel_tarifa_social), cujo estado entra em `conferencia`.
+REGRA_TSEE = {
+    "rotulo": "Gratuidade até 80 kWh por mês",
+    "descricao": "Desconto de 100% sobre a parcela do consumo até 80 kWh por mês e nenhum desconto sobre a parcela acima disso.",
+    "ato": "Medida Provisória nº 1.300, de 21 de maio de 2025",
+    "ato_curto": "MPV nº 1.300/2025",
+    "ato_data": "2025-05-21",
+    "vigencia": "2025-07-05",
+    "vigencia_texto": "faturas emitidas a partir de 5 de julho de 2025",
+    "lei": "Lei nº 15.235, de 8 de outubro de 2025",
+    "lei_data": "2025-10-08",
+    "lei_url": URL_LEI_15235,
+    "fonte": URL_ANEEL_TSEE,
+    "regra_anterior": ("Descontos progressivos: 65% até 30 kWh, 40% de 31 a 100 kWh, 10% de 101 a 220 kWh e nenhum acima de 220 kWh; "
+                       "para indígenas e quilombolas, 100% até 50 kWh e 40% nos 50 kWh seguintes."),
+    "normas_conferidas": ["lei_15235_2025", "aneel_tarifa_social"],
+}
 
 LIC_ANEEL = "Open Data Commons Open Database License (ODbL), conforme o portal de dados abertos da ANEEL"
 LIC_ANTIGA = ("O conjunto descontinuado não declara licença no portal (campo vazio no package_show); "
@@ -1052,6 +1075,7 @@ def construir(con, ctx):
     faltam = [k for k, v in blocos.items() if not v]
     if faltam:
         return c.stub(GOLD, f"blocos sem dado: {faltam}")
+    regra_e_periodos(blocos["tarifa_social"], (ctx.get("golds") or {}).get("conta.json"))
     criticos, ressalvas = validar_gold(blocos, datetime.now(timezone.utc).strftime("%Y-%m"))
     blocos["tarifa_social"].pop("_serie_cde_uf", None)
     if criticos:
@@ -1064,6 +1088,79 @@ def construir(con, ctx):
         "validacao": {"executada_em": base.agora_utc(), "criticos": criticos, "ressalvas": ressalvas},
         "downloads": [{"rotulo": _rotulo_csv(u), "url": u} for u in REGISTRO["arquivos"]],
     }
+
+
+def _mes_seguinte(anomes):
+    a, m = int(anomes[:4]), int(anomes[5:7])
+    return f"{a + (m == 12)}-{m % 12 + 1:02d}"
+
+
+def regra_e_periodos(ts, gold_conta=None):
+    """Acrescenta ao bloco da Tarifa Social a regra vigente (ato, data, vigência) e a separação entre o período
+    anterior e o posterior a ela, cada um com a sua fonte, unidade e mês.
+
+    - antes: o mês de referência do SCS (UC), quando é anterior ao mês da vigência;
+    - transição: o mês da vigência, quando ela começa depois do dia 1 (o arquivo do mês mistura faturas
+      emitidas antes e depois da mudança);
+    - depois: o último mês completo dos arquivos de Beneficiários da CDE (faturas) a partir do primeiro mês
+      inteiro sob a regra. Sem esse mês, `depois` fica None e `motivo_sem_depois` diz qual é o dado mais
+      recente e que ele é anterior à regra: nada é estimado.
+    A conferência do texto da regra vem da gold da Conta de luz (estado de cada norma na última captura);
+    sem ela, fica declarada como não executada nesta construção."""
+    regra = dict(REGRA_TSEE)
+    vig = regra["vigencia"]
+    mes_vig = vig[:7]
+    primeiro_inteiro = mes_vig if vig[8:10] == "01" else _mes_seguinte(mes_vig)
+    normas = {n.get("id"): n for n in (((gold_conta or {}).get("simulador") or {}).get("normas") or [])}
+    regra["conferencia"] = [
+        {"norma": nid, "titulo": normas[nid].get("titulo"), "estado": normas[nid].get("estado"),
+         "conferido_em": normas[nid].get("conferido_em"), "url": normas[nid].get("url")} if nid in normas else
+        {"norma": nid, "titulo": None, "estado": "NAO_EXECUTADA", "conferido_em": None, "url": None}
+        for nid in regra.pop("normas_conferidas")]
+    regra["mes_transicao"] = mes_vig if primeiro_inteiro != mes_vig else None
+    regra["primeiro_mes_inteiro"] = primeiro_inteiro
+
+    ref = ts.get("mes_referencia")
+    k = ts.get("kpis") or {}
+    serie = {x["m"]: x for x in ts.get("serie_mensal") or []}
+    antes = None
+    if ref and ref < mes_vig:
+        ponto = serie.get(ref) or {}
+        antes = {"fonte": "SCS", "unidade": "UC", "mes": ref,
+                 "uc_tsee": (k.get("uc_tsee") or {}).get("valor", ponto.get("uc_tsee")),
+                 "dmr_reais": (k.get("dmr_mes_reais") or {}).get("valor", ponto.get("dmr_reais"))}
+    com_valor = [m for m in ts.get("cde_meses") or []
+                 if m.get("completo") and m.get("original_no_bronze") and m.get("faturas_tsee") is not None]
+
+    def faturas(m):
+        return {"fonte": "Beneficiários da CDE", "unidade": "faturas", "mes": m["mes"], "recurso": m.get("recurso"),
+                "distribuidoras": m.get("distribuidoras"), "faturas_tsee": m.get("faturas_tsee"),
+                "desconto_faturas_reais": m.get("desconto_faturas_reais"),
+                "desconto_medio_por_fatura_reais": m.get("desconto_medio_por_fatura_reais")}
+    # mesma fonte e unidade dos dois lados: o último mês completo da CDE antes da vigência, para comparar faturas com faturas
+    antes_cde = [m for m in com_valor if m["mes"] < mes_vig]
+    antes_cde = faturas(max(antes_cde, key=lambda x: x["mes"])) if antes_cde else None
+    candidatos = [m for m in com_valor if m["mes"] >= primeiro_inteiro]
+    depois = None
+    if candidatos:
+        depois = {**faturas(max(candidatos, key=lambda x: x["mes"])),
+                  "meses_completos_depois": sorted(x["mes"] for x in candidatos)}
+    transicao = None
+    if regra["mes_transicao"]:
+        mt = next((m for m in ts.get("cde_meses") or [] if m.get("mes") == regra["mes_transicao"]), None)
+        transicao = {"mes": regra["mes_transicao"], "no_arquivo": mt is not None and mt.get("faturas_tsee") is not None,
+                     "nota": "O arquivo deste mês mistura faturas emitidas antes e depois da mudança e não entra em nenhum dos dois lados."}
+    mais_recente = max([x for x in (ref, *(m["mes"] for m in com_valor)) if x], default=None)
+    ts["regra_vigente"] = regra
+    ts["periodos_da_regra"] = {
+        "antes": antes, "antes_cde": antes_cde, "transicao": transicao, "depois": depois,
+        "mes_referencia_pos_regra": depois["mes"] if depois else None,
+        "motivo_sem_depois": (None if depois else
+                              f"Nenhuma fonte oficial lida tem mês completo posterior à regra de {vig[8:10]}/{vig[5:7]}/{vig[:4]}; "
+                              f"o último mês completo é {c.mes_br(mais_recente) if mais_recente else 'nenhum'}, anterior ao "
+                              f"primeiro mês inteiro sob a regra ({c.mes_br(primeiro_inteiro)})."),
+    }
+    return ts
 
 
 def validar_gold(b, mes_atual):

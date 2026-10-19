@@ -5,6 +5,7 @@ import { FaixaMedidas, MedidaGas, NotaGas, SecaoGas } from "@/components/gas/Blo
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
+import { ParaVoce } from "@/components/observatorios/ParaVoce";
 import { goldGas } from "@/lib/gas/gold";
 import { carimbo, mesExtenso, num, periodoLegivel } from "@/lib/gas/formato";
 import { GRUPOS_GAS, PAGINAS_GAS } from "@/lib/gas/navegacao";
@@ -112,7 +113,10 @@ export default function InicialGasPage() {
           </div>
         </div>
 
-        <nav aria-label="Percurso de aprendizagem" className="border-y border-linha py-5">
+        {/* "Para você" (Onda 2): o botijão e o GNV no estado do leitor, com o preço médio do país, a um clique */}
+        <ParaVoce entrada="/gas-natural" conteiner="" />
+
+        <nav aria-label="Percurso de aprendizagem" className="border-b border-linha py-5">
           <p className="rotulo text-gas-dark">Siga o caminho do gás</p>
           <p className="mt-2 max-w-prose2 text-sm text-carvao-muted">Comece pela produção e seus destinos. Depois, acompanhe a oferta e os preços. O botijão contém GLP, um produto diferente do gás natural.</p>
           <ol className="mt-3 grid gap-x-6 sm:grid-cols-2 lg:grid-cols-4">

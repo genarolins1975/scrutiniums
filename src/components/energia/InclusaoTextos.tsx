@@ -24,6 +24,7 @@ import {
   textoEstimadorDestaque,
   textoPofHistorica,
   textoPrecisaoPof,
+  textosRegraTarifaSocial,
   vereditoAcessoIndicador,
   vereditoOrcamento,
   vereditoOrcamentoRenda,
@@ -309,6 +310,59 @@ export function TarifaSocialResposta({ t, medida }: { t: TarifaSocial; medida: M
     <RespostaCurta id="p059" veredito={vereditoTarifaSocialMedida(t, medida)} vivo>
       {respostaTarifaSocialMedida(t, medida)}
     </RespostaCurta>
+  );
+}
+
+/**
+ * Regra vigente da Tarifa Social (gratuidade até 80 kWh), com o ato, a data e o início da vigência, e os números separados em antes e
+ * depois dela, cada lado com fonte, unidade e mês (banca de 19/10/2026). Sem mês completo posterior à regra, o lado "depois" declara a
+ * ausência e o mês do dado mais recente; nada é estimado. Gold anterior a esses campos: nada aparece.
+ */
+export function TarifaSocialRegraVigente({ t, className = "" }: { t: TarifaSocial; className?: string }) {
+  const idioma = idiomaEnergia();
+  const x = textosRegraTarifaSocial(t, idioma);
+  const r = t.regra_vigente;
+  if (!x || !r) return null;
+  return (
+    <section
+      data-regra-tarifa-social=""
+      data-pos-regra={x.mesPosRegra ?? "ausente"}
+      aria-labelledby="regra-tarifa-social-titulo"
+      className={`max-w-4xl space-y-3 border-l-2 border-energia pl-4 ${className}`}
+    >
+      <h3 id="regra-tarifa-social-titulo" className="font-serif text-lg text-carvao">
+        {tx("A regra vigente e o que é antes e depois dela", "The rule in force and what comes before and after it")}
+      </h3>
+      <p className="text-base leading-relaxed text-carvao">{x.regra}</p>
+      <p className="text-sm leading-relaxed text-carvao-muted">
+        {x.anterior} {x.conferencia}{" "}
+        <a href={r.fonte} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+          {tx("Página da ANEEL", "ANEEL page")}
+        </a>
+        {" · "}
+        <a href={r.lei_url} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+          {tx("Lei nº 15.235/2025", "Law No. 15,235/2025")}
+        </a>
+        .
+      </p>
+      <dl className="grid gap-x-8 gap-y-3 md:grid-cols-2">
+        <div data-lado="antes">
+          <dt className="rotulo text-mineral">{tx(`Antes da regra (até ${x.vigencia})`, `Before the rule (until ${x.vigencia})`)}</dt>
+          <dd className="mt-1 text-sm leading-relaxed text-carvao">{x.antes}</dd>
+        </div>
+        <div data-lado="depois" data-ausente={x.depoisAusente ? "sim" : "nao"}>
+          <dt className="rotulo text-mineral">{tx(`Depois da regra (desde ${x.vigencia})`, `After the rule (since ${x.vigencia})`)}</dt>
+          <dd className="mt-1 text-sm leading-relaxed text-carvao">{x.depois}</dd>
+        </div>
+      </dl>
+      <p className="text-xs leading-relaxed text-carvao-muted">
+        {x.transicao ? `${x.transicao} ` : ""}
+        {tx(
+          "Unidade consumidora (SCS) e fatura (Beneficiários da CDE) são unidades diferentes: a comparação entre os dois lados é só entre faturas.",
+          "Consumer unit (SCS) and bill (CDE Beneficiaries) are different units: the comparison between the two sides is only between bills.",
+        )}
+      </p>
+    </section>
   );
 }
 

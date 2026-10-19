@@ -12,6 +12,9 @@ import { lerQueimadasMunicipios } from "@/lib/territorio/queimadas";
 import { frase, lacunasTerritorio } from "@/lib/territorio/metodo";
 import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
 import { FRESCOR_DOS_OBSERVATORIOS } from "@/lib/frescor/entradas";
+import { leva2Aprovada } from "@/lib/rotasPublicas";
+import { ROTA_FOCOS_MUNICIPIO } from "@/lib/territorio/consultaFocos";
+import { ParaVoce } from "@/components/observatorios/ParaVoce";
 
 export const dynamic = "force-static";
 
@@ -27,8 +30,8 @@ const link = "underline decoration-linha underline-offset-4 hover:decoration-car
 
 /**
  * Entrada com conta do Observatório do Território e Clima, pela checklist de página de
- * entrada: a pergunta e quatro números de escala lidos das golds; a consulta por
- * município e os painéis que o observatório mantém, cada um já com um número e uma
+ * entrada: a pergunta e quatro números de escala lidos das golds; o bloco "Para você",
+ * com a consulta por município embutida, e os painéis que o observatório mantém, cada um já com um número e uma
  * lista; o índice de todas as coleções a um clique; o modelo didático do foco de
  * calor; perguntas para outras coleções; as lacunas declaradas; método recolhido.
  * Rota fechada (não consta de src/lib/rotasPublicas.ts); /observatorios/territorio-e-clima
@@ -86,11 +89,12 @@ export default function EntradaTerritorio() {
         </div>
       </section>
 
-      <section aria-labelledby="municipio-titulo" className="mx-auto max-w-page px-6 py-14 md:py-16">
-        <div className="grid gap-8 lg:grid-cols-12">
+      {/* "Para você" (Onda 2): o fogo e os desastres no município do leitor, a um clique, com a consulta dos focos por município embutida (antes "Teve fogo perto de você?") */}
+      <ParaVoce entrada="/territorio" className="">
+        <div className="grid gap-8 border-t border-linha pt-8 lg:grid-cols-12" data-consulta-municipio="">
           <div className="lg:col-span-5">
-            <h2 id="municipio-titulo" className="font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao">Teve fogo perto de você?</h2>
-            <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+            <h3 id="municipio-titulo" className="font-serif text-xl leading-snug text-carvao">Focos de calor no seu município</h3>
+            <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
               {anoMun
                 ? <>Escolha o município para ver os focos de calor de {anoMun}, a posição dele no país, os focos por área e o ano em curso contra os mesmos meses do ano anterior.</>
                 : <>A contagem por município não está nesta publicação; o total do país e dos estados segue no painel de queimadas.</>}
@@ -101,12 +105,18 @@ export default function EntradaTerritorio() {
             <p className="mt-2">
               <Link href="/territorio/queimadas" prefetch={false} className={`inline-flex min-h-[44px] items-center text-sm text-carvao ${link}`}>Rankings de municípios no painel de queimadas</Link>
             </p>
+            {/* consulta da leva 2 (src/lib/rotasPublicas.ts): o link só entra com a data da aprovação do dono */}
+            {leva2Aprovada("teve-fogo-perto-de-mim") && (
+              <p data-leva2="teve-fogo-perto-de-mim">
+                <Link href={ROTA_FOCOS_MUNICIPIO} className={`inline-flex min-h-[44px] items-center text-sm text-carvao ${link}`}>A ficha de cada município, aberta para quem não tem conta</Link>
+              </p>
+            )}
           </div>
           <div className="min-w-0 lg:col-span-7">
             {anoMun ? <FocosNoMunicipio ano={anoMun} /> : <p className="border border-linha bg-papel p-5 text-sm text-carvao">Consulta por município indisponível nesta publicação.</p>}
           </div>
         </div>
-      </section>
+      </ParaVoce>
 
       <section aria-labelledby="paineis-titulo" className="border-t border-linha">
         <div className="mx-auto max-w-page px-6 py-14 md:py-16">

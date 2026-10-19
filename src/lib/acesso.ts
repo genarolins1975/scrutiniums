@@ -53,10 +53,14 @@ export const ACESSO = {
    * O que a conta dá, apenas com o que existe no código: acesso aos painéis e
    * arquivos (middleware), a inscrição no boletim mensal da central de alertas
    * (Conta → Boletim mensal, src/lib/boletim.ts) e a gestão de senha, sessões e
-   * consentimentos (/app/conta).
+   * consentimentos (/app/conta), o recorte salvo e compartilhável e o pacote
+   * para citar (barra dos painéis, src/components/conta/FerramentasConta.tsx).
+   * O alerta de atualização fica fora desta promessa enquanto o envio por
+   * e-mail não estiver ligado (src/lib/conta/alertas.ts, envioLigado).
    */
   conta:
-    "Com a conta, você acessa todos os painéis, downloads e arquivos de dados, pode se inscrever no boletim mensal " +
+    "Com a conta, você acessa todos os painéis, downloads e arquivos de dados, salva recortes que pode compartilhar, " +
+    "copia a citação de cada página (ABNT, BibTeX e RIS), pode se inscrever no boletim mensal " +
     "da central de alertas do crédito e administra senha, sessões e consentimentos.",
   /** Rótulo do botão de cadastro. */
   ctaConta: pt["acesso.criar_conta"],

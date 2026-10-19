@@ -46,11 +46,11 @@ function ListaPaineis({ paineis }: Readonly<{ paineis: ColecaoEntrada["paineis"]
 /**
  * Entrada com conta de um observatório que reúne várias coleções, pelo
  * checklist de página de entrada: pergunta e escala na primeira tela,
- * coleções a um clique, um modelo didático do mecanismo, caminhos por
+ * as perguntas do leitor sobre o próprio caso ("Para você") e as coleções a um clique, um modelo didático do mecanismo, caminhos por
  * pergunta e método recolhido no fim.
  */
 export function EntradaObservatorio({
-  nomeCurto, nomeCompleto, acento, pergunta, descricao, escala, colecoes, artefato, caminhos, metodo, frescor = null, frescorMetodo = null,
+  nomeCurto, nomeCompleto, acento, pergunta, descricao, escala, paraVoce = null, colecoes, artefato, caminhos, metodo, frescor = null, frescorMetodo = null,
 }: Readonly<{
   nomeCurto: string;
   nomeCompleto: string;
@@ -58,6 +58,8 @@ export function EntradaObservatorio({
   pergunta: string;
   descricao: string;
   escala: NumeroPorta[];
+  /** Bloco "Para você" (ParaVoce), logo depois dos números de abertura. */
+  paraVoce?: ReactNode;
   colecoes: ColecaoEntrada[];
   artefato: ReactNode;
   caminhos: { pergunta: string; resumo: string; href: string; colecao: string }[];
@@ -108,6 +110,8 @@ export function EntradaObservatorio({
           </p>
         </div>
       </section>
+
+      {paraVoce}
 
       <section aria-labelledby="colecoes-titulo" className="mx-auto max-w-page px-6 py-14 md:py-16">
         <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">

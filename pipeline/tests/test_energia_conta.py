@@ -321,6 +321,37 @@ class Bandeiras(_Ambiente):
         self.assertNotIn("2026-10", ac)                   # outubro ainda não publicado: não é preenchido
 
 
+class BandeiraDoMes(unittest.TestCase):
+    """Só o mês corrente é vigente; sem ele, a última registrada com aviso; mês seguinte anunciado nunca toma o lugar."""
+    ACION = [("2026-08", "Amarela", 18.85), ("2026-09", "Amarela", 18.85), ("2026-10", "Verde", 0.0)]
+
+    def test_mes_corrente_presente_e_vigente(self):
+        fonte = {"publicado_em": "2026-10-19T08:04:01Z", "capturado_em": "2026-10-19T09:00:00Z", "url": "https://exemplo/acionamento.csv"}
+        b = conta.bandeira_do_mes(self.ACION, "2026-10", fonte)
+        self.assertEqual((b["mes"], b["bandeira"], b["rs_mwh"], b["situacao"]), ("2026-10", "Verde", 0.0, "mes_corrente"))
+        self.assertIsNone(b["aviso"])
+        self.assertEqual(b["anunciadas"], [])
+        self.assertEqual(b["fonte_publicada_em"], "2026-10-19T08:04:01Z")
+        self.assertEqual([x["mes"] for x in b["recentes"]], ["2026-08", "2026-09", "2026-10"])
+
+    def test_mes_corrente_ausente_declarado_sem_repetir_o_anterior(self):
+        b = conta.bandeira_do_mes(self.ACION, "2026-11")
+        self.assertEqual((b["mes"], b["bandeira"], b["situacao"], b["mes_referencia"]), ("2026-10", "Verde", "mes_ausente", "2026-11"))
+        self.assertIn("A bandeira de nov/2026 ainda não está no arquivo da ANEEL", b["aviso"])
+        self.assertIn("a última registrada é a de out/2026 (verde)", b["aviso"])
+        self.assertNotIn("2026-11", [x["mes"] for x in b["recentes"]])
+        self.assertIsNone(b["fonte_publicada_em"])
+
+    def test_mes_seguinte_anunciado_nao_vira_vigente(self):
+        b = conta.bandeira_do_mes(self.ACION + [("2026-11", "Amarela", 18.85)], "2026-10")
+        self.assertEqual((b["mes"], b["situacao"]), ("2026-10", "mes_corrente"))
+        self.assertEqual(b["anunciadas"], [{"mes": "2026-11", "bandeira": "Amarela", "rs_mwh": 18.85}])
+
+    def test_sem_acionamento_ate_o_mes(self):
+        self.assertIsNone(conta.bandeira_do_mes([], "2026-10"))
+        self.assertIsNone(conta.bandeira_do_mes([("2026-11", "Verde", 0.0)], "2026-10"))
+
+
 class Ipca(unittest.TestCase):
     def test_razao_de_indices_confere_com_variacao_publicada(self):
         linhas = fi.linhas_ipca(_ler("sidra_ipca_amostra.json"))
@@ -480,7 +511,7 @@ class CusteioCde(_Ambiente):
 class Gold(_Ambiente):
     """Gold construída de ponta a ponta a partir das amostras reais."""
 
-    def _monta(self):
+    def _monta(self, hoje=date(2026, 9, 30)):
         # as linhas das incorporações completam a série da RGE da amostra principal (a RGE
         # antiga termina na véspera da tarifa unificada da RGE SUL)
         conta._processa_tarifas(self.con, self.vintage(conta.DS_TARIFAS, "t-incorporacao.csv",
@@ -495,7 +526,18 @@ class Gold(_Ambiente):
         conta._processa_ipca(self.con, self.vintage(conta.DS_IPCA, "sidra_1737_ipca", "sidra_ipca_amostra.json", "json", orgao="IBGE"))
         conta._processa_cde(self.con, self.vintage(conta.DS_CDE, "cde-custeio-beneficios-tarifarios.csv", "cde_custeio_amostra.csv", "csv"))
         conta._processa_norma(self.con, conta.NORMAS[0], self.vintage(conta.DS_NORMAS, "lei_15235_2025", "lei_15235_2025_trecho.html", "html", orgao="camara"))
-        return conta.construir(self.con, {"hoje": date(2026, 9, 30)})
+        return conta.construir(self.con, {"hoje": hoje})
+
+    def test_mes_corrente_ausente_declarado_na_gold(self):
+        # referência em 19/10/2026 e a amostra só tem acionamento até set/2026: outubro não é preenchido nem copiado
+        g = self._monta(hoje=date(2026, 10, 19))
+        vig = g["simulador"]["bandeira_vigente"]
+        self.assertEqual((vig["mes"], vig["bandeira"], vig["situacao"], vig["mes_referencia"]),
+                         ("2026-09", "Amarela", "mes_ausente", "2026-10"))
+        self.assertEqual(vig["aviso"], "A bandeira de out/2026 ainda não está no arquivo da ANEEL; "
+                                       "a última registrada é a de set/2026 (amarela).")
+        self.assertNotIn("2026-10", [x["m"] for x in g["bandeiras"]["acionamento"]])
+        self.assertEqual(g["bandeiras"]["vigente"], vig)
 
     def test_gold_ponta_a_ponta(self):
         g = self._monta()
@@ -515,6 +557,11 @@ class Gold(_Ambiente):
         self.assertEqual(sim["bandeira_vigente"]["bandeira"], "Amarela")
         # setembro/2026 é o mês de referência e está publicado: sem aviso de defasagem
         self.assertIsNone(sim["bandeira_vigente"]["aviso"])
+        self.assertEqual(sim["bandeira_vigente"]["situacao"], "mes_corrente")
+        self.assertEqual(sim["bandeira_vigente"]["mes_referencia"], "2026-09")
+        # fonte e data do arquivo de acionamento acompanham a bandeira
+        self.assertTrue(sim["bandeira_vigente"]["fonte_publicada_em"])
+        self.assertTrue(sim["bandeira_vigente"]["fonte_capturada_em"])
         # só a lei foi capturada nesta amostra: a Tarifa Social tem parte na página da ANEEL
         # (não capturada) e fica parcial; o custo de disponibilidade não tem parte conferida
         self.assertEqual(sim["estado_regras"]["tarifa_social"], "PARCIAL")

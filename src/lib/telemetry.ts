@@ -130,6 +130,10 @@ export const VIEW_SECTIONS = [
   "gas:regulacao",
   "gas:dados",
   "gas:metodologia",
+  // Crédito (páginas Next fora da aplicação de página única)
+  "credito:quanto-meu-banco-cobra",
+  "credito:simulador-da-parcela",
+  "credito:metodologia",
   // Plataforma (páginas Next)
   // Agro usa somente contagem agregada, sem identificar usuários ou parâmetros.
   "agro:paginas",
@@ -257,6 +261,9 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "gas:regulacao": "Gás Natural · Regulação e marcos legais",
   "gas:dados": "Gás Natural · Dados e downloads",
   "gas:metodologia": "Gás Natural · Método e glossário",
+  "credito:quanto-meu-banco-cobra": "Crédito · Quanto meu banco cobra?",
+  "credito:simulador-da-parcela": "Crédito · Simulador da parcela",
+  "credito:metodologia": "Crédito · Metodologia e fontes",
   "app:conta": "Plataforma · Conta",
   "agro:paginas": "Agronegócio · Páginas",
   "app:observatorios": "Plataforma · Escolha do observatório",

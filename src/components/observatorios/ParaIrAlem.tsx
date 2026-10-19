@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
 import type { MapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 
 /** Painel dono do endereço: ele mesmo ou o painel mais próximo acima dele (como donoDaRota). */
@@ -25,6 +26,7 @@ function dono(mapa: MapaParaIrAlem, caminho: string) {
  * painel corrente, as outras coleções do mesmo observatório e os observatórios
  * em que ele também aparece como atalho. Navegação complementar, montada no
  * navegador depois do carregamento; o conteúdo do painel não depende dele.
+ * Numa consulta aberta, destino que pede conta leva o selo "com conta" antes do clique.
  */
 export function ParaIrAlem({ mapa }: Readonly<{ mapa: MapaParaIrAlem }>) {
   const caminho = usePathname();
@@ -48,7 +50,7 @@ export function ParaIrAlem({ mapa }: Readonly<{ mapa: MapaParaIrAlem }>) {
         <h2 id="para-ir-alem" className="rotulo text-mineral">Para ir além</h2>
         <p className="mt-3 text-sm leading-relaxed text-carvao">
           Este painel está no{" "}
-          <Link href={o.destino} prefetch={false} className="underline decoration-linha underline-offset-4 hover:decoration-carvao">{o.nome}</Link>
+          <Link href={o.destino} prefetch={false} className="underline decoration-linha underline-offset-4 hover:decoration-carvao">{o.nome}<SeloComConta href={o.destino} /></Link>
           {colecao && <>, coleção {colecao.nome}</>}.
         </p>
         {outras.length > 0 && (
@@ -57,7 +59,7 @@ export function ParaIrAlem({ mapa }: Readonly<{ mapa: MapaParaIrAlem }>) {
             {outras.map((c, i) => (
               <span key={c.id}>
                 {i > 0 && " · "}
-                <Link href={c.href} prefetch={false} className="inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4">{c.nome}</Link>
+                <Link href={c.href} prefetch={false} className="inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4">{c.nome}<SeloComConta href={c.href} /></Link>
               </span>
             ))}
           </p>
@@ -68,7 +70,7 @@ export function ParaIrAlem({ mapa }: Readonly<{ mapa: MapaParaIrAlem }>) {
             {tambem.map((t, i) => (
               <span key={t.observatorio.id}>
                 {i > 0 && " · "}
-                <Link href={t.observatorio.destino} prefetch={false} className="inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4">{t.observatorio.nome}</Link>
+                <Link href={t.observatorio.destino} prefetch={false} className="inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4">{t.observatorio.nome}<SeloComConta href={t.observatorio.destino} /></Link>
                 {", "}{t.colecao.nome}
               </span>
             ))}
