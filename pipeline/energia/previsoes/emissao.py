@@ -225,7 +225,7 @@ def _celulas_b0(origem, info, lim):
     return por_celula, calib
 
 
-def emitir(con, origem, agora=None, modo="manual", run_url=None, versao_codigo=None, falha=None, gravar=True,
+def emitir(con, origem, agora=None, modo="manual", run_url=None, versao_codigo=None, falha=None, gravar=True, gatilho=None,
            registro=None, pasta=arq.PASTA, legado=arq.LEGADO, emitido_em=None, lim=None):
     """Emite a rodada da origem e grava no arquivo. `falha`: registra a rodada como falha
     (todas as células sem número, com o motivo), sem calcular nada. `emitido_em` só é
@@ -239,6 +239,10 @@ def emitir(con, origem, agora=None, modo="manual", run_url=None, versao_codigo=N
         raise ValueError("emissão antes do corte: a rodada usa o dado como estava às 07h00 e ainda não chegou a hora")
     execucao = {"modo": modo, "executor": "GitHub Actions" if os.environ.get("GITHUB_ACTIONS") else "ambiente de desenvolvimento",
                 "run_url": run_url, "iniciado_em": cal.utc_iso(agora)}
+    # quem disparou a execução agendada: o cron do GitHub (que atrasa horas) ou o agendador externo
+    # que chama o workflow_dispatch no horário; fica no arquivo para a rotina ser auditável por gatilho
+    if gatilho:
+        execucao["gatilho"] = gatilho
     versao_codigo = versao_codigo or base.versao_codigo()
     corte_iso = cal.utc_iso(corte)
     b0 = modelos["B0"]
@@ -373,12 +377,16 @@ def aguardar_corte(origem, limite_s=3 * 3600):
     return max(0.0, falta)
 
 
+GATILHOS = ("cron do GitHub", "agendador externo", "manual")
+
+
 def main(argv):
     ap = argparse.ArgumentParser()
     ap.add_argument("acao", choices=["verificar", "coletar", "aguardar-corte", "emitir", "falha", "ja-emitida"])
     ap.add_argument("--origem", help="AAAA-MM-DD (padrão: hoje em Brasília)")
     ap.add_argument("--modo", default="manual", choices=["agendada", "manual"])
     ap.add_argument("--run-url")
+    ap.add_argument("--gatilho", choices=GATILHOS, help="o que disparou a execução (registrado no arquivo)")
     ap.add_argument("--mensagem", default="falha sem mensagem")
     a = ap.parse_args(argv)
     origem = date.fromisoformat(a.origem) if a.origem else cal.origem_de(datetime.now(timezone.utc))
@@ -397,14 +405,14 @@ def main(argv):
             print(json.dumps(coletar(con), ensure_ascii=False, default=str)[:3000])
             return 0
         if a.acao == "falha":
-            regs = emitir(con, origem, modo=a.modo, run_url=a.run_url, falha=a.mensagem)
+            regs = emitir(con, origem, modo=a.modo, run_url=a.run_url, falha=a.mensagem, gatilho=a.gatilho)
             print(f"[previsao] falha registrada: {len(regs)} células de {origem}")
             return 0
         try:
-            regs = emitir(con, origem, modo=a.modo, run_url=a.run_url)
+            regs = emitir(con, origem, modo=a.modo, run_url=a.run_url, gatilho=a.gatilho)
         except Exception as e:  # a falha vira registro, nunca número
             traceback.print_exc()
-            regs = emitir(con, origem, modo=a.modo, run_url=a.run_url, falha=f"{type(e).__name__}: {e}")
+            regs = emitir(con, origem, modo=a.modo, run_url=a.run_url, falha=f"{type(e).__name__}: {e}", gatilho=a.gatilho)
             print(f"[previsao] rodada de {origem} registrada como falha: {e}")
             return 0
         com = sum(1 for r in regs if r["status"] == "DISPONIVEL")

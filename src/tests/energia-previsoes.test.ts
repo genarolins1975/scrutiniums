@@ -252,6 +252,7 @@ const RODADA = {
   no_prazo: true,
   modo: true,
   executor: true,
+  gatilho: false,
   run_url: true,
   tipos: true,
   modelos: true,

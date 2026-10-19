@@ -101,3 +101,37 @@ class CommitDaRodada(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DisparoExterno(unittest.TestCase):
+    """O cron do GitHub disparou entre 09h48 e 11h08 de Brasília em 18/10/2026, depois do prazo das 08h00.
+    Um agendador externo chama o workflow_dispatch no horário com agendador=externo: a rodada do próprio
+    dia conta como agendada e o gatilho fica no arquivo; disparo à mão ou com origem retroativa é manual."""
+
+    def setUp(self):
+        self.texto = open(WF, encoding="utf-8").read()
+
+    def _env(self, nome):
+        return next(l.split(": ", 1)[1] for l in self.texto.splitlines() if l.strip().startswith(f"{nome}: ${{{{"))
+
+    @staticmethod
+    def _avalia(expr, evento, agendador="manual", origem=""):
+        """Avalia a expressão do Actions (só &&, || e ==) com os valores dados."""
+        corpo = expr.strip()[3:-2].strip()
+        py = (corpo.replace("github.event_name", repr(evento)).replace("inputs.agendador", repr(agendador))
+              .replace("inputs.origem", repr(origem)).replace("&&", " and ").replace("||", " or "))
+        return eval(py, {"__builtins__": {}})  # noqa: S307 (expressão do próprio workflow, com literais)
+
+    def test_modo_e_gatilho_por_tipo_de_disparo(self):
+        modo, gatilho = self._env("MODO"), self._env("GATILHO")
+        casos = [(("schedule",), "agendada", "cron do GitHub"),
+                 (("workflow_dispatch", "externo", ""), "agendada", "agendador externo"),
+                 (("workflow_dispatch", "manual", ""), "manual", "manual"),
+                 (("workflow_dispatch", "externo", "2026-10-10"), "manual", "manual")]
+        for args, m, g in casos:
+            self.assertEqual(self._avalia(modo, *args), m, args)
+            self.assertEqual(self._avalia(gatilho, *args), g, args)
+
+    def test_entrada_agendador_e_gatilho_chegam_a_emissao(self):
+        self.assertRegex(self.texto, r'agendador:\n(?:.*\n)*?\s+options: \["manual", "externo"\]')
+        self.assertEqual(self.texto.count('--gatilho "$GATILHO"'), 2)

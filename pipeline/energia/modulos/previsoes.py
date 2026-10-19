@@ -458,6 +458,7 @@ def _rodadas(registros):
             "atraso_min": atraso, "atraso_origem": origem_atraso, "no_prazo": atraso == 0 if atraso is not None else None,
             "modo": modo,
             "executor": (r0.get("execucao") or {}).get("executor"), "run_url": (r0.get("execucao") or {}).get("run_url"),
+            "gatilho": (r0.get("execucao") or {}).get("gatilho"),
             "tipos": sorted({x["tipo"] for x in rs}), "modelos": sorted({x["modelo"] for x in rs}),
             "versao_codigo": r0.get("versao_codigo"), "celulas": len(rs), "com_numero": com, "falha": falha,
             "motivos": sorted({x["motivo"] for x in rs if x.get("motivo")}),

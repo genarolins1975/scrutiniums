@@ -40,6 +40,15 @@ on:
         description: "Dia de origem AAAA-MM-DD (padrão: hoje em Brasília). Rodada fora do horário é registrada como manual e atrasada."
         required: false
         default: ""
+      agendador:
+        # O cron do GitHub chegou a disparar entre 09h48 e 11h08 de Brasília (18/10/2026), depois do prazo
+        # das 08h00. Um agendador externo chama este workflow pela API no horário, com agendador=externo:
+        # a rodada do dia conta como agendada, com o gatilho registrado no arquivo. Disparo à mão usa "manual".
+        description: "Quem dispara: manual (pessoa) ou externo (agendador externo, conta como rodada agendada do dia)."
+        required: false
+        default: "manual"
+        type: choice
+        options: ["manual", "externo"]
 
 permissions:
   contents: write
@@ -55,7 +64,9 @@ jobs:
     # espera máxima até o corte (~75 min a partir do primeiro gatilho) + coleta + gold + testes
     timeout-minutes: 120
     env:
-      MODO: ${{ github.event_name == 'schedule' && 'agendada' || 'manual' }}
+      # agendada: cron do GitHub, ou agendador externo pedindo a rodada do próprio dia (sem origem informada)
+      MODO: ${{ (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.agendador == 'externo' && inputs.origem == '')) && 'agendada' || 'manual' }}
+      GATILHO: ${{ github.event_name == 'schedule' && 'cron do GitHub' || (inputs.agendador == 'externo' && inputs.origem == '') && 'agendador externo' || 'manual' }}
       ORIGEM: ${{ inputs.origem }}
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
@@ -140,13 +151,13 @@ jobs:
             echo "Rodada registrada por outra execução durante a espera; nada a fazer."
             exit 0
           fi
-          python3 -m pipeline.energia.previsoes.emissao emitir --modo "$MODO" --run-url "$RUN_URL" $ARG
+          python3 -m pipeline.energia.previsoes.emissao emitir --modo "$MODO" --gatilho "$GATILHO" --run-url "$RUN_URL" $ARG
 
       - name: Registrar falha da rodada
         if: failure() && steps.feita.outputs.sim == '0' && steps.emitir.outcome != 'success'
         run: |
           ARG=""; [ -n "$ORIGEM" ] && ARG="--origem $ORIGEM"
-          python3 -m pipeline.energia.previsoes.emissao falha --modo "$MODO" --run-url "$RUN_URL" \
+          python3 -m pipeline.energia.previsoes.emissao falha --modo "$MODO" --gatilho "$GATILHO" --run-url "$RUN_URL" \
             --mensagem "falha no workflow antes da emissão (${{ github.run_id }})" $ARG || true
 
       - name: Gold das previsões (arquivo, desempenho e fichas)

@@ -223,6 +223,8 @@ export type Rodada = {
   /** "agendada", "manual" ou o texto do registro transcrito de artefato externo. */
   modo: string;
   executor: string | null;
+  /** O que disparou a execução (cron do GitHub, agendador externo ou manual); null nas rodadas anteriores a 19/10/2026. */
+  gatilho?: string | null;
   run_url: string | null;
   tipos: TipoRegistro[];
   modelos: CodigoModelo[];
@@ -352,7 +354,14 @@ export type RegistroEmissao = {
   snapshot: string | null;
   snapshot_sha256?: string | null;
   elegibilidade?: "LAT1D";
-  execucao?: { modo: "agendada" | "manual"; executor: string; run_url: string | null; iniciado_em: string };
+  execucao?: {
+    modo: "agendada" | "manual";
+    executor: string;
+    run_url: string | null;
+    iniciado_em: string;
+    /** O que disparou a execução; ausente nos registros anteriores a 19/10/2026. */
+    gatilho?: "cron do GitHub" | "agendador externo" | "manual";
+  };
   status: "DISPONIVEL" | "INDISPONIVEL";
   previsao: number | null;
   previsao_bruta?: number;

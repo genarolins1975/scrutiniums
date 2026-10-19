@@ -361,6 +361,23 @@ class Emissao(unittest.TestCase):
         w1 = next(x for x in regs30 if x["horizonte"] == "W1" and x["submercado"] == "SE")
         self.assertAlmostEqual(w1["previsao"], SEMANA_0919["SE"] + 100.0 / 168, places=4)
 
+    def test_gatilho_da_execucao_fica_no_arquivo_e_na_rodada(self):
+        """Agendador externo (workflow_dispatch no horário, 19/10/2026): a rodada é agendada, sem alerta de
+        execução manual, e o gatilho fica registrado; o arquivo continua válido."""
+        con = _silver()
+        regs = self._emite(con, date(2026, 9, 28), datetime(2026, 9, 28, 10, 30, tzinfo=timezone.utc),
+                           modo="agendada", gatilho="agendador externo")
+        self.assertEqual({r["execucao"]["gatilho"] for r in regs}, {"agendador externo"})
+        self.assertTrue(all("EXECUCAO_MANUAL" not in r["alertas"] for r in regs))
+        todos = arq.le_tudo(self.pasta, self.legado)
+        self.assertEqual(g.valida_arquivo(todos, {m["codigo"]: m for m in em.le_registro()["modelos"]},
+                                          resultados_liberados=False), [])
+        rod = next(x for x in mod._rodadas(todos) if x["origem"] == "2026-09-28")
+        self.assertEqual((rod["modo"], rod["gatilho"]), ("agendada", "agendador externo"))
+        # sem gatilho informado (registros anteriores), o campo não aparece no arquivo
+        regs29 = self._emite(con, date(2026, 9, 29), datetime(2026, 9, 29, 10, 30, tzinfo=timezone.utc))
+        self.assertTrue(all("gatilho" not in r["execucao"] for r in regs29))
+
     def test_horas_ja_publicadas_sao_separadas_da_previsao(self):
         """Simulação: captura datada antes do corte de uma origem de domingo (20/09), cuja W1
         (26/09 a 03/10) já tem 26 e 27/09 no recorte. A previsão cobre só o desconhecido e a
