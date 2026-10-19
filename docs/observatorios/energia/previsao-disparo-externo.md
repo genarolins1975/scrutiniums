@@ -22,7 +22,9 @@ Regras que continuam valendo, qualquer que seja o gatilho:
 - se a rodada do dia já estiver registrada, a execução termina sem emitir;
 - os crons do GitHub continuam ativos como reserva.
 
-O gatilho de cada rodada fica no arquivo de emissões (`execucao.gatilho`) e na rodada da gold (`rodadas[].gatilho`). Assim, quem audita vê quais rodadas vieram do agendador externo e quais do cron.
+O gatilho de cada rodada fica no arquivo de emissões (`execucao.gatilho`), junto com a conta do GitHub que acionou a execução (`execucao.acionado_por`) e o endereço da execução (`execucao.run_url`). A gold leva o gatilho de cada rodada (`rodadas[].gatilho`) e a contagem das rodadas agendadas por gatilho (`rotina.agendadas_por_gatilho`). Assim, quem audita vê quais rodadas vieram do agendador externo e quais do cron.
+
+**Limite da garantia.** O GitHub só aceita `workflow_dispatch` de quem tem permissão de escrita no repositório, e a entrada `agendador=externo` não autentica o agendador: uma pessoa com essa permissão também pode escolhê-la. Com um token pessoal, a conta registrada em `acionado_por` é a mesma do dono do repositório. A rodada externa é, portanto, atestada pelo dono, não autenticada de forma independente. Separar as identidades exigiria uma conta ou uma GitHub App exclusiva do agendador, cujo token gera um ator próprio em `acionado_por`.
 
 ## Configuração (feita pelo dono do repositório)
 

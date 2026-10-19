@@ -366,8 +366,9 @@ class Emissao(unittest.TestCase):
         execução manual, e o gatilho fica registrado; o arquivo continua válido."""
         con = _silver()
         regs = self._emite(con, date(2026, 9, 28), datetime(2026, 9, 28, 10, 30, tzinfo=timezone.utc),
-                           modo="agendada", gatilho="agendador externo")
+                           modo="agendada", gatilho="agendador externo", acionado_por="genarolins1975")
         self.assertEqual({r["execucao"]["gatilho"] for r in regs}, {"agendador externo"})
+        self.assertEqual({r["execucao"]["acionado_por"] for r in regs}, {"genarolins1975"})
         self.assertTrue(all("EXECUCAO_MANUAL" not in r["alertas"] for r in regs))
         todos = arq.le_tudo(self.pasta, self.legado)
         self.assertEqual(g.valida_arquivo(todos, {m["codigo"]: m for m in em.le_registro()["modelos"]},
@@ -826,6 +827,16 @@ class Rotina(unittest.TestCase):
         # um dia faltante dentro da janela volta a impedir
         sem_um = [x for x in rodadas(date(2026, 10, 19), date(2026, 11, 20)) if x["origem"] != "2026-11-10"]
         self.assertFalse(mod._rotina(sem_um, _utc(2026, 11, 20, 12))["comprovada"])
+
+    def test_rotina_conta_agendadas_por_gatilho_e_nao_afirma_comprovacao_fixa(self):
+        ag = [{"origem": "2026-10-19", "modo": "agendada", "no_prazo": True, "falha": False, "gatilho": "agendador externo"},
+              {"origem": "2026-10-20", "modo": "agendada", "no_prazo": False, "falha": False, "gatilho": "cron do GitHub"},
+              {"origem": "2026-10-21", "modo": "agendada", "no_prazo": True, "falha": False, "gatilho": "agendador externo"},
+              {"origem": "2026-10-01", "modo": "agendada", "no_prazo": True, "falha": False}]
+        r = mod._rotina(ag, _utc(2026, 10, 21, 12))
+        self.assertEqual(r["agendadas_por_gatilho"], {"agendador externo": 2, "cron do GitHub": 1, "não registrado": 1})
+        self.assertNotIn("ainda não comprovado", r["horarios"])
+        self.assertIn("agendador externo", r["horarios"])
 
     def test_dia_ainda_no_prazo_nao_conta_como_faltante(self):
         """Às 07h30 de Brasília de 09/10 (10h30 UTC) a rodada de 09/10 ainda está no prazo:

@@ -279,6 +279,7 @@ const ROTINA = {
   falhas: true,
   dias_sem_rodada: true,
   dias_sem_rodada_total: true,
+  agendadas_por_gatilho: false,
   janela_comprovacao: false,
   comprovada: true,
   incidentes: false,

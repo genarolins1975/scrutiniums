@@ -318,6 +318,8 @@ export type Rotina = {
   falhas: number;
   dias_sem_rodada: string[];
   dias_sem_rodada_total: number;
+  /** Rodadas agendadas por gatilho registrado; ausente nas golds anteriores a 19/10/2026. */
+  agendadas_por_gatilho?: Record<string, number>;
   /** Janela da comprovação (últimos 30 dias vencidos); ausente nas golds anteriores a 18/10/2026. */
   janela_comprovacao?: { dias: number; inicio: string; fim: string; no_prazo: number; dias_sem_rodada: number } | null;
   comprovada: boolean;
@@ -361,6 +363,8 @@ export type RegistroEmissao = {
     iniciado_em: string;
     /** O que disparou a execução; ausente nos registros anteriores a 19/10/2026. */
     gatilho?: "cron do GitHub" | "agendador externo" | "manual";
+    /** Conta do GitHub que acionou a execução; ausente nos registros anteriores a 19/10/2026. */
+    acionado_por?: string;
   };
   status: "DISPONIVEL" | "INDISPONIVEL";
   previsao: number | null;

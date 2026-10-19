@@ -66,6 +66,8 @@ jobs:
     env:
       # agendada: cron do GitHub, ou agendador externo pedindo a rodada do próprio dia (sem origem informada)
       MODO: ${{ (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.agendador == 'externo' && inputs.origem == '')) && 'agendada' || 'manual' }}
+      # quem acionou o disparo (no agendador externo, o dono do token): fica no arquivo para auditoria
+      ACIONADO_POR: ${{ github.triggering_actor }}
       GATILHO: ${{ github.event_name == 'schedule' && 'cron do GitHub' || (inputs.agendador == 'externo' && inputs.origem == '') && 'agendador externo' || 'manual' }}
       ORIGEM: ${{ inputs.origem }}
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -151,13 +153,13 @@ jobs:
             echo "Rodada registrada por outra execução durante a espera; nada a fazer."
             exit 0
           fi
-          python3 -m pipeline.energia.previsoes.emissao emitir --modo "$MODO" --gatilho "$GATILHO" --run-url "$RUN_URL" $ARG
+          python3 -m pipeline.energia.previsoes.emissao emitir --modo "$MODO" --gatilho "$GATILHO" --acionado-por "$ACIONADO_POR" --run-url "$RUN_URL" $ARG
 
       - name: Registrar falha da rodada
         if: failure() && steps.feita.outputs.sim == '0' && steps.emitir.outcome != 'success'
         run: |
           ARG=""; [ -n "$ORIGEM" ] && ARG="--origem $ORIGEM"
-          python3 -m pipeline.energia.previsoes.emissao falha --modo "$MODO" --gatilho "$GATILHO" --run-url "$RUN_URL" \
+          python3 -m pipeline.energia.previsoes.emissao falha --modo "$MODO" --gatilho "$GATILHO" --acionado-por "$ACIONADO_POR" --run-url "$RUN_URL" \
             --mensagem "falha no workflow antes da emissão (${{ github.run_id }})" $ARG || true
 
       - name: Gold das previsões (arquivo, desempenho e fichas)

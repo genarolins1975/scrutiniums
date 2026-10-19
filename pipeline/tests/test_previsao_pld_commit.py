@@ -134,4 +134,5 @@ class DisparoExterno(unittest.TestCase):
 
     def test_entrada_agendador_e_gatilho_chegam_a_emissao(self):
         self.assertRegex(self.texto, r'agendador:\n(?:.*\n)*?\s+options: \["manual", "externo"\]')
-        self.assertEqual(self.texto.count('--gatilho "$GATILHO"'), 2)
+        self.assertEqual(self.texto.count('--gatilho "$GATILHO" --acionado-por "$ACIONADO_POR"'), 2)
+        self.assertIn("ACIONADO_POR: ${{ github.triggering_actor }}", self.texto)
