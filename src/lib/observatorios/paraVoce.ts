@@ -32,6 +32,7 @@ import type { NumeroPorta } from "@/lib/perguntas/tipos";
 import { respostasDosCapitulos } from "@/lib/saneamento/respostas";
 import { periodoConsultaTarifas } from "@/lib/saneamento/tarifas";
 import { desastres, focos } from "@/lib/observatorios/entradas/territorio";
+import { goldJuros, resolverConsulta, rotuloModalidade } from "@/lib/credito/juros";
 
 /** Número do cartão: o mesmo do destino, com a prova ao lado. */
 export type NumeroParaVoce = {
@@ -77,6 +78,7 @@ const IDS = [
   "comida",
   "atlas-agro",
   "credito-atraso",
+  "banco-cobra",
 ] as const;
 export type IdPergunta = (typeof IDS)[number];
 
@@ -97,7 +99,7 @@ export const PARA_VOCE = {
   "/territorio": ["fogo", "desastres"],
   "/observatorios/contas-publicas": ["estado-contas", "previdencia", "metas"],
   "/observatorios/energia-e-infraestrutura": ["luz", "municipio", "botijao"],
-  "/observatorios/economia": ["credito-atraso", "comida"],
+  "/observatorios/economia": ["banco-cobra", "credito-atraso", "comida"],
 } as const satisfies Record<string, readonly IdPergunta[]>;
 
 export type EntradaParaVoce = keyof typeof PARA_VOCE;
@@ -131,6 +133,29 @@ const numeroGnv = (): NumeroPorta =>
       return { valor: `R$ ${num(m.valor, 2)}`, periodo: mesAno(m.periodo), nota: "Média dos postos pesquisados no mês, Brasil." };
     },
   );
+
+/** Taxa mediana da modalidade que a consulta "Quanto meu banco cobra?" abre sem escolha (o mesmo juros.json do destino). */
+function numeroBancoCobra(): NumeroParaVoce {
+  const origem = "/observatorio-do-credito/quanto-meu-banco-cobra";
+  const fonte = "Banco Central, taxas de juros das operações contratadas por instituição";
+  const data = (iso: string) => iso.split("-").reverse().join("/");
+  try {
+    const gold = goldJuros();
+    if (!gold) throw new Error("juros.json ausente");
+    const { modalidade } = resolverConsulta(gold, {});
+    return {
+      rotulo: `Taxa mediana entre ${modalidade.stats.n} instituições: ${rotuloModalidade(modalidade.modalidade).toLowerCase()}, pessoa física`,
+      valor: `${num(modalidade.stats.mediana, 2)}%`,
+      unidade: "ao ano",
+      periodo: `${data(modalidade.janela.inicio)} a ${data(modalidade.janela.fim)}`,
+      fonte,
+      nota: "Taxa média das operações contratadas; não é o custo efetivo total (CET).",
+      origem,
+    };
+  } catch {
+    return { rotulo: "Taxa mediana das instituições", valor: null, unidade: "", periodo: "indisponível nesta publicação", fonte, origem };
+  }
+}
 
 /** As respostas dos capítulos do Saneamento, lidas uma vez por processo (o build gera várias entradas). */
 let respostasSaneamento: ReturnType<typeof respostasDosCapitulos> | null = null;
@@ -308,6 +333,14 @@ function pergunta(id: IdPergunta, idioma: Idioma): PerguntaParaVoce {
         href: "/agronegocio/atlas",
         numero: null,
         semNumero: "Exploração: o mapa mostra a cadeia e o estado escolhidos.",
+      };
+    case "banco-cobra":
+      return {
+        id,
+        pergunta: "Quanto o meu banco cobra de juros?",
+        resposta: "A taxa do seu banco na modalidade escolhida, comparada com a mediana das instituições, e a parcela de uma dívida no simulador.",
+        href: "/observatorio-do-credito/quanto-meu-banco-cobra",
+        numero: numeroBancoCobra(),
       };
     case "credito-atraso":
       return {
