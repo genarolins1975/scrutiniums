@@ -88,6 +88,8 @@ const nextConfig = {
       {source: "/app/regulatorio", destination: "/observatorio/alerts", permanent: true},
       {source: "/metodologia", destination: "/observatorio/methodology", permanent: true},
       {source: "/fontes", destination: "/observatorio/methodology", permanent: true},
+      // a entrada do Território e Clima fica junto dos painéis que ele mantém (src/app/territorio)
+      {source: "/observatorios/territorio-e-clima", destination: "/territorio", permanent: false},
     ];
   },
 };

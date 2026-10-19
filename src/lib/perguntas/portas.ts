@@ -485,11 +485,13 @@ function porta_territorio(): Porta {
     lacunas: [
       "Emissões oficiais dos anos mais recentes (o inventário do governo sai a cada dois anos).",
       "Área queimada por estado e por município (o INPE publica a tabela só por bioma).",
+      "Emissões oficiais por estado (o inventário nacional não traz recorte por UF).",
       "Desastres reconhecidos no ano em curso (a base consolidada vai até o ano anterior).",
     ],
     metodos: [
       { rotulo: "Agronegócio: método", href: "/agronegocio/metodologia" },
       { rotulo: "Saneamento: método", href: "/saneamento/metodologia" },
+      { rotulo: "Território e Clima: método", href: "/territorio/metodologia" },
     ],
   };
 }
