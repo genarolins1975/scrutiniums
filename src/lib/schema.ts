@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, integer, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, integer, boolean, date, primaryKey } from "drizzle-orm/pg-core";
 
 /**
  * Modelo de dados da Scrutiniums (Drizzle ORM, dialeto PostgreSQL).
@@ -148,5 +148,24 @@ export const alertasAtualizacao = pgTable("alertas_atualizacao", {
   ultimoEnvioEm: timestamp("ultimo_envio_em", { withTimezone: true, mode: "date" }),
   criadoEm: timestamp("criado_em", { withTimezone: true, mode: "date" }).notNull(),
 });
+ * Medição de uso agregada (Onda 2, Q3; docs/observatorios/MEDICAO_DE_USO.md).
+ * Um contador por dia (fuso de Brasília), modelo de rota e presença de conta.
+ * Nenhuma coluna identifica pessoa: sem id de usuário, IP, navegador, cookie ou
+ * parâmetro de endereço. A rota é o modelo da pasta de src/app
+ * ("/saneamento/municipio/[id]"), aceito só se estiver na lista fechada
+ * (src/lib/uso/rotas.ts). O observatório é o dono da rota no registro na data
+ * da visita ("plataforma" fora dos observatórios).
+ */
+export const usoPaginasDia = pgTable(
+  "uso_paginas_dia",
+  {
+    dia: date("dia", { mode: "string" }).notNull(),
+    rota: text("rota").notNull(),
+    observatorio: text("observatorio").notNull(),
+    comConta: boolean("com_conta").notNull(),
+    visitas: integer("visitas").notNull().default(0),
+  },
+  (t) => [primaryKey({ columns: [t.dia, t.rota, t.comConta] })],
+);
 
 export type User = typeof users.$inferSelect;
