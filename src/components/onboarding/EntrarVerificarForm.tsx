@@ -8,8 +8,19 @@ import { Alert } from "@/components/ui/Alert";
 import { OtpInput } from "./OtpInput";
 import { ResendCountdown } from "./ResendCountdown";
 
-/** Verificação do código SMS de acesso (login alternativo, /entrar/sms). */
-export function EntrarVerificarForm({ maskedPhone }: { maskedPhone: string }) {
+/**
+ * Verificação do código SMS de acesso (login alternativo, /entrar/sms).
+ * Com `recuperar`, a API abre a troca de senha sem a atual e devolve
+ * /app/conta#senha como destino.
+ */
+export function EntrarVerificarForm({
+  maskedPhone,
+  recuperar = false,
+}: {
+  maskedPhone: string;
+  recuperar?: boolean;
+}) {
+  const inicio = recuperar ? "/entrar/sms?recuperar=1" : "/entrar/sms";
   const router = useRouter();
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | undefined>();
@@ -34,7 +45,7 @@ export function EntrarVerificarForm({ maskedPhone }: { maskedPhone: string }) {
       const res = await fetch("/api/auth/entrar/check", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
+        body: JSON.stringify(recuperar ? { code, recuperar: true } : { code }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.next) {
@@ -42,7 +53,7 @@ export function EntrarVerificarForm({ maskedPhone }: { maskedPhone: string }) {
         return;
       }
       if (res.status === 401) {
-        router.push("/entrar/sms");
+        router.push(inicio);
         return;
       }
       setError(
@@ -98,13 +109,13 @@ export function EntrarVerificarForm({ maskedPhone }: { maskedPhone: string }) {
       />
 
       <Button type="submit" full disabled={submitting}>
-        {submitting ? "Verificando…" : "Entrar"}
+        {submitting ? "Verificando…" : recuperar ? "Continuar para nova senha" : "Entrar"}
       </Button>
 
       <div className="flex items-center justify-between gap-4">
         <ResendCountdown onResend={resend} />
         <Link
-          href="/entrar/sms"
+          href={inicio}
           className="rotulo min-h-[44px] py-3 text-carvao-muted underline underline-offset-4 hover:text-bronze"
         >
           Alterar telefone

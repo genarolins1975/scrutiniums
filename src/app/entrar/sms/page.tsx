@@ -18,11 +18,16 @@ export async function generateMetadata(_props: { params?: Record<string, string>
 }
 
 /**
- * Entrada alternativa por código SMS no telefone verificado. Também cobre
- * recuperação de acesso de quem esqueceu a senha: depois de entrar,
- * a nova senha é definida em /app/conta.
+ * Entrada alternativa por código SMS no telefone verificado. Com
+ * ?recuperar=1 (link "Esqueci minha senha" de /entrar), o código leva
+ * direto à definição de nova senha em /app/conta, sem pedir a atual.
  */
-export default async function EntrarSmsPage() {
+export default async function EntrarSmsPage({
+  searchParams,
+}: {
+  searchParams?: { recuperar?: string };
+} = {}) {
+  const recuperar = searchParams?.recuperar === "1";
   const user = await getSessionUser();
   if (user) {
     redirect(nextStepPath(user.onboardingStatus as OnboardingStatus));
@@ -45,16 +50,32 @@ export default async function EntrarSmsPage() {
       <main className="flex flex-1 justify-center px-6 py-12 md:py-20">
         <div className="w-full max-w-md">
           <section className="border border-linha bg-papel p-8 md:p-10">
-            <h1 className="font-serif text-3xl text-carvao">Entrar com código por SMS</h1>
-            <p className="mt-3 text-sm text-carvao-muted">
-              Enviamos um código por SMS para o telefone cadastrado.
-            </p>
-            <p className="mt-2 text-sm text-mineral">
-              Use também este caminho se esqueceu sua senha: depois de entrar,
-              defina uma nova em Conta.
-            </p>
+            <h1 className="font-serif text-3xl text-carvao">
+              {recuperar ? "Recuperar acesso" : "Entrar com código por SMS"}
+            </h1>
+            {recuperar ? (
+              <p className="mt-3 text-sm leading-relaxed text-carvao-muted">
+                Informe o telefone cadastrado. Enviamos um código por SMS e, ao confirmá-lo,
+                você define uma nova senha.
+              </p>
+            ) : (
+              <>
+                <p className="mt-3 text-sm text-carvao-muted">
+                  Enviamos um código por SMS para o telefone cadastrado.
+                </p>
+                <p className="mt-2 text-sm text-mineral">
+                  Esqueceu a senha?{" "}
+                  <Link
+                    href="/entrar/sms?recuperar=1"
+                    className="text-bronze-dark underline underline-offset-4 hover:text-carvao"
+                  >
+                    Recuperar acesso
+                  </Link>
+                </p>
+              </>
+            )}
             <div className="mt-8">
-              <EntrarForm paises={opcoesPaisSms()} />
+              <EntrarForm paises={opcoesPaisSms()} {...(recuperar ? { recuperar: true } : {})} />
             </div>
           </section>
         </div>

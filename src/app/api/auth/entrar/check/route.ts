@@ -10,6 +10,7 @@ import {
   clearSignedPhoneCookie,
   LOGIN_PHONE_COOKIE,
   readSignedPhoneCookie,
+  setRecuperacaoSenhaCookie,
 } from "@/components/onboarding/signedEmailCookie";
 
 export const runtime = "nodejs";
@@ -18,11 +19,16 @@ export const runtime = "nodejs";
  * Conferência do código SMS de acesso (login sem senha). Ao aprovar,
  * cria a sessão e devolve nextStepPath(status): onboarding incompleto
  * é retomado da etapa correta. Erros sempre genéricos.
+ * Com `recuperar` (esqueci minha senha) e cadastro completo, abre a janela
+ * de 10 minutos para definir nova senha sem a atual e leva direto a ela.
  */
 
 const GENERIC_ERROR = "Código inválido ou expirado.";
 
-const bodySchema = z.object({ code: z.string().regex(/^\d{6}$/) });
+const bodySchema = z.object({
+  code: z.string().regex(/^\d{6}$/),
+  recuperar: z.boolean().optional(),
+});
 
 function rateLimited(retryAfterMs: number) {
   return NextResponse.json(
@@ -71,8 +77,12 @@ export async function POST(req: Request) {
   await createSession(user.id);
   clearSignedPhoneCookie(LOGIN_PHONE_COOKIE);
 
-  return NextResponse.json({
-    ok: true,
-    next: nextStepPath(user.onboardingStatus as OnboardingStatus),
-  });
+  const status = user.onboardingStatus as OnboardingStatus;
+  // Cadastro incompleto retoma a etapa pendente; a senha é criada nela.
+  if (parsed.data.recuperar && status === "COMPLETE") {
+    setRecuperacaoSenhaCookie(user.id);
+    return NextResponse.json({ ok: true, next: "/app/conta#senha" });
+  }
+
+  return NextResponse.json({ ok: true, next: nextStepPath(status) });
 }

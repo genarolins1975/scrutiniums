@@ -11,6 +11,11 @@ import { cookies } from "next/headers";
 
 export const ONBOARDING_EMAIL_COOKIE = "onboarding_email";
 export const LOGIN_PHONE_COOKIE = "login_phone";
+export const RECUPERACAO_SENHA_COOKIE = "recuperacao_senha";
+
+/** Janela em que a senha pode ser trocada sem a atual, após o código SMS. */
+export const RECUPERACAO_SENHA_TTL_MS = 10 * 60 * 1000; // 10 minutos
+const RECUPERACAO_PREFIXO = "recuperacao:";
 
 const MAX_AGE_SECONDS = 30 * 60; // 30 minutos
 
@@ -27,14 +32,14 @@ function sign(value: string): string {
   return createHmac("sha256", secret()).update(value).digest("hex");
 }
 
-function setSignedCookie(name: string, value: string): void {
+function setSignedCookie(name: string, value: string, maxAge = MAX_AGE_SECONDS): void {
   const payload = `${Buffer.from(value, "utf8").toString("base64url")}.${sign(value)}`;
   cookies().set(name, payload, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    maxAge: MAX_AGE_SECONDS,
+    maxAge,
   });
 }
 
@@ -81,4 +86,33 @@ export function readSignedPhoneCookie(name: string): string | null {
 
 export function clearSignedPhoneCookie(name: string): void {
   cookies().delete(name);
+}
+
+/**
+ * Recuperação de senha: depois do código SMS aprovado no modo "recuperar",
+ * a conta pode definir nova senha sem informar a atual por 10 minutos.
+ * O valor amarra usuário e validade; o prefixo impede reaproveitar a
+ * assinatura de outro cookie deste módulo (mesmo segredo).
+ */
+export function setRecuperacaoSenhaCookie(userId: string, agora = Date.now()): void {
+  const expira = agora + RECUPERACAO_SENHA_TTL_MS;
+  setSignedCookie(
+    RECUPERACAO_SENHA_COOKIE,
+    `${RECUPERACAO_PREFIXO}${userId}|${expira}`,
+    RECUPERACAO_SENHA_TTL_MS / 1000,
+  );
+}
+
+export function recuperacaoSenhaValida(userId: string, agora = Date.now()): boolean {
+  const valor = readSignedCookie(RECUPERACAO_SENHA_COOKIE);
+  if (!valor?.startsWith(RECUPERACAO_PREFIXO)) return false;
+  const corpo = valor.slice(RECUPERACAO_PREFIXO.length);
+  const separador = corpo.lastIndexOf("|");
+  if (separador <= 0) return false;
+  const expira = Number(corpo.slice(separador + 1));
+  return corpo.slice(0, separador) === userId && Number.isFinite(expira) && agora < expira;
+}
+
+export function clearRecuperacaoSenhaCookie(): void {
+  cookies().delete(RECUPERACAO_SENHA_COOKIE);
 }

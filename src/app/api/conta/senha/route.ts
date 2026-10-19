@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getSessionUser } from "@/lib/session";
+import { createSession, getSessionUser, revokeAllSessions } from "@/lib/session";
 import { updateUser } from "@/lib/onboarding";
 import {
   hashPassword,
@@ -9,6 +9,10 @@ import {
   PASSWORD_MIN_LENGTH,
 } from "@/lib/password";
 import { audit } from "@/lib/audit";
+import {
+  clearRecuperacaoSenhaCookie,
+  recuperacaoSenhaValida,
+} from "@/components/onboarding/signedEmailCookie";
 
 export const runtime = "nodejs";
 
@@ -16,6 +20,8 @@ export const runtime = "nodejs";
  * Define ou troca a senha da conta. Sessão obrigatória.
  * - Conta COM senha: exige a senha atual correta (erro genérico em falha).
  * - Conta SEM senha (cadastro antigo, entrada por SMS): define direto.
+ * - Recuperação (código SMS aprovado em "esqueci minha senha", até 10 min):
+ *   define sem a atual, uma única vez, e encerra as demais sessões.
  * Somente o hash scrypt é gravado; senhas NUNCA são logadas.
  */
 
@@ -43,7 +49,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
 
-  if (user.passwordHash) {
+  const recuperacao = Boolean(user.passwordHash) && recuperacaoSenhaValida(user.id);
+  if (user.passwordHash && !recuperacao) {
     const ok = await verifyPassword(parsed.data.currentPassword ?? "", user.passwordHash);
     if (!ok) {
       return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
@@ -52,6 +59,16 @@ export async function POST(req: Request) {
 
   const passwordHash = await hashPassword(parsed.data.newPassword);
   await updateUser(user.id, { passwordHash });
+
+  if (recuperacao) {
+    clearRecuperacaoSenhaCookie();
+    // Quem tinha a senha antiga perde o acesso; este dispositivo segue logado.
+    await revokeAllSessions(user.id);
+    await createSession(user.id);
+    await audit(user.id, "PASSWORD_RESET", "sms");
+    return NextResponse.json({ ok: true });
+  }
+
   await audit(user.id, "PASSWORD_CHANGED");
 
   return NextResponse.json({ ok: true });
