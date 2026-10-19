@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { createSession, getSessionUser, revokeAllSessions } from "@/lib/session";
+import { getSessionUser, revokeOtherSessions } from "@/lib/session";
 import { updateUser } from "@/lib/onboarding";
 import {
   hashPassword,
@@ -73,9 +73,9 @@ export async function POST(req: Request) {
   clearRecuperacaoSenhaCookie();
 
   if (recuperacao) {
-    // Quem tinha a senha antiga perde o acesso; este dispositivo segue logado.
-    await revokeAllSessions(user.id);
-    await createSession(user.id);
+    // Quem tinha a senha antiga perde o acesso; este dispositivo segue logado
+    // na mesma sessão (sem nova linha em sessions, que conta como acesso).
+    await revokeOtherSessions(user.id);
     await audit(user.id, "PASSWORD_RESET", "sms");
     return NextResponse.json({ ok: true });
   }

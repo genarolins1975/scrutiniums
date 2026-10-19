@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { and, eq, gt, isNull } from "drizzle-orm";
+import { and, eq, gt, isNull, ne } from "drizzle-orm";
 import { getDb, newId, schema } from "./db";
 import { generateSessionToken, hashToken } from "./crypto";
 import { signSessionCookie, verifySessionCookie } from "./sessionCookie";
@@ -67,4 +67,21 @@ export async function revokeAllSessions(userId: string): Promise<void> {
     .update(schema.sessions)
     .set({ revokedAt: new Date() })
     .where(and(eq(schema.sessions.userId, userId), isNull(schema.sessions.revokedAt)));
+}
+
+/** Revoga as demais sessões ativas do usuário e mantém a deste dispositivo. */
+export async function revokeOtherSessions(userId: string): Promise<void> {
+  const verified = await verifySessionCookie(cookies().get(COOKIE_NAME)?.value);
+  if (!verified) return revokeAllSessions(userId);
+  const db = await getDb();
+  await db
+    .update(schema.sessions)
+    .set({ revokedAt: new Date() })
+    .where(
+      and(
+        eq(schema.sessions.userId, userId),
+        isNull(schema.sessions.revokedAt),
+        ne(schema.sessions.tokenHash, hashToken(verified.token)),
+      ),
+    );
 }
