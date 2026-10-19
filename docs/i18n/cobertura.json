@@ -12,7 +12,7 @@
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
     "arquivos_analisados": 1309,
-    "fontes_sha256": "76c7cfefb1308834c81f656d3fd54aff48ff337a11a27651d0c80fd2b1f27506",
+    "fontes_sha256": "2968b13b0abc60b1d58bdc0763bf6d8e1e280ef44d4932ea366bf4403f33e646",
     "pendencias_sha256": "a5f33966fa56b57d86ad2ac3e3576d5272c2b721dd584737cea8eb19785566d4",
     "nao_classificadas": [
       {
@@ -145,18 +145,18 @@
       "interface": {
         "arquivos": 278,
         "candidatos": {
-          "jsx_text": 996,
+          "jsx_text": 999,
           "atributos": 328,
-          "props": 797,
-          "outros_literais": 5708,
-          "templates": 669,
-          "expressoes_nao_resolvidas": 4009,
-          "chaves_objetos": 4500
+          "props": 803,
+          "outros_literais": 5729,
+          "templates": 672,
+          "expressoes_nao_resolvidas": 4028,
+          "chaves_objetos": 4513
         },
         "exclusoes": {
-          "importacoes": 1198,
-          "atributos_tecnicos": 2307,
-          "tipos": 264
+          "importacoes": 1200,
+          "atributos_tecnicos": 2309,
+          "tipos": 265
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -165,7 +165,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 17007,
+        "candidatos_nao_catalogados": 17072,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -199,7 +199,7 @@
           "props": 18502,
           "outros_literais": 50633,
           "templates": 12518,
-          "expressoes_nao_resolvidas": 54442,
+          "expressoes_nao_resolvidas": 54443,
           "chaves_objetos": 35706
         },
         "exclusoes": {
@@ -214,7 +214,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 182143,
+        "candidatos_nao_catalogados": 182144,
         "percentual_traduzido": null
       },
       "rotas": {

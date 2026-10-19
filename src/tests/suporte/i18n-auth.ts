@@ -115,7 +115,11 @@ export function verificarPaginaAuth(doc: No, caminho: CaminhoAuth, estado: Estad
   const links = elementos(form).filter((e) => e.tagName === "a").map((e) => [attr(e, "href"), texto(e)]);
   if (caminho === "/entrar") {
     campo(inputs[1], "Senha", "current-password", "72");
-    expect(links).toEqual([["/entrar/sms", "Entrar com código por SMS"], ["/cadastro", "Ainda não tenho cadastro"]]);
+    expect(links).toEqual([
+      ["/entrar/sms?recuperar=1", "Esqueci minha senha"],
+      ["/entrar/sms", "Entrar com código por SMS"],
+      ["/cadastro", "Ainda não tenho cadastro"],
+    ]);
   } else {
     const consentimentos = [
       "Li e aceito os Termos de uso e a Política de privacidade. Seu e-mail é usado para contato e comunicações essenciais.",

@@ -86,13 +86,20 @@ export function EntrarSenhaForm({ de }: { de?: string }) {
         error={passwordError}
       />
 
+      <Link
+        href="/entrar/sms?recuperar=1"
+        className="-mt-3 self-end min-h-[44px] py-3 text-sm text-bronze-dark underline underline-offset-4 hover:text-carvao"
+      >
+        Esqueci minha senha
+      </Link>
+
       <Button type="submit" full disabled={submitting}>
         {submitting ? "Entrando…" : "Entrar"}
       </Button>
 
       <div className="flex flex-col items-center gap-2 border-t border-linha pt-5 text-center">
         <p className="text-sm text-carvao-muted">
-          Prefere ou precisa entrar sem senha?{" "}
+          Prefere entrar sem senha?{" "}
           <Link
             href="/entrar/sms"
             className="text-bronze-dark underline underline-offset-4 hover:text-carvao"

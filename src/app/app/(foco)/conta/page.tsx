@@ -13,6 +13,7 @@ import { AlterarTelefone } from "@/components/conta/AlterarTelefone";
 import { EncerrarSessoes } from "@/components/conta/EncerrarSessoes";
 import { BoletimPreferencia } from "@/components/conta/BoletimPreferencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { recuperacaoSenhaValida } from "@/components/onboarding/signedEmailCookie";
 
 export const metadata: Metadata = {
   title: "Conta",
@@ -32,6 +33,8 @@ export default async function ContaPage() {
   // O layout de /app já protege a rota; isto é apenas defesa em profundidade.
   if (!user) redirect("/entrar");
   const cpfObrigatorio = cpfObrigatorioParaTelefone(user) !== false;
+  // Código SMS aprovado em "esqueci minha senha": troca sem a senha atual.
+  const recuperacao = Boolean(user.passwordHash) && recuperacaoSenhaValida(user.id);
 
   return (
     <div className="mx-auto w-full max-w-page px-6 py-12">
@@ -80,9 +83,9 @@ export default async function ContaPage() {
           />
         </section>
 
-        <section aria-label="Senha" className="border border-linha bg-papel p-8">
+        <section id="senha" aria-label="Senha" className="scroll-mt-24 border border-linha bg-papel p-8">
           <SectionHeading number="02" label="Segurança do acesso" title="Senha" />
-          <AlterarSenha temSenha={Boolean(user.passwordHash)} />
+          <AlterarSenha temSenha={Boolean(user.passwordHash)} recuperacao={recuperacao} />
         </section>
 
         <section aria-label="Alterar telefone" className="border border-linha bg-papel p-8">
