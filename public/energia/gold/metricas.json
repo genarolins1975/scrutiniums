@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "metricas.json",
- "gerado_em": "2026-10-16T23:02:22Z",
+ "gerado_em": "2026-10-19T18:25:36Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "c234cbc89e7a+alterado",
+ "versao_codigo": "9df60a196542",
  "disponivel": true,
  "metricas": [
   {

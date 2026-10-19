@@ -482,22 +482,38 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
     expect(textoEntender(html.pld)).toContain(`Histórico de previsões (${texto})`);
     expect(textoEntender(html.previsoes)).toContain(`arquivo com ${texto}`);
     expect(textoEntender(html.pld)).not.toMatch(/\d+ registros, \d+ publicações/);
-    // e a última execução é a referência experimental, não uma rodada interna
-    expect(textoEntender(html.pld)).toMatch(/Referência experimental de 30\/09\/2026, com o modelo B0/);
+    // e a última execução é a referência experimental, não uma rodada interna (a data vem do arquivo: muda a cada rodada)
+    const ult = json<{ atual: { ultima_execucao: { tipo: string; origem: string } } }>("public/energia/gold/previsoes.json").atual.ultima_execucao;
+    expect(ult.tipo).toBe("REFERENCIA_EXPERIMENTAL");
+    const [a, m, d] = ult.origem.split("-");
+    expect(textoEntender(html.pld)).toContain(`Referência experimental de ${d}/${m}/${a}, com o modelo B0`);
     expect(linhas.filter((l) => l.previsao !== "").length).toBe(P.prospectivo.apuracoes.length);
   });
 
   it("(2) PLD já publicado no corte (07h a 23h) e média das 24 horas do dia na página PLD: janelas diferentes do mesmo dia", () => {
     // o dia é o de origem da última rodada de previsões; as médias saem do CSV horário (outro arquivo)
-    const dia = P.previsao_atual!.ja_publicado_no_corte!.origem;
+    const pub = P.previsao_atual!.ja_publicado_no_corte!;
+    const dia = pub.origem;
     const horas = horario.filter((r) => r.data_hora_local.startsWith(dia));
-    expect(horas).toHaveLength(24);
     const media = (rs: Record<string, string>[]) => rs.reduce((s, r) => s + Number(r.PLD_SE), 0) / rs.length;
-    const apos = horas.filter((r) => Number(r.data_hora_local.slice(11, 13)) >= 7);
-    expect(apos).toHaveLength(17);
     const t = textoEntender(html.previsoes);
-    expect(t).toContain(plano(reaisBr(media(apos))));
-    const frase = plano(`A página PLD mostra a média das 24 horas do dia, ${reaisBr(media(horas))}/MWh; aqui entram só as 17 horas depois do corte.`);
+    // a gold do PLD e a das previsões têm rodadas próprias: o CSV horário publicado pode ainda não chegar ao dia de origem
+    // da rodada. Nesse caso a página de previsões mostra a média do corte que a própria rodada capturou e não compara
+    // com a página PLD, que fala de outro dia.
+    const temDiaNoCsv = horas.length > 0;
+    if (temDiaNoCsv) {
+      expect(horas).toHaveLength(24);
+      const apos = horas.filter((r) => Number(r.data_hora_local.slice(11, 13)) >= 7);
+      expect(apos).toHaveLength(17);
+      expect(t).toContain(plano(reaisBr(media(apos))));
+    } else {
+      expect(D.referencia.dia < dia).toBe(true);
+      expect(pub.submercados.SE.horas).toBe(17);
+      expect(pub.submercados.SE.media).not.toBeNull();
+      expect(t).toContain(plano(reaisBr(pub.submercados.SE.media!)));
+    }
+    const mediaDia = temDiaNoCsv ? media(horas) : pub.submercados.SE.media!;
+    const frase = plano(`A página PLD mostra a média das 24 horas do dia, ${reaisBr(mediaDia)}/MWh; aqui entram só as 17 horas depois do corte.`);
     // a comparação com a página PLD só vale quando as duas páginas falam do mesmo dia; em outro dia a frase não aparece
     if (D.referencia.dia === dia) {
       expect(t).toContain(frase);
@@ -505,8 +521,7 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
     } else {
       expect(t).not.toContain("A página PLD mostra a média das 24 horas do dia");
     }
-    // o ramo do mesmo dia fica testado no componente, com a média das 24 horas do CSV no lugar da que a página PLD passaria
-    const pub = P.previsao_atual!.ja_publicado_no_corte!;
+    // o ramo do mesmo dia fica testado no componente, com a média das 24 horas do CSV (ou, sem o dia no CSV, a do corte) no lugar da que a página PLD passaria
     const mesmoDia = renderToStaticMarkup(
       createElement(PrevisoesAtual, {
         linhas: [],
@@ -516,7 +531,7 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
         fonte: "",
         versao: "",
         endereco: "",
-        mediaDiaPaginaPld: { SE: media(horas) },
+        mediaDiaPaginaPld: { SE: mediaDia },
       }),
     );
     expect(textoEntender(mesmoDia)).toContain(frase);

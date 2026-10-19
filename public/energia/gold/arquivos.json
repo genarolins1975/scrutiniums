@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-10-16T23:02:22Z",
+ "gerado_em": "2026-10-19T18:25:36Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "c234cbc89e7a+alterado",
+ "versao_codigo": "9df60a196542",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {
@@ -226,71 +226,6 @@
    "modulo": "carga",
    "gold": "carga_detalhe.json"
   },
-  "/energia/series/geracao_matriz_diaria.csv": {
-   "colunas": "data; regiao (SE, S, NE, N, SIN); horas = instantes horários distintos no arquivo do ONS; colunas por categoria (hidraulica, eolica, solar_centralizada, solar_mmgd, nuclear, gas, carvao, oleo, biomassa, outros, termica_sem_combustivel, nao_mapeada) em MWh no dia; total_mwh; total_sem_mmgd_mwh. Vazio = sem dado.",
-   "modulo": "geracao",
-   "gold": "geracao_detalhe.json"
-  },
-  "/energia/series/geracao_matriz_horaria_12m.csv": {
-   "colunas": "hora (local, início do intervalo); colunas por categoria em MWmed no SIN; últimos 366 dias.",
-   "modulo": "geracao",
-   "gold": "geracao_detalhe.json"
-  },
-  "/energia/series/geracao_rotulos_fonte.csv": {
-   "colunas": "ano; tipo_usina, combustivel e modalidade como o ONS escreve; categoria publicada; natureza (verificada, grupo_tipo3, grupo_mmgd); mwh no ano.",
-   "modulo": "geracao",
-   "gold": "geracao_detalhe.json"
-  },
-  "/energia/series/geracao_a11_conferencia.csv": {
-   "colunas": "data; balanco_solar_sin_mwh (Balanço de Energia); usinas_solar_mwh (soma das usinas FOTOVOLTAICA da Geração por Usina); usinas_mmgd_mwh (vazio antes de 29/04/2023: o grupo MMGD não existe na fonte, ausência e não zero); usinas_solar_sem_mmgd_mwh; diferenca_mwh = balanço − usinas.",
-   "modulo": "geracao",
-   "gold": "geracao_detalhe.json"
-  },
-  "/energia/series/geracao_reconciliacao_balanco.csv": {
-   "colunas": "mes; fonte do balanço (hidraulica, termica com nuclear, eolica, solar); balanco_mwh; usinas_mwh; diferenca_mwh = balanço − usinas; roraima_excluida_mwh (térmica das usinas de Roraima nos dias em que o balanço as exclui); diferenca_sem_roraima_mwh = diferença + Roraima excluída; dias; subsistema_dias; subsistema_dias_conciliados (|diferença ajustada| ≤ 1 MWh).",
-   "modulo": "geracao",
-   "gold": "geracao_detalhe.json"
-  },
-  "/energia/series/geracao_termica_motivo_mensal.csv": {
-   "colunas": "mes; regiao; total_mwh (geração verificada); uma coluna por motivo em MWh (partição sem dupla contagem); nao_classificado_mwh = total − soma dos motivos; constrained_off_mwh (restrição, não geração); horas.",
-   "modulo": "geracao",
-   "gold": "geracao_detalhe.json"
-  },
-  "/energia/series/geracao_termica_usina_mensal.csv": {
-   "colunas": "mes; usina (identidade: chave mais recente da usina, ligando CEGs com o mesmo número de empreendimento e elo publicado pelo ONS); nome_usina; chave_fonte (CEG ou código do ONS como a fonte publicou no mês); nome_na_fonte (último nom_usina do CEG, pode ser o de uma parcela); subsistema; combustivel (rótulo); categoria; origem_combustivel; total_mwh e uma coluna por motivo em MWh. Só linhas com algum valor diferente de zero.",
-   "modulo": "geracao",
-   "gold": "geracao_detalhe.json"
-  },
-  "/energia/series/geracao_cvu_semanal.csv": {
-   "colunas": "semana_inicio; semana_fim; pmo (ano-mês de referência e revisão); cod_usina (código do ONS nos modelos); usina (nome no CVU); usina_termica (identidade na térmica por motivo; vazio = sem par ou código ambíguo); subsistema; categoria; cvu_rs_mwh. De 2021 em diante.",
-   "modulo": "geracao",
-   "gold": "geracao_detalhe.json"
-  },
-  "/energia/series/geracao_restricao_diaria.csv": {
-   "colunas": "data; fonte (eolica, solar); regiao; razao (REL, CNF, ENE, PAR, SEM); origem (LOC, SIS); energia_nao_gerada_mwh (estimada: referência − verificada nas meias horas limitadas); gnra_fonte_mwh (campo publicado pelo ONS, quando existe); meias_horas_limitadas; e, na linha razao = TOTAL, geracao_verificada_mwh, meias_horas e potencia_max_cortada_mw.",
-   "modulo": "geracao",
-   "gold": "geracao_detalhe.json"
-  },
-  "/energia/series/geracao_restricao_usina_mensal.csv": {
-   "colunas": "mes; fonte; id_ons; nome; subsistema; uf; geracao_verificada_mwh; energia não gerada estimada por razão (eng_REL, eng_CNF, eng_ENE, eng_PAR, eng_SEM, em MWh); meias_horas; meias_horas_limitadas.",
-   "modulo": "geracao",
-   "gold": "geracao_detalhe.json"
-  },
-  "/energia/series/geracao_capacidade_unidades.csv": {
-   "colunas": "cod_equipamento; usina; ceg; tipo; combustivel (rótulo da unidade); categoria (a da usina na Geração por Usina, a mesma do fator de capacidade); origem_categoria (geracao_por_usina, geracao_por_usina_ceg_base, conjunto, rotulo_da_unidade, demais_unidades_do_ceg); modalidade; subsistema; uf; potencia_mw; entrada_teste; entrada_operacao; desativacao (retrato do dia da captura).",
-   "modulo": "geracao",
-   "gold": "geracao_detalhe.json"
-  },
-  "/energia/series/geracao_capacidade_usina_mensal.csv": {
-   "colunas": "mes; grupo (ceg:<CEG>, base:<CEG sem versão> ou cju:<conjunto>); identificadores (id_ons da Geração por Usina somados no grupo); nome; categoria; geracao_mwh; horas_com_valor; potencia_operacional_mw (média do mês pelas datas de entrada e desativação das unidades); fator_capacidade_pct; casamento. Últimos 24 meses, só grupos pareados.",
-   "modulo": "geracao",
-   "gold": "geracao_detalhe.json"
-  },
-  "/energia/series/geracao_capacidade_fonte_mensal.csv": {
-   "colunas": "mes; categoria; potencia_operacional_mw (todas as unidades do retrato em operação no mês); geracao_pareada_mwh; capacidade_hora_pareada_mwh; fator_capacidade_pct; cobertura_pct; fc_ons_pct (eólica e solar, conjunto Fator de Capacidade do ONS).",
-   "modulo": "geracao",
-   "gold": "geracao_detalhe.json"
-  },
   "/energia/series/rede_horario_2021.csv": {
    "colunas": "data_hora (início da hora, Brasília); fluxo_N_NE, fluxo_N_SE, fluxo_NE_SE, fluxo_S_SE = intercâmbio verificado na fronteira em MWmed, positivo da primeira para a segunda ponta; prog_* = programado na mesma orientação (só a partir de 2026); ext_ARGENTINA, ext_URUGUAI, ext_PARAGUAI = intercâmbio internacional verificado (positivo = exportação); prog_ext_* = programado; pld_SE, pld_S, pld_NE, pld_N = PLD horário da CCEE na mesma hora, R$/MWh nominais; saldo_SE, saldo_S, saldo_NE, saldo_N, saldo_SIN = intercâmbio líquido do balanço de energia (positivo = exporta). Uma linha para cada hora presente em qualquer uma das fontes (fronteiras, exterior, balanço ou PLD): a hora que falta numa fonte fica com as colunas dela vazias (14/09/2022, por exemplo, não está no arquivo de fronteiras e tem exterior, saldo e PLD). Vazio = ausência na fonte.",
    "modulo": "rede",
@@ -495,6 +430,71 @@
    "colunas": "Mapa de MMGD por município (carregado sob demanda): campos e linhas na mesma definição do CSV transicao_mmgd_municipios.csv.",
    "modulo": "transicao",
    "gold": "transicao.json"
+  },
+  "/energia/series/geracao_matriz_diaria.csv": {
+   "colunas": "data; regiao (SE, S, NE, N, SIN); horas = instantes horários distintos no arquivo do ONS; colunas por categoria (hidraulica, eolica, solar_centralizada, solar_mmgd, nuclear, gas, carvao, oleo, biomassa, outros, termica_sem_combustivel, nao_mapeada) em MWh no dia; total_mwh; total_sem_mmgd_mwh. Vazio = sem dado.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_matriz_horaria_12m.csv": {
+   "colunas": "hora (local, início do intervalo); colunas por categoria em MWmed no SIN; últimos 366 dias.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_rotulos_fonte.csv": {
+   "colunas": "ano; tipo_usina, combustivel e modalidade como o ONS escreve; categoria publicada; natureza (verificada, grupo_tipo3, grupo_mmgd); mwh no ano.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_a11_conferencia.csv": {
+   "colunas": "data; balanco_solar_sin_mwh (Balanço de Energia); usinas_solar_mwh (soma das usinas FOTOVOLTAICA da Geração por Usina); usinas_mmgd_mwh (vazio antes de 29/04/2023: o grupo MMGD não existe na fonte, ausência e não zero); usinas_solar_sem_mmgd_mwh; diferenca_mwh = balanço − usinas.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_reconciliacao_balanco.csv": {
+   "colunas": "mes; fonte do balanço (hidraulica, termica com nuclear, eolica, solar); balanco_mwh; usinas_mwh; diferenca_mwh = balanço − usinas; roraima_excluida_mwh (térmica das usinas de Roraima nos dias em que o balanço as exclui); diferenca_sem_roraima_mwh = diferença + Roraima excluída; dias; subsistema_dias; subsistema_dias_conciliados (|diferença ajustada| ≤ 1 MWh).",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_termica_motivo_mensal.csv": {
+   "colunas": "mes; regiao; total_mwh (geração verificada); uma coluna por motivo em MWh (partição sem dupla contagem); nao_classificado_mwh = total − soma dos motivos; constrained_off_mwh (restrição, não geração); horas.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_termica_usina_mensal.csv": {
+   "colunas": "mes; usina (identidade: chave mais recente da usina, ligando CEGs com o mesmo número de empreendimento e elo publicado pelo ONS); nome_usina; chave_fonte (CEG ou código do ONS como a fonte publicou no mês); nome_na_fonte (último nom_usina do CEG, pode ser o de uma parcela); subsistema; combustivel (rótulo); categoria; origem_combustivel; total_mwh e uma coluna por motivo em MWh. Só linhas com algum valor diferente de zero.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_cvu_semanal.csv": {
+   "colunas": "semana_inicio; semana_fim; pmo (ano-mês de referência e revisão); cod_usina (código do ONS nos modelos); usina (nome no CVU); usina_termica (identidade na térmica por motivo; vazio = sem par ou código ambíguo); subsistema; categoria; cvu_rs_mwh. De 2021 em diante.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_restricao_diaria.csv": {
+   "colunas": "data; fonte (eolica, solar); regiao; razao (REL, CNF, ENE, PAR, SEM); origem (LOC, SIS); energia_nao_gerada_mwh (estimada: referência − verificada nas meias horas limitadas); gnra_fonte_mwh (campo publicado pelo ONS, quando existe); meias_horas_limitadas; e, na linha razao = TOTAL, geracao_verificada_mwh, meias_horas e potencia_max_cortada_mw.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_restricao_usina_mensal.csv": {
+   "colunas": "mes; fonte; id_ons; nome; subsistema; uf; geracao_verificada_mwh; energia não gerada estimada por razão (eng_REL, eng_CNF, eng_ENE, eng_PAR, eng_SEM, em MWh); meias_horas; meias_horas_limitadas.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_capacidade_unidades.csv": {
+   "colunas": "cod_equipamento; usina; ceg; tipo; combustivel (rótulo da unidade); categoria (a da usina na Geração por Usina, a mesma do fator de capacidade); origem_categoria (geracao_por_usina, geracao_por_usina_ceg_base, conjunto, rotulo_da_unidade, demais_unidades_do_ceg); modalidade; subsistema; uf; potencia_mw; entrada_teste; entrada_operacao; desativacao (retrato do dia da captura).",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_capacidade_usina_mensal.csv": {
+   "colunas": "mes; grupo (ceg:<CEG>, base:<CEG sem versão> ou cju:<conjunto>); identificadores (id_ons da Geração por Usina somados no grupo); nome; categoria; geracao_mwh; horas_com_valor; potencia_operacional_mw (média do mês pelas datas de entrada e desativação das unidades); fator_capacidade_pct; casamento. Últimos 24 meses, só grupos pareados.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_capacidade_fonte_mensal.csv": {
+   "colunas": "mes; categoria; potencia_operacional_mw (todas as unidades do retrato em operação no mês); geracao_pareada_mwh; capacidade_hora_pareada_mwh; fator_capacidade_pct; cobertura_pct; fc_ons_pct (eólica e solar, conjunto Fator de Capacidade do ONS).",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
   },
   "/energia/series/mercado_consumo_mensal.csv": {
    "colunas": "mes (AAAA-MM); regiao (geográfica); subsistema (SE, S, NE, N ou ISOL = sistemas isolados); classe (Residencial, Industrial, Comercial, Rural, Outros); tipo (cativo ou livre); consumo_mwh (consumo de energia elétrica na rede, MWh, como publicado pela EPE); unidades_consumidoras (número de UCs no mês). Fonte: EPE, dados abertos do consumo mensal (tabela CONSUMO E NUMCONS SAM). Vazio = a fonte não publicou o valor; zero é zero.",
