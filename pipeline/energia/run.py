@@ -152,7 +152,10 @@ def main(argv):
             con_f.close()
     status_coleta["modulos"] = status_modulos
     # dicionário dos arquivos baixáveis dos módulos (REGISTRO["arquivos"]: url → colunas)
-    arquivos = metadados.dicionario_historico()
+    # o CSV do histórico só entra no dicionário se existe: na primeira publicação, uma falha em
+    # publicar_historico remove o arquivo recém-criado (review #283), como em executar_modulo.py
+    tem_csv_historico = os.path.isfile(os.path.join(base.SERIES, metadados.NOME_CSV))
+    arquivos = metadados.dicionario_historico() if tem_csv_historico else {}
     for mod in modulos.descobrir():
         for url, desc in (mod.REGISTRO.get("arquivos") or {}).items():
             arquivos[url] = {"colunas": desc, "modulo": mod.REGISTRO["id"], "gold": mod.REGISTRO["gold"]}

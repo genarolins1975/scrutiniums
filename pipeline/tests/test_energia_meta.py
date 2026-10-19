@@ -418,7 +418,13 @@ class TestHistoricoAntesDaValidacao(unittest.TestCase):
     def test_falha_no_historico_de_capturas_nao_derruba_a_execucao(self):
         """Review #283: publicar_historico roda fora da construção das golds. Uma exceção ali (CSV ou
         Parquet divergente) não pode abortar run.py: os arquivos voltam ao que eram, meta.json mantém
-        as fontes da publicação anterior e a regressão fica registrada."""
+        as fontes da publicação anterior e a regressão fica registrada. Sem CSV anterior (primeira
+        publicação), o arquivo removido também sai de arquivos.json."""
+        for anterior in (True, False):
+            with self.subTest(csv_anterior=anterior):
+                self._falha_no_historico(anterior)
+
+    def _falha_no_historico(self, anterior):
         from pipeline.energia import metadados as m, run
         from pipeline.energia.modulos import dados
         with tempfile.TemporaryDirectory() as tmp, ExitStack() as stack:
@@ -428,7 +434,8 @@ class TestHistoricoAntesDaValidacao(unittest.TestCase):
                 pasta.mkdir(parents=True)
             stack.enter_context(patch.multiple(base, RAIZ=tmp, SILVER=str(silver), GOLD=str(gold),
                                                SERIES=str(series), DB_PATH=str(silver / 'energia.db')))
-            (series / m.NOME_CSV).write_bytes(b'csv anterior\n')
+            if anterior:
+                (series / m.NOME_CSV).write_bytes(b'csv anterior\n')
             fontes_antes = {'tema': {'dataset': 'tema', 'capturas': [], 'historico': []}}
             base.escreve_gold('meta.json', {'disponivel': True, 'fontes': fontes_antes})
             construidas = []
@@ -456,7 +463,14 @@ class TestHistoricoAntesDaValidacao(unittest.TestCase):
             self.assertEqual(run.main(['--sem-coleta']), 0)
             # as golds depois de Dados continuam sendo construídas
             self.assertIn('visao.json', construidas)
-            self.assertEqual((series / m.NOME_CSV).read_bytes(), b'csv anterior\n')
+            url = m.URL_CSV
+            catalogados = json.loads((gold / 'arquivos.json').read_text())['arquivos']
+            if anterior:
+                self.assertEqual((series / m.NOME_CSV).read_bytes(), b'csv anterior\n')
+                self.assertIn(url, catalogados)
+            else:
+                self.assertFalse((series / m.NOME_CSV).exists())
+                self.assertNotIn(url, catalogados)
             meta = json.loads((gold / 'meta.json').read_text())
             self.assertEqual(meta['fontes'], fontes_antes)
             reg = [r for r in meta['regressoes'] if r['gold'] == 'meta.json']
