@@ -337,5 +337,7 @@
   "/territorio/desastres",
   "/territorio/emissoes",
   "/territorio/metodologia",
-  "/territorio/queimadas"
+  "/territorio/queimadas",
+  "/territorio/queimadas/municipio",
+  "/territorio/queimadas/municipio/[ibge]"
 ]

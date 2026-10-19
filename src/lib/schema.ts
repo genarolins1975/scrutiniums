@@ -148,6 +148,8 @@ export const alertasAtualizacao = pgTable("alertas_atualizacao", {
   ultimoEnvioEm: timestamp("ultimo_envio_em", { withTimezone: true, mode: "date" }),
   criadoEm: timestamp("criado_em", { withTimezone: true, mode: "date" }).notNull(),
 });
+
+/**
  * Medição de uso agregada (Onda 2, Q3; docs/observatorios/MEDICAO_DE_USO.md).
  * Um contador por dia (fuso de Brasília), modelo de rota e presença de conta.
  * Nenhuma coluna identifica pessoa: sem id de usuário, IP, navegador, cookie ou
