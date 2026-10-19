@@ -9,7 +9,7 @@ import { FrentesTerritorio, MetodoTerritorio } from "@/components/observatorios/
 import { ImpostoResultado, MetodoContas } from "@/components/observatorios/ImpostoResultado";
 import { CadeiasInfra, MetodoEnergia } from "@/components/observatorios/CadeiasInfra";
 import { CircuitoCredito, MetodoEconomia } from "@/components/observatorios/CircuitoCredito";
-import { ATALHOS, OBSERVATORIOS, observatorio, paineis, type ObservatorioId } from "@/lib/observatorios/registro";
+import { ATALHOS, OBSERVATORIOS, donoDaRota, observatorio, paineis, type ObservatorioId } from "@/lib/observatorios/registro";
 import { dominio } from "@/lib/dominios";
 import { escalaFamilias, orcamentoFamilia } from "@/lib/observatorios/entradas/familias";
 import { escalaServicos, recursoAoResultado } from "@/lib/observatorios/entradas/servicos";
@@ -47,8 +47,8 @@ function colecoesDe(id: ObservatorioId): ColecaoEntrada[] {
   return observatorio(id).colecoes.map((c) => {
     const daColecao = todos.filter((p) => p.observatorio === id && p.colecao === c.id);
     const rotas = new Set(daColecao.map((p) => p.rota));
-    // duplicata sai só quando o painel dono do tema está na mesma lista
-    const proprios = daColecao.filter((p) => !(p.duplicataDe && rotas.has(p.duplicataDe))).map((p) => ({ titulo: p.titulo, href: p.rota }));
+    // duplicata sai só quando o painel principal do tema (ou o painel acima dele) está na mesma lista
+    const proprios = daColecao.filter((p) => !(p.duplicataDe && rotas.has(donoDaRota(p.duplicataDe)?.rota ?? ""))).map((p) => ({ titulo: p.titulo, href: p.rota }));
     const atalhos = ATALHOS.filter((x) => x.observatorio === id && x.colecao === c.id).flatMap((x) => {
       const dono = todos.find((p) => p.rota === x.rota);
       return dono ? [{ titulo: dono.titulo, href: dono.rota, origem: dono.origem ? dominio(dono.origem).nomeCurto : observatorio(dono.observatorio).nomeCurto }] : [];

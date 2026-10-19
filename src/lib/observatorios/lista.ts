@@ -34,7 +34,7 @@ export type Painel = {
   colecao: string;
   /** Domínio de origem, que mantém a rota, a gold e o cabeçalho; null quando o próprio observatório mantém o painel (Território e Clima). */
   origem: DominioId | null;
-  /** Outro painel que trata do mesmo tema; a escolha do dono depende de comparar os conteúdos. */
+  /** Painel principal do mesmo tema (copias.ts); a página avisa com <PainelPrincipal>. */
   duplicataDe?: string;
 };
 

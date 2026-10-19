@@ -7,14 +7,14 @@ import { ACESSO } from "@/lib/acesso";
 export function SecaoAcesso() {
   return (
     <section id="acesso" aria-labelledby="acesso-titulo" className="scroll-mt-4 border-t border-linha bg-marfim">
-      <div className="mx-auto max-w-page px-6 py-24 md:py-32">
+      <div className="mx-auto max-w-page px-6 py-14 md:py-24">
         <div className="mx-auto max-w-2xl text-center">
           <div className="flex justify-center">
             <LogoMark size={34} />
           </div>
           <h2
             id="acesso-titulo"
-            className="mt-8 font-serif text-[clamp(2rem,5vw,3rem)] leading-tight text-carvao [text-wrap:balance]"
+            className="mt-6 font-serif text-[clamp(1.75rem,5vw,3rem)] leading-tight text-carvao [text-wrap:balance]"
           >
             Uma conta gratuita abre todos os painéis.
           </h2>
@@ -22,7 +22,7 @@ export function SecaoAcesso() {
             {ACESSO.leitura} O cadastro pede e-mail, telefone confirmado por SMS, CPF e um perfil básico.
           </p>
           <p className="mx-auto mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{ACESSO.conta}</p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
             <BotaoLink href="/cadastro">{ACESSO.ctaConta}</BotaoLink>
             <Link
               href="/entrar"
@@ -31,7 +31,7 @@ export function SecaoAcesso() {
               Já tenho cadastro
             </Link>
           </div>
-          <p className="rotulo mt-7 text-mineral">
+          <p className="rotulo mt-6 text-mineral">
             100% gratuito · sem assinatura · sem cobrança
           </p>
         </div>
