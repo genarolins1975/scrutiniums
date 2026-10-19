@@ -32,7 +32,7 @@ export default async function EntrarSmsVerificarPage({
 } = {}) {
   const recuperar = searchParams?.recuperar === "1";
   const user = await getSessionUser();
-  if (user) {
+  if (user && !recuperar) {
     redirect(nextStepPath(user.onboardingStatus as OnboardingStatus));
   }
 

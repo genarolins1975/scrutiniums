@@ -78,9 +78,10 @@ export async function POST(req: Request) {
   clearSignedPhoneCookie(LOGIN_PHONE_COOKIE);
 
   const status = user.onboardingStatus as OnboardingStatus;
-  // Cadastro incompleto retoma a etapa pendente; a senha é criada nela.
+  // Cadastro incompleto retoma a etapa pendente, onde a senha é criada; conta
+  // antiga sem senha a define direto em Conta, sem precisar da janela.
   if (parsed.data.recuperar && status === "COMPLETE") {
-    setRecuperacaoSenhaCookie(user.id);
+    if (user.passwordHash) setRecuperacaoSenhaCookie(user.id);
     return NextResponse.json({ ok: true, next: "/app/conta#senha" });
   }
 

@@ -29,7 +29,8 @@ export default async function EntrarSmsPage({
 } = {}) {
   const recuperar = searchParams?.recuperar === "1";
   const user = await getSessionUser();
-  if (user) {
+  // Recuperação pode ser reiniciada já logado (janela vencida em Conta).
+  if (user && !recuperar) {
     redirect(nextStepPath(user.onboardingStatus as OnboardingStatus));
   }
 

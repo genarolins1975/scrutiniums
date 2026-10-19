@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { eq } from "drizzle-orm";
+import { Children, isValidElement, type ReactElement, type ReactNode } from "react";
 import type { OnboardingStatus, User } from "@/lib/schema";
 
 const jarra = vi.hoisted(() => new Map<string, string>());
@@ -27,6 +28,8 @@ let cookies: typeof import("@/components/onboarding/signedEmailCookie");
 let senha: typeof import("@/lib/password");
 let conferirCodigo: typeof import("@/app/api/auth/entrar/check/route").POST;
 let trocarSenha: typeof import("@/app/api/conta/senha/route").POST;
+let EntrarSmsPage: typeof import("@/app/entrar/sms/page").default;
+let EntrarForm: typeof import("@/components/onboarding/EntrarForm").EntrarForm;
 let serial = 0;
 
 beforeAll(async () => {
@@ -40,6 +43,8 @@ beforeAll(async () => {
   senha = await import("@/lib/password");
   ({ POST: conferirCodigo } = await import("@/app/api/auth/entrar/check/route"));
   ({ POST: trocarSenha } = await import("@/app/api/conta/senha/route"));
+  ({ default: EntrarSmsPage } = await import("@/app/entrar/sms/page"));
+  ({ EntrarForm } = await import("@/components/onboarding/EntrarForm"));
 });
 
 async function limpar() {
@@ -57,11 +62,11 @@ afterAll(async () => {
   finally { vi.unstubAllEnvs(); }
 });
 
-async function usuario(onboardingStatus: OnboardingStatus = "COMPLETE"): Promise<User> {
+async function usuario(onboardingStatus: OnboardingStatus = "COMPLETE", comSenha = true): Promise<User> {
   const id = `recuperacao-${++serial}`;
   const [user] = await db.insert(schema.users).values({
     id, email: `${id}@example.invalid`, phoneE164: TELEFONE, phoneVerifiedAt: CONFIRMADO,
-    passwordHash: await senha.hashPassword(SENHA_ANTIGA),
+    passwordHash: comSenha ? await senha.hashPassword(SENHA_ANTIGA) : null,
     onboardingStatus, createdAt: CONFIRMADO, updatedAt: CONFIRMADO,
   }).returning();
   return user;
@@ -79,6 +84,16 @@ function post(url: string, corpo: unknown) {
     headers: { "Content-Type": "application/json", "x-forwarded-for": `198.51.100.${serial}` },
     body: JSON.stringify(corpo),
   });
+}
+
+/** Inspeção de JSX: não executa os formulários cliente. */
+function elementos(no: ReactNode): ReactElement<Record<string, unknown>>[] {
+  const encontrados: ReactElement<Record<string, unknown>>[] = [];
+  Children.forEach(no, (filho) => {
+    if (!isValidElement<Record<string, unknown>>(filho)) return;
+    encontrados.push(filho, ...elementos(filho.props.children as ReactNode));
+  });
+  return encontrados;
 }
 
 /** Código SMS aprovado no fluxo real de /api/auth/entrar/check. */
@@ -170,5 +185,38 @@ describe("Esqueci minha senha: código SMS abre a troca sem a senha atual", () =
     cookies.setSignedPhoneCookie(cookies.LOGIN_PHONE_COOKIE, `${user.id}|${agora + 60_000}`);
     jarra.set(cookies.RECUPERACAO_SENHA_COOKIE, jarra.get(cookies.LOGIN_PHONE_COOKIE)!);
     expect(cookies.recuperacaoSenhaValida(user.id, agora)).toBe(false);
+  });
+
+  it("janela vencida com a página aberta devolve código próprio, sem trocar a senha", async () => {
+    const user = await usuario();
+    await entrarPorSms({ recuperar: true });
+    cookies.setRecuperacaoSenhaCookie(user.id, Date.now() - cookies.RECUPERACAO_SENHA_TTL_MS - 1);
+    const res = await trocarSenha(post("/api/conta/senha", { newPassword: SENHA_NOVA }));
+    expect(res.status).toBe(400);
+    expect((await res.json()).codigo).toBe("recuperacao_expirada");
+    expect(await senha.verifyPassword(SENHA_ANTIGA, (await ler(user.id)).passwordHash)).toBe(true);
+  });
+
+  it("logado, ainda pode pedir novo código no modo recuperar", async () => {
+    const user = await usuario();
+    await sessao.createSession(user.id);
+    const arvore = elementos(await EntrarSmsPage({ searchParams: { recuperar: "1" } }));
+    expect(arvore.some((e) => e.type === "h1" && e.props.children === "Recuperar acesso")).toBe(true);
+    expect(arvore.filter((e) => e.type === EntrarForm).map((e) => e.props.recuperar)).toEqual([true]);
+  });
+
+  it("conta antiga sem senha vai à Conta sem abrir janela e não ganha segunda troca", async () => {
+    const user = await usuario("COMPLETE", false);
+    const r = await entrarPorSms({ recuperar: true });
+    expect(r.corpo.next).toBe("/app/conta#senha");
+    expect(jarra.has(cookies.RECUPERACAO_SENHA_COOKIE)).toBe(false);
+
+    // Mesmo com uma janela presente, a primeira definição a consome.
+    cookies.setRecuperacaoSenhaCookie(user.id);
+    expect((await trocarSenha(post("/api/conta/senha", { newPassword: SENHA_NOVA }))).status).toBe(200);
+    expect(jarra.has(cookies.RECUPERACAO_SENHA_COOKIE)).toBe(false);
+    const segunda = await trocarSenha(post("/api/conta/senha", { newPassword: "outra-senha-sintetica" }));
+    expect(segunda.status).toBe(400);
+    expect(await senha.verifyPassword(SENHA_NOVA, (await ler(user.id)).passwordHash)).toBe(true);
   });
 });

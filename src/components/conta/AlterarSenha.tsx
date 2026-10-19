@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { Field } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
@@ -30,6 +31,7 @@ export function AlterarSenha({
   const [erros, setErros] = useState<{ atual?: string; nova?: string }>({});
   const [status, setStatus] = useState<"idle" | "salvando" | "sucesso" | "erro">("idle");
   const [mensagemErro, setMensagemErro] = useState("");
+  const [expirou, setExpirou] = useState(false);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -44,6 +46,7 @@ export function AlterarSenha({
     if (Object.keys(novosErros).length > 0) return;
 
     setStatus("salvando");
+    setExpirou(false);
     try {
       const res = await fetch("/api/conta/senha", {
         method: "POST",
@@ -60,7 +63,13 @@ export function AlterarSenha({
         setNewPassword("");
         return;
       }
-      const data = (await res.json().catch(() => null)) as { error?: string } | null;
+      const data = (await res.json().catch(() => null)) as { error?: string; codigo?: string } | null;
+      if (data?.codigo === "recuperacao_expirada") {
+        // A janela venceu com a página aberta: volta a pedir a senha atual
+        // e oferece um novo código.
+        setRecuperando(false);
+        setExpirou(true);
+      }
       setMensagemErro(data?.error ?? "Não foi possível alterar a senha. Tente novamente.");
       setStatus("erro");
     } catch {
@@ -113,7 +122,22 @@ export function AlterarSenha({
       />
 
       {status === "sucesso" && <Alert kind="sucesso">Senha atualizada. Use-a no próximo acesso.</Alert>}
-      {status === "erro" && <Alert kind="erro">{mensagemErro}</Alert>}
+      {status === "erro" && (
+        <Alert kind="erro">
+          {mensagemErro}
+          {expirou && (
+            <>
+              {" "}
+              <Link
+                href="/entrar/sms?recuperar=1"
+                className="underline underline-offset-4 hover:text-carvao"
+              >
+                Receber novo código
+              </Link>
+            </>
+          )}
+        </Alert>
+      )}
 
       <Button type="submit" disabled={status === "salvando"}>
         {status === "salvando" ? "Salvando…" : exigeAtual ? "Alterar senha" : "Definir senha"}

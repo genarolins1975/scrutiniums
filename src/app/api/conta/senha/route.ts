@@ -26,6 +26,8 @@ export const runtime = "nodejs";
  */
 
 const GENERIC_ERROR = "Não foi possível alterar a senha. Verifique os dados informados.";
+const RECUPERACAO_EXPIRADA =
+  "O prazo de 10 minutos para definir a senha sem a atual terminou. Peça um novo código por SMS.";
 
 const bodySchema = z.object({
   currentPassword: z.string().min(1).max(PASSWORD_MAX_LENGTH).optional(),
@@ -51,6 +53,14 @@ export async function POST(req: Request) {
 
   const recuperacao = Boolean(user.passwordHash) && recuperacaoSenhaValida(user.id);
   if (user.passwordHash && !recuperacao) {
+    // Sem a senha atual numa conta que tem senha: a janela de recuperação
+    // venceu (ou nunca existiu). Sessão já autenticada; nada a enumerar.
+    if (parsed.data.currentPassword === undefined) {
+      return NextResponse.json(
+        { error: RECUPERACAO_EXPIRADA, codigo: "recuperacao_expirada" },
+        { status: 400 },
+      );
+    }
     const ok = await verifyPassword(parsed.data.currentPassword ?? "", user.passwordHash);
     if (!ok) {
       return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
@@ -59,9 +69,10 @@ export async function POST(req: Request) {
 
   const passwordHash = await hashPassword(parsed.data.newPassword);
   await updateUser(user.id, { passwordHash });
+  // Qualquer definição de senha consome a janela de recuperação.
+  clearRecuperacaoSenhaCookie();
 
   if (recuperacao) {
-    clearRecuperacaoSenhaCookie();
     // Quem tinha a senha antiga perde o acesso; este dispositivo segue logado.
     await revokeAllSessions(user.id);
     await createSession(user.id);
