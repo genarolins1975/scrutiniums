@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import Link from "next/link";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { Field } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
@@ -8,19 +9,34 @@ import { Alert } from "@/components/ui/Alert";
 /**
  * Define ou troca a senha da conta → POST /api/conta/senha.
  * Conta com senha exige a senha atual; conta antiga sem senha define direto.
+ * Em recuperação (código SMS de "esqueci minha senha"), a atual não é pedida.
  */
-export function AlterarSenha({ temSenha }: { temSenha: boolean }) {
+export function AlterarSenha({
+  temSenha,
+  recuperacao = false,
+}: {
+  temSenha: boolean;
+  recuperacao?: boolean;
+}) {
   const [definida, setDefinida] = useState(temSenha);
+  const [recuperando, setRecuperando] = useState(recuperacao);
+  const novaRef = useRef<HTMLInputElement>(null);
+  const exigeAtual = definida && !recuperando;
+
+  useEffect(() => {
+    if (recuperacao) novaRef.current?.focus();
+  }, [recuperacao]);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [erros, setErros] = useState<{ atual?: string; nova?: string }>({});
   const [status, setStatus] = useState<"idle" | "salvando" | "sucesso" | "erro">("idle");
   const [mensagemErro, setMensagemErro] = useState("");
+  const [expirou, setExpirou] = useState(false);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const novosErros: { atual?: string; nova?: string } = {};
-    if (definida && currentPassword.length < 1) {
+    if (exigeAtual && currentPassword.length < 1) {
       novosErros.atual = "Informe sua senha atual.";
     }
     if (newPassword.length < 8 || newPassword.length > 72) {
@@ -30,22 +46,30 @@ export function AlterarSenha({ temSenha }: { temSenha: boolean }) {
     if (Object.keys(novosErros).length > 0) return;
 
     setStatus("salvando");
+    setExpirou(false);
     try {
       const res = await fetch("/api/conta/senha", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(
-          definida ? { currentPassword, newPassword } : { newPassword },
+          exigeAtual ? { currentPassword, newPassword } : { newPassword },
         ),
       });
       if (res.ok) {
         setStatus("sucesso");
         setDefinida(true);
+        setRecuperando(false);
         setCurrentPassword("");
         setNewPassword("");
         return;
       }
-      const data = (await res.json().catch(() => null)) as { error?: string } | null;
+      const data = (await res.json().catch(() => null)) as { error?: string; codigo?: string } | null;
+      if (data?.codigo === "recuperacao_expirada") {
+        // A janela venceu com a página aberta: volta a pedir a senha atual
+        // e oferece um novo código.
+        setRecuperando(false);
+        setExpirou(true);
+      }
       setMensagemErro(data?.error ?? "Não foi possível alterar a senha. Tente novamente.");
       setStatus("erro");
     } catch {
@@ -62,7 +86,14 @@ export function AlterarSenha({ temSenha }: { temSenha: boolean }) {
         </p>
       )}
 
-      {definida && (
+      {recuperando && (
+        <Alert kind="info">
+          Código confirmado. Defina sua nova senha; a senha atual não é pedida nos próximos 10
+          minutos. Ao salvar, as sessões abertas em outros dispositivos são encerradas.
+        </Alert>
+      )}
+
+      {exigeAtual && (
         <Field
           label="Senha atual"
           name="current-password"
@@ -83,17 +114,33 @@ export function AlterarSenha({ temSenha }: { temSenha: boolean }) {
         autoComplete="new-password"
         maxLength={72}
         required
+        ref={novaRef}
         value={newPassword}
         onChange={(e) => setNewPassword(e.target.value)}
         error={erros.nova}
         hint="Mínimo de 8 caracteres"
       />
 
-      {status === "sucesso" && <Alert kind="sucesso">Senha atualizada.</Alert>}
-      {status === "erro" && <Alert kind="erro">{mensagemErro}</Alert>}
+      {status === "sucesso" && <Alert kind="sucesso">Senha atualizada. Use-a no próximo acesso.</Alert>}
+      {status === "erro" && (
+        <Alert kind="erro">
+          {mensagemErro}
+          {expirou && (
+            <>
+              {" "}
+              <Link
+                href="/entrar/sms?recuperar=1"
+                className="underline underline-offset-4 hover:text-carvao"
+              >
+                Receber novo código
+              </Link>
+            </>
+          )}
+        </Alert>
+      )}
 
       <Button type="submit" disabled={status === "salvando"}>
-        {status === "salvando" ? "Salvando…" : definida ? "Alterar senha" : "Definir senha"}
+        {status === "salvando" ? "Salvando…" : exigeAtual ? "Alterar senha" : "Definir senha"}
       </Button>
     </form>
   );

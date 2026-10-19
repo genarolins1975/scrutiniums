@@ -12,9 +12,15 @@ import { digitosMinimosTelefone } from "@/lib/telefone-minimo";
 
 /**
  * Login alternativo sem senha: telefone → código SMS (rota /entrar/sms).
- * Cobre entrada e recuperação de quem esqueceu a senha.
+ * Com `recuperar`, o código leva à definição de nova senha (esqueci minha senha).
  */
-export function EntrarForm({ paises = COUNTRIES }: { paises?: readonly PaisTelefone[] }) {
+export function EntrarForm({
+  paises = COUNTRIES,
+  recuperar = false,
+}: {
+  paises?: readonly PaisTelefone[];
+  recuperar?: boolean;
+}) {
   const router = useRouter();
   const [country, setCountry] = useState(paises[0]?.code ?? "");
   const [phone, setPhone] = useState("");
@@ -38,7 +44,7 @@ export function EntrarForm({ paises = COUNTRIES }: { paises?: readonly PaisTelef
         body: JSON.stringify({ country, phone }),
       });
       if (res.ok) {
-        router.push("/entrar/sms/verificar");
+        router.push(recuperar ? "/entrar/sms/verificar?recuperar=1" : "/entrar/sms/verificar");
         return;
       }
       setServerError(
