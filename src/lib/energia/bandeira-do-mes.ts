@@ -120,6 +120,6 @@ export function fonteBandeira(v: BandeiraVigente | null | undefined, idioma: Idi
   ].filter(Boolean);
   return tx(
     `Fonte: ANEEL, Bandeiras Tarifárias, recurso Acionamento${datas.length ? ` (${datas.join("; ")})` : ""}.`,
-    `Source: ANEEL, Bandeiras Tarifárias (tariff flags), Acionamento resource${datas.length ? ` (${datas.join("; ")})` : ""}.`,
+    `Source: ANEEL, tariff flags dataset, activation resource${datas.length ? ` (${datas.join("; ")})` : ""}.`,
   );
 }

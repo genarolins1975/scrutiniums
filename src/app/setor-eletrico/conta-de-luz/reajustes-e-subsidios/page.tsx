@@ -304,7 +304,7 @@ export default function ContaReajustesPage() {
           .
         </>,
         <>
-          Most recent change in the file: {rotuloDistribuidora(ultimoEvento[1], ultimoEvento[0])}, on {dataBR(ultimoEvento[2])} ({ultimoEvento[3]}), when the B1 tariff{" "}
+          Most recent change in the file: <Nome>{rotuloDistribuidora(ultimoEvento[1], ultimoEvento[0])}</Nome>, on {dataBR(ultimoEvento[2])} ({ultimoEvento[3]}), when the B1 tariff{" "}
           {verboVariacao(ultimoEvento[4])}; the IPCA since the previous change ({mesAno(`${ultimoEvento[6]}-01`)} to {mesAno(`${ultimoEvento[7]}-01`)}) was {pct(ultimoEvento[5], 2)}
           {ultimoSemIpca
             ? `, and the IPCA for ${mesAno(`${ultimoEvento[2].slice(0, 7)}-01`)}, the month of the change, is not in the data: the last published index, for ${mesAno(`${ultimoEvento[7]}-01`)}, applies`
