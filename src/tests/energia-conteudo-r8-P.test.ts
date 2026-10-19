@@ -56,7 +56,7 @@ import {
   vereditoP016,
 } from "@/lib/energia/previsoes";
 import { lerCsvPrevisoes } from "@/lib/energia/previsoes-arquivos";
-import type { ModelosGold } from "@/lib/energia/tipos";
+import type { ModelosGold, PrevisoesGold } from "@/lib/energia/tipos";
 import type { PldDetalheGold } from "@/lib/energia/tipos-pld";
 import type { PrevisoesDesempenhoGold } from "@/lib/energia/tipos-previsoes";
 
@@ -482,8 +482,10 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
     expect(textoEntender(html.pld)).toContain(`Histórico de previsões (${texto})`);
     expect(textoEntender(html.previsoes)).toContain(`arquivo com ${texto}`);
     expect(textoEntender(html.pld)).not.toMatch(/\d+ registros, \d+ publicações/);
-    // e a última execução é a referência experimental, não uma rodada interna
-    expect(textoEntender(html.pld)).toMatch(/Referência experimental de 30\/09\/2026, com o modelo B0/);
+    // e a última execução é a referência experimental, não uma rodada interna (data e modelo lidos da gold de previsões)
+    const ult = json<PrevisoesGold>("public/energia/gold/previsoes.json").atual.ultima_execucao!;
+    expect(ult.tipo).toBe("REFERENCIA_EXPERIMENTAL");
+    expect(textoEntender(html.pld)).toContain(`Referência experimental de ${dataBR(ult.origem)}, com o modelo ${ult.modelo}`);
     expect(linhas.filter((l) => l.previsao !== "").length).toBe(P.prospectivo.apuracoes.length);
   });
 
@@ -491,6 +493,13 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
     // o dia é o de origem da última rodada de previsões; as médias saem do CSV horário (outro arquivo)
     const dia = P.previsao_atual!.ja_publicado_no_corte!.origem;
     const horas = horario.filter((r) => r.data_hora_local.startsWith(dia));
+    // A rodada de previsões é publicada todo dia; o CSV horário só quando a gold do PLD passa. Com a gold do PLD
+    // atrasada, o dia da rodada ainda não está no CSV: não há o que conciliar e a página não compara com a página PLD.
+    if (horas.length === 0) {
+      expect(D.referencia.dia < dia).toBe(true);
+      expect(textoEntender(html.previsoes)).not.toContain("A página PLD mostra a média das 24 horas do dia");
+      return;
+    }
     expect(horas).toHaveLength(24);
     const media = (rs: Record<string, string>[]) => rs.reduce((s, r) => s + Number(r.PLD_SE), 0) / rs.length;
     const apos = horas.filter((r) => Number(r.data_hora_local.slice(11, 13)) >= 7);
