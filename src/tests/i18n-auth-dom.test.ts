@@ -37,9 +37,9 @@ function documento(caminho: CaminhoAuth, idioma: Idioma = "pt", estado: Estado =
     ? "<p>Use o e-mail e a senha da sua conta.</p>"
     : '<div aria-label="Etapa 1 de 3"><span aria-hidden="true">01</span><span>Etapa 1 de 3</span></div>';
   const fimFormulario = entrar
-    ? '<div><p>Prefere ou precisa entrar sem senha? <a href="/entrar/sms">Entrar com código por SMS</a></p><a href="/cadastro">Ainda não tenho cadastro</a></div>'
+    ? '<div><p>Prefere entrar sem senha? <a href="/entrar/sms">Entrar com código por SMS</a></p><a href="/cadastro">Ainda não tenho cadastro</a></div>'
     : '<div><a href="/entrar">Já tenho cadastro</a><p>100% gratuito · sem assinatura · sem cobrança</p></div>';
-  const form = `<form novalidate>${campoEmail(caminho, estado, ids.email)}${entrar ? campoSenha(estado, ids.senha) : consentimentos(estado)}<button type="submit">${entrar ? "Entrar" : "Continuar"}</button>${fimFormulario}</form>`;
+  const form = `<form novalidate>${campoEmail(caminho, estado, ids.email)}${entrar ? campoSenha(estado, ids.senha) + '<a href="/entrar/sms?recuperar=1">Esqueci minha senha</a>' : consentimentos(estado)}<button type="submit">${entrar ? "Entrar" : "Continuar"}</button>${fimFormulario}</form>`;
   const main = `<main><section>${entrar ? "" : introducao}<h1>${titulo}</h1>${entrar ? introducao : "<p>Informe seu e-mail de contato para começar.</p>"}${form}</section></main>`;
   const footer = '<footer><p>scrutiniums.com</p><p><a href="/termos">Termos de uso</a> · <a href="/privacidade">Privacidade</a></p></footer>';
   const produto = `<div>${header}${main}${footer}</div>`;
