@@ -55,7 +55,14 @@ novas viram comentários nela. Um cheque de vigília que quebre (código ≠ 0 e
   com `ZENODO_RASCUNHO=1` e o segredo `ZENODO_TOKEN`; a publicação é sempre
   manual. Pendências: conta no Zenodo, criadores e licença dos dados derivados em
   `config/institucional.json`, e a primeira publicação.
-- **Pendência de configuração dos dois envios** (não resolvível no código):
+- `alertas-atualizacao.yml` (todo dia, 11:37 UTC): verifica os alertas que as
+  contas assinam em "Avisar quando atualizar" e envia e-mail só a quem assinou
+  uma fonte cuja data de referência avançou (`src/lib/conta/alertas.ts`).
+  Idempotente. Cada execução autorizada grava o evento `alertas_verificacao`;
+  sem ele nos últimos três dias (ou sem `RESEND_API_KEY`), a conta e a barra
+  dos painéis dizem que o envio por e-mail ainda não está ligado.
+- **Pendência de configuração dos três envios** (não resolvível no código; em
+  19/10/2026 o segredo do item 1 faltava e o `resumo-email.yml` falhava):
   1. segredo `BOLETIM_SECRET` (16 caracteres ou mais) no GitHub Actions;
   2. variável `BOLETIM_SECRET` com o mesmo valor na Vercel;
   3. `RESEND_API_KEY` e `MAIL_FROM` na Vercel, com o domínio do remetente

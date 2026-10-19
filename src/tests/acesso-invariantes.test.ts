@@ -88,6 +88,12 @@ describe("acesso: uma promessa", () => {
     expect(ler("src/app/app/(foco)/conta/page.tsx")).toMatch(/title="Boletim mensal"/);
     expect(ler("src/lib/boletim.ts")).toContain("marketingOptIn");
     expect(ACESSO.conta).toMatch(/painéis/);
+    // recorte salvo e citação: a barra da conta nos painéis e a seção da conta existem
+    expect(ACESSO.conta).toMatch(/recortes/);
+    expect(ACESSO.conta).toMatch(/citação/);
+    expect(ler("src/components/layout/CabecalhoPlataforma.tsx")).toContain("<FerramentasConta");
+    expect(ler("src/app/app/(foco)/conta/page.tsx")).toMatch(/title="Meus recortes"/);
+    expect(ler("src/components/conta/FerramentasConta.tsx")).toContain("bibtex(dados)");
     expect(ACESSO.leitura).toMatch(/quem tem conta/);
     expect(ACESSO.leitura).toMatch(/gratuito/);
   });
