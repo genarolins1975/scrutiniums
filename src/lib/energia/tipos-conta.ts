@@ -217,7 +217,26 @@ export type PatamarBandeira = {
   vigencia_tabela: string | null;
 };
 
-export type BandeiraVigente = { mes: string; bandeira: string | null; rs_mwh: number | null; aviso: string | null };
+/**
+ * Bandeira do mês de referência da gold. `mes` é o mês corrente da referência quando publicado (`situacao` "mes_corrente") ou a
+ * última bandeira registrada antes dele ("mes_ausente", com `aviso`). Os campos opcionais vieram depois (banca de 19/10/2026): uma gold
+ * anterior não os traz, e a página então decide só com `mes`.
+ */
+export type BandeiraVigente = {
+  mes: string;
+  bandeira: string | null;
+  rs_mwh: number | null;
+  aviso: string | null;
+  mes_referencia?: string;
+  situacao?: "mes_corrente" | "mes_ausente";
+  /** Meses posteriores ao de referência já publicados pela ANEEL (a bandeira do mês seguinte sai no fim do mês). */
+  anunciadas?: { mes: string; bandeira: string | null; rs_mwh: number | null }[];
+  /** Últimos meses publicados, para a página refazer a escolha com o mês de quem lê. */
+  recentes?: { mes: string; bandeira: string | null; rs_mwh: number | null }[];
+  fonte_publicada_em?: string | null;
+  fonte_capturada_em?: string | null;
+  fonte_url?: string | null;
+};
 
 /** [classe, kWh, ligação, bandeira, total R$, parcela da bandeira R$]; null = simulação indisponível. */
 export type CasoReferencia = [ClasseSimuladorId, number, Ligacao, "Verde" | "Amarela", number | null, number | null];

@@ -6,7 +6,9 @@ import { ContaSelecionadas } from "@/components/energia/ContaSelecionadas";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
+import { useMesCorrente } from "@/components/energia/useMesCorrente";
 import { ContaRolavel } from "@/components/energia/ContaRolavel";
+import { bandeiraUsada, fonteBandeira, fraseBandeira, situacaoBandeira } from "@/lib/energia/bandeira-do-mes";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { formatos } from "@/lib/energia/formato";
 import { bandeiraNoIdioma, dadoNo, dadoTexto, txEm } from "@/lib/energia/i18n/conta-inclusao";
@@ -88,11 +90,16 @@ export type ContaSimuladorProps = {
   };
   evidencia: Evidencia | null;
   dataReferencia: string;
+  /**
+   * Mês em que a página foi gerada ('AAAA-MM', Brasília). O HTML estático sai com ele e o navegador refaz a escolha da bandeira com o
+   * mês de quem lê. Sem ele, vale o mês de referência da gold.
+   */
+  mesDaPagina?: string;
   /** UF de cada distribuidora, para a lista de distribuidoras: quem não sabe a sigla reconhece o estado (`compactarInfo`). */
   info?: InfoCompacta;
 };
 
-export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia, info: infoCompacta }: ContaSimuladorProps) {
+export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia, mesDaPagina, info: infoCompacta }: ContaSimuladorProps) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const idioma = useIdioma();
   const tx = useTx();
@@ -107,14 +114,18 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
   const dist = porCnpj.get(cnpj) ?? null;
   const pedidaFora = v.dist.length > 0 && !escolhida;
 
-  // "Do mês publicado" usa o acionamento do mês (nome e valor publicados), o mesmo
+  // "Bandeira do mês" usa o acionamento do mês (nome e valor publicados), o mesmo
   // da evidência do pipeline, e não o patamar da tabela de adicionais: nos meses em
-  // que os dois recursos divergem, vale o acionado. Sem acionamento publicado, a
-  // bandeira fica fora da estimativa e isso é dito (nunca vira verde).
+  // que os dois recursos divergem, vale o acionado. O mês é o corrente de quem lê;
+  // sem ele no arquivo, vale a última registrada e a nota diz que o corrente falta.
+  // Sem acionamento publicado, a bandeira fica fora da estimativa e isso é dito (nunca vira verde).
   const vig = s.bandeira_vigente;
-  const nomeBandeira: string | null = v.bandeira === "vigente" ? (vig?.bandeira ?? null) : v.bandeira;
+  const mesCorrente = useMesCorrente(mesDaPagina ?? vig?.mes_referencia ?? dataReferencia.slice(0, 7));
+  const situacao = situacaoBandeira(vig, mesCorrente);
+  const usada = bandeiraUsada(situacao);
+  const nomeBandeira: string | null = v.bandeira === "vigente" ? (usada?.bandeira ?? null) : v.bandeira;
   const adicional: number | null =
-    v.bandeira === "vigente" ? (vig?.bandeira ? (vig.rs_mwh ?? null) : null) : (s.bandeiras.find((b) => b.bandeira === v.bandeira)?.rs_mwh ?? null);
+    v.bandeira === "vigente" ? (usada?.bandeira ? (usada.rs_mwh ?? null) : null) : (s.bandeiras.find((b) => b.bandeira === v.bandeira)?.rs_mwh ?? null);
   const semBandeira = nomeBandeira === null || adicional === null;
   const rotuloBandeira = nomeBandeira === null ? tx("não publicada", "not published") : minuscula(bandeiraNoIdioma(nomeBandeira, idioma));
   const classe = s.classes.find((c) => c.id === v.classe) ?? s.classes[0];
@@ -308,10 +319,14 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
             className={CLASSE_SELECT}
           >
             <option value="vigente">
-              {tx("Do mês publicado", "Published month's flag")}
-              {vig?.bandeira
-                ? ` (${bandeiraNoIdioma(vig.bandeira, idioma)}, ${mesAno(`${vig.mes}-01`)}${
-                    vig.rs_mwh === null ? tx(", sem valor publicado", ", no published value") : vig.rs_mwh === 0 ? tx(", sem acréscimo", ", no surcharge") : `, ${reais(vig.rs_mwh / 1000, 5)}/kWh`
+              {situacao.estado === "corrente" ? tx("Do mês corrente", "Current month's flag") : tx("Última registrada", "Latest recorded")}
+              {usada?.bandeira
+                ? ` (${bandeiraNoIdioma(usada.bandeira, idioma)}, ${mesAno(`${usada.mes}-01`)}${
+                    usada.rs_mwh === null
+                      ? tx(", sem valor publicado", ", no published value")
+                      : usada.rs_mwh === 0
+                        ? tx(", sem acréscimo", ", no surcharge")
+                        : `, ${reais(usada.rs_mwh / 1000, 5)}/kWh`
                   })`
                 : tx(" (não publicada)", " (not published)")}
             </option>
@@ -349,24 +364,22 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
         limite={LIMITE_COMPARACAO}
       />
 
-      {v.bandeira === "vigente" && (
-        <p className="text-xs leading-relaxed text-carvao-muted" data-nota="bandeira-publicada">
-          {vig?.bandeira
-            ? tx(
-                `Bandeira do mês publicado: ${minuscula(vig.bandeira)} de ${mesAno(`${vig.mes}-01`)}, a última que consta nos dados de ${dataBR(dataReferencia)}. `,
-                `Tariff flag of the published month: ${minuscula(bandeiraNoIdioma(vig.bandeira, idioma))} for ${mesAno(`${vig.mes}-01`)}, the latest in the data of ${dataBR(dataReferencia)}. `,
-              )
-            : tx("Nenhuma bandeira consta nos dados. ", "No tariff flag appears in the data. ")}
-          {tx(
-            "A ANEEL pode ter publicado a de um mês seguinte depois dessa data; escolha outra bandeira na lista para simular.",
-            "ANEEL may have published the one for a later month after that date; choose another tariff flag in the list to simulate.",
-          )}
+      {v.bandeira === "vigente" && situacao.estado === "corrente" && (
+        <p className="text-xs leading-relaxed text-carvao-muted" data-nota="bandeira-publicada" data-bandeira-estado={situacao.estado} data-bandeira-mes={mesCorrente}>
+          {fraseBandeira(situacao, idioma)} {fonteBandeira(vig, idioma)}{" "}
+          {tx("Para simular outra bandeira, escolha na lista.", "To simulate another tariff flag, choose it in the list.")}
         </p>
       )}
 
-      {v.bandeira === "vigente" && vig?.aviso && (
-        <p role="status" className="text-sm text-carvao-muted">
-          {dadoNo(vig.aviso, "conta-aviso-bandeira", idioma)}
+      {v.bandeira === "vigente" && situacao.estado !== "corrente" && (
+        <p role="status" className="text-sm text-carvao-muted" data-nota="bandeira-publicada" data-bandeira-estado={situacao.estado} data-bandeira-mes={mesCorrente}>
+          {fraseBandeira(situacao, idioma)} {fonteBandeira(vig, idioma)}{" "}
+          {situacao.estado === "mes_ausente"
+            ? tx(
+                "A estimativa usa a última registrada, que não é a do mês corrente; para simular outra bandeira, escolha na lista.",
+                "The estimate uses the latest recorded one, which is not the current month's; to simulate another tariff flag, choose it in the list.",
+              )
+            : tx("A estimativa fica sem bandeira; para simular uma, escolha na lista.", "The estimate has no tariff flag; to simulate one, choose it in the list.")}
         </p>
       )}
 

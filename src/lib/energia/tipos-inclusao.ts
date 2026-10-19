@@ -212,6 +212,50 @@ export type DiagnosticoScs = {
   pares_com_dmr_variando_entre_faixas: number;
 };
 
+export type RegraTarifaSocial = {
+  rotulo: string;
+  descricao: string;
+  ato: string;
+  ato_curto: string;
+  /** Data do ato (AAAA-MM-DD). */
+  ato_data: string;
+  /** Início da vigência (AAAA-MM-DD): faturas emitidas a partir dele. */
+  vigencia: string;
+  vigencia_texto: string;
+  lei: string;
+  lei_data: string;
+  lei_url: string;
+  fonte: string;
+  regra_anterior: string;
+  conferencia: { norma: string; titulo: string | null; estado: string; conferido_em: string | null; url: string | null }[];
+  /** Mês da vigência quando ela começa depois do dia 1 (o arquivo do mês mistura as duas regras). */
+  mes_transicao: string | null;
+  primeiro_mes_inteiro: string;
+};
+
+export type LadoFaturasDaRegra = {
+  fonte: string;
+  unidade: string;
+  mes: string;
+  recurso: string | null;
+  distribuidoras: number | null;
+  faturas_tsee: number | null;
+  desconto_faturas_reais: number | null;
+  desconto_medio_por_fatura_reais: number | null;
+};
+
+export type PeriodosDaRegra = {
+  /** Mês de referência do SCS (UC), quando anterior à vigência. */
+  antes: { fonte: string; unidade: string; mes: string; uc_tsee: number | null; dmr_reais: number | null } | null;
+  /** Último mês completo da CDE antes da vigência (faturas): mesma fonte e unidade do lado posterior. */
+  antes_cde: LadoFaturasDaRegra | null;
+  transicao: { mes: string; no_arquivo: boolean; nota: string } | null;
+  /** Último mês completo da CDE a partir do primeiro mês inteiro sob a regra; null quando a fonte ainda não publicou. */
+  depois: (LadoFaturasDaRegra & { meses_completos_depois: string[] }) | null;
+  mes_referencia_pos_regra: string | null;
+  motivo_sem_depois: string | null;
+};
+
 export type TarifaSocial = {
   pergunta: string;
   mes_referencia: string;
@@ -238,6 +282,10 @@ export type TarifaSocial = {
   serie_antiga: SerieAntiga | null;
   custeio_cde: { linhas: LinhaCusteio[]; ano_corrente: string | null; proveniencia: Proveniencia } | null;
   eventos: { data: string; rotulo: string; fonte: string; detalhe: string }[];
+  /** Regra vigente da Tarifa Social (gratuidade até 80 kWh): ato, data do ato, início da vigência e conferência do texto. Opcional: gold anterior a 19/10/2026 não traz. */
+  regra_vigente?: RegraTarifaSocial;
+  /** O que é anterior e o que é posterior à regra vigente, cada lado com fonte, unidade e mês. */
+  periodos_da_regra?: PeriodosDaRegra;
   regras: {
     mes_completo: string;
     residencial_inconsistente: string;

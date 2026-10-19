@@ -90,7 +90,7 @@ export function Recorte({ periodo, universo, unidade }: { periodo: ReactNode; un
 }
 
 /** Datas de referência de cada parte da página: cada número diz o seu dia, sem sugerir simultaneidade. */
-export function Datas({ itens }: { itens: { rotulo: string; texto: string; natureza: Natureza }[] }) {
+export function Datas({ itens }: { itens: { rotulo: string; texto: ReactNode; natureza: Natureza }[] }) {
   return (
     <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-carvao-muted" aria-label={tx("Datas de referência de cada parte", "Reference dates of each part")}>
       {itens.map((x) => (

@@ -2,6 +2,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { BandeiraDoMes } from "@/components/energia/BandeiraDoMes";
 import { ContaBandeiras } from "@/components/energia/ContaBandeiras";
 import { ContaBarrasReais } from "@/components/energia/ContaBarrasReais";
 import { ContaLinkFiltros } from "@/components/energia/ContaLinkPainel";
@@ -48,6 +49,7 @@ import {
   vereditoSubsidios,
   type ValoresDoPainel,
 } from "@/lib/energia/conta";
+import { mesCorrenteBrasilia } from "@/lib/energia/bandeira-do-mes";
 import { carimbo, dataBR, mesAno, num, pct, reais } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
@@ -195,6 +197,8 @@ export default function ContaReajustesPage() {
   const sub = g.subsidios;
   const cde = g.financiamento_cde;
   const ref = g.data_referencia;
+  // mês em que a página estática foi gerada; o navegador refaz a situação da bandeira com o mês de quem lê
+  const mesDaPagina = mesCorrenteBrasilia();
   const ultimoIpca = reaj.comparacao_inflacao?.ultimo_ipca ?? null;
   const janela12 = reaj.comparacao_inflacao?.janelas.find((j) => j.meses === 12) ?? null;
   const linhasSub = linhasSubsidios(sub);
@@ -649,8 +653,11 @@ export default function ContaReajustesPage() {
             >
               <div className="space-y-6">
                 <RespostaCurta id="p050-bandeiras" veredito={vereditoBandeira(band)}>
-                  {respostaBandeira(band)}
+                  {respostaBandeira(band, idioma, mesDaPagina)}
                 </RespostaCurta>
+                <p className="max-w-3xl text-sm leading-relaxed text-carvao-muted" data-nota="bandeira-do-mes">
+                  <BandeiraDoMes vigente={band.vigente} mesInicial={mesDaPagina} forma="frase" />
+                </p>
                 <div className="grid grid-cols-[minmax(0,1fr)] gap-x-8 gap-y-5 lg:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]">
                   <ContaBandeiras acionamento={band.acionamento} />
                   <div className="min-w-0 space-y-4">
