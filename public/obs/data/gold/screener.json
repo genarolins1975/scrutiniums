@@ -2161,7 +2161,7 @@
   {
    "cod": "02869663",
    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MUTUO ",
-   "sr": "S5",
+   "sr": null,
    "nivel": "indiv",
    "ativo": 3325491.83,
    "carteira": 1415296.16,
@@ -5549,7 +5549,7 @@
   {
    "cod": "07652226",
    "nome": "LECCA CRÉDITO, FINANCIAMENTO E INVESTIME",
-   "sr": "S4",
+   "sr": null,
    "nivel": "indiv",
    "ativo": 103832464.66,
    "carteira": 72526146.36,
@@ -9511,7 +9511,7 @@
   {
    "cod": "28762249",
    "nome": "SADOC SOCIEDADE CORRETORA DE CÂMBIO LTDA",
-   "sr": "S5",
+   "sr": null,
    "nivel": "indiv",
    "ativo": 2496289.56,
    "carteira": 0.0,
@@ -9595,7 +9595,7 @@
   {
    "cod": "30183111",
    "nome": "TROCKA CORRETORA DE CAMBIO LTDA.",
-   "sr": "S4",
+   "sr": null,
    "nivel": "indiv",
    "ativo": 7056376.83,
    "carteira": 0.0,
@@ -19073,7 +19073,7 @@
   {
    "cod": "C0052656",
    "nome": "BARU",
-   "sr": "S4",
+   "sr": null,
    "nivel": "congl",
    "ativo": 15684418.55,
    "carteira": 10375534.92,

@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-18T15:09:33+00:00",
+ "gerado_em": "2026-10-19T18:02:15+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -35,7 +35,7 @@
    "apenados_distintos": 11397
   },
   "janela_12m": {
-   "ini": "2025-10-18",
+   "ini": "2025-10-19",
    "decisoes": 1342,
    "processos": 1273,
    "multas_n": 1284,
@@ -91,8 +91,8 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 859,
-    "share": 64.01
+    "n": 860,
+    "share": 64.08
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
@@ -115,24 +115,19 @@
     "share": 3.43
    },
    {
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
+    "n": 27,
+    "share": 2.01
+   },
+   {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
     "n": 26,
     "share": 1.94
    },
    {
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 24,
-    "share": 1.79
-   },
-   {
     "situacao": "PENALIDADE EXTINTA",
     "n": 6,
     "share": 0.45
-   },
-   {
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
-    "n": 4,
-    "share": 0.3
    },
    {
     "situacao": "AGUARDANDO INÍCIO DO CUMPRIMENTO",
@@ -158,7 +153,7 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11939,
+    "n": 11940,
     "share": 87.79
    },
    {
@@ -193,18 +188,13 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 38,
-    "share": 0.28
+    "n": 41,
+    "share": 0.3
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
     "n": 15,
     "share": 0.11
-   },
-   {
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
-    "n": 4,
-    "share": 0.03
    }
   ],
   "tempo_citacao_decisao_meses": {
@@ -433,7 +423,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    },
    {
     "pas": "312202",
@@ -443,7 +433,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    },
    {
     "pas": "311436",
@@ -473,7 +463,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    },
    {
     "pas": "300481",
@@ -483,7 +473,7 @@
     "pena": "MULTA",
     "multa": 12500.0,
     "recurso": "NÃO",
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    },
    {
     "pas": "312937",
@@ -653,7 +643,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+    "situacao": "MULTA PAGA"
    },
    {
     "pas": "312207",
@@ -951,7 +941,7 @@
    "finalizados": 328
   },
   "abertos_12m": {
-   "ini": "2025-10-18",
+   "ini": "2025-10-19",
    "processos": 65,
    "acusados": 165
   },

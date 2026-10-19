@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-18T15:09:03+00:00",
+ "gerado_em": "2026-10-19T18:01:24+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -1006,6 +1006,15 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE UBA",
+    "municipio": "Ubá",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-16",
+    "url": "https://pncp.gov.br/compras/18128207000101/2026/287"
+   },
+   {
     "ente": "MUNICIPIO DE DOM FELICIANO",
     "municipio": "Dom Feliciano",
     "uf": "RS",
@@ -1024,15 +1033,6 @@
     "url": "https://pncp.gov.br/compras/05121991000184/2026/109"
    },
    {
-    "ente": "MUNICIPIO DE UBA",
-    "municipio": "Ubá",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-16",
-    "url": "https://pncp.gov.br/compras/18128207000101/2026/287"
-   },
-   {
     "ente": "MUNICIPIO DE IBIUNA",
     "municipio": "Ibiúna",
     "uf": "SP",
@@ -1042,15 +1042,6 @@
     "url": "https://pncp.gov.br/compras/46634531000137/2026/320"
    },
    {
-    "ente": "MUNICIPIO DE VERTENTE DO LERIO",
-    "municipio": "Vertente do Lério",
-    "uf": "PE",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-15",
-    "url": "https://pncp.gov.br/compras/40893646000160/2026/48"
-   },
-   {
     "ente": "MUNICIPIO DE ITUBERA",
     "municipio": "Ituberá",
     "uf": "BA",
@@ -1058,6 +1049,15 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-15",
     "url": "https://pncp.gov.br/compras/14195333000128/2026/112"
+   },
+   {
+    "ente": "MUNICIPIO DE VERTENTE DO LERIO",
+    "municipio": "Vertente do Lério",
+    "uf": "PE",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-15",
+    "url": "https://pncp.gov.br/compras/40893646000160/2026/48"
    },
    {
     "ente": "MUNICIPIO DE PRESIDENTE DUTRA",
@@ -1078,6 +1078,15 @@
     "url": "https://pncp.gov.br/compras/46596235000199/2026/104"
    },
    {
+    "ente": "COMPANHIA MUNICIPAL DE TRANSITO -CMT",
+    "municipio": "Cubatão",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-07",
+    "url": "https://pncp.gov.br/compras/55670822000171/2026/31"
+   },
+   {
     "ente": "MUNICIPIO DE CURRAL DE DENTRO",
     "municipio": "Curral de Dentro",
     "uf": "MG",
@@ -1094,15 +1103,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-07",
     "url": "https://pncp.gov.br/compras/08637399000128/2026/9"
-   },
-   {
-    "ente": "COMPANHIA MUNICIPAL DE TRANSITO -CMT",
-    "municipio": "Cubatão",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-07",
-    "url": "https://pncp.gov.br/compras/55670822000171/2026/31"
    },
    {
     "ente": "MUNICIPIO DE RIBEIRA DO AMPARO",
