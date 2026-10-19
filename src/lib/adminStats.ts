@@ -49,6 +49,12 @@ export type UsuarioRecente = {
   uf: string | null;
   createdAt: Date;
 };
+/** Entrada na plataforma: cada sessão criada (senha, código SMS ou fim do cadastro). */
+export type AcessoRecente = {
+  id: string;
+  email: string | null;
+  createdAt: Date;
+};
 export type RegistroAuditoria = {
   id: string;
   email: string | null;
@@ -85,6 +91,7 @@ export type AdminStats = {
   perfisUso: ContagemPerfilUso[];
   falhasVerificacao30d: number;
   usuariosRecentes: UsuarioRecente[];
+  acessosRecentes: AcessoRecente[];
   auditoria: RegistroAuditoria[];
   sugestoesTotal: number;
   sugestoes30d: number;
@@ -130,7 +137,7 @@ export async function getAdminStats(agora = new Date(), idioma: Idioma = "pt"): 
   const corte30d = new Date(agora.getTime() - DIAS_SERIE * 24 * 60 * 60 * 1000);
   const janela = janelaDias(agora, DIAS_SERIE, idioma);
 
-  const [usuariosStatus, sessoesAtivasRows, sessoes30d, eventosTotais, eventos30d, usuariosRecentes, auditoriaRows, sugestoesRows, sugestoesRecentesRows] =
+  const [usuariosStatus, sessoesAtivasRows, sessoes30d, eventosTotais, eventos30d, usuariosRecentes, acessosRecentes, auditoriaRows, sugestoesRows, sugestoesRecentesRows] =
     await Promise.all([
       db
         .select({ status: schema.users.onboardingStatus, createdAt: schema.users.createdAt, perfilUso: schema.users.perfilUso })
@@ -172,6 +179,16 @@ export async function getAdminStats(agora = new Date(), idioma: Idioma = "pt"): 
         .from(schema.users)
         .orderBy(desc(schema.users.createdAt))
         .limit(12),
+      db
+        .select({
+          id: schema.sessions.id,
+          email: schema.users.email,
+          createdAt: schema.sessions.createdAt,
+        })
+        .from(schema.sessions)
+        .leftJoin(schema.users, eq(schema.sessions.userId, schema.users.id))
+        .orderBy(desc(schema.sessions.createdAt))
+        .limit(15),
       db
         .select({
           id: schema.auditLogs.id,
@@ -279,6 +296,7 @@ export async function getAdminStats(agora = new Date(), idioma: Idioma = "pt"): 
     perfisUso,
     falhasVerificacao30d,
     usuariosRecentes,
+    acessosRecentes,
     auditoria: auditoriaRows,
     sugestoesTotal: sugestoesRows.length,
     sugestoes30d: sugestoesRows.filter((s) => s.createdAt >= corte30d).length,
