@@ -49,6 +49,7 @@ const AUDIT_LABELS: Record<string, string> = {
   PHONE_CHANGED: "Telefone alterado",
   SESSION_REVOKED: "Sessões encerradas",
   PASSWORD_CHANGED: "Senha alterada",
+  PASSWORD_RESET: "Senha redefinida",
   ACCOUNT_DELETED: "Conta excluída",
 };
 
@@ -241,6 +242,33 @@ export default async function AdminPage() {
                           : u.jobTitle || "—"}
                       </td>
                       <td className="px-3 py-3 text-carvao-muted">{fmtDate(u.createdAt)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          <h3 className="mt-10 font-serif text-xl text-carvao">Últimos acessos</h3>
+          <p className="mt-2 text-sm text-mineral">
+            Cada entrada na plataforma, por senha, código SMS ou ao concluir o cadastro, da mais recente para a
+            mais antiga.
+          </p>
+          {stats.acessosRecentes.length === 0 ? (
+            <EmptyState title="Nenhum acesso registrado" description="As entradas na plataforma aparecem aqui." />
+          ) : (
+            <div className="tabela-scroll mt-4 overflow-x-auto">
+              <table className="w-full border-collapse text-sm">
+                <thead>
+                  <tr className="border-b border-linha">
+                    <Th>Quando</Th>
+                    <Th>Conta</Th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stats.acessosRecentes.map((a) => (
+                    <tr key={a.id} className="border-b border-linha">
+                      <td className="whitespace-nowrap px-3 py-3 text-carvao-muted">{fmtDateTime(a.createdAt)}</td>
+                      <td className="px-3 py-3 text-carvao">{a.email ?? "conta removida"}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -140,9 +140,13 @@ describe("Esqueci minha senha: código SMS abre a troca sem a senha atual", () =
     await sessao.createSession(user.id); // outro dispositivo, com a senha antiga
     const outro = jarra.get(SESSAO);
     await entrarPorSms({ recuperar: true });
+    const doSms = jarra.get(SESSAO);
 
     const res = await trocarSenha(post("/api/conta/senha", { newPassword: SENHA_NOVA }));
     expect(res.status).toBe(200);
+    // A troca mantém a sessão do código SMS: nenhuma linha nova em sessions (cada uma conta como acesso).
+    expect(jarra.get(SESSAO)).toBe(doSms);
+    expect(await db.select().from(schema.sessions).where(eq(schema.sessions.userId, user.id))).toHaveLength(2);
 
     const depois = await ler(user.id);
     expect(await senha.verifyPassword(SENHA_NOVA, depois.passwordHash)).toBe(true);

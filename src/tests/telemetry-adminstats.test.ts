@@ -151,4 +151,26 @@ describe("adminStats: agregações do painel", () => {
     const ordenado = [...datas].sort((a, b) => b - a);
     expect(datas).toEqual(ordenado);
   });
+
+  it("últimos acessos: cada sessão criada, com a conta, da mais recente para a mais antiga", async () => {
+    const base = Date.now();
+    const antigo = await criarUsuario("acesso-antigo@exemplo.com", "COMPLETE");
+    const recente = await criarUsuario("acesso-recente@exemplo.com", "COMPLETE");
+    for (const [userId, minutos] of [[antigo, 90], [recente, 5]] as const) {
+      await db.insert(schema.sessions).values({
+        id: newId(),
+        userId,
+        tokenHash: newId(),
+        expiresAt: new Date(base + 86_400_000),
+        createdAt: new Date(base - minutos * 60_000),
+      });
+    }
+    const stats = await getAdminStats();
+    const emails = stats.acessosRecentes.map((a) => a.email);
+    expect(emails.indexOf("acesso-recente@exemplo.com")).toBeGreaterThanOrEqual(0);
+    expect(emails.indexOf("acesso-recente@exemplo.com")).toBeLessThan(emails.indexOf("acesso-antigo@exemplo.com"));
+    const datas = stats.acessosRecentes.map((a) => a.createdAt.getTime());
+    expect(datas).toEqual([...datas].sort((a, b) => b - a));
+    expect(stats.acessosRecentes.length).toBeLessThanOrEqual(15);
+  });
 });
