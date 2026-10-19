@@ -229,6 +229,10 @@ class TestSelecaoEBronzeDuravel(unittest.TestCase):
             self.addCleanup(p.stop)
         self.con = base.conecta(os.path.join(self.silver, "familia.db"))
         self.addCleanup(self.con.close)
+        # orçamento de recaptura de órfãs zerado a cada teste (estado do processo em base._ORFAS)
+        p = patch.dict(base._ORFAS, {"gasto_s": 0.0, "recapturadas": 0, "adiadas": 0})
+        p.start()
+        self.addCleanup(p.stop)
 
     def vintage(self, ds, rec, corpo=b"conteudo original", captura="2026-10-01T00:00:00Z"):
         arquivo, sha = base.salva_bronze("fonte", ds, rec, corpo, "json", captura)
@@ -370,6 +374,58 @@ class TestSelecaoEBronzeDuravel(unittest.TestCase):
         self.assertEqual(len(chamadas), 1)
         self.assertTrue(base.bronze_disponivel(r["vintage"]))
         self.assertNotEqual(r["vintage"]["sha256"], anterior["sha256"])
+
+    def _orfa_recente(self, rec):
+        v = self.vintage("ds", rec)
+        os.remove(base.caminho_bronze(v["arquivo"]))
+        base.registra_coleta(self.con, "ds", rec, True)
+        self.con.commit()
+        return v
+
+    def _baixa(self, rec, chamadas, max_idade_dias=30, forcar=False):
+        from datetime import datetime, timezone
+        from pipeline.energia.fontes import ckan
+        def baixar(url, destino):
+            chamadas.append(url)
+            with open(destino, "wb") as f:
+                f.write(b"conteudo novo " + rec.encode())
+            return destino, 20
+        return ckan.baixar_recurso(self.con, orgao="fonte", dataset="ds", recurso=rec,
+                                   url=f"https://fonte.test/{rec}", publicado_em=None, ext="json",
+                                   max_idade_dias=max_idade_dias, forcar=forcar,
+                                   agora=datetime.now(timezone.utc), baixador=baixar)
+
+    def test_orcamento_esgotado_adia_recaptura_de_orfa(self):
+        """19/10/2026: as recapturas de órfãs passaram do limite de 150 min do job e nada foi
+        publicado. Esgotado o orçamento da execução, a órfã com captura recente fica para a
+        próxima, com a vintage vigente; a recaptura anterior a isso conta no orçamento."""
+        self._orfa_recente("a")
+        anterior_b = self._orfa_recente("b")
+        chamadas = []
+        with patch.object(base, "ORCAMENTO_ORFAS_S", 10.0), \
+                patch("pipeline.energia.fontes.ckan.time.monotonic", side_effect=[0.0, 15.0]):
+            r_a = self._baixa("a", chamadas)
+            r_b = self._baixa("b", chamadas)
+            resumo = base.resumo_orfas()
+        self.assertEqual(r_a["status"], "nova")
+        self.assertEqual(r_b["status"], "pulada")
+        self.assertIn("orçamento", r_b["detalhe"])
+        self.assertEqual(r_b["vintage"], anterior_b)
+        self.assertEqual(chamadas, ["https://fonte.test/a"])
+        self.assertEqual(resumo, {"orcamento_s": 10, "gasto_s": 15.0, "recapturadas": 1, "adiadas": 1})
+
+    def test_orcamento_nao_segura_recoleta_devida_nem_coleta_forcada(self):
+        """Fora do orçamento continuam a recoleta devida pela política (captura antiga) e a forçada."""
+        self._orfa_recente("forcada")
+        antiga = self.vintage("ds", "antiga")
+        os.remove(base.caminho_bronze(antiga["arquivo"]))
+        chamadas = []
+        with patch.object(base, "ORCAMENTO_ORFAS_S", 0.0):
+            r_forcada = self._baixa("forcada", chamadas, forcar=True)
+            r_antiga = self._baixa("antiga", chamadas)  # nenhuma coleta ok registrada: recoleta devida
+        self.assertEqual((r_forcada["status"], r_antiga["status"]), ("nova", "nova"))
+        self.assertEqual(len(chamadas), 2)
+        self.assertEqual(base.resumo_orfas()["recapturadas"], 0)
 
     def test_recaptura_identica_religa_bronze_sem_alterar_data_da_vintage(self):
         from pipeline.energia.fontes import ckan

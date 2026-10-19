@@ -199,6 +199,39 @@ def bronze_disponivel(vintage):
     return bool(vintage and vintage.get("arquivo") and os.path.isfile(caminho_bronze(vintage["arquivo"])))
 
 
+# Vintage órfã: a última captura está no silver, mas o bronze não está no disco (cache despejado
+# ou podado). Desde o #278 ela é recapturada. Na primeira execução com essa regra (19/10/2026),
+# as recapturas passaram do limite de 150 min do job (água 30 min; carga mais de 108 min, com as
+# séries da NASA) e nada foi publicado. As recapturas que a política de recoleta dispensaria
+# passam a ter um orçamento de tempo por execução; o que exceder fica para a próxima, com a
+# vintage vigente, como antes do #278. Recoleta devida pela política e coleta forçada não usam
+# o orçamento.
+ORCAMENTO_ORFAS_S = float(os.environ.get("ENERGIA_ORCAMENTO_ORFAS_MIN", "40")) * 60
+_ORFAS = {"gasto_s": 0.0, "recapturadas": 0, "adiadas": 0}
+
+
+def vintage_orfa(vintage):
+    return bool(vintage) and not bronze_disponivel(vintage)
+
+
+def orcamento_orfas_disponivel():
+    return _ORFAS["gasto_s"] < ORCAMENTO_ORFAS_S
+
+
+def registra_recaptura_orfa(segundos):
+    _ORFAS["gasto_s"] += max(0.0, segundos)
+    _ORFAS["recapturadas"] += 1
+
+
+def registra_orfa_adiada():
+    _ORFAS["adiadas"] += 1
+
+
+def resumo_orfas():
+    return {"orcamento_s": round(ORCAMENTO_ORFAS_S), "gasto_s": round(_ORFAS["gasto_s"], 1),
+            "recapturadas": _ORFAS["recapturadas"], "adiadas": _ORFAS["adiadas"]}
+
+
 def vintages_com_bronze(con, dataset):
     """Última vintage com bronze disponível por recurso, preservando data e sha256.
 

@@ -100,11 +100,21 @@ def baixar_recurso(con, *, orgao, dataset, recurso, url, publicado_em=None, ext=
     agora = agora or datetime.now(timezone.utc)
     publicado_em = _normaliza_publicacao(publicado_em)
     ultima = base.ultima_vintage(con, dataset, recurso)
-    if base.bronze_disponivel(ultima) and not forcar:
+    orfa = base.vintage_orfa(ultima)
+    recaptura_orfa = False
+    if ultima and not forcar:
         ok_em = _ultima_coleta_ok(con, dataset, recurso)
         mesma_publicacao = (publicado_em is None) or (ultima.get("publicado_em") == publicado_em)
         if ok_em and mesma_publicacao and agora - ok_em < timedelta(days=max_idade_dias):
-            return {"status": "pulada", "vintage": ultima, "detalhe": "recurso inalterado e captura recente"}
+            if not orfa:
+                return {"status": "pulada", "vintage": ultima, "detalhe": "recurso inalterado e captura recente"}
+            # bronze ausente: recaptura só dentro do orçamento da execução (base.ORCAMENTO_ORFAS_S)
+            if not base.orcamento_orfas_disponivel():
+                base.registra_orfa_adiada()
+                return {"status": "pulada", "vintage": ultima,
+                        "detalhe": "bronze ausente; recaptura adiada pelo orçamento de órfãs desta execução"}
+            recaptura_orfa = True
+    inicio = time.monotonic()
     fd, tmp = tempfile.mkstemp(prefix="energia-", suffix="." + ext)
     os.close(fd)
     try:
@@ -126,6 +136,8 @@ def baixar_recurso(con, *, orgao, dataset, recurso, url, publicado_em=None, ext=
         con.commit()
         return {"status": "nova", "vintage": base.ultima_vintage(con, dataset, recurso), "detalhe": f"{nbytes} bytes"}
     finally:
+        if recaptura_orfa:
+            base.registra_recaptura_orfa(time.monotonic() - inicio)
         try:
             os.remove(tmp)
         except OSError:

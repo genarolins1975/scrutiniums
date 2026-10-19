@@ -171,6 +171,8 @@ def main(argv):
         "duracao_s": round(time.time() - t0, 1),
         "coleta_executada": not sem_coleta,
         "status_coleta_modulos": status_modulos,
+        # recapturas de vintages órfãs nesta execução e as adiadas para a próxima (base.ORCAMENTO_ORFAS_S)
+        "recaptura_orfas": base.resumo_orfas(),
     }
     base.escreve_gold("meta.json", meta)
     # manifesto final: só agora arquivos.json, metricas.json, catalogo.json e meta.json estão no
@@ -179,6 +181,7 @@ def main(argv):
     con.close()
     if regressoes:
         print("REGRESSOES_ENERGIA=" + json.dumps(regressoes, ensure_ascii=False))
+    print(f"[energia] órfãs: {json.dumps(meta['recaptura_orfas'], ensure_ascii=False)}")
     print(f"[energia] concluído em {meta['duracao_s']} s; falhas: {len(falhas)}; regressões: {len(regressoes)}")
     return 0
 
