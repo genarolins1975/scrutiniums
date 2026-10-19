@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
-import { hrefEntrar } from "@/components/acesso/sessao";
+import { aoEntrarComRecorte, hrefEntrar } from "@/components/acesso/sessao";
 import { Comparador } from "@/components/energia/Comparador";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -241,7 +241,7 @@ export function ContaHistorico({ evolucao, entidades: compactas, historicoUrl, u
             "O histórico de cada distribuidora (vigências e mudanças da tarifa B1) fica com a conta gratuita. Sem conta, o gráfico mostra a mediana nacional e a faixa entre quartis.",
             "Each distribution utility's history (B1 tariff validity periods and changes) is kept for the free account. Without an account, the chart shows the national median and the interquartile band.",
           )}{" "}
-          <a href={hrefEntrar(caminho)} className="text-energia-dark underline underline-offset-4">
+          <a href={hrefEntrar(caminho)} onClick={aoEntrarComRecorte} className="text-energia-dark underline underline-offset-4">
             {tx("Entrar ou criar conta gratuita", "Sign in or create a free account")}
             <SeloComConta sempre />
           </a>

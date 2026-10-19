@@ -41,6 +41,7 @@ import hashlib
 import json
 import os
 import shutil
+import signal
 import subprocess
 import sys
 import threading
@@ -356,8 +357,10 @@ def rodar(cmd: list[str], raiz: Path, timeout_min: float, log: Path) -> tuple[in
     with open(log, "a", encoding="utf-8") as arq:
         arq.write(f"$ {' '.join(cmd)}\n")
         try:
+            # grupo de processos próprio: no tempo esgotado, os filhos (ex.: Python chamado por bash -c) também
+            # morrem e liberam o pipe de saída, em vez de prender a leitura até o teto do workflow
             proc = subprocess.Popen(cmd, cwd=raiz, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                    text=True, errors="replace")
+                                    text=True, errors="replace", start_new_session=True)
         except OSError as e:
             print(f"não foi possível iniciar: {e}", flush=True)
             print("::endgroup::", flush=True)
@@ -369,7 +372,10 @@ def rodar(cmd: list[str], raiz: Path, timeout_min: float, log: Path) -> tuple[in
                 proc.wait(timeout=timeout_min * 60)
             except subprocess.TimeoutExpired:
                 estourou.set()
-                proc.kill()
+                try:
+                    os.killpg(proc.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
 
         t = threading.Thread(target=vigiar, daemon=True)
         t.start()

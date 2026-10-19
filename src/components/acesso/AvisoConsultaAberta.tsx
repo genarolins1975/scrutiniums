@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { Cadeado } from "./SeloComConta";
-import { hrefEntrar, textosAcesso, useSessao } from "./sessao";
+import { aoEntrarComRecorte, hrefEntrar, textosAcesso, useSessao } from "./sessao";
 
 /**
  * Faixa das consultas abertas (estratégia "aberto e com conta", leva 1, 19/10/2026): diz ao visitante
@@ -31,7 +31,7 @@ export function AvisoConsultaAberta({ comConta, className = "" }: { comConta: Re
             .
           </span>
         </p>
-        <a href={hrefEntrar(caminho)} className="inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao underline decoration-linha underline-offset-4 hover:decoration-carvao">
+        <a href={hrefEntrar(caminho)} onClick={aoEntrarComRecorte} className="inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao underline decoration-linha underline-offset-4 hover:decoration-carvao">
           {t.entrar}
         </a>
       </div>

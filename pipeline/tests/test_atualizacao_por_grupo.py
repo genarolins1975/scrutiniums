@@ -330,5 +330,20 @@ class Configuracao(unittest.TestCase):
             self.assertTrue(A.sinal(raiz, cfg["sinal_de_mudanca"]))
 
 
+class TempoEsgotado(unittest.TestCase):
+    def test_tempo_esgotado_encerra_tambem_os_processos_filhos(self):
+        # bash -c com dois comandos não faz exec: o sleep é filho do shell e herda o pipe de saída.
+        # Matar só o shell deixaria a leitura presa até o sleep acabar (30 s).
+        import time
+        with tempfile.TemporaryDirectory() as d:
+            raiz = Path(d)
+            inicio = time.monotonic()
+            with contextlib.redirect_stdout(io.StringIO()):
+                rc, cauda = A.rodar(["bash", "-c", "sleep 30; echo fim"], raiz, timeout_min=0.02, log=raiz / "log.txt")
+            self.assertEqual(rc, 124)
+            self.assertIn("tempo esgotado", cauda)
+            self.assertLess(time.monotonic() - inicio, 15)
+
+
 if __name__ == "__main__":
     unittest.main()

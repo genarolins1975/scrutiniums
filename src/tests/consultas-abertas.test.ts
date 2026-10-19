@@ -123,3 +123,26 @@ describe("faixa da consulta aberta", () => {
     expect(ler("src/app/setor-eletrico/conta-de-luz/reajustes-e-subsidios/page.tsx")).not.toContain("AvisoConsultaAberta");
   });
 });
+
+describe("convite ao login leva o recorte da consulta na volta", () => {
+  it("o clique monta o destino com query e âncora, e respeita abrir em nova aba", async () => {
+    const { aoEntrarComRecorte } = await import("@/components/acesso/sessao");
+    const indo: string[] = [];
+    const original = (globalThis as { window?: unknown }).window;
+    (globalThis as { window?: unknown }).window = {
+      location: { pathname: "/eficiencia-estatal", search: "?territorio=2611606&comparador=4106902", hash: "#perguntas", assign: (u: string) => indo.push(u) },
+    };
+    try {
+      let impedido = false;
+      aoEntrarComRecorte({ metaKey: false, ctrlKey: false, shiftKey: false, button: 0, preventDefault: () => { impedido = true; } });
+      expect(impedido).toBe(true);
+      expect(indo).toEqual([`/entrar?de=${encodeURIComponent("/eficiencia-estatal?territorio=2611606&comparador=4106902#perguntas")}`]);
+      impedido = false;
+      aoEntrarComRecorte({ metaKey: true, ctrlKey: false, shiftKey: false, button: 0, preventDefault: () => { impedido = true; } });
+      expect(impedido).toBe(false);
+      expect(indo).toHaveLength(1);
+    } finally {
+      (globalThis as { window?: unknown }).window = original;
+    }
+  });
+});

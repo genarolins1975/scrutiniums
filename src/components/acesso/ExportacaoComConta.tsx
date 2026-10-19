@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
 import { Cadeado } from "./SeloComConta";
-import { hrefEntrar, textosAcesso, useSessao } from "./sessao";
+import { aoEntrarComRecorte, hrefEntrar, textosAcesso, useSessao } from "./sessao";
 
 /**
  * Exportação gerada no navegador (CSV, XLSX montados na página) numa página aberta: sem sessão, o
@@ -21,6 +21,7 @@ export function ExportacaoComConta({ rotulo, children, className = "" }: { rotul
   return (
     <a
       href={hrefEntrar(caminho)}
+      onClick={aoEntrarComRecorte}
       data-exportacao-com-conta=""
       className={`inline-flex min-h-[44px] items-center gap-1.5 text-sm text-carvao-muted underline decoration-linha underline-offset-4 hover:text-carvao ${className}`}
     >
