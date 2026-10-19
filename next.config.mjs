@@ -27,6 +27,8 @@ const nextConfig = {
       // as páginas abertas são estáticas e as leem no build. src/tests/perguntas-portas.test.ts confere esta lista
       "/": GOLDS_DAS_PORTAS,
       "/saneamento/municipio/[id]": ["./public/saneamento/gold/**/*.json"],
+      // ficha de focos por município (consulta da leva 2, src/lib/rotasPublicas.ts): gerada na primeira visita
+      "/territorio/queimadas/municipio/[ibge]": ["./public/territorio/gold/queimadas_municipios.json", "./public/saneamento/gold/indice.json"],
       "/saneamento/prestadores/[id]": ["./public/saneamento/gold/*.json"],
       "/observatorio/[[...rota]]": [
         "./public/obs/index.html",

@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1309,
-    "fontes_sha256": "875dd0b8dfade13e190d6e5aba2108c1998de255746786e2a40f478a94a91cb7",
+    "arquivos_analisados": 1317,
+    "fontes_sha256": "b38bee4f09f838ea72985f33f01f3949284cb193d27915b05cb97e830c312629",
     "pendencias_sha256": "a5f33966fa56b57d86ad2ac3e3576d5272c2b721dd584737cea8eb19785566d4",
     "nao_classificadas": [
       {
@@ -143,20 +143,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 278,
+        "arquivos": 285,
         "candidatos": {
-          "jsx_text": 1003,
-          "atributos": 328,
-          "props": 805,
-          "outros_literais": 5731,
-          "templates": 672,
-          "expressoes_nao_resolvidas": 4033,
-          "chaves_objetos": 4519
+          "jsx_text": 1099,
+          "atributos": 336,
+          "props": 818,
+          "outros_literais": 5815,
+          "templates": 696,
+          "expressoes_nao_resolvidas": 4195,
+          "chaves_objetos": 4612
         },
         "exclusoes": {
-          "importacoes": 1200,
-          "atributos_tecnicos": 2317,
-          "tipos": 265
+          "importacoes": 1242,
+          "atributos_tecnicos": 2445,
+          "tipos": 274
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -165,17 +165,17 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 17091,
+        "candidatos_nao_catalogados": 17571,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 35,
+        "paginas_pt": 37,
         "paginas_en": 12,
         "handlers": 29,
-        "templates_com_parametros": 3,
-        "paginas_pt_literais": 29,
-        "paginas_pt_fora_do_adaptador": 6,
-        "paginas_pt_literais_sem_irma": 17,
+        "templates_com_parametros": 4,
+        "paginas_pt_literais": 30,
+        "paginas_pt_fora_do_adaptador": 7,
+        "paginas_pt_literais_sem_irma": 18,
         "pares_estruturais": 12,
         "fallbacks_declarados": 8,
         "paridade_verificada": false,
@@ -384,18 +384,18 @@
     "contas_federais": {
       "nome": "Contas Públicas Federais",
       "interface": {
-        "arquivos": 52,
+        "arquivos": 53,
         "candidatos": {
           "jsx_text": 574,
           "atributos": 110,
           "props": 74,
-          "outros_literais": 1275,
-          "templates": 68,
-          "expressoes_nao_resolvidas": 872,
-          "chaves_objetos": 632
+          "outros_literais": 1276,
+          "templates": 69,
+          "expressoes_nao_resolvidas": 873,
+          "chaves_objetos": 635
         },
         "exclusoes": {
-          "importacoes": 186,
+          "importacoes": 188,
           "atributos_tecnicos": 475,
           "tipos": 43
         },
@@ -406,7 +406,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 3605,
+        "candidatos_nao_catalogados": 3611,
         "percentual_traduzido": null
       },
       "rotas": {

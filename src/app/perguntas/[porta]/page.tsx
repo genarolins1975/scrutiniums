@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import type { ComponentType } from "react";
 import { notFound } from "next/navigation";
 import { PublicHeader } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { PaginaPorta } from "@/components/perguntas/PaginaPorta";
+import { CemReaisAberto } from "@/components/perguntas/CemReaisAberto";
+import { artefatosLeva2 } from "@/lib/perguntas/leva2";
+import type { IdLeva2 } from "@/lib/rotasPublicas";
 import { IDS_PORTAS, rotaPorta } from "@/lib/perguntas/rotas";
 import { portas } from "@/lib/perguntas/portas";
 import { dominio } from "@/lib/dominios";
@@ -16,6 +20,11 @@ import { observatorio, paineis } from "@/lib/observatorios/registro";
  */
 export const dynamic = "force-static";
 export const dynamicParams = false;
+
+/** Artefatos da leva 2 que a página da porta mostra quando aprovados (src/lib/rotasPublicas.ts, LEVA_2). */
+const ARTEFATOS: Partial<Record<IdLeva2, ComponentType>> = {
+  "cem-reais-dos-impostos": CemReaisAberto,
+};
 
 export function generateStaticParams() {
   return IDS_PORTAS.map((porta) => ({ porta }));
@@ -46,7 +55,16 @@ export default function PortaPage({ params }: { params: { porta: string } }) {
   return (
     <>
       <PublicHeader />
-      <PaginaPorta porta={porta} outras={todas.filter((x) => x.id !== porta.id)} colecoes={colecoes} entrada={observatorio(porta.id).entrada} />
+      <PaginaPorta
+        porta={porta}
+        outras={todas.filter((x) => x.id !== porta.id)}
+        colecoes={colecoes}
+        entrada={observatorio(porta.id).entrada}
+        artefato={artefatosLeva2(porta.id).map((id) => {
+          const Artefato = ARTEFATOS[id];
+          return Artefato ? <Artefato key={id} /> : null;
+        })}
+      />
       <Footer />
     </>
   );

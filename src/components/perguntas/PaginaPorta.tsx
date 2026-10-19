@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { ACENTO } from "@/components/home/acentos";
 import { ConviteConta } from "@/components/perguntas/ConviteConta";
@@ -29,7 +30,11 @@ function Cadeado() {
 /** Coleção com até quatro painéis de exemplo; sem contagem, porque subpáginas não entram no registro. */
 export type ColecaoPorta = { id: string; nome: string; href: string; destaques: string[]; mais: boolean; origens: string };
 
-export function PaginaPorta({ porta, outras, colecoes, entrada }: Readonly<{ porta: Porta; outras: Porta[]; colecoes: ColecaoPorta[]; entrada?: string }>) {
+/**
+ * `artefato`: consulta da leva 2 que vive na própria página (ex.: a régua dos R$ 100 nas Contas Públicas),
+ * entregue pela rota só quando aprovada em src/lib/rotasPublicas.ts (LEVA_2).
+ */
+export function PaginaPorta({ porta, outras, colecoes, entrada, artefato }: Readonly<{ porta: Porta; outras: Porta[]; colecoes: ColecaoPorta[]; entrada?: string; artefato?: ReactNode }>) {
   const a = ACENTO[porta.acento];
   return (
     <main className="bg-papel">
@@ -93,6 +98,8 @@ export function PaginaPorta({ porta, outras, colecoes, entrada }: Readonly<{ por
           </dl>
         </div>
       </section>
+
+      {artefato}
 
       {porta.paraOSeuCaso.length > 0 && (
         <section aria-labelledby="seu-caso-titulo" data-para-o-seu-caso="" className="border-b border-linha">
