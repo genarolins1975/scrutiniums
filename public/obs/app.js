@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.116.1";
+const APP_VERSION = "0.117.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -12751,11 +12751,28 @@ function applyTheme(t) {
     })
     .catch(() => {});
 })();
-/* Seletores de observatório (details): o da barra lateral e o da barra da marca
-   no celular. Fecham com Esc (foco volta ao resumo), com clique fora e quando o
-   foco sai do menu. */
+/* Conta na barra comum da plataforma (public/obs/index.html): começa oculta e só
+   aparece com a resposta da sessão, para quem entrou não ver "Entrar" piscar.
+   Com sessão (/api/auth/eu → 204), "Minha conta"; sem ela, "Entrar", com volta a
+   esta página. Mesma regra do AcessoConta dos outros observatórios. */
+(function initContaBarra() {
+  const conta = document.getElementById("barraConta");
+  if (!conta) return;
+  fetch("/api/auth/eu", { credentials: "same-origin" })
+    .then(r => r.status === 204)
+    .catch(() => false)
+    .then(logado => {
+      if (!logado) {
+        conta.href = "/entrar?de=" + encodeURIComponent(location.pathname + location.search + location.hash);
+        conta.textContent = "Entrar";
+      }
+      conta.hidden = false;
+    });
+})();
+/* Seletor de observatório (details) da barra comum. Fecha com Esc (foco volta ao
+   resumo), com clique fora e quando o foco sai do menu. */
 (function initObsSwitcher() {
-  ["obsSwitcher", "obsTrocar"].forEach(id => {
+  ["obsTrocar"].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
     document.addEventListener("pointerdown", e => { if (el.open && !el.contains(e.target)) el.open = false; });

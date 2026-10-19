@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PublicHeader } from "@/components/layout/PublicHeader";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Footer } from "@/components/layout/Footer";
 import { EntradaObservatorio, type ColecaoEntrada } from "@/components/observatorios/EntradaObservatorio";
 import { MetodoFamilias, OrcamentoFamilia } from "@/components/observatorios/OrcamentoFamilia";
@@ -106,7 +106,9 @@ export default function EntradaObservatorioPage({ params }: { params: { id: stri
   const porta = portas().find((p) => p.id === id);
   return (
     <>
-      <PublicHeader />
+      <header className="grade-pagina">
+        <CabecalhoPlataforma observatorio={id} destinoConta={`/observatorios/${id}`} />
+      </header>
       <EntradaObservatorio
         nomeCurto={o.nomeCurto}
         nomeCompleto={o.nome}

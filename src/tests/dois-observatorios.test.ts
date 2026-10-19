@@ -160,7 +160,8 @@ describe("Crédito preservado", () => {
 
   it("a SPA do Crédito oferece a troca de observatório no desktop e no celular", () => {
     const html = ler("public/obs/index.html");
-    expect(html).toContain('class="obs-switcher"');
+    // o seletor da barra comum (desktop e celular) substituiu o da barra lateral, que o repetia
+    expect(html).toContain('class="obs-trocar"');
     expect(html).toContain('href="/setor-eletrico"');
     expect(html).toContain('class="mobile-obs"');
     expect(html).toContain('href="/app/observatorios"');

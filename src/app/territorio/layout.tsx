@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PublicHeader } from "@/components/layout/PublicHeader";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Footer } from "@/components/layout/Footer";
 import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
 import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
@@ -26,7 +26,9 @@ export default function TerritorioLayout({ children }: { children: React.ReactNo
       >
         Pular para o conteúdo
       </a>
-      <PublicHeader />
+      <header className="grade-pagina">
+        <CabecalhoPlataforma observatorio="territorio-e-clima" destinoConta="/observatorios/territorio-e-clima" />
+      </header>
       <div id="conteudo" className="flex-1">{children}</div>
       <ParaIrAlem mapa={mapaParaIrAlem()} />
       <Footer />
