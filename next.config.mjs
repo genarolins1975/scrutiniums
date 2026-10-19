@@ -47,6 +47,9 @@ const nextConfig = {
       // ficha de focos por município (consulta da leva 2, src/lib/rotasPublicas.ts): gerada na primeira visita
       "/territorio/queimadas/municipio/[ibge]": ["./public/territorio/gold/queimadas_municipios.json", "./public/saneamento/gold/indice.json"],
       "/saneamento/prestadores/[id]": ["./public/saneamento/gold/*.json"],
+      // consultas de juros do Crédito: dinâmicas (recorte na URL), leem a gold de juros a cada instância
+      "/observatorio-do-credito/quanto-meu-banco-cobra": ["./public/obs/data/gold/juros.json"],
+      "/observatorio-do-credito/simulador-da-parcela": ["./public/obs/data/gold/juros.json"],
       "/observatorio/[[...rota]]": [
         "./public/obs/index.html",
         "./public/obs/data/gold/inst_index.json",

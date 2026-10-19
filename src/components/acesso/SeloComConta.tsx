@@ -19,9 +19,20 @@ export function Cadeado() {
  * aparece só quando a página atual é aberta e o destino (`href`) pede sessão, para o visitante saber
  * antes do clique que ali começa a conta gratuita. Nas páginas fechadas não aparece, porque todos ali já
  * têm sessão. `sempre` mostra o selo sem olhar o destino (recurso fechado que não é link).
- * Fica dentro do link, sem o sublinhado dele, no idioma do endereço.
+ * Fica dentro do link, sem o sublinhado dele, no idioma do endereço (ou no fixado por `idioma`).
  */
-export function SeloComConta({ href, sempre = false, className = "" }: { href?: string; sempre?: boolean; className?: string }) {
+export function SeloComConta({
+  href,
+  sempre = false,
+  className = "",
+  idioma,
+}: {
+  href?: string;
+  sempre?: boolean;
+  className?: string;
+  /** Fixa o idioma do selo: página em português servida também pela irmã /en como conteúdo português marcado. */
+  idioma?: "pt" | "en";
+}) {
   const caminho = usePathname();
   const aberta = !!caminho && ehRotaPublica(caminho);
   if (!aberta || (!sempre && (!href || !exigeConta(href)))) return null;
@@ -29,7 +40,7 @@ export function SeloComConta({ href, sempre = false, className = "" }: { href?: 
     // o selo interno é inline-flex (atômico): o sublinhado do link não passa para ele, mesmo quando o link é flex
     <span data-selo-conta="" className={`ml-1.5 inline-block align-baseline text-xs font-normal normal-case tracking-normal text-mineral ${className}`}>
       <span className="inline-flex items-center gap-1 whitespace-nowrap">
-        <Cadeado /> {textosAcesso(caminho).selo}
+        <Cadeado /> {textosAcesso(idioma ? (idioma === "en" ? "/en" : "/") : caminho).selo}
       </span>
     </span>
   );

@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1346,
-    "fontes_sha256": "e7efcc9309cb8faadf95079c5671004e18962904528ba09851fb44e88862ef9b",
+    "arquivos_analisados": 1360,
+    "fontes_sha256": "3095f0ad2731d2ab1f2b0654f9e5008e991c2cacb90f4bae97d8b7568774d904",
     "pendencias_sha256": "deef36efc221cca46338f667e806c4d2490bbb0856aed726a84c2e16d1c075e3",
     "nao_classificadas": [
       {
@@ -148,20 +148,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 311,
+        "arquivos": 322,
         "candidatos": {
-          "jsx_text": 1148,
-          "atributos": 356,
-          "props": 850,
-          "outros_literais": 6471,
-          "templates": 757,
-          "expressoes_nao_resolvidas": 4514,
-          "chaves_objetos": 5081
+          "jsx_text": 1199,
+          "atributos": 368,
+          "props": 855,
+          "outros_literais": 6688,
+          "templates": 781,
+          "expressoes_nao_resolvidas": 4693,
+          "chaves_objetos": 5270
         },
         "exclusoes": {
-          "importacoes": 1373,
-          "atributos_tecnicos": 2591,
-          "tipos": 322
+          "importacoes": 1397,
+          "atributos_tecnicos": 2727,
+          "tipos": 349
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -170,7 +170,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 19177,
+        "candidatos_nao_catalogados": 19854,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -533,21 +533,21 @@
     "credito": {
       "nome": "Crédito",
       "interface": {
-        "arquivos": 11,
+        "arquivos": 14,
         "candidatos": {
-          "jsx_text": 20,
-          "atributos": 196,
-          "props": 16,
-          "outros_literais": 12829,
-          "templates": 2610,
-          "expressoes_nao_resolvidas": 8870,
-          "chaves_objetos": 5037,
+          "jsx_text": 153,
+          "atributos": 211,
+          "props": 162,
+          "outros_literais": 12941,
+          "templates": 2628,
+          "expressoes_nao_resolvidas": 9192,
+          "chaves_objetos": 5084,
           "textos": 158
         },
         "exclusoes": {
-          "importacoes": 21,
-          "atributos_tecnicos": 470,
-          "tipos": 0,
+          "importacoes": 53,
+          "atributos_tecnicos": 653,
+          "tipos": 4,
           "estilos": 1,
           "comentarios": 3
         },
@@ -562,17 +562,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 29736,
+        "candidatos_nao_catalogados": 30529,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 1,
+        "paginas_pt": 4,
         "paginas_en": 1,
         "handlers": 1,
         "templates_com_parametros": 1,
-        "paginas_pt_literais": 1,
+        "paginas_pt_literais": 4,
         "paginas_pt_fora_do_adaptador": 0,
-        "paginas_pt_literais_sem_irma": 0,
+        "paginas_pt_literais_sem_irma": 3,
         "pares_estruturais": 1,
         "fallbacks_declarados": 1,
         "paridade_verificada": false

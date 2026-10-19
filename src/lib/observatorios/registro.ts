@@ -27,6 +27,7 @@ import { CAPITULOS as CAPITULOS_CONTAS } from "@/lib/contas-publicas/catalogo";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from "@/lib/agro/modelo";
 import { COPIAS } from "./copias";
+import { PAGINAS_CREDITO } from "@/lib/credito/navegacao";
 
 export type { Atalho, Colecao, Observatorio, ObservatorioId, Painel } from "./lista";
 export { OBSERVATORIOS } from "./lista";
@@ -60,7 +61,9 @@ export const ABAS_INSTITUCIONAIS_CREDITO = new Set(["/suggestions", "/about"]);
 
 function paineisCredito(): Painel[] {
   const raiz: Painel = { rota: "/observatorio", titulo: "Crédito", observatorio: "economia", colecao: "credito", origem: "credito" };
-  return [raiz, ...ABAS_OBSERVATORIO.filter((a) => !ABAS_INSTITUCIONAIS_CREDITO.has(a.caminho) && !a.caminho.endsWith("/")).map((a): Painel => {
+  // páginas Next do Crédito (consultas de juros e método), logo depois da raiz: são as mais procuradas pelo leitor
+  const next = PAGINAS_CREDITO.map((p): Painel => ({ rota: p.href, titulo: p.titulo, observatorio: "economia", colecao: "credito", origem: "credito" }));
+  return [raiz, ...next, ...ABAS_OBSERVATORIO.filter((a) => !ABAS_INSTITUCIONAIS_CREDITO.has(a.caminho) && !a.caminho.endsWith("/")).map((a): Painel => {
     const destino = DESTINO_ABAS_CREDITO[a.caminho];
     if (!destino) throw new Error(`aba do Crédito sem observatório: ${a.caminho}`);
     const [observatorio, colecao] = destino;
@@ -172,6 +175,8 @@ function paineisColecoesInteiras(): Painel[] {
 /** Temas que aparecem também em outro observatório, sempre apontando para o painel do dono. */
 export const ATALHOS: Atalho[] = [
   { rota: "/observatorio/credit", observatorio: "familias", colecao: "divida" },
+  { rota: "/observatorio-do-credito/quanto-meu-banco-cobra", observatorio: "familias", colecao: "divida" },
+  { rota: "/observatorio-do-credito/simulador-da-parcela", observatorio: "familias", colecao: "divida" },
   { rota: "/setor-eletrico/inclusao-energetica", observatorio: "familias", colecao: "protecao" },
   { rota: "/saneamento/tarifa-social", observatorio: "familias", colecao: "protecao" },
   { rota: "/gas-natural/gas-de-cozinha", observatorio: "familias", colecao: "custo-de-vida" },
