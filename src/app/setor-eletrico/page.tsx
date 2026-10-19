@@ -24,6 +24,7 @@ import { conjuntoLegivel, descreverVariacao, valorDestaque } from "@/lib/energia
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
 import { ParaVoce } from "@/components/observatorios/ParaVoce";
+import { ArteFoto, ArtePrancha } from "@/components/observatorios/ArteParaVoce";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import { LINKEDIN_URL } from "@/lib/contato";
 import { conceito, conceitos } from "@/lib/energia/conteudo/conceitos";
@@ -962,7 +963,12 @@ export default function MapaDoObservatorio() {
           </details>
         </header>
         {/* "Para você" (Onda 2): as perguntas do leitor sobre o próprio caso, a um clique, logo depois das medidas de abertura; substitui os dois cartões "Qual pergunta você quer responder?" */}
-        <ParaVoce entrada="/setor-eletrico" idioma={idiomaEnergia()} conteiner="" />
+        <ParaVoce
+          entrada="/setor-eletrico"
+          idioma={idiomaEnergia()}
+          conteiner=""
+          artes={{ luz: <ArteFoto src="/energia/arte/conta-gravura-v1.webp" />, "falta-luz": <ArtePrancha etapa="distribuicao" />, "tarifa-social-luz": <ArtePrancha etapa="consumo" /> }}
+        />
         <PercursoVisualEnergia />
         <DuasCamadasEnergia compacto />
         <LeiturasIntegradas />

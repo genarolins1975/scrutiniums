@@ -134,7 +134,8 @@ describe("posição em cada entrada: logo depois dos números de abertura", () =
 
   it.each(Object.entries(PAGINAS))("%s", (rota, [arquivo, antes, depois]) => {
     const s = ler(arquivo);
-    const uso = s.indexOf(`<ParaVoce entrada="${rota}"`);
+    // o componente pode quebrar as props em várias linhas: procura a tag até o atributo entrada
+    const uso = s.search(new RegExp(`<ParaVoce\\s+entrada="${rota.replace(/[/]/g, "\\/")}"`));
     expect(uso, `${arquivo} sem <ParaVoce entrada="${rota}">`).toBeGreaterThan(0);
     expect(s.indexOf(antes), antes).toBeGreaterThan(0);
     expect(s.indexOf(antes)).toBeLessThan(uso);
