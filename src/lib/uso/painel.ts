@@ -3,7 +3,7 @@
  * Janela: os últimos 30 dias civis no fuso de Brasília, hoje incluído,
  * a mesma das demais séries do painel (DIAS_SERIE em adminStats.ts).
  */
-import { and, gte, lte, sql } from "drizzle-orm";
+import { and, eq, gte, lte, sql } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db";
 import { OBSERVATORIOS } from "@/lib/observatorios/lista";
 import { diaDeBrasilia, usoAnonimoAtivo } from "./coleta";
@@ -38,6 +38,11 @@ export type UsoDoPeriodo = {
   anonimoAtivo: boolean;
   /** Há números de visitantes sem conta na janela (contagem ligada agora ou em parte do período). */
   semContaMedido: boolean;
+  /**
+   * Primeiro dia com visita sem conta registrada (null: nenhuma). A contagem sem conta pode ser ligada no meio da janela:
+   * os dias anteriores a este não foram medidos, e o painel diz isso em vez de somá-los como zero.
+   */
+  primeiroSemConta: string | null;
   /** Os seis observatórios, na ordem do registro, e o grupo fora deles por último. */
   porObservatorio: UsoPorObservatorio[];
   /** Páginas com visita na janela, da mais para a menos visitada. */
@@ -51,7 +56,7 @@ export async function getUsoDoPeriodo(agora = new Date(), env: Record<string, st
   // meio-dia evita que a troca de horário ou a hora do dia desloque o primeiro dia da janela
   const inicio = diaDeBrasilia(new Date(Date.parse(`${fim}T12:00:00-03:00`) - (DIAS_USO - 1) * 86_400_000));
 
-  const [linhas, primeiro] = await Promise.all([
+  const [linhas, primeiro, primeiroSem] = await Promise.all([
     db
       .select({
         rota: t.rota,
@@ -63,6 +68,7 @@ export async function getUsoDoPeriodo(agora = new Date(), env: Record<string, st
       .where(and(gte(t.dia, inicio), lte(t.dia, fim)))
       .groupBy(t.rota, t.comConta),
     db.select({ dia: sql<string | null>`min(${t.dia})` }).from(t),
+    db.select({ dia: sql<string | null>`min(${t.dia})` }).from(t).where(eq(t.comConta, false)),
   ]);
 
   const paginas = new Map<string, UsoPorPagina>();
@@ -101,6 +107,7 @@ export async function getUsoDoPeriodo(agora = new Date(), env: Record<string, st
 
   const anonimoAtivo = usoAnonimoAtivo(env);
   const primeiroDia = primeiro[0]?.dia ?? null;
+  const primeiroDiaSem = primeiroSem[0]?.dia ?? null;
   return {
     inicio,
     fim,
@@ -108,6 +115,7 @@ export async function getUsoDoPeriodo(agora = new Date(), env: Record<string, st
     primeiroRegistro: primeiroDia ? String(primeiroDia).slice(0, 10) : null,
     anonimoAtivo,
     semContaMedido: anonimoAtivo || haSemConta,
+    primeiroSemConta: primeiroDiaSem ? String(primeiroDiaSem).slice(0, 10) : null,
     porObservatorio,
     porPagina,
   };

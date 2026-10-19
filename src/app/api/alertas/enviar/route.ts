@@ -25,8 +25,15 @@ export const maxDuration = 300;
  * administrador. Lê a referência publicada de cada fonte neste deploy e avisa cada assinatura cuja referência avançou;
  * sem avanço, nada sai. Idempotente: a reserva atômica grava a referência avisada antes do envio, e envio que falha a
  * devolve.
+ *
+ * A pausa entre envios vem antes da reserva, e o disparo para de reservar quando o tempo da função está perto do fim:
+ * uma assinatura nunca fica reservada sem que o envio dela tenha sido tentado, e o que sobrar sai no disparo seguinte.
+ * Falha de envio responde 502 (o workflow fica vermelho), e só um disparo sem falha registra "alertas_verificacao",
+ * o evento que faz a conta dizer que o envio está ligado.
  */
 const INTERVALO_MS = 400;
+/** Para de reservar com folga antes do maxDuration (300 s): o envio em curso ainda termina. */
+const ORCAMENTO_MS = 240_000;
 const pausa = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export async function POST(req: Request) {
@@ -38,18 +45,25 @@ export async function POST(req: Request) {
   if (!autorizado) return NextResponse.json({ error: "Acesso negado." }, { status: 403 });
 
   const agora = new Date();
-  await trackEvent("alertas_verificacao");
+  const inicio = Date.now();
   const assinaturas = await assinaturasComEmail();
   const publicadas = referenciasPublicadas(assinaturas.map((a) => a.dominio));
   const alvo = assinaturas.filter((a) => referenciaAvancou(a.referenciaAvisada, publicadas.get(a.dominio)?.referencia ?? null));
   let enviados = 0;
   let falhas = 0;
+  let pendentes = 0;
+  let tentou = false;
   for (let i = 0; i < alvo.length; i++) {
+    if (Date.now() - inicio > ORCAMENTO_MS) {
+      pendentes = alvo.length - i;
+      break;
+    }
     const a = alvo[i];
     const f = publicadas.get(a.dominio)!;
-    // reserva atômica antes do envio: outro disparo em paralelo não manda o mesmo aviso
+    if (tentou) await pausa(INTERVALO_MS);
+    // reserva atômica logo antes do envio: outro disparo em paralelo não manda o mesmo aviso
     if (!(await reservarAviso(a, f.referencia!, agora))) continue;
-    if (i > 0) await pausa(INTERVALO_MS);
+    tentou = true;
     const dominio = a.dominio as DominioFrescorId;
     const email = emailAlerta(dominio, a.referenciaAvisada, f);
     const { sent } = await sendTransactionalEmail({
@@ -66,5 +80,7 @@ export async function POST(req: Request) {
       await liberarAviso(a);
     }
   }
-  return NextResponse.json({ assinaturas: assinaturas.length, destinatarios: alvo.length, enviados, falhas });
+  if (falhas === 0) await trackEvent("alertas_verificacao");
+  const corpo = { assinaturas: assinaturas.length, destinatarios: alvo.length, enviados, falhas, pendentes };
+  return NextResponse.json(corpo, { status: falhas > 0 ? 502 : 200 });
 }

@@ -43,6 +43,21 @@ function Num({ valor }: { valor: number | null }) {
   );
 }
 
+/**
+ * O trecho da janela que a coluna sem conta de fato mede. A contagem sem conta pode ser ligada (ou desligada) no meio da
+ * janela; os dias fora dela não foram medidos e não somam zero.
+ */
+function semContaParcial(uso: UsoDoPeriodo): string {
+  if (!uso.semContaMedido) return "";
+  if (uso.primeiroSemConta === null)
+    return " A contagem sem conta está ligada, mas ainda não registrou nenhuma visita: a coluna sem conta não cobre os dias anteriores à ligação.";
+  const parcial = uso.primeiroSemConta > uso.inicio
+    ? ` A coluna sem conta só mede a partir de ${diaBr(uso.primeiroSemConta)}, primeiro dia com visita sem conta registrada; os dias anteriores do período não foram medidos, o que não equivale a zero visitas.`
+    : "";
+  const desligada = uso.anonimoAtivo ? "" : " A contagem sem conta está desligada agora; os números sem conta são do trecho em que ela esteve ligada.";
+  return parcial + desligada;
+}
+
 export function UsoPaginas({ uso, numero = "03" }: { uso: UsoDoPeriodo; numero?: string }) {
   const semConta = (n: number) => (uso.semContaMedido ? n : null);
   const comecouDepois = uso.primeiroRegistro !== null && uso.primeiroRegistro > uso.inicio;
@@ -77,10 +92,8 @@ export function UsoPaginas({ uso, numero = "03" }: { uso: UsoDoPeriodo; numero?:
           ? "Nenhuma visita registrada até agora: a medição por página começa nesta versão."
           : comecouDepois
             ? `A medição começou em ${diaBr(uso.primeiroRegistro)}. Os dias anteriores do período não têm registro, o que não equivale a zero visitas.`
-            : "Todos os dias do período estão dentro da medição."}
-        {!uso.anonimoAtivo && uso.semContaMedido
-          ? " A contagem sem conta está desligada agora; os números sem conta são do trecho do período em que ela esteve ligada."
-          : ""}
+            : "A contagem com conta cobre todos os dias do período."}
+        {semContaParcial(uso)}
       </p>
 
       {uso.porPagina.length === 0 ? (

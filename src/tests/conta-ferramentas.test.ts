@@ -236,7 +236,10 @@ describe("alertas de atualização", () => {
     const atual = JSON.parse(ler("public/energia/gold/pld.json")).dia_referencia as string;
     await db.execute(sql`UPDATE alertas_atualizacao SET referencia_avisada = '2026-01-01' WHERE user_id = ${a.id}`);
     correio.falhar = true;
-    expect(await (await disparo()).json()).toMatchObject({ destinatarios: 1, enviados: 0, falhas: 1 });
+    const falhou = await disparo();
+    // falha de entrega deixa o workflow vermelho, com os contadores no corpo
+    expect(falhou.status).toBe(502);
+    expect(await falhou.json()).toMatchObject({ destinatarios: 1, enviados: 0, falhas: 1, pendentes: 0 });
     const [devolvida] = await db.execute(sql`SELECT referencia_avisada FROM alertas_atualizacao WHERE user_id = ${a.id}`).then((r) => (r as unknown as { rows: { referencia_avisada: string }[] }).rows);
     expect(devolvida.referencia_avisada).toBe("2026-01-01");
 
@@ -271,7 +274,17 @@ describe("alertas de atualização", () => {
     expect(await alertas.envioLigado()).toBe(false);
     vi.stubEnv("RESEND_API_KEY", "re_sintetico");
     expect(await alertas.envioLigado()).toBe(false);
-    await enviarApi.POST(new Request("http://localhost/api/alertas/enviar", { method: "POST", headers: { Authorization: `Bearer ${SEGREDO}` } }));
+    // disparo com falha de entrega não conta como envio ligado
+    const u = await usuario();
+    sessao.atual = u;
+    await alertasApi.POST(json({ dominio: "energia" }));
+    sessao.atual = null;
+    await db.execute(sql`UPDATE alertas_atualizacao SET referencia_avisada = '2026-01-01' WHERE user_id = ${u.id}`);
+    correio.falhar = true;
+    expect((await enviarApi.POST(new Request("http://localhost/api/alertas/enviar", { method: "POST", headers: { Authorization: `Bearer ${SEGREDO}` } }))).status).toBe(502);
+    expect(await alertas.envioLigado()).toBe(false);
+    correio.falhar = false;
+    expect((await enviarApi.POST(new Request("http://localhost/api/alertas/enviar", { method: "POST", headers: { Authorization: `Bearer ${SEGREDO}` } }))).status).toBe(200);
     expect(await alertas.envioLigado()).toBe(true);
     expect(await alertas.envioLigado(new Date(Date.now() + 4 * 86_400_000))).toBe(false);
     vi.stubEnv("RESEND_API_KEY", "");

@@ -266,11 +266,21 @@ describe("tabela uso_paginas_dia", () => {
     const uso = await getUsoDoPeriodo(agora, {});
     expect(uso).toMatchObject({ inicio: "2026-09-20", fim: "2026-10-19", dias: 30, anonimoAtivo: false, semContaMedido: false });
     expect(uso.primeiroRegistro).toBe("2026-09-19");
+    expect(uso.primeiroSemConta).toBeNull();
     expect(uso.porPagina[0]).toMatchObject({ rota: "/setor-eletrico", comConta: 2, semConta: 0 });
     const energia = uso.porObservatorio.find((o) => o.observatorio === "energia-e-infraestrutura");
     expect(energia).toMatchObject({ comConta: 2, paginas: 1 });
     expect(uso.porObservatorio.at(-1)).toMatchObject({ observatorio: "plataforma", comConta: 1 });
     expect(uso.porObservatorio).toHaveLength(7);
+  });
+
+  it("painel: o primeiro dia com visita sem conta é o início da medição sem conta", async () => {
+    const agora = new Date("2026-10-19T15:00:00Z");
+    await registrarVisita("/setor-eletrico/conta-de-luz", false, new Date("2026-10-12T15:00:00Z"));
+    await registrarVisita("/setor-eletrico/conta-de-luz", false, agora);
+    const uso = await getUsoDoPeriodo(agora, { USO_ANONIMO_ATIVO: "1" });
+    expect(uso.primeiroSemConta).toBe("2026-10-12");
+    expect(uso.semContaMedido).toBe(true);
   });
 });
 
@@ -284,6 +294,7 @@ function usoDeExemplo(parcial: Partial<UsoDoPeriodo> = {}): UsoDoPeriodo {
     primeiroRegistro: "2026-10-19",
     anonimoAtivo: false,
     semContaMedido: false,
+    primeiroSemConta: null,
     porObservatorio: [
       { observatorio: "energia-e-infraestrutura", nome: "Energia e Infraestrutura", comConta: 12, semConta: 0, paginas: 2 },
       { observatorio: "plataforma", nome: "Fora dos observatórios", comConta: 3, semConta: 0, paginas: 1 },
@@ -316,6 +327,22 @@ describe("seção do painel de administração", () => {
     expect(html).toContain("Contagem ligada no servidor");
     expect(html).not.toContain("não medido");
     expect(html).toContain(">7<");
+  });
+
+  it("contagem sem conta ligada no meio da janela: a coluna diz desde quando mede, e os dias anteriores não viram zero", () => {
+    const meio = renderToStaticMarkup(
+      createElement(UsoPaginas, { uso: usoDeExemplo({ primeiroRegistro: "2026-09-01", anonimoAtivo: true, semContaMedido: true, primeiroSemConta: "2026-10-10" }) }),
+    );
+    expect(meio).toContain("A coluna sem conta só mede a partir de 10/10/2026");
+    expect(meio).toContain("não equivale a zero visitas");
+    const semVisita = renderToStaticMarkup(
+      createElement(UsoPaginas, { uso: usoDeExemplo({ anonimoAtivo: true, semContaMedido: true, primeiroSemConta: null }) }),
+    );
+    expect(semVisita).toContain("ainda não registrou nenhuma visita");
+    const inteira = renderToStaticMarkup(
+      createElement(UsoPaginas, { uso: usoDeExemplo({ anonimoAtivo: true, semContaMedido: true, primeiroSemConta: "2026-09-01" }) }),
+    );
+    expect(inteira).not.toContain("só mede a partir de");
   });
 
   it("sem registros declara a ausência em vez de tabela de zeros", () => {
