@@ -18,8 +18,8 @@ export const metadata: Metadata = {
 
 /**
  * Casca do domínio Energia. O cabeçalho é de cada página (marca o módulo
- * ativo); aqui ficam o fundo do domínio e os rodapés. Público para leitura,
- * como o Crédito: o middleware só protege /app.
+ * ativo); aqui ficam o fundo do domínio e os rodapés. Os painéis exigem conta;
+ * só metodologia e Aprenda são abertos (src/lib/rotasPublicas.ts).
  */
 export default function SetorEletricoLayout({ children }: { children: React.ReactNode }) {
   return (

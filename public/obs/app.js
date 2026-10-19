@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.116.0";
+const APP_VERSION = "0.116.1";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -1307,7 +1307,7 @@ function renderLeading() {
   } else if (t === "empresarial") {
     body = sechead("O setor produtivo está sob estresse antes do crédito PJ refletir?", "CNJ/DataJud — 8 tribunais estaduais (cobertura declarada)") +
       `<div class="ov-2col-eq">${leadSignalChart(L, "rj_yoy")}${leadSignalChart(L, "falencias_yoy")}</div>
-      <div class="note">Dívida ativa da PGFN (estresse fiscal por CNAE/UF): <b>fase 2</b> — arquivos de 1,3 GB/trimestre exigem janela dedicada de processamento (viabilidade confirmada, licença ok). A inscrição em dívida ativa é sinal de pressão fiscal ou de conformidade, não declaração de insolvência. Séries completas de RJ (funil, marcos, fichas): aba <a href="/observatorio/recoveries" onclick="nav('rj');return false">Recuperações &amp; Falências</a>.</div>`;
+      <div class="note">Dívida ativa da PGFN (estresse fiscal por CNAE/UF): painel próprio, <a href="/observatorio/federal-tax-debt">Dívida com a União</a>, com o trimestre mais recente processado. A inscrição em dívida ativa é sinal de pressão fiscal ou de conformidade, não declaração de insolvência. Séries completas de RJ (funil, marcos, fichas): aba <a href="/observatorio/recoveries" onclick="nav('rj');return false">Recuperações &amp; Falências</a>.</div>`;
   } else if (t === "naobancario") {
     body = sechead("O crédito originado fora dos bancos deteriora primeiro?", "CVM — informes mensais de FIDCs, de securitizadoras (CRI e CRA) e ofertas públicas de dívida") +
       `<div class="ov-2col-eq">${leadSignalChart(L, "fidc_inad_pct")}${leadSignalChart(L, "cri_venc_pct")}${leadSignalChart(L, "cra_venc_pct")}${leadSignalChart(L, "emissoes_divida_yoy")}${leadSignalChart(L, "inad_total")}</div>

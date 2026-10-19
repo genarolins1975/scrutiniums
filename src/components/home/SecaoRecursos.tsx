@@ -12,7 +12,7 @@ const RECURSOS = [
     escopo: "Crédito",
     titulo: "Central de alertas",
     href: "/observatorio/alerts",
-    descricao: "Sinais por família de monitoramento, cada um com universo, regra de persistência e feed RSS público.",
+    descricao: "Sinais por família de monitoramento, cada um com universo, regra de persistência e feed RSS.",
   },
   {
     escopo: "Crédito",
@@ -22,7 +22,7 @@ const RECURSOS = [
   },
   {
     escopo: "Crédito",
-    titulo: "API pública",
+    titulo: "API de leitura",
     href: "/dados/api",
     descricao: "Os arquivos publicados do Observatório em JSON, com contrato versionado, para quem está conectado.",
   },

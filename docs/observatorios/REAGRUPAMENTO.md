@@ -209,3 +209,14 @@ Pendências de dado, situação em 18/10/2026:
 - **Sicor × MDCR:** documentado em `/agronegocio/apoio`, junto à tabela de juros, com os dois valores do mesmo mês fechado.
 - **Captura do Inep (Contas Estaduais):** cadeia TLS incompleta no servidor e conexão reiniciada na primeira tentativa; corrigido com o intermediário oficial versionado e novas tentativas (`docs/contas-publicas-estaduais/FASE_4A_EDUCACAO.md`).
 
+
+## Decisões de 19/10/2026 (banca multidisciplinar)
+
+Registro completo em `docs/BANCA_2026-10-19.md`. Em resumo:
+
+- **Aberto e com conta:** aberto responde ao curioso sobre o seu caso, em modo de consulta; com conta fica a profundidade (séries completas, comparações, downloads, API, cenários, previsões, recortes salvos e alertas). Abertura rota por rota, com aprovação do dono; nenhuma rota foi aberta nesta data.
+- **Retrato das capitais:** a nota composta sai da entrada da Eficiência Estatal e fica no painel.
+- **Cadastro:** informações básicas continuam obrigatórias; a terceira etapa ganha perfil de uso e pede instituição, área e cargo só a perfis profissionais.
+- **Inglês na 1.0:** só a home e o Setor Elétrico.
+- **Gravuras:** revisar e melhorar quando necessário; layout sem defeito.
+- **Expansão:** sem congelamento; painel novo entra pelo valor agregado, com o critério de conclusão da banca.

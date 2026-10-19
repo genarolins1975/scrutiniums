@@ -236,8 +236,9 @@ describe("2.2/2.3 — sem alert(), fontes do meta derivadas, uma metodologia", (
     // 0.114.0: seis observatórios na barra e nos seletores; abas de outros observatórios dizem a que observatório pertencem
     // 0.115.0: as abas de Contas Públicas levam à entrada própria do observatório
     // 0.116.0: datas por grupo da gold do Crédito (publicação seletiva)
-    expect(app).toContain('const APP_VERSION = "0.116.0";');
-    expect(html).toContain("app.min.js?v=0.116.0");
+    // 0.116.1: nota dos sinais antecedentes aponta para o painel da PGFN (banca de 19/10/2026)
+    expect(app).toContain('const APP_VERSION = "0.116.1";');
+    expect(html).toContain("app.min.js?v=0.116.1");
     expect(html).not.toContain("?v=0.106.0");
     expect(html).not.toContain("?v=0.86.0");
   });

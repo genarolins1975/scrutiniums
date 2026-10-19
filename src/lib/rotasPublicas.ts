@@ -49,6 +49,13 @@ const PREFIXOS = [
 /** Páginas de método de cada tema da Eficiência Estatal. */
 const METODOS_EFICIENCIA = /^\/eficiencia-estatal\/[a-z0-9-]+\/metodos\/?$/;
 
+/**
+ * Gravuras decorativas dos observatórios (não são dado). O otimizador do
+ * next/image busca a imagem sem o cookie da sessão; fechada, a gravura
+ * chegava quebrada mesmo para quem tinha conta (19/10/2026).
+ */
+const ARTE = /^\/(energia|estado|obs)\/arte\/[a-z0-9-]+\.webp$/;
+
 /** Imagens de compartilhamento geradas pelo Next ao lado de cada rota. */
 const IMAGEM_SOCIAL = /\/(opengraph-image|twitter-image)(-[\w]+)?$/;
 
@@ -85,6 +92,7 @@ export function ehRotaPublica(caminho: string): boolean {
   const semBarra = caminho.length > 1 && caminho.endsWith("/") ? caminho.slice(0, -1) : caminho;
   if (EXATAS.has(semBarra)) return true;
   if (PREFIXOS.some((p) => sobPrefixo(semBarra, p))) return true;
+  if (ARTE.test(semBarra)) return true;
   return METODOS_EFICIENCIA.test(semBarra);
 }
 

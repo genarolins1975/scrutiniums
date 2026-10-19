@@ -4,19 +4,16 @@ import {join} from 'node:path';
 import {CabecalhoEntrada} from '@/components/eficiencia/CabecalhoEntrada';
 import {goldSaude} from '@/lib/eficiencia/saude/dados';
 import {metaEducacao} from '@/lib/eficiencia/dados';
-import {indiceSnapshot} from '@/lib/eficiencia/indice-v4';
 import {AtlasCidadao} from '@/components/eficiencia/AtlasCidadao';
 import {MapaCobertura, type TemaCobertura} from '@/components/eficiencia/entrada/MapaCobertura';
 import {montarRetrato} from '@/lib/eficiencia/entrada';
-import {EscoresServicos} from '@/components/eficiencia/EscoresServicos';
-import {DisponibilidadeEscores} from '@/components/eficiencia/DisponibilidadeEscores';
 import {dadosAssistencia} from '@/lib/eficiencia/assistencia/dados';
 import {dadosAlimentares} from '@/lib/eficiencia/alimentar/dados';
 import {dadosMobilidade} from '@/lib/eficiencia/mobilidade/dados';
 import {dadosOportunidades} from '@/lib/eficiencia/mobilidade/oportunidades-dados';
 import {dataBr} from '@/lib/eficiencia/formato';
 export const dynamic='force-static';
-export const metadata:Metadata={title:'Observatório Brasileiro de Eficiência Estatal',description:'Indicadores públicos sobre recursos, atendimento e resultados, com fonte, período e limites: Educação, Saúde, Trabalho e renda, Segurança alimentar, Assistência social, Mobilidade, Justiça, Habitação, Saneamento, Energia e conectividade, Meio ambiente e clima Segurança pública e Cultura.',alternates:{canonical:'/eficiencia-estatal'}};
+export const metadata:Metadata={title:'Observatório Brasileiro de Eficiência Estatal',description:'Indicadores públicos sobre recursos, atendimento e resultados, com fonte, período e limites: Educação, Saúde, Trabalho e renda, Segurança alimentar, Assistência social, Mobilidade, Justiça, Habitação, Saneamento, Energia e conectividade, Meio ambiente e clima, Segurança pública e Cultura.',alternates:{canonical:'/eficiencia-estatal'}};
 
 export default function PaginaEntradaEficiencia(){
  const alimentar=dadosAlimentares(),assistencia=dadosAssistencia(),edu=metaEducacao(),g=goldSaude(),mob=dadosMobilidade().base,aop=dadosOportunidades().base;
@@ -39,10 +36,9 @@ export default function PaginaEntradaEficiencia(){
  ];
  const retrato=montarRetrato();
  return <div><CabecalhoEntrada/><main id="conteudo" className="pb-20">
- {/* Os dados do retrato e do índice vão por prop, nesta página que exige login; não entram nos arquivos públicos de /_next/static. */}
- <AtlasCidadao retrato={retrato} indice={indiceSnapshot} cobertura={<MapaCobertura temas={temas}/>}/>
+ {/* Os dados do retrato vão por prop, nesta página que exige login; não entram nos arquivos públicos de /_next/static. A nota experimental fica em /eficiencia-estatal/indice-de-resultados. */}
+ <AtlasCidadao retrato={retrato} cobertura={<MapaCobertura temas={temas}/>}/>
  <div className="mx-auto max-w-page px-4 sm:px-6">
- <details id="atlas-score-method" className="scroll-mt-6 border-y border-linha py-5"><summary className="min-h-[44px] cursor-pointer font-serif text-xl">Composição e disponibilidade dos escores</summary><DisponibilidadeEscores/><details className="border-t border-linha py-4"><summary className="min-h-[44px] cursor-pointer font-serif text-lg">Consultar regras de cálculo e metodologia experimental</summary><EscoresServicos/></details></details>
  <aside className="mt-8 grid gap-5 border-l-4 border-obee bg-obee-fundo p-5 md:grid-cols-2"><div><h2 className="font-serif text-xl">Quem financia, quem entrega, quem responde?</h2><p className="mt-2 text-sm leading-relaxed">A análise completa precisa distinguir recursos da União, dos estados e dos municípios, transferências e a instituição responsável pelo atendimento.</p></div><div><h3 className="text-sm font-semibold">Estrutura e funcionamento do Estado</h3><p className="mt-2 text-sm leading-relaxed">Administração, arrecadação, pessoal e Legislativo atravessam essas dimensões. O Judiciário tem recorte próprio de recursos, filas e tempos; a comparação de despesas entre esferas e poderes ainda não está publicada.</p></div></aside>
  </div>
  </main></div>;
