@@ -7,6 +7,7 @@ import { rotulosRetorno } from "@/lib/energia/conteudo/rotulos-retorno";
 import { listaPorExtenso, menuNavegacao, type DestinoNavegacao, type ItemMenu } from "@/lib/energia/navegacao";
 import { tx } from "@/lib/energia/idioma";
 import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
+import { prefetchDoLink } from "@/lib/rotasPublicas";
 
 /**
  * Cabeçalho do Observatório Brasileiro do Setor Elétrico: a barra comum da plataforma (CabecalhoPlataforma: marca, seletor de
@@ -160,6 +161,7 @@ function Atalhos({ atual }: { atual: string }) {
     <>
       <Link
         href="/setor-eletrico/dados"
+        prefetch={prefetchDoLink("/setor-eletrico/dados")}
         aria-current={atual === "dados" ? "page" : undefined}
         className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-energia-dark"
       >
@@ -167,6 +169,7 @@ function Atalhos({ atual }: { atual: string }) {
       </Link>
       <Link
         href="/setor-eletrico/metodologia"
+        prefetch={prefetchDoLink("/setor-eletrico/metodologia")}
         aria-current={atual === "metodologia" ? "page" : undefined}
         className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-energia-dark"
       >
@@ -182,6 +185,7 @@ function ItemDestino({ d, atual, comPergunta = false }: { d: DestinoNavegacao; a
   return (
     <Link
       href={d.href}
+      prefetch={prefetchDoLink(d.href)}
       aria-current={ativo ? "page" : undefined}
       className={`flex min-h-[44px] flex-col justify-center px-3 py-2 ${ativo ? "bg-energia-fundo" : "hover:bg-papel"}`}
     >

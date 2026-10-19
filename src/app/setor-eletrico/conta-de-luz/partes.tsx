@@ -55,7 +55,7 @@ export function Navegacao({ atual }: { atual: (typeof PAGINAS)[number]["id"] }) 
               <ContaLinkFiltros
                 href={p.href}
                 atual={ativo}
-                className={`-mb-px inline-flex min-h-[44px] items-center border-b-2 px-0.5 ${
+                className={`-mb-px inline-flex min-h-[44px] flex-wrap items-center border-b-2 px-0.5 ${
                   ativo ? "border-energia text-carvao" : "border-transparent text-carvao-muted hover:border-linha hover:text-carvao"
                 }`}
               >

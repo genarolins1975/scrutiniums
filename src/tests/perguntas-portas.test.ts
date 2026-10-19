@@ -54,15 +54,38 @@ describe("O Brasil em perguntas", () => {
     }
   });
 
-  it("os destinos existem; painéis seguem com conta e métodos são abertos", () => {
+  it("os destinos existem; painéis seguem com conta, consultas da leva 1 e métodos são abertos", () => {
     for (const p of todas) {
-      for (const href of [...p.numeros.map((n) => n.href), ...p.caminhos.map((c) => c.href)]) {
+      // os caminhos de "No painel completo" levam a painéis com conta
+      for (const href of p.caminhos.map((c) => c.href)) {
         expect(rotaExiste(href), `${p.id}: ${href}`).toBe(true);
         expect(ehRotaPublica(href.split("#")[0]), `${p.id}: ${href} não deve abrir sem conta`).toBe(false);
+      }
+      // um número leva ao painel (com conta) ou a uma consulta aberta que a própria porta oferece em "Para o seu caso"
+      const consultas = new Set(p.paraOSeuCaso.map((c) => c.href));
+      for (const href of p.numeros.map((n) => n.href)) {
+        expect(rotaExiste(href), `${p.id}: ${href}`).toBe(true);
+        if (ehRotaPublica(href.split("#")[0])) expect(consultas.has(href), `${p.id}: ${href} aberto sem estar em "Para o seu caso"`).toBe(true);
       }
       for (const m of p.metodos) {
         expect(rotaExiste(m.href), m.href).toBe(true);
         expect(ehRotaPublica(m.href), m.href).toBe(true);
+      }
+    }
+  });
+
+  it("\"Para o seu caso\" só leva a consultas abertas da leva 1, sem repetir os caminhos com conta", () => {
+    const comBloco = Object.fromEntries(todas.map((p) => [p.id, p.paraOSeuCaso.map((c) => c.href)]));
+    expect(comBloco["familias"]).toEqual(["/gas-natural/gas-de-cozinha", "/setor-eletrico/conta-de-luz", "/saneamento/preco-regulado/simulador"]);
+    expect(comBloco["servicos-publicos"]).toEqual(["/eficiencia-estatal"]);
+    expect(comBloco["energia-e-infraestrutura"]).toEqual(["/setor-eletrico/conta-de-luz", "/saneamento/municipio", "/saneamento/preco-regulado/simulador", "/gas-natural/gas-de-cozinha"]);
+    for (const p of todas) {
+      for (const c of p.paraOSeuCaso) {
+        expect(rotaExiste(c.href), `${p.id}: ${c.href}`).toBe(true);
+        expect(ehRotaPublica(c.href), `${p.id}: ${c.href} deve abrir sem conta`).toBe(true);
+        expect(c.pergunta.trim().endsWith("?"), c.pergunta).toBe(true);
+        expect(c.resumo.trim(), c.href).not.toBe("");
+        expect(p.caminhos.map((x) => x.href), `${p.id}: ${c.href} repetido em "No painel completo"`).not.toContain(c.href);
       }
     }
   });

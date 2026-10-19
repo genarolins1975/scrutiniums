@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { ehApiDeDados, ehRotaPublica } from "@/lib/rotasPublicas";
+import { ehApiDeDados, ehRotaPublica, exigeConta, prefetchDoLink } from "@/lib/rotasPublicas";
+import { parDeIdioma } from "@/lib/i18n-rotas";
 import sitemap from "@/app/sitemap";
 
 /**
@@ -23,10 +24,10 @@ describe("rotas públicas", () => {
     for (const p of [
       "/observatorio", "/observatorio/pix", "/obs/data/gold/meta.json", "/obs/embed.html", "/dados", "/dados/api",
       "/resumo", "/resumo/feed.xml", "/setor-eletrico", "/setor-eletrico/pld", "/energia/series/pld.csv",
-      "/eficiencia-estatal", "/eficiencia-estatal/saude-capitais", "/eficiencia-estatal/saneamento/dados",
+      "/eficiencia-estatal/saude-capitais", "/eficiencia-estatal/saneamento/dados",
       "/contas-publicas", "/contas-publicas/execucao", "/contas-publicas-estaduais", "/contas-publicas-estaduais/comparacao.csv",
-      "/saneamento", "/saneamento/acesso", "/saneamento/municipio/2611606", "/saneamento/gold/municipios.csv",
-      "/gas-natural", "/gas-natural/gas-de-cozinha", "/gas-natural/dados", "/gas/gold/meta.json", "/gas/series/preco-glp-por-uf.csv",
+      "/saneamento", "/saneamento/acesso", "/saneamento/gold/municipios.csv",
+      "/gas-natural", "/gas-natural/dados", "/gas/gold/meta.json", "/gas/series/preco-glp-por-uf.csv",
       "/app", "/app/observatorios", "/dados/pix/opengraph-image", "/rota-que-ainda-nao-existe",
       "/api/eficiencia-mobilidade/exportar",
     ]) expect(ehRotaPublica(p), p).toBe(false);
@@ -75,6 +76,91 @@ describe("rotas públicas", () => {
     const urls = sitemap().map((u) => new URL(u.url).pathname);
     expect(urls.length).toBeGreaterThan(5);
     for (const u of urls) expect(ehRotaPublica(u), u).toBe(true);
+  });
+});
+
+/**
+ * Estratégia "aberto e com conta", leva 1 (decisão do dono de 19/10/2026, docs/BANCA_2026-10-19.md): o curioso
+ * consulta o próprio caso sem conta. Abrem exatamente cinco consultas e os arquivos que elas buscam no
+ * navegador; as vizinhas, os downloads e as subpáginas continuam fechados.
+ */
+describe("consultas abertas da leva 1", () => {
+  const ABERTAS = [
+    "/setor-eletrico/conta-de-luz", "/setor-eletrico/conta-de-luz/",
+    "/saneamento/municipio", "/saneamento/municipio/", "/saneamento/municipio/2611606", "/saneamento/municipio/3550308/",
+    "/saneamento/preco-regulado/simulador",
+    "/eficiencia-estatal", "/eficiencia-estatal/",
+    "/gas-natural/gas-de-cozinha",
+  ];
+  // os únicos arquivos que as consultas buscam no navegador, cada um pelo endereço exato
+  const ARQUIVOS = ["/setor-eletrico/conta-de-luz/municipios.json", "/saneamento/gold/indice.json", "/energia/geo/uf.json"];
+
+  it("abre as cinco consultas e os arquivos que o navegador busca", () => {
+    for (const p of [...ABERTAS, ...ARQUIVOS]) expect(ehRotaPublica(p), p).toBe(true);
+  });
+
+  it("mantém fechadas as vizinhas, os downloads e as subpáginas", () => {
+    for (const p of [
+      // Conta de luz: a página de reajustes, os arquivos e o histórico por distribuidora
+      "/setor-eletrico/conta-de-luz/reajustes-e-subsidios", "/setor-eletrico/conta-de-luz/reajustes-e-subsidios/",
+      "/energia/series/conta_tarifas_b1_vigentes.csv", "/energia/series/conta_historico_b1.json", "/energia/gold/conta.json",
+      "/energia/geo/municipios.json", "/energia/geo", "/energia/geo/",
+      // Saneamento: a pasta gold, o atlas, a comparação, os prestadores e os outros capítulos do preço regulado
+      "/saneamento/gold/municipios.csv", "/saneamento/gold/municipios.json", "/saneamento/gold", "/saneamento/gold/",
+      "/saneamento/gold/uf/SP.json", "/saneamento/acesso", "/saneamento/comparar", "/saneamento/prestadores/sabesp",
+      "/saneamento/preco-regulado", "/saneamento/preco-regulado/formacao", "/saneamento/preco-regulado/reajustes",
+      "/saneamento/preco-regulado/contrapartidas", "/saneamento/preco-regulado/riscos",
+      // Eficiência Estatal: a nota composta, os temas e a exportação das 26 capitais
+      "/eficiencia-estatal/indice-de-resultados", "/eficiencia-estatal/saude-capitais", "/eficiencia-estatal/educacao-municipal-capitais",
+      "/eficiencia-estatal/retrato-26-capitais.csv", "/eficiencia/atlas/frequencia-escolar-2022.csv",
+      // Gás Natural: a entrada, os dados e as outras páginas
+      "/gas-natural", "/gas-natural/dados", "/gas-natural/precos", "/gas-natural/gnv-e-gas-encanado", "/gas/gold/gas-de-cozinha.json",
+      "/gas/series/preco-glp-brasil-mensal.csv",
+    ]) expect(ehRotaPublica(p), p).toBe(false);
+  });
+
+  it("não aceita caminho disfarçado nem prefixo parcial", () => {
+    for (const p of [
+      "/setor-eletrico/conta-de-luzx", "/setor-eletrico/conta-de-luz/x", "/setor-eletrico/conta-de-luz//reajustes-e-subsidios",
+      "/setor-eletrico/conta-de-luz/municipios.json/", "/setor-eletrico/conta-de-luz/municipios.jsonx",
+      "/saneamento/municipiox", "/saneamento/municipio/261160", "/saneamento/municipio/26116060", "/saneamento/municipio/2611606/x",
+      "/saneamento/municipio/abc1234", "/saneamento/municipio/%32611606", "/saneamento/municipio/2611606.json",
+      "/saneamento/municipio/../acesso", "/saneamento/gold/indice.json/", "/saneamento/gold/indice.jsonx", "/saneamento/gold//indice.json",
+      "/saneamento/gold/indice.json/../municipios.csv", "/saneamento/preco-regulado/simulador/x", "/saneamento/preco-regulado/simuladorx",
+      "/eficiencia-estatalx", "/eficiencia-estatal/x", "/gas-natural/gas-de-cozinhax", "/gas-natural/gas-de-cozinha/serie.json",
+      "/energia/geo/uf.json/", "/energia/geo/uf.jsonx", "/Saneamento/municipio", "/EFICIENCIA-ESTATAL",
+    ]) expect(ehRotaPublica(p), p).toBe(false);
+  });
+
+  it("a irmã inglesa declarada herda a política; as demais não existem e seguem fechadas", () => {
+    expect(parDeIdioma("/setor-eletrico/conta-de-luz")?.en).toBe("/en/setor-eletrico/conta-de-luz");
+    expect(ehRotaPublica("/en/setor-eletrico/conta-de-luz")).toBe(true);
+    expect(ehRotaPublica("/en/setor-eletrico/conta-de-luz/reajustes-e-subsidios")).toBe(false);
+    for (const p of ["/en/saneamento/municipio", "/en/saneamento/municipio/2611606", "/en/eficiencia-estatal", "/en/gas-natural/gas-de-cozinha",
+      "/en/saneamento/preco-regulado/simulador", "/en/saneamento/gold/indice.json", "/en/energia/geo/uf.json", "/en/setor-eletrico/conta-de-luz/municipios.json"]) {
+      expect(ehRotaPublica(p), p).toBe(false);
+    }
+  });
+
+  it("o pré-carregamento só vale para destino aberto, com e sem query e âncora", () => {
+    expect(prefetchDoLink("/saneamento/municipio/2611606")).toBeUndefined();
+    expect(prefetchDoLink("/saneamento/preco-regulado/simulador?t=sabesp")).toBeUndefined();
+    expect(prefetchDoLink("/setor-eletrico/conta-de-luz?dist=23664303000104#simulador")).toBeUndefined();
+    expect(prefetchDoLink("/saneamento/comparar?m=2611606")).toBe(false);
+    expect(prefetchDoLink("/setor-eletrico/conta-de-luz/reajustes-e-subsidios#reajustes")).toBe(false);
+    expect(exigeConta("/eficiencia-estatal/indice-de-resultados?territorio=2611606")).toBe(true);
+    expect(exigeConta("/gas/series/preco-glp-por-uf.csv")).toBe(true);
+    expect(exigeConta("/eficiencia-estatal")).toBe(false);
+  });
+
+  it("o sitemap lista as consultas abertas e nenhuma vizinha fechada", () => {
+    const urls = new Set(sitemap().map((u) => new URL(u.url).pathname));
+    for (const p of ["/setor-eletrico/conta-de-luz", "/en/setor-eletrico/conta-de-luz", "/saneamento/municipio", "/saneamento/municipio/2611606",
+      "/saneamento/preco-regulado/simulador", "/eficiencia-estatal", "/gas-natural/gas-de-cozinha"]) expect(urls.has(p), p).toBe(true);
+    for (const p of ["/setor-eletrico/conta-de-luz/reajustes-e-subsidios", "/saneamento/acesso", "/saneamento/comparar", "/eficiencia-estatal/indice-de-resultados",
+      "/eficiencia-estatal/saude-capitais", "/gas-natural", "/gas-natural/dados", "/saneamento/gold/indice.json"]) expect(urls.has(p), p).toBe(false);
+    // uma ficha por município do índice da busca
+    expect([...urls].filter((u) => /^\/saneamento\/municipio\/\d{7}$/.test(u)).length).toBeGreaterThan(5000);
   });
 });
 

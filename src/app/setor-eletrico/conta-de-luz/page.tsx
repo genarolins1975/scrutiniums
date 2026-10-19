@@ -19,6 +19,8 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
 import {
   comProcedimentoExterno,
   compactarLinhasTabela,
@@ -342,6 +344,14 @@ export default function ContaDeLuzPage() {
   return (
     <>
       <CabecalhoEnergia atual="conta-de-luz" />
+      {/* consulta aberta (leva 1, 19/10/2026): o histórico por distribuidora, os arquivos e a página de reajustes seguem com conta */}
+      <AvisoConsultaAberta
+        className="ed-pagina"
+        comConta={tx(
+          "O histórico de cada distribuidora, os arquivos, a página de reajustes e as demais páginas do observatório",
+          "Each distribution utility's history, the files, the adjustments page and the observatory's other pages",
+        )}
+      />
       <MarcaVisita secao="energia:conta-de-luz" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <Navegacao atual="tarifas" />
@@ -575,6 +585,7 @@ export default function ContaDeLuzPage() {
                     {dadoNo(g.conflitos_fonte.regra, "conta-conflitos-regra", idioma)}{" "}
                     <a href={g.conflitos_fonte.download} download className="text-energia-dark underline underline-offset-4">
                       {tx("Baixar os casos e a escolha feita (CSV)", "Download the cases and the choice made (CSV)")}
+                      <SeloComConta href={g.conflitos_fonte.download} />
                     </a>
                     .
                   </p>
@@ -1115,6 +1126,7 @@ export default function ContaDeLuzPage() {
                     <li key={d.url}>
                       <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
                         {dadoNo(d.rotulo, "conta-download", idioma)}
+                        <SeloComConta href={d.url} />
                       </a>
                     </li>
                   ))}

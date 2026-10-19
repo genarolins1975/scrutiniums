@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { NextRequest } from "next/server";
+import { middleware } from "@/middleware";
+import { signSessionCookie } from "@/lib/sessionCookie";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { OBSERVATORIOS } from "@/lib/observatorios/lista";
@@ -87,6 +90,67 @@ describe("acesso: uma promessa", () => {
     expect(ACESSO.conta).toMatch(/painéis/);
     expect(ACESSO.leitura).toMatch(/quem tem conta/);
     expect(ACESSO.leitura).toMatch(/gratuito/);
+  });
+});
+
+/**
+ * Leva 1 da estratégia "aberto e com conta" (decisão do dono de 19/10/2026): o middleware serve sem sessão as
+ * cinco consultas pessoais e os arquivos que elas buscam no navegador; as vizinhas, os downloads e as exportações
+ * continuam indo ao login com o destino guardado. Com sessão, tudo abre.
+ */
+describe("acesso: consultas abertas da leva 1", () => {
+  const ORIGEM = "https://scrutiniums.com";
+  const requisicao = (caminho: string, cookie?: string) =>
+    new NextRequest(ORIGEM + caminho, { headers: new Headers({ accept: "text/html", ...(cookie ? { cookie: `scrutiniums_session=${cookie}` } : {}) }) });
+  beforeEach(() => vi.stubEnv("COOKIE_SECRET", "segredo-sintetico-do-teste-acesso-leva-1"));
+  afterEach(() => vi.unstubAllEnvs());
+
+  const ABERTAS = [
+    "/setor-eletrico/conta-de-luz", "/en/setor-eletrico/conta-de-luz", "/saneamento/municipio", "/saneamento/municipio/2611606",
+    "/saneamento/preco-regulado/simulador", "/eficiencia-estatal", "/gas-natural/gas-de-cozinha",
+    "/setor-eletrico/conta-de-luz/municipios.json", "/saneamento/gold/indice.json", "/energia/geo/uf.json",
+  ];
+  const FECHADAS = [
+    "/setor-eletrico/conta-de-luz/reajustes-e-subsidios", "/en/setor-eletrico/conta-de-luz/reajustes-e-subsidios",
+    "/energia/series/conta_historico_b1.json", "/energia/series/conta_tarifas_b1_vigentes.csv",
+    "/saneamento/gold/municipios.csv", "/saneamento/acesso", "/saneamento/comparar", "/saneamento/preco-regulado/formacao",
+    "/eficiencia-estatal/saude-capitais", "/eficiencia-estatal/indice-de-resultados", "/eficiencia-estatal/retrato-26-capitais.csv",
+    "/gas-natural", "/gas-natural/dados", "/gas/series/preco-glp-por-uf.csv", "/energia/geo/municipios.json",
+  ];
+
+  it("sem sessão, serve as consultas e manda as vizinhas ao login com o destino", async () => {
+    for (const caminho of ABERTAS) {
+      const r = await middleware(requisicao(caminho));
+      expect(r.headers.get("x-middleware-next"), caminho).toBe("1");
+      expect(r.headers.get("location"), caminho).toBeNull();
+    }
+    for (const caminho of FECHADAS) {
+      const r = await middleware(requisicao(caminho));
+      expect(r.status, caminho).toBe(307);
+      const destino = new URL(r.headers.get("location") ?? "", ORIGEM);
+      expect(destino.pathname, caminho).toMatch(/^(\/en)?\/entrar$/);
+      expect(destino.searchParams.get("de"), caminho).toBe(caminho);
+    }
+  });
+
+  it("com sessão, as vizinhas abrem como antes", async () => {
+    const cookie = await signSessionCookie("cd".repeat(32), new Date(Date.now() + 60 * 60 * 1000));
+    for (const caminho of FECHADAS.filter((c) => !c.startsWith("/en/"))) {
+      const r = await middleware(requisicao(caminho, cookie));
+      expect(r.headers.get("location"), caminho).toBeNull();
+    }
+  });
+
+  it("a lista aberta declara as consultas pelo caminho exato, nunca por prefixo", () => {
+    const fonte = ler("src/lib/rotasPublicas.ts");
+    const prefixos = fonte.slice(fonte.indexOf("const PREFIXOS"), fonte.indexOf("];", fonte.indexOf("const PREFIXOS")));
+    const entradas = [...prefixos.matchAll(/"(\/[^"]*)"/g)].map((m) => m[1]);
+    expect(entradas.length).toBeGreaterThan(5);
+    // nenhuma consulta, nenhum arquivo e nenhuma vizinha é aberta por prefixo
+    for (const c of [...ABERTAS, ...FECHADAS]) {
+      for (const p of entradas) expect(c === p || c.startsWith(p + "/"), `${c} sob o prefixo ${p}`).toBe(false);
+    }
+    expect(fonte).toMatch(/const CONSULTAS_ABERTAS = new Set\(\[/);
   });
 });
 

@@ -71,9 +71,11 @@ describe("registro de domínios", () => {
     expect(existsSync(join(raiz, "src", "app", "eficiencia-estatal", "page.tsx"))).toBe(true);
     expect(existsSync(join(raiz, "src", "app", "eficiencia-estatal", "educacao-municipal-capitais", "page.tsx"))).toBe(true);
     expect(existsSync(join(raiz, "src", "app", "eficiencia-estatal", "saude-capitais", "page.tsx"))).toBe(true);
-    // painel exige conta: fica fora do sitemap; a página de método do tema entra
+    // a entrada (retrato das capitais) é consulta aberta desde 19/10/2026 e entra no sitemap; os painéis de tema
+    // exigem conta e ficam fora; a página de método do tema entra
     const urls = sitemap().map((u) => u.url);
-    expect(urls).not.toContain("https://scrutiniums.com" + DOMINIOS[2].rotaRaiz);
+    expect(urls).toContain("https://scrutiniums.com" + DOMINIOS[2].rotaRaiz);
+    expect(urls).not.toContain("https://scrutiniums.com/eficiencia-estatal/educacao-municipal-capitais");
     expect(urls).toContain("https://scrutiniums.com/eficiencia-estatal/educacao-municipal-capitais/metodos");
   });
 

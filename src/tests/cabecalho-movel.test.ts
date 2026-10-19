@@ -211,15 +211,19 @@ describe("com e sem sessão: a barra não aponta para o login de quem entrou nem
     }
   });
 
-  it("as entradas e todo destino da barra dos observatórios seguem com conta: a barra não abre painel", () => {
-    for (const { rota } of [...ENTRADAS, { rota: "/observatorio" }]) expect(ehRotaPublica(rota), rota).toBe(false);
+  // Consultas pessoais abertas por decisão do dono (19/10/2026, leva 1 da estratégia "aberto e com conta"): a entrada da
+  // Eficiência Estatal (retrato da capital, sem a nota composta) é a única entrada que a barra alcança sem conta.
+  const ENTRADAS_ABERTAS = ["/eficiencia-estatal"];
+
+  it("as entradas e todo destino da barra dos observatórios seguem com conta, salvo as consultas abertas: a barra não abre painel", () => {
+    for (const { rota } of [...ENTRADAS, { rota: "/observatorio" }]) expect(ehRotaPublica(rota), rota).toBe(ENTRADAS_ABERTAS.includes(rota));
     const destinos = new Set<string>();
     // o seletor de idioma (onde há tradução) leva à mesma página no outro idioma, com a mesma regra de acesso dela
     const semIdioma = (h: string) => h.replace(/<div role="group" aria-label="Idioma"[\s\S]*?<\/div>/g, "");
     for (const e of ENTRADAS) for (const a of ancoras(semIdioma(barra(e.render())))) destinos.add(a.href.split(/[?#]/)[0]);
     for (const a of ancoras(barra(barraSpa))) destinos.add(a.href.split(/[?#]/)[0]);
     // a marca leva à home, que é aberta; todo o resto da barra (observatórios, coleções, escolha e conta) pede sessão
-    expect([...destinos].filter((d) => ehRotaPublica(d))).toEqual(["/"]);
+    expect([...destinos].filter((d) => ehRotaPublica(d)).sort()).toEqual(["/", ...ENTRADAS_ABERTAS].sort());
     expect(destinos.size).toBeGreaterThanOrEqual(1 + OBSERVATORIOS.length + DOMINIOS.length + 2);
   });
 });

@@ -2,6 +2,8 @@ import Link from 'next/link';
 import {DIMENSOES, GRUPOS} from '@/lib/eficiencia/dimensoes';
 import {Siglas} from '@/components/eficiencia/Siglas';
 import styles from './Entrada.module.css';
+import {SeloComConta} from '@/components/acesso/SeloComConta';
+import {prefetchDoLink} from '@/lib/rotasPublicas';
 
 export type Nivel = 'indice' | 'capitais' | 'municipios' | 'ufs' | 'regioes' | 'brasil';
 export type TemaCobertura = {id: string; titulo: string; pergunta: string; escopo: string; naoInclui: string; cobertura: string; fontes: string;
@@ -47,7 +49,7 @@ export function MapaCobertura({temas}: {temas: TemaCobertura[]}) {
                   <div><dt>Fontes</dt><dd><Siglas texto={t.fontes}/></dd></div>
                   <div><dt>Última captura de dados</dt><dd>{t.atualizacao ?? 'não informada'}; os anos de referência estão em cada medida.</dd></div>
                 </dl>
-                <ul className={styles.matrixLinks}>{t.entradas.map((e, i) => <li key={e.href}><Link href={e.href} className={i === 0 ? styles.matrixPrimary : undefined}>{e.rotulo}</Link></li>)}</ul>
+                <ul className={styles.matrixLinks}>{t.entradas.map((e, i) => <li key={e.href}><Link href={e.href} prefetch={prefetchDoLink(e.href)} className={i === 0 ? styles.matrixPrimary : undefined}>{e.rotulo}<SeloComConta href={e.href}/></Link></li>)}</ul>
               </> : <>
                 <p className={styles.matrixQuestion}>{d.verbo}. {d.descricao}</p>
                 <dl><div><dt>Recursos</dt><dd>{d.recursos}</dd></div><div><dt>Acesso</dt><dd>{d.acesso}</dd></div><div><dt>Resultados</dt><dd>{d.resultados}</dd></div></dl>

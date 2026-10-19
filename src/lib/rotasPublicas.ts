@@ -3,8 +3,10 @@
  *
  * Decisão de produto (13/10/2026): a página inicial, a apresentação do
  * Crédito, as páginas de método e glossário, as institucionais e o fluxo de
- * entrada e cadastro são abertos. Todo o resto, inclusive painéis, downloads,
- * API, feeds e gráficos incorporáveis, exige sessão. A sessão só nasce depois
+ * entrada e cadastro são abertos. Desde 19/10/2026 (estratégia "aberto e com
+ * conta", leva 1), também as consultas pessoais listadas em CONSULTAS_ABERTAS.
+ * Todo o resto, inclusive painéis, downloads, API, feeds e gráficos
+ * incorporáveis, exige sessão. A sessão só nasce depois
  * da verificação do telefone (api/onboarding/phone/check), então sessão válida
  * equivale a conta com telefone verificado.
  *
@@ -46,6 +48,37 @@ const PREFIXOS = [
   // camada aberta "O Brasil em perguntas" (decisão de 17/10/2026): a resposta curta é pública, os painéis seguem com conta
   "/perguntas",
 ];
+
+/**
+ * Consultas pessoais abertas (estratégia "aberto e com conta", leva 1, aprovada
+ * pelo dono em 19/10/2026; docs/BANCA_2026-10-19.md). O curioso consulta o
+ * próprio caso: a conta de luz da sua distribuidora, o saneamento do seu
+ * município, a conta de água, a sua capital e o botijão no seu estado. Caminho
+ * exato: subpáginas, arquivos e downloads dessas rotas continuam fechados.
+ */
+const CONSULTAS_ABERTAS = new Set([
+  "/setor-eletrico/conta-de-luz",
+  "/saneamento/municipio",
+  "/saneamento/preco-regulado/simulador",
+  "/eficiencia-estatal",
+  "/gas-natural/gas-de-cozinha",
+]);
+
+/** Ficha do município no Saneamento: só o código IBGE de sete dígitos. */
+const FICHA_MUNICIPIO = /^\/saneamento\/municipio\/\d{7}$/;
+
+/**
+ * Arquivos que as consultas abertas buscam no navegador, um a um e pelo
+ * endereço exato (sem barra final): o índice município → distribuidora da
+ * busca da Conta de luz (ContaBuscaMunicipio), o índice de nomes da busca de
+ * município do Saneamento (BuscaMunicipio) e a malha das UFs do IBGE do mapa do
+ * botijão (MapaUf). As pastas de cada um seguem fechadas.
+ */
+const ARQUIVOS_DAS_CONSULTAS = new Set([
+  "/setor-eletrico/conta-de-luz/municipios.json",
+  "/saneamento/gold/indice.json",
+  "/energia/geo/uf.json",
+]);
 
 /** Páginas de método de cada tema da Eficiência Estatal. */
 const METODOS_EFICIENCIA = /^\/eficiencia-estatal\/[a-z0-9-]+\/metodos\/?$/;
@@ -90,8 +123,10 @@ export function ehRotaPublica(caminho: string): boolean {
     const pai = caminho.slice(0, social.index) || "/";
     return ehRotaPublica(pai);
   }
+  if (ARQUIVOS_DAS_CONSULTAS.has(caminho)) return true;
   const semBarra = caminho.length > 1 && caminho.endsWith("/") ? caminho.slice(0, -1) : caminho;
-  if (EXATAS.has(semBarra)) return true;
+  if (EXATAS.has(semBarra) || CONSULTAS_ABERTAS.has(semBarra)) return true;
+  if (FICHA_MUNICIPIO.test(semBarra)) return true;
   if (PREFIXOS.some((p) => sobPrefixo(semBarra, p))) return true;
   if (ARTE.test(semBarra)) return true;
   return METODOS_EFICIENCIA.test(semBarra);
@@ -105,6 +140,10 @@ export const COOKIE_DESTINO = "scrutiniums_destino";
  * tem sessão só devolveriam o redirecionamento ao login.
  */
 export function prefetchDoLink(href: string): false | undefined {
-  const caminho = href.split(/[?#]/)[0] || "/";
-  return ehRotaPublica(caminho) ? undefined : false;
+  return exigeConta(href) ? false : undefined;
+}
+
+/** O destino do link (página ou arquivo) pede sessão? Query e âncora não contam. */
+export function exigeConta(href: string): boolean {
+  return !ehRotaPublica(href.split(/[?#]/)[0] || "/");
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { DetalhesFechaveis } from "@/components/layout/DetalhesFechaveis";
+import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { EIXOS, ROTA, ROTULO_SITUACAO, rotaCapitulo, type Capitulo } from "@/lib/saneamento/capitulos";
 
 /**
@@ -24,6 +25,7 @@ export function Cabecalho({ atual }: { atual: string }) {
             <li>
               <Link
                 href={ROTA}
+                prefetch={prefetchDoLink(ROTA)}
                 aria-current={atual === "" ? "page" : undefined}
                 className={`flex min-h-[44px] items-center border-b-2 px-3 text-sm ${atual === "" ? "border-obee text-carvao" : "border-transparent text-carvao-muted hover:text-carvao"}`}
               >
@@ -64,6 +66,7 @@ export function Cabecalho({ atual }: { atual: string }) {
             <li>
               <Link
                 href={`${ROTA}/comparar`}
+                prefetch={prefetchDoLink(`${ROTA}/comparar`)}
                 aria-current={atual === "comparar" ? "page" : undefined}
                 className={`flex min-h-[44px] items-center border-b-2 px-3 text-sm ${atual === "comparar" ? "border-obee text-carvao" : "border-transparent text-carvao-muted hover:text-carvao"}`}
               >
@@ -84,11 +87,11 @@ export function Cabecalho({ atual }: { atual: string }) {
               </summary>
               <div className="absolute inset-x-0 top-full z-40 mt-px hidden max-h-[75vh] overflow-y-auto border border-linha bg-superficie p-2 shadow-[0_8px_24px_rgba(26,29,33,0.12)] group-open:block">
                 <ul className="grid grid-cols-1 gap-x-6 sm:grid-cols-2">
-                  <li><Link href={ROTA} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Início</Link></li>
-                  <li><Link href={`${ROTA}/municipio`} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Meu município</Link></li>
-                  <li><Link href={`${ROTA}/comparar`} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Comparar municípios</Link></li>
-                  <li><Link href={`${ROTA}/internacional`} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Brasil no mundo</Link></li>
-                  <li><Link href={`${ROTA}/metodologia`} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Método e fontes</Link></li>
+                  <li><Link href={ROTA} prefetch={prefetchDoLink(ROTA)} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Início</Link></li>
+                  <li><Link href={`${ROTA}/municipio`} prefetch={prefetchDoLink(`${ROTA}/municipio`)} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Meu município</Link></li>
+                  <li><Link href={`${ROTA}/comparar`} prefetch={prefetchDoLink(`${ROTA}/comparar`)} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Comparar municípios</Link></li>
+                  <li><Link href={`${ROTA}/internacional`} prefetch={prefetchDoLink(`${ROTA}/internacional`)} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Brasil no mundo</Link></li>
+                  <li><Link href={`${ROTA}/metodologia`} prefetch={prefetchDoLink(`${ROTA}/metodologia`)} className="flex min-h-[44px] items-center px-3 text-sm text-carvao hover:bg-obee-fundo">Método e fontes</Link></li>
                 </ul>
                 <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2">
                   {EIXOS.map((e) => (
@@ -130,6 +133,7 @@ function Atalhos({ atual }: { atual: string }) {
     <>
       <Link
         href={`${ROTA}/municipio`}
+        prefetch={prefetchDoLink(`${ROTA}/municipio`)}
         aria-current={atual === "municipio" ? "page" : undefined}
         className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-obee-dark"
       >
@@ -137,6 +141,7 @@ function Atalhos({ atual }: { atual: string }) {
       </Link>
       <Link
         href={`${ROTA}/internacional`}
+        prefetch={prefetchDoLink(`${ROTA}/internacional`)}
         aria-current={atual === "internacional" ? "page" : undefined}
         className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-obee-dark"
       >
@@ -144,6 +149,7 @@ function Atalhos({ atual }: { atual: string }) {
       </Link>
       <Link
         href={`${ROTA}/metodologia`}
+        prefetch={prefetchDoLink(`${ROTA}/metodologia`)}
         aria-current={atual === "metodologia" ? "page" : undefined}
         className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-obee-dark"
       >
@@ -168,6 +174,7 @@ function ItemCapitulo({ c, atual }: { c: Capitulo; atual: string }) {
   return (
     <Link
       href={rotaCapitulo(c)}
+      prefetch={prefetchDoLink(rotaCapitulo(c))}
       aria-current={atual === c.slug ? "page" : undefined}
       className={`flex min-h-[44px] items-baseline gap-2 px-3 py-2 text-sm hover:bg-obee-fundo ${ativo ? "font-medium text-carvao" : "text-carvao"}`}
     >

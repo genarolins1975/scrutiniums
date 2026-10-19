@@ -1,3 +1,4 @@
+import { prefetchDoLink } from "@/lib/rotasPublicas";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { GRUPOS_GAS, PAGINAS_GAS } from "@/lib/gas/navegacao";
@@ -18,6 +19,7 @@ export function CabecalhoGas({ atual }: { atual: string }) {
             <li className="shrink-0">
               <Link
                 href="/gas-natural"
+                prefetch={prefetchDoLink("/gas-natural")}
                 aria-current={atual === "inicial" ? "page" : undefined}
                 className={`flex min-h-[44px] items-center whitespace-nowrap border-b-2 px-2 text-sm ${atual === "inicial" ? "border-gas text-carvao" : "border-transparent text-carvao-muted hover:text-carvao"}`}
               >
