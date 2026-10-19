@@ -10,6 +10,11 @@ import { SeloFrescor } from "@/components/dados/SeloFrescor";
 import { ACESSO } from "@/lib/acesso";
 import { fmtRefMes, geradoEmPublicado, resumoDiario } from "@/lib/dadosPublicos";
 import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
+import { prefetchDoLink } from "@/lib/rotasPublicas";
+import { goldJuros, rotuloModalidade } from "@/lib/credito/juros";
+import { janela as janelaJuros, num as numJuros } from "@/lib/credito/formato";
+import { paginaCredito } from "@/lib/credito/navegacao";
 
 /**
  * Vitrine pública do Observatório Brasileiro de Crédito.
@@ -100,6 +105,37 @@ function numerosVivos() {
   return { numeros: out.slice(0, 4), vintages };
 }
 
+/**
+ * "Para o seu caso": as consultas de juros do Crédito (páginas com conta), cada uma com um número real da publicação
+ * do Banco Central, para o leitor ver antes do clique o que encontra lá.
+ */
+function consultasDoLeitor() {
+  const juros = goldJuros();
+  const banco = paginaCredito("quanto-meu-banco-cobra");
+  const simulador = paginaCredito("simulador-da-parcela");
+  let prova: string | null = null;
+  if (juros) {
+    const pf = juros.modalidades.filter((m) => m.segmento === "PF");
+    const maior = [...(pf.length ? pf : juros.modalidades)].sort((a, b) => b.stats.n - a.stats.n)[0];
+    const instituicoes = new Set(juros.modalidades.flatMap((m) => m.ranking.map((r) => r.cnpj8))).size;
+    prova = `${instituicoes} instituições em ${juros.modalidades.length} modalidades. Em ${rotuloModalidade(maior.modalidade).toLowerCase()}, a mediana entre ${maior.stats.n} instituições foi de ${numJuros(maior.stats.mediana)}% ao ano na semana de ${janelaJuros(maior.janela)} (Banco Central).`;
+  }
+  return [
+    {
+      href: banco.href,
+      titulo: banco.titulo,
+      resumo: "A taxa de juros que o seu banco informou ao Banco Central na modalidade escolhida, ao lado da mediana e da distribuição entre as instituições. Taxa não é CET: a página diz o que fica de fora.",
+      prova,
+    },
+    {
+      href: simulador.href,
+      titulo: simulador.titulo,
+      resumo: "Parcela, total pago e juros pela tabela Price, com a taxa publicada para o seu banco ou a do seu contrato, e quanto o CET muda o custo. É cálculo, não previsão nem oferta.",
+      prova: null,
+    },
+  ];
+}
+
 /** As perguntas que o acervo responde — o mesmo catálogo didático da aplicação. */
 const AREAS = [
   {
@@ -173,6 +209,7 @@ const DIFERENCAS = [
 
 export default function ObservatorioPublicoPage() {
   const { numeros, vintages } = numerosVivos();
+  const consultas = consultasDoLeitor();
   const r = resumoDiario();
   const geradoEm = geradoEmPublicado();
 
@@ -221,6 +258,29 @@ export default function ObservatorioPublicoPage() {
                 Ver o resumo diário
                 <ComConta />
               </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------- para o seu caso: consultas de juros ---------------- */}
+        <section aria-labelledby="seu-caso" className="border-b border-linha bg-papel">
+          <div className="mx-auto max-w-page px-6 py-14 md:py-16">
+            <h2 id="seu-caso" className="font-serif text-3xl tracking-[-0.012em] text-carvao">
+              Para o seu caso
+            </h2>
+            <div className="mt-10 grid gap-x-10 gap-y-10 md:grid-cols-2">
+              {consultas.map((c) => (
+                <article key={c.href} className="border-t border-carvao pt-5">
+                  <h3 className="font-serif text-xl leading-snug text-carvao">
+                    <Link href={c.href} prefetch={prefetchDoLink(c.href)} className="underline decoration-linha underline-offset-8 transition-colors hover:text-bronze">
+                      {c.titulo}
+                      <SeloComConta href={c.href} className="font-sans" />
+                    </Link>
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{c.resumo}</p>
+                  {c.prova && <p className="mt-3 border-l-2 border-bronze pl-3 text-sm leading-relaxed text-carvao">{c.prova}</p>}
+                </article>
+              ))}
             </div>
           </div>
         </section>
@@ -287,9 +347,13 @@ export default function ObservatorioPublicoPage() {
               ))}
             </div>
             <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3">
-              <Link href="/observatorio/methodology" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
+              <Link
+                href="/observatorio-do-credito/metodologia"
+                prefetch={prefetchDoLink("/observatorio-do-credito/metodologia")}
+                className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze"
+              >
                 Metodologia e fontes
-                <ComConta />
+                <SeloComConta href="/observatorio-do-credito/metodologia" />
               </Link>
               <Link href="/glossario" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
                 Glossário
