@@ -28,12 +28,12 @@ export const dynamic = "force-static";
 const metadadosOriginais: Metadata = {
   title: "Observatório Brasileiro de Crédito",
   description:
-    "Crédito, instituições financeiras, Pix, juros e litigiosidade em uma plataforma gratuita: dados oficiais do Banco Central, CVM, IBGE e CNJ com metodologia aberta, distinguindo dado observado de indicador calculado.",
+    "Crédito, instituições financeiras, Pix, juros e litigiosidade em uma plataforma gratuita: dados oficiais do Banco Central, CVM, IBGE e CNJ com metodologia declarada, distinguindo dado observado de indicador calculado.",
   alternates: { canonical: "/observatorio-do-credito" },
   openGraph: {
     title: "Observatório Brasileiro de Crédito",
     description:
-      "O mercado de crédito brasileiro explicado com rigor: 12 fontes oficiais, metodologia aberta e gratuito.",
+      "O mercado de crédito brasileiro explicado com rigor: fontes oficiais, metodologia declarada e acesso gratuito.",
     type: "website",
   },
 };
@@ -52,6 +52,11 @@ function lerGold(nome: string): any {
     return null;
   }
 }
+/** Selo dos destinos fechados nesta página aberta: a promessa não pode parecer pública. */
+function ComConta() {
+  return <span className="ml-2 inline-block normal-case tracking-normal text-mineral">com conta</span>;
+}
+
 function nbr(v: number, dec = 1) {
   return v.toLocaleString("pt-BR", { minimumFractionDigits: dec, maximumFractionDigits: dec });
 }
@@ -88,7 +93,7 @@ function numerosVivos() {
     out.push({
       valor: `${nbr(n / 1e6, 1)} mi`,
       rotulo: "processos em temas bancários",
-      nota: `CNJ/DataJud · ${judicial.camada_nacional.n_tribunais} tribunais`,
+      nota: `CNJ/DataJud · ${judicial.camada_nacional.n_tribunais} tribunais · acervo coletado em ${String(judicial.coletado_em).slice(0, 10).split("-").reverse().join("/")}`,
     });
   }
   const vintages = meta?.vintages ?? {};
@@ -214,6 +219,7 @@ export default function ObservatorioPublicoPage() {
                 className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
               >
                 Ver o resumo diário
+                <ComConta />
               </Link>
             </div>
           </div>
@@ -259,6 +265,7 @@ export default function ObservatorioPublicoPage() {
                   className="rotulo inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
                 >
                   Ler o resumo completo
+                  <ComConta />
                 </Link>
               </p>
             </div>
@@ -282,12 +289,14 @@ export default function ObservatorioPublicoPage() {
             <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3">
               <Link href="/observatorio/methodology" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
                 Metodologia e fontes
+                <ComConta />
               </Link>
               <Link href="/glossario" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
                 Glossário
               </Link>
               <Link href="/dados" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
-                Indicadores abertos
+                Indicadores com definição
+                <ComConta />
               </Link>
             </div>
           </div>

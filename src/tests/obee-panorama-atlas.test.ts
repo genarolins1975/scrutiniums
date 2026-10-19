@@ -79,9 +79,10 @@ describe('Panorama municipal do Atlas',()=>{
     expect(hrefPainel(painel('trabalho'),'2611606','4106902')).toContain('ter=2611606&med=renda-mediana&per=2022');
     expect(hrefPainel(painel('mobilidade'),'2611606','4106902')).toContain('territorio=2611606');
   });
-  it('entrada apresenta limites materiais, fontes e a faixa do índice de resultados',()=>{
+  it('entrada apresenta limites materiais e fontes, sem a nota do índice, que fica no painel',()=>{
     const html=renderToStaticMarkup(createElement(PaginaEntradaEficiencia));
-    for(const text of ['Capacidade teórica','redes pública e privada','Reais nominais de julho de 2022','Não mede tratamento','Índice de resultados · referência 2022','Aprendizagem · Saeb','Sete perguntas sobre a vida em Recife','Até onde cada tema chega.'])expect(html).toContain(text);
+    for(const text of ['Capacidade teórica','redes pública e privada','Reais nominais de julho de 2022','Não mede tratamento','Aprendizagem · Saeb','Sete perguntas sobre a vida em Recife','Até onde cada tema chega.','/eficiencia-estatal/indice-de-resultados'])expect(html).toContain(text);
+    expect(html).not.toContain('Índice de resultados · referência 2022');expect(html).not.toContain('Nota do índice');
     for(const m of [...retrato.condicoes,...retrato.recursos])expect(html).toContain(m.fonteUrl.replaceAll('&','&amp;'));
     expect(html).not.toContain('escore validado:');expect(html).not.toContain('NaN');expect(html).not.toContain('undefined');
   });

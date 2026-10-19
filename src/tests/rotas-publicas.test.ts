@@ -32,6 +32,34 @@ describe("rotas públicas", () => {
     ]) expect(ehRotaPublica(p), p).toBe(false);
   });
 
+  it("abre só as gravuras decorativas, que o otimizador de imagem busca sem sessão", () => {
+    for (const p of ["/energia/arte/sistema-gravura-v1.webp", "/estado/arte/obee-gravura-v1.webp", "/obs/arte/economia-gravura-v1.webp"]) {
+      expect(ehRotaPublica(p), p).toBe(true);
+    }
+    for (const p of ["/energia/arte", "/energia/arte/", "/energia/arte/../gold/pld.json", "/energia/arte/x.json", "/energia/gold/pld.json", "/saneamento/arte/x.webp"]) {
+      expect(ehRotaPublica(p), p).toBe(false);
+    }
+  });
+
+  it("toda imagem servida pelo otimizador do next/image é pública", async () => {
+    const { readdirSync, readFileSync, statSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const arquivos: string[] = [];
+    const varrer = (d: string) => {
+      for (const n of readdirSync(d)) {
+        const c = join(d, n);
+        if (statSync(c).isDirectory()) varrer(c);
+        else if (/\.tsx$/.test(n)) arquivos.push(c);
+      }
+    };
+    varrer(join(process.cwd(), "src"));
+    const fontes = arquivos
+      .filter((a) => /from ["']next\/image["']/.test(readFileSync(a, "utf8")))
+      .flatMap((a) => [...readFileSync(a, "utf8").matchAll(/<Image[^>]*?src=\{?["'](\/[^"']+)["']/g)].map((m) => m[1]));
+    expect(fontes.length).toBeGreaterThan(0);
+    for (const f of fontes) expect(ehRotaPublica(f), f).toBe(true);
+  });
+
   it("não aceita prefixo parcial nem caminho disfarçado", () => {
     for (const p of ["/sobrecarga", "/entrarx", "/eficiencia-estatal/saude-capitais/metodos/extra", "/setor-eletrico/metodologiax", "/gas-natural/metodologiax"]) {
       expect(ehRotaPublica(p), p).toBe(false);

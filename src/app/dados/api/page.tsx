@@ -104,7 +104,7 @@ export default function ApiPage() {
           <p className="mt-2 text-sm text-mineral">{itens.length} arquivos no gold publicado neste deploy.</p>
           <div className="mt-4 overflow-x-auto border border-linha bg-papel">
             <table className="w-full text-sm">
-              <caption className="sr-only">Arquivos JSON da API pública, com tamanho, data de processamento e chaves de primeiro nível</caption>
+              <caption className="sr-only">Arquivos JSON da API de leitura, com tamanho, data de processamento e chaves de primeiro nível</caption>
               <thead>
                 <tr className="text-left text-xs text-mineral">
                   <th scope="col" className="p-3 font-normal">Arquivo</th>

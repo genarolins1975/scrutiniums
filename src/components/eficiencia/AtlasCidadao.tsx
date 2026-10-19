@@ -1,16 +1,14 @@
 'use client';
 
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useState} from 'react';
 import Link from 'next/link';
 import dados from '@/lib/eficiencia/atlas-resumo.json';
 import styles from './AtlasCidadao.module.css';
-import {IndiceResultados} from './IndiceResultados';
-import {createIndice, STATUS_LABELS, type IndiceSnapshot} from '@/lib/eficiencia/indice-v4-nucleo';
 import {FrequenciaEscolar} from './FrequenciaEscolar';
 import frequencia from '@/lib/eficiencia/frequencia-escolar.json';
 import {RetratoCapital} from './entrada/RetratoCapital';
 import {PerguntasCapital} from './entrada/PerguntasCapital';
-import {csv, naCapital, type RetratoDados} from '@/lib/eficiencia/entrada-nucleo';
+import {csv, daCapital, naCapital, type RetratoDados} from '@/lib/eficiencia/entrada-nucleo';
 import entrada from './entrada/Entrada.module.css';
 
 type Selection = {place: string; reference: string; metric: 'frequencia' | 'saeb'; age: string};
@@ -27,10 +25,10 @@ function selectionFromUrl(ids: string[]): Selection {
 }
 
 /**
- * Entrada do OBEE organizada por perguntas. `retrato` e `indice` chegam do servidor
- * (página com login); sem `indice`, a seção da nota não aparece.
+ * Entrada do OBEE organizada por perguntas. `retrato` chega do servidor. A entrada mostra
+ * só as posições; a nota experimental fica no painel do índice (decisão do dono de 19/10/2026).
  */
-export function AtlasCidadao({retrato, indice = null, cobertura = null}: {retrato: RetratoDados; indice?: IndiceSnapshot | null; cobertura?: React.ReactNode}) {
+export function AtlasCidadao({retrato, cobertura = null}: {retrato: RetratoDados; cobertura?: React.ReactNode}) {
   const ids = retrato.capitais.map(c => c.id);
   const [selection, setSelection] = useState<Selection>(DEFAULT);
   useEffect(() => {
@@ -48,9 +46,6 @@ export function AtlasCidadao({retrato, indice = null, cobertura = null}: {retrat
   }
   const a = retrato.capitais.find(c => c.id === selection.place) ?? retrato.capitais[0];
   const b = retrato.capitais.find(c => c.id === selection.reference) ?? retrato.capitais[1];
-  const calculo = useMemo(() => indice ? createIndice(indice) : null, [indice]);
-  const ra = calculo?.row(a.id), rb = calculo?.row(b.id), par = calculo?.stability(a.id, b.id);
-  const nota = indice && ra && rb && par ? {a: ra.score, b: rb.score, faixaA: ra.band, estabilidade: STATUS_LABELS[par.status], ano: indice.reference_year} : null;
   const saeb = [a, b].map(c => ({c, v: dados.cities.find(x => x.id === c.id)?.value ?? null}));
   const max = Math.max(1, ...dados.cities.map(r => r.value ?? 0));
   const diff = saeb[0].v !== null && saeb[1].v !== null ? saeb[0].v - saeb[1].v : null;
@@ -62,7 +57,7 @@ export function AtlasCidadao({retrato, indice = null, cobertura = null}: {retrat
   return <div className={styles.atlas}>
     <RetratoCapital a={a} b={b} condicoes={retrato.condicoes} capitais={retrato.capitais}
       onSelect={(campo, id) => select(campo === 'territorio' ? {...selection, place: id} : {...selection, reference: id})}
-      fonteContornos={retrato.fonteContornos} fontePopulacao={retrato.fontePopulacao} nota={nota}/>
+      fonteContornos={retrato.fonteContornos} fontePopulacao={retrato.fontePopulacao}/>
     <div className={entrada.wrap}>
 
     <PerguntasCapital id="perguntas" eyebrow="01 · A vida na capital" titulo={`Sete perguntas sobre a vida ${naCapital(a.nome)}`}
@@ -76,8 +71,6 @@ export function AtlasCidadao({retrato, indice = null, cobertura = null}: {retrat
       medidas={retrato.recursos} a={a} b={b} capitais={retrato.capitais}
       onReference={id => select({...selection, reference: id})}/>
 
-    {indice && <IndiceResultados data={indice} place={a.id} reference={b.id} onReference={reference => select({...selection, reference})}/>}
-
     <section id="atlas-comparacao" className={styles.section} aria-labelledby="atlas-compare-title"><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>03 · Aprofundar a educação</p><h2 id="atlas-compare-title">Escola por idade e aprendizagem.</h2></div><p>{selection.metric === 'frequencia' ? `${frequencia.source} · referência ${frequencia.period}` : `${dados.education.source} · referência ${dados.education.period}`}</p></div>
       <fieldset className={styles.indicatorChoice}><legend>Escolha a medida de educação</legend>{(['frequencia', 'saeb'] as const).map(m => <button type="button" key={m} aria-pressed={selection.metric === m} onClick={() => select({...selection, metric: m})}>{m === 'frequencia' ? `Frequência escolar · ${frequencia.period}` : `Aprendizagem · Saeb ${dados.education.period}`}</button>)}</fieldset>
       {selection.metric === 'frequencia' ? <FrequenciaEscolar place={a.id} reference={b.id} age={selection.age} onAgeChange={age => select({...selection, age})}/> :
@@ -88,7 +81,7 @@ export function AtlasCidadao({retrato, indice = null, cobertura = null}: {retrat
 
     {cobertura}
 
-    <section className={styles.method} aria-labelledby="atlas-method-title"><div><p className={styles.eyebrow}>05 · Da evidência ao escore</p><h2 id="atlas-method-title">Uma nota precisa ser explicável.</h2><p>O modelo experimental dos serviços reúne três perguntas e ainda não produz nota. É distinto do índice de resultados na vida dos moradores, que tem nota experimental para as 26 capitais.</p></div><ol>{[['Acesso', 'Quem precisa consegue ser atendido?'], ['Resposta', 'A entrega chega a tempo e tem continuidade?'], ['Qualidade', 'O serviço cumpre o padrão esperado?']].map(([title, text], i) => <li key={title}><span>0{i + 1}</span><div><h3>{title}</h3><p>{text}</p></div></li>)}</ol></section>
+    <section className={styles.method} aria-labelledby="atlas-method-title"><div><p className={styles.eyebrow}>05 · Da evidência ao escore</p><h2 id="atlas-method-title">Uma nota precisa ser explicável.</h2><p>O modelo experimental dos serviços reúne três perguntas e ainda não produz nota. É distinto do índice de resultados na vida dos moradores, que tem nota experimental para as 26 capitais, com faixa, contribuições e estabilidade de cada par, num painel próprio.</p><p><Link href={`/eficiencia-estatal/indice-de-resultados?territorio=${a.id}&comparador=${b.id}`}>Ver o índice de resultados {daCapital(a.nome)} ↗</Link></p></div><ol>{[['Acesso', 'Quem precisa consegue ser atendido?'], ['Resposta', 'A entrega chega a tempo e tem continuidade?'], ['Qualidade', 'O serviço cumpre o padrão esperado?']].map(([title, text], i) => <li key={title}><span>0{i + 1}</span><div><h3>{title}</h3><p>{text}</p></div></li>)}</ol></section>
     </div>
   </div>;
 }

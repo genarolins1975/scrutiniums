@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1281,
-    "fontes_sha256": "33d6feee43bfc6f444f758f3687f5bb888f9877671db8612af62efb6270fb2a2",
-    "pendencias_sha256": "b026960e02fda747a2f0cd6acf74c6a9f671955660f1f8aae05aa8759335b0b4",
+    "arquivos_analisados": 1283,
+    "fontes_sha256": "084f82401f84efff44b6b0defd6590fdc5490e05832e13ebf8e81adb8e912094",
+    "pendencias_sha256": "d5494fb5c8aa01ce9c79f7dfaba9cbe458d0e72e9b52b041654eaae6dc404700",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -336,19 +336,19 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 226,
+        "arquivos": 228,
         "candidatos": {
-          "jsx_text": 2941,
+          "jsx_text": 2942,
           "atributos": 1021,
-          "props": 1302,
-          "outros_literais": 7448,
-          "templates": 726,
-          "expressoes_nao_resolvidas": 7570,
-          "chaves_objetos": 4600
+          "props": 1304,
+          "outros_literais": 7463,
+          "templates": 727,
+          "expressoes_nao_resolvidas": 7575,
+          "chaves_objetos": 4604
         },
         "exclusoes": {
-          "importacoes": 872,
-          "atributos_tecnicos": 3185,
+          "importacoes": 877,
+          "atributos_tecnicos": 3192,
           "tipos": 424
         },
         "scripts_embutidos": {},
@@ -358,17 +358,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 25608,
+        "candidatos_nao_catalogados": 25636,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 68,
+        "paginas_pt": 69,
         "paginas_en": 0,
         "handlers": 3,
         "templates_com_parametros": 7,
-        "paginas_pt_literais": 61,
+        "paginas_pt_literais": 62,
         "paginas_pt_fora_do_adaptador": 7,
-        "paginas_pt_literais_sem_irma": 61,
+        "paginas_pt_literais_sem_irma": 62,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false
@@ -386,18 +386,18 @@
       "interface": {
         "arquivos": 52,
         "candidatos": {
-          "jsx_text": 573,
+          "jsx_text": 576,
           "atributos": 110,
           "props": 72,
-          "outros_literais": 1275,
-          "templates": 67,
-          "expressoes_nao_resolvidas": 863,
-          "chaves_objetos": 628
+          "outros_literais": 1271,
+          "templates": 68,
+          "expressoes_nao_resolvidas": 870,
+          "chaves_objetos": 632
         },
         "exclusoes": {
-          "importacoes": 185,
-          "atributos_tecnicos": 480,
-          "tipos": 42
+          "importacoes": 186,
+          "atributos_tecnicos": 482,
+          "tipos": 43
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -406,7 +406,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 3588,
+        "candidatos_nao_catalogados": 3599,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -530,18 +530,18 @@
       "interface": {
         "arquivos": 11,
         "candidatos": {
-          "jsx_text": 19,
+          "jsx_text": 20,
           "atributos": 194,
           "props": 16,
-          "outros_literais": 12823,
+          "outros_literais": 12825,
           "templates": 2610,
-          "expressoes_nao_resolvidas": 8869,
+          "expressoes_nao_resolvidas": 8870,
           "chaves_objetos": 5036,
           "textos": 176
         },
         "exclusoes": {
           "importacoes": 21,
-          "atributos_tecnicos": 504,
+          "atributos_tecnicos": 505,
           "tipos": 0,
           "estilos": 1,
           "comentarios": 2
@@ -557,7 +557,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 29743,
+        "candidatos_nao_catalogados": 29747,
         "percentual_traduzido": null
       },
       "rotas": {
