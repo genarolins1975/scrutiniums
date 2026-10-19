@@ -16,6 +16,8 @@ import { escalaContas, fluxoImposto } from "@/lib/observatorios/entradas/contas"
 import { cadeias, escalaEnergia } from "@/lib/observatorios/entradas/energia";
 import { circuitoCredito, escalaEconomia } from "@/lib/observatorios/entradas/economia";
 import { portas } from "@/lib/perguntas/portas";
+import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { FRESCOR_DOS_OBSERVATORIOS } from "@/lib/frescor/entradas";
 
 /**
  * Entradas com conta dos seis observatórios, cada um reunindo várias
@@ -98,6 +100,8 @@ export default function EntradaObservatorioPage({ params }: { params: { id: stri
         artefato={c.artefato}
         caminhos={porta?.caminhos ?? []}
         metodo={c.metodo}
+        frescor={<FaixaFrescor dominios={FRESCOR_DOS_OBSERVATORIOS[id]} conteiner="mx-auto max-w-page px-6" />}
+        frescorMetodo={<FaixaFrescor dominios={FRESCOR_DOS_OBSERVATORIOS[id]} variante="metodo" />}
       />
       <Footer />
     </>

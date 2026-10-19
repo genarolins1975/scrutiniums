@@ -10,6 +10,8 @@ import { capturasTerritorio, cartoesTerritorio, escalaTerritorio, numeroDoCaminh
 import { portas } from "@/lib/perguntas/portas";
 import { lerQueimadasMunicipios } from "@/lib/territorio/queimadas";
 import { frase, lacunasTerritorio } from "@/lib/territorio/metodo";
+import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { FRESCOR_DOS_OBSERVATORIOS } from "@/lib/frescor/entradas";
 
 export const dynamic = "force-static";
 
@@ -47,6 +49,7 @@ export default function EntradaTerritorio() {
   return (
     <main className="bg-papel">
       <section aria-labelledby="entrada-titulo" className="border-b border-linha bg-marfim">
+        <FaixaFrescor dominios={FRESCOR_DOS_OBSERVATORIOS["territorio-e-clima"]} conteiner="mx-auto max-w-page px-6" />
         <div className="mx-auto max-w-page px-6 pb-12 pt-10 md:pb-16 md:pt-14">
           <nav aria-label="Trilha" className="text-sm text-carvao-muted">
             <Link href="/app/observatorios" prefetch={false} className={link}>Observatórios</Link>
@@ -254,6 +257,7 @@ export default function EntradaTerritorio() {
               <li><Link href="/perguntas/territorio-e-clima" className={`inline-flex min-h-[44px] items-center text-carvao ${link}`}>Resumo aberto do observatório</Link></li>
             </ul>
           </div>
+          <div className="mt-6"><FaixaFrescor dominios={FRESCOR_DOS_OBSERVATORIOS["territorio-e-clima"]} variante="metodo" /></div>
         </details>
       </section>
     </main>
