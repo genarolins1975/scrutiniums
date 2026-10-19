@@ -1,3 +1,4 @@
+import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { TextoDaColuna } from "@/components/energia/TabelaInterativa";
 
@@ -73,6 +74,7 @@ export function TabelaDados({
       {csv && (
         <a href={csv} download className="rotulo mt-3 inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
           {tx("Baixar série completa (CSV)", "Download full series (CSV)")}
+          <SeloComConta href={csv} />
         </a>
       )}
     </details>

@@ -1,5 +1,7 @@
 "use client";
 
+import { ExportacaoComConta } from "@/components/acesso/ExportacaoComConta";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { useDeferredValue, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl, type Esquema } from "@/lib/energia/estadoUrl";
@@ -426,22 +428,26 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
           {faixa}
         </p>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-0">
-          <span className="text-xs text-carvao-muted">{tx("Baixar o recorte atual:", "Download the current selection:")}</span>
-          {(["csv", "xlsx"] as const).map((f) => (
-            <button
-              key={f}
-              type="button"
-              onClick={() => exportar(f)}
-              aria-disabled={filtradas.length === 0 || undefined}
-              aria-label={tx(`Baixar o recorte atual em ${f.toUpperCase()}`, `Download the current selection as ${f.toUpperCase()}`)}
-              className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao"
-            >
-              {f.toUpperCase()}
-            </button>
-          ))}
+          {/* exportação montada no navegador: na página aberta, só com sessão */}
+          <ExportacaoComConta rotulo={tx("Baixar o recorte atual (CSV, XLSX)", "Download the current selection (CSV, XLSX)")}>
+            <span className="text-xs text-carvao-muted">{tx("Baixar o recorte atual:", "Download the current selection:")}</span>
+            {(["csv", "xlsx"] as const).map((f) => (
+              <button
+                key={f}
+                type="button"
+                onClick={() => exportar(f)}
+                aria-disabled={filtradas.length === 0 || undefined}
+                aria-label={tx(`Baixar o recorte atual em ${f.toUpperCase()}`, `Download the current selection as ${f.toUpperCase()}`)}
+                className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao"
+              >
+                {f.toUpperCase()}
+              </button>
+            ))}
+          </ExportacaoComConta>
           {p.arquivoCompleto && (
             <a href={p.arquivoCompleto.url} download className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
               {p.arquivoCompleto.rotulo}
+              <SeloComConta href={p.arquivoCompleto.url} />
             </a>
           )}
         </div>

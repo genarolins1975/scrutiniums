@@ -1,3 +1,5 @@
+import { prefetchDoLink } from "@/lib/rotasPublicas";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -14,6 +16,7 @@ import { MOTIVO_TEXTO, NATUREZA_CURTA, SITUACAO_AGUA, SITUACAO_ESGOTO } from "@/
 import { prestadorComTarifa } from "@/lib/saneamento/tarifas";
 import { ANOS_SISAGUA, LIMITE_RAZAO_TARIFA_SOCIAL, razaoTarifaSocial } from "@/lib/saneamento/medidas";
 import type { Agregado, FichaMunicipio, Municipio } from "@/lib/saneamento/tipos";
+import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
 
 export const dynamicParams = true;
 export const revalidate = false;
@@ -177,11 +180,13 @@ export default function Pagina({ params }: { params: { id: string } }) {
   return (
     <>
       <Cabecalho atual="municipio" />
+      <AvisoConsultaAberta className="ed-pagina" comConta="A comparação entre municípios, o atlas, as fichas dos prestadores e os demais capítulos do observatório" />
       <MarcaVisita secao="saneamento:municipio" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">
         <p className="text-sm">
-          <Link href={`${ROTA}/municipio`} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
+          <Link href={`${ROTA}/municipio`} prefetch={prefetchDoLink(`${ROTA}/municipio`)} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
             ← Buscar outro município
+            <SeloComConta href={`${ROTA}/municipio`} />
           </Link>
         </p>
         <header className="mb-8 border-b border-linha pb-8">
@@ -208,11 +213,13 @@ export default function Pagina({ params }: { params: { id: string } }) {
             </div>
           </dl>
           <p className="mt-5 flex flex-wrap gap-x-6 text-sm">
-            <Link href={`${ROTA}/comparar?m=${m.id}`} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
+            <Link href={`${ROTA}/comparar?m=${m.id}`} prefetch={prefetchDoLink(`${ROTA}/comparar?m=${m.id}`)} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
               Comparar com outros municípios
+              <SeloComConta href={`${ROTA}/comparar?m=${m.id}`} />
             </Link>
-            <Link href={`${ROTA}/acesso?uf=${m.uf}&m=${m.id}`} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
+            <Link href={`${ROTA}/acesso?uf=${m.uf}&m=${m.id}`} prefetch={prefetchDoLink(`${ROTA}/acesso?uf=${m.uf}&m=${m.id}`)} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
               Ver no atlas
+              <SeloComConta href={`${ROTA}/acesso?uf=${m.uf}&m=${m.id}`} />
             </Link>
           </p>
         </header>
@@ -270,8 +277,9 @@ export default function Pagina({ params }: { params: { id: string } }) {
                     <p className="rotulo text-mineral">{v.servico === "agua" ? "Água" : "Esgoto"}</p>
                     <p className="mt-1 font-serif text-lg text-carvao">
                       {p && p.abrangencia !== "Local" ? (
-                        <Link href={`${ROTA}/prestadores/${p.id}`} className="underline decoration-linha underline-offset-4 hover:decoration-obee">
+                        <Link href={`${ROTA}/prestadores/${p.id}`} prefetch={prefetchDoLink(`${ROTA}/prestadores/${p.id}`)} className="underline decoration-linha underline-offset-4 hover:decoration-obee">
                           {p.nome}
+                          <SeloComConta href={`${ROTA}/prestadores/${p.id}`} />
                         </Link>
                       ) : (
                         p?.nome
@@ -309,8 +317,9 @@ export default function Pagina({ params }: { params: { id: string } }) {
         <Secao id="conta" titulo="Quanto custa e há tarifa social?" texto="O que o prestador declarou ao SINISA sobre tarifa mínima e tarifa social. A conta simulada só existe para tarifas verificadas em atos oficiais.">
           {comTarifa ? (
             <p className="mb-4 text-sm">
-              <Link href={`${ROTA}/preco-regulado/simulador?t=${comTarifa}`} className="inline-flex min-h-[44px] items-center border border-obee px-4 font-medium text-obee-dark hover:bg-obee-fundo">
+              <Link href={`${ROTA}/preco-regulado/simulador?t=${comTarifa}`} prefetch={prefetchDoLink(`${ROTA}/preco-regulado/simulador?t=${comTarifa}`)} className="inline-flex min-h-[44px] items-center border border-obee px-4 font-medium text-obee-dark hover:bg-obee-fundo">
                 Simular a conta com a tarifa verificada deste prestador
+                <SeloComConta href={`${ROTA}/preco-regulado/simulador?t=${comTarifa}`} />
               </Link>
             </p>
           ) : (
@@ -367,8 +376,9 @@ export default function Pagina({ params }: { params: { id: string } }) {
           <Nota>
             Valores declarados pelo prestador, sem verificação do Observatório. A razão usa a soma das economias de todos os prestadores de água do
             município. Economia não é família: a razão compara contagens diferentes e não diz quantas famílias elegíveis recebem o desconto.{" "}
-            <Link href={`${ROTA}/tarifa-social#cobertura`} className="text-obee-dark underline underline-offset-2">
+            <Link href={`${ROTA}/tarifa-social#cobertura`} prefetch={prefetchDoLink(`${ROTA}/tarifa-social#cobertura`)} className="text-obee-dark underline underline-offset-2">
               Como ler a razão
+              <SeloComConta href={`${ROTA}/tarifa-social#cobertura`} />
             </Link>
             . O valor médio declarado da tarifa social (GFI1037) tem registros incompatíveis com uma conta mensal e não é publicado. Fonte do
             CadÚnico: MDS, SAGI, API MI Social.
@@ -484,8 +494,9 @@ export default function Pagina({ params }: { params: { id: string } }) {
           <Nota>
             Análise é o exame de um parâmetro. Com poucas análises, uma única amostra muda muito a proporção. Sem registro não quer dizer água boa
             nem ruim: é falta de informação no sistema.{" "}
-            <Link href={`${ROTA}/continuidade?uf=${m.uf}&m=${m.id}#qualidade-atlas`} className="text-obee-dark underline underline-offset-2">
+            <Link href={`${ROTA}/continuidade?uf=${m.uf}&m=${m.id}#qualidade-atlas`} prefetch={prefetchDoLink(`${ROTA}/continuidade?uf=${m.uf}&m=${m.id}#qualidade-atlas`)} className="text-obee-dark underline underline-offset-2">
               Ver no atlas da qualidade da água
+              <SeloComConta href={`${ROTA}/continuidade?uf=${m.uf}&m=${m.id}#qualidade-atlas`} />
             </Link>
             .
           </Nota>
