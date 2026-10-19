@@ -31,7 +31,7 @@ import math
 import os
 import subprocess
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -458,6 +458,7 @@ def _rodadas(registros):
             "atraso_min": atraso, "atraso_origem": origem_atraso, "no_prazo": atraso == 0 if atraso is not None else None,
             "modo": modo,
             "executor": (r0.get("execucao") or {}).get("executor"), "run_url": (r0.get("execucao") or {}).get("run_url"),
+            "gatilho": (r0.get("execucao") or {}).get("gatilho"),
             "tipos": sorted({x["tipo"] for x in rs}), "modelos": sorted({x["modelo"] for x in rs}),
             "versao_codigo": r0.get("versao_codigo"), "celulas": len(rs), "com_numero": com, "falha": falha,
             "motivos": sorted({x["motivo"] for x in rs if x.get("motivo")}),
@@ -513,17 +514,21 @@ def _rotina(rodadas, agora):
     crons = _crons_do_workflow()
     return {
         "workflow": WORKFLOW, "cron_utc": crons,
-        "horarios": (f"Gatilhos às {', '.join(_hora_brasilia(x) for x in crons)} de Brasília: o primeiro que rodar confere o dado, "
+        "horarios": (f"Gatilhos do cron do GitHub às {', '.join(_hora_brasilia(x) for x in crons)} de Brasília, que o GitHub pode "
+                     "atrasar em horas, e, quando configurado, um agendador externo que dispara o mesmo workflow no horário "
+                     "(docs/observatorios/energia/previsao-disparo-externo.md). O primeiro que rodar confere o dado, "
                      "tenta coletar o que falta antes do corte, espera as 07h00 e emite com o dado como estava no corte; os "
                      "seguintes ficam na fila do mesmo grupo de concorrência, partem do main atual (não do commit em que o "
                      "gatilho foi criado), conferem de novo logo antes de emitir e saem ao ver a rodada registrada. O arquivo "
-                     "de emissões é commitado em seguida (prazo 08h00). Pré-carga: coleta noturna das 20h40 "
-                     "(atualizar-energia.yml). Comportamento ainda não comprovado por execução agendada real."),
+                     "de emissões é commitado em seguida (prazo 08h00). Pré-carga: coleta noturna (atualizar-energia.yml). "
+                     "O gatilho de cada rodada fica no arquivo; a comprovação segue o critério publicado."),
         "fuso": "America/Sao_Paulo; o cron do GitHub é em UTC e supõe UTC−3 (sem horário de verão desde 2019). Se o horário de "
                 "verão voltar, o cron precisa mudar; a emissão calcula o corte pelo fuso e marca o atraso de qualquer forma.",
         "inicio_operacao_agendada": inicio,
         "verificado_em": cal.utc_iso(agora), "dias_vencidos_ate": ate.isoformat(),
         "execucoes_agendadas": len(agendadas), "no_prazo": len(no_prazo),
+        # rodadas agendadas por gatilho registrado (cron do GitHub, agendador externo; "não registrado" antes de 19/10/2026)
+        "agendadas_por_gatilho": dict(sorted(Counter(r.get("gatilho") or "não registrado" for r in agendadas).items())),
         "atrasadas": sum(1 for r in agendadas if r["no_prazo"] is False and not r["falha"]),
         "falhas": sum(1 for r in agendadas if r["falha"]), "dias_sem_rodada": faltantes[-60:],
         "dias_sem_rodada_total": len(faltantes),
