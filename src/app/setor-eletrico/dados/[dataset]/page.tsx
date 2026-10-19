@@ -553,7 +553,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                       "Each family records the captured versions of each resource. An identical recapture does not create a new version within that family. The table includes current and replaced versions.",
                     )}
                   </p>
-                  {f?.resumo_capturas && (
+                  {f?.resumo_capturas && !capturasIndisponiveis && (
                     <p className="max-w-prose2 text-sm text-carvao-muted" data-resumo-capturas="true">
                       {tx(
                         `${plural(f.resumo_capturas.total_historico, "registro de captura", "registros de captura")}, dos quais ${plural(f.resumo_capturas.total_capturas, "vigente", "vigentes")}.`,

@@ -88,6 +88,9 @@ describe("histórico completo na ficha, além da amostra do JSON", () => {
     expect(html).toContain("histórico de capturas deste conjunto está indisponível");
     expect(html).not.toContain("antigo");
     expect(html).not.toContain('data-sem-capturas="true"');
+    // sem totais do resumo nem download que a própria ficha declara incompatível
+    expect(html).not.toContain('data-resumo-capturas="true"');
+    expect(html).not.toContain('href="/energia/series/capturas_fontes.csv"');
   });
 
   it("mantém duas famílias com o mesmo recurso e mostra suas versões separadamente", () => {
