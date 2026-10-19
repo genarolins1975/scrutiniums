@@ -248,7 +248,7 @@ export default async function AdminPage() {
                 {stats.sugestoesRecentes.map((sg) => (
                   <li key={sg.id} className="border border-linha bg-marfim p-5">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                      <span className="rotulo text-bronze">{SUGESTAO_LABELS[sg.categoria] ?? sg.categoria}</span>
+                      <span className="rotulo text-bronze-dark">{SUGESTAO_LABELS[sg.categoria] ?? sg.categoria}</span>
                       <span className="text-xs text-mineral">
                         {sg.email ?? "conta removida"} · {fmtDateTime(sg.createdAt)}
                       </span>

@@ -238,7 +238,7 @@ export default function ObservatorioPublicoPage() {
             <div className="mt-12 grid gap-x-10 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
               {AREAS.map((a) => (
                 <article key={a.titulo}>
-                  <p className="rotulo text-bronze">{a.titulo}</p>
+                  <p className="rotulo text-bronze-dark">{a.titulo}</p>
                   <h3 className="mt-3 font-serif text-lg leading-snug text-carvao">{a.pergunta}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{a.detalhe}</p>
                 </article>
