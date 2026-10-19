@@ -12,6 +12,8 @@ import { lerQueimadasMunicipios } from "@/lib/territorio/queimadas";
 import { frase, lacunasTerritorio } from "@/lib/territorio/metodo";
 import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
 import { FRESCOR_DOS_OBSERVATORIOS } from "@/lib/frescor/entradas";
+import { leva2Aprovada } from "@/lib/rotasPublicas";
+import { ROTA_FOCOS_MUNICIPIO } from "@/lib/territorio/consultaFocos";
 
 export const dynamic = "force-static";
 
@@ -101,6 +103,12 @@ export default function EntradaTerritorio() {
             <p className="mt-2">
               <Link href="/territorio/queimadas" prefetch={false} className={`inline-flex min-h-[44px] items-center text-sm text-carvao ${link}`}>Rankings de municípios no painel de queimadas</Link>
             </p>
+            {/* consulta da leva 2 (src/lib/rotasPublicas.ts): o link só entra com a data da aprovação do dono */}
+            {leva2Aprovada("teve-fogo-perto-de-mim") && (
+              <p data-leva2="teve-fogo-perto-de-mim">
+                <Link href={ROTA_FOCOS_MUNICIPIO} className={`inline-flex min-h-[44px] items-center text-sm text-carvao ${link}`}>A ficha de cada município, aberta para quem não tem conta</Link>
+              </p>
+            )}
           </div>
           <div className="min-w-0 lg:col-span-7">
             {anoMun ? <FocosNoMunicipio ano={anoMun} /> : <p className="border border-linha bg-papel p-5 text-sm text-carvao">Consulta por município indisponível nesta publicação.</p>}

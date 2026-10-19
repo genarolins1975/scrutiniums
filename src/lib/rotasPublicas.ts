@@ -5,6 +5,8 @@
  * Crédito, as páginas de método e glossário, as institucionais e o fluxo de
  * entrada e cadastro são abertos. Desde 19/10/2026 (estratégia "aberto e com
  * conta", leva 1), também as consultas pessoais listadas em CONSULTAS_ABERTAS.
+ * A leva 2 (LEVA_2, abaixo) está preparada e desligada: cada item só abre
+ * quando a data da aprovação do dono é registrada nele.
  * Todo o resto, inclusive painéis, downloads, API, feeds e gráficos
  * incorporáveis, exige sessão. A sessão só nasce depois
  * da verificação do telefone (api/onboarding/phone/check), então sessão válida
@@ -14,6 +16,7 @@
  * e o sitemap leem daqui. Código puro, compatível com o Edge Runtime.
  */
 import { parDeIdioma } from "./i18n-rotas";
+import type { ObservatorioId } from "./observatorios/lista";
 
 /** Caminhos abertos exatamente como escritos. */
 const EXATAS = new Set([
@@ -80,6 +83,126 @@ const ARQUIVOS_DAS_CONSULTAS = new Set([
   "/energia/geo/uf.json",
 ]);
 
+/**
+ * Leva 2 da estratégia "aberto e com conta" (docs/BANCA_2026-10-19.md, Onda 2,
+ * tabela "Ferramentas candidatas à abertura, rota por rota"). Preparada e
+ * desligada: enquanto `aprovadaEm` for null, nenhuma rota e nenhum arquivo do
+ * item é público, nenhuma página aberta o lista e o sitemap não o inclui.
+ *
+ * Ligar um item é uma decisão registrada do dono: trocar `aprovadaEm: null`
+ * pela data da aprovação (AAAA-MM-DD) nesse item, e mais nada. O resto segue
+ * sozinho: o middleware e o sitemap (ehRotaPublica), o bloco "Para o seu caso"
+ * e os métodos de /perguntas/[porta] (src/lib/perguntas/leva2.ts), o artefato
+ * da porta e o link da navegação do tema. Item aprovado cuja rota ainda não
+ * existe, ou cujo arquivo não está em public/, reprova src/tests/leva2.test.ts.
+ *
+ * Abertura por caminho exato, como na leva 1: subpáginas, pastas e downloads
+ * seguem fechados. `arquivos` são os que a consulta busca no navegador, um a
+ * um; o que a página lê no servidor não precisa abrir.
+ */
+export type IdLeva2 = "quanto-meu-banco-cobra" | "teve-fogo-perto-de-mim" | "cem-reais-dos-impostos" | "metodologia-do-credito";
+
+export type ItemLeva2 = {
+  id: IdLeva2;
+  /** A pergunta do curioso, como aparece na camada aberta. */
+  pergunta: string;
+  /** O que a consulta mostra, em uma frase. */
+  resumo: string;
+  /**
+   * Como entra na camada aberta quando aprovado: consulta no bloco "Para o seu
+   * caso", página de método na lista de métodos, ou artefato dentro da própria
+   * página da porta (que já é aberta, por isso sem rota própria).
+   */
+  forma: "consulta" | "metodo" | "artefato";
+  /** Páginas abertas de "O Brasil em perguntas" (/perguntas/[porta]) que mostram o item. */
+  portas: readonly ObservatorioId[];
+  /** Rotas abertas pelo caminho exato; a primeira é o destino do link. */
+  rotas: readonly string[];
+  /** Ficha por município: o prefixo seguido de "/" e do código IBGE de sete dígitos. */
+  fichasIbge?: string;
+  /** Arquivos que a consulta busca no navegador, cada um pelo endereço exato. */
+  arquivos: readonly string[];
+  /** Data da aprovação do dono (AAAA-MM-DD); null = preparada, aguardando aprovação. */
+  aprovadaEm: string | null;
+};
+
+export const LEVA_2: readonly ItemLeva2[] = Object.freeze([
+  {
+    // rota do pacote Q1 da Onda 2 (página Next a partir de public/obs/data/gold/juros.json, lida no servidor);
+    // se a versão final buscar arquivo no navegador, ele entra em `arquivos` antes da aprovação
+    id: "quanto-meu-banco-cobra",
+    pergunta: "Quanto meu banco cobra?",
+    resumo: "A taxa média da modalidade escolhida no seu banco, comparada com a mediana das instituições, com o aviso de que taxa média não é o CET.",
+    forma: "consulta",
+    portas: ["familias", "economia"],
+    rotas: ["/observatorio-do-credito/quanto-meu-banco-cobra"],
+    arquivos: [],
+    aprovadaEm: null,
+  },
+  {
+    // a ficha é montada no servidor a partir da gold municipal: a gold inteira (arquivo completo) continua com conta;
+    // no navegador, a busca só baixa o índice de nomes do IBGE, que já é aberto pela leva 1
+    id: "teve-fogo-perto-de-mim",
+    pergunta: "Teve fogo perto de mim?",
+    resumo: "Os focos de calor no seu município no último ano completo e no ano em curso, por área e comparados com o estado, pelo satélite de referência do INPE.",
+    forma: "consulta",
+    portas: ["territorio-e-clima"],
+    rotas: ["/territorio/queimadas/municipio"],
+    fichasIbge: "/territorio/queimadas/municipio",
+    arquivos: ["/saneamento/gold/indice.json"],
+    aprovadaEm: null,
+  },
+  {
+    // artefato CemReaisPagos levado para a página aberta /perguntas/contas-publicas, que já é pública
+    id: "cem-reais-dos-impostos",
+    pergunta: "Para onde vão R$ 100 dos meus impostos?",
+    resumo: "Cada R$ 100 pagos pelo orçamento federal no último exercício encerrado, repartidos por grupo de despesa, pelos dados abertos do SIOP.",
+    forma: "artefato",
+    portas: ["contas-publicas"],
+    rotas: [],
+    arquivos: [],
+    aprovadaEm: null,
+  },
+  {
+    // página estática Next avaliada pelo pacote Q1 (hoje o método do Crédito é a vista /observatorio/methodology da aplicação de página única)
+    id: "metodologia-do-credito",
+    pergunta: "Como o Crédito calcula cada número?",
+    resumo: "Conceitos, fontes e regras de cálculo do Observatório do Crédito.",
+    forma: "metodo",
+    portas: ["familias", "economia"],
+    rotas: ["/observatorio-do-credito/metodologia"],
+    arquivos: [],
+    aprovadaEm: null,
+  },
+] satisfies ItemLeva2[]);
+
+/** A aprovação vale só com data real no formato AAAA-MM-DD; qualquer outro valor mantém o item fechado. */
+export function itemAprovado(item: Pick<ItemLeva2, "aprovadaEm">): boolean {
+  const d = item.aprovadaEm;
+  if (typeof d !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return false;
+  const t = new Date(`${d}T00:00:00Z`);
+  return !Number.isNaN(t.getTime()) && t.toISOString().slice(0, 10) === d;
+}
+
+/** O item da leva 2 está aprovado? (lido pelas páginas que o mostram) */
+export function leva2Aprovada(id: IdLeva2, leva: readonly ItemLeva2[] = LEVA_2): boolean {
+  const item = leva.find((i) => i.id === id);
+  return !!item && itemAprovado(item);
+}
+
+const CODIGO_IBGE = /^\d{7}$/;
+
+/** O caminho (já sem barra final) é rota, ficha ou arquivo de um item aprovado? */
+function abertoPelaLeva2(caminho: string, semBarra: string, leva: readonly ItemLeva2[]): boolean {
+  for (const item of leva) {
+    if (!itemAprovado(item)) continue;
+    if (item.arquivos.includes(caminho)) return true;
+    if (item.rotas.includes(semBarra)) return true;
+    if (item.fichasIbge && semBarra.startsWith(item.fichasIbge + "/") && CODIGO_IBGE.test(semBarra.slice(item.fichasIbge.length + 1))) return true;
+  }
+  return false;
+}
+
 /** Páginas de método de cada tema da Eficiência Estatal. */
 const METODOS_EFICIENCIA = /^\/eficiencia-estatal\/[a-z0-9-]+\/metodos\/?$/;
 
@@ -107,12 +230,21 @@ export function ehApiDeDados(caminho: string): boolean {
 
 /** O caminho pode ser servido sem sessão? */
 export function ehRotaPublica(caminho: string): boolean {
+  return ehRotaPublicaCom(LEVA_2, caminho);
+}
+
+/**
+ * A mesma regra com uma leva 2 dada: serve para conferir, antes de ligar, o
+ * que a aprovação abriria (src/tests/leva2.test.ts). O middleware, o sitemap e
+ * as páginas usam ehRotaPublica, com a LEVA_2 registrada acima.
+ */
+export function ehRotaPublicaCom(leva2: readonly ItemLeva2[], caminho: string): boolean {
   // Só irmãs declaradas herdam a política PT. A guarda antecede imagens sociais
   // para que uma imagem inglesa ainda inexistente não herde abertura da página.
   if (sobPrefixo(caminho, "/en")) {
     if (/[?#]/.test(caminho)) return false;
     const par = parDeIdioma(caminho);
-    return par !== null && ehRotaPublica(par.pt);
+    return par !== null && ehRotaPublicaCom(leva2, par.pt);
   }
   if (caminho.startsWith("/_next/")) return true;
   if (caminho === "/api" || caminho.startsWith("/api/")) return !ehApiDeDados(caminho);
@@ -121,11 +253,12 @@ export function ehRotaPublica(caminho: string): boolean {
   const social = caminho.match(IMAGEM_SOCIAL);
   if (social) {
     const pai = caminho.slice(0, social.index) || "/";
-    return ehRotaPublica(pai);
+    return ehRotaPublicaCom(leva2, pai);
   }
   if (ARQUIVOS_DAS_CONSULTAS.has(caminho)) return true;
   const semBarra = caminho.length > 1 && caminho.endsWith("/") ? caminho.slice(0, -1) : caminho;
   if (EXATAS.has(semBarra) || CONSULTAS_ABERTAS.has(semBarra)) return true;
+  if (abertoPelaLeva2(caminho, semBarra, leva2)) return true;
   if (FICHA_MUNICIPIO.test(semBarra)) return true;
   if (PREFIXOS.some((p) => sobPrefixo(semBarra, p))) return true;
   if (ARTE.test(semBarra)) return true;

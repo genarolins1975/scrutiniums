@@ -8,6 +8,8 @@ export type PeriodoMunicipal = "ultimoAnoCompleto" | "acumuladoAnoCorrente" | "m
 export type GoldQueimadasMunicipios = {
   capturadoEm: string;
   dataReferencia: string;
+  /** Fonte dos focos, como gravada pelo pipeline. */
+  fonte?: { nome: string; url?: string; portal?: string; licenca?: string };
   sateliteReferencia: string;
   periodos: Record<PeriodoMunicipal, { periodo: { inicio: string; fim: string }; origem: string; focos: number } | null>;
   campos: string[];

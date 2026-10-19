@@ -14,6 +14,7 @@ import contasFederais from "@/lib/contas-publicas/snapshots/dados.json";
 import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
 import type { CaminhoPorta, ConsultaAberta, Porta } from "./tipos";
 import { comSinal, dataBr, lerPublico, mesAno, num, numero } from "./leitura";
+import { consultasLeva2, metodosLeva2 } from "./leva2";
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- leitura de gold JSON sem tipos gerados */
 /** Destino com o domínio de origem (ou o próprio observatório, quando ele mantém o painel) e a coleção do registro a que pertence. */
@@ -541,6 +542,11 @@ let cache: Porta[] | null = null;
  * golds só mudam com nova publicação, que reinicia as instâncias.
  */
 export function portas(): Porta[] {
-  cache ??= [porta_familias(), porta_servicos(), porta_dinheiro(), porta_energia(), porta_economia(), porta_territorio()];
+  cache ??= [porta_familias(), porta_servicos(), porta_dinheiro(), porta_energia(), porta_economia(), porta_territorio()].map(comLeva2);
   return cache;
+}
+
+/** Itens aprovados da leva 2 (src/lib/rotasPublicas.ts, LEVA_2) entram depois dos da leva 1; sem aprovação, nada muda. */
+function comLeva2(p: Porta): Porta {
+  return { ...p, paraOSeuCaso: [...p.paraOSeuCaso, ...consultasLeva2(p.id)], metodos: [...p.metodos, ...metodosLeva2(p.id)] };
 }
