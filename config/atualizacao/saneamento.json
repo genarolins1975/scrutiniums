@@ -15,7 +15,7 @@
   "saidas": ["public/saneamento/gold"],
   "sinal_de_mudanca": [
     {"caminho": "public/saneamento/gold", "exceto": ["public/saneamento/gold/meta.json"]},
-    {"arquivo": "public/saneamento/gold/meta.json", "json_sem": ["capturado_em"]}
+    {"arquivo": "public/saneamento/gold/meta.json", "json_sem": ["capturado_em", "cadunico.meses.*.sha256"]}
   ],
   "testes": [
     {

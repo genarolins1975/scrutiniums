@@ -263,11 +263,27 @@ def _valor_pontilhado(obj, caminho: str):
 
 
 def _sem_chaves(obj, chaves: set):
-    if isinstance(obj, dict):
-        return {k: _sem_chaves(v, chaves) for k, v in obj.items() if k not in chaves}
-    if isinstance(obj, list):
-        return [_sem_chaves(v, chaves) for v in obj]
-    return obj
+    """Remove as chaves de carimbo: nome simples em qualquer nível ("capturado_em") ou caminho a
+    partir da raiz com curinga por nível ("cadunico.meses.*.sha256")."""
+    simples = {c for c in chaves if "." not in c}
+    caminhos = [c.split(".") for c in chaves if "." in c]
+
+    def limpar(o, nivel):
+        if isinstance(o, dict):
+            saida = {}
+            for k, v in o.items():
+                if k in simples:
+                    continue
+                prox = [c for c in nivel if c and fnmatch.fnmatchcase(k, c[0])]
+                if any(len(c) == 1 for c in prox):
+                    continue
+                saida[k] = limpar(v, [c[1:] for c in prox])
+            return saida
+        if isinstance(o, list):
+            return [limpar(v, nivel) for v in o]
+        return o
+
+    return limpar(obj, caminhos)
 
 
 def sinal(raiz: Path, regras: list[dict]) -> dict:

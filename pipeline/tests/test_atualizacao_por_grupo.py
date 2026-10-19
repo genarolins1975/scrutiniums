@@ -283,6 +283,13 @@ class Configuracao(unittest.TestCase):
         self.assertFalse(A._sobrepoe("seed/a.json", "seed/b.json"))
         self.assertFalse(A._sobrepoe("public/x/gold", "public/x/golden"))
 
+    def test_carimbos_ignorados_no_sinal(self):
+        meta = {"capturado_em": "x", "cadunico": {"capturado_em": "y", "meses": {"202412": {"sha256": "a", "registros": 1}}},
+                "sisagua": {"arquivos": [{"sha256": "b", "capturado_em": "z"}]}}
+        limpo = A._sem_chaves(meta, {"capturado_em", "cadunico.meses.*.sha256"})
+        # a resposta da API do CadÚnico muda de bytes a cada consulta; o sha256 do SISAGUA continua contando
+        self.assertEqual(limpo, {"cadunico": {"meses": {"202412": {"registros": 1}}}, "sisagua": {"arquivos": [{"sha256": "b"}]}})
+
     def test_caminhos_sobrepostos_sao_recusados(self):
         cfg = json.loads(json.dumps(CONFIG))
         cfg["grupos"][1]["caminhos"] = ["seed"]
