@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1332,
-    "fontes_sha256": "ef7858825ee2f963d0fbf9f729cafbcd8bde6c34d8e953a6c57e903364ff2ccc",
+    "arquivos_analisados": 1334,
+    "fontes_sha256": "31340965f6dcfd31a236b4ee1272b52ed76d85806bb716851ca07cfc586003ff",
     "pendencias_sha256": "a5f33966fa56b57d86ad2ac3e3576d5272c2b721dd584737cea8eb19785566d4",
     "nao_classificadas": [
       {
@@ -143,19 +143,19 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 300,
+        "arquivos": 302,
         "candidatos": {
-          "jsx_text": 1126,
-          "atributos": 344,
-          "props": 838,
-          "outros_literais": 6221,
-          "templates": 743,
-          "expressoes_nao_resolvidas": 4430,
-          "chaves_objetos": 4849
+          "jsx_text": 1128,
+          "atributos": 346,
+          "props": 841,
+          "outros_literais": 6393,
+          "templates": 745,
+          "expressoes_nao_resolvidas": 4463,
+          "chaves_objetos": 5001
         },
         "exclusoes": {
-          "importacoes": 1317,
-          "atributos_tecnicos": 2535,
+          "importacoes": 1337,
+          "atributos_tecnicos": 2558,
           "tipos": 310
         },
         "scripts_embutidos": {},
@@ -165,7 +165,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 18551,
+        "candidatos_nao_catalogados": 18917,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -196,15 +196,15 @@
         "candidatos": {
           "jsx_text": 7495,
           "atributos": 2847,
-          "props": 18502,
-          "outros_literais": 50633,
+          "props": 18495,
+          "outros_literais": 50615,
           "templates": 12518,
-          "expressoes_nao_resolvidas": 54443,
+          "expressoes_nao_resolvidas": 54435,
           "chaves_objetos": 35706
         },
         "exclusoes": {
           "importacoes": 4873,
-          "atributos_tecnicos": 8481,
+          "atributos_tecnicos": 8477,
           "tipos": 3710
         },
         "scripts_embutidos": {},
@@ -214,7 +214,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 182144,
+        "candidatos_nao_catalogados": 182111,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -244,14 +244,14 @@
         "candidatos": {
           "jsx_text": 286,
           "atributos": 23,
-          "props": 708,
+          "props": 710,
           "outros_literais": 540,
           "templates": 75,
           "expressoes_nao_resolvidas": 718,
           "chaves_objetos": 813
         },
         "exclusoes": {
-          "importacoes": 157,
+          "importacoes": 158,
           "atributos_tecnicos": 292,
           "tipos": 17
         },
@@ -262,7 +262,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 3163,
+        "candidatos_nao_catalogados": 3165,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -292,14 +292,14 @@
         "candidatos": {
           "jsx_text": 1229,
           "atributos": 345,
-          "props": 1794,
+          "props": 1796,
           "outros_literais": 3238,
           "templates": 444,
           "expressoes_nao_resolvidas": 3070,
           "chaves_objetos": 4392
         },
         "exclusoes": {
-          "importacoes": 459,
+          "importacoes": 460,
           "atributos_tecnicos": 1643,
           "tipos": 177
         },
@@ -310,7 +310,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 14512,
+        "candidatos_nao_catalogados": 14514,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -340,14 +340,14 @@
         "candidatos": {
           "jsx_text": 2933,
           "atributos": 1016,
-          "props": 1299,
+          "props": 1301,
           "outros_literais": 7477,
           "templates": 727,
-          "expressoes_nao_resolvidas": 7577,
+          "expressoes_nao_resolvidas": 7579,
           "chaves_objetos": 4606
         },
         "exclusoes": {
-          "importacoes": 890,
+          "importacoes": 891,
           "atributos_tecnicos": 3174,
           "tipos": 424
         },
@@ -358,7 +358,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 25635,
+        "candidatos_nao_catalogados": 25639,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -388,11 +388,11 @@
         "candidatos": {
           "jsx_text": 574,
           "atributos": 110,
-          "props": 74,
+          "props": 66,
           "outros_literais": 1276,
           "templates": 69,
-          "expressoes_nao_resolvidas": 873,
-          "chaves_objetos": 635
+          "expressoes_nao_resolvidas": 872,
+          "chaves_objetos": 626
         },
         "exclusoes": {
           "importacoes": 188,
@@ -406,7 +406,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 3611,
+        "candidatos_nao_catalogados": 3593,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -484,14 +484,14 @@
         "candidatos": {
           "jsx_text": 468,
           "atributos": 266,
-          "props": 832,
+          "props": 834,
           "outros_literais": 2897,
           "templates": 230,
           "expressoes_nao_resolvidas": 2141,
           "chaves_objetos": 1760
         },
         "exclusoes": {
-          "importacoes": 277,
+          "importacoes": 278,
           "atributos_tecnicos": 78,
           "tipos": 97
         },
@@ -502,7 +502,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 8594,
+        "candidatos_nao_catalogados": 8596,
         "percentual_traduzido": null
       },
       "rotas": {

@@ -120,7 +120,9 @@ describe("Território e Clima: entrada com conta", () => {
     for (const c of colecoesDe("territorio-e-clima")) for (const p of c.paineis) expect(h, p.href).toContain(`href="${p.href}"`);
     expect(h).toContain("Do satélite ao foco de calor");
     expect(h).toContain("Modelo didático");
-    expect(h).toContain("Teve fogo perto de você?");
+    // a consulta por município fica no bloco "Para você" (Onda 2), com a pergunta na primeira pessoa como nas demais entradas
+    expect(h).toContain("Teve fogo perto de mim?");
+    expect(h).toContain("Focos de calor no seu município");
     expect(h).toContain("Emissões por estado");
     expect(h).toContain("Área queimada por estado e por município");
     const metodo = h.slice(h.lastIndexOf("<details"));

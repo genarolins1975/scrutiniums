@@ -8,6 +8,7 @@ import { SeloSituacao } from "@/components/saneamento/Editorial";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
+import { ParaVoce } from "@/components/observatorios/ParaVoce";
 import { agregado, meta } from "@/lib/saneamento/gold";
 import { EIXOS, FERRAMENTAS, ROTA, rotaCapitulo } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
@@ -100,6 +101,9 @@ export default function Pagina() {
             </p>
           </div>
         </section>
+
+        {/* "Para você" (Onda 2): o município, a conta de água e a tarifa social, a um clique, logo depois dos números de abertura */}
+        <ParaVoce entrada="/saneamento" conteiner="ed-pagina" />
 
         <section aria-labelledby="como-funciona" className="border-y border-linha bg-superficie py-12">
           <div className="ed-pagina">
