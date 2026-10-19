@@ -19,6 +19,7 @@ import json
 import os
 import sqlite3
 import subprocess
+import time
 from datetime import datetime, timezone
 from decimal import ROUND_HALF_UP, Decimal, InvalidOperation
 
@@ -197,6 +198,64 @@ def caminho_bronze(arquivo):
 
 def bronze_disponivel(vintage):
     return bool(vintage and vintage.get("arquivo") and os.path.isfile(caminho_bronze(vintage["arquivo"])))
+
+
+# Vintage órfã: a última captura está no silver, mas o bronze não está no disco (cache despejado
+# ou podado). Desde o #278 ela é recapturada. Na primeira execução com essa regra (19/10/2026),
+# as recapturas passaram do limite de 150 min do job (água 30 min; carga mais de 107 min: as
+# séries da NASA e da Open-Meteo, cuja coleta falhava por bronze ausente desde 06/10) e nada foi
+# publicado. A recaptura de órfãs passa a ter um orçamento de tempo por execução, e toda recoleta
+# não forçada, um prazo contado do início do processo: o que exceder fica para a próxima execução.
+# Coleta forçada e recurso sem nenhuma vintage não esperam.
+ORCAMENTO_ORFAS_S = float(os.environ.get("ENERGIA_ORCAMENTO_ORFAS_MIN", "40")) * 60
+PRAZO_COLETA_S = float(os.environ.get("ENERGIA_PRAZO_COLETA_MIN", "80")) * 60
+_INICIO = time.monotonic()
+_ORFAS = {"gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "adiadas_prazo": 0}
+
+
+def relogio():
+    """Relógio monotônico das recapturas (separado para os testes)."""
+    return time.monotonic()
+
+
+def vintage_orfa(vintage):
+    return bool(vintage) and not bronze_disponivel(vintage)
+
+
+def orcamento_orfas_disponivel():
+    return _ORFAS["gasto_s"] < ORCAMENTO_ORFAS_S
+
+
+def prazo_coleta_vencido():
+    return time.monotonic() - _INICIO >= PRAZO_COLETA_S
+
+
+def registra_recaptura_orfa(segundos):
+    _ORFAS["gasto_s"] += max(0.0, segundos)
+    _ORFAS["recapturadas"] += 1
+
+
+def registra_orfa_adiada():
+    _ORFAS["adiadas"] += 1
+
+
+def registra_adiada_prazo():
+    _ORFAS["adiadas_prazo"] += 1
+
+
+def resumo_orfas():
+    return {"orcamento_s": round(ORCAMENTO_ORFAS_S), "gasto_s": round(_ORFAS["gasto_s"], 1),
+            "recapturadas": _ORFAS["recapturadas"], "adiadas": _ORFAS["adiadas"],
+            "prazo_coleta_s": round(PRAZO_COLETA_S), "adiadas_prazo": _ORFAS["adiadas_prazo"]}
+
+
+def vintage_legivel(con, dataset, recurso):
+    """Última vintage do recurso com bronze no disco: a mais recente, ou a anterior mais recente
+    com bronze quando a última é órfã (recaptura adiada). None se nenhuma tem bronze."""
+    ultima = ultima_vintage(con, dataset, recurso)
+    if not vintage_orfa(ultima):
+        return ultima
+    return vintages_com_bronze(con, dataset).get(recurso)
 
 
 def vintages_com_bronze(con, dataset):
