@@ -274,7 +274,7 @@ export default function ObservatorioPublicoPage() {
                   <h3 className="font-serif text-xl leading-snug text-carvao">
                     <Link href={c.href} prefetch={prefetchDoLink(c.href)} className="underline decoration-linha underline-offset-8 transition-colors hover:text-bronze">
                       {c.titulo}
-                      <SeloComConta href={c.href} className="font-sans" />
+                      <SeloComConta href={c.href} idioma="pt" className="font-sans" />
                     </Link>
                   </h3>
                   <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{c.resumo}</p>
@@ -353,7 +353,7 @@ export default function ObservatorioPublicoPage() {
                 className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze"
               >
                 Metodologia e fontes
-                <SeloComConta href="/observatorio-do-credito/metodologia" />
+                <SeloComConta href="/observatorio-do-credito/metodologia" idioma="pt" />
               </Link>
               <Link href="/glossario" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
                 Glossário

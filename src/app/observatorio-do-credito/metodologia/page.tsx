@@ -49,15 +49,15 @@ function Campo({ rotulo, children }: { rotulo: string; children: ReactNode }) {
   return (
     <div className="grid gap-1 sm:grid-cols-[11rem_minmax(0,1fr)] sm:gap-4">
       <dt className="text-carvao">{rotulo}</dt>
-      <dd className="text-carvao-muted">{children}</dd>
+      <dd >{children}</dd>
     </div>
   );
 }
 
-function Tabela({ legenda, colunas, children, numericas = [] }: { legenda: string; colunas: string[]; children: ReactNode; numericas?: number[] }) {
+function Tabela({ legenda, colunas, children, numericas = [], classe = "" }: { legenda: string; colunas: string[]; children: ReactNode; numericas?: number[]; classe?: string }) {
   return (
     <div className="overflow-x-auto border-t border-linha" tabIndex={0} role="region" aria-label={legenda}>
-      <table className="w-full min-w-[40rem] border-collapse text-sm">
+      <table className={`w-full min-w-[40rem] border-collapse text-sm [&_tbody_th]:border-b [&_tbody_th]:border-linha [&_tbody_th]:px-2 [&_tbody_th]:py-2 [&_tbody_th]:text-left [&_tbody_th]:align-top [&_tbody_th]:text-carvao [&_td]:border-b [&_td]:border-linha [&_td]:px-2 [&_td]:py-2 [&_td]:align-top [&_td]:text-carvao-muted ${classe}`}>
         <caption className="sr-only">{legenda}</caption>
         <thead>
           <tr className="border-b border-linha text-left text-xs text-carvao-muted">
@@ -84,8 +84,8 @@ const CONCEITOS_JUROS: Record<string, string> = {
   persistencia: "Persistência",
 };
 
-const td = "border-b border-linha px-2 py-2 align-top";
-const tdNum = `${td} whitespace-nowrap text-right tabular-nums`;
+/** Bordas, espaços e cor das células vêm da tabela (Tabela); a célula só declara o que muda. */
+const tdNum = "whitespace-nowrap text-right tabular-nums text-carvao";
 
 export default function MetodologiaCreditoPage() {
   const m = metodologiaCredito();
@@ -165,10 +165,10 @@ export default function MetodologiaCreditoPage() {
               <Tabela legenda="As três inadimplências" colunas={["Conceito", "Definição", "Valor", "Referência"]} numericas={[2]}>
                 {m.inadimplencias.map((i) => (
                   <tr key={i.id}>
-                    <th scope="row" className={`${td} text-left font-medium text-carvao`}>{i.nome}</th>
-                    <td className={`${td} text-carvao-muted`}>{i.definicao}</td>
+                    <th scope="row" className="text-left font-medium text-carvao">{i.nome}</th>
+                    <td>{i.definicao}</td>
                     <td className={tdNum}>{i.valor === null ? "por produto" : `${num(i.valor)}%`}</td>
-                    <td className={`${td} tabular-nums text-carvao-muted`}>{refMes(i.ref)}</td>
+                    <td className="tabular-nums">{refMes(i.ref)}</td>
                   </tr>
                 ))}
               </Tabela>
@@ -182,10 +182,10 @@ export default function MetodologiaCreditoPage() {
               <Tabela legenda="Quatro carteiras" colunas={["Régua", "O que mede", "Valor", "Referência"]} numericas={[2]}>
                 {m.carteiras.map((c) => (
                   <tr key={c.id}>
-                    <th scope="row" className={`${td} text-left font-medium text-carvao`}>{c.nome}</th>
-                    <td className={`${td} text-carvao-muted`}>{c.definicao}</td>
+                    <th scope="row" className="text-left font-medium text-carvao">{c.nome}</th>
+                    <td>{c.definicao}</td>
                     <td className={tdNum}>R$ {num(c.valorBi, 1)} bi</td>
-                    <td className={`${td} tabular-nums text-carvao-muted`}>{refMes(c.ref)}</td>
+                    <td className="tabular-nums">{refMes(c.ref)}</td>
                   </tr>
                 ))}
               </Tabela>
@@ -199,9 +199,9 @@ export default function MetodologiaCreditoPage() {
               <Tabela legenda="Três contagens de instituições" colunas={["Quantas instituições?", "Contagem", "Referência"]} numericas={[1]}>
                 {m.contagens.map((c) => (
                   <tr key={c.id}>
-                    <td className={`${td} text-carvao-muted`}>{c.definicao}</td>
+                    <td>{c.definicao}</td>
                     <td className={tdNum}>{c.n.toLocaleString("pt-BR")}</td>
-                    <td className={`${td} tabular-nums text-carvao-muted`}>{refMes(c.ref)}</td>
+                    <td className="tabular-nums">{refMes(c.ref)}</td>
                   </tr>
                 ))}
               </Tabela>
@@ -219,15 +219,15 @@ export default function MetodologiaCreditoPage() {
         <details className="border-t border-linha pt-2 text-sm">
           <summary className="flex min-h-[44px] cursor-pointer items-center text-carvao">Ver as {m.catalogo.length.toLocaleString("pt-BR")} séries, com fonte, acesso e qualidade</summary>
           <div className="mt-2">
-            <Tabela legenda="Catálogo de séries do Crédito" colunas={["Série", "Fonte e código", "Acesso", "Última referência", "Defasagem", "Observações", "Revisões", "Qualidade"]} numericas={[4, 5, 6, 7]}>
+            <Tabela legenda="Catálogo de séries do Crédito" colunas={["Série", "Fonte e código", "Acesso", "Última referência", "Defasagem", "Observações", "Revisões", "Qualidade"]} numericas={[4, 5, 6, 7]} classe="[&_td:nth-child(n+5)]:whitespace-nowrap [&_td:nth-child(n+5)]:text-right [&_td:nth-child(n+5)]:tabular-nums [&_td:nth-child(n+5)]:text-carvao">
               {m.catalogo.map((s) => (
                 <tr key={s.chave}>
-                  <th scope="row" className={`${td} text-left font-normal text-carvao`}>{s.nome}</th>
-                  <td className={`${td} text-carvao-muted`}>
+                  <th scope="row" className="font-normal">{s.nome}</th>
+                  <td>
                     {s.fonte}
                     {s.codigo ? ` · ${s.codigo}` : ""}
                   </td>
-                  <td className={`${td} text-carvao-muted`}>
+                  <td>
                     {s.url ? (
                       <>
                         <a href={s.url} rel="noopener noreferrer" target="_blank" className="text-carvao underline decoration-linha underline-offset-4">
@@ -240,16 +240,11 @@ export default function MetodologiaCreditoPage() {
                       "sem endpoint no catálogo"
                     )}
                   </td>
-                  <td className={`${td} tabular-nums text-carvao-muted`}>{refMes(s.ultimaRef)}</td>
-                  <td className={tdNum}>{s.dias === null ? "sem dado" : `${s.dias} dias`}</td>
-                  <td className={tdNum}>{s.obs === null ? "sem dado" : s.obs.toLocaleString("pt-BR")}</td>
-                  <td className={tdNum}>{s.revisoes === null ? "sem dado" : s.revisoes.toLocaleString("pt-BR")}</td>
-                  <td
-                    className={tdNum}
-                    title={Object.entries(s.componentes)
-                      .map(([k, v]) => `${k} ${num(v, 1)}`)
-                      .join(" · ")}
-                  >
+                  <td className="tabular-nums">{refMes(s.ultimaRef)}</td>
+                  <td>{s.dias === null ? "sem dado" : `${s.dias} dias`}</td>
+                  <td>{s.obs === null ? "sem dado" : s.obs.toLocaleString("pt-BR")}</td>
+                  <td>{s.revisoes === null ? "sem dado" : s.revisoes.toLocaleString("pt-BR")}</td>
+                  <td>
                     {num(s.score, 1)}
                   </td>
                 </tr>
@@ -359,11 +354,11 @@ export default function MetodologiaCreditoPage() {
           <Tabela legenda="Linhagem recente, bronze para gold" colunas={["Objeto", "Arquivo bronze", "SHA-256", "Transformação", "Quando"]}>
             {m.linhagemRecente.map((l, i) => (
               <tr key={`${l.gold_object}-${i}`}>
-                <th scope="row" className={`${td} text-left font-normal text-carvao`}>{l.gold_object}</th>
-                <td className={`${td} break-all text-carvao-muted`}>{l.bronze_file}</td>
-                <td className={`${td} font-mono text-xs text-carvao-muted`}>{l.sha256.slice(0, 12)}…</td>
-                <td className={`${td} text-carvao-muted`}>{l.transform}</td>
-                <td className={`${td} tabular-nums text-carvao-muted`}>{l.created_at.slice(0, 19).replace("T", " ")}</td>
+                <th scope="row" className="font-normal">{l.gold_object}</th>
+                <td className="break-all">{l.bronze_file}</td>
+                <td className="font-mono text-xs">{l.sha256.slice(0, 12)}…</td>
+                <td>{l.transform}</td>
+                <td className="tabular-nums">{l.created_at.slice(0, 19).replace("T", " ")}</td>
               </tr>
             ))}
           </Tabela>
@@ -386,14 +381,14 @@ export default function MetodologiaCreditoPage() {
                 <Tabela legenda="Linhagem completa" colunas={["Objeto gold", "Produzido por", "Fontes", "Depende de", "Consumido em"]}>
                   {m.mapa.objetos.map((o) => (
                     <tr key={o.gold}>
-                      <th scope="row" className={`${td} text-left font-normal text-carvao`}>
+                      <th scope="row" className="font-normal">
                         {o.gold}
                         {o.notas.length > 0 && <span className="mt-1 block text-xs text-carvao-muted">{o.notas.join(" · ")}</span>}
                       </th>
-                      <td className={`${td} break-words text-carvao-muted`}>{o.produtores.join(", ") || "sem registro"}</td>
-                      <td className={`${td} break-words text-carvao-muted`}>{o.fontes.join(", ") || "sem registro"}</td>
-                      <td className={`${td} break-words text-carvao-muted`}>{o.depende_de.join(", ") || "nenhum"}</td>
-                      <td className={`${td} break-words text-carvao-muted`}>{o.consumido_em.join(", ") || "sem registro"}</td>
+                      <td className="break-words">{o.produtores.join(", ") || "sem registro"}</td>
+                      <td className="break-words">{o.fontes.join(", ") || "sem registro"}</td>
+                      <td className="break-words">{o.depende_de.join(", ") || "nenhum"}</td>
+                      <td className="break-words">{o.consumido_em.join(", ") || "sem registro"}</td>
                     </tr>
                   ))}
                 </Tabela>
