@@ -34,6 +34,8 @@ import {
   textoEstado,
   textoFontesPublicadas,
   textoRazaoUniversos,
+  mesesAntes,
+  notaGsfDozeMeses,
 } from "@/lib/energia/mercado";
 import type { MercadoGold } from "@/lib/energia/tipos-mercado";
 
@@ -246,11 +248,30 @@ describe("mercado: páginas", () => {
     const div = integra(g) ? g.mre_gsf.reconciliacao_infomercado.find((x) => x.medida === "gsf_12m_pct" && x.resultado !== "aprovado") : undefined;
     if (!div || div.calculado === null || div.diferenca === null) return;
     const html = paginas["mre-gsf"];
-    expect(html).toContain("na mesma janela");
+    const lado = div.diferenca < 0 ? "abaixo" : "acima";
     expect(html).toContain(`${num(div.calculado, 2)}%`);
-    expect(html).toContain(`${num(Math.abs(div.diferenca), 2)} pontos percentuais abaixo`);
-    // o cartão mostra outra janela; o texto não pode sugerir que a diferença é contra o valor do cartão
-    expect(html).toContain("O valor do cartão é o da janela mais recente");
+    expect(html).toContain(`${num(Math.abs(div.diferenca), 2)} pontos percentuais ${lado}`);
+    // Dois casos: o boletim cobre outra janela que a do cartão (01/10/2026: boletim até 08/2026 e cartão mais recente), e o texto
+    // diz que a diferença é na janela do boletim; ou cobre a mesma (20/10/2026), e o texto diz que são dois valores do mesmo
+    // recorte. O caso que a gold do dia não tem é conferido num clone com a janela do cartão trocada.
+    const outraJanela = (h: string) => {
+      expect(h).toContain("na mesma janela");
+      // o cartão mostra outra janela; o texto não pode sugerir que a diferença é contra o valor do cartão
+      expect(h).toContain("O valor do cartão é o da janela mais recente");
+    };
+    const mesmaJanela = (h: string) => {
+      expect(h).toContain("Dois valores, o mesmo recorte");
+      expect(h).toContain("que é o valor do cartão");
+    };
+    const k = g.mre_gsf.kpis.gsf_12m;
+    const mesmo = !!k && k.periodo.fim === div.mes;
+    (mesmo ? mesmaJanela : outraJanela)(html);
+    const c = structuredClone(g);
+    const kc = c.mre_gsf.kpis.gsf_12m;
+    if (kc) {
+      kc.periodo = { ...kc.periodo, fim: mesmo ? mesesAntes(div.mes, -1) : div.mes };
+      (mesmo ? outraJanela : mesmaJanela)(notaGsfDozeMeses(c));
+    }
   });
 
   it("anatomia da seção 7.2 em cada painel: resposta da gold, prova, recorte, tabela, download, link e próxima pergunta", () => {
