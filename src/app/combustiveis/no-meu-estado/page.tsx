@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
-import { SeloComConta } from "@/components/acesso/SeloComConta";
+import { ConviteAperitivo } from "@/components/acesso/ConviteAperitivo";
 import { CabecalhoCombustiveis } from "@/components/combustiveis/CabecalhoCombustiveis";
 import { PrecoNoEstado } from "@/components/combustiveis/PrecoNoEstado";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, mesExtenso } from "@/lib/gas/formato";
 import { dadosDoEstado, dataNota, goldCombustiveis } from "@/lib/combustiveis/dados";
 import { ROTA_COMBUSTIVEIS, paginaCombustiveis } from "@/lib/combustiveis/paginas";
-import { leva2Aprovada, prefetchDoLink } from "@/lib/rotasPublicas";
+import { leva2Aprovada } from "@/lib/rotasPublicas";
 
 export const dynamic = "force-static";
 
@@ -19,8 +18,6 @@ export const metadata: Metadata = {
   description: pagina.descricao,
   alternates: { canonical: pagina.href },
 };
-
-const link = "underline decoration-linha underline-offset-4 hover:decoration-carvao";
 
 /**
  * Consulta "Quanto custa encher o tanque no meu estado?" (leva 2 da estratégia "aberto e com conta", item
@@ -34,6 +31,7 @@ export default function ConsultaTanquePagina() {
   const aberta = leva2Aprovada("quanto-custa-encher-o-tanque");
   const g = goldCombustiveis();
   const lacuna = g.pesquisa.eventos.find((e) => e.tipo === "sem_pesquisa");
+  const dados = dadosDoEstado(g);
   return (
     <>
       <MarcaVisita secao={pagina.secao} />
@@ -54,7 +52,7 @@ export default function ConsultaTanquePagina() {
         </div>
 
         <section aria-label="Preço no seu estado" className="pb-8">
-          <PrecoNoEstado dados={dadosDoEstado(g)} />
+          <PrecoNoEstado dados={dados} />
         </section>
 
         <section aria-label="Fonte e ressalvas" className="max-w-prose2 space-y-3 border-t border-linha py-6 text-sm leading-relaxed text-carvao">
@@ -66,13 +64,18 @@ export default function ConsultaTanquePagina() {
             São médias de uma amostra de postos pesquisados pela ANP no mês, não o preço de um posto. A média do Brasil é calculada pela própria ANP.
             {lacuna && <> A pesquisa teve lacuna de {dataNota(lacuna.inicio)} a {dataNota(lacuna.fim)}, registrada no painel.</>}
           </p>
-          <p>
-            <Link href={ROTA_COMBUSTIVEIS} prefetch={prefetchDoLink(ROTA_COMBUSTIVEIS)} className={`inline-flex min-h-[44px] items-center text-carvao ${link}`}>
-              O painel completo: a série desde 2013, os estados lado a lado e os arquivos
-              <SeloComConta href={ROTA_COMBUSTIVEIS} />
-            </Link>
-          </p>
         </section>
+        {/* princípio do aperitivo: a página aberta sempre mostra o que o painel com conta tem a mais */}
+        <ConviteAperitivo
+          rota={ROTA_COMBUSTIVEIS}
+          comConta={[
+            `O preço do litro mês a mês desde ${mesExtenso(g.primeiro_mes)}, em valores da época e corrigidos pela inflação`,
+            `As ${dados.ufs.length} unidades da federação lado a lado, para comparar com a sua`,
+            "Quanto o litro de etanol custa em relação ao de gasolina, em cada estado",
+            "Como a ANP mede o preço, quantos postos entram na pesquisa a cada mês e onde ela tem lacunas",
+            "O método, as notas da planilha e os arquivos para baixar",
+          ]}
+        />
       </main>
     </>
   );

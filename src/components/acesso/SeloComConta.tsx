@@ -1,8 +1,8 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { ehRotaPublica, exigeConta } from "@/lib/rotasPublicas";
-import { textosAcesso } from "./sessao";
+import { exigeConta } from "@/lib/rotasPublicas";
+import { textosAcesso, usePaginaAberta, useSessao } from "./sessao";
 
 export function Cadeado() {
   return (
@@ -34,8 +34,10 @@ export function SeloComConta({
   idioma?: "pt" | "en";
 }) {
   const caminho = usePathname();
-  const aberta = !!caminho && ehRotaPublica(caminho);
-  if (!aberta || (!sempre && (!href || !exigeConta(href)))) return null;
+  const aberta = usePaginaAberta();
+  // quem tem conta não precisa do aviso; no HTML do servidor a sessão é desconhecida e o selo fica
+  const logado = useSessao() === true;
+  if (logado || !aberta || (!sempre && (!href || !exigeConta(href)))) return null;
   return (
     // o selo interno é inline-flex (atômico): o sublinhado do link não passa para ele, mesmo quando o link é flex
     <span data-selo-conta="" className={`ml-1.5 inline-block align-baseline text-xs font-normal normal-case tracking-normal text-mineral ${className}`}>

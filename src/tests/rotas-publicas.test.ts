@@ -80,22 +80,21 @@ describe("rotas públicas", () => {
 });
 
 /**
- * Estratégia "aberto e com conta", leva 1 (decisão do dono de 19/10/2026, docs/BANCA_2026-10-19.md): o curioso
- * consulta o próprio caso sem conta. Abrem exatamente cinco consultas e os arquivos que elas buscam no
- * navegador; as vizinhas, os downloads e as subpáginas continuam fechados.
+ * Estratégia "aberto e com conta", leva 1 (decisão do dono de 19/10/2026, docs/BANCA_2026-10-19.md), sob o
+ * princípio do aperitivo (20/10/2026): uma página aberta por tema e os arquivos que ela busca no navegador; as
+ * fichas do município, o simulador da conta de água, as vizinhas, os downloads e as subpáginas pedem conta.
  */
 describe("consultas abertas da leva 1", () => {
   const ABERTAS = [
     "/setor-eletrico/conta-de-luz", "/setor-eletrico/conta-de-luz/",
-    "/saneamento/municipio", "/saneamento/municipio/", "/saneamento/municipio/2611606", "/saneamento/municipio/3550308/",
-    "/saneamento/preco-regulado/simulador",
+    "/saneamento/municipio", "/saneamento/municipio/",
     "/eficiencia-estatal", "/eficiencia-estatal/",
     "/gas-natural/gas-de-cozinha",
   ];
   // os únicos arquivos que as consultas buscam no navegador, cada um pelo endereço exato
-  const ARQUIVOS = ["/setor-eletrico/conta-de-luz/municipios.json", "/saneamento/gold/indice.json", "/energia/geo/uf.json"];
+  const ARQUIVOS = ["/setor-eletrico/conta-de-luz/municipios.json", "/saneamento/gold/indice.json"];
 
-  it("abre as cinco consultas e os arquivos que o navegador busca", () => {
+  it("abre a página de cada tema e os arquivos que o navegador busca", () => {
     for (const p of [...ABERTAS, ...ARQUIVOS]) expect(ehRotaPublica(p), p).toBe(true);
   });
 
@@ -108,6 +107,7 @@ describe("consultas abertas da leva 1", () => {
       // Saneamento: a pasta gold, o atlas, a comparação, os prestadores e os outros capítulos do preço regulado
       "/saneamento/gold/municipios.csv", "/saneamento/gold/municipios.json", "/saneamento/gold", "/saneamento/gold/",
       "/saneamento/gold/uf/SP.json", "/saneamento/acesso", "/saneamento/comparar", "/saneamento/prestadores/sabesp",
+      "/saneamento/municipio/2611606", "/saneamento/municipio/3550308/", "/saneamento/preco-regulado/simulador",
       "/saneamento/preco-regulado", "/saneamento/preco-regulado/formacao", "/saneamento/preco-regulado/reajustes",
       "/saneamento/preco-regulado/contrapartidas", "/saneamento/preco-regulado/riscos",
       // Eficiência Estatal: a nota composta, os temas e a exportação das 26 capitais
@@ -115,7 +115,7 @@ describe("consultas abertas da leva 1", () => {
       "/eficiencia-estatal/retrato-26-capitais.csv", "/eficiencia/atlas/frequencia-escolar-2022.csv",
       // Gás Natural: a entrada, os dados e as outras páginas
       "/gas-natural", "/gas-natural/dados", "/gas-natural/precos", "/gas-natural/gnv-e-gas-encanado", "/gas/gold/gas-de-cozinha.json",
-      "/gas/series/preco-glp-brasil-mensal.csv",
+      "/gas/series/preco-glp-brasil-mensal.csv", "/energia/geo/uf.json",
     ]) expect(ehRotaPublica(p), p).toBe(false);
   });
 
@@ -143,8 +143,9 @@ describe("consultas abertas da leva 1", () => {
   });
 
   it("o pré-carregamento só vale para destino aberto, com e sem query e âncora", () => {
-    expect(prefetchDoLink("/saneamento/municipio/2611606")).toBeUndefined();
-    expect(prefetchDoLink("/saneamento/preco-regulado/simulador?t=sabesp")).toBeUndefined();
+    expect(prefetchDoLink("/saneamento/municipio?ibge=2611606")).toBeUndefined();
+    expect(prefetchDoLink("/saneamento/municipio/2611606")).toBe(false);
+    expect(prefetchDoLink("/saneamento/preco-regulado/simulador?t=sabesp")).toBe(false);
     expect(prefetchDoLink("/setor-eletrico/conta-de-luz?dist=23664303000104#simulador")).toBeUndefined();
     expect(prefetchDoLink("/saneamento/comparar?m=2611606")).toBe(false);
     expect(prefetchDoLink("/setor-eletrico/conta-de-luz/reajustes-e-subsidios#reajustes")).toBe(false);
@@ -153,14 +154,17 @@ describe("consultas abertas da leva 1", () => {
     expect(exigeConta("/eficiencia-estatal")).toBe(false);
   });
 
-  it("o sitemap lista as consultas abertas e nenhuma vizinha fechada", () => {
+  it("o sitemap lista a página aberta de cada tema e nenhuma vizinha fechada", () => {
     const urls = new Set(sitemap().map((u) => new URL(u.url).pathname));
-    for (const p of ["/setor-eletrico/conta-de-luz", "/en/setor-eletrico/conta-de-luz", "/saneamento/municipio", "/saneamento/municipio/2611606",
-      "/saneamento/preco-regulado/simulador", "/eficiencia-estatal", "/gas-natural/gas-de-cozinha"]) expect(urls.has(p), p).toBe(true);
+    for (const p of ["/setor-eletrico/conta-de-luz", "/en/setor-eletrico/conta-de-luz", "/saneamento/municipio", "/eficiencia-estatal", "/gas-natural/gas-de-cozinha"]) {
+      expect(urls.has(p), p).toBe(true);
+    }
     for (const p of ["/setor-eletrico/conta-de-luz/reajustes-e-subsidios", "/saneamento/acesso", "/saneamento/comparar", "/eficiencia-estatal/indice-de-resultados",
-      "/eficiencia-estatal/saude-capitais", "/gas-natural", "/gas-natural/dados", "/saneamento/gold/indice.json"]) expect(urls.has(p), p).toBe(false);
-    // uma ficha por município do índice da busca
-    expect([...urls].filter((u) => /^\/saneamento\/municipio\/\d{7}$/.test(u)).length).toBeGreaterThan(5000);
+      "/eficiencia-estatal/saude-capitais", "/gas-natural", "/gas-natural/dados", "/saneamento/gold/indice.json", "/saneamento/preco-regulado/simulador"]) {
+      expect(urls.has(p), p).toBe(false);
+    }
+    // as fichas do município são do painel completo, com conta
+    expect([...urls].filter((u) => /^\/saneamento\/municipio\/\d{7}$/.test(u))).toEqual([]);
   });
 });
 

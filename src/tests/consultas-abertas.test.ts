@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { ExportacaoComConta } from "@/components/acesso/ExportacaoComConta";
 import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
+import { PaginaAberta } from "@/components/acesso/PaginaAberta";
 
 /**
  * Estratégia "aberto e com conta", leva 1 (decisão do dono de 19/10/2026, docs/BANCA_2026-10-19.md): nas cinco
@@ -23,6 +24,8 @@ const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
 
 
 const html = (el: Parameters<typeof renderToStaticMarkup>[0]) => renderToStaticMarkup(el);
+/** Na versão aperitivo, servida no endereço público do tema: o layout de src/app/aperitivo declara a página aberta. */
+const aberta = (el: Parameters<typeof renderToStaticMarkup>[0]) => renderToStaticMarkup(createElement(PaginaAberta, null, el));
 
 describe("selo com conta", () => {
   beforeEach(() => {
@@ -30,10 +33,18 @@ describe("selo com conta", () => {
   });
 
   it("aparece na página aberta para destino fechado, e só nele", () => {
-    caminho.atual = "/saneamento/municipio/2611606";
-    expect(html(createElement(SeloComConta, { href: "/saneamento/comparar?m=2611606" }))).toContain("com conta");
-    expect(html(createElement(SeloComConta, { href: "/gas/series/preco-glp-por-uf.csv" }))).toContain("com conta");
-    expect(html(createElement(SeloComConta, { href: "/saneamento/preco-regulado/simulador?t=x" }))).toBe("");
+    caminho.atual = "/saneamento/municipio";
+    expect(aberta(createElement(SeloComConta, { href: "/saneamento/comparar?m=2611606" }))).toContain("com conta");
+    expect(aberta(createElement(SeloComConta, { href: "/gas/series/preco-glp-por-uf.csv" }))).toContain("com conta");
+    // a ficha completa e o simulador da conta de água pedem conta desde 20/10/2026 (princípio do aperitivo)
+    expect(aberta(createElement(SeloComConta, { href: "/saneamento/municipio/2611606" }))).toContain("com conta");
+    expect(aberta(createElement(SeloComConta, { href: "/saneamento/preco-regulado/simulador?t=x" }))).toContain("com conta");
+    expect(aberta(createElement(SeloComConta, { href: "/saneamento/municipio?ibge=2611606" }))).toBe("");
+    // no mesmo endereço, sem a marca da versão aperitivo, é o painel completo de quem tem conta: sem selo
+    expect(html(createElement(SeloComConta, { href: "/saneamento/comparar?m=2611606" }))).toBe("");
+    // página aberta que já é o aperitivo (sem versão separada): o caminho basta
+    caminho.atual = "/combustiveis/no-meu-estado";
+    expect(html(createElement(SeloComConta, { href: "/combustiveis" }))).toContain("com conta");
     expect(html(createElement(SeloComConta, { href: "/saneamento/metodologia" }))).toBe("");
     expect(html(createElement(SeloComConta, { sempre: true }))).toContain("com conta");
   });
@@ -47,7 +58,7 @@ describe("selo com conta", () => {
 
   it("fala inglês na irmã inglesa da Conta de luz", () => {
     caminho.atual = "/en/setor-eletrico/conta-de-luz";
-    const h = html(createElement(SeloComConta, { href: "/setor-eletrico/conta-de-luz/reajustes-e-subsidios" }));
+    const h = aberta(createElement(SeloComConta, { href: "/setor-eletrico/conta-de-luz/reajustes-e-subsidios" }));
     expect(h).toContain("account required");
     expect(h).not.toContain("com conta");
   });
@@ -55,10 +66,10 @@ describe("selo com conta", () => {
 
 describe("exportação montada no navegador", () => {
   it("sai da versão aberta: no HTML do servidor fica o convite para entrar, com o retorno à página", () => {
-    caminho.atual = "/saneamento/preco-regulado/simulador";
-    const h = html(createElement(ExportacaoComConta, { rotulo: "Baixar CSV" }, createElement("button", { type: "button" }, "exportar")));
+    caminho.atual = "/gas-natural/gas-de-cozinha";
+    const h = aberta(createElement(ExportacaoComConta, { rotulo: "Baixar CSV" }, createElement("button", { type: "button" }, "exportar")));
     expect(h).not.toContain("<button");
-    expect(h).toContain('href="/entrar?de=%2Fsaneamento%2Fpreco-regulado%2Fsimulador"');
+    expect(h).toContain('href="/entrar?de=%2Fgas-natural%2Fgas-de-cozinha"');
     expect(h).toContain("com conta");
   });
 
@@ -144,5 +155,46 @@ describe("convite ao login leva o recorte da consulta na volta", () => {
     } finally {
       (globalThis as { window?: unknown }).window = original;
     }
+  });
+
+  it("o convite do aperitivo leva o recorte da janela no caminho da rota pública (achado do Codex)", async () => {
+    const { aoEntrarComRecorteEm, destinoComRecorte } = await import("@/components/acesso/sessao");
+    // a query da janela vence; sem query na janela, vale a da rota; a âncora vem sempre da janela
+    expect(destinoComRecorte("/eficiencia-estatal", { search: "?territorio=1302603", hash: "" })).toBe("/eficiencia-estatal?territorio=1302603");
+    expect(destinoComRecorte("/saneamento/municipio?ibge=3550308", { search: "", hash: "#conteudo" })).toBe("/saneamento/municipio?ibge=3550308#conteudo");
+    expect(destinoComRecorte("/gas-natural/gas-de-cozinha", { search: "?uf=SP", hash: "" })).toBe("/gas-natural/gas-de-cozinha?uf=SP");
+    expect(destinoComRecorte("/combustiveis/no-meu-estado", { search: "", hash: "" })).toBe("/combustiveis/no-meu-estado");
+
+    const indo: string[] = [];
+    const original = (globalThis as { window?: unknown }).window;
+    // a janela pode estar no caminho interno da versão aperitivo: o caminho do destino vem sempre da rota pública
+    (globalThis as { window?: unknown }).window = {
+      location: { pathname: "/aperitivo/gas-de-cozinha", search: "?uf=SP", hash: "", assign: (u: string) => indo.push(u) },
+    };
+    try {
+      const clicar = aoEntrarComRecorteEm("/gas-natural/gas-de-cozinha");
+      let impedido = false;
+      clicar({ metaKey: false, ctrlKey: false, shiftKey: false, button: 0, preventDefault: () => { impedido = true; } });
+      expect(impedido).toBe(true);
+      expect(indo).toEqual([`/entrar?de=${encodeURIComponent("/gas-natural/gas-de-cozinha?uf=SP")}`]);
+      // nova aba, botão do meio: o navegador segue o href do HTML, sem o recorte
+      for (const tecla of [{ ctrlKey: true }, { metaKey: true }, { shiftKey: true }, { button: 1 }]) {
+        impedido = false;
+        clicar({ metaKey: false, ctrlKey: false, shiftKey: false, button: 0, ...tecla, preventDefault: () => { impedido = true; } });
+        expect(impedido).toBe(false);
+      }
+      expect(indo).toHaveLength(1);
+      // na irmã inglesa, a entrada inglesa
+      aoEntrarComRecorteEm("/en/setor-eletrico/conta-de-luz")({ metaKey: false, ctrlKey: false, shiftKey: false, button: 0, preventDefault: () => {} });
+      expect(indo[1]).toBe(`/en/entrar?de=${encodeURIComponent("/en/setor-eletrico/conta-de-luz?uf=SP")}`);
+    } finally {
+      (globalThis as { window?: unknown }).window = original;
+    }
+  });
+
+  it("o convite do aperitivo mantém o href sem JavaScript e liga o clique só para quem não tem sessão", () => {
+    const fonte = ler("src/components/acesso/ConviteAperitivo.tsx");
+    expect(fonte).toContain("href={logado ? rota : hrefEntrar(rota)}");
+    expect(fonte).toContain("onClick={logado ? undefined : aoEntrarComRecorteEm(rota)}");
   });
 });

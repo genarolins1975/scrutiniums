@@ -77,9 +77,9 @@ describe("O Brasil em perguntas", () => {
   it("\"Para o seu caso\" só leva a consultas abertas (leva 1 e itens aprovados da leva 2), sem repetir os caminhos com conta", () => {
     const comBloco = Object.fromEntries(todas.map((p) => [p.id, p.paraOSeuCaso.map((c) => c.href)]));
     // "Quanto custa encher o tanque no meu estado?" aberta em 20/10/2026 (LEVA_2): entra nas portas das Famílias e da Energia
-    expect(comBloco["familias"]).toEqual(["/gas-natural/gas-de-cozinha", "/setor-eletrico/conta-de-luz", "/saneamento/preco-regulado/simulador", "/combustiveis/no-meu-estado"]);
+    expect(comBloco["familias"]).toEqual(["/gas-natural/gas-de-cozinha", "/setor-eletrico/conta-de-luz", "/combustiveis/no-meu-estado"]);
     expect(comBloco["servicos-publicos"]).toEqual(["/eficiencia-estatal"]);
-    expect(comBloco["energia-e-infraestrutura"]).toEqual(["/setor-eletrico/conta-de-luz", "/saneamento/municipio", "/saneamento/preco-regulado/simulador", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado"]);
+    expect(comBloco["energia-e-infraestrutura"]).toEqual(["/setor-eletrico/conta-de-luz", "/saneamento/municipio", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado"]);
     for (const p of todas) {
       for (const c of p.paraOSeuCaso) {
         expect(rotaExiste(c.href), `${p.id}: ${c.href}`).toBe(true);
