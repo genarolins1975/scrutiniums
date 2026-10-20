@@ -76,6 +76,8 @@ const MOTOR: [string, string][] = [
   ["atualizar-previdencia.yml", "previdencia"],
   // capítulo 7.1 do Saneamento (dívida e alavancagem dos prestadores), 20/10/2026: DFP e ITR da CVM, trimestral
   ["atualizar-saneamento-divida.yml", "saneamento-divida"],
+  // painel Educação nos municípios (Serviços Públicos), 20/10/2026: Ideb, Censo Escolar e população no motor por grupo
+  ["atualizar-educacao.yml", "educacao"],
 ];
 
 describe.each(MOTOR)("%s (motor por grupo)", (arquivo, dominio) => {

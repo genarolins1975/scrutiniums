@@ -18,7 +18,7 @@ export const FRESCOR_DAS_COLECOES = {
 
 export const FRESCOR_DOS_OBSERVATORIOS = {
   familias: ["inflacao", "credito", "agro", "gas", "eficiencia"],
-  "servicos-publicos": ["eficiencia"],
+  "servicos-publicos": ["educacao", "eficiencia"],
   "territorio-e-clima": ["territorio", "agro", "saneamento", "eficiencia", "energia"],
   "contas-publicas": ["contas-federais", "previdencia", "contas-estaduais"],
   "energia-e-infraestrutura": ["energia", "gas", "saneamento"],

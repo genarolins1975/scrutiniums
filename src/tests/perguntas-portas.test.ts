@@ -78,7 +78,8 @@ describe("O Brasil em perguntas", () => {
     const comBloco = Object.fromEntries(todas.map((p) => [p.id, p.paraOSeuCaso.map((c) => c.href)]));
     // "Quanto custa encher o tanque no meu estado?" aberta em 20/10/2026 (LEVA_2): entra nas portas das Famílias e da Energia
     expect(comBloco["familias"]).toEqual(["/gas-natural/gas-de-cozinha", "/setor-eletrico/conta-de-luz", "/combustiveis/no-meu-estado"]);
-    expect(comBloco["servicos-publicos"]).toEqual(["/eficiencia-estatal"]);
+    // "Como está a escola pública da minha cidade?" (painel Educação nos municípios, 20/10/2026) abre o bloco dos Serviços Públicos
+    expect(comBloco["servicos-publicos"]).toEqual(["/educacao-municipal", "/eficiencia-estatal"]);
     expect(comBloco["energia-e-infraestrutura"]).toEqual(["/setor-eletrico/conta-de-luz", "/saneamento/municipio", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado"]);
     for (const p of todas) {
       for (const c of p.paraOSeuCaso) {
