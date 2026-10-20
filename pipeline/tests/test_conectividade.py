@@ -385,6 +385,22 @@ class TestGoldSintetica(unittest.TestCase):
     def tearDown(self):
         self.p1.stop()
 
+    def test_ausencia_de_tecnologia_fica_fora_das_contagens(self):
+        # município sem o valor do 5G (e do 4G) não entra em "sem 5G" nem em "4G abaixo de 50%": ausência não é zero
+        seeds = copy.deepcopy(self.seeds)
+        pi = seeds["cobertura"]["municipios"]["2207777"][5]
+        pi["g5"] = None
+        pi["g4"] = None
+        g, _uf = gold.construir(seeds)
+        ufpi = lambda gold_: next(u for u in gold_["ufs"] if u["uf"] == "PI")  # noqa: E731
+        self.assertEqual(ufpi(g)["cobertura"]["municipios_sem_5g"], 0)
+        self.assertEqual(ufpi(g)["cobertura"]["municipios_4g_abaixo_50"], 0)
+        self.assertEqual(ufpi(self.g)["cobertura"]["municipios_sem_5g"], 0)       # com o valor (48%), também não é "sem 5G"
+        pi2 = copy.deepcopy(self.seeds)
+        pi2["cobertura"]["municipios"]["2207777"][5]["g5"] = [0.5, 0.5, 0.5]
+        g2, _uf2 = gold.construir(pi2)
+        self.assertEqual(ufpi(g2)["cobertura"]["municipios_sem_5g"], 1)
+
     def test_grade_de_trimestres_completa(self):
         # seed com 2025-12 e 2026-09: a grade ganha 2026-03 e 2026-06 vazios, e as séries seguem a grade
         self.assertEqual(self.g["trimestres_cobertura"], ["2025-12", "2026-03", "2026-06", "2026-09"])

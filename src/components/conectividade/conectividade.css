@@ -120,6 +120,8 @@
 
 /* barras horizontais: a barra é o dado, no acento; o rótulo e o número ficam fora dela */
 .cn-barras { margin-top: 20px; display: grid; gap: 2px; }
+/* operadora com símbolo oficial (manifesto em public/conectividade/logos): placa pequena antes do nome, nome sempre em texto */
+.cn-operadora { display: inline-flex; align-items: center; gap: 10px; }
 .cn-barra { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 7.5rem; align-items: center; gap: 12px; min-height: 36px; }
 .cn-barra > span:first-child { font-size: 14px; line-height: 1.35; }
 .cn-barra-trilho { height: 14px; background: var(--cor-grade, #E6E8E3); position: relative; }

@@ -4,6 +4,7 @@
  * painel completo desenhado no servidor, arquivos CSV, camada aberta e frescor.
  */
 import { describe, expect, it, vi } from "vitest";
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
@@ -13,6 +14,7 @@ import PainelPage from "@/app/conectividade/page";
 import { GraficoLinhas } from "@/components/conectividade/Graficos";
 import { csvBrasilMensal, csvPorEstado, csvPorMunicipio } from "@/lib/conectividade/csv";
 import { comConta } from "@/lib/conectividade/convite";
+import { lerManifestoLogosConectividade, logosConectividade } from "@/lib/conectividade/logos";
 import { arquivoUf, cobertos, consultarMunicipio, faixaNaDistribuicao, goldConectividade, UF_DO_PREFIXO } from "@/lib/conectividade/dados";
 import { dataCaptura, mesAcessos, mesExtenso, milhoes, num, pct } from "@/lib/conectividade/formato";
 import { hrefMunicipio, nomeGrupo, PERGUNTA_APERITIVO, PERGUNTA_PAINEL, ROTA_CONECTIVIDADE, SECAO_APERITIVO, SECAO_PAINEL, VERSAO_ABERTA } from "@/lib/conectividade/paginas";
@@ -254,6 +256,56 @@ describe("arquivos CSV", () => {
     const ultimo = br[br.length - 1].split(";");
     expect(ultimo[0]).toBe(g.brasil.fixa.acessos_mensal.meses.at(-1));
     expect(Number(ultimo[1])).toBe(g.brasil.fixa.acessos_mensal.acessos.at(-1));
+  });
+});
+
+describe("Conectividade: símbolos oficiais das operadoras (contrato de logos)", () => {
+  const m = lerManifestoLogosConectividade()!;
+  const g = goldConectividade();
+
+  it("toda operadora da cobertura está no manifesto, com arquivo publicado íntegro ou ausência com motivo e vínculo declarado", () => {
+    expect(m).toBeTruthy();
+    for (const o of g.operadoras) {
+      const l = m.logos.find((x) => x.operadora === o);
+      expect(l, o).toBeTruthy();
+      expect(l!.vinculo.length, o).toBeGreaterThan(20);
+      if (l!.arquivo) {
+        expect(l!.cnpj, o).toMatch(/^\d{14}$/);
+        expect(l!.arquivo, o).toBe(`/conectividade/logos/${l!.cnpj}.${l!.formato}`);
+        const caminho = join(raiz, "public", l!.arquivo.replace(/^\//, ""));
+        expect(existsSync(caminho), o).toBe(true);
+        const bytes = readFileSync(caminho);
+        expect(bytes.length, o).toBe(l!.bytes);
+        expect(createHash("sha256").update(bytes).digest("hex"), o).toBe(l!.sha256);
+        expect(l!.url_origem, o).toMatch(/^https:\/\//);
+        expect(l!.ausencia, o).toBeNull();
+        if (l!.formato === "svg") {
+          const svg = bytes.toString("utf-8");
+          expect(svg, o).not.toMatch(/<script|\son\w+\s*=|<foreignObject|<!ENTITY|(xlink:)?href\s*=\s*["'](https?:|\/\/|data:)/i);
+        }
+      } else {
+        expect(l!.ausencia?.motivo.length, o).toBeGreaterThan(20);
+      }
+    }
+  });
+
+  it("o painel marca o símbolo de quem o tem, mostra o nome de todas e declara no método quem ficou sem", () => {
+    const logos = logosConectividade();
+    const m3 = arquivoUf("SP")!.municipios.find((x) => x.cobertura && Object.keys(x.cobertura.operadoras).length >= 3)!;
+    const html = renderToStaticMarkup(createElement(PainelPage, { searchParams: { ibge: m3.id } }));
+    for (const o of g.operadoras) {
+      const l = logos.get(o)!;
+      expect(html, o).toContain(nomeGrupo(o));
+      if (l.arquivo) {
+        expect(html, o).toContain(`data-logo="${l.papel}"`);
+        expect(html, o).toContain(`src="${l.arquivo}"`);
+      } else {
+        expect(html, o).toContain(`${nomeGrupo(o)} (${l.motivo!.slice(0, 20)}`); // o motivo inteiro pode ter aspas, que o HTML escapa
+      }
+    }
+    expect(html).toContain("/conectividade/logos/manifesto.json");
+    const cfg = readFileSync(join(raiz, "next.config.mjs"), "utf-8");
+    expect(cfg).toContain('source: "/conectividade/logos/:path*"');
   });
 });
 

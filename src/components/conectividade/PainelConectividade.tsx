@@ -6,24 +6,30 @@
  */
 import type { ReactNode } from "react";
 import { BuscaConectividade } from "./BuscaConectividade";
+import { ListadasLogo } from "@/components/energia/ListadasLogo";
 import { anoDecimal, GraficoLinhas, marcasAnos, type Serie } from "./Graficos";
 import { cobertos, faixaNaDistribuicao, pontosAnuais, serieCobertura, ufsPor, type ConsultaMunicipio } from "@/lib/conectividade/dados";
+import { logosConectividade, type LogoDaOperadora } from "@/lib/conectividade/logos";
 import { dataBr, dataCaptura, mesAcessos, mesCurto, mesExtenso, milhoes, num, pct, plural, posicao, SEM_DADO } from "@/lib/conectividade/formato";
 import { DO_ESTADO, DOWNLOADS, hrefMunicipio, MEIOS, nomeGrupo, ROTA_CONECTIVIDADE, TECNOLOGIAS, VELOCIDADES } from "@/lib/conectividade/paginas";
 import type { ArquivoUf, GoldConectividade, MunicipioGold, UfGold } from "@/lib/conectividade/tipos";
 
+type Logos = Map<string, LogoDaOperadora>;
+
 export function PainelConectividade({ g, consulta, ferramentas }: { g: GoldConectividade; consulta: ConsultaMunicipio; ferramentas?: ReactNode }) {
+  // símbolos oficiais das operadoras (contrato de identidade da plataforma): manifesto em public/conectividade/logos
+  const logos = logosConectividade();
   return (
     <>
       <Abertura g={g} />
       {ferramentas}
-      <SecaoMunicipio g={g} c={consulta} />
+      <SecaoMunicipio g={g} c={consulta} logos={logos} />
       <SecaoFibra g={g} />
-      <SecaoCobertura g={g} />
+      <SecaoCobertura g={g} logos={logos} />
       <SecaoEvolucao g={g} />
       <SecaoEstados g={g} escolhida={consulta.estado === "ok" ? consulta.uf : null} />
       <Mecanismo />
-      <Metodo g={g} />
+      <Metodo g={g} logos={logos} />
     </>
   );
 }
@@ -97,7 +103,7 @@ function ComoLerMunicipio() {
   );
 }
 
-function SecaoMunicipio({ g, c }: { g: GoldConectividade; c: ConsultaMunicipio }) {
+function SecaoMunicipio({ g, c, logos }: { g: GoldConectividade; c: ConsultaMunicipio; logos: Logos }) {
   return (
     <section className="cn-secao" id="municipio" aria-labelledby="municipio-titulo">
       <h2 id="municipio-titulo">Como é a internet na sua cidade?</h2>
@@ -113,7 +119,7 @@ function SecaoMunicipio({ g, c }: { g: GoldConectividade; c: ConsultaMunicipio }
           {c.codigo ? `Nenhum município da base da Anatel tem o código IBGE ${c.codigo}.` : "O endereço não traz um código IBGE de município, que tem sete dígitos."} Busque pelo nome.
         </p>
       )}
-      {c.estado === "ok" ? <Municipio g={g} m={c.m} uf={c.uf} arquivo={c.arquivo} /> : <Distribuicao g={g} />}
+      {c.estado === "ok" ? <Municipio g={g} m={c.m} uf={c.uf} arquivo={c.arquivo} logos={logos} /> : <Distribuicao g={g} />}
     </section>
   );
 }
@@ -183,7 +189,7 @@ function Regua({ m }: { m: MunicipioGold }) {
   );
 }
 
-function Municipio({ g, m, uf, arquivo }: { g: GoldConectividade; m: MunicipioGold; uf: string; arquivo: ArquivoUf }) {
+function Municipio({ g, m, uf, arquivo, logos }: { g: GoldConectividade; m: MunicipioGold; uf: string; arquivo: ArquivoUf; logos: Logos }) {
   const f = m.fixa;
   const mv = m.movel;
   const c = m.cobertura;
@@ -244,7 +250,7 @@ function Municipio({ g, m, uf, arquivo }: { g: GoldConectividade; m: MunicipioGo
           <>
             <h3 className="cn-subtitulo">Quem a cobertura alcança, geração a geração</h3>
             <Regua m={m} />
-            <p className="cn-regua-nota -mt-1">Cada barra é a parte dos {num(c.moradores)} moradores (Censo 2022) dentro da mancha de cobertura de qualquer operadora em {mesExtenso(r.cobertura)}; a geração mais nova alcança menos gente.</p>
+            <p className="cn-regua-nota -mt-1">Cada barra é a parte dos {num(c.moradores)} moradores (Censo 2022) dentro da mancha de cobertura de qualquer operadora em {mesExtenso(r.cobertura)}; o 5G nunca alcança mais gente que o 4G.</p>
             {ops.length > 0 && (
               <div className="cn-tabela-rolagem" tabIndex={0}>
                 <table className="cn-tabela">
@@ -259,7 +265,7 @@ function Municipio({ g, m, uf, arquivo }: { g: GoldConectividade; m: MunicipioGo
                   <tbody>
                     {ops.map((o) => (
                       <tr key={o}>
-                        <th scope="row">{nomeGrupo(o)}</th>
+                        <th scope="row"><span className="cn-operadora"><ListadasLogo logo={logos.get(o)} nome={nomeGrupo(o)} tamanho="sm" decorativo />{nomeGrupo(o)}</span></th>
                         <td>{pct(c.operadoras[o].g4g5_moradores)}</td>
                         <td>{pct(c.operadoras[o].todas_moradores)}</td>
                       </tr>
@@ -320,12 +326,15 @@ function MaioresDaUf({ arquivo, uf, escolhido }: { arquivo: ArquivoUf; uf: strin
 
 /* ------------------------------------------------------------------------------------------------ fibra */
 
-function Barras({ itens, max, unidade = "%", casas = 1, referencia }: { itens: { rotulo: string; v: number | null; forte?: boolean; href?: string }[]; max: number; unidade?: string; casas?: number; referencia?: number | null }) {
+function Barras({ itens, max, unidade = "%", casas = 1, referencia }: { itens: { rotulo: string; v: number | null; forte?: boolean; href?: string; logo?: LogoDaOperadora }[]; max: number; unidade?: string; casas?: number; referencia?: number | null }) {
   return (
     <div className="cn-barras" role="list">
       {itens.map((it) => (
         <div key={it.rotulo} className={`cn-barra${it.forte ? " cn-escolhido" : ""}`} role="listitem">
-          <span>{it.href ? <a href={it.href} className="cn-toque cn-link">{it.rotulo}</a> : it.rotulo}</span>
+          <span className={it.logo !== undefined ? "cn-operadora" : undefined}>
+            {it.logo !== undefined && <ListadasLogo logo={it.logo} nome={it.rotulo} tamanho="sm" decorativo />}
+            {it.href ? <a href={it.href} className="cn-toque cn-link">{it.rotulo}</a> : it.rotulo}
+          </span>
           <span className="cn-barra-trilho" aria-hidden="true">
             {it.v !== null && <i style={{ width: `${Math.max(0, Math.min(100, (100 * it.v) / max))}%` }} />}
             {referencia != null && <b style={{ left: `${Math.max(0, Math.min(100, (100 * referencia) / max))}%` }} />}
@@ -379,7 +388,7 @@ function SecaoFibra({ g }: { g: GoldConectividade }) {
 
 /* --------------------------------------------------------------------------------------------- cobertura */
 
-function SecaoCobertura({ g }: { g: GoldConectividade }) {
+function SecaoCobertura({ g, logos }: { g: GoldConectividade; logos: Logos }) {
   const c = g.brasil.cobertura;
   const tri = c.trimestres;
   const ufs5 = ufsPor(g, (u) => u.cobertura.g5_moradores);
@@ -408,7 +417,7 @@ function SecaoCobertura({ g }: { g: GoldConectividade }) {
         </div>
         <div>
           <h3>Por operadora, 4G ou 5G</h3>
-          <Barras itens={ops.map(([o, v]) => ({ rotulo: nomeGrupo(o), v: v.g4g5_moradores }))} max={100} />
+          <Barras itens={ops.map(([o, v]) => ({ rotulo: nomeGrupo(o), logo: logos.get(o), v: v.g4g5_moradores }))} max={100} />
           <p className="cn-fonte">Parte dos moradores do país dentro da cobertura 4G ou 5G de cada operadora. As regionais cobrem partes de poucos estados.</p>
         </div>
       </div>
@@ -568,7 +577,14 @@ function Mecanismo() {
 
 /* -------------------------------------------------------------------------------------------------- método */
 
-function Metodo({ g }: { g: GoldConectividade }) {
+/** Operadoras sem símbolo oficial obtido, com o motivo do manifesto: a ausência fica dita na página, nunca escondida. */
+function semSimbolo(g: GoldConectividade, logos: Logos): string {
+  const sem = g.operadoras.filter((o) => !logos.get(o)?.arquivo);
+  if (!sem.length) return " Todas as operadoras da cobertura têm o símbolo oficial.";
+  return ` Sem símbolo oficial, só o nome: ${sem.map((o) => `${nomeGrupo(o)} (${logos.get(o)?.motivo ?? "fora do manifesto"})`).join("; ")}.`;
+}
+
+function Metodo({ g, logos }: { g: GoldConectividade; logos: Logos }) {
   const f = g.fontes;
   return (
     <details className="cn-metodo" id="metodo">
@@ -598,6 +614,11 @@ function Metodo({ g }: { g: GoldConectividade }) {
             <li>{g.notas.movel_acessos}</li>
             <li>{g.notas.cobertura}</li>
             <li>{g.notas.ausencia} Municípios sem dado nesta publicação: banda larga fixa {num(g.destaques.sem_dado.fixa.length)}, telefonia móvel {num(g.destaques.sem_dado.movel.length)}, cobertura {num(g.destaques.sem_dado.cobertura.length)}.</li>
+            <li>
+              Símbolos das operadoras: arquivo oficial do site de cada companhia, ligado ao nome da cobertura da Anatel pelo CNPJ do cadastro da Anatel (manifesto em{" "}
+              <code>/conectividade/logos/manifesto.json</code>).
+              {semSimbolo(g, logos)}
+            </li>
             <li>
               Partes em % (fibra, velocidade, geração, pré-pago), posições no estado e no país e faixas da distribuição (quantis) são cálculos da Scrutiniums sobre os números
               publicados. Nada é estimado nem interpolado; trimestre ou mês sem publicação fica em branco.

@@ -253,8 +253,9 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
                 "municipios_com_dado": len(cob_uf),
                 **{f"{campo}_moradores": _media_ponderada([((c["tecnologias"].get(campo) or [None])[0], c["moradores"]) for c in cob_uf])
                    for campo in ("todas", "g4", "g5", "g4g5")},
-                "municipios_sem_5g": sum(1 for c in cob_uf if ((c["tecnologias"].get("g5") or [None])[0] or 0) < 1),
-                "municipios_4g_abaixo_50": sum(1 for c in cob_uf if ((c["tecnologias"].get("g4") or [None])[0] or 0) < 50),
+                # ausência da tecnologia não é zero: município sem o valor fica fora das duas contagens
+                "municipios_sem_5g": sum(1 for c in cob_uf if (v := (c["tecnologias"].get("g5") or [None])[0]) is not None and v < 1),
+                "municipios_4g_abaixo_50": sum(1 for c in cob_uf if (v := (c["tecnologias"].get("g4") or [None])[0]) is not None and v < 50),
             },
             "sem_fibra": sum(1 for c in cods if municipios[c]["fixa"] and municipios[c]["fixa"]["fibra_pct"] == 0),
             "uma_prestadora": sum(1 for c in cods if municipios[c]["fixa"] and municipios[c]["fixa"]["prestadoras"] == 1),
