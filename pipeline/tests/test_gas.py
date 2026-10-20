@@ -88,6 +88,7 @@ class TestGold(unittest.TestCase):
         gold.importacao(cls.s, nac, meses)
         gold.precos(cls.s)
         gold.consumidor(cls.s)
+        gold.combustiveis(cls.s)
         gold.mercado_e_infraestrutura(cls.s)
         gold.meta(cls.s)
         validacoes.conferir(cls.s)
@@ -278,6 +279,7 @@ class TestCoberturaAdversa(unittest.TestCase):
         gold.importacao(self.s, self.nac, self.meses)
         gold.precos(self.s)
         gold.consumidor(self.s)
+        gold.combustiveis(self.s)
         gold.mercado_e_infraestrutura(self.s)
         for nome, serie in self.s.series.items():
             with self.subTest(serie=nome):
@@ -285,6 +287,155 @@ class TestCoberturaAdversa(unittest.TestCase):
                     linhas = list(csv.reader(f, delimiter=";"))
                 esperado = [["" if v is None else str(v).replace(".", ",") if isinstance(v, float) else str(v) for v in row] for row in serie["linhas"]]
                 self.assertEqual(linhas, [serie["colunas"], *esperado])
+
+
+def _xlsx(caminho, linhas):
+    """Planilha mínima (texto em linha, sem estilos) para testar o recorte sem rede."""
+    import zipfile
+    from xml.sax.saxutils import escape
+
+    def col(i):
+        return chr(65 + i) if i < 26 else chr(64 + i // 26) + chr(65 + i % 26)
+
+    corpo = "".join(
+        f'<row r="{r + 1}">' + "".join(
+            f'<c r="{col(i)}{r + 1}" t="inlineStr"><is><t>{escape(str(v))}</t></is></c>' if isinstance(v, str)
+            else f'<c r="{col(i)}{r + 1}"><v>{v}</v></c>' for i, v in enumerate(l)) + "</row>"
+        for r, l in enumerate(linhas))
+    ns = 'xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"'
+    with zipfile.ZipFile(caminho, "w") as z:
+        z.writestr("xl/workbook.xml", f'<workbook {ns}><sheets><sheet name="A" sheetId="1" r:id="rId1"/></sheets></workbook>')
+        z.writestr("xl/_rels/workbook.xml.rels", '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+                   '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>')
+        z.writestr("xl/worksheets/sheet1.xml", f"<worksheet {ns}><sheetData>{corpo}</sheetData></worksheet>")
+
+
+class TestRecortePrecos(unittest.TestCase):
+    CAB = ["MÊS", "PRODUTO", "NÚMERO DE POSTOS PESQUISADOS", "UNIDADE DE MEDIDA", "PREÇO MÉDIO REVENDA"]
+
+    def _planilha(self, produtos, unidade_gasolina="R$/l"):
+        import tempfile
+        from pipeline.gas.fontes import PRODUTOS_PRECOS
+        linhas = [["AGÊNCIA NACIONAL DO PETRÓLEO"], ["Obs: Entre 30/07/17 e 30/12/17, a abrangência foi reduzida."],
+                  ["Não houve pesquisa de preços entre 18/8/20 e 17/10/20. "], self.CAB]
+        for p in produtos:
+            u = unidade_gasolina if p == "GASOLINA COMUM" else PRODUTOS_PRECOS[p][-1]
+            linhas.append([46266, p, 100, u, 6.5])
+        linhas.append([46266, "GASOLINA ADITIVADA", 10, "R$/l", 7.0])
+        t = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
+        t.close()
+        _xlsx(t.name, linhas)
+        self.addCleanup(os.unlink, t.name)
+        return t.name
+
+    def test_recorte_guarda_os_seis_produtos_e_as_observacoes(self):
+        from pipeline.gas.fontes import PRODUTOS_PRECOS, recortar_precos
+        texto, notas, meses = recortar_precos(self._planilha(list(PRODUTOS_PRECOS)))
+        linhas = list(csv.reader(io.StringIO(texto), delimiter=";"))
+        self.assertEqual(linhas[0], self.CAB)
+        self.assertEqual(sorted(l[1] for l in linhas[1:]), sorted(PRODUTOS_PRECOS))
+        self.assertTrue(all(l[0] == "2026-09" for l in linhas[1:]))
+        # a gasolina aditivada não entra no recorte
+        self.assertNotIn("GASOLINA ADITIVADA", texto)
+        self.assertEqual(notas, ["Entre 30/07/17 e 30/12/17, a abrangência foi reduzida.", "Não houve pesquisa de preços entre 18/8/20 e 17/10/20."])
+        self.assertEqual(set(meses), set(PRODUTOS_PRECOS))
+
+    def test_produto_ausente_ou_unidade_trocada_interrompe_a_coleta(self):
+        from pipeline.gas.fontes import PRODUTOS_PRECOS, recortar_precos
+        with self.assertRaisesRegex(RuntimeError, "ausentes"):
+            recortar_precos(self._planilha([p for p in PRODUTOS_PRECOS if p != "ETANOL HIDRATADO"]))
+        with self.assertRaisesRegex(RuntimeError, "unidade inesperada"):
+            recortar_precos(self._planilha(list(PRODUTOS_PRECOS), unidade_gasolina="R$/m³"))
+
+    def test_eventos_e_situacao_do_mes_saem_das_observacoes(self):
+        ev = gold.eventos_da_pesquisa(["Não houve pesquisa de preços entre 18/8/20 e 17/10/20.",
+                                       "Os preços de distribuição foram coletados até 17/8/20."])
+        self.assertEqual(len(ev), 1)
+        self.assertEqual((ev[0]["tipo"], ev[0]["inicio"], ev[0]["fim"]), ("sem_pesquisa", "2020-08-18", "2020-10-17"))
+        self.assertEqual(ev[0]["meses"], ["2020-08", "2020-09", "2020-10"])
+        self.assertEqual(gold.situacao_do_mes("2020-09", False, ev), "sem_pesquisa")
+        self.assertEqual(gold.situacao_do_mes("2020-08", True, ev), "parcial")
+        self.assertEqual(gold.situacao_do_mes("2021-01", True, ev), "completo")
+        self.assertEqual(gold.situacao_do_mes("2021-02", False, ev), "sem_dado")
+
+
+class TestCombustiveis(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.s = gold.Saida()
+        gold.consumidor(cls.s)
+        gold.combustiveis(cls.s)
+        cls.c = cls.s.golds["combustiveis"]
+        cls.ids = [p["id"] for p in cls.c["produtos"]]
+
+    def test_quatro_produtos_desde_2013_na_mesma_planilha_do_botijao(self):
+        self.assertEqual(self.ids, ["gasolina", "etanol", "diesel", "diesel_s10"])
+        self.assertEqual(self.c["serie"][0]["mes"], "2013-01")
+        self.assertEqual(self.c["ultimo_mes"], self.s.golds["gas-de-cozinha"]["ultimo_mes"])
+        self.assertTrue(all(p["unidade"] == "R$/l" for p in self.c["produtos"]))
+
+    def test_lacuna_de_2020_e_lacuna_nunca_zero(self):
+        por_mes = {x["mes"]: x for x in self.c["serie"]}
+        self.assertEqual(por_mes["2020-09"]["situacao"], "sem_pesquisa")
+        for pid in self.ids:
+            self.assertIsNone(por_mes["2020-09"][pid])
+            self.assertIsNone(por_mes["2020-09"][f"{pid}_real"])
+            self.assertIsNone(self.c["serie_uf"]["valores"][pid]["SP"][self.c["serie_uf"]["meses"].index("2020-09")])
+        self.assertEqual(por_mes["2020-08"]["situacao"], "parcial")
+        self.assertEqual(por_mes["2020-10"]["situacao"], "parcial")
+        for x in self.c["serie"]:
+            for pid in self.ids:
+                self.assertNotEqual(x[pid], 0, x["mes"])
+
+    def test_uf_sem_pesquisa_fica_sem_dado(self):
+        est = ler.precos_estados()
+        u = self.c["ultimo_mes"]
+        for l in self.c["por_uf"]:
+            for pid, anp, *_ in gold.PRODUTOS_COMBUSTIVEIS:
+                tem = any(x["uf"] == l["uf"] and x["produto"] == anp and x["mes"] == u and x["medio"] is not None for x in est)
+                self.assertEqual(l[pid] is not None, tem, f"{l['uf']} {pid}")
+
+    def test_postos_do_brasil_somam_os_das_ufs_em_todos_os_meses(self):
+        est, br = ler.precos_estados(), ler.precos_brasil()
+        soma = {}
+        for x in est:
+            soma[(x["mes"], x["produto"])] = soma.get((x["mes"], x["produto"]), 0) + (x["postos"] or 0)
+        for x in br:
+            if x["produto"] in {anp for _, anp, *_ in gold.PRODUTOS_COMBUSTIVEIS}:
+                self.assertEqual(soma[(x["mes"], x["produto"])], x["postos"], (x["mes"], x["produto"]))
+
+    def test_distancia_para_o_brasil_e_razao_etanol_gasolina(self):
+        ultimo = self.c["serie"][-1]
+        for l in self.c["por_uf"]:
+            for pid in self.ids:
+                if l[pid]:
+                    self.assertAlmostEqual(l[pid]["dif_brasil"], l[pid]["medio"] - ultimo[pid], places=3)
+                    self.assertAlmostEqual(l[pid]["dif_brasil_pct"], round(100 * (l[pid]["medio"] / ultimo[pid] - 1), 1), places=1)
+            if l["etanol"] and l["gasolina"]:
+                self.assertAlmostEqual(l["etanol_gasolina_pct"], round(100 * l["etanol"]["medio"] / l["gasolina"]["medio"], 1))
+        self.assertEqual(self.c["indicadores"]["etanol_gasolina_brasil"]["natureza"], "CALCULADO")
+
+    def test_preco_real_do_mes_base_igual_ao_nominal(self):
+        b = next(x for x in self.c["serie"] if x["mes"] == self.c["mes_base_real"])
+        for pid in self.ids:
+            self.assertAlmostEqual(b[f"{pid}_real"], b[pid], places=2)
+
+    def test_validacao_reprova_valor_dentro_da_lacuna(self):
+        import copy
+        c = copy.deepcopy(self.c)
+        x = next(x for x in c["serie"] if x["mes"] == "2020-09")
+        x["gasolina"] = 4.3
+        with self.assertRaises(validacoes.ErroValidacao):
+            validacoes.conferir_combustiveis(c, c["ultimo_mes"])
+        c = copy.deepcopy(self.c)
+        del c["serie"][10]
+        c["serie_uf"]["meses"] = [x["mes"] for x in c["serie"]]
+        with self.assertRaises(validacoes.ErroValidacao):
+            validacoes.conferir_combustiveis(c, c["ultimo_mes"])
+        c = copy.deepcopy(self.c)
+        c["pesquisa"]["conferencia_ultimo_mes"][0]["soma_postos_ufs"] += 1
+        with self.assertRaises(validacoes.ErroValidacao):
+            validacoes.conferir_combustiveis(c, c["ultimo_mes"])
 
 
 if __name__ == "__main__":
