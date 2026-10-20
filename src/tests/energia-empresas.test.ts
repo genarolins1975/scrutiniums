@@ -741,10 +741,12 @@ describe("páginas renderizadas no servidor", () => {
     expect(fichas["cemig-d"]).toContain("Como as perdas da CEMIG-D evoluíram?");
     expect(fichas["cemig-d"]).toContain("Concessionárias do Brasil");
     expect(fichas["cemig-d"]).toContain("já consolida estes números");
-    const cergapa = G.distribuidoras.indice.find((x) => x.slug === "cergapa")!;
-    expect(fichas.cergapa).toContain("sem tarifa vigente");
+    // tarifa ausente dita como tal: a CERGAPA estava sem tarifa vigente em 01/10/2026 e tem a REH 3.768/2026 desde 30/09; a ficha
+    // conferida é a de uma distribuidora que a gold do dia publica sem tarifa vigente (há sempre as encerradas e incorporadas)
+    const semTarifa = G.distribuidoras.indice.find((x) => x.tarifa && !x.tarifa.vigente)!;
+    const hSem = fichas[semTarifa.slug] ?? renderToStaticMarkup(createElement(Ficha, { params: { entidade: semTarifa.slug } }));
+    expect(hSem).toContain("sem tarifa vigente");
     expect(fichas.cergapa).toContain("não é companhia aberta");
-    expect(cergapa.tarifa && !cergapa.tarifa.vigente).toBe(true);
     expect(fichas.ceb).toContain("inativa");
   });
 
