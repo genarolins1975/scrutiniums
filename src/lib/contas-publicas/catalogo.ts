@@ -1,4 +1,5 @@
 /** Contrato v0.1: catálogo metodológico, não uma série de dados fiscais. */
+import {PERGUNTA_PAINEL, ROTA_PREVIDENCIA, ROTULO_NAVEGACAO, TITULO_PAINEL} from '@/lib/previdencia/paginas';
 export const VERSAO = '0.1.0';
 export const FONTES = {
   rap: {nome:'Tesouro · Avaliação dos Restos a Pagar',url:'https://www.tesourotransparente.gov.br/publicacoes/relatorio-de-avaliacao-dos-restos-a-pagar/2026/114',uso:'Posições de RAP por origem, tipo e órgão; base 2025 ajustada por revalidações.'},
@@ -21,8 +22,14 @@ export type FonteId = keyof typeof FONTES;
 export const PAINEIS_COM_DADOS = [['execucao','Pagamentos'],['panorama','Resultado fiscal'],['riscos','Dívida e rigidez'],['beneficios','Gastos tributários'],['planejamento','Plano e execução'],['restos-a-pagar','Restos a pagar'],['custos','Custos'],['metas','Entregas']] as const;
 /** Painel complementar do Panorama (não é capítulo): a despesa por área, pela classificação funcional do SIOP. */
 export const PAINEL_AREAS = {href:'/contas-publicas/por-area',rotulo:'Por área',titulo:'Despesa por área',pergunta:'Para onde vai o dinheiro federal, por área?',capitulo:'panorama'} as const;
-/** Navegação entre os painéis com dados, na ordem da procura: a despesa por área primeiro, depois os capítulos. */
-export const PAINEIS_NAVEGACAO:readonly (readonly [string,string])[] = [[PAINEL_AREAS.href,PAINEL_AREAS.rotulo],...PAINEIS_COM_DADOS.map(([id,nome])=>[`/contas-publicas/${id}`,nome] as const)];
+/**
+ * Painel Previdência e INSS (aprovado pelo dono em 20/10/2026), também complemento do Panorama: benefícios do INSS por
+ * tipo, estado e município e o resultado do Regime Geral, com pipeline e gold próprios (pipeline/previdencia). Rota e
+ * títulos vêm de src/lib/previdencia/paginas.ts.
+ */
+export const PAINEL_PREVIDENCIA = {href:ROTA_PREVIDENCIA,rotulo:ROTULO_NAVEGACAO,titulo:TITULO_PAINEL,pergunta:PERGUNTA_PAINEL,capitulo:'panorama'} as const;
+/** Navegação entre os painéis com dados, na ordem da procura: a Previdência e a despesa por área primeiro, depois os capítulos. */
+export const PAINEIS_NAVEGACAO:readonly (readonly [string,string])[] = [[PAINEL_PREVIDENCIA.href,PAINEL_PREVIDENCIA.rotulo],[PAINEL_AREAS.href,PAINEL_AREAS.rotulo],...PAINEIS_COM_DADOS.map(([id,nome])=>[`/contas-publicas/${id}`,nome] as const)];
 export const REFERENCIAS = [
   {nome:'PEFA', papel:'Confiabilidade, execução e controle do orçamento.', url:'https://www.pefa.org/node/119'},
   {nome:'OCDE · Government at a Glance', papel:'Orçamento orientado a desempenho e comparações internacionais.', url:'https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report.html'},
