@@ -689,6 +689,26 @@ class TestCapturas(unittest.TestCase):
         self.assertEqual(m._revisoes_entre_capturas([(m.FONTE_PRINCIPAL, so, m.DS_ENA_SM), (m.FONTE_RECAPTURA, None, m.DS_ENA_SM_CONF)],
                                                     "ENA_DIARIO_SUBSISTEMA_", [("SE", "ena_bruta_mwmed.SE")], dias), [])
 
+    def test_csv_das_revisoes_sai_mesmo_sem_exemplo(self):
+        """O CSV está no REGISTRO: sem revisão, sai só com o cabeçalho e citado nos downloads, para não anunciar
+        arquivo inexistente nem deixar o de uma execução anterior; com mais de 5 exemplos, a gold fica com 5."""
+        with tempfile.TemporaryDirectory() as dest:
+            caminho = os.path.join(dest, m.ARQ_REVISOES.rsplit("/", 1)[1])
+            with open(caminho, "w", encoding="utf-8") as f:
+                f.write("indicador;serie;ref;valores\nantigo;x;2026-01-01;1\n")
+            downloads = []
+            m._revisoes_para_gold({"destino_csv": dest}, {"ear": {"revisoes_conhecidas": {"total": 0, "exemplos": []}}}, downloads)
+            with open(caminho, encoding="utf-8") as f:
+                self.assertEqual(f.read(), "indicador;serie;ref;valores\n")
+            self.assertEqual([x["url"] for x in downloads], [m.ARQ_REVISOES])
+            exs = [{"serie": "ear_mwmes.SE", "ref": f"2026-10-{i:02d}", "valores": 2} for i in range(1, 8)]
+            prov = {"ear": {"revisoes_conhecidas": {"total": 7, "exemplos": exs}}}
+            m._revisoes_para_gold({"destino_csv": dest}, prov, [])
+            rv = prov["ear"]["revisoes_conhecidas"]
+            self.assertEqual((len(rv["exemplos"]), rv["exemplos_so_no_csv"], rv["arquivo"]), (m.LIMITE_EXEMPLOS_REVISAO_GOLD, 2, m.ARQ_REVISOES))
+            with open(caminho, encoding="utf-8") as f:
+                self.assertEqual(len(list(csv.DictReader(f, delimiter=";"))), 7)
+
 
 class TestBalancoJanelaEConvencao(unittest.TestCase):
     """Defeitos: fração de dias calculada na série inteira mas publicada como da janela; e

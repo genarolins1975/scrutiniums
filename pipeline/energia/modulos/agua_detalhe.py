@@ -2908,9 +2908,10 @@ def _revisoes_para_gold(d, prov, downloads):
             p["revisoes_conhecidas"] = {**rv, "exemplos": exs[:LIMITE_EXEMPLOS_REVISAO_GOLD],
                                         "exemplos_so_no_csv": len(exs) - LIMITE_EXEMPLOS_REVISAO_GOLD,
                                         "arquivo": ARQ_REVISOES}
-    if linhas:
-        _escreve(d, ARQ_REVISOES.rsplit("/", 1)[1], ["indicador", "serie", "ref", "valores"], linhas)
-        downloads.append({"rotulo": "Revisões conhecidas de cada número, exemplos por indicador (CSV)", "url": ARQ_REVISOES})
+    # sempre gravado e citado, só com o cabeçalho quando não há exemplo: o arquivo está no REGISTRO, e uma execução
+    # sem revisões não pode anunciar arquivo inexistente nem deixar publicado o CSV de uma execução anterior
+    _escreve(d, ARQ_REVISOES.rsplit("/", 1)[1], ["indicador", "serie", "ref", "valores"], linhas)
+    downloads.append({"rotulo": "Revisões conhecidas de cada número, exemplos por indicador (CSV)", "url": ARQ_REVISOES})
 
 
 def _escreve(d, nome, cab, linhas):
