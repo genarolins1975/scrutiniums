@@ -4,7 +4,7 @@ import {Proveniencia} from './artefatos/Proveniencia';
 import {Termo} from './artefatos/Termo';
 import {moeda, numero} from '@/lib/contas-publicas/formato';
 import {desvioPercentual} from '@/lib/contas-publicas/metricas';
-import {BASES_PLANO, NOME_BASE_PLANO, FONTE_PLANO, type AnoPlano, type BasePlano} from '@/lib/contas-publicas/planejamento';
+import {BASES_PLANO, NOME_BASE_PLANO, FONTE_PLANO, type AnoPlano, type BasePlano} from '@/lib/contas-publicas/planejamento-modelo';
 
 /**
  * Plano e execução (capítulo Qualidade do planejamento). Recebe do servidor só os totais por exercício: a base por

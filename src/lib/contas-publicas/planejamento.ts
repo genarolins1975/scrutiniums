@@ -21,15 +21,8 @@ import {ANOS, ANOS_LIQUIDADO_IGUAL, FUNCOES, REGISTROS, encerrado, exercicio, ty
 import {desvioPercentual, type Medida} from './metricas';
 import {dataFonte} from './dados';
 
-export const ESTAGIOS_PLANO = ['inicial', 'atualizada', 'liquidado'] as const;
-export type EstagioPlano = (typeof ESTAGIOS_PLANO)[number];
-export type ValoresPlano = Record<EstagioPlano, number | null>;
-export const BASES_PLANO = ['primaria', 'total'] as const;
-export type BasePlano = (typeof BASES_PLANO)[number];
-export const NOME_BASE_PLANO: Record<BasePlano, string> = {
-  primaria: 'Despesa primária, sem a dívida',
-  total: 'Orçamento inteiro, com a dívida',
-};
+import {ESTAGIOS_PLANO, type AnoPlano, type BasePlano, type ValoresPlano} from './planejamento-modelo';
+export * from './planejamento-modelo';
 const RESERVA = ['99', '98'];
 
 /** Primeiro exercício com liquidado distinto do empenhado na fonte. */
@@ -46,21 +39,6 @@ function somar(registros: Registro[]): ValoresPlano {
   }
   return s;
 }
-
-export type FuncaoPlano = {codigo: string; nome: string} & ValoresPlano;
-export type AnoPlano = {
-  ano: number;
-  encerrado: boolean;
-  atualizacao: string;
-  captura: string;
-  primaria: ValoresPlano;
-  total: ValoresPlano;
-  /** Reserva de contingência na lei original, parte primária (R$). */
-  reservaPrimaria: number | null;
-  reservaTotal: number | null;
-  /** Despesa primária por função, sem a reserva de contingência; só nos anos encerrados. */
-  funcoes: FuncaoPlano[];
-};
 
 export function anoPlano(ano: number): AnoPlano | null {
   const ex = exercicio(ano);
@@ -106,10 +84,3 @@ export function desvioPlano(a: AnoPlano, base: BasePlano): Medida {
 export function creditosPlano(a: AnoPlano, base: BasePlano): Medida {
   return desvioPercentual(a[base].atualizada, a[base].inicial);
 }
-
-export const FONTE_PLANO = {
-  fonte: 'SIOP · dados abertos · classificação funcional e identificador de resultado primário',
-  url: 'https://www1.siop.planejamento.gov.br/siopdoc/doku.php/acesso_publico:dados_abertos',
-  perimetro: 'Orçamentos Fiscal e da Seguridade Social da União',
-  unidade: 'R$ correntes',
-};
