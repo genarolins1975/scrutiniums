@@ -272,7 +272,12 @@ export type ResumoTerritorio = {
     conferencia_coordenada: {
       conferencia: "maxima" | "simplificada";
       faltam: string[];
-      arquivos: { uf: string; arquivo: string; sha256: string; capturado_em: string }[];
+      /** Capturas da malha de qualidade máxima usadas (uma por UF); a lista está em `malha_arquivos` do arquivo das usinas. */
+      n_arquivos?: number;
+      /** Endereço da lista: "/energia/series/territorio_usinas.json#malha_arquivos". */
+      arquivos_em?: string;
+      /** Gold anterior a 20/10/2026: a lista vinha aqui. */
+      arquivos?: ArquivoMalhaMaxima[];
     };
   };
 };
@@ -543,5 +548,10 @@ export type UsinasTerritorio = {
   grade: { origem_m: [number, number]; metros_por_unidade: number; projecao: string };
   /** Malha usada em coord_no_declarado: "maxima" (IBGE, sem simplificação) ou "simplificada" (aproximada). */
   conferencia_coordenada: "maxima" | "simplificada";
+  /** Capturas da malha municipal de qualidade máxima usadas na conferência (ausente em arquivo anterior a 20/10/2026). */
+  malha_arquivos?: ArquivoMalhaMaxima[];
   linhas: LinhaUsinaTerritorio[];
 };
+
+/** Uma captura da malha de qualidade máxima do IBGE (uma por UF). */
+export type ArquivoMalhaMaxima = { uf: string; arquivo: string; sha256: string; capturado_em: string };

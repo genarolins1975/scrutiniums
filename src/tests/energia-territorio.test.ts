@@ -456,7 +456,13 @@ describe("textos derivados dos números", () => {
   it("período, universo, atualidade e defasagem saem dos dados", () => {
     expect(textoUniverso(G)).toContain(`${num(G.resumo.usinas.total, 0)} usinas do SIGA`);
     expect(textoPeriodoPainel(G)).toContain(`relação de distribuidoras de ${G.referencias.relacao_distribuidoras_ano}`);
-    expect(textoAtualidade(G)).toContain("conferida em 16/09/2026 e 13/09/2026");
+    // os dias da conferência das áreas de carga vêm das conferências publicadas (outra parte da gold), escritos aqui à mão
+    const diasConf = G.areas_carga.conferencias.map((c) => c.dia);
+    expect(G.referencias.areas_carga_dias).toEqual(diasConf);
+    expect(diasConf.length).toBe(2);
+    const br = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
+    expect(textoAtualidade(G)).toContain(`conferida em ${br(diasConf[0])} e ${br(diasConf[1])}.`);
+    expect(textoAtualidade({ referencias: { ...G.referencias, areas_carga_dias: [] } })).not.toContain("conferida em");
     expect(mesesDeDefasagem("2025-05", "2026-10-01")).toBe(17);
     expect(mesesDeDefasagem("2025", "2026-10-01")).toBeNull();
     expect(textoDefasagem("2026-09", "2026-10-01")).toBeNull();
@@ -811,8 +817,31 @@ describe("r10: distribuidoras sem tarifa e como os indicadores se distribuem", (
     const t = textoSemTarifa(D.distribuidoras)!;
     expect(sem.length).toBeGreaterThan(0);
     expect(t).toContain(`${num(sem.length, 0)} das ${num(D.distribuidoras.length, 0)} distribuidoras`);
-    expect(t).toContain("tarifa seguinte ainda não consta no arquivo da ANEEL");
-    expect(textoSemTarifa(D.distribuidoras.filter((d) => d.tarifa !== null))).toBeNull();
+    // o motivo de cada uma é o que o módulo Conta publica (conta.json, lido aqui), e cada grupo de motivo aparece no texto
+    const conta = JSON.parse(ler("public/energia/gold/conta.json")).tarifas as { sem_vigente: { cnpj: string; motivo: string }[] };
+    const motivoConta = new Map(conta.sem_vigente.map((x) => [x.cnpj, x.motivo]));
+    const motivos = sem.map((d) => motivoConta.get(d.id) ?? "sem tarifa B1 residencial vigente no arquivo da ANEEL");
+    expect(sem.map((d) => d.tarifa_motivo)).toEqual(motivos);
+    const encerradas = motivos.filter((m) => m.startsWith("vigência encerrada")).length;
+    const incorporadas = motivos.filter((m) => m.startsWith("incorporada")).length;
+    const outras = motivos.length - encerradas - incorporadas;
+    if (encerradas) expect(t).toContain("tarifa seguinte ainda não consta no arquivo da ANEEL");
+    else expect(t).not.toContain("vigência encerrada");
+    if (incorporadas) expect(t).toContain(`${num(incorporadas, 0)} ${incorporadas === 1 ? "foi incorporada" : "foram incorporadas"} por outra distribuidora`);
+    if (outras) expect(t).toContain(`${num(outras, 0)} ${outras === 1 ? "não tem" : "não têm"} linha de tarifa residencial no arquivo`);
+    // vigência encerrada sem a tarifa seguinte (CODESAM em 30/09/2026), qualquer que seja a situação do dia: singular e plural
+    const comTarifa = D.distribuidoras.filter((d) => d.tarifa !== null);
+    const encerrada = (d: (typeof comTarifa)[number]) => ({
+      ...d,
+      tarifa: null,
+      tarifa_motivo: "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    });
+    const um = textoSemTarifa([encerrada(comTarifa[0]), ...comTarifa.slice(1)])!;
+    expect(um).toContain(`1 das ${num(comTarifa.length, 0)} distribuidoras`);
+    expect(um).toContain("1 teve a vigência encerrada e a tarifa seguinte ainda não consta no arquivo da ANEEL");
+    const dois = textoSemTarifa([encerrada(comTarifa[0]), encerrada(comTarifa[1]), ...comTarifa.slice(2)])!;
+    expect(dois).toContain("2 tiveram a vigência encerrada e a tarifa seguinte ainda não consta no arquivo da ANEEL");
+    expect(textoSemTarifa(comTarifa)).toBeNull();
   });
 
   it("menor, quartis e maior de cada indicador, só entre as que têm o dado", () => {

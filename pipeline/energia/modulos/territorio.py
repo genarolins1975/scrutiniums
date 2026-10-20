@@ -79,6 +79,11 @@ LIMIAR_POP_ISOLADA = 0.5
 # 3 kW de propriedade da Equatorial Pará e da Energisa MS, em nome de moradores e escolas)
 # ficam em colunas próprias: somados às usinas, dominariam a contagem municipal.
 LIMITE_REGISTRO_KW = 10.0
+# Proveniência que só reapresenta um número de outro módulo: o bloco de revisões vem inteiro
+# (total, capturas comparadas, recapturas, último download), mas só os exemplos mais recentes
+# que o diálogo "Sobre este dado" mostra; a lista publicada pelo módulo de origem fica na gold
+# dele, apontada em `exemplos_completos_em` (copiar as listas inteiras levava a gold ao teto).
+LIMITE_EXEMPLOS_REVISAO_DERIVADA = 5
 
 SERIES_URL = "/energia/series/"
 ARQ_MUN_JSON = "territorio_municipios.json"
@@ -172,7 +177,8 @@ REGISTRO = {
                         "declarados pelo SIGA e reconhecidos); n_declarados (municípios que o SIGA declara, reconhecidos ou não: só "
                         "usina com 1 entra na soma municipal); coord_no_declarado (1 = a coordenada cai num dos municípios declarados, 0 = "
                         "não, nulo = sem coordenada ou sem município reconhecido; conferido na malha de qualidade máxima do IBGE); "
-                        "outorga (Concessão, Autorização ou Registro, como o SIGA publica)."),
+                        "outorga (Concessão, Autorização ou Registro, como o SIGA publica). Fora de 'linhas', malha_arquivos lista as capturas "
+                        "da malha municipal de qualidade máxima usadas na conferência (uf; arquivo no bronze; sha256; capturado_em)."),
         U["mun_csv"]: ("codigo_ibge; municipio; uf; submercado (da UF; vazio quando não se aplica) e estado_submercado (provado, "
                        "provado_com_area_sem_carga, com_localidade_isolada = há localidade do município em sistema isolado, mas a sede "
                        "e a maior parte da população estão no SIN; fora_do_sin = a sede é localidade isolada do PASI ou as localidades "
@@ -983,6 +989,7 @@ def construir(con, ctx):
                                      "grade": {"origem_m": list(origem), "metros_por_unidade": geo.GRADE_M,
                                                "projecao": "Albers cônica equivalente da malha publicada"},
                                      "conferencia_coordenada": U_["malha"]["conferencia"],
+                                     "malha_arquivos": U_["malha"]["arquivos"],
                                      "linhas": usinas})
     _escreve_csvs(linhas_mun, distribuidoras, conjuntos, n_mun_conj, usi_csv, areas, idx_dist)
 
@@ -991,7 +998,11 @@ def construir(con, ctx):
                      conj_sem_valor, contagem_usi, nao_reconhecidos, usi_multi_mun, isolados_mun, isol_sem_mun,
                      tsee, tsee_sem_cod, mmgd, lpt, lpt_sem_cod, lpt_anos, uf_sm, lpt_por_nome)
     resumo["distribuidoras_por_municipio_perdas_x_qualidade"] = validacao["diferencas_perdas_qualidade"]
-    resumo["usinas"]["conferencia_coordenada"] = U_["malha"]
+    # a lista das capturas da malha (uma por UF, com arquivo do bronze e sha256) fica no arquivo
+    # das usinas, cuja coordenada ela conferiu; a gold leva o resumo e o endereço da lista
+    resumo["usinas"]["conferencia_coordenada"] = {
+        "conferencia": U_["malha"]["conferencia"], "faltam": U_["malha"]["faltam"],
+        "n_arquivos": len(U_["malha"]["arquivos"]), "arquivos_em": f"{U['usi_json']}#malha_arquivos"}
     snap = _snapshot_insumos(ins)
     g.update({
         "pergunta": "O que acontece na minha região?",
@@ -1904,13 +1915,34 @@ def _periodo(inicio, fim=None):
     return {"inicio": str(inicio), "fim": str(fim if fim is not None else inicio)}
 
 
+def _ref_origem(insumo, caminho):
+    """Endereço publicado do bloco de origem: '/energia/gold/perdas.json#proveniencia.taxas'."""
+    pasta, arquivo = INSUMOS[insumo][:2]
+    return f"/energia/{pasta}/{arquivo}#{caminho}"
+
+
+def _revisoes_derivadas(rev, ref):
+    """Bloco de revisões do módulo de origem com os LIMITE_EXEMPLOS_REVISAO_DERIVADA exemplos
+    mais recentes (a origem já os publica do mais recente para o mais antigo); os contadores
+    ficam inteiros e `exemplos_completos_em` aponta a lista publicada pela origem."""
+    if not isinstance(rev, dict) or len(rev.get("exemplos") or []) <= LIMITE_EXEMPLOS_REVISAO_DERIVADA:
+        return rev
+    out = dict(rev)
+    out["exemplos"] = list(rev["exemplos"][:LIMITE_EXEMPLOS_REVISAO_DERIVADA])
+    out["exemplos_na_origem"] = len(rev["exemplos"])
+    out["exemplos_completos_em"] = f"{ref}.revisoes_conhecidas.exemplos" if ref else None
+    return out
+
+
 def _prov_derivada(indicador, origem, transformacoes, limitacoes, unidade, frequencia, download, natureza=None, formula=None,
-                   periodo=None, herda_formula=True):
+                   periodo=None, herda_formula=True, ref=None):
     """Proveniência de um bloco que só reapresenta, no território, um número de outro
     módulo: fonte, captura, snapshot e revisões vêm da proveniência de origem; o período
     é o do valor exibido (`periodo`), e a cobertura histórica da fonte fica em `cobertura`.
     `herda_formula=False` quando a proveniência de origem descreve outro agregado (ex.: a
-    EAR do SIN, cuja fórmula não vale para o subsistema que a fonte publica pronto)."""
+    EAR do SIN, cuja fórmula não vale para o subsistema que a fonte publica pronto).
+    `ref` é o endereço do bloco de origem (_ref_origem), para onde apontam os exemplos de
+    revisão que não são copiados."""
     if not origem:
         return None
     nat = natureza or origem.get("natureza") or "OBSERVADO"
@@ -1924,8 +1956,8 @@ def _prov_derivada(indicador, origem, transformacoes, limitacoes, unidade, frequ
         limitacoes=list(limitacoes) + list(origem.get("limitacoes") or [])[:3],
         transformacoes=list(transformacoes) + ([f"origem: {t}" for t in (origem.get("transformacoes") or [])[:4]] if herda_formula else []),
         formula=form,
-        publicado_em=origem.get("publicado_pela_fonte_em"), revisoes=origem.get("revisoes_conhecidas"), download=download,
-        publicacao_informada=origem.get("publicado_pela_fonte_em") is not None)
+        publicado_em=origem.get("publicado_pela_fonte_em"), revisoes=_revisoes_derivadas(origem.get("revisoes_conhecidas"), ref),
+        download=download, publicacao_informada=origem.get("publicado_pela_fonte_em") is not None)
 
 
 FAMILIA_POPULACAO = "aneel_mmgd"    # silver em que o módulo Transição guarda a coleta do IBGE (SIDRA 6579)
@@ -2019,12 +2051,14 @@ def _proveniencias(con, ins, snap, ano_q, mes_cde, lpt_anos, areas, ano_pop, cic
         "Perdas da distribuidora (área inteira)", pr, ["valor do ano de referência lido de perdas.json, sem recálculo",
                                                        "ano com menos de 12 meses marcado como parcial; taxa fora de 0% a 100% mantida com ressalva"],
         ["Taxa da distribuidora inteira: não é a perda de nenhum município."], "%", "anual", U["dist_csv"],
-        periodo=_periodo(ano_perdas))
+        periodo=_periodo(ano_perdas),
+        ref=_ref_origem("perdas_gold", "proveniencia.taxas"))
     pq = _prov_de(O("qualidade_gold"), "proveniencia.distribuidoras")
     out["distribuidora_qualidade"] = _prov_derivada(
         "DEC e FEC da distribuidora (área inteira)", pq, ["valor anual lido de qualidade.json, sem recálculo"],
         ["DEC e FEC da distribuidora inteira: o município pode ter conjuntos muito acima ou muito abaixo."],
-        "horas (DEC); interrupções (FEC)", "anual", U["dist_csv"], periodo=_periodo(ano_q))
+        "horas (DEC); interrupções (FEC)", "anual", U["dist_csv"], periodo=_periodo(ano_q),
+        ref=_ref_origem("qualidade_gold", "proveniencia.distribuidoras"))
     pqc = _prov_de(O("qualidade_gold"), "proveniencia.conjuntos")
     out["conjuntos"] = _prov_derivada(
         "DEC e FEC anuais dos conjuntos elétricos que atendem cada município", pqc,
@@ -2034,19 +2068,22 @@ def _proveniencias(con, ins, snap, ano_q, mes_cde, lpt_anos, areas, ano_pop, cic
          "Conjunto sem os 12 meses no ano de referência fica sem valor (listado em sem_valor_no_ano)."],
         "horas (DEC); interrupções (FEC)", "anual", U["conj_csv"], natureza="OBSERVADO",
         formula="DEC(c, ano) = Σ_m DEC(c, m); FEC(c, ano) = Σ_m FEC(c, m), só com os 12 meses publicados",
-        periodo=_periodo(ano_q))
+        periodo=_periodo(ano_q),
+        ref=_ref_origem("qualidade_gold", "proveniencia.conjuntos"))
     tg = O("transicao_gold")
     pc = _prov_de(O("conta_gold"), "tarifas.proveniencia")
     out["distribuidora_tarifa"] = _prov_derivada(
         "Tarifa B1 residencial vigente da distribuidora", pc, ["tarifa vigente lida de conta.json, sem recálculo"],
         ["Tarifa homologada sem tributos e sem bandeira: não é a conta de um consumidor do município."], "R$/MWh",
-        "por vigência", U["dist_csv"], periodo=_periodo(O("conta_gold").get("data_referencia")))
+        "por vigência", U["dist_csv"], periodo=_periodo(O("conta_gold").get("data_referencia")),
+        ref=_ref_origem("conta_gold", "tarifas.proveniencia"))
     pt = _prov_de(tg, "mmgd.proveniencia.cadastro")
     out["mmgd"] = _prov_derivada(
         "MMGD cadastrada (município e distribuidora)", pt,
         ["unidades e potência por município lidas de transicao_mmgd_municipios.csv e por distribuidora de transicao.json"],
         ["Capacidade cadastrada no município da unidade, não energia gerada."], "unidades; kW", "cadastro vigente", U["mun_csv"],
-        periodo=_periodo((tg.get("mmgd") or {}).get("data_cadastro")))
+        periodo=_periodo((tg.get("mmgd") or {}).get("data_cadastro")),
+        ref=_ref_origem("transicao_gold", "mmgd.proveniencia.cadastro"))
     om = (tg.get("ons_mmgd") or {}).get("ultimo_mes_completo") or {}
     po = _prov_de(tg, "ons_mmgd.proveniencia.estimativa")
     out["mmgd_ons"] = _prov_derivada(
@@ -2054,7 +2091,8 @@ def _proveniencias(con, ins, snap, ano_q, mes_cde, lpt_anos, areas, ano_pop, cic
         ["média do último mês completo lida de transicao.json (ons_mmgd.ultimo_mes_completo), sem recálculo"],
         ["Estimativa do ONS (não é medição): a geração da MMGD não é medida unidade a unidade.",
          "Valor do submercado inteiro; não é um valor do município."],
-        "MWmed", "mensal", "/energia/series/transicao_ons_mmgd_mensal.csv", natureza="ESTIMADO", periodo=_periodo(om.get("m")))
+        "MWmed", "mensal", "/energia/series/transicao_ons_mmgd_mensal.csv", natureza="ESTIMADO", periodo=_periodo(om.get("m")),
+        ref=_ref_origem("transicao_gold", "ons_mmgd.proveniencia.estimativa"))
     snap_pop, v_pop = _snapshot_populacao()
     out["populacao"] = c.proveniencia(
         indicador="População residente estimada do município (IBGE)", natureza="ESTIMADO",
@@ -2073,7 +2111,8 @@ def _proveniencias(con, ins, snap, ano_q, mes_cde, lpt_anos, areas, ano_pop, cic
         "Tarifa Social por município, distribuidora e UF", pi,
         ["faturas e desconto por município lidos de inclusao_municipios.csv; código de 6 dígitos completado pelo IBGE"],
         ["A razão por família do Cadastro Único é uma proxy de cobertura, não a taxa de famílias elegíveis atendidas."],
-        "faturas; R$", "mensal", U["mun_csv"], periodo=_periodo(mes_cde))
+        "faturas; R$", "mensal", U["mun_csv"], periodo=_periodo(mes_cde),
+        ref=_ref_origem("inclusao_gold", "tarifa_social.proveniencia.cde"))
     pl = _prov_de(O("inclusao_gold"), "acesso.proveniencia.luz_para_todos")
     anos = sorted(lpt_anos)
     out["luz_para_todos"] = _prov_derivada(
@@ -2081,14 +2120,16 @@ def _proveniencias(con, ins, snap, ano_q, mes_cde, lpt_anos, areas, ano_pop, cic
         ["soma dos domicílios por município em todos os anos e programas do arquivo do módulo Inclusão"],
         ["Ligação nova registrada pelo programa no período inteiro; não é a situação atual de acesso."], "domicílios",
         "acumulado do período", U["mun_csv"], natureza="CALCULADO", formula="domicílios(m) = Σ_ano Σ_programa domicílios(m, ano, programa)",
-        periodo=_periodo(anos[0], anos[-1]) if anos else None)
+        periodo=_periodo(anos[0], anos[-1]) if anos else None,
+        ref=_ref_origem("inclusao_gold", "acesso.proveniencia.luz_para_todos"))
     pis = _prov_de(O("inclusao_gold"), "acesso.proveniencia.isolados")
     out["isolados"] = _prov_derivada(
         "Localidades atendidas por sistema isolado e municípios fora do SIN", pis,
         ["município pela igualdade do nome com a lista do IBGE na UF (160 de 160 reconhecidas)",
          f"município fora do SIN quando a sede é localidade isolada ou a população isolada declarada é ao menos {int(LIMIAR_POP_ISOLADA * 100)}% da estimada pelo IBGE"],
         ["A população declarada pelo PASI e a estimada pelo IBGE têm bases diferentes: a razão separa os municípios com sede isolada dos demais, não mede a parte exata fora do SIN."],
-        "localidades; habitantes", "ciclo anual do PASI", U["mun_csv"], periodo=_periodo(ciclo_isolados))
+        "localidades; habitantes", "ciclo anual do PASI", U["mun_csv"], periodo=_periodo(ciclo_isolados),
+        ref=_ref_origem("inclusao_gold", "acesso.proveniencia.isolados"))
     pe = _prov_de(O("expansao_gold"), "proveniencia.capacidade")
     out["usinas"] = _prov_derivada(
         "Usinas do SIGA como pontos e somas por município", pe,
@@ -2100,19 +2141,22 @@ def _proveniencias(con, ins, snap, ano_q, mes_cde, lpt_anos, areas, ano_pop, cic
         ["A coordenada do SIGA é aproximada (centróide do empreendimento); a conferência não corrige o município declarado."],
         "MW", "cadastro do dia", U["usi_csv"], natureza="CALCULADO",
         formula="MW(m) = Σ potência fiscalizada das usinas em operação declaradas só no município m, sem os registros de até 10 kW, ÷ 1.000",
-        periodo=_periodo((O("expansao_gold").get("referencias") or {}).get("siga")))
+        periodo=_periodo((O("expansao_gold").get("referencias") or {}).get("siga")),
+        ref=_ref_origem("expansao_gold", "proveniencia.capacidade"))
     plg = O("pld_gold")
     mensal = [m for m in plg.get("mensal") or [] if not m.get("parcial")]
     out["pld_dia"] = _prov_derivada(
         "PLD médio do dia por submercado", _prov_de(plg, "proveniencia.diario"),
         ["média do dia lida de pld.json (cartões), sem recálculo"],
         ["Preço do submercado inteiro; não é tarifa nem conta de luz do município."], "R$/MWh", "diária",
-        "/energia/series/pld_diario.csv", natureza="CALCULADO", periodo=_periodo(plg.get("dia_referencia")))
+        "/energia/series/pld_diario.csv", natureza="CALCULADO", periodo=_periodo(plg.get("dia_referencia")),
+        ref=_ref_origem("pld_gold", "proveniencia.diario"))
     out["pld_mes"] = _prov_derivada(
         "PLD médio do último mês completo por submercado", _prov_de(plg, "proveniencia.mensal"),
         ["média do último mês completo lida de pld.json (mensal), sem recálculo"],
         ["Média temporal do submercado inteiro (não ponderada pela carga); não é tarifa do município."], "R$/MWh", "mensal",
-        "/energia/series/pld_diario.csv", natureza="CALCULADO", periodo=_periodo(mensal[-1]["m"]) if mensal else None)
+        "/energia/series/pld_diario.csv", natureza="CALCULADO", periodo=_periodo(mensal[-1]["m"]) if mensal else None,
+        ref=_ref_origem("pld_gold", "proveniencia.mensal"))
     ag = O("agua_gold")
     pa = _prov_de(ag, "proveniencia.ear_sin")
     out["ear"] = _prov_derivada(
@@ -2120,7 +2164,8 @@ def _proveniencias(con, ins, snap, ano_q, mes_cde, lpt_anos, areas, ano_pop, cic
         ["ear_verif_subsistema_percentual, ear_verif_subsistema_mwmes e ear_max_subsistema do último dia, lidos de agua_detalhe.json (armazenamento.subsistemas), sem recálculo"],
         ["Armazenamento do subsistema inteiro; não é um valor do município."], "% da EAR máxima; MWmês", "diária",
         "/energia/series/ear_diario.csv", natureza="OBSERVADO", herda_formula=False,
-        periodo=_periodo((ag.get("dias_referencia") or {}).get("ear")))
+        periodo=_periodo((ag.get("dias_referencia") or {}).get("ear")),
+        ref=_ref_origem("agua_gold", "proveniencia.ear_sin"))
     return {k: v for k, v in out.items() if v}
 
 

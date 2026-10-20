@@ -82,6 +82,86 @@ def _json(caminho):
         return json.load(f)
 
 
+def _universo_da_malha():
+    """Códigos IBGE da malha municipal publicada para o mapa (public/energia/geo), lida aqui."""
+    return {f["id"] for f in _json(os.path.join(base.RAIZ, "public", "energia", "geo", "municipios.json"))["features"]}
+
+
+def _ultimo_no_bronze(*partes):
+    """Captura mais recente de um arquivo no bronze (o nome começa pelo instante da captura)."""
+    pasta = os.path.join(base.BRONZE, *partes)
+    nomes = sorted(x for x in os.listdir(pasta) if not x.startswith(".")) if os.path.isdir(pasta) else []
+    return os.path.join(pasta, nomes[-1]) if nomes else None
+
+
+def _relacao_dos_arquivos_originais(universo):
+    """Relação município × distribuidora refeita aqui dos três arquivos originais da ANEEL no
+    bronze, sem código do pipeline: limites de continuidade (AnoLimiteQualidade mais recente
+    até o ano corrente: conjunto → CNPJ), IndQual Município (conjunto → município) e cadastro
+    de MMGD (empreendimentos por CNPJ e município). Vínculo 1 = há empreendimento da
+    distribuidora no município, 0 = não há; município da malha fora da relação ligado à
+    distribuidora com ao menos 10 empreendimentos e 5% dos do município = vínculo 2.
+    Retorna ({município: {cnpj: estado}}, origem) ou None quando falta um dos arquivos."""
+    import datetime as dt
+    import io
+    lim = _ultimo_no_bronze("aneel", "aneel_continuidade_limites", "indicadores-continuidade-coletivos-limite")
+    iq = _ultimo_no_bronze("aneel", "aneel_indqual_municipio", "indqual-municipio")
+    pq = _ultimo_no_bronze("aneel", "aneel_mmgd_municipio", "empreendimento-geracao-distribuida.parquet")
+    if not (lim and iq and pq):
+        return None
+    import pyarrow.parquet as pqm
+
+    def ler(caminho):
+        with gzip.open(caminho, "rt", encoding="latin-1", newline="") as f:
+            return list(csv.DictReader(f, delimiter=";"))
+    limites = ler(lim)
+    ano = max(int(r["AnoLimiteQualidade"]) for r in limites if int(r["AnoLimiteQualidade"]) <= dt.date.today().year)
+    conj_cnpj = {r["IdeConjUndConsumidoras"].strip(): r["NumCNPJ"].strip().zfill(14)
+                 for r in limites if int(r["AnoLimiteQualidade"]) == ano}
+    conj_mun = defaultdict(set)
+    for r in ler(iq):
+        conj_mun[r["IdeConjUnidConsumidoras"].strip()].add(r["CodMunicipio"].strip())
+    with gzip.open(pq, "rb") as f:
+        tab = pqm.read_table(io.BytesIO(f.read()), columns=["NumCNPJDistribuidora", "CodMunicipioIbge"])
+    emp = defaultdict(int)
+    for cn, cod in zip(tab.column(0).to_pylist(), tab.column(1).to_pylist()):
+        if cn not in (None, "") and cod not in (None, ""):
+            emp[(str(cn).strip().zfill(14), str(cod).strip())] += 1
+    rel = defaultdict(dict)
+    for cid, cn in conj_cnpj.items():
+        for cod in conj_mun.get(cid, ()):
+            rel[cod][cn] = 1 if emp.get((cn, cod), 0) > 0 else 0
+    fora_da_relacao = defaultdict(dict)
+    for (cn, cod), n in emp.items():
+        if cod in universo and cod not in rel:
+            fora_da_relacao[cod][cn] = n
+    for cod, d in fora_da_relacao.items():
+        total = sum(d.values())
+        for cn, n in d.items():
+            if n >= 10 and n / total >= 0.05:
+                rel[cod][cn] = 2
+    return dict(rel), "arquivos originais da ANEEL no bronze"
+
+
+def _relacao_do_csv_de_perdas():
+    """Sem o bronze (CI dos pull requests): a mesma relação relida do CSV que o módulo Perdas
+    publica (perdas_municipios.csv, não o JSON que o Território lê), com as regras do estado
+    conferidas linha a linha: 1 = relação com empreendimento de MMGD, 0 = relação sem
+    empreendimento, 2 = só pelo cadastro de MMGD e com ao menos 10 empreendimentos."""
+    rel = defaultdict(dict)
+    with open(os.path.join(base.SERIES, "perdas_municipios.csv"), encoding="utf-8", newline="") as f:
+        for r in csv.DictReader(f, delimiter=";"):
+            n = int(r["empreendimentos_mmgd"] or 0)
+            if r["origem_vinculo"] == "mmgd":
+                assert n >= 10 and not r["conjuntos"], r
+                rel[r["cod_ibge"]][r["cnpj"]] = 2
+            else:
+                assert r["origem_vinculo"] == "relacao" and r["conjuntos"], r
+                assert r["confirmado_mmgd"] == ("1" if n > 0 else "0"), r
+                rel[r["cod_ibge"]][r["cnpj"]] = 1 if n > 0 else 0
+    return dict(rel), "perdas_municipios.csv (módulo Perdas)"
+
+
 # ---------------------------------------------------------------- áreas de carga do ONS
 
 class AreasDeCarga(unittest.TestCase):
@@ -488,6 +568,7 @@ class GoldPublicada(unittest.TestCase):
         cls.C = {k: i for i, k in enumerate(cls.m["campos"])}
         cls.linhas = {l[0]: l for l in cls.m["linhas"]}
         cls.dist = {d["sigla"]: d for d in cls.g["distribuidoras"]}
+        cls.por_cnpj = {d["cnpj"]: d for d in cls.g["distribuidoras"]}   # sigla muda na fonte; o CNPJ, não
 
     def col(self, cod, campo):
         return self.linhas[cod][self.C[campo]]
@@ -618,27 +699,55 @@ class GoldPublicada(unittest.TestCase):
         self.assertIn("Portel (PA) 5708", ctl["detalhe"])
 
     def test_relacao_igual_a_refeita_dos_arquivos_originais(self):
-        # Reconstrução independente (script à parte, sem código do pipeline, 01/10/2026):
-        # indicadores-continuidade-coletivos-limite.csv (AnoLimiteQualidade = 2026: conjunto →
-        # CNPJ), indqual-municipio.csv (conjunto → município) e
-        # empreendimento-geracao-distribuida.parquet (empreendimentos por CNPJ e município):
-        # vínculo 1 com empreendimento, 0 sem; município fora da relação com distribuidora de
-        # ao menos 10 empreendimentos e 5% do município = vínculo 2. Resultado: 6.259
-        # vínculos na malha (6.044 / 191 / 24), 5.566 municípios com distribuidora, 440
-        # compartilhados, CEMIG-D com 800 (776 + 24), só 2109056 sem vínculo e 4314530 fora da malha.
+        # Reconstrução independente, feita aqui a cada execução e sem código do pipeline (antes,
+        # valores de um script à parte de 01/10/2026): indicadores-continuidade-coletivos-limite.csv
+        # (conjunto → CNPJ), indqual-municipio.csv (conjunto → município) e
+        # empreendimento-geracao-distribuida.parquet (empreendimentos por CNPJ e município), lidos
+        # do bronze. Sem o bronze (CI dos pull requests, que não tem data/), a relação é relida do
+        # CSV publicado pelo módulo Perdas, com as regras do estado conferidas linha a linha.
+        # Compara município a município (distribuidoras e estado do vínculo), não só os totais.
+        univ = _universo_da_malha()
+        rec = _relacao_dos_arquivos_originais(univ) if os.path.isdir(base.BRONZE) else None
+        if rec is None:
+            self.assertFalse(os.path.isdir(os.path.join(base.BRONZE, "aneel")),
+                             "bronze da ANEEL presente sem os três arquivos originais da relação")
+            rec = _relacao_do_csv_de_perdas()
+        rel, origem = rec
+        na_malha = {cod: v for cod, v in rel.items() if cod in univ}
+        cnpjs = self.m["distribuidoras"]
+        publicado = {}
+        for l in self.m["linhas"]:
+            vs = {cnpjs[i][0]: e for i, e in l[self.C["dist"]]}
+            if vs:
+                publicado[l[0]] = vs
+        self.assertEqual(publicado, {cod: v for cod, v in na_malha.items() if v}, origem)
+        validos = lambda v: [c for c, e in v.items() if e in (1, 2)]  # noqa: E731
         r = self.g["resumo"]
-        self.assertEqual(r["municipios"], 5571)
-        self.assertEqual(r["municipios_compartilhados"], 440)
-        self.assertEqual(r["municipios_com_distribuidora"], 5566)
+        self.assertEqual(r["municipios"], len(univ))
+        self.assertEqual(r["municipios_compartilhados"], sum(1 for v in na_malha.values() if len(validos(v)) > 1))
+        self.assertEqual(r["municipios_com_distribuidora"], sum(1 for v in na_malha.values() if validos(v)))
         estados = defaultdict(int)
         for l in self.m["linhas"]:
             for _i, e in l[self.C["dist"]]:
                 estados[e] += 1
-        self.assertEqual(dict(estados), {1: 6044, 0: 191, 2: 24})
-        self.assertEqual([x["codigo"] for x in r["municipios_sem_vinculo"]], ["2109056"])
-        self.assertEqual([x["codigo"] for x in r["codigos_da_relacao_fora_da_malha"]], ["4314530"])
-        cemig = self.dist["CEMIG-D"]
-        self.assertEqual((cemig["area"]["municipios"], cemig["area"]["confirmados"], cemig["area"]["nao_confirmados"]), (800, 776, 24))
+        esperado = defaultdict(int)
+        for v in na_malha.values():
+            for e in v.values():
+                esperado[e] += 1
+        self.assertEqual(dict(estados), dict(esperado))
+        self.assertEqual([x["codigo"] for x in r["municipios_sem_vinculo"]], sorted(univ - {c for c, v in na_malha.items() if v}))
+        self.assertEqual([x["codigo"] for x in r["codigos_da_relacao_fora_da_malha"]], sorted(c for c in rel if c not in univ))
+        # área de cada distribuidora (CEMIG-D, a maior, incluída) igual à contada na relação refeita
+        for d in self.g["distribuidoras"]:
+            cont = defaultdict(int)
+            for v in na_malha.values():
+                if d["cnpj"] in v:
+                    cont[v[d["cnpj"]]] += 1
+            a = d["area"]
+            self.assertEqual((a["confirmados"], a["nao_confirmados"], a["so_mmgd"], a["municipios"]),
+                             (cont[1], cont[0], cont[2], sum(cont.values())), d["sigla"])
+        # CEMIG-D continua a de mais municípios (a relação não foi esvaziada nem trocada de chave)
+        self.assertEqual(max(self.g["distribuidoras"], key=lambda d: d["area"]["municipios"])["cnpj"], "06981180000116")
 
     def test_tarifa_da_distribuidora_igual_ao_arquivo_original(self):
         # tarifas-homologadas-distribuidoras-energia-eletrica.csv (bronze de 30/09/2026), linha
@@ -698,11 +807,13 @@ class GoldPublicada(unittest.TestCase):
         self.assertFalse([l[0] for l in self.m["linhas"] if l[self.C["sm_estado"]] == "fora_do_sin" and l[self.C["sm"]] is not None])
 
     def test_distribuidora_com_area_fora_do_sin(self):
-        amb = self.dist["ÂMBAR AMAZONAS"]
+        # por CNPJ: a Roraima Energia passou a se chamar Âmbar Energia Roraima (sigla "ÂMBAR ENERGIA RR"
+        # em 30/09/2026, "ÂMBAR RORAIMA" em 20/10/2026, mesmo CNPJ 02.341.470/0001-44)
+        amb = self.por_cnpj["02341467000120"]                 # Âmbar Amazonas
         self.assertEqual((amb["area"]["confirmados"], amb["area"]["fora_do_sin"], amb["area"]["com_localidade_isolada"]), (58, 49, 3))
         self.assertEqual(amb["submercados"], [{"sm": "N", "municipios": 9}])     # só os 9 municípios no SIN
         self.assertTrue(amb["parte_fora_do_sin"])
-        rr = self.dist["ÂMBAR ENERGIA RR"]
+        rr = self.por_cnpj["02341470000144"]                  # Âmbar Energia Roraima
         self.assertEqual((rr["area"]["confirmados"], rr["area"]["fora_do_sin"], rr["submercados"]), (15, 3, [{"sm": "N", "municipios": 12}]))
         self.assertFalse(self.dist["CEMIG-D"]["parte_fora_do_sin"])
         # 52 no AM: os 49 da Âmbar com vínculo válido mais Amaturá, Santo Antônio do Içá e São
@@ -735,10 +846,35 @@ class GoldPublicada(unittest.TestCase):
         self.assertIsNone(self.col("3550308", "lpt_dom"))                  # sem linha no arquivo: nulo, não zero
         self.assertEqual(self.col("2109056", "usi_op_n"), 0)                # SIGA é cadastro completo: zero real
         self.assertEqual(self.col("3550308", "isol_n"), 0)
-        cod = self.dist["CODESAM"]["indicadores"]["tarifa"]
-        self.assertFalse(cod["disponivel"])
-        self.assertTrue(cod["motivo"])
-        self.assertNotIn("valor", cod)
+        # tarifa: a de cada distribuidora é a vigente que o módulo Conta publica, e a ausência leva o
+        # motivo publicado por ele (vigência encerrada, incorporação) ou o padrão, nunca valor
+        conta = _json(os.path.join(base.GOLD, "conta.json"))["tarifas"]
+        vig = {x["cnpj"]: x for x in conta["vigentes"]}
+        sem = {x["cnpj"]: x["motivo"] for x in conta["sem_vigente"]}
+        ausentes = 0
+        for d in self.g["distribuidoras"]:
+            tar = d["indicadores"]["tarifa"]
+            if d["cnpj"] in vig:
+                v = vig[d["cnpj"]]
+                self.assertTrue(tar["disponivel"], d["sigla"])
+                self.assertEqual((tar["total_rs_mwh"], tar["te_rs_mwh"], tar["tusd_rs_mwh"], tar["vigencia_inicio"], tar["vigencia_fim"]),
+                                 (v["total"], v["te"], v["tusd"], v["inicio"], v["fim"]), d["sigla"])
+            else:
+                ausentes += 1
+                self.assertEqual(tar, {"disponivel": False,
+                                       "motivo": sem.get(d["cnpj"], "sem tarifa B1 residencial vigente no arquivo da ANEEL")}, d["sigla"])
+        self.assertGreater(ausentes, 0)
+        # tarifa sem vigência (CODESAM em 30/09/2026: vigência encerrada em 29/09 e a seguinte ainda fora
+        # do arquivo): o motivo do módulo Conta passa sem valor, qualquer que seja a situação do dia
+        cn = "11810343000138"
+        motivo = ("vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL "
+                  "em 30/09/2026")
+        ins = {"conta_gold": {"obj": {"data_referencia": "2026-09-30",
+                                      "tarifas": {"vigentes": [], "sem_vigente": [{"cnpj": cn, "motivo": motivo}]}}},
+               "perdas_gold": {"obj": {}}}
+        import datetime as dt
+        sint = t._distribuidoras(ins, [cn], {cn: {"sigla": "CODESAM", "ativa": True}}, {}, {}, {}, dt.date(2026, 9, 30), {})
+        self.assertEqual(sint[0]["indicadores"]["tarifa"], {"disponivel": False, "motivo": motivo})
         nao = [x for x in self.g["compatibilidade"] if not x["valida"]]
         self.assertEqual({(x["de"], x["para"]) for x in nao},
                          {("submercado", "municipio"), ("usina", "submercado"), ("usina", "distribuidora")})
@@ -775,6 +911,43 @@ class GoldPublicada(unittest.TestCase):
         self.assertEqual(self.g["referencias"]["populacao_ano"], 2026)
         self.assertEqual(P["conjuntos"]["periodo_referencia"], {"inicio": "2025", "fim": "2025"})
 
+    def test_revisoes_reapresentadas_resumem_as_da_origem(self):
+        # O bloco de revisões de uma proveniência reapresentada traz os contadores da origem e os
+        # primeiros exemplos dela; com mais exemplos na origem, aponta a lista inteira na gold de lá
+        lim = t.LIMITE_EXEMPLOS_REVISAO_DERIVADA
+        for nome, p in self.g["proveniencia"].items():
+            rv = p.get("revisoes_conhecidas")
+            if not isinstance(rv, dict):
+                continue
+            if "exemplos_completos_em" not in rv:
+                continue
+            self.assertEqual(len(rv["exemplos"]), lim, nome)
+            url, caminho = rv["exemplos_completos_em"].split("#")
+            orig = _json(os.path.join(base.RAIZ, "public", url.lstrip("/")))
+            for parte in caminho.split("."):
+                orig = orig[parte]
+            self.assertEqual(rv["exemplos_na_origem"], len(orig), nome)
+            self.assertGreater(len(orig), lim, nome)
+            self.assertEqual(rv["exemplos"], orig[:lim], nome)
+            raiz_rev = _json(os.path.join(base.RAIZ, "public", url.lstrip("/")))
+            for parte in caminho.split(".")[:-1]:
+                raiz_rev = raiz_rev[parte]
+            self.assertEqual(rv["total"], raiz_rev["total"], nome)
+        # o recorte não muda os contadores: a mesma função sobre um bloco sintético longo
+        sint = {"detectado_em": "2026-10-20T00:00:00Z", "total": 34, "vintages_comparadas": 5, "arquivos": 3,
+                "recapturas_sem_mudanca": 3, "ultimo_download_ok": "2026-10-16T02:06:39Z",
+                "exemplos": [{"serie": f"s{i}", "ref": "2026-09", "valores": 2} for i in range(20)]}
+        rec = t._revisoes_derivadas(sint, "/energia/gold/inclusao.json#acesso.proveniencia.luz_para_todos")
+        self.assertEqual({k: v for k, v in rec.items() if k not in ("exemplos", "exemplos_na_origem", "exemplos_completos_em")},
+                         {k: v for k, v in sint.items() if k != "exemplos"})
+        self.assertEqual(rec["exemplos"], sint["exemplos"][:lim])
+        self.assertEqual(rec["exemplos_na_origem"], 20)
+        self.assertEqual(rec["exemplos_completos_em"],
+                         "/energia/gold/inclusao.json#acesso.proveniencia.luz_para_todos.revisoes_conhecidas.exemplos")
+        curto = dict(sint, exemplos=sint["exemplos"][:lim])
+        self.assertIs(t._revisoes_derivadas(curto, "x"), curto)          # até o limite, o bloco passa como veio
+        self.assertIsNone(t._revisoes_derivadas(None, "x"))
+
     def test_natureza_metrica_e_periodo_do_valor_exibido(self):
         P = self.g["proveniencia"]
         ind = {x["id"]: x for x in self.g["indicadores"]}
@@ -782,28 +955,73 @@ class GoldPublicada(unittest.TestCase):
         self.assertEqual(ind["pld_dia"]["natureza"], "CALCULADO")
         self.assertEqual(P["pld_dia"]["natureza"], "CALCULADO")
         self.assertIn("PLD_dia", P["pld_dia"]["formula"])
-        self.assertEqual(P["pld_dia"]["periodo_referencia"], {"inicio": "2026-09-30", "fim": "2026-09-30"})
-        self.assertEqual(P["pld_mes"]["periodo_referencia"], {"inicio": "2026-09", "fim": "2026-09"})
+        # período do PLD relido de pld_diario.csv: o dia exibido é o último publicado (a CCEE publica
+        # o PLD de amanhã hoje, então ele pode ser o dia seguinte ao da coleta) e o mês é o último
+        # com todos os dias no arquivo; o valor de cada submercado é o do CSV
+        import calendar
+        with open(os.path.join(base.SERIES, "pld_diario.csv"), encoding="utf-8") as f:
+            pld = {r["data"]: r for r in csv.DictReader(f, delimiter=";")}
+        dia_pld = max(pld)
+        self.assertEqual(P["pld_dia"]["periodo_referencia"], {"inicio": dia_pld, "fim": dia_pld})
+        dias_mes = defaultdict(int)
+        for d in pld:
+            dias_mes[d[:7]] += 1
+        mes_pld = max(m for m, n in dias_mes.items() if n == calendar.monthrange(int(m[:4]), int(m[5:]))[1])
+        self.assertEqual(P["pld_mes"]["periodo_referencia"], {"inicio": mes_pld, "fim": mes_pld})
+        for sm in self.g["submercados"]:
+            b = sm["indicadores"]
+            self.assertEqual(b["pld_dia"]["periodo"], {"inicio": dia_pld, "fim": dia_pld}, sm["sm"])
+            self.assertAlmostEqual(b["pld_dia"]["valor"], float(pld[dia_pld][sm["sm"]]), delta=0.006, msg=sm["sm"])
+            self.assertEqual(b["pld_mes"]["periodo"], {"inicio": mes_pld, "fim": mes_pld}, sm["sm"])
         # EAR do subsistema: observada pelo ONS, sem a fórmula do SIN, métrica própria
         self.assertEqual((P["ear"]["natureza"], P["ear"]["formula"]), ("OBSERVADO", None))
         self.assertNotIn("SIN", " ".join(P["ear"]["transformacoes"]))
         self.assertEqual(ind["ear_pct"]["metrica"], "territorio_ear_subsistema_pct")
-        self.assertEqual(P["ear"]["periodo_referencia"], {"inicio": "2026-09-29", "fim": "2026-09-29"})
+        # EAR: último dia do CSV diário por subsistema do módulo Água (o que o Território reapresenta)
+        ear = defaultdict(dict)
+        with open(os.path.join(base.SERIES, "agua_subsistemas_diario.csv"), encoding="utf-8") as f:
+            for r in csv.DictReader(f, delimiter=";"):
+                if r["ear_pct"] != "":
+                    ear[r["data"]][r["recorte"]] = r
+        dia_ear = max(d for d, v in ear.items() if {"SE", "S", "NE", "N"} <= set(v))
+        self.assertEqual(P["ear"]["periodo_referencia"], {"inicio": dia_ear, "fim": dia_ear})
+        for sm in self.g["submercados"]:
+            e, linha = sm["indicadores"]["ear"], ear[dia_ear][sm["sm"]]
+            self.assertEqual(e["periodo"], {"inicio": dia_ear, "fim": dia_ear}, sm["sm"])
+            self.assertAlmostEqual(e["pct"], float(linha["ear_pct"]), delta=0.06, msg=sm["sm"])
+            self.assertAlmostEqual(e["mwmes"], float(linha["ear_mwmes"]), delta=0.06, msg=sm["sm"])
         # período do valor exibido, não a cobertura da fonte
         self.assertEqual(P["distribuidora_perdas"]["periodo_referencia"], {"inicio": "2025", "fim": "2025"})
         self.assertEqual(P["isolados"]["periodo_referencia"], {"inicio": "2025", "fim": "2025"})
-        self.assertEqual(P["mmgd_ons"]["periodo_referencia"], {"inicio": "2026-08", "fim": "2026-08"})
+        # MMGD do ONS: último mês completo (todos os dias com dado no SIN) de transicao_ons_mmgd_mensal.csv
+        with open(os.path.join(base.SERIES, "transicao_ons_mmgd_mensal.csv"), encoding="utf-8") as f:
+            mm = [r for r in csv.DictReader(f, delimiter=";")]
+        mes_mmgd = max(r["mes"] for r in mm if r["submercado"] == "SIN" and r["dias_completos"] == r["dias_no_mes"])
+        self.assertEqual(P["mmgd_ons"]["periodo_referencia"], {"inicio": mes_mmgd, "fim": mes_mmgd})
+        mwmed = {r["submercado"]: float(r["mmgd_mwmed"]) for r in mm if r["mes"] == mes_mmgd}
+        for sm in self.g["submercados"]:
+            self.assertAlmostEqual(sm["indicadores"]["mmgd_ons"]["mwmed"], mwmed[sm["sm"]], delta=0.06, msg=sm["sm"])
         self.assertNotIn("scrutiniums.com", P["indice"]["fonte"]["url_dataset"])
 
     def test_evidencia_com_captura_original_e_consulta_atual(self):
         E = self.g["evidencias"]
         f = E["municipios_compartilhados"]["fonte"]
-        # captura do IndQual pelo módulo Perdas, não a geração do arquivo intermediário
-        self.assertEqual(f["capturado_em"], "2026-09-30T22:32:46Z")
+        # captura do IndQual pelo módulo Perdas (a proveniência dele e o instante do snapshot
+        # original), não a geração do arquivo intermediário perdas_municipios.json
+        perdas = _json(os.path.join(base.GOLD, "perdas.json"))["proveniencia"]["territorio"]
+        pm = _json(os.path.join(base.SERIES, "perdas_municipios.json"))
+        self.assertEqual(f["capturado_em"], perdas["capturado_em"])
+        self.assertEqual(f["snapshot_original"]["id"], f"aneel_indqual_municipio@{f['capturado_em']}")
+        self.assertNotEqual(f["capturado_em"], pm["gerado_em"])
         self.assertTrue(f["processado_em"] and f["processado_em"] != f["capturado_em"])
+        self.assertLess(f["capturado_em"], f["processado_em"])
+        # captura do SIGA pelo módulo Expansão, não a do CSV intermediário
         u = E["usinas_municipio_reconhecido"]["fonte"]
-        self.assertEqual(u["capturado_em"], "2026-09-30T22:18:54Z")        # captura do SIGA
+        exp = _json(os.path.join(base.GOLD, "expansao.json"))["proveniencia"]["capacidade"]
+        self.assertEqual(u["capturado_em"], exp["capturado_em"])
+        self.assertEqual(u["snapshot_original"]["id"], f"aneel_siga@{u['capturado_em']}")
         self.assertTrue(u["publicado_em"])
+        self.assertLessEqual(u["publicado_em"], u["capturado_em"])
         self.assertIn("meia_hora.", E["municipios_com_submercado"]["consulta"])
         self.assertNotIn("carga_global_mwmed", E["municipios_com_submercado"]["consulta"])
 
@@ -822,20 +1040,53 @@ class GoldPublicada(unittest.TestCase):
         self.assertLess(r["coordenada_fora_do_municipio_declarado"], 1379)
         self.assertEqual(r["coordenada_fora_na_malha_simplificada"] - r["simplificada_fora_maxima_dentro"]
                          + r["simplificada_dentro_maxima_fora"], r["coordenada_fora_do_municipio_declarado"])
-        self.assertEqual(r["conferencia_coordenada"]["conferencia"], "maxima")
-        self.assertEqual(len(r["conferencia_coordenada"]["arquivos"]), 27)
+        cc = r["conferencia_coordenada"]
+        self.assertEqual(cc["conferencia"], "maxima")
+        arqs = cc.get("arquivos")
+        if arqs is None:      # desde 20/10/2026 a lista está no arquivo das usinas, apontada pela gold
+            self.assertEqual(cc["arquivos_em"], "/energia/series/territorio_usinas.json#malha_arquivos")
+            arqs = self.u["malha_arquivos"]
+            self.assertEqual(cc["n_arquivos"], len(arqs))
+        self.assertEqual(len(arqs), 27)
+        self.assertEqual(sorted(a["uf"] for a in arqs), sorted(UF_SM))          # as 27 UFs, cada uma uma vez
+        for a in arqs:      # uma captura por UF, com o arquivo do bronze e o sha256 que o nomeia
+            self.assertRegex(a["sha256"], r"^[0-9a-f]{64}$")
+            self.assertIn(a["sha256"][:12], a["arquivo"])
+            self.assertTrue(a["capturado_em"].endswith("Z"))
 
     def test_areas_publicam_as_duas_estatisticas(self):
+        # Cada conferência publica as duas estatísticas e o que cada uma escolheria, e tudo sai
+        # das linhas do CSV de alternativas (uma por alternativa e dia, lidas aqui): a menor pela
+        # mediana por meia hora, a menor pelo resíduo das médias do dia e as que passariam pelas
+        # médias. O caso em que as médias deixariam passar uma troca que a meia hora reprova
+        # (16/09/2026, troca RO e TON) é conferido na amostra real recortada, em
+        # AreasDeCarga.test_media_do_dia_deixaria_passar_troca_que_a_meia_hora_reprova.
         ac = self.g["areas_carga"]
         self.assertEqual(ac["mapeamento_epe"], UF_SM)
-        d16 = next(c for c in ac["conferencias"] if c["dia"] == "2026-09-16")
-        self.assertEqual(d16["menor_alternativa"]["descricao"], "troca AC e RR")
-        self.assertEqual(d16["menor_alternativa_pelas_medias"]["descricao"], "troca RO e TON")
-        self.assertEqual(d16["alternativas_que_fechariam_pelas_medias"], ["troca RO e TON", "troca RS e BASE"])
         with open(os.path.join(base.SERIES, "territorio_areas_alternativas.csv"), encoding="utf-8") as f:
             alts = list(csv.DictReader(f, delimiter=";"))
         self.assertEqual(len(alts), 2 * 297)
         self.assertFalse([a for a in alts if a["fecha"] == "1"])
+        self.assertEqual({a["dia"] for a in alts}, {cf["dia"] for cf in ac["conferencias"]})
+        self.assertEqual(sorted(ac["dias"]), sorted(cf["dia"] for cf in ac["conferencias"]))
+        for cf in ac["conferencias"]:
+            do_dia = [a for a in alts if a["dia"] == cf["dia"]]
+            self.assertEqual(len(do_dia), cf["alternativas_avaliadas"], cf["dia"])
+            tol = cf["tolerancia_mwmed"]
+            self.assertTrue(all(float(a["tolerancia_mwmed"]) == tol for a in do_dia))
+            pela_mediana = min(do_dia, key=lambda a: (float(a["mediana_abs_meia_hora_mwmed"]), a["alternativa"]))
+            pelas_medias = min(do_dia, key=lambda a: (float(a["residuo_medias_dia_mwmed"]), a["alternativa"]))
+            m, md = cf["menor_alternativa"], cf["menor_alternativa_pelas_medias"]
+            self.assertEqual(m["descricao"], pela_mediana["alternativa"], cf["dia"])
+            self.assertEqual(md["descricao"], pelas_medias["alternativa"], cf["dia"])
+            for pub, linha in ((m, pela_mediana), (md, pelas_medias)):
+                self.assertAlmostEqual(pub["mediana_abs_mwmed"], float(linha["mediana_abs_meia_hora_mwmed"]), delta=0.001)
+                self.assertAlmostEqual(pub["residuo_medias_dia_mwmed"], float(linha["residuo_medias_dia_mwmed"]), delta=0.001)
+                self.assertEqual(sorted(pub["envolvidas"]), sorted(linha["areas"].split()))
+            self.assertEqual(cf["alternativas_que_fechariam_pelas_medias"],
+                             sorted(a["alternativa"] for a in do_dia if float(a["residuo_medias_dia_mwmed"]) <= tol))
+            # a prova é a mediana: nenhuma alternativa fecha por ela, passe ou não pelas médias
+            self.assertGreater(m["mediana_abs_mwmed"], tol, cf["dia"])
 
     def test_tamanhos(self):
         self.assertLess(os.path.getsize(GOLD), 400 * 1024)
