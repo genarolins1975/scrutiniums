@@ -116,6 +116,9 @@ DIAS_EAR_DIARIA = 120           # EAR diária por subsistema na gold
 DIAS_SERIES_RES = 45            # séries diárias dos reservatórios (agua_reservatorios_45d.json)
 DIAS_TEMP_DIARIA = 45           # temperatura diária com a faixa na gold (o CSV traz tudo)
 UF_DESDE = "2019-01-01"          # temperatura por UF no silver e no CSV
+# revisões conhecidas: a gold leva os exemplos que o "Sobre este dado" mostra (até 5); o CSV, todos
+LIMITE_EXEMPLOS_REVISAO_GOLD = 5
+ARQ_REVISOES = "/energia/series/agua_revisoes_conhecidas.csv"
 
 URLS = {k: f"https://dados.ons.org.br/dataset/{v[0]}" for k, v in oa.PACOTES.items()}
 URL_POWER = "https://power.larc.nasa.gov/"
@@ -297,6 +300,12 @@ REGISTRO = {
             "Mudanças da MLT por usina (ONS, ENA por reservatório). Colunas: data; cod_reservatorio; reservatorio; "
             "subsistema; mlt_antes_mwmed; mlt_depois_mwmed; variacao_pct; tipo (revisao_no_mes: mudança fora do dia 1º, "
             "em usina existente). As trocas mensais normais (dia 1º) não entram no arquivo."),
+        ARQ_REVISOES: (
+            "Revisões conhecidas de cada número da página: os exemplos que a detecção de revisões entrega por indicador "
+            "(até 20, das referências mais recentes), dos quais a gold leva os 5 que o \"Sobre este dado\" mostra. Colunas: "
+            "indicador (chave da proveniência na gold: ear_sin, ena_30d, balanco etc.); serie (série revisada no conjunto da "
+            "fonte); ref (dia ou período da observação revisada); valores (quantos valores distintos a observação teve entre "
+            "as capturas integradas). O total de cada indicador está em revisoes_conhecidas.total da gold."),
         "/energia/series/agua_reservatorios.csv": (
             "Todos os reservatórios dos dados hidráulicos do ONS, com o balanço hídrico da janela de 30 dias. Colunas: "
             "janela_inicio e janela_fim (dias das vazões; o volume inicial é o do dia anterior a janela_inicio); id "
@@ -553,6 +562,13 @@ def configuracao_ree(max_por_ree, tol_rel=0.001, busca_dias=31):
     return {"quebras": quebras, "quebra": ult["data"] if ult else None,
             "afetados": sorted({n_ for q in quebras for n_ in q["afetados"]}),
             "ano_inicio_base": ano_base}
+
+
+def _int0(x):
+    """Arredondado a zero casas e escrito como inteiro (45444, não 45444.0): o mesmo valor,
+    com dois bytes a menos por ponto nas séries longas da gold; ausência continua null."""
+    v = c.r(x, 0)
+    return None if v is None else int(v)
 
 
 def _col(linhas, campos):
@@ -1374,29 +1390,84 @@ def series_mais_recentes(fontes, prefixo, nomes):
     return out, escolha, dados
 
 
-def _revisoes_entre_capturas(dados, nomes_sm, dias):
-    """Dias em que a captura do silver principal e a recaptura diferem (revisão do ONS
-    entre as capturas), por série, nos dias pedidos. Publicado para que a revisão
-    conhecida fique visível, e não apenas absorvida."""
-    a, b = dados.get(FONTE_PRINCIPAL), dados.get(FONTE_RECAPTURA)
-    if not a or not b:
+def _fontes_ear(con_p, con):
+    return [(FONTE_PRINCIPAL, con_p, DS_EAR_SM), (FONTE_RECAPTURA, con, DS_EAR_SM_CONF)]
+
+
+def _fontes_ena(con_p, con):
+    return [(FONTE_PRINCIPAL, con_p, DS_ENA_SM), (FONTE_RECAPTURA, con, DS_ENA_SM_CONF)]
+
+
+def _serie_ate(con, ds, serie, ate, desde):
+    """Valores da série como estavam na captura de instante `ate` (vintages até ela)."""
+    out = {}
+    for ref, v in con.execute(
+            """SELECT o.ref, o.valor FROM observacoes o JOIN vintages v ON v.vintage_id=o.vintage_id
+               WHERE o.dataset=? AND o.serie=? AND v.capturado_em <= ? AND o.ref >= ?
+               ORDER BY v.capturado_em, o.rowid""", (ds, serie, ate, desde)):
+        out[ref] = v
+    return out
+
+
+def _revisoes_entre_capturas(fontes, prefixo, nomes_sm, dias):
+    """Dias em que a captura mais recente do arquivo anual do ONS e a captura anterior de
+    conteúdo diferente divergem (revisão do ONS entre as duas), por série, nos dias pedidos.
+    Publicado para que a revisão conhecida fique visível, e não apenas absorvida.
+
+    fontes: [(rótulo, conexão, dataset)], as mesmas de series_mais_recentes. As capturas
+    dos dois armazéns entram juntas, ordenadas pelo instante, e capturas do mesmo arquivo
+    com o mesmo sha256 são a mesma versão. A comparação era sempre silver principal contra
+    recaptura: quando as duas coletas rodam minutos uma da outra, baixam o mesmo arquivo,
+    e a página dizia que nenhum valor mudou embora o ONS tivesse revisado os dias entre a
+    captura da véspera e a do dia (20/10/2026: 30 dos 30 dias da ENA do Sudeste). Os campos
+    silver_principal e recaptura (nomes do contrato da gold) guardam o valor da captura
+    anterior e o da mais recente, que é a usada na gold; anterior_em e recente_em dizem
+    quando cada uma foi feita."""
+    if not dias:
         return []
+    pares = {}
+    for ano in sorted({k[:4] for k in dias}):
+        caps = []
+        for rot, con, ds in fontes:
+            if con is None:
+                continue
+            for cap, sha in con.execute("SELECT capturado_em, sha256 FROM vintages WHERE dataset=? AND recurso=?",
+                                        (ds, f"{prefixo}{ano}")):
+                caps.append((cap, sha, rot, con, ds))
+        if not caps:
+            continue
+        caps.sort(key=lambda x: x[0])
+        rec = caps[-1]
+        ant = next((x for x in reversed(caps) if x[1] != rec[1]), None)
+        if ant is not None:
+            pares[ano] = (ant, rec)
+    desde = min(dias)
     out = []
     for sm, serie in nomes_sm:
-        difs = [(k, b[serie][k] - a[serie][k]) for k in dias if k in a[serie] and k in b[serie]
-                and abs(b[serie][k] - a[serie][k]) > 0.0005]
+        valores = {}
+        for ano, (ant, rec) in pares.items():
+            a = _serie_ate(ant[3], ant[4], serie, ant[0], desde)
+            b = _serie_ate(rec[3], rec[4], serie, rec[0], desde)
+            valores[ano] = (a, b, ant[0], rec[0])
+        difs = []
+        for k in dias:
+            if k[:4] not in valores:
+                continue
+            a, b, _, _ = valores[k[:4]]
+            if k in a and k in b and abs(b[k] - a[k]) > 0.0005:
+                difs.append((k, b[k] - a[k], a[k], b[k]))
         if difs:
-            k, dmax = max(difs, key=lambda x: abs(x[1]))
+            k, dmax, va, vb = max(difs, key=lambda x: abs(x[1]))
             out.append({"sm": sm, "serie": serie.split(".")[0], "dias_revisados": len(difs), "dia_maior": k,
-                        "silver_principal": c.r(a[serie][k], 3), "recaptura": c.r(b[serie][k], 3),
-                        "diferenca": c.r(dmax, 3)})
+                        "silver_principal": c.r(va, 3), "recaptura": c.r(vb, 3), "diferenca": c.r(dmax, 3),
+                        "anterior_em": valores[k[:4]][2], "recente_em": valores[k[:4]][3]})
     return out
 
 
 def _ear_subsistemas(con_p, con=None):
     nomes = [f"{p}.{sm}" for p in ("ear_mwmes", "ear_max_mwmes", "ear_pct") for sm in SMS]
     s, escolha, dados = series_mais_recentes(
-        [(FONTE_PRINCIPAL, con_p, DS_EAR_SM), (FONTE_RECAPTURA, con, DS_EAR_SM_CONF)], "EAR_DIARIO_SUBSISTEMA_", nomes)
+        _fontes_ear(con_p, con), "EAR_DIARIO_SUBSISTEMA_", nomes)
     mw = {sm: s[f"ear_mwmes.{sm}"] for sm in SMS}
     mx = {sm: s[f"ear_max_mwmes.{sm}"] for sm in SMS}
     pct = {sm: s[f"ear_pct.{sm}"] for sm in SMS}
@@ -1621,7 +1692,7 @@ def _armazenamento(con, con_p, d):
         "sin_silver_principal_mwmes": c.r(sin_principal, 3),
         "captura_por_ano": [{"ano": int(a), **e} for a, e in sorted(escolha.items()) if a >= str(int(dia[:4]) - 1)],
         "revisoes_entre_capturas_30d": _revisoes_entre_capturas(
-            dados_cap, [(sm, f"ear_mwmes.{sm}") for sm in SMS], ult30),
+            _fontes_ear(con_p, con), "EAR_DIARIO_SUBSISTEMA_", [(sm, f"ear_mwmes.{sm}") for sm in SMS], ult30),
         "reservatorios_por_subsistema": rec_res,
         "reservatorios_por_ano": [x for x in tabela if x["dias_fora_ear"] or x["dias_fora_ear_max"]],
         "anos_sem_divergencia": sorted({x["ano"] for x in tabela} - {x["ano"] for x in tabela if x["dias_fora_ear"] or x["dias_fora_ear_max"]}),
@@ -1659,7 +1730,7 @@ def _armazenamento(con, con_p, d):
     fim_mes = {}
     for k in dias_:
         fim_mes[k[:7]] = k
-    mensal = _col([{"m": m, **{sm: c.r(mw[sm][k], 0) for sm in TODOS}, "SIN_max": c.r(mx["SIN"][k], 0)}
+    mensal = _col([{"m": m, **{sm: _int0(mw[sm][k]) for sm in TODOS}, "SIN_max": _int0(mx["SIN"][k])}
                    for m, k in sorted(fim_mes.items())], ("m",) + TODOS + ("SIN_max",))
     fora_fim = [{"m": m, "d": k} for m, k in sorted(fim_mes.items())
                 if int(k[8:10]) != calendar.monthrange(int(k[:4]), int(k[5:7]))[1]]
@@ -1669,7 +1740,7 @@ def _armazenamento(con, con_p, d):
     # dias consecutivos desde d0 (dia sem dado = null, nunca preenchido); o CSV
     # agua_subsistemas_diario.csv traz desde 2022
     diaria = {"d0": ini, "passo_dias": 1,
-              **_col([{sm: c.r(mw[sm].get(k), 0) for sm in TODOS} for k in _dias_janela(dia, DIAS_EAR_DIARIA)], TODOS)}
+              **_col([{sm: _int0(mw[sm].get(k)) for sm in TODOS} for k in _dias_janela(dia, DIAS_EAR_DIARIA)], TODOS)}
     # 5) capacidade: eventos e atribuição
     eventos = _eventos_capacidade(con, con_p, mx)
     d["_eventos"] = eventos
@@ -1736,7 +1807,7 @@ def _ena_subsistemas(con_p, con=None):
     out = {}
     nomes = [f"{p}.{sm}" for p in ("ena_bruta_mwmed", "ena_bruta_pct_mlt", "ena_arm_mwmed", "ena_arm_pct_mlt") for sm in SMS]
     s_, escolha, dados = series_mais_recentes(
-        [(FONTE_PRINCIPAL, con_p, DS_ENA_SM), (FONTE_RECAPTURA, con, DS_ENA_SM_CONF)], "ENA_DIARIO_SUBSISTEMA_", nomes)
+        _fontes_ena(con_p, con), "ENA_DIARIO_SUBSISTEMA_", nomes)
     for sm in SMS:
         mw = s_[f"ena_bruta_mwmed.{sm}"]
         p = s_[f"ena_bruta_pct_mlt.{sm}"]
@@ -2085,7 +2156,7 @@ def _vigente(itens, d):
 
 
 def _afluencia(con, con_p, d):
-    ena_sm, dias_, escolha, dados_cap = _ena_subsistemas(con_p, con)
+    ena_sm, dias_, escolha, _dados = _ena_subsistemas(con_p, con)
     if not dias_:
         raise RuntimeError("ENA por subsistema ausente no silver principal e na recaptura")
     fim = dias_[-1]
@@ -2137,7 +2208,7 @@ def _afluencia(con, con_p, d):
         "dia": fim, "subsistemas": subs, "ree": lst_ree, "bacias": lst_bac, "dia_ree": fim_ree, "dia_bacias": fim_bac,
         "captura_por_ano": [{"ano": int(a), **e} for a, e in sorted(escolha.items()) if a >= str(int(fim[:4]) - 1)],
         "revisoes_entre_capturas_30d": _revisoes_entre_capturas(
-            dados_cap, [(sm, f"ena_bruta_mwmed.{sm}") for sm in SMS], ult30),
+            _fontes_ena(con_p, con), "ENA_DIARIO_SUBSISTEMA_", [(sm, f"ena_bruta_mwmed.{sm}") for sm in SMS], ult30),
         "ree_novos_por_data": cfg_ena,
         "serie_30d_semanal": serie, "conferencia_bacias_sin": conf,
         "mlt": _mlt(con, con_p, ena_sm, d),
@@ -2823,6 +2894,25 @@ LIM_ONS = ("O ONS informa que os dados fazem parte de um processo de consistênc
            "após a publicação; revisões entram como novas vintages.")
 
 
+def _revisoes_para_gold(d, prov, downloads):
+    """A gold leva o total e os LIMITE_EXEMPLOS_REVISAO_GOLD exemplos que o "Sobre este dado"
+    mostra; todos os exemplos de cada indicador vão para ARQ_REVISOES, citado em
+    revisoes_conhecidas.arquivo e nos downloads (a gold passou do teto de tamanho quando a
+    detecção começou a achar revisões em todas as proveniências, em 20/10/2026)."""
+    linhas = []
+    for chave, p in prov.items():
+        rv = p.get("revisoes_conhecidas")
+        exs = (rv or {}).get("exemplos") or []
+        linhas += [[chave, e.get("serie"), e.get("ref"), e.get("valores")] for e in exs]
+        if len(exs) > LIMITE_EXEMPLOS_REVISAO_GOLD:
+            p["revisoes_conhecidas"] = {**rv, "exemplos": exs[:LIMITE_EXEMPLOS_REVISAO_GOLD],
+                                        "exemplos_so_no_csv": len(exs) - LIMITE_EXEMPLOS_REVISAO_GOLD,
+                                        "arquivo": ARQ_REVISOES}
+    if linhas:
+        _escreve(d, ARQ_REVISOES.rsplit("/", 1)[1], ["indicador", "serie", "ref", "valores"], linhas)
+        downloads.append({"rotulo": "Revisões conhecidas de cada número, exemplos por indicador (CSV)", "url": ARQ_REVISOES})
+
+
 def _escreve(d, nome, cab, linhas):
     return base.escreve_csv(nome, cab, linhas, destino=d.get("destino_csv"))
 
@@ -3053,6 +3143,7 @@ def construir(con, ctx):
         return c.stub(GOLD, "; ".join(criticos)[:300])
     downloads = _csvs(d)
     prov, evid = _proveniencias_e_evidencias(con, con_p, d, downloads)
+    _revisoes_para_gold(d, prov, downloads)
     gold = {
         **c.cabecalho(GOLD),
         "dias_referencia": {"ear": d["dia_ear"], "ena": d["dia_ena"],
@@ -3081,7 +3172,7 @@ REGRAS = {
     "capacidade": "Mudança de capacidade = variação diária da EAR máxima do subsistema acima de 0,01 MWmês; atribuída aos reservatórios cuja EAR máxima (parte própria no subsistema da usina, parte a jusante no subsistema a jusante) mudou, entrou ou saiu no mesmo dia. O resíduo do evento é publicado.",
     "faixa_sazonal": "Mediana, 10º e 90º percentis do valor do mesmo dia do calendário nos anos completos anteriores (subsistemas, SIN e bacias desde 2001; REE desde 2016, e desde 2018 os seis com perímetro mudado na reconfiguração de 29 e 30/12/2017). Anos com EAR máxima zero ficam fora; com menos de 5 anos não há faixa; periodo_base traz os anos usados. 29/02 usa 28/02.",
     "nao_se_aplica": "Recorte com EAR máxima zero (sem armazenamento): percentual, variações em pontos percentuais, faixa e percentil são nulos (não se aplica); a EAR em MWmês, zero, é publicada.",
-    "captura": "Para cada ano vale a captura mais recente do arquivo anual do ONS por subsistema (silver principal ou recaptura do módulo); as revisões entre as duas nos últimos 30 dias são publicadas.",
+    "captura": "Para cada ano vale a captura mais recente do arquivo anual do ONS por subsistema (silver principal ou recaptura do módulo); as revisões dos últimos 30 dias entre a captura mais recente e a anterior de conteúdo diferente (de qualquer um dos dois) são publicadas.",
     "ena_30d": "ENA de 30 dias em % da MLT = soma da ENA bruta diária (MWmed) nos 30 dias ÷ soma da MLT vigente em cada dia (MLT implícita = ENA ÷ percentual da MLT × 100) × 100.",
     "mlt": "A MLT não é fixa: muda quando usinas entram ou saem e quando o ONS troca a versão da referência. Mudança dentro do mês, em usina existente, é comparada por igualdade com a MLT vigente na mesma data 1 e 2 anos antes: retorno a uma versão anterior ou versão nova. Comparação entre anos pela MLT do último dia do mês.",
     "precipitacao": "Precipitação da bacia = média ponderada pela área (cos(lat) × passo²) dos pontos de grade dentro do polígono do ONS; dia publicado só com ao menos 80% do peso com dado. Mês só com todos os dias.",

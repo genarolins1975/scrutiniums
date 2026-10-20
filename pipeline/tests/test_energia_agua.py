@@ -653,8 +653,41 @@ class TestCapturas(unittest.TestCase):
         self.assertEqual(out["ear_mwmes.NE"]["2024-09-28"], 21187.0)        # ano só no silver principal
         self.assertEqual(escolha["2026"]["fonte"], m.FONTE_RECAPTURA)
         self.assertEqual(escolha["2024"]["fonte"], m.FONTE_PRINCIPAL)
-        rev = m._revisoes_entre_capturas(dados, [("NE", "ear_mwmes.NE")], ["2026-09-28"])
+        fontes = [(m.FONTE_PRINCIPAL, cp, m.DS_EAR_SM), (m.FONTE_RECAPTURA, cr, m.DS_EAR_SM_CONF)]
+        rev = m._revisoes_entre_capturas(fontes, "EAR_DIARIO_SUBSISTEMA_", [("NE", "ear_mwmes.NE")], ["2026-09-28"])
         self.assertEqual(rev[0]["diferenca"], 24.877)                         # revisão exposta, não absorvida
+        self.assertEqual((rev[0]["silver_principal"], rev[0]["recaptura"]), (35626.564, 35651.441))
+        self.assertEqual((rev[0]["anterior_em"], rev[0]["recente_em"]), ("2026-09-30T02:19:44Z", "2026-09-30T23:51:52Z"))
+
+    def test_capturas_do_mesmo_arquivo_minutos_depois_nao_escondem_a_revisao(self):
+        """Defeito (20/10/2026): o silver principal (02:03Z) e a recaptura (02:06Z) baixaram o
+        mesmo arquivo, e a tabela dizia que nenhum valor dos últimos 30 dias mudou, embora o ONS
+        tivesse revisado os dias entre a captura da véspera e a do dia. Captura de mesmo sha256 é
+        a mesma versão: a comparação é com a captura anterior de conteúdo diferente."""
+        def vint(con, ds, capt, sha, linhas):
+            vid, _ = base.registra_vintage(con, ds, "ENA_DIARIO_SUBSISTEMA_2026", "teste", capt, None, sha, 1, "teste", "x")
+            base.grava_observacoes(con, ds, vid, linhas)
+        cp, cr = base.conecta(":memory:"), base.conecta(":memory:")
+        vespera = [("ena_bruta_mwmed.SE", "2026-10-16", 30000.0), ("ena_bruta_mwmed.SE", "2026-10-17", 31000.0)]
+        dia = [("ena_bruta_mwmed.SE", "2026-10-16", 30050.5), ("ena_bruta_mwmed.SE", "2026-10-17", 31000.0),
+               ("ena_bruta_mwmed.SE", "2026-10-18", 29000.0)]
+        vint(cp, m.DS_ENA_SM, "2026-10-19T01:37:29Z", "b" * 64, vespera)
+        vint(cr, m.DS_ENA_SM_CONF, "2026-10-19T01:49:40Z", "b" * 64, vespera)
+        vint(cp, m.DS_ENA_SM, "2026-10-20T02:03:43Z", "c" * 64, dia)
+        vint(cr, m.DS_ENA_SM_CONF, "2026-10-20T02:06:44Z", "c" * 64, dia)
+        fontes = [(m.FONTE_PRINCIPAL, cp, m.DS_ENA_SM), (m.FONTE_RECAPTURA, cr, m.DS_ENA_SM_CONF)]
+        dias = ["2026-10-16", "2026-10-17", "2026-10-18"]
+        rev = m._revisoes_entre_capturas(fontes, "ENA_DIARIO_SUBSISTEMA_", [("SE", "ena_bruta_mwmed.SE")], dias)
+        self.assertEqual(len(rev), 1)
+        # só o dia 16 mudou; o 18 não existia na véspera e não conta como revisão
+        self.assertEqual((rev[0]["dias_revisados"], rev[0]["dia_maior"], rev[0]["diferenca"]), (1, "2026-10-16", 50.5))
+        self.assertEqual((rev[0]["silver_principal"], rev[0]["recaptura"]), (30000.0, 30050.5))
+        self.assertEqual((rev[0]["anterior_em"], rev[0]["recente_em"]), ("2026-10-19T01:49:40Z", "2026-10-20T02:06:44Z"))
+        # um arquivo só, sem versão anterior de conteúdo diferente: nada a comparar, sem inventar revisão
+        so = base.conecta(":memory:")
+        vint(so, m.DS_ENA_SM, "2026-10-20T02:03:43Z", "c" * 64, dia)
+        self.assertEqual(m._revisoes_entre_capturas([(m.FONTE_PRINCIPAL, so, m.DS_ENA_SM), (m.FONTE_RECAPTURA, None, m.DS_ENA_SM_CONF)],
+                                                    "ENA_DIARIO_SUBSISTEMA_", [("SE", "ena_bruta_mwmed.SE")], dias), [])
 
 
 class TestBalancoJanelaEConvencao(unittest.TestCase):
@@ -1101,6 +1134,30 @@ class TestGoldPublicada(unittest.TestCase):
         self.assertEqual(cam["contagem"]["poligonos"], cam["contagem"]["poligonos_origem"])
         self.assertEqual(sorted(cam["conciliacao"]["poligonos_por_bacia"]["AMAZONAS"]),
                          ["CURUA-UNA", "JARI", "MADEIRA", "TAPAJOS", "UATUAMA", "XINGU"])
+
+    def test_revisoes_conhecidas_resumo_na_gold_e_exemplos_no_csv(self):
+        """A gold leva o total e os exemplos que o "Sobre este dado" mostra; os demais exemplos
+        de cada indicador estão no CSV citado, e a contagem do que ficou só no CSV fecha."""
+        self.assertIn(m.ARQ_REVISOES, m.REGISTRO["arquivos"])
+        caminho = os.path.join(base.RAIZ, "public", m.ARQ_REVISOES.lstrip("/"))
+        # o CSV entrou com o código de 20/10/2026; gold gerada depois disso sem ele reprova
+        if not os.path.exists(caminho) and self.g["gerado_em"] < "2026-10-20":
+            self.skipTest(f"gold publicada em {self.g['gerado_em']}, anterior ao CSV das revisões")
+        with open(caminho, encoding="utf-8") as f:
+            linhas = list(csv.DictReader(f, delimiter=";"))
+        por_ind = {}
+        for x in linhas:
+            por_ind.setdefault(x["indicador"], []).append((x["serie"], x["ref"], int(x["valores"])))
+        self.assertIn({"url": m.ARQ_REVISOES}, [{"url": x["url"]} for x in self.g["downloads"]])
+        for chave, p in self.g["proveniencia"].items():
+            rv = p.get("revisoes_conhecidas") or {}
+            exs = [(e["serie"], e["ref"], e["valores"]) for e in rv.get("exemplos") or []]
+            self.assertLessEqual(len(exs), m.LIMITE_EXEMPLOS_REVISAO_GOLD, chave)
+            self.assertEqual(exs, por_ind.get(chave, [])[:len(exs)], chave)
+            self.assertEqual(len(exs) + rv.get("exemplos_so_no_csv", 0), len(por_ind.get(chave, [])), chave)
+            if rv.get("exemplos_so_no_csv"):
+                self.assertEqual(rv["arquivo"], m.ARQ_REVISOES)
+            self.assertLessEqual(len(por_ind.get(chave, [])), rv.get("total") or 0, chave)
 
     def test_tamanho_e_nenhum_nan(self):
         # Contrato: até cerca de 400 KB, mais a lista de exemplos de revisão de cada ficha, como em Perdas

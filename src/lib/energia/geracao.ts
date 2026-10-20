@@ -2945,8 +2945,16 @@ export function usinasPadraoComparacao(usinas: readonly TermicaUsina[], n = 3): 
   return out;
 }
 
-/** Dias em que o Balanço registra a eólica de um subsistema muito abaixo da soma das usinas (menos de 10%): entram nas maiores divergências da reconciliação. */
-export function diasDoBalancoForaDoPadrao(rec: Pick<Matriz["reconciliacao_balanco"], "maiores_divergencias">): { d: string; sm: string; balanco_mwh: number; usinas_mwh: number }[] {
+/**
+ * Dias em que o Balanço registra a eólica de um subsistema muito abaixo da soma das usinas (menos de 10%). A gold publica a lista
+ * inteira (`eolica_abaixo_de_10pct_das_usinas`); só a gold anterior, sem ela, cai nas 15 maiores divergências da reconciliação, que
+ * perdem um dia quando outras divergências o superam.
+ */
+export function diasDoBalancoForaDoPadrao(
+  rec: Pick<Matriz["reconciliacao_balanco"], "maiores_divergencias" | "eolica_abaixo_de_10pct_das_usinas">,
+): { d: string; sm: string; balanco_mwh: number; usinas_mwh: number }[] {
+  const ordem = (a: { d: string; sm: string }, b: { d: string; sm: string }) => (a.d < b.d ? -1 : a.d > b.d ? 1 : a.sm < b.sm ? -1 : a.sm > b.sm ? 1 : 0);
+  if (rec.eolica_abaixo_de_10pct_das_usinas) return rec.eolica_abaixo_de_10pct_das_usinas.map((x) => ({ d: x.d, sm: x.sm as string, balanco_mwh: x.balanco_mwh, usinas_mwh: x.usinas_mwh })).sort(ordem);
   return rec.maiores_divergencias
     .flatMap((x) => (x.fonte === "eolica" && x.usinas_mwh !== null && x.balanco_mwh !== null && x.usinas_mwh > 0 && x.balanco_mwh < 0.1 * x.usinas_mwh ? [{ d: x.d, sm: x.sm as string, balanco_mwh: x.balanco_mwh, usinas_mwh: x.usinas_mwh }] : []))
     .sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0));
