@@ -39,6 +39,11 @@ const nextConfig = {
     // (WASM) em tempo de execução e o pg usa require dinâmico.
     serverComponentsExternalPackages: ["@electric-sql/pglite", "pg"],
     // Arquivos usados pelos route handlers em runtime devem integrar o bundle.
+    // os dados por município da Educação (13 MB) só são lidos pelo painel e pela sua versão aperitivo; sem esta regra o
+    // rastreio os levava a todas as funções, e a maior passava do tamanho que a Vercel aceita
+    outputFileTracingExcludes: {
+      "!{/educacao-municipal,/aperitivo/educacao-municipal}{,/**}": ["./public/educacao/gold/municipios/**"],
+    },
     outputFileTracingIncludes: {
       "/eficiencia-estatal/laboratorio-cesta": [
         "./docs/obee/resultados/revisao-interativa-v3.html",
