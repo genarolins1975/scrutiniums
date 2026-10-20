@@ -14,6 +14,7 @@ const GOLDS_DAS_PORTAS = [
   "./public/energia/gold/conta.json",
   "./public/inflacao/gold/ipca.json",
   "./public/previdencia/gold/previdencia.json",
+  "./public/educacao/gold/educacao.json",
 ];
 
 /**
@@ -60,6 +61,10 @@ const nextConfig = {
       // dinâmicos (município na URL), leem a cada instância a gold e o arquivo da UF do município pedido
       "/contas-publicas/previdencia": ["./public/previdencia/gold/**/*.json"],
       "/aperitivo/previdencia": ["./public/previdencia/gold/**/*.json"],
+      // painel Educação nos municípios e a sua versão aperitivo (servida em /educacao-municipal a quem não tem sessão):
+      // dinâmicos (município na URL), leem a gold e o arquivo da UF do município pedido; os CSV leem todas as UFs no build
+      "/educacao-municipal": ["./public/educacao/gold/**/*.json"],
+      "/aperitivo/educacao-municipal": ["./public/educacao/gold/**/*.json"],
       // ficha de focos por município (consulta da leva 2, src/lib/rotasPublicas.ts): gerada na primeira visita
       "/territorio/queimadas/municipio/[ibge]": ["./public/territorio/gold/queimadas_municipios.json", "./public/saneamento/gold/indice.json"],
       "/saneamento/prestadores/[id]": ["./public/saneamento/gold/*.json"],
@@ -117,6 +122,7 @@ const nextConfig = {
       {source: "/saneamento/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/previdencia/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/saneamento/divida/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
+      {source: "/educacao/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/gas/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       // API de leitura (/dados/api): exige sessão (src/lib/rotasPublicas.ts); cache privado do navegador
       {source: "/obs/data/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},

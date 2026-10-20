@@ -23,6 +23,7 @@ import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
 import { orgaosDasFontes } from "@/lib/energia/dados";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
+import { PERGUNTA_PAINEL as PERGUNTA_EDUCACAO, ROTA_EDUCACAO, TITULO_PAINEL as TITULO_EDUCACAO } from "@/lib/educacao/paginas";
 import { CAPITULOS, PAINEIS_COM_DADOS, PAINEL_AREAS, PAINEL_PREVIDENCIA } from "@/lib/contas-publicas/catalogo";
 import { MEDIDAS } from "@/lib/contas-estaduais/comparacao";
 import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
@@ -154,11 +155,16 @@ function vitrineEficiencia(fmt: FormatarNumero): Vitrine {
     imagem: "/home/eficiencia.webp",
     contagem: { valor: fmt(quantidade), unidade: "temas publicados" },
     contagemIndice: { tipo: "simples", quantidade, unidade: "temas_publicados" },
-    paineis: publicadas.flatMap((d) => [{ titulo: d.titulo, href: d.href as string, descricao: d.descricao }, ...(d.id === "justica" ? [{ titulo: "Judiciário: filas e tempos", href: "/eficiencia-estatal/judiciario", descricao: "Despesas, filas e tempos em três ramos; 57 tribunais e comparação internacional WJP de acesso, demora e cumprimento, sem nota própria de eficiência." }] : [])]),
+    // painel Educação nos municípios (Serviços Públicos, 20/10/2026): abre a lista, porque responde à consulta pessoal do tema
+    // (a escola pública da cidade do leitor); fora da contagem de temas da Eficiência Estatal, que ele não é
+    paineis: [
+      { titulo: TITULO_EDUCACAO, href: ROTA_EDUCACAO, descricao: PERGUNTA_EDUCACAO },
+      ...publicadas.flatMap((d) => [{ titulo: d.titulo, href: d.href as string, descricao: d.descricao }, ...(d.id === "justica" ? [{ titulo: "Judiciário: filas e tempos", href: "/eficiencia-estatal/judiciario", descricao: "Despesas, filas e tempos em três ramos; 57 tribunais e comparação internacional WJP de acesso, demora e cumprimento, sem nota própria de eficiência." }] : [])]),
+    ],
     fontes:
       "Tesouro (Siconfi), INEP, IBGE, Ministério da Saúde, MDS, Ministério das Cidades, CNJ, Sinesp e WJP, declaradas tema a tema, com a página de métodos de cada tema.",
     situacao:
-      `Valores e referências por tema e um índice experimental de resultados nas 26 capitais, com memória de cálculo e testes de sensibilidade; sem conclusões sobre a gestão.` +
+      `O Ideb e as matrículas da escola pública de cada município, valores e referências por tema e um índice experimental de resultados nas 26 capitais, com memória de cálculo e testes de sensibilidade; sem conclusões sobre a gestão.` +
       (semPainel > 0 ? ` ${semPainel} temas do mapa ainda não têm painel publicado.` : ""),
   };
 }

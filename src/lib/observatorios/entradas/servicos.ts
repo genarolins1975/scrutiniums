@@ -3,7 +3,7 @@
  *
  * Números de escala e o modelo didático "do recurso ao resultado", lidos das
  * golds da Eficiência Estatal (educação e saúde nas capitais, Judiciário,
- * segurança pública). Os estágios recursos, atendimento e resultados vêm do
+ * segurança pública) e da Educação nos municípios (public/educacao/gold). Os estágios recursos, atendimento e resultados vêm do
  * mapa de temas da Eficiência Estatal (src/lib/eficiencia/dimensoes.ts); a
  * plataforma não estabelece relação causal entre eles nem calcula eficiência.
  */
@@ -43,6 +43,17 @@ const ideb = () => numero(
   },
 );
 
+/** Ideb dos anos iniciais das redes municipais do Brasil, o primeiro número do painel Educação nos municípios (pipeline/educacao). */
+const idebMunicipios = () => numero(
+  { rotulo: "Ideb do 1º ao 5º ano nas escolas municipais do Brasil", unidade: "de 0 a 10", fonte: "INEP, Ideb", href: "/educacao-municipal" },
+  () => {
+    const g = lerPublico("educacao", "gold", "educacao.json");
+    const k = g.ideb.anos.length - 1;
+    const d = g.distribuicao.ai.brasil;
+    return { valor: num(g.ideb.brasil.ai.municipal.ideb[k], 1), periodo: String(g.ideb.ano), nota: `${num(d.n, 0)} redes municipais com resultado; metade entre ${num(d.p25, 1)} e ${num(d.p75, 1)}.` };
+  },
+);
+
 const saudePorHabitante = () => numero(
   { rotulo: "Despesa da prefeitura com saúde por morador (mediana das capitais)", unidade: "por habitante no ano", fonte: "Tesouro Nacional, Siconfi, e IBGE", href: "/eficiencia-estatal/saude-capitais/gastos", nota: "Só a despesa do município; não inclui o gasto da União e do estado. Valores nominais." },
   () => {
@@ -79,7 +90,9 @@ const despesaSeguranca = () => numero(
 
 /** Até quatro números de escala do tema. */
 export function escalaServicos(): NumeroPorta[] {
-  return [ideb(), saudePorHabitante(), pendentes(), homicidios()];
+  // a escola pública de todos os municípios (painel Educação nos municípios, 20/10/2026) abre a faixa; o Ideb das capitais
+  // segue no modelo do recurso ao resultado, abaixo, ao lado do gasto
+  return [idebMunicipios(), saudePorHabitante(), pendentes(), homicidios()];
 }
 
 export type EstagioServico = { texto: string; numero: NumeroPorta | null };
