@@ -456,7 +456,10 @@ describe("textos derivados dos números", () => {
   it("período, universo, atualidade e defasagem saem dos dados", () => {
     expect(textoUniverso(G)).toContain(`${num(G.resumo.usinas.total, 0)} usinas do SIGA`);
     expect(textoPeriodoPainel(G)).toContain(`relação de distribuidoras de ${G.referencias.relacao_distribuidoras_ano}`);
-    expect(textoAtualidade(G)).toContain("conferida em 16/09/2026 e 13/09/2026");
+    // os dias da conferência das áreas de carga são os da gold (16/09 e 13/09/2026 em 01/10/2026; 17/09 e 13/09/2026 em 20/10/2026)
+    const diasAreas = G.referencias.areas_carga_dias.map((d) => d.split("-").reverse().join("/"));
+    expect(diasAreas.length).toBe(2);
+    expect(textoAtualidade(G)).toContain(`conferida em ${diasAreas.join(" e ")}`);
     expect(mesesDeDefasagem("2025-05", "2026-10-01")).toBe(17);
     expect(mesesDeDefasagem("2025", "2026-10-01")).toBeNull();
     expect(textoDefasagem("2026-09", "2026-10-01")).toBeNull();
@@ -811,7 +814,18 @@ describe("r10: distribuidoras sem tarifa e como os indicadores se distribuem", (
     const t = textoSemTarifa(D.distribuidoras)!;
     expect(sem.length).toBeGreaterThan(0);
     expect(t).toContain(`${num(sem.length, 0)} das ${num(D.distribuidoras.length, 0)} distribuidoras`);
-    expect(t).toContain("tarifa seguinte ainda não consta no arquivo da ANEEL");
+    // o porquê sai do motivo publicado: em 01/10/2026, 21 cooperativas com a vigência encerrada em 29/09 e a tarifa seguinte fora
+    // do arquivo; em 20/10/2026 todas já têm a REH nova. O ramo da vigência encerrada é conferido num clone quando a gold não o tem
+    const encerradas = sem.filter((d) => /vigência encerrada/i.test(d.tarifa_motivo ?? "")).length;
+    if (encerradas) expect(t).toContain("tarifa seguinte ainda não consta no arquivo da ANEEL");
+    else expect(t).not.toContain("vigência encerrada");
+    const clone = structuredClone(D.distribuidoras);
+    const alvo = clone.find((d) => d.tarifa !== null)!;
+    alvo.tarifa = null;
+    alvo.tarifa_motivo = "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026";
+    const tc = textoSemTarifa(clone)!;
+    expect(tc).toContain(`${num(sem.length + 1, 0)} das ${num(clone.length, 0)} distribuidoras`);
+    expect(tc).toContain(`${num(encerradas + 1, 0)} tiveram a vigência encerrada e a tarifa seguinte ainda não consta no arquivo da ANEEL`);
     expect(textoSemTarifa(D.distribuidoras.filter((d) => d.tarifa !== null))).toBeNull();
   });
 

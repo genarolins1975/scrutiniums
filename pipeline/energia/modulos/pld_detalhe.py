@@ -113,6 +113,10 @@ TOL_SENS = 0.01
 MEIO_CENTAVO = 0.005
 EPS = 1e-9
 FLUXO_NULO = 1.0  # MWmed: fluxo de fronteira tratado como nulo nesta faixa
+# Casas das frações (horas ÷ horas). As páginas mostram a fração em % com uma casa; com 4 casas na fração (2 no
+# percentual) o valor era arredondado duas vezes: 302 de 8.760 horas (3,4475%) viravam 0,0345 e a matriz mostrava
+# 3,5% em vez de 3,4% (par Nordeste e Norte, 12 meses até 20/10/2026). Com 6 casas o erro fica em 0,00005 ponto.
+CASAS_FRACAO = 6
 PARES = (("SE", "S"), ("SE", "NE"), ("SE", "N"), ("S", "NE"), ("S", "N"), ("NE", "N"))
 FRONTEIRAS = (("N", "NE"), ("N", "SE"), ("NE", "SE"), ("S", "SE"))
 INICIO = "2021-01-01"  # início do PLD horário
@@ -1519,10 +1523,10 @@ def _bloco_cmo_pld(d):
             "todas": {"media_dif": c.r(c.media(dt_)), "media_abs_dif": c.r(c.media([abs(x) for x in dt_]))},
             "entre": ({"n": len(de), "media_dif": c.r(c.media(de)), "media_abs_dif": c.r(c.media(abs_e)),
                        "mediana_abs_dif": c.r(c.quantil(abs_e, 0.5)),
-                       "frac_abs_ate_1": c.r(sum(1 for x in abs_e if x <= 1.0 + EPS) / len(de), 4),
-                       "frac_abs_ate_0_01": c.r(sum(1 for x in abs_e if x <= TOL + EPS) / len(de), 4)} if de else None),
-            "piso": ({"n": a["n_piso"], "frac_cmo_no_piso_ou_abaixo": c.r(a["piso_cmo_ate"] / a["n_piso"], 4),
-                      "frac_cmo_acima_do_piso_mais_1": c.r(a["piso_cmo_acima1"] / a["n_piso"], 4)} if a["n_piso"] else None),
+                       "frac_abs_ate_1": c.r(sum(1 for x in abs_e if x <= 1.0 + EPS) / len(de), CASAS_FRACAO),
+                       "frac_abs_ate_0_01": c.r(sum(1 for x in abs_e if x <= TOL + EPS) / len(de), CASAS_FRACAO)} if de else None),
+            "piso": ({"n": a["n_piso"], "frac_cmo_no_piso_ou_abaixo": c.r(a["piso_cmo_ate"] / a["n_piso"], CASAS_FRACAO),
+                      "frac_cmo_acima_do_piso_mais_1": c.r(a["piso_cmo_acima1"] / a["n_piso"], CASAS_FRACAO)} if a["n_piso"] else None),
         })
 
     # semanas operativas (sábado a sexta) desde a primeira semana completa do PLD horário
@@ -1708,7 +1712,7 @@ def _bloco_limites(d):
             k_no_piso[k] += 1
         empates.append({"ano": int(ano), "parcial": ano == d["dia_ref"][:4] and d["dia_ref"][5:] != "12-31", "horas": len(horas_ano),
                         "por_quantidade_no_piso": {str(k): k_no_piso.get(k, 0) for k in range(5)},
-                        "horas_quatro_no_piso": k_no_piso.get(4, 0), "frac_quatro_no_piso": c.r(k_no_piso.get(4, 0) / len(horas_ano), 4) if horas_ano else None})
+                        "horas_quatro_no_piso": k_no_piso.get(4, 0), "frac_quatro_no_piso": c.r(k_no_piso.get(4, 0) / len(horas_ano), CASAS_FRACAO) if horas_ano else None})
         for sm in SM:
             hs = [h for h in pld[sm] if h[:4] == ano and h <= ultima_hora]
             cont, sens, viz = defaultdict(int), defaultdict(int), defaultdict(int)
@@ -1738,8 +1742,8 @@ def _bloco_limites(d):
             perm.append({
                 "ano": int(ano), "sm": sm, "parcial": ano == d["dia_ref"][:4] and d["dia_ref"][5:] != "12-31",
                 "horas": n, "horas_com_limite": n_lim,
-                "horas_piso": cont["piso"], "frac_piso": c.r(cont["piso"] / n_lim, 4) if n_lim else None,
-                "horas_teto_horario": cont["teto_horario"], "frac_teto_horario": c.r(cont["teto_horario"] / n_lim, 4) if n_lim else None,
+                "horas_piso": cont["piso"], "frac_piso": c.r(cont["piso"] / n_lim, CASAS_FRACAO) if n_lim else None,
+                "horas_teto_horario": cont["teto_horario"], "frac_teto_horario": c.r(cont["teto_horario"] / n_lim, CASAS_FRACAO) if n_lim else None,
                 "horas_entre": cont["entre"], "horas_sem_limite": cont["sem_limite"],
                 "controle_abaixo_do_piso": cont["abaixo_do_piso"], "controle_acima_do_teto": cont["acima_do_teto"],
                 "horas_um_centavo_acima_do_piso": viz["piso"], "horas_um_centavo_abaixo_do_teto_horario": viz["teto_horario"],
@@ -1968,8 +1972,8 @@ def _bloco_historico(d):
             regimes.append({"ano": int(ano), "sm": sm, "parcial": ano == dia_ref[:4] and dia_ref[5:] != "12-31",
                             "limites": [dict(zip(CAMPOS_LIMITE, x)) for x in lims], **resumo_quantis(vals),
                             "media": c.r(c.media(vals)), "horas_com_limite": n_lim,
-                            "frac_piso": c.r(sit["piso"] / n_lim, 4) if n_lim else None,
-                            "frac_teto_horario": c.r(sit["teto_horario"] / n_lim, 4) if n_lim else None})
+                            "frac_piso": c.r(sit["piso"] / n_lim, CASAS_FRACAO) if n_lim else None,
+                            "frac_teto_horario": c.r(sit["teto_horario"] / n_lim, CASAS_FRACAO) if n_lim else None})
 
     ult12 = meses[-12:]
     perfil = {"meses": ult12, "parcial": [mes_parcial(m, dias_por_mes.get(m, 0)) for m in ult12]}
@@ -2257,7 +2261,7 @@ def _bloco_regional(d):
         av = [a for _, a in amps]
         amplitude.append({"periodo": per["id"], "rotulo": per["rotulo"], "inicio": hs[0], "fim": hs[-1], "horas": len(hs),
                           "horas_com_separacao": sum(1 for a in av if a > TOL + EPS),
-                          "frac_com_separacao": c.r(sum(1 for a in av if a > TOL + EPS) / len(hs), 4),
+                          "frac_com_separacao": c.r(sum(1 for a in av if a > TOL + EPS) / len(hs), CASAS_FRACAO),
                           # sensibilidade ao limiar: a gold de operação pld.json conta horas com
                           # diferença acima de R$ 1,00/MWh; a mesma contagem aqui reconcilia as duas
                           "horas_acima_1": sum(1 for a in av if a > 1.0 + EPS), "horas_acima_10": sum(1 for a in av if a > 10.0 + EPS),
@@ -2269,7 +2273,7 @@ def _bloco_regional(d):
             hm, dm = max(difs, key=lambda x: abs(x[1]))
             sep = sum(1 for x in ab if x > TOL + EPS)
             separacao.append({"periodo": per["id"], "par": f"{a}_{b}", "horas": len(hs), "horas_separadas": sep,
-                              "frac_separadas": c.r(sep / len(hs), 4), "dif_media": c.r(c.media([x for _, x in difs])),
+                              "frac_separadas": c.r(sep / len(hs), CASAS_FRACAO), "dif_media": c.r(c.media([x for _, x in difs])),
                               "dif_abs_media": c.r(c.media(ab)), "dif_abs_p95": c.r(c.quantil(ab, 0.95)),
                               "dif_max": c.r(dm), "quando_max": hm,
                               "horas_diferenca_de_um_centavo": sum(1 for x in ab if MEIO_CENTAVO < x <= TOL + EPS),
@@ -2290,7 +2294,7 @@ def _bloco_regional(d):
                 "periodo": per["id"], "fronteira": f"{a}_{b}", "horas_com_fluxo": n, "horas_separadas": n_sep,
                 "do_menor_para_o_maior": cont["do_menor_para_o_maior"], "do_maior_para_o_menor": cont["do_maior_para_o_menor"],
                 "fluxo_nulo": cont["nulo"],
-                "frac_do_menor_para_o_maior": c.r(cont["do_menor_para_o_maior"] / n_sep, 4) if n_sep else None,
+                "frac_do_menor_para_o_maior": c.r(cont["do_menor_para_o_maior"] / n_sep, CASAS_FRACAO) if n_sep else None,
                 "fluxo_medio_separadas": c.r(c.media(fl_sep)), "fluxo_medio_nao_separadas": c.r(c.media(fl_nsep)),
                 "ultima_hora_fluxo": max(f) if f else None,
             })
@@ -2298,7 +2302,7 @@ def _bloco_regional(d):
     matriz = {"periodo": "12m", "ordem": list(SM), "dif_media": [], "frac_separadas": []}
     for a in SM:
         matriz["dif_media"].append([None if a == b else c.r(c.media([pld[a][h] - pld[b][h] for h in h12])) for b in SM])
-        matriz["frac_separadas"].append([None if a == b else c.r(sum(1 for h in h12 if separado(pld[a][h], pld[b][h])) / len(h12), 4)
+        matriz["frac_separadas"].append([None if a == b else c.r(sum(1 for h in h12 if separado(pld[a][h], pld[b][h])) / len(h12), CASAS_FRACAO)
                                          for b in SM])
     perfil = {}
     for a, b in PARES:
@@ -2470,7 +2474,7 @@ def _achado_a02(d, con):
         dias_pub = {k[:10] for k in sh[sm] if ini_meia <= k <= fim_meia}
         dessem.append({"sm": sm, "meias_horas": len(vs), "meias_horas_esperadas": n_dias * 48, "dias_sem_publicacao": n_dias - len(dias_pub),
                        "meias_horas_zero": sum(1 for v in vs if v == 0),
-                       "frac_zero": c.r(sum(1 for v in vs if v == 0) / len(vs), 4) if vs else None,
+                       "frac_zero": c.r(sum(1 for v in vs if v == 0) / len(vs), CASAS_FRACAO) if vs else None,
                        "media": c.r(c.media(vs)), "max": c.r(max(vs)) if vs else None})
     pld_p = []
     for sm in SM:
@@ -2481,7 +2485,7 @@ def _achado_a02(d, con):
                 sit[situacao_hora(d["pld"][sm][h], d["lim_dia"].get(h[:10], {}))] += 1
         n_lim = len(hs) - sit["sem_limite"] if d["lim_dia"] else 0
         pld_p.append({"sm": sm, "horas": len(hs), "media": c.r(c.media([d["pld"][sm][h] for h in hs])), "horas_com_limite": n_lim,
-                      "frac_piso": c.r(sit["piso"] / n_lim, 4) if n_lim else None})
+                      "frac_piso": c.r(sit["piso"] / n_lim, CASAS_FRACAO) if n_lim else None})
     se_d = next(x for x in dessem if x["sm"] == "SE")
     se_p = next(x for x in pld_p if x["sm"] == "SE")
     texto = (f"Nas {principal['semanas']} semanas operativas datadas pelo ONS de {c.data_br(ini)} a {c.data_br(fim)} (sextas-feiras que encerram "

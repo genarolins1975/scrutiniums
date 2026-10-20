@@ -88,14 +88,14 @@ def fonte_de_vintage(orgao, conjunto, url, vintage):
     v = vintage or {}
     return {
         "orgao": orgao, "conjunto": conjunto, "recurso": v.get("recurso"), "url": v.get("url") or url,
-        "arquivo": v.get("arquivo"), "sha256": v.get("sha256"), "capturado_em": v.get("capturado_em"),
+        "arquivo": base.arquivo_publicavel(v.get("arquivo")), "sha256": v.get("sha256"), "capturado_em": v.get("capturado_em"),
         "publicado_em": v.get("publicado_em"),
     }
 
 
 def arquivo_de_vintage(vintage):
     """Item de `fonte.arquivos` (número que usa mais de um arquivo, como anos diferentes)."""
-    return {"recurso": vintage.get("recurso"), "arquivo": vintage.get("arquivo"), "sha256": vintage.get("sha256"),
+    return {"recurso": vintage.get("recurso"), "arquivo": base.arquivo_publicavel(vintage.get("arquivo")), "sha256": vintage.get("sha256"),
             "capturado_em": vintage.get("capturado_em"), "publicado_em": vintage.get("publicado_em")}
 
 

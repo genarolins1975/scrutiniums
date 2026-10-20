@@ -179,7 +179,7 @@ export type Revisoes = {
   a_partir_de_zero?: number;
   maior_abs?: EventoRevisao | null;
   maior_rel?: EventoRevisao | null;
-  /** Dia da captura (UTC) → eventos de revisão (observações revisadas) trazidos pela captura. */
+  /** Dia da captura (UTC) → eventos de revisão (observações revisadas) trazidos pela captura, na janela do calendário (120 dias). */
   por_captura?: Record<string, number>;
   /** Mesma (série, referência) com valores diferentes em arquivos diferentes: não é revisão da fonte. */
   conflitos_entre_recursos?: {
@@ -196,6 +196,7 @@ export type Revisoes = {
     chaves?: number;
     campos?: Record<string, number>;
     apagados_pela_fonte?: number;
+    /** Dia da captura (UTC) → mudanças trazidas pela captura, na janela do calendário (120 dias). */
     por_captura?: Record<string, number>;
     metadado_do_arquivo?: number;
     conflitos_entre_recursos?: {

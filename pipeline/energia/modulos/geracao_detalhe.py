@@ -226,7 +226,8 @@ REGISTRO = {
                                   "gnra_fonte_mwh (campo publicado pelo ONS, quando existe); meias_horas_limitadas; e, na linha "
                                   "razao = TOTAL, geracao_verificada_mwh, meias_horas e potencia_max_cortada_mw."),
         CSV["restricao_usina"]: ("mes; fonte; id_ons; nome; subsistema; uf; geracao_verificada_mwh; energia não gerada estimada "
-                                 "por razão (eng_REL, eng_CNF, eng_ENE, eng_PAR, eng_SEM, em MWh); meias_horas; meias_horas_limitadas."),
+                                 "por razão (eng_REL, eng_CNF, eng_ENE, eng_PAR, eng_SEM, em MWh); meias_horas; meias_horas_limitadas. Energias com "
+                                 "quatro casas decimais, a precisão do silver: a soma das linhas reproduz o total do painel."),
         CSV["capacidade_unidades"]: ("cod_equipamento; usina; ceg; tipo; combustivel (rótulo da unidade); categoria (a da usina "
                                      "na Geração por Usina, a mesma do fator de capacidade); origem_categoria (geracao_por_usina, "
                                      "geracao_por_usina_ceg_base, conjunto, rotulo_da_unidade, demais_unidades_do_ceg); modalidade; "
@@ -3070,10 +3071,13 @@ def escreve_csvs(ctx, D_u, cat_dia, horas, rotulos, cache, bal, matriz, termica,
         for (d, sm), x in sorted(b["_sm_dia"].items()):
             lin_d.append([d, fonte, sm, "TOTAL", "", c.r(eng_tot.get((d, sm), 0.0), 3), None, int(x.get("l", 0)), c.r(x.get("g"), 3),
                           int(x.get("m", 0)), c.r(b["_pot"].get((d, sm)), 3) if (d, sm) in b["_pot"] else 0.0])
+        # Quatro casas, as do silver: a energia de meia hora é MW × 0,5 h e termina em 0 ou 5 na
+        # quarta casa; com três casas, o arredondamento meio para cima subia metade dos valores em
+        # 0,0005 MWh e a soma de 12 meses do CSV passava a do cartão em 1,088 MWh (eólica, 20/10/2026).
         for (m, ido), x in sorted(b["_usina"].items()):
             r_ = b["_cad"].get(ido, {})
-            lin_u.append([m, fonte, ido, r_.get("nome"), r_.get("sm"), r_.get("uf"), c.r(x.get("ger"), 3)] +
-                         [c.r(x.get(f"eng_{r}", 0.0), 3) for r in RAZOES] + [int(x.get("meias", 0)), int(x.get("lim", 0))])
+            lin_u.append([m, fonte, ido, r_.get("nome"), r_.get("sm"), r_.get("uf"), c.r(x.get("ger"), 4)] +
+                         [c.r(x.get(f"eng_{r}", 0.0), 4) for r in RAZOES] + [int(x.get("meias", 0)), int(x.get("lim", 0))])
     _csv(ctx, nome(CSV["restricao_diaria"]), ["data", "fonte", "regiao", "razao", "origem", "energia_nao_gerada_mwh", "gnra_fonte_mwh",
                                               "meias_horas_limitadas", "geracao_verificada_mwh", "meias_horas",
                                               "potencia_max_cortada_mw"], lin_d)

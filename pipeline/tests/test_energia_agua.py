@@ -1103,7 +1103,14 @@ class TestGoldPublicada(unittest.TestCase):
                          ["CURUA-UNA", "JARI", "MADEIRA", "TAPAJOS", "UATUAMA", "XINGU"])
 
     def test_tamanho_e_nenhum_nan(self):
-        self.assertLess(os.path.getsize(GOLD), 400 * 1024)            # contrato: até cerca de 400 KB
+        # Contrato: até cerca de 400 KB, mais a lista de exemplos de revisão de cada ficha, como em Perdas
+        # (test_energia_perdas): a lista nasce vazia e enche quando o ONS revisa dados, até 20 por ficha
+        # (comum.revisoes_do_dataset). Gold de 01/10/2026: 24,8 mil caracteres de proveniência; 20/10/2026:
+        # 43,5 mil, com 200 exemplos em 10 fichas, e o arquivo em 417.297 bytes (o resto cresceu 3,4 mil).
+        fichas = [p for p in self.g["proveniencia"].values() if isinstance(p, dict) and "natureza" in p]
+        exemplos = [len((p.get("revisoes_conhecidas") or {}).get("exemplos") or []) for p in fichas]
+        self.assertTrue(all(n <= 20 for n in exemplos), exemplos)
+        self.assertLess(os.path.getsize(GOLD), 400 * 1024 + 100 * sum(exemplos))
         with open(GOLD, encoding="utf-8") as f:
             texto = f.read()
         self.assertNotIn("NaN", texto)

@@ -1904,6 +1904,20 @@ def _periodo(inicio, fim=None):
     return {"inicio": str(inicio), "fim": str(fim if fim is not None else inicio)}
 
 
+# Exemplos de revisão que a ficha "Sobre este dado" mostra (SobreEsteDado.tsx, slice(0, 5)). O território
+# reapresenta a proveniência de outros módulos, e a lista completa (até 20 por ficha, comum.revisoes_do_dataset)
+# continua na gold do módulo de origem. Em 20/10/2026 as listas cheias levaram a gold a 413.153 bytes, acima do
+# teto de 400 KB: eram 90 exemplos repetidos de outras golds, que nenhuma página do território mostrava.
+EXEMPLOS_REVISAO_REAPRESENTADOS = 5
+
+
+def _revisoes_reapresentadas(rev):
+    """Revisões da proveniência de origem com o total e as contagens intactos e só os exemplos exibidos."""
+    if not isinstance(rev, dict) or len(rev.get("exemplos") or []) <= EXEMPLOS_REVISAO_REAPRESENTADOS:
+        return rev
+    return {**rev, "exemplos": rev["exemplos"][:EXEMPLOS_REVISAO_REAPRESENTADOS]}
+
+
 def _prov_derivada(indicador, origem, transformacoes, limitacoes, unidade, frequencia, download, natureza=None, formula=None,
                    periodo=None, herda_formula=True):
     """Proveniência de um bloco que só reapresenta, no território, um número de outro
@@ -1924,7 +1938,8 @@ def _prov_derivada(indicador, origem, transformacoes, limitacoes, unidade, frequ
         limitacoes=list(limitacoes) + list(origem.get("limitacoes") or [])[:3],
         transformacoes=list(transformacoes) + ([f"origem: {t}" for t in (origem.get("transformacoes") or [])[:4]] if herda_formula else []),
         formula=form,
-        publicado_em=origem.get("publicado_pela_fonte_em"), revisoes=origem.get("revisoes_conhecidas"), download=download,
+        publicado_em=origem.get("publicado_pela_fonte_em"), revisoes=_revisoes_reapresentadas(origem.get("revisoes_conhecidas")),
+        download=download,
         publicacao_informada=origem.get("publicado_pela_fonte_em") is not None)
 
 
@@ -1975,7 +1990,8 @@ def _proveniencias(con, ins, snap, ano_q, mes_cde, lpt_anos, areas, ano_pop, cic
                         f"fora do SIN (submercado nulo) quando a sede é localidade isolada do PASI ou as localidades isoladas somam ao menos {int(LIMIAR_POP_ISOLADA * 100)}% da população estimada",
                         "código IBGE de 6 dígitos (Tarifa Social, Luz para Todos) completado pelo único código de 7 dígitos com o mesmo prefixo"],
         formula="vínculo(m, d) = vínculo publicado pelo módulo Perdas; submercado(m) = subsistema provado da UF de m, ou nulo se m está fora do SIN",
-        publicado_em=prel.get("publicado_pela_fonte_em"), revisoes=prel.get("revisoes_conhecidas"), download=U["mun_csv"],
+        publicado_em=prel.get("publicado_pela_fonte_em"), revisoes=_revisoes_reapresentadas(prel.get("revisoes_conhecidas")),
+        download=U["mun_csv"],
         publicacao_informada=prel.get("publicado_pela_fonte_em") is not None)
     out["areas_carga"] = c.proveniencia(
         indicador="Pertença das áreas de carga ao submercado (fechamento da carga verificada)", natureza="CALCULADO",
