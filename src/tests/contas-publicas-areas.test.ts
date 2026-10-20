@@ -169,7 +169,7 @@ describe('a página', () => {
     expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
     expect(html).toContain('Do orçamento ao pagamento');
     expect(html).toContain('Modelo didático');
-    expect(html).toMatch(/<details class="cp-method-fold"><summary><span id="metodo-titulo">Método, fontes, notas e downloads/);
+    expect(html).toMatch(/<details class="cp-method-fold"><summary id="metodo-titulo">Método, fontes, notas e downloads/);
     const metodo = html.slice(html.indexOf('id="metodo"'));
     expect(metodo).toContain('/contas-publicas/por-area/funcoes.csv');
     expect(metodo).toContain('/contas-publicas/funcoes.json');

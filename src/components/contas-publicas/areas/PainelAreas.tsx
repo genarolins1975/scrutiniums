@@ -12,6 +12,7 @@ import {EnvioAutomatico} from './EnvioAutomatico';
 import {BarrasValor, LinhaParcela} from './GraficosArea';
 
 const bi = (v: number | null) => (v === null ? 'Não informado' : numero(v / 1e9, 1));
+const singular: Record<EstagioArea, string> = {inicial: 'autorizado na lei original', atualizada: 'autorizado', empenhado: 'empenhado', liquidado: 'liquidado', pago: 'pago'};
 const verbo: Record<EstagioArea, string> = {inicial: 'autorizados na lei original', atualizada: 'autorizados', empenhado: 'empenhados', liquidado: 'liquidados', pago: 'pagos'};
 const classe = (p: {tipo: string; id: string}) => (p.tipo === 'divida' ? 'cp-financial' : p.tipo === 'encargos' ? 'cp-area-encargo' : p.tipo === 'reserva' ? 'cp-area-reserva' : p.id === 'demais' ? 'cp-area-demais' : 'cp-area-foco');
 const legenda = (p: {tipo: string; id: string}) => (p.tipo === 'divida' ? 'cp-financial-label' : p.tipo === 'encargos' ? 'cp-area-encargo-label' : '');
@@ -95,7 +96,7 @@ function Abertura({r, c}: {r: Recorte; c: Composicao | null}) {
         <>
           <figure className="cp-area-regua">
             <div className="cp-hundred" aria-hidden="true">
-              {agrupar(itens).map((p) => <span key={p.id} className={classe(p)} style={{width: `${p.cem}%`}}>{p.cem >= 4 ? numero(p.cem) : ''}</span>)}
+              {agrupar(itens).map((p) => <span key={p.id} className={`${classe(p)}${p.cem < 9 ? ' cp-area-curto' : ''}`} style={{width: `${p.cem}%`}}>{p.cem >= 4 ? numero(p.cem) : ''}</span>)}
             </div>
             <figcaption className="cp-sr-only">Repartição de cada R$ 100 {plural} em {r.ano}, por área. A lista a seguir traz os mesmos valores.</figcaption>
             <ol className="cp-hundred-labels cp-area-lista" aria-label={`Cada R$ 100 ${plural} em ${r.ano}`}>
@@ -108,7 +109,7 @@ function Abertura({r, c}: {r: Recorte; c: Composicao | null}) {
             </ol>
           </figure>
           <div className="cp-kpis">
-            <div><span>Total {plural} em {r.ano}</span><strong>{moeda(c.total, 'reais')}</strong><small>{r.base === 'total' ? 'Orçamentos Fiscal e da Seguridade Social, com a dívida' : 'Despesa primária (identificador de resultado primário diferente de 0)'}</small></div>
+            <div><span>Total {singular[r.estagio]} em {r.ano}</span><strong>{moeda(c.total, 'reais')}</strong><small>{r.base === 'total' ? 'Orçamentos Fiscal e da Seguridade Social, com a dívida' : 'Despesa primária (identificador de resultado primário diferente de 0)'}</small></div>
             {r.base === 'total'
               ? <div><span>Dívida pública</span><strong>{moeda(somaValor(divida), 'reais')}</strong><small>R$ {numero(somaCem(divida))} de cada R$ 100. Inclui o refinanciamento: títulos que vencem trocados por títulos novos.</small></div>
               : <div><span>Transferências a estados, DF e municípios</span><strong>{transf ? moeda(transf.valor, 'reais') : 'Não informado'}</strong><small>{transf ? `R$ ${numero(transf.cem)} de cada R$ 100. Dinheiro que outros governos aplicam.` : ''}</small></div>}
@@ -198,7 +199,7 @@ function DoOrcamentoAoPagamento({r}: {r: Recorte}) {
                     <div key={e}>
                       <dt>{NOME_ESTAGIO[e]}</dt>
                       <dd>
-                        <span className={`cp-bar-track ${tipoParcela(id) === 'divida' ? 'cp-debt' : ''}`} aria-hidden="true"><span style={{width: `${vals[i] === null ? 0 : (100 * vals[i]!) / escala}%`}} /></span>
+                        <span className={`cp-bar-track ${tipoParcela(id) === 'divida' ? 'cp-debt' : tipoParcela(id) === 'area' ? '' : 'cp-area-encargo-trilho'}`} aria-hidden="true"><span style={{width: `${vals[i] === null ? 0 : (100 * vals[i]!) / escala}%`}} /></span>
                         <strong>{vals[i] === null ? 'Não informado' : `R$ ${bi(vals[i])} bi`}</strong>
                         {e !== 'atualizada' && aut !== null && aut > 0 && vals[i] !== null ? <small>{numero((100 * vals[i]!) / aut, 0)}% do autorizado</small> : null}
                       </dd>
@@ -253,7 +254,7 @@ function Serie({r}: {r: Recorte}) {
               <LinhaParcela pontos={pontos} nome={nome} unidade="R$ em cada R$ 100" />
             </figure>
             <figure>
-              <figcaption><h3>Valor no ano</h3><p className="cp-note">R$ bilhões correntes, sem correção pela inflação · barra clara: {ANO_CORRENTE} parcial</p></figcaption>
+              <figcaption><h3>Valor no ano</h3><p className="cp-note">R$ bilhões correntes, sem correção pela inflação · barra tracejada: {ANO_CORRENTE} parcial</p></figcaption>
               <BarrasValor pontos={pontos} nome={nome} />
             </figure>
           </div>
@@ -316,7 +317,7 @@ function Metodo() {
   return (
     <section className="cp-section" id="metodo" aria-labelledby="metodo-titulo">
       <details className="cp-method-fold">
-        <summary><span id="metodo-titulo">Método, fontes, notas e downloads</span> <span>SIOP · {FONTE_AREAS.primeiroAno} a {ANO_CORRENTE} · R$ correntes</span></summary>
+        <summary id="metodo-titulo">Método, fontes, notas e downloads <span>SIOP · {FONTE_AREAS.primeiroAno} a {ANO_CORRENTE} · R$ correntes</span></summary>
         <div className="cp-area-metodo">
           <h3>O que é a área</h3>
           <p>A área é a <Termo id="funcao">função</Termo> da classificação funcional ({FONTE_AREAS.classificacao}). Ela é atribuída pela competência do órgão que executa a ação, não pelo resultado: um hospital universitário pode estar em Educação, e o pagamento de pessoal de um ministério fica na função dele.</p>

@@ -42,6 +42,8 @@ export function CemReaisPorAreaAberto() {
   const linhas = itens ? linhasDaConsulta(itens) : null;
   const datas = ano === null ? null : datasDoExercicio(ano);
   const divida = linhas?.find((l) => l.id === "divida");
+  const refin = itens?.find((p) => p.id === "divida-refinanciamento");
+  const refinMaior = !!divida && !!refin && refin.cem > divida.cem / 2;
   const areas = linhas?.filter((l) => l.tom === "area") ?? [];
   const somaAreas = Number(areas.reduce((s, l) => s + l.cem, 0).toFixed(1));
 
@@ -91,7 +93,9 @@ export function CemReaisPorAreaAberto() {
               </ol>
               <p className="mt-4 text-sm leading-relaxed text-carvao">
                 Total pago em {ano}: <strong className="font-medium tabular-nums">{moeda(c.total, "reais")}</strong>, em valores nominais.
-                {divida ? ` R$ ${numero(divida.cem)} de cada R$ 100 foram para a dívida, em bronze; a maior parte é refinanciamento, a troca de títulos que vencem por títulos novos.` : ""}{" "}
+                {divida
+                  ? ` R$ ${numero(divida.cem)} de cada R$ 100 foram para a dívida, em bronze${refin ? `; R$ ${numero(refin.cem)} deles${refinMaior ? ", a maior parte," : ""} são refinanciamento, a troca de títulos que vencem por títulos novos` : ""}.`
+                  : ""}{" "}
                 As áreas de governo ficaram com R$ {numero(somaAreas)}.
               </p>
               <p className="mt-3 text-xs leading-relaxed text-mineral">

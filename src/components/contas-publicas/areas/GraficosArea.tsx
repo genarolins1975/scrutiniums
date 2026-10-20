@@ -54,14 +54,10 @@ export function LinhaParcela({pontos, nome, unidade}: {pontos: PontoSerie[]; nom
         <line key={`l${p.ano}`} x1={x(ultimo.ano)} y1={y(ultimo.parcela as number)} x2={x(p.ano)} y2={y(p.parcela as number)} className="cp-area-linha cp-area-tracejada" />
       ))}
       {fechados.map((p) => <circle key={p.ano} cx={x(p.ano)} cy={y(p.parcela as number)} r={3} className="cp-area-ponto" />)}
-      {parcial.map((p) => (
-        <g key={p.ano}>
-          <circle cx={x(p.ano)} cy={y(p.parcela as number)} r={4.5} className="cp-area-ponto cp-area-vazado" />
-          <text x={x(p.ano) - 6} y={y(p.parcela as number) - 10} textAnchor="end" className="cp-area-eixo">parcial</text>
-        </g>
-      ))}
-      {ultimo && <text x={x(ultimo.ano) - 6} y={y(ultimo.parcela as number) + 18} textAnchor="end" className="cp-area-valor">{numero(ultimo.parcela)}</text>}
-      {primeiro && <text x={x(primeiro.ano) + 6} y={y(primeiro.parcela as number) - 8} className="cp-area-valor">{numero(primeiro.parcela)}</text>}
+      {/* o ano parcial é o ponto vazado, explicado na legenda da figura */}
+      {parcial.map((p) => <circle key={p.ano} cx={x(p.ano)} cy={y(p.parcela as number)} r={4.5} className="cp-area-ponto cp-area-vazado" />)}
+      {ultimo && <text x={x(ultimo.ano)} y={y(ultimo.parcela as number) - 12} textAnchor="middle" className="cp-area-valor">{numero(ultimo.parcela)}</text>}
+      {primeiro && <text x={x(primeiro.ano)} y={y(primeiro.parcela as number) - 12} textAnchor="start" className="cp-area-valor">{numero(primeiro.parcela)}</text>}
     </svg>
   );
 }
