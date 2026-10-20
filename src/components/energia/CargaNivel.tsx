@@ -3,6 +3,7 @@
 import { useMemo, type ReactNode } from "react";
 import { CargaBase, CargaEscolha, CargaLista } from "@/components/energia/CargaControles";
 import { Comparador } from "@/components/energia/Comparador";
+import { LeituraGuiada } from "@/components/energia/Didatica";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
@@ -260,6 +261,33 @@ export function CargaNivel({
   const anualTabela = useMemo(() => paraTabela(anual, idioma), [anual, idioma]);
   const anosMisturados = anual.filter((a) => a.regimes.includes(tx(" e ", " and "))).map((a) => a.ano);
   const escolhidas = (v.sms as Regiao[]).length ? (v.sms as Regiao[]) : [];
+  // leituras guiadas: frases factuais calculadas das mesmas linhas do gráfico de pontos e da mesma série diária
+  const leituraPontos = useMemo(() => {
+    const comDif = linhas.filter((l) => l.media !== null && l.media_ant !== null);
+    if (comDif.length < 2) return null;
+    const curta = comDif.reduce((a, b) => (b.dias < a.dias ? b : a));
+    const longa = comDif.reduce((a, b) => (b.dias > a.dias ? b : a));
+    const dif = (l: (typeof comDif)[number]) => (l.media as number) - (l.media_ant as number);
+    return { curta, longa, difCurta: dif(curta), difLonga: dif(longa) };
+  }, [linhas]);
+  const leituraSemana = useMemo(() => {
+    const vals = serie[sm] ?? [];
+    const n = serie.d.length;
+    // as últimas 13 semanas completas, de segunda a domingo
+    let fim = n - 1;
+    while (fim >= 0 && new Date(`${serie.d[fim]}T12:00:00Z`).getUTCDay() !== 0) fim--;
+    let semanas = 0;
+    let domingo = 0;
+    for (let s = 0; s < 13 && fim - 6 >= 0; s++, fim -= 7) {
+      const idx = Array.from({ length: 7 }, (_, k) => fim - 6 + k);
+      if (idx.some((i) => vals[i] === null || vals[i] === undefined)) continue;
+      semanas++;
+      const menor = idx.reduce((a, b) => ((vals[b] as number) < (vals[a] as number) ? b : a));
+      if (menor === fim) domingo++;
+    }
+    return semanas ? { semanas, domingo } : null;
+  }, [serie, sm]);
+  const mwTxt = (x: number) => `${f.num(Math.abs(x), 0)} ${mw} ${x >= 0 ? tx("acima", "above") : tx("abaixo", "below")}`;
   const janelasIguais = textoJanelasIguais(p.comparacoes.janelas, idioma);
   const refChave = tipo === "equivalente" ? "ref364" : "refDatas";
 
@@ -302,6 +330,14 @@ export function CargaNivel({
         selecionado={janela}
         onSelecionar={(id) => id && definir({ jan: id as JanelaId })}
       />
+      {leituraPontos && (
+        <LeituraGuiada id="p025-pontos" rotulo={tx("Como ler", "How to read it")}>
+          {tx(
+            `Cada linha compara uma janela (círculo) com a de um ano antes (losango); a distância entre os dois é a diferença. Na janela mais curta (${leituraPontos.curta.rotulo}), a média ficou ${mwTxt(leituraPontos.difCurta)} da comparação; na mais longa (${leituraPontos.longa.rotulo}), ${mwTxt(leituraPontos.difLonga)}. Janela curta depende de poucos dias de calor, frio ou feriado; a longa mostra o nível do ano. A página não atribui causa: a parte compatível com clima e calendário está em Clima e calendário.`,
+            `Each row compares a window (circle) with the one a year earlier (diamond); the distance between them is the difference. In the shortest window (${leituraPontos.curta.rotulo}), the average was ${mwTxt(leituraPontos.difCurta)} the comparison; in the longest (${leituraPontos.longa.rotulo}), ${mwTxt(leituraPontos.difLonga)}. A short window depends on a few days of heat, cold or holidays; the long one shows the year's level. The page does not attribute a cause: the part compatible with climate and calendar is on Climate and calendar.`,
+          )}
+        </LeituraGuiada>
+      )}
       {j && (
         <div data-calendario-janelas="" className="max-w-prose2 space-y-1 border-l-2 border-linha pl-4 text-sm leading-relaxed text-carvao-muted">
           <p className="rotulo text-mineral">{tx("Calendário das duas janelas", "Calendar of the two windows")}</p>
@@ -345,6 +381,14 @@ export function CargaNivel({
         onIntervalo={(i) => definir({ de: i?.inicio ?? inicioSerie, ate: i?.fim ?? fimSerie })}
         legendaInterativa
       />
+      {leituraSemana && (
+        <LeituraGuiada id="p025-semana" rotulo={tx("Como ler", "How to read it")}>
+          {tx(
+            `Os vales regulares são os fins de semana: nas últimas ${leituraSemana.semanas} semanas completas, o dia de menor carga ${DO_REGIAO[sm]} foi o domingo em ${leituraSemana.domingo}. Por isso a comparação principal põe cada dia ao lado do mesmo dia da semana, 364 dias antes (linha tracejada).`,
+            `The regular dips are weekends: over the last ${leituraSemana.semanas} complete weeks, the lowest-load day ${doRegiao(sm, "en")} was Sunday in ${leituraSemana.domingo}. That is why the main comparison puts each day next to the same day of the week, 364 days earlier (dashed line).`,
+          )}
+        </LeituraGuiada>
+      )}
 
       <dl className="grid gap-x-6 gap-y-1 border-t border-linha pt-3 text-xs text-carvao-muted sm:grid-cols-3" data-recorte-painel="">
         <div>
