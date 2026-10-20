@@ -229,3 +229,14 @@ describe('acesso, navegação e coleta', () => {
     expect(cfg.testes.some((t: {comando: string[]}) => t.comando.includes('src/tests/contas-publicas'))).toBe(true);
   });
 });
+
+describe("série com ano sem dado (achado da revisão de 20/10/2026)", () => {
+  it("a linha se parte no ano sem dado em vez de ligar os vizinhos", async () => {
+    const { LinhaParcela } = await import("@/components/contas-publicas/areas/GraficosArea");
+    const pontos = [2012, 2013, 2014, 2015, 2016].map((ano) => ({ ano, valor: ano === 2014 ? null : 1e9, total: ano === 2014 ? null : 1e10, parcela: ano === 2014 ? null : 10, parcial: false }));
+    const html = renderToStaticMarkup(createElement(LinhaParcela, { pontos, nome: "Saúde", unidade: "R$ de cada R$ 100" }));
+    const d = html.match(/<path d="([^"]+)"/)![1];
+    expect(d.match(/M/g)).toHaveLength(2);
+    expect(d.match(/L/g)).toHaveLength(2);
+  });
+});

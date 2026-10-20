@@ -4,7 +4,7 @@ import {numero} from '@/lib/contas-publicas/formato';
 /**
  * Dois gráficos da série de uma parcela, desenhados no servidor: a parte de cada R$ 100 (linha) e o valor em
  * R$ bilhões correntes (barras a partir de zero). Unidades diferentes, gráficos separados: sem eixo duplo.
- * O ano em curso aparece vazado e rotulado como parcial; ano sem dado fica sem marca, nunca em zero.
+ * O ano em curso aparece vazado e rotulado como parcial; ano sem dado fica sem marca e parte a linha, nunca em zero.
  */
 const L = 720, A = 250, M = {e: 64, d: 16, t: 34, b: 34};
 
@@ -32,7 +32,20 @@ export function LinhaParcela({pontos, nome, unidade}: {pontos: PontoSerie[]; nom
   const y = (v: number) => M.t + (1 - v / max) * (A - M.t - M.b);
   const fechados = validos.filter((p) => !p.parcial);
   const parcial = validos.filter((p) => p.parcial);
-  const caminho = fechados.map((p, i) => `${i ? 'L' : 'M'}${x(p.ano).toFixed(1)},${y(p.parcela as number).toFixed(1)}`).join(' ');
+  // a linha se parte em cada ano sem dado (ex.: o autorizado de 2014): ausência não vira continuidade
+  let novoTrecho = true;
+  const caminho = pontos
+    .filter((p) => !p.parcial)
+    .map((p) => {
+      if (p.parcela === null) { novoTrecho = true; return ''; }
+      const cmd = `${novoTrecho ? 'M' : 'L'}${x(p.ano).toFixed(1)},${y(p.parcela).toFixed(1)}`;
+      novoTrecho = false;
+      return cmd;
+    })
+    .filter(Boolean)
+    .join(' ');
+  // o trecho tracejado até o ano parcial só existe se o ano anterior a ele tem dado
+  const anteriorAoParcial = (ano: number) => pontos.find((q) => q.ano === ano - 1);
   const primeiro = fechados[0], ultimo = fechados[fechados.length - 1];
   const descricao = primeiro && ultimo
     ? `${nome}: R$ ${numero(primeiro.parcela)} de cada R$ 100 em ${primeiro.ano} e R$ ${numero(ultimo.parcela)} em ${ultimo.ano}${parcial[0] ? `; ${parcial[0].ano}, parcial, R$ ${numero(parcial[0].parcela)}` : ''}.`
@@ -50,9 +63,11 @@ export function LinhaParcela({pontos, nome, unidade}: {pontos: PontoSerie[]; nom
         <text key={p.ano} x={x(p.ano)} y={A - 8} textAnchor="middle" className="cp-area-eixo">{p.ano}</text>
       ))}
       <path d={caminho} className="cp-area-linha" />
-      {ultimo && parcial.map((p) => (
-        <line key={`l${p.ano}`} x1={x(ultimo.ano)} y1={y(ultimo.parcela as number)} x2={x(p.ano)} y2={y(p.parcela as number)} className="cp-area-linha cp-area-tracejada" />
-      ))}
+      {parcial.map((p) => {
+        const a = anteriorAoParcial(p.ano);
+        if (!a || a.parcela === null || a.parcial) return null;
+        return <line key={`l${p.ano}`} x1={x(a.ano)} y1={y(a.parcela)} x2={x(p.ano)} y2={y(p.parcela as number)} className="cp-area-linha cp-area-tracejada" />;
+      })}
       {fechados.map((p) => <circle key={p.ano} cx={x(p.ano)} cy={y(p.parcela as number)} r={3} className="cp-area-ponto" />)}
       {/* o ano parcial é o ponto vazado, explicado na legenda da figura */}
       {parcial.map((p) => <circle key={p.ano} cx={x(p.ano)} cy={y(p.parcela as number)} r={4.5} className="cp-area-ponto cp-area-vazado" />)}
