@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifySessionCookie } from "@/lib/sessionCookie";
 import { estadoRotaMobilidade } from "@/lib/eficiencia/mobilidade/roteamento";
-import { COOKIE_DESTINO, desvioDoAperitivo, ehApiDeDados, ehRotaPublica } from "@/lib/rotasPublicas";
+import { COOKIE_DESTINO, desvioDoAperitivo, ehApiDeDados, ehRotaPublica, fichaComSessao } from "@/lib/rotasPublicas";
 import { analisarUrlPagina } from "@/lib/i18n-url";
 import { parDeIdioma } from "@/lib/i18n-rotas";
 import type { Idioma } from "@/lib/idioma";
@@ -40,7 +40,17 @@ export async function middleware(request: NextRequest) {
     const naoEncontrado = pathname.startsWith("/en/") ? "/en/nao-encontrado-404" : "/nao-encontrado-404";
     return NextResponse.rewrite(new URL(naoEncontrado, request.url));
   }
-  if (desvio && !(await verifySessionCookie(request.cookies.get("scrutiniums_session")?.value))) {
+  const sessaoAperitivo = desvio ? await verifySessionCookie(request.cookies.get("scrutiniums_session")?.value) : null;
+  if (desvio && sessaoAperitivo) {
+    const ficha = fichaComSessao(pathname, request.nextUrl.searchParams.get("ibge"));
+    if (ficha) {
+      const url = request.nextUrl.clone();
+      url.pathname = ficha;
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
+  }
+  if (desvio && !sessaoAperitivo) {
     const url = request.nextUrl.clone();
     if (desvio.tipo === "aperitivo") {
       url.pathname = desvio.destino;

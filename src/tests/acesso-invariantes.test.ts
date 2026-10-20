@@ -160,6 +160,16 @@ describe("acesso: páginas abertas e aperitivos", () => {
     expect(comConta.headers.get("x-middleware-rewrite")).toBeNull();
   });
 
+  it("com sessão, a página aberta do Saneamento com ?ibge= leva à ficha completa do município", async () => {
+    const r = await middleware(requisicao("/saneamento/municipio?ibge=2611606", await sessao()));
+    expect(r.status).toBe(307);
+    const destino = new URL(r.headers.get("location") ?? "", ORIGEM);
+    expect(destino.pathname + destino.search).toBe("/saneamento/municipio/2611606");
+    // código inválido: a busca de sempre
+    const invalido = await middleware(requisicao("/saneamento/municipio?ibge=26116", await sessao()));
+    expect(invalido.headers.get("location")).toBeNull();
+  });
+
   it("o caminho interno da versão aperitivo não existe como endereço, com ou sem sessão", async () => {
     for (const cookie of [undefined, await sessao()]) {
       for (const caminho of ["/aperitivo/conta-de-luz", "/en/aperitivo/conta-de-luz"]) {

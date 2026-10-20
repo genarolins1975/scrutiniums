@@ -398,6 +398,17 @@ export function desvioDoAperitivo(caminho: string): DesvioDoAperitivo | null {
   return null;
 }
 
+/**
+ * Com sessão, a página aberta do tema pedida com ?ibge= (o endereço que a versão aperitivo usa e que volta
+ * do login) leva direto à ficha completa desse município. null quando não se aplica.
+ */
+export function fichaComSessao(caminho: string, ibge: string | null): string | null {
+  if (!ibge || !CODIGO_IBGE.test(ibge)) return null;
+  const semBarra = caminho.length > 1 && caminho.endsWith("/") ? caminho.slice(0, -1) : caminho;
+  const a = APERITIVOS.find((x) => x.fichasIbge && x.rota === semBarra);
+  return a ? `${a.fichasIbge}/${ibge}` : null;
+}
+
 /** Cookie que guarda o painel pedido enquanto a pessoa entra ou se cadastra. */
 export const COOKIE_DESTINO = "scrutiniums_destino";
 
