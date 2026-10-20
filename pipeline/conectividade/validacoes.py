@@ -224,10 +224,10 @@ def validar_cobertura(seed: dict, anterior: dict | None = None, hoje: date | Non
         g5 = (tec.get("g5") or [None])[0]
         g4 = (tec.get("g4") or [None])[0]
         g45 = (tec.get("g4g5") or [None])[0]
-        if g5 is not None and ((g45 is not None and g5 > g45 + 0.05) or g5 > todas[0] + 0.05):
+        if g5 is not None and ((g45 is not None and g5 > g45 + 0.05) or (g4 is not None and g5 > g4 + 0.05) or g5 > todas[0] + 0.05):
             erros += 1
             if erros <= 5:
-                p.append(f"cobertura: município {cod} ({nomem}) com 5G ({g5}) acima do 4G ou 5G ({g45}) ou de todas ({todas[0]})")
+                p.append(f"cobertura: município {cod} ({nomem}) com 5G ({g5}) acima do 4G ({g4}), do 4G ou 5G ({g45}) ou de todas ({todas[0]})")
         if g4 is not None and g4 > todas[0] + 0.05:
             erros += 1
             if erros <= 5:

@@ -33,6 +33,21 @@ export function mesAcessos(r: { fixa: string; movel: string }, longo = false): s
   return longo ? `Acessos fixos de ${mesExtenso(r.fixa)} e linhas móveis de ${mesExtenso(r.movel)}` : `acessos fixos de ${mesExtenso(r.fixa)} · linhas móveis de ${mesExtenso(r.movel)}`;
 }
 
+type Carimbos = { fixa: { capturado_em: string }; movel: { capturado_em: string }; cobertura: { capturado_em: string } };
+const NOME_FONTE = { fixa: "banda larga fixa", movel: "telefonia móvel", cobertura: "cobertura" } as const;
+
+/**
+ * Data de captura das fontes citadas numa frase: uma data só quando as capturas caem no mesmo dia; uma por fonte
+ * quando a atualização por grupo publicou uma base e reteve outra (capturado_em da gold é o máximo das três e
+ * esconderia a retenção).
+ */
+export function dataCaptura(fontes: Carimbos, quais: ("fixa" | "movel" | "cobertura")[]): string {
+  const datas = quais.map((q) => dataBr(fontes[q].capturado_em));
+  if (new Set(datas).size === 1) return datas[0];
+  const partes = quais.map((q, i) => `${datas[i]} (${NOME_FONTE[q]})`);
+  return partes.length > 1 ? `${partes.slice(0, -1).join(", ")} e ${partes[partes.length - 1]}` : partes[0];
+}
+
 /** "2026-08" vira "ago/2026". */
 export function mesCurto(m: string | null | undefined): string {
   if (!m || !/^\d{4}-\d{2}$/.test(m)) return SEM_DADO;

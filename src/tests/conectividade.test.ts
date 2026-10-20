@@ -13,7 +13,7 @@ import PainelPage from "@/app/conectividade/page";
 import { csvBrasilMensal, csvPorEstado, csvPorMunicipio } from "@/lib/conectividade/csv";
 import { comConta } from "@/lib/conectividade/convite";
 import { arquivoUf, cobertos, consultarMunicipio, faixaNaDistribuicao, goldConectividade, UF_DO_PREFIXO } from "@/lib/conectividade/dados";
-import { mesAcessos, mesExtenso, milhoes, num, pct } from "@/lib/conectividade/formato";
+import { dataCaptura, mesAcessos, mesExtenso, milhoes, num, pct } from "@/lib/conectividade/formato";
 import { hrefMunicipio, nomeGrupo, PERGUNTA_APERITIVO, PERGUNTA_PAINEL, ROTA_CONECTIVIDADE, SECAO_APERITIVO, SECAO_PAINEL, VERSAO_ABERTA } from "@/lib/conectividade/paginas";
 import { colecoesDe } from "@/lib/observatorios/colecoes";
 import { donoDaRota, paineis } from "@/lib/observatorios/registro";
@@ -260,6 +260,25 @@ describe("Conectividade: achados do Codex no #309", () => {
   it("mês próprio de cada base: um só quando coincidem, os dois quando divergem", () => {
     expect(mesAcessos({ fixa: "2026-08", movel: "2026-08" })).toBe("acessos e linhas de agosto de 2026");
     expect(mesAcessos({ fixa: "2026-08", movel: "2026-07" }, true)).toBe("Acessos fixos de agosto de 2026 e linhas móveis de julho de 2026");
+  });
+
+  it("data de captura por fonte: uma só no mesmo dia, uma por fonte quando uma base ficou retida", () => {
+    const mesmo = { fixa: { capturado_em: "2026-10-20T17:30:39Z" }, movel: { capturado_em: "2026-10-20T09:00:00Z" }, cobertura: { capturado_em: "2026-10-20T17:30:39Z" } };
+    expect(dataCaptura(mesmo, ["fixa", "movel", "cobertura"])).toBe("20/10/2026");
+    const retida = { ...mesmo, fixa: { capturado_em: "2026-07-12T12:00:00Z" } };
+    expect(dataCaptura(retida, ["fixa", "cobertura"])).toBe("12/07/2026 (banda larga fixa) e 20/10/2026 (cobertura)");
+    expect(dataCaptura(retida, ["fixa", "movel", "cobertura"])).toBe("12/07/2026 (banda larga fixa), 20/10/2026 (telefonia móvel) e 20/10/2026 (cobertura)");
+  });
+
+  it("a grade de trimestres da cobertura é completa e o trimestre não publicado fica vazio", () => {
+    const g = goldConectividade();
+    const tri = g.brasil.cobertura.trimestres;
+    expect(tri).toEqual(g.trimestres_cobertura);
+    for (let i = 1; i < tri.length; i++) expect(Number(tri[i].slice(5, 7)) % 3).toBe(0);
+    const vazio = tri.indexOf("2023-09");
+    expect(vazio).toBeGreaterThan(0);
+    expect(g.brasil.cobertura.serie.g5[vazio]).toBeNull();
+    expect(g.brasil.cobertura.serie.g5[tri.indexOf("2024-03")]).not.toBeNull();
   });
 
   it("as partes em % das linhas móveis aparecem ao lado do total de linhas ativas, não do total sem M2M", () => {

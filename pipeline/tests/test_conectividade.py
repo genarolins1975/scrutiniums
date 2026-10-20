@@ -316,6 +316,10 @@ class TestValidacoesRetem(unittest.TestCase):
         s["municipios"]["2207777"][5]["g5"][0] = 99.0                 # 5G acima do 4G ou 5G
         self.assertTrue(any("5G" in p for p in V.validar_cobertura(s)))
         s = copy.deepcopy(self.cob)
+        pi = s["municipios"]["2207777"][5]
+        pi["g4"][0] = pi["g5"][0] - 1                                  # só o 4G abaixo do 5G; 4G ou 5G e todas seguem acima
+        self.assertTrue(any("acima do 4G" in p for p in V.validar_cobertura(s)))
+        s = copy.deepcopy(self.cob)
         s["municipios"]["2207777"][5]["g3"][2] = 101.0
         self.assertTrue(any("0 a 100" in p for p in V.validar_cobertura(s)))
         s = copy.deepcopy(self.cob)
@@ -363,6 +367,15 @@ class TestGoldSintetica(unittest.TestCase):
     def tearDown(self):
         self.p1.stop()
 
+    def test_grade_de_trimestres_completa(self):
+        # seed com 2025-12 e 2026-09: a grade ganha 2026-03 e 2026-06 vazios, e as séries seguem a grade
+        self.assertEqual(self.g["trimestres_cobertura"], ["2025-12", "2026-03", "2026-06", "2026-09"])
+        self.assertEqual(self.g["brasil"]["cobertura"]["trimestres"], ["2025-12", "2026-03", "2026-06", "2026-09"])
+        self.assertEqual([v is None for v in self.g["brasil"]["cobertura"]["serie"]["g5"]], [False, True, True, False])
+        pi = next(m for m in self.uf["PI"]["municipios"] if m["id"] == "2207777")
+        self.assertEqual(pi["cobertura"]["serie_g4_moradores"], [57.0, None, None, 60.0])
+        self.assertEqual(self.uf["PI"]["trimestres_cobertura"], self.g["trimestres_cobertura"])
+
     def test_partes_posicoes_e_ausencia(self):
         sp = next(m for m in self.uf["SP"]["municipios"] if m["id"] == "3550308")
         self.assertEqual((sp["fixa"]["acessos"], sp["fixa"]["fibra_pct"], sp["fixa"]["vel_100_mais_pct"], sp["fixa"]["prestadoras"]), (100, 60.0, 60.0, 2))
@@ -380,7 +393,7 @@ class TestGoldSintetica(unittest.TestCase):
         # média da cobertura ponderada pelos moradores: (99 × 11451999 + 95 × 1139047) / soma
         self.assertAlmostEqual(sp_uf["cobertura"]["todas_moradores"], (99.0 * 11451999 + 95.0 * 1139047) / (11451999 + 1139047), places=2)
         self.assertEqual(self.g["brasil"]["fixa"]["acessos_mensal"]["acessos"][-1], 115)
-        self.assertEqual(self.g["brasil"]["cobertura"]["serie"]["g5"], [70.68, 74.4])
+        self.assertEqual(self.g["brasil"]["cobertura"]["serie"]["g5"], [70.68, None, None, 74.4])
         self.assertEqual(self.g["brasil"]["fixa"]["densidade"], 27.0)
         self.assertIn("habitantes", self.g["notas"]["densidade"])
         self.assertEqual(self.g["distribuicao"]["fixa_fibra_pct"]["n"], 3)
@@ -454,6 +467,14 @@ class TestSeedsVersionados(unittest.TestCase):
                     self.assertTrue(m["fixa"]["densidade"] is None or 0 <= m["fixa"]["densidade"] <= F.DENSIDADE_MUNICIPIO_MAX)
                 if m["cobertura"]:
                     self.assertEqual(len(m["cobertura"]["serie_g5_moradores"]), len(self.g["trimestres_cobertura"]))
+        # a grade é completa entre o primeiro e o último trimestre publicado; o que a Anatel não publicou fica vazio
+        tri = self.g["trimestres_cobertura"]
+        self.assertEqual(tri, self.g["brasil"]["cobertura"]["trimestres"])
+        self.assertTrue(all(int(t[5:7]) % 3 == 0 for t in tri[1:]))
+        for faltante in ("2022-03", "2023-09", "2023-12"):
+            self.assertIn(faltante, tri)
+            self.assertIsNone(self.g["brasil"]["cobertura"]["serie"]["g5"][tri.index(faltante)])
+        self.assertIsNotNone(self.g["brasil"]["cobertura"]["serie"]["g5"][tri.index("2024-03")])
         self.assertEqual(len(ids), len(set(ids)))
         self.assertEqual(len(ids), n)
         self.assertEqual(sum(u["fixa"]["acessos"] for u in self.g["ufs"] if u["fixa"]), self.g["brasil"]["fixa"]["acessos"])

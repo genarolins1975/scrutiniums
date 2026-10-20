@@ -3,7 +3,7 @@ import { ConviteAperitivo } from "@/components/acesso/ConviteAperitivo";
 import { BuscaConectividade } from "@/components/conectividade/BuscaConectividade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { cobertos, consultarMunicipio, goldConectividade } from "@/lib/conectividade/dados";
-import { dataBr, mesExtenso, milhoes, num, pct, SEM_DADO } from "@/lib/conectividade/formato";
+import { dataCaptura, mesExtenso, milhoes, num, pct, SEM_DADO } from "@/lib/conectividade/formato";
 import { comConta } from "@/lib/conectividade/convite";
 import { hrefMunicipio, PERGUNTA_APERITIVO, ROTA_CONECTIVIDADE, SECAO_APERITIVO } from "@/lib/conectividade/paginas";
 import type { MunicipioGold } from "@/lib/conectividade/tipos";
@@ -70,7 +70,7 @@ export default function AperitivoConectividade({ searchParams }: Busca) {
           <ComoLer />
           <p className="cn-fonte">
             Fonte: {g.fontes.fixa.orgao}, {g.fontes.fixa.nome.toLowerCase()} ({mesExtenso(g.referencia.fixa)}) e {g.fontes.cobertura.nome.toLowerCase()} ({mesExtenso(g.referencia.cobertura)}). Dados
-            capturados em {dataBr(g.capturado_em)}.
+            capturados em {dataCaptura(g.fontes, ["fixa", "cobertura"])}.
           </p>
         </>
       )}
@@ -129,7 +129,7 @@ function Retrato({ m, uf, nomeUf }: { m: MunicipioGold; uf: string; nomeUf: stri
       <ComoLer />
       <p className="cn-fonte">
         Fonte: {g.fontes.fixa.orgao}, {g.fontes.fixa.nome.toLowerCase()} ({mesExtenso(r.fixa)}) e {g.fontes.cobertura.nome.toLowerCase()} ({mesExtenso(r.cobertura)}). Dados capturados em{" "}
-        {dataBr(g.capturado_em)}. Densidade como a Anatel publica (acessos por 100 habitantes); partes em %: cálculo da Scrutiniums.
+        {dataCaptura(g.fontes, ["fixa", "cobertura"])}. Densidade como a Anatel publica (acessos por 100 habitantes); partes em %: cálculo da Scrutiniums.
       </p>
     </section>
   );

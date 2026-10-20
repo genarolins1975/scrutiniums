@@ -106,13 +106,41 @@ def _movel_de(linha: list, grupos: list[str]) -> dict:
     }
 
 
-def _cobertura_de(v: list, operadoras: list[str]) -> dict:
+def _grade_trimestres(publicados: list[str]) -> list[str]:
+    """Todos os trimestres entre o primeiro e o último publicado: o primeiro como está (a Anatel começou em
+    2021-11) e, depois dele, cada fim de trimestre (03, 06, 09, 12). Trimestre que a Anatel não publicou entra na
+    grade e fica vazio nas séries, para o gráfico partir a linha em vez de ligar vizinhos distantes."""
+    if not publicados:
+        return []
+    grade = [publicados[0]]
+    ano, mes = int(publicados[0][:4]), int(publicados[0][5:7])
+    while True:
+        mes = (mes // 3 + 1) * 3
+        if mes > 12:
+            ano, mes = ano + 1, 3
+        t = f"{ano:04d}-{mes:02d}"
+        if t > publicados[-1]:
+            break
+        grade.append(t)
+    for t in publicados:
+        if t not in grade:
+            raise ValueError(f"trimestre {t} fora dos fins de trimestre")
+    return grade
+
+
+def _na_grade(valores: list, publicados: list[str], grade: list[str]) -> list:
+    """Reindexa uma série publicada para a grade completa, com None nos trimestres sem publicação."""
+    por = dict(zip(publicados, valores))
+    return [por.get(t) for t in grade]
+
+
+def _cobertura_de(v: list, operadoras: list[str], publicados: list[str], grade: list[str]) -> dict:
     _nome, _uf, mor, dom, area, tec, ops, s4, s5 = v
     return {
         "moradores": mor, "domicilios": dom, "area_km2": area,
         "tecnologias": {campo: tec.get(campo) for campo in tec},
         "operadoras": {op: {"g4g5_moradores": ops[op][0], "todas_moradores": ops[op][1]} for op in operadoras if op in ops},
-        "serie_g4_moradores": s4, "serie_g5_moradores": s5,
+        "serie_g4_moradores": _na_grade(s4, publicados, grade), "serie_g5_moradores": _na_grade(s5, publicados, grade),
     }
 
 
@@ -156,6 +184,7 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
 
     ids = sorted(set(fixa["municipios"]) | set(movel["municipios"]) | set(cob["municipios"]))
     operadoras = cob["operadoras"]
+    grade = _grade_trimestres(cob["trimestres"])
 
     municipios: dict[str, dict] = {}
     for cod in ids:
@@ -170,7 +199,7 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
             "id": cod, "nome": nome, "uf": uf,
             "fixa": None if f is None else {**_fixa_de(f[2], fixa["grupos"]), "densidade": fixa["densidade"]["municipios"].get(cod)},
             "movel": None if m is None else {**_movel_de(m[2], movel["grupos"]), "densidade": movel["densidade"]["municipios"].get(cod)},
-            "cobertura": None if c is None else _cobertura_de(c, operadoras),
+            "cobertura": None if c is None else _cobertura_de(c, operadoras, cob["trimestres"], grade),
             "ausencias": [x for x, falta in (("fixa", f is None), ("movel", m is None), ("cobertura", c is None)) if falta],
         }
 
@@ -253,8 +282,8 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
             "populacao": bc["populacao"].get(ref_cob),
             "tecnologias": serie_cob[ref_cob],
             "operadoras": {op: {"g4g5_moradores": v.get("g4g5"), "todas_moradores": v.get("todas")} for op, v in bc["operadoras_ultimo"].items()},
-            "trimestres": bc["trimestres"],
-            "serie": {campo: [(serie_cob[t].get(campo) or [None])[0] for t in bc["trimestres"]] for campo, _ in F.TECNOLOGIAS_COBERTURA},
+            "trimestres": grade,
+            "serie": {campo: [(serie_cob[t].get(campo) or [None])[0] if t in serie_cob else None for t in grade] for campo, _ in F.TECNOLOGIAS_COBERTURA},
             "populacao_por_trimestre": bc["populacao"],
         },
     }
@@ -275,7 +304,7 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
         "gerado_por": "pipeline/conectividade/gold.py",
         "capturado_em": max(fixa["capturado_em"], movel["capturado_em"], cob["capturado_em"]),
         "referencia": {"fixa": fixa["referencia"], "movel": movel["referencia"], "cobertura": cob["referencia"]},
-        "trimestres_cobertura": cob["trimestres"],
+        "trimestres_cobertura": grade,
         "notas": {
             "densidade": "Acessos por 100 habitantes, como a Anatel publica nos dois conjuntos (acessos ÷ densidade reproduz a população; "
                          "o Densidades.pdf de 2020 nos zips diz por 100 domicílios para a banda larga fixa, mas os números não dividem "
@@ -301,7 +330,7 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
         cods = por_uf_ids.get(uf, [])
         por_uf[uf] = {
             "uf": uf, "nome_uf": F.NOME_UF[uf],
-            "referencia": gold["referencia"], "trimestres_cobertura": cob["trimestres"],
+            "referencia": gold["referencia"], "trimestres_cobertura": grade,
             "operadoras": operadoras, "municipios_brasil": len(ids),
             "municipios": [municipios[c] for c in sorted(cods, key=lambda c: municipios[c]["nome"])],
         }

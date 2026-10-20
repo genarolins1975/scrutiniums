@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
 import { BuscaConectividade } from "./BuscaConectividade";
 import { anoDecimal, GraficoLinhas, marcasAnos, type Serie } from "./Graficos";
 import { cobertos, faixaNaDistribuicao, pontosAnuais, serieCobertura, ufsPor, type ConsultaMunicipio } from "@/lib/conectividade/dados";
-import { dataBr, mesAcessos, mesCurto, mesExtenso, milhoes, num, pct, plural, posicao, SEM_DADO } from "@/lib/conectividade/formato";
+import { dataBr, dataCaptura, mesAcessos, mesCurto, mesExtenso, milhoes, num, pct, plural, posicao, SEM_DADO } from "@/lib/conectividade/formato";
 import { DO_ESTADO, DOWNLOADS, hrefMunicipio, MEIOS, nomeGrupo, ROTA_CONECTIVIDADE, TECNOLOGIAS, VELOCIDADES } from "@/lib/conectividade/paginas";
 import type { ArquivoUf, GoldConectividade, MunicipioGold, UfGold } from "@/lib/conectividade/tipos";
 
@@ -50,7 +50,7 @@ function Abertura({ g }: { g: GoldConectividade }) {
     <>
       <p className="cn-achado">
         Em {mesExtenso(r.fixa)}, o Brasil tinha <strong>{milhoes(f.acessos)} de acessos de banda larga fixa</strong>, {num(f.densidade, 1)} para cada 100 habitantes, e{" "}
-        <strong>{pct(f.fibra_pct)} deles por fibra óptica</strong>. Nas redes móveis, {milhoes(m.linhas)} de linhas ativas, {pct(m.g5_pct)} já em 5G. Em {mesExtenso(r.cobertura)},{" "}
+        <strong>{pct(f.fibra_pct)} deles por fibra óptica</strong>. Nas redes móveis{r.movel !== r.fixa ? `, em ${mesExtenso(r.movel)}` : ""}, {milhoes(m.linhas)} de linhas ativas, {pct(m.g5_pct)} já em 5G. Em {mesExtenso(r.cobertura)},{" "}
         <strong>{pct(c.tecnologias.g5?.[0])} dos moradores</strong> do país estavam dentro da cobertura 5G declarada pelas operadoras, e {num(g.destaques.sem_5g)} municípios ainda
         ficavam fora dela.
       </p>
@@ -287,7 +287,7 @@ function Municipio({ g, m, uf, arquivo }: { g: GoldConectividade; m: MunicipioGo
         <ComoLerMunicipio />
         <p className="cn-fonte">
           Fontes: Anatel, acessos de banda larga fixa ({mesExtenso(r.fixa)}), telefonia móvel ({mesExtenso(r.movel)}) e cobertura das redes móveis ({mesExtenso(r.cobertura)}), dados capturados em{" "}
-          {dataBr(g.capturado_em)}. Densidades como a Anatel publica (acessos por 100 habitantes). Partes em %, posições e faixas: cálculo da Scrutiniums.
+          {dataCaptura(g.fontes, ["fixa", "movel", "cobertura"])}. Densidades como a Anatel publica (acessos por 100 habitantes). Partes em %, posições e faixas: cálculo da Scrutiniums.
         </p>
       </section>
       <MaioresDaUf arquivo={arquivo} uf={uf} escolhido={m.id} />
