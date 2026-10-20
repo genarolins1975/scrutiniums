@@ -186,13 +186,56 @@ def validar_ibge(seed: dict, anterior: dict | None = None) -> list[str]:
     return p
 
 
+def validar_siconfi(seed: dict, anterior: dict | None = None) -> list[str]:
+    p: list[str] = []
+    anos = seed.get("anos") or []
+    if not anos or anos[0] != F.PRIMEIRO_ANO or anos != list(range(anos[0], anos[-1] + 1)):
+        return [f"Siconfi sem anos contínuos desde {F.PRIMEIRO_ANO}"]
+    vals = seed.get("valores", {})
+    if sorted(vals) != sorted(F.SIGLAS):
+        return ["Siconfi sem as 27 UFs"]
+    lo, hi = F.FAIXA_PARTICIPACAO
+    for a in map(str, anos):
+        com = 0
+        for uf in F.SIGLAS:
+            d = vals[uf].get(a)
+            if d is None:
+                p.append(f"Siconfi {uf} {a}: ano ausente do seed")
+                continue
+            s, t = d.get("seguranca"), d.get("total")
+            if s is None:
+                continue
+            com += 1
+            if not _num(s) or not _num(t) or s <= 0 or t <= 0:
+                p.append(f"Siconfi {uf} {a}: despesa {s!r} ou total {t!r} inválidos")
+            elif not lo <= s / t * 100 <= hi:
+                p.append(f"Siconfi {uf} {a}: segurança pública é {s / t * 100:.1f}% da despesa, fora da faixa plausível [{lo}; {hi}]")
+        if com < 20:
+            p.append(f"Siconfi {a}: só {com} UFs com a função 06 na DCA")
+    if anterior and not p:
+        for a in map(str, anos):
+            comuns = [uf for uf in F.SIGLAS if (anterior.get("valores", {}).get(uf, {}).get(a) or {}).get("seguranca") and vals[uf][a]["seguranca"]]
+            ant = sum(anterior["valores"][uf][a]["seguranca"] for uf in comuns)
+            novo = sum(vals[uf][a]["seguranca"] for uf in comuns)
+            if ant and abs(novo - ant) / ant > F.REVISAO_MAXIMA:
+                p.append(f"Siconfi {a}: a despesa das UFs em comum passou de {ant:,.0f} para {novo:,.0f}, revisão acima de {F.REVISAO_MAXIMA:.0%}")
+    return p
+
+
 def validar_seeds(seeds: dict) -> list[str]:
-    p = validar_vde(seeds["sinesp"]) + validar_sim(seeds["sim"]) + validar_ibge(seeds["ibge"])
+    p = validar_vde(seeds["sinesp"]) + validar_sim(seeds["sim"]) + validar_ibge(seeds["ibge"]) + validar_siconfi(seeds["siconfi"])
     if p:
         return p
     anos_pop = set(seeds["ibge"]["anos"])
-    usados = set(anos_completos_vde(seeds["sinesp"])) | set(seeds["sim"]["anos"])
+    usados = set(anos_completos_vde(seeds["sinesp"])) | set(seeds["sim"]["anos"]) | set(seeds["siconfi"]["anos"])
     faltam = sorted(usados - anos_pop)
     if faltam:
-        p.append(f"população sem os anos {faltam}, usados pelo Sinesp ou pelo SIM")
+        p.append(f"população sem os anos {faltam}, usados pelo Sinesp, pelo SIM ou pelo Siconfi")
+        return p
+    lo, hi = F.FAIXA_POR_HABITANTE
+    for uf in F.SIGLAS:
+        for a in map(str, seeds["siconfi"]["anos"]):
+            s = seeds["siconfi"]["valores"][uf][a]["seguranca"]
+            if s is not None and not lo <= s / seeds["ibge"]["populacao"][uf]["total"][a] <= hi:
+                p.append(f"Siconfi {uf} {a}: R$ {s / seeds['ibge']['populacao'][uf]['total'][a]:.2f} por habitante, fora da faixa plausível [{lo}; {hi}]")
     return p

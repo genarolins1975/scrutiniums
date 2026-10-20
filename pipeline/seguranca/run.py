@@ -27,6 +27,7 @@ SEEDS = {
     "sinesp": SEED / "sinesp_vde.json",
     "sim": SEED / "sim_tabnet.json",
     "ibge": SEED / "ibge_populacao.json",
+    "siconfi": SEED / "siconfi_dca.json",
 }
 PASTA = RAIZ / "public" / "eficiencia" / "seguranca-publica" / "gold"
 GOLD = PASTA / "seguranca.json"
@@ -55,8 +56,8 @@ def saidas(seeds: dict) -> dict[Path, str]:
     return {GOLD: _json(g), CSV: gold.csv_taxas(g)}
 
 
-COLETORES = {"sinesp": coleta.coletar_vde, "sim": coleta.coletar_sim, "ibge": coleta.coletar_ibge}
-VALIDADORES = {"sinesp": validacoes.validar_vde, "sim": validacoes.validar_sim, "ibge": validacoes.validar_ibge}
+COLETORES = {"sinesp": coleta.coletar_vde, "sim": coleta.coletar_sim, "ibge": coleta.coletar_ibge, "siconfi": coleta.coletar_siconfi}
+VALIDADORES = {"sinesp": validacoes.validar_vde, "sim": validacoes.validar_sim, "ibge": validacoes.validar_ibge, "siconfi": validacoes.validar_siconfi}
 
 
 def main(argv=None) -> int:

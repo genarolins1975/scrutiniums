@@ -17,6 +17,7 @@ from __future__ import annotations
 import hashlib
 import html
 import io
+import json
 import os
 import re
 import tempfile
@@ -385,4 +386,48 @@ def coletar_ibge() -> dict:
         "anos": anos,
         "populacao": pop,
         "original": {"url": F.URL_PROJECAO, **_info(corpo)},
+    }
+
+
+# ------------------------------------------------------------------ Siconfi
+
+
+def despesa_dca(itens: list[dict]) -> dict:
+    """Despesa liquidada na função 06 e total do ente (exceto intraorçamentárias) numa resposta da DCA I-E."""
+    def um(contas: tuple[str, ...]):
+        linhas = [i for i in itens if i.get("conta") in contas and i.get("coluna") == F.COLUNA_DESPESA
+                  and i.get("cod_conta") in (F.COD_CONTA_DESPESA, None)]
+        if len(linhas) > 1:
+            raise ValueError(f"DCA com {len(linhas)} linhas para {contas}")
+        return float(linhas[0]["valor"]) if linhas else None
+    return {"seguranca": um((F.CONTA_SEGURANCA,)), "total": um(F.CONTAS_TOTAL)}
+
+
+def coletar_siconfi(anos: list[int] | None = None, pausa: float = 0.4) -> dict:
+    from pipeline.eficiencia.fontes import siconfi as S
+
+    capturado = agora_utc()
+    ultimo = datetime.now(timezone.utc).year - 1
+    anos = anos or list(range(F.PRIMEIRO_ANO, ultimo + 1))
+    valores: dict = {uf: {} for uf in F.SIGLAS}
+    originais: dict = {}
+    for a in anos:
+        for cod, sigla, _n, _r in F.UFS:
+            urls, itens = S._todas_paginas("dca", {"an_exercicio": a, "no_anexo": F.ANEXO_DCA, "id_ente": cod})
+            corpo = json.dumps(itens, ensure_ascii=False, sort_keys=True).encode("utf-8")
+            valores[sigla][str(a)] = despesa_dca(itens) if itens else {"seguranca": None, "total": None}
+            originais[f"{sigla}_{a}"] = {"url": urls[0], "linhas": len(itens), **_info(corpo)}
+            time.sleep(pausa)
+        com = sum(1 for uf in F.SIGLAS if valores[uf][str(a)]["seguranca"] is not None)
+        print(f"  Siconfi DCA {a}: {com} de 27 com a função 06", flush=True)
+    return {
+        "fonte": "Secretaria do Tesouro Nacional, Siconfi: Declaração de Contas Anuais (DCA), Anexo I-E, despesa por função",
+        "pagina": F.DOC_SICONFI,
+        "url": f"{F.API_SICONFI}/dca?an_exercicio=<ano>&no_anexo=DCA-Anexo%20I-E&id_ente=<código IBGE da UF>",
+        "capturado_em": capturado,
+        "anos": anos,
+        "conta": F.CONTA_SEGURANCA,
+        "coluna": F.COLUNA_DESPESA,
+        "valores": valores,
+        "originais": originais,
     }

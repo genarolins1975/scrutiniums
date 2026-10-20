@@ -17,8 +17,8 @@ Regra de ausência (Sinesp VDE; a base não distingue zero de falta de envio):
 - mês sem valor na base: o ano fica "incompleto";
 - 12 meses zerados quando o esperado seria de pelo menos fontes.LIMIAR_ANO registros (pela taxa nacional do
   ano ou pela média da própria UF nos anos com registro): "sem registro", ausência e não zero;
-- mês zerado num ano em que a média dos meses com registro é de pelo menos fontes.LIMIAR_MES: o ano fica
-  "incompleto" e o total não é publicado.
+- meses zerados num ano com registros, quando a chance de tantos zeros por acaso (Poisson com a média do
+  próprio ano) é menor que fontes.PROB_MESES_ZERADOS: o ano fica "incompleto" e o total não é publicado.
 """
 from __future__ import annotations
 
@@ -26,6 +26,7 @@ import csv
 import hashlib
 import io
 import json
+import math
 
 from . import fontes as F
 from .validacoes import _num, anos_completos_vde, validar_seeds
@@ -46,8 +47,18 @@ def milhar(n: float) -> str:
     return f"{n:,.0f}".replace(",", ".")
 
 
+def media_mensal(m: float) -> str:
+    return f"{m:.1f}".replace(".", ",") if m < 10 else milhar(m)
+
+
 def _pop(ibge: dict, uf: str, ano: int, denominador: str | None) -> int:
     return ibge["populacao"][uf]["mulheres" if denominador == "mulheres" else "total"][str(ano)]
+
+
+def chance_zerados(z: int, media: float, meses: int = 12) -> float:
+    """Chance de z ou mais meses zerados em `meses`, se os registros de cada mês seguissem Poisson com a média dada."""
+    p0 = math.exp(-media)
+    return sum(math.comb(meses, j) * p0 ** j * (1 - p0) ** (meses - j) for j in range(z, meses + 1))
 
 
 def situacao_vde(seed: dict, ibge: dict, evento: tuple, anos: list[int]) -> dict:
@@ -77,12 +88,12 @@ def situacao_vde(seed: dict, ibge: dict, evento: tuple, anos: list[int]) -> dict
                 else:
                     out[uf][a] = (0, "ok", None)
                 continue
-            com_registro = [x for x in arr if x]
-            media = s / len(com_registro)
             zerados = [MESES[k] for k, x in enumerate(arr) if x == 0]
-            if zerados and media >= F.LIMIAR_MES:
+            if zerados and chance_zerados(len(zerados), s / 12) < F.PROB_MESES_ZERADOS:
+                plural = len(zerados) > 1
                 out[uf][a] = (None, "incompleto", (
-                    f"Meses sem registro ({lista(zerados)}) num ano com média de {milhar(media)} por mês nos demais. "
+                    f"{'Meses' if plural else 'Mês'} sem registro ({lista(zerados)}) num ano com média de {media_mensal(s / 12)} por mês: "
+                    f"por acaso, a chance de {'tantos meses zerados' if plural else 'um mês zerado'} seria menor que {F.PROB_MESES_ZERADOS:.0%}. "
                     "O total do ano não é publicado."))
                 continue
             out[uf][a] = (s, "ok", None)
@@ -94,7 +105,7 @@ def situacao_sim(sim: dict, consulta: str, anos: list[int]) -> dict:
     return {uf: {a: (c[uf][str(a)], "ok", None) if str(a) in c[uf] else (None, "fora", None) for a in anos} for uf in F.SIGLAS}
 
 
-def serie(contagens: dict, ibge: dict, anos: list[int], denominador: str | None, casas: int = 2) -> dict:
+def serie(contagens: dict, ibge: dict, anos: list[int], denominador: str | None, casas: int = 2, escala: int = 100_000) -> dict:
     """Taxas, referência nacional, posições e diferenças a partir das contagens e situações por UF."""
     s: dict = {}
     for uf in F.SIGLAS:
@@ -103,7 +114,7 @@ def serie(contagens: dict, ibge: dict, anos: list[int], denominador: str | None,
         mot = [contagens[uf][a][2] for a in anos]
         taxa = None
         if denominador:
-            taxa = [None if x is None else round(x / _pop(ibge, uf, a, denominador) * 100_000, casas) for x, a in zip(n, anos)]
+            taxa = [None if x is None else round(x / _pop(ibge, uf, a, denominador) * escala, casas) for x, a in zip(n, anos)]
         s[uf] = {"n": n, "situacao": st, "motivo": mot, "taxa": taxa}
     br = {"n": [], "situacao": [], "cobertura": [], "fora": [], "taxa": [] if denominador else None, "variacao": []}
     for k, a in enumerate(anos):
@@ -123,7 +134,7 @@ def serie(contagens: dict, ibge: dict, anos: list[int], denominador: str | None,
         br["situacao"].append("ok" if len(ok) == len(F.SIGLAS) else "parcial")
         if denominador:
             pop = sum(_pop(ibge, uf, a, denominador) for uf in ok)
-            br["taxa"].append(round(total / pop * 100_000, casas))
+            br["taxa"].append(round(total / pop * escala, casas))
         ant = k - 1
         if ant >= 0 and br["situacao"][k] == "ok" and br["situacao"][ant] == "ok" and br["n"][ant]:
             br["variacao"].append(round((total - br["n"][ant]) / br["n"][ant] * 100, 2))
@@ -154,7 +165,7 @@ def construir(seeds: dict) -> dict:
     vde, sim, ibge = seeds["sinesp"], seeds["sim"], seeds["ibge"]
     anos_vde = anos_completos_vde(vde)
     anos_sim = list(sim["anos"])
-    anos = list(range(F.PRIMEIRO_ANO, max(anos_vde[-1], anos_sim[-1]) + 1))
+    anos = list(range(F.PRIMEIRO_ANO, max(anos_vde[-1], anos_sim[-1], seeds["siconfi"]["anos"][-1]) + 1))
     fora = lambda: {uf: {} for uf in F.SIGLAS}  # noqa: E731
 
     indicadores, series = [], {}
@@ -203,6 +214,34 @@ def construir(seeds: dict) -> dict:
         "definicao": "Óbitos com causa básica Y10 a Y34 da CID-10 (evento cuja intenção é indeterminada) sobre todos os óbitos por causas externas (V01 a Y98), pela UF de residência.",
     })
 
+    # Siconfi: despesa liquidada do governo estadual na função 06, por habitante e em % da despesa do estado
+    sic = seeds["siconfi"]
+    nao_entregue = "DCA sem a função 06 no Siconfi para este ano. Ausência, não zero."
+    desp = {uf: {a: ((round(sic["valores"][uf][str(a)]["seguranca"], 2), "ok", None) if sic["valores"][uf].get(str(a), {}).get("seguranca") is not None
+                     else ((None, "sem_registro", nao_entregue) if str(a) in sic["valores"][uf] else (None, "fora", None))) for a in anos}
+            for uf in F.SIGLAS}
+    series["despesa_habitante"] = serie(desp, ibge, anos, "populacao", casas=2, escala=1)
+    indicadores.append({
+        "id": "despesa_habitante", "fonte": "siconfi", "grupo": "recursos", "titulo": "Despesa do governo estadual com segurança pública",
+        "unidade": "reais correntes", "denominador": "populacao", "escala": 1, "base": "governo_estadual",
+        "definicao": "Despesa liquidada na função 06 (Segurança Pública), exceto intraorçamentária, declarada pelo estado ou pelo DF na DCA, Anexo I-E, em reais do próprio ano.",
+    })
+    part: dict = {}
+    for uf in F.SIGLAS:
+        v = [sic["valores"][uf].get(str(a)) for a in anos]
+        part[uf] = {"pct": [None if not d or d.get("seguranca") is None else round(d["seguranca"] / d["total"] * 100, 2) for d in v]}
+    tot = {a: [uf for uf in F.SIGLAS if (sic["valores"][uf].get(str(a)) or {}).get("seguranca") is not None] for a in anos}
+    part[F.BRASIL] = {"pct": [round(sum(sic["valores"][uf][str(a)]["seguranca"] for uf in tot[a]) / sum(sic["valores"][uf][str(a)]["total"] for uf in tot[a]) * 100, 2) if tot[a] else None for a in anos],
+                      "cobertura": [len(tot[a]) for a in anos]}
+    series["despesa_participacao"] = part
+    indicadores.append({
+        "id": "despesa_participacao", "fonte": "siconfi", "grupo": "recursos", "titulo": "Peso da segurança pública na despesa do estado",
+        "unidade": "% da despesa liquidada do estado", "denominador": None, "base": "governo_estadual",
+        "definicao": "Despesa liquidada na função 06 sobre a despesa liquidada total do estado ou do DF, ambas exceto intraorçamentárias, na DCA, Anexo I-E.",
+    })
+    for i in indicadores:
+        i.setdefault("escala", 100_000)
+
     # polícia e saúde: homicídio doloso registrado pela polícia sobre óbitos por agressão no SIM
     comp: dict = {}
     h, ag = series["homicidio"], series["agressoes"]
@@ -245,6 +284,10 @@ def construir(seeds: dict) -> dict:
             "extracao_final": sim["notas"]["extracao_final"], "extracao_preliminar": sim["notas"]["preliminares"],
             "previas_fora": sim["notas"]["previas"],
         },
+        "siconfi": {
+            "nome": sic["fonte"], "pagina": sic["pagina"], "url": sic["url"], "capturado_em": sic["capturado_em"],
+            "anos": sic["anos"], "conta": sic["conta"], "coluna": sic["coluna"],
+        },
         "ibge": {
             "nome": ibge["fonte"], "url": ibge["url"], "metodo": ibge["metodo"], "capturado_em": ibge["capturado_em"],
             "sha256": ibge["original"]["sha256"],
@@ -253,10 +296,10 @@ def construir(seeds: dict) -> dict:
     return {
         "versao": VERSAO,
         "hash_dados": hash_dados,
-        "capturado_em": min(vde["capturado_em"], sim["capturado_em"], ibge["capturado_em"]),
+        "capturado_em": min(vde["capturado_em"], sim["capturado_em"], ibge["capturado_em"], sic["capturado_em"]),
         "anos": anos,
         "ufs": [{"codigo": c, "sigla": s, "nome": n, "regiao": r} for c, s, n, r in F.UFS],
-        "regra_ausencia": {"limiar_ano": F.LIMIAR_ANO, "limiar_mes": F.LIMIAR_MES},
+        "regra_ausencia": {"limiar_ano": F.LIMIAR_ANO, "prob_meses_zerados": F.PROB_MESES_ZERADOS},
         "fontes": fontes,
         "indicadores": indicadores,
         "populacao": populacao,
@@ -280,11 +323,14 @@ def csv_taxas(g: dict) -> str:
         for terr in [F.BRASIL, *[u["sigla"] for u in g["ufs"]]]:
             x = s[terr]
             for k, a in enumerate(g["anos"]):
-                if ind["id"] == "indeterminadas_pct":
-                    n, taxa, pop = x["n"][k], x["pct"][k], x["externas"][k]
-                    sit = "ok" if n is not None else "fora"
-                    w.writerow([ind["id"], ind["titulo"], ind["fonte"], ind["base"], nomes[terr], a, n, ind["unidade"],
-                                "óbitos por causas externas", pop, "" if taxa is None else str(taxa).replace(".", ","), sit, "", "", "", "", ""])
+                if "pct" in x:
+                    # participações (%): intenção indeterminada nas causas externas; função 06 na despesa do estado
+                    taxa = x["pct"][k]
+                    n, pop = (x["n"][k], x["externas"][k]) if "externas" in x else ("", "")
+                    sit = "ok" if taxa is not None else "sem_registro"
+                    den = "óbitos por causas externas" if "externas" in x else "despesa liquidada total do estado"
+                    w.writerow([ind["id"], ind["titulo"], ind["fonte"], ind["base"], nomes[terr], a, "" if n is None else n, ind["unidade"],
+                                den, "" if pop is None else pop, "" if taxa is None else str(taxa).replace(".", ","), sit, "", "", "", "", ""])
                     continue
                 den = ind["denominador"]
                 pop = g["populacao"][terr]["mulheres" if den == "mulheres" else "total"][k] if den else ""

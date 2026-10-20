@@ -128,8 +128,29 @@ FAIXA_POP_BRASIL = (190_000_000, 230_000_000)
 
 # Um ano de uma UF num evento é "sem registro" (ausência, não zero) quando os 12 meses vêm zerados e o
 # esperado seria de pelo menos LIMIAR_ANO registros, pela taxa nacional do ano ou pela média da própria UF
-# nos anos com registro. Um mês zerado num ano com registros é "mês sem registro" quando a média dos meses
-# com registro naquele ano é de pelo menos LIMIAR_MES; um mês assim torna o ano incompleto, e o total do
-# ano não é publicado.
+# nos anos com registro. Num ano com registros, os meses zerados tornam o ano "incompleto" (total não
+# publicado) quando a chance de haver tantos meses zerados por acaso, com a média mensal do próprio ano
+# (modelo de Poisson, meses independentes), é menor que PROB_MESES_ZERADOS. Ex.: um mês zerado num ano com
+# média de 12 por mês é ausência; um mês zerado num ano com média de 4 pode ser zero de verdade.
 LIMIAR_ANO = 12
-LIMIAR_MES = 5
+PROB_MESES_ZERADOS = 0.01
+
+# ------------------------------------------------------------------ Siconfi (despesa dos governos estaduais)
+
+# DCA, Anexo I-E (Despesa por Função), entregue por cada estado e pelo DF até 30 de abril do ano seguinte e
+# retificável a qualquer tempo. Só o governo estadual: a despesa da União (Polícia Federal, Polícia
+# Rodoviária Federal, Fundo Nacional de Segurança Pública) e a dos municípios (guardas municipais) ficam de
+# fora. No DF, as polícias Civil e Militar e o Corpo de Bombeiros são pagos pela União, pelo Fundo
+# Constitucional do Distrito Federal, fora do orçamento distrital.
+API_SICONFI = "https://apidatalake.tesouro.gov.br/ords/siconfi/tt"
+DOC_SICONFI = "https://www.tesourotransparente.gov.br/consultas/consultas-siconfi/siconfi-api-de-dados-abertos"
+ANEXO_DCA = "DCA-Anexo I-E"
+CONTA_SEGURANCA = "06 - Segurança Pública"
+# o nome da linha de total mudou em 2017: "Despesas (Exceto Intraorçamentárias)" até 2016
+CONTAS_TOTAL = ("Despesas Exceto Intraorçamentárias", "Despesas (Exceto Intraorçamentárias)")
+COLUNA_DESPESA = "Despesas Liquidadas"
+COD_CONTA_DESPESA = "TotalDespesas"
+# faixa plausível da participação da função 06 na despesa liquidada do estado (%) e da despesa por
+# habitante (R$ correntes); fora dela o valor é tratado como erro de coleta ou de declaração
+FAIXA_PARTICIPACAO = (0.5, 30.0)
+FAIXA_POR_HABITANTE = (20.0, 5_000.0)
