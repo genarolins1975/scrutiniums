@@ -22,6 +22,7 @@ import { CONSULTAS, portas } from "@/lib/perguntas/portas";
 import { APERITIVOS, desvioDoAperitivo, ehRotaPublica } from "@/lib/rotasPublicas";
 import { SECTION_LABELS, VIEW_SECTIONS } from "@/lib/telemetry";
 import limiares from "@/lib/frescor/limiares.json";
+import { extrairFrescor, situacaoDominio } from "@/lib/frescor/regras";
 
 // as páginas usam componentes de cliente que leem o roteador (barra comum, busca): fora do Next, o caminho é fixo
 vi.mock("next/navigation", async () => ({
@@ -66,7 +67,13 @@ describe("registro, navegação e acesso", () => {
     expect(VIEW_SECTIONS).toContain(SECAO_PAINEL);
     expect(VIEW_SECTIONS).toContain(SECAO_APERITIVO);
     expect(SECTION_LABELS[SECAO_PAINEL]).toContain("Conectividade");
-    expect(limiares.dominios.conectividade.publicacao[0].arquivo).toBe("public/conectividade/gold/conectividade.json");
+    expect(limiares.dominios.conectividade.publicacao.map((o) => o.campo)).toEqual(["fontes.fixa.capturado_em", "fontes.movel.capturado_em"]);
+    // uma base mensal retida enquanto a outra segue: a data publicada é a mais antiga, e a cobertura só conta como parte
+    const ler = () => ({ capturado_em: "2026-10-20T17:30:39Z", fontes: { fixa: { capturado_em: "2026-07-12T12:00:00Z" }, movel: { capturado_em: "2026-10-20T17:30:39Z" }, cobertura: { capturado_em: "2026-10-20T17:30:39Z" } } });
+    const f = extrairFrescor("conectividade", ler);
+    expect(f.publicadoEm).toBe("2026-07-12T12:00:00Z");
+    expect(f.parteMaisRecente).toBe("2026-10-20T17:30:39Z");
+    expect(situacaoDominio(f, new Date("2026-10-21T00:00:00Z")).estado).toBe("retida");
     expect(readFileSync(join(raiz, "src/app/sitemap.ts"), "utf-8")).toContain(`rota("${ROTA_CONECTIVIDADE}"`);
     const cfg = readFileSync(join(raiz, "next.config.mjs"), "utf-8");
     expect(cfg).toContain('"/conectividade": ["./public/conectividade/gold/**/*.json"]');

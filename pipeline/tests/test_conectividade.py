@@ -294,6 +294,14 @@ class TestValidacoesRetem(unittest.TestCase):
         anterior["brasil"]["acessos"] = 113
         self.assertEqual(V.validar_fixa(self.fixa, anterior), [])
 
+    def test_variacao_acumulada_depois_de_retencao(self):
+        # seed de maio retido por três meses: 12% acumulados cabem em 3 × 5%, e o atualizador se recupera sozinho
+        anterior = self._fixa(referencia="2026-05")
+        anterior["brasil"]["acessos"] = 103                           # 115 contra 103: 11,7% em três meses
+        self.assertEqual(V.validar_fixa(self.fixa, anterior), [])
+        anterior["brasil"]["acessos"] = 95                            # 21% em três meses passa do teto de 15%
+        self.assertTrue(any("em 3 meses" in p for p in V.validar_fixa(self.fixa, anterior)))
+
     def test_movel_m2m_e_modalidades(self):
         s = copy.deepcopy(self.movel)
         i = {c: k for k, c in enumerate(F.CAMPOS_MOVEL)}

@@ -135,8 +135,12 @@ def _comparar_anterior(seed: dict, anterior: dict | None, nome: str) -> list[str
     br, br_ant = seed["brasil"]["acessos"], (anterior.get("brasil") or {}).get("acessos")
     if ref == ref_ant and br_ant and not _perto(br, br_ant, F.REVISAO_MAXIMA_MESMO_MES):
         p.append(f"{nome}: o mesmo mês {ref} mudou de {br_ant} para {br} acessos (mais de {F.REVISAO_MAXIMA_MESMO_MES:.0%})")
-    if ref != ref_ant and br_ant and not _perto(br, br_ant, F.VARIACAO_MAXIMA_MES_SEGUINTE):
-        p.append(f"{nome}: de {ref_ant} para {ref} o Brasil foi de {br_ant} para {br} acessos (mais de {F.VARIACAO_MAXIMA_MES_SEGUINTE:.0%})")
+    # o teto vale por mês transcorrido: depois de uma retenção de dois ou mais meses, a variação acumulada legítima
+    # pode passar de 5% e o atualizador agendado precisa conseguir se recuperar sozinho
+    meses = max(1, _meses_entre(ref_ant, ref)) if ref != ref_ant and isinstance(ref_ant, str) and MES.match(ref_ant) else 1
+    limite = F.VARIACAO_MAXIMA_MES_SEGUINTE * meses
+    if ref != ref_ant and br_ant and not _perto(br, br_ant, limite):
+        p.append(f"{nome}: de {ref_ant} para {ref} o Brasil foi de {br_ant} para {br} acessos (mais de {limite:.0%} em {meses} {'mês' if meses == 1 else 'meses'})")
     return p
 
 
