@@ -59,7 +59,9 @@ export const OBSERVATORIOS: Observatorio[] = [
       { id: "divida", nome: "Dívida e crédito das famílias", href: "/observatorio/payroll-lending-aging" },
       { id: "protecao", nome: "Proteção social", href: "/eficiencia-estatal/assistencia-social" },
       { id: "moradia", nome: "Moradia", href: "/eficiencia-estatal/habitacao" },
-      { id: "custo-de-vida", nome: "Custo de vida", href: "/agronegocio/prato" },
+      // porta da coleção desde 20/10/2026: o painel Inflação por cidade (todos os itens do orçamento); a comida item por
+      // item continua no painel canônico /agronegocio/prato, que segue na coleção
+      { id: "custo-de-vida", nome: "Custo de vida", href: "/custo-de-vida" },
     ],
   },
   {

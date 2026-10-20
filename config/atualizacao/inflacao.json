@@ -1,0 +1,38 @@
+{
+  "dominio": "inflacao",
+  "titulo": "Inflação por cidade (IPCA, Observatório das Famílias)",
+  "descricao": "Recoleta mensal do IPCA na API do SIDRA (IBGE, tabela 7060): índice geral e nove grupos nas 16 áreas e no Brasil, todos os meses desde janeiro de 2020, e subitens no último mês e no início da janela de 12 meses. A gold só é publicada se os pesos somarem 100 por área e mês, se nenhum mês faltar, se as variações ficarem na faixa plausível e se o encadeamento e as contribuições conferirem.",
+  "codigo": [
+    "pipeline/inflacao/*.py",
+    "pipeline/tests/test_inflacao.py",
+    "src/lib/inflacao",
+    "src/tests/inflacao.test.ts"
+  ],
+  "reconstruir": [["python3", "-m", "pipeline.inflacao.run"]],
+  "timeout_reconstruir_min": 5,
+  "saidas": ["public/inflacao/gold", "public/inflacao/series"],
+  "sinal_de_mudanca": [
+    {"arquivo": "public/inflacao/gold/ipca.json", "json_chave": "hash_dados"}
+  ],
+  "testes": [
+    {
+      "nome": "pipeline do IPCA por área (Python): validações que retêm a publicação",
+      "comando": ["python3", "-m", "unittest", "pipeline.tests.test_inflacao"],
+      "timeout_min": 5
+    },
+    {
+      "nome": "contratos do painel, da consulta e das entradas (vitest)",
+      "comando": ["npx", "vitest", "run", "--testTimeout=60000", "src/tests/inflacao.test.ts", "src/tests/observatorios-entradas.test.ts", "src/tests/perguntas-portas.test.ts", "src/tests/para-voce.test.ts"],
+      "timeout_min": 15
+    }
+  ],
+  "grupos": [
+    {
+      "id": "ibge-ipca",
+      "nome": "IBGE, IPCA (SIDRA, tabela 7060) e calendário de divulgação",
+      "coleta": [["python3", "-m", "pipeline.inflacao.run", "--coleta", "--so-coleta"]],
+      "caminhos": ["pipeline/inflacao/seed"],
+      "timeout_min": 20
+    }
+  ]
+}

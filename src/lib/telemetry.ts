@@ -135,6 +135,9 @@ export const VIEW_SECTIONS = [
   "gas:combustiveis-no-meu-estado",
   // Contas Públicas Federais
   "contas:por-area",
+  // Inflação por cidade (Observatório das Famílias, coleção Custo de vida; pipeline e gold próprios)
+  "familias:custo-de-vida",
+  "familias:custo-de-vida-na-minha-cidade",
   // Crédito (páginas Next fora da aplicação de página única)
   "credito:quanto-meu-banco-cobra",
   "credito:simulador-da-parcela",
@@ -269,6 +272,8 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "gas:combustiveis": "Combustíveis · Preços nos postos",
   "gas:combustiveis-no-meu-estado": "Combustíveis · Consulta por estado",
   "contas:por-area": "Contas Federais · Despesa por área",
+  "familias:custo-de-vida": "Custo de vida · Inflação por cidade",
+  "familias:custo-de-vida-na-minha-cidade": "Custo de vida · Consulta por cidade",
   "credito:quanto-meu-banco-cobra": "Crédito · Quanto meu banco cobra?",
   "credito:simulador-da-parcela": "Crédito · Simulador da parcela",
   "credito:metodologia": "Crédito · Metodologia e fontes",

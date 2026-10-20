@@ -84,6 +84,35 @@ export const numeroBotijao = (): NumeroPorta =>
     },
   );
 
+/**
+ * Inflação oficial em 12 meses no Brasil (IPCA, índice geral), a mesma da primeira tela do painel /custo-de-vida, com a
+ * faixa entre as 16 áreas pesquisadas no mesmo mês. Lida da gold do painel (public/inflacao/gold/ipca.json).
+ */
+export const numeroCustoDeVida = (): NumeroPorta =>
+  numero(
+    {
+      rotulo: "Inflação oficial em 12 meses, Brasil",
+      unidade: "%",
+      fonte: "IBGE, IPCA, tabela 7060 do SIDRA",
+      href: "/custo-de-vida",
+    },
+    () => {
+      const g = lerPublico("inflacao", "gold", "ipca.json");
+      const areas = (g.areas as { id: string; nome: string }[])
+        .filter((a) => a.id !== "1")
+        .map((a) => ({ nome: a.nome, doze: g.ultimo[a.id].geral.doze as number }))
+        .sort((x, y) => x.doze - y.doze || x.nome.localeCompare(y.nome, "pt-BR"));
+      const menor = areas[0];
+      const maior = areas[areas.length - 1];
+      if (areas.length !== 16 || typeof g.ultimo["1"]?.geral?.doze !== "number") throw new Error("gold do IPCA incompleta");
+      return {
+        valor: comSinal(g.ultimo["1"].geral.doze, 2),
+        periodo: `12 meses até ${mesAno(g.ultimo_mes)}`,
+        nota: `Nas 16 áreas pesquisadas pelo IBGE, de ${comSinal(menor.doze, 2)}% em ${menor.nome} a ${comSinal(maior.doze, 2)}% em ${maior.nome}.`,
+      };
+    },
+  );
+
 /** Inflação da alimentação no domicílio em 12 meses (IPCA), a mesma do painel /agronegocio/prato. */
 export const numeroComidaEmCasa = (): NumeroPorta =>
   numero(
@@ -240,12 +269,15 @@ function porta_familias(): Porta {
     ...identidade("familias"),
     resumo:
       "Renda, dívidas, proteção social, moradia e os preços que entram no orçamento doméstico, cada um medido pela fonte oficial do seu tema.",
+    // a inflação de todo o orçamento abre a porta (e o cartão da home, que mostra o primeiro número) desde 20/10/2026; a
+    // comida em casa continua a um clique, no caminho "Por que a comida subiu?" e no painel canônico /agronegocio/prato
     numeros: [
+      numeroCustoDeVida(),
       numeroBotijao(),
-      numeroComidaEmCasa(),
       numeroAtrasoFamilias(),
     ],
     caminhos: [
+      caminho("familias", "Quanto subiu o custo de vida na minha cidade?", "A inflação do IPCA em cada uma das 16 áreas pesquisadas e no Brasil, por grupo de despesa, mês a mês desde 2020.", "/custo-de-vida"),
       caminho("eficiencia", "Quanto as famílias ganham com o trabalho?", "Rendimento, ocupação, emprego formal e Cadastro Único nos recortes de cada fonte.", "/eficiencia-estatal/trabalho-renda"),
       caminho("credito", "Os aposentados estão mais endividados?", "Crédito consignado por idade, benefício e instituição.", "/observatorio/payroll-lending-aging"),
       caminho("credito", "As apostas online pesam no crédito das famílias?", "Apostas, endividamento e inadimplência, com o grau de evidência de cada número.", "/observatorio/bets-financial-risk"),
@@ -255,7 +287,6 @@ function porta_familias(): Porta {
     ],
     paraOSeuCaso: [CONSULTAS.botijao, CONSULTAS.luz, CONSULTAS.agua],
     lacunas: [
-      "Inflação de todos os itens do orçamento, por região metropolitana.",
       "Quanto cada família paga de impostos sobre o consumo.",
       "Dívidas fora dos bancos: crediário e contas de consumo atrasadas.",
     ],

@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1377,
-    "fontes_sha256": "60804d4480e8cbda70ed65fb167c42c64612c0dea6c0bdb98f40b6fc1ee17bf9",
-    "pendencias_sha256": "33141f865c1938bb697ba08fa28885e8984d143cbfd924fc356ba5d0a64b8fc6",
+    "arquivos_analisados": 1390,
+    "fontes_sha256": "c03514b06fbd15d12b7f955cc63fa9a97232bfa55e67c6432b5f7168cddc956f",
+    "pendencias_sha256": "952fda810afb3795e996d114f6e86bb71bd7df1eb30508c8badc581ffc4e3fb1",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -38,6 +38,11 @@
       {
         "path": "src/app/contas-publicas/contas.css",
         "dominio": "contas_federais",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/app/custo-de-vida/custo-de-vida.css",
+        "dominio": "plataforma",
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       },
       {
@@ -148,20 +153,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 332,
+        "arquivos": 345,
         "candidatos": {
-          "jsx_text": 1312,
-          "atributos": 375,
-          "props": 949,
-          "outros_literais": 6874,
-          "templates": 828,
-          "expressoes_nao_resolvidas": 4989,
-          "chaves_objetos": 5508
+          "jsx_text": 1499,
+          "atributos": 388,
+          "props": 1004,
+          "outros_literais": 7046,
+          "templates": 868,
+          "expressoes_nao_resolvidas": 5371,
+          "chaves_objetos": 5667
         },
         "exclusoes": {
-          "importacoes": 1460,
-          "atributos_tecnicos": 2873,
-          "tipos": 359
+          "importacoes": 1528,
+          "atributos_tecnicos": 3085,
+          "tipos": 368
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -170,17 +175,17 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 20835,
+        "candidatos_nao_catalogados": 21843,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 39,
+        "paginas_pt": 41,
         "paginas_en": 12,
         "handlers": 37,
         "templates_com_parametros": 6,
-        "paginas_pt_literais": 32,
+        "paginas_pt_literais": 34,
         "paginas_pt_fora_do_adaptador": 7,
-        "paginas_pt_literais_sem_irma": 20,
+        "paginas_pt_literais_sem_irma": 22,
         "pares_estruturais": 12,
         "fallbacks_declarados": 8,
         "paridade_verificada": false,
@@ -202,10 +207,10 @@
           "jsx_text": 7494,
           "atributos": 2855,
           "props": 18500,
-          "outros_literais": 50684,
+          "outros_literais": 50694,
           "templates": 12564,
           "expressoes_nao_resolvidas": 54567,
-          "chaves_objetos": 35740
+          "chaves_objetos": 35745
         },
         "exclusoes": {
           "importacoes": 4891,
@@ -219,7 +224,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 182404,
+        "candidatos_nao_catalogados": 182419,
         "percentual_traduzido": null
       },
       "rotas": {

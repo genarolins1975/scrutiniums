@@ -10,7 +10,7 @@ import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { DOMINIOS } from "@/lib/dominios";
 
 /** Diretórios das coleções no App Router; toda página dentro deles precisa de dono. */
-const RAIZES = ["setor-eletrico", "gas-natural", "combustiveis", "saneamento", "contas-publicas", "contas-publicas-estaduais", "eficiencia-estatal", "agronegocio", "territorio"];
+const RAIZES = ["setor-eletrico", "gas-natural", "combustiveis", "custo-de-vida", "saneamento", "contas-publicas", "contas-publicas-estaduais", "eficiencia-estatal", "agronegocio", "territorio"];
 
 /** Rotas de página (page.tsx) sob uma raiz, com segmentos dinâmicos preservados. */
 function paginas(raiz: string): string[] {

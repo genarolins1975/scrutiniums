@@ -24,6 +24,7 @@ import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { CAPITULOS as CAPITULOS_SANEAMENTO, FERRAMENTAS as FERRAMENTAS_SANEAMENTO } from "@/lib/saneamento/capitulos";
 import { PAGINAS_GAS } from "@/lib/gas/navegacao";
 import { PAGINAS_COMBUSTIVEIS, ROTA_COMBUSTIVEIS } from "@/lib/combustiveis/paginas";
+import { ROTA_INFLACAO, TITULO_PAINEL as TITULO_PAINEL_INFLACAO } from "@/lib/inflacao/paginas";
 import { CAPITULOS as CAPITULOS_CONTAS, PAINEL_AREAS } from "@/lib/contas-publicas/catalogo";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from "@/lib/agro/modelo";
@@ -210,13 +211,22 @@ function paineisTerritorio(): Painel[] {
 }
 
 /**
+ * Painéis mantidos pelo próprio Observatório das Famílias, com pipeline e gold próprios (pipeline/inflacao, public/inflacao).
+ * A consulta por cidade (/custo-de-vida/na-minha-cidade) herda o dono do painel e só entra nas listas com a aprovação da LEVA_2.
+ */
+function paineisFamilias(): Painel[] {
+  return [{ rota: ROTA_INFLACAO, titulo: TITULO_PAINEL_INFLACAO, observatorio: "familias", colecao: "custo-de-vida", origem: null }];
+}
+
+/**
  * Painel registrado que é cópia integral de outro (copias.ts) leva `duplicataDe`.
  * Cópia parcial, uma seção da página, não: o resto da página é próprio e continua nas listas.
  */
 const PRINCIPAL_DA_COPIA = new Map(COPIAS.filter((c) => !c.parcial).map((c) => [c.rota, c.principal]));
 
 export function paineis(): Painel[] {
-  return [...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras(), ...paineisTerritorio()]
+  // o painel das Famílias vem primeiro: na coleção Custo de vida, a inflação de todo o orçamento abre a lista, antes da comida
+  return [...paineisFamilias(), ...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras(), ...paineisTerritorio()]
     .map((p) => (PRINCIPAL_DA_COPIA.has(p.rota) ? { ...p, duplicataDe: PRINCIPAL_DA_COPIA.get(p.rota) } : p));
 }
 

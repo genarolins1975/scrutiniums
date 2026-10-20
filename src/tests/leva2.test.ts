@@ -57,7 +57,7 @@ function caminhosDo(item: ItemLeva2): string[] {
 
 describe("leva 2: a lista declarativa", () => {
   it("registra as ferramentas da tabela da banca, com pergunta, forma, porta, rotas e arquivos exatos", () => {
-    // as quatro da Onda 2, a consulta do painel Combustíveis nos postos (19/10/2026) e a do painel Despesa por área (20/10/2026)
+    // as quatro da Onda 2, a consulta do painel Combustíveis nos postos (19/10/2026) a do painel Despesa por área e a do painel Inflação por cidade (20/10/2026)
     expect(LEVA_2.map((i) => i.id)).toEqual([
       "quanto-meu-banco-cobra",
       "teve-fogo-perto-de-mim",
@@ -65,6 +65,7 @@ describe("leva 2: a lista declarativa", () => {
       "metodologia-do-credito",
       "quanto-custa-encher-o-tanque",
       "cem-reais-por-area",
+      "quanto-subiu-o-custo-de-vida",
     ]);
     expect(Object.isFrozen(LEVA_2)).toBe(true);
     for (const i of LEVA_2) {
@@ -91,6 +92,11 @@ describe("leva 2: a lista declarativa", () => {
     expect(porId["quanto-custa-encher-o-tanque"].rotas).toEqual(["/combustiveis/no-meu-estado"]);
     expect(porId["quanto-custa-encher-o-tanque"].arquivos).toEqual([]);
     expect(porId["quanto-custa-encher-o-tanque"].portas).toEqual(["energia-e-infraestrutura", "familias"]);
+    // a consulta do custo de vida também é só a rota exata, montada no servidor: a gold, as séries e o painel seguem com conta
+    expect(porId["quanto-subiu-o-custo-de-vida"].rotas).toEqual(["/custo-de-vida/na-minha-cidade"]);
+    expect(porId["quanto-subiu-o-custo-de-vida"].arquivos).toEqual([]);
+    expect(porId["quanto-subiu-o-custo-de-vida"].portas).toEqual(["familias"]);
+    expect(porId["quanto-subiu-o-custo-de-vida"].aprovadaEm).toBeNull();
   });
 
   it("a aprovação só vale com data real no formato AAAA-MM-DD", () => {
@@ -182,6 +188,9 @@ describe("leva 2 ligada num teste (aprovação preenchida)", () => {
       // Combustíveis: o painel, as vizinhas e os arquivos da gold
       "/combustiveis", "/combustiveis/", "/combustiveis/no-meu-estadox", "/combustiveis/no-meu-estado/SP", "/en/combustiveis/no-meu-estado",
       "/gas/gold/combustiveis.json", "/gas/series/preco-combustiveis-por-uf.csv", "/gas/gold", "/gas-natural",
+      // Custo de vida: o painel, as vizinhas e os arquivos da gold
+      "/custo-de-vida", "/custo-de-vida/", "/custo-de-vida/na-minha-cidadex", "/custo-de-vida/na-minha-cidade/3501", "/en/custo-de-vida/na-minha-cidade",
+      "/inflacao/gold/ipca.json", "/inflacao/gold", "/inflacao/series/ipca-geral-e-grupos-mensal.csv", "/inflacao/series/ipca-subitens-12-meses.csv",
       // pastas e variações dos arquivos abertos
       "/saneamento/gold", "/saneamento/gold/", "/saneamento/gold/indice.json/", "/saneamento/gold/indice.jsonx", "/saneamento/gold/municipios.json",
     ]) expect(ehRotaPublicaCom(ligada, p), p).toBe(false);
@@ -209,7 +218,9 @@ describe("leva 2 ligada num teste (aprovação preenchida)", () => {
     ]);
     for (const p of ["familias", "economia"] as const) {
       expect(consultasLeva2(p, ligada).map((c) => c.href), p).toEqual(
-        p === "familias" ? ["/observatorio-do-credito/quanto-meu-banco-cobra", "/combustiveis/no-meu-estado"] : ["/observatorio-do-credito/quanto-meu-banco-cobra"],
+        p === "familias"
+          ? ["/observatorio-do-credito/quanto-meu-banco-cobra", "/combustiveis/no-meu-estado", "/custo-de-vida/na-minha-cidade"]
+          : ["/observatorio-do-credito/quanto-meu-banco-cobra"],
       );
       expect(metodosLeva2(p, ligada).map((m) => m.href), p).toEqual(["/observatorio-do-credito/metodologia"]);
     }
@@ -484,5 +495,35 @@ describe("leva 2: a consulta \"Quanto custa encher o tanque no meu estado?\"", (
     expect(html).not.toMatch(/NaN|undefined|Infinity/);
     expect(html).not.toContain(".csv");
     expect(html.includes("data-aviso-consulta-aberta")).toBe(leva2Aprovada("quanto-custa-encher-o-tanque"));
+  });
+});
+
+describe("leva 2: a consulta \"Quanto subiu o custo de vida na minha cidade?\"", () => {
+  it("rota pronta para ligar, fechada enquanto a aprovação for null, com a faixa e a navegação presas à aprovação", () => {
+    expect(paginaExiste("/custo-de-vida/na-minha-cidade")).toBe(true);
+    const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
+    const pagina = ler("src/app/custo-de-vida/na-minha-cidade/page.tsx");
+    expect(pagina).toMatch(/const aberta = leva2Aprovada\("quanto-subiu-o-custo-de-vida"\)/);
+    expect(pagina).toMatch(/\{aberta && \(\s*<AvisoConsultaAberta/);
+    expect(ler("src/components/inflacao/CabecalhoCustoDeVida.tsx")).toContain('leva2Aprovada("quanto-subiu-o-custo-de-vida")');
+    // modo de consulta: o último mês vai no HTML; a página não busca a gold nem as séries no navegador, nem desenha série
+    for (const p of ["src/components/inflacao/InflacaoNaArea.tsx", "src/app/custo-de-vida/na-minha-cidade/page.tsx"]) {
+      expect(ler(p), p).not.toMatch(/fetch\(|["`]\/inflacao\/(gold|series)|DownloadsInflacao|GraficoLinhas|SerieArea|ComparacaoAreas|Destaques|ComoPesa/);
+    }
+  });
+
+  it("renderiza o último mês da área com fonte, data, os nove grupos e o painel com selo, sem série nem download", async () => {
+    caminho.atual = "/custo-de-vida/na-minha-cidade";
+    const { default: Consulta } = await import("@/app/custo-de-vida/na-minha-cidade/page");
+    const html = renderToStaticMarkup(createElement(Consulta));
+    expect(html).toContain("Quanto subiu o custo de vida na minha cidade?");
+    expect(html).toContain("IBGE, Índice Nacional de Preços ao Consumidor Amplo (IPCA), tabela 7060 do SIDRA");
+    expect(html).toMatch(/Dados capturados em \d{2}\/\d{2}\/\d{4}/);
+    expect(html).toContain("Os nove grupos de despesa");
+    expect(html).toContain("1 a 40 salários mínimos");
+    expect(html).not.toMatch(/NaN|undefined|Infinity/);
+    expect(html).not.toContain(".csv");
+    expect(html).not.toContain("data-artefato");
+    expect(html.includes("data-aviso-consulta-aberta")).toBe(leva2Aprovada("quanto-subiu-o-custo-de-vida"));
   });
 });
