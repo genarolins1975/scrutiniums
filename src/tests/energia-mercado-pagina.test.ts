@@ -246,7 +246,7 @@ describe("mercado: páginas", () => {
   it("GSF de 12 meses: a diferença com o InfoMercado diz a janela em que foi calculada, que não é a do cartão (r6, R4)", () => {
     const g = lerGold<MercadoGold>("mercado.json");
     const div = integra(g) ? g.mre_gsf.reconciliacao_infomercado.find((x) => x.medida === "gsf_12m_pct" && x.resultado !== "aprovado") : undefined;
-    if (!div || div.calculado === null || div.diferenca === null) return;
+    if (!g || !div || div.calculado === null || div.diferenca === null) return;
     const html = paginas["mre-gsf"];
     const lado = div.diferenca < 0 ? "abaixo" : "acima";
     expect(html).toContain(`${num(div.calculado, 2)}%`);

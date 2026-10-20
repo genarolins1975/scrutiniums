@@ -233,13 +233,13 @@ describe("Visão geral: veredito à vista e resposta completa por trás", () => 
     expect(e).not.toMatch(/\bEAR_FAIXA|ENA_FAIXA|CARGA_EXTREMA|PLD_PISO|PLD_TETO|RESTRICAO_EOLICA|RESTRICAO_SOLAR|REVISAO_MATERIAL/);
     expect(e).not.toMatch(IDENTIFICADOR);
     expect(e).not.toMatch(/silver principal|sintese\.json|energia-0\.1\.0|aneel_scs|\bhoje\b/);
-    expect(e).not.toContain(G.versao_codigo.split("+")[0]);
+    expect(e).not.toContain(G.versao_codigo!.split("+")[0]);
     // em Analisar o código volta
     expect(texto(html)).toContain("código ear_faixa");
     // o código do painel (P004) é nome interno: nenhum nível o mostra mais
     expect(html).not.toMatch(/data-nivel="analisar"[^>]*>\s*P004/);
     // a versão do código é a da gold (685bb4bc29fd na publicação de 01/10/2026)
-    expect(html).toContain(G.versao_codigo.split("+")[0]);
+    expect(html).toContain(G.versao_codigo!.split("+")[0]);
   });
 
   it("o botão de prova anuncia o nome do número, e não o identificador da gold", () => {
