@@ -55,7 +55,7 @@ export function ParceriaTecnica({ variante = "faixa", idioma, escuro = false }: 
               )}
             </p>
           </div>
-          <a {...ligacao} className="inline-flex shrink-0 items-center self-start py-2 md:self-center">
+          <a {...ligacao} className="inline-flex min-h-[44px] shrink-0 items-center self-start py-2 md:self-center">
             {imagem("h-14 md:h-[4.5rem]")}
           </a>
         </div>
@@ -67,7 +67,7 @@ export function ParceriaTecnica({ variante = "faixa", idioma, escuro = false }: 
     return (
       <p data-parceria={CERI.id} className="flex flex-wrap items-center gap-x-3 gap-y-2">
         <span className="rotulo text-mineral">{rotulo}</span>
-        <a {...ligacao} className="inline-flex items-center">
+        <a {...ligacao} className="inline-flex min-h-[44px] items-center">
           {imagem("h-8")}
         </a>
       </p>
@@ -78,7 +78,7 @@ export function ParceriaTecnica({ variante = "faixa", idioma, escuro = false }: 
     <div data-parceria={CERI.id} className="border-t border-linha">
       <div className="ed-pagina flex min-h-[44px] items-center justify-end gap-3 md:min-h-[52px]">
         <span className="rotulo text-mineral">{rotulo}</span>
-        <a {...ligacao} className="inline-flex items-center py-1">
+        <a {...ligacao} className="inline-flex min-h-[44px] items-center">
           {imagem("h-8 md:h-9")}
         </a>
       </div>

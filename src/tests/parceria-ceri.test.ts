@@ -33,6 +33,13 @@ describe("marca do FGV CERI", () => {
     }
   });
 
+  it("a pasta responde com a mesma CSP restritiva dos logos de empresas", () => {
+    const config = ler("next.config.mjs");
+    const regra = (pasta: string) => config.match(new RegExp(`\\{source: "${pasta}/:path\\*", headers: \\[(.*?)\\]\\}`))?.[1];
+    expect(regra("/home/parceiros"), "regra de cabeçalhos da pasta de parceiros").toBeDefined();
+    expect(regra("/home/parceiros")).toBe(regra("/energia/logos"));
+  });
+
   it("o SVG é só desenho: sem script, evento, conteúdo embutido ou referência externa", () => {
     for (const a of ceri.arquivos) {
       const svg = ler(join("public", a.arquivo));
@@ -58,6 +65,8 @@ describe("componente ParceriaTecnica", () => {
       expect(h, v).toContain(`alt="${CERI.nome}, ${CERI.descricao}"`);
       expect(h, v).toContain("Parceria técnica");
       expect(h, v).toContain(`data-parceria="${CERI.id}"`);
+      // alvo de toque de 44 px no próprio link, em toda variante
+      expect(h, v).toMatch(/<a [^>]*href="https:\/\/ceri\.fgv\.br\/"[^>]*class="[^"]*min-h-\[44px\]/);
     }
   });
 
