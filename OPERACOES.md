@@ -89,8 +89,9 @@ Cada domínio tem workflow próprio: falha de um não atrasa o outro. Horários 
 | `atualizar-contas-publicas.yml` | Contas Públicas Federais | terças, 10:19 | SIOP (execução orçamentária) e vigia de edição do RTN | por grupo: testes dos importadores e contratos vitest do painel |
 | `atualizar-contas-estaduais.yml` | Contas Públicas Estaduais | dia 5, 11:29 | conferência das 81 respostas do Siconfi e sondagem de período novo | não publica (promoção revisada); contratos e `consolidar --check` deixam a execução vermelha |
 | `atualizar-eficiencia.yml` | Eficiência Estatal (Educação e Saúde nas capitais) | dia 12, 10:53 | Siconfi (DCA, RREO, MSC), IPCA e SIOPS | por grupo: testes Python do OBEE, conferências derivadas do `ci.yml` e contratos vitest |
+| `atualizar-inflacao.yml` | Famílias, Inflação por cidade (IPCA) | dias 10 e 14, 13:47 | IBGE, SIDRA tabela 7060 (índice geral, grupos e subitens nas 16 áreas e no Brasil) e calendário de divulgação | por grupo: `pipeline.tests.test_inflacao` (pesos somam 100 por área e mês, mês faltando, faixa plausível, encadeamento e contribuições) e contratos vitest do painel |
 
-**Motor comum dos três novos que publicam** (`scripts/atualizacao_por_grupo.py`,
+**Motor comum dos novos que publicam (Saneamento, Contas Federais, Eficiência Estatal e, desde 20/10/2026, Inflação por cidade)** (`scripts/atualizacao_por_grupo.py`,
 configuração em `config/atualizacao/<domínio>.json`). Cada grupo de fontes é coletado à
 parte; coleta que falha, ou que troca dado íntegro por erro (guarda
 `manifesto_sem_erro_novo` do OBEE), devolve o seed do grupo ao commit e não para os
