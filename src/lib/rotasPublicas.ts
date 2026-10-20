@@ -71,6 +71,30 @@ const CONSULTAS_ABERTAS = new Set([
 const FICHA_MUNICIPIO = /^\/saneamento\/municipio\/\d{7}$/;
 
 /**
+ * Princípio do aperitivo (decisão do dono de 20/10/2026): tudo o que a área
+ * aberta mostra existe na área com conta, com nível de detalhe muito maior; a
+ * área aberta mostra só um aperitivo da informação. Por isso cada consulta
+ * aberta aponta o painel com conta que a aprofunda, e o teste
+ * src/tests/aperitivo.test.ts reprova consulta sem esse painel ou com painel
+ * aberto. Método, glossário, conteúdo didático, páginas institucionais e o
+ * fluxo de conta não são aperitivo: explicam como a plataforma mede e valem
+ * igual para todos.
+ */
+export const PAINEL_COMPLETO_DA_CONSULTA: Readonly<Record<string, string>> = Object.freeze({
+  "/setor-eletrico/conta-de-luz": "/setor-eletrico/conta-de-luz/reajustes-e-subsidios",
+  "/saneamento/municipio": "/saneamento/acesso",
+  "/saneamento/municipio/[id]": "/saneamento/comparar",
+  "/saneamento/preco-regulado/simulador": "/saneamento/preco-regulado",
+  "/eficiencia-estatal": "/eficiencia-estatal/indice-de-resultados",
+  "/gas-natural/gas-de-cozinha": "/gas-natural/precos",
+});
+
+/** Consultas abertas da leva 1, com a ficha do município no formato de rota do App Router. */
+export function consultasAbertasLeva1(): string[] {
+  return [...CONSULTAS_ABERTAS, "/saneamento/municipio/[id]"];
+}
+
+/**
  * Arquivos que as consultas abertas buscam no navegador, um a um e pelo
  * endereço exato (sem barra final): o índice município → distribuidora da
  * busca da Conta de luz (ContaBuscaMunicipio), o índice de nomes da busca de
@@ -129,6 +153,11 @@ export type ItemLeva2 = {
   fichasIbge?: string;
   /** Arquivos que a consulta busca no navegador, cada um pelo endereço exato. */
   arquivos: readonly string[];
+  /**
+   * Painel com conta que aprofunda o item (princípio do aperitivo, 20/10/2026):
+   * a mesma informação com nível de detalhe muito maior. null só para método.
+   */
+  painelCompleto: string | null;
   /** Data da aprovação do dono (AAAA-MM-DD); null = preparada, aguardando aprovação. */
   aprovadaEm: string | null;
 };
@@ -144,6 +173,7 @@ export const LEVA_2: readonly ItemLeva2[] = Object.freeze([
     portas: ["familias", "economia"],
     rotas: ["/observatorio-do-credito/quanto-meu-banco-cobra"],
     arquivos: [],
+    painelCompleto: "/observatorio/interest-rates",
     aprovadaEm: null,
   },
   {
@@ -157,6 +187,7 @@ export const LEVA_2: readonly ItemLeva2[] = Object.freeze([
     rotas: ["/territorio/queimadas/municipio"],
     fichasIbge: "/territorio/queimadas/municipio",
     arquivos: ["/saneamento/gold/indice.json"],
+    painelCompleto: "/territorio/queimadas",
     aprovadaEm: null,
   },
   {
@@ -168,6 +199,7 @@ export const LEVA_2: readonly ItemLeva2[] = Object.freeze([
     portas: ["contas-publicas"],
     rotas: [],
     arquivos: [],
+    painelCompleto: "/contas-publicas",
     aprovadaEm: null,
   },
   {
@@ -179,6 +211,7 @@ export const LEVA_2: readonly ItemLeva2[] = Object.freeze([
     portas: ["familias", "economia"],
     rotas: ["/observatorio-do-credito/metodologia"],
     arquivos: [],
+    painelCompleto: null,
     aprovadaEm: null,
   },
   {
@@ -192,6 +225,7 @@ export const LEVA_2: readonly ItemLeva2[] = Object.freeze([
     portas: ["energia-e-infraestrutura", "familias"],
     rotas: ["/combustiveis/no-meu-estado"],
     arquivos: [],
+    painelCompleto: "/combustiveis",
     // aprovada pelo dono em 20/10/2026, junto com o merge do painel Combustíveis nos postos
     aprovadaEm: "2026-10-20",
   },
@@ -207,6 +241,7 @@ export const LEVA_2: readonly ItemLeva2[] = Object.freeze([
     portas: ["contas-publicas"],
     rotas: [],
     arquivos: [],
+    painelCompleto: "/contas-publicas/por-area",
     aprovadaEm: null,
   },
   {
@@ -221,6 +256,7 @@ export const LEVA_2: readonly ItemLeva2[] = Object.freeze([
     portas: ["familias"],
     rotas: ["/custo-de-vida/na-minha-cidade"],
     arquivos: [],
+    painelCompleto: "/custo-de-vida",
     aprovadaEm: null,
   },
 ] satisfies ItemLeva2[]);

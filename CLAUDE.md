@@ -12,6 +12,7 @@ Todo trabalho em página, painel, observatório, gráfico, tabela, texto exibido
 - Nunca anunciar o que não existe; ausência de dado não vira zero nem estimativa; toda medida com unidade, período, fonte e ressalva.
 - Página de entrada: primeira tela para o leitor, destino mais procurado a um clique, artefato didático do mecanismo, método recolhido no fim.
 - Painéis só com conta (`src/lib/rotasPublicas.ts`); mudança de navegação é conferida logado e deslogado.
+- Princípio do aperitivo (decisão do dono de 20/10/2026): tudo o que a área não logada mostra existe na área logada com detalhe muito maior; a área não logada mostra só um aperitivo. Toda consulta aberta declara o painel com conta que a aprofunda (`src/tests/aperitivo.test.ts`).
 - O trabalho termina em produção: PR, CI verde, merge só com autorização do usuário, deploy confirmado e links das rotas na resposta.
 
 ## Comandos do repositório
