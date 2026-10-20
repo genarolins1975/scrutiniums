@@ -44,7 +44,7 @@ Cada tarefa tem a pergunta dita à pessoa, o destino esperado e o critério de c
 | C1 | "Quanto o seu banco cobra de juros no crédito pessoal? E os outros bancos?" | `/observatorio-do-credito/quanto-meu-banco-cobra` | Diz a taxa do banco e a compara com a mediana, e reconhece que taxa não é o custo total |
 | C2 | "Se você pegasse R$ 5.000 em 24 meses, quanto pagaria por mês e no total?" | `/observatorio-do-credito/simulador-da-parcela` | Diz a parcela e o total, e de onde veio a taxa usada |
 | C3 | "Quanto custa a conta de luz de quem gasta 150 kWh na sua cidade?" | `/setor-eletrico/conta-de-luz` | Diz o valor estimado e a bandeira considerada |
-| C4 | "A sua cidade tem coleta de esgoto? Para quantas pessoas?" | `/saneamento/municipio/[id]` | Diz o percentual atendido e o ano |
+| C4 | "A sua cidade tem coleta de esgoto? Para quantas pessoas?" | `/saneamento/municipio` (sem conta, o aperitivo; com conta, a ficha `/saneamento/municipio/[id]`) | Diz o percentual atendido e o ano |
 | C5 | "Crie uma conta e volte para a página em que estava." | Cadastro com `?de=` | Conta criada e retorno à página de origem |
 
 ### Jornalista

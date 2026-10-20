@@ -10,10 +10,10 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1412,
-    "fontes_sha256": "075d422d69eb57d6ea3474c78e411fcd2dfbe07a5cfdb9d8958d1755f487f2e8",
-    "pendencias_sha256": "833d766bc14d926b6293c949b6f91e5cddb70243685dddd4ef622821c459aa01",
+    "inventario_sha256": "d932a71658c21a96d3844ed462f3be1a0b7b2937f80a5b937f3a8e5ad23f56df",
+    "arquivos_analisados": 1428,
+    "fontes_sha256": "6d9fb801c0aa7956f593053946e78e0f38b73f1e957c3da0c1dfbb7afb9637a8",
+    "pendencias_sha256": "72bcf94065e5d97c671e30eb632f8d5d322ceb8a3561149c2132cb2682026068",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -96,6 +96,11 @@
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       },
       {
+        "path": "src/components/eficiencia/entrada/MinhaCapitalAperitivo.module.css",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
         "path": "src/components/eficiencia/judiciario/Internacional.module.css",
         "dominio": "eficiencia",
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
@@ -153,20 +158,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 345,
+        "arquivos": 356,
         "candidatos": {
-          "jsx_text": 1499,
-          "atributos": 388,
-          "props": 1004,
-          "outros_literais": 7070,
-          "templates": 872,
-          "expressoes_nao_resolvidas": 5377,
-          "chaves_objetos": 5681
+          "jsx_text": 1533,
+          "atributos": 394,
+          "props": 1030,
+          "outros_literais": 7211,
+          "templates": 925,
+          "expressoes_nao_resolvidas": 5518,
+          "chaves_objetos": 5758
         },
         "exclusoes": {
-          "importacoes": 1528,
-          "atributos_tecnicos": 3085,
-          "tipos": 368
+          "importacoes": 1585,
+          "atributos_tecnicos": 3157,
+          "tipos": 376
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -175,18 +180,18 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 21891,
+        "candidatos_nao_catalogados": 22369,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 41,
-        "paginas_en": 12,
+        "paginas_pt": 45,
+        "paginas_en": 13,
         "handlers": 37,
         "templates_com_parametros": 6,
-        "paginas_pt_literais": 34,
+        "paginas_pt_literais": 38,
         "paginas_pt_fora_do_adaptador": 7,
-        "paginas_pt_literais_sem_irma": 22,
-        "pares_estruturais": 12,
+        "paginas_pt_literais_sem_irma": 25,
+        "pares_estruturais": 13,
         "fallbacks_declarados": 8,
         "paridade_verificada": false,
         "parciais_declarados": 1
@@ -202,20 +207,20 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 571,
+        "arquivos": 572,
         "candidatos": {
-          "jsx_text": 7631,
-          "atributos": 2893,
-          "props": 18821,
-          "outros_literais": 50965,
-          "templates": 12744,
-          "expressoes_nao_resolvidas": 55392,
-          "chaves_objetos": 35977
+          "jsx_text": 7648,
+          "atributos": 2901,
+          "props": 18823,
+          "outros_literais": 51047,
+          "templates": 12762,
+          "expressoes_nao_resolvidas": 55520,
+          "chaves_objetos": 35983
         },
         "exclusoes": {
-          "importacoes": 4945,
-          "atributos_tecnicos": 8628,
-          "tipos": 3725
+          "importacoes": 4956,
+          "atributos_tecnicos": 8678,
+          "tipos": 3729
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -224,7 +229,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 184423,
+        "candidatos_nao_catalogados": 184684,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -250,19 +255,19 @@
     "gas": {
       "nome": "Gás Natural",
       "interface": {
-        "arquivos": 27,
+        "arquivos": 29,
         "candidatos": {
-          "jsx_text": 286,
-          "atributos": 23,
+          "jsx_text": 301,
+          "atributos": 26,
           "props": 710,
-          "outros_literais": 542,
-          "templates": 75,
-          "expressoes_nao_resolvidas": 718,
-          "chaves_objetos": 815
+          "outros_literais": 555,
+          "templates": 78,
+          "expressoes_nao_resolvidas": 749,
+          "chaves_objetos": 830
         },
         "exclusoes": {
-          "importacoes": 158,
-          "atributos_tecnicos": 292,
+          "importacoes": 163,
+          "atributos_tecnicos": 320,
           "tipos": 30
         },
         "scripts_embutidos": {},
@@ -272,7 +277,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 3169,
+        "candidatos_nao_catalogados": 3249,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -346,20 +351,20 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 233,
+        "arquivos": 235,
         "candidatos": {
-          "jsx_text": 3099,
+          "jsx_text": 3116,
           "atributos": 1071,
-          "props": 1334,
-          "outros_literais": 7758,
-          "templates": 790,
-          "expressoes_nao_resolvidas": 7965,
-          "chaves_objetos": 4758
+          "props": 1336,
+          "outros_literais": 7776,
+          "templates": 800,
+          "expressoes_nao_resolvidas": 8028,
+          "chaves_objetos": 4783
         },
         "exclusoes": {
-          "importacoes": 916,
-          "atributos_tecnicos": 3356,
-          "tipos": 457
+          "importacoes": 922,
+          "atributos_tecnicos": 3366,
+          "tipos": 467
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -368,7 +373,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 26775,
+        "candidatos_nao_catalogados": 26910,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -542,16 +547,16 @@
         "candidatos": {
           "jsx_text": 153,
           "atributos": 211,
-          "props": 162,
+          "props": 170,
           "outros_literais": 12941,
-          "templates": 2628,
-          "expressoes_nao_resolvidas": 9192,
+          "templates": 2629,
+          "expressoes_nao_resolvidas": 9196,
           "chaves_objetos": 5084,
           "textos": 158
         },
         "exclusoes": {
-          "importacoes": 53,
-          "atributos_tecnicos": 653,
+          "importacoes": 55,
+          "atributos_tecnicos": 654,
           "tipos": 4,
           "estilos": 1,
           "comentarios": 3
@@ -567,7 +572,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 30529,
+        "candidatos_nao_catalogados": 30542,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -772,6 +777,17 @@
         "fontes": {
           "pt": "src/app/page.tsx",
           "en": "src/app/en/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/aperitivo/conta-de-luz",
+        "en": "/en/aperitivo/conta-de-luz",
+        "dominio": "plataforma",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/aperitivo/conta-de-luz/page.tsx",
+          "en": "src/app/en/aperitivo/conta-de-luz/page.tsx"
         },
         "arquivos_presentes": true
       },
@@ -1783,7 +1799,7 @@
         "arquivos_presentes": true
       }
     ],
-    "pares_estruturais": 92,
+    "pares_estruturais": 93,
     "fallbacks_declarados": 9,
     "html_verificado_pelo_inventario": false,
     "acesso_verificado_pelo_inventario": false

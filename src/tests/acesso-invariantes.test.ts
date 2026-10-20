@@ -100,31 +100,86 @@ describe("acesso: uma promessa", () => {
 });
 
 /**
- * Leva 1 da estratégia "aberto e com conta" (decisão do dono de 19/10/2026): o middleware serve sem sessão as
- * cinco consultas pessoais e os arquivos que elas buscam no navegador; as vizinhas, os downloads e as exportações
- * continuam indo ao login com o destino guardado. Com sessão, tudo abre.
+ * Leva 1 da estratégia "aberto e com conta" (decisão do dono de 19/10/2026), sob o princípio do aperitivo
+ * (20/10/2026): sem sessão, o endereço público de cada tema serve a versão aperitivo, no mesmo endereço; a ficha do
+ * município volta à página aberta do Saneamento; os arquivos que as páginas abertas buscam passam; as vizinhas, os
+ * downloads, as exportações e o simulador da conta de água vão ao login com o destino guardado. Com sessão, tudo
+ * abre, e o endereço público serve o painel completo.
  */
-describe("acesso: consultas abertas da leva 1", () => {
+describe("acesso: páginas abertas e aperitivos", () => {
   const ORIGEM = "https://scrutiniums.com";
   const requisicao = (caminho: string, cookie?: string) =>
     new NextRequest(ORIGEM + caminho, { headers: new Headers({ accept: "text/html", ...(cookie ? { cookie: `scrutiniums_session=${cookie}` } : {}) }) });
   beforeEach(() => vi.stubEnv("COOKIE_SECRET", "segredo-sintetico-do-teste-acesso-leva-1"));
   afterEach(() => vi.unstubAllEnvs());
+  const sessao = () => signSessionCookie("cd".repeat(32), new Date(Date.now() + 60 * 60 * 1000));
 
-  const ABERTAS = [
-    "/setor-eletrico/conta-de-luz", "/en/setor-eletrico/conta-de-luz", "/saneamento/municipio", "/saneamento/municipio/2611606",
-    "/saneamento/preco-regulado/simulador", "/eficiencia-estatal", "/gas-natural/gas-de-cozinha",
-    "/setor-eletrico/conta-de-luz/municipios.json", "/saneamento/gold/indice.json", "/energia/geo/uf.json",
-  ];
+  const APERITIVOS: Record<string, string> = {
+    "/setor-eletrico/conta-de-luz": "/aperitivo/conta-de-luz",
+    "/en/setor-eletrico/conta-de-luz": "/en/aperitivo/conta-de-luz",
+    "/saneamento/municipio": "/aperitivo/saneamento",
+    "/eficiencia-estatal": "/aperitivo/minha-capital",
+    "/gas-natural/gas-de-cozinha": "/aperitivo/gas-de-cozinha",
+  };
+  const ABERTAS = ["/setor-eletrico/conta-de-luz/municipios.json", "/saneamento/gold/indice.json", "/observatorio-do-credito"];
   const FECHADAS = [
     "/setor-eletrico/conta-de-luz/reajustes-e-subsidios", "/en/setor-eletrico/conta-de-luz/reajustes-e-subsidios",
     "/energia/series/conta_historico_b1.json", "/energia/series/conta_tarifas_b1_vigentes.csv",
     "/saneamento/gold/municipios.csv", "/saneamento/acesso", "/saneamento/comparar", "/saneamento/preco-regulado/formacao",
+    "/saneamento/preco-regulado/simulador",
     "/eficiencia-estatal/saude-capitais", "/eficiencia-estatal/indice-de-resultados", "/eficiencia-estatal/retrato-26-capitais.csv",
-    "/gas-natural", "/gas-natural/dados", "/gas/series/preco-glp-por-uf.csv", "/energia/geo/municipios.json",
+    "/gas-natural", "/gas-natural/dados", "/gas/series/preco-glp-por-uf.csv", "/energia/geo/municipios.json", "/energia/geo/uf.json",
   ];
 
-  it("sem sessão, serve as consultas e manda as vizinhas ao login com o destino", async () => {
+  it("sem sessão, o endereço público do tema serve o aperitivo, sem mudar o endereço", async () => {
+    for (const [caminho, versao] of Object.entries(APERITIVOS)) {
+      const r = await middleware(requisicao(caminho + "?x=1"));
+      expect(r.headers.get("location"), caminho).toBeNull();
+      const destino = new URL(r.headers.get("x-middleware-rewrite") ?? "", ORIGEM);
+      expect(destino.pathname, caminho).toBe(versao);
+      expect(destino.search, caminho).toBe("?x=1");
+    }
+  });
+
+  it("com sessão, o endereço público serve o painel completo", async () => {
+    const cookie = await sessao();
+    for (const caminho of Object.keys(APERITIVOS)) {
+      const r = await middleware(requisicao(caminho, cookie));
+      expect(r.headers.get("x-middleware-rewrite"), caminho).toBeNull();
+      expect(r.headers.get("location"), caminho).toBeNull();
+    }
+  });
+
+  it("sem sessão, a ficha do município volta à página aberta do Saneamento; com sessão, abre", async () => {
+    const r = await middleware(requisicao("/saneamento/municipio/2611606"));
+    expect(r.status).toBe(307);
+    const destino = new URL(r.headers.get("location") ?? "", ORIGEM);
+    expect(destino.pathname + destino.search).toBe("/saneamento/municipio?ibge=2611606");
+    const comConta = await middleware(requisicao("/saneamento/municipio/2611606", await sessao()));
+    expect(comConta.headers.get("location")).toBeNull();
+    expect(comConta.headers.get("x-middleware-rewrite")).toBeNull();
+  });
+
+  it("com sessão, a página aberta do Saneamento com ?ibge= leva à ficha completa do município", async () => {
+    const r = await middleware(requisicao("/saneamento/municipio?ibge=2611606", await sessao()));
+    expect(r.status).toBe(307);
+    const destino = new URL(r.headers.get("location") ?? "", ORIGEM);
+    expect(destino.pathname + destino.search).toBe("/saneamento/municipio/2611606");
+    // código inválido: a busca de sempre
+    const invalido = await middleware(requisicao("/saneamento/municipio?ibge=26116", await sessao()));
+    expect(invalido.headers.get("location")).toBeNull();
+  });
+
+  it("o caminho interno da versão aperitivo não existe como endereço, com ou sem sessão", async () => {
+    for (const cookie of [undefined, await sessao()]) {
+      for (const caminho of ["/aperitivo/conta-de-luz", "/en/aperitivo/conta-de-luz"]) {
+        const r = await middleware(requisicao(caminho, cookie));
+        expect(new URL(r.headers.get("x-middleware-rewrite") ?? "", ORIGEM).pathname, caminho).toMatch(/nao-encontrado-404$/);
+      }
+    }
+  });
+
+  it("sem sessão, os arquivos das páginas abertas passam e as vizinhas vão ao login com o destino", async () => {
     for (const caminho of ABERTAS) {
       const r = await middleware(requisicao(caminho));
       expect(r.headers.get("x-middleware-next"), caminho).toBe("1");
@@ -140,23 +195,23 @@ describe("acesso: consultas abertas da leva 1", () => {
   });
 
   it("com sessão, as vizinhas abrem como antes", async () => {
-    const cookie = await signSessionCookie("cd".repeat(32), new Date(Date.now() + 60 * 60 * 1000));
+    const cookie = await sessao();
     for (const caminho of FECHADAS.filter((c) => !c.startsWith("/en/"))) {
       const r = await middleware(requisicao(caminho, cookie));
       expect(r.headers.get("location"), caminho).toBeNull();
     }
   });
 
-  it("a lista aberta declara as consultas pelo caminho exato, nunca por prefixo", () => {
+  it("a lista aberta declara as páginas pelo caminho exato, nunca por prefixo", () => {
     const fonte = ler("src/lib/rotasPublicas.ts");
     const prefixos = fonte.slice(fonte.indexOf("const PREFIXOS"), fonte.indexOf("];", fonte.indexOf("const PREFIXOS")));
     const entradas = [...prefixos.matchAll(/"(\/[^"]*)"/g)].map((m) => m[1]);
     expect(entradas.length).toBeGreaterThan(5);
-    // nenhuma consulta, nenhum arquivo e nenhuma vizinha é aberta por prefixo
-    for (const c of [...ABERTAS, ...FECHADAS]) {
+    // nenhuma página aberta, nenhum arquivo e nenhuma vizinha é aberta por prefixo
+    for (const c of [...Object.keys(APERITIVOS), ...ABERTAS, ...FECHADAS]) {
       for (const p of entradas) expect(c === p || c.startsWith(p + "/"), `${c} sob o prefixo ${p}`).toBe(false);
     }
-    expect(fonte).toMatch(/const CONSULTAS_ABERTAS = new Set\(\[/);
+    expect(fonte).toMatch(/export const APERITIVOS: readonly Aperitivo\[\] = Object\.freeze\(\[/);
   });
 });
 

@@ -261,7 +261,14 @@ function pergunta(id: IdPergunta, idioma: Idioma): PerguntaParaVoce {
         numero: daPorta(numeroTanque()),
       };
     case "agua":
-      return { id, pergunta: CONSULTAS.agua.pergunta, resposta: CONSULTAS.agua.resumo, href: CONSULTAS.agua.href, numero: daPorta(numeroContaAgua()) };
+      // o simulador da conta de água saiu da área aberta em 20/10/2026 (princípio do aperitivo); segue nas entradas, com conta
+      return {
+        id,
+        pergunta: "Quanto eu pagaria de água e esgoto?",
+        resposta: "A conta do mês calculada com as tabelas verificadas nos atos dos reguladores, numa amostra declarada de prestadores.",
+        href: "/saneamento/preco-regulado/simulador",
+        numero: daPorta(numeroContaAgua()),
+      };
     case "municipio":
       return {
         id,

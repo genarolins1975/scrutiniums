@@ -7,6 +7,7 @@
     "schema_version": 1,
     "literais": [
       { "pt": "/", "conteudo": "parcialmente_traduzido" },
+      { "pt": "/aperitivo/conta-de-luz", "conteudo": "traduzido" },
       { "pt": "/cadastro", "conteudo": "portugues_marcado" },
       { "pt": "/entrar", "conteudo": "portugues_marcado" },
       { "pt": "/entrar/sms", "conteudo": "portugues_marcado" },

@@ -8,6 +8,7 @@ import { listaPorExtenso, menuNavegacao, type DestinoNavegacao, type ItemMenu } 
 import { tx } from "@/lib/energia/idioma";
 import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
 
 /**
  * Cabeçalho do Observatório Brasileiro do Setor Elétrico: a barra comum da plataforma (CabecalhoPlataforma: marca, seletor de
@@ -28,13 +29,17 @@ import { prefetchDoLink } from "@/lib/rotasPublicas";
  *
  * Quem chega de um verbete ou de uma trilha do Aprenda (?volta=) ganha o botão fixo de volta ao contexto (RetornoContexto), que só
  * existe no cliente.
+ *
+ * `comSelo`: na versão aperitivo (servida sem sessão no endereço público), cada destino que pede conta leva o selo "com conta"
+ * (SeloComConta), para o visitante saber antes do clique. O painel completo não o pede: ali todos têm sessão. `rotaPublica` é o
+ * endereço público da versão aperitivo, que o seletor de idioma usa no lugar do caminho interno.
  */
-export function CabecalhoEnergia({ atual }: { atual: string }) {
+export function CabecalhoEnergia({ atual, comSelo = false, rotaPublica }: { atual: string; comSelo?: boolean; rotaPublica?: string }) {
   const { itens, grupoAtual } = menuNavegacao(atual);
   const paginaAtual = grupoAtual?.links.find((d) => d.slug === atual) ?? null;
   return (
     <header className="obs-identidade border-b border-linha bg-superficie">
-      <CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" complementos={<SeletorIdiomaPublico idioma={tx("pt", "en")} />} />
+      <CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" complementos={<SeletorIdiomaPublico idioma={tx("pt", "en")} rotaPublica={rotaPublica} />} />
       <nav aria-label={tx("Navegação do Observatório do Setor Elétrico", "Setor Elétrico observatory navigation")}>
         <div className="ed-pagina relative">
           {/* tela larga: os seis grupos numa linha */}
@@ -64,7 +69,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
                       <ul aria-label={item.grupo.rotulo}>
                         {item.links.map((d) => (
                           <li key={d.slug}>
-                            <ItemDestino d={d} atual={atual} comPergunta />
+                            <ItemDestino d={d} atual={atual} comPergunta comSelo={comSelo} />
                           </li>
                         ))}
                       </ul>
@@ -97,7 +102,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
                           <ul aria-labelledby={idRotulo}>
                             {item.links.map((d) => (
                               <li key={d.slug}>
-                                <ItemDestino d={d} atual={atual} />
+                                <ItemDestino d={d} atual={atual} comSelo={comSelo} />
                               </li>
                             ))}
                           </ul>
@@ -138,6 +143,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
                     >
                       {d.rotulo}
                       <MarcaIntegracao d={d} />
+                      {comSelo && <SeloComConta href={d.href} />}
                     </Link>
                   </li>
                 );
@@ -145,7 +151,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
             </ul>
           )}
           <div className="ml-auto flex shrink-0 items-center gap-5">
-            <Atalhos atual={atual} />
+            <Atalhos atual={atual} comSelo={comSelo} />
           </div>
         </div>
       </div>
@@ -156,7 +162,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
 }
 
 /** Atalhos de dados e método, à direita da faixa do grupo (de 768 px em diante; no celular estão no Menu). */
-function Atalhos({ atual }: { atual: string }) {
+function Atalhos({ atual, comSelo }: { atual: string; comSelo: boolean }) {
   return (
     <>
       <Link
@@ -166,6 +172,7 @@ function Atalhos({ atual }: { atual: string }) {
         className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-energia-dark"
       >
         {tx("Dados e fontes", "Data and sources")}
+        {comSelo && <SeloComConta href="/setor-eletrico/dados" />}
       </Link>
       <Link
         href="/setor-eletrico/metodologia"
@@ -174,13 +181,14 @@ function Atalhos({ atual }: { atual: string }) {
         className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-energia-dark"
       >
         {tx("Metodologia", "Methodology")}
+        {comSelo && <SeloComConta href="/setor-eletrico/metodologia" />}
       </Link>
     </>
   );
 }
 
 /** Link de um destino dentro de um painel aberto (grupo ou Menu). */
-function ItemDestino({ d, atual, comPergunta = false }: { d: DestinoNavegacao; atual: string; comPergunta?: boolean }) {
+function ItemDestino({ d, atual, comPergunta = false, comSelo }: { d: DestinoNavegacao; atual: string; comPergunta?: boolean; comSelo: boolean }) {
   const ativo = d.slug === atual;
   return (
     <Link
@@ -193,6 +201,7 @@ function ItemDestino({ d, atual, comPergunta = false }: { d: DestinoNavegacao; a
         {ativo && <span aria-hidden="true" className="inline-block h-2 w-2 shrink-0 bg-energia" />}
         {d.rotulo}
         <MarcaIntegracao d={d} />
+        {comSelo && <SeloComConta href={d.href} />}
       </span>
       {comPergunta && <span className="mt-0.5 text-[0.8rem] leading-snug text-carvao-muted">{d.pergunta}</span>}
     </Link>

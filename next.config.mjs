@@ -45,6 +45,14 @@ const nextConfig = {
       // as páginas abertas são estáticas e as leem no build. src/tests/perguntas-portas.test.ts confere esta lista
       "/": GOLDS_DAS_PORTAS,
       "/saneamento/municipio/[id]": ["./public/saneamento/gold/**/*.json"],
+      // versão aperitivo do Saneamento (servida em /saneamento/municipio a quem não tem sessão): dinâmica, lê a cada
+      // instância só o que a consulta usa (tabela municipal, ficha da UF, catálogo de prestadores e proveniência)
+      "/aperitivo/saneamento": [
+        "./public/saneamento/gold/municipios.json",
+        "./public/saneamento/gold/meta.json",
+        "./public/saneamento/gold/prestadores.json",
+        "./public/saneamento/gold/uf/*.json",
+      ],
       // ficha de focos por município (consulta da leva 2, src/lib/rotasPublicas.ts): gerada na primeira visita
       "/territorio/queimadas/municipio/[ibge]": ["./public/territorio/gold/queimadas_municipios.json", "./public/saneamento/gold/indice.json"],
       "/saneamento/prestadores/[id]": ["./public/saneamento/gold/*.json"],

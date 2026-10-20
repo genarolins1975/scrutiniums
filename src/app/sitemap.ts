@@ -86,8 +86,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/saneamento/metodologia", 0.6, "monthly"),
     rota("/territorio/metodologia", 0.6, "monthly"),
     rota("/saneamento/municipio", 0.8, "monthly"),
-    ...municipiosSaneamento.map((id) => rota(`/saneamento/municipio/${id}`, 0.5, "yearly")),
-    rota("/saneamento/preco-regulado/simulador", 0.7, "monthly"),
     // leva 2 (src/lib/rotasPublicas.ts, LEVA_2): fica de fora pelo filtro abaixo até a data da aprovação do dono
     ...LEVA_2.flatMap((i) => i.rotas).map((r) => rota(r, 0.7, "monthly")),
     ...LEVA_2.flatMap((i) => (i.fichasIbge ? municipiosSaneamento.map((id) => rota(`${i.fichasIbge}/${id}`, 0.4, "yearly")) : [])),

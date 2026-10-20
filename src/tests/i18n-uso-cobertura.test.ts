@@ -124,8 +124,10 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
     expect(parDeIdioma("/")).toEqual({ pt: "/", en: "/en", conteudo: "parcialmente_traduzido" });
     expect(parDeIdioma("/en")).toEqual(parDeIdioma("/"));
     // O Setor Elétrico (fase 3) declara todas as páginas literais como traduzidas; a prova delas é energia-i18n-html.test.ts.
-    const plataforma = PARES_DE_IDIOMA.filter((par) => !par.pt.startsWith("/setor-eletrico"));
-    const setor = PARES_DE_IDIOMA.filter((par) => par.pt.startsWith("/setor-eletrico"));
+    // a versão aperitivo da Conta de luz (servida por rewrite em /setor-eletrico/conta-de-luz) conta com o Setor Elétrico
+    const doSetor = (pt: string) => pt.startsWith("/setor-eletrico") || pt === "/aperitivo/conta-de-luz";
+    const plataforma = PARES_DE_IDIOMA.filter((par) => !doSetor(par.pt));
+    const setor = PARES_DE_IDIOMA.filter((par) => doSetor(par.pt));
     expect(plataforma).toHaveLength(13);
     expect(setor.length).toBeGreaterThanOrEqual(73);
     expect(setor.every((par) => par.conteudo === "traduzido")).toBe(true);

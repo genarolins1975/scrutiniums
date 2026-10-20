@@ -2285,8 +2285,7 @@ export function textoCobertura(
 export function textoMunicipioEncontrado(m: MunicipioEncontrado, linhas: readonly LinhaRanking[], perfil: Perfil, dataReferencia: string, idioma: Idioma = idiomaEnergia()): string {
   const tx = txEm(idioma);
   const { reais, dataBR } = formatos(idioma);
-  const validos = m.vinculos.filter((v) => v.estado !== 0);
-  const usados = validos.length ? validos : m.vinculos;
+  const usados = distribuidorasDoMunicipio(m);
   const porId = new Map(linhas.map((l) => [l.id, l]));
   const semConfirmacao = tx(", vínculo sem confirmação na relação da ANEEL", ", link not confirmed in ANEEL's list");
   const partes = usados.map((v) => {
@@ -2381,6 +2380,15 @@ const semAcento = (s: string) =>
 
 export type MunicipioEncontrado = { nome: string; uf: string; vinculos: { cnpj: string; sigla: string; estado: 0 | 1 | 2 }[] };
 
+/**
+ * As distribuidoras que a relação oficial liga ao município, pela regra de vínculo da busca: as de vínculo confirmado (ou só pelo
+ * cadastro de MMGD); a de vínculo sem confirmação só entra quando o município não tem outra.
+ */
+export function distribuidorasDoMunicipio(m: MunicipioEncontrado): MunicipioEncontrado["vinculos"] {
+  const validos = m.vinculos.filter((v) => v.estado !== 0);
+  return validos.length ? validos : m.vinculos;
+}
+
 /** Nomes sem acento nem caixa, para buscar sem recalcular a cada tecla. */
 export function prepararBuscaMunicipios(indice: IndiceMunicipios): string[] {
   return indice.m.map(([nome, uf]) => `${semAcento(nome)}|${uf.toLowerCase()}`);
@@ -2420,8 +2428,7 @@ export function buscarMunicipios(indice: IndiceMunicipios, preparado: readonly s
 export function textoMunicipioReajuste(m: MunicipioEncontrado, linhas: readonly LinhaJanela[], janela: Pick<JanelaInflacao, "meses" | "ipca_pct">, idioma: Idioma = idiomaEnergia()): string {
   const tx = txEm(idioma);
   const { pct } = formatos(idioma);
-  const validos = m.vinculos.filter((v) => v.estado !== 0);
-  const usados = validos.length ? validos : m.vinculos;
+  const usados = distribuidorasDoMunicipio(m);
   const porId = new Map(linhas.map((l) => [l.id, l]));
   const partes = usados.map((v) => {
     const l = porId.get(v.cnpj);
