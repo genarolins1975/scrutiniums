@@ -9,7 +9,7 @@
   "sede": "Rio de Janeiro/RJ",
   "segmento": "S?",
   "grupo_pares": "S?",
-  "n_pares": 386,
+  "n_pares": 387,
   "conglomerado_prudencial": "C0081672",
   "capital": "não classificado",
   "modelo": null,
@@ -21,7 +21,7 @@
    "ultima_entrega": "2026-T1",
    "texto": "Consta da lista do IF.data em 2026-T2 sem balanço entregue (saldo nulo na fonte: atraso, RAET ou retardatário). A ficha usa a última entrega, 2026-T1; as comparações com pares usam a data-base deles."
   },
-  "atualizado_em": "2026-10-19T18:01:44+00:00",
+  "atualizado_em": "2026-10-20T15:56:15+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 31.880.826"
  },
@@ -75,7 +75,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 386,
+  "quantidade": 387,
   "maiores_membros": [
    {
     "cod": "C0010069",
@@ -256,7 +256,7 @@
    "d_tri": 0.99,
    "vs_pares": "abaixo",
    "mediana_grupo": 28.51,
-   "percentil": 32.8
+   "percentil": 33.0
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -264,8 +264,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 3.68,
-   "percentil": 69.1
+   "mediana_grupo": 3.66,
+   "percentil": 69.2
   },
   {
    "indicador": "ROE do período",
@@ -273,8 +273,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.1,
-   "percentil": 64.7
+   "mediana_grupo": 3.96,
+   "percentil": 64.8
   }
  ],
  "carteira": {
@@ -938,6 +938,7 @@
     0.76,
     0.74,
     6.38,
+    -35.54,
     3.0,
     0.01,
     -17.52,
@@ -1270,7 +1271,7 @@
     55.04
    ],
    "meu": 6.63,
-   "mediana": 4.1
+   "mediana": 3.96
   },
   "basileia": {
    "valores": [
@@ -1330,6 +1331,7 @@
     13.85,
     47.55,
     13.35,
+    13.93,
     72.07,
     46.26,
     13.95,
@@ -1691,6 +1693,7 @@
     7.25,
     2.01,
     13.32,
+    2.01,
     1.38,
     1.28,
     14.76,
@@ -2023,7 +2026,7 @@
     9.56
    ],
    "meu": 7.31,
-   "mediana": 3.68
+   "mediana": 3.66
   }
  },
  "comparacao_pares": {

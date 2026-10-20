@@ -9,7 +9,7 @@
   "sede": "Natal/RN",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 282,
+  "n_pares": 281,
   "conglomerado_prudencial": "C0082097",
   "capital": "não classificado",
   "modelo": null,
@@ -21,7 +21,7 @@
    "ultima_entrega": "2026-T1",
    "texto": "Consta da lista do IF.data em 2026-T2 sem balanço entregue (saldo nulo na fonte: atraso, RAET ou retardatário). A ficha usa a última entrega, 2026-T1; as comparações com pares usam a data-base deles."
   },
-  "atualizado_em": "2026-10-19T18:01:45+00:00",
+  "atualizado_em": "2026-10-20T15:56:15+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 08.520.517"
  },
@@ -69,7 +69,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 282,
+  "quantidade": 281,
   "maiores_membros": [
    {
     "cod": "18189547",
@@ -254,7 +254,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 6.6,
-   "percentil": 35.2
+   "percentil": 35.0
   },
   {
    "indicador": "ROE do período",
@@ -263,7 +263,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 3.91,
-   "percentil": 2.8
+   "percentil": 2.9
   }
  ],
  "carteira": {
@@ -695,7 +695,6 @@
     7.95,
     2.46,
     -2.09,
-    -35.54,
     2.57,
     4.78,
     -79.94,
@@ -980,7 +979,6 @@
     14.91,
     86.99,
     128.29,
-    13.93,
     32.12,
     12.06,
     14.32,
@@ -1245,7 +1243,6 @@
     8.41,
     2.18,
     1.25,
-    2.01,
     1.59,
     11.21,
     1.64,
