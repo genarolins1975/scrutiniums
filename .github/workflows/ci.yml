@@ -33,7 +33,8 @@ concurrency:
 jobs:
   testes:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # build, pipeline e Vitest completos levavam cerca de 19 minutos; com o painel da Educação passaram de 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
