@@ -172,7 +172,11 @@ export type AguaCapturaAno = {
   vintage_id: string | null;
 };
 
-/** Revisão do ONS entre a captura do silver principal e a recaptura (últimos 30 dias). */
+/**
+ * Revisão do ONS nos últimos 30 dias entre a captura mais recente do arquivo anual e a captura anterior de conteúdo diferente
+ * (do silver principal ou da recaptura do módulo). Os nomes dos campos são do contrato: `silver_principal` é o valor da captura
+ * anterior e `recaptura`, o da mais recente (a usada na página); `anterior_em` e `recente_em` dizem quando cada uma foi feita.
+ */
 export type AguaRevisaoCaptura = {
   sm: Submercado;
   serie: string;
@@ -181,6 +185,8 @@ export type AguaRevisaoCaptura = {
   silver_principal: number | null;
   recaptura: number | null;
   diferenca: number | null;
+  anterior_em?: string | null;
+  recente_em?: string | null;
 };
 
 export type AguaReconciliacaoEar = {

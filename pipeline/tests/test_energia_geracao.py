@@ -659,6 +659,21 @@ class GoldPublicada(unittest.TestCase):
         with open(os.path.join(RAIZ, "public") + url, encoding="utf-8") as f:
             return list(csv.DictReader(f, delimiter=";"))
 
+    def test_eolica_abaixo_do_balanco_e_a_lista_inteira(self):
+        # a página nomeia esses dias: a lista não pode depender do corte das 15 maiores divergências
+        rec = self.g["matriz"]["reconciliacao_balanco"]
+        # a lista entrou na gold com o código de 20/10/2026; gold gerada depois disso sem ela reprova
+        if "eolica_abaixo_de_10pct_das_usinas" not in rec and self.g["gerado_em"] < "2026-10-20":
+            self.skipTest(f"gold publicada em {self.g['gerado_em']}, anterior à lista dos dias da eólica")
+        lista = rec["eolica_abaixo_de_10pct_das_usinas"]
+        for x in lista:
+            self.assertLess(x["balanco_mwh"], gd.LIMIAR_BALANCO_EOLICA * x["usinas_mwh"], x)
+        chaves = [(x["d"], x["sm"]) for x in lista]
+        self.assertEqual(chaves, sorted(set(chaves)))
+        for x in rec["maiores_divergencias"]:
+            if x["fonte"] == "eolica" and x["usinas_mwh"] and x["balanco_mwh"] < gd.LIMIAR_BALANCO_EOLICA * x["usinas_mwh"]:
+                self.assertIn((x["d"], x["sm"]), chaves)
+
     def test_disponivel_tamanho_e_paineis(self):
         self.assertTrue(self.g["disponivel"])
         self.assertEqual(self.g["paineis"], ["P021", "P022", "P023", "P024"])

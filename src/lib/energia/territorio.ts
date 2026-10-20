@@ -2138,7 +2138,7 @@ export function textoSemTarifa(dist: readonly Pick<LinhaDistribuidora, "tarifa" 
   const partes = [
     encerrada
       ? tx(
-          `${n(encerrada)} tiveram a vigência encerrada e a tarifa seguinte ainda não consta no arquivo da ANEEL`,
+          `${n(encerrada)} ${encerrada === 1 ? "teve" : "tiveram"} a vigência encerrada e a tarifa seguinte ainda não consta no arquivo da ANEEL`,
           `${n(encerrada)} had their validity period end and the next tariff is not yet in ANEEL's file`,
           idioma,
         )

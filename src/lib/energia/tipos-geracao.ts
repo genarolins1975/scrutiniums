@@ -273,6 +273,8 @@ export type ReconciliacaoBalanco = {
     regra: string;
   };
   maiores_divergencias: { d: string; fonte: FonteBalanco; sm: Submercado; balanco_mwh: number | null; usinas_mwh: number | null; diferenca_mwh: number | null }[];
+  /** Todos os subsistemas e dias em que a eólica do Balanço fica abaixo de 10% da soma das usinas (não só os das 15 maiores divergências). Ausente em gold anterior a 20/10/2026. */
+  eolica_abaixo_de_10pct_das_usinas?: { d: string; sm: Submercado; balanco_mwh: number; usinas_mwh: number }[];
   mensal_ultimos_6: ReconciliacaoMensal[];
 };
 

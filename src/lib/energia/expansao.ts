@@ -2149,9 +2149,10 @@ export function semNomeDeCampo(texto: string): string {
 }
 
 /**
- * RALIE e SIGA somam carteiras de totais próximos (usinas e MW) que não são a mesma lista nem a mesma medida: o RALIE conta as
+ * RALIE e SIGA somam carteiras (usinas e MW) que não são a mesma lista nem a mesma medida: o RALIE conta as
  * unidades geradoras em implantação na fotografia dele; o SIGA, a potência outorgada nas fases Construção e Construção não
- * iniciada, na data do arquivo dele. A nota diz isso com a distribuição das usinas do RALIE pelas fases do SIGA.
+ * iniciada, na data do arquivo dele. A nota diz isso com a distribuição das usinas do RALIE pelas fases do SIGA. Não qualifica
+ * os totais como próximos: em 30/09/2026 eram 95,9 e 96,3 GW, em 20/10/2026 107,7 e 96,3 GW; os números ficam à vista do leitor.
  */
 export function notaRalieSiga(g: Pick<ExpansaoGold, "estagios">, idioma: Idioma = idiomaEnergia()): string {
   const r = g.estagios.ralie;
@@ -2174,8 +2175,8 @@ export function notaRalieSiga(g: Pick<ExpansaoGold, "estagios">, idioma: Idioma 
     idioma,
   );
   return tx(
-    `Os totais do RALIE e do SIGA são próximos, mas não são a mesma lista nem a mesma medida: o RALIE (${dt(r.data_ralie)}) acompanha ${i(r.usinas)} usinas, com ${mw(r.mw_ugs_em_implantacao)} em unidades geradoras em implantação (${fases}); o SIGA (${dt(g.estagios.data_referencia)}) soma ${i(con.usinas + nao.usinas)} usinas, com ${mw(con.mw_outorgado + nao.mw_outorgado)} de potência outorgada, nas fases Construção e Construção não iniciada.`,
-    `The RALIE and SIGA totals are close, but they are neither the same list nor the same measure: the RALIE (${dt(r.data_ralie)}) monitors ${i(r.usinas)} plants, with ${mw(r.mw_ugs_em_implantacao)} in generating units under implementation (${fases}); the SIGA (${dt(g.estagios.data_referencia)}) adds up ${i(con.usinas + nao.usinas)} plants, with ${mw(con.mw_outorgado + nao.mw_outorgado)} of granted capacity, in the Construction and Construction not started phases.`,
+    `Os totais do RALIE e do SIGA não são a mesma lista nem a mesma medida: o RALIE (${dt(r.data_ralie)}) acompanha ${i(r.usinas)} usinas, com ${mw(r.mw_ugs_em_implantacao)} em unidades geradoras em implantação (${fases}); o SIGA (${dt(g.estagios.data_referencia)}) soma ${i(con.usinas + nao.usinas)} usinas, com ${mw(con.mw_outorgado + nao.mw_outorgado)} de potência outorgada, nas fases Construção e Construção não iniciada.`,
+    `The RALIE and SIGA totals are neither the same list nor the same measure: the RALIE (${dt(r.data_ralie)}) monitors ${i(r.usinas)} plants, with ${mw(r.mw_ugs_em_implantacao)} in generating units under implementation (${fases}); the SIGA (${dt(g.estagios.data_referencia)}) adds up ${i(con.usinas + nao.usinas)} plants, with ${mw(con.mw_outorgado + nao.mw_outorgado)} of granted capacity, in the Construction and Construction not started phases.`,
     idioma,
   );
 }
