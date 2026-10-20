@@ -41,7 +41,7 @@
 .paginas a:hover{color:#7c5638;text-decoration:underline;text-underline-offset:4px}
 .sep{margin:0 3px;color:#b8b2a6}
 .parcial a{color:#5d6063}
-.previsto>span{color:#8a8c88;font-style:italic;cursor:help}
+.previsto>span{color:#6b6d6a;font-style:italic;cursor:help}
 .bate a,.bate>span{color:var(--obs-tinta);text-decoration:underline;text-decoration-color:#0e6170;text-underline-offset:4px}
 .nada{padding:28px 0;font-size:15px;color:#3d4147;max-width:60ch}
 .nada q{font-style:italic}
