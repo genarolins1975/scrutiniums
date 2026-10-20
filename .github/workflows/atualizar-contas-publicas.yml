@@ -4,7 +4,8 @@ name: Atualizar dados das Contas Públicas Federais
 # pública, sem credencial) para os exercícios integrados, com o RTN do snapshot mantido como está
 # (scripts/contas-publicas/importar.py --so-siop; config/atualizacao/contas-publicas.json), e a mesma execução
 # por função e subfunção do ano corrente e do anterior (importar-funcoes.py --recentes; os exercícios desde
-# 2000 ficam no snapshot e se refazem com --todos). O SIOP
+# 2000 ficam no snapshot e se refazem com --todos), e a dívida bruta do governo geral do Banco Central
+# (importar-divida.py, SGS 13761 e 13762, grupo "bcb"). O SIOP
 # atualiza a base de madrugada, em geral a cada poucos dias; uma execução por semana mantém a
 # execução de 2026 em dia. Publicação só com os testes do painel verdes; retenção abre issue e deixa
 # a execução vermelha. Base sem mudança não gera commit (a data de captura não conta).
@@ -13,7 +14,8 @@ name: Atualizar dados das Contas Públicas Federais
 # preços do IPCA, o aviso de atualidade e os testes que fixam a edição. O que se automatiza é a
 # detecção: o passo "Vigiar edição nova do RTN" abre a issue própria quando o Tesouro publica o
 # boletim do mês seguinte ao integrado ou troca a planilha da série histórica no CKAN.
-# Restos a pagar (relatório anual), metas físicas (AFFO anual), custos (RFC anual, hash fixado) e
+# Restos a pagar (relatório anual), metas físicas (AFFO anual), custos (RFC anual, hash fixado), gastos
+# tributários (DGT Bases Efetivas da Receita, anual, hash fixado) e
 # os denominadores do IBGE também são integrados por edição.
 on:
   schedule:
