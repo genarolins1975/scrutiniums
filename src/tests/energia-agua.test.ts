@@ -212,6 +212,27 @@ function csv(nome: string): Record<string, string>[] {
 }
 const n = (s: string) => (s === "" ? null : Number(s));
 const menosDias = (iso: string, d: number) => new Date(Date.parse(`${iso}T00:00:00Z`) - d * 86_400_000).toISOString().slice(0, 10);
+const dataBr = (iso: string) => iso.split("-").reverse().join("/");
+/** Número com casas fixas, separador brasileiro e o sinal de menos tipográfico, como as páginas escrevem ("−675,4"). */
+const numBr = (v: number, casas = 1) => (v < 0 ? "−" : "") + Math.abs(v).toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
+/**
+ * Revisões do ONS entre as duas capturas mais recentes (silver principal e recaptura do módulo). A gold do dia pode não ter
+ * nenhuma: em 20/10/2026 as duas capturas vieram iguais e as listas ficaram vazias. O ramo com revisão continua conferido
+ * com as linhas da publicação de 01/10/2026, no formato da gold; o ramo sem revisão, com a gold zerada.
+ */
+const REV_ENA_0110: AguaDetalheGold["afluencia"]["revisoes_entre_capturas_30d"] = [
+  { sm: "SE", serie: "ena_bruta_mwmed", dias_revisados: 30, dia_maior: "2026-09-23", silver_principal: 35133.329, recaptura: 35220.16, diferenca: 86.831 },
+  { sm: "S", serie: "ena_bruta_mwmed", dias_revisados: 21, dia_maior: "2026-09-23", silver_principal: 41113.176, recaptura: 41576.934, diferenca: 463.758 },
+  { sm: "NE", serie: "ena_bruta_mwmed", dias_revisados: 15, dia_maior: "2026-09-28", silver_principal: 2040.435, recaptura: 2042.172, diferenca: 1.737 },
+  { sm: "N", serie: "ena_bruta_mwmed", dias_revisados: 29, dia_maior: "2026-09-19", silver_principal: 1111.223, recaptura: 1130.755, diferenca: 19.532 },
+];
+const REV_EAR_0110: AguaDetalheGold["reconciliacao_ear"]["revisoes_entre_capturas_30d"] = [
+  { sm: "SE", serie: "ear_mwmes", dias_revisados: 18, dia_maior: "2026-09-20", silver_principal: 117632.039, recaptura: 117639.127, diferenca: 7.088 },
+  { sm: "S", serie: "ear_mwmes", dias_revisados: 14, dia_maior: "2026-09-23", silver_principal: 16985.479, recaptura: 17019.467, diferenca: 33.988 },
+  { sm: "NE", serie: "ear_mwmes", dias_revisados: 1, dia_maior: "2026-09-28", silver_principal: 35626.564, recaptura: 35651.441, diferenca: 24.877 },
+  { sm: "N", serie: "ear_mwmes", dias_revisados: 18, dia_maior: "2026-09-20", silver_principal: 11602.439, recaptura: 11607.778, diferenca: 5.339 },
+];
+const comRevisao = <T extends { dias_revisados: number }>(rs: T[], de0110: T[]): T[] => (rs.some((r) => r.dias_revisados > 0) ? rs : de0110);
 
 /* ---------- contrato ---------- */
 
@@ -581,7 +602,8 @@ describe("P018: gráfico, tabela e exportação usam as mesmas linhas", () => {
       expect(rotuloRecorte("bacia", g.nome)).toBe(g.rotulo);
       expect(motivoSemEna30d(g)).toBe("o ONS publica essas afluências agrupadas sem MLT, e sem MLT não há percentual");
       const v = vereditoAfluencia(g);
-      expect(v).toMatch(/^Sem ENA de 30 dias do grupo Outras do (Sul|Sudeste) até 29\/09\/2026: o ONS publica essas afluências agrupadas sem MLT/);
+      // a data é a da ENA da gold (29/09/2026 na publicação de 01/10/2026)
+      expect(v).toMatch(new RegExp(`^Sem ENA de 30 dias do grupo Outras do (Sul|Sudeste) até ${dataBr(G.dias_referencia.ena)}: o ONS publica essas afluências agrupadas sem MLT`));
       expect(respostaAfluencia(g)).toContain("o ONS publica essas afluências agrupadas sem MLT");
       expect(textoFaixaJanela(g)).toBe("sem faixa da mesma janela, porque o recorte não tem ENA de 30 dias");
       expect(String(linhasAfluencia([g])[0].rotulo)).not.toMatch(/Bacia do Outras/);
@@ -605,7 +627,10 @@ describe("P018: gráfico, tabela e exportação usam as mesmas linhas", () => {
   });
 
   it("revisões do ONS: a ficha da ENA diz o que a tabela da página mostra, e os destaques dizem que os últimos dias são provisórios", () => {
-    const rev = G.afluencia.revisoes_entre_capturas_30d;
+    // a lista da gold do dia, ou a de 01/10/2026 quando a do dia não tem revisão (o ramo sem revisão é conferido logo abaixo)
+    const doDia = G.afluencia.revisoes_entre_capturas_30d;
+    if (!doDia.some((r) => r.dias_revisados > 0)) expect(textoRevisoesFicha(doDia)).toBe("Nenhum valor dos últimos 30 dias mudou entre as duas capturas mais recentes.");
+    const rev = comRevisao(doDia, REV_ENA_0110);
     const f = textoRevisoesFicha(rev);
     const nome = { SE: "Sudeste/Centro-Oeste", S: "Sul", NE: "Nordeste", N: "Norte" } as const;
     for (const r of rev.filter((x) => x.dias_revisados > 0)) expect(f).toContain(`${nome[r.sm]} ${r.dias_revisados}`);
@@ -742,15 +767,18 @@ describe("P020: decomposição, balanço, tabela e séries usam as mesmas linhas
     const demais = barrasDecomposicaoComRestante(se).at(-1)!;
     expect(demais.cod).toBe("");
     expect(reservatorioDaParcela(R.lista, demais.cod)).toBeNull();
-    expect(demais.rotulo).toContain("Demais 35 reservatórios");
-    expect(demais.delta!).toBeCloseTo(-1912.3, 1);
-    // o subsistema com todas as parcelas no gráfico não ganha a barra
-    const norte = R.decomposicao_ear.find((d) => d.sm === "N")!;
-    expect(restanteDecomposicao(norte)).toBeNull();
-    expect(textoParcelasFaltantes(norte)).toBe("");
+    // a soma dos demais é a soma publicada dos reservatórios menos as parcelas listadas (01/10/2026: 35 reservatórios, −1.912,3 MWmês)
+    const listadasSe = barrasDecomposicao(se);
+    expect(demais.rotulo).toContain(`Demais ${se.n_reservatorios - listadasSe.length} reservatórios`);
+    expect(demais.delta!).toBeCloseTo(se.soma_reservatorios_mwmes! - listadasSe.reduce((t, b) => t + (b.delta ?? 0), 0), 6);
+    // o subsistema com todas as parcelas no gráfico não ganha a barra (o Norte em 01/10/2026; clone quando a gold do dia não tem um)
+    const todas = R.decomposicao_ear.find((d) => barrasDecomposicao(d).length >= d.n_reservatorios) ?? { ...se, n_reservatorios: listadasSe.length };
+    expect(restanteDecomposicao(todas)).toBeNull();
+    expect(textoParcelasFaltantes(todas)).toBe("");
+    expect(barrasDecomposicaoComRestante(todas)).toHaveLength(barrasDecomposicao(todas).length);
     // a frase diz o que falta: a soma dos demais é por diferença e as variações individuais não estão publicadas
     const f = textoParcelasFaltantes(se);
-    expect(f).toContain("10 das 45 parcelas");
+    expect(f).toContain(`${listadasSe.length} das ${se.n_reservatorios} parcelas`);
     expect(f).toContain("por diferença");
     expect(f).toContain("não está publicada");
     // os números dos cartões (soma das listadas e dos demais) não se repetem na frase
@@ -760,16 +788,23 @@ describe("P020: decomposição, balanço, tabela e séries usam as mesmas linhas
   });
 
   it("partes própria e a jusante: a definição é pelo subsistema (não pela própria usina), a frase do Norte diz que Serra da Mesa entra pela parte a jusante, e a comparação abre com os quatro maiores", () => {
+    // Em 01/10/2026 a maior queda do Norte era a parte a jusante de Serra da Mesa (−675,4); em 20/10/2026 é Tucuruí, e Serra da Mesa
+    // vem em segundo. A regra vale para qualquer ordem: a parcela a jusante é dita como tal na resposta, e o veredito diz a parte
+    // a jusante quando ela é a maior queda (conferido num clone com a ordem de 01/10/2026 quando a gold do dia não tem esse caso).
     const norte = R.decomposicao_ear.find((d) => d.sm === "N")!;
-    const maior = norte.maiores_quedas[0];
-    expect(maior.parte).toBe("jusante");
-    expect(nomeProprio(maior.nome)).toBe("Serra da Mesa");
-    expect(nomeDaParcela(maior)).toBe("Serra da Mesa, parte a jusante");
+    const jus = norte.maiores_quedas.find((x) => x.parte === "jusante")!;
+    expect(nomeProprio(jus.nome)).toBe("Serra da Mesa");
+    expect(nomeDaParcela(jus)).toBe("Serra da Mesa, parte a jusante");
     expect(nomeDaParcela({ nome: "TUCURUI", cod: "275", parte: "proprio" })).toBe("Tucuruí");
+    expect(respostaDecomposicao(norte)).toContain(`Serra da Mesa, parte a jusante (${numBr(jus.delta_mwmes!)})`);
+    const comJusante = R.decomposicao_ear.find((d) => d.maiores_quedas[0]?.parte === "jusante") ??
+      { ...clone(norte), maiores_quedas: [{ cod: "251", nome: "SERRA DA MESA", parte: "jusante" as const, delta_mwmes: -675.4 }, ...norte.maiores_quedas.filter((x) => x !== jus)] };
+    const maior = comJusante.maiores_quedas[0];
     // veredito (a frase de abertura) e resposta completa: a parte a jusante é dita, com o reservatório de outro subsistema
-    const v = vereditoDecomposicao(norte);
-    expect(v).toContain("a maior queda foi a da parte a jusante de Serra da Mesa, a água dele que gera neste subsistema");
-    expect(respostaDecomposicao(norte)).toContain("Serra da Mesa, parte a jusante (−675,4)");
+    const v = vereditoDecomposicao(comJusante);
+    expect(v).toContain(`a maior queda foi a da parte a jusante de ${nomeProprio(maior.nome)}, a água dele que gera neste subsistema`);
+    expect(respostaDecomposicao(comJusante)).toContain(`${nomeDaParcela(maior)} (${numBr(maior.delta_mwmes!)})`);
+    if (norte.maiores_quedas[0].parte === "proprio") expect(vereditoDecomposicao(norte)).toContain(`a maior queda foi a de ${nomeProprio(norte.maiores_quedas[0].nome)} (`);
     expect(respostaDecomposicao(norte)).toContain("a parte própria de cada um, nas usinas do subsistema dele, e a parte a jusante, nas usinas de outro subsistema, rio abaixo");
     // o mesmo reservatório, pela parte própria, é só "Serra da Mesa" na decomposição do Sudeste/Centro-Oeste
     expect(vereditoDecomposicao(R.decomposicao_ear.find((d) => d.sm === "SE")!)).toContain("a maior queda foi a de Serra da Mesa (");
@@ -949,7 +984,12 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
     expect(textoJanelasDaVariacao(sin.dia, [])).toBe("");
     expect(textoJanelasDaVariacao(null, R.decomposicao_ear)).toBe("");
     // a ficha da EAR diz o que a tabela de revisões mostra (a da gold dizia "nenhuma revisão")
-    const rs = G.reconciliacao_ear.revisoes_entre_capturas_30d;
+    // a lista da gold do dia, ou a de 01/10/2026 quando a do dia não tem revisão da EAR
+    const doDia = G.reconciliacao_ear.revisoes_entre_capturas_30d;
+    if (!doDia.some((r) => r.serie === "ear_mwmes" && r.dias_revisados > 0)) {
+      expect(textoRevisoesFichaEar(doDia)).toBe("Nenhum valor da EAR dos últimos 30 dias mudou entre as duas capturas mais recentes.");
+    }
+    const rs = doDia.some((r) => r.serie === "ear_mwmes" && r.dias_revisados > 0) ? doDia : REV_EAR_0110;
     const com = rs.filter((r) => r.serie === "ear_mwmes" && r.dias_revisados > 0);
     expect(com.length).toBeGreaterThan(0);
     const f = textoRevisoesFichaEar(rs);
@@ -1814,10 +1854,12 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     const se = R.decomposicao_ear.find((d) => d.sm === "SE")!;
     const t0 = textoDe(todas[0]);
     expect(t0).toContain("Variação da EAR do subsistema");
-    expect(t0).toContain("−3.188,7");
-    expect(t0).toContain("Soma das 10 parcelas do gráfico");
-    expect(t0).toContain("Soma dos demais 35 reservatórios");
-    expect(t0).toContain("−1.912,3");
+    // os números são os da decomposição do Sudeste/Centro-Oeste na gold (01/10/2026: −3.188,7; 10 parcelas; 35 demais, −1.912,3)
+    const restSe = restanteDecomposicao(se)!;
+    expect(t0).toContain(numBr(se.delta_ear_mwmes!));
+    expect(t0).toContain(`Soma das ${restSe.nListadas} parcelas do gráfico`);
+    expect(t0).toContain(`Soma dos demais ${restSe.nRestantes} reservatórios`);
+    expect(t0).toContain(numBr(restSe.somaRestantes));
     expect(t0).toContain("Por diferença");
     // as duas janelas de 30 dias do mesmo subsistema são ditas uma vez só, no parágrafo sob o bloco (não também no cartão nem na nota da faixa)
     expect(t0).not.toContain("outra janela");
@@ -1830,9 +1872,11 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     // 2) a conta da água do reservatório padrão: quatro números em hm³, com a ficha do resíduo
     expect(todas[1].match(/data-metrica=""/g)?.length).toBe(4);
     const t1 = textoDe(todas[1]);
-    expect(t1).toContain("−1,95");
+    // o resíduo do reservatório padrão, como a gold o publica (Serra da Mesa, −1,95 hm³ em 01/10/2026)
+    const padraoRes = R.lista.find((r) => r.id === reservatorioPadrao(R.lista))!;
+    expect(t1).toContain(numBr(padraoRes.residuo_hm3!, 2));
     expect(t1).toContain("hm³");
-    expect(t1).toContain("reservatório Serra da Mesa: variação observada menos afluência mais defluência");
+    expect(t1).toContain(`reservatório ${nomeProprio(padraoRes.nome)}: variação observada menos afluência mais defluência`);
     expect(todas[1].match(/Comprove este número/g)?.length).toBe(1);
     // 3) a qualidade do balanço, em bloco próprio, com os dois universos ditos (153 de 177 e a lista menor)
     expect(todas[2].match(/data-metrica=""/g)?.length).toBe(2);
@@ -1881,13 +1925,17 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
   });
 
   it("reservatórios: a faixa da decomposição e a conta da água acompanham a escolha, e o estado sem balanço diz o motivo exato", () => {
-    const norte = R.decomposicao_ear.find((d) => d.sm === "N")!;
-    const hNorte = textoDe(renderToStaticMarkup(createElement(MedidasDecomposicao, { dec: norte })));
-    expect(hNorte).toContain("Todas as 5 parcelas estão no gráfico e somam a variação da EAR do subsistema");
-    const sul = R.decomposicao_ear.find((d) => d.sm === "S")!;
-    const hSul = textoDe(renderToStaticMarkup(createElement(MedidasDecomposicao, { dec: sul })));
-    expect(hSul).toContain("Soma das 7 parcelas do gráfico");
-    expect(hSul).toContain("Soma dos demais 9 reservatórios");
+    // um subsistema com todas as parcelas no gráfico (o Norte, com 5, em 01/10 e 20/10/2026) e um com a soma dos demais
+    // (o Sul tinha 7 listadas e 9 demais em 01/10/2026; 10 e 6 em 20/10/2026): o texto segue a contagem da gold
+    const inteiro = R.decomposicao_ear.find((d) => !restanteDecomposicao(d) && d.delta_ear_mwmes !== null)!;
+    const hInteiro = textoDe(renderToStaticMarkup(createElement(MedidasDecomposicao, { dec: inteiro })));
+    expect(hInteiro).toContain(`Todas as ${inteiro.n_reservatorios} parcelas estão no gráfico e somam a variação da EAR do subsistema`);
+    for (const dec of R.decomposicao_ear.filter((d) => restanteDecomposicao(d))) {
+      const r = restanteDecomposicao(dec)!;
+      const hDec = textoDe(renderToStaticMarkup(createElement(MedidasDecomposicao, { dec })));
+      expect(hDec, dec.sm).toContain(`Soma das ${r.nListadas} parcelas do gráfico`);
+      expect(hDec, dec.sm).toContain(`Soma dos demais ${r.nRestantes} ${r.nRestantes === 1 ? "reservatório" : "reservatórios"}`);
+    }
     const evid = G.evidencias.balanco_maior_reservatorio;
     const periodo = `${R.inicio} a ${R.fim}`;
     const conta = (id: string, padrao = false) =>
@@ -1927,36 +1975,48 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
   });
 
   it("reservatórios: o volume fora de 0 a 100% do volume útil é marcado na tabela, no veredito e na nota, com o nome legível", () => {
-    const fora = R.lista.filter((r) => volumeForaDaFaixa(r.vol_util_pct_fim) !== null);
-    expect(fora.length).toBe(6);
+    // 6 reservatórios terminavam fora da faixa em 01/10 e em 20/10/2026 (Garibaldi com o maior desvio: 165,13% e 125,42%);
+    // sem nenhum na gold do dia, o caso é conferido num clone com o desvio de 01/10/2026
+    const desvio = (x: number | null) => (x === null ? 0 : x > 100 ? x - 100 : x < 0 ? -x : 0);
+    let lista = R.lista;
+    if (!lista.some((r) => volumeForaDaFaixa(r.vol_util_pct_fim) !== null)) {
+      lista = clone(R.lista);
+      lista.find((r) => r.balanco_calculado)!.vol_util_pct_fim = 165.13;
+    }
+    const fora = lista.filter((r) => volumeForaDaFaixa(r.vol_util_pct_fim) !== null);
+    expect(fora.length).toBeGreaterThan(0);
     expect(volumeForaDaFaixa(100)).toBeNull();
     expect(volumeForaDaFaixa(0)).toBeNull();
     expect(volumeForaDaFaixa(100.01)).toBe("acima");
     expect(volumeForaDaFaixa(-0.5)).toBe("abaixo");
     expect(volumeForaDaFaixa(null)).toBeNull();
-    const linhas = linhasReservatorios(R.lista, R.sem_cadastro);
+    const linhas = linhasReservatorios(lista, R.sem_cadastro);
     for (const r of fora) {
       const l = linhas.find((x) => x.id === r.id)!;
-      expect(String(l.rotulo), r.id).toContain("(volume acima de 100%)");
-      expect(String(l.motivo), r.id).toContain("Valor da fonte, acima do volume máximo normal do reservatório");
+      const lado = volumeForaDaFaixa(r.vol_util_pct_fim) === "acima" ? "acima" : "abaixo";
+      expect(String(l.rotulo), r.id).toContain(lado === "acima" ? "(volume acima de 100%)" : "(volume abaixo de 0%)");
+      if (lado === "acima") expect(String(l.motivo), r.id).toContain("Valor da fonte, acima do volume máximo normal do reservatório");
     }
     // quem está dentro da faixa não leva a marca
-    const dentro = linhas.find((x) => x.id === R.lista.find((r) => volumeForaDaFaixa(r.vol_util_pct_fim) === null && r.balanco_calculado)!.id)!;
+    const dentro = linhas.find((x) => x.id === lista.find((r) => volumeForaDaFaixa(r.vol_util_pct_fim) === null && r.balanco_calculado)!.id)!;
     expect(String(dentro.rotulo)).not.toContain("volume acima");
     expect(dentro.motivo).toBeNull();
-    // a nota da tabela cita quantos terminam fora e os maiores desvios
-    const nota = textoVolumeForaDaFaixa(R.lista);
-    expect(nota).toContain("6 reservatórios terminam a janela fora de 0 a 100% do volume útil");
-    expect(nota).toContain("Garibaldi 165,13%");
-    expect(textoVolumeForaDaFaixa(R.lista.filter((r) => volumeForaDaFaixa(r.vol_util_pct_fim) === null))).toBe("");
+    // a nota da tabela cita quantos terminam fora e o maior desvio, com o nome legível e duas casas
+    const nota = textoVolumeForaDaFaixa(lista);
+    const maior = [...fora].sort((a, b) => desvio(b.vol_util_pct_fim) - desvio(a.vol_util_pct_fim))[0];
+    expect(nota).toContain(`${fora.length} ${fora.length === 1 ? "reservatório termina" : "reservatórios terminam"} a janela fora de 0 a 100% do volume útil`);
+    expect(nota).toContain(`${nomeProprio(maior.nome)} ${numBr(maior.vol_util_pct_fim!, 2)}%`);
+    expect(textoVolumeForaDaFaixa(lista.filter((r) => volumeForaDaFaixa(r.vol_util_pct_fim) === null))).toBe("");
     // a resposta do reservatório fora da faixa diz que o valor é da fonte; o veredito de abertura não muda
     const janela = { inicio: R.inicio, fim: R.fim, periodo_fecham_por_construcao: R.periodo_fecham_por_construcao };
-    const gari = R.lista.find((r) => r.nome === "GARIBALDI")!;
-    expect(respostaBalanco(gari, janela)).toContain("terminou em 165,13% do volume útil (valor da fonte, acima do volume máximo normal do reservatório)");
-    expect(vereditoBalancoReservatorio(gari, janela)).not.toContain("165,13");
-    // a página mostra a nota e os nomes legíveis (sem "Sao Roque")
+    if (maior.balanco_calculado && volumeForaDaFaixa(maior.vol_util_pct_fim) === "acima") {
+      const v = numBr(maior.vol_util_pct_fim!, 2);
+      expect(respostaBalanco(maior, janela)).toContain(`terminou em ${v}% do volume útil (valor da fonte, acima do volume máximo normal do reservatório)`);
+      expect(vereditoBalancoReservatorio(maior, janela)).not.toContain(v);
+    }
+    // a página mostra a nota da gold e os nomes legíveis (sem "Sao Roque")
     const h = textoDe(html.p020);
-    expect(h).toContain(nota);
+    expect(h).toContain(textoVolumeForaDaFaixa(R.lista));
     expect(h).toContain("São Roque");
     expect(h).not.toMatch(/Sao Roque|Tucurui\b/);
   });
@@ -1991,11 +2051,13 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     const dec = R.decomposicao_ear.find((d) => d.sm === "SE")!;
     // da página de armazenamento para a de reservatórios: a mesma explicação, escrita para quem lê a outra página
     const frase = textoOutraJanelaNaArmazenamento(se, R.decomposicao_ear);
-    expect(frase).toContain("A página de reservatórios mostra −3.188,7 MWmês do Sudeste/Centro-Oeste de 29/08/2026 a 28/09/2026");
-    expect(frase).toContain("Aqui a janela é de 30 dias até 29/09/2026, e a variação é −3.297,8 MWmês");
+    // números e datas da gold (01/10/2026: −3.188,7 MWmês de 29/08 a 28/09/2026 na decomposição; −3.297,8 MWmês até 29/09/2026 aqui)
+    expect(se.dia).not.toBe(dec.fim);
+    expect(frase).toContain(`A página de reservatórios mostra ${numBr(dec.delta_ear_mwmes!)} MWmês do Sudeste/Centro-Oeste de ${dataBr(dec.inicio)} a ${dataBr(dec.fim)}`);
+    expect(frase).toContain(`Aqui a janela é de 30 dias até ${dataBr(se.dia!)}, e a variação é ${numBr(se.variacao_30d_mwmes!)} MWmês`);
     const mesmo = { ...se, dia: dec.fim };
     expect(textoOutraJanelaNaArmazenamento(mesmo, R.decomposicao_ear)).toBe("");
-    expect(notaOutraJanelaCurta(dec, ents)).toContain("Na página de armazenamento, −3.297,8 MWmês em 30 dias até 29/09/2026");
+    expect(notaOutraJanelaCurta(dec, ents)).toContain(`Na página de armazenamento, ${numBr(se.variacao_30d_mwmes!)} MWmês em 30 dias até ${dataBr(se.dia!)}`);
     expect(notaOutraJanelaCurta(dec, ents.map((e) => (e.id === "SE" ? { ...e, dia: dec.fim } : e)))).toBe("");
     // a página diz que a variação de cada um dos demais reservatórios não está publicada
     expect(textoDe(html.p020)).toContain("a variação de cada um deles não está publicada");
@@ -2179,7 +2241,11 @@ describe("página mãe (armazenamento) no sistema editorial", () => {
     // a tabela equivalente nasce no wrapper que não deixa a escolha de um recorte abrir a tabela
     expect(h).toContain('data-tabela-agua=""');
     // "Sobre este dado" não diz que não há revisão onde a página mostra dias revisados: o total é a soma dos dias revisados da tabela
-    const earRev = rev.filter((r) => r.serie === "ear_mwmes");
+    // (a tabela da gold do dia, ou a de 01/10/2026 quando a do dia não tem dia revisado; sem dia revisado, a ficha fica como veio)
+    if (!rev.some((r) => r.serie === "ear_mwmes" && r.dias_revisados > 0)) {
+      expect(provenienciaComRevisoesDaPagina(G.proveniencia.ear_sin!, rev.filter((r) => r.serie === "ear_mwmes"), "da EAR")).toBe(G.proveniencia.ear_sin);
+    }
+    const earRev = comRevisao(rev, REV_EAR_0110).filter((r) => r.serie === "ear_mwmes");
     const comRev = provenienciaComRevisoesDaPagina(G.proveniencia.ear_sin!, earRev, "da EAR");
     expect(comRev.revisoes_conhecidas!.total).toBe(earRev.reduce((tt, r) => tt + r.dias_revisados, 0));
     expect(comRev.revisoes_conhecidas!.total).toBeGreaterThan(0);
