@@ -257,10 +257,14 @@ def _total(z: Zip, membro: str) -> dict:
 # ------------------------------------------------------------------------------------------------ banda larga fixa
 
 
-def _faixa_velocidade(v: float | None) -> str:
+def _faixa_velocidade(v: float | None) -> str | None:
+    """Faixa da velocidade contratada; velocidade ausente não vira faixa nenhuma (nem a mais baixa): o acesso conta no
+    total e não nas faixas, e a validação retém a fonte quando as faixas deixam de somar o total."""
+    if v is None:
+        return None
     campo = F.FAIXAS_VELOCIDADE[0][1]
     for limite, nome in F.FAIXAS_VELOCIDADE:
-        if v is not None and v >= limite:
+        if v >= limite:
             campo = nome
     return campo
 
@@ -288,7 +292,9 @@ def _agregar_fixa(linhas, membro: str) -> tuple[str, dict, dict]:
                             "pf": 0, "prest": set(), "grupo": Counter(), "produto": Counter()}
         d["acessos"] += a
         d["meio"][F.MEIOS.get(x["Meio de Acesso"], "outro")] += a
-        d["vel"][_faixa_velocidade(numero(x["Velocidade"]))] += a
+        faixa = _faixa_velocidade(numero(x["Velocidade"]))
+        if faixa is not None:
+            d["vel"][faixa] += a
         if x["Tipo de Pessoa"] == "Pessoa Física":
             d["pf"] += a
         d["prest"].add(x["CNPJ"])

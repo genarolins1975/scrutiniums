@@ -51,8 +51,8 @@ function Abertura({ g }: { g: GoldConectividade }) {
       <p className="cn-achado">
         Em {mesExtenso(r.fixa)}, o Brasil tinha <strong>{milhoes(f.acessos)} de acessos de banda larga fixa</strong>, {num(f.densidade, 1)} para cada 100 habitantes, e{" "}
         <strong>{pct(f.fibra_pct)} deles por fibra óptica</strong>. Nas redes móveis{r.movel !== r.fixa ? `, em ${mesExtenso(r.movel)}` : ""}, {milhoes(m.linhas)} de linhas ativas, {pct(m.g5_pct)} já em 5G. Em {mesExtenso(r.cobertura)},{" "}
-        <strong>{pct(c.tecnologias.g5?.[0])} dos moradores</strong> do país estavam dentro da cobertura 5G declarada pelas operadoras, e {num(g.destaques.sem_5g)} municípios ainda
-        ficavam fora dela.
+        <strong>{pct(c.tecnologias.g5?.[0])} dos moradores</strong> do país estavam dentro da cobertura 5G declarada pelas operadoras, e em {num(g.destaques.sem_5g)} municípios
+        menos de 1% dos moradores estavam dentro de alguma cobertura 5G.
       </p>
       <dl className="cn-numeros" aria-label="O tema em quatro números">
         <div className="cn-lider">

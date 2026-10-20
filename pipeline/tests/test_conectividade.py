@@ -73,6 +73,15 @@ def zip_fixa() -> io.BytesIO:
     })
 
 
+def zip_fixa_sem_velocidade() -> io.BytesIO:
+    """Como zip_fixa, com os 30 acessos de cabo coaxial de São Paulo sem a velocidade contratada."""
+    z = zipfile.ZipFile(zip_fixa())
+    membros = {n: z.read(n).decode("utf-8-sig") for n in z.namelist()}
+    membros["Acessos_Banda_Larga_Fixa_2026.csv"] = membros["Acessos_Banda_Larga_Fixa_2026.csv"].replace("2Mbps a 12Mbps;10,000000;HFC", "2Mbps a 12Mbps;;HFC")
+    assert ";;HFC" in membros["Acessos_Banda_Larga_Fixa_2026.csv"]
+    return _zip(membros)
+
+
 def zip_movel() -> io.BytesIO:
     acessos = [
         [2026, 7, "TELEFONICA", "VIVO", "1", "Grande Porte", "SP", "São Paulo", "3550308", "11", "11", "Pós-pago", "LTE", "4G", "Pessoa Física", "VOZ+DADOS", 999],
@@ -138,7 +147,7 @@ class TestLeitura(unittest.TestCase):
         self.assertIsNone(coleta.numero(""))
         self.assertEqual(coleta.mes_iso("2026", "8"), "2026-08")
         self.assertEqual([coleta._faixa_velocidade(v) for v in (None, 0.5, 9.99, 10, 24.9, 25, 99.9, 100, 10000)],
-                         ["vel_ate_10", "vel_ate_10", "vel_ate_10", "vel_10_25", "vel_10_25", "vel_25_100", "vel_25_100", "vel_100_mais", "vel_100_mais"])
+                         [None, "vel_ate_10", "vel_ate_10", "vel_10_25", "vel_10_25", "vel_25_100", "vel_25_100", "vel_100_mais", "vel_100_mais"])
         self.assertEqual(coleta._periodo_iso("09-2026"), "2026-09")
         with self.assertRaises(ValueError):
             coleta._periodo_iso("2026-09")
@@ -283,6 +292,15 @@ class TestValidacoesRetem(unittest.TestCase):
         self.assertTrue(any("meses da captura" in p for p in V.validar_fixa(s)))
         anterior = self._fixa(referencia="2026-09")
         self.assertTrue(any("voltou" in p for p in V.validar_fixa(self.fixa, anterior)))
+
+    def test_velocidade_ausente_nao_vira_faixa_e_retem(self):
+        s = coleta.coletar_fixa("memoria://fixa.zip", zip_fixa_sem_velocidade())
+        i = {c: k for k, c in enumerate(F.CAMPOS_FIXA)}
+        sp = s["municipios"]["3550308"][2]
+        self.assertEqual(sp[i["acessos"]], 100)                       # o acesso conta no total
+        self.assertEqual(sp[i["vel_ate_10"]], 0)                      # e em faixa nenhuma, nem na mais baixa
+        self.assertEqual(sp[i["vel_10_25"]] + sp[i["vel_25_100"]] + sp[i["vel_100_mais"]], 70)
+        self.assertTrue(any("somam 70, acessos 100" in p for p in V.validar_fixa(s)))
 
     def test_revisao_acima_do_limite(self):
         anterior = copy.deepcopy(self.fixa)
