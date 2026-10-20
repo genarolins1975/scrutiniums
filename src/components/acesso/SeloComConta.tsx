@@ -1,8 +1,8 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { ehRotaPublica, exigeConta } from "@/lib/rotasPublicas";
-import { textosAcesso } from "./sessao";
+import { exigeConta } from "@/lib/rotasPublicas";
+import { ehPaginaAberta, textosAcesso } from "./sessao";
 
 export function Cadeado() {
   return (
@@ -34,7 +34,7 @@ export function SeloComConta({
   idioma?: "pt" | "en";
 }) {
   const caminho = usePathname();
-  const aberta = !!caminho && ehRotaPublica(caminho);
+  const aberta = ehPaginaAberta(caminho);
   if (!aberta || (!sempre && (!href || !exigeConta(href)))) return null;
   return (
     // o selo interno é inline-flex (atômico): o sublinhado do link não passa para ele, mesmo quando o link é flex

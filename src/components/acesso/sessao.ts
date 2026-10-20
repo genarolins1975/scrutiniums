@@ -53,8 +53,17 @@ export function aoEntrarComRecorte(e: { metaKey: boolean; ctrlKey: boolean; shif
 
 /** A página atual é aberta (src/lib/rotasPublicas.ts)? Igual no servidor e no navegador. */
 export function usePaginaAberta(): boolean {
-  const caminho = usePathname();
-  return !!caminho && ehRotaPublica(caminho);
+  return ehPaginaAberta(usePathname());
+}
+
+/**
+ * Página aberta pelo caminho: rota pública (src/lib/rotasPublicas.ts) ou versão aperitivo. A versão aperitivo é gerada no caminho
+ * interno (/aperitivo/..., /en/aperitivo/...) e servida por rewrite no endereço público: o HTML estático vê o interno e o navegador
+ * vê o público, e os dois precisam concluir "aberta" para o selo não divergir na hidratação.
+ */
+export function ehPaginaAberta(caminho: string | null | undefined): boolean {
+  if (!caminho) return false;
+  return /^(\/en)?\/aperitivo(\/|$)/.test(caminho) || ehRotaPublica(caminho);
 }
 
 /** Entrada com retorno para a página atual; em /en, a irmã inglesa do login. */

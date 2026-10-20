@@ -10,9 +10,9 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1422,
-    "fontes_sha256": "97aeb825d559f0e88b16fa01841f0a58d84334d3cdba063662dd39af7399e92e",
+    "inventario_sha256": "d932a71658c21a96d3844ed462f3be1a0b7b2937f80a5b937f3a8e5ad23f56df",
+    "arquivos_analisados": 1425,
+    "fontes_sha256": "bac6f232f583f80685d19a937d5cbdd39f9e406c00e8ffae422c11c8755981ab",
     "pendencias_sha256": "72bcf94065e5d97c671e30eb632f8d5d322ceb8a3561149c2132cb2682026068",
     "nao_classificadas": [
       {
@@ -158,19 +158,19 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 351,
+        "arquivos": 353,
         "candidatos": {
           "jsx_text": 1532,
           "atributos": 394,
-          "props": 1023,
-          "outros_literais": 7170,
-          "templates": 898,
-          "expressoes_nao_resolvidas": 5463,
-          "chaves_objetos": 5752
+          "props": 1030,
+          "outros_literais": 7201,
+          "templates": 924,
+          "expressoes_nao_resolvidas": 5509,
+          "chaves_objetos": 5758
         },
         "exclusoes": {
-          "importacoes": 1561,
-          "atributos_tecnicos": 3144,
+          "importacoes": 1578,
+          "atributos_tecnicos": 3153,
           "tipos": 376
         },
         "scripts_embutidos": {},
@@ -180,18 +180,18 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 22232,
+        "candidatos_nao_catalogados": 22348,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 44,
-        "paginas_en": 12,
+        "paginas_pt": 45,
+        "paginas_en": 13,
         "handlers": 37,
         "templates_com_parametros": 6,
-        "paginas_pt_literais": 37,
+        "paginas_pt_literais": 38,
         "paginas_pt_fora_do_adaptador": 7,
         "paginas_pt_literais_sem_irma": 25,
-        "pares_estruturais": 12,
+        "pares_estruturais": 13,
         "fallbacks_declarados": 8,
         "paridade_verificada": false,
         "parciais_declarados": 1
@@ -207,20 +207,20 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 571,
+        "arquivos": 572,
         "candidatos": {
-          "jsx_text": 7631,
-          "atributos": 2893,
-          "props": 18821,
-          "outros_literais": 50955,
-          "templates": 12744,
-          "expressoes_nao_resolvidas": 55387,
-          "chaves_objetos": 35973
+          "jsx_text": 7648,
+          "atributos": 2901,
+          "props": 18823,
+          "outros_literais": 51037,
+          "templates": 12762,
+          "expressoes_nao_resolvidas": 55515,
+          "chaves_objetos": 35979
         },
         "exclusoes": {
-          "importacoes": 4945,
-          "atributos_tecnicos": 8628,
-          "tipos": 3724
+          "importacoes": 4956,
+          "atributos_tecnicos": 8678,
+          "tipos": 3728
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -229,7 +229,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 184404,
+        "candidatos_nao_catalogados": 184665,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -777,6 +777,17 @@
         "fontes": {
           "pt": "src/app/page.tsx",
           "en": "src/app/en/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/aperitivo/conta-de-luz",
+        "en": "/en/aperitivo/conta-de-luz",
+        "dominio": "plataforma",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/aperitivo/conta-de-luz/page.tsx",
+          "en": "src/app/en/aperitivo/conta-de-luz/page.tsx"
         },
         "arquivos_presentes": true
       },
@@ -1788,7 +1799,7 @@
         "arquivos_presentes": true
       }
     ],
-    "pares_estruturais": 92,
+    "pares_estruturais": 93,
     "fallbacks_declarados": 9,
     "html_verificado_pelo_inventario": false,
     "acesso_verificado_pelo_inventario": false
