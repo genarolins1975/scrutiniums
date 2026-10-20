@@ -953,6 +953,7 @@ ROTULO_NATUREZA = {
 # (até 24 × 700 parcelas de ±0,0005) tem desvio-padrão de cerca de 0,04 MWh; 1 MWh é 25
 # desvios, e qualquer diferença de definição (uma usina a mais ou a menos) passa disso.
 TOL_DIA_MWH = 1.0
+LIMIAR_BALANCO_EOLICA = 0.1  # eólica do Balanço abaixo de 10% da soma das usinas no subsistema e dia: registro fora do padrão
 # Fator de capacidade mensal acima de 100% numa usina é fisicamente impossível com a
 # potência certa: indica potência do cadastro menor que a real no mês (unidade em teste
 # gerando antes da operação comercial, repotenciação não registrada). Fica na conta e é
@@ -1829,6 +1830,12 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
                         "soma_diferencas_mwh": c.r(sum(x["dif_ajustada"] for x in xs), 1),
                         "soma_balanco_mwh": c.r(sum(x["bal"] for x in xs), 1)}
     maiores = sorted(rec, key=lambda x: -abs(x["dif_ajustada"]))[:15]
+    # Dias em que o Balanço registra a eólica de um subsistema abaixo de 10% da soma das usinas: a lista inteira. A página
+    # nomeia esses dias; tirados das 15 maiores divergências, saíam da frase quando outras divergências as superavam (07/03/2026
+    # no Sul, gold de 20/10/2026), e a frase deixava de ser a lista dos dias.
+    eolica_abaixo = [{"d": x["d"], "sm": x["sm"], "balanco_mwh": c.r(x["bal"], 1), "usinas_mwh": c.r(x["us"], 1)}
+                     for x in sorted(rec, key=lambda x: (x["d"], x["sm"]))
+                     if x["f"] == "eolica" and x["us"] > 0 and x["bal"] < LIMIAR_BALANCO_EOLICA * x["us"]]
     reconciliacao = {
         "tolerancia_mwh_por_subsistema_dia": TOL_DIA_MWH,
         "por_fonte": por_fonte,
@@ -1838,6 +1845,7 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
                     "primeiro_dia_sem_exclusao_apos": min((d for d in rr_dias if rr_excl and d > max(rr_excl)), default=None),
                     "regra": ("Dia em que o balanço exclui Roraima: diferença balanço − usinas no Norte igual, dentro da tolerância, "
                               "à térmica das usinas de Roraima (UF RR) na Geração por Usina. Só nesses dias a diferença é ajustada.")},
+        "eolica_abaixo_de_10pct_das_usinas": eolica_abaixo,
         "maiores_divergencias": [{"d": x["d"], "fonte": x["f"], "sm": x["sm"], "balanco_mwh": c.r(x["bal"], 1),
                                   "usinas_mwh": c.r(x["us"], 1), "diferenca_mwh": c.r(x["dif_ajustada"], 1)} for x in maiores],
         "mensal_ultimos_6": [x for x in rec_mensal if x["mes"] >= _meses_entre(ok[0][:7], dia_ref[:7])[-6]],

@@ -536,6 +536,17 @@ export const CARTOES: Record<string, CartaoDestino> = {
     get recorte() { return tx("Sistema interligado e subsistemas; usina para térmicas e cortes; horário, diário e mensal.", "Interconnected system and subsystems; plant level for thermal plants and cuts; hourly, daily and monthly."); },
     conceito: { slug: "geracao-centralizada", get rotulo() { return tx("o que é geração verificada", "what verified generation is"); } },
   },
+  curtailment: {
+    get utilidade() { return tx("Entender por que o operador corta geração eólica e solar, em que horas do dia isso acontece, quanto é cortado e quem arca com o custo, com laboratórios identificados como modelo didático.", "Understand why the operator cuts wind and solar generation, at what hours of the day it happens, how much is cut and who bears the cost, with labs labelled as didactic models."); },
+    encontra: [
+      { get texto() { return tx("As quatro razões oficiais do corte e o que cada uma significa", "The four official reasons for cuts and what each one means"); }, href: "/setor-eletrico/geracao/curtailment#por-que" },
+      { get texto() { return tx("Simulador do dia: por que o corte se concentra no meio do dia", "Day simulator: why cuts concentrate around midday"); }, href: "/setor-eletrico/geracao/curtailment#meio-dia" },
+      { get texto() { return tx("Tamanho do corte nos últimos dias e meses, por razão", "Size of the cuts over recent days and months, by reason"); }, href: "/setor-eletrico/geracao/curtailment#ultimos-dias" },
+      { get texto() { return tx("Quem perde: o efeito na receita das usinas e no setor", "Who loses: the effect on plant revenue and on the sector"); }, href: "/setor-eletrico/geracao/curtailment#efeito" },
+    ],
+    get recorte() { return tx("Sistema interligado e subsistemas; meia hora, dia e mês; usina nos laboratórios.", "Interconnected system and subsystems; half hour, day and month; plant level in the labs."); },
+    conceito: { slug: "constrained-off", get rotulo() { return tx("o que é constrained-off", "what constrained-off is"); } },
+  },
   carga: {
     get utilidade() { return tx("Medir o consumo do sistema, comparar com períodos equivalentes e separar calendário, temperatura e micro e minigeração.", "Measure the system's consumption, compare it with equivalent periods and separate calendar, temperature and micro and mini generation."); },
     encontra: [

@@ -1,5 +1,7 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { ACENTO } from "@/components/home/acentos";
+import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/home/Recolhido";
 import { DOMINIOS } from "@/lib/dominios";
 import type { Porta } from "@/lib/perguntas/tipos";
 import { rotaPorta } from "@/lib/perguntas/rotas";
@@ -10,7 +12,7 @@ import { rotaPorta } from "@/lib/perguntas/rotas";
  * a matriz que liga cada pergunta aos observatórios que a alimentam, lida dos
  * destinos de cada porta: nada nela é marcado à mão.
  */
-export function HeroPerguntas({ portas }: Readonly<{ portas: Porta[] }>) {
+export function HeroPerguntas({ portas, rodape = null }: Readonly<{ portas: Porta[]; rodape?: ReactNode }>) {
   return (
     <section id="perguntas" aria-labelledby="perguntas-titulo" className="scroll-mt-4 border-b border-linha bg-marfim">
       <div className="mx-auto max-w-page px-6 pb-14 pt-12 md:pb-20 md:pt-16">
@@ -73,6 +75,8 @@ export function HeroPerguntas({ portas }: Readonly<{ portas: Porta[] }>) {
 
         <MatrizFontes portas={portas} />
       </div>
+      {/* faixa no fim da primeira seção (a parceria técnica): a home em inglês só admite as quatro seções seguintes no <main> */}
+      {rodape}
     </section>
   );
 }
@@ -81,9 +85,11 @@ export function HeroPerguntas({ portas }: Readonly<{ portas: Porta[] }>) {
 function MatrizFontes({ portas }: Readonly<{ portas: Porta[] }>) {
   const usados = DOMINIOS.filter((d) => portas.some((p) => p.caminhos.some((c) => c.observatorio === d.nomeCurto)));
   return (
-    <details className="mt-8 border-t border-linha pt-4">
-      <summary className="rotulo flex min-h-[44px] cursor-pointer items-center text-carvao-muted hover:text-carvao">
+    // mesmo desenho dos outros blocos recolhidos da home (Recolhido.tsx): título em serifa e o sinal de mais, não um rótulo solto
+    <details className={`${DETALHE_RECOLHIDO} mt-10 border-t border-linha md:mt-12`}>
+      <summary className={`${RESUMO_RECOLHIDO} py-4 font-serif text-xl text-carvao md:text-2xl`}>
         De onde vêm as respostas
+        <IndicadorRecolhido />
       </summary>
       <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
         Cada observatório reúne painéis de várias coleções. A marca indica que a página do observatório leva a pelo menos

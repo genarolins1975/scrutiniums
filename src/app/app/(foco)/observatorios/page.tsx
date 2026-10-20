@@ -10,6 +10,7 @@ import { rotaPorta } from "@/lib/perguntas/rotas";
 import { atualizacaoObservatorio } from "@/lib/atualizacaoObservatorios";
 import styles from "./escolha.module.css";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
 
 export const metadata: Metadata = {
   title: "Escolha seu observatório",
@@ -99,6 +100,9 @@ export default async function EscolhaObservatorioPage() {
   const user = await getSessionUser();
   if (!user) redirect("/entrar");
   const ultimo = cookies().get(COOKIE_OBSERVATORIO)?.value;
+  // o cookie guarda um observatório ou uma coleção; nos dois casos há um observatório a retomar
+  const cartaoUltimo = OPCOES_OBSERVATORIOS.find((d) => d.id === ultimo);
+  const observatorioUltimo = OBSERVATORIOS.find((o) => o.id === ultimo) ?? (cartaoUltimo ? OBSERVATORIOS.find((o) => o.id === OBSERVATORIO_DO_CARTAO(cartaoUltimo.id)) : undefined);
 
   return (
     <div className={styles.pagina}>
@@ -113,6 +117,24 @@ export default async function EscolhaObservatorioPage() {
           <p className={styles.metodo}>Dados públicos. Método transparente.<br />Fontes e limites à vista, em cada análise.</p>
         </section>
 
+        {/* a página é longa: os seis observatórios ficam a um toque do topo, e quem já esteve aqui retoma de onde parou */}
+        <nav aria-label="Ir direto a um observatório" className={styles.indice}>
+          <p className={styles.rotulo}>Ir direto</p>
+          <ul>
+            {OBSERVATORIOS.map((o) => (
+              <li key={o.id}><a href={`#obs-${o.id}`}>{o.nomeCurto}</a></li>
+            ))}
+          </ul>
+          {observatorioUltimo && (
+            <form method="post" action="/app/observatorios/entrar" className={styles.continuar}>
+              {cartaoUltimo ? <input type="hidden" name="d" value={cartaoUltimo.id} /> : <input type="hidden" name="o" value={observatorioUltimo.id} />}
+              <button type="submit">
+                Continuar em {cartaoUltimo ? cartaoUltimo.nomeCurto : observatorioUltimo.nomeCurto} <span aria-hidden="true">→</span>
+              </button>
+            </form>
+          )}
+        </nav>
+
         {OBSERVATORIOS.map((o) => {
           const cartoes = OPCOES_OBSERVATORIOS.filter((d) => OBSERVATORIO_DO_CARTAO(d.id) === o.id);
           return (
@@ -125,6 +147,12 @@ export default async function EscolhaObservatorioPage() {
                   </div>
                   <h2 id={`obs-${o.id}`}>{o.nomeCurto}</h2>
                   <p className={styles.pergunta}>{o.pergunta}</p>
+                  {/* parceria técnica com o FGV CERI, só no observatório de infraestrutura */}
+                  {o.id === "energia-e-infraestrutura" && (
+                    <div className={styles.parceria}>
+                      <ParceriaTecnica variante="compacto" idioma="pt" />
+                    </div>
+                  )}
                 </div>
                 <nav aria-label={`Coleções do ${o.nome}`} className={styles.colecoes}>
                   <p className={styles.rotulo}>Coleções</p>

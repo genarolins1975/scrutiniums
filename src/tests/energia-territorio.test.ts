@@ -825,7 +825,12 @@ describe("r10: distribuidoras sem tarifa e como os indicadores se distribuem", (
     alvo.tarifa_motivo = "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026";
     const tc = textoSemTarifa(clone)!;
     expect(tc).toContain(`${num(sem.length + 1, 0)} das ${num(clone.length, 0)} distribuidoras`);
-    expect(tc).toContain(`${num(encerradas + 1, 0)} tiveram a vigência encerrada e a tarifa seguinte ainda não consta no arquivo da ANEEL`);
+    // singular e plural: com nenhuma encerrada na gold do dia, o clone tem uma só
+    expect(tc).toContain(`${num(encerradas + 1, 0)} ${encerradas + 1 === 1 ? "teve" : "tiveram"} a vigência encerrada e a tarifa seguinte ainda não consta no arquivo da ANEEL`);
+    const alvo2 = clone.find((d) => d.tarifa !== null)!;
+    alvo2.tarifa = null;
+    alvo2.tarifa_motivo = alvo.tarifa_motivo;
+    expect(textoSemTarifa(clone)!).toContain(`${num(encerradas + 2, 0)} tiveram a vigência encerrada e a tarifa seguinte ainda não consta no arquivo da ANEEL`);
     expect(textoSemTarifa(D.distribuidoras.filter((d) => d.tarifa !== null))).toBeNull();
   });
 

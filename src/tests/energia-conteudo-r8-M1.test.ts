@@ -614,7 +614,7 @@ describe("conciliação: eólicas, 51,3 GW em operação e implantação contra 
 });
 
 describe("conciliação: RALIE com 2.246 usinas e 95.888,3 MW contra SIGA com 145 + 2.099 usinas e 96.298,0 MW (/expansao/carteira)", () => {
-  it("os totais são próximos e de listas diferentes: relidos dos CSV do RALIE e do SIGA, e a página diz a medida, a data e as fases", () => {
+  it("os totais são de listas diferentes: relidos dos CSV do RALIE e do SIGA, e a página diz a medida, a data e as fases", () => {
     const ralie = csv("public/energia/series/expansao_carteira_ralie.csv");
     const siga = csv("public/energia/series/expansao_usinas_siga.csv").filter((r) => r.estagio === "construcao" || r.estagio === "construcao_nao_iniciada");
     const mwRalie = ralie.reduce((s, r) => s + Number(r.kw_ugs_em_implantacao || 0), 0) / 1e3;
@@ -631,7 +631,9 @@ describe("conciliação: RALIE com 2.246 usinas e 95.888,3 MW contra SIGA com 14
     for (const r of ralie) fasesRalie.set(r.fase_siga, (fasesRalie.get(r.fase_siga) ?? 0) + 1);
     expect(fasesRalie.get("Operação")).toBeGreaterThan(0);
     const h = entender(HTML.carteira);
-    expect(h).toContain("Os totais do RALIE e do SIGA são próximos, mas não são a mesma lista nem a mesma medida");
+    // sem qualificar os totais como próximos: 95,9 e 96,3 GW em 01/10/2026, 107,7 e 96,3 GW em 20/10/2026
+    expect(h).toContain("Os totais do RALIE e do SIGA não são a mesma lista nem a mesma medida");
+    expect(h).not.toContain("são próximos");
     expect(h).toContain(`o RALIE (${dmy(XG.referencias.ralie!)}) acompanha ${n0(ralie.length)} usinas, com ${f1(mwRalie)} MW em unidades geradoras em implantação (`);
     for (const [fase, k] of fasesRalie) {
       expect(h, fase || "fora").toContain(fase ? `${n0(k)} na fase ${fase} do SIGA` : `${n0(k)} fora do arquivo aberto do SIGA`);

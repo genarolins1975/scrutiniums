@@ -653,6 +653,16 @@ describe("r10: DEC apurado, perdas, tarifa de referência e EAR com a ressalva j
     expect(b).toContain(`${num(ctx.tarifa!.comTarifa, 0)} distribuidoras`);
     // o cartão mostra R$/kWh e diz que é o mesmo valor que a página Conta de luz traz em R$/MWh
     expect(b).toContain("R$/MWh");
+    // singular e plural nos dois grupos de fora, qualquer que seja a contagem do dia
+    const um = textoCoberturaTarifa({ ...ctx.tarifa!, fora: 2, foraRecente: 1, foraAntigas: 1, naVespera: 0, incorporadas: 0 });
+    expect(um).toContain("1 teve a vigência encerrada nos 90 dias anteriores");
+    expect(um).toContain("1 está sem tarifa há mais de 90 dias");
+    const dois = textoCoberturaTarifa({ ...ctx.tarifa!, fora: 4, foraRecente: 2, foraAntigas: 2, naVespera: 0, incorporadas: 0 });
+    expect(dois).toContain("2 tiveram a vigência encerrada nos 90 dias anteriores");
+    expect(dois).toContain("2 estão sem tarifa há mais de 90 dias");
+    const en = textoCoberturaTarifa({ ...ctx.tarifa!, fora: 2, foraRecente: 1, foraAntigas: 1, naVespera: 0, incorporadas: 0 }, "en");
+    expect(en).toContain("1 had its validity period end");
+    expect(en).toContain("1 has had no tariff for more than 90 days");
   });
 
   it("a EAR do SIN é arredondada uma só vez: cartão, gráfico, tabela e arquivo leem a mesma célula", () => {
