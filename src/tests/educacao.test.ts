@@ -69,7 +69,8 @@ describe("educação nos municípios: lugar no registro, navegação e acesso", 
     for (const r of [
       "/educacao/gold/educacao.json",
       "/educacao/gold/municipios/SP.json",
-      "/educacao-municipal/ideb-por-municipio.csv",
+      "/educacao-municipal/ideb-anos-iniciais-por-municipio.csv",
+      "/educacao-municipal/ideb-anos-finais-por-municipio.csv",
       "/educacao-municipal/censo-escolar-por-municipio.csv",
       "/educacao-municipal/resumo-por-estado.csv",
       "/eficiencia-estatal/educacao-municipal-capitais",
@@ -181,10 +182,10 @@ describe("educação nos municípios: painel completo (com sessão)", () => {
     expect(t).toContain(`INEP, Ideb ${gold.ideb.ano}`);
   });
 
-  it("todas as seções por pergunta, o método recolhido e os três arquivos; nenhum selo no painel completo", async () => {
+  it("todas as seções por pergunta, o método recolhido e os quatro arquivos; nenhum selo no painel completo", async () => {
     const html = await painel();
     for (const id of ["municipio", "estados", "porte", "cobertura", "capitais", "metodo"]) expect(html, id).toContain(`id="${id}"`);
-    for (const a of ["ideb-por-municipio.csv", "censo-escolar-por-municipio.csv", "resumo-por-estado.csv"]) {
+    for (const a of ["ideb-anos-iniciais-por-municipio.csv", "ideb-anos-finais-por-municipio.csv", "censo-escolar-por-municipio.csv", "resumo-por-estado.csv"]) {
       expect(html).toContain(`/educacao-municipal/${a}`);
       expect(existsSync(join(raiz, "src/app/educacao-municipal", a, "route.ts")), a).toBe(true);
     }
@@ -237,7 +238,7 @@ describe("educação nos municípios: arquivos para baixar", () => {
 
   it("Ideb por município: ausência vazia com o motivo, nunca zero", async () => {
     const { csvIdeb } = await import("@/lib/educacao/csv");
-    const txt = (await csvIdeb().text()).replace(/^﻿/, "");
+    const txt = (await csvIdeb("ai").text()).replace(/^﻿/, "");
     const [cab, ...linhas] = txt.trim().split("\n").map((l) => l.split(";"));
     const iIdeb = cab.indexOf("ideb");
     const iMotivo = cab.indexOf("motivo_sem_ideb");
@@ -248,6 +249,14 @@ describe("educação nos municípios: arquivos para baixar", () => {
       expect(l[iMotivo]).toBe("sem_matricula");
     }
     expect(linhas.some((l) => l[iIdeb] === "0")).toBe(false);
+  });
+
+  it("cada arquivo para baixar cabe com folga no teto de 20 MB da Vercel para resposta gerada no build", async () => {
+    const { csvCenso, csvEstados, csvIdeb } = await import("@/lib/educacao/csv");
+    for (const [nome, r] of [["ideb ai", csvIdeb("ai")], ["ideb af", csvIdeb("af")], ["censo", csvCenso()], ["estados", csvEstados()]] as const) {
+      const bytes = (await r.arrayBuffer()).byteLength;
+      expect(bytes, nome).toBeLessThan(15e6);
+    }
   });
 });
 

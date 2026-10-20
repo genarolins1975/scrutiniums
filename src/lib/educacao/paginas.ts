@@ -72,7 +72,8 @@ export const TEXTO_MARCA: Record<string, string> = {
 
 /** Arquivos para baixar, servidos por rotas com conta ao lado do painel. */
 export const DOWNLOADS = [
-  { arquivo: "ideb-por-municipio.csv", rotulo: "Ideb e componentes por município, desde 2005", descricao: "Rede municipal e rede pública, anos iniciais e finais: Ideb, aprovação, notas do Saeb, N, P e meta" },
+  { arquivo: "ideb-anos-iniciais-por-municipio.csv", rotulo: "Ideb e componentes por município, anos iniciais, desde 2005", descricao: "Rede municipal e rede pública, 1º ao 5º ano: Ideb, aprovação, notas do Saeb, N, P e meta" },
+  { arquivo: "ideb-anos-finais-por-municipio.csv", rotulo: "Ideb e componentes por município, anos finais, desde 2005", descricao: "Rede municipal e rede pública, 6º ao 9º ano: Ideb, aprovação, notas do Saeb, N, P e meta" },
   { arquivo: "censo-escolar-por-municipio.csv", rotulo: "Matrículas e escolas por município", descricao: "Censo Escolar: matrículas por rede e etapa e escolas por rede" },
   { arquivo: "resumo-por-estado.csv", rotulo: "Resumo por estado", descricao: "Ideb da rede pública da UF, mediana das redes municipais e matrículas, por etapa" },
 ] as const;

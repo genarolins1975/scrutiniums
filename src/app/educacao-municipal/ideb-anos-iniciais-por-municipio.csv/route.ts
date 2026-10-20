@@ -4,5 +4,5 @@ import { csvIdeb } from "@/lib/educacao/csv";
 export const dynamic = "force-static";
 
 export function GET() {
-  return csvIdeb();
+  return csvIdeb("ai");
 }
