@@ -29,10 +29,13 @@
   "grupos": [
     {
       "id": "inep-ideb",
-      "nome": "INEP, Ideb por município, UF e Brasil (bienal, anos iniciais e finais do ensino fundamental)",
-      "coleta": [["python3", "-m", "pipeline.educacao.run", "--coleta", "ideb", "--so-coleta"]],
-      "caminhos": ["pipeline/educacao/seed/ideb.json.gz"],
-      "timeout_min": 20
+      "nome": "INEP, Ideb por município, UF e Brasil (bienal, anos iniciais e finais do ensino fundamental), com a população do IBGE no ano do Ideb (SIDRA 6579, para o porte do município): as duas no mesmo grupo para a população seguir a edição coletada",
+      "coleta": [
+        ["python3", "-m", "pipeline.educacao.run", "--coleta", "ideb", "--so-coleta"],
+        ["python3", "-m", "pipeline.educacao.run", "--coleta", "populacao", "--so-coleta"]
+      ],
+      "caminhos": ["pipeline/educacao/seed/ideb.json.gz", "pipeline/educacao/seed/populacao.json"],
+      "timeout_min": 30
     },
     {
       "id": "inep-censo-escolar",
@@ -40,13 +43,6 @@
       "coleta": [["python3", "-m", "pipeline.educacao.run", "--coleta", "censo", "--so-coleta"]],
       "caminhos": ["pipeline/educacao/seed/censo.json"],
       "timeout_min": 30
-    },
-    {
-      "id": "ibge-populacao",
-      "nome": "IBGE, estimativas da população residente no ano do Ideb (SIDRA 6579, para o porte do município)",
-      "coleta": [["python3", "-m", "pipeline.educacao.run", "--coleta", "populacao", "--so-coleta"]],
-      "caminhos": ["pipeline/educacao/seed/populacao.json"],
-      "timeout_min": 10
     }
   ]
 }

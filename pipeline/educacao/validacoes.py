@@ -90,7 +90,10 @@ def validar_ideb(seed: dict, anterior: dict | None = None) -> list[str]:
                 if r["ideb"][k] is not None:
                     com[rede] += 1
         esperado = F.QUADRO_1.get(ano, {}).get(etapa)
-        if esperado and esperado != com:
+        if esperado is None:
+            # edição nova sem a contagem da nota informativa cadastrada: retida até o cadastro em fontes.QUADRO_1
+            p.append(f"{etapa}: edição {ano} sem a contagem do Quadro 1 da nota informativa em fontes.QUADRO_1")
+        elif esperado != com:
             p.append(f"{etapa}: municípios com Ideb {ano} {com}, a nota informativa diz {esperado}")
         ufs = e.get("ufs") or {}
         if sorted(ufs) != sorted(F.SIGLAS):
@@ -211,6 +214,8 @@ def validar_populacao(seed: dict, anterior: dict | None = None) -> list[str]:
 
 def validar_cruzado(ideb: dict, censo: dict, pop: dict) -> list[str]:
     p: list[str] = []
+    if pop.get("ano") != ideb.get("ano"):
+        p.append(f"população de {pop.get('ano')} e Ideb de {ideb.get('ano')}: o porte do município tem de ser do ano do Ideb")
     populacao = pop.get("municipios") or {}
     censo_mun = censo.get("municipios") or {}
     for cod in censo_mun:

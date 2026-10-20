@@ -10,6 +10,7 @@ lê as mesmas planilhas do INEP.
 import copy
 import json
 import unittest
+from unittest import mock
 from pathlib import Path
 
 from pipeline.educacao import coleta, gold, run, validacoes
@@ -105,8 +106,18 @@ class TestValidacoesRetem(unittest.TestCase):
         cod = self._um_municipio(i)
         r = i["etapas"]["ai"]["municipios"][cod]["redes"]["municipal"]
         r["ideb"][-1] = None
-        if i["ano"] in F.QUADRO_1:
-            self.assertTrue(any("nota informativa" in p for p in validacoes.validar_ideb(i)))
+        self.assertIn(i["ano"], F.QUADRO_1)
+        self.assertTrue(any("nota informativa" in p for p in validacoes.validar_ideb(i)))
+
+    def test_edicao_sem_referencia_do_quadro_1_fica_retida(self):
+        # edição nova antes do cadastro da contagem da nota informativa: simulada tirando a referência da edição publicada
+        with mock.patch.dict(F.QUADRO_1, clear=True):
+            self.assertTrue(any("sem a contagem do Quadro 1" in p for p in validacoes.validar_ideb(self.s["ideb"])))
+
+    def test_cruzada_populacao_de_outro_ano(self):
+        pop = copy.deepcopy(self.s["populacao"])
+        pop["ano"] = self.s["ideb"]["ano"] - 2
+        self.assertTrue(any("tem de ser do ano do Ideb" in x for x in validacoes.validar_cruzado(self.s["ideb"], self.s["censo"], pop)))
 
     def test_uf_faltando_e_brasil_sem_rede(self):
         i = copy.deepcopy(self.s["ideb"])
