@@ -1,3 +1,5 @@
+"use client";
+
 import { Cadeado } from "./SeloComConta";
 import { hrefEntrar, textosAcesso } from "./sessao";
 
