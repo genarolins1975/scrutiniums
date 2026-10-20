@@ -29,6 +29,7 @@ import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
 import catalogoEstadual from "@/lib/contas-estaduais/catalogo.json";
 import { CAPITULOS as CAPITULOS_SANEAMENTO, ROTA as ROTA_SANEAMENTO, rotaCapitulo } from "@/lib/saneamento/capitulos";
 import { PAGINAS_GAS } from "@/lib/gas/navegacao";
+import { ROTA_COMBUSTIVEIS, paginaCombustiveis } from "@/lib/combustiveis/paginas";
 import { goldGas } from "@/lib/gas/gold";
 
 export type PainelVitrine = { titulo: string; href: string; descricao: string };
@@ -241,7 +242,11 @@ function vitrineGas(fmt: FormatarNumero): Vitrine {
     focoImagem: "50% 22%",
     contagem: { valor: fmt(quantidade), unidade: "páginas por pergunta" },
     contagemIndice: { tipo: "simples", quantidade, unidade: "paginas_por_pergunta" },
-    paineis: PAGINAS_GAS.filter((p) => p.grupo !== "dados").map((p) => ({ titulo: p.rotulo, href: p.href, descricao: p.pergunta })),
+    paineis: [
+      ...PAGINAS_GAS.filter((p) => p.grupo !== "dados").map((p) => ({ titulo: p.rotulo, href: p.href, descricao: p.pergunta })),
+      // coleção Combustíveis: painel próprio no Observatório de Energia e Infraestrutura, com a gold deste pipeline
+      { titulo: "Combustíveis nos postos", href: ROTA_COMBUSTIVEIS, descricao: `${paginaCombustiveis("painel").pergunta} Coleção Combustíveis, pela mesma pesquisa de preços da ANP.` },
+    ],
     fontes: `${fmt(meta.fontes.length)} conjuntos de ${listaPt(orgaos)}.`,
     metodologia: { href: "/gas-natural/dados", rotulo: "Dados e método" },
   };

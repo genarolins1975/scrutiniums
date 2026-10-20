@@ -64,6 +64,7 @@ const IDS = [
   "tarifa-social-luz",
   "botijao",
   "gnv",
+  "tanque",
   "agua",
   "municipio",
   "tarifa-social-agua",
@@ -98,7 +99,9 @@ export const PARA_VOCE = {
   "/observatorios/servicos-publicos": ["capital", "educacao-capital", "saude-capital"],
   "/territorio": ["fogo", "desastres"],
   "/observatorios/contas-publicas": ["estado-contas", "previdencia", "metas"],
-  "/observatorios/energia-e-infraestrutura": ["luz", "municipio", "botijao"],
+  // o botijão saiu daqui em 19/10/2026 para dar lugar ao tanque (painel novo): continua a um clique no elo "Chegar à casa"
+  // da cadeia do gás, logo abaixo, e no "Para você" das Famílias; assim ficam uma pergunta por serviço (luz, combustível, água)
+  "/observatorios/energia-e-infraestrutura": ["luz", "tanque", "municipio"],
   "/observatorios/economia": ["banco-cobra", "credito-atraso", "comida"],
 } as const satisfies Record<string, readonly IdPergunta[]>;
 
@@ -131,6 +134,19 @@ const numeroGnv = (): NumeroPorta =>
     () => {
       const m = lerPublico("gas", "gold", "gnv-e-gas-encanado.json").indicadores.medio_mes;
       return { valor: `R$ ${num(m.valor, 2)}`, periodo: mesAno(m.periodo), nota: "Média dos postos pesquisados no mês, Brasil." };
+    },
+  );
+
+/** Preço médio da gasolina comum no Brasil, do mesmo arquivo do painel de combustíveis. */
+const numeroTanque = (): NumeroPorta =>
+  numero(
+    { rotulo: "Preço médio do litro de gasolina comum", unidade: "por litro", fonte: "ANP, Levantamento de Preços de Combustíveis", href: "/combustiveis" },
+    () => {
+      const g = lerPublico("gas", "gold", "combustiveis.json").indicadores;
+      const p = g.gasolina_medio_mes;
+      const n = g.gasolina_postos_mes;
+      if (typeof p?.valor !== "number") throw new Error("combustiveis.gasolina_medio_mes ausente");
+      return { valor: `R$ ${num(p.valor, 2)}`, periodo: mesAno(p.periodo), nota: `Média Brasil de ${num(n.valor, 0)} postos pesquisados no mês.` };
     },
   );
 
@@ -231,6 +247,14 @@ function pergunta(id: IdPergunta, idioma: Idioma): PerguntaParaVoce {
         resposta: "O preço do metro cúbico de GNV em cada estado com postos pesquisados pela ANP e a inflação do gás encanado.",
         href: "/gas-natural/gnv-e-gas-encanado",
         numero: daPorta(numeroGnv()),
+      };
+    case "tanque":
+      return {
+        id,
+        pergunta: "Quanto custa encher o tanque no meu estado?",
+        resposta: "O preço médio do litro de gasolina, etanol e diesel no seu estado, a distância para a média do Brasil e a série mês a mês desde 2013.",
+        href: "/combustiveis",
+        numero: daPorta(numeroTanque()),
       };
     case "agua":
       return { id, pergunta: CONSULTAS.agua.pergunta, resposta: CONSULTAS.agua.resumo, href: CONSULTAS.agua.href, numero: daPorta(numeroContaAgua()) };

@@ -130,6 +130,9 @@ export const VIEW_SECTIONS = [
   "gas:regulacao",
   "gas:dados",
   "gas:metodologia",
+  // Combustíveis nos postos (coleção própria, gold do pipeline do Gás)
+  "gas:combustiveis",
+  "gas:combustiveis-no-meu-estado",
   // Crédito (páginas Next fora da aplicação de página única)
   "credito:quanto-meu-banco-cobra",
   "credito:simulador-da-parcela",
@@ -261,6 +264,8 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "gas:regulacao": "Gás Natural · Regulação e marcos legais",
   "gas:dados": "Gás Natural · Dados e downloads",
   "gas:metodologia": "Gás Natural · Método e glossário",
+  "gas:combustiveis": "Combustíveis · Preços nos postos",
+  "gas:combustiveis-no-meu-estado": "Combustíveis · Consulta por estado",
   "credito:quanto-meu-banco-cobra": "Crédito · Quanto meu banco cobra?",
   "credito:simulador-da-parcela": "Crédito · Simulador da parcela",
   "credito:metodologia": "Crédito · Metodologia e fontes",

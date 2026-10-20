@@ -395,12 +395,12 @@ function porta_energia(): Porta {
       caminho("energia", "Os reservatórios estão cheios ou vazios?", "Armazenamento e chuvas por região, comparados ao histórico da mesma época.", "/setor-eletrico/agua-e-clima"),
       caminho("energia", "Quais fontes geram a energia do país?", "Geração por fonte e por usina, com solar distribuída separada.", "/setor-eletrico/geracao"),
       caminho("gas", "Quanto gás o Brasil produz e importa?", "Produção por estado, gás reinjetado e queimado, importação por origem.", "/gas-natural/producao"),
+      caminho("gas", "Quanto custa encher o tanque no meu estado?", "Gasolina, etanol e diesel por estado e no Brasil, mês a mês desde 2013.", "/combustiveis"),
       caminho("eficiencia", "Como as pessoas se deslocam nas cidades?", "Oferta e uso do transporte público nos recortes disponíveis.", "/eficiencia-estatal/mobilidade-transporte"),
     ],
     paraOSeuCaso: [CONSULTAS.luz, CONSULTAS.municipio, CONSULTAS.agua, CONSULTAS.botijao],
     lacunas: [
       "Valor final da conta de luz com tributos e bandeira tarifária.",
-      "Preço da gasolina e do diesel nos postos.",
       "Rodovias, ferrovias e portos.",
     ],
     metodos: [

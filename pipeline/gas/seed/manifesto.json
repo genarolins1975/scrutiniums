@@ -465,17 +465,33 @@
  },
  "anp_precos_brasil": {
   "bytes_original": 113245,
-  "capturado_em": "2026-10-14T02:33:12Z",
-  "recorte": "linhas dos produtos GLP e GNV, todas as colunas",
-  "seed": "anp/precos-mensais-brasil-glp-gnv.csv.gz",
+  "capturado_em": "2026-10-19T23:59:12Z",
+  "notas_da_planilha": [
+   "Entre 30/07/17 e 30/12/17, a abrangência geográfica da pesquisa foi reduzida de 501 para 459 municípios, distribuídos da seguinte forma: as 26 capitais e o DF pesquisados semanalmente e outros 432 municípios pesquisados quinzenalmente, alternando-se a cada semana um determinado grupo (Grupo A com as 27 capitais mais 215 municípios, totalizando 242 localidades, e Grupo B com as 27 capitais e outros 217 municípios, reunindo 244 localidades).",
+   "Entre 27/5/18 e 2/6/18, o quantitativo de revendas com combustível disponível pesquisadas foi reduzido em torno de 85% em função dos impactos gerados pela greve dos caminhoneiros.",
+   "Não houve pesquisa de preços entre 18/8/20 e 17/10/20.",
+   "Os preços de distribuição foram coletados por meio da pesquisa de preços até 17/8/20. Para mais informações, acesse https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis/serie-historica-do-levantamento-de-precos.",
+   "A partir de maio/22, os preços por litro de todos os combustíveis automotivos comercializados deverão ser expressos com duas casas decimais no painel de preços e nas bombas medidoras. (RESOLUÇÃO ANP Nº 858, DE 5 DE NOVEMBRO DE 2021)",
+   "Atualmente, o produto 'óleo diesel' se refere ao óleo diesel B S500 comum."
+  ],
+  "recorte": "linhas dos produtos GLP, GNV, gasolina comum, etanol hidratado, óleo diesel e óleo diesel S10, todas as colunas; as observações da planilha (lacunas e mudanças de abrangência) ficam no manifesto",
+  "seed": "anp/precos-mensais-brasil.csv.gz",
   "sha256_original": "33193d652c05a38c5f157fd8cbc10eb6aaffaf2e426c7937e17ddbb0d08ef940",
   "url": "https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis/shlp/mensal/mensal-brasil-desde-jan2013.xlsx"
  },
  "anp_precos_estados": {
   "bytes_original": 2835462,
-  "capturado_em": "2026-10-14T02:33:12Z",
-  "recorte": "linhas dos produtos GLP e GNV, todas as colunas",
-  "seed": "anp/precos-mensais-estados-glp-gnv.csv.gz",
+  "capturado_em": "2026-10-19T23:59:11Z",
+  "notas_da_planilha": [
+   "Entre 30/07/17 e 30/12/17, a abrangência geográfica da pesquisa foi reduzida de 501 para 459 municípios, distribuídos da seguinte forma: as 26 capitais e o DF pesquisados semanalmente e outros 432 municípios pesquisados quinzenalmente, alternando-se a cada semana um determinado grupo (Grupo A com as 27 capitais mais 215 municípios, totalizando 242 localidades, e Grupo B com as 27 capitais e outros 217 municípios, reunindo 244 localidades).",
+   "Entre 27/5/18 e 2/6/18, o quantitativo de revendas com combustível disponível pesquisadas foi reduzido em torno de 85% em função dos impactos gerados pela greve dos caminhoneiros.",
+   "Não houve pesquisa de preços entre 18/8/20 e 17/10/20.",
+   "Os preços de distribuição foram coletados por meio da pesquisa de preços até 17/8/20. Para mais informações, acesse https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis/serie-historica-do-levantamento-de-precos.",
+   "A partir de maio/22, os preços por litro de todos os combustíveis automotivos comercializados deverão ser expressos com duas casas decimais no painel de preços e nas bombas medidoras. (RESOLUÇÃO ANP Nº 858, DE 5 DE NOVEMBRO DE 2021)",
+   "Atualmente, o produto 'óleo diesel' se refere ao óleo diesel B S500 comum."
+  ],
+  "recorte": "linhas dos produtos GLP, GNV, gasolina comum, etanol hidratado, óleo diesel e óleo diesel S10, todas as colunas; as observações da planilha (lacunas e mudanças de abrangência) ficam no manifesto",
+  "seed": "anp/precos-mensais-estados.csv.gz",
   "sha256_original": "9673e3979c55887a5f45f4b3a8b3fc4f6e6d8631407c11fb9234520ee8095b0b",
   "url": "https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis/shlp/mensal/mensal-estados-desde-jan2013.xlsx"
  },

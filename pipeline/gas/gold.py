@@ -9,6 +9,7 @@ import csv
 import io
 import json
 import os
+import re
 from collections import defaultdict
 from statistics import median
 
@@ -594,6 +595,223 @@ def consumidor(s):
             "IPCA em 12 meses (%): índice geral, gás de botijão, gás encanado e gás veicular")
 
 
+# ------------------------------------------------------------------ combustíveis nos postos
+
+# Produtos do painel de combustíveis (/combustiveis): id na gold, nome na planilha da ANP, nome e rótulo curto exibidos.
+# A planilha chama de "óleo diesel" o que hoje é o diesel B S500 comum; o nome exibido segue a planilha, e a nota diz isso.
+PRODUTOS_COMBUSTIVEIS = [
+    ("gasolina", "GASOLINA COMUM", "Gasolina comum", "Gasolina", None),
+    ("etanol", "ETANOL HIDRATADO", "Etanol hidratado", "Etanol", None),
+    ("diesel", "OLEO DIESEL", "Óleo diesel", "Diesel", "Na planilha, “óleo diesel”; segundo a ANP, hoje o produto é o óleo diesel B S500 comum."),
+    ("diesel_s10", "OLEO DIESEL S10", "Óleo diesel S10", "Diesel S10", None),
+]
+PRIMEIRO_MES_COMBUSTIVEIS = "2013-01"
+
+
+def _data_nota(d, m, a):
+    a = int(a)
+    return f"{a + 2000 if a < 100 else a:04d}-{int(m):02d}-{int(d):02d}"
+
+
+def eventos_da_pesquisa(notas):
+    """Intervalos que as observações da planilha descrevem ("Entre 27/5/18 e 2/6/18 ..."), com o tipo pelo texto da
+    própria nota. Nota com uma data só (fim da coleta de preços de distribuição) não descreve intervalo e fica de fora."""
+    out = []
+    for texto in notas:
+        datas = re.findall(r"\b(\d{1,2})/(\d{1,2})/(\d{2,4})\b", texto)
+        if len(datas) < 2:
+            continue
+        inicio, fim = _data_nota(*datas[0]), _data_nota(*datas[1])
+        baixo = texto.lower()
+        if "não houve pesquisa" in baixo:
+            tipo = "sem_pesquisa"
+        elif "abrangência" in baixo:
+            tipo = "abrangencia"
+        elif "reduzid" in baixo:
+            tipo = "amostra_reduzida"
+        else:
+            tipo = "outro"
+        out.append({"tipo": tipo, "inicio": inicio, "fim": fim, "meses": _meses_entre(inicio[:7], fim[:7]), "texto": texto})
+    return out
+
+
+def _meses_entre(ini, fim):
+    out = []
+    a, m = (int(x) for x in ini.split("-"))
+    while f"{a:04d}-{m:02d}" <= fim:
+        out.append(f"{a:04d}-{m:02d}")
+        m += 1
+        if m == 13:
+            a, m = a + 1, 1
+    return out
+
+
+def situacao_do_mes(mes, presente, eventos):
+    """completo, parcial (a pesquisa parou em parte do mês) ou sem_pesquisa (o mês inteiro fora da pesquisa, sem linha na
+    planilha). Mês sem linha e sem nota que explique fica sem_dado: ausência, nunca zero."""
+    lacunas = [e for e in eventos if e["tipo"] == "sem_pesquisa" and mes in e["meses"]]
+    if not presente:
+        return "sem_pesquisa" if lacunas else "sem_dado"
+    return "parcial" if lacunas else "completo"
+
+
+def _inteiro(v):
+    """Contagem da planilha (lida como número decimal) como inteiro; ausência continua None."""
+    return None if v is None else int(round(v))
+
+
+def combustiveis(s):
+    est = ler.precos_estados()
+    br = ler.precos_brasil()
+    ip = ler.ipca()
+    geral = ip[("geral", "mensal")]
+    ult_ipca = max(geral)
+    notas = ler.notas_precos()
+    eventos = eventos_da_pesquisa(notas)
+    nomes_anp = {anp: pid for pid, anp, _, _, _ in PRODUTOS_COMBUSTIVEIS}
+
+    brasil = defaultdict(dict)  # mes -> pid -> registro
+    for x in br:
+        if x["produto"] in nomes_anp:
+            brasil[x["mes"]][nomes_anp[x["produto"]]] = x
+    por_uf = defaultdict(dict)  # (mes, uf) -> pid -> registro
+    for x in est:
+        if x["produto"] in nomes_anp:
+            por_uf[(x["mes"], x["uf"])][nomes_anp[x["produto"]]] = x
+    ultimo = max(m for m, d in brasil.items() if all(pid in d for pid, *_ in PRODUTOS_COMBUSTIVEIS))
+    meses = _meses_entre(PRIMEIRO_MES_COMBUSTIVEIS, ultimo)
+    base_real = min(ultimo, ult_ipca)
+    idx = _indice_encadeado(geral, PRIMEIRO_MES_COMBUSTIVEIS)
+
+    def real(v, m):
+        if v is None or m not in idx or base_real not in idx:
+            return None
+        return v * idx[base_real] / idx[m]
+
+    ids = [pid for pid, *_ in PRODUTOS_COMBUSTIVEIS]
+    serie = []
+    for m in meses:
+        d = brasil.get(m, {})
+        linha = {"mes": m, "situacao": situacao_do_mes(m, bool(d), eventos)}
+        for pid in ids:
+            x = d.get(pid) or {}
+            linha[pid] = _r(x.get("medio"))
+            linha[f"{pid}_minimo"] = _r(x.get("minimo"))
+            linha[f"{pid}_maximo"] = _r(x.get("maximo"))
+            linha[f"{pid}_postos"] = _inteiro(x.get("postos"))
+            linha[f"{pid}_real"] = _r(real(x.get("medio"), m), 2)
+        serie.append(linha)
+
+    m12 = _mes_menos(ultimo, 12)
+    u_br = brasil[ultimo]
+    ufs = sorted(base.UF_NOME, key=lambda uf: base.UF_NOME[uf])
+    tabela = []
+    for uf in ufs:
+        atual = por_uf.get((ultimo, uf), {})
+        antes = por_uf.get((m12, uf), {})
+        linha = {"uf": uf, "codigo": base.UF_CODIGO[uf], "nome": base.UF_NOME[uf], "regiao": base.UF_REGIAO[uf]}
+        for pid in ids:
+            x = atual.get(pid)
+            if not x or x["medio"] is None:
+                linha[pid] = None
+                continue
+            ref = u_br[pid]["medio"]
+            ant = (antes.get(pid) or {}).get("medio")
+            linha[pid] = {
+                "medio": _r(x["medio"]), "minimo": _r(x["minimo"]), "maximo": _r(x["maximo"]), "desvio": _r(x["desvio"]),
+                "postos": _inteiro(x["postos"]), "medio_12m_antes": _r(ant), "variacao_12m_pct": _r(_var_pct(x["medio"], ant), 1),
+                "dif_brasil": _r(x["medio"] - ref), "dif_brasil_pct": _r(_var_pct(x["medio"], ref), 1),
+            }
+        g, e = linha["gasolina"], linha["etanol"]
+        linha["etanol_gasolina_pct"] = _r(100 * e["medio"] / g["medio"], 1) if g and e else None
+        tabela.append(linha)
+
+    serie_uf = {pid: {uf: [_r((por_uf.get((m, uf), {}).get(pid) or {}).get("medio")) for m in meses] for uf in ufs} for pid in ids}
+
+    fb, fe = ["anp_precos_brasil"], ["anp_precos_estados"]
+    ind = {}
+    for pid, anp, nome, curto, nota in PRODUTOS_COMBUSTIVEIS:
+        x = u_br[pid]
+        a12 = (brasil.get(m12) or {}).get(pid)
+        com_uf = [l for l in tabela if l[pid]]
+        ind[f"{pid}_medio_mes"] = indicador(f"Preço médio de revenda: {nome.lower()}", "R$/l", O, fb, ultimo, _r(x["medio"]),
+                                            nota="Média nacional da ANP sobre a amostra de postos pesquisados no mês." + (f" {nota}" if nota else ""))
+        ind[f"{pid}_minimo_mes"] = indicador(f"Menor preço encontrado na pesquisa do mês: {nome.lower()}", "R$/l", O, fb, ultimo, _r(x["minimo"]))
+        ind[f"{pid}_maximo_mes"] = indicador(f"Maior preço encontrado na pesquisa do mês: {nome.lower()}", "R$/l", O, fb, ultimo, _r(x["maximo"]))
+        ind[f"{pid}_postos_mes"] = indicador(f"Postos pesquisados no mês: {nome.lower()}", "postos", O, fb, ultimo, _inteiro(x["postos"]),
+                                             nota="Número que a ANP informa na série mensal. A planilha não diz se um posto pesquisado em mais de uma semana conta uma vez ou mais.")
+        ind[f"{pid}_variacao_12m"] = indicador(f"Variação do preço médio em 12 meses: {nome.lower()}", "%", C, fb, f"{m12} a {ultimo}",
+                                               _r(_var_pct(x["medio"], a12["medio"] if a12 else None), 1),
+                                               "(preço médio do mês ÷ preço médio 12 meses antes − 1) × 100")
+        ind[f"{pid}_ufs_mes"] = indicador(f"UFs com preço pesquisado no mês: {nome.lower()}", "UFs", C, fe, ultimo, len(com_uf),
+                                          "contagem de UFs com preço médio publicado")
+    ind["etanol_gasolina_brasil"] = indicador("Preço do etanol como porcentagem do preço da gasolina, média Brasil", "%", C, fb, ultimo,
+                                              _r(100 * u_br["etanol"]["medio"] / u_br["gasolina"]["medio"], 1),
+                                              "preço médio do etanol hidratado ÷ preço médio da gasolina comum × 100",
+                                              nota="Razão entre preços por litro. Não considera o rendimento de cada combustível no motor.")
+
+    # Como a ANP mede: a média nacional é calculada pela própria ANP; a conferência mostra que ela não é a média das UFs
+    conferencia = []
+    for pid, anp, nome, curto, nota in PRODUTOS_COMBUSTIVEIS:
+        ls = [l[pid] for l in tabela if l[pid]]
+        soma_postos = sum(x["postos"] for x in ls if x["postos"] is not None)
+        conferencia.append({
+            "produto": pid, "media_anp": _r(u_br[pid]["medio"]), "postos_brasil": _inteiro(u_br[pid]["postos"]), "soma_postos_ufs": soma_postos,
+            "media_simples_ufs": _r(sum(x["medio"] for x in ls) / len(ls)),
+            "media_ponderada_postos_ufs": _r(sum(x["medio"] * x["postos"] for x in ls) / soma_postos) if soma_postos else None,
+        })
+
+    # a soma dos postos das UFs contra o total do Brasil em todos os meses e produtos publicados (não só no último): a página
+    # afirma a identidade para a série inteira, então ela é conferida mês a mês e qualquer divergência retém a publicação
+    postos_conferidos, postos_divergentes = 0, []
+    for m in meses:
+        for pid in ids:
+            tot = ((brasil.get(m) or {}).get(pid) or {}).get("postos")
+            if tot is None:
+                continue
+            soma = sum(((por_uf.get((m, uf)) or {}).get(pid) or {}).get("postos") or 0 for uf in ufs)
+            postos_conferidos += 1
+            if _inteiro(tot) != soma:
+                postos_divergentes.append({"mes": m, "produto": pid, "postos_brasil": _inteiro(tot), "soma_postos_ufs": soma})
+
+    s.gold("combustiveis", ["anp_precos_brasil", "anp_precos_estados", "ibge_ipca"], {
+        "ultimo_mes": ultimo, "primeiro_mes": PRIMEIRO_MES_COMBUSTIVEIS, "mes_base_real": base_real,
+        "produtos": [{"id": pid, "nome": nome, "curto": curto, "produto_anp": anp, "unidade": "R$/l", "nota": nota}
+                     for pid, anp, nome, curto, nota in PRODUTOS_COMBUSTIVEIS],
+        "indicadores": ind, "serie": serie, "por_uf": tabela,
+        "serie_uf": {"meses": meses, "valores": serie_uf},
+        "pesquisa": {
+            "notas": notas, "eventos": eventos,
+            "meses_sem_pesquisa": [x["mes"] for x in serie if x["situacao"] == "sem_pesquisa"],
+            "meses_parciais": [x["mes"] for x in serie if x["situacao"] == "parcial"],
+            "meses_sem_dado": [x["mes"] for x in serie if x["situacao"] == "sem_dado"],
+            "conferencia_ultimo_mes": conferencia,
+            "conferencia_postos": {"meses_produtos_conferidos": postos_conferidos, "divergencias": postos_divergentes},
+        },
+    })
+    s.serie("preco-combustiveis-brasil-mensal",
+            ["mes", "situacao"] + [f"{pid}{suf}" for pid in ids for suf in ("", "_minimo", "_maximo", "_postos", "_real")],
+            [[x["mes"], x["situacao"]] + [x[f"{pid}{suf}"] for pid in ids for suf in ("", "_minimo", "_maximo", "_postos", "_real")] for x in serie],
+            ["anp_precos_brasil", "ibge_ipca"],
+            f"Preço de revenda da gasolina comum, do etanol hidratado, do óleo diesel e do óleo diesel S10 (R$/l), Brasil, desde janeiro de 2013: "
+            f"médio, mínimo e máximo da pesquisa, postos pesquisados e médio em reais de {base.mes_legivel(base_real)} (IPCA); situação do mês na pesquisa")
+    s.serie("preco-combustiveis-por-uf",
+            ["uf", "nome"] + [f"{pid}_{k}" for pid in ids for k in ("medio", "minimo", "maximo", "postos", "dif_brasil", "dif_brasil_pct", "variacao_12m_pct")] + ["etanol_gasolina_pct"],
+            [[l["uf"], l["nome"]] + [(l[pid] or {}).get(k) for pid in ids for k in ("medio", "minimo", "maximo", "postos", "dif_brasil", "dif_brasil_pct", "variacao_12m_pct")]
+             + [l["etanol_gasolina_pct"]] for l in tabela],
+            ["anp_precos_estados", "anp_precos_brasil"],
+            f"Preço de revenda dos combustíveis por UF em {base.mes_legivel(ultimo)} (R$/l), distância para a média Brasil e preço do etanol em % do da gasolina")
+    longas = []
+    for m in meses:
+        for uf in ufs:
+            for pid in ids:
+                x = por_uf.get((m, uf), {}).get(pid)
+                if x and x["medio"] is not None:
+                    longas.append([m, uf, pid, _r(x["medio"]), _r(x["minimo"]), _r(x["maximo"]), _inteiro(x["postos"])])
+    s.serie("preco-combustiveis-uf-mensal", ["mes", "uf", "produto", "medio", "minimo", "maximo", "postos"], longas, ["anp_precos_estados"],
+            "Preço de revenda dos combustíveis por UF e mês desde janeiro de 2013 (R$/l): médio, mínimo e máximo da pesquisa e postos pesquisados")
+
+
 # ------------------------------------------------------------------ mercado e transporte
 
 TERMINAIS_GNL = [
@@ -779,6 +997,7 @@ def construir():
     importacao(s, nac, meses)
     precos(s)
     consumidor(s)
+    combustiveis(s)
     mercado_e_infraestrutura(s)
     meta(s)
     validacoes.conferir(s)

@@ -56,8 +56,9 @@ function caminhosDo(item: ItemLeva2): string[] {
 }
 
 describe("leva 2: a lista declarativa", () => {
-  it("registra as quatro ferramentas da tabela da banca, com pergunta, forma, porta, rotas e arquivos exatos", () => {
-    expect(LEVA_2.map((i) => i.id)).toEqual(["quanto-meu-banco-cobra", "teve-fogo-perto-de-mim", "cem-reais-dos-impostos", "metodologia-do-credito"]);
+  it("registra as ferramentas da tabela da banca, com pergunta, forma, porta, rotas e arquivos exatos", () => {
+    // as quatro da Onda 2 e a consulta do painel Combustíveis nos postos (19/10/2026), todas preparadas e desligadas
+    expect(LEVA_2.map((i) => i.id)).toEqual(["quanto-meu-banco-cobra", "teve-fogo-perto-de-mim", "cem-reais-dos-impostos", "metodologia-do-credito", "quanto-custa-encher-o-tanque"]);
     expect(Object.isFrozen(LEVA_2)).toBe(true);
     for (const i of LEVA_2) {
       expect(i.pergunta.trim().endsWith("?"), i.id).toBe(true);
@@ -76,6 +77,10 @@ describe("leva 2: a lista declarativa", () => {
     // a ficha é montada no servidor: a gold municipal inteira continua com conta
     expect(porId["teve-fogo-perto-de-mim"].arquivos).toEqual(["/saneamento/gold/indice.json"]);
     expect(porId["cem-reais-dos-impostos"].portas).toEqual(["contas-publicas"]);
+    // a consulta do tanque é só a rota exata, montada no servidor: nenhum arquivo abre, e o painel /combustiveis continua com conta
+    expect(porId["quanto-custa-encher-o-tanque"].rotas).toEqual(["/combustiveis/no-meu-estado"]);
+    expect(porId["quanto-custa-encher-o-tanque"].arquivos).toEqual([]);
+    expect(porId["quanto-custa-encher-o-tanque"].portas).toEqual(["energia-e-infraestrutura", "familias"]);
   });
 
   it("a aprovação só vale com data real no formato AAAA-MM-DD", () => {
@@ -164,6 +169,9 @@ describe("leva 2 ligada num teste (aprovação preenchida)", () => {
       "/observatorio-do-credito/metodologiax", "/obs/data/gold/juros.json", "/obs/data/gold", "/obs/data/gold/", "/observatorio", "/observatorio/methodology",
       // Contas Públicas: o painel, os capítulos e os arquivos
       "/contas-publicas", "/contas-publicas/execucao", "/contas-publicas/serie.json",
+      // Combustíveis: o painel, as vizinhas e os arquivos da gold
+      "/combustiveis", "/combustiveis/", "/combustiveis/no-meu-estadox", "/combustiveis/no-meu-estado/SP", "/en/combustiveis/no-meu-estado",
+      "/gas/gold/combustiveis.json", "/gas/series/preco-combustiveis-por-uf.csv", "/gas/gold", "/gas-natural",
       // pastas e variações dos arquivos abertos
       "/saneamento/gold", "/saneamento/gold/", "/saneamento/gold/indice.json/", "/saneamento/gold/indice.jsonx", "/saneamento/gold/municipios.json",
     ]) expect(ehRotaPublicaCom(ligada, p), p).toBe(false);
@@ -190,14 +198,17 @@ describe("leva 2 ligada num teste (aprovação preenchida)", () => {
       { pergunta: "Teve fogo perto de mim?", resumo: LEVA_2[1].resumo, href: "/territorio/queimadas/municipio" },
     ]);
     for (const p of ["familias", "economia"] as const) {
-      expect(consultasLeva2(p, ligada).map((c) => c.href), p).toEqual(["/observatorio-do-credito/quanto-meu-banco-cobra"]);
+      expect(consultasLeva2(p, ligada).map((c) => c.href), p).toEqual(
+        p === "familias" ? ["/observatorio-do-credito/quanto-meu-banco-cobra", "/combustiveis/no-meu-estado"] : ["/observatorio-do-credito/quanto-meu-banco-cobra"],
+      );
       expect(metodosLeva2(p, ligada).map((m) => m.href), p).toEqual(["/observatorio-do-credito/metodologia"]);
     }
+    expect(consultasLeva2("energia-e-infraestrutura", ligada).map((c) => c.href)).toEqual(["/combustiveis/no-meu-estado"]);
     expect(artefatosLeva2("contas-publicas", ligada)).toEqual(["cem-reais-dos-impostos"]);
     expect(consultasLeva2("contas-publicas", ligada)).toEqual([]);
     expect(consultasLeva2("territorio-e-clima", so("quanto-meu-banco-cobra"))).toEqual([]);
     // toda consulta aprovada leva a rota que a própria aprovação abre
-    for (const p of ["familias", "economia", "territorio-e-clima"] as const) {
+    for (const p of ["familias", "economia", "territorio-e-clima", "energia-e-infraestrutura"] as const) {
       for (const c of consultasLeva2(p, ligada)) expect(ehRotaPublicaCom(ligada, c.href), c.href).toBe(true);
     }
   });
@@ -369,5 +380,34 @@ describe("leva 2: a ficha \"Teve fogo perto de mim?\"", () => {
     expect(html).toMatch(/focos de calor de 2025/);
     expect(html).not.toMatch(/NaN|undefined|Infinity/);
     expect(html.includes("data-aviso-consulta-aberta")).toBe(leva2Aprovada("teve-fogo-perto-de-mim"));
+  });
+});
+
+describe("leva 2: a consulta \"Quanto custa encher o tanque no meu estado?\"", () => {
+  it("rota pronta para ligar, fechada enquanto a aprovação for null, com a faixa e a navegação presas à aprovação", () => {
+    expect(paginaExiste("/combustiveis/no-meu-estado")).toBe(true);
+    const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
+    const pagina = ler("src/app/combustiveis/no-meu-estado/page.tsx");
+    expect(pagina).toMatch(/const aberta = leva2Aprovada\("quanto-custa-encher-o-tanque"\)/);
+    expect(pagina).toMatch(/\{aberta && \(\s*<AvisoConsultaAberta/);
+    expect(ler("src/components/combustiveis/CabecalhoCombustiveis.tsx")).toContain('leva2Aprovada("quanto-custa-encher-o-tanque")');
+    // modo de consulta: o último mês vai no HTML; a página não busca a gold nem as séries no navegador
+    for (const p of ["src/components/combustiveis/PrecoNoEstado.tsx", "src/app/combustiveis/no-meu-estado/page.tsx"]) {
+      expect(ler(p), p).not.toMatch(/fetch\(|["`]\/gas\/(gold|series)|DownloadsGas|GraficoLinhas/);
+    }
+  });
+
+  it("renderiza o último mês por UF com fonte, data, distância para o Brasil e o painel com selo, sem série nem download", async () => {
+    caminho.atual = "/combustiveis/no-meu-estado";
+    const { default: Consulta } = await import("@/app/combustiveis/no-meu-estado/page");
+    const html = renderToStaticMarkup(createElement(Consulta));
+    expect(html).toContain("Quanto custa encher o tanque no meu estado?");
+    expect(html).toContain("ANP, Levantamento de Preços de Combustíveis");
+    expect(html).toMatch(/Dados capturados\s+em \d{2}\/\d{2}\/\d{4}/);
+    expect(html).toContain("Gasolina comum");
+    expect(html).toContain("postos pesquisados");
+    expect(html).not.toMatch(/NaN|undefined|Infinity/);
+    expect(html).not.toContain(".csv");
+    expect(html.includes("data-aviso-consulta-aberta")).toBe(leva2Aprovada("quanto-custa-encher-o-tanque"));
   });
 });

@@ -28,6 +28,8 @@
   "/cadastro/perfil",
   "/cadastro/telefone",
   "/cadastro/verificar-email",
+  "/combustiveis",
+  "/combustiveis/no-meu-estado",
   "/contas-publicas",
   "/contas-publicas-estaduais",
   "/contas-publicas/[capitulo]",
