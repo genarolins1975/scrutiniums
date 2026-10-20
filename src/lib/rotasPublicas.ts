@@ -185,7 +185,8 @@ export const LEVA_2: readonly ItemLeva2[] = Object.freeze([
     portas: ["energia-e-infraestrutura", "familias"],
     rotas: ["/combustiveis/no-meu-estado"],
     arquivos: [],
-    aprovadaEm: null,
+    // aprovada pelo dono em 20/10/2026, junto com o merge do painel Combustíveis nos postos
+    aprovadaEm: "2026-10-20",
   },
 ] satisfies ItemLeva2[]);
 

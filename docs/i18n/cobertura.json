@@ -12,7 +12,7 @@
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
     "arquivos_analisados": 1369,
-    "fontes_sha256": "61596893a49bf1b4cf9e8dbfaea05f44ef08faaea3ec513eb2e6b40b8a3ad9d7",
+    "fontes_sha256": "c45f60fb45ecaac002eecc0134f7e2a371c4e25c48caf3d8a2751e99a707a6a5",
     "pendencias_sha256": "deef36efc221cca46338f667e806c4d2490bbb0856aed726a84c2e16d1c075e3",
     "nao_classificadas": [
       {
@@ -152,11 +152,11 @@
         "candidatos": {
           "jsx_text": 1292,
           "atributos": 374,
-          "props": 944,
-          "outros_literais": 6820,
-          "templates": 819,
-          "expressoes_nao_resolvidas": 4945,
-          "chaves_objetos": 5453
+          "props": 948,
+          "outros_literais": 6821,
+          "templates": 821,
+          "expressoes_nao_resolvidas": 4950,
+          "chaves_objetos": 5464
         },
         "exclusoes": {
           "importacoes": 1453,
@@ -170,7 +170,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 20647,
+        "candidatos_nao_catalogados": 20670,
         "percentual_traduzido": null
       },
       "rotas": {

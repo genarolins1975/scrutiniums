@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from "vitest";
 
 /**
  * Painel "Combustíveis nos postos" (aprovado pelo dono em 19/10/2026): coleção própria do Observatório de Energia e
- * Infraestrutura, gold do pipeline do Gás. Confere o lugar no registro, o acesso (painel e consulta nascem fechados), os
+ * Infraestrutura, gold do pipeline do Gás. Confere o lugar no registro, o acesso (painel com conta; consulta por estado aberta em 20/10/2026), os
  * números contra a gold, a lacuna de 2020 e as entradas que citam o painel (Para você, camada aberta, home, busca).
  */
 const caminho = vi.hoisted(() => ({ atual: "/combustiveis" }));
@@ -41,11 +41,13 @@ describe("combustíveis: lugar no registro e acesso", () => {
     expect(colecao.paineis.map((p) => p.href)).toEqual(["/combustiveis"]);
   });
 
-  it("painel e consulta nascem fechados; a gold e as séries também", async () => {
-    const { ehRotaPublica } = await import("@/lib/rotasPublicas");
-    for (const r of ["/combustiveis", "/combustiveis/", "/combustiveis/no-meu-estado", "/gas/gold/combustiveis.json", "/gas/series/preco-combustiveis-uf-mensal.csv"]) {
+  it("o painel, a gold e as séries ficam com conta; só a consulta por estado abre (aprovada em 20/10/2026)", async () => {
+    const { ehRotaPublica, LEVA_2 } = await import("@/lib/rotasPublicas");
+    for (const r of ["/combustiveis", "/combustiveis/", "/gas/gold/combustiveis.json", "/gas/series/preco-combustiveis-uf-mensal.csv", "/combustiveis/no-meu-estado/outra"]) {
       expect(ehRotaPublica(r), r).toBe(false);
     }
+    expect(LEVA_2.find((i) => i.id === "quanto-custa-encher-o-tanque")?.aprovadaEm).toBe("2026-10-20");
+    expect(ehRotaPublica("/combustiveis/no-meu-estado")).toBe(true);
   });
 
   it("o cabeçalho é o comum, com o observatório marcado e as fontes do domínio gas", () => {
