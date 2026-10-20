@@ -12,7 +12,7 @@
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
     "arquivos_analisados": 1416,
-    "fontes_sha256": "7cd45f405db95ec6f788791cd9aea8748bfe886eb9e1b4f070b7ed7274736e1d",
+    "fontes_sha256": "15ba5d4dda4a3a0c518deed0467dfa1eb9f1ceed251a8f0862574a7254b24cef",
     "pendencias_sha256": "72bcf94065e5d97c671e30eb632f8d5d322ceb8a3561149c2132cb2682026068",
     "nao_classificadas": [
       {
@@ -160,16 +160,16 @@
       "interface": {
         "arquivos": 347,
         "candidatos": {
-          "jsx_text": 1499,
+          "jsx_text": 1498,
           "atributos": 389,
-          "props": 1004,
-          "outros_literais": 7120,
-          "templates": 873,
-          "expressoes_nao_resolvidas": 5389,
+          "props": 1007,
+          "outros_literais": 7119,
+          "templates": 874,
+          "expressoes_nao_resolvidas": 5388,
           "chaves_objetos": 5721
         },
         "exclusoes": {
-          "importacoes": 1535,
+          "importacoes": 1534,
           "atributos_tecnicos": 3096,
           "tipos": 371
         },
@@ -180,7 +180,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 21995,
+        "candidatos_nao_catalogados": 21996,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -547,16 +547,16 @@
         "candidatos": {
           "jsx_text": 153,
           "atributos": 211,
-          "props": 162,
+          "props": 168,
           "outros_literais": 12941,
-          "templates": 2628,
-          "expressoes_nao_resolvidas": 9192,
+          "templates": 2629,
+          "expressoes_nao_resolvidas": 9194,
           "chaves_objetos": 5084,
           "textos": 158
         },
         "exclusoes": {
-          "importacoes": 53,
-          "atributos_tecnicos": 653,
+          "importacoes": 55,
+          "atributos_tecnicos": 654,
           "tipos": 4,
           "estilos": 1,
           "comentarios": 3
@@ -572,7 +572,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 30529,
+        "candidatos_nao_catalogados": 30538,
         "percentual_traduzido": null
       },
       "rotas": {

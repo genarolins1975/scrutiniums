@@ -11,6 +11,8 @@ import { ACESSO } from "@/lib/acesso";
 import { fmtRefMes, geradoEmPublicado, resumoDiario } from "@/lib/dadosPublicos";
 import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
+import { ConviteAperitivo } from "@/components/acesso/ConviteAperitivo";
+import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { goldJuros, rotuloModalidade } from "@/lib/credito/juros";
 import { janela as janelaJuros, num as numJuros } from "@/lib/credito/formato";
@@ -284,6 +286,21 @@ export default function ObservatorioPublicoPage() {
             </div>
           </div>
         </section>
+
+        {/* ---------------- princípio do aperitivo: o que o observatório completo tem a mais ---------------- */}
+        <div className="border-b border-linha bg-papel">
+          <ConviteAperitivo
+            rota="/observatorio"
+            className="mx-auto max-w-page px-6"
+            comConta={[
+              `As ${ABAS_OBSERVATORIO.filter((a) => a.gold).length} áreas com dados do observatório, do crédito por estado e por município aos juros de cada instituição`,
+              "Juros por instituição e por modalidade, a comparação entre instituições e o simulador da parcela",
+              "Consignado, crédito imobiliário, rural e direcionado, consórcios e o crédito a estados e municípios",
+              "Bancos na bolsa, captação, Pix, Open Finance, golpes e fraudes, sanções e reclamações",
+              "Sinais antecedentes, cenários, o resumo diário completo e a central de alertas",
+            ]}
+          />
+        </div>
 
         {/* ---------------- perguntas que responde ---------------- */}
         <section aria-labelledby="areas" className="border-b border-linha bg-papel">

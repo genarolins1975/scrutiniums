@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { describe, expect, it } from "vitest";
 import { APERITIVOS, LEVA_2, desvioDoAperitivo, ehRotaPublica, exigeConta, itemAprovado } from "@/lib/rotasPublicas";
@@ -86,6 +86,24 @@ describe("princípio do aperitivo", () => {
       }
       expect(item.painelCompleto, `${item.id} sem painel completo`).not.toBeNull();
       conferePainel(item.rotas[0] ?? `/perguntas (${item.id})`, item.painelCompleto as string);
+    }
+  });
+
+  it("toda página aberta de tema mostra o que a página com conta tem a mais (ConviteAperitivo)", () => {
+    // decisão do dono de 20/10/2026: "sempre coloque na página aberta o que mais tem disponível na página logada"
+    const fonteComImportacoes = (rota: string): string => {
+      const arquivo = join(APP, ...rota.split("/").filter(Boolean), "page.tsx");
+      const fonte = readFileSync(arquivo, "utf-8");
+      const locais = [...fonte.matchAll(/from ["']@\/components\/([^"']+)["']/g)].map((m) => join(process.cwd(), "src", "components", m[1] + ".tsx"));
+      return [fonte, ...locais.filter((f) => existsSync(f)).map((f) => readFileSync(f, "utf-8"))].join("\n");
+    };
+    const paginas = [
+      ...APERITIVOS.map((a) => a.versaoAberta ?? a.rota),
+      ...LEVA_2.filter((i) => itemAprovado(i) && i.rotas.length > 0 && i.forma !== "metodo").map((i) => i.rotas[0]),
+    ];
+    for (const rota of paginas) {
+      if (!existsSync(join(APP, ...rota.split("/").filter(Boolean), "page.tsx"))) continue; // a falta da página reprova no teste acima
+      expect(fonteComImportacoes(rota), `${rota} sem o bloco do que a conta tem a mais`).toMatch(/<ConviteAperitivo\b[\s\S]*?comConta=/);
     }
   });
 
