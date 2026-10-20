@@ -628,7 +628,11 @@ describe("P015: arquivo de emissões, CSV publicado e tabela", () => {
     expect(t).toContain(`O arquivo tem ${linhas.length} registros de ${G.prospectivo.total_rodadas} rodadas.`);
     const semNumero = G.prospectivo.rodadas.filter((r) => r.com_numero === 0);
     for (const r of semNumero) expect(t).toContain(`A rodada de ${r.origem.split("-").reverse().join("/")}`);
-    if (G.prospectivo.apuracoes.every((a) => a.realizado === null) && G.prospectivo.apuracoes.length) {
+    // a gold publica só as apurações mais recentes (LIMITE_APURACOES) e o total em apuracoes_total: a frase "nenhuma
+    // entrega terminou" só pode ser conferida pela gold quando a lista está completa
+    const completa = G.prospectivo.apuracoes.length === G.prospectivo.apuracoes_total;
+    if (!completa) expect(t).toMatch(new RegExp(`\\d+ de ${G.prospectivo.apuracoes_total} previsões com número`));
+    if (completa && G.prospectivo.apuracoes.every((a) => a.realizado === null) && G.prospectivo.apuracoes.length) {
       const fins = G.prospectivo.apuracoes.map((a) => fimDaEntrega(a.entrega)!).sort();
       expect(t).toContain(`termina em ${fins[0].split("-").reverse().join("/")}`);
       expect(t).toContain("Nenhuma entrega prevista terminou");

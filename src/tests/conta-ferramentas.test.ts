@@ -398,7 +398,8 @@ describe("barra de ferramentas da conta", () => {
   it("a origem do cabeçalho define o observatório citado e as fontes oferecidas", async () => {
     const { origemDoCabecalho } = await import("@/lib/conta/origens");
     expect(origemDoCabecalho("energia", null)).toMatchObject({ id: "energia", nome: "Observatório Brasileiro do Setor Elétrico", dominios: ["energia"] });
-    expect(origemDoCabecalho("contas", null)?.dominios).toEqual(["contas-federais"]);
+    // a coleção Contas Federais cita também a fonte do painel Previdência e INSS (20/10/2026), que tem gold própria
+    expect(origemDoCabecalho("contas", null)?.dominios).toEqual(["contas-federais", "previdencia"]);
     expect(origemDoCabecalho(null, "territorio-e-clima", ["territorio"])?.dominios).toEqual(["territorio"]);
     expect(origemDoCabecalho(null, "familias")?.dominios).toEqual(["inflacao", "credito", "agro", "gas", "eficiencia"]);
     expect(origemDoCabecalho(null, null)).toBeNull();

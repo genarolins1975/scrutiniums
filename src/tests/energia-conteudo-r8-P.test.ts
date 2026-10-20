@@ -486,7 +486,10 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
     const ult = json<PrevisoesGold>("public/energia/gold/previsoes.json").atual.ultima_execucao!;
     expect(ult.tipo).toBe("REFERENCIA_EXPERIMENTAL");
     expect(textoEntender(html.pld)).toContain(`Referência experimental de ${dataBR(ult.origem)}, com o modelo ${ult.modelo}`);
-    expect(linhas.filter((l) => l.previsao !== "").length).toBe(P.prospectivo.apuracoes.length);
+    // a gold publica só as apurações mais recentes (LIMITE_APURACOES, pipeline/energia/modulos/previsoes.py) e o total em
+    // apuracoes_total; o CSV de emissões tem o histórico completo
+    expect(linhas.filter((l) => l.previsao !== "").length).toBe(P.prospectivo.apuracoes_total);
+    expect(P.prospectivo.apuracoes.length).toBeLessThanOrEqual(P.prospectivo.apuracoes_total);
   });
 
   it("(2) PLD já publicado no corte (07h a 23h) e média das 24 horas do dia na página PLD: janelas diferentes do mesmo dia", () => {

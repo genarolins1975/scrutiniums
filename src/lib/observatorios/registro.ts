@@ -25,7 +25,7 @@ import { CAPITULOS as CAPITULOS_SANEAMENTO, FERRAMENTAS as FERRAMENTAS_SANEAMENT
 import { PAGINAS_GAS } from "@/lib/gas/navegacao";
 import { PAGINAS_COMBUSTIVEIS, ROTA_COMBUSTIVEIS } from "@/lib/combustiveis/paginas";
 import { ROTA_INFLACAO, TITULO_PAINEL as TITULO_PAINEL_INFLACAO } from "@/lib/inflacao/paginas";
-import { CAPITULOS_PUBLICADOS as CAPITULOS_CONTAS, PAINEL_AREAS } from "@/lib/contas-publicas/catalogo";
+import { CAPITULOS_PUBLICADOS as CAPITULOS_CONTAS, PAINEL_AREAS, PAINEL_PREVIDENCIA } from "@/lib/contas-publicas/catalogo";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from "@/lib/agro/modelo";
 import { COPIAS } from "./copias";
@@ -169,6 +169,9 @@ function paineisColecoesInteiras(): Painel[] {
     ]),
     ...inteira("contas", "contas-publicas", "federais", [
       { rota: "/contas-publicas", titulo: "Contas Federais" },
+      // painel Previdência e INSS (20/10/2026): benefícios do INSS por tipo, estado e município e resultado do Regime Geral,
+      // com pipeline e gold próprios (pipeline/previdencia); o endereço é o único aberto do tema, como aperitivo sem sessão
+      { rota: PAINEL_PREVIDENCIA.href, titulo: PAINEL_PREVIDENCIA.titulo },
       // complemento do capítulo Panorama (20/10/2026): a despesa por área, pela classificação funcional do SIOP
       { rota: PAINEL_AREAS.href, titulo: PAINEL_AREAS.titulo },
       // só os capítulos com dados; os em preparação não têm página (Onda 3)
