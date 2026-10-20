@@ -8,7 +8,7 @@ Todo trabalho em página, painel, observatório, gráfico, tabela, texto exibido
 
 ## Skills de design obrigatórias (decisão do dono de 20/10/2026)
 
-Neste projeto, todo trabalho de interface usa sempre, além da skill de layout, as skills **emil-design-eng**, **impeccable** e **design-taste-frontend**. Carregar as três antes de desenhar, revisar ou alterar página, componente, gráfico ou texto exibido. Se alguma não estiver disponível no ambiente, dizer isso ao usuário antes de entregar, sem substituir por outra.
+Neste projeto, todo trabalho de interface usa sempre, além da skill de layout, as skills **emil-design-eng**, **impeccable** e **design-taste-frontend**. Carregar as três antes de desenhar, revisar ou alterar página, componente, gráfico ou texto exibido. Elas estão versionadas em `.claude/skills/` (origem e o que ficou de fora em `ORIGEM.md` de cada uma); em conflito com o sistema de design da plataforma, prevalece a skill observatorio-layout. Se alguma não estiver disponível no ambiente, dizer isso ao usuário antes de entregar, sem substituir por outra.
 
 ## O essencial da skill, para não esquecer
 
