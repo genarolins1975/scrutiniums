@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "d932a71658c21a96d3844ed462f3be1a0b7b2937f80a5b937f3a8e5ad23f56df",
-    "arquivos_analisados": 1468,
-    "fontes_sha256": "fce135abad94bc946dc670dabac2a7c81f49ae29d90a865b83610889386641ea",
-    "pendencias_sha256": "9a17bcf6e0f7da35af9e10cbd0763f22e3fc42373b3bcaddbe04d2710608ac99",
+    "arquivos_analisados": 1470,
+    "fontes_sha256": "0da9af00ddde9a51f4732ace437ed97124a1d4f26fc07774bca4fa0e44b27a5e",
+    "pendencias_sha256": "f2b3ca2c047bdd075e80be5534f56922c8f9750dde058fd34745dd8f44d44501",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -146,6 +146,11 @@
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       },
       {
+        "path": "src/components/observatorios/DiretorioPaineis.module.css",
+        "dominio": "plataforma",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
         "path": "src/components/observatorios/EntradaEstado.module.css",
         "dominio": "plataforma",
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
@@ -168,20 +173,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 385,
+        "arquivos": 387,
         "candidatos": {
-          "jsx_text": 2003,
-          "atributos": 474,
-          "props": 1104,
-          "outros_literais": 8002,
-          "templates": 1052,
-          "expressoes_nao_resolvidas": 6474,
-          "chaves_objetos": 6350
+          "jsx_text": 2021,
+          "atributos": 445,
+          "props": 1108,
+          "outros_literais": 7987,
+          "templates": 1058,
+          "expressoes_nao_resolvidas": 6508,
+          "chaves_objetos": 6379
         },
         "exclusoes": {
-          "importacoes": 1675,
-          "atributos_tecnicos": 3541,
-          "tipos": 459
+          "importacoes": 1688,
+          "atributos_tecnicos": 3551,
+          "tipos": 463
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -190,7 +195,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 25459,
+        "candidatos_nao_catalogados": 25506,
         "percentual_traduzido": null
       },
       "rotas": {
