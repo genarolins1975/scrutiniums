@@ -155,7 +155,9 @@ function documentosDoPar(ctx: TestContext, par: ParDeIdioma) {
 
 // Não filtrar por existência de HTML ou acesso público: toda declaração precisa de prova.
 // O Setor Elétrico tem prova própria, mais exigente e com as páginas de parâmetro: energia-i18n-html.test.ts.
-const PARES_FORA_DO_SETOR = PARES_DE_IDIOMA.filter((par) => !par.pt.startsWith("/setor-eletrico"));
+// A versão aperitivo da Conta de luz é do Setor Elétrico e tem head do endereço público (o caminho interno nunca é canonical):
+// a prova dela é energia-conta-aperitivo.test.ts.
+const PARES_FORA_DO_SETOR = PARES_DE_IDIOMA.filter((par) => !par.pt.startsWith("/setor-eletrico") && par.pt !== "/aperitivo/conta-de-luz");
 describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", (par) => {
   beforeAll(async () => {
     if (!exigirBuild()) return;

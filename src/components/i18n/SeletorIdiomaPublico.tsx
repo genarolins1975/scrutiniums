@@ -10,9 +10,16 @@ import { urlDaPagina } from "@/lib/i18n-url";
 
 type LeituraUrl = { pathname: string | null; href: string | null };
 
-/** Links disponíveis no SSR; a URL real acrescenta query e fragmento no navegador. */
-export function SeletorIdiomaPublico({ idioma = "pt" }: { idioma?: Idioma } = {}) {
-  const pathname = usePathname();
+/**
+ * Links disponíveis no SSR; a URL real acrescenta query e fragmento no navegador.
+ *
+ * `rotaPublica`: na versão aperitivo, gerada no caminho interno (/aperitivo/..., /en/aperitivo/...) e servida por rewrite no endereço
+ * público, o HTML estático vê o caminho interno e o navegador vê o público. Com ela, o caminho interno é lido como o endereço público
+ * do mesmo idioma, para os links nunca apontarem o caminho interno e o servidor e o navegador desenharem o mesmo seletor.
+ */
+export function SeletorIdiomaPublico({ idioma = "pt", rotaPublica }: { idioma?: Idioma; rotaPublica?: string } = {}) {
+  const lido = usePathname();
+  const pathname = rotaPublica && lido && /^(\/en)?\/aperitivo(\/|$)/.test(lido) ? (lido.startsWith("/en/") ? `/en${rotaPublica}` : rotaPublica) : lido;
   const linkPt = useRef<HTMLAnchorElement>(null);
   const linkEn = useRef<HTMLAnchorElement>(null);
   const [leitura, setLeitura] = useState<LeituraUrl | null>(null);
