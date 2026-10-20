@@ -9,7 +9,7 @@ import { CAPITULOS, EIXOS, ROTA } from "@/lib/saneamento/capitulos";
 import { data, inteiro, mesAno, numero } from "@/lib/saneamento/formato";
 import { ANOS_SISAGUA, FONTE_ROTULO, medida } from "@/lib/saneamento/medidas";
 import { TARIFAS } from "@/lib/saneamento/tarifas";
-import { MOTIVO_TEXTO, SITUACAO_AGUA, SITUACAO_ESGOTO } from "@/lib/saneamento/rotulos";
+import { ATENDIMENTO_REDE, CASAS_ATENDIMENTO, atendimentoRede } from "@/lib/saneamento/atendimento";
 import type { FichaMunicipio, Municipio } from "@/lib/saneamento/tipos";
 import { BuscaAperitivo } from "./BuscaAperitivo";
 
@@ -69,16 +69,16 @@ function comConta(): string[] {
   const ano = mt?.sinisa.ano_referencia ?? "sem dado";
   return [
     `Ficha completa do município, seção 1, comparação: o município ao lado da UF, do Brasil e da mediana dos municípios de porte semelhante da mesma região, em falta de água encanada e de esgoto, atendimento, esgoto tratado e perdas de água`,
-    `Seção 2, acesso: como os moradores recebem água e destinam o esgoto pelo Censo 2022, forma por forma (rede, poço, nascente, água da chuva, fossa, vala e outras), para ${inteiro(cob?.municipios_censo_2022)} municípios`,
+    `Seção 2, acesso: quantas pessoas o prestador declara atender com rede de água e com rede coletora de esgoto, e como os moradores recebem água e destinam o esgoto pelo Censo 2022, forma por forma (rede, poço, nascente, água da chuva, fossa, vala e outras), para ${inteiro(cob?.municipios_censo_2022)} municípios`,
     `Seção 3, prestador e regulador: natureza jurídica, contrato, vigência e população atendida de cada prestador, e a agência reguladora que o município declara (${inteiro(cob?.gestao_municipal_respondentes)} municípios responderam)`,
-    `Seção 4, tarifa e tarifa social: tarifa mínima declarada, se há tarifa social e quantas unidades de consumo têm o desconto, ao lado das famílias de baixa renda do CadÚnico (${mesAno(mt?.cadunico.mes_referencia)} e ${mesAno(mt?.cadunico.mes_mais_recente)})`,
+    `Seção 4, tarifa e tarifa social: tarifa mínima declarada pelo prestador, se há tarifa social e quantas unidades de consumo têm o desconto, ao lado das famílias de baixa renda do CadÚnico (${mesAno(mt?.cadunico.mes_referencia)} e ${mesAno(mt?.cadunico.mes_mais_recente)})`,
     `Seção 5, metas e plano: a distância das metas legais de ${numero(mt?.metas.agua, 0)}% com água e ${numero(mt?.metas.esgoto, 0)}% com coleta e tratamento até ${data(mt?.metas.data)}, e se o município tem plano de saneamento`,
-    `Seção 6, investimento: quanto foi investido em ${ano} em água e em esgoto, pelo prestador e pelo governo estadual, e o valor por residente estimado`,
+    `Seção 6, investimento: quanto o prestador declarou ao SINISA ter investido em ${ano} em água e em esgoto, inclusive o que informa como investido pelo governo estadual, e o valor por residente estimado, com a ressalva de que é autodeclarado, sem conferência com demonstrações financeiras auditadas`,
     `Seção 7, continuidade: paralisações com falta de água, racionamento ou rodízio e dias com o sistema em colapso, declarados para ${ano}`,
     `Seção 8, qualidade da água: análises do SISAGUA em ${ANOS_SISAGUA.join(" e ")} (bactérias, cloro, turbidez, flúor, agrotóxicos e outras substâncias), pelo controle do prestador e pela vigilância da saúde`,
     `Simulador da conta de água: quanto se paga pelo mesmo consumo em ${inteiro(TARIFAS.length)} tabelas tarifárias conferidas nos atos oficiais`,
     `Comparação de até quatro municípios lado a lado e mapas por município, para os ${inteiro(cob?.municipios_ibge)} municípios`,
-    `Fichas dos ${inteiro(regionais)} prestadores regionais, com volumes, perdas, receitas e investimento`,
+    `Fichas dos ${inteiro(regionais)} prestadores regionais, com volumes, perdas, consumo médio por pessoa e os valores financeiros que eles declaram ao SINISA, com a mesma ressalva`,
     `Os ${inteiro(capitulos.length)} capítulos do observatório, em ${inteiro(EIXOS.length)} eixos: ${EIXOS.map((e) => e.rotulo.toLowerCase()).join("; ")}`,
   ];
 }
@@ -143,16 +143,11 @@ export default function Pagina({ searchParams }: Busca) {
 }
 
 function Resultado({ m, ficha }: { m: Municipio; ficha: FichaMunicipio }) {
-  const ag = ficha.sinisa.agua;
-  const es = ficha.sinisa.esgoto;
-  // mesmos valores, motivos e situações que a ficha completa (src/app/saneamento/municipio/[id]/page.tsx): o motivo da
-  // linha da comparação e, quando o município não participou com indicadores, a situação que o cabeçalho da ficha mostra
-  const ausencia = (motivo: string | undefined, situacao: string, participou: boolean) =>
-    [motivo ?? situacao, motivo && !participou ? situacao : null].filter(Boolean).join(". ") + ".";
-  const agua = { v: m.IAG0001, motivo: ausencia(MOTIVO_TEXTO[ag.motivos?.IAG0001 ?? ""], SITUACAO_AGUA[ag.situacao], ag.situacao === "participou") };
-  const esgoto = { v: m.IES0001, motivo: ausencia(MOTIVO_TEXTO[es.motivos?.IES0001 ?? ""], SITUACAO_ESGOTO[es.situacao], es.situacao === "participou") };
-  const medAgua = medida("sinisa-agua-nao-atendida");
-  const medEsgoto = medida("sinisa-esgoto-nao-atendida");
+  // mesmos valores, rótulos, casas e motivos de ausência que a ficha completa (src/lib/saneamento/atendimento.ts)
+  const agua = atendimentoRede(m, ficha, "agua");
+  const esgoto = atendimentoRede(m, ficha, "esgoto");
+  const medAgua = medida(ATENDIMENTO_REDE.agua.medida);
+  const medEsgoto = medida(ATENDIMENTO_REDE.esgoto.medida);
   const s = meta()?.sinisa;
   const catalogo = prestadores();
   const vinculos = ficha.sinisa.prestadores ?? [];
@@ -179,16 +174,16 @@ function Resultado({ m, ficha }: { m: Municipio; ficha: FichaMunicipio }) {
           colunas={2}
           itens={[
             {
-              rotulo: "Atendimento da população com rede de água",
-              valor: numero(agua.v, 2),
-              unidade: agua.v == null ? undefined : "%",
-              contexto: agua.v == null ? agua.motivo : "Parcela da população residente estimada pelo IBGE para 2024 que o prestador declara atender (IAG0001).",
+              rotulo: ATENDIMENTO_REDE.agua.rotulo,
+              valor: numero(agua.pct, CASAS_ATENDIMENTO),
+              unidade: agua.pct == null ? undefined : "%",
+              contexto: agua.pct == null ? agua.motivo : ATENDIMENTO_REDE.agua.contexto,
             },
             {
-              rotulo: "Atendimento da população com rede de esgoto (coleta)",
-              valor: numero(esgoto.v, 2),
-              unidade: esgoto.v == null ? undefined : "%",
-              contexto: esgoto.v == null ? esgoto.motivo : "Parcela da população residente estimada pelo IBGE para 2024 que o prestador declara atender com rede coletora (IES0001).",
+              rotulo: ATENDIMENTO_REDE.esgoto.rotulo,
+              valor: numero(esgoto.pct, CASAS_ATENDIMENTO),
+              unidade: esgoto.pct == null ? undefined : "%",
+              contexto: esgoto.pct == null ? esgoto.motivo : ATENDIMENTO_REDE.esgoto.contexto,
             },
           ]}
         />

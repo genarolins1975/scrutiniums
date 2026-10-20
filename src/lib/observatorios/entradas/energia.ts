@@ -152,15 +152,8 @@ export function cadeias(): Cadeia[] {
       return { valor: num(a.sem_ligacao / 1e6, 1), periodo: "2022", nota: `Abastecidas por poço, nascente, carro-pipa, chuva ou rio: ${num((100 * a.sem_ligacao) / a.total, 1)}% dos moradores.` };
     },
   );
-  const investimento = numero(
-    { rotulo: "Investimento em água e esgoto", unidade: "bilhões de reais", fonte: "Ministério das Cidades, SINISA", href: "/saneamento/investimento" },
-    () => {
-      const s = censo().sinisa;
-      const ano = lerPublico("saneamento", "gold", "meta.json").sinisa.ano_referencia;
-      const t = s.agua.investimento.total + s.esgoto.investimento.total;
-      return { valor: num(t / 1e9, 1), periodo: String(ano), nota: `Água R$ ${num(s.agua.investimento.total / 1e9, 1)} bi e esgoto R$ ${num(s.esgoto.investimento.total / 1e9, 1)} bi, declarados por prestadores e governos estaduais.` };
-    },
-  );
+  // Investimento em água e esgoto: valor autodeclarado ao SINISA, sem conferência com demonstrações financeiras auditadas; não vai para
+  // manchete de entrada (src/lib/saneamento/autodeclarado.ts). O elo "Investir" fica só com a descrição e o link para o capítulo.
   const prestadores = numero(
     { rotulo: "Prestadores de água e esgoto", unidade: "prestadores", fonte: "Ministério das Cidades, SINISA", href: "/saneamento/prestadores" },
     () => {
@@ -192,10 +185,10 @@ export function cadeias(): Cadeia[] {
       paineis: [{ titulo: "Gás Natural", href: "/gas-natural" }, { titulo: "Gás de cozinha", href: "/gas-natural/gas-de-cozinha" }],
     },
     {
-      id: "agua", titulo: "Água e esgoto", pergunta: "Quem está sem água e esgoto, e quanto se investe?",
+      id: "agua", titulo: "Água e esgoto", pergunta: "Quem presta o serviço e quem está sem água e esgoto?",
       elos: [
         { titulo: "Prestar e regular", texto: "O município presta o serviço diretamente ou o delega a uma companhia; uma agência reguladora fiscaliza preço e qualidade.", numero: prestadores },
-        { titulo: "Investir", texto: "Prestadores e governos investem para ampliar e repor redes de água, coleta e tratamento.", numero: investimento },
+        { titulo: "Investir", texto: "Prestadores e governos investem para ampliar e repor redes de água, coleta e tratamento. Os valores que os prestadores declaram estão no capítulo de investimento do Saneamento, com a ressalva de que não foram conferidos com demonstrações financeiras auditadas." },
         { titulo: "Abastecer", texto: "A rede leva água tratada às casas; quem não está ligado depende de poço, carro-pipa ou rio.", numero: semAgua },
         { titulo: "Coletar e tratar", texto: "O esgoto deveria ir para a rede ou para fossa séptica; o restante vai para fossa rudimentar, vala ou rio.", numero: semEsgoto() },
       ],

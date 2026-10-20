@@ -80,15 +80,15 @@ export const EIXOS: Eixo[] = [
   },
   {
     id: "B",
-    rotulo: "Preço regulado e conta das famílias",
-    curto: "Preço regulado",
+    rotulo: "Tarifa e conta das famílias",
+    curto: "Tarifa",
     resumo: "Quanto se paga, por que o valor foi autorizado, o que ele financia, quem assume os riscos e se a conta cabe no orçamento.",
     capitulos: [
       {
         numero: 5,
         slug: "preco-regulado",
-        rotulo: "Preço regulado",
-        pergunta: "Preço regulado: o que pagamos, por que foi autorizado e o que ele financia?",
+        rotulo: "Tarifa",
+        pergunta: "Tarifa: o que pagamos, por que foi autorizada e o que ela financia?",
         resumo: "Simulador com regras verificadas, formação da tarifa pelo regulador, reajustes, contrapartidas e riscos.",
         situacao: "parcial",
         pendencia: "Amostra de prestadores e decisões tarifárias limitada aos atos verificados; cada subpainel declara o tamanho da amostra.",
@@ -96,7 +96,7 @@ export const EIXOS: Eixo[] = [
           { slug: "simulador", numero: "5.1", rotulo: "Quanto pagaríamos", pergunta: "Quanto pagaríamos pelo mesmo consumo?", situacao: "parcial" },
           { slug: "formacao", numero: "5.2", rotulo: "Como o regulador chega ao valor", pergunta: "Como o regulador chega ao valor da tarifa?", situacao: "parcial" },
           { slug: "reajustes", numero: "5.3", rotulo: "Por que a conta aumentou", pergunta: "Por que a conta aumentou?", situacao: "parcial" },
-          { slug: "contrapartidas", numero: "5.4", rotulo: "Preço e serviço", pergunta: "O preço autorizado está associado a melhor serviço?", situacao: "parcial" },
+          { slug: "contrapartidas", numero: "5.4", rotulo: "Tarifa e serviço", pergunta: "A tarifa autorizada está associada a melhor serviço?", situacao: "parcial" },
           { slug: "riscos", numero: "5.5", rotulo: "Riscos e desvios", pergunta: "Quem assume os riscos e quem paga pelos desvios?", situacao: "parcial" },
         ],
       },
@@ -134,7 +134,8 @@ export const EIXOS: Eixo[] = [
         slug: "prestadores/comparar",
         rotulo: "Como se comparam",
         pergunta: "Como os prestadores se comparam em serviço, operação e finanças?",
-        resumo: "Até quatro prestadores lado a lado: perdas, receita e despesa por metro cúbico, investimento e demonstrações declaradas.",
+        resumo:
+          "Até quatro prestadores lado a lado: perdas, consumo, receita e despesa por metro cúbico, investimento e demonstrações declaradas; os valores financeiros são autodeclarados ao SINISA, sem conferência com demonstrações financeiras auditadas.",
         situacao: "parcial",
         pendencia:
           "Seleção de pares por escala, densidade e renda e reconciliação de demonstrações auditadas (CVM) ainda não feitas; a comparação é descritiva e declara o perímetro de cada número.",
@@ -152,7 +153,8 @@ export const EIXOS: Eixo[] = [
         slug: "investimento",
         rotulo: "Onde o investimento chega",
         pergunta: "Onde o investimento está chegando? As obras viram serviço?",
-        resumo: "Investimento declarado em 2024 por município, água e esgoto, expansão e reposição, ao lado da carência medida pelo Censo.",
+        resumo:
+          "Investimento de 2024 declarado pelos prestadores por município, em água e esgoto, expansão e reposição, ao lado da carência medida pelo Censo; autodeclarado ao SINISA, sem conferência com demonstrações financeiras auditadas.",
         situacao: "parcial",
         pendencia: "Obras identificadas (cronograma, avanço físico e entrada em operação) dependem de bases de execução ainda não integradas.",
       },
@@ -161,7 +163,8 @@ export const EIXOS: Eixo[] = [
         slug: "financiamento",
         rotulo: "De onde vem o dinheiro",
         pergunta: "De onde vem o dinheiro e quem suporta o custo?",
-        resumo: "Recursos próprios, onerosos e não onerosos declarados por prestadores e Estados no SINISA 2024.",
+        resumo:
+          "Origem dos recursos (próprios, onerosos e não onerosos) do investimento que os prestadores declararam ao SINISA 2024, o próprio e o do governo estadual; autodeclarado, sem conferência com demonstrações financeiras auditadas.",
         situacao: "parcial",
         pendencia: "Contratações e desembolsos do BNDES, CAIXA e Transferegov ainda não conciliados com o SINISA; sem conciliação não se somam.",
       },

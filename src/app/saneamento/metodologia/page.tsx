@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, NestaPagina, Nota, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, NestaPagina, Nota, RessalvaAutodeclarado, Secao } from "@/components/saneamento/Editorial";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { meta, URL_GOLD } from "@/lib/saneamento/gold";
@@ -28,12 +28,24 @@ const CONTRATO: [string, string][] = [
   ["Divergências explicadas", "Quando duas bases discordam, a diferença é calculada, publicada e explicada nas conferências abaixo; nunca redistribuída."],
 ];
 
+/** Indicadores financeiros autodeclarados ao SINISA e onde aparecem (src/lib/saneamento/autodeclarado.ts). */
+const FINANCEIROS: [string, string, string][] = [
+  ["Investimento em água e em esgoto, do prestador e do governo estadual informado pelo prestador", "GFI2024, GFI2036, GFI2124, GFI2136 e destinos GFI2025 a GFI2143", "Capítulo 9, ficha do município, ficha e comparação de prestadores, tabela 5.4"],
+  ["Investimento por habitante", "Campos acima ÷ DFE0001", "Atlas do capítulo 9 e comparação de municípios, sem ranking"],
+  ["Origem dos recursos (próprios, onerosos e não onerosos)", "GFI2021 a GFI2023, GFI2033 a GFI2035, GFI2121 a GFI2123 e GFI2133 a GFI2135", "Capítulo 10"],
+  ["Receita direta de água por m³ faturado (tarifa média declarada)", "GFI1001 ÷ GTA1221", "Ficha e comparação de prestadores"],
+  ["Despesa de exploração de água por m³ faturado", "GFI2008 ÷ GTA1221 (IFA2004)", "Ficha e comparação de prestadores"],
+  ["Margem líquida e grau de endividamento", "GFI3011 ÷ GFI3008; (GFI3004 + GFI3005) ÷ GFI3001", "Ficha e comparação de prestadores"],
+  ["Balanço declarado (ativo, passivo, patrimônio, receitas, resultado e lucro)", "GFI3001 a GFI3011", "Ficha do prestador"],
+  ["Valor da tarifa mínima residencial declarada", "GFI1018", "Ficha do município"],
+];
+
 const ARQUIVOS: [string, string][] = [
-  ["municipios.csv", "Tabela municipal com todas as medidas (Censo, SINISA, NR 8, investimento, arranjo institucional), uma linha por município"],
+  ["municipios.csv", "Tabela municipal com todas as medidas (Censo, SINISA, NR 8, investimento autodeclarado, arranjo institucional), uma linha por município"],
   ["municipios.json", "A mesma tabela em formato compacto (campos e linhas), usada pelo atlas"],
   ["agregados.json", "Brasil, regiões e UFs: Censo, consolidado SINISA, continuidade, gestão municipal"],
-  ["prestadores.csv", "Cadastro de prestadores com perímetro, população, perdas e investimento"],
-  ["prestadores.json", "Prestadores com volumes, receita, despesa e balanço declarados"],
+  ["prestadores.csv", "Cadastro de prestadores com perímetro, população, perdas, consumo per capita e investimento autodeclarado"],
+  ["prestadores.json", "Prestadores com volumes, consumo per capita e receita, despesa e balanço autodeclarados"],
   ["reguladores.json", "Entidades reguladoras por CNPJ e municípios que as declararam"],
   ["etes.csv", "Estações de tratamento de esgoto declaradas"],
   ["desigualdades_municipios.csv", "Censo 2022 por grupo (cor ou raça, quilombolas, indígenas, favelas): carência e universo por município"],
@@ -95,6 +107,7 @@ export default function Pagina() {
         <NestaPagina
           itens={[
             { id: "contrato", rotulo: "Contrato metodológico" },
+            { id: "autodeclarados", rotulo: "Valores financeiros" },
             { id: "viabilidade", rotulo: "Matriz de viabilidade" },
             { id: "conferencias", rotulo: "Conferências entre bases" },
             { id: "fontes", rotulo: "Arquivos de origem" },
@@ -112,6 +125,41 @@ export default function Pagina() {
               </div>
             ))}
           </dl>
+        </Secao>
+
+        <Secao
+          id="autodeclarados"
+          titulo="Valores financeiros autodeclarados ao SINISA"
+          texto="Quais indicadores levam a marca, de que campos vêm e onde aparecem. Nenhum deles está na página aberta, nas manchetes da entrada, nos números de abertura, em rankings ou no bloco Para você."
+        >
+          <RessalvaAutodeclarado />
+          <div className="tabela-scroll mt-6" tabIndex={0} role="region" aria-label="Indicadores financeiros autodeclarados (rolável)">
+            <table className="w-full min-w-[44rem] border-collapse text-sm">
+              <caption className="sr-only">Indicadores financeiros autodeclarados ao SINISA, campos de origem e onde aparecem</caption>
+              <thead>
+                <tr className="border-b border-carvao text-left">
+                  <th scope="col" className="py-2 pr-4 font-medium">Indicador</th>
+                  <th scope="col" className="py-2 pr-4 font-medium">Campos do SINISA 2024</th>
+                  <th scope="col" className="py-2 font-medium">Onde aparece</th>
+                </tr>
+              </thead>
+              <tbody>
+                {FINANCEIROS.map(([i, c, o]) => (
+                  <tr key={i} className="border-b border-linha align-top">
+                    <th scope="row" className="py-2 pr-4 text-left font-normal text-carvao">{i}</th>
+                    <td className="py-2 pr-4 text-carvao-muted">{c}</td>
+                    <td className="py-2 text-carvao-muted">{o}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Nota>
+            Quem declara: o formulário de gestão financeira do SINISA é preenchido pelo prestador, seja companhia, empresa, autarquia ou a própria
+            prefeitura que presta o serviço. O investimento &quot;realizado pelo Estado&quot; vem do mesmo formulário: é o que o governo estadual
+            investiu no sistema, segundo o prestador. Dados técnicos (população atendida, volumes, perdas, consumo) também são declarados, mas
+            não têm demonstração auditada com que se possam conferir e não levam a marca.
+          </Nota>
         </Secao>
 
         <Secao
@@ -453,6 +501,10 @@ export default function Pagina() {
         <Secao id="limitacoes" titulo="Limitações gerais">
           <ul className="max-w-prose2 list-disc space-y-2 pl-5 text-sm leading-relaxed text-carvao">
             <li>O SINISA reúne declarações de prestadores e municípios. O ministério aplica regras de consistência, mas não audita os dados em campo.</li>
+            <li>
+              Receitas, despesas, investimentos, tarifa declarada e balanço são autodeclarados ao SINISA, sem conferência com demonstrações
+              financeiras auditadas; ficam só nos capítulos que os tratam, com a marca (seção Valores financeiros, acima).
+            </li>
             <li>
               O Censo 2022 e o SINISA 2024 medem coisas diferentes (ligação declarada pelo morador; atendimento declarado pelo prestador) em anos
               diferentes. Os dois aparecem lado a lado e nunca são combinados numa mesma razão.

@@ -309,6 +309,10 @@ export type Prestador = {
   ligacoes_esgoto: number | null;
   volumes_mil_m3: Record<string, number | null>;
   perdas_distribuicao_pct: number | null;
+  /** Consumo total médio per capita de água (fórmula do IAG2006 sobre as somas, sem a média com a população de 2023), l/hab/dia. */
+  consumo_per_capita_agua: number | null;
+  /** Municípios com os quatro campos do IAG2006 que entram no consumo per capita. */
+  consumo_per_capita_municipios: number;
   receita_direta_usuarios_agua: number | null;
   despesa_exploracao_agua: number | null;
   receita_por_m3_faturado_agua: number | null;

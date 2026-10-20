@@ -214,7 +214,7 @@ export const VIABILIDADE: LinhaViabilidade[] = [
   {
     capitulo: "8",
     pergunta: "Como os prestadores se comparam?",
-    indicador: "Perdas (IAG2013), receita e despesa por m³, investimento, margens e endividamento",
+    indicador: "Perdas (IAG2013), consumo per capita (IAG2006), receita e despesa por m³, investimento, margens e endividamento",
     fonte: "SINISA 2025, planilhas por prestador e de balanço",
     periodo: "2024",
     unidadeGeografica: "Prestador",
@@ -222,7 +222,7 @@ export const VIABILIDADE: LinhaViabilidade[] = [
     cobertura: "1.797 prestadores; balanço quando declarado",
     atualizacao: "Anual",
     acesso: "Planilhas públicas",
-    limitacoes: "Sem seleção de pares por escala e densidade; balanço não auditado pelo SINISA",
+    limitacoes: "Sem seleção de pares por escala e densidade; receitas, despesas, investimento e balanço autodeclarados ao SINISA, sem conferência com demonstrações financeiras auditadas; consumo per capita sem a média com a população de 2023",
     situacao: "parcial",
   },
   {
@@ -236,7 +236,7 @@ export const VIABILIDADE: LinhaViabilidade[] = [
     cobertura: "5.148 municípios declarantes",
     atualizacao: "Anual",
     acesso: "Planilhas públicas",
-    limitacoes: "Um ano isolado; investimento regional pode ser lançado num município; sem ligação a obras",
+    limitacoes: "Autodeclarado ao SINISA, sem conferência com demonstrações financeiras auditadas; um ano isolado; investimento regional pode ser lançado num município; sem ligação a obras",
     situacao: "parcial",
   },
   {
@@ -264,7 +264,7 @@ export const VIABILIDADE: LinhaViabilidade[] = [
     cobertura: "Declarantes",
     atualizacao: "Anual",
     acesso: "Planilhas públicas",
-    limitacoes: "Não detalha a composição dos recursos próprios",
+    limitacoes: "Autodeclarado ao SINISA, sem conferência com demonstrações financeiras auditadas; não detalha a composição dos recursos próprios",
     situacao: "parcial",
   },
   {
