@@ -1,4 +1,10 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { AtalhoLeitura } from "@/components/energia/LeiturasIntegradas";
+import { LeituraGuiada, ParaLer } from "@/components/energia/Didatica";
+import { TerritorioAreas } from "@/components/energia/TerritorioAreas";
+import { exemplosTerritorio, type ExemploTerritorio } from "@/lib/energia/territorio-exemplos";
+import type { MunicipiosTerritorio } from "@/lib/energia/tipos-territorio";
 import type { Metadata, ResolvingMetadata } from "next";
 import type { ReactNode } from "react";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
@@ -98,6 +104,16 @@ function rotulosComplementares(): Record<string, string> {
   };
 }
 
+/** Exemplos do artefato "Um endereço, várias áreas", lidos do índice municipal publicado (o mesmo arquivo do explorador); vazio se faltar. */
+function lerExemplos(g: GoldTerritorio): ExemploTerritorio[] {
+  try {
+    const arq = JSON.parse(readFileSync(join(process.cwd(), "public", g.series.municipios.replace(/^\/+/, "")), "utf-8")) as MunicipiosTerritorio;
+    return exemplosTerritorio(g, arq);
+  } catch {
+    return [];
+  }
+}
+
 const curto = (sha: string | null | undefined) => (sha ? `${sha.slice(0, 12)}…` : tx("sem registro", "no record"));
 
 /** Texto livre da gold (em português): na página inglesa, marcado como trecho só em português. */
@@ -148,6 +164,12 @@ export default function TerritorioPage() {
   const mudaram = insumos.filter((x) => x.confere === false).length;
   const naoLidos = insumos.filter((x) => x.confere === null).length;
   const quartis = quartisDistribuidoras(dados.distribuidoras);
+  // resposta da abertura e artefato: a maior cidade de cada submercado, com o número de cada área (mesmos arquivos da ficha)
+  const exemplos = lerExemplos(g);
+  const ex = exemplos[0];
+  const exDist = ex?.distribuidoras.find((d) => d.tarifa) ?? null;
+  const ufsPorSm = g.submercados.map((s) => ({ sm: s.sm, n: s.ufs.length }));
+  const foraDoSin = r.municipios_fora_do_sin.total;
   const comoInterpretarEn = (
     <>
       Choose a layer: submarket (state color), distribution utilities (whole municipalities from the official list), municipalities (one measure published by municipality) or plants
@@ -214,7 +236,21 @@ export default function TerritorioPage() {
         <CabecalhoModulo
           siglas={["SIN", "PLD", "DEC", "FEC", "MMGD", "SIGA"]}
           titulo={rotuloDado(g.pergunta, PERGUNTA_TERRITORIO_EN, idioma)}
-          lead={tx(
+          lead={
+            ex && ex.pldDia && exDist?.tarifa
+              ? tx(
+                  <>
+                    Depende da área de cada número. Em {ex.nome} ({ex.uf}), o PLD do <Termo slug="submercado">submercado</Termo> {nomeSm(ex.sm, "pt")} foi de R${"\u00a0"}
+                    {num(ex.pldDia.valor, 2)}/MWh em {dataBR(ex.pldDia.dia)}, o mesmo para {ex.ufsDoSm} UFs; a tarifa residencial da {exDist.sigla} é de R$&nbsp;{num(exDist.tarifa.valor, 2)}/MWh, a
+                    mesma para os {num(exDist.municipiosNaArea, 0)} municípios da área dela.
+                  </>,
+                  <>
+                    It depends on each figure&apos;s area. In <Nome>{ex.nome}</Nome> ({ex.uf}), the PLD of the <Termo slug="submercado">submarket</Termo> {nomeSm(ex.sm, "en")} was R${"\u00a0"}
+                    {num(ex.pldDia.valor, 2)}/MWh on {dataBR(ex.pldDia.dia)}, the same for {ex.ufsDoSm} states; the residential tariff of <Nome>{exDist.sigla}</Nome> is R${"\u00a0"}
+                    {num(exDist.tarifa.valor, 2)}/MWh, the same for the {num(exDist.municipiosNaArea, 0)} municipalities in its area.
+                  </>,
+                )
+              : tx(
             <>
               Quem mora num município paga a tarifa da distribuidora da área e vive num <Termo slug="submercado">submercado</Termo>, com preço próprio, por isso cada número aqui é da área da sua fonte. Escolha uma região
               para ver preço, tarifa, perdas, continuidade e usinas.
@@ -223,7 +259,8 @@ export default function TerritorioPage() {
               Whoever lives in a municipality pays the tariff of the area&apos;s distribution utility and lives in a <Termo slug="submercado">submarket</Termo>, with its own price, so each figure here belongs
               to its source&apos;s area. Choose a region to see price, tariff, losses, continuity and plants.
             </>,
-          )}
+                )
+          }
           limite={tx(
             "Tarifa, perdas, DEC e FEC são da distribuidora inteira e não distinguem os municípios dela; preço e energia armazenada são do submercado; a área da distribuidora é a união de municípios inteiros.",
             "Tariff, losses, DEC and FEC belong to the whole distribution utility and do not distinguish its municipalities; price and stored energy belong to the submarket; the utility's area is the union of whole municipalities.",
@@ -287,6 +324,84 @@ export default function TerritorioPage() {
             >
               <div className="space-y-6">
                 <TerritorioExplorador dados={dados} />
+
+                <LeituraGuiada id="p002-mapa">
+                  {tx(
+                    `Na camada que abre, a cor de cada UF é o submercado dela: ${ufsPorSm.map((x) => `${x.n} UFs no ${nomeSm(x.sm, "pt")}`).join(", ")}. Os ${inteiro(foraDoSin)} municípios fora do SIN, atendidos por sistemas isolados, não pertencem a nenhum submercado. Troque a camada para ver distribuidoras, municípios ou usinas; ao escolher um lugar, a ficha diz de que área é cada número.`,
+                    `In the layer that opens, each state's color is its submarket: ${ufsPorSm.map((x) => `${x.n} states in the ${nomeSm(x.sm, "en")}`).join(", ")}. The ${inteiro(foraDoSin)} municipalities outside the SIN, served by isolated systems, belong to no submarket. Switch the layer to see utilities, municipalities or plants; when you choose a place, the sheet says which area each figure belongs to.`,
+                  )}
+                </LeituraGuiada>
+
+                <TerritorioAreas
+                  exemplos={exemplos}
+                  dataMmgd={g.referencias.mmgd_data_cadastro ?? null}
+                  anoPop={g.referencias.populacao_ano ?? null}
+                  fonte={tx(
+                    `PLD da CCEE e energia armazenada do ONS por submercado; tarifa B1 (ANEEL) vigente em ${g.referencias.tarifa_data ? dataBR(g.referencias.tarifa_data) : "data sem registro"}; perdas (ANEEL, ${g.referencias.perdas_ano ?? "ano sem dado"}) e DEC e FEC (ANEEL, ${g.referencias.qualidade_ano ?? "ano sem dado"}) da distribuidora e dos conjuntos; população do IBGE; MMGD e usinas da ANEEL. Os mesmos arquivos da ficha do mapa.`,
+                    `CCEE PLD and ONS stored energy by submarket; B1 tariff (ANEEL) in force on ${g.referencias.tarifa_data ? dataBR(g.referencias.tarifa_data) : "date not recorded"}; losses (ANEEL, ${g.referencias.perdas_ano ?? "year with no data"}) and DEC and FEC (ANEEL, ${g.referencias.qualidade_ano ?? "year with no data"}) of the utility and the consumer sets; IBGE population; ANEEL MMGD and plants. The same files as the map sheet.`,
+                  )}
+                />
+
+                <ParaLer
+                  id="para-ler-territorio"
+                  nivelTitulo={3}
+                  itens={[
+                    {
+                      termo: <Termo slug="sin">SIN</Termo>,
+                      definicao: tx(
+                        `O Sistema Interligado Nacional: a rede que liga quase todo o país. Ficam fora ${inteiro(foraDoSin)} municípios atendidos por sistemas isolados.`,
+                        `The National Interconnected System: the grid that links almost the whole country. Left out are ${inteiro(foraDoSin)} municipalities served by isolated systems.`,
+                      ),
+                    },
+                    {
+                      termo: <Termo slug="submercado">{tx("Submercado", "Submarket")}</Termo>,
+                      definicao: tx(
+                        "Uma das quatro regiões elétricas do SIN (Sudeste/Centro-Oeste, Sul, Nordeste e Norte), cada uma com o seu PLD, o preço do mercado de curto prazo e os seus reservatórios. O ONS chama a mesma divisão de subsistema.",
+                        "One of the four electrical regions of the SIN (Southeast/Center-West, South, Northeast and North), each with its own PLD, the short-term market price and reservoirs. ONS calls the same division a subsystem.",
+                      ),
+                    },
+                    {
+                      termo: tx("Distribuidora", "Distribution utility"),
+                      definicao: tx(
+                        "A empresa que leva a energia até a casa e cobra a tarifa. A área dela é a lista oficial de municípios que ela atende; tarifa e perdas valem para a área inteira.",
+                        "The company that brings power to the home and charges the tariff. Its area is the official list of municipalities it serves; tariff and losses hold for the whole area.",
+                      ),
+                    },
+                    {
+                      termo: <Termo slug="conjunto-eletrico">{tx("Conjunto elétrico", "Consumer set")}</Termo>,
+                      definicao: tx(
+                        "Grupo de consumidores definido pela ANEEL para medir as interrupções. Um município grande tem vários; um conjunto pode juntar municípios pequenos.",
+                        "A group of consumers defined by ANEEL to measure interruptions. A large municipality has several; one set may group small municipalities.",
+                      ),
+                    },
+                    {
+                      termo: tx("DEC e FEC", "DEC and FEC"),
+                      definicao: tx(
+                        <>
+                          <Termo slug="dec">DEC</Termo>: quantas horas, em média, cada consumidor ficou sem energia no ano. <Termo slug="fec">FEC</Termo>: quantas vezes a energia caiu, em
+                          média, para cada consumidor.
+                        </>,
+                        <>
+                          <Termo slug="dec">DEC</Termo>: how many hours, on average, each consumer was without power in the year. <Termo slug="fec">FEC</Termo>: how many times power went
+                          out, on average, for each consumer.
+                        </>,
+                      ),
+                    },
+                    {
+                      termo: tx("PLD e tarifa", "PLD and tariff"),
+                      definicao: tx(
+                        <>
+                          Os dois vêm em R$/MWh, mas não se comparam: o <Termo slug="pld">PLD</Termo> é o preço da energia no mercado de curto prazo, por submercado; a tarifa é o que a
+                          distribuidora cobra do consumidor residencial, antes dos impostos e da bandeira.
+                        </>,
+                        <>
+                          Both come in R$/MWh, but they are not comparable: the <Termo slug="pld">PLD</Termo> is the price of energy in the short-term market, by submarket; the tariff is
+                          what the utility charges the residential consumer, before taxes and the tariff flag.
+                        </>,
+                      ),
+                    },
+                  ]}
+                />
 
                 <div id="territorio-limites" className="scroll-mt-28">
                   <NotasDoPainel oQueMudou={textoAtualidade(g)} comoInterpretar={comoInterpretarNotas} naoConcluir={naoConcluirNotas} />

@@ -324,9 +324,22 @@ export function textoOutraBase(p: Pick<P025, "comparacoes">, sm: Regiao, janela:
       ? tx("nas mesmas datas, os dias do ano anterior caem em outros dias da semana", "on the same dates, the days of the previous year fall on other days of the week", idioma)
       : tx("nos mesmos dias da semana, a janela de comparação é deslocada 364 dias", "on the same days of the week, the comparison window is shifted by 364 days", idioma);
   const d = (x: string) => dataBR(x, idioma);
+  // qual das duas ler primeiro: a de mesmos dias da semana é a principal; a de mesmas datas reproduz a taxa publicada antes
+  const qual =
+    outra === "mesmas_datas"
+      ? tx(
+          " A taxa principal é a de cima: cada dia útil contra um dia útil, cada domingo contra um domingo; a de mesmas datas reproduz a que o observatório publicava antes.",
+          " The main rate is the one above: each working day against a working day, each Sunday against a Sunday; the same-dates rate reproduces the one the observatory used to publish.",
+          idioma,
+        )
+      : tx(
+          " A taxa principal é a de mesmos dias da semana; a de cima reproduz a que o observatório publicava antes.",
+          " The main rate is the same-days-of-the-week one; the one above reproduces the rate the observatory used to publish.",
+          idioma,
+        );
   return tx(
-    `Com ${nome} (${d(l.inicio_ant)} a ${d(l.fim_ant)}), a variação da mesma janela é ${sinal(l.variacao_pct, 2, "", idioma)}%. As duas taxas usam bases diferentes: ${diferenca}.`,
-    `With ${nome} (${d(l.inicio_ant)} to ${d(l.fim_ant)}), the change for the same window is ${sinal(l.variacao_pct, 2, "", idioma)}%. The two rates use different bases: ${diferenca}.`,
+    `Com ${nome} (${d(l.inicio_ant)} a ${d(l.fim_ant)}), a variação da mesma janela é ${sinal(l.variacao_pct, 2, "", idioma)}%. As duas taxas usam bases diferentes: ${diferenca}.${qual}`,
+    `With ${nome} (${d(l.inicio_ant)} to ${d(l.fim_ant)}), the change for the same window is ${sinal(l.variacao_pct, 2, "", idioma)}%. The two rates use different bases: ${diferenca}.${qual}`,
     idioma,
   );
 }

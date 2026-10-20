@@ -487,7 +487,8 @@ describe("termos explicados no ponto de uso", () => {
   it("Rede: 'energia escondida pelo saldo' definida antes dos cartões, e o lead não cita mais o 'arquivo de 2026'", () => {
     const t = entender.rede;
     expect(t).toContain("A energia escondida pelo saldo é o menor dos dois sentidos; zero quer dizer que o fluxo foi sempre no mesmo sentido");
-    expect(t.indexOf("A energia escondida pelo saldo é o menor")).toBeLessThan(t.indexOf("Energia escondida pelo saldo de 30 dias, Norte"));
+    expect(t.indexOf("A energia escondida pelo saldo é o menor")).toBeLessThan(t.indexOf("Energia escondida pelo saldo de 30 dias, entre Norte"));
+    expect(t.indexOf("Energia escondida pelo saldo de 30 dias, entre Norte")).toBeGreaterThan(-1);
     expect(t).not.toContain("no arquivo de");
     expect(t).not.toContain("Quatro painéis");
   });
