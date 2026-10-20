@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1408,
-    "fontes_sha256": "d83f819ab8ad4de4f150b35c45f1ed595456733e85f77923bca15b1b4e1ece31",
+    "arquivos_analisados": 1412,
+    "fontes_sha256": "5a5a0080e3d32ab0ee1081b7e385299ba84a4e73e031f03ea29bd6f7f5b90f52",
     "pendencias_sha256": "833d766bc14d926b6293c949b6f91e5cddb70243685dddd4ef622821c459aa01",
     "nao_classificadas": [
       {
@@ -158,10 +158,10 @@
           "jsx_text": 1499,
           "atributos": 388,
           "props": 1004,
-          "outros_literais": 7054,
-          "templates": 868,
-          "expressoes_nao_resolvidas": 5371,
-          "chaves_objetos": 5667
+          "outros_literais": 7070,
+          "templates": 872,
+          "expressoes_nao_resolvidas": 5377,
+          "chaves_objetos": 5681
         },
         "exclusoes": {
           "importacoes": 1528,
@@ -175,7 +175,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 21851,
+        "candidatos_nao_catalogados": 21891,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -346,20 +346,20 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 229,
+        "arquivos": 233,
         "candidatos": {
-          "jsx_text": 2933,
-          "atributos": 1016,
-          "props": 1301,
-          "outros_literais": 7477,
-          "templates": 727,
-          "expressoes_nao_resolvidas": 7579,
-          "chaves_objetos": 4606
+          "jsx_text": 3099,
+          "atributos": 1071,
+          "props": 1334,
+          "outros_literais": 7757,
+          "templates": 789,
+          "expressoes_nao_resolvidas": 7963,
+          "chaves_objetos": 4758
         },
         "exclusoes": {
-          "importacoes": 891,
-          "atributos_tecnicos": 3174,
-          "tipos": 424
+          "importacoes": 916,
+          "atributos_tecnicos": 3356,
+          "tipos": 457
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -368,7 +368,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 25639,
+        "candidatos_nao_catalogados": 26771,
         "percentual_traduzido": null
       },
       "rotas": {

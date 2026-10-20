@@ -114,6 +114,8 @@ function paineisEficiencia(): Painel[] {
     { rota: "/eficiencia-estatal/saneamento/residuos", titulo: "Resíduos sólidos", observatorio: "territorio-e-clima", colecao: "cidades-clima", origem: "eficiencia" },
     { rota: "/eficiencia-estatal/saneamento/drenagem", titulo: "Drenagem e risco de inundação", observatorio: "territorio-e-clima", colecao: "cidades-clima", origem: "eficiencia" },
     ...temas,
+    // comparação por UF do painel Segurança pública (pipeline/seguranca, 20/10/2026): o destino mais procurado do tema
+    { rota: "/eficiencia-estatal/seguranca-publica/estados", titulo: "Violência por estado", observatorio: "servicos-publicos", colecao: "seguranca", origem: "eficiencia" },
   ];
 }
 

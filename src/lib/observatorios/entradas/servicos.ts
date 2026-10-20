@@ -26,10 +26,13 @@ function referenciaCapitais(arquivo: string, filtro: (r: any) => boolean): any {
   return refs.reduce((a, b) => (b.ano > a.ano ? b : a));
 }
 
-function seguranca(id: string): { valor: number; variacao: number | null; unidade: string; ano: number; fonte: string } {
-  const s = lerPublico("eficiencia", "seguranca-publica", "snapshot.json");
-  const i = (s.indicadores as any[]).find((x) => x.id === id);
-  return { valor: i.valor, variacao: i.variacao, unidade: i.unidade, ano: s.referencia, fonte: s.fonte };
+/** Brasil no último ano em que as 27 UFs têm dado publicado, na gold do painel Segurança pública (pipeline/seguranca). */
+function seguranca(id: string): { valor: number; taxa: number | null; variacao: number | null; ano: number; cobertura: number } {
+  const g = lerPublico("eficiencia", "seguranca-publica", "gold", "seguranca.json");
+  const br = g.series[id].BR;
+  let k = g.anos.length - 1;
+  while (k > 0 && br.situacao[k] !== "ok") k--;
+  return { valor: br.n[k], taxa: br.taxa ? br.taxa[k] : null, variacao: br.variacao[k], ano: g.anos[k], cobertura: br.cobertura[k] };
 }
 
 const ideb = () => numero(
@@ -57,10 +60,20 @@ const pendentes = () => numero(
 );
 
 const homicidios = () => numero(
-  { rotulo: "Vítimas de homicídio doloso registradas", unidade: "vítimas no ano", fonte: "Ministério da Justiça, Sinesp", href: "/eficiencia-estatal/seguranca-publica", nota: "Registros policiais consolidados pelo Sinesp; não é taxa por habitante." },
+  { rotulo: "Vítimas de homicídio doloso registradas", unidade: "vítimas no ano", fonte: "Ministério da Justiça, Sinesp VDE", href: "/eficiencia-estatal/seguranca-publica", nota: "Registros das polícias estaduais consolidados pelo Sinesp." },
   () => {
     const s = seguranca("homicidio");
-    return { valor: num(s.valor, 0), periodo: String(s.ano), nota: s.variacao === null ? undefined : `Variação sobre o ano anterior informada pela fonte: ${s.variacao > 0 ? "+" : "−"}${num(Math.abs(s.variacao), 1)}%. Registros policiais; não é taxa por habitante.` };
+    const taxa = s.taxa === null ? "" : `${num(s.taxa, 1)} por 100 mil habitantes. `;
+    const variacao = s.variacao === null ? "" : `Variação sobre o ano anterior: ${s.variacao > 0 ? "+" : "−"}${num(Math.abs(s.variacao), 1)}%. `;
+    return { valor: num(s.valor, 0), periodo: String(s.ano), nota: `${taxa}${variacao}Registros das polícias estaduais, soma das 27 UFs.` };
+  },
+);
+
+const despesaSeguranca = () => numero(
+  { rotulo: "Despesa dos governos estaduais com segurança pública por habitante", unidade: "por habitante no ano", fonte: "Tesouro Nacional, Siconfi, e IBGE", href: "/eficiencia-estatal/seguranca-publica/recursos", nota: "Só o governo estadual e o do DF; não inclui a União nem os municípios. Valores nominais." },
+  () => {
+    const s = seguranca("despesa_habitante");
+    return { valor: `R$ ${num(s.taxa as number, 0)}`, periodo: `${s.ano}, ${s.cobertura} governos estaduais` };
   },
 );
 
@@ -109,7 +122,7 @@ export function recursoAoResultado(): TemaServico[] {
   return [
     { id: "educacao", titulo: educacao.titulo, href: educacao.href, recursos: { texto: educacao.recursos, numero: null }, atendimento: { texto: educacao.acesso, numero: null }, resultados: { texto: educacao.resultados, numero: ideb() } },
     { id: "saude", titulo: saude.titulo, href: saude.href, recursos: { texto: saude.recursos, numero: saudePorHabitante() }, atendimento: { texto: saude.acesso, numero: null }, resultados: { texto: saude.resultados, numero: null } },
-    { id: "seguranca", titulo: seg.titulo, href: seg.href, recursos: { texto: seg.recursos, numero: null }, atendimento: { texto: seg.acesso, numero: armas }, resultados: { texto: seg.resultados, numero: homicidios() } },
+    { id: "seguranca", titulo: seg.titulo, href: seg.href, recursos: { texto: seg.recursos, numero: despesaSeguranca() }, atendimento: { texto: seg.acesso, numero: armas }, resultados: { texto: seg.resultados, numero: homicidios() } },
     { id: "justica", titulo: justica.titulo, href: "/eficiencia-estatal/judiciario", recursos: { texto: justica.recursos, numero: despesaJustica }, atendimento: { texto: justica.acesso, numero: pendentes() }, resultados: { texto: justica.resultados, numero: tempo } },
   ];
 }
