@@ -10,12 +10,15 @@
  * - A função Encargos Especiais (28) não é uma área: reúne a dívida pública (subfunções 841 a 844), as
  *   transferências a estados, DF e municípios (845 e 847) e outros encargos (846 e demais). As três aparecem
  *   separadas e nunca somadas a saúde, educação ou previdência sem dizer.
+ * - A Reserva de Contingência (99) também não é uma área: é dotação guardada para riscos e créditos ao longo do ano,
+ *   sem execução própria. Fica numa parcela à parte (com os três itens da função 98, "Atípica", de 2007, que tiveram
+ *   R$ 380 mil autorizados e nada empenhado), que só aparece nos estágios em que tem valor.
  * - "Primária" exclui as linhas com identificador de resultado primário 0 (despesa financeira): juros,
  *   amortização e refinanciamento da dívida, e também concessão de empréstimos e financiamentos em outras funções.
  * - Estágio incompleto na fonte (2014, dotação atualizada) é null: a página diz "não informado", nunca zero.
  */
 import fonte from './snapshots/funcoes.json';
-import {dataFonte} from './dados';
+import {DADOS, dataFonte} from './dados';
 import {dividirEmCem} from './formato';
 
 export const ESTAGIOS_AREA = ['inicial', 'atualizada', 'empenhado', 'liquidado', 'pago'] as const;
@@ -93,17 +96,27 @@ export function datasDoExercicio(ano: number) {
 export const DIVIDA_REFIN = ['841', '842'];
 export const DIVIDA_SERVICO = ['843', '844'];
 export const TRANSFERENCIAS = ['845', '847'];
-export type TipoParcela = 'divida' | 'encargos' | 'area';
-export type IdParcela = 'divida-refinanciamento' | 'divida-servico' | 'transferencias' | 'outros-encargos' | `f${string}`;
+/** Funções que não são áreas de governo nem Encargos Especiais: reserva para riscos e a função atípica de 2007. */
+export const FUNCOES_RESERVA = ['99', '98'];
+export type TipoParcela = 'divida' | 'encargos' | 'reserva' | 'area';
+export type IdParcela = 'divida-refinanciamento' | 'divida-servico' | 'transferencias' | 'outros-encargos' | 'reserva' | `f${string}`;
 
 export const PARCELAS_ENCARGOS: {id: IdParcela; nome: string; tipo: TipoParcela; explica: string}[] = [
   {id: 'divida-refinanciamento', nome: 'Dívida: refinanciamento', tipo: 'divida', explica: 'Títulos que vencem pagos com títulos novos (subfunções 841 e 842). Troca dívida velha por nova.'},
   {id: 'divida-servico', nome: 'Dívida: juros e amortização', tipo: 'divida', explica: 'Juros e parte do principal pagos com outros recursos (subfunções 843 e 844).'},
-  {id: 'transferencias', nome: 'Transferências a estados, DF e municípios', tipo: 'encargos', explica: 'Repartição de receitas (FPM, FPE, royalties), complementação do Fundeb e salário-educação, Fundo Constitucional do DF (subfunções 845 e 847).'},
-  {id: 'outros-encargos', nome: 'Outros encargos especiais', tipo: 'encargos', explica: 'Precatórios e sentenças judiciais, cobertura do resultado negativo do Banco Central, financiamentos a setores produtivos e outros (subfunção 846).'},
+  {id: 'transferencias', nome: 'Transferências a estados, DF e municípios', tipo: 'encargos', explica: 'Repartição de receitas com estados e municípios (FPM, FPE, royalties do petróleo), a parte dessas receitas que vai para o Fundeb, as quotas do salário-educação e o Fundo Constitucional do DF (subfunções 845 e 847). A complementação da União ao Fundeb fica em Educação.'},
+  {id: 'outros-encargos', nome: 'Outros encargos especiais', tipo: 'encargos', explica: 'Cobertura do resultado negativo do Banco Central, precatórios e sentenças judiciais, pensões militares, financiamentos dos fundos constitucionais e a exportadores, e outros (subfunção 846).'},
 ];
+/** Parcela da reserva: aparece nos estágios de autorização; nos de execução, a fonte não registra valor nela. */
+export const PARCELA_RESERVA: {id: IdParcela; nome: string; tipo: TipoParcela; explica: string} = {
+  id: 'reserva', nome: 'Reserva de contingência', tipo: 'reserva',
+  explica: 'Dotação guardada para riscos fiscais e para abrir créditos durante o ano (função 99). Não é gasto em si: o que é usado passa para a área que recebe o crédito.',
+};
+/** Tudo o que fica fora das áreas de governo, na ordem de exibição. */
+export const PARCELAS_FORA = [...PARCELAS_ENCARGOS, PARCELA_RESERVA];
 
 export function parcelaDe(funcao: string, subfuncao: string): IdParcela {
+  if (FUNCOES_RESERVA.includes(funcao)) return 'reserva';
   if (funcao !== '28') return `f${funcao}`;
   if (DIVIDA_REFIN.includes(subfuncao)) return 'divida-refinanciamento';
   if (DIVIDA_SERVICO.includes(subfuncao)) return 'divida-servico';
@@ -111,12 +124,17 @@ export function parcelaDe(funcao: string, subfuncao: string): IdParcela {
   return 'outros-encargos';
 }
 export function nomeParcela(id: IdParcela): string {
-  const e = PARCELAS_ENCARGOS.find((p) => p.id === id);
+  const e = PARCELAS_FORA.find((p) => p.id === id);
   if (e) return e.nome;
   return FUNCOES[id.slice(1)] ?? `Função ${id.slice(1)}`;
 }
 export function tipoParcela(id: IdParcela): TipoParcela {
-  return PARCELAS_ENCARGOS.find((p) => p.id === id)?.tipo ?? 'area';
+  return PARCELAS_FORA.find((p) => p.id === id)?.tipo ?? 'area';
+}
+/** Grupo da parcela fora das áreas, para o rótulo: "Encargos Especiais" ou "Reserva"; null para as áreas. */
+export function grupoParcela(id: IdParcela): string | null {
+  const t = tipoParcela(id);
+  return t === 'area' ? null : t === 'reserva' ? 'Fora das áreas' : 'Encargos Especiais';
 }
 
 const naBase = (r: Registro, base: Base) => base === 'total' || r.rp !== '0';
@@ -143,12 +161,13 @@ export function composicao(ano: number, estagio: EstagioArea = 'pago', base: Bas
     if (r.rp === '0') s.financeiro += v;
     soma.set(id, s);
   }
-  const ordem = (p: Parcela) => (p.tipo === 'divida' ? 0 : p.tipo === 'encargos' ? 1 : 2);
-  const enc = PARCELAS_ENCARGOS.map((p) => p.id);
+  const ordem = (p: Parcela) => ({divida: 0, encargos: 1, area: 2, reserva: 3})[p.tipo];
+  const enc = PARCELAS_FORA.map((p) => p.id);
   const parcelas = [...soma.entries()]
     .map(([id, s]) => ({id, nome: nomeParcela(id), tipo: tipoParcela(id), valor: s.valor, financeiro: s.financeiro}))
-    // parcela vazia na base (a dívida na despesa primária) sai da lista; zero calculado de uma área continua
-    .filter((p) => !(p.tipo !== 'area' && p.valor === 0 && base === 'primaria'))
+    // parcela fora das áreas sem valor (a dívida na despesa primária, a reserva nos estágios de execução) sai da lista;
+    // zero calculado de uma área continua
+    .filter((p) => !(p.tipo !== 'area' && p.valor === 0))
     .sort((a, b) => ordem(a) - ordem(b) || (a.tipo === 'area' ? b.valor - a.valor : enc.indexOf(a.id) - enc.indexOf(b.id)) || a.id.localeCompare(b.id));
   const total = parcelas.reduce((s, p) => s + p.valor, 0);
   return {ano, estagio, base, total, parcelas};
@@ -161,16 +180,31 @@ export function emCem(c: Composicao): (Parcela & {cem: number})[] | null {
   return c.parcelas.map((p, i) => ({...p, cem: cem[i]}));
 }
 
+/**
+ * Conciliação com a régua por grupo de despesa (entrada das Contas Federais, cemReais.ts): juros e amortização (GND 2 e
+ * 6) somam mais que a dívida por função (subfunções 841 a 844), porque parte deles está classificada em Outros encargos
+ * especiais (846); em 2025, sobretudo a cobertura do resultado negativo do Banco Central (conferido no SIOP em
+ * 20/10/2026). Só para os exercícios que o painel de execução integra; null nos demais.
+ */
+export function conciliacaoGrupos(ano: number): {grupos: number; funcao: number; diferenca: number} | null {
+  const b = DADOS.orcamento.find((o) => o.ano === ano);
+  const c = composicao(ano, 'pago', 'total');
+  if (!b || !c) return null;
+  const grupos = b.grupos.filter((g) => g.codigo === '2' || g.codigo === '6').reduce((s, g) => s + g.pago, 0);
+  const funcao = c.parcelas.filter((p) => p.tipo === 'divida').reduce((s, p) => s + p.valor, 0);
+  return {grupos, funcao, diferenca: grupos - funcao};
+}
+
 // ------------------------------------------------------------------ série
 
 export type PontoSerie = {ano: number; valor: number | null; total: number | null; parcela: number | null; parcial: boolean};
 
-/** A parcela (ou a função inteira, com `f28`) em todos os exercícios: valor corrente e parte de cada R$ 100. */
-export function serie(id: IdParcela | 'f28', estagio: EstagioArea = 'pago', base: Base = 'total'): PontoSerie[] {
+/** A parcela em todos os exercícios: valor corrente e parte de cada R$ 100 (zero calculado quando não teve valor). */
+export function serie(id: IdParcela, estagio: EstagioArea = 'pago', base: Base = 'total'): PontoSerie[] {
   return ANOS.map((ano) => {
     const c = composicao(ano, estagio, base);
     if (!c) return {ano, valor: null, total: null, parcela: null, parcial: !encerrado(ano)};
-    const valor = id === 'f28' ? c.parcelas.filter((p) => p.tipo !== 'area').reduce((s, p) => s + p.valor, 0) : (c.parcelas.find((p) => p.id === id)?.valor ?? 0);
+    const valor = c.parcelas.find((p) => p.id === id)?.valor ?? 0;
     return {ano, valor, total: c.total, parcela: c.total > 0 ? (100 * valor) / c.total : null, parcial: !encerrado(ano)};
   });
 }
@@ -211,12 +245,6 @@ for (const r of REGISTROS) {
 }
 function anosDaCombinacao(funcao: string, subfuncao: string): number[] {
   return [...(COMBINACOES.get(`${funcao}.${subfuncao}`) ?? [])].sort((a, b) => a - b);
-}
-
-/** Funções que podem ser escolhidas no detalhe: as que têm valor no exercício, em ordem de código. */
-export function funcoesDoAno(ano: number): {codigo: string; nome: string}[] {
-  const cods = new Set((POR_ANO.get(ano) ?? []).map((r) => r.funcao));
-  return [...cods].sort().map((codigo) => ({codigo, nome: FUNCOES[codigo] ?? codigo}));
 }
 
 // ------------------------------------------------------------------ quebras e ressalvas
@@ -280,11 +308,11 @@ export const ROTA_AREAS = '/contas-publicas/por-area';
 export type Recorte = {ano: number; estagio: EstagioArea; base: Base; area: IdParcela};
 export const AREA_PADRAO: IdParcela = 'f10';
 
-/** Parcelas que o leitor pode escolher: as quatro de Encargos Especiais e as funções com valor em algum exercício. */
+/** Parcelas que o leitor pode escolher: as de fora das áreas (Encargos Especiais e reserva) e as 27 funções de governo. */
 export function parcelasEscolhiveis(): {id: IdParcela; nome: string; tipo: TipoParcela}[] {
-  const funcoes = Object.keys(FUNCOES).filter((c) => c !== '28' && c !== '98').sort();
+  const funcoes = Object.keys(FUNCOES).filter((c) => c !== '28' && !FUNCOES_RESERVA.includes(c)).sort();
   return [
-    ...PARCELAS_ENCARGOS.map((p) => ({id: p.id, nome: p.nome, tipo: p.tipo})),
+    ...PARCELAS_FORA.map((p) => ({id: p.id, nome: p.nome, tipo: p.tipo})),
     ...funcoes.map((c) => ({id: `f${c}` as IdParcela, nome: FUNCOES[c], tipo: 'area' as const})),
   ];
 }
@@ -310,8 +338,9 @@ export function hrefRecorte(r: Recorte, mudanca: Partial<Recorte> = {}, ancora =
   return `${ROTA_AREAS}${s ? `?${s}` : ''}${ancora ? `#${ancora}` : ''}`;
 }
 
-/** Subfunções da parcela escolhida: a função inteira, ou só as subfunções de Encargos Especiais daquela parcela. */
+/** Subfunções da parcela escolhida: a função inteira, a reserva, ou só as subfunções de Encargos Especiais da parcela. */
 export function subfuncoesDaParcela(id: IdParcela, ano: number): LinhaSubfuncao[] {
   if (id.startsWith('f')) return subfuncoes(id.slice(1), ano);
+  if (id === 'reserva') return FUNCOES_RESERVA.flatMap((f) => subfuncoes(f, ano));
   return subfuncoes('28', ano).filter((l) => parcelaDe('28', l.codigo) === id);
 }

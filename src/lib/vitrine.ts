@@ -168,7 +168,7 @@ function vitrineEficiencia(fmt: FormatarNumero): Vitrine {
 function vitrineContas(): Vitrine {
   const publicados = PAINEIS_COM_DADOS.length;
   const total = CAPITULOS.length;
-  const paineis = PAINEIS_COM_DADOS.map(([id, rotulo]) => {
+  const paineis: { titulo: string; href: string; descricao: string }[] = PAINEIS_COM_DADOS.map(([id, rotulo]) => {
     const c = CAPITULOS.find((x) => x.id === id);
     if (!c) throw new Error(`capítulo das Contas Federais fora do catálogo: ${id}`);
     return { titulo: rotulo, href: `/contas-publicas/${id}`, descricao: c.pergunta };

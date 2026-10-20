@@ -36,6 +36,7 @@
   "/contas-publicas/dados",
   "/contas-publicas/glossario",
   "/contas-publicas/metodologia",
+  "/contas-publicas/por-area",
   "/dados",
   "/dados/[slug]",
   "/dados/api",

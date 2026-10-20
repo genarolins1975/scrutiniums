@@ -6,7 +6,7 @@ import {numero} from '@/lib/contas-publicas/formato';
  * R$ bilhões correntes (barras a partir de zero). Unidades diferentes, gráficos separados: sem eixo duplo.
  * O ano em curso aparece vazado e rotulado como parcial; ano sem dado fica sem marca, nunca em zero.
  */
-const L = 720, A = 230, M = {e: 46, d: 14, t: 18, b: 30};
+const L = 720, A = 250, M = {e: 64, d: 16, t: 34, b: 34};
 
 function escalaX(pontos: PontoSerie[]) {
   const anos = pontos.map((p) => p.ano);
@@ -19,7 +19,11 @@ function topo(max: number) {
   for (const m of [1, 2, 2.5, 5, 10]) if (m * p >= max) return m * p;
   return 10 * p;
 }
-const anosRotulo = (pontos: PontoSerie[]) => pontos.filter((p, i) => i === 0 || i === pontos.length - 1 || p.ano % 5 === 0);
+/** Primeiro e último ano sempre; os múltiplos de 5 só quando não encostam neles (2025 ao lado de 2026, por exemplo). */
+const anosRotulo = (pontos: PontoSerie[]) => {
+  const primeiro = pontos[0]?.ano ?? 0, ultimo = pontos.at(-1)?.ano ?? 0;
+  return pontos.filter((p, i) => i === 0 || i === pontos.length - 1 || (p.ano % 5 === 0 && p.ano - primeiro >= 3 && ultimo - p.ano >= 3));
+};
 
 export function LinhaParcela({pontos, nome, unidade}: {pontos: PontoSerie[]; nome: string; unidade: string}) {
   const x = escalaX(pontos);
@@ -41,7 +45,7 @@ export function LinhaParcela({pontos, nome, unidade}: {pontos: PontoSerie[]; nom
           <text x={M.e - 8} y={y(t) + 4} textAnchor="end" className="cp-area-eixo">{numero(t, max < 10 ? 1 : 0)}</text>
         </g>
       ))}
-      <text x={M.e} y={10} className="cp-area-eixo">{unidade}</text>
+      <text x={M.e} y={18} className="cp-area-eixo">{unidade}</text>
       {anosRotulo(pontos).map((p) => (
         <text key={p.ano} x={x(p.ano)} y={A - 8} textAnchor="middle" className="cp-area-eixo">{p.ano}</text>
       ))}
@@ -78,7 +82,7 @@ export function BarrasValor({pontos, nome}: {pontos: PontoSerie[]; nome: string}
           <text x={M.e - 8} y={y(t) + 4} textAnchor="end" className="cp-area-eixo">{numero(t, max < 10 ? 1 : 0)}</text>
         </g>
       ))}
-      <text x={M.e} y={10} className="cp-area-eixo">R$ bilhões correntes</text>
+      <text x={M.e} y={18} className="cp-area-eixo">R$ bilhões correntes</text>
       {anosRotulo(pontos).map((p) => (
         <text key={p.ano} x={x(p.ano)} y={A - 8} textAnchor="middle" className="cp-area-eixo">{p.ano}</text>
       ))}

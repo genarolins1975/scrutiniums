@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import {
   ANOS, ANO_CORRENTE, ANOS_LIQUIDADO_IGUAL, BASES, ESTAGIOS_AREA, ESTAGIOS_INCOMPLETOS, FONTE_AREAS, NOME_BASE, NOME_ESTAGIO,
-  PARCELAS_ENCARGOS, ROTA_AREAS, composicao, exercicio, datasDoExercicio, emCem, encerrado, hrefRecorte, nomeParcela, parcelasEscolhiveis,
-  rotulosAlterados, serie, subfuncoesComQuebra, subfuncoesDaParcela, tipoParcela, ultimoEncerrado,
+  PARCELAS_ENCARGOS, PARCELA_RESERVA, ROTA_AREAS, composicao, exercicio, datasDoExercicio, emCem, encerrado, hrefRecorte, nomeParcela, parcelasEscolhiveis,
+  rotulosAlterados, serie, conciliacaoGrupos, subfuncoesComQuebra, subfuncoesDaParcela, tipoParcela, grupoParcela, ultimoEncerrado,
   type Composicao, type EstagioArea, type IdParcela, type Parcela, type Recorte,
 } from '@/lib/contas-publicas/areas';
 import {moeda, numero} from '@/lib/contas-publicas/formato';
@@ -13,7 +13,7 @@ import {BarrasValor, LinhaParcela} from './GraficosArea';
 
 const bi = (v: number | null) => (v === null ? 'Não informado' : numero(v / 1e9, 1));
 const verbo: Record<EstagioArea, string> = {inicial: 'autorizados na lei original', atualizada: 'autorizados', empenhado: 'empenhados', liquidado: 'liquidados', pago: 'pagos'};
-const classe = (p: {tipo: string; id: string}) => (p.tipo === 'divida' ? 'cp-financial' : p.tipo === 'encargos' ? 'cp-area-encargo' : p.id === 'demais' ? 'cp-area-demais' : '');
+const classe = (p: {tipo: string; id: string}) => (p.tipo === 'divida' ? 'cp-financial' : p.tipo === 'encargos' ? 'cp-area-encargo' : p.tipo === 'reserva' ? 'cp-area-reserva' : p.id === 'demais' ? 'cp-area-demais' : 'cp-area-foco');
 const legenda = (p: {tipo: string; id: string}) => (p.tipo === 'divida' ? 'cp-financial-label' : p.tipo === 'encargos' ? 'cp-area-encargo-label' : '');
 
 function origem(ano: number) {
@@ -72,6 +72,7 @@ function Abertura({r, c}: {r: Recorte; c: Composicao | null}) {
   const areas = itens?.filter((p) => p.tipo === 'area') ?? [];
   const transf = itens?.find((p) => p.id === 'transferencias');
   const outros = itens?.find((p) => p.id === 'outros-encargos');
+  const reserva = itens?.find((p) => p.id === 'reserva');
   const somaCem = (l: {cem: number}[]) => l.reduce((s, p) => s + p.cem, 0);
   const somaValor = (l: {valor: number}[]) => l.reduce((s, p) => s + p.valor, 0);
   const maior = areas[0];
@@ -100,7 +101,7 @@ function Abertura({r, c}: {r: Recorte; c: Composicao | null}) {
             <ol className="cp-hundred-labels cp-area-lista" aria-label={`Cada R$ 100 ${plural} em ${r.ano}`}>
               {agrupar(itens).map((p) => (
                 <li key={p.id} className={legenda(p)}>
-                  <span><i aria-hidden="true" className={`cp-area-chave ${classe(p)}`} />{p.nome}{p.tipo === 'area' && p.id !== 'demais' && p.financeiro > 0 && r.base === 'total' ? <small> · {numero((100 * p.financeiro) / p.valor, 0)}% em operações financeiras</small> : null}</span>
+                  <span><i aria-hidden="true" className={`cp-area-chave ${classe(p)}`} />{p.nome}<small>R$ {bi(p.valor)} bilhões{p.tipo === 'area' && (p.id as string) !== 'demais' && p.financeiro > 0 && r.base === 'total' && p.financeiro / p.valor >= 0.005 ? ` · ${numero((100 * p.financeiro) / p.valor, 0)}% em operações financeiras` : ''}</small></span>
                   <strong>R$ {numero(p.cem)}</strong>
                 </li>
               ))}
@@ -115,16 +116,20 @@ function Abertura({r, c}: {r: Recorte; c: Composicao | null}) {
           </div>
           <p className="cp-reading">
             {r.base === 'total' && divida.length > 0 && <>Em {r.ano}, de cada R$ 100 {plural} pelo orçamento federal, R$ {numero(somaCem(divida))} foram para a dívida pública: {divida.map((p) => `R$ ${numero(p.cem)} em ${p.id === 'divida-refinanciamento' ? 'refinanciamento' : 'juros e amortização'}`).join(' e ')}. </>}
-            {transf && <>R$ {numero(transf.cem)} foram transferidos a estados, DF e municípios{outros ? `, R$ ${numero(outros.cem)} foram outros encargos especiais` : ''} e R$ {numero(somaCem(areas))} ficaram com as áreas de governo. </>}
+            {transf && <>R$ {numero(transf.cem)} foram para estados, DF e municípios{outros ? `, R$ ${numero(outros.cem)} para outros encargos especiais` : ''}{reserva ? `, R$ ${numero(reserva.cem)} para a reserva de contingência` : ''} e R$ {numero(somaCem(areas))} para as áreas de governo. </>}
             {maior && <>A maior área foi {maior.nome}, com R$ {numero(maior.cem)}.</>}
           </p>
           <p className="cp-note">
             Fonte: <a href={FONTE_AREAS.documentacao}>SIOP, dados abertos</a>, consulta SPARQL pública. {NOME_ESTAGIO[r.estagio]} no exercício de {r.ano}{r.estagio === 'pago' ? ', sem restos a pagar de anos anteriores' : ''}, em R$ correntes, sem correção pela inflação. Base atualizada em {d?.atualizacao}; captura em {d?.captura}. Cada parcela é arredondada por maiores restos para fechar R$ 100,0. {encerrado(r.ano) ? '' : `${r.ano} está em andamento: o recorte parcial não se compara com um ano completo.`}
           </p>
+          {r.base === 'total' && r.estagio === 'pago' && (() => {
+            const k = conciliacaoGrupos(r.ano);
+            return k && Math.abs(k.diferenca) >= 5e8 ? <p className="cp-note">A régua por grupo de despesa da <Link href="/contas-publicas">entrada das Contas Federais</Link> mostra R$ {numero((100 * k.grupos) / c.total)} de cada R$ 100 em juros e amortização; aqui a dívida soma R$ {numero(somaCem(divida))}. A diferença, R$ {bi(k.diferenca)} bilhões, são juros e amortização classificados fora das subfunções da dívida; em 2025, conferido no SIOP, todos em Outros encargos especiais, sobretudo a cobertura do resultado negativo do Banco Central.</p> : null;
+          })()}
           <details className="cp-exact">
             <summary>Por que o painel usa o valor pago, e onde cada área se encaixa</summary>
             <p className="cp-note">O pago é o dinheiro que saiu do caixa no ano para a despesa daquele orçamento; é o mesmo estágio da régua de R$ 100 por grupo de despesa da entrada das Contas Federais. Ele deixa de fora os restos a pagar quitados no ano, que pertencem a orçamentos anteriores, e a despesa empenhada e ainda não paga, que vira restos a pagar. Por isso o seletor de estágio mostra também o autorizado, o empenhado e o liquidado: a <Termo id="funcao">função</Termo> de cada linha é a mesma em todos os estágios.</p>
-            <p className="cp-note">A função Encargos Especiais não corresponde a um serviço: o painel a divide em quatro parcelas, sempre fora das áreas. {PARCELAS_ENCARGOS.map((p) => `${p.nome}: ${p.explica}`).join(' ')}</p>
+            <p className="cp-note">A função Encargos Especiais não corresponde a um serviço: o painel a divide em quatro parcelas, sempre fora das áreas. {PARCELAS_ENCARGOS.map((p) => `${p.nome}: ${p.explica}`).join(' ')} {PARCELA_RESERVA.nome}: {PARCELA_RESERVA.explica}</p>
           </details>
           <details className="cp-data-details">
             <summary>Ver todas as parcelas, em reais e em cada R$ 100</summary>
@@ -152,7 +157,7 @@ function DoOrcamentoAoPagamento({r}: {r: Recorte}) {
   const total = (e: EstagioArea) => comp[e]?.total ?? null;
   const areas = pago ? pago.parcelas.filter((p) => p.tipo === 'area').slice(0, 6).map((p) => p.id) : [];
   if (pago && tipoParcela(r.area) === 'area' && !areas.includes(r.area)) areas.push(r.area);
-  const linhas: IdParcela[] = [...PARCELAS_ENCARGOS.map((p) => p.id), ...areas];
+  const linhas: IdParcela[] = [...PARCELAS_ENCARGOS.map((p) => p.id), ...areas, PARCELA_RESERVA.id];
   const passos = [
     {e: 'atualizada' as const, verbo: 'Autorizar', texto: 'A lei do orçamento e os créditos aprovados no ano fixam quanto pode ser gasto em cada área.'},
     {e: 'empenhado' as const, verbo: 'Empenhar', texto: 'O órgão reserva o dinheiro e assume o compromisso com quem vai receber.'},
@@ -187,7 +192,7 @@ function DoOrcamentoAoPagamento({r}: {r: Recorte}) {
             if (!(escala > 0)) return null;
             return (
               <article key={id} className={id === r.area ? 'cp-area-escolhida' : undefined}>
-                <h3>{nomeParcela(id)}{tipoParcela(id) !== 'area' ? <small> · Encargos Especiais</small> : null}</h3>
+                <h3>{nomeParcela(id)}{grupoParcela(id) ? <small> · {grupoParcela(id)}</small> : null}</h3>
                 <dl>
                   {estagios.map((e, i) => (
                     <div key={e}>
@@ -230,7 +235,7 @@ function Serie({r}: {r: Recorte}) {
       <EnvioAutomatico acao={ROTA_AREAS} ancora="serie" rotulo="Área da série e do detalhe">
         <label className="cp-select">Área
           <select name="area" defaultValue={r.area} data-padrao="f10">
-            <optgroup label="Encargos Especiais (não são áreas)">{escolhas.filter((p) => p.tipo !== 'area').map((p) => <option key={p.id} value={p.id}>{p.nome}</option>)}</optgroup>
+            <optgroup label="Fora das áreas de governo">{escolhas.filter((p) => p.tipo !== 'area').map((p) => <option key={p.id} value={p.id}>{p.nome}</option>)}</optgroup>
             <optgroup label="Áreas de governo">{escolhas.filter((p) => p.tipo === 'area').map((p) => <option key={p.id} value={p.id}>{p.nome}</option>)}</optgroup>
           </select>
         </label>
@@ -240,6 +245,7 @@ function Serie({r}: {r: Recorte}) {
       </EnvioAutomatico>
       {indisponivel ? <p className="cp-status">A dívida não faz parte da despesa primária. Escolha a base com todos os pagamentos para ver a série dela.</p> : (
         <>
+          {r.area === 'reserva' && r.estagio !== 'inicial' && r.estagio !== 'atualizada' && <p className="cp-status">A reserva de contingência não é executada: o que dela se usa vira crédito de outra área. Por isso o valor é zero em {NOME_ESTAGIO[r.estagio].toLowerCase()}; escolha o estágio autorizado para ver quanto foi reservado.</p>}
           {primeiro && ultimo && <p className="cp-reading">{nome}: R$ {numero(primeiro.parcela)} de cada R$ 100 em {primeiro.ano} e R$ {numero(ultimo.parcela)} em {ultimo.ano}; em valores correntes, de R$ {bi(primeiro.valor)} bilhões para R$ {bi(ultimo.valor)} bilhões. A comparação em reais mistura preços de épocas diferentes.</p>}
           <div className="cp-data-grid">
             <figure>
@@ -317,7 +323,7 @@ function Metodo() {
           <h3>Dívida e despesa primária</h3>
           <p>A dívida pública são as subfunções 841 a 844 da função Encargos Especiais: refinanciamento (títulos novos que pagam títulos vencidos) e serviço (juros e amortização com outros recursos). A base &quot;só a despesa primária&quot; usa o <Termo id="despesa-financeira">identificador de resultado primário</Termo>: exclui as linhas com código 0, que além da dívida incluem empréstimos e financiamentos registrados em outras áreas (FIES, repasses do FAT ao BNDES, fundos constitucionais de financiamento).</p>
           <h3>Estágio e período</h3>
-          <p>Cinco estágios por exercício, na posição da última atualização da base do SIOP. Pago no exercício não inclui o pagamento de restos a pagar. Valores nominais: a Scrutiniums não corrige pela inflação a execução anual do SIOP; o IPCA usado no Panorama vale só para o resultado mensal do Tesouro desde 2023. Para comparar anos, use a parte de cada R$ 100.</p>
+          <p>Cinco estágios por exercício, na posição da última atualização da base do SIOP. Os totais incluem as operações intraorçamentárias, como no SIOP: a contribuição da União ao regime de previdência dos próprios servidores aparece em cada área que paga pessoal. Pago no exercício não inclui o pagamento de restos a pagar. Valores nominais: a Scrutiniums não corrige pela inflação a execução anual do SIOP; o IPCA usado no Panorama vale só para o resultado mensal do Tesouro desde 2023. Para comparar anos, use a parte de cada R$ 100.</p>
           <h3>Conferências que retêm a publicação</h3>
           <p>Para cada exercício, a soma por função e subfunção é conferida contra uma consulta independente por esfera (tolerância de R$ 5 ou um décimo de bilionésimo do total, porque a fonte soma em ponto flutuante). Estágio com item sem valor na fonte fica não informado. A coleta roda toda terça, no mesmo ciclo do SIOP das Contas Federais; teste que falha retém a publicação e abre issue.</p>
           <h3>Quebras e notas da série</h3>
@@ -330,7 +336,7 @@ function Metodo() {
             <li>Bases de {FONTE_AREAS.primeiroAno} a 2013 foram atualizadas pela última vez em 2014; cada exercício traz a própria data de atualização e de captura.</li>
           </ul>
           <h3>O que esta página não permite concluir</h3>
-          <p>Que uma área recebe demais ou de menos, que gastar mais produz mais serviço ou que um ano foi melhor que outro. Parte relevante do gasto federal com saúde e educação é transferida a estados e municípios e aparece na própria área (transferências fundo a fundo) ou em Encargos Especiais (Fundeb).</p>
+          <p>Que uma área recebe demais ou de menos, que gastar mais produz mais serviço ou que um ano foi melhor que outro. Parte relevante do gasto federal com saúde e educação é transferida a estados e municípios: os repasses do SUS e a complementação da União ao Fundeb aparecem na própria área; a parte dos impostos repassada ao Fundeb e o salário-educação ficam em Encargos Especiais. Pensões militares também estão em Encargos Especiais, fora de Previdência Social.</p>
           <h3>Fontes</h3>
           <p><a href={FONTE_AREAS.documentacao}>SIOP, dados abertos do orçamento federal</a>; consulta SPARQL pública em <a href={FONTE_AREAS.url}>{FONTE_AREAS.url}</a>. Classificação: Manual Técnico de Orçamento 2026, seção 4.4 (função e subfunção) e 4.6.2.4 (resultado primário).</p>
           <h3>Downloads</h3>
