@@ -688,12 +688,19 @@ describe("números que parecem divergir: causa, classificação e explicação n
   });
 
   it("Reservatórios, −3.188,7 e −3.297,8 MWmês (classe 2, janelas que terminam em dias diferentes): as duas variações saem da EAR diária do SE publicada", () => {
+    // as janelas e as variações vêm da gold; cada variação é refeita aqui com a EAR diária do SE no CSV publicado (outro arquivo)
     const se = new Map(csv("agua_subsistemas_diario.csv").filter((r) => r.recorte === "SE").map((r) => [r.data, Number(r.ear_mwmes)]));
-    expect(se.get("2026-09-28")! - se.get("2026-08-29")!).toBeCloseTo(DEC_SE.delta_ear_mwmes!, 0);
-    expect(se.get("2026-09-29")! - se.get("2026-08-30")!).toBeCloseTo(ENT_EAR.find((e) => e.id === "SE")!.variacao_30d_mwmes!, 0);
+    const entSe = ENT_EAR.find((e) => e.id === "SE")!;
+    const antes = (iso: string, n: number) => new Date(Date.parse(`${iso}T00:00:00Z`) - n * 86_400_000).toISOString().slice(0, 10);
+    expect(entSe.dia).not.toBe(DEC_SE.fim);
+    expect(antes(DEC_SE.fim, 30)).toBe(DEC_SE.inicio);
+    expect(se.get(DEC_SE.fim)! - se.get(DEC_SE.inicio)!).toBeCloseTo(DEC_SE.delta_ear_mwmes!, 0);
+    expect(se.get(entSe.dia!)! - se.get(antes(entSe.dia!, 30))!).toBeCloseTo(entSe.variacao_30d_mwmes!, 0);
+    const br = (iso: string) => iso.split("-").reverse().join("/");
+    const mw1 = (v: number) => `${v < 0 ? "−" : "+"}${Math.abs(v).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}`;
     const frase = A.textoOutraJanelaDaEar(DEC_SE, ENT_EAR);
-    expect(frase).toContain("A página de armazenamento mostra −3.297,8 MWmês do Sudeste/Centro-Oeste em 30 dias até 29/09/2026");
-    expect(frase).toContain("Aqui a janela vai de 29/08/2026 a 28/09/2026, o último dia com EAR por reservatório, e a variação é −3.188,7 MWmês");
+    expect(frase).toContain(`A página de armazenamento mostra ${mw1(entSe.variacao_30d_mwmes!)} MWmês do Sudeste/Centro-Oeste em 30 dias até ${br(entSe.dia!)}`);
+    expect(frase).toContain(`Aqui a janela vai de ${br(DEC_SE.inicio)} a ${br(DEC_SE.fim)}, o último dia com EAR por reservatório, e a variação é ${mw1(DEC_SE.delta_ear_mwmes!)} MWmês`);
     expect(html.reservatorios).toContain(esc(frase));
     // se as duas janelas terminam no mesmo dia, não há o que explicar
     const mesmo = copia(ENT_EAR);
@@ -704,9 +711,12 @@ describe("números que parecem divergir: causa, classificação e explicação n
   it("Água, 61,5% em 29/09 (Visão geral traz 61,6% em 28/09): a EAR do SIN no dia de cada página sai da EAR diária publicada", () => {
     const sin = new Map(csv("agua_subsistemas_diario.csv").filter((r) => r.recorte === "SIN").map((r) => [r.data, Number(r.ear_pct)]));
     const e = ENT_EAR.find((x) => x.id === "SIN")!;
-    expect(e.dia).toBe("2026-09-29");
-    expect(sin.get("2026-09-29")!).toBeCloseTo(e.ear_pct!, 1);
-    expect(A.vereditoArmazenamento(e)).toContain(`Em 29/09/2026, o SIN guardava ${e.ear_pct!.toFixed(1).replace(".", ",")}%`);
+    // o dia da página é o último dia do SIN no CSV publicado e o dia de referência da EAR na gold (outro campo)
+    const ultimo = csv("agua_subsistemas_diario.csv").filter((r) => r.recorte === "SIN" && r.ear_pct !== "").map((r) => r.data).sort().at(-1)!;
+    expect(e.dia).toBe(ultimo);
+    expect(e.dia).toBe(GA.dias_referencia.ear);
+    expect(sin.get(e.dia!)!).toBeCloseTo(e.ear_pct!, 1);
+    expect(A.vereditoArmazenamento(e)).toContain(`Em ${e.dia!.split("-").reverse().join("/")}, o SIN guardava ${e.ear_pct!.toFixed(1).replace(".", ",")}%`);
   });
 });
 

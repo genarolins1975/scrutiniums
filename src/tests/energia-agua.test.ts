@@ -577,7 +577,10 @@ describe("P018: gráfico, tabela e exportação usam as mesmas linhas", () => {
       expect(rotuloRecorte("bacia", g.nome)).toBe(g.rotulo);
       expect(motivoSemEna30d(g)).toBe("o ONS publica essas afluências agrupadas sem MLT, e sem MLT não há percentual");
       const v = vereditoAfluencia(g);
-      expect(v).toMatch(/^Sem ENA de 30 dias do grupo Outras do (Sul|Sudeste) até 29\/09\/2026: o ONS publica essas afluências agrupadas sem MLT/);
+      // o dia é o das bacias na gold (outro campo), escrito aqui em dd/mm/aaaa sem o formatador da página
+      expect(g.dia).toBe(G.afluencia.dia_bacias);
+      const diaBr = g.dia!.split("-").reverse().join("/");
+      expect(v.startsWith(`Sem ENA de 30 dias do grupo Outras do ${g.nome.includes("SUL") ? "Sul" : "Sudeste"} até ${diaBr}: o ONS publica essas afluências agrupadas sem MLT`), v).toBe(true);
       expect(respostaAfluencia(g)).toContain("o ONS publica essas afluências agrupadas sem MLT");
       expect(textoFaixaJanela(g)).toBe("sem faixa da mesma janela, porque o recorte não tem ENA de 30 dias");
       expect(String(linhasAfluencia([g])[0].rotulo)).not.toMatch(/Bacia do Outras/);
@@ -738,15 +741,20 @@ describe("P020: decomposição, balanço, tabela e séries usam as mesmas linhas
     const demais = barrasDecomposicaoComRestante(se).at(-1)!;
     expect(demais.cod).toBe("");
     expect(reservatorioDaParcela(R.lista, demais.cod)).toBeNull();
-    expect(demais.rotulo).toContain("Demais 35 reservatórios");
-    expect(demais.delta!).toBeCloseTo(-1912.3, 1);
+    // quantos ficam de fora e quanto somam, contados aqui das parcelas publicadas (quedas e altas, sem repetir usina e parte)
+    const listadas = new Map([...se.maiores_quedas, ...se.maiores_altas].map((x) => [`${x.cod}:${x.parte}`, x.delta_mwmes ?? 0]));
+    const nDemais = se.n_reservatorios - listadas.size;
+    expect(nDemais).toBeGreaterThan(0);
+    expect(demais.rotulo).toContain(`Demais ${nDemais} reservatórios`);
+    const somaListadas = Array.from(listadas.values()).reduce((t, x) => t + x, 0);
+    expect(demais.delta!).toBeCloseTo(se.soma_reservatorios_mwmes! - somaListadas, 1);
     // o subsistema com todas as parcelas no gráfico não ganha a barra
     const norte = R.decomposicao_ear.find((d) => d.sm === "N")!;
     expect(restanteDecomposicao(norte)).toBeNull();
     expect(textoParcelasFaltantes(norte)).toBe("");
     // a frase diz o que falta: a soma dos demais é por diferença e as variações individuais não estão publicadas
     const f = textoParcelasFaltantes(se);
-    expect(f).toContain("10 das 45 parcelas");
+    expect(f).toContain(`${listadas.size} das ${se.n_reservatorios} parcelas`);
     expect(f).toContain("por diferença");
     expect(f).toContain("não está publicada");
     // os números dos cartões (soma das listadas e dos demais) não se repetem na frase
@@ -757,18 +765,38 @@ describe("P020: decomposição, balanço, tabela e séries usam as mesmas linhas
 
   it("partes própria e a jusante: a definição é pelo subsistema (não pela própria usina), a frase do Norte diz que Serra da Mesa entra pela parte a jusante, e a comparação abre com os quatro maiores", () => {
     const norte = R.decomposicao_ear.find((d) => d.sm === "N")!;
-    const maior = norte.maiores_quedas[0];
-    expect(maior.parte).toBe("jusante");
-    expect(nomeProprio(maior.nome)).toBe("Serra da Mesa");
-    expect(nomeDaParcela(maior)).toBe("Serra da Mesa, parte a jusante");
+    // Serra da Mesa (usina 251) fica no Sudeste/Centro-Oeste e entra no Norte pela parte a jusante; localizada pelo código, não pela posição
+    const sdm = [...norte.maiores_quedas, ...norte.maiores_altas].find((x) => x.cod === "251")!;
+    expect(sdm.parte).toBe("jusante");
+    expect(nomeProprio(sdm.nome)).toBe("Serra da Mesa");
+    expect(nomeDaParcela(sdm)).toBe("Serra da Mesa, parte a jusante");
     expect(nomeDaParcela({ nome: "TUCURUI", cod: "275", parte: "proprio" })).toBe("Tucuruí");
-    // veredito (a frase de abertura) e resposta completa: a parte a jusante é dita, com o reservatório de outro subsistema
-    const v = vereditoDecomposicao(norte);
-    expect(v).toContain("a maior queda foi a da parte a jusante de Serra da Mesa, a água dele que gera neste subsistema");
-    expect(respostaDecomposicao(norte)).toContain("Serra da Mesa, parte a jusante (−675,4)");
+    // veredito (a frase de abertura): a maior queda de cada subsistema, dita pela parte; a parte a jusante, com o reservatório de outro subsistema
+    const ptBR1 = (x: number) => Math.abs(x).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    for (const d of R.decomposicao_ear.filter((x) => (x.delta_ear_mwmes ?? 0) < 0)) {
+      const m = [...d.maiores_quedas].sort((a, b) => (a.delta_mwmes ?? 0) - (b.delta_mwmes ?? 0))[0];
+      if (!m || (m.delta_mwmes ?? 0) >= 0) continue;
+      const quem = m.parte === "jusante" ? `a da parte a jusante de ${nomeProprio(m.nome)}, a água dele que gera neste subsistema` : `a de ${nomeProprio(m.nome)}`;
+      expect(vereditoDecomposicao(d), d.sm).toContain(`a maior queda foi ${quem} (${ptBR1(m.delta_mwmes!)} MWmês)`);
+    }
+    // o ramo da parte a jusante, em clone do Norte que só traz a parcela de Serra da Mesa, como queda
+    const soJusante = clone(norte);
+    soJusante.maiores_quedas = [{ ...sdm, delta_mwmes: -Math.abs(sdm.delta_mwmes!) }];
+    expect(vereditoDecomposicao(soJusante)).toContain(`a maior queda foi a da parte a jusante de Serra da Mesa, a água dele que gera neste subsistema (${ptBR1(sdm.delta_mwmes!)} MWmês)`);
+    // resposta completa: as três maiores quedas com o nome da parcela e o valor da gold; a parcela a jusante dita como tal
+    const sinal1 = (x: number) => `${x < 0 ? "−" : "+"}${ptBR1(x)}`;
+    const quedas3 = [...norte.maiores_quedas].filter((x) => (x.delta_mwmes ?? 0) < 0).sort((a, b) => a.delta_mwmes! - b.delta_mwmes!).slice(0, 3);
+    for (const x of quedas3) expect(respostaDecomposicao(norte)).toContain(`${nomeDaParcela(x)} (${sinal1(x.delta_mwmes!)})`);
+    expect(respostaDecomposicao(soJusante)).toContain(`Serra da Mesa, parte a jusante (${sinal1(-Math.abs(sdm.delta_mwmes!))})`);
     expect(respostaDecomposicao(norte)).toContain("a parte própria de cada um, nas usinas do subsistema dele, e a parte a jusante, nas usinas de outro subsistema, rio abaixo");
     // o mesmo reservatório, pela parte própria, é só "Serra da Mesa" na decomposição do Sudeste/Centro-Oeste
-    expect(vereditoDecomposicao(R.decomposicao_ear.find((d) => d.sm === "SE")!)).toContain("a maior queda foi a de Serra da Mesa (");
+    const seDec = R.decomposicao_ear.find((d) => d.sm === "SE")!;
+    const sdmSe = [...seDec.maiores_quedas, ...seDec.maiores_altas].find((x) => x.cod === "251")!;
+    expect(sdmSe.parte).toBe("proprio");
+    expect(nomeDaParcela(sdmSe)).toBe("Serra da Mesa");
+    const soSdmSe = clone(seDec);
+    soSdmSe.maiores_quedas = [{ ...sdmSe, delta_mwmes: -Math.abs(sdmSe.delta_mwmes!) }];
+    expect(vereditoDecomposicao(soSdmSe)).toContain("a maior queda foi a de Serra da Mesa (");
     // definição e exemplo vêm dos dados: o primeiro reservatório pela parte a jusante num subsistema que não é o dele
     const txt = textoPartesDaEar(R.decomposicao_ear, R.lista);
     expect(txt).toContain("Parte própria: a energia que a água do reservatório produz nas usinas do subsistema em que ele fica.");
@@ -1809,11 +1837,17 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     expect(todas[0].match(/data-metrica=""/g)?.length).toBe(3);
     const se = R.decomposicao_ear.find((d) => d.sm === "SE")!;
     const t0 = textoDe(todas[0]);
+    // números escritos aqui em pt-BR, sem o formatador da página; a variação do subsistema confere com a EAR diária do CSV publicado
+    const fmt = (v: number, c: number) => `${v < 0 ? "−" : ""}${Math.abs(v).toLocaleString("pt-BR", { minimumFractionDigits: c, maximumFractionDigits: c })}`;
+    const earSe = new Map(csv("agua_subsistemas_diario.csv").filter((r) => r.recorte === "SE").map((r) => [r.data, n(r.ear_mwmes)]));
+    expect(earSe.get(se.fim)! - earSe.get(se.inicio)!).toBeCloseTo(se.delta_ear_mwmes!, 0);
+    const parcelas = new Map([...se.maiores_quedas, ...se.maiores_altas].map((x) => [`${x.cod}:${x.parte}`, x.delta_mwmes ?? 0]));
+    const somaParcelas = Array.from(parcelas.values()).reduce((t, x) => t + x, 0);
     expect(t0).toContain("Variação da EAR do subsistema");
-    expect(t0).toContain("−3.188,7");
-    expect(t0).toContain("Soma das 10 parcelas do gráfico");
-    expect(t0).toContain("Soma dos demais 35 reservatórios");
-    expect(t0).toContain("−1.912,3");
+    expect(t0).toContain(fmt(se.delta_ear_mwmes!, 1));
+    expect(t0).toContain(`Soma das ${parcelas.size} parcelas do gráfico`);
+    expect(t0).toContain(`Soma dos demais ${se.n_reservatorios - parcelas.size} reservatórios`);
+    expect(t0).toContain(fmt(se.soma_reservatorios_mwmes! - somaParcelas, 1));
     expect(t0).toContain("Por diferença");
     // as duas janelas de 30 dias do mesmo subsistema são ditas uma vez só, no parágrafo sob o bloco (não também no cartão nem na nota da faixa)
     expect(t0).not.toContain("outra janela");
@@ -1826,7 +1860,12 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     // 2) a conta da água do reservatório padrão: quatro números em hm³, com a ficha do resíduo
     expect(todas[1].match(/data-metrica=""/g)?.length).toBe(4);
     const t1 = textoDe(todas[1]);
-    expect(t1).toContain("−1,95");
+    // o resíduo do reservatório padrão, relido do CSV dos reservatórios (outro arquivo) e conferido pela conta da água da gold
+    const padraoRes = R.lista.find((r) => r.id === reservatorioPadrao(R.lista))!;
+    const residuoCsv = n(csv("agua_reservatorios.csv").find((r) => r.id === padraoRes.id)!.residuo_hm3)!;
+    expect(residuoCsv).toBeCloseTo(padraoRes.residuo_hm3!, 2);
+    expect(Math.abs(padraoRes.dv_obs_hm3! - padraoRes.afluencia_hm3! + padraoRes.defluencia_hm3! - residuoCsv)).toBeLessThanOrEqual(0.02);
+    expect(t1).toContain(fmt(residuoCsv, 2));
     expect(t1).toContain("hm³");
     expect(t1).toContain("reservatório Serra da Mesa: variação observada menos afluência mais defluência");
     expect(todas[1].match(/Comprove este número/g)?.length).toBe(1);
@@ -1877,13 +1916,17 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
   });
 
   it("reservatórios: a faixa da decomposição e a conta da água acompanham a escolha, e o estado sem balanço diz o motivo exato", () => {
+    // quantas parcelas o gráfico traz: contadas aqui das quedas e altas publicadas, sem repetir usina e parte
+    const nListadas = (d: (typeof R.decomposicao_ear)[number]) => new Set([...d.maiores_quedas, ...d.maiores_altas].map((x) => `${x.cod}:${x.parte}`)).size;
     const norte = R.decomposicao_ear.find((d) => d.sm === "N")!;
+    expect(nListadas(norte)).toBe(norte.n_reservatorios);
     const hNorte = textoDe(renderToStaticMarkup(createElement(MedidasDecomposicao, { dec: norte })));
-    expect(hNorte).toContain("Todas as 5 parcelas estão no gráfico e somam a variação da EAR do subsistema");
+    expect(hNorte).toContain(`Todas as ${norte.n_reservatorios} parcelas estão no gráfico e somam a variação da EAR do subsistema`);
     const sul = R.decomposicao_ear.find((d) => d.sm === "S")!;
+    expect(nListadas(sul)).toBeLessThan(sul.n_reservatorios);
     const hSul = textoDe(renderToStaticMarkup(createElement(MedidasDecomposicao, { dec: sul })));
-    expect(hSul).toContain("Soma das 7 parcelas do gráfico");
-    expect(hSul).toContain("Soma dos demais 9 reservatórios");
+    expect(hSul).toContain(`Soma das ${nListadas(sul)} parcelas do gráfico`);
+    expect(hSul).toContain(`Soma dos demais ${sul.n_reservatorios - nListadas(sul)} reservatórios`);
     const evid = G.evidencias.balanco_maior_reservatorio;
     const periodo = `${R.inicio} a ${R.fim}`;
     const conta = (id: string, padrao = false) =>
@@ -1924,7 +1967,11 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
 
   it("reservatórios: o volume fora de 0 a 100% do volume útil é marcado na tabela, no veredito e na nota, com o nome legível", () => {
     const fora = R.lista.filter((r) => volumeForaDaFaixa(r.vol_util_pct_fim) !== null);
-    expect(fora.length).toBe(6);
+    // a contagem confere com o CSV dos reservatórios (outro arquivo), relido aqui com a regra escrita à mão: fora de 0 a 100%
+    const ids = new Set(R.lista.map((r) => r.id));
+    const foraCsv = csv("agua_reservatorios.csv").filter((r) => ids.has(r.id) && r.vol_util_pct_fim !== "" && (Number(r.vol_util_pct_fim) > 100 || Number(r.vol_util_pct_fim) < 0));
+    expect(fora.map((r) => r.id).sort()).toEqual(foraCsv.map((r) => r.id).sort());
+    expect(fora.length).toBeGreaterThan(0);
     expect(volumeForaDaFaixa(100)).toBeNull();
     expect(volumeForaDaFaixa(0)).toBeNull();
     expect(volumeForaDaFaixa(100.01)).toBe("acima");
@@ -1933,8 +1980,9 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     const linhas = linhasReservatorios(R.lista, R.sem_cadastro);
     for (const r of fora) {
       const l = linhas.find((x) => x.id === r.id)!;
-      expect(String(l.rotulo), r.id).toContain("(volume acima de 100%)");
-      expect(String(l.motivo), r.id).toContain("Valor da fonte, acima do volume máximo normal do reservatório");
+      const acima = r.vol_util_pct_fim! > 100;
+      expect(String(l.rotulo), r.id).toContain(acima ? "(volume acima de 100%)" : "(volume abaixo de 0%)");
+      expect(String(l.motivo), r.id).toContain(acima ? "Valor da fonte, acima do volume máximo normal do reservatório" : "Valor da fonte, abaixo de zero");
     }
     // quem está dentro da faixa não leva a marca
     const dentro = linhas.find((x) => x.id === R.lista.find((r) => volumeForaDaFaixa(r.vol_util_pct_fim) === null && r.balanco_calculado)!.id)!;
@@ -1942,14 +1990,20 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     expect(dentro.motivo).toBeNull();
     // a nota da tabela cita quantos terminam fora e os maiores desvios
     const nota = textoVolumeForaDaFaixa(R.lista);
-    expect(nota).toContain("6 reservatórios terminam a janela fora de 0 a 100% do volume útil");
-    expect(nota).toContain("Garibaldi 165,13%");
+    expect(nota).toContain(`${fora.length} ${fora.length === 1 ? "reservatório termina" : "reservatórios terminam"} a janela fora de 0 a 100% do volume útil`);
+    // o maior desvio, achado aqui no CSV, e o percentual escrito em pt-BR sem o formatador da página
+    const desvioCsv = (r: Record<string, string>) => Math.max(Number(r.vol_util_pct_fim) - 100, -Number(r.vol_util_pct_fim));
+    const topo = [...foraCsv].sort((a, b) => desvioCsv(b) - desvioCsv(a))[0];
+    const pct2 = (v: number) => `${v < 0 ? "−" : ""}${Math.abs(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`;
+    const gari = R.lista.find((r) => r.id === topo.id)!;
+    expect(gari.vol_util_pct_fim!).toBeCloseTo(Number(topo.vol_util_pct_fim), 2);
+    expect(nota).toContain(`${nomeProprio(gari.nome)} ${pct2(gari.vol_util_pct_fim!)}`);
     expect(textoVolumeForaDaFaixa(R.lista.filter((r) => volumeForaDaFaixa(r.vol_util_pct_fim) === null))).toBe("");
     // a resposta do reservatório fora da faixa diz que o valor é da fonte; o veredito de abertura não muda
     const janela = { inicio: R.inicio, fim: R.fim, periodo_fecham_por_construcao: R.periodo_fecham_por_construcao };
-    const gari = R.lista.find((r) => r.nome === "GARIBALDI")!;
-    expect(respostaBalanco(gari, janela)).toContain("terminou em 165,13% do volume útil (valor da fonte, acima do volume máximo normal do reservatório)");
-    expect(vereditoBalancoReservatorio(gari, janela)).not.toContain("165,13");
+    const avisoTopo = gari.vol_util_pct_fim! > 100 ? "acima do volume máximo normal do reservatório" : "abaixo de zero";
+    expect(respostaBalanco(gari, janela)).toContain(`terminou em ${pct2(gari.vol_util_pct_fim!)} do volume útil (valor da fonte, ${avisoTopo})`);
+    expect(vereditoBalancoReservatorio(gari, janela)).not.toContain(pct2(gari.vol_util_pct_fim!).replace("%", ""));
     // a página mostra a nota e os nomes legíveis (sem "Sao Roque")
     const h = textoDe(html.p020);
     expect(h).toContain(nota);
@@ -1987,11 +2041,18 @@ describe("páginas filhas (afluência, chuva e temperatura, reservatórios) no s
     const dec = R.decomposicao_ear.find((d) => d.sm === "SE")!;
     // da página de armazenamento para a de reservatórios: a mesma explicação, escrita para quem lê a outra página
     const frase = textoOutraJanelaNaArmazenamento(se, R.decomposicao_ear);
-    expect(frase).toContain("A página de reservatórios mostra −3.188,7 MWmês do Sudeste/Centro-Oeste de 29/08/2026 a 28/09/2026");
-    expect(frase).toContain("Aqui a janela é de 30 dias até 29/09/2026, e a variação é −3.297,8 MWmês");
+    // as duas variações saem da EAR diária do SE no CSV publicado (outro arquivo); datas e números escritos aqui em pt-BR
+    const earSe = new Map(csv("agua_subsistemas_diario.csv").filter((r) => r.recorte === "SE").map((r) => [r.data, n(r.ear_mwmes)]));
+    expect(earSe.get(dec.fim)! - earSe.get(dec.inicio)!).toBeCloseTo(dec.delta_ear_mwmes!, 0);
+    expect(earSe.get(se.dia!)! - earSe.get(menosDias(se.dia!, 30))!).toBeCloseTo(se.variacao_30d_mwmes!, 0);
+    expect(se.dia).not.toBe(dec.fim);
+    const br = (d: string) => d.split("-").reverse().join("/");
+    const mw1 = (v: number) => `${v < 0 ? "−" : "+"}${Math.abs(v).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}`;
+    expect(frase).toContain(`A página de reservatórios mostra ${mw1(dec.delta_ear_mwmes!)} MWmês do Sudeste/Centro-Oeste de ${br(dec.inicio)} a ${br(dec.fim)}`);
+    expect(frase).toContain(`Aqui a janela é de 30 dias até ${br(se.dia!)}, e a variação é ${mw1(se.variacao_30d_mwmes!)} MWmês`);
     const mesmo = { ...se, dia: dec.fim };
     expect(textoOutraJanelaNaArmazenamento(mesmo, R.decomposicao_ear)).toBe("");
-    expect(notaOutraJanelaCurta(dec, ents)).toContain("Na página de armazenamento, −3.297,8 MWmês em 30 dias até 29/09/2026");
+    expect(notaOutraJanelaCurta(dec, ents)).toContain(`Na página de armazenamento, ${mw1(se.variacao_30d_mwmes!)} MWmês em 30 dias até ${br(se.dia!)}`);
     expect(notaOutraJanelaCurta(dec, ents.map((e) => (e.id === "SE" ? { ...e, dia: dec.fim } : e)))).toBe("");
     // a página diz que a variação de cada um dos demais reservatórios não está publicada
     expect(textoDe(html.p020)).toContain("a variação de cada um deles não está publicada");
