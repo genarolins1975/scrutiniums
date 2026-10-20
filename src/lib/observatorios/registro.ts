@@ -25,7 +25,7 @@ import { CAPITULOS as CAPITULOS_SANEAMENTO, FERRAMENTAS as FERRAMENTAS_SANEAMENT
 import { PAGINAS_GAS } from "@/lib/gas/navegacao";
 import { PAGINAS_COMBUSTIVEIS, ROTA_COMBUSTIVEIS } from "@/lib/combustiveis/paginas";
 import { ROTA_INFLACAO, TITULO_PAINEL as TITULO_PAINEL_INFLACAO } from "@/lib/inflacao/paginas";
-import { CAPITULOS as CAPITULOS_CONTAS, PAINEL_AREAS } from "@/lib/contas-publicas/catalogo";
+import { CAPITULOS_PUBLICADOS as CAPITULOS_CONTAS, PAINEL_AREAS } from "@/lib/contas-publicas/catalogo";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from "@/lib/agro/modelo";
 import { COPIAS } from "./copias";
@@ -114,6 +114,8 @@ function paineisEficiencia(): Painel[] {
     { rota: "/eficiencia-estatal/saneamento/residuos", titulo: "Resíduos sólidos", observatorio: "territorio-e-clima", colecao: "cidades-clima", origem: "eficiencia" },
     { rota: "/eficiencia-estatal/saneamento/drenagem", titulo: "Drenagem e risco de inundação", observatorio: "territorio-e-clima", colecao: "cidades-clima", origem: "eficiencia" },
     ...temas,
+    // comparação por UF do painel Segurança pública (pipeline/seguranca, 20/10/2026): o destino mais procurado do tema
+    { rota: "/eficiencia-estatal/seguranca-publica/estados", titulo: "Violência por estado", observatorio: "servicos-publicos", colecao: "seguranca", origem: "eficiencia" },
   ];
 }
 
@@ -169,6 +171,7 @@ function paineisColecoesInteiras(): Painel[] {
       { rota: "/contas-publicas", titulo: "Contas Federais" },
       // complemento do capítulo Panorama (20/10/2026): a despesa por área, pela classificação funcional do SIOP
       { rota: PAINEL_AREAS.href, titulo: PAINEL_AREAS.titulo },
+      // só os capítulos com dados; os em preparação não têm página (Onda 3)
       ...CAPITULOS_CONTAS.map((c) => ({ rota: `/contas-publicas/${c.id}`, titulo: c.titulo })),
       { rota: "/contas-publicas/metodologia", titulo: "Metodologia" },
       { rota: "/contas-publicas/glossario", titulo: "Glossário" },

@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1390,
-    "fontes_sha256": "9441ebaf8b7abc047443a457ebc87f52501b8e8d732e7303dbdde9b664a2c366",
-    "pendencias_sha256": "952fda810afb3795e996d114f6e86bb71bd7df1eb30508c8badc581ffc4e3fb1",
+    "arquivos_analisados": 1412,
+    "fontes_sha256": "075d422d69eb57d6ea3474c78e411fcd2dfbe07a5cfdb9d8958d1755f487f2e8",
+    "pendencias_sha256": "833d766bc14d926b6293c949b6f91e5cddb70243685dddd4ef622821c459aa01",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -158,10 +158,10 @@
           "jsx_text": 1499,
           "atributos": 388,
           "props": 1004,
-          "outros_literais": 7046,
-          "templates": 868,
-          "expressoes_nao_resolvidas": 5371,
-          "chaves_objetos": 5667
+          "outros_literais": 7070,
+          "templates": 872,
+          "expressoes_nao_resolvidas": 5377,
+          "chaves_objetos": 5681
         },
         "exclusoes": {
           "importacoes": 1528,
@@ -175,7 +175,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 21843,
+        "candidatos_nao_catalogados": 21891,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -202,20 +202,20 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 564,
+        "arquivos": 571,
         "candidatos": {
-          "jsx_text": 7494,
-          "atributos": 2855,
-          "props": 18500,
-          "outros_literais": 50704,
-          "templates": 12564,
-          "expressoes_nao_resolvidas": 54572,
-          "chaves_objetos": 35749
+          "jsx_text": 7631,
+          "atributos": 2893,
+          "props": 18821,
+          "outros_literais": 50965,
+          "templates": 12744,
+          "expressoes_nao_resolvidas": 55392,
+          "chaves_objetos": 35977
         },
         "exclusoes": {
-          "importacoes": 4891,
-          "atributos_tecnicos": 8492,
-          "tipos": 3718
+          "importacoes": 4945,
+          "atributos_tecnicos": 8628,
+          "tipos": 3725
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -224,7 +224,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 182438,
+        "candidatos_nao_catalogados": 184423,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -346,20 +346,20 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 229,
+        "arquivos": 233,
         "candidatos": {
-          "jsx_text": 2933,
-          "atributos": 1016,
-          "props": 1301,
-          "outros_literais": 7477,
-          "templates": 727,
-          "expressoes_nao_resolvidas": 7579,
-          "chaves_objetos": 4606
+          "jsx_text": 3099,
+          "atributos": 1071,
+          "props": 1334,
+          "outros_literais": 7758,
+          "templates": 790,
+          "expressoes_nao_resolvidas": 7965,
+          "chaves_objetos": 4758
         },
         "exclusoes": {
-          "importacoes": 891,
-          "atributos_tecnicos": 3174,
-          "tipos": 424
+          "importacoes": 916,
+          "atributos_tecnicos": 3356,
+          "tipos": 457
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -368,7 +368,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 25639,
+        "candidatos_nao_catalogados": 26775,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -394,20 +394,20 @@
     "contas_federais": {
       "nome": "Contas Públicas Federais",
       "interface": {
-        "arquivos": 60,
+        "arquivos": 71,
         "candidatos": {
-          "jsx_text": 766,
-          "atributos": 144,
-          "props": 87,
-          "outros_literais": 1578,
-          "templates": 113,
-          "expressoes_nao_resolvidas": 1285,
-          "chaves_objetos": 818
+          "jsx_text": 955,
+          "atributos": 197,
+          "props": 103,
+          "outros_literais": 1799,
+          "templates": 149,
+          "expressoes_nao_resolvidas": 1618,
+          "chaves_objetos": 950
         },
         "exclusoes": {
-          "importacoes": 213,
-          "atributos_tecnicos": 607,
-          "tipos": 59
+          "importacoes": 260,
+          "atributos_tecnicos": 742,
+          "tipos": 67
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -416,13 +416,13 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 4791,
+        "candidatos_nao_catalogados": 5771,
         "percentual_traduzido": null
       },
       "rotas": {
         "paginas_pt": 6,
         "paginas_en": 0,
-        "handlers": 9,
+        "handlers": 11,
         "templates_com_parametros": 1,
         "paginas_pt_literais": 5,
         "paginas_pt_fora_do_adaptador": 1,

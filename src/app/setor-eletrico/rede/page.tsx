@@ -1,4 +1,9 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import type { Metadata, ResolvingMetadata } from "next";
+import Link from "@/components/i18n/LinkIdioma";
+import { ModeloDidatico, ParaLer } from "@/components/energia/Didatica";
+import { HorasDoDia, type SerieHoras } from "@/components/energia/HorasDoDia";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
@@ -21,10 +26,12 @@ import { tx } from "@/lib/energia/idioma";
 import {
   COR_PAR,
   FRONTEIRAS,
+  PONTAS,
   colunasCobertura,
   colunasEsquemaNacional,
   colunasUltimoAno,
   curtoFronteira,
+  entreFronteira,
   linhasCobertura,
   linhasEsquemaNacional,
   linhasUltimoAno,
@@ -44,7 +51,7 @@ import {
 } from "@/lib/energia/rede";
 import { textoAmplitude, textoFluxos30d } from "@/lib/energia/resumos";
 import type { ColunaTabela } from "@/lib/energia/tabela";
-import type { SubsistemaOuSin, GoldRedeDetalhe } from "@/lib/energia/tipos-rede";
+import type { SubsistemaOuSin, GoldRedeDetalhe, JanelaHorariaRede } from "@/lib/energia/tipos-rede";
 
 export const dynamic = "force-static";
 /** Descrição com o início do histórico lido da gold (nenhuma data escrita à mão). */
@@ -64,6 +71,16 @@ function metadadosDaPagina(): Metadata {
 
 export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
   return metadadosEnergia("/setor-eletrico/rede", metadadosDaPagina(), anterior);
+}
+
+/** A janela horária publicada (a mesma que a escala Hora baixa no navegador), lida no servidor para o modelo didático; null se faltar. */
+function lerJanelaHoraria(url: string): JanelaHorariaRede | null {
+  try {
+    const j = JSON.parse(readFileSync(join(process.cwd(), "public", url.replace(/^\/+/, "")), "utf-8")) as JanelaHorariaRede;
+    return j?.disponivel && Array.isArray(j.horas) && j.horas.length ? j : null;
+  } catch {
+    return null;
+  }
 }
 
 const fonteRede = () => tx("ONS, Intercâmbios Entre Subsistemas (releitura do módulo Rede)", "ONS, Interchanges Between Subsystems (Grid module re-read)");
@@ -94,6 +111,41 @@ export default function RedePage() {
   const ultimoAno = integra(r) ? linhasUltimoAno(r.serie_fluxos, r.serie_amplitude_pld) : [];
   // a faixa da abertura lê o mesmo resumo de 30 dias do gráfico dos dois sentidos, da tabela e da exportação
   const medidas = medidasFronteiras30d(resumo);
+  // abertura: a fronteira com o maior saldo em 30 dias, lida do mesmo resumo da faixa
+  const maior = resumo.length ? resumo.reduce((x, y) => (Math.abs(y.liquido_mwh) > Math.abs(x.liquido_mwh) ? y : x)) : null;
+  const maiorSentido = maior ? textoSentidoSaldo(maior.par, maior.liquido_mwh) : null;
+  const comVolta = resumo.filter((x) => x.contra_saldo_mwh > 0).length;
+  // artefato: a janela horária publicada (mesmo arquivo da escala Hora), por fronteira e dia, com as somas da gold diária
+  const janelaHoraria = lerJanelaHoraria(c.janela_horaria.url);
+  const seriesHoras: SerieHoras[] = janelaHoraria
+    ? FRONTEIRAS.map((par) => {
+        const [de, para] = PONTAS[par];
+        const dias = [...new Set(janelaHoraria.horas.map((h) => h.slice(0, 10)))];
+        return {
+          id: par,
+          rotulo: curtoFronteira(par),
+          positivo: `${nomeSm(de)} → ${nomeSm(para)}`,
+          negativo: `${nomeSm(para)} → ${nomeSm(de)}`,
+          de: nomeSm(de),
+          para: nomeSm(para),
+          dias: dias.map((dia) => {
+            const horas: (number | null)[] = Array.from({ length: 24 }, () => null);
+            janelaHoraria.horas.forEach((h, i) => {
+              if (h.startsWith(dia)) horas[Number(h.slice(11, 13))] = janelaHoraria.fluxo[par]?.[i] ?? null;
+            });
+            const k = c.diario.dias.indexOf(dia);
+            const pp = c.diario.por_par[par];
+            const totais = k >= 0 && pp.canonico_mwh[k] !== null && pp.inverso_mwh[k] !== null ? { positivo: pp.canonico_mwh[k] as number, negativo: pp.inverso_mwh[k] as number } : null;
+            return { dia, horas, totais };
+          }),
+        };
+      })
+    : [];
+  const ultimoDiaHoras = seriesHoras[0]?.dias[seriesHoras[0].dias.length - 1]?.dia;
+  // fronteira inicial: a que mais escondeu energia no último dia da janela
+  const kUltimo = ultimoDiaHoras ? c.diario.dias.indexOf(ultimoDiaHoras) : -1;
+  const serieInicialHoras =
+    kUltimo >= 0 ? FRONTEIRAS.reduce((x, y) => ((c.diario.por_par[y].contra_saldo_mwh[kUltimo] ?? 0) > (c.diario.por_par[x].contra_saldo_mwh[kUltimo] ?? 0) ? y : x)) : FRONTEIRAS[0];
   const fonteIntercambios = tx("ONS, Intercâmbios Entre Subsistemas", "ONS, Interchanges Between Subsystems");
   const fontePld = tx("ONS, Intercâmbios Entre Subsistemas; CCEE, PLD horário", "ONS, Interchanges Between Subsystems; CCEE, hourly PLD");
   const semFluxo30 = tx("Sem fluxo publicado na janela de 30 dias.", "No flow published in the 30-day window.");
@@ -131,10 +183,17 @@ export default function RedePage() {
         <CabecalhoModulo
           siglas={["SIN", "PLD", "ONS", "CCEE", "MWh", "MWmed"]}
           titulo={perguntaPainel("p028")}
-          lead={tx(
-            "Para onde a energia foi em cada uma das quatro fronteiras entre subsistemas, e quanta passou em cada sentido. O saldo é só a diferença entre os dois sentidos.",
-            "Where energy went at each of the four boundaries between subsystems, and how much passed in each direction. The net flow is only the difference between the two directions.",
-          )}
+          lead={
+            maior && maiorSentido && janela30
+              ? tx(
+                  `Nos ${janela30.dias} dias até ${dataBR(janela30.fim)}, a maior entrega entre regiões foi ${maiorSentido}: ${num(Math.abs(maior.liquido_mwh), 0)} MWh de saldo. Em ${comVolta} das quatro fronteiras a energia também passou no sentido contrário, e o saldo mostra só a diferença entre os dois sentidos.`,
+                  `Over the ${janela30.dias} days through ${dataBR(janela30.fim)}, the largest delivery between regions was ${maiorSentido}: ${num(Math.abs(maior.liquido_mwh), 0)} MWh of net flow. At ${comVolta} of the four boundaries energy also passed in the opposite direction, and the net flow shows only the difference between the two directions.`,
+                )
+              : tx(
+                  "Para onde a energia foi em cada uma das quatro fronteiras entre subsistemas, e quanta passou em cada sentido. O saldo é só a diferença entre os dois sentidos.",
+                  "Where energy went at each of the four boundaries between subsystems, and how much passed in each direction. The net flow is only the difference between the two directions.",
+                )
+          }
           recorte={tx(
             `${janela30 ? `${plural(janela30.dias, "dia", "dias")}, de ${dataBR(janela30.inicio)} a ${dataBR(janela30.fim)}` : "janela de 30 dias"} · quatro fronteiras · MWh e MWmed`,
             `${janela30 ? `${plural(janela30.dias, "day", "days")}, from ${dataBR(janela30.inicio)} to ${dataBR(janela30.fim)}` : "30-day window"} · four boundaries · MWh and MWavg`,
@@ -221,6 +280,88 @@ export default function RedePage() {
             </>,
           )}
         </CabecalhoModulo>
+        <ParaLer
+          id="para-ler-rede"
+          itens={[
+            {
+              termo: tx("Subsistema e fronteira", "Subsystem and boundary"),
+              definicao: tx(
+                <>
+                  O ONS divide a rede interligada em quatro <Termo slug="submercado">subsistemas</Termo>: Sudeste/Centro-Oeste, Sul, Nordeste e Norte. Fronteira é o conjunto de
+                  linhas de transmissão que liga dois deles; a página acompanha quatro fronteiras.
+                </>,
+                <>
+                  ONS divides the interconnected grid into four <Termo slug="submercado">subsystems</Termo>: Southeast/Center-West, South, Northeast and North. A boundary is the set
+                  of transmission lines linking two of them; the page follows four boundaries.
+                </>,
+              ),
+            },
+            {
+              termo: <Termo slug="intercambio">{tx("Intercâmbio", "Interchange")}</Termo>,
+              definicao: tx(
+                "A energia que atravessa uma fronteira, medida pelo ONS hora a hora: é o que uma região manda para a outra quando gera mais do que consome naquela hora.",
+                "The energy that crosses a boundary, measured by ONS hour by hour: it is what one region sends to another when it generates more than it consumes in that hour.",
+              ),
+            },
+            {
+              termo: tx("Fluxo bruto e saldo", "Gross flow and net flow"),
+              definicao: tx(
+                "Na mesma fronteira a energia pode ir num sentido em algumas horas e voltar em outras. Fluxo bruto é o total de cada sentido; saldo é a diferença entre eles. Um saldo pequeno pode esconder muita energia indo e voltando.",
+                "At the same boundary, energy can go one way in some hours and come back in others. Gross flow is the total in each direction; net flow is the difference between them. A small net flow can hide a lot of energy going back and forth.",
+              ),
+              exemplo: (() => {
+                const x = maior ? resumo.find((y) => y.contra_saldo_mwh === Math.max(...resumo.map((z) => z.contra_saldo_mwh))) : null;
+                if (!x || x.contra_saldo_mwh <= 0 || !janela30) return undefined;
+                const [a2, b2] = PONTAS[x.par];
+                return tx(
+                  `Em ${janela30.dias} dias, ${num(x.canonico_mwh, 0)} MWh foram do ${nomeSm(a2, "pt")} para o ${nomeSm(b2, "pt")} e ${num(x.inverso_mwh, 0)} MWh voltaram: saldo de ${num(Math.abs(x.liquido_mwh), 0)} MWh.`,
+                  `Over ${janela30.dias} days, ${num(x.canonico_mwh, 0)} MWh went from the ${nomeSm(a2, "en")} to the ${nomeSm(b2, "en")} and ${num(x.inverso_mwh, 0)} MWh came back: a net flow of ${num(Math.abs(x.liquido_mwh), 0)} MWh.`,
+                );
+              })(),
+            },
+            {
+              termo: tx("MWmed e MWh numa hora", "MWavg and MWh in one hour"),
+              definicao: tx(
+                <>
+                  O fluxo de cada hora vem em <Unidade u="MWmed" />, a potência média da hora. Durante uma hora, 1 MWmed entrega 1 MWh: por isso o valor horário é o mesmo número
+                  nas duas unidades, e a energia do dia é a soma das 24 horas.
+                </>,
+                <>
+                  The flow of each hour comes in <Unidade u="MWmed" />, the average power of the hour. Over one hour, 1 MWavg delivers 1 MWh: that is why the hourly value is the
+                  same number in both units, and the day&apos;s energy is the sum of the 24 hours.
+                </>,
+              ),
+            },
+            {
+              termo: tx("Sentido do nome", "Direction of the name"),
+              definicao: tx(
+                "Cada fronteira tem um sentido de referência no nome (Norte → Nordeste, Norte → Sudeste/Centro-Oeste, Nordeste → Sudeste/Centro-Oeste, Sul → Sudeste/Centro-Oeste). Valor positivo é energia nesse sentido; negativo, no contrário. O nome não diz para onde a energia foi: os cartões dizem.",
+                "Each boundary has a reference direction in its name (North → Northeast, North → Southeast/Center-West, Northeast → Southeast/Center-West, South → Southeast/Center-West). A positive value is energy in that direction; negative, in the opposite one. The name does not say where energy went: the cards do.",
+              ),
+            },
+            {
+              termo: tx("Limite de transmissão", "Transmission limit"),
+              definicao: tx(
+                <>
+                  Cada fronteira tem um limite operativo de quanto pode passar, que muda com a configuração da rede. O ONS não publica esses limites em dados abertos, então nenhuma
+                  página diz se a fronteira estava no limite; o que se sabe sobre restrições está em{" "}
+                  <Link href={rotaPainel("p030")} className="text-energia-dark underline underline-offset-4">
+                    Restrições publicadas
+                  </Link>
+                  .
+                </>,
+                <>
+                  Each boundary has an operating limit on how much can pass, which changes with the grid configuration. ONS does not publish these limits as open data, so no page says
+                  whether the boundary was at its limit; what is known about constraints is on{" "}
+                  <Link href={rotaPainel("p030")} className="text-energia-dark underline underline-offset-4">
+                    Published restrictions
+                  </Link>
+                  .
+                </>,
+              ),
+            },
+          ]}
+        />
         <ModoProfundidade>
           <Bloco id="circulacao">
             <PainelEvidencia
@@ -258,13 +399,56 @@ export default function RedePage() {
                   fonte={FONTE}
                   versao={versao}
                   notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
-                  aposPrincipal={<RedeCapitulos />}
+                  aposPrincipal={
+                    <>
+                      {seriesHoras.length > 0 && (
+                        <ModeloDidatico
+                          id="ida-e-volta"
+                          nivelTitulo={3}
+                          titulo={tx("Ida e volta numa fronteira: o fluxo hora a hora e o saldo do dia", "There and back at a boundary: the flow hour by hour and the day's net flow")}
+                          intro={tx(
+                            <>
+                              Cada barra é uma hora de um dia real. Acima do zero, a energia foi no sentido do nome da fronteira; abaixo, no contrário. Some as barras de cima e as de
+                              baixo: são a energia de cada sentido. O saldo do dia é a diferença entre as duas somas, e o menor dos dois sentidos é a energia que o saldo esconde.
+                            </>,
+                            <>
+                              Each bar is one hour of a real day. Above zero, energy went in the direction of the boundary&apos;s name; below, in the opposite direction. Add up the
+                              bars above and those below: they are the energy in each direction. The day&apos;s net flow is the difference between the two sums, and the smaller of the
+                              two directions is the energy the net flow hides.
+                            </>,
+                          )}
+                          deixaDeFora={[
+                            tx(
+                              "Cada fronteira soma várias linhas de transmissão: se, na mesma hora, uma linha leva energia para um lado e outra para o outro, as duas se anulam antes de chegar a este número.",
+                              "Each boundary adds up several transmission lines: if, in the same hour, one line carries energy one way and another the other way, they cancel out before reaching this figure.",
+                            ),
+                            tx(
+                              "O limite de cada fronteira não é público: a altura da barra não diz quão perto do limite a fronteira estava.",
+                              "Each boundary's limit is not public: the height of the bar does not say how close to the limit the boundary was.",
+                            ),
+                            tx(
+                              "Não mostra por que a energia mudou de sentido (carga, chuva, vento, sol ou decisão de operação); a página não atribui causa.",
+                              "It does not show why energy changed direction (load, rain, wind, sun or an operating decision); the page does not attribute a cause.",
+                            ),
+                          ]}
+                          fonte={tx(
+                            `ONS, Intercâmbios Entre Subsistemas, ${seriesHoras[0].dias.length} dias, de ${dataBR(seriesHoras[0].dias[0].dia)} a ${dataBR(seriesHoras[0].dias[seriesHoras[0].dias.length - 1].dia)}, hora a hora; as somas de cada sentido são as da série diária desta página.`,
+                            `ONS, Interchanges Between Subsystems, ${seriesHoras[0].dias.length} days, from ${dataBR(seriesHoras[0].dias[0].dia)} to ${dataBR(seriesHoras[0].dias[seriesHoras[0].dias.length - 1].dia)}, hour by hour; the sums of each direction are those of this page's daily series.`,
+                          )}
+                        >
+                          <HorasDoDia id="rede-horas" modo="fluxo" series={seriesHoras} serieInicial={serieInicialHoras} rotuloSerie={tx("Fronteira", "Boundary")} />
+                        </ModeloDidatico>
+                      )}
+                      <RedeCapitulos />
+                    </>
+                  }
                   escondida={
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                       {FRONTEIRAS.map((par) => (
                         <Numero
                           key={par}
-                          rotulo={tx(`Energia escondida pelo saldo de 30 dias, ${nomeFronteira(par, "pt")}`, `Energy hidden by the 30-day net flow, ${nomeFronteira(par, "en")}`)}
+                          // a fronteira sem sentido no rótulo ("entre Norte e Nordeste"): o sentido do saldo vem na nota, para o nome não parecer o sentido do fluxo
+                          rotulo={tx(`Energia escondida pelo saldo de 30 dias, ${entreFronteira(par, "pt")}`, `Energy hidden by the 30-day net flow, ${entreFronteira(par, "en")}`)}
                           natureza="CALCULADO"
                           evidencia={ev[`contra_saldo_30d.${par}`] ?? null}
                           casas={0}

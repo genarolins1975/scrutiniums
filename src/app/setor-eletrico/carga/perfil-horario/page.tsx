@@ -4,6 +4,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { CargaDatas, CargaFontes, CargaIndisponivel, CargaNavegacao, CargaSeguir } from "@/components/energia/CargaPagina";
 import { CargaPerfil } from "@/components/energia/CargaPerfil";
+import { ParaLer } from "@/components/energia/Didatica";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
@@ -29,7 +30,7 @@ import {
   textoDiferencaHoraria,
   textoGlobalContraDiaria,
 } from "@/lib/energia/carga";
-import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
+import { carimbo, dataBR, mesAno, num, plural } from "@/lib/energia/formato";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
 import { COMPONENTE_API_CARGA_EN, SERIE_API_CARGA_EN, rotuloDaGold } from "@/lib/energia/i18n/agua-carga-rede";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
@@ -106,6 +107,8 @@ export default function PerfilHorarioPage() {
   const picoEv = p.picos_90d.find((x) => x.d === ev.p026_pico_sin?.periodo?.fim && x.hora !== null) ?? null;
   // hora em que o pico do dia caiu mais vezes no último ano, lida das mesmas contagens do mapa de calor
   const modal = picoModalDoAno(p, "SIN");
+  // glossário: o último mês com a parcela de MMGD do SIN, da mesma série mensal da página
+  const mmgdSin = p.mmgd_mensal.filter((x) => x.sm === "SIN" && x.mmgd_pct !== null).at(-1) ?? null;
   // a ficha prova o pico do dia que ela escolheu; se a série vai além dele, o último dia publicado e o pico dele ficam ditos junto do cartão
   const ultimoPico = p.picos_90d.length ? p.picos_90d[p.picos_90d.length - 1] : null;
   const alemDaFicha = picoEv && ultimoPico && ultimoPico.d > picoEv.d && ultimoPico.hora !== null ? ultimoPico : null;
@@ -259,6 +262,64 @@ export default function PerfilHorarioPage() {
           )}
         </CabecalhoModulo>
         <CargaNavegacao atual="p026" />
+        <ParaLer
+          id="para-ler-perfil"
+          itens={[
+            {
+              termo: <Termo slug="geracao-distribuida">MMGD</Termo>,
+              definicao: tx(
+                "Micro e minigeração distribuída: painéis solares nos telhados e pequenas usinas dos próprios consumidores. O ONS não mede essa geração; ele a estima, e por isso o número vem marcado como Estimado.",
+                "Distributed micro and mini generation: rooftop solar panels and the consumers' own small plants. ONS does not measure this generation; it estimates it, which is why the figure is marked as Estimated.",
+              ),
+              exemplo: mmgdSin
+                ? tx(
+                    `No SIN, em ${mesAno(mmgdSin.m)}, a MMGD estimada foi ${num(mmgdSin.mmgd_pct, 2)}% da carga global.`,
+                    `In the SIN, in ${mesAno(mmgdSin.m)}, the estimated MMGD was ${num(mmgdSin.mmgd_pct, 2)}% of the global load.`,
+                  )
+                : undefined,
+            },
+            {
+              termo: tx("Carga global e carga líquida", "Global load and net load"),
+              definicao: tx(
+                <>
+                  <Termo slug="carga-global">Carga global</Termo> é todo o consumo, inclusive o atendido pela MMGD. <Termo slug="carga-liquida-de-mmgd">Carga líquida</Termo> é a global
+                  menos a MMGD: o que as usinas do sistema precisam suprir. As duas vêm da mesma publicação do ONS e fecham entre si.
+                </>,
+                <>
+                  <Termo slug="carga-global">Global load</Termo> is all consumption, including what MMGD supplies. <Termo slug="carga-liquida-de-mmgd">Net load</Termo> is global
+                  minus MMGD: what the system&apos;s plants need to supply. Both come from the same ONS release and close with each other.
+                </>,
+              ),
+            },
+            {
+              termo: tx("Curva de carga e Carga de Energia Diária", "Load curve and Daily Energy Load"),
+              definicao: tx(
+                <>
+                  Outro produto do ONS: a <Termo slug="curva-de-carga">curva de carga</Termo> dá a carga de cada hora, e a Carga de Energia Diária é a média das 24 horas. Já
+                  incluem uma MMGD estimada, sem separá-la; por isso a página não soma nem subtrai a MMGD da curva, e os números das duas famílias não coincidem.
+                </>,
+                <>
+                  Another ONS product: the <Termo slug="curva-de-carga">load curve</Termo> gives the load of each hour, and the Daily Energy Load is the average of the 24 hours.
+                  They already include an estimated MMGD, without separating it; that is why the page neither adds nor subtracts MMGD from the curve, and the figures of the two
+                  families do not match.
+                </>,
+              ),
+            },
+            {
+              termo: tx("Pico do dia e hora", "Daily peak and hour"),
+              definicao: tx(
+                "O pico é a hora de maior carga do dia; a hora é a de início (a das 18h vai de 18h a 19h). Dia sem as 24 horas publicadas não tem pico.",
+                "The peak is the hour of highest load in the day; the hour is the start hour (18h runs from 18h to 19h). A day without all 24 hours published has no peak.",
+              ),
+              exemplo: modal
+                ? tx(
+                    `Em ${modal.ano}, o pico do SIN caiu mais vezes às ${modal.curva.hora}h (${num(modal.curva.dias, 0)} de ${num(modal.dias, 0)} dias).`,
+                    `In ${modal.ano}, the SIN peak fell most often at ${modal.curva.hora}h (${num(modal.curva.dias, 0)} of ${num(modal.dias, 0)} days).`,
+                  )
+                : undefined,
+            },
+          ]}
+        />
         <ModoProfundidade>
           <Bloco id="perfil">
             <PainelEvidencia

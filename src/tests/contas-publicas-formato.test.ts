@@ -37,11 +37,14 @@ describe('apresentação monetária e razões',()=>{
   expect(compararSaldo(1,-1,2025)).toMatch(/déficit.*para superávit/);
   expect(compararSaldo(0,1,2025)).toContain('para equilíbrio');
  });
- it('distingue cinco indicadores observados dos painéis complementares de custos e de despesa por área',()=>{
-  expect(COBERTURA).toHaveLength(12);
-  // a composição funcional da despesa (Panorama) passou a ter dados com o painel Despesa por área (20/10/2026)
-  expect(COBERTURA.flatMap(c=>c.observados).map(i=>i.id)).toEqual(['resultado-primario','composicao','execucao-liquidada','rap-idade','meta-entrega']);
-  expect(COBERTURA.flatMap(c=>c.pendentes)).toHaveLength(19);
+ it('distingue os indicadores observados dos painéis complementares de custos e de despesa por área',()=>{
+  // Onda 3: a cobertura lista só os 8 capítulos com dados; os 4 em preparação ficam fora da navegação e do quadro,
+  // com o desenho (e os 8 indicadores propostos deles) registrado no catálogo
+  expect(COBERTURA).toHaveLength(8);
+  // a composição funcional da despesa (Panorama) passou a ter dados com o painel Despesa por área (20/10/2026);
+  // desvio do plano, gasto tributário, rigidez e dívida bruta entraram com os capítulos Planejamento, Benefícios e Riscos
+  expect(COBERTURA.flatMap(c=>c.observados).map(i=>i.id)).toEqual(['resultado-primario','composicao','desvio-plano','execucao-liquidada','rap-idade','meta-entrega','gasto-tributario','rigidez','divida-bruta']);
+  expect(COBERTURA.flatMap(c=>c.pendentes)).toHaveLength(8);
   expect(PAINEIS_COMPLEMENTARES.map(p=>p.href)).toEqual(['/contas-publicas/custos#custos-observados','/contas-publicas/por-area']);
  });
 });

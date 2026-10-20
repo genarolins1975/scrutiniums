@@ -1,0 +1,59 @@
+{
+  "dominio": "seguranca",
+  "titulo": "Segurança pública por UF (Eficiência Estatal)",
+  "descricao": "Recoleta mensal das quatro fontes do painel Segurança pública: as planilhas anuais do Sinesp VDE (MJSP), os óbitos por agressão, por intenção indeterminada e por causas externas do SIM pelo TabNet (DATASUS), a despesa estadual na função 06 da DCA (Siconfi) e a população da Projeção do IBGE, Revisão 2024. A gold só é publicada se as 27 UFs e todos os anos estiverem presentes, se nenhum evento do painel tiver sido renomeado, se os totais ficarem nas faixas plausíveis, se a revisão de um ano fechado não passar de 10%, se o total do TabNet fechar com a soma das UFs e se a população das UFs somar a do Brasil.",
+  "codigo": [
+    "pipeline/seguranca/*.py",
+    "pipeline/tests/test_seguranca.py",
+    "src/lib/eficiencia/seguranca",
+    "src/tests/obee-seguranca.test.ts"
+  ],
+  "reconstruir": [["python3", "-m", "pipeline.seguranca.run"]],
+  "timeout_reconstruir_min": 5,
+  "saidas": ["public/eficiencia/seguranca-publica/gold"],
+  "sinal_de_mudanca": [
+    {"arquivo": "public/eficiencia/seguranca-publica/gold/seguranca.json", "json_chave": "hash_dados"}
+  ],
+  "testes": [
+    {
+      "nome": "pipeline da Segurança pública (Python): validações que retêm a publicação e regra de ausência",
+      "comando": ["python3", "-m", "unittest", "pipeline.tests.test_seguranca"],
+      "timeout_min": 5
+    },
+    {
+      "nome": "contratos do painel, das entradas e da camada aberta (vitest)",
+      "comando": ["npx", "vitest", "run", "--testTimeout=60000", "src/tests/obee-seguranca.test.ts", "src/tests/observatorios-entradas.test.ts", "src/tests/perguntas-portas.test.ts"],
+      "timeout_min": 15
+    }
+  ],
+  "grupos": [
+    {
+      "id": "sinesp-vde",
+      "nome": "MJSP, Sinesp VDE (planilhas anuais desde 2015, polícias estaduais)",
+      "coleta": [["python3", "-m", "pipeline.seguranca.run", "--coleta", "sinesp", "--so-coleta"]],
+      "caminhos": ["pipeline/seguranca/seed/sinesp_vde.json"],
+      "timeout_min": 60
+    },
+    {
+      "id": "sim-tabnet",
+      "nome": "Ministério da Saúde, SIM pelo TabNet (óbitos por causas externas por UF de residência)",
+      "coleta": [["python3", "-m", "pipeline.seguranca.run", "--coleta", "sim", "--so-coleta"]],
+      "caminhos": ["pipeline/seguranca/seed/sim_tabnet.json"],
+      "timeout_min": 20
+    },
+    {
+      "id": "siconfi-dca",
+      "nome": "Tesouro Nacional, Siconfi: DCA Anexo I-E dos 27 governos estaduais (função 06)",
+      "coleta": [["python3", "-m", "pipeline.seguranca.run", "--coleta", "siconfi", "--so-coleta"]],
+      "caminhos": ["pipeline/seguranca/seed/siconfi_dca.json"],
+      "timeout_min": 60
+    },
+    {
+      "id": "ibge-populacao",
+      "nome": "IBGE, Projeções da População, Revisão 2024 (UF e sexo)",
+      "coleta": [["python3", "-m", "pipeline.seguranca.run", "--coleta", "ibge", "--so-coleta"]],
+      "caminhos": ["pipeline/seguranca/seed/ibge_populacao.json"],
+      "timeout_min": 10
+    }
+  ]
+}

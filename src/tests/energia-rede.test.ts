@@ -476,7 +476,8 @@ describe("páginas renderizadas no servidor", () => {
     expect(h).toContain('role="group"');
     expect((h.match(/aria-pressed="false"/g) ?? []).length).toBeGreaterThanOrEqual(8);
     expect(h).toContain('id="fluxo-e-preco"');
-    expect(h).toContain(`Energia escondida pelo saldo de 30 dias, ${R.nomeFronteira("N_SE")}`);
+    // o cartão nomeia a fronteira sem sentido (o sentido do saldo vem na nota), para o nome não parecer o sentido do fluxo
+    expect(h).toContain(`Energia escondida pelo saldo de 30 dias, ${R.entreFronteira("N_SE")}`);
   });
 
   it("P029 e P030: frases do A05, bloqueio dos limites e documentos conferidos visíveis", () => {

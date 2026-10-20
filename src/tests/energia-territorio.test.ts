@@ -1099,12 +1099,13 @@ describe("r2: rótulos, textos e marcas do mapa", () => {
     expect(textoLegivel("quem: ['COORSEL', 'CERMC']")).toBe("quem: COORSEL, CERMC");
   });
 
-  it("'Cada número é da área da sua fonte' aparece uma vez, e a abertura traz o limite ('Não permite concluir') e a razão numa frase", () => {
+  it("a regra 'cada número é da área da sua fonte' aparece uma vez, como resposta com exemplo, e a abertura traz o limite ('Não permite concluir')", () => {
+    // Onda 3: a abertura responde com um caso real (a maior cidade do primeiro submercado) em vez de enunciar a regra; a regra continua uma vez só
     expect(texto.match(/Cada número é da área da sua fonte/gi)?.length ?? 0).toBe(0);
-    expect(texto.match(/cada número aqui é da área da sua fonte/g)?.length ?? 0).toBe(1);
+    expect(texto.match(/Depende da área de cada número\./g)?.length ?? 0).toBe(1);
+    expect(texto).toMatch(/o mesmo para \d+ UFs; a tarifa residencial da .+? é de R\$ [\d.,]+\/MWh, a mesma para os [\d.]+ municípios da área dela/);
     expect(h).toContain('data-limite=""');
     expect(texto).toContain("Não permite concluir Tarifa, perdas, DEC e FEC são da distribuidora inteira");
-    expect(texto).toContain("Quem mora num município paga a tarifa da distribuidora da área");
   });
 
   it("a busca anuncia a quantidade e o vazio numa região viva fora da lista, e a tarifa vem também em R$/kWh", () => {
