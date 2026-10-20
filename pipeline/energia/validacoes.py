@@ -672,8 +672,13 @@ def valida_conjunto(chave, an, *, regra_horizonte=None, documento=False, lido_do
         if br["sha256_divergentes"]:
             res, det = "reprovado", f"{br['sha256_divergentes']} arquivos com sha256 diferente do registrado na captura"
         elif br["arquivos_ausentes"]:
-            res, det = "ressalva", (f"{br['arquivos_ausentes']} originais ausentes do bronze neste ambiente (a cópia durável do "
-                                    f"pipeline guarda só o silver); {br['sha256_conferidos']} conferidos")
+            # A cópia durável guarda o silver e o original da captura vigente de cada recurso (issue #116); o da captura
+            # anterior só existe no cache do runner. O texto antigo dizia que a cópia guardava só o silver.
+            vig = br.get("ausentes_vigentes")
+            partes = (f" ({vig} da captura vigente e {br['arquivos_ausentes'] - vig} da anterior, que a cópia durável não guarda)"
+                      if vig is not None else "")
+            res, det = "ressalva", (f"{br['arquivos_ausentes']} originais ausentes do bronze neste ambiente{partes}; "
+                                    f"{br['sha256_conferidos']} conferidos")
         else:
             res, det = "aprovado", f"{br['sha256_conferidos']} originais com sha256 recalculado igual ao registrado"
         out.append(checagem(f"{pref}:original", chave, "original", res, det,

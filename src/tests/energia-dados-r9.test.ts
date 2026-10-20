@@ -292,9 +292,23 @@ describe("Metodologia: porta de entrada por tarefa, linhagem, exemplo reproduzí
   it("a nota das checagens reprovadas está na faixa e na seção própria, com o que a releitura mostra", () => {
     const reprovados = Array.from(validacoesDosCsv()).filter((par) => par[1].veredito === "reprovado").map((par) => estadoDoArquivo(`/energia/series/${par[0]}`, pub, man));
     const n = textoChecagensReprovadas(reprovados, pub.resumo.validacao.reprovado);
-    expect(n.frase).not.toBe("");
-    expect(t).toContain(n.curta);
-    expect(t).toContain(n.frase);
+    if (reprovados.length && pub.resumo.validacao.reprovado > 0) {
+      // a publicação de 01/10/2026 tinha CSV reprovado: a nota sai na faixa e na seção
+      expect(n.frase).not.toBe("");
+      expect(t).toContain(n.curta);
+      expect(t).toContain(n.frase);
+    } else {
+      // sem checagem reprovada (20/10/2026), não há nota; o texto da nota é conferido com um arquivo sintético
+      expect(n).toEqual({ curta: "", frase: "", tecnico: "" });
+      expect(t).not.toContain("Nada foi reaprovado à mão");
+      const sintetico = textoChecagensReprovadas(
+        [{ caminho: "/energia/series/x.csv", veredito: "reprovado", problemas: [{ tipo: "esquema", resultado: "reprovado", detalhe: "3 linhas com 9 colunas" }], releitura: { linhas: 10, colunas: 8, divergentes: 0 }, outraVersao: null }],
+        1,
+      );
+      expect(sintetico.curta).toContain("1 arquivo reprovado");
+      expect(sintetico.frase).toContain("A checagem reprovada é de arquivos CSV: linhas com número de colunas diferente do cabeçalho.");
+      expect(sintetico.frase).toContain("Nada foi reaprovado à mão");
+    }
     expect(h).toContain('id="checagens"');
   });
 

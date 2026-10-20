@@ -326,8 +326,15 @@ describe("gráfico, tabela e exportação usam as mesmas linhas, conferidas cont
       const col = COLUNAS_CARTEIRA_UF.findIndex((c) => c.id === `${m}_mw`);
       car.forEach((l, i) => expect(exp.linhas[i][col], `${m} ${l.id}`).toBe(v[CODIGO_UF[l.id]]));
     }
-    // RALIE por UF: zero observado onde a UF não tem usina, nunca null
-    expect(car.find((l) => l.id === "AC")!.ralie_mw).toBe(0);
+    // RALIE por UF: zero observado onde a UF não tem usina, nunca null, e a soma do CSV do RALIE onde tem (o Acre não tinha
+    // usina em 01/10/2026 e tem 28,2 MW em 20/10/2026)
+    const kwUf = new Map<string, number>();
+    for (const r of csv("expansao_carteira_ralie.csv")) kwUf.set(r.uf, (kwUf.get(r.uf) ?? 0) + Number(r.kw_ugs_em_implantacao || 0));
+    for (const l of car) {
+      expect(l.ralie_mw, l.id).not.toBeNull();
+      if (!kwUf.has(l.id)) expect(l.ralie_mw, l.id).toBe(0);
+      else expect(l.ralie_mw!, l.id).toBeCloseTo(kwUf.get(l.id)! / 1000, 0);
+    }
     const rede = linhasGeracaoRedeUf(G);
     for (const m of MEDIDAS_REDE) {
       const v = valoresMapaRede(rede, m);

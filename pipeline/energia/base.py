@@ -196,6 +196,24 @@ def caminho_bronze(arquivo):
     return caminho if os.path.isfile(caminho) else (_bronze_mesmo_conteudo(caminho) or caminho)
 
 
+def arquivo_publicavel(arquivo):
+    """Caminho a publicar numa evidência: o gravado na vintage, ou a cópia idêntica que está no
+    bronze (mesma pasta, mesmo sha256 no nome) quando o gravado não existe.
+
+    O bronze restaurado da cópia durável traz a recaptura de um recurso órfão (o conteúdo é o
+    mesmo, o carimbo do nome é o da recaptura), e a vintage continua apontando o arquivo da
+    primeira captura, que não existe mais em nenhum ambiente. Publicar esse caminho dá uma
+    evidência que ninguém consegue abrir (20/10/2026: p026_mmgd_mes apontava
+    cargaverificada_SECO_2026-09/20261006T033320Z…, e o bronze tinha 20261016T014137Z… com o mesmo
+    sha256). Sem cópia idêntica, devolve o caminho gravado: a ausência continua visível."""
+    if not arquivo:
+        return arquivo
+    resolvido = caminho_bronze(arquivo)
+    if not os.path.isfile(resolvido) or os.path.isabs(arquivo):
+        return arquivo
+    return os.path.relpath(resolvido, RAIZ).replace(os.sep, "/")
+
+
 def bronze_disponivel(vintage):
     return bool(vintage and vintage.get("arquivo") and os.path.isfile(caminho_bronze(vintage["arquivo"])))
 
@@ -529,10 +547,18 @@ def _escreve_atomico(caminho, texto):
     return caminho
 
 
+# Golds de catálogo do módulo Dados, gravadas sem indentação, como a avaliacao.json. Crescem com o número de
+# conjuntos integrados e de entradas dos portais, e a página Catálogo baixa a publicacao.json no navegador. A
+# indentação era um quarto dos bytes: em 20/10/2026, 511.958 contra 388.328 bytes (publicacao.json) e 417.915
+# contra 323.720 (catalogo.json), com o teto de 400 KB do contrato dos módulos. O conteúdo não muda.
+GOLDS_COMPACTAS = frozenset({"publicacao.json", "catalogo.json"})
+
+
 def escreve_gold(nome, payload, destino=None):
     base = destino or GOLD
+    formato = {"separators": (",", ":")} if nome in GOLDS_COMPACTAS else {"indent": 1}
     return _escreve_atomico(os.path.join(base, nome),
-                            json.dumps(payload, ensure_ascii=False, indent=1, allow_nan=False))
+                            json.dumps(payload, ensure_ascii=False, allow_nan=False, **formato))
 
 
 def escreve_csv(nome, cabecalho, linhas, destino=None):

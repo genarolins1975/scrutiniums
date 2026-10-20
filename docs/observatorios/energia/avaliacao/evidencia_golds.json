@@ -1,0 +1,2743 @@
+{
+ "referencia_dos_dados": "2026-10-01",
+ "publicacao_gerada_em": "2026-10-01T11:22:00Z",
+ "por_gold": {
+  "agua_detalhe.json": {
+   "naturezas": {
+    "CALCULADO": 6,
+    "OBSERVADO": 3,
+    "ESTIMADO": 2,
+    "PREVISTO": 1
+   },
+   "situacoes": {
+    "reconciliacao_aprovada": 2,
+    "controles_aprovados": 4,
+    "ressalva": 4
+   },
+   "fichas": 10,
+   "proveniencias": 12
+  },
+  "carga.json": {
+   "naturezas": {
+    "OBSERVADO": 1,
+    "CALCULADO": 2
+   },
+   "situacoes": {},
+   "fichas": 0,
+   "proveniencias": 3
+  },
+  "carga_detalhe.json": {
+   "naturezas": {
+    "CALCULADO": 1,
+    "OBSERVADO": 2,
+    "ESTIMADO": 2
+   },
+   "situacoes": {
+    "reconciliacao_aprovada": 3,
+    "controles_aprovados": 1,
+    "ressalva": 1
+   },
+   "fichas": 5,
+   "proveniencias": 5
+  },
+  "cmo.json": {
+   "naturezas": {
+    "ESTIMADO": 1
+   },
+   "situacoes": {},
+   "fichas": 0,
+   "proveniencias": 1
+  },
+  "conta.json": {
+   "naturezas": {
+    "CALCULADO": 5,
+    "ESTIMADO": 1,
+    "OBSERVADO": 2,
+    "PREVISTO": 1
+   },
+   "situacoes": {
+    "ressalva": 4,
+    "reconciliacao_aprovada": 2,
+    "controles_aprovados": 1
+   },
+   "fichas": 7,
+   "proveniencias": 9
+  },
+  "empresas.json": {
+   "naturezas": {
+    "OBSERVADO": 4,
+    "CALCULADO": 6,
+    "ESTIMADO": 2
+   },
+   "situacoes": {
+    "reconciliacao_aprovada": 2,
+    "controles_aprovados": 1
+   },
+   "fichas": 3,
+   "proveniencias": 12
+  },
+  "expansao.json": {
+   "naturezas": {
+    "CALCULADO": 11,
+    "PREVISTO": 1,
+    "CENARIO": 1
+   },
+   "situacoes": {
+    "reconciliacao_aprovada": 3,
+    "controles_aprovados": 4,
+    "ressalva": 1
+   },
+   "fichas": 8,
+   "proveniencias": 13
+  },
+  "geracao.json": {
+   "naturezas": {
+    "CALCULADO": 2
+   },
+   "situacoes": {},
+   "fichas": 0,
+   "proveniencias": 2
+  },
+  "geracao_detalhe.json": {
+   "naturezas": {
+    "CALCULADO": 4,
+    "OBSERVADO": 1,
+    "ESTIMADO": 2
+   },
+   "situacoes": {
+    "ressalva": 9,
+    "reconciliacao_aprovada": 4,
+    "controles_aprovados": 1
+   },
+   "fichas": 14,
+   "proveniencias": 7
+  },
+  "hidrologia.json": {
+   "naturezas": {
+    "OBSERVADO": 2,
+    "CALCULADO": 4
+   },
+   "situacoes": {},
+   "fichas": 0,
+   "proveniencias": 6
+  },
+  "inclusao.json": {
+   "naturezas": {
+    "OBSERVADO": 9,
+    "CALCULADO": 3,
+    "ESTIMADO": 3
+   },
+   "situacoes": {
+    "ressalva": 5,
+    "controles_aprovados": 3,
+    "reconciliacao_aprovada": 3
+   },
+   "fichas": 11,
+   "proveniencias": 15
+  },
+  "mercado.json": {
+   "naturezas": {
+    "CALCULADO": 8
+   },
+   "situacoes": {
+    "ressalva": 5,
+    "reconciliacao_aprovada": 4,
+    "controles_aprovados": 3
+   },
+   "fichas": 12,
+   "proveniencias": 8
+  },
+  "perdas.json": {
+   "naturezas": {
+    "OBSERVADO": 2,
+    "ESTIMADO": 2,
+    "CALCULADO": 4
+   },
+   "situacoes": {
+    "ressalva": 6
+   },
+   "fichas": 6,
+   "proveniencias": 8
+  },
+  "pld.json": {
+   "naturezas": {
+    "OBSERVADO": 1,
+    "CALCULADO": 4
+   },
+   "situacoes": {},
+   "fichas": 0,
+   "proveniencias": 5
+  },
+  "pld_detalhe.json": {
+   "naturezas": {
+    "ESTIMADO": 2,
+    "CALCULADO": 11,
+    "OBSERVADO": 1
+   },
+   "situacoes": {},
+   "fichas": 0,
+   "proveniencias": 14
+  },
+  "previsoes_desempenho.json": {
+   "naturezas": {
+    "PREVISTO": 2,
+    "OBSERVADO": 1
+   },
+   "situacoes": {
+    "controles_aprovados": 4,
+    "reconciliacao_aprovada": 8
+   },
+   "fichas": 12,
+   "proveniencias": 3
+  },
+  "qualidade.json": {
+   "naturezas": {
+    "OBSERVADO": 2,
+    "CALCULADO": 9,
+    "ESTIMADO": 1
+   },
+   "situacoes": {
+    "ressalva": 3,
+    "controles_aprovados": 3
+   },
+   "fichas": 6,
+   "proveniencias": 12
+  },
+  "rede.json": {
+   "naturezas": {
+    "CALCULADO": 4
+   },
+   "situacoes": {},
+   "fichas": 0,
+   "proveniencias": 4
+  },
+  "rede_detalhe.json": {
+   "naturezas": {
+    "CALCULADO": 8
+   },
+   "situacoes": {
+    "reconciliacao_aprovada": 10,
+    "ressalva": 12
+   },
+   "fichas": 22,
+   "proveniencias": 8
+  },
+  "regulacao.json": {
+   "naturezas": {
+    "OBSERVADO": 4,
+    "CALCULADO": 1,
+    "PREVISTO": 1
+   },
+   "situacoes": {
+    "reconciliacao_aprovada": 1,
+    "ressalva": 3
+   },
+   "fichas": 4,
+   "proveniencias": 6
+  },
+  "sintese.json": {
+   "naturezas": {},
+   "situacoes": {
+    "reconciliacao_aprovada": 15,
+    "ressalva": 5,
+    "controles_aprovados": 6
+   },
+   "fichas": 26,
+   "proveniencias": 0
+  },
+  "territorio.json": {
+   "naturezas": {
+    "CALCULADO": 10,
+    "OBSERVADO": 5,
+    "ESTIMADO": 2
+   },
+   "situacoes": {
+    "reconciliacao_aprovada": 2,
+    "controles_aprovados": 1
+   },
+   "fichas": 3,
+   "proveniencias": 17
+  },
+  "transicao.json": {
+   "naturezas": {
+    "OBSERVADO": 1,
+    "CALCULADO": 2,
+    "ESTIMADO": 3
+   },
+   "situacoes": {
+    "ressalva": 2,
+    "reconciliacao_aprovada": 2,
+    "controles_aprovados": 1
+   },
+   "fichas": 5,
+   "proveniencias": 6
+  }
+ },
+ "vereditos": {
+  "agua_detalhe.json": "aprovado",
+  "arquivos.json": "aprovado",
+  "carga.json": "aprovado",
+  "carga_detalhe.json": "ressalva",
+  "catalogo.json": "aprovado",
+  "cmo.json": "aprovado",
+  "conta.json": "aprovado",
+  "empresas.json": "aprovado",
+  "expansao.json": "ressalva",
+  "geracao.json": "aprovado",
+  "geracao_detalhe.json": "ressalva",
+  "hidrologia.json": "aprovado",
+  "inclusao.json": "ressalva",
+  "mercado.json": "ressalva",
+  "meta.json": "aprovado",
+  "metricas.json": "ressalva",
+  "modelos.json": "aprovado",
+  "perdas.json": "ressalva",
+  "pld.json": "aprovado",
+  "pld_detalhe.json": "aprovado",
+  "previsoes.json": "ressalva",
+  "previsoes_desempenho.json": "aprovado",
+  "qualidade.json": "aprovado",
+  "rede.json": "aprovado",
+  "rede_detalhe.json": "aprovado",
+  "regulacao.json": "aprovado",
+  "sintese.json": "ressalva",
+  "territorio.json": "aprovado",
+  "transicao.json": "ressalva"
+ },
+ "sem_teste": {
+  "agua_detalhe.json": 0,
+  "carga.json": 0,
+  "carga_detalhe.json": 0,
+  "cmo.json": 0,
+  "conta.json": 0,
+  "empresas.json": 0,
+  "expansao.json": 0,
+  "geracao.json": 0,
+  "geracao_detalhe.json": 0,
+  "hidrologia.json": 0,
+  "inclusao.json": 0,
+  "leiloes.json": 0,
+  "listadas.json": 0,
+  "mercado.json": 0,
+  "perdas.json": 0,
+  "pld.json": 0,
+  "pld_detalhe.json": 0,
+  "previsoes_desempenho.json": 0,
+  "qualidade.json": 0,
+  "rede.json": 0,
+  "rede_detalhe.json": 0,
+  "regulacao.json": 0,
+  "sintese.json": 0,
+  "territorio.json": 0,
+  "transicao.json": 0
+ },
+ "manifesto": [
+  "agua_detalhe.json",
+  "arquivos.json",
+  "avaliacao.json",
+  "carga.json",
+  "carga_detalhe.json",
+  "catalogo.json",
+  "cmo.json",
+  "conta.json",
+  "empresas.json",
+  "expansao.json",
+  "geracao.json",
+  "geracao_detalhe.json",
+  "hidrologia.json",
+  "inclusao.json",
+  "leiloes.json",
+  "listadas.json",
+  "mercado.json",
+  "meta.json",
+  "metricas.json",
+  "modelos.json",
+  "perdas.json",
+  "pld.json",
+  "pld_detalhe.json",
+  "previsoes.json",
+  "previsoes_desempenho.json",
+  "publicacao.json",
+  "qualidade.json",
+  "rede.json",
+  "rede_detalhe.json",
+  "regulacao.json",
+  "sintese.json",
+  "territorio.json",
+  "transicao.json"
+ ],
+ "csv": {
+  "aprovados": 167,
+  "ressalva": 4,
+  "reprovados": 3
+ },
+ "golds_integras": 29,
+ "golds_total": 29,
+ "conjuntos": [
+  {
+   "id": "aneel_distribuicao/aneel_componentes_tarifarias_b1",
+   "slug": "aneel-componentes-tarifarias",
+   "golds": [
+    "perdas.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_distribuicao/aneel_continuidade_limites",
+   "slug": "aneel-continuidade-dec-fec",
+   "golds": [
+    "perdas.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_distribuicao/aneel_indqual_municipio",
+   "slug": "aneel-indqual-municipio",
+   "golds": [
+    "perdas.json",
+    "qualidade.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_distribuicao/aneel_mmgd_municipio",
+   "slug": "aneel-mmgd-empreendimentos",
+   "golds": [
+    "perdas.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_distribuicao/aneel_samp_balanco",
+   "slug": "aneel-samp-balanco",
+   "golds": [
+    "empresas.json",
+    "perdas.json",
+    "territorio.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_distribuicao/ibge_censo2022_municipio",
+   "slug": "ibge-censo-2022-municipios",
+   "golds": [
+    "perdas.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_geracao/aneel_atos_outorga_geracao",
+   "slug": "aneel-atos-outorgas-geracao",
+   "golds": [
+    "expansao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {
+    "fonte_mais_nova": true
+   }
+  },
+  {
+   "id": "aneel_geracao/aneel_capacidade_agregada",
+   "slug": "aneel-capacidade-uf",
+   "golds": [
+    "expansao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_geracao/aneel_leiloes_transmissao",
+   "slug": "aneel-resultado-leiloes",
+   "golds": [
+    "expansao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {
+    "fonte_mais_nova": true
+   }
+  },
+  {
+   "id": "aneel_geracao/aneel_liberacao_comercial",
+   "slug": "aneel-liberacao-operacao-comercial",
+   "golds": [
+    "expansao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_geracao/aneel_ralie",
+   "slug": "aneel-ralie",
+   "golds": [
+    "expansao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_geracao/aneel_siga",
+   "slug": "aneel-siga",
+   "golds": [
+    "empresas.json",
+    "expansao.json",
+    "territorio.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_geracao/aneel_siget",
+   "slug": "aneel-siget",
+   "golds": [
+    "empresas.json",
+    "expansao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_geracao/epe_pde",
+   "slug": "epe-pde-2035",
+   "golds": [
+    "expansao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_geracao/epe_webmap_rede",
+   "slug": "epe-webmap-linhas-transmissao",
+   "golds": [
+    "expansao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_mmgd/aneel_mmgd_empreendimentos",
+   "slug": "aneel-mmgd-empreendimentos",
+   "golds": [
+    "territorio.json",
+    "transicao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_mmgd/aneel_mmgd_ref_conjuntos_limite",
+   "slug": "aneel-conjuntos-limite-area-mmgd",
+   "golds": [
+    "transicao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_mmgd/aneel_mmgd_ref_conjuntos_municipio",
+   "slug": "aneel-indqual-municipio-area-mmgd",
+   "golds": [
+    "transicao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_mmgd/ibge_populacao_6579",
+   "slug": "ibge-populacao-estimada-6579",
+   "golds": [
+    "territorio.json",
+    "transicao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM DADO",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_mmgd/mcti_fator_emissao",
+   "slug": "mcti-fatores-emissao-sin",
+   "golds": [
+    "transicao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_mmgd/ons_carga_verificada_mmgd",
+   "slug": "ons-carga-verificada-mmgd",
+   "golds": [
+    "territorio.json",
+    "transicao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_qualidade/aneel_atendimento_emergencial",
+   "slug": "aneel-atendimento-emergencial",
+   "golds": [
+    "qualidade.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_qualidade/aneel_atendimento_telefonico",
+   "slug": "aneel-atendimento-telefonico",
+   "golds": [
+    "qualidade.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_qualidade/aneel_continuidade",
+   "slug": "aneel-continuidade-dec-fec",
+   "golds": [
+    "empresas.json",
+    "qualidade.json",
+    "territorio.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_qualidade/aneel_eventos_emergencia",
+   "slug": "aneel-eventos-situacao-emergencia",
+   "golds": [
+    "qualidade.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_qualidade/aneel_iasc",
+   "slug": "aneel-iasc",
+   "golds": [
+    "qualidade.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_qualidade/aneel_indqual_municipio",
+   "slug": "aneel-indqual-municipio",
+   "golds": [
+    "perdas.json",
+    "qualidade.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_qualidade/aneel_manifestacoes",
+   "slug": "aneel-manifestacoes-distribuidora",
+   "golds": [
+    "qualidade.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_qualidade/aneel_ouvidoria",
+   "slug": "aneel-ouvidoria-setorial",
+   "golds": [
+    "qualidade.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_qualidade/aneel_ranking_continuidade",
+   "slug": "aneel-ranking-continuidade",
+   "golds": [
+    "qualidade.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_qualidade/ibge_localidades_municipios",
+   "slug": "ibge-localidades-municipios-qualidade",
+   "golds": [
+    "qualidade.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_social/aneel_cde_beneficiarios",
+   "slug": "aneel-beneficiarios-cde",
+   "golds": [
+    "inclusao.json",
+    "territorio.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_social/aneel_cde_custeio",
+   "slug": "aneel-cde-custeio",
+   "golds": [
+    "conta.json",
+    "inclusao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {
+    "fonte_mais_nova": true
+   }
+  },
+  {
+   "id": "aneel_social/aneel_scs",
+   "slug": "aneel-scs",
+   "golds": [
+    "inclusao.json"
+   ],
+   "atualidade": {
+    "situacao": "ATRASADO",
+    "dias_atraso": 367
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_social/aneel_tarifa_social_antiga",
+   "slug": "aneel-tarifa-social-antiga",
+   "golds": [
+    "inclusao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_social/epe_pasi_localidades",
+   "slug": "epe-pasi-localidades",
+   "golds": [
+    "inclusao.json",
+    "territorio.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_social/ibge_pnadc_energia",
+   "slug": "ibge-pnadc-energia",
+   "golds": [
+    "inclusao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_social/ibge_pof_6715",
+   "slug": "ibge-pof-6715",
+   "golds": [
+    "inclusao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM DADO",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_social/ibge_pof_cv",
+   "slug": "ibge-pof-cv",
+   "golds": [
+    "inclusao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_social/ibge_pof_microdados",
+   "slug": "ibge-pof-microdados",
+   "golds": [
+    "inclusao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_social/mds_cadunico",
+   "slug": "mds-cadunico-municipios",
+   "golds": [
+    "inclusao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_social/mme_luz_para_todos",
+   "slug": "mme-luz-para-todos",
+   "golds": [
+    "inclusao.json",
+    "territorio.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_tarifas/aneel_bandeiras_tarifarias",
+   "slug": "aneel-bandeiras-tarifarias",
+   "golds": [
+    "conta.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {
+    "fonte_mais_nova": true
+   }
+  },
+  {
+   "id": "aneel_tarifas/aneel_cde_custeio",
+   "slug": "aneel-cde-custeio",
+   "golds": [
+    "conta.json",
+    "inclusao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {
+    "fonte_mais_nova": true
+   }
+  },
+  {
+   "id": "aneel_tarifas/aneel_componentes_tarifarias",
+   "slug": "aneel-componentes-tarifarias",
+   "golds": [
+    "conta.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_tarifas/aneel_subsidios_tarifarios",
+   "slug": "aneel-subsidios-tarifarios",
+   "golds": [
+    "conta.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {
+    "fonte_mais_nova": true
+   }
+  },
+  {
+   "id": "aneel_tarifas/aneel_tarifas_aplicacao",
+   "slug": "aneel-tarifas-aplicacao",
+   "golds": [
+    "conta.json",
+    "empresas.json",
+    "territorio.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "aneel_tarifas/ibge_ipca",
+   "slug": "ibge-ipca-1737",
+   "golds": [
+    "conta.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "empresas/aneel_agentes_geracao",
+   "slug": "aneel-agentes-geracao",
+   "golds": [
+    "empresas.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "empresas/aneel_agentes_setor",
+   "slug": "aneel-agentes-setor-eletrico",
+   "golds": [
+    "empresas.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "empresas/aneel_polimero",
+   "slug": "aneel-composicao-societaria",
+   "golds": [
+    "empresas.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "empresas/aneel_siga",
+   "slug": "aneel-siga",
+   "golds": [
+    "empresas.json",
+    "expansao.json",
+    "territorio.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "empresas/aneel_siget",
+   "slug": "aneel-siget",
+   "golds": [
+    "empresas.json",
+    "expansao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "empresas/cvm_cad_cia_aberta",
+   "slug": "cvm-cadastro-companhias-abertas",
+   "golds": [
+    "empresas.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "empresas/cvm_dfp",
+   "slug": "cvm-dfp",
+   "golds": [
+    "empresas.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "empresas/cvm_itr",
+   "slug": "cvm-itr",
+   "golds": [
+    "empresas.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "energia/balanco_energia_subsistema_ho",
+   "slug": "ons-balanco-energia",
+   "golds": [
+    "geracao.json",
+    "pld_detalhe.json",
+    "rede.json",
+    "sintese.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {
+    "fonte_mais_nova": true
+   }
+  },
+  {
+   "id": "energia/carga_energia_di",
+   "slug": "ons-carga-diaria",
+   "golds": [
+    "carga.json",
+    "carga_detalhe.json",
+    "sintese.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {
+    "fonte_mais_nova": true
+   }
+  },
+  {
+   "id": "energia/ccee_pld_horario",
+   "slug": "ccee-pld-horario",
+   "golds": [
+    "pld.json",
+    "pld_detalhe.json",
+    "previsoes_desempenho.json",
+    "rede.json",
+    "rede_detalhe.json",
+    "sintese.json",
+    "territorio.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "energia/cmo_se",
+   "slug": "ons-cmo-semanal",
+   "golds": [
+    "cmo.json",
+    "pld_detalhe.json",
+    "sintese.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {
+    "fonte_mais_nova": true
+   }
+  },
+  {
+   "id": "energia/ear_subsistema_di",
+   "slug": "ons-ear-subsistema",
+   "golds": [
+    "hidrologia.json",
+    "sintese.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {
+    "fonte_mais_nova": true
+   }
+  },
+  {
+   "id": "energia/ena_subsistema_di",
+   "slug": "ons-ena-subsistema",
+   "golds": [
+    "hidrologia.json",
+    "sintese.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {
+    "fonte_mais_nova": true
+   }
+  },
+  {
+   "id": "energia/intercambio_nacional_ho",
+   "slug": "ons-intercambio",
+   "golds": [
+    "pld_detalhe.json",
+    "rede.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {
+    "fonte_mais_nova": true
+   }
+  },
+  {
+   "id": "mercado/aneel_agentes_mercado",
+   "slug": "aneel-agentes-setor-eletrico",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/aneel_conta_bandeira",
+   "slug": "aneel-conta-bandeira",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/aneel_samp_mercado",
+   "slug": "aneel-samp-mercado",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_agente_qtd_contabilizacao",
+   "slug": "ccee-agente-qtd-contabilizacao",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_consumo_classe_agente",
+   "slug": "ccee-consumo-classe-agente",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": 1
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_consumo_mensal_ambiente_comercializacao",
+   "slug": "ccee-consumo-mensal-ambiente-comercializacao",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_desligamento_compulsorio",
+   "slug": "ccee-desligamento-compulsorio",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_desligamento_voluntario",
+   "slug": "ccee-desligamento-voluntario",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_encargo_ess_ancilar",
+   "slug": "ccee-encargo-ess-ancilar",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": 1
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_encargo_pgto_mensal",
+   "slug": "ccee-encargo-pgto-mensal",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_garantia_fisica_sazo_mre_submercado",
+   "slug": "ccee-garantia-fisica-sazo-mre-submercado",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_geracao_submercado",
+   "slug": "ccee-geracao-submercado",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_infomercado",
+   "slug": "ccee-infomercado-mensal",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_lista_agente_associado",
+   "slug": "ccee-lista-agente-associado",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_lista_perfil_v1",
+   "slug": "ccee-lista-perfil-v1",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": 2
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_mre_mensal",
+   "slug": "ccee-mre-mensal",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_parcela_carga_consumo",
+   "slug": "ccee-parcela-carga-consumo",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_rd_encargos_contab_mensal",
+   "slug": "ccee-rd-encargos-contab-mensal",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_reserva_encargo",
+   "slug": "ccee-reserva-encargo",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_sumario_mensal_compra_venda_submercado",
+   "slug": "ccee-sumario-mensal-compra-venda-submercado",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/ccee_sumario_mensal_liquidacao",
+   "slug": "ccee-sumario-mensal-liquidacao",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/epe_consumo_classe",
+   "slug": "epe-consumo-classe-planilha",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/epe_consumo_mensal",
+   "slug": "epe-consumo-mensal",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "mercado/mme_boletim_monitoramento",
+   "slug": "mme-boletim-monitoramento",
+   "golds": [
+    "mercado.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_carga/ibge_populacao_uf_6579",
+   "slug": "ibge-populacao-uf-6579-carga",
+   "golds": [
+    "carga_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM DADO",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_carga/nasa_power_temperatura",
+   "slug": "nasa-power-temperatura-capitais",
+   "golds": [
+    "carga_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_carga/ons_balanco_carga_conferencia",
+   "slug": "ons-balanco-subsistema-conferencia-carga",
+   "golds": [
+    "carga_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_carga/ons_carga_diaria_conferencia",
+   "slug": "ons-carga-energia-arquivo-atual-conferencia",
+   "golds": [
+    "carga_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_carga/ons_carga_verificada_ho",
+   "slug": "ons-carga-verificada-horaria",
+   "golds": [
+    "carga_detalhe.json",
+    "pld_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_carga/ons_curva_carga_ho",
+   "slug": "ons-curva-carga-horaria",
+   "golds": [
+    "carga_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_carga/openmeteo_temperatura",
+   "slug": "openmeteo-era5-ifs-capitais",
+   "golds": [
+    "carga_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": 2
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_carga/senado_leis_feriados",
+   "slug": "senado-leis-feriados",
+   "golds": [
+    "carga_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_cmo/ibge_ipca_1737",
+   "slug": "ibge-ipca-1737",
+   "golds": [
+    "pld_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_cmo/normas_pld",
+   "slug": "camara-decreto-5163-2004",
+   "golds": [
+    "pld_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_cmo/ons_cmo_balanco_conferencia",
+   "slug": "ons-balanco-subsistema-conferencia-pld",
+   "golds": [
+    "pld_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_cmo/ons_cmo_semanal_a02",
+   "slug": "ons-cmo-semanal",
+   "golds": [
+    "pld_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_cmo/ons_cmo_semihorario",
+   "slug": "ons-cmo-semi-horario",
+   "golds": [
+    "pld_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_geracao/aneel_empreendimentos_operacao",
+   "slug": "aneel-empreendimentos-operacao",
+   "golds": [
+    "geracao_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_geracao/ons_capacidade_geracao",
+   "slug": "ons-capacidade-geracao",
+   "golds": [
+    "geracao_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_geracao/ons_coff_eolica",
+   "slug": "ons-restricao-coff-eolica-usi",
+   "golds": [
+    "geracao_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_geracao/ons_coff_eolica_detalhe",
+   "slug": "ons-restricao-coff-eolica-detail",
+   "golds": [
+    "geracao_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_geracao/ons_coff_fotovoltaica",
+   "slug": "ons-restricao-coff-fotovoltaica",
+   "golds": [
+    "geracao_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_geracao/ons_coff_fotovoltaica_detalhe",
+   "slug": "ons-restricao-coff-fotovoltaica-detail",
+   "golds": [
+    "geracao_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_geracao/ons_cvu_termica",
+   "slug": "ons-cvu-usitermica",
+   "golds": [
+    "geracao_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_geracao/ons_fator_capacidade",
+   "slug": "ons-fator-capacidade-2",
+   "golds": [
+    "geracao_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_geracao/ons_geracao_termica_motivo",
+   "slug": "ons-geracao-termica-despacho-2",
+   "golds": [
+    "geracao_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_geracao/ons_geracao_usina",
+   "slug": "ons-geracao-usina-2",
+   "golds": [
+    "geracao_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_geracao/ons_modalidade_usina",
+   "slug": "ons-modalidade-usina",
+   "golds": [
+    "geracao_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_geracao/ons_usina_conjunto",
+   "slug": "ons-usina-conjunto",
+   "golds": [
+    "geracao_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/clima_previsao",
+   "slug": "openmeteo-previsao-ecmwf",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/ibge_censo2022_populacao",
+   "slug": "ibge-sidra-4709",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM DADO",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/ibge_localidades_2022",
+   "slug": "ibge-localidades-2022",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/nasa_power_imerg",
+   "slug": "nasa-power-imerg",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/nasa_power_merra2",
+   "slug": "nasa-power-merra2",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/ons_bacia_contorno",
+   "slug": "ons-bacia_contorno",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/ons_carga_areas_verificacao",
+   "slug": "ons-carga-verificada-areas",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/ons_dados_hidrologicos_di",
+   "slug": "ons-dados-hidrologicos-res",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/ons_ear_bacia_di",
+   "slug": "ons-ear-diario-por-bacia",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/ons_ear_ree_di",
+   "slug": "ons-ear-diario-por-ree-reservatorio-equivalente-de-energia",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/ons_ear_reservatorio_di",
+   "slug": "ons-ear-diario-por-reservatorio",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/ons_ena_bacia_di",
+   "slug": "ons-ena-diario-por-bacia",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/ons_ena_ree_di",
+   "slug": "ons-ena-diario-por-ree-reservatorio-equivalente-de-energia",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/ons_ena_reservatorio_di",
+   "slug": "ons-ena-diario-por-reservatorio",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/ons_pmo_relatorio_mlt",
+   "slug": "ons-relatorio-pmo-mlt",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/ons_precipitacao_estacao",
+   "slug": "ons-precipitacao-estacao",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_hidrologia/ons_reservatorio_cadastro",
+   "slug": "ons-reservatorio",
+   "golds": [
+    "agua_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_rede/ons_rede_atls",
+   "slug": "ons-ind-confiarb-atls",
+   "golds": [
+    "rede_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_rede/ons_rede_balanco",
+   "slug": "ons-balanco-energia-subsistema-releitura",
+   "golds": [
+    "rede_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_rede/ons_rede_documentos",
+   "slug": "ons-documentos-limites-intercambio",
+   "golds": [
+    "rede_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_rede/ons_rede_intercambio_internacional",
+   "slug": "ons-intercambio-internacional",
+   "golds": [
+    "rede_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_rede/ons_rede_intercambio_nacional",
+   "slug": "ons-intercambio-nacional-releitura",
+   "golds": [
+    "rede_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_rede/ons_rede_interrupcao_carga",
+   "slug": "ons-interrupcao-carga",
+   "golds": [
+    "rede_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_rede/ons_rede_itaipu",
+   "slug": "ons-geracao-itaipu",
+   "golds": [
+    "rede_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "ons_rede/ons_rede_pdo_conversoras",
+   "slug": "ons-programacao-fluxo-controlado",
+   "golds": [
+    "rede_detalhe.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "previsoes/previsoes_dicionarios_ons",
+   "slug": "ons-dicionarios-ear-ena",
+   "golds": [
+    "previsoes_desempenho.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "publicacao/catalogo_ccee_seed",
+   "slug": "ccee-package-show-versionados",
+   "golds": [
+    "publicacao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "publicacao/catalogo_ckan_aneel",
+   "slug": "aneel-catalogo-ckan",
+   "golds": [
+    "publicacao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "publicacao/catalogo_ckan_ccee",
+   "slug": "ccee-catalogo-ckan",
+   "golds": [
+    "publicacao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "publicacao/catalogo_ckan_ons",
+   "slug": "ons-catalogo-ckan",
+   "golds": [
+    "publicacao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "regulacao/aneel_audiencias_consultas",
+   "slug": "aneel-audiencias-consultas-publicas",
+   "golds": [
+    "regulacao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "regulacao/aneel_bandeiras_adicional",
+   "slug": "aneel-bandeiras-tarifarias",
+   "golds": [
+    "regulacao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "regulacao/aneel_paginas_regulatorias",
+   "slug": "aneel-paginas-regulatorias",
+   "golds": [
+    "regulacao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": 1
+   },
+   "capturas": {}
+  },
+  {
+   "id": "regulacao/aneel_pautas_atas_diretoria",
+   "slug": "aneel-pautas-atas-diretoria",
+   "golds": [
+    "regulacao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "regulacao/ibge_ipca_1737",
+   "slug": "ibge-ipca-1737",
+   "golds": [
+    "regulacao.json"
+   ],
+   "atualidade": {
+    "situacao": "EM DIA",
+    "dias_atraso": 0
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "regulacao/regulacao_documentos",
+   "slug": "aneel-atos-limites-pld",
+   "golds": [
+    "regulacao.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "territorio/territorio_epe_webmap",
+   "slug": "epe-webmap-subsistemas-isolados-territorio",
+   "golds": [
+    "territorio.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "territorio/territorio_ibge_malha_maxima",
+   "slug": "ibge-malha-municipal-maxima-territorio",
+   "golds": [
+    "territorio.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  },
+  {
+   "id": "territorio/territorio_ons_areas_carga",
+   "slug": "ons-carga-verificada-areas-territorio",
+   "golds": [
+    "territorio.json"
+   ],
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "dias_atraso": null
+   },
+   "coleta": {
+    "falhas_consecutivas": null
+   },
+   "capturas": {}
+  }
+ ],
+ "modelos_fichas": [
+  {
+   "codigo": "B0",
+   "aprovacao": {
+    "estado": "PESQUISA",
+    "referencia_experimental": true
+   }
+  },
+  {
+   "codigo": "C1",
+   "aprovacao": {
+    "estado": "PESQUISA",
+    "referencia_experimental": false
+   }
+  },
+  {
+   "codigo": "C2-P",
+   "aprovacao": {
+    "estado": "PESQUISA",
+    "referencia_experimental": false
+   }
+  },
+  {
+   "codigo": "C2-H",
+   "aprovacao": {
+    "estado": "PESQUISA",
+    "referencia_experimental": false
+   }
+  },
+  {
+   "codigo": "S0",
+   "aprovacao": {
+    "estado": "PESQUISA",
+    "referencia_experimental": false
+   }
+  }
+ ]
+}
