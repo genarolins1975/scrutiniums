@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1390,
-    "fontes_sha256": "085cdf47cd97005d8281c66edc28438d18d347672c606324115dca4de3ef30a5",
-    "pendencias_sha256": "952fda810afb3795e996d114f6e86bb71bd7df1eb30508c8badc581ffc4e3fb1",
+    "arquivos_analisados": 1400,
+    "fontes_sha256": "dfc5c0c476d62451d075c114792c38f57a15386d33f73b109d9c6231d623c2d9",
+    "pendencias_sha256": "833d766bc14d926b6293c949b6f91e5cddb70243685dddd4ef622821c459aa01",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -158,7 +158,7 @@
           "jsx_text": 1499,
           "atributos": 388,
           "props": 1004,
-          "outros_literais": 7046,
+          "outros_literais": 7054,
           "templates": 868,
           "expressoes_nao_resolvidas": 5371,
           "chaves_objetos": 5667
@@ -175,7 +175,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 21843,
+        "candidatos_nao_catalogados": 21851,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -394,20 +394,20 @@
     "contas_federais": {
       "nome": "Contas Públicas Federais",
       "interface": {
-        "arquivos": 60,
+        "arquivos": 70,
         "candidatos": {
-          "jsx_text": 766,
-          "atributos": 144,
-          "props": 87,
-          "outros_literais": 1578,
-          "templates": 113,
-          "expressoes_nao_resolvidas": 1285,
-          "chaves_objetos": 818
+          "jsx_text": 955,
+          "atributos": 197,
+          "props": 103,
+          "outros_literais": 1799,
+          "templates": 149,
+          "expressoes_nao_resolvidas": 1618,
+          "chaves_objetos": 950
         },
         "exclusoes": {
-          "importacoes": 213,
-          "atributos_tecnicos": 607,
-          "tipos": 59
+          "importacoes": 258,
+          "atributos_tecnicos": 742,
+          "tipos": 67
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -416,13 +416,13 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 4791,
+        "candidatos_nao_catalogados": 5771,
         "percentual_traduzido": null
       },
       "rotas": {
         "paginas_pt": 6,
         "paginas_en": 0,
-        "handlers": 9,
+        "handlers": 11,
         "templates_com_parametros": 1,
         "paginas_pt_literais": 5,
         "paginas_pt_fora_do_adaptador": 1,
