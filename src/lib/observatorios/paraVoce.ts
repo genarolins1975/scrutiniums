@@ -27,6 +27,7 @@ import {
   numeroIdebCapitais,
   numeroInss,
   numeroDividaCem,
+  numeroEducacaoMunicipios,
   numeroSaudeCapitais,
 } from "@/lib/perguntas/portas";
 import { lerPublico, mesAno, num, numero } from "@/lib/perguntas/leitura";
@@ -71,6 +72,7 @@ const IDS = [
   "municipio",
   "tarifa-social-agua",
   "capital",
+  "escola",
   "educacao-capital",
   "saude-capital",
   "fogo",
@@ -104,7 +106,9 @@ export const PARA_VOCE = {
   // o custo de vida (painel novo das Famílias, 20/10/2026) abre o bloco; a água saiu para manter três perguntas e continua a
   // um clique em "Para o seu caso" da camada aberta das Famílias e no elo "Gás, luz e água" do orçamento da família
   "/observatorios/familias": ["custo-de-vida", "luz", "botijao"],
-  "/observatorios/servicos-publicos": ["capital", "educacao-capital", "saude-capital"],
+  // a escola pública da cidade do leitor (painel Educação nos municípios, 20/10/2026) abre o bloco; a educação das capitais
+  // continua a um clique, na coleção Educação e no "Para você" da Eficiência Estatal
+  "/observatorios/servicos-publicos": ["escola", "capital", "saude-capital"],
   "/territorio": ["fogo", "desastres"],
   "/observatorios/contas-publicas": ["inss", "estado-contas", "previdencia"],
   // o botijão saiu daqui em 19/10/2026 para dar lugar ao tanque (painel novo): continua a um clique no elo "Chegar à casa"
@@ -298,6 +302,14 @@ function pergunta(id: IdPergunta, idioma: Idioma): PerguntaParaVoce {
         href: CONSULTAS.capital.href,
         numero: null,
         semNumero: "Consulta: o retrato mostra os números da capital escolhida.",
+      };
+    case "escola":
+      return {
+        id,
+        pergunta: CONSULTAS.escola.pergunta,
+        resposta: "O Ideb da rede municipal da sua cidade; com a conta, a série histórica, a aprendizagem e a aprovação, a comparação com o estado e com cidades do mesmo porte e as matrículas.",
+        href: CONSULTAS.escola.href,
+        numero: daPorta(numeroEducacaoMunicipios()),
       };
     case "educacao-capital":
       return {

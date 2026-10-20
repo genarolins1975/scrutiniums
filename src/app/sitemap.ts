@@ -90,6 +90,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/contas-publicas/previdencia", 0.8, "monthly"),
     // Conectividade (20/10/2026): o endereço é a página aberta do tema (aperitivo sem sessão)
     rota("/conectividade", 0.8, "monthly"),
+    // Educação nos municípios (20/10/2026): o endereço é a página aberta do tema (aperitivo sem sessão)
+    rota("/educacao-municipal", 0.8, "monthly"),
     // leva 2 (src/lib/rotasPublicas.ts, LEVA_2): fica de fora pelo filtro abaixo até a data da aprovação do dono
     ...LEVA_2.flatMap((i) => i.rotas).map((r) => rota(r, 0.7, "monthly")),
     ...LEVA_2.flatMap((i) => (i.fichasIbge ? municipiosSaneamento.map((id) => rota(`${i.fichasIbge}/${id}`, 0.4, "yearly")) : [])),

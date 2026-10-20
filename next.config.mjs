@@ -14,6 +14,7 @@ const GOLDS_DAS_PORTAS = [
   "./public/energia/gold/conta.json",
   "./public/inflacao/gold/ipca.json",
   "./public/previdencia/gold/previdencia.json",
+  "./public/educacao/gold/educacao.json",
 ];
 
 /**
@@ -38,6 +39,11 @@ const nextConfig = {
     // (WASM) em tempo de execução e o pg usa require dinâmico.
     serverComponentsExternalPackages: ["@electric-sql/pglite", "pg"],
     // Arquivos usados pelos route handlers em runtime devem integrar o bundle.
+    // os dados por município da Educação (13 MB) só são lidos pelo painel e pela sua versão aperitivo; sem esta regra o
+    // rastreio os levava a todas as funções, e a maior passava do tamanho que a Vercel aceita
+    outputFileTracingExcludes: {
+      "!{/educacao-municipal,/aperitivo/educacao-municipal}{,/**}": ["./public/educacao/gold/municipios/**"],
+    },
     outputFileTracingIncludes: {
       "/eficiencia-estatal/laboratorio-cesta": [
         "./docs/obee/resultados/revisao-interativa-v3.html",
@@ -64,6 +70,10 @@ const nextConfig = {
       // (município na URL), leem a cada instância a gold e o arquivo da UF do município pedido
       "/conectividade": ["./public/conectividade/gold/**/*.json"],
       "/aperitivo/conectividade": ["./public/conectividade/gold/**/*.json"],
+      // painel Educação nos municípios e a sua versão aperitivo (servida em /educacao-municipal a quem não tem sessão):
+      // dinâmicos (município na URL), leem a gold e o arquivo da UF do município pedido; os CSV leem todas as UFs no build
+      "/educacao-municipal": ["./public/educacao/gold/**/*.json"],
+      "/aperitivo/educacao-municipal": ["./public/educacao/gold/**/*.json"],
       // ficha de focos por município (consulta da leva 2, src/lib/rotasPublicas.ts): gerada na primeira visita
       "/territorio/queimadas/municipio/[ibge]": ["./public/territorio/gold/queimadas_municipios.json", "./public/saneamento/gold/indice.json"],
       "/saneamento/prestadores/[id]": ["./public/saneamento/gold/*.json"],
@@ -122,6 +132,7 @@ const nextConfig = {
       {source: "/previdencia/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/conectividade/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/saneamento/divida/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
+      {source: "/educacao/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/gas/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       // API de leitura (/dados/api): exige sessão (src/lib/rotasPublicas.ts); cache privado do navegador
       {source: "/obs/data/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},

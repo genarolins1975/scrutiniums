@@ -223,6 +223,26 @@
       ],
       "referenciaRotulo": "BEPS"
     },
+    "educacao": {
+      "nome": "Educação nos municípios",
+      "nomeEn": "Education in municipalities",
+      "rotulo": "Fonte: INEP, Ideb e Censo Escolar",
+      "cadencia": "anual",
+      "nota": "O INEP divulga o Ideb a cada dois anos, no ano seguinte ao do Saeb, e a Sinopse do Censo Escolar uma vez por ano. A plataforma recoleta todo mês e só republica quando um número muda; a data é a da captura que trouxe o dado novo.",
+      "publicacao": [
+        {
+          "arquivo": "public/educacao/gold/educacao.json",
+          "campo": "capturado_em"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/educacao/gold/educacao.json",
+          "campo": "referencia"
+        }
+      ],
+      "referenciaRotulo": "Ideb"
+    },
     "contas-federais": {
       "nome": "Contas federais",
       "nomeEn": "Federal accounts",

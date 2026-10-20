@@ -258,6 +258,10 @@ export function indiceBusca(destinos: readonly DestinoNavegacao[], verbetes: rea
     // maior peso no índice) acha o painel Inflação por cidade, do Observatório das Famílias. Só em português, como o painel
     // i18n: dado
     itens.push({ tipo: "Pergunta", titulo: "Quanto subiu o custo de vida na minha cidade?", detalhe: "Inflação por cidade (IPCA), Observatório das Famílias", href: "/custo-de-vida", sinonimos: ["inflação", "IPCA", "custo de vida", "inflação da minha cidade", "carestia", "índice de preços"] });
+    // quem procura escola, Ideb ou Saeb acha o painel Educação nos municípios, do Observatório dos Serviços Públicos
+    // (20/10/2026). Só em português, como o painel
+    // i18n: dado
+    itens.push({ tipo: "Pergunta", titulo: "Como está a escola pública da minha cidade?", detalhe: "Educação nos municípios (Ideb), Observatório dos Serviços Públicos", href: "/educacao-municipal", sinonimos: ["Ideb", "Saeb", "escola", "educação", "escola municipal", "escola pública", "nota da escola", "ensino fundamental"] });
   }
   for (const d of destinos) {
     const c = CARTOES[d.slug];

@@ -1,0 +1,48 @@
+{
+  "dominio": "educacao",
+  "titulo": "Educação nos municípios (Observatório dos Serviços Públicos)",
+  "descricao": "Recoleta das três fontes do painel Educação nos municípios: o Ideb por município, UF e Brasil (INEP, bienal, divulgado no ano seguinte ao do Saeb), a Sinopse Estatística do Censo Escolar (INEP, anual: matrículas por rede e etapa e escolas por rede) e as estimativas de população do IBGE no ano do Ideb (SIDRA 6579, só para o porte). A gold só é publicada se cada planilha conferir com o MD5 que o INEP publica no pacote, se cada Ideb fechar com N × P, se a contagem de municípios com Ideb for a da nota informativa da edição, se as 27 UFs e o Brasil estiverem presentes, se os municípios do Censo somarem as UFs e as UFs o Brasil, com as redes fechando com o total, se a população somar a do Brasil, se toda rede com Ideb tiver matrícula no Censo da mesma edição e se nenhum Ideb já publicado for revisto ou sumir.",
+  "codigo": [
+    "pipeline/educacao/*.py",
+    "pipeline/tests/test_educacao.py",
+    "src/lib/educacao",
+    "src/tests/educacao.test.ts"
+  ],
+  "reconstruir": [["python3", "-m", "pipeline.educacao.run"]],
+  "timeout_reconstruir_min": 10,
+  "saidas": ["public/educacao/gold"],
+  "sinal_de_mudanca": [
+    {"arquivo": "public/educacao/gold/educacao.json", "json_chave": "hash_dados"}
+  ],
+  "testes": [
+    {
+      "nome": "pipeline da Educação nos municípios (Python): validações que retêm a publicação, conferência cruzada e o Ideb das capitais igual ao do painel das capitais",
+      "comando": ["python3", "-m", "unittest", "pipeline.tests.test_educacao"],
+      "timeout_min": 10
+    },
+    {
+      "nome": "contratos do painel, do aperitivo e das entradas (vitest)",
+      "comando": ["npx", "vitest", "run", "--testTimeout=60000", "src/tests/educacao.test.ts", "src/tests/aperitivo.test.ts", "src/tests/observatorios-entradas.test.ts", "src/tests/perguntas-portas.test.ts", "src/tests/para-voce.test.ts"],
+      "timeout_min": 15
+    }
+  ],
+  "grupos": [
+    {
+      "id": "inep-ideb",
+      "nome": "INEP, Ideb por município, UF e Brasil (bienal, anos iniciais e finais do ensino fundamental), com a população do IBGE no ano do Ideb (SIDRA 6579, para o porte do município): as duas no mesmo grupo para a população seguir a edição coletada",
+      "coleta": [
+        ["python3", "-m", "pipeline.educacao.run", "--coleta", "ideb", "--so-coleta"],
+        ["python3", "-m", "pipeline.educacao.run", "--coleta", "populacao", "--so-coleta"]
+      ],
+      "caminhos": ["pipeline/educacao/seed/ideb.json.gz", "pipeline/educacao/seed/populacao.json"],
+      "timeout_min": 30
+    },
+    {
+      "id": "inep-censo-escolar",
+      "nome": "INEP, Sinopse Estatística do Censo Escolar (anual, matrículas e escolas por município e rede)",
+      "coleta": [["python3", "-m", "pipeline.educacao.run", "--coleta", "censo", "--so-coleta"]],
+      "caminhos": ["pipeline/educacao/seed/censo.json"],
+      "timeout_min": 30
+    }
+  ]
+}

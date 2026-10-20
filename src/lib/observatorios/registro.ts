@@ -26,6 +26,7 @@ import { PAGINAS_GAS } from "@/lib/gas/navegacao";
 import { PAGINAS_COMBUSTIVEIS, ROTA_COMBUSTIVEIS } from "@/lib/combustiveis/paginas";
 import { ROTA_INFLACAO, TITULO_PAINEL as TITULO_PAINEL_INFLACAO } from "@/lib/inflacao/paginas";
 import { ROTA_CONECTIVIDADE, TITULO_PAINEL as TITULO_PAINEL_CONECTIVIDADE } from "@/lib/conectividade/paginas";
+import { ROTA_EDUCACAO, TITULO_PAINEL as TITULO_PAINEL_EDUCACAO } from "@/lib/educacao/paginas";
 import { CAPITULOS_PUBLICADOS as CAPITULOS_CONTAS, PAINEL_AREAS, PAINEL_PREVIDENCIA } from "@/lib/contas-publicas/catalogo";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from "@/lib/agro/modelo";
@@ -226,6 +227,17 @@ function paineisFamilias(): Painel[] {
 }
 
 /**
+ * Painéis mantidos pelo próprio Observatório dos Serviços Públicos, com pipeline e gold próprios (pipeline/educacao,
+ * public/educacao). "Educação nos municípios" (20/10/2026) é a porta da coleção Educação: cobre a rede pública dos
+ * municípios pelo resultado (Ideb, Saeb, aprovação) e pelo tamanho da rede (Censo Escolar). O painel "Educação nas
+ * capitais" (Eficiência Estatal) continua na coleção como o canônico da eficiência das 26 capitais (gasto por matrícula
+ * ao lado do resultado), e o painel novo leva a ele quando o município é capital: os dois não repetem a mesma análise.
+ */
+function paineisServicos(): Painel[] {
+  return [{ rota: ROTA_EDUCACAO, titulo: TITULO_PAINEL_EDUCACAO, observatorio: "servicos-publicos", colecao: "educacao", origem: null }];
+}
+
+/**
  * Painel mantido pelo próprio Observatório de Energia e Infraestrutura, com pipeline e gold próprios
  * (pipeline/conectividade, public/conectividade): dados abertos da Anatel por município. É o painel principal da coleção
  * Conectividade; a página "Energia e conectividade" da Eficiência Estatal continua na coleção como cópia do Setor Elétrico.
@@ -242,7 +254,8 @@ const PRINCIPAL_DA_COPIA = new Map(COPIAS.filter((c) => !c.parcial).map((c) => [
 
 export function paineis(): Painel[] {
   // o painel das Famílias vem primeiro: na coleção Custo de vida, a inflação de todo o orçamento abre a lista, antes da comida
-  return [...paineisFamilias(), ...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras(), ...paineisConectividade(), ...paineisTerritorio()]
+  // o painel dos Serviços Públicos vem antes da Eficiência Estatal: na coleção Educação, os municípios abrem a lista, antes das capitais
+  return [...paineisFamilias(), ...paineisServicos(), ...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras(), ...paineisConectividade(), ...paineisTerritorio()]
     .map((p) => (PRINCIPAL_DA_COPIA.has(p.rota) ? { ...p, duplicataDe: PRINCIPAL_DA_COPIA.get(p.rota) } : p));
 }
 

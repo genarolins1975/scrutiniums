@@ -142,6 +142,9 @@ export const VIEW_SECTIONS = [
   // Conectividade (Energia e Infraestrutura; painel com conta e a versão aperitivo no mesmo endereço)
   "infra:conectividade",
   "infra:conectividade-aperitivo",
+  // Educação nos municípios (Serviços Públicos: painel com conta e a versão aperitivo no mesmo endereço)
+  "servicos:educacao-municipal",
+  "servicos:educacao-municipal-aperitivo",
   // Inflação por cidade (Observatório das Famílias, coleção Custo de vida; pipeline e gold próprios)
   "familias:custo-de-vida",
   "familias:custo-de-vida-na-minha-cidade",
@@ -284,6 +287,8 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "contas:previdencia-aperitivo": "Contas Federais · Previdência e INSS: versão aperitivo (sem conta)",
   "infra:conectividade": "Energia e Infraestrutura · Conectividade",
   "infra:conectividade-aperitivo": "Energia e Infraestrutura · Conectividade: versão aperitivo (sem conta)",
+  "servicos:educacao-municipal": "Serviços Públicos · Educação nos municípios",
+  "servicos:educacao-municipal-aperitivo": "Serviços Públicos · Educação nos municípios: versão aperitivo (sem conta)",
   "familias:custo-de-vida": "Custo de vida · Inflação por cidade",
   "familias:custo-de-vida-na-minha-cidade": "Custo de vida · Consulta por cidade",
   "credito:quanto-meu-banco-cobra": "Crédito · Quanto meu banco cobra?",

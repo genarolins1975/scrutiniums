@@ -306,7 +306,7 @@ class Configuracao(unittest.TestCase):
         # ordem pelo nome do domínio: "saneamento-divida.json" viria antes de "saneamento.json" na ordem dos arquivos
         self.assertEqual(
             sorted(p.stem for p in arquivos),
-            ["conectividade", "contas-publicas", "eficiencia", "inflacao", "previdencia", "saneamento", "saneamento-divida", "seguranca"],
+            ["conectividade", "contas-publicas", "educacao", "eficiencia", "inflacao", "previdencia", "saneamento", "saneamento-divida", "seguranca"],
         )
         for p in arquivos:
             cfg = A.carregar_config(p)
