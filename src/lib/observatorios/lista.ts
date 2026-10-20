@@ -101,6 +101,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     colecoes: [
       { id: "setor-eletrico", nome: "Setor Elétrico", href: "/setor-eletrico" },
       { id: "gas", nome: "Gás Natural", href: "/gas-natural" },
+      { id: "combustiveis", nome: "Combustíveis", href: "/combustiveis" },
       { id: "saneamento", nome: "Saneamento", href: "/saneamento" },
       { id: "mobilidade", nome: "Mobilidade", href: "/eficiencia-estatal/mobilidade-transporte" },
       { id: "conectividade", nome: "Conectividade", href: "/eficiencia-estatal/energia-conectividade" },

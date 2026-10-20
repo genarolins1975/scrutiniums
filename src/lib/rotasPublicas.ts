@@ -100,7 +100,7 @@ const ARQUIVOS_DAS_CONSULTAS = new Set([
  * seguem fechados. `arquivos` são os que a consulta busca no navegador, um a
  * um; o que a página lê no servidor não precisa abrir.
  */
-export type IdLeva2 = "quanto-meu-banco-cobra" | "teve-fogo-perto-de-mim" | "cem-reais-dos-impostos" | "metodologia-do-credito";
+export type IdLeva2 = "quanto-meu-banco-cobra" | "teve-fogo-perto-de-mim" | "cem-reais-dos-impostos" | "metodologia-do-credito" | "quanto-custa-encher-o-tanque";
 
 export type ItemLeva2 = {
   id: IdLeva2;
@@ -171,6 +171,19 @@ export const LEVA_2: readonly ItemLeva2[] = Object.freeze([
     forma: "metodo",
     portas: ["familias", "economia"],
     rotas: ["/observatorio-do-credito/metodologia"],
+    arquivos: [],
+    aprovadaEm: null,
+  },
+  {
+    // consulta do painel novo Combustíveis nos postos (19/10/2026): só o último mês, por UF, com fonte e data, montado no
+    // servidor a partir de public/gas/gold/combustiveis.json; nenhum arquivo é buscado no navegador. Série, comparação entre
+    // as UFs, downloads e o painel /combustiveis seguem com conta
+    id: "quanto-custa-encher-o-tanque",
+    pergunta: "Quanto custa encher o tanque no meu estado?",
+    resumo: "O preço médio do litro de gasolina, etanol e diesel no seu estado no último mês da pesquisa da ANP, comparado com a média do Brasil.",
+    forma: "consulta",
+    portas: ["energia-e-infraestrutura", "familias"],
+    rotas: ["/combustiveis/no-meu-estado"],
     arquivos: [],
     aprovadaEm: null,
   },

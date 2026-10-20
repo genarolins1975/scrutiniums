@@ -67,7 +67,7 @@ const CONTEUDO: Partial<Record<ObservatorioId, () => { descricao: string; escala
     metodo: <MetodoContas />,
   }),
   "energia-e-infraestrutura": () => ({
-    descricao: "Eletricidade, gás, água e esgoto, mobilidade e conectividade: oferta, preço regulado e acesso, a partir do ONS, da ANEEL, da ANP, do IBGE e do SINISA. Cada número traz o período e o universo da sua fonte.",
+    descricao: "Eletricidade, gás, combustíveis nos postos, água e esgoto, mobilidade e conectividade: oferta, preço e acesso, a partir do ONS, da ANEEL, da ANP, do IBGE e do SINISA. Cada número traz o período e o universo da sua fonte.",
     escala: escalaEnergia(),
     artefato: <CadeiasInfra cadeias={cadeias()} />,
     metodo: <MetodoEnergia />,

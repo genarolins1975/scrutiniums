@@ -249,6 +249,12 @@ export function indiceBusca(destinos: readonly DestinoNavegacao[], verbetes: rea
   for (const p of PERGUNTAS_PRIORITARIAS) itens.push({ tipo: "Pergunta", titulo: p.pergunta, detalhe: p.link.rotulo, href: p.link.href });
   // i18n: dado
   for (const p of PERGUNTAS_COTIDIANAS) itens.push({ tipo: "Pergunta", titulo: p.pergunta, detalhe: p.destinos.map((x) => x.rotulo).join(" · "), href: p.destinos[0].href });
+  // a coleção Combustíveis, do mesmo Observatório de Energia e Infraestrutura, responde à pergunta de quem procura gasolina,
+  // etanol ou diesel aqui. Só em português: o painel não tem versão inglesa (fora do escopo de tradução da 1.0)
+  if (idiomaEnergia() === "pt") {
+    // i18n: dado
+    itens.push({ tipo: "Pergunta", titulo: "Quanto custa encher o tanque no meu estado?", detalhe: "Combustíveis nos postos", href: "/combustiveis", sinonimos: ["gasolina", "etanol", "diesel", "combustível", "posto de gasolina", "álcool", "preço da gasolina", "preço do etanol", "preço do diesel"] });
+  }
   for (const d of destinos) {
     const c = CARTOES[d.slug];
     // módulo em integração não promete painel na busca: só a página entra

@@ -23,6 +23,7 @@ import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { CAPITULOS as CAPITULOS_SANEAMENTO, FERRAMENTAS as FERRAMENTAS_SANEAMENTO } from "@/lib/saneamento/capitulos";
 import { PAGINAS_GAS } from "@/lib/gas/navegacao";
+import { PAGINAS_COMBUSTIVEIS, ROTA_COMBUSTIVEIS } from "@/lib/combustiveis/paginas";
 import { CAPITULOS as CAPITULOS_CONTAS } from "@/lib/contas-publicas/catalogo";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from "@/lib/agro/modelo";
@@ -154,6 +155,10 @@ function paineisColecoesInteiras(): Painel[] {
       { rota: "/gas-natural", titulo: "Gás Natural" },
       ...PAGINAS_GAS.map((p) => ({ rota: p.href, titulo: p.rotulo })),
     ]),
+    // coleção própria com a gold do pipeline do Gás (a mesma planilha da ANP do botijão e do GNV): origem gas. A consulta
+    // por estado (/combustiveis/no-meu-estado) herda o dono do painel e só entra nas listas com a aprovação da LEVA_2
+    ...inteira("gas", "energia-e-infraestrutura", "combustiveis",
+      PAGINAS_COMBUSTIVEIS.filter((p) => p.href === ROTA_COMBUSTIVEIS).map((p) => ({ rota: p.href, titulo: "Combustíveis nos postos" }))),
     ...inteira("saneamento", "energia-e-infraestrutura", "saneamento", [
       { rota: "/saneamento", titulo: "Saneamento" },
       ...CAPITULOS_SANEAMENTO.map((c) => ({ rota: `/saneamento/${c.slug}`, titulo: c.rotulo })),
