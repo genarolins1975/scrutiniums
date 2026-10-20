@@ -136,6 +136,22 @@ class TestGold(unittest.TestCase):
         br = [l for l in linhas[1:] if l[0] == "homicidio" and l[4] == "Brasil"]
         k = len(self.g["anos"]) - 1
         self.assertEqual(br[k][cab.index("contagem")], str(self.g["series"]["homicidio"][F.BRASIL]["n"][k]))
+        # cada valor diz a própria unidade: taxa por 100 mil, reais por residente ou percentual
+        self.assertNotIn("taxa_por_100_mil", cab)
+        unidade = {l[0]: l[cab.index("unidade_do_valor")] for l in linhas[1:]}
+        self.assertEqual(unidade["homicidio"], "vítimas por 100 mil residentes")
+        self.assertEqual(unidade["despesa_habitante"], "reais correntes por residente")
+        self.assertTrue(unidade["despesa_participacao"].startswith("%"))
+        self.assertTrue(unidade["indeterminadas_pct"].startswith("%"))
+
+    def test_hash_muda_quando_o_sim_promove_um_ano_a_final(self):
+        s2 = copy.deepcopy(self.s)
+        sim = s2["sim"]
+        preliminares = [a for a, st in sim["situacao"].items() if st == "preliminar"]
+        self.assertTrue(preliminares)
+        sim["situacao"][preliminares[0]] = "final"
+        sim["notas"]["final_ate"] = int(preliminares[0])
+        self.assertNotEqual(gold.construir(s2)["hash_dados"], self.g["hash_dados"])
 
     def test_hash_ignora_a_data_de_captura(self):
         s2 = copy.deepcopy(self.s)

@@ -87,8 +87,8 @@ export function PorEstado({ pacote: p, inicial }: { pacote: PacoteEstados; inici
 
   function baixar() {
     const cel = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-    const cab = ["uf", "nome", "ano", "indicador", "contagem", "unidade", "denominador", "taxa", "taxa_brasil", "diferenca_para_brasil", "posicao", "situacao", "motivo", "fonte"];
-    const corpo = ordenadas.map((l) => [l.sigla, l.nome, ano, i.titulo, l.n, i.fonte === "siconfi" ? "reais correntes" : i.unidade, temTaxa ? pop(l.sigla) : "", l.taxa === null ? "" : String(l.taxa).replace(".", ","), br.taxa?.[k] === null || !br.taxa ? "" : String(br.taxa[k]).replace(".", ","), l.diferenca === null ? "" : String(l.diferenca).replace(".", ","), l.posicao ?? "", ROTULO_SITUACAO[l.situacao], l.motivo ?? "", p.rotuloFonte[i.fonte]]);
+    const cab = ["uf", "nome", "ano", "indicador", "contagem", "unidade", "denominador", "taxa", "unidade_da_taxa", "taxa_brasil", "diferenca_para_brasil", "posicao", "situacao", "motivo", "fonte"];
+    const corpo = ordenadas.map((l) => [l.sigla, l.nome, ano, i.titulo, l.n, i.fonte === "siconfi" ? "reais correntes" : i.unidade, temTaxa ? pop(l.sigla) : "", l.taxa === null ? "" : String(l.taxa).replace(".", ","), temTaxa && i.denominador ? `${i.unidade} ${porDenominador(i.denominador, i.escala)}` : i.unidade, br.taxa?.[k] === null || !br.taxa ? "" : String(br.taxa[k]).replace(".", ","), l.diferenca === null ? "" : String(l.diferenca).replace(".", ","), l.posicao ?? "", ROTULO_SITUACAO[l.situacao], l.motivo ?? "", p.rotuloFonte[i.fonte]]);
     const texto = "﻿" + [cab, ...corpo].map((r) => r.map(cel).join(";")).join("\r\n");
     const url = URL.createObjectURL(new Blob([texto], { type: "text/csv;charset=utf-8" }));
     const a = document.createElement("a");

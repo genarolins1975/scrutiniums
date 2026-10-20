@@ -266,7 +266,9 @@ def construir(seeds: dict) -> dict:
                 if s[uf]["situacao"][k] in ("sem_registro", "incompleto"):
                     ausencias.append({"indicador": i["id"], "uf": uf, "ano": a, "situacao": s[uf]["situacao"][k]})
 
-    dados = {"anos": anos, "populacao": populacao, "series": series, "policia_saude": comp}
+    # a situação do SIM (final ou preliminar) entra no sinal: a promoção de um ano sem revisão numérica também publica
+    dados = {"anos": anos, "populacao": populacao, "series": series, "policia_saude": comp,
+             "sim_situacao": sim["situacao"], "sim_final_ate": sim["notas"]["final_ate"]}
     hash_dados = hashlib.sha256(json.dumps(dados, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
     ultimo_vde = int(max(vde["arquivos"], key=int))
@@ -310,13 +312,21 @@ def construir(seeds: dict) -> dict:
     }
 
 
+def unidade_do_valor(ind: dict) -> str:
+    """Unidade da coluna valor do CSV: taxa por 100 mil, reais por habitante ou a própria unidade percentual."""
+    mulheres = ind["denominador"] == "mulheres"
+    if ind.get("escala") == 1:
+        return f"{ind['unidade']} por {'residente do sexo feminino' if mulheres else 'residente'}"
+    return f"{ind['unidade']} por 100 mil {'residentes do sexo feminino' if mulheres else 'residentes'}"
+
+
 def csv_taxas(g: dict) -> str:
     """Uma linha por indicador, território e ano, com contagem, denominador, taxa, situação e referência."""
     buf = io.StringIO()
     w = csv.writer(buf, delimiter=";", lineterminator="\r\n")
     w.writerow(["indicador", "titulo", "fonte", "base_territorial", "territorio", "ano", "contagem", "unidade",
-                "denominador", "populacao_denominador", "taxa_por_100_mil", "situacao", "motivo",
-                "taxa_brasil", "diferenca_para_brasil", "posicao_entre_ufs", "ufs_comparadas"])
+                "denominador", "populacao_denominador", "valor", "unidade_do_valor", "situacao", "motivo",
+                "valor_brasil", "diferenca_para_brasil", "posicao_entre_ufs", "ufs_comparadas"])
     nomes = {u["sigla"]: u["nome"] for u in g["ufs"]}
     nomes[F.BRASIL] = "Brasil"
     for ind in g["indicadores"]:
@@ -331,7 +341,7 @@ def csv_taxas(g: dict) -> str:
                     sit = "ok" if taxa is not None else "sem_registro"
                     den = "óbitos por causas externas" if "externas" in x else "despesa liquidada total do estado"
                     w.writerow([ind["id"], ind["titulo"], ind["fonte"], ind["base"], nomes[terr], a, "" if n is None else n, ind["unidade"],
-                                den, "" if pop is None else pop, "" if taxa is None else str(taxa).replace(".", ","), sit, "", "", "", "", ""])
+                                den, "" if pop is None else pop, "" if taxa is None else str(taxa).replace(".", ","), ind["unidade"], sit, "", "", "", "", ""])
                     continue
                 den = ind["denominador"]
                 pop = g["populacao"][terr]["mulheres" if den == "mulheres" else "total"][k] if den else ""
@@ -339,9 +349,9 @@ def csv_taxas(g: dict) -> str:
                 ref = s[F.BRASIL]["taxa"][k] if den else None
                 w.writerow([
                     ind["id"], ind["titulo"], ind["fonte"], ind["base"], nomes[terr], a,
-                    "" if x["n"][k] is None else x["n"][k], ind["unidade"],
+                    "" if x["n"][k] is None else str(x["n"][k]).replace(".", ","), ind["unidade"],
                     {"populacao": "residentes", "mulheres": "residentes do sexo feminino"}.get(den, ""), pop,
-                    "" if taxa is None else str(taxa).replace(".", ","),
+                    "" if taxa is None else str(taxa).replace(".", ","), unidade_do_valor(ind),
                     x["situacao"][k], (x.get("motivo") or [None] * len(g["anos"]))[k] or "",
                     "" if ref is None or terr == F.BRASIL else str(ref).replace(".", ","),
                     "" if terr == F.BRASIL or not x.get("diferenca") or x["diferenca"][k] is None else str(x["diferenca"][k]).replace(".", ","),
