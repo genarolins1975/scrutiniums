@@ -455,8 +455,10 @@ function SecaoEvolucao({ g }: { g: GoldConectividade }) {
   const m = pontosAnuais(g.brasil.movel.acessos_mensal);
   const anosF = f.map((p) => Number(p.mes.slice(0, 4)));
   const anosM = m.map((p) => Number(p.mes.slice(0, 4)));
-  const serieF: Serie = { nome: "Banda larga fixa", classe: "cn-linha", pontos: f.map((p) => ({ x: anoDecimal(p.mes), y: p.acessos / 1e6 })), rotuloFim: `${num(f[f.length - 1].acessos / 1e6, 1)} mi` };
-  const serieM: Serie = { nome: "Linhas móveis", classe: "cn-linha", pontos: m.map((p) => ({ x: anoDecimal(p.mes), y: p.acessos / 1e6 })), rotuloFim: `${num(m[m.length - 1].acessos / 1e6, 1)} mi` };
+  // mês que a Anatel entregou vazio parte a linha (ausência nunca vira zero)
+  const mi = (v: number | null) => (v === null ? null : v / 1e6);
+  const serieF: Serie = { nome: "Banda larga fixa", classe: "cn-linha", pontos: f.map((p) => ({ x: anoDecimal(p.mes), y: mi(p.acessos) })), rotuloFim: `${num(mi(f[f.length - 1].acessos), 1)} mi` };
+  const serieM: Serie = { nome: "Linhas móveis", classe: "cn-linha", pontos: m.map((p) => ({ x: anoDecimal(p.mes), y: mi(p.acessos) })), rotuloFim: `${num(mi(m[m.length - 1].acessos), 1)} mi` };
   return (
     <section className="cn-secao" id="evolucao" aria-labelledby="evolucao-titulo">
       <h2 id="evolucao-titulo">Como a internet cresceu no Brasil?</h2>
@@ -471,7 +473,7 @@ function SecaoEvolucao({ g }: { g: GoldConectividade }) {
             marcasX={marcasAnos([...new Set(anosF)])}
             unidade="milhões de acessos"
             altura={220}
-            descricao={`Acessos de banda larga fixa no Brasil, de ${num(f[0].acessos / 1e6, 1)} milhões em ${mesExtenso(f[0].mes)} a ${num(f[f.length - 1].acessos / 1e6, 1)} milhões em ${mesExtenso(f[f.length - 1].mes)}.`}
+            descricao={`Acessos de banda larga fixa no Brasil, de ${num(mi(f[0].acessos), 1)} milhões em ${mesExtenso(f[0].mes)} a ${num(mi(f[f.length - 1].acessos), 1)} milhões em ${mesExtenso(f[f.length - 1].mes)}.`}
           />
           <figcaption>Banda larga fixa: acessos em serviço, dezembro de cada ano e {mesExtenso(f[f.length - 1].mes)}. Anatel, série de totais.</figcaption>
         </figure>
@@ -481,7 +483,7 @@ function SecaoEvolucao({ g }: { g: GoldConectividade }) {
             marcasX={marcasAnos([...new Set(anosM)])}
             unidade="milhões de linhas"
             altura={220}
-            descricao={`Linhas de telefonia móvel no Brasil, de ${num(m[0].acessos / 1e6, 1)} milhões em ${mesExtenso(m[0].mes)} a ${num(m[m.length - 1].acessos / 1e6, 1)} milhões em ${mesExtenso(m[m.length - 1].mes)}.`}
+            descricao={`Linhas de telefonia móvel no Brasil, de ${num(mi(m[0].acessos), 1)} milhões em ${mesExtenso(m[0].mes)} a ${num(mi(m[m.length - 1].acessos), 1)} milhões em ${mesExtenso(m[m.length - 1].mes)}.`}
           />
           <figcaption>Telefonia móvel: linhas em operação sem M2M e pontos de serviço, dezembro de cada ano e {mesExtenso(m[m.length - 1].mes)}. Anatel, série de totais.</figcaption>
         </figure>

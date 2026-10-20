@@ -169,10 +169,14 @@ def _fontes(fixa: dict, movel: dict, cobertura: dict) -> dict:
     return out
 
 
+# proveniência volátil: muda quando a Anatel reempacota ou toca o zip sem alterar nenhum número
+VOLATEIS = ("capturado_em", "sha256", "gerado_por", "hash_dados", "zip_modificado_em", "zip_bytes", "modificado_no_zip", "bytes", "crc32")
+
+
 def _sem_captura(obj):
-    """Cópia sem os carimbos de captura e sem sha256: o hash da gold só muda quando um número muda."""
+    """Cópia sem os carimbos de captura e sem a proveniência do zip: o hash da gold só muda quando um número muda."""
     if isinstance(obj, dict):
-        return {k: _sem_captura(v) for k, v in obj.items() if k not in ("capturado_em", "sha256", "gerado_por", "hash_dados")}
+        return {k: _sem_captura(v) for k, v in obj.items() if k not in VOLATEIS}
     if isinstance(obj, list):
         return [_sem_captura(x) for x in obj]
     return obj

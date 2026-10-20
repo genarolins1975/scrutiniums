@@ -134,12 +134,12 @@ export type GoldConectividade = {
   fontes: { fixa: Fonte; movel: Fonte; cobertura: Fonte };
   brasil: {
     fixa: Fixa & {
-      acessos_mensal: { meses: string[]; acessos: number[] };
+      acessos_mensal: { meses: string[]; acessos: (number | null)[] };
       produto: Record<string, number>;
       grupos: { grupo: string; acessos: number; pct: number | null }[];
     };
     movel: Movel & {
-      acessos_mensal: { meses: string[]; acessos: number[] };
+      acessos_mensal: { meses: string[]; acessos: (number | null)[] };
       grupos: { grupo: string; acessos: number; pct: number | null }[];
     };
     cobertura: {

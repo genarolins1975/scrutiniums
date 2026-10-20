@@ -111,8 +111,8 @@ export function serieCobertura(g: GoldConectividade, tec: "todas" | "g4" | "g5")
 }
 
 /** Dezembro de cada ano e o último mês da série mensal de acessos (para o gráfico anual, sem interpolar). */
-export function pontosAnuais(serie: { meses: string[]; acessos: number[] }): { mes: string; acessos: number }[] {
-  const out: { mes: string; acessos: number }[] = [];
+export function pontosAnuais(serie: { meses: string[]; acessos: (number | null)[] }): { mes: string; acessos: number | null }[] {
+  const out: { mes: string; acessos: number | null }[] = [];
   serie.meses.forEach((m, i) => {
     if (m.endsWith("-12") || i === serie.meses.length - 1) out.push({ mes: m, acessos: serie.acessos[i] });
   });

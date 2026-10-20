@@ -40,9 +40,11 @@ def numero(v) -> float | None:
     return float(s.replace(".", "").replace(",", ".")) if "," in s else float(s)
 
 
-def inteiro(v) -> int:
+def inteiro(v) -> int | None:
+    """Inteiro do CSV; célula vazia é ausência (None), nunca zero. Quem agrega decide: acessos vazios retêm a fonte,
+    série mensal fica com o mês vazio, população vazia fica sem o número."""
     s = str(v or "").strip()
-    return int(s) if s else 0
+    return int(s) if s else None
 
 
 def mes_iso(ano, mes) -> str:
@@ -286,6 +288,8 @@ def _agregar_fixa(linhas, membro: str) -> tuple[str, dict, dict]:
             continue
         a = inteiro(x["Acessos"])
         cod = x["Código IBGE Município"]
+        if a is None:
+            raise ValueError(f"{membro}: linha de {m} sem o número de acessos (município {cod}); a fonte fica retida")
         d = mun.get(cod)
         if d is None:
             d = mun[cod] = {"nome": x["Município"], "uf": x["UF"], "acessos": 0, "meio": Counter(), "vel": Counter(),
@@ -389,6 +393,8 @@ def _agregar_movel(linhas, membro: str) -> tuple[str, dict, dict]:
             continue
         a = inteiro(x["Acessos"])
         cod = x["Código IBGE Município"]
+        if a is None:
+            raise ValueError(f"{membro}: linha de {m} sem o número de acessos (município {cod}); a fonte fica retida")
         d = mun.get(cod)
         if d is None:
             d = mun[cod] = {"nome": x["Município"], "uf": x["UF"], "acessos": 0, "ger": Counter(), "pre": 0, "pos": 0, "pf": 0, "m2m": 0, "ps": 0, "grupo": Counter()}

@@ -3,7 +3,7 @@ import { PainelConectividade } from "@/components/conectividade/PainelConectivid
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { consultarMunicipio, goldConectividade } from "@/lib/conectividade/dados";
-import { mesExtenso } from "@/lib/conectividade/formato";
+import { mesAcessos, mesExtenso } from "@/lib/conectividade/formato";
 import { PERGUNTA_PAINEL, ROTA_CONECTIVIDADE, SECAO_PAINEL } from "@/lib/conectividade/paginas";
 
 /**
@@ -17,7 +17,7 @@ export function generateMetadata(): Metadata {
   const g = goldConectividade();
   return {
     title: `${PERGUNTA_PAINEL} · Conectividade · Energia e Infraestrutura`,
-    description: `Banda larga fixa, linhas móveis e cobertura 4G e 5G em cada município e estado, com acessos de ${mesExtenso(g.referencia.fixa)} e cobertura de ${mesExtenso(g.referencia.cobertura)}, pelos dados abertos da Anatel.`,
+    description: `Banda larga fixa, linhas móveis e cobertura 4G e 5G em cada município e estado, com ${mesAcessos(g.referencia)} e cobertura de ${mesExtenso(g.referencia.cobertura)}, pelos dados abertos da Anatel.`,
     alternates: { canonical: ROTA_CONECTIVIDADE },
   };
 }

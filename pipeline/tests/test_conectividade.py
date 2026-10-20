@@ -293,6 +293,20 @@ class TestValidacoesRetem(unittest.TestCase):
         anterior = self._fixa(referencia="2026-09")
         self.assertTrue(any("voltou" in p for p in V.validar_fixa(self.fixa, anterior)))
 
+    def test_acessos_vazio_retem_e_mes_vazio_da_serie_fica_vazio(self):
+        self.assertIsNone(coleta.inteiro(""))
+        self.assertIsNone(coleta.inteiro(None))
+        self.assertEqual(coleta.inteiro("12"), 12)
+        z = zipfile.ZipFile(zip_fixa())
+        membros = {n: z.read(n).decode("utf-8-sig") for n in z.namelist()}
+        membros["Acessos_Banda_Larga_Fixa_2026.csv"] = membros["Acessos_Banda_Larga_Fixa_2026.csv"].replace("Pessoa Jurídica;INTERNET;30", "Pessoa Jurídica;INTERNET;")
+        with self.assertRaises(ValueError):
+            coleta.coletar_fixa("memoria://fixa.zip", _zip(membros))
+        membros = {n: z.read(n).decode("utf-8-sig") for n in z.namelist()}
+        membros["Acessos_Banda_Larga_Fixa_Total.csv"] = membros["Acessos_Banda_Larga_Fixa_Total.csv"].replace("2026;7;999", "2026;7;")
+        s = coleta.coletar_fixa("memoria://fixa.zip", _zip(membros))
+        self.assertEqual(s["total_mensal"]["acessos"][s["total_mensal"]["meses"].index("2026-07")], None)
+
     def test_velocidade_ausente_nao_vira_faixa_e_retem(self):
         s = coleta.coletar_fixa("memoria://fixa.zip", zip_fixa_sem_velocidade())
         i = {c: k for k, c in enumerate(F.CAMPOS_FIXA)}
@@ -442,6 +456,21 @@ class TestGoldSintetica(unittest.TestCase):
         self.assertEqual(camp["ausencias"], ["cobertura"])
         self.assertEqual(g["destaques"]["sem_dado"]["cobertura"], ["3509502"])
         self.assertIsNone(camp["posicao"]["cobertura_g5_moradores"]["uf"])
+
+    def test_hash_independe_da_proveniencia_do_zip(self):
+        # a Anatel reempacota o zip sem mudar número: tamanho, data e crc mudam, o hash dos dados não
+        seeds = copy.deepcopy(self.seeds)
+        arq = seeds["fixa"]["arquivo"]
+        arq["zip_bytes"] += 7
+        arq["zip_modificado_em"] = "2030-01-01T00:00:00Z"
+        for m in arq["membros"].values():
+            m["modificado_no_zip"] = "2030-01-01T00:00:00"
+            m["bytes"] += 1
+            m["crc32"] = "deadbeef"
+            m["sha256"] = "0" * 64
+        g2, _ = gold.construir(seeds)
+        self.assertEqual(g2["hash_dados"], self.g["hash_dados"])
+        self.assertNotEqual(g2["fontes"]["fixa"]["zip_bytes"], self.g["fontes"]["fixa"]["zip_bytes"])
 
     def test_hash_independe_da_captura_e_gold_reprovada_nao_sai(self):
         seeds = copy.deepcopy(self.seeds)
