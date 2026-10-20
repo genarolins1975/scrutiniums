@@ -5,6 +5,8 @@ import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { Numero } from "@/components/energia/Numero";
 import { RedeBalanco } from "@/components/energia/RedeBalanco";
+import { RedeContaRegiao } from "@/components/energia/RedeContaRegiao";
+import { ParaLer } from "@/components/energia/Didatica";
 import { RedeAviso, RedeCapitulos, RedeDatas, RedeDicionarios, RedeIndisponivel, RedeNavegacao, RedeRegras, RedeSeguir } from "@/components/energia/RedePagina";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -85,6 +87,8 @@ export default function RedeBalancoPage() {
   const horasDa = (id: string) => b.identidades.find((x) => x.id === id)?.horas ?? null;
   const horasSin = horasDa("balanco.SIN");
   const horasSul = horasDa("perimetro.S");
+  const idSin = b.identidades.find((x) => x.id === "balanco.SIN") ?? null;
+  const anosResiduoSin = idSin ? Object.keys(idSin.horas_residuo_por_ano ?? {}).sort() : [];
   const ultimaHoraExterior = (["ARGENTINA", "URUGUAI", "PARAGUAI"] as const)
     .map((p) => g.exterior.por_pais[p]?.ultima_hora)
     .filter((h): h is string => !!h)
@@ -137,10 +141,17 @@ export default function RedeBalancoPage() {
           siglas={["MWmed", "SIN", "ONS", "CCEE", "MMGD"]}
           rotulo={tx("Rede · Balanço e exterior", "Grid · Balance and exterior")}
           titulo={perguntaPainel("p029")}
-          lead={tx(
-            "Em cada região, geração menos carga deve igualar o intercâmbio, e o intercâmbio, os fluxos das fronteiras e do exterior. Resíduo é a diferença que sobra quando a conta não fecha.",
-            "In each region, generation minus load should equal the interchange, and the interchange should equal the flows of the boundaries and the exterior. A residual is the difference left over when the account does not close.",
-          )}
+          lead={
+            idSin && horasSin
+              ? tx(
+                  `Quase sempre. No SIN, geração menos carga bateu com o intercâmbio em ${num(horasSin - idSin.horas_residuo, 0)} de ${num(horasSin, 0)} horas conferidas, de ${periodoTexto}${anosResiduoSin.length ? `; as ${num(idSin.horas_residuo, 0)} horas que não fecham estão em ${anosResiduoSin.join(", ")}` : ""}, e a fonte não informa o motivo. Resíduo é a diferença que sobra quando a conta não fecha.`,
+                  `Almost always. In the SIN, generation minus load matched the interchange in ${num(horasSin - idSin.horas_residuo, 0)} of ${num(horasSin, 0)} hours checked, from ${periodoTexto}${anosResiduoSin.length ? `; the ${num(idSin.horas_residuo, 0)} hours that do not close are in ${anosResiduoSin.join(", ")}` : ""}, and the source does not state why. A residual is the difference left over when the account does not close.`,
+                )
+              : tx(
+                  "Em cada região, geração menos carga deve igualar o intercâmbio, e o intercâmbio, os fluxos das fronteiras e do exterior. Resíduo é a diferença que sobra quando a conta não fecha.",
+                  "In each region, generation minus load should equal the interchange, and the interchange should equal the flows of the boundaries and the exterior. A residual is the difference left over when the account does not close.",
+                )
+          }
           recorte={tx(`${periodoTexto}, hora a hora · SIN e subsistemas · horas e MWh`, `${periodoTexto}, hour by hour · SIN and subsystems · hours and MWh`)}
           fonte={tx("ONS, Balanço de Energia nos Subsistemas, intercâmbios e Itaipu", "ONS, Energy Balance in the Subsystems, interchanges and Itaipu")}
           referencia={tx(
@@ -233,6 +244,53 @@ export default function RedeBalancoPage() {
           )}
         </CabecalhoModulo>
         <RedeNavegacao atual="p029" />
+        <ParaLer
+          id="para-ler-balanco"
+          itens={[
+            {
+              termo: tx("Balanço de energia", "Energy balance"),
+              definicao: tx(
+                "A conta que o ONS publica para cada região, hora a hora: quanto as usinas geraram, quanto foi consumido (a carga) e quanto entrou ou saiu pelas linhas (o intercâmbio).",
+                "The account ONS publishes for each region, hour by hour: how much the plants generated, how much was consumed (the load) and how much came in or went out over the lines (the interchange).",
+              ),
+            },
+            {
+              termo: tx("Conta 1: balanço interno", "Account 1: internal balance"),
+              definicao: tx(
+                "Geração menos carga menos intercâmbio, no mesmo arquivo do ONS. Se a região gerou mais do que consumiu, a sobra tem de ter saído pelas linhas.",
+                "Generation minus load minus interchange, in the same ONS file. If the region generated more than it consumed, the surplus must have left over the lines.",
+              ),
+            },
+            {
+              termo: tx("Conta 2: perímetro", "Account 2: perimeter"),
+              definicao: tx(
+                "O intercâmbio do balanço contra o que o ONS publica, em outro arquivo, para cada fronteira e para os países vizinhos. É conferir a mesma energia por dois caminhos.",
+                "The balance interchange against what ONS publishes, in another file, for each boundary and for the neighboring countries. It checks the same energy along two paths.",
+              ),
+            },
+            {
+              termo: tx("Resíduo e tolerância", "Residual and tolerance"),
+              definicao: tx(
+                `Resíduo é o que sobra quando uma conta não fecha. Numa hora, a página só conta resíduo acima de ${num(b.tolerancia_mwmed, 1)} MWmed, porque os arquivos arredondam cada parcela; abaixo disso, a conta fecha.`,
+                `A residual is what is left when an account does not close. In an hour, the page only counts a residual above ${num(b.tolerancia_mwmed, 1)} MWavg, because the files round each part; below that, the account closes.`,
+              ),
+            },
+            {
+              termo: tx("Exterior", "Exterior"),
+              definicao: tx(
+                "A energia trocada com Argentina, Uruguai e Paraguai. Positivo é exportação. Hora sem dado publicado fica como ausência, nunca como zero.",
+                "The energy exchanged with Argentina, Uruguay and Paraguay. Positive is export. An hour without published data stays as missing, never as zero.",
+              ),
+            },
+            {
+              termo: tx("MWmed numa hora e MWh", "MWavg in an hour and MWh"),
+              definicao: tx(
+                "Cada valor horário vem em MWmed; durante uma hora, 1 MWmed entrega 1 MWh. As somas do mês, no gráfico de resíduo e no exemplo abaixo, estão em MWh.",
+                "Each hourly value comes in MWavg; over one hour, 1 MWavg delivers 1 MWh. The month's sums, in the residual chart and in the example below, are in MWh.",
+              ),
+            },
+          ]}
+        />
         <ModoProfundidade>
           <Bloco id="balanco">
             <PainelEvidencia
@@ -269,7 +327,12 @@ export default function RedeBalancoPage() {
                   fonte={FONTE}
                   versao={versao}
                   notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
-                  aposPrincipal={<RedeCapitulos atual="p029" />}
+                  aposPrincipal={
+                    <>
+                      <RedeContaRegiao b={b} />
+                      <RedeCapitulos atual="p029" />
+                    </>
+                  }
                 />
 
                 <SecaoDoPainel id="a05" nivel="analisar" titulo={tx("O balanço dos intercâmbios, identidade por identidade", "The interchange balance, identity by identity")}>
