@@ -36,6 +36,8 @@
   "/contas-publicas/dados",
   "/contas-publicas/glossario",
   "/contas-publicas/metodologia",
+  "/custo-de-vida",
+  "/custo-de-vida/na-minha-cidade",
   "/dados",
   "/dados/[slug]",
   "/dados/api",

@@ -343,6 +343,12 @@ describe("busca da página inicial", () => {
     }
   });
 
+  it("quem procura inflação ou IPCA acha o painel Inflação por cidade, do Observatório das Famílias", () => {
+    for (const q of ["inflação", "ipca", "custo de vida"]) {
+      expect(buscar(indice, q).itens.map((i) => i.href), q).toContain("/custo-de-vida");
+    }
+  });
+
   it("as seis perguntas prioritárias e as nove do dia a dia entram no índice como perguntas", () => {
     const perguntas = indice.filter((i) => i.tipo === "Pergunta").map((i) => i.titulo);
     for (const p of PERGUNTAS_PRIORITARIAS) expect(perguntas, p.id).toContain(p.pergunta);

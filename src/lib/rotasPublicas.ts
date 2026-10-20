@@ -100,7 +100,13 @@ const ARQUIVOS_DAS_CONSULTAS = new Set([
  * seguem fechados. `arquivos` são os que a consulta busca no navegador, um a
  * um; o que a página lê no servidor não precisa abrir.
  */
-export type IdLeva2 = "quanto-meu-banco-cobra" | "teve-fogo-perto-de-mim" | "cem-reais-dos-impostos" | "metodologia-do-credito" | "quanto-custa-encher-o-tanque";
+export type IdLeva2 =
+  | "quanto-meu-banco-cobra"
+  | "teve-fogo-perto-de-mim"
+  | "cem-reais-dos-impostos"
+  | "metodologia-do-credito"
+  | "quanto-custa-encher-o-tanque"
+  | "quanto-subiu-o-custo-de-vida";
 
 export type ItemLeva2 = {
   id: IdLeva2;
@@ -187,6 +193,20 @@ export const LEVA_2: readonly ItemLeva2[] = Object.freeze([
     arquivos: [],
     // aprovada pelo dono em 20/10/2026, junto com o merge do painel Combustíveis nos postos
     aprovadaEm: "2026-10-20",
+  },
+  {
+    // consulta do painel novo Inflação por cidade (Observatório das Famílias, 20/10/2026): só o último mês da área escolhida,
+    // 12 meses do índice geral e dos nove grupos comparados com o Brasil, montado no servidor a partir de
+    // public/inflacao/gold/ipca.json; nenhum arquivo é buscado no navegador. A série desde 2020, a comparação entre as 16
+    // áreas, os produtos e serviços que mais subiram, o artefato dos pesos, os downloads e o painel /custo-de-vida seguem com conta
+    id: "quanto-subiu-o-custo-de-vida",
+    pergunta: "Quanto subiu o custo de vida na minha cidade?",
+    resumo: "A inflação em 12 meses da sua cidade ou região metropolitana no último mês do IPCA, no índice geral e nos nove grupos de despesa, comparada com a do Brasil.",
+    forma: "consulta",
+    portas: ["familias"],
+    rotas: ["/custo-de-vida/na-minha-cidade"],
+    arquivos: [],
+    aprovadaEm: null,
   },
 ] satisfies ItemLeva2[]);
 

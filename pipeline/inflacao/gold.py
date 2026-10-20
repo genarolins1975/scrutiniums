@@ -37,8 +37,20 @@ def data_br_iso(d: str | None) -> str | None:
 
 
 def nome_limpo(nome: str) -> str:
-    """'1101002.Arroz' vira 'Arroz'; '1.Alimentação e bebidas' vira 'Alimentação e bebidas'."""
-    return nome.split(".", 1)[1].strip() if "." in nome and nome.split(".", 1)[0].isdigit() else nome.strip()
+    """'1101002.Arroz' vira 'Arroz'; '1.Alimentação e bebidas' vira 'Alimentação e bebidas'.
+
+    O hífen que o IBGE usa como separador de variedade ('Feijão - preto', 'Peixe - tilápia') vira vírgula
+    ('Feijão, preto'): a plataforma não usa hífen como pontuação. O código do SIDRA continua ao lado nos arquivos.
+    """
+    n = nome.split(".", 1)[1].strip() if "." in nome and nome.split(".", 1)[0].isdigit() else nome.strip()
+    return n.replace(" - ", ", ")
+
+
+def nome_tabela(nome: str | None) -> str | None:
+    if not nome or " - " not in nome:
+        return nome
+    antes, depois = nome.split(" - ", 1)
+    return f"{antes}: {depois[:1].lower()}{depois[1:]}"
 
 
 def r(x, casas):
@@ -139,7 +151,8 @@ def construir(seed: dict, publicada: dict | None = None) -> dict:
             "orgao": "IBGE",
             "pesquisa": "Índice Nacional de Preços ao Consumidor Amplo (IPCA)",
             "tabela": F.TABELA,
-            "nome_tabela": seed.get("nome_tabela"),
+            # 'IPCA - Variação mensal, ...' vira 'IPCA: variação mensal, ...' (sem hífen como pontuação)
+            "nome_tabela": nome_tabela(seed.get("nome_tabela")),
             "url_tabela": F.URL_TABELA,
             "url_metodo": F.URL_METODO,
             "divulgado_em": divulgado,

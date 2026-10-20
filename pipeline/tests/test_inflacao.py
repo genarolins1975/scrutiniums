@@ -198,6 +198,14 @@ class TestGold(unittest.TestCase):
         ids = {x["id"] for x in self.g["subitens"]["1501"]}
         self.assertFalse(ids & set(fora))
 
+    def test_nomes_sem_hifen_como_pontuacao(self):
+        self.assertEqual(gold.nome_limpo("1106008.Banana - prata"), "Banana, prata")
+        self.assertEqual(gold.nome_limpo("1101002.Arroz"), "Arroz")
+        self.assertNotIn(" - ", self.g["fonte"]["nome_tabela"])
+        for a in F.IDS_AREAS:
+            for x in self.g["subitens"][a]:
+                self.assertNotIn(" - ", x["nome"])
+
     def test_grupos_com_os_principais_itens_da_fonte(self):
         self.assertEqual([g["nome"] for g in self.g["grupos"]], [g[2] for g in F.GRUPOS])
         for g in self.g["grupos"]:

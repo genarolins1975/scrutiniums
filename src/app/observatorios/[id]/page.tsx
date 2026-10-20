@@ -49,7 +49,7 @@ export function generateMetadata({ params }: { params: { id: string } }): Metada
 /** Conteúdo próprio de cada entrada: descrição, escala, modelo didático e método. */
 const CONTEUDO: Partial<Record<ObservatorioId, () => { descricao: string; escala: ReturnType<typeof escalaFamilias>; artefato: React.ReactNode; metodo: React.ReactNode }>> = {
   familias: () => ({
-    descricao: "Renda, gastos essenciais, dívidas e proteção social das famílias brasileiras, reunidos a partir das coleções de Crédito, Eficiência Estatal, Agronegócio, Gás Natural, Setor Elétrico e Saneamento. Cada número vem da fonte oficial do seu tema, com o próprio período.",
+    descricao: "Renda, custo de vida, gastos essenciais, dívidas e proteção social das famílias brasileiras, reunidos a partir das coleções de Crédito, Eficiência Estatal, Agronegócio, Gás Natural, Setor Elétrico e Saneamento e do painel próprio de inflação por cidade. Cada número vem da fonte oficial do seu tema, com o próprio período.",
     escala: escalaFamilias(),
     artefato: <OrcamentoFamilia orcamento={orcamentoFamilia()} />,
     metodo: <MetodoFamilias />,

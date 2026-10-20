@@ -107,7 +107,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1;Brasil;2026-09;7769;Creche;Educação;7,54;0,1993;0,2065;0,015
 1;Brasil;2026-09;47668;Plano de telefonia fixa;Comunicação;0,00;0,2130;0,2054;0,000
 1;Brasil;2026-09;7629;Táxi;Transportes;3,83;0,2049;0,2046;0,008
-1;Brasil;2026-09;7260;Banana - prata;Alimentação e bebidas;-5,74;0,2134;0,2018;-0,012
+1;Brasil;2026-09;7260;Banana, prata;Alimentação e bebidas;-5,74;0,2134;0,2018;-0,012
 1;Brasil;2026-09;7710;Papel higiênico;Saúde e cuidados pessoais;4,96;0,2011;0,2010;0,010
 1;Brasil;2026-09;12411;Pneu;Transportes;-4,86;0,2175;0,2008;-0,011
 1;Brasil;2026-09;47651;Hormonal;Saúde e cuidados pessoais;3,20;0,2013;0,2007;0,006
@@ -140,7 +140,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1;Brasil;2026-09;7378;Bolo;Alimentação e bebidas;1,88;0,1485;0,1463;0,003
 1;Brasil;2026-09;7644;Óleo lubrificante;Transportes;13,65;0,1315;0,1415;0,018
 1;Brasil;2026-09;12402;Utensílios de metal;Artigos de residência;1,08;0,1448;0,1413;0,002
-1;Brasil;2026-09;12222;Feijão - carioca (rajado);Alimentação e bebidas;39,11;0,0984;0,1375;0,038
+1;Brasil;2026-09;12222;Feijão, carioca (rajado);Alimentação e bebidas;39,11;0,0984;0,1375;0,038
 1;Brasil;2026-09;7187;Macarrão;Alimentação e bebidas;-0,09;0,1428;0,1374;-0,000
 1;Brasil;2026-09;47652;Neurológico;Saúde e cuidados pessoais;3,25;0,1357;0,1346;0,004
 1;Brasil;2026-09;12409;Conjunto infantil;Vestuário;-0,50;0,1367;0,1313;-0,001
@@ -158,7 +158,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1;Brasil;2026-09;7632;Ônibus interestadual;Transportes;6,75;0,1129;0,1178;0,008
 1;Brasil;2026-09;47655;Sobrancelha;Despesas pessoais;6,47;0,1109;0,1131;0,007
 1;Brasil;2026-09;7195;Farinha de mandioca;Alimentação e bebidas;2,39;0,1118;0,1109;0,003
-1;Brasil;2026-09;7258;Banana - d'água;Alimentação e bebidas;-3,05;0,1143;0,1103;-0,003
+1;Brasil;2026-09;7258;Banana, d'água;Alimentação e bebidas;-3,05;0,1143;0,1103;-0,003
 1;Brasil;2026-09;7708;Absorvente higiênico;Saúde e cuidados pessoais;4,17;0,1089;0,1101;0,005
 1;Brasil;2026-09;7377;Pão de forma;Alimentação e bebidas;1,50;0,1132;0,1101;0,002
 1;Brasil;2026-09;7691;Exame de laboratório;Saúde e cuidados pessoais;5,06;0,1071;0,1083;0,005
@@ -168,7 +168,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1;Brasil;2026-09;12395;Margarina;Alimentação e bebidas;5,47;0,1025;0,1043;0,006
 1;Brasil;2026-09;7418;Alho;Alimentação e bebidas;-6,07;0,1158;0,1033;-0,007
 1;Brasil;2026-09;7221;Açúcar cristal;Alimentação e bebidas;-13,42;0,1183;0,0975;-0,016
-1;Brasil;2026-09;7279;Laranja - pera;Alimentação e bebidas;-12,04;0,1117;0,0953;-0,013
+1;Brasil;2026-09;7279;Laranja, pera;Alimentação e bebidas;-12,04;0,1117;0,0953;-0,013
 1;Brasil;2026-09;12434;Ar-condicionado;Artigos de residência;-2,50;0,1032;0,0952;-0,003
 1;Brasil;2026-09;7220;Açúcar refinado;Alimentação e bebidas;-15,49;0,1149;0,0926;-0,018
 1;Brasil;2026-09;7376;Pão doce;Alimentação e bebidas;4,32;0,0898;0,0907;0,004
@@ -223,11 +223,11 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1;Brasil;2026-09;7191;Farinha de trigo;Alimentação e bebidas;-5,25;0,0504;0,0464;-0,003
 1;Brasil;2026-09;47630;Suco em pó;Alimentação e bebidas;0,33;0,0460;0,0448;0,000
 1;Brasil;2026-09;7341;Mortadela;Alimentação e bebidas;0,47;0,0451;0,0436;0,000
-1;Brasil;2026-09;7176;Feijão - preto;Alimentação e bebidas;25,68;0,0362;0,0433;0,009
+1;Brasil;2026-09;7176;Feijão, preto;Alimentação e bebidas;25,68;0,0362;0,0433;0,009
 1;Brasil;2026-09;12403;Utensílios de vidro e louça;Artigos de residência;-1,83;0,0442;0,0423;-0,001
 1;Brasil;2026-09;7270;Melancia;Alimentação e bebidas;6,46;0,0371;0,0416;0,002
 1;Brasil;2026-09;47621;Picanha;Alimentação e bebidas;10,74;0,0387;0,0415;0,004
-1;Brasil;2026-09;12302;Peixe - tilápia;Alimentação e bebidas;4,15;0,0410;0,0414;0,002
+1;Brasil;2026-09;12302;Peixe, tilápia;Alimentação e bebidas;4,15;0,0410;0,0414;0,002
 1;Brasil;2026-09;7622;Tecido;Vestuário;0,05;0,0424;0,0412;0,000
 1;Brasil;2026-09;107640;Material hidráulico;Habitação;9,95;0,0386;0,0411;0,004
 1;Brasil;2026-09;7497;Tapete;Artigos de residência;-4,95;0,0437;0,0404;-0,002
@@ -264,7 +264,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1;Brasil;2026-09;7563;Agasalho masculino;Vestuário;-0,60;0,0227;0,0225;-0,000
 1;Brasil;2026-09;7311;Camarão;Alimentação e bebidas;2,62;0,0223;0,0223;0,001
 1;Brasil;2026-09;12401;Móvel infantil;Artigos de residência;-1,96;0,0230;0,0219;-0,000
-1;Brasil;2026-09;7320;Peixe - pescada;Alimentação e bebidas;6,09;0,0216;0,0219;0,001
+1;Brasil;2026-09;7320;Peixe, pescada;Alimentação e bebidas;6,09;0,0216;0,0219;0,001
 1;Brasil;2026-09;7358;Leite condensado;Alimentação e bebidas;-0,80;0,0228;0,0218;-0,000
 1;Brasil;2026-09;7256;Abacaxi;Alimentação e bebidas;-0,73;0,0220;0,0216;-0,000
 1;Brasil;2026-09;107656;Aluguel de veículo;Transportes;1,16;0,0224;0,0211;0,000
@@ -273,8 +273,8 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1;Brasil;2026-09;12414;Aparelho ortodôntico;Saúde e cuidados pessoais;7,77;0,0186;0,0193;0,001
 1;Brasil;2026-09;7617;Bijuteria;Vestuário;4,58;0,0190;0,0191;0,001
 1;Brasil;2026-09;7255;Banana-da-terra;Alimentação e bebidas;3,92;0,0187;0,0190;0,001
-1;Brasil;2026-09;41129;Peixe - tambaqui;Alimentação e bebidas;-2,71;0,0199;0,0188;-0,001
-1;Brasil;2026-09;7306;Peixe - corvina;Alimentação e bebidas;-0,70;0,0188;0,0184;-0,000
+1;Brasil;2026-09;41129;Peixe, tambaqui;Alimentação e bebidas;-2,71;0,0199;0,0188;-0,001
+1;Brasil;2026-09;7306;Peixe, corvina;Alimentação e bebidas;-0,70;0,0188;0,0184;-0,000
 1;Brasil;2026-09;7406;Palmito em conserva;Alimentação e bebidas;0,70;0,0190;0,0183;0,000
 1;Brasil;2026-09;7245;Couve;Alimentação e bebidas;8,53;0,0170;0,0182;0,001
 1;Brasil;2026-09;7653;Pintura de veículo;Transportes;7,04;0,0164;0,0171;0,001
@@ -282,20 +282,20 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1;Brasil;2026-09;12224;Balas;Alimentação e bebidas;3,94;0,0165;0,0168;0,001
 1;Brasil;2026-09;7424;Vinagre;Alimentação e bebidas;8,34;0,0163;0,0168;0,001
 1;Brasil;2026-09;7301;Peito;Alimentação e bebidas;15,89;0,0146;0,0163;0,002
-1;Brasil;2026-09;47617;Feijão - macáçar (fradinho);Alimentação e bebidas;-0,38;0,0170;0,0162;-0,000
+1;Brasil;2026-09;47617;Feijão, macáçar (fradinho);Alimentação e bebidas;-0,38;0,0170;0,0162;-0,000
 1;Brasil;2026-09;7735;Instrumento musical;Despesas pessoais;-0,43;0,0166;0,0162;-0,000
 1;Brasil;2026-09;12405;Conserto de refrigerador;Artigos de residência;5,36;0,0161;0,0161;0,001
 1;Brasil;2026-09;7530;Ventilador;Artigos de residência;-4,50;0,0174;0,0161;-0,001
 1;Brasil;2026-09;7280;Morango;Alimentação e bebidas;24,55;0,0120;0,0153;0,003
 1;Brasil;2026-09;47639;Utensílios para bebê;Artigos de residência;1,80;0,0148;0,0145;0,000
 1;Brasil;2026-09;7493;Colchão;Artigos de residência;9,17;0,0137;0,0143;0,001
-1;Brasil;2026-09;12431;Peixe - salmão;Alimentação e bebidas;8,45;0,0134;0,0142;0,001
+1;Brasil;2026-09;12431;Peixe, salmão;Alimentação e bebidas;8,45;0,0134;0,0142;0,001
 1;Brasil;2026-09;107642;Areia;Habitação;6,25;0,0136;0,0140;0,001
 1;Brasil;2026-09;47628;Polpa de fruta (congelada);Alimentação e bebidas;0,81;0,0145;0,0139;0,000
 1;Brasil;2026-09;7715;Costureira;Despesas pessoais;2,92;0,0138;0,0138;0,000
-1;Brasil;2026-09;7175;Feijão - mulatinho;Alimentação e bebidas;8,48;0,0130;0,0136;0,001
+1;Brasil;2026-09;7175;Feijão, mulatinho;Alimentação e bebidas;8,48;0,0130;0,0136;0,001
 1;Brasil;2026-09;7368;Leite fermentado;Alimentação e bebidas;9,43;0,0119;0,0125;0,001
-1;Brasil;2026-09;107616;Peixe - merluza;Alimentação e bebidas;-3,79;0,0136;0,0125;-0,001
+1;Brasil;2026-09;107616;Peixe, merluza;Alimentação e bebidas;-3,79;0,0136;0,0125;-0,001
 1;Brasil;2026-09;47618;Milho (em grão);Alimentação e bebidas;-0,57;0,0132;0,0124;-0,000
 1;Brasil;2026-09;47634;Madeira e taco;Habitação;4,91;0,0122;0,0122;0,001
 1;Brasil;2026-09;7456;Material de eletricidade;Habitação;3,46;0,0120;0,0120;0,000
@@ -327,23 +327,23 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1;Brasil;2026-09;7508;Flores naturais;Artigos de residência;-4,66;0,0064;0,0062;-0,000
 1;Brasil;2026-09;7481;Carvão vegetal;Habitação;9,77;0,0058;0,0061;0,001
 1;Brasil;2026-09;47635;Sabão líquido;Habitação;3,97;0,0060;0,0059;0,000
-1;Brasil;2026-09;7259;Banana - maçã;Alimentação e bebidas;-7,03;0,0064;0,0058;-0,000
-1;Brasil;2026-09;107615;Peixe - cação;Alimentação e bebidas;1,11;0,0057;0,0056;0,000
-1;Brasil;2026-09;7263;Laranja - lima;Alimentação e bebidas;-19,03;0,0070;0,0054;-0,001
-1;Brasil;2026-09;7333;Peixe - dourada;Alimentação e bebidas;-0,79;0,0048;0,0050;-0,000
+1;Brasil;2026-09;7259;Banana, maçã;Alimentação e bebidas;-7,03;0,0064;0,0058;-0,000
+1;Brasil;2026-09;107615;Peixe, cação;Alimentação e bebidas;1,11;0,0057;0,0056;0,000
+1;Brasil;2026-09;7263;Laranja, lima;Alimentação e bebidas;-19,03;0,0070;0,0054;-0,001
+1;Brasil;2026-09;7333;Peixe, dourada;Alimentação e bebidas;-0,79;0,0048;0,0050;-0,000
 1;Brasil;2026-09;7520;Roupa de banho;Artigos de residência;4,63;0,0049;0,0049;0,000
 1;Brasil;2026-09;7444;Doces;Alimentação e bebidas;6,89;0,0047;0,0048;0,000
 1;Brasil;2026-09;7281;Goiaba;Alimentação e bebidas;11,53;0,0048;0,0048;0,001
-1;Brasil;2026-09;7310;Peixe - sardinha;Alimentação e bebidas;8,64;0,0043;0,0047;0,000
+1;Brasil;2026-09;7310;Peixe, sardinha;Alimentação e bebidas;8,64;0,0043;0,0047;0,000
 1;Brasil;2026-09;12406;Conserto de máquina de lavar roupa;Artigos de residência;-0,02;0,0048;0,0046;-0,000
 1;Brasil;2026-09;7407;Pepino em conserva;Alimentação e bebidas;4,91;0,0044;0,0045;0,000
 1;Brasil;2026-09;7323;Caranguejo;Alimentação e bebidas;1,53;0,0044;0,0044;0,000
 1;Brasil;2026-09;7477;Papel toalha;Habitação;-0,76;0,0045;0,0043;-0,000
 1;Brasil;2026-09;12397;Sal;Alimentação e bebidas;9,22;0,0041;0,0043;0,000
-1;Brasil;2026-09;47623;Peixe - filhote;Alimentação e bebidas;12,53;0,0037;0,0042;0,000
+1;Brasil;2026-09;47623;Peixe, filhote;Alimentação e bebidas;12,53;0,0037;0,0042;0,000
 1;Brasil;2026-09;7471;Esponja de limpeza;Habitação;3,01;0,0041;0,0041;0,000
 1;Brasil;2026-09;7463;Saco para lixo;Habitação;10,72;0,0038;0,0041;0,000
-1;Brasil;2026-09;7262;Laranja - baía;Alimentação e bebidas;-9,90;0,0043;0,0038;-0,000
+1;Brasil;2026-09;7262;Laranja, baía;Alimentação e bebidas;-9,90;0,0043;0,0038;-0,000
 1;Brasil;2026-09;7703;Produto para unha;Saúde e cuidados pessoais;8,45;0,0035;0,0037;0,000
 1;Brasil;2026-09;7209;Pepino;Alimentação e bebidas;19,38;0,0033;0,0036;0,001
 1;Brasil;2026-09;7246;Couve-flor;Alimentação e bebidas;18,11;0,0029;0,0030;0,001
@@ -357,25 +357,25 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1;Brasil;2026-09;107648;Conserto de televisor;Artigos de residência;11,48;0,0017;0,0019;0,000
 1;Brasil;2026-09;7411;Sopa desidratada;Alimentação e bebidas;2,32;0,0019;0,0019;0,000
 1;Brasil;2026-09;7453;Mudança;Habitação;11,89;0,0017;0,0018;0,000
-1;Brasil;2026-09;7309;Peixe - tainha;Alimentação e bebidas;-9,95;0,0019;0,0017;-0,000
+1;Brasil;2026-09;7309;Peixe, tainha;Alimentação e bebidas;-9,95;0,0019;0,0017;-0,000
 1;Brasil;2026-09;107682;Curso de informática;Educação;-4,32;0,0014;0,0013;-0,000
 1;Brasil;2026-09;107625;Salsicha em conserva;Alimentação e bebidas;-1,49;0,0014;0,0013;-0,000
 1;Brasil;2026-09;7233;Doce de frutas em pasta;Alimentação e bebidas;1,07;0,0012;0,0011;0,000
-1;Brasil;2026-09;7317;Peixe - serra;Alimentação e bebidas;7,65;0,0009;0,0009;0,000
+1;Brasil;2026-09;7317;Peixe, serra;Alimentação e bebidas;7,65;0,0009;0,0009;0,000
 1;Brasil;2026-09;7257;Abacate;Alimentação e bebidas;-23,44;0,0010;0,0008;-0,000
 1;Brasil;2026-09;7421;Caldo de tucupi;Alimentação e bebidas;-2,89;0,0008;0,0008;-0,000
-1;Brasil;2026-09;12300;Peixe - castanha;Alimentação e bebidas;-3,29;0,0009;0,0008;-0,000
-1;Brasil;2026-09;7313;Peixe - cavala;Alimentação e bebidas;9,09;0,0007;0,0008;0,000
+1;Brasil;2026-09;12300;Peixe, castanha;Alimentação e bebidas;-3,29;0,0009;0,0008;-0,000
+1;Brasil;2026-09;7313;Peixe, cavala;Alimentação e bebidas;9,09;0,0007;0,0008;0,000
 1;Brasil;2026-09;7420;Colorau;Alimentação e bebidas;8,26;0,0007;0,0007;0,000
-1;Brasil;2026-09;101466;Peixe - curimatã;Alimentação e bebidas;0,72;0,0007;0,0007;0,000
-1;Brasil;2026-09;8874;Peixe - peroá;Alimentação e bebidas;-2,47;0,0007;0,0007;-0,000
-1;Brasil;2026-09;12301;Peixe - palombeta;Alimentação e bebidas;10,66;0,0006;0,0006;0,000
+1;Brasil;2026-09;101466;Peixe, curimatã;Alimentação e bebidas;0,72;0,0007;0,0007;0,000
+1;Brasil;2026-09;8874;Peixe, peroá;Alimentação e bebidas;-2,47;0,0007;0,0007;-0,000
+1;Brasil;2026-09;12301;Peixe, palombeta;Alimentação e bebidas;10,66;0,0006;0,0006;0,000
 1;Brasil;2026-09;47620;Açúcar demerara;Alimentação e bebidas;-12,07;0,0006;0,0005;-0,000
-1;Brasil;2026-09;7305;Peixe - anchova;Alimentação e bebidas;15,51;0,0005;0,0005;0,000
-1;Brasil;2026-09;47624;Peixe - aruanã;Alimentação e bebidas;3,63;0,0005;0,0005;0,000
+1;Brasil;2026-09;7305;Peixe, anchova;Alimentação e bebidas;15,51;0,0005;0,0005;0,000
+1;Brasil;2026-09;47624;Peixe, aruanã;Alimentação e bebidas;3,63;0,0005;0,0005;0,000
 1;Brasil;2026-09;12435;Fisioterapeuta;Saúde e cuidados pessoais;6,41;0,0004;0,0004;0,000
 1;Brasil;2026-09;107643;Pedras;Habitação;-1,07;0,0004;0,0004;-0,000
-1;Brasil;2026-09;31694;Peixe - pintado;Alimentação e bebidas;-0,62;0,0004;0,0004;-0,000
+1;Brasil;2026-09;31694;Peixe, pintado;Alimentação e bebidas;-0,62;0,0004;0,0004;-0,000
 1501;Região metropolitana de Belém;2026-09;7485;Energia elétrica residencial;Habitação;-3,10;6,9902;6,1212;-0,217
 1501;Região metropolitana de Belém;2026-09;7657;Gasolina;Transportes;5,81;5,6098;5,7116;0,326
 1501;Região metropolitana de Belém;2026-09;7642;Emplacamento e licença;Transportes;4,95;3,7476;3,7873;0,186
@@ -458,7 +458,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1501;Região metropolitana de Belém;2026-09;7440;Cerveja;Alimentação e bebidas;4,32;0,3125;0,3178;0,014
 1501;Região metropolitana de Belém;2026-09;7671;Vitamina e fortificante;Saúde e cuidados pessoais;-0,93;0,3205;0,3140;-0,003
 1501;Região metropolitana de Belém;2026-09;101448;Capa de filé;Alimentação e bebidas;24,45;0,2555;0,3095;0,062
-1501;Região metropolitana de Belém;2026-09;7260;Banana - prata;Alimentação e bebidas;-0,30;0,3152;0,3064;-0,001
+1501;Região metropolitana de Belém;2026-09;7260;Banana, prata;Alimentação e bebidas;-0,30;0,3152;0,3064;-0,001
 1501;Região metropolitana de Belém;2026-09;7523;Refrigerador;Artigos de residência;-13,79;0,3509;0,3002;-0,048
 1501;Região metropolitana de Belém;2026-09;7614;Tênis;Vestuário;5,68;0,2868;0,2950;0,016
 1501;Região metropolitana de Belém;2026-09;47663;Pré-escola;Educação;9,18;0,2771;0,2927;0,025
@@ -467,7 +467,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1501;Região metropolitana de Belém;2026-09;12420;Fralda descartável;Saúde e cuidados pessoais;4,08;0,2647;0,2708;0,011
 1501;Região metropolitana de Belém;2026-09;7301;Peito;Alimentação e bebidas;17,16;0,2314;0,2590;0,040
 1501;Região metropolitana de Belém;2026-09;7686;Dentista;Saúde e cuidados pessoais;0,97;0,2640;0,2586;0,003
-1501;Região metropolitana de Belém;2026-09;7320;Peixe - pescada;Alimentação e bebidas;5,66;0,2593;0,2578;0,015
+1501;Região metropolitana de Belém;2026-09;7320;Peixe, pescada;Alimentação e bebidas;5,66;0,2593;0,2578;0,015
 1501;Região metropolitana de Belém;2026-09;12411;Pneu;Transportes;-5,76;0,2656;0,2560;-0,015
 1501;Região metropolitana de Belém;2026-09;7663;Anti-infeccioso e antibiótico;Saúde e cuidados pessoais;7,77;0,2413;0,2513;0,019
 1501;Região metropolitana de Belém;2026-09;7526;Máquina de lavar roupa;Artigos de residência;1,08;0,2475;0,2390;0,003
@@ -482,7 +482,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1501;Região metropolitana de Belém;2026-09;7249;Cheiro-verde;Alimentação e bebidas;17,78;0,1961;0,2134;0,035
 1501;Região metropolitana de Belém;2026-09;7659;Óleo diesel;Transportes;16,72;0,1893;0,2089;0,032
 1501;Região metropolitana de Belém;2026-09;107619;Queijo;Alimentação e bebidas;3,06;0,2064;0,2069;0,006
-1501;Região metropolitana de Belém;2026-09;12222;Feijão - carioca (rajado);Alimentação e bebidas;56,09;0,1267;0,2028;0,071
+1501;Região metropolitana de Belém;2026-09;12222;Feijão, carioca (rajado);Alimentação e bebidas;56,09;0,1267;0,2028;0,071
 1501;Região metropolitana de Belém;2026-09;47645;Bermuda/short feminino;Vestuário;-6,23;0,2255;0,2014;-0,014
 1501;Região metropolitana de Belém;2026-09;107659;Oftalmológico;Saúde e cuidados pessoais;5,08;0,2000;0,1986;0,010
 1501;Região metropolitana de Belém;2026-09;7738;Brinquedo;Despesas pessoais;6,35;0,1875;0,1977;0,012
@@ -519,7 +519,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1501;Região metropolitana de Belém;2026-09;7378;Bolo;Alimentação e bebidas;1,90;0,1481;0,1470;0,003
 1501;Região metropolitana de Belém;2026-09;7367;Manteiga;Alimentação e bebidas;-0,86;0,1528;0,1462;-0,001
 1501;Região metropolitana de Belém;2026-09;7386;Azeite de oliva;Alimentação e bebidas;-17,33;0,1804;0,1461;-0,031
-1501;Região metropolitana de Belém;2026-09;41129;Peixe - tambaqui;Alimentação e bebidas;0,57;0,1486;0,1448;0,001
+1501;Região metropolitana de Belém;2026-09;41129;Peixe, tambaqui;Alimentação e bebidas;0,57;0,1486;0,1448;0,001
 1501;Região metropolitana de Belém;2026-09;12395;Margarina;Alimentação e bebidas;2,42;0,1434;0,1415;0,003
 1501;Região metropolitana de Belém;2026-09;47659;Hospedagem;Despesas pessoais;-7,01;0,1598;0,1414;-0,011
 1501;Região metropolitana de Belém;2026-09;7187;Macarrão;Alimentação e bebidas;0,86;0,1479;0,1414;0,001
@@ -535,7 +535,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1501;Região metropolitana de Belém;2026-09;107674;Pós-graduação;Educação;3,15;0,1314;0,1311;0,004
 1501;Região metropolitana de Belém;2026-09;12399;Telha;Habitação;-1,60;0,1383;0,1303;-0,002
 1501;Região metropolitana de Belém;2026-09;7518;Roupa de cama;Artigos de residência;-4,95;0,1398;0,1290;-0,007
-1501;Região metropolitana de Belém;2026-09;7333;Peixe - dourada;Alimentação e bebidas;-0,79;0,1211;0,1278;-0,001
+1501;Região metropolitana de Belém;2026-09;7333;Peixe, dourada;Alimentação e bebidas;-0,79;0,1211;0,1278;-0,001
 1501;Região metropolitana de Belém;2026-09;12416;Exame de imagem;Saúde e cuidados pessoais;1,64;0,1298;0,1273;0,002
 1501;Região metropolitana de Belém;2026-09;7643;Seguro voluntário de veículo;Transportes;-14,89;0,1535;0,1253;-0,023
 1501;Região metropolitana de Belém;2026-09;7216;Cenoura;Alimentação e bebidas;34,13;0,0873;0,1252;0,030
@@ -543,7 +543,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1501;Região metropolitana de Belém;2026-09;7665;Anti-inflamatório e antirreumático;Saúde e cuidados pessoais;6,23;0,1168;0,1227;0,007
 1501;Região metropolitana de Belém;2026-09;107609;Chocolate em barra e bombom;Alimentação e bebidas;13,42;0,1116;0,1226;0,015
 1501;Região metropolitana de Belém;2026-09;47651;Hormonal;Saúde e cuidados pessoais;0,20;0,1255;0,1222;0,000
-1501;Região metropolitana de Belém;2026-09;7279;Laranja - pera;Alimentação e bebidas;-23,58;0,1643;0,1210;-0,039
+1501;Região metropolitana de Belém;2026-09;7279;Laranja, pera;Alimentação e bebidas;-23,58;0,1643;0,1210;-0,039
 1501;Região metropolitana de Belém;2026-09;107633;Refrigerante e água mineral;Alimentação e bebidas;3,79;0,1202;0,1201;0,005
 1501;Região metropolitana de Belém;2026-09;7669;Antialérgico e broncodilatador;Saúde e cuidados pessoais;1,89;0,1210;0,1196;0,002
 1501;Região metropolitana de Belém;2026-09;7215;Cebola;Alimentação e bebidas;64,55;0,0810;0,1191;0,052
@@ -562,7 +562,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1501;Região metropolitana de Belém;2026-09;7467;Desinfetante;Habitação;3,72;0,0922;0,0930;0,003
 1501;Região metropolitana de Belém;2026-09;107653;Multa;Transportes;0,00;0,0957;0,0926;0,000
 1501;Região metropolitana de Belém;2026-09;7622;Tecido;Vestuário;3,60;0,0921;0,0923;0,003
-1501;Região metropolitana de Belém;2026-09;47623;Peixe - filhote;Alimentação e bebidas;13,50;0,0803;0,0913;0,011
+1501;Região metropolitana de Belém;2026-09;47623;Peixe, filhote;Alimentação e bebidas;13,50;0,0803;0,0913;0,011
 1501;Região metropolitana de Belém;2026-09;7530;Ventilador;Artigos de residência;-3,73;0,0985;0,0911;-0,004
 1501;Região metropolitana de Belém;2026-09;7270;Melancia;Alimentação e bebidas;3,82;0,0870;0,0906;0,003
 1501;Região metropolitana de Belém;2026-09;7470;Sabão em barra;Habitação;1,57;0,0894;0,0872;0,001
@@ -581,7 +581,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1501;Região metropolitana de Belém;2026-09;47668;Plano de telefonia fixa;Comunicação;0,00;0,0736;0,0712;0,000
 1501;Região metropolitana de Belém;2026-09;7464;Água sanitária;Habitação;7,15;0,0697;0,0708;0,005
 1501;Região metropolitana de Belém;2026-09;47665;Curso técnico;Educação;0,16;0,0726;0,0703;0,000
-1501;Região metropolitana de Belém;2026-09;7176;Feijão - preto;Alimentação e bebidas;21,41;0,0570;0,0689;0,012
+1501;Região metropolitana de Belém;2026-09;7176;Feijão, preto;Alimentação e bebidas;21,41;0,0570;0,0689;0,012
 1501;Região metropolitana de Belém;2026-09;47628;Polpa de fruta (congelada);Alimentação e bebidas;-6,71;0,0757;0,0689;-0,005
 1501;Região metropolitana de Belém;2026-09;12403;Utensílios de vidro e louça;Artigos de residência;8,77;0,0669;0,0688;0,006
 1501;Região metropolitana de Belém;2026-09;7778;Jornal diário;Educação;3,00;0,0681;0,0674;0,002
@@ -666,7 +666,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2301;Região metropolitana de Fortaleza;2026-09;7709;Sabonete;Saúde e cuidados pessoais;7,11;0,4081;0,4168;0,029
 2301;Região metropolitana de Fortaleza;2026-09;107619;Queijo;Alimentação e bebidas;3,69;0,4277;0,4156;0,016
 2301;Região metropolitana de Fortaleza;2026-09;7302;Costela;Alimentação e bebidas;13,05;0,3686;0,4032;0,048
-2301;Região metropolitana de Fortaleza;2026-09;47617;Feijão - macáçar (fradinho);Alimentação e bebidas;-2,51;0,4239;0,3943;-0,011
+2301;Região metropolitana de Fortaleza;2026-09;47617;Feijão, macáçar (fradinho);Alimentação e bebidas;-2,51;0,4239;0,3943;-0,011
 2301;Região metropolitana de Fortaleza;2026-09;101644;Produto para pele;Saúde e cuidados pessoais;4,33;0,3951;0,3934;0,017
 2301;Região metropolitana de Fortaleza;2026-09;7643;Seguro voluntário de veículo;Transportes;-1,01;0,4188;0,3900;-0,004
 2301;Região metropolitana de Fortaleza;2026-09;7489;Móvel para sala;Artigos de residência;3,28;0,3923;0,3873;0,013
@@ -674,7 +674,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2301;Região metropolitana de Fortaleza;2026-09;7542;Televisor;Artigos de residência;3,17;0,3822;0,3659;0,012
 2301;Região metropolitana de Fortaleza;2026-09;7294;Alcatra;Alimentação e bebidas;14,21;0,3292;0,3609;0,047
 2301;Região metropolitana de Fortaleza;2026-09;7295;Patinho;Alimentação e bebidas;9,96;0,3248;0,3556;0,032
-2301;Região metropolitana de Fortaleza;2026-09;7260;Banana - prata;Alimentação e bebidas;5,07;0,3278;0,3377;0,017
+2301;Região metropolitana de Fortaleza;2026-09;7260;Banana, prata;Alimentação e bebidas;5,07;0,3278;0,3377;0,017
 2301;Região metropolitana de Fortaleza;2026-09;107661;Produto para higiene bucal;Saúde e cuidados pessoais;9,25;0,3263;0,3375;0,030
 2301;Região metropolitana de Fortaleza;2026-09;47670;Tv por assinatura;Comunicação;7,72;0,3364;0,3359;0,026
 2301;Região metropolitana de Fortaleza;2026-09;107674;Pós-graduação;Educação;0,76;0,3467;0,3343;0,003
@@ -708,7 +708,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2301;Região metropolitana de Fortaleza;2026-09;7221;Açúcar cristal;Alimentação e bebidas;-11,28;0,2739;0,2263;-0,031
 2301;Região metropolitana de Fortaleza;2026-09;7187;Macarrão;Alimentação e bebidas;-0,44;0,2403;0,2213;-0,001
 2301;Região metropolitana de Fortaleza;2026-09;12416;Exame de imagem;Saúde e cuidados pessoais;5,11;0,2208;0,2207;0,011
-2301;Região metropolitana de Fortaleza;2026-09;12302;Peixe - tilápia;Alimentação e bebidas;4,50;0,2097;0,2168;0,009
+2301;Região metropolitana de Fortaleza;2026-09;12302;Peixe, tilápia;Alimentação e bebidas;4,50;0,2097;0,2168;0,009
 2301;Região metropolitana de Fortaleza;2026-09;12428;Atividades físicas;Educação;5,29;0,2108;0,2123;0,011
 2301;Região metropolitana de Fortaleza;2026-09;7492;Móvel para copa e cozinha;Artigos de residência;2,59;0,2167;0,2090;0,006
 2301;Região metropolitana de Fortaleza;2026-09;47645;Bermuda/short feminino;Vestuário;3,65;0,2018;0,2059;0,007
@@ -808,23 +808,23 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2301;Região metropolitana de Fortaleza;2026-09;7498;Cortina;Artigos de residência;1,20;0,0615;0,0581;0,001
 2301;Região metropolitana de Fortaleza;2026-09;107624;Sardinha em conserva;Alimentação e bebidas;4,26;0,0581;0,0577;0,002
 2301;Região metropolitana de Fortaleza;2026-09;7341;Mortadela;Alimentação e bebidas;0,19;0,0592;0,0568;0,000
-2301;Região metropolitana de Fortaleza;2026-09;7279;Laranja - pera;Alimentação e bebidas;-6,06;0,0652;0,0558;-0,004
+2301;Região metropolitana de Fortaleza;2026-09;7279;Laranja, pera;Alimentação e bebidas;-6,06;0,0652;0,0558;-0,004
 2301;Região metropolitana de Fortaleza;2026-09;7520;Roupa de banho;Artigos de residência;5,78;0,0545;0,0549;0,003
 2301;Região metropolitana de Fortaleza;2026-09;12403;Utensílios de vidro e louça;Artigos de residência;4,20;0,0449;0,0442;0,002
 2301;Região metropolitana de Fortaleza;2026-09;7242;Alface;Alimentação e bebidas;5,29;0,0430;0,0430;0,002
-2301;Região metropolitana de Fortaleza;2026-09;12431;Peixe - salmão;Alimentação e bebidas;12,32;0,0380;0,0398;0,005
+2301;Região metropolitana de Fortaleza;2026-09;12431;Peixe, salmão;Alimentação e bebidas;12,32;0,0380;0,0398;0,005
 2301;Região metropolitana de Fortaleza;2026-09;109463;Atomatado;Alimentação e bebidas;-1,75;0,0421;0,0394;-0,001
 2301;Região metropolitana de Fortaleza;2026-09;47638;Artigos de iluminação;Artigos de residência;0,41;0,0399;0,0377;0,000
 2301;Região metropolitana de Fortaleza;2026-09;7425;Caldo concentrado;Alimentação e bebidas;6,96;0,0348;0,0360;0,002
 2301;Região metropolitana de Fortaleza;2026-09;47639;Utensílios para bebê;Artigos de residência;-8,32;0,0406;0,0359;-0,003
 2301;Região metropolitana de Fortaleza;2026-09;7423;Maionese;Alimentação e bebidas;1,79;0,0313;0,0304;0,001
 2301;Região metropolitana de Fortaleza;2026-09;107628;Milho-verde em conserva;Alimentação e bebidas;7,53;0,0295;0,0299;0,002
-2301;Região metropolitana de Fortaleza;2026-09;7317;Peixe - serra;Alimentação e bebidas;7,65;0,0264;0,0279;0,002
+2301;Região metropolitana de Fortaleza;2026-09;7317;Peixe, serra;Alimentação e bebidas;7,65;0,0264;0,0279;0,002
 2301;Região metropolitana de Fortaleza;2026-09;7412;Azeitona;Alimentação e bebidas;1,02;0,0266;0,0256;0,000
-2301;Região metropolitana de Fortaleza;2026-09;7313;Peixe - cavala;Alimentação e bebidas;9,09;0,0224;0,0233;0,002
+2301;Região metropolitana de Fortaleza;2026-09;7313;Peixe, cavala;Alimentação e bebidas;9,09;0,0224;0,0233;0,002
 2301;Região metropolitana de Fortaleza;2026-09;7420;Colorau;Alimentação e bebidas;8,26;0,0226;0,0231;0,002
 2301;Região metropolitana de Fortaleza;2026-09;7311;Camarão;Alimentação e bebidas;2,28;0,0219;0,0207;0,000
-2301;Região metropolitana de Fortaleza;2026-09;12301;Peixe - palombeta;Alimentação e bebidas;10,66;0,0172;0,0179;0,002
+2301;Região metropolitana de Fortaleza;2026-09;12301;Peixe, palombeta;Alimentação e bebidas;10,66;0,0172;0,0179;0,002
 2601;Região metropolitana do Recife;2026-09;7657;Gasolina;Transportes;6,10;5,9569;6,0820;0,363
 2601;Região metropolitana do Recife;2026-09;7696;Plano de saúde;Saúde e cuidados pessoais;5,75;4,3892;4,4396;0,252
 2601;Região metropolitana do Recife;2026-09;7434;Refeição;Alimentação e bebidas;4,03;4,1897;4,1784;0,169
@@ -905,7 +905,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2601;Região metropolitana do Recife;2026-09;12412;Dermatológico;Saúde e cuidados pessoais;6,04;0,2902;0,2947;0,018
 2601;Região metropolitana do Recife;2026-09;7686;Dentista;Saúde e cuidados pessoais;9,40;0,2838;0,2892;0,027
 2601;Região metropolitana do Recife;2026-09;7606;Sapato masculino;Vestuário;8,12;0,2817;0,2858;0,023
-2601;Região metropolitana do Recife;2026-09;7260;Banana - prata;Alimentação e bebidas;5,34;0,2637;0,2803;0,014
+2601;Região metropolitana do Recife;2026-09;7260;Banana, prata;Alimentação e bebidas;5,34;0,2637;0,2803;0,014
 2601;Região metropolitana do Recife;2026-09;7385;Óleo de soja;Alimentação e bebidas;0,83;0,2881;0,2795;0,002
 2601;Região metropolitana do Recife;2026-09;47644;Bermuda/short masculino;Vestuário;4,51;0,2846;0,2778;0,013
 2601;Região metropolitana do Recife;2026-09;47641;Computador pessoal;Artigos de residência;7,95;0,2646;0,2740;0,021
@@ -913,7 +913,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2601;Região metropolitana do Recife;2026-09;12428;Atividades físicas;Educação;3,04;0,2763;0,2717;0,008
 2601;Região metropolitana do Recife;2026-09;47670;Tv por assinatura;Comunicação;7,72;0,2709;0,2715;0,021
 2601;Região metropolitana do Recife;2026-09;7673;Psicotrópico e anorexígeno;Saúde e cuidados pessoais;0,89;0,2739;0,2646;0,002
-2601;Região metropolitana do Recife;2026-09;12222;Feijão - carioca (rajado);Alimentação e bebidas;46,22;0,1736;0,2593;0,080
+2601;Região metropolitana do Recife;2026-09;12222;Feijão, carioca (rajado);Alimentação e bebidas;46,22;0,1736;0,2593;0,080
 2601;Região metropolitana do Recife;2026-09;12420;Fralda descartável;Saúde e cuidados pessoais;0,80;0,2619;0,2580;0,002
 2601;Região metropolitana do Recife;2026-09;7658;Etanol;Transportes;1,35;0,2584;0,2575;0,003
 2601;Região metropolitana do Recife;2026-09;7221;Açúcar cristal;Alimentação e bebidas;-7,48;0,2838;0,2552;-0,021
@@ -979,7 +979,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2601;Região metropolitana do Recife;2026-09;7619;Relógio de pulso;Vestuário;-0,33;0,1327;0,1265;-0,000
 2601;Região metropolitana do Recife;2026-09;109463;Atomatado;Alimentação e bebidas;4,69;0,1266;0,1233;0,006
 2601;Região metropolitana do Recife;2026-09;107624;Sardinha em conserva;Alimentação e bebidas;6,17;0,1179;0,1221;0,007
-2601;Região metropolitana do Recife;2026-09;7175;Feijão - mulatinho;Alimentação e bebidas;-3,24;0,1306;0,1217;-0,004
+2601;Região metropolitana do Recife;2026-09;7175;Feijão, mulatinho;Alimentação e bebidas;-3,24;0,1306;0,1217;-0,004
 2601;Região metropolitana do Recife;2026-09;7691;Exame de laboratório;Saúde e cuidados pessoais;6,40;0,1191;0,1209;0,008
 2601;Região metropolitana do Recife;2026-09;7579;Lingerie;Vestuário;3,37;0,1230;0,1199;0,004
 2601;Região metropolitana do Recife;2026-09;47668;Plano de telefonia fixa;Comunicação;0,00;0,1245;0,1196;0,000
@@ -1010,7 +1010,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2601;Região metropolitana do Recife;2026-09;47667;Livro não didático;Educação;5,05;0,0898;0,0907;0,005
 2601;Região metropolitana do Recife;2026-09;7467;Desinfetante;Habitação;5,69;0,0912;0,0905;0,005
 2601;Região metropolitana do Recife;2026-09;107609;Chocolate em barra e bombom;Alimentação e bebidas;8,04;0,0852;0,0888;0,007
-2601;Região metropolitana do Recife;2026-09;47617;Feijão - macáçar (fradinho);Alimentação e bebidas;8,43;0,0841;0,0876;0,007
+2601;Região metropolitana do Recife;2026-09;47617;Feijão, macáçar (fradinho);Alimentação e bebidas;8,43;0,0841;0,0876;0,007
 2601;Região metropolitana do Recife;2026-09;7692;Hospitalização e cirurgia;Saúde e cuidados pessoais;0,73;0,0879;0,0851;0,001
 2601;Região metropolitana do Recife;2026-09;7443;Outras bebidas alcoólicas;Alimentação e bebidas;3,65;0,0851;0,0847;0,003
 2601;Região metropolitana do Recife;2026-09;12401;Móvel infantil;Artigos de residência;5,61;0,0824;0,0845;0,005
@@ -1026,7 +1026,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2601;Região metropolitana do Recife;2026-09;7341;Mortadela;Alimentação e bebidas;-2,34;0,0840;0,0786;-0,002
 2601;Região metropolitana do Recife;2026-09;12399;Telha;Habitação;4,06;0,0750;0,0784;0,003
 2601;Região metropolitana do Recife;2026-09;7285;Fígado;Alimentação e bebidas;9,16;0,0718;0,0783;0,007
-2601;Região metropolitana do Recife;2026-09;12302;Peixe - tilápia;Alimentação e bebidas;3,54;0,0765;0,0765;0,003
+2601;Região metropolitana do Recife;2026-09;12302;Peixe, tilápia;Alimentação e bebidas;3,54;0,0765;0,0765;0,003
 2601;Região metropolitana do Recife;2026-09;7185;Farinha de arroz;Alimentação e bebidas;7,14;0,0736;0,0752;0,005
 2601;Região metropolitana do Recife;2026-09;7555;Reforma de estofado;Artigos de residência;-4,33;0,0791;0,0747;-0,003
 2601;Região metropolitana do Recife;2026-09;107683;Autoescola;Educação;-2,07;0,0774;0,0737;-0,002
@@ -1040,14 +1040,14 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2601;Região metropolitana do Recife;2026-09;12405;Conserto de refrigerador;Artigos de residência;7,73;0,0622;0,0650;0,005
 2601;Região metropolitana do Recife;2026-09;7783;Caderno;Educação;-3,71;0,0701;0,0635;-0,003
 2601;Região metropolitana do Recife;2026-09;107611;Chocolate e achocolatado em pó;Alimentação e bebidas;0,68;0,0630;0,0628;0,000
-2601;Região metropolitana do Recife;2026-09;7279;Laranja - pera;Alimentação e bebidas;-27,47;0,0905;0,0626;-0,025
+2601;Região metropolitana do Recife;2026-09;7279;Laranja, pera;Alimentação e bebidas;-27,47;0,0905;0,0626;-0,025
 2601;Região metropolitana do Recife;2026-09;7543;Aparelho de som;Artigos de residência;2,00;0,0597;0,0588;0,001
 2601;Região metropolitana do Recife;2026-09;47638;Artigos de iluminação;Artigos de residência;-9,48;0,0655;0,0568;-0,006
 2601;Região metropolitana do Recife;2026-09;7498;Cortina;Artigos de residência;13,06;0,0521;0,0556;0,007
 2601;Região metropolitana do Recife;2026-09;7244;Coentro;Alimentação e bebidas;1,18;0,0542;0,0553;0,001
 2601;Região metropolitana do Recife;2026-09;12403;Utensílios de vidro e louça;Artigos de residência;-6,32;0,0586;0,0535;-0,004
 2601;Região metropolitana do Recife;2026-09;7428;Tempero misto;Alimentação e bebidas;3,09;0,0528;0,0523;0,002
-2601;Região metropolitana do Recife;2026-09;7306;Peixe - corvina;Alimentação e bebidas;-7,67;0,0556;0,0509;-0,004
+2601;Região metropolitana do Recife;2026-09;7306;Peixe, corvina;Alimentação e bebidas;-7,67;0,0556;0,0509;-0,004
 2601;Região metropolitana do Recife;2026-09;47639;Utensílios para bebê;Artigos de residência;4,12;0,0497;0,0496;0,002
 2601;Região metropolitana do Recife;2026-09;7520;Roupa de banho;Artigos de residência;9,54;0,0469;0,0494;0,004
 2601;Região metropolitana do Recife;2026-09;7242;Alface;Alimentação e bebidas;5,37;0,0484;0,0487;0,003
@@ -1057,14 +1057,14 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2601;Região metropolitana do Recife;2026-09;107628;Milho-verde em conserva;Alimentação e bebidas;1,50;0,0368;0,0360;0,001
 2601;Região metropolitana do Recife;2026-09;7220;Açúcar refinado;Alimentação e bebidas;-12,00;0,0412;0,0355;-0,005
 2601;Região metropolitana do Recife;2026-09;7424;Vinagre;Alimentação e bebidas;10,70;0,0324;0,0343;0,003
-2601;Região metropolitana do Recife;2026-09;107616;Peixe - merluza;Alimentação e bebidas;-2,09;0,0302;0,0294;-0,001
+2601;Região metropolitana do Recife;2026-09;107616;Peixe, merluza;Alimentação e bebidas;-2,09;0,0302;0,0294;-0,001
 2601;Região metropolitana do Recife;2026-09;7233;Doce de frutas em pasta;Alimentação e bebidas;1,07;0,0296;0,0285;0,000
 2601;Região metropolitana do Recife;2026-09;7412;Azeitona;Alimentação e bebidas;2,87;0,0281;0,0282;0,001
-2601;Região metropolitana do Recife;2026-09;7310;Peixe - sardinha;Alimentação e bebidas;2,42;0,0236;0,0234;0,001
+2601;Região metropolitana do Recife;2026-09;7310;Peixe, sardinha;Alimentação e bebidas;2,42;0,0236;0,0234;0,001
 2601;Região metropolitana do Recife;2026-09;7249;Cheiro-verde;Alimentação e bebidas;2,63;0,0213;0,0223;0,001
-2601;Região metropolitana do Recife;2026-09;12300;Peixe - castanha;Alimentação e bebidas;-3,29;0,0223;0,0206;-0,001
+2601;Região metropolitana do Recife;2026-09;12300;Peixe, castanha;Alimentação e bebidas;-3,29;0,0223;0,0206;-0,001
 2601;Região metropolitana do Recife;2026-09;107630;Atum em conserva;Alimentação e bebidas;3,37;0,0174;0,0170;0,001
-2601;Região metropolitana do Recife;2026-09;7305;Peixe - anchova;Alimentação e bebidas;15,51;0,0122;0,0132;0,002
+2601;Região metropolitana do Recife;2026-09;7305;Peixe, anchova;Alimentação e bebidas;15,51;0,0122;0,0132;0,002
 2901;Região metropolitana de Salvador;2026-09;7657;Gasolina;Transportes;4,53;4,6450;4,7098;0,210
 2901;Região metropolitana de Salvador;2026-09;7696;Plano de saúde;Saúde e cuidados pessoais;5,76;4,6109;4,6935;0,266
 2901;Região metropolitana de Salvador;2026-09;7485;Energia elétrica residencial;Habitação;0,09;4,2769;3,7937;0,004
@@ -1145,7 +1145,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2901;Região metropolitana de Salvador;2026-09;7396;Cerveja;Alimentação e bebidas;0,94;0,3183;0,3126;0,003
 2901;Região metropolitana de Salvador;2026-09;107661;Produto para higiene bucal;Saúde e cuidados pessoais;6,20;0,3054;0,3116;0,019
 2901;Região metropolitana de Salvador;2026-09;47653;Óculos de grau;Saúde e cuidados pessoais;5,48;0,2945;0,3025;0,016
-2901;Região metropolitana de Salvador;2026-09;7260;Banana - prata;Alimentação e bebidas;-3,25;0,3144;0,2992;-0,010
+2901;Região metropolitana de Salvador;2026-09;7260;Banana, prata;Alimentação e bebidas;-3,25;0,3144;0,2992;-0,010
 2901;Região metropolitana de Salvador;2026-09;7671;Vitamina e fortificante;Saúde e cuidados pessoais;1,30;0,2931;0,2909;0,004
 2901;Região metropolitana de Salvador;2026-09;7645;Acessórios e peças;Transportes;6,82;0,2814;0,2878;0,019
 2901;Região metropolitana de Salvador;2026-09;7489;Móvel para sala;Artigos de residência;0,26;0,3002;0,2870;0,001
@@ -1182,7 +1182,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2901;Região metropolitana de Salvador;2026-09;7606;Sapato masculino;Vestuário;1,87;0,2022;0,1972;0,004
 2901;Região metropolitana de Salvador;2026-09;7632;Ônibus interestadual;Transportes;14,89;0,1802;0,1969;0,027
 2901;Região metropolitana de Salvador;2026-09;7692;Hospitalização e cirurgia;Saúde e cuidados pessoais;4,59;0,1944;0,1963;0,009
-2901;Região metropolitana de Salvador;2026-09;12222;Feijão - carioca (rajado);Alimentação e bebidas;36,06;0,1361;0,1944;0,049
+2901;Região metropolitana de Salvador;2026-09;12222;Feijão, carioca (rajado);Alimentação e bebidas;36,06;0,1361;0,1944;0,049
 2901;Região metropolitana de Salvador;2026-09;7266;Maçã;Alimentação e bebidas;-11,02;0,2230;0,1931;-0,025
 2901;Região metropolitana de Salvador;2026-09;107659;Oftalmológico;Saúde e cuidados pessoais;5,48;0,1865;0,1894;0,010
 2901;Região metropolitana de Salvador;2026-09;107650;Camisa/camiseta infantil;Vestuário;2,02;0,1959;0,1868;0,004
@@ -1219,7 +1219,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2901;Região metropolitana de Salvador;2026-09;7639;Transporte escolar;Transportes;2,43;0,1326;0,1331;0,003
 2901;Região metropolitana de Salvador;2026-09;101448;Capa de filé;Alimentação e bebidas;15,54;0,1179;0,1315;0,018
 2901;Região metropolitana de Salvador;2026-09;7708;Absorvente higiênico;Saúde e cuidados pessoais;0,60;0,1300;0,1280;0,001
-2901;Região metropolitana de Salvador;2026-09;7306;Peixe - corvina;Alimentação e bebidas;-1,29;0,1286;0,1243;-0,002
+2901;Região metropolitana de Salvador;2026-09;7306;Peixe, corvina;Alimentação e bebidas;-1,29;0,1286;0,1243;-0,002
 2901;Região metropolitana de Salvador;2026-09;107656;Aluguel de veículo;Transportes;-16,87;0,1573;0,1184;-0,027
 2901;Região metropolitana de Salvador;2026-09;12395;Margarina;Alimentação e bebidas;4,37;0,1187;0,1181;0,005
 2901;Região metropolitana de Salvador;2026-09;47637;Amaciante e alvejante;Habitação;2,02;0,1188;0,1173;0,002
@@ -1228,7 +1228,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2901;Região metropolitana de Salvador;2026-09;109463;Atomatado;Alimentação e bebidas;-3,00;0,1234;0,1148;-0,004
 2901;Região metropolitana de Salvador;2026-09;7378;Bolo;Alimentação e bebidas;8,19;0,1086;0,1140;0,009
 2901;Região metropolitana de Salvador;2026-09;107633;Refrigerante e água mineral;Alimentação e bebidas;6,50;0,1090;0,1132;0,007
-2901;Região metropolitana de Salvador;2026-09;7175;Feijão - mulatinho;Alimentação e bebidas;11,37;0,1038;0,1121;0,012
+2901;Região metropolitana de Salvador;2026-09;7175;Feijão, mulatinho;Alimentação e bebidas;11,37;0,1038;0,1121;0,012
 2901;Região metropolitana de Salvador;2026-09;7268;Manga;Alimentação e bebidas;14,30;0,0904;0,1115;0,013
 2901;Região metropolitana de Salvador;2026-09;7267;Mamão;Alimentação e bebidas;4,93;0,1098;0,1107;0,005
 2901;Região metropolitana de Salvador;2026-09;47628;Polpa de fruta (congelada);Alimentação e bebidas;2,29;0,1111;0,1079;0,003
@@ -1278,7 +1278,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2901;Região metropolitana de Salvador;2026-09;107608;Massa semipreparada;Alimentação e bebidas;2,78;0,0610;0,0607;0,002
 2901;Região metropolitana de Salvador;2026-09;7191;Farinha de trigo;Alimentação e bebidas;-5,60;0,0645;0,0585;-0,004
 2901;Região metropolitana de Salvador;2026-09;7497;Tapete;Artigos de residência;-10,66;0,0686;0,0583;-0,007
-2901;Região metropolitana de Salvador;2026-09;7279;Laranja - pera;Alimentação e bebidas;-22,15;0,0663;0,0547;-0,015
+2901;Região metropolitana de Salvador;2026-09;7279;Laranja, pera;Alimentação e bebidas;-22,15;0,0663;0,0547;-0,015
 2901;Região metropolitana de Salvador;2026-09;7783;Caderno;Educação;-5,90;0,0582;0,0540;-0,003
 2901;Região metropolitana de Salvador;2026-09;7249;Cheiro-verde;Alimentação e bebidas;18,87;0,0489;0,0540;0,009
 2901;Região metropolitana de Salvador;2026-09;7470;Sabão em barra;Habitação;2,41;0,0540;0,0539;0,001
@@ -1291,15 +1291,15 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2901;Região metropolitana de Salvador;2026-09;107628;Milho-verde em conserva;Alimentação e bebidas;7,56;0,0357;0,0366;0,003
 2901;Região metropolitana de Salvador;2026-09;12405;Conserto de refrigerador;Artigos de residência;6,80;0,0338;0,0338;0,002
 2901;Região metropolitana de Salvador;2026-09;7428;Tempero misto;Alimentação e bebidas;4,72;0,0330;0,0335;0,002
-2901;Região metropolitana de Salvador;2026-09;7310;Peixe - sardinha;Alimentação e bebidas;11,89;0,0298;0,0333;0,004
-2901;Região metropolitana de Salvador;2026-09;12431;Peixe - salmão;Alimentação e bebidas;1,14;0,0319;0,0320;0,000
+2901;Região metropolitana de Salvador;2026-09;7310;Peixe, sardinha;Alimentação e bebidas;11,89;0,0298;0,0333;0,004
+2901;Região metropolitana de Salvador;2026-09;12431;Peixe, salmão;Alimentação e bebidas;1,14;0,0319;0,0320;0,000
 2901;Região metropolitana de Salvador;2026-09;7425;Caldo concentrado;Alimentação e bebidas;0,33;0,0313;0,0307;0,000
 2901;Região metropolitana de Salvador;2026-09;7311;Camarão;Alimentação e bebidas;5,21;0,0272;0,0271;0,001
 2901;Região metropolitana de Salvador;2026-09;107630;Atum em conserva;Alimentação e bebidas;4,77;0,0263;0,0264;0,001
 2901;Região metropolitana de Salvador;2026-09;7424;Vinagre;Alimentação e bebidas;5,66;0,0257;0,0260;0,001
 2901;Região metropolitana de Salvador;2026-09;7248;Repolho;Alimentação e bebidas;18,96;0,0181;0,0242;0,003
-2901;Região metropolitana de Salvador;2026-09;107616;Peixe - merluza;Alimentação e bebidas;-7,95;0,0264;0,0236;-0,002
-2901;Região metropolitana de Salvador;2026-09;12302;Peixe - tilápia;Alimentação e bebidas;2,08;0,0229;0,0234;0,000
+2901;Região metropolitana de Salvador;2026-09;107616;Peixe, merluza;Alimentação e bebidas;-7,95;0,0264;0,0236;-0,002
+2901;Região metropolitana de Salvador;2026-09;12302;Peixe, tilápia;Alimentação e bebidas;2,08;0,0229;0,0234;0,000
 2901;Região metropolitana de Salvador;2026-09;7412;Azeitona;Alimentação e bebidas;4,05;0,0154;0,0152;0,001
 3101;Região metropolitana de Belo Horizonte;2026-09;7657;Gasolina;Transportes;1,86;5,3638;5,1074;0,100
 3101;Região metropolitana de Belo Horizonte;2026-09;7696;Plano de saúde;Saúde e cuidados pessoais;5,61;4,0993;4,1830;0,230
@@ -1376,7 +1376,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3101;Região metropolitana de Belo Horizonte;2026-09;7385;Óleo de soja;Alimentação e bebidas;-5,77;0,3853;0,3448;-0,022
 3101;Região metropolitana de Belo Horizonte;2026-09;47663;Pré-escola;Educação;8,73;0,3141;0,3314;0,027
 3101;Região metropolitana de Belo Horizonte;2026-09;7631;Ônibus intermunicipal;Transportes;15,19;0,3162;0,3311;0,048
-3101;Região metropolitana de Belo Horizonte;2026-09;7260;Banana - prata;Alimentação e bebidas;-23,50;0,4026;0,3284;-0,095
+3101;Região metropolitana de Belo Horizonte;2026-09;7260;Banana, prata;Alimentação e bebidas;-23,50;0,4026;0,3284;-0,095
 3101;Região metropolitana de Belo Horizonte;2026-09;7339;Linguiça;Alimentação e bebidas;4,02;0,3164;0,3241;0,013
 3101;Região metropolitana de Belo Horizonte;2026-09;7659;Óleo diesel;Transportes;12,34;0,2970;0,3220;0,037
 3101;Região metropolitana de Belo Horizonte;2026-09;7576;Vestido;Vestuário;2,56;0,3161;0,3101;0,008
@@ -1413,7 +1413,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3101;Região metropolitana de Belo Horizonte;2026-09;7738;Brinquedo;Despesas pessoais;-1,82;0,2282;0,2188;-0,004
 3101;Região metropolitana de Belo Horizonte;2026-09;7629;Táxi;Transportes;8,42;0,2119;0,2186;0,018
 3101;Região metropolitana de Belo Horizonte;2026-09;47649;Transporte por aplicativo;Transportes;5,50;0,2123;0,2175;0,012
-3101;Região metropolitana de Belo Horizonte;2026-09;12222;Feijão - carioca (rajado);Alimentação e bebidas;42,60;0,1561;0,2172;0,066
+3101;Região metropolitana de Belo Horizonte;2026-09;12222;Feijão, carioca (rajado);Alimentação e bebidas;42,60;0,1561;0,2172;0,066
 3101;Região metropolitana de Belo Horizonte;2026-09;7302;Costela;Alimentação e bebidas;6,61;0,2104;0,2148;0,014
 3101;Região metropolitana de Belo Horizonte;2026-09;7645;Acessórios e peças;Transportes;5,08;0,2098;0,2115;0,011
 3101;Região metropolitana de Belo Horizonte;2026-09;107681;Curso de idioma;Educação;4,66;0,2057;0,2089;0,010
@@ -1464,7 +1464,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3101;Região metropolitana de Belo Horizonte;2026-09;12398;Revestimento de piso e parede;Habitação;4,98;0,1241;0,1284;0,006
 3101;Região metropolitana de Belo Horizonte;2026-09;107633;Refrigerante e água mineral;Alimentação e bebidas;5,78;0,1194;0,1222;0,007
 3101;Região metropolitana de Belo Horizonte;2026-09;107608;Massa semipreparada;Alimentação e bebidas;3,65;0,1191;0,1204;0,004
-3101;Região metropolitana de Belo Horizonte;2026-09;7279;Laranja - pera;Alimentação e bebidas;-16,57;0,1503;0,1201;-0,025
+3101;Região metropolitana de Belo Horizonte;2026-09;7279;Laranja, pera;Alimentação e bebidas;-16,57;0,1503;0,1201;-0,025
 3101;Região metropolitana de Belo Horizonte;2026-09;101642;Produto para barba;Saúde e cuidados pessoais;1,66;0,1228;0,1201;0,002
 3101;Região metropolitana de Belo Horizonte;2026-09;7579;Lingerie;Vestuário;1,47;0,1225;0,1192;0,002
 3101;Região metropolitana de Belo Horizonte;2026-09;47627;Requeijão;Alimentação e bebidas;1,80;0,1176;0,1168;0,002
@@ -1492,7 +1492,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3101;Região metropolitana de Belo Horizonte;2026-09;7377;Pão de forma;Alimentação e bebidas;8,85;0,0824;0,0863;0,007
 3101;Região metropolitana de Belo Horizonte;2026-09;7539;Chuveiro elétrico;Artigos de residência;11,19;0,0794;0,0856;0,009
 3101;Região metropolitana de Belo Horizonte;2026-09;7467;Desinfetante;Habitação;10,07;0,0774;0,0842;0,008
-3101;Região metropolitana de Belo Horizonte;2026-09;7258;Banana - d'água;Alimentação e bebidas;-25,08;0,0976;0,0829;-0,024
+3101;Região metropolitana de Belo Horizonte;2026-09;7258;Banana, d'água;Alimentação e bebidas;-25,08;0,0976;0,0829;-0,024
 3101;Região metropolitana de Belo Horizonte;2026-09;7736;Bicicleta;Despesas pessoais;-4,87;0,0871;0,0823;-0,004
 3101;Região metropolitana de Belo Horizonte;2026-09;47630;Suco em pó;Alimentação e bebidas;4,45;0,0803;0,0820;0,004
 3101;Região metropolitana de Belo Horizonte;2026-09;7783;Caderno;Educação;-4,26;0,0854;0,0814;-0,004
@@ -1513,8 +1513,8 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3101;Região metropolitana de Belo Horizonte;2026-09;7464;Água sanitária;Habitação;8,75;0,0594;0,0619;0,005
 3101;Região metropolitana de Belo Horizonte;2026-09;107653;Multa;Transportes;0,00;0,0625;0,0606;0,000
 3101;Região metropolitana de Belo Horizonte;2026-09;12403;Utensílios de vidro e louça;Artigos de residência;5,40;0,0592;0,0594;0,003
-3101;Região metropolitana de Belo Horizonte;2026-09;12302;Peixe - tilápia;Alimentação e bebidas;10,66;0,0554;0,0585;0,006
-3101;Região metropolitana de Belo Horizonte;2026-09;7263;Laranja - lima;Alimentação e bebidas;-19,03;0,0720;0,0562;-0,014
+3101;Região metropolitana de Belo Horizonte;2026-09;12302;Peixe, tilápia;Alimentação e bebidas;10,66;0,0554;0,0585;0,006
+3101;Região metropolitana de Belo Horizonte;2026-09;7263;Laranja, lima;Alimentação e bebidas;-19,03;0,0720;0,0562;-0,014
 3101;Região metropolitana de Belo Horizonte;2026-09;7195;Farinha de mandioca;Alimentação e bebidas;0,66;0,0539;0,0534;0,000
 3101;Região metropolitana de Belo Horizonte;2026-09;47639;Utensílios para bebê;Artigos de residência;3,57;0,0522;0,0526;0,002
 3101;Região metropolitana de Belo Horizonte;2026-09;7191;Farinha de trigo;Alimentação e bebidas;-3,54;0,0552;0,0518;-0,002
@@ -1531,7 +1531,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3101;Região metropolitana de Belo Horizonte;2026-09;7253;Brócolis;Alimentação e bebidas;14,52;0,0226;0,0234;0,003
 3101;Região metropolitana de Belo Horizonte;2026-09;7406;Palmito em conserva;Alimentação e bebidas;6,36;0,0182;0,0187;0,001
 3101;Região metropolitana de Belo Horizonte;2026-09;7623;Artigos de armarinho;Vestuário;10,91;0,0169;0,0184;0,002
-3101;Região metropolitana de Belo Horizonte;2026-09;107616;Peixe - merluza;Alimentação e bebidas;5,59;0,0157;0,0160;0,001
+3101;Região metropolitana de Belo Horizonte;2026-09;107616;Peixe, merluza;Alimentação e bebidas;5,59;0,0157;0,0160;0,001
 3201;Região metropolitana da Grande Vitória;2026-09;7696;Plano de saúde;Saúde e cuidados pessoais;5,55;6,5440;6,6272;0,363
 3201;Região metropolitana da Grande Vitória;2026-09;7641;Automóvel novo;Transportes;2,13;6,2351;6,1193;0,133
 3201;Região metropolitana da Grande Vitória;2026-09;7657;Gasolina;Transportes;3,93;5,0161;5,0721;0,197
@@ -1664,7 +1664,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3201;Região metropolitana da Grande Vitória;2026-09;47649;Transporte por aplicativo;Transportes;1,13;0,1546;0,1492;0,002
 3201;Região metropolitana da Grande Vitória;2026-09;107659;Oftalmológico;Saúde e cuidados pessoais;6,32;0,1447;0,1471;0,009
 3201;Região metropolitana da Grande Vitória;2026-09;107611;Chocolate e achocolatado em pó;Alimentação e bebidas;6,05;0,1428;0,1470;0,009
-3201;Região metropolitana da Grande Vitória;2026-09;7260;Banana - prata;Alimentação e bebidas;-6,46;0,1581;0,1457;-0,010
+3201;Região metropolitana da Grande Vitória;2026-09;7260;Banana, prata;Alimentação e bebidas;-6,46;0,1581;0,1457;-0,010
 3201;Região metropolitana da Grande Vitória;2026-09;7187;Macarrão;Alimentação e bebidas;2,80;0,1436;0,1434;0,004
 3201;Região metropolitana da Grande Vitória;2026-09;7267;Mamão;Alimentação e bebidas;3,11;0,1313;0,1409;0,004
 3201;Região metropolitana da Grande Vitória;2026-09;7367;Manteiga;Alimentação e bebidas;-0,09;0,1467;0,1400;-0,000
@@ -1680,7 +1680,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3201;Região metropolitana da Grande Vitória;2026-09;47661;Serviço de higiene para animais;Despesas pessoais;12,95;0,1156;0,1244;0,015
 3201;Região metropolitana da Grande Vitória;2026-09;101448;Capa de filé;Alimentação e bebidas;14,21;0,1102;0,1195;0,016
 3201;Região metropolitana da Grande Vitória;2026-09;7629;Táxi;Transportes;0,00;0,1239;0,1194;0,000
-3201;Região metropolitana da Grande Vitória;2026-09;7176;Feijão - preto;Alimentação e bebidas;44,35;0,0831;0,1156;0,037
+3201;Região metropolitana da Grande Vitória;2026-09;7176;Feijão, preto;Alimentação e bebidas;44,35;0,0831;0,1156;0,037
 3201;Região metropolitana da Grande Vitória;2026-09;7377;Pão de forma;Alimentação e bebidas;4,17;0,1139;0,1155;0,005
 3201;Região metropolitana da Grande Vitória;2026-09;7266;Maçã;Alimentação e bebidas;-11,71;0,1396;0,1145;-0,016
 3201;Região metropolitana da Grande Vitória;2026-09;12412;Dermatológico;Saúde e cuidados pessoais;4,45;0,1129;0,1134;0,005
@@ -1700,7 +1700,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3201;Região metropolitana da Grande Vitória;2026-09;7378;Bolo;Alimentação e bebidas;-0,75;0,0914;0,0873;-0,001
 3201;Região metropolitana da Grande Vitória;2026-09;47671;Serviços de streaming;Comunicação;2,02;0,0882;0,0857;0,002
 3201;Região metropolitana da Grande Vitória;2026-09;7443;Outras bebidas alcoólicas;Alimentação e bebidas;4,70;0,0849;0,0850;0,004
-3201;Região metropolitana da Grande Vitória;2026-09;7279;Laranja - pera;Alimentação e bebidas;-1,84;0,0863;0,0835;-0,002
+3201;Região metropolitana da Grande Vitória;2026-09;7279;Laranja, pera;Alimentação e bebidas;-1,84;0,0863;0,0835;-0,002
 3201;Região metropolitana da Grande Vitória;2026-09;47639;Utensílios para bebê;Artigos de residência;3,41;0,0821;0,0810;0,003
 3201;Região metropolitana da Grande Vitória;2026-09;7785;Artigos de papelaria;Educação;2,29;0,0812;0,0806;0,002
 3201;Região metropolitana da Grande Vitória;2026-09;7230;Sorvete;Alimentação e bebidas;4,87;0,0783;0,0785;0,004
@@ -1736,7 +1736,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3201;Região metropolitana da Grande Vitória;2026-09;7265;Limão;Alimentação e bebidas;51,13;0,0400;0,0436;0,020
 3201;Região metropolitana da Grande Vitória;2026-09;12403;Utensílios de vidro e louça;Artigos de residência;2,85;0,0432;0,0436;0,001
 3201;Região metropolitana da Grande Vitória;2026-09;107628;Milho-verde em conserva;Alimentação e bebidas;1,23;0,0413;0,0401;0,001
-3201;Região metropolitana da Grande Vitória;2026-09;8874;Peixe - peroá;Alimentação e bebidas;-2,47;0,0401;0,0385;-0,001
+3201;Região metropolitana da Grande Vitória;2026-09;8874;Peixe, peroá;Alimentação e bebidas;-2,47;0,0401;0,0385;-0,001
 3201;Região metropolitana da Grande Vitória;2026-09;47642;Conserto de aparelho celular;Artigos de residência;13,55;0,0347;0,0370;0,005
 3201;Região metropolitana da Grande Vitória;2026-09;7249;Cheiro-verde;Alimentação e bebidas;-2,55;0,0366;0,0349;-0,001
 3201;Região metropolitana da Grande Vitória;2026-09;7470;Sabão em barra;Habitação;0,01;0,0346;0,0330;0,000
@@ -1745,7 +1745,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3201;Região metropolitana da Grande Vitória;2026-09;7425;Caldo concentrado;Alimentação e bebidas;7,97;0,0256;0,0267;0,002
 3201;Região metropolitana da Grande Vitória;2026-09;7245;Couve;Alimentação e bebidas;2,57;0,0261;0,0260;0,001
 3201;Região metropolitana da Grande Vitória;2026-09;7471;Esponja de limpeza;Habitação;5,50;0,0243;0,0245;0,001
-3201;Região metropolitana da Grande Vitória;2026-09;12302;Peixe - tilápia;Alimentação e bebidas;2,89;0,0229;0,0233;0,001
+3201;Região metropolitana da Grande Vitória;2026-09;12302;Peixe, tilápia;Alimentação e bebidas;2,89;0,0229;0,0233;0,001
 3201;Região metropolitana da Grande Vitória;2026-09;7253;Brócolis;Alimentação e bebidas;-0,19;0,0226;0,0222;-0,000
 3201;Região metropolitana da Grande Vitória;2026-09;7311;Camarão;Alimentação e bebidas;2,50;0,0199;0,0200;0,000
 3201;Região metropolitana da Grande Vitória;2026-09;7622;Tecido;Vestuário;9,09;0,0179;0,0188;0,002
@@ -1832,13 +1832,13 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3301;Região metropolitana do Rio de Janeiro;2026-09;7607;Sapato feminino;Vestuário;6,14;0,2664;0,2686;0,016
 3301;Região metropolitana do Rio de Janeiro;2026-09;7523;Refrigerador;Artigos de residência;-1,40;0,2860;0,2685;-0,004
 3301;Região metropolitana do Rio de Janeiro;2026-09;7390;Suco de frutas;Alimentação e bebidas;-4,51;0,2773;0,2575;-0,013
-3301;Região metropolitana do Rio de Janeiro;2026-09;7260;Banana - prata;Alimentação e bebidas;-6,78;0,2696;0,2554;-0,018
+3301;Região metropolitana do Rio de Janeiro;2026-09;7260;Banana, prata;Alimentação e bebidas;-6,78;0,2696;0,2554;-0,018
 3301;Região metropolitana do Rio de Janeiro;2026-09;7635;Metrô;Transportes;0,00;0,2595;0,2497;0,000
 3301;Região metropolitana do Rio de Janeiro;2026-09;47643;Conserto de bicicleta;Artigos de residência;8,47;0,2367;0,2466;0,020
 3301;Região metropolitana do Rio de Janeiro;2026-09;7658;Etanol;Transportes;7,50;0,2352;0,2417;0,018
 3301;Região metropolitana do Rio de Janeiro;2026-09;47641;Computador pessoal;Artigos de residência;16,34;0,2128;0,2390;0,035
 3301;Região metropolitana do Rio de Janeiro;2026-09;101644;Produto para pele;Saúde e cuidados pessoais;3,63;0,2362;0,2390;0,009
-3301;Região metropolitana do Rio de Janeiro;2026-09;7176;Feijão - preto;Alimentação e bebidas;26,24;0,2014;0,2384;0,053
+3301;Região metropolitana do Rio de Janeiro;2026-09;7176;Feijão, preto;Alimentação e bebidas;26,24;0,2014;0,2384;0,053
 3301;Região metropolitana do Rio de Janeiro;2026-09;107661;Produto para higiene bucal;Saúde e cuidados pessoais;10,70;0,2179;0,2300;0,023
 3301;Região metropolitana do Rio de Janeiro;2026-09;7573;Calça comprida feminina;Vestuário;1,67;0,2355;0,2297;0,004
 3301;Região metropolitana do Rio de Janeiro;2026-09;7440;Cerveja;Alimentação e bebidas;5,02;0,2266;0,2276;0,011
@@ -1918,7 +1918,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3301;Região metropolitana do Rio de Janeiro;2026-09;107639;Tijolo;Habitação;9,89;0,0933;0,0993;0,009
 3301;Região metropolitana do Rio de Janeiro;2026-09;47645;Bermuda/short feminino;Vestuário;6,36;0,0972;0,0970;0,006
 3301;Região metropolitana do Rio de Janeiro;2026-09;12409;Conjunto infantil;Vestuário;-2,89;0,1048;0,0965;-0,003
-3301;Região metropolitana do Rio de Janeiro;2026-09;7279;Laranja - pera;Alimentação e bebidas;-9,07;0,1096;0,0945;-0,010
+3301;Região metropolitana do Rio de Janeiro;2026-09;7279;Laranja, pera;Alimentação e bebidas;-9,07;0,1096;0,0945;-0,010
 3301;Região metropolitana do Rio de Janeiro;2026-09;7298;Músculo;Alimentação e bebidas;0,13;0,0953;0,0939;0,000
 3301;Região metropolitana do Rio de Janeiro;2026-09;47646;Bermuda/short infantil;Vestuário;3,31;0,0953;0,0932;0,003
 3301;Região metropolitana do Rio de Janeiro;2026-09;107642;Areia;Habitação;4,58;0,0902;0,0914;0,004
@@ -1941,8 +1941,8 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3301;Região metropolitana do Rio de Janeiro;2026-09;47655;Sobrancelha;Despesas pessoais;4,66;0,0745;0,0751;0,003
 3301;Região metropolitana do Rio de Janeiro;2026-09;7708;Absorvente higiênico;Saúde e cuidados pessoais;7,59;0,0708;0,0735;0,005
 3301;Região metropolitana do Rio de Janeiro;2026-09;7785;Artigos de papelaria;Educação;-0,16;0,0759;0,0728;-0,000
-3301;Região metropolitana do Rio de Janeiro;2026-09;7306;Peixe - corvina;Alimentação e bebidas;1,32;0,0721;0,0726;0,001
-3301;Região metropolitana do Rio de Janeiro;2026-09;7258;Banana - d'água;Alimentação e bebidas;-3,43;0,0746;0,0718;-0,003
+3301;Região metropolitana do Rio de Janeiro;2026-09;7306;Peixe, corvina;Alimentação e bebidas;1,32;0,0721;0,0726;0,001
+3301;Região metropolitana do Rio de Janeiro;2026-09;7258;Banana, d'água;Alimentação e bebidas;-3,43;0,0746;0,0718;-0,003
 3301;Região metropolitana do Rio de Janeiro;2026-09;47619;Macarrão instantâneo;Alimentação e bebidas;1,05;0,0690;0,0673;0,001
 3301;Região metropolitana do Rio de Janeiro;2026-09;7195;Farinha de mandioca;Alimentação e bebidas;0,98;0,0699;0,0656;0,001
 3301;Região metropolitana do Rio de Janeiro;2026-09;7276;Uva;Alimentação e bebidas;2,76;0,0639;0,0651;0,002
@@ -1965,7 +1965,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3301;Região metropolitana do Rio de Janeiro;2026-09;7470;Sabão em barra;Habitação;3,78;0,0379;0,0379;0,001
 3301;Região metropolitana do Rio de Janeiro;2026-09;7253;Brócolis;Alimentação e bebidas;10,63;0,0369;0,0358;0,004
 3301;Região metropolitana do Rio de Janeiro;2026-09;7249;Cheiro-verde;Alimentação e bebidas;7,71;0,0317;0,0345;0,002
-3301;Região metropolitana do Rio de Janeiro;2026-09;12431;Peixe - salmão;Alimentação e bebidas;9,65;0,0319;0,0345;0,003
+3301;Região metropolitana do Rio de Janeiro;2026-09;12431;Peixe, salmão;Alimentação e bebidas;9,65;0,0319;0,0345;0,003
 3301;Região metropolitana do Rio de Janeiro;2026-09;7311;Camarão;Alimentação e bebidas;7,65;0,0311;0,0326;0,002
 3301;Região metropolitana do Rio de Janeiro;2026-09;12397;Sal;Alimentação e bebidas;9,95;0,0299;0,0308;0,003
 3301;Região metropolitana do Rio de Janeiro;2026-09;7245;Couve;Alimentação e bebidas;12,22;0,0270;0,0306;0,003
@@ -2086,7 +2086,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3501;Região metropolitana de São Paulo;2026-09;7212;Tomate;Alimentação e bebidas;31,15;0,2093;0,1916;0,065
 3501;Região metropolitana de São Paulo;2026-09;7666;Antigripal e antitussígeno;Saúde e cuidados pessoais;9,37;0,1761;0,1911;0,017
 3501;Região metropolitana de São Paulo;2026-09;7302;Costela;Alimentação e bebidas;8,04;0,1823;0,1899;0,015
-3501;Região metropolitana de São Paulo;2026-09;12222;Feijão - carioca (rajado);Alimentação e bebidas;33,82;0,1405;0,1891;0,048
+3501;Região metropolitana de São Paulo;2026-09;12222;Feijão, carioca (rajado);Alimentação e bebidas;33,82;0,1405;0,1891;0,048
 3501;Região metropolitana de São Paulo;2026-09;47651;Hormonal;Saúde e cuidados pessoais;3,42;0,1831;0,1829;0,006
 3501;Região metropolitana de São Paulo;2026-09;7659;Óleo diesel;Transportes;12,21;0,1709;0,1827;0,021
 3501;Região metropolitana de São Paulo;2026-09;12420;Fralda descartável;Saúde e cuidados pessoais;6,21;0,1789;0,1812;0,011
@@ -2094,7 +2094,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3501;Região metropolitana de São Paulo;2026-09;7355;Ovo de galinha;Alimentação e bebidas;-11,27;0,2043;0,1797;-0,023
 3501;Região metropolitana de São Paulo;2026-09;7671;Vitamina e fortificante;Saúde e cuidados pessoais;1,89;0,1811;0,1780;0,003
 3501;Região metropolitana de São Paulo;2026-09;12411;Pneu;Transportes;-4,02;0,1906;0,1776;-0,008
-3501;Região metropolitana de São Paulo;2026-09;7258;Banana - d'água;Alimentação e bebidas;-0,75;0,1776;0,1741;-0,001
+3501;Região metropolitana de São Paulo;2026-09;7258;Banana, d'água;Alimentação e bebidas;-0,75;0,1776;0,1741;-0,001
 3501;Região metropolitana de São Paulo;2026-09;107650;Camisa/camiseta infantil;Vestuário;0,35;0,1830;0,1737;0,001
 3501;Região metropolitana de São Paulo;2026-09;7629;Táxi;Transportes;0,00;0,1802;0,1735;0,000
 3501;Região metropolitana de São Paulo;2026-09;107611;Chocolate e achocolatado em pó;Alimentação e bebidas;6,25;0,1716;0,1733;0,011
@@ -2129,9 +2129,9 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3501;Região metropolitana de São Paulo;2026-09;7711;Artigos de maquiagem;Saúde e cuidados pessoais;5,08;0,1263;0,1277;0,006
 3501;Região metropolitana de São Paulo;2026-09;7266;Maçã;Alimentação e bebidas;-0,65;0,1314;0,1275;-0,001
 3501;Região metropolitana de São Paulo;2026-09;109463;Atomatado;Alimentação e bebidas;1,25;0,1323;0,1272;0,002
-3501;Região metropolitana de São Paulo;2026-09;7279;Laranja - pera;Alimentação e bebidas;-8,57;0,1408;0,1272;-0,012
+3501;Região metropolitana de São Paulo;2026-09;7279;Laranja, pera;Alimentação e bebidas;-8,57;0,1408;0,1272;-0,012
 3501;Região metropolitana de São Paulo;2026-09;12409;Conjunto infantil;Vestuário;-5,26;0,1342;0,1255;-0,007
-3501;Região metropolitana de São Paulo;2026-09;7260;Banana - prata;Alimentação e bebidas;-3,91;0,1289;0,1247;-0,005
+3501;Região metropolitana de São Paulo;2026-09;7260;Banana, prata;Alimentação e bebidas;-3,91;0,1289;0,1247;-0,005
 3501;Região metropolitana de São Paulo;2026-09;12294;Lagarto comum;Alimentação e bebidas;12,40;0,1156;0,1245;0,014
 3501;Região metropolitana de São Paulo;2026-09;7606;Sapato masculino;Vestuário;8,06;0,1163;0,1212;0,009
 3501;Região metropolitana de São Paulo;2026-09;47627;Requeijão;Alimentação e bebidas;7,13;0,1144;0,1183;0,008
@@ -2204,7 +2204,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3501;Região metropolitana de São Paulo;2026-09;7249;Cheiro-verde;Alimentação e bebidas;15,95;0,0340;0,0374;0,005
 3501;Região metropolitana de São Paulo;2026-09;107624;Sardinha em conserva;Alimentação e bebidas;11,95;0,0334;0,0355;0,004
 3501;Região metropolitana de São Paulo;2026-09;107630;Atum em conserva;Alimentação e bebidas;3,64;0,0357;0,0354;0,001
-3501;Região metropolitana de São Paulo;2026-09;12302;Peixe - tilápia;Alimentação e bebidas;6,17;0,0348;0,0354;0,002
+3501;Região metropolitana de São Paulo;2026-09;12302;Peixe, tilápia;Alimentação e bebidas;6,17;0,0348;0,0354;0,002
 3501;Região metropolitana de São Paulo;2026-09;7412;Azeitona;Alimentação e bebidas;-5,08;0,0356;0,0330;-0,002
 3501;Região metropolitana de São Paulo;2026-09;7245;Couve;Alimentação e bebidas;7,53;0,0291;0,0307;0,002
 3501;Região metropolitana de São Paulo;2026-09;7783;Caderno;Educação;-9,27;0,0320;0,0281;-0,003
@@ -2213,11 +2213,11 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 3501;Região metropolitana de São Paulo;2026-09;7622;Tecido;Vestuário;-1,75;0,0248;0,0237;-0,000
 3501;Região metropolitana de São Paulo;2026-09;7248;Repolho;Alimentação e bebidas;2,84;0,0225;0,0231;0,001
 3501;Região metropolitana de São Paulo;2026-09;7424;Vinagre;Alimentação e bebidas;10,96;0,0221;0,0229;0,002
-3501;Região metropolitana de São Paulo;2026-09;107616;Peixe - merluza;Alimentação e bebidas;-5,57;0,0250;0,0223;-0,001
-3501;Região metropolitana de São Paulo;2026-09;12431;Peixe - salmão;Alimentação e bebidas;9,79;0,0203;0,0219;0,002
-3501;Região metropolitana de São Paulo;2026-09;7320;Peixe - pescada;Alimentação e bebidas;5,35;0,0191;0,0198;0,001
+3501;Região metropolitana de São Paulo;2026-09;107616;Peixe, merluza;Alimentação e bebidas;-5,57;0,0250;0,0223;-0,001
+3501;Região metropolitana de São Paulo;2026-09;12431;Peixe, salmão;Alimentação e bebidas;9,79;0,0203;0,0219;0,002
+3501;Região metropolitana de São Paulo;2026-09;7320;Peixe, pescada;Alimentação e bebidas;5,35;0,0191;0,0198;0,001
 3501;Região metropolitana de São Paulo;2026-09;107628;Milho-verde em conserva;Alimentação e bebidas;3,59;0,0181;0,0180;0,001
-3501;Região metropolitana de São Paulo;2026-09;107615;Peixe - cação;Alimentação e bebidas;1,11;0,0177;0,0172;0,000
+3501;Região metropolitana de São Paulo;2026-09;107615;Peixe, cação;Alimentação e bebidas;1,11;0,0177;0,0172;0,000
 3501;Região metropolitana de São Paulo;2026-09;7623;Artigos de armarinho;Vestuário;-2,06;0,0120;0,0116;-0,000
 4101;Região metropolitana de Curitiba;2026-09;7657;Gasolina;Transportes;1,03;6,8624;6,8090;0,071
 4101;Região metropolitana de Curitiba;2026-09;7641;Automóvel novo;Transportes;0,54;4,7172;4,6800;0,025
@@ -2322,7 +2322,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 4101;Região metropolitana de Curitiba;2026-09;7769;Creche;Educação;11,74;0,2023;0,2215;0,024
 4101;Região metropolitana de Curitiba;2026-09;7692;Hospitalização e cirurgia;Saúde e cuidados pessoais;4,52;0,2145;0,2192;0,010
 4101;Região metropolitana de Curitiba;2026-09;12398;Revestimento de piso e parede;Habitação;-2,10;0,2194;0,2168;-0,005
-4101;Região metropolitana de Curitiba;2026-09;7258;Banana - d'água;Alimentação e bebidas;2,19;0,2199;0,2134;0,005
+4101;Região metropolitana de Curitiba;2026-09;7258;Banana, d'água;Alimentação e bebidas;2,19;0,2199;0,2134;0,005
 4101;Região metropolitana de Curitiba;2026-09;7645;Acessórios e peças;Transportes;-1,67;0,2188;0,2126;-0,004
 4101;Região metropolitana de Curitiba;2026-09;47661;Serviço de higiene para animais;Despesas pessoais;8,65;0,2011;0,2115;0,017
 4101;Região metropolitana de Curitiba;2026-09;7738;Brinquedo;Despesas pessoais;-0,52;0,2165;0,2110;-0,001
@@ -2421,22 +2421,22 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 4101;Região metropolitana de Curitiba;2026-09;7341;Mortadela;Alimentação e bebidas;4,33;0,0778;0,0805;0,003
 4101;Região metropolitana de Curitiba;2026-09;7221;Açúcar cristal;Alimentação e bebidas;-19,93;0,1022;0,0800;-0,020
 4101;Região metropolitana de Curitiba;2026-09;7428;Tempero misto;Alimentação e bebidas;7,55;0,0739;0,0775;0,006
-4101;Região metropolitana de Curitiba;2026-09;7279;Laranja - pera;Alimentação e bebidas;-6,25;0,0829;0,0763;-0,005
+4101;Região metropolitana de Curitiba;2026-09;7279;Laranja, pera;Alimentação e bebidas;-6,25;0,0829;0,0763;-0,005
 4101;Região metropolitana de Curitiba;2026-09;7276;Uva;Alimentação e bebidas;-6,11;0,0821;0,0759;-0,005
 4101;Região metropolitana de Curitiba;2026-09;12224;Balas;Alimentação e bebidas;2,87;0,0732;0,0757;0,002
 4101;Região metropolitana de Curitiba;2026-09;7456;Material de eletricidade;Habitação;0,08;0,0775;0,0756;0,000
 4101;Região metropolitana de Curitiba;2026-09;107652;Bolsa;Vestuário;2,04;0,0729;0,0735;0,001
-4101;Região metropolitana de Curitiba;2026-09;7176;Feijão - preto;Alimentação e bebidas;38,06;0,0548;0,0732;0,021
+4101;Região metropolitana de Curitiba;2026-09;7176;Feijão, preto;Alimentação e bebidas;38,06;0,0548;0,0732;0,021
 4101;Região metropolitana de Curitiba;2026-09;7271;Melão;Alimentação e bebidas;1,95;0,0832;0,0729;0,002
 4101;Região metropolitana de Curitiba;2026-09;12403;Utensílios de vidro e louça;Artigos de residência;-6,01;0,0746;0,0696;-0,004
-4101;Região metropolitana de Curitiba;2026-09;7260;Banana - prata;Alimentação e bebidas;8,76;0,0652;0,0685;0,006
+4101;Região metropolitana de Curitiba;2026-09;7260;Banana, prata;Alimentação e bebidas;8,76;0,0652;0,0685;0,006
 4101;Região metropolitana de Curitiba;2026-09;12401;Móvel infantil;Artigos de residência;-6,72;0,0717;0,0655;-0,005
 4101;Região metropolitana de Curitiba;2026-09;107653;Multa;Transportes;0,00;0,0652;0,0639;0,000
 4101;Região metropolitana de Curitiba;2026-09;7216;Cenoura;Alimentação e bebidas;35,79;0,0478;0,0633;0,017
 4101;Região metropolitana de Curitiba;2026-09;7497;Tapete;Artigos de residência;2,76;0,0637;0,0633;0,002
 4101;Região metropolitana de Curitiba;2026-09;47619;Macarrão instantâneo;Alimentação e bebidas;7,34;0,0593;0,0610;0,004
 4101;Região metropolitana de Curitiba;2026-09;7574;Agasalho feminino;Vestuário;1,83;0,0591;0,0602;0,001
-4101;Região metropolitana de Curitiba;2026-09;12302;Peixe - tilápia;Alimentação e bebidas;-0,30;0,0610;0,0595;-0,000
+4101;Região metropolitana de Curitiba;2026-09;12302;Peixe, tilápia;Alimentação e bebidas;-0,30;0,0610;0,0595;-0,000
 4101;Região metropolitana de Curitiba;2026-09;47645;Bermuda/short feminino;Vestuário;-1,32;0,0613;0,0591;-0,001
 4101;Região metropolitana de Curitiba;2026-09;7249;Cheiro-verde;Alimentação e bebidas;15,41;0,0463;0,0539;0,007
 4101;Região metropolitana de Curitiba;2026-09;107624;Sardinha em conserva;Alimentação e bebidas;9,94;0,0493;0,0524;0,005
@@ -2583,7 +2583,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 4301;Região metropolitana de Porto Alegre;2026-09;7666;Antigripal e antitussígeno;Saúde e cuidados pessoais;2,04;0,1823;0,1814;0,004
 4301;Região metropolitana de Porto Alegre;2026-09;7440;Cerveja;Alimentação e bebidas;1,70;0,1854;0,1799;0,003
 4301;Região metropolitana de Porto Alegre;2026-09;7377;Pão de forma;Alimentação e bebidas;3,19;0,1810;0,1795;0,006
-4301;Região metropolitana de Porto Alegre;2026-09;7260;Banana - prata;Alimentação e bebidas;0,24;0,1819;0,1780;0,000
+4301;Região metropolitana de Porto Alegre;2026-09;7260;Banana, prata;Alimentação e bebidas;0,24;0,1819;0,1780;0,000
 4301;Região metropolitana de Porto Alegre;2026-09;7280;Morango;Alimentação e bebidas;24,55;0,1396;0,1779;0,034
 4301;Região metropolitana de Porto Alegre;2026-09;47661;Serviço de higiene para animais;Despesas pessoais;2,55;0,1748;0,1743;0,004
 4301;Região metropolitana de Porto Alegre;2026-09;7266;Maçã;Alimentação e bebidas;-5,30;0,1874;0,1697;-0,010
@@ -2608,7 +2608,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 4301;Região metropolitana de Porto Alegre;2026-09;12399;Telha;Habitação;5,54;0,1406;0,1421;0,008
 4301;Região metropolitana de Porto Alegre;2026-09;109463;Atomatado;Alimentação e bebidas;3,06;0,1405;0,1418;0,004
 4301;Região metropolitana de Porto Alegre;2026-09;7242;Alface;Alimentação e bebidas;20,10;0,1240;0,1385;0,025
-4301;Região metropolitana de Porto Alegre;2026-09;7258;Banana - d'água;Alimentação e bebidas;4,51;0,1345;0,1371;0,006
+4301;Região metropolitana de Porto Alegre;2026-09;7258;Banana, d'água;Alimentação e bebidas;4,51;0,1345;0,1371;0,006
 4301;Região metropolitana de Porto Alegre;2026-09;7670;Gastroprotetor;Saúde e cuidados pessoais;2,16;0,1349;0,1351;0,003
 4301;Região metropolitana de Porto Alegre;2026-09;7336;Presunto;Alimentação e bebidas;-5,10;0,1457;0,1351;-0,007
 4301;Região metropolitana de Porto Alegre;2026-09;7466;Sabão em pó;Habitação;-6,75;0,1528;0,1350;-0,010
@@ -2635,7 +2635,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 4301;Região metropolitana de Porto Alegre;2026-09;7589;Calça comprida infantil;Vestuário;-0,10;0,1101;0,1072;-0,000
 4301;Região metropolitana de Porto Alegre;2026-09;47655;Sobrancelha;Despesas pessoais;9,96;0,1006;0,1065;0,010
 4301;Região metropolitana de Porto Alegre;2026-09;7376;Pão doce;Alimentação e bebidas;4,32;0,1038;0,1046;0,004
-4301;Região metropolitana de Porto Alegre;2026-09;7176;Feijão - preto;Alimentação e bebidas;15,73;0,0946;0,1045;0,015
+4301;Região metropolitana de Porto Alegre;2026-09;7176;Feijão, preto;Alimentação e bebidas;15,73;0,0946;0,1045;0,015
 4301;Região metropolitana de Porto Alegre;2026-09;47652;Neurológico;Saúde e cuidados pessoais;7,50;0,1027;0,1037;0,008
 4301;Região metropolitana de Porto Alegre;2026-09;7785;Artigos de papelaria;Educação;3,00;0,1073;0,1036;0,003
 4301;Região metropolitana de Porto Alegre;2026-09;47644;Bermuda/short masculino;Vestuário;-3,85;0,1119;0,1024;-0,004
@@ -2680,7 +2680,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 4301;Região metropolitana de Porto Alegre;2026-09;7425;Caldo concentrado;Alimentação e bebidas;7,11;0,0452;0,0466;0,003
 4301;Região metropolitana de Porto Alegre;2026-09;12405;Conserto de refrigerador;Artigos de residência;6,61;0,0447;0,0454;0,003
 4301;Região metropolitana de Porto Alegre;2026-09;107628;Milho-verde em conserva;Alimentação e bebidas;3,58;0,0446;0,0448;0,002
-4301;Região metropolitana de Porto Alegre;2026-09;7262;Laranja - baía;Alimentação e bebidas;-9,90;0,0504;0,0444;-0,005
+4301;Região metropolitana de Porto Alegre;2026-09;7262;Laranja, baía;Alimentação e bebidas;-9,90;0,0504;0,0444;-0,005
 4301;Região metropolitana de Porto Alegre;2026-09;7253;Brócolis;Alimentação e bebidas;10,94;0,0452;0,0432;0,005
 4301;Região metropolitana de Porto Alegre;2026-09;47636;Limpador multiuso;Habitação;2,49;0,0426;0,0421;0,001
 4301;Região metropolitana de Porto Alegre;2026-09;7216;Cenoura;Alimentação e bebidas;57,73;0,0261;0,0420;0,015
@@ -2689,11 +2689,11 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 4301;Região metropolitana de Porto Alegre;2026-09;7248;Repolho;Alimentação e bebidas;15,56;0,0348;0,0374;0,005
 4301;Região metropolitana de Porto Alegre;2026-09;7555;Reforma de estofado;Artigos de residência;-2,37;0,0394;0,0369;-0,001
 4301;Região metropolitana de Porto Alegre;2026-09;7424;Vinagre;Alimentação e bebidas;3,47;0,0334;0,0334;0,001
-4301;Região metropolitana de Porto Alegre;2026-09;12302;Peixe - tilápia;Alimentação e bebidas;-0,67;0,0316;0,0308;-0,000
+4301;Região metropolitana de Porto Alegre;2026-09;12302;Peixe, tilápia;Alimentação e bebidas;-0,67;0,0316;0,0308;-0,000
 4301;Região metropolitana de Porto Alegre;2026-09;7422;Fermento;Alimentação e bebidas;3,84;0,0293;0,0294;0,001
 4301;Região metropolitana de Porto Alegre;2026-09;107630;Atum em conserva;Alimentação e bebidas;8,90;0,0281;0,0291;0,003
 4301;Região metropolitana de Porto Alegre;2026-09;7622;Tecido;Vestuário;1,03;0,0224;0,0217;0,000
-4301;Região metropolitana de Porto Alegre;2026-09;7310;Peixe - sardinha;Alimentação e bebidas;8,59;0,0190;0,0204;0,002
+4301;Região metropolitana de Porto Alegre;2026-09;7310;Peixe, sardinha;Alimentação e bebidas;8,59;0,0190;0,0204;0,002
 4301;Região metropolitana de Porto Alegre;2026-09;7412;Azeitona;Alimentação e bebidas;-3,74;0,0220;0,0203;-0,001
 4301;Região metropolitana de Porto Alegre;2026-09;7311;Camarão;Alimentação e bebidas;7,26;0,0189;0,0192;0,001
 4301;Região metropolitana de Porto Alegre;2026-09;7623;Artigos de armarinho;Vestuário;3,42;0,0142;0,0141;0,000
@@ -2743,7 +2743,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1200401;Município de Rio Branco;2026-09;101644;Produto para pele;Saúde e cuidados pessoais;-0,33;0,5815;0,5695;-0,002
 1200401;Município de Rio Branco;2026-09;7302;Costela;Alimentação e bebidas;19,54;0,4962;0,5542;0,097
 1200401;Município de Rio Branco;2026-09;7577;Blusa;Vestuário;5,32;0,5205;0,5331;0,028
-1200401;Município de Rio Branco;2026-09;41129;Peixe - tambaqui;Alimentação e bebidas;0,93;0,5428;0,5301;0,005
+1200401;Município de Rio Branco;2026-09;41129;Peixe, tambaqui;Alimentação e bebidas;0,93;0,5428;0,5301;0,005
 1200401;Município de Rio Branco;2026-09;7707;Desodorante;Saúde e cuidados pessoais;1,67;0,5349;0,5167;0,009
 1200401;Município de Rio Branco;2026-09;7759;Cigarro;Despesas pessoais;20,03;0,4450;0,5132;0,089
 1200401;Município de Rio Branco;2026-09;107621;Refrigerante e água mineral;Alimentação e bebidas;7,55;0,4952;0,5036;0,037
@@ -2804,12 +2804,12 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1200401;Município de Rio Branco;2026-09;12294;Lagarto comum;Alimentação e bebidas;11,72;0,1831;0,2022;0,021
 1200401;Município de Rio Branco;2026-09;107650;Camisa/camiseta infantil;Vestuário;8,17;0,1928;0,2013;0,016
 1200401;Município de Rio Branco;2026-09;7298;Músculo;Alimentação e bebidas;19,25;0,1799;0,2010;0,035
-1200401;Município de Rio Branco;2026-09;12222;Feijão - carioca (rajado);Alimentação e bebidas;35,77;0,1507;0,2009;0,054
+1200401;Município de Rio Branco;2026-09;12222;Feijão, carioca (rajado);Alimentação e bebidas;35,77;0,1507;0,2009;0,054
 1200401;Município de Rio Branco;2026-09;7644;Óleo lubrificante;Transportes;8,88;0,1813;0,1941;0,016
 1200401;Município de Rio Branco;2026-09;7492;Móvel para copa e cozinha;Artigos de residência;-1,61;0,1983;0,1912;-0,003
 1200401;Município de Rio Branco;2026-09;12409;Conjunto infantil;Vestuário;-1,97;0,2018;0,1880;-0,004
 1200401;Município de Rio Branco;2026-09;47643;Conserto de bicicleta;Artigos de residência;6,01;0,1842;0,1866;0,011
-1200401;Município de Rio Branco;2026-09;7260;Banana - prata;Alimentação e bebidas;-1,62;0,1948;0,1862;-0,003
+1200401;Município de Rio Branco;2026-09;7260;Banana, prata;Alimentação e bebidas;-1,62;0,1948;0,1862;-0,003
 1200401;Município de Rio Branco;2026-09;7738;Brinquedo;Despesas pessoais;-5,35;0,2062;0,1848;-0,011
 1200401;Município de Rio Branco;2026-09;107672;Ensino médio;Educação;8,02;0,1765;0,1840;0,014
 1200401;Município de Rio Branco;2026-09;7789;Correio;Comunicação;4,72;0,1803;0,1821;0,009
@@ -2840,7 +2840,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1200401;Município de Rio Branco;2026-09;7378;Bolo;Alimentação e bebidas;5,37;0,1422;0,1429;0,008
 1200401;Município de Rio Branco;2026-09;7591;Vestido infantil;Vestuário;-0,10;0,1421;0,1414;-0,000
 1200401;Município de Rio Branco;2026-09;7643;Seguro voluntário de veículo;Transportes;-1,19;0,1440;0,1394;-0,002
-1200401;Município de Rio Branco;2026-09;101466;Peixe - curimatã;Alimentação e bebidas;0,72;0,1434;0,1393;0,001
+1200401;Município de Rio Branco;2026-09;101466;Peixe, curimatã;Alimentação e bebidas;0,72;0,1434;0,1393;0,001
 1200401;Município de Rio Branco;2026-09;107619;Queijo;Alimentação e bebidas;9,82;0,1326;0,1381;0,013
 1200401;Município de Rio Branco;2026-09;7530;Ventilador;Artigos de residência;-7,40;0,1500;0,1377;-0,011
 1200401;Município de Rio Branco;2026-09;7673;Psicotrópico e anorexígeno;Saúde e cuidados pessoais;5,23;0,1383;0,1365;0,007
@@ -2895,7 +2895,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 1200401;Município de Rio Branco;2026-09;107624;Sardinha em conserva;Alimentação e bebidas;6,02;0,0700;0,0720;0,004
 1200401;Município de Rio Branco;2026-09;107653;Multa;Transportes;0,00;0,0744;0,0718;0,000
 1200401;Município de Rio Branco;2026-09;7464;Água sanitária;Habitação;6,70;0,0703;0,0716;0,005
-1200401;Município de Rio Branco;2026-09;7279;Laranja - pera;Alimentação e bebidas;-9,40;0,0833;0,0702;-0,008
+1200401;Município de Rio Branco;2026-09;7279;Laranja, pera;Alimentação e bebidas;-9,40;0,0833;0,0702;-0,008
 1200401;Município de Rio Branco;2026-09;7270;Melancia;Alimentação e bebidas;0,79;0,0693;0,0674;0,001
 1200401;Município de Rio Branco;2026-09;7276;Uva;Alimentação e bebidas;-2,23;0,0693;0,0671;-0,002
 1200401;Município de Rio Branco;2026-09;47642;Conserto de aparelho celular;Artigos de residência;-4,33;0,0717;0,0666;-0,003
@@ -2960,7 +2960,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2111300;Município de São Luís;2026-09;101644;Produto para pele;Saúde e cuidados pessoais;7,80;0,6422;0,6869;0,050
 2111300;Município de São Luís;2026-09;7294;Alcatra;Alimentação e bebidas;16,66;0,6135;0,6743;0,102
 2111300;Município de São Luís;2026-09;7696;Plano de saúde;Saúde e cuidados pessoais;5,67;0,5867;0,5966;0,033
-2111300;Município de São Luís;2026-09;7260;Banana - prata;Alimentação e bebidas;5,93;0,5825;0,5853;0,035
+2111300;Município de São Luís;2026-09;7260;Banana, prata;Alimentação e bebidas;5,93;0,5825;0,5853;0,035
 2111300;Município de São Luís;2026-09;7195;Farinha de mandioca;Alimentação e bebidas;5,26;0,5565;0,5723;0,029
 2111300;Município de São Luís;2026-09;47644;Bermuda/short masculino;Vestuário;2,88;0,5517;0,5572;0,016
 2111300;Município de São Luís;2026-09;7212;Tomate;Alimentação e bebidas;12,88;0,5273;0,5458;0,068
@@ -2970,7 +2970,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2111300;Município de São Luís;2026-09;47648;Sandália/chinelo;Vestuário;4,42;0,5125;0,5076;0,023
 2111300;Município de São Luís;2026-09;47672;Combo de telefonia, internet e tv por assinatura;Comunicação;2,06;0,5121;0,5014;0,011
 2111300;Município de São Luís;2026-09;7631;Ônibus intermunicipal;Transportes;5,41;0,4838;0,4946;0,026
-2111300;Município de São Luís;2026-09;41129;Peixe - tambaqui;Alimentação e bebidas;-7,27;0,5276;0,4830;-0,038
+2111300;Município de São Luís;2026-09;41129;Peixe, tambaqui;Alimentação e bebidas;-7,27;0,5276;0,4830;-0,038
 2111300;Município de São Luís;2026-09;7542;Televisor;Artigos de residência;1,21;0,5019;0,4800;0,006
 2111300;Município de São Luís;2026-09;7686;Dentista;Saúde e cuidados pessoais;1,64;0,4840;0,4766;0,008
 2111300;Município de São Luís;2026-09;7373;Biscoito;Alimentação e bebidas;8,67;0,4378;0,4579;0,038
@@ -3005,7 +3005,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2111300;Município de São Luís;2026-09;12416;Exame de imagem;Saúde e cuidados pessoais;0,99;0,3263;0,3152;0,003
 2111300;Município de São Luís;2026-09;7692;Hospitalização e cirurgia;Saúde e cuidados pessoais;-1,06;0,3248;0,3105;-0,003
 2111300;Município de São Luís;2026-09;7293;Chã de dentro;Alimentação e bebidas;5,34;0,2943;0,3012;0,016
-2111300;Município de São Luís;2026-09;7320;Peixe - pescada;Alimentação e bebidas;8,93;0,2931;0,3006;0,026
+2111300;Município de São Luís;2026-09;7320;Peixe, pescada;Alimentação e bebidas;8,93;0,2931;0,3006;0,026
 2111300;Município de São Luís;2026-09;7300;Acém;Alimentação e bebidas;21,93;0,2483;0,2956;0,054
 2111300;Município de São Luís;2026-09;12421;Manicure;Despesas pessoais;9,37;0,2782;0,2939;0,026
 2111300;Município de São Luís;2026-09;7271;Melão;Alimentação e bebidas;7,84;0,2985;0,2909;0,023
@@ -3054,7 +3054,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2111300;Município de São Luís;2026-09;107633;Refrigerante e água mineral;Alimentação e bebidas;7,68;0,1579;0,1628;0,012
 2111300;Município de São Luís;2026-09;47641;Computador pessoal;Artigos de residência;16,77;0,1460;0,1627;0,024
 2111300;Município de São Luís;2026-09;12379;Carne-seca e de sol;Alimentação e bebidas;14,45;0,1456;0,1614;0,021
-2111300;Município de São Luís;2026-09;12222;Feijão - carioca (rajado);Alimentação e bebidas;54,31;0,1070;0,1611;0,058
+2111300;Município de São Luís;2026-09;12222;Feijão, carioca (rajado);Alimentação e bebidas;54,31;0,1070;0,1611;0,058
 2111300;Município de São Luís;2026-09;7669;Antialérgico e broncodilatador;Saúde e cuidados pessoais;4,66;0,1605;0,1606;0,007
 2111300;Município de São Luís;2026-09;107624;Sardinha em conserva;Alimentação e bebidas;8,45;0,1481;0,1579;0,013
 2111300;Município de São Luís;2026-09;7708;Absorvente higiênico;Saúde e cuidados pessoais;-0,55;0,1653;0,1563;-0,001
@@ -3081,8 +3081,8 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2111300;Município de São Luís;2026-09;7591;Vestido infantil;Vestuário;5,88;0,1270;0,1331;0,007
 2111300;Município de São Luís;2026-09;7622;Tecido;Vestuário;-4,37;0,1419;0,1325;-0,006
 2111300;Município de São Luís;2026-09;7418;Alho;Alimentação e bebidas;-6,83;0,1433;0,1323;-0,010
-2111300;Município de São Luís;2026-09;7175;Feijão - mulatinho;Alimentação e bebidas;33,03;0,1045;0,1320;0,035
-2111300;Município de São Luís;2026-09;7258;Banana - d'água;Alimentação e bebidas;-5,59;0,1360;0,1319;-0,008
+2111300;Município de São Luís;2026-09;7175;Feijão, mulatinho;Alimentação e bebidas;33,03;0,1045;0,1320;0,035
+2111300;Município de São Luís;2026-09;7258;Banana, d'água;Alimentação e bebidas;-5,59;0,1360;0,1319;-0,008
 2111300;Município de São Luís;2026-09;7187;Macarrão;Alimentação e bebidas;2,57;0,1243;0,1284;0,003
 2111300;Município de São Luís;2026-09;7459;Tinta;Habitação;6,73;0,1252;0,1279;0,008
 2111300;Município de São Luís;2026-09;107609;Chocolate em barra e bombom;Alimentação e bebidas;13,68;0,1149;0,1274;0,016
@@ -3098,8 +3098,8 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2111300;Município de São Luís;2026-09;7565;Cueca;Vestuário;-0,64;0,1141;0,1064;-0,001
 2111300;Município de São Luís;2026-09;7783;Caderno;Educação;-4,35;0,1126;0,1057;-0,005
 2111300;Município de São Luís;2026-09;7715;Costureira;Despesas pessoais;10,73;0,0995;0,1052;0,011
-2111300;Município de São Luís;2026-09;7279;Laranja - pera;Alimentação e bebidas;1,12;0,1144;0,1049;0,001
-2111300;Município de São Luís;2026-09;7309;Peixe - tainha;Alimentação e bebidas;-9,95;0,1179;0,1048;-0,012
+2111300;Município de São Luís;2026-09;7279;Laranja, pera;Alimentação e bebidas;1,12;0,1144;0,1049;0,001
+2111300;Município de São Luís;2026-09;7309;Peixe, tainha;Alimentação e bebidas;-9,95;0,1179;0,1048;-0,012
 2111300;Município de São Luís;2026-09;7543;Aparelho de som;Artigos de residência;0,77;0,1049;0,1039;0,001
 2111300;Município de São Luís;2026-09;7677;Antidiabético;Saúde e cuidados pessoais;6,64;0,1005;0,1028;0,007
 2111300;Município de São Luís;2026-09;7736;Bicicleta;Despesas pessoais;-4,67;0,1101;0,0999;-0,005
@@ -3118,7 +3118,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2111300;Município de São Luís;2026-09;47660;Pacote turístico;Despesas pessoais;-6,01;0,0957;0,0864;-0,006
 2111300;Município de São Luís;2026-09;47664;Educação de jovens e adultos;Educação;2,06;0,0872;0,0860;0,002
 2111300;Município de São Luís;2026-09;107611;Chocolate e achocolatado em pó;Alimentação e bebidas;0,92;0,0869;0,0849;0,001
-2111300;Município de São Luís;2026-09;7306;Peixe - corvina;Alimentação e bebidas;4,25;0,0809;0,0841;0,003
+2111300;Município de São Luís;2026-09;7306;Peixe, corvina;Alimentação e bebidas;4,25;0,0809;0,0841;0,003
 2111300;Município de São Luís;2026-09;107682;Curso de informática;Educação;-4,32;0,0885;0,0830;-0,004
 2111300;Município de São Luís;2026-09;47671;Serviços de streaming;Comunicação;2,02;0,0851;0,0830;0,002
 2111300;Município de São Luís;2026-09;7575;Saia;Vestuário;-0,09;0,0842;0,0821;-0,000
@@ -3201,7 +3201,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2800308;Município de Aracaju;2026-09;7686;Dentista;Saúde e cuidados pessoais;7,01;0,4516;0,4552;0,032
 2800308;Município de Aracaju;2026-09;7392;Café moído;Alimentação e bebidas;-13,99;0,5372;0,4527;-0,075
 2800308;Município de Aracaju;2026-09;107688;Acesso à internet;Comunicação;0,63;0,4681;0,4523;0,003
-2800308;Município de Aracaju;2026-09;7260;Banana - prata;Alimentação e bebidas;2,07;0,4548;0,4486;0,009
+2800308;Município de Aracaju;2026-09;7260;Banana, prata;Alimentação e bebidas;2,07;0,4548;0,4486;0,009
 2800308;Município de Aracaju;2026-09;7629;Táxi;Transportes;0,00;0,4601;0,4418;0,000
 2800308;Município de Aracaju;2026-09;7631;Ônibus intermunicipal;Transportes;-1,88;0,4542;0,4279;-0,009
 2800308;Município de Aracaju;2026-09;12398;Revestimento de piso e parede;Habitação;7,50;0,4183;0,4269;0,031
@@ -3229,7 +3229,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2800308;Município de Aracaju;2026-09;7573;Calça comprida feminina;Vestuário;4,44;0,2999;0,3034;0,013
 2800308;Município de Aracaju;2026-09;47653;Óculos de grau;Saúde e cuidados pessoais;18,04;0,2574;0,2906;0,046
 2800308;Município de Aracaju;2026-09;12412;Dermatológico;Saúde e cuidados pessoais;5,67;0,2860;0,2903;0,016
-2800308;Município de Aracaju;2026-09;12222;Feijão - carioca (rajado);Alimentação e bebidas;33,69;0,2035;0,2771;0,069
+2800308;Município de Aracaju;2026-09;12222;Feijão, carioca (rajado);Alimentação e bebidas;33,69;0,2035;0,2771;0,069
 2800308;Município de Aracaju;2026-09;7692;Hospitalização e cirurgia;Saúde e cuidados pessoais;8,73;0,2689;0,2752;0,023
 2800308;Município de Aracaju;2026-09;7298;Músculo;Alimentação e bebidas;11,39;0,2596;0,2750;0,030
 2800308;Município de Aracaju;2026-09;7639;Transporte escolar;Transportes;2,27;0,2792;0,2742;0,006
@@ -3333,8 +3333,8 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2800308;Município de Aracaju;2026-09;7575;Saia;Vestuário;6,23;0,0790;0,0784;0,005
 2800308;Município de Aracaju;2026-09;7230;Sorvete;Alimentação e bebidas;7,62;0,0731;0,0749;0,006
 2800308;Município de Aracaju;2026-09;7608;Sapato infantil;Vestuário;3,71;0,0750;0,0740;0,003
-2800308;Município de Aracaju;2026-09;7306;Peixe - corvina;Alimentação e bebidas;-1,30;0,0772;0,0739;-0,001
-2800308;Município de Aracaju;2026-09;12302;Peixe - tilápia;Alimentação e bebidas;2,54;0,0740;0,0725;0,002
+2800308;Município de Aracaju;2026-09;7306;Peixe, corvina;Alimentação e bebidas;-1,30;0,0772;0,0739;-0,001
+2800308;Município de Aracaju;2026-09;12302;Peixe, tilápia;Alimentação e bebidas;2,54;0,0740;0,0725;0,002
 2800308;Município de Aracaju;2026-09;7622;Tecido;Vestuário;3,91;0,0726;0,0721;0,003
 2800308;Município de Aracaju;2026-09;7555;Reforma de estofado;Artigos de residência;11,06;0,0688;0,0715;0,008
 2800308;Município de Aracaju;2026-09;7190;Flocos de milho;Alimentação e bebidas;3,83;0,0687;0,0687;0,003
@@ -3347,14 +3347,14 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 2800308;Município de Aracaju;2026-09;7242;Alface;Alimentação e bebidas;1,61;0,0632;0,0625;0,001
 2800308;Município de Aracaju;2026-09;7336;Presunto;Alimentação e bebidas;0,99;0,0634;0,0620;0,001
 2800308;Município de Aracaju;2026-09;7543;Aparelho de som;Artigos de residência;-2,06;0,0630;0,0585;-0,001
-2800308;Município de Aracaju;2026-09;7279;Laranja - pera;Alimentação e bebidas;-26,47;0,0824;0,0584;-0,022
+2800308;Município de Aracaju;2026-09;7279;Laranja, pera;Alimentação e bebidas;-26,47;0,0824;0,0584;-0,022
 2800308;Município de Aracaju;2026-09;107624;Sardinha em conserva;Alimentação e bebidas;2,48;0,0546;0,0538;0,001
 2800308;Município de Aracaju;2026-09;107645;Utensílios de plástico;Artigos de residência;0,94;0,0545;0,0526;0,001
 2800308;Município de Aracaju;2026-09;107611;Chocolate e achocolatado em pó;Alimentação e bebidas;7,98;0,0511;0,0525;0,004
 2800308;Município de Aracaju;2026-09;12403;Utensílios de vidro e louça;Artigos de residência;3,31;0,0518;0,0516;0,002
 2800308;Município de Aracaju;2026-09;47620;Açúcar demerara;Alimentação e bebidas;-12,07;0,0574;0,0493;-0,007
 2800308;Município de Aracaju;2026-09;7530;Ventilador;Artigos de residência;-2,55;0,0534;0,0490;-0,001
-2800308;Município de Aracaju;2026-09;7320;Peixe - pescada;Alimentação e bebidas;-3,59;0,0478;0,0435;-0,002
+2800308;Município de Aracaju;2026-09;7320;Peixe, pescada;Alimentação e bebidas;-3,59;0,0478;0,0435;-0,002
 2800308;Município de Aracaju;2026-09;47638;Artigos de iluminação;Artigos de residência;-0,94;0,0436;0,0421;-0,000
 2800308;Município de Aracaju;2026-09;7418;Alho;Alimentação e bebidas;-18,94;0,0493;0,0393;-0,009
 2800308;Município de Aracaju;2026-09;7783;Caderno;Educação;-1,83;0,0406;0,0379;-0,001
@@ -3444,7 +3444,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5002704;Município de Campo Grande;2026-09;7385;Óleo de soja;Alimentação e bebidas;-1,77;0,3142;0,2951;-0,006
 5002704;Município de Campo Grande;2026-09;107672;Ensino médio;Educação;7,34;0,2825;0,2913;0,021
 5002704;Município de Campo Grande;2026-09;47670;Tv por assinatura;Comunicação;7,72;0,2903;0,2909;0,022
-5002704;Município de Campo Grande;2026-09;7258;Banana - d'água;Alimentação e bebidas;-16,48;0,3254;0,2855;-0,054
+5002704;Município de Campo Grande;2026-09;7258;Banana, d'água;Alimentação e bebidas;-16,48;0,3254;0,2855;-0,054
 5002704;Município de Campo Grande;2026-09;47666;Livro didático;Educação;1,00;0,2913;0,2825;0,003
 5002704;Município de Campo Grande;2026-09;12428;Atividades físicas;Educação;1,54;0,2862;0,2797;0,004
 5002704;Município de Campo Grande;2026-09;7644;Óleo lubrificante;Transportes;17,39;0,2479;0,2751;0,043
@@ -3510,7 +3510,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5002704;Município de Campo Grande;2026-09;7266;Maçã;Alimentação e bebidas;-18,99;0,1808;0,1433;-0,034
 5002704;Município de Campo Grande;2026-09;107679;Curso preparatório;Educação;9,90;0,1352;0,1427;0,013
 5002704;Município de Campo Grande;2026-09;7579;Lingerie;Vestuário;1,96;0,1468;0,1417;0,003
-5002704;Município de Campo Grande;2026-09;7279;Laranja - pera;Alimentação e bebidas;-26,17;0,1879;0,1379;-0,049
+5002704;Município de Campo Grande;2026-09;7279;Laranja, pera;Alimentação e bebidas;-26,17;0,1879;0,1379;-0,049
 5002704;Município de Campo Grande;2026-09;7204;Mandioca (aipim);Alimentação e bebidas;5,83;0,1298;0,1346;0,008
 5002704;Município de Campo Grande;2026-09;47667;Livro não didático;Educação;5,53;0,1333;0,1341;0,007
 5002704;Município de Campo Grande;2026-09;7691;Exame de laboratório;Saúde e cuidados pessoais;6,07;0,1312;0,1332;0,008
@@ -3524,7 +3524,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5002704;Município de Campo Grande;2026-09;47642;Conserto de aparelho celular;Artigos de residência;11,31;0,1168;0,1221;0,013
 5002704;Município de Campo Grande;2026-09;47661;Serviço de higiene para animais;Despesas pessoais;8,46;0,1178;0,1218;0,010
 5002704;Município de Campo Grande;2026-09;107683;Autoescola;Educação;-3,87;0,1286;0,1215;-0,005
-5002704;Município de Campo Grande;2026-09;12222;Feijão - carioca (rajado);Alimentação e bebidas;19,40;0,0974;0,1187;0,019
+5002704;Município de Campo Grande;2026-09;12222;Feijão, carioca (rajado);Alimentação e bebidas;19,40;0,0974;0,1187;0,019
 5002704;Município de Campo Grande;2026-09;7453;Mudança;Habitação;11,89;0,1113;0,1177;0,013
 5002704;Município de Campo Grande;2026-09;47633;Sorvete;Alimentação e bebidas;8,44;0,1100;0,1136;0,009
 5002704;Município de Campo Grande;2026-09;7390;Suco de frutas;Alimentação e bebidas;1,50;0,1165;0,1133;0,002
@@ -3553,7 +3553,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5002704;Município de Campo Grande;2026-09;12414;Aparelho ortodôntico;Saúde e cuidados pessoais;3,21;0,0870;0,0862;0,003
 5002704;Município de Campo Grande;2026-09;7376;Pão doce;Alimentação e bebidas;6,44;0,0801;0,0827;0,005
 5002704;Município de Campo Grande;2026-09;12401;Móvel infantil;Artigos de residência;0,08;0,0875;0,0826;0,000
-5002704;Município de Campo Grande;2026-09;7259;Banana - maçã;Alimentação e bebidas;-3,84;0,0924;0,0817;-0,004
+5002704;Município de Campo Grande;2026-09;7259;Banana, maçã;Alimentação e bebidas;-3,84;0,0924;0,0817;-0,004
 5002704;Município de Campo Grande;2026-09;7608;Sapato infantil;Vestuário;12,88;0,0756;0,0807;0,010
 5002704;Município de Campo Grande;2026-09;47619;Macarrão instantâneo;Alimentação e bebidas;1,35;0,0799;0,0804;0,001
 5002704;Município de Campo Grande;2026-09;7341;Mortadela;Alimentação e bebidas;0,78;0,0794;0,0794;0,001
@@ -3576,7 +3576,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5002704;Município de Campo Grande;2026-09;7497;Tapete;Artigos de residência;-7,62;0,0675;0,0601;-0,005
 5002704;Município de Campo Grande;2026-09;7423;Maionese;Alimentação e bebidas;2,50;0,0587;0,0597;0,001
 5002704;Município de Campo Grande;2026-09;47639;Utensílios para bebê;Artigos de residência;-0,01;0,0613;0,0592;-0,000
-5002704;Município de Campo Grande;2026-09;12302;Peixe - tilápia;Alimentação e bebidas;1,99;0,0577;0,0575;0,001
+5002704;Município de Campo Grande;2026-09;12302;Peixe, tilápia;Alimentação e bebidas;1,99;0,0577;0,0575;0,001
 5002704;Município de Campo Grande;2026-09;12224;Balas;Alimentação e bebidas;1,96;0,0584;0,0567;0,001
 5002704;Município de Campo Grande;2026-09;7276;Uva;Alimentação e bebidas;5,00;0,0534;0,0565;0,003
 5002704;Município de Campo Grande;2026-09;107653;Multa;Transportes;0,00;0,0577;0,0555;0,000
@@ -3590,8 +3590,8 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5002704;Município de Campo Grande;2026-09;7412;Azeitona;Alimentação e bebidas;1,03;0,0383;0,0375;0,000
 5002704;Município de Campo Grande;2026-09;107624;Sardinha em conserva;Alimentação e bebidas;8,56;0,0360;0,0375;0,003
 5002704;Município de Campo Grande;2026-09;12397;Sal;Alimentação e bebidas;12,75;0,0337;0,0361;0,004
-5002704;Município de Campo Grande;2026-09;31694;Peixe - pintado;Alimentação e bebidas;-0,62;0,0269;0,0256;-0,000
-5002704;Município de Campo Grande;2026-09;41129;Peixe - tambaqui;Alimentação e bebidas;-1,17;0,0270;0,0253;-0,000
+5002704;Município de Campo Grande;2026-09;31694;Peixe, pintado;Alimentação e bebidas;-0,62;0,0269;0,0256;-0,000
+5002704;Município de Campo Grande;2026-09;41129;Peixe, tambaqui;Alimentação e bebidas;-1,17;0,0270;0,0253;-0,000
 5002704;Município de Campo Grande;2026-09;7411;Sopa desidratada;Alimentação e bebidas;-3,96;0,0189;0,0177;-0,001
 5208707;Município de Goiânia;2026-09;7657;Gasolina;Transportes;9,28;6,4955;6,6286;0,603
 5208707;Município de Goiânia;2026-09;7485;Energia elétrica residencial;Habitação;12,50;4,0198;4,0908;0,502
@@ -3676,7 +3676,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5208707;Município de Goiânia;2026-09;107661;Produto para higiene bucal;Saúde e cuidados pessoais;6,59;0,3000;0,3009;0,020
 5208707;Município de Goiânia;2026-09;7385;Óleo de soja;Alimentação e bebidas;-3,86;0,3262;0,2955;-0,013
 5208707;Município de Goiânia;2026-09;7542;Televisor;Artigos de residência;5,69;0,2925;0,2879;0,017
-5208707;Município de Goiânia;2026-09;12222;Feijão - carioca (rajado);Alimentação e bebidas;46,80;0,1975;0,2863;0,092
+5208707;Município de Goiânia;2026-09;12222;Feijão, carioca (rajado);Alimentação e bebidas;46,80;0,1975;0,2863;0,092
 5208707;Município de Goiânia;2026-09;7663;Anti-infeccioso e antibiótico;Saúde e cuidados pessoais;1,92;0,2932;0,2859;0,006
 5208707;Município de Goiânia;2026-09;7665;Anti-inflamatório e antirreumático;Saúde e cuidados pessoais;4,36;0,2747;0,2747;0,012
 5208707;Município de Goiânia;2026-09;107679;Curso preparatório;Educação;8,71;0,2622;0,2716;0,023
@@ -3716,7 +3716,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5208707;Município de Goiânia;2026-09;7230;Sorvete;Alimentação e bebidas;5,34;0,1730;0,1738;0,009
 5208707;Município de Goiânia;2026-09;7645;Acessórios e peças;Transportes;4,09;0,1705;0,1694;0,007
 5208707;Município de Goiânia;2026-09;12416;Exame de imagem;Saúde e cuidados pessoais;5,00;0,1680;0,1680;0,008
-5208707;Município de Goiânia;2026-09;7260;Banana - prata;Alimentação e bebidas;-5,59;0,1758;0,1665;-0,010
+5208707;Município de Goiânia;2026-09;7260;Banana, prata;Alimentação e bebidas;-5,59;0,1758;0,1665;-0,010
 5208707;Município de Goiânia;2026-09;7735;Instrumento musical;Despesas pessoais;-1,10;0,1697;0,1636;-0,002
 5208707;Município de Goiânia;2026-09;47655;Sobrancelha;Despesas pessoais;8,61;0,1609;0,1631;0,014
 5208707;Município de Goiânia;2026-09;7378;Bolo;Alimentação e bebidas;6,72;0,1576;0,1616;0,011
@@ -3759,8 +3759,8 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5208707;Município de Goiânia;2026-09;7465;Detergente;Habitação;8,90;0,1076;0,1106;0,010
 5208707;Município de Goiânia;2026-09;7418;Alho;Alimentação e bebidas;-6,89;0,1270;0,1092;-0,009
 5208707;Município de Goiânia;2026-09;107674;Pós-graduação;Educação;1,80;0,1114;0,1080;0,002
-5208707;Município de Goiânia;2026-09;7259;Banana - maçã;Alimentação e bebidas;-7,99;0,1179;0,1076;-0,009
-5208707;Município de Goiânia;2026-09;7279;Laranja - pera;Alimentação e bebidas;-10,16;0,1297;0,1053;-0,013
+5208707;Município de Goiânia;2026-09;7259;Banana, maçã;Alimentação e bebidas;-7,99;0,1179;0,1076;-0,009
+5208707;Município de Goiânia;2026-09;7279;Laranja, pera;Alimentação e bebidas;-10,16;0,1297;0,1053;-0,013
 5208707;Município de Goiânia;2026-09;107608;Massa semipreparada;Alimentação e bebidas;1,58;0,1073;0,1047;0,002
 5208707;Município de Goiânia;2026-09;107633;Refrigerante e água mineral;Alimentação e bebidas;6,37;0,1027;0,1039;0,007
 5208707;Município de Goiânia;2026-09;7579;Lingerie;Vestuário;5,96;0,0977;0,0999;0,006
@@ -3812,13 +3812,13 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5208707;Município de Goiânia;2026-09;7347;Carne de porco salgada e defumada;Alimentação e bebidas;0,10;0,0363;0,0352;0,000
 5208707;Município de Goiânia;2026-09;12224;Balas;Alimentação e bebidas;8,89;0,0308;0,0316;0,003
 5208707;Município de Goiânia;2026-09;7249;Cheiro-verde;Alimentação e bebidas;10,11;0,0285;0,0298;0,003
-5208707;Município de Goiânia;2026-09;107616;Peixe - merluza;Alimentação e bebidas;-0,04;0,0300;0,0285;-0,000
-5208707;Município de Goiânia;2026-09;12302;Peixe - tilápia;Alimentação e bebidas;-0,92;0,0291;0,0276;-0,000
-5208707;Município de Goiânia;2026-09;41129;Peixe - tambaqui;Alimentação e bebidas;2,57;0,0282;0,0271;0,001
+5208707;Município de Goiânia;2026-09;107616;Peixe, merluza;Alimentação e bebidas;-0,04;0,0300;0,0285;-0,000
+5208707;Município de Goiânia;2026-09;12302;Peixe, tilápia;Alimentação e bebidas;-0,92;0,0291;0,0276;-0,000
+5208707;Município de Goiânia;2026-09;41129;Peixe, tambaqui;Alimentação e bebidas;2,57;0,0282;0,0271;0,001
 5208707;Município de Goiânia;2026-09;107628;Milho-verde em conserva;Alimentação e bebidas;0,11;0,0224;0,0220;0,000
 5208707;Município de Goiânia;2026-09;7311;Camarão;Alimentação e bebidas;2,83;0,0207;0,0209;0,001
 5208707;Município de Goiânia;2026-09;7623;Artigos de armarinho;Vestuário;4,07;0,0180;0,0178;0,001
-5208707;Município de Goiânia;2026-09;47624;Peixe - aruanã;Alimentação e bebidas;3,63;0,0110;0,0109;0,000
+5208707;Município de Goiânia;2026-09;47624;Peixe, aruanã;Alimentação e bebidas;3,63;0,0110;0,0109;0,000
 5300108;Brasília;2026-09;7657;Gasolina;Transportes;5,43;7,1686;7,1724;0,389
 5300108;Brasília;2026-09;7696;Plano de saúde;Saúde e cuidados pessoais;5,77;5,9003;5,9760;0,340
 5300108;Brasília;2026-09;7434;Refeição;Alimentação e bebidas;5,20;4,4389;4,4439;0,231
@@ -3912,7 +3912,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5300108;Brasília;2026-09;7526;Máquina de lavar roupa;Artigos de residência;2,70;0,2090;0,2052;0,006
 5300108;Brasília;2026-09;107674;Pós-graduação;Educação;0,03;0,2095;0,2015;0,000
 5300108;Brasília;2026-09;7300;Acém;Alimentação e bebidas;11,39;0,1946;0,2002;0,022
-5300108;Brasília;2026-09;7260;Banana - prata;Alimentação e bebidas;-8,05;0,2183;0,1999;-0,018
+5300108;Brasília;2026-09;7260;Banana, prata;Alimentação e bebidas;-8,05;0,2183;0,1999;-0,018
 5300108;Brasília;2026-09;7738;Brinquedo;Despesas pessoais;4,11;0,1983;0,1971;0,008
 5300108;Brasília;2026-09;107609;Chocolate em barra e bombom;Alimentação e bebidas;11,15;0,1881;0,1961;0,021
 5300108;Brasília;2026-09;7789;Correio;Comunicação;4,72;0,1942;0,1955;0,009
@@ -3947,7 +3947,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5300108;Brasília;2026-09;12420;Fralda descartável;Saúde e cuidados pessoais;-1,57;0,1460;0,1394;-0,002
 5300108;Brasília;2026-09;47643;Conserto de bicicleta;Artigos de residência;11,17;0,1303;0,1379;0,015
 5300108;Brasília;2026-09;107688;Acesso à internet;Comunicação;0,63;0,1416;0,1370;0,001
-5300108;Brasília;2026-09;12222;Feijão - carioca (rajado);Alimentação e bebidas;48,55;0,0877;0,1301;0,043
+5300108;Brasília;2026-09;12222;Feijão, carioca (rajado);Alimentação e bebidas;48,55;0,0877;0,1301;0,043
 5300108;Brasília;2026-09;12402;Utensílios de metal;Artigos de residência;-1,25;0,1363;0,1297;-0,002
 5300108;Brasília;2026-09;7645;Acessórios e peças;Transportes;5,87;0,1263;0,1295;0,007
 5300108;Brasília;2026-09;47671;Serviços de streaming;Comunicação;2,02;0,1320;0,1280;0,003
@@ -3961,7 +3961,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5300108;Brasília;2026-09;7266;Maçã;Alimentação e bebidas;-7,58;0,1297;0,1177;-0,010
 5300108;Brasília;2026-09;7456;Material de eletricidade;Habitação;9,21;0,1107;0,1152;0,010
 5300108;Brasília;2026-09;7267;Mamão;Alimentação e bebidas;-1,79;0,1099;0,1147;-0,002
-5300108;Brasília;2026-09;7279;Laranja - pera;Alimentação e bebidas;-12,64;0,1331;0,1102;-0,017
+5300108;Brasília;2026-09;7279;Laranja, pera;Alimentação e bebidas;-12,64;0,1331;0,1102;-0,017
 5300108;Brasília;2026-09;7466;Sabão em pó;Habitação;-0,34;0,1167;0,1099;-0,000
 5300108;Brasília;2026-09;7271;Melão;Alimentação e bebidas;27,99;0,0960;0,1095;0,027
 5300108;Brasília;2026-09;7622;Tecido;Vestuário;-0,89;0,1118;0,1082;-0,001
@@ -3980,7 +3980,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5300108;Brasília;2026-09;7635;Metrô;Transportes;10,56;0,0870;0,0925;0,009
 5300108;Brasília;2026-09;7691;Exame de laboratório;Saúde e cuidados pessoais;3,65;0,0929;0,0920;0,003
 5300108;Brasília;2026-09;7215;Cebola;Alimentação e bebidas;109,54;0,0521;0,0889;0,057
-5300108;Brasília;2026-09;7258;Banana - d'água;Alimentação e bebidas;-10,44;0,0935;0,0882;-0,010
+5300108;Brasília;2026-09;7258;Banana, d'água;Alimentação e bebidas;-10,44;0,0935;0,0882;-0,010
 5300108;Brasília;2026-09;12434;Ar-condicionado;Artigos de residência;1,31;0,0885;0,0857;0,001
 5300108;Brasília;2026-09;7735;Instrumento musical;Despesas pessoais;2,35;0,0868;0,0857;0,002
 5300108;Brasília;2026-09;7617;Bijuteria;Vestuário;6,68;0,0838;0,0854;0,006
@@ -4012,7 +4012,7 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5300108;Brasília;2026-09;7210;Pimentão;Alimentação e bebidas;-16,37;0,0692;0,0584;-0,011
 5300108;Brasília;2026-09;7465;Detergente;Habitação;8,78;0,0555;0,0577;0,005
 5300108;Brasília;2026-09;7190;Flocos de milho;Alimentação e bebidas;2,24;0,0573;0,0558;0,001
-5300108;Brasília;2026-09;12302;Peixe - tilápia;Alimentação e bebidas;-0,56;0,0559;0,0556;-0,000
+5300108;Brasília;2026-09;12302;Peixe, tilápia;Alimentação e bebidas;-0,56;0,0559;0,0556;-0,000
 5300108;Brasília;2026-09;7265;Limão;Alimentação e bebidas;38,46;0,0593;0,0537;0,023
 5300108;Brasília;2026-09;47638;Artigos de iluminação;Artigos de residência;3,19;0,0546;0,0533;0,002
 5300108;Brasília;2026-09;12224;Balas;Alimentação e bebidas;7,26;0,0513;0,0530;0,004
@@ -4036,11 +4036,11 @@ area_codigo_ibge;area;mes;subitem_codigo_sidra;subitem;grupo;variacao_12_meses_p
 5300108;Brasília;2026-09;7497;Tapete;Artigos de residência;-2,04;0,0301;0,0279;-0,001
 5300108;Brasília;2026-09;47635;Sabão líquido;Habitação;1,07;0,0289;0,0276;0,000
 5300108;Brasília;2026-09;7220;Açúcar refinado;Alimentação e bebidas;-15,14;0,0340;0,0275;-0,005
-5300108;Brasília;2026-09;41129;Peixe - tambaqui;Alimentação e bebidas;-0,22;0,0268;0,0257;-0,000
-5300108;Brasília;2026-09;7176;Feijão - preto;Alimentação e bebidas;20,69;0,0215;0,0249;0,004
+5300108;Brasília;2026-09;41129;Peixe, tambaqui;Alimentação e bebidas;-0,22;0,0268;0,0257;-0,000
+5300108;Brasília;2026-09;7176;Feijão, preto;Alimentação e bebidas;20,69;0,0215;0,0249;0,004
 5300108;Brasília;2026-09;7783;Caderno;Educação;-9,23;0,0259;0,0226;-0,002
 5300108;Brasília;2026-09;7406;Palmito em conserva;Alimentação e bebidas;9,20;0,0170;0,0181;0,002
-5300108;Brasília;2026-09;12431;Peixe - salmão;Alimentação e bebidas;4,37;0,0179;0,0175;0,001
+5300108;Brasília;2026-09;12431;Peixe, salmão;Alimentação e bebidas;4,37;0,0179;0,0175;0,001
 5300108;Brasília;2026-09;7246;Couve-flor;Alimentação e bebidas;19,94;0,0127;0,0141;0,003
-5300108;Brasília;2026-09;47623;Peixe - filhote;Alimentação e bebidas;6,72;0,0129;0,0138;0,001
+5300108;Brasília;2026-09;47623;Peixe, filhote;Alimentação e bebidas;6,72;0,0129;0,0138;0,001
 5300108;Brasília;2026-09;7311;Camarão;Alimentação e bebidas;-3,14;0,0134;0,0129;-0,000

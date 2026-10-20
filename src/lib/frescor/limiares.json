@@ -183,6 +183,26 @@
       ],
       "referenciaRotulo": "focos de calor"
     },
+    "inflacao": {
+      "nome": "Inflação por cidade (IPCA)",
+      "nomeEn": "Inflation by city (IPCA)",
+      "rotulo": "Fonte: IBGE, IPCA",
+      "cadencia": "mensal",
+      "nota": "O IBGE divulga o IPCA do mês anterior entre os dias 8 e 12. A plataforma recoleta nos dias 10 e 14 e só republica quando um número muda; a data é a da captura que trouxe o mês novo.",
+      "publicacao": [
+        {
+          "arquivo": "public/inflacao/gold/ipca.json",
+          "campo": "capturado_em"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/inflacao/gold/ipca.json",
+          "campo": "ultimo_mes"
+        }
+      ],
+      "referenciaRotulo": "IPCA"
+    },
     "contas-federais": {
       "nome": "Contas federais",
       "nomeEn": "Federal accounts",

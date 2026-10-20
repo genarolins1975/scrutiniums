@@ -1,0 +1,26 @@
+/* Acabamento do painel Inflação por cidade (Observatório das Famílias, acento bronze). */
+.dominio-familias {
+  background: #F8F7F2;
+}
+.dominio-familias main .text-carvao { color: #182B36; }
+.dominio-familias main .text-mineral { color: #5B6469; }
+.dominio-familias main :is(button, select, summary) { min-height: 44px; }
+.dominio-familias :is(a, button, select, input, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--cor-bronze-dark);
+  outline-offset: 4px;
+}
+.dominio-familias .familias-abertura { padding-bottom: 2rem; }
+.dominio-familias .familias-secao > h2 { text-wrap: balance; }
+.dominio-familias main :is(h1, h2, h3) { overflow-wrap: anywhere; }
+.dominio-familias main select { max-width: 100%; }
+@media (min-width: 1024px) {
+  .dominio-familias .familias-abertura { padding-top: 2.5rem; }
+  .dominio-familias .familias-secao { padding-block: 3rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dominio-familias *, .dominio-familias *::before, .dominio-familias *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
