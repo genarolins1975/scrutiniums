@@ -28,8 +28,8 @@ const GUIAS: Record<OpcaoObservatorioId, { chamada: string; temas: [string, stri
     temas: [["Recursos e despesas", "Série financeira e composição dos gastos"], ["Tempos e filas", "Duração dos processos, pendências e congestionamento"], ["Comparar tribunais", "57 fichas e comparação dentro de cada ramo"]],
   },
   saneamento: {
-    chamada: "Água, esgoto, preço regulado e metas em cada município.",
-    temas: [["Acesso e carência", "Censo 2022 e SINISA 2024 nos 5.570 municípios"], ["Preço regulado", "Tarifas verificadas, decisões dos reguladores e conta das famílias"], ["Prestadores, investimento e metas", "Quem presta, quem regula, quanto se investe e quanto falta"]],
+    chamada: "Água, esgoto, tarifas e metas em cada município.",
+    temas: [["Acesso e carência", "Censo 2022 e SINISA 2024 nos 5.570 municípios"], ["Tarifa", "Tabelas verificadas, decisões dos reguladores e conta das famílias"], ["Prestadores, investimento e metas", "Quem presta, quem regula, quanto se investe e quanto falta"]],
   },
   gas: {
     chamada: "Do poço ao botijão e ao gás canalizado.",

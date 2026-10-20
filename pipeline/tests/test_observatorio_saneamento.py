@@ -107,6 +107,26 @@ class ObservatorioSaneamento(unittest.TestCase):
             soma = gold.soma_parcial([p[campo] for p in self.g["prestadores"]])
             self.assertAlmostEqual(soma, br["sinisa"][servico]["investimento"]["total"], places=2, msg=campo)
 
+    def test_consumo_per_capita_pela_formula_do_iag2006(self):
+        # (GTA1211 + GTA1207) / 365 / (GTA0001 + GTA0002) x 1.000.000; linha sem campo obrigatório ou sem população fica fora
+        linhas = [
+            {"GTA1211": 365, "GTA1207": 0, "GTA0001": 4000, "GTA0002": 1000},
+            {"GTA1211": "730,0", "GTA1207": "0", "GTA0001": 10000, "GTA0002": 0},
+            {"GTA1211": 999, "GTA1207": None, "GTA0001": 1, "GTA0002": 1},
+            {"GTA1211": 999, "GTA1207": 1, "GTA0001": 0, "GTA0002": 0},
+        ]
+        v, n = gold.consumo_per_capita(linhas)
+        self.assertEqual(n, 2)
+        self.assertAlmostEqual(v, (365 + 730) / 365 / 15000 * 1_000_000, places=2)
+        self.assertEqual(gold.consumo_per_capita([{"GTA1211": None}]), (None, 0))
+        # ausência não vira zero: prestador sem linha válida fica sem valor
+        for p in self.g["prestadores"]:
+            if p["consumo_per_capita_municipios"] == 0:
+                self.assertIsNone(p["consumo_per_capita_agua"], p["id"])
+        conf = {c["id"]: c["valores"] for c in self.g["meta"]["conferencias"]}["agua_consumo_per_capita_sem_media_anual"]
+        self.assertGreater(conf["municipios_comparados"], 5000)
+        self.assertIsNotNone(conf["brasil_publicado_l_hab_dia"])
+
     def test_cobertura(self):
         cob = self.g["meta"]["cobertura"]
         self.assertEqual(cob["municipios_ibge"], 5571)

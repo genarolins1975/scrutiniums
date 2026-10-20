@@ -418,7 +418,7 @@ function porta_energia(): Porta {
   return {
     ...identidade("energia-e-infraestrutura"),
     resumo:
-      "Eletricidade, gás, água e esgoto e transporte: oferta, preço regulado e acesso, a partir dos dados abertos do ONS, da ANEEL, da ANP, do IBGE e do SINISA.",
+      "Eletricidade, gás, água e esgoto e transporte: oferta, tarifas e acesso, a partir dos dados abertos do ONS, da ANEEL, da ANP, do IBGE e do SINISA.",
     numeros: [
       numero(
         {

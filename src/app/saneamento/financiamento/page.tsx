@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Indisponivel, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, Indisponivel, MarcaAutodeclarado, NestaPagina, Nota, Numeros, Ressalva, RessalvaAutodeclarado, Secao } from "@/components/saneamento/Editorial";
+import { AUTODECLARADO } from "@/lib/saneamento/autodeclarado";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
@@ -16,7 +17,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "De onde vem o dinheiro do saneamento?",
   description:
-    "Investimento em água e esgoto declarado ao SINISA 2024 por origem dos recursos (próprios, onerosos e não onerosos), por quem investe (prestador ou Estado), por natureza jurídica do prestador e por UF.",
+    "Investimento em água e esgoto autodeclarado pelos prestadores ao SINISA 2024, sem conferência com demonstrações financeiras auditadas, por origem dos recursos (próprios, onerosos e não onerosos), por quem investe (o prestador ou o governo estadual), por natureza jurídica do prestador e por UF.",
   alternates: { canonical: "/saneamento/financiamento" },
 };
 
@@ -34,17 +35,18 @@ export default function Pagina() {
     const nome = s === "agua" ? "Água" : "Esgoto";
     return [
       { id: `${s}-p`, rotulo: `${nome}, prestador`, ...Object.fromEntries(FONTES.map((f) => [f.id, (inv?.prestador_fontes?.[f.id] ?? 0) / 1e9])) },
-      { id: `${s}-e`, rotulo: `${nome}, Estado`, ...Object.fromEntries(FONTES.map((f) => [f.id, (inv?.estado_fontes?.[f.id] ?? 0) / 1e9])) },
+      { id: `${s}-e`, rotulo: `${nome}, governo estadual`, ...Object.fromEntries(FONTES.map((f) => [f.id, (inv?.estado_fontes?.[f.id] ?? 0) / 1e9])) },
     ];
   });
 
+  // valor autodeclarado não vira ranking: UFs em ordem alfabética (src/lib/saneamento/autodeclarado.ts)
   const porUf = ufs
     .map((u) => {
       const f = fontesDe(u);
       const t = f.proprios + f.onerosos + f.nao_onerosos;
       return { id: u.id, rotulo: u.nome, proprios: razaoPct(f.proprios, t), onerosos: razaoPct(f.onerosos, t), nao_onerosos: razaoPct(f.nao_onerosos, t) };
     })
-    .sort((a, b) => (b.onerosos ?? 0) + (b.nao_onerosos ?? 0) - ((a.onerosos ?? 0) + (a.nao_onerosos ?? 0)));
+    .sort((a, b) => a.rotulo.localeCompare(b.rotulo, "pt-BR"));
 
   // Natureza jurídica: soma das parcelas do prestador declaradas em cada vínculo prestador × município.
   const natureza = new Map(prestadores().map((p) => [p.id, p.natureza ?? "Não informada"]));
@@ -75,12 +77,18 @@ export default function Pagina() {
           titulo={cap.pergunta}
           texto={
             <p>
-              O SINISA pede a quem investe que separe a origem do dinheiro: recursos próprios (em geral, a receita das tarifas), recursos onerosos
+              O formulário financeiro do SINISA, preenchido pelo prestador, separa a origem do dinheiro investido por ele e pelo governo estadual:
+              recursos próprios (em geral, a receita das tarifas), recursos onerosos
               (empréstimos e financiamentos, que serão pagos depois, também com tarifa) e recursos não onerosos (transferências a fundo perdido e
               doações). Quem suporta o custo, ao final, é o usuário pela tarifa ou o contribuinte pelo orçamento.
             </p>
           }
-          recorte={<>Investimento de 2024 declarado por prestadores e Estados ao SINISA, valores correntes. As fontes somam {reaisCompacto(totalFontes)}.</>}
+          recorte={
+            <>
+              Investimento de 2024 declarado ao SINISA pelos prestadores, o próprio e o do governo estadual, em reais correntes, {AUTODECLARADO}. As
+              fontes somam {reaisCompacto(totalFontes)}.
+            </>
+          }
           situacao={cap.situacao}
           pendencia={cap.pendencia}
         />
@@ -100,9 +108,16 @@ export default function Pagina() {
           itens={FONTES.map((f) => ({
             rotulo: f.rotulo,
             valor: reaisCompacto(fb[f.id]),
-            contexto: <>{numero(razaoPct(fb[f.id], totalFontes), 1)}% do investimento com origem declarada, água e esgoto, prestador e Estado.</>,
+            contexto: (
+              <>
+                {numero(razaoPct(fb[f.id], totalFontes), 1)}% do investimento com origem declarada, água e esgoto, do prestador e do governo estadual;
+                reais correntes de 2024.
+                <MarcaAutodeclarado className="mt-1" />
+              </>
+            ),
           }))}
         />
+        <RessalvaAutodeclarado />
 
         <Secao
           id="quem-paga"
@@ -112,9 +127,13 @@ export default function Pagina() {
           <TresTs proprios={fb.proprios} onerosos={fb.onerosos} naoOnerosos={fb.nao_onerosos} />
         </Secao>
 
-        <Secao id="quem" titulo="Quem investe e com que dinheiro?" texto="Investimento de 2024 por serviço, por quem declara e por origem dos recursos, em bilhões de reais correntes.">
+        <Secao
+          id="quem"
+          titulo="Quem investe e com que dinheiro?"
+          texto="Investimento de 2024 por serviço, por quem investe (o prestador ou o governo estadual, segundo o prestador) e por origem dos recursos, em bilhões de reais correntes."
+        >
           <GraficoBarras
-            titulo="Investimento por origem dos recursos (R$ bilhões correntes de 2024)"
+            titulo="Investimento autodeclarado por origem dos recursos (R$ bilhões correntes de 2024)"
             dados={quem}
             chaveCategoria="id"
             chaveRotulo="rotulo"
@@ -136,7 +155,7 @@ export default function Pagina() {
           texto="Parcela do investimento declarada pelos prestadores, somada por natureza jurídica do prestador, em bilhões de reais. Não inclui a parcela dos Estados."
         >
           <GraficoBarras
-            titulo="Investimento do prestador por natureza jurídica e origem (R$ bilhões correntes de 2024)"
+            titulo="Investimento autodeclarado do prestador por natureza jurídica e origem (R$ bilhões correntes de 2024)"
             dados={nat}
             chaveCategoria="id"
             chaveRotulo="rotulo"
@@ -148,7 +167,7 @@ export default function Pagina() {
           />
           <Nota>
             Soma por natureza: {reaisCompacto(somaNat)}; parcela do prestador no consolidado nacional: {reaisCompacto(somaPrestador)}. A soma dos
-            vínculos prestador × município reproduz o consolidado oficial por origem de recursos.
+            vínculos prestador × município reproduz o consolidado oficial por origem de recursos. Valores {AUTODECLARADO}.
           </Nota>
           <Ressalva
             permite="Comparar a composição das fontes entre empresas privadas, companhias estaduais, autarquias e prestação direta municipal."
@@ -156,9 +175,13 @@ export default function Pagina() {
           />
         </Secao>
 
-        <Secao id="por-uf" titulo="Onde o investimento depende mais de financiamento ou de transferência?" texto="Composição percentual do investimento de 2024 por origem, prestador e Estado somados, ordenada pela parcela não própria.">
+        <Secao
+          id="por-uf"
+          titulo="Onde o investimento depende mais de financiamento ou de transferência?"
+          texto="Composição percentual do investimento de 2024 por origem, do prestador e do governo estadual somados. UFs em ordem alfabética: o valor é autodeclarado e não forma ranking."
+        >
           <GraficoBarras
-            titulo="Origem do investimento em água e esgoto, por UF (% do investimento com origem declarada)"
+            titulo="Origem do investimento autodeclarado em água e esgoto, por UF (% do investimento com origem declarada)"
             dados={porUf}
             chaveCategoria="id"
             chaveRotulo="rotulo"
@@ -172,7 +195,10 @@ export default function Pagina() {
             permite="Ver em que UFs o investimento de 2024 dependeu mais de dívida ou de transferências."
             naoPermite="Tratar um ano como padrão: a composição muda com a liberação de financiamentos e programas federais."
           />
-          <Fonte>Ministério das Cidades, SINISA 2025 (ano de referência 2024), consolidado por UF e base prestador × município, campos GFI2021 a GFI2023, GFI2033 a GFI2035, GFI2121 a GFI2123 e GFI2133 a GFI2135.</Fonte>
+          <Fonte>
+            Ministério das Cidades, SINISA 2025 (ano de referência 2024), consolidado por UF e base prestador × município, campos GFI2021 a GFI2023,
+            GFI2033 a GFI2035, GFI2121 a GFI2123 e GFI2133 a GFI2135, {AUTODECLARADO}.
+          </Fonte>
         </Secao>
 
         <Secao

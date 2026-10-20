@@ -10,7 +10,9 @@ import { agregado, agregados, meta, municipios } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
 import { capituloPorSlug } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
-import { inteiro, numero } from "@/lib/saneamento/formato";
+import { data, inteiro, numero } from "@/lib/saneamento/formato";
+import { medida } from "@/lib/saneamento/medidas";
+import { ATENDIMENTO_REDE, CASAS_ATENDIMENTO } from "@/lib/saneamento/atendimento";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -25,6 +27,8 @@ const ATLAS = [
   "c22-esgoto-sem-rede-nem-septica",
   "c22-esgoto-sem-rede",
   "c22-agua-ligacao-outra-fonte",
+  "sinisa-agua-atendida",
+  "sinisa-esgoto-atendida",
   "sinisa-agua-nao-atendida",
   "sinisa-esgoto-nao-atendida",
   "evolucao-agua-rede",
@@ -78,6 +82,11 @@ export default function Pagina() {
     referencia: razaoPct(u.censo2010?.esgoto_rede_pluvial, u.censo2010?.esgoto_moradores),
   }));
 
+  // População atendida com rede declarada pelos prestadores (IAG0001 e IES0001), consolidado oficial por UF, na ordem do atendimento de água
+  const atendimentoUf = ufs
+    .map((u) => ({ id: u.id, rotulo: u.nome, agua: u.sinisa.agua.indicadores.IAG0001 ?? null, esgoto: u.sinisa.esgoto.indicadores.IES0001 ?? null }))
+    .sort((a, b) => (b.agua ?? -1) - (a.agua ?? -1) || a.rotulo.localeCompare(b.rotulo, "pt-BR"));
+
   const composicao = [br!, ...ufs].map((a) => {
     const f = a.censo2022.moradores?.agua.sem_ligacao_fontes;
     const tot = a.censo2022.moradores?.agua.sem_ligacao ?? null;
@@ -112,6 +121,7 @@ export default function Pagina() {
         <NestaPagina
           itens={[
             { id: "atlas", rotulo: "Onde faltam" },
+            { id: "atendimento-declarado", rotulo: "Atendidos com rede" },
             { id: "pessoas-ou-proporcao", rotulo: "Pessoas ou proporção" },
             { id: "sem-rede-usa", rotulo: "Quem não tem rede usa o quê" },
             { id: "evolucao", rotulo: "Evolução entre os Censos" },
@@ -164,6 +174,64 @@ export default function Pagina() {
           <Fonte>
             IBGE, Censo Demográfico 2022, tabelas SIDRA 6894 e 7555; Censo 2010, tabelas 3217 e 3216; Ministério das Cidades, SINISA 2025
             (ano de referência 2024), base municipal com retificação de água de 25/05/2026. Malha municipal do IBGE.
+          </Fonte>
+        </Secao>
+
+        <Secao
+          id="atendimento-declarado"
+          titulo="Quanto da população a rede atende, segundo os prestadores?"
+          texto="A população que cada prestador declara atender com rede de água e com rede coletora de esgoto, dividida pela população estimada pelo IBGE para 2024. Mede quem o prestador declara atender, não quem falta, e não se soma ao Censo."
+        >
+          <Numeros
+            colunas={2}
+            itens={[
+              {
+                rotulo: `${ATENDIMENTO_REDE.agua.rotulo} (IAG0001), Brasil, 2024`,
+                valor: `${numero(br?.sinisa.agua.indicadores.IAG0001, CASAS_ATENDIMENTO)}%`,
+                contexto: (
+                  <>
+                    {inteiro(br?.sinisa.agua.pop_atendida)} pessoas atendidas declaradas, de {inteiro(br?.cobertura_sinisa.agua_dfe0001)} residentes dos{" "}
+                    {inteiro(br?.cobertura_sinisa.agua_participantes)} municípios do módulo de água. Fórmula: {ATENDIMENTO_REDE.agua.formula}.
+                  </>
+                ),
+              },
+              {
+                rotulo: `${ATENDIMENTO_REDE.esgoto.rotulo} (IES0001), Brasil, 2024`,
+                valor: `${numero(br?.sinisa.esgoto.indicadores.IES0001, CASAS_ATENDIMENTO)}%`,
+                contexto: (
+                  <>
+                    {inteiro(br?.sinisa.esgoto.pop_atendida)} pessoas atendidas declaradas, de {inteiro(br?.cobertura_sinisa.esgoto_dfe0001)} residentes no
+                    consolidado de esgoto, que inclui os {inteiro(br?.cobertura_sinisa.esgoto_delegacao_sem_atendimento)} municípios com delegação sem
+                    atendimento. Fórmula: {ATENDIMENTO_REDE.esgoto.formula}.
+                  </>
+                ),
+              },
+            ]}
+          />
+          <div className="mt-8">
+            <GraficoBarras
+              titulo="População atendida com rede de água (IAG0001) e com rede coletora de esgoto (IES0001), por UF (% da população estimada, 2024)"
+              dados={atendimentoUf}
+              chaveCategoria="id"
+              chaveRotulo="rotulo"
+              series={[
+                { id: "agua", rotulo: "Rede de água (IAG0001)", cor: "var(--cor-obee)" },
+                { id: "esgoto", rotulo: "Rede coletora de esgoto (IES0001)", cor: "var(--serie-comp-3)" },
+              ]}
+              unidade="%"
+              casas={1}
+              orientacao="horizontal"
+              limiteInicial={12}
+            />
+          </div>
+          <Ressalva permite={medida(ATENDIMENTO_REDE.agua.medida).permite} naoPermite={medida(ATENDIMENTO_REDE.agua.medida).naoPermite} />
+          <Nota>
+            Esgoto: {medida(ATENDIMENTO_REDE.esgoto.medida).naoPermite} No atlas acima, as duas medidas aparecem por município, em percentual e em
+            pessoas atendidas.
+          </Nota>
+          <Fonte>
+            Ministério das Cidades, SINISA 2025 (ano de referência 2024), consolidado por UF e base municipal com retificação de água de{" "}
+            {data(m?.sinisa.retificacao_agua_municipal)}; população residente estimada pelo IBGE para 2024 (DFE0001).
           </Fonte>
         </Secao>
 
