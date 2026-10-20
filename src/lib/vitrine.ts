@@ -23,7 +23,7 @@ import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
 import { orgaosDasFontes } from "@/lib/energia/dados";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
-import { CAPITULOS, PAINEIS_COM_DADOS, PAINEL_AREAS } from "@/lib/contas-publicas/catalogo";
+import { CAPITULOS, PAINEIS_COM_DADOS, PAINEL_AREAS, PAINEL_PREVIDENCIA } from "@/lib/contas-publicas/catalogo";
 import { MEDIDAS } from "@/lib/contas-estaduais/comparacao";
 import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
 import catalogoEstadual from "@/lib/contas-estaduais/catalogo.json";
@@ -175,13 +175,15 @@ function vitrineContas(): Vitrine {
   });
   // complemento do Panorama, não capítulo: entra entre os painéis, fora da contagem de capítulos com dados
   paineis.unshift({ titulo: PAINEL_AREAS.titulo, href: PAINEL_AREAS.href, descricao: PAINEL_AREAS.pergunta });
+  // painel Previdência e INSS (20/10/2026): abre a lista, porque responde à consulta pessoal do tema (o INSS na cidade do leitor)
+  paineis.unshift({ titulo: PAINEL_PREVIDENCIA.titulo, href: PAINEL_PREVIDENCIA.href, descricao: PAINEL_PREVIDENCIA.pergunta });
   return {
     id: "contas",
     imagem: "/home/contas.webp",
     contagem: { valor: `${publicados} de ${total}`, unidade: "capítulos com dados" },
     contagemIndice: { tipo: "parcial", publicados, total, unidade: "capitulos_com_dados" },
     paineis,
-    situacao: `Orçamento, resultado fiscal, dívida, gastos tributários, restos a pagar, custos e entregas físicas com fonte e data em cada painel. Os outros ${CAPITULOS.length - PAINEIS_COM_DADOS.length} capítulos do desenho estão em preparação, fora da navegação.`,
+    situacao: `Orçamento, previdência e INSS, resultado fiscal, dívida, gastos tributários, restos a pagar, custos e entregas físicas com fonte e data em cada painel. Os outros ${CAPITULOS.length - PAINEIS_COM_DADOS.length} capítulos do desenho estão em preparação, fora da navegação.`,
     metodologia: { href: "/contas-publicas/metodologia", rotulo: "Metodologia" },
   };
 }

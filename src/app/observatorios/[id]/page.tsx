@@ -61,7 +61,7 @@ const CONTEUDO: Partial<Record<ObservatorioId, () => { descricao: string; escala
     metodo: <MetodoServicos />,
   }),
   "contas-publicas": () => ({
-    descricao: "Arrecadação, despesas e resultado do governo federal, a execução do orçamento e as contas dos 27 estados, a partir do Tesouro Nacional, do SIOP e do Siconfi. Valores nominais, cada um com o período do seu demonstrativo.",
+    descricao: "Arrecadação, despesas e resultado do governo federal, a execução do orçamento, os benefícios do INSS e as contas dos 27 estados, a partir do Tesouro Nacional, do SIOP, do Ministério da Previdência Social e do Siconfi. Valores nominais, cada um com o período do seu demonstrativo.",
     escala: escalaContas(),
     artefato: <ImpostoResultado fluxo={fluxoImposto()} />,
     metodo: <MetodoContas />,

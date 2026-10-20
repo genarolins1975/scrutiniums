@@ -203,6 +203,26 @@
       ],
       "referenciaRotulo": "IPCA"
     },
+    "previdencia": {
+      "nome": "Previdência e INSS",
+      "nomeEn": "Social security (INSS)",
+      "rotulo": "Fontes: Ministério da Previdência Social e Tesouro Nacional",
+      "cadencia": "mensal",
+      "nota": "O Ministério da Previdência publica o boletim estatístico do mês cerca de quatro semanas depois, e o Tesouro publica o Resultado do Tesouro Nacional no fim do mês seguinte; o arquivo por município é anual. A plataforma recoleta nos dias 2 e 18 e só republica quando um número muda; a data é a da captura que trouxe o dado novo.",
+      "publicacao": [
+        {
+          "arquivo": "public/previdencia/gold/previdencia.json",
+          "campo": "capturado_em"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/previdencia/gold/previdencia.json",
+          "campo": "referencia"
+        }
+      ],
+      "referenciaRotulo": "BEPS"
+    },
     "contas-federais": {
       "nome": "Contas federais",
       "nomeEn": "Federal accounts",
