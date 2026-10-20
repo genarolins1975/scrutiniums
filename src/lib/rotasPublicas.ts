@@ -97,6 +97,9 @@ export const APERITIVOS: readonly Aperitivo[] = Object.freeze([
   },
   { tema: "Eficiência Estatal", rota: "/eficiencia-estatal", versaoAberta: "/aperitivo/minha-capital", painelCompleto: "/eficiencia-estatal" },
   { tema: "Gás de cozinha", rota: "/gas-natural/gas-de-cozinha", versaoAberta: "/aperitivo/gas-de-cozinha", painelCompleto: "/gas-natural/gas-de-cozinha" },
+  // painel novo Previdência e INSS (Contas Públicas), aprovado pelo dono em 20/10/2026: sem sessão, "Quanto o INSS paga na
+  // minha cidade?" (só o município escolhido, último dezembro); com sessão, o painel completo no mesmo endereço
+  { tema: "Previdência", rota: "/contas-publicas/previdencia", versaoAberta: "/aperitivo/previdencia", painelCompleto: "/contas-publicas/previdencia" },
   // apresentação do Crédito, aberta desde 13/10/2026: é a página única do tema; o observatório completo segue com conta
   { tema: "Crédito", rota: "/observatorio-do-credito", versaoAberta: null, painelCompleto: "/observatorio" },
 ] satisfies Aperitivo[]);

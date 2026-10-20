@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "d932a71658c21a96d3844ed462f3be1a0b7b2937f80a5b937f3a8e5ad23f56df",
-    "arquivos_analisados": 1428,
-    "fontes_sha256": "fa0908fa109b07b916d8a4bfc726f5c024ab704390dd1ca38aeddc1452dc572d",
-    "pendencias_sha256": "72bcf94065e5d97c671e30eb632f8d5d322ceb8a3561149c2132cb2682026068",
+    "arquivos_analisados": 1443,
+    "fontes_sha256": "7ef5721fa6bb7f67aa9713727cdd82afcea495eafb85ed3e233f5cb19399a5d9",
+    "pendencias_sha256": "8143d34932a4e8cf792bc7e2924b7bcad209286089c0c8b76b6ac6ceb869c6f3",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -149,6 +149,11 @@
         "path": "src/components/observatorios/ParaVoce.module.css",
         "dominio": "plataforma",
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/previdencia/previdencia.css",
+        "dominio": "plataforma",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       }
     ],
     "exclusoes": [],
@@ -158,20 +163,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 356,
+        "arquivos": 366,
         "candidatos": {
-          "jsx_text": 1533,
-          "atributos": 394,
-          "props": 1030,
-          "outros_literais": 7211,
-          "templates": 925,
-          "expressoes_nao_resolvidas": 5518,
-          "chaves_objetos": 5758
+          "jsx_text": 1793,
+          "atributos": 441,
+          "props": 1077,
+          "outros_literais": 7616,
+          "templates": 985,
+          "expressoes_nao_resolvidas": 6013,
+          "chaves_objetos": 6094
         },
         "exclusoes": {
-          "importacoes": 1585,
-          "atributos_tecnicos": 3157,
-          "tipos": 376
+          "importacoes": 1615,
+          "atributos_tecnicos": 3349,
+          "tipos": 424
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -180,17 +185,17 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 22369,
+        "candidatos_nao_catalogados": 24019,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 45,
+        "paginas_pt": 46,
         "paginas_en": 13,
         "handlers": 37,
         "templates_com_parametros": 6,
-        "paginas_pt_literais": 38,
+        "paginas_pt_literais": 39,
         "paginas_pt_fora_do_adaptador": 7,
-        "paginas_pt_literais_sem_irma": 25,
+        "paginas_pt_literais_sem_irma": 26,
         "pares_estruturais": 13,
         "fallbacks_declarados": 8,
         "paridade_verificada": false,
@@ -399,19 +404,19 @@
     "contas_federais": {
       "nome": "Contas Públicas Federais",
       "interface": {
-        "arquivos": 71,
+        "arquivos": 76,
         "candidatos": {
-          "jsx_text": 955,
-          "atributos": 197,
-          "props": 103,
-          "outros_literais": 1799,
-          "templates": 149,
-          "expressoes_nao_resolvidas": 1618,
-          "chaves_objetos": 950
+          "jsx_text": 965,
+          "atributos": 199,
+          "props": 107,
+          "outros_literais": 1810,
+          "templates": 151,
+          "expressoes_nao_resolvidas": 1638,
+          "chaves_objetos": 962
         },
         "exclusoes": {
-          "importacoes": 260,
-          "atributos_tecnicos": 742,
+          "importacoes": 274,
+          "atributos_tecnicos": 750,
           "tipos": 67
         },
         "scripts_embutidos": {},
@@ -421,17 +426,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 5771,
+        "candidatos_nao_catalogados": 5832,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 6,
+        "paginas_pt": 7,
         "paginas_en": 0,
-        "handlers": 11,
+        "handlers": 15,
         "templates_com_parametros": 1,
-        "paginas_pt_literais": 5,
+        "paginas_pt_literais": 6,
         "paginas_pt_fora_do_adaptador": 1,
-        "paginas_pt_literais_sem_irma": 5,
+        "paginas_pt_literais_sem_irma": 6,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false

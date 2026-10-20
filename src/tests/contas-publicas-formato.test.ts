@@ -37,7 +37,7 @@ describe('apresentação monetária e razões',()=>{
   expect(compararSaldo(1,-1,2025)).toMatch(/déficit.*para superávit/);
   expect(compararSaldo(0,1,2025)).toContain('para equilíbrio');
  });
- it('distingue os indicadores observados dos painéis complementares de custos e de despesa por área',()=>{
+ it('distingue os indicadores observados dos painéis complementares de custos, de despesa por área e de previdência',()=>{
   // Onda 3: a cobertura lista só os 8 capítulos com dados; os 4 em preparação ficam fora da navegação e do quadro,
   // com o desenho (e os 8 indicadores propostos deles) registrado no catálogo
   expect(COBERTURA).toHaveLength(8);
@@ -45,6 +45,7 @@ describe('apresentação monetária e razões',()=>{
   // desvio do plano, gasto tributário, rigidez e dívida bruta entraram com os capítulos Planejamento, Benefícios e Riscos
   expect(COBERTURA.flatMap(c=>c.observados).map(i=>i.id)).toEqual(['resultado-primario','composicao','desvio-plano','execucao-liquidada','rap-idade','meta-entrega','gasto-tributario','rigidez','divida-bruta']);
   expect(COBERTURA.flatMap(c=>c.pendentes)).toHaveLength(8);
-  expect(PAINEIS_COMPLEMENTARES.map(p=>p.href)).toEqual(['/contas-publicas/custos#custos-observados','/contas-publicas/por-area']);
+  // o painel Previdência e INSS (20/10/2026) também complementa o Panorama
+  expect(PAINEIS_COMPLEMENTARES.map(p=>p.href)).toEqual(['/contas-publicas/custos#custos-observados','/contas-publicas/por-area','/contas-publicas/previdencia']);
  });
 });

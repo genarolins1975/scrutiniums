@@ -136,6 +136,9 @@ export const VIEW_SECTIONS = [
   "gas:combustiveis-no-meu-estado",
   // Contas Públicas Federais
   "contas:por-area",
+  // Previdência e INSS (painel com conta e a versão aperitivo no mesmo endereço)
+  "contas:previdencia",
+  "contas:previdencia-aperitivo",
   // Inflação por cidade (Observatório das Famílias, coleção Custo de vida; pipeline e gold próprios)
   "familias:custo-de-vida",
   "familias:custo-de-vida-na-minha-cidade",
@@ -274,6 +277,8 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "gas:combustiveis": "Combustíveis · Preços nos postos",
   "gas:combustiveis-no-meu-estado": "Combustíveis · Consulta por estado",
   "contas:por-area": "Contas Federais · Despesa por área",
+  "contas:previdencia": "Contas Federais · Previdência e INSS",
+  "contas:previdencia-aperitivo": "Contas Federais · Previdência e INSS: versão aperitivo (sem conta)",
   "familias:custo-de-vida": "Custo de vida · Inflação por cidade",
   "familias:custo-de-vida-na-minha-cidade": "Custo de vida · Consulta por cidade",
   "credito:quanto-meu-banco-cobra": "Crédito · Quanto meu banco cobra?",

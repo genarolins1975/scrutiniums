@@ -1,0 +1,134 @@
+/**
+ * Contrato da gold do painel Previdência e INSS (public/previdencia/gold), gerada por pipeline/previdencia/gold.py.
+ * Valores em reais (R$) no BEPS e no arquivo municipal; em R$ milhões correntes no RTN. Ausência é null, nunca zero.
+ */
+
+export type FonteBeps = {
+  orgao: string;
+  nome: string;
+  edicao: string | null;
+  referencia: string;
+  url: string;
+  pagina: string;
+  sha256: string;
+  capturado_em: string;
+  tabelas: Record<"14" | "15" | "19", string>;
+};
+
+export type FonteMunicipios = {
+  orgao: string;
+  nome: string;
+  pagina: string;
+  referencia: string;
+  capturado_em: string;
+  arquivos: { ano: number; url: string; sha256: string }[];
+};
+
+export type FonteRtn = {
+  orgao: string;
+  nome: string;
+  edicao: string;
+  publicado_em: string | null;
+  url: string;
+  pagina: string;
+  sha256: string;
+  capturado_em: string;
+  tabela: string;
+  unidade: string;
+  metodo_resultado: string;
+};
+
+export type IdTipo =
+  | "total" | "rgps" | "previdenciarios" | "aposentadorias" | "apo_idade" | "apo_invalidez" | "apo_tempo" | "pensoes"
+  | "auxilios" | "aux_doenca" | "aux_acidente" | "aux_reclusao" | "salario_maternidade" | "prev_outros" | "acidentarios"
+  | "acid_apo_invalidez" | "acid_pensao" | "acid_aux_doenca" | "acid_aux_acidente" | "acid_aux_suplementar"
+  | "assistenciais" | "loas" | "loas_idoso" | "loas_deficiencia" | "loas_outros" | "rmv" | "rmv_idade" | "rmv_invalidez" | "ble";
+
+export type TipoMes = {
+  id: IdTipo;
+  pai: IdTipo | null;
+  rotulo_fonte: string;
+  q: number;
+  v: number;
+  medio: number | null;
+  q_urbana: number | null;
+  q_rural: number | null;
+};
+
+export type UfMes = {
+  q: number;
+  v: number;
+  medio: number | null;
+  q_urbana: number;
+  q_rural: number;
+  medio_urbana: number | null;
+  medio_rural: number | null;
+  pct_rural: number | null;
+};
+
+export type GrupoSerie = "total" | "rgps" | "assist" | "ble";
+
+/** Campos das listas anuais, na ordem da gold (CAMPOS_Q_GOLD e CAMPOS_V_GOLD). */
+export const CAMPOS_Q = ["total", "previdenciarios", "aposentadorias", "apo_idade", "apo_invalidez", "apo_tempo", "pensoes", "auxilios", "outros_prev", "assistenciais"] as const;
+export const CAMPOS_V = ["total", "aposentadorias", "pensoes", "auxilios", "outros_prev", "assistenciais"] as const;
+export type CampoQ = (typeof CAMPOS_Q)[number];
+export type CampoV = (typeof CAMPOS_V)[number];
+
+export type Anual = { q: number[]; v: number[]; municipios: number };
+
+export type GoldPrevidencia = {
+  versao: string;
+  gerado_por: string;
+  capturado_em: string;
+  hash_dados: string;
+  referencia: string;
+  fontes: { beps: FonteBeps; municipios: FonteMunicipios; rtn: FonteRtn };
+  brasil_mes: { referencia: string; tipos: TipoMes[] };
+  ufs_mes: {
+    referencia: string;
+    brasil: UfMes;
+    sem_localizacao: number;
+    notas: string[];
+    ufs: (UfMes & { uf: string; nome: string; regiao: string })[];
+  };
+  serie: { meses: string[]; abono: boolean[]; q: Record<GrupoSerie, (number | null)[]>; v: Record<GrupoSerie, (number | null)[]> };
+  anual: { anos: number[]; campos_q: string[]; campos_v: string[]; brasil: Record<string, Anual>; ufs: Record<string, Record<string, Anual>> };
+  municipios: { anos: number[]; por_uf: Record<string, number>; total: number };
+  rgps: {
+    anos: number[];
+    unidade: string;
+    arrecadacao: number[];
+    arrecadacao_urbana: (number | null)[];
+    arrecadacao_rural: (number | null)[];
+    beneficios: number[];
+    beneficios_urbano: (number | null)[];
+    beneficios_rural: (number | null)[];
+    sentencas_urbano: (number | null)[];
+    sentencas_rural: (number | null)[];
+    bpc_rmv: (number | null)[];
+    sentencas_bpc: (number | null)[];
+    compensacao: number[];
+    despesa_total: number[];
+    pib: number[];
+    resultado: number[];
+    resultado_urbano: (number | null)[];
+    resultado_rural: (number | null)[];
+    pct_pib: { arrecadacao: number[]; beneficios: number[]; resultado: number[]; bpc_rmv: (number | null)[] };
+    pct_despesa_primaria: number[];
+    inicio_divisao_urbana_rural: number;
+    inicio_bpc: number;
+    inicio_sentencas: number;
+  };
+};
+
+export type MunicipioGold = { id: string; nome: string; q: (number[] | null)[]; v: (number[] | null)[] };
+
+export type ArquivoUf = {
+  versao: string;
+  uf: string;
+  nome_uf: string;
+  anos: number[];
+  campos_q: string[];
+  campos_v: string[];
+  municipios: MunicipioGold[];
+};
