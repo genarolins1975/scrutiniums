@@ -111,3 +111,6 @@
 .cp-area-metodo{max-width:80ch;padding-bottom:16px}.cp-area-metodo h3{font-size:18px;font-weight:600;margin:24px 0 8px}.cp-area-metodo p,.cp-area-metodo li{font-size:15px;line-height:1.7}.cp-area-metodo ul{list-style:disc;padding-left:22px;display:grid;gap:6px}.cp-area-metodo a{text-decoration:underline;color:var(--cp-foco)}
 @media(max-width:960px){.cp-area-estagios{grid-template-columns:1fr 1fr}}
 @media(max-width:760px){.cp-hundred>span.cp-area-curto{font-size:0}.cp-area-form .cp-select{min-width:0;max-width:100%}.cp-area-form select{width:100%;min-width:0}.cp-area-passos{grid-template-columns:1fr 1fr}.cp-area-passos li{padding:16px 12px 16px 0;border-right:0;border-bottom:1px solid var(--cor-linha)}.cp-area-estagios{grid-template-columns:1fr}.cp-area-eixo{font-size:22px}.cp-area-valor{font-size:23px}.cp-area-controles{align-items:stretch}.cp-area-segmento{width:100%}.cp-area-segmento a{flex:1;justify-content:center;text-align:center}.cp-area-form{width:100%}.cp-area-form .cp-select{flex:1;min-width:140px}}
+/* Onda 3: plano e execução, rigidez, dívida e gastos tributários */
+.cp-controls-inline{margin:0;flex:1 1 420px;max-width:560px}.cp-section-tight{margin-top:40px}
+@media(max-width:760px){.cp-controls-inline{flex-basis:100%;max-width:none}}

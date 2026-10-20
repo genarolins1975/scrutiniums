@@ -181,7 +181,7 @@ function vitrineContas(): Vitrine {
     contagem: { valor: `${publicados} de ${total}`, unidade: "capítulos com dados" },
     contagemIndice: { tipo: "parcial", publicados, total, unidade: "capitulos_com_dados" },
     paineis,
-    situacao: `Projeto metodológico: os outros ${CAPITULOS.length - PAINEIS_COM_DADOS.length} capítulos apresentam o método proposto, ainda sem série publicada.`,
+    situacao: `Orçamento, resultado fiscal, dívida, gastos tributários, restos a pagar, custos e entregas físicas com fonte e data em cada painel. Os outros ${CAPITULOS.length - PAINEIS_COM_DADOS.length} capítulos do desenho estão em preparação, fora da navegação.`,
     metodologia: { href: "/contas-publicas/metodologia", rotulo: "Metodologia" },
   };
 }
