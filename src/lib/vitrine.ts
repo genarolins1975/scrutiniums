@@ -23,7 +23,7 @@ import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
 import { orgaosDasFontes } from "@/lib/energia/dados";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
-import { CAPITULOS, PAINEIS_COM_DADOS } from "@/lib/contas-publicas/catalogo";
+import { CAPITULOS, PAINEIS_COM_DADOS, PAINEL_AREAS } from "@/lib/contas-publicas/catalogo";
 import { MEDIDAS } from "@/lib/contas-estaduais/comparacao";
 import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
 import catalogoEstadual from "@/lib/contas-estaduais/catalogo.json";
@@ -173,6 +173,8 @@ function vitrineContas(): Vitrine {
     if (!c) throw new Error(`capítulo das Contas Federais fora do catálogo: ${id}`);
     return { titulo: rotulo, href: `/contas-publicas/${id}`, descricao: c.pergunta };
   });
+  // complemento do Panorama, não capítulo: entra entre os painéis, fora da contagem de capítulos com dados
+  paineis.unshift({ titulo: PAINEL_AREAS.titulo, href: PAINEL_AREAS.href, descricao: PAINEL_AREAS.pergunta });
   return {
     id: "contas",
     imagem: "/home/contas.webp",

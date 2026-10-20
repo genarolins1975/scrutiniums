@@ -24,7 +24,7 @@ import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { CAPITULOS as CAPITULOS_SANEAMENTO, FERRAMENTAS as FERRAMENTAS_SANEAMENTO } from "@/lib/saneamento/capitulos";
 import { PAGINAS_GAS } from "@/lib/gas/navegacao";
 import { PAGINAS_COMBUSTIVEIS, ROTA_COMBUSTIVEIS } from "@/lib/combustiveis/paginas";
-import { CAPITULOS as CAPITULOS_CONTAS } from "@/lib/contas-publicas/catalogo";
+import { CAPITULOS as CAPITULOS_CONTAS, PAINEL_AREAS } from "@/lib/contas-publicas/catalogo";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from "@/lib/agro/modelo";
 import { COPIAS } from "./copias";
@@ -166,6 +166,8 @@ function paineisColecoesInteiras(): Painel[] {
     ]),
     ...inteira("contas", "contas-publicas", "federais", [
       { rota: "/contas-publicas", titulo: "Contas Federais" },
+      // complemento do capítulo Panorama (20/10/2026): a despesa por área, pela classificação funcional do SIOP
+      { rota: PAINEL_AREAS.href, titulo: PAINEL_AREAS.titulo },
       ...CAPITULOS_CONTAS.map((c) => ({ rota: `/contas-publicas/${c.id}`, titulo: c.titulo })),
       { rota: "/contas-publicas/metodologia", titulo: "Metodologia" },
       { rota: "/contas-publicas/glossario", titulo: "Glossário" },
