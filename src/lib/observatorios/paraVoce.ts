@@ -25,6 +25,7 @@ import {
   numeroCustoDeVida,
   numeroEstadosDivida,
   numeroIdebCapitais,
+  numeroInss,
   numeroDividaCem,
   numeroSaudeCapitais,
 } from "@/lib/perguntas/portas";
@@ -75,6 +76,7 @@ const IDS = [
   "fogo",
   "desastres",
   "estado-contas",
+  "inss",
   "previdencia",
   "metas",
   "comida",
@@ -95,14 +97,16 @@ export const PARA_VOCE = {
   "/gas-natural": ["botijao", "gnv"],
   "/saneamento": ["municipio", "agua", "tarifa-social-agua"],
   "/eficiencia-estatal": ["educacao-capital", "saude-capital", "municipio"],
-  "/contas-publicas": ["estado-contas", "previdencia", "metas"],
+  // o INSS na cidade do leitor (painel Previdência e INSS, 20/10/2026) abre o bloco; as metas continuam a um clique na
+  // navegação dos painéis e no índice dos capítulos
+  "/contas-publicas": ["inss", "estado-contas", "previdencia"],
   "/agronegocio": ["comida", "atlas-agro"],
   // o custo de vida (painel novo das Famílias, 20/10/2026) abre o bloco; a água saiu para manter três perguntas e continua a
   // um clique em "Para o seu caso" da camada aberta das Famílias e no elo "Gás, luz e água" do orçamento da família
   "/observatorios/familias": ["custo-de-vida", "luz", "botijao"],
   "/observatorios/servicos-publicos": ["capital", "educacao-capital", "saude-capital"],
   "/territorio": ["fogo", "desastres"],
-  "/observatorios/contas-publicas": ["estado-contas", "previdencia", "metas"],
+  "/observatorios/contas-publicas": ["inss", "estado-contas", "previdencia"],
   // o botijão saiu daqui em 19/10/2026 para dar lugar ao tanque (painel novo): continua a um clique no elo "Chegar à casa"
   // da cadeia do gás, logo abaixo, e no "Para você" das Famílias; assim ficam uma pergunta por serviço (luz, combustível, água)
   "/observatorios/energia-e-infraestrutura": ["luz", "tanque", "municipio"],
@@ -334,6 +338,14 @@ function pergunta(id: IdPergunta, idioma: Idioma): PerguntaParaVoce {
         resposta: "Receitas, despesas, resultado e dívida das 27 unidades da Federação lado a lado, como cada uma declara ao Tesouro.",
         href: "/contas-publicas-estaduais",
         numero: daPorta(numeroEstadosDivida()),
+      };
+    case "inss":
+      return {
+        id,
+        pergunta: CONSULTAS.inss.pergunta,
+        resposta: "Quantos benefícios o INSS pagou na sua cidade e o valor médio; com a conta, os tipos de benefício, os estados e o resultado do Regime Geral.",
+        href: CONSULTAS.inss.href,
+        numero: daPorta(numeroInss()),
       };
     case "previdencia":
       return {

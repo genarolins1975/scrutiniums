@@ -9,7 +9,7 @@
   "sede": "Belo Horizonte/MG",
   "segmento": "S?",
   "grupo_pares": "S?",
-  "n_pares": 386,
+  "n_pares": 387,
   "conglomerado_prudencial": "C0085214",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-19T18:01:41+00:00",
+  "atualizado_em": "2026-10-20T15:56:12+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 37.134.759"
  },
@@ -72,7 +72,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 386,
+  "quantidade": 387,
   "maiores_membros": [
    {
     "cod": "C0010069",
@@ -263,7 +263,7 @@
    "d_tri": 0.43,
    "vs_pares": "acima",
    "mediana_grupo": 28.51,
-   "percentil": 65.5
+   "percentil": 65.6
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -271,8 +271,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 3.68,
-   "percentil": 37.1
+   "mediana_grupo": 3.66,
+   "percentil": 37.0
   },
   {
    "indicador": "ROE do período",
@@ -280,8 +280,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.1,
-   "percentil": 61.6
+   "mediana_grupo": 3.96,
+   "percentil": 61.7
   }
  ],
  "carteira": {
@@ -615,6 +615,7 @@
     0.76,
     0.74,
     6.38,
+    -35.54,
     3.0,
     0.01,
     -17.52,
@@ -947,7 +948,7 @@
     55.04
    ],
    "meu": 6.16,
-   "mediana": 4.1
+   "mediana": 3.96
   },
   "basileia": {
    "valores": [
@@ -1007,6 +1008,7 @@
     13.85,
     47.55,
     13.35,
+    13.93,
     72.07,
     46.26,
     13.95,
@@ -1368,6 +1370,7 @@
     7.25,
     2.01,
     13.32,
+    2.01,
     1.38,
     1.28,
     14.76,
@@ -1700,7 +1703,7 @@
     9.56
    ],
    "meu": 1.98,
-   "mediana": 3.68
+   "mediana": 3.66
   }
  },
  "comparacao_pares": {

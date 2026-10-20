@@ -72,6 +72,8 @@ const MOTOR: [string, string][] = [
   ["atualizar-inflacao.yml", "inflacao"],
   // painel Segurança pública por UF (Eficiência Estatal), 20/10/2026: Sinesp VDE, SIM, Siconfi e IBGE no motor por grupo
   ["atualizar-seguranca.yml", "seguranca"],
+  // painel Previdência e INSS (Contas Públicas), 20/10/2026: BEPS, benefícios por município e RTN no motor por grupo
+  ["atualizar-previdencia.yml", "previdencia"],
 ];
 
 describe.each(MOTOR)("%s (motor por grupo)", (arquivo, dominio) => {

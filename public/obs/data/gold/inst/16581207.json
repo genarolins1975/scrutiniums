@@ -9,7 +9,7 @@
   "sede": "São José dos Campos/SP",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 282,
+  "n_pares": 281,
   "conglomerado_prudencial": "C0083467",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-19T18:01:43+00:00",
+  "atualizado_em": "2026-10-20T15:56:14+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 16.581.207"
  },
@@ -60,7 +60,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 282,
+  "quantidade": 281,
   "maiores_membros": [
    {
     "cod": "18189547",
@@ -220,7 +220,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 6.6,
-   "percentil": 42.0
+   "percentil": 41.8
   },
   {
    "indicador": "ROE do período",
@@ -229,7 +229,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 3.91,
-   "percentil": 6.4
+   "percentil": 6.1
   }
  ],
  "carteira": {
@@ -373,7 +373,6 @@
     7.95,
     2.46,
     -2.09,
-    -35.54,
     2.57,
     4.78,
     -79.94,
@@ -661,7 +660,6 @@
     8.41,
     2.18,
     1.25,
-    2.01,
     1.59,
     11.21,
     1.64,

@@ -9,7 +9,7 @@
   "sede": "Goianésia/GO",
   "segmento": "S?",
   "grupo_pares": "S?",
-  "n_pares": 386,
+  "n_pares": 387,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-19T18:01:28+00:00",
+  "atualizado_em": "2026-10-20T15:56:03+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 00.968.602"
  },
@@ -71,7 +71,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 386,
+  "quantidade": 387,
   "maiores_membros": [
    {
     "cod": "C0010069",
@@ -257,7 +257,7 @@
    "d_tri": 2.31,
    "vs_pares": "abaixo",
    "mediana_grupo": 28.51,
-   "percentil": 49.2
+   "percentil": 49.3
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -265,8 +265,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 3.68,
-   "percentil": 54.0
+   "mediana_grupo": 3.66,
+   "percentil": 54.1
   },
   {
    "indicador": "ROE do período",
@@ -274,8 +274,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 4.1,
-   "percentil": 24.4
+   "mediana_grupo": 3.96,
+   "percentil": 24.6
   }
  ],
  "carteira": {
@@ -951,6 +951,7 @@
     0.76,
     0.74,
     6.38,
+    -35.54,
     3.0,
     0.01,
     -17.52,
@@ -1283,7 +1284,7 @@
     55.04
    ],
    "meu": -0.91,
-   "mediana": 4.1
+   "mediana": 3.96
   },
   "basileia": {
    "valores": [
@@ -1343,6 +1344,7 @@
     13.85,
     47.55,
     13.35,
+    13.93,
     72.07,
     46.26,
     13.95,
@@ -1704,6 +1706,7 @@
     7.25,
     2.01,
     13.32,
+    2.01,
     1.38,
     1.28,
     14.76,
@@ -2036,7 +2039,7 @@
     9.56
    ],
    "meu": 4.32,
-   "mediana": 3.68
+   "mediana": 3.66
   }
  },
  "comparacao_pares": {

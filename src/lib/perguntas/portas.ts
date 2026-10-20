@@ -53,6 +53,12 @@ export const CONSULTAS = {
     resumo: "Alguns indicadores da sua capital, cada um com o ano, a fonte e a posição entre as 26 capitais.",
     href: "/eficiencia-estatal",
   },
+  // painel Previdência e INSS (20/10/2026): sem sessão, o endereço mostra só o município escolhido no último dezembro
+  inss: {
+    pergunta: "Quanto o INSS paga na minha cidade?",
+    resumo: "Quantos benefícios o INSS pagou por agências da sua cidade em dezembro e o valor médio de cada um, pelo Ministério da Previdência Social.",
+    href: "/contas-publicas/previdencia",
+  },
 } satisfies Record<string, ConsultaAberta>;
 
 // ------------------------------------------------- Números compartilhados
@@ -186,19 +192,30 @@ export const numeroSaudeCapitais = (): NumeroPorta =>
     },
   );
 
-/** Parte da despesa primária federal que vai para benefícios da Previdência, do Resultado do Tesouro. */
-export const numeroPrevidencia = (): NumeroPorta =>
+/**
+ * Benefícios pagos pelo INSS no mês mais recente do BEPS (todos os grupos), o primeiro número do painel Previdência e INSS,
+ * lido da gold dele (public/previdencia/gold/previdencia.json, pipeline/previdencia).
+ */
+export const numeroInss = (): NumeroPorta =>
   numero(
     {
-      rotulo: "Parte da despesa primária federal que vai para benefícios da Previdência",
-      unidade: "a cada R$ 100",
-      fonte: "Tesouro Nacional, Resultado do Tesouro Nacional",
-      href: "/contas-publicas/panorama",
-      nota: "Calculado: benefícios previdenciários sobre a despesa primária total do governo central. Não inclui juros da dívida.",
+      rotulo: "Benefícios pagos pelo INSS no mês",
+      unidade: "milhões",
+      fonte: "Ministério da Previdência Social, Boletim Estatístico da Previdência Social",
+      href: "/contas-publicas/previdencia",
     },
     () => {
-      const r = anoCompleto();
-      return { valor: `R$ ${num((100 * r.previdencia) / r.despesa, 2)}`, periodo: r.periodo };
+      const g = lerPublico("previdencia", "gold", "previdencia.json");
+      const t = (g.brasil_mes.tipos as { id: string; q: number }[]);
+      const total = t.find((x) => x.id === "total");
+      const rgps = t.find((x) => x.id === "rgps");
+      const assist = t.find((x) => x.id === "assistenciais");
+      if (!total || !rgps || !assist) throw new Error("gold da previdência incompleta");
+      return {
+        valor: num(total.q / 1e6, 2),
+        periodo: mesAno(g.brasil_mes.referencia),
+        nota: `${num(rgps.q / 1e6, 2)} milhões do Regime Geral e ${num(assist.q / 1e6, 2)} milhões assistenciais, como o BPC. Conta benefícios, não pessoas.`,
+      };
     },
   );
 
@@ -349,8 +366,10 @@ function porta_dinheiro(): Porta {
     ...identidade("contas-publicas"),
     resumo:
       "Receitas e despesas do governo federal, o resultado das contas e a dívida dos estados, com valores nominais e o período de cada demonstrativo.",
+    // o INSS (painel Previdência e INSS, 20/10/2026) abre a porta e o cartão da home, que mostra o primeiro número; a
+    // parte da despesa primária que vai para benefícios segue no Panorama e na régua do painel Despesa por área
     numeros: [
-      numeroPrevidencia(),
+      numeroInss(),
       numero(
         {
           rotulo: "Resultado primário do governo central",
@@ -380,9 +399,9 @@ function porta_dinheiro(): Porta {
       caminho("estados", "Como está a dívida do meu estado?", "Execução, receitas, despesas e dívida das 27 unidades da Federação lado a lado.", "/contas-publicas-estaduais"),
       caminho("credito", "Quem deve à União?", "Dívida ativa da União inscrita na Procuradoria da Fazenda, por tipo de devedor.", "/observatorio/federal-tax-debt"),
     ],
-    paraOSeuCaso: [],
+    paraOSeuCaso: [CONSULTAS.inss],
     lacunas: [
-      "Previdência e INSS em detalhe: benefícios, quem recebe e o resultado do sistema.",
+      "Previdência dos servidores públicos: os regimes próprios da União, dos estados e dos municípios.",
       "Quem paga os impostos e o que muda com a reforma tributária.",
     ],
     metodos: [

@@ -9,7 +9,7 @@
   "sede": "João Pessoa/PB",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 282,
+  "n_pares": 281,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-19T18:01:38+00:00",
+  "atualizado_em": "2026-10-20T15:56:10+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 70.116.611"
  },
@@ -75,7 +75,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 282,
+  "quantidade": 281,
   "maiores_membros": [
    {
     "cod": "18189547",
@@ -261,7 +261,7 @@
    "d_tri": -2.38,
    "vs_pares": "abaixo",
    "mediana_grupo": 21.13,
-   "percentil": 43.5
+   "percentil": 43.3
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -279,7 +279,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 3.91,
-   "percentil": 64.4
+   "percentil": 64.3
   }
  ],
  "carteira": {
@@ -910,7 +910,6 @@
     7.95,
     2.46,
     -2.09,
-    -35.54,
     2.57,
     4.78,
     -79.94,
@@ -1195,7 +1194,6 @@
     14.91,
     86.99,
     128.29,
-    13.93,
     32.12,
     12.06,
     14.32,
@@ -1460,7 +1458,6 @@
     8.41,
     2.18,
     1.25,
-    2.01,
     1.59,
     11.21,
     1.64,
