@@ -343,12 +343,10 @@ function BarrasAlavancagem({ titulo, companhias, logos }: { titulo: string; comp
           return (
             <li key={c.cnpj} className="grid grid-cols-[minmax(0,9.5rem)_minmax(0,1fr)_5.5rem] items-center gap-3 text-sm sm:grid-cols-[minmax(0,17rem)_minmax(0,1fr)_6rem]">
               <span className="flex min-w-0 items-center gap-3">
-                {/* no celular a coluna do nome é estreita: o símbolo fica na tabela logo abaixo */}
-                {logoDe(logos, c.cnpj)?.arquivo && (
-                  <span className="hidden sm:contents">
-                    <ListadasLogo logo={logoDe(logos, c.cnpj)} nome={c.nome} tamanho="sm" decorativo />
-                  </span>
-                )}
+                {/* no celular a coluna do nome é estreita: o símbolo fica na tabela logo abaixo; sem símbolo, o mesmo espaço vazio alinha os nomes */}
+                <span className="hidden sm:contents">
+                  <ListadasLogo logo={logoDe(logos, c.cnpj)} nome={c.nome} tamanho="sm" decorativo />
+                </span>
                 <span className="truncate text-carvao" title={c.nome}>
                   {c.nome}
                   {u.data !== companhias[0]?.ultimo?.data && u.periodo !== companhias[0]?.ultimo?.periodo && <span className="text-xs text-carvao-muted"> ({u.periodo})</span>}
