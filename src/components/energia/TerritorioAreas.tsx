@@ -46,7 +46,7 @@ function Exemplo({ e, dataMmgd, anoPop }: { e: ExemploTerritorio; dataMmgd: stri
           {tx("PLD médio do dia (preço do mercado de curto prazo): ", "Daily average PLD (short-term market price): ")}
           {e.pldDia ? (
             <strong className="font-medium tabular-nums">
-              R$ {num(e.pldDia.valor, 2)}/MWh {tx(`em ${dataBR(e.pldDia.dia)}`, `on ${dataBR(e.pldDia.dia)}`)}
+              R$&nbsp;{num(e.pldDia.valor, 2)}/MWh {tx(`em ${dataBR(e.pldDia.dia)}`, `on ${dataBR(e.pldDia.dia)}`)}
             </strong>
           ) : (
             sd
@@ -85,7 +85,7 @@ function Exemplo({ e, dataMmgd, anoPop }: { e: ExemploTerritorio; dataMmgd: stri
                 {tx("Tarifa residencial (B1, sem impostos): ", "Residential tariff (B1, before taxes): ")}
                 {d.tarifa ? (
                   <strong className="font-medium tabular-nums">
-                    R$ {num(d.tarifa.valor, 2)}/MWh {d.tarifa.data ? tx(`vigente em ${dataBR(d.tarifa.data)}`, `in force on ${dataBR(d.tarifa.data)}`) : ""}
+                    R$&nbsp;{num(d.tarifa.valor, 2)}/MWh {d.tarifa.data ? tx(`vigente em ${dataBR(d.tarifa.data)}`, `in force on ${dataBR(d.tarifa.data)}`) : ""}
                   </strong>
                 ) : (
                   sd

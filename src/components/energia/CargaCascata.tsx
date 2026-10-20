@@ -11,16 +11,16 @@ import type { A07, DecomposicaoA07 } from "@/lib/energia/tipos-carga";
  * é a diferença real. Lê a mesma decomposição da faixa de métricas e do gráfico de barras (variante principal, mesmos dias da semana).
  */
 
-type Peca = { id: string; curto: string; valor: number; tipo: "modelo" | "residuo" };
+type Peca = { id: string; curto: string; minimo: string; valor: number; tipo: "modelo" | "residuo" };
 
 function pecas(d: DecomposicaoA07): Peca[] {
   const c = d.contribuicoes_log100;
   return [
-    { id: "calendario", curto: tx("Calendário", "Calendar"), valor: c.calendario, tipo: "modelo" },
-    { id: "temperatura", curto: tx("Temperatura", "Temperature"), valor: c.temperatura, tipo: "modelo" },
-    { id: "sazonalidade", curto: tx("Estação", "Season"), valor: c.sazonalidade, tipo: "modelo" },
-    { id: "nivel", curto: tx("Nível", "Level"), valor: c.nivel_tendencia, tipo: "modelo" },
-    { id: "residuo", curto: tx("Resíduo", "Residual"), valor: d.residuo_log100, tipo: "residuo" },
+    { id: "calendario", curto: tx("Calendário", "Calendar"), minimo: tx("Calend.", "Cal."), valor: c.calendario, tipo: "modelo" },
+    { id: "temperatura", curto: tx("Temperatura", "Temperature"), minimo: tx("Temp.", "Temp."), valor: c.temperatura, tipo: "modelo" },
+    { id: "sazonalidade", curto: tx("Estação", "Season"), minimo: tx("Estação", "Season"), valor: c.sazonalidade, tipo: "modelo" },
+    { id: "nivel", curto: tx("Nível", "Level"), minimo: tx("Nível", "Level"), valor: c.nivel_tendencia, tipo: "modelo" },
+    { id: "residuo", curto: tx("Resíduo", "Residual"), minimo: tx("Resíduo", "Resid."), valor: d.residuo_log100, tipo: "residuo" },
   ];
 }
 
@@ -37,20 +37,21 @@ function Cascata({ d }: { d: DecomposicaoA07 }) {
   const valores = [0, total, ...barras.flatMap((b) => [b.ini, b.fim])];
   const max = Math.max(...valores) * 1.15 || 1;
   const min = Math.min(0, ...valores) * 1.15;
-  const W = 640;
-  const H = 260;
-  const M = { e: 16, d: 16, t: 24, b: 44 };
-  const n = barras.length + 1;
-  const larg = (W - M.e - M.d) / n;
-  const y = (v: number) => M.t + ((max - v) / (max - min || 1)) * (H - M.t - M.b);
   const cor = (p: { tipo: string }) => (p.tipo === "residuo" ? "var(--cor-bronze)" : "var(--cor-energia)");
   const p = partesDaDiferenca(d);
   const resumo = tx(
     `Cascata da diferença ${DO_REGIAO[d.sm]}: ${barras.map((b) => `${b.curto} ${sinal(b.valor, 2)}`).join("; ")}; diferença real ${sinal(total, 2)} pontos.`,
     `Waterfall of the difference ${doRegiao(d.sm, "en")}: ${barras.map((b) => `${b.curto} ${sinal(b.valor, 2)}`).join("; ")}; actual difference ${sinal(total, 2)} points.`,
   );
-  return (
-    <div className="space-y-3">
+  // dois desenhos do mesmo dado: no celular, caixa estreita com rótulos curtos; a partir de 640 px, a caixa larga
+  const desenho = (W: number, fs: number, estreito: boolean) => {
+    const H = 250;
+    const M = { e: 8, d: 8, t: 24, b: 30 };
+    const n = barras.length + 1;
+    const larg = (W - M.e - M.d) / n;
+    const folga = estreito ? 4 : 8;
+    const y = (v: number) => M.t + ((max - v) / (max - min || 1)) * (H - M.t - M.b);
+    return (
       <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full max-w-3xl" role="img" aria-label={resumo}>
         <line x1={M.e} x2={W - M.d} y1={y(0)} y2={y(0)} stroke="var(--cor-carvao-soft)" strokeWidth={1} />
         {barras.map((b, i) => {
@@ -59,31 +60,40 @@ function Cascata({ d }: { d: DecomposicaoA07 }) {
           const alt = Math.max(1.5, Math.abs(y(b.ini) - y(b.fim)));
           return (
             <g key={b.id}>
-              <rect x={x + 8} width={larg - 16} y={topo} height={alt} fill={cor(b)} opacity={0.85} />
-              {i < barras.length - 1 && <line x1={x + larg - 8} x2={x + larg + 8} y1={y(b.fim)} y2={y(b.fim)} stroke="var(--cor-mineral)" strokeDasharray="3 3" />}
-              <text x={x + larg / 2} y={topo - 6} textAnchor="middle" fontSize="13" fill="var(--cor-carvao)">
+              <rect x={x + folga} width={larg - 2 * folga} y={topo} height={alt} fill={cor(b)} opacity={0.85} />
+              {i < barras.length - 1 && <line x1={x + larg - folga} x2={x + larg + folga} y1={y(b.fim)} y2={y(b.fim)} stroke="var(--cor-mineral)" strokeDasharray="3 3" />}
+              <text x={x + larg / 2} y={topo - 6} textAnchor="middle" fontSize={fs} fill="var(--cor-carvao)">
                 {sinal(b.valor, 2)}
               </text>
-              <text x={x + larg / 2} y={H - 22} textAnchor="middle" fontSize="12" fill="var(--cor-carvao-muted)">
-                {b.curto}
+              <text x={x + larg / 2} y={H - 10} textAnchor="middle" fontSize={fs - 1} fill="var(--cor-carvao-muted)">
+                {estreito ? b.minimo : b.curto}
               </text>
             </g>
           );
         })}
         <g>
-          <line x1={M.e + (n - 1) * larg - 8} x2={M.e + (n - 1) * larg + 8} y1={y(total)} y2={y(total)} stroke="var(--cor-mineral)" strokeDasharray="3 3" />
-          <rect x={M.e + (n - 1) * larg + 8} width={larg - 16} y={y(Math.max(0, total))} height={Math.max(1.5, Math.abs(y(0) - y(total)))} fill="var(--cor-carvao)" />
-          <text x={M.e + (n - 1) * larg + larg / 2} y={y(Math.max(0, total)) - 6} textAnchor="middle" fontSize="13" fontWeight={600} fill="var(--cor-carvao)">
+          <line x1={M.e + (n - 1) * larg - folga} x2={M.e + (n - 1) * larg + folga} y1={y(total)} y2={y(total)} stroke="var(--cor-mineral)" strokeDasharray="3 3" />
+          <rect x={M.e + (n - 1) * larg + folga} width={larg - 2 * folga} y={y(Math.max(0, total))} height={Math.max(1.5, Math.abs(y(0) - y(total)))} fill="var(--cor-carvao)" />
+          <text x={M.e + (n - 1) * larg + larg / 2} y={y(Math.max(0, total)) - 6} textAnchor="middle" fontSize={fs} fontWeight={600} fill="var(--cor-carvao)">
             {sinal(total, 2)}
           </text>
-          <text x={M.e + (n - 1) * larg + larg / 2} y={H - 22} textAnchor="middle" fontSize="12" fontWeight={600} fill="var(--cor-carvao)">
-            {tx("Diferença", "Difference")}
+          <text x={M.e + (n - 1) * larg + larg / 2} y={H - 10} textAnchor="middle" fontSize={fs - 1} fontWeight={600} fill="var(--cor-carvao)">
+            {estreito ? tx("Total", "Total") : tx("Diferença", "Difference")}
           </text>
         </g>
-        <text x={M.e} y={H - 4} fontSize="11" fill="var(--cor-carvao-muted)">
-          {tx("pontos (log × 100); verde-azulado: partes do modelo; marrom: resíduo; preto: diferença real", "points (log × 100); teal: model parts; brown: residual; black: actual difference")}
-        </text>
       </svg>
+    );
+  };
+  return (
+    <div className="space-y-3">
+      <div className="sm:hidden">{desenho(360, 12, true)}</div>
+      <div className="hidden sm:block">{desenho(640, 13, false)}</div>
+      <p className="text-xs text-carvao-muted">
+        {tx(
+          "Pontos (log × 100). Verde-azulado: partes do modelo; marrom: resíduo; preto: diferença real.",
+          "Points (log × 100). Teal: model parts; brown: residual; black: actual difference.",
+        )}
+      </p>
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao">
         {tx(
           `De ${dataBR(d.inicio)} a ${dataBR(d.fim)}, contra ${dataBR(d.inicio_ant)} a ${dataBR(d.fim_ant)}: a carga ficou ${sinal(total, 2)} pontos, uma variação de ${sinal(d.variacao_real_pct, 2)}%. Calendário, temperatura e estação somam ${sinal(p.clima, 2)}; nível e tendência, ${sinal(p.nivelTendencia, 2)}; o resíduo, o que o modelo não reproduz, ${sinal(p.residuo, 2)}.`,

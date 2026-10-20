@@ -240,13 +240,13 @@ export default function TerritorioPage() {
             ex && ex.pldDia && exDist?.tarifa
               ? tx(
                   <>
-                    Depende da área de cada número. Em {ex.nome} ({ex.uf}), o PLD do <Termo slug="submercado">submercado</Termo> {nomeSm(ex.sm, "pt")} foi de R${" "}
-                    {num(ex.pldDia.valor, 2)}/MWh em {dataBR(ex.pldDia.dia)}, o mesmo para {ex.ufsDoSm} UFs; a tarifa residencial da {exDist.sigla} é de R$ {num(exDist.tarifa.valor, 2)}/MWh, a
+                    Depende da área de cada número. Em {ex.nome} ({ex.uf}), o PLD do <Termo slug="submercado">submercado</Termo> {nomeSm(ex.sm, "pt")} foi de R${"\u00a0"}
+                    {num(ex.pldDia.valor, 2)}/MWh em {dataBR(ex.pldDia.dia)}, o mesmo para {ex.ufsDoSm} UFs; a tarifa residencial da {exDist.sigla} é de R$&nbsp;{num(exDist.tarifa.valor, 2)}/MWh, a
                     mesma para os {num(exDist.municipiosNaArea, 0)} municípios da área dela.
                   </>,
                   <>
-                    It depends on each figure&apos;s area. In <Nome>{ex.nome}</Nome> ({ex.uf}), the PLD of the <Termo slug="submercado">submarket</Termo> {nomeSm(ex.sm, "en")} was R${" "}
-                    {num(ex.pldDia.valor, 2)}/MWh on {dataBR(ex.pldDia.dia)}, the same for {ex.ufsDoSm} states; the residential tariff of <Nome>{exDist.sigla}</Nome> is R${" "}
+                    It depends on each figure&apos;s area. In <Nome>{ex.nome}</Nome> ({ex.uf}), the PLD of the <Termo slug="submercado">submarket</Termo> {nomeSm(ex.sm, "en")} was R${"\u00a0"}
+                    {num(ex.pldDia.valor, 2)}/MWh on {dataBR(ex.pldDia.dia)}, the same for {ex.ufsDoSm} states; the residential tariff of <Nome>{exDist.sigla}</Nome> is R${"\u00a0"}
                     {num(exDist.tarifa.valor, 2)}/MWh, the same for the {num(exDist.municipiosNaArea, 0)} municipalities in its area.
                   </>,
                 )
