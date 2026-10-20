@@ -5,6 +5,7 @@
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { dataBr } from "./formato";
 import { BRASIL, type GoldSeguranca, type GrupoId, type Indicador, type SerieBrasil, type SeriePercentual, type SerieUF } from "./tipos";
 
 export { BRASIL };
@@ -135,9 +136,9 @@ export function pacoteEstados(g: GoldSeguranca): PacoteEstados {
     simSituacao: g.fontes.sim.situacao,
     policiaSaude: g.policia_saude,
     rotuloFonte: {
-      sinesp: `Sinesp VDE (MJSP), captura de ${g.fontes.sinesp.capturado_em.slice(0, 10)}`,
+      sinesp: `Sinesp VDE (MJSP), captura de ${dataBr(g.fontes.sinesp.capturado_em)}`,
       sim: `SIM (Ministério da Saúde), dados finais até ${g.fontes.sim.final_ate}`,
-      siconfi: `Siconfi (Tesouro Nacional), DCA, captura de ${g.fontes.siconfi.capturado_em.slice(0, 10)}`,
+      siconfi: `Siconfi (Tesouro Nacional), DCA, captura de ${dataBr(g.fontes.siconfi.capturado_em)}`,
       ibge: `IBGE, ${g.fontes.ibge.rotulo}`,
     },
   };

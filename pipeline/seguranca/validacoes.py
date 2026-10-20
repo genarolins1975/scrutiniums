@@ -17,7 +17,11 @@ O que reprova:
   último ano final recuando; revisão de ano final acima de 10%.
 - IBGE: UF ou ano faltando; soma das UFs diferente do Brasil; homens e mulheres que não somam o total;
   população do Brasil fora da faixa plausível.
-- Conjunto: população sem algum ano usado pelo Sinesp ou pelo SIM.
+- Siconfi: anos não contínuos desde 2015; UF faltando no seed; menos de 20 governos com a função 06 num ano;
+  despesa ou total inválidos; participação da função 06 fora da faixa plausível; revisão acima de 10% da
+  despesa das UFs em comum com o seed publicado.
+- Conjunto: população sem algum ano usado pelo Sinesp, pelo SIM ou pelo Siconfi; despesa por habitante fora
+  da faixa plausível.
 """
 from __future__ import annotations
 

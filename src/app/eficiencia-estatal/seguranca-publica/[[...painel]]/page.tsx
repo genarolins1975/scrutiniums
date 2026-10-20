@@ -7,7 +7,7 @@ import {PorEstado, PoliciaSaude} from '@/components/eficiencia/seguranca/PorEsta
 import {SeloComConta} from '@/components/acesso/SeloComConta';
 import {prefetchDoLink} from '@/lib/rotasPublicas';
 import {amplitude, goldSeguranca, GRUPOS, HREF_CSV, HREF_GOLD, indicador, linhasNacionais, nomeUF, pacoteEstados, ROTA, serieBR, seriePct, serieUF, ultimoIndice, ultimoIndiceSimFinal} from '@/lib/eficiencia/seguranca/dados';
-import {contagemComUnidade, dataBr, inteiro, listaNatural, numero, percentualVariacao, reais, ROTULO_SITUACAO, taxaComUnidade} from '@/lib/eficiencia/seguranca/formato';
+import {contagemComUnidade, dataBr, inteiro, listaNatural, numero, percentualVariacao, reais, ROTULO_SITUACAO} from '@/lib/eficiencia/seguranca/formato';
 import type {GoldSeguranca, GrupoId} from '@/lib/eficiencia/seguranca/tipos';
 
 type Grupo = keyof typeof GRUPOS;
@@ -19,11 +19,11 @@ export function generateMetadata({params}: {params: {painel?: string[]}}): Metad
   return {title: `${GRUPOS[slug as Grupo]?.titulo ?? TITULOS[slug] ?? 'Segurança pública'} · OBEE`, description: 'Violência registrada pela polícia e pela saúde em cada estado, em taxa por 100 mil habitantes, e a despesa estadual com segurança pública, com fontes, períodos e ausências explícitas.'};
 }
 
-function Fonte({children}: {children: React.ReactNode}) { return <p className="mt-3 text-xs leading-relaxed text-carvao-muted">{children}</p>; }
+function Fonte({children, dd = false}: {children: React.ReactNode; dd?: boolean}) { const T = dd ? 'dd' : 'p'; return <T className="mt-3 text-xs leading-relaxed text-carvao-muted">{children}</T>; }
 
 function Panorama({g}: {g: GoldSeguranca}) {
   const kH = ultimoIndice(g, 'homicidio'), kS = ultimoIndiceSimFinal(g), kF = ultimoIndice(g, 'feminicidio');
-  const iH = indicador(g, 'homicidio'), iS = indicador(g, 'agressoes'), iF = indicador(g, 'feminicidio');
+  const iH = indicador(g, 'homicidio'), iF = indicador(g, 'feminicidio');
   const bH = serieBR(g, 'homicidio'), bS = serieBR(g, 'agressoes'), bF = serieBR(g, 'feminicidio');
   const amp = amplitude(g, 'homicidio', kH);
   const capturaSinesp = dataBr(g.fontes.sinesp.capturado_em);
@@ -61,25 +61,25 @@ function Panorama({g}: {g: GoldSeguranca}) {
         <dt className="text-sm">Óbitos por agressão, registro de saúde</dt>
         <dd className="mt-3 font-serif text-4xl tabular-nums">{numero(bS.taxa?.[kS] as number, 1)}</dd>
         <dd className="mt-2 text-sm">por 100 mil habitantes em {g.anos[kS]} · {inteiro(bS.n[kS] as number)} óbitos</dd>
-        <Fonte>SIM, Ministério da Saúde, dado final (extração de {g.fontes.sim.extracao_final}); UF de residência.</Fonte>
+        <Fonte dd>SIM, Ministério da Saúde, dado final (extração de {g.fontes.sim.extracao_final}); UF de residência.</Fonte>
       </div>
       <div className="border-linha py-6 sm:pl-5 sm:border-l lg:pl-5">
         <dt className="text-sm">Vítimas de homicídio doloso, registro policial</dt>
         <dd className="mt-3 font-serif text-4xl tabular-nums">{numero(bH.taxa?.[kH] as number, 1)}</dd>
         <dd className="mt-2 text-sm">por 100 mil habitantes em {g.anos[kH]} · {inteiro(bH.n[kH] as number)} vítimas{bH.variacao[kH] !== null && ` · ${percentualVariacao(bH.variacao[kH] as number)} sobre ${g.anos[kH - 1]}`}</dd>
-        <Fonte>Sinesp VDE, Ministério da Justiça, captura de {capturaSinesp}; polícias estaduais, UF do fato.</Fonte>
+        <Fonte dd>Sinesp VDE, Ministério da Justiça, captura de {capturaSinesp}; polícias estaduais, UF do fato.</Fonte>
       </div>
       <div className="border-t border-linha py-6 sm:border-t-0 sm:pr-5 lg:border-l lg:pl-5">
         <dt className="text-sm">Vítimas de feminicídio</dt>
         <dd className="mt-3 font-serif text-4xl tabular-nums">{numero(bF.taxa?.[kF] as number, 2)}</dd>
         <dd className="mt-2 text-sm">por 100 mil mulheres em {g.anos[kF]} · {inteiro(bF.n[kF] as number)} vítimas</dd>
-        <Fonte>Sinesp VDE, captura de {capturaSinesp}; mulheres residentes pela Projeção do IBGE.</Fonte>
+        <Fonte dd>Sinesp VDE, captura de {capturaSinesp}; mulheres residentes pela Projeção do IBGE.</Fonte>
       </div>
       <div className="border-t border-linha py-6 sm:border-l sm:border-t-0 sm:pl-5">
         <dt className="text-sm">Distância entre as UFs no homicídio doloso</dt>
         <dd className="mt-3 font-serif text-4xl tabular-nums">{numero(amp.min.taxa, 1)} a {numero(amp.max.taxa, 1)}</dd>
         <dd className="mt-2 text-sm">por 100 mil habitantes em {g.anos[kH]}: de {nomeUF(g, amp.min.uf)} a {nomeUF(g, amp.max.uf)}</dd>
-        <Fonte>Sinesp VDE; {amp.comparadas} UFs com dado no ano.</Fonte>
+        <Fonte dd>Sinesp VDE; {amp.comparadas} UFs com dado no ano.</Fonte>
       </div>
     </dl>
     <p className="mt-4 max-w-3xl text-sm text-carvao-muted">Os dois registros não se somam nem se substituem: contam a mesma realidade com regras diferentes. Bases revisadas pelas UFs depois da publicação.</p>
