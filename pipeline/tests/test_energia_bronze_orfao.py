@@ -480,6 +480,26 @@ class TestSelecaoEBronzeDuravel(unittest.TestCase):
         self.assertEqual(r["vintage"]["capturado_em"], anterior["capturado_em"])
         self.assertTrue(base.bronze_disponivel(r["vintage"]))
 
+    def test_evidencia_publica_a_copia_identica_que_existe(self):
+        # 20/10/2026: a vintage da carga verificada apontava a captura de 06/10, que nenhum ambiente
+        # tinha mais; o bronze restaurado trazia a recaptura de 16/10 com o mesmo sha256, e a
+        # evidência p026_mmgd_mes publicava um caminho que não abre.
+        from pipeline.energia import evidencia as ev
+        anterior = self.vintage("ds", "rec")
+        os.remove(base.caminho_bronze(anterior["arquivo"]))
+        self.assertEqual(ev.fonte_de_vintage("ONS", "c", "u", anterior)["arquivo"], anterior["arquivo"])  # sem cópia: ausência visível
+        copia, _ = base.salva_bronze("fonte", "ds", "rec", b"conteudo original", "json", "2026-10-16T01:41:37Z")
+        self.assertNotEqual(copia, anterior["arquivo"])
+        for item in (ev.fonte_de_vintage("ONS", "c", "u", anterior), ev.arquivo_de_vintage(anterior)):
+            self.assertEqual(item["arquivo"], os.path.relpath(base.caminho_bronze(copia), self.raiz))
+            self.assertTrue(os.path.isfile(os.path.join(self.raiz, item["arquivo"])))
+            self.assertEqual((item["sha256"], item["capturado_em"]), (anterior["sha256"], anterior["capturado_em"]))
+        # outro conteúdo na mesma pasta não serve
+        outra = self.vintage("ds", "rec2", b"outro conteudo")
+        os.remove(base.caminho_bronze(outra["arquivo"]))
+        base.salva_bronze("fonte", "ds", "rec2", b"conteudo diferente", "json", "2026-10-16T01:41:37Z")
+        self.assertEqual(ev.arquivo_de_vintage(outra)["arquivo"], outra["arquivo"])
+
     def test_historico_mensal_respeita_captura_do_bronze_selecionado(self):
         v = self.vintage(expansao.DS_RALIE, "historico", b"primeiro")
         base.grava_observacoes(self.con, expansao.DS_RALIE, v["vintage_id"],
