@@ -8,6 +8,7 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import Link from "@/components/i18n/LinkIdioma";
 import { RedeEscolha, RedeLista } from "@/components/energia/RedeControles";
 import { RedeEsquemaFluxos, type FluxoEsquema } from "@/components/energia/RedeEsquemaFluxos";
+import { LeituraGuiada } from "@/components/energia/Didatica";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -238,6 +239,15 @@ export function RedeCirculacao({
   const ultimoMes = mensal[mensal.length - 1];
   const resumoDias = c.resumo_30d[0]?.dias ?? 0;
   const para = tx("para", "to");
+  // leitura guiada do gráfico diário: as mesmas linhas do gráfico e da tabela (somas dos dias publicados)
+  const leituraDiaria = useMemo(() => {
+    const ok = diario.filter((x) => x.canonico_mwh !== null && x.inverso_mwh !== null);
+    if (!ok.length) return null;
+    const ida = ok.reduce((t, x) => t + (x.canonico_mwh as number), 0);
+    const volta = ok.reduce((t, x) => t + (x.inverso_mwh as number), 0);
+    const diasVolta = ok.filter((x) => (x.inverso_mwh as number) > 0 && (x.canonico_mwh as number) > 0).length;
+    return { dias: ok.length, ida, volta, saldo: ida - volta, diasVolta };
+  }, [diario]);
 
   const paragrafoEscondida = tx(
     `${resumoDias ? `Em ${plural(resumoDias, "dia", "dias")}` : "Na janela"}, a energia pode passar nos dois sentidos de uma fronteira, e o saldo mostra só a diferença entre eles. A energia escondida pelo saldo é o menor dos dois sentidos; zero quer dizer que o fluxo foi sempre no mesmo sentido.`,
@@ -408,6 +418,14 @@ export function RedeCirculacao({
                 zeroNoEixo
                 legendaInterativa
               />
+              {leituraDiaria && (
+                <LeituraGuiada id="p028-dia" rotulo={tx("Como ler", "How to read it")}>
+                  {tx(
+                    `Linha cheia: energia do ${nomeSm(a, "pt")} para o ${nomeSm(b, "pt")}; tracejada: no sentido contrário; preta: o saldo, a diferença entre as duas. Nos ${leituraDiaria.dias} dias, somaram ${num(leituraDiaria.ida, 0)} MWh num sentido e ${num(leituraDiaria.volta, 0)} MWh no outro, saldo de ${num(Math.abs(leituraDiaria.saldo), 0)} MWh ${leituraDiaria.saldo >= 0 ? `do ${nomeSm(a, "pt")} para o ${nomeSm(b, "pt")}` : `do ${nomeSm(b, "pt")} para o ${nomeSm(a, "pt")}`}. Em ${leituraDiaria.diasVolta} dias a energia passou nos dois sentidos; quando as duas linhas coloridas estão perto, o saldo fica pequeno mesmo com muita energia passando.`,
+                    `Solid line: energy in the ${nomeSm(a, "en")} to ${nomeSm(b, "en")} direction; dashed: in the opposite direction; black: the net flow, the difference between the two. Over the ${leituraDiaria.dias} days, ${num(leituraDiaria.ida, 0)} MWh went one way and ${num(leituraDiaria.volta, 0)} MWh the other, a net flow of ${num(Math.abs(leituraDiaria.saldo), 0)} MWh ${leituraDiaria.saldo >= 0 ? `from ${nomeSm(a, "en")} to ${nomeSm(b, "en")}` : `from ${nomeSm(b, "en")} to ${nomeSm(a, "en")}`}. On ${leituraDiaria.diasVolta} days energy passed in both directions; when the two colored lines are close, the net flow is small even with a lot of energy passing.`,
+                  )}
+                </LeituraGuiada>
+              )}
               <p className="text-sm text-carvao-muted">
                 {fr
                   ? tx("Fronteira escolhida no esquema ou na tabela.", "Boundary chosen in the schematic or in the table.")

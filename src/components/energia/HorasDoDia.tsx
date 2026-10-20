@@ -235,7 +235,7 @@ export function HorasDoDia({
             </text>
           ))}
           {modo === "fluxo" && (
-            <g fontSize="11">
+            <g fontSize="11" stroke="#FFFFFF" strokeWidth={4} paintOrder="stroke">
               <text x={M.e + 4} y={M.t + 10} fill="#0A4A56">
                 {`↑ ${serie.positivo}`}
               </text>
