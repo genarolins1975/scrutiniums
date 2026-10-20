@@ -60,6 +60,62 @@ Rodada de 19/10/2026 do item "Caminho Para você em cada entrada" da Onda 2 (`do
 
 Itens 3 a 7 da checklist não mudaram nesta rodada: o artefato didático, a busca e os caminhos por pergunta, o método recolhido e as imagens de cada entrada seguem como na Onda 1. Os números dos cartões são lidos pelos mesmos leitores dos destinos (camada aberta, sinais da inicial do Setor Elétrico, respostas dos capítulos do Saneamento e entrada do Território); na rodada todos vieram publicados, nenhum como indisponível.
 
+## Setor Elétrico: didatismo, Onda 3
+
+Rodada de 20/10/2026 do item da Onda 3 "Setor Elétrico: elevar o didatismo das páginas com nota 5,5 a 6,0 (Carga, Rede, Território)" (`docs/BANCA_2026-10-19.md`), critério de aceite "nenhuma página abaixo de 8 em didatismo". **É autoavaliação, feita por quem fez a mudança; não é revisão independente.** A revisão independente das entradas pela rubrica continua como item próprio da Onda 3.
+
+**Escopo.** As oito páginas dos três módulos, não só as três entradas, porque as duas notas de 5,5 eram de páginas filhas: `/setor-eletrico/carga`, `/carga/clima-e-calendario`, `/carga/perfil-horario`, `/setor-eletrico/rede`, `/rede/balanco-e-exterior`, `/rede/programado`, `/rede/restricoes` e `/setor-eletrico/territorio`.
+
+**Como foi medido.** `next dev` local (porta 3143), Playwright com Chromium, 1440 e 390 px, com sessão de desenvolvimento, antes e depois, página inteira e texto de `main`; recortes dos blocos novos nas duas larguras; `/en` de Rede e Minha região. Diagnóstico pela rubrica da skill (§10) e pelas observações da rodada r9 do instrumento de avaliação do Setor Elétrico (`docs/observatorios/energia/avaliacao/revisao_visual.json`, revisores agentes do próprio instrumento). Nenhuma página com rolagem horizontal, nas duas larguras, antes e depois. Leitor de tela e ampliação de texto isolada não verificados.
+
+**O que derrubava a nota (r9).** Pergunta sem resposta na abertura (Minha região abria com "Escolha uma região" e o painel "Nenhuma escolha"); unidades e conceitos sem explicação no ponto de uso (MW, MWh e MWmed; carga contra geração; regime do ONS; balanço, perímetro, resíduo e tolerância; programado, verificado, percentis e limiar; ATLS, banda morta e energia não suprida; log × 100, fora da amostra, erro absoluto médio e referência ingênua; submercado, SIN e conjunto elétrico); gráficos principais sem frase de leitura; cartões da energia escondida com o nome da fronteira no sentido contrário ao do saldo; duas taxas de carga lado a lado sem dizer qual usar.
+
+**O que mudou para o leitor.**
+
+- Peças comuns (`src/components/energia/Didatica.tsx`): `ParaLer` (glossário no ponto de uso, cada termo em uma ou duas frases e, quando há, um exemplo calculado da gold da página), `LeituraGuiada` (uma frase factual sob o gráfico, do mesmo contrato do gráfico, sem causa) e `ModeloDidatico` (moldura do artefato, com o selo "Modelo didático", o que o modelo deixa de fora e a fonte dos números).
+- Carga: a abertura responde com o número (média em MWmed dos 7 dias, a energia por dia em MWh e a variação contra os mesmos dias da semana); glossário de MW, MWh, MWmed (com a conversão dos 7 dias), carga contra geração, SIN e subsistemas e regime do ONS; modelo didático "Potência e energia num dia" (`HorasDoDia`): as 24 horas de um dia real da curva horária, com a soma (MWh), a média (MWmed), o pico e a hora mais baixa, escolha do dia e da hora, tabela das 24 horas e a comparação com a Carga de Energia Diária do mesmo dia; leitura guiada do gráfico de pontos e da série diária (o domingo como vale da semana, contado nas últimas 13 semanas completas); a frase sob a faixa diz qual das duas taxas é a principal.
+- Clima e calendário: a abertura responde "Uma parte", com a diferença em pontos e em %, a parte do clima e calendário, a de nível e tendência e o resíduo; glossário de pontos (log × 100), modelo estatístico, fora da amostra, erro absoluto médio (com a referência ingênua), resíduo e intervalo de 80% (com a cobertura do SIN); modelo didático "Peça por peça" (cascata da diferença por região); leitura guiada do gráfico de partes, que diz que barra perto de zero não é falta de dado.
+- Perfil horário: glossário de MMGD (com a parcela do último mês), carga global e líquida, curva de carga e Carga de Energia Diária, pico e hora de início (com a hora modal do ano).
+- Rede: a abertura responde com a maior entrega dos 30 dias e quantas fronteiras tiveram energia nos dois sentidos; glossário de subsistema e fronteira, intercâmbio, fluxo bruto e saldo (com o exemplo da fronteira que mais escondeu), MWmed numa hora, sentido do nome e limite de transmissão; modelo didático "Ida e volta numa fronteira" (fluxo hora a hora, quatro fronteiras e sete dias, somas de cada sentido lidas da gold diária, saldo e energia escondida); leitura guiada do gráfico diário dos dois sentidos; os cartões da energia escondida nomeiam a fronteira sem sentido ("entre Norte e Nordeste").
+- Balanço e exterior: a abertura responde "Quase sempre", com as horas em que a conta do SIN fecha e o ano das que não fecham; glossário de balanço, conta 1, conta 2, resíduo e tolerância, exterior e MWmed numa hora; modelo didático "A conta de uma região" (último mês completo, cinco regiões, com o mês de maior resíduo).
+- Programado: glossário de programado, verificado, desvio, percentis, limiar material e sinal negativo, com o desvio médio em proporção do programa mediano e o maior desvio com sentido invertido.
+- Restrições: glossário de fluxo acompanhado e limite, ATLS e banda morta (com os trechos conferidos do Submódulo 9.1), corte de carga e perturbação, energia não suprida (com os números de 12 meses) e limite de intercâmbio.
+- Minha região: a abertura responde com um caso real (PLD do submercado e tarifa da distribuidora da maior cidade do primeiro submercado, cada um com a área a que vale); leitura guiada do mapa (UFs por submercado e municípios fora do SIN); modelo didático "Um endereço, várias áreas" (a maior cidade de cada submercado em caixas aninhadas: submercado, distribuidoras, conjuntos elétricos e município, com link para a ficha completa); glossário de SIN, submercado, distribuidora, conjunto elétrico, DEC e FEC e PLD contra tarifa.
+
+Nenhum número foi escrito à mão: todos saem das golds e séries publicadas (`carga_detalhe.json`, `carga.json`, `rede_detalhe.json`, `rede_janela_horaria.json`, `territorio.json`, `territorio_municipios.json`); as datas de regime e de quebra também. O método continua recolhido (Fontes, datas e siglas; Analisar e Auditar).
+
+**Notas por critério (§10).** "Antes" de Didática visual é a nota de didatismo da r9; os demais "antes" são leitura retroativa desta rodada sobre as capturas antigas, também autoavaliação.
+
+| Página | Direção de arte | Hierarquia | Tipografia e acabamento | Densidade e profundidade | Didática visual | Comparabilidade | Interação e acessibilidade | Responsividade |
+|---|---|---|---|---|---|---|---|---|
+| `/setor-eletrico/carga` | 8 → 8 | 7,5 → 8 | 7 → 7,5 | 8 → 8 | 7,5 → 8,5 | 8 → 8,5 | 8 → 8 | 6,5 → 7 |
+| `/carga/clima-e-calendario` | 7,5 → 8 | 7 → 8 | 7 → 7,5 | 7 → 8 | 5,5 → 8 | 7,5 → 8 | 8 → 8 | 7 → 7,5 |
+| `/carga/perfil-horario` | 7,5 → 7,5 | 7 → 7,5 | 6,5 → 6,5 | 7,5 → 8 | 7 → 8 | 8 → 8 | 8 → 8 | 6 → 6 |
+| `/setor-eletrico/rede` | 8 → 8,5 | 7,5 → 8 | 7,5 → 7,5 | 8 → 8 | 7,5 → 8,5 | 7,5 → 8,5 | 8 → 8 | 7 → 7,5 |
+| `/rede/balanco-e-exterior` | 7 → 7,5 | 6,5 → 8 | 6,5 → 6,5 | 7 → 8 | 5,5 → 8 | 7,5 → 8 | 8 → 8 | 6,5 → 6,5 |
+| `/rede/programado` | 7,5 → 7,5 | 7 → 7,5 | 7 → 7 | 7 → 7,5 | 6,5 → 8 | 7,5 → 8 | 8 → 8 | 6,5 → 6,5 |
+| `/rede/restricoes` | 7,5 → 7,5 | 7 → 7,5 | 7 → 7 | 7,5 → 8 | 6,5 → 8 | 8 → 8 | 8 → 8 | 7 → 7 |
+| `/setor-eletrico/territorio` | 7,5 → 8 | 6 → 8 | 7 → 7,5 | 7 → 8,5 | 6 → 8,5 | 8,5 → 9 | 8 → 8 | 7 → 7,5 |
+
+Critério de aceite: atendido na autoavaliação (nenhuma página abaixo de 8 em Didática visual). Nenhuma página chega a 9 em todos os critérios.
+
+**Evidência e limitação remanescente por página.**
+
+| Página | Evidência | Limitação remanescente |
+|---|---|---|
+| Carga | Abertura com "83.771 MWmed nos 7 dias até 28/09/2026: 2.010.504 MWh por dia, 11,45% acima"; glossário com "83.771 MWmed durante 7 dias (168 horas) são 14.073.545 MWh"; artefato com 2.133.939 MWh, média de 88.914 MWmed e pico de 98.741 MW às 19h em 28/09/2026; leitura "o dia de menor carga do SIN foi o domingo em" 12 das últimas 13 semanas completas | A 390 px, as marcas do eixo do gráfico de pontos ainda se encostam e os rótulos das linhas são cortados (r9); "Últimos 28 dias" e "Mês corrente" repetem a mesma janela quando o mês tem 28 dias publicados (a página diz isso abaixo do gráfico) |
+| Clima e calendário | Abertura "Uma parte", com +10,49 pontos (+11,06%), +2,53 de clima e calendário, +2,65 de nível e tendência e +5,32 de resíduo; cascata por região; leitura que explica as barras perto de zero | O seletor de seis variantes do modelo continua em Entender; a 390 px, o rótulo "Nível e tendência" do gráfico de partes segue truncado (r9) |
+| Perfil horário | Glossário com a parcela de MMGD do último mês e a hora modal do pico | O gráfico dos últimos 7 dias segue sem marca de dia e o mapa de calor das horas do pico é cortado a 390 px (r9); nenhuma leitura guiada nova nesta página |
+| Rede | Abertura com a maior entrega de 30 dias (3.492.734 MWh do Nordeste para o Sudeste/Centro-Oeste); artefato com 51.257 MWh do Sul para o Sudeste/Centro-Oeste e 25.729 MWh de volta em 29/09/2026, saldo de 25.528 MWh; os quatro cartões da energia escondida sem sentido no nome | A linha do saldo e a de Sul para Sudeste/Centro-Oeste ainda quase coincidem no gráfico diário; o submenu do módulo continua empilhado a 390 px |
+| Balanço e exterior | Abertura "Quase sempre": 47.880 de 50.352 horas; artefato com as duas contas de ago/2026 por região e o mês de maior resíduo | Rótulos das barras empilhadas seguem truncados a 1440 e 390 px e a anotação do gráfico de resíduo mensal é cortada a 390 px (r9) |
+| Programado | Glossário com o desvio médio de 914,4 MWmed como 36% do programa mediano da fronteira Norte → Nordeste e o maior desvio com sentido invertido | A seção "Os maiores desvios horários" continua só com o botão em Entender; rótulos de fronteira truncados a 390 px |
+| Restrições | Glossário com os trechos conferidos do Submódulo 9.1 (10 minutos e banda morta) e 30.734,6 MWh em 343 registros de 277 perturbações | As siglas FBTA, FNS+NESE e FJUSC continuam sem definição em documento público conferido; a barra parcial de 2026 tem a mesma cor das completas |
+| Minha região | Abertura com São Paulo (SP): PLD de R$ 135,25/MWh em 30/09/2026, o mesmo para 10 UFs, e tarifa da ELETROPAULO de R$ 789,38/MWh, a mesma para 24 municípios; artefato com as quatro maiores cidades por submercado, em caixas aninhadas; leitura do mapa | A camada padrão do mapa continua "Submercados"; o painel "Nenhuma escolha" ao lado do mapa continua alto e vazio a 1440 px; o HTML da página ficou maior (os quatro exemplos ficam no servidor) |
+
+**Testes que mudaram de propósito.** `energia-rede.test.ts` e `energia-conteudo-r8-R.test.ts`: o rótulo do cartão da energia escondida passa a ser "entre Norte e Nordeste" (`entreFronteira`); a ordem "definição antes dos cartões" continua exigida. `energia-territorio.test.ts`: a abertura troca o enunciado da regra por um caso real; continua exigido que a regra apareça uma vez, que o limite ("Não permite concluir") fique à vista e, em `energia-conteudo-r8-T1.test.ts` (sem mudança), que a busca fique a menos de 2.000 caracteres do título.
+
+**Capturas.** Antes e depois em `/tmp/claude-0/-home-user-scrutiniums/edbbf738-1d91-5b76-9c6e-d438c08d2fb4/scratchpad/onda3-energia/` (`antes/` e `depois/`, dobra e página inteira a 1440 e 390 px), fora do repositório.
+
 ## Pendências
 
 - Teste com leitor de tela nas seis entradas e nas cinco consultas abertas.

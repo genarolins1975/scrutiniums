@@ -70,6 +70,8 @@ const MOTOR: [string, string][] = [
   ["atualizar-eficiencia.yml", "eficiencia"],
   // painel Inflação por cidade (IPCA, Observatório das Famílias), 20/10/2026: nasce no motor por grupo
   ["atualizar-inflacao.yml", "inflacao"],
+  // painel Segurança pública por UF (Eficiência Estatal), 20/10/2026: Sinesp VDE, SIM, Siconfi e IBGE no motor por grupo
+  ["atualizar-seguranca.yml", "seguranca"],
 ];
 
 describe.each(MOTOR)("%s (motor por grupo)", (arquivo, dominio) => {

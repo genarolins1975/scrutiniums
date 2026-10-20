@@ -9,7 +9,7 @@ import {naCapital,numero} from "@/lib/eficiencia/entrada-nucleo";
 import {IndiceFederal} from '@/components/contas-publicas/IndiceFederal';
 import {DADOS} from '@/lib/contas-publicas/dados';
 import {moeda} from '@/lib/contas-publicas/formato';
-import {CAPITULOS} from '@/lib/contas-publicas/catalogo';
+import {CAPITULOS_EM_PREPARACAO,CAPITULOS_PUBLICADOS} from '@/lib/contas-publicas/catalogo';
 import {snapshot,dividaPrimaria} from '@/lib/contas-estaduais/dados';
 import {comparar} from '@/lib/contas-estaduais/comparacao';
 
@@ -55,9 +55,10 @@ describe('Aberturas editoriais: números e perímetros preservados',()=>{
   expect(vitoria.contorno!.partesDistantes).toBeGreaterThan(0);
   expect(retratoDe(vitoria.id,'2611606')).toMatch(/partes remotas ficam fora do enquadramento/);
  });
- it('o índice federal preserva acesso a todos os capítulos e identifica os ainda não integrados',()=>{
+ it('o índice federal dá acesso a todos os capítulos com dados e não anuncia os em preparação (Onda 3)',()=>{
   const html=renderToStaticMarkup(createElement(IndiceFederal));
-  for(const c of CAPITULOS)expect(html).toContain(`href="/contas-publicas/${c.id}"`);
-  expect(html).toContain('Dados disponíveis');expect(html).toContain('Em preparação');
+  for(const c of CAPITULOS_PUBLICADOS)expect(html).toContain(`href="/contas-publicas/${c.id}"`);
+  for(const c of CAPITULOS_EM_PREPARACAO){expect(html).not.toContain(`href="/contas-publicas/${c.id}"`);expect(html).not.toContain(c.titulo);}
+  expect(html).toContain('Dados disponíveis');expect(html).not.toContain('Em preparação');expect(html).not.toContain('Conhecer a proposta');
  });
 });

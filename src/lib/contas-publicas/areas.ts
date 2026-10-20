@@ -37,9 +37,9 @@ export const NOME_BASE: Record<Base, string> = {
   primaria: 'Só a despesa primária, sem a dívida',
 };
 
-type Registro = {ano: number; funcao: string; subfuncao: string; rp: string; v: Record<EstagioArea, number | null>};
+export type Registro = {ano: number; funcao: string; subfuncao: string; rp: string; v: Record<EstagioArea, number | null>};
 const COL = Object.fromEntries(fonte.colunas.map((c, i) => [c, i])) as Record<string, number>;
-const REGISTROS: Registro[] = (fonte.registros as (string | number | null)[][]).map((r) => ({
+export const REGISTROS: Registro[] = (fonte.registros as (string | number | null)[][]).map((r) => ({
   ano: r[COL.ano] as number,
   funcao: r[COL.funcao] as string,
   subfuncao: r[COL.subfuncao] as string,

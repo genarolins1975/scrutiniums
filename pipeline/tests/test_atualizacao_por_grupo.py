@@ -303,7 +303,7 @@ class Configuracao(unittest.TestCase):
     def test_configuracoes_versionadas(self):
         raiz = Path(__file__).resolve().parents[2]
         arquivos = sorted((raiz / "config/atualizacao").glob("*.json"))
-        self.assertEqual([p.stem for p in arquivos], ["contas-publicas", "eficiencia", "inflacao", "saneamento"])
+        self.assertEqual([p.stem for p in arquivos], ["contas-publicas", "eficiencia", "inflacao", "saneamento", "seguranca"])
         for p in arquivos:
             cfg = A.carregar_config(p)
             for g in cfg["grupos"]:
