@@ -9,6 +9,7 @@ import { tx } from "@/lib/energia/idioma";
 import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
+import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
 
 /**
  * Cabeçalho do Observatório Brasileiro do Setor Elétrico: a barra comum da plataforma (CabecalhoPlataforma: marca, seletor de
@@ -155,6 +156,8 @@ export function CabecalhoEnergia({ atual, comSelo = false, rotaPublica }: { atua
           </div>
         </div>
       </div>
+      {/* parceria técnica com o FGV CERI: a marca fecha o cabeçalho de todos os painéis de infraestrutura */}
+      <ParceriaTecnica variante="faixa" />
       <AtivoVisivel alvo="modulos-energia" />
       <RetornoContexto rotulos={rotulosRetorno()} />
     </header>

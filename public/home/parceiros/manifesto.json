@@ -1,0 +1,47 @@
+{
+  "_leia": "Marcas de parceiros institucionais servidas pela plataforma. Só arquivo oficial fornecido pelo próprio parceiro, convertido sem redesenho; o vínculo é institucional (parceria técnica), não de dado. A pasta /home é aberta (src/lib/rotasPublicas.ts), para a marca carregar também nas páginas sem sessão.",
+  "gerado_em": "2026-10-20",
+  "parceiros": [
+    {
+      "id": "fgv-ceri",
+      "nome": "FGV CERI",
+      "nome_completo": "Centro de Estudos em Regulação e Infraestrutura da Fundação Getulio Vargas",
+      "relacao": "Parceria técnica (decisão do mantenedor, 20/10/2026)",
+      "url": "https://ceri.fgv.br/",
+      "onde_aparece": "Página inicial e painéis de infraestrutura: Setor Elétrico, Gás Natural, Saneamento e Combustíveis (cabeçalho do módulo), entrada e mapa do Observatório de Energia e Infraestrutura.",
+      "origem": {
+        "formato": "EPS (Adobe Illustrator 23.0, criado em 02/05/2019), kit de marca 'Marca_CERI_Endosso'",
+        "recebido_em": "2026-10-20",
+        "recebido_de": "arquivos oficiais do CERI enviados pelo mantenedor",
+        "conversao": "Ghostscript 10.02.1 (pdfwrite, -dEPSCrop) e pdftocairo 24.02.0 (SVG). Sem redesenho: removidos só o prólogo XML e o namespace xlink não usado.",
+        "arquivos_eps": [
+          { "nome": "Marca_CERI_Endosso.eps", "sha256": "b00f48fbe1d77b42f8568f4c687cc1593b55d68b694ff74a31615cbe4b8548d6", "bytes": 1220030 },
+          { "nome": "Marca_CERI_Endosso_escuro.eps", "sha256": "af359b5e0cb14b5bffd1180532ae4dfa2ab1c43701081c8225f8bc6f2cf42efa", "bytes": 1236862 },
+          { "nome": "Marca_CERI_Endosso_azul.eps", "sha256": "27c57309375c797452c3e5484d0a8ab62491f1722b82b21c0e65957691f3b234", "bytes": 1223938, "nao_publicado": "variante monocromática azul, sem uso na plataforma" },
+          { "nome": "Marca_CERI_Endosso_branco.eps", "sha256": "1136f8695bafd22a5f04f6d2f0d67a64364c489f9d7cad31519495323c64d2f8", "bytes": 1234446, "nao_publicado": "variante branca, sem uso na plataforma" },
+          { "nome": "Marca_CERI_Endosso_preto.eps", "sha256": "a542420981b038e9b65cf21f0a79196da737918958d05bc6d0f566e9a707eb84", "bytes": 1254154, "nao_publicado": "variante preta, sem uso na plataforma" }
+        ]
+      },
+      "arquivos": [
+        {
+          "arquivo": "/home/parceiros/fgv-ceri.svg",
+          "variante": "colorida (padrão do kit)",
+          "fundo": "claro",
+          "largura": 447.55,
+          "altura": 117.52,
+          "sha256": "2d295629e6d0cad1af5c3516bd50257324a57d83f8b685d835ad27ef70b7e800",
+          "bytes": 47586
+        },
+        {
+          "arquivo": "/home/parceiros/fgv-ceri-escuro.svg",
+          "variante": "para fundo escuro (texto branco, CERI em azul-claro)",
+          "fundo": "escuro",
+          "largura": 446.55,
+          "altura": 117.52,
+          "sha256": "8f936d5bac8244faf4fd84ad9e6ab6c09bb2e4624ef46f572519d459df7bb9af",
+          "bytes": 46719
+        }
+      ]
+    }
+  ]
+}

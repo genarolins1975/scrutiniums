@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
 import { PAGINAS_COMBUSTIVEIS, ROTA_CONSULTA_TANQUE } from "@/lib/combustiveis/paginas";
 import { leva2Aprovada, prefetchDoLink } from "@/lib/rotasPublicas";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
@@ -36,6 +37,8 @@ export function CabecalhoCombustiveis({ atual }: { atual: string }) {
           </ul>
         </div>
       </nav>
+      {/* parceria técnica com o FGV CERI: a marca fecha o cabeçalho de todos os painéis de infraestrutura */}
+      <ParceriaTecnica variante="faixa" />
     </header>
   );
 }
