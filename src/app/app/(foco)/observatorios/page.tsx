@@ -98,10 +98,11 @@ export default async function EscolhaObservatorioPage() {
       <div className={styles.conteudo}>
         <DiretorioPaineis observatorios={obs} totais={totais(obs)} extras={extras} />
 
-        {/* método recolhido no fim: fontes, cobertura e atualização de cada coleção com pipeline próprio */}
+        {/* método recolhido no fim: fontes, cobertura e atualização de cada coleção com pipeline próprio, com a sua entrada
+            direta (POST com `d`, como nos cartões de antes: guarda o último acesso e registra a escolha) */}
         <section className={styles.fontes} aria-labelledby="fontes-titulo">
           <h2 id="fontes-titulo">Fontes e atualização</h2>
-          <p>O que cada coleção lê, de que período e quando foi capturado. Ausência de dado é declarada, nunca estimada.</p>
+          <p>O que cada coleção lê, de que período e quando foi capturado, e a entrada direta de cada uma. Ausência de dado é declarada, nunca estimada.</p>
           <div className={styles.fontesLista}>
             {OBSERVATORIOS.map((o) => {
               const cartoes = OPCOES_OBSERVATORIOS.filter((d) => OBSERVATORIO_DO_CARTAO(d.id) === o.id);
@@ -112,14 +113,21 @@ export default async function EscolhaObservatorioPage() {
                   {cartoes.map((d) => {
                     const at = atualizacaoObservatorio(d.id);
                     return (
-                      <details key={d.id}>
-                        <summary>{d.nomeCurto} <span aria-hidden="true">+</span></summary>
-                        <div>
-                          <p>{d.descricaoCurta}</p>
-                          <p className={styles.rotulo}>{at.rotulo}</p>
-                          <ul>{at.linhas.map((l) => <li key={l}>{l}</li>)}</ul>
-                        </div>
-                      </details>
+                      <article key={d.id} aria-label={d.nome} className={styles.ficha}>
+                        <details>
+                          <summary>{d.nomeCurto} <span aria-hidden="true">+</span></summary>
+                          <div>
+                            <p>{d.descricaoCurta}</p>
+                            <p className={styles.rotulo}>{at.rotulo}</p>
+                            <ul>{at.linhas.map((l) => <li key={l}>{l}</li>)}</ul>
+                          </div>
+                        </details>
+                        {ultimo === d.id && <span className={styles.selo}>Último acesso</span>}
+                        <form method="post" action="/app/observatorios/entrar">
+                          <input type="hidden" name="d" value={d.id} />
+                          <button type="submit" className={styles.explorar}>Explorar<span className="sr-only"> {d.nomeCurto}</span> <span aria-hidden="true">→</span></button>
+                        </form>
+                      </article>
                     );
                   })}
                 </div>
