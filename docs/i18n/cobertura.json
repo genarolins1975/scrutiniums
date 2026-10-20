@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1416,
-    "fontes_sha256": "15ba5d4dda4a3a0c518deed0467dfa1eb9f1ceed251a8f0862574a7254b24cef",
+    "arquivos_analisados": 1420,
+    "fontes_sha256": "86d23b11d228f3cf0149637b1c547990c5c24aa85593e1f65e9251abdfd13aac",
     "pendencias_sha256": "72bcf94065e5d97c671e30eb632f8d5d322ceb8a3561149c2132cb2682026068",
     "nao_classificadas": [
       {
@@ -158,19 +158,19 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 347,
+        "arquivos": 349,
         "candidatos": {
-          "jsx_text": 1498,
-          "atributos": 389,
-          "props": 1007,
-          "outros_literais": 7119,
-          "templates": 874,
-          "expressoes_nao_resolvidas": 5388,
-          "chaves_objetos": 5721
+          "jsx_text": 1511,
+          "atributos": 391,
+          "props": 1011,
+          "outros_literais": 7131,
+          "templates": 879,
+          "expressoes_nao_resolvidas": 5411,
+          "chaves_objetos": 5728
         },
         "exclusoes": {
-          "importacoes": 1534,
-          "atributos_tecnicos": 3096,
+          "importacoes": 1546,
+          "atributos_tecnicos": 3110,
           "tipos": 371
         },
         "scripts_embutidos": {},
@@ -180,17 +180,17 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 21996,
+        "candidatos_nao_catalogados": 22062,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 42,
+        "paginas_pt": 43,
         "paginas_en": 12,
         "handlers": 37,
         "templates_com_parametros": 6,
-        "paginas_pt_literais": 35,
+        "paginas_pt_literais": 36,
         "paginas_pt_fora_do_adaptador": 7,
-        "paginas_pt_literais_sem_irma": 23,
+        "paginas_pt_literais_sem_irma": 24,
         "pares_estruturais": 12,
         "fallbacks_declarados": 8,
         "paridade_verificada": false,
@@ -255,19 +255,19 @@
     "gas": {
       "nome": "Gás Natural",
       "interface": {
-        "arquivos": 27,
+        "arquivos": 29,
         "candidatos": {
-          "jsx_text": 286,
-          "atributos": 23,
+          "jsx_text": 301,
+          "atributos": 26,
           "props": 710,
-          "outros_literais": 542,
-          "templates": 75,
-          "expressoes_nao_resolvidas": 718,
-          "chaves_objetos": 815
+          "outros_literais": 555,
+          "templates": 78,
+          "expressoes_nao_resolvidas": 749,
+          "chaves_objetos": 830
         },
         "exclusoes": {
-          "importacoes": 158,
-          "atributos_tecnicos": 292,
+          "importacoes": 163,
+          "atributos_tecnicos": 319,
           "tipos": 30
         },
         "scripts_embutidos": {},
@@ -277,7 +277,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 3169,
+        "candidatos_nao_catalogados": 3249,
         "percentual_traduzido": null
       },
       "rotas": {
