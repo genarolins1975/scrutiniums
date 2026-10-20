@@ -1,7 +1,7 @@
 "use client";
 
 import { Cadeado } from "./SeloComConta";
-import { hrefEntrar, textosAcesso } from "./sessao";
+import { hrefEntrar, textosAcesso, useSessao } from "./sessao";
 
 /**
  * Fecho de toda página aperitivo (princípio do aperitivo, decisão do dono de 20/10/2026): diz o que o
@@ -13,10 +13,12 @@ import { hrefEntrar, textosAcesso } from "./sessao";
 export function ConviteAperitivo({ rota, comConta, className = "" }: { rota: string; comConta: readonly string[]; className?: string }) {
   const en = rota === "/en" || rota.startsWith("/en/");
   const t = textosAcesso(rota);
+  // páginas abertas que já são o aperitivo (Combustíveis, Crédito) chegam também a quem tem conta: para ele, o painel direto
+  const logado = useSessao() === true;
   return (
     <section data-convite-aperitivo="" aria-labelledby="convite-aperitivo-titulo" className={`border-t border-linha py-6 ${className}`}>
       <h2 id="convite-aperitivo-titulo" className="font-serif text-xl text-carvao">
-        {en ? "The full panel, with a free account" : "O painel completo, com a conta gratuita"}
+        {logado ? (en ? "In the full panel" : "No painel completo") : en ? "The full panel, with a free account" : "O painel completo, com a conta gratuita"}
       </h2>
       <ul className="mt-3 max-w-prose2 space-y-1.5 text-sm leading-relaxed text-carvao">
         {comConta.map((item) => (
@@ -29,8 +31,8 @@ export function ConviteAperitivo({ rota, comConta, className = "" }: { rota: str
         ))}
       </ul>
       <p className="mt-4">
-        <a href={hrefEntrar(rota)} className="inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4 hover:decoration-carvao">
-          {t.entrar}
+        <a href={logado ? rota : hrefEntrar(rota)} className="inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4 hover:decoration-carvao">
+          {logado ? (en ? "Open the full panel" : "Abrir o painel completo") : t.entrar}
         </a>
       </p>
     </section>

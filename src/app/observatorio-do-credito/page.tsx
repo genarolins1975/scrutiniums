@@ -255,6 +255,7 @@ export default function ObservatorioPublicoPage() {
               <LinkEntrarComDestino className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze" />
               <Link
                 href="/resumo"
+                prefetch={prefetchDoLink("/resumo")}
                 className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
               >
                 Ver o resumo diário
@@ -339,6 +340,7 @@ export default function ObservatorioPublicoPage() {
               <p className="mt-8">
                 <Link
                   href="/resumo"
+                prefetch={prefetchDoLink("/resumo")}
                   className="rotulo inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
                 >
                   Ler o resumo completo
