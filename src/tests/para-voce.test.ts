@@ -11,6 +11,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { staticGenerationAsyncStorage } from "next/dist/client/components/static-generation-async-storage.external";
 import { ParaVoce } from "@/components/observatorios/ParaVoce";
+import { PaginaAberta } from "@/components/acesso/PaginaAberta";
 import { FRESCOR_DAS_COLECOES, FRESCOR_DOS_OBSERVATORIOS } from "@/lib/frescor/entradas";
 import { observatorio, type ObservatorioId } from "@/lib/observatorios/registro";
 import { PARA_VOCE, ehEntradaParaVoce, paraVoce, todasAsPerguntas, type EntradaParaVoce, type PerguntaParaVoce } from "@/lib/observatorios/paraVoce";
@@ -38,6 +39,7 @@ vi.setConfig({ testTimeout: 60_000 });
 const raiz = process.cwd();
 const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
 const html = (entrada: EntradaParaVoce, idioma: "pt" | "en" = "pt") => renderToStaticMarkup(createElement(ParaVoce, { entrada, idioma }));
+const aberta = (entrada: EntradaParaVoce) => renderToStaticMarkup(createElement(PaginaAberta, null, createElement(ParaVoce, { entrada, idioma: "pt" })));
 const emIngles = <T,>(urlPathname: string, f: () => T): T =>
   (staticGenerationAsyncStorage as unknown as { run: (store: unknown, cb: () => T) => T }).run({ urlPathname }, f);
 
@@ -187,12 +189,14 @@ describe("componente", () => {
     expect(h).not.toMatch(/NaN|undefined|Infinity|\[object Object\]/);
   });
 
-  it("entrada vista sem sessão (rota aberta): todo destino fechado leva o selo, e o aberto não", () => {
-    const abertas = ENTRADAS.filter((e) => ehRotaPublica(e));
-    expect(abertas).toEqual(["/eficiencia-estatal"]);
-    for (const e of abertas) {
-      caminho.atual = e;
-      const h = html(e as EntradaParaVoce);
+  it("numa página aberta (versão aperitivo, marcada por PaginaAberta), todo destino fechado leva o selo, e o aberto não", () => {
+    // princípio do aperitivo (20/10/2026): a entrada da Eficiência Estatal no endereço público é o painel completo de quem
+    // tem conta; a página aberta é a versão aperitivo, que se declara aberta pelo layout de src/app/aperitivo
+    expect(ENTRADAS.filter((e) => ehRotaPublica(e))).toEqual(["/eficiencia-estatal"]);
+    caminho.atual = "/eficiencia-estatal";
+    expect(html("/eficiencia-estatal" as EntradaParaVoce)).not.toContain("data-selo-conta");
+    for (const e of ENTRADAS) {
+      const h = aberta(e as EntradaParaVoce);
       const cartoes = h.split("<li ").slice(1);
       const perguntas = paraVoce(e as EntradaParaVoce);
       expect(cartoes).toHaveLength(perguntas.length);
@@ -200,19 +204,11 @@ describe("componente", () => {
         if (exigeConta(p.href)) expect(cartoes[i], `${e}: ${p.href} sem selo`).toContain("data-selo-conta");
         else expect(cartoes[i], `${e}: ${p.href} aberto com selo`).not.toContain("data-selo-conta");
       });
-      // pelo menos um destino de cada tipo, para o teste valer
-      expect(perguntas.some((p) => exigeConta(p.href))).toBe(true);
-      expect(perguntas.some((p) => !exigeConta(p.href))).toBe(true);
     }
-  });
-
-  it("o mesmo bloco numa página aberta qualquer também marca os destinos fechados", () => {
-    caminho.atual = "/eficiencia-estatal";
-    for (const e of ENTRADAS) {
-      const h = html(e as EntradaParaVoce);
-      const fechados = paraVoce(e as EntradaParaVoce).filter((p) => exigeConta(p.href)).length;
-      expect((h.match(/data-selo-conta/g) ?? []).length, e).toBe(fechados);
-    }
+    // pelo menos um destino de cada tipo, para o teste valer
+    const todas = ENTRADAS.flatMap((e) => paraVoce(e as EntradaParaVoce));
+    expect(todas.some((p) => exigeConta(p.href))).toBe(true);
+    expect(todas.some((p) => !exigeConta(p.href))).toBe(true);
   });
 
   it("entrada com conta: sem selo, porque quem a vê já tem sessão", () => {
