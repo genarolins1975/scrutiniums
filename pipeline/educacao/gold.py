@@ -104,6 +104,7 @@ def _fontes(ideb: dict, censo: dict, pop: dict) -> dict:
         "ideb": {
             "orgao": F.ORGAO_INEP, "nome": F.NOME_IDEB, "edicao": ideb["ano"], "pagina": ideb.get("pagina", F.PAGINA_IDEB),
             "nota_informativa": ideb.get("nota_informativa"), "capturado_em": ideb.get("capturado_em"),
+            "ultima_formula_original": F.ULTIMA_FORMULA_ORIGINAL,
             "publicado_em": max((a.get("modificado_em") or "") for a in ideb["arquivos"].values()) or None,
             "arquivos": {k: {"url": a.get("url"), "sha256": a.get("sha256"), "membro": a.get("membro"), "md5_publicado_inep": a.get("md5_publicado_inep"), "modificado_em": a.get("modificado_em")} for k, a in ideb["arquivos"].items()},
             "codigos_divergentes": ideb.get("codigos_divergentes") or {},

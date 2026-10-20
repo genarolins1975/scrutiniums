@@ -232,7 +232,7 @@ describe("entradas com conta: faixa na primeira tela e no método", () => {
   });
 
   // De onde cada entrada que reúne coleções lê os números: cada domínio lido aparece na faixa.
-  const DOMINIO_DA_PASTA: Record<string, string> = { obs: "credito", energia: "energia", gas: "gas", saneamento: "saneamento", agro: "agro", territorio: "territorio", eficiencia: "eficiencia" };
+  const DOMINIO_DA_PASTA: Record<string, string> = { obs: "credito", energia: "energia", gas: "gas", saneamento: "saneamento", agro: "agro", territorio: "territorio", eficiencia: "eficiencia", educacao: "educacao" };
   const ARQUIVO_DA_ENTRADA: Record<keyof typeof FRESCOR_DOS_OBSERVATORIOS, string> = {
     familias: "familias",
     "servicos-publicos": "servicos",
