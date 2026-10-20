@@ -138,6 +138,7 @@ export function pacoteEstados(g: GoldSeguranca): PacoteEstados {
       sinesp: `Sinesp VDE (MJSP), captura de ${g.fontes.sinesp.capturado_em.slice(0, 10)}`,
       sim: `SIM (Ministério da Saúde), dados finais até ${g.fontes.sim.final_ate}`,
       siconfi: `Siconfi (Tesouro Nacional), DCA, captura de ${g.fontes.siconfi.capturado_em.slice(0, 10)}`,
+      ibge: `IBGE, ${g.fontes.ibge.rotulo}`,
     },
   };
 }

@@ -330,17 +330,17 @@ function porta_servicos(): Porta {
       caminho("eficiencia", "A atenção primária à saúde alcança a população?", "Despesa, unidades básicas, equipes e internações evitáveis nas capitais.", "/eficiencia-estatal/saude-capitais"),
       caminho("eficiencia", "Quanto tempo a Justiça leva?", "Despesas, filas e tempos em 57 tribunais, sem nota própria de eficiência.", "/eficiencia-estatal/judiciario"),
       caminho("eficiencia", "A Justiça é acessível a quem precisa?", "Cobertura das defensorias, tempo de resposta e conciliação.", "/eficiencia-estatal/acesso-justica"),
-      caminho("eficiencia", "Que violência é registrada no país?", "Indicadores nacionais de violência, crimes patrimoniais, desaparecimentos e recursos por esfera de governo.", "/eficiencia-estatal/seguranca-publica"),
+      caminho("eficiencia", "Quanta violência cada estado registra?", "Homicídios registrados pela polícia e óbitos por agressão na saúde, por UF e em taxa por 100 mil habitantes, com a referência do Brasil.", "/eficiencia-estatal/seguranca-publica/estados"),
     ],
     paraOSeuCaso: [CONSULTAS.capital],
     lacunas: [
       "Filas e tempo de espera no SUS.",
       "Educação e saúde nos municípios que não são capitais.",
-      "Violência comparável entre estados, em taxa por habitante.",
     ],
     metodos: [
       { rotulo: "Educação: métodos", href: "/eficiencia-estatal/educacao-municipal-capitais/metodos" },
       { rotulo: "Saúde: métodos", href: "/eficiencia-estatal/saude-capitais/metodos" },
+      { rotulo: "Segurança pública: métodos", href: "/eficiencia-estatal/seguranca-publica/metodos" },
     ],
   };
 }

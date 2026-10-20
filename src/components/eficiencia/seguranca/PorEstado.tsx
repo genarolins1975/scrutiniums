@@ -242,7 +242,7 @@ export function PorEstado({ pacote: p, inicial }: { pacote: PacoteEstados; inici
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
           <button type="button" onClick={baixar} className="min-h-[44px] border border-obee-dark px-4">Baixar esta tabela · CSV</button>
-          <span className="text-carvao-muted">Fonte: {p.rotuloFonte[i.fonte]}; população: IBGE, Projeções da População, Revisão 2024.</span>
+          <span className="text-carvao-muted">Fonte: {p.rotuloFonte[i.fonte]}; população: {p.rotuloFonte.ibge}.</span>
         </div>
       </section>
     </div>

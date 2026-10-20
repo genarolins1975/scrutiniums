@@ -289,7 +289,8 @@ def construir(seeds: dict) -> dict:
             "anos": sic["anos"], "conta": sic["conta"], "coluna": sic["coluna"],
         },
         "ibge": {
-            "nome": ibge["fonte"], "url": ibge["url"], "metodo": ibge["metodo"], "capturado_em": ibge["capturado_em"],
+            "nome": ibge["fonte"], "rotulo": F.ROTULO_PROJECAO, "base": F.BASE_PROJECAO,
+            "url": ibge["url"], "metodo": ibge["metodo"], "capturado_em": ibge["capturado_em"],
             "sha256": ibge["original"]["sha256"],
         },
     }

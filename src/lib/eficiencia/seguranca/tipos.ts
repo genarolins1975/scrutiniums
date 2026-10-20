@@ -67,7 +67,7 @@ export type GoldSeguranca = {
       extracao_preliminar: Record<string, string>; previas_fora: Record<string, { edicao: number; extracao: string }>;
     };
     siconfi: { nome: string; pagina: string; url: string; capturado_em: string; anos: number[]; conta: string; coluna: string };
-    ibge: { nome: string; url: string; metodo: string; capturado_em: string; sha256: string };
+    ibge: { nome: string; rotulo: string; base: string; url: string; metodo: string; capturado_em: string; sha256: string };
   };
   indicadores: Indicador[];
   populacao: Record<string, { total: number[]; mulheres: number[] }>;

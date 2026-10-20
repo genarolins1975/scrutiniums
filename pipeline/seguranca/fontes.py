@@ -122,6 +122,8 @@ URL_PROJECAO_METODO = (
     "Serie_Relatorios_Metotodologicos_v40_Projecoes_da_Populacao_Brasil_e_Unidades_da_Federacao_Revisao_2024_3a_Edicao.pdf"
 )
 GRUPOS_IDADE = 19  # 00-04 a 85-89 e 90+
+ROTULO_PROJECAO = "Projeções da População, Revisão 2024"
+BASE_PROJECAO = "ajustada ao Censo 2022"
 FAIXA_POP_BRASIL = (190_000_000, 230_000_000)
 
 # ------------------------------------------------------------------ regra de ausência

@@ -90,7 +90,7 @@ def main(argv=None) -> int:
         print(str(e), file=sys.stderr)
         return 1
     if a.check:
-        difere = [str(p.relative_to(RAIZ)) for p, t in out.items() if not p.exists() or p.read_text(encoding="utf-8") != t]
+        difere = [str(p.relative_to(RAIZ)) for p, t in out.items() if not p.exists() or p.read_bytes().decode("utf-8") != t]
         if difere:
             print("a publicação versionada não é a dos seeds:", ", ".join(difere), file=sys.stderr)
             return 1

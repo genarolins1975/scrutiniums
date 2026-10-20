@@ -279,8 +279,8 @@
           "campo": "captura"
         },
         {
-          "arquivo": "public/eficiencia/seguranca-publica/snapshot.json",
-          "campo": "verificadoEm"
+          "arquivo": "public/eficiencia/seguranca-publica/gold/seguranca.json",
+          "campo": "capturado_em"
         }
       ],
       "referencia": [
