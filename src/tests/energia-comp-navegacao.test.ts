@@ -36,6 +36,7 @@ const QUADRO_6_2_C: Record<string, string> = {
   "visao-geral": "Visão geral",
   "agua-e-clima": "Água e clima",
   geracao: "Geração",
+  curtailment: "Curtailment",
   carga: "Carga",
   rede: "Rede",
   pld: "PLD",
@@ -57,7 +58,7 @@ const QUADRO_6_2_C: Record<string, string> = {
 // Seção 5.1: grupos, na ordem, e o que cada um reúne.
 const SECAO_5_1: [string, string[]][] = [
   ["Comece aqui", ["mapa", "visao-geral", "territorio"]],
-  ["Operação do sistema", ["agua-e-clima", "geracao", "carga", "rede"]],
+  ["Operação do sistema", ["agua-e-clima", "geracao", "curtailment", "carga", "rede"]],
   ["Preços e mercado", ["pld", "pld-modelos", "mercado", "leiloes"]],
   ["Consumidor e território", ["conta-de-luz", "perdas", "qualidade", "inclusao-energetica"]],
   ["Empresas e futuro", ["empresas", "expansao", "transicao"]],
