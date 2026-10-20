@@ -15,6 +15,7 @@ import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
 import type { CaminhoPorta, ConsultaAberta, NumeroPorta, Porta } from "./tipos";
 import { comSinal, dataBr, lerPublico, mesAno, num, numero } from "./leitura";
 import { consultasLeva2, metodosLeva2 } from "./leva2";
+import { composicao, emCem, ultimoEncerrado } from "@/lib/contas-publicas/areas";
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- leitura de gold JSON sem tipos gerados */
 /** Destino com o domínio de origem (ou o próprio observatório, quando ele mantém o painel) e a coleção do registro a que pertence. */
@@ -175,6 +176,30 @@ export const numeroPrevidencia = (): NumeroPorta =>
     },
   );
 
+/**
+ * Parte de cada R$ 100 pagos pelo orçamento federal que foi para a dívida pública, no último exercício encerrado: o
+ * número do painel Despesa por área (/contas-publicas/por-area), com a mesma conta (src/lib/contas-publicas/areas.ts).
+ */
+export const numeroDividaCem = (): NumeroPorta =>
+  numero(
+    {
+      rotulo: "Parte dos pagamentos federais que foi para a dívida pública",
+      unidade: "a cada R$ 100 pagos",
+      fonte: "SIOP, execução do orçamento da União por função",
+      href: "/contas-publicas/por-area",
+      nota: "Juros, amortização e refinanciamento de títulos (função Encargos Especiais, subfunções 841 a 844), valor pago no exercício, em valores nominais. O restante se divide entre as transferências a estados e municípios e as áreas de governo.",
+    },
+    () => {
+      const ano = ultimoEncerrado();
+      if (ano === null) throw new Error("sem exercício encerrado");
+      const c = composicao(ano, "pago", "total");
+      const itens = c ? emCem(c) : null;
+      if (!itens) throw new Error("composição indisponível");
+      const divida = itens.filter((p) => p.tipo === "divida").reduce((s, p) => s + p.cem, 0);
+      return { valor: `R$ ${num(divida, 1)}`, periodo: String(ano) };
+    },
+  );
+
 /** Estados com dívida consolidada líquida acima da receita corrente líquida (RGF, 3º quadrimestre). */
 export const numeroEstadosDivida = (): NumeroPorta =>
   numero(
@@ -317,16 +342,16 @@ function porta_dinheiro(): Porta {
       numeroEstadosDivida(),
     ],
     caminhos: [
+      caminho("contas", "Para onde vai o dinheiro federal, por área?", "Cada R$ 100 pagos por área de governo (saúde, educação, previdência), com a dívida à parte, desde 2000.", "/contas-publicas/por-area"),
       caminho("contas", "O governo fechou as contas no azul ou no vermelho?", "Receitas, despesas e resultado primário do governo central desde 1997.", "/contas-publicas/panorama"),
       caminho("contas", "Quanto do orçamento foi efetivamente pago?", "Da autorização ao pagamento, com juros e refinanciamento da dívida separados.", "/contas-publicas/execucao"),
-      caminho("contas", "Quanto custa cada área do governo?", "Custos da União por área, do relatório de custos do Tesouro.", "/contas-publicas/custos"),
+      caminho("contas", "Quanto custa manter o governo federal?", "Custos da União por natureza (pessoal, funcionamento, transferências e benefícios), do relatório de custos do Tesouro.", "/contas-publicas/custos"),
       caminho("contas", "O que ficou para pagar no ano seguinte?", "Restos a pagar inscritos, pagos e cancelados.", "/contas-publicas/restos-a-pagar"),
       caminho("estados", "Como está a dívida do meu estado?", "Execução, receitas, despesas e dívida das 27 unidades da Federação lado a lado.", "/contas-publicas-estaduais"),
       caminho("credito", "Quem deve à União?", "Dívida ativa da União inscrita na Procuradoria da Fazenda, por tipo de devedor.", "/observatorio/federal-tax-debt"),
     ],
     paraOSeuCaso: [],
     lacunas: [
-      "Despesa federal por área (saúde, educação, previdência) no orçamento executado.",
       "Previdência e INSS em detalhe: benefícios, quem recebe e o resultado do sistema.",
       "Quem paga os impostos e o que muda com a reforma tributária.",
     ],

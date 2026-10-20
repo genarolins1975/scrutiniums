@@ -100,7 +100,13 @@ const ARQUIVOS_DAS_CONSULTAS = new Set([
  * seguem fechados. `arquivos` são os que a consulta busca no navegador, um a
  * um; o que a página lê no servidor não precisa abrir.
  */
-export type IdLeva2 = "quanto-meu-banco-cobra" | "teve-fogo-perto-de-mim" | "cem-reais-dos-impostos" | "metodologia-do-credito" | "quanto-custa-encher-o-tanque";
+export type IdLeva2 =
+  | "quanto-meu-banco-cobra"
+  | "teve-fogo-perto-de-mim"
+  | "cem-reais-dos-impostos"
+  | "metodologia-do-credito"
+  | "quanto-custa-encher-o-tanque"
+  | "cem-reais-por-area";
 
 export type ItemLeva2 = {
   id: IdLeva2;
@@ -187,6 +193,20 @@ export const LEVA_2: readonly ItemLeva2[] = Object.freeze([
     arquivos: [],
     // aprovada pelo dono em 20/10/2026, junto com o merge do painel Combustíveis nos postos
     aprovadaEm: "2026-10-20",
+  },
+  {
+    // consulta do painel novo Despesa por área (/contas-publicas/por-area, autorizado em 20/10/2026, com conta): artefato
+    // CemReaisPorAreaAberto dentro de /perguntas/contas-publicas, que já é aberta. Só o último exercício encerrado, valor
+    // pago, montado no servidor a partir de src/lib/contas-publicas/snapshots/funcoes.json; nenhuma rota e nenhum arquivo
+    // abrem. Série, outros estágios, subfunções, downloads e o painel seguem com conta
+    id: "cem-reais-por-area",
+    pergunta: "Quanto de cada R$ 100 do governo federal vai para cada área?",
+    resumo: "Cada R$ 100 pagos pelo orçamento federal no último exercício encerrado, repartidos por área de governo (previdência, saúde, educação e as demais), com a dívida pública à parte, pelos dados abertos do SIOP.",
+    forma: "artefato",
+    portas: ["contas-publicas"],
+    rotas: [],
+    arquivos: [],
+    aprovadaEm: null,
   },
 ] satisfies ItemLeva2[]);
 

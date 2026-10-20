@@ -37,10 +37,11 @@ describe('apresentação monetária e razões',()=>{
   expect(compararSaldo(1,-1,2025)).toMatch(/déficit.*para superávit/);
   expect(compararSaldo(0,1,2025)).toContain('para equilíbrio');
  });
- it('distingue quatro indicadores observados do panorama complementar de custos',()=>{
+ it('distingue cinco indicadores observados dos painéis complementares de custos e de despesa por área',()=>{
   expect(COBERTURA).toHaveLength(12);
-  expect(COBERTURA.flatMap(c=>c.observados)).toHaveLength(4);
-  expect(COBERTURA.flatMap(c=>c.pendentes)).toHaveLength(20);
-  expect(PAINEIS_COMPLEMENTARES).toHaveLength(1);
+  // a composição funcional da despesa (Panorama) passou a ter dados com o painel Despesa por área (20/10/2026)
+  expect(COBERTURA.flatMap(c=>c.observados).map(i=>i.id)).toEqual(['resultado-primario','composicao','execucao-liquidada','rap-idade','meta-entrega']);
+  expect(COBERTURA.flatMap(c=>c.pendentes)).toHaveLength(19);
+  expect(PAINEIS_COMPLEMENTARES.map(p=>p.href)).toEqual(['/contas-publicas/custos#custos-observados','/contas-publicas/por-area']);
  });
 });

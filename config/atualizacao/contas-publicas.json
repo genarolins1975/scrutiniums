@@ -1,11 +1,14 @@
 {
   "dominio": "contas-publicas",
   "titulo": "Contas Públicas Federais",
-  "descricao": "Recoleta semanal da execução orçamentária do SIOP (consulta SPARQL pública) para os exercícios integrados. A edição do RTN, o IPCA, os restos a pagar, as metas físicas, os custos e os denominadores do IBGE são integrados por edição, à mão (OPERACOES.md).",
+  "descricao": "Recoleta semanal da execução orçamentária do SIOP (consulta SPARQL pública) para os exercícios integrados, e por função e subfunção para o ano corrente e o anterior (os exercícios desde 2000 ficam no snapshot). A edição do RTN, o IPCA, os restos a pagar, as metas físicas, os custos e os denominadores do IBGE são integrados por edição, à mão (OPERACOES.md).",
   "codigo": [
     "scripts/contas-publicas/importar.py",
     "scripts/contas-publicas/esferas.rq",
     "scripts/contas-publicas/gnd.rq",
+    "scripts/contas-publicas/importar-funcoes.py",
+    "scripts/contas-publicas/funcoes.rq",
+    "scripts/contas-publicas/totais.rq",
     "src/lib/contas-publicas",
     "src/tests/contas-publicas*.test.ts"
   ],
@@ -13,6 +16,7 @@
   "saidas": [],
   "sinal_de_mudanca": [
     {"arquivo": "src/lib/contas-publicas/snapshots/dados.json", "json_sem": ["capturaSIOP"]},
+    {"arquivo": "src/lib/contas-publicas/snapshots/funcoes.json", "json_sem": ["captura"]},
     {"caminho": "data/contas-publicas/fontes"}
   ],
   "testes": [
@@ -30,13 +34,14 @@
   "grupos": [
     {
       "id": "siop",
-      "nome": "SIOP: execução orçamentária da União (esferas e GND, exercícios integrados)",
-      "coleta": [["python3", "scripts/contas-publicas/importar.py", "--so-siop"]],
+      "nome": "SIOP: execução orçamentária da União (esferas e GND dos exercícios integrados; função e subfunção do ano corrente e do anterior)",
+      "coleta": [["python3", "scripts/contas-publicas/importar.py", "--so-siop"], ["python3", "scripts/contas-publicas/importar-funcoes.py", "--recentes"]],
       "caminhos": [
         "src/lib/contas-publicas/snapshots/dados.json",
+        "src/lib/contas-publicas/snapshots/funcoes.json",
         "data/contas-publicas/fontes"
       ],
-      "timeout_min": 15
+      "timeout_min": 25
     }
   ]
 }

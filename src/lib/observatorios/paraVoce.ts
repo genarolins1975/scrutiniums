@@ -24,7 +24,7 @@ import {
   numeroComidaEmCasa,
   numeroEstadosDivida,
   numeroIdebCapitais,
-  numeroPrevidencia,
+  numeroDividaCem,
   numeroSaudeCapitais,
 } from "@/lib/perguntas/portas";
 import { lerPublico, mesAno, num, numero } from "@/lib/perguntas/leitura";
@@ -328,9 +328,9 @@ function pergunta(id: IdPergunta, idioma: Idioma): PerguntaParaVoce {
       return {
         id,
         pergunta: "Para onde vai o dinheiro do governo federal?",
-        resposta: "Receitas, despesas e resultado do governo central desde 1997, com o peso de cada grande despesa.",
-        href: "/contas-publicas/panorama",
-        numero: daPorta(numeroPrevidencia()),
+        resposta: "Cada R$ 100 pagos por área de governo, como previdência, saúde e educação, com a dívida pública à parte, desde 2000.",
+        href: "/contas-publicas/por-area",
+        numero: daPorta(numeroDividaCem()),
       };
     case "metas":
       return {

@@ -1,6 +1,7 @@
 import { FONTES, type Indicador } from '@/lib/contas-publicas/catalogo';
 const recortes:Record<string,{texto:string;url:string}>={
  'resultado-primario':{texto:'RTN em valores correntes; % do PIB disponível para 2024–2025. Apuração da meta fiscal pendente.',url:'/contas-publicas/panorama#fiscal-observado'},
+ 'composicao':{texto:'SIOP por função e subfunção, 2000 ao ano corrente, cinco estágios, com a dívida e as transferências de Encargos Especiais separadas. Valores nominais.',url:'/contas-publicas/por-area'},
  'execucao-liquidada':{texto:'SIOP 2025 e captura parcial de 2026; histórico mensal comparável pendente.',url:'/contas-publicas/execucao#orcamento-observado'},
  'rap-idade':{texto:'Abertura 2026 e encerramentos 2024 e 2025, por origem, tipo e órgão. Base 2025 ajustada; não representa coorte inicial imutável.',url:'/contas-publicas/restos-a-pagar#rap-observado'},
  'meta-entrega':{texto:'AFFO 2025 por localizador, com meta original e atualizada. Custos, qualidade e impacto não integrados.',url:'/contas-publicas/metas#metas-observadas'},

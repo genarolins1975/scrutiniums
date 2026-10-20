@@ -15,6 +15,10 @@ export const FONTES = {
 export type FonteId = keyof typeof FONTES;
 /** Capítulos com painel de dados publicado (id do capítulo, rótulo da navegação). Os demais mostram só o método proposto. */
 export const PAINEIS_COM_DADOS = [['execucao','Pagamentos'],['panorama','Resultado fiscal'],['restos-a-pagar','Restos a pagar'],['custos','Custos'],['metas','Entregas']] as const;
+/** Painel complementar do Panorama (não é capítulo): a despesa por área, pela classificação funcional do SIOP. */
+export const PAINEL_AREAS = {href:'/contas-publicas/por-area',rotulo:'Por área',titulo:'Despesa por área',pergunta:'Para onde vai o dinheiro federal, por área?',capitulo:'panorama'} as const;
+/** Navegação entre os painéis com dados, na ordem da procura: a despesa por área primeiro, depois os capítulos. */
+export const PAINEIS_NAVEGACAO:readonly (readonly [string,string])[] = [[PAINEL_AREAS.href,PAINEL_AREAS.rotulo],...PAINEIS_COM_DADOS.map(([id,nome])=>[`/contas-publicas/${id}`,nome] as const)];
 export const REFERENCIAS = [
   {nome:'PEFA', papel:'Confiabilidade, execução e controle do orçamento.', url:'https://www.pefa.org/node/119'},
   {nome:'OCDE · Government at a Glance', papel:'Orçamento orientado a desempenho e comparações internacionais.', url:'https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report.html'},
@@ -44,7 +48,7 @@ export type Indicador = {
   fonte: FonteId; periodicidade: string; referencia: string; ressalva: string;
   perimetro: string; requisitos: string; status: 'aguardando-integracao'|'integracao-parcial';
 };
-const indicador = (id:string, capitulo:CapituloId, nome:string, unidade:string, formula:string, fonte:FonteId, referencia:string, ressalva:string, requisitos:string, perimetro='Orçamento Fiscal e da Seguridade Social da União', periodicidade='Anual; acompanhamento mensal quando conciliado'):Indicador => ({id,capitulo,nome,unidade,formula,fonte,referencia,ressalva,requisitos,perimetro,periodicidade,status:['resultado-primario','execucao-liquidada','rap-idade','meta-entrega'].includes(id)?'integracao-parcial':'aguardando-integracao'});
+const indicador = (id:string, capitulo:CapituloId, nome:string, unidade:string, formula:string, fonte:FonteId, referencia:string, ressalva:string, requisitos:string, perimetro='Orçamento Fiscal e da Seguridade Social da União', periodicidade='Anual; acompanhamento mensal quando conciliado'):Indicador => ({id,capitulo,nome,unidade,formula,fonte,referencia,ressalva,requisitos,perimetro,periodicidade,status:['resultado-primario','composicao','execucao-liquidada','rap-idade','meta-entrega'].includes(id)?'integracao-parcial':'aguardando-integracao'});
 export const INDICADORES: Indicador[] = [
   indicador('resultado-primario','panorama','Resultado primário','R$ e % do PIB','Receita primária líquida − despesa primária','rtn','Série comparável e meta com vigência identificada','Apresentar resultado observado e ajustes para a meta separadamente.','Receitas, despesas e PIB com bases consistentes.','Governo Central'),
   indicador('composicao','panorama','Composição funcional da despesa','%','100 × despesa da função / despesa total do mesmo universo','siop','Composição histórica','As parcelas precisam reconciliar com o total e o mesmo estágio.','Função, exercício, estágio e total conciliado.'),
