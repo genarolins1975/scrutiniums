@@ -24,6 +24,15 @@ export function mesExtenso(m: string | null | undefined): string {
   return `${MESES[Number(m.slice(5, 7)) - 1]} de ${m.slice(0, 4)}`;
 }
 
+/**
+ * Mês dos acessos fixos e das linhas móveis: um só quando coincidem, os dois quando a atualização por grupo reteve
+ * uma base e publicou a outra. Com `longo`, a frase começa por "Acessos ...".
+ */
+export function mesAcessos(r: { fixa: string; movel: string }, longo = false): string {
+  if (r.fixa === r.movel) return longo ? `Acessos e linhas de ${mesExtenso(r.fixa)}` : `acessos e linhas de ${mesExtenso(r.fixa)}`;
+  return longo ? `Acessos fixos de ${mesExtenso(r.fixa)} e linhas móveis de ${mesExtenso(r.movel)}` : `acessos fixos de ${mesExtenso(r.fixa)} · linhas móveis de ${mesExtenso(r.movel)}`;
+}
+
 /** "2026-08" vira "ago/2026". */
 export function mesCurto(m: string | null | undefined): string {
   if (!m || !/^\d{4}-\d{2}$/.test(m)) return SEM_DADO;

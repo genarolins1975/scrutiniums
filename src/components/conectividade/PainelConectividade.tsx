@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
 import { BuscaConectividade } from "./BuscaConectividade";
 import { anoDecimal, GraficoLinhas, marcasAnos, type Serie } from "./Graficos";
 import { cobertos, faixaNaDistribuicao, pontosAnuais, serieCobertura, ufsPor, type ConsultaMunicipio } from "@/lib/conectividade/dados";
-import { dataBr, mesCurto, mesExtenso, milhoes, num, pct, plural, posicao, SEM_DADO } from "@/lib/conectividade/formato";
+import { dataBr, mesAcessos, mesCurto, mesExtenso, milhoes, num, pct, plural, posicao, SEM_DADO } from "@/lib/conectividade/formato";
 import { DO_ESTADO, DOWNLOADS, hrefMunicipio, MEIOS, nomeGrupo, ROTA_CONECTIVIDADE, TECNOLOGIAS, VELOCIDADES } from "@/lib/conectividade/paginas";
 import type { ArquivoUf, GoldConectividade, MunicipioGold, UfGold } from "@/lib/conectividade/tipos";
 
@@ -39,7 +39,7 @@ function Abertura({ g }: { g: GoldConectividade }) {
     <>
       <p className="cn-achado">
         Em {mesExtenso(r.fixa)}, o Brasil tinha <strong>{milhoes(f.acessos)} de acessos de banda larga fixa</strong>, {num(f.densidade, 1)} para cada 100 habitantes, e{" "}
-        <strong>{pct(f.fibra_pct)} deles por fibra óptica</strong>. Nas redes móveis, {milhoes(m.acessos)} de linhas, {pct(m.g5_pct)} já em 5G. Em {mesExtenso(r.cobertura)},{" "}
+        <strong>{pct(f.fibra_pct)} deles por fibra óptica</strong>. Nas redes móveis, {milhoes(m.linhas)} de linhas ativas, {pct(m.g5_pct)} já em 5G. Em {mesExtenso(r.cobertura)},{" "}
         <strong>{pct(c.tecnologias.g5?.[0])} dos moradores</strong> do país estavam dentro da cobertura 5G declarada pelas operadoras, e {num(g.destaques.sem_5g)} municípios ainda
         ficavam fora dela.
       </p>
@@ -193,7 +193,7 @@ function Municipio({ g, m, uf, arquivo }: { g: GoldConectividade; m: MunicipioGo
           <h3 id="retrato-titulo">
             {m.nome} <span className="cn-unidade">{arquivo.nome_uf} ({uf})</span>
           </h3>
-          <span className="cn-competencia">código IBGE {m.id} · acessos de {mesExtenso(r.fixa)} · cobertura de {mesExtenso(r.cobertura)}</span>
+          <span className="cn-competencia">código IBGE {m.id} · {mesAcessos(r)} · cobertura de {mesExtenso(r.cobertura)}</span>
         </header>
         <dl>
           <div>
@@ -226,7 +226,7 @@ function Municipio({ g, m, uf, arquivo }: { g: GoldConectividade; m: MunicipioGo
           <div>
             <dt>Linhas móveis por 100 habitantes</dt>
             <dd className="cn-valor">{mv ? num(mv.densidade, 1) : SEM_DADO}</dd>
-            <dd className="cn-detalhe">{mv ? `${num(mv.acessos)} linhas · ${pct(mv.g5_pct)} em 5G · ${pct(mv.pre_pct)} pré-pagas` : "A Anatel não registra linhas móveis neste município."}</dd>
+            <dd className="cn-detalhe">{mv ? `${num(mv.acessos)} linhas sem máquinas e pontos de serviço · das ${num(mv.linhas)} linhas ativas, ${pct(mv.g5_pct)} em 5G e ${pct(mv.pre_pct)} pré-pagas` : "A Anatel não registra linhas móveis neste município."}</dd>
           </div>
         </dl>
         {c && (
@@ -275,7 +275,7 @@ function Municipio({ g, m, uf, arquivo }: { g: GoldConectividade; m: MunicipioGo
         )}
         <ComoLerMunicipio />
         <p className="cn-fonte">
-          Fontes: Anatel, acessos de banda larga fixa e de telefonia móvel ({mesExtenso(r.fixa)}) e cobertura das redes móveis ({mesExtenso(r.cobertura)}), dados capturados em{" "}
+          Fontes: Anatel, acessos de banda larga fixa ({mesExtenso(r.fixa)}), telefonia móvel ({mesExtenso(r.movel)}) e cobertura das redes móveis ({mesExtenso(r.cobertura)}), dados capturados em{" "}
           {dataBr(g.capturado_em)}. Densidades como a Anatel publica (acessos por 100 habitantes). Partes em %, posições e faixas: cálculo da Scrutiniums.
         </p>
       </section>
@@ -498,7 +498,7 @@ function SecaoEstados({ g, escolhida }: { g: GoldConectividade; escolhida: strin
       <h2 id="estados-titulo">Os estados lado a lado</h2>
       <p className="cn-intro">As mesmas medidas da sua cidade para cada estado e para o Brasil. A cobertura por estado é a média dos municípios ponderada pelos moradores.</p>
       <p className="cn-legenda-tabela">
-        Acessos e linhas de {mesExtenso(r.fixa)}; cobertura de {mesExtenso(r.cobertura)}. Prestadoras: empresas com ao menos um acesso fixo no estado.
+        {mesAcessos(r, true)}; cobertura de {mesExtenso(r.cobertura)}. Linhas móveis por 100 habitantes sem máquinas e pontos de serviço; linhas em 5G como parte de todas as linhas ativas. Prestadoras: empresas com ao menos um acesso fixo no estado.
       </p>
       <div className="cn-tabela-rolagem" tabIndex={0}>
         <table className="cn-tabela cn-tabela-larga">

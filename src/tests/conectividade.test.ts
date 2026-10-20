@@ -13,8 +13,8 @@ import PainelPage from "@/app/conectividade/page";
 import { csvBrasilMensal, csvPorEstado, csvPorMunicipio } from "@/lib/conectividade/csv";
 import { comConta } from "@/lib/conectividade/convite";
 import { arquivoUf, cobertos, consultarMunicipio, faixaNaDistribuicao, goldConectividade, UF_DO_PREFIXO } from "@/lib/conectividade/dados";
-import { mesExtenso, num, pct } from "@/lib/conectividade/formato";
-import { hrefMunicipio, PERGUNTA_APERITIVO, PERGUNTA_PAINEL, ROTA_CONECTIVIDADE, SECAO_APERITIVO, SECAO_PAINEL, VERSAO_ABERTA } from "@/lib/conectividade/paginas";
+import { mesAcessos, mesExtenso, milhoes, num, pct } from "@/lib/conectividade/formato";
+import { hrefMunicipio, nomeGrupo, PERGUNTA_APERITIVO, PERGUNTA_PAINEL, ROTA_CONECTIVIDADE, SECAO_APERITIVO, SECAO_PAINEL, VERSAO_ABERTA } from "@/lib/conectividade/paginas";
 import { colecoesDe } from "@/lib/observatorios/colecoes";
 import { donoDaRota, paineis } from "@/lib/observatorios/registro";
 import { OBSERVATORIOS } from "@/lib/observatorios/lista";
@@ -246,5 +246,29 @@ describe("arquivos CSV", () => {
     const ultimo = br[br.length - 1].split(";");
     expect(ultimo[0]).toBe(g.brasil.fixa.acessos_mensal.meses.at(-1));
     expect(Number(ultimo[1])).toBe(g.brasil.fixa.acessos_mensal.acessos.at(-1));
+  });
+});
+
+describe("Conectividade: achados do Codex no #309", () => {
+  it("mês próprio de cada base: um só quando coincidem, os dois quando divergem", () => {
+    expect(mesAcessos({ fixa: "2026-08", movel: "2026-08" })).toBe("acessos e linhas de agosto de 2026");
+    expect(mesAcessos({ fixa: "2026-08", movel: "2026-07" }, true)).toBe("Acessos fixos de agosto de 2026 e linhas móveis de julho de 2026");
+  });
+
+  it("as partes em % das linhas móveis aparecem ao lado do total de linhas ativas, não do total sem M2M", () => {
+    const g = goldConectividade();
+    const m = g.brasil.movel;
+    const html = renderToStaticMarkup(createElement(PainelPage, { searchParams: {} }));
+    expect(html).toContain(`${milhoes(m.linhas)} de linhas ativas, ${pct(m.g5_pct)} já em 5G`);
+    expect(html).not.toContain(`${milhoes(m.acessos)} de linhas, ${pct(m.g5_pct)}`);
+  });
+
+  it("o aperitivo não revela a maior prestadora nem a parte dela", () => {
+    const a = arquivoUf("SP")!;
+    const m = a.municipios.find((x) => x.fixa && x.fixa.maior_grupo)!;
+    const html = renderToStaticMarkup(createElement(AperitivoPage, { searchParams: { ibge: m.id } }));
+    expect(html).not.toContain(nomeGrupo(m.fixa!.maior_grupo));
+    expect(html).not.toContain(pct(m.fixa!.maior_grupo_pct));
+    expect(html).toContain(`${num(m.fixa!.prestadoras)} empresas vendem banda larga fixa`);
   });
 });

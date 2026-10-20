@@ -5,7 +5,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { cobertos, consultarMunicipio, goldConectividade } from "@/lib/conectividade/dados";
 import { dataBr, mesExtenso, milhoes, num, pct, SEM_DADO } from "@/lib/conectividade/formato";
 import { comConta } from "@/lib/conectividade/convite";
-import { hrefMunicipio, nomeGrupo, PERGUNTA_APERITIVO, ROTA_CONECTIVIDADE, SECAO_APERITIVO } from "@/lib/conectividade/paginas";
+import { hrefMunicipio, PERGUNTA_APERITIVO, ROTA_CONECTIVIDADE, SECAO_APERITIVO } from "@/lib/conectividade/paginas";
 import type { MunicipioGold } from "@/lib/conectividade/tipos";
 
 /**
@@ -14,7 +14,8 @@ import type { MunicipioGold } from "@/lib/conectividade/tipos";
  * a uma pergunta só: como é a internet na minha cidade. Com ?ibge= de um município da gold, mostra os acessos de banda
  * larga fixa por 100 habitantes e a parte por fibra, quantas empresas vendem o serviço e a parte dos moradores dentro
  * da cobertura 4G e 5G, com unidade, mês, fonte, data da captura e a ressalva principal. Sem série, sem operadoras,
- * sem posição, sem comparação e sem arquivo para baixar: tudo isso fica com a conta, listado no convite do fim.
+ * sem a maior prestadora, sem posição, sem comparação e sem arquivo para baixar: tudo isso fica com a conta, listado
+ * no convite do fim.
  *
  * Renderização no servidor a cada requisição (lê searchParams): o HTML leva só os números do município pedido; o
  * navegador baixa apenas o índice de nomes da busca, já aberto (/saneamento/gold/indice.json).
@@ -117,7 +118,7 @@ function Retrato({ m, uf, nomeUf }: { m: MunicipioGold; uf: string; nomeUf: stri
         <div>
           <dt>Acessos por fibra óptica</dt>
           <dd className="cn-valor">{f ? pct(f.fibra_pct) : SEM_DADO}</dd>
-          <dd className="cn-detalhe">{f ? `${num(f.prestadoras)} ${f.prestadoras === 1 ? "empresa vende" : "empresas vendem"} banda larga fixa na cidade; a maior, ${nomeGrupo(f.maior_grupo)}, tem ${pct(f.maior_grupo_pct)} dos acessos.` : "Sem dado."}</dd>
+          <dd className="cn-detalhe">{f ? `${num(f.prestadoras)} ${f.prestadoras === 1 ? "empresa vende" : "empresas vendem"} banda larga fixa na cidade.` : "Sem dado."}</dd>
         </div>
         <div>
           <dt>Moradores dentro da cobertura 5G</dt>
