@@ -226,7 +226,11 @@ describe("contrato da gold agua_detalhe.json e dos arquivos sob demanda", () => 
     expect(G.armazenamento.bacias.length).toBeGreaterThanOrEqual(20);
     expect(C.precipitacao_bacias.length).toBeGreaterThan(15);
     expect(R.lista.length).toBeGreaterThan(30);
-    expect(statSync(join(raiz, "public/energia/gold/agua_detalhe.json")).size).toBeLessThan(400 * 1024);
+    // até cerca de 400 KB, mais 100 bytes por exemplo de revisão publicado (até 20 por ficha), como em Perdas:
+    // a lista nasce vazia e enche quando o ONS revisa dados (20/10/2026: 200 exemplos em 10 fichas, 417.297 bytes)
+    const exemplos = Object.values(G.proveniencia).map((p) => (p as { revisoes_conhecidas?: { exemplos?: unknown[] } | null } | null)?.revisoes_conhecidas?.exemplos?.length ?? 0);
+    for (const n of exemplos) expect(n).toBeLessThanOrEqual(20);
+    expect(statSync(join(raiz, "public/energia/gold/agua_detalhe.json")).size).toBeLessThan(400 * 1024 + 100 * exemplos.reduce((a, b) => a + b, 0));
   });
 
   it("subsistemas trazem o último ano com a faixa da data, terminando no dia da EAR (mesma captura do resumo)", () => {

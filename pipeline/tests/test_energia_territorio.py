@@ -839,6 +839,13 @@ class GoldPublicada(unittest.TestCase):
 
     def test_tamanhos(self):
         self.assertLess(os.path.getsize(GOLD), 400 * 1024)
+        # a lista de exemplos de revisão reapresentada fica no que a ficha mostra; a completa está na gold de origem
+        # (20/10/2026: 90 exemplos repetidos de outras golds passaram a gold de 400 KB)
+        for nome, p in self.g["proveniencia"].items():
+            rev = (p or {}).get("revisoes_conhecidas")
+            if isinstance(rev, dict):
+                self.assertLessEqual(len(rev.get("exemplos") or []), t.EXEMPLOS_REVISAO_REAPRESENTADOS, nome)
+                self.assertLessEqual(len(rev.get("exemplos") or []), rev["total"], nome)
         for nome in ("territorio_municipios.json", "territorio_usinas.json", "territorio_municipios.csv",
                      "territorio_usinas.csv"):
             self.assertLess(os.path.getsize(os.path.join(base.SERIES, nome)), 5 * 1024 * 1024, nome)
