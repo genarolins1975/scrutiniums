@@ -30,10 +30,13 @@ describe("selo com conta", () => {
   });
 
   it("aparece na página aberta para destino fechado, e só nele", () => {
-    caminho.atual = "/saneamento/municipio/2611606";
+    caminho.atual = "/saneamento/municipio";
     expect(html(createElement(SeloComConta, { href: "/saneamento/comparar?m=2611606" }))).toContain("com conta");
     expect(html(createElement(SeloComConta, { href: "/gas/series/preco-glp-por-uf.csv" }))).toContain("com conta");
-    expect(html(createElement(SeloComConta, { href: "/saneamento/preco-regulado/simulador?t=x" }))).toBe("");
+    // a ficha completa e o simulador da conta de água pedem conta desde 20/10/2026 (princípio do aperitivo)
+    expect(html(createElement(SeloComConta, { href: "/saneamento/municipio/2611606" }))).toContain("com conta");
+    expect(html(createElement(SeloComConta, { href: "/saneamento/preco-regulado/simulador?t=x" }))).toContain("com conta");
+    expect(html(createElement(SeloComConta, { href: "/saneamento/municipio?ibge=2611606" }))).toBe("");
     expect(html(createElement(SeloComConta, { href: "/saneamento/metodologia" }))).toBe("");
     expect(html(createElement(SeloComConta, { sempre: true }))).toContain("com conta");
   });
@@ -55,10 +58,10 @@ describe("selo com conta", () => {
 
 describe("exportação montada no navegador", () => {
   it("sai da versão aberta: no HTML do servidor fica o convite para entrar, com o retorno à página", () => {
-    caminho.atual = "/saneamento/preco-regulado/simulador";
+    caminho.atual = "/gas-natural/gas-de-cozinha";
     const h = html(createElement(ExportacaoComConta, { rotulo: "Baixar CSV" }, createElement("button", { type: "button" }, "exportar")));
     expect(h).not.toContain("<button");
-    expect(h).toContain('href="/entrar?de=%2Fsaneamento%2Fpreco-regulado%2Fsimulador"');
+    expect(h).toContain('href="/entrar?de=%2Fgas-natural%2Fgas-de-cozinha"');
     expect(h).toContain("com conta");
   });
 

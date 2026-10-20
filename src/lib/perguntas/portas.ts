@@ -28,32 +28,29 @@ function caminho(obs: DominioId | ObservatorioId, pergunta: string, resumo: stri
 
 /**
  * Consultas pessoais abertas (leva 1, 19/10/2026; src/lib/rotasPublicas.ts). Cada uma responde ao caso de quem
- * pergunta, sem conta; séries completas, comparações amplas e downloads seguem nos painéis.
+ * pergunta, sem conta; séries completas, comparações amplas e downloads seguem nos painéis. Princípio do aperitivo
+ * (20/10/2026): uma única página aberta por tema, que sem sessão mostra só o aperitivo; o simulador da conta de água
+ * saiu da área aberta, e o resumo de cada consulta descreve o aperitivo, não o painel completo.
  */
 export const CONSULTAS = {
   botijao: {
     pergunta: "Quanto custa o botijão no meu estado?",
-    resumo: "Preço médio do botijão de 13 kg em cada estado, no mapa e na tabela, pela pesquisa de preços da ANP.",
+    resumo: "O preço médio do botijão de 13 kg no seu estado no último mês, comparado com a média do Brasil, pela pesquisa de preços da ANP.",
     href: "/gas-natural/gas-de-cozinha",
   },
   luz: {
     pergunta: "Quanto custa a minha conta de luz?",
-    resumo: "A tarifa da sua distribuidora, do que ela é feita e a conta estimada para o seu consumo, sem tributos.",
+    resumo: "A conta estimada para o seu consumo na distribuidora da sua cidade, sem tributos, com a bandeira do mês.",
     href: "/setor-eletrico/conta-de-luz",
-  },
-  agua: {
-    pergunta: "Quanto eu pagaria de água e esgoto?",
-    resumo: "A conta do mês calculada com as tabelas verificadas nos atos dos reguladores, numa amostra declarada de prestadores.",
-    href: "/saneamento/preco-regulado/simulador",
   },
   municipio: {
     pergunta: "Como está o saneamento no meu município?",
-    resumo: "A ficha do município: quem está sem água e esgoto, prestador, regulador e comparação com o estado.",
+    resumo: "Quantos moradores da sua cidade têm água e esgoto e quem presta o serviço.",
     href: "/saneamento/municipio",
   },
   capital: {
-    pergunta: "Como se vive na minha capital?",
-    resumo: "Sete perguntas sobre a vida dos moradores e o que a prefeitura aplica, com a posição entre as 26 capitais.",
+    pergunta: "Como está a minha capital?",
+    resumo: "Alguns indicadores da sua capital, cada um com o ano, a fonte e a posição entre as 26 capitais.",
     href: "/eficiencia-estatal",
   },
 } satisfies Record<string, ConsultaAberta>;
@@ -285,7 +282,7 @@ function porta_familias(): Porta {
       caminho("eficiencia", "Falta moradia ou falta moradia adequada?", "Déficit habitacional, peso do aluguel na renda e inadequação dos domicílios.", "/eficiencia-estatal/habitacao"),
       caminho("agro", "Por que a comida subiu?", "Inflação de alimentos, itens da cesta e segurança alimentar dos domicílios.", "/agronegocio/prato"),
     ],
-    paraOSeuCaso: [CONSULTAS.botijao, CONSULTAS.luz, CONSULTAS.agua],
+    paraOSeuCaso: [CONSULTAS.botijao, CONSULTAS.luz],
     lacunas: [
       "Quanto cada família paga de impostos sobre o consumo.",
       "Dívidas fora dos bancos: crediário e contas de consumo atrasadas.",
@@ -456,7 +453,7 @@ function porta_energia(): Porta {
       caminho("gas", "Quanto custa encher o tanque no meu estado?", "Gasolina, etanol e diesel por estado e no Brasil, mês a mês desde 2013.", "/combustiveis"),
       caminho("eficiencia", "Como as pessoas se deslocam nas cidades?", "Oferta e uso do transporte público nos recortes disponíveis.", "/eficiencia-estatal/mobilidade-transporte"),
     ],
-    paraOSeuCaso: [CONSULTAS.luz, CONSULTAS.municipio, CONSULTAS.agua, CONSULTAS.botijao],
+    paraOSeuCaso: [CONSULTAS.luz, CONSULTAS.municipio, CONSULTAS.botijao],
     lacunas: [
       "Valor final da conta de luz com tributos e bandeira tarifária.",
       "Rodovias, ferrovias e portos.",
