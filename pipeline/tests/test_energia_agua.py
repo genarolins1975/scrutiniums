@@ -1139,7 +1139,11 @@ class TestGoldPublicada(unittest.TestCase):
         """A gold leva o total e os exemplos que o "Sobre este dado" mostra; os demais exemplos
         de cada indicador estão no CSV citado, e a contagem do que ficou só no CSV fecha."""
         self.assertIn(m.ARQ_REVISOES, m.REGISTRO["arquivos"])
-        with open(os.path.join(base.RAIZ, "public", m.ARQ_REVISOES.lstrip("/")), encoding="utf-8") as f:
+        caminho = os.path.join(base.RAIZ, "public", m.ARQ_REVISOES.lstrip("/"))
+        # o CSV entrou com o código de 20/10/2026; gold gerada depois disso sem ele reprova
+        if not os.path.exists(caminho) and self.g["gerado_em"] < "2026-10-20":
+            self.skipTest(f"gold publicada em {self.g['gerado_em']}, anterior ao CSV das revisões")
+        with open(caminho, encoding="utf-8") as f:
             linhas = list(csv.DictReader(f, delimiter=";"))
         por_ind = {}
         for x in linhas:

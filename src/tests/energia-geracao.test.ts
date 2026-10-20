@@ -77,6 +77,7 @@ import type { GoldGeracaoDetalhe } from "@/lib/energia/tipos-geracao";
  */
 const raiz = process.cwd();
 const G: GoldGeracaoDetalhe = JSON.parse(readFileSync(join(raiz, "public/energia/gold/geracao_detalhe.json"), "utf-8"));
+const GOLD_COM_LISTA_EOLICA = "2026-10-20";
 const UF: CamadaGeo = JSON.parse(readFileSync(join(raiz, "public/energia/geo/uf.json"), "utf-8"));
 const clone = <T,>(x: T): T => structuredClone(x);
 const ocorrencias = (h: string, t: string) => h.split(t).length - 1;
@@ -792,8 +793,11 @@ describe("o que mudou, notas de universo e referências ao lado do dado", () => 
     for (let i = 1; i < padrao.length; i++) expect(padrao[i - 1].mwmed ?? 0).toBeGreaterThanOrEqual(padrao[i].mwmed ?? 0);
   });
 
-  it("os dias em que o Balanço registra a eólica muito abaixo da soma das usinas são a lista inteira da gold, não só os das maiores divergências", () => {
+  it("os dias em que o Balanço registra a eólica muito abaixo da soma das usinas são a lista inteira da gold, não só os das maiores divergências", (ctx) => {
     const rec = G.matriz.reconciliacao_balanco;
+    // a lista entrou na gold com o código de 20/10/2026; gold gerada depois disso sem ela reprova
+    if (rec.eolica_abaixo_de_10pct_das_usinas === undefined && G.gerado_em < GOLD_COM_LISTA_EOLICA)
+      ctx.skip(`gold publicada em ${G.gerado_em}, anterior à lista dos dias da eólica`);
     const dias = diasDoBalancoForaDoPadrao(rec);
     expect(rec.eolica_abaixo_de_10pct_das_usinas).toBeDefined();
     expect(dias.length).toBe(rec.eolica_abaixo_de_10pct_das_usinas!.length);
@@ -942,7 +946,8 @@ describe("páginas com as correções das avaliações independentes", () => {
     // a frase nomeia todos os dias e subsistemas da lista da gold, com o caso de maior soma das usinas como exemplo
     const lista = (xs: string[]) => (xs.length > 1 ? `${xs.slice(0, -1).join(", ")} e ${xs.at(-1)}` : xs[0]);
     const nomeSm: Record<string, string> = { N: "Norte", NE: "Nordeste", S: "Sul", SE: "Sudeste/Centro-Oeste" };
-    const anom = G.matriz.reconciliacao_balanco.eolica_abaixo_de_10pct_das_usinas!;
+    // os mesmos dias que a página usa: a lista da gold ou, em gold anterior a ela, as maiores divergências
+    const anom = diasDoBalancoForaDoPadrao(G.matriz.reconciliacao_balanco);
     const datas = [...new Set(anom.map((a) => a.d))].sort();
     const br = (d: string) => d.split("-").reverse().join("/");
     const quando = lista(datas.map((d) => `${br(d)} (${lista(anom.filter((a) => a.d === d).map((a) => nomeSm[a.sm]))})`));

@@ -662,6 +662,9 @@ class GoldPublicada(unittest.TestCase):
     def test_eolica_abaixo_do_balanco_e_a_lista_inteira(self):
         # a página nomeia esses dias: a lista não pode depender do corte das 15 maiores divergências
         rec = self.g["matriz"]["reconciliacao_balanco"]
+        # a lista entrou na gold com o código de 20/10/2026; gold gerada depois disso sem ela reprova
+        if "eolica_abaixo_de_10pct_das_usinas" not in rec and self.g["gerado_em"] < "2026-10-20":
+            self.skipTest(f"gold publicada em {self.g['gerado_em']}, anterior à lista dos dias da eólica")
         lista = rec["eolica_abaixo_de_10pct_das_usinas"]
         for x in lista:
             self.assertLess(x["balanco_mwh"], gd.LIMIAR_BALANCO_EOLICA * x["usinas_mwh"], x)
