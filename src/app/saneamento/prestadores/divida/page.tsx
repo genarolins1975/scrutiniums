@@ -3,10 +3,12 @@ import Link from "next/link";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
 import { Abertura, Fonte, Indisponivel, NestaPagina, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { LabAlavancagem, SerieDivida, type Preset, type SerieCompanhia } from "@/components/saneamento/Divida";
+import { ListadasLogo } from "@/components/energia/ListadasLogo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
 import { controleSocietario } from "@/lib/saneamento/gold";
 import { data, inteiro, numero, SEM_DADO } from "@/lib/saneamento/formato";
+import { logosSaneamento, soDigitos } from "@/lib/saneamento/logos";
 import {
   comPonto,
   fotografia,
@@ -41,6 +43,10 @@ const NOMES_INDICADOR: Record<string, string> = {
   parcela_cp: "parte que vence em até 12 meses",
   cobertura: "cobertura das despesas financeiras",
 };
+
+/** Símbolo oficial pelo CNPJ (manifesto em public/saneamento/logos); sem arquivo, o nome em texto ao lado basta. */
+type Logos = ReturnType<typeof logosSaneamento>;
+const logoDe = (logos: Logos, cnpj: string) => logos.get(soDigitos(cnpj)) ?? null;
 
 const mi = (v: number | null | undefined) => {
   const m = milhoes(v);
@@ -80,6 +86,7 @@ function Conteudo({ g, pergunta, situacao, pendencia }: { g: GoldDivida; pergunt
   const primeiroAno = lista.flatMap((c) => c.anual.filter((p) => !p.retido).map((p) => p.periodo)).sort()[0];
   const fichas = new Map(controleSocietario().filter((c) => c.prestador).map((c) => [c.cnpj, c.prestador!]));
   const fora = lista.filter((c) => c.ultimo!.data !== g.referencia_trimestral);
+  const logos = logosSaneamento();
 
   const presets: Preset[] = [...operadoras, ...holdings]
     .filter((c) => c.ultimo!.ebitda != null && c.ultimo!.ebitda > 0 && c.ultimo!.divida_liquida != null && c.ultimo!.data === g.referencia_trimestral)
@@ -207,8 +214,8 @@ function Conteudo({ g, pergunta, situacao, pendencia }: { g: GoldDivida; pergunt
         }
       >
         <div className="grid grid-cols-1 gap-x-12 gap-y-8 xl:grid-cols-2">
-          <BarrasAlavancagem titulo="Prestadoras" companhias={operadoras} />
-          <BarrasAlavancagem titulo="Holdings de grupo" companhias={holdings} />
+          <BarrasAlavancagem titulo="Prestadoras" companhias={operadoras} logos={logos} />
+          <BarrasAlavancagem titulo="Holdings de grupo" companhias={holdings} logos={logos} />
         </div>
         <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
           Escala até {inteiro(ESCALA_BARRAS)} vezes; acima disso a barra aparece cortada, com o valor escrito. Sem leitura quando o EBITDA dos 12 meses é
@@ -217,7 +224,7 @@ function Conteudo({ g, pergunta, situacao, pendencia }: { g: GoldDivida; pergunt
 
         <h3 className="mt-10 font-serif text-xl text-carvao">Todas as medidas, companhia por companhia</h3>
         <p className="mt-1 max-w-prose2 text-sm text-carvao-muted">Valores em R$ milhões; razões em vezes. Na tela estreita a tabela rola de lado, com o nome fixo.</p>
-        <TabelaFotografia operadoras={operadoras} holdings={holdings} fichas={fichas} />
+        <TabelaFotografia operadoras={operadoras} holdings={holdings} fichas={fichas} logos={logos} />
         <NotasDaTabela companhias={[...operadoras, ...holdings]} />
         {fora.length > 0 && (
           <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
@@ -278,7 +285,7 @@ function Conteudo({ g, pergunta, situacao, pendencia }: { g: GoldDivida; pergunt
       </Secao>
 
       <Secao id="metodo" titulo="Método, fontes e arquivos">
-        <Metodo g={g} lista={lista} />
+        <Metodo g={g} lista={lista} logos={logos} />
       </Secao>
     </>
   );
@@ -317,7 +324,7 @@ function notasDaSerie(c: CompanhiaDivida): string[] {
   return notas;
 }
 
-function BarrasAlavancagem({ titulo, companhias }: { titulo: string; companhias: CompanhiaDivida[] }) {
+function BarrasAlavancagem({ titulo, companhias, logos }: { titulo: string; companhias: CompanhiaDivida[]; logos: Logos }) {
   const linhas = [...companhias].sort((a, b) => (b.ultimo!.dl_ebitda ?? -Infinity) - (a.ultimo!.dl_ebitda ?? -Infinity));
   const minimo = Math.min(0, ...linhas.map((c) => c.ultimo!.dl_ebitda ?? 0));
   const dominio = ESCALA_BARRAS - minimo;
@@ -334,10 +341,18 @@ function BarrasAlavancagem({ titulo, companhias }: { titulo: string; companhias:
           const ini = v == null ? 0 : Math.min(pos(v), zero);
           const fim = v == null ? 0 : Math.max(pos(v), zero);
           return (
-            <li key={c.cnpj} className="grid grid-cols-[minmax(0,9.5rem)_minmax(0,1fr)_5.5rem] items-center gap-3 text-sm sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)_6rem]">
-              <span className="truncate text-carvao" title={c.nome}>
-                {c.nome}
-                {u.data !== companhias[0]?.ultimo?.data && u.periodo !== companhias[0]?.ultimo?.periodo && <span className="text-xs text-carvao-muted"> ({u.periodo})</span>}
+            <li key={c.cnpj} className="grid grid-cols-[minmax(0,9.5rem)_minmax(0,1fr)_5.5rem] items-center gap-3 text-sm sm:grid-cols-[minmax(0,17rem)_minmax(0,1fr)_6rem]">
+              <span className="flex min-w-0 items-center gap-3">
+                {/* no celular a coluna do nome é estreita: o símbolo fica na tabela logo abaixo */}
+                {logoDe(logos, c.cnpj)?.arquivo && (
+                  <span className="hidden sm:contents">
+                    <ListadasLogo logo={logoDe(logos, c.cnpj)} nome={c.nome} tamanho="sm" decorativo />
+                  </span>
+                )}
+                <span className="truncate text-carvao" title={c.nome}>
+                  {c.nome}
+                  {u.data !== companhias[0]?.ultimo?.data && u.periodo !== companhias[0]?.ultimo?.periodo && <span className="text-xs text-carvao-muted"> ({u.periodo})</span>}
+                </span>
               </span>
               <span className="relative block h-4" aria-hidden="true">
                 <span className="absolute inset-y-0 w-px bg-linha" style={{ left: `${zero}%` }} />
@@ -361,7 +376,7 @@ function BarrasAlavancagem({ titulo, companhias }: { titulo: string; companhias:
   );
 }
 
-function TabelaFotografia({ operadoras, holdings, fichas }: { operadoras: CompanhiaDivida[]; holdings: CompanhiaDivida[]; fichas: Map<string, string> }) {
+function TabelaFotografia({ operadoras, holdings, fichas, logos }: { operadoras: CompanhiaDivida[]; holdings: CompanhiaDivida[]; fichas: Map<string, string>; logos: Logos }) {
   const colunas = [
     "Período",
     "Dívida bruta",
@@ -383,10 +398,16 @@ function TabelaFotografia({ operadoras, holdings, fichas }: { operadoras: Compan
       {lista.map((c) => {
         const u = c.ultimo!;
         const ficha = fichas.get(c.cnpj);
+        const logo = logoDe(logos, c.cnpj);
         const cel = (v: string, ausente: boolean) => <td className={`py-2 pr-4 text-right tabular-nums ${ausente ? "text-carvao-muted" : "text-carvao"}`}>{v}</td>;
         return (
           <tr key={c.cnpj} className="border-b border-linha align-top">
             <th scope="row" className="sticky left-0 z-10 bg-papel py-2 pr-4 text-left font-normal">
+              {logo?.arquivo && (
+                <span className="mb-1.5 block">
+                  <ListadasLogo logo={logo} nome={c.nome} tamanho="sm" decorativo />
+                </span>
+              )}
               {ficha ? (
                 <Link href={`${ROTA}/prestadores/${ficha}`} className="text-obee-dark underline underline-offset-2">
                   {c.nome}
@@ -463,7 +484,8 @@ function NotasDaTabela({ companhias }: { companhias: CompanhiaDivida[] }) {
   );
 }
 
-function Metodo({ g, lista }: { g: GoldDivida; lista: CompanhiaDivida[] }) {
+function Metodo({ g, lista, logos }: { g: GoldDivida; lista: CompanhiaDivida[]; logos: Logos }) {
+  const semSimbolo = g.companhias.filter((c) => !logoDe(logos, c.cnpj)?.arquivo);
   const definicoes: [string, string][] = [
     ["Dívida bruta", "Empréstimos e financiamentos mais debêntures, no passivo circulante e no não circulante (contas 2.01.04.01, 2.01.04.02, 2.02.01.01 e 2.02.01.02 do plano padronizado da CVM). Financiamento por arrendamento fica fora. Quando a companhia não abre a linha nas subcontas, vale a linha total, com nota."],
     ["Caixa e aplicações", "Caixa e equivalentes de caixa mais aplicações financeiras do ativo circulante (1.01.01 e 1.01.02)."],
@@ -522,7 +544,14 @@ function Metodo({ g, lista }: { g: GoldDivida; lista: CompanhiaDivida[] }) {
               <tbody>
                 {g.companhias.map((c) => (
                   <tr key={c.cnpj} className="border-b border-linha align-top">
-                    <th scope="row" className="py-2 pr-4 text-left font-normal">{c.nome}</th>
+                    <th scope="row" className="py-2 pr-4 text-left font-normal">
+                      {logoDe(logos, c.cnpj)?.arquivo && (
+                        <span className="mb-1.5 block">
+                          <ListadasLogo logo={logoDe(logos, c.cnpj)} nome={c.nome} tamanho="sm" decorativo />
+                        </span>
+                      )}
+                      {c.nome}
+                    </th>
                     <td className="py-2 pr-4 tabular-nums text-carvao-muted">{c.cnpj}</td>
                     <td className="py-2 pr-4">{ROTULO_PAPEL[c.papel]}</td>
                     <td className="py-2 pr-4 text-right tabular-nums">{c.papel === "operadora" ? inteiro(c.municipios_declarados) : "não se aplica"}</td>
@@ -535,6 +564,13 @@ function Metodo({ g, lista }: { g: GoldDivida; lista: CompanhiaDivida[] }) {
               </tbody>
             </table>
           </div>
+          <p className="mt-3 max-w-prose2 text-xs text-carvao-muted">
+            Símbolos: o arquivo oficial publicado pela própria companhia, baixado sem alteração e ligado pelo CNPJ registrado na CVM, com
+            origem, data de captura e sha256 em public/saneamento/logos/manifesto.json.
+            {semSimbolo.length > 0
+              ? ` Sem símbolo oficial obtido (${inteiro(semSimbolo.length)}): ${semSimbolo.map((c) => c.nome).join(", ")}; o motivo de cada ausência está no mesmo arquivo, e a página mostra só o nome.`
+              : ""}
+          </p>
           {g.fora_do_recorte.length > 0 && (
             <p className="mt-3 max-w-prose2 text-xs text-carvao-muted">
               Registradas no setor de saneamento da CVM e fora do recorte ({inteiro(g.fora_do_recorte.length)}): {g.fora_do_recorte.map((x) => x.denominacao).join("; ")}. Motivo

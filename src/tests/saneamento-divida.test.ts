@@ -21,6 +21,8 @@ import { APERITIVOS, ehRotaPublica } from "@/lib/rotasPublicas";
 import { comPonto, fotografia, goldDivida, mediana, periodoPorExtenso, reaisDeMil, resumoDivida, ROTA_DIVIDA, vezes } from "@/lib/saneamento/divida";
 import { inteiro, numero } from "@/lib/saneamento/formato";
 import { calcularAlavancagem, fraseAlavancagem } from "@/components/saneamento/Divida";
+import { lerManifestoLogosSaneamento, soDigitos } from "@/lib/saneamento/logos";
+import { createHash } from "node:crypto";
 import { VIABILIDADE } from "@/lib/saneamento/viabilidade";
 
 /**
@@ -141,6 +143,37 @@ describe("laboratório de alavancagem", () => {
     expect(f).toContain("já passa do limite escolhido em R$ 2,0 bi");
     expect(f).toContain("ficaria em 4,5 vezes");
     expect(f).not.toContain("Para ficar no limite");
+  });
+});
+
+describe("símbolos das companhias", () => {
+  const m = lerManifestoLogosSaneamento();
+  it("cada companhia tem símbolo oficial com origem e sha256, ou ausência com motivo, ligado pelo CNPJ", () => {
+    expect(m).not.toBeNull();
+    for (const c of g.companhias) {
+      const l = m!.logos.find((x) => soDigitos(x.cnpj) === soDigitos(c.cnpj));
+      expect(l, c.nome).toBeTruthy();
+      if (l!.arquivo) {
+        expect(l!.url_origem).toMatch(/^https?:\/\//);
+        expect(l!.arquivo).toMatch(/^\/saneamento\/logos\/\d{14}\.(svg|png|jpg|webp)$/);
+        expect(["claro", "escuro"]).toContain(l!.fundo);
+        const bytes = readFileSync(join(raiz, "public", l!.arquivo));
+        expect(bytes.length, c.nome).toBe(l!.bytes);
+        expect(createHash("sha256").update(bytes).digest("hex"), c.nome).toBe(l!.sha256);
+        if (l!.formato === "svg") {
+          const svg = bytes.toString("utf-8");
+          expect(svg, c.nome).not.toMatch(/<script|\son\w+\s*=|<foreignObject|<!ENTITY|(xlink:)?href\s*=\s*["'](https?:|\/\/|data:)/i);
+        }
+      } else {
+        expect(l!.ausencia?.motivo.length, c.nome).toBeGreaterThan(10);
+      }
+    }
+  });
+  it("a página mostra o símbolo de cada companhia que o tem, e o método registra as ausências", () => {
+    const com = m!.logos.filter((l) => l.arquivo);
+    for (const l of com) expect(html, l.nome_exibicao).toContain(`data-logo="${soDigitos(l.cnpj)}"`);
+    const sem = g.companhias.filter((c) => !m!.logos.find((x) => soDigitos(x.cnpj) === soDigitos(c.cnpj))?.arquivo);
+    if (sem.length) expect(t).toContain(`Sem símbolo oficial obtido (${inteiro(sem.length)})`);
   });
 });
 
