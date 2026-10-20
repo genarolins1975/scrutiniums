@@ -6,7 +6,15 @@
     "pipeline/saneamento_divida/*.py",
     "pipeline/tests/test_saneamento_divida.py",
     "src/lib/saneamento/divida.ts",
-    "src/tests/saneamento-divida.test.ts"
+    "src/components/saneamento/Divida.tsx",
+    "src/app/saneamento/prestadores/divida",
+    "src/app/saneamento/page.tsx",
+    "src/app/aperitivo/saneamento",
+    "src/components/acesso/ConviteAperitivo.tsx",
+    "src/lib/rotasPublicas.ts",
+    "src/tests/saneamento-divida.test.ts",
+    "src/tests/saneamento-entrada.test.ts",
+    "src/tests/aperitivo.test.ts"
   ],
   "reconstruir": [["python3", "-m", "pipeline.saneamento_divida.run"]],
   "timeout_reconstruir_min": 5,

@@ -60,6 +60,27 @@ function Controle({
 /** Investimento, limite e parte financiada com dívida de partida: hipóteses do modelo, não dados de companhia. */
 const HIPOTESES = { limite: 3.5, investimento: 5, parteDivida: 70 };
 
+/** Conta do laboratório, em R$ bilhões: espaço até o teto, dívida nova e quanto dela teria de vir de fora da dívida. */
+export function calcularAlavancagem({ ebitda, dl, limite, investimento, parte }: { ebitda: number; dl: number; limite: number; investimento: number; parte: number }) {
+  const hoje = ebitda > 0 ? dl / ebitda : null;
+  const teto = limite * ebitda;
+  const espaco = teto - dl;
+  const nova = (investimento * parte) / 100;
+  const depois = ebitda > 0 ? (dl + nova) / ebitda : null;
+  const proprio = Math.max(0, nova - Math.max(0, espaco));
+  // já acima do teto antes do contrato: nem o contrato inteiro fora da dívida devolve a companhia ao limite
+  const excesso = Math.max(0, -espaco);
+  return { hoje, teto, espaco, nova, depois, proprio, excesso };
+}
+
+export function fraseAlavancagem(r: ReturnType<typeof calcularAlavancagem>, limite: number): string {
+  if (r.nova === 0) return "Sem dívida nova, a alavancagem não muda.";
+  if (r.depois != null && r.depois <= limite + 1e-9) return `A dívida nova cabe no limite escolhido: a alavancagem iria a ${x(r.depois)}.`;
+  if (r.excesso > 0)
+    return `A dívida de hoje já passa do limite escolhido em ${bi(r.excesso)}. Mesmo com os ${bi(r.nova)} do contrato vindos todos de capital próprio, de sócios ou de outra estrutura de financiamento, a alavancagem ficaria em ${x(r.hoje)}: voltar ao limite pediria reduzir a dívida atual nesse valor ou aumentar o EBITDA.`;
+  return `Para ficar no limite escolhido, ${bi(r.proprio)} dos ${bi(r.nova)} teriam de vir de capital próprio, de sócios ou de outra estrutura de financiamento, e não de dívida da companhia.`;
+}
+
 export function LabAlavancagem({ presets }: { presets: Preset[] }) {
   const inicial = presets[0];
   const [origem, setOrigem] = useState(inicial?.id ?? "livre");
@@ -80,20 +101,11 @@ export function LabAlavancagem({ presets }: { presets: Preset[] }) {
   };
   const p = presets.find((q) => q.id === origem);
 
-  const r = useMemo(() => {
-    const hoje = ebitda > 0 ? dl / ebitda : null;
-    const teto = limite * ebitda;
-    const espaco = teto - dl;
-    const nova = (investimento * parte) / 100;
-    const depois = ebitda > 0 ? (dl + nova) / ebitda : null;
-    const proprio = Math.max(0, nova - Math.max(0, espaco));
-    return { hoje, teto, espaco, nova, depois, proprio };
-  }, [ebitda, dl, limite, investimento, parte]);
+  const r = useMemo(() => calcularAlavancagem({ ebitda, dl, limite, investimento, parte }), [ebitda, dl, limite, investimento, parte]);
 
   // escala fixa da barra: o maior entre o teto e a dívida depois do contrato, com folga
   const escala = Math.max(r.teto, dl + r.nova, 1) * 1.08;
   const pct = (v: number) => `${Math.max(0, Math.min(100, (v / escala) * 100))}%`;
-  const dentro = r.depois != null && r.depois <= limite + 1e-9;
 
   return (
     <section aria-labelledby="lab-alavancagem-t" className="space-y-6 border border-linha bg-superficie p-4 sm:p-6" data-laboratorio="alavancagem">
@@ -232,13 +244,7 @@ export function LabAlavancagem({ presets }: { presets: Preset[] }) {
             </figcaption>
           </figure>
 
-          <p className="text-sm leading-relaxed text-carvao">
-            {r.nova === 0
-              ? "Sem dívida nova, a alavancagem não muda."
-              : dentro
-                ? `A dívida nova cabe no limite escolhido: a alavancagem iria a ${x(r.depois)}.`
-                : `Para ficar no limite escolhido, ${bi(r.proprio)} dos ${bi(r.nova)} teriam de vir de capital próprio, de sócios ou de outra estrutura de financiamento, e não de dívida da companhia.`}
-          </p>
+          <p className="text-sm leading-relaxed text-carvao">{fraseAlavancagem(r, limite)}</p>
           <p className="text-xs leading-relaxed text-carvao-muted">
             O modelo deixa de fora: o EBITDA que o contrato novo vai gerar (chega aos poucos, depois das obras), prazo e custo da dívida, garantias,
             dívida tomada pela própria concessionária sem recurso à controladora e as definições de cada contrato, que muitas vezes incluem

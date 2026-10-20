@@ -20,6 +20,7 @@ import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
 import { APERITIVOS, ehRotaPublica } from "@/lib/rotasPublicas";
 import { comPonto, fotografia, goldDivida, mediana, periodoPorExtenso, reaisDeMil, resumoDivida, ROTA_DIVIDA, vezes } from "@/lib/saneamento/divida";
 import { inteiro, numero } from "@/lib/saneamento/formato";
+import { calcularAlavancagem, fraseAlavancagem } from "@/components/saneamento/Divida";
 import { VIABILIDADE } from "@/lib/saneamento/viabilidade";
 
 /**
@@ -123,6 +124,23 @@ describe("página /saneamento/prestadores/divida", () => {
       expect(readFileSync(join(raiz, a), "utf-8"), a).not.toMatch(/—|–/);
     }
     expect(t).not.toMatch(/—|–/);
+  });
+});
+
+describe("laboratório de alavancagem", () => {
+  it("abaixo do teto, diz quanto do contrato teria de vir de fora da dívida", () => {
+    const r = calcularAlavancagem({ ebitda: 2, dl: 5, limite: 3.5, investimento: 5, parte: 70 });
+    expect(r.excesso).toBe(0);
+    expect(r.proprio).toBeCloseTo(1.5, 9);
+    expect(fraseAlavancagem(r, 3.5)).toMatch(/^Para ficar no limite escolhido, R\$ 1,5 bi dos R\$ 3,5 bi/);
+  });
+  it("já acima do teto, não promete voltar ao limite só com o contrato fora da dívida", () => {
+    const r = calcularAlavancagem({ ebitda: 2, dl: 9, limite: 3.5, investimento: 5, parte: 70 });
+    expect(r.excesso).toBeCloseTo(2, 9);
+    const f = fraseAlavancagem(r, 3.5);
+    expect(f).toContain("já passa do limite escolhido em R$ 2,0 bi");
+    expect(f).toContain("ficaria em 4,5 vezes");
+    expect(f).not.toContain("Para ficar no limite");
   });
 });
 
