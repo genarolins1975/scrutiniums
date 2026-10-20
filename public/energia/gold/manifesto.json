@@ -1,18 +1,18 @@
 {
  "dominio": "energia",
  "gold": "manifesto.json",
- "gerado_em": "2026-10-19T17:52:07Z",
+ "gerado_em": "2026-10-20T13:55:15Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d2c80a075035+alterado",
+ "versao_codigo": "c00210ecb6ec",
  "disponivel": true,
- "id_publicacao": "01858ed9d50fa70f37ee62156f03e4bea8a06641675cf96916dc7fd9b83b29ff",
+ "id_publicacao": "64df14f140613fcc02a2535f5da06fdc7482f3a43ef81f1a28cfe37cbe769216",
  "regra_id": "sha256 da lista JSON [caminho, bytes, sha256] de todos os arquivos listados, em ordem de caminho (separadores sem espaço, UTF-8): o mesmo conjunto de bytes tem o mesmo id.",
  "completo": true,
  "fora_do_manifesto": [],
  "repositorio": "https://github.com/genarolins1975/scrutiniums",
  "totais": {
   "arquivos": 288,
-  "bytes": 213406179,
+  "bytes": 213500145,
   "geometrias": 2,
   "golds": 33,
   "series": 228,
@@ -187,8 +187,8 @@
    "caminho": "/energia/gold/modelos.json",
    "tipo": "gold",
    "bytes": 28519,
-   "sha256": "c6a67c6c5ee0d1c8213a5a1643aea52d1c8d9c6573a40a2261b7f2df4bdb9a93",
-   "gerado_em": "2026-10-19T15:54:58Z",
+   "sha256": "d0c4604c69c96008201bd42598b82c88f43d5bc8b1cb4bd085d7f29ae9531930",
+   "gerado_em": "2026-10-20T13:53:55Z",
    "disponivel": true
   },
   {
@@ -218,17 +218,17 @@
   {
    "caminho": "/energia/gold/previsoes.json",
    "tipo": "gold",
-   "bytes": 42823,
-   "sha256": "54da3cb58da2e3283004cdff776d2ea003ee336a664e0a1b872e4e5e91d39b31",
-   "gerado_em": "2026-10-19T15:54:58Z",
+   "bytes": 43255,
+   "sha256": "6bafdb74d1897f4c42299a340134421be88b697dff05de6745c4ee9d1824641f",
+   "gerado_em": "2026-10-20T13:53:55Z",
    "disponivel": true
   },
   {
    "caminho": "/energia/gold/previsoes_desempenho.json",
    "tipo": "gold",
-   "bytes": 235811,
-   "sha256": "2f3b8f1bcb69dbbbabb80c27bc290bf6db12c66d951dd204c0d10d28bcd4e2c0",
-   "gerado_em": "2026-10-19T15:55:51Z",
+   "bytes": 245195,
+   "sha256": "6204c4cb3baa7b44b44641f55d3f3ba30885f429e561d4fa512e1c2862e413fd",
+   "gerado_em": "2026-10-20T13:54:50Z",
    "disponivel": true
   },
   {
@@ -3826,7 +3826,7 @@
    "caminho": "/energia/series/previsoes_ajustes_c2.csv",
    "tipo": "serie",
    "bytes": 1309434,
-   "sha256": "0685e7ae0a720a8714f724eff142a34163e32e02c3ba922fc1984ada44990cb0",
+   "sha256": "fc36babffb11d3c45e851042c49e85624794a091e05d3935ba367452c2fb3c82",
    "colunas": [
     "origem_ajuste",
     "modelo",
@@ -3856,8 +3856,8 @@
   {
    "caminho": "/energia/series/previsoes_emissoes.csv",
    "tipo": "serie",
-   "bytes": 38107,
-   "sha256": "553c82cd220005053eb44607d645da799f327e85865b203bc63181328a6f161b",
+   "bytes": 50155,
+   "sha256": "b0a99e12db0191dd9c1dafc8fa3733a1948889b94849a9b4507e3a2d3d66b579",
    "colunas": [
     "forecast_id",
     "run_id",
@@ -3889,7 +3889,7 @@
     "substitui",
     "anterior"
    ],
-   "linhas": 84,
+   "linhas": 112,
    "dicionario": true,
    "parquet": null
   },
@@ -3902,8 +3902,8 @@
   {
    "caminho": "/energia/series/previsoes_emissoes_2026-10.json",
    "tipo": "serie",
-   "bytes": 72135,
-   "sha256": "36bbd4919b9e0c7d49b38906bd1e4a53c68d47f3ca3de5e935ea5ae517c737a1"
+   "bytes": 144237,
+   "sha256": "eb2db58a5885b7bc383189b08d978ac599840aca2a4240f0c17257374b865ff6"
   },
   {
    "caminho": "/energia/series/qualidade_atendimento.csv",
