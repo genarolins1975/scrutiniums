@@ -43,7 +43,7 @@ function Exemplo({ e, dataMmgd, anoPop }: { e: ExemploTerritorio; dataMmgd: stri
     >
       <ul className="space-y-1">
         <li>
-          {tx("Preço de curto prazo (PLD médio do dia): ", "Short-term price (daily average PLD): ")}
+          {tx("PLD médio do dia (preço do mercado de curto prazo): ", "Daily average PLD (short-term market price): ")}
           {e.pldDia ? (
             <strong className="font-medium tabular-nums">
               R$ {num(e.pldDia.valor, 2)}/MWh {tx(`em ${dataBR(e.pldDia.dia)}`, `on ${dataBR(e.pldDia.dia)}`)}
@@ -197,12 +197,12 @@ export function TerritorioAreas({ exemplos, dataMmgd, anoPop, fonte }: { exemplo
       titulo={tx("Um endereço, várias áreas: de quem é cada número", "One address, several areas: whose figure is each one")}
       intro={tx(
         <>
-          Quem mora numa cidade está, ao mesmo tempo, num submercado (que tem o preço de curto prazo e os reservatórios), na área de uma distribuidora (que cobra a tarifa e tem
+          Quem mora numa cidade está, ao mesmo tempo, num submercado (que tem o PLD, o preço do mercado de curto prazo, e os reservatórios), na área de uma distribuidora (que cobra a tarifa e tem
           as perdas), em conjuntos elétricos (onde se medem as interrupções) e no próprio município. As caixas mostram, para a maior cidade de cada submercado, o número de cada
           área. Um número de fora vale igual para todos os lugares de dentro: não diz nada que distinga a cidade das vizinhas.
         </>,
         <>
-          Someone living in a city is, at the same time, in a submarket (which has the short-term price and the reservoirs), in a distribution utility&apos;s area (which charges
+          Someone living in a city is, at the same time, in a submarket (which has the PLD, the short-term market price, and the reservoirs), in a distribution utility&apos;s area (which charges
           the tariff and has the losses), in consumer sets (where interruptions are measured) and in the municipality itself. The boxes show, for the largest city of each
           submarket, the figure of each area. A figure from an outer box is the same for every place inside it: it says nothing that sets the city apart from its neighbors.
         </>,

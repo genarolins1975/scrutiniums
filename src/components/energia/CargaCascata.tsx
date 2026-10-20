@@ -43,7 +43,7 @@ function Cascata({ d }: { d: DecomposicaoA07 }) {
   const n = barras.length + 1;
   const larg = (W - M.e - M.d) / n;
   const y = (v: number) => M.t + ((max - v) / (max - min || 1)) * (H - M.t - M.b);
-  const cor = (p: { tipo: string }) => (p.tipo === "residuo" ? "#966B48" : "#0E6170");
+  const cor = (p: { tipo: string }) => (p.tipo === "residuo" ? "var(--cor-bronze)" : "var(--cor-energia)");
   const p = partesDaDiferenca(d);
   const resumo = tx(
     `Cascata da diferença ${DO_REGIAO[d.sm]}: ${barras.map((b) => `${b.curto} ${sinal(b.valor, 2)}`).join("; ")}; diferença real ${sinal(total, 2)} pontos.`,
@@ -52,7 +52,7 @@ function Cascata({ d }: { d: DecomposicaoA07 }) {
   return (
     <div className="space-y-3">
       <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full max-w-3xl" role="img" aria-label={resumo}>
-        <line x1={M.e} x2={W - M.d} y1={y(0)} y2={y(0)} stroke="#33373D" strokeWidth={1} />
+        <line x1={M.e} x2={W - M.d} y1={y(0)} y2={y(0)} stroke="var(--cor-carvao-soft)" strokeWidth={1} />
         {barras.map((b, i) => {
           const x = M.e + i * larg;
           const topo = y(Math.max(b.ini, b.fim));
@@ -60,27 +60,27 @@ function Cascata({ d }: { d: DecomposicaoA07 }) {
           return (
             <g key={b.id}>
               <rect x={x + 8} width={larg - 16} y={topo} height={alt} fill={cor(b)} opacity={0.85} />
-              {i < barras.length - 1 && <line x1={x + larg - 8} x2={x + larg + 8} y1={y(b.fim)} y2={y(b.fim)} stroke="#6B6D6A" strokeDasharray="3 3" />}
-              <text x={x + larg / 2} y={topo - 6} textAnchor="middle" fontSize="13" fill="#1A1D21">
+              {i < barras.length - 1 && <line x1={x + larg - 8} x2={x + larg + 8} y1={y(b.fim)} y2={y(b.fim)} stroke="var(--cor-mineral)" strokeDasharray="3 3" />}
+              <text x={x + larg / 2} y={topo - 6} textAnchor="middle" fontSize="13" fill="var(--cor-carvao)">
                 {sinal(b.valor, 2)}
               </text>
-              <text x={x + larg / 2} y={H - 22} textAnchor="middle" fontSize="12" fill="#3D4147">
+              <text x={x + larg / 2} y={H - 22} textAnchor="middle" fontSize="12" fill="var(--cor-carvao-muted)">
                 {b.curto}
               </text>
             </g>
           );
         })}
         <g>
-          <line x1={M.e + (n - 1) * larg - 8} x2={M.e + (n - 1) * larg + 8} y1={y(total)} y2={y(total)} stroke="#6B6D6A" strokeDasharray="3 3" />
-          <rect x={M.e + (n - 1) * larg + 8} width={larg - 16} y={y(Math.max(0, total))} height={Math.max(1.5, Math.abs(y(0) - y(total)))} fill="#1A1D21" />
-          <text x={M.e + (n - 1) * larg + larg / 2} y={y(Math.max(0, total)) - 6} textAnchor="middle" fontSize="13" fontWeight={600} fill="#1A1D21">
+          <line x1={M.e + (n - 1) * larg - 8} x2={M.e + (n - 1) * larg + 8} y1={y(total)} y2={y(total)} stroke="var(--cor-mineral)" strokeDasharray="3 3" />
+          <rect x={M.e + (n - 1) * larg + 8} width={larg - 16} y={y(Math.max(0, total))} height={Math.max(1.5, Math.abs(y(0) - y(total)))} fill="var(--cor-carvao)" />
+          <text x={M.e + (n - 1) * larg + larg / 2} y={y(Math.max(0, total)) - 6} textAnchor="middle" fontSize="13" fontWeight={600} fill="var(--cor-carvao)">
             {sinal(total, 2)}
           </text>
-          <text x={M.e + (n - 1) * larg + larg / 2} y={H - 22} textAnchor="middle" fontSize="12" fontWeight={600} fill="#1A1D21">
+          <text x={M.e + (n - 1) * larg + larg / 2} y={H - 22} textAnchor="middle" fontSize="12" fontWeight={600} fill="var(--cor-carvao)">
             {tx("Diferença", "Difference")}
           </text>
         </g>
-        <text x={M.e} y={H - 4} fontSize="11" fill="#3D4147">
+        <text x={M.e} y={H - 4} fontSize="11" fill="var(--cor-carvao-muted)">
           {tx("pontos (log × 100); verde-azulado: partes do modelo; marrom: resíduo; preto: diferença real", "points (log × 100); teal: model parts; brown: residual; black: actual difference")}
         </text>
       </svg>

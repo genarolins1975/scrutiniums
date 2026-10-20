@@ -58,8 +58,8 @@ function Conta({ b, sm, k }: { b: BalancoRede; sm: SubsistemaOuSin; k: number })
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Barra valor={g} max={max} cor="#0E6170" rotulo={tx(`Geração: ${num(g, 0)} MWh`, `Generation: ${num(g, 0)} MWh`)} />
-        <Barra valor={c} max={max} cor="#966B48" rotulo={tx(`Carga: ${num(c, 0)} MWh`, `Load: ${num(c, 0)} MWh`)} />
+        <Barra valor={g} max={max} cor="var(--cor-energia)" rotulo={tx(`Geração: ${num(g, 0)} MWh`, `Generation: ${num(g, 0)} MWh`)} />
+        <Barra valor={c} max={max} cor="var(--cor-bronze)" rotulo={tx(`Carga: ${num(c, 0)} MWh`, `Load: ${num(c, 0)} MWh`)} />
       </div>
       <ol className="space-y-3 text-sm leading-relaxed text-carvao">
         <li>

@@ -195,8 +195,8 @@ export function HorasDoDia({
         <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" role="img" aria-label={resumoAria}>
           {ticks.map((t) => (
             <g key={t}>
-              <line x1={M.e} x2={W - M.d} y1={y(t)} y2={y(t)} stroke="var(--cor-linha, #D8D2C6)" strokeWidth={t === 0 ? 1.2 : 0.6} />
-              <text x={M.e - 6} y={y(t) + 4} textAnchor="end" fontSize="11" fill="#3D4147">
+              <line x1={M.e} x2={W - M.d} y1={y(t)} y2={y(t)} stroke="var(--cor-linha)" strokeWidth={t === 0 ? 1.2 : 0.6} />
+              <text x={M.e - 6} y={y(t) + 4} textAnchor="end" fontSize="11" fill="var(--cor-carvao-muted)">
                 {f.num(t, 0)}
               </text>
             </g>
@@ -206,7 +206,7 @@ export function HorasDoDia({
             const y0 = y(0);
             const y1 = y(v);
             const escolhida = h === hora;
-            const cor = modo === "carga" || v >= 0 ? "#0E6170" : "#966B48";
+            const cor = modo === "carga" || v >= 0 ? "var(--cor-energia)" : "var(--cor-bronze)";
             return (
               <rect
                 key={h}
@@ -223,24 +223,24 @@ export function HorasDoDia({
           })}
           {modo === "carga" && (
             <g>
-              <line x1={M.e} x2={W - M.d} y1={y(media)} y2={y(media)} stroke="#1A1D21" strokeDasharray="5 4" strokeWidth={1.4} />
-              <text x={M.e + 6} y={y(media) - 6} fontSize="11" fill="#1A1D21" stroke="#FFFFFF" strokeWidth={4} paintOrder="stroke">
+              <line x1={M.e} x2={W - M.d} y1={y(media)} y2={y(media)} stroke="var(--cor-carvao)" strokeDasharray="5 4" strokeWidth={1.4} />
+              <text x={M.e + 6} y={y(media) - 6} fontSize="11" fill="var(--cor-carvao)" stroke="var(--cor-superficie)" strokeWidth={4} paintOrder="stroke">
                 {tx(`média do dia: ${f.num(media, 0)} MWmed`, `day average: ${f.num(media, 0)} MWavg`)}
               </text>
             </g>
           )}
           {[0, 6, 12, 18, 23].map((h) => (
-            <text key={h} x={x(h) + larg / 2} y={H - 10} textAnchor="middle" fontSize="11" fill="#3D4147">
+            <text key={h} x={x(h) + larg / 2} y={H - 10} textAnchor="middle" fontSize="11" fill="var(--cor-carvao-muted)">
               {hh(h)}
             </text>
           ))}
           {modo === "fluxo" && (
-            <g fontSize="11" stroke="#FFFFFF" strokeWidth={4} paintOrder="stroke">
-              <text x={M.e + 4} y={M.t + 10} fill="#0A4A56">
+            <g fontSize="11" stroke="var(--cor-superficie)" strokeWidth={4} paintOrder="stroke">
+              <text x={M.e + 4} y={M.t + 10} fill="var(--cor-energia-dark)">
                 {`↑ ${serie.positivo}`}
               </text>
               {fundo < 0 && (
-                <text x={M.e + 4} y={H - M.b - 4} fill="#7C5638">
+                <text x={M.e + 4} y={H - M.b - 4} fill="var(--cor-bronze-dark)">
                   {`↓ ${serie.negativo}`}
                 </text>
               )}

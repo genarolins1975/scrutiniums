@@ -240,14 +240,14 @@ export default function TerritorioPage() {
             ex && ex.pldDia && exDist?.tarifa
               ? tx(
                   <>
-                    Depende da área de cada número. Em {ex.nome} ({ex.uf}), o preço de curto prazo do <Termo slug="submercado">submercado</Termo> {nomeSm(ex.sm, "pt")} foi de R${" "}
+                    Depende da área de cada número. Em {ex.nome} ({ex.uf}), o PLD do <Termo slug="submercado">submercado</Termo> {nomeSm(ex.sm, "pt")} foi de R${" "}
                     {num(ex.pldDia.valor, 2)}/MWh em {dataBR(ex.pldDia.dia)}, o mesmo para {ex.ufsDoSm} UFs; a tarifa residencial da {exDist.sigla} é de R$ {num(exDist.tarifa.valor, 2)}/MWh, a
-                    mesma para os {num(exDist.municipiosNaArea, 0)} municípios da área dela. Busque o seu município para ver os números de cada área.
+                    mesma para os {num(exDist.municipiosNaArea, 0)} municípios da área dela.
                   </>,
                   <>
-                    It depends on each figure&apos;s area. In <Nome>{ex.nome}</Nome> ({ex.uf}), the short-term price of the <Termo slug="submercado">submarket</Termo> {nomeSm(ex.sm, "en")} was R${" "}
+                    It depends on each figure&apos;s area. In <Nome>{ex.nome}</Nome> ({ex.uf}), the PLD of the <Termo slug="submercado">submarket</Termo> {nomeSm(ex.sm, "en")} was R${" "}
                     {num(ex.pldDia.valor, 2)}/MWh on {dataBR(ex.pldDia.dia)}, the same for {ex.ufsDoSm} states; the residential tariff of <Nome>{exDist.sigla}</Nome> is R${" "}
-                    {num(exDist.tarifa.valor, 2)}/MWh, the same for the {num(exDist.municipiosNaArea, 0)} municipalities in its area. Search for your municipality to see the figures of each area.
+                    {num(exDist.tarifa.valor, 2)}/MWh, the same for the {num(exDist.municipiosNaArea, 0)} municipalities in its area.
                   </>,
                 )
               : tx(
@@ -356,8 +356,8 @@ export default function TerritorioPage() {
                     {
                       termo: <Termo slug="submercado">{tx("Submercado", "Submarket")}</Termo>,
                       definicao: tx(
-                        "Uma das quatro regiões elétricas do SIN (Sudeste/Centro-Oeste, Sul, Nordeste e Norte), cada uma com o seu preço de curto prazo (PLD) e os seus reservatórios. O ONS chama a mesma divisão de subsistema.",
-                        "One of the four electrical regions of the SIN (Southeast/Center-West, South, Northeast and North), each with its own short-term price (PLD) and reservoirs. ONS calls the same division a subsystem.",
+                        "Uma das quatro regiões elétricas do SIN (Sudeste/Centro-Oeste, Sul, Nordeste e Norte), cada uma com o seu PLD, o preço do mercado de curto prazo e os seus reservatórios. O ONS chama a mesma divisão de subsistema.",
+                        "One of the four electrical regions of the SIN (Southeast/Center-West, South, Northeast and North), each with its own PLD, the short-term market price and reservoirs. ONS calls the same division a subsystem.",
                       ),
                     },
                     {
