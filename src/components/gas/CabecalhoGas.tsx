@@ -1,6 +1,7 @@
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
 import { GRUPOS_GAS, PAGINAS_GAS } from "@/lib/gas/navegacao";
 
 /**
@@ -48,6 +49,8 @@ export function CabecalhoGas({ atual }: { atual: string }) {
           </ul>
         </div>
       </nav>
+      {/* parceria técnica com o FGV CERI: a marca fecha o cabeçalho de todos os painéis de infraestrutura */}
+      <ParceriaTecnica variante="faixa" />
     </header>
   );
 }

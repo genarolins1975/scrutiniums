@@ -104,6 +104,8 @@ const nextConfig = {
     return [
       // logos oficiais: SVG aberto direto no navegador não roda script nem carrega nada de fora
       {source: "/energia/logos/:path*", headers: [{key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox"}, {key: "X-Content-Type-Options", value: "nosniff"}]},
+      // marcas de parceiros (pasta aberta): mesma política dos logos
+      {source: "/home/parceiros/:path*", headers: [{key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox"}, {key: "X-Content-Type-Options", value: "nosniff"}]},
       {source: "/energia/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/energia/series/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/eficiencia/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},

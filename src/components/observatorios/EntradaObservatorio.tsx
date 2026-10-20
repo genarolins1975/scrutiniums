@@ -50,7 +50,7 @@ function ListaPaineis({ paineis }: Readonly<{ paineis: ColecaoEntrada["paineis"]
  * pergunta e método recolhido no fim.
  */
 export function EntradaObservatorio({
-  nomeCurto, nomeCompleto, acento, pergunta, descricao, escala, paraVoce = null, colecoes, artefato, caminhos, metodo, frescor = null, frescorMetodo = null,
+  nomeCurto, nomeCompleto, acento, pergunta, descricao, escala, paraVoce = null, colecoes, artefato, caminhos, metodo, frescor = null, frescorMetodo = null, parceria = null,
 }: Readonly<{
   nomeCurto: string;
   nomeCompleto: string;
@@ -68,6 +68,8 @@ export function EntradaObservatorio({
   frescor?: ReactNode;
   /** Frescor por fonte no rodapé de método (FaixaFrescor, variante "metodo"). */
   frescorMetodo?: ReactNode;
+  /** Crédito de parceria técnica (ParceriaTecnica compacta), à direita do nome do observatório. */
+  parceria?: ReactNode;
 }>) {
   const a = ACENTO[acento];
   return (
@@ -82,10 +84,13 @@ export function EntradaObservatorio({
             <span aria-hidden="true" className="mx-2 text-mineral">/</span>
             <span aria-current="page">{nomeCurto}</span>
           </nav>
-          <p className="rotulo mt-8 flex items-center gap-3 text-mineral">
-            <span aria-hidden="true" className={`h-[3px] w-8 ${a.filete}`} />
-            {nomeCompleto}
-          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
+            <p className="rotulo flex items-center gap-3 text-mineral">
+              <span aria-hidden="true" className={`h-[3px] w-8 ${a.filete}`} />
+              {nomeCompleto}
+            </p>
+            {parceria}
+          </div>
           <h1 id="entrada-titulo" className="mt-5 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.1] text-carvao [text-wrap:balance]">
             {pergunta}
           </h1>

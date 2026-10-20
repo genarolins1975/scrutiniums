@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { DetalhesFechaveis } from "@/components/layout/DetalhesFechaveis";
+import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { EIXOS, ROTA, ROTULO_SITUACAO, rotaCapitulo, type Capitulo } from "@/lib/saneamento/capitulos";
 
@@ -123,6 +124,8 @@ export function Cabecalho({ atual }: { atual: string }) {
           </div>
         </div>
       </nav>
+      {/* parceria técnica com o FGV CERI: a marca fecha o cabeçalho de todos os painéis de infraestrutura */}
+      <ParceriaTecnica variante="faixa" />
     </header>
   );
 }
