@@ -151,6 +151,10 @@ def conferir_combustiveis(c, ultimo_glp):
         conf = next(x for x in c["pesquisa"]["conferencia_ultimo_mes"] if x["produto"] == pid)
         _exige(conf["postos_brasil"] == conf["soma_postos_ufs"], f"combustíveis: postos do Brasil diferem da soma das UFs ({pid})")
         _exige(c["indicadores"][f"{pid}_ufs_mes"]["valor"] == len(com), f"combustíveis: contagem de UFs não confere ({pid})")
+    # a identidade "soma dos postos das UFs = total do Brasil", afirmada na página para toda a série, vale em todos os meses
+    cp = c["pesquisa"]["conferencia_postos"]
+    _exige(cp["meses_produtos_conferidos"] > 0, "combustíveis: nenhuma conferência de postos")
+    _exige(not cp["divergencias"], f"combustíveis: postos do Brasil diferem da soma das UFs em {cp['divergencias'][:3]}")
     for l in c["por_uf"]:
         if l["etanol_gasolina_pct"] is not None:
             _exige(0 < l["etanol_gasolina_pct"] < 200, f"combustíveis: razão etanol/gasolina fora de faixa em {l['uf']}")

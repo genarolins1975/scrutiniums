@@ -436,6 +436,17 @@ class TestCombustiveis(unittest.TestCase):
         c["pesquisa"]["conferencia_ultimo_mes"][0]["soma_postos_ufs"] += 1
         with self.assertRaises(validacoes.ErroValidacao):
             validacoes.conferir_combustiveis(c, c["ultimo_mes"])
+        # divergência num mês histórico também retém: a página afirma a identidade para a série inteira
+        c = copy.deepcopy(self.c)
+        c["pesquisa"]["conferencia_postos"]["divergencias"].append({"mes": "2015-03", "produto": "gasolina", "postos_brasil": 9000, "soma_postos_ufs": 8999})
+        with self.assertRaises(validacoes.ErroValidacao):
+            validacoes.conferir_combustiveis(c, c["ultimo_mes"])
+
+    def test_conferencia_de_postos_cobre_todos_os_meses_e_produtos(self):
+        cp = self.c["pesquisa"]["conferencia_postos"]
+        com_total = sum(1 for x in self.c["serie"] for pid in self.ids if x[f"{pid}_postos"] is not None)
+        self.assertEqual(cp["meses_produtos_conferidos"], com_total)
+        self.assertEqual(cp["divergencias"], [])
 
 
 if __name__ == "__main__":

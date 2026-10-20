@@ -136,6 +136,8 @@ export type CombustiveisGold = Cabecalho & {
     meses_parciais: string[];
     meses_sem_dado: string[];
     conferencia_ultimo_mes: { produto: IdCombustivel; media_anp: number; postos_brasil: number; soma_postos_ufs: number; media_simples_ufs: number; media_ponderada_postos_ufs: number | null }[];
+    /** Soma dos postos das UFs contra o total do Brasil em todos os meses e produtos; divergência retém a publicação. */
+    conferencia_postos: { meses_produtos_conferidos: number; divergencias: { mes: string; produto: IdCombustivel; postos_brasil: number; soma_postos_ufs: number }[] };
   };
 };
 

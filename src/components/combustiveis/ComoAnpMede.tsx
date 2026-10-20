@@ -52,8 +52,9 @@ export function ComoAnpMede({ g }: { g: CombustiveisGold }) {
         ))}
       </ol>
       <p className="max-w-prose2 text-xs leading-relaxed text-mineral">
-        Conferência da Scrutiniums com os números da planilha: a soma dos postos das 27 UFs é igual ao total do Brasil em todos os meses e produtos
-        publicados. As etapas descrevem o que a planilha publica; o método completo da pesquisa está na página da ANP.
+        Conferência da Scrutiniums com os números da planilha: a soma dos postos das 27 UFs é igual ao total do Brasil em todos os{" "}
+        {g.pesquisa.conferencia_postos.meses_produtos_conferidos.toLocaleString("pt-BR")} pares de mês e produto publicados; a publicação
+        é retida se algum divergir. As etapas descrevem o que a planilha publica; o método completo da pesquisa está na página da ANP.
       </p>
       <figure className="space-y-2">
         <figcaption className="text-sm text-carvao">

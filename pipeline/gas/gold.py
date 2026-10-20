@@ -761,6 +761,19 @@ def combustiveis(s):
             "media_ponderada_postos_ufs": _r(sum(x["medio"] * x["postos"] for x in ls) / soma_postos) if soma_postos else None,
         })
 
+    # a soma dos postos das UFs contra o total do Brasil em todos os meses e produtos publicados (não só no último): a página
+    # afirma a identidade para a série inteira, então ela é conferida mês a mês e qualquer divergência retém a publicação
+    postos_conferidos, postos_divergentes = 0, []
+    for m in meses:
+        for pid in ids:
+            tot = ((brasil.get(m) or {}).get(pid) or {}).get("postos")
+            if tot is None:
+                continue
+            soma = sum(((por_uf.get((m, uf)) or {}).get(pid) or {}).get("postos") or 0 for uf in ufs)
+            postos_conferidos += 1
+            if _inteiro(tot) != soma:
+                postos_divergentes.append({"mes": m, "produto": pid, "postos_brasil": _inteiro(tot), "soma_postos_ufs": soma})
+
     s.gold("combustiveis", ["anp_precos_brasil", "anp_precos_estados", "ibge_ipca"], {
         "ultimo_mes": ultimo, "primeiro_mes": PRIMEIRO_MES_COMBUSTIVEIS, "mes_base_real": base_real,
         "produtos": [{"id": pid, "nome": nome, "curto": curto, "produto_anp": anp, "unidade": "R$/l", "nota": nota}
@@ -773,6 +786,7 @@ def combustiveis(s):
             "meses_parciais": [x["mes"] for x in serie if x["situacao"] == "parcial"],
             "meses_sem_dado": [x["mes"] for x in serie if x["situacao"] == "sem_dado"],
             "conferencia_ultimo_mes": conferencia,
+            "conferencia_postos": {"meses_produtos_conferidos": postos_conferidos, "divergencias": postos_divergentes},
         },
     })
     s.serie("preco-combustiveis-brasil-mensal",
