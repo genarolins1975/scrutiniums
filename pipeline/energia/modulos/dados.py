@@ -631,7 +631,17 @@ def _poucos_arquivos(valores, n=4):
     return dict([itens[0]] + itens[-(n - 1):])
 
 
-def _resumo_revisao(an):
+def _na_janela(por_captura, hoje):
+    """Dias de captura dentro da janela do calendário (JANELA_CALENDARIO_DIAS). Sem `hoje`, todos: a contagem por dia
+    crescia um dia por captura com revisão, sem limite, numa gold com teto de tamanho; o calendário e o CSV
+    dados_calendario.csv cobrem a mesma janela."""
+    if hoje is None or not por_captura:
+        return por_captura
+    inicio = (hoje - timedelta(days=JANELA_CALENDARIO_DIAS)).isoformat()
+    return {d: n for d, n in por_captura.items() if d >= inicio}
+
+
+def _resumo_revisao(an, hoje=None):
     rv = (an or {}).get("revisoes")
     rr = (an or {}).get("revisoes_registros")
     conflitos = (rv or {}).get("conflitos_entre_recursos") or 0
@@ -654,14 +664,15 @@ def _resumo_revisao(an):
         out.update({"eventos": rv["eventos"], "observacoes": rv["observacoes_revisadas"], "referencias": rv["referencias_revisadas"],
                     "series": rv["series_afetadas"],
                     "ref_min": rv["ref_min"], "ref_max": rv["ref_max"], "a_partir_de_zero": rv["a_partir_de_zero"],
-                    "maior_abs": ev_(rv["maior_abs"]), "maior_rel": ev_(rv["maior_rel"]), "por_captura": rv["por_captura"]})
+                    "maior_abs": ev_(rv["maior_abs"]), "maior_rel": ev_(rv["maior_rel"]),
+                    "por_captura": _na_janela(rv["por_captura"], hoje)})
     if rr:
         # mudanças entre capturas do MESMO arquivo; diferenças entre arquivos do conjunto
         # (anos diferentes, listas de anos diferentes) são conflito entre recursos, à parte
         reg = {}
         if rr.get("mudancas"):
             reg.update({"mudancas": rr["mudancas"], "chaves": rr["chaves_afetadas"], "campos": rr["campos"],
-                        "apagados_pela_fonte": rr["apagados_pela_fonte"], "por_captura": rr["por_captura"]})
+                        "apagados_pela_fonte": rr["apagados_pela_fonte"], "por_captura": _na_janela(rr["por_captura"], hoje)})
         if rr.get("metadado_do_arquivo"):
             reg["metadado_do_arquivo"] = rr["metadado_do_arquivo"]
         if rr.get("conflitos_entre_recursos"):
@@ -816,7 +827,7 @@ def conjuntos(grupos, analises, golds_res, brutos, seeds, metadados, hoje, agora
             ressalvas.append(f"A listagem do portal informa modificação de {novo['recursos']} arquivo(s) depois da última captura "
                              f"({ex['recurso']}: {ex['modificado_na_fonte']} UTC; captura em {ex['ultima_captura']}).")
         modelos = sorted({m for x in grupo for m in x.get("modelos", [])})
-        rv = _resumo_revisao(an)
+        rv = _resumo_revisao(an, hoje)
         br = (an or {}).get("bronze") or {}
         co = (an or {}).get("coletas") or {}
         vs = (an or {}).get("vintages") or {}

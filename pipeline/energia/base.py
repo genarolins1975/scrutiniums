@@ -547,10 +547,18 @@ def _escreve_atomico(caminho, texto):
     return caminho
 
 
+# Golds de catálogo do módulo Dados, gravadas sem indentação, como a avaliacao.json. Crescem com o número de
+# conjuntos integrados e de entradas dos portais, e a página Catálogo baixa a publicacao.json no navegador. A
+# indentação era um quarto dos bytes: em 20/10/2026, 511.958 contra 388.328 bytes (publicacao.json) e 417.915
+# contra 323.720 (catalogo.json), com o teto de 400 KB do contrato dos módulos. O conteúdo não muda.
+GOLDS_COMPACTAS = frozenset({"publicacao.json", "catalogo.json"})
+
+
 def escreve_gold(nome, payload, destino=None):
     base = destino or GOLD
+    formato = {"separators": (",", ":")} if nome in GOLDS_COMPACTAS else {"indent": 1}
     return _escreve_atomico(os.path.join(base, nome),
-                            json.dumps(payload, ensure_ascii=False, indent=1, allow_nan=False))
+                            json.dumps(payload, ensure_ascii=False, allow_nan=False, **formato))
 
 
 def escreve_csv(nome, cabecalho, linhas, destino=None):

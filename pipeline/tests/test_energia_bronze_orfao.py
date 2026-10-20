@@ -494,6 +494,20 @@ class TestSelecaoEBronzeDuravel(unittest.TestCase):
             self.assertEqual(item["arquivo"], os.path.relpath(base.caminho_bronze(copia), self.raiz))
             self.assertTrue(os.path.isfile(os.path.join(self.raiz, item["arquivo"])))
             self.assertEqual((item["sha256"], item["capturado_em"]), (anterior["sha256"], anterior["capturado_em"]))
+        # a conferência dos originais do módulo Dados acha a mesma cópia: a captura vigente não conta como ausente
+        from pipeline.energia.fontes import silver_dados as sd
+        from pipeline.energia import validacoes as val
+        r = sd.confere_bronze([anterior])
+        self.assertEqual((r["arquivos_presentes"], r["arquivos_ausentes"], r["ausentes_vigentes"], r["sha256_divergentes"]), (1, 0, 0, 0))
+        # a captura anterior que a cópia durável não guarda é ressalva, dita como tal
+        nova = self.vintage("ds", "rec", b"conteudo novo", "2026-10-18T00:00:00Z")
+        os.remove(base.caminho_bronze(copia))
+        r = sd.confere_bronze([anterior, nova])
+        self.assertEqual((r["arquivos_presentes"], r["arquivos_ausentes"], r["ausentes_vigentes"]), (1, 1, 0))
+        chk = next(x for x in val.valida_conjunto("f/ds", {"_vintages": [anterior, nova], "bronze": r}) if x["tipo"] == "original")
+        self.assertEqual(chk["resultado"], "ressalva")
+        self.assertIn("0 da captura vigente e 1 da anterior, que a cópia durável não guarda", chk["detalhe"])
+        self.assertNotIn("só o silver", chk["detalhe"])
         # outro conteúdo na mesma pasta não serve
         outra = self.vintage("ds", "rec2", b"outro conteudo")
         os.remove(base.caminho_bronze(outra["arquivo"]))
