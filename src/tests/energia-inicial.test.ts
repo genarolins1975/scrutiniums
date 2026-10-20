@@ -640,7 +640,13 @@ const secao = (id: string) => {
 describe("a página renderizada", () => {
   it("a abertura preserva título, contexto e cinco caminhos: orientação, cobertura, busca, mapa e perguntas antes da referência", () => {
     const h1 = /<h1[^>]*>([^<]+)<\/h1>/.exec(html)![1];
-    expect(h1).toBe("A energia que move o Brasil.");
+    // redesenho de 20/10/2026: o título é a pergunta do observatório, não um slogan (checklist da página de entrada, item 1)
+    expect(h1).toBe("De onde vem a energia e quanto ela custa?");
+    expect(h1.endsWith("?")).toBe(true);
+    // os três números de abertura vêm logo depois do título, antes da gravura do sistema, que abre o percurso
+    expect(html.indexOf('class="energia-abertura-medidas"')).toBeGreaterThan(html.indexOf("<h1"));
+    expect(html.indexOf('class="energia-abertura-medidas"')).toBeLessThan(html.indexOf('class="energia-cenario"'));
+    expect(html.indexOf('class="energia-cenario"')).toBeLessThan(html.indexOf('id="percurso-energia"'));
     expect(h1.split(/\s+/).length).toBeGreaterThanOrEqual(5);
     expect(h1.split(/\s+/).length).toBeLessThanOrEqual(9);
     const ordem = [html.indexOf("<h1"), html.indexOf('aria-label="Por onde começar"'), html.indexOf('class="obs-metrics"'), html.indexOf('type="search"'), html.indexOf('<section id="perguntas"'), html.indexOf('aria-label="Conhecimento e fontes"')];
