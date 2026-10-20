@@ -51,6 +51,28 @@ export function aoEntrarComRecorte(e: { metaKey: boolean; ctrlKey: boolean; shif
   window.location.assign(hrefEntrar(destinoAtual()));
 }
 
+/**
+ * Destino da volta do login para um convite que conhece a rota pública do tema (`ConviteAperitivo`): o caminho de `rota`
+ * com a query da janela (o recorte escolhido: ?territorio=, ?uf=), ou a de `rota` quando a janela não tiver, e a âncora.
+ * O caminho vem de `rota`, nunca da janela: a versão aperitivo pode ser vista no caminho interno.
+ */
+export function destinoComRecorte(rota: string, local: { search: string; hash: string }): string {
+  const fim = rota.search(/[?#]/);
+  const caminho = fim === -1 ? rota : rota.slice(0, fim);
+  const daRota = rota.match(/\?[^#]*/)?.[0] ?? "";
+  const query = local.search && local.search !== "?" ? local.search : daRota;
+  return `${caminho}${query}${local.hash}`;
+}
+
+/** Clique no convite com rota pública: como `aoEntrarComRecorte`, com o caminho de `rota` e o recorte da janela. */
+export function aoEntrarComRecorteEm(rota: string) {
+  return (e: { metaKey: boolean; ctrlKey: boolean; shiftKey: boolean; altKey?: boolean; button: number; preventDefault: () => void }) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    window.location.assign(hrefEntrar(destinoComRecorte(rota, window.location)));
+  };
+}
+
 /** A página atual é aberta (src/lib/rotasPublicas.ts)? Igual no servidor e no navegador. */
 /**
  * A versão aperitivo se declara aberta por contexto (src/app/aperitivo/layout.tsx): no endereço público do
