@@ -2,9 +2,8 @@
 
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import { ehRotaPublica } from "@/lib/rotasPublicas";
 import { Cadeado } from "./SeloComConta";
-import { aoEntrarComRecorte, hrefEntrar, textosAcesso, useSessao } from "./sessao";
+import { aoEntrarComRecorte, hrefEntrar, textosAcesso, usePaginaAberta, useSessao } from "./sessao";
 
 /**
  * Exportação gerada no navegador (CSV, XLSX montados na página) numa página aberta: sem sessão, o
@@ -15,9 +14,10 @@ import { aoEntrarComRecorte, hrefEntrar, textosAcesso, useSessao } from "./sessa
 export function ExportacaoComConta({ rotulo, children, className = "" }: { rotulo: ReactNode; children?: ReactNode; className?: string }) {
   const caminho = usePathname();
   const logado = useSessao();
-  const aberta = !!caminho && ehRotaPublica(caminho);
+  const aberta = usePaginaAberta();
   if (!aberta || logado === true) return <>{children}</>;
   const t = textosAcesso(caminho);
+  if (!caminho) return <>{children}</>;
   return (
     <a
       href={hrefEntrar(caminho)}

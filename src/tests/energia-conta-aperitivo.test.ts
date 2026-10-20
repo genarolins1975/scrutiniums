@@ -35,11 +35,14 @@ describe("Conta de luz, versão aperitivo: código", () => {
     expect(parDeIdioma("/aperitivo/conta-de-luz")?.conteudo).toBe("traduzido");
   });
 
-  it("o selo vê a página como aberta no caminho interno (HTML estático) e no público (navegador)", () => {
+  it("pelo caminho, o interno é aberto e o público é o painel completo; a versão aperitivo se declara aberta pelo layout", () => {
     expect(ehPaginaAberta("/aperitivo/conta-de-luz")).toBe(true);
     expect(ehPaginaAberta("/en/aperitivo/conta-de-luz")).toBe(true);
-    expect(ehPaginaAberta("/setor-eletrico/conta-de-luz")).toBe(true);
+    // no navegador, o endereço público serve o aperitivo (marcado por src/app/aperitivo/layout.tsx) ou o painel completo
+    expect(ehPaginaAberta("/setor-eletrico/conta-de-luz")).toBe(false);
     expect(ehPaginaAberta("/setor-eletrico/geracao")).toBe(false);
+    expect(ler("src/app/aperitivo/layout.tsx")).toMatch(/<PaginaAberta>\{children\}<\/PaginaAberta>/);
+    expect(ler("src/app/en/aperitivo/layout.tsx")).toMatch(/<PaginaAberta>\{children\}<\/PaginaAberta>/);
   });
 
   it("fecha com o convite no endereço público e o cabeçalho com selo; nada do painel completo entra", () => {

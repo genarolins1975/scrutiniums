@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { ExportacaoComConta } from "@/components/acesso/ExportacaoComConta";
 import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
+import { PaginaAberta } from "@/components/acesso/PaginaAberta";
 
 /**
  * Estratégia "aberto e com conta", leva 1 (decisão do dono de 19/10/2026, docs/BANCA_2026-10-19.md): nas cinco
@@ -23,6 +24,8 @@ const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
 
 
 const html = (el: Parameters<typeof renderToStaticMarkup>[0]) => renderToStaticMarkup(el);
+/** Na versão aperitivo, servida no endereço público do tema: o layout de src/app/aperitivo declara a página aberta. */
+const aberta = (el: Parameters<typeof renderToStaticMarkup>[0]) => renderToStaticMarkup(createElement(PaginaAberta, null, el));
 
 describe("selo com conta", () => {
   beforeEach(() => {
@@ -31,12 +34,17 @@ describe("selo com conta", () => {
 
   it("aparece na página aberta para destino fechado, e só nele", () => {
     caminho.atual = "/saneamento/municipio";
-    expect(html(createElement(SeloComConta, { href: "/saneamento/comparar?m=2611606" }))).toContain("com conta");
-    expect(html(createElement(SeloComConta, { href: "/gas/series/preco-glp-por-uf.csv" }))).toContain("com conta");
+    expect(aberta(createElement(SeloComConta, { href: "/saneamento/comparar?m=2611606" }))).toContain("com conta");
+    expect(aberta(createElement(SeloComConta, { href: "/gas/series/preco-glp-por-uf.csv" }))).toContain("com conta");
     // a ficha completa e o simulador da conta de água pedem conta desde 20/10/2026 (princípio do aperitivo)
-    expect(html(createElement(SeloComConta, { href: "/saneamento/municipio/2611606" }))).toContain("com conta");
-    expect(html(createElement(SeloComConta, { href: "/saneamento/preco-regulado/simulador?t=x" }))).toContain("com conta");
-    expect(html(createElement(SeloComConta, { href: "/saneamento/municipio?ibge=2611606" }))).toBe("");
+    expect(aberta(createElement(SeloComConta, { href: "/saneamento/municipio/2611606" }))).toContain("com conta");
+    expect(aberta(createElement(SeloComConta, { href: "/saneamento/preco-regulado/simulador?t=x" }))).toContain("com conta");
+    expect(aberta(createElement(SeloComConta, { href: "/saneamento/municipio?ibge=2611606" }))).toBe("");
+    // no mesmo endereço, sem a marca da versão aperitivo, é o painel completo de quem tem conta: sem selo
+    expect(html(createElement(SeloComConta, { href: "/saneamento/comparar?m=2611606" }))).toBe("");
+    // página aberta que já é o aperitivo (sem versão separada): o caminho basta
+    caminho.atual = "/combustiveis/no-meu-estado";
+    expect(html(createElement(SeloComConta, { href: "/combustiveis" }))).toContain("com conta");
     expect(html(createElement(SeloComConta, { href: "/saneamento/metodologia" }))).toBe("");
     expect(html(createElement(SeloComConta, { sempre: true }))).toContain("com conta");
   });
@@ -50,7 +58,7 @@ describe("selo com conta", () => {
 
   it("fala inglês na irmã inglesa da Conta de luz", () => {
     caminho.atual = "/en/setor-eletrico/conta-de-luz";
-    const h = html(createElement(SeloComConta, { href: "/setor-eletrico/conta-de-luz/reajustes-e-subsidios" }));
+    const h = aberta(createElement(SeloComConta, { href: "/setor-eletrico/conta-de-luz/reajustes-e-subsidios" }));
     expect(h).toContain("account required");
     expect(h).not.toContain("com conta");
   });
@@ -59,7 +67,7 @@ describe("selo com conta", () => {
 describe("exportação montada no navegador", () => {
   it("sai da versão aberta: no HTML do servidor fica o convite para entrar, com o retorno à página", () => {
     caminho.atual = "/gas-natural/gas-de-cozinha";
-    const h = html(createElement(ExportacaoComConta, { rotulo: "Baixar CSV" }, createElement("button", { type: "button" }, "exportar")));
+    const h = aberta(createElement(ExportacaoComConta, { rotulo: "Baixar CSV" }, createElement("button", { type: "button" }, "exportar")));
     expect(h).not.toContain("<button");
     expect(h).toContain('href="/entrar?de=%2Fgas-natural%2Fgas-de-cozinha"');
     expect(h).toContain("com conta");
