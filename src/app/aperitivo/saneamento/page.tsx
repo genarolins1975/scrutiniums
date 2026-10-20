@@ -194,11 +194,11 @@ function Resultado({ m, ficha }: { m: Municipio; ficha: FichaMunicipio }) {
         />
       </div>
 
-      <dl className="mt-6 grid grid-cols-1 gap-x-8 gap-y-4 text-sm sm:grid-cols-2">
+      <dl className="mt-5 grid grid-cols-1 gap-x-8 gap-y-4 text-sm sm:grid-cols-2">
         {(["agua", "esgoto"] as const).map((servico) => {
           const lista = nomes(servico);
           return (
-            <div key={servico} className="border-t border-linha pt-3">
+            <div key={servico} className="min-w-0">
               <dt className="text-carvao-muted">Quem presta o serviço de {servico === "agua" ? "água" : "esgoto"}</dt>
               <dd className="mt-1 font-serif text-lg leading-snug text-carvao">
                 {lista.length ? lista.join("; ") : <span className="font-sans text-sm text-carvao-muted">Nenhum prestador declarou atuação ao SINISA</span>}

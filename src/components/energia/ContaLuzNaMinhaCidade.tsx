@@ -174,7 +174,7 @@ export function ContaLuzNaMinhaCidade({
                           type="button"
                           aria-pressed={ativo}
                           onClick={() => setCnpj(v.cnpj)}
-                          className={`inline-flex min-h-[44px] items-center border px-3 text-sm ${ativo ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao hover:border-carvao"}`}
+                          className={`inline-flex min-h-[44px] items-center border px-3 text-sm transition-[border-color,background-color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] motion-safe:active:scale-[0.97] ${ativo ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao [@media(hover:hover)]:hover:border-carvao"}`}
                         >
                           <Nome>{nomeVinculo(v)}</Nome>
                           {v.estado === 0 ? <span className="ml-1 text-xs text-carvao-muted">{tx("(vínculo sem confirmação)", "(link not confirmed)")}</span> : null}

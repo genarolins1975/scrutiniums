@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import {CabecalhoEntrada} from '@/components/eficiencia/CabecalhoEntrada';
 import {MinhaCapitalAperitivo} from '@/components/eficiencia/entrada/MinhaCapitalAperitivo';
+import {Footer} from '@/components/layout/Footer';
 import {montarRetrato} from '@/lib/eficiencia/entrada';
 import {montarAperitivoCapital} from '@/lib/eficiencia/aperitivo-capital';
 
@@ -10,6 +11,10 @@ import {montarAperitivoCapital} from '@/lib/eficiencia/aperitivo-capital';
  * completa (src/app/eficiencia-estatal/page.tsx). Mostra só quatro condições de 2022 da capital escolhida, com
  * valor, ano, posição entre as 26 e fonte, recortadas do mesmo retrato da entrada completa. Fica de fora tudo o
  * que é do painel: atlas, mapa de cobertura, tabela e faixa das 26 capitais, recursos, índice, temas e arquivos.
+ *
+ * A casca repete a do domínio (src/app/eficiencia-estatal/layout.tsx), que não envolve o caminho interno: o mesmo
+ * fundo e anel de foco, o atalho para o conteúdo e o rodapé; sem o bloco de outras páginas, como nas demais versões
+ * aperitivo.
  */
 export const dynamic = 'force-static';
 export const metadata: Metadata = {
@@ -29,10 +34,14 @@ const COM_CONTA = [
 
 export default function AperitivoMinhaCapital() {
   const dados = montarAperitivoCapital(montarRetrato());
-  return <div><CabecalhoEntrada/>
-    <main id="conteudo" className="pb-20">
-      {/* fecho obrigatório: ConviteAperitivo com rota="/eficiencia-estatal", dentro do componente cliente */}
-      <MinhaCapitalAperitivo dados={dados} comConta={COM_CONTA}/>
-    </main>
+  return <div className="dominio-obee flex min-h-screen flex-col bg-papel text-obee-tinta">
+    <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:inline-flex focus:min-h-[44px] focus:items-center focus:border focus:border-obee focus:bg-superficie focus:px-4 focus:text-sm focus:text-obee-tinta">Pular para o conteúdo</a>
+    <div className="flex-1"><CabecalhoEntrada/>
+      <main id="conteudo" className="pb-12">
+        {/* fecho obrigatório: ConviteAperitivo com rota="/eficiencia-estatal", dentro do componente cliente */}
+        <MinhaCapitalAperitivo dados={dados} comConta={COM_CONTA}/>
+      </main>
+    </div>
+    <Footer/>
   </div>;
 }

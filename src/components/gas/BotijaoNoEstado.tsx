@@ -39,13 +39,13 @@ export function BotijaoNoEstado({ dados }: { dados: DadosBotijaoNoEstado }) {
       </div>
       {escolha.invalida && <p aria-live="polite" className="text-sm text-carvao-muted">O estado informado no endereço não está na pesquisa. Exibimos a média do Brasil.</p>}
 
-      <div role="status" aria-live="polite">
+      <div role="status" aria-live="polite" className="pt-5">
         <h2 className="ed-h2 max-w-3xl font-serif text-carvao">Botijão de 13 kg {linha ? `em ${linha.nome}` : "no Brasil"}, {mes}</h2>
         <dl className="mt-5 grid gap-x-8 gap-y-6 sm:grid-cols-3">
           {linha && (
             <div className="min-w-0 border-t-2 border-gas pt-3" data-botijao="uf">
               <dt className="text-sm text-carvao-muted">Preço médio em {linha.nome}</dt>
-              <dd className="mt-1 text-[1.75rem] leading-tight tracking-tight text-carvao [font-variant-numeric:tabular-nums]">
+              <dd className="mt-1 text-[2rem] leading-tight tracking-tight text-carvao [font-variant-numeric:tabular-nums] sm:text-[2.5rem]">
                 {reais(linha.medio, 2)} <span className="text-base text-carvao-muted">por botijão</span>
               </dd>
               <dd className="mt-1 text-xs leading-relaxed text-mineral">{mes} · {revendas(linha.postos)}</dd>
@@ -53,7 +53,7 @@ export function BotijaoNoEstado({ dados }: { dados: DadosBotijaoNoEstado }) {
           )}
           <div className={`min-w-0 border-t-2 pt-3 ${linha ? "border-linha" : "border-gas"}`} data-botijao="brasil">
             <dt className="text-sm text-carvao-muted">Média do Brasil</dt>
-            <dd className={`mt-1 leading-tight tracking-tight text-carvao [font-variant-numeric:tabular-nums] ${linha ? "text-[1.375rem]" : "text-[1.75rem]"}`}>
+            <dd className={`mt-1 leading-tight tracking-tight text-carvao [font-variant-numeric:tabular-nums] ${linha ? "text-[1.375rem]" : "text-[2rem] sm:text-[2.5rem]"}`}>
               {reais(br.medio, 2)} <span className="text-base text-carvao-muted">por botijão</span>
             </dd>
             <dd className="mt-1 text-xs leading-relaxed text-mineral">{mes} · {revendas(br.postos)}</dd>
