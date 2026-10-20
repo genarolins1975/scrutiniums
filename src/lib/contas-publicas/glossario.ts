@@ -3,6 +3,8 @@ const MTO='https://www1.siop.planejamento.gov.br/mto/lib/exe/fetch.php/mto2026:m
 const RTN='https://www.tesourotransparente.gov.br/temas/estatisticas-fiscais-e-planejamento/resultado-do-tesouro-nacional-rtn-conteudos-relacionados';
 const consulta='2026-10-12';
 const mcasp=(pagina:number)=>({fonte:`STN · MCASP · 11ª edição · p. ${pagina}`,url:`${MCASP}#page=${pagina}`,consulta});
+/** Página impressa do MTO 2026 e a página do PDF (o arquivo tem três páginas antes da numeração), conferidas em 20/10/2026. */
+const mtoPdf=(impressa:number,pdf:number)=>({fonte:`SOF · MTO 2026 · 7ª versão · p. ${impressa}`,url:`${MTO}#page=${pdf}`,consulta:'2026-10-20'});
 const mto=(pagina:number)=>({fonte:`SOF · MTO 2026 · 7ª versão · p. ${pagina}`,url:`${MTO}#page=${pagina+2}`,consulta});
 /** Paráfrases curtas de definições oficiais. Não alteram os contratos dos indicadores. */
 export const GLOSSARIO={
@@ -20,6 +22,9 @@ export const GLOSSARIO={
  'programacao-financeira':{termo:'Programação financeira',definicao:'Organização dos pagamentos em compatibilidade com os recebimentos previstos e as metas fiscais.',...mcasp(104)},
  localizador:{termo:'Localizador',definicao:'Detalhamento territorial da ação orçamentária, orientado pela localização dos beneficiários ou do objeto da ação.',...mcasp(76)},
  'plano-orcamentario':{termo:'Plano orçamentário',definicao:'Identificador gerencial vinculado a uma ação, com detalhamento maior que o da ação e do localizador. Não consta da LOA.',...mto(58)},
+ funcao:{termo:'Função',definicao:'Maior nível de agregação das áreas de atuação do setor público, como saúde, educação ou defesa. Reflete a competência do órgão; Encargos Especiais reúne despesas sem bem ou serviço associado, como dívidas e transferências.',...mtoPdf(41,44)},
+ subfuncao:{termo:'Subfunção',definicao:'Nível imediatamente abaixo da função, que evidencia a natureza da atuação. Pode ser combinada com funções diferentes da sua de origem.',...mtoPdf(41,44)},
+ 'despesa-financeira':{termo:'Identificador de resultado primário',definicao:'Marca cada dotação como financeira (código 0) ou primária (demais códigos). Financeiras não entram no resultado primário: juros, amortização e concessão de empréstimos.',...mtoPdf(100,103)},
  'custo-contabil':{termo:'Custo contábil',definicao:'Consumo de recursos para produzir bens ou prestar serviços, reconhecido por competência. Não equivale ao pagamento orçamentário.',fonte:'Tesouro Nacional · definições do Portal de Custos',url:'https://www.tesourotransparente.gov.br/visualizacao/portal-de-custos-do-governo-federal',consulta}
 } as const;
 export type TermoId=keyof typeof GLOSSARIO;

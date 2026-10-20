@@ -3,12 +3,14 @@
  *
  * Números de escala e o modelo didático do orçamento doméstico, todos lidos
  * das golds publicadas pelas coleções de origem (Crédito, Eficiência Estatal,
- * Agronegócio, Gás Natural, Setor Elétrico). Cada número traz fonte e
+ * Agronegócio, Gás Natural, Setor Elétrico) e pelo próprio observatório
+ * (Inflação por cidade, public/inflacao/gold/ipca.json). Cada número traz fonte e
  * período da própria base; números de fontes e períodos diferentes nunca são
  * somados nem comparados entre si.
  */
 import { lerPublico, mesAno, num, numero } from "@/lib/perguntas/leitura";
 import type { NumeroPorta } from "@/lib/perguntas/tipos";
+import { numeroCustoDeVida } from "@/lib/perguntas/portas";
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- leitura de gold JSON sem tipos gerados */
 
@@ -66,19 +68,9 @@ export function escalaFamilias(): NumeroPorta[] {
         return { valor: num(h.deficit / 1e6, 2), periodo: String(h.ano) };
       },
     ),
-    numero(
-      {
-        rotulo: "Inflação da comida em casa, em 12 meses",
-        unidade: "%",
-        fonte: "IBGE, IPCA, alimentação no domicílio",
-        href: "/agronegocio/prato",
-      },
-      () => {
-        const meses = lerPublico("agro", "gold", "snapshot.json").economia.prato.meses;
-        const u = meses[meses.length - 1];
-        return { valor: num(u.domicilio, 2), periodo: `12 meses até ${mesAno(u.mes)}`, nota: `IPCA geral no mesmo período: ${num(u.geral, 2)}%.` };
-      },
-    ),
+    // desde 20/10/2026, a inflação de todo o orçamento (painel Inflação por cidade, mantido pelo próprio observatório); a da
+    // comida em casa segue no elo "Comida" do orçamento da família, logo abaixo, e no painel canônico /agronegocio/prato
+    numeroCustoDeVida(),
   ];
 }
 
@@ -143,6 +135,7 @@ export function orcamentoFamilia(): EtapaOrcamento[] {
       titulo: "O essencial",
       pergunta: "Para onde vai o dinheiro antes de qualquer escolha?",
       elos: [
+        { titulo: "Todos os preços", explicacao: "A inflação do orçamento inteiro, grupo por grupo de despesa, na sua cidade ou região metropolitana e no Brasil.", numero: null, href: "/custo-de-vida", painel: "Inflação por cidade" },
         { titulo: "Comida", explicacao: "O preço dos alimentos comprados para casa, item por item da cesta.", numero: comida, href: "/agronegocio/prato", painel: "Comida no prato" },
         { titulo: "Moradia", explicacao: "Aluguel, condições da casa e déficit habitacional.", numero: aluguel, href: "/eficiencia-estatal/habitacao", painel: "Habitação" },
         { titulo: "Gás, luz e água", explicacao: "Botijão, tarifa de energia e tarifa de água e esgoto, cada uma com a regra do seu regulador.", numero: botijao, href: "/gas-natural/gas-de-cozinha", painel: "Gás de cozinha" },

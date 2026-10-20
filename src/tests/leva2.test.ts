@@ -57,8 +57,16 @@ function caminhosDo(item: ItemLeva2): string[] {
 
 describe("leva 2: a lista declarativa", () => {
   it("registra as ferramentas da tabela da banca, com pergunta, forma, porta, rotas e arquivos exatos", () => {
-    // as quatro da Onda 2 e a consulta do painel Combustíveis nos postos (19/10/2026), todas preparadas e desligadas
-    expect(LEVA_2.map((i) => i.id)).toEqual(["quanto-meu-banco-cobra", "teve-fogo-perto-de-mim", "cem-reais-dos-impostos", "metodologia-do-credito", "quanto-custa-encher-o-tanque"]);
+    // as quatro da Onda 2, a consulta do painel Combustíveis nos postos (19/10/2026) a do painel Despesa por área e a do painel Inflação por cidade (20/10/2026)
+    expect(LEVA_2.map((i) => i.id)).toEqual([
+      "quanto-meu-banco-cobra",
+      "teve-fogo-perto-de-mim",
+      "cem-reais-dos-impostos",
+      "metodologia-do-credito",
+      "quanto-custa-encher-o-tanque",
+      "cem-reais-por-area",
+      "quanto-subiu-o-custo-de-vida",
+    ]);
     expect(Object.isFrozen(LEVA_2)).toBe(true);
     for (const i of LEVA_2) {
       expect(i.pergunta.trim().endsWith("?"), i.id).toBe(true);
@@ -77,10 +85,18 @@ describe("leva 2: a lista declarativa", () => {
     // a ficha é montada no servidor: a gold municipal inteira continua com conta
     expect(porId["teve-fogo-perto-de-mim"].arquivos).toEqual(["/saneamento/gold/indice.json"]);
     expect(porId["cem-reais-dos-impostos"].portas).toEqual(["contas-publicas"]);
+    // a consulta por área é artefato da porta aberta das Contas Públicas: nenhuma rota e nenhum arquivo abrem; o painel segue com conta
+    expect(porId["cem-reais-por-area"]).toMatchObject({ forma: "artefato", portas: ["contas-publicas"], rotas: [], arquivos: [], aprovadaEm: null });
+    expect(porId["cem-reais-por-area"].pergunta).toBe("Quanto de cada R$ 100 do governo federal vai para cada área?");
     // a consulta do tanque é só a rota exata, montada no servidor: nenhum arquivo abre, e o painel /combustiveis continua com conta
     expect(porId["quanto-custa-encher-o-tanque"].rotas).toEqual(["/combustiveis/no-meu-estado"]);
     expect(porId["quanto-custa-encher-o-tanque"].arquivos).toEqual([]);
     expect(porId["quanto-custa-encher-o-tanque"].portas).toEqual(["energia-e-infraestrutura", "familias"]);
+    // a consulta do custo de vida também é só a rota exata, montada no servidor: a gold, as séries e o painel seguem com conta
+    expect(porId["quanto-subiu-o-custo-de-vida"].rotas).toEqual(["/custo-de-vida/na-minha-cidade"]);
+    expect(porId["quanto-subiu-o-custo-de-vida"].arquivos).toEqual([]);
+    expect(porId["quanto-subiu-o-custo-de-vida"].portas).toEqual(["familias"]);
+    expect(porId["quanto-subiu-o-custo-de-vida"].aprovadaEm).toBeNull();
   });
 
   it("a aprovação só vale com data real no formato AAAA-MM-DD", () => {
@@ -172,6 +188,9 @@ describe("leva 2 ligada num teste (aprovação preenchida)", () => {
       // Combustíveis: o painel, as vizinhas e os arquivos da gold
       "/combustiveis", "/combustiveis/", "/combustiveis/no-meu-estadox", "/combustiveis/no-meu-estado/SP", "/en/combustiveis/no-meu-estado",
       "/gas/gold/combustiveis.json", "/gas/series/preco-combustiveis-por-uf.csv", "/gas/gold", "/gas-natural",
+      // Custo de vida: o painel, as vizinhas e os arquivos da gold
+      "/custo-de-vida", "/custo-de-vida/", "/custo-de-vida/na-minha-cidadex", "/custo-de-vida/na-minha-cidade/3501", "/en/custo-de-vida/na-minha-cidade",
+      "/inflacao/gold/ipca.json", "/inflacao/gold", "/inflacao/series/ipca-geral-e-grupos-mensal.csv", "/inflacao/series/ipca-subitens-12-meses.csv",
       // pastas e variações dos arquivos abertos
       "/saneamento/gold", "/saneamento/gold/", "/saneamento/gold/indice.json/", "/saneamento/gold/indice.jsonx", "/saneamento/gold/municipios.json",
     ]) expect(ehRotaPublicaCom(ligada, p), p).toBe(false);
@@ -199,12 +218,15 @@ describe("leva 2 ligada num teste (aprovação preenchida)", () => {
     ]);
     for (const p of ["familias", "economia"] as const) {
       expect(consultasLeva2(p, ligada).map((c) => c.href), p).toEqual(
-        p === "familias" ? ["/observatorio-do-credito/quanto-meu-banco-cobra", "/combustiveis/no-meu-estado"] : ["/observatorio-do-credito/quanto-meu-banco-cobra"],
+        p === "familias"
+          ? ["/observatorio-do-credito/quanto-meu-banco-cobra", "/combustiveis/no-meu-estado", "/custo-de-vida/na-minha-cidade"]
+          : ["/observatorio-do-credito/quanto-meu-banco-cobra"],
       );
       expect(metodosLeva2(p, ligada).map((m) => m.href), p).toEqual(["/observatorio-do-credito/metodologia"]);
     }
     expect(consultasLeva2("energia-e-infraestrutura", ligada).map((c) => c.href)).toEqual(["/combustiveis/no-meu-estado"]);
-    expect(artefatosLeva2("contas-publicas", ligada)).toEqual(["cem-reais-dos-impostos"]);
+    expect(artefatosLeva2("contas-publicas", ligada)).toEqual(["cem-reais-dos-impostos", "cem-reais-por-area"]);
+    expect(artefatosLeva2("contas-publicas", so("cem-reais-por-area"))).toEqual(["cem-reais-por-area"]);
     expect(consultasLeva2("contas-publicas", ligada)).toEqual([]);
     expect(consultasLeva2("territorio-e-clima", so("quanto-meu-banco-cobra"))).toEqual([]);
     // toda consulta aprovada leva a rota que a própria aprovação abre
@@ -228,6 +250,7 @@ describe("leva 2: só se liga o que existe", () => {
     expect(paginaExiste(FICHA)).toBe(true);
     expect(existsSync(join(raiz, "public", "saneamento", "gold", "indice.json"))).toBe(true);
     expect(existsSync(join(raiz, "src", "components", "perguntas", "CemReaisAberto.tsx"))).toBe(true);
+    expect(existsSync(join(raiz, "src", "components", "perguntas", "CemReaisPorAreaAberto.tsx"))).toBe(true);
   });
 
   it("a navegação de Território, a faixa de consulta aberta e o artefato só aparecem com a aprovação", () => {
@@ -301,6 +324,69 @@ describe("leva 2: o artefato dos R$ 100 na página aberta das Contas Públicas",
     // a régua vem depois dos números da porta e antes do convite aos painéis
     expect(comArtefato.indexOf('data-leva2="cem-reais-dos-impostos"')).toBeGreaterThan(comArtefato.indexOf("porta-titulo"));
     expect(comArtefato.indexOf('data-leva2="cem-reais-dos-impostos"')).toBeLessThan(comArtefato.indexOf("caminhos-titulo"));
+  });
+});
+
+describe("leva 2: a consulta por área na página aberta das Contas Públicas", () => {
+  it("mostra cada R$ 100 pagos no último exercício encerrado, por área, com a dívida à parte, fonte e datas, e o painel com selo", async () => {
+    caminho.atual = "/perguntas/contas-publicas";
+    const { CemReaisPorAreaAberto, linhasDaConsulta } = await import("@/components/perguntas/CemReaisPorAreaAberto");
+    const { composicao, datasDoExercicio, emCem, ultimoEncerrado, ROTA_AREAS } = await import("@/lib/contas-publicas/areas");
+    const { numero } = await import("@/lib/contas-publicas/formato");
+    const ano = ultimoEncerrado()!;
+    expect(ano).toBe(2025);
+    const linhas = linhasDaConsulta(emCem(composicao(ano, "pago", "total")!)!);
+    expect(linhas.reduce((s, l) => s + l.cem, 0)).toBeCloseTo(100, 6);
+    // a dívida numa linha só, primeiro; as áreas nunca somadas a ela
+    expect(linhas[0]).toMatchObject({ id: "divida", tom: "divida" });
+    expect(linhas.filter((l) => l.tom === "area").map((l) => l.nome)).toContain("Previdência Social");
+
+    const html = renderToStaticMarkup(createElement(CemReaisPorAreaAberto));
+    expect(html).toContain('data-leva2="cem-reais-por-area"');
+    expect(html).toContain(`Cada R$ 100 pagos em ${ano}, por área de governo`);
+    for (const l of linhas) {
+      expect(html, l.nome).toContain(l.nome);
+      expect(html, l.nome).toContain(`R$ ${numero(l.cem)}`);
+    }
+    const d = datasDoExercicio(ano)!;
+    expect(html).toContain("SIOP, dados abertos");
+    expect(html).toContain(`base atualizada em ${d.atualizacao}`);
+    expect(html).toContain(`capturada em ${d.captura}`);
+    expect(html).toContain("valores nominais");
+    expect(html).toContain("Cálculo sobre os valores pagos, não estimativa");
+    expect(html).not.toMatch(/NaN|undefined|Infinity|—/);
+    // modo de consulta: sem série, sem download, sem outro exercício
+    expect(html).not.toMatch(/\.csv|funcoes\.json|role="img"|<table/);
+    expect(html).not.toMatch(/parcial|em andamento/);
+    const fechados = [...html.matchAll(/<a [^>]*href="(\/[^"#?]*)[^"]*"[^>]*>([\s\S]*?)<\/a>/g)].filter(([, href]) => !ehRotaPublica(href));
+    expect(fechados.map(([, href]) => href)).toEqual([ROTA_AREAS]);
+    for (const [, href, corpo] of fechados) expect(corpo, href).toContain("com conta");
+  });
+
+  it("a página da porta mostra a consulta só quando ela está aprovada, entre os números e os caminhos", async () => {
+    caminho.atual = "/perguntas/contas-publicas";
+    const { PaginaPorta } = await import("@/components/perguntas/PaginaPorta");
+    const { CemReaisPorAreaAberto } = await import("@/components/perguntas/CemReaisPorAreaAberto");
+    const { portas } = await import("@/lib/perguntas/portas");
+    const todas = portas();
+    const porta = todas.find((p) => p.id === "contas-publicas")!;
+    const pagina = (leva: readonly ItemLeva2[]) =>
+      renderToStaticMarkup(
+        createElement(PaginaPorta, {
+          porta,
+          outras: todas.filter((p) => p.id !== porta.id),
+          colecoes: [],
+          artefato: artefatosLeva2("contas-publicas", leva).map((id) => (id === "cem-reais-por-area" ? createElement(CemReaisPorAreaAberto, { key: id }) : null)),
+        }),
+      );
+    expect(pagina(LEVA_2).includes('data-leva2="cem-reais-por-area"')).toBe(leva2Aprovada("cem-reais-por-area"));
+    expect(pagina(desligada)).not.toContain('data-leva2="cem-reais-por-area"');
+    const ligado = pagina(so("cem-reais-por-area"));
+    expect(ligado).toContain('data-leva2="cem-reais-por-area"');
+    expect(ligado.indexOf('data-leva2="cem-reais-por-area"')).toBeGreaterThan(ligado.indexOf("porta-titulo"));
+    expect(ligado.indexOf('data-leva2="cem-reais-por-area"')).toBeLessThan(ligado.indexOf("caminhos-titulo"));
+    // a rota da página aberta registra o componente
+    expect(readFileSync(join(raiz, "src/app/perguntas/[porta]/page.tsx"), "utf-8")).toContain('"cem-reais-por-area": CemReaisPorAreaAberto');
   });
 });
 
@@ -409,5 +495,35 @@ describe("leva 2: a consulta \"Quanto custa encher o tanque no meu estado?\"", (
     expect(html).not.toMatch(/NaN|undefined|Infinity/);
     expect(html).not.toContain(".csv");
     expect(html.includes("data-aviso-consulta-aberta")).toBe(leva2Aprovada("quanto-custa-encher-o-tanque"));
+  });
+});
+
+describe("leva 2: a consulta \"Quanto subiu o custo de vida na minha cidade?\"", () => {
+  it("rota pronta para ligar, fechada enquanto a aprovação for null, com a faixa e a navegação presas à aprovação", () => {
+    expect(paginaExiste("/custo-de-vida/na-minha-cidade")).toBe(true);
+    const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
+    const pagina = ler("src/app/custo-de-vida/na-minha-cidade/page.tsx");
+    expect(pagina).toMatch(/const aberta = leva2Aprovada\("quanto-subiu-o-custo-de-vida"\)/);
+    expect(pagina).toMatch(/\{aberta && \(\s*<AvisoConsultaAberta/);
+    expect(ler("src/components/inflacao/CabecalhoCustoDeVida.tsx")).toContain('leva2Aprovada("quanto-subiu-o-custo-de-vida")');
+    // modo de consulta: o último mês vai no HTML; a página não busca a gold nem as séries no navegador, nem desenha série
+    for (const p of ["src/components/inflacao/InflacaoNaArea.tsx", "src/app/custo-de-vida/na-minha-cidade/page.tsx"]) {
+      expect(ler(p), p).not.toMatch(/fetch\(|["`]\/inflacao\/(gold|series)|DownloadsInflacao|GraficoLinhas|SerieArea|ComparacaoAreas|Destaques|ComoPesa/);
+    }
+  });
+
+  it("renderiza o último mês da área com fonte, data, os nove grupos e o painel com selo, sem série nem download", async () => {
+    caminho.atual = "/custo-de-vida/na-minha-cidade";
+    const { default: Consulta } = await import("@/app/custo-de-vida/na-minha-cidade/page");
+    const html = renderToStaticMarkup(createElement(Consulta));
+    expect(html).toContain("Quanto subiu o custo de vida na minha cidade?");
+    expect(html).toContain("IBGE, Índice Nacional de Preços ao Consumidor Amplo (IPCA), tabela 7060 do SIDRA");
+    expect(html).toMatch(/Dados capturados em \d{2}\/\d{2}\/\d{4}/);
+    expect(html).toContain("Os nove grupos de despesa");
+    expect(html).toContain("1 a 40 salários mínimos");
+    expect(html).not.toMatch(/NaN|undefined|Infinity/);
+    expect(html).not.toContain(".csv");
+    expect(html).not.toContain("data-artefato");
+    expect(html.includes("data-aviso-consulta-aberta")).toBe(leva2Aprovada("quanto-subiu-o-custo-de-vida"));
   });
 });

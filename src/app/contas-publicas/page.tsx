@@ -34,7 +34,7 @@ export default function Page(){return <main id="conteudo-contas" className="cp-w
  <div className="cp-home-section-heading"><p className="cp-eyebrow">01 / Primeiras respostas</p><h2>Três perspectivas das contas federais.</h2><p>Pagamento, resultado fiscal e compromissos de outros exercícios têm conceitos distintos.</p></div>
  <RespostasIniciais/>
  <CemReaisPagos/>
- <p className="cp-note">{CAPITULOS.length} capítulos · {INDICADORES.length} indicadores propostos. Quatro têm integração parcial. O panorama de custos agregados é complementar; custos por entrega e impacto aguardam integração.</p>
+ <p className="cp-note">{CAPITULOS.length} capítulos · {INDICADORES.length} indicadores propostos. {INDICADORES.filter(i=>i.status==='integracao-parcial').length} têm integração parcial. A despesa por área e os custos agregados são painéis complementares; custos por entrega e impacto aguardam integração.</p>
 
  <section className="cp-section" aria-labelledby="ciclo"><div className="cp-section-head"><div><p className="cp-eyebrow">O percurso da gestão</p><h2 id="ciclo">Acompanhe o caminho dos recursos</h2></div></div><div className="cp-cycle">{CICLO.map(({n,t,d,destino})=>destino
   ?<Link key={t} href={`/contas-publicas/${destino.id}`}><span className="cp-index">{n} · {destino.titulo} →</span><strong>{t}</strong><span>{d}</span></Link>

@@ -5,6 +5,7 @@ import { PublicHeader } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { PaginaPorta } from "@/components/perguntas/PaginaPorta";
 import { CemReaisAberto } from "@/components/perguntas/CemReaisAberto";
+import { CemReaisPorAreaAberto } from "@/components/perguntas/CemReaisPorAreaAberto";
 import { artefatosLeva2 } from "@/lib/perguntas/leva2";
 import type { IdLeva2 } from "@/lib/rotasPublicas";
 import { IDS_PORTAS, rotaPorta } from "@/lib/perguntas/rotas";
@@ -24,6 +25,7 @@ export const dynamicParams = false;
 /** Artefatos da leva 2 que a página da porta mostra quando aprovados (src/lib/rotasPublicas.ts, LEVA_2). */
 const ARTEFATOS: Partial<Record<IdLeva2, ComponentType>> = {
   "cem-reais-dos-impostos": CemReaisAberto,
+  "cem-reais-por-area": CemReaisPorAreaAberto,
 };
 
 export function generateStaticParams() {

@@ -58,14 +58,15 @@ export function MetodoFamilias() {
   return (
     <>
       <p>
-        O observatório não produz dados próprios: reúne painéis de outras coleções, que mantêm as bases, as
-        conferências e as páginas de método. Os números desta entrada são lidos das mesmas bases na publicação do
-        site; quando uma base não pode ser lida, o número aparece como indisponível, nunca como zero.
+        O observatório reúne painéis de outras coleções, que mantêm as bases, as conferências e as páginas de método,
+        e mantém um painel próprio, Inflação por cidade, com coleta mensal do IPCA no SIDRA do IBGE e conferências que
+        retêm a publicação. Os números desta entrada são lidos das mesmas bases na publicação do site; quando uma base
+        não pode ser lida, o número aparece como indisponível, nunca como zero.
       </p>
       <p>
         Crédito das famílias: séries do Banco Central (SGS), só dívidas no sistema financeiro. Déficit
-        habitacional: estimativa da Fundação João Pinheiro. Comida: IPCA do IBGE. Gás: levantamento de preços da
-        ANP.
+        habitacional: estimativa da Fundação João Pinheiro. Inflação por cidade e comida: IPCA do IBGE. Gás:
+        levantamento de preços da ANP.
       </p>
       <ul className="flex flex-wrap gap-x-6 gap-y-2">
         <li><Link href="/glossario" className="inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4">Glossário do crédito</Link></li>

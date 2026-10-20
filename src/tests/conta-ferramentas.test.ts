@@ -400,7 +400,7 @@ describe("barra de ferramentas da conta", () => {
     expect(origemDoCabecalho("energia", null)).toMatchObject({ id: "energia", nome: "Observatório Brasileiro do Setor Elétrico", dominios: ["energia"] });
     expect(origemDoCabecalho("contas", null)?.dominios).toEqual(["contas-federais"]);
     expect(origemDoCabecalho(null, "territorio-e-clima", ["territorio"])?.dominios).toEqual(["territorio"]);
-    expect(origemDoCabecalho(null, "familias")?.dominios).toEqual(["credito", "agro", "gas", "eficiencia"]);
+    expect(origemDoCabecalho(null, "familias")?.dominios).toEqual(["inflacao", "credito", "agro", "gas", "eficiencia"]);
     expect(origemDoCabecalho(null, null)).toBeNull();
   });
 });

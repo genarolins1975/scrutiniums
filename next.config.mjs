@@ -12,6 +12,7 @@ const GOLDS_DAS_PORTAS = [
   "./public/eficiencia/saneamento/snapshot.json",
   "./public/energia/gold/agua_detalhe.json",
   "./public/energia/gold/conta.json",
+  "./public/inflacao/gold/ipca.json",
 ];
 
 /**

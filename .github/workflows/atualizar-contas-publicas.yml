@@ -2,7 +2,9 @@ name: Atualizar dados das Contas Públicas Federais
 
 # Contas Públicas Federais: recoleta semanal da execução orçamentária do SIOP (consulta SPARQL
 # pública, sem credencial) para os exercícios integrados, com o RTN do snapshot mantido como está
-# (scripts/contas-publicas/importar.py --so-siop; config/atualizacao/contas-publicas.json). O SIOP
+# (scripts/contas-publicas/importar.py --so-siop; config/atualizacao/contas-publicas.json), e a mesma execução
+# por função e subfunção do ano corrente e do anterior (importar-funcoes.py --recentes; os exercícios desde
+# 2000 ficam no snapshot e se refazem com --todos). O SIOP
 # atualiza a base de madrugada, em geral a cada poucos dias; uma execução por semana mantém a
 # execução de 2026 em dia. Publicação só com os testes do painel verdes; retenção abre issue e deixa
 # a execução vermelha. Base sem mudança não gera commit (a data de captura não conta).
@@ -42,7 +44,7 @@ env:
 jobs:
   pipeline:
     runs-on: ubuntu-latest
-    # quatro consultas SPARQL e os testes do painel; cada comando tem teto próprio na configuração
+    # oito consultas SPARQL e os testes do painel; cada comando tem teto próprio na configuração
     timeout-minutes: 45
     outputs:
       relatado: ${{ steps.issue.outcome == 'success' }}

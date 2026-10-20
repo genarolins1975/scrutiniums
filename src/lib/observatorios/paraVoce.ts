@@ -22,9 +22,10 @@ import {
   numeroAtrasoFamilias,
   numeroBotijao,
   numeroComidaEmCasa,
+  numeroCustoDeVida,
   numeroEstadosDivida,
   numeroIdebCapitais,
-  numeroPrevidencia,
+  numeroDividaCem,
   numeroSaudeCapitais,
 } from "@/lib/perguntas/portas";
 import { lerPublico, mesAno, num, numero } from "@/lib/perguntas/leitura";
@@ -77,6 +78,7 @@ const IDS = [
   "previdencia",
   "metas",
   "comida",
+  "custo-de-vida",
   "atlas-agro",
   "credito-atraso",
   "banco-cobra",
@@ -95,7 +97,9 @@ export const PARA_VOCE = {
   "/eficiencia-estatal": ["educacao-capital", "saude-capital", "municipio"],
   "/contas-publicas": ["estado-contas", "previdencia", "metas"],
   "/agronegocio": ["comida", "atlas-agro"],
-  "/observatorios/familias": ["luz", "botijao", "agua"],
+  // o custo de vida (painel novo das Famílias, 20/10/2026) abre o bloco; a água saiu para manter três perguntas e continua a
+  // um clique em "Para o seu caso" da camada aberta das Famílias e no elo "Gás, luz e água" do orçamento da família
+  "/observatorios/familias": ["custo-de-vida", "luz", "botijao"],
   "/observatorios/servicos-publicos": ["capital", "educacao-capital", "saude-capital"],
   "/territorio": ["fogo", "desastres"],
   "/observatorios/contas-publicas": ["estado-contas", "previdencia", "metas"],
@@ -328,9 +332,9 @@ function pergunta(id: IdPergunta, idioma: Idioma): PerguntaParaVoce {
       return {
         id,
         pergunta: "Para onde vai o dinheiro do governo federal?",
-        resposta: "Receitas, despesas e resultado do governo central desde 1997, com o peso de cada grande despesa.",
-        href: "/contas-publicas/panorama",
-        numero: daPorta(numeroPrevidencia()),
+        resposta: "Cada R$ 100 pagos por área de governo, como previdência, saúde e educação, com a dívida pública à parte, desde 2000.",
+        href: "/contas-publicas/por-area",
+        numero: daPorta(numeroDividaCem()),
       };
     case "metas":
       return {
@@ -348,6 +352,14 @@ function pergunta(id: IdPergunta, idioma: Idioma): PerguntaParaVoce {
         resposta: "A inflação dos alimentos no IPCA, os itens da cesta e a segurança alimentar dos domicílios.",
         href: "/agronegocio/prato",
         numero: daPorta(numeroComidaEmCasa()),
+      };
+    case "custo-de-vida":
+      return {
+        id,
+        pergunta: "Quanto subiu o custo de vida na minha cidade?",
+        resposta: "A inflação do IPCA na sua cidade ou região metropolitana, no índice geral e nos nove grupos de despesa, comparada com a do Brasil.",
+        href: "/custo-de-vida",
+        numero: daPorta(numeroCustoDeVida()),
       };
     case "atlas-agro":
       return {
