@@ -133,6 +133,7 @@ describe("inflação por cidade: o painel", () => {
     const soma = gold.ultimo["1"].soma_contribuicoes_pp;
     expect(texto).toContain(`${pct(soma).replace("%", "")} p.p.`);
     expect(texto).toContain(`publicada pelo IBGE: ${pct(gold.ultimo["1"].geral.doze)}`);
+    expect(texto).not.toMatch(/p\.p\.\s*\./);
   });
 
   it("variação em %, diferença e contribuição em pontos percentuais, nunca em %", async () => {

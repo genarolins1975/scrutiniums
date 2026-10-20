@@ -110,6 +110,8 @@ export function ComparacaoAreas({ areas, grupos, ultimoMes }: { areas: AreaNaTel
         selecionado={escolha.valor === BRASIL ? null : escolha.valor}
         onSelecionar={(v) => escolha.selecionar(v ?? BRASIL)}
         rotulosSaoNomes
+        // as 16 áreas cabem inteiras: nenhuma fica escondida atrás de "Mostrar todas"
+        alturaMaxima={900}
       />
     </div>
   );

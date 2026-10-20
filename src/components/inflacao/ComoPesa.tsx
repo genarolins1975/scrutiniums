@@ -80,10 +80,11 @@ export function ComoPesa({ grupos, areas, nomes, referencia: ref }: { grupos: Gr
           })}
         </ul>
         <p className="text-sm leading-relaxed text-carvao [font-variant-numeric:tabular-nums]" data-soma>
-          Somando os nove grupos, a compra de R$ 100 passou a custar {reais(100 + a.soma)}: <span className="font-medium">{pp(a.soma)}</span>. Inflação em 12
-          meses {onde}, publicada pelo IBGE:{" "}
-          <span className="font-medium">{pct(a.doze)}</span>. A diferença, de {pp(Math.abs(a.residuo), 2)}, vem do arredondamento dos números publicados (variações
-          com 2 casas e pesos com 4).
+          Somando os nove grupos, a compra de R$ 100 passou a custar {reais(100 + a.soma)}, ou seja, <span className="font-medium">{pp(a.soma)}</span> de
+          inflação. Inflação em 12 meses {onde}, publicada pelo IBGE: <span className="font-medium">{pct(a.doze)}</span>.{" "}
+          {Math.abs(a.residuo) < 0.005
+            ? "As duas contas coincidem com duas casas decimais."
+            : <>A diferença, de {pp(Math.abs(a.residuo), 2)}, vem do arredondamento dos números publicados (variações com 2 casas e pesos com 4).</>}
         </p>
         <p className="max-w-prose2 text-xs leading-relaxed text-mineral">
           Exemplo: {reais(ex.pesoInicio)} iam para {exemplo.nome} em {mesAno(ref.inicioJanela)}; com variação de {pctSinal(ex.doze)} em 12 meses, a mesma
