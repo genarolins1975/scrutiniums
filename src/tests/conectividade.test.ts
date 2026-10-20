@@ -270,6 +270,17 @@ describe("Conectividade: achados do Codex no #309", () => {
     expect(html).not.toContain(`${milhoes(m.acessos)} de linhas, ${pct(m.g5_pct)}`);
   });
 
+  it("OUTROS não vira a maior prestadora: a soma dos provedores regionais aparece como soma", () => {
+    const a = arquivoUf("AC")!;
+    const m = a.municipios.find((x) => x.fixa && x.fixa.maior_grupo === "OUTROS")!;
+    const html = renderToStaticMarkup(createElement(PainelPage, { searchParams: { ibge: m.id } }));
+    expect(html).toContain(`Provedores regionais e locais, somados, têm ${pct(m.fixa!.maior_grupo_pct)} dos acessos`);
+    expect(html).not.toContain("A maior, Provedores regionais e locais");
+    const g = goldConectividade();
+    expect(g.brasil.fixa.maior_grupo).toBe("OUTROS");
+    expect(html).not.toContain("a maior delas, Provedores regionais e locais");
+  });
+
   it("o aperitivo não revela a maior prestadora nem a parte dela", () => {
     const a = arquivoUf("SP")!;
     const m = a.municipios.find((x) => x.fixa && x.fixa.maior_grupo)!;

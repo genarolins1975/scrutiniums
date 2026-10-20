@@ -30,6 +30,17 @@ export function PainelConectividade({ g, consulta, ferramentas }: { g: GoldConec
 
 /* --------------------------------------------------------------------------------------------- abertura */
 
+/**
+ * A maior prestadora do lugar. "OUTROS" é a categoria em que a Anatel soma os provedores regionais e locais que não
+ * nomeia (é o maior_grupo de 4.806 dos 5.571 municípios e do Brasil): não é uma empresa, e a frase diz isso em vez de
+ * apresentar a soma como líder única.
+ */
+function fraseMaiorGrupo(grupo: string | null, parte: number | null): string {
+  if (!grupo) return "Sem dado.";
+  if (grupo === "OUTROS") return `Provedores regionais e locais, somados, têm ${pct(parte)} dos acessos; nenhum grande grupo lidera sozinho.`;
+  return `A maior, ${nomeGrupo(grupo)}, tem ${pct(parte)} dos acessos.`;
+}
+
 function Abertura({ g }: { g: GoldConectividade }) {
   const f = g.brasil.fixa;
   const m = g.brasil.movel;
@@ -211,7 +222,7 @@ function Municipio({ g, m, uf, arquivo }: { g: GoldConectividade; m: MunicipioGo
           <div>
             <dt>Empresas que vendem banda larga fixa</dt>
             <dd className="cn-valor">{f ? num(f.prestadoras) : SEM_DADO}</dd>
-            <dd className="cn-detalhe">{f ? `A maior, ${nomeGrupo(f.maior_grupo)}, tem ${pct(f.maior_grupo_pct)} dos acessos` : "Sem dado."}</dd>
+            <dd className="cn-detalhe">{f ? fraseMaiorGrupo(f.maior_grupo, f.maior_grupo_pct) : "Sem dado."}</dd>
           </div>
           <div>
             <dt>Moradores dentro da cobertura 4G</dt>
@@ -349,7 +360,7 @@ function SecaoFibra({ g }: { g: GoldConectividade }) {
       </div>
       <p className="cn-fonte">
         Parte dos {milhoes(f.acessos)} de acessos de banda larga fixa, pelo meio de acesso e pela velocidade que cada prestadora declara à Anatel. {pct(f.pessoa_fisica_pct)} dos
-        acessos são de pessoas físicas; {num(f.prestadoras)} prestadoras atendem o país, e a maior delas, {nomeGrupo(f.maior_grupo)}, tem {pct(f.maior_grupo_pct)}.
+        acessos são de pessoas físicas; {num(f.prestadoras)} prestadoras atendem o país. {fraseMaiorGrupo(f.maior_grupo, f.maior_grupo_pct)}
       </p>
       <h3>Acessos por fibra em cada estado</h3>
       <Barras itens={ufs.map((x) => ({ rotulo: x.u.nome, v: x.v }))} max={100} referencia={f.fibra_pct} />
