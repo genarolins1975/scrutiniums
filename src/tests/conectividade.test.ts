@@ -10,6 +10,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import AperitivoPage from "@/app/aperitivo/conectividade/page";
 import PainelPage from "@/app/conectividade/page";
+import { GraficoLinhas } from "@/components/conectividade/Graficos";
 import { csvBrasilMensal, csvPorEstado, csvPorMunicipio } from "@/lib/conectividade/csv";
 import { comConta } from "@/lib/conectividade/convite";
 import { arquivoUf, cobertos, consultarMunicipio, faixaNaDistribuicao, goldConectividade, UF_DO_PREFIXO } from "@/lib/conectividade/dados";
@@ -268,6 +269,16 @@ describe("Conectividade: achados do Codex no #309", () => {
     const retida = { ...mesmo, fixa: { capturado_em: "2026-07-12T12:00:00Z" } };
     expect(dataCaptura(retida, ["fixa", "cobertura"])).toBe("12/07/2026 (banda larga fixa) e 20/10/2026 (cobertura)");
     expect(dataCaptura(retida, ["fixa", "movel", "cobertura"])).toBe("12/07/2026 (banda larga fixa), 20/10/2026 (telefonia móvel) e 20/10/2026 (cobertura)");
+  });
+
+  it("valor isolado entre ausências ganha uma marca no gráfico", () => {
+    const pontos = [{ x: 0, y: 40 }, { x: 1, y: null }, { x: 2, y: null }, { x: 3, y: 50 }, { x: 4, y: 55 }];
+    const svg = renderToStaticMarkup(createElement(GraficoLinhas, { series: [{ nome: "5G", classe: "cn-linha", pontos }], marcasX: [{ x: 0, rotulo: "a" }, { x: 4, rotulo: "b" }], unidade: "%", maximo: 100, descricao: "t" }));
+    expect(svg.match(/<circle /g)?.length).toBe(2); // uma marca por versão (larga e estreita)
+    expect(svg).toContain('class="cn-ponto-cn-linha"');
+    // na gold real, novembro de 2021 é seguido de vazios: o gráfico do Brasil carrega a marca
+    const html = renderToStaticMarkup(createElement(PainelPage, { searchParams: {} }));
+    expect(html).toMatch(/class="cn-ponto-cn-linha(-suave|-ref)?"/);
   });
 
   it("a grade de trimestres da cobertura é completa e o trimestre não publicado fica vazio", () => {

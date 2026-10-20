@@ -112,6 +112,14 @@ function Linhas({
       {series.map((s) => (
         <path key={s.nome} d={caminho(s.pontos, fx, fy)} className={s.classe} />
       ))}
+      {/* valor isolado entre ausências (o primeiro trimestre da cobertura, 2021-11, seguido de dois vazios): o caminho só
+          tem um "M" e não desenha nada, então o ponto ganha uma marca própria */}
+      {series.flatMap((s) =>
+        s.pontos
+          .map((p, i) => ({ p, i }))
+          .filter(({ p, i }) => p.y !== null && (s.pontos[i - 1]?.y ?? null) === null && (s.pontos[i + 1]?.y ?? null) === null)
+          .map(({ p }) => <circle key={`${s.nome}-${p.x}`} cx={fx(p.x)} cy={fy(p.y as number)} r={3.5} className={`cn-ponto-${s.classe}`} />),
+      )}
       {fins.map((f) => (
         <text key={f.s.nome} x={f.x + 8} y={f.y + 4} className="cn-rotulo-forte">{f.s.rotuloFim ?? f.s.nome}</text>
       ))}

@@ -146,6 +146,9 @@
 .cn-svg .cn-linha { fill: none; stroke: var(--cn-acento); stroke-width: 2.25; stroke-linejoin: round; }
 .cn-svg .cn-linha-ref { fill: none; stroke: var(--cn-ref); stroke-width: 1.75; stroke-linejoin: round; }
 .cn-svg .cn-linha-suave { fill: none; stroke: var(--cn-acento-suave); stroke-width: 2; stroke-linejoin: round; }
+.cn-svg .cn-ponto-cn-linha { fill: var(--cn-acento); }
+.cn-svg .cn-ponto-cn-linha-ref { fill: var(--cn-ref); }
+.cn-svg .cn-ponto-cn-linha-suave { fill: var(--cn-acento-suave); }
 .cn-svg .cn-coluna { fill: var(--cn-acento); }
 .cn-svg .cn-ponto { fill: var(--cn-acento); }
 .cn-svg .cn-ponto-ref { fill: var(--cn-ref); }

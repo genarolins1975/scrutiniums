@@ -108,14 +108,16 @@ def _movel_de(linha: list, grupos: list[str]) -> dict:
 
 def _grade_trimestres(publicados: list[str]) -> list[str]:
     """Todos os trimestres entre o primeiro e o último publicado: o primeiro como está (a Anatel começou em
-    2021-11) e, depois dele, cada fim de trimestre (03, 06, 09, 12). Trimestre que a Anatel não publicou entra na
-    grade e fica vazio nas séries, para o gráfico partir a linha em vez de ligar vizinhos distantes."""
+    2021-11, que vale pelo seu trimestre) e, depois dele, cada fim de trimestre seguinte (03, 06, 09, 12). Trimestre
+    que a Anatel não publicou entra na grade e fica vazio nas séries, para o gráfico partir a linha em vez de ligar
+    vizinhos distantes."""
     if not publicados:
         return []
     grade = [publicados[0]]
     ano, mes = int(publicados[0][:4]), int(publicados[0][5:7])
+    mes = ((mes - 1) // 3 + 1) * 3                      # fim do trimestre do primeiro mês publicado
     while True:
-        mes = (mes // 3 + 1) * 3
+        mes += 3
         if mes > 12:
             ano, mes = ano + 1, 3
         t = f"{ano:04d}-{mes:02d}"
