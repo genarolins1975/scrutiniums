@@ -4,7 +4,7 @@ import { useId, useState } from "react";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { useSelecaoGas } from "@/components/gas/useSelecaoGas";
-import type { PacoteEstados } from "@/lib/eficiencia/seguranca/dados";
+import type { PacoteEstados, PacotePoliciaSaude } from "@/lib/eficiencia/seguranca/dados";
 import { contagemComUnidade, inteiro, numero, porDenominador, ROTULO_BASE, ROTULO_SITUACAO, sinal, taxaComUnidade, taxaCurta } from "@/lib/eficiencia/seguranca/formato";
 import { BRASIL, type Indicador, type SerieBrasil, type SerieUF } from "@/lib/eficiencia/seguranca/tipos";
 
@@ -253,9 +253,9 @@ export function PorEstado({ pacote: p, inicial }: { pacote: PacoteEstados; inici
  * Polícia e saúde lado a lado: vítimas de homicídio doloso registradas pela polícia (UF do fato) e óbitos por agressão
  * no SIM (UF de residência), na mesma escala de taxa por 100 mil, e a razão entre as duas contagens calculada pela gold.
  */
-export function PoliciaSaude({ pacote: p }: { pacote: PacoteEstados }) {
-  const h = p.series.homicidio, s = p.series.agressoes;
-  const comuns = p.anos.filter((_, k) => (h[BRASIL] as SerieBrasil).n[k] !== null && (s[BRASIL] as SerieBrasil).n[k] !== null);
+export function PoliciaSaude({ pacote: p }: { pacote: PacotePoliciaSaude }) {
+  const h = p.policia, s = p.saude;
+  const comuns = p.anos.filter((_, k) => h[BRASIL].n[k] !== null && s[BRASIL].n[k] !== null);
   // padrão: o último ano com o SIM final (o preliminar continua na lista, marcado)
   const padrao = comuns.filter((a) => p.simSituacao[String(a)] === "final").at(-1) ?? comuns.at(-1);
   const anoSel = useSelecaoGas("ano_comparacao", comuns.map(String), String(padrao));
@@ -263,7 +263,7 @@ export function PoliciaSaude({ pacote: p }: { pacote: PacoteEstados }) {
   const k = p.anos.indexOf(ano);
   const id = useId();
   const linhas = p.ufs
-    .map((u) => ({ id: u.sigla, nome: u.nome, policia: (h[u.sigla] as SerieUF).taxa?.[k] ?? null, saude: (s[u.sigla] as SerieUF).taxa?.[k] ?? null, razao: p.policiaSaude[u.sigla][k] }))
+    .map((u) => ({ id: u.sigla, nome: u.nome, policia: h[u.sigla].taxa[k] ?? null, saude: s[u.sigla].taxa[k] ?? null, razao: p.policiaSaude[u.sigla][k] }))
     .sort((a, b) => (b.saude ?? -1) - (a.saude ?? -1) || a.nome.localeCompare(b.nome, "pt-BR"));
   const brR = p.policiaSaude[BRASIL][k];
   return (

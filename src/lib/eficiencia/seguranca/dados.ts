@@ -125,16 +125,23 @@ export type PacoteEstados = {
 
 export const NA_COMPARACAO = (i: Indicador) => i.id !== "indeterminadas_pct" && i.id !== "despesa_participacao";
 
-export function pacoteEstados(g: GoldSeguranca): PacoteEstados {
-  const indicadores = g.indicadores.filter(NA_COMPARACAO);
+/** Só o que a comparação desenha: a razão por UF fica na gold e no CSV, fora do payload do navegador. */
+function semRazao(serie: SerieUF | SerieBrasil): SerieUF | SerieBrasil {
+  if (!("razao" in serie)) return serie;
+  const { razao: _razao, ...resto } = serie as SerieUF; // eslint-disable-line @typescript-eslint/no-unused-vars
+  return resto;
+}
+
+export function pacoteEstados(g: GoldSeguranca, filtro: (i: Indicador) => boolean = () => true): PacoteEstados {
+  const indicadores = g.indicadores.filter((i) => NA_COMPARACAO(i) && filtro(i));
   return {
     anos: g.anos,
     ufs: g.ufs.map(({ sigla, nome, regiao }) => ({ sigla, nome, regiao })),
     indicadores,
-    series: Object.fromEntries(indicadores.map((i) => [i.id, g.series[i.id] as Record<string, SerieUF | SerieBrasil>])),
+    series: Object.fromEntries(indicadores.map((i) => [i.id, Object.fromEntries(Object.entries(g.series[i.id] as Record<string, SerieUF | SerieBrasil>).map(([uf, x]) => [uf, semRazao(x)]))])),
     populacao: g.populacao,
     simSituacao: g.fontes.sim.situacao,
-    policiaSaude: g.policia_saude,
+    policiaSaude: {},
     rotuloFonte: {
       sinesp: `Sinesp VDE (MJSP), captura de ${dataBr(g.fontes.sinesp.capturado_em)}`,
       sim: `SIM (Ministério da Saúde), dados finais até ${g.fontes.sim.final_ate}`,
@@ -155,4 +162,22 @@ export function amplitude(g: GoldSeguranca, id: string, k: number): { max: { uf:
 
 export function nomeUF(g: GoldSeguranca, sigla: string): string {
   return g.ufs.find((u) => u.sigla === sigla)?.nome ?? sigla;
+}
+
+/** Payload da comparação polícia e saúde: só as duas taxas por UF, a razão da gold e a situação do SIM. */
+export type PacotePoliciaSaude = Pick<PacoteEstados, "anos" | "ufs" | "simSituacao" | "policiaSaude"> & {
+  policia: Record<string, { taxa: (number | null)[]; n: (number | null)[] }>;
+  saude: Record<string, { taxa: (number | null)[]; n: (number | null)[] }>;
+};
+
+export function pacotePoliciaSaude(g: GoldSeguranca): PacotePoliciaSaude {
+  const duas = (id: string) => Object.fromEntries(Object.entries(g.series[id] as Record<string, SerieUF | SerieBrasil>).map(([uf, x]) => [uf, { taxa: x.taxa ?? [], n: x.n }]));
+  return {
+    anos: g.anos,
+    ufs: g.ufs.map(({ sigla, nome, regiao }) => ({ sigla, nome, regiao })),
+    simSituacao: g.fontes.sim.situacao,
+    policiaSaude: g.policia_saude,
+    policia: duas("homicidio"),
+    saude: duas("agressoes"),
+  };
 }

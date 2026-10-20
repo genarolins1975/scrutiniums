@@ -6,7 +6,7 @@ import {DoisRegistros, type DadosDoisRegistros} from '@/components/eficiencia/se
 import {PorEstado, PoliciaSaude} from '@/components/eficiencia/seguranca/PorEstado';
 import {SeloComConta} from '@/components/acesso/SeloComConta';
 import {prefetchDoLink} from '@/lib/rotasPublicas';
-import {amplitude, goldSeguranca, GRUPOS, HREF_CSV, HREF_GOLD, indicador, linhasNacionais, nomeUF, pacoteEstados, ROTA, serieBR, seriePct, serieUF, ultimoIndice, ultimoIndiceSimFinal} from '@/lib/eficiencia/seguranca/dados';
+import {amplitude, goldSeguranca, GRUPOS, HREF_CSV, HREF_GOLD, indicador, linhasNacionais, nomeUF, pacoteEstados, pacotePoliciaSaude, ROTA, serieBR, seriePct, serieUF, ultimoIndice, ultimoIndiceSimFinal} from '@/lib/eficiencia/seguranca/dados';
 import {contagemComUnidade, dataBr, inteiro, listaNatural, numero, percentualVariacao, reais, ROTULO_SITUACAO} from '@/lib/eficiencia/seguranca/formato';
 import type {GoldSeguranca, GrupoId} from '@/lib/eficiencia/seguranca/tipos';
 
@@ -128,7 +128,7 @@ function Panorama({g}: {g: GoldSeguranca}) {
 }
 
 function Estados({g}: {g: GoldSeguranca}) {
-  const p = pacoteEstados(g);
+  const p = pacoteEstados(g, (i) => i.grupo !== 'recursos');
   const ausH = g.ausencias.filter((a) => a.indicador === 'homicidio');
   const anosAusentesH = [...new Set(ausH.map((a) => a.ano))].sort();
   const ufsAusentesH = [...new Set(ausH.map((a) => a.uf))].sort();
@@ -140,7 +140,7 @@ function Estados({g}: {g: GoldSeguranca}) {
     <section id="policia-e-saude" className="mt-14 border-t border-linha pt-8">
       <h2 className="font-serif text-2xl sm:text-3xl">Polícia e saúde contam de formas diferentes</h2>
       <p className="mt-3 max-w-3xl leading-relaxed">Vítimas de homicídio doloso registradas pela polícia (UF do fato) e óbitos por agressão no SIM (UF de residência), na mesma escala. Onde a saúde classifica muitas mortes como de intenção indeterminada, o SIM capta menos; onde a polícia deixa de classificar, o registro policial capta menos.</p>
-      <div className="mt-6"><PoliciaSaude pacote={p}/></div>
+      <div className="mt-6"><PoliciaSaude pacote={pacotePoliciaSaude(g)}/></div>
     </section>
     <section className="mt-12 border-l-4 border-obee pl-5">
       <h2 className="font-serif text-2xl">Antes de comparar</h2>
@@ -156,8 +156,7 @@ function Estados({g}: {g: GoldSeguranca}) {
 }
 
 function Recursos({g}: {g: GoldSeguranca}) {
-  const p = pacoteEstados(g);
-  const rec = {...p, indicadores: p.indicadores.filter((i) => i.grupo === 'recursos')};
+  const rec = pacoteEstados(g, (i) => i.grupo === 'recursos');
   const k = ultimoIndice(g, 'despesa_habitante'), br = serieBR(g, 'despesa_habitante');
   const part = seriePct(g, 'despesa_participacao', 'BR');
   return <section className="mt-8">
