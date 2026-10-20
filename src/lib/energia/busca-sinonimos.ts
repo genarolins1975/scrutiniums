@@ -70,7 +70,7 @@ function montarSinonimosBusca(tx: TxIdioma): readonly GrupoDeSinonimos[] {
     // geração
     { alvos: [`${S}/geracao`], termos: [tx("fontes de energia", "energy sources"), tx("matriz elétrica", "electricity mix"), tx("matriz energética", "energy mix"), tx("energia solar", "solar energy"), tx("energia eólica", "wind energy"), tx("energia hidrelétrica", "hydropower"), tx("usinas", "power plants")] },
     { alvos: [`${S}/geracao/termica#p022`], termos: [tx("usina térmica", "thermal plant"), tx("térmicas ligadas", "thermal plants on"), tx("por que ligaram as térmicas", "why thermal plants were turned on")] },
-    { alvos: [`${S}/geracao/curtailment`, `${S}/geracao/restricoes#p023`, `${S}/aprenda/constrained-off`], termos: [tx("curtailment", "curtailment"), tx("geração cortada", "curtailed generation"), tx("corte de energia solar", "solar curtailment"), tx("corte de energia eólica", "wind curtailment")] },
+    { alvos: [`${S}/geracao/curtailment`, `${S}/geracao/restricoes#p023`, `${S}/aprenda/constrained-off`], termos: [tx("geração cortada", "curtailed generation"), tx("corte de energia solar", "solar curtailment"), tx("corte de energia eólica", "wind curtailment")] },
     // leilões
     {
       alvos: [`${S}/leiloes`, `${S}/leiloes#preco`],

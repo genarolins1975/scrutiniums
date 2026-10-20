@@ -10,7 +10,7 @@ import { inteiro, numero } from "@/lib/saneamento/formato";
 export function SubnavPreco({ atual }: { atual: string }) {
   const cap = capituloPorSlug("preco-regulado")!;
   return (
-    <nav aria-label="Subpainéis do preço regulado" className="mb-10 border-y border-linha">
+    <nav aria-label="Subpainéis da tarifa" className="mb-10 border-y border-linha">
       <ol className="flex flex-wrap gap-x-1">
         <li>
           <Link

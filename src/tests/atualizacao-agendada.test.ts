@@ -74,6 +74,8 @@ const MOTOR: [string, string][] = [
   ["atualizar-seguranca.yml", "seguranca"],
   // painel Previdência e INSS (Contas Públicas), 20/10/2026: BEPS, benefícios por município e RTN no motor por grupo
   ["atualizar-previdencia.yml", "previdencia"],
+  // capítulo 7.1 do Saneamento (dívida e alavancagem dos prestadores), 20/10/2026: DFP e ITR da CVM, trimestral
+  ["atualizar-saneamento-divida.yml", "saneamento-divida"],
   ["atualizar-conectividade.yml", "conectividade"],
 ];
 

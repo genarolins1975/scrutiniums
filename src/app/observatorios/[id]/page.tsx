@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Footer } from "@/components/layout/Footer";
+import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
 import { EntradaObservatorio } from "@/components/observatorios/EntradaObservatorio";
 import { MetodoFamilias, OrcamentoFamilia } from "@/components/observatorios/OrcamentoFamilia";
 import { MetodoServicos, RecursoResultado } from "@/components/observatorios/RecursoResultado";
@@ -107,6 +108,8 @@ export default function EntradaObservatorioPage({ params }: { params: { id: stri
         metodo={c.metodo}
         frescor={<FaixaFrescor dominios={FRESCOR_DOS_OBSERVATORIOS[id]} conteiner="mx-auto max-w-page px-6" />}
         frescorMetodo={<FaixaFrescor dominios={FRESCOR_DOS_OBSERVATORIOS[id]} variante="metodo" />}
+        // parceria técnica com o FGV CERI: só na entrada do observatório de infraestrutura
+        parceria={id === "energia-e-infraestrutura" ? <ParceriaTecnica variante="compacto" /> : null}
       />
       <Footer />
     </>

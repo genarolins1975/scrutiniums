@@ -6,7 +6,8 @@ import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { baixarCsv } from "@/lib/saneamento/csv";
 import { normalizar } from "@/lib/saneamento/municipios";
-import { MEDIDAS_PRESTADOR, formatarMedidaPrestador } from "@/lib/saneamento/prestadores";
+import { MEDIDAS_PRESTADOR, formatarMedidaPrestador, notaMedidaPrestador } from "@/lib/saneamento/prestadores";
+import { MARCA_AUTODECLARADO } from "@/lib/saneamento/autodeclarado";
 import { NATUREZA_CURTA } from "@/lib/saneamento/rotulos";
 import type { Prestador } from "@/lib/saneamento/tipos";
 
@@ -73,7 +74,7 @@ export function ComparadorPrestadores({ sugestoes }: { sugestoes: { id: string; 
     baixarCsv(
       "saneamento-comparacao-prestadores-2024.csv",
       ["medida", "como_calculada", ...escolhidos.map((p) => p.sigla ?? p.nome ?? p.id)],
-      MEDIDAS_PRESTADOR.map((m) => [m.rotulo, m.nota, ...escolhidos.map((p) => m.valor(p))]),
+      MEDIDAS_PRESTADOR.map((m) => [m.rotulo, notaMedidaPrestador(m), ...escolhidos.map((p) => m.valor(p))]),
     );
 
   if (erro) {
@@ -182,6 +183,11 @@ export function ComparadorPrestadores({ sugestoes }: { sugestoes: { id: string; 
                     <th scope="row" className="py-2 pr-4 text-left font-normal text-carvao">
                       {m.rotulo}
                       <span className="block text-xs text-carvao-muted">{m.nota}</span>
+                      {m.financeira && (
+                        <span data-autodeclarado="" className="block text-xs text-carvao-muted">
+                          {MARCA_AUTODECLARADO}
+                        </span>
+                      )}
                     </th>
                     {escolhidos.map((p) => {
                       const v = m.valor(p);

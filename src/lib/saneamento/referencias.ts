@@ -35,6 +35,18 @@ function referenciaDe(med: Medida, a: Agregado, membros: readonly Municipio[]): 
       return censoPct(a, () => (mor?.esgoto.total != null && mor.esgoto.rede != null ? mor.esgoto.total - mor.esgoto.rede : null));
     case "c22-esgoto-sem-rede-nem-septica":
       return censoPct(a, () => mor?.esgoto.sem_rede_nem_septica);
+    case "sinisa-agua-atendida":
+      return {
+        pct: a.sinisa.agua.indicadores.IAG0001 ?? null,
+        contagem: a.sinisa.agua.pop_atendida,
+        origem: "Consolidação oficial do SINISA (IAG0001 e população atendida do módulo)",
+      };
+    case "sinisa-esgoto-atendida":
+      return {
+        pct: a.sinisa.esgoto.indicadores.IES0001 ?? null,
+        contagem: a.sinisa.esgoto.pop_atendida,
+        origem: "Consolidação oficial do SINISA (IES0001 e população atendida do módulo)",
+      };
     case "sinisa-agua-nao-atendida": {
       const v = a.sinisa.agua.indicadores.IAG0001;
       const dfe = a.cobertura_sinisa.agua_dfe0001;

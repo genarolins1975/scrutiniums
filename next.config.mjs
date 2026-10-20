@@ -53,6 +53,8 @@ const nextConfig = {
         "./public/saneamento/gold/meta.json",
         "./public/saneamento/gold/prestadores.json",
         "./public/saneamento/gold/uf/*.json",
+        // contagens e datas do capítulo 7.1 (dívida dos prestadores) para o convite do painel completo
+        "./public/saneamento/divida/resumo.json",
       ],
       // painel Previdência e INSS e a sua versão aperitivo (servida em /contas-publicas/previdencia a quem não tem sessão):
       // dinâmicos (município na URL), leem a cada instância a gold e o arquivo da UF do município pedido
@@ -108,6 +110,9 @@ const nextConfig = {
     return [
       // logos oficiais: SVG aberto direto no navegador não roda script nem carrega nada de fora
       {source: "/energia/logos/:path*", headers: [{key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox"}, {key: "X-Content-Type-Options", value: "nosniff"}]},
+      {source: "/saneamento/logos/:path*", headers: [{key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox"}, {key: "X-Content-Type-Options", value: "nosniff"}]},
+      // marcas de parceiros (pasta aberta): mesma política dos logos
+      {source: "/home/parceiros/:path*", headers: [{key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox"}, {key: "X-Content-Type-Options", value: "nosniff"}]},
       {source: "/energia/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/energia/series/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/eficiencia/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
@@ -116,6 +121,7 @@ const nextConfig = {
       {source: "/saneamento/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/previdencia/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/conectividade/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
+      {source: "/saneamento/divida/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/gas/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       // API de leitura (/dados/api): exige sessão (src/lib/rotasPublicas.ts); cache privado do navegador
       {source: "/obs/data/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},

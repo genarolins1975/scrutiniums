@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { DetalhesFechaveis } from "@/components/layout/DetalhesFechaveis";
+import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { EIXOS, ROTA, ROTULO_SITUACAO, rotaCapitulo, type Capitulo } from "@/lib/saneamento/capitulos";
 
@@ -56,6 +57,7 @@ export function Cabecalho({ atual }: { atual: string }) {
                       {e.capitulos.map((c) => (
                         <li key={c.numero}>
                           <ItemCapitulo c={c} atual={atual} />
+                          <ItensSubpainel c={c} atual={atual} />
                         </li>
                       ))}
                     </ul>
@@ -103,6 +105,7 @@ export function Cabecalho({ atual }: { atual: string }) {
                         {e.capitulos.map((c) => (
                           <li key={c.numero}>
                             <ItemCapitulo c={c} atual={atual} />
+                            <ItensSubpainel c={c} atual={atual} />
                           </li>
                         ))}
                       </ul>
@@ -123,6 +126,8 @@ export function Cabecalho({ atual }: { atual: string }) {
           </div>
         </div>
       </nav>
+      {/* parceria técnica com o FGV CERI: a marca fecha o cabeçalho de todos os painéis de infraestrutura */}
+      <ParceriaTecnica variante="faixa" />
     </header>
   );
 }
@@ -156,6 +161,36 @@ function Atalhos({ atual }: { atual: string }) {
         Método e fontes
       </Link>
     </>
+  );
+}
+
+/** Subpainéis marcados para o menu (`naNavegacao`), recuados logo abaixo do capítulo; os do capítulo 5 têm navegação própria. */
+function ItensSubpainel({ c, atual }: { c: Capitulo; atual: string }) {
+  const itens = (c.subpaineis ?? []).filter((s) => s.naNavegacao && s.situacao !== "em_preparacao");
+  if (!itens.length) return null;
+  return (
+    <ul>
+      {itens.map((s) => {
+        const slug = `${c.slug}/${s.slug}`;
+        const href = `${ROTA}/${slug}`;
+        return (
+          <li key={s.slug}>
+            <Link
+              href={href}
+              prefetch={prefetchDoLink(href)}
+              aria-current={atual === slug ? "page" : undefined}
+              className={`flex min-h-[44px] items-baseline gap-2 py-2 pl-8 pr-3 text-sm text-carvao hover:bg-obee-fundo ${atual === slug ? "font-medium" : ""}`}
+            >
+              <span className="tabular-nums text-mineral">{s.numero}</span>
+              <span>
+                {s.rotulo}
+                {s.situacao === "parcial" && <span className="text-xs text-carvao-muted"> · cobertura parcial</span>}
+              </span>
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
