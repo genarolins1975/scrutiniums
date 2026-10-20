@@ -6,6 +6,7 @@ import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { baixarCsv } from "@/lib/saneamento/csv";
 import { FONTE_ROTULO, MEDIDAS_GERAIS, formatarValor } from "@/lib/saneamento/medidas";
 import { inteiro } from "@/lib/saneamento/formato";
+import { AUTODECLARADO, MARCA_AUTODECLARADO } from "@/lib/saneamento/autodeclarado";
 import type { Municipio } from "@/lib/saneamento/tipos";
 import { BuscaMunicipio } from "./BuscaMunicipio";
 import { useMunicipios } from "./useMunicipios";
@@ -50,10 +51,10 @@ export function ComparadorMunicipios({ sugestoes }: { sugestoes: { ids: string; 
   const exportar = () =>
     baixarCsv(
       "saneamento-comparacao-municipios.csv",
-      ["medida", "fonte", "periodo", "unidade", ...escolhidos.map((m) => `${m.nome} (${m.uf}) ${m.id}`)],
+      ["medida", "fonte", "periodo", "unidade", "ressalva", ...escolhidos.map((m) => `${m.nome} (${m.uf}) ${m.id}`)],
       [
-        ...MEDIDAS_GERAIS.map((med) => [med.titulo, FONTE_ROTULO[med.fonte], med.periodo, med.unidadePct, ...escolhidos.map((m) => med.pct(m))]),
-        ...ARRANJO.map((l) => [l.rotulo, l.fonte, "", "", ...escolhidos.map((m) => l.valor(m))]),
+        ...MEDIDAS_GERAIS.map((med) => [med.titulo, FONTE_ROTULO[med.fonte], med.periodo, med.unidadePct, med.financeira ? AUTODECLARADO : "", ...escolhidos.map((m) => med.pct(m))]),
+        ...ARRANJO.map((l) => [l.rotulo, l.fonte, "", "", "", ...escolhidos.map((m) => l.valor(m))]),
       ],
     );
 
@@ -141,6 +142,11 @@ export function ComparadorMunicipios({ sugestoes }: { sugestoes: { ids: string; 
                       <span className="block text-xs text-carvao-muted">
                         {FONTE_ROTULO[med.fonte]}, {med.periodo}
                       </span>
+                      {med.financeira && (
+                        <span data-autodeclarado="" className="block text-xs text-carvao-muted">
+                          {MARCA_AUTODECLARADO}
+                        </span>
+                      )}
                     </th>
                     {escolhidos.map((m) => {
                       const v = med.pct(m);

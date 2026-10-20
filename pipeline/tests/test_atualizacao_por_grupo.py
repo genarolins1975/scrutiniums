@@ -303,7 +303,11 @@ class Configuracao(unittest.TestCase):
     def test_configuracoes_versionadas(self):
         raiz = Path(__file__).resolve().parents[2]
         arquivos = sorted((raiz / "config/atualizacao").glob("*.json"))
-        self.assertEqual([p.stem for p in arquivos], ["contas-publicas", "eficiencia", "inflacao", "previdencia", "saneamento", "seguranca"])
+        # ordem pelo nome do domínio: "saneamento-divida.json" viria antes de "saneamento.json" na ordem dos arquivos
+        self.assertEqual(
+            sorted(p.stem for p in arquivos),
+            ["contas-publicas", "eficiencia", "inflacao", "previdencia", "saneamento", "saneamento-divida", "seguranca"],
+        )
         for p in arquivos:
             cfg = A.carregar_config(p)
             for g in cfg["grupos"]:

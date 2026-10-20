@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Fonte, NestaPagina, Nota, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Fonte, MarcaAutodeclarado, NestaPagina, Nota, Ressalva, RessalvaAutodeclarado, Secao } from "@/components/saneamento/Editorial";
 import { QuadroSocietario } from "@/components/saneamento/QuadroSocietario";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -127,7 +127,10 @@ export default function Pagina({ params }: { params: { id: string } }) {
                     <tr key={m.id} className="border-b border-linha align-top">
                       <th scope="row" className="py-2 pr-4 text-left font-normal text-carvao">{m.rotulo}</th>
                       <td className={`py-2 pr-4 text-right tabular-nums ${v == null ? "text-carvao-muted" : "text-carvao"}`}>{formatarMedidaPrestador(m, v)}</td>
-                      <td className="py-2 text-xs text-carvao-muted">{m.nota}</td>
+                      <td className="py-2 text-xs text-carvao-muted">
+                        {m.nota}
+                        {m.financeira && <MarcaAutodeclarado className="mt-0.5" />}
+                      </td>
                     </tr>
                   );
                 })}
@@ -138,9 +141,16 @@ export default function Pagina({ params }: { params: { id: string } }) {
             permite="Ver o perímetro e os principais números que o prestador declarou para 2024, com a fórmula de cada um."
             naoPermite="Julgar o desempenho isoladamente: perdas, custos e investimento dependem da área atendida, do estágio do contrato e da qualidade do registro. Para comparar, use prestadores de perfil semelhante."
           />
+          <RessalvaAutodeclarado>
+            Nesta ficha, as linhas de receita, despesa, investimento, margem e endividamento e o balanço abaixo levam a marca.
+          </RessalvaAutodeclarado>
         </Secao>
 
-        <Secao id="balanco" titulo="Balanço declarado ao SINISA" texto="Demonstrações informadas pelo prestador ao SINISA para 2024, em reais. Não substituem as demonstrações auditadas.">
+        <Secao
+          id="balanco"
+          titulo="Balanço declarado ao SINISA"
+          texto="Demonstrações informadas pelo prestador ao SINISA para 2024, em reais. Autodeclarado ao SINISA, sem conferência com demonstrações financeiras auditadas: não substitui o balanço publicado pela empresa."
+        >
           {b ? (
             <dl className="grid max-w-4xl grid-cols-1 gap-x-10 gap-y-3 text-sm sm:grid-cols-2">
               {(

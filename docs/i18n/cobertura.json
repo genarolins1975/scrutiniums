@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "d932a71658c21a96d3844ed462f3be1a0b7b2937f80a5b937f3a8e5ad23f56df",
-    "arquivos_analisados": 1448,
-    "fontes_sha256": "a4ae7c818802f72e735b0a752c3ae5f251114168ff1a0f18b7fb4ead73bee1b6",
+    "arquivos_analisados": 1454,
+    "fontes_sha256": "38cca8f2f0894fccdd775d3f5d48b06ee616ac4caef43161f240c1b6e0309553",
     "pendencias_sha256": "5474d5465c1e4c7b2007aa17285e6fd6dba38047fb47ea5704d537350309b4d1",
     "nao_classificadas": [
       {
@@ -172,14 +172,14 @@
         "candidatos": {
           "jsx_text": 1811,
           "atributos": 413,
-          "props": 1088,
-          "outros_literais": 7623,
-          "templates": 999,
-          "expressoes_nao_resolvidas": 6092,
-          "chaves_objetos": 6138
+          "props": 1084,
+          "outros_literais": 7610,
+          "templates": 1000,
+          "expressoes_nao_resolvidas": 6097,
+          "chaves_objetos": 6126
         },
         "exclusoes": {
-          "importacoes": 1640,
+          "importacoes": 1641,
           "atributos_tecnicos": 3379,
           "tipos": 431
         },
@@ -190,7 +190,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 24164,
+        "candidatos_nao_catalogados": 24141,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -313,20 +313,20 @@
     "saneamento": {
       "nome": "Saneamento",
       "interface": {
-        "arquivos": 64,
+        "arquivos": 70,
         "candidatos": {
-          "jsx_text": 1229,
-          "atributos": 345,
-          "props": 1797,
-          "outros_literais": 3238,
-          "templates": 444,
-          "expressoes_nao_resolvidas": 3070,
-          "chaves_objetos": 4392
+          "jsx_text": 1404,
+          "atributos": 377,
+          "props": 1895,
+          "outros_literais": 3514,
+          "templates": 498,
+          "expressoes_nao_resolvidas": 3490,
+          "chaves_objetos": 4621
         },
         "exclusoes": {
-          "importacoes": 461,
-          "atributos_tecnicos": 1643,
-          "tipos": 177
+          "importacoes": 495,
+          "atributos_tecnicos": 1858,
+          "tipos": 216
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -335,17 +335,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 14515,
+        "candidatos_nao_catalogados": 15799,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 26,
+        "paginas_pt": 27,
         "paginas_en": 0,
         "handlers": 0,
         "templates_com_parametros": 2,
-        "paginas_pt_literais": 24,
+        "paginas_pt_literais": 25,
         "paginas_pt_fora_do_adaptador": 2,
-        "paginas_pt_literais_sem_irma": 24,
+        "paginas_pt_literais_sem_irma": 25,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false
@@ -363,9 +363,9 @@
       "interface": {
         "arquivos": 235,
         "candidatos": {
-          "jsx_text": 3116,
+          "jsx_text": 3117,
           "atributos": 1071,
-          "props": 1336,
+          "props": 1337,
           "outros_literais": 7776,
           "templates": 800,
           "expressoes_nao_resolvidas": 8028,
@@ -373,7 +373,7 @@
         },
         "exclusoes": {
           "importacoes": 922,
-          "atributos_tecnicos": 3366,
+          "atributos_tecnicos": 3367,
           "tipos": 467
         },
         "scripts_embutidos": {},
@@ -383,7 +383,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 26910,
+        "candidatos_nao_catalogados": 26912,
         "percentual_traduzido": null
       },
       "rotas": {

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ROTA, ROTULO_SITUACAO, eixoDoCapitulo, type Situacao } from "@/lib/saneamento/capitulos";
+import { MARCA_AUTODECLARADO, RESSALVA_AUTODECLARADO } from "@/lib/saneamento/autodeclarado";
 
 /**
  * Peças editoriais do Observatório do Saneamento. Todas no servidor.
@@ -109,6 +110,30 @@ export function Ressalva({ permite, naoPermite }: { permite: ReactNode; naoPermi
         <span className="text-carvao">{naoPermite}</span>
       </p>
     </div>
+  );
+}
+
+/** Marca de valor financeiro declarado pelo prestador ao SINISA, junto ao número (src/lib/saneamento/autodeclarado.ts). */
+export function MarcaAutodeclarado({ className = "" }: { className?: string }) {
+  return (
+    <span data-autodeclarado="" className={`block text-xs leading-snug text-carvao-muted ${className}`}>
+      {MARCA_AUTODECLARADO}
+    </span>
+  );
+}
+
+/** A explicação da marca, uma vez por capítulo, perto do primeiro valor financeiro. */
+export function RessalvaAutodeclarado({ children }: { children?: ReactNode }) {
+  return (
+    <aside
+      aria-label="Valores financeiros autodeclarados"
+      data-ressalva-autodeclarado=""
+      className="mt-6 max-w-prose2 border-l-2 border-aviso pl-4 text-sm leading-relaxed text-carvao"
+    >
+      <p className="font-medium">Valores autodeclarados ao SINISA, sem conferência com demonstrações financeiras auditadas</p>
+      <p className="mt-1 text-carvao-muted">{RESSALVA_AUTODECLARADO}</p>
+      {children && <div className="mt-1 text-carvao-muted">{children}</div>}
+    </aside>
   );
 }
 

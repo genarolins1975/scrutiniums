@@ -11,7 +11,7 @@ vi.mock("next/navigation", async () => ({
 import { renderToStaticMarkup } from "react-dom/server";
 import { EIXOS, ROTA, rotaCapitulo } from "@/lib/saneamento/capitulos";
 import { prestadores, controleSocietario } from "@/lib/saneamento/gold";
-import { respostasDosCapitulos } from "@/lib/saneamento/respostas";
+import { CAPITULOS_SEM_MANCHETE_FINANCEIRA, respostasDosCapitulos } from "@/lib/saneamento/respostas";
 import Entrada from "@/app/saneamento/page";
 
 /**
@@ -23,14 +23,19 @@ async function pagina(mod: string, props: object = {}) {
   const C = (await import(/* @vite-ignore */ mod)).default as FunctionComponent<object>;
   return renderToStaticMarkup(createElement(C, props));
 }
-const capitulos = EIXOS.flatMap((e) => e.capitulos);
+const todos = EIXOS.flatMap((e) => e.capitulos);
+// capítulos cujo número seria valor financeiro autodeclarado ao SINISA ficam sem manchete (decisão de 20/10/2026)
+const semManchete = new Set<number>(CAPITULOS_SEM_MANCHETE_FINANCEIRA);
+const capitulos = todos.filter((c) => !semManchete.has(c.numero));
 const modulo = (slug: string) => `@/app/saneamento/${slug}/page`;
 
 describe("Entrada: resposta curta e número com prova por capítulo", () => {
   const respostas = respostasDosCapitulos();
 
-  it("os catorze capítulos têm resposta com valor, o que ele mede, frase e fonte", () => {
-    expect(capitulos).toHaveLength(14);
+  it("os capítulos sem valor financeiro autodeclarado têm resposta com valor, o que ele mede, frase e fonte", () => {
+    expect(todos).toHaveLength(14);
+    expect(capitulos).toHaveLength(14 - semManchete.size);
+    for (const n of semManchete) expect(respostas[n], `capítulo ${n} sem manchete financeira`).toBeUndefined();
     for (const c of capitulos) {
       const r = respostas[c.numero];
       expect(r, `capítulo ${c.numero}`).toBeDefined();

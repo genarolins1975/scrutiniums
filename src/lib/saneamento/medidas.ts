@@ -49,6 +49,11 @@ export type Medida = {
   fator?: number;
   /** Limites das classes do histograma quando a medida não é percentual de 0 a 100. */
   limitesHistograma?: number[];
+  /**
+   * Valor financeiro autodeclarado ao SINISA (src/lib/saneamento/autodeclarado.ts): leva a marca junto ao número, não entra em
+   * ranking e fica só nos capítulos e ferramentas com conta.
+   */
+  financeira?: boolean;
 };
 
 const pop22 = (m: Municipio) => m.pop22;
@@ -529,6 +534,50 @@ export const MEDIDAS: Medida[] = [
     cortesContagem: [1_000, 5_000, 20_000, 80_000],
   },
   {
+    id: "sinisa-agua-atendida",
+    titulo: "População atendida com rede de abastecimento de água (IAG0001)",
+    pergunta: "Segundo o prestador, que parcela dos residentes a rede de abastecimento de água atende?",
+    fonte: "sinisa2024",
+    periodo: "2024",
+    universo: "População residente estimada pelo IBGE para 2024 (DFE0001), municípios participantes do módulo de água",
+    unidadePct: "%",
+    unidadeContagem: "pessoas atendidas",
+    casas: 2,
+    pct: (m) => m.IAG0001,
+    contagem: (m) => (m.IAG0001 == null ? null : m.ag_pop_at),
+    numerador: (m) => (m.IAG0001 == null ? null : m.ag_pop_at),
+    denominador: (m) => (m.IAG0001 == null ? null : m.dfe0001),
+    permite:
+      "Ver a parcela da população que o prestador declara atender com rede de água (GTA0001 + GTA0002 sobre DFE0001), na fórmula oficial do IAG0001.",
+    naoPermite:
+      "Somar com o Censo, que mede outra população em outro ano, nem concluir que a água chega todo dia ou é potável: a população atendida é declarada pelo prestador, não verificada no domicílio, e soluções alternativas ficam fora.",
+    ausencia: "Município não participou do módulo de água do SINISA 2024 ou o indicador não foi calculado pela regra oficial.",
+    cortesPct: [50, 75, 90, 99],
+    cortesContagem: [2_000, 10_000, 50_000, 250_000],
+  },
+  {
+    id: "sinisa-esgoto-atendida",
+    titulo: "População atendida com rede coletora de esgoto (IES0001)",
+    pergunta: "Segundo o prestador, que parcela dos residentes a rede coletora de esgoto atende?",
+    fonte: "sinisa2024",
+    periodo: "2024",
+    universo: "População residente estimada pelo IBGE para 2024 (DFE0001), municípios com indicadores de esgoto",
+    unidadePct: "%",
+    unidadeContagem: "pessoas atendidas",
+    casas: 2,
+    pct: (m) => m.IES0001,
+    contagem: (m) => (m.IES0001 == null ? null : m.es_pop_at),
+    numerador: (m) => (m.IES0001 == null ? null : m.es_pop_at),
+    denominador: (m) => (m.IES0001 == null ? null : m.dfe0001),
+    permite:
+      "Ver a parcela da população que o prestador declara atender com rede coletora (GTE0001 + GTE0002 sobre DFE0001), na fórmula oficial do IES0001.",
+    naoPermite:
+      "Inferir tratamento: rede coletora não assegura que o esgoto seja tratado (IES2004 e IES0007 respondem a isso). A população atendida é declarada pelo prestador, e municípios com delegação sem atendimento ficam sem indicador.",
+    ausencia: "Município sem indicador de esgoto no SINISA 2024 (não participou, delegação sem atendimento ou indicador não calculado pela regra oficial).",
+    cortesPct: [10, 30, 60, 90],
+    cortesContagem: [2_000, 10_000, 50_000, 250_000],
+  },
+  {
     id: "sinisa-agua-nao-atendida",
     titulo: "Não atendidos por rede de água (prestador)",
     pergunta: "Segundo o prestador, quantos residentes não são atendidos pela rede de água?",
@@ -694,9 +743,11 @@ export const MEDIDAS: Medida[] = [
     numerador: (m) => (m.dfe0001 == null || (m.inv_ag == null && m.inv_es == null) ? null : (m.inv_ag ?? 0) + (m.inv_es ?? 0)),
     denominador: (m) => (m.inv_ag == null && m.inv_es == null ? null : m.dfe0001),
     fator: 1,
-    permite: "Ver onde o investimento declarado de 2024 se concentrou, por habitante, somando prestador e Estado.",
+    financeira: true,
+    permite:
+      "Ver onde o investimento declarado de 2024 se concentrou, por habitante, somando o que o prestador investiu e o que ele informa como investido pelo governo estadual.",
     naoPermite:
-      "Avaliar suficiência ou eficiência: um ano isolado oscila com o ciclo de obras, e investimento regional pode ser lançado num município que serve outros.",
+      "Avaliar suficiência ou eficiência, nem tomar o valor como contábil: é autodeclarado ao SINISA, sem conferência com demonstrações financeiras auditadas; um ano isolado oscila com o ciclo de obras, e investimento regional pode ser lançado num município que serve outros.",
     ausencia: "Município sem declaração de água nem de esgoto ao SINISA 2024. Zero declarado aparece como zero.",
     cortesPct: [10, 50, 100, 250],
     limitesHistograma: [0, 10, 25, 50, 100, 250, 500, 1000],
