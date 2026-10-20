@@ -132,6 +132,25 @@ describe("previdência: aperitivo (sem sessão)", () => {
   });
 });
 
+describe("previdência: o convite do aperitivo não promete série que o município não tem", () => {
+  it("município que só aparece na base em 2025 não ganha a série desde 2019; município antigo ganha", async () => {
+    const { comConta } = await import("@/lib/previdencia/convite");
+    const { consultarMunicipio, goldPrevidencia } = await import("@/lib/previdencia/dados");
+    const g = goldPrevidencia();
+    const novo = consultarMunicipio("5101837"); // Boa Esperança do Norte (MT), instalado em 2025
+    expect(novo.estado).toBe("ok");
+    if (novo.estado !== "ok") return;
+    const anosComDado = novo.arquivo.anos.filter((_, i) => novo.m.q[i] != null);
+    const primeiro = comConta(g, novo.uf, { m: novo.m, anos: novo.arquivo.anos })[0];
+    expect(primeiro).toContain(`dezembro de ${anosComDado[0]}`);
+    expect(primeiro).not.toContain(`dezembro de ${g.anual.anos[0]} a`);
+    const antigo = consultarMunicipio("3550308");
+    expect(antigo.estado).toBe("ok");
+    if (antigo.estado !== "ok") return;
+    expect(comConta(g, antigo.uf, { m: antigo.m, anos: antigo.arquivo.anos })[0]).toContain(`de dezembro de ${g.anual.anos[0]} a dezembro de`);
+  });
+});
+
 describe("previdência: painel completo (com sessão)", () => {
   it("abertura: os quatro números com período e fonte, lidos da gold", async () => {
     const t = textoDe(await painel());
