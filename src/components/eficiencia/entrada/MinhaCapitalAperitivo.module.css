@@ -1,0 +1,50 @@
+/* Versão aperitivo da entrada da Eficiência Estatal: mesma tinta e tipografia do retrato completo, sem os gráficos. */
+.pagina{--ink:var(--cor-obee-atlas-tinta);--muted:var(--cor-obee-atlas-texto-secundario);--line:var(--cor-obee-atlas-linha);color:var(--ink);font-size:16px;line-height:1.55}
+.pagina *{box-sizing:border-box}
+.pagina h1,.pagina h2,.pagina h3,.pagina p{margin:0}
+.pagina a{text-underline-offset:4px}
+.pagina a:focus-visible,.pagina select:focus-visible{outline:3px solid var(--cor-obee-atlas-foco);outline-offset:4px}
+
+.abertura{color:var(--cor-obee-atlas-texto-claro);background:
+  radial-gradient(ellipse 60% 70% at 78% 40%,rgba(163,227,215,.10),transparent 62%),
+  repeating-linear-gradient(0deg,rgba(255,255,255,.028) 0 1px,transparent 1px 56px),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.028) 0 1px,transparent 1px 56px),
+  var(--cor-obee-atlas-tinta)}
+.aberturaInterna{max-width:76rem;margin:0 auto;padding:56px 32px 44px}
+.kicker{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--cor-obee-atlas-rotulo-inverso)}
+.titulo{font-family:"Playfair Display Variable",Georgia,serif;font-weight:400;font-size:clamp(34px,4.6vw,58px)!important;line-height:1.08!important;letter-spacing:-.03em;margin-top:14px!important;color:var(--cor-obee-atlas-texto-claro)}
+.lead{margin-top:18px!important;max-width:38rem;font-size:18px;line-height:1.6;color:var(--cor-obee-atlas-texto-inverso)}
+.escolha{display:flex;flex-direction:column;gap:6px;margin-top:28px;max-width:22rem;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--cor-obee-atlas-rotulo-inverso)}
+.escolha select{min-height:48px;width:100%;padding:0 12px;border:1px solid var(--cor-obee-atlas-linha-inversa);background:rgba(255,255,255,.06);color:var(--cor-obee-atlas-texto-claro);font:inherit;font-size:16px;text-transform:none;letter-spacing:0;border-radius:0}
+.escolha select option{color:var(--cor-obee-atlas-tinta)}
+.contexto{margin-top:20px!important;padding-top:14px;max-width:38rem;border-top:1px solid var(--cor-obee-atlas-linha-inversa);font-size:15px;color:var(--cor-obee-atlas-texto-inverso)}
+.contexto strong{font-weight:500;color:var(--cor-obee-atlas-texto-claro)}
+.contexto small{display:block;margin-top:4px;font-size:12px}
+
+.corpo{max-width:76rem;margin:0 auto;padding:48px 32px 8px}
+.subtitulo{font-family:"Playfair Display Variable",Georgia,serif;font-weight:400;letter-spacing:-.02em;font-size:clamp(26px,3vw,36px)!important;line-height:1.15!important;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.grade{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:48px}
+.indicador{padding:28px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:6px;min-width:0}
+.indicador h3{font-family:"Playfair Display Variable",Georgia,serif;font-weight:400;font-size:22px;line-height:1.25;letter-spacing:-.01em}
+.valor,.ausente{margin-top:8px!important;font-family:"Playfair Display Variable",Georgia,serif;font-size:clamp(32px,3.4vw,42px);line-height:1.1;font-variant-numeric:tabular-nums;color:var(--cor-obee-atlas-serie-territorio);overflow-wrap:anywhere}
+.ausente{font-size:24px;color:var(--muted)}
+.medida{font-size:14px;color:var(--muted)}
+.posicao{margin-top:10px!important;padding:10px 12px;background:var(--cor-obee-atlas-selecao);font-size:15px;line-height:1.45}
+.posicao span{display:block;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.nota{margin-top:6px!important;font-size:13px;line-height:1.55;color:var(--muted);max-width:36rem}
+.fonte{font-size:13px;color:var(--muted)}
+.fonte a{display:inline-flex;align-items:center;min-height:44px;color:var(--cor-obee-atlas-serie-territorio)}
+.ressalva{margin-top:20px!important;max-width:44rem;font-size:13px;line-height:1.6;color:var(--muted);border-left:2px solid var(--cor-obee-atlas-marcador);padding-left:14px}
+
+/* Gutter igual ao do convite e do cabeçalho (px-4 sm:px-6 lg:px-8). */
+@media(max-width:1023px){.aberturaInterna{padding-inline:24px}.corpo{padding-inline:24px}}
+@media(max-width:767px){
+  .aberturaInterna{padding-block:32px 28px}
+  .lead{font-size:16px}
+  .escolha{max-width:none}
+  .corpo{padding-block:32px 4px}
+  .grade{grid-template-columns:1fr}
+  .indicador{padding:22px 0}
+  .indicador h3{font-size:20px}
+}
+@media(max-width:639px){.aberturaInterna{padding-inline:16px}.corpo{padding-inline:16px}}
