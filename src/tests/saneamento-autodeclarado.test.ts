@@ -143,7 +143,8 @@ describe("Tarifa no lugar de preço regulado e consumo na tabela 5.4", () => {
     expect(t).toContain("Consumo médio por pessoa (2024)");
     const p = prestador(SABESP)!;
     expect(p.consumo_per_capita_agua).not.toBeNull();
-    expect(t).toContain(`${numero(p.consumo_per_capita_agua, 1)} l/hab/dia`);
+    expect(t).toContain("l/hab/dia, fórmula do IAG2006");
+    expect(t).toContain(numero(p.consumo_per_capita_agua, 1));
     expect(t).not.toContain("R$ 0,00");
   }, 60_000);
 });

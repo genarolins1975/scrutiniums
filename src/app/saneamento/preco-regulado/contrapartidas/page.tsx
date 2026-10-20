@@ -105,7 +105,7 @@ export default function Pagina() {
                   <th scope="col" className="py-2 pr-4 text-right font-medium">Pessoas atendidas com água</th>
                   <th scope="col" className="py-2 pr-4 text-right font-medium">
                     Consumo médio por pessoa (2024)
-                    <span className="block text-xs font-normal text-carvao-muted">litros por habitante por dia, IAG2006</span>
+                    <span className="block text-xs font-normal text-carvao-muted">l/hab/dia, fórmula do IAG2006</span>
                   </th>
                   <th scope="col" className="py-2 pr-4 text-right font-medium">Perdas na distribuição</th>
                   <th scope="col" className="py-2 text-right font-medium">
@@ -131,7 +131,7 @@ export default function Pagina() {
                     </th>
                     <td className="py-2 pr-4 text-right tabular-nums text-carvao">
                       {ts.map((t) => (
-                        <span key={t.id} className="block">
+                        <span key={t.id} className="block whitespace-nowrap">
                           {reais(calcularConta(t.categorias.residencial, 10).total)}
                           {ts.length > 1 && <span className="text-xs text-carvao-muted"> {t.id.endsWith("curitiba") ? "Curitiba" : "demais"}</span>}
                         </span>
@@ -140,7 +140,7 @@ export default function Pagina() {
                     <td className="py-2 pr-4 text-right tabular-nums text-carvao">{inteiro(p?.municipios_agua.length)}</td>
                     <td className="py-2 pr-4 text-right tabular-nums text-carvao">{inteiro(p?.populacao_atendida_agua)}</td>
                     <td className={`py-2 pr-4 text-right tabular-nums ${p?.consumo_per_capita_agua == null ? "text-carvao-muted" : "text-carvao"}`}>
-                      {p?.consumo_per_capita_agua == null ? "sem dado" : `${numero(p.consumo_per_capita_agua, 1)} l/hab/dia`}
+                      {p?.consumo_per_capita_agua == null ? "sem dado" : numero(p.consumo_per_capita_agua, 1)}
                       {p && p.consumo_per_capita_agua != null && p.consumo_per_capita_municipios < p.municipios_agua.length && (
                         <span className="block text-xs text-carvao-muted">
                           {inteiro(p.consumo_per_capita_municipios)} de {inteiro(p.municipios_agua.length)} municípios
