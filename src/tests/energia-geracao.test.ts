@@ -792,11 +792,19 @@ describe("o que mudou, notas de universo e referências ao lado do dado", () => 
     for (let i = 1; i < padrao.length; i++) expect(padrao[i - 1].mwmed ?? 0).toBeGreaterThanOrEqual(padrao[i].mwmed ?? 0);
   });
 
-  it("os dias em que o Balanço registra a eólica muito abaixo da soma das usinas saem das maiores divergências da própria gold", () => {
-    const dias = diasDoBalancoForaDoPadrao(G.matriz.reconciliacao_balanco);
-    expect(dias.map((x) => x.d)).toEqual(expect.arrayContaining(["2026-01-16", "2026-05-09"]));
+  it("os dias em que o Balanço registra a eólica muito abaixo da soma das usinas são a lista inteira da gold, não só os das maiores divergências", () => {
+    const rec = G.matriz.reconciliacao_balanco;
+    const dias = diasDoBalancoForaDoPadrao(rec);
+    expect(rec.eolica_abaixo_de_10pct_das_usinas).toBeDefined();
+    expect(dias.length).toBe(rec.eolica_abaixo_de_10pct_das_usinas!.length);
     for (const x of dias) expect(x.balanco_mwh).toBeLessThan(0.1 * x.usinas_mwh);
-    expect(dias.map((x) => x.d)).toEqual([...dias.map((x) => x.d)].sort());
+    // todo caso da regra que aparece entre as maiores divergências está na lista (na gold de 30/09/2026 só esses entravam,
+    // e a frase perdia 16/01/2026 no Sul e 09/05/2026 no Sudeste/Centro-Oeste, abaixo das 15 maiores)
+    const chave = (x: { d: string; sm: string }) => `${x.d}|${x.sm}`;
+    const naLista = new Set(dias.map(chave));
+    for (const x of rec.maiores_divergencias)
+      if (x.fonte === "eolica" && x.usinas_mwh && x.balanco_mwh !== null && x.balanco_mwh < 0.1 * x.usinas_mwh) expect(naLista.has(chave(x)), chave(x)).toBe(true);
+    expect(dias.map(chave)).toEqual([...dias.map(chave)].sort());
   });
 
   it("a lacuna de usinas sem dado aparece ao lado da variação das categorias que seguem comparáveis, e a categoria suprimida fica de fora", () => {
@@ -931,8 +939,19 @@ describe("páginas com as correções das avaliações independentes", () => {
     expect(x).toContain("CVU 0,00 é valor publicado pela fonte");
     expect(x).toContain("nunca é tratado como ausência");
     expect(x).toContain("que reúnem todas as estações do ano, não só esta época");
-    expect(x).toContain("No Balanço, a eólica fica muito abaixo da soma das usinas em 16/01/2026 (Nordeste), 07/03/2026 (Nordeste e Sul) e 09/05/2026 (Nordeste e Sul); por exemplo, 10,8 GWh contra 329,9 GWh no Nordeste em 16/01/2026");
-    expect(x).toContain("podem ter a participação térmica distorcida");
+    // a frase nomeia todos os dias e subsistemas da lista da gold, com o caso de maior soma das usinas como exemplo
+    const lista = (xs: string[]) => (xs.length > 1 ? `${xs.slice(0, -1).join(", ")} e ${xs.at(-1)}` : xs[0]);
+    const nomeSm: Record<string, string> = { N: "Norte", NE: "Nordeste", S: "Sul", SE: "Sudeste/Centro-Oeste" };
+    const anom = G.matriz.reconciliacao_balanco.eolica_abaixo_de_10pct_das_usinas!;
+    const datas = [...new Set(anom.map((a) => a.d))].sort();
+    const br = (d: string) => d.split("-").reverse().join("/");
+    const quando = lista(datas.map((d) => `${br(d)} (${lista(anom.filter((a) => a.d === d).map((a) => nomeSm[a.sm]))})`));
+    const ex = [...anom].sort((a, b) => b.usinas_mwh - a.usinas_mwh)[0];
+    const gwh = (v: number) => (v / 1000).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    if (anom.length) {
+      expect(x).toContain(`No Balanço, a eólica fica muito abaixo da soma das usinas em ${quando}; por exemplo, ${gwh(ex.balanco_mwh)} GWh contra ${gwh(ex.usinas_mwh)} GWh no ${nomeSm[ex.sm]} em ${br(ex.d)}`);
+      expect(x).toContain("podem ter a participação térmica distorcida");
+    } else expect(x).not.toContain("No Balanço, a eólica fica muito abaixo");
     // o que mudou traz a variação mensal da térmica
     expect(x).toContain(`A geração das térmicas despachadas em ${mesAno(t.ultimo_mes_completo)}:`);
   });

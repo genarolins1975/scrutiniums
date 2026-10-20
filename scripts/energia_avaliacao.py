@@ -873,8 +873,51 @@ def carrega_evidencia_golds():
         "manifesto": {c["caminho"].rsplit("/", 1)[-1] for c in man.get("arquivos", []) if c["caminho"].startswith("/energia/gold/")},
         "csv": {"aprovados": csv.get("aprovado", 0), "ressalva": csv.get("ressalva", 0), "reprovados": csv.get("reprovado", 0)},
         "golds_integras": pub["resumo"]["golds"]["integras"], "golds_total": pub["resumo"]["golds"]["total"],
-        "conjuntos": pub["conjuntos"], "csv_com_problema": arq,
+        "conjuntos": pub["conjuntos"], "csv_com_problema": arq, "referencia_hoje": pub["referencia"].get("hoje"),
+        "modelos_fichas": (lj(os.path.join(GOLD_DIR, "previsoes_desempenho.json"), {}) or {}).get("fichas", []),
     }
+
+
+RETRATO_GOLDS = os.path.join(ENT, "evidencia_golds.json")
+
+
+def retrato_evidencia_golds(g):
+    """Só o que a avaliação lê das golds, fixado no dia da rodada. Sem o retrato, cada gold
+    nova recalculava as notas de uma rodada já publicada (test_gold_sai_das_entradas_versionadas
+    reprovou com a gold de 20/10/2026)."""
+    conj = []
+    for c in g["conjuntos"]:
+        at = c.get("atualidade", {})
+        item = {"id": c["id"], "slug": c.get("slug"), "golds": c["golds"],
+                "atualidade": {"situacao": at.get("situacao"), "dias_atraso": at.get("dias_atraso")},
+                "coleta": {"falhas_consecutivas": (c.get("coleta", {}) or {}).get("falhas_consecutivas")}}
+        if "fonte_mais_nova" in c.get("capturas", {}):
+            item["capturas"] = {"fonte_mais_nova": c["capturas"]["fonte_mais_nova"]}
+        conj.append(item)
+    return {"por_gold": g["por_gold"], "vered": {k: {"veredito": v.get("veredito")} for k, v in g["vered"].items()},
+            "sem_teste": g["sem_teste"], "manifesto": sorted(g["manifesto"]), "csv": g["csv"],
+            "golds_integras": g["golds_integras"], "golds_total": g["golds_total"], "conjuntos": conj,
+            "csv_com_problema": g["csv_com_problema"], "referencia_hoje": g["referencia_hoje"],
+            # só o que modelo_sem_numero lê das fichas de modelo do PLD
+            "modelos_fichas": [{"codigo": f.get("codigo"),
+                                "aprovacao": ({"estado": f["aprovacao"].get("estado"),
+                                               "referencia_experimental": f["aprovacao"].get("referencia_experimental")}
+                                              if isinstance(f.get("aprovacao"), dict) else None)}
+                               for f in g["modelos_fichas"] if isinstance(f, dict)]}
+
+
+def evidencia_golds(ao_vivo=False):
+    """Retrato versionado em docs/.../avaliacao/evidencia_golds.json; ao vivo (--golds-ao-vivo),
+    lido das golds do disco e gravado como novo retrato, para uma rodada nova."""
+    if not ao_vivo and os.path.exists(RETRATO_GOLDS):
+        g = lj(RETRATO_GOLDS)
+    else:
+        g = retrato_evidencia_golds(carrega_evidencia_golds())
+        with open(RETRATO_GOLDS, "w", encoding="utf-8") as f:
+            json.dump(g, f, ensure_ascii=False, indent=1, sort_keys=True)
+            f.write("\n")
+    g["manifesto"] = set(g["manifesto"])
+    return g
 
 
 def resumo_golds(g, golds):
@@ -942,7 +985,7 @@ def monta(args):
         posteriores = []
     testes = lj(os.path.join(ENT, "testes.json"), {"vitest": {}, "python": {}})
     historico = lj(os.path.join(ENT, "rodadas.json"), {"rodadas": []})
-    g = carrega_evidencia_golds()
+    g = evidencia_golds(getattr(args, "golds_ao_vivo", False))
     titulos = Counter()
     for r in insp["rotas"]:
         for m in r["medicoes"]:
@@ -958,7 +1001,7 @@ def monta(args):
     dimensoes_ids = [d["id"] for d in DIMENSOES]
     rodada_corrente = args.rodada or (historico["rodadas"][-1]["id"] if historico["rodadas"] else None)
     regra_modelo = regra_modelo_sem_numero_ativa(rodada_corrente)
-    modelos_fichas = (lj(os.path.join(GOLD_DIR, "previsoes_desempenho.json"), {}) or {}).get("fichas", []) if regra_modelo else []
+    modelos_fichas = g["modelos_fichas"] if regra_modelo else []
     for r in insp["rotas"]:
         rota = r["rota"]
         ms = r["medicoes"]
@@ -1153,7 +1196,7 @@ def monta_saida(args):
         "rodada": {"id": rodada_id, "data_inspecao": data, "inspecao_gerada_em": insp.get("gerado_em"), "base": insp.get("base"),
                    "navegador": insp.get("navegador"), "larguras": insp.get("larguras"), "modos": insp.get("modos"),
                    "rotas_medidas": len(insp["rotas"]), "rotas_construidas": universo.get("total"),
-                   "familias": universo.get("familias"), "referencia_dos_dados": g["pub"]["referencia"].get("hoje"),
+                   "familias": universo.get("familias"), "referencia_dos_dados": g["referencia_hoje"],
                    "corrigido_depois_da_medicao": posteriores,
                    "ajustes_do_metodo": ajustes.get(rodada_id, [])},
         "metodo": {
@@ -1343,6 +1386,8 @@ def main():
     ap.add_argument("--registrar-rodada", action="store_true")
     ap.add_argument("--sem-publicacao", action="store_true", help="não atualiza publicacao.json nem o manifesto")
     ap.add_argument("--sem-revisao", action="store_true", help="ignora a revisão visual e didática (rodada de base)")
+    ap.add_argument("--golds-ao-vivo", action="store_true",
+                    help="lê a evidência das golds do disco e regrava o retrato evidencia_golds.json (rodada nova)")
     ap.add_argument("--reprocessada", default=None, help="texto que declara por que a rodada foi recalculada com outra regra")
     args = ap.parse_args()
     os.makedirs(ENT, exist_ok=True)

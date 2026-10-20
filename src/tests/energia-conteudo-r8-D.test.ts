@@ -13,7 +13,7 @@ import MetodologiaPage from "@/app/setor-eletrico/metodologia/page";
 import DatasetPage from "@/app/setor-eletrico/dados/[dataset]/page";
 import { DATASETS_INTEGRADOS, catalogoDados } from "@/lib/energia/datasets";
 import { carimbo } from "@/lib/energia/formato";
-import { respostaCatalogo, respostaReproducao, respostaRegras, respostaSaude, resumoCatalogo, resumoMetricas, resumoSaude, situacaoDoConjunto } from "@/lib/energia/dados";
+import { refLegivel, respostaCatalogo, respostaReproducao, respostaRegras, respostaSaude, resumoCatalogo, resumoMetricas, resumoSaude, situacaoDoConjunto } from "@/lib/energia/dados";
 import {
   NOME_ODBL,
   corrigeGrafia,
@@ -228,9 +228,13 @@ describe("O que mudou diz o que mudou", () => {
     const maior = [...linhasConj].sort((a, b) => Number(b[cConj.maior_revisao_rel_pct] || 0) - Number(a[cConj.maior_revisao_rel_pct] || 0))[0];
     const observacoes = linhasConj.reduce((s, l) => s + Number(l[cConj.revisoes_observacoes] || 0), 0);
     const t = textoMudancaSaude(resumoSaude(pub));
-    // o título do conjunto, lido do catálogo publicado em CSV (órgão e nome da linha da saúde)
-    const tituloDoMaior = linhasCat.find((l) => l[cCat.id] === `${maior[cConj.orgao].toLowerCase()}:${maior[cConj.conjunto]}`)![cCat.titulo];
-    expect(t).toContain(tituloDoMaior);
+    // o conjunto do maior salto é o da linha de dados_conjuntos.csv (outro artefato) e está no catálogo publicado em CSV; a
+    // página o nomeia pelo título da integração em publicacao.json, que pode diferir do título do portal (gold de 20/10/2026:
+    // "Restrição de Operação por Constrained-off de Usinas Eólicas" na integração, com "Dados de" no portal do ONS)
+    expect(linhasCat.some((l) => l[cCat.id] === `${maior[cConj.orgao].toLowerCase()}:${maior[cConj.conjunto]}`)).toBe(true);
+    const doMaior = pub.conjuntos.find((c) => c.id === maior[cConj.id])!;
+    expect(doMaior.revisoes?.maior_rel?.relativa_pct).toBeCloseTo(Number(maior[cConj.maior_revisao_rel_pct]), 2);
+    expect(t).toContain(`O maior salto relativo está em ${doMaior.titulo} (${doMaior.orgao})`);
     expect(t).toContain(observacoes.toLocaleString("pt-BR"));
     expect(t).toContain("não prova erro");
     expect(entender(paginas.saude)).toContain(t);
@@ -462,9 +466,19 @@ describe("ficha de conjunto: situação dos dados com o critério", () => {
   });
 
   it("cadastro sem período: o prazo parte da data de publicação da fonte, que a ficha diz", () => {
+    // gold de 30/09/2026: publicação de 25/09/2026 e prazo de 09/10/2026; as datas vêm de publicacao.json e o prazo é
+    // conferido pela regra publicada (data da publicação + um período semanal + tolerância semanal, regras.sla)
     const e = entender(fichas["aneel-pautas-atas-diretoria"]);
+    const d = DATASETS_INTEGRADOS.find((x) => x.slug === "aneel-pautas-atas-diretoria")!;
+    const c = conj(d.interno);
+    expect(c.atualidade.base).toBe("publicacao_da_fonte");
+    expect(c.atualidade.cadencia).toBe("semanal");
+    const publicada = c.capturas.ultima_publicacao_fonte!;
+    const sem = pub.regras.sla.semanal;
+    const prazo = new Date(Date.parse(publicada.slice(0, 10)) + (sem.periodo_dias_aprox + sem.tolerancia_dias) * 86_400_000).toISOString().slice(0, 10);
+    expect(c.atualidade.prazo_proximo).toBe(prazo);
     expect(e).toContain("A lista não traz um período de referência.");
-    expect(e).toContain("O prazo parte da data da última publicação informada pela fonte (25/09/2026), mais um período semanal e 7 dias de tolerância: 09/10/2026.");
+    expect(e).toContain(`O prazo parte da data da última publicação informada pela fonte (${carimbo(publicada, "pt").slice(0, 10)}), mais um período semanal e ${sem.tolerancia_dias} dias de tolerância: ${dmy(prazo)}.`);
   });
 
   it("sem prazo declarado: a consequência para o leitor e a referência registrada (POF, dados de 2017-2018)", () => {
@@ -498,15 +512,30 @@ describe("ficha de conjunto: situação dos dados com o critério", () => {
   });
 
   it("data de referência: período já publicado antes de terminar (CCEE), referência única (POF) e cadastro", () => {
-    const e = entender(fichas["ccee-lista-agente-associado"]);
-    const c = json<{ conjuntos: { id: string; capturas: { ultima_publicacao_fonte: string; ultima: string } }[] }>("public/energia/gold/publicacao.json").conjuntos.find((x) => x.id.endsWith("/ccee_lista_agente_associado"))!;
-    expect(e).toContain(`último período disponível 09/2026. Esse período ainda não tinha terminado na última captura (${carimbo(c.capturas.ultima).slice(0, 10)}): a fonte já o havia publicado em ${carimbo(c.capturas.ultima_publicacao_fonte).slice(0, 10)}.`);
+    // período em curso na última captura: dito com a data em que a fonte o publicou (CCEE, 09/2026, na gold de 30/09/2026);
+    // período já encerrado na captura: só o período. O estado é lido de publicacao.json, conjunto a conjunto
+    const emCurso = (x: ConjuntoIntegrado) =>
+      !!(x.atualidade.fim_ultimo_periodo && x.capturas.ultima && x.capturas.ultima_publicacao_fonte && carimbo(x.capturas.ultima, "pt").slice(0, 10).split("/").reverse().join("-") <= x.atualidade.fim_ultimo_periodo);
+    let comFrase = 0;
+    for (const d of unicos) {
+      const x = pub.conjuntos.find((k) => k.id.endsWith(`/${d.interno}`));
+      if (!x?.atualidade.ultimo_periodo) continue;
+      const e = entender(fichas[d.slug]);
+      expect(e, d.slug).toContain(`último período disponível ${refLegivel(x.atualidade.ultimo_periodo)}`);
+      const frase = `Esse período ainda não tinha terminado na última captura (${carimbo(x.capturas.ultima!, "pt").slice(0, 10)}): a fonte já o havia publicado em ${carimbo(x.capturas.ultima_publicacao_fonte!, "pt").slice(0, 10)}.`;
+      if (emCurso(x)) {
+        comFrase++;
+        expect(e, d.slug).toContain(frase);
+      } else expect(e, d.slug).not.toContain("ainda não tinha terminado na última captura");
+    }
+    expect(comFrase).toBe(unicos.filter((d) => { const x = pub.conjuntos.find((k) => k.id.endsWith(`/${d.interno}`)); return !!x?.atualidade.ultimo_periodo && emCurso(x); }).length);
     expect(entender(fichas["ibge-pof-6715"])).toContain("uma única referência, 2017-2018: o conjunto não é uma série no tempo");
     expect(entender(fichas["senado-leis-feriados"])).toContain("sem período de referência: a lista não traz um período a que se refira");
     expect(fraseReferencia(undefined, true)).toBe("sem período registrado para este conjunto");
-    // diário, com a captura depois do fim do período: sem a frase de período em curso
-    expect(entender(fichas["ons-ena-diario-por-bacia"])).toContain("último período disponível 29/09/2026");
-    expect(entender(fichas["ons-ena-diario-por-bacia"])).not.toContain("ainda não tinha terminado");
+    // diário, com a captura depois do fim do período: sem a frase de período em curso (29/09/2026 na gold de 30/09/2026)
+    const ena = conj(DATASETS_INTEGRADOS.find((x) => x.slug === "ons-ena-diario-por-bacia")!.interno);
+    expect(entender(fichas["ons-ena-diario-por-bacia"])).toContain(`último período disponível ${refLegivel(ena.atualidade.ultimo_periodo!)}`);
+    if (!emCurso(ena)) expect(entender(fichas["ons-ena-diario-por-bacia"])).not.toContain("ainda não tinha terminado");
   });
 });
 
@@ -725,11 +754,17 @@ describe("conciliação 3: a coleta autorizada em 06/10/2026 e a data de referê
     const e = entender(paginas.metodologia);
     expect(e).toContain(`coleta autorizada pelo responsável em ${dmy(decisao)}`);
     expect(e).toContain(`${dmy(decisao)} é a data da decisão do responsável, um registro de autorização, e não uma data dos dados; a data de referência dos dados do catálogo e da saúde é ${dmy(publicacao.referencia.hoje)}.`);
+    // na gold de 01/10/2026 havia capturas da CCEE posteriores ao processamento; numa execução que processa depois de todas,
+    // a frase de captura posterior não aparece (o ramo é o mesmo do teste seguinte, aqui com os JSON publicados)
     const depois = mercado.acesso_ccee.capturas.filter((c) => c.ultima_captura > publicacao.gerado_em);
-    expect(depois.length).toBeGreaterThan(0);
-    expect(e).toContain(`${depois.length} fontes da CCEE (conjuntos abertos e InfoMercado) foram capturadas depois dele`);
-    expect(e).toContain(`a última captura é de ${carimbo(depois.map((c) => c.ultima_captura).sort().at(-1))}`);
-    expect(e).toContain("A página Mercado já usa essas capturas; as contagens do catálogo e da saúde só as incluem na próxima atualização.");
+    if (depois.length) {
+      expect(e).toContain(`${depois.length === 1 ? "1 fonte da CCEE (conjuntos abertos e InfoMercado) foi capturada" : `${depois.length} fontes da CCEE (conjuntos abertos e InfoMercado) foram capturadas`} depois dele`);
+      expect(e).toContain(`a última captura é de ${carimbo(depois.map((c) => c.ultima_captura).sort().at(-1))}`);
+      expect(e).toContain("A página Mercado já usa essas capturas; as contagens do catálogo e da saúde só as incluem na próxima atualização.");
+    } else {
+      expect(e).not.toContain("A coleta autorizada é posterior ao processamento");
+      expect(e).not.toContain("A página Mercado já usa essas capturas");
+    }
   });
 
   it("a frase de captura posterior só aparece quando há captura posterior ao processamento", () => {

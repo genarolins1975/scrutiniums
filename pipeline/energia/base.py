@@ -196,6 +196,21 @@ def caminho_bronze(arquivo):
     return caminho if os.path.isfile(caminho) else (_bronze_mesmo_conteudo(caminho) or caminho)
 
 
+def arquivo_publicavel(arquivo):
+    """Caminho do bronze para citar numa gold: o registrado na vintage, ou, se ele não está no
+    disco, a cópia idêntica (mesmo sha256 no nome, mesma pasta) gravada pela recaptura.
+
+    A recaptura de uma vintage órfã com o mesmo conteúdo não cria vintage nova (o silver é
+    por conteúdo) e grava o arquivo com o carimbo do novo instante: citar o caminho antigo
+    publica um arquivo que não existe. Sem cópia idêntica, devolve o caminho registrado."""
+    if not arquivo:
+        return arquivo
+    resolvido = caminho_bronze(arquivo)
+    if not os.path.isfile(resolvido):
+        return arquivo
+    return resolvido if os.path.isabs(arquivo) else os.path.relpath(resolvido, RAIZ)
+
+
 def bronze_disponivel(vintage):
     return bool(vintage and vintage.get("arquivo") and os.path.isfile(caminho_bronze(vintage["arquivo"])))
 
@@ -529,10 +544,19 @@ def _escreve_atomico(caminho, texto):
     return caminho
 
 
+# Golds de controle que crescem com o número de conjuntos (uma entrada por conjunto integrado ou catalogado) e têm o
+# teto de tamanho conferido em test_energia_dados: saem sem indentação. Em 20/10/2026 publicacao.json chegou a 507 KB
+# com indentação (161 conjuntos, 37 com revisões entre capturas); sem ela, o mesmo conteúdo ocupa cerca de 76%.
+GOLDS_COMPACTAS = frozenset({"publicacao.json", "catalogo.json"})
+
+
 def escreve_gold(nome, payload, destino=None):
     base = destino or GOLD
-    return _escreve_atomico(os.path.join(base, nome),
-                            json.dumps(payload, ensure_ascii=False, indent=1, allow_nan=False))
+    if nome in GOLDS_COMPACTAS:
+        texto = json.dumps(payload, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
+    else:
+        texto = json.dumps(payload, ensure_ascii=False, indent=1, allow_nan=False)
+    return _escreve_atomico(os.path.join(base, nome), texto)
 
 
 def escreve_csv(nome, cabecalho, linhas, destino=None):

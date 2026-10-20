@@ -112,6 +112,10 @@ TOL = 0.01
 TOL_SENS = 0.01
 MEIO_CENTAVO = 0.005
 EPS = 1e-9
+# Fração de horas separadas com 6 casas: a página escreve a porcentagem com 1 casa, e com 4 casas a fração já
+# arredondada era arredondada de novo (NE e N nos 12 meses até 20/10/2026: 302 de 8.760 horas = 3,447%, publicada
+# 0,0345 e escrita 3,5%). Com 6 casas, frações de 8.760 ou 8.784 horas não ficam a menos de 5e-7 de um meio.
+CASAS_FRAC_SEPARADAS = 6
 FLUXO_NULO = 1.0  # MWmed: fluxo de fronteira tratado como nulo nesta faixa
 PARES = (("SE", "S"), ("SE", "NE"), ("SE", "N"), ("S", "NE"), ("S", "N"), ("NE", "N"))
 FRONTEIRAS = (("N", "NE"), ("N", "SE"), ("NE", "SE"), ("S", "SE"))
@@ -2269,7 +2273,7 @@ def _bloco_regional(d):
             hm, dm = max(difs, key=lambda x: abs(x[1]))
             sep = sum(1 for x in ab if x > TOL + EPS)
             separacao.append({"periodo": per["id"], "par": f"{a}_{b}", "horas": len(hs), "horas_separadas": sep,
-                              "frac_separadas": c.r(sep / len(hs), 4), "dif_media": c.r(c.media([x for _, x in difs])),
+                              "frac_separadas": c.r(sep / len(hs), CASAS_FRAC_SEPARADAS), "dif_media": c.r(c.media([x for _, x in difs])),
                               "dif_abs_media": c.r(c.media(ab)), "dif_abs_p95": c.r(c.quantil(ab, 0.95)),
                               "dif_max": c.r(dm), "quando_max": hm,
                               "horas_diferenca_de_um_centavo": sum(1 for x in ab if MEIO_CENTAVO < x <= TOL + EPS),
@@ -2298,7 +2302,7 @@ def _bloco_regional(d):
     matriz = {"periodo": "12m", "ordem": list(SM), "dif_media": [], "frac_separadas": []}
     for a in SM:
         matriz["dif_media"].append([None if a == b else c.r(c.media([pld[a][h] - pld[b][h] for h in h12])) for b in SM])
-        matriz["frac_separadas"].append([None if a == b else c.r(sum(1 for h in h12 if separado(pld[a][h], pld[b][h])) / len(h12), 4)
+        matriz["frac_separadas"].append([None if a == b else c.r(sum(1 for h in h12 if separado(pld[a][h], pld[b][h])) / len(h12), CASAS_FRAC_SEPARADAS)
                                          for b in SM])
     perfil = {}
     for a, b in PARES:

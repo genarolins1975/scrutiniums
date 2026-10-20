@@ -613,25 +613,39 @@ describe("conciliação: eólicas, 51,3 GW em operação e implantação contra 
   });
 });
 
-describe("conciliação: RALIE com 2.246 usinas e 95.888,3 MW contra SIGA com 145 + 2.099 usinas e 96.298,0 MW (/expansao/carteira)", () => {
-  it("os totais são próximos e de listas diferentes: relidos dos CSV do RALIE e do SIGA, e a página diz a medida, a data e as fases", () => {
+describe("conciliação: RALIE contra SIGA nas fases Construção e Construção não iniciada (/expansao/carteira)", () => {
+  // Gold de 30/09/2026: RALIE com 2.246 usinas e 95.888,3 MW contra SIGA com 145 + 2.099 usinas e 96.298,0 MW. Os números
+  // são relidos dos dois CSV publicados (outro artefato) e conferidos contra a gold e contra o texto da página.
+  it("os totais são de listas diferentes: relidos dos CSV do RALIE e do SIGA, e a página diz a medida, a data e as fases", () => {
     const ralie = csv("public/energia/series/expansao_carteira_ralie.csv");
     const siga = csv("public/energia/series/expansao_usinas_siga.csv").filter((r) => r.estagio === "construcao" || r.estagio === "construcao_nao_iniciada");
     const mwRalie = ralie.reduce((s, r) => s + Number(r.kw_ugs_em_implantacao || 0), 0) / 1e3;
     const mwSiga = siga.reduce((s, r) => s + Number(r.kw_outorgado || 0), 0) / 1e3;
-    expect(ralie).toHaveLength(2246);
-    expect(siga).toHaveLength(2244);
-    expect(mwRalie).toBeCloseTo(95888.3, 0);
-    expect(mwSiga).toBeCloseTo(96298.0, 0);
+    const r = XG.estagios.ralie;
+    const est = (e: string) => XG.estagios.resumo.find((x) => x.estagio === e)!;
+    expect(ralie.length).toBeGreaterThan(0);
+    expect(ralie).toHaveLength(r.usinas);
+    expect(siga).toHaveLength(est("construcao").usinas + est("construcao_nao_iniciada").usinas);
+    expect(mwRalie).toBeCloseTo(r.mw_ugs_em_implantacao, 0);
+    expect(mwSiga).toBeCloseTo(est("construcao").mw_outorgado + est("construcao_nao_iniciada").mw_outorgado, 0);
+    // a data do RALIE é a da fotografia gravada em cada linha do CSV
+    expect(new Set(ralie.map((x) => x.data_base_ralie))).toEqual(new Set([r.data_ralie]));
     // não é a mesma lista: parte das usinas do RALIE está em outra fase do SIGA (ou fora dele)
     const fasesRalie = new Map<string, number>();
-    for (const r of ralie) fasesRalie.set(r.fase_siga, (fasesRalie.get(r.fase_siga) ?? 0) + 1);
-    expect(fasesRalie.get("Operação")).toBe(23);
-    expect(fasesRalie.get("Construção não iniciada")).toBe(2078);
+    for (const x of ralie) fasesRalie.set(x.fase_siga || "ausente do SIGA", (fasesRalie.get(x.fase_siga || "ausente do SIGA") ?? 0) + 1);
+    expect(fasesRalie.get("Operação")).toBeGreaterThan(0);
+    expect(new Map(r.fase_no_siga!.map((f) => [f.fase, f.usinas]))).toEqual(fasesRalie);
+    const n = (v: number) => v.toLocaleString("pt-BR");
+    const mw = (v: number) => `${v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} MW`;
+    const dt = (d: string) => d.split("-").reverse().join("/");
+    const partes = [...fasesRalie].sort((a, b) => b[1] - a[1])
+      .map(([f, u]) => `${n(u)} ${f === "ausente do SIGA" ? "fora do arquivo aberto do SIGA" : `na fase ${f} do SIGA`}`);
+    const fases = partes.length > 1 ? `${partes.slice(0, -1).join(", ")} e ${partes.at(-1)}` : partes[0];
     const h = entender(HTML.carteira);
-    expect(h).toContain("Os totais do RALIE e do SIGA são próximos, mas não são a mesma lista nem a mesma medida");
-    expect(h).toContain("o RALIE (18/09/2026) acompanha 2.246 usinas, com 95.888,3 MW em unidades geradoras em implantação (2.078 na fase Construção não iniciada do SIGA, 139 na fase Construção do SIGA, 23 na fase Operação do SIGA e 6 fora do arquivo aberto do SIGA)");
-    expect(h).toContain("o SIGA (30/09/2026) soma 2.244 usinas, com 96.298,0 MW de potência outorgada");
+    expect(h).toContain("Os totais do RALIE e do SIGA não são a mesma lista nem a mesma medida");
+    expect(h).not.toContain("são próximos");
+    expect(h).toContain(`o RALIE (${dt(r.data_ralie)}) acompanha ${n(ralie.length)} usinas, com ${mw(mwRalie)} em unidades geradoras em implantação (${fases})`);
+    expect(h).toContain(`o SIGA (${dt(XG.estagios.data_referencia)}) soma ${n(siga.length)} usinas, com ${mw(mwSiga)} de potência outorgada`);
   });
 
   it("em operação: o cartão (fiscalizada) e o gráfico (outorgada) têm medidas diferentes, e a página diz isso antes do gráfico", () => {
@@ -654,14 +668,19 @@ describe("conciliação: RALIE com 2.246 usinas e 95.888,3 MW contra SIGA com 14
   });
 });
 
-describe("conciliação: 177, 63 e 50 fotografias e as datas 22/09/2025 e 22/08/2025 (/expansao/cronograma)", () => {
-  it("50 é o número de janelas de confiabilidade (CSV); 177 e 63 são as fotografias publicadas e mensais; a página diz o uso de cada contagem", () => {
+describe("conciliação: fotografias publicadas, mensais, janelas de confiabilidade e pares de revisão (/expansao/cronograma)", () => {
+  // Gold de 30/09/2026: 177 fotografias, 63 mensais, 50 janelas (a última de 22/08/2025) e o último par de 22/09/2025 a
+  // 18/09/2026. As contagens e as datas são relidas do CSV de confiabilidade e conferidas contra a gold e o texto.
+  it("as janelas de confiabilidade vêm do CSV; fotografias publicadas e mensais são contagens maiores; a página diz o uso de cada contagem", () => {
     const conf = csv("public/energia/series/expansao_confiabilidade_previsoes.csv").filter((r) => r.tipo === "TOTAL");
-    expect(conf).toHaveLength(50);
-    expect(conf.at(-1)!.ralie).toBe("2025-08-22");
-    expect(conf.at(-1)!.fim_janela).toBe("2026-08-22");
     const c = XG.cronograma;
+    expect(conf.length).toBeGreaterThan(0);
     expect(c.confiabilidade.length).toBe(conf.length);
+    expect(conf.map((r) => [r.ralie, r.fim_janela])).toEqual(c.confiabilidade.map((x) => [x.ralie, x.fim_janela]));
+    // janela de 12 meses já encerrada na última fotografia publicada
+    const ult = conf.at(-1)!;
+    expect(ult.fim_janela).toBe(`${Number(ult.ralie.slice(0, 4)) + 1}${ult.ralie.slice(4)}`);
+    expect(ult.fim_janela <= c.historico_fonte.ultima_fotografia!).toBe(true);
     expect(c.historico_fonte.fotografias).toBeGreaterThan(c.historico_fonte.fotografias_mensais);
     expect(c.historico_fonte.fotografias_mensais).toBeGreaterThan(c.confiabilidade.length);
     expect(c.deslizamento.length).toBe(c.confiabilidade.length + 1);
@@ -672,14 +691,21 @@ describe("conciliação: 177, 63 e 50 fotografias e as datas 22/09/2025 e 22/08/
     );
   });
 
-  it("as duas datas do 'O que mudou' são de leituras diferentes: a última janela encerrada (22/08/2025) e o último par de 12 meses (22/09/2025 a 18/09/2026)", () => {
-    const d = XG.cronograma.deslizamento.at(-1)!;
-    expect(d.ralie).toBe("2025-09-22");
-    expect(d.ralie_seguinte).toBe("2026-09-18");
+  it("as duas datas do 'O que mudou' são de leituras diferentes: a última janela encerrada (CSV) e o último par de 12 meses", () => {
+    const c = XG.cronograma;
+    const conf = csv("public/energia/series/expansao_confiabilidade_previsoes.csv").filter((r) => r.tipo === "TOTAL").at(-1)!;
+    const d = c.deslizamento.at(-1)!;
+    // o último par termina na última fotografia publicada e começa cerca de 12 meses antes
+    expect(d.ralie_seguinte).toBe(c.historico_fonte.ultima_fotografia);
+    const dias = (Date.parse(d.ralie_seguinte) - Date.parse(d.ralie)) / 864e5;
+    expect(dias).toBeGreaterThan(330);
+    expect(dias).toBeLessThan(400);
+    expect(d.ralie).not.toBe(conf.ralie);
+    const dt = (v: string) => v.split("-").reverse().join("/");
     const h = entender(HTML.cronograma);
-    expect(h).toContain("As duas leituras terminam em fotografias diferentes: a confiabilidade usa a última janela de 12 meses já encerrada (previsões de 22/08/2025, janela até 22/08/2026), e a revisão compara a fotografia de 22/09/2025 com a de 18/09/2026");
-    expect(h).toContain("adiamento mediano, ponderado pela potência: 367 dias");
-    expect(h).not.toContain("mediana ponderada de 367 dias");
+    expect(h).toContain(`As duas leituras terminam em fotografias diferentes: a confiabilidade usa a última janela de 12 meses já encerrada (previsões de ${dt(conf.ralie)}, janela até ${dt(conf.fim_janela)}), e a revisão compara a fotografia de ${dt(d.ralie)} com a de ${dt(d.ralie_seguinte)}`);
+    expect(h).toContain(`adiamento mediano, ponderado pela potência: ${d.mediana_dias_ponderada!.toLocaleString("pt-BR")} dias`);
+    expect(h).not.toContain(`mediana ponderada de ${d.mediana_dias_ponderada!.toLocaleString("pt-BR")} dias`);
   });
 
   it("o cartão não chama a potência prevista de 'prometida' no texto de Entender", () => {

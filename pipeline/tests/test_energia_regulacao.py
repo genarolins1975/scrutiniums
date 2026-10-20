@@ -1061,8 +1061,44 @@ class GoldPublicada(unittest.TestCase):
                           proc[("PRORET", "Submódulo 4.3")]["conferencia_versao"]), ("1.3", "1.1", "diverge"))
         self.assertEqual(proc[("PRORET", "Submódulo 3.1 A")]["ato_na_pagina"], "Resolução Normativa nº 1.114/2025")
         self.assertEqual(proc[("PRORET", "Submódulo 9.3")]["ato_na_pagina"], "Despacho nº 3.606/2025")
-        p73 = proc[("PRORET", "Submódulo 7.3")]["atos_posteriores"][0]
-        self.assertEqual((p73["ato"], p73["ato_na_fonte"], p73["ato_suspeito"]), (None, "Resolução Normativa nº 3.354/2024", True))
+        # Ato que aprovou a versão 2.7 do PRORET 7.3 (ata de 23/07/2024). Nas atas de 30/09/2026 a ANEEL o registrava como
+        # "Resolução Normativa nº 3.354/2024", número fora da faixa das REN: publicado como suspeito, sem `ato`. No CSV das
+        # atas de 16/10/2026 a mesma linha passou a "Resolução Homologatória" e o número cabe na faixa das REH. A conferência
+        # não depende do registro do dia: (1) o nome na fonte é o da linha da ata, relida do bronze; (2) a suspeita é a da
+        # faixa do tipo, recalculada aqui sobre o mesmo CSV; (3) o leitor das consultas, que lê a mesma linha como resultado
+        # da CP, publica o mesmo nome e o mesmo veredito; (4) ato suspeito nunca é publicado como `ato` e vira ressalva.
+        p73_item = proc[("PRORET", "Submódulo 7.3")]
+        p73 = p73_item["atos_posteriores"][0]
+        self.assertEqual(p73["data"], "2024-07-23")
+        self.assertIn("versão 2.7 do Submódulo 7.3", p73["trecho"])
+        suspeitos = [a for i in proc.values() for a in i["atos_posteriores"] if a["ato_suspeito"]]
+        self.assertTrue(all(a["ato"] is None and a["ato_na_fonte"] in a["motivo_ato_suspeito"] for a in suspeitos))
+        self.assertTrue(all(a["ato"] == a["ato_na_fonte"] and a["motivo_ato_suspeito"] is None
+                            for i in proc.values() for a in i["atos_posteriores"] if a["ato_suspeito"] is False))
+        if p73["ato_suspeito"]:
+            self.assertIn(f"número de ato suspeito nas atas: {p73['motivo_ato_suspeito']}", p73_item["ressalvas"])
+        else:
+            self.assertFalse([r for r in p73_item["ressalvas"] if p73["ato_na_fonte"] in r])
+        with open(os.path.join(base.RAIZ, "public", "energia", "series", m.CSV_CONS), encoding="utf-8", newline="") as f:
+            mesma_linha = [r for r in csv.DictReader(f, delimiter=";")
+                           if r["resultado_data"] == p73["data"] and r["resultado_ato_na_ata"] == p73["ato_na_fonte"]]
+        self.assertEqual(len(mesma_linha), 1, p73["ato_na_fonte"])
+        self.assertEqual(mesma_linha[0]["resultado_ato_suspeito"], str(int(p73["ato_suspeito"])))
+        pasta = os.path.join(base.BRONZE, "aneel", "aneel_pautas_atas_diretoria", "pautas-atas-reunioes-publicas-diretoria.csv")
+        if os.path.isdir(pasta) and os.listdir(pasta):
+            with gzip.open(os.path.join(pasta, sorted(os.listdir(pasta))[-1]), "rt", encoding="utf-8", newline="") as f:
+                atas = list(csv.DictReader(f, delimiter=";"))
+            linha = next(a for a in atas if a["DatReuniao"] == p73["data"] and "versão 2.7 do Submódulo 7.3" in a["TxtDecisaoJulgamento"])
+            inteiro = lambda x: int(re.sub(r"\D", "", x or "") or 0)  # noqa: E731  (o CSV traz "3354" e "3.173")
+            tipo, num, ano = linha["NomTipoAtoAdministrativo"], inteiro(linha["NumAtoAdministrativo"]), int(p73["data"][:4])
+            self.assertEqual(p73["ato_na_fonte"], f"{tipo} nº {num:,}/{ano}".replace(",", "."))
+            serie = sorted(inteiro(a["NumAtoAdministrativo"]) for a in atas
+                           if a["NomTipoAtoAdministrativo"] == tipo and a["DscResultadoJulgamento"] in ("Deliberado", "Parcialmente Deliberado")
+                           and int(a["DatReuniao"][:4]) in (ano - 1, ano, ano + 1) and inteiro(a["NumAtoAdministrativo"]) > 0)
+            k = len(serie) // 2
+            mediana = serie[k] if len(serie) % 2 else (serie[k - 1] + serie[k]) / 2
+            self.assertGreaterEqual(len(serie), 5)
+            self.assertEqual(p73["ato_suspeito"], not (0.5 * mediana <= num <= 1.5 * mediana), (tipo, num, mediana))
         ev = {e["id"]: e for e in g["linha_do_tempo"]["eventos"]}
         self.assertIn("bandeiras-acionamento-2015-09-vermelha-p1", ev)
         self.assertIn("bandeiras-acionamento-2017-11-vermelha-p2", ev)

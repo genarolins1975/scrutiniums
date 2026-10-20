@@ -659,6 +659,18 @@ class GoldPublicada(unittest.TestCase):
         with open(os.path.join(RAIZ, "public") + url, encoding="utf-8") as f:
             return list(csv.DictReader(f, delimiter=";"))
 
+    def test_eolica_abaixo_do_balanco_e_a_lista_inteira(self):
+        # a página nomeia esses dias: a lista não pode depender do corte das 15 maiores divergências
+        rec = self.g["matriz"]["reconciliacao_balanco"]
+        lista = rec["eolica_abaixo_de_10pct_das_usinas"]
+        for x in lista:
+            self.assertLess(x["balanco_mwh"], gd.LIMIAR_BALANCO_EOLICA * x["usinas_mwh"], x)
+        chaves = [(x["d"], x["sm"]) for x in lista]
+        self.assertEqual(chaves, sorted(set(chaves)))
+        for x in rec["maiores_divergencias"]:
+            if x["fonte"] == "eolica" and x["usinas_mwh"] and x["balanco_mwh"] < gd.LIMIAR_BALANCO_EOLICA * x["usinas_mwh"]:
+                self.assertIn((x["d"], x["sm"]), chaves)
+
     def test_disponivel_tamanho_e_paineis(self):
         self.assertTrue(self.g["disponivel"])
         self.assertEqual(self.g["paineis"], ["P021", "P022", "P023", "P024"])
@@ -714,8 +726,11 @@ class GoldPublicada(unittest.TestCase):
                 if x["fonte"] == fonte and u["inicio"] <= x["mes"] <= u["fim"]:
                     eng += sum(float(x[f"eng_{k}_mwh"] or 0) for k in ("REL", "CNF", "ENE", "PAR", "SEM"))
                     ger += float(x["geracao_verificada_mwh"] or 0)
-            self.assertAlmostEqual(eng, u["energia_nao_gerada_mwh"], delta=1.0)  # arredondamento de 0,001 MWh por linha
-            self.assertAlmostEqual(ger, u["geracao_verificada_mwh"], delta=1.0)
+            # o CSV sai na precisão do silver (múltiplos de 0,0005 MWh, CASAS_MWH_USINA): a soma só difere
+            # do total pelo arredondamento da gold a 0,1 MWh. Com 3 casas, o meio arredondado para cima
+            # somava +1,09 MWh nas eólicas da gold de 20/10/2026 e a tolerância de 1,0 MWh não bastava.
+            self.assertAlmostEqual(eng, u["energia_nao_gerada_mwh"], delta=0.06)
+            self.assertAlmostEqual(ger, u["geracao_verificada_mwh"], delta=0.06)
             self.assertAlmostEqual(100 * eng / (eng + ger), u["taxa_pct"], delta=0.01)
 
     def test_termica_12m_igual_ao_csv_por_usina_e_combustivel_separado(self):

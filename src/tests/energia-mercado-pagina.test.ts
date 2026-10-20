@@ -10,7 +10,7 @@ import MercadoEncargosPage from "@/app/setor-eletrico/mercado/encargos/page";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import type { CatalogoDados } from "@/lib/energia/tipos-dados";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
-import { num } from "@/lib/energia/formato";
+import { mesAno, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   PAGINAS_MERCADO,
@@ -241,16 +241,28 @@ describe("mercado: páginas", () => {
   } as const;
   const ids = { "livre-regulado": "P032", agentes: "P033", "mre-gsf": "P034", encargos: "P035" } as const;
 
-  it("GSF de 12 meses: a diferença com o InfoMercado diz a janela em que foi calculada, que não é a do cartão (r6, R4)", () => {
+  it("GSF de 12 meses: a diferença com o InfoMercado diz a janela em que foi calculada e se ela é a do cartão (r6, R4)", () => {
     const g = lerGold<MercadoGold>("mercado.json");
     const div = integra(g) ? g.mre_gsf.reconciliacao_infomercado.find((x) => x.medida === "gsf_12m_pct" && x.resultado !== "aprovado") : undefined;
     if (!div || div.calculado === null || div.diferenca === null) return;
     const html = paginas["mre-gsf"];
-    expect(html).toContain("na mesma janela");
     expect(html).toContain(`${num(div.calculado, 2)}%`);
-    expect(html).toContain(`${num(Math.abs(div.diferenca), 2)} pontos percentuais abaixo`);
-    // o cartão mostra outra janela; o texto não pode sugerir que a diferença é contra o valor do cartão
-    expect(html).toContain("O valor do cartão é o da janela mais recente");
+    expect(html).toContain(`${num(Math.abs(div.diferenca), 2)} pontos percentuais ${div.diferenca < 0 ? "abaixo" : "acima"}`);
+    const [a, m] = div.mes.split("-").map(Number);
+    const ini = `${m === 12 ? a : a - 1}-${String((m % 12) + 1).padStart(2, "0")}`;
+    const janela = `${mesAno(ini)} a ${mesAno(div.mes)}`;
+    const cartao = g!.mre_gsf.kpis.gsf_12m;
+    if (cartao && cartao.periodo.fim === div.mes) {
+      // o boletim cobre a janela do cartão (gold de 20/10/2026, InfoMercado de ago/2026): mesmo recorte, e o texto diz que o
+      // valor calculado é o do cartão
+      expect(html).toContain(`Dois valores, o mesmo recorte (${janela})`);
+      expect(html).toContain(`que é o valor do cartão, dá ${num(div.calculado, 2)}%`);
+      expect(html).not.toContain("O valor do cartão é o da janela mais recente");
+    } else {
+      // o cartão mostra outra janela (gold de 30/09/2026); o texto não pode sugerir que a diferença é contra o valor do cartão
+      expect(html).toContain(`na mesma janela (${janela})`);
+      expect(html).toContain("O valor do cartão é o da janela mais recente");
+    }
   });
 
   it("anatomia da seção 7.2 em cada painel: resposta da gold, prova, recorte, tabela, download, link e próxima pergunta", () => {

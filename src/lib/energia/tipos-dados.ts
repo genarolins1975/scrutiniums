@@ -167,6 +167,14 @@ export type EventoRevisao = {
   recurso: string;
 };
 
+/** Resumo de uma contagem por dia de captura (UTC): o total é `eventos` (ou `mudancas`); cada dia está em dados_calendario.csv. */
+export type ResumoPorCaptura = {
+  dias: number;
+  primeiro: string;
+  ultimo: string;
+  eventos_no_ultimo: number;
+};
+
 export type Revisoes = {
   eventos?: number;
   /** Pares (série, referência) revisados entre capturas do mesmo arquivo. */
@@ -179,8 +187,11 @@ export type Revisoes = {
   a_partir_de_zero?: number;
   maior_abs?: EventoRevisao | null;
   maior_rel?: EventoRevisao | null;
-  /** Dia da captura (UTC) → eventos de revisão (observações revisadas) trazidos pela captura. */
-  por_captura?: Record<string, number>;
+  /**
+   * Resumo dos eventos de revisão (observações revisadas) por dia de captura (UTC). A contagem de cada dia está em
+   * dados_calendario.csv (observacoes_revisadas); até a gold de 20/10/2026 vinha aqui como `por_captura`, que crescia um item por dia.
+   */
+  por_captura_resumo?: ResumoPorCaptura | null;
   /** Mesma (série, referência) com valores diferentes em arquivos diferentes: não é revisão da fonte. */
   conflitos_entre_recursos?: {
     referencias: number;
@@ -196,7 +207,8 @@ export type Revisoes = {
     chaves?: number;
     campos?: Record<string, number>;
     apagados_pela_fonte?: number;
-    por_captura?: Record<string, number>;
+    /** Resumo dos campos alterados por dia de captura; a contagem de cada dia está em dados_calendario.csv (registros_alterados). */
+    por_captura_resumo?: ResumoPorCaptura | null;
     metadado_do_arquivo?: number;
     conflitos_entre_recursos?: {
       /** Pares (chave, campo) com valores diferentes entre arquivos. */

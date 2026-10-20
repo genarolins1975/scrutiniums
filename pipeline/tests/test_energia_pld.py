@@ -839,6 +839,13 @@ class ConstrucaoDaGold(unittest.TestCase):
                 a, b = x["par"].split("_")
                 self.assertEqual(x["frac_separadas"], mt["frac_separadas"][m.SM.index(a)][m.SM.index(b)])
 
+    def test_fracao_separada_sem_duplo_arredondamento(self):
+        # a página escreve a fração em % com 1 casa: a fração publicada tem de estar a menos de meio milionésimo da
+        # contagem (com 4 casas, 302 de 8.760 horas saía 0,0345 e virava 3,5% em vez de 3,4%; gold de 20/10/2026)
+        for x in self.g["regional"]["separacao"]:
+            if x["horas"]:
+                self.assertAlmostEqual(x["frac_separadas"], x["horas_separadas"] / x["horas"], delta=5e-7, msg=(x["periodo"], x["par"]))
+
     def test_ponderada_so_nas_horas_com_carga(self):
         mh = self.g["historico"]["mensal"]
         i = mh["meses"].index("2026-09")

@@ -8,6 +8,8 @@ import json
 import os
 import sys
 import unittest
+import tempfile
+from unittest.mock import patch
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 _spec = importlib.util.spec_from_file_location("energia_avaliacao", os.path.join(RAIZ, "scripts", "energia_avaliacao.py"))
@@ -494,6 +496,16 @@ class GoldPublicada(unittest.TestCase):
         for chave in ("paginas", "modulos", "defeitos"):
             self.assertEqual(json.loads(json.dumps(nova[chave])), self.a[chave], chave)
         self.assertEqual(nova["resumo"], self.a["resumo"])
+
+    def test_notas_nao_dependem_da_gold_do_dia(self):
+        """A rodada lê das golds o retrato versionado (evidencia_golds.json), não a gold do disco:
+        com a gold de 20/10/2026 as notas de uma rodada publicada mudavam (8,7 para 8,5)."""
+        class Args:
+            rodada = self.a["rodada"]["id"]
+        with tempfile.TemporaryDirectory() as vazio, patch.object(ea, "GOLD_DIR", vazio):
+            nova, _ = ea.monta_saida(Args)
+        for chave in ("paginas", "modulos", "defeitos"):
+            self.assertEqual(json.loads(json.dumps(nova[chave])), self.a[chave], chave)
 
     def test_jornadas_sao_dez_e_nao_se_chamam_teste_com_usuarios(self):
         self.assertEqual(len(self.a["jornadas"]), 10)

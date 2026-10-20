@@ -326,8 +326,15 @@ describe("gráfico, tabela e exportação usam as mesmas linhas, conferidas cont
       const col = COLUNAS_CARTEIRA_UF.findIndex((c) => c.id === `${m}_mw`);
       car.forEach((l, i) => expect(exp.linhas[i][col], `${m} ${l.id}`).toBe(v[CODIGO_UF[l.id]]));
     }
-    // RALIE por UF: zero observado onde a UF não tem usina, nunca null
-    expect(car.find((l) => l.id === "AC")!.ralie_mw).toBe(0);
+    // RALIE por UF: zero observado onde a UF não tem usina, nunca null. A soma por UF é relida do CSV da carteira do RALIE
+    // (na gold de 30/09/2026 o Acre não tinha usina; na de 20/10/2026 tem uma, e Distrito Federal e Roraima ficam em zero)
+    const porUf = new Map<string, number>();
+    for (const r of csv("expansao_carteira_ralie.csv")) porUf.set(r.uf, (porUf.get(r.uf) ?? 0) + Number(r.kw_ugs_em_implantacao || 0) / 1e3);
+    for (const l of car) {
+      expect(typeof l.ralie_mw, l.id).toBe("number");
+      expect(l.ralie_mw!, l.id).toBeCloseTo(porUf.get(l.id) ?? 0, 0);
+      if (!porUf.has(l.id)) expect(l.ralie_mw, l.id).toBe(0);
+    }
     const rede = linhasGeracaoRedeUf(G);
     for (const m of MEDIDAS_REDE) {
       const v = valoresMapaRede(rede, m);

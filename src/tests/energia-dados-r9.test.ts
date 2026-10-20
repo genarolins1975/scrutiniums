@@ -292,10 +292,16 @@ describe("Metodologia: porta de entrada por tarefa, linhagem, exemplo reproduzí
   it("a nota das checagens reprovadas está na faixa e na seção própria, com o que a releitura mostra", () => {
     const reprovados = Array.from(validacoesDosCsv()).filter((par) => par[1].veredito === "reprovado").map((par) => estadoDoArquivo(`/energia/series/${par[0]}`, pub, man));
     const n = textoChecagensReprovadas(reprovados, pub.resumo.validacao.reprovado);
-    expect(n.frase).not.toBe("");
-    expect(t).toContain(n.curta);
-    expect(t).toContain(n.frase);
     expect(h).toContain('id="checagens"');
+    // na publicação de 01/10/2026 havia CSV reprovado; sem reprovação, não há nota (nunca uma nota vazia ou com zero)
+    if (reprovados.some((e) => e.veredito === "reprovado") && pub.resumo.validacao.reprovado > 0) {
+      expect(n.frase).not.toBe("");
+      expect(t).toContain(n.curta);
+      expect(t).toContain(n.frase);
+    } else {
+      expect(n).toEqual({ curta: "", frase: "", tecnico: "" });
+      expect(t).not.toMatch(/arquivos? reprovados?; |checage(m|ns) reprovadas? (é|são|estão em)/);
+    }
   });
 
   it("a lista abre na primeira página, sem a regra de nenhum indicador no HTML, e a tabela completa fica em Analisar", () => {

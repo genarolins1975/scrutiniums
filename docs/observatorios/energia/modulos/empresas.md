@@ -2,6 +2,8 @@
 
 Documento de método do módulo `empresas` (rotas `/setor-eletrico/empresas` e `/setor-eletrico/empresas/[entidade]`, família de silver `empresas`, ordem 60). Estado em 01/10/2026, fim da fase de dados com as correções das duas rodadas de verificação adversarial (seção 7): coleta, silver, gold, métricas, tipos TypeScript e testes prontos; as páginas ainda não foram escritas (fase de interface).
 
+Recoleta de 20/10/2026 (gold reconstruída com o bronze recuperado; os números do resto deste documento são os de 01/10/2026 e as conferências da seção 7 valem para as capturas citadas nelas): o SIGET de 15/10/2026 tem 16.854 módulos em 413 contratos (16.856 em 29/09/2026: 1.565 módulos de linha em vez de 1.567, 4.319 de equipamento em vez de 4.318 e 9.967 do tipo MM em vez de 9.968), 100% com CNPJ, 298 concessionárias com módulos, 114 CNPJs completados com zeros à esquerda, 135.838,6 km de circuito e 626 subestações com equipamento em operação; o índice da CVM recapturado tem 512 documentos com mais de uma versão distinta (511 em 01/10/2026) e 4 observações revisadas entre capturas. Os demais números citados abaixo e conferidos pelo teste do documento (9.998 agentes, 473 e 490 com o ramo transmissão, 2.134 valores reapresentados, 144 inversões de escala, 63 documentos com escala convertida, 139 evidências) não mudaram.
+
 Arquivos do módulo:
 
 | Camada | Caminho |

@@ -193,7 +193,10 @@ REGISTRO = {
         U["calendario"]: (
             "dia (data UTC da captura); familia; dataset; capturas_novas (vintages com conteúdo novo); recapturas_sem_mudanca "
             "(downloads idênticos à vintage vigente); falhas (tentativas sem êxito); observacoes_revisadas (pares série e "
-            "referência cujo valor mudou na captura do dia, em relação à captura anterior do mesmo arquivo); publicacoes_fonte (arquivos com last_modified informado pela fonte naquele dia)."),
+            "referência cujo valor mudou na captura do dia, em relação à captura anterior do mesmo arquivo); publicacoes_fonte (arquivos com last_modified informado pela fonte naquele dia); "
+            "registros_alterados (campos de cadastro ou ato alterados na captura do dia, em relação à captura anterior do mesmo arquivo). "
+            "Janela de 120 dias; antes dela, só os dias cuja captura trouxe revisão, para que a contagem por captura fique inteira "
+            "(publicacao.json leva por conjunto só o resumo: dias, primeiro, último, total e eventos do último dia)."),
         U["catalogo"]: (
             "Uma linha por conjunto do catálogo: id (órgão:nome); orgao; nome; titulo; estado; papeis; descontinuado (1/0) e "
             "motivo; frequencia_declarada; recurso_verificado_em (UTC); integracoes (datasets do silver); golds; recursos "
@@ -631,6 +634,19 @@ def _poucos_arquivos(valores, n=4):
     return dict([itens[0]] + itens[-(n - 1):])
 
 
+# A contagem de revisões por dia de captura crescia um item por dia em cada conjunto revisado: com 151 conjuntos e
+# capturas diárias, publicacao.json passou de 400 KB para 507 KB em 20 dias (execução de 20/10/2026). A contagem por dia
+# sai em dados_calendario.csv (observacoes_revisadas e registros_alterados, por conjunto e dia, também antes da janela do
+# calendário quando o dia trouxe revisão); a gold leva por conjunto o resumo, de tamanho fixo.
+def _resumo_por_captura(por_captura):
+    """{dias, primeiro, ultimo, eventos_no_ultimo} da contagem por dia de captura, ou None sem contagem (o total já é
+    `eventos` ou `mudancas`; cada dia está em dados_calendario.csv)."""
+    if not por_captura:
+        return None
+    dias = sorted(por_captura)
+    return {"dias": len(dias), "primeiro": dias[0], "ultimo": dias[-1], "eventos_no_ultimo": por_captura[dias[-1]]}
+
+
 def _resumo_revisao(an):
     rv = (an or {}).get("revisoes")
     rr = (an or {}).get("revisoes_registros")
@@ -654,14 +670,15 @@ def _resumo_revisao(an):
         out.update({"eventos": rv["eventos"], "observacoes": rv["observacoes_revisadas"], "referencias": rv["referencias_revisadas"],
                     "series": rv["series_afetadas"],
                     "ref_min": rv["ref_min"], "ref_max": rv["ref_max"], "a_partir_de_zero": rv["a_partir_de_zero"],
-                    "maior_abs": ev_(rv["maior_abs"]), "maior_rel": ev_(rv["maior_rel"]), "por_captura": rv["por_captura"]})
+                    "maior_abs": ev_(rv["maior_abs"]), "maior_rel": ev_(rv["maior_rel"]),
+                    "por_captura_resumo": _resumo_por_captura(rv["por_captura"])})
     if rr:
         # mudanças entre capturas do MESMO arquivo; diferenças entre arquivos do conjunto
         # (anos diferentes, listas de anos diferentes) são conflito entre recursos, à parte
         reg = {}
         if rr.get("mudancas"):
             reg.update({"mudancas": rr["mudancas"], "chaves": rr["chaves_afetadas"], "campos": rr["campos"],
-                        "apagados_pela_fonte": rr["apagados_pela_fonte"], "por_captura": rr["por_captura"]})
+                        "apagados_pela_fonte": rr["apagados_pela_fonte"], "por_captura_resumo": _resumo_por_captura(rr["por_captura"])})
         if rr.get("metadado_do_arquivo"):
             reg["metadado_do_arquivo"] = rr["metadado_do_arquivo"]
         if rr.get("conflitos_entre_recursos"):
@@ -957,14 +974,20 @@ def calendario(lista, hoje):
             dias[dia]["_ok"] += ok
         for dia, n in ((an.get("revisoes") or {}).get("por_captura") or {}).items():
             dias[dia]["observacoes_revisadas"] += n
+        for dia, n in ((an.get("revisoes_registros") or {}).get("por_captura") or {}).items():
+            dias[dia]["registros_alterados"] += n
         for dia, cnt in dias.items():
-            if dia < inicio or dia > hoje.isoformat():
+            revisao = cnt["observacoes_revisadas"] or cnt["registros_alterados"]
+            # antes da janela, só o dia com revisão (a contagem por captura saiu de publicacao.json e fica inteira aqui)
+            if dia > hoje.isoformat() or (dia < inicio and not revisao):
                 continue
             rec = max(0, cnt["_ok"] - cnt["capturas_novas"])
             row = {"dia": dia, "familia": x["familia"], "dataset": x["dataset_silver"], "capturas_novas": cnt["capturas_novas"],
                    "recapturas_sem_mudanca": rec, "falhas": cnt["falhas"], "observacoes_revisadas": cnt["observacoes_revisadas"],
-                   "publicacoes_fonte": cnt["publicacoes_fonte"]}
+                   "publicacoes_fonte": cnt["publicacoes_fonte"], "registros_alterados": cnt["registros_alterados"]}
             linhas.append(row)
+            if dia < inicio:
+                continue
             t = total[dia]
             for k in ("capturas_novas", "recapturas_sem_mudanca", "falhas", "observacoes_revisadas", "publicacoes_fonte"):
                 t[k] += row[k]
@@ -1215,9 +1238,9 @@ def escreve_csvs(lista, todas_checagens, cal_linhas, cat, eixos_linhas, descrico
     _csv(CSV["revisoes"], ["familia", "dataset", "serie", "ref", "valor_anterior", "valor_novo", "diferenca",
                            "diferenca_relativa_pct", "capturado_anterior", "capturado_novo", "recurso"], rev)
     _csv(CSV["calendario"], ["dia", "familia", "dataset", "capturas_novas", "recapturas_sem_mudanca", "falhas",
-                             "observacoes_revisadas", "publicacoes_fonte"],
+                             "observacoes_revisadas", "publicacoes_fonte", "registros_alterados"],
          [[r["dia"], r["familia"], r["dataset"], r["capturas_novas"], r["recapturas_sem_mudanca"], r["falhas"],
-           r["observacoes_revisadas"], r["publicacoes_fonte"]] for r in cal_linhas])
+           r["observacoes_revisadas"], r["publicacoes_fonte"], r["registros_alterados"]] for r in cal_linhas])
     _csv(CSV["catalogo"], ["id", "orgao", "nome", "titulo", "estado", "papeis", "descontinuado", "motivo_descontinuacao",
                            "frequencia_declarada", "recurso_verificado_em", "integracoes", "golds", "recursos", "recursos_acessados",
                            "recursos_integrados", "recursos_removidos", "url", "licenca", "metadados_verificados", "descricao"],

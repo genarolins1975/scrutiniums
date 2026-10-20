@@ -1281,16 +1281,16 @@ export function textoCoberturaTarifa(c: CoberturaTarifa, idioma: Idioma = idioma
   const recentes =
     c.foraRecente > 0
       ? tx(
-          `${n(c.foraRecente)} tiveram a vigência encerrada nos 90 dias anteriores e a tarifa seguinte ainda não constava no arquivo da ANEEL gerado em ${data}${c.naVespera > 0 ? ` (${n(c.naVespera)} delas com a vigência encerrada em ${vespera})` : ""}`,
-          `${n(c.foraRecente)} had their validity period end in the previous 90 days and the next tariff was not yet in the ANEEL file generated on ${data}${c.naVespera > 0 ? ` (${n(c.naVespera)} of them with the validity period ending on ${vespera})` : ""}`,
+          `${n(c.foraRecente)} ${c.foraRecente === 1 ? "teve" : "tiveram"} a vigência encerrada nos 90 dias anteriores e a tarifa seguinte ainda não constava no arquivo da ANEEL gerado em ${data}${c.naVespera > 0 ? ` (${n(c.naVespera)} delas com a vigência encerrada em ${vespera})` : ""}`,
+          `${n(c.foraRecente)} ${c.foraRecente === 1 ? "had its" : "had their"} validity period end in the previous 90 days and the next tariff was not yet in the ANEEL file generated on ${data}${c.naVespera > 0 ? ` (${n(c.naVespera)} of them with the validity period ending on ${vespera})` : ""}`,
           idioma,
         )
       : "";
   const antigas =
     c.foraAntigas > 0
       ? tx(
-          `${n(c.foraAntigas)} estão sem tarifa há mais de 90 dias${c.incorporadas > 0 ? ` (${n(c.incorporadas)} incorporadas por outra distribuidora)` : ""}`,
-          `${n(c.foraAntigas)} have had no tariff for more than 90 days${c.incorporadas > 0 ? ` (${n(c.incorporadas)} merged into another distribution utility)` : ""}`,
+          `${n(c.foraAntigas)} ${c.foraAntigas === 1 ? "está" : "estão"} sem tarifa há mais de 90 dias${c.incorporadas > 0 ? ` (${n(c.incorporadas)} incorporadas por outra distribuidora)` : ""}`,
+          `${n(c.foraAntigas)} ${c.foraAntigas === 1 ? "has had" : "have had"} no tariff for more than 90 days${c.incorporadas > 0 ? ` (${n(c.incorporadas)} merged into another distribution utility)` : ""}`,
           idioma,
         )
       : "";

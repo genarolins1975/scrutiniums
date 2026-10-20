@@ -189,8 +189,10 @@ describe("Visão geral: veredito à vista e resposta completa por trás", () => 
     const carga = G.multiplos!.paineis.find((p) => p.id === "carga")!;
     const hoje = carga.valor_atual.valor!;
     const ano = G.multiplos!.dados.find((l) => l.d === carga.data_referencia)!.carga_ano_anterior as number;
-    const pct = (100 * (hoje / ano - 1)).toFixed(1).replace(".", ",");
+    // magnitude com a direção em palavra (a gold de 20/10/2026 trouxe a primeira variação negativa: "1,6% abaixo")
+    const pct = Math.abs(100 * (hoje / ano - 1)).toFixed(1).replace(".", ",");
     expect(v).toContain(`${pct}% ${hoje > ano ? "acima" : "abaixo"} do mesmo dia da semana do ano anterior`);
+    expect(v).not.toContain(`-${pct}%`);
     expect(v).toContain("sem comparação com limites de intercâmbio");
   });
 
@@ -230,12 +232,16 @@ describe("Visão geral: veredito à vista e resposta completa por trás", () => 
     expect(e).not.toMatch(/\b(ear_faixa|ena_faixa|carga_extrema|pld_piso|pld_teto|restricao_eolica|restricao_solar|revisao_material)\b/i);
     expect(e).not.toMatch(/\bEAR_FAIXA|ENA_FAIXA|CARGA_EXTREMA|PLD_PISO|PLD_TETO|RESTRICAO_EOLICA|RESTRICAO_SOLAR|REVISAO_MATERIAL/);
     expect(e).not.toMatch(IDENTIFICADOR);
-    expect(e).not.toMatch(/silver principal|sintese\.json|energia-0\.1\.0|685bb4bc29fd|aneel_scs|\bhoje\b/);
+    expect(e).not.toMatch(/silver principal|sintese\.json|energia-0\.1\.0|aneel_scs|\bhoje\b/);
+    // a versão do código é a da gold publicada (685bb4bc29fd em 30/09/2026): fora de Entender, presente na página
+    const versao = (G as unknown as { versao_codigo: string }).versao_codigo.split("+")[0];
+    expect(versao).toMatch(/^[0-9a-f]{12}$/);
+    expect(e).not.toContain(versao);
     // em Analisar o código volta
     expect(texto(html)).toContain("código ear_faixa");
     // o código do painel (P004) é nome interno: nenhum nível o mostra mais
     expect(html).not.toMatch(/data-nivel="analisar"[^>]*>\s*P004/);
-    expect(html).toContain("685bb4bc29fd");
+    expect(html).toContain(versao);
   });
 
   it("o botão de prova anuncia o nome do número, e não o identificador da gold", () => {
@@ -294,8 +300,10 @@ describe("Visão geral: carga em duas janelas (7 dias e o dia), classificação 
     expect(sete.replace("-", "")).toBe(f1(v7));
     expect(um.replace("-", "")).toBe(f1(100 * (painel.valor_atual.valor! / ano - 1)));
     const nota = notaCarga(G)!;
-    expect(nota).toContain(`${sete}%`);
-    expect(nota).toContain(`${um}%`);
+    // a nota escreve a magnitude e a direção ("4,9% acima", "1,6% abaixo"), nunca o sinal
+    const direcao = (t: string) => `${t.replace("-", "")}% ${t.startsWith("-") ? "abaixo" : "acima"}`;
+    expect(nota).toContain(direcao(sete));
+    expect(nota).toContain(direcao(um));
     expect(nota).toContain("não precisam coincidir");
     // as datas da nota são as das janelas reais
     expect(nota).toContain(`${dia(fim, -6).split("-").reverse().join("/")} a ${fim.split("-").reverse().join("/")}`);
@@ -310,13 +318,15 @@ describe("Visão geral: carga em duas janelas (7 dias e o dia), classificação 
   });
 });
 
-describe("Visão geral: rede, média de 30 dias e fluxo do dia (4.842 e 5.184 MWmed), classificação 2", () => {
-  it("relendo rede.json: a fronteira NE_SE tem média de 30 dias de 4.842 e fluxo do dia de 5.184", () => {
+describe("Visão geral: rede, média de 30 dias e fluxo do dia, classificação 2", () => {
+  it("relendo rede.json: a fronteira NE_SE tem a média de 30 dias e o fluxo do dia da nota", () => {
     const r = json<{ dia_referencia: string; fronteiras: { par: string; fluxo_dia: number; fluxo_media_30d: number }[] }>("public/energia/gold/rede.json");
     const f = r.fronteiras.find((x) => x.par === "NE_SE")!;
     const nota = notaRede(G)!;
-    expect(nota).toContain(f.fluxo_media_30d.toLocaleString("pt-BR"));
-    expect(nota).toContain(f.fluxo_dia.toLocaleString("pt-BR"));
+    // fluxo com sinal no sentido da fronteira, com o sinal de menos tipográfico da página (−1.846 em 18/10/2026)
+    const mw = (v: number) => `${v < 0 ? "\u2212" : ""}${Math.abs(v).toLocaleString("pt-BR")} MWmed`;
+    expect(nota).toContain(`(${mw(f.fluxo_media_30d)})`);
+    expect(nota).toContain(`(${mw(f.fluxo_dia)})`);
     expect(nota).toContain(r.dia_referencia.split("-").reverse().join("/"));
     expect(nota).toContain("Média de 30 dias e valor de um dia não precisam coincidir");
     expect(pagina.visao()).toContain('data-nota-frase="rede"');

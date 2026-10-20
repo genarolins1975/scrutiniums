@@ -6,6 +6,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { VisaoRegraDetalhe, VisaoRegraResumo } from "@/components/energia/VisaoRegras";
 import PaginaVisaoGeral from "@/app/setor-eletrico/visao-geral/page";
 import { carregaJson, lerCaminho } from "@/lib/energia/carregaJson";
+import { estadoDoArquivo, manifestoDados, publicacaoDados } from "@/lib/energia/dados-servidor";
 import { num } from "@/lib/energia/formato";
 import { ANCORAS_VISAO_GERAL } from "@/lib/energia/mapa";
 import type { CargaGold, GeracaoGold, HidrologiaGold, PldGold, RedeGold } from "@/lib/energia/tipos";
@@ -371,7 +372,15 @@ describe("P005: recorte, séries, posição e leitura dos determinantes", () => 
     expect(leituras).toHaveLength(M.paineis.length);
     for (const [i, p] of Array.from(M.paineis.entries())) {
       expect(leituras[i]).toContain(p.titulo);
-      if (p.valor_atual.valor !== null) expect(leituras[i]).toContain(comUnidade(p.valor_atual.valor, p.unidade, p.casas).replace(/^R\$ /, ""));
+      if (p.valor_atual.valor === null) continue;
+      const v = p.valor_atual.valor;
+      if (posicaoDeterminante(p as PainelDeterminante, M).situacao === "sentido") {
+        // rede: o sinal vira o sentido escrito (fluxo negativo de NE → SE/CO em 18/10/2026 é "de Sudeste/Centro-Oeste para Nordeste")
+        const [de, para] = (p.valor_atual.rotulo ?? "").split(" → ");
+        expect(leituras[i]).toContain(comUnidade(Math.abs(v), p.unidade, p.casas));
+        if (de && para) expect(leituras[i]).toContain(v >= 0 ? `de ${de} para ${para}` : `de ${para} para ${de}`);
+        expect(leituras[i]).not.toContain(`\u2212${comUnidade(Math.abs(v), p.unidade, p.casas)}`);
+      } else expect(leituras[i]).toContain(comUnidade(v, p.unidade, p.casas).replace(/^R\$ /, ""));
     }
     const p = clone(M.paineis.find((x) => x.id === "carga") as PainelDeterminante);
     const antes = leituraDeterminante(p, M);
@@ -869,10 +878,21 @@ describe("r2: Visão geral", () => {
   it("os dois CSV de Regras mostram o estado da validação junto do link; o 'reprovado' de uma versão anterior vem explicado sem tocar na publicação", () => {
     expect(html).toContain('data-arquivo="/energia/series/sintese_regras_diario.csv"');
     expect(T).toContain("Arquivos para baixar e o estado de cada um");
-    expect(html).toContain('data-estado-arquivo="reprovado"');
-    expect(T).toContain("Validação automática: reprovada na versão de");
-    expect(T).toContain("o arquivo publicado é outra versão");
-    expect(T).toContain("Relido como CSV, o arquivo publicado tem");
+    // o estado de cada CSV é o que o relatório de validação de publicacao.json registra (na publicação de 01/10/2026, um
+    // reprovado numa versão anterior do arquivo); a página diz esse estado, qualquer que seja
+    const pubDados = publicacaoDados();
+    const man = manifestoDados();
+    const estados = ["sintese_regras_diario", "sintese_episodios"].map((n) => estadoDoArquivo(`/energia/series/${n}.csv`, pubDados, man));
+    for (const e of estados) expect(html).toContain(`data-estado-arquivo="${e.veredito}"`);
+    if (estados.some((e) => e.veredito === "reprovado" && e.outraVersao)) {
+      expect(T).toContain("Validação automática: reprovada na versão de");
+      expect(T).toContain("o arquivo publicado é outra versão");
+      expect(T).toContain("Relido como CSV, o arquivo publicado tem");
+    }
+    if (!estados.some((e) => e.veredito === "reprovado")) {
+      expect(html).not.toContain('data-estado-arquivo="reprovado"');
+      expect(T).not.toContain("Validação automática: reprovada");
+    }
   });
 
   it("o CSV do painel diz o que não traz, e a mediana de tarifa diz que é simples e que muda com o conjunto do arquivo", () => {

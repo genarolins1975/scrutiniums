@@ -177,6 +177,53 @@ class TestRevisoesRegistros(unittest.TestCase):
 # ---------------------------------------------------------------- completude e grão
 
 
+class TestRevisoesPorCapturaNaoCrescemNaGold(unittest.TestCase):
+    """publicacao.json passou de 400 KB para 507 KB entre 01/10 e 20/10/2026: a contagem de revisões por dia de captura
+    ganhava um item por dia em cada conjunto. A gold leva o resumo, de tamanho fixo; o CSV do calendário leva cada dia."""
+
+    @staticmethod
+    def _an(n_dias):
+        dias = [(date(2026, 1, 1).toordinal() + i) for i in range(n_dias)]
+        pc = {date.fromordinal(d).isoformat(): 3 for d in dias}
+        rv = {"eventos": 3 * n_dias, "observacoes_revisadas": 3 * n_dias, "referencias_revisadas": n_dias, "series_afetadas": 1,
+              "ref_min": "2025-12-01", "ref_max": "2026-12-31", "a_partir_de_zero": 0, "maior_abs": None, "maior_rel": None,
+              "por_captura": pc, "conflitos_entre_recursos": 0, "exemplos_conflito": []}
+        rr = {"mudancas": 2 * n_dias, "chaves_afetadas": 1, "campos": {"nome": 2 * n_dias}, "apagados_pela_fonte": 0,
+              "por_captura": {d: 2 for d in pc}, "conflitos_entre_recursos": 0}
+        return {"revisoes": rv, "revisoes_registros": rr, "_vintages": [], "coletas_por_dia": {}}
+
+    def test_resumo_de_tamanho_fixo(self):
+        tam = {n: len(json.dumps(dados._resumo_revisao(self._an(n)), ensure_ascii=False, indent=1)) for n in (1, 30, 365)}
+        # só os algarismos das contagens e das datas mudam (com o mapa por dia, 365 dias somavam cerca de 10 KB)
+        self.assertLessEqual(max(tam.values()) - min(tam.values()), 30)
+        r = dados._resumo_revisao(self._an(365))
+        self.assertNotIn("por_captura", r)
+        self.assertEqual(r["por_captura_resumo"], {"dias": 365, "primeiro": "2026-01-01", "ultimo": "2026-12-31", "eventos_no_ultimo": 3})
+        self.assertEqual((r["eventos"], r["registros"]["mudancas"]), (1095, 730))
+        self.assertEqual(r["registros"]["por_captura_resumo"]["dias"], 365)
+
+    def test_golds_de_controle_sem_indentacao(self):
+        # mesmo conteúdo, sem espaço de indentação: publicacao.json e catalogo.json têm uma entrada por conjunto
+        payload = {"conjuntos": [{"id": f"f/ds{i}", "revisoes": dados._resumo_revisao(self._an(30))} for i in range(50)]}
+        with tempfile.TemporaryDirectory() as d:
+            for nome in ("publicacao.json", "catalogo.json", "carga.json"):
+                base.escreve_gold(nome, payload, destino=d)
+            tam = {n: os.path.getsize(os.path.join(d, n)) for n in ("publicacao.json", "catalogo.json", "carga.json")}
+            for n in ("publicacao.json", "catalogo.json"):
+                with open(os.path.join(d, n), encoding="utf-8") as f:
+                    self.assertEqual(json.load(f), payload)
+                self.assertLess(tam[n], 0.85 * tam["carga.json"], n)
+
+    def test_calendario_leva_cada_dia_com_revisao_mesmo_antes_da_janela(self):
+        lista = [{"familia": "f", "dataset_silver": "ds", "_an": self._an(365)}]
+        agregado, linhas = dados.calendario(lista, date(2026, 12, 31))
+        self.assertEqual(len(linhas), 365)
+        self.assertEqual(sum(x["observacoes_revisadas"] for x in linhas), 1095)
+        self.assertEqual(sum(x["registros_alterados"] for x in linhas), 730)
+        # o agregado da página continua na janela do calendário
+        self.assertEqual(len(agregado), dados.JANELA_CALENDARIO_DIAS + 1)
+
+
 class TestCompletude(unittest.TestCase):
     def test_lacuna_real_no_recorte(self):
         con = silver_de_amostra("carga_energia_di")

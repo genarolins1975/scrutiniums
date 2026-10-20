@@ -741,10 +741,22 @@ describe("páginas renderizadas no servidor", () => {
     expect(fichas["cemig-d"]).toContain("Como as perdas da CEMIG-D evoluíram?");
     expect(fichas["cemig-d"]).toContain("Concessionárias do Brasil");
     expect(fichas["cemig-d"]).toContain("já consolida estes números");
+    // estado de ausência da tarifa: na gold de 30/09/2026 a CERGAPA estava sem tarifa vigente (a de 30/09/2026 ainda não
+    // constava do arquivo); na de 20/10/2026 tem. A ficha segue a gold: a distribuidora sem tarifa vigente é escolhida na
+    // própria gold (sem registro na CVM, para conferir também o estado das finanças) e a CERGAPA diz o estado que tiver.
+    const semTarifa = G.distribuidoras.indice.find((x) => x.tarifa && !x.tarifa.vigente && !x.cvm)!;
+    expect(semTarifa).toBeTruthy();
+    const fichaSem = renderToStaticMarkup(createElement(Ficha, { params: { entidade: semTarifa.slug } }));
+    expect(fichaSem).toContain("Distribuidora sem tarifa vigente na data do arquivo de tarifas");
+    const t = semTarifa.tarifa!;
+    const motivo = t.vigente === false ? (t.motivo ?? "motivo não publicado") : "";
+    expect(fichaSem).toContain(motivo.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;"));
+    expect(fichaSem).toContain("não é companhia aberta");
     const cergapa = G.distribuidoras.indice.find((x) => x.slug === "cergapa")!;
-    expect(fichas.cergapa).toContain("sem tarifa vigente");
+    expect(cergapa.cvm).toBeNull();
     expect(fichas.cergapa).toContain("não é companhia aberta");
-    expect(cergapa.tarifa && !cergapa.tarifa.vigente).toBe(true);
+    if (cergapa.tarifa && !cergapa.tarifa.vigente) expect(fichas.cergapa).toContain("Distribuidora sem tarifa vigente");
+    else expect(fichas.cergapa).not.toContain("Distribuidora sem tarifa vigente");
     expect(fichas.ceb).toContain("inativa");
   });
 
