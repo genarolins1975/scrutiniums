@@ -77,10 +77,6 @@ MARCAS_SAEB = {"ND", "ND*", "ND***", "*", "**"}
 # Motivo de não haver Ideb da rede num município no ano mais recente (ordem de decisão em gold.motivo).
 MOTIVOS = ["sem_matricula", "nao_divulgado", "participacao", "a_pedido", "extravio", "sem_aprovacao", "sem_saeb"]
 
-# A nota informativa do Ideb 2025 avisa que esta é a última divulgação com a fórmula original (o novo Plano Nacional de
-# Educação prevê um índice de formulação similar). O painel diz isso ao leitor enquanto 2025 for a edição publicada.
-ULTIMA_FORMULA_ORIGINAL = 2025
-
 # Conferência com o Quadro 1 da nota informativa de cada edição: municípios com Ideb calculado, por etapa e rede.
 QUADRO_1 = {
     2025: {"ai": {"municipal": 5320, "publica": 5478}, "af": {"municipal": 3292, "publica": 5491}},

@@ -55,7 +55,7 @@ const CONTEUDO: Partial<Record<ObservatorioId, () => { descricao: string; escala
     metodo: <MetodoFamilias />,
   }),
   "servicos-publicos": () => ({
-    descricao: "Recursos, atendimento e resultados da educação, da saúde, da segurança pública, da Justiça e da cultura: o Ideb e as matrículas da escola pública de cada município, a mesma régua para cada capital e os recortes nacionais de cada fonte. Valores e referências, sem nota de eficiência nem conclusão sobre a gestão.",
+    descricao: "Recursos, atendimento e resultados da educação, da saúde, da segurança pública, da Justiça e da cultura, com a mesma régua para cada capital e os recortes nacionais de cada fonte. Valores e referências, sem nota de eficiência nem conclusão sobre a gestão.",
     escala: escalaServicos(),
     artefato: <RecursoResultado temas={recursoAoResultado()} />,
     metodo: <MetodoServicos />,

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { statSync } from "node:fs";
 import { join } from "node:path";
 import { PanoramaInterativo, SeletorCapitalPanorama } from "@/components/eficiencia/PanoramaInterativo";
@@ -58,11 +57,6 @@ export default function PaginaPanorama() {
           <p className="mt-3 max-w-[40rem] font-serif text-[1.35rem] leading-snug text-obee-tinta md:text-[1.65rem]">Quanto se gasta, quem é atendido e quais resultados são observados.</p>
           <p className="mt-3 max-w-[44rem] text-[0.9375rem] leading-relaxed text-carvao-muted">
             {g.universo.capitais.length} capitais estaduais · educação municipal · dados capturados até {dataBr(g.meta.dados_capturados_ate)} · anos de referência indicados em cada indicador
-          </p>
-          {/* painel canônico da eficiência nas capitais; o Ideb e as matrículas de todos os municípios ficam no painel da coleção (20/10/2026) */}
-          <p className="mt-2 max-w-[44rem] text-[0.9375rem] leading-relaxed text-carvao-muted">
-            Para os demais municípios, o Ideb, a aprendizagem, a aprovação e as matrículas da escola pública estão em{" "}
-            <Link href="/educacao-municipal" className="text-obee-dark underline underline-offset-[3px]">Educação nos municípios</Link>.
           </p>
         </div>
         <div className="lg:pt-3">

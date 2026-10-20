@@ -59,12 +59,6 @@ export const CONSULTAS = {
     resumo: "Quantos benefícios o INSS pagou por agências da sua cidade em dezembro e o valor médio de cada um, pelo Ministério da Previdência Social.",
     href: "/contas-publicas/previdencia",
   },
-  // painel Educação nos municípios (20/10/2026): sem sessão, o endereço mostra só o Ideb mais recente da rede municipal
-  escola: {
-    pergunta: "Como está a escola pública da minha cidade?",
-    resumo: "O Ideb mais recente das escolas da prefeitura da sua cidade, nos anos iniciais e finais do ensino fundamental, pelo INEP.",
-    href: "/educacao-municipal",
-  },
 } satisfies Record<string, ConsultaAberta>;
 
 // ------------------------------------------------- Números compartilhados
@@ -174,32 +168,6 @@ export const numeroIdebCapitais = (): NumeroPorta =>
         valor: num(r.mediana, 2),
         periodo: String(r.ano),
         nota: `${r.n} capitais, de ${num(r.minimo, 1)} a ${num(r.maximo, 1)}. Mediana: metade das capitais está acima, metade abaixo.`,
-      };
-    },
-  );
-
-/**
- * Ideb dos anos iniciais das redes municipais do Brasil na edição mais recente, o primeiro número do painel Educação nos
- * municípios, lido da gold dele (public/educacao/gold/educacao.json, pipeline/educacao).
- */
-export const numeroEducacaoMunicipios = (): NumeroPorta =>
-  numero(
-    {
-      rotulo: "Ideb do 1º ao 5º ano nas escolas municipais do Brasil",
-      unidade: "de 0 a 10",
-      fonte: "INEP, Ideb",
-      href: "/educacao-municipal",
-    },
-    () => {
-      const g = lerPublico("educacao", "gold", "educacao.json");
-      const k = g.ideb.anos.length - 1;
-      const v = g.ideb.brasil.ai.municipal.ideb[k];
-      const d = g.distribuicao.ai.brasil;
-      if (typeof v !== "number" || typeof d?.n !== "number") throw new Error("gold da educação incompleta");
-      return {
-        valor: num(v, 1),
-        periodo: String(g.ideb.ano),
-        nota: `Metade das ${num(d.n, 0)} redes municipais com resultado ficou entre ${num(d.p25, 1)} e ${num(d.p75, 1)}. Anos finais: ${num(g.ideb.brasil.af.municipal.ideb[k], 1)}.`,
       };
     },
   );
@@ -350,11 +318,8 @@ function porta_servicos(): Porta {
   return {
     ...identidade("servicos-publicos"),
     resumo:
-      "Recursos, atendimento e resultados dos serviços públicos: a escola pública de cada município, a mesma régua para cada capital e o volume e o tempo dos processos na Justiça, cada medida com o universo da sua fonte.",
-    // a escola pública dos municípios (painel Educação nos municípios, 20/10/2026) abre a porta e o cartão da home, que mostra o
-    // primeiro número; o Ideb das capitais segue a um clique, no caminho "Como estão as escolas municipais das capitais?"
+      "Recursos, atendimento e resultados dos serviços públicos, com a mesma régua para cada capital e o volume e o tempo dos processos na Justiça, cada medida com o universo da sua fonte.",
     numeros: [
-      numeroEducacaoMunicipios(),
       numero(
         {
           rotulo: "Processos à espera de decisão final na Justiça",
@@ -371,6 +336,7 @@ function porta_servicos(): Porta {
           };
         },
       ),
+      numeroIdebCapitais(),
       numeroSaudeCapitais(),
     ],
     caminhos: [
@@ -380,10 +346,10 @@ function porta_servicos(): Porta {
       caminho("eficiencia", "A Justiça é acessível a quem precisa?", "Cobertura das defensorias, tempo de resposta e conciliação.", "/eficiencia-estatal/acesso-justica"),
       caminho("eficiencia", "Quanta violência cada estado registra?", "Homicídios registrados pela polícia e óbitos por agressão na saúde, por UF e em taxa por 100 mil habitantes, com a referência do Brasil.", "/eficiencia-estatal/seguranca-publica/estados"),
     ],
-    paraOSeuCaso: [CONSULTAS.escola, CONSULTAS.capital],
+    paraOSeuCaso: [CONSULTAS.capital],
     lacunas: [
       "Filas e tempo de espera no SUS.",
-      "Saúde nos municípios que não são capitais.",
+      "Educação e saúde nos municípios que não são capitais.",
     ],
     metodos: [
       { rotulo: "Educação: métodos", href: "/eficiencia-estatal/educacao-municipal-capitais/metodos" },

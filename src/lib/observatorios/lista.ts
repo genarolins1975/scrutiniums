@@ -72,10 +72,7 @@ export const OBSERVATORIOS: Observatorio[] = [
     entrada: "/observatorios/servicos-publicos",
     acento: "obee",
     colecoes: [
-      // porta da coleção desde 20/10/2026: o painel Educação nos municípios (rede pública de todos os municípios); a
-      // eficiência da rede municipal das capitais continua no painel canônico /eficiencia-estatal/educacao-municipal-capitais,
-      // que segue na coleção
-      { id: "educacao", nome: "Educação", href: "/educacao-municipal" },
+      { id: "educacao", nome: "Educação", href: "/eficiencia-estatal/educacao-municipal-capitais" },
       { id: "saude", nome: "Saúde", href: "/eficiencia-estatal/saude-capitais" },
       { id: "seguranca", nome: "Segurança pública", href: "/eficiencia-estatal/seguranca-publica" },
       { id: "justica", nome: "Justiça", href: "/eficiencia-estatal/judiciario" },
