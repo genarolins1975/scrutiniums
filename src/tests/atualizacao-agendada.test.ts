@@ -74,6 +74,7 @@ const MOTOR: [string, string][] = [
   ["atualizar-seguranca.yml", "seguranca"],
   // painel Previdência e INSS (Contas Públicas), 20/10/2026: BEPS, benefícios por município e RTN no motor por grupo
   ["atualizar-previdencia.yml", "previdencia"],
+  ["atualizar-conectividade.yml", "conectividade"],
 ];
 
 describe.each(MOTOR)("%s (motor por grupo)", (arquivo, dominio) => {

@@ -58,6 +58,10 @@ const nextConfig = {
       // dinâmicos (município na URL), leem a cada instância a gold e o arquivo da UF do município pedido
       "/contas-publicas/previdencia": ["./public/previdencia/gold/**/*.json"],
       "/aperitivo/previdencia": ["./public/previdencia/gold/**/*.json"],
+      // painel Conectividade e a sua versão aperitivo (servida em /conectividade a quem não tem sessão): dinâmicos
+      // (município na URL), leem a cada instância a gold e o arquivo da UF do município pedido
+      "/conectividade": ["./public/conectividade/gold/**/*.json"],
+      "/aperitivo/conectividade": ["./public/conectividade/gold/**/*.json"],
       // ficha de focos por município (consulta da leva 2, src/lib/rotasPublicas.ts): gerada na primeira visita
       "/territorio/queimadas/municipio/[ibge]": ["./public/territorio/gold/queimadas_municipios.json", "./public/saneamento/gold/indice.json"],
       "/saneamento/prestadores/[id]": ["./public/saneamento/gold/*.json"],
@@ -111,6 +115,7 @@ const nextConfig = {
       {source: "/agro/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/saneamento/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/previdencia/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
+      {source: "/conectividade/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/gas/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       // API de leitura (/dados/api): exige sessão (src/lib/rotasPublicas.ts); cache privado do navegador
       {source: "/obs/data/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},

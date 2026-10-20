@@ -106,7 +106,8 @@ export const OBSERVATORIOS: Observatorio[] = [
       { id: "combustiveis", nome: "Combustíveis", href: "/combustiveis" },
       { id: "saneamento", nome: "Saneamento", href: "/saneamento" },
       { id: "mobilidade", nome: "Mobilidade", href: "/eficiencia-estatal/mobilidade-transporte" },
-      { id: "conectividade", nome: "Conectividade", href: "/eficiencia-estatal/energia-conectividade" },
+      // desde 20/10/2026 a porta da coleção é o painel Conectividade (Anatel por município); a página da Eficiência segue na coleção
+      { id: "conectividade", nome: "Conectividade", href: "/conectividade" },
     ],
   },
   {

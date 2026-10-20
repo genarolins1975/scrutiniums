@@ -1,0 +1,52 @@
+{
+  "dominio": "conectividade",
+  "titulo": "Conectividade (Observatório de Energia e Infraestrutura)",
+  "descricao": "Recoleta das três fontes do painel Conectividade, dados abertos da Anatel lidos por faixa de bytes dos zips da agência: acessos de banda larga fixa por município (mensal, com meio de acesso, velocidade contratada, tipo de pessoa e prestadora), acessos de telefonia móvel por município (mensal, com geração 2G a 5G, pré e pós-pago e M2M) e cobertura das redes móveis por município (trimestral, parte dos moradores, dos domicílios e da área coberta por tecnologia e operadora). A gold só é publicada se cada fonte tiver entre 5.565 e 5.575 municípios, se em cada município as partes somarem o total, se os municípios somarem as UFs e o Brasil, se o Brasil do mês for o mesmo do arquivo de totais da Anatel, se as densidades nacionais estiverem na faixa plausível, se nenhuma cobertura passar de 100% nem o 5G passar do 4G, se os moradores dos municípios fecharem com o Brasil do arquivo de evolução e se nenhuma recoleta do mesmo mês mudar o total acima do limite.",
+  "codigo": [
+    "pipeline/conectividade/*.py",
+    "pipeline/tests/test_conectividade.py",
+    "src/lib/conectividade",
+    "src/tests/conectividade.test.ts"
+  ],
+  "reconstruir": [["python3", "-m", "pipeline.conectividade.run"]],
+  "timeout_reconstruir_min": 5,
+  "saidas": ["public/conectividade/gold"],
+  "sinal_de_mudanca": [
+    {"arquivo": "public/conectividade/gold/conectividade.json", "json_chave": "hash_dados"}
+  ],
+  "testes": [
+    {
+      "nome": "pipeline da Conectividade (Python): validações que retêm a publicação e conferência cruzada",
+      "comando": ["python3", "-m", "unittest", "pipeline.tests.test_conectividade"],
+      "timeout_min": 10
+    },
+    {
+      "nome": "contratos do painel, do aperitivo e das entradas (vitest)",
+      "comando": ["npx", "vitest", "run", "--testTimeout=60000", "src/tests/conectividade.test.ts", "src/tests/aperitivo.test.ts", "src/tests/observatorios-entradas.test.ts", "src/tests/perguntas-portas.test.ts", "src/tests/para-voce.test.ts"],
+      "timeout_min": 15
+    }
+  ],
+  "grupos": [
+    {
+      "id": "anatel-banda-larga-fixa",
+      "nome": "Anatel, acessos de banda larga fixa por município (mensal; CSV do ano, densidade e totais lidos do zip por faixa de bytes)",
+      "coleta": [["python3", "-m", "pipeline.conectividade.run", "--coleta", "fixa", "--so-coleta"]],
+      "caminhos": ["pipeline/conectividade/seed/fixa.json"],
+      "timeout_min": 40
+    },
+    {
+      "id": "anatel-telefonia-movel",
+      "nome": "Anatel, acessos de telefonia móvel por município (mensal; CSV do semestre, densidade e totais lidos do zip por faixa de bytes)",
+      "coleta": [["python3", "-m", "pipeline.conectividade.run", "--coleta", "movel", "--so-coleta"]],
+      "caminhos": ["pipeline/conectividade/seed/movel.json"],
+      "timeout_min": 40
+    },
+    {
+      "id": "anatel-cobertura-movel",
+      "nome": "Anatel, cobertura das redes móveis por município (trimestral; um CSV por trimestre e a evolução do Brasil)",
+      "coleta": [["python3", "-m", "pipeline.conectividade.run", "--coleta", "cobertura", "--so-coleta"]],
+      "caminhos": ["pipeline/conectividade/seed/cobertura.json"],
+      "timeout_min": 30
+    }
+  ]
+}

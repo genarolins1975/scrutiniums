@@ -34,6 +34,7 @@ export const ENTRADA_DO_DOMINIO: Record<DominioFrescorId, string> = {
   territorio: "/territorio",
   inflacao: "/custo-de-vida",
   previdencia: "/contas-publicas/previdencia",
+  conectividade: "/conectividade",
   "contas-federais": "/contas-publicas",
   "contas-estaduais": "/contas-publicas-estaduais",
   eficiencia: "/eficiencia-estatal",

@@ -79,7 +79,8 @@ describe("O Brasil em perguntas", () => {
     // "Quanto custa encher o tanque no meu estado?" aberta em 20/10/2026 (LEVA_2): entra nas portas das Famílias e da Energia
     expect(comBloco["familias"]).toEqual(["/gas-natural/gas-de-cozinha", "/setor-eletrico/conta-de-luz", "/combustiveis/no-meu-estado"]);
     expect(comBloco["servicos-publicos"]).toEqual(["/eficiencia-estatal"]);
-    expect(comBloco["energia-e-infraestrutura"]).toEqual(["/setor-eletrico/conta-de-luz", "/saneamento/municipio", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado"]);
+    // "Como é a internet na minha cidade?" (painel Conectividade, aperitivo aberto em 20/10/2026) entra na porta da Energia
+    expect(comBloco["energia-e-infraestrutura"]).toEqual(["/setor-eletrico/conta-de-luz", "/conectividade", "/saneamento/municipio", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado"]);
     for (const p of todas) {
       for (const c of p.paraOSeuCaso) {
         expect(rotaExiste(c.href), `${p.id}: ${c.href}`).toBe(true);
