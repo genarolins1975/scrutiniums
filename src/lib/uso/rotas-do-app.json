@@ -261,6 +261,7 @@
   "/saneamento/prestadores",
   "/saneamento/prestadores/[id]",
   "/saneamento/prestadores/comparar",
+  "/saneamento/prestadores/divida",
   "/saneamento/resiliencia",
   "/saneamento/responsaveis",
   "/saneamento/saude-ambiente",

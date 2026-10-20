@@ -26,8 +26,11 @@ export type Capitulo = {
   situacao: Situacao;
   /** O que ainda falta e de que depende (obrigatório quando não publicado). */
   pendencia?: string;
-  /** Subpainéis (só o capítulo 5). */
-  subpaineis?: { slug: string; numero: string; rotulo: string; pergunta: string; situacao: Situacao; pendencia?: string }[];
+  /**
+   * Subpainéis, com rota `${slug do capítulo}/${slug do subpainel}`: os cinco do capítulo 5 (navegação própria na página)
+   * e o 7.1, dívida e alavancagem (`naNavegacao`: aparece também no menu do eixo, logo abaixo do capítulo).
+   */
+  subpaineis?: { slug: string; numero: string; rotulo: string; pergunta: string; situacao: Situacao; pendencia?: string; naNavegacao?: boolean }[];
 };
 
 export type Eixo = { id: "A" | "B" | "C" | "D" | "E"; rotulo: string; curto: string; resumo: string; capitulos: Capitulo[] };
@@ -128,6 +131,18 @@ export const EIXOS: Eixo[] = [
         situacao: "parcial",
         pendencia:
           "Controle societário só das 17 companhias abertas com Formulário de Referência na CVM. Empresas fechadas, SPEs sem registro, autarquias e serviços municipais não têm esse dado; para eles o painel mostra a natureza jurídica declarada em 2024.",
+        subpaineis: [
+          {
+            slug: "divida",
+            numero: "7.1",
+            rotulo: "Dívida e alavancagem",
+            pergunta: "Quanto devem as empresas de água e esgoto?",
+            situacao: "parcial",
+            pendencia:
+              "Só as companhias com demonstrações financeiras na CVM (DFP e ITR). Prazo médio (duration), custo, indexadores e limites contratuais da dívida estão só nas notas explicativas, sem base estruturada, e não são estimados.",
+            naNavegacao: true,
+          },
+        ],
       },
       {
         numero: 8,

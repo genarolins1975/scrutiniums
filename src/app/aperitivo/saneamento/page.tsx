@@ -10,6 +10,7 @@ import { data, inteiro, mesAno, numero } from "@/lib/saneamento/formato";
 import { ANOS_SISAGUA, FONTE_ROTULO, medida } from "@/lib/saneamento/medidas";
 import { TARIFAS } from "@/lib/saneamento/tarifas";
 import { ATENDIMENTO_REDE, CASAS_ATENDIMENTO, atendimentoRede } from "@/lib/saneamento/atendimento";
+import { periodoPorExtenso, resumoDivida } from "@/lib/saneamento/divida";
 import type { FichaMunicipio, Municipio } from "@/lib/saneamento/tipos";
 import { BuscaAperitivo } from "./BuscaAperitivo";
 
@@ -79,9 +80,21 @@ function comConta(): string[] {
     `Simulador da conta de água: quanto se paga pelo mesmo consumo em ${inteiro(TARIFAS.length)} tabelas tarifárias conferidas nos atos oficiais`,
     `Comparação de até quatro municípios lado a lado e mapas por município, para os ${inteiro(cob?.municipios_ibge)} municípios`,
     `Fichas dos ${inteiro(regionais)} prestadores regionais, com volumes, perdas, consumo médio por pessoa e os valores financeiros que eles declaram ao SINISA, com a mesma ressalva`,
+    ...dividaComConta(),
     `Os ${inteiro(capitulos.length)} capítulos do observatório, em ${inteiro(EIXOS.length)} eixos: ${EIXOS.map((e) => e.rotulo.toLowerCase()).join("; ")}`,
   ];
 }
+
+/** Capítulo 7.1 (dívida dos prestadores), dimensionado pelo resumo da própria publicação; sem a publicação, não entra. */
+function dividaComConta(): string[] {
+  const r = resumoDivida();
+  if (!r || !r.companhias || !r.primeiro_ano) return [];
+  return [
+    `Dívida e alavancagem das ${inteiro(r.companhias)} companhias de água e esgoto com demonstrações financeiras na CVM (${inteiro(r.operadoras)} prestadoras e ${inteiro(r.holdings)} holdings de grupo): dívida bruta e líquida, dívida sobre o EBITDA, o que vence em até 12 meses, série anual desde ${r.primeiro_ano} e fotografia do ${periodoPorExtenso(trimestreDe(r.referencia_trimestral))}`,
+  ];
+}
+
+const trimestreDe = (d: string | null) => (d ? `${Math.floor((Number(d.slice(5, 7)) - 1) / 3) + 1}T${d.slice(0, 4)}` : null);
 
 export default function Pagina({ searchParams }: Busca) {
   const c = consultar(searchParams.ibge);

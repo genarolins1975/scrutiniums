@@ -53,6 +53,8 @@ const nextConfig = {
         "./public/saneamento/gold/meta.json",
         "./public/saneamento/gold/prestadores.json",
         "./public/saneamento/gold/uf/*.json",
+        // contagens e datas do capítulo 7.1 (dívida dos prestadores) para o convite do painel completo
+        "./public/saneamento/divida/resumo.json",
       ],
       // painel Previdência e INSS e a sua versão aperitivo (servida em /contas-publicas/previdencia a quem não tem sessão):
       // dinâmicos (município na URL), leem a cada instância a gold e o arquivo da UF do município pedido
@@ -111,6 +113,7 @@ const nextConfig = {
       {source: "/agro/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/saneamento/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/previdencia/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
+      {source: "/saneamento/divida/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/gas/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       // API de leitura (/dados/api): exige sessão (src/lib/rotasPublicas.ts); cache privado do navegador
       {source: "/obs/data/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
