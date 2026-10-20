@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "3ea6691e3a55db6c57561c02f3db7806d86fa8ba0b2b36d0b6ef628fb959f42c",
-    "arquivos_analisados": 1400,
-    "fontes_sha256": "dfc5c0c476d62451d075c114792c38f57a15386d33f73b109d9c6231d623c2d9",
+    "arquivos_analisados": 1401,
+    "fontes_sha256": "c5b3b3080cd319d2f1d646ac278b3260920789f3ffd930791a49c1989c670d97",
     "pendencias_sha256": "833d766bc14d926b6293c949b6f91e5cddb70243685dddd4ef622821c459aa01",
     "nao_classificadas": [
       {
@@ -394,7 +394,7 @@
     "contas_federais": {
       "nome": "Contas Públicas Federais",
       "interface": {
-        "arquivos": 70,
+        "arquivos": 71,
         "candidatos": {
           "jsx_text": 955,
           "atributos": 197,
@@ -405,7 +405,7 @@
           "chaves_objetos": 950
         },
         "exclusoes": {
-          "importacoes": 258,
+          "importacoes": 260,
           "atributos_tecnicos": 742,
           "tipos": 67
         },
