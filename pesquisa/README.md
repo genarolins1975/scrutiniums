@@ -29,7 +29,7 @@ A regra está em `papeis/config.json` e é verificada pelo orquestrador antes de
 | `revisor_independente` | `claude-sonnet-5` | fatos do pacote com ponteiros para a gold | JSON | fidelidade à evidência |
 | `terceiro_revisor` | `claude-fable-5-1` | histórico bruto das séries na gold (13 meses) | série mensal | leitor cético |
 
-Cada revisor roda em contexto isolado: não vê o parecer dos outros, nem os rascunhos, nem a saída dos analistas. Nenhum revisor aprova número (isso é do validador mecânico). A decisão é derivada dos itens por código (`orquestrador.decisao_do_parecer`): só item grave devolve (no validador constitucional, qualquer falha de C1 a C5); moderadas e leves são sugestões registradas. Qualquer devolução volta a nota à revisão; sem unanimidade em `max_rodadas_revisao` rodadas a nota é rejeitada e nada sai. Fornecedor ainda é o mesmo nos três: a diferença de fornecedor depende de chave de outra API (pendência registrada no próprio `config.json`).
+Cada revisor roda em contexto isolado: não vê o parecer dos outros, nem os rascunhos, nem a saída dos analistas. Nenhum revisor aprova número (isso é do validador mecânico). A decisão é derivada dos itens por código (`orquestrador.decisao_do_parecer`): só item grave devolve (no validador constitucional, só falha grave; observação não devolve); moderadas, leves e observações são sugestões registradas. Qualquer devolução volta a nota à revisão. Os limites são separados: `max_rodadas_revisao` rodadas lidas pelos revisores e `max_bloqueios_mecanicos` bloqueios do validador mecânico; esgotado qualquer um, a nota é rejeitada e nada sai. Fornecedor ainda é o mesmo nos três: a diferença de fornecedor depende de chave de outra API (pendência registrada no próprio `config.json`).
 
 ## Um ciclo
 
