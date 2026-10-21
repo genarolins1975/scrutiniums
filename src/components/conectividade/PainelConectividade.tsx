@@ -37,14 +37,16 @@ export function PainelConectividade({ g, consulta, ferramentas }: { g: GoldConec
 /* --------------------------------------------------------------------------------------------- abertura */
 
 /**
- * A maior prestadora do lugar. "OUTROS" é a categoria em que a Anatel soma os provedores regionais e locais que não
- * nomeia (é o maior_grupo de 4.806 dos 5.571 municípios e do Brasil): não é uma empresa, e a frase diz isso em vez de
+ * O maior grupo econômico do lugar, e a frase o chama assim: a Anatel conta as prestadoras por CNPJ, mas a parte dos
+ * acessos é somada por grupo econômico, que pode reunir mais de um CNPJ; chamar o grupo de "a maior empresa" daria a uma
+ * empresa a fatia do grupo inteiro. "OUTROS" é a categoria em que a Anatel soma os provedores regionais e locais que não
+ * nomeia (é o maior_grupo de 4.806 dos 5.571 municípios e do Brasil): não é um grupo, e a frase diz isso em vez de
  * apresentar a soma como líder única.
  */
 function fraseMaiorGrupo(grupo: string | null, parte: number | null): string {
   if (!grupo) return "Sem dado.";
   if (grupo === "OUTROS") return `Provedores regionais e locais, somados, têm ${pct(parte)} dos acessos; nenhum grande grupo lidera sozinho.`;
-  return `A maior, ${nomeGrupo(grupo)}, tem ${pct(parte)} dos acessos.`;
+  return `O maior grupo econômico, ${nomeGrupo(grupo)}, tem ${pct(parte)} dos acessos.`;
 }
 
 function Abertura({ g }: { g: GoldConectividade }) {
@@ -537,7 +539,7 @@ function SecaoEstados({ g, escolhida }: { g: GoldConectividade; escolhida: strin
       <h2 id="estados-titulo">Os estados lado a lado</h2>
       <p className="cn-intro">As mesmas medidas da sua cidade para cada estado e para o Brasil. A cobertura por estado é a média dos municípios ponderada pelos moradores.</p>
       <p className="cn-legenda-tabela">
-        {mesAcessos(r, true)}; cobertura de {mesExtenso(r.cobertura)}. Acessos móveis por 100 habitantes: o total da Anatel sem máquinas e pontos de serviço; linhas em 5G como parte de todas as linhas ativas. Prestadoras: empresas com ao menos um acesso fixo no estado. Municípios na base: cada coluna agrega só os municípios que a sua fonte traz no estado (a cobertura 4G e a 5G, cada uma só os municípios com o valor daquela geração publicado), e a célula diz a contagem de cada uma quando alguma fica abaixo do total; na linha do Brasil, a cobertura 4G e 5G é o número nacional publicado pela Anatel, não a média dos municípios. Municípios sem 5G: menos de 1% dos moradores cobertos, entre os municípios com cobertura 5G publicada.
+        {mesAcessos(r, true)}; cobertura de {mesExtenso(r.cobertura)}. Acessos móveis por 100 habitantes: o total da Anatel sem máquinas e pontos de serviço; linhas em 5G como parte de todas as linhas ativas. Prestadoras: empresas (CNPJs) com ao menos um acesso fixo no estado. Maior grupo: grupo econômico como a Anatel o cadastra, que pode reunir mais de um CNPJ; a parte dos acessos é a do grupo inteiro. Municípios na base: cada coluna agrega só os municípios que a sua fonte traz no estado (a cobertura 4G e a 5G, cada uma só os municípios com o valor daquela geração publicado), e a célula diz a contagem de cada uma quando alguma fica abaixo do total; na linha do Brasil, a cobertura 4G e 5G é o número nacional publicado pela Anatel, não a média dos municípios. Municípios sem 5G: menos de 1% dos moradores cobertos, entre os municípios com cobertura 5G publicada.
       </p>
       <div className="cn-tabela-rolagem" tabIndex={0}>
         <table className="cn-tabela cn-tabela-larga">
@@ -577,7 +579,7 @@ function Mecanismo() {
       <div className="cn-mecanismo">
         <div>
           <h3>Acesso de banda larga fixa</h3>
-          <p>Um contrato de internet por cabo, fibra, rádio ou satélite num endereço. A prestadora declara à Anatel, todo mês, quantos contratos tem em cada município, por meio e velocidade.</p>
+          <p>Um contrato de internet por cabo, fibra, rádio ou satélite num endereço. A prestadora declara à Anatel, todo mês, quantos contratos tem em cada município, por meio e velocidade. As prestadoras são contadas por CNPJ; a parte de cada grupo econômico soma os CNPJs do grupo.</p>
           <p className="cn-mede">Mede a demanda atendida com fio. Não diz quantas pessoas usam o contrato nem a velocidade entregue.</p>
         </div>
         <div>

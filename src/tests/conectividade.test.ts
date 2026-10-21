@@ -10,7 +10,7 @@ import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import AperitivoPage from "@/app/aperitivo/conectividade/page";
-import PainelPage from "@/app/conectividade/page";
+import PainelPage, { generateMetadata } from "@/app/conectividade/page";
 import { GraficoLinhas } from "@/components/conectividade/Graficos";
 import { csvBrasilMensal, csvPorEstado, csvPorMunicipio } from "@/lib/conectividade/csv";
 import { comConta } from "@/lib/conectividade/convite";
@@ -489,6 +489,24 @@ describe("Conectividade: achados do Codex no #309", () => {
     const g = goldConectividade();
     expect(g.brasil.fixa.maior_grupo).toBe("OUTROS");
     expect(html).not.toContain("a maior delas, Provedores regionais e locais");
+  });
+
+  it("o maior grupo é chamado de grupo econômico, nunca de maior empresa: a parte é somada por grupo, as prestadoras contadas por CNPJ", () => {
+    const g = goldConectividade();
+    const mun = g.ufs.flatMap((u) => arquivoUf(u.uf)!.municipios).find((x) => x.fixa && x.fixa.maior_grupo && x.fixa.maior_grupo !== "OUTROS")!;
+    expect(mun).toBeDefined();
+    const html = renderToStaticMarkup(createElement(PainelPage, { searchParams: { ibge: mun.id } }));
+    expect(html).toContain(`O maior grupo econômico, ${nomeGrupo(mun.fixa!.maior_grupo)}, tem ${pct(mun.fixa!.maior_grupo_pct)} dos acessos.`);
+    expect(html).not.toContain("A maior, ");
+    expect(html).toContain("Maior grupo: grupo econômico como a Anatel o cadastra, que pode reunir mais de um CNPJ");
+  });
+
+  it("a descrição do painel não promete linhas móveis e cobertura em cada município: 1 município só tem a banda larga fixa", () => {
+    const g = goldConectividade();
+    expect(g.destaques.municipios_por_fonte.movel).toBeLessThan(g.destaques.municipios_por_fonte.fixa);
+    const d = String(generateMetadata().description);
+    expect(d).toContain("cada medida só onde a Anatel a publica");
+    expect(d).not.toContain("em cada município");
   });
 
   it("o aperitivo não revela a maior prestadora nem a parte dela", () => {

@@ -18,7 +18,7 @@ export function comConta(g: GoldConectividade, uf: string | null, m?: MunicipioG
   // a Anatel só nomeia os grandes grupos: na maioria dos municípios a maior parte é a soma dos provedores regionais ("OUTROS")
   const lider = !m?.fixa ? "e se um grande grupo lidera ou se os provedores regionais, somados, ficam com a maior parte"
     : m.fixa.maior_grupo === "OUTROS" ? "e a parte somada dos provedores regionais e locais, que ali é a maior"
-    : "e a parte da maior delas";
+    : "e a parte do maior grupo econômico";
   // só o que o cartão do município mostra: posição no estado e no país nos acessos fixos por 100 habitantes, posição no
   // estado na cobertura 4G, faixa entre os municípios do país na fibra e no 5G
   // cada geração só entra se o município tem o valor publicado (registro de cobertura sem g4 ou g5 fica fora do ranking)

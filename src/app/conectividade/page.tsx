@@ -17,7 +17,7 @@ export function generateMetadata(): Metadata {
   const g = goldConectividade();
   return {
     title: `${PERGUNTA_PAINEL} · Conectividade · Energia e Infraestrutura`,
-    description: `Banda larga fixa, linhas móveis e cobertura 4G e 5G em cada município e estado, com ${mesAcessos(g.referencia)} e cobertura de ${mesExtenso(g.referencia.cobertura)}, pelos dados abertos da Anatel.`,
+    description: `Banda larga fixa, linhas móveis e cobertura 4G e 5G por município e estado, cada medida só onde a Anatel a publica, com ${mesAcessos(g.referencia)} e cobertura de ${mesExtenso(g.referencia.cobertura)}, pelos dados abertos da Anatel.`,
     alternates: { canonical: ROTA_CONECTIVIDADE },
   };
 }
