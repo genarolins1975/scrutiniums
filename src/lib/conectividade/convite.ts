@@ -18,11 +18,20 @@ export function comConta(g: GoldConectividade, uf: string | null, m?: MunicipioG
     : "e a parte da maior delas";
   // só o que o cartão do município mostra: posição no estado e no país nos acessos fixos por 100 habitantes, posição no
   // estado na cobertura 4G, faixa entre os municípios do país na fibra e no 5G
-  const posicoes = `${n ? `A posição do município entre os ${num(n)} do estado e os ${num(g.destaques.municipios)} do país` : `A posição do município entre os do estado e os ${num(g.destaques.municipios)} do país`} em acessos fixos por 100 habitantes, a colocação estadual em cobertura 4G e a faixa em que ele cai, entre os municípios do país, em fibra e em cobertura 5G`;
+  const posicoes = `${n ? `A posição do município entre os ${num(n)} do estado e os ${num(g.destaques.municipios)} do país` : `A posição do município entre os do estado e os ${num(g.destaques.municipios)} do país`} em acessos fixos por 100 habitantes e a faixa em que ele cai, entre os municípios do país, em fibra${m && !m.cobertura ? "" : ", a colocação estadual em cobertura 4G e a faixa nacional em cobertura 5G"}`;
+  // município publicado sem uma das fontes (Boa Esperança do Norte, instalado depois do Censo 2022, não tem telefonia
+  // móvel nem cobertura): o convite diz a ausência em vez de prometer o que o painel não mostra
+  const semMovel = !!m && !m.movel;
+  const semCobertura = !!m && !m.cobertura;
+  const movelTexto = semMovel ? "as linhas móveis por geração nos municípios que a Anatel registra (este não tem telefonia móvel na base)" : "as linhas móveis por geração (2G a 5G), pré e pós-pago";
+  const coberturaTexto = semCobertura ? `a cobertura de cada uma das ${num(ops)} operadoras onde a Anatel a publica (este município ainda não tem cobertura publicada)` : `a cobertura de cada uma das ${num(ops)} operadoras`;
+  const serieTexto = semCobertura
+    ? `Como a cobertura 4G e 5G mudou trimestre a trimestre, de ${mesExtenso(tri[0])} a ${mesExtenso(tri[tri.length - 1])}, no Brasil e nos municípios com cobertura publicada`
+    : `Como a cobertura 4G e 5G da cidade mudou trimestre a trimestre, de ${mesExtenso(tri[0])} a ${mesExtenso(tri[tri.length - 1])}`;
   return [
-    `O retrato completo do seu município: velocidade contratada por faixa, cabo, rádio e satélite além da fibra, ${prest} ${lider}, as linhas móveis por geração (2G a 5G), pré e pós-pago e a cobertura de cada uma das ${num(ops)} operadoras`,
+    `O retrato completo do seu município: velocidade contratada por faixa, cabo, rádio e satélite além da fibra, ${prest} ${lider}, ${movelTexto} e ${coberturaTexto}`,
     posicoes,
-    `Como a cobertura 4G e 5G da cidade mudou trimestre a trimestre, de ${mesExtenso(tri[0])} a ${mesExtenso(tri[tri.length - 1])}`,
+    serieTexto,
     `Onde a fibra ainda não chegou: os ${num(g.destaques.sem_fibra)} municípios sem acesso por fibra${g.destaques.uma_prestadora ? ` e os ${num(g.destaques.uma_prestadora)} atendidos por uma única prestadora` : ""}, estado a estado`,
     `Os ${num(g.ufs.length)} estados lado a lado: acessos por 100 habitantes, fibra, 100 Mbps ou mais, prestadoras, 5G nas linhas e moradores cobertos por 4G e 5G`,
     `Como a internet cresceu no Brasil: acessos de banda larga fixa mês a mês desde ${mesExtenso(mensalFixa)} e linhas móveis desde ${mesExtenso(mensalMovel)}, e a cobertura 4G e 5G trimestre a trimestre`,
