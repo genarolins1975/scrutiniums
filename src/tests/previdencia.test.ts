@@ -213,6 +213,9 @@ describe("previdência: o ano inteiro e o atendimento, pelo Anuário (AEPS)", ()
     expect(a.concessoes_uf.ufs.reduce((s, u) => s + u.v[k]!, 0)).toBe(esp.total.concedidos[k]);
     expect(t).toContain("Anuário Estatístico da Previdência Social");
     expect(t).toMatch(/tabelas atualizadas no portal em \d{2}\/\d{2}\/\d{4}, capturadas em \d{2}\/\d{2}\/\d{4}/);
+    // cada edição anterior leva a própria data de captura, não a de outra edição
+    const br = (d: string | null) => d!.slice(0, 10).split("-").reverse().join("/");
+    for (const x of gold.fontes.aeps.anteriores) expect(t).toContain(`atualizadas no portal em ${br(x.atualizado_em)} e capturadas em ${br(x.capturado_em)}`);
   });
 
   it("traço da fonte é ausência: salário família não aparece como zero nem como linha da tabela de concessões", async () => {

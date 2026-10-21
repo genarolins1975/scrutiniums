@@ -736,10 +736,10 @@ function Metodo({ g }: { g: GoldPrevidencia }) {
                         {j < ids.length - 1 ? " e " : ""}
                       </span>
                     ))}
-                    , atualizadas no portal em {dataBr(x.atualizado_em)}){i < xs.length - 2 ? ", " : i === xs.length - 2 ? " e " : ""}
+                    , atualizadas no portal em {dataBr(x.atualizado_em)} e capturadas em {dataBr(x.capturado_em)}){i < xs.length - 2 ? ", " : i === xs.length - 2 ? " e " : ""}
                   </span>
                 ))}
-                , capturadas em {dataBr(f.aeps.anteriores[0].capturado_em)} com o sha256 de cada página e de cada tabela. A série começa em {g.aeps.atendimento.anos[0]}.{" "}
+                , com o sha256 de cada página e de cada tabela. A série começa em {g.aeps.atendimento.anos[0]}.{" "}
                 {g.aeps.fora_da_serie.map((x) => `Fica fora a tabela ${x.tabela} da edição ${x.edicao}: ${x.motivo}; o ano fica sem ela, sem estimativa. `)}
               </li>
             )}
