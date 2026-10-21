@@ -14,6 +14,7 @@ import PaginaPerdasRegulatorio from "@/app/setor-eletrico/perdas/regulatorio/pag
 import PaginaConta from "@/app/setor-eletrico/conta-de-luz/page";
 import PaginaContaReajustes from "@/app/setor-eletrico/conta-de-luz/reajustes-e-subsidios/page";
 import PaginaQualidade from "@/app/setor-eletrico/qualidade/page";
+import PaginaQualidadeComparar from "@/app/setor-eletrico/qualidade/comparar-distribuidoras/page";
 import PaginaInclusao from "@/app/setor-eletrico/inclusao-energetica/page";
 import PaginaInclusaoAcesso from "@/app/setor-eletrico/inclusao-energetica/acesso/page";
 import PaginaInclusaoCobertura from "@/app/setor-eletrico/inclusao-energetica/cobertura/page";
@@ -118,6 +119,7 @@ const H = {
   conta: render(PaginaConta as never),
   reajustes: render(PaginaContaReajustes as never),
   qualidade: render(PaginaQualidade as never),
+  qualidadeComparar: render(PaginaQualidadeComparar as never),
   inclusao: render(PaginaInclusao as never),
   acesso: render(PaginaInclusaoAcesso as never),
   cobertura: render(PaginaInclusaoCobertura as never),
@@ -155,7 +157,7 @@ const PAINEIS: [Pagina, string, string, string][] = [
   ["reajustes", "p050-bandeiras", C.vereditoBandeira(GC.bandeiras), C.respostaBandeira(GC.bandeiras)],
   ["reajustes", "p050-subsidios", C.vereditoSubsidios(GC.subsidios), C.respostaSubsidios(GC.subsidios)],
   ["qualidade", "p051", Q.vereditoP051(GQ), Q.respostaP051(GQ)],
-  ["qualidade", "p052", Q.vereditoP052(GQ), Q.respostaP052(GQ)],
+  ["qualidadeComparar", "p052", Q.vereditoP052(GQ), Q.respostaP052(GQ)],
   ["qualidade", "p053", Q.vereditoP053(GQ), Q.respostaP053(GQ)],
   ["qualidade", "p054", Q.vereditoP054(GQ), Q.respostaP054(GQ)],
   ["inclusao", "p059", I.vereditoTarifaSocial(t), I.respostaTarifaSocial(t)],
@@ -494,13 +496,16 @@ describe("r8 T1: Qualidade", () => {
     const emQualidade = new Set(q.map((l) => l.cnpj));
     const foraDeQualidade = comArea.filter((l) => !emQualidade.has(l.cnpj)).map((l) => l.sigla).sort();
     expect(foraDeQualidade).toEqual(["CODESAM", "ENF"]);
-    expect(COMPLETO.qualidade).toContain("102 distribuidoras com indicadores de continuidade");
-    expect(COMPLETO.qualidade).toContain("as encerradas ou absorvidas, listadas em Perdas e em Minha região, não têm");
+    // o universo das distribuidoras está no painel de limites, em Comparar distribuidoras (diagnóstico de layout de 20/10/2026, item 6)
+    expect(COMPLETO.qualidadeComparar).toContain("102 distribuidoras com indicadores de continuidade");
+    expect(COMPLETO.qualidadeComparar).toContain("as encerradas ou absorvidas, listadas em Perdas e em Minha região, não têm");
   });
 
   it("os links de erro e o rodapé não citam nome de arquivo em Entender", () => {
-    expect(ENTENDER.qualidade).not.toMatch(/qualidade_[a-z_]+\.csv/);
-    expect(ENTENDER.qualidade).not.toMatch(/\b[a-z]+_[a-z_]+\.(?:csv|json)\b/);
+    for (const k of ["qualidade", "qualidadeComparar"] as const) {
+      expect(ENTENDER[k], k).not.toMatch(/qualidade_[a-z_]+\.csv/);
+      expect(ENTENDER[k], k).not.toMatch(/\b[a-z]+_[a-z_]+\.(?:csv|json)\b/);
+    }
   });
 });
 
