@@ -9,6 +9,7 @@ import { hrefNoIdioma } from "@/lib/i18n-href";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { FerramentasConta } from "@/components/conta/FerramentasConta";
 import { origemDoCabecalho } from "@/lib/conta/origens";
+import { contextoAtual } from "@/lib/observatorios/contexto";
 import type { DominioFrescorId } from "@/lib/frescor";
 
 /**
@@ -19,7 +20,9 @@ import type { DominioFrescorId } from "@/lib/frescor";
  * Abaixo de 640 px as abas saem (public/observatorios.css) e os mesmos destinos ficam no seletor, na linha da marca, com a
  * conta (skill observatorio-layout, §4 "Cabeçalho no celular").
  *
- * `colecao`: domínio de origem da página; marca o observatório em que está o núcleo dela (OBSERVATORIO_PRINCIPAL).
+ * O observatório marcado nas abas e a coleção do seletor são os donos do endereço no registro (contextoAtual), os mesmos do
+ * rótulo acima do H1 e da trilha. `colecao`: domínio de origem da página; quando o endereço não está no registro, marca o
+ * observatório em que está o núcleo dela (OBSERVATORIO_PRINCIPAL).
  * `observatorio`: para as páginas que pertencem a um observatório sem ser de uma coleção (as entradas dos seis e os
  * painéis do Território e Clima). `complementos`: o que vem à direita das abas (o seletor de idioma onde há tradução).
  *
@@ -41,12 +44,13 @@ export function CabecalhoPlataforma({
   fontes?: readonly DominioFrescorId[];
 }) {
   const idioma = idiomaEnergia();
-  const marcado = observatorio ?? (colecao ? OBSERVATORIO_PRINCIPAL[colecao] : null);
+  const ctx = contextoAtual();
+  const marcado = ctx?.observatorio.id ?? observatorio ?? (colecao ? OBSERVATORIO_PRINCIPAL[colecao] : null);
   const origem = origemDoCabecalho(colecao, observatorio, fontes);
   return (
     <BarraPlataforma
       marca={{ href: hrefNoIdioma("/", idioma), rotulo: tx("Scrutiniums: página inicial", "Scrutiniums: home page", idioma) }}
-      seletor={<SwitcherObservatorio atual={colecao} />}
+      seletor={<SwitcherObservatorio atual={colecao} contexto={ctx} />}
       acoes={<AcessoConta destino={destinoConta} />}
       abas={
         <div className="bp-abas-linha">

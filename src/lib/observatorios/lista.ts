@@ -13,6 +13,12 @@ export type Colecao = {
   nome: string;
   /** Porta de entrada da coleção (painel com conta). */
   href: string;
+  /** Domínio com pipeline próprio que a coleção apresenta inteiro (src/lib/dominios.ts), quando há um. */
+  dominio?: DominioId;
+  /** Página de método da coleção, quando existe (aberta: src/lib/rotasPublicas.ts). */
+  metodo?: string;
+  /** Glossário da coleção, quando existe. */
+  glossario?: string;
 };
 
 export type Observatorio = {
@@ -55,9 +61,9 @@ export const OBSERVATORIOS: Observatorio[] = [
     entrada: "/observatorios/familias",
     acento: "bronze",
     colecoes: [
-      { id: "renda", nome: "Renda e trabalho", href: "/eficiencia-estatal/trabalho-renda" },
+      { id: "renda", nome: "Renda e trabalho", href: "/eficiencia-estatal/trabalho-renda", metodo: "/eficiencia-estatal/trabalho-renda/metodos" },
       { id: "divida", nome: "Dívida e crédito das famílias", href: "/observatorio/payroll-lending-aging" },
-      { id: "protecao", nome: "Proteção social", href: "/eficiencia-estatal/assistencia-social" },
+      { id: "protecao", nome: "Proteção social", href: "/eficiencia-estatal/assistencia-social", metodo: "/eficiencia-estatal/assistencia-social/metodos" },
       { id: "moradia", nome: "Moradia", href: "/eficiencia-estatal/habitacao" },
       // porta da coleção desde 20/10/2026: o painel Inflação por cidade (todos os itens do orçamento); a comida item por
       // item continua no painel canônico /agronegocio/prato, que segue na coleção
@@ -75,12 +81,12 @@ export const OBSERVATORIOS: Observatorio[] = [
       // porta da coleção desde 20/10/2026: o painel Educação nos municípios (rede pública de todos os municípios); a
       // eficiência da rede municipal das capitais continua no painel canônico /eficiencia-estatal/educacao-municipal-capitais,
       // que segue na coleção
-      { id: "educacao", nome: "Educação", href: "/educacao-municipal" },
-      { id: "saude", nome: "Saúde", href: "/eficiencia-estatal/saude-capitais" },
+      { id: "educacao", nome: "Educação", href: "/educacao-municipal", metodo: "/eficiencia-estatal/educacao-municipal-capitais/metodos" },
+      { id: "saude", nome: "Saúde", href: "/eficiencia-estatal/saude-capitais", metodo: "/eficiencia-estatal/saude-capitais/metodos" },
       { id: "seguranca", nome: "Segurança pública", href: "/eficiencia-estatal/seguranca-publica" },
       { id: "justica", nome: "Justiça", href: "/eficiencia-estatal/judiciario" },
       { id: "cultura", nome: "Cultura", href: "/eficiencia-estatal/cultura" },
-      { id: "sintese", nome: "Síntese das capitais", href: "/eficiencia-estatal" },
+      { id: "sintese", nome: "Síntese das capitais", href: "/eficiencia-estatal", dominio: "eficiencia" },
     ],
   },
   {
@@ -91,8 +97,8 @@ export const OBSERVATORIOS: Observatorio[] = [
     entrada: "/observatorios/contas-publicas",
     acento: "energia",
     colecoes: [
-      { id: "federais", nome: "Contas Federais", href: "/contas-publicas" },
-      { id: "estaduais", nome: "Contas Estaduais", href: "/contas-publicas-estaduais" },
+      { id: "federais", nome: "Contas Federais", href: "/contas-publicas", dominio: "contas", metodo: "/contas-publicas/metodologia", glossario: "/contas-publicas/glossario" },
+      { id: "estaduais", nome: "Contas Estaduais", href: "/contas-publicas-estaduais", dominio: "estados" },
       { id: "divida-governos", nome: "Dívida e crédito dos governos", href: "/observatorio/subnational-credit" },
     ],
   },
@@ -104,10 +110,10 @@ export const OBSERVATORIOS: Observatorio[] = [
     entrada: "/observatorios/energia-e-infraestrutura",
     acento: "energia",
     colecoes: [
-      { id: "setor-eletrico", nome: "Setor Elétrico", href: "/setor-eletrico" },
-      { id: "gas", nome: "Gás Natural", href: "/gas-natural" },
+      { id: "setor-eletrico", nome: "Setor Elétrico", href: "/setor-eletrico", dominio: "energia", metodo: "/setor-eletrico/metodologia" },
+      { id: "gas", nome: "Gás Natural", href: "/gas-natural", dominio: "gas", metodo: "/gas-natural/metodologia" },
       { id: "combustiveis", nome: "Combustíveis", href: "/combustiveis" },
-      { id: "saneamento", nome: "Saneamento", href: "/saneamento" },
+      { id: "saneamento", nome: "Saneamento", href: "/saneamento", dominio: "saneamento", metodo: "/saneamento/metodologia" },
       { id: "mobilidade", nome: "Mobilidade", href: "/eficiencia-estatal/mobilidade-transporte" },
       // desde 20/10/2026 a porta da coleção é o painel Conectividade (Anatel por município); a página da Eficiência segue na coleção
       { id: "conectividade", nome: "Conectividade", href: "/conectividade" },
@@ -121,10 +127,10 @@ export const OBSERVATORIOS: Observatorio[] = [
     entrada: "/observatorios/economia",
     acento: "gas",
     colecoes: [
-      { id: "credito", nome: "Crédito e sistema financeiro", href: "/observatorio" },
+      { id: "credito", nome: "Crédito e sistema financeiro", href: "/observatorio", dominio: "credito", metodo: "/observatorio/methodology", glossario: "/glossario" },
       { id: "pagamentos", nome: "Pagamentos", href: "/observatorio/pix" },
       { id: "empresas", nome: "Empresas e risco", href: "/observatorio/sectors" },
-      { id: "agro", nome: "Agronegócio", href: "/agronegocio" },
+      { id: "agro", nome: "Agronegócio", href: "/agronegocio", dominio: "agro", metodo: "/agronegocio/metodologia", glossario: "/agronegocio/glossario" },
     ],
   },
   {
