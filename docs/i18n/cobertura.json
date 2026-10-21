@@ -10,9 +10,9 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "d932a71658c21a96d3844ed462f3be1a0b7b2937f80a5b937f3a8e5ad23f56df",
-    "arquivos_analisados": 1490,
-    "fontes_sha256": "5e19e15762bc7d2e827804a6ab16c6e19f5156b3f570c15803bad8c1091a6380",
+    "inventario_sha256": "d811954d297cf0a73406a6fd4055f56779648316ab798341a19ee959ef01a8ec",
+    "arquivos_analisados": 1494,
+    "fontes_sha256": "0762561cba3351066c5cb5577d585bc35903a0776a2e94932c2decd5a308ebfe",
     "pendencias_sha256": "e515a96a1d38eea004dec0a772a9e9c3dd6e5e7c6f17d5a315b787a6dff7632f",
     "nao_classificadas": [
       {
@@ -227,20 +227,20 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 572,
+        "arquivos": 576,
         "candidatos": {
-          "jsx_text": 7648,
+          "jsx_text": 7674,
           "atributos": 2903,
-          "props": 18825,
-          "outros_literais": 51086,
-          "templates": 12762,
-          "expressoes_nao_resolvidas": 55521,
-          "chaves_objetos": 36015
+          "props": 18871,
+          "outros_literais": 51149,
+          "templates": 12780,
+          "expressoes_nao_resolvidas": 55615,
+          "chaves_objetos": 36036
         },
         "exclusoes": {
-          "importacoes": 4958,
-          "atributos_tecnicos": 8681,
-          "tipos": 3729
+          "importacoes": 4998,
+          "atributos_tecnicos": 8697,
+          "tipos": 3734
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -249,18 +249,18 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 184760,
+        "candidatos_nao_catalogados": 185028,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 79,
-        "paginas_en": 79,
+        "paginas_pt": 80,
+        "paginas_en": 80,
         "handlers": 1,
         "templates_com_parametros": 12,
-        "paginas_pt_literais": 73,
+        "paginas_pt_literais": 74,
         "paginas_pt_fora_do_adaptador": 6,
         "paginas_pt_literais_sem_irma": -6,
-        "pares_estruturais": 79,
+        "pares_estruturais": 80,
         "fallbacks_declarados": 0,
         "paridade_verificada": false
       },
@@ -1610,6 +1610,17 @@
         "arquivos_presentes": true
       },
       {
+        "pt": "/setor-eletrico/qualidade/comparar-distribuidoras",
+        "en": "/en/setor-eletrico/qualidade/comparar-distribuidoras",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/qualidade/comparar-distribuidoras/page.tsx",
+          "en": "src/app/en/setor-eletrico/qualidade/comparar-distribuidoras/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
         "pt": "/setor-eletrico/rede",
         "en": "/en/setor-eletrico/rede",
         "dominio": "energia",
@@ -1819,7 +1830,7 @@
         "arquivos_presentes": true
       }
     ],
-    "pares_estruturais": 93,
+    "pares_estruturais": 94,
     "fallbacks_declarados": 9,
     "html_verificado_pelo_inventario": false,
     "acesso_verificado_pelo_inventario": false

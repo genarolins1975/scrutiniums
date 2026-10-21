@@ -74,6 +74,7 @@
       { "pt": "/setor-eletrico/pld/modelos", "conteudo": "traduzido" },
       { "pt": "/setor-eletrico/pld/previsoes", "conteudo": "traduzido" },
       { "pt": "/setor-eletrico/qualidade", "conteudo": "traduzido" },
+      { "pt": "/setor-eletrico/qualidade/comparar-distribuidoras", "conteudo": "traduzido" },
       { "pt": "/setor-eletrico/rede", "conteudo": "traduzido" },
       { "pt": "/setor-eletrico/rede/balanco-e-exterior", "conteudo": "traduzido" },
       { "pt": "/setor-eletrico/rede/programado", "conteudo": "traduzido" },
