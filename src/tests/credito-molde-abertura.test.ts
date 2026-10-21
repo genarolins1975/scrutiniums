@@ -37,7 +37,7 @@ describe("molde de abertura do Crédito: contrato no código", () => {
   });
 
   it("os ativos alterados sobem de versão (cache imutável)", () => {
-    expect(html).toContain("/observatorios.css?v=7");
+    expect(html).toContain("/observatorios.css?v=8");
     expect(html).toContain("/obs/editorial.js?v=6");
   });
 });
@@ -68,6 +68,40 @@ describe("Instituições (item 3 do diagnóstico): busca antes, exclusões depoi
     expect(regua).toContain('<details class="charttable">');
     // a tabela equivalente traz cada conglomerado, não só os agregados (achado do Codex no #315)
     expect(regua).toContain("Cada conglomerado com Basileia reportada");
+  });
+});
+
+describe("Risco setorial (item 4 do diagnóstico): sem cor de juízo, régua do score perto do topo", () => {
+  const i0 = app.indexOf("function renderSectors() {");
+  const aba = app.slice(i0, app.indexOf("\nfunction renderExposuresSection", i0));
+  it("o nome da atividade é o link para a ficha, sem botão por linha", () => {
+    expect(aba).toContain(`<a href="/observatorio/sectors/\${s.codigo}"`);
+    expect(aba).not.toContain("ficha do setor →</button>");
+  });
+  it("tendência e velocidade não pintam a célula de vermelho ou verde", () => {
+    expect(aba).not.toMatch(/s\.tendencia === "piorando" \? "up"/);
+    expect(aba).not.toMatch(/s\.velocidade === "momento piorando" \? "up"/);
+  });
+  it("a régua vem antes das tabelas e o método desce para depois delas", () => {
+    expect(aba.indexOf("${setorRegua(sectors)}")).toBeLessThan(aba.indexOf("${blocos}"));
+    expect(aba.indexOf("método do score e limitações")).toBeGreaterThan(aba.indexOf("${blocos}"));
+    const regua = app.slice(app.indexOf("function setorRegua(sectors)"), i0);
+    expect(regua).toContain("50 = média da própria história");
+    expect(regua).toContain('<details class="charttable">');
+  });
+  it("atividades com o mesmo score não se encobrem na régua", () => {
+    const fn = app.slice(app.indexOf("function setorRegua(sectors)"), i0);
+    const fmt = { n: (v: number) => String(v), my: (v: string) => v };
+    const setorRegua = new Function("fmt", `${fn}; return setorRegua;`)(fmt) as (s: unknown) => string;
+    const setores = [57.2, 57.2, 57.2, 40, 70].map((score, i) => ({ codigo: String(i), nome: `A${i}`, score, tendencia: "estável", pesquisa: "industria", ref: "2026-08" }));
+    const pontos = [...setorRegua({ setores }).matchAll(/<circle cx="([\d.]+)" cy="([\d.]+)"/g)].map((m) => [Number(m[1]), Number(m[2])]);
+    expect(pontos).toHaveLength(5);
+    for (let i = 0; i < pontos.length; i++)
+      for (let j = i + 1; j < pontos.length; j++)
+        expect(Math.hypot(pontos[i][0] - pontos[j][0], pontos[i][1] - pontos[j][1])).toBeGreaterThanOrEqual(9);
+  });
+  it("a barrinha do score não usa o degradê verde-amarelo-vermelho no Crédito", () => {
+    expect(css).toMatch(/\.observatorio-credito \.scorebar \{ background:var\(--surface-3\); \}/);
   });
 });
 
