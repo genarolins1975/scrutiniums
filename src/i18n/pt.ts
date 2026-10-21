@@ -11,7 +11,7 @@ export const pt = {
   "acesso.criar_conta": "Criar conta gratuita",
   "home.hero.ja_cadastrado": "Já tenho cadastro",
   "home.hero.rotulo": "As coleções de dados",
-  "home.hero.introducao": "{observatorios} sobre crédito, setor elétrico, agronegócio, gás natural, saneamento, serviços públicos e contas da União e dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o que o dado não permite afirmar." satisfies IntroducaoHero,
+  "home.hero.introducao": "{observatorios}, das Famílias aos Serviços Públicos, das Contas Públicas à Energia e Infraestrutura, da Economia ao Território e Clima, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o que o dado não permite afirmar." satisfies IntroducaoHero,
   "home.hero.beneficio_conta": "Todos os painéis com uma conta gratuita",
   "home.hero.beneficio_evidencia": "Fonte, período e limitações em cada número",
   "home.hero.beneficio_gratuidade": "Gratuito, sem assinatura",

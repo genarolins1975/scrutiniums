@@ -6,12 +6,12 @@ const MENSAGENS = [
   {
     idioma: "pt",
     texto: pt["home.hero.introducao"],
-    esperado: "{observatorios} sobre crédito, setor elétrico, agronegócio, gás natural, saneamento, serviços públicos e contas da União e dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o que o dado não permite afirmar.",
+    esperado: "{observatorios}, das Famílias aos Serviços Públicos, das Contas Públicas à Energia e Infraestrutura, da Economia ao Território e Clima, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o que o dado não permite afirmar.",
   },
   {
     idioma: "en",
     texto: en["home.hero.introducao"].texto,
-    esperado: "{observatorios} on credit, the power sector, agribusiness, natural gas, basic sanitation, public services and the public accounts of the União (Brazil's federal government) and the states, built on official databases. Each dashboard identifies the data source, the reference period and what the data cannot establish.",
+    esperado: "{observatorios} on families, public services, public accounts, energy and infrastructure, the economy, and territory and climate, built on official databases. Each dashboard identifies the data source, the reference period and what the data cannot establish.",
   },
 ] as const;
 

@@ -78,7 +78,7 @@ export default function DadosPage() {
 
         <ChamadaObservatorio
           titulo="A análise completa é gratuita"
-          texto="O Observatório Brasileiro de Crédito abre estes números por instituição financeira, por modalidade e por estado: taxas de juros de cada banco em 20 modalidades, comparador de instituições, sinais antecedentes e alertas com regra publicada."
+          texto="A coleção Crédito e sistema financeiro abre estes números por instituição financeira, por modalidade e por estado: taxas de juros de cada banco em 20 modalidades, comparador de instituições, sinais antecedentes e alertas com regra publicada."
           extra={
             <Link href="/observatorio/methodology" className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted hover:text-bronze">
               Como calculamos →

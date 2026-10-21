@@ -48,7 +48,7 @@ export async function generateMetadata(_props: unknown, anterior: ResolvingMetad
   return metadadosEnergia("/setor-eletrico/metodologia", {
     title: tx("Do arquivo ao número: metodologia do Observatório do Setor Elétrico", "From the file to the number: methodology of the Power Sector Observatory"),
     description: tx(
-      "O caminho de cada número, da fonte à tela, e a regra de cada indicador publicado: definição, unidade, recortes, fórmula, fontes com ficha e limitações. Natureza do dado, regra editorial, regras de classificação, governança de previsão e limitações do Observatório Brasileiro do Setor Elétrico.",
+      "O caminho de cada número, da fonte à tela, e a regra de cada indicador publicado: definição, unidade, recortes, fórmula, fontes com ficha e limitações. Natureza do dado, regra editorial, regras de classificação, governança de previsão e limitações da coleção Setor Elétrico.",
       "The path of each number, from the source to the screen, and the rule of each published indicator: definition, unit, scopes, formula, sources with a record and limitations. Nature of the data, editorial rule, classification rules, forecast governance and limitations of the Brazilian Power Sector Observatory.",
     ),
     alternates: { canonical: "/setor-eletrico/metodologia" },

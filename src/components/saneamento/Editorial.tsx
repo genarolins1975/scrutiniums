@@ -30,7 +30,7 @@ export function Abertura({
   return (
     <header className="mb-10 border-b border-linha pb-8">
       <p className="rotulo text-obee-dark">
-        {eixo ? `Eixo ${eixo.id} · ${eixo.rotulo}` : "Observatório Brasileiro do Saneamento"}
+        {eixo ? `Eixo ${eixo.id} · ${eixo.rotulo}` : "Saneamento"}
         {capitulo ? ` · Capítulo ${capitulo}` : ""}
         {rotuloExtra ? ` · ${rotuloExtra}` : ""}
       </p>

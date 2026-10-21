@@ -43,6 +43,13 @@
 /* Trilha "Você está em" logo abaixo da barra comum (Iniciativa 1 do parecer de UX, 21/10/2026): mesma largura e margens da
    barra, sem caixa nem regra própria, para não somar mais uma faixa de cromo ao cabeçalho. */
 .bp-trilha { box-sizing:border-box; width:100%; max-width:var(--bp-largura,77.5rem); margin-inline:auto; padding-inline:var(--bp-margem,clamp(1rem,4vw,2.5rem)); padding-block:4px; }
+/* a mesma trilha na SPA do Crédito, que não carrega o Tailwind das páginas Next */
+.observatorio-credito .obs-trilha ol { display:flex; flex-wrap:wrap; align-items:center; gap:0 8px; margin:0; padding:0; list-style:none; font-size:13px; line-height:20px; color:var(--bp-suave); }
+.observatorio-credito .obs-trilha li { display:inline-flex; align-items:center; gap:8px; }
+.observatorio-credito .obs-trilha a { display:inline-flex; align-items:center; min-height:32px; color:inherit; text-decoration:underline; text-decoration-color:var(--bp-regra); text-underline-offset:4px; }
+.observatorio-credito .obs-trilha a:hover { color:var(--bp-tinta); text-decoration-color:currentColor; }
+.observatorio-credito .obs-trilha [aria-current] { display:inline-flex; align-items:center; min-height:32px; color:var(--bp-tinta); }
+@media (pointer:coarse) { .observatorio-credito .obs-trilha a, .observatorio-credito .obs-trilha [aria-current] { min-height:44px; } }
 .bp .obs-dominios a, .bp a.bp-aba { min-height:44px; display:inline-flex; align-items:center; padding:4px 0; border-bottom:2px solid transparent; font-size:13px; line-height:1.35; white-space:nowrap; color:var(--bp-tinta); text-decoration:none; }
 .bp .obs-dominios a:hover, .bp a.bp-aba:hover { color:var(--bp-destaque); text-decoration:none; }
 .bp .obs-dominios a[aria-current] { border-color:var(--bp-destaque); font-weight:600; }

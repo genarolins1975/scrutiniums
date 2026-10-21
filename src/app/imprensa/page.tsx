@@ -230,7 +230,7 @@ export default function ImprensaPage() {
               Como citar
             </h2>
             <p className="mt-6 max-w-prose2 text-base leading-relaxed text-carvao">
-              «Observatório Brasileiro de Crédito / Scrutiniums (scrutiniums.com), a partir de
+              «Scrutiniums, coleção Crédito e sistema financeiro (scrutiniums.com), a partir de
               [fonte primária]» — a fonte primária de cada número está declarada ao lado dele.
               O uso é livre e gratuito; pedimos apenas o link para o painel citado, para que o
               leitor encontre o contexto e as limitações do dado.

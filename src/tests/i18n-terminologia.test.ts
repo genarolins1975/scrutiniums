@@ -497,11 +497,10 @@ describe("vínculos reais das 22 mensagens atuais", () => {
       "home.indice.paginas_por_pergunta", "home.indice.contagem_parcial",
     ];
     const esperadas = {
+      // Iniciativa 1 do parecer de UX (21/10/2026): a abertura nomeia os seis observatórios (nomes de produto, não termos),
+      // e não mais os temas dos domínios antigos; ficam os termos de método que a frase ainda usa
       "home.hero.introducao": [
-        ref("credito.credito", "canonica"), ref("energia.setor_eletrico", "canonica"), ref("gas.gas_natural", "canonica"),
-        ref("saneamento.saneamento_basico", "home_curta"), ref("servicos.servicos_publicos", "canonica"), ref("fiscal.contas_publicas", "home_curta"),
-        refNome("na_mensagem"), ref("federativo.estado", "plural"), ref("estatistica.base_dados", "home_oficiais_plural"),
-        ref("estatistica.fonte_dados", "home_curta"), ref("estatistica.periodo_referencia", "canonica"),
+        ref("estatistica.base_dados", "home_oficiais_plural"), ref("estatistica.fonte_dados", "home_curta"), ref("estatistica.periodo_referencia", "canonica"),
       ],
       "home.hero.beneficio_evidencia": [ref("estatistica.fonte_dados", "home_curta_inicial"), ref("estatistica.periodo_referencia", "home_curta")],
       "home.indice.unidades_federacao": [ref("federativo.unidades_federacao", "canonica")],
@@ -516,8 +515,8 @@ describe("vínculos reais das 22 mensagens atuais", () => {
     }
     expect(lerTerminologia(bytes, c, g)).toEqual({
       schema_version: 1, mensagens: 22, mensagens_vinculadas: 3, mensagens_sem_termos_tecnicos: 19,
-      referencias: 14, ids_distintos: 12, formas_contextuais_usadas: 7,
-      referencias_pt_verificadas: 14, referencias_en_verificadas: 14, referencias_en_pendentes: 0,
+      referencias: 6, ids_distintos: 4, formas_contextuais_usadas: 4,
+      referencias_pt_verificadas: 6, referencias_en_verificadas: 6, referencias_en_pendentes: 0,
       uso_na_interface_verificado: false,
     });
   });
