@@ -12,7 +12,7 @@
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
     "arquivos_analisados": 1484,
-    "fontes_sha256": "2893f6557e1c3a10c9164a681a2aa684ccd14899cc56381ddb60e0cee93440f4",
+    "fontes_sha256": "cf839e68cf6b390087a2349d32e46d8d3971e5a8e39724051721b2baae672529",
     "pendencias_sha256": "f3c89d0559bfe21c5192154a4be742bea65bcd9528e3a2b9ed6d043cebe9d8b7",
     "nao_classificadas": [
       {
