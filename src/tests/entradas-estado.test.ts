@@ -35,6 +35,7 @@ describe('Aberturas editoriais: números e perímetros preservados',()=>{
   for(const [de,para] of [['atualizada','empenhado'],['empenhado','liquidado'],['liquidado','pago']] as const)expect(html).toContain(moeda(b[de]-b[para],'reais'));
   expect(html).toContain('não empenhados');
   expect(html).toContain('liquidados e não pagos');
+  expect(html).toContain('cada um está dentro do anterior');
  });
  it.each(snapshot.ufs)('Estadual mantém os números conferidos de $uf e as 27 bandeiras',u=>{
   const html=renderToStaticMarkup(createElement(AberturaEstadual,{uf:u.uf,ano:2025,selecionar:()=>{}}));
