@@ -494,6 +494,8 @@ export default function VisaoGeralEnergia() {
                   d={det.leves}
                   ancoras={ANCORAS_DETERMINANTES}
                   fonte={fonteTabelas}
+                  // a da água diz que o mesmo percentual em épocas diferentes não é a mesma energia: ressalva da faixa, fica no Entender
+                  notasAVista={["agua"]}
                   notas={{
                     preco: ctx.doisCriteriosPld ? [ctx.doisCriteriosPld] : [],
                     agua: [ctx.capacidadeAgua, ctx.earNoModulo].filter((x): x is string => !!x),

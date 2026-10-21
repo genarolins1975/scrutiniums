@@ -68,6 +68,7 @@ function Cartao({
   ocultas,
   onOcultas,
   notas,
+  notasAVista = false,
   largo = false,
 }: {
   p: PainelLeve;
@@ -79,6 +80,8 @@ function Cartao({
   onOcultas?: (ids: string[]) => void;
   /** Pontes entre este número e o da mesma grandeza em outro corte ou em outro módulo, escritas a partir da gold (visao.ts). */
   notas?: readonly string[];
+  /** As notas deste cartão são ressalva da referência (não só ponte com outro corte) e ficam no Entender. */
+  notasAVista?: boolean;
   /** Último cartão de uma quantidade ímpar: ocupa as duas colunas, para a grade não terminar com metade vazia. */
   largo?: boolean;
 }) {
@@ -165,8 +168,8 @@ function Cartao({
       </p>
       {notas && notas.length > 0 && (
         // diagnóstico de layout de 20/10/2026, item 7: no Entender o cartão é número, gráfico, leitura, referência e o link; os valores do dia
-        // e as pontes com outros cortes descem para Analisar (seguem no HTML)
-        <div data-nivel="analisar" className="mt-3 space-y-1.5 border-t border-linha pt-3 text-xs leading-relaxed text-carvao" data-nota-determinante={p.id}>
+        // e as pontes com outros cortes descem para Analisar (seguem no HTML); nota que é ressalva da referência fica à vista
+        <div data-nivel={notasAVista ? undefined : "analisar"} className="mt-3 space-y-1.5 border-t border-linha pt-3 text-xs leading-relaxed text-carvao" data-nota-determinante={p.id}>
           {notas.map((n, i) => (
             <p key={n}>
               {i === 0 && <span className="rotulo mr-2 text-mineral">{tx("Para ler junto", "Read together")}</span>}
@@ -197,11 +200,14 @@ export function VisaoDeterminantes({
   ancoras,
   fonte,
   notas = {},
+  notasAVista = [],
 }: {
   d: DeterminantesLeves;
   ancoras: Partial<Record<string, AncorasDeterminante>>;
   fonte: string;
   notas?: Partial<Record<IdPainelMultiplo, readonly string[]>>;
+  /** Painéis cujas notas são ressalva da referência e ficam no Entender. */
+  notasAVista?: readonly IdPainelMultiplo[];
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const nome = useId();
@@ -262,6 +268,7 @@ export function VisaoDeterminantes({
               linhas={linhas}
               ancoras={ancoras[p.id]}
               notas={notas[p.id]}
+              notasAVista={notasAVista.includes(p.id)}
               ocultas={p.id === "preco" ? v.sm : p.id === "rede" ? v.fr : undefined}
               onOcultas={p.id === "preco" ? (ids) => definir({ sm: ids }) : p.id === "rede" ? (ids) => definir({ fr: ids }) : undefined}
             />
