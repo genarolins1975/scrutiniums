@@ -10,9 +10,9 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "d811954d297cf0a73406a6fd4055f56779648316ab798341a19ee959ef01a8ec",
-    "arquivos_analisados": 1494,
-    "fontes_sha256": "0762561cba3351066c5cb5577d585bc35903a0776a2e94932c2decd5a308ebfe",
+    "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
+    "arquivos_analisados": 1495,
+    "fontes_sha256": "7b1cce801768b768e63f9e54c61e20eb91f6f94090adf4cf94110e09b238e78e",
     "pendencias_sha256": "e515a96a1d38eea004dec0a772a9e9c3dd6e5e7c6f17d5a315b787a6dff7632f",
     "nao_classificadas": [
       {
@@ -178,20 +178,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 407,
+        "arquivos": 408,
         "candidatos": {
-          "jsx_text": 2324,
-          "atributos": 491,
-          "props": 1133,
-          "outros_literais": 8374,
-          "templates": 1156,
-          "expressoes_nao_resolvidas": 7234,
-          "chaves_objetos": 6627
+          "jsx_text": 2293,
+          "atributos": 490,
+          "props": 1113,
+          "outros_literais": 8358,
+          "templates": 1155,
+          "expressoes_nao_resolvidas": 7278,
+          "chaves_objetos": 6651
         },
         "exclusoes": {
-          "importacoes": 1761,
-          "atributos_tecnicos": 3781,
-          "tipos": 503
+          "importacoes": 1771,
+          "atributos_tecnicos": 3763,
+          "tipos": 505
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -200,7 +200,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 27339,
+        "candidatos_nao_catalogados": 27338,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -212,7 +212,7 @@
         "paginas_pt_fora_do_adaptador": 7,
         "paginas_pt_literais_sem_irma": 30,
         "pares_estruturais": 13,
-        "fallbacks_declarados": 8,
+        "fallbacks_declarados": 5,
         "paridade_verificada": false,
         "parciais_declarados": 1
       },
@@ -826,7 +826,7 @@
         "pt": "/entrar",
         "en": "/en/entrar",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/entrar/page.tsx",
           "en": "src/app/en/entrar/page.tsx"
@@ -837,7 +837,7 @@
         "pt": "/entrar/sms",
         "en": "/en/entrar/sms",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/entrar/sms/page.tsx",
           "en": "src/app/en/entrar/sms/page.tsx"
@@ -848,7 +848,7 @@
         "pt": "/entrar/sms/verificar",
         "en": "/en/entrar/sms/verificar",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/entrar/sms/verificar/page.tsx",
           "en": "src/app/en/entrar/sms/verificar/page.tsx"
@@ -1831,7 +1831,7 @@
       }
     ],
     "pares_estruturais": 94,
-    "fallbacks_declarados": 9,
+    "fallbacks_declarados": 6,
     "html_verificado_pelo_inventario": false,
     "acesso_verificado_pelo_inventario": false
   },

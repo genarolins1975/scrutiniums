@@ -288,6 +288,8 @@ export function verificarHomeParcial(pt: No, en: No): void {
     expect(anchor.tag).toBe("a");
     expect(anchor.filhos).toEqual([catalogoPt[chave]]);
     anchor.filhos = [inglesa(chave)];
+    // a entrada tem tradução publicada: o atalho inglês leva à irmã /en; o cadastro continua em português
+    if (href === "/entrar") anchor.atributos = anchor.atributos.map(([nome, valor]): [string, string] => [nome, nome === "href" ? "/en/entrar" : valor]);
   }
   const rotuloEsperado = forma(rotuloPt);
   expect(rotuloEsperado.tag).toBe("p");
