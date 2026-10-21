@@ -724,6 +724,25 @@ function Metodo({ g }: { g: GoldPrevidencia }) {
               , uma página por tabela. Anual. Tabelas atualizadas no portal em {dataBr(f.aeps.atualizado_em)}; capturadas em {dataBr(f.aeps.capturado_em)}, com o sha256 de cada página e o
               de cada tabela. Ficam de fora as tabelas do Anuário com benefícios emitidos por estado (B.13 a B.17), que repetem o BEPS e o arquivo municipal, e as demais seções do Anuário.
             </li>
+            {f.aeps.anteriores.length > 0 && (
+              <li>
+                Atendimento e rede dos anos anteriores: cada edição do Anuário traz um só ano das tabelas 43.1 e 43.2, por isso a série vem das edições{" "}
+                {f.aeps.anteriores.map((x, i, xs) => (
+                  <span key={x.edicao}>
+                    {x.edicao} (
+                    {(Object.keys(x.tabelas) as (keyof typeof x.tabelas)[]).map((id, j, ids) => (
+                      <span key={id}>
+                        <a href={x.tabelas[id]?.url}>{id}</a>
+                        {j < ids.length - 1 ? " e " : ""}
+                      </span>
+                    ))}
+                    , atualizadas no portal em {dataBr(x.atualizado_em)}){i < xs.length - 2 ? ", " : i === xs.length - 2 ? " e " : ""}
+                  </span>
+                ))}
+                , capturadas em {dataBr(f.aeps.anteriores[0].capturado_em)} com o sha256 de cada página e de cada tabela. A série começa em {g.aeps.atendimento.anos[0]}.{" "}
+                {g.aeps.fora_da_serie.map((x) => `Fica fora a tabela ${x.tabela} da edição ${x.edicao}: ${x.motivo}; o ano fica sem ela, sem estimativa. `)}
+              </li>
+            )}
           </ul>
         </div>
         <div>
@@ -732,7 +751,7 @@ function Metodo({ g }: { g: GoldPrevidencia }) {
             A atualização é agendada duas vezes por mês. Nada é publicado se a série mensal tiver mês faltando ou não fechar com os grupos, se a tabela dos tipos mudar de linhas ou as partes não
             somarem o todo, se os 27 estados não somarem o Brasil, se um município não fechar por grupo, se a soma dos municípios em algum dezembro diferir do BEPS, se a divisão urbana e rural do
             Tesouro não somar o total, se o % do PIB não conferir com o publicado ou se um ano fechado for revisto além do limite. Do Anuário, nada é publicado se uma tabela faltar, se as partes
-            de um grupo de benefício não somarem o todo, se os estados não somarem o Brasil, se o Regime Geral de algum dezembro diferir do BEPS ou se uma edição nova rever um ano além de 1%. Ausência
+            de um grupo de benefício não somarem o todo, se os estados não somarem o Brasil, se o Regime Geral de algum dezembro diferir do BEPS ou se uma edição nova rever um ano além de 1%; no atendimento e na rede, se faltar a edição de um ano, se os estados não somarem o Brasil em algum mês ou se um ano repetido entre edições mudar além de 1%. Ausência
             fica como ausência: nunca vira zero nem estimativa.
           </p>
         </div>

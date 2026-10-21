@@ -234,6 +234,34 @@ describe("previdência: o ano inteiro e o atendimento, pelo Anuário (AEPS)", ()
     for (const u of a.atendimento.ufs) expect(t).toContain(fmt(u.total));
   });
 
+  it("atendimento em série, um ano por edição do Anuário: total de cada ano, mês a mês e por estado, com a ressalva", async () => {
+    const at = a.atendimento;
+    // a série começa na edição 2022 e chega à edição principal, sem lacuna; o último ano é o mesmo do primeiro plano
+    expect(at.anos[0]).toBe(2022);
+    expect(at.anos).toEqual(Array.from({ length: at.ano - 2022 + 1 }, (_x, i) => 2022 + i));
+    expect(at.serie[at.serie.length - 1].total).toBe(at.total);
+    for (const x of at.serie) {
+      expect(x.total).toBe(x.brasil.reduce((s, v) => s + v, 0));
+      for (let m = 0; m < 12; m++) expect(x.ufs.reduce((s, u) => s + (u.v[m] ?? 0), 0)).toBe(x.brasil[m]);
+    }
+    const t = textoDe(await painel());
+    expect(t).toContain(`O ano inteiro, de ${at.anos[0]} a ${at.ano}`);
+    expect(t).toContain(`Mês a mês, de janeiro de ${at.anos[0]} a dezembro de ${at.ano}`);
+    for (const x of at.serie) {
+      expect(t).toContain(`${fmt(x.total / 1e6, 2)} milhões`);
+      expect(t).toContain(fmt(x.total)); // a linha "Ano inteiro" da tabela mês a mês e o Brasil da tabela por estado
+      expect(t).toContain(fmt(x.brasil[0]));
+      for (const u of x.ufs) expect(t).toContain(fmt(u.total));
+    }
+    expect(t).toContain("Um ano por edição");
+    expect(t).toContain("não informa o tempo de espera nem o prazo");
+    // cada edição citada com a sua data de atualização no portal; a rede de 2022 fica fora, com o motivo
+    for (const x of gold.fontes.aeps.anteriores) expect(t).toContain(`atualizada no portal em ${x.atualizado_em!.split("-").reverse().join("/")}`);
+    for (const x of a.fora_da_serie) expect(t).toContain(`A rede de dezembro de ${x.edicao} não entra`);
+    // a rede dos dezembros anteriores aparece sob o número de dezembro do último ano
+    for (const r of a.rede.serie.slice(0, -1)) expect(t).toContain(`Dezembro de ${r.ano}: ${fmt(r.brasil[a.rede.colunas.indexOf("aps_fixas")]!)}`);
+  });
+
   it("ordem das seções: o ano depois dos tipos, o atendimento depois dos estados", async () => {
     const html = await painel();
     const pos = (id: string) => html.indexOf(`id="${id}"`);
@@ -259,7 +287,8 @@ describe("previdência: o ano inteiro e o atendimento, pelo Anuário (AEPS)", ()
     const t = textoDe(html);
     expect(t).not.toContain(`${fmt(a.atendimento.total / 1e6, 2)} milhões de atendimentos`);
     expect(t).toContain(`O ano inteiro, de ${a.anos[0]} a ${a.anos[k]}, pelo Anuário Estatístico da Previdência Social`);
-    expect(t).toContain(`O atendimento nas unidades do INSS mês a mês em ${a.atendimento.ano}`);
+    expect(t).toContain(`O atendimento nas unidades do INSS mês a mês de ${a.atendimento.anos[0]} a ${a.atendimento.ano}`);
+    for (const x of a.atendimento.serie) expect(t).not.toContain(`${fmt(x.total / 1e6, 2)} milhões de atendimentos`);
     expect(t).toContain(`${fmt(a.rede.brasil[a.rede.colunas.indexOf("aps_fixas")]!)} agências fixas`);
   });
 
@@ -270,7 +299,13 @@ describe("previdência: o ano inteiro e o atendimento, pelo Anuário (AEPS)", ()
     const { csvAnuario } = await import("@/lib/previdencia/csv");
     const linhas = (await csvAnuario().text()).replace(/^﻿/, "").trim().split("\n");
     const n = a.anos.length;
-    expect(linhas).toHaveLength(1 + 4 * a.especies.length * 3 * n + 28 * 3 * n + 28 * a.rede.colunas.length + 28 * 12);
+    expect(linhas).toHaveLength(1 + 4 * a.especies.length * 3 * n + 28 * 3 * n + 28 * a.rede.colunas.length * a.rede.serie.length + 28 * 12 * a.atendimento.serie.length);
+    // cada linha do atendimento leva a fonte e o endereço da sua edição
+    for (const x of gold.fontes.aeps.anteriores) {
+      const l = linhas.find((y) => y.startsWith("43.2;") && y.includes(`;${x.edicao}-01;`))!;
+      expect(l).toContain(`edição ${x.edicao}, tabela 43.2`);
+      expect(l).toContain(x.tabelas["43.2"]!.url);
+    }
     const tracos = linhas.filter((l) => l.includes(";traço na fonte;"));
     expect(tracos.length).toBeGreaterThan(0);
     for (const l of tracos.slice(0, 20)) expect(l.split(";")[6]).toBe("");

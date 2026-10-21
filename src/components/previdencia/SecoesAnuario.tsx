@@ -2,17 +2,16 @@
  * Duas seções do painel Previdência e INSS que só o Anuário Estatístico da Previdência Social (AEPS) responde, com os
  * três anos da edição mais recente: o ano inteiro (valor emitido nos doze meses, benefícios concedidos e a divisão entre
  * Regime Geral, assistenciais e encargos previdenciários da União) e o atendimento nas unidades do INSS (mês a mês e
- * por estado, com a rede de agências). Desenhadas no servidor a partir do bloco aeps da gold; nenhum número escrito à
- * mão. O que o BEPS e o arquivo municipal já mostram (benefícios emitidos por estado e mês a mês) não se repete aqui.
+ * por estado, com a rede de agências; em série, um ano por edição do Anuário). Desenhadas no servidor a partir do bloco
+ * aeps da gold; nenhum número escrito à mão. O que o BEPS e o arquivo municipal já mostram (benefícios emitidos por estado e mês a mês) não se repete aqui.
  */
 import { GraficoColunas } from "./Graficos";
 import { especiesAeps } from "@/lib/previdencia/dados";
 import { bilhoesDeMil, dataBr, milhoes, num, pct, razao, SEM_DADO, variacao } from "@/lib/previdencia/formato";
 import { GRANDES_GRUPOS_AEPS, NOME_ESPECIE_AEPS } from "@/lib/previdencia/paginas";
-import type { GoldPrevidencia, IdEspecieAeps, IdRedeAeps, NoveValores } from "@/lib/previdencia/tipos";
+import type { GoldPrevidencia, IdEspecieAeps, IdRedeAeps, NoveValores, TabelaAeps } from "@/lib/previdencia/tipos";
 
 const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-const MESES_CURTOS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 
 /** Total, clientela urbana e clientela rural do ano k nas nove colunas da fonte. */
 const total = (v: NoveValores, k: number) => v[k] ?? null;
@@ -26,7 +25,8 @@ function parte(a: number | null, b: number | null): string {
   return pct(100 * x, 100 * x < 1 ? 2 : 1);
 }
 
-const semFonte = (s: string) => s.replace(/^FONTE:\s*/i, "").replace(/\.$/, "");
+/** A linha de fonte sem o rótulo e sem o ponto final (a edição 2022 da 43.2 termina em dois pontos: "NovoSIGMA.."). */
+const semFonte = (s: string) => s.replace(/^FONTE:\s*/i, "").replace(/\.+$/, "");
 
 /* --------------------------------------------------------------------------------------------- o ano inteiro */
 
@@ -322,22 +322,58 @@ const REDE: { id: IdRedeAeps; rotulo: string }[] = [
   { id: "aps_tel", rotulo: "Agências de teleatendimento, a Central 135" },
 ];
 
+/** "30,9% a mais" ou "5,2% a menos", sem o sinal. */
+function comparado(atual: number, base: number): string {
+  const v = variacao(atual, base);
+  return atual >= base ? `${v.replace("+", "")} a mais` : `${v.replace("−", "")} a menos`;
+}
+
+/** Os metadados de uma tabela numa edição: a principal ou uma das anteriores (cada edição traz um ano do atendimento). */
+function tabelaDaEdicao(f: GoldPrevidencia["fontes"]["aeps"], edicao: number, tid: "43.1" | "43.2"): TabelaAeps | null {
+  if (edicao === f.edicao) return f.tabelas[tid];
+  return f.anteriores.find((x) => x.edicao === edicao)?.tabelas[tid] ?? null;
+}
+
+const lista = (itens: string[]) => (itens.length < 2 ? itens.join("") : `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`);
+
 export function SecaoAtendimento({ g }: { g: GoldPrevidencia }) {
   const a = g.aeps;
   const f = g.fontes.aeps;
   const t = a.atendimento;
   const ano = t.ano;
+  const serie = t.serie;
+  const ano0 = serie[0].ano;
+  const porAno = Object.fromEntries(serie.map((x) => [x.ano, x]));
+  const antes = serie.slice(0, -1).reverse();
   const iMax = t.brasil.indexOf(Math.max(...t.brasil));
+  const maxAno = Math.max(...serie.map((x) => x.total));
   const rede = Object.fromEntries(a.rede.colunas.map((c, i) => [c, a.rede.brasil[i]])) as Record<IdRedeAeps, number | null>;
+  const redeAntes = a.rede.serie.slice(0, -1).reverse();
   const redeUf = (uf: string, c: IdRedeAeps) => a.rede.ufs.find((u) => u.uf === uf)?.v[a.rede.colunas.indexOf(c)] ?? null;
   const ufs = [...t.ufs].sort((x, y) => y.total - x.total);
-  const pontos = t.brasil.map((v, i) => ({ x: i + 1, y: v / 1e6, destaque: i === iMax }));
+  const ufAno = (ano2: number, uf: string) => porAno[ano2]?.ufs.find((u) => u.uf === uf)?.total ?? null;
+  // os meses de todos os anos, em sequência; ano que faltasse ficaria vazio (a validação não deixa faltar)
+  const anosSerie = Array.from({ length: ano - ano0 + 1 }, (_x, i) => ano0 + i);
+  const maxDoAno = Object.fromEntries(serie.map((x) => [x.ano, x.brasil.indexOf(Math.max(...x.brasil))]));
+  const pontos = anosSerie.flatMap((y, j) =>
+    Array.from({ length: 12 }, (_x, m) => {
+      const v = porAno[y]?.brasil[m];
+      return { x: 12 * j + m + 1, y: typeof v === "number" ? v / 1e6 : null, destaque: maxDoAno[y] === m };
+    }),
+  );
+  const ultimoMes = serie[serie.length - 1].brasil[11];
+  // a nota que define o que a contagem engloba não está em todas as edições: diz-se em quais
+  const comNota = serie.filter((x) => tabelaDaEdicao(f, x.ano, "43.2")?.notas).map((x) => String(x.ano));
+  const semNota = serie.filter((x) => !tabelaDaEdicao(f, x.ano, "43.2")?.notas).map((x) => String(x.ano));
+  const nota = tabelaDaEdicao(f, ano, "43.2")?.notas.replace(/\.$/, "").toLowerCase();
+  const foraRede = a.fora_da_serie.filter((x) => x.tabela === "43.1");
   return (
     <section className="pv-secao" id="atendimento" aria-labelledby="atendimento-titulo">
       <h2 id="atendimento-titulo">Quanto o INSS atende nas suas unidades?</h2>
       <p className="pv-intro">
-        Em {ano}, as unidades do INSS registraram <strong>{milhoes(t.total)} de atendimentos</strong>, entre serviços administrativos, perícias médicas, serviços sociais e de reabilitação. O mês de
-        maior movimento foi {MESES[iMax]}, com {milhoes(t.brasil[iMax])}. Em dezembro de {ano}, a rede tinha {num(rede.aps_fixas)} agências fixas, distribuídas pelos {num(a.rede.ufs.length)} estados.
+        Em {ano}, as unidades do INSS registraram <strong>{milhoes(t.total)} de atendimentos</strong>, entre serviços administrativos, perícias médicas, serviços sociais e de reabilitação:{" "}
+        {lista(antes.map((x) => `${comparado(t.total, x.total)} que em ${x.ano} (${milhoes(x.total)})`))}. O mês de maior movimento de {ano} foi {MESES[iMax]}, com {milhoes(t.brasil[iMax])}. Em
+        dezembro de {ano}, a rede tinha {num(rede.aps_fixas)} agências fixas, distribuídas pelos {num(a.rede.ufs.length)} estados.
       </p>
 
       <dl className="pv-rede" aria-label={`A rede do INSS em dezembro de ${ano}`}>
@@ -345,20 +381,72 @@ export function SecaoAtendimento({ g }: { g: GoldPrevidencia }) {
           <div key={r.id}>
             <dt>{r.rotulo}</dt>
             <dd className="pv-valor">{num(rede[r.id])}</dd>
+            {redeAntes.map((x) => (
+              <dd key={x.ano} className="pv-prova">
+                Dezembro de {x.ano}: {num(x.brasil[a.rede.colunas.indexOf(r.id)])}
+              </dd>
+            ))}
           </div>
         ))}
       </dl>
 
+      <h3 className="pv-subtitulo">O ano inteiro, de {ano0} a {ano}</h3>
+      <div className="pv-barras" role="list" aria-label={`Atendimentos nas unidades do INSS por ano, de ${ano0} a ${ano}`}>
+        {serie.map((x) => (
+          <div key={x.ano} className={`pv-barra ${x.ano === ano ? "pv-escolhido" : ""}`} role="listitem">
+            <span>{x.ano}</span>
+            <span className="pv-barra-trilho" aria-hidden="true"><i style={{ width: `${(100 * x.total) / maxAno}%` }} /></span>
+            <span>{milhoes(x.total)}</span>
+          </div>
+        ))}
+      </div>
+      <p className="pv-fonte">Soma dos doze meses de cada ano, na mesma escala; cada ano vem de uma edição do Anuário.</p>
+
+      <h3 className="pv-subtitulo">Mês a mês, de janeiro de {ano0} a dezembro de {ano}</h3>
       <figure className="pv-figura pv-figura-media">
         <GraficoColunas
           pontos={pontos}
-          marcasX={pontos.map((p) => ({ x: p.x, rotulo: MESES_CURTOS[p.x - 1] }))}
+          marcasX={anosSerie.map((y, j) => ({ x: 12 * j + 1, rotulo: `jan ${y}` }))}
           unidade="milhões de atendimentos no mês"
           casas={2}
-          descricao={`Atendimentos nas unidades do INSS em ${ano}: ${milhoes(t.brasil[0])} em janeiro e ${milhoes(t.brasil[11])} em dezembro; o maior mês foi ${MESES[iMax]}, com ${milhoes(t.brasil[iMax])}.`}
+          descricao={`Atendimentos nas unidades do INSS mês a mês, de janeiro de ${ano0} a dezembro de ${ano}: ${milhoes(serie[0].brasil[0])} em janeiro de ${ano0} e ${milhoes(ultimoMes)} em dezembro de ${ano}; o maior mês de ${ano} foi ${MESES[iMax]}, com ${milhoes(t.brasil[iMax])}.`}
         />
-        <figcaption>Atendimentos registrados nas unidades do INSS a cada mês de {ano}; a coluna escura é o mês de maior movimento.</figcaption>
+        <figcaption>Atendimentos registrados nas unidades do INSS a cada mês; a coluna escura é o mês de maior movimento de cada ano.</figcaption>
       </figure>
+
+      <p className="pv-legenda-tabela" aria-hidden="true">Atendimentos em cada mês, de {ano0} a {ano}, e a variação de {ano - 1} para {ano} no mesmo mês.</p>
+      <div className="pv-tabela-rolagem" tabIndex={0} role="region" aria-label="Tabela; no celular, deslize para o lado">
+        <table className="pv-tabela pv-tabela-media">
+          <caption className="cp-sr-only">Atendimentos em cada mês, de {ano0} a {ano}, e a variação de {ano - 1} para {ano} no mesmo mês.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Mês</th>
+              {serie.map((x) => (
+                <th key={x.ano} scope="col">{x.ano}</th>
+              ))}
+              <th scope="col">Variação de {ano - 1} a {ano}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {MESES.map((m, i) => (
+              <tr key={m}>
+                <th scope="row">{m[0].toUpperCase() + m.slice(1)}</th>
+                {serie.map((x) => (
+                  <td key={x.ano}>{num(x.brasil[i])}</td>
+                ))}
+                <td>{variacao(t.brasil[i], porAno[ano - 1]?.brasil[i])}</td>
+              </tr>
+            ))}
+            <tr className="pv-forte">
+              <th scope="row">Ano inteiro</th>
+              {serie.map((x) => (
+                <td key={x.ano}>{num(x.total)}</td>
+              ))}
+              <td>{variacao(t.total, porAno[ano - 1]?.total)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <div className="pv-ler" aria-label="Como ler os atendimentos">
         <p>
@@ -367,18 +455,27 @@ export function SecaoAtendimento({ g }: { g: GoldPrevidencia }) {
         <p>
           <strong>O que a tabela não diz.</strong> Ela conta o que foi registrado nas unidades, sem separar o canal, e não informa o tempo de espera nem o prazo de análise dos pedidos.
         </p>
+        <p>
+          <strong>Um ano por edição.</strong> Cada edição do Anuário publica o atendimento de um só ano; a série junta as edições de {lista(serie.map((x) => String(x.ano)))}, sem ano repetido entre
+          elas.{" "}
+          {semNota.length > 0 && comNota.length > 0
+            ? `A nota que diz o que a contagem engloba (${nota}) está nas edições de ${lista(comNota)}; a de ${lista(semNota)} não a traz.`
+            : ""}
+        </p>
       </div>
 
-      <p className="pv-legenda-tabela" aria-hidden="true">Atendimentos em cada estado em {ano} e a rede em dezembro. Ordem: mais atendimentos primeiro.</p>
+      <p className="pv-legenda-tabela" aria-hidden="true">Atendimentos em cada estado, de {ano0} a {ano}, e a rede em dezembro de {ano}. Ordem: mais atendimentos em {ano} primeiro.</p>
       <div className="pv-tabela-rolagem" tabIndex={0} role="region" aria-label="Tabela; no celular, deslize para o lado">
         <table className="pv-tabela pv-tabela-larga">
-          <caption className="cp-sr-only">Atendimentos em cada estado em {ano} e a rede em dezembro. Ordem: mais atendimentos primeiro.</caption>
+          <caption className="cp-sr-only">Atendimentos em cada estado, de {ano0} a {ano}, e a rede em dezembro de {ano}. Ordem: mais atendimentos em {ano} primeiro.</caption>
           <thead>
             <tr>
               <th scope="col">Estado</th>
-              <th scope="col">Atendimentos no ano</th>
-              <th scope="col">Média por mês</th>
-              <th scope="col">Mês de maior movimento</th>
+              {serie.map((x) => (
+                <th key={x.ano} scope="col">Atendimentos em {x.ano}</th>
+              ))}
+              <th scope="col">Variação de {ano0} a {ano}</th>
+              <th scope="col">Mês de maior movimento em {ano}</th>
               <th scope="col">Agências fixas</th>
               <th scope="col">Gerências executivas</th>
             </tr>
@@ -389,8 +486,10 @@ export function SecaoAtendimento({ g }: { g: GoldPrevidencia }) {
               return (
                 <tr key={u.uf}>
                   <th scope="row">{u.nome}</th>
-                  <td>{num(u.total)}</td>
-                  <td>{num(u.total / 12)}</td>
+                  {serie.map((x) => (
+                    <td key={x.ano}>{num(ufAno(x.ano, u.uf))}</td>
+                  ))}
+                  <td>{variacao(u.total, ufAno(ano0, u.uf))}</td>
                   <td>{MESES[m]}</td>
                   <td>{num(redeUf(u.uf, "aps_fixas"))}</td>
                   <td>{num(redeUf(u.uf, "gerencias"))}</td>
@@ -399,8 +498,10 @@ export function SecaoAtendimento({ g }: { g: GoldPrevidencia }) {
             })}
             <tr className="pv-forte">
               <th scope="row">Brasil</th>
-              <td>{num(t.total)}</td>
-              <td>{num(t.total / 12)}</td>
+              {serie.map((x) => (
+                <td key={x.ano}>{num(x.total)}</td>
+              ))}
+              <td>{variacao(t.total, serie[0].total)}</td>
               <td>{MESES[iMax]}</td>
               <td>{num(rede.aps_fixas)}</td>
               <td>{num(rede.gerencias)}</td>
@@ -409,9 +510,18 @@ export function SecaoAtendimento({ g }: { g: GoldPrevidencia }) {
         </table>
       </div>
       <p className="pv-fonte">
-        Fonte: {f.orgao}, {f.nome}, edição {f.edicao}. Atendimentos: tabela 43.2 ({semFonte(f.tabelas["43.2"].fonte)}); a soma do ano e a média por mês são cálculo da Scrutiniums. Rede: tabela
-        43.1, posição de dezembro de {ano} ({semFonte(f.tabelas["43.1"].fonte)}). A fonte conta no Paraná uma agência ligada à gerência de Joinville (SC) e em Goiás doze ligadas à do Distrito Federal.
-        Tabelas atualizadas no portal em {dataBr(f.atualizado_em)}, capturadas em {dataBr(f.capturado_em)}.
+        Fonte: {f.orgao}, {f.nome}. Atendimentos: tabela 43.2 das edições{" "}
+        {lista(
+          serie.map((x) => {
+            const tb = tabelaDaEdicao(f, x.ano, "43.2");
+            return `${x.ano} (${tb ? `${semFonte(tb.fonte)}; atualizada no portal em ${dataBr(tb.atualizado_em)}` : "sem metadados"})`;
+          }),
+        )}
+        ; a soma do ano e a variação são cálculo da Scrutiniums. Rede: tabela 43.1, posição de dezembro, das edições {lista(a.rede.anos.map(String))} ({semFonte(f.tabelas["43.1"].fonte)}, na
+        edição {f.edicao}). A fonte conta no Paraná uma agência ligada à gerência de Joinville (SC) e em Goiás doze ligadas à do Distrito Federal.{" "}
+        {foraRede.map((x) => `A rede de dezembro de ${x.edicao} não entra: na tabela 43.1 da edição ${x.edicao}, ${x.motivo}. `)}
+        Edição {f.edicao} capturada em {dataBr(f.capturado_em)}
+        {f.anteriores.length > 0 ? `; edições ${lista(f.anteriores.map((x) => String(x.edicao)))} capturadas em ${lista([...new Set(f.anteriores.map((x) => dataBr(x.capturado_em)))])}` : ""}.
       </p>
     </section>
   );

@@ -30,7 +30,7 @@ export const DOWNLOADS = [
   { arquivo: "beneficios-por-estado.csv", rotulo: "Benefícios por estado", descricao: "Os dezembros do arquivo municipal somados por UF e o mês mais recente do BEPS (Regime Geral)" },
   { arquivo: "beneficios-brasil-mensal.csv", rotulo: "Benefícios no Brasil, mês a mês", descricao: "Quantidade e valor por grande grupo, da série do BEPS" },
   { arquivo: "resultado-rgps.csv", rotulo: "Resultado do Regime Geral, ano a ano", descricao: "Arrecadação, benefícios, necessidade de financiamento, BPC e PIB, do Resultado do Tesouro Nacional" },
-  { arquivo: "anuario-inss.csv", rotulo: "Concessões, valor do ano e atendimento, do Anuário", descricao: "As sete tabelas do Anuário Estatístico da Previdência Social usadas no painel, valor a valor, com a linha e a coluna da fonte" },
+  { arquivo: "anuario-inss.csv", rotulo: "Concessões, valor do ano e atendimento, do Anuário", descricao: "As sete tabelas do Anuário Estatístico da Previdência Social usadas no painel, valor a valor, com a linha e a coluna da fonte, e o atendimento e a rede das edições anteriores" },
 ] as const;
 
 /** O estado com a preposição certa ("do Maranhão", "de São Paulo", "da Bahia"), pela sigla. */

@@ -5,7 +5,9 @@
 - municipios/{UF}.json: cada município da UF, dezembro a dezembro desde 2019, por grupo de espécie.
 - previdencia.json, bloco aeps: a edição mais recente do Anuário Estatístico da Previdência Social (três anos): benefícios
   concedidos, emitidos em dezembro e valor emitido no ano por grupo de espécie (Regime Geral, assistenciais e encargos
-  da União), concessões por UF, rede de unidades do INSS por UF e atendimentos mês a mês nas unidades, por UF.
+  da União), concessões por UF, rede de unidades do INSS por UF e atendimentos mês a mês nas unidades, por UF; a rede e
+  o atendimento também em série, um ano por edição (as edições anteriores entram só com essas duas tabelas), com as
+  tabelas que ficaram fora da série e o motivo.
 
 Nada aqui estima nem interpola. O que a gold calcula, sempre a partir de números publicados e marcado como cálculo da
 Scrutiniums: valor médio (valor ÷ quantidade), somas por UF dos municípios (pelo prefixo do código IBGE), resultado do
@@ -191,6 +193,17 @@ def _aeps(aeps: dict, beps: dict) -> dict:
     br_conc, ufs_conc = _por_territorio(t["a.14"])
     br_rede, ufs_rede = _por_territorio(t["43.1"])
     br_atend, ufs_atend = _por_territorio(t["43.2"])
+    # séries do atendimento e da rede: um ano por edição (as anteriores só com 43.1 e 43.2), do mais antigo ao mais novo
+    quadros = [(a["edicao"], a["tabelas"]) for a in aeps.get("anteriores") or []] + [(aeps["edicao"], t)]
+    serie_atend, serie_rede = [], []
+    for ano, tabs in quadros:
+        if "43.2" in tabs:
+            br, ufs = _por_territorio(tabs["43.2"])
+            serie_atend.append({"ano": ano, "edicao": ano, "brasil": br, "total": sum(br), "ufs": [{**u, "total": sum(u["v"])} for u in ufs]})
+        if "43.1" in tabs:
+            br, ufs = _por_territorio(tabs["43.1"])
+            serie_rede.append({"ano": ano, "edicao": ano, "referencia": f"{ano}-12", "brasil": br, "ufs": ufs})
+    fora = [{"edicao": e, "tabela": tid, "motivo": m} for e, tabs in sorted(F.FORA_DA_SERIE_AEPS.items()) for tid, m in tabs.items() if e < aeps["edicao"]]
     serie = {x["mes"]: x for x in beps["tabela14"]["serie"]}
     conferencia = []
     for k, ano in enumerate(aeps["anos"]):
@@ -209,13 +222,20 @@ def _aeps(aeps: dict, beps: dict) -> dict:
         "unidade_valor": "R$ mil correntes",
         "especies": especies,
         "concessoes_uf": {"brasil": br_conc, "ufs": ufs_conc},
-        "rede": {"referencia": f"{aeps['edicao']}-12", "colunas": [i for i, _r in F.REDE_AEPS], "brasil": br_rede, "ufs": ufs_rede},
+        # rede e atendimento: o último ano em primeiro plano e a série por edição (o último ano se repete nela)
+        "rede": {
+            "referencia": f"{aeps['edicao']}-12", "colunas": [i for i, _r in F.REDE_AEPS], "brasil": br_rede, "ufs": ufs_rede,
+            "anos": [x["ano"] for x in serie_rede], "serie": serie_rede,
+        },
         "atendimento": {
             "ano": aeps["edicao"],
             "brasil": br_atend,
             "total": sum(br_atend),
             "ufs": [{**u, "total": sum(u["v"])} for u in ufs_atend],
+            "anos": [x["ano"] for x in serie_atend],
+            "serie": serie_atend,
         },
+        "fora_da_serie": fora,
         "conferencia_beps": conferencia,
     }
 
@@ -243,14 +263,23 @@ def _fontes(beps: dict, mun: dict, rtn: dict, aeps: dict) -> dict:
             "orgao": F.ORGAO_MPS, "nome": F.NOME_AEPS, "edicao": aeps["edicao"], "pagina": aeps.get("pagina", F.PAGINA_AEPS),
             "raiz": aeps.get("raiz"), "capturado_em": aeps.get("capturado_em"),
             "atualizado_em": max(x["atualizado_em"] for x in aeps["tabelas"].values() if x.get("atualizado_em")),
-            "tabelas": {
-                tid: {
-                    "titulo": x["titulo"], "url": x["url"], "unidade": x["unidade"], "fonte": x["fonte"], "notas": x["notas"],
-                    "atualizado_em": x.get("atualizado_em"), "sha256": x.get("sha256"), "sha256_tabela": x["sha256_tabela"],
+            "tabelas": {tid: _meta_tabela(x) for tid, x in aeps["tabelas"].items()},
+            "anteriores": [
+                {
+                    "edicao": a["edicao"], "raiz": a.get("raiz"), "capturado_em": a.get("capturado_em"),
+                    "atualizado_em": max((x["atualizado_em"] for x in a["tabelas"].values() if x.get("atualizado_em")), default=None),
+                    "tabelas": {tid: _meta_tabela(x) for tid, x in a["tabelas"].items()},
                 }
-                for tid, x in aeps["tabelas"].items()
-            },
+                for a in aeps.get("anteriores") or []
+            ],
         },
+    }
+
+
+def _meta_tabela(x: dict) -> dict:
+    return {
+        "titulo": x["titulo"], "url": x["url"], "unidade": x["unidade"], "fonte": x["fonte"], "notas": x["notas"],
+        "atualizado_em": x.get("atualizado_em"), "sha256": x.get("sha256"), "sha256_tabela": x["sha256_tabela"],
     }
 
 

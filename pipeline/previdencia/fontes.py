@@ -35,6 +35,12 @@
    Ficam de fora B.13 a B.17 (emitidos por UF, em dezembro e mês a mês), que repetem o que o painel já mostra pela
    tabela 19 do BEPS e pelo arquivo municipal. Cada tabela traz três anos (ou os doze meses do último), e o Anuário não
    define o traço: ele vira ausência (null), nunca zero.
+   As tabelas 43.1 e 43.2 trazem um único ano por edição; a série do atendimento e da rede vem das edições anteriores
+   (conferido em 21/10/2026): a AEPS 2023 nos mesmos endereços da 2024 (atualizada em 09/12/2024) e a AEPS 2022 numa
+   raiz própria, "copy_of_onlinte-aeps-2022-" (atualizada em 22/12/2023), com os mesmos caminhos de tabela. A 43.1 da
+   edição 2022 fica fora (FORA_DA_SERIE_AEPS): as UFs não somam o Brasil na coluna das superintendências. A série
+   começa na edição 2022, o escopo aprovado; a AEPS 2021 está noutra raiz ("onlinte-aeps-2021-", não em "aeps-2021",
+   que responde 404) e não entra.
 """
 from __future__ import annotations
 
@@ -76,7 +82,34 @@ TABELAS_AEPS = {
     "43.1": (f"{_AT}/43-1-unidades-de-atendimentos-do-inss-segundo-as-grandes-regioes-e-unidades-da-federacao-2013-2019", "rede", "unidades"),
     "43.2": (f"{_AT}/43-2-quantidade-mensal-de-atendimentos-nas-unidades-do-inss-2013-2019", "meses", "atendimentos"),
 }
-PRIMEIRA_EDICAO_AEPS = 2024  # a primeira integrada; edições anteriores não entram na gold
+PRIMEIRA_EDICAO_AEPS = 2024  # a primeira integrada inteira; das anteriores entram só o atendimento e a rede
+
+# Atendimento e rede (43.1 e 43.2), um ano por edição: as edições anteriores à principal entram só com essas duas tabelas,
+# desde a primeira abaixo, sem lacuna. Raiz própria quando o portal publicou a edição fora do endereço padrão.
+TABELAS_ATENDIMENTO_AEPS = ("43.1", "43.2")
+PRIMEIRA_EDICAO_ATENDIMENTO_AEPS = 2022
+RAIZ_AEPS_EDICAO = {2022: f"{BASE_MPS}/arquivos/copy_of_onlinte-aeps-2022-"}
+# Tabela de uma edição anterior que não entra na série, com o motivo (publicado no método do painel). Nada é estimado
+# no lugar: o ano fica sem a tabela. A leitura estrita não é afrouxada para fazê-la caber.
+FORA_DA_SERIE_AEPS = {
+    2022: {
+        "43.1": (
+            "as UFs não somam o Brasil na coluna das superintendências regionais (Goiás e Distrito Federal com uma cada; "
+            "Centro-Oeste e Brasil contam uma só); a edição também não traz a coluna das agências de teleatendimento"
+        ),
+    },
+}
+
+
+def raiz_aeps(edicao: int) -> str:
+    """Raiz das páginas de uma edição do AEPS: a padrão, ou a própria quando o portal publicou a edição em outro lugar."""
+    return RAIZ_AEPS_EDICAO.get(edicao) or BASE_AEPS.format(edicao=edicao)
+
+
+def tabelas_atendimento_aeps(edicao: int) -> tuple[str, ...]:
+    """As tabelas de atendimento e rede que entram de uma edição anterior: 43.1 e 43.2, menos as fora da série."""
+    return tuple(t for t in TABELAS_ATENDIMENTO_AEPS if t not in FORA_DA_SERIE_AEPS.get(edicao, {}))
+
 
 # Tabelas por grupo de espécie (A.1, B.1, B.2, B.3): a sequência exata das 33 linhas (rótulo normalizado), com o
 # identificador e o pai. Linha nova, fora de ordem ou renomeada reprova a coleta, como na tabela 15 do BEPS.
@@ -132,7 +165,7 @@ REDE_AEPS = [
     ("corregedorias", "corregedorias regionais"),
 ]
 
-REVISAO_MAXIMA_AEPS = 0.01                # um ano repetido numa edição nova não pode mudar mais de 1% num total
+REVISAO_MAXIMA_AEPS = 0.01                # um ano repetido entre edições (ou entre coletas) não pode mudar mais de 1% num total
 DIFERENCA_MAXIMA_AEPS_BEPS = 0.0001       # total de dezembro do AEPS contra o BEPS (0,01%); o RGPS tem de ser igual
 
 # Unidades da Federação pelo prefixo de dois dígitos do código IBGE do município.
