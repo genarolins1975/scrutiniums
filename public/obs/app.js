@@ -4331,9 +4331,18 @@ function setorRegua(sectors) {
     const cy = topo + k * passo + passo / 2;
     svg += `<text x="0" y="${cy - 2}" font-size="13" style="fill:var(--text)">${l.rot}</text>`;
     svg += `<text x="0" y="${cy + 13}" font-size="12" style="fill:var(--text-2)">${l.pts.length} atividades</text>`;
-    l.pts.forEach(s => {
+    /* pontos que se tocariam (score igual ou vizinho) sobem ou descem uma faixa de 10 px: nenhum encobre o outro */
+    const postos = [];
+    l.pts.slice().sort((a, b) => a.score - b.score).forEach(s => {
+      const cx = x(s.score);
+      let dy = 0;
+      for (let i = 0; i < 9; i++) {
+        dy = (i % 2 ? 1 : -1) * Math.ceil(i / 2) * 10;
+        if (!postos.some(q => q.dy === dy && Math.abs(q.cx - cx) < 10)) break;
+      }
+      postos.push({ cx, dy });
       const tip = encodeURIComponent(`<div class="tt-date">${s.nome}</div><div class="tt-row"><span class="tt-lbl">score · ${s.tendencia}</span><span class="tt-val">${fmt.n(s.score, 1)}</span></div>`);
-      svg += `<circle cx="${x(s.score)}" cy="${cy}" r="4.5" data-tip="${tip}" style="fill:color-mix(in srgb, var(--accent) 72%, transparent);stroke:var(--surface)" stroke-width="1"/>`;
+      svg += `<circle cx="${cx}" cy="${cy + dy}" r="4.5" data-tip="${tip}" style="fill:color-mix(in srgb, var(--accent) 72%, transparent);stroke:var(--surface)" stroke-width="1"/>`;
     });
   });
   svg += `</svg>`;
