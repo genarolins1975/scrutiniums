@@ -40,9 +40,12 @@ describe('Aberturas editoriais: números e perímetros preservados',()=>{
   const painel=readFileSync('src/components/contas-estaduais/PainelEstadual.tsx','utf8');
   expect(painel).not.toContain('<TrilhasEstado');
   expect(readFileSync('src/components/contas-estaduais/TerritoriosEstaduais.tsx','utf8')).not.toContain('ce-flag-list');
-  // a matriz das 27 UFs e a lista dos 48 contratos ficam recolhidas; a lista abre sozinha quando o leitor busca
+  // a matriz das 27 UFs e a lista dos 48 contratos ficam recolhidas; a lista abre sozinha quando o leitor busca,
+  // e o resumo continua capaz de fechá-la com o filtro ativo (o open não fica preso à busca)
   expect(painel).toContain('Ver a matriz das 27 UFs em');
-  expect(painel).toContain('open={catalogoAberto || busca !== "" || grupo !== "Todos"}');
+  expect(painel).toContain('open={catalogoAberto}');
+  expect(painel).toContain('if (e.target.value) setCatalogoAberto(true);');
+  expect(painel).toContain('if (e.target.value !== "Todos") setCatalogoAberto(true);');
  });
  it('Estadual distingue ausência de dado conferido de valor zero',()=>{
   const html=renderToStaticMarkup(createElement(AberturaEstadual,{uf:'PE',ano:2015,selecionar:()=>{}}));
