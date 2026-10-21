@@ -348,8 +348,15 @@ class TestValidacoesRetem(unittest.TestCase):
         s["municipios"]["2207777"][2] = None                           # moradores vazios retêm a fonte
         self.assertTrue(any("sem moradores ou domicílios" in p for p in V.validar_cobertura(s)))
         s = copy.deepcopy(self.cob)
-        s["municipios"]["2207777"][5]["g5"][0] = 99.0                 # 5G acima do 4G ou 5G
+        s["municipios"]["2207777"][5]["g5"][0] = 99.0                 # 5G acima de "4G ou 5G" e de "todas" (invariantes de união)
         self.assertTrue(any("5G" in p for p in V.validar_cobertura(s)))
+        # 5G acima do 4G, dentro da união, não retém: a Anatel publica isso em trimestres antigos (146 pares em 95 municípios no seed de 20/10/2026)
+        s = copy.deepcopy(self.cob)
+        g4 = s["municipios"]["2207777"][5]["g4"][0]
+        s["municipios"]["2207777"][5]["g5"][0] = g4 + 1
+        s["municipios"]["2207777"][5]["g4g5"][0] = max(s["municipios"]["2207777"][5]["g4g5"][0], g4 + 1)
+        s["municipios"]["2207777"][5]["todas"][0] = max(s["municipios"]["2207777"][5]["todas"][0], g4 + 1)
+        self.assertEqual([p for p in V.validar_cobertura(s) if "2207777" in p], [])
         # a série nacional também: 5G acima do 4G (ou de todas) no trimestre de referência retém (17ª revisão do Codex)
         s = copy.deepcopy(self.cob)
         ref = s["referencia"]
@@ -358,6 +365,14 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.cob)
         s["brasil"]["serie"][ref]["g4"][0] = s["brasil"]["serie"][ref]["todas"][0] + 1
         self.assertTrue(any("Brasil em" in p and "4G" in p for p in V.validar_cobertura(s)))
+        # a série histórica de cada município: valor fora de 0 a 100 num trimestre antigo retém (22ª revisão do Codex)
+        s = copy.deepcopy(self.cob)
+        s["municipios"]["2207777"][7][0] = -5
+        self.assertTrue(any("série em" in p and "2207777" in p for p in V.validar_cobertura(s)))
+        # 5G acima do 4G num trimestre antigo não retém: fica contado na gold, com o trimestre no município
+        s = copy.deepcopy(self.cob)
+        s["municipios"]["2207777"][8][0] = (s["municipios"]["2207777"][7][0] or 0) + 1
+        self.assertEqual([p for p in V.validar_cobertura(s) if "2207777" in p], [])
         # as três medidas da série nacional ficam em 0 a 100: área negativa retém (18ª revisão do Codex)
         s = copy.deepcopy(self.cob)
         s["brasil"]["serie"][ref]["g4"][2] = -5
@@ -365,7 +380,7 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.cob)
         pi = s["municipios"]["2207777"][5]
         pi["g4"][0] = pi["g5"][0] - 1                                  # só o 4G abaixo do 5G; 4G ou 5G e todas seguem acima
-        self.assertTrue(any("acima do 4G" in p for p in V.validar_cobertura(s)))
+        self.assertEqual([p for p in V.validar_cobertura(s) if "2207777" in p], [])   # não retém: a fonte publica isso (contado na gold)
         s = copy.deepcopy(self.cob)
         s["municipios"]["2207777"][5]["g3"][2] = 101.0
         self.assertTrue(any("0 a 100" in p for p in V.validar_cobertura(s)))
@@ -449,6 +464,21 @@ class TestGoldSintetica(unittest.TestCase):
         pi2["cobertura"]["municipios"]["2207777"][5]["g5"] = [0.5, 0.5, 0.5]
         g2, _uf2 = gold.construir(pi2)
         self.assertEqual(ufpi(g2)["cobertura"]["municipios_sem_5g"], 1)
+
+    def test_5g_acima_do_4g_e_contado_nao_corrigido(self):
+        # a Anatel publica 5G acima do 4G em trimestres antigos de alguns municípios: a gold conta, declara e mantém os valores
+        self.assertEqual(self.g["brasil"]["cobertura"]["g5_acima_do_4g"], {"pares": 0, "municipios": 0, "por_trimestre": {}, "trimestre_atual": 0})
+        seeds = copy.deepcopy(self.seeds)
+        pi = seeds["cobertura"]["municipios"]["2207777"]
+        pi[8][0] = (pi[7][0] or 0) + 1
+        g, uf = gold.construir(seeds)
+        self.assertEqual(g["brasil"]["cobertura"]["g5_acima_do_4g"]["pares"], 1)
+        self.assertEqual(g["brasil"]["cobertura"]["g5_acima_do_4g"]["municipios"], 1)
+        self.assertEqual(g["brasil"]["cobertura"]["g5_acima_do_4g"]["por_trimestre"], {seeds["cobertura"]["trimestres"][0]: 1})
+        m = next(x for x in uf["PI"]["municipios"] if x["id"] == "2207777")
+        self.assertEqual(m["cobertura"]["trimestres_5g_acima_do_4g"], [seeds["cobertura"]["trimestres"][0]])
+        self.assertEqual(m["cobertura"]["serie_g5_moradores"][0], pi[8][0])      # o valor publicado fica
+        self.assertIn("pares município-trimestre", g["notas"]["cobertura"])
 
     def test_grade_de_trimestres_completa(self):
         # seed com 2025-12 e 2026-09: a grade ganha 2026-03 e 2026-06 vazios, e as séries seguem a grade

@@ -53,6 +53,8 @@ export type CoberturaMunicipio = {
   operadoras: Record<string, { g4g5_moradores: number | null; todas_moradores: number | null }>;
   serie_g4_moradores: (number | null)[];
   serie_g5_moradores: (number | null)[];
+  /** trimestres em que a Anatel publicou o 5G acima do 4G neste município (valores mantidos como publicados) */
+  trimestres_5g_acima_do_4g: string[];
 };
 
 export type MedidaPosicao =
@@ -151,6 +153,8 @@ export type GoldConectividade = {
     cobertura: {
       populacao: { moradores: number; domicilios: number; censo: number } | null;
       tecnologias: Partial<Record<TecnologiaCobertura, [number, number, number]>>;
+      /** pares município-trimestre em que a Anatel publicou o 5G acima do 4G: contados e declarados, não corrigidos */
+      g5_acima_do_4g: { pares: number; municipios: number; por_trimestre: Record<string, number>; trimestre_atual: number };
       operadoras: Record<string, { g4g5_moradores: number | null; todas_moradores: number | null }>;
       trimestres: string[];
       serie: Record<TecnologiaCobertura, (number | null)[]>;

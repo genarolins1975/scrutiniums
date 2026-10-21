@@ -256,7 +256,11 @@ function Municipio({ g, m, uf, arquivo, logos }: { g: GoldConectividade; m: Muni
           <>
             <h3 className="cn-subtitulo">Quem a cobertura alcança, geração a geração</h3>
             <Regua m={m} />
-            <p className="cn-regua-nota -mt-1">Cada barra é a parte dos {num(c.moradores)} moradores (Censo 2022) dentro da mancha de cobertura de qualquer operadora em {mesExtenso(r.cobertura)}; o 5G nunca alcança mais gente que o 4G.</p>
+            <p className="cn-regua-nota -mt-1">Cada barra é a parte dos {num(c.moradores)} moradores (Censo 2022) dentro da mancha de cobertura de qualquer operadora em {mesExtenso(r.cobertura)}.{" "}
+              {g.brasil.cobertura.g5_acima_do_4g.trimestre_atual === 0
+                ? "Neste trimestre, em nenhum município a Anatel publica o 5G acima do 4G."
+                : `Neste trimestre, a Anatel publica o 5G acima do 4G em ${num(g.brasil.cobertura.g5_acima_do_4g.trimestre_atual)} municípios; os valores ficam como publicados.`}
+            </p>
             {ops.length > 0 && (
               <div className="cn-tabela-rolagem" tabIndex={0}>
                 <table className="cn-tabela">
@@ -292,6 +296,8 @@ function Municipio({ g, m, uf, arquivo, logos }: { g: GoldConectividade; m: Muni
               <figcaption>
                 Cobertura 4G e 5G de {m.nome} trimestre a trimestre, em % dos moradores. Até 2024 a Anatel usava os setores do Censo 2010; a partir de 2025, os do Censo 2022, o que pode
                 mover a linha sem que a rede tenha mudado. Trimestre sem publicação fica em branco.
+                {c.trimestres_5g_acima_do_4g.length > 0 &&
+                  ` Em ${c.trimestres_5g_acima_do_4g.map(mesCurto).join(", ")} a Anatel publicou o 5G acima do 4G neste município; o gráfico mostra os valores como publicados.`}
               </figcaption>
             </figure>
           </>
@@ -640,7 +646,8 @@ function Metodo({ g, logos }: { g: GoldConectividade; logos: Logos }) {
             <li>
               A publicação é retida se alguma fonte vier com estrutura diferente, se a contagem de municípios sair de 5.565 a 5.575, se duas das bases diferirem entre si em mais de
               três municípios (fixa e móvel, fixa e cobertura, móvel e cobertura; a diferença tolerada fica declarada acima, em municípios sem dado), se as partes de um município não somarem o total, se o Brasil do mês não for
-              o do arquivo de totais da Anatel, se a cobertura passar de 100% ou se o 5G passar do 4G, no município ou na série nacional (pipeline/conectividade/validacoes.py).
+              o do arquivo de totais da Anatel, se a cobertura passar de 100% ou se uma geração passar da união que a contém (4G e 5G nunca acima de &quot;todas&quot;, 5G nunca acima de &quot;4G ou 5G&quot;), no município, na série histórica
+              ou na série nacional (pipeline/conectividade/validacoes.py). O 5G acima do 4G não retém: é contado e declarado (item acima).
               Hash dos dados: <code>{g.hash_dados.slice(0, 16)}</code>.
             </li>
           </ul>

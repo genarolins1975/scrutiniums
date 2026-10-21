@@ -143,6 +143,8 @@ def _cobertura_de(v: list, operadoras: list[str], publicados: list[str], grade: 
         "tecnologias": {campo: tec.get(campo) for campo in tec},
         "operadoras": {op: {"g4g5_moradores": ops[op][0], "todas_moradores": ops[op][1]} for op in operadoras if op in ops},
         "serie_g4_moradores": _na_grade(s4, publicados, grade), "serie_g5_moradores": _na_grade(s5, publicados, grade),
+        # trimestres em que a Anatel publicou o 5G acima do 4G neste município: os valores ficam como publicados e o painel diz
+        "trimestres_5g_acima_do_4g": [t for t, h4, h5 in zip(publicados, s4, s5) if h4 is not None and h5 is not None and h5 > h4 + 0.05],
     }
 
 
@@ -271,6 +273,18 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
             "uma_prestadora": sum(1 for c in cods if municipios[c]["fixa"] and municipios[c]["fixa"]["prestadoras"] == 1),
         })
 
+    # pares (município, trimestre) em que a Anatel publicou o 5G acima do 4G
+    por_tri: dict[str, int] = {}
+    for m in municipios.values():
+        for t in ((m.get("cobertura") or {}).get("trimestres_5g_acima_do_4g") or []):
+            por_tri[t] = por_tri.get(t, 0) + 1
+    g5_acima = {
+        "pares": sum(por_tri.values()),
+        "municipios": sum(1 for m in municipios.values() if (m.get("cobertura") or {}).get("trimestres_5g_acima_do_4g")),
+        "por_trimestre": dict(sorted(por_tri.items())),
+        "trimestre_atual": por_tri.get(cob["referencia"], 0),
+    }
+
     # Brasil
     bf = fixa["brasil"]
     bm = movel["brasil"]
@@ -294,6 +308,8 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
         "cobertura": {
             "populacao": bc["populacao"].get(ref_cob),
             "tecnologias": serie_cob[ref_cob],
+            # 5G acima do 4G não é invariante da fonte: contado e declarado, nunca motivo de retenção nem de correção
+            "g5_acima_do_4g": g5_acima,
             "operadoras": {op: {"g4g5_moradores": v.get("g4g5"), "todas_moradores": v.get("todas")} for op, v in bc["operadoras_ultimo"].items()},
             "trimestres": grade,
             "serie": {campo: [(serie_cob[t].get(campo) or [None])[0] if t in serie_cob else None for t in grade] for campo, _ in F.TECNOLOGIAS_COBERTURA},
@@ -332,7 +348,10 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
             "cobertura": "Parte dos moradores, dos domicílios e da área de cada município dentro da mancha de cobertura declarada pelas "
                          "operadoras (setores censitários, Censo 2022 a partir de 2025 e Censo 2010 antes). O número do Brasil é o "
                          "publicado pela Anatel (evolucao_cobertura_brasil.csv); as médias por UF, ponderadas pelos moradores dos "
-                         "municípios, são cálculo da Scrutiniums.",
+                         "municípios, são cálculo da Scrutiniums. A Anatel publica, em alguns trimestres e municípios, o 5G acima do 4G "
+                         f"({g5_acima['pares']} pares município-trimestre em {g5_acima['municipios']} municípios nesta edição, "
+                         f"{g5_acima['trimestre_atual']} no trimestre atual; contagem em brasil.cobertura.g5_acima_do_4g): os valores "
+                         "ficam como publicados e o retrato do município diz em quais trimestres isso acontece.",
             "ausencia": "Município sem dado numa fonte fica com o campo vazio, nunca com zero; a lista está em destaques.sem_dado.",
         },
         "operadoras": operadoras,

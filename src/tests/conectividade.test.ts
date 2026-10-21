@@ -229,6 +229,18 @@ describe("painel completo", () => {
     expect(html).not.toContain(`<span class="cn-unidade">de ${num(d.municipios)}</span>`);
     expect(t).toContain(`${num(d.sem_5g)} dos ${num(d.municipios_com_5g_publicado)} municípios com cobertura 5G publicada`);
     expect(t).toContain(`${num(d.g4_abaixo_50)} dos ${num(d.municipios_com_4g_publicado)} com cobertura 4G publicada`);
+    // 5G acima do 4G em trimestres antigos é contado e declarado, não escondido (22ª revisão do Codex)
+    const acima = g.brasil.cobertura.g5_acima_do_4g;
+    expect(acima.pares).toBeGreaterThan(0);
+    expect(acima.trimestre_atual).toBe(0);
+    expect(t).toContain(`${num(acima.pares)} pares município-trimestre em ${num(acima.municipios)} municípios`);
+    const ar = consultarMunicipio("2301406");                        // Aratuba (CE): 5G acima do 4G em mar/2023 no seed real
+    if (ar.estado !== "ok") throw new Error("Aratuba fora da gold");
+    expect(ar.m.cobertura!.trimestres_5g_acima_do_4g).toContain("2023-03");
+    const ht = texto(renderToStaticMarkup(createElement(PainelPage, { searchParams: { ibge: "2301406" } })));
+    expect(ht).toContain("a Anatel publicou o 5G acima do 4G neste município; o gráfico mostra os valores como publicados");
+    expect(ht).toContain("Neste trimestre, em nenhum município a Anatel publica o 5G acima do 4G.");
+    expect(ht).not.toContain("nunca alcança mais gente");
     // a série fixa antiga só tem os fins de trimestre: o texto não promete "mês a mês desde 2007" (19ª revisão do Codex)
     expect(frequenciaSerie(g.brasil.fixa.acessos_mensal.meses)).toBe("só os fins de trimestre de março de 2007 a dezembro de 2010 e mês a mês desde janeiro de 2011");
     expect(frequenciaSerie(g.brasil.movel.acessos_mensal.meses)).toBe("mês a mês desde fevereiro de 2005");

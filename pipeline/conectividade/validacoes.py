@@ -216,6 +216,13 @@ def validar_cobertura(seed: dict, anterior: dict | None = None, hoje: date | Non
             erros += 1
             if erros <= 5:
                 p.append(f"cobertura: município {cod} ({nomem}) com série de {len(s4)} e {len(s5)} valores para {len(tri)} trimestres")
+        # a série histórica vai direto ao gráfico do município: cada trimestre fica em 0 a 100 (5G acima do 4G é contado na gold)
+        for i, (h4, h5) in enumerate(zip(s4, s5)):
+            if any(x is not None and not 0 <= x <= 100 for x in (h4, h5)):
+                erros += 1
+                if erros <= 5:
+                    t = tri[i] if i < len(tri) else f"#{i}"
+                    p.append(f"cobertura: município {cod} ({nomem}) com série em {t} fora de 0 a 100: 4G {h4}, 5G {h5}")
         todas = tec.get("todas")
         if not todas or any(x is None or not 0 <= x <= 100 for x in todas):
             erros += 1
@@ -230,10 +237,12 @@ def validar_cobertura(seed: dict, anterior: dict | None = None, hoje: date | Non
         g5 = (tec.get("g5") or [None])[0]
         g4 = (tec.get("g4") or [None])[0]
         g45 = (tec.get("g4g5") or [None])[0]
-        if g5 is not None and ((g45 is not None and g5 > g45 + 0.05) or (g4 is not None and g5 > g4 + 0.05) or g5 > todas[0] + 0.05):
+        # invariantes de união: 5G nunca acima de "4G ou 5G" nem de "todas", 4G nunca acima de "todas". 5G acima do 4G não é
+        # invariante da fonte (a Anatel publica isso em trimestres antigos de dezenas de municípios): a gold conta e declara
+        if g5 is not None and ((g45 is not None and g5 > g45 + 0.05) or g5 > todas[0] + 0.05):
             erros += 1
             if erros <= 5:
-                p.append(f"cobertura: município {cod} ({nomem}) com 5G ({g5}) acima do 4G ({g4}), do 4G ou 5G ({g45}) ou de todas ({todas[0]})")
+                p.append(f"cobertura: município {cod} ({nomem}) com 5G ({g5}) acima do 4G ou 5G ({g45}) ou de todas ({todas[0]}); 4G {g4}")
         if g4 is not None and g4 > todas[0] + 0.05:
             erros += 1
             if erros <= 5:
@@ -256,8 +265,8 @@ def validar_cobertura(seed: dict, anterior: dict | None = None, hoje: date | Non
     for t, tec in sorted((br.get("serie") or {}).items()):
         primeiro = lambda campo: ((tec.get(campo) or [None])[0])  # noqa: E731
         g5, g4, g45, todas = primeiro("g5"), primeiro("g4"), primeiro("g4g5"), primeiro("todas")
-        if g5 is not None and any(x is not None and g5 > x + 0.05 for x in (g4, g45, todas)):
-            p.append(f"cobertura: Brasil em {t} com 5G ({g5}) acima do 4G ({g4}), do 4G ou 5G ({g45}) ou de todas ({todas})")
+        if g5 is not None and any(x is not None and g5 > x + 0.05 for x in (g45, todas)):
+            p.append(f"cobertura: Brasil em {t} com 5G ({g5}) acima do 4G ou 5G ({g45}) ou de todas ({todas}); 4G {g4}")
         if g4 is not None and todas is not None and g4 > todas + 0.05:
             p.append(f"cobertura: Brasil em {t} com 4G ({g4}) acima de todas ({todas})")
         # as três medidas (moradores, domicílios e área) de cada tecnologia, como nos registros municipais
