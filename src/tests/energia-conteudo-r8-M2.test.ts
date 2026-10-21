@@ -17,6 +17,8 @@ import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { contrastesDe } from "@/lib/energia/conteudo/complementos";
 import { exemploComEvidencia } from "@/lib/energia/conteudo/evidencias-verbetes";
+// mesmo arredondamento dos textos (Intl, meio para cima): toFixed arredonda 45,05 para 45,0 e a frase diz 45,1
+import { num } from "@/lib/energia/formato";
 import { TRILHAS_APRENDA } from "@/lib/energia/conteudo/trilhas";
 import { vigenciaMaisRecente } from "@/lib/energia/home";
 import type { SinteseVisaoGold } from "@/lib/energia/tipos-visao";
@@ -191,7 +193,7 @@ describe("Visão geral: veredito à vista e resposta completa por trás", () => 
     const ano = G.multiplos!.dados.find((l) => l.d === carga.data_referencia)!.carga_ano_anterior as number;
     // o sentido vai na palavra (acima, abaixo) e o percentual sem sinal: em 01/10/2026 a carga estava acima, e o teste
     // escrevia o sinal junto ("-1,6% abaixo", 20/10/2026), o que a página corretamente não faz
-    const pct = Math.abs(100 * (hoje / ano - 1)).toFixed(1).replace(".", ",");
+    const pct = num(Math.abs(100 * (hoje / ano - 1)), 1);
     expect(v).toContain(`${pct}% ${hoje > ano ? "acima" : "abaixo"} do mesmo dia da semana do ano anterior`);
     expect(v).toContain("sem comparação com limites de intercâmbio");
   });
@@ -287,10 +289,10 @@ describe("Visão geral: carga em duas janelas (7 dias e o dia), classificação 
 
   it("relendo a série diária publicada: 7 dias contra as mesmas datas e o dia contra o mesmo dia da semana dão os percentuais da gold", () => {
     const fim = G.multiplos!.datas_referencia.carga!;
-    const sete = (100 * (media(dia(fim, -6), 7) / media(dia(fim, -6 - 365), 7) - 1)).toFixed(1).replace(".", ",");
-    const um = (100 * (sin.get(fim)! / sin.get(dia(fim, -364))! - 1)).toFixed(1).replace(".", ",");
+    const sete = num((100 * (media(dia(fim, -6), 7) / media(dia(fim, -6 - 365), 7) - 1)), 1);
+    const um = num((100 * (sin.get(fim)! / sin.get(dia(fim, -364))! - 1)), 1);
     // a série diária relida dá os mesmos percentuais que a gold publica: a frase (7 dias) e o painel de determinantes (o dia)
-    const f1 = (x: number) => Math.abs(x).toFixed(1).replace(".", ",");
+    const f1 = (x: number) => num(Math.abs(x), 1);
     const v7 = G.frases.find((f) => f.id === "carga")!.valores.variacao_pct!.valor as number;
     const painel = G.multiplos!.paineis.find((p) => p.id === "carga")!;
     const ano = G.multiplos!.dados.find((l) => l.d === painel.data_referencia)!.carga_ano_anterior as number;
@@ -628,8 +630,8 @@ describe("Verbetes: números que parecem divergir, relidos de outro artefato", (
   it("GSF: 78,9% e 75,9% são o mesmo mês e a mesma geração com duas garantias físicas (classificação 2)", () => {
     const m = json<{ mre_gsf: { mensal: { mes: string; geracao_mre_mwmed: number; gf_modulada_fdisp_mwmed: number; gf_sazonalizada_mwmed: number }[] } }>("public/energia/gold/mercado.json").mre_gsf.mensal;
     const u = m[m.length - 1];
-    const a = ((100 * u.geracao_mre_mwmed) / u.gf_modulada_fdisp_mwmed).toFixed(1).replace(".", ",");
-    const b = ((100 * u.geracao_mre_mwmed) / u.gf_sazonalizada_mwmed).toFixed(1).replace(".", ",");
+    const a = num(((100 * u.geracao_mre_mwmed) / u.gf_modulada_fdisp_mwmed), 1);
+    const b = num(((100 * u.geracao_mre_mwmed) / u.gf_sazonalizada_mwmed), 1);
     expect([a, b]).toEqual(["78,9", "75,9"]);
     const c = exemploComEvidencia("gsf")!.complemento!;
     expect(c).toContain(`${b}%`);
@@ -642,7 +644,7 @@ describe("Verbetes: números que parecem divergir, relidos de outro artefato", (
     // o cartão de água da Visão geral é o mesmo número da base de hidrologia
     expect(G.multiplos!.paineis.find((p) => p.id === "agua")!.valor_atual.valor).toBe(hid.valor);
     const diaAgua = json<{ armazenamento: { subsistemas: { sm: string; dia: string }[] } }>("public/energia/gold/agua_detalhe.json").armazenamento.subsistemas.find((s) => s.sm === "SIN")!.dia;
-    const f1 = (v: number) => v.toFixed(1).replace(".", ",");
+    const f1 = (v: number) => num(v, 1);
     const br = (iso: string) => iso.split("-").reverse().join("/");
     const c = exemploComEvidencia("ear")!.complemento!;
     if (Date.parse(diaAgua) > Date.parse(hid.dia)) {
@@ -660,7 +662,7 @@ describe("Verbetes: números que parecem divergir, relidos de outro artefato", (
   it("EAR: a mediana para a data nos anos completos desde 2001 volta ao exemplo, no mesmo escopo (SIN)", () => {
     const sin = json<{ armazenamento: { subsistemas: { sm: string; p50: number; p10: number; p90: number; periodo_base: string; anos_na_base: number }[] } }>("public/energia/gold/agua_detalhe.json").armazenamento.subsistemas.find((s) => s.sm === "SIN")!;
     const c = exemploComEvidencia("ear")!.complemento!;
-    const f = (v: number) => v.toFixed(1).replace(".", ",");
+    const f = (v: number) => num(v, 1);
     expect(c).toContain(`mediana dos anos completos desde 2001 (2001 a 2025, ${sin.anos_na_base} anos) é ${f(sin.p50)}% da EAR máxima`);
     expect(c).toContain(`${f(sin.p10)}% a ${f(sin.p90)}%`);
     // a mediana do Sudeste/Centro-Oeste (49,35) não entra no lugar da do SIN
@@ -671,7 +673,7 @@ describe("Verbetes: números que parecem divergir, relidos de outro artefato", (
 
   it("CDE: a leitura dá o ano e os reais das quotas e das receitas (conta.json)", () => {
     const ev = json<{ financiamento_cde: { evidencia: { numerador: { valor: number }; denominador: { valor: number }; periodo: { fim: string } } } }>("public/energia/gold/conta.json").financiamento_cde.evidencia;
-    const bi = (v: number) => `R$ ${(v / 1e9).toFixed(1).replace(".", ",")} bilhões`;
+    const bi = (v: number) => `R$ ${num((v / 1e9), 1)} bilhões`;
     const ex = exemploComEvidencia("cde")!;
     expect(ex.leitura).toContain(`de ${ev.periodo.fim} que vem`);
     expect(ex.leitura).not.toContain("no ano que vem");
@@ -687,17 +689,17 @@ describe("Verbetes: números que parecem divergir, relidos de outro artefato", (
       const i = Math.floor(h);
       return total[i] + (h - i) * ((total[Math.min(i + 1, total.length - 1)] ?? total[i]) - total[i]);
     };
-    const kwh = (mwh: number) => `R$ ${(mwh / 1000).toFixed(4).replace(".", ",")}`;
+    const kwh = (mwh: number) => `R$ ${num((mwh / 1000), 4)}`;
     const c = exemploComEvidencia("tarifa-te-tusd")!.complemento!;
     expect(c).toContain(`entre as ${total.length} distribuidoras`);
     expect(c).toContain(`cobra de ${kwh(q(0.25))} a ${kwh(q(0.75))} por kWh`);
-    expect(c).toContain(`custa R$ ${((q(0.5) / 1000) * 200).toFixed(2).replace(".", ",")} na tarifa mediana`);
+    expect(c).toContain(`custa R$ ${num(((q(0.5) / 1000) * 200), 2)} na tarifa mediana`);
   });
 
   it("ACL: a leitura repete o percentual como 'de cada 100 MWh' e os 12 meses da ficha", () => {
     const k = json<{ livre_regulado: { kpis: { participacao_acl_ccee_12m: { valor_pct: number; periodo: { inicio: string; fim: string } } } } }>("public/energia/gold/mercado.json").livre_regulado.kpis.participacao_acl_ccee_12m;
     const c = exemploComEvidencia("acl")!.complemento!;
-    expect(c).toContain(`${k.valor_pct.toFixed(1).replace(".", ",")} foram consumidos no ACL`);
+    expect(c).toContain(`${num(k.valor_pct, 1)} foram consumidos no ACL`);
     expect(c).toContain("set/2025 a ago/2026");
   });
 
@@ -723,7 +725,7 @@ describe("Verbetes: números que parecem divergir, relidos de outro artefato", (
     expect(ult.length).toBe(49);
     const mediana = ult[(ult.length - 1) / 2];
     const h = texto(pagina.verbete("percentual-regulatorio-de-perdas"));
-    expect(h).toContain(`com mediana de ${mediana.toFixed(1).replace(".", ",")}%`);
+    expect(h).toContain(`com mediana de ${num(mediana, 1)}%`);
     expect(h).toContain("As 49 são as distribuidoras (de 103 com dado de 2025)");
     expect(h).not.toMatch(/\d,\d{3}%/);
     expect(h).toContain("Procedimentos de Distribuição de Energia Elétrica no Sistema Elétrico Nacional");
@@ -777,7 +779,7 @@ describe("Aprenda: índice e trilhas", () => {
   it("passo 6 da trilha de água traz o GSF do mês, que o exemplo do MRE não mostrava", () => {
     const h = texto(pagina.trilha("agua-operacao-preco"));
     const gsf = json<{ mre_gsf: { kpis: { gsf_ultimo_mes: { valor_pct: number; mes: string } } } }>("public/energia/gold/mercado.json").mre_gsf.kpis.gsf_ultimo_mes;
-    expect(h).toContain(`é o GSF de ago/2026: ${gsf.valor_pct.toFixed(1).replace(".", ",")}%`);
+    expect(h).toContain(`é o GSF de ago/2026: ${num(gsf.valor_pct, 1)}%`);
   });
 
   it("o exemplo sintético diz que o piso e o teto não são os vigentes", () => {

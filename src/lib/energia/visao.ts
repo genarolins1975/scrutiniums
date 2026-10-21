@@ -2286,9 +2286,23 @@ export function horasContraOSaldo(c: { liquido_mwh: readonly (number | null)[]; 
   return liq >= 0 ? inv : h - inv;
 }
 
+/**
+ * Dia cujo saldo líquido a Visão geral mostra. O módulo Rede só detalha hora a hora os dias com as 24 horas verificadas
+ * (`dias`, em ordem crescente). Se o dia apontado pela Visão geral está detalhado, é ele. Se a Visão geral já aponta um dia
+ * posterior ao último detalhado (21/10/2026: gold retida com o saldo vazio), o saldo é o do último dia detalhado, dito com as
+ * duas datas pelo chamador. Se o dia apontado é anterior ao último detalhado e não está na lista (síntese retida mais antiga
+ * que a janela do módulo), não há saldo honesto a mostrar: o retorno é nulo, nunca o saldo de um dia posterior ao cartão.
+ */
+export function diaDoSaldoRede(diaVisao: string | null, dias: readonly string[]): string | null {
+  if (!diaVisao || dias.length === 0) return null;
+  if (dias.includes(diaVisao)) return diaVisao;
+  const ultimo = dias[dias.length - 1];
+  return diaVisao > ultimo ? ultimo : null;
+}
+
 /** Saldo líquido do dia e as horas contra o saldo em cada fronteira, com a ligação para a página Rede escrita pelo componente. */
 export function textoSaldoLiquidoRede(
-  a: { dia: string; fronteiras: readonly { rotulo: string; horasContra: number | null; horas: number }[]; diaModulo: string | null },
+  a: { dia: string; fronteiras: readonly { rotulo: string; horasContra: number | null; horas: number }[]; diaModulo: string | null; diaVisao?: string | null },
   idioma: Idioma = idiomaEnergia(),
 ): string {
   const listadas = a.fronteiras
@@ -2305,9 +2319,18 @@ export function textoSaldoLiquidoRede(
     : "";
   const outroDia = a.diaModulo ? dataBR(a.diaModulo, idioma) : "";
   const modulo = a.diaModulo && a.diaModulo !== a.dia ? tx(` A página Rede traz também ${outroDia}.`, ` The Grid page also shows ${outroDia}.`, idioma) : "";
+  // a Visão geral já aponta um dia que o módulo Rede ainda não detalha hora a hora: o cartão fica com o saldo da própria data
+  // (sintese.json) e só as horas contra o saldo listadas nesta nota são as do último dia detalhado; a nota diz as duas datas
+  const visao = a.diaVisao
+    ? tx(
+        ` O cartão desta página mostra o saldo de ${dataBR(a.diaVisao, "pt")}, dia que a página Rede ainda não detalha hora a hora; as horas contra o saldo listadas aqui são as de ${dataBR(a.dia, "pt")}, último dia detalhado.`,
+        ` The card on this page shows the balance of ${dataBR(a.diaVisao, "en")}, a day the Grid page does not yet detail hour by hour; the hours against the balance listed here are those of ${dataBR(a.dia, "en")}, the last detailed day.`,
+        idioma,
+      )
+    : "";
   return tx(
-    `Saldo líquido do dia ${dataBR(a.dia, "pt")}: a média das 24 horas do fluxo verificado em cada fronteira, positiva da primeira para a segunda ponta; as horas em sentido contrário ficam compensadas no saldo.${horas}${modulo}`,
-    `Net balance of the day ${dataBR(a.dia, "en")}: the average of the 24 hours of verified flow on each border, positive from the first to the second end; the hours in the opposite direction are offset in the balance.${horas}${modulo}`,
+    `Saldo líquido do dia ${dataBR(a.dia, "pt")}: a média das 24 horas do fluxo verificado em cada fronteira, positiva da primeira para a segunda ponta; as horas em sentido contrário ficam compensadas no saldo.${horas}${modulo}${visao}`,
+    `Net balance of the day ${dataBR(a.dia, "en")}: the average of the 24 hours of verified flow on each border, positive from the first to the second end; the hours in the opposite direction are offset in the balance.${horas}${modulo}${visao}`,
     idioma,
   );
 }
