@@ -1,0 +1,22 @@
+[
+  {
+    "arquivo": "deficit.xlsx",
+    "sha256": "e7b9b58df200b66d174820cc1d9363c3bcbc0d4c6a0b4c7c8b90d3919438aa55",
+    "url": "https://drive.google.com/uc?export=download&id=1AwlL17JBmASv8Jurnkb6zhfXc0fzGQwp"
+  },
+  {
+    "arquivo": "inadequacao.xlsx",
+    "sha256": "9d007e699b4cbea44bf98d7ca7bf8a023e759f1080e355da02ce4670c808c031",
+    "url": "https://drive.google.com/uc?export=download&id=1Qg5DSnJRrsvqoZeCItJ-KPHNtuMf_JE6"
+  },
+  {
+    "arquivo": "deficit.pdf",
+    "sha256": "18f525647936985836adcee507a896fdd2262e085b1a84dbe7d0fc4a998e9429",
+    "url": "https://drive.google.com/uc?export=download&id=1wcGG-95LHqzhjXbtTvCnFh2XX2vL0xyW"
+  },
+  {
+    "arquivo": "inadequacao.pdf",
+    "sha256": "b08faf675e385e0d77f734e3a9ff564c05ee8078f8ea21c1e196a9eb49417ea3",
+    "url": "https://drive.google.com/uc?export=download&id=1mJwFkcxnOBR1J2JG2uVFyXcw7N3FVIj2"
+  }
+]

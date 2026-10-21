@@ -1,0 +1,25 @@
+﻿territorio;tipo;indicador;nome;valor;unidade;ano;numerador;denominador;universo;origem;fonte
+Brasil;Brasil;IAP0002;Vias urbanas com redes subterrâneas pluviais;32.7;%;2024;;;Extensão de vias públicas urbanas do universo elegível.;Relatório drenagem, p. 21;drenagem-relatorio
+Norte;Região;IAP0002;Vias urbanas com redes subterrâneas pluviais;22.5;%;2024;;;Extensão de vias públicas urbanas do universo elegível.;Relatório drenagem, p. 21;drenagem-relatorio
+Nordeste;Região;IAP0002;Vias urbanas com redes subterrâneas pluviais;16.0;%;2024;;;Extensão de vias públicas urbanas do universo elegível.;Relatório drenagem, p. 21;drenagem-relatorio
+Sudeste;Região;IAP0002;Vias urbanas com redes subterrâneas pluviais;33.3;%;2024;;;Extensão de vias públicas urbanas do universo elegível.;Relatório drenagem, p. 21;drenagem-relatorio
+Sul;Região;IAP0002;Vias urbanas com redes subterrâneas pluviais;52.8;%;2024;;;Extensão de vias públicas urbanas do universo elegível.;Relatório drenagem, p. 21;drenagem-relatorio
+Centro-Oeste;Região;IAP0002;Vias urbanas com redes subterrâneas pluviais;26.6;%;2024;;;Extensão de vias públicas urbanas do universo elegível.;Relatório drenagem, p. 21;drenagem-relatorio
+Brasil;Brasil;IGR0002;População urbana impactada por eventos hidrológicos;0.55;%;2024;;;"População urbana no universo elegível; numerador: desabrigados e desalojados.";Relatório drenagem, p. 32;drenagem-relatorio
+Norte;Região;IGR0002;População urbana impactada por eventos hidrológicos;1.75;%;2024;;;"População urbana no universo elegível; numerador: desabrigados e desalojados.";Relatório drenagem, p. 32;drenagem-relatorio
+Nordeste;Região;IGR0002;População urbana impactada por eventos hidrológicos;0.43;%;2024;;;"População urbana no universo elegível; numerador: desabrigados e desalojados.";Relatório drenagem, p. 32;drenagem-relatorio
+Sudeste;Região;IGR0002;População urbana impactada por eventos hidrológicos;0.16;%;2024;;;"População urbana no universo elegível; numerador: desabrigados e desalojados.";Relatório drenagem, p. 32;drenagem-relatorio
+Sul;Região;IGR0002;População urbana impactada por eventos hidrológicos;1.54;%;2024;;;"População urbana no universo elegível; numerador: desabrigados e desalojados.";Relatório drenagem, p. 32;drenagem-relatorio
+Centro-Oeste;Região;IGR0002;População urbana impactada por eventos hidrológicos;0.07;%;2024;;;"População urbana no universo elegível; numerador: desabrigados e desalojados.";Relatório drenagem, p. 32;drenagem-relatorio
+Brasil;Brasil;DOM_RISCO;Domicílios sujeitos ao risco de inundação;2694600;domicílios;2024;;;Domicílios identificados em áreas urbanas de risco pelos municípios informantes.;Relatório drenagem, p. 39;drenagem-relatorio
+Norte;Região;DOM_RISCO;Domicílios sujeitos ao risco de inundação;196365;domicílios;2024;;;Domicílios identificados em áreas urbanas de risco pelos municípios informantes.;Relatório drenagem, p. 39;drenagem-relatorio
+Nordeste;Região;DOM_RISCO;Domicílios sujeitos ao risco de inundação;496518;domicílios;2024;;;Domicílios identificados em áreas urbanas de risco pelos municípios informantes.;Relatório drenagem, p. 39;drenagem-relatorio
+Sudeste;Região;DOM_RISCO;Domicílios sujeitos ao risco de inundação;1233459;domicílios;2024;;;Domicílios identificados em áreas urbanas de risco pelos municípios informantes.;Relatório drenagem, p. 39;drenagem-relatorio
+Sul;Região;DOM_RISCO;Domicílios sujeitos ao risco de inundação;612597;domicílios;2024;;;Domicílios identificados em áreas urbanas de risco pelos municípios informantes.;Relatório drenagem, p. 39;drenagem-relatorio
+Centro-Oeste;Região;DOM_RISCO;Domicílios sujeitos ao risco de inundação;155661;domicílios;2024;;;Domicílios identificados em áreas urbanas de risco pelos municípios informantes.;Relatório drenagem, p. 39;drenagem-relatorio
+Brasil;Brasil;PLANO_DRENAGEM;Municípios com Plano Diretor de Drenagem Urbana;231;municípios;2024;;;Municípios participantes do módulo de águas pluviais.;Relatório drenagem, p. 27;drenagem-relatorio
+Norte;Região;PLANO_DRENAGEM;Municípios com Plano Diretor de Drenagem Urbana;9;municípios;2024;;;Municípios participantes do módulo de águas pluviais.;Relatório drenagem, p. 27;drenagem-relatorio
+Nordeste;Região;PLANO_DRENAGEM;Municípios com Plano Diretor de Drenagem Urbana;20;municípios;2024;;;Municípios participantes do módulo de águas pluviais.;Relatório drenagem, p. 27;drenagem-relatorio
+Sudeste;Região;PLANO_DRENAGEM;Municípios com Plano Diretor de Drenagem Urbana;145;municípios;2024;;;Municípios participantes do módulo de águas pluviais.;Relatório drenagem, p. 27;drenagem-relatorio
+Sul;Região;PLANO_DRENAGEM;Municípios com Plano Diretor de Drenagem Urbana;43;municípios;2024;;;Municípios participantes do módulo de águas pluviais.;Relatório drenagem, p. 27;drenagem-relatorio
+Centro-Oeste;Região;PLANO_DRENAGEM;Municípios com Plano Diretor de Drenagem Urbana;14;municípios;2024;;;Municípios participantes do módulo de águas pluviais.;Relatório drenagem, p. 27;drenagem-relatorio

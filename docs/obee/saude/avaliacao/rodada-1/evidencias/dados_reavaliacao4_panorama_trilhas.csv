@@ -1,0 +1,8 @@
+medida_no_panorama;ancora_de_destino;existe;trilha_aberta;foco_no_destino;topo_px;indicador_da_trilha
+Despesa liquidada em Saúde por habitante;trilha-sau-despesa-por_habitante;True;True;True;96;sau.despesa.por_habitante
+Percentual da receita de impostos e transf;trilha-sau-asps-percentual_aplicado;True;True;True;96;sau.asps.percentual_aplicado
+UBS públicas ativas por 10 mil habitantes;trilha-sau-rede-ubs_publicas_por_10mil;True;True;True;96;sau.rede.ubs_publicas_por_10mil
+Equipes de Saúde da Família (eSF) por 10 m;trilha-sau-aps-equipes_por_10mil;True;True;True;96;sau.aps.equipes_por_10mil
+Cobertura potencial estimada da atenção pr;trilha-sau-aps-cobertura_potencial;True;True;True;96;sau.aps.cobertura_potencial
+Internações ICSAP por 100 mil habitantes;trilha-sau-icsap-taxa;True;True;True;96;sau.icsap.taxa
+ICSAP nas internações SUS de residentes (%;trilha-sau-icsap-participacao;True;True;True;96;sau.icsap.participacao

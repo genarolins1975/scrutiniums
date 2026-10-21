@@ -1,0 +1,11 @@
+ONS   RT-ONS DPL 0131/2023 – ANÁLISE DOS LIMITES DE TRANSFERÊNCIA DE ENERGIA ENTRE AS                                                                                                                                                                        22   /   39
+      REGIÕES N/NE E SE/CO COM O BYPASS DE BCS
+          De acordo com os valores de fluxos apresentados na Tabela 5-5, os bypass
+          provocam redistribuições/reduções nos fluxos da Interligação Nordeste -
+          Sudeste/Centro-Oeste (FNESE) e elevações nos fluxos da Interligação Nordeste-
+          Norte (FNEN), e por consequência, da Interligação Norte-Sudeste/Centro-Oeste
+          (FNS). A elevação do FNEN ocorre majoritariamente pela LT 500 kV Miracema –
+          Gilbués II, e assim, não eleva significativamente o carregamento das demais linhas
+          de transmissão que compõem esse fluxo. Por esse motivo, o bypass dos BCS do
+          eixo de Barreiras II – Rio das Éguas – Luziânia pode ser realizado sem a
+          necessidade de efetuar o bypass de quaisquer BCS do tronco em 500 kV entre as

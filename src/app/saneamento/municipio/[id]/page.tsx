@@ -1,0 +1,755 @@
+import { prefetchDoLink } from "@/lib/rotasPublicas";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { Fonte, MarcaAutodeclarado, NestaPagina, Nota, Secao } from "@/components/saneamento/Editorial";
+import { PosicaoMunicipio } from "@/components/saneamento/PosicaoMunicipio";
+import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { agregado, fichaMunicipio, meta, municipio, municipios, prestadores } from "@/lib/saneamento/gold";
+import { ROTA } from "@/lib/saneamento/capitulos";
+import { razaoPct } from "@/lib/saneamento/municipios";
+import { classePorte, mediana, ROTULO_PORTE } from "@/lib/saneamento/pares";
+import { data, inteiro, mesAno, numero, reais, reaisCompacto } from "@/lib/saneamento/formato";
+import { MOTIVO_TEXTO, NATUREZA_CURTA, SITUACAO_AGUA, SITUACAO_ESGOTO } from "@/lib/saneamento/rotulos";
+import { prestadorComTarifa } from "@/lib/saneamento/tarifas";
+import { ANOS_SISAGUA, LIMITE_RAZAO_TARIFA_SOCIAL, medida, razaoTarifaSocial } from "@/lib/saneamento/medidas";
+import { ATENDIMENTO_REDE, CASAS_ATENDIMENTO, atendimentoRede, type Atendimento, type Servico } from "@/lib/saneamento/atendimento";
+import { QUEM_DECLARA_INVESTIMENTO } from "@/lib/saneamento/autodeclarado";
+import type { Agregado, FichaMunicipio, Municipio } from "@/lib/saneamento/tipos";
+import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
+
+export const dynamicParams = true;
+export const revalidate = false;
+
+export function generateMetadata({ params }: { params: { id: string } }): Metadata {
+  const m = municipio(params.id);
+  if (!m) return { title: "Município não encontrado" };
+  return {
+    title: `${m.nome} (${m.uf}): água, esgoto, prestador e metas`,
+    description: `Saneamento em ${m.nome} (${m.uf}): carência pelo Censo 2022, atendimento declarado ao SINISA 2024, prestador, regulador, plano, investimento e comparação com a UF.`,
+    alternates: { canonical: `${ROTA}/municipio/${m.id}` },
+  };
+}
+
+type Pares = { v: number | null; n: number };
+type Linha = { rotulo: string; fonte: string; m: number | null; uf: number | null; br: number | null; pares: Pares; unidade: string; casas: number; motivo?: string };
+
+function Comparacao({ linhas, uf, grupo }: { linhas: Linha[]; uf: string; grupo: number }) {
+  const f = (v: number | null, l: Linha) => (v == null ? "sem dado" : `${numero(v, l.casas)}${l.unidade === "%" ? "%" : ` ${l.unidade}`}`);
+  return (
+    <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Comparação do município com UF, Brasil e pares (rolável)">
+      <table className="w-full min-w-[44rem] border-collapse text-sm">
+        <caption className="sr-only">Medidas do município, da UF, do Brasil e mediana dos pares</caption>
+        <thead>
+          <tr className="border-b border-carvao text-left">
+            <th scope="col" className="py-2 pr-4 font-medium text-carvao">Medida</th>
+            <th scope="col" className="py-2 pr-4 text-right font-medium text-carvao">Município</th>
+            <th scope="col" className="py-2 pr-4 text-right font-medium text-carvao-muted">{uf}</th>
+            <th scope="col" className="py-2 pr-4 text-right font-medium text-carvao-muted">Brasil</th>
+            <th scope="col" className="py-2 text-right font-medium text-carvao-muted">Pares (mediana)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {linhas.map((l) => (
+            <tr key={l.rotulo} className="border-b border-linha align-top">
+              <th scope="row" className="py-2 pr-4 text-left font-normal text-carvao">
+                {l.rotulo}
+                <span className="block text-xs text-carvao-muted">{l.fonte}</span>
+              </th>
+              <td className="py-2 pr-4 text-right tabular-nums text-carvao">
+                {f(l.m, l)}
+                {l.m == null && l.motivo && <span className="block text-xs text-carvao-muted">{l.motivo}</span>}
+              </td>
+              <td className="py-2 pr-4 text-right tabular-nums text-carvao-muted">{f(l.uf, l)}</td>
+              <td className="py-2 pr-4 text-right tabular-nums text-carvao-muted">{f(l.br, l)}</td>
+              <td className="py-2 text-right tabular-nums text-carvao-muted">
+                {f(l.pares.v, l)}
+                <span className="block text-xs">{inteiro(l.pares.n)} de {inteiro(grupo)} municípios com valor</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function pctCenso(a: Agregado | null, f: (a: Agregado) => number | null | undefined) {
+  return a ? razaoPct(f(a), a.censo2022.moradores?.agua.total) : null;
+}
+
+export default function Pagina({ params }: { params: { id: string } }) {
+  const m = municipio(params.id);
+  const ficha = m ? fichaMunicipio(m.id) : null;
+  if (!m || !ficha) notFound();
+  const uf = agregado(m.uf);
+  const br = agregado("BR");
+  const todos = municipios();
+  const porte = classePorte(m.pop22);
+  const grupo = porte == null ? [] : todos.filter((x) => x.regiao === m.regiao && classePorte(x.pop22) === porte && x.id !== m.id);
+  const med = (f: (x: Municipio) => number | null): Pares => {
+    const vs = grupo.map(f).filter((v): v is number => v != null);
+    return { v: mediana(vs), n: vs.length };
+  };
+  const mor = ficha.censo2022?.moradores;
+  const ag = ficha.sinisa.agua;
+  const es = ficha.sinisa.esgoto;
+  const gm = ficha.gestao_municipal;
+  const catalogo = prestadores();
+  const vinculos = ficha.sinisa.prestadores ?? [];
+  const pop24 = m.pop24;
+  // população atendida com rede (IAG0001 e IES0001): mesmos valores, rótulos e motivos da página aberta
+  const atAgua = atendimentoRede(m, ficha, "agua");
+  const atEsgoto = atendimentoRede(m, ficha, "esgoto");
+  const confRetificacao = meta()?.conferencias.find((c) => c.id === "agua_retificacao_contagens");
+  const retificacao = (confRetificacao?.detalhe ?? []).filter((d) => d.uf === m.uf);
+  const retificacaoDatas = confRetificacao?.datas;
+
+  const linhas: Linha[] = [
+    {
+      rotulo: "Moradores sem ligação à rede geral de água",
+      fonte: "Censo 2022",
+      m: razaoPct(m.c22_ag_sem, m.pop22),
+      uf: pctCenso(uf, (a) => a.censo2022.moradores?.agua.sem_ligacao),
+      br: pctCenso(br, (a) => a.censo2022.moradores?.agua.sem_ligacao),
+      pares: med((x) => razaoPct(x.c22_ag_sem, x.pop22)),
+      unidade: "%",
+      casas: 1,
+    },
+    {
+      rotulo: "Moradores sem rede de esgoto nem fossa séptica",
+      fonte: "Censo 2022",
+      m: razaoPct(m.c22_es_precario != null && m.c22_es_sem_banheiro != null ? m.c22_es_precario + m.c22_es_sem_banheiro : null, m.pop22),
+      uf: pctCenso(uf, (a) => a.censo2022.moradores?.esgoto.sem_rede_nem_septica),
+      br: pctCenso(br, (a) => a.censo2022.moradores?.esgoto.sem_rede_nem_septica),
+      pares: med((x) => razaoPct(x.c22_es_precario != null && x.c22_es_sem_banheiro != null ? x.c22_es_precario + x.c22_es_sem_banheiro : null, x.pop22)),
+      unidade: "%",
+      casas: 1,
+    },
+    {
+      rotulo: `${ATENDIMENTO_REDE.agua.rotulo} (IAG0001)`,
+      fonte: "SINISA 2024, declarado pelo prestador",
+      m: atAgua.pct,
+      uf: uf?.sinisa.agua.indicadores.IAG0001 ?? null,
+      br: br?.sinisa.agua.indicadores.IAG0001 ?? null,
+      pares: med((x) => x.IAG0001),
+      unidade: "%",
+      casas: CASAS_ATENDIMENTO,
+      motivo: atAgua.motivo ?? undefined,
+    },
+    {
+      rotulo: `${ATENDIMENTO_REDE.esgoto.rotulo} (IES0001)`,
+      fonte: "SINISA 2024, declarado pelo prestador",
+      m: atEsgoto.pct,
+      uf: uf?.sinisa.esgoto.indicadores.IES0001 ?? null,
+      br: br?.sinisa.esgoto.indicadores.IES0001 ?? null,
+      pares: med((x) => x.IES0001),
+      unidade: "%",
+      casas: CASAS_ATENDIMENTO,
+      motivo: atEsgoto.motivo ?? undefined,
+    },
+    {
+      rotulo: "Esgoto tratado sobre coletado (IES2004)",
+      fonte: "SINISA 2024",
+      m: m.IES2004,
+      uf: uf?.sinisa.esgoto.indicadores.IES2004 ?? null,
+      br: br?.sinisa.esgoto.indicadores.IES2004 ?? null,
+      pares: med((x) => x.IES2004),
+      unidade: "%",
+      casas: 2,
+      motivo: MOTIVO_TEXTO[es.motivos?.IES2004 ?? ""] ?? SITUACAO_ESGOTO[es.situacao],
+    },
+    {
+      rotulo: "Perdas totais de água na distribuição (IAG2013)",
+      fonte: "SINISA 2024",
+      m: m.IAG2013,
+      uf: uf?.sinisa.agua.indicadores.IAG2013 ?? null,
+      br: br?.sinisa.agua.indicadores.IAG2013 ?? null,
+      pares: med((x) => x.IAG2013),
+      unidade: "%",
+      casas: 2,
+      motivo: MOTIVO_TEXTO[ag.motivos?.IAG2013 ?? ""] ?? SITUACAO_AGUA[ag.situacao],
+    },
+  ];
+
+  const invAg = ag.investimento;
+  const invEs = es.investimento;
+  const tarifasAgua = vinculos.filter((v) => v.servico === "agua" && v.tarifa);
+  const comTarifa = prestadorComTarifa(m.id);
+  const cad = meta()?.cadunico;
+  const razaoTs = razaoTarifaSocial(m);
+  const razaoTsSuspeita = razaoTs != null && razaoTs > LIMITE_RAZAO_TARIFA_SOCIAL;
+
+  return (
+    <>
+      <Cabecalho atual="municipio" />
+      <AvisoConsultaAberta className="ed-pagina" comConta="A comparação entre municípios, o atlas, as fichas dos prestadores e os demais capítulos do observatório" />
+      <MarcaVisita secao="saneamento:municipio" />
+      <main id="conteudo" className="ed-pagina pb-20 pt-8">
+        <p className="text-sm">
+          <Link href={`${ROTA}/municipio`} prefetch={prefetchDoLink(`${ROTA}/municipio`)} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
+            ← Buscar outro município
+            <SeloComConta href={`${ROTA}/municipio`} />
+          </Link>
+        </p>
+        <header className="mb-8 border-b border-linha pb-8">
+          <p className="rotulo text-obee-dark">Meu município · {uf?.nome ?? m.uf}</p>
+          <h1 className="mt-3 font-serif text-[2.2rem] leading-tight text-carvao md:text-[3rem]">
+            {m.nome} <span className="text-[0.6em] text-carvao-muted">({m.uf})</span>
+          </h1>
+          <dl className="mt-5 flex flex-wrap gap-x-10 gap-y-3 text-sm">
+            <div>
+              <dt className="text-carvao-muted">Moradores, Censo 2022</dt>
+              <dd className="tabular-nums text-carvao">{inteiro(m.pop22)}</dd>
+            </div>
+            <div>
+              <dt className="text-carvao-muted">População estimada, 2024</dt>
+              <dd className="tabular-nums text-carvao">{inteiro(pop24)}</dd>
+            </div>
+            <div>
+              <dt className="text-carvao-muted">SINISA 2024, água</dt>
+              <dd className="text-carvao">{SITUACAO_AGUA[ag.situacao]}</dd>
+            </div>
+            <div>
+              <dt className="text-carvao-muted">SINISA 2024, esgoto</dt>
+              <dd className="text-carvao">{SITUACAO_ESGOTO[es.situacao]}</dd>
+            </div>
+          </dl>
+          <p className="mt-5 flex flex-wrap gap-x-6 text-sm">
+            <Link href={`${ROTA}/comparar?m=${m.id}`} prefetch={prefetchDoLink(`${ROTA}/comparar?m=${m.id}`)} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
+              Comparar com outros municípios
+              <SeloComConta href={`${ROTA}/comparar?m=${m.id}`} />
+            </Link>
+            <Link href={`${ROTA}/acesso?uf=${m.uf}&m=${m.id}`} prefetch={prefetchDoLink(`${ROTA}/acesso?uf=${m.uf}&m=${m.id}`)} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
+              Ver no atlas
+              <SeloComConta href={`${ROTA}/acesso?uf=${m.uf}&m=${m.id}`} />
+            </Link>
+          </p>
+        </header>
+        <NestaPagina
+          itens={[
+            { id: "comparacao", rotulo: "Comparação" },
+            { id: "agua-esgoto", rotulo: "Água e esgoto" },
+            { id: "quem-presta", rotulo: "Quem presta e regula" },
+            { id: "conta", rotulo: "Conta e tarifa social" },
+            { id: "metas", rotulo: "Metas e plano" },
+            { id: "investimento", rotulo: "Investimento" },
+            { id: "continuidade", rotulo: "Continuidade" },
+            { id: "qualidade", rotulo: "Qualidade da água" },
+          ]}
+        />
+
+        <Secao id="comparacao" titulo="Como o município se compara?" texto={
+          <>Cada linha tem sua fonte e seu ano. Pares: mediana dos municípios da mesma região com {porte != null ? ROTULO_PORTE[porte] : "porte semelhante"} ({inteiro(grupo.length)} municípios). A mediana dos pares não é meta nem referência de eficiência.</>
+        }>
+          <PosicaoMunicipio
+            uf={m.uf}
+            linhas={linhas.map((l) => ({ rotulo: l.rotulo, fonte: l.fonte, m: l.m, uf: l.uf, br: l.br, pares: l.pares.v }))}
+          />
+          <Comparacao linhas={linhas} uf={m.uf} grupo={grupo.length} />
+          <Nota>
+            As colunas não têm o mesmo universo. Município e pares comparam só municípios com indicador. UF e Brasil são os consolidados do SINISA e do
+            Censo: no esgoto, o consolidado inclui na população os municípios com delegação sem atendimento, que não têm indicador municipal e ficam
+            fora da mediana dos pares; na água, cobre a população dos municípios que participaram do módulo. Use os pares como referência de município
+            e a UF e o Brasil como referência de território.
+            {retificacao.length > 0 && retificacaoDatas && (
+              <>
+                {" "}
+                Em {uf?.nome ?? m.uf}, o consolidado da UF (publicação de {data(retificacaoDatas.consolidado_uf_publicacao)}, sem data de retificação) não
+                fecha com a base municipal de água, retificada em {data(retificacaoDatas.municipal_retificacao)}: em {inteiro(retificacao.length)} colunas
+                de ligações e economias, a soma dos municípios difere do consolidado em até{" "}
+                {numero(Math.max(...retificacao.map((r) => Math.abs(r.diferenca_pct ?? 0))), 1)}%. O efeito sobre os indicadores da UF não foi medido.
+              </>
+            )}
+          </Nota>
+        </Secao>
+
+        <Secao
+          id="agua-esgoto"
+          titulo="Como os moradores recebem água e destinam o esgoto?"
+          texto="Duas fontes, lado a lado e nunca somadas: o que o prestador declara ao SINISA sobre a população que atende com rede, em 2024, e o que cada domicílio respondeu ao Censo 2022."
+        >
+          <AtendimentoRede agua={atAgua} esgoto={atEsgoto} uf={m.uf} ufAgua={uf?.sinisa.agua.indicadores.IAG0001 ?? null} ufEsgoto={uf?.sinisa.esgoto.indicadores.IES0001 ?? null} />
+          <h3 className="mt-10 font-serif text-xl text-carvao">O que os moradores responderam ao Censo 2022</h3>
+          <p className="mt-1 max-w-prose2 text-sm text-carvao-muted">Moradores em domicílios particulares permanentes ocupados, por forma principal.</p>
+          <div className="mt-4">
+            {mor ? <Composicao f={ficha} /> : <Nota>O município não tem resultado no Censo 2022 (foi criado depois da coleta).</Nota>}
+          </div>
+        </Secao>
+
+        <Secao id="quem-presta" titulo="Quem presta o serviço e quem regula?" texto="Declarações dos prestadores (SINISA, Informações) e do município (SINISA, Gestão Municipal), referência 2024.">
+          {vinculos.length === 0 ? (
+            <Nota>Nenhum prestador declarou atuação no município ao SINISA 2024.</Nota>
+          ) : (
+            <ul className="grid grid-cols-1 gap-x-10 md:grid-cols-2">
+              {vinculos.map((v) => {
+                const p = catalogo.find((x) => x.id === v.prestador);
+                return (
+                  <li key={v.servico + v.prestador} className="border-t border-linha py-4">
+                    <p className="rotulo text-mineral">{v.servico === "agua" ? "Água" : "Esgoto"}</p>
+                    <p className="mt-1 font-serif text-lg text-carvao">
+                      {p && p.abrangencia !== "Local" ? (
+                        <Link href={`${ROTA}/prestadores/${p.id}`} prefetch={prefetchDoLink(`${ROTA}/prestadores/${p.id}`)} className="underline decoration-linha underline-offset-4 hover:decoration-obee">
+                          {p.nome}
+                          <SeloComConta href={`${ROTA}/prestadores/${p.id}`} />
+                        </Link>
+                      ) : (
+                        p?.nome
+                      )}
+                      {p?.sigla && <span className="text-base text-carvao-muted"> ({p.sigla})</span>}
+                    </p>
+                    <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
+                      <dt className="text-carvao-muted">Natureza</dt>
+                      <dd className="text-carvao">{NATUREZA_CURTA[p?.natureza ?? ""] ?? p?.natureza ?? "sem dado"}</dd>
+                      <dt className="text-carvao-muted">Abrangência</dt>
+                      <dd className="text-carvao">{p?.abrangencia ?? "sem dado"}</dd>
+                      <dt className="text-carvao-muted">Forma</dt>
+                      <dd className="text-carvao">{v.forma ?? "sem dado"}</dd>
+                      <dt className="text-carvao-muted">Instrumento</dt>
+                      <dd className="text-carvao">{v.instrumento ?? "sem dado"}</dd>
+                      <dt className="text-carvao-muted">Vigência</dt>
+                      <dd className="text-carvao">
+                        {v.inicio ? data(v.inicio) : "início sem dado"} a {v.termino ? data(v.termino) : "término sem dado"}
+                      </dd>
+                      <dt className="text-carvao-muted">Atendidos</dt>
+                      <dd className="tabular-nums text-carvao">{v.populacao_atendida == null ? "sem dado" : `${inteiro(v.populacao_atendida)} pessoas, declarado`}</dd>
+                    </dl>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+          <Reguladores f={ficha} />
+          <Nota>
+            Natureza jurídica e instrumento são os declarados ao SINISA para 2024. Controle societário e grupo econômico não são publicados
+            pelo SINISA e não aparecem aqui; para companhias abertas, a posição acionária está na ficha do prestador.
+          </Nota>
+        </Secao>
+
+        <Secao id="conta" titulo="Quanto custa e há tarifa social?" texto="O que o prestador declarou ao SINISA sobre tarifa mínima e tarifa social. A conta simulada só existe para tarifas verificadas em atos oficiais.">
+          {comTarifa ? (
+            <p className="mb-4 text-sm">
+              <Link href={`${ROTA}/preco-regulado/simulador?t=${comTarifa}`} prefetch={prefetchDoLink(`${ROTA}/preco-regulado/simulador?t=${comTarifa}`)} className="inline-flex min-h-[44px] items-center border border-obee px-4 font-medium text-obee-dark hover:bg-obee-fundo">
+                Simular a conta com a tarifa verificada deste prestador
+                <SeloComConta href={`${ROTA}/preco-regulado/simulador?t=${comTarifa}`} />
+              </Link>
+            </p>
+          ) : (
+            <Nota>A tarifa do prestador deste município ainda não está na amostra verificada do simulador.</Nota>
+          )}
+          {tarifasAgua.length > 0 ? (
+            tarifasAgua.map((v) => {
+              const t = v.tarifa!;
+              const p = catalogo.find((x) => x.id === v.prestador);
+              return (
+                <dl key={v.prestador} className="grid max-w-3xl grid-cols-[1fr_auto] gap-x-6 gap-y-2 border-t border-linha pt-4 text-sm [&:not(:first-of-type)]:mt-4">
+                  {tarifasAgua.length > 1 && (
+                    <>
+                      <dt className="col-span-2 font-medium text-carvao">{p?.nome ?? v.prestador}</dt>
+                    </>
+                  )}
+                  <dt className="text-carvao-muted">Cobra tarifa mínima de água?</dt>
+                  <dd className="text-carvao">{String(t.GFI1008 ?? "sem dado")}</dd>
+                  <dt className="text-carvao-muted">
+                    Valor declarado da tarifa mínima residencial (GFI1018, 2024)
+                    <MarcaAutodeclarado />
+                  </dt>
+                  <dd className="tabular-nums text-carvao">{typeof t.GFI1018 === "number" ? reais(t.GFI1018) : "sem dado"}</dd>
+                  <dt className="text-carvao-muted">Tem tarifa social de água?</dt>
+                  <dd className="text-carvao">{String(t.GFI1019 ?? "sem dado")}</dd>
+                  <dt className="text-carvao-muted">Norma que a regulamenta</dt>
+                  <dd className="text-carvao">{String(t.GFI1021 ?? "sem dado")}</dd>
+                  <dt className="text-carvao-muted">Economias residenciais com tarifa social</dt>
+                  <dd className="tabular-nums text-carvao">{typeof t.GFI1036 === "number" ? inteiro(t.GFI1036) : "sem dado"}</dd>
+                </dl>
+              );
+            })
+          ) : (
+            <Nota>Sem declaração de tarifa no SINISA 2024 para este município.</Nota>
+          )}
+          <dl className="mt-6 grid max-w-3xl grid-cols-[1fr_auto] gap-x-6 gap-y-2 border-t border-linha pt-4 text-sm">
+            <dt className="text-carvao-muted">Famílias no CadÚnico com renda per capita até meio salário-mínimo, {mesAno(cad?.mes_referencia)}</dt>
+            <dd className="tabular-nums text-carvao">{inteiro(m.cad_fam_ms)}</dd>
+            <dt className="text-carvao-muted">Mesmo critério, {mesAno(cad?.mes_mais_recente)}</dt>
+            <dd className="tabular-nums text-carvao">{inteiro(m.cad_fam_ms_atual)}</dd>
+            {tarifasAgua.length > 1 && (
+              <>
+                <dt className="text-carvao-muted">Economias com tarifa social, soma dos prestadores de água (2024)</dt>
+                <dd className="tabular-nums text-carvao">{inteiro(m.ts_economias)}</dd>
+              </>
+            )}
+            <dt className="text-carvao-muted">Economias com tarifa social por 100 famílias elegíveis (2024)</dt>
+            <dd className="tabular-nums text-carvao">
+              {razaoTs == null ? "sem dado" : numero(razaoTs, 1)}
+              {razaoTsSuspeita && (
+                <span className="block text-xs text-carvao-muted">
+                  Acima de {LIMITE_RAZAO_TARIFA_SOCIAL}: mais economias declaradas do que famílias elegíveis. Declaração do prestador a verificar.
+                </span>
+              )}
+            </dd>
+          </dl>
+          <Nota>
+            Valores declarados pelo prestador, sem verificação do Observatório. A razão usa a soma das economias de todos os prestadores de água do
+            município. Economia não é família: a razão compara contagens diferentes e não diz quantas famílias elegíveis recebem o desconto.{" "}
+            <Link href={`${ROTA}/tarifa-social#cobertura`} prefetch={prefetchDoLink(`${ROTA}/tarifa-social#cobertura`)} className="text-obee-dark underline underline-offset-2">
+              Como ler a razão
+              <SeloComConta href={`${ROTA}/tarifa-social#cobertura`} />
+            </Link>
+            . O valor médio declarado da tarifa social (GFI1037) tem registros incompatíveis com uma conta mensal e não é publicado. Fonte do
+            CadÚnico: MDS, SAGI, API MI Social.
+          </Nota>
+        </Secao>
+
+        <Secao id="metas" titulo="A que distância está da meta e há plano?" texto="Metas do art. 11-B da Lei 11.445/2007 (99% com água e 90% com coleta e tratamento até 31/12/2033), aferidas pela NR ANA 8/2024 em domicílios.">
+          <dl className="grid grid-cols-1 gap-x-10 gap-y-4 text-sm md:grid-cols-3">
+            <div className="border-t border-linha pt-3">
+              <dt className="text-carvao-muted">IAA da NR 8, parcela de rede pública</dt>
+              <dd className="font-serif text-2xl tabular-nums text-carvao">{m.iaa_rede == null ? "sem dado" : `${numero(m.iaa_rede, 1)}%`}</dd>
+              <dd className="text-xs text-carvao-muted">
+                Meta: 99%. Economias residenciais ativas ÷ domicílios ocupados estimados ({inteiro(m.dom_est24)}).
+                {m.iaa_rede != null && m.iaa_rede > 100 && " Acima de 100%: as economias ativas excedem a estimativa de domicílios ocupados; não é atendimento acima do total."}
+              </dd>
+            </div>
+            <div className="border-t border-linha pt-3">
+              <dt className="text-carvao-muted">IAE da NR 8, parcela de rede com tratamento</dt>
+              <dd className="font-serif text-2xl tabular-nums text-carvao">{m.iae_rede == null ? "sem dado" : `${numero(m.iae_rede, 1)}%`}</dd>
+              <dd className="text-xs text-carvao-muted">
+                Meta: 90%. Sem soluções individuais aceitas pelo regulador, que o SINISA não traz.
+                {m.iae_rede != null && m.iae_rede > 100 && " Acima de 100%: as economias com tratamento excedem a estimativa de domicílios ocupados."}
+              </dd>
+            </div>
+            <div className="border-t border-linha pt-3">
+              <dt className="text-carvao-muted">Plano de saneamento básico</dt>
+              <dd className="text-carvao">
+                {gm?.respondeu !== "Sim"
+                  ? "Município não respondeu ao módulo Gestão Municipal"
+                  : gm.plano?.existe === "Sim"
+                    ? `Declarado${gm.plano.data ? `, aprovado em ${data(gm.plano.data)}` : ""}${gm.plano.instrumento ? ` (${gm.plano.instrumento.toLowerCase()})` : ""}`
+                    : gm.plano?.existe === "Não"
+                      ? `Não declarado${gm.plano.em_elaboracao === "Sim" ? "; em elaboração" : ""}`
+                      : "sem dado"}
+              </dd>
+              {gm?.plano?.link && (
+                <dd className="text-xs">
+                  <a href={gm.plano.link} className="text-obee-dark underline underline-offset-2" rel="noopener noreferrer">
+                    Endereço informado pelo município
+                  </a>
+                </dd>
+              )}
+            </div>
+          </dl>
+          <Nota>
+            Os índices da NR 8 exigem também os indicadores de cobertura (ICA e ICE) para declarar meta cumprida. Aqui eles servem como
+            referência; não atestam cumprimento. O denominador é uma estimativa (população de 2024 ÷ moradores por domicílio do Censo 2022), e
+            valores acima de 100% mostram que o numerador a excede, não cobertura maior que a total. Plano declarado não equivale a plano
+            atualizado, financiado ou executado.
+          </Nota>
+        </Secao>
+
+        <Secao
+          id="investimento"
+          titulo="Quanto foi investido em 2024?"
+          texto={<>{QUEM_DECLARA_INVESTIMENTO}. Reais correntes de 2024.</>}
+        >
+          <dl className="grid grid-cols-1 gap-x-10 gap-y-4 text-sm md:grid-cols-2">
+            {[["Água", invAg], ["Esgoto", invEs]].map(([rot, inv]) => {
+              const i = inv as FichaMunicipio["sinisa"]["agua"]["investimento"];
+              return (
+                <div key={rot as string} className="border-t border-linha pt-3">
+                  <dt className="text-carvao-muted">{rot as string}</dt>
+                  <dd className="font-serif text-2xl tabular-nums text-carvao">{i?.total != null ? reaisCompacto(i.total) : "sem dado"}</dd>
+                  <dd className="text-xs text-carvao-muted">
+                    {i?.total != null && m.dfe0001 ? `${reais(i.total / m.dfe0001)} por residente estimado. ` : ""}
+                    Prestador: {reaisCompacto(i?.prestador)}; governo estadual, segundo o prestador: {i?.estado_informado ? reaisCompacto(i?.estado) : "não informado"}.
+                  </dd>
+                  <dd>
+                    <MarcaAutodeclarado className="mt-1" />
+                  </dd>
+                </div>
+              );
+            })}
+          </dl>
+          <Nota>
+            O SINISA publica o investimento como o prestador o declarou; o Observatório não o conferiu com as demonstrações financeiras auditadas.
+            Investimento declarado não identifica obras nem prova entrada em operação. Por residente é razão descritiva sobre a população
+            estimada, não custo de atender quem falta. Campos GFI2024, GFI2036, GFI2124 e GFI2136.
+          </Nota>
+        </Secao>
+
+        <Secao id="continuidade" titulo="A água chega sem interrupção?" texto="Paralisações e interrupções sistemáticas declaradas pelo prestador ao SINISA 2024.">
+          {ag.tecnica ? (
+            <dl className="grid grid-cols-1 gap-x-10 gap-y-4 text-sm md:grid-cols-3">
+              <div className="border-t border-linha pt-3">
+                <dt className="text-carvao-muted">Paralisações com falta de água</dt>
+                <dd className="font-serif text-2xl tabular-nums text-carvao">{inteiro(ag.tecnica.GTA3001)}</dd>
+                <dd className="text-xs text-carvao-muted">
+                  Duração média:{" "}
+                  {ag.indicadores?.IAG3004 != null
+                    ? `${numero(ag.indicadores.IAG3004, 1)} horas`
+                    : ag.motivos?.IAG3004 === "nao_calculado_divisao_zero"
+                      ? "não se calcula, porque o município declarou 0 paralisações (horas divididas por zero eventos)"
+                      : "sem dado"}
+                  .
+                </dd>
+              </div>
+              <div className="border-t border-linha pt-3">
+                <dt className="text-carvao-muted">Interrupções sistemáticas (racionamento ou rodízio)</dt>
+                <dd className="font-serif text-2xl tabular-nums text-carvao">{inteiro(ag.tecnica.GTA3003)}</dd>
+                <dd className="text-xs text-carvao-muted">Motivo principal declarado: {ag.motivo_interrupcoes ?? "sem dado"}.</dd>
+              </div>
+              <div className="border-t border-linha pt-3">
+                <dt className="text-carvao-muted">Dias com sistema em colapso</dt>
+                <dd className="font-serif text-2xl tabular-nums text-carvao">{ag.tecnica.GTA3006 == null ? "sem dado" : inteiro(ag.tecnica.GTA3006)}</dd>
+              </div>
+            </dl>
+          ) : (
+            <Nota>Sem declaração de continuidade: o município não participou do módulo de água do SINISA 2024.</Nota>
+          )}
+          <Nota>Registro declarado pelo prestador. Ausência de registro não prova fornecimento contínuo. A qualidade da água vem do SISAGUA, na seção seguinte.</Nota>
+        </Secao>
+
+        <Secao
+          id="qualidade"
+          titulo="A qualidade da água é monitorada?"
+          texto="Registros do SISAGUA, do Ministério da Saúde: o controle que o prestador informa e a vigilância da secretaria de saúde, sempre em separado."
+        >
+          <QualidadeMunicipio q={ficha.qualidade} />
+          <Nota>
+            Análise é o exame de um parâmetro. Com poucas análises, uma única amostra muda muito a proporção. Sem registro não quer dizer água boa
+            nem ruim: é falta de informação no sistema.{" "}
+            <Link href={`${ROTA}/continuidade?uf=${m.uf}&m=${m.id}#qualidade-atlas`} prefetch={prefetchDoLink(`${ROTA}/continuidade?uf=${m.uf}&m=${m.id}#qualidade-atlas`)} className="text-obee-dark underline underline-offset-2">
+              Ver no atlas da qualidade da água
+              <SeloComConta href={`${ROTA}/continuidade?uf=${m.uf}&m=${m.id}#qualidade-atlas`} />
+            </Link>
+            .
+          </Nota>
+        </Secao>
+
+        <Fonte>
+          IBGE, Censo 2022 e estimativa 2024; Ministério das Cidades, SINISA 2025 (ano de referência 2024), base municipal
+          {ag.linha?.tecnica ? `, linha ${ag.linha.tecnica} da planilha técnica de água` : ""}
+          {es.linha?.tecnica ? ` e ${es.linha.tecnica} da de esgoto` : ""}
+          {gm ? `; Gestão Municipal, linha ${gm.linha}` : ""}; Ministério da Saúde, SISAGUA 2024 e 2025 (controle mensal, plano de amostragem e
+          vigilância).
+        </Fonte>
+      </main>
+    </>
+  );
+}
+
+const LINHAS_QUALIDADE: { campo: string; registro: string; medida: string; casas: number }[] = [
+  { campo: "ctrl_ecoli", registro: "Controle", medida: "Presença de E. coli", casas: 2 },
+  { campo: "ctrl_colif", registro: "Controle", medida: "Presença de coliformes totais", casas: 1 },
+  { campo: "ctrl_cloro", registro: "Controle", medida: "Cloro residual livre abaixo de 0,2 mg/L", casas: 1 },
+  { campo: "ctrl_turb", registro: "Controle", medida: "Turbidez acima de 5,0 uT", casas: 1 },
+  { campo: "ctrl_cor", registro: "Controle", medida: "Cor aparente acima de 15 uH", casas: 1 },
+  { campo: "ctrl_fluor", registro: "Controle", medida: "Fluoreto acima de 1,5 mg/L", casas: 1 },
+  { campo: "vig_ecoli", registro: "Vigilância", medida: "Presença de E. coli (rotina)", casas: 1 },
+  { campo: "vig_cloro", registro: "Vigilância", medida: "Cloro residual livre abaixo de 0,2 mg/L (rotina)", casas: 1 },
+  { campo: "vig_fluor", registro: "Vigilância", medida: "Fluoreto acima de 1,5 mg/L (rotina)", casas: 1 },
+  { campo: "ctrl_agro", registro: "Controle semestral", medida: "Agrotóxicos acima do VMP (água tratada)", casas: 2 },
+  { campo: "ctrl_quim", registro: "Controle semestral", medida: "Inorgânicas, orgânicas e subprodutos acima do VMP", casas: 1 },
+  { campo: "ctrl_organol", registro: "Controle semestral", medida: "Padrão organoléptico acima do VMP", casas: 1 },
+  { campo: "vig_quim", registro: "Vigilância", medida: "Substâncias químicas acima do VMP (rotina)", casas: 1 },
+  { campo: "plano", registro: "Plano de amostragem", medida: "Análises de coliformes exigidas na rede de SAA e cobertas", casas: 1 },
+  { campo: "plano_sac", registro: "Plano de amostragem", medida: "Análises de coliformes exigidas nas SAC e cobertas", casas: 1 },
+  { campo: "pop_saa", registro: "Cadastro", medida: "População de SAA sob sistemas com controle informado", casas: 1 },
+  { campo: "pop_sac", registro: "Cadastro", medida: "População de SAC sob soluções com controle informado", casas: 1 },
+];
+
+function QualidadeMunicipio({ q }: { q?: Record<string, number> }) {
+  const anos = ANOS_SISAGUA;
+  const celula = (campo: string, ano: number, casas: number) => {
+    const num = q?.[`qa_${campo}_${ano}_num`];
+    const den = q?.[`qa_${campo}_${ano}_den`];
+    if (num == null || den == null || !(den > 0)) {
+      if (!campo.startsWith("ctrl") && !campo.startsWith("vig")) return <span className="text-carvao-muted">sem dado</span>;
+      if (["ctrl_agro", "ctrl_quim", "ctrl_organol", "vig_quim"].includes(campo)) return <span className="text-carvao-muted">sem análise</span>;
+      const reg = q?.[`qa_reg_${campo.startsWith("vig") ? "vig" : "ctrl"}_${ano}`];
+      return <span className="text-carvao-muted">{reg === 1 ? "sem análise" : "sem registro"}</span>;
+    }
+    const p = (num / den) * 100;
+    const piso = 10 ** -casas;
+    return (
+      <>
+        {num > 0 && p < piso / 2 ? `menos de ${numero(piso, casas)}` : numero(p, casas)}%
+        <span className="block text-xs text-carvao-muted">{inteiro(num)} de {inteiro(den)}</span>
+      </>
+    );
+  };
+  return (
+    <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Qualidade da água no SISAGUA, por ano (rolável)">
+      <table className="w-full min-w-[36rem] border-collapse text-sm">
+        <caption className="sr-only">SISAGUA: proporção de análises com o resultado medido, por registro e ano</caption>
+        <thead>
+          <tr className="border-b border-carvao text-left">
+            <th scope="col" className="py-2 pr-4 font-medium text-carvao">Registro e medida</th>
+            {anos.map((ano) => (
+              <th key={ano} scope="col" className="py-2 pr-4 text-right font-medium text-carvao">
+                {ano}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="border-b border-linha">
+            <th scope="row" className="py-2 pr-4 text-left font-normal text-carvao">Há registro de controle e de vigilância?</th>
+            {anos.map((ano) => (
+              <td key={ano} className="py-2 pr-4 text-right text-carvao">
+                {q?.[`qa_reg_ctrl_${ano}`] === 1 ? "controle sim" : "controle não"}, {q?.[`qa_reg_vig_${ano}`] === 1 ? "vigilância sim" : "vigilância não"}
+              </td>
+            ))}
+          </tr>
+          {LINHAS_QUALIDADE.map((l) => (
+            <tr key={l.campo} className="border-b border-linha">
+              <th scope="row" className="py-2 pr-4 text-left font-normal text-carvao">
+                <span className="block text-xs text-carvao-muted">{l.registro}</span>
+                {l.medida}
+              </th>
+              {anos.map((ano) => (
+                <td key={ano} className="py-2 pr-4 text-right tabular-nums text-carvao">
+                  {celula(l.campo, ano, l.casas)}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/**
+ * População atendida com rede de abastecimento de água (IAG0001) e com rede coletora de esgoto (IES0001), declarada pelo prestador ao
+ * SINISA 2024: percentual, pessoas, a UF como referência de território e o motivo publicado quando falta. Mesmo rótulo, mesmas casas e mesma
+ * regra de ausência da página aberta (src/lib/saneamento/atendimento.ts).
+ */
+function AtendimentoRede({
+  agua,
+  esgoto,
+  uf,
+  ufAgua,
+  ufEsgoto,
+}: {
+  agua: Atendimento;
+  esgoto: Atendimento;
+  uf: string;
+  ufAgua: number | null;
+  ufEsgoto: number | null;
+}) {
+  const itens: [Servico, Atendimento, number | null][] = [
+    ["agua", agua, ufAgua],
+    ["esgoto", esgoto, ufEsgoto],
+  ];
+  return (
+    <div data-atendimento-rede="">
+      <dl className="grid grid-cols-1 gap-x-10 gap-y-4 text-sm md:grid-cols-2">
+        {itens.map(([s, a, ref]) => (
+          <div key={s} className="border-t border-carvao pt-3" data-codigo={ATENDIMENTO_REDE[s].codigo}>
+            <dt className="text-carvao">
+              {ATENDIMENTO_REDE[s].rotulo} <span className="text-carvao-muted">({ATENDIMENTO_REDE[s].codigo}, 2024)</span>
+            </dt>
+            <dd className="mt-2 font-serif text-[2rem] leading-none tabular-nums text-carvao">
+              {a.pct == null ? <span className="font-sans text-base text-carvao-muted">sem dado</span> : `${numero(a.pct, CASAS_ATENDIMENTO)}%`}
+            </dd>
+            {a.pessoas != null && <dd className="mt-1 tabular-nums text-carvao">{inteiro(a.pessoas)} pessoas atendidas, declarado</dd>}
+            <dd className="mt-1 text-xs leading-relaxed text-carvao-muted">
+              {a.pct == null ? a.motivo : `${ATENDIMENTO_REDE[s].contexto} Fórmula: ${ATENDIMENTO_REDE[s].formula}.`}
+            </dd>
+            <dd className="mt-1 text-xs tabular-nums text-carvao-muted">
+              {uf}, consolidado oficial: {ref == null ? "sem dado" : `${numero(ref, CASAS_ATENDIMENTO)}%`}
+            </dd>
+          </div>
+        ))}
+      </dl>
+      <Nota>
+        <span className="font-medium text-carvao">Não permite concluir.</span> Água: {medida(ATENDIMENTO_REDE.agua.medida).naoPermite} Esgoto:{" "}
+        {medida(ATENDIMENTO_REDE.esgoto.medida).naoPermite}
+      </Nota>
+    </div>
+  );
+}
+
+function Composicao({ f }: { f: FichaMunicipio }) {
+  const a = f.censo2022!.moradores!.agua;
+  const e = f.censo2022!.moradores!.esgoto;
+  const linhasAgua: [string, number | null][] = [
+    ["Rede geral como forma principal", a.rede],
+    ["Ligado à rede, mas usa outra forma", a.lig_outra],
+    ["Sem ligação: poço profundo ou artesiano", a.sem_ligacao_fontes?.poco_profundo ?? null],
+    ["Sem ligação: poço raso ou cacimba", a.sem_ligacao_fontes?.poco_raso ?? null],
+    ["Sem ligação: fonte, nascente ou mina", a.sem_ligacao_fontes?.nascente ?? null],
+    ["Sem ligação: carro-pipa", a.sem_ligacao_fontes?.carro_pipa ?? null],
+    ["Sem ligação: água da chuva", a.sem_ligacao_fontes?.chuva ?? null],
+    ["Sem ligação: rios, açudes, lagos", a.sem_ligacao_fontes?.rio ?? null],
+    ["Sem ligação: outra", a.sem_ligacao_fontes?.outra ?? null],
+  ];
+  const linhasEsgoto: [string, number | null][] = [
+    ["Rede geral ou pluvial", e.rede_pluvial],
+    ["Fossa séptica ligada à rede", e.fossa_ligada],
+    ["Fossa séptica não ligada à rede", e.septica],
+    ["Fossa rudimentar ou buraco", e.rudimentar],
+    ["Vala", e.vala],
+    ["Rio, lago, córrego ou mar", e.corpo_dagua],
+    ["Outra forma", e.outra],
+    ["Sem banheiro nem sanitário", e.sem_banheiro],
+  ];
+  const Tab = ({ titulo, linhas, total }: { titulo: string; linhas: [string, number | null][]; total: number | null }) => (
+    <table className="w-full border-collapse text-sm">
+      <caption className="pb-2 text-left font-medium text-carvao">{titulo}</caption>
+      <thead>
+        <tr className="border-b border-carvao text-left">
+          <th scope="col" className="py-1.5 pr-3 font-medium">Forma</th>
+          <th scope="col" className="py-1.5 pr-3 text-right font-medium">Moradores</th>
+          <th scope="col" className="py-1.5 text-right font-medium">%</th>
+        </tr>
+      </thead>
+      <tbody>
+        {linhas.map(([r, v]) => (
+          <tr key={r} className="border-b border-linha">
+            <th scope="row" className="py-1.5 pr-3 text-left font-normal text-carvao">{r}</th>
+            <td className="py-1.5 pr-3 text-right tabular-nums">{inteiro(v)}</td>
+            <td className="py-1.5 text-right tabular-nums text-carvao-muted">{numero(razaoPct(v, total), 1)}</td>
+          </tr>
+        ))}
+        <tr>
+          <th scope="row" className="py-1.5 pr-3 text-left font-medium text-carvao">Total</th>
+          <td className="py-1.5 pr-3 text-right tabular-nums font-medium">{inteiro(total)}</td>
+          <td className="py-1.5 text-right tabular-nums text-carvao-muted">100,0</td>
+        </tr>
+      </tbody>
+    </table>
+  );
+  return (
+    <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+      <Tab titulo="Abastecimento de água" linhas={linhasAgua} total={a.total} />
+      <Tab titulo="Esgotamento sanitário" linhas={linhasEsgoto} total={e.total} />
+    </div>
+  );
+}
+
+function Reguladores({ f }: { f: FichaMunicipio }) {
+  const gm = f.gestao_municipal;
+  if (!gm || gm.respondeu !== "Sim") {
+    return <Nota>O município não respondeu ao módulo Gestão Municipal do SINISA 2024; a entidade reguladora não está declarada.</Nota>;
+  }
+  const lista = (s: "agua" | "esgoto") => (gm.reguladores?.[s] ?? []).filter((r) => r.existe === "Sim");
+  return (
+    <dl className="mt-6 grid grid-cols-1 gap-x-10 gap-y-3 border-t border-carvao pt-4 text-sm md:grid-cols-2">
+      {(["agua", "esgoto"] as const).map((s) => (
+        <div key={s}>
+          <dt className="rotulo text-mineral">Regulador declarado · {s === "agua" ? "água" : "esgoto"}</dt>
+          <dd className="mt-1 text-carvao">
+            {lista(s).length
+              ? lista(s).map((r) => `${r.nome ?? "sem nome"}${r.sigla ? ` (${r.sigla})` : ""}${r.abrangencia ? `, ${r.abrangencia.toLowerCase()}` : ""}`).join("; ")
+              : gm.regulacao_declarada?.[s] === "Não"
+                ? "O município declarou não haver entidade reguladora"
+                : "sem dado"}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  );
+}

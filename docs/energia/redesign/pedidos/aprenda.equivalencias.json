@@ -1,0 +1,9 @@
+{
+  "/setor-eletrico/aprenda": [
+    {
+      "antes": "controle|procurar um termo",
+      "depois": "controle|o que você quer entender?",
+      "justificativa": "O mesmo campo de busca (entrada do tipo busca, presente nos três níveis de profundidade), agora com o rótulo escrito como pergunta, visível, no topo da página e antes das trilhas e da lista por tema. Ganhou o recorte na URL (?q=) e passou a procurar na pergunta prática, na sigla, no nome e na definição de cada verbete, em ordem de relevância; a lista por tema continua inteira, sem JavaScript e sem termo digitado. Nada do que o campo fazia foi retirado."
+    }
+  ]
+}

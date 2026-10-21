@@ -1,0 +1,109 @@
+DEFINIÇÕES
+DOS PROCESSOS
+Lista de termos:
+✓ MRE – Mecanismo de Realocação
+de Energia
+✓ CCEAR – Contrato de
+Comercialização de Energia no
+Ambiente Regulado
+✓ CONER – Conta de Energia de
+Reserva
+✓ RRV – Reajuste de Receita de
+Venda
+✓ CCGF – Contrato de Cotas de
+Garantia Física
+✓ CCEN – Contrato de Cotas de
+Energia Nuclear
+Prazos para divulgação dos
+resultados dos processamentos:
+✓ Contabilização: até MS+21
+✓ Liquidação do MCP:
+até MS + 26 d.u. (débito) e
+MS + 27 d.u. (crédito)
+•
+•
+
+MS: Mês seguinte
+d.u.: dias úteis
+
+0800 881 2233
+
+Nº 229 – Contabilização de julho de 2026
+
+www.ccee.org.br
+
+12. GLOSSÁRIO
+MRE – Mecanismo de compartilhamento dos riscos
+hidrológicos associados à otimização eletroenergética do SIN, por meio do despacho
+centralizado das unidades de geração de energia
+elétrica.
+CCEAR por Disponibilidade (CCEAR D) - Os
+Contratos de Disponibilidade de Energia são aqueles
+nos quais os custos decorrentes dos riscos
+hidrológicos são assumidos pelos compradores ou
+vendedores e eventuais exposições financeiras no
+MCP, positivas ou negativas, são assumidas pelos
+agentes de distribuição, garantido o repasse ao
+consumidor final.
+CCEAR por Quantidade (CCEAR Q) - Os Contratos
+de Quantidade de Energia são aqueles nos quais os
+riscos hidrológicos da operação energética integrada
+são assumidos totalmente pelos vendedores,
+cabendo a eles todos os custos referentes ao
+fornecimento da energia contratada. Os riscos
+financeiros decorrentes de diferenças de preços
+entre submercados são assumidos pelo comprador.
+CCEAR por Cessão (CCEAR C) - Transferência, por
+meio de Termos de Cessão, de direitos e obrigações
+inerentes aos montantes de energia elétrica de
+contratos regulados (CCEARs) do agente cedente
+para outro agente cessionário, proporcionalmente à
+sua energia contratada.
+Cotas de Garantia física (CCGF) - As
+hidrelétricas que se enquadram nos critérios
+adotados na Lei 12.783/13 têm a totalidade de sua
+garantia física alocada, por meio de cotas, às
+distribuidoras de energia elétrica do SIN, e recebem
+remuneração por tarifa regulada pela Aneel.
+
+Cotas de energia nuclear (CCEN) – Regime de distribuição, em cotas, da energia
+elétrica proveniente das usinas nucleares de Angra I e II para atendimento do mercado
+das concessionárias, permissionárias e autorizadas de serviço público de distribuição de
+energia elétrica do SIN, sendo rateado entre as mesmas o pagamento à Eletronuclear da
+receita decorrente da geração da energia nuclear.
+Cessão – Os Contratos de Cessão são aqueles que permitem a cessão de energia e
+potência limitada à quantidade e ao prazo final do contrato original de compra e venda de
+energia elétrica a preço livremente negociados entre os agentes vendedores e
+compradores, tendo como cedente Consumidor Livre ou Consumidor Especial e como
+cessionário Consumidor Livre, Consumidor Especial ou Agente Vendedor.
+Valor de Referência (VR) - Média dos preços dos leilões de energia nova A-3 e A-5,
+ponderada pela energia contratada em cada leilão. Representa o valor limite que pode ser
+repassado aos consumidores cativos pelos agentes de distribuição em função da
+contratação de energia elétrica, sendo um dos possíveis valores aplicados na valoração das
+penalidades de energia.
+CONER – A Conta de Energia de Reserva é uma conta corrente específica administrada
+pela CCEE para realização de operações associadas à contratação e uso de energia de
+reserva.
+RRV – A CCEE é responsável por realizar os reajustes das receitas fixas e variáveis dos
+contratos regulados por disponibilidade (CCEARs-D) de acordo com as regras estipuladas
+pelo Ministério de Minas e Energia – MME e pelos próprios CCEARs resultantes de cada
+leilão. Os reajustes serão realizados para os contratos regulados firmados na modalidade
+por disponibilidade a partir dos Leilões de Energia Nova (LEN), Leilões de Fontes
+Alternativas (LFA) e Leilões de Energia Existente (LEE). Além destes, o RRV promove
+reajustes para os CCEARs por quantidade, provenientes de Leilões de Energia Nova
+realizados de 2011 em diante, além das receitas das usinas comprometidas com Leilões
+de Energia de Reserva (LER).
+Excedente financeiro – A soma dos valores pagos em decorrência da diferença de preços
+entre os submercados, por conta das restrições de intercâmbio de energia. Este é um
+resultado do mercado e não de um agente em específico.
+Média de Longo Termo (MLT) - A MLT é média de energia natural afluente calculada
+com base em uma série histórica desde 1931. Esta média ligada à quantidade de chuvas
+que alimenta a vazão dos rios que suprem os reservatórios das hidrelétricas.
+
+O conteúdo desta publicação foi produzido pela CCEE com base em dados e informações de conhecimento público. É de responsabilidade exclusiva dos agentes e demais interessados a obtenção de outros dados e informações, a realização
+de análises, estudos e avaliações para fins de tomada de decisões, definição de estratégias de atuação, assunção de compromissos e obrigações e quaisquer outras finalidades, em qualquer tempo e sob qualquer condição.
+É proibida a reprodução ou utilização total ou parcial do presente sem a identificação da fonte.
+
+12
+
+

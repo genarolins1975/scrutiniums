@@ -1,0 +1,80 @@
+{
+  "/setor-eletrico/dados/saude": [
+    {
+      "antes": "painel|o que atrasou ou mudou?",
+      "depois": "painel|como cada integração está frente ao prazo da fonte?",
+      "justificativa": "A pergunta antiga virou o título da página (O que atrasou ou mudou?), e o painel ganhou a pergunta específica da figura principal. O painel continua com o mesmo id (painel-saude), as mesmas fontes, os mesmos selos e a mesma resposta (P068)."
+    }
+  ],
+  "/setor-eletrico/dados/reproducao": [
+    {
+      "antes": "painel|consigo reproduzir este gráfico?",
+      "depois": "painel|quais são os passos para refazer um número?",
+      "justificativa": "A pergunta antiga virou o título da página (Consigo reproduzir este gráfico?), e o painel ganhou a pergunta específica da figura principal. O painel continua com o mesmo id (painel-reproducao), as mesmas fontes, os mesmos selos e a mesma resposta (P069)."
+    }
+  ],
+  "/setor-eletrico/dados": [
+    {
+      "antes": "controle|filtrar por estado alcançado",
+      "depois": null,
+      "justificativa": "Renomeado para 'Filtrar por Estado mais avançado', com as mesmas três opções e as mesmas contagens (catalogado 22, recurso verificado 267, publicado 126). A lista ganhou, além dele, o seletor cumulativo 'Estado: chegou a' (qualquer estado 415, recurso verificado ou além 393, integrado ou além 126, validado ou além 126, publicado 126)."
+    },
+    {
+      "antes": "controle|filtrar por órgão",
+      "depois": null,
+      "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+    },
+    {
+      "antes": "controle|filtrar por tema",
+      "depois": null,
+      "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+    },
+    {
+      "antes": "controle|filtrar por uso declarado",
+      "depois": null,
+      "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+    },
+    {
+      "antes": "controle|filtrar por recurso verificado",
+      "depois": null,
+      "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+    },
+    {
+      "antes": "controle|filtrar por ressalva declarada",
+      "depois": null,
+      "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+    },
+    {
+      "antes": "controle|filtrar por descontinuado pela fonte",
+      "depois": null,
+      "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+    },
+    {
+      "antes": "controle|filtrar por frequência declarada pela fonte",
+      "depois": null,
+      "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+    }
+  ],
+  "/setor-eletrico/metodologia": [
+    {
+      "antes": "controle|filtrar por módulo",
+      "depois": null,
+      "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+    },
+    {
+      "antes": "controle|filtrar por natureza do dado de origem",
+      "depois": null,
+      "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+    },
+    {
+      "antes": "controle|filtrar por natureza do resultado",
+      "depois": null,
+      "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+    },
+    {
+      "antes": "controle|filtrar por tem fórmula publicada",
+      "depois": null,
+      "justificativa": "As opções e as contagens são as mesmas de antes (conferidas uma a uma entre a captura anterior e a atual). Só mudou a palavra que acompanha a contagem, de 'linhas' para o que a lista conta ('conjuntos' ou 'indicadores'), e o comparador só reconhece 'linhas'. O filtro está na barra da lista, e a mesma coluna segue disponível na tabela completa, em Analisar."
+    }
+  ]
+}

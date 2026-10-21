@@ -1,0 +1,235 @@
+{
+  "version": "pacote-revisao-v3-v1",
+  "edition": "candidata-2022-v3",
+  "scenario": "conjunta__domicilios_gt2__materiais_40pct",
+  "authors": [
+    "codex-implementation"
+  ],
+  "criteria": [
+    "conteudo",
+    "habitacao_definicao",
+    "pesos_compensacao",
+    "precisao_divulgacao",
+    "reproducao",
+    "edicao_apresentacao"
+  ],
+  "files": [
+    {
+      "path": "docs/obee/resultados/CESTA_CONJUNTA_V3.md",
+      "sha256": "5bafdfa7291e470828df25254f60de5a8c5de3758da208ea488983b2be4f36d6"
+    },
+    {
+      "path": "docs/obee/resultados/PARECER_CONTEUDO_PESOS_V3.md",
+      "sha256": "a47b4a6c6054366cdb002d987f27916df8cf6d23be19d179d90c70653c08aa4c"
+    },
+    {
+      "path": "docs/obee/resultados/PRECISAO_CANDIDATAS.md",
+      "sha256": "3020d7aea69b3f4651809d5e912d3bea3423c83b763ec039ba981115e968e104"
+    },
+    {
+      "path": "docs/obee/resultados/REVISAO_INDEPENDENTE_V3.md",
+      "sha256": "669962c915386a28ceaf52559a680576eb761658ddfb64a93eefef8c884c6687"
+    },
+    {
+      "path": "docs/obee/resultados/cesta-conjunta.csv",
+      "sha256": "f7e17bb4242c3050e547fd295576b4d9fe74576282bbe075162675b9a0aac085"
+    },
+    {
+      "path": "docs/obee/resultados/cesta-conjunta.json",
+      "sha256": "15339579dc2cceecd3c237569e011640aa2b7198329dbfd9c081075c3c1de7bd"
+    },
+    {
+      "path": "docs/obee/resultados/parecer-conteudo-pesos-v3.json",
+      "sha256": "5739b952b345bd156f7a36f26fc344028fc97ef073fa8e135a3709c3f09e8443"
+    },
+    {
+      "path": "docs/obee/resultados/piloto-2022-v2.json",
+      "sha256": "61d9df0b252048e98731aaea3155f27ed0cdf487aa10867105671951443360ef"
+    },
+    {
+      "path": "docs/obee/resultados/precisao-anexo-inventario.json",
+      "sha256": "9c79e4e498ad67002d38ce2562dbb78f28d8dbb566750390642391fef107dead"
+    },
+    {
+      "path": "docs/obee/resultados/precisao-candidatas-evidencia.json",
+      "sha256": "c229af3f62b973078a824e670f530617f438c660339b540e3fa19e858c9ea815"
+    },
+    {
+      "path": "docs/obee/resultados/precisao-candidatas.json",
+      "sha256": "66af5a673e45b27a1415eb188520d2c7d6f342d6dc421d328e5a6d0dc9171fb8"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/captura_recaptura.py",
+      "sha256": "59bafe326d836e460c78ee191956d1832137b5d957fdee58dc669021660c4ed6"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/cesta_conjunta.py",
+      "sha256": "a95fbfaad858fe02650b45f5de387fb8c2a6d18aa984ab49f2f7cbf8b3fba2ed"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/coletar_expansao.py",
+      "sha256": "59fe1941fbf68bd704fe1a1aa7375ab0eeb87fb17405ace440a95ecfa06d0d86"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/coletar_saude.py",
+      "sha256": "324cd11f6ea141bb656146135365bfc193080bcb8741c9b2ecaf5722d0d9c387"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/conectividade.py",
+      "sha256": "bac6ced2ba176cce5c9c2bd27a20f41b7a1bc7bfbd07332c9dd0b8d688eea29a"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/expansao.py",
+      "sha256": "6585513d11b9b9bedf54078fa5165f3627956b4a79b75c83429e84cf48f59f36"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/extrair_evidencia_ibge.py",
+      "sha256": "f2871ac7abb2b8b13d01d8cca64b0299c8a53e42a0bfb0a4a7a94d3048779bb6"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/habitacao.py",
+      "sha256": "0273537da3142f5349dd7ac9f06cfad2f91fccfd854e18dab0dd8d150f1f22f3"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/habitacao_cenarios.py",
+      "sha256": "e5ca72c32bcd3f944dc8a982abb619bad40209cf59a6291e54032d7a08df15b9"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/motor.py",
+      "sha256": "9ed4c4dddba57b585a924623a6b755068e80404d304d31442cc2d012204e3574"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/piloto.py",
+      "sha256": "f4e299264c47db9a6a40f71a4f179ab2090b6882b8e9710c0f5bfb92be63f91b"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/precisao_candidatas.py",
+      "sha256": "1516b463bd94445861dc020b5cad90ef5eef8f2fdff7a87c4e9570ecb3811fb9"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/precisao_saude.py",
+      "sha256": "ef784727f7068d2539329c9cd96ef59569afc2003a24667a053847c06602f0fe"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/referencia-2022-v1.json",
+      "sha256": "303430318fd6d1157beff39de58a719e820f93298147495eded891c4e9f44847"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/referencia-2022-v2.json",
+      "sha256": "cb317ab4904efdb3a03aa2c3b6e4f20c914aedfc6af79b1c88a8bd941d329ff6"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/revisao_v3.py",
+      "sha256": "8641dee3c8714c504beede06ba87a81ff992b39040159101217bdc83be589388"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/saude_municipal.py",
+      "sha256": "c10ce2b93025d6128b88f2b73ba741d101b871c6f4a5c956bc88537a9526a083"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/atlas-tabela3.txt",
+      "sha256": "d3bcd04a53d2c50b9ef6083508c24bee79c6e6e95fff573b912e9a3614b2885d"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/conectividade/data.json",
+      "sha256": "306fa8adc598a736853d92472247f758dc4c668b6989f062312a918df7f75238"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/conectividade/manifest.json",
+      "sha256": "051f3b82410007c7fd8acb927498d46ad9bdf076de5431e0cc108ec92a806243"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/conectividade/metadata.json",
+      "sha256": "91f07325ad15764351d5b53d0d478471b811add63cdc629465d906ace12f78c2"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/expansao-2022.json",
+      "sha256": "cb4cfd1b894739829ecb9e3aa2715460041f775fd126542923a669278c6dfb60"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9934-data.json",
+      "sha256": "7cf230787c436be6263bd411ba5072593f8a8a93958576f2cee21711b0947886"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9934-metadata.json",
+      "sha256": "542834e6d634411d52a0eddf2c697a11e9d2989b5218539eadc0a3a436131cc6"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9940-data.json",
+      "sha256": "19377a02df2bbd7be37d69583837d6169ca697a531d9fa9d8470771da2c1aa35"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9940-metadata.json",
+      "sha256": "1046084f040b33de9e83b4ccd65684d83b32114e18209ceaf1ed4bdd26a74c3f"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/manifest.json",
+      "sha256": "23b4ca15302ac746af1e8ef0977e3c47aabfbefdac5946badefba74f2886a99f"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/saude/ibge-subnotificacao-2023.json",
+      "sha256": "d68235f39b362369a91c05ac47a43189e03799ad78eb6ff7e05cfdc98af3ebd6"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/saude/manifest.json",
+      "sha256": "d68da13b0e2a048e8cd80fb46fc86f35c94a13661029fdfa73a3a9091670b333"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/saude/ms-captura-recaptura-2026-10-12.json",
+      "sha256": "48056f0747caf31fdace39c63238111ee4cd191e370f13345c069a7261cca937"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/sidra6805-metadata.json",
+      "sha256": "a5f845be6d9b2c63a8a9084d92215d1e434b5e0a763bebf281f89cae5ad80bf6"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/sidra6805-values.json",
+      "sha256": "061c07cc437a7add1518417524512f95c8e013e921889efa84f2acf63637b56f"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/test_captura_recaptura.py",
+      "sha256": "b148ed0dbaf11a2a563daa63ad88e031385b6833b5a6e26b4561ad6a8d0835c0"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/test_cesta_conjunta.py",
+      "sha256": "dd7cdca87c1b60e1c651568cba04445663b393882d0f00fd8a06a3e65758ba92"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/test_conectividade.py",
+      "sha256": "dcd82072d457cb6825534004fcfdd05c186bc4b2a3900b1ac5203df8b0e52f34"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/test_expansao.py",
+      "sha256": "e599e564e4d662ed2abfd17d4befda1de575d95100151d85b6b52f15655637f1"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/test_habitacao.py",
+      "sha256": "0b6f3e7794a6c6eea3f6e314e92599122cd43cffe8eceebfb66d4face5668e31"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/test_habitacao_cenarios.py",
+      "sha256": "3fb2f715a15d3b0aa28c6f746671bfbdcca29908aca3fdf05c69659e49105dc7"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/test_motor.py",
+      "sha256": "57160dbf0fc029164ad14bbbbb738bddd4a5c188231e7badb19c5f44bbba8a80"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/test_precisao_candidatas.py",
+      "sha256": "8c4ff5d9b42f661fb916fc0fa2f29173853ac03fa4275ef6443aae7c3df0f32a"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/test_precisao_saude.py",
+      "sha256": "fbc908f21081614494385d723cfa48fbe3b228b3bc0cfed306e68d6dde8f2bdb"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/test_revisao_v3.py",
+      "sha256": "085ad4d365ebbd0a67fd0f80376b94faedc62602972cd5da27cdbeb7035e670b"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/test_saude_municipal.py",
+      "sha256": "edb4a15b578277841065e9db9b0a7bad16cd9252cf931ae33adc5c68bd8f423d"
+    }
+  ],
+  "packet_sha256": "6707a21e499c774e838810541de48d81e760f520bb8ccd89c9f947f6542651fd"
+}

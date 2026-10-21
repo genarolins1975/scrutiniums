@@ -1,7 +1,7 @@
 {
  "cod": "51938876",
  "nome": "BANCO DE LA REPUBLICA ORIENTAL DEL URUGUAY",
- "sr": "S4",
+ "sr": null,
  "tcb": "B1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -203,5 +203,5 @@
    "201909": 0.0
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

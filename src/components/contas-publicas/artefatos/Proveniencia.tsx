@@ -1,0 +1,5 @@
+import {dataFonte} from '@/lib/contas-publicas/dados';
+export type OrigemVisual={fonte:string;url:string;referencia:string;publicacao:string|null;captura:string|null;perimetro:string;unidade:string;natureza:string;download?:string};
+export function Proveniencia({fonte,url,referencia,publicacao,captura,perimetro,unidade,natureza,download}:OrigemVisual){
+ return <div className="cp-provenance"><p><a href={url}>{fonte} ↗</a>{download&&<> · <a href={download}>Baixar dados · JSON</a></>}</p><p className="cp-source-summary">{referencia} · {unidade}<br/>{perimetro}</p><details className="cp-source-details"><summary>Datas e ficha da fonte</summary><dl className="cp-source-facts"><div><dt>Referência</dt><dd>{referencia}</dd></div><div><dt>Publicação</dt><dd>{publicacao?dataFonte(publicacao):'Não identificada'}</dd></div><div><dt>Captura</dt><dd>{captura?dataFonte(captura):'Não identificada'}</dd></div><div><dt>Perímetro</dt><dd>{perimetro}</dd></div><div><dt>Unidade</dt><dd>{unidade}</dd></div><div><dt>Natureza</dt><dd>{natureza}</dd></div></dl></details></div>;
+}

@@ -1,7 +1,7 @@
 {
  "cod": "29283884",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DA UNIVERSIDADE FEDERAL FLUMINENSE E DOS SERVIDORES PÚBLICOS DA EDUCAÇÃO, SAÚDE E CULTURA NOS MUNICÍPIOS DO RIO DE JANEIRO E NITERÓI LTDA.",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -196,5 +196,5 @@
    "201912": 6.678265440405753
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

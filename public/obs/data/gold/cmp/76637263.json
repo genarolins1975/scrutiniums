@@ -1,7 +1,7 @@
 {
  "cod": "76637263",
  "nome": "NOMINAL DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
- "sr": "S4",
+ "sr": null,
  "tcb": "N2",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -147,5 +147,5 @@
    "201709": 0.0
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

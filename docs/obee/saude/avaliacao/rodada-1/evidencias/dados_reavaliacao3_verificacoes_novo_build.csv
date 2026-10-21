@@ -1,0 +1,25 @@
+verificacao;escopo;resultado
+testes Python do módulo (python3 -m unittest pipeline.tests.test_eficiencia_saude);57 testes;"OK (15,0 s); o terceiro ciclo acrescentou uma asserção, não um teste"
+testes vitest do módulo (npx vitest run src/tests/obee-saude.test.ts);70 testes;"OK; o arquivo não foi alterado no terceiro ciclo"
+suíte vitest completa (npx vitest run);143 arquivos;2.762 testes aprovados e 1 ignorado: igual ao dito em VALIDACOES_E_REPRODUCAO.md
+reconstrução em cópia temporária fora do repositório;hash_dados ea1565fee6907c1a, gerador-b84de0984ebc;"todas as 22 seções comparáveis iguais às publicadas; carimbos de tempo e commit de proveniência diferem; nos CSV estáticos só a coluna dados_gerados_em difere (9.677 de 331.799 células)"
+receita do hash_dados da página;ea1565fee6907c1a;"reproduz com ensure_ascii=False; sem ele sai 56ddc75d3a3fc121"
+recomputação independente a partir do seed bruto;8.135 checagens;"8.110 iguais; 25 diferentes e as mesmas explicadas (23 de cobertura 2021 pela NT 2/2025; 2 de natureza de Florianópolis)"
+mudanças da gold entre o segundo e o terceiro ciclo;8.777 observações;"apenas o texto da nota de natureza de Florianópolis 2022 e 2023 (6 observações) e o motivo correspondente em S04; nenhum valor mudou"
+hashes do manifesto do seed de Saúde;682 recortes;682 de 682 iguais no conteúdo descomprimido
+população 2022 e 2023 do módulo contra o PDF do IBGE de 22/12/2023 (baixado agora);26 capitais;"26 de 26 iguais; contra a população de referência do Ministério (origem DOU) 25 de 26: Porto Alegre 1.332.845 no módulo e 1.332.833 no Ministério"
+COB.2.01 e COB.5.01 (RIPSA) contra os arquivos originais;104 pares cada;iguais (verificação da Reavaliação 2, seed inalterado)
+consulta ao vivo de três fontes;3 consultas;Relatório APS Brasil e São Paulo dez. 2025 (99,14% e 59,47%), SIDRA 6579 São Paulo 2025 (11.904.961) e DCA 2025 de São Paulo (R$ 23.342.248.911,99): iguais à gold
+superfícies das páginas de exploração (gold, gráfico, tabela e CSV do recorte);15 recortes;0 divergências de n, mediana e capitais fora
+tabela de Comparar baixada do site;5 tabelas x 26 capitais x 10 medidas = 1.300 células;"0 divergências; células sem dado vazias"
+Comparar, painel e CSV da medida;10 recortes (260 células);0 divergências
+CSV de série (12 medidas, capital e mediana);24 arquivos, 112 linhas;valor, n de capitais, base do denominador e marca iguais à gold em 112 de 112
+razão agregada exibida;24 combinações;24 de 24 iguais a soma do numerador / soma do denominador x fator
+composições agregadas;15 blocos;n e soma das linhas iguais à gold em 15 de 15
+Panorama: extremos, faixa central, n e capitais fora de 7 cartões;7 cartões;7 de 7 iguais à gold (quartis tipo 7)
+trilhas de reconstrução de São Paulo 2025;20 trilhas;unidade, casas e participação corretas (20 de 20)
+linhas dos gráficos de Evolução (SVG);9 gráficos;"segmentos só entre anos com a mesma marca; sem segmento para Macapá 2025 e Campo Grande 2021"
+desempenho em laboratório (7 rotas x 320, 390, 768, 1440 px);28 medições;0 erros ou avisos de console, 0 px de rolagem horizontal, LCP de 76 a 248 ms, CLS máximo 0,0037 (Panorama a 1440 px, repetível)
+links internos das sete rotas;66 links;"nenhum quebrado; âncora #reproducao existe"
+parâmetros de URL inválidos;9 URLs;"nenhum NaN ou undefined; med=foo e cap=distrito-federal ficam na URL (D9 aberto)"
+"quadro ""O módulo em números"" de Dados e métodos";5 números e 3 decisões;20 + 3 indicadores, 8.777 observações, 21 = 16 + 5 validações e 12 + 9 + 10 = 31 medidas candidatas: iguais à gold e à matriz de fontes

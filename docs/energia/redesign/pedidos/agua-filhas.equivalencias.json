@@ -1,0 +1,50 @@
+{
+  "/setor-eletrico/agua-e-clima": [
+    {
+      "antes": "grafico|",
+      "depois": "grafico|ear no último ano (% da ear máxima), a cada 14 dias, com o 10º e o 90º percentil da data",
+      "justificativa": "Os pequenos múltiplos de recortes (antes um gráfico sem título, em Analisar) têm título e fazem parte do bloco 'Até quatro recortes na mesma escala', em Entender desde a migração da abertura. Mesmos quatro recortes por padrão, mesma escala, mesma faixa do 10º ao 90º percentil; a tabela dos painéis (27 linhas, 4 painéis) acompanha. Na rodada 2 os painéis ganharam título de nível 4 e o aviso de que a escolha é independente do recorte da figura principal."
+    },
+    {
+      "antes": "tabela-recolhida|dados do gráfico em tabela (5 linhas)",
+      "depois": "tabela|tabela equivalente: subsistemas e sin, ear do dia, faixa da data e variação. 5 de 5 linhas. o botão na coluna de nome seleciona a linha.",
+      "justificativa": "A tabela própria do gráfico de pontos continua no HTML e fica escondida por CSS dentro da página (recipiente data-grafico-pontos); a 'Tabela equivalente' da página traz as mesmas cinco linhas e é a única porta. A tabela equivalente nunca abre sozinha ao escolher um recorte (AguaTabela)."
+    },
+    {
+      "antes": "tabela-recolhida|dados do gráfico em tabela (321 linhas)",
+      "depois": "tabela-recolhida|dados do gráfico em tabela (321 linhas)",
+      "justificativa": "A série mensal do SIN desde 2000 (321 linhas) passou de Analisar a Entender na migração da abertura. Na rodada 2 o bloco 'Desde 2000: energia armazenada e capacidade no fim de cada mês' (com as 63 mudanças e a ficha) passou a vir antes da comparação de recortes, para a página terminar na comparação, que responde ao título; o nível não mudou."
+    }
+  ],
+  "/setor-eletrico/agua-e-clima/afluencia": [
+    {
+      "antes": "grafico|mlt implícita de cada subsistema no dia 15 de janeiro e de julho, desde 2000",
+      "depois": "grafico|mlt implícita de cada subsistema no dia 15 de janeiro e no dia 15 de julho, desde 2000",
+      "justificativa": "Rodada 2: a grade de quatro painéis da MLT implícita (15 de janeiro e 15 de julho) volta de Entender a Analisar, o nível do original, junto da diferença contra o PMO e das tabelas, em 'Como a MLT do PMO, a do conjunto aberto e as mudanças por usina se comparam'. Em Entender fica a seção 'Qual MLT? A referência muda de versão' com duas frases (a MLT muda de versão, e o que há em Analisar). Os termos conjunto aberto, PMO e MLT implícita são definidos no ponto de uso, em Analisar. Título e valores não mudaram."
+    }
+  ],
+  "/setor-eletrico/agua-e-clima/chuva-e-temperatura": [
+    {
+      "antes": "grafico|",
+      "depois": "grafico|chuva mensal estimada e média do mês, últimos 12 meses completos",
+      "justificativa": "Os pequenos múltiplos da chuva mensal por bacia (antes um gráfico sem título, em Analisar) têm título. Rodada 2: a seção 'Como a chuva mensal se compara entre bacias?' (comparador, painéis e tabela dos painéis) volta de Entender a Analisar, o nível do original, para a página ter menos painéis de peso parecido em Entender; o painel central (o mapa) segue em Entender. Mesmas quatro bacias por padrão e mesmos valores."
+    },
+    {
+      "antes": "controle|temperatura",
+      "depois": null,
+      "justificativa": "As opções do recorte da temperatura deixaram de ser siglas (SIN, SE/CO, S, NE, N) e passaram a ser os nomes dos subsistemas (SIN, Sudeste/Centro-Oeste, Sul, Nordeste, Norte), com a sigla na dica; as cinco opções existem, o valor da URL (?rt=) é o mesmo."
+    }
+  ],
+  "/setor-eletrico/agua-e-clima/reservatorios": [
+    {
+      "antes": "controle|subsistema da decomposição",
+      "depois": null,
+      "justificativa": "As opções do subsistema da decomposição passaram de siglas a nomes (Sudeste/Centro-Oeste, Sul, Nordeste, Norte); as quatro existem, o valor da URL (?sm=) é o mesmo."
+    },
+    {
+      "antes": "grafico|balanço hídrico de serra da mesa, 31/08/2026 a 29/09/2026, em hm³",
+      "depois": "grafico|balanço hídrico de serra da mesa, 31/08/2026 a 29/09/2026 (defluência não inclui as outras estruturas), em hm³",
+      "justificativa": "O gráfico único do balanço virou três (balanço, divisão da defluência e resíduo e transferência, cada um na sua régua, dita no título); o primeiro mantém o título e acrescenta a convenção da defluência. Na rodada 2 o glossário da conta da água passou a vir antes dos números e dos gráficos, e o gráfico da divisão da defluência ganhou '(régua própria)' no título."
+    }
+  ]
+}

@@ -30,6 +30,44 @@ const config: Config = {
         },
         linha: "#D8D2C6",
         "linha-escura": "#33373D",
+        // Acento do Observatório Brasileiro do Setor Elétrico (teal sóbrio).
+        // DEFAULT e dark passam AA sobre marfim, papel e branco; soft só para
+        // marcação não textual. Ver docs/observatorios/DESIGN_SYSTEM_OBSERVATORIOS.md.
+        energia: {
+          DEFAULT: "#0E6170",
+          dark: "#0A4A56",
+          soft: "#5E98A3",
+          fundo: "#E6EEEE",
+        },
+        // Acento do Observatório Brasileiro de Eficiência Estatal (petróleo).
+        // DEFAULT e dark passam AA como texto sobre papel e branco; neutro é só
+        // marcação não textual (pontos dos pares nos gráficos), validada >= 3:1.
+        // tinta: azul muito escuro do texto do domínio. Ver docs/obee/ARQUITETURA.md.
+        obee: {
+          DEFAULT: "#00697F",
+          dark: "#0B4F5E",
+          fundo: "#E6EFF0",
+          tinta: "#14243A",
+          neutro: "#858072",
+        },
+        // Acento do Observatório Brasileiro de Gás Natural (azul ardósia).
+        // DEFAULT mede 6,7:1 e dark 8,4:1 sobre o papel; soft só para marcação
+        // não textual. Seleção e identidade do domínio, nunca juízo de valor.
+        gas: {
+          DEFAULT: "#35598A",
+          dark: "#2B4A78",
+          soft: "#7A93B8",
+          fundo: "#E8EDF4",
+        },
+        superficie: "#FFFFFF",
+        // Selos de natureza do dado (texto AA sobre papel e branco).
+        natureza: {
+          observado: "#1A1D21",
+          calculado: "#4A5158",
+          estimado: "#7A5A12",
+          previsto: "#5B3F8C",
+          cenario: "#6B4F3A",
+        },
         erro: "#8C3B2E",
         sucesso: "#4F6B4E",
         aviso: "#8A6D2F",

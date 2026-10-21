@@ -1,0 +1,7 @@
+lote,descricao,paginas,checagens,ok,divergencias_exceto_console,erros_de_console
+gastos,"Gastos (gráfico, referências, frase da capital e CSV)",510,27147,27146,0,1
+atendimento,Atendimento,500,34901,34900,0,1
+resultados,Resultados,434,30244,30244,0,0
+comparar_grafico,"Comparar, gráfico",306,14289,13993,0,296
+comparar_tabela,"Comparar, tabela completa e CSV",122,32236,32194,42,0
+evolucao,"Gastos, Evolução (frase, tabela e CSV da série)",54,1876,1876,0,0

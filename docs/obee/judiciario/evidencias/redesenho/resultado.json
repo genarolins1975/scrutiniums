@@ -1,0 +1,1081 @@
+{
+  "startedAt": "2026-10-17T10:39:30.716Z",
+  "datasetSha256": "d3d516a84bc550559eb217ac09d810e5d6b107de8e7cfeb599c796be33746bb3",
+  "screens": [
+    {
+      "slug": "seletor-observatorios",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "seletor-observatorios",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "seletor-observatorios",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "seletor-observatorios",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "slug": "entrada",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "panorama",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "recursos",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tempo",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "filas",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "entrega",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "acesso",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "comparar",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "metodos",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/tjsp",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/tjdft",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/trf3",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/trt3",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "entrada",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "panorama",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "recursos",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tempo",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "filas",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "entrega",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "acesso",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "comparar",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "metodos",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/tjsp",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/tjdft",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/trf3",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/trt3",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "entrada",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "panorama",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "recursos",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tempo",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "filas",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "entrega",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "acesso",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "comparar",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "metodos",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/tjsp",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/tjdft",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/trf3",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/trt3",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "entrada",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "panorama",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "recursos",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tempo",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "filas",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "entrega",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "acesso",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "comparar",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "metodos",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/tjsp",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/tjdft",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/trf3",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    },
+    {
+      "slug": "tribunais/trt3",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "h1": 1,
+      "violations": []
+    }
+  ],
+  "checks": [
+    {
+      "name": "Observatório exige sessão: /observatorio",
+      "passed": true
+    },
+    {
+      "name": "Observatório exige sessão: /setor-eletrico",
+      "passed": true
+    },
+    {
+      "name": "Observatório exige sessão: /eficiencia-estatal",
+      "passed": true
+    },
+    {
+      "name": "Observatório exige sessão: /contas-publicas",
+      "passed": true
+    },
+    {
+      "name": "Observatório exige sessão: /contas-publicas-estaduais",
+      "passed": true
+    },
+    {
+      "name": "Observatório exige sessão: /saneamento",
+      "passed": true
+    },
+    {
+      "name": "Observatório exige sessão: /gas-natural",
+      "passed": true
+    },
+    {
+      "name": "Protegido sem sessão: /eficiencia-estatal/judiciario",
+      "passed": true
+    },
+    {
+      "name": "Protegido sem sessão: /eficiencia-estatal/judiciario/comparar",
+      "passed": true
+    },
+    {
+      "name": "Protegido sem sessão: /eficiencia-estatal/judiciario/tribunais/tjsp",
+      "passed": true
+    },
+    {
+      "name": "Protegido sem sessão: /eficiencia/judiciario/snapshot.json",
+      "passed": true
+    },
+    {
+      "name": "Método acessível sem sessão",
+      "passed": true
+    },
+    {
+      "name": "Ilustração conceitual pública sem abrir dados",
+      "passed": true
+    },
+    {
+      "name": "Cabeçalho anônimo oferece entrada com retorno ao método",
+      "passed": true
+    },
+    {
+      "name": "Cabeçalho anônimo mantém oito destinos",
+      "passed": true
+    },
+    {
+      "name": "Seletor exige sessão",
+      "passed": true
+    },
+    {
+      "name": "Escolha do Judiciário exige sessão",
+      "passed": true
+    },
+    {
+      "name": "Sessão real da fixture no banco",
+      "passed": true
+    },
+    {
+      "name": "Observatório com sessão: /observatorio",
+      "passed": true
+    },
+    {
+      "name": "Observatório com sessão: /setor-eletrico",
+      "passed": true
+    },
+    {
+      "name": "Observatório com sessão: /eficiencia-estatal",
+      "passed": true
+    },
+    {
+      "name": "Observatório com sessão: /contas-publicas",
+      "passed": true
+    },
+    {
+      "name": "Observatório com sessão: /contas-publicas-estaduais",
+      "passed": true
+    },
+    {
+      "name": "Observatório com sessão: /saneamento",
+      "passed": true
+    },
+    {
+      "name": "Observatório com sessão: /gas-natural",
+      "passed": true
+    },
+    {
+      "name": "Cartão próprio do Judiciário 320px",
+      "passed": true
+    },
+    {
+      "name": "Sete observatórios e Judiciário no seletor 320px",
+      "passed": true
+    },
+    {
+      "name": "Fonte e cobertura reais no cartão 320px",
+      "passed": true
+    },
+    {
+      "name": "Seletor acessível e sem overflow 320px",
+      "passed": true
+    },
+    {
+      "name": "Cartão próprio do Judiciário 390px",
+      "passed": true
+    },
+    {
+      "name": "Sete observatórios e Judiciário no seletor 390px",
+      "passed": true
+    },
+    {
+      "name": "Fonte e cobertura reais no cartão 390px",
+      "passed": true
+    },
+    {
+      "name": "Seletor acessível e sem overflow 390px",
+      "passed": true
+    },
+    {
+      "name": "Cartão próprio do Judiciário 768px",
+      "passed": true
+    },
+    {
+      "name": "Sete observatórios e Judiciário no seletor 768px",
+      "passed": true
+    },
+    {
+      "name": "Fonte e cobertura reais no cartão 768px",
+      "passed": true
+    },
+    {
+      "name": "Seletor acessível e sem overflow 768px",
+      "passed": true
+    },
+    {
+      "name": "Cartão próprio do Judiciário 1440px",
+      "passed": true
+    },
+    {
+      "name": "Sete observatórios e Judiciário no seletor 1440px",
+      "passed": true
+    },
+    {
+      "name": "Fonte e cobertura reais no cartão 1440px",
+      "passed": true
+    },
+    {
+      "name": "Seletor acessível e sem overflow 1440px",
+      "passed": true
+    },
+    {
+      "name": "Cartão abre o Judiciário por teclado",
+      "passed": true
+    },
+    {
+      "name": "Escolha preserva a sessão",
+      "passed": true
+    },
+    {
+      "name": "Cookie guarda o Judiciário",
+      "passed": true
+    },
+    {
+      "name": "Último acesso identifica o cartão do Judiciário",
+      "passed": true
+    },
+    {
+      "name": "Ilustração carregada 320px",
+      "passed": true
+    },
+    {
+      "name": "Tela entrada 320px",
+      "passed": true
+    },
+    {
+      "name": "Tela panorama 320px",
+      "passed": true
+    },
+    {
+      "name": "Tela recursos 320px",
+      "passed": true
+    },
+    {
+      "name": "Tela tempo 320px",
+      "passed": true
+    },
+    {
+      "name": "Tela filas 320px",
+      "passed": true
+    },
+    {
+      "name": "Tela entrega 320px",
+      "passed": true
+    },
+    {
+      "name": "Tela acesso 320px",
+      "passed": true
+    },
+    {
+      "name": "Tela comparar 320px",
+      "passed": true
+    },
+    {
+      "name": "Tela metodos 320px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/tjsp 320px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/tjdft 320px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/trf3 320px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/trt3 320px",
+      "passed": true
+    },
+    {
+      "name": "Ilustração carregada 390px",
+      "passed": true
+    },
+    {
+      "name": "Tela entrada 390px",
+      "passed": true
+    },
+    {
+      "name": "Tela panorama 390px",
+      "passed": true
+    },
+    {
+      "name": "Tela recursos 390px",
+      "passed": true
+    },
+    {
+      "name": "Tela tempo 390px",
+      "passed": true
+    },
+    {
+      "name": "Tela filas 390px",
+      "passed": true
+    },
+    {
+      "name": "Tela entrega 390px",
+      "passed": true
+    },
+    {
+      "name": "Tela acesso 390px",
+      "passed": true
+    },
+    {
+      "name": "Tela comparar 390px",
+      "passed": true
+    },
+    {
+      "name": "Tela metodos 390px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/tjsp 390px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/tjdft 390px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/trf3 390px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/trt3 390px",
+      "passed": true
+    },
+    {
+      "name": "Ilustração carregada 768px",
+      "passed": true
+    },
+    {
+      "name": "Tela entrada 768px",
+      "passed": true
+    },
+    {
+      "name": "Tela panorama 768px",
+      "passed": true
+    },
+    {
+      "name": "Tela recursos 768px",
+      "passed": true
+    },
+    {
+      "name": "Tela tempo 768px",
+      "passed": true
+    },
+    {
+      "name": "Tela filas 768px",
+      "passed": true
+    },
+    {
+      "name": "Tela entrega 768px",
+      "passed": true
+    },
+    {
+      "name": "Tela acesso 768px",
+      "passed": true
+    },
+    {
+      "name": "Tela comparar 768px",
+      "passed": true
+    },
+    {
+      "name": "Tela metodos 768px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/tjsp 768px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/tjdft 768px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/trf3 768px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/trt3 768px",
+      "passed": true
+    },
+    {
+      "name": "Ilustração carregada 1440px",
+      "passed": true
+    },
+    {
+      "name": "Tela entrada 1440px",
+      "passed": true
+    },
+    {
+      "name": "Tela panorama 1440px",
+      "passed": true
+    },
+    {
+      "name": "Tela recursos 1440px",
+      "passed": true
+    },
+    {
+      "name": "Tela tempo 1440px",
+      "passed": true
+    },
+    {
+      "name": "Tela filas 1440px",
+      "passed": true
+    },
+    {
+      "name": "Tela entrega 1440px",
+      "passed": true
+    },
+    {
+      "name": "Tela acesso 1440px",
+      "passed": true
+    },
+    {
+      "name": "Tela comparar 1440px",
+      "passed": true
+    },
+    {
+      "name": "Tela metodos 1440px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/tjsp 1440px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/tjdft 1440px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/trf3 1440px",
+      "passed": true
+    },
+    {
+      "name": "Tela tribunais/trt3 1440px",
+      "passed": true
+    },
+    {
+      "name": "Cabeçalho logado vai à conta, sem convite de login",
+      "passed": true
+    },
+    {
+      "name": "Menu mantém destino /observatorio",
+      "passed": true
+    },
+    {
+      "name": "Menu mantém destino /setor-eletrico",
+      "passed": true
+    },
+    {
+      "name": "Menu mantém destino /eficiencia-estatal",
+      "passed": true
+    },
+    {
+      "name": "Menu mantém destino /contas-publicas",
+      "passed": true
+    },
+    {
+      "name": "Menu mantém destino /contas-publicas-estaduais",
+      "passed": true
+    },
+    {
+      "name": "Menu mantém destino /saneamento",
+      "passed": true
+    },
+    {
+      "name": "Menu mantém destino /gas-natural",
+      "passed": true
+    },
+    {
+      "name": "Menu mantém destino /eficiencia-estatal/judiciario",
+      "passed": true
+    },
+    {
+      "name": "Menu fecha por Escape",
+      "passed": true
+    },
+    {
+      "name": "Ramo Federal tem contexto e comparação próprios",
+      "passed": true
+    },
+    {
+      "name": "Ramo Trabalho tem contexto próprio",
+      "passed": true
+    },
+    {
+      "name": "Busca informa sigla inexistente",
+      "passed": true
+    },
+    {
+      "name": "Busca abre ficha regional por teclado",
+      "passed": true
+    },
+    {
+      "name": "Exemplo da entrada mantém três TJs de grande porte",
+      "passed": true
+    },
+    {
+      "name": "Seleção compartilhável",
+      "passed": true
+    },
+    {
+      "name": "Reload preserva recorte",
+      "passed": true
+    },
+    {
+      "name": "Voltar restaura medida",
+      "passed": true
+    },
+    {
+      "name": "Avançar restaura medida",
+      "passed": true
+    },
+    {
+      "name": "CSV exporta 27 pares, não só três selecionados",
+      "passed": true
+    },
+    {
+      "name": "Limpar por teclado",
+      "passed": true
+    },
+    {
+      "name": "Tribunal do ramo selecionado: federal",
+      "passed": true
+    },
+    {
+      "name": "Ficha real do ramo: federal",
+      "passed": true
+    },
+    {
+      "name": "Agregado do ramo existe: federal",
+      "passed": true
+    },
+    {
+      "name": "Tribunal do ramo selecionado: trabalho",
+      "passed": true
+    },
+    {
+      "name": "Ficha real do ramo: trabalho",
+      "passed": true
+    },
+    {
+      "name": "Agregado do ramo existe: trabalho",
+      "passed": true
+    },
+    {
+      "name": "Seleção incompatível não mistura ramos",
+      "passed": true
+    },
+    {
+      "name": "Porte federal não inventado",
+      "passed": true
+    },
+    {
+      "name": "Limpar porte restaura pares",
+      "passed": true
+    },
+    {
+      "name": "Nominal não inventa histórico",
+      "passed": true
+    },
+    {
+      "name": "Nominal só tem ano-base",
+      "passed": true
+    },
+    {
+      "name": "Série real tem 17 anos",
+      "passed": true
+    },
+    {
+      "name": "CSV preserva preços e todos os anos",
+      "passed": true
+    },
+    {
+      "name": "Duplicata na URL não duplica tribunal",
+      "passed": true
+    },
+    {
+      "name": "Ficha reutilizável TJPE",
+      "passed": true
+    },
+    {
+      "name": "Tribunal desconhecido 404",
+      "passed": true
+    },
+    {
+      "name": "Download autenticado snapshot.json",
+      "passed": true
+    },
+    {
+      "name": "Cache privado snapshot.json",
+      "passed": true
+    },
+    {
+      "name": "Download autenticado ramos.csv",
+      "passed": true
+    },
+    {
+      "name": "Cache privado ramos.csv",
+      "passed": true
+    },
+    {
+      "name": "Download autenticado tribunais.csv",
+      "passed": true
+    },
+    {
+      "name": "Cache privado tribunais.csv",
+      "passed": true
+    },
+    {
+      "name": "Download autenticado despesas-historico.csv",
+      "passed": true
+    },
+    {
+      "name": "Cache privado despesas-historico.csv",
+      "passed": true
+    },
+    {
+      "name": "Download autenticado manifesto.json",
+      "passed": true
+    },
+    {
+      "name": "Cache privado manifesto.json",
+      "passed": true
+    },
+    {
+      "name": "Jornada interativa",
+      "passed": true
+    },
+    {
+      "name": "Texto ampliado sem overflow global",
+      "passed": true
+    },
+    {
+      "name": "Home logada preserva destino do seletor",
+      "passed": true
+    },
+    {
+      "name": "Seletor mantém acesso ao OBEE",
+      "passed": true
+    },
+    {
+      "name": "Vitrine anônima anuncia cobertura real",
+      "passed": true
+    },
+    {
+      "name": "Integração /eficiencia-estatal",
+      "passed": true
+    },
+    {
+      "name": "Integração /eficiencia-estatal/acesso-justica",
+      "passed": true
+    },
+    {
+      "name": "Sitemap não expõe painéis",
+      "passed": true
+    },
+    {
+      "name": "Sem erros JavaScript",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

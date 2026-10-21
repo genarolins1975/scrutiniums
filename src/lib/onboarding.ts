@@ -2,9 +2,12 @@ import { and, desc, eq, gt, isNotNull, isNull } from "drizzle-orm";
 import { getDb, newId, schema } from "./db";
 import { generateOtp, hashToken } from "./crypto";
 import { sendEmailCode } from "./mailer";
+import { cpfObrigatorioParaTelefone } from "./cpf-telefone";
+import { isValidCpf } from "./cpf";
 import type { OnboardingStatus, User } from "./schema";
 
-export const PRIVACY_VERSION = "2026-07";
+export { PRIVACY_VERSION } from "./versoesPoliticas";
+import { PRIVACY_VERSION } from "./versoesPoliticas";
 
 const EMAIL_CODE_TTL_MS = 15 * 60 * 1000;
 const EMAIL_MAX_ATTEMPTS = 5;
@@ -30,23 +33,36 @@ export function nextStepPath(status: OnboardingStatus): string {
       // Rota legada: promove a COMPLETE e redireciona ao Observatório.
       return "/cadastro/acesso";
     case "COMPLETE":
-      // Destino principal pós-login: o Observatório completo.
-      return "/observatorio";
+      // Destino principal pós-login: a escolha do observatório.
+      return "/app/observatorios";
   }
 }
 
 /**
  * Valida um destino pós-login vindo da query (?de=...): aceita apenas
- * caminho interno absoluto ("/...") — nunca "//host", "\", esquema externo
- * ou rotas de API. Retorna null quando o valor não é seguro.
+ * caminho interno absoluto ("/...") — nunca "//host", "\", esquema externo,
+ * caractere de controle ou espaço (o navegador descarta tabulação e quebra de
+ * linha, e "/\t/host" viraria "//host") ou rotas de API. A conferência final
+ * resolve o caminho contra uma origem fictícia e exige a mesma origem.
+ * Retorna null quando o valor não é seguro.
  */
 export function safeInternalPath(raw: string | null | undefined): string | null {
   if (!raw) return null;
+  if (/[\u0000-\u0020\u007f-\u009f]/.test(raw)) return null;
   if (!raw.startsWith("/")) return null;
   if (raw.startsWith("//")) return null;
   if (raw.includes("\\")) return null;
   if (raw.includes("://")) return null;
   if (raw === "/api" || raw.startsWith("/api/")) return null;
+  const base = "https://interno.invalid";
+  let alvo: URL;
+  try {
+    alvo = new URL(raw, base);
+  } catch {
+    return null;
+  }
+  if (alvo.origin !== base) return null;
+  if (alvo.pathname === "/api" || alvo.pathname.startsWith("/api/")) return null;
   return raw;
 }
 
@@ -223,4 +239,32 @@ export async function updateUser(
     .update(schema.users)
     .set({ ...values, updatedAt: new Date() })
     .where(eq(schema.users.id, userId));
+}
+
+/** Gravação condicional: uma requisição antiga não conclui perfil de outro telefone. */
+export async function completeProfile(
+  user: User,
+  values: Pick<typeof schema.users.$inferInsert, "passwordHash" | "cpf" | "perfilUso" | "orgType" | "orgArea" | "orgRole" | "uf">,
+): Promise<boolean> {
+  const exigeCpf = cpfObrigatorioParaTelefone(user);
+  if (exigeCpf === null || !user.phoneE164 || !user.phoneVerifiedAt) return false;
+  if (exigeCpf && (!values.cpf || !isValidCpf(values.cpf))) return false;
+  const db = await getDb();
+  const rows = await db.update(schema.users)
+    .set({ ...values, onboardingStatus: "COMPLETE", updatedAt: new Date() })
+    .where(and(eq(schema.users.id, user.id), eq(schema.users.onboardingStatus, "PROFILE_PENDING"),
+      eq(schema.users.phoneE164, user.phoneE164), eq(schema.users.phoneVerifiedAt, user.phoneVerifiedAt)))
+    .returning({ id: schema.users.id });
+  return rows.length === 1;
+}
+
+/** Só a primeira confirmação pode avançar a etapa e vincular o número único. */
+export async function confirmOnboardingPhone(userId: string, phoneE164: string): Promise<boolean> {
+  const db = await getDb();
+  const now = new Date();
+  const rows = await db.update(schema.users)
+    .set({ phoneE164, phoneVerifiedAt: now, onboardingStatus: "PROFILE_PENDING", updatedAt: now })
+    .where(and(eq(schema.users.id, userId), eq(schema.users.onboardingStatus, "PHONE_PENDING")))
+    .returning({ id: schema.users.id });
+  return rows.length === 1;
 }

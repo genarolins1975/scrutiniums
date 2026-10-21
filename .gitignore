@@ -20,3 +20,30 @@ __pycache__/
 # Ferramentas locais
 .vercel/
 .claude/
+
+# Materialized Food Security downloads, generated from the verified seed at build.
+/public/eficiencia/seguranca-alimentar/uf-*.json
+/public/eficiencia/seguranca-alimentar/municipios.csv
+/public/eficiencia/seguranca-alimentar/pnad.csv
+# Bases complementares (21/10/2026): geradas do seed complementos.json.gz no mesmo script.
+/public/eficiencia/seguranca-alimentar/complementos-uf-*.json
+/public/eficiencia/seguranca-alimentar/ebia-territorios.csv
+/public/eficiencia/seguranca-alimentar/cadinsan.csv
+/public/eficiencia/seguranca-alimentar/paa.csv
+/public/eficiencia/seguranca-alimentar/pnae.csv
+/public/eficiencia/seguranca-alimentar/ipca-alimentacao.csv
+/public/eficiencia/seguranca-alimentar/sisvan.csv
+
+# Build-only SUAS payloads; canonical seed has a pinned SHA-256
+/public/eficiencia/assistencia-social/
+# Saída derivada do payload canônico; materializada no prebuild e no setup Vitest.
+/public/eficiencia/trabalho-renda/snapshot.json
+/public/eficiencia/trabalho-renda/snapshot.json.tmp
+/vitest-resultado.json
+/testes-codigos.txt
+/pipeline-testes.log
+/pesquisa-testes.log
+/dist/
+/.gold-publicacao/
+# Trabalho da atualização agendada por grupo (scripts/atualizacao_por_grupo.py)
+/.atualizacao/

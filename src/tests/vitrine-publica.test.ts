@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { ehRotaPublica } from "@/lib/rotasPublicas";
 
 /**
  * Vitrine pública do Observatório: a porta de entrada editorial. Com o
@@ -12,22 +13,20 @@ import { join } from "node:path";
  */
 const pagina = readFileSync(join(process.cwd(), "src/app/observatorio-do-credito/page.tsx"), "utf-8");
 const middleware = readFileSync(join(process.cwd(), "src/middleware.ts"), "utf-8");
-const header = readFileSync(join(process.cwd(), "src/components/layout/PublicHeader.tsx"), "utf-8");
 const sitemap = readFileSync(join(process.cwd(), "src/app/sitemap.ts"), "utf-8");
 
 describe("vitrine pública do Observatório", () => {
-  it("não está protegida pelo middleware — nem ela, nem o Observatório", () => {
-    const matcher = middleware.slice(middleware.indexOf("matcher:"));
-    expect(matcher).not.toMatch(/observatorio/);
-    expect(matcher).not.toMatch(/\/obs/);
-    // e o middleware precisa continuar protegendo a área logada
-    expect(matcher).toMatch(/\/app\/:path\*/);
+  it("a vitrine é pública; o Observatório e a área logada exigem sessão", () => {
+    expect(ehRotaPublica("/observatorio-do-credito")).toBe(true);
+    for (const p of ["/observatorio", "/observatorio/overview", "/obs/index.html", "/app", "/app/conta"]) expect(ehRotaPublica(p), p).toBe(false);
+    expect(middleware).toContain("if (ehRotaPublica(pathname)) return NextResponse.next();");
     expect(middleware).toMatch(/pathname\.startsWith\("\/app"\)/);
   });
 
-  it("visitante que pede a área logada é levado ao login, com o destino preservado", () => {
+  it("visitante que pede um painel é levado ao login, com o destino (e o recorte) preservado", () => {
     expect(middleware).toMatch(/url\.pathname = "\/entrar"/);
-    expect(middleware).toMatch(/url\.searchParams\.set\("de", pathname\)/);
+    expect(middleware).toContain("const destino = pathname + request.nextUrl.search;");
+    expect(middleware).toMatch(/url\.searchParams\.set\("de", destino\)/);
   });
 
   it("é estática e indexável", () => {
@@ -37,8 +36,8 @@ describe("vitrine pública do Observatório", () => {
     expect(sitemap).toMatch(/observatorio-do-credito/);
   });
 
-  it("está acessível a partir do cabeçalho público", () => {
-    expect(header).toMatch(/observatorio-do-credito/);
+  it("está acessível a partir do rodapé público", () => {
+    expect(readFileSync(join(process.cwd(), "src/components/layout/Footer.tsx"), "utf-8")).toMatch(/href=\{h\("\/observatorio-do-credito"\)\}/);
   });
 
   it("os números vêm do gold, não são literais no código", () => {

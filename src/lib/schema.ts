@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, integer, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, integer, boolean, date, primaryKey } from "drizzle-orm/pg-core";
 
 /**
  * Modelo de dados da Scrutiniums (Drizzle ORM, dialeto PostgreSQL).
@@ -30,7 +30,16 @@ export const users = pgTable("users", {
   jobTitle: text("job_title"),
   /** CPF normalizado (11 dígitos). Finalidade única: uma conta por pessoa. Nunca exibido integralmente. */
   cpf: text("cpf").unique(),
-  /** Perfil estruturado (allowlists em perfilOpcoes.ts; sem texto livre). */
+  /**
+   * Perfil de uso (PERFIS_USO em perfilOpcoes.ts), obrigatório no cadastro
+   * desde 19/10/2026. Null nas contas anteriores, que continuam válidas.
+   */
+  perfilUso: text("perfil_uso"),
+  /**
+   * Perfil estruturado (allowlists em perfilOpcoes.ts; sem texto livre).
+   * Tipo de instituição, área e cargo só nos perfis de uso profissionais;
+   * null nos demais.
+   */
   orgType: text("org_type"),
   orgArea: text("org_area"),
   orgRole: text("org_role"),
@@ -91,5 +100,74 @@ export const suggestions = pgTable("suggestions", {
   texto: text("texto").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull(),
 });
+
+/**
+ * Assinaturas do resumo do crédito por e-mail, sem conta. Dupla confirmação:
+ * nasce PENDENTE no formulário e só fica ATIVA pelo link enviado ao endereço.
+ * O descadastro apaga a linha (nada a reter de quem saiu).
+ */
+export const assinaturasResumo = pgTable("assinaturas_resumo", {
+  id: text("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  periodicidade: text("periodicidade").notNull(),
+  status: text("status").notNull(),
+  consentimentoEm: timestamp("consentimento_em", { withTimezone: true, mode: "date" }).notNull(),
+  confirmadaEm: timestamp("confirmada_em", { withTimezone: true, mode: "date" }),
+  ultimoEnvioEm: timestamp("ultimo_envio_em", { withTimezone: true, mode: "date" }),
+  ultimaEdicao: text("ultima_edicao"),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull(),
+});
+
+/**
+ * Recortes salvos pela conta (Onda 2, "o que a conta precisa ganhar"): o
+ * endereço interno da página com a consulta e a âncora, um título dado pela
+ * pessoa e o observatório de origem. O link compartilhável é o próprio caminho;
+ * quem não tem conta passa pelo login e volta a ele. Limite por conta em
+ * src/lib/conta/recortes.ts.
+ */
+export const recortesSalvos = pgTable("recortes_salvos", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  titulo: text("titulo").notNull(),
+  caminho: text("caminho").notNull(),
+  observatorio: text("observatorio").notNull(),
+  criadoEm: timestamp("criado_em", { withTimezone: true, mode: "date" }).notNull(),
+});
+
+/**
+ * Alertas de atualização por domínio de dados (as fontes de src/lib/frescor/limiares.json).
+ * `referenciaAvisada` guarda a data de referência que a pessoa já conhece: a do
+ * momento da assinatura e, depois, a do último aviso. O envio só sai quando a
+ * referência publicada avança (src/lib/conta/alertas.ts).
+ */
+export const alertasAtualizacao = pgTable("alertas_atualizacao", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  dominio: text("dominio").notNull(),
+  referenciaAvisada: text("referencia_avisada"),
+  ultimoEnvioEm: timestamp("ultimo_envio_em", { withTimezone: true, mode: "date" }),
+  criadoEm: timestamp("criado_em", { withTimezone: true, mode: "date" }).notNull(),
+});
+
+/**
+ * Medição de uso agregada (Onda 2, Q3; docs/observatorios/MEDICAO_DE_USO.md).
+ * Um contador por dia (fuso de Brasília), modelo de rota e presença de conta.
+ * Nenhuma coluna identifica pessoa: sem id de usuário, IP, navegador, cookie ou
+ * parâmetro de endereço. A rota é o modelo da pasta de src/app
+ * ("/saneamento/municipio/[id]"), aceito só se estiver na lista fechada
+ * (src/lib/uso/rotas.ts). O observatório é o dono da rota no registro na data
+ * da visita ("plataforma" fora dos observatórios).
+ */
+export const usoPaginasDia = pgTable(
+  "uso_paginas_dia",
+  {
+    dia: date("dia", { mode: "string" }).notNull(),
+    rota: text("rota").notNull(),
+    observatorio: text("observatorio").notNull(),
+    comConta: boolean("com_conta").notNull(),
+    visitas: integer("visitas").notNull().default(0),
+  },
+  (t) => [primaryKey({ columns: [t.dia, t.rota, t.comConta] })],
+);
 
 export type User = typeof users.$inferSelect;

@@ -1,0 +1,456 @@
+{
+ "conferido_em": "2026-10-01",
+ "nota": "Marcos que mudam a leitura dos painéis do observatório. 'resumo' é texto editorial do observatório, conferido no documento citado; 'efeito_declarado' é o que o próprio ato declara (ementa ou dispositivo, citado literalmente); 'impacto_estimado' fica sempre vazio aqui: o observatório não estima o efeito das normas nesta linha do tempo, e a coincidência entre uma data desta lista e um movimento em gráfico não é evidência de causa. 'trecho', 'efeito_declarado' e 'vigencia_regra' são literais do documento; 'trecho' é composto de passagens literais do documento, separadas por ' […] '. Vigência marcada como calculada segue a Lei Complementar nº 95/1998, art. 8º, § 1º (inclui o dia da publicação e o último dia do prazo; vigora no dia seguinte).",
+ "eventos": [
+  {
+   "id": "pld-horario",
+   "titulo": "PLD passa a ser calculado hora a hora",
+   "orgao": "MME",
+   "ato": "Portaria MME nº 301, de 31 de julho de 2019",
+   "tipo_ato": "Portaria",
+   "data_ato": "2019-07-31",
+   "data_publicacao": null,
+   "vigencia_inicio": "2021-01-01",
+   "vigencia_regra": "prevista para ocorrer a partir de 1º de janeiro de 2021, data de implementação do PLD horário no Mercado de Curto Prazo (MCP)",
+   "vigencia_calculada": false,
+   "dispositivo": "Portaria MME nº 301/2019, art. 1º, § 5º (texto da portaria não acessado; citado pela ANEEL); REN nº 1.032/2022, art. 23, inciso II",
+   "resumo": "A partir de 1º de janeiro de 2021 o preço de liquidação passou a ser definido para cada hora. Na mesma data passou a valer o teto horário, ao lado do teto estrutural, que já valia desde 1º de janeiro de 2020.",
+   "efeito_declarado": "A vigência do PLDmax_estrutural deu-se a partir de 1º de janeiro de 2020 e a do PLDmax_horáo, prevista para ocorrer a partir de 1º de janeiro de 2021, data de implementação do PLD horário no Mercado de Curto Prazo (MCP)",
+   "impacto_estimado": null,
+   "temas": [
+    "preco"
+   ],
+   "paineis": [
+    {
+     "rotulo": "PLD",
+     "href": "/setor-eletrico/pld"
+    },
+    {
+     "rotulo": "Previsões",
+     "href": "/setor-eletrico/pld/previsoes"
+    }
+   ],
+   "documento": "nreh20212994",
+   "trecho": "A vigência do PLDmax_estrutural deu-se a partir de 1º de janeiro de 2020 e a do PLDmax_horáo, prevista para ocorrer a partir de 1º de janeiro de 2021, data de implementação do PLD horário no Mercado de Curto Prazo (MCP), conforme disposto no §5º, Art. 1º, da Portaria MME nº 301, de 31 de julho de 2019.",
+   "nivel_conferencia": "documento_oficial_que_cita_o_ato",
+   "observacoes": [
+    "A data de publicação da Portaria MME nº 301/2019 no DOU não foi conferida (Diário Oficial inacessível daqui). O PLD anterior a 2021 não é comparável hora a hora com o atual."
+   ]
+  },
+  {
+   "id": "ren-1032-2022",
+   "titulo": "Regras do PMO, do PLD e dos seus limites reunidas numa só resolução",
+   "orgao": "ANEEL",
+   "ato": "Resolução Normativa ANEEL nº 1.032, de 26 de julho de 2022",
+   "tipo_ato": "Resolução Normativa",
+   "data_ato": "2022-07-26",
+   "data_publicacao": "2022-08-02",
+   "vigencia_inicio": "2022-09-01",
+   "vigencia_regra": "Art. 34. Esta Resolução entra em vigor em 1º de setembro de 2022.",
+   "vigencia_calculada": false,
+   "dispositivo": "arts. 22 a 24 (limites do PLD) e art. 34 (vigência)",
+   "resumo": "Consolida as regras de formação do PLD e dos seus limites. O teto horário vale hora a hora; o teto estrutural vale para a média diária dos preços horários, que a CCEE ajusta de forma uniforme quando a média passa do teto; o piso é o maior valor entre a TEO e a TEO de Itaipu; o art. 23, § 1º, manda atualizar os tetos todo ano pelo IPCA a partir dos valores de setembro de 2019, mas os atos anuais encadeiam o teto publicado no ano anterior pela variação do IPCA de novembro; a aplicação literal do artigo não reproduz os valores publicados (conferências regra_ipca e art23_literal). A regra dos limites vinha da REN nº 858/2019, revogada na consolidação.",
+   "efeito_declarado": "Consolida os atos regulatórios relativos à elaboração do Programa Mensal da Operação Energética – PMO, e para a formação do Custo Marginal da Operação – CMO e do Preço de Liquidação de Diferenças – PLD",
+   "impacto_estimado": null,
+   "temas": [
+    "preco",
+    "metodologia"
+   ],
+   "paineis": [
+    {
+     "rotulo": "PLD",
+     "href": "/setor-eletrico/pld"
+    }
+   ],
+   "documento": "ren20221032",
+   "trecho": "§ 1º Os limites máximos do PLD serão atualizados pela ANEEL anualmente pela variação do Índice Nacional de Preços ao Consumidor Amplo (IPCA) a partir dos seguintes valores, a preços de setembro de 2019: I - R$ 556,58 / MWh, para o para o PLDmax_estrutural; e II - R$ 1.141,85 / MWh, para o para o PLDmax_horário. […] § 3º A partir da vigência do PLDmax_horário, caso a média diária dos PLDs horários for superior ao PLDmax_estrutural, a CCEE deve ajustar a série de PLDs horários até que a média de seus valores seja igual ao PLDmax_estrutural. […] Art. 24. O valor mínimo do PLD será calculado anualmente pela ANEEL considerando o maior valor entre: I - a Tarifa de Energia de Otimização da UHE Itaipu (TEOItaipu); e II - a Tarifa de Energia de Otimização (TEO) das outras usinas hidrelétricas do Sistema Interligado Nacional.",
+   "nivel_conferencia": "texto_do_ato",
+   "observacoes": [
+    "O próprio texto registra retificação no D.O. de 21.11.2022. A revogação da REN nº 858/2019 pela consolidação é afirmada na Nota Técnica nº 01/2023-SGT/ANEEL, item 8."
+   ]
+  },
+  {
+   "id": "arr-limites-pld-2023",
+   "titulo": "ANEEL avalia os limites do PLD e abre revisão das metodologias",
+   "orgao": "ANEEL",
+   "ato": "Despacho ANEEL nº 3.587, de 26 de setembro de 2023",
+   "tipo_ato": "Despacho",
+   "data_ato": "2023-09-26",
+   "data_publicacao": "2023-10-02",
+   "vigencia_inicio": "2024-01-01",
+   "vigencia_regra": "(ii) definir que, para o ano de 2024, os limites máximos do PLD serão aqueles definidos na Resolução Homologatória nº 3.167, de 29 de dezembro de 2022",
+   "vigencia_calculada": false,
+   "dispositivo": "itens (i) e (ii) da parte decisória",
+   "resumo": "Depois da avaliação de resultado regulatório, a ANEEL manteve para 2024 a regra de correção dos tetos pelo IPCA e mandou abrir processos para rever a metodologia do teto estrutural, a conciliação entre os dois tetos (para aplicação a partir de 2025) e as metodologias do piso e da TEO. As duas revisões constam da Agenda Regulatória 2026-2027 (atividades AR24-05 e AR24-18) com previsão de norma em 2026.",
+   "efeito_declarado": "(ii) definir que, para o ano de 2024, os limites máximos do PLD serão aqueles definidos na Resolução Homologatória nº 3.167, de 29 de dezembro de 2022, atualizados pela variação acumulada do Índice Nacional de Preços ao Consumidor Amplo – IPCA no ano de 2023",
+   "impacto_estimado": null,
+   "temas": [
+    "preco",
+    "metodologia"
+   ],
+   "paineis": [
+    {
+     "rotulo": "PLD",
+     "href": "/setor-eletrico/pld"
+    }
+   ],
+   "documento": "dsp20233587",
+   "trecho": "(i.a) a revisão da metodologia de cálculo do PLD máximo estrutural, diante dos atuais critérios de garantia de suprimento definidos pelo Conselho Nacional de Política Energética – CNPE, e a sistemática de conciliação entre o PLD máximo horário e o PLD máximo estrutural, a serem aplicadas a partir de 2025; e (i.b) as metodologias de cálculo do PLD mínimo e de definição da Tarifa de Energia de Otimização – TEO; e (ii) definir que, para o ano de 2024, os limites máximos do PLD serão aqueles definidos na Resolução Homologatória nº 3.167, de 29 de dezembro de 2022, atualizados pela variação acumulada do Índice Nacional de Preços ao Consumidor Amplo – IPCA no ano de 2023",
+   "nivel_conferencia": "texto_do_ato",
+   "observacoes": []
+  },
+  {
+   "id": "ren-1000-2021",
+   "titulo": "Regras de prestação do serviço de distribuição reunidas na REN nº 1.000",
+   "orgao": "ANEEL",
+   "ato": "Resolução Normativa ANEEL nº 1.000, de 7 de dezembro de 2021",
+   "tipo_ato": "Resolução Normativa",
+   "data_ato": "2021-12-07",
+   "data_publicacao": "2021-12-20",
+   "vigencia_inicio": "2022-01-03",
+   "vigencia_regra": "Art. 679. Esta Resolução entra em vigor em 3 de janeiro de 2022.",
+   "vigencia_calculada": false,
+   "dispositivo": "art. 1º (objeto) e art. 679 do texto compilado (vigência)",
+   "resumo": "Reúne numa norma as regras de atendimento das distribuidoras, com os direitos e deveres do consumidor e dos demais usuários (conexão, medição, faturamento, suspensão do fornecimento, qualidade do atendimento e ressarcimento de danos, entre outros temas), e revoga a REN nº 414/2010. Mudanças posteriores de faturamento e de Tarifa Social passam a alterar esta resolução.",
+   "efeito_declarado": "Estabelece as Regras de Prestação do Serviço Público de Distribuição de Energia Elétrica; revoga as Resoluções Normativas ANEEL nº 414, de 9 de setembro de 2010; nº 470, de 13 de dezembro de 2011; nº 901, de 8 de dezembro de 2020 e dá outras providências.",
+   "impacto_estimado": null,
+   "temas": [
+    "consumidor",
+    "tarifa"
+   ],
+   "paineis": [
+    {
+     "rotulo": "Conta de luz",
+     "href": "/setor-eletrico/conta-de-luz"
+    },
+    {
+     "rotulo": "Qualidade",
+     "href": "/setor-eletrico/qualidade"
+    },
+    {
+     "rotulo": "Inclusão energética",
+     "href": "/setor-eletrico/inclusao-energetica"
+    }
+   ],
+   "documento": "ren20211000",
+   "trecho": "Art. 1º Esta Resolução Normativa estabelece as Regras de Prestação do Serviço Público de Distribuição de Energia Elétrica, nas quais estão dispostos os direitos e deveres do consumidor e demais usuários do serviço. […] Art. 679. Esta Resolução entra em vigor em 3 de janeiro de 2022. […] (*) Republicado em razão de incorreções no original publicado no DOU de 20/12/2021, edição 238, seção 1, página 206.",
+   "nivel_conferencia": "texto_do_ato",
+   "observacoes": [
+    "Documento lido é o texto compilado de dezembro de 2023. A publicação original foi no DOU de 20/12/2021, edição 238, seção 1, página 206, como o próprio texto registra na nota '(*) Republicado em razão de incorreções no original publicado no DOU de 20/12/2021, edição 238, seção 1, página 206.' (passagem incluída no trecho e conferida no PDF). O texto foi republicado no D.O. de 21.01.2022, seção 1, p. 74, e retificado no D.O. de 21.02.2022, 25.03.2022, 04.05.2022, 11.07.2022, 27.10.2022 e 04.07.2023. A numeração do artigo de vigência é a do texto compilado."
+   ]
+  },
+  {
+   "id": "lei-14203-2021",
+   "titulo": "Inscrição automática na Tarifa Social",
+   "orgao": "Congresso Nacional",
+   "ato": "Lei nº 14.203, de 10 de setembro de 2021",
+   "tipo_ato": "Lei",
+   "data_ato": "2021-09-10",
+   "data_publicacao": "2021-09-13",
+   "vigencia_inicio": "2022-01-11",
+   "vigencia_regra": "Art. 2º Esta Lei entra em vigor após decorridos 120 (cento e vinte) dias de sua publicação oficial.",
+   "vigencia_calculada": true,
+   "dispositivo": "art. 1º (nova redação do parágrafo único do art. 4º da Lei nº 12.212/2010) e art. 2º",
+   "resumo": "Obriga o Poder Executivo e as distribuidoras a cruzar e atualizar os cadastros e a inscrever automaticamente na Tarifa Social as famílias que cumprem os critérios da Lei nº 12.212/2010, sem depender de pedido. A ANEEL regulou a mudança na REN nº 953/2021.",
+   "efeito_declarado": "Altera a Lei nº 12.212, de 20 de janeiro de 2010, para tornar obrigatória a atualização do cadastro dos beneficiários da Tarifa Social de Energia Elétrica.",
+   "impacto_estimado": null,
+   "temas": [
+    "tarifa_social",
+    "consumidor"
+   ],
+   "paineis": [
+    {
+     "rotulo": "Inclusão energética",
+     "href": "/setor-eletrico/inclusao-energetica"
+    },
+    {
+     "rotulo": "Conta de luz",
+     "href": "/setor-eletrico/conta-de-luz"
+    }
+   ],
+   "documento": "lei14203_2021",
+   "trecho": "Parágrafo único. O Poder Executivo e as concessionárias, permissionárias e autorizadas de serviço público de distribuição de energia elétrica deverão compatibilizar e atualizar a relação de cadastrados que atendam aos critérios fixados no art. 2º desta Lei e inscrevê-los automaticamente como beneficiários da Tarifa Social de Energia Elétrica.” (NR) Art. 2º Esta Lei entra em vigor após decorridos 120 (cento e vinte) dias de sua publicação oficial.",
+   "nivel_conferencia": "texto_do_ato",
+   "observacoes": []
+  },
+  {
+   "id": "ren-953-2021",
+   "titulo": "ANEEL regula a inscrição automática na Tarifa Social",
+   "orgao": "ANEEL",
+   "ato": "Resolução Normativa ANEEL nº 953, de 30 de novembro de 2021",
+   "tipo_ato": "Resolução Normativa",
+   "data_ato": "2021-11-30",
+   "data_publicacao": "2021-12-02",
+   "vigencia_inicio": "2022-01-01",
+   "vigencia_regra": "Art. 3º Esta Resolução entra em vigor em 1º de janeiro de 2022.",
+   "vigencia_calculada": false,
+   "dispositivo": "art. 1º (alterações na REN nº 414/2010) e art. 3º",
+   "resumo": "Adapta as regras de atendimento à Lei nº 14.203/2021: o benefício vale para uma só unidade consumidora por família, com critérios para resolver duplicidades, e a família deve avisar a distribuidora quando deixar de usar a unidade.",
+   "efeito_declarado": "Altera a Resolução Normativa nº 414, de 9 de setembro de 2010, para regular a Lei nº 14.203, de 10 de setembro de 2021, que torna obrigatória a atualização do cadastro e a inscrição automática dos beneficiários da Tarifa Social de Energia Elétrica— TSEE.",
+   "impacto_estimado": null,
+   "temas": [
+    "tarifa_social",
+    "consumidor"
+   ],
+   "paineis": [
+    {
+     "rotulo": "Inclusão energética",
+     "href": "/setor-eletrico/inclusao-energetica"
+    }
+   ],
+   "documento": "ren2021953",
+   "trecho": "§3º Cada família terá direito ao benefício da TSEE em apenas uma unidade consumidora […] Art. 3º Esta Resolução entra em vigor em 1º de janeiro de 2022.",
+   "nivel_conferencia": "texto_do_ato",
+   "observacoes": []
+  },
+  {
+   "id": "lei-14300-2022",
+   "titulo": "Marco legal da micro e minigeração distribuída",
+   "orgao": "Congresso Nacional",
+   "ato": "Lei nº 14.300, de 6 de janeiro de 2022",
+   "tipo_ato": "Lei",
+   "data_ato": "2022-01-06",
+   "data_publicacao": "2022-01-07",
+   "vigencia_inicio": "2022-01-07",
+   "vigencia_regra": "Art. 37. Esta Lei entra em vigor na data de sua publicação.",
+   "vigencia_calculada": false,
+   "dispositivo": "arts. 26 e 27 (transição) e art. 37 (vigência)",
+   "resumo": "Cria em lei o Sistema de Compensação de Energia Elétrica. Quem já tinha micro ou minigeração, ou pediu acesso à distribuidora em até 12 meses da publicação, fica fora da regra definitiva do art. 17 até o fim de 2045; os demais passam a pagar, sobre a energia compensada, uma parcela crescente dos componentes da tarifa ligados à rede de distribuição (remuneração dos ativos, depreciação e operação e manutenção): 15% a partir de 2023 até 90% a partir de 2028, com a regra do art. 17 a partir de 2029 e exceções previstas no próprio artigo.",
+   "efeito_declarado": "Institui o marco legal da microgeração e minigeração distribuída, o Sistema de Compensação de Energia Elétrica (SCEE) e o Programa de Energia Renovável Social (PERS)",
+   "impacto_estimado": null,
+   "temas": [
+    "mmgd",
+    "tarifa"
+   ],
+   "paineis": [
+    {
+     "rotulo": "Transição e ambiente",
+     "href": "/setor-eletrico/transicao"
+    },
+    {
+     "rotulo": "Carga",
+     "href": "/setor-eletrico/carga"
+    },
+    {
+     "rotulo": "Conta de luz",
+     "href": "/setor-eletrico/conta-de-luz"
+    }
+   ],
+   "documento": "lei14300_2022",
+   "trecho": "Art. 26. As disposições constantes do art. 17 desta Lei não se aplicam até 31 de dezembro de 2045 para unidades beneficiárias da energia oriunda de microgeradores e minigeradores: I – existentes na data de publicação desta Lei; ou II – que protocolarem solicitação de acesso na distribuidora em até 12 (doze) meses contados da publicação desta Lei. […] I – 15% (quinze por cento) a partir de 2023; […] VI – 90% (noventa por cento) a partir de 2028; VII – a regra disposta no art. 17 desta Lei a partir de 2029. […] Art. 37. Esta Lei entra em vigor na data de sua publicação.",
+   "nivel_conferencia": "texto_do_ato",
+   "observacoes": [
+    "A lei foi alterada depois (Leis nº 14.620/2023, nº 15.097/2025 e nº 15.269/2025, segundo os metadados do Senado); o texto lido é o da publicação original."
+   ]
+  },
+  {
+   "id": "mpv-1300-2025",
+   "titulo": "Medida provisória muda a Tarifa Social: desconto integral até 80 kWh",
+   "orgao": "Presidência da República",
+   "ato": "Medida Provisória nº 1.300, de 21 de maio de 2025",
+   "tipo_ato": "Medida Provisória",
+   "data_ato": "2025-05-21",
+   "data_publicacao": "2025-05-21",
+   "vigencia_inicio": "2025-07-05",
+   "vigencia_regra": "Art. 10. Esta Medida Provisória entra em vigor: I – quarenta e cinco dias contados da data de sua publicação, quanto ao art. 6º",
+   "vigencia_calculada": true,
+   "dispositivo": "art. 6º (nova redação do art. 1º da Lei nº 12.212/2010) e art. 10, inciso I",
+   "resumo": "Troca as faixas cumulativas de desconto da Tarifa Social previstas na Lei nº 12.212/2010 por uma regra única: desconto de 100% na parcela do consumo até 80 kWh por mês e nenhum desconto acima disso. Convertida na Lei nº 15.235/2025.",
+   "efeito_declarado": "I – para a parcela do consumo de energia elétrica inferior ou igual a 80 kWh/mês (oitenta quilowatt-hora/mês), o desconto será de 100% (cem por cento); e II – para a parcela do consumo de energia elétrica superior a 80 kWh/mês (oitenta quilowatt-hora/mês), o desconto será de 0% (zero por cento).",
+   "impacto_estimado": null,
+   "temas": [
+    "tarifa_social",
+    "tarifa"
+   ],
+   "paineis": [
+    {
+     "rotulo": "Inclusão energética",
+     "href": "/setor-eletrico/inclusao-energetica"
+    },
+    {
+     "rotulo": "Conta de luz",
+     "href": "/setor-eletrico/conta-de-luz"
+    }
+   ],
+   "documento": "mpv1300_2025",
+   "trecho": "I – para a parcela do consumo de energia elétrica inferior ou igual a 80 kWh/mês (oitenta quilowatt-hora/mês), o desconto será de 100% (cem por cento); e II – para a parcela do consumo de energia elétrica superior a 80 kWh/mês (oitenta quilowatt-hora/mês), o desconto será de 0% (zero por cento). […] Art. 10. Esta Medida Provisória entra em vigor: I – quarenta e cinco dias contados da data de sua publicação, quanto ao art. 6º",
+   "nivel_conferencia": "texto_do_ato",
+   "observacoes": [
+    "Publicada em edição extra do DOU (nº 94-A), segundo os metadados do Senado."
+   ]
+  },
+  {
+   "id": "lei-15235-2025",
+   "titulo": "Lei confirma a nova Tarifa Social e cria isenção da CDE até 120 kWh",
+   "orgao": "Congresso Nacional",
+   "ato": "Lei nº 15.235, de 8 de outubro de 2025",
+   "tipo_ato": "Lei",
+   "data_ato": "2025-10-08",
+   "data_publicacao": "2025-10-09",
+   "vigencia_inicio": "2025-10-09",
+   "vigencia_regra": "Art. 6º Esta Lei entra em vigor: I – em 1º de janeiro de 2026, quanto ao inciso III do caput do art. 5º; e II – na data de sua publicação, quanto aos demais dispositivos.",
+   "vigencia_calculada": false,
+   "dispositivo": "art. 1º (§ 3º-I do art. 13 da Lei nº 10.438/2002), art. 3º (art. 1º da Lei nº 12.212/2010) e art. 6º",
+   "resumo": "Converte a Medida Provisória nº 1.300/2025: mantém o desconto de 100% até 80 kWh por mês na Tarifa Social e, a partir de 1º de janeiro de 2026, isenta das quotas da CDE, até 120 kWh por mês e numa única unidade, as famílias do CadÚnico com renda por pessoa acima de meio e até um salário mínimo.",
+   "efeito_declarado": "§ 3º-I. A partir de 1º de janeiro de 2026, as famílias com renda mensal per capita superior a 1/2 (meio) e igual ou inferior a 1 (um) salário mínimo, desde que devidamente inscritas no Cadastro Único para Programas Sociais do Governo Federal (CadÚnico), terão isenção, em uma única unidade consumidora, do pagamento das quotas anuais da CDE para consumo mensal de até 120 kWh (cento e vinte quilowatts-hora).",
+   "impacto_estimado": null,
+   "temas": [
+    "tarifa_social",
+    "tarifa",
+    "subsidios"
+   ],
+   "paineis": [
+    {
+     "rotulo": "Inclusão energética",
+     "href": "/setor-eletrico/inclusao-energetica"
+    },
+    {
+     "rotulo": "Conta de luz",
+     "href": "/setor-eletrico/conta-de-luz"
+    }
+   ],
+   "documento": "lei15235_2025",
+   "trecho": "§ 3º-I. A partir de 1º de janeiro de 2026, as famílias com renda mensal per capita superior a 1/2 (meio) e igual ou inferior a 1 (um) salário mínimo, desde que devidamente inscritas no Cadastro Único para Programas Sociais do Governo Federal (CadÚnico), terão isenção, em uma única unidade consumidora, do pagamento das quotas anuais da CDE para consumo mensal de até 120 kWh (cento e vinte quilowatts-hora). […] I – para a parcela do consumo de energia elétrica inferior ou igual a 80 kWh/mês (oitenta quilowatts-hora por mês), o desconto será de 100% (cem por cento); e II – para a parcela do consumo de energia elétrica superior a 80 kWh/mês (oitenta quilowatts-hora por mês), o desconto será de 0% (zero por cento);",
+   "nivel_conferencia": "texto_do_ato",
+   "observacoes": [
+    "O Senado registra retificação no DOU de 10/10/2025. A ANEEL regulou a lei na REN nº 1.147/2025."
+   ]
+  },
+  {
+   "id": "ren-1147-2025",
+   "titulo": "ANEEL regula a nova Tarifa Social e o desconto social",
+   "orgao": "ANEEL",
+   "ato": "Resolução Normativa ANEEL nº 1.147, de 9 de dezembro de 2025",
+   "tipo_ato": "Resolução Normativa",
+   "data_ato": "2025-12-09",
+   "data_publicacao": "2025-12-16",
+   "vigencia_inicio": "2025-12-16",
+   "vigencia_regra": "Art. 13. Esta Resolução entra em vigor na data de sua publicação e produz efeitos: I - em 1º de julho de 2026, quanto ao art. 2º, na parte que insere o artigo 205-A na Resolução Normativa nº 1.000, de 7 de dezembro de 2021; II - em 1º de abril de 2026, quanto ao art. 2º, na parte que altera os artigos 440, 441 e 443",
+   "vigencia_calculada": false,
+   "dispositivo": "art. 1º (objeto), art. 2º (alterações na REN nº 1.000/2021) e art. 13 (vigência e efeitos)",
+   "resumo": "Adapta as regras de atendimento à Lei nº 15.235/2025: cria a subclasse residencial desconto social, obriga a distribuidora a esclarecer o consumidor sobre as subclasses de baixa renda e de desconto social e escalona efeitos de parte das mudanças para abril e julho de 2026.",
+   "efeito_declarado": "Regula a Lei nº 15.235, de 8 de outubro de 2025, para tratar as alterações na Lei nº 12.212, de 20 de janeiro de 2010 e na Lei nº 10.438, de 26 de abril de 2002, relativas à tarifa social de energia elétrica, desconto social e desconto de atividades de irrigação e aquicultura.",
+   "impacto_estimado": null,
+   "temas": [
+    "tarifa_social",
+    "consumidor"
+   ],
+   "paineis": [
+    {
+     "rotulo": "Inclusão energética",
+     "href": "/setor-eletrico/inclusao-energetica"
+    },
+    {
+     "rotulo": "Conta de luz",
+     "href": "/setor-eletrico/conta-de-luz"
+    }
+   ],
+   "documento": "ren20251147",
+   "trecho": "VII - residencial desconto social. […] Art. 13. Esta Resolução entra em vigor na data de sua publicação e produz efeitos: I - em 1º de julho de 2026, quanto ao art. 2º, na parte que insere o artigo 205-A na Resolução Normativa nº 1.000, de 7 de dezembro de 2021; II - em 1º de abril de 2026, quanto ao art. 2º, na parte que altera os artigos 440, 441 e 443",
+   "nivel_conferencia": "texto_do_ato",
+   "observacoes": []
+  },
+  {
+   "id": "lei-15269-2025",
+   "titulo": "Lei prevê abertura do mercado livre à baixa tensão",
+   "orgao": "Congresso Nacional",
+   "ato": "Lei nº 15.269, de 24 de novembro de 2025",
+   "tipo_ato": "Lei",
+   "data_ato": "2025-11-24",
+   "data_publicacao": "2025-11-25",
+   "vigencia_inicio": "2025-11-25",
+   "vigencia_regra": "Art. 24. Esta Lei entra em vigor na data de sua publicação e produz efeitos: I – em 1º de janeiro de 2026, quanto ao: a) art. 14; b) ao inciso V do art. 23; II – em 90 (noventa) dias da data de sua publicação",
+   "vigencia_calculada": false,
+   "dispositivo": "art. 2º (§ 17 do art. 15 da Lei nº 9.074/1995) e art. 24 (vigência)",
+   "resumo": "Entre outras mudanças no setor, prevê que a escolha do fornecedor chegue aos consumidores atendidos em baixa tensão (abaixo de 2,3 kV): em até 24 meses da entrada em vigor do dispositivo para indústrias e comércio e em até 36 meses para os demais, depois de requisitos como plano de comunicação e definição de tarifas.",
+   "efeito_declarado": "Moderniza o marco regulatório do setor elétrico para promover a modicidade tarifária e a segurança energética",
+   "impacto_estimado": null,
+   "temas": [
+    "mercado",
+    "consumidor"
+   ],
+   "paineis": [
+    {
+     "rotulo": "Mercado",
+     "href": "/setor-eletrico/mercado"
+    },
+    {
+     "rotulo": "Conta de luz",
+     "href": "/setor-eletrico/conta-de-luz"
+    }
+   ],
+   "documento": "lei15269_2025",
+   "trecho": "§ 17. A redução dos limites de tensão e carga de que trata o § 3º, para atingir os consumidores atendidos em tensão inferior a 2,3 kV (dois inteiros e três décimos quilovolts): I – deverá observar o seguinte cronograma: a) até 24 (vinte e quatro) meses da entrada em vigor deste dispositivo para consumidores industriais e comerciais; b) até 36 (trinta e seis) meses da entrada em vigor deste dispositivo para os demais",
+   "nivel_conferencia": "texto_do_ato",
+   "observacoes": [
+    "Os prazos são máximos ('até') e contados da entrada em vigor do dispositivo; a lei não fixa uma data de abertura. A regulação da ANEEL consta da Agenda Regulatória 2026-2027 (atividades AR26-08 e AR26-26)."
+   ]
+  },
+  {
+   "id": "ren-1114-2025",
+   "titulo": "Perdas não técnicas passam a ser calculadas sobre o mercado medido",
+   "orgao": "ANEEL",
+   "ato": "Resolução Normativa ANEEL nº 1.114, de 11 de fevereiro de 2025",
+   "tipo_ato": "Resolução Normativa",
+   "data_ato": "2025-02-11",
+   "data_publicacao": "2025-03-14",
+   "vigencia_inicio": "2025-03-14",
+   "vigencia_regra": "Art. 4º Esta Resolução entra em vigor na data de sua publicação.",
+   "vigencia_calculada": false,
+   "dispositivo": "art. 1º e parágrafo único (objeto e recálculo), art. 2º, incisos II e III (Submódulos 2.6 v3.0 e 2.6A v2.0 do PRORET), item 38 do Submódulo 2.6 no Anexo I e art. 4º (vigência)",
+   "resumo": "Nos processos tarifários, o ponto de partida, a meta e a trajetória das perdas não técnicas passam a usar o mercado de baixa tensão medido, e não o faturado, por causa dos efeitos da micro e minigeração distribuída no Sistema de Compensação. Os percentuais de perdas não técnicas já definidos nas revisões tarifárias seriam recalculados e publicados em despacho da superintendência de gestão tarifária.",
+   "efeito_declarado": "Altera os Procedimentos de Regulação Tarifária – PRORET no tocante a definição da energia requerida e das perdas não técnicas nos sistemas de distribuição de energia elétrica, considerando os efeitos da MMGD participante do SCEE.",
+   "impacto_estimado": null,
+   "temas": [
+    "perdas",
+    "metodologia",
+    "mmgd"
+   ],
+   "paineis": [
+    {
+     "rotulo": "Perdas",
+     "href": "/setor-eletrico/perdas"
+    }
+   ],
+   "documento": "ren20251114",
+   "trecho": "Parágrafo único. Os atuais percentuais de perdas não técnicas definidos nas revisões tarifárias das concessionárias de energia serão recalculados conforme as adequações do caput e publicados em Despacho da Superintendência de Gestão Tarifária e Regulação Econômica. […] 38.O mercado medido deve ser utilizado: i) na definição do ponto de partida e da meta de perdas não técnicas; ii) na trajetória de redução a ser aplicada nos reajustes subsequentes e iii) para o cálculo dos percentuais na construção do balanço energético nos processos tarifários. […] Art. 4º Esta Resolução entra em vigor na data de sua publicação.",
+   "nivel_conferencia": "texto_do_ato",
+   "observacoes": [
+    "Muda o denominador das perdas não técnicas regulatórias: séries anteriores e posteriores a 2025 não são diretamente comparáveis sem ajuste. A página oficial do PRORET lista as versões 3.0 do Submódulo 2.6 e 2.0 do Submódulo 2.6A como vigentes, aprovadas por esta resolução."
+   ]
+  },
+  {
+   "id": "ren-1137-2025",
+   "titulo": "Novo indicador DISE: interrupções em situação de emergência passam a gerar compensação",
+   "orgao": "ANEEL",
+   "ato": "Resolução Normativa ANEEL nº 1.137, de 21 de outubro de 2025",
+   "tipo_ato": "Resolução Normativa",
+   "data_ato": "2025-10-21",
+   "data_publicacao": "2025-10-30",
+   "vigencia_inicio": "2025-10-30",
+   "vigencia_regra": "Art. 21. Esta Resolução entra em vigor na data de sua publicação.",
+   "vigencia_calculada": false,
+   "dispositivo": "art. 2º (item 134-A do Módulo 1 do PRODIST), art. 5º (itens 172, 214, 216, 219 e 220-A do Módulo 8), art. 13, incisos I a VI (prazos de implantação) e art. 21 (vigência)",
+   "resumo": "Cria o indicador individual DISE, a duração de cada interrupção ocorrida em situação de emergência, com limite vinculado ao DEC anual e compensação ao consumidor de média ou baixa tensão a cada interrupção que o supere. A apuração do DISE deve começar em até 180 dias da publicação, com efeitos retroativos a dois meses após a publicação. A mesma resolução exige planos de manejo de vegetação, de comunicação e de contingência e a divulgação, em mapa, das unidades afetadas por interrupções.",
+   "efeito_declarado": "Estabelece disposições para o aumento da resiliência do sistema de distribuição e de transmissão a eventos climáticos severos; altera as Resoluções Normativas nº 846, de 11 de junho de 2019, nº 905, de 08 de dezembro de 2020, nº 948, de 16 de novembro de 2021, nº 956, de 7 de dezembro de 2021, nº 1.000, de 7 de dezembro de 2021, e dá outras providências.",
+   "impacto_estimado": null,
+   "temas": [
+    "qualidade",
+    "metodologia",
+    "consumidor"
+   ],
+   "paineis": [
+    {
+     "rotulo": "Qualidade",
+     "href": "/setor-eletrico/qualidade"
+    }
+   ],
+   "documento": "ren20251137",
+   "trecho": "134-A. Duração da Interrupção Individual ocorrida em Situação de Emergência por Unidade Consumidora ou por Ponto de Conexão – DISE: corresponde à duração de cada interrupção ocorrida em Situação de Emergência, para cada unidade consumidora ou ponto de conexão. […] 216. Os limites dos indicadores DIC, DMIC, DICRI e DISE são vinculados ao limite anual do indicador DEC […] 220-A. A distribuidora deve efetuar uma compensação ao consumidor ou central geradora de média ou baixa tensão para cada interrupção ocorrida em Situação de Emergência que superar o limite do indicador DISE. […] VI - Até 180 (cento e oitenta) dias mês para iniciar as apurações do Duração da Interrupção Individual ocorrida em Situação de Emergência por Unidade Consumidora ou por Ponto de Conexão – DISE e observar as disposições da Seção 8.2 do Módulo 8 do PRODIST com o corresponde pagamento de compensações por transgressão desse indicador, com efeitos retroativos a 2 meses após a publicação da norma;",
+   "nivel_conferencia": "texto_do_ato",
+   "observacoes": [
+    "O texto do art. 13, VI, diz '180 (cento e oitenta) dias mês', como transcrito. A página oficial do PRODIST lista a versão 14 do Módulo 8 como vigente, aprovada por esta resolução. Os indicadores de continuidade publicados antes da resolução não têm o DISE."
+   ]
+  }
+ ]
+}

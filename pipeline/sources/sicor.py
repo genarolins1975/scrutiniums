@@ -26,29 +26,59 @@ FonteRecursos e RegiaoUFGenero e trava em anos cheios de RegiaoUF (medido em
 - `sicor_fonte`   ← FonteRecursos (nacional), todos os meses;
 - `sicor_faixa`   ← Faixa (nacional, 13 faixas de valor), todos os meses;
 - `sicor_genero`  ← RegiaoUFGenero, todos os meses, agregado a (mês, UF, sexo, atividade);
-- `sicor_if`      ← SegmentoIF, últimos 15 meses, agregado a (mês, IF, programa, atividade);
-- `sicor_mun`     ← municipal, últimos 14 meses, grão da fonte (município × programa × fonte × atividade);
-- `sicor_produto` ← Custeio/InvestRegiaoUFProduto, últimos 14 meses
-  (14 e 15 porque a janela publicada, de 12 meses fechados, termina dois meses antes do corrente).
+- `sicor_if`      ← SegmentoIF, últimos 17 meses, agregado a (mês, IF, programa, atividade);
+- `sicor_mun`     ← municipal, últimos 16 meses, grão da fonte (município × programa × fonte × atividade);
+- `sicor_produto` ← Custeio/InvestRegiaoUFProduto, últimos 16 meses
+  (a janela publicada, de 12 meses fechados, termina dois meses antes do corrente, ou
+  mais cedo quando o municipal atrasa; ver MESES_MUN).
 Nomes de programa e subprograma vêm de ProgramaSubprogramaRegiaoUF (um mês), em
-`sicor_nomes`. Cap por execução nos recursos pesados: a primeira carga converge
-em poucas execuções diárias; falha consome o cap, nunca trava num mês quebrado.
+`sicor_nomes`. Cap e orçamento por execução, separados: pesados primeiro, leves depois. A primeira
+carga converge em poucas execuções diárias; falha consome o cap, nunca trava num
+mês quebrado.
 """
 import hashlib
 import json
+import time as _time
 from datetime import date
 
 from pipeline import common
 
 BASE = "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata"
 PRIMEIRO_ANO = 2013
-MESES_IF = 15         # a janela publicada (12 meses fechados) termina 2 meses antes do corrente
-MESES_MUN = 14
-MESES_PRODUTO = 14
+# A janela publicada (12 meses fechados) termina 2 meses antes do corrente, e mais
+# cedo quando o recorte municipal da Olinda atrasa em relação ao nacional (em
+# 13/10/2026 o municipal devolvia HTTP 500 para 2026-08 e 2026-09 e servia 2026-07).
+# Os dois meses extras cobrem esse atraso sem deixar a janela recuada sem dado.
+MESES_IF = 17
+MESES_MUN = 16
+MESES_PRODUTO = 16
 MESES_RECOLETA = 2       # mês corrente e anterior: parciais, sempre recoletados
 CAP_PESADOS = 40         # requisições pesadas (IF, município, produto) por execução
 CAP_LEVES = 200          # requisições leves (UF, fonte, faixa, gênero) por execução
-ORCAMENTO_S = 1500       # 25 min por execução: a Olinda responde em segundos ou em minutos (504 aos 60 s); o resto fica para o dia seguinte
+# Orçamentos SEPARADOS, pesados primeiro. Até 13/10/2026 havia um orçamento único
+# de 25 min, gasto antes pelos leves; depois da perda do cache em 03/10, a recarga da
+# cauda histórica dos leves (2013 em diante, com HTTP 500 recorrente em meses
+# antigos) consumiu o orçamento inteiro todos os dias, os pesados nunca rodaram, o
+# silver ficou sem sicor_mun e o rural.json saiu sem UFs e municípios, o que
+# reprovou a gold do dia nos testes de conteúdo de 04/10 em diante.
+# Em 13/10/2026 o municipal falhou nos 16 meses (ver TENTATIVAS_500) e o cache
+# ficou sem sicor_mun: a recarga completa custa de 35 a 90 s por mês, cerca de
+# 20 min só para o municipal, além de IF e produto. Teto: a coleta inteira levou
+# 131 min nesse dia contra os 150 min de run.py (ORCAMENTO_COLETA_MIN), e os
+# coletores depois do Sicor seriam pulados se ele tomasse mais.
+ORCAMENTO_PESADOS_S = 1500
+ORCAMENTO_S = 750        # leves; a Olinda responde em segundos ou em minutos (504 aos 60 s); o resto fica para o dia seguinte
+
+# A Olinda devolve HTTP 500 "Erro desconhecido" em cerca de 1 s, de forma
+# intermitente, para consultas que no instante seguinte respondem 200 (medido em
+# 13/10/2026: no mesmo mês do municipal, 2 sucessos em 8 tentativas antes de o
+# servidor passar a responder do cache; um mês ainda falhou após 15 tentativas em
+# 99 s, outro só passou na 8ª). Com 2 tentativas e 6 s de espera, os 16 meses do
+# municipal falharam no runner e o rural.json saiu sem UFs e municípios. O 500
+# rápido é retentado por até cerca de 3 min por mês; o mês que ainda falhar fica
+# para o dia seguinte. Os demais erros seguem com 2 tentativas.
+TENTATIVAS_500 = 30
+ESPERA_500_S = 3   # somada aos 2 s de http_get e ao ~1 s da resposta: ~6 s por tentativa
 
 VALORES = ("QtdCusteio", "VlCusteio", "QtdInvestimento", "VlInvestimento",
            "QtdComercializacao", "VlComercializacao", "QtdIndustrializacao", "VlIndustrializacao")
@@ -107,7 +137,20 @@ def _get(recurso, filtro, select=None, timeout=600):
     if select:
         url += "&$select=" + ",".join(select)
     url = url.replace(" ", "%20").replace("'", "%27")
-    body, meta = common.http_get(url, timeout=timeout, retries=2)
+    erros = 0
+    for tentativa in range(1, TENTATIVAS_500 + 1):
+        try:
+            body, meta = common.http_get(url, timeout=timeout, retries=1)
+            break
+        except RuntimeError as e:
+            if "HTTP Error 500" not in str(e):
+                erros += 1
+                if erros >= 2:
+                    raise
+            elif tentativa == TENTATIVAS_500:
+                raise RuntimeError(f"{e} (após {TENTATIVAS_500} tentativas)") from e
+            _time.sleep(ESPERA_500_S)
+    meta["attempt"] = tentativa
     meta["sha256"] = hashlib.sha256(body).hexdigest()
     return json.loads(body.decode("utf-8")).get("value", []), meta
 
@@ -293,54 +336,121 @@ def _coleta_nomes(con, mes):
     return len(rows), meta
 
 
+# Recursos nacionais que precisam ser da mesma fotografia que o municipal do mês:
+# o rural.json soma as UFs no municipal e o total no FonteRecursos, e o teste exige
+# que fechem ao centavo. Em 14/10/2026 o municipal inteiro foi recoletado (o cache
+# estava sem ele), mas o nacional de meses já "fechados" vinha de coletas anteriores;
+# o BCB ainda registrava contratos nesses meses e as UFs ficaram R$ 731,8 mi acima
+# do total. Coletados na mesma hora, os dois recortes fecham (2026-08: R$ 34.405.907.666,05
+# nos dois, medido em 14/10/2026).
+# Só o FonteRecursos: a Faixa entra numa reconciliação com tolerância de 0,5%, e na
+# primeira execução depois de uma recarga do municipal o realinhamento dos 16 meses
+# precisa caber no orçamento dos leves (FonteRecursos: de 1 a 62 s por mês em 14/10/2026).
+ALINHADOS_AO_MUN = ("fonte",)
+
+
+def _desalinhados(con):
+    """(recurso, mês) do nacional coletado antes do municipal do mesmo mês, ou ausente,
+    dentro da janela móvel do municipal; do mês mais recente para o mais antigo."""
+    out = []
+    for mes in _meses_atras(MESES_MUN):
+        r = con.execute("SELECT coletado_em FROM sicor_coleta WHERE recurso='mun' AND periodo=?", (mes,)).fetchone()
+        if not r:
+            continue
+        for recurso in ALINHADOS_AO_MUN:
+            n = con.execute("SELECT coletado_em FROM sicor_coleta WHERE recurso=? AND periodo=?",
+                            (recurso, mes)).fetchone()
+            if not n or n[0] < r[0]:
+                out.append((recurso, mes))
+    return out
+
+
+# Coletar na mesma hora não basta. Em 15/10/2026, na mesma execução e com o nacional
+# coletado DEPOIS do municipal, o FonteRecursos de 2026-08 (16:17) veio idêntico ao
+# centavo à medição de 14/10 enquanto o municipal (16:00) já somava R$ 71,06 mi a mais,
+# e o municipal de 2026-06 é que veio igual ao de 14/10 (FonteRecursos R$ 9,98 mi acima).
+# Em 17/10 o municipal de 2026-09 veio byte a byte igual ao de 16/10 (sha256) quatro
+# minutos antes de FonteRecursos e Faixa já trazerem a fotografia nova; às 18:53 do mesmo
+# dia os três fechavam ao centavo. A prova da mesma fotografia é o valor: mês do
+# municipal cujo total difere do FonteRecursos em mais de TOLERANCIA_PAR_RS volta a ser
+# coletado (municipal primeiro; o nacional, então anterior, é refeito por _desalinhados).
+TOLERANCIA_PAR_RS = 0.05   # por mês; o teste da gold exige R$ 1 na soma dos 12 meses
+
+
+def _divergentes(con):
+    """Meses da janela do municipal em que municipal e FonteRecursos não fecham ao centavo."""
+    out = []
+    for mes in _meses_atras(MESES_MUN):
+        vm = con.execute("SELECT SUM(vl_c+vl_i+vl_com+vl_ind) FROM sicor_mun WHERE mes=?", (mes,)).fetchone()[0]
+        vf = con.execute("SELECT SUM(vl_c+vl_i+vl_com+vl_ind) FROM sicor_fonte WHERE mes=?", (mes,)).fetchone()[0]
+        if vm is not None and vf is not None and abs(vm - vf) > TOLERANCIA_PAR_RS:
+            out.append(mes)
+    return out
+
+
+def _resumo_erro(e, limite=300):
+    """Mensagem curta que preserva a causa: a URL da Olinda tem mais de 300
+    caracteres e, cortada pelo começo, escondia o "HTTP Error 500" no log."""
+    msg = str(e)
+    if len(msg) <= limite:
+        return msg
+    return msg[:100] + " [...] " + msg[-(limite - 107):]
+
+
 def collect(con, cfg):
-    import time as _time
     _ensure(con)
     results = []
+
+    def _executa(recurso, fn, mes, lineage):
+        key = f"sicor_{recurso}:{mes}"
+        try:
+            n, meta = fn(con, mes)
+            _registra(con, recurso, mes, n)
+            common.record_lineage(con, lineage, meta.get("url", ""), meta.get("sha256", "-"), key)
+            con.commit()
+            results.append({"key": key, "ok": True, "rows": n})
+        except Exception as e:
+            con.rollback()
+            results.append({"key": key, "ok": False, "error": _resumo_erro(e)})
+
+    # 1) pesados, com orçamento próprio: são a janela publicada (UFs, municípios,
+    # instituições, produtos) e nunca podem esperar a cauda histórica dos leves.
+    # Município primeiro: é o recorte que fecha com o universo nacional.
     t0 = _time.monotonic()
-    estourou = lambda: _time.monotonic() - t0 > ORCAMENTO_S
+    pesados = [("mun", _coleta_mun, MESES_MUN), ("if", _coleta_if, MESES_IF), ("produto", _coleta_produto, MESES_PRODUTO)]
+    gasto = 0
+    divergentes = set(_divergentes(con))
+    for recurso, fn, n_meses in pesados:
+        for mes in _meses_atras(n_meses):
+            if gasto >= CAP_PESADOS or _time.monotonic() - t0 > ORCAMENTO_PESADOS_S:
+                break
+            if _ja_coletado(con, recurso, mes) and not (recurso == "mun" and mes in divergentes):
+                continue
+            gasto += 1
+            _executa(recurso, fn, mes, "rural_mun.json" if recurso == "mun" else "rural.json")
+
+    # 2) leves, mês-maior e recurso-menor: os meses recentes primeiro. Na ordem
+    # antiga (recurso-maior) o gênero só era coletado depois de UF, fonte e faixa
+    # esgotarem a história, e o runner publicou rural.json com gênero zerado em 07/09/2026.
+    t0 = _time.monotonic()
     leves = [("uf", _coleta_uf), ("fonte", _coleta_fonte), ("faixa", _coleta_faixa), ("genero", _coleta_genero)]
     gasto_leve = 0
-    # mês-maior, recurso-menor: os quatro recursos leves recebem os meses recentes primeiro. Na ordem
-    # antiga (recurso-maior) o gênero só era coletado depois de UF, fonte e faixa esgotarem a história,
-    # e o runner publicou rural.json com gênero zerado em 07/09/2026.
+    # o nacional de cada mês do municipal é recoletado se for de fotografia anterior
+    # à dele, antes de qualquer outro leve (ver ALINHADOS_AO_MUN)
+    fn_leve = dict(leves)
+    for recurso, mes in _desalinhados(con):
+        if gasto_leve >= CAP_LEVES or _time.monotonic() - t0 > ORCAMENTO_S:
+            break
+        gasto_leve += 1
+        _executa(recurso, fn_leve[recurso], mes, "rural.json")
     for mes in _meses_historia():
         for recurso, fn in leves:
-            if gasto_leve >= CAP_LEVES or estourou():
+            if gasto_leve >= CAP_LEVES or _time.monotonic() - t0 > ORCAMENTO_S:
                 break
-            key = f"sicor_{recurso}:{mes}"
             if _ja_coletado(con, recurso, mes):
                 continue
             gasto_leve += 1
-            try:
-                n, meta = fn(con, mes)
-                _registra(con, recurso, mes, n)
-                common.record_lineage(con, "rural.json", meta.get("url", ""), meta.get("sha256", "-"), key)
-                con.commit()
-                results.append({"key": key, "ok": True, "rows": n})
-            except Exception as e:
-                con.rollback()
-                results.append({"key": key, "ok": False, "error": str(e)[:300]})
-    pesados = [("if", _coleta_if, MESES_IF), ("mun", _coleta_mun, MESES_MUN), ("produto", _coleta_produto, MESES_PRODUTO)]
-    gasto = 0
-    for recurso, fn, n_meses in pesados:
-        for mes in _meses_atras(n_meses):
-            if gasto >= CAP_PESADOS or estourou():
-                break
-            key = f"sicor_{recurso}:{mes}"
-            if _ja_coletado(con, recurso, mes):
-                continue
-            gasto += 1
-            try:
-                n, meta = fn(con, mes)
-                _registra(con, recurso, mes, n)
-                common.record_lineage(con, "rural_mun.json" if recurso == "mun" else "rural.json",
-                                      meta.get("url", ""), meta.get("sha256", "-"), key)
-                con.commit()
-                results.append({"key": key, "ok": True, "rows": n})
-            except Exception as e:
-                con.rollback()
-                results.append({"key": key, "ok": False, "error": str(e)[:300]})
+            _executa(recurso, fn, mes, "rural.json")
     # nomes de programa/subprograma: do mês anterior (mais completo que o corrente)
     try:
         n, _ = _coleta_nomes(con, _meses_atras(2)[1])

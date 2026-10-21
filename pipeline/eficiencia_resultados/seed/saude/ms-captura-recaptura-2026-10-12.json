@@ -1,0 +1,1138 @@
+{
+  "version": "ms-capture-recapture-scope-v1",
+  "retrieved_at": "2026-10-12",
+  "selected_years": [
+    2021,
+    2022,
+    2023
+  ],
+  "sources": [
+    {
+      "file": "cobertura-SIM.xlsx",
+      "url": "https://svs.aids.gov.br/daent/acesso-a-informacao/acoes-e-programas/captura-recaptura/mortalidade/cobertura-SIM.xlsx",
+      "sha256": "dd3cd353f48d63ec589e67460fead6e85cb578c43b3f1d9916acfa3f4406636c",
+      "tables": [
+        {
+          "sheet": "Cobertura SIM Infantil",
+          "sheet_state": "visible",
+          "geography_header": "UF",
+          "metric": "infant_registration_coverage",
+          "unit": "percent",
+          "available_years": [
+            2015,
+            2016,
+            2017,
+            2018,
+            2019,
+            2020,
+            2021,
+            2022,
+            2023
+          ],
+          "source_columns": {
+            "2021": "H",
+            "2022": "I",
+            "2023": "J"
+          },
+          "rows": [
+            {
+              "source_row": 2,
+              "name": "Brasil",
+              "geography_level": "country",
+              "values": {
+                "2021": 98.1449068195926,
+                "2022": 98.6179917758649,
+                "2023": 98.442
+              }
+            },
+            {
+              "source_row": 3,
+              "name": "Norte",
+              "geography_level": "region",
+              "values": {
+                "2021": 98.3827220559384,
+                "2022": 98.4073491944227,
+                "2023": 98.51196123204288
+              }
+            },
+            {
+              "source_row": 4,
+              "name": "Rondônia",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.0109542022776,
+                "2022": 97.9277769186426,
+                "2023": 98.969
+              }
+            },
+            {
+              "source_row": 5,
+              "name": "Acre",
+              "geography_level": "state",
+              "values": {
+                "2021": 95.620935286319,
+                "2022": 96.4279220134484,
+                "2023": 96.052
+              }
+            },
+            {
+              "source_row": 6,
+              "name": "Amazonas",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.4956295148179,
+                "2022": 98.5045437092931,
+                "2023": 99.099
+              }
+            },
+            {
+              "source_row": 7,
+              "name": "Roraima",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.7586697523566,
+                "2022": 97.9825081769439,
+                "2023": 96.703
+              }
+            },
+            {
+              "source_row": 8,
+              "name": "Pará",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.4003732049085,
+                "2022": 99.0094772581682,
+                "2023": 98.786
+              }
+            },
+            {
+              "source_row": 9,
+              "name": "Amapá",
+              "geography_level": "state",
+              "values": {
+                "2021": 97.7236244372794,
+                "2022": 96.5598329653956,
+                "2023": 97.27
+              }
+            },
+            {
+              "source_row": 10,
+              "name": "Tocantins",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.8638602107402,
+                "2022": 99.5067435603023,
+                "2023": 99.115
+              }
+            },
+            {
+              "source_row": 11,
+              "name": "Nordeste",
+              "geography_level": "region",
+              "values": {
+                "2021": 97.078320581328,
+                "2022": 98.2606332992952,
+                "2023": 97.9735184886162
+              }
+            },
+            {
+              "source_row": 12,
+              "name": "Maranhão",
+              "geography_level": "state",
+              "values": {
+                "2021": 95.3556041639829,
+                "2022": 97.328250196084,
+                "2023": 96.668
+              }
+            },
+            {
+              "source_row": 13,
+              "name": "Piauí",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.1443865808662,
+                "2022": 99.0271225441192,
+                "2023": 99.368
+              }
+            },
+            {
+              "source_row": 14,
+              "name": "Ceará",
+              "geography_level": "state",
+              "values": {
+                "2021": 91.8786153392612,
+                "2022": 98.0532250958125,
+                "2023": 97.498
+              }
+            },
+            {
+              "source_row": 15,
+              "name": "Rio Grande do Norte",
+              "geography_level": "state",
+              "values": {
+                "2021": 96.4914854732241,
+                "2022": 97.2503102532877,
+                "2023": 97.36
+              }
+            },
+            {
+              "source_row": 16,
+              "name": "Paraíba",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.4600932020643,
+                "2022": 98.0450535211293,
+                "2023": 98.776
+              }
+            },
+            {
+              "source_row": 17,
+              "name": "Pernambuco",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.8498695690589,
+                "2022": 99.0013977974649,
+                "2023": 98.643
+              }
+            },
+            {
+              "source_row": 18,
+              "name": "Alagoas",
+              "geography_level": "state",
+              "values": {
+                "2021": 97.7919119904064,
+                "2022": 97.8451390221196,
+                "2023": 98.737
+              }
+            },
+            {
+              "source_row": 19,
+              "name": "Sergipe",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.0435392554734,
+                "2022": 99.067335367569,
+                "2023": 98.113
+              }
+            },
+            {
+              "source_row": 20,
+              "name": "Bahia",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.4282790228269,
+                "2022": 98.3327234636959,
+                "2023": 98.179
+              }
+            },
+            {
+              "source_row": 21,
+              "name": "Sudeste",
+              "geography_level": "region",
+              "values": {
+                "2021": 98.5578488331105,
+                "2022": 98.7560486712254,
+                "2023": 98.5413104125173
+              }
+            },
+            {
+              "source_row": 22,
+              "name": "Minas Gerais",
+              "geography_level": "state",
+              "values": {
+                "2021": 97.6827618636103,
+                "2022": 98.0860419187884,
+                "2023": 98.126
+              }
+            },
+            {
+              "source_row": 23,
+              "name": "Espírito Santo",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.6445599822036,
+                "2022": 99.1982872703998,
+                "2023": 98.308
+              }
+            },
+            {
+              "source_row": 24,
+              "name": "Rio de Janeiro",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.4215635299731,
+                "2022": 99.3716397777244,
+                "2023": 99.287
+              }
+            },
+            {
+              "source_row": 25,
+              "name": "São Paulo",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.6787015168332,
+                "2022": 98.8761727223909,
+                "2023": 98.503
+              }
+            },
+            {
+              "source_row": 26,
+              "name": "Sul",
+              "geography_level": "region",
+              "values": {
+                "2021": 99.1744150975634,
+                "2022": 99.1712682960676,
+                "2023": 99.14197632289094
+              }
+            },
+            {
+              "source_row": 27,
+              "name": "Paraná",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.1635774608526,
+                "2022": 99.4403509145953,
+                "2023": 99.136
+              }
+            },
+            {
+              "source_row": 28,
+              "name": "Santa Catarina",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.2357843175867,
+                "2022": 98.6234747846819,
+                "2023": 99.165
+              }
+            },
+            {
+              "source_row": 29,
+              "name": "Rio Grande do Sul",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.4738206476081,
+                "2022": 99.3584393736453,
+                "2023": 99.302
+              }
+            },
+            {
+              "source_row": 30,
+              "name": "Centro-Oeste",
+              "geography_level": "region",
+              "values": {
+                "2021": 98.7832566944052,
+                "2022": 98.9417380526099,
+                "2023": 98.7019181629246
+              }
+            },
+            {
+              "source_row": 31,
+              "name": "Mato Grosso do Sul",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.1927656319749,
+                "2022": 98.1919688579347,
+                "2023": 98.331
+              }
+            },
+            {
+              "source_row": 32,
+              "name": "Mato Grosso",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.9441448910293,
+                "2022": 99.7471327712644,
+                "2023": 98.099
+              }
+            },
+            {
+              "source_row": 33,
+              "name": "Goiás",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.9106001358822,
+                "2022": 99.050115781066,
+                "2023": 98.954
+              }
+            },
+            {
+              "source_row": 34,
+              "name": "Distrito Federal",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.0492080510754,
+                "2022": 99.4676036547588,
+                "2023": 98.75
+              }
+            }
+          ],
+          "notes": []
+        },
+        {
+          "sheet": "Cobertura SIM Total",
+          "sheet_state": "visible",
+          "geography_header": "UF",
+          "metric": "all_age_registration_coverage",
+          "unit": "percent",
+          "available_years": [
+            2015,
+            2016,
+            2017,
+            2018,
+            2019,
+            2020,
+            2021,
+            2022,
+            2023
+          ],
+          "source_columns": {
+            "2021": "H",
+            "2022": "I",
+            "2023": "J"
+          },
+          "rows": [
+            {
+              "source_row": 2,
+              "name": "Brasil",
+              "geography_level": "country",
+              "values": {
+                "2021": 99.02609,
+                "2022": 98.9065,
+                "2023": 98.90826
+              }
+            },
+            {
+              "source_row": 3,
+              "name": "Norte",
+              "geography_level": "region",
+              "values": {
+                "2021": 98.72336,
+                "2022": 98.60277,
+                "2023": 98.74787
+              }
+            },
+            {
+              "source_row": 4,
+              "name": "Rondônia",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.24157,
+                "2022": 99.08683,
+                "2023": 99.29491
+              }
+            },
+            {
+              "source_row": 5,
+              "name": "Acre",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.65571,
+                "2022": 97.41979,
+                "2023": 96.24806
+              }
+            },
+            {
+              "source_row": 6,
+              "name": "Amazonas",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.99333,
+                "2022": 98.85482,
+                "2023": 99.18086
+              }
+            },
+            {
+              "source_row": 7,
+              "name": "Roraima",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.26696,
+                "2022": 98.64886,
+                "2023": 97.96539
+              }
+            },
+            {
+              "source_row": 8,
+              "name": "Pará",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.46157,
+                "2022": 98.63208,
+                "2023": 98.85382
+              }
+            },
+            {
+              "source_row": 9,
+              "name": "Amapá",
+              "geography_level": "state",
+              "values": {
+                "2021": 96.98158,
+                "2022": 96.23651,
+                "2023": 97.70961
+              }
+            },
+            {
+              "source_row": 10,
+              "name": "Tocantins",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.15394,
+                "2022": 98.9111,
+                "2023": 98.60061
+              }
+            },
+            {
+              "source_row": 11,
+              "name": "Nordeste",
+              "geography_level": "region",
+              "values": {
+                "2021": 98.2178,
+                "2022": 98.15064,
+                "2023": 98.19377
+              }
+            },
+            {
+              "source_row": 12,
+              "name": "Maranhão",
+              "geography_level": "state",
+              "values": {
+                "2021": 96.45896,
+                "2022": 96.30298,
+                "2023": 95.99153
+              }
+            },
+            {
+              "source_row": 13,
+              "name": "Piauí",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.38528,
+                "2022": 98.88765,
+                "2023": 98.6465
+              }
+            },
+            {
+              "source_row": 14,
+              "name": "Ceará",
+              "geography_level": "state",
+              "values": {
+                "2021": 97.75334,
+                "2022": 98.15715,
+                "2023": 98.45171
+              }
+            },
+            {
+              "source_row": 15,
+              "name": "Rio Grande do Norte",
+              "geography_level": "state",
+              "values": {
+                "2021": 97.50183,
+                "2022": 97.09258,
+                "2023": 97.80762
+              }
+            },
+            {
+              "source_row": 16,
+              "name": "Paraíba",
+              "geography_level": "state",
+              "values": {
+                "2021": 97.41821,
+                "2022": 97.67469,
+                "2023": 97.57578
+              }
+            },
+            {
+              "source_row": 17,
+              "name": "Pernambuco",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.60382,
+                "2022": 98.2759,
+                "2023": 98.6844
+              }
+            },
+            {
+              "source_row": 18,
+              "name": "Alagoas",
+              "geography_level": "state",
+              "values": {
+                "2021": 97.98531,
+                "2022": 97.21087,
+                "2023": 97.4298
+              }
+            },
+            {
+              "source_row": 19,
+              "name": "Sergipe",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.96383,
+                "2022": 99.15775,
+                "2023": 98.95431
+              }
+            },
+            {
+              "source_row": 20,
+              "name": "Bahia",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.04105,
+                "2022": 99.05934,
+                "2023": 98.78978
+              }
+            },
+            {
+              "source_row": 21,
+              "name": "Sudeste",
+              "geography_level": "region",
+              "values": {
+                "2021": 99.3709,
+                "2022": 99.18764,
+                "2023": 99.1671
+              }
+            },
+            {
+              "source_row": 22,
+              "name": "Minas Gerais",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.6008,
+                "2022": 98.56869,
+                "2023": 98.55602
+              }
+            },
+            {
+              "source_row": 23,
+              "name": "Espírito Santo",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.16552,
+                "2022": 98.41287,
+                "2023": 98.77957
+              }
+            },
+            {
+              "source_row": 24,
+              "name": "Rio de Janeiro",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.81687,
+                "2022": 99.7052,
+                "2023": 99.73224
+              }
+            },
+            {
+              "source_row": 25,
+              "name": "São Paulo",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.61179,
+                "2022": 99.31645,
+                "2023": 99.24491
+              }
+            },
+            {
+              "source_row": 26,
+              "name": "Sul",
+              "geography_level": "region",
+              "values": {
+                "2021": 99.3731,
+                "2022": 99.45678,
+                "2023": 99.42534
+              }
+            },
+            {
+              "source_row": 27,
+              "name": "Paraná",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.54783,
+                "2022": 99.52502,
+                "2023": 99.51888
+              }
+            },
+            {
+              "source_row": 28,
+              "name": "Santa Catarina",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.14181,
+                "2022": 99.30817,
+                "2023": 99.29069
+              }
+            },
+            {
+              "source_row": 29,
+              "name": "Rio Grande do Sul",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.32405,
+                "2022": 99.47118,
+                "2023": 99.41184
+              }
+            },
+            {
+              "source_row": 30,
+              "name": "Centro-Oeste",
+              "geography_level": "region",
+              "values": {
+                "2021": 99.25297,
+                "2022": 99.18024,
+                "2023": 99.18052
+              }
+            },
+            {
+              "source_row": 31,
+              "name": "Mato Grosso do Sul",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.4198,
+                "2022": 99.40236,
+                "2023": 99.37402
+              }
+            },
+            {
+              "source_row": 32,
+              "name": "Mato Grosso",
+              "geography_level": "state",
+              "values": {
+                "2021": 98.77432,
+                "2022": 98.97827,
+                "2023": 99.18801
+              }
+            },
+            {
+              "source_row": 33,
+              "name": "Goiás",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.32015,
+                "2022": 99.24666,
+                "2023": 99.2491
+              }
+            },
+            {
+              "source_row": 34,
+              "name": "Distrito Federal",
+              "geography_level": "state",
+              "values": {
+                "2021": 99.54621,
+                "2022": 98.95249,
+                "2023": 98.67882
+              }
+            }
+          ],
+          "notes": []
+        }
+      ]
+    },
+    {
+      "file": "taxa-mortalidade-infantil.xlsx",
+      "url": "https://svs.aids.gov.br/daent/acesso-a-informacao/acoes-e-programas/captura-recaptura/mortalidade/taxa-mortalidade-infantil.xlsx",
+      "sha256": "a8cfccad239f134747e1fbfd41051f079dc267a6cb0d736812e69a349a9f0706",
+      "tables": [
+        {
+          "sheet": "TMI",
+          "sheet_state": "visible",
+          "geography_header": "UF",
+          "metric": "infant_mortality_rate",
+          "unit": "per_1000_live_births",
+          "available_years": [
+            2000,
+            2001,
+            2002,
+            2003,
+            2004,
+            2005,
+            2006,
+            2007,
+            2008,
+            2009,
+            2010,
+            2011,
+            2012,
+            2013,
+            2014,
+            2015,
+            2016,
+            2017,
+            2018,
+            2019,
+            2020,
+            2021,
+            2022,
+            2023,
+            2024
+          ],
+          "source_columns": {
+            "2021": "W",
+            "2022": "X",
+            "2023": "Y"
+          },
+          "rows": [
+            {
+              "source_row": 2,
+              "name": "Brasil",
+              "geography_level": "country",
+              "values": {
+                "2021": 12.0655040934587,
+                "2022": 12.7047309378533,
+                "2023": 12.7608616451092
+              }
+            },
+            {
+              "source_row": 3,
+              "name": "Norte",
+              "geography_level": "region",
+              "values": {
+                "2021": 15.1203298630263,
+                "2022": 15.2444633006708,
+                "2023": 16.0426370561149
+              }
+            },
+            {
+              "source_row": 4,
+              "name": "Rondônia",
+              "geography_level": "state",
+              "values": {
+                "2021": 12.3211753868147,
+                "2022": 13.7200986140195,
+                "2023": 12.3849774301234
+              }
+            },
+            {
+              "source_row": 5,
+              "name": "Acre",
+              "geography_level": "state",
+              "values": {
+                "2021": 18.5231873720853,
+                "2022": 17.6365983017142,
+                "2023": 17.4992791480418
+              }
+            },
+            {
+              "source_row": 6,
+              "name": "Amazonas",
+              "geography_level": "state",
+              "values": {
+                "2021": 14.8546996032872,
+                "2022": 15.8670991551674,
+                "2023": 17.1830364656461
+              }
+            },
+            {
+              "source_row": 7,
+              "name": "Roraima",
+              "geography_level": "state",
+              "values": {
+                "2021": 19.4200915853959,
+                "2022": 18.7079530835429,
+                "2023": 23.9872545334121
+              }
+            },
+            {
+              "source_row": 8,
+              "name": "Pará",
+              "geography_level": "state",
+              "values": {
+                "2021": 14.8161305755143,
+                "2022": 14.7026792133078,
+                "2023": 15.1521852176539
+              }
+            },
+            {
+              "source_row": 9,
+              "name": "Amapá",
+              "geography_level": "state",
+              "values": {
+                "2021": 20.0648991294034,
+                "2022": 18.3809844766022,
+                "2023": 21.0953180371125
+              }
+            },
+            {
+              "source_row": 10,
+              "name": "Tocantins",
+              "geography_level": "state",
+              "values": {
+                "2021": 12.7564245630625,
+                "2022": 12.446099908433,
+                "2023": 12.8465494072582
+              }
+            },
+            {
+              "source_row": 11,
+              "name": "Nordeste",
+              "geography_level": "region",
+              "values": {
+                "2021": 13.4135893343839,
+                "2022": 14.2357954999037,
+                "2023": 13.9894748289763
+              }
+            },
+            {
+              "source_row": 12,
+              "name": "Maranhão",
+              "geography_level": "state",
+              "values": {
+                "2021": 13.9069341301281,
+                "2022": 15.524686417196,
+                "2023": 15.2285505090293
+              }
+            },
+            {
+              "source_row": 13,
+              "name": "Piauí",
+              "geography_level": "state",
+              "values": {
+                "2021": 13.8488863196661,
+                "2022": 15.8129630245275,
+                "2023": 14.9671113687861
+              }
+            },
+            {
+              "source_row": 14,
+              "name": "Ceará",
+              "geography_level": "state",
+              "values": {
+                "2021": 11.5557883079012,
+                "2022": 11.8369227617594,
+                "2023": 11.9190029002197
+              }
+            },
+            {
+              "source_row": 15,
+              "name": "Rio Grande do Norte",
+              "geography_level": "state",
+              "values": {
+                "2021": 12.5703675787778,
+                "2022": 11.293605352414,
+                "2023": 11.3704564825976
+              }
+            },
+            {
+              "source_row": 16,
+              "name": "Paraíba",
+              "geography_level": "state",
+              "values": {
+                "2021": 12.8183298134314,
+                "2022": 15.0208488067815,
+                "2023": 13.1367734227105
+              }
+            },
+            {
+              "source_row": 17,
+              "name": "Pernambuco",
+              "geography_level": "state",
+              "values": {
+                "2021": 12.454855376754,
+                "2022": 13.309649237959,
+                "2023": 13.3487338914969
+              }
+            },
+            {
+              "source_row": 18,
+              "name": "Alagoas",
+              "geography_level": "state",
+              "values": {
+                "2021": 13.6166736714137,
+                "2022": 13.1387696693991,
+                "2023": 13.6632494400695
+              }
+            },
+            {
+              "source_row": 19,
+              "name": "Sergipe",
+              "geography_level": "state",
+              "values": {
+                "2021": 14.2317503389454,
+                "2022": 17.7724554014212,
+                "2023": 18.8812469758761
+              }
+            },
+            {
+              "source_row": 20,
+              "name": "Bahia",
+              "geography_level": "state",
+              "values": {
+                "2021": 15.0630083173238,
+                "2022": 15.4679134496996,
+                "2023": 14.9538875248628
+              }
+            },
+            {
+              "source_row": 21,
+              "name": "Sudeste",
+              "geography_level": "region",
+              "values": {
+                "2021": 11.0728969672362,
+                "2022": 11.7425392576073,
+                "2023": 11.8713096406165
+              }
+            },
+            {
+              "source_row": 22,
+              "name": "Minas Gerais",
+              "geography_level": "state",
+              "values": {
+                "2021": 10.8823462062733,
+                "2022": 11.5371139841093,
+                "2023": 11.4302978787379
+              }
+            },
+            {
+              "source_row": 23,
+              "name": "Espírito Santo",
+              "geography_level": "state",
+              "values": {
+                "2021": 11.4232597343418,
+                "2022": 10.8205582557226,
+                "2023": 11.7594382132891
+              }
+            },
+            {
+              "source_row": 24,
+              "name": "Rio de Janeiro",
+              "geography_level": "state",
+              "values": {
+                "2021": 12.7577509320416,
+                "2022": 13.2025694156659,
+                "2023": 13.518297521324
+              }
+            },
+            {
+              "source_row": 25,
+              "name": "São Paulo",
+              "geography_level": "state",
+              "values": {
+                "2021": 10.516084920599,
+                "2022": 11.4153985827474,
+                "2023": 11.5113400059074
+              }
+            },
+            {
+              "source_row": 26,
+              "name": "Sul",
+              "geography_level": "region",
+              "values": {
+                "2021": 9.50343607415971,
+                "2022": 10.2936110193856,
+                "2023": 10.0209407161202
+              }
+            },
+            {
+              "source_row": 27,
+              "name": "Paraná",
+              "geography_level": "state",
+              "values": {
+                "2021": 9.52950823532097,
+                "2022": 10.3879928917671,
+                "2023": 10.8922988059747
+              }
+            },
+            {
+              "source_row": 28,
+              "name": "Santa Catarina",
+              "geography_level": "state",
+              "values": {
+                "2021": 9.2778120631609,
+                "2022": 9.86845371686994,
+                "2023": 9.10637679351667
+              }
+            },
+            {
+              "source_row": 29,
+              "name": "Rio Grande do Sul",
+              "geography_level": "state",
+              "values": {
+                "2021": 9.64876249026616,
+                "2022": 10.5296857371677,
+                "2023": 9.74384229126506
+              }
+            },
+            {
+              "source_row": 30,
+              "name": "Centro-Oeste",
+              "geography_level": "region",
+              "values": {
+                "2021": 11.8206151212436,
+                "2022": 12.6312449019552,
+                "2023": 12.9240763464128
+              }
+            },
+            {
+              "source_row": 31,
+              "name": "Mato Grosso do Sul",
+              "geography_level": "state",
+              "values": {
+                "2021": 10.8676539978638,
+                "2022": 12.5524424371263,
+                "2023": 13.685735993819
+              }
+            },
+            {
+              "source_row": 32,
+              "name": "Mato Grosso",
+              "geography_level": "state",
+              "values": {
+                "2021": 12.5932342266895,
+                "2022": 13.995591373065,
+                "2023": 14.1454292968576
+              }
+            },
+            {
+              "source_row": 33,
+              "name": "Goiás",
+              "geography_level": "state",
+              "values": {
+                "2021": 12.0575279606029,
+                "2022": 12.5960010273129,
+                "2023": 12.3770843259727
+              }
+            },
+            {
+              "source_row": 34,
+              "name": "Distrito Federal",
+              "geography_level": "state",
+              "values": {
+                "2021": 11.1233135039888,
+                "2022": 10.5919152845496,
+                "2023": 11.4442802613995
+              }
+            }
+          ],
+          "notes": [
+            {
+              "cell": "A35",
+              "text": "Elaboração : MS/SVSA/DAENT/CGIAE"
+            },
+            {
+              "cell": "A37",
+              "text": "FONTES DE DADOS"
+            },
+            {
+              "cell": "A38",
+              "text": "De 2000 a 2014, os nascidos vivos e óbitos constam nos Indicadores Implícitos na projeção da população, edição 2024, publicados pelo IBGE."
+            },
+            {
+              "cell": "A39",
+              "text": "    • IBGE. Diretoria de Pesquisas, Coordenação de População e Indicadores Sociais, Projeções Populacionais do Brasil e Unidades da Federação, 2024 IBGE: Indicadores Implícitos  "
+            },
+            {
+              "cell": "A41",
+              "text": "De 2015 em diante, os nascidos vivos e óbitos infantis constam no Estudo Complementar à Aplicação da Técnica de Captura-Recaptura, publicado pelo IBGE."
+            },
+            {
+              "cell": "A42",
+              "text": "    • IBGE. Diretoria de Pesquisas, Coordenação de População e Indicadores Sociais, Projeções Populacionais do Brasil e Unidades da Federação, 202 IBGE: Captura e Recaptura  "
+            },
+            {
+              "cell": "A44",
+              "text": "Dados finalizados para 2024."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

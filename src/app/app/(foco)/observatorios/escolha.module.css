@@ -1,0 +1,51 @@
+/* Mapa da área logada: lugar do leitor, diretório com filtro (DiretorioPaineis.module.css) e fontes recolhidas. */
+.pagina{background:var(--obs-papel);color:var(--obs-tinta);min-height:calc(100vh - 150px)}
+.conteudo{max-width:1320px;margin:0 auto;padding:0 32px 32px}
+.rotulo{font-family:var(--font-label),var(--font-sans),sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:400;line-height:1.6;color:#6b6d6a}
+
+/* faixa "seu lugar": continuar, recortes, avisos */
+.lugar{max-width:1320px;margin:0 auto;padding:6px 32px;gap:4px 24px;border-bottom:1px solid var(--obs-regra);font-size:14px;line-height:1.5;color:#3d4147}
+.lugarItens{display:flex;flex-wrap:wrap;align-items:center;gap:4px 36px;min-height:44px}
+.lugar strong{font-weight:500;color:var(--obs-tinta)}
+.lugar a{color:var(--obs-tinta);text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--obs-regra)}
+.lugar a:hover{text-decoration-color:currentColor;color:#7c5638}
+.vazio{color:#6b6d6a}
+.continuar{display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px 12px}
+.continuar button{font:inherit;cursor:pointer;background:none;border:0;padding:0;display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--obs-tinta);text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--obs-regra)}
+.continuar button:hover{text-decoration-color:currentColor;color:#7c5638}
+.continuar button:focus-visible,.lugar a:focus-visible{outline:3px solid #0e6170;outline-offset:3px}
+.conta{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-family:var(--font-label),var(--font-sans),sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none !important;color:#3d4147 !important}
+.parceria{margin:2px 0 10px}
+
+/* fontes e atualização, recolhidas no fim */
+.fontes{border-top:1px solid var(--obs-regra);margin-top:16px;padding:24px 0 8px}
+.fontes h2{font-family:var(--font-serif),Georgia,serif;font-weight:400;font-size:22px;line-height:1.2;margin:0 0 6px}
+.fontes>p{font-size:14px;line-height:1.55;color:#3d4147;max-width:66ch;margin:0 0 18px}
+.fontesLista{columns:3;column-gap:48px}
+.fontesLista>div{break-inside:avoid;margin-bottom:22px}
+.ficha{display:flex;align-items:flex-start;gap:8px 16px;border-top:1px solid var(--obs-regra)}
+.ficha details{flex:1;min-width:0}
+.selo{align-self:center;flex-shrink:0;font-family:var(--font-label),var(--font-sans),sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7c5638;border:1px solid #7c5638;padding:2px 7px;line-height:1.6}
+.explorar{font:inherit;cursor:pointer;background:none;border:0;padding:0;display:inline-flex;align-items:center;gap:6px;min-height:44px;white-space:nowrap;font-size:13px;font-weight:600;color:var(--obs-tinta);text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--obs-regra)}
+.explorar:hover{color:#7c5638;text-decoration-color:currentColor}
+.explorar:focus-visible{outline:3px solid #0e6170;outline-offset:3px}
+.fontesLista summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;cursor:pointer;list-style:none;font-size:14px;color:var(--obs-tinta)}
+.fontesLista summary::-webkit-details-marker{display:none}
+.fontesLista summary span{font-size:20px;line-height:1;color:#6b6d6a;transition:transform .16s cubic-bezier(.23,1,.32,1)}
+.fontesLista details[open] summary span{transform:rotate(45deg)}
+.fontesLista summary:focus-visible{outline:3px solid #0e6170;outline-offset:3px}
+.fontesLista details>div{padding:0 0 16px;font-size:13px;line-height:1.65;color:#3d4147}
+.fontesLista details .rotulo{margin:12px 0 6px;font-size:11px}
+.fontesLista ul{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+
+@media (max-width:1100px){.fontesLista{columns:2}}
+@media (max-width:700px){
+.conteudo{padding:0 16px 24px}
+.lugar{padding:8px 16px;gap:2px 16px}
+.lugarItens{gap:2px 20px;min-height:0}
+.fontesLista{columns:1}
+.ficha{flex-wrap:wrap}
+.ficha details{flex-basis:100%}
+.explorar{white-space:normal;text-align:left}
+}
+@media (prefers-reduced-motion:reduce){.fontesLista summary span{transition:none}}

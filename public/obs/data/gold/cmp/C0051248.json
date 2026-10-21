@@ -1,7 +1,7 @@
 {
  "cod": "C0051248",
  "nome": "CM CAPITAL MARKETS",
- "sr": "S4",
+ "sr": null,
  "tcb": "N2",
  "porte_quartil": null,
  "nivel": "conglomerado prudencial",
@@ -336,5 +336,5 @@
    "202409": 0.0
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

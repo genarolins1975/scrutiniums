@@ -1,0 +1,59 @@
+{
+  "dominio": "previdencia",
+  "titulo": "Previdência e INSS (Observatório das Contas Públicas)",
+  "descricao": "Recoleta das quatro fontes do painel Previdência e INSS: o Boletim Estatístico da Previdência Social (BEPS, mensal, tabelas 14, 15 e 19), os benefícios emitidos por município (Ministério da Previdência Social, anual, posição de dezembro, desde 2019), o Resultado do Tesouro Nacional (série histórica, tabelas 2.2 e 2.1-A) e o Anuário Estatístico da Previdência Social (AEPS, anual, tabelas A.1, A.14, B.1, B.2, B.3, 43.1 e 43.2; o coletor procura a edição seguinte no mesmo endereço e, sem ela, recoleta a publicada). A gold só é publicada se a série mensal do BEPS estiver contínua e fechar com os grupos, se a tabela dos tipos de benefício mantiver as linhas esperadas e as partes somarem o todo, se as 27 UFs somarem o Brasil, se cada município fechar por grupo, se a soma dos municípios em cada dezembro for igual à do BEPS, se a divisão urbana e rural do RTN somar o total, se a conta em % do PIB conferir com a do Tesouro, se nenhum ano fechado tiver revisão acima do limite e se o Anuário fechar por grupo de benefício e por estado, com o Regime Geral de cada dezembro igual ao do BEPS.",
+  "codigo": [
+    "pipeline/previdencia/*.py",
+    "pipeline/tests/test_previdencia.py",
+    "src/lib/previdencia",
+    "src/tests/previdencia.test.ts"
+  ],
+  "reconstruir": [["python3", "-m", "pipeline.previdencia.run"]],
+  "timeout_reconstruir_min": 5,
+  "saidas": ["public/previdencia/gold"],
+  "sinal_de_mudanca": [
+    {"arquivo": "public/previdencia/gold/previdencia.json", "json_chave": "hash_dados"}
+  ],
+  "testes": [
+    {
+      "nome": "pipeline da Previdência e INSS (Python): validações que retêm a publicação e conferência cruzada",
+      "comando": ["python3", "-m", "unittest", "pipeline.tests.test_previdencia"],
+      "timeout_min": 10
+    },
+    {
+      "nome": "contratos do painel, do aperitivo e das entradas (vitest)",
+      "comando": ["npx", "vitest", "run", "--testTimeout=60000", "src/tests/previdencia.test.ts", "src/tests/aperitivo.test.ts", "src/tests/observatorios-entradas.test.ts", "src/tests/perguntas-portas.test.ts", "src/tests/para-voce.test.ts"],
+      "timeout_min": 15
+    }
+  ],
+  "grupos": [
+    {
+      "id": "mps-beps",
+      "nome": "Ministério da Previdência Social, Boletim Estatístico da Previdência Social (BEPS, mensal)",
+      "coleta": [["python3", "-m", "pipeline.previdencia.run", "--coleta", "beps", "--so-coleta"]],
+      "caminhos": ["pipeline/previdencia/seed/beps.json"],
+      "timeout_min": 15
+    },
+    {
+      "id": "mps-municipios",
+      "nome": "Ministério da Previdência Social, benefícios emitidos por município (anual, dezembro, desde 2019)",
+      "coleta": [["python3", "-m", "pipeline.previdencia.run", "--coleta", "municipios", "--so-coleta"]],
+      "caminhos": ["pipeline/previdencia/seed/municipios.json"],
+      "timeout_min": 30
+    },
+    {
+      "id": "tesouro-rtn",
+      "nome": "Tesouro Nacional, Resultado do Tesouro Nacional (série histórica, tabelas 2.2 e 2.1-A)",
+      "coleta": [["python3", "-m", "pipeline.previdencia.run", "--coleta", "rtn", "--so-coleta"]],
+      "caminhos": ["pipeline/previdencia/seed/rtn.json"],
+      "timeout_min": 15
+    },
+    {
+      "id": "mps-aeps",
+      "nome": "Ministério da Previdência Social, Anuário Estatístico da Previdência Social (AEPS, anual: concessões, valor do ano, rede e atendimento)",
+      "coleta": [["python3", "-m", "pipeline.previdencia.run", "--coleta", "aeps", "--so-coleta"]],
+      "caminhos": ["pipeline/previdencia/seed/aeps.json"],
+      "timeout_min": 15
+    }
+  ]
+}

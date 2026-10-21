@@ -1,0 +1,300 @@
+[PDF, página 33]
+Ministério de Minas e Energia
+Secretaria de Energia Elétrica | Departamento de Monitoramento do Sistema Elétrico
+
+Mecanismo de Realocação de Energia ¹
+
+8.5.
+
+Em dezembro de 2020, as usinas participantes do MRE geraram, juntas, 42.500 MWmédios, ante a garantia física
+sazonalizada de 52.788 MWmédios, o que representou um GSF mensal de 80,51%.
+
+GSF
+
+200
+
+150
+123,7
+
+Porcentagem (%)
+
+105,1
+100
+
+90,7
+
+84,4 87,0
+
+79,0 81,6 81,0
+
+104,0 95,6
+
+86,4
+
+76,5
+
+80,51
+
+68,9
+
+62,8 66,2 63,9
+
+63
+
+jul
+
+ago
+
+out
+
+nov
+
+50
+
+0
+jan
+2014
+
+2015
+
+2016
+
+2017
+
+2018
+
+fev
+
+mar
+
+abr
+
+jun
+
+mai
+
+set
+
+dez
+
+2020 - Mensal
+GSFA 2020
+
+2019
+
+Figura 26. Evolução do GSF.
+
+Tabela 18. Geração Hidráulica, Garantia Física Sazonalizada e GSF verificados no ano.
+
+Jan
+
+Fev
+
+Mar
+
+Abr
+
+Mai
+
+Jun
+
+Jul
+
+Ago
+
+Set
+
+Out
+
+Nov
+
+Dez
+
+Geração Hidráulica (centro
+49.404 53.178 52.686 43.190 40.711 40.374 42.495 41.673 45.395 42.750 39.232 42.500
+de gravidade) (MWmédio)
+Garantia Física
+Sazonalizada (MW médio)
+GSF (%)
+
+57.201 50.581 42.606 41.522 42.580 52.782 61.717 66.330 68.532 66.860 62.318 52.788
+86,4
+
+105,1
+
+123,7
+
+104,0
+
+95,6
+
+76,5
+
+Dados contabilizados até dezembro de 2020.
+¹ Valores históricos corrigidos em dezembro/2020, em comparação com as publicações anteriores.
+
+Boletim Mensal de Monitoramento do Sistema Elétrico Brasileiro – Janeiro/2021
+
+68,9
+
+62,8
+
+66,2
+
+63,9
+
+63,0
+
+80,5
+
+Fonte dos dados: CCEE.
+
+28
+
+[PDF, página 45]
+Ministério de Minas e Energia
+Secretaria de Energia Elétrica | Departamento de Monitoramento do Sistema Elétrico
+
+LISTA DE SIGLAS
+ACL – Ambiente de Contratação Livre
+
+MLT - Média de Longo Termo
+
+ACR – Ambiente de Contratação Regulada
+
+MME - Ministério Minas e Energia
+
+ANEEL - Agência Nacional de Energia Elétrica
+
+MRE- Mecanismo de Realocação de Energia
+
+BC – Banco de Capacitor
+
+Mvar - Megavolt-ampère-reativo
+
+CAG – Controle Automático de Geração
+
+MW - Megawatt (106 W)
+
+CC - Corrente Contínua
+
+MWh – Megawatt-hora (106 Wh)
+
+CCEE - Câmara de Comercialização de Energia Elétrica
+
+MWmês – Megawatt-mês (106 Wmês)
+
+CE – Compensador Estático
+
+N - Norte
+
+CEG – Código Único de Empreendimentos de Geração
+
+NE - Nordeste
+
+CGH – Central Geradora Hidrelétrica
+
+NUCR - Número de Unidades Consumidoras Residenciais
+
+CGU – Usina Geradora Undielétrica
+
+NUCT - Número de Unidades Consumidoras Totais
+
+CMO – Custo Marginal de Operação
+
+ONS - Operador Nacional do Sistema Elétrico
+
+CO - Centro-Oeste
+
+PCH - Pequena Central Hidrelétrica
+
+CVaR – Conditional Value at Risk
+
+PIE - Produtor Independente de Energia
+
+DEC – Duração Equivalente de Interrupção por Unidade Consumidora PMO - Programa Mensal de Operação
+DMSE - Departamento de Monitoramento do Sistema Elétrico
+
+Proinfa - Programa de Incentivo às Fontes Alternativas de Energia
+
+EAR – Energia Armazenada
+
+Elétrica
+
+ENA - Energia Natural Afluente
+
+RT - Reator
+
+EOL – Usina Eólica
+
+S - Sul
+
+EPE - Empresa de Pesquisa Energética
+
+SE - Sudeste
+
+ERAC - Esquema Regional de Alívio de Carga
+
+SEB - Sistema Elétrico Brasileiro
+
+ESS - Encargo de Serviço de Sistema
+
+SEE - Secretaria de Energia Elétrica
+
+FC - Fator de Carga
+
+SEP – Sistemas Especiais de Proteção
+
+FEC – Frequência Equivalente de Interrupção por Unidade
+
+SI - Sistemas Isolados
+
+Consumidora
+
+SIN - Sistema Interligado Nacional
+
+GD - Geração Distribuída
+
+SPE - Secretaria de Planejamento e Desenvolvimento Energético
+
+GE - Garantia de Suprimento Energético
+
+TR – Transformador
+
+GNL - Gás Natural Liquefeito
+
+UEE - Usina Eólica
+
+GSF - Generation Scaling Factor
+
+UFV – Usina Fotovoltaica
+
+GW - Gigawatt (109 W)
+
+UHE - Usina Hidrelétrica
+
+GWh – Gigawatt-hora (109 Wh)
+
+UNE - Usina Nuclear
+
+h - Hora
+
+UTE - Usina Termelétrica
+
+Hz - Hertz
+
+VU - Volume Útil
+
+km - Quilômetro
+
+ZCAS – Zona de Convergência do Atlântico Sul
+
+kV – Quilovolt (103 V)
+
+ZCOU – Zona de Convergência de Umidade
+
+LT – Linha de Transmissão
+
+Boletim Mensal de Monitoramento do Sistema Elétrico Brasileiro – Janeiro/2021
+
+40

@@ -1,0 +1,21 @@
+{
+  "/setor-eletrico/conta-de-luz": [
+    {
+      "antes": "tabela|tarifas b1 residenciais vigentes e custo por perfil. 81 de 81 linhas, ordenada por posição (1 = menor), crescente. página 1 de 4. o botão na coluna de nome seleciona a linha.",
+      "depois": null,
+      "justificativa": "A tabela do ranking passou a ser montada ao pedido, atrás do botão 'Mostrar a tabela das distribuidoras' (ContaSobDemanda com abreEm=analisar): em Analisar e Auditar nasce aberta, em Entender abre com um clique, e a escolha de uma distribuidora no gráfico não a abre mais (a avaliação de rodada 2 mediu 2.800 px a mais). Mesmas linhas, busca, filtros, ordenação, exportação CSV e XLSX, página e seleção sincronizada com o gráfico; ganhou duas colunas (posição pela base econômica e a diferença entre a tarifa de aplicação e a base)."
+    },
+    {
+      "antes": "tabela-recolhida|dados do gráfico em tabela (81 linhas)",
+      "depois": null,
+      "justificativa": "A tabela equivalente do ranking de barras segue dentro do gráfico, com as 81 linhas, mas o gráfico desenha as 12 primeiras barras até 'Mostrar todas' (limiteInicial do GraficoBarras, do coordenador); a tabela traz todas."
+    }
+  ],
+  "/setor-eletrico/conta-de-luz/reajustes-e-subsidios": [
+    {
+      "antes": "grafico|variação da tarifa b1 residencial de 31/08/2025 a 31/08/2026, por distribuidora, com o ipca do período",
+      "depois": "grafico|variação da tarifa b1 residencial de 31/08/2025 a 31/08/2026, por distribuidora, com o ipca do período",
+      "justificativa": "Mesmo gráfico e mesmo título. A linha de referência 'Mediana das distribuidoras' saiu do ranking de barras, porque IPCA e mediana, com o mesmo traço tracejado, só se distinguiam pela legenda (avaliação de rodada 2); a mediana segue na faixa de pontos da mesma janela, no cartão 'Variação mediana da tarifa B1' e na tabela da janela, e a dica de cada barra deixa de trazer a diferença para a mediana (traz a diferença para o IPCA). A linha do IPCA permanece."
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "data": "09/10/2026",
+  "natureza": "Medição própria por instrumento, sem revisor: a r10 com nove revisores não foi rodada. Não declara nota de didatismo nem de qualidade visual.",
+  "decisao": "Itens 1 e 2 da recomendação da Rodada 9 (gráficos de barras a 390 px e Entender sem tabela larga no celular), aprovados pelo responsável com a resposta 'Sim'.",
+  "codigo": "commits depois de ec2aeea4a na branch claude/kind-mayer-v9tpwi: c41b9e6f1 (rótulo acima da barra, marcas de eixo, passo constante, seleção padrão que não abre a tabela, tabelas estáticas) e o da entrega final (tabela pedida pelo leitor nasce aberta, roteiro da J5, instrumento)",
+  "instrumentos": {
+    "graficos_e_tabelas": "scripts/energia-graficos-celular.mjs (novo): Entender, 390x844 px, 94 rotas; rótulos truncados e idênticos, pares de textos sobrepostos, textos fora da borda, tabelas visíveis, rolagem horizontal, células cortadas na borda e palavra partida medida pelas caixas do texto no navegador",
+    "abas": "scripts/energia-abas.mjs (da correção anterior): sem respiro inline, rótulo cortado nem aba abaixo de 150 px nas 63 páginas com abas"
+  },
+  "graficos_e_tabelas_em_entender_390x844": {
+    "nota": "As duas colunas foram medidas com a mesma versão do instrumento: a linha de base é o commit ec2aeea4a (build refeito à parte, servidor em outra porta); 'depois' é o build do código final. A primeira versão do instrumento estimava a palavra partida pela largura do texto e dava 1 célula na linha de base; a medida pelas caixas do texto dá 35.",
+    "linha_de_base_ec2aeea4a": {
+      "graficos_visiveis": 86,
+      "graficos_rotas": 52,
+      "rotulos_truncados": 240,
+      "rotulos_truncados_rotas": 38,
+      "rotulos_identicos": 39,
+      "rotulos_identicos_rotas": 10,
+      "pares_sobrepostos": 25,
+      "pares_sobrepostos_rotas": 7,
+      "textos_fora_da_borda": 28,
+      "textos_fora_da_borda_rotas": 10,
+      "tabelas_visiveis": 45,
+      "tabelas_rotas": 27,
+      "tabelas_com_rolagem": 38,
+      "tabelas_com_rolagem_rotas": 25,
+      "celulas_cortadas_na_borda": 399,
+      "celulas_cortadas_na_borda_rotas": 25,
+      "celulas_com_palavra_partida": 35,
+      "tabelas_com_palavra_partida": 14,
+      "palavra_partida_rotas": 9,
+      "tabelas_com_mais_de_6_colunas": 22,
+      "tabelas_mais_de_6_colunas_rotas": 19
+    },
+    "depois": {
+      "graficos_visiveis": 86,
+      "graficos_rotas": 52,
+      "rotulos_truncados": 15,
+      "rotulos_truncados_rotas": 7,
+      "rotulos_identicos": 3,
+      "rotulos_identicos_rotas": 1,
+      "pares_sobrepostos": 0,
+      "pares_sobrepostos_rotas": 0,
+      "textos_fora_da_borda": 0,
+      "textos_fora_da_borda_rotas": 0,
+      "tabelas_visiveis": 28,
+      "tabelas_rotas": 18,
+      "tabelas_com_rolagem": 19,
+      "tabelas_com_rolagem_rotas": 14,
+      "celulas_cortadas_na_borda": 144,
+      "celulas_cortadas_na_borda_rotas": 14,
+      "celulas_com_palavra_partida": 0,
+      "tabelas_com_palavra_partida": 0,
+      "palavra_partida_rotas": 0,
+      "tabelas_com_mais_de_6_colunas": 6,
+      "tabelas_mais_de_6_colunas_rotas": 6
+    }
+  },
+  "coleta_objetiva_94_rotas_564_medicoes": {
+    "r9": {
+      "axe_violacoes": 0,
+      "rolagem_horizontal_medicoes": 0,
+      "erros_console": 0,
+      "transbordo_itens": 15,
+      "transbordo_rotas": 1,
+      "altura_mediana_390_entender_px": 8041.0,
+      "altura_mediana_1440_entender_px": 4586.5,
+      "rotas_acima_10000px_390_entender": 28,
+      "html_max_por_rota_kB": 850.3,
+      "rotas_html_acima_600kB": 8
+    },
+    "depois": {
+      "axe_violacoes": 0,
+      "rolagem_horizontal_medicoes": 0,
+      "erros_console": 0,
+      "transbordo_itens": 15,
+      "transbordo_rotas": 1,
+      "altura_mediana_390_entender_px": 7776.0,
+      "altura_mediana_1440_entender_px": 4385.0,
+      "rotas_acima_10000px_390_entender": 25,
+      "html_max_por_rota_kB": 851.6,
+      "rotas_html_acima_600kB": 8
+    }
+  },
+  "desktop_e_tablet": "Em 1440 e 768 px, quatro páginas com gráficos (Restrições, Qualidade, Capacidade, Chuva e temperatura) têm os mesmos textos e alturas antes e depois; a única diferença é a ordem, no HTML, do cabeçalho Diferença dos pontos pareados, sem efeito visual.",
+  "analisar_390_sem_linha_de_base": {
+    "graficos_visiveis": 139,
+    "rotulos_truncados": 24,
+    "pares_sobrepostos": 0,
+    "textos_fora_da_borda": 0,
+    "tabelas_visiveis": 71,
+    "celulas_com_palavra_partida": 20,
+    "nota": "Medido só no build final. A regra de palavra inteira nas células vale em Entender; em Analisar há 20 células com palavra partida em 12 tabelas, e estender a regra é uma linha de CSS ainda não aplicada."
+  },
+  "jornadas": {
+    "primeira_execucao": "J2 e J5 interrompidas: erros meus (a tabela pedida em Qualidade nascia recolhida porque a seleção já existente deixou de abri-la; a J5 esperava uma tabela que a linha escolhida pela página abria sozinha)",
+    "execucao_final": {
+      "J1": {
+        "resultado": "cumprida",
+        "passos": "12/12",
+        "interacoes": 10
+      },
+      "J2": {
+        "resultado": "cumprida",
+        "passos": "11/11",
+        "interacoes": 12
+      },
+      "J3": {
+        "resultado": "cumprida",
+        "passos": "8/8",
+        "interacoes": 5
+      },
+      "J4": {
+        "resultado": "cumprida",
+        "passos": "10/10",
+        "interacoes": 13
+      },
+      "J5": {
+        "resultado": "cumprida",
+        "passos": "12/12",
+        "interacoes": 13
+      },
+      "J6": {
+        "resultado": "cumprida",
+        "passos": "19/19",
+        "interacoes": 21
+      },
+      "J7": {
+        "resultado": "cumprida",
+        "passos": "18/18",
+        "interacoes": 164
+      },
+      "J8": {
+        "resultado": "cumprida",
+        "passos": "11/11",
+        "interacoes": 37
+      },
+      "J9": {
+        "resultado": "cumprida",
+        "passos": "13/13",
+        "interacoes": 27
+      },
+      "J10": {
+        "resultado": "cumprida",
+        "passos": "14/14",
+        "interacoes": 12
+      }
+    }
+  }
+}

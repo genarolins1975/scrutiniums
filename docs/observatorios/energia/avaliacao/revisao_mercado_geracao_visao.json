@@ -1,0 +1,850 @@
+{
+ "revisao": "Revisão adversarial dos módulos Mercado, Geração e Visão geral (nove páginas)",
+ "data": "2026-10-08",
+ "metodo": "Três revisores independentes, cada um em contexto limpo e com uma lente (fonte e risco, leitor não especialista, interface e acessibilidade), sobre o site local, nas nove páginas e nos três níveis de profundidade. Cada achado foi verificado pelo responsável pela correção antes de ser corrigido: números recalculados na gold e nos CSV, definições conferidas no dicionário do ONS e no da ANEEL, normas e boletins lidos nas capturas versionadas, e visibilidade medida no navegador. O estado registra o que a rodada de correção de 08/10/2026 fez.",
+ "lentes": [
+  {
+   "lente": "fonte e risco",
+   "achados_total": 31,
+   "por_estado": {
+    "corrigido": 11,
+    "parcial": 3,
+    "aberto": 17
+   },
+   "achados": [
+    {
+     "id": "F01",
+     "severidade": "alta",
+     "pagina": "/setor-eletrico/mercado/encargos",
+     "categoria": "Trocar o rótulo para \"valores não pagos na liquidação\" ou publicar as duas grandezas (não ",
+     "estado": "corrigido",
+     "nota": "texto passa a dizer valor registrado como inadimplência pela CCEE, traz o contexto da série e declara que os comunicados da CCEE não foram consultados; a distinção entre valor não pago e inadimplência efetiva vem de imprensa e não foi confirmada em fonte primária"
+    },
+    {
+     "id": "F02",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado/mre-e-gsf",
+     "categoria": "Testar a definição contra todas as edições do InfoMercado em que o parágrafo de 12 meses a",
+     "estado": "corrigido",
+     "nota": "a página mostra os 92,55% do InfoMercado Nº 229, a diferença de 12,12 p.p. e que as outras edições não foram conferidas; a reprodução das edições 223 a 228 veio de busca web e não foi confirmada"
+    },
+    {
+     "id": "F03",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Retirar a relação causal ou fundamentá-la em documento da CCEE ou da EPE sobre o perímetro",
+     "estado": "corrigido",
+     "nota": "retirado o por isso; razões CCEE sobre EPE de 1,21 (regulado) e 1,04 (livre) conferidas na gold"
+    },
+    {
+     "id": "F04",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Publicar a variação do total sobre as categorias comparáveis (mais 0,5%) ou suprimir a var",
+     "estado": "corrigido",
+     "nota": "total das categorias comparáveis (+0,5%) recalculado no CSV diário e publicado ao lado do -0,6%"
+    },
+    {
+     "id": "F05",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Trocar por \"próximo do total do Balanço (diferença acumulada de até 0,3% por fonte no hist",
+     "estado": "corrigido",
+     "nota": "o total fica próximo do Balanço; a reconciliação por fonte e dia segue em Auditar"
+    },
+    {
+     "id": "F06",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/termica",
+     "categoria": "Rotular a medida como \"inflexibilidade (declarada pelo agente ou geração acima do despacho",
+     "estado": "corrigido",
+     "nota": "rótulo conforme o dicionário do ONS (declaração do agente ou geração acima do despachado)"
+    },
+    {
+     "id": "F07",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/termica",
+     "categoria": "Reescrever como \"dados diários até 29/09/2026; o último mês completo é ago/2026\" e retirar",
+     "estado": "corrigido",
+     "nota": "defasagem mensal medida em dias entre o fim do último mês completo e o processamento"
+    },
+    {
+     "id": "F08",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/capacidade",
+     "categoria": "Separar na ressalva: (a) geração em teste no mês de entrada; (b) potência nominal do ato a",
+     "estado": "corrigido",
+     "nota": "ressalva separa geração em teste e potência nominal do ato (nucleares)"
+    },
+    {
+     "id": "F09",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/restricoes",
+     "categoria": "Atualizar o verbete e acrescentar na página nota curta sobre o regime de compensação com d",
+     "estado": "parcial",
+     "nota": "limite declarado: norma lida em cópia de 08/01/2025 e alterações posteriores do ressarcimento não verificadas; lei e portarias de 2025 e 2026 citadas pelo revisor vêm de notícias, não confirmadas no Diário Oficial"
+    },
+    {
+     "id": "F10",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/restricoes",
+     "categoria": "Trocar por \"o registro de restrições do ONS não cobre geração Tipo III nem MMGD; cortes de",
+     "estado": "corrigido",
+     "nota": "redação passa a dizer que Tipo III e MMGD não constam do registro e que eventual corte por outro mecanismo não entra na taxa; cortes de Tipo III citados vêm de notícias"
+    },
+    {
+     "id": "F11",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Reconstruir a síntese com a captura mais recente antes de publicar ou exibir na frase e no",
+     "estado": "aberto",
+     "nota": "a síntese é o retrato de 01/10/2026 e o módulo Água foi recapturado depois; refazer só a síntese deixaria os módulos em datas diferentes, e a reconstrução completa exige a próxima execução do pipeline"
+    },
+    {
+     "id": "F12",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado/mre-e-gsf",
+     "categoria": "Exibir bruto, previsão, prêmio e líquido lado a lado no cartão do Entender; corrigir a exp",
+     "estado": "parcial",
+     "nota": "nota do cartão e rodapé da tabela reescritos conforme o dicionário da Conta Bandeira da ANEEL; o valor líquido do período não é publicado na página"
+    },
+    {
+     "id": "F13",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado/agentes",
+     "categoria": "Renomear a coluna para \"Consumo das parcelas do ACL e exportação, sem varejista (GWh)\" ou ",
+     "estado": "corrigido",
+     "nota": "coluna renomeada para consumo das parcelas do ACL e exportação, sem a classe varejista"
+    },
+    {
+     "id": "F14",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado/encargos",
+     "categoria": "Qualificar a frase (ESS de competência; o pagamento final depende do alívio com recursos d",
+     "estado": "corrigido",
+     "nota": "a página cita o art. 59 do Decreto 5.163 e restringe a proporção do consumo ao ESS de restrição de operação (REN 1.030, art. 16, §1º)"
+    },
+    {
+     "id": "F15",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado/mre-e-gsf",
+     "categoria": "Reescrever como \"o agente com contratos acima da energia que o MRE lhe aloca (garantia fís",
+     "estado": "aberto"
+    },
+    {
+     "id": "F16",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado/mre-e-gsf",
+     "categoria": "Descrever o denominador como \"garantia física após redução (perdas internas, perdas de red",
+     "estado": "aberto"
+    },
+    {
+     "id": "F17",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado/agentes",
+     "categoria": "Usar a data de cada conjunto na linha de fonte, marcar out/26 como parcial ou omiti-lo e e",
+     "estado": "aberto"
+    },
+    {
+     "id": "F18",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado/agentes",
+     "categoria": "Registrar a definição como operacional do observatório e conferir com a CCEE ou com a vari",
+     "estado": "aberto"
+    },
+    {
+     "id": "F19",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado/agentes",
+     "categoria": "Incluir a categoria ERC (18) ou escrever que há outras unidades sem classificação.",
+     "estado": "aberto"
+    },
+    {
+     "id": "F20",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado/encargos",
+     "categoria": "Separar \"o que o Decreto prevê\" de \"componentes publicados pela CCEE\" e corrigir a descriç",
+     "estado": "aberto"
+    },
+    {
+     "id": "F21",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Usar \"geração do balanço do ONS (inclui MMGD estimada)\" também no P005.",
+     "estado": "aberto"
+    },
+    {
+     "id": "F22",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Escrever \"alerta com 24 horas\".",
+     "estado": "aberto"
+    },
+    {
+     "id": "F23",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Trocar por \"revisão é prevista pela fonte; variações grandes indicam dado inicial incomple",
+     "estado": "aberto"
+    },
+    {
+     "id": "F24",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao/termica",
+     "categoria": "Padronizar: OBSERVADO para somas simples de medição, MISTO ou composição explícita para o ",
+     "estado": "aberto"
+    },
+    {
+     "id": "F25",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Conferir a cobertura da série da EPE em 2004 e 2005 no dicionário e acrescentar nota ou in",
+     "estado": "aberto"
+    },
+    {
+     "id": "F26",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Citar a norma, escrever \"paga o uso da rede e os encargos\" e retirar ou fundamentar a cons",
+     "estado": "aberto"
+    },
+    {
+     "id": "F27",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado/mre-e-gsf",
+     "categoria": "Explicar a composição do valor (ponderação, componentes) ou rotular como \"custo do MRE pub",
+     "estado": "aberto"
+    },
+    {
+     "id": "F28",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado/agentes",
+     "categoria": "Mostrar 2011 e 2012 como \"sem dado\" e explicar por que 2022 é incompleto.",
+     "estado": "aberto"
+    },
+    {
+     "id": "F29",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao/restricoes",
+     "categoria": "Usar nas duas páginas \"indisponibilidade externa (REL)\", \"confiabilidade elétrica (CNF)\" e",
+     "estado": "aberto"
+    },
+    {
+     "id": "F30",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado/encargos",
+     "categoria": "Acrescentar nota sobre o que cada coluna mede e por que valores negativos ocorrem.",
+     "estado": "aberto"
+    },
+    {
+     "id": "F31",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Corrigir a função que baixa a caixa de siglas e revisar o plural.",
+     "estado": "parcial",
+     "nota": "caixa de siglas corrigida em Visão geral e Geração; o plural de meses desses anos segue"
+    }
+   ],
+   "nao_conferido": [
+    "Texto integral dos InfoMercado Nº 216 a 228: os valores de 12 meses das edições 223 a 228 e a média anual de 2025 vieram de trechos retornados por busca web; ccee.org.br respondeu 403 ao curl e à ferramenta de leitura, e o acesso não foi contornado.",
+    "Causa do 92,55% da edição Nº 229: o PDF local confirma o texto, mas a CCEE não foi consultada.",
+    "Composição da inadimplência de jul/2026 e comunicados de liquidação da CCEE: não localizados; valores de fev/2026, abr/2026, jun/2025 e jul/2025 vêm de notícias que citam a CCEE.",
+    "Regras de Comercialização da CCEE (definição regulatória de GSF, rateio de ESS e EER, perímetro do consumo das distribuidoras, tratamento de perdas): não lidas.",
+    "Despacho ANEEL nº 3.850/2025 (limites do PLD de 2026) e atos da ANEEL: cedoc responde 403 e não foi contornado; os três limites (57,31; 1.611,04; 785,27) bateram com notícias que citam o ato, não com o texto.",
+    "Lei 15.269/2025, Portaria Normativa MME 140/2026, atos da ANEEL de 2026 sobre curtailment e Plano de Gestão de Excedentes do ONS (cortes de Tipo III em 07/06 e 23/08/2026): conferidos só por notícias; Diário Oficial e portal do ONS não abertos.",
+    "Decreto 5.163/2004 no Planalto: a conexão devolveu resposta vazia; foi usado o texto capturado no repositório, com sha256 conferido contra MANIFESTO.json (13 de 13 arquivos íntegros).",
+    "Indicadores de P006 da Visão geral (tarifa B1, DEC e FEC, perdas na distribuição, Tarifa Social) e a faixa de 14,7% de perdas: copiados de módulos fora do escopo, não recalculados.",
+    "Cobertura da série EPE em 2004 e 2005 (bronze e dicionário da EPE ausentes na máquina).",
+    "Natureza do PLD diário de 2021 e 2022 (horário oficial ou sombra) usado no percentil 60,3 da Visão geral: o percentil e os quartis foram recalculados e batem; a natureza da série não foi conferida.",
+    "CMO do Norte de R$ 461,46/MWh na semana de 02/10/2026 e os valores 581,48, 289,25 e 2.045,69 das semanas anteriores: não conferidos com o ONS.",
+    "Tratamento da usina de Itaipu (50 Hz e 60 Hz) na potência, na geração hidráulica e no MRE (ENTREGA_MRE \"exceto por Itaipu\"): não conferido.",
+    "Oscilações do EER mensal (nov/2024 R$ 137,7 milhões; out/2024 R$ 576,2 milhões; jan/2025 R$ 309,9 milhões): não explicadas nem conferidas.",
+    "TEO mensal da coluna do MRE contra o ato da ANEEL."
+   ]
+  },
+  {
+   "lente": "leitor",
+   "achados_total": 51,
+   "por_estado": {
+    "corrigido": 10,
+    "aberto": 35,
+    "parcial": 6
+   },
+   "achados": [
+    {
+     "id": "L01",
+     "severidade": "alta",
+     "pagina": "/setor-eletrico/mercado/mre-e-gsf",
+     "categoria": "No Entender, colocar ao lado do 81,8% uma linha com a faixa: \"o InfoMercado publica 92,55%",
+     "estado": "corrigido",
+     "nota": "a divergência de 12,12 p.p. com o InfoMercado Nº 229 está no cartão do GSF de 12 meses"
+    },
+    {
+     "id": "L02",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Expandir no primeiro uso (\"tarifa regulada (Ambiente de Contratação Regulada, ACR)\"). Incl",
+     "estado": "corrigido",
+     "nota": "legendas de siglas das nove páginas refeitas a partir do texto visível; EER e GSF entram no dicionário"
+    },
+    {
+     "id": "L03",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Escolher um número principal, com uma linha adjacente \"por que há dois números\" nos própri",
+     "estado": "aberto"
+    },
+    {
+     "id": "L04",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Mostrar no próprio cartão um selo de conferência (conferido, conferido com ressalva, sem c",
+     "estado": "corrigido",
+     "nota": "a promessa de conferência de todo número saiu; a ficha mostra o que foi conferido, o que tem ressalva e o que não tem conferência"
+    },
+    {
+     "id": "L05",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Rotular o cartão \"ESS (um dos encargos)\" e mostrar o EER ao lado, ou o total. Explicar \"no",
+     "estado": "aberto"
+    },
+    {
+     "id": "L06",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Trocar por linguagem direta (\"a CCEE mede o consumo no ponto de referência do submercado, ",
+     "estado": "aberto"
+    },
+    {
+     "id": "L07",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado/agentes",
+     "categoria": "Abrir com a resposta (\"Em ago/2026, 16.389 agentes ... 96.618 unidades livres, 14.569 a ma",
+     "estado": "aberto"
+    },
+    {
+     "id": "L08",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado/agentes",
+     "categoria": "Rotular cada contagem pelo que conta (\"agentes contabilizados em ago/2026\", \"agentes do ca",
+     "estado": "aberto"
+    },
+    {
+     "id": "L09",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado/agentes",
+     "categoria": "Definir em uma frase (\"migração: consumidor que deixa a distribuidora e passa a comprar no",
+     "estado": "aberto"
+    },
+    {
+     "id": "L10",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado/encargos",
+     "categoria": "Trocar a tira por siglas realmente usadas e expandir ESS e EER no primeiro uso, com uma fr",
+     "estado": "corrigido",
+     "nota": "legenda de Encargos refeita"
+    },
+    {
+     "id": "L11",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado/encargos",
+     "categoria": "Incluir variação contra os 12 meses anteriores nos dois cartões, trazer o gráfico do EER p",
+     "estado": "aberto"
+    },
+    {
+     "id": "L12",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado/encargos",
+     "categoria": "Acrescentar uma linha com a mediana dos últimos 12 meses e o pico histórico, e uma frase s",
+     "estado": "corrigido",
+     "nota": "valor em reais, valor a liquidar e a razão do percentual subir"
+    },
+    {
+     "id": "L13",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado/mre-e-gsf",
+     "categoria": "Reescrever o título (\"As hidrelétricas geraram menos do que o prometido?\"), expandir MRE, ",
+     "estado": "parcial",
+     "nota": "MRE, GSF e CCEE entram na legenda; o título e a abertura continuam em jargão"
+    },
+    {
+     "id": "L14",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado/mre-e-gsf",
+     "categoria": "Escrever \"valor bruto; o efeito líquido na tarifa não é calculado aqui\", alinhar a janela ",
+     "estado": "corrigido",
+     "nota": "o cartão diz que R$ 8,41 bilhões é custo bruto, antes da previsão tarifária e do prêmio de risco"
+    },
+    {
+     "id": "L15",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Abrir com a resposta: \"Nos 30 dias até 29/09/2026, 52,7% da eletricidade do SIN veio de hi",
+     "estado": "aberto"
+    },
+    {
+     "id": "L16",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Trocar a comparação 30 dias contra 365 por 30 dias contra os mesmos 30 dias do ano anterio",
+     "estado": "aberto"
+    },
+    {
+     "id": "L17",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Apresentar \"micro e minigeração distribuída (MMGD)\" no primeiro uso, trocar \"perímetro\" po",
+     "estado": "parcial",
+     "nota": "legenda refeita; MMGD, Tipo III e perímetro seguem sem definição na página"
+    },
+    {
+     "id": "L18",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Trocar por \"coincide com o Balanço do ONS no total do SIN, com diferenças pequenas entre s",
+     "estado": "corrigido",
+     "nota": "o total fica próximo do Balanço, e não igual"
+    },
+    {
+     "id": "L19",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/capacidade",
+     "categoria": "Abrir com \"fator de capacidade é a fração da potência que de fato gerou: 36,5% nas eólicas",
+     "estado": "aberto"
+    },
+    {
+     "id": "L20",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/capacidade",
+     "categoria": "Usar \"O QUE MUDOU\" para a variação contra o período anterior e manter o aviso em um só lug",
+     "estado": "corrigido",
+     "nota": "o aviso de defasagem deixa de aparecer quando o último mês completo é o do ritmo normal"
+    },
+    {
+     "id": "L21",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/capacidade",
+     "categoria": "Mover a distribuição e a coluna de chaves para Analisar, ou acrescentar uma frase de leitu",
+     "estado": "aberto"
+    },
+    {
+     "id": "L22",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/capacidade",
+     "categoria": "Repetir a ressalva de universo nas barras de biomassa, óleo e outras térmicas, e avisar qu",
+     "estado": "aberto"
+    },
+    {
+     "id": "L23",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/restricoes",
+     "categoria": "Definir as quatro razões em uma linha cada, dizer qual dá direito a ressarcimento, e linka",
+     "estado": "parcial",
+     "nota": "link para o verbete Constrained-off e limite sobre ressarcimento; CNF, REL e PAR seguem sem definição no Entender"
+    },
+    {
+     "id": "L24",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/restricoes",
+     "categoria": "Mostrar eólica e solar lado a lado no Entender, usar GWh nos cartões e explicar por que a ",
+     "estado": "aberto"
+    },
+    {
+     "id": "L25",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/restricoes",
+     "categoria": "Acrescentar \"= 83% da potência eólica em operação\" (se confirmado) e trocar \"157 de 157\" p",
+     "estado": "aberto"
+    },
+    {
+     "id": "L26",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/termica",
+     "categoria": "Dar uma linha para cada motivo ao lado da legenda (\"inflexibilidade: geração obrigatória p",
+     "estado": "parcial",
+     "nota": "legenda refeita; inflexibilidade, unit commitment, substituição e garantia energética seguem sem definição no Entender"
+    },
+    {
+     "id": "L27",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/termica",
+     "categoria": "Mostrar a inflexibilidade com e sem nuclear, e dizer no texto principal que a nuclear está",
+     "estado": "corrigido",
+     "nota": "a página diz quanto a nuclear pesa na inflexibilidade e a parcela sem ela (50,6%)"
+    },
+    {
+     "id": "L28",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/termica",
+     "categoria": "Fechar a tabela por padrão, trocar nomes de campos por texto e dar a semana e uma régua (m",
+     "estado": "aberto"
+    },
+    {
+     "id": "L29",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Abrir com duas ou três frases de situação (\"Reservatórios acima do normal, afluência muito",
+     "estado": "aberto"
+    },
+    {
+     "id": "L30",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Reescrever em português simples (\"A série de PLD não foi atualizada desde 30/09/2026 porqu",
+     "estado": "corrigido",
+     "nota": "firewall, HTTP 403 e nome de arquivo passam para Analisar e Auditar"
+    },
+    {
+     "id": "L31",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Mover o rodapé técnico para Auditar, remover códigos de painel e usar rótulos legíveis nos",
+     "estado": "parcial",
+     "nota": "rejeitado em parte: silver, sintese.json e a versão do código já estavam ocultos em Entender (medido); primeiro_dia_avaliado e dias_avaliados viraram texto"
+    },
+    {
+     "id": "L32",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Acrescentar ao primeiro painel \"1 regra em observação: afluência de 30 dias em nível extre",
+     "estado": "aberto"
+    },
+    {
+     "id": "L33",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Marcar cada fato afetado com \"revisado pela fonte\" e a ordem de grandeza da revisão, ou di",
+     "estado": "aberto"
+    },
+    {
+     "id": "L34",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Mostrar a variação em contexto histórico (últimos 5 anos), explicar a comparação e transfe",
+     "estado": "aberto"
+    },
+    {
+     "id": "L35",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Ancorar na subseção que contém o número e fixar a data (parâmetro de data) ou avisar \"o pa",
+     "estado": "aberto"
+    },
+    {
+     "id": "L36",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Apresentar EAR e MLT no primeiro fato (\"energia armazenável máxima (EAR)\") e completar a t",
+     "estado": "parcial",
+     "nota": "ANEEL, ONS e CCEE entram na legenda; as demais siglas da página não estão no dicionário"
+    },
+    {
+     "id": "L37",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Usar uma unidade só nos cartões e, se for comparar com o PLD, converter na tela.",
+     "estado": "aberto"
+    },
+    {
+     "id": "L38",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Abrir a ficha com um resumo em três linhas (\"Como chegamos a 45,3%: ...\", \"Conferido com X",
+     "estado": "aberto"
+    },
+    {
+     "id": "L39",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado/agentes",
+     "categoria": "Dividir o diálogo em \"Resumo\" e \"Detalhes técnicos\".",
+     "estado": "aberto"
+    },
+    {
+     "id": "L40",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Mostrar em 390 o rótulo \"Nível de detalhe\" e uma frase sob os botões; incluir uma legenda ",
+     "estado": "aberto"
+    },
+    {
+     "id": "L41",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado/agentes",
+     "categoria": "Criar verbetes e links para os termos listados, começando por EER, inflexibilidade, ordem ",
+     "estado": "aberto"
+    },
+    {
+     "id": "L42",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Quebrar o rótulo em duas linhas, ou girar o gráfico, ou usar ícone de ressalva visível.",
+     "estado": "aberto"
+    },
+    {
+     "id": "L43",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao/capacidade",
+     "categoria": "Reduzir a quantidade de marcas no eixo em telas estreitas.",
+     "estado": "aberto"
+    },
+    {
+     "id": "L44",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao/restricoes",
+     "categoria": "Escrever a unidade no título do gráfico, marcar o mês parcial e indicar o botão de período",
+     "estado": "aberto"
+    },
+    {
+     "id": "L45",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/visao-geral",
+     "categoria": "Rotular as linhas diretamente e usar pequenos múltiplos ou padrões para as séries pequenas",
+     "estado": "aberto"
+    },
+    {
+     "id": "L46",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao/termica",
+     "categoria": "Mostrar \"não classificado\" na legenda ou acrescentar nota no gráfico.",
+     "estado": "aberto"
+    },
+    {
+     "id": "L47",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Alinhar janelas ou avisar, e explicar \"incentivadas\" e o zero residencial.",
+     "estado": "aberto"
+    },
+    {
+     "id": "L48",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado/agentes",
+     "categoria": "Anotar a diferença (\"31.220 inclui varejista; 29.350 não\") na conferência.",
+     "estado": "aberto"
+    },
+    {
+     "id": "L49",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Revisar a copy e unificar as tabelas.",
+     "estado": "aberto"
+    },
+    {
+     "id": "L50",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao/capacidade",
+     "categoria": "Usar vírgula decimal ou avisar o formato no botão de download.",
+     "estado": "aberto"
+    },
+    {
+     "id": "L51",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Testar em navegador e, se bloqueado, oferecer a cópia arquivada ou o nome do conjunto para",
+     "estado": "aberto"
+    }
+   ],
+   "notas_didatismo_antes_da_correcao": {
+    "/setor-eletrico/mercado": 6,
+    "/setor-eletrico/mercado/agentes": 5,
+    "/setor-eletrico/mercado/encargos": 4,
+    "/setor-eletrico/mercado/mre-e-gsf": 6,
+    "/setor-eletrico/geracao": 5,
+    "/setor-eletrico/geracao/capacidade": 4,
+    "/setor-eletrico/geracao/restricoes": 5,
+    "/setor-eletrico/geracao/termica": 4,
+    "/setor-eletrico/visao-geral": 5
+   }
+  },
+  {
+   "lente": "interface e acessibilidade",
+   "achados_total": 19,
+   "por_estado": {
+    "corrigido": 14,
+    "aberto": 1,
+    "parcial": 3,
+    "rejeitado": 1
+   },
+   "achados": [
+    {
+     "id": "I01",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado (também /setor-eletrico/mercado/agentes e /setor-eletrico/geracao/capacidade)",
+     "categoria": "Gravar o intervalo (de e ate, ou preset) na URL nas três páginas, com o mesmo contrato de ",
+     "estado": "corrigido",
+     "nota": "intervalo dos gráficos de linha de Mercado (liv), Agentes (ulv), Capacidade (fcm) e Geração (dia, hor) na URL como <chave>.de e <chave>.ate; F5, link em aba nova e Voltar conferidos em Chromium"
+    },
+    {
+     "id": "I02",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/capacidade (também /setor-eletrico/geracao/termica)",
+     "categoria": "Persistir o conjunto de séries visíveis na URL (lista curta de ids) em Capacidade e Térmic",
+     "estado": "corrigido",
+     "nota": "séries desligadas em <chave>.oc em Capacidade (fcm, pot), Térmica (cvu) e Geração (dia, hor); F5 conferido; a lista vazia explícita distingue tudo ligado do padrão"
+    },
+    {
+     "id": "I03",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Incluir a ordenação do painel na URL (ex.: ord=nome).",
+     "estado": "corrigido",
+     "nota": "ordem do gráfico de 365 dias em dzg.ord e dzg.dir"
+    },
+    {
+     "id": "I04",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao/restricoes (também /setor-eletrico/mercado/agentes e /setor-eletrico/geracao/capacidade)",
+     "categoria": "Passar chaveUrl às 7 instâncias de TabelaInterativa.",
+     "estado": "corrigido",
+     "nota": "as sete tabelas passaram a ter chaveUrl (perf, fxm, det-<fonte>, um, rz, ss, ds)"
+    },
+    {
+     "id": "I05",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao/restricoes (também /setor-eletrico/geracao e /setor-eletrico/geracao/termica)",
+     "categoria": "Incluir o modo do mapa e o estado aberto das tabelas recolhidas na URL, ou documentar que ",
+     "estado": "aberto",
+     "nota": "modo Brasil inteiro do mapa de Restrições e tabela aberta em Entender seguem fora da URL"
+    },
+    {
+     "id": "I06",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/mercado (abas do módulo e 'Abrir o painel'; também /setor-eletrico/geracao)",
+     "categoria": "Repassar o modo atual (leitura de ?modo=) aos links internos entre painéis do módulo, ou l",
+     "estado": "corrigido",
+     "nota": "ModoProfundidade leva o nível no clique em link interno do observatório (urlComNivel); abas, Abrir o painel e Próxima pergunta de todos os módulos com seletor; hub e Aprenda ficam de fora; fecha o D050 no código"
+    },
+    {
+     "id": "I07",
+     "severidade": "media",
+     "pagina": "15 tabelas em /setor-eletrico/mercado, /setor-eletrico/mercado/agentes, /setor-eletrico/mercado/encargos, /setor-eletrico/mercado/mre-e-gsf, /setor-eletrico/geracao, /setor-eletrico/geracao/capacidade, /setor-eletrico/geracao/restricoes, /setor-eletrico/visao-geral",
+     "categoria": "Marcar como buscáveis as colunas de rótulo de data e indexar o texto exibido (dd/mm/aaaa, ",
+     "estado": "corrigido",
+     "nota": "a coluna de rótulo da linha entra sempre no índice de busca; 49 tabelas das nove páginas achadas pelo rótulo da primeira linha em Chromium"
+    },
+    {
+     "id": "I08",
+     "severidade": "media",
+     "pagina": "7 páginas: /setor-eletrico/mercado, /setor-eletrico/mercado/encargos, /setor-eletrico/mercado/mre-e-gsf, /setor-eletrico/geracao, /setor-eletrico/geracao/capacidade, /setor-eletrico/geracao/restricoes, /setor-eletrico/geracao/termica",
+     "categoria": "Mostrar a unidade nos rótulos do eixo y (ex.: 40 %) ou no título para qualquer unidade, in",
+     "estado": "corrigido",
+     "nota": "unidade de um caractere no eixo vertical ('40 %', '12 h'); o título segue sem repeti-la, pela decisão da r5"
+    },
+    {
+     "id": "I09",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Escurecer as duas cores a 3:1 ou delimitar o segmento com contorno escuro, e oferecer padr",
+     "estado": "parcial",
+     "nota": "Solar MMGD e Térmicas Tipo III de 1,6:1 e 1,8:1 para 5,1:1 e 6,2:1 contra o fundo; as onze séries do gráfico empilhado continuam distinguidas só por cor, com legenda, tooltip e tabela equivalente"
+    },
+    {
+     "id": "I10",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/capacidade (vale para os rádios de profundidade, rádios nativos e botões de série das nove páginas)",
+     "categoria": "Marcar o selecionado com borda mais grossa, sublinhado, marca de seleção ou outline que so",
+     "estado": "parcial",
+     "nota": "selecionado ganha cor de sistema, borda de 3 px e sublinhado em forced-colors, conferido na emulação do Chromium e não em Alto Contraste real do Windows; os botões de série já traziam '(oculta)' em texto"
+    },
+    {
+     "id": "I11",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao/termica (45 tabelas nas nove páginas)",
+     "categoria": "Em @media print: overflow visible e table-layout fixo com fonte menor nas tabelas, mostrar",
+     "estado": "corrigido",
+     "nota": "em A4 nenhuma das 85 tabelas visíveis fica mais larga que a página; a paginação mantém 'Página 1 de N · linhas 1 a 25', que diz o que saiu no papel"
+    },
+    {
+     "id": "I12",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Montar o ouvinte beforeprint/afterprint no layout do módulo ou usar CSS que mostre o conte",
+     "estado": "corrigido",
+     "nota": "os details abrem antes de imprimir em toda página com profundidade, e o GraficoLinhas monta a tabela dos dados de forma síncrona no beforeprint (o toggle do navegador chega depois do layout); o PDF A4 de Mercado em Auditar traz a tabela de 140 linhas"
+    },
+    {
+     "id": "I13",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Estender a regra ::after aos links internos com URL absoluta, ocultar controles e a barra ",
+     "estado": "corrigido",
+     "nota": "links internos saem com o caminho; barra de profundidade, busca, filtros, exportação, botões de página, intervalo do gráfico e link do painel ficam fora do papel"
+    },
+    {
+     "id": "I14",
+     "severidade": "media",
+     "pagina": "/setor-eletrico/geracao (também /setor-eletrico/geracao/termica)",
+     "categoria": "Reduzir o HTML de /geracao (carregar tabelas sob demanda como em Mercado), evitar o prefet",
+     "estado": "corrigido",
+     "nota": "as 20 tabelas de Analisar e Auditar de Geração e da Térmica passaram a ser lidas sob demanda: HTML de 1.045,6 kB para 590,1 kB em Geração e de 646,3 kB para 529,2 kB na Térmica; hidratação de 3,9 s com CPU 4x e 1,6 Mbps em emulação (era 5,9 s no roteiro do revisor); o restante do peso de Geração são os gráficos e as tabelas de Entender, com folga de 9,9 kB sob os 600 kB"
+    },
+    {
+     "id": "I15",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Aplicar o modo padrão (Entender) por CSS no HTML inicial e esconder os níveis mais fundos ",
+     "estado": "corrigido",
+     "nota": "com JavaScript ligado o HTML vale Entender desde o primeiro quadro (scripting: enabled); com os scripts atrasados em 2,5 s o conteúdo de Auditar ficou oculto e a altura não mudou na hidratação; sem JavaScript todos os níveis seguem à vista"
+    },
+    {
+     "id": "I16",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao/capacidade (também /setor-eletrico/geracao/termica, /setor-eletrico/geracao)",
+     "categoria": "html { scroll-padding-top: altura da barra + folga } (por exemplo 5rem).",
+     "estado": "corrigido",
+     "nota": "scroll-padding-top de 5 rem: em 390 e 1440 px nenhuma das 70 paradas de Tab ficou coberta pela barra"
+    },
+    {
+     "id": "I17",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/mercado",
+     "categoria": "Usar replaceState durante a navegação por setas e gravar no histórico só ao parar ou ao co",
+     "estado": "rejeitado",
+     "nota": "as setas do seletor de profundidade chegaram a substituir a entrada do histórico, e a coleta da r6 mediu o efeito: o Voltar deixava de desfazer a troca em 69 páginas (defeito alto de navegação). A mudança foi revertida; clique e seta criam entrada, como pede a seção 7.3 da especificação, e o histórico cheio de quem percorre as setas é o custo aceito"
+    },
+    {
+     "id": "I18",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/visao-geral (também /setor-eletrico/geracao/restricoes)",
+     "categoria": "Usar H3 nos cartões e distinguir o nome das duas tabelas (eólicas e fotovoltaicas).",
+     "estado": "corrigido",
+     "nota": "h4 sob h2 virou h3 nos cartões da Visão geral e as duas tabelas de detalhamento de Restrições têm o nome da fonte"
+    },
+    {
+     "id": "I19",
+     "severidade": "baixa",
+     "pagina": "/setor-eletrico/geracao",
+     "categoria": "Anunciar a nova divisão de páginas e a razão da recusa ('Sem linhas para exportar') e, se ",
+     "estado": "parcial",
+     "nota": "tamanho de página e exportação sem linhas são anunciados; o tamanho de página segue fora da URL e o botão desativado continua focável"
+    }
+   ],
+   "nao_testado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver): o anúncio foi avaliado só pelo DOM (role=status, aria-live, caption, aria-label).",
+    "Firefox e Safari: só Chromium 1194 em Playwright; touch por emulação, sem dispositivo real.",
+    "Varredura de Tab em Auditar a 1440 px: interrompida por erro do script e por ordem de encerramento; só o log de 4 páginas (paradas cobertas 17, 9, 30, 8) e sem JSON, grau de ocultação não medido. Tab em Entender foi feita nas nove páginas a 390 e 1440 px.",
+    "Tabelas (busca, filtro, ordem, paginação, exportação, seleção) só em 1440 px e nível auditar, com carga por rolagem para as tabelas sob demanda de Mercado; em 390 px só foram vistos o painel de filtro e a paginação por captura; Analisar e Entender não repetidos (mesmo componente).",
+    "Estado em URL, link do painel e Voltar/Avançar: executados só em 1440 px; em 390 px não rodados. O teste de Voltar/Avançar passo a passo ficou com alinhamento impreciso entre ações e entradas de histórico, então só se conclui que estados na URL são restaurados e estados fora dela não têm entrada de histórico.",
+    "axe-core em 360 e 768 px: não rodado (nessas larguras só rolagem horizontal e alvos de toque, todos sem achado). axe-core com regras AAA (color-contrast-enhanced) falha em todas as páginas e não foi listado por ser AAA.",
+    "Distinguibilidade das séries para daltonismo: o cálculo de diferença de cor foi descartado por erro de conversão; só vale a razão de contraste de I09.",
+    "Impressão: só PDF A4 do Chromium (page.pdf) e media print a 1440 e 718 px; não houve diálogo de impressão real nem outro navegador.",
+    "XLSX aberto apenas por leitura do XML (zipfile), não em Excel ou LibreOffice; fórmula ou formatação visual não avaliadas.",
+    "Arrasto com o mouse no gráfico (zoom por seleção), aria-valuetext dos controles 'Ajustar início e fim' e clique no fundo do diálogo para fechar: não testados. Gesto de pinça e zoom do mapa: não testados.",
+    "Modo escuro: não existe (nenhuma regra prefers-color-scheme; com colorScheme=dark o fundo continua rgb(243,239,229)); não é achado. Movimento reduzido: testado e correto (scroll-behavior vira auto, transições somem).",
+    "Desempenho em campo (INP, LCP reais): só emulação de CPU 4x e rede 1,6 Mbps."
+   ]
+  }
+ ],
+ "resumo": {
+  "achados_total": 101,
+  "por_estado": {
+   "corrigido": 35,
+   "parcial": 12,
+   "aberto": 53,
+   "rejeitado": 1
+  },
+  "nenhum_bloqueante": true,
+  "nota": "As notas dos revisores são de agentes, não de leitores reais, e valem como instrumento de comparação, não como medida absoluta. Achados abertos de severidade baixa são, em sua maioria, polimento de redação ou de desenho; os de severidade média abertos estão listados em CONTINUIDADE.md. O leitor extraiu texto oculto como se fosse visível em alguns achados de bastidor: a visibilidade foi medida em Entender antes de corrigir."
+ }
+}

@@ -1,0 +1,1966 @@
+{
+ "avaliador": "P-U05",
+ "papel": "produto",
+ "rodada": "inicial",
+ "versao_avaliada": "commit 51747baf8, estado servido em http://localhost:3100 (inspeção em 09/10/2026)",
+ "paginas": {
+  "/setor-eletrico/carga": {
+   "paineis": [
+    "P025"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 7.0,
+     "evidencia": [
+      "Playwright em 1440 e carga/1440_dobra.png: a frase resposta ocupa y 750 a 828, dentro da dobra de 900; os cartões começam em y 1244 e o primeiro gráfico em y 1461",
+      "carga/390_dobra.png e medição em 390: a dobra traz cabeçalho, título, fontes, siglas, três painéis e Profundidade; a frase resposta começa em y 822 de 844",
+      "carga/texto_entender.txt linhas 5 e 17: o título da página e o do painel são o mesmo texto, 'Quanto o sistema está consumindo?'"
+     ],
+     "atendidos": [
+      "Hierarquia legível: frase resposta, contexto, cartões, gráfico de pontos, série diária e quatro blocos finais",
+      "Números com unidade (MWmed, %) e selos de natureza do dado com forma e texto",
+      "Tipografia e espaçamento consistentes entre painel, cartões e tabelas",
+      "Entender compacto, com 3793 px de altura em 1440"
+     ],
+     "problemas": [
+      "Cabeçalho, três camadas de navegação, abertura recolhida, siglas, painéis e Profundidade ocupam quase toda a primeira tela",
+      "Título da página repetido no painel",
+      "Janelas idênticas (últimos 28 dias e mês corrente) ocupam duas linhas no gráfico e na tabela",
+      "A série diária abre com 3 anos sobrepostos e vira massa de linhas"
+     ],
+     "justificativa": "Boa hierarquia e consistência visual, mas a primeira tela é tomada por navegação e metadados, a resposta cai abaixo da dobra no celular, o título se repete e o gráfico diário abre denso demais."
+    },
+    "B": {
+     "nota": 7.0,
+     "evidencia": [
+      "carga/texto_entender.txt: sob o filtro, 'Mesmos dias da semana compara cada dia ... 364 dias; mesmas datas compara com o mesmo calendário do ano anterior'; o bloco final diz que a variação não mede atividade econômica",
+      "carga/texto_auditar.txt linha 10 chama a carga de 'energia atendida ... em MWmed', e a linha Unidade diz 'média diária de potência'",
+      "Playwright em 1440: 'Por que isso importa' começa em y 2667 e 'O que não é possível concluir' em y 2837, depois de gráficos e downloads"
+     ],
+     "atendidos": [
+      "Siglas traduzidas na linha Siglas",
+      "Os dois modos de comparação são explicados no ponto de uso",
+      "Limites de leitura explícitos: a variação não mede atividade econômica nem isola clima",
+      "Próxima pergunta e três painéis irmãos orientam o caminho"
+     ],
+     "problemas": [
+      "A abertura com a definição de carga fica recolhida; das cinco perguntas, 'por que importa' e 'o que não permite concluir' só aparecem no fim do painel",
+      "MWmed aparece como energia e como potência média, sem distinguir de MWh",
+      "O segundo cartão se chama 'reprodução do diagnóstico', rótulo de produto interno",
+      "O bloco O que mudou traz revisões em jargão técnico (mediana de 0,0191%, valor fora do domínio)",
+      "A ligação da carga com o restante do sistema se resume a uma frase"
+     ],
+     "justificativa": "Explica bem os modos de comparação e o que não se conclui, mas deixa a abertura recolhida, mistura energia e potência média, mantém rótulos de uso interno e conecta pouco a carga ao resto do sistema."
+    },
+    "C": {
+     "nota": 7.5,
+     "evidencia": [
+      "Playwright em 1440: Sul, último mês completo e mesmas datas trocam frase (7,34%, calendário não equivalente), universo, gráfico e tabela, e gravam sm, jan e cmp na URL",
+      "carga/texto_auditar.txt: tabela de janelas com Dias úteis, Dias úteis na comparação, Calendário equivalente e Mesmo regime do ONS",
+      "Perfil horário e clima estão nos painéis MMGD e perfil horário e Clima e calendário, a um clique cada"
+     ],
+     "atendidos": [
+      "Compara janelas com mesmos dias da semana e com mesmas datas",
+      "Mostra equivalência de calendário e regime do ONS por janela",
+      "A frase avisa quando a composição de calendário difere",
+      "Só publica variação com janelas completas e no mesmo regime do ONS",
+      "Exporta o recorte com nome de arquivo descritivo"
+     ],
+     "problemas": [
+      "Os cartões de variação ficam em SIN e 7 dias e contradizem a frase quando o recorte muda",
+      "Perfil horário e efeito de clima exigem trocar de página",
+      "A evolução mensal e anual só aparece em Analisar"
+     ],
+     "justificativa": "Atende bem a comparação com calendário compatível, com sinais de equivalência e exportação do recorte. Perde pontos porque os cartões não acompanham o filtro e porque perfil horário, clima e crescimento ficam em outras páginas ou níveis."
+    },
+    "D": {
+     "nota": 6.5,
+     "evidencia": [
+      "Playwright: Copiar link deste painel copia a URL com sm, jan, cmp e âncora p025; Baixar CSV da tabela gera arquivo com o nome do recorte e a versão dos dados",
+      "carga/texto_entender.txt: Fonte, Sobre este dado e Comprove este número; o bloco final impede ler a variação como atividade econômica",
+      "carga/texto_entender.txt: recortes só por SIN e quatro subsistemas; o texto não menciona consumidor, custo ou desigualdade"
+     ],
+     "atendidos": [
+      "Link com o estado do recorte e CSV do recorte",
+      "Procedência e limitações visíveis",
+      "Cautela editorial contra leitura econômica ou causal"
+     ],
+     "problemas": [
+      "Sem relação com custo, continuidade ou acesso do consumidor",
+      "CSV estático com códigos internos (7d, equivalente, mesmo_regime) e sem fonte nem unidade no arquivo",
+      "Recorte territorial limitado aos subsistemas"
+     ],
+     "justificativa": "Adaptado a página técnica para pesquisador e jornalista: boa transparência e link com estado preservado. O impacto potencial fica genérico, sem custo, consumidor ou território além dos subsistemas, e com CSV estático sem contexto."
+    },
+    "I": {
+     "nota": 7.0,
+     "evidencia": [
+      "carga/1440_inteira_01de02.png: gráfico de pontos com coluna Diferença e ordenação; escala de 74.000 a 84.000",
+      "carga/1440_inteira_01de02.png: série diária de 1.096 dias com a série de 364 dias antes tracejada; a janela de 7 dias só aparece como linha vertical",
+      "Playwright em 1440, Analisar: rótulos do gráfico anual truncados ('2014 (364…', '2018 (364…', '2026 (271…') e textos das marcas de regime sobre a série"
+     ],
+     "atendidos": [
+      "Gráfico de pontos adequado para comparar média e referência por janela",
+      "Tabela equivalente e navegação por setas e Enter",
+      "Barras anuais com eixo em zero e marcas de mudança de regime no histórico",
+      "Sem eixo duplo nem cor de aprovação ou reprovação"
+     ],
+     "problemas": [
+      "A série diária abre com 3 anos sobrepostos e não mostra o efeito da janela escolhida",
+      "Rótulos do gráfico anual truncados no Analisar",
+      "Textos das marcas de regime se sobrepõem à linha no histórico"
+     ],
+     "justificativa": "Escolhas de gráfico adequadas e acessíveis por tabela e teclado. Pesam a série diária densa na abertura, os rótulos truncados do gráfico anual e as anotações sobrepostas do histórico."
+    },
+    "J": {
+     "nota": 7.0,
+     "evidencia": [
+      "Playwright em 1440: região, janela e comparação mudam frase, universo, gráfico e tabela e gravam sm, jan e cmp; Enter numa linha do gráfico troca a janela; Analisar e Auditar mantêm o recorte",
+      "Playwright: depois de Sul, último mês completo e mesmas datas, os cartões seguem 'Variação da carga do SIN: últimos 7 dias' com 11,45% e 10,54%, enquanto a frase diz 7,34%",
+      "Playwright: busca na tabela, ordenação, CSV do recorte e estado vazio 'Nenhuma linha com esses filtros. Limpar filtros'"
+     ],
+     "atendidos": [
+      "Filtros claros com estado na URL e link copiável",
+      "Seleção pelo gráfico, pela tabela ou pelo teclado",
+      "Busca, ordenação e exportação seguem o recorte",
+      "Estado vazio compreensível com ação de limpar",
+      "A troca de profundidade preserva a seleção"
+     ],
+     "problemas": [
+      "Os cartões Comprove não acompanham região, janela nem comparação",
+      "Três camadas de navegação (grupos, subnavegação e painéis) antes do conteúdo",
+      "A tabela se abre sozinha ao trocar a janela"
+     ],
+     "justificativa": "Interação consistente, com estado em URL, seleção por gráfico e teclado, busca e exportação do recorte. Pesam os cartões desalinhados do recorte e as camadas sucessivas de navegação."
+    },
+    "K": {
+     "nota": 7.5,
+     "evidencia": [
+      "carga/objetivo.json: axe 0 em 320, 390, 768 e 1440; sem rolagem horizontal; teclado sem foco invisível; 3 alvos abaixo de 44 px e nenhum abaixo de 24",
+      "Playwright: 21 Tab até o filtro de região, contorno de 2 px, diálogo Comprove com foco dentro e retorno com Esc; movimento reduzido sem transições; contraste mínimo do texto 4,88 para 1",
+      "Playwright em 390 com fonte raiz a 200% (emulação CSS): o botão Auditar sai da tela e 'Nível e crescimento' e o h1 ficam cortados"
+     ],
+     "atendidos": [
+      "Marcos, títulos em ordem e tabelas com legenda",
+      "Selos com forma e texto, não só cor",
+      "Alternativa em tabela e descrição para leitor de tela em cada gráfico",
+      "Movimento reduzido respeitado",
+      "Foco visível e diálogo bem gerenciado"
+     ],
+     "problemas": [
+      "Controles de profundidade, selos e legendas em 11,5 px",
+      "Com texto a 200% em 390 px o seletor de profundidade e o chip do painel não cabem",
+      "Leitor de tela real não testado"
+     ],
+     "justificativa": "Base técnica sólida: axe limpo, foco visível, teclado, diálogo e movimento reduzido corretos, contraste adequado. Limites: fonte pequena nos controles, quebra do seletor com texto ampliado e ausência de teste com leitor de tela."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "carga_cartoes_fora_do_recorte",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "C"
+     ],
+     "onde": "Dois cartões 'Variação da carga do SIN' logo abaixo dos filtros Região, Janela e Comparar com (1440 e 390)",
+     "descricao": "Com Sul, último mês completo e mesmas datas a frase mostra 7,34% e os cartões seguem em 11,45% e 10,54% do SIN em 7 dias. O rótulo diz SIN, mas a posição sugere que acompanham o filtro.",
+     "sugestao": "Fazer os cartões seguirem o recorte ou isolá-los numa faixa 'Diagnóstico publicado' fora do bloco de filtros."
+    },
+    {
+     "id": "carga_primeira_tela",
+     "gravidade": "media",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Topo da página em 1440 e 390",
+     "descricao": "Cabeçalho, três camadas de navegação, fontes, abertura recolhida, siglas, painéis e Profundidade antecedem o painel. Em 1440 a frase termina em y 828 e o primeiro gráfico começa em y 1461; em 390 a frase começa em y 822 de 844.",
+     "sugestao": "Compactar o topo e subir a frase resposta e o gráfico principal; deixar siglas e fontes numa linha."
+    },
+    {
+     "id": "carga_titulo_repetido",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "H1 e título do painel",
+     "descricao": "'Quanto o sistema está consumindo?' aparece duas vezes seguidas.",
+     "sugestao": "Usar subtítulo diferente no painel ou ocultar o título do painel quando a página tem um só."
+    },
+    {
+     "id": "carga_abertura_recolhida",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Ler a abertura da página (Entender) e blocos finais",
+     "descricao": "A definição de carga, a escala MWmed e a regra de equivalência estão no bloco recolhido. Por que isso importa e O que não é possível concluir começam em y 2667 e 2837, depois de gráficos e downloads.",
+     "sugestao": "Abrir por padrão uma abertura de poucas frases: o que é, por que importa, com o que comparar, o que não concluir e onde aprofundar."
+    },
+    {
+     "id": "carga_mwmed_energia_potencia",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Abertura (Auditar) e linha Unidade",
+     "descricao": "A carga é chamada de energia atendida em MWmed e de média diária de potência, sem explicar MWmed contra MWh.",
+     "sugestao": "Definir MWmed numa frase e mostrar a equivalência com MWh por dia."
+    },
+    {
+     "id": "carga_reproducao_diagnostico",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "A"
+     ],
+     "onde": "Segundo cartão e título do Analisar 'O +10,5% publicado em 29/09/2026'; ficha Comprove",
+     "descricao": "'Reprodução do diagnóstico' e '+10,5% publicado' remetem a um produto interno que o leitor não conhece. Os botões Comprove trazem +11,4% e +10,5% enquanto o cartão e a frase mostram 11,45% e 10,54%.",
+     "sugestao": "Trocar o rótulo por 'mesmas datas do ano anterior' e usar o mesmo arredondamento no cartão, na frase e na ficha."
+    },
+    {
+     "id": "carga_serie_diaria_densa",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "A"
+     ],
+     "onde": "Gráfico 'Carga diária do SIN e o mesmo dia da semana 52 semanas antes' (1440 e 390)",
+     "descricao": "Abre com 1.096 dias e duas séries sobrepostas; a oscilação semanal domina e o efeito da janela de 7 dias não aparece. Os botões 30 dias, 90 dias e 1 ano ficam acima do gráfico.",
+     "sugestao": "Abrir em 90 dias ou na janela escolhida, com a janela e a referência destacadas."
+    },
+    {
+     "id": "carga_linhas_duplicadas",
+     "gravidade": "baixa",
+     "criterios": [
+      "A",
+      "I"
+     ],
+     "onde": "Gráfico de pontos e tabela de janelas",
+     "descricao": "Últimos 28 dias e Mês corrente até o último dia têm as mesmas datas e a mesma média e ocupam duas linhas; um parágrafo explica a coincidência.",
+     "sugestao": "Fundir as duas linhas com rótulo único quando coincidirem."
+    },
+    {
+     "id": "carga_texto_pequeno_e_ampliacao",
+     "gravidade": "baixa",
+     "criterios": [
+      "K"
+     ],
+     "onde": "Controles, selos e legendas; 390 px com fonte a 200%",
+     "descricao": "Profundidade, selos e legendas usam 11,5 px. Com fonte raiz a 200% em 390 px (emulação CSS) o botão Auditar sai da tela e 'crescimento' e 'consumindo' são cortados.",
+     "sugestao": "Subir a fonte mínima para 12 a 14 px e permitir quebra de linha no seletor e nos chips."
+    },
+    {
+     "id": "carga_jargao_auditar",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Auditar e ficha Comprove",
+     "descricao": "'silver', 'bronze', val_cargaenergiamwmed, faixa_plausivel, registros_esperados e CARGA_ENERGIA_AAAA aparecem sem tradução.",
+     "sugestao": "Traduzir ou mover para um glossário técnico."
+    },
+    {
+     "id": "carga_csv_sem_contexto",
+     "gravidade": "baixa",
+     "criterios": [
+      "D",
+      "J"
+     ],
+     "onde": "Downloads do painel e Baixar CSV da tabela",
+     "descricao": "O CSV estático usa códigos internos (7d, equivalente, mesmo_regime) e não traz fonte, unidade ou data no arquivo. O CSV da tabela usa ponto decimal com separador ponto e vírgula.",
+     "sugestao": "Incluir linha de metadados ou arquivo companheiro e padronizar o decimal."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, VoiceOver, TalkBack)",
+    "Aparência em 320 e 768 px: só as medições de objetivo.json, sem inspeção visual",
+    "Analisar e Auditar: gráficos vistos por amostra com Playwright; tabelas longas e XLSX não abertos",
+    "Contraste de linhas de séries e bordas de controles",
+    "Tooltips por passagem do mouse",
+    "objetivo.json exercitou 13 de 39 controles e não mede o nível Analisar"
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T7",
+     "perfil": "pesquisador",
+     "passos": [
+      "Abre a página e lê a frase resposta: últimos 7 dias, 83.771 MWmed, 11,45% acima dos mesmos dias da semana 52 semanas antes, mesma composição de calendário",
+      "Troca Comparar com para Mesmas datas: a frase passa a 10,54% (1 clique)",
+      "Escolhe Sul e último mês completo: a frase passa a 7,34% e avisa que o calendário não é equivalente (2 interações)",
+      "Abre a tabela e lê Calendário equivalente e Mesmo regime do ONS por janela (1 clique)",
+      "Baixa o CSV do recorte (1 clique)",
+      "Abre MMGD e perfil horário e Clima e calendário para as outras partes da tarefa (2 cliques)"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Cartões de variação não acompanham o recorte (11,45% e 10,54% do SIN contra 7,34% na frase)",
+      "A série diária de 3 anos não mostra o efeito da janela sem usar 30 dias",
+      "Perfil horário e clima exigem trocar de página"
+     ],
+     "erros": [
+      "A ficha Comprove mostra +11,4% e +10,5% enquanto o cartão mostra 11,45% e 10,54%"
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/carga/clima-e-calendario": {
+   "paineis": [
+    "P027"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 7.0,
+     "evidencia": [
+      "carga_clima_e_calendario/1440_dobra.png e medição em 1440: a frase resposta ocupa y 750 a 828; o cartão fica em y 1280 e o primeiro gráfico em y 1553",
+      "texto_entender.txt: a diferença de 10,49 se divide em 0,00, 2,52, 0,01, 2,65 e 5,32; a frase cita 24% e 51% e os 25% de nível e tendência ficam sem menção",
+      "390_inteira_02de06.png e 03de06.png: nota longa sobre 6 contra 7 dias antes do cartão; no gráfico de contribuições o rótulo direto é 'Tendência' e a legenda 'Nível e tendência'"
+     ],
+     "atendidos": [
+      "Frase resposta com unidade e período na primeira tela em 1440",
+      "Gráfico de partes com a diferença real marcada em 10,49",
+      "Selos Estimado e Calculado visíveis",
+      "Tipografia e espaçamento iguais aos do resto da família"
+     ],
+     "problemas": [
+      "A frase resposta cita 75% das partes e omite o nível e tendência (25%)",
+      "A nota sobre 6 contra 7 dias adensa a abertura antes do cartão",
+      "No celular a resposta cai abaixo da dobra (y 850 de 844)",
+      "O gráfico de contribuições tem quatro linhas e o calendário oscila de menos 12 a mais 5"
+     ],
+     "justificativa": "Boa estrutura e leitura rápida da frase resposta em 1440, mas a frase cita só 75% das partes, a nota de janela adensa a abertura e o gráfico de contribuições é carregado. No celular a resposta cai abaixo da dobra."
+    },
+    "B": {
+     "nota": 6.5,
+     "evidencia": [
+      "texto_entender.txt: Unidade define log × 100 como 'aproximadamente pontos percentuais'; O que não é possível concluir diz que contribuição não é efeito causal e resíduo não é atividade econômica",
+      "texto_entender.txt: seletor 'Principal: temperatura média com dobras e defasagem, calendário completo'; fora da amostra, origem mensal e intervalo de 80% sem glossário no ponto de uso",
+      "texto_auditar.txt linha 8: a abertura que resume o método (modelo estimado só com o passado) está recolhida em Entender"
+     ],
+     "atendidos": [
+      "Insiste que decomposição é associação e não causa",
+      "Explica o resíduo como a parte que o modelo não reproduz",
+      "Distingue avaliação ex post de previsão de carga",
+      "Siglas traduzidas, incluindo UF no Auditar"
+     ],
+     "problemas": [
+      "Vocabulário estatístico (log × 100, dobras, origem, fora da amostra, intervalo de 80%) sem glossário em Entender",
+      "A abertura com o método fica recolhida",
+      "O cartão do erro de 2,08% responde a 'quão bom é o modelo' e não à pergunta do título",
+      "A ligação com carga, clima e calendário no restante do sistema só aparece em texto"
+     ],
+     "justificativa": "Honesta sobre o que não se conclui, mas exige repertório estatístico: log × 100, dobras, origem mensal e intervalo sem glossário no ponto de uso, abertura recolhida e cartão de erro que não responde à pergunta do título."
+    },
+    "C": {
+     "nota": 7.0,
+     "evidencia": [
+      "Playwright em 1440: Sul leva a 11,41 pontos (14% e 59%); Mesmas datas, a 7,45 pontos com 94% de resíduo; a variante Sem temperatura passa a 7 dias",
+      "texto_entender.txt: gráfico de real contra previsto em 90 dias com intervalo e gráfico de contribuições por grupo",
+      "Playwright: o cartão do erro 2,08% (referência ingênua 4,80%) fica em SIN com Sul selecionado"
+     ],
+     "atendidos": [
+      "Decompõe a diferença entre janelas em calendário, temperatura, sazonalidade, nível e resíduo",
+      "Permite trocar comparação e variante do modelo",
+      "Compara com a referência ingênua de 364 dias",
+      "Exporta as partes da diferença"
+     ],
+     "problemas": [
+      "A tarefa de comparar com calendário compatível fica diluída na avaliação do modelo",
+      "Cartão e blocos de 90 dias não acompanham a região",
+      "O resultado muda com a variante e com o número de dias (6 ou 7) sem destaque na frase"
+     ],
+     "justificativa": "Entrega o efeito de calendário e clima sem isolar causa e permite testar variantes. Perde por diluir a tarefa na avaliação do modelo, por não sincronizar cartão e blocos de 90 dias com a região e por números que mudam com a variante."
+    },
+    "D": {
+     "nota": 6.5,
+     "evidencia": [
+      "texto_entender.txt: fontes ONS, NASA POWER e IBGE; a temperatura é reanálise e não estação; Comprove este número e Sobre este dado",
+      "Playwright: o CSV das partes sai como carga-decomposicao-a07-s-sem-temperatura-mesmas-datas_completo_v2026-09-01.csv, com ponto decimal",
+      "carga_clima_e_calendario/texto_entender.txt: recortes só por SIN e quatro subsistemas; sem menção a conta, consumidor ou território"
+     ],
+     "atendidos": [
+      "Limitações da temperatura (reanálise, capital como UF) declaradas",
+      "Link e CSV do recorte",
+      "Linguagem que evita causalidade"
+     ],
+     "problemas": [
+      "Conteúdo especializado, sem tradução para leitor não técnico",
+      "Nome de arquivo com código interno a07",
+      "Sem relação com custo ou consumidor"
+     ],
+     "justificativa": "Adaptado a página estatística: fontes e limitações transparentes, úteis a pesquisador e jornalista cuidadoso. O potencial social é restrito pelo vocabulário especializado e pela falta de ligação com custo, consumidor ou território."
+    },
+    "I": {
+     "nota": 6.5,
+     "evidencia": [
+      "carga_clima_e_calendario/1440_inteira_01de02.png: banda cinza do 'intervalo de 80%' sobre real e previsto; texto_auditar.txt: o intervalo cobriu 71,5% dos dias e o de 95%, 91,6%",
+      "carga_clima_e_calendario/1440_inteira_01de02.png: gráfico de contribuições com quatro linhas e calendário entre menos 12 e mais 5 em log × 100",
+      "Playwright em 1440, Analisar: rótulos de variantes truncados ('Sem temperatura (só calendári…', 'Temperatura média só linear (…')"
+     ],
+     "atendidos": [
+      "Linha contínua para o real e tracejada para o previsto, com legenda",
+      "Gráfico de partes com referência da diferença real",
+      "Tabelas equivalentes e navegação por setas",
+      "Sem eixo duplo"
+     ],
+     "problemas": [
+      "O intervalo de 80% é desenhado como nominal em Entender, mas a cobertura observada é 71,5%, dado que só aparece em Analisar",
+      "Gráfico de contribuições denso e difícil sem repertório",
+      "Rótulos de variantes truncados no Analisar",
+      "Em 390 o rótulo 'Tendência' substitui 'Nível e tendência'"
+     ],
+     "justificativa": "Escolhas coerentes e bem rotuladas, mas a banda de 80% é apresentada sem o aviso de que cobre 71,5% dos dias, o gráfico de contribuições é denso e há rótulos truncados nas variantes."
+    },
+    "J": {
+     "nota": 6.5,
+     "evidencia": [
+      "Playwright em 1440: região, comparação e variante gravam sm, cmp e var na URL e mudam frase, universo, gráfico, tabela de partes e CSV",
+      "Playwright: com Sul, o cartão 'SIN: erro absoluto médio 2,08%' e o bloco 'Últimos 90 dias previstos (SIN)' não mudam",
+      "Comparar com e Variante do modelo ficam no meio da página, longe do filtro de região do topo"
+     ],
+     "atendidos": [
+      "Estado na URL e link com âncora",
+      "A exportação das partes segue variante e comparação",
+      "Seletores acessíveis por teclado",
+      "O aviso de cobertura de 6 dias aparece junto da variante"
+     ],
+     "problemas": [
+      "A região do topo vale só para a frase e o gráfico de partes",
+      "Dois conjuntos de filtros (região no topo, comparação e variante no meio) sem aviso do que cada um afeta",
+      "Três camadas de navegação antes do painel"
+     ],
+     "justificativa": "Interação funciona e guarda estado, mas o filtro de região atinge só parte do painel, o cartão e os blocos de 90 dias seguem em SIN, e os controles de comparação e variante ficam distantes do filtro principal."
+    },
+    "K": {
+     "nota": 7.5,
+     "evidencia": [
+      "carga_clima_e_calendario/objetivo.json: axe 0 em 320, 390, 768 e 1440; sem rolagem horizontal; 0 alvos abaixo de 44 px em Entender; foco sem falha; 9 de 31 controles exercitados",
+      "objetivo.json: ficha Comprove fecha com Esc e 0 foco invisível; Playwright: contraste mínimo do texto do conteúdo 4,88 para 1; movimento reduzido respeitado (testado em carga e rede)",
+      "Playwright em 390 com fonte raiz a 200% (emulação): o botão Auditar sai da tela"
+     ],
+     "atendidos": [
+      "Axe limpo em quatro larguras",
+      "Foco e teclado",
+      "Alternativas em tabela e descrição para leitor de tela",
+      "Selos com forma e texto",
+      "Contraste de texto adequado"
+     ],
+     "problemas": [
+      "Texto de controles e selos em 11,5 px",
+      "Texto a 200% quebra o seletor de profundidade em 390",
+      "Tabela de 14 colunas com rolagem interna em 390, com aviso",
+      "Leitor de tela real não testado"
+     ],
+     "justificativa": "Mesma base sólida da família: axe limpo, teclado, foco, diálogo e movimento reduzido. Limites: 11,5 px nos controles, quebra do seletor com texto ampliado, tabelas largas com rolagem interna e leitor de tela não testado."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "ressalva essencial escondida",
+     "descricao": "Em Entender, o texto e o gráfico sobre 27/09/2026 usam o intervalo de 80% como referência ('acima do intervalo de 80%') sem avisar que a cobertura observada fora da amostra é 71,5% (no de 95%, 91,6%), isto é, que os intervalos são mais estreitos que a incerteza real. O aviso só existe em Analisar.",
+     "evidencia": "carga_clima_e_calendario/texto_entender.txt linha 39 contra texto_auditar.txt linhas 30 e 139; Playwright em 1440 confirma que Entender não traz o aviso"
+    }
+   ],
+   "achados": [
+    {
+     "id": "clima_intervalo_80_sem_aviso",
+     "gravidade": "alta",
+     "criterios": [
+      "I",
+      "B"
+     ],
+     "onde": "Banda 'intervalo de 80%' e frase de 27/09/2026 (Entender)",
+     "descricao": "A banda e a frase tratam o intervalo como de 80%, mas a cobertura medida é 71,5% (95%: 91,6%). O aviso 'abaixo do nominal, os intervalos são mais estreitos que a incerteza real' só está em Analisar.",
+     "sugestao": "Levar o aviso e a cobertura medida para a legenda e para a frase em Entender."
+    },
+    {
+     "id": "clima_frase_nao_fecha",
+     "gravidade": "media",
+     "criterios": [
+      "A",
+      "B"
+     ],
+     "onde": "Frase resposta: 'acompanham 24% dessa diferença; o modelo não reproduz 51%'",
+     "descricao": "As partes são 0,00 (calendário), 2,52 (temperatura), 0,01 (sazonalidade), 2,65 (nível e tendência) e 5,32 (resíduo) de 10,49. A frase cita 24% e 51% e omite os 25% de nível e tendência, que só aparecem no gráfico e na tabela.",
+     "sugestao": "Incluir a parcela de nível e tendência na frase ou dizer que a soma não fecha 100%."
+    },
+    {
+     "id": "clima_cartao_e_90_dias_em_SIN",
+     "gravidade": "media",
+     "criterios": [
+      "J"
+     ],
+     "onde": "Cartão 'SIN: erro absoluto médio 2,08%' e bloco 'Últimos 90 dias previstos (SIN)'",
+     "descricao": "Com Sul selecionado a frase e o gráfico de partes mudam, mas o cartão, o texto de 27/09 e os dois gráficos de 90 dias seguem em SIN.",
+     "sugestao": "Fazer o bloco seguir a região ou rotular a seção como 'Somente SIN' fora do filtro."
+    },
+    {
+     "id": "clima_vocabulario_estatistico",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Unidade, seletor de variante e blocos finais (Entender)",
+     "descricao": "log × 100, dobras, defasagem, origem mensal, fora da amostra e intervalo de 80% aparecem sem glossário no ponto de uso, para um público que inclui jornalista e professor.",
+     "sugestao": "Acrescentar glossário curto de seis termos e um exemplo numérico da leitura de 'pontos'."
+    },
+    {
+     "id": "clima_primeira_tela",
+     "gravidade": "media",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Topo da página em 390 e 1440",
+     "descricao": "Em 390 a frase resposta começa em y 850 de 844; em 1440 o cartão fica em y 1280 e o primeiro gráfico em y 1553.",
+     "sugestao": "Compactar o cabeçalho e subir a frase e o gráfico de partes."
+    },
+    {
+     "id": "clima_nota_6_contra_7_dias",
+     "gravidade": "baixa",
+     "criterios": [
+      "A",
+      "B"
+     ],
+     "onde": "Nota antes do cartão e variante Sem temperatura",
+     "descricao": "Há duas janelas (6 dias, +11,06%, e 7 dias, +11,45%) e a variante Sem temperatura troca a frase para 7 dias; a nota explica, mas ocupa quatro linhas na abertura.",
+     "sugestao": "Mostrar a janela de cada número em um selo e mover a nota para junto da variante."
+    },
+    {
+     "id": "clima_rotulos_truncados",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Gráfico de sensibilidade (Analisar), 1440",
+     "descricao": "Quatro dos seis nomes de variante terminam em reticências ('Sem temperatura (só calendári…') com espaço livre no gráfico.",
+     "sugestao": "Ampliar a coluna de rótulos ou quebrar linha."
+    },
+    {
+     "id": "clima_janela_do_achado",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Título 'A janela do achado, de 22/09/2026 a 28/09/2026, decomposta' (Entender)",
+     "descricao": "'Achado' é o termo interno para o diagnóstico publicado no resumo diário; o leitor não sabe a que achado a janela se refere.",
+     "sugestao": "Trocar por 'A janela dos últimos 7 dias, decomposta'."
+    },
+    {
+     "id": "clima_rotulo_tendencia_390",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "K"
+     ],
+     "onde": "Gráfico de contribuições em 390 px",
+     "descricao": "O rótulo direto aparece como 'Tendência' enquanto a legenda diz 'Nível e tendência'.",
+     "sugestao": "Usar o mesmo texto ou abreviar nos dois."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real",
+    "A fatia 390_inteira_04de06 não veio no pacote; foi regenerada por mim com Playwright no mesmo servidor e vista",
+    "Aparência em 320 e 768 px: só as medições de objetivo.json",
+    "Analisar e Auditar: gráficos vistos por amostra; tabelas de 90 linhas e de coeficientes não lidas linha a linha",
+    "Reprodução do modelo e dos 71,5% de cobertura (cabe ao avaliador técnico)",
+    "objetivo.json exercitou 9 de 31 controles e não mede o nível Analisar"
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T7",
+     "perfil": "analista de empresas",
+     "passos": [
+      "Lê a frase: 10,49 pontos acima, calendário, temperatura e estação acompanham 24% e o modelo não reproduz 51%",
+      "Lê a nota sobre 6 contra 7 dias e o cartão do erro de 2,08% contra 4,80% da referência ingênua",
+      "Escolhe Sul e Mesmas datas: a frase passa a 7,45 pontos, calendário e temperatura em sentido oposto e 94% de resíduo (2 cliques)",
+      "Troca a variante para Sem temperatura: a janela passa a 7 dias e a frase a 0% e 77% (1 seleção)",
+      "Baixa o CSV das partes (1 clique)"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "A frase soma 75% e omite 25% de nível e tendência",
+      "Cartão de erro e bloco de 90 dias continuam em SIN com Sul",
+      "Vocabulário estatístico sem glossário em Entender",
+      "Banda de 80% apresentada sem o aviso de cobertura de 71,5%"
+     ],
+     "erros": []
+    }
+   ]
+  },
+  "/setor-eletrico/carga/perfil-horario": {
+   "paineis": [
+    "P026"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 7.0,
+     "evidencia": [
+      "carga_perfil_horario/visoes.json e medição em 1440: Entender com 7069 px, seis gráficos, mapa de calor e glossário em sequência; o glossário só começa em y 5204",
+      "Fatia 390 02 (regenerada por mim): rótulos '23/09 23h25/09 23h27/09 23h29/09 23h' colados nos dois gráficos horários",
+      "Fatia 390 04 (regenerada) e Playwright: mapa de calor com 840 px em contêiner de 316 px; as horas 0 a 6 aparecem primeiro e o pico das 18h exige rolagem interna"
+     ],
+     "atendidos": [
+      "Seções com títulos claros (7 dias, dia típico, MMGD mês a mês, hora do pico)",
+      "Cartões com estimado e observado separados por selo",
+      "Chamada no topo que explica por que 83.065 e 80.189 MWmed diferem",
+      "Linhas com rótulo direto"
+     ],
+     "problemas": [
+      "Página longa em Entender, com dois gráficos horários quase iguais em escalas distintas",
+      "Rótulos do eixo colados em 390",
+      "O mapa de calor esconde o pico em 390",
+      "O glossário 'Que carga é cada série' só vem depois de todos os gráficos"
+     ],
+     "justificativa": "Seções bem tituladas e explicação clara da diferença entre produtos do ONS, mas a página é longa, repete dois gráficos horários em escalas distintas, e no celular os rótulos do eixo colam e o mapa de calor esconde o pico."
+    },
+    "B": {
+     "nota": 7.5,
+     "evidencia": [
+      "carga_perfil_horario/texto_entender.txt: o bloco 'Que carga é cada série' define curva, carga global, MMGD e carga líquida, com 'Por que não somar nem subtrair'",
+      "texto_entender.txt: chamada 'São produtos diferentes do ONS, com definições diferentes' e cartão 'Estimativa do ONS sobre a carga global da carga verificada, não sobre a curva'",
+      "texto_entender.txt: 'É energia consumida junto da carga e suprida pelos painéis e pequenas usinas dos próprios consumidores'"
+     ],
+     "atendidos": [
+      "Distingue curva, carga global, MMGD e carga líquida",
+      "Explica por que não somar nem subtrair",
+      "Estimativa do ONS identificada em frase, selo e legenda",
+      "Siglas traduzidas, incluindo CCEE",
+      "Hora local de início definida"
+     ],
+     "problemas": [
+      "O glossário fica no fim da página e a abertura está recolhida",
+      "'Carga verificada (API)' e campos como val_cargammgd aparecem sem tradução",
+      "O selo Observado convive com componente estimado (carga global e pico da curva)",
+      "Pouca ligação com o transporte físico e com o restante do sistema"
+     ],
+     "justificativa": "É a página mais didática da unidade: define cada série, explica por que não somar e marca a estimativa. Perde pontos porque o glossário vem no fim, a abertura fica recolhida e o selo Observado convive com componente estimado."
+    },
+    "C": {
+     "nota": 7.5,
+     "evidencia": [
+      "Playwright em 1440: tipo de dia (dia útil, sábado, domingo ou feriado) e mês mudam frase, gráficos e tabela e gravam cls e mes na URL",
+      "texto_entender.txt: mapa de calor do pico por ano e hora e gráfico de 2026 para carga líquida e global; Analisar traz 'Como o dia útil de agosto mudou desde 2019'",
+      "texto_entender.txt: 'o pico do dia caiu mais vezes entre 18h e 19h' confere com 129 e 99 dias na linha de 2026 do mapa"
+     ],
+     "atendidos": [
+      "Perfil horário por tipo de dia e por mês",
+      "Hora do pico por ano com escala em dias",
+      "MMGD como parcela da carga global por região",
+      "Exportação das tabelas por seção"
+     ],
+     "problemas": [
+      "A região altera só frase, curva horária e mapa; carga verificada e dia típico ficam em SIN",
+      "A comparação entre anos com o mesmo tipo de dia só está em Analisar",
+      "Cartões fixos em SIN"
+     ],
+     "justificativa": "Serve bem ao perfil horário e ao efeito de calendário por tipo de dia, com mapa de calor do pico. Limita-se pela cobertura parcial do filtro de região e porque a comparação entre anos fica em Analisar."
+    },
+    "D": {
+     "nota": 7.0,
+     "evidencia": [
+      "texto_entender.txt: Por que isso importa explica que a MMGD reduz a energia entregue nas horas de sol e desloca o pico da carga líquida para o começo da noite",
+      "Parcela da MMGD por região mês a mês, desde fev/2019 no SIN e set/2025 nos subsistemas",
+      "Cinco CSV, link do painel e a expressão 'estimada pelo ONS e não medida' na frase resposta"
+     ],
+     "atendidos": [
+      "Tema de interesse público (geração distribuída dos próprios consumidores)",
+      "Estimativa sempre identificada",
+      "Recorte regional",
+      "Downloads múltiplos"
+     ],
+     "problemas": [
+      "Sem custo, tarifa ou efeito para o consumidor",
+      "Recorte por subsistema, sem UF",
+      "Exportações com códigos internos"
+     ],
+     "justificativa": "Adaptado a tema de interesse público: MMGD e deslocamento do pico importam ao consumidor, com estimativa bem marcada, recorte regional e downloads. Falta ligar o pico a custo ou ao consumidor e detalhar território além do subsistema."
+    },
+    "I": {
+     "nota": 7.0,
+     "evidencia": [
+      "carga_perfil_horario/1440_inteira_01de03.png e 03de03.png: linhas com rótulo direto, MMGD em âmbar, mapa de calor numa matiz com legenda e hachura para 'sem dado'",
+      "Playwright em 390: 3 pares de rótulos '23/09 23h' se sobrepõem nos dois gráficos horários; mapa de calor de 840 px em 316 px com rolagem interna sem sinalização",
+      "Playwright com SE/CO: as opções do mapa passam a 'Desde 2019' e 'Todos, desde 2019', duas opções iguais"
+     ],
+     "atendidos": [
+      "Linhas, barras agrupadas e mapa de calor adequados a série horária, picos e frequência",
+      "Curva e carga verificada em gráficos separados",
+      "Tabelas equivalentes e teclado por células",
+      "Sem eixo duplo"
+     ],
+     "problemas": [
+      "Dois gráficos horários em escalas diferentes lado a lado",
+      "Rótulos do eixo colados em 390",
+      "Mapa de calor exige rolagem interna em 390",
+      "Opções repetidas do mapa com subsistema"
+     ],
+     "justificativa": "Tipos de gráfico adequados, bem rotulados e com alternativas em tabela. Perde por escalas diferentes em gráficos vizinhos, rótulos colados e mapa cortado no celular, e por opções repetidas ao trocar de região."
+    },
+    "J": {
+     "nota": 6.5,
+     "evidencia": [
+      "Playwright em 1440: com SE/CO a frase vira 10,09% do SE/CO e o Universo diz que SE/CO vale para resposta, curva e mapa, e SIN para carga verificada, dia típico e picos",
+      "Playwright: os dois cartões seguem em 10,8% e 98.741 MWmed do SIN com SE/CO ou Sul selecionado",
+      "Playwright: Mês e Tipo de dia gravam mes e cls; o mapa de calor mantém navegação por setas"
+     ],
+     "atendidos": [
+      "Estado em URL e link com âncora",
+      "O Universo declara o alcance do filtro",
+      "Seletores de mês e tipo de dia sincronizam gráficos, frase e tabela",
+      "Teclado no mapa de calor"
+     ],
+     "problemas": [
+      "Filtro de região parcial, com escopo misto na mesma tela",
+      "Cartões não seguem a região",
+      "Opção duplicada no mapa de calor",
+      "Três camadas de navegação antes do painel"
+     ],
+     "justificativa": "O estado é guardado e o Universo declara o alcance do filtro, o que ajuda. Mas a região vale só para parte do painel, os cartões ficam em SIN e há opção duplicada, o que torna a interação mais confusa do que deveria."
+    },
+    "K": {
+     "nota": 6.5,
+     "evidencia": [
+      "carga_perfil_horario/objetivo.json: axe 0, sem rolagem horizontal no documento, foco sem falha, 12 de 47 controles exercitados",
+      "Playwright em 390: rótulos do eixo sobrepostos nos dois gráficos horários; mapa de calor com rolagem interna de 524 px sem indicação",
+      "Playwright em 390 com fonte raiz a 200%: o botão Auditar sai da tela; texto de controles e selos em 11,5 px"
+     ],
+     "atendidos": [
+      "Axe limpo em quatro larguras",
+      "Teclado e foco",
+      "Contraste de texto adequado",
+      "Mapa de calor com células navegáveis por setas e texto 'N dias, classe...'",
+      "Movimento reduzido"
+     ],
+     "problemas": [
+      "Rótulos de data colados em 390 nos dois gráficos horários",
+      "O mapa de calor exige rolagem lateral sem aviso e mostra primeiro as horas sem pico",
+      "Texto de 11,5 px e quebra com 200%",
+      "Leitor de tela real não testado"
+     ],
+     "justificativa": "Teclado, axe e contraste bons, mas no celular as datas do eixo ficam ilegíveis em dois gráficos e o mapa de calor esconde o pico atrás de rolagem interna sem aviso. Fonte pequena e leitor de tela não testado."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "perfil_rotulos_colados_390",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "K"
+     ],
+     "onde": "Gráficos 'Carga verificada do SIN' e 'Curva de carga horária do SIN' (últimos 7 dias), 390 px",
+     "descricao": "As marcas '23/09 23h', '25/09 23h', '27/09 23h' e '29/09 23h' se sobrepõem nos dois gráficos e viram um texto contínuo.",
+     "sugestao": "Mostrar uma marca por dia com formato curto (23/09) e girar ou alternar rótulos."
+    },
+    {
+     "id": "perfil_mapa_calor_390",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "K",
+      "A"
+     ],
+     "onde": "Mapa de calor 'Em que hora cai o pico do dia', 390 px",
+     "descricao": "A tabela mede 840 px num contêiner de 316 px, com rolagem interna sem aviso. A primeira vista mostra as horas 0 a 6, sem nenhum pico; as horas 18 e 19 exigem rolar 524 px.",
+     "sugestao": "Abrir rolado no horário de pico, ou mostrar só 12h a 23h, e indicar a rolagem."
+    },
+    {
+     "id": "perfil_regiao_parcial",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "C"
+     ],
+     "onde": "Filtro Região e cartões de destaque",
+     "descricao": "A região vale para a frase, a curva horária e o mapa; a carga verificada, o dia típico e os picos diários ficam em SIN (dito na linha Universo). Os cartões 10,8% e 98.741 MWmed seguem em SIN, enquanto a frase diz, por exemplo, 10,09% do SE/CO.",
+     "sugestao": "Aplicar a região a todos os blocos possíveis e marcar visualmente os blocos que ficam em SIN."
+    },
+    {
+     "id": "perfil_opcao_duplicada",
+     "gravidade": "baixa",
+     "criterios": [
+      "J"
+     ],
+     "onde": "Anos no mapa, com subsistema selecionado",
+     "descricao": "As duas opções passam a 'Desde 2019' e 'Todos, desde 2019'.",
+     "sugestao": "Esconder a segunda opção quando as séries coincidem."
+    },
+    {
+     "id": "perfil_glossario_no_fim",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "A"
+     ],
+     "onde": "Bloco 'Que carga é cada série' (y 5204 em 1440; 6878 em 390)",
+     "descricao": "O glossário que distingue curva, carga global, MMGD e carga líquida só vem depois de seis gráficos; a distinção é central para ler os dois gráficos do topo.",
+     "sugestao": "Levar um resumo de duas linhas para antes dos primeiros gráficos e manter o glossário completo no fim."
+    },
+    {
+     "id": "perfil_dois_graficos_escalas",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Primeiro e segundo gráficos de 'Últimos 7 dias, hora a hora'",
+     "descricao": "Os gráficos vizinhos usam eixos de 0 a 100.000 e de 70.000 a 100.000 MWmed, o que dificulta comparar formas; a separação é intencional e explicada.",
+     "sugestao": "Alinhar o eixo ou sobrepor a curva como referência tracejada com aviso."
+    },
+    {
+     "id": "perfil_observado_com_estimado",
+     "gravidade": "baixa",
+     "criterios": [
+      "B",
+      "I"
+     ],
+     "onde": "Selos Observado em 'Carga global' e no cartão do pico",
+     "descricao": "O selo diz Observado e o texto ao lado explica 'observado com componente estimado'; a legenda do gráfico não repete o aviso.",
+     "sugestao": "Criar o selo 'Observado com componente estimado' ou repetir o aviso na legenda."
+    },
+    {
+     "id": "perfil_pico_28_09",
+     "gravidade": "baixa",
+     "criterios": [
+      "C",
+      "A"
+     ],
+     "onde": "Cartão 'Pico horário da curva de carga do SIN no dia' (28/09/2026) e tabela de picos (Analisar)",
+     "descricao": "O cartão mostra 98.741 MWmed às 19h de 28/09, mas os dados vão até 29/09 e a tabela do Analisar traz 100.610 MWmed às 11h em 29/09, sem explicar o corte.",
+     "sugestao": "Usar o último dia com 24 horas ou explicar a data escolhida."
+    },
+    {
+     "id": "perfil_primeira_tela",
+     "gravidade": "media",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Topo da página em 390 e 1440",
+     "descricao": "Em 390 a frase resposta começa em y 842 de 844; em 1440 o primeiro gráfico começa em y 1516.",
+     "sugestao": "Compactar o cabeçalho e subir a frase e o primeiro gráfico."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real",
+    "As fatias 390_inteira_02, 04 e 07 de 08 não vieram no pacote; foram regeneradas por mim com Playwright (altura de 11.050 contra 11.178 px do pacote) e vistas",
+    "Aparência em 320 e 768 px: só as medições de objetivo.json",
+    "Analisar e Auditar: gráficos vistos por amostra; tabelas de 168 e 135 linhas não lidas linha a linha",
+    "Correção das comparações entre curva e carga global (cabe ao avaliador técnico)",
+    "objetivo.json exercitou 12 de 47 controles e não mede o nível Analisar"
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T7",
+     "perfil": "jornalista ou professor",
+     "passos": [
+      "Lê a frase: MMGD estimada em 10,80% da carga global em ago/2026 e pico mais frequente entre 18h e 19h",
+      "Lê a chamada que diz que 83.065 e 80.189 MWmed são produtos diferentes do ONS",
+      "Escolhe domingo ou feriado e depois outro mês: frase e gráficos do dia típico mudam (2 interações)",
+      "Escolhe SE/CO: a frase passa a 10,09% do SE/CO e os cartões seguem em SIN (1 clique)",
+      "Rola até o mapa de calor e o gráfico das horas de pico de 2026",
+      "Lê o bloco Que carga é cada série"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Região vale só para parte do painel",
+      "Glossário no fim da página",
+      "No celular os rótulos do eixo colam e o mapa de calor mostra primeiro as horas 0 a 6"
+     ],
+     "erros": [
+      "Com SE/CO a opção 'Todos, desde 2019' repete 'Desde 2019'"
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/rede": {
+   "paineis": [
+    "P028"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 7.0,
+     "evidencia": [
+      "rede/1440_dobra.png e medição em 1440: título de duas linhas e frase resposta a partir de y 803; cartões em y 1494 e primeiro gráfico em y 1639",
+      "rede/1440_inteira_01de02.png: quatro cartões com cor própria, repetida nas séries; esquema com setas de espessura proporcional",
+      "rede/390_inteira_03de05.png e medição em 390: o esquema vira lista de quatro linhas; a frase resposta começa em y 964 de 844"
+     ],
+     "atendidos": [
+      "Frase resposta com sentido e valor",
+      "Cartões coloridos com a mesma cor nas séries do gráfico",
+      "Esquema como visão geral das fronteiras",
+      "Quatro blocos finais claros"
+     ],
+     "problemas": [
+      "Dois dos quatro cartões mostram 0 MWh e ocupam metade da faixa de cartões",
+      "O título longo (duas linhas em 1440, quatro em 390) empurra a resposta para o pé da primeira tela e para fora dela em 390",
+      "No celular o esquema desaparece e vira lista"
+     ],
+     "justificativa": "Boa hierarquia com frase, cartões e esquema, e cores consistentes. A resposta chega ao pé da primeira tela em 1440 e fora dela em 390, dois dos quatro cartões mostram zero e o esquema vira lista no celular."
+    },
+    "B": {
+     "nota": 7.0,
+     "evidencia": [
+      "rede/texto_entender.txt: 'A energia escondida pelo saldo é o menor dos dois sentidos; zero quer dizer que o fluxo foi sempre no mesmo sentido', logo abaixo dos campos de contexto",
+      "texto_entender.txt: O que não é possível concluir diz que limites não são públicos e que espessura da seta ou diferença de preço não demonstram saturação",
+      "texto_entender.txt: os cartões usam 'Norte → Nordeste' e mostram 0 MWh, enquanto frase e esquema dizem Nordeste para Norte; MWh contra MWmed só no Auditar"
+     ],
+     "atendidos": [
+      "Define energia escondida pelo saldo com regra de leitura",
+      "Explica sinal e sentido positivo em Como interpretar",
+      "Declara que não infere congestionamento",
+      "Siglas e PLD traduzidos",
+      "Próxima pergunta orienta o caminho"
+     ],
+     "problemas": [
+      "Cartões nomeados na orientação do nome da fronteira entram em conflito com a leitura do esquema (Nordeste para Norte)",
+      "MWh contra MWmed só é explicado no Auditar",
+      "O cabeçalho cita 'outros países', mas o exterior só aparece em Balanço e exterior",
+      "A abertura com o escopo está recolhida"
+     ],
+     "justificativa": "Explica bem saldo e energia escondida e recusa inferir congestionamento. Pesam o conflito entre os nomes dos cartões e o sentido real do esquema, a explicação de MWh e MWmed só no Auditar e o exterior fora do painel."
+    },
+    "C": {
+     "nota": 6.5,
+     "evidencia": [
+      "Playwright em 1440: Dia muda frase e esquema; clicar numa seta grava fr=N_NE e abre 'Limpar a fronteira escolhida'; o gráfico mostra os dois sentidos e o saldo por dia",
+      "Playwright: a escala Hora fica em 'Carregando a janela horária…' por mais de 20 s (1440) e 12 s (390); rede_janela_horaria.json volta em 200 em 24 ms",
+      "rede/texto_entender.txt: Universo 'quatro fronteiras entre subsistemas'; exterior em outra página e PLD só em Analisar"
+     ],
+     "atendidos": [
+      "Mostra saldo e energia nos dois sentidos para as quatro fronteiras em 30 dias",
+      "Escolha de dia e de fronteira",
+      "Não infere congestionamento"
+     ],
+     "problemas": [
+      "A escala Hora, única visão de fluxo e PLD na mesma hora, nunca carrega",
+      "Exterior e programado ficam em outras páginas",
+      "Cartões com zero ocupam espaço sem informar"
+     ],
+     "justificativa": "Distingue saldo e fluxo bruto por dia para quatro fronteiras, com seleção de dia e fronteira. Perde porque a escala horária, que traria fluxo e PLD na mesma hora, nunca carrega e porque exterior e programado exigem outras páginas."
+    },
+    "D": {
+     "nota": 6.5,
+     "evidencia": [
+      "rede/texto_entender.txt: sentido da energia entre regiões e cautela de não inferir limite; downloads de série horária 2021 a 2026, fronteiras e subsistemas por dia e janela JSON",
+      "O PLD só se relaciona ao fluxo em Analisar e na escala Hora, que não carrega",
+      "rede/texto_entender.txt não menciona consumidor, tarifa ou custo"
+     ],
+     "atendidos": [
+      "Downloads amplos e link com estado",
+      "Procedência e limitações visíveis",
+      "Linguagem sem alarmismo"
+     ],
+     "problemas": [
+      "Sem ligação visível de fluxo com preço ou custo em Entender",
+      "Recorte limitado aos subsistemas",
+      "A leitura exige familiaridade com sinal e sentido"
+     ],
+     "justificativa": "Adaptado a página operacional: útil a pesquisador e gestor por downloads e cautela de leitura. Sem ligação visível com preço e custo em Entender, e a visão horária com PLD, que faria essa ligação, está indisponível."
+    },
+    "I": {
+     "nota": 6.0,
+     "evidencia": [
+      "Playwright em 1440 com ampliação 2x: no esquema, a seta Nordeste para Norte (94.244 MWh) tem a ponta escondida sob o retângulo Norte; só o texto e a tabela dizem o sentido",
+      "rede/1440_inteira_01de02.png: gráfico de linhas por dia com rótulo fundido 'SE→S · saldo'",
+      "rede/390_inteira_03de05.png: o esquema é substituído por lista de quatro linhas"
+     ],
+     "atendidos": [
+      "Linhas separam cada sentido e o saldo",
+      "Espessura proporcional com aviso de que não indica limite",
+      "Cores iguais entre cartão e séries",
+      "Tabela equivalente"
+     ],
+     "problemas": [
+      "A ponta da seta Nordeste para Norte, sentido oposto ao nome da fronteira, fica coberta pelo nó Norte",
+      "A visão horária prometida não renderiza",
+      "Rótulo fundido 'SE→S · saldo'",
+      "No celular o esquema vira lista sem espacialidade"
+     ],
+     "justificativa": "O gráfico de linhas com os dois sentidos e o saldo é apropriado e o esquema avisa que a espessura não indica limite. Mas a seta de sentido oposto ao nome perde a ponta e a visão horária prometida não renderiza."
+    },
+    "J": {
+     "nota": 5.5,
+     "evidencia": [
+      "Playwright em 1440 (20 s) e 390 (12 s): a escala Hora fica em 'Carregando a janela horária…'; o fetch devolve 200 e o painel não sai do estado, sem erro nem tempo limite",
+      "Playwright: Dia, clique na seta, tabela e 'Limpar a fronteira escolhida (N→NE)' gravam dia, fr e esc na URL",
+      "Playwright: Copiar link devolve a URL com o recorte e âncora p028"
+     ],
+     "atendidos": [
+      "Estado em URL e link copiável",
+      "Seleção por seta ou tabela com botão para limpar",
+      "Tabela e CSV do recorte",
+      "A profundidade preserva o estado"
+     ],
+     "problemas": [
+      "A escala Hora nunca termina de carregar e não informa falha",
+      "Esquema e lista alternam conforme a largura",
+      "Três camadas de navegação antes do painel"
+     ],
+     "justificativa": "Dia, fronteira, limpeza de seleção e link funcionam bem. Mas a escala Hora, metade do controle Escala, trava em 'Carregando' sem erro nem alternativa, o que é perda funcional relevante."
+    },
+    "K": {
+     "nota": 7.0,
+     "evidencia": [
+      "rede/objetivo.json: axe 0 em 320, 390, 768 e 1440; sem rolagem horizontal; teclado e foco sem falha; 13 de 22 controles exercitados em 390",
+      "Playwright: os elementos do esquema têm papel de botão e nome 'Nordeste para Norte: 94.244 MWh'; a lista alternativa aparece no celular",
+      "Playwright: o estado 'Carregando a janela horária…' não anuncia falha e não some"
+     ],
+     "atendidos": [
+      "Axe limpo em quatro larguras",
+      "Nome acessível dos elementos do esquema",
+      "Contraste de texto adequado, mínimo 4,88 para 1",
+      "Alternativa em lista no celular"
+     ],
+     "problemas": [
+      "Estado de carregamento sem fim, sem mensagem de erro",
+      "Texto de 11,5 px em controles e selos",
+      "Com fonte a 200% o seletor de profundidade quebra em 390",
+      "Leitor de tela real não testado"
+     ],
+     "justificativa": "Base técnica boa e esquema com nomes acessíveis, mas o carregamento sem fim da escala Hora não informa nem oferece saída, há fonte de 11,5 px nos controles e o seletor quebra com texto ampliado."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "perda funcional relevante",
+     "descricao": "A escala Hora do painel (fluxo, programa e PLD na mesma hora, últimos 7 dias), anunciada no subtítulo 'por dia e por hora', nunca renderiza: o texto 'Carregando a janela horária…' permanece indefinidamente, sem erro. É a única visão da página que relaciona fluxo e preço na mesma hora.",
+     "evidencia": "Playwright: clique em Hora (ou ?esc=hora) mantém o estado por mais de 20 s em 1440 e de 12 s em 390; GET /energia/series/rede_janela_horaria.json devolve 200 em 24 ms com horas, fluxo, programado, exterior e pld; sem mensagem de erro"
+    }
+   ],
+   "achados": [
+    {
+     "id": "rede_escala_hora_trava",
+     "gravidade": "alta",
+     "criterios": [
+      "J",
+      "C",
+      "I",
+      "K"
+     ],
+     "onde": "Controle Escala, opção Hora",
+     "descricao": "Depois de escolher Hora aparece 'Carregando a janela horária (fluxo, programa e PLD na mesma hora)…' e o estado nunca muda, nem em ?esc=hora; o arquivo carrega em 24 ms e o painel segue travado. O 'Janela horária de 7 dias (JSON)' continua no download.",
+     "sugestao": "Corrigir a rotina de carregamento da janela horária e acrescentar mensagem de erro com nova tentativa."
+    },
+    {
+     "id": "rede_seta_oculta",
+     "gravidade": "media",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Esquema 'Saldo de cada fronteira no dia' (1440)",
+     "descricao": "A seta Nordeste para Norte (94.244 MWh) perde a ponta sob o retângulo Norte; o rótulo visível diz só 'MWh', sem direção.",
+     "sugestao": "Terminar a seta na borda do nó e incluir a direção no rótulo (Nordeste para Norte)."
+    },
+    {
+     "id": "rede_cartoes_orientacao_canonica",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Quatro cartões 'Energia escondida pelo saldo de 30 dias'",
+     "descricao": "Os títulos usam a orientação do nome (Norte → Nordeste) e mostram 0 MWh, enquanto a frase, o esquema e a tabela dizem que o fluxo foi de Nordeste para Norte.",
+     "sugestao": "Explicar no cartão 'fluxo sempre Nordeste para Norte, nada no sentido contrário'."
+    },
+    {
+     "id": "rede_cartoes_zero",
+     "gravidade": "baixa",
+     "criterios": [
+      "A",
+      "C"
+     ],
+     "onde": "Faixa de quatro cartões",
+     "descricao": "Dois cartões mostram 0 MWh; a mensagem útil (fluxo num só sentido) caberia numa linha.",
+     "sugestao": "Condensar os cartões com zero em uma linha de texto."
+    },
+    {
+     "id": "rede_exterior_fora_do_painel",
+     "gravidade": "media",
+     "criterios": [
+      "C",
+      "B"
+     ],
+     "onde": "Cabeçalho 'intercâmbios entre subsistemas e com outros países' e linha Universo",
+     "descricao": "O cabeçalho cita outros países, mas o painel Entender só traz as quatro fronteiras entre subsistemas; o exterior está em Balanço e exterior.",
+     "sugestao": "Ajustar o cabeçalho ou incluir uma linha de ligação para o exterior no painel."
+    },
+    {
+     "id": "rede_datas_pld",
+     "gravidade": "baixa",
+     "criterios": [
+      "A",
+      "B"
+     ],
+     "onde": "Cabeçalho e linha Fontes do rodapé do painel",
+     "descricao": "O cabeçalho informa PLD horário até 30/09/2026 e a linha Fontes diz referência até 29/09/2026.",
+     "sugestao": "Usar a mesma data ou explicar a diferença."
+    },
+    {
+     "id": "rede_rotulos_fundidos",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Gráfico de energia por sentido, entre Sul e SE/CO",
+     "descricao": "Os rótulos 'SE→S' e 'Saldo' se fundem em 'SE→S · saldo', ambíguo para quem lê só o rótulo.",
+     "sugestao": "Deslocar os rótulos ou diferenciar por posição."
+    },
+    {
+     "id": "rede_titulo_longo",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "H1 da página",
+     "descricao": "'Como a energia circula entre regiões e que restrições são documentadas?' ocupa duas linhas em 1440 e quatro em 390 e repete duas perguntas.",
+     "sugestao": "Encurtar o título do hub e deixar as perguntas nos painéis."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real",
+    "Aparência em 320 e 768 px: só as medições de objetivo.json",
+    "Analisar e Auditar: gráficos vistos por amostra; tabelas de 368 e 69 linhas não lidas linha a linha",
+    "O painel 'fluxo-e-preco' (Analisar) não tem identificador P0xx na página",
+    "Correção dos saldos e da energia escondida (cabe ao avaliador técnico)",
+    "objetivo.json exercitou 13 de 22 controles em 390 e 10 de 34 em 1440 e não mede o nível Analisar"
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T8",
+     "perfil": "analista de empresas",
+     "passos": [
+      "Lê a frase: SE/CO recebeu do Norte, do Nordeste e do Sul; o Norte recebeu do Nordeste; em duas fronteiras o saldo esconde até 233.099 MWh no sentido contrário",
+      "Lê os quatro cartões (0, 143.979, 0 e 233.099 MWh) e a regra de que energia escondida é o menor dos dois sentidos",
+      "Escolhe o dia 24/09/2026: frase e esquema mudam (1 seleção)",
+      "Clica na seta Norte e Nordeste: o gráfico passa a esta fronteira e aparece o botão Limpar (1 clique)",
+      "Escolhe Escala Hora para ver fluxo, programa e PLD na mesma hora: fica em 'Carregando' por mais de 20 s",
+      "Procura o exterior e o programado: precisa abrir Balanço e exterior e Programado e verificado"
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "A escala Hora nunca carrega",
+      "O exterior e o programado ficam em outras páginas",
+      "Os cartões usam a orientação do nome e não o sentido real"
+     ],
+     "erros": [
+      "Escala Hora sem conclusão nem mensagem de erro",
+      "Ponta da seta Nordeste para Norte coberta pelo retângulo Norte"
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/rede/balanco-e-exterior": {
+   "paineis": [
+    "P029"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 6.5,
+     "evidencia": [
+      "rede_balanco_e_exterior/texto_entender.txt linhas 5 e 18: título e painel iguais, 'De onde vem a diferença de energia?'; subtítulo 'Contas do balanço conferidas hora a hora, resíduos e intercâmbio internacional'",
+      "rede_balanco_e_exterior/1440_inteira_01de02.png: cartões com títulos longos ('Horas em que o intercâmbio do Sul no balanço difere da fronteira com o Sudeste/Centro-Oeste somada ao exterior publicado'); rótulos do gráfico empilhado truncados",
+      "rede_balanco_e_exterior/390_inteira_02de06.png: a anotação '29/04/2023: MMGD estimada passa a entrar...' é cortada na borda esquerda"
+     ],
+     "atendidos": [
+      "Frase resposta curta com período",
+      "Exterior em seção própria com seletor de país",
+      "Marca da quebra de 29/04/2023 nos gráficos",
+      "Selos Calculado visíveis"
+     ],
+     "problemas": [
+      "A pergunta do título não corresponde ao que o painel faz",
+      "Títulos de cartão longos e técnicos",
+      "Rótulos do gráfico empilhado truncados",
+      "Anotação cortada em 390"
+     ],
+     "justificativa": "Estrutura coerente com a família, mas a pergunta do título não descreve o que o painel faz, os cartões têm títulos longos, rótulos do gráfico de contas são truncados e a anotação da quebra de 2023 é cortada no celular."
+    },
+    "B": {
+     "nota": 6.0,
+     "evidencia": [
+      "rede_balanco_e_exterior/texto_entender.txt: 'geração, carga e intercâmbio conferem entre si em pelo menos 95% das horas conferidas' sem definir balanço interno, perímetro e resíduo em Entender; a abertura está recolhida",
+      "texto_entender.txt: título 'De onde vem a diferença de energia?' contra conteúdo de conferência contábil e exterior",
+      "Como interpretar: 'o do Sul inclui Argentina e Uruguai ... Soma zero só acontece quando o exterior é nulo' num parágrafo único e denso"
+     ],
+     "atendidos": [
+      "Declara que a fonte não informa a causa e que nada é atribuído a perdas",
+      "Trata o Paraguai como ausência e não como zero",
+      "Siglas traduzidas",
+      "Explicita a mudança metodológica de 29/04/2023"
+     ],
+     "problemas": [
+      "Balanço interno, perímetro e resíduo sem definição em Entender",
+      "O título promete explicar a diferença e o painel só confere contas",
+      "O parágrafo Como interpretar é denso",
+      "Pouca ligação com o transporte físico e com o restante do sistema"
+     ],
+     "justificativa": "A honestidade sobre causas é boa, mas o leitor não encontra em Entender a definição de balanço interno, perímetro e resíduo, o título promete explicar a diferença e o painel só confere contas, e o texto de interpretação é denso."
+    },
+    "C": {
+     "nota": 6.5,
+     "evidencia": [
+      "texto_entender.txt e texto_auditar.txt: exportação e importação mensais por país (Argentina 2.724.094 e 174.227 MWh) e saldo de 12 meses de 2.754.057 MWh",
+      "texto_entender.txt: O que mudou diz que as 2.472 horas com resíduo ficam em 2026, entre 01/01 e 14/05, enquanto a frase fala em 'pelo menos 95%'",
+      "rede_balanco_e_exterior/1440_inteira_01de02.png: o gráfico mensal do resíduo mostra os picos de 2026"
+     ],
+     "atendidos": [
+      "Mostra exportação e importação por país nos dois sentidos",
+      "Distingue saldo de 12 meses e fluxos mensais",
+      "Marca a ausência do Paraguai",
+      "Exporta balanço, horas com resíduo e exterior"
+     ],
+     "problemas": [
+      "A frase de abertura (95%) esconde que o problema se concentra em 2026 e em todas as regiões",
+      "O saldo contra fluxo bruto entre regiões depende de outra página",
+      "Cartões fixos em SIN"
+     ],
+     "justificativa": "Atende a parte do exterior da tarefa, com os dois sentidos e o saldo de 12 meses. A frase de abertura resume 95% de horas coerentes e deixa para blocos e gráfico abaixo que todo o resíduo está em 2026."
+    },
+    "D": {
+     "nota": 6.0,
+     "evidencia": [
+      "texto_entender.txt: Por que isso importa diz que comparações entre regiões herdam a diferença e evita atribuir a perdas ou ao exterior o que a fonte não explica",
+      "Downloads Balanço mensal, Horas com resíduo no balanço e Exterior e Itaipu por mês",
+      "rede_balanco_e_exterior/texto_entender.txt não relaciona o resíduo a custo, perdas reais ou continuidade"
+     ],
+     "atendidos": [
+      "Transparência sobre os limites da fonte",
+      "Downloads disponíveis",
+      "Exterior por país"
+     ],
+     "problemas": [
+      "Tema de consistência contábil, sem leitura de impacto",
+      "Recorte regional só em Analisar",
+      "Sem ligação com custo ou consumidor"
+     ],
+     "justificativa": "Adaptado a página de consistência de dados: serve a analistas que dependem do balanço do ONS e evita ler perdas onde a fonte não diz. O impacto social é indireto e não aparece no texto nem nos números."
+    },
+    "I": {
+     "nota": 6.5,
+     "evidencia": [
+      "rede_balanco_e_exterior/1440_inteira_01de02.png: barras empilhadas de horas; os resíduos de perímetro (213 h) e soma (24 h) quase invisíveis; rótulos de categoria truncados",
+      "Playwright em 390: a anotação da quebra de 29/04/2023 fica 199 px fora da borda esquerda; os rótulos das contas truncam",
+      "Playwright com Paraguai: linha em zero até fev/2024 e vazio depois, sem texto no próprio gráfico"
+     ],
+     "atendidos": [
+      "Marca de 29/04/2023 nos gráficos mensais",
+      "Exportação e importação em séries separadas",
+      "Ausência desenhada como vazio e não como zero",
+      "Tabela equivalente"
+     ],
+     "problemas": [
+      "Rótulos das três contas truncados",
+      "Anotação cortada em 390",
+      "Barras de contagem escondem resíduos pequenos e a concentração em 2026",
+      "O gráfico do Paraguai não explica o vazio"
+     ],
+     "justificativa": "Boa escolha de séries separadas e marca da quebra metodológica, com ausência tratada como vazio. Pesam rótulos truncados, anotação cortada no celular e barras de contagem que escondem resíduos pequenos."
+    },
+    "J": {
+     "nota": 7.0,
+     "evidencia": [
+      "Playwright em 1440: Região e País gravam sm e pais na URL; País Paraguai abre a tabela e destaca a linha 'sem dado'; frase, universo e gráfico por região mudam",
+      "Playwright: com Sul os três cartões seguem em SIN (2.472 horas, 213 horas e 2.754.057 MWh)",
+      "Playwright: Copiar link devolve a URL com sm, pais e âncora p029"
+     ],
+     "atendidos": [
+      "Estado em URL e link copiável",
+      "Seletor de país com estado ausente compreensível",
+      "Tabela e exportação do recorte",
+      "A seleção na tabela destaca a linha"
+     ],
+     "problemas": [
+      "Os cartões não acompanham a região",
+      "A tabela abre sozinha ao escolher país",
+      "Três camadas de navegação antes do painel"
+     ],
+     "justificativa": "Seletores de região e país funcionam e guardam estado, e o caso do Paraguai é bem tratado. Os cartões não acompanham a região e há camadas sucessivas de navegação."
+    },
+    "K": {
+     "nota": 7.0,
+     "evidencia": [
+      "rede_balanco_e_exterior/objetivo.json: axe 0 em todas as larguras; sem rolagem horizontal; 15 de 59 controles exercitados; 15 alvos abaixo de 44 px no Auditar",
+      "Playwright em 390: a anotação da quebra de 2023 é cortada pela borda e os rótulos das contas truncam",
+      "Playwright em 390 com fonte raiz a 200%: rolagem horizontal da página até 512 px"
+     ],
+     "atendidos": [
+      "Axe limpo",
+      "Teclado e foco",
+      "Contraste de texto adequado",
+      "Tabelas com legenda e aviso de rolagem",
+      "Movimento reduzido"
+     ],
+     "problemas": [
+      "Anotação cortada em 390",
+      "Rótulos truncados",
+      "Texto de 11,5 px nos controles",
+      "Leitor de tela real não testado"
+     ],
+     "justificativa": "Base técnica sólida, com axe limpo, teclado e contraste. Pesam a anotação cortada no celular, rótulos truncados, fonte pequena nos controles e a falta de teste com leitor de tela."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "balanco_titulo_nao_descreve",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "A"
+     ],
+     "onde": "H1 e título do painel 'De onde vem a diferença de energia?'",
+     "descricao": "A pergunta sugere uma explicação de causa, mas o painel confere identidades contábeis do balanço e mostra o exterior; 'diferença' não é definida em Entender.",
+     "sugestao": "Renomear para algo como 'As contas do balanço de energia fecham?' e definir resíduo na abertura."
+    },
+    {
+     "id": "balanco_frase_95_esconde_2026",
+     "gravidade": "media",
+     "criterios": [
+      "A",
+      "C",
+      "B"
+     ],
+     "onde": "Frase resposta e bloco O que mudou",
+     "descricao": "A frase diz que as contas conferem em pelo menos 95% das horas (47.880 de 50.352), mas as 2.472 horas com resíduo estão todas entre 01/01 e 14/05/2026, em todas as regiões; isso só aparece em O que mudou e no gráfico mensal.",
+     "sugestao": "Dizer na frase que todos os resíduos estão em 2026 e mostrar a série anual de horas com resíduo."
+    },
+    {
+     "id": "balanco_rotulos_truncados",
+     "gravidade": "media",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Gráfico 'Horas em que cada conta fecha e horas com resíduo' (1440 e 390)",
+     "descricao": "Os três nomes de conta terminam em reticências ('Balanço interno: geração − ca…') e as contas só se entendem pela tabela.",
+     "sugestao": "Ampliar a coluna de rótulos ou usar nomes curtos (Balanço interno, Perímetro, Soma)."
+    },
+    {
+     "id": "balanco_anotacao_cortada_390",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "K"
+     ],
+     "onde": "Gráfico 'Resíduo mensal do balanço interno e do perímetro' em 390",
+     "descricao": "A anotação '29/04/2023: MMGD estimada passa a entrar na geração solar e na carga' fica 199 px fora da borda esquerda e some pela metade.",
+     "sugestao": "Quebrar o texto em duas linhas dentro da área do gráfico."
+    },
+    {
+     "id": "balanco_cartoes_em_SIN",
+     "gravidade": "media",
+     "criterios": [
+      "J"
+     ],
+     "onde": "Três cartões de destaque",
+     "descricao": "Com Sul selecionado, a frase, o universo e o gráfico mudam; os cartões seguem em 2.472 h, 213 h e 2.754.057 MWh do SIN.",
+     "sugestao": "Fazer os cartões acompanharem a região ou rotulá-los como fixos."
+    },
+    {
+     "id": "balanco_titulos_longos",
+     "gravidade": "baixa",
+     "criterios": [
+      "A",
+      "B"
+     ],
+     "onde": "Segundo cartão",
+     "descricao": "'Horas em que o intercâmbio do Sul no balanço difere da fronteira com o Sudeste/Centro-Oeste somada ao exterior publicado' tem 19 palavras e exige conhecer o balanço.",
+     "sugestao": "Resumir em 8 a 10 palavras e deixar o detalhe na ficha."
+    },
+    {
+     "id": "balanco_paraguai_grafico",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "B"
+     ],
+     "onde": "Gráfico do Paraguai",
+     "descricao": "Mostra linha zero até fev/2024 e vazio depois, mas sem texto no próprio gráfico; a explicação está acima, na frase da seção.",
+     "sugestao": "Escrever 'sem hora publicada desde 21/02/2024' dentro da área do gráfico."
+    },
+    {
+     "id": "balanco_achado_a05",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Título do Analisar 'Achado A05: o balanço dos intercâmbios, identidade por identidade'",
+     "descricao": "O rótulo 'Achado A05' é identificador interno de trabalho.",
+     "sugestao": "Trocar por título descritivo."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real",
+    "A fatia 390_inteira_04de06 não veio no pacote; foi regenerada por mim com Playwright e vista",
+    "Aparência em 320 e 768 px: só as medições de objetivo.json",
+    "Analisar e Auditar: gráficos vistos por amostra; tabelas de 69 e 11 identidades não lidas linha a linha",
+    "Correção das identidades do balanço e do saldo de 2.754.057 MWh (cabe ao avaliador técnico)",
+    "objetivo.json exercitou 15 de 59 controles e não mede o nível Analisar"
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T8",
+     "perfil": "pesquisador",
+     "passos": [
+      "Lê a frase: contas conferem em pelo menos 95% das horas conferidas",
+      "Lê os três cartões (2.472 horas, 213 horas e 2.754.057 MWh)",
+      "Lê em O que mudou que as 2.472 horas estão entre 01/01 e 14/05/2026",
+      "Escolhe Sul: frase, gráfico de contas e resíduos mensais mudam; cartões seguem em SIN (1 clique)",
+      "Seleciona Argentina, Uruguai e Paraguai: lê exportação e importação mensais e a ausência do Paraguai (3 cliques)",
+      "Abre a tabela por país (1 clique)"
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "O título não diz que o painel confere contas",
+      "A frase de abertura resume 95% e esconde a concentração em 2026",
+      "O saldo contra fluxo bruto entre regiões está em outra página"
+     ],
+     "erros": [
+      "Rótulos das contas truncados e anotação cortada em 390"
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/rede/programado": {
+   "paineis": [
+    "P031"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 7.5,
+     "evidencia": [
+      "rede_programado/1440_dobra.png e medição em 1440: título, frase resposta (y 731 a 809) e filtros Fronteira ou país e Base dentro da primeira tela",
+      "rede_programado/1440_inteira_01de02.png: um cartão, um gráfico de faixa e um gráfico diário; Entender com 3825 px",
+      "rede_programado/texto_entender.txt linhas 5 e 18: título e painel iguais, 'Quanto o fluxo divergiu do programa?'"
+     ],
+     "atendidos": [
+      "Frase resposta e filtros na primeira tela em 1440",
+      "Página compacta, com um cartão e dois gráficos",
+      "Limiar material desenhado como linha no gráfico",
+      "Hierarquia clara"
+     ],
+     "problemas": [
+      "Título repetido no painel",
+      "Em 390 a frase resposta começa em y 839 de 844",
+      "O gráfico diário usa eixo de menos 120.000 a menos 80.000, sem zero e sem lembrete do sinal"
+     ],
+     "justificativa": "A página mais enxuta da unidade, com resposta e filtros já na primeira tela em 1440. Falta o mesmo no celular, o título se repete e o gráfico diário usa valores negativos sem lembrar o sinal."
+    },
+    "B": {
+     "nota": 7.0,
+     "evidencia": [
+      "rede_programado/texto_entender.txt: 'Desvio não é falha; a fonte não informa o motivo' na frase, no bloco e em O que não é possível concluir; limiar de 1.000 MWmed 'escolha do observatório, não um critério do ONS'",
+      "texto_entender.txt: Universo diz 'positivo do Norte para o Nordeste', mas o gráfico diário mostra valores negativos sem lembrete do sinal",
+      "Os chips 'N→NE' e 'NE→SE/CO' e a opção 'Sem dias rotulados' só têm expansão ou explicação para leitor de tela ou em Analisar"
+     ],
+     "atendidos": [
+      "Explica desvio como verificado menos programado",
+      "Declara que o limiar é escolha do observatório",
+      "Percentis explicados em Como interpretar",
+      "PDO traduzido",
+      "Recusa julgar falha ou erro do ONS"
+     ],
+     "problemas": [
+      "Siglas N, NE e SE/CO nos chips sem expansão visível",
+      "Sinal negativo do gráfico diário sem lembrete",
+      "'Dia rotulado' e 'programa repetido' só são explicados em Analisar",
+      "A abertura com o escopo está recolhida"
+     ],
+     "justificativa": "Explica bem o que é desvio e que não é falha, e declara a escolha do limiar. Perde porque siglas dos chips e o conceito de dia rotulado não são explicados em Entender e o sinal negativo do gráfico diário fica sem lembrete."
+    },
+    "C": {
+     "nota": 7.5,
+     "evidencia": [
+      "Playwright em 1440: Argentina muda a frase para 40,2 MWmed e programa mediano de 187; S→SE/CO com base sem dias rotulados leva a 853,8 MWmed e atualiza gráficos e tabelas",
+      "texto_auditar.txt: os 15 maiores desvios são todos de 22/08/2026, dia rotulado por programa repetido (24 horas com 0,000 MWmed no Nordeste para o Sudeste/Centro-Oeste)",
+      "Analisar e Auditar: horas materiais por mês e conferência do programa do exterior com o PDO"
+     ],
+     "atendidos": [
+      "Compara programado e verificado por fronteira e país",
+      "Mostra a distribuição (mediana, P90, P99, máximo) e o limiar",
+      "Separa dias de programa repetido, sem descartá-los",
+      "Exporta o recorte"
+     ],
+     "problemas": [
+      "O cartão mantém a base 'todos os dias' quando a base é 'sem dias rotulados' (853 contra 853,8), com nota",
+      "A tabela dos 15 maiores desvios só aparece atrás de botão",
+      "Histórico só desde 01/01/2026"
+     ],
+     "justificativa": "Entrega bem a comparação entre programado e verificado, com distribuição, limiar e tratamento do programa repetido. Perde pontos por pequenos desencontros entre cartão e base escolhida e pela tabela dos maiores desvios escondida."
+    },
+    "D": {
+     "nota": 6.5,
+     "evidencia": [
+      "rede_programado/texto_entender.txt: O que não é possível concluir recusa falha, erro de previsão do ONS ou decisão errada; downloads por hora, por dia e conferência com o PDO",
+      "Link com estado (par, base) e CSV do recorte",
+      "rede_programado/texto_entender.txt não relaciona o desvio a custo, confiabilidade para o consumidor ou território"
+     ],
+     "atendidos": [
+      "Cautela contra julgamento de operador",
+      "Downloads e link com estado",
+      "Procedência e limitações"
+     ],
+     "problemas": [
+      "Tema operacional sem ligação com custo ou consumidor",
+      "Recorte só por fronteira e país",
+      "Histórico curto (desde 01/01/2026)"
+     ],
+     "justificativa": "Adaptado a página operacional: cautelosa e transparente, útil a analista e conselho que acompanham a operação. Impacto potencial limitado, sem ligação com custo ou consumidor e com histórico de apenas nove meses."
+    },
+    "I": {
+     "nota": 7.0,
+     "evidencia": [
+      "rede_programado/1440_inteira_01de02.png: barras agrupadas (mediana, P90, P99, maior) numa matiz com linha tracejada do limiar de 1.000 MWmed; linhas Verificado e Programado por dia",
+      "Playwright em 1440: o rótulo 'Nordeste → Sudeste/Centro-Oes…' é truncado; o gráfico diário vai de menos 120.000 a menos 80.000",
+      "Playwright em 390: a linha do limiar cruza os rótulos de categoria; a nota diz 'só parte das 6 categorias' com as 6 já desenhadas"
+     ],
+     "atendidos": [
+      "Gráfico de faixa adequado à distribuição e com limiar visível",
+      "Linhas Verificado e Programado comparáveis na mesma escala",
+      "Tabela equivalente e teclado",
+      "Sem eixo duplo"
+     ],
+     "problemas": [
+      "Rótulo truncado em 1440",
+      "Eixo diário sem zero e sinal sem lembrete no gráfico",
+      "Em 390 a linha do limiar cruza rótulos e a nota sobre categorias contradiz o desenho"
+     ],
+     "justificativa": "Gráficos adequados e legíveis, com limiar desenhado e séries comparáveis. Pesam um rótulo truncado, o eixo negativo sem lembrete de sinal e, no celular, a linha do limiar sobre rótulos e uma nota de categorias que contradiz o desenho."
+    },
+    "J": {
+     "nota": 7.5,
+     "evidencia": [
+      "Playwright em 1440: chips de fronteira e país e a Base mudam frase, universo, cartão, gráficos, tabelas e CSV, e gravam par e base na URL",
+      "texto do cartão com base 'sem dias': 'A ficha prova a base com todos os dias; a tabela abaixo traz a base sem os dias rotulados'",
+      "rede_programado/texto_auditar.txt: tabelas com Buscar na tabela, Filtrar, ordenação e Baixar CSV e XLSX"
+     ],
+     "atendidos": [
+      "Filtros claros e sincronizados com o estado em URL",
+      "Aviso quando o cartão usa base diferente da frase",
+      "Tabelas com busca, ordenação e exportação do recorte",
+      "A profundidade preserva o estado"
+     ],
+     "problemas": [
+      "O cartão não acompanha a base escolhida (com nota)",
+      "Três camadas de navegação antes do painel",
+      "A tabela de maiores desvios exige clique para aparecer"
+     ],
+     "justificativa": "A melhor sincronização da unidade: frase, universo, gráficos, tabelas e exportação seguem o recorte e a divergência do cartão é avisada. Pesam o cartão em base diferente e as camadas de navegação."
+    },
+    "K": {
+     "nota": 7.5,
+     "evidencia": [
+      "rede_programado/objetivo.json: axe 0 em todas as larguras; sem rolagem horizontal; foco sem falha; 11 de 44 controles exercitados; 0 alvos abaixo de 44 px em Entender",
+      "objetivo.json: ficha Comprove fecha com Esc e 0 foco invisível; Playwright: contraste mínimo do texto do conteúdo 4,88 para 1; movimento reduzido respeitado (testado em carga e rede)",
+      "Playwright em 390: a linha do limiar cruza rótulos de categoria; com fonte a 200% o seletor de profundidade quebra"
+     ],
+     "atendidos": [
+      "Axe limpo",
+      "Teclado e foco",
+      "Tabelas com legenda e aviso de rolagem",
+      "Contraste de texto adequado",
+      "Movimento reduzido"
+     ],
+     "problemas": [
+      "Linha do limiar sobre rótulos no celular",
+      "Texto de 11,5 px em controles e selos",
+      "Quebra do seletor com texto a 200%",
+      "Leitor de tela real não testado"
+     ],
+     "justificativa": "Base técnica sólida, com axe limpo, teclado, foco e contraste. Limites: linha do limiar sobre rótulos no celular, fonte de 11,5 px, quebra do seletor com texto ampliado e leitor de tela não testado."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "programado_dia_rotulado_sem_explicacao",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Opção 'Sem dias rotulados' da Base (Entender)",
+     "descricao": "O leitor não sabe o que é 'dia rotulado' até Analisar; os 15 maiores desvios são todos de 22/08/2026, um dia rotulado.",
+     "sugestao": "Explicar em uma frase ao lado da opção ('dia com programa repetido por 6 horas ou mais')."
+    },
+    {
+     "id": "programado_sinal_negativo",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "B"
+     ],
+     "onde": "Gráfico 'Saldo programado e verificado por dia, Norte → Nordeste'",
+     "descricao": "O título diz Norte → Nordeste e os valores vão de menos 120.000 a menos 80.000 MWh; o sinal (negativo é Nordeste para Norte) só está no Universo.",
+     "sugestao": "Escrever 'negativo = Nordeste para Norte' no subtítulo do gráfico."
+    },
+    {
+     "id": "programado_chips_siglas",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Chips Fronteira ou país",
+     "descricao": "N→NE, N→SE/CO, NE→SE/CO e S→SE/CO só têm expansão para leitor de tela.",
+     "sugestao": "Mostrar o nome por extenso em dica ou legenda curta."
+    },
+    {
+     "id": "programado_cartao_base",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "C"
+     ],
+     "onde": "Cartão de desvio com base 'sem dias rotulados'",
+     "descricao": "O cartão mantém 853 MWmed (todos os dias) e a frase mostra 853,8 (sem dias rotulados); há nota, mas a diferença confunde.",
+     "sugestao": "Atualizar o cartão para a base escolhida e oferecer a outra como comparação."
+    },
+    {
+     "id": "programado_nota_categorias_390",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "K"
+     ],
+     "onde": "Gráfico de faixa em 390 px",
+     "descricao": "A nota 'O gráfico mostra só parte das 6 categorias' aparece com as 6 desenhadas; o botão 'Mostrar todas as 6' só troca o texto; a linha do limiar cruza os rótulos.",
+     "sugestao": "Corrigir a condição da nota e deslocar a linha para trás dos rótulos."
+    },
+    {
+     "id": "programado_rotulo_truncado",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Gráfico de faixa em 1440",
+     "descricao": "'Nordeste → Sudeste/Centro-Oes…' é truncado com espaço livre.",
+     "sugestao": "Ampliar a coluna de rótulos."
+    },
+    {
+     "id": "programado_maiores_desvios_escondidos",
+     "gravidade": "baixa",
+     "criterios": [
+      "C"
+     ],
+     "onde": "Seção 'Os maiores desvios horários'",
+     "descricao": "Em Entender há título, frase e botão, sem dados visíveis; a tabela traz 15 linhas todas de um dia rotulado.",
+     "sugestao": "Mostrar as cinco primeiras linhas e indicar o dia rotulado."
+    },
+    {
+     "id": "programado_titulo_repetido",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "H1 e título do painel",
+     "descricao": "'Quanto o fluxo divergiu do programa?' aparece duas vezes seguidas.",
+     "sugestao": "Trocar o título do painel por subtítulo."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real",
+    "Aparência em 320 e 768 px: só as medições de objetivo.json",
+    "Analisar e Auditar: gráficos vistos por amostra; tabelas de 30, 15 e 9 linhas não lidas linha a linha",
+    "Correção dos desvios, percentis e da regra de dia rotulado (cabe ao avaliador técnico)",
+    "objetivo.json exercitou 11 de 44 controles e não mede o nível Analisar"
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T8",
+     "perfil": "analista de empresas",
+     "passos": [
+      "Lê a frase para N→NE: 914,4 MWmed de desvio médio e programa mediano de 2.574 MWmed",
+      "Lê o limiar material de 1.000 MWmed e a nota de que é escolha do observatório",
+      "Compara as seis faixas (mediana, P90, P99, maior) no gráfico",
+      "Escolhe Argentina: desvio médio de 40,2 MWmed (1 clique)",
+      "Escolhe S→SE/CO e Sem dias rotulados: 853,8 MWmed (2 cliques)",
+      "Abre a tabela dos 15 maiores desvios: todos de 22/08/2026 (1 clique)"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "'Dia rotulado' não é explicado em Entender",
+      "O sinal negativo do gráfico diário fica sem lembrete",
+      "O cartão não acompanha a base escolhida"
+     ],
+     "erros": [
+      "Nota 'só parte das 6 categorias' contradiz o gráfico em 390"
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/rede/restricoes": {
+   "paineis": [
+    "P030"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 7.0,
+     "evidencia": [
+      "rede_restricoes/1440_dobra.png e medição em 1440: o cartão tracejado 'Limites operativos de intercâmbio: sem fonte aberta' ocupa o fim da primeira tela e a frase resposta só começa em y 916",
+      "rede_restricoes/texto_entender.txt linhas 5 e 18: título e painel iguais, 'Quando há evidência publicada de limitação da rede?'",
+      "rede_restricoes/390_inteira_02de05.png e medição em 390: a frase resposta começa em y 1140 de 844"
+     ],
+     "atendidos": [
+      "Aviso de estado bloqueado em destaque e com linguagem clara",
+      "Gráfico de barras ordenado por valor com números na ponta",
+      "Cartões com a unidade e o período",
+      "Hierarquia clara entre aviso, frase, gráfico e histórico"
+     ],
+     "problemas": [
+      "A frase resposta fica abaixo da primeira tela em 1440 e em 390",
+      "Título repetido no painel",
+      "A barra de 2026 parcial tem a mesma cor das anuais completas e o rótulo do eixo não a identifica"
+     ],
+     "justificativa": "O aviso de bloqueio é claro e os gráficos são limpos, mas a frase resposta fica abaixo da dobra, o título se repete e a barra do ano parcial parece igual às anuais completas."
+    },
+    "B": {
+     "nota": 6.5,
+     "evidencia": [
+      "rede_restricoes/texto_entender.txt: ATLS aparece no subtítulo e no gráfico, mas só é definido no bloco Por que isso importa (y 3833) e na abertura recolhida",
+      "texto_entender.txt: o gráfico traz FBTA, FNS+NESE e FJUSC sem definição; a tabela do Analisar diz 'sem definição em documento público conferido'",
+      "texto_entender.txt: 'Os limites de cada fronteira não são públicos: isso não mostra se a rede estava no limite'"
+     ],
+     "atendidos": [
+      "Explica por que não há percentual de utilização",
+      "Declara que corte de carga não prova limite de intercâmbio",
+      "Cita a regra do ONS de 10 minutos e banda morta",
+      "Próxima pergunta liga ao programado"
+     ],
+     "problemas": [
+      "ATLS usado antes de ser definido",
+      "Três dos oito fluxos aparecem só pela sigla, sem tradução",
+      "A abertura com o escopo está recolhida",
+      "A frase junta duas janelas de 12 meses diferentes (ATLS ago/2025 a jul/2026 e cortes 30/09/2025 a 29/09/2026)"
+     ],
+     "justificativa": "Muito cuidadosa com o que não se pode concluir, mas usa ATLS antes de defini-lo, mostra três fluxos só por sigla e junta duas janelas de 12 meses na mesma frase. A abertura fica recolhida."
+    },
+    "C": {
+     "nota": 7.0,
+     "evidencia": [
+      "Playwright em 1440: clicar numa barra grava fl, atualiza cartão e histórico; busca de fluxos permite comparar até 4; região muda cortes de carga",
+      "rede_restricoes/texto_entender.txt: 7 dos 8 fluxos passaram algum tempo acima do limite e houve 343 cortes de carga, sem inferir utilização",
+      "texto_auditar.txt: tabela 'Onde os limites foram procurados e o que se encontrou' com seis tentativas"
+     ],
+     "atendidos": [
+      "Mostra a evidência publicada sem inferir congestionamento",
+      "Seleciona e compara fluxos",
+      "Cortes de carga por ano e região",
+      "Registra a busca por limites públicos"
+     ],
+     "problemas": [
+      "A frase mistura janelas diferentes",
+      "Não mostra quantos consumidores ou quais UF em Entender",
+      "ATLS só vai até jul/2026"
+     ],
+     "justificativa": "Atende bem a tarefa de mostrar restrições documentadas sem inferir congestionamento, com seleção e comparação de fluxos. Perde por misturar duas janelas na frase e por não mostrar consumidor ou UF em Entender."
+    },
+    "D": {
+     "nota": 7.0,
+     "evidencia": [
+      "rede_restricoes/texto_entender.txt: energia não suprida (30.734,6 MWh) em cortes de carga por ano e região, desde 2007",
+      "texto_auditar.txt: perturbações com UF e subsistemas, as 15 maiores e as 15 mais recentes",
+      "Downloads do ATLS e das interrupções; link com estado fl, fls e smi"
+     ],
+     "atendidos": [
+      "Tema de continuidade do serviço, relevante socialmente",
+      "Recorte por região e, em Analisar, por UF",
+      "Limites da fonte e ausência de limites públicos expostos",
+      "Downloads e link com estado"
+     ],
+     "problemas": [
+      "Sem número de consumidores ou duração por consumidor",
+      "UF só em Analisar",
+      "A página não situa os cortes de carga em relação aos indicadores de continuidade por consumidor (DEC e FEC)"
+     ],
+     "justificativa": "Trata de continuidade e expõe com honestidade o que as fontes públicas permitem. O potencial social fica abaixo do possível porque faltam consumidores afetados, UF em Entender e a relação com DEC e FEC."
+    },
+    "I": {
+     "nota": 7.0,
+     "evidencia": [
+      "rede_restricoes/1440_inteira_01de02.png: barras horizontais ordenadas, com valores nas pontas e eixo em zero; histórico por fluxo em linha; barras anuais de energia não suprida",
+      "Playwright em 1440: a barra de 2026 (parcial) não tem rótulo de ano no eixo e usa a mesma cor das anuais; o rótulo 'Fluxo da Interligação Nordest…' é truncado",
+      "rede_restricoes/390_inteira_02de05.png: barras com rótulo acima, boa leitura no celular"
+     ],
+     "atendidos": [
+      "Gráfico de barras escolhido pela tarefa, com eixo em zero",
+      "Seleção de até quatro fluxos na mesma escala",
+      "Tabelas equivalentes",
+      "Sem eixo duplo nem cor de julgamento"
+     ],
+     "problemas": [
+      "O ano parcial parece completo no gráfico anual e só o texto abaixo avisa",
+      "Rótulo truncado",
+      "Siglas FBTA, FNS+NESE e FJUSC como únicos rótulos de três barras"
+     ],
+     "justificativa": "Gráficos limpos e adequados, com seleção e comparação na mesma escala. Pesam a barra do ano parcial sem marca visual, um rótulo truncado e siglas como únicos rótulos de três barras."
+    },
+    "J": {
+     "nota": 7.5,
+     "evidencia": [
+      "Playwright em 1440: clique em barra grava fl; busca de fluxos grava fls (até 4); região grava smi; Copiar link devolve URL com recorte",
+      "rede_restricoes/texto_entender.txt: '0 de 4 selecionadas. Mostrando Recebimento pela Região Sul'; Playwright: 'Selecionada: FBTA' depois do clique na barra",
+      "Estado bloqueado com cartão tracejado e explicação; fluxos encerrados marcados como 'encerrado' na lista"
+     ],
+     "atendidos": [
+      "Seleção por gráfico, tabela ou busca",
+      "Comparação de até quatro entidades com contagem",
+      "Estado bloqueado compreensível",
+      "Estado em URL e link copiável",
+      "Tabelas com busca, filtro e exportação"
+     ],
+     "problemas": [
+      "Três camadas de navegação antes do painel",
+      "A tabela se abre sozinha ao selecionar um fluxo"
+     ],
+     "justificativa": "A melhor interação de seleção e comparação da unidade, com estado bloqueado claro e fluxos encerrados identificados. Pesam apenas as camadas de navegação e a tabela que se abre sozinha."
+    },
+    "K": {
+     "nota": 7.5,
+     "evidencia": [
+      "rede_restricoes/objetivo.json: axe 0 em todas as larguras; sem rolagem horizontal; foco sem falha; 13 de 49 controles exercitados; 0 alvos abaixo de 44 px em Entender",
+      "objetivo.json: ficha Comprove fecha com Esc e 0 foco invisível; Playwright: contraste mínimo do texto do conteúdo 4,88 para 1; movimento reduzido respeitado (testado em carga e rede)",
+      "Playwright em 390 com fonte raiz a 200%: rolagem horizontal da página até 512 px"
+     ],
+     "atendidos": [
+      "Axe limpo",
+      "Teclado e foco",
+      "Cartão de bloqueio com texto e borda tracejada, não só cor",
+      "Contraste de texto adequado",
+      "Movimento reduzido"
+     ],
+     "problemas": [
+      "Texto de 11,5 px nos controles e selos",
+      "Quebra do seletor com texto a 200%",
+      "Tabelas largas com rolagem interna em 390, avisada",
+      "Leitor de tela real não testado"
+     ],
+     "justificativa": "Base técnica sólida, com axe limpo, teclado, foco e contraste. Limites: fonte de 11,5 px nos controles, quebra com texto ampliado, tabelas largas com rolagem interna e leitor de tela não testado."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "restricoes_atls_sem_definicao",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Subtítulo do painel, cartão e gráfico (Entender)",
+     "descricao": "ATLS aparece sem definição até o bloco Por que isso importa (y 3833) e a abertura recolhida; a sigla é 'Atendimento aos Limites Sistêmicos'.",
+     "sugestao": "Definir ATLS na primeira ocorrência, no subtítulo."
+    },
+    {
+     "id": "restricoes_codigos_sem_definicao",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "I"
+     ],
+     "onde": "Gráfico 'Horas acima do limite em 12 meses, fluxos publicados em jul/2026'",
+     "descricao": "FBTA, FNS+NESE e FJUSC aparecem só pela sigla; a tabela do Analisar diz 'sem definição em documento público conferido'.",
+     "sugestao": "Mostrar 'sem definição pública' ao lado da sigla no próprio gráfico."
+    },
+    {
+     "id": "restricoes_frase_abaixo_da_dobra",
+     "gravidade": "media",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Topo do painel (1440 e 390)",
+     "descricao": "O cartão de bloqueio vem antes da frase resposta, que começa em y 916 em 1440 e em y 1140 em 390.",
+     "sugestao": "Colocar a frase antes do aviso ou encurtar o aviso para uma linha."
+    },
+    {
+     "id": "restricoes_2026_parcial_sem_marca",
+     "gravidade": "media",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Gráfico 'Energia não suprida em cortes de carga por ano' (1440 e 390)",
+     "descricao": "A barra de 2026, parcial, tem a mesma cor das anuais e não tem rótulo de ano no eixo; o aviso está em texto abaixo do gráfico.",
+     "sugestao": "Usar hachura ou outra cor e rótulo '2026 (parcial)' no eixo."
+    },
+    {
+     "id": "restricoes_frase_duas_janelas",
+     "gravidade": "baixa",
+     "criterios": [
+      "B",
+      "C"
+     ],
+     "onde": "Frase resposta",
+     "descricao": "'Em 12 meses, 7 dos 8 fluxos ... e houve 343 cortes de carga' une ATLS de ago/2025 a jul/2026 e cortes de 30/09/2025 a 29/09/2026; as janelas só aparecem em Período.",
+     "sugestao": "Separar a frase em duas, cada uma com sua janela."
+    },
+    {
+     "id": "restricoes_cortes_sem_consumidor",
+     "gravidade": "media",
+     "criterios": [
+      "D",
+      "C"
+     ],
+     "onde": "Cartão de energia não suprida e gráfico anual",
+     "descricao": "A energia não suprida (30.734,6 MWh) não vem com consumidores, duração nem UF em Entender, e a página não situa os cortes frente a DEC e FEC.",
+     "sugestao": "Mostrar UF e número de perturbações por região e relacionar os cortes aos indicadores de continuidade por consumidor."
+    },
+    {
+     "id": "restricoes_correcao_pedida",
+     "gravidade": "baixa",
+     "criterios": [
+      "B",
+      "A"
+     ],
+     "onde": "Auditar, seção 'Correção pedida na página de metodologia'",
+     "descricao": "O texto descreve uma pendência interna ('A página de metodologia dizia que os limites estavam catalogados ...') e aparece numa página pública.",
+     "sugestao": "Retirar da página pública ou transformar em nota de revisão datada."
+    },
+    {
+     "id": "restricoes_rotulo_truncado",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Gráfico de horas acima do limite (1440 e 390)",
+     "descricao": "'Fluxo da Interligação Nordest…' (1440) e '…Sudeste/Centro…' (390) são truncados.",
+     "sugestao": "Ampliar a coluna de rótulos ou usar a sigla com o nome em dica."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real",
+    "Aparência em 320 e 768 px: só as medições de objetivo.json",
+    "Analisar e Auditar: gráficos vistos por amostra; tabelas de 53, 20, 15 e 16 linhas não lidas linha a linha",
+    "Correção dos totais de ATLS e de energia não suprida (cabe ao avaliador técnico)",
+    "objetivo.json exercitou 13 de 49 controles e não mede o nível Analisar"
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T8",
+     "perfil": "gestor público ou conselho",
+     "passos": [
+      "Lê o aviso 'Limites operativos de intercâmbio: sem fonte aberta' e a frase: 7 dos 8 fluxos acima do limite e 343 cortes em 12 meses",
+      "Lê o cartão de energia não suprida (30.734,6 MWh) e o gráfico de horas acima do limite por fluxo",
+      "Clica FBTA: cartão e histórico mudam; escolhe FNS e FNESE para comparar até 4 fluxos (3 interações)",
+      "Escolhe a região Sul nos cortes por ano (1 clique)",
+      "Lê Como interpretar e O que não é possível concluir"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "ATLS aparece antes de ser definido",
+      "FBTA, FNS+NESE e FJUSC sem definição legível em Entender",
+      "A frase une duas janelas de 12 meses distintas",
+      "A barra de 2026 parcial tem a mesma cor das anuais"
+     ],
+     "erros": []
+    }
+   ]
+  }
+ },
+ "achados_entre_paginas": [
+  "Os cartões de destaque (Comprove este número) ficam fixos em SIN e no recorte padrão enquanto frase, universo e gráficos seguem o filtro: carga, clima e calendário, perfil horário e balanço e exterior (Playwright em 1440 com região Sul).",
+  "A primeira tela é ocupada por cabeçalho, três camadas de navegação, fontes, siglas, painéis e Profundidade: a frase resposta só cabe na dobra de 1440 em 6 de 7 páginas e em nenhuma em 390; nenhum gráfico principal aparece na primeira tela; o título da página se repete no painel em 4 de 7.",
+  "A abertura recolhida concentra definições e escopo; 'Por que isso importa' e 'O que não é possível concluir' ficam entre y 2667 e y 6158 em 1440, depois de gráficos e downloads; nenhuma página responde às cinco perguntas de abertura na primeira tela.",
+  "Rótulos de categoria truncados em gráficos de barras horizontais com espaço sobrando: balanço e exterior, programado e restrições (Entender); carga e clima (Analisar).",
+  "No celular há rótulos de eixo colados (perfil horário), anotação cortada pela borda (balanço e exterior), linha de limiar sobre rótulos (programado) e mapa de calor de 840 px em 316 px com rolagem interna sem aviso (perfil horário).",
+  "Texto de controles, selos e legendas em 11,5 px; com fonte raiz a 200% em 390 o botão Auditar sai da tela e as sete páginas ganham rolagem horizontal; em carga também ficam cortados o chip 'Nível e crescimento' e o título (emulação por CSS).",
+  "Jargão e identificadores internos expostos: 'achado A05' e 'A06', 'janela do achado', 'reprodução do diagnóstico', 'silver' e 'bronze', nomes de campo da API e 'Correção pedida na página de metodologia'.",
+  "Exportações sem contexto no arquivo: os CSV estáticos usam códigos internos e não trazem fonte, unidade ou data; os CSV de tabela usam ponto decimal com separador ponto e vírgula."
+ ],
+ "limites_da_avaliacao": "Inspeção heurística por agente, sem usuários. Leitor de tela real não foi testado. O pacote não trouxe as fatias de 390 px 04 de 06 (clima), 02, 04 e 07 de 08 (perfil horário) e 04 de 06 (balanço e exterior); regenerei essas fatias com Playwright no mesmo servidor (a do perfil horário sai com 11.050 px, contra 11.178 px do pacote) e as vi. Analisar e Auditar foram vistos por amostra: capturei gráficos com Playwright, mas não li linha a linha as tabelas longas e não abri XLSX. Larguras de 320 e 768 px: só as medições de objetivo.json, que também não cobre o nível Analisar e exercitou parte dos controles. Contraste de séries e bordas de controles e tooltips por mouse não foram medidos. A ampliação de texto a 200% foi emulada por CSS na fonte raiz, não por configuração de sistema. A correção numérica, a rastreabilidade e a confiabilidade técnica ficam com o avaliador técnico. Não editei o repositório e não rodei build, dev nem testes; só escrevi este arquivo e arquivos temporários na área de rascunho."
+}

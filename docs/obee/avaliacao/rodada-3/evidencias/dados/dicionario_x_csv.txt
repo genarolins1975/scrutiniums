@@ -1,0 +1,5 @@
+arquivos de dados: ['obee_tabela_comparativa_2025_anos_iniciais_nominal.csv', 'obee_comparacao_despesa_hab_2025_nominal.csv', 'obee_gastos_despesa_hab_serie_recife_nominal.csv']
+entradas do dicionário: 79 sem texto: []
+obee_tabela_comparativa_2025_anos_iniciais_nominal.csv 21 colunas; sem descrição no dicionário: []
+obee_comparacao_despesa_hab_2025_nominal.csv 36 colunas; sem descrição no dicionário: []
+obee_gastos_despesa_hab_serie_recife_nominal.csv 19 colunas; sem descrição no dicionário: []

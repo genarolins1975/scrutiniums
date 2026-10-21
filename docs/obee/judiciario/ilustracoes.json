@@ -1,0 +1,17 @@
+{
+  "ilustracoes": [
+    {
+      "arquivo": "/home/judiciario-por-dentro.webp",
+      "sha256": "66f49c164b58db9ae2726abf111ac657573cf7ca3be44e03e915b607b86d880f",
+      "largura": 1536,
+      "altura": 1024,
+      "bytes": 226620,
+      "criacao": "2026-10-17",
+      "origem": "OpenAI ImageGen; ilustração original gerada para esta interface",
+      "natureza": "ILUSTRACAO_CONCEITUAL_IA",
+      "descricao": "Modelo arquitetônico imaginado de um tribunal em corte, com atendimento, audiência, documentos e mediação.",
+      "limites": "Não representa prédio real, jurisdição, volume, escala quantitativa ou sequência processual obrigatória. Nenhum elemento é dado observado.",
+      "tratamento": "Somente codificação WebP para entrega web; original PNG preservado no workspace."
+    }
+  ]
+}

@@ -1,0 +1,273 @@
+{
+ "_origem": "Recortes reais das listagens package_search colhidas em 01/10/2026 (data/energia/meta/_ckan_<ORGAO>.json): campos e recursos reduzidos para o teste.",
+ "ONS": [
+  {
+   "name": "carga-energia",
+   "title": "Carga de Energia Diária",
+   "notes": "Dados de carga por subsistema em base diária, medida em MWmed. \r\n\r\nAté fevereiro/2021, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle",
+   "license_title": "Creative Commons Atribuição",
+   "metadata_modified": "2026-09-30T22:00:57.513821",
+   "num_resources": 83,
+   "extras": [
+    {
+     "key": "Schedule de Atualização",
+     "value": "Diariamento, as 12h e 19h"
+    }
+   ],
+   "resources": [
+    {
+     "id": "29a3462e-98f1-4410-8320-78d37033726c",
+     "name": "Dicionário de Dados",
+     "format": "PDF",
+     "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/DicionarioDados_Carga_Energia_Diaria.pdf",
+     "last_modified": "2021-08-16T15:47:57.579240",
+     "size": 81683
+    },
+    {
+     "id": "07c9e615-120a-4740-ab6c-61d33a1aa8f9",
+     "name": "Carga_Energia-2025",
+     "format": "CSV",
+     "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2025.csv",
+     "last_modified": "2026-01-31T22:01:25.205259",
+     "size": 54504
+    },
+    {
+     "id": "952a38d6-0989-475e-b160-e87a739e6eff",
+     "name": "Carga_Energia-2025",
+     "format": "PARQUET",
+     "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2025.parquet",
+     "last_modified": "2026-01-31T22:01:16.653866",
+     "size": 19524
+    },
+    {
+     "id": "0ac98293-9053-4981-92ec-6b70ad6d13cf",
+     "name": "Carga_Energia-2025",
+     "format": "XLSX",
+     "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2025.xlsx",
+     "last_modified": "2026-01-31T22:01:34.150930",
+     "size": 40641
+    },
+    {
+     "id": "abb91c8a-ce49-4e80-b3b5-c2f9c2b1b82b",
+     "name": "Carga_Energia-2026",
+     "format": "PARQUET",
+     "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2026.parquet",
+     "last_modified": "2026-09-30T22:00:50.810629",
+     "size": 15543
+    },
+    {
+     "id": "1691a33a-2c6b-4009-be3a-5bdca2f1bc3b",
+     "name": "Carga_Energia-2026",
+     "format": "CSV",
+     "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2026.csv",
+     "last_modified": "2026-09-30T22:00:54.014182",
+     "size": 44560
+    },
+    {
+     "id": "d8b2639f-6b4f-400f-9cac-8d44fd37b8a0",
+     "name": "Carga_Energia-2026",
+     "format": "XLSX",
+     "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2026.xlsx",
+     "last_modified": "2026-09-30T22:00:56.946479",
+     "size": 32249
+    }
+   ]
+  }
+ ],
+ "ANEEL": [
+  {
+   "name": "componentes-tarifarias",
+   "title": "Componentes Tarifárias",
+   "notes": "Apresenta os valores das Tarifas de Energia - TE e das Tarifas de Uso do Sistema de Distribuição - TUSD, resultantes dos processos de reajustes tarifários das distribuidoras de energia elétrica. ",
+   "license_title": "Open Data Commons Open Database License (ODbL)",
+   "metadata_modified": "2026-09-27T05:33:59.370430",
+   "num_resources": 31,
+   "extras": [
+    {
+     "key": "Frequência de atualização",
+     "value": "Semanal"
+    }
+   ],
+   "resources": [
+    {
+     "id": "cb1d06a8-5b4c-45a0-bb41-9e9546cc578b",
+     "name": "Dicionário de metadados",
+     "format": "PDF",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/613e6b74-1a4b-4c48-a231-096815e96bd5/resource/cb1d06a8-5b4c-45a0-bb41-9e9546cc578b/download/dm-componentes-tarifarias.pdf",
+     "last_modified": "2026-06-12T17:12:09.129059",
+     "size": 178528
+    },
+    {
+     "id": "4657eb39-a4ed-4113-8feb-3565633a61e9",
+     "name": "componentes-tarifarias-2020.parquet",
+     "format": "PARQUET",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/613e6b74-1a4b-4c48-a231-096815e96bd5/resource/4657eb39-a4ed-4113-8feb-3565633a61e9/download/componentes-tarifarias-2020.parquet",
+     "last_modified": "2026-09-26T11:46:53.914711",
+     "size": 4782137
+    },
+    {
+     "id": "1b79d43b-f625-4122-b790-5bb986da4bd2",
+     "name": "componentes-tarifarias-2021.parquet",
+     "format": "PARQUET",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/613e6b74-1a4b-4c48-a231-096815e96bd5/resource/1b79d43b-f625-4122-b790-5bb986da4bd2/download/componentes-tarifarias-2021.parquet",
+     "last_modified": "2026-09-26T11:48:03.917869",
+     "size": 4901405
+    }
+   ]
+  },
+  {
+   "name": "projetos-por-tipologia",
+   "title": "Projetos por tipologia (descontinuado)",
+   "notes": "## Substituído pelo conjunto de dados [Projetos de Eficiência Energética](https://dadosabertos.aneel.gov.br/dataset/projetos-de-eficiencia-energetica).\n\nQuantidade acumulada de projetos, valores de demanda de retirada de ponta em MW, Econom",
+   "license_title": "Open Data Commons Open Database License (ODbL)",
+   "metadata_modified": "2026-06-12T17:19:45.712493",
+   "num_resources": 4,
+   "extras": [
+    {
+     "key": "Situação",
+     "value": "Descontinuado"
+    }
+   ],
+   "resources": [
+    {
+     "id": "687c80c9-18f8-47b5-8334-fbdb2bd657cd",
+     "name": "Dicionário de dados",
+     "format": "PDF",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/8ea45cdf-0031-44c8-9524-e400aaf86a06/resource/687c80c9-18f8-47b5-8334-fbdb2bd657cd/download/dd_ig_7_2.pdf",
+     "last_modified": "2026-06-12T17:19:45.683876",
+     "size": 34267
+    },
+    {
+     "id": "2824cf06-c04c-4d37-b5b3-07a501b89503",
+     "name": "NovoProjeto.csv",
+     "format": "CSV",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/8ea45cdf-0031-44c8-9524-e400aaf86a06/resource/2824cf06-c04c-4d37-b5b3-07a501b89503/download/novoprojeto.csv",
+     "last_modified": "2021-11-30T19:08:32.300423",
+     "size": 2017
+    }
+   ]
+  }
+ ],
+ "CCEE": [
+  {
+   "name": "agente_qtd_contabilizacao",
+   "title": "AGENTE_QTD_CONTABILIZACAO",
+   "notes": "Dados com a quantidade de agentes participantes da CCEE por  classe de comercialização.",
+   "license_title": "Creative Commons Attribution 4.0",
+   "metadata_modified": "2026-09-01T17:58:18.255185",
+   "num_resources": 4,
+   "extras": [
+    {
+     "key": "Frequência de Atualização",
+     "value": "Mensal"
+    },
+    {
+     "key": "Referência de Publicação",
+     "value": "MS+22du"
+    }
+   ],
+   "resources": [
+    {
+     "id": "7bb6bd3d-29c5-4f8e-a592-ab2948d6cb40",
+     "name": "agente_qtd_contabilizacao_2023",
+     "format": "CSV",
+     "url": "https://pda-download.ccee.org.br/J1LvjYUYQgyLsl7HTseblQ/content",
+     "last_modified": "2024-02-05T18:43:59.817000",
+     "size": null
+    },
+    {
+     "id": "dc4fcbcd-0ab3-437d-a77b-b5a60eefcd5a",
+     "name": "agente_qtd_contabilizacao_2024",
+     "format": "CSV",
+     "url": "https://pda-download.ccee.org.br/_vZPPoZfTa-9ewORpTXJBA/content",
+     "last_modified": "2025-01-31T20:14:04.763000",
+     "size": null
+    },
+    {
+     "id": "3b54d5a9-ce55-449c-b322-bf8a80cca584",
+     "name": "agente_qtd_contabilizacao_2025",
+     "format": "CSV",
+     "url": "https://pda-download.ccee.org.br/KlZZVT4bSPq313uAFfYM_w/content",
+     "last_modified": "2026-02-02T17:35:29.107000",
+     "size": null
+    },
+    {
+     "id": "3377c238-27d9-44a5-8c67-ca8c6aecc877",
+     "name": "agente_qtd_contabilizacao_2026",
+     "format": "CSV",
+     "url": "https://pda-download.ccee.org.br/v3bY_Fm0T9uBcmLSctmFXQ/content",
+     "last_modified": "2026-09-01T14:58:18.161000",
+     "size": null
+    }
+   ]
+  },
+  {
+   "name": "pld_media_diaria",
+   "title": "PLD_MEDIA_DIARIA",
+   "notes": "Disponibilizar os dados históricos de média diária do Preço de Liquidação das Diferenças - PLD, por submercado e dia de referência",
+   "license_title": "Creative Commons Attribution 4.0",
+   "metadata_modified": "2026-09-30T22:20:08.717729",
+   "num_resources": 6,
+   "extras": [
+    {
+     "key": "Frequência de Atualização",
+     "value": "Mensal"
+    },
+    {
+     "key": "Referência de Publicação",
+     "value": "Todos os dias"
+    }
+   ],
+   "resources": [
+    {
+     "id": "9e152b60-f75c-4219-bcee-6033d287e0ab",
+     "name": "pld_media_diaria_2021",
+     "format": "CSV",
+     "url": "https://pda-download.ccee.org.br/s2aV2TfuTb2EQmKKY2Qg-w/content",
+     "last_modified": "2025-07-14T14:22:27.021000",
+     "size": null
+    },
+    {
+     "id": "6ccbf348-66ca-4bb1-a329-f607761fdf11",
+     "name": "pld_media_diaria_2022",
+     "format": "CSV",
+     "url": "https://pda-download.ccee.org.br/toeEwFnrRdi2lT7_ppiRfw/content",
+     "last_modified": "2025-07-14T14:22:49.752000",
+     "size": null
+    },
+    {
+     "id": "f28d0cb3-1afa-4b55-bf90-71c68b28272a",
+     "name": "pld_media_diaria_2023",
+     "format": "CSV",
+     "url": "https://pda-download.ccee.org.br/WYOTpvY0QrmRKXx0bVT_ng/content",
+     "last_modified": "2025-07-14T14:23:12.611000",
+     "size": null
+    },
+    {
+     "id": "ed66d3dd-1987-4460-9164-20e169ad36fc",
+     "name": "pld_media_diaria_2024",
+     "format": "CSV",
+     "url": "https://pda-download.ccee.org.br/jJSRhSl3SuGfKkCHVcQHxA/content",
+     "last_modified": "2025-07-14T14:23:34.824000",
+     "size": null
+    },
+    {
+     "id": "8b81daa1-8155-4fe1-9ee3-e01beb42fcc8",
+     "name": "pld_media_diaria_2025",
+     "format": "CSV",
+     "url": "https://pda-download.ccee.org.br/by-H-ms8SLCvO0rerYBWTQ/content",
+     "last_modified": "2025-12-30T18:38:59.720000",
+     "size": null
+    },
+    {
+     "id": "3ca83769-de89-4dc5-84a7-0128167b594d",
+     "name": "pld_media_diaria_2026",
+     "format": "CSV",
+     "url": "https://pda-download.ccee.org.br/T09SGpnfRN-2ZaeWfHgrMw/content",
+     "last_modified": "2026-06-09T16:37:31.045000",
+     "size": null
+    }
+   ]
+  }
+ ]
+}

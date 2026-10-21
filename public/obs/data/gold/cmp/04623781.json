@@ -1,7 +1,7 @@
 {
  "cod": "04623781",
  "nome": "CORRETORA AMAZONENSE DE CAMBIO LTDA.",
- "sr": "S5",
+ "sr": null,
  "tcb": "N2",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -231,5 +231,5 @@
    "202009": 0.0
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

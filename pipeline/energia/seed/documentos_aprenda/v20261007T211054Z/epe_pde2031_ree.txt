@@ -1,0 +1,90 @@
+[PDF, página 7]
+PLANO DECENAL DE EXPANSÃO DE ENERGIA 2031
+
+2. Sensibilidade com software alternativo:
+simulação individualizada das usinas
+hidrelétricas
+No contexto do PDE2031, a análise de
+sensibilidade do presente cenário what-if é
+resultante da simulação do despacho econômico
+hidrotérmico do SIN a partir de modelo que
+possibilita a representação individualizada das UHEs
+no horizonte decenal e que otimiza a decisão de
+operação centralizada do sistema elétrico
+interligado. Com o resultado, é possível aferir os
+critérios de suprimento de energia e potência ao
+avaliar as variáveis operativas resultantes dessa
+alternativa de simulação e relacioná-los aos estudos
+do Plano Decenal (PDE) para o horizonte do
+planejamento.
+É importante frisar o desenvolvimento
+contínuo de ferramentas e processos do
+planejamento da expansão que tem sido mostrado
+nos últimos ciclos do PDE. Como exemplo de
+aperfeiçoamento recente, apresentado neste PDE
+2031, pode ser citada a metodologia de revisão de
+restrições operativas aplicadas às UHEs, defluências
+mínimas e metas mensais de geração hidráulica. Essa
+metodologia foi utilizada nos modelos oficiais do
+Setor Elétrico Brasileiro (SEB) visando aprimorar a
+aderência dos resultados das simulações com a
+realidade operativa dessas usinas. Esse trabalho de
+aprimoramento da representação das características
+operativas das fontes de geração nos modelos de
+despacho auxilia na identificação de requisitos e sua
+sinalização para as condições de suprimento
+eletroenergético. Dessa forma, é possível traçar
+ações mitigadoras da insuficiência da oferta, com a
+antecedência necessária, notadamente sob
+conjunturas desafiadoras do ponto de vista de
+
+escassez hídrica, como foi apresentado no texto do
+PDE 2031 (EPE, 2022).
+Por isso, em complemento às análises
+indicadas no PDE 2031 — seção 3.2 Configuração
+Inicial para Expansão: Caso Base do PDE 2031 —, ou
+seja, ainda não incorporados os montantes de
+expansão da oferta de geração e troncos de
+transmissão indicativos, o presente cenário
+exploratório what-if também evidencia mais um
+aprimoramento trazido pelo processo do
+planejamento que é simular a operação
+individualizada das UHEs com software alternativo
+que, assim como o oficial, usa a Programação
+Dinâmica Dual Estocástica. Este aprimoramento
+ocorre devido à relevância das UHEs em termos de
+capacidade instalada total do SIN e também sua
+representação agregada nos modelos oficiais de
+planejamento da operação, isto é, através dos
+reservatórios equivalentes de energia de acordo com
+as bacias hidrográficas onde estas usinas
+hidrelétricas estão localizadas. Com resultados
+obtidos por dois modelos diferentes, torna-se
+possível tomadas de decisões considerando-se as
+informações disponíveis em cada um.
+Neste contexto, destaca-se que em 19 de
+novembro de 2018, foi celebrado o Contrato CT-EPE030/20181, referente à aquisição de ferramentas
+computacionais para planejamento da expansão,
+respectivo treinamento, bem como a prestação do
+serviço de suporte e manutenção, utilizando
+recursos do Projeto META, contemplado no
+subprojeto do Termo de Referência nº 57. As
+ferramentas contratadas foram SDDP2, OPTGEN3 e o
+
+1
+
+Disponível em: https://www.epe.gov.br/pt/acesso-ainformacao/licitacoes-e-contratos/ct-epe-030-2018
+2
+
+O SDDP é um modelo de despacho hidrotérmico com
+representação da rede de transmissão e utilizado para
+estudos operativos de curto, médio e longo prazo
+
+3
+
+O OPTGEN é um modelo integrado de planejamento da
+expansão de capacidade de produção e transporte de
+sistemas de eletricidade e gás natural, baseado em
+decomposição e otimização estocástica.
+
+4

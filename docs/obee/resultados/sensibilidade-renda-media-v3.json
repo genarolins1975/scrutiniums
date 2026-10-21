@@ -1,0 +1,1947 @@
+{
+  "version": "sensibilidade-renda-media-v1",
+  "reference": "julho de 2022",
+  "unit": "R$ nominais; sem ajuste espacial de preços",
+  "publication_ready": false,
+  "approved_weights": null,
+  "basket_unchanged": true,
+  "source": {
+    "id": "censo-renda",
+    "nome": "IBGE · Censo Demográfico · tabela 10295",
+    "url": "https://sidra.ibge.gov.br/tabela/10295",
+    "consulta": "https://apisidra.ibge.gov.br/values/t/10295/n1/all/n3/all/n6/all/v/13431,13534/p/2022/c2/6794/c86/95251/c58/95253",
+    "periodo": {
+      "frequencia": "anual",
+      "inicio": 2022,
+      "fim": 2022
+    },
+    "universo": "Moradores em domicílios particulares permanentes ocupados, exclusive os cuja condição no domicílio era pensionista, empregado(a) doméstico(a) ou parente do(a) empregado(a) doméstico(a), valor do rendimento domiciliar mensal per capita, médio e mediano, por sexo, cor ou raça e grupos de idade",
+    "limitacoes": [
+      "Resultados preliminares da amostra do Censo 2022; valores nominais de julho de 2022, sem atualização pela inflação.",
+      "Não comparar diretamente com rendimento real do trabalho da PNAD: população e conceito distintos."
+    ],
+    "capturadoEm": "2026-10-09T22:07:28.724620+00:00",
+    "sha256": "f3a411db4391e3603e391837688935e2c5749244fbd80bec757f4592859af83a",
+    "bruto": "/eficiencia/trabalho-renda/brutos/censo-renda.json",
+    "local_path": "public/eficiencia/trabalho-renda/brutos/censo-renda.json",
+    "reutilizacao_verificada_em": "2026-10-13",
+    "acquisition": "Coleta oficial já preservada; não é nova captura de rede"
+  },
+  "inputs": [
+    {
+      "path": "public/eficiencia/trabalho-renda/brutos/censo-renda.json",
+      "sha256": "f3a411db4391e3603e391837688935e2c5749244fbd80bec757f4592859af83a"
+    },
+    {
+      "path": "public/eficiencia/trabalho-renda/snapshot.payload.gz.b64",
+      "sha256": "6b94b0a2c3149f13c1cd146b37482d387a2159ca6611602a71b4292f2806fffc"
+    },
+    {
+      "path": "docs/obee/resultados/piloto-2022-v2.json",
+      "sha256": "61d9df0b252048e98731aaea3155f27ed0cdf487aa10867105671951443360ef"
+    },
+    {
+      "path": "docs/obee/resultados/cesta-conjunta.json",
+      "sha256": "15339579dc2cceecd3c237569e011640aa2b7198329dbfd9c081075c3c1de7bd"
+    }
+  ],
+  "method": "Substituição apenas do estimando de renda nos oito cenários conjuntos; mesmos percentis de postos médios, coorte, demais medidas e pesos. Comparações com frações exatas.",
+  "caveat": "Média é mais sensível à cauda superior; não corrige preços, amontoamento ou erros amostrais. Precisão municipal não quantificada. Experimento condicional, sem inferência ou escolha normativa.",
+  "summary": {
+    "rank_correlation": 0.9700803697943285,
+    "max_absolute_percentile_change": 15.384615384615385,
+    "income_pairs": {
+      "pairs": 325,
+      "strict_reversals": 20,
+      "ties_created": 0,
+      "ties_broken": 1,
+      "ties_preserved": 0
+    }
+  },
+  "rows": [
+    {
+      "id": "2800308",
+      "capital": "Aracaju",
+      "mediana_nominal": 1070.67,
+      "media_nominal": 2087.74,
+      "percentil_mediana": 55.76923076923077,
+      "percentil_media": 51.92307692307692,
+      "delta_percentil": -3.8461538461538463
+    },
+    {
+      "id": "3106200",
+      "capital": "Belo Horizonte",
+      "mediana_nominal": 1441.0,
+      "media_nominal": 2748.85,
+      "percentil_mediana": 78.84615384615384,
+      "percentil_media": 82.6923076923077,
+      "delta_percentil": 3.8461538461538463
+    },
+    {
+      "id": "1501402",
+      "capital": "Belém",
+      "mediana_nominal": 842.4,
+      "media_nominal": 1668.52,
+      "percentil_mediana": 21.153846153846153,
+      "percentil_media": 32.69230769230769,
+      "delta_percentil": 11.538461538461538
+    },
+    {
+      "id": "1400100",
+      "capital": "Boa Vista",
+      "mediana_nominal": 800.0,
+      "media_nominal": 1399.0,
+      "percentil_mediana": 9.615384615384615,
+      "percentil_media": 9.615384615384615,
+      "delta_percentil": 0.0
+    },
+    {
+      "id": "5002704",
+      "capital": "Campo Grande",
+      "mediana_nominal": 1237.33,
+      "media_nominal": 2088.31,
+      "percentil_mediana": 63.46153846153846,
+      "percentil_media": 55.76923076923077,
+      "delta_percentil": -7.6923076923076925
+    },
+    {
+      "id": "5103403",
+      "capital": "Cuiabá",
+      "mediana_nominal": 1300.0,
+      "media_nominal": 2428.24,
+      "percentil_mediana": 71.15384615384616,
+      "percentil_media": 67.3076923076923,
+      "delta_percentil": -3.8461538461538463
+    },
+    {
+      "id": "4106902",
+      "capital": "Curitiba",
+      "mediana_nominal": 1850.0,
+      "media_nominal": 3137.92,
+      "percentil_mediana": 94.23076923076923,
+      "percentil_media": 86.53846153846153,
+      "delta_percentil": -7.6923076923076925
+    },
+    {
+      "id": "4205407",
+      "capital": "Florianópolis",
+      "mediana_nominal": 2087.5,
+      "media_nominal": 3636.13,
+      "percentil_mediana": 98.07692307692308,
+      "percentil_media": 98.07692307692308,
+      "delta_percentil": 0.0
+    },
+    {
+      "id": "2304400",
+      "capital": "Fortaleza",
+      "mediana_nominal": 900.0,
+      "media_nominal": 1668.98,
+      "percentil_mediana": 40.38461538461539,
+      "percentil_media": 36.53846153846154,
+      "delta_percentil": -3.8461538461538463
+    },
+    {
+      "id": "5208707",
+      "capital": "Goiânia",
+      "mediana_nominal": 1450.0,
+      "media_nominal": 2668.8,
+      "percentil_mediana": 82.6923076923077,
+      "percentil_media": 75.0,
+      "delta_percentil": -7.6923076923076925
+    },
+    {
+      "id": "2507507",
+      "capital": "João Pessoa",
+      "mediana_nominal": 1000.0,
+      "media_nominal": 1879.0,
+      "percentil_mediana": 51.92307692307692,
+      "percentil_media": 44.23076923076923,
+      "delta_percentil": -7.6923076923076925
+    },
+    {
+      "id": "1600303",
+      "capital": "Macapá",
+      "mediana_nominal": 744.8,
+      "media_nominal": 1313.17,
+      "percentil_mediana": 5.769230769230769,
+      "percentil_media": 5.769230769230769,
+      "delta_percentil": 0.0
+    },
+    {
+      "id": "2704302",
+      "capital": "Maceió",
+      "mediana_nominal": 837.33,
+      "media_nominal": 1605.6,
+      "percentil_mediana": 17.307692307692307,
+      "percentil_media": 28.846153846153847,
+      "delta_percentil": 11.538461538461538
+    },
+    {
+      "id": "1302603",
+      "capital": "Manaus",
+      "mediana_nominal": 686.0,
+      "media_nominal": 1284.7,
+      "percentil_mediana": 1.9230769230769231,
+      "percentil_media": 1.9230769230769231,
+      "delta_percentil": 0.0
+    },
+    {
+      "id": "2408102",
+      "capital": "Natal",
+      "mediana_nominal": 969.6,
+      "media_nominal": 2049.37,
+      "percentil_mediana": 44.23076923076923,
+      "percentil_media": 48.07692307692308,
+      "delta_percentil": 3.8461538461538463
+    },
+    {
+      "id": "1721000",
+      "capital": "Palmas",
+      "mediana_nominal": 1266.67,
+      "media_nominal": 2260.06,
+      "percentil_mediana": 67.3076923076923,
+      "percentil_media": 59.61538461538461,
+      "delta_percentil": -7.6923076923076925
+    },
+    {
+      "id": "4314902",
+      "capital": "Porto Alegre",
+      "mediana_nominal": 1700.0,
+      "media_nominal": 3203.31,
+      "percentil_mediana": 86.53846153846153,
+      "percentil_media": 90.38461538461539,
+      "delta_percentil": 3.8461538461538463
+    },
+    {
+      "id": "1100205",
+      "capital": "Porto Velho",
+      "mediana_nominal": 866.67,
+      "media_nominal": 1459.81,
+      "percentil_mediana": 26.923076923076923,
+      "percentil_media": 17.307692307692307,
+      "delta_percentil": -9.615384615384615
+    },
+    {
+      "id": "2611606",
+      "capital": "Recife",
+      "mediana_nominal": 970.67,
+      "media_nominal": 2284.77,
+      "percentil_mediana": 48.07692307692308,
+      "percentil_media": 63.46153846153846,
+      "delta_percentil": 15.384615384615385
+    },
+    {
+      "id": "1200401",
+      "capital": "Rio Branco",
+      "mediana_nominal": 833.33,
+      "media_nominal": 1436.01,
+      "percentil_mediana": 13.461538461538462,
+      "percentil_media": 13.461538461538462,
+      "delta_percentil": 0.0
+    },
+    {
+      "id": "3304557",
+      "capital": "Rio de Janeiro",
+      "mediana_nominal": 1212.0,
+      "media_nominal": 2515.32,
+      "percentil_mediana": 59.61538461538461,
+      "percentil_media": 71.15384615384616,
+      "delta_percentil": 11.538461538461538
+    },
+    {
+      "id": "2927408",
+      "capital": "Salvador",
+      "mediana_nominal": 887.5,
+      "media_nominal": 1770.35,
+      "percentil_mediana": 36.53846153846154,
+      "percentil_media": 40.38461538461539,
+      "delta_percentil": 3.8461538461538463
+    },
+    {
+      "id": "2111300",
+      "capital": "São Luís",
+      "mediana_nominal": 866.67,
+      "media_nominal": 1595.48,
+      "percentil_mediana": 26.923076923076923,
+      "percentil_media": 25.0,
+      "delta_percentil": -1.9230769230769231
+    },
+    {
+      "id": "3550308",
+      "capital": "São Paulo",
+      "mediana_nominal": 1340.0,
+      "media_nominal": 2713.36,
+      "percentil_mediana": 75.0,
+      "percentil_media": 78.84615384615384,
+      "delta_percentil": 3.8461538461538463
+    },
+    {
+      "id": "2211001",
+      "capital": "Teresina",
+      "mediana_nominal": 868.0,
+      "media_nominal": 1559.89,
+      "percentil_mediana": 32.69230769230769,
+      "percentil_media": 21.153846153846153,
+      "delta_percentil": -11.538461538461538
+    },
+    {
+      "id": "3205309",
+      "capital": "Vitória",
+      "mediana_nominal": 1750.0,
+      "media_nominal": 3351.64,
+      "percentil_mediana": 90.38461538461539,
+      "percentil_media": 94.23076923076923,
+      "delta_percentil": 3.8461538461538463
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "conjunta__domicilios_gt2__iguais",
+      "housing_definition": "domicilios_gt2",
+      "weight_model": "iguais",
+      "weights": {
+        "educacao": 0.14285714285714285,
+        "trabalho": 0.14285714285714285,
+        "mobilidade": 0.14285714285714285,
+        "saneamento": 0.14285714285714285,
+        "seguranca": 0.14285714285714285,
+        "habitacao": 0.14285714285714285,
+        "conectividade": 0.14285714285714285
+      },
+      "comparison": {
+        "pairs": 325,
+        "strict_reversals": 3,
+        "ties_created": 0,
+        "ties_broken": 1,
+        "ties_preserved": 1
+      },
+      "max_absolute_score_change": 2.197802197802198,
+      "rows": [
+        {
+          "id": "2800308",
+          "score_mediana": 56.31868131868132,
+          "score_media": 55.76923076923077,
+          "delta": -0.5494505494505495,
+          "delta_exact": "-50/91"
+        },
+        {
+          "id": "3106200",
+          "score_mediana": 73.9010989010989,
+          "score_media": 74.45054945054945,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "1501402",
+          "score_mediana": 29.395604395604394,
+          "score_media": 31.043956043956044,
+          "delta": 1.6483516483516483,
+          "delta_exact": "150/91"
+        },
+        {
+          "id": "1400100",
+          "score_mediana": 35.989010989010985,
+          "score_media": 35.989010989010985,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "5002704",
+          "score_mediana": 59.61538461538461,
+          "score_media": 58.51648351648352,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "5103403",
+          "score_mediana": 57.967032967032964,
+          "score_media": 57.417582417582416,
+          "delta": -0.5494505494505495,
+          "delta_exact": "-50/91"
+        },
+        {
+          "id": "4106902",
+          "score_mediana": 82.6923076923077,
+          "score_media": 81.5934065934066,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "4205407",
+          "score_mediana": 90.38461538461539,
+          "score_media": 90.38461538461539,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2304400",
+          "score_mediana": 35.989010989010985,
+          "score_media": 35.43956043956044,
+          "delta": -0.5494505494505495,
+          "delta_exact": "-50/91"
+        },
+        {
+          "id": "5208707",
+          "score_mediana": 68.95604395604396,
+          "score_media": 67.85714285714286,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "2507507",
+          "score_mediana": 60.714285714285715,
+          "score_media": 59.61538461538461,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "1600303",
+          "score_mediana": 17.307692307692307,
+          "score_media": 17.307692307692307,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2704302",
+          "score_mediana": 30.494505494505493,
+          "score_media": 32.142857142857146,
+          "delta": 1.6483516483516483,
+          "delta_exact": "150/91"
+        },
+        {
+          "id": "1302603",
+          "score_mediana": 11.263736263736265,
+          "score_media": 11.263736263736265,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2408102",
+          "score_mediana": 40.38461538461539,
+          "score_media": 40.934065934065934,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "1721000",
+          "score_mediana": 65.65934065934066,
+          "score_media": 64.56043956043956,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "4314902",
+          "score_mediana": 61.26373626373626,
+          "score_media": 61.81318681318681,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "1100205",
+          "score_mediana": 29.67032967032967,
+          "score_media": 28.296703296703296,
+          "delta": -1.3736263736263736,
+          "delta_exact": "-125/91"
+        },
+        {
+          "id": "2611606",
+          "score_mediana": 37.08791208791209,
+          "score_media": 39.285714285714285,
+          "delta": 2.197802197802198,
+          "delta_exact": "200/91"
+        },
+        {
+          "id": "1200401",
+          "score_mediana": 34.34065934065934,
+          "score_media": 34.34065934065934,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "3304557",
+          "score_mediana": 50.27472527472528,
+          "score_media": 51.92307692307692,
+          "delta": 1.6483516483516483,
+          "delta_exact": "150/91"
+        },
+        {
+          "id": "2927408",
+          "score_mediana": 37.637362637362635,
+          "score_media": 38.18681318681319,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "2111300",
+          "score_mediana": 36.81318681318681,
+          "score_media": 36.53846153846154,
+          "delta": -0.27472527472527475,
+          "delta_exact": "-25/91"
+        },
+        {
+          "id": "3550308",
+          "score_mediana": 61.26373626373626,
+          "score_media": 61.81318681318681,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "2211001",
+          "score_mediana": 50.824175824175825,
+          "score_media": 49.175824175824175,
+          "delta": -1.6483516483516483,
+          "delta_exact": "-150/91"
+        },
+        {
+          "id": "3205309",
+          "score_mediana": 83.79120879120879,
+          "score_media": 84.34065934065934,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        }
+      ]
+    },
+    {
+      "id": "conjunta__domicilios_gt2__materiais_40pct",
+      "housing_definition": "domicilios_gt2",
+      "weight_model": "materiais_40pct",
+      "weights": {
+        "educacao": 0.2,
+        "trabalho": 0.1,
+        "mobilidade": 0.2,
+        "saneamento": 0.1,
+        "seguranca": 0.2,
+        "habitacao": 0.1,
+        "conectividade": 0.1
+      },
+      "comparison": {
+        "pairs": 325,
+        "strict_reversals": 3,
+        "ties_created": 0,
+        "ties_broken": 0,
+        "ties_preserved": 0
+      },
+      "max_absolute_score_change": 1.5384615384615385,
+      "rows": [
+        {
+          "id": "2800308",
+          "score_mediana": 53.07692307692308,
+          "score_media": 52.69230769230769,
+          "delta": -0.38461538461538464,
+          "delta_exact": "-5/13"
+        },
+        {
+          "id": "3106200",
+          "score_mediana": 70.76923076923077,
+          "score_media": 71.15384615384616,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "1501402",
+          "score_mediana": 33.46153846153846,
+          "score_media": 34.61538461538461,
+          "delta": 1.1538461538461537,
+          "delta_exact": "15/13"
+        },
+        {
+          "id": "1400100",
+          "score_mediana": 39.61538461538461,
+          "score_media": 39.61538461538461,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "5002704",
+          "score_mediana": 58.46153846153846,
+          "score_media": 57.69230769230769,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "5103403",
+          "score_mediana": 59.23076923076923,
+          "score_media": 58.84615384615385,
+          "delta": -0.38461538461538464,
+          "delta_exact": "-5/13"
+        },
+        {
+          "id": "4106902",
+          "score_mediana": 77.6923076923077,
+          "score_media": 76.92307692307692,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "4205407",
+          "score_mediana": 88.84615384615384,
+          "score_media": 88.84615384615384,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2304400",
+          "score_mediana": 36.15384615384615,
+          "score_media": 35.76923076923077,
+          "delta": -0.38461538461538464,
+          "delta_exact": "-5/13"
+        },
+        {
+          "id": "5208707",
+          "score_mediana": 65.38461538461539,
+          "score_media": 64.61538461538461,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "2507507",
+          "score_mediana": 60.76923076923077,
+          "score_media": 60.0,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "1600303",
+          "score_mediana": 20.76923076923077,
+          "score_media": 20.76923076923077,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2704302",
+          "score_mediana": 30.76923076923077,
+          "score_media": 31.923076923076923,
+          "delta": 1.1538461538461537,
+          "delta_exact": "15/13"
+        },
+        {
+          "id": "1302603",
+          "score_mediana": 10.76923076923077,
+          "score_media": 10.76923076923077,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2408102",
+          "score_mediana": 42.69230769230769,
+          "score_media": 43.07692307692308,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "1721000",
+          "score_mediana": 66.15384615384616,
+          "score_media": 65.38461538461539,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "4314902",
+          "score_mediana": 53.46153846153846,
+          "score_media": 53.84615384615385,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "1100205",
+          "score_mediana": 31.73076923076923,
+          "score_media": 30.76923076923077,
+          "delta": -0.9615384615384616,
+          "delta_exact": "-25/26"
+        },
+        {
+          "id": "2611606",
+          "score_mediana": 35.76923076923077,
+          "score_media": 37.30769230769231,
+          "delta": 1.5384615384615385,
+          "delta_exact": "20/13"
+        },
+        {
+          "id": "1200401",
+          "score_mediana": 41.92307692307692,
+          "score_media": 41.92307692307692,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "3304557",
+          "score_mediana": 49.23076923076923,
+          "score_media": 50.38461538461539,
+          "delta": 1.1538461538461537,
+          "delta_exact": "15/13"
+        },
+        {
+          "id": "2927408",
+          "score_mediana": 33.07692307692308,
+          "score_media": 33.46153846153846,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "2111300",
+          "score_mediana": 41.73076923076923,
+          "score_media": 41.53846153846154,
+          "delta": -0.19230769230769232,
+          "delta_exact": "-5/26"
+        },
+        {
+          "id": "3550308",
+          "score_mediana": 60.0,
+          "score_media": 60.38461538461539,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "2211001",
+          "score_mediana": 57.30769230769231,
+          "score_media": 56.15384615384615,
+          "delta": -1.1538461538461537,
+          "delta_exact": "-15/13"
+        },
+        {
+          "id": "3205309",
+          "score_mediana": 81.15384615384616,
+          "score_media": 81.53846153846153,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        }
+      ]
+    },
+    {
+      "id": "conjunta__domicilios_gt3__iguais",
+      "housing_definition": "domicilios_gt3",
+      "weight_model": "iguais",
+      "weights": {
+        "educacao": 0.14285714285714285,
+        "trabalho": 0.14285714285714285,
+        "mobilidade": 0.14285714285714285,
+        "saneamento": 0.14285714285714285,
+        "seguranca": 0.14285714285714285,
+        "habitacao": 0.14285714285714285,
+        "conectividade": 0.14285714285714285
+      },
+      "comparison": {
+        "pairs": 325,
+        "strict_reversals": 3,
+        "ties_created": 3,
+        "ties_broken": 2,
+        "ties_preserved": 0
+      },
+      "max_absolute_score_change": 2.197802197802198,
+      "rows": [
+        {
+          "id": "2800308",
+          "score_mediana": 56.31868131868132,
+          "score_media": 55.76923076923077,
+          "delta": -0.5494505494505495,
+          "delta_exact": "-50/91"
+        },
+        {
+          "id": "3106200",
+          "score_mediana": 73.35164835164835,
+          "score_media": 73.9010989010989,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "1501402",
+          "score_mediana": 29.395604395604394,
+          "score_media": 31.043956043956044,
+          "delta": 1.6483516483516483,
+          "delta_exact": "150/91"
+        },
+        {
+          "id": "1400100",
+          "score_mediana": 35.989010989010985,
+          "score_media": 35.989010989010985,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "5002704",
+          "score_mediana": 60.16483516483517,
+          "score_media": 59.065934065934066,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "5103403",
+          "score_mediana": 57.967032967032964,
+          "score_media": 57.417582417582416,
+          "delta": -0.5494505494505495,
+          "delta_exact": "-50/91"
+        },
+        {
+          "id": "4106902",
+          "score_mediana": 82.6923076923077,
+          "score_media": 81.5934065934066,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "4205407",
+          "score_mediana": 89.83516483516483,
+          "score_media": 89.83516483516483,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2304400",
+          "score_mediana": 36.53846153846154,
+          "score_media": 35.989010989010985,
+          "delta": -0.5494505494505495,
+          "delta_exact": "-50/91"
+        },
+        {
+          "id": "5208707",
+          "score_mediana": 70.6043956043956,
+          "score_media": 69.50549450549451,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "2507507",
+          "score_mediana": 60.714285714285715,
+          "score_media": 59.61538461538461,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "1600303",
+          "score_mediana": 17.307692307692307,
+          "score_media": 17.307692307692307,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2704302",
+          "score_mediana": 30.494505494505493,
+          "score_media": 32.142857142857146,
+          "delta": 1.6483516483516483,
+          "delta_exact": "150/91"
+        },
+        {
+          "id": "1302603",
+          "score_mediana": 11.263736263736265,
+          "score_media": 11.263736263736265,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2408102",
+          "score_mediana": 40.934065934065934,
+          "score_media": 41.48351648351648,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "1721000",
+          "score_mediana": 66.20879120879121,
+          "score_media": 65.10989010989012,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "4314902",
+          "score_mediana": 61.26373626373626,
+          "score_media": 61.81318681318681,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "1100205",
+          "score_mediana": 30.21978021978022,
+          "score_media": 28.846153846153847,
+          "delta": -1.3736263736263736,
+          "delta_exact": "-125/91"
+        },
+        {
+          "id": "2611606",
+          "score_mediana": 36.53846153846154,
+          "score_media": 38.73626373626374,
+          "delta": 2.197802197802198,
+          "delta_exact": "200/91"
+        },
+        {
+          "id": "1200401",
+          "score_mediana": 34.34065934065934,
+          "score_media": 34.34065934065934,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "3304557",
+          "score_mediana": 48.62637362637363,
+          "score_media": 50.27472527472528,
+          "delta": 1.6483516483516483,
+          "delta_exact": "150/91"
+        },
+        {
+          "id": "2927408",
+          "score_mediana": 37.08791208791209,
+          "score_media": 37.637362637362635,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "2111300",
+          "score_mediana": 36.26373626373626,
+          "score_media": 35.989010989010985,
+          "delta": -0.27472527472527475,
+          "delta_exact": "-25/91"
+        },
+        {
+          "id": "3550308",
+          "score_mediana": 60.16483516483517,
+          "score_media": 60.714285714285715,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "2211001",
+          "score_mediana": 52.472527472527474,
+          "score_media": 50.824175824175825,
+          "delta": -1.6483516483516483,
+          "delta_exact": "-150/91"
+        },
+        {
+          "id": "3205309",
+          "score_mediana": 83.24175824175825,
+          "score_media": 83.79120879120879,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        }
+      ]
+    },
+    {
+      "id": "conjunta__domicilios_gt3__materiais_40pct",
+      "housing_definition": "domicilios_gt3",
+      "weight_model": "materiais_40pct",
+      "weights": {
+        "educacao": 0.2,
+        "trabalho": 0.1,
+        "mobilidade": 0.2,
+        "saneamento": 0.1,
+        "seguranca": 0.2,
+        "habitacao": 0.1,
+        "conectividade": 0.1
+      },
+      "comparison": {
+        "pairs": 325,
+        "strict_reversals": 2,
+        "ties_created": 0,
+        "ties_broken": 1,
+        "ties_preserved": 1
+      },
+      "max_absolute_score_change": 1.5384615384615385,
+      "rows": [
+        {
+          "id": "2800308",
+          "score_mediana": 53.07692307692308,
+          "score_media": 52.69230769230769,
+          "delta": -0.38461538461538464,
+          "delta_exact": "-5/13"
+        },
+        {
+          "id": "3106200",
+          "score_mediana": 70.38461538461539,
+          "score_media": 70.76923076923077,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "1501402",
+          "score_mediana": 33.46153846153846,
+          "score_media": 34.61538461538461,
+          "delta": 1.1538461538461537,
+          "delta_exact": "15/13"
+        },
+        {
+          "id": "1400100",
+          "score_mediana": 39.61538461538461,
+          "score_media": 39.61538461538461,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "5002704",
+          "score_mediana": 58.84615384615385,
+          "score_media": 58.07692307692308,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "5103403",
+          "score_mediana": 59.23076923076923,
+          "score_media": 58.84615384615385,
+          "delta": -0.38461538461538464,
+          "delta_exact": "-5/13"
+        },
+        {
+          "id": "4106902",
+          "score_mediana": 77.6923076923077,
+          "score_media": 76.92307692307692,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "4205407",
+          "score_mediana": 88.46153846153847,
+          "score_media": 88.46153846153847,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2304400",
+          "score_mediana": 36.53846153846154,
+          "score_media": 36.15384615384615,
+          "delta": -0.38461538461538464,
+          "delta_exact": "-5/13"
+        },
+        {
+          "id": "5208707",
+          "score_mediana": 66.53846153846153,
+          "score_media": 65.76923076923077,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "2507507",
+          "score_mediana": 60.76923076923077,
+          "score_media": 60.0,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "1600303",
+          "score_mediana": 20.76923076923077,
+          "score_media": 20.76923076923077,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2704302",
+          "score_mediana": 30.76923076923077,
+          "score_media": 31.923076923076923,
+          "delta": 1.1538461538461537,
+          "delta_exact": "15/13"
+        },
+        {
+          "id": "1302603",
+          "score_mediana": 10.76923076923077,
+          "score_media": 10.76923076923077,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2408102",
+          "score_mediana": 43.07692307692308,
+          "score_media": 43.46153846153846,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "1721000",
+          "score_mediana": 66.53846153846153,
+          "score_media": 65.76923076923077,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "4314902",
+          "score_mediana": 53.46153846153846,
+          "score_media": 53.84615384615385,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "1100205",
+          "score_mediana": 32.11538461538461,
+          "score_media": 31.153846153846153,
+          "delta": -0.9615384615384616,
+          "delta_exact": "-25/26"
+        },
+        {
+          "id": "2611606",
+          "score_mediana": 35.38461538461539,
+          "score_media": 36.92307692307692,
+          "delta": 1.5384615384615385,
+          "delta_exact": "20/13"
+        },
+        {
+          "id": "1200401",
+          "score_mediana": 41.92307692307692,
+          "score_media": 41.92307692307692,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "3304557",
+          "score_mediana": 48.07692307692308,
+          "score_media": 49.23076923076923,
+          "delta": 1.1538461538461537,
+          "delta_exact": "15/13"
+        },
+        {
+          "id": "2927408",
+          "score_mediana": 32.69230769230769,
+          "score_media": 33.07692307692308,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "2111300",
+          "score_mediana": 41.34615384615385,
+          "score_media": 41.15384615384615,
+          "delta": -0.19230769230769232,
+          "delta_exact": "-5/26"
+        },
+        {
+          "id": "3550308",
+          "score_mediana": 59.23076923076923,
+          "score_media": 59.61538461538461,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "2211001",
+          "score_mediana": 58.46153846153846,
+          "score_media": 57.30769230769231,
+          "delta": -1.1538461538461537,
+          "delta_exact": "-15/13"
+        },
+        {
+          "id": "3205309",
+          "score_mediana": 80.76923076923077,
+          "score_media": 81.15384615384616,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        }
+      ]
+    },
+    {
+      "id": "conjunta__moradores_gt2__iguais",
+      "housing_definition": "moradores_gt2",
+      "weight_model": "iguais",
+      "weights": {
+        "educacao": 0.14285714285714285,
+        "trabalho": 0.14285714285714285,
+        "mobilidade": 0.14285714285714285,
+        "saneamento": 0.14285714285714285,
+        "seguranca": 0.14285714285714285,
+        "habitacao": 0.14285714285714285,
+        "conectividade": 0.14285714285714285
+      },
+      "comparison": {
+        "pairs": 325,
+        "strict_reversals": 3,
+        "ties_created": 1,
+        "ties_broken": 2,
+        "ties_preserved": 0
+      },
+      "max_absolute_score_change": 2.197802197802198,
+      "rows": [
+        {
+          "id": "2800308",
+          "score_mediana": 56.31868131868132,
+          "score_media": 55.76923076923077,
+          "delta": -0.5494505494505495,
+          "delta_exact": "-50/91"
+        },
+        {
+          "id": "3106200",
+          "score_mediana": 73.9010989010989,
+          "score_media": 74.45054945054945,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "1501402",
+          "score_mediana": 29.395604395604394,
+          "score_media": 31.043956043956044,
+          "delta": 1.6483516483516483,
+          "delta_exact": "150/91"
+        },
+        {
+          "id": "1400100",
+          "score_mediana": 35.989010989010985,
+          "score_media": 35.989010989010985,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "5002704",
+          "score_mediana": 59.61538461538461,
+          "score_media": 58.51648351648352,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "5103403",
+          "score_mediana": 57.967032967032964,
+          "score_media": 57.417582417582416,
+          "delta": -0.5494505494505495,
+          "delta_exact": "-50/91"
+        },
+        {
+          "id": "4106902",
+          "score_mediana": 82.6923076923077,
+          "score_media": 81.5934065934066,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "4205407",
+          "score_mediana": 90.38461538461539,
+          "score_media": 90.38461538461539,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2304400",
+          "score_mediana": 37.08791208791209,
+          "score_media": 36.53846153846154,
+          "delta": -0.5494505494505495,
+          "delta_exact": "-50/91"
+        },
+        {
+          "id": "5208707",
+          "score_mediana": 69.50549450549451,
+          "score_media": 68.4065934065934,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "2507507",
+          "score_mediana": 60.714285714285715,
+          "score_media": 59.61538461538461,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "1600303",
+          "score_mediana": 17.307692307692307,
+          "score_media": 17.307692307692307,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2704302",
+          "score_mediana": 30.494505494505493,
+          "score_media": 32.142857142857146,
+          "delta": 1.6483516483516483,
+          "delta_exact": "150/91"
+        },
+        {
+          "id": "1302603",
+          "score_mediana": 11.263736263736265,
+          "score_media": 11.263736263736265,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2408102",
+          "score_mediana": 40.38461538461539,
+          "score_media": 40.934065934065934,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "1721000",
+          "score_mediana": 66.20879120879121,
+          "score_media": 65.10989010989012,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "4314902",
+          "score_mediana": 61.26373626373626,
+          "score_media": 61.81318681318681,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "1100205",
+          "score_mediana": 29.67032967032967,
+          "score_media": 28.296703296703296,
+          "delta": -1.3736263736263736,
+          "delta_exact": "-125/91"
+        },
+        {
+          "id": "2611606",
+          "score_mediana": 37.08791208791209,
+          "score_media": 39.285714285714285,
+          "delta": 2.197802197802198,
+          "delta_exact": "200/91"
+        },
+        {
+          "id": "1200401",
+          "score_mediana": 34.34065934065934,
+          "score_media": 34.34065934065934,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "3304557",
+          "score_mediana": 49.175824175824175,
+          "score_media": 50.824175824175825,
+          "delta": 1.6483516483516483,
+          "delta_exact": "150/91"
+        },
+        {
+          "id": "2927408",
+          "score_mediana": 37.637362637362635,
+          "score_media": 38.18681318681319,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "2111300",
+          "score_mediana": 36.81318681318681,
+          "score_media": 36.53846153846154,
+          "delta": -0.27472527472527475,
+          "delta_exact": "-25/91"
+        },
+        {
+          "id": "3550308",
+          "score_mediana": 60.714285714285715,
+          "score_media": 61.26373626373626,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "2211001",
+          "score_mediana": 50.824175824175825,
+          "score_media": 49.175824175824175,
+          "delta": -1.6483516483516483,
+          "delta_exact": "-150/91"
+        },
+        {
+          "id": "3205309",
+          "score_mediana": 83.24175824175825,
+          "score_media": 83.79120879120879,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        }
+      ]
+    },
+    {
+      "id": "conjunta__moradores_gt2__materiais_40pct",
+      "housing_definition": "moradores_gt2",
+      "weight_model": "materiais_40pct",
+      "weights": {
+        "educacao": 0.2,
+        "trabalho": 0.1,
+        "mobilidade": 0.2,
+        "saneamento": 0.1,
+        "seguranca": 0.2,
+        "habitacao": 0.1,
+        "conectividade": 0.1
+      },
+      "comparison": {
+        "pairs": 325,
+        "strict_reversals": 2,
+        "ties_created": 1,
+        "ties_broken": 0,
+        "ties_preserved": 0
+      },
+      "max_absolute_score_change": 1.5384615384615385,
+      "rows": [
+        {
+          "id": "2800308",
+          "score_mediana": 53.07692307692308,
+          "score_media": 52.69230769230769,
+          "delta": -0.38461538461538464,
+          "delta_exact": "-5/13"
+        },
+        {
+          "id": "3106200",
+          "score_mediana": 70.76923076923077,
+          "score_media": 71.15384615384616,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "1501402",
+          "score_mediana": 33.46153846153846,
+          "score_media": 34.61538461538461,
+          "delta": 1.1538461538461537,
+          "delta_exact": "15/13"
+        },
+        {
+          "id": "1400100",
+          "score_mediana": 39.61538461538461,
+          "score_media": 39.61538461538461,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "5002704",
+          "score_mediana": 58.46153846153846,
+          "score_media": 57.69230769230769,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "5103403",
+          "score_mediana": 59.23076923076923,
+          "score_media": 58.84615384615385,
+          "delta": -0.38461538461538464,
+          "delta_exact": "-5/13"
+        },
+        {
+          "id": "4106902",
+          "score_mediana": 77.6923076923077,
+          "score_media": 76.92307692307692,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "4205407",
+          "score_mediana": 88.84615384615384,
+          "score_media": 88.84615384615384,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2304400",
+          "score_mediana": 36.92307692307692,
+          "score_media": 36.53846153846154,
+          "delta": -0.38461538461538464,
+          "delta_exact": "-5/13"
+        },
+        {
+          "id": "5208707",
+          "score_mediana": 65.76923076923077,
+          "score_media": 65.0,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "2507507",
+          "score_mediana": 60.76923076923077,
+          "score_media": 60.0,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "1600303",
+          "score_mediana": 20.76923076923077,
+          "score_media": 20.76923076923077,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2704302",
+          "score_mediana": 30.76923076923077,
+          "score_media": 31.923076923076923,
+          "delta": 1.1538461538461537,
+          "delta_exact": "15/13"
+        },
+        {
+          "id": "1302603",
+          "score_mediana": 10.76923076923077,
+          "score_media": 10.76923076923077,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2408102",
+          "score_mediana": 42.69230769230769,
+          "score_media": 43.07692307692308,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "1721000",
+          "score_mediana": 66.53846153846153,
+          "score_media": 65.76923076923077,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "4314902",
+          "score_mediana": 53.46153846153846,
+          "score_media": 53.84615384615385,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "1100205",
+          "score_mediana": 31.73076923076923,
+          "score_media": 30.76923076923077,
+          "delta": -0.9615384615384616,
+          "delta_exact": "-25/26"
+        },
+        {
+          "id": "2611606",
+          "score_mediana": 35.76923076923077,
+          "score_media": 37.30769230769231,
+          "delta": 1.5384615384615385,
+          "delta_exact": "20/13"
+        },
+        {
+          "id": "1200401",
+          "score_mediana": 41.92307692307692,
+          "score_media": 41.92307692307692,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "3304557",
+          "score_mediana": 48.46153846153846,
+          "score_media": 49.61538461538461,
+          "delta": 1.1538461538461537,
+          "delta_exact": "15/13"
+        },
+        {
+          "id": "2927408",
+          "score_mediana": 33.07692307692308,
+          "score_media": 33.46153846153846,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "2111300",
+          "score_mediana": 41.73076923076923,
+          "score_media": 41.53846153846154,
+          "delta": -0.19230769230769232,
+          "delta_exact": "-5/26"
+        },
+        {
+          "id": "3550308",
+          "score_mediana": 59.61538461538461,
+          "score_media": 60.0,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "2211001",
+          "score_mediana": 57.30769230769231,
+          "score_media": 56.15384615384615,
+          "delta": -1.1538461538461537,
+          "delta_exact": "-15/13"
+        },
+        {
+          "id": "3205309",
+          "score_mediana": 80.76923076923077,
+          "score_media": 81.15384615384616,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        }
+      ]
+    },
+    {
+      "id": "conjunta__moradores_gt3__iguais",
+      "housing_definition": "moradores_gt3",
+      "weight_model": "iguais",
+      "weights": {
+        "educacao": 0.14285714285714285,
+        "trabalho": 0.14285714285714285,
+        "mobilidade": 0.14285714285714285,
+        "saneamento": 0.14285714285714285,
+        "seguranca": 0.14285714285714285,
+        "habitacao": 0.14285714285714285,
+        "conectividade": 0.14285714285714285
+      },
+      "comparison": {
+        "pairs": 325,
+        "strict_reversals": 7,
+        "ties_created": 2,
+        "ties_broken": 1,
+        "ties_preserved": 0
+      },
+      "max_absolute_score_change": 2.197802197802198,
+      "rows": [
+        {
+          "id": "2800308",
+          "score_mediana": 56.31868131868132,
+          "score_media": 55.76923076923077,
+          "delta": -0.5494505494505495,
+          "delta_exact": "-50/91"
+        },
+        {
+          "id": "3106200",
+          "score_mediana": 73.35164835164835,
+          "score_media": 73.9010989010989,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "1501402",
+          "score_mediana": 29.395604395604394,
+          "score_media": 31.043956043956044,
+          "delta": 1.6483516483516483,
+          "delta_exact": "150/91"
+        },
+        {
+          "id": "1400100",
+          "score_mediana": 35.989010989010985,
+          "score_media": 35.989010989010985,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "5002704",
+          "score_mediana": 60.16483516483517,
+          "score_media": 59.065934065934066,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "5103403",
+          "score_mediana": 57.967032967032964,
+          "score_media": 57.417582417582416,
+          "delta": -0.5494505494505495,
+          "delta_exact": "-50/91"
+        },
+        {
+          "id": "4106902",
+          "score_mediana": 82.6923076923077,
+          "score_media": 81.5934065934066,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "4205407",
+          "score_mediana": 89.83516483516483,
+          "score_media": 89.83516483516483,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2304400",
+          "score_mediana": 36.53846153846154,
+          "score_media": 35.989010989010985,
+          "delta": -0.5494505494505495,
+          "delta_exact": "-50/91"
+        },
+        {
+          "id": "5208707",
+          "score_mediana": 70.6043956043956,
+          "score_media": 69.50549450549451,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "2507507",
+          "score_mediana": 60.714285714285715,
+          "score_media": 59.61538461538461,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "1600303",
+          "score_mediana": 17.307692307692307,
+          "score_media": 17.307692307692307,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2704302",
+          "score_mediana": 31.043956043956044,
+          "score_media": 32.69230769230769,
+          "delta": 1.6483516483516483,
+          "delta_exact": "150/91"
+        },
+        {
+          "id": "1302603",
+          "score_mediana": 11.263736263736265,
+          "score_media": 11.263736263736265,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2408102",
+          "score_mediana": 40.934065934065934,
+          "score_media": 41.48351648351648,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "1721000",
+          "score_mediana": 66.20879120879121,
+          "score_media": 65.10989010989012,
+          "delta": -1.098901098901099,
+          "delta_exact": "-100/91"
+        },
+        {
+          "id": "4314902",
+          "score_mediana": 61.26373626373626,
+          "score_media": 61.81318681318681,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "1100205",
+          "score_mediana": 31.318681318681318,
+          "score_media": 29.945054945054945,
+          "delta": -1.3736263736263736,
+          "delta_exact": "-125/91"
+        },
+        {
+          "id": "2611606",
+          "score_mediana": 35.989010989010985,
+          "score_media": 38.18681318681319,
+          "delta": 2.197802197802198,
+          "delta_exact": "200/91"
+        },
+        {
+          "id": "1200401",
+          "score_mediana": 34.34065934065934,
+          "score_media": 34.34065934065934,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "3304557",
+          "score_mediana": 47.527472527472526,
+          "score_media": 49.175824175824175,
+          "delta": 1.6483516483516483,
+          "delta_exact": "150/91"
+        },
+        {
+          "id": "2927408",
+          "score_mediana": 37.08791208791209,
+          "score_media": 37.637362637362635,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "2111300",
+          "score_mediana": 37.362637362637365,
+          "score_media": 37.08791208791209,
+          "delta": -0.27472527472527475,
+          "delta_exact": "-25/91"
+        },
+        {
+          "id": "3550308",
+          "score_mediana": 59.065934065934066,
+          "score_media": 59.61538461538461,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        },
+        {
+          "id": "2211001",
+          "score_mediana": 52.472527472527474,
+          "score_media": 50.824175824175825,
+          "delta": -1.6483516483516483,
+          "delta_exact": "-150/91"
+        },
+        {
+          "id": "3205309",
+          "score_mediana": 83.24175824175825,
+          "score_media": 83.79120879120879,
+          "delta": 0.5494505494505495,
+          "delta_exact": "50/91"
+        }
+      ]
+    },
+    {
+      "id": "conjunta__moradores_gt3__materiais_40pct",
+      "housing_definition": "moradores_gt3",
+      "weight_model": "materiais_40pct",
+      "weights": {
+        "educacao": 0.2,
+        "trabalho": 0.1,
+        "mobilidade": 0.2,
+        "saneamento": 0.1,
+        "seguranca": 0.2,
+        "habitacao": 0.1,
+        "conectividade": 0.1
+      },
+      "comparison": {
+        "pairs": 325,
+        "strict_reversals": 4,
+        "ties_created": 2,
+        "ties_broken": 1,
+        "ties_preserved": 1
+      },
+      "max_absolute_score_change": 1.5384615384615385,
+      "rows": [
+        {
+          "id": "2800308",
+          "score_mediana": 53.07692307692308,
+          "score_media": 52.69230769230769,
+          "delta": -0.38461538461538464,
+          "delta_exact": "-5/13"
+        },
+        {
+          "id": "3106200",
+          "score_mediana": 70.38461538461539,
+          "score_media": 70.76923076923077,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "1501402",
+          "score_mediana": 33.46153846153846,
+          "score_media": 34.61538461538461,
+          "delta": 1.1538461538461537,
+          "delta_exact": "15/13"
+        },
+        {
+          "id": "1400100",
+          "score_mediana": 39.61538461538461,
+          "score_media": 39.61538461538461,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "5002704",
+          "score_mediana": 58.84615384615385,
+          "score_media": 58.07692307692308,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "5103403",
+          "score_mediana": 59.23076923076923,
+          "score_media": 58.84615384615385,
+          "delta": -0.38461538461538464,
+          "delta_exact": "-5/13"
+        },
+        {
+          "id": "4106902",
+          "score_mediana": 77.6923076923077,
+          "score_media": 76.92307692307692,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "4205407",
+          "score_mediana": 88.46153846153847,
+          "score_media": 88.46153846153847,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2304400",
+          "score_mediana": 36.53846153846154,
+          "score_media": 36.15384615384615,
+          "delta": -0.38461538461538464,
+          "delta_exact": "-5/13"
+        },
+        {
+          "id": "5208707",
+          "score_mediana": 66.53846153846153,
+          "score_media": 65.76923076923077,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "2507507",
+          "score_mediana": 60.76923076923077,
+          "score_media": 60.0,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "1600303",
+          "score_mediana": 20.76923076923077,
+          "score_media": 20.76923076923077,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2704302",
+          "score_mediana": 31.153846153846153,
+          "score_media": 32.30769230769231,
+          "delta": 1.1538461538461537,
+          "delta_exact": "15/13"
+        },
+        {
+          "id": "1302603",
+          "score_mediana": 10.76923076923077,
+          "score_media": 10.76923076923077,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "2408102",
+          "score_mediana": 43.07692307692308,
+          "score_media": 43.46153846153846,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "1721000",
+          "score_mediana": 66.53846153846153,
+          "score_media": 65.76923076923077,
+          "delta": -0.7692307692307693,
+          "delta_exact": "-10/13"
+        },
+        {
+          "id": "4314902",
+          "score_mediana": 53.46153846153846,
+          "score_media": 53.84615384615385,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "1100205",
+          "score_mediana": 32.88461538461539,
+          "score_media": 31.923076923076923,
+          "delta": -0.9615384615384616,
+          "delta_exact": "-25/26"
+        },
+        {
+          "id": "2611606",
+          "score_mediana": 35.0,
+          "score_media": 36.53846153846154,
+          "delta": 1.5384615384615385,
+          "delta_exact": "20/13"
+        },
+        {
+          "id": "1200401",
+          "score_mediana": 41.92307692307692,
+          "score_media": 41.92307692307692,
+          "delta": 0.0,
+          "delta_exact": "0"
+        },
+        {
+          "id": "3304557",
+          "score_mediana": 47.30769230769231,
+          "score_media": 48.46153846153846,
+          "delta": 1.1538461538461537,
+          "delta_exact": "15/13"
+        },
+        {
+          "id": "2927408",
+          "score_mediana": 32.69230769230769,
+          "score_media": 33.07692307692308,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "2111300",
+          "score_mediana": 42.11538461538461,
+          "score_media": 41.92307692307692,
+          "delta": -0.19230769230769232,
+          "delta_exact": "-5/26"
+        },
+        {
+          "id": "3550308",
+          "score_mediana": 58.46153846153846,
+          "score_media": 58.84615384615385,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        },
+        {
+          "id": "2211001",
+          "score_mediana": 58.46153846153846,
+          "score_media": 57.30769230769231,
+          "delta": -1.1538461538461537,
+          "delta_exact": "-15/13"
+        },
+        {
+          "id": "3205309",
+          "score_mediana": 80.76923076923077,
+          "score_media": 81.15384615384616,
+          "delta": 0.38461538461538464,
+          "delta_exact": "5/13"
+        }
+      ]
+    }
+  ]
+}

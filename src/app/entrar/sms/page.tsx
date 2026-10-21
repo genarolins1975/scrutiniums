@@ -1,67 +1,23 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { getSessionUser } from "@/lib/session";
-import { nextStepPath } from "@/lib/onboarding";
-import type { OnboardingStatus } from "@/lib/schema";
-import { LogoWordmark } from "@/components/ui/Logo";
-import { EntrarForm } from "@/components/onboarding/EntrarForm";
+import type { Metadata, ResolvingMetadata } from "next";
+import { PaginaEntrarSms } from "@/components/onboarding/PaginasEntrar";
+import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
 
-export const metadata: Metadata = { title: "Entrar com código por SMS" };
+const metadadosOriginais: Metadata = { title: "Entrar com código por SMS" };
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata(_props: { params?: Record<string, string> }, parent: ResolvingMetadata): Promise<Metadata> {
+  return metadadosPortuguesComAlternativas("/entrar/sms", metadadosOriginais, await parent);
+}
+
 /**
- * Entrada alternativa por código SMS no telefone verificado. Também cobre
- * recuperação de acesso de quem esqueceu a senha: depois de entrar,
- * a nova senha é definida em /app/conta.
+ * Entrada alternativa por código SMS. Com ?recuperar=1 (link "Esqueci minha
+ * senha" de /entrar), o código leva direto à definição de nova senha em
+ * /app/conta, sem pedir a atual.
  */
-export default async function EntrarSmsPage() {
-  const user = await getSessionUser();
-  if (user) {
-    redirect(nextStepPath(user.onboardingStatus as OnboardingStatus));
-  }
-
-  return (
-    <div className="flex min-h-screen flex-col bg-marfim">
-      <header className="border-b border-linha">
-        <div className="mx-auto flex max-w-page items-center justify-between px-6 py-5">
-          <Link href="/" aria-label="Scrutiniums — página inicial">
-            <LogoWordmark />
-          </Link>
-          <Link href="/cadastro" className="rotulo min-h-[44px] py-3 text-carvao-muted hover:text-bronze">
-            Criar acesso
-          </Link>
-        </div>
-      </header>
-
-      <main className="flex flex-1 justify-center px-6 py-12 md:py-20">
-        <div className="w-full max-w-md">
-          <section className="border border-linha bg-papel p-8 md:p-10">
-            <h1 className="font-serif text-3xl text-carvao">Entrar com código por SMS</h1>
-            <p className="mt-3 text-sm text-carvao-muted">
-              Enviamos um código por SMS para o telefone cadastrado.
-            </p>
-            <p className="mt-2 text-sm text-mineral">
-              Use também este caminho se esqueceu sua senha: depois de entrar,
-              defina uma nova em Conta.
-            </p>
-            <div className="mt-8">
-              <EntrarForm />
-            </div>
-          </section>
-        </div>
-      </main>
-
-      <footer className="border-t border-linha">
-        <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-2 px-6 py-5">
-          <p className="text-xs text-mineral">scrutiniums.com</p>
-          <p className="text-xs text-mineral">
-            <Link href="/termos" className="hover:text-bronze">Termos de uso</Link>
-            {" · "}
-            <Link href="/privacidade" className="hover:text-bronze">Privacidade</Link>
-          </p>
-        </div>
-      </footer>
-    </div>
-  );
+export default async function EntrarSmsPage({
+  searchParams,
+}: {
+  searchParams?: { recuperar?: string };
+}) {
+  return PaginaEntrarSms({ idioma: "pt", searchParams });
 }

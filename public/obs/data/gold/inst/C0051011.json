@@ -9,7 +9,7 @@
   "sede": "São Paulo/SP",
   "segmento": "S2",
   "grupo_pares": "S2 — porte entre 1% e 10% do PIB",
-  "n_pares": 11,
+  "n_pares": 7,
   "conglomerado_prudencial": "C0080484",
   "capital": "não classificado",
   "modelo": null,
@@ -17,16 +17,21 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-24T15:24:40+00:00",
+  "atualizado_em": "2026-10-21T16:18:21+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
-   "texto": "Capitalização abaixo da mediana do grupo S2, rentabilidade do período acima da mediana.",
+   "texto": "Capitalização acima da mediana do grupo S2, rentabilidade do período acima da mediana.",
    "base": "BCB IF.data (Informações de Capital) + medianas do grupo S2"
   },
   "pontos_fortes": [
+   {
+    "tipo": "ok",
+    "texto": "Basileia de 15.9% (acima da mediana do grupo S2: 15.9%).",
+    "base": "BCB IF.data (Informações de Capital)"
+   },
    {
     "tipo": "ok",
     "texto": "Carteira cresceu 10.1% em 4 trimestres.",
@@ -43,13 +48,7 @@
     "base": "BCB rdrweb"
    }
   ],
-  "pontos_atencao": [
-   {
-    "tipo": "warn",
-    "texto": "Basileia de 15.9% (abaixo da mediana do grupo S2: 15.9%).",
-    "base": "BCB IF.data (Informações de Capital)"
-   }
-  ],
+  "pontos_atencao": [],
   "mudancas_recentes": [
    {
     "texto": "Índice de Basileia: +0.86p.p. no trimestre.",
@@ -68,43 +67,23 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 11,
+  "quantidade": 7,
   "maiores_membros": [
    {
-    "cod": "33657248",
-    "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOM"
-   },
-   {
-    "cod": "C0052120",
-    "nome": "XP"
-   },
-   {
-    "cod": "C0010083",
-    "nome": "SAFRA"
+    "cod": "C0052058",
+    "nome": "NUBANK"
    },
    {
     "cod": "01181521",
     "nome": "BANCO COOPERATIVO SICREDI S.A."
    },
    {
-    "cod": "C0051750",
-    "nome": "BANCO SICOOB"
-   },
-   {
-    "cod": "C0030403",
-    "nome": "CITIBANK"
-   },
-   {
-    "cod": "C0030173",
-    "nome": "BANRISUL"
-   },
-   {
     "cod": "C0051011",
     "nome": "VOTORANTIM"
    },
    {
-    "cod": "07237373",
-    "nome": "BANCO DO NORDESTE DO BRASIL S.A."
+    "cod": "18236120",
+    "nome": "NU PAGAMENTOS S.A. - INSTITUIÇÃO DE PAGA"
    },
    {
     "cod": "92934215",
@@ -113,13 +92,13 @@
    {
     "cod": "13140088",
     "nome": "ACESSO SOLUÇÕES DE PAGAMENTO S.A. - INST"
+   },
+   {
+    "cod": "32219232",
+    "nome": "NUPAY FOR BUSINESS INSTITUICAO DE PAGAME"
    }
   ],
-  "quartis_basileia": {
-   "q1": 15.4,
-   "mediana": 15.9,
-   "q3": 20.2
-  },
+  "quartis_basileia": null,
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
  "kpis": [
@@ -215,8 +194,8 @@
  ],
  "destaques": [
   {
-   "tipo": "warn",
-   "texto": "Basileia de 15.9% (abaixo da mediana do grupo S2: 15.9%).",
+   "tipo": "ok",
+   "texto": "Basileia de 15.9% (acima da mediana do grupo S2: 15.9%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -241,27 +220,27 @@
    "valor": 15.88,
    "unit": "%",
    "d_tri": 0.86,
-   "vs_pares": "abaixo",
-   "mediana_grupo": 15.91,
-   "percentil": 37.5
+   "vs_pares": "na média",
+   "mediana_grupo": 15.88,
+   "percentil": 50.0
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
    "valor": 11.85,
    "unit": "×",
    "d_tri": null,
-   "vs_pares": "abaixo",
-   "mediana_grupo": 14.95,
-   "percentil": 30.0
+   "vs_pares": "na média",
+   "mediana_grupo": 11.85,
+   "percentil": 50.0
   },
   {
    "indicador": "ROE do período",
    "valor": 7.41,
    "unit": "%",
    "d_tri": null,
-   "vs_pares": "acima",
-   "mediana_grupo": 6.29,
-   "percentil": 70.0
+   "vs_pares": "na média",
+   "mediana_grupo": 7.41,
+   "percentil": 50.0
   }
  ],
  "carteira": {
@@ -882,96 +861,82 @@
   "roe": {
    "valores": [
     2.97,
-    6.29,
-    6.17,
-    10.24,
-    4.73,
-    11.39,
     7.41,
-    6.57,
+    17.61,
     -150.52,
-    2.95,
+    27.93,
+    5.22,
     7.84
    ],
    "meu": 7.41,
-   "mediana": 6.29
+   "mediana": 7.41
   },
   "basileia": {
    "valores": [
     20.16,
-    15.14,
-    25.43,
-    18.14,
-    15.91,
-    15.37,
     15.88,
-    20.29,
-    13.28
+    15.51
    ],
    "meu": 15.88,
-   "mediana": 15.91
+   "mediana": 15.88
   },
   "alav": {
    "valores": [
     42.77,
-    4.82,
-    5.94,
-    14.8,
-    14.95,
-    15.5,
     11.85,
-    31.95,
+    5.26,
     58.06,
-    27.91,
+    17.84,
+    1.03,
     1.95
    ],
    "meu": 11.85,
-   "mediana": 14.95
+   "mediana": 11.85
   }
  },
  "comparacao_pares": {
   "dimensoes": {
    "capital_basileia": {
     "valor": 15.88,
-    "percentil_pares": 37.5,
-    "mediana_pares": 15.91,
-    "q1_pares": 15.37,
-    "q3_pares": 20.16
+    "percentil_pares": 45.1,
+    "mediana_pares": 16.14,
+    "q1_pares": 14.66,
+    "q3_pares": 21.62
    },
    "rentabilidade": {
     "valor": 7.41,
-    "percentil_pares": 75.0,
-    "mediana_pares": 6.29,
-    "q1_pares": 4.73,
-    "q3_pares": 7.41
+    "percentil_pares": 65.7,
+    "mediana_pares": 6.2,
+    "q1_pares": 3.28,
+    "q3_pares": 9.14
    },
    "alavancagem": {
     "valor": 11.85,
-    "percentil_pares": 25.0,
-    "mediana_pares": 14.95,
-    "q1_pares": 11.85,
-    "q3_pares": 27.91
+    "percentil_pares": 57.6,
+    "mediana_pares": 10.92,
+    "q1_pares": 6.89,
+    "q3_pares": 15.73
    },
    "concentracao_credito": {
     "valor": 51.86,
-    "percentil_pares": 100.0,
-    "mediana_pares": 21.94,
-    "q1_pares": 20.13,
-    "q3_pares": 35.0
+    "percentil_pares": 64.6,
+    "mediana_pares": 45.43,
+    "q1_pares": 14.94,
+    "q3_pares": 58.82
    },
    "dependencia_captacoes": {
     "valor": 73.76,
-    "percentil_pares": 25.0,
-    "mediana_pares": 78.85,
-    "q1_pares": 73.76,
-    "q3_pares": 84.33
+    "percentil_pares": 50.5,
+    "mediana_pares": 73.68,
+    "q1_pares": 51.47,
+    "q3_pares": 82.12
    },
    "concentracao_setorial": {
     "valor": 2463,
-    "percentil_pares": 66.7,
-    "mediana_pares": 2289.0,
-    "q1_pares": 1978.0,
-    "q3_pares": 2558.5
+    "percentil_pares": 63.0,
+    "mediana_pares": 2283.0,
+    "q1_pares": 1790.5,
+    "q3_pares": 3180.0
    }
   },
   "dimensoes_disponiveis": "6/6",
@@ -979,17 +944,17 @@
    "tipo": "CENÁRIO",
    "cenario": "severamente adverso",
    "delta_inad_pp": [
-    0.18,
-    1.29
+    0.21,
+    1.31
    ],
    "impacto_basileia_pp": [
-    -0.58,
-    -0.08
+    -0.59,
+    -0.1
    ],
    "basileia_atual_pct": 15.88,
    "basileia_pos_choque_pct": [
-    15.3,
-    15.79
+    15.29,
+    15.78
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },

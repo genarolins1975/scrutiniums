@@ -1,0 +1,134 @@
+[PDF, página 6]
+Ministério de Minas e Energia
+
+1. Introdução
+Em 1º de setembro de 2015 foi publicada a Portaria MME nº 416, que estabelece
+procedimentos e metodologias relativos aos montantes de garantia física de energia de
+usinas eólicas, tanto para revisão com base nas alterações de características técnicas quanto
+para cálculo e revisão anual com base na geração de energia elétrica verificada. Tais
+diretrizes não são aplicáveis aos empreendimentos que comercializaram energia em Leilões
+de Energia de Reserva e à parcela de energia de referência de empreendimento participante
+do Programa de Incentivo às Fontes Alternativas de Energia Elétrica - PROINFA, calculada
+nos termos da Resolução Normativa ANEEL nº 62, de 5 de maio de 2004.
+A referida portaria estabelece que os meses referentes a períodos de indisponibilidade
+decorrente de restrições sistêmicas ou causas de terceiros, devidamente reconhecidos pela
+ANEEL, serão informados ao MME, à EPE e à CCEE, situação na qual poderão ser excluídos
+do cálculo da Geração Média de Energia Elétrica (Gmédia).
+No que concerne aos expurgos reconhecidos pela ANEEL, o documento mais recente é o
+Ofício nº 053/2021-SRG/ANEEL, de 21 de setembro de 2021. Apesar de não mencionar
+expressamente qualquer usina contemplada com o reconhecimento, é feita uma referência à
+Resolução Normativa nº 927, de 22 de março de 2021, indicando que os eventos referentes
+a períodos de indisponibilidade decorrente de restrições sistêmicas ou causas de terceiros a
+serem informados pela ANEEL no contexto da Portaria MME nº 416/2015, guardam
+similaridade com aqueles apurados conforme a REN ANEEL nº 927/2021, posteriormente
+revogada e substituída pela Resolução Normativa nº 1.030, de 26 de julho de 2022, que
+consolidou normativos referentes a produção e comercialização de energia elétrica em
+atendimento ao disposto no Decreto nº 10.139/2019.
+De acordo com a REN ANEEL nº 1.030/2022, eventos de restrição de operação por
+
+constrained-off são definidos como “a redução da produção de energia por usinas
+eolioelétricas despachadas centralizadamente ou usinas/conjuntos de usinas eolioelétricas
+considerados na programação, decorrente de comando do Operador Nacional do Sistema –
+ONS, que tenham sido originados externamente às instalações das respectivas usinas”.
+A classificação dos eventos de restrição de operação é feita de acordo com a motivação em:
+razão de indisponibilidade externa, razão de atendimento a requisitos de confiabilidade
+elétrica e razão energética.
+Por meio do Ofício DPE/SPE-MME nº 268, de 6 de outubro de 2022, o MME solicitou à EPE a
+realização de análises dos efeitos do constrained-off nos montantes de garantias físicas das
+usinas eólicas elegíveis à revisão prevista para o ano de 2022. Adicionalmente, indicou que
+
+EPE-DEE-NT-096/2022-r0 – Constrained-off de usinas eólicas – Período Definitivo
+6
+
+[PDF, página 8]
+Ministério de Minas e Energia
+
+Conexão.
+No que tange aos expurgos reconhecidos pela ANEEL, o documento mais recente ainda é o
+Ofício nº 053/2021-SRG/ANEEL, de 21 de setembro de 2021. Em relação à indisponibilidade
+decorrente de restrições sistêmicas ou causas de terceiros, para fins de aplicação da Portaria
+MME nº 416/2015, o Ofício não indica expressamente nenhuma usina contemplada com o
+reconhecimento dos expurgos. No documento, é feita referência à REN ANEEL nº 927/2021,
+indicando que os eventos referentes a períodos de indisponibilidade decorrente de restrições
+sistêmicas ou causas de terceiros a serem informados pela ANEEL no contexto da Portaria
+MME nº 416/2015, guardam similaridade com aqueles apurados conforme a REN ANEEL nº
+927/2021.
+Adicionalmente, informa que a REN ANEEL nº 927/2021 estabeleceu responsabilidades para
+o ONS e para a CCEE na identificação dos eventos de redução de geração, cálculo da
+frustração de geração, valoração de encargos, entre outros. Desse modo, em cumprimento à
+REN ANEEL nº 927/2021, a CCEE já contém em sua base de dados os eventos de restrição
+de operação nas usinas eólicas despachadas centralizadamente ou usinas/conjuntos de
+usinas eólicas considerados na programação que tenham sido originados externamente às
+instalações das respectivas usinas.
+Ao longo do ano de 2022, o MME e a EPE buscaram, junto à ANEEL, à CCEE e ao ONS,
+dados consolidados sobre os eventos de constrained-off para que pudessem ser avaliados na
+Revisão de Garantia Física por Geração Verificada de 2022.
+
+2.1. Dados de Constrained-off de Usinas Eólicas
+Para o cálculo do constrained-off do período definitivo foram utilizados os dados enviados
+pelo ONS, por meio da Carta CTA-ONS DGL 1.392/2022, de 5 de agosto de 2022, em
+reposta ao Ofício nº 193/2022/DPE/SPE-MME e aos questionamentos realizados pelo MME.
+Os dados consolidados foram disponibilizados por meio da planilha eletrônica “Dados SAGIC
+2021”. O ONS informou que a partir de 1º de outubro de 2021 a apuração passou a ser
+realizada para todas as usinas eólicas despachadas centralizadamente ou conjuntos de
+usinas eolioelétricas consideradas na programação, independentemente do ambiente de
+contratação. A planilha apresenta, portanto, dados consolidados para usinas do Ambiente de
+Contratação Regulado e do Ambiente de Contratação Livre.
+De acordo com a REN ANEEL nº 1.030/2022, o ONS deverá calcular a referência de geração
+de energia decorrente de evento de restrição de operação por constrained-off das usinas ou
+
+EPE-DEE-NT-096/2022-r0 – Constrained-off de usinas eólicas – Período Definitivo
+8
+
+[PDF, página 9]
+Ministério de Minas e Energia
+
+conjuntos de usinas eolioelétricas, classificado como razão de indisponibilidade externa, a
+partir da curva de produtividade da usina eolioelétrica, que relaciona a potência de saída da
+usina e a velocidade do vento.
+A curva de produtividade deverá ser elaborada a partir de dados medidos de geração e
+velocidade do vento pelo período de um ano, sendo revisada anualmente. Até a elaboração
+da curva de produtividade, será tomado como referência da frustração de geração de
+energia das usinas ou conjuntos de usinas eolioelétricas o segundo menor valor de energia
+gerada nos 10 (dez) períodos imediatamente anteriores coincidentes com o horário da
+restrição de operação em análise. O ONS deverá desconsiderar, da geração de referência, as
+reduções de geração associadas às restrições indicadas no parecer de acesso das usinas ou
+dos conjuntos de usinas eolioelétricas. No caso de conjuntos de usinas eolioelétricas, o ONS
+deverá realizar o rateio da referência da frustração de geração de energia proporcionalmente
+à capacidade instalada de cada usina eolioelétrica integrante do conjunto.
+Os dados apresentados na planilha contêm as informações de geração verificada e de
+geração de referência das usinas eolioelétricas em operação, bem como motivo e origem das
+restrições, para o período posterior a 01/10/2021 (período correspondente ao marco
+definitivo estabelecido na citada resolução).
+O ONS informou que utiliza os seguintes dados para o cálculo da referência de geração:
+i.
+
+vento verificado, em tempo real, no sistema de supervisão dos centros de operação;
+
+ii.
+
+geração verificada, em tempo real, no sistema de supervisão dos centros de
+operação;
+
+iii.
+
+registro dos valores de limitação de geração solicitados em tempo real pelo ONS, por
+conjunto eólico;
+
+iv.
+
+a garantia física da usina eolioelétrica; e
+
+v.
+
+disponibilidade eletromecânica.
+
+Os dados recebidos são descritos a seguir:
+➢ geração verificada e geração de referência;
+➢ por usina, tanto do ACL quanto do ACR, com informações de CEG e nome do
+empreendimento;
+➢ de meia em meia-hora;
+➢ em MWh/h no período de meia-hora;
+
+EPE-DEE-NT-096/2022-r0 – Constrained-off de usinas eólicas – Período Definitivo
+9

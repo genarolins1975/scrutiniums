@@ -1,0 +1,148 @@
+name: Atualizar dados da Conectividade
+
+# Observatório de Energia e Infraestrutura, painel Conectividade: recoleta das três fontes da Anatel e publicação pelo
+# motor comum por grupo (scripts/atualizacao_por_grupo.py, config/atualizacao/conectividade.json). A gold
+# (public/conectividade/gold/conectividade.json e um arquivo por UF em public/conectividade/gold/municipios) é
+# reconstruída dos seeds e só é publicada com os testes verdes: cada fonte com todos os municípios, as partes de cada
+# município somando o total, os municípios somando as UFs e o Brasil, o Brasil do mês igual ao arquivo de totais da
+# Anatel, densidades nacionais na faixa plausível, cobertura entre 0 e 100% e nenhuma geração acima da união que a
+# contém (4G e 5G nunca acima de "todas", 5G nunca acima de "4G ou 5G"; 5G acima do 4G é contado e declarado na gold,
+# não retido), moradores fechando com o Brasil e nenhuma recoleta do mesmo mês mudando o total acima do limite. Reprovado, a publicação
+# anterior continua no ar, a issue é aberta ou comentada e a execução fica vermelha.
+#
+# Cadência pela fonte: a Anatel atualiza os zips de acessos no começo de cada mês (os de banda larga fixa e telefonia
+# móvel foram gravados em 08/10/2026 com o mês de agosto) e o de cobertura a cada trimestre (10/10/2026, com setembro).
+# Duas execuções por mês, nos dias 12 e 26, cobrem a publicação mensal e a trimestral; dado igual não gera commit (o
+# sinal é o hash_dados da gold). Os zips somam mais de 4 GB, mas a coleta lê só os membros necessários por faixa de
+# bytes: cerca de 250 MB por execução.
+on:
+  schedule:
+    - cron: "23 12 12,26 * *" # dias 12 e 26, 09:23 em São Paulo
+  workflow_dispatch:
+    inputs:
+      sem_coleta:
+        description: "Pular a coleta e só reconstruir a gold a partir dos seeds (publica se mudou e os testes passarem)"
+        type: boolean
+        default: false
+      grupos:
+        description: "Coletar só estes grupos (ids separados por vírgula; vazio = todos)"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: atualizar-conectividade
+  cancel-in-progress: false
+
+env:
+  CONFIG: config/atualizacao/conectividade.json
+  TITULO_ISSUE: "Atualização agendada da Conectividade: publicação retida ou coleta com falha"
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    # três zips lidos por faixa de bytes (cerca de 250 MB no total) e a agregação de uns 6 milhões de linhas; cada
+    # comando tem teto próprio na configuração
+    timeout-minutes: 120
+    outputs:
+      relatado: ${{ steps.issue.outcome == 'success' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # a coleta e a gold usam só a biblioteca padrão
+
+      - name: Node para os testes de contrato
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Dependências da interface
+        run: npm ci
+
+      - name: Coletar, reconstruir e decidir a publicação por grupo
+        id: ciclo
+        continue-on-error: true
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          SEM_COLETA: ${{ inputs.sem_coleta }}
+          GRUPOS: ${{ inputs.grupos }}
+        run: |
+          ARGS=()
+          if [ "$SEM_COLETA" = "true" ]; then ARGS+=(--sem-coleta); fi
+          if [ -n "$GRUPOS" ]; then ARGS+=(--grupos "$GRUPOS"); fi
+          python3 -u scripts/atualizacao_por_grupo.py ciclo "$CONFIG" "${ARGS[@]}"
+
+      # Só os grupos aprovados e a gold, com rebase sobre o ramo e quatro tentativas. Se a gold ou os seeds da
+      # conectividade mudaram no ramo durante a execução, não publica (a composição foi testada sobre outra base); se o
+      # código mudou, reconstrói e testa com o código novo antes de empurrar.
+      - name: Commit e push dos grupos aprovados
+        id: publicar
+        if: always() && steps.ciclo.outputs.publicavel == '1'
+        run: |
+          git config user.name "pipeline-observatorio[bot]"
+          git config user.email "pipeline@scrutiniums.com"
+          python3 -u scripts/atualizacao_por_grupo.py publicar "$CONFIG" --ramo "$GITHUB_REF_NAME"
+
+      - name: Abrir ou comentar a issue de retenção
+        id: issue
+        if: always() && (steps.ciclo.outcome != 'success' || steps.publicar.outcome == 'failure')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PUBLICACAO: ${{ steps.publicar.outcome }}
+        run: |
+          CORPO=.atualizacao/conectividade/relatorio.md
+          mkdir -p .atualizacao/conectividade
+          if [ ! -s "$CORPO" ]; then
+            printf 'Execução: %s\n\nO ciclo terminou sem relatório (falha antes de gravar). Ver o log do passo *Coletar, reconstruir e decidir*.\n' "$RUN_URL" > "$CORPO"
+          fi
+          if [ "$PUBLICACAO" = "failure" ]; then
+            printf '\n**A publicação dos grupos aprovados falhou** (passo *Commit e push*): nada foi empurrado.\n' >> "$CORPO"
+          fi
+          scripts/issue_dedup.sh "$TITULO_ISSUE" "$CORPO"
+
+      - name: Guardar resultado, relatório e logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atualizacao-conectividade
+          include-hidden-files: true
+          path: .atualizacao/conectividade/
+          if-no-files-found: warn
+          retention-days: 30
+
+      # Retenção deixa a execução VERMELHA: de 25/09 a 12/10/2026 o Crédito reteve a gold com o
+      # workflow verde e ninguém viu (OPERACOES.md, terceira memória).
+      - name: Sinalizar publicação retida
+        if: always() && (steps.ciclo.outcome != 'success' || steps.publicar.outcome == 'failure')
+        run: |
+          echo "::error::grupo retido, coleta com falha ou publicação não concluída; ver a issue '$TITULO_ISSUE'"
+          exit 1
+
+  # Tempo esgotado ou cancelamento não chegam ao passo da issue: este job cobre esses casos.
+  alertar:
+    runs-on: ubuntu-latest
+    needs: pipeline
+    if: always() && needs.pipeline.outputs.relatado != 'true' && (needs.pipeline.result == 'failure' || needs.pipeline.result == 'cancelled')
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Abrir ou comentar issue de interrupção
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULTADO: ${{ needs.pipeline.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          printf 'Execução de %s UTC terminou com **%s** antes do relatório (tempo esgotado, cancelamento ou falha de preparo): %s\n\nNada foi publicado.\n' \
+            "$(date -u +%d/%m/%Y\ %H:%M)" "$RESULTADO" "$RUN_URL" > /tmp/corpo.md
+          scripts/issue_dedup.sh "$TITULO_ISSUE" /tmp/corpo.md

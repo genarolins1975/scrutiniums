@@ -1,0 +1,2181 @@
+{
+  "version": "habitacao-cenarios-v1",
+  "reference_year": 2022,
+  "publication_ready": false,
+  "score_eligible": false,
+  "recommended_weights": null,
+  "nature": "cenarios_condicionais_de_composicao_sem_inferencia_amostral",
+  "baseline": "piloto-2022-v2",
+  "scenarios": [
+    {
+      "id": "domicilios_gt2__seis_iguais",
+      "definition": "domicilios_gt2",
+      "weight_model": "seis_iguais",
+      "weights": {
+        "educacao": 0.16666666666666666,
+        "trabalho": 0.16666666666666666,
+        "mobilidade": 0.16666666666666666,
+        "saneamento": 0.16666666666666666,
+        "seguranca": 0.16666666666666666,
+        "habitacao": 0.16666666666666666
+      },
+      "correlations_oriented": {
+        "trabalho": 0.8466404637330835,
+        "saneamento": 0.7367521367521368
+      },
+      "versus_v2": {
+        "strict_reversals": 20,
+        "baseline_ties_broken": 3,
+        "ties_reached": 2,
+        "pairs": 325
+      },
+      "rows": [
+        {
+          "id": "2800308",
+          "name": "Aracaju",
+          "housing_raw_pct": 7.708780423074635,
+          "housing_percentile": 75.0,
+          "baseline_score": 51.92307692307692,
+          "scenario_score": 55.76923076923077,
+          "composition_delta": 3.8461538461538467
+        },
+        {
+          "id": "3106200",
+          "name": "Belo Horizonte",
+          "housing_raw_pct": 5.144156483836796,
+          "housing_percentile": 90.38461538461539,
+          "baseline_score": 71.92307692307692,
+          "scenario_score": 75.0,
+          "composition_delta": 3.07692307692308
+        },
+        {
+          "id": "1501402",
+          "name": "Belém",
+          "housing_raw_pct": 18.30356087155985,
+          "housing_percentile": 13.461538461538462,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 33.33333333333333,
+          "composition_delta": -3.974358974358978
+        },
+        {
+          "id": "1400100",
+          "name": "Boa Vista",
+          "housing_raw_pct": 27.201378093357423,
+          "housing_percentile": 1.9230769230769231,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 32.69230769230769,
+          "composition_delta": -6.153846153846153
+        },
+        {
+          "id": "5002704",
+          "name": "Campo Grande",
+          "housing_raw_pct": 8.902045275977216,
+          "housing_percentile": 63.46153846153846,
+          "baseline_score": 55.769230769230774,
+          "scenario_score": 57.051282051282044,
+          "composition_delta": 1.2820512820512704
+        },
+        {
+          "id": "5103403",
+          "name": "Cuiabá",
+          "housing_raw_pct": 11.01132302923322,
+          "housing_percentile": 48.07692307692308,
+          "baseline_score": 61.92307692307693,
+          "scenario_score": 59.61538461538461,
+          "composition_delta": -2.3076923076923137
+        },
+        {
+          "id": "4106902",
+          "name": "Curitiba",
+          "housing_raw_pct": 4.352822283696859,
+          "housing_percentile": 98.07692307692308,
+          "baseline_score": 77.3076923076923,
+          "scenario_score": 80.76923076923077,
+          "composition_delta": 3.461538461538467
+        },
+        {
+          "id": "4205407",
+          "name": "Florianópolis",
+          "housing_raw_pct": 5.004347054244865,
+          "housing_percentile": 94.23076923076923,
+          "baseline_score": 88.07692307692308,
+          "scenario_score": 89.1025641025641,
+          "composition_delta": 1.025641025641022
+        },
+        {
+          "id": "2304400",
+          "name": "Fortaleza",
+          "housing_raw_pct": 12.885307472717864,
+          "housing_percentile": 32.69230769230769,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 37.82051282051282,
+          "composition_delta": -1.025641025641029
+        },
+        {
+          "id": "5208707",
+          "name": "Goiânia",
+          "housing_raw_pct": 5.71546576324475,
+          "housing_percentile": 82.6923076923077,
+          "baseline_score": 63.46153846153847,
+          "scenario_score": 66.66666666666666,
+          "composition_delta": 3.20512820512819
+        },
+        {
+          "id": "2507507",
+          "name": "João Pessoa",
+          "housing_raw_pct": 8.546264132089675,
+          "housing_percentile": 71.15384615384616,
+          "baseline_score": 58.07692307692308,
+          "scenario_score": 60.256410256410255,
+          "composition_delta": 2.1794871794871753
+        },
+        {
+          "id": "1600303",
+          "name": "Macapá",
+          "housing_raw_pct": 25.419732278870775,
+          "housing_percentile": 9.615384615384615,
+          "baseline_score": 18.846153846153847,
+          "scenario_score": 17.307692307692307,
+          "composition_delta": -1.53846153846154
+        },
+        {
+          "id": "2704302",
+          "name": "Maceió",
+          "housing_raw_pct": 10.688203838059867,
+          "housing_percentile": 51.92307692307692,
+          "baseline_score": 24.230769230769234,
+          "scenario_score": 28.846153846153843,
+          "composition_delta": 4.61538461538461
+        },
+        {
+          "id": "1302603",
+          "name": "Manaus",
+          "housing_raw_pct": 25.54374745986588,
+          "housing_percentile": 5.769230769230769,
+          "baseline_score": 8.846153846153847,
+          "scenario_score": 8.333333333333332,
+          "composition_delta": -0.5128205128205146
+        },
+        {
+          "id": "2408102",
+          "name": "Natal",
+          "housing_raw_pct": 10.284495495395417,
+          "housing_percentile": 55.76923076923077,
+          "baseline_score": 41.15384615384616,
+          "scenario_score": 43.58974358974359,
+          "composition_delta": 2.435897435897431
+        },
+        {
+          "id": "1721000",
+          "name": "Palmas",
+          "housing_raw_pct": 12.201103617412631,
+          "housing_percentile": 40.38461538461539,
+          "baseline_score": 65.76923076923077,
+          "scenario_score": 61.53846153846153,
+          "composition_delta": -4.230769230769241
+        },
+        {
+          "id": "4314902",
+          "name": "Porto Alegre",
+          "housing_raw_pct": 5.763394289668376,
+          "housing_percentile": 78.84615384615384,
+          "baseline_score": 54.23076923076923,
+          "scenario_score": 58.33333333333333,
+          "composition_delta": 4.102564102564095
+        },
+        {
+          "id": "1100205",
+          "name": "Porto Velho",
+          "housing_raw_pct": 15.216633678991563,
+          "housing_percentile": 21.153846153846153,
+          "baseline_score": 28.461538461538463,
+          "scenario_score": 27.24358974358974,
+          "composition_delta": -1.2179487179487225
+        },
+        {
+          "id": "2611606",
+          "name": "Recife",
+          "housing_raw_pct": 9.379057930120046,
+          "housing_percentile": 59.61538461538461,
+          "baseline_score": 33.46153846153847,
+          "scenario_score": 37.82051282051282,
+          "composition_delta": 4.358974358974351
+        },
+        {
+          "id": "1200401",
+          "name": "Rio Branco",
+          "housing_raw_pct": 16.92099016615802,
+          "housing_percentile": 17.307692307692307,
+          "baseline_score": 44.23076923076923,
+          "scenario_score": 39.743589743589745,
+          "composition_delta": -4.487179487179489
+        },
+        {
+          "id": "3304557",
+          "name": "Rio de Janeiro",
+          "housing_raw_pct": 11.726261260928547,
+          "housing_percentile": 44.23076923076923,
+          "baseline_score": 54.23076923076924,
+          "scenario_score": 52.56410256410256,
+          "composition_delta": -1.6666666666666785
+        },
+        {
+          "id": "2927408",
+          "name": "Salvador",
+          "housing_raw_pct": 8.708595007358685,
+          "housing_percentile": 67.3076923076923,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 42.30769230769231,
+          "composition_delta": 5.0
+        },
+        {
+          "id": "2111300",
+          "name": "São Luís",
+          "housing_raw_pct": 14.777722937064542,
+          "housing_percentile": 25.0,
+          "baseline_score": 43.84615384615385,
+          "scenario_score": 40.705128205128204,
+          "composition_delta": -3.1410256410256423
+        },
+        {
+          "id": "3550308",
+          "name": "São Paulo",
+          "housing_raw_pct": 12.58423039462652,
+          "housing_percentile": 36.53846153846154,
+          "baseline_score": 64.23076923076923,
+          "scenario_score": 59.61538461538461,
+          "composition_delta": -4.615384615384613
+        },
+        {
+          "id": "2211001",
+          "name": "Teresina",
+          "housing_raw_pct": 13.896883479976976,
+          "housing_percentile": 28.846153846153847,
+          "baseline_score": 55.0,
+          "scenario_score": 50.64102564102564,
+          "composition_delta": -4.358974358974358
+        },
+        {
+          "id": "3205309",
+          "name": "Vitória",
+          "housing_raw_pct": 5.3504789152879715,
+          "housing_percentile": 86.53846153846153,
+          "baseline_score": 82.6923076923077,
+          "scenario_score": 83.33333333333333,
+          "composition_delta": 0.6410256410256352
+        }
+      ]
+    },
+    {
+      "id": "domicilios_gt2__materiais_40pct",
+      "definition": "domicilios_gt2",
+      "weight_model": "materiais_40pct",
+      "weights": {
+        "educacao": 0.2,
+        "trabalho": 0.13333333333333333,
+        "mobilidade": 0.2,
+        "saneamento": 0.13333333333333333,
+        "seguranca": 0.2,
+        "habitacao": 0.13333333333333333
+      },
+      "correlations_oriented": {
+        "trabalho": 0.8466404637330835,
+        "saneamento": 0.7367521367521368
+      },
+      "versus_v2": {
+        "strict_reversals": 13,
+        "baseline_ties_broken": 3,
+        "ties_reached": 1,
+        "pairs": 325
+      },
+      "rows": [
+        {
+          "id": "2800308",
+          "name": "Aracaju",
+          "housing_raw_pct": 7.708780423074635,
+          "housing_percentile": 75.0,
+          "baseline_score": 51.92307692307692,
+          "scenario_score": 53.717948717948715,
+          "composition_delta": 1.7948717948717956
+        },
+        {
+          "id": "3106200",
+          "name": "Belo Horizonte",
+          "housing_raw_pct": 5.144156483836796,
+          "housing_percentile": 90.38461538461539,
+          "baseline_score": 71.92307692307692,
+          "scenario_score": 72.6923076923077,
+          "composition_delta": 0.7692307692307736
+        },
+        {
+          "id": "1501402",
+          "name": "Belém",
+          "housing_raw_pct": 18.30356087155985,
+          "housing_percentile": 13.461538461538462,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 35.256410256410255,
+          "composition_delta": -2.051282051282051
+        },
+        {
+          "id": "1400100",
+          "name": "Boa Vista",
+          "housing_raw_pct": 27.201378093357423,
+          "housing_percentile": 1.9230769230769231,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 35.769230769230774,
+          "composition_delta": -3.076923076923073
+        },
+        {
+          "id": "5002704",
+          "name": "Campo Grande",
+          "housing_raw_pct": 8.902045275977216,
+          "housing_percentile": 63.46153846153846,
+          "baseline_score": 55.769230769230774,
+          "scenario_score": 56.794871794871796,
+          "composition_delta": 1.025641025641022
+        },
+        {
+          "id": "5103403",
+          "name": "Cuiabá",
+          "housing_raw_pct": 11.01132302923322,
+          "housing_percentile": 48.07692307692308,
+          "baseline_score": 61.92307692307693,
+          "scenario_score": 60.12820512820513,
+          "composition_delta": -1.7948717948717956
+        },
+        {
+          "id": "4106902",
+          "name": "Curitiba",
+          "housing_raw_pct": 4.352822283696859,
+          "housing_percentile": 98.07692307692308,
+          "baseline_score": 77.3076923076923,
+          "scenario_score": 77.82051282051282,
+          "composition_delta": 0.512820512820511
+        },
+        {
+          "id": "4205407",
+          "name": "Florianópolis",
+          "housing_raw_pct": 5.004347054244865,
+          "housing_percentile": 94.23076923076923,
+          "baseline_score": 88.07692307692308,
+          "scenario_score": 88.33333333333334,
+          "composition_delta": 0.2564102564102626
+        },
+        {
+          "id": "2304400",
+          "name": "Fortaleza",
+          "housing_raw_pct": 12.885307472717864,
+          "housing_percentile": 32.69230769230769,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 37.56410256410257,
+          "composition_delta": -1.2820512820512775
+        },
+        {
+          "id": "5208707",
+          "name": "Goiânia",
+          "housing_raw_pct": 5.71546576324475,
+          "housing_percentile": 82.6923076923077,
+          "baseline_score": 63.46153846153847,
+          "scenario_score": 64.74358974358974,
+          "composition_delta": 1.2820512820512704
+        },
+        {
+          "id": "2507507",
+          "name": "João Pessoa",
+          "housing_raw_pct": 8.546264132089675,
+          "housing_percentile": 71.15384615384616,
+          "baseline_score": 58.07692307692308,
+          "scenario_score": 60.38461538461539,
+          "composition_delta": 2.3076923076923066
+        },
+        {
+          "id": "1600303",
+          "name": "Macapá",
+          "housing_raw_pct": 25.419732278870775,
+          "housing_percentile": 9.615384615384615,
+          "baseline_score": 18.846153846153847,
+          "scenario_score": 19.615384615384613,
+          "composition_delta": 0.7692307692307665
+        },
+        {
+          "id": "2704302",
+          "name": "Maceió",
+          "housing_raw_pct": 10.688203838059867,
+          "housing_percentile": 51.92307692307692,
+          "baseline_score": 24.230769230769234,
+          "scenario_score": 29.35897435897436,
+          "composition_delta": 5.128205128205128
+        },
+        {
+          "id": "1302603",
+          "name": "Manaus",
+          "housing_raw_pct": 25.54374745986588,
+          "housing_percentile": 5.769230769230769,
+          "baseline_score": 8.846153846153847,
+          "scenario_score": 8.58974358974359,
+          "composition_delta": -0.2564102564102573
+        },
+        {
+          "id": "2408102",
+          "name": "Natal",
+          "housing_raw_pct": 10.284495495395417,
+          "housing_percentile": 55.76923076923077,
+          "baseline_score": 41.15384615384616,
+          "scenario_score": 44.48717948717949,
+          "composition_delta": 3.3333333333333286
+        },
+        {
+          "id": "1721000",
+          "name": "Palmas",
+          "housing_raw_pct": 12.201103617412631,
+          "housing_percentile": 40.38461538461539,
+          "baseline_score": 65.76923076923077,
+          "scenario_score": 62.69230769230769,
+          "composition_delta": -3.07692307692308
+        },
+        {
+          "id": "4314902",
+          "name": "Porto Alegre",
+          "housing_raw_pct": 5.763394289668376,
+          "housing_percentile": 78.84615384615384,
+          "baseline_score": 54.23076923076923,
+          "scenario_score": 53.717948717948715,
+          "composition_delta": -0.5128205128205181
+        },
+        {
+          "id": "1100205",
+          "name": "Porto Velho",
+          "housing_raw_pct": 15.216633678991563,
+          "housing_percentile": 21.153846153846153,
+          "baseline_score": 28.461538461538463,
+          "scenario_score": 29.102564102564106,
+          "composition_delta": 0.6410256410256423
+        },
+        {
+          "id": "2611606",
+          "name": "Recife",
+          "housing_raw_pct": 9.379057930120046,
+          "housing_percentile": 59.61538461538461,
+          "baseline_score": 33.46153846153847,
+          "scenario_score": 36.794871794871796,
+          "composition_delta": 3.3333333333333286
+        },
+        {
+          "id": "1200401",
+          "name": "Rio Branco",
+          "housing_raw_pct": 16.92099016615802,
+          "housing_percentile": 17.307692307692307,
+          "baseline_score": 44.23076923076923,
+          "scenario_score": 43.71794871794872,
+          "composition_delta": -0.512820512820511
+        },
+        {
+          "id": "3304557",
+          "name": "Rio de Janeiro",
+          "housing_raw_pct": 11.726261260928547,
+          "housing_percentile": 44.23076923076923,
+          "baseline_score": 54.23076923076924,
+          "scenario_score": 51.410256410256416,
+          "composition_delta": -2.8205128205128247
+        },
+        {
+          "id": "2927408",
+          "name": "Salvador",
+          "housing_raw_pct": 8.708595007358685,
+          "housing_percentile": 67.3076923076923,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 38.333333333333336,
+          "composition_delta": 1.025641025641029
+        },
+        {
+          "id": "2111300",
+          "name": "São Luís",
+          "housing_raw_pct": 14.777722937064542,
+          "housing_percentile": 25.0,
+          "baseline_score": 43.84615384615385,
+          "scenario_score": 43.205128205128204,
+          "composition_delta": -0.6410256410256423
+        },
+        {
+          "id": "3550308",
+          "name": "São Paulo",
+          "housing_raw_pct": 12.58423039462652,
+          "housing_percentile": 36.53846153846154,
+          "baseline_score": 64.23076923076923,
+          "scenario_score": 59.1025641025641,
+          "composition_delta": -5.128205128205124
+        },
+        {
+          "id": "2211001",
+          "name": "Teresina",
+          "housing_raw_pct": 13.896883479976976,
+          "housing_percentile": 28.846153846153847,
+          "baseline_score": 55.0,
+          "scenario_score": 55.0,
+          "composition_delta": 0.0
+        },
+        {
+          "id": "3205309",
+          "name": "Vitória",
+          "housing_raw_pct": 5.3504789152879715,
+          "housing_percentile": 86.53846153846153,
+          "baseline_score": 82.6923076923077,
+          "scenario_score": 81.66666666666667,
+          "composition_delta": -1.025641025641022
+        }
+      ]
+    },
+    {
+      "id": "domicilios_gt3__seis_iguais",
+      "definition": "domicilios_gt3",
+      "weight_model": "seis_iguais",
+      "weights": {
+        "educacao": 0.16666666666666666,
+        "trabalho": 0.16666666666666666,
+        "mobilidade": 0.16666666666666666,
+        "saneamento": 0.16666666666666666,
+        "seguranca": 0.16666666666666666,
+        "habitacao": 0.16666666666666666
+      },
+      "correlations_oriented": {
+        "trabalho": 0.825440258259961,
+        "saneamento": 0.6772649572649573
+      },
+      "versus_v2": {
+        "strict_reversals": 20,
+        "baseline_ties_broken": 3,
+        "ties_reached": 1,
+        "pairs": 325
+      },
+      "rows": [
+        {
+          "id": "2800308",
+          "name": "Aracaju",
+          "housing_raw_pct": 1.3837093844232027,
+          "housing_percentile": 75.0,
+          "baseline_score": 51.92307692307692,
+          "scenario_score": 55.76923076923077,
+          "composition_delta": 3.8461538461538467
+        },
+        {
+          "id": "3106200",
+          "name": "Belo Horizonte",
+          "housing_raw_pct": 1.0842942641035849,
+          "housing_percentile": 86.53846153846153,
+          "baseline_score": 71.92307692307692,
+          "scenario_score": 74.35897435897435,
+          "composition_delta": 2.435897435897431
+        },
+        {
+          "id": "1501402",
+          "name": "Belém",
+          "housing_raw_pct": 5.516300363701717,
+          "housing_percentile": 13.461538461538462,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 33.33333333333333,
+          "composition_delta": -3.974358974358978
+        },
+        {
+          "id": "1400100",
+          "name": "Boa Vista",
+          "housing_raw_pct": 10.41048695432965,
+          "housing_percentile": 1.9230769230769231,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 32.69230769230769,
+          "composition_delta": -6.153846153846153
+        },
+        {
+          "id": "5002704",
+          "name": "Campo Grande",
+          "housing_raw_pct": 1.8482370850520526,
+          "housing_percentile": 67.3076923076923,
+          "baseline_score": 55.769230769230774,
+          "scenario_score": 57.692307692307686,
+          "composition_delta": 1.9230769230769127
+        },
+        {
+          "id": "5103403",
+          "name": "Cuiabá",
+          "housing_raw_pct": 2.733026219485943,
+          "housing_percentile": 48.07692307692308,
+          "baseline_score": 61.92307692307693,
+          "scenario_score": 59.61538461538461,
+          "composition_delta": -2.3076923076923137
+        },
+        {
+          "id": "4106902",
+          "name": "Curitiba",
+          "housing_raw_pct": 0.7833884320419285,
+          "housing_percentile": 98.07692307692308,
+          "baseline_score": 77.3076923076923,
+          "scenario_score": 80.76923076923077,
+          "composition_delta": 3.461538461538467
+        },
+        {
+          "id": "4205407",
+          "name": "Florianópolis",
+          "housing_raw_pct": 0.9445170217898939,
+          "housing_percentile": 90.38461538461539,
+          "baseline_score": 88.07692307692308,
+          "scenario_score": 88.46153846153845,
+          "composition_delta": 0.3846153846153726
+        },
+        {
+          "id": "2304400",
+          "name": "Fortaleza",
+          "housing_raw_pct": 3.1773440543258973,
+          "housing_percentile": 36.53846153846154,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 38.46153846153846,
+          "composition_delta": -0.3846153846153868
+        },
+        {
+          "id": "5208707",
+          "name": "Goiânia",
+          "housing_raw_pct": 0.9413879559108757,
+          "housing_percentile": 94.23076923076923,
+          "baseline_score": 63.46153846153847,
+          "scenario_score": 68.58974358974359,
+          "composition_delta": 5.128205128205124
+        },
+        {
+          "id": "2507507",
+          "name": "João Pessoa",
+          "housing_raw_pct": 1.4965076985919392,
+          "housing_percentile": 71.15384615384616,
+          "baseline_score": 58.07692307692308,
+          "scenario_score": 60.256410256410255,
+          "composition_delta": 2.1794871794871753
+        },
+        {
+          "id": "1600303",
+          "name": "Macapá",
+          "housing_raw_pct": 8.540498492853207,
+          "housing_percentile": 9.615384615384615,
+          "baseline_score": 18.846153846153847,
+          "scenario_score": 17.307692307692307,
+          "composition_delta": -1.53846153846154
+        },
+        {
+          "id": "2704302",
+          "name": "Maceió",
+          "housing_raw_pct": 2.274935764064838,
+          "housing_percentile": 51.92307692307692,
+          "baseline_score": 24.230769230769234,
+          "scenario_score": 28.846153846153843,
+          "composition_delta": 4.61538461538461
+        },
+        {
+          "id": "1302603",
+          "name": "Manaus",
+          "housing_raw_pct": 8.849350995732575,
+          "housing_percentile": 5.769230769230769,
+          "baseline_score": 8.846153846153847,
+          "scenario_score": 8.333333333333332,
+          "composition_delta": -0.5128205128205146
+        },
+        {
+          "id": "2408102",
+          "name": "Natal",
+          "housing_raw_pct": 2.17768841392743,
+          "housing_percentile": 59.61538461538461,
+          "baseline_score": 41.15384615384616,
+          "scenario_score": 44.230769230769226,
+          "composition_delta": 3.076923076923066
+        },
+        {
+          "id": "1721000",
+          "name": "Palmas",
+          "housing_raw_pct": 2.915625147384804,
+          "housing_percentile": 44.23076923076923,
+          "baseline_score": 65.76923076923077,
+          "scenario_score": 62.179487179487175,
+          "composition_delta": -3.5897435897435983
+        },
+        {
+          "id": "4314902",
+          "name": "Porto Alegre",
+          "housing_raw_pct": 1.2960914685630593,
+          "housing_percentile": 78.84615384615384,
+          "baseline_score": 54.23076923076923,
+          "scenario_score": 58.33333333333333,
+          "composition_delta": 4.102564102564095
+        },
+        {
+          "id": "1100205",
+          "name": "Porto Velho",
+          "housing_raw_pct": 3.6599880323783345,
+          "housing_percentile": 25.0,
+          "baseline_score": 28.461538461538463,
+          "scenario_score": 27.884615384615383,
+          "composition_delta": -0.5769230769230802
+        },
+        {
+          "id": "2611606",
+          "name": "Recife",
+          "housing_raw_pct": 2.27362799727508,
+          "housing_percentile": 55.76923076923077,
+          "baseline_score": 33.46153846153847,
+          "scenario_score": 37.179487179487175,
+          "composition_delta": 3.7179487179487083
+        },
+        {
+          "id": "1200401",
+          "name": "Rio Branco",
+          "housing_raw_pct": 4.723958081028274,
+          "housing_percentile": 17.307692307692307,
+          "baseline_score": 44.23076923076923,
+          "scenario_score": 39.743589743589745,
+          "composition_delta": -4.487179487179489
+        },
+        {
+          "id": "3304557",
+          "name": "Rio de Janeiro",
+          "housing_raw_pct": 3.304765023393843,
+          "housing_percentile": 32.69230769230769,
+          "baseline_score": 54.23076923076924,
+          "scenario_score": 50.64102564102564,
+          "composition_delta": -3.5897435897435983
+        },
+        {
+          "id": "2927408",
+          "name": "Salvador",
+          "housing_raw_pct": 1.9587350362093225,
+          "housing_percentile": 63.46153846153846,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 41.666666666666664,
+          "composition_delta": 4.358974358974358
+        },
+        {
+          "id": "2111300",
+          "name": "São Luís",
+          "housing_raw_pct": 3.695435084537597,
+          "housing_percentile": 21.153846153846153,
+          "baseline_score": 43.84615384615385,
+          "scenario_score": 40.06410256410256,
+          "composition_delta": -3.7820512820512846
+        },
+        {
+          "id": "3550308",
+          "name": "São Paulo",
+          "housing_raw_pct": 3.60582786030605,
+          "housing_percentile": 28.846153846153847,
+          "baseline_score": 64.23076923076923,
+          "scenario_score": 58.33333333333333,
+          "composition_delta": -5.897435897435898
+        },
+        {
+          "id": "2211001",
+          "name": "Teresina",
+          "housing_raw_pct": 3.157635062906011,
+          "housing_percentile": 40.38461538461539,
+          "baseline_score": 55.0,
+          "scenario_score": 52.56410256410256,
+          "composition_delta": -2.435897435897438
+        },
+        {
+          "id": "3205309",
+          "name": "Vitória",
+          "housing_raw_pct": 1.2548202512750342,
+          "housing_percentile": 82.6923076923077,
+          "baseline_score": 82.6923076923077,
+          "scenario_score": 82.6923076923077,
+          "composition_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "domicilios_gt3__materiais_40pct",
+      "definition": "domicilios_gt3",
+      "weight_model": "materiais_40pct",
+      "weights": {
+        "educacao": 0.2,
+        "trabalho": 0.13333333333333333,
+        "mobilidade": 0.2,
+        "saneamento": 0.13333333333333333,
+        "seguranca": 0.2,
+        "habitacao": 0.13333333333333333
+      },
+      "correlations_oriented": {
+        "trabalho": 0.825440258259961,
+        "saneamento": 0.6772649572649573
+      },
+      "versus_v2": {
+        "strict_reversals": 11,
+        "baseline_ties_broken": 3,
+        "ties_reached": 1,
+        "pairs": 325
+      },
+      "rows": [
+        {
+          "id": "2800308",
+          "name": "Aracaju",
+          "housing_raw_pct": 1.3837093844232027,
+          "housing_percentile": 75.0,
+          "baseline_score": 51.92307692307692,
+          "scenario_score": 53.717948717948715,
+          "composition_delta": 1.7948717948717956
+        },
+        {
+          "id": "3106200",
+          "name": "Belo Horizonte",
+          "housing_raw_pct": 1.0842942641035849,
+          "housing_percentile": 86.53846153846153,
+          "baseline_score": 71.92307692307692,
+          "scenario_score": 72.17948717948718,
+          "composition_delta": 0.2564102564102626
+        },
+        {
+          "id": "1501402",
+          "name": "Belém",
+          "housing_raw_pct": 5.516300363701717,
+          "housing_percentile": 13.461538461538462,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 35.256410256410255,
+          "composition_delta": -2.051282051282051
+        },
+        {
+          "id": "1400100",
+          "name": "Boa Vista",
+          "housing_raw_pct": 10.41048695432965,
+          "housing_percentile": 1.9230769230769231,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 35.769230769230774,
+          "composition_delta": -3.076923076923073
+        },
+        {
+          "id": "5002704",
+          "name": "Campo Grande",
+          "housing_raw_pct": 1.8482370850520526,
+          "housing_percentile": 67.3076923076923,
+          "baseline_score": 55.769230769230774,
+          "scenario_score": 57.30769230769231,
+          "composition_delta": 1.538461538461533
+        },
+        {
+          "id": "5103403",
+          "name": "Cuiabá",
+          "housing_raw_pct": 2.733026219485943,
+          "housing_percentile": 48.07692307692308,
+          "baseline_score": 61.92307692307693,
+          "scenario_score": 60.12820512820513,
+          "composition_delta": -1.7948717948717956
+        },
+        {
+          "id": "4106902",
+          "name": "Curitiba",
+          "housing_raw_pct": 0.7833884320419285,
+          "housing_percentile": 98.07692307692308,
+          "baseline_score": 77.3076923076923,
+          "scenario_score": 77.82051282051282,
+          "composition_delta": 0.512820512820511
+        },
+        {
+          "id": "4205407",
+          "name": "Florianópolis",
+          "housing_raw_pct": 0.9445170217898939,
+          "housing_percentile": 90.38461538461539,
+          "baseline_score": 88.07692307692308,
+          "scenario_score": 87.82051282051282,
+          "composition_delta": -0.2564102564102626
+        },
+        {
+          "id": "2304400",
+          "name": "Fortaleza",
+          "housing_raw_pct": 3.1773440543258973,
+          "housing_percentile": 36.53846153846154,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 38.07692307692308,
+          "composition_delta": -0.7692307692307665
+        },
+        {
+          "id": "5208707",
+          "name": "Goiânia",
+          "housing_raw_pct": 0.9413879559108757,
+          "housing_percentile": 94.23076923076923,
+          "baseline_score": 63.46153846153847,
+          "scenario_score": 66.28205128205128,
+          "composition_delta": 2.8205128205128176
+        },
+        {
+          "id": "2507507",
+          "name": "João Pessoa",
+          "housing_raw_pct": 1.4965076985919392,
+          "housing_percentile": 71.15384615384616,
+          "baseline_score": 58.07692307692308,
+          "scenario_score": 60.38461538461539,
+          "composition_delta": 2.3076923076923066
+        },
+        {
+          "id": "1600303",
+          "name": "Macapá",
+          "housing_raw_pct": 8.540498492853207,
+          "housing_percentile": 9.615384615384615,
+          "baseline_score": 18.846153846153847,
+          "scenario_score": 19.615384615384613,
+          "composition_delta": 0.7692307692307665
+        },
+        {
+          "id": "2704302",
+          "name": "Maceió",
+          "housing_raw_pct": 2.274935764064838,
+          "housing_percentile": 51.92307692307692,
+          "baseline_score": 24.230769230769234,
+          "scenario_score": 29.35897435897436,
+          "composition_delta": 5.128205128205128
+        },
+        {
+          "id": "1302603",
+          "name": "Manaus",
+          "housing_raw_pct": 8.849350995732575,
+          "housing_percentile": 5.769230769230769,
+          "baseline_score": 8.846153846153847,
+          "scenario_score": 8.58974358974359,
+          "composition_delta": -0.2564102564102573
+        },
+        {
+          "id": "2408102",
+          "name": "Natal",
+          "housing_raw_pct": 2.17768841392743,
+          "housing_percentile": 59.61538461538461,
+          "baseline_score": 41.15384615384616,
+          "scenario_score": 45.0,
+          "composition_delta": 3.8461538461538396
+        },
+        {
+          "id": "1721000",
+          "name": "Palmas",
+          "housing_raw_pct": 2.915625147384804,
+          "housing_percentile": 44.23076923076923,
+          "baseline_score": 65.76923076923077,
+          "scenario_score": 63.205128205128204,
+          "composition_delta": -2.564102564102569
+        },
+        {
+          "id": "4314902",
+          "name": "Porto Alegre",
+          "housing_raw_pct": 1.2960914685630593,
+          "housing_percentile": 78.84615384615384,
+          "baseline_score": 54.23076923076923,
+          "scenario_score": 53.717948717948715,
+          "composition_delta": -0.5128205128205181
+        },
+        {
+          "id": "1100205",
+          "name": "Porto Velho",
+          "housing_raw_pct": 3.6599880323783345,
+          "housing_percentile": 25.0,
+          "baseline_score": 28.461538461538463,
+          "scenario_score": 29.615384615384617,
+          "composition_delta": 1.1538461538461533
+        },
+        {
+          "id": "2611606",
+          "name": "Recife",
+          "housing_raw_pct": 2.27362799727508,
+          "housing_percentile": 55.76923076923077,
+          "baseline_score": 33.46153846153847,
+          "scenario_score": 36.282051282051285,
+          "composition_delta": 2.8205128205128176
+        },
+        {
+          "id": "1200401",
+          "name": "Rio Branco",
+          "housing_raw_pct": 4.723958081028274,
+          "housing_percentile": 17.307692307692307,
+          "baseline_score": 44.23076923076923,
+          "scenario_score": 43.71794871794872,
+          "composition_delta": -0.512820512820511
+        },
+        {
+          "id": "3304557",
+          "name": "Rio de Janeiro",
+          "housing_raw_pct": 3.304765023393843,
+          "housing_percentile": 32.69230769230769,
+          "baseline_score": 54.23076923076924,
+          "scenario_score": 49.871794871794876,
+          "composition_delta": -4.358974358974365
+        },
+        {
+          "id": "2927408",
+          "name": "Salvador",
+          "housing_raw_pct": 1.9587350362093225,
+          "housing_percentile": 63.46153846153846,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 37.82051282051282,
+          "composition_delta": 0.512820512820511
+        },
+        {
+          "id": "2111300",
+          "name": "São Luís",
+          "housing_raw_pct": 3.695435084537597,
+          "housing_percentile": 21.153846153846153,
+          "baseline_score": 43.84615384615385,
+          "scenario_score": 42.69230769230769,
+          "composition_delta": -1.1538461538461533
+        },
+        {
+          "id": "3550308",
+          "name": "São Paulo",
+          "housing_raw_pct": 3.60582786030605,
+          "housing_percentile": 28.846153846153847,
+          "baseline_score": 64.23076923076923,
+          "scenario_score": 58.07692307692307,
+          "composition_delta": -6.153846153846153
+        },
+        {
+          "id": "2211001",
+          "name": "Teresina",
+          "housing_raw_pct": 3.157635062906011,
+          "housing_percentile": 40.38461538461539,
+          "baseline_score": 55.0,
+          "scenario_score": 56.53846153846154,
+          "composition_delta": 1.53846153846154
+        },
+        {
+          "id": "3205309",
+          "name": "Vitória",
+          "housing_raw_pct": 1.2548202512750342,
+          "housing_percentile": 82.6923076923077,
+          "baseline_score": 82.6923076923077,
+          "scenario_score": 81.15384615384616,
+          "composition_delta": -1.538461538461533
+        }
+      ]
+    },
+    {
+      "id": "moradores_gt2__seis_iguais",
+      "definition": "moradores_gt2",
+      "weight_model": "seis_iguais",
+      "weights": {
+        "educacao": 0.16666666666666666,
+        "trabalho": 0.16666666666666666,
+        "mobilidade": 0.16666666666666666,
+        "saneamento": 0.16666666666666666,
+        "seguranca": 0.16666666666666666,
+        "habitacao": 0.16666666666666666
+      },
+      "correlations_oriented": {
+        "trabalho": 0.837066177390383,
+        "saneamento": 0.7182905982905984
+      },
+      "versus_v2": {
+        "strict_reversals": 21,
+        "baseline_ties_broken": 3,
+        "ties_reached": 0,
+        "pairs": 325
+      },
+      "rows": [
+        {
+          "id": "2800308",
+          "name": "Aracaju",
+          "housing_raw_pct": 13.005055332702733,
+          "housing_percentile": 75.0,
+          "baseline_score": 51.92307692307692,
+          "scenario_score": 55.76923076923077,
+          "composition_delta": 3.8461538461538467
+        },
+        {
+          "id": "3106200",
+          "name": "Belo Horizonte",
+          "housing_raw_pct": 9.132039342658635,
+          "housing_percentile": 90.38461538461539,
+          "baseline_score": 71.92307692307692,
+          "scenario_score": 75.0,
+          "composition_delta": 3.07692307692308
+        },
+        {
+          "id": "1501402",
+          "name": "Belém",
+          "housing_raw_pct": 27.099194120281908,
+          "housing_percentile": 13.461538461538462,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 33.33333333333333,
+          "composition_delta": -3.974358974358978
+        },
+        {
+          "id": "1400100",
+          "name": "Boa Vista",
+          "housing_raw_pct": 40.27371158063972,
+          "housing_percentile": 1.9230769230769231,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 32.69230769230769,
+          "composition_delta": -6.153846153846153
+        },
+        {
+          "id": "5002704",
+          "name": "Campo Grande",
+          "housing_raw_pct": 15.304110505247968,
+          "housing_percentile": 63.46153846153846,
+          "baseline_score": 55.769230769230774,
+          "scenario_score": 57.051282051282044,
+          "composition_delta": 1.2820512820512704
+        },
+        {
+          "id": "5103403",
+          "name": "Cuiabá",
+          "housing_raw_pct": 18.04002813874566,
+          "housing_percentile": 48.07692307692308,
+          "baseline_score": 61.92307692307693,
+          "scenario_score": 59.61538461538461,
+          "composition_delta": -2.3076923076923137
+        },
+        {
+          "id": "4106902",
+          "name": "Curitiba",
+          "housing_raw_pct": 7.54095316597298,
+          "housing_percentile": 98.07692307692308,
+          "baseline_score": 77.3076923076923,
+          "scenario_score": 80.76923076923077,
+          "composition_delta": 3.461538461538467
+        },
+        {
+          "id": "4205407",
+          "name": "Florianópolis",
+          "housing_raw_pct": 8.878633588631505,
+          "housing_percentile": 94.23076923076923,
+          "baseline_score": 88.07692307692308,
+          "scenario_score": 89.1025641025641,
+          "composition_delta": 1.025641025641022
+        },
+        {
+          "id": "2304400",
+          "name": "Fortaleza",
+          "housing_raw_pct": 19.751833944510704,
+          "housing_percentile": 40.38461538461539,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 39.1025641025641,
+          "composition_delta": 0.2564102564102555
+        },
+        {
+          "id": "5208707",
+          "name": "Goiânia",
+          "housing_raw_pct": 9.951729803971578,
+          "housing_percentile": 86.53846153846153,
+          "baseline_score": 63.46153846153847,
+          "scenario_score": 67.3076923076923,
+          "composition_delta": 3.8461538461538396
+        },
+        {
+          "id": "2507507",
+          "name": "João Pessoa",
+          "housing_raw_pct": 14.556971188649197,
+          "housing_percentile": 71.15384615384616,
+          "baseline_score": 58.07692307692308,
+          "scenario_score": 60.256410256410255,
+          "composition_delta": 2.1794871794871753
+        },
+        {
+          "id": "1600303",
+          "name": "Macapá",
+          "housing_raw_pct": 37.26224423717068,
+          "housing_percentile": 9.615384615384615,
+          "baseline_score": 18.846153846153847,
+          "scenario_score": 17.307692307692307,
+          "composition_delta": -1.53846153846154
+        },
+        {
+          "id": "2704302",
+          "name": "Maceió",
+          "housing_raw_pct": 17.478729441432144,
+          "housing_percentile": 51.92307692307692,
+          "baseline_score": 24.230769230769234,
+          "scenario_score": 28.846153846153843,
+          "composition_delta": 4.61538461538461
+        },
+        {
+          "id": "1302603",
+          "name": "Manaus",
+          "housing_raw_pct": 37.66843008487341,
+          "housing_percentile": 5.769230769230769,
+          "baseline_score": 8.846153846153847,
+          "scenario_score": 8.333333333333332,
+          "composition_delta": -0.5128205128205146
+        },
+        {
+          "id": "2408102",
+          "name": "Natal",
+          "housing_raw_pct": 16.624396836907906,
+          "housing_percentile": 55.76923076923077,
+          "baseline_score": 41.15384615384616,
+          "scenario_score": 43.58974358974359,
+          "composition_delta": 2.435897435897431
+        },
+        {
+          "id": "1721000",
+          "name": "Palmas",
+          "housing_raw_pct": 19.415750600029174,
+          "housing_percentile": 44.23076923076923,
+          "baseline_score": 65.76923076923077,
+          "scenario_score": 62.179487179487175,
+          "composition_delta": -3.5897435897435983
+        },
+        {
+          "id": "4314902",
+          "name": "Porto Alegre",
+          "housing_raw_pct": 10.901992743899259,
+          "housing_percentile": 78.84615384615384,
+          "baseline_score": 54.23076923076923,
+          "scenario_score": 58.33333333333333,
+          "composition_delta": 4.102564102564095
+        },
+        {
+          "id": "1100205",
+          "name": "Porto Velho",
+          "housing_raw_pct": 23.285401373690032,
+          "housing_percentile": 21.153846153846153,
+          "baseline_score": 28.461538461538463,
+          "scenario_score": 27.24358974358974,
+          "composition_delta": -1.2179487179487225
+        },
+        {
+          "id": "2611606",
+          "name": "Recife",
+          "housing_raw_pct": 15.649610623644314,
+          "housing_percentile": 59.61538461538461,
+          "baseline_score": 33.46153846153847,
+          "scenario_score": 37.82051282051282,
+          "composition_delta": 4.358974358974351
+        },
+        {
+          "id": "1200401",
+          "name": "Rio Branco",
+          "housing_raw_pct": 26.004046031903957,
+          "housing_percentile": 17.307692307692307,
+          "baseline_score": 44.23076923076923,
+          "scenario_score": 39.743589743589745,
+          "composition_delta": -4.487179487179489
+        },
+        {
+          "id": "3304557",
+          "name": "Rio de Janeiro",
+          "housing_raw_pct": 20.09388760563125,
+          "housing_percentile": 36.53846153846154,
+          "baseline_score": 54.23076923076924,
+          "scenario_score": 51.28205128205128,
+          "composition_delta": -2.948717948717963
+        },
+        {
+          "id": "2927408",
+          "name": "Salvador",
+          "housing_raw_pct": 15.006706559970766,
+          "housing_percentile": 67.3076923076923,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 42.30769230769231,
+          "composition_delta": 5.0
+        },
+        {
+          "id": "2111300",
+          "name": "São Luís",
+          "housing_raw_pct": 22.9313524898013,
+          "housing_percentile": 25.0,
+          "baseline_score": 43.84615384615385,
+          "scenario_score": 40.705128205128204,
+          "composition_delta": -3.1410256410256423
+        },
+        {
+          "id": "3550308",
+          "name": "São Paulo",
+          "housing_raw_pct": 20.35155837167887,
+          "housing_percentile": 32.69230769230769,
+          "baseline_score": 64.23076923076923,
+          "scenario_score": 58.97435897435897,
+          "composition_delta": -5.2564102564102555
+        },
+        {
+          "id": "2211001",
+          "name": "Teresina",
+          "housing_raw_pct": 20.926747517454313,
+          "housing_percentile": 28.846153846153847,
+          "baseline_score": 55.0,
+          "scenario_score": 50.64102564102564,
+          "composition_delta": -4.358974358974358
+        },
+        {
+          "id": "3205309",
+          "name": "Vitória",
+          "housing_raw_pct": 10.046044629781319,
+          "housing_percentile": 82.6923076923077,
+          "baseline_score": 82.6923076923077,
+          "scenario_score": 82.6923076923077,
+          "composition_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "moradores_gt2__materiais_40pct",
+      "definition": "moradores_gt2",
+      "weight_model": "materiais_40pct",
+      "weights": {
+        "educacao": 0.2,
+        "trabalho": 0.13333333333333333,
+        "mobilidade": 0.2,
+        "saneamento": 0.13333333333333333,
+        "seguranca": 0.2,
+        "habitacao": 0.13333333333333333
+      },
+      "correlations_oriented": {
+        "trabalho": 0.837066177390383,
+        "saneamento": 0.7182905982905984
+      },
+      "versus_v2": {
+        "strict_reversals": 12,
+        "baseline_ties_broken": 3,
+        "ties_reached": 1,
+        "pairs": 325
+      },
+      "rows": [
+        {
+          "id": "2800308",
+          "name": "Aracaju",
+          "housing_raw_pct": 13.005055332702733,
+          "housing_percentile": 75.0,
+          "baseline_score": 51.92307692307692,
+          "scenario_score": 53.717948717948715,
+          "composition_delta": 1.7948717948717956
+        },
+        {
+          "id": "3106200",
+          "name": "Belo Horizonte",
+          "housing_raw_pct": 9.132039342658635,
+          "housing_percentile": 90.38461538461539,
+          "baseline_score": 71.92307692307692,
+          "scenario_score": 72.6923076923077,
+          "composition_delta": 0.7692307692307736
+        },
+        {
+          "id": "1501402",
+          "name": "Belém",
+          "housing_raw_pct": 27.099194120281908,
+          "housing_percentile": 13.461538461538462,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 35.256410256410255,
+          "composition_delta": -2.051282051282051
+        },
+        {
+          "id": "1400100",
+          "name": "Boa Vista",
+          "housing_raw_pct": 40.27371158063972,
+          "housing_percentile": 1.9230769230769231,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 35.769230769230774,
+          "composition_delta": -3.076923076923073
+        },
+        {
+          "id": "5002704",
+          "name": "Campo Grande",
+          "housing_raw_pct": 15.304110505247968,
+          "housing_percentile": 63.46153846153846,
+          "baseline_score": 55.769230769230774,
+          "scenario_score": 56.794871794871796,
+          "composition_delta": 1.025641025641022
+        },
+        {
+          "id": "5103403",
+          "name": "Cuiabá",
+          "housing_raw_pct": 18.04002813874566,
+          "housing_percentile": 48.07692307692308,
+          "baseline_score": 61.92307692307693,
+          "scenario_score": 60.12820512820513,
+          "composition_delta": -1.7948717948717956
+        },
+        {
+          "id": "4106902",
+          "name": "Curitiba",
+          "housing_raw_pct": 7.54095316597298,
+          "housing_percentile": 98.07692307692308,
+          "baseline_score": 77.3076923076923,
+          "scenario_score": 77.82051282051282,
+          "composition_delta": 0.512820512820511
+        },
+        {
+          "id": "4205407",
+          "name": "Florianópolis",
+          "housing_raw_pct": 8.878633588631505,
+          "housing_percentile": 94.23076923076923,
+          "baseline_score": 88.07692307692308,
+          "scenario_score": 88.33333333333334,
+          "composition_delta": 0.2564102564102626
+        },
+        {
+          "id": "2304400",
+          "name": "Fortaleza",
+          "housing_raw_pct": 19.751833944510704,
+          "housing_percentile": 40.38461538461539,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 38.58974358974359,
+          "composition_delta": -0.2564102564102555
+        },
+        {
+          "id": "5208707",
+          "name": "Goiânia",
+          "housing_raw_pct": 9.951729803971578,
+          "housing_percentile": 86.53846153846153,
+          "baseline_score": 63.46153846153847,
+          "scenario_score": 65.25641025641025,
+          "composition_delta": 1.7948717948717814
+        },
+        {
+          "id": "2507507",
+          "name": "João Pessoa",
+          "housing_raw_pct": 14.556971188649197,
+          "housing_percentile": 71.15384615384616,
+          "baseline_score": 58.07692307692308,
+          "scenario_score": 60.38461538461539,
+          "composition_delta": 2.3076923076923066
+        },
+        {
+          "id": "1600303",
+          "name": "Macapá",
+          "housing_raw_pct": 37.26224423717068,
+          "housing_percentile": 9.615384615384615,
+          "baseline_score": 18.846153846153847,
+          "scenario_score": 19.615384615384613,
+          "composition_delta": 0.7692307692307665
+        },
+        {
+          "id": "2704302",
+          "name": "Maceió",
+          "housing_raw_pct": 17.478729441432144,
+          "housing_percentile": 51.92307692307692,
+          "baseline_score": 24.230769230769234,
+          "scenario_score": 29.35897435897436,
+          "composition_delta": 5.128205128205128
+        },
+        {
+          "id": "1302603",
+          "name": "Manaus",
+          "housing_raw_pct": 37.66843008487341,
+          "housing_percentile": 5.769230769230769,
+          "baseline_score": 8.846153846153847,
+          "scenario_score": 8.58974358974359,
+          "composition_delta": -0.2564102564102573
+        },
+        {
+          "id": "2408102",
+          "name": "Natal",
+          "housing_raw_pct": 16.624396836907906,
+          "housing_percentile": 55.76923076923077,
+          "baseline_score": 41.15384615384616,
+          "scenario_score": 44.48717948717949,
+          "composition_delta": 3.3333333333333286
+        },
+        {
+          "id": "1721000",
+          "name": "Palmas",
+          "housing_raw_pct": 19.415750600029174,
+          "housing_percentile": 44.23076923076923,
+          "baseline_score": 65.76923076923077,
+          "scenario_score": 63.205128205128204,
+          "composition_delta": -2.564102564102569
+        },
+        {
+          "id": "4314902",
+          "name": "Porto Alegre",
+          "housing_raw_pct": 10.901992743899259,
+          "housing_percentile": 78.84615384615384,
+          "baseline_score": 54.23076923076923,
+          "scenario_score": 53.717948717948715,
+          "composition_delta": -0.5128205128205181
+        },
+        {
+          "id": "1100205",
+          "name": "Porto Velho",
+          "housing_raw_pct": 23.285401373690032,
+          "housing_percentile": 21.153846153846153,
+          "baseline_score": 28.461538461538463,
+          "scenario_score": 29.102564102564106,
+          "composition_delta": 0.6410256410256423
+        },
+        {
+          "id": "2611606",
+          "name": "Recife",
+          "housing_raw_pct": 15.649610623644314,
+          "housing_percentile": 59.61538461538461,
+          "baseline_score": 33.46153846153847,
+          "scenario_score": 36.794871794871796,
+          "composition_delta": 3.3333333333333286
+        },
+        {
+          "id": "1200401",
+          "name": "Rio Branco",
+          "housing_raw_pct": 26.004046031903957,
+          "housing_percentile": 17.307692307692307,
+          "baseline_score": 44.23076923076923,
+          "scenario_score": 43.71794871794872,
+          "composition_delta": -0.512820512820511
+        },
+        {
+          "id": "3304557",
+          "name": "Rio de Janeiro",
+          "housing_raw_pct": 20.09388760563125,
+          "housing_percentile": 36.53846153846154,
+          "baseline_score": 54.23076923076924,
+          "scenario_score": 50.38461538461539,
+          "composition_delta": -3.846153846153854
+        },
+        {
+          "id": "2927408",
+          "name": "Salvador",
+          "housing_raw_pct": 15.006706559970766,
+          "housing_percentile": 67.3076923076923,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 38.333333333333336,
+          "composition_delta": 1.025641025641029
+        },
+        {
+          "id": "2111300",
+          "name": "São Luís",
+          "housing_raw_pct": 22.9313524898013,
+          "housing_percentile": 25.0,
+          "baseline_score": 43.84615384615385,
+          "scenario_score": 43.205128205128204,
+          "composition_delta": -0.6410256410256423
+        },
+        {
+          "id": "3550308",
+          "name": "São Paulo",
+          "housing_raw_pct": 20.35155837167887,
+          "housing_percentile": 32.69230769230769,
+          "baseline_score": 64.23076923076923,
+          "scenario_score": 58.58974358974359,
+          "composition_delta": -5.641025641025635
+        },
+        {
+          "id": "2211001",
+          "name": "Teresina",
+          "housing_raw_pct": 20.926747517454313,
+          "housing_percentile": 28.846153846153847,
+          "baseline_score": 55.0,
+          "scenario_score": 55.0,
+          "composition_delta": 0.0
+        },
+        {
+          "id": "3205309",
+          "name": "Vitória",
+          "housing_raw_pct": 10.046044629781319,
+          "housing_percentile": 82.6923076923077,
+          "baseline_score": 82.6923076923077,
+          "scenario_score": 81.15384615384616,
+          "composition_delta": -1.538461538461533
+        }
+      ]
+    },
+    {
+      "id": "moradores_gt3__seis_iguais",
+      "definition": "moradores_gt3",
+      "weight_model": "seis_iguais",
+      "weights": {
+        "educacao": 0.16666666666666666,
+        "trabalho": 0.16666666666666666,
+        "mobilidade": 0.16666666666666666,
+        "saneamento": 0.16666666666666666,
+        "seguranca": 0.16666666666666666,
+        "habitacao": 0.16666666666666666
+      },
+      "correlations_oriented": {
+        "trabalho": 0.7912463784646023,
+        "saneamento": 0.6369230769230769
+      },
+      "versus_v2": {
+        "strict_reversals": 22,
+        "baseline_ties_broken": 3,
+        "ties_reached": 0,
+        "pairs": 325
+      },
+      "rows": [
+        {
+          "id": "2800308",
+          "name": "Aracaju",
+          "housing_raw_pct": 2.7136879657813324,
+          "housing_percentile": 75.0,
+          "baseline_score": 51.92307692307692,
+          "scenario_score": 55.76923076923077,
+          "composition_delta": 3.8461538461538467
+        },
+        {
+          "id": "3106200",
+          "name": "Belo Horizonte",
+          "housing_raw_pct": 2.0990816490684456,
+          "housing_percentile": 86.53846153846153,
+          "baseline_score": 71.92307692307692,
+          "scenario_score": 74.35897435897435,
+          "composition_delta": 2.435897435897431
+        },
+        {
+          "id": "1501402",
+          "name": "Belém",
+          "housing_raw_pct": 8.949498255553532,
+          "housing_percentile": 13.461538461538462,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 33.33333333333333,
+          "composition_delta": -3.974358974358978
+        },
+        {
+          "id": "1400100",
+          "name": "Boa Vista",
+          "housing_raw_pct": 17.196788503716643,
+          "housing_percentile": 1.9230769230769231,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 32.69230769230769,
+          "composition_delta": -6.153846153846153
+        },
+        {
+          "id": "5002704",
+          "name": "Campo Grande",
+          "housing_raw_pct": 3.4959886972047127,
+          "housing_percentile": 67.3076923076923,
+          "baseline_score": 55.769230769230774,
+          "scenario_score": 57.692307692307686,
+          "composition_delta": 1.9230769230769127
+        },
+        {
+          "id": "5103403",
+          "name": "Cuiabá",
+          "housing_raw_pct": 4.810179423155714,
+          "housing_percentile": 48.07692307692308,
+          "baseline_score": 61.92307692307693,
+          "scenario_score": 59.61538461538461,
+          "composition_delta": -2.3076923076923137
+        },
+        {
+          "id": "4106902",
+          "name": "Curitiba",
+          "housing_raw_pct": 1.4981250084918094,
+          "housing_percentile": 98.07692307692308,
+          "baseline_score": 77.3076923076923,
+          "scenario_score": 80.76923076923077,
+          "composition_delta": 3.461538461538467
+        },
+        {
+          "id": "4205407",
+          "name": "Florianópolis",
+          "housing_raw_pct": 1.868099489341098,
+          "housing_percentile": 90.38461538461539,
+          "baseline_score": 88.07692307692308,
+          "scenario_score": 88.46153846153845,
+          "composition_delta": 0.3846153846153726
+        },
+        {
+          "id": "2304400",
+          "name": "Fortaleza",
+          "housing_raw_pct": 5.393330990899148,
+          "housing_percentile": 36.53846153846154,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 38.46153846153846,
+          "composition_delta": -0.3846153846153868
+        },
+        {
+          "id": "5208707",
+          "name": "Goiânia",
+          "housing_raw_pct": 1.749559422095583,
+          "housing_percentile": 94.23076923076923,
+          "baseline_score": 63.46153846153847,
+          "scenario_score": 68.58974358974359,
+          "composition_delta": 5.128205128205124
+        },
+        {
+          "id": "2507507",
+          "name": "João Pessoa",
+          "housing_raw_pct": 2.8881328121229672,
+          "housing_percentile": 71.15384615384616,
+          "baseline_score": 58.07692307692308,
+          "scenario_score": 60.256410256410255,
+          "composition_delta": 2.1794871794871753
+        },
+        {
+          "id": "1600303",
+          "name": "Macapá",
+          "housing_raw_pct": 13.590620420127015,
+          "housing_percentile": 9.615384615384615,
+          "baseline_score": 18.846153846153847,
+          "scenario_score": 17.307692307692307,
+          "composition_delta": -1.53846153846154
+        },
+        {
+          "id": "2704302",
+          "name": "Maceió",
+          "housing_raw_pct": 4.210684213894073,
+          "housing_percentile": 55.76923076923077,
+          "baseline_score": 24.230769230769234,
+          "scenario_score": 29.487179487179485,
+          "composition_delta": 5.256410256410252
+        },
+        {
+          "id": "1302603",
+          "name": "Manaus",
+          "housing_raw_pct": 14.675986480892307,
+          "housing_percentile": 5.769230769230769,
+          "baseline_score": 8.846153846153847,
+          "scenario_score": 8.333333333333332,
+          "composition_delta": -0.5128205128205146
+        },
+        {
+          "id": "2408102",
+          "name": "Natal",
+          "housing_raw_pct": 3.9568033057277288,
+          "housing_percentile": 59.61538461538461,
+          "baseline_score": 41.15384615384616,
+          "scenario_score": 44.230769230769226,
+          "composition_delta": 3.076923076923066
+        },
+        {
+          "id": "1721000",
+          "name": "Palmas",
+          "housing_raw_pct": 5.215612692771804,
+          "housing_percentile": 44.23076923076923,
+          "baseline_score": 65.76923076923077,
+          "scenario_score": 62.179487179487175,
+          "composition_delta": -3.5897435897435983
+        },
+        {
+          "id": "4314902",
+          "name": "Porto Alegre",
+          "housing_raw_pct": 2.6729938937772775,
+          "housing_percentile": 78.84615384615384,
+          "baseline_score": 54.23076923076923,
+          "scenario_score": 58.33333333333333,
+          "composition_delta": 4.102564102564095
+        },
+        {
+          "id": "1100205",
+          "name": "Porto Velho",
+          "housing_raw_pct": 6.1440057360958695,
+          "housing_percentile": 32.69230769230769,
+          "baseline_score": 28.461538461538463,
+          "scenario_score": 29.166666666666664,
+          "composition_delta": 0.7051282051282008
+        },
+        {
+          "id": "2611606",
+          "name": "Recife",
+          "housing_raw_pct": 4.271006754687827,
+          "housing_percentile": 51.92307692307692,
+          "baseline_score": 33.46153846153847,
+          "scenario_score": 36.53846153846154,
+          "composition_delta": 3.076923076923073
+        },
+        {
+          "id": "1200401",
+          "name": "Rio Branco",
+          "housing_raw_pct": 8.216705910965189,
+          "housing_percentile": 17.307692307692307,
+          "baseline_score": 44.23076923076923,
+          "scenario_score": 39.743589743589745,
+          "composition_delta": -4.487179487179489
+        },
+        {
+          "id": "3304557",
+          "name": "Rio de Janeiro",
+          "housing_raw_pct": 6.385063226528584,
+          "housing_percentile": 25.0,
+          "baseline_score": 54.23076923076924,
+          "scenario_score": 49.35897435897436,
+          "composition_delta": -4.871794871794883
+        },
+        {
+          "id": "2927408",
+          "name": "Salvador",
+          "housing_raw_pct": 3.8479043557342125,
+          "housing_percentile": 63.46153846153846,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 41.666666666666664,
+          "composition_delta": 4.358974358974358
+        },
+        {
+          "id": "2111300",
+          "name": "São Luís",
+          "housing_raw_pct": 6.296686500301915,
+          "housing_percentile": 28.846153846153847,
+          "baseline_score": 43.84615384615385,
+          "scenario_score": 41.34615384615385,
+          "composition_delta": -2.5
+        },
+        {
+          "id": "3550308",
+          "name": "São Paulo",
+          "housing_raw_pct": 6.527948864236847,
+          "housing_percentile": 21.153846153846153,
+          "baseline_score": 64.23076923076923,
+          "scenario_score": 57.05128205128205,
+          "composition_delta": -7.179487179487175
+        },
+        {
+          "id": "2211001",
+          "name": "Teresina",
+          "housing_raw_pct": 5.2599371366582295,
+          "housing_percentile": 40.38461538461539,
+          "baseline_score": 55.0,
+          "scenario_score": 52.56410256410256,
+          "composition_delta": -2.435897435897438
+        },
+        {
+          "id": "3205309",
+          "name": "Vitória",
+          "housing_raw_pct": 2.6481867599970212,
+          "housing_percentile": 82.6923076923077,
+          "baseline_score": 82.6923076923077,
+          "scenario_score": 82.6923076923077,
+          "composition_delta": 0.0
+        }
+      ]
+    },
+    {
+      "id": "moradores_gt3__materiais_40pct",
+      "definition": "moradores_gt3",
+      "weight_model": "materiais_40pct",
+      "weights": {
+        "educacao": 0.2,
+        "trabalho": 0.13333333333333333,
+        "mobilidade": 0.2,
+        "saneamento": 0.13333333333333333,
+        "seguranca": 0.2,
+        "habitacao": 0.13333333333333333
+      },
+      "correlations_oriented": {
+        "trabalho": 0.7912463784646023,
+        "saneamento": 0.6369230769230769
+      },
+      "versus_v2": {
+        "strict_reversals": 11,
+        "baseline_ties_broken": 3,
+        "ties_reached": 3,
+        "pairs": 325
+      },
+      "rows": [
+        {
+          "id": "2800308",
+          "name": "Aracaju",
+          "housing_raw_pct": 2.7136879657813324,
+          "housing_percentile": 75.0,
+          "baseline_score": 51.92307692307692,
+          "scenario_score": 53.717948717948715,
+          "composition_delta": 1.7948717948717956
+        },
+        {
+          "id": "3106200",
+          "name": "Belo Horizonte",
+          "housing_raw_pct": 2.0990816490684456,
+          "housing_percentile": 86.53846153846153,
+          "baseline_score": 71.92307692307692,
+          "scenario_score": 72.17948717948718,
+          "composition_delta": 0.2564102564102626
+        },
+        {
+          "id": "1501402",
+          "name": "Belém",
+          "housing_raw_pct": 8.949498255553532,
+          "housing_percentile": 13.461538461538462,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 35.256410256410255,
+          "composition_delta": -2.051282051282051
+        },
+        {
+          "id": "1400100",
+          "name": "Boa Vista",
+          "housing_raw_pct": 17.196788503716643,
+          "housing_percentile": 1.9230769230769231,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 35.769230769230774,
+          "composition_delta": -3.076923076923073
+        },
+        {
+          "id": "5002704",
+          "name": "Campo Grande",
+          "housing_raw_pct": 3.4959886972047127,
+          "housing_percentile": 67.3076923076923,
+          "baseline_score": 55.769230769230774,
+          "scenario_score": 57.30769230769231,
+          "composition_delta": 1.538461538461533
+        },
+        {
+          "id": "5103403",
+          "name": "Cuiabá",
+          "housing_raw_pct": 4.810179423155714,
+          "housing_percentile": 48.07692307692308,
+          "baseline_score": 61.92307692307693,
+          "scenario_score": 60.12820512820513,
+          "composition_delta": -1.7948717948717956
+        },
+        {
+          "id": "4106902",
+          "name": "Curitiba",
+          "housing_raw_pct": 1.4981250084918094,
+          "housing_percentile": 98.07692307692308,
+          "baseline_score": 77.3076923076923,
+          "scenario_score": 77.82051282051282,
+          "composition_delta": 0.512820512820511
+        },
+        {
+          "id": "4205407",
+          "name": "Florianópolis",
+          "housing_raw_pct": 1.868099489341098,
+          "housing_percentile": 90.38461538461539,
+          "baseline_score": 88.07692307692308,
+          "scenario_score": 87.82051282051282,
+          "composition_delta": -0.2564102564102626
+        },
+        {
+          "id": "2304400",
+          "name": "Fortaleza",
+          "housing_raw_pct": 5.393330990899148,
+          "housing_percentile": 36.53846153846154,
+          "baseline_score": 38.84615384615385,
+          "scenario_score": 38.07692307692308,
+          "composition_delta": -0.7692307692307665
+        },
+        {
+          "id": "5208707",
+          "name": "Goiânia",
+          "housing_raw_pct": 1.749559422095583,
+          "housing_percentile": 94.23076923076923,
+          "baseline_score": 63.46153846153847,
+          "scenario_score": 66.28205128205128,
+          "composition_delta": 2.8205128205128176
+        },
+        {
+          "id": "2507507",
+          "name": "João Pessoa",
+          "housing_raw_pct": 2.8881328121229672,
+          "housing_percentile": 71.15384615384616,
+          "baseline_score": 58.07692307692308,
+          "scenario_score": 60.38461538461539,
+          "composition_delta": 2.3076923076923066
+        },
+        {
+          "id": "1600303",
+          "name": "Macapá",
+          "housing_raw_pct": 13.590620420127015,
+          "housing_percentile": 9.615384615384615,
+          "baseline_score": 18.846153846153847,
+          "scenario_score": 19.615384615384613,
+          "composition_delta": 0.7692307692307665
+        },
+        {
+          "id": "2704302",
+          "name": "Maceió",
+          "housing_raw_pct": 4.210684213894073,
+          "housing_percentile": 55.76923076923077,
+          "baseline_score": 24.230769230769234,
+          "scenario_score": 29.871794871794872,
+          "composition_delta": 5.641025641025639
+        },
+        {
+          "id": "1302603",
+          "name": "Manaus",
+          "housing_raw_pct": 14.675986480892307,
+          "housing_percentile": 5.769230769230769,
+          "baseline_score": 8.846153846153847,
+          "scenario_score": 8.58974358974359,
+          "composition_delta": -0.2564102564102573
+        },
+        {
+          "id": "2408102",
+          "name": "Natal",
+          "housing_raw_pct": 3.9568033057277288,
+          "housing_percentile": 59.61538461538461,
+          "baseline_score": 41.15384615384616,
+          "scenario_score": 45.0,
+          "composition_delta": 3.8461538461538396
+        },
+        {
+          "id": "1721000",
+          "name": "Palmas",
+          "housing_raw_pct": 5.215612692771804,
+          "housing_percentile": 44.23076923076923,
+          "baseline_score": 65.76923076923077,
+          "scenario_score": 63.205128205128204,
+          "composition_delta": -2.564102564102569
+        },
+        {
+          "id": "4314902",
+          "name": "Porto Alegre",
+          "housing_raw_pct": 2.6729938937772775,
+          "housing_percentile": 78.84615384615384,
+          "baseline_score": 54.23076923076923,
+          "scenario_score": 53.717948717948715,
+          "composition_delta": -0.5128205128205181
+        },
+        {
+          "id": "1100205",
+          "name": "Porto Velho",
+          "housing_raw_pct": 6.1440057360958695,
+          "housing_percentile": 32.69230769230769,
+          "baseline_score": 28.461538461538463,
+          "scenario_score": 30.641025641025642,
+          "composition_delta": 2.179487179487179
+        },
+        {
+          "id": "2611606",
+          "name": "Recife",
+          "housing_raw_pct": 4.271006754687827,
+          "housing_percentile": 51.92307692307692,
+          "baseline_score": 33.46153846153847,
+          "scenario_score": 35.769230769230774,
+          "composition_delta": 2.3076923076923066
+        },
+        {
+          "id": "1200401",
+          "name": "Rio Branco",
+          "housing_raw_pct": 8.216705910965189,
+          "housing_percentile": 17.307692307692307,
+          "baseline_score": 44.23076923076923,
+          "scenario_score": 43.71794871794872,
+          "composition_delta": -0.512820512820511
+        },
+        {
+          "id": "3304557",
+          "name": "Rio de Janeiro",
+          "housing_raw_pct": 6.385063226528584,
+          "housing_percentile": 25.0,
+          "baseline_score": 54.23076923076924,
+          "scenario_score": 48.84615384615385,
+          "composition_delta": -5.384615384615394
+        },
+        {
+          "id": "2927408",
+          "name": "Salvador",
+          "housing_raw_pct": 3.8479043557342125,
+          "housing_percentile": 63.46153846153846,
+          "baseline_score": 37.30769230769231,
+          "scenario_score": 37.82051282051282,
+          "composition_delta": 0.512820512820511
+        },
+        {
+          "id": "2111300",
+          "name": "São Luís",
+          "housing_raw_pct": 6.296686500301915,
+          "housing_percentile": 28.846153846153847,
+          "baseline_score": 43.84615384615385,
+          "scenario_score": 43.71794871794872,
+          "composition_delta": -0.1282051282051242
+        },
+        {
+          "id": "3550308",
+          "name": "São Paulo",
+          "housing_raw_pct": 6.527948864236847,
+          "housing_percentile": 21.153846153846153,
+          "baseline_score": 64.23076923076923,
+          "scenario_score": 57.05128205128205,
+          "composition_delta": -7.179487179487175
+        },
+        {
+          "id": "2211001",
+          "name": "Teresina",
+          "housing_raw_pct": 5.2599371366582295,
+          "housing_percentile": 40.38461538461539,
+          "baseline_score": 55.0,
+          "scenario_score": 56.53846153846154,
+          "composition_delta": 1.53846153846154
+        },
+        {
+          "id": "3205309",
+          "name": "Vitória",
+          "housing_raw_pct": 2.6481867599970212,
+          "housing_percentile": 82.6923076923077,
+          "baseline_score": 82.6923076923077,
+          "scenario_score": 81.15384615384616,
+          "composition_delta": -1.538461538461533
+        }
+      ]
+    }
+  ],
+  "definition_comparisons": [
+    {
+      "a": "domicilios_gt2__seis_iguais",
+      "b": "domicilios_gt3__seis_iguais",
+      "strict_reversals": 1,
+      "baseline_ties_broken": 2,
+      "ties_reached": 1,
+      "pairs": 325
+    },
+    {
+      "a": "domicilios_gt2__seis_iguais",
+      "b": "moradores_gt2__seis_iguais",
+      "strict_reversals": 0,
+      "baseline_ties_broken": 2,
+      "ties_reached": 0,
+      "pairs": 325
+    },
+    {
+      "a": "domicilios_gt2__seis_iguais",
+      "b": "moradores_gt3__seis_iguais",
+      "strict_reversals": 3,
+      "baseline_ties_broken": 2,
+      "ties_reached": 0,
+      "pairs": 325
+    },
+    {
+      "a": "domicilios_gt3__seis_iguais",
+      "b": "moradores_gt2__seis_iguais",
+      "strict_reversals": 1,
+      "baseline_ties_broken": 1,
+      "ties_reached": 0,
+      "pairs": 325
+    },
+    {
+      "a": "domicilios_gt3__seis_iguais",
+      "b": "moradores_gt3__seis_iguais",
+      "strict_reversals": 1,
+      "baseline_ties_broken": 1,
+      "ties_reached": 0,
+      "pairs": 325
+    },
+    {
+      "a": "moradores_gt2__seis_iguais",
+      "b": "moradores_gt3__seis_iguais",
+      "strict_reversals": 3,
+      "baseline_ties_broken": 0,
+      "ties_reached": 0,
+      "pairs": 325
+    },
+    {
+      "a": "domicilios_gt2__materiais_40pct",
+      "b": "domicilios_gt3__materiais_40pct",
+      "strict_reversals": 2,
+      "baseline_ties_broken": 0,
+      "ties_reached": 0,
+      "pairs": 325
+    },
+    {
+      "a": "domicilios_gt2__materiais_40pct",
+      "b": "moradores_gt2__materiais_40pct",
+      "strict_reversals": 1,
+      "baseline_ties_broken": 0,
+      "ties_reached": 0,
+      "pairs": 325
+    },
+    {
+      "a": "domicilios_gt2__materiais_40pct",
+      "b": "moradores_gt3__materiais_40pct",
+      "strict_reversals": 3,
+      "baseline_ties_broken": 0,
+      "ties_reached": 2,
+      "pairs": 325
+    },
+    {
+      "a": "domicilios_gt3__materiais_40pct",
+      "b": "moradores_gt2__materiais_40pct",
+      "strict_reversals": 1,
+      "baseline_ties_broken": 0,
+      "ties_reached": 0,
+      "pairs": 325
+    },
+    {
+      "a": "domicilios_gt3__materiais_40pct",
+      "b": "moradores_gt3__materiais_40pct",
+      "strict_reversals": 1,
+      "baseline_ties_broken": 0,
+      "ties_reached": 2,
+      "pairs": 325
+    },
+    {
+      "a": "moradores_gt2__materiais_40pct",
+      "b": "moradores_gt3__materiais_40pct",
+      "strict_reversals": 2,
+      "baseline_ties_broken": 0,
+      "ties_reached": 2,
+      "pairs": 325
+    }
+  ]
+}

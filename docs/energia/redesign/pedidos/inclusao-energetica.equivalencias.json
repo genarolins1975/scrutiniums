@@ -1,0 +1,16 @@
+{
+  "/setor-eletrico/inclusao-energetica": [
+    {
+      "antes": "painel|quem pode estar ficando de fora?",
+      "depois": "painel|faturas por 100 famílias do cadastro único: o que a proxy mede",
+      "justificativa": "É a mesma seção, a da razão entre faturas com Tarifa Social e famílias do Cadastro Único (resposta P060, mesma figura, mesmos controles, mesmas fichas). O título deixou de enquadrar a razão como exclusão: ela mede faturas por família cadastrada e não diz quem fica de fora. A pergunta da gold continua citada, entre aspas, em 'o que não é possível concluir' da página de Cobertura."
+    }
+  ],
+  "/setor-eletrico/inclusao-energetica/cobertura": [
+    {
+      "antes": "painel|quem pode estar ficando de fora?",
+      "depois": "painel|faturas por 100 famílias do cadastro único, uf a uf",
+      "justificativa": "É o mesmo painel da proxy de cobertura (mapa e tabela por UF, séries, municípios), com o mesmo id de resposta (P060). Só o título mudou, pela mesma razão da síntese: a razão faturas por famílias não mede quem fica fora. Nenhuma outra visão da família mudou de lugar na rodada 2: a frase, os cartões e a ficha que passaram a seguir o controle (Na renda, Indicador, Medida) continuam nos mesmos painéis."
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+ "_aviso": "FIXTURE DE TESTE, não publicada. Mesmo esquema do arquivo pipeline/energia/regulatorio/limites_pld.json do módulo Regulação. Valores de 2021 e 2026 como noticiados pela ANEEL e pela imprensa setorial (2026: Despacho ANEEL nº 3.850/2025, notícia da ANEEL de dezembro de 2025; 2021: valores homologados em dezembro de 2020). A conferência no ato primário é responsabilidade do módulo Regulação; aqui os valores só exercitam o código.",
+ "conferido_em": "2026-09-30T22:00:00Z",
+ "atos": [
+  {
+   "ano": 2021,
+   "ato": "Limites do PLD para 2021 (fixture)",
+   "data_publicacao": "2020-12-15",
+   "vigencia_inicio": "2021-01-01",
+   "vigencia_fim": "2021-12-31",
+   "pld_min": 49.77,
+   "pld_max_horario": 1141.85,
+   "pld_max_estrutural": 583.88,
+   "unidade": "R$/MWh",
+   "dispositivo": "fixture",
+   "url": "https://energiahoje.editorabrasilenergia.com.br/definidos-limites-do-pld-horario-para-2021/",
+   "trecho": null,
+   "altera_ou_revoga": null
+  },
+  {
+   "ano": 2026,
+   "ato": "Despacho ANEEL nº 3.850/2025 (fixture)",
+   "data_publicacao": "2025-12-23",
+   "vigencia_inicio": "2026-01-01",
+   "vigencia_fim": "2026-12-31",
+   "pld_min": 57.31,
+   "pld_max_horario": 1611.04,
+   "pld_max_estrutural": 785.27,
+   "unidade": "R$/MWh",
+   "dispositivo": "fixture",
+   "url": "https://www2.aneel.gov.br/cedoc/dsp20253850ti.pdf",
+   "trecho": null,
+   "altera_ou_revoga": null
+  }
+ ]
+}

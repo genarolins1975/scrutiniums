@@ -1,0 +1,1633 @@
+{
+ "avaliador": "P2-U11",
+ "papel": "produto",
+ "rodada": "reavaliacao 2",
+ "versao_avaliada": "commit cbb5fbfeb, servido em http://localhost:3101",
+ "paginas": {
+  "/setor-eletrico/inclusao-energetica": {
+   "paineis": [
+    "P059",
+    "P060",
+    "P061",
+    "P062"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 8.0,
+     "evidencia": [
+      "1440_dobra.png: H1 em forma de pergunta, lead, três números com unidade (2,5%, 4,4%, 0,9%) e rótulo Estimado, seletor de profundidade e início do gráfico na primeira tela.",
+      "390_dobra.png e 390_inteira_01de06.png: os três números e a nota 'Estatística histórica' cabem em 390 px; cabeçalho e barra de menu ocupam cerca de 90 px.",
+      "Captura própria 390 (home390_02de06.png): no gráfico de barras a linha tracejada de referência cruza rótulos de categoria e a linha de base cruza a primeira letra."
+     ],
+     "atendidos": [
+      "Pergunta e informação principal reconhecíveis na primeira tela",
+      "Hierarquia entre síntese, gráfico e blocos Período, Universo, Unidade e Como interpretar",
+      "Números, unidades e datas legíveis; tipografia consistente",
+      "Celular preserva os três números e a nota de limitação"
+     ],
+     "problemas": [
+      "O H1 'Para quem a energia pesa mais?' cobre só o primeiro dos quatro painéis; o título da aba cita Tarifa Social, cobertura, orçamento e acesso.",
+      "O par 4,4% e 2,5% aparece no cartão, na frase e no gráfico; blocos de texto de 45 a 120 palavras no fim do painel.",
+      "Em 390 px a linha de referência e a linha de base cruzam rótulos de categoria.",
+      "Três camadas de navegação empilhadas no topo (menu, grupo, capítulos nas filhas); a síntese não mostra a barra de capítulos."
+     ],
+     "justificativa": "Primeira tela clara e hierarquia bem resolvida, mas o título cobre um quarto do conteúdo, os mesmos números se repetem, os blocos de texto são longos e em celular linhas cruzam rótulos do gráfico."
+    },
+    "B": {
+     "nota": 8.0,
+     "evidencia": [
+      "texto_entender.txt, 'Benefício e acesso, cada medida na sua unidade e na sua data': UC, fatura, família, domicílio e pessoa definidos junto de cada número.",
+      "texto_entender.txt: bloco 'O que não é possível concluir' em cada painel (ex.: 'Os limiares de 3%, 5%, 10% não definem pobreza energética').",
+      "Playwright 1440: 'Por que isso importa' abre recolhido; Estimado, Observado e Calculado só têm definição em atributo title (sem foco e sem toque)."
+     ],
+     "atendidos": [
+      "Distinção entre UC, fatura, família, domicílio e pessoa explicada antes do uso",
+      "Limites da leitura declarados em cada painel",
+      "Siglas principais (POF, PNAD, UC, SCS, CDE, PASI) expandidas no primeiro uso",
+      "Caminho para aprofundar indicado em 'Onde aprofundar'"
+     ],
+     "problemas": [
+      "'Por que isso importa' (pergunta 2 da abertura) fica recolhido no fim do primeiro painel.",
+      "Razão de médias só é explicada depois do gráfico, no bloco 'Como interpretar'.",
+      "Definição de Estimado, Observado e Calculado só como tooltip; glossário de siglas recolhido.",
+      "Rótulo 'O que mudou' sobre uma pesquisa de período único não descreve mudança."
+     ],
+     "justificativa": "Cuidado exemplar com unidades e limites, mas a razão pela qual a medida importa e a definição das etiquetas de natureza do dado ficam escondidas, e termos como razão de médias vêm depois do gráfico."
+    },
+    "C": {
+     "nota": 8.5,
+     "evidencia": [
+      "1440_dobra.png e 1440_inteira_01de02.png: resposta à pergunta (4,4% na menor faixa contra 0,9% na maior) em uma tela; tabela do gráfico a um clique.",
+      "texto_entender.txt: Tarifa Social (17.246.524 UC, 21,1%), proxy 67,8 por 100 famílias e acesso (135 mil domicílios) lado a lado, cada um com unidade e data.",
+      "Playwright: link 'painel completo de orçamento' leva a região, limiar e UF; 'Onde aprofundar' leva a Tarifa Social, Cobertura e Acesso."
+     ],
+     "atendidos": [
+      "Tarefa 'ver para quem a energia pesa mais' cumprida em um passo",
+      "Cinco unidades distintas apresentadas sem soma",
+      "Caminho para o detalhe por UF, região e limiar"
+     ],
+     "problemas": [
+      "'Onde aprofundar' lista três dos quatro capítulos; Peso no orçamento só tem link no texto corrido.",
+      "Para comparar territórios ou ver séries é preciso sair da síntese; Tarifa Social e acesso aparecem só como cartões numéricos."
+     ],
+     "justificativa": "A síntese cumpre a tarefa principal e mostra os quatro indicadores com unidades, mas depende de links para qualquer comparação territorial ou temporal e a lista de aprofundamento omite o capítulo de orçamento."
+    },
+    "D": {
+     "nota": 8.5,
+     "evidencia": [
+      "1440_dobra.png: peso da energia por faixa de renda (4,4% contra 0,9%) como primeira mensagem; 'Estatística histórica' declara que a POF não é projetada para 2026.",
+      "texto_entender.txt: 135 mil domicílios sem energia, 1.964.825 pessoas em sistemas isolados e Luz para Todos com a ressalva 'ligação feita não mede a qualidade do fornecimento'.",
+      "Playwright: 'Copiar link deste painel' gera URL com âncora; 'Baixar os dados (16 arquivos)' traz nota sobre separador, ponto decimal e campo vazio para ausência."
+     ],
+     "atendidos": [
+      "Custo, acesso e benefício tratados com recorte de renda",
+      "Lacunas visíveis: sem recorte municipal na POF e sem projeção para 2026",
+      "Arquivos para baixar com explicação do formato",
+      "Útil a gestores, jornalistas e pesquisadores"
+     ],
+     "problemas": [
+      "Recortes territoriais ficam nas páginas filhas; a síntese não mostra desigualdade entre regiões ou UF.",
+      "Linguagem técnica (razão de médias, proxy, UC) exige leitura atenta de leitor leigo."
+     ],
+     "justificativa": "Tema de grande interesse social, com desigualdade por renda, acesso e benefício e limites honestos; falta mostrar na própria síntese a desigualdade territorial, e a linguagem ainda é técnica para leigos."
+    },
+    "I": {
+     "nota": 8.5,
+     "evidencia": [
+      "1440_inteira_01de02.png: barras horizontais com base em zero (0 a 5), sete faixas completas, rótulos de valor e linha tracejada da razão nacional 2,5%.",
+      "Playwright: setas, Home e End percorrem as barras com anúncio em região viva; tabela com os mesmos 7 valores em 'Dados do gráfico em tabela'.",
+      "Captura própria 390 (home390_02de06.png): linha de referência cruza rótulos de categoria; rótulos numéricos em 11 px."
+     ],
+     "atendidos": [
+      "Gráfico escolhido pela tarefa, com eixo em zero e referência visível",
+      "Categorias completas na ordem das faixas",
+      "Alternativa em tabela e navegação por teclado",
+      "Cor única, sem juízo de aprovação ou reprovação"
+     ],
+     "problemas": [
+      "Em 390 px a linha tracejada e a linha de base cruzam rótulos de categoria e valores.",
+      "Tarifa Social e acesso aparecem só como cartões numéricos, sem visual de série ou mapa."
+     ],
+     "justificativa": "O único gráfico é bem escolhido e acessível, com referência e tabela; em celular as linhas cruzam rótulos, e os demais temas da síntese não têm visualização."
+    },
+    "J": {
+     "nota": 8.0,
+     "evidencia": [
+      "Playwright: seletor de profundidade é radiogroup nomeado; setas trocam o nível e gravam ?modo=analisar; recarregar mantém; links entre capítulos levam o ?modo.",
+      "Playwright: 'Comprove este número' abre painel lateral, foco vai ao botão de fechar e Esc devolve o foco ao botão de origem.",
+      "Playwright (DOM): navegação 'Capítulos da inclusão energética' tem 3 links; a página não exibe a barra Síntese, Tarifa Social, Cobertura, Peso no orçamento, Acesso que as filhas têm."
+     ],
+     "atendidos": [
+      "Estado de profundidade na URL e mantido entre capítulos",
+      "Ficha de comprovação com foco gerenciado e fechamento por Esc",
+      "Downloads agrupados com explicação do formato"
+     ],
+     "problemas": [
+      "'Onde aprofundar' omite Peso no orçamento; a barra de capítulos das filhas não existe na síntese.",
+      "Três camadas de navegação no topo; em 390 px chegam a cerca de 220 px nas filhas.",
+      "Analisar e Auditar acrescentam só quatro parágrafos e abrem dois blocos; o ganho de profundidade na síntese é pequeno."
+     ],
+     "justificativa": "Estado na URL, profundidade persistente e fichas bem tratadas, mas a síntese não oferece a barra de capítulos das filhas, omite um capítulo na lista de aprofundamento e os níveis acrescentam pouco."
+    },
+    "K": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: axe sem violações em 360, 390, 768 e 1440; sem rolagem horizontal; 0 alvos abaixo de 24 px e 0 abaixo de 44 px em 390; foco invisível 0; primeiro Tab é 'Pular para o conteúdo'.",
+      "Playwright: nenhum texto abaixo do contraste mínimo no main; foco com contorno de 2 px; skip link leva ao main; movimento reduzido desliga a rolagem suave.",
+      "Playwright: 320 px sem rolagem horizontal; com fonte base a 200% e janela de 640 px o seletor Entender, Analisar, Auditar passa da largura da tela."
+     ],
+     "atendidos": [
+      "Teclado completo com foco visível e roving tabindex",
+      "Semântica: marcos, radiogroup nomeado, gráfico com tabela e região viva",
+      "Contraste e alternativas à cor (símbolos ◐ ● ◆ junto do texto da natureza do dado)",
+      "Leitura de 320 a 1440 px sem rolagem horizontal"
+     ],
+     "problemas": [
+      "Definição de Estimado, Observado e Calculado só em title: invisível a teclado e toque.",
+      "Rótulos de gráfico em 11 px; linhas cruzam rótulos em 390 px.",
+      "Com texto em 200% e janela de 640 px o seletor de profundidade excede a tela.",
+      "Leitor de tela real não testado."
+     ],
+     "justificativa": "Base técnica sólida, confirmada por axe e por teste manual de teclado, contraste e 320 px; restam definições só em tooltip, textos pequenos nos gráficos e a ausência de teste com leitor de tela."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "H01_titulo_escopo",
+     "gravidade": "media",
+     "criterios": [
+      "A",
+      "B"
+     ],
+     "onde": "H1 e título da aba",
+     "descricao": "O H1 'Para quem a energia pesa mais?' descreve só o primeiro painel (POF); a página também trata Tarifa Social, proxy de cobertura e acesso, e o título da aba já diz isso.",
+     "sugestao": "Usar H1 que nomeie a síntese e subtítulo com as quatro perguntas, ou rebaixar a pergunta do orçamento a H2."
+    },
+    {
+     "id": "H02_onde_aprofundar",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "C"
+     ],
+     "onde": "Seção 'Onde aprofundar'",
+     "descricao": "Lista Tarifa Social, Cobertura e Acesso; Peso no orçamento só aparece num link do texto corrido ('painel completo de orçamento'). A barra de capítulos das filhas não existe na síntese.",
+     "sugestao": "Listar os quatro capítulos e repetir a barra de capítulos no topo da síntese."
+    },
+    {
+     "id": "H03_natureza_tooltip",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "K"
+     ],
+     "onde": "Etiquetas ◐ Estimado, ● Observado, ◆ Calculado",
+     "descricao": "As definições estão só em atributo title (ex.: 'Calculado: Transformação determinística feita pela Scrutiniums...'), sem foco, sem toque e sem legenda visível.",
+     "sugestao": "Legenda visível perto do primeiro uso ou popover focável; repetir a definição no glossário aberto."
+    },
+    {
+     "id": "H04_por_que_recolhido",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "'Por que isso importa' no fim do primeiro painel",
+     "descricao": "A resposta à pergunta 2 da abertura (por que a medida importa) fica recolhida; só aparece ao clicar ou no nível Auditar.",
+     "sugestao": "Uma frase visível logo abaixo do lead."
+    },
+    {
+     "id": "H05_390_linhas_cruzam",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "K"
+     ],
+     "onde": "Gráfico de barras em 390 px",
+     "descricao": "A linha tracejada da razão nacional e a linha de base cruzam rótulos de faixa (ex.: 'Mais de R$ 14.310 a R$ 23.850') e valores; rótulos numéricos em 11 px.",
+     "sugestao": "Margem entre rótulo e linha, fundo opaco no rótulo ou rótulo de categoria em linha própria sem cruzamento."
+    },
+    {
+     "id": "H06_niveis_rasos",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "C"
+     ],
+     "onde": "Seletor Entender, Analisar, Auditar",
+     "descricao": "Analisar acrescenta 4 parágrafos 'Os números por trás da resposta' (altura de 4.488 para 5.060 px) e Auditar abre dois blocos; nenhuma tabela ou arquivo novo na síntese.",
+     "sugestao": "Usar Analisar para mostrar a tabela do gráfico e os arquivos; manter Auditar para fontes e regras."
+    },
+    {
+     "id": "H07_o_que_mudou",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Bloco 'O que mudou' do painel POF",
+     "descricao": "Rótulo padrão usado para uma pesquisa de período único; o texto descreve a data e a sensibilidade da média, não mudança.",
+     "sugestao": "Renomear (por exemplo 'Data e limites da pesquisa') quando não há série."
+    },
+    {
+     "id": "H08_repeticao_numeros",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Primeira tela e painel do orçamento",
+     "descricao": "4,4% e 2,5% aparecem no cartão, na frase-resposta, no rótulo do gráfico e de novo no nível Analisar; blocos 'Como interpretar' chegam a cerca de 120 palavras.",
+     "sugestao": "Cortar a repetição na frase e dividir 'Como interpretar' em itens curtos."
+    },
+    {
+     "id": "H09_200pct_seletor",
+     "gravidade": "baixa",
+     "criterios": [
+      "K"
+     ],
+     "onde": "Seletor de profundidade com texto ampliado",
+     "descricao": "Com fonte base a 200% e janela de 640 px o botão Auditar fica fora da tela (borda direita em 867 px).",
+     "sugestao": "Permitir quebra de linha do grupo também a partir de 640 px."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver) não testado; só rótulos, regiões vivas e árvore de papéis lidos no DOM.",
+    "Zoom real do navegador a 200% e 400% não testado; usei viewport de 320 px e fonte base a 200%.",
+    "Firefox, Safari e aparelho móvel físico não testados; toque emulado no Chromium.",
+    "Conteúdo integral das fichas 'Sobre este dado' e de seis das sete fichas 'Comprove este número' não lido.",
+    "Arquivos de 'Baixar os dados (16 arquivos)' só listados; apenas inclusao_pof.csv foi baixado."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "id": "TP1",
+     "tarefa": "Ver para quem a energia pesa mais (orçamento por renda)",
+     "perfil": "gestor público ou conselho",
+     "passos": [
+      "Abrir a página em 1440 px",
+      "Ler o H1 e os três números (2,5%, 4,4%, 0,9%)",
+      "Ler a frase-resposta e o gráfico por faixa",
+      "Abrir 'Dados do gráfico em tabela'"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "'Por que isso importa' recolhido",
+      "Razão de médias só explicada depois do gráfico"
+     ],
+     "erros": []
+    },
+    {
+     "id": "TP2",
+     "tarefa": "Distinguir UC, fatura, família, domicílio e pessoa e o que cada número permite concluir",
+     "perfil": "jornalista ou professor",
+     "passos": [
+      "Rolar até 'Benefício e acesso, cada medida na sua unidade e na sua data'",
+      "Ler a definição de cada unidade junto do número",
+      "Ler os blocos 'O que não é possível concluir'"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Densidade de texto",
+      "Sem legenda visível para Observado, Estimado e Calculado"
+     ],
+     "erros": []
+    },
+    {
+     "id": "TP3",
+     "tarefa": "Chegar aos números por região, limiar e UF e ao arquivo de dados",
+     "perfil": "pesquisador",
+     "passos": [
+      "Ler o fim do painel POF",
+      "Seguir o link 'painel completo de orçamento'",
+      "Voltar e abrir 'Baixar os dados (16 arquivos)'",
+      "Baixar inclusao_pof.csv"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "'Onde aprofundar' não lista Peso no orçamento; o link está no texto corrido"
+     ],
+     "erros": []
+    }
+   ]
+  },
+  "/setor-eletrico/inclusao-energetica/tarifa-social": {
+   "paineis": [
+    "P059"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 8.0,
+     "evidencia": [
+      "1440_dobra.png: eyebrow, H1, lead que já separa UC de fatura, quatro números (17.246.524 UC, 21,1%, R$ 542.423.515, 17.155.135 faturas) com datas e a nota 'Fonte defasada, declarada'.",
+      "1440_inteira_01de03.png: seção 'Onde e quanto' com seletor de medida, intervalo, série, blocos Período, Universo, Unidade e leitura em três colunas.",
+      "390_inteira_03de07.png e ts390_02de07.png: anotações 'Concessão automática' e 'MPV nº 1.300/2025' cortadas à esquerda nos gráficos de linha."
+     ],
+     "atendidos": [
+      "Primeira tela com pergunta, quatro números datados e ressalva de defasagem",
+      "Hierarquia síntese, série, mapa, histórico e aprofundamento",
+      "Unidades e datas legíveis em cada número",
+      "Tipografia e espaçamento consistentes entre painéis"
+     ],
+     "problemas": [
+      "Quatro cartões do mesmo peso; 17.246.524 UC (05/2025) e 17.155.135 faturas (03/2026) quase iguais convidam à comparação direta.",
+      "Em 390 px as anotações dos gráficos de linha ficam cortadas (perdem 'jan/2022' e 'jul/2025').",
+      "A série mensal da CDE aparece em cinco pedaços soltos (cheio, tracejado e um ponto isolado em mar/2026).",
+      "Hero longo: lead de quase 50 palavras mais bloco de defasagem com dois itens antes do primeiro gráfico."
+     ],
+     "justificativa": "Primeira tela forte, com números datados e aviso de defasagem, mas quatro cartões de mesmo peso, anotações cortadas no celular e uma série mensal fragmentada reduzem a leitura."
+    },
+    "B": {
+     "nota": 8.0,
+     "evidencia": [
+      "texto_entender.txt, hero: UC, fatura e DMR definidos junto dos números ('A DMR é a receita que a distribuidora deixa de cobrar, não o desconto de cada família').",
+      "texto_entender.txt: 'Como interpretar' explica por que SCS e CDE não se emendam; 'O que mudou' dá a gratuidade até 80 kWh (MPV nº 1.300/2025).",
+      "texto_entender.txt: 'SP em jan/2026 (ESS fora do arquivo)' usa ESS sem definição; texto_auditar.txt: o glossário define 'ESS, Encargos de Serviços do Sistema', mas a página usa ESS como sigla de distribuidora."
+     ],
+     "atendidos": [
+      "UC, fatura e DMR distinguidas antes do uso",
+      "Quebra de série entre SCS e CDE explicada em texto",
+      "Limites explícitos: sem número de famílias nem de pessoas",
+      "Mês incompleto e fonte defasada explicados ao leitor"
+     ],
+     "problemas": [
+      "MPV só é expandida no glossário recolhido; ESS não tem definição no Entender e, no Auditar, o glossário a define como encargo, mas a página a usa como distribuidora.",
+      "Natureza do dado só em tooltip; 'Por que isso importa' recolhido.",
+      "Muitos conceitos em sequência (SCS, CDE, DMR, mês completo, despacho) no nível Entender.",
+      "Sem remissão no texto à página Conta de luz, onde a CDE compõe a fatura."
+     ],
+     "justificativa": "Boa separação entre UC, fatura e DMR e entre as duas séries, mas siglas sem expansão (uma delas definida de forma diferente do uso), etiquetas de natureza só em tooltip e muitos conceitos seguidos pesam para o leigo."
+    },
+    "C": {
+     "nota": 8.0,
+     "evidencia": [
+      "Playwright: Medida '% das UC residenciais' e 'DMR (R$ milhões)' redesenham série e título; '5 anos' recorta e informa 'jul/20 a jun/25, 60 de 138 pontos'.",
+      "Playwright: mapa 'Desconto médio por fatura' mostra valores de menos 41,84 a 63,30 R$ por fatura; ES tem 273.840 faturas e desconto das faturas de menos 11,5 R$ milhões.",
+      "texto_entender.txt: 'Onde: faturas com desconto por UF' abre por contagem absoluta (SP 2.030.073); histórico de até 4 UF por mapa, tabela ou campo."
+     ],
+     "atendidos": [
+      "Dimensionar a Tarifa Social (UC, participação, DMR) em um passo",
+      "Histórico de até 4 UF e tabelas por UF, distribuidora e mês",
+      "Cobertura do mês declarada, evitando comparar mês incompleto"
+     ],
+     "problemas": [
+      "A comparação entre UF do desconto médio fica comprometida pelo valor negativo do ES, sem nota.",
+      "O mapa padrão mostra contagem absoluta de faturas, que repete o tamanho da população da UF.",
+      "UC (SCS até mai/2025) e faturas (CDE até mar/2026) não se emendam; não há série única até hoje."
+     ],
+     "justificativa": "Atende a tarefa de dimensionar e localizar a Tarifa Social, mas a comparação por UF perde valor com o desconto negativo do ES sem explicação, o mapa padrão é contagem bruta e as duas séries não se emendam."
+    },
+    "D": {
+     "nota": 8.0,
+     "evidencia": [
+      "texto_entender.txt: modalidades (baixa renda, BPC, quilombola, indígena), faixa de consumo e custeio da CDE (R$ 7,83 bilhões em 2025).",
+      "texto_entender.txt: 'Não se conclui número de famílias nem de pessoas beneficiadas'; 'Diferenças entre UF não têm causa atribuída aqui'.",
+      "Playwright: URL guarda ts.med, ts.mapa e ts.uf (link copiado leva o recorte); componente de tabela exporta CSV e XLSX com busca e ordem no nome do arquivo."
+     ],
+     "atendidos": [
+      "Benefício, custo para a CDE e diferenças entre UF tratados",
+      "Grupos como quilombola e indígena visíveis",
+      "Limites declarados, sem causalidade atribuída",
+      "Exportação com contexto e link com estado"
+     ],
+     "problemas": [
+      "Desconto negativo no ES e queda de SP em jul/2025 sem nota podem levar jornalista a conclusão errada.",
+      "Mapa de contagem absoluta favorece leitura por tamanho da UF, não por alcance do benefício; a proxy de alcance está em outra página."
+     ],
+     "justificativa": "Relevância social alta e limites honestos, mas pontos sem explicação (ES negativo, queda de SP) e um mapa de contagem absoluta enfraquecem o uso por jornalistas e conselhos."
+    },
+    "I": {
+     "nota": 7.0,
+     "evidencia": [
+      "Playwright: mapa 'Desconto médio por fatura', tabela por UF e histórico mostram ES negativo (menos 41,84 R$ por fatura; menos 11,5 R$ milhões); inclusao_cde_mensal_uf.csv tem ES negativo nos 11 meses.",
+      "1440_inteira_03de03.png e ts390_06de07.png: barra de 2026 da CDE (valor orçado) com a mesma cor das demais; rótulo '2026 (ano…' truncado em 1440; anotações cortadas em 390.",
+      "SVG da série mensal da CDE: gridlines só em 0, 20 e 40 enquanto há pontos de 56,11 e 56,49; série em cinco trechos soltos, com ponto isolado em mar/2026."
+     ],
+     "atendidos": [
+      "Série principal em linha com meses incompletos tracejados e legenda",
+      "Anotações de eventos (Lei 14.203/2021, MPV 1.300/2025)",
+      "Tabela por gráfico e navegação por setas com anúncio",
+      "Mapas em projeção equivalente e hachura para sem dado"
+     ],
+     "problemas": [
+      "Valor negativo de desconto para o ES (e para o RJ em 4 meses de 2025) exibido em mapa, tabela e histórico sem nota.",
+      "Barra de 2026 (valor orçado) sem diferenciação visual; rótulo do ano truncado em 1440 px.",
+      "Anotações cortadas em 390 px; série mensal fragmentada; eixo sem gridline acima de 40.",
+      "Mapa padrão por contagem absoluta de faturas, com classes que dependem do tamanho da UF.",
+      "Rótulos de categoria cruzados pela linha de base nas barras em 390 px."
+     ],
+     "justificativa": "Boa escolha de gráficos e tratamento honesto de meses incompletos, mas valores negativos sem nota, barra orçada igual às demais, anotações cortadas no celular, série em pedaços e mapa de contagem bruta pesam na nota."
+    },
+    "J": {
+     "nota": 7.5,
+     "evidencia": [
+      "Playwright 1440: indicador do mapa a 2395 px e primeiro clique em SP a 2943 px levam a página a 70 px (pushState e rolagem suave); Medida e período não saltam.",
+      "Playwright: Medida DMR muda título e eixo, mas a frase 'Em mai/2025, 17.246.524 unidades consumidoras (21,1% das residenciais)' permanece.",
+      "Playwright: histórico de até 4 UF por mapa, tabela ou campo, com chips ✕; a lista do campo fica aberta sobre os controles seguintes até Esc."
+     ],
+     "atendidos": [
+      "Estado na URL (ts.med, ts.de, ts.ate, ts.mapa, ts.uf)",
+      "Comparação de até 4 UF com retorno por chip",
+      "Tabelas com busca, filtro, ordenação e exportação CSV e XLSX",
+      "Malha indisponível mostra mensagem, aponta a tabela e oferece 'Tentar de novo'"
+     ],
+     "problemas": [
+      "Salto ao topo ao trocar o indicador do mapa e no primeiro clique em UF.",
+      "Frase-resposta e cartões não acompanham a Medida escolhida.",
+      "Lista de opções do campo de UF permanece aberta cobrindo controles abaixo até Esc.",
+      "O título do gráfico não informa o intervalo ao usar 12 meses, 5 anos ou 10 anos (só a linha de status informa)."
+     ],
+     "justificativa": "Estado na URL, comparação de UF, tabelas com exportação e mensagens de erro bem resolvidos, mas a página salta ao topo em controles do meio, a frase-resposta fica fixa e a lista do campo de UF cobre o conteúdo."
+    },
+    "K": {
+     "nota": 7.5,
+     "evidencia": [
+      "objetivo.json: axe vazio em 4 larguras; sem rolagem horizontal; 9 alvos abaixo de 44 px em 390 no Entender e 22 no Auditar; 0 abaixo de 24 px; teclado sem foco invisível.",
+      "390_inteira_03de07.png: anotação 'jul/2025: Gratuidade até 80 kWh (MPV nº 1.300/2025)' perde o início; tabela de 1.102 px em contêiner de 358 px com aviso de rolagem lateral.",
+      "Playwright: 102 caracteres em 10 px e 163 em 11 px nos rótulos de gráfico em 390; nenhum texto abaixo do contraste mínimo além do botão desabilitado."
+     ],
+     "atendidos": [
+      "Teclado com foco visível e gráficos com setas e região viva",
+      "Semântica de grupos, mapa com título e busca por teclado",
+      "Contraste adequado e alternativas à cor (símbolos, hachura, tracejado)",
+      "320 a 1440 px sem rolagem horizontal"
+     ],
+     "problemas": [
+      "Anotações de evento cortadas em 390 px (perda de informação no celular).",
+      "Texto de 10 e 11 px em eixos e rótulos.",
+      "Definições de natureza do dado só em tooltip.",
+      "Tabelas largas (até 1.102 px) pedem rolagem lateral; colunas numéricas ficam fora da primeira tela.",
+      "Leitor de tela real não testado."
+     ],
+     "justificativa": "Base de acessibilidade boa (axe, teclado, contraste), mas anotações cortadas no celular, textos de 10 e 11 px, definições só em tooltip e tabelas largas reduzem a nota; leitor de tela não testado."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "ressalva essencial escondida",
+     "descricao": "Mapa 'Desconto médio por fatura' e 'Desconto das faturas', tabela por UF e histórico exibem desconto negativo para o Espírito Santo (menos R$ 11,5 milhões e menos R$ 41,84 por fatura em mar/2026, com 273.840 'faturas com desconto') e para o Rio de Janeiro em 4 meses de 2025, sem nota. O valor contradiz a definição 'fatura com desconto' e define o mínimo da legenda. Não verifiquei a origem (estorno, ajuste ou erro de sinal); cabe ao avaliador técnico.",
+     "evidencia": "Playwright com ?ts.mapa=desconto&ts.uf=ES: 'SELEÇÃO Espírito Santo (ES): menos 11,5 R$ milhões, classe menos de 5,6' e resumo 'Valores de menos 11,5 R$ milhões a 98,9 R$ milhões'; tabela 'Espírito Santo | ES | Sudeste | 273.840 | menos 11,5 | menos 41,84 | 78'; tabela do histórico de ES em 'Desconto das faturas (R$ milhões)': menos 7,8 em mai/25, menos 12,1 em jul/25, menos 13,4 em ago/25; arquivo inclusao_cde_mensal_uf.csv com ES negativo em todos os 11 meses e RJ em jun a set/2025; nenhum texto da página cita valor negativo."
+    }
+   ],
+   "achados": [
+    {
+     "id": "T01_negativo_ES",
+     "gravidade": "alta",
+     "criterios": [
+      "I",
+      "C",
+      "D",
+      "B"
+     ],
+     "onde": "Mapa por UF, tabela 'Tarifa Social por UF, mar/2026' e histórico por UF",
+     "descricao": "ES aparece com desconto das faturas de menos R$ 11,5 milhões e desconto médio de menos R$ 41,84 por fatura (273.840 faturas); RJ também fica negativo em jun a set/2025. Sem nota, o mínimo da legenda e a comparação entre UF ficam distorcidos.",
+     "sugestao": "Verificar na fonte; se for estorno ou ajuste, explicar e tratar fora da média; se for erro, corrigir; sinalizar no mapa e na tabela."
+    },
+    {
+     "id": "T02_salto_topo",
+     "gravidade": "alta",
+     "criterios": [
+      "J",
+      "K"
+     ],
+     "onde": "Indicador do mapa e primeiro clique em UF",
+     "descricao": "Ao trocar o indicador do mapa (2395 px) ou clicar em SP (2943 px), a página rola sozinha de volta a cerca de 70 px, tirando mapa e barra de seleção da tela; o segundo clique em outra UF não salta.",
+     "sugestao": "Atualizar a URL sem rolar (scroll false) e manter a posição do leitor."
+    },
+    {
+     "id": "T03_frase_medida",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "B"
+     ],
+     "onde": "Frase-resposta do painel 'Onde e quanto a Tarifa Social alcança?'",
+     "descricao": "Com Medida DMR ou % das UC residenciais, título, eixo e série mudam, mas a frase 'Em mai/2025, 17.246.524 unidades consumidoras...' e os cartões ficam fixos.",
+     "sugestao": "Gerar a frase a partir da medida escolhida ou rotular a frase como 'Resumo do mês de referência'."
+    },
+    {
+     "id": "T04_orcado_2026",
+     "gravidade": "media",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Gráfico 'Quanto a CDE destina à Tarifa Social por ano?'",
+     "descricao": "A barra de 2026 (valor orçado, R$ 10,44 bilhões) tem a mesma cor das demais e o rótulo do eixo aparece como '2026 (ano…' em 1440 px; a ressalva está em texto abaixo, e o conjunto não distingue orçado de executado nos outros anos.",
+     "sugestao": "Hachura ou cor mais clara para o ano orçado e rótulo completo do eixo; título com 'ano em curso é orçado'."
+    },
+    {
+     "id": "T05_anotacoes_390",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "K"
+     ],
+     "onde": "Gráficos de linha em 390 px",
+     "descricao": "As anotações 'jan/2022: Concessão automática (Lei nº 14.203/2021)' e 'jul/2025: Gratuidade até 80 kWh (MPV nº 1.300/2025)' perdem o início por corte à esquerda.",
+     "sugestao": "Alinhar a anotação à direita da linha quando faltar espaço ou quebrar em duas linhas."
+    },
+    {
+     "id": "T06_serie_cde_fragmentada",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Gráfico 'Depois do SCS' (desconto médio por fatura)",
+     "descricao": "A série tem cinco trechos soltos (mai a ago/25 cheio, set a out tracejado, nov a dez cheio, jan a fev/26 tracejado, mar/26 ponto isolado) e o eixo tem gridline só até 40 com pontos em 56.",
+     "sugestao": "Ligar os meses incompletos aos vizinhos com linha tracejada e estender o eixo até 60."
+    },
+    {
+     "id": "T07_mapa_contagem_absoluta",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "C"
+     ],
+     "onde": "Mapa 'Faturas com desconto' (padrão)",
+     "descricao": "Choropleth de contagem absoluta por UF com classes por quantis (menos de 137.623 a 1.148.952 ou mais); reproduz o tamanho da população e não o alcance do benefício.",
+     "sugestao": "Padrão por razão (por 100 famílias do Cadastro Único, já calculada na página Cobertura) ou aviso de efeito do tamanho."
+    },
+    {
+     "id": "T08_queda_SP_jul25",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "B"
+     ],
+     "onde": "Histórico por UF com SP e BA",
+     "descricao": "SP cai de cerca de 2,3 milhões para cerca de 1,4 milhão de faturas em jul/2025, ao lado do marcador da MPV nº 1.300/2025, sem explicação; o marcador sugere causa.",
+     "sugestao": "Nota curta sobre a queda ou marcador de evento com texto neutro 'mês mistura emissões antes e depois'."
+    },
+    {
+     "id": "T09_siglas",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Glossário 'Fontes, datas e siglas' e texto sobre lacunas",
+     "descricao": "No Entender ESS não tem definição; no Auditar é definida como Encargos de Serviços do Sistema, mas é usada como sigla de distribuidora (ex.: 'SP em jan/2026 (ESS fora do arquivo)'); MPV só tem expansão no glossário recolhido.",
+     "sugestao": "Definir ESS como a distribuidora em questão no Entender e corrigir o glossário; expandir MPV no primeiro uso."
+    },
+    {
+     "id": "T10_tabela_larga_390",
+     "gravidade": "baixa",
+     "criterios": [
+      "K",
+      "A"
+     ],
+     "onde": "Tabela 'Arquivos mensais de Beneficiários da CDE' em 390 px",
+     "descricao": "Tabela de 1.102 px em contêiner de 358 px, 9 colunas, sem coluna fixa; as primeiras colunas visíveis não são as numéricas.",
+     "sugestao": "Coluna de mês fixa e ordem de colunas pensada para telas estreitas."
+    },
+    {
+     "id": "T11_jargao_auditar",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Nível Auditar, painel 'Regras, conferências e a série antiga'",
+     "descricao": "Aparecem termos internos ('bronze', 'HTTP 302', 'maiores_diferencas', 'diferencas_distribuidoras_pequenas', 'incorporacoes').",
+     "sugestao": "Trocar por texto de leitor ('arquivo original', 'redirecionamento circular') e manter o identificador entre parênteses."
+    },
+    {
+     "id": "T12_lista_aberta",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "K"
+     ],
+     "onde": "Campo 'UF no histórico (até 4)'",
+     "descricao": "Depois de escolher uma UF com Enter, a lista continua aberta (aria expanded verdadeiro) e cobre os controles de Histórico até Esc.",
+     "sugestao": "Fechar a lista ao escolher, mantendo a seleção múltipla pelo teclado."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver) não testado; só rótulos, regiões vivas e árvore de papéis lidos no DOM.",
+    "Zoom real do navegador a 200% e 400% não testado; usei viewport de 320 px e fonte base a 200%.",
+    "Firefox, Safari e aparelho móvel físico não testados; toque emulado no Chromium.",
+    "Exportação XLSX e CSV das tabelas desta página não baixada; o componente foi testado na página Acesso.",
+    "Correção numérica do desconto negativo do ES (origem na fonte) cabe ao avaliador técnico.",
+    "Níveis Analisar e Auditar vistos em texto e capturas próprias das tabelas de distribuidoras; o restante só em texto."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "id": "TP1",
+     "tarefa": "Saber quantas UC recebem a Tarifa Social e como evoluiu",
+     "perfil": "jornalista ou professor",
+     "passos": [
+      "Ler os números 17.246.524 UC e 21,1%",
+      "Trocar Medida para '% das UC residenciais' e 'DMR'",
+      "Usar '5 anos' e ler 'Intervalo exibido'",
+      "Ler a nota de meses incompletos"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Frase-resposta fixa ao trocar a Medida",
+      "Anotações cortadas em 390 px"
+     ],
+     "erros": []
+    },
+    {
+     "id": "TP2",
+     "tarefa": "Comparar UF pelo desconto médio por fatura e abrir o histórico de duas UF",
+     "perfil": "gestor público ou conselho",
+     "passos": [
+      "Escolher 'Desconto médio por fatura' no mapa",
+      "Clicar em SP e BA",
+      "Ler o histórico e a nota de lacuna de SP em jan/2026",
+      "Abrir a tabela por UF"
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Salto ao topo ao trocar o indicador e no primeiro clique",
+      "ES com valor negativo sem nota na legenda e na tabela",
+      "Queda de SP em jul/2025 sem explicação"
+     ],
+     "erros": [
+      "Valor negativo de desconto no ES (menos 41,84 R$ por fatura)"
+     ]
+    },
+    {
+     "id": "TP3",
+     "tarefa": "Entender por que abr/2026 e mai/2026 não aparecem e qual mês vale para cada número",
+     "perfil": "pesquisador",
+     "passos": [
+      "Ler 'Fonte defasada, declarada' e os dois itens de defasagem",
+      "Abrir 'Ver a tabela completa (13 linhas)' em 390 px",
+      "Ler 'Depois do SCS: o que os arquivos da CDE mostram mês a mês?'"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Tabela de 1.102 px exige rolagem lateral em 390 px"
+     ],
+     "erros": []
+    }
+   ]
+  },
+  "/setor-eletrico/inclusao-energetica/cobertura": {
+   "paineis": [
+    "P060"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 8.5,
+     "evidencia": [
+      "1440_dobra.png: H1, lead com 'É uma proxy: fatura não é família', quatro números (67,8; 61,6; 17.155.135; 25.305.223) e etiqueta PROXY na primeira tela.",
+      "1440_inteira_01de02.png: ordem lógica mapa, legenda de classes fixas, faixa de sensibilidade por UF, histograma e série, com blocos Período, Universo, Unidade.",
+      "390_inteira_04de06.png e c390_tabela.png: rótulos do histograma cruzados pela linha de base; tabela de 1.044 px abre mostrando UF, Sigla e Região, sem números."
+     ],
+     "atendidos": [
+      "Pergunta, fórmula e etiqueta de proxy reconhecíveis na primeira tela",
+      "Hierarquia mapa, sensibilidade, distribuição municipal e série",
+      "Números com unidade e data; tipografia consistente",
+      "Página compacta (5.244 px no Entender) sem repetição excessiva"
+     ],
+     "problemas": [
+      "Quatro cartões do mesmo peso: o número principal (67,8) não se destaca dos outros três.",
+      "O gráfico de pontos mostra só 13 das 27 UF por padrão, deixando de fora os menores valores (39,2 em SC).",
+      "Em 390 px rótulos do histograma são cruzados pela linha de base e a tabela por UF abre sem números na primeira tela."
+     ],
+     "justificativa": "Página compacta, bem ordenada e com a ressalva de proxy logo na primeira tela; perde pontos por quatro cartões de mesmo peso, gráfico de pontos limitado a 13 UF e detalhes de celular."
+    },
+    "B": {
+     "nota": 8.5,
+     "evidencia": [
+      "texto_entender.txt: etiqueta 'Proxy: medida indireta, com denominador elegível só pelo critério de renda' e 'não mede quantas famílias com direito ficaram sem o desconto'.",
+      "texto_entender.txt: 'A pergunta Quem pode estar ficando de fora? não tem resposta nesta razão'; explica por que a razão passa de 100 (BPC e equipamento médico).",
+      "Playwright: legenda 'Faixa de sensibilidade ao denominador (não é margem de erro)'; critérios de elegibilidade completos só no nível Auditar."
+     ],
+     "atendidos": [
+      "Fórmula 100 vezes faturas dividido por famílias dada no hero",
+      "Distinção entre fatura, UC, família e Cadastro Único explicada",
+      "O que não se pode concluir dito sem rodeio",
+      "Faixa de sensibilidade diferenciada de intervalo estatístico"
+     ],
+     "problemas": [
+      "Critérios II e III de elegibilidade só no nível Auditar; no Entender há um resumo de uma frase.",
+      "'Por que isso importa' recolhido; definição de Calculado só em tooltip.",
+      "O hero fala em '27 UF e municípios' e o texto cita 'mapa municipal', mas esse mapa só existe a partir de Analisar."
+     ],
+     "justificativa": "A melhor explicação conceitual da unidade: deixa claro o que a proxy mede e não mede; perde pontos por critérios de elegibilidade só no Auditar, tooltips e referência a um mapa municipal que o nível padrão não mostra."
+    },
+    "C": {
+     "nota": 8.0,
+     "evidencia": [
+      "Playwright: seletor de denominador troca mapa e legenda (39,2 a 83,2 com atualizadas; 35,3 a 77,3 com todas as cadastradas); ordenar por Diferença e por Nome; 'Mostrar todas as 27'.",
+      "Playwright: 'Carregar o mapa por município' em Analisar abre 5.571 municípios (5.534 com valor, 37 não se aplica) com cinco classes fixas.",
+      "texto_entender.txt: mediana municipal 67,6; P10 41,4 e P90 86,2; '72 passam de 100' com a explicação do numerador."
+     ],
+     "atendidos": [
+      "Tarefa de ler a razão por UF e por município com o denominador declarado",
+      "Sensibilidade ao denominador visível lado a lado",
+      "Distribuição municipal com quantis e contagem fora da base"
+     ],
+     "problemas": [
+      "O detalhe municipal, mais útil a conselhos locais, só aparece em Analisar e sob demanda.",
+      "A razão não responde onde há lacuna (a própria página diz); o leitor recebe um indicador de sensibilidade, não de decisão.",
+      "A série nacional vai só até mai/2025 (SCS) enquanto o número principal é mar/2026 (CDE)."
+     ],
+     "justificativa": "Atende bem a leitura da proxy por UF com os dois denominadores, mas o mapa municipal fica no nível Analisar e a série nacional termina em mai/2025, dez meses antes do número principal."
+    },
+    "D": {
+     "nota": 8.5,
+     "evidencia": [
+      "texto_entender.txt: razão por UF e distribuição entre 5.534 municípios (mediana 67,6; P10 41,4; P90 86,2).",
+      "texto_entender.txt: 'famílias sem ligação à rede contam só no denominador'; 'a família pode não ser titular da conta'.",
+      "Playwright: URL guarda cob.den e cob.uf; arquivo de municípios (CSV) e tabela por UF com CSV e XLSX."
+     ],
+     "atendidos": [
+      "Atenção a acesso ao benefício e a diferenças entre UF e municípios",
+      "Lacunas relevantes visíveis (sem resposta sobre quem fica de fora)",
+      "Exportação de municípios e de UF; link com estado",
+      "Útil a conselhos, jornalistas e pesquisadores"
+     ],
+     "problemas": [
+      "Mapa municipal escondido do nível padrão.",
+      "Em celular a tabela por UF mostra Sigla e Região antes dos números."
+     ],
+     "justificativa": "Alto potencial para conselhos e imprensa, com recorte por UF e município e ressalvas claras; o recorte municipal fica fora do nível padrão e no celular os números ficam fora da primeira tela da tabela."
+    },
+    "I": {
+     "nota": 8.0,
+     "evidencia": [
+      "1440_inteira_01de02.png: gráfico de pontos com círculo cheio e losango vazado (forma além da cor), diferença em pontos à direita; 13 de 27 UF visíveis.",
+      "1440_inteira_02de02.png: histograma de 6 faixas com a nota 'faixas de larguras diferentes'; série de 121 meses com faixa cinza rotulada 'não é margem de erro'.",
+      "Captura própria cob_municipal.png: mapa com 5.598 polígonos, cinco classes fixas e 37 'não se aplica' em cinza."
+     ],
+     "atendidos": [
+      "Gráfico de pontos adequado à comparação de dois denominadores",
+      "Faixa de sensibilidade rotulada como não estatística",
+      "Mapas com classes fixas e legenda com contagens; sem dado em hachura",
+      "Tabelas e teclado como alternativa"
+     ],
+     "problemas": [
+      "Gráfico de pontos limitado a 13 UF por padrão.",
+      "Série de 121 meses sem anotação de evento para a alta de 2020 a 2021 (a série equivalente da Tarifa Social anota jan/2022).",
+      "Histograma com faixa inicial de 40 pontos e as demais de 20 desenhadas com a mesma largura.",
+      "Em 390 px rótulos cruzados pela linha de base."
+     ],
+     "justificativa": "Gráficos bem escolhidos e honestos (faixa não estatística, nota sobre larguras diferentes), mas o de pontos esconde 14 UF por padrão, a série não anota o pico de 2021 e há cruzamento de rótulos em celular."
+    },
+    "J": {
+     "nota": 7.5,
+     "evidencia": [
+      "Playwright 1440: primeiro clique em CE a 881 px leva a página a 70 px; denominador, ordem e períodos não saltam.",
+      "Playwright: URL guarda cob.den e cob.uf; botões 12 meses, 5 anos, 10 anos com estado pressionado e texto 'Intervalo exibido: jun/24 a mai/25, 11 de 121 pontos'; o título do gráfico segue 'abr/2015 a mai/2025'.",
+      "Playwright: erro simulado de malha e de série mostra mensagem com 'Tentar de novo' e aponta a tabela ou o CSV."
+     ],
+     "atendidos": [
+      "Estado na URL e retorno do navegador",
+      "Busca de UF por teclado e 'Limpar seleção'",
+      "Ordenar por medida, diferença ou nome com botão de ordem",
+      "Estados de erro compreensíveis"
+     ],
+     "problemas": [
+      "Salto ao topo no clique em UF no mapa.",
+      "Mapa municipal só em Analisar e sob demanda, sem pista no nível padrão.",
+      "O título do gráfico de série não acompanha o intervalo escolhido."
+     ],
+     "justificativa": "Interação rica e previsível, com estado na URL e mensagens de erro úteis, mas a página volta ao topo no clique em UF, o mapa municipal exige trocar de nível sem aviso e o título da série não acompanha o período."
+    },
+    "K": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: axe vazio em 4 larguras; sem rolagem horizontal; 6 alvos abaixo de 44 px em 390 (Entender) e 11 no Auditar; 0 abaixo de 24 px; teclado sem foco invisível.",
+      "c390_tabela.png: tabela de 1.044 px em contêiner de 358 px, sem coluna fixa; números fora da primeira tela; aviso de rolagem lateral presente.",
+      "Playwright: gráfico de pontos com 'Use Tab para entrar' e setas; forma (círculo e losango) além da cor; 320 px sem rolagem horizontal."
+     ],
+     "atendidos": [
+      "Teclado com foco visível, busca de UF por teclado e gráfico com setas",
+      "Alternativas à cor (formas, hachura, rótulo de diferença em pontos)",
+      "Contraste adequado e 320 a 1440 px sem rolagem horizontal"
+     ],
+     "problemas": [
+      "Tabela por UF em 390 px sem coluna fixa; números fora da primeira tela.",
+      "Rótulos do histograma cruzados pela linha de base e texto de 11 px nos gráficos.",
+      "Definição de Calculado só em tooltip; leitor de tela real não testado."
+     ],
+     "justificativa": "Teclado, semântica, contraste e alternativas à cor funcionam; restam tabela estreita sem coluna fixa no celular, rótulos pequenos e cruzados e a ausência de teste com leitor de tela."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "C01_salto_topo",
+     "gravidade": "alta",
+     "criterios": [
+      "J",
+      "K"
+     ],
+     "onde": "Mapa por UF",
+     "descricao": "O primeiro clique em CE (881 px) devolve a página a cerca de 70 px, deixando mapa e barra de seleção fora da tela; o seletor de denominador, a ordem e os períodos não saltam.",
+     "sugestao": "Atualizar a URL sem rolar e manter a posição do leitor."
+    },
+    {
+     "id": "C02_municipal_escondido",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "C",
+      "D"
+     ],
+     "onde": "Hero '27 UF e municípios' e seção 'Por município'",
+     "descricao": "O mapa por município existe só em Analisar, com botão 'Carregar o mapa por município'; no Entender o texto cita 'mapa municipal' e 'UF e municípios', sem pista de onde achá-lo.",
+     "sugestao": "Link no Entender para o mapa municipal ('Ver por município, nível Analisar') ou histograma com chamada visível."
+    },
+    {
+     "id": "C03_pontos_13_de_27",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "J"
+     ],
+     "onde": "Gráfico 'Faixa de sensibilidade ao denominador por UF'",
+     "descricao": "Por padrão mostra 13 de 27 UF na ordem 'maior primeiro'; os menores valores (SC 39,2; AM) só aparecem em 'Mostrar todas as 27'. A nota existe.",
+     "sugestao": "Mostrar as 27 UF por padrão ou os dois extremos."
+    },
+    {
+     "id": "C04_serie_sem_anotacao",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "B"
+     ],
+     "onde": "Série 'A razão ao longo do tempo'",
+     "descricao": "A alta de 2020 a 2021 (acima de 80 por 100 famílias) e a queda seguinte não têm anotação; a série equivalente da Tarifa Social anota jan/2022.",
+     "sugestao": "Anotar eventos conhecidos (por exemplo concessão automática) ou dizer que a causa não é atribuída."
+    },
+    {
+     "id": "C05_titulo_periodo",
+     "gravidade": "baixa",
+     "criterios": [
+      "J"
+     ],
+     "onde": "Título do gráfico de série",
+     "descricao": "Com 12 meses o título continua 'abr/2015 a mai/2025'; só a linha 'Intervalo exibido' informa jun/24 a mai/25.",
+     "sugestao": "Atualizar o título com o intervalo exibido."
+    },
+    {
+     "id": "C06_tabela_390",
+     "gravidade": "baixa",
+     "criterios": [
+      "K",
+      "A"
+     ],
+     "onde": "Tabela 'Faturas e famílias por UF' em 390 px",
+     "descricao": "1.044 px em contêiner de 358 px; as colunas visíveis são UF, Sigla e Região; os números (faturas, famílias, razão) exigem rolagem lateral.",
+     "sugestao": "Fixar UF e razão e mover Sigla e Região para o fim."
+    },
+    {
+     "id": "C07_cartoes_peso",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Quatro números da primeira tela",
+     "descricao": "67,8; 61,6; 17.155.135 e 25.305.223 têm o mesmo corpo e peso; o principal não se destaca e os dois últimos são insumos.",
+     "sugestao": "Destacar 67,8 e reduzir numerador e denominador a linha de apoio."
+    },
+    {
+     "id": "C08_faixas_diferentes",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Histograma 'Como a razão se distribui entre os municípios?'",
+     "descricao": "A primeira faixa (0 a menos de 40) tem o dobro da largura das demais mas é desenhada com a mesma largura de barra; a nota abaixo avisa.",
+     "sugestao": "Dividir a primeira faixa em duas de 20 ou marcar a largura no eixo."
+    },
+    {
+     "id": "C09_390_rotulos",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "K"
+     ],
+     "onde": "Histograma em 390 px",
+     "descricao": "A linha de base cruza o primeiro caractere de '0 a menos de 40' e '40 a menos de 60'.",
+     "sugestao": "Recuo de 8 px entre linha de base e rótulo."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver) não testado; só rótulos, regiões vivas e árvore de papéis lidos no DOM.",
+    "Zoom real do navegador a 200% e 400% não testado; usei viewport de 320 px e fonte base a 200%.",
+    "Firefox, Safari e aparelho móvel físico não testados; toque emulado no Chromium.",
+    "Mapa por município avaliado só em 1440 px; busca de município e seleção não testadas.",
+    "Fichas 'Comprove este número' dos quatro cartões não lidas; 61,6 e 25.305.223 não têm botão."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "id": "TP1",
+     "tarefa": "Ler quantas faturas há por 100 famílias numa UF e o que isso não permite concluir",
+     "perfil": "gestor público ou conselho",
+     "passos": [
+      "Ler os quatro números e a etiqueta PROXY",
+      "Clicar em CE no mapa e ler a barra de seleção",
+      "Ler 'O que não é possível concluir'"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Salto ao topo no clique em UF"
+     ],
+     "erros": []
+    },
+    {
+     "id": "TP2",
+     "tarefa": "Comparar os dois denominadores (cadastro atualizado e todas as cadastradas)",
+     "perfil": "pesquisador",
+     "passos": [
+      "Alternar o seletor de denominador",
+      "Conferir legenda e faixa de valores do mapa",
+      "Ordenar o gráfico de pontos por Diferença e por Nome",
+      "Usar 'Mostrar todas as 27'"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Gráfico de pontos abre com 13 UF"
+     ],
+     "erros": []
+    },
+    {
+     "id": "TP3",
+     "tarefa": "Ver a razão por município",
+     "perfil": "gestor público ou conselho",
+     "passos": [
+      "Procurar mapa municipal no nível Entender (não há)",
+      "Ler o histograma por município",
+      "Trocar para Analisar",
+      "Acionar 'Carregar o mapa por município'"
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Mapa municipal só em Analisar, sem pista no Entender",
+      "Carga sob demanda do mapa (cerca de 3,5 s no teste)"
+     ],
+     "erros": []
+    }
+   ]
+  },
+  "/setor-eletrico/inclusao-energetica/orcamento": {
+   "paineis": [
+    "P061"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 8.0,
+     "evidencia": [
+      "1440_dobra.png: H1, lead que cita a precisão, três razões de médias (2,5%, 4,4%, 0,9%), seletor de profundidade e a pergunta 'Para quem a energia pesa mais?' com o controle Participação.",
+      "1440_inteira_01de02.png: gráfico de 3 séries por 7 faixas, cartões 3,8% e 6,9% abaixo do gráfico, três blocos de texto, territórios, limiar e mapa.",
+      "390_inteira_03de06.png e orc390_02de06.png: rótulos de categoria e valores cruzados por linha de referência e linha de base; tabela de limiar com 816 px em contêiner de 358 px."
+     ],
+     "atendidos": [
+      "Pergunta e números principais na primeira tela",
+      "Hierarquia entre síntese, comparação por território e aprofundamento por limiar e UF",
+      "Unidades, datas e precisão (CV) legíveis",
+      "Tipografia e espaçamento consistentes"
+     ],
+     "problemas": [
+      "Cartões 3,8% e 6,9% ficam depois do gráfico, separados do trio inicial.",
+      "O gráfico padrão traz 3 medidas por faixa (21 barras) antes de os conceitos serem explicados.",
+      "Em 390 px linhas cruzam rótulos de categoria e valores.",
+      "Em Analisar, tabela de 45 colunas (5.367 px) com 14 botões de filtro de precisão."
+     ],
+     "justificativa": "Primeira tela clara e estrutura consistente, mas o gráfico padrão com três medidas, os cartões separados do trio inicial, o cruzamento de rótulos em celular e o excesso de colunas e filtros em Analisar reduzem a nota."
+    },
+    "B": {
+     "nota": 8.0,
+     "evidencia": [
+      "texto_entender.txt, 'Como interpretar': razão de médias, média das participações e mediana explicadas, mas depois do gráfico que as mostra.",
+      "texto_entender.txt: 'Os limiares de 3%, 5%, 10% não definem pobreza energética; são sensibilidade'; CV de 15% a 30% é cautela e acima de 30% é suprimido.",
+      "Playwright: ao escolher Na renda desaparece a série Razão de médias, sem aviso do motivo na tela."
+     ],
+     "atendidos": [
+      "Limites claros: sem recorte municipal, sem projeção para 2026",
+      "Precisão explicada com CV e estados (cautela, suprimido, zero na amostra)",
+      "Diferença entre despesa e renda como base",
+      "Siglas POF e CV expandidas no texto"
+     ],
+     "problemas": [
+      "Razão de médias, média das participações e mediana aparecem no gráfico antes de explicadas.",
+      "Ao escolher Na renda some a razão de médias sem aviso.",
+      "'O que mudou' descreve a data da pesquisa, não mudança.",
+      "No nível Auditar aparecem identificadores internos (sem_erro_padrao, zero_na_amostra, medidas_uf, inclusao_pof, DESPESA_COLETIVA)."
+     ],
+     "justificativa": "Excelente na honestidade sobre precisão e limites, mas conceitos centrais (razão de médias, média das participações, mediana) vêm depois do gráfico, uma série some sem explicação e o Auditar mostra identificadores internos."
+    },
+    "C": {
+     "nota": 8.5,
+     "evidencia": [
+      "Playwright: Na renda mostra média 6,88% e mediana 4,27% na menor faixa; limiar 3%, 5% e 10% recalcula gráfico e tabela com CV e precisão.",
+      "Playwright: Brasil, Nordeste e Sul lado a lado na mesma escala (?pof.ter=BR,RG-NE,RG-S) com anúncio 'Sul entrou na comparação: 3 de 4'.",
+      "Playwright: mapa com 4 indicadores, busca de UF por teclado e seleção do Pará (114,59 R$ por família e mês)."
+     ],
+     "atendidos": [
+      "Tarefa 'para quem a energia pesa mais' cumprida por faixa, região, UF e limiar",
+      "Precisão de cada estimativa disponível",
+      "Comparação lado a lado de até 4 territórios"
+     ],
+     "problemas": [
+      "A frase-resposta e os cartões seguem em despesa quando o leitor escolhe Na renda.",
+      "O gráfico padrão traz 21 números por faixa; para a pergunta principal bastam os sete da razão de médias."
+     ],
+     "justificativa": "Muito útil para a pergunta central e para comparações territoriais e de sensibilidade; perde pontos porque a frase-resposta não acompanha a escolha Na renda e o gráfico padrão traz mais números do que a pergunta exige."
+    },
+    "D": {
+     "nota": 8.5,
+     "evidencia": [
+      "texto_entender.txt: desigualdade por renda (4,4% a 0,9%), por região e UF, e limiares com CV; 'Não existe recorte municipal: a amostra não permite'.",
+      "texto_entender.txt: 'Não representa 2026: os preços e a Tarifa Social mudaram desde 2018'.",
+      "Playwright: link copiado guarda o recorte (?pof.mapa=energia_media&pof.uf=RN#p061); componente de tabela exporta XLSX com folha 'Sobre' (testado na página Acesso)."
+     ],
+     "atendidos": [
+      "Custo e desigualdade por renda e território tratados",
+      "Lacunas visíveis: município, data da pesquisa, UF só no total",
+      "Compartilhar com estado na URL e exportar com contexto (XLSX)",
+      "Útil a gestores, pesquisadores e jornalistas"
+     ],
+     "problemas": [
+      "Dados de 2017 e 2018: relevância atual limitada, embora declarada.",
+      "Termos técnicos (razão de médias, CV, mediana) pesam para leitor leigo.",
+      "O download do painel é o arquivo inteiro inclusao_pof.csv (2.150 linhas de dados, formato longo), sem refletir o recorte escolhido."
+     ],
+     "justificativa": "Relevância social alta, com desigualdade por renda, região e UF e limites declarados; perde pontos pela data da pesquisa, pelo vocabulário técnico e pelo download do painel que entrega o arquivo inteiro."
+    },
+    "I": {
+     "nota": 8.0,
+     "evidencia": [
+      "Playwright: em Na despesa teal é 'Razão de médias' e laranja é 'Média das participações'; em Na renda teal vira 'Média das participações' e laranja vira 'Mediana'.",
+      "1440_inteira_01de02.png: gráfico de limiar com hachura para 'sem dado' e 0,0 distinto; territórios em roxo, laranja e verde; roxo e verde significam renda e despesa no gráfico de limiar que vem a seguir.",
+      "Captura própria orc390_02de06.png: linha tracejada da média nacional atravessa os valores 2,42, 2,32 e 2,30."
+     ],
+     "atendidos": [
+      "Gráficos escolhidos pela tarefa, com eixo em zero e referência visível",
+      "'Sem dado', zero na amostra e suprimido tratados de forma distinta",
+      "Territórios comparados na mesma escala",
+      "Tabelas e navegação por teclado com anúncio"
+     ],
+     "problemas": [
+      "Cores trocam de significado entre Na despesa e Na renda; roxo e verde mudam de sentido entre gráficos vizinhos.",
+      "Barras triplas aumentam a densidade; em 390 px a linha de referência cobre valores.",
+      "Rótulos de categoria cruzados pela linha de base em 390 px."
+     ],
+     "justificativa": "Boa escolha de gráficos, com tratamento exemplar de sem dado e zero, mas a troca de significado das cores entre as bases, a densidade das barras triplas e o cruzamento de rótulos em celular limitam a nota."
+    },
+    "J": {
+     "nota": 7.5,
+     "evidencia": [
+      "Playwright 1440: limiar 3% e 10% (2095 px), indicador do mapa (2860 px) e primeiro clique em PA (3112 px) levam a página a 70 px; toque em PA a 390 px vai de 6380 a 25 px; com setas num rádio já focado não há salto.",
+      "Playwright: Na renda troca título, séries e referência (3,73%), mas a frase 'a despesa média com energia foi 4,4%...' e os cartões 'da despesa total' permanecem.",
+      "Playwright: URLs ?pof.ter=BR,RG-NE,RG-S, ?pof.lim=10 e ?pof.mapa=energia_media&pof.uf=PA; Voltar do navegador restaura o limiar."
+     ],
+     "atendidos": [
+      "Estado na URL e retorno do navegador",
+      "Comparação de até 4 territórios com chips e anúncio",
+      "Busca de UF por teclado e mensagem 'Nenhum resultado para essa busca'",
+      "Tabelas com busca, filtro, ordem e exportação"
+     ],
+     "problemas": [
+      "Salto ao topo em limiar, indicador do mapa e primeiro clique em UF.",
+      "Frase-resposta e cartões não acompanham Na renda.",
+      "A lista de territórios permanece aberta sobre o gráfico até Esc.",
+      "O download do painel é o arquivo inteiro, não o recorte."
+     ],
+     "justificativa": "Estado na URL, comparação de territórios e tratamento de busca vazia são bons, mas a página salta ao topo em vários controles do meio, a frase-resposta não acompanha a base escolhida e o download não reflete o recorte."
+    },
+    "K": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: axe vazio em 4 larguras; sem rolagem horizontal; 10 alvos abaixo de 44 px em 390 (Entender) e 53 no Auditar; 0 abaixo de 24 px; teclado sem foco invisível.",
+      "Playwright: radiogroups nomeados (Participação, Limiar, Mapa); combobox de territórios com anúncio de entrada; contraste de texto sem falhas além de botão desabilitado.",
+      "o390_tabela.png: tabela de limiar de 816 px em 358 px; colunas de despesa fora da tela; aviso 'A tabela é mais larga que a tela' presente."
+     ],
+     "atendidos": [
+      "Teclado com foco visível, radios com setas e combobox",
+      "Semântica de grupos e rótulos; tabela como alternativa ao gráfico",
+      "Contraste e alternativas à cor (hachura para sem dado)",
+      "320 a 1440 px sem rolagem horizontal"
+     ],
+     "problemas": [
+      "Tabela larga em 390 px esconde as colunas de despesa.",
+      "No Auditar em 390 px há 53 alvos abaixo de 44 px e uma tabela de 45 colunas; texto de 11 px nos rótulos.",
+      "Salto ao topo ao tocar na UF (medido a 390 px).",
+      "Leitor de tela real não testado."
+     ],
+     "justificativa": "Acessibilidade sólida em teclado, semântica e contraste, mas tabelas largas em celular, muitos alvos pequenos no Auditar, textos de 11 px e o salto ao topo após o toque no mapa pesam; leitor de tela não testado."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "O01_salto_topo",
+     "gravidade": "alta",
+     "criterios": [
+      "J",
+      "K"
+     ],
+     "onde": "Limiar, indicador do mapa e clique em UF",
+     "descricao": "Clique em limiar 3% ou 10% (2095 px), no indicador do mapa (2860 px) e na primeira UF (3112 px) devolve a página a cerca de 70 px; em 390 px o toque em PA vai de 6380 a 25 px. Com setas do teclado num rádio já focado não há salto.",
+     "sugestao": "Atualizar a URL sem rolar (scroll false) e manter a posição do leitor."
+    },
+    {
+     "id": "O02_frase_renda",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "B"
+     ],
+     "onde": "Frase-resposta e cartões do painel 'Para quem a energia pesa mais?'",
+     "descricao": "Com Na renda, o gráfico passa a média e mediana na renda (6,88% e 4,27% na menor faixa), mas a frase continua em despesa (4,4% contra 2,5%) e os cartões seguem 'da despesa total'.",
+     "sugestao": "Frase que acompanhe a base escolhida ou rótulo 'Resumo na despesa total'."
+    },
+    {
+     "id": "O03_cor_semantica",
+     "gravidade": "media",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Legenda do gráfico principal ao alternar a base",
+     "descricao": "Teal, laranja e cinza mudam de medida entre Na despesa (razão, média, mediana) e Na renda (média, mediana); o cartão 'Média das participações na despesa' usa laranja e o da renda usa cinza.",
+     "sugestao": "Fixar uma cor por medida em todas as bases."
+    },
+    {
+     "id": "O04_razao_some",
+     "gravidade": "baixa",
+     "criterios": [
+      "B",
+      "I"
+     ],
+     "onde": "Gráfico em Na renda",
+     "descricao": "A série 'Razão de médias' e a referência nacional 2,48% somem e a referência vira 'Média das participações: 3,73%', sem texto dizendo por quê.",
+     "sugestao": "Aviso curto: 'Na renda o IBGE não publica razão de médias'."
+    },
+    {
+     "id": "O05_cartoes_depois",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Cartões 3,8% e 6,9%",
+     "descricao": "Aparecem depois do gráfico, separados do trio 2,5%, 4,4%, 0,9%, e misturam base despesa e renda.",
+     "sugestao": "Reunir os cartões no topo com rótulo de base."
+    },
+    {
+     "id": "O06_analisar_45_colunas",
+     "gravidade": "media",
+     "criterios": [
+      "A",
+      "J",
+      "K"
+     ],
+     "onde": "Nível Analisar, 'Todas as medidas do território'",
+     "descricao": "Tabela de 45 colunas (5.367 px em 1.160 px) para 8 linhas, com 14 botões 'Precisão: ...' em maiúsculas e entrelinha larga.",
+     "sugestao": "Agrupar medidas por tema, mostrar CV e precisão em tooltip ou segunda linha e reduzir filtros."
+    },
+    {
+     "id": "O07_lista_aberta",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "K"
+     ],
+     "onde": "Campo 'Territórios (até 4)'",
+     "descricao": "Depois de escolher Nordeste ou Sul a lista continua aberta cobrindo o gráfico até Esc.",
+     "sugestao": "Fechar a lista ao escolher e manter foco no campo."
+    },
+    {
+     "id": "O08_download_inteiro",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "D"
+     ],
+     "onde": "Rodapé do painel 'Baixar CSV'",
+     "descricao": "Entrega inclusao_pof.csv completo (2.150 linhas de dados, formato longo) mesmo com Na renda, limiar ou territórios escolhidos; só as tabelas exportam o recorte.",
+     "sugestao": "Botão 'Baixar este gráfico' com o recorte e a folha Sobre."
+    },
+    {
+     "id": "O09_tabela_390",
+     "gravidade": "baixa",
+     "criterios": [
+      "K"
+     ],
+     "onde": "Tabela de limiar em 390 px",
+     "descricao": "816 px em 358 px: as colunas de despesa ficam fora da tela.",
+     "sugestao": "Empilhar renda e despesa em duas linhas por faixa em telas estreitas."
+    },
+    {
+     "id": "O10_jargao_auditar",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Nível Auditar, notas de tabela e conferência",
+     "descricao": "Aparecem sem_erro_padrao, zero_na_amostra, medidas_uf, inclusao_pof e nomes de tabelas de microdados (DESPESA_COLETIVA, CADERNETA_COLETIVA).",
+     "sugestao": "Texto de leitor com o identificador entre parênteses."
+    },
+    {
+     "id": "O11_390_cruzamento",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "K"
+     ],
+     "onde": "Gráficos de barras em 390 px",
+     "descricao": "A linha de base cruza a primeira letra dos rótulos ('Total', 'Até R$ 1.908') e a linha tracejada atravessa valores como 2,32.",
+     "sugestao": "Recuo entre linha e rótulo e fundo opaco nos valores."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver) não testado; só rótulos, regiões vivas e árvore de papéis lidos no DOM.",
+    "Zoom real do navegador a 200% e 400% não testado; usei viewport de 320 px e fonte base a 200%.",
+    "Firefox, Safari e aparelho móvel físico não testados; toque emulado no Chromium.",
+    "Comparação de territórios com a base Na renda ativa não testada.",
+    "CSV e XLSX das tabelas do próprio painel não baixados; componente testado na página Acesso.",
+    "Tabela de 45 colunas avaliada em captura de 1440 px; em 390 px só a de limiar."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "id": "TP1",
+     "tarefa": "Comparar a participação na despesa e na renda por faixa de renda",
+     "perfil": "pesquisador",
+     "passos": [
+      "Alternar para 'Na renda'",
+      "Ler média (6,88%) e mediana (4,27%) na menor faixa",
+      "Abrir 'Dados do gráfico em tabela'",
+      "Ler 'Como interpretar'"
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Frase-resposta e cartões seguem em despesa",
+      "Cores trocam de significado",
+      "Razão de médias some sem aviso"
+     ],
+     "erros": []
+    },
+    {
+     "id": "TP2",
+     "tarefa": "Comparar Nordeste e Sul com o Brasil nas faixas de renda",
+     "perfil": "gestor público ou conselho",
+     "passos": [
+      "Digitar 'Nord' e escolher Nordeste",
+      "Digitar 'Sul' e escolher",
+      "Ler o gráfico lado a lado e o anúncio '3 de 4'"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Lista de opções aberta sobre o gráfico até Esc"
+     ],
+     "erros": []
+    },
+    {
+     "id": "TP3",
+     "tarefa": "Achar a UF com maior peso da energia e ler o valor",
+     "perfil": "jornalista ou professor",
+     "passos": [
+      "Escolher o indicador do mapa",
+      "Clicar em PA (e tocar em PA a 390 px)",
+      "Usar a busca de UF por teclado",
+      "Ler 'SELEÇÃO ...'"
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Salto ao topo no primeiro clique ou toque",
+      "Sem prévia ao passar o mouse; valor só ao clicar"
+     ],
+     "erros": []
+    }
+   ]
+  },
+  "/setor-eletrico/inclusao-energetica/acesso": {
+   "paineis": [
+    "P062"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 8.0,
+     "evidencia": [
+      "1440_dobra.png: eyebrow, H1, lead que nomeia as três unidades, três números com definições e o aviso 'os três números não se somam'; seletor de profundidade ao fim da primeira tela.",
+      "1440_inteira_01de03.png a 03de03.png: seis painéis encadeados (acesso, mapa, histórico, isolados, Luz para Todos, CDE) em 7.372 px no Entender, com seis tabelas visíveis.",
+      "390_dobra.png e 390_inteira_06de08.png: grade de cinco links de capítulo ocupa cerca de 130 px antes do H1; rótulos de ano cruzados pela linha de base no gráfico da CDE."
+     ],
+     "atendidos": [
+      "Pergunta e três números com definição na primeira tela",
+      "Hierarquia síntese, mapa, histórico e aprofundamento com títulos de pergunta",
+      "Unidades e datas legíveis",
+      "Padrão visual repetido de forma consistente em todos os painéis"
+     ],
+     "problemas": [
+      "Página mais longa da unidade (7.372 px no Entender; 11.124 px em 390) com seis tabelas e duas linhas iguais de rádios Indicador.",
+      "Cartões do topo com parágrafos de 25 a 40 palavras em 12 px; o número 135 mil se repete no cartão, na frase e no rótulo.",
+      "Em 390 px menu e grade de capítulos ocupam cerca de 220 px antes do título.",
+      "Rótulos cruzados pela linha de base nas barras em 390 px."
+     ],
+     "justificativa": "Estrutura clara e primeira tela eficiente, mas a página é longa e densa, repete controles e números e, em celular, a navegação consome quase um terço da primeira tela e rótulos de barras são cruzados."
+    },
+    "B": {
+     "nota": 8.0,
+     "evidencia": [
+      "texto_entender.txt: 'Isolamento não é falta de acesso: é acesso fora do SIN' e 'Localidade isolada não é localidade sem energia'.",
+      "texto_entender.txt: 'O percentual em tempo integral é sobre os ligados à rede, não sobre todos os domicílios'; 'O IBGE não publicou 2020 e 2021'.",
+      "Playwright: 'Mais 2 siglas' (CCC e ANEEL) está dentro de 'Fontes, datas e siglas' recolhido, mas o título 'Quanto a CDE destina ao Luz para Todos e à CCC por ano?' usa CDE e CCC."
+     ],
+     "atendidos": [
+      "Três unidades (domicílio, pessoa, ligação) distinguidas antes do uso",
+      "Limites declarados em cada painel",
+      "Ausência explicada (2020 e 2021 sem dado; menos de 1 mil não é zero)",
+      "Siglas SIN, PNAD e PASI expandidas no lead e na linha de fonte"
+     ],
+     "problemas": [
+      "CDE e CCC usadas em título, e UC num cartão, sem expansão visível (glossário recolhido e aninhado).",
+      "Natureza do dado só em tooltip; 'Por que isso importa' recolhido.",
+      "Conceitos como 'ligados à rede geral' e 'tempo integral' dependem do bloco Como interpretar, abaixo do gráfico."
+     ],
+     "justificativa": "Distinções conceituais muito bem feitas (isolamento não é falta de acesso, três unidades que não se somam), mas siglas de título sem expansão visível, definições só em tooltip e explicações depois do gráfico limitam a nota."
+    },
+    "C": {
+     "nota": 8.0,
+     "evidencia": [
+      "Playwright: Indicador troca gráfico regional, legenda e mapa (menos de 97,6 a 99,6 ou mais em Ligados à rede; 96,7 a 100,0 em tempo integral).",
+      "Playwright: com Rede em tempo integral e Só área rural o mapa vai de 84,7% a 100,0%; clique em AM e PA monta histórico de duas UF na mesma escala.",
+      "texto_entender.txt: PASI por UF (Amazonas 1.467.631 pessoas), ciclos 2023 a 2025 e Luz para Todos por ano e por UF."
+     ],
+     "atendidos": [
+      "Tarefa de ver quem não tem energia, regularidade e sistemas isolados cumprida em uma página",
+      "Comparação de UF e histórico de até 4 UF",
+      "Leitura rural e total"
+     ],
+     "problemas": [
+      "O histórico por UF ignora o filtro 'Só área rural' (o título diz 'todos os domicílios').",
+      "Painéis de CDE, recursos por contrato e municípios (Analisar) ampliam muito a página para a pergunta sobre acesso adequado."
+     ],
+     "justificativa": "Cumpre a tarefa de mapear acesso, regularidade e sistemas isolados com comparação de UF, mas o histórico ignora o recorte rural e a página acumula painéis de custeio e contratos além da pergunta."
+    },
+    "D": {
+     "nota": 8.5,
+     "evidencia": [
+      "texto_entender.txt: 135 mil domicílios sem energia (0,2%; 0,7% na área rural), 1.964.825 pessoas em sistemas isolados e 98,3% com fornecimento em tempo integral.",
+      "texto_entender.txt: Luz para Todos por ano e por UF e custeio da CDE para o programa e a CCC (R$ bilhões correntes).",
+      "Playwright: XLSX de tabela traz folha 'Sobre' (título, fonte, versão, recorte, data, ausência, dicionário); CSV só dados; nome do arquivo guarda busca e ordem."
+     ],
+     "atendidos": [
+      "Acesso, continuidade do serviço e desigualdade regional tratados",
+      "Recorte rural e por UF; sistemas isolados por UF e localidade",
+      "Exportação com contexto (XLSX) e link com estado",
+      "Lacunas visíveis: anos sem dado, população informada pela distribuidora"
+     ],
+     "problemas": [
+      "Recorte territorial do acesso só em UF e grandes regiões; municípios apenas para o Luz para Todos, em Analisar.",
+      "O CSV exportado não leva fonte, versão nem regra de ausência dentro do arquivo (só o XLSX)."
+     ],
+     "justificativa": "Alta relevância para acesso, continuidade e desigualdade regional, com exportação em XLSX que leva fonte e dicionário; limita a nota o recorte territorial só em UF e o CSV sem contexto interno."
+    },
+    "I": {
+     "nota": 7.5,
+     "evidencia": [
+      "acesso390_04de08.png e 1440_inteira_02de03.png: histórico do Brasil com eixo de 0,200 a 0,300 e ticks de 3 casas; a série 0,2, 0,2, 0,3, 0,2 vira pico em 2018 (dados de 1 casa, sem erro padrão).",
+      "1440_inteira_01de03.png: mapa por quantis com a classe '0,3 ou mais (8)' reunindo de 0,3 (BA) a 1,6 (AM).",
+      "1440_inteira_03de03.png: barras da CDE (2026 orçado) e do Luz para Todos (2026 até ago) iguais às demais; rótulos '2026 (ano…' e '2026 (até ago…' truncados em 1440."
+     ],
+     "atendidos": [
+      "Linhas regionais em eixo zero com lacuna honesta em 2020 e 2021",
+      "Barras horizontais de pessoas por UF com valores diretos",
+      "Mapa com projeção equivalente, hachura para sem dado e zero distinto",
+      "Tabelas e teclado como alternativa"
+     ],
+     "problemas": [
+      "Eixo ampliado no histórico do Brasil transforma arredondamento de 0,1 ponto em pico.",
+      "Mapa por quantis esconde a distância entre AM e BA na classe mais alta.",
+      "Barras de 2026 (orçado e parcial) sem diferenciação visual; rótulo truncado em 1440 px.",
+      "Fim das linhas com siglas 'N', 'BR·NE' e 'SE·S·CO' que a legenda não define.",
+      "Rótulos cruzados pela linha de base em 390 px."
+     ],
+     "justificativa": "Gráficos adequados e honestos com a lacuna de 2020 e 2021, mas o eixo ampliado do histórico, a classe aberta do mapa, as barras orçada e parcial sem distinção e siglas de fim de linha não definidas reduzem a nota."
+    },
+    "J": {
+     "nota": 7.0,
+     "evidencia": [
+      "Playwright 1440: indicador do mapa (1541 px), Situação rural (1597 px) e primeiro clique em AM (1860 px) levam a página a 70 px; o segundo clique em PA não salta.",
+      "Playwright: Indicador em Rede em tempo integral troca gráfico, tabela e mapa, mas a frase 'Em 2025, 135 mil domicílios (0,2%) não tinham energia elétrica de nenhuma fonte' permanece.",
+      "Playwright: histórico de AM e PA usa 'todos os domicílios' com Só área rural ativo no mapa; tabela PASI com busca, ordem, paginação e CSV e XLSX; busca vazia mostra 'Nenhuma linha com esses filtros. Limpar filtros'."
+     ],
+     "atendidos": [
+      "Estado na URL (ac.ind, ac.sit, ac.uf, ac.prog)",
+      "Histórico de até 4 UF com chips e retorno",
+      "Tabelas com busca, ordem, paginação e exportação com recorte no nome do arquivo",
+      "Estados vazios e de erro compreensíveis"
+     ],
+     "problemas": [
+      "Salto ao topo em indicador do mapa, situação e primeiro clique em UF.",
+      "Frase-resposta e cartões não acompanham o Indicador.",
+      "Dois grupos Indicador idênticos (painel e mapa) andam juntos sem aviso; o histórico por UF ignora a situação rural."
+     ],
+     "justificativa": "Estados vazios, de erro e exportação muito bem resolvidos, mas três controles do meio da página levam ao topo, a frase-resposta fica fixa, há dois seletores iguais que andam juntos e o histórico ignora o recorte rural."
+    },
+    "K": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: axe vazio em 4 larguras; sem rolagem horizontal; 13 alvos abaixo de 44 px em 390 (Entender) e 33 no Auditar; 0 abaixo de 24 px; 70 paradas de Tab alcançadas (limite do teste) sem foco invisível.",
+      "Playwright: radiogroups nomeados; mapa com título e busca por teclado; tabela com ordenação anunciada; busca vazia com mensagem e 'Limpar filtros'.",
+      "a390_tabela.png: tabela de 912 px em 358 px com primeira coluna fixa e aviso de rolagem; 390_inteira_06de08.png: rótulos cruzados pela linha de base."
+     ],
+     "atendidos": [
+      "Teclado com foco visível, combobox de UF e gráficos com setas",
+      "Semântica de grupos, tabela e região viva",
+      "Contraste e alternativas à cor",
+      "Primeira coluna fixa nas tabelas largas"
+     ],
+     "problemas": [
+      "Rótulos de gráfico em 11 px e siglas 'N', 'BR·NE', 'SE·S·CO' no fim das linhas.",
+      "Definições de natureza do dado só em tooltip.",
+      "Salto ao topo após o clique no mapa desorienta quem usa ampliação; medido a 1440 px nesta página.",
+      "Leitor de tela real não testado."
+     ],
+     "justificativa": "Boa base de teclado, semântica e tabelas com primeira coluna fixa; textos de 11 px, siglas sem definição, definições só em tooltip e o salto ao topo após o clique no mapa pesam; leitor de tela não testado."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "A01_salto_topo",
+     "gravidade": "alta",
+     "criterios": [
+      "J",
+      "K"
+     ],
+     "onde": "Indicador do mapa, Situação e primeiro clique em UF",
+     "descricao": "Indicador do mapa (1541 px), Situação rural (1597 px) e clique em AM (1860 px) levam a página a cerca de 70 px; o segundo clique em outra UF não salta.",
+     "sugestao": "Atualizar a URL sem rolar e manter a posição do leitor."
+    },
+    {
+     "id": "A02_frase_indicador",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "B"
+     ],
+     "onde": "Frase-resposta do painel 'Quem ainda precisa de acesso adequado?'",
+     "descricao": "Com Ligados à rede geral ou Rede em tempo integral, gráfico, tabela e mapa mudam, mas a frase continua 'Em 2025, 135 mil domicílios (0,2%) não tinham energia elétrica de nenhuma fonte...'.",
+     "sugestao": "Frase gerada pelo indicador escolhido ou rotulada como resumo fixo."
+    },
+    {
+     "id": "A03_eixo_historico_brasil",
+     "gravidade": "media",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Gráfico 'Como as UF escolhidas evoluíram desde 2016?' sem UF",
+     "descricao": "Eixo de 0,200 a 0,300 com ticks de 3 casas para valores de 1 casa (0,2; 0,2; 0,3; 0,2; sem dado em 2020 e 2021): arredondamento aparece como pico em 2018; os dados são diferença entre duas estimativas sem erro padrão.",
+     "sugestao": "Eixo a partir de zero ou banda de arredondamento de 0,05 ponto e nota 'diferença de 0,1 ponto está dentro do arredondamento'."
+    },
+    {
+     "id": "A04_quantis_topo",
+     "gravidade": "media",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Mapa 'Como o acesso se distribui entre as UF?' (sem energia)",
+     "descricao": "A classe '0,3 ou mais (8)' reúne de 0,3 (BA) a 1,6 (AM); a diferença de cinco vezes some na cor.",
+     "sugestao": "Dividir a classe superior (por exemplo 0,3 a 0,6 e 1,0 ou mais) ou rotular os extremos no mapa."
+    },
+    {
+     "id": "A05_barras_2026",
+     "gravidade": "media",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Barras 'Domicílios atendidos por ano' e 'Quanto a CDE destina...'",
+     "descricao": "2026 é parcial (até ago) no Luz para Todos e orçado na CDE, mas as barras têm o mesmo estilo; o rótulo do eixo é truncado em 1440 px ('2026 (até ago…', '2026 (ano…').",
+     "sugestao": "Hachura para ano parcial ou orçado e rótulo completo."
+    },
+    {
+     "id": "A06_historico_ignora_rural",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "C"
+     ],
+     "onde": "Histórico por UF escolhidas",
+     "descricao": "Com Só área rural no mapa, AM e PA entram no histórico como 'todos os domicílios'; o título avisa, mas o recorte do mapa e o do gráfico divergem.",
+     "sugestao": "Seguir a situação escolhida ou oferecer o seletor também no histórico."
+    },
+    {
+     "id": "A07_indicador_duplicado",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "A"
+     ],
+     "onde": "Dois grupos 'Indicador' iguais",
+     "descricao": "Um acima do gráfico regional e outro acima do mapa, com os mesmos três nomes, andam juntos (mesmo parâmetro ac.ind) sem aviso.",
+     "sugestao": "Um só seletor fixo no topo da seção ou texto 'vale para o gráfico e o mapa'."
+    },
+    {
+     "id": "A08_cde_ccc_sem_expansao",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Título 'Quanto a CDE destina ao Luz para Todos e à CCC por ano?'",
+     "descricao": "CDE e CCC (Conta de Consumo de Combustíveis) só são expandidas em 'Mais 2 siglas', dentro de bloco recolhido.",
+     "sugestao": "Expandir no título ou na primeira linha do painel."
+    },
+    {
+     "id": "A09_siglas_fim_linha",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Fim das linhas do gráfico regional",
+     "descricao": "Os rótulos 'N', 'BR·NE' e 'SE·S·CO' agrupam séries coincidentes e a cor do ponto final é a de uma só região.",
+     "sugestao": "Legenda com as siglas ou direto o nome de cada região, com deslocamento vertical."
+    },
+    {
+     "id": "A10_pagina_longa",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Página inteira",
+     "descricao": "7.372 px no Entender (16.236 em Analisar) com seis painéis e sem índice interno; os painéis de custeio (CDE e, em Analisar, recursos por contrato) ampliam a página além da pergunta sobre acesso.",
+     "sugestao": "Índice de seções no topo e mover custeio para um capítulo próprio ou para o nível Analisar."
+    },
+    {
+     "id": "A11_390_rotulos",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "K"
+     ],
+     "onde": "Barras horizontais em 390 px",
+     "descricao": "A linha de base cruza a primeira letra dos anos e dos nomes de UF nas barras de pessoas e da CDE.",
+     "sugestao": "Recuo entre linha e rótulo."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver) não testado; só rótulos, regiões vivas e árvore de papéis lidos no DOM.",
+    "Zoom real do navegador a 200% e 400% não testado; usei viewport de 320 px e fonte base a 200%.",
+    "Firefox, Safari e aparelho móvel físico não testados; toque emulado no Chromium.",
+    "Tabelas de municípios e recursos do Luz para Todos (Analisar) e conferências (Auditar) vistas só em texto.",
+    "Salto ao topo não medido em 390 px nesta página (medido no Orçamento).",
+    "Mapa de sistemas isolados por pontos (JSON) não localizado na página; só o gráfico de barras e as tabelas."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "id": "TP1",
+     "tarefa": "Entender quem não tem energia e quem vive fora do SIN sem somar as unidades",
+     "perfil": "jornalista ou professor",
+     "passos": [
+      "Ler os três números e as definições de domicílio, pessoa e ligação",
+      "Ler 'Domicílio, pessoa e ligação do programa são unidades diferentes'",
+      "Ler 'O que não é possível concluir' do painel"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "CDE e CCC sem expansão visível nos títulos"
+     ],
+     "erros": []
+    },
+    {
+     "id": "TP2",
+     "tarefa": "Comparar UF em Rede em tempo integral e ver a evolução de duas UF",
+     "perfil": "gestor público ou conselho",
+     "passos": [
+      "Escolher Rede em tempo integral",
+      "Escolher Só área rural",
+      "Clicar em AM e em PA",
+      "Ler o histórico de AM e PA"
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Salto ao topo ao trocar o indicador do mapa, a situação e no primeiro clique",
+      "Histórico ignora Só área rural",
+      "Frase-resposta não muda com o indicador"
+     ],
+     "erros": []
+    },
+    {
+     "id": "TP3",
+     "tarefa": "Exportar a tabela de sistemas isolados filtrada, com fonte e versão",
+     "perfil": "pesquisador",
+     "passos": [
+      "Abrir a página no nível Auditar",
+      "Buscar 'ama' na tabela PASI por UF",
+      "Baixar CSV e XLSX",
+      "Abrir o XLSX e ler a folha 'Sobre'"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "O CSV não leva fonte nem versão dentro do arquivo"
+     ],
+     "erros": []
+    }
+   ]
+  }
+ },
+ "achados_entre_paginas": [
+  "Salto ao topo (rolagem suave até cerca de 70 px) ao usar controles do meio da página: indicador do mapa, primeiro clique em UF, limiar e situação rural em Orçamento, Acesso, Cobertura e Tarifa Social; com setas do teclado num rádio já focado não houve salto.",
+  "Frase-resposta e cartões ficam fixos quando o leitor muda o controle do painel: Na renda (Orçamento), Indicador (Acesso) e Medida (Tarifa Social).",
+  "Anotações de evento cortadas à esquerda em 390 px (Tarifa Social) e barras de ano orçado ou parcial (CDE 2026, Luz para Todos 2026) sem diferenciação visual e com rótulo truncado em 1440 px.",
+  "Em 390 px a linha de base ou a linha de referência cruza rótulos de categoria nos gráficos de barras horizontais das cinco páginas.",
+  "Definições de Estimado, Observado e Calculado só em atributo title; glossário de siglas recolhido e aninhado, com CCC (Acesso), MPV e ESS (Tarifa Social) sem expansão visível ou definidas de modo diferente do uso.",
+  "Navegação em três camadas empilhadas, síntese sem a barra de capítulos das filhas, 'Onde aprofundar' sem Peso no orçamento e mapa municipal da Cobertura só no nível Analisar, sem pista no nível padrão.",
+  "Eixos e classes que exageram ou escondem magnitude: histórico do Brasil no Acesso (0,200 a 0,300), classe superior do mapa de Acesso (0,3 a 1,6) e mapa de contagem absoluta de faturas por UF na Tarifa Social.",
+  "Tabelas largas em 390 px (de 816 a 1.102 px, e 5.367 px em Analisar no Orçamento) com as colunas numéricas fora da primeira tela e primeira coluna fixa em apenas uma delas."
+ ],
+ "limites_da_avaliacao": "Avaliação por inspeção heurística de um agente, só em Chromium sem cabeça (Playwright 1.56) contra http://localhost:3101, commit cbb5fbfeb. Leitor de tela real não foi testado; Firefox, Safari e aparelhos móveis físicos não foram testados; toque, zoom e texto ampliado foram emulados (viewport de 320 px e fonte base a 200%). As imagens de 1440 do pacote estão reduzidas a 50%; detalhes de 10 a 12 px foram conferidos no DOM e em capturas próprias. O pacote não trouxe os trechos de 390 px home 02 e 05, acesso 02, 04, 05 e 07, cobertura 02 e 05, orçamento 02 e 05 e tarifa social 02, 04 e 06; recapturei esses trechos no mesmo servidor, no estado Entender. O objetivo.json mede 360 e não 320 px, e o teste de teclado dele para em 70 paradas; medi 320 px por conta própria. O campo tarefas_rubrica veio vazio nas cinco páginas (nenhuma tarefa T1 a T12 associada); inspecionei a tarefa de publico_tarefa.json em três recortes por página. Níveis Analisar e Auditar foram vistos em texto e em capturas pontuais. A correção numérica, a origem do desconto negativo do ES e a rastreabilidade pertencem ao avaliador técnico. Os testes de salto de rolagem usaram clique de mouse e toque emulado e registraram pushState e posição de rolagem; não identifiquei a causa no código. Capturas e scripts próprios citados nas evidências estão em /tmp/claude-0/-home-user-scrutiniums/fdb6f8f5-b80e-56ed-ab31-342c1b46c73d/scratchpad/aval_u11 (capturas na subpasta out)."
+}

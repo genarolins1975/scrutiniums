@@ -2,7 +2,7 @@
  "cod": "C0088448",
  "nome": "NG CASH IP - PRUDENCIAL",
  "sr": null,
- "tcb": "N4",
+ "tcb": "N1",
  "porte_quartil": null,
  "nivel": "conglomerado prudencial",
  "anomes_list": [
@@ -74,5 +74,5 @@
    "202603": 10321800.48
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

@@ -1,85 +1,96 @@
-import { BotaoLink } from "@/components/home/BotaoLink";
+import Link from "next/link";
+import { registroErros } from "@/lib/sobre";
+import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/home/Recolhido";
 
-const CONTEUDOS = [
-  {
-    titulo: "Panorama do Crédito por estado",
-    descricao:
-      "Mapa e perfis do SCR: carteira, inadimplência arrastada, renda, ocupação e produto em cada UF, com alertas de deterioração por regras publicadas.",
-  },
-  {
-    titulo: "Taxas de juros por instituição",
-    descricao:
-      "20 modalidades PF e PJ, cerca de 200 instituições: ranking completo, dispersão, quem é persistentemente mais barato e a carteira associada.",
-  },
-  {
-    titulo: "Comparador de instituições",
-    descricao:
-      "Visão executiva de 2 a 10 bancos e cooperativas (IF.data), com grupo comparável por segmento prudencial e sentido econômico declarado em cada métrica.",
-  },
-  {
-    titulo: "Sinais antecedentes e alertas",
-    descricao:
-      "Subíndices de estresse decompostos, alertas com persistência mínima e relatório diário automático, tudo com regra publicada.",
-  },
-  {
-    titulo: "Riscos emergentes: bets e fraudes",
-    descricao:
-      "Apostas e golpes digitais versus crédito das famílias, com hierarquia de evidência A a E e a honestidade de dizer o que ainda é hipótese.",
-  },
-  {
-    titulo: "Mercado & valor dos bancos listados",
-    descricao:
-      "Retorno total com proventos reinvestidos, drawdown, valuation e resultados das companhias financeiras da B3.",
-  },
-  {
-    titulo: "Glossário e metodologia abertos",
-    descricao: "Definições e métodos acessíveis a qualquer pessoa, sem cadastro.",
-  },
-];
+type Item = { titulo: string; descricao: string; link?: { href: string; rotulo: string } };
 
 /**
- * Momento de manifesto: a frase de transparência em serifa grande
- * sobre carvão, seguida do que existe dentro da plataforma em lista
- * editorial com filetes — sem cartões.
+ * O sistema de evidência, dito com o alcance que cada recurso tem hoje.
+ * Recurso que existe em um só observatório é atribuído a ele; nada é
+ * apresentado como comum a todos sem estar em todos.
  */
+function itens(): Item[] {
+  const nErros = registroErros().erros.length;
+  return [
+    {
+      titulo: "Fonte e data de referência",
+      descricao:
+        "Órgão, base e período de referência acompanham indicadores, gráficos e tabelas em todos os observatórios.",
+    },
+    {
+      titulo: "Ausência declarada",
+      descricao:
+        "Recorte sem dado aparece como indisponível, com o motivo. Nunca como zero, nunca preenchido por estimativa silenciosa.",
+    },
+    {
+      titulo: "Natureza de cada número",
+      descricao:
+        "No Setor Elétrico, cada valor traz o selo observado, calculado, estimado, previsto ou cenário. No Gás Natural, cada indicador traz observado ou calculado, com a fórmula. Nos demais observatórios, a natureza consta da ficha e da proveniência do indicador.",
+    },
+    {
+      titulo: "Previsão só com estado declarado",
+      descricao:
+        "Os modelos de previsão do PLD aparecem como pesquisa e cada emissão fica em arquivo imutável. Cenários e laboratórios didáticos são rotulados como tal.",
+    },
+    {
+      titulo: "Dados para reutilizar",
+      descricao:
+        "Com a conta: CSV e Parquet com hash SHA-256 no Setor Elétrico; CSV, XLSX e API em JSON no Crédito; CSV na maior parte dos temas da Eficiência Estatal, nas Contas Estaduais e no Gás Natural; JSON nas Contas Federais.",
+    },
+    {
+      titulo: "Erros corrigidos em público",
+      descricao:
+        nErros > 0
+          ? `O registro público reúne ${nErros} ${nErros === 1 ? "erro identificado" : "erros identificados"}, com descrição, gravidade e correção.`
+          : "O registro público de erros reúne cada correção com descrição, gravidade e onde foi corrigida.",
+      link: { href: "/sobre/erros", rotulo: "Registro de erros" },
+    },
+  ];
+}
+
+/** O método da plataforma, recolhido no fim da home (achado A9 da banca de 19/10/2026): no HTML, a um clique. */
 export function SecaoPlataforma() {
   return (
-    <section id="plataforma" aria-labelledby="plataforma-titulo" className="bg-carvao text-marfim">
-      <div className="mx-auto max-w-page px-6 py-24 md:py-32">
-        <p className="rotulo text-mineral-soft">Dentro da plataforma</p>
-        <h2
-          id="plataforma-titulo"
-          className="mt-7 max-w-5xl font-serif text-[clamp(1.9rem,4.5vw,3.4rem)] leading-[1.12] text-marfim"
-        >
-          Fontes, critérios, período e limitações —{" "}
-          <span className="text-bronze-soft">declarados em cada análise.</span>
-        </h2>
-        <p className="mt-8 max-w-prose2 leading-relaxed text-mineral-soft">
-          É o compromisso que sustenta tudo o que existe do outro lado do cadastro.
-        </p>
-
-        <ul className="mt-16 border-t border-linha-escura">
-          {CONTEUDOS.map((item) => (
-            <li
-              key={item.titulo}
-              className="grid gap-1.5 border-b border-linha-escura py-6 md:grid-cols-[16rem_1fr] md:items-baseline md:gap-8 md:py-7 lg:grid-cols-[22rem_1fr] lg:gap-10"
-            >
-              <h3 className="font-serif text-lg text-marfim md:text-xl">{item.titulo}</h3>
-              <p className="text-sm leading-relaxed text-mineral-soft md:text-base">
-                {item.descricao}
+    <section id="plataforma" aria-labelledby="plataforma-titulo" className="scroll-mt-4 bg-carvao text-marfim">
+      <div className="mx-auto max-w-page px-6">
+        <details className={DETALHE_RECOLHIDO}>
+          <summary className={`${RESUMO_RECOLHIDO} py-8 md:py-10`}>
+            <span className="block">
+              <span className="rotulo block text-mineral-soft">Método</span>
+              <h2
+                id="plataforma-titulo"
+                className="mt-3 font-serif text-[clamp(1.5rem,3.4vw,2.25rem)] leading-[1.15] text-marfim [text-wrap:balance]"
+              >
+                Fonte, período e limites, <span className="text-bronze-soft">declarados junto ao número.</span>
+              </h2>
+            </span>
+            <IndicadorRecolhido claro />
+          </summary>
+          <div className="grid gap-10 pb-16 lg:grid-cols-12 lg:gap-8">
+            <div className="lg:sticky lg:top-10 lg:col-span-5 lg:self-start">
+              <p className="max-w-md leading-relaxed text-mineral-soft">
+                Os observatórios apresentam indicadores, referências e ressalvas. A conclusão fica com quem lê.
               </p>
-            </li>
-          ))}
-        </ul>
+            </div>
 
-        <div className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-4">
-          <BotaoLink href="/cadastro" variant="dark">
-            Criar acesso
-          </BotaoLink>
-          <p className="rotulo text-mineral-soft">
-            100% gratuito · sem assinatura · sem cobrança
-          </p>
-        </div>
+            <ul className="border-t border-linha-escura lg:col-span-7">
+              {itens().map((item) => (
+                <li key={item.titulo} className="border-b border-linha-escura py-6 md:py-7">
+                  <h3 className="font-serif text-lg text-marfim md:text-xl">{item.titulo}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-mineral-soft md:text-base">{item.descricao}</p>
+                  {item.link && (
+                    <Link
+                      href={item.link.href}
+                      className="rotulo mt-3 inline-flex min-h-[44px] items-center gap-2 text-bronze-soft underline decoration-linha-escura underline-offset-8 hover:text-marfim"
+                    >
+                      {item.link.rotulo} <span aria-hidden="true">→</span>
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </details>
       </div>
     </section>
   );

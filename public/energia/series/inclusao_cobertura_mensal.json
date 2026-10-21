@@ -1,0 +1,983 @@
+{
+ "gerado_em": "2026-10-01T00:28:44Z",
+ "natureza_da_medida": "PROXY",
+ "unidade": "UC com Tarifa Social (SCS, meses completos) por 100 famílias do Cadastro Único com renda per capita até meio salário mínimo",
+ "campos": [
+  "m",
+  "uc_tsee",
+  "familias_atualizadas",
+  "familias_cadastradas",
+  "razao_atualizadas_pct",
+  "razao_cadastradas_pct"
+ ],
+ "serie": [
+  {
+   "m": "2015-04",
+   "uc_tsee": 10835963.0,
+   "familias_atualizadas": 16568618.0,
+   "familias_cadastradas": 23362648.0,
+   "razao_atualizadas_pct": 65.4,
+   "razao_cadastradas_pct": 46.38
+  },
+  {
+   "m": "2015-05",
+   "uc_tsee": 9224360.0,
+   "familias_atualizadas": 16432499.0,
+   "familias_cadastradas": 23455795.0,
+   "razao_atualizadas_pct": 56.13,
+   "razao_cadastradas_pct": 39.33
+  },
+  {
+   "m": "2015-06",
+   "uc_tsee": 8931143.0,
+   "familias_atualizadas": 16400184.0,
+   "familias_cadastradas": 23504436.0,
+   "razao_atualizadas_pct": 54.46,
+   "razao_cadastradas_pct": 38.0
+  },
+  {
+   "m": "2015-07",
+   "uc_tsee": 8805549.0,
+   "familias_atualizadas": 16387988.0,
+   "familias_cadastradas": 22559653.0,
+   "razao_atualizadas_pct": 53.73,
+   "razao_cadastradas_pct": 39.03
+  },
+  {
+   "m": "2015-08",
+   "uc_tsee": 9048271.0,
+   "familias_atualizadas": 16364299.0,
+   "familias_cadastradas": 22652539.0,
+   "razao_atualizadas_pct": 55.29,
+   "razao_cadastradas_pct": 39.94
+  },
+  {
+   "m": "2015-09",
+   "uc_tsee": 8540235.0,
+   "familias_atualizadas": 16434074.0,
+   "familias_cadastradas": 22726127.0,
+   "razao_atualizadas_pct": 51.97,
+   "razao_cadastradas_pct": 37.58
+  },
+  {
+   "m": "2015-10",
+   "uc_tsee": 8463317.0,
+   "familias_atualizadas": 16497512.0,
+   "familias_cadastradas": 22798822.0,
+   "razao_atualizadas_pct": 51.3,
+   "razao_cadastradas_pct": 37.12
+  },
+  {
+   "m": "2015-11",
+   "uc_tsee": 8687082.0,
+   "familias_atualizadas": 16831875.0,
+   "familias_cadastradas": 22874121.0,
+   "razao_atualizadas_pct": 51.61,
+   "razao_cadastradas_pct": 37.98
+  },
+  {
+   "m": "2015-12",
+   "uc_tsee": 8874647.0,
+   "familias_atualizadas": 16469262.0,
+   "familias_cadastradas": 22961293.0,
+   "razao_atualizadas_pct": 53.89,
+   "razao_cadastradas_pct": 38.65
+  },
+  {
+   "m": "2016-01",
+   "uc_tsee": 9082827.0,
+   "familias_atualizadas": 16426356.0,
+   "familias_cadastradas": 22390351.0,
+   "razao_atualizadas_pct": 55.29,
+   "razao_cadastradas_pct": 40.57
+  },
+  {
+   "m": "2016-02",
+   "uc_tsee": 9225760.0,
+   "familias_atualizadas": 16542465.0,
+   "familias_cadastradas": 22481781.0,
+   "razao_atualizadas_pct": 55.77,
+   "razao_cadastradas_pct": 41.04
+  },
+  {
+   "m": "2016-03",
+   "uc_tsee": 9337186.0,
+   "familias_atualizadas": 16508651.0,
+   "familias_cadastradas": 22619963.0,
+   "razao_atualizadas_pct": 56.56,
+   "razao_cadastradas_pct": 41.28
+  },
+  {
+   "m": "2016-04",
+   "uc_tsee": 9408351.0,
+   "familias_atualizadas": 16308287.0,
+   "familias_cadastradas": 22790112.0,
+   "razao_atualizadas_pct": 57.69,
+   "razao_cadastradas_pct": 41.28
+  },
+  {
+   "m": "2016-05",
+   "uc_tsee": 9473381.0,
+   "familias_atualizadas": 16315583.0,
+   "familias_cadastradas": 22933787.0,
+   "razao_atualizadas_pct": 58.06,
+   "razao_cadastradas_pct": 41.31
+  },
+  {
+   "m": "2016-06",
+   "uc_tsee": 9280992.0,
+   "familias_atualizadas": 16203871.0,
+   "familias_cadastradas": 23038996.0,
+   "razao_atualizadas_pct": 57.28,
+   "razao_cadastradas_pct": 40.28
+  },
+  {
+   "m": "2016-07",
+   "uc_tsee": 9293879.0,
+   "familias_atualizadas": 16180675.0,
+   "familias_cadastradas": 23174691.0,
+   "razao_atualizadas_pct": 57.44,
+   "razao_cadastradas_pct": 40.1
+  },
+  {
+   "m": "2016-08",
+   "uc_tsee": 9220962.0,
+   "familias_atualizadas": 16132621.0,
+   "familias_cadastradas": 23268230.0,
+   "razao_atualizadas_pct": 57.16,
+   "razao_cadastradas_pct": 39.63
+  },
+  {
+   "m": "2016-09",
+   "uc_tsee": 9074766.0,
+   "familias_atualizadas": 16059057.0,
+   "familias_cadastradas": 22628157.0,
+   "razao_atualizadas_pct": 56.51,
+   "razao_cadastradas_pct": 40.1
+  },
+  {
+   "m": "2016-10",
+   "uc_tsee": 9161201.0,
+   "familias_atualizadas": 16136915.0,
+   "familias_cadastradas": 22671669.0,
+   "razao_atualizadas_pct": 56.77,
+   "razao_cadastradas_pct": 40.41
+  },
+  {
+   "m": "2016-11",
+   "uc_tsee": 9284895.0,
+   "familias_atualizadas": 16299525.0,
+   "familias_cadastradas": 22688343.0,
+   "razao_atualizadas_pct": 56.96,
+   "razao_cadastradas_pct": 40.92
+  },
+  {
+   "m": "2016-12",
+   "uc_tsee": 8911412.0,
+   "familias_atualizadas": 16483089.0,
+   "familias_cadastradas": 21410812.0,
+   "razao_atualizadas_pct": 54.06,
+   "razao_cadastradas_pct": 41.62
+  },
+  {
+   "m": "2017-01",
+   "uc_tsee": 8886051.0,
+   "familias_atualizadas": 16675505.0,
+   "familias_cadastradas": 22541556.0,
+   "razao_atualizadas_pct": 53.29,
+   "razao_cadastradas_pct": 39.42
+  },
+  {
+   "m": "2017-02",
+   "uc_tsee": 8794374.0,
+   "familias_atualizadas": 16673333.0,
+   "familias_cadastradas": 22667042.0,
+   "razao_atualizadas_pct": 52.75,
+   "razao_cadastradas_pct": 38.8
+  },
+  {
+   "m": "2017-03",
+   "uc_tsee": 8696184.0,
+   "familias_atualizadas": 16603164.0,
+   "familias_cadastradas": 22812785.0,
+   "razao_atualizadas_pct": 52.38,
+   "razao_cadastradas_pct": 38.12
+  },
+  {
+   "m": "2017-04",
+   "uc_tsee": 8791497.0,
+   "familias_atualizadas": 16647284.0,
+   "familias_cadastradas": 23012049.0,
+   "razao_atualizadas_pct": 52.81,
+   "razao_cadastradas_pct": 38.2
+  },
+  {
+   "m": "2017-05",
+   "uc_tsee": 8880465.0,
+   "familias_atualizadas": 16722231.0,
+   "familias_cadastradas": 23173043.0,
+   "razao_atualizadas_pct": 53.11,
+   "razao_cadastradas_pct": 38.32
+  },
+  {
+   "m": "2017-06",
+   "uc_tsee": 9029144.0,
+   "familias_atualizadas": 16776260.0,
+   "familias_cadastradas": 23302304.0,
+   "razao_atualizadas_pct": 53.82,
+   "razao_cadastradas_pct": 38.75
+  },
+  {
+   "m": "2017-07",
+   "uc_tsee": 9053182.0,
+   "familias_atualizadas": 16781787.0,
+   "familias_cadastradas": 23451019.0,
+   "razao_atualizadas_pct": 53.95,
+   "razao_cadastradas_pct": 38.6
+  },
+  {
+   "m": "2017-08",
+   "uc_tsee": 8933102.0,
+   "familias_atualizadas": 17099618.0,
+   "familias_cadastradas": 23595178.0,
+   "razao_atualizadas_pct": 52.24,
+   "razao_cadastradas_pct": 37.86
+  },
+  {
+   "m": "2017-09",
+   "uc_tsee": 9050706.0,
+   "familias_atualizadas": 17004369.0,
+   "familias_cadastradas": 21485976.0,
+   "razao_atualizadas_pct": 53.23,
+   "razao_cadastradas_pct": 42.12
+  },
+  {
+   "m": "2017-10",
+   "uc_tsee": 8860746.0,
+   "familias_atualizadas": 17267115.0,
+   "familias_cadastradas": 21747166.0,
+   "razao_atualizadas_pct": 51.32,
+   "razao_cadastradas_pct": 40.74
+  },
+  {
+   "m": "2017-11",
+   "uc_tsee": 8862060.0,
+   "familias_atualizadas": 17442838.0,
+   "familias_cadastradas": 21946626.0,
+   "razao_atualizadas_pct": 50.81,
+   "razao_cadastradas_pct": 40.38
+  },
+  {
+   "m": "2017-12",
+   "uc_tsee": 8781228.0,
+   "familias_atualizadas": 17628415.0,
+   "familias_cadastradas": 22138797.0,
+   "razao_atualizadas_pct": 49.81,
+   "razao_cadastradas_pct": 39.66
+  },
+  {
+   "m": "2018-01",
+   "uc_tsee": 8741368.0,
+   "familias_atualizadas": 17795235.0,
+   "familias_cadastradas": 22344446.0,
+   "razao_atualizadas_pct": 49.12,
+   "razao_cadastradas_pct": 39.12
+  },
+  {
+   "m": "2018-02",
+   "uc_tsee": 8719120.0,
+   "familias_atualizadas": 17867132.0,
+   "familias_cadastradas": 22501582.0,
+   "razao_atualizadas_pct": 48.8,
+   "razao_cadastradas_pct": 38.75
+  },
+  {
+   "m": "2018-03",
+   "uc_tsee": 8789383.0,
+   "familias_atualizadas": 17865016.0,
+   "familias_cadastradas": 21746919.0,
+   "razao_atualizadas_pct": 49.2,
+   "razao_cadastradas_pct": 40.42
+  },
+  {
+   "m": "2018-04",
+   "uc_tsee": 8853383.0,
+   "familias_atualizadas": 17954473.0,
+   "familias_cadastradas": 21972556.0,
+   "razao_atualizadas_pct": 49.31,
+   "razao_cadastradas_pct": 40.29
+  },
+  {
+   "m": "2018-05",
+   "uc_tsee": 8791367.0,
+   "familias_atualizadas": 18068301.0,
+   "familias_cadastradas": 22259057.0,
+   "razao_atualizadas_pct": 48.66,
+   "razao_cadastradas_pct": 39.5
+  },
+  {
+   "m": "2018-06",
+   "uc_tsee": 8707794.0,
+   "familias_atualizadas": 18130852.0,
+   "familias_cadastradas": 22447369.0,
+   "razao_atualizadas_pct": 48.03,
+   "razao_cadastradas_pct": 38.79
+  },
+  {
+   "m": "2018-07",
+   "uc_tsee": 8745933.0,
+   "familias_atualizadas": 18068282.0,
+   "familias_cadastradas": 22592247.0,
+   "razao_atualizadas_pct": 48.4,
+   "razao_cadastradas_pct": 38.71
+  },
+  {
+   "m": "2018-08",
+   "uc_tsee": 8850381.0,
+   "familias_atualizadas": 17913290.0,
+   "familias_cadastradas": 21524182.0,
+   "razao_atualizadas_pct": 49.41,
+   "razao_cadastradas_pct": 41.12
+  },
+  {
+   "m": "2018-09",
+   "uc_tsee": 9047392.0,
+   "familias_atualizadas": 18261071.0,
+   "familias_cadastradas": 21755362.0,
+   "razao_atualizadas_pct": 49.54,
+   "razao_cadastradas_pct": 41.59
+  },
+  {
+   "m": "2018-10",
+   "uc_tsee": 9022591.0,
+   "familias_atualizadas": 18491250.0,
+   "familias_cadastradas": 22058920.0,
+   "razao_atualizadas_pct": 48.79,
+   "razao_cadastradas_pct": 40.9
+  },
+  {
+   "m": "2018-11",
+   "uc_tsee": 9073397.0,
+   "familias_atualizadas": 18639353.0,
+   "familias_cadastradas": 22243404.0,
+   "razao_atualizadas_pct": 48.68,
+   "razao_cadastradas_pct": 40.79
+  },
+  {
+   "m": "2018-12",
+   "uc_tsee": 8494522.0,
+   "familias_atualizadas": 18497188.0,
+   "familias_cadastradas": 21488560.0,
+   "razao_atualizadas_pct": 45.92,
+   "razao_cadastradas_pct": 39.53
+  },
+  {
+   "m": "2019-01",
+   "uc_tsee": 8560983.0,
+   "familias_atualizadas": 18726770.0,
+   "familias_cadastradas": 21793499.0,
+   "razao_atualizadas_pct": 45.72,
+   "razao_cadastradas_pct": 39.28
+  },
+  {
+   "m": "2019-02",
+   "uc_tsee": 8493649.0,
+   "familias_atualizadas": 18835654.0,
+   "familias_cadastradas": 22008196.0,
+   "razao_atualizadas_pct": 45.09,
+   "razao_cadastradas_pct": 38.59
+  },
+  {
+   "m": "2019-03",
+   "uc_tsee": 8659505.0,
+   "familias_atualizadas": 18860392.0,
+   "familias_cadastradas": 22184908.0,
+   "razao_atualizadas_pct": 45.91,
+   "razao_cadastradas_pct": 39.03
+  },
+  {
+   "m": "2019-04",
+   "uc_tsee": 8753529.0,
+   "familias_atualizadas": 18578432.0,
+   "familias_cadastradas": 21878764.0,
+   "razao_atualizadas_pct": 47.12,
+   "razao_cadastradas_pct": 40.01
+  },
+  {
+   "m": "2019-05",
+   "uc_tsee": 8818694.0,
+   "familias_atualizadas": 18618973.0,
+   "familias_cadastradas": 22094790.0,
+   "razao_atualizadas_pct": 47.36,
+   "razao_cadastradas_pct": 39.91
+  },
+  {
+   "m": "2019-06",
+   "uc_tsee": 8910608.0,
+   "familias_atualizadas": 18554981.0,
+   "familias_cadastradas": 22317692.0,
+   "razao_atualizadas_pct": 48.02,
+   "razao_cadastradas_pct": 39.93
+  },
+  {
+   "m": "2019-07",
+   "uc_tsee": 9181977.0,
+   "familias_atualizadas": 18623613.0,
+   "familias_cadastradas": 22473041.0,
+   "razao_atualizadas_pct": 49.3,
+   "razao_cadastradas_pct": 40.86
+  },
+  {
+   "m": "2019-08",
+   "uc_tsee": 9165550.0,
+   "familias_atualizadas": 18678387.0,
+   "familias_cadastradas": 22665535.0,
+   "razao_atualizadas_pct": 49.07,
+   "razao_cadastradas_pct": 40.44
+  },
+  {
+   "m": "2019-09",
+   "uc_tsee": 9248472.0,
+   "familias_atualizadas": 18304434.0,
+   "familias_cadastradas": 21710985.0,
+   "razao_atualizadas_pct": 50.53,
+   "razao_cadastradas_pct": 42.6
+  },
+  {
+   "m": "2019-10",
+   "uc_tsee": 9215412.0,
+   "familias_atualizadas": 18520452.0,
+   "familias_cadastradas": 21971568.0,
+   "razao_atualizadas_pct": 49.76,
+   "razao_cadastradas_pct": 41.94
+  },
+  {
+   "m": "2019-11",
+   "uc_tsee": 9286581.0,
+   "familias_atualizadas": 18655214.0,
+   "familias_cadastradas": 22166167.0,
+   "razao_atualizadas_pct": 49.78,
+   "razao_cadastradas_pct": 41.9
+  },
+  {
+   "m": "2019-12",
+   "uc_tsee": 9142774.0,
+   "familias_atualizadas": 18738148.0,
+   "familias_cadastradas": 22351469.0,
+   "razao_atualizadas_pct": 48.79,
+   "razao_cadastradas_pct": 40.9
+  },
+  {
+   "m": "2020-01",
+   "uc_tsee": 9348474.0,
+   "familias_atualizadas": 18895116.0,
+   "familias_cadastradas": 22683490.0,
+   "razao_atualizadas_pct": 49.48,
+   "razao_cadastradas_pct": 41.21
+  },
+  {
+   "m": "2020-02",
+   "uc_tsee": 9428138.0,
+   "familias_atualizadas": 18526576.0,
+   "familias_cadastradas": 22051429.0,
+   "razao_atualizadas_pct": 50.89,
+   "razao_cadastradas_pct": 42.76
+  },
+  {
+   "m": "2020-03",
+   "uc_tsee": 9485682.0,
+   "familias_atualizadas": 18507967.0,
+   "familias_cadastradas": 22231990.0,
+   "razao_atualizadas_pct": 51.25,
+   "razao_cadastradas_pct": 42.67
+  },
+  {
+   "m": "2020-04",
+   "uc_tsee": 9630265.0,
+   "familias_atualizadas": 18284748.0,
+   "familias_cadastradas": 22318525.0,
+   "razao_atualizadas_pct": 52.67,
+   "razao_cadastradas_pct": 43.15
+  },
+  {
+   "m": "2020-05",
+   "uc_tsee": 10376895.0,
+   "familias_atualizadas": 18003601.0,
+   "familias_cadastradas": 22468323.0,
+   "razao_atualizadas_pct": 57.64,
+   "razao_cadastradas_pct": 46.18
+  },
+  {
+   "m": "2020-06",
+   "uc_tsee": 10785437.0,
+   "familias_atualizadas": 17772890.0,
+   "familias_cadastradas": 22609909.0,
+   "razao_atualizadas_pct": 60.68,
+   "razao_cadastradas_pct": 47.7
+  },
+  {
+   "m": "2020-07",
+   "uc_tsee": 11026843.0,
+   "familias_atualizadas": 17574659.0,
+   "familias_cadastradas": 22743236.0,
+   "razao_atualizadas_pct": 62.74,
+   "razao_cadastradas_pct": 48.48
+  },
+  {
+   "m": "2020-08",
+   "uc_tsee": 11137514.0,
+   "familias_atualizadas": 17308089.0,
+   "familias_cadastradas": 22908831.0,
+   "razao_atualizadas_pct": 64.35,
+   "razao_cadastradas_pct": 48.62
+  },
+  {
+   "m": "2020-09",
+   "uc_tsee": 11302736.0,
+   "familias_atualizadas": 16979213.0,
+   "familias_cadastradas": 23040262.0,
+   "razao_atualizadas_pct": 66.57,
+   "razao_cadastradas_pct": 49.06
+  },
+  {
+   "m": "2020-10",
+   "uc_tsee": 11449796.0,
+   "familias_atualizadas": 16669716.0,
+   "familias_cadastradas": 23201706.0,
+   "razao_atualizadas_pct": 68.69,
+   "razao_cadastradas_pct": 49.35
+  },
+  {
+   "m": "2020-11",
+   "uc_tsee": 11575575.0,
+   "familias_atualizadas": 16263736.0,
+   "familias_cadastradas": 22500463.0,
+   "razao_atualizadas_pct": 71.17,
+   "razao_cadastradas_pct": 51.45
+  },
+  {
+   "m": "2020-12",
+   "uc_tsee": 11736536.0,
+   "familias_atualizadas": 16110529.0,
+   "familias_cadastradas": 22643048.0,
+   "razao_atualizadas_pct": 72.85,
+   "razao_cadastradas_pct": 51.83
+  },
+  {
+   "m": "2021-01",
+   "uc_tsee": 11893484.0,
+   "familias_atualizadas": 16067096.0,
+   "familias_cadastradas": 22943731.0,
+   "razao_atualizadas_pct": 74.02,
+   "razao_cadastradas_pct": 51.84
+  },
+  {
+   "m": "2021-02",
+   "uc_tsee": 11984114.0,
+   "familias_atualizadas": 16052256.0,
+   "familias_cadastradas": 23173000.0,
+   "razao_atualizadas_pct": 74.66,
+   "razao_cadastradas_pct": 51.72
+  },
+  {
+   "m": "2021-03",
+   "uc_tsee": 12060853.0,
+   "familias_atualizadas": 16049272.0,
+   "familias_cadastradas": 23380053.0,
+   "razao_atualizadas_pct": 75.15,
+   "razao_cadastradas_pct": 51.59
+  },
+  {
+   "m": "2021-04",
+   "uc_tsee": 11871041.0,
+   "familias_atualizadas": 15713566.0,
+   "familias_cadastradas": 23589298.0,
+   "razao_atualizadas_pct": 75.55,
+   "razao_cadastradas_pct": 50.32
+  },
+  {
+   "m": "2021-05",
+   "uc_tsee": 11975334.0,
+   "familias_atualizadas": 15627487.0,
+   "familias_cadastradas": 23778168.0,
+   "razao_atualizadas_pct": 76.63,
+   "razao_cadastradas_pct": 50.36
+  },
+  {
+   "m": "2021-06",
+   "uc_tsee": 12038909.0,
+   "familias_atualizadas": 15427827.0,
+   "familias_cadastradas": 23958739.0,
+   "razao_atualizadas_pct": 78.03,
+   "razao_cadastradas_pct": 50.25
+  },
+  {
+   "m": "2021-07",
+   "uc_tsee": 12233007.0,
+   "familias_atualizadas": 15318840.0,
+   "familias_cadastradas": 24204173.0,
+   "razao_atualizadas_pct": 79.86,
+   "razao_cadastradas_pct": 50.54
+  },
+  {
+   "m": "2021-08",
+   "uc_tsee": 12372365.0,
+   "familias_atualizadas": 15145271.0,
+   "familias_cadastradas": 24394029.0,
+   "razao_atualizadas_pct": 81.69,
+   "razao_cadastradas_pct": 50.72
+  },
+  {
+   "m": "2021-09",
+   "uc_tsee": 12294773.0,
+   "familias_atualizadas": 15032817.0,
+   "familias_cadastradas": 24578491.0,
+   "razao_atualizadas_pct": 81.79,
+   "razao_cadastradas_pct": 50.02
+  },
+  {
+   "m": "2021-10",
+   "uc_tsee": 12433707.0,
+   "familias_atualizadas": 15041733.0,
+   "familias_cadastradas": 24786236.0,
+   "razao_atualizadas_pct": 82.66,
+   "razao_cadastradas_pct": 50.16
+  },
+  {
+   "m": "2021-11",
+   "uc_tsee": 12550643.0,
+   "familias_atualizadas": 15836379.0,
+   "familias_cadastradas": 25369018.0,
+   "razao_atualizadas_pct": 79.25,
+   "razao_cadastradas_pct": 49.47
+  },
+  {
+   "m": "2021-12",
+   "uc_tsee": 12675578.0,
+   "familias_atualizadas": 16330241.0,
+   "familias_cadastradas": 25688552.0,
+   "razao_atualizadas_pct": 77.62,
+   "razao_cadastradas_pct": 49.34
+  },
+  {
+   "m": "2022-01",
+   "uc_tsee": 13110646.0,
+   "familias_atualizadas": 16873069.0,
+   "familias_cadastradas": 26322129.0,
+   "razao_atualizadas_pct": 77.7,
+   "razao_cadastradas_pct": 49.81
+  },
+  {
+   "m": "2022-02",
+   "uc_tsee": 13686421.0,
+   "familias_atualizadas": 17576409.0,
+   "familias_cadastradas": 27070335.0,
+   "razao_atualizadas_pct": 77.87,
+   "razao_cadastradas_pct": 50.56
+  },
+  {
+   "m": "2022-03",
+   "uc_tsee": 14168889.0,
+   "familias_atualizadas": 17895871.0,
+   "familias_cadastradas": 27452553.0,
+   "razao_atualizadas_pct": 79.17,
+   "razao_cadastradas_pct": 51.61
+  },
+  {
+   "m": "2022-04",
+   "uc_tsee": 14303463.0,
+   "familias_atualizadas": 19050725.0,
+   "familias_cadastradas": 28111134.0,
+   "razao_atualizadas_pct": 75.08,
+   "razao_cadastradas_pct": 50.88
+  },
+  {
+   "m": "2022-05",
+   "uc_tsee": 14113725.0,
+   "familias_atualizadas": 19952556.0,
+   "familias_cadastradas": 28581767.0,
+   "razao_atualizadas_pct": 70.74,
+   "razao_cadastradas_pct": 49.38
+  },
+  {
+   "m": "2022-06",
+   "uc_tsee": 14179107.0,
+   "familias_atualizadas": 20727763.0,
+   "familias_cadastradas": 29033428.0,
+   "razao_atualizadas_pct": 68.41,
+   "razao_cadastradas_pct": 48.84
+  },
+  {
+   "m": "2022-07",
+   "uc_tsee": 14539479.0,
+   "familias_atualizadas": 21886758.0,
+   "familias_cadastradas": 29639509.0,
+   "razao_atualizadas_pct": 66.43,
+   "razao_cadastradas_pct": 49.05
+  },
+  {
+   "m": "2022-08",
+   "uc_tsee": 14809994.0,
+   "familias_atualizadas": 23223138.0,
+   "familias_cadastradas": 30459836.0,
+   "razao_atualizadas_pct": 63.77,
+   "razao_cadastradas_pct": 48.62
+  },
+  {
+   "m": "2022-09",
+   "uc_tsee": 14965756.0,
+   "familias_atualizadas": 24293392.0,
+   "familias_cadastradas": 31260109.0,
+   "razao_atualizadas_pct": 61.6,
+   "razao_cadastradas_pct": 47.87
+  },
+  {
+   "m": "2022-10",
+   "uc_tsee": 15082350.0,
+   "familias_atualizadas": 25417309.0,
+   "familias_cadastradas": 32091098.0,
+   "razao_atualizadas_pct": 59.34,
+   "razao_cadastradas_pct": 47.0
+  },
+  {
+   "m": "2022-11",
+   "uc_tsee": 15343873.0,
+   "familias_atualizadas": 26239639.0,
+   "familias_cadastradas": 32583694.0,
+   "razao_atualizadas_pct": 58.48,
+   "razao_cadastradas_pct": 47.09
+  },
+  {
+   "m": "2022-12",
+   "uc_tsee": 15549641.0,
+   "familias_atualizadas": 26808770.0,
+   "familias_cadastradas": 33009054.0,
+   "razao_atualizadas_pct": 58.0,
+   "razao_cadastradas_pct": 47.11
+  },
+  {
+   "m": "2023-01",
+   "uc_tsee": 15958609.0,
+   "familias_atualizadas": 27232285.0,
+   "familias_cadastradas": 33473906.0,
+   "razao_atualizadas_pct": 58.6,
+   "razao_cadastradas_pct": 47.67
+  },
+  {
+   "m": "2023-02",
+   "uc_tsee": 16197219.0,
+   "familias_atualizadas": 27466334.0,
+   "familias_cadastradas": 33789868.0,
+   "razao_atualizadas_pct": 58.97,
+   "razao_cadastradas_pct": 47.94
+  },
+  {
+   "m": "2023-03",
+   "uc_tsee": 16342792.0,
+   "familias_atualizadas": 27620793.0,
+   "familias_cadastradas": 34025656.0,
+   "razao_atualizadas_pct": 59.17,
+   "razao_cadastradas_pct": 48.03
+  },
+  {
+   "m": "2023-04",
+   "uc_tsee": 16565385.0,
+   "familias_atualizadas": 28020826.0,
+   "familias_cadastradas": 33791468.0,
+   "razao_atualizadas_pct": 59.12,
+   "razao_cadastradas_pct": 49.02
+  },
+  {
+   "m": "2023-05",
+   "uc_tsee": 16890333.0,
+   "familias_atualizadas": 28210226.0,
+   "familias_cadastradas": 33994281.0,
+   "razao_atualizadas_pct": 59.87,
+   "razao_cadastradas_pct": 49.69
+  },
+  {
+   "m": "2023-06",
+   "uc_tsee": 16875226.0,
+   "familias_atualizadas": 26068759.0,
+   "familias_cadastradas": 30086921.0,
+   "razao_atualizadas_pct": 64.73,
+   "razao_cadastradas_pct": 56.09
+  },
+  {
+   "m": "2023-07",
+   "uc_tsee": 17047947.0,
+   "familias_atualizadas": 26312057.0,
+   "familias_cadastradas": 30376090.0,
+   "razao_atualizadas_pct": 64.79,
+   "razao_cadastradas_pct": 56.12
+  },
+  {
+   "m": "2023-08",
+   "uc_tsee": 16696795.0,
+   "familias_atualizadas": 26541410.0,
+   "familias_cadastradas": 30640223.0,
+   "razao_atualizadas_pct": 62.91,
+   "razao_cadastradas_pct": 54.49
+  },
+  {
+   "m": "2023-09",
+   "uc_tsee": 16659707.0,
+   "familias_atualizadas": 26766434.0,
+   "familias_cadastradas": 30910990.0,
+   "razao_atualizadas_pct": 62.24,
+   "razao_cadastradas_pct": 53.9
+  },
+  {
+   "m": "2023-10",
+   "uc_tsee": 17051323.0,
+   "familias_atualizadas": 26067704.0,
+   "familias_cadastradas": 30053485.0,
+   "razao_atualizadas_pct": 65.41,
+   "razao_cadastradas_pct": 56.74
+  },
+  {
+   "m": "2023-11",
+   "uc_tsee": 16991053.0,
+   "familias_atualizadas": 26373950.0,
+   "familias_cadastradas": 30276737.0,
+   "razao_atualizadas_pct": 64.42,
+   "razao_cadastradas_pct": 56.12
+  },
+  {
+   "m": "2023-12",
+   "uc_tsee": 17041908.0,
+   "familias_atualizadas": 26508239.0,
+   "familias_cadastradas": 30569464.0,
+   "razao_atualizadas_pct": 64.29,
+   "razao_cadastradas_pct": 55.75
+  },
+  {
+   "m": "2024-01",
+   "uc_tsee": 17144522.0,
+   "familias_atualizadas": 25745220.0,
+   "familias_cadastradas": 29680182.0,
+   "razao_atualizadas_pct": 66.59,
+   "razao_cadastradas_pct": 57.76
+  },
+  {
+   "m": "2024-02",
+   "uc_tsee": 17051425.0,
+   "familias_atualizadas": 24998986.0,
+   "familias_cadastradas": 28828945.0,
+   "razao_atualizadas_pct": 68.21,
+   "razao_cadastradas_pct": 59.15
+  },
+  {
+   "m": "2024-03",
+   "uc_tsee": 16875952.0,
+   "familias_atualizadas": 25225778.0,
+   "familias_cadastradas": 29140426.0,
+   "razao_atualizadas_pct": 66.9,
+   "razao_cadastradas_pct": 57.91
+  },
+  {
+   "m": "2024-04",
+   "uc_tsee": 16874030.0,
+   "familias_atualizadas": 25125143.0,
+   "familias_cadastradas": 29241438.0,
+   "razao_atualizadas_pct": 67.16,
+   "razao_cadastradas_pct": 57.71
+  },
+  {
+   "m": "2024-05",
+   "uc_tsee": 16848203.0,
+   "familias_atualizadas": 25080585.0,
+   "familias_cadastradas": 29202993.0,
+   "razao_atualizadas_pct": 67.18,
+   "razao_cadastradas_pct": 57.69
+  },
+  {
+   "m": "2024-06",
+   "uc_tsee": 16943737.0,
+   "familias_atualizadas": 24579148.0,
+   "familias_cadastradas": 28303248.0,
+   "razao_atualizadas_pct": 68.94,
+   "razao_cadastradas_pct": 59.86
+  },
+  {
+   "m": "2024-07",
+   "uc_tsee": 17047419.0,
+   "familias_atualizadas": 24821707.0,
+   "familias_cadastradas": 28169091.0,
+   "razao_atualizadas_pct": 68.68,
+   "razao_cadastradas_pct": 60.52
+  },
+  {
+   "m": "2024-08",
+   "uc_tsee": 16905828.0,
+   "familias_atualizadas": 24980909.0,
+   "familias_cadastradas": 28522699.0,
+   "razao_atualizadas_pct": 67.67,
+   "razao_cadastradas_pct": 59.27
+  },
+  {
+   "m": "2024-09",
+   "uc_tsee": 16961548.0,
+   "familias_atualizadas": 24648804.0,
+   "familias_cadastradas": 27904504.0,
+   "razao_atualizadas_pct": 68.81,
+   "razao_cadastradas_pct": 60.78
+  },
+  {
+   "m": "2024-10",
+   "uc_tsee": 17258535.0,
+   "familias_atualizadas": 24779589.0,
+   "familias_cadastradas": 28169741.0,
+   "razao_atualizadas_pct": 69.65,
+   "razao_cadastradas_pct": 61.27
+  },
+  {
+   "m": "2024-11",
+   "uc_tsee": 17188266.0,
+   "familias_atualizadas": 24811684.0,
+   "familias_cadastradas": 28380019.0,
+   "razao_atualizadas_pct": 69.27,
+   "razao_cadastradas_pct": 60.56
+  },
+  {
+   "m": "2024-12",
+   "uc_tsee": 17392912.0,
+   "familias_atualizadas": 24416771.0,
+   "familias_cadastradas": 27883284.0,
+   "razao_atualizadas_pct": 71.23,
+   "razao_cadastradas_pct": 62.38
+  },
+  {
+   "m": "2025-01",
+   "uc_tsee": 17573219.0,
+   "familias_atualizadas": 24626264.0,
+   "familias_cadastradas": 28290080.0,
+   "razao_atualizadas_pct": 71.36,
+   "razao_cadastradas_pct": 62.12
+  },
+  {
+   "m": "2025-02",
+   "uc_tsee": 17333070.0,
+   "familias_atualizadas": 24281885.0,
+   "familias_cadastradas": 27829320.0,
+   "razao_atualizadas_pct": 71.38,
+   "razao_cadastradas_pct": 62.28
+  },
+  {
+   "m": "2025-03",
+   "uc_tsee": 17217270.0,
+   "familias_atualizadas": 24464670.0,
+   "familias_cadastradas": 28036473.0,
+   "razao_atualizadas_pct": 70.38,
+   "razao_cadastradas_pct": 61.41
+  },
+  {
+   "m": "2025-05",
+   "uc_tsee": 17246524.0,
+   "familias_atualizadas": 24013000.0,
+   "familias_cadastradas": 27800239.0,
+   "razao_atualizadas_pct": 71.82,
+   "razao_cadastradas_pct": 62.04
+  }
+ ]
+}

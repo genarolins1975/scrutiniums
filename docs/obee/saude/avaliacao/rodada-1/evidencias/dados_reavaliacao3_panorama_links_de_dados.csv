@@ -1,0 +1,8 @@
+medida_no_panorama;link_baixar_serie_completa;link_fonte_e_como_reproduzir;altura_do_alvo_px;csv_responde_200
+Despesa liquidada em Saúde por habitante;/eficiencia/series/sau_despesa_por_habitante.csv;/eficiencia-estatal/saude-capitais/metodos#reproducao;44;sim
+Percentual da receita de impostos e transferências aplicado em ASPS;/eficiencia/series/sau_asps_percentual_aplicado.csv;/eficiencia-estatal/saude-capitais/metodos#reproducao;44;sim
+UBS públicas ativas por 10 mil habitantes;/eficiencia/series/sau_rede_ubs_publicas_por_10mil.csv;/eficiencia-estatal/saude-capitais/metodos#reproducao;44;sim
+Equipes de Saúde da Família (eSF) por 10 mil habitantes;/eficiencia/series/sau_aps_equipes_por_10mil.csv;/eficiencia-estatal/saude-capitais/metodos#reproducao;44;sim
+Cobertura potencial estimada da atenção primária;/eficiencia/series/sau_aps_cobertura_potencial.csv;/eficiencia-estatal/saude-capitais/metodos#reproducao;44;sim
+Internações ICSAP por 100 mil habitantes;/eficiencia/series/sau_icsap_taxa.csv;/eficiencia-estatal/saude-capitais/metodos#reproducao;44;sim
+ICSAP nas internações SUS de residentes (%);/eficiencia/series/sau_icsap_participacao.csv;/eficiencia-estatal/saude-capitais/metodos#reproducao;44;sim

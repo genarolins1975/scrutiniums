@@ -1,0 +1,437 @@
+{
+  "versao": "0.1.0",
+  "registros": [
+    {
+      "uf": "PE",
+      "ano": 2025,
+      "fonte": "rgf",
+      "parametros": {
+        "an_exercicio": 2025,
+        "in_periodicidade": "Q",
+        "nr_periodo": 3,
+        "co_tipo_demonstrativo": "RGF",
+        "no_anexo": "RGF-Anexo 02",
+        "co_poder": "E",
+        "id_ente": 26,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-12T09:02:53.900841+00:00",
+      "status": "capturado",
+      "linhas": 105,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2025&in_periodicidade=Q&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=26&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:53.900924+00:00",
+          "sha256": "b5277330329482394ab37b9ae2de2caa28be7631b1e75ced31f92ae2553e792d",
+          "arquivo": "b5277330329482394ab37b9ae2de2caa28be7631b1e75ced31f92ae2553e792d.json",
+          "linhas": 105,
+          "offset": 0
+        }
+      ],
+      "mapeamento": {
+        "status": "mapeamento_candidato",
+        "valores": {
+          "dcl": 14981516040.5,
+          "rcl_ajustada": 47181384933.44,
+          "percentual_declarado": 31.75
+        },
+        "percentual_calculado": 31.75302306542042,
+        "diferenca_pp": 0.0030230654204217444,
+        "validacao_primaria": "revisao_humana_pendente",
+        "coluna": "Até o 3º Quadrimestre",
+        "codigos": {
+          "DividaConsolidadaLiquida": "dcl",
+          "ReceitaCorrenteLiquidaAjustadaParaCalculoDosLimitesDeEndividamento": "rcl_ajustada",
+          "PercentualDaDCLSobreARCL": "percentual_declarado"
+        }
+      }
+    },
+    {
+      "uf": "PE",
+      "ano": 2025,
+      "fonte": "rreo",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 01",
+        "co_esfera": "E",
+        "id_ente": 26,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-12T09:02:54.099683+00:00",
+      "status": "capturado",
+      "linhas": 640,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=26&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.099798+00:00",
+          "sha256": "ea531794d506cb2e9b3ea9ce2f289be9ea8bceacfae4de8d5148177333a09513",
+          "arquivo": "ea531794d506cb2e9b3ea9ce2f289be9ea8bceacfae4de8d5148177333a09513.json",
+          "linhas": 640,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "SP",
+      "ano": 2025,
+      "fonte": "rgf",
+      "parametros": {
+        "an_exercicio": 2025,
+        "in_periodicidade": "Q",
+        "nr_periodo": 3,
+        "co_tipo_demonstrativo": "RGF",
+        "no_anexo": "RGF-Anexo 02",
+        "co_poder": "E",
+        "id_ente": 35,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-12T09:02:54.125452+00:00",
+      "status": "capturado",
+      "linhas": 125,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2025&in_periodicidade=Q&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=35&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.125560+00:00",
+          "sha256": "3ec587f7ec553275839260c43c3b5ec21a280a5df3b958d396dbea9e077c1a35",
+          "arquivo": "3ec587f7ec553275839260c43c3b5ec21a280a5df3b958d396dbea9e077c1a35.json",
+          "linhas": 125,
+          "offset": 0
+        }
+      ],
+      "mapeamento": {
+        "status": "mapeamento_candidato",
+        "valores": {
+          "dcl": 330471301118.9,
+          "rcl_ajustada": 266021234077.37,
+          "percentual_declarado": 124.23
+        },
+        "percentual_calculado": 124.22741450134966,
+        "diferenca_pp": -0.0025854986503475175,
+        "validacao_primaria": "revisao_humana_pendente",
+        "coluna": "Até o 3º Quadrimestre",
+        "codigos": {
+          "DividaConsolidadaLiquida": "dcl",
+          "ReceitaCorrenteLiquidaAjustadaParaCalculoDosLimitesDeEndividamento": "rcl_ajustada",
+          "PercentualDaDCLSobreARCL": "percentual_declarado"
+        }
+      }
+    },
+    {
+      "uf": "SP",
+      "ano": 2025,
+      "fonte": "rreo",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 01",
+        "co_esfera": "E",
+        "id_ente": 35,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-12T09:02:54.137500+00:00",
+      "status": "capturado",
+      "linhas": 707,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=35&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.137596+00:00",
+          "sha256": "e8fb24d693058fababe7df4ad33b1c3579ec27b1e45510eaa7f3f726cd6b1046",
+          "arquivo": "e8fb24d693058fababe7df4ad33b1c3579ec27b1e45510eaa7f3f726cd6b1046.json",
+          "linhas": 707,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "MG",
+      "ano": 2025,
+      "fonte": "rgf",
+      "parametros": {
+        "an_exercicio": 2025,
+        "in_periodicidade": "Q",
+        "nr_periodo": 3,
+        "co_tipo_demonstrativo": "RGF",
+        "no_anexo": "RGF-Anexo 02",
+        "co_poder": "E",
+        "id_ente": 31,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-12T09:02:54.153065+00:00",
+      "status": "capturado",
+      "linhas": 113,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2025&in_periodicidade=Q&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=31&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.153151+00:00",
+          "sha256": "e43865fe90b3cb92cd2a9671ceb9039bb69d6668c1b8407004b0fdad35fa5a60",
+          "arquivo": "e43865fe90b3cb92cd2a9671ceb9039bb69d6668c1b8407004b0fdad35fa5a60.json",
+          "linhas": 113,
+          "offset": 0
+        }
+      ],
+      "mapeamento": {
+        "status": "mapeamento_candidato",
+        "valores": {
+          "dcl": 187101497500.28,
+          "rcl_ajustada": 111728299446.62,
+          "percentual_declarado": 167.46
+        },
+        "percentual_calculado": 167.46115212258357,
+        "diferenca_pp": 0.0011521225835622317,
+        "validacao_primaria": "revisao_humana_pendente",
+        "coluna": "Até o 3º Quadrimestre",
+        "codigos": {
+          "DividaConsolidadaLiquida": "dcl",
+          "ReceitaCorrenteLiquidaAjustadaParaCalculoDosLimitesDeEndividamento": "rcl_ajustada",
+          "PercentualDaDCLSobreARCL": "percentual_declarado"
+        }
+      }
+    },
+    {
+      "uf": "MG",
+      "ano": 2025,
+      "fonte": "rreo",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 01",
+        "co_esfera": "E",
+        "id_ente": 31,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-12T09:02:54.173954+00:00",
+      "status": "capturado",
+      "linhas": 697,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=31&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.174036+00:00",
+          "sha256": "d8eae4d00c3ff75c48375c450766efd6cfac6d571f93e0bb59a6e6c6b8ed9f2b",
+          "arquivo": "d8eae4d00c3ff75c48375c450766efd6cfac6d571f93e0bb59a6e6c6b8ed9f2b.json",
+          "linhas": 697,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "RS",
+      "ano": 2025,
+      "fonte": "rgf",
+      "parametros": {
+        "an_exercicio": 2025,
+        "in_periodicidade": "Q",
+        "nr_periodo": 3,
+        "co_tipo_demonstrativo": "RGF",
+        "no_anexo": "RGF-Anexo 02",
+        "co_poder": "E",
+        "id_ente": 43,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-12T09:02:54.192068+00:00",
+      "status": "capturado",
+      "linhas": 112,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2025&in_periodicidade=Q&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=43&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.192145+00:00",
+          "sha256": "06326b11fca44e62317182c8c1f5cf3cdc9545d039ae57cd95e1108090d63346",
+          "arquivo": "06326b11fca44e62317182c8c1f5cf3cdc9545d039ae57cd95e1108090d63346.json",
+          "linhas": 112,
+          "offset": 0
+        }
+      ],
+      "mapeamento": {
+        "status": "mapeamento_candidato",
+        "valores": {
+          "dcl": 113377582604.03,
+          "rcl_ajustada": 65146827300.12,
+          "percentual_declarado": 174.03
+        },
+        "percentual_calculado": 174.03392813240063,
+        "diferenca_pp": 0.003928132400631057,
+        "validacao_primaria": "revisao_humana_pendente",
+        "coluna": "Até o 3º Quadrimestre",
+        "codigos": {
+          "DividaConsolidadaLiquida": "dcl",
+          "ReceitaCorrenteLiquidaAjustadaParaCalculoDosLimitesDeEndividamento": "rcl_ajustada",
+          "PercentualDaDCLSobreARCL": "percentual_declarado"
+        }
+      }
+    },
+    {
+      "uf": "RS",
+      "ano": 2025,
+      "fonte": "rreo",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 01",
+        "co_esfera": "E",
+        "id_ente": 43,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-12T09:02:54.248601+00:00",
+      "status": "capturado",
+      "linhas": 605,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=43&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.248751+00:00",
+          "sha256": "439ef6ab648b532b7577d64c32bfb00ef8ca45a01eeec83ebc10d15169eddc0f",
+          "arquivo": "439ef6ab648b532b7577d64c32bfb00ef8ca45a01eeec83ebc10d15169eddc0f.json",
+          "linhas": 605,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "AM",
+      "ano": 2025,
+      "fonte": "rgf",
+      "parametros": {
+        "an_exercicio": 2025,
+        "in_periodicidade": "Q",
+        "nr_periodo": 3,
+        "co_tipo_demonstrativo": "RGF",
+        "no_anexo": "RGF-Anexo 02",
+        "co_poder": "E",
+        "id_ente": 13,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-12T09:02:54.265352+00:00",
+      "status": "capturado",
+      "linhas": 102,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2025&in_periodicidade=Q&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=13&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.265430+00:00",
+          "sha256": "1325de32ba2d64e6822d95869ddc41b986a86a17e6e101e2dc7b63f2d84edac0",
+          "arquivo": "1325de32ba2d64e6822d95869ddc41b986a86a17e6e101e2dc7b63f2d84edac0.json",
+          "linhas": 102,
+          "offset": 0
+        }
+      ],
+      "mapeamento": {
+        "status": "mapeamento_candidato",
+        "valores": {
+          "dcl": 7534524307.58,
+          "rcl_ajustada": 28525081741.78,
+          "percentual_declarado": 26.41
+        },
+        "percentual_calculado": 26.413681740811153,
+        "diferenca_pp": 0.0036817408111531336,
+        "validacao_primaria": "revisao_humana_pendente",
+        "coluna": "Até o 3º Quadrimestre",
+        "codigos": {
+          "DividaConsolidadaLiquida": "dcl",
+          "ReceitaCorrenteLiquidaAjustadaParaCalculoDosLimitesDeEndividamento": "rcl_ajustada",
+          "PercentualDaDCLSobreARCL": "percentual_declarado"
+        }
+      }
+    },
+    {
+      "uf": "AM",
+      "ano": 2025,
+      "fonte": "rreo",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 01",
+        "co_esfera": "E",
+        "id_ente": 13,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-12T09:02:54.281297+00:00",
+      "status": "capturado",
+      "linhas": 542,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=13&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.281394+00:00",
+          "sha256": "46255e072422ed0629233b8948b872c98783e7fb515ce09110ea5fa76490eefd",
+          "arquivo": "46255e072422ed0629233b8948b872c98783e7fb515ce09110ea5fa76490eefd.json",
+          "linhas": 542,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "DF",
+      "ano": 2025,
+      "fonte": "rgf",
+      "parametros": {
+        "an_exercicio": 2025,
+        "in_periodicidade": "Q",
+        "nr_periodo": 3,
+        "co_tipo_demonstrativo": "RGF",
+        "no_anexo": "RGF-Anexo 02",
+        "co_poder": "E",
+        "id_ente": 53,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-12T09:02:54.296869+00:00",
+      "status": "capturado",
+      "linhas": 116,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=2025&in_periodicidade=Q&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo+02&co_poder=E&id_ente=53&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.296948+00:00",
+          "sha256": "43a1f07abf5b76657b72f8e99e9bcc5b04a7e94eac54bb48f83e79799963dfc9",
+          "arquivo": "43a1f07abf5b76657b72f8e99e9bcc5b04a7e94eac54bb48f83e79799963dfc9.json",
+          "linhas": 116,
+          "offset": 0
+        }
+      ],
+      "mapeamento": {
+        "status": "mapeamento_candidato",
+        "valores": {
+          "dcl": 6221218399.07,
+          "rcl_ajustada": 39090948038.61,
+          "percentual_declarado": 15.91
+        },
+        "percentual_calculado": 15.914728885381145,
+        "diferenca_pp": 0.004728885381144465,
+        "validacao_primaria": "revisao_humana_pendente",
+        "coluna": "Até o 3º Quadrimestre",
+        "codigos": {
+          "DividaConsolidadaLiquida": "dcl",
+          "ReceitaCorrenteLiquidaAjustadaParaCalculoDosLimitesDeEndividamento": "rcl_ajustada",
+          "PercentualDaDCLSobreARCL": "percentual_declarado"
+        }
+      }
+    },
+    {
+      "uf": "DF",
+      "ano": 2025,
+      "fonte": "rreo",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 01",
+        "co_esfera": "E",
+        "id_ente": 53,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-12T09:02:54.311612+00:00",
+      "status": "capturado",
+      "linhas": 638,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=53&limit=5000&offset=0",
+          "capturado_em": "2026-10-12T09:02:54.311704+00:00",
+          "sha256": "aa87cf8737e731d0e07159651016163c7f7926816a23443590f2c3a1b6538acc",
+          "arquivo": "aa87cf8737e731d0e07159651016163c7f7926816a23443590f2c3a1b6538acc.json",
+          "linhas": 638,
+          "offset": 0
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+Testes executados pelo avaliador em 2026-10-09 (sem modificar nenhum teste)
+
+== python3 -m unittest pipeline.tests.test_eficiencia
+.........................................
+----------------------------------------------------------------------
+Ran 41 tests in 60.408s
+
+OK
+
+== python3 -m unittest pipeline.tests.test_eficiencia_comparacoes
+........................................................
+----------------------------------------------------------------------
+Ran 56 tests in 22.582s
+
+OK
+
+== npx vitest run src/tests/obee-educacao.test.ts
+ RUN  v4.1.10 /home/user/scrutiniums
+
+
+ Test Files  1 passed (1)
+      Tests  73 passed (73)
+   Start at  10:02:52
+   Duration  1.56s (transform 450ms, setup 0ms, import 678ms, tests 618ms, environment 0ms)
+
+
+== npx vitest run src/tests/obee- (todos os arquivos obee-*)
+
+ RUN  v4.1.10 /home/user/scrutiniums
+
+
+ Test Files  7 passed (7)
+      Tests  160 passed (160)
+   Start at  10:02:54
+   Duration  2.17s (transform 1.52s, setup 0ms, import 3.04s, tests 1.52s, environment 1ms)
+
+
+== npx vitest run (suíte completa do repositório)
+
+ RUN  v4.1.10 /home/user/scrutiniums
+
+
+ Test Files  142 passed (142)
+      Tests  2668 passed | 1 skipped (2669)
+   Start at  10:03:02
+   Duration  49.90s (transform 11.09s, setup 0ms, import 38.11s, tests 79.46s, environment 20ms)
+

@@ -1,0 +1,162 @@
+{
+ "result": {
+  "author": "CCEE-GAIM",
+  "author_email": "",
+  "creator_user_id": "b769d7d0-5632-47ee-a5fa-f18004e7e791",
+  "extras": [
+   {
+    "key": "Frequência de Atualização",
+    "value": "Mensal"
+   },
+   {
+    "key": "Referência de Publicação",
+    "value": "MS+10du"
+   },
+   {
+    "key": "Termo Legal",
+    "value": "O acesso a este site e/ou a utilização de conteúdos, dados e bases de dados nele disponibilizados se sujeita ao aceite dos termos e condições da licença aberta Creative Commons Attribution 4.0 International (CC-BY-4.0), bem como aos Termos de Uso do site e do aplicativo mobile (App) da CCEE (Link - https://www.ccee.org.br/en/web/guest/termos-de-uso). Ao utilizar esses recursos, você concorda em cumprir todos os requisitos dessa licença, que permitem que os reutilizadores distribuam, modifiquem, adaptem e desenvolvam o material sobre os dados, desde que seja atribuído o crédito apropriado ao criador (CCEE) e que sejam informadas as alterações. O Material Licenciado é disponibilizado no \"estado em que se encontra\" e \"como disponível\" apenas para fins informativos, sendo possível a interrupção da disponibilidade do conjunto de dados a qualquer momento e por qualquer motivo, sendo a sua utilização de livre iniciativa, não sendo atribuível qualquer tipo de responsabilização à CCEE por seu uso."
+   }
+  ],
+  "groups": [],
+  "id": "3cc5ffe0-f3f4-48ce-b089-2250026b9240",
+  "isopen": true,
+  "license_id": "CC-BY-4.0",
+  "license_title": "Creative Commons Attribution 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "maintainer": "CCEE-GAIM",
+  "maintainer_email": "",
+  "metadata_created": "2023-11-21T13:28:10.952425",
+  "metadata_modified": "2026-08-14T23:17:33.448097",
+  "name": "reserva_encargo",
+  "notes": "Dados que que compõe o encargo de energia de reserva no mês de referência.",
+  "num_resources": 4,
+  "num_tags": 2,
+  "organization": {
+   "approval_status": "approved",
+   "created": "2023-03-02T11:15:44.108398",
+   "description": "O Infomercado é uma organização que agrupa os principais conjuntos de dados referentes ao resultado da contabilização do mercado de energia brasileiro.\r\n\r\nAs partes interessadas poderão acessar conjuntos de dados relacionados aos seguintes assuntos: geração; consumo; MRE; contratos; PLD; e demais temas do Mercado de Curto Prazo - MCP.\r\n\r\nOs conjuntos de dados do informercado, seus recursos e APIs são atualizados periodicamente nesse portal de dados, para o mês de referência relativo à finalização da liquidação do MCP (não são considerados eventos de recontabilização).\r\n\r\nPara consulta ao acervo de dados públicos, a parte interessada poderá consultar o portal da CCEE > dados e análises.",
+   "id": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+   "image_url": "https://www.ccee.org.br/documents/20121/1583681/icon_pda-infomercado.svg/029872ce-13b0-9153-3d63-0501ca687dff?t=1724955920662",
+   "is_organization": true,
+   "name": "infomercado",
+   "state": "active",
+   "title": "Infomercado",
+   "type": "organization"
+  },
+  "owner_org": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+  "private": false,
+  "relationships_as_object": [],
+  "relationships_as_subject": [],
+  "resources": [
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2023-11-21T13:30:15.648423",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os valores que compõe o encargo de energia de reserva no mês de referência.  \n \n **Campos contidos nesse conjunto de dados:** \n   \n * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.   \n * **ENCARGO_ENERGIA_RESERVA** : Corresponde ao Valor do Encargo de Energia de Reserva do perfil de agente \"\"a\"\", no mês de referência \"\"m\"\" (EER_Ca,m) [R$]   \n * **TOTAL_PAGAMENTO_LIQ_ER** : Corresponde ao Total Líquido de Pagamentos na Liquidação da Energia de Reserva no mês de referrência \"\"m\"\" (TOT_LIQ_PAGm) [R$]   \n * **FUNDO_GARANTIA_OPER_CONTR_ER** : Corresponde ao Fundo de Garantia para Operacionalização da Contratação da Energia de Reserva no mês de referência \"\"m\"\" (FGARm) [R$]   \n * **TOTAL_RECEITA_RETIDA_CONER** : Corresponde ao Total de Receita Retida a ser mantida na CONER no mês de referência \"\"m\"\" (TOT_REC_RETm) [R$]   \n * **CUSTO_ADIMN_FIN_TRIB_CCEE** : Corresponde aos Custos Administrativos, Financeiros e Tributários incorridos pela CCEE no mês de referência \"\"m\"\" (CAFTm) [R$]   \n * **SALDO_EFETIVO_CONER** : Corresponde ao Saldo Efetivo da CONER no mês de referência \"\"m\"\" (SCONER_EFm) [R$]",
+    "format": "CSV",
+    "hash": "",
+    "id": "6dea4a22-26a6-46d7-bd86-2630b3313181",
+    "last_modified": "2024-01-15T11:19:52.138000",
+    "metadata_modified": "2025-11-21T00:50:01.631101",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "reserva_encargo_2023",
+    "package_id": "3cc5ffe0-f3f4-48ce-b089-2250026b9240",
+    "position": 0,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/u-aFkCF8SVSb_wDZEVzRXw/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2024-02-15T00:29:04.701106",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os valores que compõe o encargo de energia de reserva no mês de referência. \n \n    **Campos contidos nesse conjunto de dados:**  \n \n   * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados. \n   * **ENCARGO_ENERGIA_RESERVA** : Corresponde ao Valor do Encargo de Energia de Reserva do perfil de agente \"\"a\"\", no mês de referência \"\"m\"\" (EER_Ca,m) [R$]  \n  * **TOTAL_PAGAMENTO_LIQ_ER** : Corresponde ao Total Líquido de Pagamentos na Liquidação da Energia de Reserva no mês de referrência \"\"m\"\" (TOT_LIQ_PAGm) [R$]  \n  * **FUNDO_GARANTIA_OPER_CONTR_ER** : Corresponde ao Fundo de Garantia para Operacionalização da Contratação da Energia de Reserva no mês de referência \"\"m\"\" (FGARm) [R$] \n   * **TOTAL_RECEITA_RETIDA_CONER** : Corresponde ao Total de Receita Retida a ser mantida na CONER no mês de referência \"\"m\"\" (TOT_REC_RETm) [R$]    * **CUSTO_ADIMN_FIN_TRIB_CCEE** : Corresponde aos Custos Administrativos, Financeiros e Tributários incorridos pela CCEE no mês de referência \"\"m\"\" (CAFTm) [R$]  \n  * **SALDO_EFETIVO_CONER** : Corresponde ao Saldo Efetivo da CONER no mês de referência \"\"m\"\" (SCONER_EFm) [R$]",
+    "format": "CSV",
+    "hash": "",
+    "id": "827214f2-8672-4da9-b50e-aa39244ef592",
+    "last_modified": "2025-01-15T21:11:06.916000",
+    "metadata_modified": "2025-01-16T00:11:07.042965",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "reserva_encargo_2024",
+    "package_id": "3cc5ffe0-f3f4-48ce-b089-2250026b9240",
+    "position": 1,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/rW59RwXERRWTuJ1BJXPgnA/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2025-02-14T23:07:43.539224",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os valores que compõe o encargo de energia de reserva no mês de referência. \n \n    **Campos contidos nesse conjunto de dados:**  \n \n   * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados. \n   * **ENCARGO_ENERGIA_RESERVA** : Corresponde ao Valor do Encargo de Energia de Reserva do perfil de agente \"\"a\"\", no mês de referência \"\"m\"\" (EER_Ca,m) [R$]  \n  * **TOTAL_PAGAMENTO_LIQ_ER** : Corresponde ao Total Líquido de Pagamentos na Liquidação da Energia de Reserva no mês de referrência \"\"m\"\" (TOT_LIQ_PAGm) [R$]  \n  * **FUNDO_GARANTIA_OPER_CONTR_ER** : Corresponde ao Fundo de Garantia para Operacionalização da Contratação da Energia de Reserva no mês de referência \"\"m\"\" (FGARm) [R$] \n   * **TOTAL_RECEITA_RETIDA_CONER** : Corresponde ao Total de Receita Retida a ser mantida na CONER no mês de referência \"\"m\"\" (TOT_REC_RETm) [R$]    * **CUSTO_ADIMN_FIN_TRIB_CCEE** : Corresponde aos Custos Administrativos, Financeiros e Tributários incorridos pela CCEE no mês de referência \"\"m\"\" (CAFTm) [R$]  \n  * **SALDO_EFETIVO_CONER** : Corresponde ao Saldo Efetivo da CONER no mês de referência \"\"m\"\" (SCONER_EFm) [R$]",
+    "format": "CSV",
+    "hash": "",
+    "id": "dabc305d-3b86-432a-92f9-fb09745f8c5a",
+    "last_modified": "2026-01-15T17:33:36.359000",
+    "metadata_modified": "2026-01-15T20:33:36.515984",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "reserva_encargo_2025",
+    "package_id": "3cc5ffe0-f3f4-48ce-b089-2250026b9240",
+    "position": 2,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/tjaRcIv9Q9OTfU8FhNM3Og/content",
+    "url_type": null
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2026-02-13T20:33:41.750301",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os valores que compõe o encargo de energia de reserva no mês de referência. \n \n    **Campos contidos nesse conjunto de dados:**  \n \n   * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados. \n   * **ENCARGO_ENERGIA_RESERVA** : Corresponde ao Valor do Encargo de Energia de Reserva do perfil de agente \"\"a\"\", no mês de referência \"\"m\"\" (EER_Ca,m) [R$]  \n  * **TOTAL_PAGAMENTO_LIQ_ER** : Corresponde ao Total Líquido de Pagamentos na Liquidação da Energia de Reserva no mês de referrência \"\"m\"\" (TOT_LIQ_PAGm) [R$]  \n  * **FUNDO_GARANTIA_OPER_CONTR_ER** : Corresponde ao Fundo de Garantia para Operacionalização da Contratação da Energia de Reserva no mês de referência \"\"m\"\" (FGARm) [R$] \n   * **TOTAL_RECEITA_RETIDA_CONER** : Corresponde ao Total de Receita Retida a ser mantida na CONER no mês de referência \"\"m\"\" (TOT_REC_RETm) [R$]    * **CUSTO_ADIMN_FIN_TRIB_CCEE** : Corresponde aos Custos Administrativos, Financeiros e Tributários incorridos pela CCEE no mês de referência \"\"m\"\" (CAFTm) [R$]  \n  * **SALDO_EFETIVO_CONER** : Corresponde ao Saldo Efetivo da CONER no mês de referência \"\"m\"\" (SCONER_EFm) [R$]",
+    "format": "CSV",
+    "hash": "",
+    "id": "1eaaecd5-e543-44c5-a282-9180460385d5",
+    "last_modified": "2026-08-14T20:17:29.407000",
+    "metadata_modified": "2026-08-14T23:17:33.453517",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "reserva_encargo_2026",
+    "package_id": "3cc5ffe0-f3f4-48ce-b089-2250026b9240",
+    "position": 3,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/AjHmAmuaRDCbTnBGF6rz_w/content",
+    "url_type": null
+   }
+  ],
+  "state": "active",
+  "tags": [
+   {
+    "display_name": "dados gerais",
+    "id": "608eaa47-92c5-460b-a3d0-2069bff3b41d",
+    "name": "dados gerais",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "energia de reserva",
+    "id": "da77703c-3f07-4c36-88d4-3b7b2f0f9ad1",
+    "name": "energia de reserva",
+    "state": "active",
+    "vocabulary_id": null
+   }
+  ],
+  "title": "RESERVA_ENCARGO",
+  "type": "dataset",
+  "url": "",
+  "version": ""
+ }
+}

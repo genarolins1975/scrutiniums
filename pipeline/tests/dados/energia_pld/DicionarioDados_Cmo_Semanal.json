@@ -1,0 +1,33 @@
+{
+    "titulo": "DicionarioDados_Cmo_Semanal",
+    "dicionario_simplificado": [
+        {
+            "descricao": "Código do Subsistema",
+            "codigo": "id_subsistema"
+        },
+        {
+            "descricao": "Nome do Subsistema",
+            "codigo": "nom_subsistema"
+        },
+        {
+            "descricao": "Data de referência da Semana Operativa",
+            "codigo": "din_instante"
+        },
+        {
+            "descricao": "CMO Médio Semanal, em R$/MW",
+            "codigo": "val_cmomediasemanal"
+        },
+        {
+            "descricao": "CMO no patamar de carga leve, em R$/MWh",
+            "codigo": "val_cmoleve"
+        },
+        {
+            "descricao": "CMO no patamar de carga média, em R$/MWh",
+            "codigo": "val_cmomedia"
+        },
+        {
+            "descricao": "CMO no patamar de carga pesada, em R$/MWh",
+            "codigo": "val_cmopesada"
+        }
+    ]
+}

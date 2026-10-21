@@ -46,7 +46,8 @@ describe("bundles fora do git", () => {
   it("core e os dois chunks estão no .gitignore; CI e Vercel os geram antes de testar e publicar", () => {
     const gi = read(".gitignore");
     for (const f of ["/public/obs/app.min.js", "/public/obs/app-municipal.min.js", "/public/obs/app-emergentes.min.js"]) expect(gi).toContain(f);
-    expect(read("package.json")).toContain('"prebuild": "node scripts/minify-obs.mjs"');
+    const scripts = JSON.parse(read("package.json")).scripts as Record<string, string>;
+    expect(scripts.prebuild.split(/\s*&&\s*/)).toContain("node scripts/minify-obs.mjs");
     expect(read(".github/workflows/ci.yml")).toContain("run: node scripts/minify-obs.mjs");
   });
 });

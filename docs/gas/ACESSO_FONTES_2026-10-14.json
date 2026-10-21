@@ -1,0 +1,97 @@
+[
+  {
+    "fonte": "anp_producao",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/ppgn-el/producao-gas-natural-1000m3.csv",
+    "erro": "HTTP Error 403: Forbidden"
+  },
+  {
+    "fonte": "anp_reinjecao",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/ppgn-el/reinjecao-gn-1000m3",
+    "erro": "HTTP Error 403: Forbidden"
+  },
+  {
+    "fonte": "anp_queima",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/ppgn-el/queima-e-perda-gn-1000m3.csv",
+    "erro": "HTTP Error 403: Forbidden"
+  },
+  {
+    "fonte": "anp_consumo_proprio",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/ppgn-el/consumo-proprio-gn1000m3.csv",
+    "erro": "HTTP Error 403: Forbidden"
+  },
+  {
+    "fonte": "anp_disponivel",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/ppgn-el/gn-disponivel-1000m3.csv",
+    "erro": "HTTP Error 403: Forbidden"
+  },
+  {
+    "fonte": "anp_importacao",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/ie/gn/importacao-gas-natural-2000-2025.csv",
+    "erro": "HTTP Error 403: Forbidden"
+  },
+  {
+    "fonte": "anp_vendas_distribuidoras",
+    "url": "https://www.gov.br/anp/pt-br/assuntos/movimentacao-estocagem-e-comercializacao-de-gas-natural/acompanhamento-do-mercado-de-gas-natural/ppg/distribuidoras-consumidores-livres.csv",
+    "erro": "HTTP Error 403: Forbidden"
+  },
+  {
+    "fonte": "anp_vendas_produtores",
+    "url": "https://www.gov.br/anp/pt-br/assuntos/movimentacao-estocagem-e-comercializacao-de-gas-natural/acompanhamento-do-mercado-de-gas-natural/ppg/vendas-entre-produtores.csv",
+    "erro": "HTTP Error 403: Forbidden"
+  },
+  {
+    "fonte": "anp_vendas_comercializadores",
+    "url": "https://www.gov.br/anp/pt-br/assuntos/movimentacao-estocagem-e-comercializacao-de-gas-natural/acompanhamento-do-mercado-de-gas-natural/ppg/vendas-aos-comercializadores.csv",
+    "erro": "HTTP Error 403: Forbidden"
+  },
+  {
+    "fonte": "anp_glp_vasilhame",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/vdpb/vct/vendas-glp-tipo-vasilhame-m3-2007-2025.csv",
+    "erro": "HTTP Error 403: Forbidden"
+  },
+  {
+    "fonte": "anp_precos_estados",
+    "url": "https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis/shlp/mensal/mensal-estados-desde-jan2013.xlsx",
+    "erro": "HTTP Error 403: Forbidden"
+  },
+  {
+    "fonte": "anp_precos_brasil",
+    "url": "https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis/shlp/mensal/mensal-brasil-desde-jan2013.xlsx",
+    "erro": "HTTP Error 403: Forbidden"
+  },
+  {
+    "fonte": "anp_autorizacoes",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/arquivos/autorizacoes-gas-natural/autorizacoes-construcao-operacao-gas-natural.csv",
+    "erro": "HTTP Error 403: Forbidden"
+  },
+  {
+    "fonte": "anp_movimentacao",
+    "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/dados-consolidados-movimentacao-de-gas-natural-em-gasodutos-de-transporte",
+    "erro": "HTTP Error 403: Forbidden"
+  },
+  {
+    "fonte": "comex_gas",
+    "url": "https://api-comexstat.mdic.gov.br/general",
+    "erro": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "fonte": "ibge_ipca",
+    "url": "https://servicodados.ibge.gov.br/api/v3/agregados",
+    "erro": "HTTP Error 500: Internal Server Error"
+  },
+  {
+    "fonte": "bcb_ptax",
+    "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.3698/dados?formato=json",
+    "erro": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "fonte": "wb_pinksheet",
+    "url": "https://www.worldbank.org/en/research/commodity-markets",
+    "erro": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+    "fonte": "lei_gas",
+    "url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14134.htm",
+    "erro": "The read operation timed out"
+  }
+]

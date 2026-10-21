@@ -1,0 +1,630 @@
+lote,id,campo,exibido,esperado,resultado
+gastos,G|despesa_hab|2022|real|campo-grande|todas,console,error: Failed to fetch RSC payload for http://localhost:3100/eficiencia-estatal/educacao-municipal-capitais/metodos. Falling back to browser navigation. TypeError: network error,sem erros,DIVERGE
+atendimento,A|matriculas|2021|total||palmas,console,error: Failed to fetch RSC payload for http://localhost:3100/eficiencia-estatal/educacao-municipal-capitais/metodos. Falling back to browser navigation. TypeError: network error,sem erros,DIVERGE
+comparar_grafico,CG|despesa|2023|||,console,"error: Failed to fetch RSC payload for http://localhost:3100/cadastro. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|despesa|2024|||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|despesa|2024|||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/privacidade. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c",sem erros,DIVERGE
+comparar_grafico,CG|despesa|2023|||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|despesa|2025|||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|despesa_hab|2021|||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|despesa|2025|||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|despesa_hab|2021|||,console,error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: network error; error: Failed to fetch RSC payload for http://loc,sem erros,DIVERGE
+comparar_grafico,CG|despesa_hab|2022|||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|despesa_hab|2023|||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|despesa_hab|2022|||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|despesa_hab|2023|||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|despesa_hab|2024|||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|despesa_hab|2024|||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|despesa_hab|2025|||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|despesa_hab|2025|||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|despesa_mat|2021|||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121",sem erros,DIVERGE
+comparar_grafico,CG|despesa_mat|2021|||S,console,error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: network error; error: Failed to fetch RSC payload for http://loc,sem erros,DIVERGE
+comparar_grafico,CG|despesa_mat|2022|||,console,"error: Failed to fetch RSC payload for http://localhost:3100/glossario. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56",sem erros,DIVERGE
+comparar_grafico,CG|despesa_mat|2022|||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|despesa_mat|2023|||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|despesa_mat|2023|||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|despesa_mat|2024|||,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|despesa_mat|2024|||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|despesa_mat|2025|||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|despesa_mat|2025|||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|total||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|total||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|creche||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|creche||S,console,error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: network error; error: Failed to fetch RSC payload for http://localhost,sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|pre_escola||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|ensino_medio||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|ensino_medio||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d615",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|eja||,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|eja||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|profissional||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2021|profissional||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|total||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|total||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|creche||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/cadastro. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|creche||,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|pre_escola||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|ensino_medio||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|eja||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|ensino_medio||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|eja||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|profissional||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2022|profissional||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|total||,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|total||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|creche||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|creche||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/privacidade. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|pre_escola||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/privacidade. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|ensino_medio||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/cadastro. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|eja||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|eja||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/privacidade. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|profissional||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2023|profissional||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|total||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|total||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|creche||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|creche||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/cadastro. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/privacidade. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|pre_escola||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/glossario. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|ensino_medio||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|ensino_medio||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|eja||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d615",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|eja||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|profissional||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2024|profissional||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|total||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|total||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|creche||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|creche||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|pre_escola||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|ensino_medio||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|ensino_medio||,console,"error: Failed to fetch RSC payload for http://localhost:3100/termos. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|eja||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|eja||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|profissional||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|matriculas|2025|profissional||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|total||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|total||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|creche||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/resumo. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|creche||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|pre_escola||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/resumo. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/resumo. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|ensino_medio||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|ensino_medio||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|eja||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|eja||,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|profissional||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2021|profissional||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|total||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|total||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|creche||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|creche||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|pre_escola||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/termos. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|ensino_medio||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|ensino_medio||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|eja||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|eja||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|profissional||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2022|profissional||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|total||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|creche||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|total||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|creche||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|pre_escola||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/cadastro. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|ensino_medio||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|ensino_medio||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|eja||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|eja||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|profissional||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2023|profissional||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|total||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|total||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|creche||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|pre_escola||S,console,error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: network error; error: Failed to fetch RSC payload for http://localhost,sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/resumo. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d615",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/termos. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|ensino_medio||,console,"error: Failed to fetch RSC payload for http://localhost:3100/entrar. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|ensino_medio||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|eja||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d615",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|eja||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|profissional||,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2024|profissional||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/termos. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|total||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|total||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|creche||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|creche||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|pre_escola||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/termos. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|ensino_medio||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|eja||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|ensino_medio||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/observatorio/methodology. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunk",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|eja||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/cadastro. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|profissional||,console,"error: Failed to fetch RSC payload for http://localhost:3100/termos. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|atu|2021|creche||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|conveniadas|2025|profissional||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|atu|2021|creche||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|atu|2021|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|atu|2021|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|atu|2021|pre_escola||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|atu|2021|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|atu|2021|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|atu|2022|creche||,console,error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: network error; error: Failed to fetch RSC payload for http://loc,sem erros,DIVERGE
+comparar_grafico,CG|atu|2021|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/glossario. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56",sem erros,DIVERGE
+comparar_grafico,CG|atu|2022|creche||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|atu|2022|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/entrar. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|atu|2022|pre_escola||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|atu|2022|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/cadastro. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|atu|2022|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/entrar. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|atu|2022|anos_finais||S,console,error: Failed to fetch RSC payload for http://localhost:3100/cadastro. Falling back to browser navigation. TypeError: network error; error: Failed to fetch RSC payload for http://localhost:3100/entrar,sem erros,DIVERGE
+comparar_grafico,CG|atu|2023|creche||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|atu|2023|creche||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|atu|2023|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/termos. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|atu|2023|pre_escola||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/termos. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|atu|2023|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|atu|2023|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|atu|2023|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|atu|2023|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|atu|2024|creche||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|atu|2024|creche||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|atu|2024|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|atu|2024|pre_escola||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/observatorio-do-credito. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks",sem erros,DIVERGE
+comparar_grafico,CG|atu|2024|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/termos. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|atu|2024|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|atu|2024|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|atu|2024|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/termos. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|atu|2025|creche||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|atu|2025|creche||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|atu|2025|pre_escola||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|atu|2025|pre_escola||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|atu|2025|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|atu|2025|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|atu|2025|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2021|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2021|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2021|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2021|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2022|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2022|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2022|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2022|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2023|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2023|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2023|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2023|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2024|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/glossario. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2024|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2024|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2024|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2025|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2025|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2025|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|aprovacao|2025|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2019|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2019|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2019|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2019|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d615",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2020|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2020|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/resumo. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2020|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2020|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2021|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2021|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/privacidade. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2021|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2021|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2022|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/glossario. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2022|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2022|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2022|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2023|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2023|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2023|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2023|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2024|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2024|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2024|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2024|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2025|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/cadastro. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2025|anos_iniciais||S,console,error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: network error; error: Failed to fetch RSC payload for http://loc,sem erros,DIVERGE
+comparar_grafico,CG|ideb|2025|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|ideb|2025|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2019|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2019|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/privacidade. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2019|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2019|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2020|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2020|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/visao-geral. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2020|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2020|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/imprensa. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2021|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2021|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2021|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/termos. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2021|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2022|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2022|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2022|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2022|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d615",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2023|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2023|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/termos. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d61",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2023|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2023|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2024|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/aprenda. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2024|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117-121c5c56d615",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2024|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2024|anos_iniciais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2025|anos_iniciais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/metodologia. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chu",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2025|anos_finais||,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/dados. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/21",sem erros,DIVERGE
+comparar_grafico,CG|saeb|2025|anos_finais||S,console,"error: Failed to fetch RSC payload for http://localhost:3100/setor-eletrico/pld. Falling back to browser navigation. TypeError: Failed to fetch
+    at f (http://localhost:3100/_next/static/chunks/2117",sem erros,DIVERGE
+comparar_tabela,C|tab|2021|total|nominal|,csv_x_tabela_Campo Grande (MS)_despesa,"R$ 1,03 bilhão","R$ 1,03 bilhão fora das comparações",DIVERGE
+comparar_tabela,C|tab|2021|total|nominal|,csv_x_tabela_Campo Grande (MS)_despesa_hab,R$ 1.125,R$ 1.125 fora das comparações,DIVERGE
+comparar_tabela,C|tab|2021|total|nominal|,csv_igual_tabela,2,0,DIVERGE
+comparar_tabela,C|tab|2021|total|real|,csv_x_tabela_Campo Grande (MS)_despesa,"R$ 1,29 bilhão","R$ 1,29 bilhão fora das comparações",DIVERGE
+comparar_tabela,C|tab|2021|total|real|,csv_x_tabela_Campo Grande (MS)_despesa_hab,R$ 1.410,R$ 1.410 fora das comparações,DIVERGE
+comparar_tabela,C|tab|2021|total|real|,csv_igual_tabela,2,0,DIVERGE
+comparar_tabela,C|tab|2021|creche|nominal|,csv_x_tabela_Campo Grande (MS)_despesa,"R$ 1,03 bilhão","R$ 1,03 bilhão fora das comparações",DIVERGE
+comparar_tabela,C|tab|2021|creche|nominal|,csv_x_tabela_Campo Grande (MS)_despesa_hab,R$ 1.125,R$ 1.125 fora das comparações,DIVERGE
+comparar_tabela,C|tab|2021|creche|nominal|,csv_igual_tabela,2,0,DIVERGE
+comparar_tabela,C|tab|2021|creche|real|,csv_x_tabela_Campo Grande (MS)_despesa,"R$ 1,29 bilhão","R$ 1,29 bilhão fora das comparações",DIVERGE
+comparar_tabela,C|tab|2021|creche|real|,csv_x_tabela_Campo Grande (MS)_despesa_hab,R$ 1.410,R$ 1.410 fora das comparações,DIVERGE
+comparar_tabela,C|tab|2021|creche|real|,csv_igual_tabela,2,0,DIVERGE
+comparar_tabela,C|tab|2021|pre_escola|nominal|,csv_x_tabela_Campo Grande (MS)_despesa,"R$ 1,03 bilhão","R$ 1,03 bilhão fora das comparações",DIVERGE
+comparar_tabela,C|tab|2021|pre_escola|nominal|,csv_x_tabela_Campo Grande (MS)_despesa_hab,R$ 1.125,R$ 1.125 fora das comparações,DIVERGE
+comparar_tabela,C|tab|2021|pre_escola|nominal|,csv_igual_tabela,2,0,DIVERGE
+comparar_tabela,C|tab|2021|pre_escola|real|,csv_x_tabela_Campo Grande (MS)_despesa,"R$ 1,29 bilhão","R$ 1,29 bilhão fora das comparações",DIVERGE
+comparar_tabela,C|tab|2021|pre_escola|real|,csv_x_tabela_Campo Grande (MS)_despesa_hab,R$ 1.410,R$ 1.410 fora das comparações,DIVERGE
+comparar_tabela,C|tab|2021|pre_escola|real|,csv_igual_tabela,2,0,DIVERGE
+comparar_tabela,C|tab|2021|anos_iniciais|nominal|,csv_x_tabela_Campo Grande (MS)_despesa,"R$ 1,03 bilhão","R$ 1,03 bilhão fora das comparações",DIVERGE
+comparar_tabela,C|tab|2021|anos_iniciais|nominal|,csv_x_tabela_Campo Grande (MS)_despesa_hab,R$ 1.125,R$ 1.125 fora das comparações,DIVERGE
+comparar_tabela,C|tab|2021|anos_iniciais|nominal|,csv_igual_tabela,2,0,DIVERGE
+comparar_tabela,C|tab|2021|anos_iniciais|real|,csv_x_tabela_Campo Grande (MS)_despesa,"R$ 1,29 bilhão","R$ 1,29 bilhão fora das comparações",DIVERGE
+comparar_tabela,C|tab|2021|anos_iniciais|real|,csv_x_tabela_Campo Grande (MS)_despesa_hab,R$ 1.410,R$ 1.410 fora das comparações,DIVERGE
+comparar_tabela,C|tab|2021|anos_iniciais|real|,csv_igual_tabela,2,0,DIVERGE
+comparar_tabela,C|tab|2021|anos_finais|nominal|,csv_x_tabela_Campo Grande (MS)_despesa,"R$ 1,03 bilhão","R$ 1,03 bilhão fora das comparações",DIVERGE
+comparar_tabela,C|tab|2021|anos_finais|nominal|,csv_x_tabela_Campo Grande (MS)_despesa_hab,R$ 1.125,R$ 1.125 fora das comparações,DIVERGE
+comparar_tabela,C|tab|2021|anos_finais|nominal|,csv_igual_tabela,2,0,DIVERGE
+comparar_tabela,C|tab|2021|anos_finais|real|,csv_x_tabela_Campo Grande (MS)_despesa,"R$ 1,29 bilhão","R$ 1,29 bilhão fora das comparações",DIVERGE
+comparar_tabela,C|tab|2021|anos_finais|real|,csv_x_tabela_Campo Grande (MS)_despesa_hab,R$ 1.410,R$ 1.410 fora das comparações,DIVERGE
+comparar_tabela,C|tab|2021|anos_finais|real|,csv_igual_tabela,2,0,DIVERGE
+comparar_tabela,C|tab|2021|ensino_medio|nominal|,csv_x_tabela_Campo Grande (MS)_despesa,"R$ 1,03 bilhão","R$ 1,03 bilhão fora das comparações",DIVERGE
+comparar_tabela,C|tab|2021|ensino_medio|nominal|,csv_x_tabela_Campo Grande (MS)_despesa_hab,R$ 1.125,R$ 1.125 fora das comparações,DIVERGE
+comparar_tabela,C|tab|2021|ensino_medio|nominal|,csv_igual_tabela,2,0,DIVERGE
+comparar_tabela,C|tab|2021|ensino_medio|real|,csv_x_tabela_Campo Grande (MS)_despesa,"R$ 1,29 bilhão","R$ 1,29 bilhão fora das comparações",DIVERGE
+comparar_tabela,C|tab|2021|ensino_medio|real|,csv_x_tabela_Campo Grande (MS)_despesa_hab,R$ 1.410,R$ 1.410 fora das comparações,DIVERGE
+comparar_tabela,C|tab|2021|ensino_medio|real|,csv_igual_tabela,2,0,DIVERGE
+comparar_tabela,C|tab|2022|anos_iniciais|nominal|,csv_x_tabela_Campo Grande (MS)_despesa,"R$ 1,03 bilhão","R$ 1,03 bilhão fora das comparações",DIVERGE
+comparar_tabela,C|tab|2022|anos_iniciais|nominal|,csv_x_tabela_Campo Grande (MS)_despesa_hab,R$ 1.125,R$ 1.125 fora das comparações,DIVERGE
+comparar_tabela,C|tab|2022|anos_iniciais|nominal|,csv_igual_tabela,2,0,DIVERGE
+comparar_tabela,C|tab|2022|anos_finais|nominal|,csv_x_tabela_Campo Grande (MS)_despesa,"R$ 1,03 bilhão","R$ 1,03 bilhão fora das comparações",DIVERGE
+comparar_tabela,C|tab|2022|anos_finais|nominal|,csv_x_tabela_Campo Grande (MS)_despesa_hab,R$ 1.125,R$ 1.125 fora das comparações,DIVERGE
+comparar_tabela,C|tab|2022|anos_finais|nominal|,csv_igual_tabela,2,0,DIVERGE

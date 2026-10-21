@@ -1,0 +1,1248 @@
+{
+ "avaliador": "P-U03",
+ "papel": "produto",
+ "rodada": "inicial",
+ "versao_avaliada": "commit 51747baf8, estado servido em http://localhost:3100",
+ "paginas": {
+  "/setor-eletrico/agua-e-clima": {
+   "paineis": [
+    "P017"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 7.5,
+     "evidencia": [
+      "Medição própria a 1440 por 900 e 1440_dobra.png: H1 de 3 linhas, fontes, siglas, 5 datas, 4 abas e profundidade ocupam a tela; a frase de resposta começa em y 894.",
+      "390_dobra.png e medição a 390 por 844: a resposta começa em y 1067, abaixo da dobra; a 320 por 640 começa em y 1271.",
+      "1440_inteira_01de02.png: frase, três cartões, série com faixa, pontos por região e quatro blocos finais em ordem clara; cartões com 128 px de vazio entre data e link."
+     ],
+     "atendidos": [
+      "Título em pergunta e tipografia consistente (serifa no título, rótulos em caixa alta)",
+      "Gráficos largos (1.118 por 300 px) com unidades e referências legíveis",
+      "Síntese, comparação e aprofundamento separados por Entender, Analisar e Auditar",
+      "Sem rolagem horizontal da página de 320 a 1440 px (objetivo.json)"
+     ],
+     "problemas": [
+      "Informação principal fora da primeira tela em 1440 e em 390.",
+      "Cabeçalho pesado antes do dado: fontes, siglas, 5 chips de data, 4 abas e profundidade.",
+      "Repetições: 'Dados do gráfico em tabela (5 linhas)' e 'Ver a tabela completa (5 linhas)' em sequência; 3 botões Comprove; blocos finais retomam a frase.",
+      "Cartões de destaque altos, com vazio entre a data e o link Comprove.",
+      "No celular a tabela completa abre em colunas sem número."
+     ],
+     "justificativa": "Hierarquia e legibilidade boas, mas a resposta fica abaixo da dobra em 1440 e 390, o cabeçalho é pesado e há repetições e cartões vazios. Faltam evidências do nível 9 para primeira tela e celular."
+    },
+    "B": {
+     "nota": 7.5,
+     "evidencia": [
+      "texto_entender.txt: frase clara ('61,5% da energia que os reservatórios comportam'); linha Unidade com 1 MWmês = 720 MWh e p.p. explicado.",
+      "Medição própria: 'Ler a abertura da página' vem recolhida em Entender (5 palavras visíveis) e aberta em Analisar e Auditar; define EAR, ENA e MLT com links para o Aprenda.",
+      "texto_entender.txt: siglas ONS, ENA, SIN, REE, sem EAR nem MLT; 'Por que isso importa' e 'O que não é possível concluir' só no fim do painel."
+     ],
+     "atendidos": [
+      "Frase de resposta sem jargão",
+      "Energia armazenada, capacidade (EAR máxima) e unidades distinguidas",
+      "Quatro blocos cobrem importância, comparação, limites e fonte",
+      "Termos da abertura ligados ao glossário do Aprenda",
+      "Próxima pergunta leva à Afluência"
+     ],
+     "problemas": [
+      "Definição de EAR e links do Aprenda ficam na abertura recolhida no nível padrão.",
+      "Linha de siglas não expande EAR nem MLT.",
+      "As cinco perguntas da abertura se espalham: importância e limites só depois de gráficos, tabela e downloads.",
+      "Sem ponte visível para preço ou custo (PLD, conta de luz), embora a página negue inferir preço."
+     ],
+     "justificativa": "Boa linguagem na frase e nas unidades, com limites bem declarados, mas conceitos centrais ficam numa abertura recolhida, a linha de siglas não expande EAR e os blocos explicativos vêm depois dos gráficos. Nível 7 a 8."
+    },
+    "C": {
+     "nota": 8.0,
+     "evidencia": [
+      "Medição própria: trocar Subsistema, REE ou Bacias muda frase, título e série; clicar numa linha do gráfico de pontos seleciona a região e atualiza select e URL.",
+      "1440_inteira_01de02.png: pontos por região com círculo do dia, losango da mediana da data e diferença em p.p., com ordenação explícita.",
+      "Medição própria: CSV da tabela leva recorte e versão no nome; a busca 'Sul' reduz o arquivo a 1 linha de dados; a faixa em MWmês só existe nas colunas 12 a 14 da tabela de 20 colunas."
+     ],
+     "atendidos": [
+      "T5 em percentual: faixa do 10º ao 90º percentil de 2001 a 2025",
+      "Comparação entre regiões na mesma tela",
+      "Exportação CSV e XLSX do recorte atual",
+      "Link do painel preserva o estado (?ent=NE&arm.q=Sul#p017)"
+     ],
+     "problemas": [
+      "Comparação com a história em energia (MWmês) só aparece na tabela; nenhum gráfico mostra faixa em energia.",
+      "Cartões de destaque ficam no SIN quando o leitor escolhe outra região.",
+      "Em 1440 o número só aparece depois de rolar.",
+      "A região escolhida não passa para as outras abas da família."
+     ],
+     "justificativa": "T5 bem atendida em percentual, com faixa sazonal, comparação regional e exportação. Limitam a nota a comparação em energia só em tabela, os cartões presos ao SIN e a resposta abaixo da dobra."
+    },
+    "D": {
+     "nota": 7.5,
+     "evidencia": [
+      "texto_auditar.txt (Analisar): '1 p.p. de EAR ali equivale a 2.046 MWmês, contra 153 MWmês no Norte'; recortes por subsistema, REE e bacia.",
+      "Medição própria: CSV com versão no nome, Copiar link com estado, ficha Comprove com arquivo, hash e fórmula.",
+      "texto_entender.txt: 'não mede risco de desabastecimento nem diz qual será o preço'; sem link para PLD ou conta de luz no corpo do painel."
+     ],
+     "atendidos": [
+      "Recortes territoriais pertinentes",
+      "Exportar e compartilhar com contexto",
+      "Lacunas visíveis: recorte sem armazenamento e revisões do ONS",
+      "Útil a pesquisador, jornalista e analista, públicos declarados"
+     ],
+     "problemas": [
+      "Sem caminho do painel para custo ou continuidade do serviço, que dão sentido social ao tema.",
+      "Vocabulário técnico (REE, MWmês, percentil) para leitor não especializado.",
+      "Quem compara regiões precisa reescolher a região em cada aba."
+     ],
+     "justificativa": "Recortes territoriais, exportação com contexto e lacunas visíveis são pontos fortes. Falta ligar o dado ao leitor comum, com ponte para custo e continuidade, e reduzir vocabulário técnico. Potencial descrito, impacto não comprovado."
+    },
+    "I": {
+     "nota": 8.0,
+     "evidencia": [
+      "1440_inteira_01de02.png e medição própria: série com faixa 10º a 90º percentil, pontos com mediana e diferença em p.p.; cada gráfico tem tabela equivalente e leitura por setas com dica de valores (teclado).",
+      "Captura própria de ?modo=analisar, cores lidas no SVG: nos pequenos múltiplos Sul é laranja e Nordeste verde; no gráfico de 120 dias Sul é verde e Nordeste laranja.",
+      "Captura própria de ?modo=analisar: tabelas com coluna Ano em 2.026, 2.025 e 2.010."
+     ],
+     "atendidos": [
+      "Gráfico escolhido pela tarefa: faixa sazonal, pontos e diferença",
+      "Referências visíveis (faixa, mediana, capacidade)",
+      "Tabela e teclado como alternativa ao hover",
+      "Escala compartilhada declarada nos pequenos múltiplos"
+     ],
+     "problemas": [
+      "Cor por posição nos pequenos múltiplos: Sul e Nordeste trocam de cor entre gráficos do mesmo painel.",
+      "Gráfico de 120 dias em MWmês comprime Sul e Norte junto ao eixo.",
+      "Ano formatado com separador de milhar em tabelas de Analisar e Auditar.",
+      "Legenda repetida quatro vezes sob os pequenos múltiplos.",
+      "Nenhum gráfico com faixa histórica em energia."
+     ],
+     "justificativa": "Escolhas de gráfico adequadas, com referências visíveis e alternativas por tabela e teclado. Cor inconsistente entre gráficos, séries em MWmês comprimidas, faixa em energia ausente e anos mal formatados mantêm a nota abaixo de 9."
+    },
+    "J": {
+     "nota": 7.5,
+     "evidencia": [
+      "Medição própria: com Subsistema Nordeste (e com REE ou Bacias) frase, título e linha mudam, mas os cartões seguem 'EAR do SIN 61,5%' e '179.724 MWmês' e os botões Comprove apontam o SIN.",
+      "Medição própria: ?modo=analisar persiste ao recarregar e ao trocar de aba; ?ent=N não passa de Armazenamento para Afluência.",
+      "Medição própria: bacia do Araguari traz frase clara, mas o campo Período diz 'faixa do mesmo dia do calendário em sem base'."
+     ],
+     "atendidos": [
+      "Filtros claros com estado na URL e link do painel",
+      "Seleção por clique no gráfico, na tabela ou no select, sincronizada",
+      "Busca, filtros e ordenação nas tabelas; exportação do recorte atual",
+      "Estado sem armazenamento compreensível",
+      "Nível de profundidade mantido entre abas"
+     ],
+     "problemas": [
+      "Cartões de destaque e botões Comprove não acompanham o recorte.",
+      "Região escolhida não persiste nas outras abas da família.",
+      "Texto de modelo quebrado no recorte sem base ('em sem base').",
+      "Cinco camadas de navegação antes do conteúdo; no celular o menu repete as irmãs do grupo.",
+      "Abertura recolhida no nível padrão."
+     ],
+     "justificativa": "Interação rica e com estado na URL, mas a sincronização do recorte é incompleta: cartões presos ao SIN, seleção que não persiste entre abas e texto de modelo quebrado no estado vazio. Nível 7 a 8."
+    },
+    "K": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: axe sem violações a 320, 390, 768 e 1440; sem rolagem horizontal; foco sempre visível; 3 alvos abaixo de 44 px em Entender e 22 em Auditar.",
+      "Medição própria: link de pular, anel de 2 px nos controles, rádios com foco interno, gráficos focáveis com setas; axe em Analisar sem violações a 1440 e 390; scroll padding evita foco sob a barra fixa.",
+      "Medição própria a 390: tabela de 2.321 px em região rolável com rótulo e coluna fixa; a primeira vista traz Recorte, Tipo e Dia, sem número."
+     ],
+     "atendidos": [
+      "Teclado com foco visível e ordem previsível",
+      "Tabelas em região rolável rotulada e focável",
+      "Alternativas à cor: formas, rótulos diretos e texto",
+      "Movimento reduzido respeitado",
+      "Sem perda de página a 320 px"
+     ],
+     "problemas": [
+      "Tabela larga no celular: Tipo e Dia, iguais em todas as linhas, ocupam a primeira vista.",
+      "Rótulos de 11 a 11,5 px em caixa alta, inclusive o link da abertura.",
+      "Alvos abaixo de 44 px: 3 em Entender e 22 em Auditar.",
+      "Leitor de tela real não testado."
+     ],
+     "justificativa": "Base técnica forte: axe limpo, foco visível, leitura a 320 px, movimento reduzido. Tabela larga sem número na primeira vista do celular, rótulos de 11 px e leitor de tela não testado impedem 9."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "valor incorreto",
+     "descricao": "A coluna Ano de quatro tabelas dos níveis Analisar e Auditar exibe 2.026, 2.025 e 2.010: ano formatado com separador de milhar. É erro de apresentação, sem efeito no cálculo, mas o valor mostrado está errado.",
+     "evidencia": "Captura própria a 1440 de ?modo=analisar (tabelas 'EAR máxima no último dia de cada ano', 'Anos e subsistemas em que a soma dos reservatórios difere', 'Captura usada em cada ano'); texto_auditar.txt traz o mesmo '2.026'; leitura do DOM confirma."
+    }
+   ],
+   "achados": [
+    {
+     "id": "p1_ano_com_milhar",
+     "gravidade": "alta",
+     "criterios": [
+      "I",
+      "A"
+     ],
+     "onde": "Tabelas de Analisar e Auditar, coluna Ano (4 tabelas)",
+     "descricao": "Anos aparecem como 2.026, 2.025, 2.010, com separador de milhar.",
+     "sugestao": "Formatar ano como texto ou inteiro sem agrupamento de milhar."
+    },
+    {
+     "id": "p1_resposta_fora_da_dobra",
+     "gravidade": "media",
+     "criterios": [
+      "A",
+      "B"
+     ],
+     "onde": "Cabeçalho do painel: H1, fontes, siglas, chips de data, abas, profundidade",
+     "descricao": "A frase de resposta e o número começam em y 894 (1440 por 900) e y 1067 (390 por 844); a primeira tela traz só moldura.",
+     "sugestao": "Subir frase e primeiro cartão acima de siglas e chips; recolher chips de data e siglas em uma linha."
+    },
+    {
+     "id": "p1_cartoes_nao_seguem_recorte",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "C"
+     ],
+     "onde": "Três cartões de destaque e botões Comprove",
+     "descricao": "Com Subsistema, REE ou Bacias diferente do SIN, frase, título do gráfico e universo mudam, mas os cartões continuam 'EAR do SIN 61,5%', '179.724 MWmês' e '63 mudanças'.",
+     "sugestao": "Fazer os cartões seguirem a seleção ou separar visualmente um bloco rotulado 'SIN, fixo'."
+    },
+    {
+     "id": "p1_siglas_ear_ausente",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Linha 'Siglas' e abertura recolhida",
+     "descricao": "A linha de siglas lista ONS, ENA, SIN e REE, sem EAR nem MLT; a definição de EAR e os links do Aprenda estão na abertura recolhida, em fonte de 11,5 px.",
+     "sugestao": "Expandir EAR (Energia Armazenada) na linha de siglas e deixar a abertura aberta em Entender, com texto curto."
+    },
+    {
+     "id": "p1_energia_sem_faixa_visual",
+     "gravidade": "media",
+     "criterios": [
+      "C",
+      "I"
+     ],
+     "onde": "Gráfico da EAR do SIN no último ano e tabela completa",
+     "descricao": "A tarefa pede comparar com a história em percentual e em energia; a faixa em MWmês só existe nas colunas 12 a 14 de uma tabela de 20 colunas.",
+     "sugestao": "Oferecer alternância % e MWmês no gráfico principal, com a mesma faixa."
+    },
+    {
+     "id": "p1_tabela_celular",
+     "gravidade": "media",
+     "criterios": [
+      "K",
+      "A"
+     ],
+     "onde": "Tabela completa, 390 px (2.321 px de largura)",
+     "descricao": "A primeira vista mostra Recorte, Tipo e Dia, que repetem valores; os números ficam depois de rolar; o aviso de rolagem está acima da tabela.",
+     "sugestao": "Ocultar Tipo e Dia no celular e fixar as colunas EAR; ou mostrar linhas como cartões."
+    },
+    {
+     "id": "p1_cores_multiplos",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Pequenos múltiplos de Analisar contra o gráfico de 120 dias",
+     "descricao": "Sul é laranja e Nordeste verde nos múltiplos; Sul é verde e Nordeste laranja no gráfico de 120 dias.",
+     "sugestao": "Fixar uma cor por entidade em todo o painel."
+    },
+    {
+     "id": "p1_texto_sem_base",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "B"
+     ],
+     "onde": "Campo Período com recorte Bacias sem armazenamento (Araguari)",
+     "descricao": "Texto 'faixa do mesmo dia do calendário em sem base'.",
+     "sugestao": "Trocar por 'sem faixa, recorte sem armazenamento'."
+    },
+    {
+     "id": "p1_cartoes_vazios_e_botoes_duplos",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Cartões de destaque; sob o gráfico de pontos",
+     "descricao": "Cartões com 128 px de vazio; duas chamadas seguidas ('Dados do gráfico em tabela (5 linhas)' e 'Ver a tabela completa (5 linhas)') abrem tabelas quase iguais.",
+     "sugestao": "Reduzir a altura dos cartões e unificar as chamadas de tabela."
+    },
+    {
+     "id": "p1_nomes_sem_acento",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Tabela 'Dias em que a EAR máxima de um subsistema mudou'",
+     "descricao": "Nomes sem acento ('Sao Roque', 'Tucurui', 'Curua-Una') ao lado de nomes acentuados do gráfico ('São Simão').",
+     "sugestao": "Normalizar a grafia dos reservatórios."
+    },
+    {
+     "id": "p1_navegacao_empilhada",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "A"
+     ],
+     "onde": "Topo da página: observatório, seis grupos, irmãs do grupo, abas da família, profundidade",
+     "descricao": "Cinco camadas de navegação antes do conteúdo; a 390 px o menu aberto repete Água e clima, Geração, Carga e Rede, que já estão na faixa abaixo dele.",
+     "sugestao": "Fundir a faixa das irmãs com o menu e deixar só abas da família e profundidade perto do conteúdo."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver) não foi usado.",
+    "Nível Auditar avaliado só pelo texto e pelas medidas do objetivo.json, sem captura de tela.",
+    "Nível Analisar visto em imagem só a 1440 px; a 390 px só por axe.",
+    "Navegador único (Chromium headless); Firefox, Safari e aparelhos reais não foram testados.",
+    "Frescor dos dados em relação à data de hoje (09/10/2026) não foi avaliado: o site é um instantâneo processado em 01/10/2026.",
+    "Painel P017 inferido de visoes.json; a matriz P001 a P071 não foi consultada.",
+    "Painel 'conferencia-resumo' do nível Auditar lido só pelo texto."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T5",
+     "perfil": "jornalista ou professor",
+     "passos": [
+      "Abri a página a 1440 e a 390 px e li o H1.",
+      "Procurei a resposta: a 1440 ela começa em y 894 e a 390 em y 1067, depois de cabeçalho e abas.",
+      "Li a frase (61,5% da energia que os reservatórios comportam, dentro da faixa usual) e a série com faixa de 2001 a 2025.",
+      "No gráfico de pontos comparei as regiões com a mediana da data: Nordeste acima da faixa usual; Sudeste/Centro-Oeste perto da mediana.",
+      "Abri a abertura recolhida para entender o que é EAR."
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Resposta fora da primeira tela.",
+      "EAR não expandida na linha de siglas.",
+      "Comparação 'em energia' só em tabela."
+     ],
+     "erros": [],
+     "intervencoes_necessarias": [
+      "Rolar até o painel",
+      "Abrir a abertura recolhida"
+     ]
+    },
+    {
+     "tarefa": "T5",
+     "perfil": "pesquisador",
+     "passos": [
+      "Troquei o recorte para Nordeste, REE e Bacias e conferi frase, título do gráfico e universo.",
+      "Abri a tabela completa e procurei a faixa histórica em MWmês (colunas 12 a 14, após rolar).",
+      "Baixei o CSV do recorte atual e copiei o link do painel (estado preservado).",
+      "Abri Analisar para a série desde 2000 em MWmês com a capacidade (EAR máxima)."
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Faixa histórica em energia só em tabela de 20 colunas.",
+      "Cartões de destaque continuam no SIN.",
+      "A região escolhida não vai para a aba Afluência."
+     ],
+     "erros": [
+      "Ano exibido como 2.026 nas tabelas de Analisar.",
+      "Texto 'em sem base' no recorte sem armazenamento."
+     ],
+     "intervencoes_necessarias": [
+      "Rolar a tabela para o lado",
+      "Reescolher a região em cada aba"
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/agua-e-clima/afluencia": {
+   "paineis": [
+    "P018"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 8.0,
+     "evidencia": [
+      "1440_dobra.png e medição própria: H1, abas, profundidade, pergunta do painel e frase de resposta na primeira tela (resposta em y 778 a 830 de 900).",
+      "390_dobra.png e medição a 390 por 844: o título do painel aparece cortado no pé da tela; a resposta começa em y 886.",
+      "1440_inteira_01de02.png: frase, dois cartões, pontos por região e série semanal em ordem clara; cartões com 72 px de vazio entre data e link."
+     ],
+     "atendidos": [
+      "Pergunta e resposta na primeira tela em 1440",
+      "Hierarquia entre síntese, comparação e série",
+      "Rótulos diretos nas linhas e linha de 100 % da MLT legível",
+      "Sem rolagem horizontal de 320 a 1440 px"
+     ],
+     "problemas": [
+      "No celular a resposta fica abaixo da primeira tela.",
+      "Cartões de destaque com vazio interno.",
+      "H1 de uma palavra ('Afluência') com a pergunta no H2, padrão diferente da página de Armazenamento.",
+      "Siglas em dois níveis: lista visível e 'Mais 2 siglas' recolhida."
+     ],
+     "justificativa": "Primeira tela em 1440 mostra pergunta e resposta, com hierarquia e gráficos legíveis. No celular a resposta cai abaixo da dobra; cartões vazios e padrão de título diferente mantêm a nota em 8."
+    },
+    "B": {
+     "nota": 8.0,
+     "evidencia": [
+      "texto_entender.txt: frase 'a água que chegou ao SIN (ENA) foi 172,3% da média de longo prazo (MLT)'; linha Unidade explica MWmed·dia e a razão de somas.",
+      "texto_entender.txt: siglas com MLT e PMO; MWmed e EAR só em 'Mais 2 siglas' recolhido; p.p. sem definição na página.",
+      "texto_entender.txt: 'O que não é possível concluir' e a nota sob o gráfico dizem que a MLT muda de versão e não é comparável entre períodos longos."
+     ],
+     "atendidos": [
+      "Conceito de ENA e MLT na frase e na abertura",
+      "Limite explícito: afluência alta não é reservatório cheio",
+      "Comparação com a mesma janela de outros anos explicada",
+      "Termos ENA e MLT ligados ao glossário do Aprenda",
+      "Próxima pergunta leva ao clima"
+     ],
+     "problemas": [
+      "Abertura recolhida no nível padrão.",
+      "p.p. não é definido nesta página; MWmed e EAR ficam em lista recolhida.",
+      "O alerta sobre versão da MLT só aparece sob o gráfico e no bloco final, longe do número de destaque.",
+      "Regra 'Faixa sazonal' (Auditar) repete texto da EAR ('Anos com EAR máxima zero') e cita periodo_base e silver."
+     ],
+     "justificativa": "Frase clara, unidades explicadas e limites honestos sobre a MLT. A abertura recolhida, p.p. sem definição, o alerta da MLT longe do destaque e texto copiado da EAR no Auditar mantêm a nota em 8."
+    },
+    "C": {
+     "nota": 8.0,
+     "evidencia": [
+      "Medição própria: Norte muda a frase para 52,8% da MLT, abaixo da faixa usual; REE e Bacias trocam o universo; 'Outras do Sul' vira estado sem MLT.",
+      "Medição própria: série semanal com até 4 regiões, busca com combobox (SIN entra), períodos 30 dias, 90 dias, 1 ano e restaurar, tudo na URL.",
+      "texto_auditar.txt: tabela com faixa do 10º ao 90º percentil, percentil e último dia; CSV do painel inclui ENA e MLT implícita."
+     ],
+     "atendidos": [
+      "Tarefa ENA e MLT atendida por região, REE e bacia",
+      "Comparação com a mediana da mesma janela",
+      "Série semanal com linha de 100 % da MLT",
+      "Exportação do recorte atual"
+     ],
+     "problemas": [
+      "A série semanal não desenha a faixa histórica; ela só aparece na tabela.",
+      "Cartões ficam no SIN quando a região muda.",
+      "A região escolhida não vai para as outras abas.",
+      "Percentuais de versões diferentes da MLT em períodos longos exigem cautela do leitor."
+     ],
+     "justificativa": "A tarefa de acompanhar ENA e MLT é bem atendida, com comparação regional e série interativa. Faixa histórica só em tabela, cartões presos ao SIN e a cautela com versões da MLT limitam a nota."
+    },
+    "D": {
+     "nota": 7.5,
+     "evidencia": [
+      "texto_entender.txt: recortes por subsistema, REE e bacia (25 bacias, inclusive grupos 'Outras do Sul e do Sudeste').",
+      "Medição própria: downloads com ENA e MLT, CSV do recorte atual, link com estado (?sms=SE,S,NE,SIN&de=...), ficha Comprove.",
+      "texto_entender.txt: alerta de que a MLT do conjunto aberto difere do PMO em todos os 7 meses conferidos."
+     ],
+     "atendidos": [
+      "Recortes territoriais pertinentes",
+      "Exportação com contexto e link com estado",
+      "Lacunas visíveis: MLT não publicada e mudança de versão",
+      "Útil a analista, pesquisador e jornalista"
+     ],
+     "problemas": [
+      "Sem ponte para custo ou continuidade do serviço.",
+      "Vocabulário técnico (MLT, razão de somas, MWmed·dia) para leitor não especializado.",
+      "Rótulos como 'Bacia do Outras do Sul' atrapalham o leitor comum."
+     ],
+     "justificativa": "Recortes, exportação e alertas sobre a MLT dão boa utilidade pública para quem analisa. Falta ligar o tema ao leitor comum (custo, continuidade) e simplificar vocabulário e rótulos. Impacto não comprovado."
+    },
+    "I": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_inteira_01de02.png: pontos por região (círculo e losango) e série semanal com rótulos diretos e linha de 100 %.",
+      "Captura própria de ?modo=analisar: 'MLT do Sudeste/Centro-Oeste no PMO e no conjunto aberto' com 3 linhas sobrepostas e linha reta de mar/26 a jul/26, sem abr a jun.",
+      "Captura própria: 'MLT implícita no dia 15 de janeiro e de julho' como uma só linha em dente de serra por subsistema."
+     ],
+     "atendidos": [
+      "Pontos por região com mediana e diferença",
+      "Linha de referência de 100 % da MLT",
+      "Rótulos diretos e tabela equivalente",
+      "Toque e teclado mostram os valores de todas as séries"
+     ],
+     "problemas": [
+      "Série semanal sem a faixa histórica.",
+      "Gráfico mensal da MLT liga março a julho em linha reta, eixo equidistante; faltam abril a junho.",
+      "As três séries da MLT se sobrepõem; diferenças de até 1,26 % não aparecem.",
+      "Janeiro e julho na mesma linha criam dente de serra que esconde as mudanças de versão.",
+      "Ano exibido como 2.026 nas tabelas de Analisar e Auditar."
+     ],
+     "justificativa": "Gráficos principais bem escolhidos e com alternativas. Os gráficos de MLT no Analisar ligam meses ausentes, sobrepõem séries e misturam estações numa linha; a série semanal não mostra a faixa. Nota 7,5."
+    },
+    "J": {
+     "nota": 7.5,
+     "evidencia": [
+      "Medição própria: Norte altera a frase, mas os cartões seguem 'ENA bruta de 30 dias do SIN 172,3%' e 'armazenável 109,2%'.",
+      "Medição própria: ?sms=SE,S,NE,SIN guarda as séries; ?de e ?ate guardam o período; limite de 4 e remoção por botão funcionam.",
+      "Medição própria: bacia 'Outras do Sul' dá 'Sem ENA de 30 dias ... falta dia na janela ou não há MLT publicada' e Período 'em sem base'."
+     ],
+     "atendidos": [
+      "Filtros claros com estado na URL",
+      "Comparador de regiões com busca, chips, limite e remoção",
+      "Períodos rápidos e restaurar intervalo",
+      "Busca, filtros e exportação nas tabelas",
+      "Estado sem MLT explicado em texto"
+     ],
+     "problemas": [
+      "Cartões de destaque não acompanham o recorte.",
+      "A região escolhida não persiste nas outras abas.",
+      "Estado sem dado lista duas causas possíveis e traz 'em sem base'.",
+      "Rótulo 'Bacia do Outras do Sul' na lista de bacias."
+     ],
+     "justificativa": "Interação completa e com estado na URL. A sincronização é parcial: cartões presos ao SIN, seleção que não persiste entre abas e estado sem dado com texto de modelo quebrado e causa ambígua."
+    },
+    "K": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: axe sem violações a 320, 390, 768 e 1440; sem rolagem horizontal; 4 alvos abaixo de 44 px em Entender e 33 em Auditar.",
+      "Medição própria: combobox com rótulo, aria describedby e botões 'Remover X da comparação' de 44 px; toque no gráfico mostra cartão com os valores; axe em Analisar sem violações a 1440 e 390.",
+      "390_inteira_02de05.png: tabela equivalente de 15 colunas fora da primeira vista; texto de aviso de rolagem acima."
+     ],
+     "atendidos": [
+      "Teclado com foco visível e leitura por setas",
+      "Componentes com rótulos e áreas vivas",
+      "Alternativas à cor: formas e rótulos diretos",
+      "Movimento reduzido respeitado",
+      "Sem perda de página a 320 px"
+     ],
+     "problemas": [
+      "Tabelas largas no celular, com números fora da primeira vista.",
+      "Rótulos de 11 a 11,5 px em caixa alta.",
+      "Linhas de Nordeste e Norte terminam coladas no gráfico a 390 px, com rótulos curtos (NE, N).",
+      "Leitor de tela real não testado."
+     ],
+     "justificativa": "Base técnica forte, com componentes bem rotulados e toque funcional. Tabelas largas no celular, rótulos pequenos, linhas coladas no fim do gráfico e leitor de tela não testado mantêm a nota em 8."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "valor incorreto",
+     "descricao": "A coluna Ano das tabelas do Analisar e do Auditar exibe 2.026, 2.025 e 2.021: ano formatado com separador de milhar. Erro de apresentação, sem efeito no cálculo.",
+     "evidencia": "Captura própria a 1440 de ?modo=analisar ('MLT do fim de janeiro e de julho comparada com a do ano anterior, por usina') e texto_auditar.txt ('Captura usada em cada ano': 2.025, 2.026)."
+    }
+   ],
+   "achados": [
+    {
+     "id": "p2_ano_com_milhar",
+     "gravidade": "alta",
+     "criterios": [
+      "I",
+      "A"
+     ],
+     "onde": "Tabelas de Analisar e Auditar, coluna Ano",
+     "descricao": "Anos aparecem como 2.026, 2.025, 2.021, com separador de milhar.",
+     "sugestao": "Formatar ano sem agrupamento de milhar."
+    },
+    {
+     "id": "p2_cartoes_nao_seguem_recorte",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "C"
+     ],
+     "onde": "Cartões 'ENA bruta de 30 dias do SIN' e 'ENA armazenável'",
+     "descricao": "Com Norte, REE ou Bacias, a frase muda para o recorte e os cartões ficam em 172,3% e 109,2% do SIN.",
+     "sugestao": "Fazer os cartões seguirem a seleção ou rotular como destaque fixo do SIN."
+    },
+    {
+     "id": "p2_mlt_mensal_lacuna_e_sobreposicao",
+     "gravidade": "media",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Gráfico 'MLT do Sudeste/Centro-Oeste no PMO e no conjunto aberto, mês a mês' (Analisar)",
+     "descricao": "Eixo categórico equidistante com dez/25 a mar/26 e jul/26 a set/26; a linha liga março a julho sem marcar abril a junho; as três séries ficam sobrepostas e a diferença de até 1,26 % não se vê.",
+     "sugestao": "Marcar a lacuna (linha quebrada), usar eixo de tempo real e plotar a diferença percentual em vez de três linhas."
+    },
+    {
+     "id": "p2_serie_sem_faixa",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "C"
+     ],
+     "onde": "Série semanal 'ENA bruta de 30 dias em % da MLT'",
+     "descricao": "A única referência é a linha de 100 %; a faixa do 10º ao 90º percentil só existe na tabela e no texto.",
+     "sugestao": "Desenhar a faixa histórica por data atrás das linhas, ao menos para a região selecionada."
+    },
+    {
+     "id": "p2_dente_de_serra_jan_jul",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Gráfico 'MLT implícita de cada subsistema no dia 15 de janeiro e de julho' (Analisar)",
+     "descricao": "Janeiro e julho ligados na mesma linha formam oscilação artificial que esconde as mudanças de versão.",
+     "sugestao": "Usar duas linhas por subsistema, uma por mês, ou pequenos múltiplos."
+    },
+    {
+     "id": "p2_estado_sem_dado_texto",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "B"
+     ],
+     "onde": "Recorte Bacias com 'Outras do Sul' e 'Outras do Sudeste'",
+     "descricao": "Rótulo 'Bacia do Outras do Sul'; Período com 'em sem base'; a frase lista duas causas ('falta dia ou não há MLT') quando a página já sabe que as afluências agrupadas não têm MLT.",
+     "sugestao": "Rótulo 'Outras do Sul (grupo ONS)'; texto de Período sem a expressão quebrada; dizer a causa exata."
+    },
+    {
+     "id": "p2_regra_copiada_da_ear",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Regras do nível Auditar, item 'Faixa sazonal'",
+     "descricao": "O texto repete a regra da EAR ('Anos com EAR máxima zero ficam fora') e cita periodo_base e silver.",
+     "sugestao": "Reescrever a regra para a ENA e trocar os termos internos."
+    },
+    {
+     "id": "p2_p_p_sem_definicao",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Legenda do gráfico de pontos ('em p.p.') e lista de siglas",
+     "descricao": "p.p. é usado em '+186,3 p.p.' sem definição nesta página; MWmed e EAR ficam em 'Mais 2 siglas'.",
+     "sugestao": "Definir p.p. na linha Unidade e mostrar todas as siglas."
+    },
+    {
+     "id": "p2_tabela_celular",
+     "gravidade": "baixa",
+     "criterios": [
+      "K"
+     ],
+     "onde": "Tabela equivalente com 15 colunas, 390 px",
+     "descricao": "Números fora da primeira vista, com aviso de rolagem só em texto.",
+     "sugestao": "Fixar as colunas essenciais ou mostrar cartões por região."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver) não foi usado.",
+    "Nível Auditar avaliado só pelo texto e pelas medidas do objetivo.json, sem captura de tela.",
+    "Nível Analisar visto em imagem só a 1440 px; a 390 px só por axe.",
+    "Navegador único (Chromium headless); Firefox, Safari e aparelhos reais não foram testados.",
+    "Frescor dos dados em relação à data de hoje (09/10/2026) não foi avaliado: o site é um instantâneo processado em 01/10/2026.",
+    "Painel P018 inferido de visoes.json; a matriz P001 a P071 não foi consultada."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T5",
+     "perfil": "analista de empresas",
+     "passos": [
+      "Li a pergunta 'A água que chega está acima do normal?' e a frase: 172,3% da MLT em 30 dias, acima da faixa usual.",
+      "No gráfico de pontos comparei as regiões: Sul 260,3% acima da faixa, Nordeste dentro, Norte 52,8% abaixo.",
+      "Troquei para REE e Bacias; abri a bacia 'Outras do Sul' e vi o estado sem MLT.",
+      "Na série semanal mantive 4 regiões, adicionei o SIN e usei os períodos de 90 dias e 1 ano.",
+      "Li a nota sobre mudança de versão da MLT e a tabela de comparação com o PMO no Analisar."
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Cartões de destaque ficam no SIN quando a região muda.",
+      "Série semanal sem faixa histórica.",
+      "A MLT muda de versão; o percentual exige cautela em períodos longos."
+     ],
+     "erros": [
+      "Ano exibido como 2.026 nas tabelas de Analisar.",
+      "Texto 'em sem base' no estado sem dado."
+     ],
+     "intervencoes_necessarias": [
+      "Abrir a abertura recolhida para as siglas",
+      "Fechar a lista do combobox antes de usar os botões de período"
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/agua-e-clima/chuva-e-temperatura": {
+   "paineis": [
+    "P019"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 7.0,
+     "evidencia": [
+      "Medição própria: a resposta começa em y 1131 (1440 por 900) e em y 1749 (390 por 844); antes vêm cabeçalho, siglas, abas, profundidade, subtítulo e quatro caixas de natureza do dado (1440_dobra.png, 390_dobra.png).",
+      "1440_inteira_01de03.png: mapa, série de 12 meses, temperatura e previsão em sequência; mapa centralizado com grande área vazia nos lados.",
+      "objetivo.json: altura de 11.600 px a 390 em Entender."
+     ],
+     "atendidos": [
+      "Hierarquia entre mapa, séries e previsão em seção própria",
+      "Tipografia e espaçamento consistentes",
+      "Previsão com título 'não observação' e cor própria",
+      "Sem rolagem horizontal de 320 a 1440 px"
+     ],
+     "problemas": [
+      "Resposta fora da primeira tela em 1440 e a mais de duas telas no celular.",
+      "A caixa 'Observação' descreve dado de estações que não aparece em Entender e empurra a resposta.",
+      "Página longa no celular (11.600 px).",
+      "Legenda de cada pequeno múltiplo repetida quatro vezes no Analisar."
+     ],
+     "justificativa": "Seções bem hierarquizadas e legíveis, mas a resposta fica longe da primeira tela (y 1131 em 1440, y 1749 em 390) por causa da legenda de natureza do dado, e a página é muito longa no celular."
+    },
+    "B": {
+     "nota": 7.5,
+     "evidencia": [
+      "texto_entender.txt: quatro blocos Observação, Estimativa, Previsão e Cenário distinguem estimativa, previsão e ausência de cenário; frases 'estimativa por satélite', 'É associação, não causa'.",
+      "texto_entender.txt: siglas ONS, SIN, UF, EAR, ENA; IMERG, MERRA-2, GEOS-IT, reanálise e UTC sem expansão visível; abertura recolhida.",
+      "texto_entender.txt: 'Por que isso importa', 'Como interpretar' e 'O que não é possível concluir' no fim do painel; link para o painel de carga."
+     ],
+     "atendidos": [
+      "Natureza do dado separada em quatro blocos didáticos",
+      "Limites claros (estimativa, associação, uma rodada de modelo)",
+      "Comparação com a média de 2001 a 2025 explicada",
+      "Glossário do Aprenda ligado a IMERG e MERRA-2",
+      "Conexão com carga e afluência por links"
+     ],
+     "problemas": [
+      "IMERG, MERRA-2, GEOS-IT, reanálise e UTC não são explicados na parte visível.",
+      "Abertura recolhida no nível padrão; os links do Aprenda ficam dentro dela.",
+      "Abreviações SIN, SE/CO, S, NE e N como rótulos do seletor de temperatura, sem definição.",
+      "Importância e limites só no fim do painel."
+     ],
+     "justificativa": "A separação entre estimado, previsto e cenário é um bom recurso didático e os limites são claros. Jargão sem tradução na parte visível, abertura recolhida e abreviações sem definição limitam a nota."
+    },
+    "C": {
+     "nota": 7.5,
+     "evidencia": [
+      "Medição própria: Bacia (22 opções), Período do mapa (13) e Temperatura (5 recortes) atualizam frases, mapa e gráficos; clicar numa bacia do mapa seleciona a bacia e atualiza a URL.",
+      "texto_entender.txt: chuva até 14/09 (17 dias de atraso) e temperatura até 27/09 na mesma frase de abertura, cada janela declarada.",
+      "texto_entender.txt: 14 de 22 bacias na classe '+100% ou mais'; nota 'No período seco, médias pequenas geram percentuais grandes: confira os milímetros'."
+     ],
+     "atendidos": [
+      "Acompanhar chuva e temperatura por bacia e subsistema",
+      "Comparação com a base 2001 a 2025 e faixa do mês",
+      "Previsão separada, com rodada e ressalvas",
+      "Tabelas equivalentes e downloads"
+     ],
+     "problemas": [
+      "A frase de destaque usa 351,4% de anomalia em época seca (70,2 mm contra 15,6 mm), de pouco valor para decisão.",
+      "A relação com a água e com a demanda é só um número de correlação (0,25) e dois links.",
+      "Cartões ficam em Paranaíba e SIN quando bacia ou temperatura mudam.",
+      "Chuva e temperatura têm janelas diferentes (14/09 e 27/09), o que dificulta ler as duas juntas."
+     ],
+     "justificativa": "Boa cobertura de chuva, temperatura e previsão, com ressalvas. O destaque percentual em época seca, a ligação com água e demanda reduzida a uma correlação e as janelas diferentes limitam a utilidade para decisão."
+    },
+    "D": {
+     "nota": 7.5,
+     "evidencia": [
+      "texto_entender.txt: chuva por 22 bacias do ONS e temperatura por 5 recortes; links para o painel de carga e para afluência.",
+      "Medição própria: sete downloads, inclusive contornos das bacias em JSON e manifesto espacial; Copiar link com estado.",
+      "texto_entender.txt: 'o INMET não respondeu nas tentativas de coleta'; previsão de um único modelo e uma rodada, sem avaliação de acerto."
+     ],
+     "atendidos": [
+      "Recorte territorial pertinente (bacia e subsistema)",
+      "Exportação com contexto e fontes",
+      "Lacunas visíveis (INMET, avaliação da previsão, cenário não integrado)",
+      "Útil a pesquisador, jornalista e analista"
+     ],
+     "problemas": [
+      "Sem ponte para custo ou continuidade do serviço.",
+      "Linguagem técnica (anomalia, percentil, reanálise, quebras fixas) para leitor não especializado.",
+      "Nenhuma camada ou texto liga bacias a regiões atendidas ou a custo para o leitor comum."
+     ],
+     "justificativa": "Recorte territorial, downloads e transparência sobre lacunas são fortes. Falta traduzir o conteúdo para o leitor comum e ligar clima a custo ou continuidade. Potencial de impacto descrito, não comprovado."
+    },
+    "I": {
+     "nota": 8.0,
+     "evidencia": [
+      "1440_inteira_01de03.png e 390_inteira_03de08.png: mapa das 22 bacias em projeção equivalente, classes fixas com contagem na legenda, borda preta na seleção e hachura para sem dado.",
+      "1440_inteira_02de03.png: temperatura com faixa do mesmo dia, anomalia mensal em barras e previsão em roxo e linhas pontilhadas, distintas do observado.",
+      "Medição própria: barras e bacias focáveis, dica de valores por foco e por toque; cada gráfico tem tabela equivalente."
+     ],
+     "atendidos": [
+      "Mapa com geometria e unidade territorial corretas",
+      "Série de 12 meses com média e faixa do mês",
+      "Previsão com codificação própria",
+      "Alternativas textuais, tabela e interação além do hover",
+      "Cor divergente neutra, sem aprovação ou reprovação"
+     ],
+     "problemas": [
+      "Classe '+100% ou mais' reúne 14 de 22 bacias; o mapa informa pouco neste período.",
+      "Cor por posição nos pequenos múltiplos (Paranaíba laranja ali e azul no gráfico principal).",
+      "Bacias pequenas (Capivari 7 por 5 px a 1440) quase invisíveis no mapa.",
+      "Quatro legendas repetidas sob os pequenos múltiplos."
+     ],
+     "justificativa": "A página com melhor trabalho visual: mapa correto, classes fixas, faixa sazonal e previsão distinta. Classe saturada em época seca, cor por posição nos múltiplos, bacias minúsculas e legendas repetidas impedem 9."
+    },
+    "J": {
+     "nota": 7.0,
+     "evidencia": [
+      "Medição própria: Bacia, clique no mapa, Período do mapa e Temperatura atualizam o que anunciam e a URL (?bac, ?per, ?rt); cartões ficam em 'Bacia do Paranaíba' e 'SIN'.",
+      "Medição própria: com Período do mapa em abr/2026 o título do mapa muda, mas a frase 'Nos 30 dias até 14/09/2026, a bacia do Iguaçu recebeu ...' continua sobre a janela mais recente.",
+      "Medição própria com Tab: as 22 bacias do mapa são 22 paradas seguidas (Tab 27 a 48) antes da tabela."
+     ],
+     "atendidos": [
+      "Filtros claros com estado na URL",
+      "Mapa, select e tabela sincronizados por clique",
+      "Comparador de até 4 bacias no Analisar",
+      "Busca, filtros e exportação nas tabelas"
+     ],
+     "problemas": [
+      "Cartões de destaque não acompanham bacia nem temperatura.",
+      "Período do mapa não muda a frase nem os cartões, embora fiquem logo abaixo do seletor.",
+      "Mapa exige 22 paradas de Tab; não há atalho para pular.",
+      "Seleção de bacia não persiste nas outras abas da família."
+     ],
+     "justificativa": "Muitos controles sincronizados e com estado na URL, mas os cartões ficam presos, o período do mapa não alcança a frase, o teclado percorre 22 bacias seguidas e a seleção não persiste entre abas. Nota 7."
+    },
+    "K": {
+     "nota": 7.5,
+     "evidencia": [
+      "objetivo.json: axe sem violações a 320, 390, 768 e 1440; sem rolagem horizontal; 0 alvos abaixo de 44 px em Entender e 7 em Auditar.",
+      "Medição própria: polígonos do mapa com focus:outline-none; o foco só traça borda fina da cor do polígono (bacia de 12 por 12 px com sinal quase imperceptível; diferença de pixels pequena).",
+      "390_inteira_06de08.png: tabela de previsão com a segunda coluna cortada ('Méd... MERRA-2 ... mesm'); aviso de rolagem em texto."
+     ],
+     "atendidos": [
+      "Foco visível em controles, rádios e barras",
+      "Mapa com nome acessível e classe em cada bacia",
+      "Alternativas à cor: legenda, tabela e hachura",
+      "Movimento reduzido respeitado"
+     ],
+     "problemas": [
+      "Foco quase invisível nos polígonos do mapa, diferente do anel de 2 px do resto.",
+      "Alvos de toque minúsculos nas bacias pequenas; o select e a tabela são o único caminho confortável.",
+      "Tabela de previsão cortada no celular.",
+      "Rótulos S, N e NE no seletor de temperatura têm o nome só em title.",
+      "Leitor de tela real não testado."
+     ],
+     "justificativa": "Base técnica boa (axe limpo, reflow, movimento), mas o mapa tem foco fraco, 22 paradas de Tab e alvos minúsculos, a tabela de previsão é cortada no celular e os rótulos do seletor são crípticos. Nota 7,5."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "p3_resposta_longe_da_dobra",
+     "gravidade": "media",
+     "criterios": [
+      "A",
+      "B"
+     ],
+     "onde": "Painel p019: antes das frases vêm subtítulo e quatro caixas de natureza do dado",
+     "descricao": "A frase de resposta começa em y 1131 a 1440 por 900 e em y 1749 a 390 por 844 (mais de duas telas); a 320 começa em y 2136.",
+     "sugestao": "Mover a legenda de natureza do dado para depois das frases ou recolhê-la em um resumo de uma linha."
+    },
+    {
+     "id": "p3_cartoes_nao_seguem_selecao",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "C"
+     ],
+     "onde": "Cartões 'Anomalia da temperatura do SIN' e 'Chuva de 30 dias, Bacia do Paranaíba'",
+     "descricao": "Ao escolher outra bacia ou outro recorte de temperatura, frases e gráficos mudam e os cartões ficam em SIN e Paranaíba.",
+     "sugestao": "Fazer os cartões seguirem a seleção ou rotulá-los como destaque fixo."
+    },
+    {
+     "id": "p3_mapa_foco_e_alvos",
+     "gravidade": "media",
+     "criterios": [
+      "K",
+      "J"
+     ],
+     "onde": "Mapa das bacias (22 botões em SVG)",
+     "descricao": "Cada bacia é uma parada de Tab (22 seguidas), com focus:outline-none e só traço fino; Capivari mede 7 por 5 px e Itabapoana 12 por 12 px a 1440, menores no celular.",
+     "sugestao": "Usar um único controle com setas (roving tabindex), anel de foco visível e caixas de toque ampliadas."
+    },
+    {
+     "id": "p3_periodo_do_mapa_vs_frase",
+     "gravidade": "baixa",
+     "criterios": [
+      "J"
+     ],
+     "onde": "Seletor 'Período do mapa' e frases do painel",
+     "descricao": "Em abr/2026 o título do mapa muda, mas a frase sobre a bacia selecionada e os cartões continuam na janela mais recente.",
+     "sugestao": "Deixar claro na frase qual janela ela descreve ou atualizar a frase com o período do mapa."
+    },
+    {
+     "id": "p3_anomalia_em_epoca_seca",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "C",
+      "I"
+     ],
+     "onde": "Frase de abertura, mapa e legenda",
+     "descricao": "O destaque é 351,4% acima da média (70,2 mm contra 15,6 mm) e 14 de 22 bacias caem na classe '+100% ou mais'; a cautela vem em notas abaixo do mapa.",
+     "sugestao": "Priorizar milímetros e posição no percentil na frase; mostrar a cautela junto do destaque."
+    },
+    {
+     "id": "p3_jargao_e_abreviacoes",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "K"
+     ],
+     "onde": "Blocos de natureza do dado e seletor 'Temperatura'",
+     "descricao": "IMERG, MERRA-2, GEOS-IT, reanálise e UTC sem expansão visível; rádios SIN, SE/CO, S, NE e N têm o nome completo só no atributo title.",
+     "sugestao": "Expandir os termos na linha de siglas e usar nomes completos nos rótulos."
+    },
+    {
+     "id": "p3_tabela_previsao_celular",
+     "gravidade": "media",
+     "criterios": [
+      "K",
+      "A"
+     ],
+     "onde": "Tabela 'Temperatura média prevista nos 7 primeiros dias', 390 px",
+     "descricao": "A segunda coluna (média MERRA-2) fica cortada; a comparação que a tabela existe para fazer exige rolar.",
+     "sugestao": "Reduzir cabeçalhos ou empilhar as duas colunas no celular."
+    },
+    {
+     "id": "p3_legenda_observacao_sem_uso",
+     "gravidade": "baixa",
+     "criterios": [
+      "A",
+      "B"
+     ],
+     "onde": "Caixa 'Observação' do bloco de natureza do dado",
+     "descricao": "Descreve estações de 2020 e 2021 usadas só para conferência; nenhum gráfico de Entender mostra dado observado.",
+     "sugestao": "Mover para Analisar ou para a nota de método."
+    },
+    {
+     "id": "p3_rotulo_comprove_bruto",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Botão 'Comprove este número' do cartão de chuva",
+     "descricao": "Rótulo 'Chuva de 30 dias na bacia PARANAIBA, 70 mm' enquanto o cartão mostra 'Bacia do Paranaíba, 70,2 mm'.",
+     "sugestao": "Usar o mesmo nome e o mesmo arredondamento do cartão."
+    },
+    {
+     "id": "p3_pagina_longa_no_celular",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Página inteira a 390 px",
+     "descricao": "11.600 px em Entender; legenda, mapa, quatro gráficos e previsão em coluna única.",
+     "sugestao": "Recolher a previsão e os gráficos secundários em seções que abrem sob demanda."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver) não foi usado.",
+    "Nível Auditar avaliado só pelo texto e pelas medidas do objetivo.json, sem captura de tela.",
+    "Nível Analisar visto em imagem só a 1440 px; a 390 px só por axe.",
+    "Navegador único (Chromium headless); Firefox, Safari e aparelhos reais não foram testados.",
+    "Frescor dos dados em relação à data de hoje (09/10/2026) não foi avaliado: o site é um instantâneo processado em 01/10/2026.",
+    "Painel P019 inferido de visoes.json; a matriz P001 a P071 não foi consultada.",
+    "Trechos 390_inteira_02, 04 e 07 de 08 não estavam no pacote; vistos em captura própria do mesmo servidor.",
+    "Nenhuma bacia ou período sem dado apareceu nas opções, então o estado vazio do mapa (hachura com contagem 0) não foi exercitado."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T5",
+     "perfil": "pesquisador",
+     "passos": [
+      "Li o H1 e rolei até a frase de resposta (y 1131 a 1440; y 1749 a 390).",
+      "Troquei a bacia para Iguaçu, o período do mapa para abr/2026 e a temperatura para Nordeste; li frases, mapa e gráficos.",
+      "Cliquei numa bacia do mapa e conferi select e URL; abri a tabela equivalente (22 linhas).",
+      "Li a previsão separada: rodada de 30/09, 55,1 mm em 7 dias na bacia do Paranaíba, 'não observação'.",
+      "Segui os links para carga e para afluência."
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Resposta longe da primeira tela.",
+      "Percentual de anomalia em época seca como destaque.",
+      "Período do mapa não muda a frase.",
+      "Mapa exige 22 paradas de Tab."
+     ],
+     "erros": [
+      "Rótulo 'Comprove ... bacia PARANAIBA, 70 mm' diferente do cartão."
+     ],
+     "intervencoes_necessarias": [
+      "Rolar duas telas no celular",
+      "Usar o select no lugar do mapa para bacias pequenas"
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/agua-e-clima/reservatorios": {
+   "paineis": [
+    "P020"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_dobra.png e medição própria: pergunta, seletores e a primeira frase na primeira tela (resposta em y 820 a 872 de 900); a 390 a resposta começa em y 990.",
+      "390_inteira_03de06.png: tabela de variação com a coluna numérica cortada ('−1.8', '−1.0', '−7').",
+      "1440_inteira_02de02.png: gráfico do balanço com o rótulo 'Vazão natural (contexto, fora…' truncado; cartões com 72 px de vazio."
+     ],
+     "atendidos": [
+      "Pergunta e primeira frase na primeira tela em 1440",
+      "Ordem clara: decomposição, balanço, séries de 45 dias",
+      "Barras divergentes com seleção destacada",
+      "Sem rolagem horizontal da página de 320 a 1440 px"
+     ],
+     "problemas": [
+      "No celular a resposta fica abaixo da dobra e a tabela corta os números.",
+      "Rótulo do gráfico de balanço truncado a 1440.",
+      "Dois cartões técnicos (resíduo, '124 de 153') ocupam o lugar do destaque da resposta.",
+      "Cartões com vazio interno."
+     ],
+     "justificativa": "Boa ordem e primeira tela útil em 1440. No celular a resposta cai abaixo da dobra e a tabela corta números; rótulo truncado e cartões vazios mantêm a nota em 7,5."
+    },
+    "B": {
+     "nota": 7.0,
+     "evidencia": [
+      "texto_entender.txt: a frase explica 'resíduo' ('a diferença que sobra quando ela não fecha') e Unidade explica hm³; mas defluência, turbinado, vertido, transferência e 'parte própria' aparecem no subtítulo, nos rótulos e na tabela sem definição visível; siglas só ONS e ENA.",
+      "Medição própria: 'Ler a abertura da página' recolhida em Entender; é ali que 'parte própria', 'a jusante' e EAR são definidos.",
+      "texto_entender.txt: nota 'A página de armazenamento mostra −3.297,8 MWmês ... aqui ... −3.188,7 MWmês' explica a diferença de janelas."
+     ],
+     "atendidos": [
+      "Unidades explicadas (hm³, MWmês, m³/s e conversão)",
+      "Limites explícitos: afluência vem do próprio balanço; resíduo perto de zero não prova medição",
+      "Janelas diferentes entre páginas explicadas em nota",
+      "Termos EAR e MWmês ligados ao Aprenda e à Metodologia"
+     ],
+     "problemas": [
+      "Defluência, turbinado, vertido, transferência e 'parte própria' sem definição na parte visível; as definições estão na abertura recolhida e no texto sob o gráfico.",
+      "Linha de siglas só ONS e ENA; EAR, REE e SE/CO sem expansão.",
+      "Convenção da defluência e transferência exigem leitura técnica.",
+      "Duas janelas (29/08 a 28/09 e 31/08 a 29/09) na mesma página."
+     ],
+     "justificativa": "Frase e unidades bem explicadas (resíduo, hm³) e limites claros. Defluência, turbinado, vertido e parte própria aparecem sem definição visível, a abertura vem recolhida e a página mistura duas janelas. Nota 7."
+    },
+    "C": {
+     "nota": 7.5,
+     "evidencia": [
+      "Medição própria: trocar Subsistema muda frase, título e aviso; clicar numa barra seleciona o reservatório e atualiza select, frase do balanço, gráficos e URL (?res=SFSOBR).",
+      "texto_entender.txt: 'Variação ... maiores quedas e maiores altas': 10 de 45 reservatórios; as barras somam queda de 1.276 MWmês contra queda de 3.188,7 no título; o restante (1.912, 60%) não aparece.",
+      "Downloads do painel (medição própria): nenhum dos quatro arquivos traz a variação de EAR de cada um dos 45 reservatórios na janela."
+     ],
+     "atendidos": [
+      "Balanço por reservatório com afluência, defluência e resíduo",
+      "Reservatório navegável pelo gráfico, tabela e select",
+      "Comparador de até 4 reservatórios no Analisar",
+      "Exportação do recorte atual"
+     ],
+     "problemas": [
+      "Decomposição incompleta: 10 de 45 reservatórios; o gráfico não fecha com o título.",
+      "Cartões de destaque medem qualidade do dado (resíduo, '124 de 153') e não a resposta à pergunta.",
+      "Cartões ficam em Serra da Mesa quando o subsistema ou o reservatório muda.",
+      "Dois universos (153 com balanço, 67 com EAR máxima positiva) na mesma página."
+     ],
+     "justificativa": "O balanço por reservatório é bem atendido para especialistas, com clique e comparação. A decomposição mostra 10 de 45 reservatórios sem fechar com o título e os cartões destacam qualidade de dado, não a resposta."
+    },
+    "D": {
+     "nota": 7.0,
+     "evidencia": [
+      "texto_entender.txt e visoes.json: recorte por subsistema (4), reservatório (67 opções) e bacia (filtro da tabela).",
+      "Medição própria: downloads (4), link com estado (?sm=NE&res=SFSOBR), ficha Comprove; 18 reservatórios sem cadastro listados no Auditar.",
+      "texto_entender.txt: 'a afluência publicada ... é calculada pelo próprio balanço: o fechamento não é prova independente'."
+     ],
+     "atendidos": [
+      "Recorte por subsistema, bacia e reservatório",
+      "Exportação e link com contexto",
+      "Lacunas visíveis (reservatórios sem balanço, afluência derivada)"
+     ],
+     "problemas": [
+      "Conteúdo voltado a especialista; pouco para o leitor comum.",
+      "Sem ponte para custo, continuidade ou consequências do armazenamento.",
+      "Nada na página relaciona o balanço às regiões atendidas ou ao consumidor."
+     ],
+     "justificativa": "Útil para pesquisador e analista, com lacunas bem expostas e exportação com contexto. Pouco acessível a leitor não especializado e sem ligação com custo ou continuidade. Impacto social descrito, não comprovado."
+    },
+    "I": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_inteira_01de02.png: barras divergentes ordenadas, uma cor para quedas e altas (sem aprovação), seleção destacada; marcador 'início da janela do balanço' nas séries de 45 dias.",
+      "1440_inteira_02de02.png: balanço em hm³ numa só régua (variação, afluência, defluência, partes, resíduo); o resíduo de 1,95 hm³ não aparece na escala de 4.000; rótulo truncado.",
+      "Captura própria a 390: Defluente e Turbinada coincidem e formam uma só linha verde sobre preta."
+     ],
+     "atendidos": [
+      "Barras divergentes adequadas à variação",
+      "Hachura para 'sem dado', nunca zero",
+      "Referência visível: início da janela",
+      "Tabela e toque com valores"
+     ],
+     "problemas": [
+      "Só 10 de 45 reservatórios na decomposição; as barras não fecham com o título.",
+      "Total e partes (defluência e turbinado) na mesma régua; o resíduo some na escala.",
+      "Rótulo 'Vazão natural (contexto, fora…' truncado a 1440.",
+      "Defluente e Turbinada sobrepostas; a legenda sugere quatro linhas distintas."
+     ],
+     "justificativa": "Barras divergentes e hachura para ausência são boas escolhas. A decomposição mostra 10 de 45, o balanço mistura totais e partes numa régua que esconde o resíduo, e há rótulo truncado e linhas sobrepostas."
+    },
+    "J": {
+     "nota": 7.5,
+     "evidencia": [
+      "Medição própria: Subsistema Nordeste muda a frase de cima, mas a frase do balanço e os gráficos seguem em Serra da Mesa; clicar na barra de Sobradinho atualiza select, balanço e URL.",
+      "Medição própria: Billings (sem balanço) dá 'sem balanço de 30 dias ... falta volume ou vazão na janela, ou volume útil no cadastro. Nada é preenchido.'; o CSV traz o motivo exato.",
+      "Medição própria: select de 67 reservatórios em ordem alfabética, sem marcar os 5 sem balanço; comparador do Analisar começa vazio (0 de 4)."
+     ],
+     "atendidos": [
+      "Seleção por clique no gráfico, na tabela e no select, sincronizada",
+      "Estado bloqueado compreensível e honesto (nada preenchido)",
+      "Comparador de até 4 reservatórios",
+      "Busca, filtros e exportação nas tabelas"
+     ],
+     "problemas": [
+      "Subsistema e Reservatório são independentes: a página mistura Nordeste no título e Serra da Mesa no balanço.",
+      "Cartões de destaque não acompanham a seleção.",
+      "Motivo do estado bloqueado genérico, embora o CSV traga o motivo exato.",
+      "Select de 67 opções sem agrupar por subsistema nem marcar os sem balanço."
+     ],
+     "justificativa": "Seleção por clique funciona e o estado bloqueado é honesto. Subsistema e reservatório independentes, cartões fixos, motivo genérico no estado bloqueado e select longo e sem marcas limitam a nota a 7,5."
+    },
+    "K": {
+     "nota": 7.5,
+     "evidencia": [
+      "objetivo.json: axe sem violações a 320, 390, 768 e 1440; sem rolagem horizontal; 1 alvo abaixo de 44 px em Entender e 29 em Auditar.",
+      "390_inteira_03de06.png: tabela de variação com 4 colunas cortada; os números aparecem como '−1.8', '−1.0', '−7', '3'; aviso de rolagem só em texto.",
+      "Medição própria: toque na barra mostra cartão com o valor ('Emborcação ... −400,9 MWmês'); axe em Analisar sem violações a 1440 e 390."
+     ],
+     "atendidos": [
+      "Teclado com foco visível, linhas do gráfico focáveis com dica de valor",
+      "Tabelas em região rolável rotulada",
+      "Valores acessíveis por toque e por tabela",
+      "Movimento reduzido respeitado"
+     ],
+     "problemas": [
+      "Números cortados no celular (a tabela mostra '−1.8' para 1.862,4).",
+      "Rótulos de 11 a 11,5 px em caixa alta.",
+      "Alvos abaixo de 44 px: 29 no Auditar.",
+      "Leitor de tela real não testado."
+     ],
+     "justificativa": "Acessibilidade técnica boa, com toque funcional. O corte de números no celular cria risco de leitura errada (−1.8 por 1.862,4), há 29 alvos pequenos no Auditar e leitor de tela não foi testado. Nota 7,5."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "p4_decomposicao_parcial",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "C"
+     ],
+     "onde": "Gráfico 'Variação da EAR do Sudeste/Centro-Oeste por reservatório' e tabela de 10 linhas",
+     "descricao": "Mostra 10 de 45 reservatórios; as barras somam queda de 1.276 MWmês contra queda de 3.188,7 no título; os outros 35 (1.912 MWmês, 60%) não aparecem em gráfico, tabela ou nos quatro arquivos do painel; a nota diz que a soma está no Analisar, onde só há total por subsistema.",
+     "sugestao": "Adicionar barra 'demais 35 reservatórios' e baixar a lista completa de 45 variações."
+    },
+    {
+     "id": "p4_tabela_celular_numeros_cortados",
+     "gravidade": "media",
+     "criterios": [
+      "K",
+      "A"
+     ],
+     "onde": "Tabela equivalente da decomposição, 390 px",
+     "descricao": "A coluna 'Variação da EAR (MWmês)' fica cortada e mostra '−1.8', '−1.0', '−7' em vez de 1.862,4, 1.093,0 e 759,8; o aviso de rolagem é só texto.",
+     "sugestao": "Reordenar colunas para o valor ficar junto do nome e ocultar 'Código da usina' no celular."
+    },
+    {
+     "id": "p4_cartoes_nao_seguem_selecao",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "C"
+     ],
+     "onde": "Cartões 'Resíduo do balanço ... em SERRA DA MESA' e '124 de 153'",
+     "descricao": "Ao trocar subsistema ou reservatório, os cartões continuam em Serra da Mesa; Subsistema e Reservatório são independentes.",
+     "sugestao": "Fazer o cartão seguir o reservatório escolhido e filtrar o select pelo subsistema."
+    },
+    {
+     "id": "p4_cartoes_de_qualidade_no_destaque",
+     "gravidade": "media",
+     "criterios": [
+      "C",
+      "B"
+     ],
+     "onde": "Cartões de destaque do painel p020",
+     "descricao": "Resíduo de 1,95 hm³ e '124 de 153 com balanço' medem qualidade do dado, não a resposta a 'Por que o armazenamento mudou?'; 153 e 67 são universos diferentes na mesma página.",
+     "sugestao": "Colocar no destaque a variação do subsistema e a maior queda; levar qualidade de dado para um bloco próprio."
+    },
+    {
+     "id": "p4_jargao_sem_traducao",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Frases e subtítulo do painel, linha de siglas e abertura recolhida",
+     "descricao": "'Defluência', 'turbinado', 'vertido', 'transferência', 'parte própria' e 'convenção' aparecem no subtítulo, nos rótulos e na tabela antes de definição visível; siglas só ONS e ENA; SE/CO sem expansão. Resíduo e hm³ são explicados.",
+     "sugestao": "Definir os termos em uma linha visível e abrir a abertura por padrão."
+    },
+    {
+     "id": "p4_grafico_balanco",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Gráfico 'Balanço hídrico de Serra da Mesa' (1440)",
+     "descricao": "Total e partes na mesma régua (±4.000 hm³): o resíduo de 1,95 hm³ não aparece; rótulo 'Vazão natural (contexto, fora…' truncado; todas as barras em azul.",
+     "sugestao": "Separar totais de partes, mostrar o resíduo em escala própria e dar largura ao rótulo."
+    },
+    {
+     "id": "p4_vazoes_sobrepostas",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "K"
+     ],
+     "onde": "Gráfico 'Vazões de Serra da Mesa' (45 dias)",
+     "descricao": "Defluente (preta) e Turbinada (verde pontilhada) coincidem; a legenda mostra quatro séries e o leitor vê três.",
+     "sugestao": "Registrar na legenda que Defluente e Turbinada coincidem quando o vertido é zero, ou desenhar uma delas mais fina."
+    },
+    {
+     "id": "p4_estado_bloqueado_generico",
+     "gravidade": "baixa",
+     "criterios": [
+      "J"
+     ],
+     "onde": "Reservatório sem balanço (Billings, Guarapiranga, Jordão, Ernestina, Lajes)",
+     "descricao": "A frase lista três causas possíveis; o CSV traz o motivo exato ('sem correspondência no cadastro'); o select não marca os 5 reservatórios sem balanço.",
+     "sugestao": "Mostrar o motivo exato e marcar o rótulo da opção."
+    },
+    {
+     "id": "p4_duas_janelas",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Aviso sob 'Unidade' e frase de abertura",
+     "descricao": "A queda do Sudeste/Centro-Oeste aparece como 3.188,7 MWmês (29/08 a 28/09) e como 3.297,8 na página Armazenamento (30 dias até 29/09); a nota explica, mas o leitor vê dois números.",
+     "sugestao": "Alinhar as janelas ou mostrar as duas lado a lado com rótulo."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver) não foi usado.",
+    "Nível Auditar avaliado só pelo texto e pelas medidas do objetivo.json, sem captura de tela.",
+    "Nível Analisar visto em imagem só a 1440 px; a 390 px só por axe.",
+    "Navegador único (Chromium headless); Firefox, Safari e aparelhos reais não foram testados.",
+    "Frescor dos dados em relação à data de hoje (09/10/2026) não foi avaliado: o site é um instantâneo processado em 01/10/2026.",
+    "Painel P020 inferido de visoes.json; a matriz P001 a P071 não foi consultada.",
+    "Trecho 390_inteira_04de06 não estava no pacote; visto em captura própria do mesmo servidor.",
+    "Os gráficos de 45 dias carregam sob rolagem (arquivo à parte); foram vistos só depois de rolar.",
+    "Se a variação de EAR dos 45 reservatórios existe em outro arquivo do site fora dos quatro downloads do painel."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T5",
+     "perfil": "analista de empresas",
+     "passos": [
+      "Li a frase: Sudeste/Centro-Oeste caiu 3.188,7 MWmês de 29/08 a 28/09; maior queda em Serra da Mesa (1.862,4).",
+      "Troquei o subsistema para Nordeste (Sobradinho, maior queda) e cliquei na barra para ver o balanço.",
+      "Li afluência, defluência, turbinado, vertido e resíduo (hm³) e as séries de 45 dias de volume e vazão.",
+      "Tentei obter a decomposição completa dos 45 reservatórios: só 10 barras e 10 linhas; o restante não está em tabela nem nos quatro CSV do painel.",
+      "Abri Billings (sem balanço) e li o estado bloqueado."
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Decomposição completa dos 45 reservatórios indisponível.",
+      "Jargão do balanço sem tradução visível.",
+      "Duas janelas e dois universos na mesma página."
+     ],
+     "erros": [
+      "Tabela a 390 px mostra '−1.8' no lugar de 1.862,4 até rolar para o lado."
+     ],
+     "intervencoes_necessarias": [
+      "Abrir a abertura recolhida",
+      "Rolar a tabela para o lado no celular",
+      "Rolar até os gráficos de 45 dias para carregá-los"
+     ]
+    }
+   ]
+  }
+ },
+ "achados_entre_paginas": [
+  "Cartões de destaque (EAR do SIN, ENA do SIN, chuva do Paranaíba, resíduo de Serra da Mesa) não acompanham a seleção de região, bacia ou reservatório nas quatro páginas; frase, título do gráfico e universo acompanham.",
+  "Cabeçalho, siglas, abas e profundidade ocupam a primeira tela: a frase de resposta fica abaixo da dobra a 390 px nas quatro páginas e a 1440 px em Armazenamento (y 894) e em Chuva e temperatura (y 1131).",
+  "A abertura que define os conceitos (EAR, MLT, parte própria, hm³) vem recolhida em Entender e só abre em Analisar e Auditar; a linha de siglas é irregular (EAR só em Chuva e temperatura e na lista recolhida de Afluência).",
+  "Tabelas largas no celular (Armazenamento 2.321 px, previsão de Chuva e temperatura, variação de Reservatórios): números fora da primeira vista ou cortados, com aviso só em texto.",
+  "Ano com separador de milhar ('2.026') nas tabelas de Analisar e Auditar de Armazenamento e Afluência.",
+  "Cores por posição nos pequenos múltiplos (Armazenamento e Chuva e temperatura) divergem das cores por entidade nos demais gráficos; a legenda se repete quatro vezes.",
+  "Texto de modelo quebrado e rótulos crus nos estados sem dado: 'faixa ... em sem base' (Armazenamento e Afluência), 'Bacia do Outras do Sul', motivo genérico do estado bloqueado em Reservatórios.",
+  "A região ou reservatório escolhido não persiste entre as abas da família, embora o nível de profundidade persista; cinco camadas de navegação antes do conteúdo."
+ ],
+ "limites_da_avaliacao": "Leitor de tela real não foi testado, nem Firefox, Safari ou aparelhos físicos; as verificações de teclado, toque e responsividade usaram Chromium headless com Playwright. Inspeção heurística de um agente, sem usuários, tempos ou depoimentos. As capturas de 1440 do pacote estão reduzidas a 50%; detalhes foram conferidos em capturas próprias do servidor localhost:3100. Faltavam no pacote os trechos 390_inteira_02, 04 e 07 de 08 de Chuva e temperatura e 390_inteira_04 de 06 de Reservatórios; foram vistos em capturas próprias do mesmo servidor. O nível Analisar foi visto em imagem só a 1440 px (a 390 px só por axe) e o Auditar só pelo texto e pelas medidas. Não pontuei E, F, G, H e L, não conferi cálculos nem fontes, e não consultei relatórios de rodadas anteriores nem o plano de implementação. A associação das rotas aos painéis P017 a P020 vem de visoes.json."
+}

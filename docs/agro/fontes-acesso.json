@@ -1,0 +1,112 @@
+{
+  "dataSondagem": "2026-10-17",
+  "nota": "Falha CONNECT da política do ambiente, não ausência do dado oficial. Tentativas limitadas; não repetir sem mudança de estado.",
+  "sondagens": [
+    {
+      "id": "pam-metadata",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/5457/metadados",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "seconds": 0.05
+    },
+    {
+      "id": "ppm-rebanho-metadata",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/3939/metadados",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "seconds": 0.03
+    },
+    {
+      "id": "ppm-leite-metadata",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/74/metadados",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "seconds": 0.05
+    },
+    {
+      "id": "ipca-metadata",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/7060/metadados",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "seconds": 0.06
+    },
+    {
+      "id": "censo-agro-metadata",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/6753/metadados",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "seconds": 0.04
+    },
+    {
+      "id": "conab-custos",
+      "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/custos-de-producao",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "seconds": 0.04
+    },
+    {
+      "id": "comex",
+      "url": "https://api-comexstat.mdic.gov.br/general/filters",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "seconds": 0.03
+    },
+    {
+      "id": "mdcr",
+      "url": "https://olinda.bcb.gov.br/olinda/servico/MDCR/versao/v1/odata/",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "seconds": 0.03
+    },
+    {
+      "id": "inpe",
+      "url": "https://terrabrasilis.dpi.inpe.br/downloads/",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "seconds": 0.03
+    },
+    {
+      "id": "ibge-malha",
+      "url": "https://servicodados.ibge.gov.br/api/v3/malhas/paises/BR?formato=application%2Fvnd.geo%2Bjson&resolucao=2&qualidade=minima",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "seconds": 0.02
+    },
+    {
+      "url": "https://www.fao.org/faostat/en/",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://fenixservices.fao.org/faostat/api/v1/en/definitions/domain/QCL",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11326.htm",
+      "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    }
+  ],
+  "sondagemPosterior": {
+    "data": "2026-10-17",
+    "nota": "Nova sondagem na mesma data, após mudança da política de rede do ambiente. Respostas HTTP observadas; a coleta da economia passou a usar IBGE e Comex Stat.",
+    "resultados": [
+      {
+        "url": "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos",
+        "status": 200
+      },
+      {
+        "url": "https://apisidra.ibge.gov.br/values/t/5938/n1/all/v/37/p/last",
+        "status": 200
+      },
+      {
+        "url": "https://api-comexstat.mdic.gov.br/general",
+        "status": 200
+      },
+      {
+        "url": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/",
+        "status": 200
+      },
+      {
+        "url": "https://www.ipeadata.gov.br/api/odata4/Metadados",
+        "status": 200
+      },
+      {
+        "url": "https://www.conab.gov.br",
+        "status": "sem resposta em 15 s"
+      },
+      {
+        "url": "https://www.cepea.org.br",
+        "status": 403
+      }
+    ]
+  }
+}

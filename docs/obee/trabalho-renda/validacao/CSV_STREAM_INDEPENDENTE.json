@@ -1,0 +1,32 @@
+{
+  "validacao": "CSV HTTP efetivamente recebido do build local 3021; parser independente confronta registros originais JSON/CSV MTE. Não depende do evento download CUA.",
+  "arquivos": [
+    {
+      "arquivo": "cursos-todos-stream-validacao.csv",
+      "bytes": 31920026,
+      "linhasDados": 90587,
+      "bomUnico": true,
+      "cabecalhoUnico": true,
+      "linhasOriginaisUnicas": 90587,
+      "divergencias": 0,
+      "sha256": "db14ff2cca6db196b00e962eb6b9d037b8e0fb5de037063d45f88a051f4fa390"
+    },
+    {
+      "arquivo": "cursos-sp-stream-validacao.csv",
+      "bytes": 32798,
+      "linhasDados": 104,
+      "bomUnico": true,
+      "cabecalhoUnico": true,
+      "linhasOriginaisUnicas": 104,
+      "divergencias": 0,
+      "sha256": "95a9ad98d2937e7f495b5ef8b10a19ac7f9ce020f45d882fbb1dac9a7b4cb036"
+    }
+  ],
+  "headers": {
+    "todos": "HTTP/1.1 200 OK\nvary: RSC, Next-Router-State-Tree, Next-Router-Prefetch\ncache-control: public, max-age=300\ncontent-disposition: attachment; filename=\"cursos-aprendizagem-recorte.csv\"\ncontent-type: text/csv; charset=utf-8\nDate: Fri, 09 Oct 2026 22:53:28 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nTransfer-Encoding: chunked\n\n",
+    "sp": "HTTP/1.1 200 OK\nvary: RSC, Next-Router-State-Tree, Next-Router-Prefetch\ncache-control: public, max-age=300\ncontent-disposition: attachment; filename=\"cursos-aprendizagem-recorte.csv\"\ncontent-type: text/csv; charset=utf-8\nDate: Fri, 09 Oct 2026 22:53:28 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nTransfer-Encoding: chunked\n\n"
+  },
+  "completudeTodos": true,
+  "recorteSP": true,
+  "limite": "Conferência local do fluxo HTTP; implantação Vercel ainda não atestada pelo avaliador."
+}

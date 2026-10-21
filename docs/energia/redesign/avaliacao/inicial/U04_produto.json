@@ -1,0 +1,1245 @@
+{
+ "avaliador": "P-U04",
+ "papel": "produto",
+ "rodada": "inicial",
+ "versao_avaliada": "commit 51747baf8, estado servido em http://localhost:3100",
+ "paginas": {
+  "/setor-eletrico/geracao": {
+   "paineis": [
+    "P021"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_dobra.png e 1440_inteira_01de02.png: H1 em forma de pergunta, fonte e data, frase-resposta (52,7% hidráulica, 18,4% eólica) na primeira tela; cartões e gráfico abaixo da dobra.",
+      "Captura própria em 1440 px: no gráfico 30 dias contra 365 dias a 11ª linha (Térmicas Tipo III, 2,6%) fica cortada pela moldura; 390_inteira_03de06.png: no celular o gráfico termina em Biomassa e esconde 2 das 11 categorias.",
+      "390_dobra.png: a primeira tela do celular só tem título, fonte, siglas, abas e seletor de profundidade; a frase-resposta aparece na segunda tela."
+     ],
+     "atendidos": [
+      "Pergunta como título e frase-resposta com número, período e natureza do dado (1440).",
+      "Hierarquia entre síntese (frase e 4 cartões), comparação (30 dias contra 365 dias) e aprofundamento (Analisar e Auditar).",
+      "Tipografia, espaçamento e formato pt-BR consistentes; sem rolagem horizontal de 320 a 1440 (objetivo.json).",
+      "Celular preserva filtros, cartões, gráficos e tabelas, esta com rolagem lateral."
+     ],
+     "problemas": [
+      "Última linha do gráfico principal cortada em 1440 px; em 390 px duas categorias ficam ocultas por padrão.",
+      "Em 390 px a primeira tela não traz a resposta; siglas e quatro camadas de navegação ocupam a dobra.",
+      "Duas portas para a mesma tabela sob cada gráfico e três camadas de download repetem controles.",
+      "Cartões de KPI com espaço vertical ocioso entre o distintivo e o link de prova; colunas 'Ressalva de universo' e 'Presença parcial' mostram 'sem dado' em quase todas as linhas."
+     ],
+     "justificativa": "Página limpa e hierárquica, com resposta numérica na primeira tela em 1440 px. Perde pontos por defeito visível no gráfico principal (linha cortada), pela resposta fora da primeira tela no celular e por controles repetidos de tabela e download."
+    },
+    "B": {
+     "nota": 7.5,
+     "evidencia": [
+      "texto_entender.txt: siglas (ONS, SIN, MWmed, MMGD) antes do painel; 'Por que isso importa', 'Como interpretar' e 'O que não é possível concluir' só no fim do painel; 'Ler a abertura da página' recolhido.",
+      "Frase de abertura já avisa 'Parte da energia é estimativa ou previsão do ONS, não medição'; cartão da MMGD com distintivo ESTIMADO; Universo traz 81,7% medição, 6,9% previsão e 11,3% estimativa.",
+      "Captura própria: a abertura tem links de verbete (geração verificada, MMGD) para o Aprenda; a tabela completa traz 'Ressalva de universo' com contagem de usinas."
+     ],
+     "atendidos": [
+      "Siglas traduzidas antes do uso.",
+      "As cinco perguntas da abertura estão presentes (o que vejo, por que importa, comparação, limites, onde aprofundar).",
+      "Distinção explícita entre medição, previsão e estimativa (MMGD), com distintivo e texto.",
+      "Limites explícitos: participação não é capacidade; maior participação não indica preço."
+     ],
+     "problemas": [
+      "A explicação conceitual fica recolhida e os blocos 'por que importa' e 'não é possível concluir' só vêm depois de cerca de 3,5 telas em 1440 px ou 7 telas em 390 px (páginas de 4.406 e 7.833 px).",
+      "Termos sem definição em linguagem simples no nível Entender: 'grupos Tipo III', 'perímetro', 'ressalva de universo', 'relacionamento com o ONS'.",
+      "'Na ordem escolhida' não corresponde a controle algum: ordenar a tabela (mx.ord) não reordena o gráfico.",
+      "Analisar diz que o total 'é igual ao do Balanço', Entender diz 'fica próximo dele' e Auditar mostra a térmica conciliada em 49,8% dos dias.",
+      "Sem ligação textual com o restante do sistema (carga, água) além da 'Próxima pergunta' para térmica."
+     ],
+     "justificativa": "Didática cuidadosa quanto a limites e natureza do dado, com siglas e ressalvas visíveis. Pesam a explicação conceitual recolhida e distante da resposta, o vocabulário técnico sem tradução no Entender e a redação inconsistente sobre o Balanço."
+    },
+    "C": {
+     "nota": 8.0,
+     "evidencia": [
+      "Inspeção T6 (jornalista ou professor) em 1440 px: a primeira tela já dá a composição dos 30 dias e a diferença para 365 dias; o gráfico mensal mostra a evolução; Universo separa medição, previsão e estimativa.",
+      "Região Sul com Sem MMGD: frase, universo, gráfico, tabela e CSV mudam e a URL guarda o recorte (?rg=S&per=sem); CSV baixado coincide com o gráfico (Eólica 62,72% no NE, 365 dias, sem MMGD).",
+      "Analisar: comparador de até 4 categorias e 'O que mudou em 365 dias' com variação suprimida em Óleo e diesel, Biomassa e Outras térmicas por salto de universo."
+     ],
+     "atendidos": [
+      "T6 cumprida: composição, evolução e natureza do dado.",
+      "Exportação em CSV e XLSX com nome que traz região, janela, perímetro e versão.",
+      "Ficha 'Comprove este número' com fórmula, arquivos e passos de reprodução.",
+      "Variação de 365 dias suprimida onde o universo mudou, sem comparação enganosa."
+     ],
+     "problemas": [
+      "No Entender, a evolução de categorias pequenas depende do comparador de Analisar; o empilhado de 11 categorias só deixa ler bem a hidráulica.",
+      "Cartões e gráfico mensal não seguem Região e Janela; 'Último dia' e '7 dias' somem para subsistemas.",
+      "Capacidade, utilização, térmica e restrições só entram por abas e 'Próxima pergunta'; não há síntese do conjunto nesta página."
+     ],
+     "justificativa": "Atende bem a tarefa T6 com poucos passos e dados exportáveis com contexto. Limitações: evolução por fonte pequena exige Analisar, filtros não alcançam cartões e gráfico mensal, e falta ligação textual com capacidade, térmica e restrições."
+    },
+    "D": {
+     "nota": 7.5,
+     "evidencia": [
+      "Região (SIN, SE/CO, Sul, Nordeste, Norte); 'Copiar link deste painel' devolveu a URL com o recorte e abriu o mesmo recorte em outra aba (testado).",
+      "Botão 'Copiar citação' da ficha de prova devolve referência com data de acesso, mas com URL relativa ('/setor-eletrico/geracao#p021') e 'recurso não identificado'.",
+      "texto_entender.txt: 'Uma participação maior não indica, sozinha, preço menor ou maior'."
+     ],
+     "atendidos": [
+      "Recorte territorial por subsistema.",
+      "Compartilhamento com contexto: link com recorte, CSV e XLSX nomeados, ficha de prova e citação.",
+      "Lacunas visíveis: ressalvas de universo, mês parcial e quebra de 29/04/2023.",
+      "Sem causalidade nem julgamento sobre fontes de energia."
+     ],
+     "problemas": [
+      "Leitor não especializado encontra jargão (Tipo III, perímetro, ressalva de universo) e nenhuma ponte para custo, continuidade ou conta de luz.",
+      "Citação copiada traz URL relativa, 'recurso não identificado' e 'código eec0a3121e05+alterado', pouco publicável para a imprensa.",
+      "CSV mistura separador ponto e vírgula com ponto decimal (ex.: 'Hidráulica;3644.7;19.73')."
+     ],
+     "justificativa": "Bom potencial para jornalistas e pesquisadores: link com recorte, exportações nomeadas, citação e lacunas visíveis. Limitado para o leitor leigo, que não vê ponte para custo ou conta, e pela citação com URL relativa e termos internos."
+    },
+    "I": {
+     "nota": 7.5,
+     "evidencia": [
+      "Captura própria 1440: barras agrupadas 30 dias contra 365 dias com zero no eixo e rótulos de valor; 11ª linha cortada; ordem fixa da taxonomia, não por valor.",
+      "Teclado: barras e colunas recebem foco com anel e tooltip e as setas percorrem as colunas do empilhado; tabelas equivalentes sob os gráficos; sem hachura nem rótulo direto no empilhado mensal.",
+      "Simulação de daltonismo na paleta de 11 categorias: Óleo e diesel ~ Biomassa (ΔE 1,5), Solar MMGD ~ Gás natural (ΔE 6,5 a 10), Biomassa ~ Outras térmicas (ΔE 9,6)."
+     ],
+     "atendidos": [
+      "Gráfico adequado à tarefa (composição e comparação com 365 dias), com categorias completas.",
+      "Eixos corretos, sem eixo duplo e sem cor de aprovação ou reprovação.",
+      "Alternativas textuais, tabelas e interação por teclado além do hover.",
+      "Quebras sinalizadas (29/04/2023) e pilha incompleta com hachura quando não há MMGD."
+     ],
+     "problemas": [
+      "Linha final cortada no gráfico principal (1440) e categorias ocultas por padrão (390).",
+      "Empilhado de 11 categorias só por cor; camadas pequenas viram fios e pares ficam próximos para daltonismo.",
+      "Mês parcial (set/2026) sem marca visual no gráfico mensal; 0,04% aparece como '0,0'.",
+      "No celular o rótulo da categoria cruza o eixo vertical."
+     ],
+     "justificativa": "Escolhas de gráfico certas, com escalas corretas, tooltips por teclado e tabelas. Defeitos concretos: linha cortada, paleta de 11 cores frágil para daltonismo, mês parcial sem marca visual e ordem fixa em vez de por valor."
+    },
+    "J": {
+     "nota": 7.5,
+     "evidencia": [
+      "Região Sul: frase, universo, gráfico, tabela, CSV e URL mudam; os 4 cartões seguem 'SIN, últimos 30 dias' e o gráfico mensal segue SIN (conferido também com Janela e Perímetro).",
+      "Com Região diferente de SIN a Janela passa a ter só 30 dias e 365 dias, sem aviso (testado em SE/CO, Sul, Nordeste e Norte).",
+      "Analisar: combobox de até 4 categorias com 'Limite atingido'; busca sem resultado mostra 'Nenhuma linha com esses filtros. Limpar filtros'; ?modo= persiste após recarregar."
+     ],
+     "atendidos": [
+      "Estado na URL (rg, jan, per, cmp, modo) e 'Copiar link' fiel ao recorte.",
+      "Comparação de até 4 categorias com limite claro; estado vazio com ação de limpar.",
+      "Profundidade fixa no topo (sticky) e coerente entre Entender, Analisar e Auditar.",
+      "CSV e XLSX do recorte atual, com nome do recorte."
+     ],
+     "problemas": [
+      "Cartões e gráfico mensal não acompanham o recorte; só os rótulos 'SIN' avisam.",
+      "Opções 'Último dia' e '7 dias' somem para subsistemas sem explicação.",
+      "Quatro camadas de navegação além da barra superior (grupos, subitens, abas da família e profundidade) e 26 tabs até o primeiro filtro.",
+      "Duas portas para a mesma tabela por gráfico; 'Mostrar todas as 11' é a única forma de ver o gráfico inteiro."
+     ],
+     "justificativa": "Interação robusta: URL com estado, limite e vazio bem tratados, exportações fiéis. A sincronização é parcial: cartões e gráfico mensal ficam em SIN e 30 dias, janelas somem para subsistemas sem aviso, e a navegação em camadas ocupa a dobra."
+    },
+    "K": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: axe sem violações (320, 390, 768, 1440 em Entender; 390 e 1440 em Auditar), sem rolagem horizontal, sem foco invisível, 0 alvos abaixo de 24 px; axe próprio em Analisar (1440 e 390): 0 violações.",
+      "Teclado: 'Pular para o conteúdo' primeiro; contorno de 2 px em todos os controles; barras e colunas dos gráficos com anel de foco e tooltip; reduced motion zera transições e rolagem suave.",
+      "Teste próprio: em 390 px com texto a 175% a página passa a 449 px e a 200% a 512 px de largura por causa do seletor de profundidade."
+     ],
+     "atendidos": [
+      "Foco visível e ordem lógica; link de pular.",
+      "Semântica: landmarks, h1 único, radiogroup de profundidade, botões com aria-pressed.",
+      "Distintivos de natureza com forma e texto, não só cor; tabelas equivalentes aos gráficos.",
+      "Movimento reduzido respeitado; alvos de toque de 44 px.",
+      "Leitura de 320 a 1440 px sem rolagem horizontal da página."
+     ],
+     "problemas": [
+      "Seletor de profundidade não quebra linha: com texto a 175% ou mais em 390 px o botão 'Auditar' sai da tela e a página rola na horizontal.",
+      "Paleta de 11 categorias depende de cor (pares próximos em deuteranopia e protanopia).",
+      "Leitor de tela real não testado; axe deixa contraste 'incompleto' em 129 a 160 nós (varredura própria de texto não achou falha).",
+      "Tabelas largas exigem rolagem lateral mesmo em 1440 px."
+     ],
+     "justificativa": "Base técnica sólida: axe limpo, foco visível, tooltips por teclado, movimento reduzido e 320 a 1440 sem rolagem. Pontos abertos: seletor estoura com texto ampliado, paleta dependente de cor, leitor de tela não testado e tabelas largas."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "ger-grafico-cortado",
+     "gravidade": "media",
+     "criterios": [
+      "A",
+      "I",
+      "J"
+     ],
+     "onde": "Gráfico 'Participação na geração do SIN: 30 dias contra 365 dias', 1440 px e 390 px",
+     "descricao": "Em 1440 px a 11ª linha (Térmicas Tipo III, 2,6%) fica cortada pela moldura do gráfico; em 390 px Outras térmicas e Térmicas Tipo III ficam ocultas até 'Mostrar todas as 11'. O texto 'na ordem escolhida' não corresponde a controle algum: ordenar a tabela (mx.ord) não reordena o gráfico, que segue a ordem fixa da taxonomia.",
+     "sugestao": "Mostrar as 11 categorias por padrão, ordenadas por participação, ou oferecer controle de ordem visível; remover 'na ordem escolhida'."
+    },
+    {
+     "id": "ger-kpi-fixos",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "C"
+     ],
+     "onde": "Quatro cartões de KPI e gráfico 'Energia por fonte, mês a mês'",
+     "descricao": "Ao mudar Região, Janela ou Perímetro, frase, universo, gráfico, tabela, CSV e link mudam, mas os cartões continuam em 'SIN, últimos 30 dias, com MMGD' (82.216 MWmed, 18,4%, 11,3%, 5,0%) e o gráfico mensal continua SIN. Os rótulos avisam 'SIN', porém os filtros ficam abaixo dos cartões sem indicar seu alcance.",
+     "sugestao": "Fazer os cartões seguirem o recorte ou rotular 'estes números não mudam com os filtros' e mover os filtros para antes dos cartões."
+    },
+    {
+     "id": "ger-janela-some",
+     "gravidade": "baixa",
+     "criterios": [
+      "J"
+     ],
+     "onde": "Filtro Janela com Região diferente de SIN",
+     "descricao": "Com SE/CO, Sul, Nordeste ou Norte as opções 'Último dia' e '7 dias' desaparecem e restam 30 dias e 365 dias, sem aviso.",
+     "sugestao": "Manter as opções desativadas com a razão ('disponível só para o SIN')."
+    },
+    {
+     "id": "ger-abertura-fim",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "A"
+     ],
+     "onde": "Abertura recolhida e quatro blocos no fim do painel",
+     "descricao": "'Ler a abertura da página' vem recolhido e os blocos 'Por que isso importa' e 'O que não é possível concluir' ficam depois de cerca de 3,5 telas em 1440 px e 7 telas em 390 px. Em 390 px a frase-resposta só aparece na segunda tela.",
+     "sugestao": "Subir uma frase de 'por que importa' e o limite principal para junto da frase-resposta; abrir a abertura por padrão no primeiro acesso."
+    },
+    {
+     "id": "ger-sem-dado",
+     "gravidade": "baixa",
+     "criterios": [
+      "B",
+      "J"
+     ],
+     "onde": "Tabela completa (11 linhas), colunas 'Ressalva de universo' e 'Presença parcial no período'",
+     "descricao": "Linhas sem ressalva mostram 'sem dado' em itálico (a coluna 'Presença parcial' é 'sem dado' nas 11 linhas), embora a página defina 'sem dado' como ausência na fonte; no CSV o mesmo campo vem vazio.",
+     "sugestao": "Usar 'sem ressalva' ou traço e ocultar colunas sem conteúdo."
+    },
+    {
+     "id": "ger-tabelas-duplas",
+     "gravidade": "baixa",
+     "criterios": [
+      "A",
+      "J"
+     ],
+     "onde": "Sob cada gráfico do painel",
+     "descricao": "'Dados do gráfico em tabela (11 linhas)' (1 decimal, só as séries do gráfico) e 'Ver a tabela completa (11 linhas)' (2 decimais, MWmed, ressalvas, busca, CSV e XLSX) têm o mesmo número de linhas no rótulo; somam-se o botão 'Baixar CSV' do painel e 5 links de CSV.",
+     "sugestao": "Unificar em um só controle 'Tabela e exportação' com a lista de arquivos."
+    },
+    {
+     "id": "ger-paleta-11",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "K"
+     ],
+     "onde": "Gráfico mensal empilhado, 11 categorias",
+     "descricao": "Só por cor; em simulação de deuteranopia e protanopia os pares Óleo e diesel ~ Biomassa (ΔE 1,5), Solar MMGD ~ Gás natural (ΔE 6,5 a 10) e Biomassa ~ Outras térmicas (ΔE 9,6) ficam quase iguais, e as camadas térmicas viram fios finos. Tooltip por teclado e tabela compensam em parte.",
+     "sugestao": "Agrupar as térmicas pequenas por padrão ou usar hachura e rótulo direto nas camadas."
+    },
+    {
+     "id": "ger-mes-parcial",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Gráfico mensal e nota de mês parcial",
+     "descricao": "set/2026 (29 de 30 dias) entra no gráfico sem marca visual; só a nota abaixo avisa.",
+     "sugestao": "Hachura ou rótulo 'parcial' na coluna."
+    },
+    {
+     "id": "ger-vocabulario-interno",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "K"
+     ],
+     "onde": "Analisar e Auditar",
+     "descricao": "O texto exibe id_ons, ressalvas_universo, outros_por_ceg, natureza_pct, natureza_mensal_sin e matriz.universo, e 'hidraulica', 'termica', 'eolica' sem acento na tabela de controles.",
+     "sugestao": "Substituir por descrição em português e mover nomes de campo para o dicionário de dados."
+    },
+    {
+     "id": "ger-igual-balanco",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "J"
+     ],
+     "onde": "Analisar ('Tratamento aplicado') e Entender ('Como interpretar')",
+     "descricao": "Analisar diz 'total da Geração por Usina, igual ao do Balanço'; Entender diz 'fica próximo dele'; Auditar mostra 1.045 de 2.097 dias conciliados para a térmica (49,8%) e 1.645 para a solar (78,5%).",
+     "sugestao": "Padronizar para 'próximo, com divergências listadas em Auditar'."
+    },
+    {
+     "id": "ger-citacao",
+     "gravidade": "baixa",
+     "criterios": [
+      "D"
+     ],
+     "onde": "Ficha 'Comprove este número', botão 'Copiar citação' (verificado só nesta página)",
+     "descricao": "A citação sai com URL relativa ('/setor-eletrico/geracao#p021'), 'recurso não identificado' e 'código eec0a3121e05+alterado'.",
+     "sugestao": "URL absoluta e remoção de termos internos."
+    },
+    {
+     "id": "ger-csv-formato",
+     "gravidade": "baixa",
+     "criterios": [
+      "D",
+      "J"
+     ],
+     "onde": "CSV do recorte (também nas restrições)",
+     "descricao": "Separador ponto e vírgula com ponto decimal e valores sem arredondar (na tabela de usinas de restrições aparece 512.8584000000001), diferentes do que a tela mostra.",
+     "sugestao": "Padronizar delimitador e decimal, documentar e arredondar na exportação publicada."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver, TalkBack).",
+    "Trecho 390_inteira_04de06.png ausente do pacote; substituído por capturas próprias no Chromium contra localhost:3100.",
+    "Correção numérica, reconciliação com o Balanço e conteúdo completo dos CSV e XLSX (papel técnico).",
+    "Analisar e Auditar em 390 px por imagem: só texto, axe e checagem de largura.",
+    "Comportamento da citação copiada nas demais páginas."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T6",
+     "enunciado": "Entender composição e evolução da geração",
+     "perfil": "jornalista ou professor",
+     "passos": [
+      "Abrir /setor-eletrico/geracao em 1440 px e ler título, frase-resposta, Período, Universo e cartões.",
+      "Ler o gráfico 30 dias contra 365 dias e abrir 'Mostrar todas as 11'.",
+      "Ler o gráfico mensal empilhado e abrir 'Ver a tabela completa'.",
+      "Trocar Região para Sul e Perímetro para Sem MMGD e conferir frase, gráfico e CSV.",
+      "Abrir 'Comprove este número' e copiar o link do painel."
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Última linha do gráfico cortada até 'Mostrar todas as 11'.",
+      "Cartões e gráfico mensal não acompanham a Região.",
+      "Evolução de categorias pequenas só legível em Analisar."
+     ],
+     "erros": [
+      "Nenhum erro de console. 'Na ordem escolhida' não tem controle correspondente."
+     ]
+    },
+    {
+     "tarefa": "T6",
+     "enunciado": "Entender composição e evolução da geração",
+     "perfil": "pesquisador",
+     "passos": [
+      "Abrir Analisar (?modo=analisar) e escolher Eólica e Solar MMGD no comparador.",
+      "Ler 'O que mudou em 365 dias' e a quebra de 29/04/2023.",
+      "Baixar CSV e XLSX do recorte Nordeste, 365 dias, sem MMGD e conferir contra o gráfico."
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "'Último dia' e '7 dias' indisponíveis para subsistemas.",
+      "Tabelas largas exigem rolagem lateral."
+     ],
+     "erros": [
+      "CSV com ponto decimal e separador ponto e vírgula."
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/geracao/capacidade": {
+   "paineis": [
+    "P024"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_dobra.png e 1440_inteira_01de03.png: H1 e título do painel idênticos ('Quanto está instalado e quanto produz?') a cerca de 400 px um do outro; frase-resposta com 200.657 MW e FC de 36,5% na primeira tela.",
+      "1440_inteira_01de03.png e 390_inteira_03de07.png: rótulos P10, P25, Mediana, P75 e Agregado sobrepostos no topo do histograma.",
+      "390_inteira_04de07.png: tabela dos extremos com colunas cortadas no celular; altura do Entender 6.329 px (1440) e 10.188 px (390)."
+     ],
+     "atendidos": [
+      "Pergunta e resposta numérica na primeira tela em 1440.",
+      "Barras ordenadas por valor com rótulo direto e unidade; hierarquia clara entre cartões, comparação e série mensal.",
+      "Linhas com rótulo direto no fim da série e gráficos com espaço adequado.",
+      "Sem rolagem horizontal da página de 320 a 1440."
+     ],
+     "problemas": [
+      "Título repetido: H1 e H2 do painel são iguais.",
+      "Entender longo (cinco gráficos e quatro tabelas) para 'o essencial em poucos minutos'.",
+      "Rótulos de quantis do histograma se sobrepõem; cartões com espaço vazio.",
+      "Celular: tabela das usinas corta dígitos e esconde a coluna de potência."
+     ],
+     "justificativa": "Boa hierarquia e gráficos de leitura direta, com resposta na primeira tela em 1440 px. Reduzem a nota o título duplicado, a extensão do Entender, rótulos de quantis sobrepostos e a tabela cortada no celular."
+    },
+    "B": {
+     "nota": 8.0,
+     "evidencia": [
+      "Frase-resposta em linguagem simples: 'as eólicas geraram 36,5% do máximo que a potência delas permitiria'; abertura (recolhida) separa potência instalada, fator de capacidade, capacidade da ANEEL e MMGD.",
+      "'O que não é possível concluir': ANEEL e ONS não medem o mesmo universo; FC da MMGD não é calculável; causa de FC baixo não é separada.",
+      "Aprenda (48 verbetes) não tem fator de capacidade, potência instalada nem MWmed; a página não traz link de verbete."
+     ],
+     "atendidos": [
+      "Distinção explícita entre potência (MW), geração (MWmed), capacidade do ONS e da ANEEL e MMGD cadastrada.",
+      "Siglas traduzidas (ONS, ANEEL, MWmed, CEG).",
+      "Cinco perguntas da abertura cobertas, com limites claros.",
+      "Exemplo visual útil: histograma por usina com quantis e agregado."
+     ],
+     "problemas": [
+      "Conceito de fator de capacidade só na abertura recolhida e em fórmula em 'Como interpretar'; sem verbete.",
+      "MW e MWmed lado a lado sem explicar a diferença no Entender; 'grupos' no seletor sem definição.",
+      "'O que mudou' vazio: 'Sem comparação com a publicação anterior'.",
+      "Nota sobre FC acima de 100% (eixo vai a 107,2%) só em Auditar."
+     ],
+     "justificativa": "Boa tradução de potência versus uso, com frase leiga e limites claros. Perde por conceito central recolhido, MW e MWmed sem diferenciação, bloco 'O que mudou' sem conteúdo e ressalva de FC acima de 100% restrita a Auditar."
+    },
+    "C": {
+     "nota": 8.0,
+     "evidencia": [
+      "Inspeção T6 (analista de empresas): um passo dá potência por fonte e FC por fonte; o seletor de categoria troca frase, histograma, quantis e tabela de extremos (Hidráulica: 156 grupos, mediana 41,7%).",
+      "Gráficos mensais de FC e potência com período, séries ocultas ou visíveis e escala; CSV por usina e mês disponível.",
+      "Analisar: FC do painel contra o publicado pelo ONS (eólica 36,45% contra 35,95%) e capacidade ANEEL contra ONS."
+     ],
+     "atendidos": [
+      "Capacidade e utilização respondidas por fonte e por usina.",
+      "Conferência com o FC publicado pelo ONS visível.",
+      "Três arquivos CSV (unidades, usina por mês, fonte por mês).",
+      "Extremos por usina com ressalva de causa."
+     ],
+     "problemas": [
+      "A T6 completa depende de /geracao e /termica; aqui só a parte capacidade e utilização.",
+      "Nenhum texto sobre a evolução da capacidade em 12 meses; só o gráfico.",
+      "Na tabela completa, a capacidade ANEEL de Outras térmicas (166 MW) é menor que a do ONS (2.185 MW) sem nota no Entender."
+     ],
+     "justificativa": "Atende bem a parte capacidade e utilização, com distribuição por usina, conferência com o ONS e arquivos úteis. Faltam texto sobre evolução, nota imediata para valores aparentemente contraditórios entre ANEEL e ONS e síntese que ligue às demais páginas."
+    },
+    "D": {
+     "nota": 7.5,
+     "evidencia": [
+      "'Copiar link deste painel' e a URL com cat= e fcm.oc= guardam categoria e séries ocultas.",
+      "Analisar: MMGD cadastrada na ANEEL (53.966 MW) e estimada pelo ONS lado a lado, nunca somadas.",
+      "Nenhum recorte territorial de capacidade ou de MMGD (nada por UF, região ou subsistema)."
+     ],
+     "atendidos": [
+      "Compartilhamento com contexto (link, CSV, ficha de prova).",
+      "Lacunas visíveis: fora do despacho, MMGD fora do FC, retrato de 30/09/2026.",
+      "Sem julgamento: FC baixo 'pode vir de entrada recente, manutenção ou restrição'."
+     ],
+     "problemas": [
+      "Sem recorte territorial da capacidade e da MMGD (só nacional).",
+      "Nenhuma ponte para custo ou conta de luz; texto técnico para leigo.",
+      "Códigos (CJU_...) e nomes em caixa alta expostos em Auditar sem tradução."
+     ],
+     "justificativa": "Útil a pesquisadores e analistas, com exportações, link do recorte e lacunas explicitadas. Para impacto social falta recorte territorial da capacidade e da MMGD e ponte com custo; linguagem ainda técnica."
+    },
+    "I": {
+     "nota": 7.5,
+     "evidencia": [
+      "Capturas 1440: barras horizontais ordenadas por valor com zero no eixo; linhas com rótulo no fim; histograma com quantis e agregado.",
+      "Captura própria (Nuclear, 2 grupos): histograma com marcas 0,25 a 1,00 no eixo de contagem e quantis P10 a P90 interpolados de 2 usinas.",
+      "FC mensal: Nuclear a Outras térmicas ocultas por padrão; nota 'Escala ajustada às séries visíveis: 0 a 63%; com todas, 0 a 107,2%' e botão para manter a escala."
+     ],
+     "atendidos": [
+      "Gráficos adequados e ordenados, com referências (agregado, quantis) visíveis.",
+      "Escala ajustada com aviso explícito e opção de manter todas as séries.",
+      "Alternativas: tabelas equivalentes e interação por teclado.",
+      "Cor neutra (um tom) nas barras de FC, sem julgamento."
+     ],
+     "problemas": [
+      "Histograma com 2 a 9 observações (Nuclear 2, Outras térmicas 3, Carvão 9) mostra quantis interpolados e 'metade entre' como intervalos estáveis; eixo de contagem fracionário.",
+      "Rótulos P10, P25, Mediana e Agregado sobrepostos.",
+      "Duas políticas de escala nos gráficos mensais; FC de Biomassa (16,8%) sem a cobertura (95,4%) ao lado da barra.",
+      "Mediana divergente entre frase e painel em 3 de 9 categorias (41,7 contra 41,6; 15,5 contra 15,4; P25 61,1 contra 61,0)."
+     ],
+     "justificativa": "Gráficos bem escolhidos, com referências e aviso de escala. Queda por quantis calculados de amostras de 2 a 9 usinas, eixo de contagem fracionário, rótulos sobrepostos e medianas que divergem em 0,1 ponto entre frase e painel."
+    },
+    "J": {
+     "nota": 8.0,
+     "evidencia": [
+      "Seletor de categoria: frase, quantis e URL (?cat=hidraulica) mudam nas 9 categorias; histograma e tabela de extremos conferidos em Eólica, Hidráulica e Nuclear.",
+      "Legenda como botões com aria-pressed: ligar Nuclear atualiza a URL (fcm.oc=...) e o eixo; a mensagem 'Ocultar séries não mudou a escala do eixo' aparece sem o leitor ter ocultado nada.",
+      "Botões '12 meses', '5 anos' e 'Restaurar intervalo' mudam o eixo e gravam fcm.de e fcm.ate na URL; 'Ajustar início e fim' tem controles com rótulo ('Início: jan/21', 'Fim: ago/26')."
+     ],
+     "atendidos": [
+      "Filtro de categoria sincronizado com os elementos do recorte.",
+      "Estado preservado na URL e link do painel.",
+      "Séries ligam e desligam por botão acessível; períodos 12 meses, 5 anos e arraste.",
+      "Busca, ordenação e paginação nas tabelas; exportação do recorte."
+     ],
+     "problemas": [
+      "Microcopy de escala confusa: 'Ocultar séries não mudou...' e botão 'Manter a escala' sem efeito nesse estado.",
+      "Seis séries começam ocultas e o leitor precisa descobrir como ligá-las.",
+      "Duas portas para a mesma tabela por gráfico."
+     ],
+     "justificativa": "Interação coerente e sincronizada, com estado na URL e legenda operável. Falta clareza na mensagem de escala e na descoberta das séries ocultas, além da duplicação de acesso às tabelas."
+    },
+    "K": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: axe 0 violações em 320 a 1440 (Entender) e Auditar; 2 alvos abaixo de 44 px e nenhum abaixo de 24; axe próprio em Analisar: 0; sem erros de console.",
+      "Teclado: 30 tabs até o seletor de categoria; foco visível (contorno de 2 px; anel no SVG do histograma); barras recebem foco com tooltip.",
+      "390 px: a tabela de extremos mostra '0' para 0,8 e '13' para 13,0, 13,2 e 13,4 (coluna cortada); 'A tabela é mais larga que a tela' é o único aviso."
+     ],
+     "atendidos": [
+      "Foco visível e ordem lógica.",
+      "Distintivos Observado e Calculado com forma e texto.",
+      "Sem rolagem horizontal da página de 320 a 1440.",
+      "Alternativas textuais, tabelas equivalentes e movimento reduzido respeitado."
+     ],
+     "problemas": [
+      "Tabela de extremos no celular corta dígitos e oculta a coluna de potência.",
+      "Seletor de profundidade estoura com texto a 175% ou mais em 390 px.",
+      "Leitor de tela real não testado; axe deixa contraste 'incompleto' em 127 a 165 nós.",
+      "Rótulos de quantis sobrepostos dificultam a leitura ampliada."
+     ],
+     "justificativa": "Base sólida: axe limpo, foco visível, sem rolagem de página e movimento reduzido respeitado. Fragilidades: tabela cortada no celular, seletor de profundidade com texto ampliado, rótulos sobrepostos e ausência de teste com leitor de tela."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "cap-titulo-duplicado",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "H1 e título do painel",
+     "descricao": "'Quanto está instalado e quanto produz?' aparece como H1 (y=274) e como título do painel (y=680) em 1440 px.",
+     "sugestao": "Trocar o título do painel pela pergunta específica do bloco ou remover."
+    },
+    {
+     "id": "cap-histograma-amostra",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "B"
+     ],
+     "onde": "Distribuição por usina, categorias com poucas usinas",
+     "descricao": "Nuclear (2 grupos), Outras térmicas (3) e Carvão (9) mostram P10 a P90 interpolados e a frase 'metade entre 86,6% e 91,0%'; o eixo de contagem tem marcas 0,25, 0,50, 0,75 e 1,00. Só 'n = 2' sinaliza amostra pequena.",
+     "sugestao": "Com menos de 10 observações mostrar os pontos individuais, ocultar quantis e usar eixo inteiro."
+    },
+    {
+     "id": "cap-mediana-diverge",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "I"
+     ],
+     "onde": "Frase do histograma e painel de quantis",
+     "descricao": "Hidráulica: mediana 41,7% na frase e 41,6% no painel; Gás natural 15,5% contra 15,4%; Outras térmicas P25 61,1% contra 61,0%.",
+     "sugestao": "Usar uma só regra de arredondamento nos dois blocos."
+    },
+    {
+     "id": "cap-escala-microcopy",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "B"
+     ],
+     "onde": "Gráficos mensais de FC e de potência",
+     "descricao": "'Ocultar séries não mudou a escala do eixo' aparece sem o leitor ocultar nada e 'Manter a escala de todas as séries' não tem efeito nesse estado; seis séries começam ocultas.",
+     "sugestao": "Mostrar a mensagem só após a ação e desativar o botão sem efeito."
+    },
+    {
+     "id": "cap-aneel-ons",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "I"
+     ],
+     "onde": "Tabela completa (9 linhas), colunas ANEEL SIGA e ONS",
+     "descricao": "Outras térmicas: ANEEL 166,0 MW contra ONS 2.184,8 MW; Biomassa 18.050,9 contra 4.211,9; a explicação (mapeamento de categorias, ANEEL é outro universo) só aparece em Analisar e Auditar.",
+     "sugestao": "Nota sob a tabela já no Entender."
+    },
+    {
+     "id": "cap-fc-100",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Gráfico mensal de FC",
+     "descricao": "'com todas as séries, 0,0 a 107,2%' indica FC acima de 100%, mas a causa (geração em teste antes da operação comercial, potência nominal abaixo da bruta; 228 usina meses, nuclear perto de 101%) só está em Auditar.",
+     "sugestao": "Nota curta junto do gráfico."
+    },
+    {
+     "id": "cap-tabela-celular",
+     "gravidade": "media",
+     "criterios": [
+      "K",
+      "A"
+     ],
+     "onde": "390 px, tabela 'menor e maior fator de capacidade'",
+     "descricao": "A coluna mostra '0' para 0,8 e '13' para 13,0, 13,2 e 13,4; a coluna de potência fica fora da vista.",
+     "sugestao": "Empilhar em cartões no celular ou mostrar sombra de rolagem; nunca cortar dígitos."
+    },
+    {
+     "id": "cap-o-que-mudou",
+     "gravidade": "baixa",
+     "criterios": [
+      "B",
+      "C"
+     ],
+     "onde": "Bloco 'O que mudou'",
+     "descricao": "Traz 'Sem comparação com a publicação anterior' e 'O fator de capacidade mensal: último mês completo ago/2026...', sem variação alguma.",
+     "sugestao": "Dizer a variação de potência e de FC em 12 meses."
+    },
+    {
+     "id": "cap-rotulos-quantis",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "A"
+     ],
+     "onde": "Histograma da distribuição por usina",
+     "descricao": "Rótulos P10, P25, Mediana, P75 e 'Agregado da categoria' se sobrepõem no topo (390 e 1440 px).",
+     "sugestao": "Escalonar os rótulos em linhas ou usar chamadas."
+    },
+    {
+     "id": "cap-sem-verbete",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Conceito de fator de capacidade",
+     "descricao": "Sem verbete no Aprenda (48 verbetes) e sem link; definição só na abertura recolhida e em fórmula.",
+     "sugestao": "Criar o verbete e linkar a partir do cartão."
+    },
+    {
+     "id": "cap-sem-territorio",
+     "gravidade": "baixa",
+     "criterios": [
+      "D"
+     ],
+     "onde": "Página inteira",
+     "descricao": "Capacidade e MMGD só em escala nacional; sem UF, região ou subsistema.",
+     "sugestao": "Incluir recorte por subsistema ao menos para capacidade e MMGD."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real.",
+    "Trechos 390_inteira_02de07.png e 390_inteira_06de07.png ausentes do pacote; substituídos por capturas próprias.",
+    "Se o FC acima de 100% em usinas individuais (até 1.412% em usina mês) afeta os agregados (papel técnico).",
+    "Arraste sobre o gráfico com o mouse para ampliar um trecho (só os botões e os controles de início e fim foram acionados).",
+    "Conteúdo dos CSV por usina e mês e de unidades geradoras (só o CSV de recortes da tabela principal foi aberto em outras páginas)."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T6",
+     "enunciado": "Entender composição e evolução da geração (parte capacidade e utilização)",
+     "perfil": "analista de empresas",
+     "passos": [
+      "Abrir /setor-eletrico/geracao/capacidade em 1440 px e ler frase-resposta e cartões.",
+      "Comparar as barras de potência e de FC por fonte.",
+      "Abrir 'Ver a tabela completa (9 linhas)' e ler colunas ONS, ANEEL e FC.",
+      "Trocar a categoria do histograma para Hidráulica, Nuclear e demais e conferir frase e quantis.",
+      "Ligar Nuclear no FC mensal e abrir a ficha 'Comprove este número' em 1440 e 390 px."
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Cumpre a parte capacidade e utilização; composição e evolução da geração estão em /geracao.",
+      "Quantis de amostra de 2 usinas no histograma de Nuclear.",
+      "ANEEL 166 MW menor que ONS 2.185 MW em Outras térmicas sem nota no Entender."
+     ],
+     "erros": [
+      "Medianas divergentes entre frase e painel em 3 de 9 categorias.",
+      "Mensagem de escala 'Ocultar séries não mudou a escala do eixo' sem ação do leitor."
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/geracao/restricoes": {
+   "paineis": [
+    "P023"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_dobra.png e 1440_inteira_01de02.png: H1 e título do painel idênticos ('Quanta geração eólica e solar foi restringida?'); a frase com 21,3% e 25,7% fica cortada pela dobra.",
+      "1440_inteira_01de02.png: mapa com cerca de 670 px numa faixa de 1.118 px; lado direito vazio; legendas só abaixo.",
+      "390_inteira_02de05.png: mapa pequeno e marcas sobrepostas no RN e CE."
+     ],
+     "atendidos": [
+      "Resposta numérica com unidade, período e natureza (ESTIMADO) logo no topo.",
+      "Sequência clara: cartões, mapa, série por razão, taxa e potência.",
+      "Legendas por cor, forma e tamanho; aviso de mês parcial junto do gráfico.",
+      "Sem rolagem horizontal da página de 320 a 1440."
+     ],
+     "problemas": [
+      "H1 repetido como título do painel.",
+      "Bloco do mapa deixa cerca de 40% da largura vazia; cartões com espaço vazio.",
+      "Em 390 px a resposta só aparece na segunda tela e o mapa fica pequeno e sobreposto."
+     ],
+     "justificativa": "Estrutura clara e legendas bem feitas, com resposta e natureza do dado no topo. Reduz a nota o título duplicado, a área vazia ao lado do mapa e o mapa pequeno e sobreposto no celular."
+    },
+    "B": {
+     "nota": 8.0,
+     "evidencia": [
+      "Frase-resposta: 'O valor é estimativa, e restrição não é falta de vento nem de sol'; distintivo ESTIMADO no topo e em cada cartão.",
+      "Abertura (recolhida) explica constrained-off e separa energia não gerada (GWh) de maior corte simultâneo (MW); legenda traduz ENE, CNF e REL; 'ESS' e 'constrained-off' têm link para o Aprenda.",
+      "'O que mudou': 'Sem comparação com a publicação anterior. As restrições de eólicas e fotovoltaicas: último mês completo ago/2026...' (fragmento)."
+     ],
+     "atendidos": [
+      "Conceito e grandezas explicados, com distinção entre energia e potência.",
+      "Siglas traduzidas (UF, IBGE, REN, ESS).",
+      "Cinco perguntas da abertura presentes; limites explícitos (referência é estimativa; a marca no mapa não é o lugar do corte).",
+      "Taxa com denominador explícito."
+     ],
+     "problemas": [
+      "Explicação conceitual recolhida; 'por que importa' e 'não é possível concluir' no fim do painel.",
+      "'O que mudou' sem conteúdo apesar das séries de 12 meses e anteriores.",
+      "Códigos e 'parecer de acesso' só com glosa curta; compensação (ESS) aparece só no último bloco."
+     ],
+     "justificativa": "Didática forte: define constrained-off, separa energia de potência, traduz códigos e avisa o que não se conclui. Perde por abertura recolhida, bloco 'O que mudou' vazio e compensação ESS só no fim."
+    },
+    "C": {
+     "nota": 8.0,
+     "evidencia": [
+      "Inspeção T6 (pesquisador): Fonte de Eólicas para Fotovoltaicas muda cartões (28.923 GWh e 21,3% para 12.376 GWh e 25,7%), universo (157 para 85 usinas), mapa e tabela.",
+      "Clique numa marca mostra 'Conj. Jerusalém (RN): 477,7 GWh não gerados; taxa 39,9%; Confiabilidade (CNF)' e grava ?ru=CJU_RNJER.",
+      "CSV do recorte solar tem 40 linhas e nome 'geracao-restricao-usinas-solar_completo_...'."
+     ],
+     "atendidos": [
+      "Parte 'restrições de renováveis' da tarefa: quanto, onde e por qual razão.",
+      "Comparação entre eólicas e fotovoltaicas com o mesmo formato.",
+      "Série mensal, taxa e maior corte.",
+      "Arquivos por dia, razão e origem e por usina e mês."
+     ],
+     "problemas": [
+      "A T6 completa depende de /geracao e /capacidade.",
+      "Maior corte simultâneo (28.196,7 MW) sem referência da capacidade da frota (33.781,6 MW na página de capacidade).",
+      "Sem texto de evolução (12 meses contra os anteriores)."
+     ],
+     "justificativa": "Atende bem a parte restrições, com alternância de fonte que atualiza tudo, mapa e arquivos úteis. Falta referência de capacidade para o pico em MW, texto de evolução e síntese ligada às demais páginas."
+    },
+    "D": {
+     "nota": 8.0,
+     "evidencia": [
+      "Mapa por UF e usina (RN, BA, PI, CE) e tabela por subsistema (Nordeste com taxa de 22,11% em Analisar).",
+      "'O que não é possível concluir': só a razão de indisponibilidade externa dá direito a ESS (REN ANEEL 1.030/2022, cópia de 08/01/2025), com ressalva de verificação.",
+      "Link com recorte (?f=solar, ?ru=...) e CSV por fonte."
+     ],
+     "atendidos": [
+      "Recorte territorial pertinente e explícito.",
+      "Pagamento e compensação mencionados, com ressalva.",
+      "Compartilhamento com contexto e exportações.",
+      "Lacunas visíveis: coordenada fora da UF em 2 casos; série fotovoltaica só desde abr/2024."
+     ],
+     "problemas": [
+      "Linguagem ainda técnica (ENE, CNF, REL, parecer de acesso) para o leitor leigo.",
+      "Nenhuma estimativa de custo ou de conta ligada à energia não gerada.",
+      "Marcas pequenas e sobrepostas dificultam o uso no celular."
+     ],
+     "justificativa": "Tema relevante, com mapa por UF, tabela por subsistema, nota sobre ressarcimento (ESS) e exportações com contexto. Limitado pela linguagem técnica e pela ausência de ligação com custo; marcas pequenas no celular."
+    },
+    "I": {
+     "nota": 8.0,
+     "evidencia": [
+      "Mapa com malha de UF do IBGE, marcas por razão (cor e forma) e tamanho por GWh, tooltip por hover; seleção grava a URL e há 'Limpar seleção'.",
+      "Barras empilhadas por razão (ENE, CNF, REL) e linha de taxa; o último mês (set/2026) é parcial e não tem marca visual.",
+      "SVG do mapa com role=img e aria-label, mas com <title>RO</title> solto; 60 marcas só por mouse ou toque, com tabela equivalente por teclado."
+     ],
+     "atendidos": [
+      "Mapa com geometria e unidade territorial corretas e duplo código (cor e forma).",
+      "Gráfico mensal por razão com categorias completas.",
+      "Taxa e potência em gráficos separados (energia não é potência).",
+      "Alternativas textuais: tabelas e aria-label."
+     ],
+     "problemas": [
+      "Maior corte (MW) sem referência de capacidade.",
+      "Mês parcial sem marca visual nas três séries.",
+      "Marcas sobrepostas no RN e CE e de 6 a 16 px; sem zoom além de 'Ampliar nas usinas' e 'Brasil inteiro'.",
+      "<title>RO</title> solto no SVG; marcas do mapa fora do alcance do teclado."
+     ],
+     "justificativa": "Mapa bem construído (cor, forma, tamanho, legenda, seleção na URL) e séries separadas por grandeza. Pendências: referência de capacidade para o pico em MW, mês parcial sem marca, marcas sobrepostas e sem acesso por teclado."
+    },
+    "J": {
+     "nota": 8.0,
+     "evidencia": [
+      "Fonte Eólicas ou Fotovoltaicas atualiza cartões, universo, mapa, gráficos, tabela e CSV; URL ?f=solar.",
+      "Mapa: hover mostra tooltip, clique grava ?ru= e aparece 'Limpar seleção'; botões 'Ampliar nas usinas' e 'Brasil inteiro' funcionam em 390 e 1440 px (a medição automática marcou 'sem efeito', falso positivo: o viewBox muda).",
+      "'Sobre este dado' continua descrevendo as eólicas (10/2021 a 08/2026) com Fotovoltaicas selecionada; a ficha das fotovoltaicas vem por um chip separado."
+     ],
+     "atendidos": [
+      "Alternância de fonte sincronizada com exportação e URL.",
+      "Seleção com retorno e limpeza.",
+      "Tabela equivalente com seleção de linha e busca.",
+      "Profundidade e link do painel coerentes."
+     ],
+     "problemas": [
+      "'Sobre este dado' não segue a Fonte escolhida.",
+      "A frase de abertura fala das duas fontes, mas os cartões seguem só a escolhida.",
+      "'Brasil inteiro' não entra na URL; marcas não alcançáveis por teclado (só pela tabela)."
+     ],
+     "justificativa": "Alternância de fonte sincroniza cartões, mapa, gráficos, tabela, CSV e URL, e a seleção no mapa tem retorno e limpeza. Falhas pequenas: a ficha 'Sobre este dado' não acompanha a fonte e a vista 'Brasil inteiro' não é compartilhável."
+    },
+    "K": {
+     "nota": 7.5,
+     "evidencia": [
+      "objetivo.json: axe 0 violações (320 a 1440 em Entender e Auditar); axe próprio em Analisar (1440 e 390): 0; sem foco invisível; 1 alvo abaixo de 44 px.",
+      "Teste próprio: 60 marcas do mapa (cursor pointer) não recebem foco em 90 tabs; <title>RO</title> dentro do SVG; marcas de 6 a 16 px.",
+      "Em 390 px com texto a 200% a página passa de 390 para 512 px (seletor de profundidade)."
+     ],
+     "atendidos": [
+      "Foco visível, link de pular e movimento reduzido.",
+      "Mapa com role=img, aria-label e tabela equivalente que seleciona por teclado.",
+      "Cor mais forma na legenda do mapa.",
+      "Sem rolagem horizontal da página de 320 a 1440."
+     ],
+     "problemas": [
+      "Mapa interativo sem acesso por teclado às marcas; alvos de toque menores que 24 px e sobrepostos no RN e CE.",
+      "Seletor de profundidade estoura com texto a 175% ou mais em 390 px.",
+      "Leitor de tela real não testado; axe deixa contraste 'incompleto' em 57 a 93 nós.",
+      "<title>RO</title> estranho dentro do SVG do mapa."
+     ],
+     "justificativa": "Boa base (axe limpo, foco, movimento reduzido, alternativa em tabela). A nota cai pelo mapa sem acesso por teclado e com alvos minúsculos e sobrepostos no celular, pelo seletor que estoura com texto ampliado e pela falta de teste com leitor de tela."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "res-titulo-duplicado",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "H1 e título do painel",
+     "descricao": "'Quanta geração eólica e solar foi restringida?' aparece como H1 (y=274) e como título do painel (y=780) em 1440 px.",
+     "sugestao": "Usar no painel a pergunta específica do bloco ou remover."
+    },
+    {
+     "id": "res-mapa-espaco",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Bloco do mapa, 1440 px",
+     "descricao": "Mapa com 672 px de largura numa faixa de 1.118 px; o lado direito fica vazio e a legenda só aparece abaixo.",
+     "sugestao": "Usar a faixa livre para legenda e para a lista das maiores usinas."
+    },
+    {
+     "id": "res-mapa-teclado",
+     "gravidade": "media",
+     "criterios": [
+      "K",
+      "I"
+     ],
+     "onde": "Mapa 'Eólicas com mais energia não gerada'",
+     "descricao": "As 60 marcas (cursor pointer) não recebem foco em 90 tabs; só a tabela atrás de 'Ver a tabela completa' seleciona por teclado; marcas de 6 a 16 px e sobrepostas no RN e CE em 390 px; <title>RO</title> solto dentro do SVG.",
+     "sugestao": "Tornar as marcas focáveis ou oferecer lista de usinas ao lado; remover o title solto; agrupar marcas sobrepostas."
+    },
+    {
+     "id": "res-corte-referencia",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "B"
+     ],
+     "onde": "Gráfico 'Maior corte simultâneo numa meia hora do mês'",
+     "descricao": "O pico de 28.196,7 MW em 16/08/2026 não traz referência da potência eólica em operação (33.781,6 MW na página de capacidade); o leitor não vê a proporção.",
+     "sugestao": "Linha de referência com a potência em operação da fonte."
+    },
+    {
+     "id": "res-mes-parcial",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Três séries mensais",
+     "descricao": "set/2026 (parcial) entra nas barras, na linha de taxa (25,4%) e na de corte sem marca visual; só a nota avisa.",
+     "sugestao": "Hachura ou rótulo 'parcial'."
+    },
+    {
+     "id": "res-o-que-mudou",
+     "gravidade": "baixa",
+     "criterios": [
+      "B",
+      "C"
+     ],
+     "onde": "Bloco 'O que mudou'",
+     "descricao": "Fragmento 'As restrições de eólicas e fotovoltaicas: último mês completo ago/2026, processado em 01/10/2026', sem comparação.",
+     "sugestao": "Comparar os 12 meses com os 12 anteriores."
+    },
+    {
+     "id": "res-sobre-dado",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "B"
+     ],
+     "onde": "'Sobre este dado' com Fonte igual a Fotovoltaicas",
+     "descricao": "A ficha continua descrevendo as eólicas (10/2021 a 08/2026); a das fotovoltaicas só vem pelo chip separado 'Restrições das fotovoltaicas'.",
+     "sugestao": "Seguir a Fonte escolhida e rotular o segundo chip."
+    },
+    {
+     "id": "res-frase-duas-fontes",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "C"
+     ],
+     "onde": "Frase de abertura e cartões",
+     "descricao": "A frase cita eólicas (21,3%) e fotovoltaicas (25,7%), mas cartões, mapa e tabela seguem só a Fonte escolhida: com Eólicas selecionadas o 25,7% não tem cartão.",
+     "sugestao": "Mostrar os dois cartões lado a lado ou fazer a frase seguir a fonte."
+    },
+    {
+     "id": "res-ess-fim",
+     "gravidade": "baixa",
+     "criterios": [
+      "B",
+      "D"
+     ],
+     "onde": "Bloco 'O que não é possível concluir'",
+     "descricao": "A informação de que só a razão de indisponibilidade externa dá direito a ESS aparece apenas no último bloco e em sigla.",
+     "sugestao": "Antecipar em uma frase junto da legenda de razões."
+    },
+    {
+     "id": "res-brasil-url",
+     "gravidade": "baixa",
+     "criterios": [
+      "J"
+     ],
+     "onde": "Botões 'Ampliar nas usinas' e 'Brasil inteiro'",
+     "descricao": "A vista escolhida não entra na URL e não é compartilhável pelo link do painel.",
+     "sugestao": "Gravar a vista na URL."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real.",
+    "Mapa com toque real em celular (apenas emulação de 390 px).",
+    "Correção da estimativa de energia não gerada e da taxa (papel técnico).",
+    "Conteúdo completo do XLSX de restrições.",
+    "Detalhamento por usina e conferências de Auditar por imagem (só texto)."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T6",
+     "enunciado": "Entender composição e evolução da geração (parte restrições de renováveis)",
+     "perfil": "pesquisador",
+     "passos": [
+      "Abrir /setor-eletrico/geracao/restricoes em 1440 px e ler frase e cartões.",
+      "Alternar a Fonte para Fotovoltaicas e conferir cartões, universo, mapa e tabela.",
+      "Passar o mouse e clicar numa marca do mapa; usar 'Brasil inteiro' e 'Limpar seleção'.",
+      "Abrir a tabela de usinas, baixar o CSV do recorte solar e abrir 'Sobre este dado'.",
+      "Ler as séries mensais por razão, taxa e maior corte, em 1440 e 390 px."
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Cumpre a parte restrições de renováveis; composição e evolução da geração estão em /geracao.",
+      "Maior corte sem referência de capacidade.",
+      "Marcas do mapa fora do alcance do teclado e sobrepostas no celular."
+     ],
+     "erros": [
+      "'Sobre este dado' não segue a Fonte; <title>RO</title> solto no SVG."
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/geracao/termica": {
+   "paineis": [
+    "P022"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_dobra.png e 1440_inteira_01de02.png: H1 e título do painel idênticos ('Quanto as térmicas geraram e por que foram acionadas?'); a frase-resposta começa na borda inferior da primeira tela.",
+      "1440_inteira_01de02.png: a seção 'As 40 usinas com mais geração' abre com o botão 'Ver a tabela completa (40 linhas)' e uma tabela de 1 linha (Angra II).",
+      "390_dobra.png: primeira tela do celular só com título, fonte, siglas, abas e seletor; 390_inteira_01de06.png: em 'Universo' aparece 'ONS , inclusive nucleares' com espaço antes da vírgula."
+     ],
+     "atendidos": [
+      "Dois cartões claros e barras empilhadas com total no fim.",
+      "Linha com faixa de percentis e rótulos diretos bem legíveis.",
+      "Tipografia e espaçamento consistentes; sem rolagem horizontal de 320 a 1440.",
+      "Celular mantém gráficos e blocos finais."
+     ],
+     "problemas": [
+      "Título repetido (H1 e H2 iguais).",
+      "Seção das 40 usinas mostra um botão e uma tabela de uma linha, parecendo vazia ou incompleta.",
+      "Dois distintivos na linha de subtítulo (CALCULADO e OBSERVADO) sem dizer a que se referem; só os chips do rodapé esclarecem.",
+      "Espaço solto antes da vírgula em 'Universo' (o parêntese '(Tipo I e II-A)' está oculto no Entender)."
+     ],
+     "justificativa": "Boa hierarquia, com gráficos legíveis e o contexto dos percentis. Queda por título duplicado, seção de usinas que abre com botão e tabela de uma linha, distintivos duplos sem referência e resposta fora da primeira tela no celular."
+    },
+    "B": {
+     "nota": 7.0,
+     "evidencia": [
+      "texto_entender.txt: 'inflexibilidade (geração declarada pelo agente ou acima do despachado)'; legenda com 'Unit commitment', 'Razão elétrica', 'Garantia energética'; o glossário recolhido só lista nomes com glosas curtas e traz CMSE sem tradução.",
+      "Aprenda (48 verbetes) não tem despacho, ordem de mérito, inflexibilidade nem unit commitment; só o CVU tem link.",
+      "'Como interpretar' (fim do painel): 'A nuclear é 99,2% inflexível e responde por 35,1% de toda a inflexibilidade; sem ela, 50,6%'."
+     ],
+     "atendidos": [
+      "Siglas traduzidas (ONS, SIN, CVU, PLD, CMO, CEG).",
+      "Limites explícitos: o motivo é classificação do ONS; CVU não é custo realizado; participação não diz se foi caro.",
+      "Distinção entre quantidade (GWh), média (MWmed) e custo declarado (R$/MWh).",
+      "Exemplo útil: faixa usual e percentil da semana."
+     ],
+     "problemas": [
+      "Conceitos centrais sem definição em linguagem simples (despacho, ordem de mérito, inflexibilidade, unit commitment, razão elétrica); glossário recolhido e telegráfico; sem verbete.",
+      "Manchete '61,1% por inflexibilidade' sem dizer na primeira leitura que a nuclear explica 35,1% dessa parcela.",
+      "'O que mudou' vazio: 'Sem comparação com a publicação anterior'.",
+      "CVU 0,00 R$/MWh em tabelas e gráfico de Analisar sem explicação (óleo e diesel, outras térmicas)."
+     ],
+     "justificativa": "Boa disciplina de limites (motivo é do ONS, CVU não é custo realizado), mas os conceitos centrais seguem em jargão: despacho, mérito, inflexibilidade e unit commitment sem definição leiga ou verbete. A nuance da nuclear fica no fim e há CVU 0,00 sem explicação."
+    },
+    "C": {
+     "nota": 7.5,
+     "evidencia": [
+      "Inspeção T6 (analista de empresas): três passos mostram geração térmica (8.033 MWmed), motivo (61,1% inflexível), mês a mês e contexto de 7 dias (10,6%; percentil 24,7).",
+      "Selecionar 'Mauá 3' na tabela de 40 usinas troca frase, gráfico e URL (?us=...); comparar até 4 usinas funciona (Pecém, Santa Cruz, Mauá 3).",
+      "Por padrão o detalhe por usina é Angra II (nuclear, 99,4% inflexível) e a série por combustível só existe em Analisar."
+     ],
+     "atendidos": [
+      "Geração térmica por combustível e por motivo, em 12 e 24 meses.",
+      "Contexto da semana contra o ano anterior com percentil e faixa usual.",
+      "Seleção e comparação de usinas; CSV mensal, por usina e de CVU semanal.",
+      "Separação clara entre motivo (ONS) e CVU declarado."
+     ],
+     "problemas": [
+      "A T6 completa depende de /geracao; aqui só a parte térmica.",
+      "A visão padrão por usina é trivial (Angra II) e não mostra a diversidade de motivos.",
+      "Evolução por combustível só em Analisar; 'O que mudou' vazio.",
+      "Total térmico (8.033 MWmed, Tipo I e II-A, set/2025 a ago/2026) difere da soma térmica de /geracao em 365 dias (cerca de 8.586 MWmed sem Tipo III) sem explicação no Entender."
+     ],
+     "justificativa": "Atende a parte térmica com motivo, série, contexto de percentil e comparação de usinas. Limitações: padrão por usina pouco informativo, evolução por combustível só em Analisar, 'O que mudou' vazio e total sem ponte com a página de matriz."
+    },
+    "D": {
+     "nota": 7.5,
+     "evidencia": [
+      "'Por que isso importa': o motivo muda a leitura do custo da operação e do uso da água nos reservatórios.",
+      "CVU declarado por usina e por combustível (Analisar) em R$/MWh; 'A participação das térmicas não diz se o despacho foi caro ou barato para o consumidor'.",
+      "Link com recorte (?jt=tudo, ?cmp=, ?us=) e três CSV (motivo mensal, usina e CVU semanal)."
+     ],
+     "atendidos": [
+      "Atenção a custo e ao uso da água, com cautela contra causalidade.",
+      "Compartilhamento com contexto e exportações úteis.",
+      "Lacunas visíveis (último mês parcial; usinas sem par no CVU)."
+     ],
+     "problemas": [
+      "Sem recorte territorial no Entender (subsistema só como filtro de tabela).",
+      "Sem ponte explícita com conta de luz ou bandeiras, nem com quem arca com o custo.",
+      "Jargão técnico (inflexibilidade, unit commitment, CMSE) sem tradução para o leigo."
+     ],
+     "justificativa": "Relevante para quem acompanha custo da operação e uso da água, com cautela contra causalidade e bons arquivos. Para impacto social faltam recorte territorial, ponte com a conta e linguagem acessível ao leigo."
+    },
+    "I": {
+     "nota": 8.0,
+     "evidencia": [
+      "1440_inteira_02de02.png: linha de participação térmica em 7 dias com mediana tracejada e faixa de 10º a 90º percentil rotulada, rótulos diretos no fim da linha.",
+      "Barras horizontais empilhadas por combustível e motivo com total no fim; 7 cores (Unit commitment ~ Substituição, ΔE 11,4 em deuteranopia).",
+      "Analisar (captura própria): linhas de CVU por combustível caem a 0 R$/MWh (óleo e diesel, sem combustível) e um pico em 2022 comprime as demais."
+     ],
+     "atendidos": [
+      "Gráfico escolhido pela tarefa (motivo, evolução e contexto).",
+      "Referências visíveis: mediana, faixa usual e percentil.",
+      "Composição com categorias completas e total.",
+      "Tabelas equivalentes, interação por teclado e legendas."
+     ],
+     "problemas": [
+      "Linhas de CVU em Analisar caem a zero sem explicação e a escala é puxada por um pico de 2022.",
+      "Padrão por usina é Angra II com duas barras (99,4% e 0,6%), pouco informativo.",
+      "Empilhado de 7 motivos só por cor; segmentos pequenos viram fios (óleo e diesel, 246 GWh).",
+      "Mês parcial (set/2026) sem marca visual."
+     ],
+     "justificativa": "Destaque para a linha com mediana e faixa de percentil e para o empilhado com total. Pendências: CVU em zero sem explicação, gráfico padrão por usina trivial, segmentos pequenos só por cor e mês parcial sem marca."
+    },
+    "J": {
+     "nota": 8.0,
+     "evidencia": [
+      "Período '24 meses mais recentes' para 'Desde 2019' muda gráfico e tabela (93 linhas) e grava ?jt=tudo.",
+      "Combobox de usinas (até 4) com chips, opções marcadas e 'Limite atingido'; seleção na tabela grava ?us=...",
+      "Busca sem resultado mostra mensagem e 'Limpar filtros' (verificado na página principal; mesmo componente de tabela)."
+     ],
+     "atendidos": [
+      "Filtros claros e sincronizados com a URL.",
+      "Comparação de entidades (até 4 usinas) com limite explícito.",
+      "Seleção por linha da tabela com retorno.",
+      "Exportação por recorte (CSV e XLSX) e CSV do painel."
+     ],
+     "problemas": [
+      "A seção das 40 usinas começa recolhida atrás de botão, com um detalhe de Angra II que o leitor não escolheu.",
+      "A tabela de CVU não acompanha a comparação de usinas (só a usina selecionada na tabela).",
+      "Distintivos CALCULADO e OBSERVADO sem ligação clara com cada parte.",
+      "Duas portas para a mesma tabela por gráfico."
+     ],
+     "justificativa": "Interação sólida: período, comparação de até 4 usinas, seleção por linha e URL com estado, com limites e vazios tratados. Falhas pequenas: seção das usinas recolhida com padrão arbitrário, CVU fora da comparação e distintivos sem referência."
+    },
+    "K": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: axe 0 violações em 320 a 1440 (Entender) e Auditar; axe próprio em Analisar: 0; sem foco invisível; sem erros de console.",
+      "Teclado: 29 tabs até o primeiro filtro (Período); foco visível; barras e colunas com tooltip por teclado; combobox com listbox, aria e limite anunciado.",
+      "Teste próprio: texto a 200% em 390 px leva a página a 512 px de largura (seletor de profundidade)."
+     ],
+     "atendidos": [
+      "Foco visível e ordem lógica; link de pular.",
+      "Combobox acessível com listbox e mensagens de limite.",
+      "Tabelas equivalentes e rótulos nos gráficos; movimento reduzido.",
+      "Leitura de 320 a 1440 px sem rolagem horizontal da página."
+     ],
+     "problemas": [
+      "Seletor de profundidade estoura com texto a 175% ou mais em 390 px.",
+      "Empilhados dependem de cor (7 motivos aqui, 11 categorias em /geracao).",
+      "Tabelas de 4 a 12 colunas com rolagem lateral; no celular a coluna de CVU fica fora da vista.",
+      "Leitor de tela real não testado; axe deixa contraste 'incompleto' em 79 a 99 nós."
+     ],
+     "justificativa": "Base sólida: axe limpo, foco visível, combobox acessível e movimento reduzido. Pendências: seletor com texto ampliado, empilhados só por cor, tabelas largas e leitor de tela não testado."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "ter-titulo-duplicado",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "H1 e título do painel",
+     "descricao": "'Quanto as térmicas geraram e por que foram acionadas?' aparece como H1 (y=274) e como título do painel (y=761) em 1440 px.",
+     "sugestao": "Usar no painel a pergunta específica do bloco ou remover."
+    },
+    {
+     "id": "ter-quarenta-recolhida",
+     "gravidade": "media",
+     "criterios": [
+      "A",
+      "J",
+      "C"
+     ],
+     "onde": "Seção 'As 40 usinas com mais geração'",
+     "descricao": "Mostra apenas o botão 'Ver a tabela completa (40 linhas)' e uma tabela de 1 linha (Angra II); nenhuma lista das usinas que o título promete, e o gráfico por usina abre com Angra II (99,4% e 0,6%).",
+     "sugestao": "Mostrar as 10 maiores por padrão e abrir o comparador com 3 usinas de combustíveis diferentes."
+    },
+    {
+     "id": "ter-jargao-motivos",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Legenda dos motivos e glossário 'O que cada motivo quer dizer'",
+     "descricao": "Glossário telegráfico (nomes e glosas curtas), com 'Unit commitment' e 'CMSE' sem tradução e 'despachada' nunca definida; o Aprenda não tem verbete de despacho, ordem de mérito nem inflexibilidade.",
+     "sugestao": "Definições de uma frase em linguagem simples e verbetes no Aprenda."
+    },
+    {
+     "id": "ter-nuclear-manchete",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "C"
+     ],
+     "onde": "Cartão '61,1% por inflexibilidade'",
+     "descricao": "A nuance de que a nuclear (99,2% inflexível) responde por 35,1% dessa parcela e que sem ela a taxa cai a 50,6% só aparece em 'Como interpretar', no fim do painel.",
+     "sugestao": "Nota curta no cartão."
+    },
+    {
+     "id": "ter-cvu-zero",
+     "gravidade": "media",
+     "criterios": [
+      "I",
+      "B"
+     ],
+     "onde": "Analisar: tabela de CVU por combustível e gráfico da mediana mensal",
+     "descricao": "CVU 0,00 no mínimo do gás natural, nos quartis de óleo e diesel e em todas as colunas de 'Outras térmicas', e linhas do gráfico caindo a zero (óleo e diesel e 'sem combustível identificado'); a nota diz que mês sem parcela fica vazio, mas não explica o que 0,00 publicado significa.",
+     "sugestao": "Explicar o que CVU 0,00 significa na fonte; se for ausência, mostrar vazio."
+    },
+    {
+     "id": "ter-total-matriz",
+     "gravidade": "baixa",
+     "criterios": [
+      "B",
+      "C"
+     ],
+     "onde": "Cartão '8.033 MWmed' e página /geracao",
+     "descricao": "As térmicas somam 8.033 MWmed (Tipo I e II-A, set/2025 a ago/2026) contra cerca de 8.586 MWmed na soma térmica de /geracao em 365 dias sem Tipo III; o Entender não explica a diferença de janela e universo.",
+     "sugestao": "Nota com a ponte entre os dois totais."
+    },
+    {
+     "id": "ter-distintivos",
+     "gravidade": "baixa",
+     "criterios": [
+      "B",
+      "J"
+     ],
+     "onde": "Linha de subtítulo do painel",
+     "descricao": "Dois distintivos (CALCULADO e OBSERVADO) sem dizer a que se referem; os chips do rodapé (CVU semanal: observado; participação de 7 dias: calculado) esclarecem.",
+     "sugestao": "Associar cada distintivo ao cartão ou gráfico correspondente."
+    },
+    {
+     "id": "ter-espaco-virgula",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Bloco 'Universo' no Entender",
+     "descricao": "'Usinas térmicas despachadas pelo ONS , inclusive nucleares': espaço antes da vírgula porque o parêntese '(Tipo I e II-A)' está oculto no Entender.",
+     "sugestao": "Remover o espaço ou mostrar o parêntese."
+    },
+    {
+     "id": "ter-cvu-comparador",
+     "gravidade": "baixa",
+     "criterios": [
+      "J"
+     ],
+     "onde": "Tabela de CVU e comparador de usinas",
+     "descricao": "A tabela de CVU mostra só a usina selecionada na tabela e não acompanha as até 4 usinas do comparador.",
+     "sugestao": "Mostrar o CVU de cada usina comparada."
+    },
+    {
+     "id": "ter-o-que-mudou",
+     "gravidade": "baixa",
+     "criterios": [
+      "B",
+      "C"
+     ],
+     "onde": "Bloco 'O que mudou'",
+     "descricao": "Traz 'Sem comparação com a publicação anterior. A térmica por motivo de despacho: último mês completo ago/2026...', sem variação alguma.",
+     "sugestao": "Comparar os 12 meses com os 12 anteriores."
+    },
+    {
+     "id": "ter-tabela-celular",
+     "gravidade": "baixa",
+     "criterios": [
+      "K"
+     ],
+     "onde": "390 px, tabela de parcelas de Angra II",
+     "descricao": "A coluna de CVU fica fora da vista; só a frase 'A tabela é mais larga que a tela' avisa.",
+     "sugestao": "Empilhar em cartões no celular."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real.",
+    "Trecho 390_inteira_04de06.png ausente do pacote; substituído por captura própria.",
+    "Se CVU 0,00 R$/MWh é valor publicado pela fonte ou ausência convertida em zero (papel técnico).",
+    "Tabela completa de 40 usinas em 390 px.",
+    "Conteúdo do XLSX e dos CSV de CVU semanal."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T6",
+     "enunciado": "Entender composição e evolução da geração (parte geração térmica)",
+     "perfil": "analista de empresas",
+     "passos": [
+      "Abrir /setor-eletrico/geracao/termica em 1440 px e ler frase, cartões e gráfico por combustível e motivo.",
+      "Abrir o glossário 'O que cada motivo quer dizer'.",
+      "Alternar o período para 'Desde 2019'.",
+      "Abrir a tabela de 40 usinas e selecionar Mauá 3; comparar Pecém, Santa Cruz e Mauá 3.",
+      "Ler o contexto da semana (percentil) e, em Analisar, o CVU por combustível."
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Cumpre a parte geração térmica; composição geral e evolução da geração estão em /geracao.",
+      "Glossário telegráfico e seção das 40 usinas recolhida.",
+      "CVU 0,00 sem explicação."
+     ],
+     "erros": [
+      "Espaço solto antes da vírgula em 'Universo'."
+     ]
+    }
+   ]
+  }
+ },
+ "achados_entre_paginas": [
+  "Título repetido: em capacidade, restrições e térmica o H1 se repete como título do painel logo abaixo (y=274 e y=680 a 780 em 1440 px).",
+  "'O que mudou' sem conteúdo ('Sem comparação com a publicação anterior...') em capacidade, restrições e térmica, apesar de haver séries mensais.",
+  "Abertura da página recolhida por padrão e blocos 'Por que isso importa' e 'O que não é possível concluir' no fim do painel, de 3,5 a 7 telas depois da resposta.",
+  "Conceitos centrais sem definição em linguagem simples nem verbete no Aprenda (48 verbetes): despachada, ordem de mérito, inflexibilidade, fator de capacidade, MWmed, unit commitment, CMSE, Tipo III.",
+  "Duas portas para a mesma tabela sob cada gráfico ('Dados do gráfico em tabela (N linhas)' e 'Ver a tabela completa (N linhas)') com precisão e colunas diferentes, mais três camadas de download.",
+  "Vocabulário interno em texto de leitor nos níveis Analisar e Auditar: id_ons, ressalvas_universo, outros_por_ceg, natureza_pct, natureza_mensal_sin, ons_pct_da_aneel, val_verif..., 'hidraulica' sem acento.",
+  "Seletor de profundidade sem quebra de linha: em 390 px com texto a 175% ou mais passa da borda (449 e 512 px) e a página rola na horizontal, nas quatro páginas.",
+  "Tabelas largas (4 a 15 colunas) em rolagem lateral cortam números no celular; só a frase 'A tabela é mais larga que a tela' avisa."
+ ],
+ "limites_da_avaliacao": "Inspeção heurística por agente, sem usuários. Leitor de tela real não testado (NVDA, JAWS, VoiceOver, TalkBack); toque e zoom do navegador só emulados em Chromium (viewports de 320 a 1440 px e aumento de texto por CSS). Trechos ausentes do pacote (390_inteira geração 04de06, capacidade 02de07 e 06de07, térmica 04de06) foram substituídos por capturas próprias contra localhost:3100, e as telas de Analisar e Auditar foram vistas por texto, axe próprio (1440 e 390 px) e capturas por amostra, não por todos os trechos. objetivo.json não tem medição de Analisar nem teclado e controles em 320 e 768 px. A varredura de contraste própria cobre só texto e é aproximada; o axe deixa contraste 'incompleto' em 57 a 165 nós por página. A simulação de daltonismo é computacional. Não conferi a correção numérica nem o conteúdo completo de CSV e XLSX (papel técnico); só coerência visível entre texto, gráfico, tabela e arquivo baixado em poucos recortes. Nenhum bloqueio da seção 7 foi comprovado do ponto de vista do produto; suspeitas de natureza técnica (CVU 0,00, FC acima de 100%, divergência com o Balanço) ficaram como achados para o avaliador técnico."
+}

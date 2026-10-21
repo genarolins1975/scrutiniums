@@ -1,0 +1,3697 @@
+{
+  "version": "precisao-cesta-completa-v1",
+  "reference_year": 2022,
+  "scope": "sete_medidas;26_capitais_estaduais;sem_DF",
+  "publication_ready": false,
+  "approved_weights": null,
+  "nota": "Complemento externo ao pacote congelado. Verificar natureza não quantifica erro nem autoriza promoção editorial.",
+  "inputs": [
+    {
+      "path": "docs/obee/resultados/piloto-2022-v2.json",
+      "sha256": "61d9df0b252048e98731aaea3155f27ed0cdf487aa10867105671951443360ef"
+    },
+    {
+      "path": "docs/obee/resultados/precisao-cesta-evidencias.json",
+      "sha256": "edb20e88fb4bd491c0f0ca339de229b8d105ddc1d0997afef47af036ec27d582"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/expansao-2022.json",
+      "sha256": "cb4cfd1b894739829ecb9e3aa2715460041f775fd126542923a669278c6dfb60"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/atlas-tabela3.txt",
+      "sha256": "d3bcd04a53d2c50b9ef6083508c24bee79c6e6e95fff573b912e9a3614b2885d"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9934-data.json",
+      "sha256": "7cf230787c436be6263bd411ba5072593f8a8a93958576f2cee21711b0947886"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9934-metadata.json",
+      "sha256": "542834e6d634411d52a0eddf2c697a11e9d2989b5218539eadc0a3a436131cc6"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9940-data.json",
+      "sha256": "19377a02df2bbd7be37d69583837d6169ca697a531d9fa9d8470771da2c1aa35"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/9940-metadata.json",
+      "sha256": "1046084f040b33de9e83b4ccd65684d83b32114e18209ceaf1ed4bdd26a74c3f"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/habitacao/manifest.json",
+      "sha256": "23b4ca15302ac746af1e8ef0977e3c47aabfbefdac5946badefba74f2886a99f"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/conectividade/data.json",
+      "sha256": "306fa8adc598a736853d92472247f758dc4c668b6989f062312a918df7f75238"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/conectividade/manifest.json",
+      "sha256": "051f3b82410007c7fd8acb927498d46ad9bdf076de5431e0cc108ec92a806243"
+    },
+    {
+      "path": "pipeline/eficiencia_resultados/seed/conectividade/metadata.json",
+      "sha256": "91f07325ad15764351d5b53d0d478471b811add63cdc629465d906ace12f78c2"
+    }
+  ],
+  "evidencias": {
+    "10056": {
+      "natureza": "amostra_censo",
+      "verificada": true,
+      "url": "https://sidra.ibge.gov.br/tabela/10056#notas-tabela",
+      "data_acesso": "2026-10-13",
+      "localizador": "Notas, item 1",
+      "trecho": "Dados dos resultados preliminares da amostra, estimados a partir de áreas de ponderação preliminares.",
+      "metodo_verificacao": "Nota oficial lida diretamente no navegador; capitalização normalizada na transcrição."
+    },
+    "10295": {
+      "natureza": "amostra_censo",
+      "verificada": true,
+      "url": "https://sidra.ibge.gov.br/tabela/10295#notas-tabela",
+      "data_acesso": "2026-10-13",
+      "localizador": "Notas, item 1",
+      "trecho": "Dados dos resultados preliminares da amostra, estimados a partir de áreas de ponderação preliminares.",
+      "metodo_verificacao": "Nota oficial lida diretamente no navegador; capitalização normalizada na transcrição."
+    },
+    "10330": {
+      "natureza": "amostra_censo",
+      "verificada": true,
+      "url": "https://sidra.ibge.gov.br/tabela/10330#notas-tabela",
+      "data_acesso": "2026-10-13",
+      "localizador": "Notas, item 1",
+      "trecho": "Dados dos resultados preliminares da amostra, estimados a partir de áreas de ponderação preliminares.",
+      "metodo_verificacao": "Nota oficial lida diretamente no navegador; capitalização normalizada na transcrição."
+    },
+    "9934": {
+      "natureza": "amostra_censo",
+      "verificada": true,
+      "url": "https://sidra.ibge.gov.br/tabela/9934#notas-tabela",
+      "data_acesso": "2026-10-13",
+      "localizador": "Notas, item 1",
+      "trecho": "Dados dos resultados preliminares da amostra, estimados a partir de áreas de ponderação preliminares.",
+      "metodo_verificacao": "Nota oficial lida diretamente no navegador; capitalização normalizada na transcrição."
+    },
+    "9940": {
+      "natureza": "amostra_censo",
+      "verificada": true,
+      "url": "https://sidra.ibge.gov.br/tabela/9940#notas-tabela",
+      "data_acesso": "2026-10-13",
+      "localizador": "Notas, item 1",
+      "trecho": "Dados dos resultados preliminares da amostra, estimados a partir de áreas de ponderação preliminares.",
+      "metodo_verificacao": "Nota oficial lida diretamente no navegador; capitalização normalizada na transcrição."
+    },
+    "9936": {
+      "natureza": "amostra_censo",
+      "verificada": true,
+      "url": "https://sidra.ibge.gov.br/tabela/9936#notas-tabela",
+      "data_acesso": "2026-10-13",
+      "localizador": "Notas, item 1",
+      "trecho": "Dados dos resultados preliminares da amostra, estimados a partir de áreas de ponderação preliminares.",
+      "metodo_verificacao": "Nota oficial lida diretamente no navegador; capitalização normalizada na transcrição."
+    },
+    "6805": {
+      "natureza": "universo_censo",
+      "verificada": true,
+      "url": "https://sidra.ibge.gov.br/tabela/6805#notas-tabela",
+      "data_acesso": "2026-10-13",
+      "localizador": "Notas, item 1",
+      "trecho": "Dados do Universo",
+      "metodo_verificacao": "Nota oficial lida diretamente no navegador."
+    },
+    "atlas2024": {
+      "natureza": "registro_mais_modelo",
+      "verificada": true,
+      "url": "https://repositorio.ipea.gov.br/bitstream/11058/14031/5/AtlasViolencia2024_Retrato_dos_municipios_brasileros.pdf",
+      "data_acesso": "2026-10-13",
+      "localizador": "Tabela 3, página impressa 18; nota abaixo da tabela e explicação do modelo na página 6",
+      "trecho": "dos homicídios ocultos estimados em Cerqueira e Lins (2024).",
+      "evidencia_adicional": "Tabela identifica registrados (A), ocultos (B) e estimados (A+B); fonte SIM e Censo 2022. A explicação metodológica descreve aprendizado supervisionado.",
+      "metodo_verificacao": "PDF oficial consultado; registros reconciliados com a extração congelada atlas-tabela3.txt."
+    }
+  },
+  "records": [
+    {
+      "medida": "educacao",
+      "codigo_ibge": "2800308",
+      "capital": "Aracaju",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 83.81,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "2800308",
+      "capital": "Aracaju",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 1070.67,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "2800308",
+      "capital": "Aracaju",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 8.442615658362989,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "2800308",
+      "capital": "Aracaju",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 94.62869486026003,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "2800308",
+      "capital": "Aracaju",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 41.8,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 240,
+        "ocultos": 12,
+        "total": 252,
+        "parcela_ocultos_pct": 4.761904761904762,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 7,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "2800308",
+      "capital": "Aracaju",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 7.708780423074635,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "2800308",
+      "capital": "Aracaju",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 90.608713159424,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "3106200",
+      "capital": "Belo Horizonte",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 93.71,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "3106200",
+      "capital": "Belo Horizonte",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 1441.0,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "3106200",
+      "capital": "Belo Horizonte",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 17.58087201125176,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "3106200",
+      "capital": "Belo Horizonte",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 97.41025018435583,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "3106200",
+      "capital": "Belo Horizonte",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 17.6,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 312,
+        "ocultos": 96,
+        "total": 408,
+        "parcela_ocultos_pct": 23.529411764705884,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 22,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "3106200",
+      "capital": "Belo Horizonte",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 5.144156483836796,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "3106200",
+      "capital": "Belo Horizonte",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 91.73127225209785,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "1501402",
+      "capital": "Belém",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 82.33,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "1501402",
+      "capital": "Belém",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 842.4,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "1501402",
+      "capital": "Belém",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 13.930803490164193,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "1501402",
+      "capital": "Belém",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 83.94751462852415,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "1501402",
+      "capital": "Belém",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 26.5,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 339,
+        "ocultos": 7,
+        "total": 346,
+        "parcela_ocultos_pct": 2.023121387283237,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 16,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "1501402",
+      "capital": "Belém",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 18.30356087155985,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "1501402",
+      "capital": "Belém",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 87.04271248646168,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "1400100",
+      "capital": "Boa Vista",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 70.53,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "1400100",
+      "capital": "Boa Vista",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 800.0,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "1400100",
+      "capital": "Boa Vista",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 4.918477208473723,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "1400100",
+      "capital": "Boa Vista",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 88.30444244649654,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "1400100",
+      "capital": "Boa Vista",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 39.2,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 148,
+        "ocultos": 14,
+        "total": 162,
+        "parcela_ocultos_pct": 8.641975308641975,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 10,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "1400100",
+      "capital": "Boa Vista",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 27.201378093357423,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "1400100",
+      "capital": "Boa Vista",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 90.56426200579807,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "5002704",
+      "capital": "Campo Grande",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 81.69,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "5002704",
+      "capital": "Campo Grande",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 1237.33,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "5002704",
+      "capital": "Campo Grande",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 9.76056372821482,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "5002704",
+      "capital": "Campo Grande",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 89.18303461821753,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "5002704",
+      "capital": "Campo Grande",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 19.8,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 170,
+        "ocultos": 8,
+        "total": 178,
+        "parcela_ocultos_pct": 4.49438202247191,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 21,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "5002704",
+      "capital": "Campo Grande",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 8.902045275977216,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "5002704",
+      "capital": "Campo Grande",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 91.83945934001179,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "5103403",
+      "capital": "Cuiabá",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 83.02,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "5103403",
+      "capital": "Cuiabá",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 1300.0,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "5103403",
+      "capital": "Cuiabá",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 10.325453152072503,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "5103403",
+      "capital": "Cuiabá",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 89.65077669777477,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "5103403",
+      "capital": "Cuiabá",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 15.2,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 90,
+        "ocultos": 9,
+        "total": 99,
+        "parcela_ocultos_pct": 9.090909090909092,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 25,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "5103403",
+      "capital": "Cuiabá",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 11.01132302923322,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "5103403",
+      "capital": "Cuiabá",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 89.77267834847376,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "4106902",
+      "capital": "Curitiba",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 89.79,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "4106902",
+      "capital": "Curitiba",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 1850.0,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "4106902",
+      "capital": "Curitiba",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 10.394678219723156,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "4106902",
+      "capital": "Curitiba",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 98.76741209026731,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "4106902",
+      "capital": "Curitiba",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 21.0,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 361,
+        "ocultos": 12,
+        "total": 373,
+        "parcela_ocultos_pct": 3.2171581769436997,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 20,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "4106902",
+      "capital": "Curitiba",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 4.352822283696859,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "4106902",
+      "capital": "Curitiba",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 94.1842304433611,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "4205407",
+      "capital": "Florianópolis",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 93.04,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "4205407",
+      "capital": "Florianópolis",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 2087.5,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "4205407",
+      "capital": "Florianópolis",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 8.181132356639253,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "4205407",
+      "capital": "Florianópolis",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 96.28468319233272,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "4205407",
+      "capital": "Florianópolis",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 8.9,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 48,
+        "ocultos": 0,
+        "total": 48,
+        "parcela_ocultos_pct": 0.0,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 27,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "4205407",
+      "capital": "Florianópolis",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 5.004347054244865,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "4205407",
+      "capital": "Florianópolis",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 95.80543404540055,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "2304400",
+      "capital": "Fortaleza",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 87.94,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "2304400",
+      "capital": "Fortaleza",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 900.0,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "2304400",
+      "capital": "Fortaleza",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 15.207595631140592,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "2304400",
+      "capital": "Fortaleza",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 88.57486987568288,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "2304400",
+      "capital": "Fortaleza",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 45.3,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 918,
+        "ocultos": 183,
+        "total": 1101,
+        "parcela_ocultos_pct": 16.62125340599455,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 5,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "2304400",
+      "capital": "Fortaleza",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 12.885307472717864,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "2304400",
+      "capital": "Fortaleza",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 89.20761167216088,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "5208707",
+      "capital": "Goiânia",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 76.53,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "5208707",
+      "capital": "Goiânia",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 1450.0,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "5208707",
+      "capital": "Goiânia",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 9.548204579408555,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "5208707",
+      "capital": "Goiânia",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 91.60436446288367,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "5208707",
+      "capital": "Goiânia",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 16.1,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 214,
+        "ocultos": 18,
+        "total": 232,
+        "parcela_ocultos_pct": 7.758620689655173,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 23,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "5208707",
+      "capital": "Goiânia",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 5.71546576324475,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "5208707",
+      "capital": "Goiânia",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 92.4172237242865,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "2507507",
+      "capital": "João Pessoa",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 85.15,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "2507507",
+      "capital": "João Pessoa",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 1000.0,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "2507507",
+      "capital": "João Pessoa",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 8.538422551949527,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "2507507",
+      "capital": "João Pessoa",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 89.77313003588198,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "2507507",
+      "capital": "João Pessoa",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 23.5,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 196,
+        "ocultos": 0,
+        "total": 196,
+        "parcela_ocultos_pct": 0.0,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 18,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "2507507",
+      "capital": "João Pessoa",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 8.546264132089675,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "2507507",
+      "capital": "João Pessoa",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 91.21270124196973,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "1600303",
+      "capital": "Macapá",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 58.46,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "1600303",
+      "capital": "Macapá",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 744.8,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "1600303",
+      "capital": "Macapá",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 7.4693398119168,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "1600303",
+      "capital": "Macapá",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 57.33953126771513,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "1600303",
+      "capital": "Macapá",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 55.8,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 241,
+        "ocultos": 6,
+        "total": 247,
+        "parcela_ocultos_pct": 2.42914979757085,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 2,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "1600303",
+      "capital": "Macapá",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 25.419732278870775,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "1600303",
+      "capital": "Macapá",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 89.07804751563867,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "2704302",
+      "capital": "Maceió",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 81.01,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "2704302",
+      "capital": "Maceió",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 837.33,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "2704302",
+      "capital": "Maceió",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 13.226933773041617,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "2704302",
+      "capital": "Maceió",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 68.33079688239901,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "2704302",
+      "capital": "Maceió",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 41.5,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 379,
+        "ocultos": 19,
+        "total": 398,
+        "parcela_ocultos_pct": 4.773869346733668,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 8,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "2704302",
+      "capital": "Maceió",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 10.688203838059867,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "2704302",
+      "capital": "Maceió",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 89.64922112065625,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "1302603",
+      "capital": "Manaus",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 69.12,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "1302603",
+      "capital": "Manaus",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 686.0,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "1302603",
+      "capital": "Manaus",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 20.982219311942778,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "1302603",
+      "capital": "Manaus",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 71.23045033663354,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "1302603",
+      "capital": "Manaus",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 55.7,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 1130,
+        "ocultos": 19,
+        "total": 1149,
+        "parcela_ocultos_pct": 1.6536118363794603,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 3,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "1302603",
+      "capital": "Manaus",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 25.54374745986588,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "1302603",
+      "capital": "Manaus",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 89.21697190611664,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "2408102",
+      "capital": "Natal",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 86.55,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "2408102",
+      "capital": "Natal",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 969.6,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "2408102",
+      "capital": "Natal",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 11.02673690488023,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "2408102",
+      "capital": "Natal",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 75.63702345905313,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "2408102",
+      "capital": "Natal",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 36.9,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 241,
+        "ocultos": 36,
+        "total": 277,
+        "parcela_ocultos_pct": 12.99638989169675,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 11,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "2408102",
+      "capital": "Natal",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 10.284495495395417,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "2408102",
+      "capital": "Natal",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 89.0804533857667,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "1721000",
+      "capital": "Palmas",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 89.0,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "1721000",
+      "capital": "Palmas",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 1266.67,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "1721000",
+      "capital": "Palmas",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 5.9927388245972315,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "1721000",
+      "capital": "Palmas",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 90.62614979669236,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "1721000",
+      "capital": "Palmas",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 32.0,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 94,
+        "ocultos": 3,
+        "total": 97,
+        "parcela_ocultos_pct": 3.0927835051546393,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 12,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "1721000",
+      "capital": "Palmas",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 12.201103617412631,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "1721000",
+      "capital": "Palmas",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 93.82634532849126,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "4314902",
+      "capital": "Porto Alegre",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 74.61,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "4314902",
+      "capital": "Porto Alegre",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 1700.0,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "4314902",
+      "capital": "Porto Alegre",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 12.04652544050683,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "4314902",
+      "capital": "Porto Alegre",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 96.09047526923325,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "4314902",
+      "capital": "Porto Alegre",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 29.0,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 376,
+        "ocultos": 10,
+        "total": 386,
+        "parcela_ocultos_pct": 2.5906735751295336,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 13,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "4314902",
+      "capital": "Porto Alegre",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 5.763394289668376,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "4314902",
+      "capital": "Porto Alegre",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 91.9120665577926,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "1100205",
+      "capital": "Porto Velho",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 73.13,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "1100205",
+      "capital": "Porto Velho",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 866.67,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "1100205",
+      "capital": "Porto Velho",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 6.391471114111686,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "1100205",
+      "capital": "Porto Velho",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 59.013857345051186,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "1100205",
+      "capital": "Porto Velho",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 47.6,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 211,
+        "ocultos": 8,
+        "total": 219,
+        "parcela_ocultos_pct": 3.65296803652968,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 4,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "1100205",
+      "capital": "Porto Velho",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 15.216633678991563,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "1100205",
+      "capital": "Porto Velho",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 89.67825509445873,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "2611606",
+      "capital": "Recife",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 85.13,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "2611606",
+      "capital": "Recife",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 970.67,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "2611606",
+      "capital": "Recife",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 15.00545509687228,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "2611606",
+      "capital": "Recife",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 77.83129757188183,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "2611606",
+      "capital": "Recife",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 44.7,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 635,
+        "ocultos": 31,
+        "total": 666,
+        "parcela_ocultos_pct": 4.654654654654655,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 6,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "2611606",
+      "capital": "Recife",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 9.379057930120046,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "2611606",
+      "capital": "Recife",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 89.40550353490802,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "1200401",
+      "capital": "Rio Branco",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 75.29,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "1200401",
+      "capital": "Rio Branco",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 833.33,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "1200401",
+      "capital": "Rio Branco",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 5.374579124579125,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "1200401",
+      "capital": "Rio Branco",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 79.4140205552999,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "1200401",
+      "capital": "Rio Branco",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 25.8,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 93,
+        "ocultos": 1,
+        "total": 94,
+        "parcela_ocultos_pct": 1.0638297872340425,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 17,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "1200401",
+      "capital": "Rio Branco",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 16.92099016615802,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "1200401",
+      "capital": "Rio Branco",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 85.89190847583524,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "3304557",
+      "capital": "Rio de Janeiro",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 86.73,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "3304557",
+      "capital": "Rio de Janeiro",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 1212.0,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "3304557",
+      "capital": "Rio de Janeiro",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 27.36206672978056,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "3304557",
+      "capital": "Rio de Janeiro",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 95.9978186035041,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "3304557",
+      "capital": "Rio de Janeiro",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 21.3,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 1042,
+        "ocultos": 283,
+        "total": 1325,
+        "parcela_ocultos_pct": 21.358490566037737,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 19,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "3304557",
+      "capital": "Rio de Janeiro",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 11.726261260928547,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "3304557",
+      "capital": "Rio de Janeiro",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 89.55003885979534,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "2927408",
+      "capital": "Salvador",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 86.28,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "2927408",
+      "capital": "Salvador",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 887.5,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "2927408",
+      "capital": "Salvador",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 21.49523847059577,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "2927408",
+      "capital": "Salvador",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 96.10849437967816,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "2927408",
+      "capital": "Salvador",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 66.4,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 1568,
+        "ocultos": 37,
+        "total": 1605,
+        "parcela_ocultos_pct": 2.305295950155763,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 1,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "2927408",
+      "capital": "Salvador",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 8.708595007358685,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "2927408",
+      "capital": "Salvador",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 88.32091587734203,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "2111300",
+      "capital": "São Luís",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 92.25,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "2111300",
+      "capital": "São Luís",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 866.67,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "2111300",
+      "capital": "São Luís",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 15.226003377061955,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "2111300",
+      "capital": "São Luís",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 83.24032759431527,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "2111300",
+      "capital": "São Luís",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 27.2,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 280,
+        "ocultos": 2,
+        "total": 282,
+        "parcela_ocultos_pct": 0.7092198581560284,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 15,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "2111300",
+      "capital": "São Luís",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 14.777722937064542,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "2111300",
+      "capital": "São Luís",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 88.61267662216916,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "3550308",
+      "capital": "São Paulo",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 91.05,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "3550308",
+      "capital": "São Paulo",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 1340.0,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "3550308",
+      "capital": "São Paulo",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 29.150119820725347,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "3550308",
+      "capital": "São Paulo",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 96.0833537426889,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "3550308",
+      "capital": "São Paulo",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 15.4,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 344,
+        "ocultos": 1418,
+        "total": 1762,
+        "parcela_ocultos_pct": 80.47673098751419,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 24,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "3550308",
+      "capital": "São Paulo",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 12.58423039462652,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "3550308",
+      "capital": "São Paulo",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 91.81052097588325,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "2211001",
+      "capital": "Teresina",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 94.11,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "2211001",
+      "capital": "Teresina",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 868.0,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "2211001",
+      "capital": "Teresina",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 5.936783831900864,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "2211001",
+      "capital": "Teresina",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 79.18587118857232,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "2211001",
+      "capital": "Teresina",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 40.4,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 343,
+        "ocultos": 7,
+        "total": 350,
+        "parcela_ocultos_pct": 2.0,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 9,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "2211001",
+      "capital": "Teresina",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 13.896883479976976,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "2211001",
+      "capital": "Teresina",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 90.00547008791469,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "educacao",
+      "codigo_ibge": "3205309",
+      "capital": "Vitória",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 96.47,
+      "unidade": "%",
+      "universo": "Crianças de 4 a 5 anos; frequência escolar nas redes pública e privada",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10056"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Frequência não mede aprendizagem nem atribui resultado à rede municipal. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "trabalho",
+      "codigo_ibge": "3205309",
+      "capital": "Vitória",
+      "reference_year": 2022,
+      "referencia": "julho de 2022",
+      "valor_original": 1750.0,
+      "unidade": "R$",
+      "universo": "Moradores elegíveis da tabela 10295, excluídos pensionistas, empregados domésticos e seus parentes",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10295"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mediana nominal de julho de 2022, sem ajuste espacial de preços. Valores redondos e empates não demonstram equivalência de poder de compra. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "mobilidade",
+      "codigo_ibge": "3205309",
+      "capital": "Vitória",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 7.945876627646982,
+      "unidade": "%",
+      "universo": "Pessoas ocupadas que se deslocavam para trabalhar no universo da tabela 10330",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "10330"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Mais de uma hora até o trabalho; exclui trabalho em mais de um município ou país. Não mede toda a mobilidade urbana. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "saneamento",
+      "codigo_ibge": "3205309",
+      "capital": "Vitória",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 99.7776343718171,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "universo_censo",
+      "evidencia_ids": [
+        "6805"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Rede geral/pluvial ou fossa ligada à rede, mais fossa séptica/filtro não ligada. Universo censitário não significa ausência de erros de cobertura e declaração; não mede tratamento. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "seguranca",
+      "codigo_ibge": "3205309",
+      "capital": "Vitória",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 28.5,
+      "unidade": "por 100 mil habitantes",
+      "universo": "População residente; município de residência dos óbitos",
+      "natureza": "registro_mais_modelo",
+      "evidencia_ids": [
+        "atlas2024"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Soma registros e homicídios ocultos estimados por modelo; parcela oculta não é erro-padrão nem intervalo de confiança. Incerteza municipal do modelo não obtida. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística.",
+      "homicidios": {
+        "registrados": 90,
+        "ocultos": 2,
+        "total": 92,
+        "parcela_ocultos_pct": 2.1739130434782608,
+        "tabela": 3,
+        "pagina": 18,
+        "linha": 14,
+        "edicao": 2024
+      }
+    },
+    {
+      "medida": "habitacao",
+      "codigo_ibge": "3205309",
+      "capital": "Vitória",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 5.3504789152879715,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados com mais de dois moradores por dormitório",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9934",
+        "9940"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Definição principal preservada apenas para descrever a cesta congelada; 9940 sustenta a alternativa em moradores. Não mede déficit habitacional completo; unidade e limiar aguardam decisão. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    },
+    {
+      "medida": "conectividade",
+      "codigo_ibge": "3205309",
+      "capital": "Vitória",
+      "reference_year": 2022,
+      "referencia": "2022",
+      "valor_original": 92.6942094787909,
+      "unidade": "%",
+      "universo": "Domicílios particulares permanentes ocupados",
+      "natureza": "amostra_censo",
+      "evidencia_ids": [
+        "9936"
+      ],
+      "precisao_municipal": "nao_quantificada",
+      "standard_error": null,
+      "confidence_interval": null,
+      "ressalva": "Presença de Internet não informa velocidade, preço, continuidade ou capacidade digital. Precisão municipal não quantificada; diferenças observadas não demonstram significância estatística."
+    }
+  ]
+}

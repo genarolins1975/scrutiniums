@@ -1,0 +1,687 @@
+{
+ "avaliador": "T-U01",
+ "papel": "tecnico",
+ "rodada": "inicial",
+ "versao_avaliada": "commit 51747baf8, estado servido em http://localhost:3100 (arquivos de public/energia idênticos aos do repositório de leitura, conferidos por sha256)",
+ "paginas": {
+  "/setor-eletrico": {
+   "paineis": [
+    "P001",
+    "P003"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "Li os dois textos e visoes.json: mapa conceitual de 7 elos com 5 tipos de ligação, 21 cartões com pergunta, utilidade e recorte, 8 perguntas, 4 trilhas, seção de confiança e quadro de atualidade de 21 fontes.",
+      "Quadro de atualidade (21 linhas) conferido contra publicacao.json: período, cadência e situação iguais em todas (EAR 28/09/2026; SCS jun/2025 atrasada; CMO 25/09/2026).",
+      "Rodapé conferido: 13 órgãos, 151 integrações e 4 conjuntos revisados iguais a publicacao.json (resumo e conjuntos).",
+      "Busca testada no navegador: bandeira, CEMIG, CNPJ e furto levam ao destino certo; 'preço da luz' e 'congestionamento' não retornam nada."
+     ],
+     "atendidos": [
+      "Relações entre temas tipadas (fluxo físico, decisão de operação, regra de mercado, componente de custo, associação) e quatro limites do que o mapa não permite concluir.",
+      "Cada cartão traz o recorte territorial e temporal da página de destino.",
+      "Limites e cobertura visíveis: cinco naturezas de dado, quatro datas distintas, dados revisados, ausência nunca vira zero.",
+      "Um número real de ponta a ponta (perdas) com universo, período e ficha de prova."
+     ],
+     "problemas": [
+      "Função de porta de entrada: a Inicial não traz ordem de grandeza do sistema; o nível atual só existe na Visão geral (adaptação justificada).",
+      "A busca indexa títulos e detalhes: termos leigos ('preço da luz', 'congestionamento') não acham nada e a sigla DEC põe o verbete fora dos 8 primeiros (aparecem 'declarados' e DECOMP).",
+      "O mapa não separa geração centralizada de micro e minigeração distribuída nem coloca os sistemas isolados na cadeia."
+     ],
+     "justificativa": "Porta de entrada com conteúdo conceitual real, verificado contra publicacao.json. Faltam ordem de grandeza e vocabulário leigo na busca. Adaptação à função justificada, sem eliminar dimensões inteiras."
+    },
+    "F": {
+     "nota": 8.0,
+     "evidencia": [
+      "Recalculei a taxa de perdas de 2025: soma das perdas das 51 concessionárias no samp-balanco.parquet da ANEEL (15/09/2026) é 90.355.796,242 MWh, igual ao numerador da ficha; denominador publicado 612.653.775,717 MWh; taxa 14,748%.",
+      "Com a energia injetada total publicada pela ANEEL (632,05 TWh no CSV do projeto; 632,7 TWh na minha soma do arquivo primário) a mesma soma dá cerca de 14,3%; em 47 das 51 concessionárias o denominador é energia requerida ou mista (perdas_distribuidoras.csv, origem_injetada).",
+      "Universo do exemplo conferido em perdas_nacional.csv: 51 concessionárias com 12 meses, 52 permissionárias fora, 103 distribuidoras com dado em 2025.",
+      "As descrições de referência dos cartões (faixa do mesmo dia, percentil por regime de limites) são de outras páginas e não foram validadas aqui."
+     ],
+     "atendidos": [
+      "Distingue razão entre agregados (soma de perdas sobre soma da injetada) de média simples, com universo e cobertura à vista no exemplo.",
+      "Separa o que se confunde: PLD e tarifa, CMO e PLD, EAR em % da capacidade e ENA em % da MLT, subsistema e submercado.",
+      "Não usa benchmark internacional nem extremos mecânicos."
+     ],
+     "problemas": [
+      "O exemplo chama de 'energia injetada' um denominador construído (requerida em 47 de 51); a ficha diz só 'injetada de referência' e a explicação está apenas em Perdas e Território.",
+      "O 14,7% não tem reconciliação por outro caminho (a ficha registra 'nenhuma reconciliação').",
+      "O quadro de atualidade mostra '2026, período em curso' para DEC e FEC mensais e para consultas, sem o último mês publicado (jun/2026 no DEC)."
+     ],
+     "justificativa": "Exemplo bem documentado em universo e fórmula, mas o denominador reconstruído não é nomeado e falta reconciliação externa. Referências descritas dependem de outras páginas. A ausência de benchmark não penaliza."
+    },
+    "G": {
+     "nota": 8.5,
+     "evidencia": [
+      "Verbetes e os cinco pares de nomes que se confundem conferidos com as definições das fontes; MMGD reproduz a redação da ANEEL, compatível com a Lei 14.300/2022 lida na Câmara (art. 1º, XI e XIII: 75 kW; 5 MW despacháveis, 3 MW não despacháveis).",
+      "Taxa de perdas (14,75%) e DEC nacional de 2025 (9,334 h) refeitos nos arquivos primários da ANEEL: iguais ao publicado.",
+      "Quadro de atualidade e contagens do rodapé conferidos contra publicacao.json sem divergência.",
+      "Definição de ENA (produtibilidade a 65% do volume útil) só confirmada por citação acadêmica do ONS, não pelo glossário oficial."
+     ],
+     "atendidos": [
+      "Naturezas observado, calculado, estimado, previsto e cenário separadas; cálculo nunca aparece como medição.",
+      "Ausência escrita como 'sem dado' e campo vazio, nunca zero (conferido nas 90 linhas de sintese_multiplos.csv).",
+      "Período, publicação, captura e processamento são datas distintas.",
+      "Capacidade instalada não é energia gerada; MWmed explicado como MWh dividido pelas horas."
+     ],
+     "problemas": [
+      "A ligação 'a energia gerada entra na rede de transmissão' ignora que a MMGD, listada no mesmo elo, entra pela distribuição.",
+      "O verbete de DEC não diz que o apurado exclui interrupções expurgadas (7,87 h dos 17,20 h de 2025).",
+      "Diz que a carga 'diminui na rede quando a MMGD produz', mas a série diária de carga usada nas páginas inclui a estimativa de MMGD; as duas leituras não são distinguidas.",
+      "O exemplo de perdas não distingue energia injetada publicada de requerida."
+     ],
+     "justificativa": "Conceitos e naturezas corretos nas conferências, com pares enganosos bem separados. Descontam a ligação geração e rede que esquece a distribuição, o verbete de DEC sem expurgos e o denominador do exemplo."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Ficha 'Comprove este número' de perdas aberta no navegador: fonte, arquivo e sha256, fórmula, numerador e denominador, 5 testes, passos de reprodução e citação; numerador reproduzido no arquivo primário.",
+      "Quadro de atualidade com 21 linhas e links para as fichas de conjunto; período, cadência e situação iguais a publicacao.json em todas.",
+      "Código da ficha: d329b83c69a5+alterado; a ficha avisa que a reprodução pode diferir.",
+      "Rodapé (13 órgãos, 151 integrações, 4 conjuntos revisados) confere com publicacao.json."
+     ],
+     "atendidos": [
+      "Fonte específica com arquivo, captura e publicação pela fonte.",
+      "Fórmula, variáveis, unidades, filtros e exclusões na ficha.",
+      "Procedimento reproduzível com CSV nacional e por distribuidora.",
+      "Revisões e limitações declaradas; ausência de reconciliação também declarada."
+     ],
+     "problemas": [
+      "As golds carregam '+alterado': o código exato não se reconstitui a partir do commit citado.",
+      "O denominador 'de referência' não é explicado na ficha e não há reconciliação por outro caminho.",
+      "O quadro de atualidade usa o grão anual para fontes mensais, sem o último mês."
+     ],
+     "justificativa": "Rastreio de ponta a ponta verificado com ficha completa, hashes e fórmula, e quadro de atualidade fiel a publicacao.json. Descontam o código '+alterado', o denominador não explicado e o grão anual do quadro."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 0 erros de console, 0 falhas de rede, 0 violações do axe e sem rolagem horizontal em 320, 390, 768 e 1440 px; carga de 0,82 a 0,91 s em laboratório.",
+      "HTML de 592 KB bruto (84 KB com gzip), JS de 517 a 553 KB e nenhum dado externo no carregamento.",
+      "energia-mapa.test.ts cobre seções, âncoras, busca e quadro de atualidade (período no grão da fonte, nunca a captura); no navegador, o seletor de distribuidora leva o CNPJ a Perdas e a Qualidade e os dois destinos abrem com CEMIG-D.",
+      "Pipeline: a sentinela mantém a publicação anterior quando a gold regride e os testes rodam antes do commit, retendo a publicação se falharem (atualizar-energia.yml)."
+     ],
+     "atendidos": [
+      "Interações corretas e sem erro depois dos controles exercitados.",
+      "Sem falha de link entre 156 links internos.",
+      "Protocolo de laboratório documentado (DECISOES D11) e limite declarado."
+     ],
+     "problemas": [
+      "Só medida de laboratório (Chromium headless, sem limitação de rede ou CPU); sem LCP, INP e CLS de campo, e o próprio projeto fixa teto 9,0 por isso.",
+      "Não há teste de orçamento de peso para a Inicial (592 KB de HTML, perto do limite de 600 KB das outras páginas)."
+     ],
+     "justificativa": "Sem erros nas medições, interações conferidas e gate de publicação por testes e sentinela. Limita a nota a medição só de laboratório e a falta de orçamento de peso testado para a Inicial."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "inicial_perdas_denominador",
+     "gravidade": "media",
+     "criterios": [
+      "F",
+      "G",
+      "H"
+     ],
+     "onde": "Seção 'Um número real, do arquivo à página' e ficha Comprove das perdas",
+     "descricao": "O 14,7% divide 90,36 TWh de perdas por 612,65 TWh de 'energia injetada de referência'. Em 47 das 51 concessionárias essa referência é energia requerida ou mista, não a injetada publicada (632,05 TWh), com a qual a taxa seria cerca de 14,3%. O texto e a ficha não dizem isso.",
+     "sugestao": "Nomear o denominador, mostrar a diferença para a injetada publicada e registrar reconciliação com uma publicação da ANEEL."
+    },
+    {
+     "id": "inicial_atualidade_grao_anual",
+     "gravidade": "baixa",
+     "criterios": [
+      "H",
+      "G"
+     ],
+     "onde": "Quadro 'Fontes principais de cada tema', linhas Qualidade e Regulação",
+     "descricao": "O último período aparece como '2026, período em curso' para DEC e FEC (cadência mensal; último mês publicado jun/2026) e para consultas; a situação 'em dia' vem da data de publicação do arquivo (caso E de publicacao.json), não do último mês.",
+     "sugestao": "Mostrar o último mês publicado e dizer qual regra de atualidade gerou 'em dia'."
+    },
+    {
+     "id": "inicial_ligacao_geracao_rede",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Mapa conceitual, elos Geração e Rede, ligação de fluxo físico",
+     "descricao": "'A energia gerada entra na rede de transmissão' vale para a geração centralizada; a MMGD, listada no mesmo elo, entra pela distribuição, e parte das usinas centralizadas também.",
+     "sugestao": "Dizer 'entra na rede de transmissão ou de distribuição'."
+    },
+    {
+     "id": "inicial_verbete_dec_sem_expurgo",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Verbete DEC no elo Vida das pessoas",
+     "descricao": "A definição do DEC não menciona expurgos. Em 2025 o apurado (9,33 h) exclui 7,87 h de interrupções (emergência, dia crítico, origem externa, ONS), conferido no arquivo primário da ANEEL.",
+     "sugestao": "Acrescentar uma frase sobre o apurado e os expurgos."
+    },
+    {
+     "id": "inicial_carga_e_mmgd",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Elo Consumo (carga)",
+     "descricao": "O texto diz que a carga 'diminui na rede quando a MMGD produz', mas a série diária de carga das páginas inclui a estimativa de MMGD desde 29/04/2023 (carga global).",
+     "sugestao": "Distinguir carga global de carga líquida da MMGD."
+    },
+    {
+     "id": "inicial_busca_vocabulario",
+     "gravidade": "baixa",
+     "criterios": [
+      "E"
+     ],
+     "onde": "Campo de busca da Inicial",
+     "descricao": "Termos leigos como 'preço da luz' e 'congestionamento' não retornam resultado; a busca da sigla DEC mostra 'Despacho térmico' e DECOMP antes do verbete.",
+     "sugestao": "Indexar sinônimos e dar peso a sigla exata."
+    }
+   ],
+   "nao_verificado": [
+    "Definição de ENA (65% do volume útil) apenas por citação secundária do ONS.",
+    "Descrições dos cartões e das trilhas sobre o conteúdo das páginas de destino (fora desta unidade).",
+    "Desempenho em campo, leitor de tela e navegadores além do Chromium."
+   ]
+  },
+  "/setor-eletrico/territorio": {
+   "paineis": [
+    "P002"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.0,
+     "evidencia": [
+      "Li os três níveis e testei no navegador as 4 camadas e as fichas de Belo Horizonte, Nova Friburgo, Tabatinga, Palmas e Portel: submercado das 27 UFs, 104 distribuidoras, 5.571 municípios, 3.146 conjuntos, 25.042 usinas e catálogo de 27 indicadores por grão.",
+      "Contagens refeitas nos CSV: 440 municípios com mais de uma distribuidora; 5.482 com submercado provado (5.343 mais 139 de Tocantins); 73 fora do SIN; 16 com localidade isolada; 25.030 usinas reconhecidas. A API do IBGE lista 5.571 municípios.",
+      "A ficha separa município, distribuidora, conjunto (DEC e FEC com limite), submercado e UF, cada bloco com valor e período.",
+      "Não há série temporal na página: histórico de MMGD e de interrupções só por link para outras páginas."
+     ],
+     "atendidos": [
+      "Diferenças territoriais no grão certo, com tabela equivalente ao mapa e busca por nome, UF, CNPJ e código IBGE.",
+      "Composição de capacidade por fonte na UF e DEC por conjunto na ficha do município.",
+      "Relações com outros temas por links que levam a mesma entidade a Perdas, Qualidade e Conta de luz.",
+      "Limitações e cobertura em destaque (73 fora do SIN, 19 CNPJ sem área, 31 vínculos divergentes)."
+     ],
+     "problemas": [
+      "Mapa sem série: nenhuma evolução na página, e nenhum resumo (mediana, quartis) da distribuição dos 104 valores de cada indicador.",
+      "A contagem de usinas por UF mistura registros de até 10 kW com usinas (ver bloqueio).",
+      "Tarifa Social tem duas medidas de meses diferentes (distribuidora em mai/2025; município em mar/2026) sem comparação possível entre elas."
+     ],
+     "justificativa": "Cobertura territorial ampla, com grão explícito e provas verificadas. Faltam evolução e resumo da distribuição, e a contagem de usinas por UF é inconsistente. Mapa sem série é falta apontada pela rubrica."
+    },
+    "F": {
+     "nota": 8.5,
+     "evidencia": [
+      "DEC e FEC de 3.146 conjuntos contra o limite do mesmo conjunto e ano: 0 divergências contra qualidade_conjuntos_anual; DEC da distribuidora é média ponderada por UC, declarada.",
+      "Quadro de 104 distribuidoras: perdas, DEC, FEC, tarifa, MMGD e Tarifa Social iguais aos módulos de origem (0 divergências); tarifa B1 das 81 distribuidoras igual ao arquivo primário da ANEEL.",
+      "Mapa municipal em quintis declarados (ex.: MMGD em W/hab: 107,2; 202,2; 347,5; 596,9), com contagem por classe e 'sem dado' separado.",
+      "Tarifa Social do município é razão de faturas por famílias do CadÚnico, rotulada como proxy; a da distribuidora vem do SCS de mai/2025."
+     ],
+     "atendidos": [
+      "Cada indicador é comparado só no próprio grão; os controles críticos garantem que nada da distribuidora desce ao município.",
+      "Ponderação e universo declarados (distribuidora conta uma vez; mediana não ponderada).",
+      "Limite do ente e do ano ao lado do realizado por conjunto, com excedências visíveis (CI Santa Luzia 14,06 contra 13,00).",
+      "PLD do dia e do mês como média das 24 horas, não ponderada pela carga, e sem causalidade."
+     ],
+     "problemas": [
+      "23 das 104 distribuidoras ficam sem tarifa; 20 delas têm tarifa vigente em 30/09/2026 no arquivo da ANEEL de 08/10 (referência igual ao dia da captura).",
+      "A taxa de perdas da distribuidora aparece sem o percentual regulatório (só na página de Perdas).",
+      "A Tarifa Social da distribuidora (SCS mai/2025, conjunto atrasado) e a do município (CDE mar/2026) não são comparáveis e estão na mesma ficha."
+     ],
+     "justificativa": "Comparações feitas no grão certo, com limite do ente e do ano e ponderação declarada, verificadas contra módulos e fonte primária. Reduzem a nota as distribuidoras sem tarifa por defasagem de captura e a Tarifa Social de bases diferentes."
+    },
+    "G": {
+     "nota": 8.0,
+     "evidencia": [
+      "SIGA primário (ANEEL, 08/10/2026): o Pará tem 13.201 usinas em operação, das quais 13.101 são registros de até 10 kW; a página mostra '23.466,7 MW (13.201 usinas)' no mesmo painel em que Portel mostra 0 usinas e 5.708 registros à parte; a soma municipal do Pará é 97.",
+      "Prova de pertença refeita com territorio_areas_carga.csv: resíduos de 0,21, 0,008, 7,84 e 0,85 MWmed no dia 16/09/2026, iguais aos da página.",
+      "Capacidade por UF (SP 25.474,6; PA 23.466,7; BA 22.031,2; PR 17.712,1 MW) igual ao SIGA primário; Itaipu entra com 7.000 MW (parte brasileira).",
+      "Fichas de Tabatinga, Palmas e Nova Friburgo: fora do SIN sem submercado, área sem carga sinalizada, vínculo sem confirmação listado com ressalva."
+     ],
+     "atendidos": [
+      "Submercado, UF, distribuidora, conjunto, município e usina em grãos que não se trocam; usina não é ligada a submercado.",
+      "MMGD estimada (MWmed, ONS) e cadastrada (kW) lado a lado e nunca somadas; potência não é energia.",
+      "Domicílio do Luz para Todos, fatura da CDE, UC do SCS e família do CadÚnico identificados e não intercambiados.",
+      "Perda negativa publicada como a fonte e ressalvada; ano parcial marcado."
+     ],
+     "problemas": [
+      "A contagem de usinas por UF inclui registros de até 10 kW, contra a regra da própria página para o município (bloqueio: unidade incompatível).",
+      "Capacidade de usina multiestadual vai toda para a UF principal (Ilha Solteira, 3.444 MW, só em SP; Xingó, 3.162 MW, só em SE); o aviso está em 'Sobre este dado', não no quadro de UFs.",
+      "O destaque '5.482 com submercado provado' inclui 139 municípios de Tocantins com prova parcial (área TOCO sem carga).",
+      "A prova de pertença usa dois dias (um domingo); declarado, mas curto."
+     ],
+     "justificativa": "Rigor de grão e de unidade acima da média e verificado em fonte primária. A contagem de usinas por UF mistura registros de até 10 kW com usinas e contradiz a regra do próprio município; atribuição multiestadual e prova parcial estão declaradas."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "19 insumos com sha256 e 16 blocos 'Sobre este dado' (fonte, snapshot, fórmula, limitações, licença); 6 CSV; exportação do navegador das 104 distribuidoras igual ao CSV (0 divergências).",
+      "Ficha de Belo Horizonte igual ao CSV municipal (2.415.451 hab; 18.005 unidades; 165.320 kW; 52,01% proxy) e conjuntos iguais a qualidade_conjuntos_anual (0 divergências em 3.146).",
+      "Prova de pertença reproduzida só com territorio_areas_carga.csv, somando as áreas e comparando com o submercado.",
+      "A soma municipal de usinas não reproduz a contagem por UF do quadro (Pará: 97 contra 13.201); só territorio_usinas.csv reconstrói."
+     ],
+     "atendidos": [
+      "Fonte específica, arquivo, captura e atualização por bloco.",
+      "Fórmulas e filtros explícitos (kWh vezes TE mais TUSD dividido por 1.000; faturas por tipo de subsídio e subclasses 3.2 a 3.6).",
+      "Arquivos reproduzíveis e 18 controles publicados, 4 críticos aprovados.",
+      "Declara que há uma única captura por arquivo (revisões ainda não detectáveis).",
+      "Limitações e bloqueios (SIGEL, BDGD, tabela município para submercado) com evidência."
+     ],
+     "problemas": [
+      "O código '+alterado' aparece sem explicação nos blocos (as fichas da Visão geral explicam) e o hash vem truncado em 12 caracteres na tabela de insumos.",
+      "A contagem de usinas por UF não se reproduz a partir do CSV municipal.",
+      "O mês da Tarifa Social da distribuidora (mai/2025) não está no cabeçalho da coluna nem no campo Período.",
+      "A camada 24 da EPE respondeu 'Token Required' (499) em 09/10/2026; a recoleta mensal pode falhar e a conferência não é refazível por quem lê."
+     ],
+     "justificativa": "Procedência por bloco, hashes, fórmulas e CSV verificados, com ficha, exportação e conjuntos sem divergência. Descontam o '+alterado' sem explicação, a contagem de usinas por UF irreprodutível, o mês omitido da Tarifa Social e a dependência de serviço da EPE."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 0 erros de console, 0 falhas de rede, 0 violações do axe; HTML de 845 KB bruto (109 KB com gzip) e 67 KB de dados no carregamento; municípios (1,1 e 1,3 MB) e usinas (3,1 MB) só carregam ao escolher a camada (confirmado no navegador).",
+      "Testes: 596 linhas no vitest e 876 no unittest cobrem grão (nenhum valor da distribuidora no município), CSV igual ao JSON, prova de áreas (troca e mediana), ausência e zero, registros até 10 kW; 18 controles na publicação, 4 críticos.",
+      "Busca, 4 camadas e 5 fichas sem erro de console a 1440 px; escolha guardada na URL (?sel=mun:3106200).",
+      "O teste de peso mede a marcação estática (menos de 600 KB), não o HTML entregue (845 KB)."
+     ],
+     "atendidos": [
+      "Carga proporcional: dados pesados sob demanda por camada.",
+      "Testes orientados ao risco principal da página (atribuição abaixo do grão da fonte).",
+      "Bloqueio de publicação por controles críticos e sentinela."
+     ],
+     "problemas": [
+      "Só medida de laboratório; sem LCP, INP e CLS de campo.",
+      "Nenhum teste cobre a contagem de usinas por UF; passou com 13.201 no Pará.",
+      "O teste de orçamento de peso não representa o HTML entregue (845 KB bruto).",
+      "Depende de serviço da EPE que passou a pedir token."
+     ],
+     "justificativa": "Medições limpas, carga sob demanda e testes orientados ao risco da página. Descontam a contagem de usinas por UF que os testes não pegaram, o orçamento de peso que não representa o HTML entregue e a medida só de laboratório."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "unidade ou denominador incompatível",
+     "descricao": "A contagem 'Usinas em operação (UF principal)' do quadro de UFs e do bloco 'Da UF' da ficha inclui registros em operação de até 10 kW, que a própria página exclui da contagem de usinas no grão município. Para o Pará aparece '23.466,7 MW (13.201 usinas)'; 13.101 são registros de até 10 kW e a soma municipal é 97, de modo que o Pará parece ter 14 vezes as usinas de Minas (943). A potência em MW não é afetada.",
+     "evidencia": "SIGA primário (ANEEL, siga-empreendimentos-geracao-diario.csv de 08/10/2026): 13.201 em operação no Pará, 13.101 com potência fiscalizada de até 10 kW. territorio_usinas.csv e territorio_municipios.csv: soma municipal 97 mais 13.101 registros mais 3 usinas em vários municípios. Ficha de Portel no navegador: '0 usinas' e '5.708 registros à parte' no município, '13.201 usinas' na UF. Código: territorio.ts linha 1065."
+    }
+   ],
+   "achados": [
+    {
+     "id": "terr_uf_usinas_registros_10kw",
+     "gravidade": "alta",
+     "criterios": [
+      "G",
+      "F",
+      "H",
+      "L"
+     ],
+     "onde": "Tabela 'UFs: capacidade, Tarifa Social e sistemas isolados' (coluna Usinas em operação) e bloco 'Da UF' da ficha",
+     "descricao": "A contagem por UF inclui 16.035 registros de até 10 kW em todo o país (13.101 só no Pará), contra a regra do município. Não reconcilia com a soma municipal e distorce a comparação entre UFs; nenhum teste a cobre.",
+     "sugestao": "Excluir os registros de até 10 kW da contagem por UF, ou mostrar as duas colunas, e testar a reconciliação UF contra município."
+    },
+    {
+     "id": "terr_sem_serie_e_distribuicao",
+     "gravidade": "media",
+     "criterios": [
+      "E"
+     ],
+     "onde": "Página inteira, camada Municípios e ficha",
+     "descricao": "Não há série temporal nem resumo da distribuição (mediana, quartis, extremos) entre as 104 distribuidoras; evolução de MMGD e de interrupções só por link a outras páginas.",
+     "sugestao": "Mini série da entidade escolhida e quartis dos indicadores do quadro de distribuidoras."
+    },
+    {
+     "id": "terr_tarifa_social_bases",
+     "gravidade": "baixa",
+     "criterios": [
+      "G",
+      "H"
+     ],
+     "onde": "Quadro de distribuidoras (coluna Residenciais com Tarifa Social) e campo Período",
+     "descricao": "A distribuidora usa o SCS de mai/2025 (conjunto marcado como atrasado na própria publicação) e o município usa faturas da CDE de mar/2026. O mês do SCS não está no cabeçalho da coluna nem no campo Período; só a ficha diz 'referência mai/2025'.",
+     "sugestao": "Pôr o mês no cabeçalho da coluna e no campo Período."
+    },
+    {
+     "id": "terr_tarifa_sem_dado_defasagem",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "H"
+     ],
+     "onde": "Quadro de distribuidoras, coluna Tarifa B1; ficha da distribuidora",
+     "descricao": "23 das 104 distribuidoras ficam sem tarifa B1. Vinte delas têm vigência começada em 30/09/2026 no arquivo da ANEEL de 08/10, ausente da captura do mesmo dia; as demais são cooperativas sem linha no arquivo ou a ENF, incorporada mas ainda listada entre as 104.",
+     "sugestao": "Usar a última data com cobertura completa ou recapturar no dia seguinte."
+    },
+    {
+     "id": "terr_multiestadual_uf",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Quadro de UFs e ficha, capacidade em operação",
+     "descricao": "Usinas multiestaduais vão inteiras para a UF principal: Ilha Solteira (3.444 MW, SP e MS) só em SP; Xingó (3.162 MW, AL e SE) só em SE. O aviso está no bloco 'Sobre este dado' das usinas, não no quadro.",
+     "sugestao": "Nota na tabela de UFs ou repartição declarada."
+    },
+    {
+     "id": "terr_prova_submercado_parcial",
+     "gravidade": "baixa",
+     "criterios": [
+      "G",
+      "H"
+     ],
+     "onde": "Número de destaque 'Municípios com submercado provado pela UF: 5.482'",
+     "descricao": "O total inclui 139 municípios de Tocantins, onde a área TOCO não teve carga e a prova é parcial; a prova usa só dois dias (13/09, domingo, e 16/09). Está declarado, mas o número de destaque não separa os 139.",
+     "sugestao": "Mostrar 5.343 provados e 139 com prova parcial."
+    },
+    {
+     "id": "terr_epe_token",
+     "gravidade": "baixa",
+     "criterios": [
+      "H",
+      "L"
+     ],
+     "onde": "Bloco 'UF e subsistema (EPE)' e recoleta a cada 30 dias",
+     "descricao": "A camada 24 do WebMap da EPE respondeu 'Token Required' (código 499) em 09/10/2026; a recoleta pode falhar e a conferência não é refazível por quem lê.",
+     "sugestao": "Publicar a tabela UF e subsistema capturada, com data e hash, e registrar o bloqueio em 'O que não foi possível obter'."
+    },
+    {
+     "id": "terr_peso_html",
+     "gravidade": "baixa",
+     "criterios": [
+      "L"
+     ],
+     "onde": "Teste 'abaixo de 600 KB' em energia-territorio.test.ts",
+     "descricao": "O teste mede a marcação estática; o HTML entregue tem 845 KB (109 KB com gzip), e os arquivos de municípios e de usinas somam 5,5 MB sob demanda.",
+     "sugestao": "Medir o HTML real e declarar o peso por camada."
+    }
+   ],
+   "nao_verificado": [
+    "Camada 24 da EPE (UF para subsistema), que exigiu token em 09/10/2026.",
+    "Relação município e conjunto (ANEEL, IndQual) e MMGD por município contra os arquivos primários (não baixados).",
+    "Luz para Todos, PASI e população do IBGE contra as fontes primárias.",
+    "Geometria e malha dos mapas (matéria do avaliador de produto).",
+    "Desempenho em campo e leitor de tela."
+   ]
+  },
+  "/setor-eletrico/visao-geral": {
+   "paineis": [
+    "P004",
+    "P005",
+    "P006",
+    "P007"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz as 6 frases e os 5 painéis nos CSV publicados e nos arquivos primários do ONS (EAR, ENA, carga, balanço, intercâmbio, CMO): todos conferem; diferenças só por revisões posteriores da fonte (ENA de 30 dias 169,03% hoje contra 168,6% publicado; carga de 28/09 88.931 contra 88.896 MWmed).",
+      "90 linhas e 14 colunas de sintese_multiplos.csv contra pld_diario, ear_diario, carga_diaria, intercambio_diario e geracao_diaria: 0 divergências; bandas p10 e p90 da EAR iguais nos 90 dias.",
+      "Tabela de 13 regras (dias avaliados, percentuais, episódios) igual a sintese_regras_diario.csv e sintese_episodios.csv; contagens de 365 dias (ex.: descolamento 109, 26 e 230) iguais.",
+      "Cartões de DEC, perdas e Tarifa Social trazem número nacional sem distribuição: 810 de 3.146 conjuntos (25,7%; 23% das UC) ficaram acima do limite de DEC em 2025."
+     ],
+     "atendidos": [
+      "Nível atual com data própria por frase e evolução em janelas de 30, 60 e 90 dias sincronizadas em cinco gráficos e tabelas (testado no navegador).",
+      "Distribuição de referência para água (p10 a p90 do dia), térmica (p10 a p90 de 365 janelas), preço (quartis) e tarifa (quartis entre distribuidoras).",
+      "Treze regras com frequência de disparo, sensibilidade à duração mínima e 365 dias de estado.",
+      "Cobertura, defasagem e atualidade declaradas por indicador."
+     ],
+     "problemas": [
+      "DEC, perdas e Tarifa Social aparecem só como número nacional, sem distribuição entre conjuntos ou distribuidoras no próprio painel.",
+      "Sem composição (matriz de geração, parcelas do DEC) e sem recorte por subsistema nos cartões de água e afluência (só no texto das regras).",
+      "O cartão de Tarifa Social mostra duas bases de unidades e meses diferentes (UC do SCS em mai/2025 e faturas da CDE em mar/2026)."
+     ],
+     "justificativa": "Cobertura analítica ampla e verificada para sistema e regras. Os indicadores de sociedade ficam em número único, sem distribuição nem composição. É resumo e não módulo, o que justifica a adaptação."
+    },
+    "F": {
+     "nota": 8.0,
+     "evidencia": [
+      "PLD refeito: percentil 60,29 entre 2.099 médias diárias nominais desde 2021 (rank médio), quartis 61,07 e 225,70, amplitude 10,317 R$/MWh; iguais ao publicado. A faixa é única para todos os dias, sem sazonalidade, e mistura regimes de piso (R$ 49,77 em 2021, R$ 57,31 em 2026).",
+      "Água: mediana 49,26, p10 25,53 e p90 67,51 do dia 28/09 de 2001 a 2025, e p5 e p95 (23,78 e 70,65), refeitos de ear_diario.csv; térmica: p10 9,17, p90 17,40, mediana 12,36 e percentil 24,7 refeitos com a janela do pipeline.",
+      "Tarifa: no arquivo primário da ANEEL de 08/10/2026, 101 distribuidoras têm tarifa B1 em 30/09/2026 (mediana 814,24 R$/MWh; p25 742,54; p75 909,98) contra 81 no cartão (821,18; 759,75; 903,29); as 81 conferem exatamente.",
+      "DEC 2025: limite agregado 10,87 h refeito (limites dos conjuntos ponderados pelas UC médias); 810 conjuntos acima do próprio limite."
+     ],
+     "atendidos": [
+      "Carga contra o mesmo dia da semana 364 dias antes, só no mesmo regime; janela de 7 dias e dia único explicados lado a lado.",
+      "Água e térmica com referências sazonal e por janela no regime atual, calculadas como o texto declara.",
+      "Universo, cobertura e ponderação visíveis (81 de 115 CNPJs; 'ponderação nenhuma').",
+      "Sem benchmark internacional; extremos descritos com critério (maior e menor submercado)."
+     ],
+     "problemas": [
+      "A faixa do PLD é histórico nominal completo, sem sazonalidade nem regime de limites, embora a Inicial descreva a página de PLD como percentil do mesmo mês e semana por regime.",
+      "O 'limite regulatório agregado' do DEC (10,87 h, construído pelo projeto; não há limite nacional) fica ao lado de 9,33 h sem dizer que 25,7% dos conjuntos excederam o próprio limite.",
+      "A tarifa de referência é mediana sem ponderação; 20 cooperativas com tarifa nova vigente em 30/09 ficaram de fora por defasagem de captura e o cartão não diz o motivo.",
+      "A faixa da EAR em % da capacidade não menciona que a EAR máxima mudou ao longo de 2001 a 2025 (o projeto registra variação de cerca de 19%)."
+     ],
+     "justificativa": "Referências sazonais e por janela bem construídas e verificadas. Pesam a faixa nominal e sem regime do PLD, o limite agregado de DEC sem dispersão e a tarifa mediana com cobertura reduzida por defasagem de captura."
+    },
+    "G": {
+     "nota": 7.5,
+     "evidencia": [
+      "DEC de 2025 no arquivo primário da ANEEL (parquet de 05/10/2026, 37.795 conjuntos mês): apurado 9,334 h; soma de todas as parcelas 17,200 h; expurgado 7,87 h (emergência 5,87; dia crítico 1,70; externa 0,24; ONS 0,06), 46% do total.",
+      "O HTML da página não contém 'apurado' nem 'expurgo'; a página de Qualidade traz 'O número não inclui as interrupções que a regra exclui do apurado' (qualidade.ts, linha 219).",
+      "Perdas: numerador igual ao SAMP primário (90.355.796 MWh); denominador 612,65 TWh contra 632 TWh de injetada publicada (14,75% contra cerca de 14,3%).",
+      "PLD, EAR, carga, térmica e rede refeitos em CSV e em arquivos primários do ONS (EAR de 28/09 61,62%; intercâmbio NE para SE 5.184,38 MWmed e 30 dias 4.841,90): valores corretos para a captura, unidades e universos coerentes."
+     ],
+     "atendidos": [
+      "Unidades separadas e corretas (R$/MWh, % da EAR máxima, % da MLT, MWmed); PLD declarado como média de 24 horas e não tarifa.",
+      "Componentes que não são medição (carga: previsto desde 01/03/2021, estimado desde 29/04/2023; MMGD na solar do balanço) identificados na frase.",
+      "Ausência como 'sem dado' na tabela e campo vazio no CSV (conferido nas 90 linhas).",
+      "Revisões entre capturas medidas, com regra própria (58 revisões materiais em 29/09/2026, conferidas em sintese_revisoes.csv).",
+      "Sinal do fluxo e ausência de inferência de congestionamento declarados."
+     ],
+     "problemas": [
+      "O cartão de continuidade diz que cada consumidor 'ficou 9,33 h sem energia' sem informar que o DEC apurado exclui 7,87 h de interrupções expurgadas (bloqueio: ressalva essencial escondida).",
+      "Perdas 14,7% usa denominador 'injetada de referência' (energia requerida em 47 de 51) sem dizer; com a injetada publicada seria cerca de 14,3%.",
+      "A EAR de 28/09 aparece como 61,6% nos cartões e 61,7 na tabela dos 90 dias por arredondamento duplo (7 de 88 linhas com o último algarismo errado).",
+      "O fluxo diário por fronteira é líquido e esconde reversões (S para SE em 28/09: 849 MWmed líquidos com 11 das 24 horas no sentido contrário).",
+      "A legenda 'alerta acima de 24 horas' do piso do PLD é impossível: a condição é 24 horas."
+     ],
+     "justificativa": "Números corretos nas verificações primárias, com unidades e naturezas bem separadas. Mas o DEC apurado é apresentado como tempo sem energia, escondendo 7,87 h expurgadas; o denominador de perdas e o arredondamento da EAR também falham."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "25 fichas 'Comprove este número' abertas no navegador: fonte, arquivo, sha256, fórmula, numerador e denominador, testes, reprodução e citação; DEC, perdas, tarifa e Tarifa Social reproduzidos nos arquivos primários.",
+      "Exportações do navegador: 90 linhas e 14 colunas iguais a sintese_multiplos.csv (0 divergências); tabelas de regras e de valores iguais aos CSV e à gold.",
+      "A tabela 'Últimos episódios' tem 42 linhas (até 5 por regra) com rodapé '42 de 42', enquanto o CSV oferecido tem 78 episódios.",
+      "sintese_regras_diario.csv aparece como reprovado (3.099 linhas) no relatório do pipeline; é falso positivo (lido como CSV: 20.981 linhas de 8 colunas) e a coluna estado usa A, o, ponto e hífen."
+     ],
+     "atendidos": [
+      "Reconstrução do número da fonte à apresentação em cada frase, com versão, snapshot e sha256.",
+      "Fórmulas, pesos, exclusões e cobertura nas fichas (DEC, tarifa).",
+      "Quatro CSV com dicionário de colunas em arquivos.json.",
+      "Doze controles do painel aprovados e frases refeitas a partir dos valores.",
+      "Histórico de revisões entre capturas com 3.057 referências e 58 materiais."
+     ],
+     "problemas": [
+      "O cartão (61,6) e a tabela (61,7) divergem para o mesmo dia por arredondamento duplo; os testes comparam com a gold, não com o texto exibido.",
+      "11 das 14 golds lidas e as 25 fichas têm '+alterado' e há 8 versões de código; a ficha avisa que a reprodução pode diferir.",
+      "O CSV das regras está marcado como reprovado pelo validador (falso positivo por ponto e vírgula entre aspas) e documentado como 'lido durante a escrita'; a legenda dos estados não fica junto do link.",
+      "O corte de 5 episódios por regra não é declarado na tabela."
+     ],
+     "justificativa": "Rastreio forte e verificado: fichas completas, exportações iguais aos CSV e números refeitos nas fontes primárias. Descontam cartão e tabela da EAR divergentes, código '+alterado', CSV de regras reprovado por falso positivo e tabela de episódios truncada."
+    },
+    "L": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: 0 erros de console, 0 falhas de rede, 0 violações do axe e sem rolagem horizontal; HTML de 540 KB bruto (85 KB com gzip) e nenhum dado extra no carregamento; fichas e tabelas pesadas lidas sob demanda.",
+      "Pipeline: frase refeita que difere vira stub e mantém a publicação anterior; 12 controles aprovados; testes rodam antes do commit (atualizar-energia.yml).",
+      "energia-visao.test.ts compara células com as golds de origem nos últimos 10 dias e limita o HTML a 600 KB; não compara cartão com tabela (61,6 e 61,7 passam).",
+      "Protocolo de laboratório documentado (DECISOES D11, ESPECIFICACAO) e teto de 9,0 sem dado de campo."
+     ],
+     "atendidos": [
+      "Janela comum de 30, 60 e 90 dias atualiza as cinco tabelas e o texto da janela sem erro de console (testado no navegador).",
+      "Gate de publicação por stub, sentinela e testes.",
+      "Carga proporcional à tarefa: nada além do HTML no carregamento."
+     ],
+     "problemas": [
+      "Só laboratório; sem LCP, INP e CLS de campo.",
+      "O relatório de validação do pipeline marca como reprovado um CSV baixável desta página e a publicação segue, sem corrigir o validador.",
+      "O teste de paridade não cobre o arredondamento exibido entre cartão e tabela.",
+      "Golds de 33 h de idade (hidrologia, PLD, rede) lidas junto de outras de 5 h; a EAR de 29/09 já existia na mesma publicação."
+     ],
+     "justificativa": "Medições limpas e gate de publicação real. Rebaixam o CSV baixável reprovado por validador com falso positivo, o teste de paridade que deixa passar 61,6 contra 61,7 e golds de idades diferentes, além da medida só de laboratório."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "ressalva essencial escondida",
+     "descricao": "P006, cartão Continuidade do fornecimento: a frase diz que cada consumidor 'ficou 9,33 h sem energia (ano de 2025)'. É o DEC apurado, que exclui por regra as interrupções de emergência, dia crítico, origem externa e ONS. A soma de todas as parcelas é 17,20 h; o excluído é 7,87 h (46%). A página não informa isso em nenhum nível.",
+     "evidencia": "ANEEL, indicadores coletivos de continuidade 2020 a 2029 (parquet de 05/10/2026), 2025: DEC apurado 9,3343 h (DEC igual a DECIP mais DECIND em 100% dos 37.795 conjuntos mês) e soma das parcelas 17,2004 h; mesma conta em qualidade.json (dec_todas_parcelas 17,2). Busca por 'apurad' e 'expurg' no HTML da Visão geral: zero ocorrências. A página de Qualidade acrescenta a ressalva (src/lib/energia/qualidade.ts, linha 219)."
+    }
+   ],
+   "achados": [
+    {
+     "id": "vg_dec_apurado_sem_expurgo",
+     "gravidade": "alta",
+     "criterios": [
+      "G",
+      "F",
+      "H"
+     ],
+     "onde": "P006, cartão Continuidade do fornecimento (Entender, Analisar e ficha Comprove)",
+     "descricao": "O DEC apurado de 9,33 h é descrito como tempo sem energia; todas as parcelas somam 17,20 h e o apurado exclui 7,87 h (emergência 5,87; dia crítico 1,70; externa 0,24; ONS 0,06). Só a ficha chama o número de 'apurado', e nenhum texto explica o que isso exclui.",
+     "sugestao": "Escrever 'DEC apurado, sem X h de interrupções expurgadas pela regra', mostrar o total de todas as origens e levar a ressalva ao verbete de DEC da Inicial."
+    },
+    {
+     "id": "vg_ear_arredondamento_duplo",
+     "gravidade": "media",
+     "criterios": [
+      "H",
+      "L"
+     ],
+     "onde": "P005, cartão e tabela 'Dados do gráfico em tabela' da água, 28/09/2026",
+     "descricao": "O cartão e o texto dizem 61,6% (hidrologia.json, 61,6473 arredondado uma vez; ONS hoje 61,62). A tabela do mesmo gráfico mostra 61,7 porque recebe 61,65 (duas casas) e arredonda de novo. Em 7 das 88 linhas de EAR o último algarismo da tabela está errado (06/07, 22/07, 31/07, 21/08, 10/09, 14/09 e 28/09). O CSV traz 61,65.",
+     "sugestao": "Gerar a coluna a partir do valor sem arredondar ou formatar uma só vez, e testar cartão contra tabela na casa exibida."
+    },
+    {
+     "id": "vg_perdas_denominador_referencia",
+     "gravidade": "media",
+     "criterios": [
+      "F",
+      "G",
+      "H"
+     ],
+     "onde": "P006, cartão Perdas na distribuição e ficha Comprove",
+     "descricao": "O 14,7% usa 'energia injetada de referência' de 612,65 TWh; em 47 das 51 concessionárias é energia requerida ou mista, e não a injetada publicada (632,05 TWh), com a qual a taxa é cerca de 14,3%. Cartão e ficha não explicam; a ficha registra 'nenhuma reconciliação por outro caminho'.",
+     "sugestao": "Nomear o denominador, mostrar as duas taxas ou a diferença e registrar reconciliação com publicação da ANEEL."
+    },
+    {
+     "id": "vg_dec_limite_agregado",
+     "gravidade": "media",
+     "criterios": [
+      "F",
+      "E"
+     ],
+     "onde": "P006, cartão Continuidade, complemento 'Limite regulatório agregado do DEC'",
+     "descricao": "O limite de 10,87 h é média dos limites dos conjuntos ponderada pelas UC médias, feita pelo projeto; não há limite nacional. Em 2025, 810 de 3.146 conjuntos (25,7%; 23% das UC) ficaram acima do próprio limite e o DEC por conjunto vai de 0,01 a 102,73 h. Nada disso aparece no cartão.",
+     "sugestao": "Explicar o agregado, mostrar a parcela de conjuntos acima do limite e quartis, com ligação a Qualidade."
+    },
+    {
+     "id": "vg_pld_faixa_sem_regime",
+     "gravidade": "media",
+     "criterios": [
+      "F"
+     ],
+     "onde": "P004, frase de PLD; P005, painel Preço (faixa de 61,07 a 225,70 R$/MWh)",
+     "descricao": "'Faixa central, percentil 60,3' e a faixa cinza usam todas as médias diárias nominais de 2021 a 2026, sem sazonalidade, misturando regimes de piso e teto e inflação. A Inicial descreve a página de PLD como percentil do mesmo mês e semana por regime de limites.",
+     "sugestao": "Usar a referência sazonal por regime da página de PLD ou dizer na frase que a faixa mistura regimes."
+    },
+    {
+     "id": "vg_tarifa_referencia_data_captura",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "P006, cartão Tarifa residencial de referência",
+     "descricao": "A data de referência (30/09/2026) é o dia em que 20 cooperativas trocam de tarifa; o arquivo capturado nesse dia ainda não trazia a nova vigência e elas ficaram fora (81 de 101 com tarifa no dia). Com o arquivo da ANEEL de 08/10/2026 a mediana é 814,24 R$/MWh (0,8142 R$/kWh), p25 742,54 e p75 909,98, e 200 kWh custam R$ 162,85; o cartão mostra 821,18, 759,75, 903,29 e R$ 164,24. O motivo da cobertura de 81 de 115 só está na ficha.",
+     "sugestao": "Escolher data com cobertura completa ou declarar no cartão as distribuidoras com tarifa nova no dia que ficaram fora."
+    },
+    {
+     "id": "vg_episodios_tabela_truncada",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "P007, tabela 'Últimos episódios de alerta'",
+     "descricao": "A tabela lista até 5 episódios por regra (42 linhas) e o rodapé diz '42 de 42 linhas'; o CSV 'Episódios de alerta das regras' tem 78, e a tabela de regras mostra, por exemplo, 16 episódios de carga extrema contra 5 listados. O corte não é declarado.",
+     "sugestao": "Declarar 'últimos 5 por regra' com o total, ou listar todos."
+    },
+    {
+     "id": "vg_csv_regras_reprovado",
+     "gravidade": "media",
+     "criterios": [
+      "L",
+      "H"
+     ],
+     "onde": "Download 'Estados diários das regras desde 2021 (CSV)' e relatório de validação (publicacao.json)",
+     "descricao": "O validador marca sintese_regras_diario.csv como reprovado (3.099 linhas com colunas a mais). É falso positivo: o campo detalhe tem ponto e vírgula entre aspas; lido como CSV, são 20.981 linhas de 8 colunas. O documento dados.md atribui a falha a leitura durante a escrita. A coluna estado usa A, o, ponto e hífen e a legenda está só em arquivos.json.",
+     "sugestao": "Corrigir o validador para ler aspas, rever a explicação em dados.md e pôr a legenda junto do link."
+    },
+    {
+     "id": "vg_datas_entre_modulos",
+     "gravidade": "baixa",
+     "criterios": [
+      "G",
+      "H"
+     ],
+     "onde": "P004 e P005, datas de referência de EAR, ENA, carga, térmica e rede",
+     "descricao": "Esses painéis estão em 28/09/2026 (golds de 33 h de idade), enquanto Minha região, da mesma publicação, traz a EAR de 29/09/2026. O ONS já havia publicado 29/09 e a captura é anterior. A frase diz 'fonte em dia' com 3 dias de defasagem até o processamento, acima da tolerância de 2 dias da cadência diária, medida na data da captura.",
+     "sugestao": "Regerar as golds na mesma execução ou declarar a diferença de data entre páginas."
+    },
+    {
+     "id": "vg_rede_liquido_esconde_reversao",
+     "gravidade": "baixa",
+     "criterios": [
+      "E",
+      "G"
+     ],
+     "onde": "P005, painel Rede e frase de Rede",
+     "descricao": "O fluxo diário por fronteira é média líquida de 24 horas. No arquivo do ONS, em 28/09/2026, S para SE ficou em 849 MWmed líquidos com 11 das 24 horas no sentido contrário (soma de 1.070 MWmed de SE para S) e N para SE teve 7 horas no sentido contrário. O painel diz 'fluxo médio' sem avisar das reversões.",
+     "sugestao": "Dizer 'saldo líquido do dia' e ligar à página Rede, que traz os dois sentidos."
+    },
+    {
+     "id": "vg_pld_piso_limiar",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "P007, regra 'PLD no piso o dia inteiro', valor avaliado",
+     "descricao": "A regra mostra '14 horas (alerta acima de 24 horas)'; como o dia tem 24 horas, 'acima de 24' nunca ocorre. A condição é igual a 24 horas.",
+     "sugestao": "Escrever 'alerta com 24 horas'."
+    },
+    {
+     "id": "vg_ear_capacidade_base",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "P005, painel Água, faixa p10 a p90 em % da EAR máxima",
+     "descricao": "A faixa compara 25 anos em % da capacidade máxima de cada época; o projeto registra variação de cerca de 19% dessa capacidade entre 2001 e 2025 e trata o caso no módulo Água (faixa em MWmês ao lado), mas a Visão geral não avisa.",
+     "sugestao": "Citar a mudança de capacidade na referência do painel."
+    }
+   ],
+   "nao_verificado": [
+    "PLD contra a CCEE: o download da CCEE respondeu HTTP 403 em 09/10/2026; conferi coerência interna dos CSV e os limites de 2026 por reportagens que citam o Despacho ANEEL 3.850/2025.",
+    "Valores de 2026 contra publicações oficiais em PDF do ONS e da CCEE.",
+    "Texto das hipóteses fixas das regras (a caixa de destaques está vazia nesta publicação).",
+    "Causa das revisões da carga (revisão da fonte ou captura parcial).",
+    "Desempenho em campo e leitor de tela."
+   ]
+  }
+ },
+ "achados_entre_paginas": [
+  "Código '+alterado' nas golds: 11 das 14 lidas pela Visão geral, todas as 25 fichas dela e a ficha da Inicial, com 8 versões de código na mesma publicação; as fichas avisam que a reprodução pode diferir, os blocos do Território não explicam o sufixo.",
+  "Perdas de 14,7% (Inicial e Visão geral): o denominador 'injetada de referência' é energia requerida em 47 de 51 concessionárias; com a injetada publicada a taxa é cerca de 14,3%. A explicação existe em Perdas e Território, não nos cartões nem nas fichas.",
+  "Tarifa em 30/09/2026 (Visão geral e Território): a data de referência é o dia da captura, quando 20 cooperativas começaram tarifa nova ausente do arquivo; mediana de 821,18 no cartão contra 814,24 R$/MWh com o arquivo de 08/10 da ANEEL.",
+  "Tarifa Social com bases e meses diferentes: UC do SCS em mai/2025 (conjunto atrasado) ao lado de faturas da CDE em mar/2026, na Visão geral e no Território, com o mês do SCS ausente de cabeçalhos.",
+  "Datas de referência diferentes na mesma publicação: EAR em 28/09 na Visão geral e em 29/09 no Território, porque as golds foram geradas em momentos distintos (33 h de diferença).",
+  "DEC apurado sem a ressalva dos expurgos na Inicial (verbete) e na Visão geral (número); só o Território e a Qualidade avisam. Em 2025 o apurado exclui 7,87 h dos 17,20 h.",
+  "Rótulos de totalidade em listas parciais: '42 de 42 linhas' em tabela que limita a 5 episódios por regra (CSV tem 78) e '5.482 provados' com 139 de prova parcial.",
+  "Contagens e totais sem reconciliação entre grãos: usinas por UF (13.201 no Pará) contra soma municipal (97), por contagem de registros de até 10 kW de maneira diferente em cada grão."
+ ],
+ "limites_da_avaliacao": "Não executei pipeline, testes nem build, e o repositório não traz bronze nem silver (data/energia fora do repositório). Refiz os números com os CSV publicados e com arquivos primários baixados em 09/10/2026: ONS (EAR, ENA, carga, balanço, intercâmbio, CMO), ANEEL (tarifas, continuidade, SAMP, SCS, SIGA) e IBGE (municípios). Os arquivos de hoje já trazem revisões posteriores à captura do projeto (30/09/2026), daí diferenças de até 0,4 p.p. na ENA de 30 dias e 0,04% na carga, que não tratei como erro. A CCEE bloqueou o download do PLD (HTTP 403), o cedoc da ANEEL também (403) e a camada 24 da EPE exigiu token: o PLD e os limites de 2026 foram conferidos só por coerência interna dos CSV e por reportagens que citam o Despacho ANEEL 3.850/2025. A Lei 14.300/2022 foi lida no texto da Câmara; o glossário do ONS e o PRODIST não foram abertos (ENA e expurgos conferidos por fontes secundárias e pelo dicionário de indicadores da ANEEL). Não li o prompt de implementação nem a seção 'cobertura mínima' citada no prompt do avaliador (não consta em INVENTARIO.md); julguei E pela rubrica, pela tarefa de cada página e por visoes.json. Usei um Chromium headless a 1440 px para interações e downloads; não testei leitor de tela, dispositivos reais nem desempenho em campo (a medida de laboratório não é experiência real). As capturas de tela foram consultadas só para mapa e gráficos. Arquivos temporários ficaram em saida/tmp_tecnico_u01."
+}

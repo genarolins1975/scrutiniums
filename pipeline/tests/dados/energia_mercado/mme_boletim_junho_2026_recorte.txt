@@ -1,0 +1,98 @@
+   DDOS/SNEE/MME                             Boletim Mensal de Monitoramento do Sistema Elétrico Brasileiro – Junho de 2026
+
+
+
+                       Consumo de energia elétrica: estratificação por ambiente de contratação
+
+                                     Valor Mensal                                    Acumulado 12 meses
+                                                                                                                           Participação
+  Ambiente de                                  Evolução anual
+                       jun/25       jun/26                            jul/24 a jun/25       jul/25 a jun/26   Evolução        Total
+  Contratação                                  (jun/25 a jun/26)
+                       (GWh)        (GWh)                                  (GWh)                 (GWh)          (%)             (%)
+                                                      (%)
+        ACR            24.332       24.729             1,6                 315.817             311.346          -1,4             53,5
+        ACL            20.758       21.475             3,5                 247.479             257.741           4,1             46,5
+        Total          45.090       46.203             2,5                 563.296             569.087           1,0             100
+
+Dados contabilizados até Junho de 2026.
+
+                                                                                                          Fontes dos dados: EPE e ONS.
+
+
+
+
+                                                                                                                                        16
+DDOS/SNEE/MME                                       Boletim Mensal de Monitoramento do Sistema Elétrico Brasileiro – Junho de 2026
+
+
+                                    Consumo de energia elétrica: estratificação por classe
+                                               Consumo Mensal                                          Acumulado 12 meses
+
+  Classe de Consumo                                          Evolução anual
+                                jun/25         jun/26                                  jul/24 a jun/25       jul/25 a jun/26        Evolução
+                                                             (jun/25 a jun/26)
+                                (GWh)          (GWh)                                        (GWh)                 (GWh)               (%)
+                                                                    (%)
+       Residencial              13.858         14.386                3,8                   177.356               182.912                3,1
+
+         Industrial             16.556         16.595                0,2                   199.887               198.726                -0,6
+
+        Comercial                7.982         8.420                 5,5                   103.060               104.902                1,8
+
+            Rural                2.532         2.590                 2,3                   31.221                 30.880                -1,1
+
+     Demais classes¹             4.162         4.212                 1,2                   51.772                 51.615                -0,3
+
+ Perdas e Diferenças²           10.723         11.694                9,1                   148.959               149.158                0,1
+            Total               55.813         57.898                3,7                   712.254               718.192                0,8
+
+¹ Em “Demais classes” estão consideradas Poder Público, Iluminação Pública, Serviço Público e Consumo próprio das Distribuidoras.
+² As informações “Perdas e Diferenças” são obtidas considerando o cálculo do montante de carga verificada no SEB (SIN e Sistemas Isolados), abatido
+do consumo apurado mensalmente no País (consolidação EPE).
+Considera autoprodução circulante na rede.
+Esta tabela considera os valores decorrentes de eventuais revisões de consumo.
+
+Dados contabilizados até Junho de 2026.
+Referência: https://www.epe.gov.br/pt/publicacoes-dados-abertos/publicacoes/resenha-mensal-do-mercado-de-energia-eletrica.
+
+                                                                                                               Fontes dos dados: EPE e ONS.
+
+
+
+
+          Restriçao de Operação       Suporte de Reativo   Deslocamento Hidráulico   Outros Serviços Ancilares    Resposta da demanda   Segurança Energética   Importação de Energia   Reserva Operativa
+
+
+
+                                                                                                                         Mil R$
+        Encargos¹                      jan/26         fev/26       mar/26         abr/26         mai/26           jun/26      jul/26       ago/26         set/26        out/26         nov/26        dez/26
+  Restriçao de Operação                63.245        116.286       260.872       108.276         84.534           49.259
+   RO - Constrained-On                  9.416         55.595        55.947        27.066         31.212            5.119
+   RO - Constrained-Off                46.089         44.589        79.180        29.080         45.132           33.333
+  RO - Unit Commitment                  7.741         16.102       125.745        52.130          8.190           10.807
+    Suporte de Reativo                 21.087         15.515        22.024        24.534         29.002           25.561
+ Deslocamento Hidráulico               14.634         23.771        42.039        10.863         12.987            7.153
+  Resposta da demanda                   5.859            9             81           57               -                -
+  Segurança Energética                     -             -          16.446         662               -                -
+ Outros Serviços Ancilares                 -             -              -            -               -                -
+  Importação de Energia                    -            59           3.031         220               -                -
+    Reserva Operativa                      -             -              -            -               -                -
+          Total                       104.825        155.640       344.493       144.612        126.523           81.973        0              0               0            0             0                0
+
+RO – Restrição Operativa.
+¹ As definições de todos os encargos estão descritas no Glossário do Boletim.
+
+
+
+
+                                                                                                                                                                                                               36
+DDOS/SNEE/MME                                        Boletim Mensal de Monitoramento do Sistema Elétrico Brasileiro – Junho de 2026
+
+
+
+DESEMPENHO DO SISTEMA ELÉTRICO BRASILEIRO
+Ocorrências no Sistema Elétrico Brasileiro
+Junho de 2026
+
+

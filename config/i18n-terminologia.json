@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "mensagens": {
+    "idioma.portugues": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "549939394df67d2f7d4266f62dc90d39b9eceefbfa36ba19c8c3eec634c345a2",
+      "justificativa": "Nome de idioma no seletor; não define conceito técnico de domínio."
+    },
+    "idioma.ingles": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "5d953653a202f2119d1515f0afe352174c65654dd8bf2f130a38a599b417c13d",
+      "justificativa": "Nome de idioma no seletor; não define conceito técnico de domínio."
+    },
+    "idioma.seletor": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "507b125524d9a5eda6a851192c2ea505a28090e07b858061b4e27ea6e5ccbc3e",
+      "justificativa": "Rótulo do controle de idioma; vocabulário comum de interface."
+    },
+    "traducao.portugues_apenas": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "df4a5a07bac54ca506f5035328738144f537d6c3970c2432547d2c9c412c4fda",
+      "justificativa": "Aviso de disponibilidade de idioma; vocabulário comum de interface."
+    },
+    "home.hero.titulo_inicio": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "fdabee7cc38c6411abf30f5117435541cefa7cff9dee855783daa2d3fafabcca",
+      "justificativa": "Prosa de apresentação sobre informação e conhecimento, sem definição técnica ou indicador."
+    },
+    "home.hero.titulo_destaque": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "f1fc0de00d42154757e9f0a50df72615f7cb1775a351ed04c4a7842683586450",
+      "justificativa": "Qualificação comum do conhecimento apresentado, sem categoria técnica ou classificação de indicador."
+    },
+    "acesso.criar_conta": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "366af62e66f026c26f0c0d11cdd6ba8fee3db36a440c623899dfa1a186c16484",
+      "justificativa": "Ação de criação de conta gratuita; não trata de conta contábil, bancária ou fiscal."
+    },
+    "home.hero.ja_cadastrado": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "153ff59cb9e7cc34c95ae9b04a65b4f34595674bde479520d1d7548889b5f572",
+      "justificativa": "Ação de entrada de pessoa já cadastrada; não define conceito técnico de domínio."
+    },
+    "home.hero.rotulo": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "83c00237b823b40b198fd6de136c33efe3fb2eda127877831c3eb3e3295995c8",
+      "justificativa": "Rótulo da seção que lista as coleções de dados da plataforma; coleção significa conjunto de painéis, não categoria estatística formal."
+    },
+    "home.hero.introducao": {
+      "classificacao": "vinculada",
+      "sha256_revisado": "015bb894e7f165db572f4a301997bff0080687e6875905a014651bc4cc6a2bab",
+      "referencias": [
+        {
+          "id": "credito.credito",
+          "forma": "canonica",
+          "ocorrencias": 1
+        },
+        {
+          "id": "energia.setor_eletrico",
+          "forma": "canonica",
+          "ocorrencias": 1
+        },
+        {
+          "id": "gas.gas_natural",
+          "forma": "canonica",
+          "ocorrencias": 1
+        },
+        {
+          "id": "saneamento.saneamento_basico",
+          "forma": "home_curta",
+          "ocorrencias": 1
+        },
+        {
+          "id": "servicos.servicos_publicos",
+          "forma": "canonica",
+          "ocorrencias": 1
+        },
+        {
+          "id": "fiscal.contas_publicas",
+          "forma": "home_curta",
+          "ocorrencias": 1
+        },
+        {
+          "id": "nome.uniao",
+          "forma": "canonica",
+          "ocorrencias": 1,
+          "explicacao": "na_mensagem"
+        },
+        {
+          "id": "federativo.estado",
+          "forma": "plural",
+          "ocorrencias": 1
+        },
+        {
+          "id": "estatistica.base_dados",
+          "forma": "home_oficiais_plural",
+          "ocorrencias": 1
+        },
+        {
+          "id": "estatistica.fonte_dados",
+          "forma": "home_curta",
+          "ocorrencias": 1
+        },
+        {
+          "id": "estatistica.periodo_referencia",
+          "forma": "canonica",
+          "ocorrencias": 1
+        }
+      ]
+    },
+    "home.hero.beneficio_conta": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "8faabd95471d04647eeeeb9340fa3fe8b60f55556829defab75cba8b3ec2a6dc",
+      "justificativa": "Promessa de acesso aos painéis por uma conta gratuita; não trata de conta contábil, bancária ou fiscal."
+    },
+    "home.hero.beneficio_evidencia": {
+      "classificacao": "vinculada",
+      "sha256_revisado": "1da5c77f2bfd098a0fb3becf67ad3500feafa54757550ac2e03397a0b10ca2b6",
+      "referencias": [
+        {
+          "id": "estatistica.fonte_dados",
+          "forma": "home_curta_inicial",
+          "ocorrencias": 1
+        },
+        {
+          "id": "estatistica.periodo_referencia",
+          "forma": "home_curta",
+          "ocorrencias": 1
+        }
+      ]
+    },
+    "home.hero.beneficio_gratuidade": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "75569a473da473a6ceae4030930778e8b8f16d65c118ae7d7a1ab058a2a68a67",
+      "justificativa": "Condição de gratuidade do acesso; assinatura significa contratação paga neste texto, não assinatura criptográfica."
+    },
+    "home.indice.rotulo": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "7a1de98513bf4ac7bdc3535c8aae6b18b8ab0732d93dcd785551784fe9910112",
+      "justificativa": "Nome acessível da navegação que reúne as coleções; índice significa lista de destinos, não índice estatístico ou indicador de domínio."
+    },
+    "home.indice.ilustracoes": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "d0d938b70a6ef2519e31784aba94af1f922f66e84c9f5965961e3510b80d0d36",
+      "justificativa": "Ressalva editorial sobre imagens decorativas; dados e lugares descrevem aquilo que as ilustrações não representam, sem definir categoria estatística, fonte ou recorte territorial."
+    },
+    "home.indice.paginas_tematicas": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "4dfc973eee30caa2fe77b2ed52dcfc12b09a9269f4f5389573eb77372a38254d",
+      "justificativa": "Unidade de contagem de páginas da navegação do Crédito organizadas por tema; não nomeia série, indicador financeiro ou categoria técnica do domínio."
+    },
+    "home.indice.secoes_publicadas": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "81b19b8033b2dbc9d4d50d32f05460b5876cd7e8e49805d029f1455606a02897",
+      "justificativa": "Unidade de contagem das seções disponíveis na navegação do Setor Elétrico; publicadas descreve disponibilidade editorial, sem avaliar qualidade, completude ou situação dos dados."
+    },
+    "home.indice.temas_publicados": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "5d98a36f42bcb8dfe87743c415a18aada203862df2f6ea8290dc52413e872a41",
+      "justificativa": "Unidade de contagem de temas com destino publicado na navegação da Eficiência Estatal; temas organiza o conteúdo e não traduz o nome de uma dimensão estatística ou medida de desempenho."
+    },
+    "home.indice.capitulos_com_dados": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "e510d30d294d9276ee204a38aff7da40151396311dff2d4ae3c7534acdabf691",
+      "justificativa": "Unidade editorial compartilhada pelas contagens de capítulos de Contas Públicas Federais e Saneamento; com dados conserva o critério de disponibilidade já aplicado e não promete completude nem define uma medida estatística de cobertura."
+    },
+    "home.indice.unidades_federacao": {
+      "classificacao": "vinculada",
+      "sha256_revisado": "9cb4277b6b18971fe307638aa0f015b565536fd659b24290fa5fde27e89d4878",
+      "referencias": [
+        {
+          "id": "federativo.unidades_federacao",
+          "forma": "canonica",
+          "ocorrencias": 1
+        }
+      ]
+    },
+    "home.indice.paginas_por_pergunta": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "85e097dcb45eff3a54ccfdba540d14e6cfe810a411249a47403e253ca04c6cd4",
+      "justificativa": "Unidade de organização das páginas do Gás Natural em torno de perguntas; não descreve questionário de pesquisa, variável estatística ou divisão numérica por perguntas."
+    },
+    "home.indice.contagem_parcial": {
+      "classificacao": "sem_termos_tecnicos",
+      "sha256_revisado": "9ba313dfc70904a2795a44aebd6cff4d2ac68b66fc93e889a8ae8554606c44e1",
+      "justificativa": "Conectivo comum entre a quantidade publicada e o total de capítulos, recebidos pelos dois placeholders preservados; não calcula proporção, percentual ou indicador e não fixa nenhuma quantidade no catálogo."
+    }
+  }
+}

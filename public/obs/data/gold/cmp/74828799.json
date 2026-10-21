@@ -1,7 +1,7 @@
 {
  "cod": "74828799",
  "nome": "NOVO BANCO CONTINENTAL S.A. - BANCO MÚLTIPLO",
- "sr": "S4",
+ "sr": null,
  "tcb": "B1",
  "porte_quartil": "P4",
  "nivel": "instituição individual",
@@ -546,7 +546,7 @@
    "202606": 0.0
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00",
+ "gerado_em": "2026-10-21T16:18:29+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
@@ -559,7 +559,7 @@
    {
     "cod": "19468242",
     "nome": "ZOOP TECNOLOGIA & INSTITUICAO DE PAGAMENTO S.A.",
-    "sr": "S5",
+    "sr": null,
     "ativo_brl": 5601766851.63
    },
    {
@@ -577,13 +577,13 @@
    {
     "cod": "09464032",
     "nome": "MIDWAY S.A. - CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
-    "sr": "S4",
+    "sr": null,
     "ativo_brl": 5910371198.24
    },
    {
     "cod": "27351731",
-    "nome": "REALIZE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
-    "sr": "S4",
+    "nome": "REALIZE SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
+    "sr": null,
     "ativo_brl": 6127059058.03
    },
    {

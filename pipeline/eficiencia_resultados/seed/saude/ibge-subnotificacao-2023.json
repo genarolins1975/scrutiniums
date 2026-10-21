@@ -1,0 +1,1046 @@
+{
+  "version": "ibge-registration-scope-2023-v1",
+  "reference_year": 2023,
+  "retrieved_at": "2026-10-12",
+  "scope": "Context only; not correction factors for the 2021-2023 municipal infant rates",
+  "sources": [
+    {
+      "url": "https://ftp.ibge.gov.br/Estatisticas_Vitais/Estimativas_sub_registro_nascimentos/2023/xlsx/01nascidosvivos_xlsx_20260610.zip",
+      "sha256": "8cc2a7a8cef6ff38d95e908ae7d84db94aad771503c211f562f8eaff7a097e06"
+    },
+    {
+      "url": "https://ftp.ibge.gov.br/Estatisticas_Vitais/Estimativas_sub_registro_nascimentos/2023/xlsx/02obitos_xlsx_20260610.zip",
+      "sha256": "ecf46db72b69f778f6ac8e4a68e207a8dd4bba012a4daeb10f2fefeba4761397"
+    },
+    {
+      "url": "https://ftp.ibge.gov.br/Estatisticas_Vitais/Estimativas_sub_registro_nascimentos/2023/xlsx/indice_tabelas_sub_registro_2023_20260610.xlsx",
+      "sha256": "dfdf2ff928ecacbd9f107b3fe10c0ee47f3871298cbb4916abffe6085b7262d5"
+    }
+  ],
+  "tables": [
+    {
+      "archive": "01nascidosvivos_xlsx_20260610.zip",
+      "member": "Tabela 1.2.xlsx",
+      "member_sha256": "3d2ed71df669712bfd96ab74c5c7d2c9dc83365f77154e45e61e6c596d85663c",
+      "sheet": "Tabela 1.2",
+      "title": "Tabela 1.2 - Total estimado e percentual de sub-registro/subnotificação de nascidos vivos, segundo Município de residência da mãe - 2023.",
+      "headers": [
+        "Código da Unidade da Federação de residência da mãe",
+        "Unidade da Federação de residência da mãe",
+        "Código do Município de residência da mãe",
+        "Município de residência da mãe",
+        "Total estimado de nascidos vivos",
+        "Percentual de \nsub-registro de nascidos vivos \n(IBGE)(1)",
+        "Percentual de subnotificação de nascidos vivos \n(Ministério da Saúde)"
+      ],
+      "scope": "municipality_live_births",
+      "rows": [
+        {
+          "row": 19,
+          "values": [
+            11,
+            "Rondônia",
+            1100205,
+            "Porto Velho",
+            6645.13,
+            0.634,
+            0.4835
+          ]
+        },
+        {
+          "row": 69,
+          "values": [
+            12,
+            "Acre",
+            1200401,
+            "Rio Branco",
+            5154.35,
+            2.9752,
+            0.4142
+          ]
+        },
+        {
+          "row": 114,
+          "values": [
+            13,
+            "Amazonas",
+            1302603,
+            "Manaus",
+            33556.9,
+            3.0155,
+            0.1159
+          ]
+        },
+        {
+          "row": 141,
+          "values": [
+            14,
+            "Roraima",
+            1400100,
+            "Boa Vista",
+            7878.34,
+            2.1241,
+            0.6517
+          ]
+        },
+        {
+          "row": 172,
+          "values": [
+            15,
+            "Pará",
+            1501402,
+            "Belém",
+            14799.33,
+            1.5766,
+            0.3468
+          ]
+        },
+        {
+          "row": 306,
+          "values": [
+            16,
+            "Amapá",
+            1600303,
+            "Macapá",
+            7595.46,
+            4.5483,
+            0.5064
+          ]
+        },
+        {
+          "row": 446,
+          "values": [
+            17,
+            "Tocantins",
+            1721000,
+            "Palmas",
+            5037.2,
+            0.7583,
+            0.1826
+          ]
+        },
+        {
+          "row": 638,
+          "values": [
+            21,
+            "Maranhão",
+            2111300,
+            "São Luís",
+            13057.65,
+            1.4983,
+            0.5717
+          ]
+        },
+        {
+          "row": 885,
+          "values": [
+            22,
+            "Piauí",
+            2211001,
+            "Teresina",
+            11185.7,
+            1.6781,
+            1.0165
+          ]
+        },
+        {
+          "row": 952,
+          "values": [
+            23,
+            "Ceará",
+            2304400,
+            "Fortaleza",
+            29223.19,
+            1.3592,
+            0.4318
+          ]
+        },
+        {
+          "row": 1166,
+          "values": [
+            24,
+            "Rio Grande do Norte",
+            2408102,
+            "Natal",
+            9162.34,
+            0.7568,
+            0.1674
+          ]
+        },
+        {
+          "row": 1340,
+          "values": [
+            25,
+            "Paraíba",
+            2507507,
+            "João Pessoa",
+            10831.41,
+            11.0642,
+            0.1699
+          ]
+        },
+        {
+          "row": 1599,
+          "values": [
+            26,
+            "Pernambuco",
+            2611606,
+            "Recife",
+            17083.98,
+            1.0359,
+            0.392
+          ]
+        },
+        {
+          "row": 1699,
+          "values": [
+            27,
+            "Alagoas",
+            2704302,
+            "Maceió",
+            12986.17,
+            0.7406,
+            0.6867
+          ]
+        },
+        {
+          "row": 1757,
+          "values": [
+            28,
+            "Sergipe",
+            2800308,
+            "Aracaju",
+            7287.13,
+            1.621,
+            0.1252
+          ]
+        },
+        {
+          "row": 2165,
+          "values": [
+            29,
+            "Bahia",
+            2927408,
+            "Salvador",
+            25851.82,
+            0.3126,
+            0.6994
+          ]
+        },
+        {
+          "row": 2312,
+          "values": [
+            31,
+            "Minas Gerais",
+            3106200,
+            "Belo Horizonte",
+            23505.18,
+            0.6645,
+            0.5794
+          ]
+        },
+        {
+          "row": 3177,
+          "values": [
+            32,
+            "Espírito Santo",
+            3205309,
+            "Vitória",
+            3711.08,
+            0.4873,
+            0.137
+          ]
+        },
+        {
+          "row": 3245,
+          "values": [
+            33,
+            "Rio de Janeiro",
+            3304557,
+            "Rio de Janeiro",
+            62654.48,
+            0.802,
+            0.0997
+          ]
+        },
+        {
+          "row": 3832,
+          "values": [
+            35,
+            "São Paulo",
+            3550308,
+            "São Paulo",
+            128661.23,
+            0.2784,
+            0.0367
+          ]
+        },
+        {
+          "row": 4008,
+          "values": [
+            41,
+            "Paraná",
+            4106902,
+            "Curitiba",
+            18003.08,
+            0.1226,
+            0.1004
+          ]
+        },
+        {
+          "row": 4401,
+          "values": [
+            42,
+            "Santa Catarina",
+            4205407,
+            "Florianópolis",
+            5961.02,
+            0.1513,
+            0.1346
+          ]
+        },
+        {
+          "row": 4934,
+          "values": [
+            43,
+            "Rio Grande do Sul",
+            4314902,
+            "Porto Alegre",
+            13543.01,
+            0.3176,
+            0.0444
+          ]
+        },
+        {
+          "row": 5125,
+          "values": [
+            50,
+            "Mato Grosso do Sul",
+            5002704,
+            "Campo Grande",
+            11829.46,
+            0.2913,
+            0.063
+          ]
+        },
+        {
+          "row": 5222,
+          "values": [
+            51,
+            "Mato Grosso",
+            5103403,
+            "Cuiabá",
+            9441.4,
+            0.6715,
+            1.2011
+          ]
+        },
+        {
+          "row": 5420,
+          "values": [
+            52,
+            "Goiás",
+            5208707,
+            "Goiânia",
+            17491.14,
+            0.2924,
+            0.1437
+          ]
+        }
+      ]
+    },
+    {
+      "archive": "02obitos_xlsx_20260610.zip",
+      "member": "Tabela 2.2.xlsx",
+      "member_sha256": "e8816b9db1331acaf320e54ed128897535a660294046ecd3529387a46e4fc33f",
+      "sheet": "Tabela 2.2",
+      "title": "Tabela 2.2 - Total estimado e percentual de sub-registro/subnotificação de óbitos, segundo Município de residência do falecido - 2023.",
+      "headers": [
+        "Código da Unidade da Federação de residência do falecido",
+        "Unidade da Federação de residência do falecido",
+        "Código do Município de residência do falecido",
+        "Município de residência do falecido",
+        "Total estimado de óbitos",
+        "Percentual de \nsub-registro de óbitos \n(IBGE)(1)",
+        "Percentual de subnotificação de óbitos \n(Ministério da Saúde)"
+      ],
+      "scope": "municipality_all_age_deaths",
+      "rows": [
+        {
+          "row": 19,
+          "values": [
+            11,
+            "Rondônia",
+            1100205,
+            "Porto Velho",
+            2868.16,
+            1.3654,
+            0.7379
+          ]
+        },
+        {
+          "row": 69,
+          "values": [
+            12,
+            "Acre",
+            1200401,
+            "Rio Branco",
+            2164.24,
+            10.7771,
+            3.2918
+          ]
+        },
+        {
+          "row": 114,
+          "values": [
+            13,
+            "Amazonas",
+            1302603,
+            "Manaus",
+            12183.84,
+            4.0942,
+            0.2449
+          ]
+        },
+        {
+          "row": 141,
+          "values": [
+            14,
+            "Roraima",
+            1400100,
+            "Boa Vista",
+            2179.55,
+            2.0441,
+            1.9523
+          ]
+        },
+        {
+          "row": 172,
+          "values": [
+            15,
+            "Pará",
+            1501402,
+            "Belém",
+            8881.14,
+            17.6119,
+            0.3731
+          ]
+        },
+        {
+          "row": 306,
+          "values": [
+            16,
+            "Amapá",
+            1600303,
+            "Macapá",
+            2537.37,
+            18.932,
+            1.5518
+          ]
+        },
+        {
+          "row": 446,
+          "values": [
+            17,
+            "Tocantins",
+            1721000,
+            "Palmas",
+            1319.28,
+            1.4613,
+            0.4002
+          ]
+        },
+        {
+          "row": 638,
+          "values": [
+            21,
+            "Maranhão",
+            2111300,
+            "São Luís",
+            6377.46,
+            16.4088,
+            4.4761
+          ]
+        },
+        {
+          "row": 885,
+          "values": [
+            22,
+            "Piauí",
+            2211001,
+            "Teresina",
+            5311.72,
+            13.4743,
+            1.4067
+          ]
+        },
+        {
+          "row": 952,
+          "values": [
+            23,
+            "Ceará",
+            2304400,
+            "Fortaleza",
+            16509.24,
+            2.4607,
+            0.7465
+          ]
+        },
+        {
+          "row": 1166,
+          "values": [
+            24,
+            "Rio Grande do Norte",
+            2408102,
+            "Natal",
+            5417.69,
+            7.8758,
+            1.1017
+          ]
+        },
+        {
+          "row": 1340,
+          "values": [
+            25,
+            "Paraíba",
+            2507507,
+            "João Pessoa",
+            5186.3,
+            10.6299,
+            1.2977
+          ]
+        },
+        {
+          "row": 1599,
+          "values": [
+            26,
+            "Pernambuco",
+            2611606,
+            "Recife",
+            13835,
+            0.3398,
+            0.8963
+          ]
+        },
+        {
+          "row": 1699,
+          "values": [
+            27,
+            "Alagoas",
+            2704302,
+            "Maceió",
+            6747.19,
+            2.1222,
+            1.1737
+          ]
+        },
+        {
+          "row": 1757,
+          "values": [
+            28,
+            "Sergipe",
+            2800308,
+            "Aracaju",
+            3837.34,
+            7.3577,
+            0.8167
+          ]
+        },
+        {
+          "row": 2165,
+          "values": [
+            29,
+            "Bahia",
+            2927408,
+            "Salvador",
+            18193.26,
+            0.7764,
+            0.617
+          ]
+        },
+        {
+          "row": 2312,
+          "values": [
+            31,
+            "Minas Gerais",
+            3106200,
+            "Belo Horizonte",
+            18174.74,
+            0.7524,
+            0.3122
+          ]
+        },
+        {
+          "row": 3177,
+          "values": [
+            32,
+            "Espírito Santo",
+            3205309,
+            "Vitória",
+            2355.17,
+            0.6015,
+            0.2618
+          ]
+        },
+        {
+          "row": 3245,
+          "values": [
+            33,
+            "Rio de Janeiro",
+            3304557,
+            "Rio de Janeiro",
+            57390.17,
+            0.1205,
+            0.0717
+          ]
+        },
+        {
+          "row": 3832,
+          "values": [
+            35,
+            "São Paulo",
+            3550308,
+            "São Paulo",
+            82407.97,
+            0.2342,
+            1.1164
+          ]
+        },
+        {
+          "row": 4008,
+          "values": [
+            41,
+            "Paraná",
+            4106902,
+            "Curitiba",
+            12006.21,
+            0.5848,
+            0.2183
+          ]
+        },
+        {
+          "row": 4401,
+          "values": [
+            42,
+            "Santa Catarina",
+            4205407,
+            "Florianópolis",
+            3096.21,
+            2.9783,
+            0.5883
+          ]
+        },
+        {
+          "row": 4934,
+          "values": [
+            43,
+            "Rio Grande do Sul",
+            4314902,
+            "Porto Alegre",
+            12251.37,
+            0.2234,
+            0.2071
+          ]
+        },
+        {
+          "row": 5125,
+          "values": [
+            50,
+            "Mato Grosso do Sul",
+            5002704,
+            "Campo Grande",
+            6438.34,
+            0.2383,
+            0.1451
+          ]
+        },
+        {
+          "row": 5222,
+          "values": [
+            51,
+            "Mato Grosso",
+            5103403,
+            "Cuiabá",
+            4057.34,
+            1.6103,
+            0.5259
+          ]
+        },
+        {
+          "row": 5420,
+          "values": [
+            52,
+            "Goiás",
+            5208707,
+            "Goiânia",
+            9380.45,
+            0.8576,
+            0.5058
+          ]
+        }
+      ]
+    },
+    {
+      "archive": "02obitos_xlsx_20260610.zip",
+      "member": "Tabela 2.9.xlsx",
+      "member_sha256": "5373b23a01bc17971c486c5e3ffc588fde963e9dc1abebb774d8b04e5d8727a2",
+      "sheet": "Tabela 2.9",
+      "title": "Tabela 2.9 - Total estimado e percentual de sub-registro/subnotificação de óbitos de menores de 1 ano de idade, segundo Grandes Regiões e Unidades da Federação de residência do falecido - 2023.",
+      "headers": [
+        "Grandes Regiões e Unidades da Federação de residência do falecido",
+        "Total estimado de óbitos de menores de 1 ano de idade",
+        "Percentual de \nsub-registro de óbitos de menores de 1 ano de idade \n(IBGE)(1)",
+        "Percentual de subnotificação de óbitos de menores de 1 ano de idade \n(Ministério da Saúde)"
+      ],
+      "scope": "state_infant_deaths",
+      "rows": [
+        {
+          "row": 3,
+          "values": [
+            "Brasil",
+            32531.76,
+            11.4342,
+            1.55774
+          ]
+        },
+        {
+          "row": 4,
+          "values": [
+            "Norte",
+            4585.23,
+            27.0048,
+            1.48812
+          ]
+        },
+        {
+          "row": 5,
+          "values": [
+            "Rondônia",
+            297.06,
+            2.3779,
+            1.03134
+          ]
+        },
+        {
+          "row": 6,
+          "values": [
+            "Acre",
+            256.11,
+            9.8052,
+            3.94839
+          ]
+        },
+        {
+          "row": 7,
+          "values": [
+            "Amazonas",
+            1216.97,
+            16.9247,
+            0.90129
+          ]
+        },
+        {
+          "row": 8,
+          "values": [
+            "Roraima",
+            321.6,
+            33.7694,
+            3.29715
+          ]
+        },
+        {
+          "row": 9,
+          "values": [
+            "Pará",
+            1915.25,
+            38.7024,
+            1.21375
+          ]
+        },
+        {
+          "row": 10,
+          "values": [
+            "Amapá",
+            277.58,
+            42.3586,
+            2.73007
+          ]
+        },
+        {
+          "row": 11,
+          "values": [
+            "Tocantins",
+            300.66,
+            10.8632,
+            0.88516
+          ]
+        },
+        {
+          "row": 12,
+          "values": [
+            "Nordeste",
+            9908.81,
+            18.8197,
+            1.95591
+          ]
+        },
+        {
+          "row": 13,
+          "values": [
+            "Maranhão",
+            1494.81,
+            43.0026,
+            3.33194
+          ]
+        },
+        {
+          "row": 14,
+          "values": [
+            "Piauí",
+            633,
+            33.0175,
+            0.63213
+          ]
+        },
+        {
+          "row": 15,
+          "values": [
+            "Ceará",
+            1336.43,
+            13.95,
+            2.50161
+          ]
+        },
+        {
+          "row": 16,
+          "values": [
+            "Rio Grande do Norte",
+            450.9,
+            20.16,
+            2.63961
+          ]
+        },
+        {
+          "row": 17,
+          "values": [
+            "Paraíba",
+            677.29,
+            10.8209,
+            1.2238
+          ]
+        },
+        {
+          "row": 18,
+          "values": [
+            "Pernambuco",
+            1564.23,
+            9.9877,
+            1.3573
+          ]
+        },
+        {
+          "row": 19,
+          "values": [
+            "Alagoas",
+            636.03,
+            14.3127,
+            1.26304
+          ]
+        },
+        {
+          "row": 20,
+          "values": [
+            "Sergipe",
+            546.31,
+            17.0802,
+            1.88733
+          ]
+        },
+        {
+          "row": 21,
+          "values": [
+            "Bahia",
+            2569.8,
+            12.5224,
+            1.82122
+          ]
+        },
+        {
+          "row": 22,
+          "values": [
+            "Sudeste",
+            11502.8,
+            2.9627,
+            1.43268
+          ]
+        },
+        {
+          "row": 23,
+          "values": [
+            "Minas Gerais",
+            2688.38,
+            4.7755,
+            1.87416
+          ]
+        },
+        {
+          "row": 24,
+          "values": [
+            "Espírito Santo",
+            617.45,
+            3.3118,
+            1.6922
+          ]
+        },
+        {
+          "row": 25,
+          "values": [
+            "Rio de Janeiro",
+            2390.03,
+            1.2148,
+            0.71272
+          ]
+        },
+        {
+          "row": 26,
+          "values": [
+            "São Paulo",
+            5806.93,
+            2.8058,
+            1.49701
+          ]
+        },
+        {
+          "row": 27,
+          "values": [
+            "Sul",
+            3590.81,
+            2.6683,
+            0.80245
+          ]
+        },
+        {
+          "row": 28,
+          "values": [
+            "Paraná",
+            1528.21,
+            1.3224,
+            0.86436
+          ]
+        },
+        {
+          "row": 29,
+          "values": [
+            "Santa Catarina",
+            883.37,
+            4.4572,
+            0.83476
+          ]
+        },
+        {
+          "row": 30,
+          "values": [
+            "Rio Grande do Sul",
+            1179.23,
+            3.0724,
+            0.69801
+          ]
+        },
+        {
+          "row": 31,
+          "values": [
+            "Centro-Oeste",
+            2935.11,
+            6.1363,
+            1.43455
+          ]
+        },
+        {
+          "row": 32,
+          "values": [
+            "Mato Grosso do Sul",
+            554.25,
+            5.2774,
+            1.66897
+          ]
+        },
+        {
+          "row": 33,
+          "values": [
+            "Mato Grosso",
+            833.85,
+            9.9361,
+            1.90106
+          ]
+        },
+        {
+          "row": 34,
+          "values": [
+            "Goiás",
+            1141.94,
+            5.7744,
+            1.04559
+          ]
+        },
+        {
+          "row": 35,
+          "values": [
+            "Distrito Federal",
+            405.06,
+            0.5093,
+            1.24996
+          ]
+        },
+        {
+          "row": 36,
+          "values": [
+            "Ignorado",
+            9,
+            0,
+            "."
+          ]
+        },
+        {
+          "row": 37,
+          "values": [
+            "Fontes: 1. IBGE, Diretoria de Pesquisas, Coordenação de População e Indicadores Sociais, Estatísticas do Registro Civil 2023. 2. Ministério da Saúde, Sistema de Informações sobre Mortalidade 2023.",
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "row": 39,
+          "values": [
+            "(1) Para estimar o total de eventos é necessário incorporar todos os óbitos  incluindo aqueles presentes na base do Registro Civil e que não são objeto de pareamento como os casos: Registro realizado a partir da declaração de Testemunhas Qualificadas para os quais não foram emitidas Declarações de Óbito; Registro por Sentença Judicial; Registro administrativo da FUNAI;  Registro realizado a partir da declaração de Testemunhas para os quais não foram emitidas Declarações de Óbito.",
+            null,
+            null,
+            null
+          ]
+        }
+      ]
+    }
+  ],
+  "table_index": [
+    "Tabela 1.1 - Total estimado e percentual de sub-registro/subnotificação de nascidos vivos, segundo Grandes Regiões e Unidades da Federação de residência da mãe - 2023.",
+    "Tabela 1.2 - Total estimado e percentual de sub-registro/subnotificação de nascidos vivos, segundo Município de residência da mãe - 2023.",
+    "Tabela 1.3 - Total estimado e percentual de sub-registro/subnotificação de nascidos vivos, segundo a idade da mãe na ocasião do parto - 2023.",
+    "Tabela 1.4 - Total estimado e percentual de sub-registro/subnotificação de nascidos vivos, segundo o local de nascimento - 2023.",
+    "Tabela 1.5 - Total estimado e percentual de sub-registro/subnotificação de nascidos vivos, segundo as classes de percentual de Municípios em ordem crescente da proporção de mulheres de 25 a 39 anos de idade com ensino médio completo - 2023.",
+    "Tabela 1.6 - Total estimado e percentual de sub-registro/subnotificação de nascidos vivos, segundo as classes de percentual de Municípios em ordem crescente da densidade populacional - 2023.",
+    "Tabela 1.7 - Total estimado e percentual de sub-registro/subnotificação de nascidos vivos, segundo a idade da mãe na ocasião do parto e Grandes Regiões e Unidades da Federação de residência da mãe - 2023.",
+    "Tabela 2.1 - Total estimado e percentual de sub-registro/subnotificação de óbitos, segundo Grandes Regiões e Unidades da Federação de residência do falecido - 2023.",
+    "Tabela 2.2 - Total estimado e percentual de sub-registro/subnotificação de óbitos, segundo Município de residência do falecido - 2023.",
+    "Tabela 2.3 - Total estimado e percentual de sub-registro/subnotificação de óbitos, segundo o grupo de idade do falecido - 2023.",
+    "Tabela 2.4 - Total estimado e percentual de sub-registro/subnotificação de óbitos, segundo o local de ocorrência do óbito - 2023.",
+    "Tabela 2.5 - Total estimado e percentual de sub-registro/subnotificação de óbitos, segundo as classes de percentual de Municípios em ordem crescente da proporção de pessoas de 25 a 39 anos de idade com ensino médio completo - 2023.",
+    "Tabela 2.6 - Total estimado e percentual de sub-registro/subnotificação de óbitos, segundo as classes de percentual de Municípios em ordem crescente da densidade populacional - 2023.",
+    "Tabela 2.7 - Total estimado e percentual de sub-registro/subnotificação de óbitos, segundo natureza do óbito - 2023.",
+    "Tabela 2.8 - Total estimado e percentual de sub-registro/subnotificação de óbitos, segundo o sexo do falecido - 2023.",
+    "Tabela 2.9 - Total estimado e percentual de sub-registro/subnotificação de óbitos de menores de 1 ano de idade, segundo Grandes Regiões e Unidades da Federação de residência do falecido - 2023.",
+    "Tabela 2.10 - Total estimado e percentual de sub-registro/subnotificação de óbitos de mulheres em idade fértil (de 10 a 49 anos), segundo Grandes Regiões e Unidades da Federação de residência da falecida - 2023.",
+    "Tabela 2.11 - Total estimado e percentual de sub-registro/subnotificação de óbitos de maiores de 80 anos de idade, segundo Grandes Regiões e Unidades da Federação de residência do falecido - 2023.",
+    "Tabela 2.12 - Total estimado e percentual de sub-registro/subnotificação de óbitos de menores de 5 anos de idade, segundo Grandes Regiões e Unidades da Federação de residência do falecido - 2023.",
+    "Tabela 2.13 - Total estimado e percentual de sub-registro/subnotificação de óbitos, segundo Grandes Regiões e Unidades da Federação de residência, Sexo e Grupos de idade do falecido - 2023."
+  ]
+}

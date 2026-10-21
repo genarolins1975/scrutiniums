@@ -1,3 +1,4 @@
+import "./materializar-trabalho-renda.mjs";
 import { readFileSync, writeFileSync, statSync } from "node:fs";
 
 /**

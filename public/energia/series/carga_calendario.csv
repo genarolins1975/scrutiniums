@@ -1,0 +1,330 @@
+data;nome;categoria;base_legal;dia_semana
+2003-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;quarta-feira
+2003-03-03;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2003-03-04;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2003-03-05;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2003-04-18;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2003-04-21;Tiradentes;feriado_nacional;lei_10607_2002;segunda-feira
+2003-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;quinta-feira
+2003-06-19;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2003-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;domingo
+2003-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;domingo
+2003-11-02;Finados;feriado_nacional;lei_10607_2002;domingo
+2003-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;sábado
+2003-12-25;Natal;feriado_nacional;lei_10607_2002;quinta-feira
+2004-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;quinta-feira
+2004-02-23;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2004-02-24;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2004-02-25;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2004-04-09;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2004-04-21;Tiradentes;feriado_nacional;lei_10607_2002;quarta-feira
+2004-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;sábado
+2004-06-10;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2004-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;terça-feira
+2004-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;terça-feira
+2004-11-02;Finados;feriado_nacional;lei_10607_2002;terça-feira
+2004-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;segunda-feira
+2004-12-25;Natal;feriado_nacional;lei_10607_2002;sábado
+2005-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;sábado
+2005-02-07;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2005-02-08;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2005-02-09;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2005-03-25;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2005-04-21;Tiradentes;feriado_nacional;lei_10607_2002;quinta-feira
+2005-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;domingo
+2005-05-26;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2005-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;quarta-feira
+2005-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;quarta-feira
+2005-11-02;Finados;feriado_nacional;lei_10607_2002;quarta-feira
+2005-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;terça-feira
+2005-12-25;Natal;feriado_nacional;lei_10607_2002;domingo
+2006-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;domingo
+2006-02-27;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2006-02-28;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2006-03-01;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2006-04-14;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2006-04-21;Tiradentes;feriado_nacional;lei_10607_2002;sexta-feira
+2006-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;segunda-feira
+2006-06-15;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2006-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;quinta-feira
+2006-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;quinta-feira
+2006-11-02;Finados;feriado_nacional;lei_10607_2002;quinta-feira
+2006-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;quarta-feira
+2006-12-25;Natal;feriado_nacional;lei_10607_2002;segunda-feira
+2007-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;segunda-feira
+2007-02-19;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2007-02-20;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2007-02-21;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2007-04-06;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2007-04-21;Tiradentes;feriado_nacional;lei_10607_2002;sábado
+2007-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;terça-feira
+2007-06-07;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2007-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;sexta-feira
+2007-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;sexta-feira
+2007-11-02;Finados;feriado_nacional;lei_10607_2002;sexta-feira
+2007-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;quinta-feira
+2007-12-25;Natal;feriado_nacional;lei_10607_2002;terça-feira
+2008-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;terça-feira
+2008-02-04;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2008-02-05;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2008-02-06;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2008-03-21;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2008-04-21;Tiradentes;feriado_nacional;lei_10607_2002;segunda-feira
+2008-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;quinta-feira
+2008-05-22;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2008-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;domingo
+2008-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;domingo
+2008-11-02;Finados;feriado_nacional;lei_10607_2002;domingo
+2008-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;sábado
+2008-12-25;Natal;feriado_nacional;lei_10607_2002;quinta-feira
+2009-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;quinta-feira
+2009-02-23;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2009-02-24;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2009-02-25;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2009-04-10;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2009-04-21;Tiradentes;feriado_nacional;lei_10607_2002;terça-feira
+2009-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;sexta-feira
+2009-06-11;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2009-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;segunda-feira
+2009-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;segunda-feira
+2009-11-02;Finados;feriado_nacional;lei_10607_2002;segunda-feira
+2009-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;domingo
+2009-12-25;Natal;feriado_nacional;lei_10607_2002;sexta-feira
+2010-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;sexta-feira
+2010-02-15;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2010-02-16;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2010-02-17;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2010-04-02;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2010-04-21;Tiradentes;feriado_nacional;lei_10607_2002;quarta-feira
+2010-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;sábado
+2010-06-03;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2010-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;terça-feira
+2010-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;terça-feira
+2010-11-02;Finados;feriado_nacional;lei_10607_2002;terça-feira
+2010-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;segunda-feira
+2010-12-25;Natal;feriado_nacional;lei_10607_2002;sábado
+2011-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;sábado
+2011-03-07;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2011-03-08;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2011-03-09;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2011-04-21;Tiradentes;feriado_nacional;lei_10607_2002;quinta-feira
+2011-04-22;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2011-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;domingo
+2011-06-23;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2011-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;quarta-feira
+2011-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;quarta-feira
+2011-11-02;Finados;feriado_nacional;lei_10607_2002;quarta-feira
+2011-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;terça-feira
+2011-12-25;Natal;feriado_nacional;lei_10607_2002;domingo
+2012-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;domingo
+2012-02-20;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2012-02-21;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2012-02-22;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2012-04-06;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2012-04-21;Tiradentes;feriado_nacional;lei_10607_2002;sábado
+2012-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;terça-feira
+2012-06-07;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2012-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;sexta-feira
+2012-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;sexta-feira
+2012-11-02;Finados;feriado_nacional;lei_10607_2002;sexta-feira
+2012-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;quinta-feira
+2012-12-25;Natal;feriado_nacional;lei_10607_2002;terça-feira
+2013-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;terça-feira
+2013-02-11;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2013-02-12;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2013-02-13;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2013-03-29;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2013-04-21;Tiradentes;feriado_nacional;lei_10607_2002;domingo
+2013-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;quarta-feira
+2013-05-30;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2013-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;sábado
+2013-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;sábado
+2013-11-02;Finados;feriado_nacional;lei_10607_2002;sábado
+2013-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;sexta-feira
+2013-12-25;Natal;feriado_nacional;lei_10607_2002;quarta-feira
+2014-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;quarta-feira
+2014-03-03;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2014-03-04;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2014-03-05;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2014-04-18;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2014-04-21;Tiradentes;feriado_nacional;lei_10607_2002;segunda-feira
+2014-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;quinta-feira
+2014-06-19;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2014-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;domingo
+2014-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;domingo
+2014-11-02;Finados;feriado_nacional;lei_10607_2002;domingo
+2014-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;sábado
+2014-12-25;Natal;feriado_nacional;lei_10607_2002;quinta-feira
+2015-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;quinta-feira
+2015-02-16;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2015-02-17;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2015-02-18;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2015-04-03;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2015-04-21;Tiradentes;feriado_nacional;lei_10607_2002;terça-feira
+2015-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;sexta-feira
+2015-06-04;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2015-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;segunda-feira
+2015-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;segunda-feira
+2015-11-02;Finados;feriado_nacional;lei_10607_2002;segunda-feira
+2015-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;domingo
+2015-12-25;Natal;feriado_nacional;lei_10607_2002;sexta-feira
+2016-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;sexta-feira
+2016-02-08;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2016-02-09;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2016-02-10;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2016-03-25;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2016-04-21;Tiradentes;feriado_nacional;lei_10607_2002;quinta-feira
+2016-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;domingo
+2016-05-26;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2016-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;quarta-feira
+2016-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;quarta-feira
+2016-11-02;Finados;feriado_nacional;lei_10607_2002;quarta-feira
+2016-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;terça-feira
+2016-12-25;Natal;feriado_nacional;lei_10607_2002;domingo
+2017-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;domingo
+2017-02-27;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2017-02-28;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2017-03-01;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2017-04-14;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2017-04-21;Tiradentes;feriado_nacional;lei_10607_2002;sexta-feira
+2017-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;segunda-feira
+2017-06-15;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2017-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;quinta-feira
+2017-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;quinta-feira
+2017-11-02;Finados;feriado_nacional;lei_10607_2002;quinta-feira
+2017-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;quarta-feira
+2017-12-25;Natal;feriado_nacional;lei_10607_2002;segunda-feira
+2018-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;segunda-feira
+2018-02-12;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2018-02-13;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2018-02-14;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2018-03-30;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2018-04-21;Tiradentes;feriado_nacional;lei_10607_2002;sábado
+2018-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;terça-feira
+2018-05-31;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2018-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;sexta-feira
+2018-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;sexta-feira
+2018-11-02;Finados;feriado_nacional;lei_10607_2002;sexta-feira
+2018-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;quinta-feira
+2018-12-25;Natal;feriado_nacional;lei_10607_2002;terça-feira
+2019-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;terça-feira
+2019-03-04;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2019-03-05;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2019-03-06;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2019-04-19;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2019-04-21;Tiradentes;feriado_nacional;lei_10607_2002;domingo
+2019-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;quarta-feira
+2019-06-20;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2019-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;sábado
+2019-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;sábado
+2019-11-02;Finados;feriado_nacional;lei_10607_2002;sábado
+2019-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;sexta-feira
+2019-12-25;Natal;feriado_nacional;lei_10607_2002;quarta-feira
+2020-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;quarta-feira
+2020-02-24;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2020-02-25;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2020-02-26;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2020-04-10;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2020-04-21;Tiradentes;feriado_nacional;lei_10607_2002;terça-feira
+2020-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;sexta-feira
+2020-06-11;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2020-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;segunda-feira
+2020-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;segunda-feira
+2020-11-02;Finados;feriado_nacional;lei_10607_2002;segunda-feira
+2020-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;domingo
+2020-12-25;Natal;feriado_nacional;lei_10607_2002;sexta-feira
+2021-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;sexta-feira
+2021-02-15;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2021-02-16;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2021-02-17;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2021-04-02;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2021-04-21;Tiradentes;feriado_nacional;lei_10607_2002;quarta-feira
+2021-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;sábado
+2021-06-03;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2021-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;terça-feira
+2021-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;terça-feira
+2021-11-02;Finados;feriado_nacional;lei_10607_2002;terça-feira
+2021-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;segunda-feira
+2021-12-25;Natal;feriado_nacional;lei_10607_2002;sábado
+2022-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;sábado
+2022-02-28;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2022-03-01;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2022-03-02;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2022-04-15;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2022-04-21;Tiradentes;feriado_nacional;lei_10607_2002;quinta-feira
+2022-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;domingo
+2022-06-16;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2022-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;quarta-feira
+2022-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;quarta-feira
+2022-11-02;Finados;feriado_nacional;lei_10607_2002;quarta-feira
+2022-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;terça-feira
+2022-12-25;Natal;feriado_nacional;lei_10607_2002;domingo
+2023-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;domingo
+2023-02-20;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2023-02-21;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2023-02-22;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2023-04-07;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2023-04-21;Tiradentes;feriado_nacional;lei_10607_2002;sexta-feira
+2023-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;segunda-feira
+2023-06-08;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2023-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;quinta-feira
+2023-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;quinta-feira
+2023-11-02;Finados;feriado_nacional;lei_10607_2002;quinta-feira
+2023-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;quarta-feira
+2023-12-25;Natal;feriado_nacional;lei_10607_2002;segunda-feira
+2024-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;segunda-feira
+2024-02-12;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2024-02-13;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2024-02-14;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2024-03-29;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2024-04-21;Tiradentes;feriado_nacional;lei_10607_2002;domingo
+2024-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;quarta-feira
+2024-05-30;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2024-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;sábado
+2024-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;sábado
+2024-11-02;Finados;feriado_nacional;lei_10607_2002;sábado
+2024-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;sexta-feira
+2024-11-20;Dia Nacional de Zumbi e da Consciência Negra;feriado_nacional;lei_14759_2023;quarta-feira
+2024-12-25;Natal;feriado_nacional;lei_10607_2002;quarta-feira
+2025-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;quarta-feira
+2025-03-03;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2025-03-04;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2025-03-05;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2025-04-18;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2025-04-21;Tiradentes;feriado_nacional;lei_10607_2002;segunda-feira
+2025-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;quinta-feira
+2025-06-19;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2025-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;domingo
+2025-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;domingo
+2025-11-02;Finados;feriado_nacional;lei_10607_2002;domingo
+2025-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;sábado
+2025-11-20;Dia Nacional de Zumbi e da Consciência Negra;feriado_nacional;lei_14759_2023;quinta-feira
+2025-12-25;Natal;feriado_nacional;lei_10607_2002;quinta-feira
+2026-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;quinta-feira
+2026-02-16;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2026-02-17;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2026-02-18;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2026-04-03;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2026-04-21;Tiradentes;feriado_nacional;lei_10607_2002;terça-feira
+2026-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;sexta-feira
+2026-06-04;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2026-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;segunda-feira
+2026-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;segunda-feira
+2026-11-02;Finados;feriado_nacional;lei_10607_2002;segunda-feira
+2026-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;domingo
+2026-11-20;Dia Nacional de Zumbi e da Consciência Negra;feriado_nacional;lei_14759_2023;sexta-feira
+2026-12-25;Natal;feriado_nacional;lei_10607_2002;sexta-feira
+2027-01-01;Confraternização Universal;feriado_nacional;lei_10607_2002;sexta-feira
+2027-02-08;Carnaval (segunda-feira);ponto_facultativo;portaria_anual;segunda-feira
+2027-02-09;Carnaval (terça-feira);ponto_facultativo;portaria_anual;terça-feira
+2027-02-10;Quarta-feira de Cinzas (até as 14h);ponto_facultativo;portaria_anual;quarta-feira
+2027-03-26;Sexta-feira da Paixão;paixao;lei_9093_1995;sexta-feira
+2027-04-21;Tiradentes;feriado_nacional;lei_10607_2002;quarta-feira
+2027-05-01;Dia do Trabalho;feriado_nacional;lei_10607_2002;sábado
+2027-05-27;Corpus Christi;ponto_facultativo;portaria_anual;quinta-feira
+2027-09-07;Independência do Brasil;feriado_nacional;lei_10607_2002;terça-feira
+2027-10-12;Nossa Senhora Aparecida;feriado_nacional;lei_6802_1980;terça-feira
+2027-11-02;Finados;feriado_nacional;lei_10607_2002;terça-feira
+2027-11-15;Proclamação da República;feriado_nacional;lei_10607_2002;segunda-feira
+2027-11-20;Dia Nacional de Zumbi e da Consciência Negra;feriado_nacional;lei_14759_2023;sábado
+2027-12-25;Natal;feriado_nacional;lei_10607_2002;sábado

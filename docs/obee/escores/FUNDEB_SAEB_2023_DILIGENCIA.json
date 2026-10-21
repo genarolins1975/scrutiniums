@@ -1,0 +1,264 @@
+{
+  "review_date": "2026-10-12",
+  "role": "DILIGENCIA_NAO_ESCORE",
+  "sources": [
+    {
+      "url": "https://download.inep.gov.br/fundeb/2025/resultados_dicionario_de_dados.xlsx",
+      "bytes": 22392,
+      "sha256": "9d27caf273ccc8c30ce9dfb150ad600a3c59073354c7bf4761b886c61d22382e"
+    },
+    {
+      "url": "https://download.inep.gov.br/fundeb/2025/resultados_indicador_aprendizagem_vaar_fundeb_financeiro_2025_v5.xlsx",
+      "bytes": 1625071,
+      "sha256": "daf719049e68c2315eb5acd7950c2f4285489a7e9c2717dbc62060540a562055"
+    }
+  ],
+  "dictionary_variables": [
+    "ID_ALUNO",
+    "ID_SAEB",
+    "ID_UF",
+    "ID_MUNICIPIO",
+    "ID_DEPENDENCIA_ADM",
+    "ID_SERIE",
+    "PROFICIENCIA_MT_SAEB",
+    "PESO_ALUNO_MT",
+    "PROFICIENCIA_LP_SAEB",
+    "PESO_ALUNO_LP",
+    "CO_ENTE",
+    "PESO_ALUNO",
+    "PPI_IMPUT",
+    "NSE_GRUPO"
+  ],
+  "municipality_semantics": "Código IBGE nesta base específica; não altera as máscaras do arquivo TS_ESCOLA.",
+  "network_semantics": "2 = Estadual; 3 = Municipal.",
+  "dictionary_has_school_location": false,
+  "results_sheet": "Resultados Aprend VAAR-FUNDEB",
+  "results_header_row": 9,
+  "results_headers": {
+    "A": "CO_ENTE",
+    "B": "NO_ENTE",
+    "C": "ANO_FUNDEB",
+    "D": "ADEQ_SAEB_19",
+    "E": "ADEQ_SAEB_23",
+    "F": "APROV_CENSO_19",
+    "G": "APROV_CENSO_23",
+    "H": "IND_19",
+    "I": "IND_23",
+    "J": "IAD",
+    "K": "IAD_AJ",
+    "L": "IAD_ER",
+    "M": "INAD",
+    "N": "IPSAEB_19",
+    "O": "IPSAEB_23",
+    "P": "INE_S_19",
+    "Q": "INE_R_19",
+    "R": "INDEQUI_19",
+    "S": "INE_S_23",
+    "T": "INE_R_23",
+    "U": "INDEQUI_23",
+    "V": "VAAR_APREND_23",
+    "W": "DELTA_VAAR_APREND",
+    "X": "MELHOROU_VAAR_APREND",
+    "Y": "hab_5_cond",
+    "Z": "recebe_VAAR_Aprend",
+    "AA": "motivo_recebimento_ou_nao"
+  },
+  "entity_rows": 5595,
+  "capital_rows": 26,
+  "observations": [
+    {
+      "municipality_ibge": "2800308",
+      "name": "Aracaju",
+      "excel_row": 1790,
+      "ipsaeb_2023": 0.9558,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "3106200",
+      "name": "Belo Horizonte",
+      "excel_row": 2345,
+      "ipsaeb_2023": 0.8975,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "1501402",
+      "name": "Belém",
+      "excel_row": 206,
+      "ipsaeb_2023": 0.9026,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "1400100",
+      "name": "Boa Vista",
+      "excel_row": 175,
+      "ipsaeb_2023": 0.9755,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "5002704",
+      "name": "Campo Grande",
+      "excel_row": 5158,
+      "ipsaeb_2023": 0.8875,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "5103403",
+      "name": "Cuiabá",
+      "excel_row": 5255,
+      "ipsaeb_2023": 0.911,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "4106902",
+      "name": "Curitiba",
+      "excel_row": 4041,
+      "ipsaeb_2023": 0.9326,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "4205407",
+      "name": "Florianópolis",
+      "excel_row": 4434,
+      "ipsaeb_2023": 0.8818,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "2304400",
+      "name": "Fortaleza",
+      "excel_row": 986,
+      "ipsaeb_2023": 0.9688,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "5208707",
+      "name": "Goiânia",
+      "excel_row": 5453,
+      "ipsaeb_2023": 0.941,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "2507507",
+      "name": "João Pessoa",
+      "excel_row": 1374,
+      "ipsaeb_2023": 0.8986,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "1600303",
+      "name": "Macapá",
+      "excel_row": 340,
+      "ipsaeb_2023": 0.9702,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "2704302",
+      "name": "Maceió",
+      "excel_row": 1732,
+      "ipsaeb_2023": 0.9428,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "1302603",
+      "name": "Manaus",
+      "excel_row": 148,
+      "ipsaeb_2023": 0.9203,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "2408102",
+      "name": "Natal",
+      "excel_row": 1200,
+      "ipsaeb_2023": 0.8055,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "1721000",
+      "name": "Palmas",
+      "excel_row": 480,
+      "ipsaeb_2023": 0.924,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "4314902",
+      "name": "Porto Alegre",
+      "excel_row": 4967,
+      "ipsaeb_2023": 0.7077,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "1100205",
+      "name": "Porto Velho",
+      "excel_row": 53,
+      "ipsaeb_2023": 0.9387,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "2611606",
+      "name": "Recife",
+      "excel_row": 1632,
+      "ipsaeb_2023": 0.9227,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "1200401",
+      "name": "Rio Branco",
+      "excel_row": 103,
+      "ipsaeb_2023": 0.924,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "3304557",
+      "name": "Rio de Janeiro",
+      "excel_row": 3278,
+      "ipsaeb_2023": 0.9324,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "2927408",
+      "name": "Salvador",
+      "excel_row": 2198,
+      "ipsaeb_2023": 0.9187,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "2111300",
+      "name": "São Luís",
+      "excel_row": 672,
+      "ipsaeb_2023": 0.88,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "3550308",
+      "name": "São Paulo",
+      "excel_row": 3865,
+      "ipsaeb_2023": 0.838,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "2211001",
+      "name": "Teresina",
+      "excel_row": 919,
+      "ipsaeb_2023": 0.9145,
+      "eligible_for_current_pilot": false
+    },
+    {
+      "municipality_ibge": "3205309",
+      "name": "Vitória",
+      "excel_row": 3210,
+      "ipsaeb_2023": 0.9533,
+      "eligible_for_current_pilot": false
+    }
+  ],
+  "eligible_for_current_pilot": false,
+  "blocking_reasons": [
+    "IPSaeb municipal publicado agrega 5º e 9º anos, conforme notas do XLSX.",
+    "Não há localização urbana no dicionário revisado.",
+    "Microbase filtrada exclui estudantes sem proficiência/peso; contagem dessas linhas não constitui população elegível."
+  ],
+  "limits": [
+    "ZIP de microdados VAAR não adquirido nem inspecionado; evidências referentes aos dois XLSX.",
+    "Participação agregada não comprova representatividade do recorte municipal urbano do 5º ano.",
+    "Não unir alunos mascarados entre bases."
+  ],
+  "next_step": "Obter tabulação agregada oficial com etapa e localização; preparar especificação do pedido sem envio externo."
+}

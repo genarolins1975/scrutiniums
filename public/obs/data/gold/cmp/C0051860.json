@@ -1,7 +1,7 @@
 {
  "cod": "C0051860",
  "nome": "COMPANHIA PROVINCIA DE CREDITO IMOBILIARIO",
- "sr": "S4",
+ "sr": null,
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "conglomerado prudencial",
@@ -224,5 +224,5 @@
    "202006": 29.721188224983468
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

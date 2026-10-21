@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-24T15:25:14+00:00",
+ "gerado_em": "2026-10-21T16:18:45+00:00",
  "fontes": {
   "cadastro": {
    "nome": "BCB — Relação de instituições em funcionamento (Unicad, API Olinda)",
@@ -24,20 +24,20 @@
    "nivel": "A — lista oficial vigente, diária"
   }
  },
- "sintese": "Em 2026-09-24, 1738 sedes estavam autorizadas e em funcionamento: 166 bancos, 751 cooperativas de crédito, 193 instituições de pagamento e 149 fintechs de crédito (SCD e SEP). No IF.data, 1422 instituições e conglomerados entregaram o resumo de 1T 2026 (39 constavam da lista sem balanço entregue); nos quatro trimestres fechados, 75 códigos apareceram pela primeira vez na lista (59 instituições novas, 14 já existentes que passaram a reportar ou mudaram de código) e 50 deixaram a lista (40 fora do cadastro do BCB hoje, 7 ainda autorizadas). 23 instituições estão sob regime de resolução, 21 decretados nos últimos 12 meses.",
+ "sintese": "Em 2026-10-21, 1739 sedes estavam autorizadas e em funcionamento: 165 bancos, 750 cooperativas de crédito, 195 instituições de pagamento e 150 fintechs de crédito (SCD e SEP). No IF.data, 1422 instituições e conglomerados entregaram o resumo de 1T 2026 (39 constavam da lista sem balanço entregue); nos quatro trimestres fechados, 75 códigos apareceram pela primeira vez na lista (59 instituições novas, 14 já existentes que passaram a reportar ou mudaram de código) e 50 deixaram a lista (40 fora do cadastro do BCB hoje, 7 ainda autorizadas). 24 instituições estão sob regime de resolução, 22 decretados nos últimos 12 meses.",
  "cadastro": {
   "disponivel": true,
-  "data": "2026-09-24",
-  "total": 1738,
+  "data": "2026-10-21",
+  "total": 1739,
   "grupos": [
    {
     "grupo": "Bancos",
     "cor": "#1d4e89",
-    "n": 166,
+    "n": 165,
     "segmentos": [
      {
       "segmento": "Banco Múltiplo",
-      "n": 128
+      "n": 127
      },
      {
       "segmento": "Banco Comercial",
@@ -68,16 +68,16 @@
       "n": 1
      }
     ],
-    "share": 9.55
+    "share": 9.49
    },
    {
     "grupo": "Cooperativas de crédito",
     "cor": "#2f7d4f",
-    "n": 751,
+    "n": 750,
     "segmentos": [
      {
       "segmento": "Cooperativa de crédito (singular)",
-      "n": 719
+      "n": 717
      },
      {
       "segmento": "Cooperativa de crédito (central)",
@@ -89,38 +89,38 @@
      },
      {
       "segmento": "Cooperativa de crédito (confederação)",
-      "n": 2
+      "n": 3
      }
     ],
-    "share": 43.21
+    "share": 43.13
    },
    {
     "grupo": "Instituições de pagamento",
     "cor": "#b45309",
-    "n": 193,
+    "n": 195,
     "segmentos": [
      {
       "segmento": "Instituição de Pagamento",
-      "n": 193
+      "n": 195
      }
     ],
-    "share": 11.1
+    "share": 11.21
    },
    {
     "grupo": "Fintechs de crédito",
     "cor": "#6b46a3",
-    "n": 149,
+    "n": 150,
     "segmentos": [
      {
       "segmento": "Sociedade de Crédito Direto",
-      "n": 137
+      "n": 138
      },
      {
       "segmento": "Sociedade de Empréstimo entre Pessoas",
       "n": 12
      }
     ],
-    "share": 8.57
+    "share": 8.63
    },
    {
     "grupo": "Financeiras e crédito especializado",
@@ -168,7 +168,7 @@
       "n": 48
      }
     ],
-    "share": 11.74
+    "share": 11.73
    },
    {
     "grupo": "Fomento e desenvolvimento",
@@ -207,27 +207,27 @@
    {
     "uf": "SP",
     "regiao": "Sudeste",
-    "n": 741,
-    "bancos": 116,
-    "cooperativas": 152,
-    "ips": 135,
-    "fintechs": 80
+    "n": 745,
+    "bancos": 115,
+    "cooperativas": 151,
+    "ips": 137,
+    "fintechs": 81
    },
    {
     "uf": "MG",
     "regiao": "Sudeste",
-    "n": 220,
+    "n": 217,
     "bancos": 8,
-    "cooperativas": 161,
+    "cooperativas": 160,
     "ips": 11,
     "fintechs": 12
    },
    {
     "uf": "RS",
     "regiao": "Sul",
-    "n": 158,
+    "n": 159,
     "bancos": 7,
-    "cooperativas": 82,
+    "cooperativas": 83,
     "ips": 9,
     "fintechs": 12
    },
@@ -279,7 +279,7 @@
    {
     "uf": "ES",
     "regiao": "Sudeste",
-    "n": 28,
+    "n": 27,
     "bancos": 1,
     "cooperativas": 20,
     "ips": 0,
@@ -452,23 +452,23 @@
    {
     "regiao": "Sudeste",
     "n": 1080,
-    "cooperativas": 365,
-    "bancos": 138,
-    "share": 62.14
+    "cooperativas": 363,
+    "bancos": 137,
+    "share": 62.1
    },
    {
     "regiao": "Sul",
-    "n": 423,
-    "cooperativas": 243,
+    "n": 424,
+    "cooperativas": 244,
     "bancos": 18,
-    "share": 24.34
+    "share": 24.38
    },
    {
     "regiao": "Centro-Oeste",
     "n": 103,
     "cooperativas": 68,
     "bancos": 4,
-    "share": 5.93
+    "share": 5.92
    },
    {
     "regiao": "Nordeste",
@@ -486,27 +486,27 @@
    }
   ],
   "cooperativas": {
-   "n": 751,
+   "n": 750,
    "por_sistema": [
     {
      "sistema": "Sicoob",
      "n": 328,
-     "share": 43.68
+     "share": 43.73
     },
     {
      "sistema": "Independente ou outra central",
-     "n": 199,
-     "share": 26.5
+     "n": 197,
+     "share": 26.27
     },
     {
      "sistema": "Sicredi",
-     "n": 103,
-     "share": 13.72
+     "n": 104,
+     "share": 13.87
     },
     {
      "sistema": "Cresol",
      "n": 59,
-     "share": 7.86
+     "share": 7.87
     },
     {
      "sistema": "Unicred",
@@ -516,12 +516,12 @@
     {
      "sistema": "CrediSIS",
      "n": 14,
-     "share": 1.86
+     "share": 1.87
     },
     {
      "sistema": "Ailos",
      "n": 14,
-     "share": 1.86
+     "share": 1.87
     },
     {
      "sistema": "Uniprime",
@@ -533,12 +533,12 @@
     {
      "criterio": "Livre Admissão",
      "n": 406,
-     "share": 54.06
+     "share": 54.13
     },
     {
      "criterio": "Empregados ou Servidores",
-     "n": 226,
-     "share": 30.09
+     "n": 224,
+     "share": 29.87
     },
     {
      "criterio": "Atividade Profissional",
@@ -547,8 +547,8 @@
     },
     {
      "criterio": "não informado",
-     "n": 32,
-     "share": 4.26
+     "n": 33,
+     "share": 4.4
     },
     {
      "criterio": "Produtor Rural",
@@ -558,7 +558,7 @@
     {
      "criterio": "Critérios de Associação Mistos Outros",
      "n": 11,
-     "share": 1.46
+     "share": 1.47
     },
     {
      "criterio": "Critérios de Associação Mistos Empresários",
@@ -580,22 +580,22 @@
     {
      "categoria": "Clássica",
      "n": 506,
-     "share": 67.38
+     "share": 67.47
     },
     {
      "categoria": "Capital e Empréstimo",
-     "n": 144,
-     "share": 19.17
+     "n": 142,
+     "share": 18.93
     },
     {
      "categoria": "Plena",
      "n": 69,
-     "share": 9.19
+     "share": 9.2
     },
     {
      "categoria": "Não Informada",
-     "n": 27,
-     "share": 3.6
+     "n": 28,
+     "share": 3.73
     },
     {
      "categoria": "não informada",
@@ -605,291 +605,109 @@
    ]
   },
   "bancos": {
-   "n": 166,
+   "n": 165,
    "com_carteira_comercial": 113,
-   "sem_carteira_comercial": 38
+   "sem_carteira_comercial": 37
   },
   "historico_proprio": {
-   "desde": "2026-09-06",
+   "desde": "2026-10-15",
    "entradas": [
     {
-     "cnpj8": "42563672",
-     "nome": "PAGALEVE INSTITUICAO DE PAGAMENTO LTDA.",
-     "grupo": "Instituições de pagamento",
-     "segmento": "Instituição de Pagamento",
-     "uf": "SP",
-     "data": "2026-09-14"
-    },
-    {
-     "cnpj8": "67093727",
-     "nome": "NINE - SOCIEDADE DE CRÉDITO DIRETO S.A.",
+     "cnpj8": "65513969",
+     "nome": "HUMU SOCIEDADE DE CRÉDITO DIRETO S.A.",
      "grupo": "Fintechs de crédito",
      "segmento": "Sociedade de Crédito Direto",
      "uf": "SP",
-     "data": "2026-09-11"
-    },
-    {
-     "cnpj8": "32246162",
-     "nome": "AIBR INSTITUIÇÃO DE PAGAMENTO LTDA.",
-     "grupo": "Instituições de pagamento",
-     "segmento": "Instituição de Pagamento",
-     "uf": "SP",
-     "data": "2026-09-09"
+     "data": "2026-10-16"
     }
    ],
    "saidas": [
     {
-     "cnpj8": "18587586",
-     "nome": "EDENRED SOLUCOES DE MOBILIDADE E INSTITUICAO DE PAGAMENTO HU S.A.",
-     "grupo": "Instituições de pagamento",
-     "segmento": "Instituição de Pagamento",
-     "uf": "RS",
-     "data": "2026-09-22"
-    },
-    {
-     "cnpj8": "43561343",
-     "nome": "CRYSTAL BMC - INSTITUICAO DE PAGAMENTO LTDA.",
-     "grupo": "Instituições de pagamento",
-     "segmento": "Instituição de Pagamento",
-     "uf": "SP",
-     "data": "2026-09-22"
-    },
-    {
-     "cnpj8": "28581308",
-     "nome": "GREENPASS TECNOLOGIA E INSTITUICAO DE PAGAMENTO HUE S.A.",
-     "grupo": "Instituições de pagamento",
-     "segmento": "Instituição de Pagamento",
-     "uf": "SP",
-     "data": "2026-09-22"
-    },
-    {
-     "cnpj8": "01788147",
-     "nome": "H.COMMCOR DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
-     "grupo": "Mercado de capitais e câmbio",
-     "segmento": "Sociedade Distribuidora de TVM",
-     "uf": "SP",
-     "data": "2026-09-20"
-    },
-    {
-     "cnpj8": "18287740",
-     "nome": "CONECTA CORRETORA DE CÂMBIO LTDA.",
-     "grupo": "Mercado de capitais e câmbio",
-     "segmento": "Sociedade Corretora de Câmbio",
-     "uf": "SP",
-     "data": "2026-09-16"
-    },
-    {
-     "cnpj8": "32983165",
-     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO VALE DO CERRADO - SICREDI VALE DO CERRADO",
+     "cnpj8": "20833992",
+     "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DO CENTRO UNIVERSITÁRIO NEWTON PAIVA LTDA. - CREDIPAIVA",
      "grupo": "Cooperativas de crédito",
      "segmento": "Cooperativa de crédito (singular)",
-     "uf": "MT",
-     "data": "2026-09-09"
-    },
-    {
-     "cnpj8": "17352220",
-     "nome": "SENSO CORRETORA DE CAMBIO E VALORES MOBILIARIOS S.A",
-     "grupo": "Mercado de capitais e câmbio",
-     "segmento": "Sociedade Corretora de TVM",
-     "uf": "RJ",
-     "data": "2026-09-07"
-    },
-    {
-     "cnpj8": "03443143",
-     "nome": "AVIPAM CORRETORA DE CAMBIO LTDA",
-     "grupo": "Mercado de capitais e câmbio",
-     "segmento": "Sociedade Corretora de Câmbio",
-     "uf": "RJ",
-     "data": "2026-09-07"
+     "uf": "MG",
+     "data": "2026-10-18"
     }
    ],
    "conversoes": [],
    "contagem": [
     {
-     "data": "2026-09-06",
-     "Bancos": 166,
-     "Consórcios": 130,
-     "Cooperativas de crédito": 752,
-     "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 148,
-     "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 194,
-     "Mercado de capitais e câmbio": 208
-    },
-    {
-     "data": "2026-09-07",
-     "Bancos": 166,
-     "Consórcios": 130,
-     "Cooperativas de crédito": 752,
-     "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 148,
-     "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 194,
-     "Mercado de capitais e câmbio": 208
-    },
-    {
-     "data": "2026-09-09",
-     "Bancos": 166,
-     "Consórcios": 130,
-     "Cooperativas de crédito": 752,
-     "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 148,
-     "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 195,
-     "Mercado de capitais e câmbio": 206
-    },
-    {
-     "data": "2026-09-11",
-     "Bancos": 166,
+     "data": "2026-10-15",
+     "Bancos": 165,
      "Consórcios": 130,
      "Cooperativas de crédito": 751,
      "Financeiras e crédito especializado": 125,
      "Fintechs de crédito": 149,
      "Fomento e desenvolvimento": 20,
      "Instituições de pagamento": 195,
-     "Mercado de capitais e câmbio": 206
-    },
-    {
-     "data": "2026-09-12",
-     "Bancos": 166,
-     "Consórcios": 130,
-     "Cooperativas de crédito": 751,
-     "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 149,
-     "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 195,
-     "Mercado de capitais e câmbio": 206
-    },
-    {
-     "data": "2026-09-13",
-     "Bancos": 166,
-     "Consórcios": 130,
-     "Cooperativas de crédito": 751,
-     "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 149,
-     "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 195,
-     "Mercado de capitais e câmbio": 206
-    },
-    {
-     "data": "2026-09-14",
-     "Bancos": 166,
-     "Consórcios": 130,
-     "Cooperativas de crédito": 751,
-     "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 149,
-     "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 196,
-     "Mercado de capitais e câmbio": 206
-    },
-    {
-     "data": "2026-09-15",
-     "Bancos": 166,
-     "Consórcios": 130,
-     "Cooperativas de crédito": 751,
-     "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 149,
-     "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 196,
-     "Mercado de capitais e câmbio": 206
-    },
-    {
-     "data": "2026-09-16",
-     "Bancos": 166,
-     "Consórcios": 130,
-     "Cooperativas de crédito": 751,
-     "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 149,
-     "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 196,
-     "Mercado de capitais e câmbio": 206
-    },
-    {
-     "data": "2026-09-17",
-     "Bancos": 166,
-     "Consórcios": 130,
-     "Cooperativas de crédito": 751,
-     "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 149,
-     "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 196,
-     "Mercado de capitais e câmbio": 205
-    },
-    {
-     "data": "2026-09-18",
-     "Bancos": 166,
-     "Consórcios": 130,
-     "Cooperativas de crédito": 751,
-     "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 149,
-     "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 196,
-     "Mercado de capitais e câmbio": 205
-    },
-    {
-     "data": "2026-09-19",
-     "Bancos": 166,
-     "Consórcios": 130,
-     "Cooperativas de crédito": 751,
-     "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 149,
-     "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 196,
-     "Mercado de capitais e câmbio": 205
-    },
-    {
-     "data": "2026-09-20",
-     "Bancos": 166,
-     "Consórcios": 130,
-     "Cooperativas de crédito": 751,
-     "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 149,
-     "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 196,
-     "Mercado de capitais e câmbio": 205
-    },
-    {
-     "data": "2026-09-21",
-     "Bancos": 166,
-     "Consórcios": 130,
-     "Cooperativas de crédito": 751,
-     "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 149,
-     "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 196,
      "Mercado de capitais e câmbio": 204
     },
     {
-     "data": "2026-09-22",
-     "Bancos": 166,
+     "data": "2026-10-16",
+     "Bancos": 165,
      "Consórcios": 130,
      "Cooperativas de crédito": 751,
      "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 149,
+     "Fintechs de crédito": 150,
      "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 196,
+     "Instituições de pagamento": 195,
      "Mercado de capitais e câmbio": 204
     },
     {
-     "data": "2026-09-23",
-     "Bancos": 166,
+     "data": "2026-10-17",
+     "Bancos": 165,
      "Consórcios": 130,
      "Cooperativas de crédito": 751,
      "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 149,
+     "Fintechs de crédito": 150,
      "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 193,
+     "Instituições de pagamento": 195,
      "Mercado de capitais e câmbio": 204
     },
     {
-     "data": "2026-09-24",
-     "Bancos": 166,
+     "data": "2026-10-18",
+     "Bancos": 165,
      "Consórcios": 130,
      "Cooperativas de crédito": 751,
      "Financeiras e crédito especializado": 125,
-     "Fintechs de crédito": 149,
+     "Fintechs de crédito": 150,
      "Fomento e desenvolvimento": 20,
-     "Instituições de pagamento": 193,
+     "Instituições de pagamento": 195,
+     "Mercado de capitais e câmbio": 204
+    },
+    {
+     "data": "2026-10-19",
+     "Bancos": 165,
+     "Consórcios": 130,
+     "Cooperativas de crédito": 750,
+     "Financeiras e crédito especializado": 125,
+     "Fintechs de crédito": 150,
+     "Fomento e desenvolvimento": 20,
+     "Instituições de pagamento": 195,
+     "Mercado de capitais e câmbio": 204
+    },
+    {
+     "data": "2026-10-20",
+     "Bancos": 165,
+     "Consórcios": 130,
+     "Cooperativas de crédito": 750,
+     "Financeiras e crédito especializado": 125,
+     "Fintechs de crédito": 150,
+     "Fomento e desenvolvimento": 20,
+     "Instituições de pagamento": 195,
+     "Mercado de capitais e câmbio": 204
+    },
+    {
+     "data": "2026-10-21",
+     "Bancos": 165,
+     "Consórcios": 130,
+     "Cooperativas de crédito": 750,
+     "Financeiras e crédito especializado": 125,
+     "Fintechs de crédito": 150,
+     "Fomento e desenvolvimento": 20,
+     "Instituições de pagamento": 195,
      "Mercado de capitais e câmbio": 204
     }
    ]
@@ -934,11 +752,11 @@
     "retornos": null,
     "ausencias": null,
     "por_tcb": {
-     "N1": 109,
      "B3S": 1091,
+     "B3C": 37,
+     "N1": 109,
      "B1": 105,
      "N2": 170,
-     "B3C": 37,
      "B2": 35,
      "B4": 4
     },
@@ -954,11 +772,11 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 106,
      "B3S": 1070,
+     "B3C": 37,
+     "N1": 106,
      "B1": 105,
      "N2": 170,
-     "B3C": 37,
      "B2": 35,
      "B4": 4
     },
@@ -974,11 +792,11 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 106,
      "B3S": 1064,
+     "B3C": 37,
+     "N1": 106,
      "B1": 105,
      "N2": 160,
-     "B3C": 37,
      "B2": 34,
      "B4": 4
     },
@@ -994,11 +812,11 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 106,
      "B3S": 1057,
+     "B3C": 37,
+     "N1": 106,
      "B1": 104,
      "N2": 159,
-     "B3C": 37,
      "B2": 33,
      "B4": 4
     },
@@ -1014,11 +832,11 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 105,
      "B3S": 1050,
+     "B3C": 37,
+     "N1": 105,
      "B1": 104,
      "N2": 156,
-     "B3C": 37,
      "B2": 33,
      "B4": 4
     },
@@ -1034,11 +852,11 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 104,
      "B3S": 1043,
+     "B3C": 37,
+     "N1": 104,
      "B1": 104,
      "N2": 152,
-     "B3C": 37,
      "B2": 34,
      "B4": 4
     },
@@ -1054,11 +872,11 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 103,
      "B3S": 1034,
+     "B3C": 37,
+     "N1": 103,
      "B1": 105,
      "N2": 150,
-     "B3C": 37,
      "B2": 33,
      "B4": 4
     },
@@ -1074,11 +892,11 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 103,
      "B3S": 1014,
+     "B3C": 37,
+     "N1": 103,
      "B1": 105,
      "N2": 149,
-     "B3C": 37,
      "B2": 33,
      "B4": 4
     },
@@ -1094,11 +912,11 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 102,
      "B3S": 1000,
+     "B3C": 37,
+     "N1": 102,
      "B1": 104,
      "N2": 151,
-     "B3C": 37,
      "B2": 34,
      "B4": 4
     },
@@ -1114,11 +932,11 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 101,
      "B3S": 984,
+     "B3C": 36,
+     "N1": 101,
      "B1": 104,
      "N2": 148,
-     "B3C": 36,
      "B2": 34,
      "B4": 4
     },
@@ -1134,11 +952,11 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 102,
      "B3S": 971,
+     "B3C": 36,
+     "N1": 102,
      "B1": 104,
      "N2": 144,
-     "B3C": 36,
      "B2": 34,
      "B4": 4
     },
@@ -1154,12 +972,12 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 103,
      "B3S": 967,
+     "B3C": 37,
+     "N1": 103,
      "B1": 104,
      "N2": 144,
      "N4": 6,
-     "B3C": 37,
      "B2": 34,
      "B4": 4
     },
@@ -1175,12 +993,12 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 103,
      "B3S": 964,
+     "B3C": 37,
+     "N1": 103,
      "B1": 105,
      "N2": 143,
      "N4": 6,
-     "B3C": 37,
      "B2": 34,
      "B4": 4
     },
@@ -1196,12 +1014,12 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 102,
      "B3S": 952,
+     "B3C": 37,
+     "N1": 102,
      "B1": 103,
      "N2": 143,
      "N4": 7,
-     "B3C": 37,
      "B2": 34,
      "B4": 4
     },
@@ -1217,12 +1035,12 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 101,
      "B3S": 933,
+     "B3C": 37,
+     "N1": 101,
      "B1": 103,
      "N2": 143,
      "N4": 8,
-     "B3C": 37,
      "B2": 34,
      "B4": 4
     },
@@ -1238,12 +1056,12 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 102,
      "B3S": 921,
+     "B3C": 37,
+     "N1": 102,
      "B1": 103,
      "N2": 141,
      "N4": 10,
-     "B3C": 37,
      "B2": 34,
      "B4": 4
     },
@@ -1259,12 +1077,12 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 104,
      "B3S": 908,
+     "B3C": 36,
+     "N1": 104,
      "B1": 105,
      "N2": 137,
      "N4": 11,
-     "B3C": 36,
      "B2": 34,
      "B4": 4
     },
@@ -1280,12 +1098,12 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 106,
      "B3S": 893,
+     "B3C": 36,
+     "N1": 106,
      "B1": 105,
      "N2": 135,
      "N4": 13,
-     "B3C": 36,
      "B2": 35,
      "B4": 4
     },
@@ -1301,15 +1119,15 @@
     "retornos": 0,
     "ausencias": 3,
     "por_tcb": {
-     "N1": 107,
      "B3S": 883,
+     "B3C": 36,
+     "N1": 107,
      "B1": 105,
      "N2": 130,
      "N4": 18,
-     "B3C": 36,
      "B2": 35,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1323,15 +1141,15 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 108,
      "B3S": 872,
+     "B3C": 36,
+     "N1": 108,
      "B1": 104,
      "N2": 127,
      "N4": 18,
-     "B3C": 36,
      "B2": 34,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1345,15 +1163,15 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 109,
      "B3S": 862,
+     "B3C": 36,
+     "N1": 109,
      "B1": 105,
      "N2": 128,
      "N4": 20,
-     "B3C": 36,
      "B2": 34,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1367,15 +1185,15 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 113,
      "B3S": 857,
+     "B3C": 36,
+     "N1": 113,
      "B1": 105,
      "N2": 127,
      "N4": 22,
-     "B3C": 36,
      "B2": 34,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1389,15 +1207,15 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 123,
      "B3S": 851,
-     "B1": 103,
-     "N2": 129,
-     "N4": 24,
      "B3C": 36,
+     "N1": 123,
+     "N2": 129,
+     "B1": 103,
+     "N4": 24,
      "B2": 35,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1411,15 +1229,15 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 131,
      "B3S": 841,
-     "B1": 103,
-     "N2": 128,
-     "N4": 26,
      "B3C": 36,
+     "N1": 131,
+     "N2": 128,
+     "B1": 103,
+     "N4": 26,
      "B2": 34,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1433,15 +1251,15 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 134,
      "B3S": 834,
-     "B1": 103,
-     "N2": 126,
-     "N4": 28,
      "B3C": 36,
+     "N1": 134,
+     "N2": 126,
+     "B1": 103,
+     "N4": 28,
      "B2": 35,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1455,15 +1273,15 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 141,
      "B3S": 828,
-     "B1": 101,
-     "N2": 127,
-     "N4": 31,
      "B3C": 36,
+     "N1": 141,
+     "N2": 127,
+     "B1": 101,
+     "N4": 31,
      "B2": 35,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1477,15 +1295,15 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 145,
      "B3S": 821,
-     "B1": 103,
-     "N2": 126,
-     "N4": 33,
      "B3C": 35,
+     "N1": 145,
+     "N2": 126,
+     "B1": 103,
+     "N4": 33,
      "B2": 35,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1499,15 +1317,15 @@
     "retornos": 1,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 158,
      "B3S": 817,
-     "B1": 102,
-     "N2": 130,
-     "N4": 37,
      "B3C": 35,
+     "N1": 158,
+     "N2": 130,
+     "B1": 102,
+     "N4": 37,
      "B2": 35,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1521,15 +1339,15 @@
     "retornos": 1,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 163,
      "B3S": 815,
-     "B1": 104,
-     "N2": 128,
-     "N4": 44,
      "B3C": 35,
+     "N1": 163,
+     "N2": 128,
+     "B1": 104,
+     "N4": 44,
      "B2": 35,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1543,15 +1361,15 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 165,
      "B3S": 812,
-     "B1": 103,
-     "N2": 127,
-     "N4": 47,
      "B3C": 35,
+     "N1": 165,
+     "N2": 127,
+     "B1": 103,
+     "N4": 47,
      "B2": 34,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1565,15 +1383,15 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 170,
      "B3S": 803,
-     "B1": 102,
-     "N2": 128,
-     "N4": 55,
      "B3C": 35,
+     "N1": 170,
+     "N2": 128,
+     "B1": 102,
+     "N4": 55,
      "B2": 33,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1587,15 +1405,15 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 184,
      "B3S": 796,
-     "B1": 103,
-     "N2": 127,
-     "N4": 72,
      "B3C": 33,
+     "N1": 184,
+     "N2": 127,
+     "B1": 103,
+     "N4": 72,
      "B2": 33,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1610,14 +1428,14 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 788,
-     "B1": 102,
+     "B3C": 32,
      "N1": 190,
      "N2": 128,
+     "B1": 102,
      "N4": 83,
-     "B3C": 32,
      "B2": 33,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1632,14 +1450,14 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 784,
-     "B1": 102,
+     "B3C": 32,
      "N1": 195,
      "N2": 129,
+     "B1": 102,
      "N4": 87,
-     "B3C": 32,
      "B2": 33,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1654,14 +1472,14 @@
     "ausencias": 3,
     "por_tcb": {
      "B3S": 777,
-     "N4": 96,
-     "B1": 101,
+     "B3C": 32,
      "N1": 202,
      "N2": 133,
-     "B3C": 32,
+     "B1": 101,
+     "N4": 96,
      "B2": 33,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1676,14 +1494,14 @@
     "ausencias": 2,
     "por_tcb": {
      "B3S": 768,
-     "N4": 103,
-     "B1": 99,
+     "B3C": 32,
      "N1": 212,
      "N2": 131,
-     "B3C": 32,
+     "B1": 99,
+     "N4": 103,
      "B2": 32,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1698,14 +1516,14 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 767,
-     "N4": 114,
-     "B1": 100,
-     "N1": 214,
-     "N2": 131,
      "B3C": 32,
+     "N1": 214,
+     "N4": 114,
+     "N2": 131,
+     "B1": 100,
      "B2": 32,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1720,14 +1538,14 @@
     "ausencias": 2,
     "por_tcb": {
      "B3S": 760,
-     "N4": 125,
-     "B1": 97,
-     "N1": 218,
-     "N2": 128,
      "B3C": 31,
+     "N1": 218,
+     "N4": 125,
+     "N2": 128,
+     "B1": 97,
      "B2": 32,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1742,14 +1560,14 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 757,
-     "N4": 139,
-     "B1": 97,
-     "N1": 223,
-     "N2": 130,
      "B3C": 30,
+     "N1": 223,
+     "N4": 139,
+     "N2": 130,
+     "B1": 97,
      "B2": 31,
-     "?": 1,
-     "B4": 4
+     "B4": 4,
+     "?": 1
     },
     "provisorio": false
    },
@@ -1764,11 +1582,11 @@
     "ausencias": 7,
     "por_tcb": {
      "B3S": 753,
-     "N4": 144,
-     "B1": 98,
-     "N1": 224,
-     "N2": 133,
      "B3C": 27,
+     "N1": 224,
+     "N4": 144,
+     "N2": 133,
+     "B1": 98,
      "B2": 32,
      "B4": 4
     },
@@ -1785,11 +1603,11 @@
     "ausencias": 3,
     "por_tcb": {
      "B3S": 752,
-     "N4": 152,
-     "B1": 97,
-     "N1": 222,
-     "N2": 128,
      "B3C": 29,
+     "N1": 222,
+     "N4": 152,
+     "N2": 128,
+     "B1": 97,
      "B2": 32,
      "B4": 4
     },
@@ -1806,11 +1624,11 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 748,
-     "N4": 157,
-     "B1": 97,
-     "N1": 224,
-     "N2": 128,
      "B3C": 29,
+     "N1": 224,
+     "N4": 157,
+     "N2": 128,
+     "B1": 97,
      "B2": 31,
      "B4": 4
     },
@@ -1827,11 +1645,11 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 747,
-     "N4": 161,
-     "B1": 96,
-     "N1": 227,
-     "N2": 127,
      "B3C": 29,
+     "N1": 227,
+     "N4": 161,
+     "N2": 127,
+     "B1": 96,
      "B2": 33,
      "B4": 4
     },
@@ -1848,11 +1666,11 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 734,
-     "N4": 181,
-     "B1": 93,
-     "N1": 233,
-     "N2": 123,
      "B3C": 29,
+     "N1": 233,
+     "N4": 181,
+     "N2": 123,
+     "B1": 93,
      "B2": 33,
      "B4": 4
     },
@@ -1869,11 +1687,11 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 719,
-     "N4": 182,
-     "B1": 94,
-     "N1": 237,
-     "N2": 124,
      "B3C": 29,
+     "N1": 237,
+     "N4": 182,
+     "N2": 124,
+     "B1": 94,
      "B2": 33,
      "B4": 4
     },
@@ -1890,11 +1708,11 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 710,
-     "N4": 183,
-     "B1": 94,
-     "N1": 234,
-     "N2": 119,
      "B3C": 29,
+     "N1": 234,
+     "N4": 183,
+     "N2": 119,
+     "B1": 94,
      "B2": 33,
      "B4": 4
     },
@@ -1953,11 +1771,11 @@
   ],
   "var_4t_por_tcb": {
    "B3S": -29,
-   "N4": 25,
-   "B1": -3,
-   "N1": 13,
-   "N2": -4,
    "B3C": 0,
+   "N1": 13,
+   "N4": 25,
+   "N2": -4,
+   "B1": -3,
    "B2": 2,
    "B4": 0
   },
@@ -2159,7 +1977,7 @@
     "nome": "MERCADO BITCOIN CORRETORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
-    "uf": "MG",
+    "uf": "SP",
     "sr": "S4",
     "anomes": "202603",
     "ativo": 20198367.66,
@@ -2256,7 +2074,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202603",
     "ativo": 3606336.2,
     "provisorio": false,
@@ -2512,7 +2330,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202512",
     "ativo": 13905088.29,
     "provisorio": false,
@@ -2720,7 +2538,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "SC",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202512",
     "ativo": 3612434.64,
     "provisorio": false,
@@ -3072,7 +2890,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "RS",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202509",
     "ativo": 1107514.9,
     "provisorio": false,
@@ -3099,22 +2917,6 @@
     "leitura": "instituição nova: início de atividade em 08/2025"
    },
    {
-    "cod": "C0085520",
-    "nome": "OXY CH - PRUDENCIAL",
-    "tcb": "N1",
-    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
-    "uf": "RS",
-    "sr": "S4",
-    "anomes": "202509",
-    "ativo": null,
-    "provisorio": false,
-    "inicio_atividade": "201309",
-    "cnpj8": "18282093",
-    "entregou": false,
-    "classe": "troca_codigo",
-    "leitura": "mesma instituição: antes reportava como OXY COMPANHIA HIPOTECÁRIA (18282093)"
-   },
-   {
     "cod": "C0084820",
     "nome": "MERCADO PAGO IP - PRUDENCIAL",
     "tcb": "N1",
@@ -3136,7 +2938,7 @@
     "tcb": "B1",
     "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202509",
     "ativo": null,
     "provisorio": false,
@@ -3145,6 +2947,22 @@
     "entregou": false,
     "classe": "antiga",
     "leitura": "já existia (atividade desde 08/1967): passou a reportar ou ganhou novo código"
+   },
+   {
+    "cod": "C0085520",
+    "nome": "OXY CH - PRUDENCIAL",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "RS",
+    "sr": "S4",
+    "anomes": "202509",
+    "ativo": null,
+    "provisorio": false,
+    "inicio_atividade": "201309",
+    "cnpj8": "18282093",
+    "entregou": false,
+    "classe": "troca_codigo",
+    "leitura": "mesma instituição: antes reportava como OXY COMPANHIA HIPOTECÁRIA (18282093)"
    },
    {
     "cod": "32343119",
@@ -3488,7 +3306,7 @@
     "tcb": "N4",
     "tcb_nome": "Instituição de pagamento",
     "uf": "SP",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202503",
     "ativo": 35049116.6,
     "provisorio": false,
@@ -3792,7 +3610,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "SP",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202412",
     "ativo": 3585353.2,
     "provisorio": false,
@@ -3808,7 +3626,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "RS",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202412",
     "ativo": 3009383.19,
     "provisorio": false,
@@ -3840,7 +3658,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202412",
     "ativo": 230729.2,
     "provisorio": false,
@@ -3890,7 +3708,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "MT",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202606",
     "ativo": 1465858132.71,
     "ultimo_entregue": "202603",
@@ -3907,7 +3725,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "PA",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202606",
     "ativo": 653934247.07,
     "ultimo_entregue": "202603",
@@ -3924,7 +3742,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "SC",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202606",
     "ativo": 450080221.41,
     "ultimo_entregue": "202603",
@@ -3975,7 +3793,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "PR",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202606",
     "ativo": 94507417.94,
     "ultimo_entregue": "202512",
@@ -3992,7 +3810,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202606",
     "ativo": 74170756.07,
     "ultimo_entregue": "202603",
@@ -4009,7 +3827,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202606",
     "ativo": 54849403.79,
     "ultimo_entregue": "202512",
@@ -4026,7 +3844,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "PR",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202606",
     "ativo": 46736793.46,
     "ultimo_entregue": "202603",
@@ -4043,7 +3861,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "SP",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202606",
     "ativo": 35778690.27,
     "ultimo_entregue": "202603",
@@ -4060,7 +3878,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "SP",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202606",
     "ativo": 21778350.39,
     "ultimo_entregue": "202603",
@@ -4162,7 +3980,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "PR",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202603",
     "ativo": 241302525.52,
     "ultimo_entregue": "202512",
@@ -4179,7 +3997,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "SP",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202603",
     "ativo": 216313704.67,
     "ultimo_entregue": "202512",
@@ -4196,7 +4014,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202603",
     "ativo": 117793866.02,
     "ultimo_entregue": "202512",
@@ -4230,7 +4048,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202603",
     "ativo": 74472766.75,
     "ultimo_entregue": "202509",
@@ -4298,7 +4116,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "SP",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202603",
     "ativo": 5068173.61,
     "ultimo_entregue": "202512",
@@ -4315,7 +4133,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "SP",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202603",
     "ativo": 3187506.0,
     "ultimo_entregue": "202512",
@@ -4349,7 +4167,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "MG",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202603",
     "ativo": 1319736.53,
     "ultimo_entregue": "202512",
@@ -4366,7 +4184,7 @@
     "tcb": "B1",
     "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202603",
     "ativo": null,
     "ultimo_entregue": null,
@@ -4417,7 +4235,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "MS",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202512",
     "ativo": 2246493527.27,
     "ultimo_entregue": "202509",
@@ -4434,7 +4252,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "MG",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202512",
     "ativo": 1953957036.8,
     "ultimo_entregue": "202509",
@@ -4485,7 +4303,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202512",
     "ativo": 567344641.98,
     "ultimo_entregue": "202509",
@@ -4502,7 +4320,7 @@
     "tcb": "N4",
     "tcb_nome": "Instituição de pagamento",
     "uf": "SP",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202512",
     "ativo": 553558488.64,
     "ultimo_entregue": "202509",
@@ -4519,7 +4337,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "RS",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202512",
     "ativo": 364996777.05,
     "ultimo_entregue": "202509",
@@ -4536,7 +4354,7 @@
     "tcb": "B3S",
     "tcb_nome": "Cooperativa singular",
     "uf": "SP",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202512",
     "ativo": 100060497.17,
     "ultimo_entregue": "202509",
@@ -4621,7 +4439,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "RS",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202512",
     "ativo": 8313999.99,
     "ultimo_entregue": "202509",
@@ -4655,7 +4473,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202512",
     "ativo": 3752990.02,
     "ultimo_entregue": "202509",
@@ -4961,7 +4779,7 @@
     "tcb": "B1",
     "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
     "uf": "SP",
-    "sr": "S3",
+    "sr": "S1",
     "anomes": "202503",
     "ativo": 17487977444.99,
     "ultimo_entregue": "202412",
@@ -4995,7 +4813,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "RS",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202503",
     "ativo": 7981028689.35,
     "ultimo_entregue": "202412",
@@ -5046,7 +4864,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202503",
     "ativo": 103445423.8,
     "ultimo_entregue": "202412",
@@ -5063,7 +4881,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202503",
     "ativo": 69330371.37,
     "ultimo_entregue": "202412",
@@ -5131,7 +4949,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "MG",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202503",
     "ativo": 3927075.92,
     "ultimo_entregue": "202409",
@@ -5165,7 +4983,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "RJ",
-    "sr": "S5",
+    "sr": "S4",
     "anomes": "202503",
     "ativo": 2069213.77,
     "ultimo_entregue": "202412",
@@ -5284,7 +5102,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": "S2",
     "anomes": "202412",
     "ativo": 431608245.85,
     "ultimo_entregue": "202409",
@@ -5318,7 +5136,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202412",
     "ativo": 73319636.24,
     "ultimo_entregue": "202409",
@@ -5386,7 +5204,7 @@
     "tcb": "B2",
     "tcb_nome": "Banco múltiplo sem carteira comercial ou de investimento",
     "uf": "SP",
-    "sr": "S4",
+    "sr": "S3",
     "anomes": "202409",
     "ativo": 1209438540.92,
     "ultimo_entregue": "202406",
@@ -5403,7 +5221,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202409",
     "ativo": 476901413.41,
     "ultimo_entregue": "202406",
@@ -5505,7 +5323,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202409",
     "ativo": 4631519.42,
     "ultimo_entregue": "202406",
@@ -5522,7 +5340,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202409",
     "ativo": 461553.21,
     "ultimo_entregue": "202406",
@@ -5541,7 +5359,7 @@
     "tcb": "B2",
     "tcb_nome": "Banco múltiplo sem carteira comercial ou de investimento",
     "uf": "SP",
-    "sr": "S3",
+    "sr": null,
     "anomes": "202506",
     "voltou_em": "202509",
     "ativo": 55002104882.83
@@ -5629,7 +5447,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "RS",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202412",
     "voltou_em": "202503",
     "ativo": 2565788.56
@@ -5747,17 +5565,6 @@
     "ativo": 559140.45
    },
    {
-    "cod": "51834986",
-    "nome": "MH SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "tcb": "N1",
-    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
-    "uf": "PR",
-    "sr": "S5",
-    "anomes": "202512",
-    "ausente_desde": "202412",
-    "ativo": null
-   },
-   {
     "cod": "33884941",
     "nome": "BANCO MASTER MÚLTIPLO S.A. - SOB RAET",
     "tcb": "B1",
@@ -5780,12 +5587,23 @@
     "ativo": null
    },
    {
+    "cod": "51834986",
+    "nome": "MH SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "PR",
+    "sr": "S5",
+    "anomes": "202512",
+    "ausente_desde": "202412",
+    "ativo": null
+   },
+   {
     "cod": "59109165",
     "nome": "BANCO VOLKSWAGEN S.A.",
     "tcb": "B2",
     "tcb_nome": "Banco múltiplo sem carteira comercial ou de investimento",
     "uf": "SP",
-    "sr": "S3",
+    "sr": null,
     "anomes": "202509",
     "ausente_desde": "202506",
     "ativo": 57305530354.34
@@ -5818,7 +5636,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "RS",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202503",
     "ausente_desde": "202412",
     "ativo": 8085979.9
@@ -6491,7 +6309,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "SP",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202606",
     "desde": "202606",
     "trimestres": 1,
@@ -6763,7 +6581,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202606",
     "desde": "202606",
     "trimestres": 1,
@@ -6848,7 +6666,7 @@
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "PR",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202603",
     "desde": "202603",
     "trimestres": 1,
@@ -6899,7 +6717,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202603",
     "desde": "202603",
     "trimestres": 1,
@@ -7290,7 +7108,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "SP",
-    "sr": "S5",
+    "sr": null,
     "anomes": "202512",
     "desde": "202512",
     "trimestres": 1,
@@ -7460,7 +7278,7 @@
     "tcb": "B1",
     "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
     "uf": "SP",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202512",
     "desde": "202509",
     "trimestres": 2,
@@ -7664,7 +7482,7 @@
     "tcb": "N2",
     "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
     "uf": "MG",
-    "sr": "S4",
+    "sr": null,
     "anomes": "202412",
     "desde": "202412",
     "trimestres": 1,
@@ -7851,15 +7669,26 @@
  },
  "regimes": {
   "disponivel": true,
-  "vigentes": 23,
+  "vigentes": 24,
   "por_tipo": [
    {
     "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
-    "n": 23
+    "n": 24
    }
   ],
-  "decretados_12m": 21,
+  "decretados_12m": 22,
   "recentes": [
+   {
+    "cnpj": "20833992000145",
+    "cnpj8": "20833992",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DO CENTRO UNIVERSITÁRIO NEWTON PAIVA LTDA. - CREDIPAIVA",
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "inicio": "16/10/2026",
+    "inicio_iso": "2026-10-16",
+    "responsavel": "JR RECUPERACAO DE CREDITO LTDA",
+    "municipio": "Belo Horizonte",
+    "uf": "MG"
+   },
    {
     "cnpj": "02671743000119",
     "cnpj8": "02671743",
@@ -7933,7 +7762,7 @@
     "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
     "inicio": "16/04/2026",
     "inicio_iso": "2026-04-16",
-    "responsavel": "J&J CONSULTORIA EM GESTAO E CONTROLES LTDA",
+    "responsavel": "FABIANO FABRI BAYARRI",
     "municipio": "Mineiros",
     "uf": "GO"
    },
@@ -7980,20 +7809,9 @@
     "responsavel": "EFB REGIMES ESPECIAIS DE EMPRESAS LTDA",
     "municipio": "São Paulo",
     "uf": "SP"
-   },
-   {
-    "cnpj": "48430050000135",
-    "cnpj8": "48430050",
-    "nome": "DANK SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
-    "inicio": "11/03/2026",
-    "inicio_iso": "2026-03-11",
-    "responsavel": "FACCIO ADMINISTRACOES LTDA",
-    "municipio": "São Paulo",
-    "uf": "SP"
    }
   ],
-  "gerado_em": "2026-09-24T15:24:28+00:00"
+  "gerado_em": "2026-10-21T16:18:11+00:00"
  },
  "catalogo": [
   {

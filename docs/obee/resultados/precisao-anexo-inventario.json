@@ -1,0 +1,602 @@
+{
+  "zip_sha256": "816400ea98a128b82e71b3f68cf084c3b5d5c895c3e3a070fcf5795e337f0acc",
+  "xlsx_sha256": "c4e844f8be9ce661b7c8b483da63286c9fbf3cfb643af915fdd8d1a058dd8045",
+  "member": "Coeficientes_de_variacao_regressao_amostra_CD2022.xlsx",
+  "sheet_count": 33,
+  "sheets": [
+    {
+      "name": "Brasil",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Brasil",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 4.001973080397323,
+          "B": -0.5007701541756946
+        },
+        "domicilios": {
+          "A": 3.5237678250396782,
+          "B": -0.49538739177723545
+        }
+      }
+    },
+    {
+      "name": "Região Norte",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Região Norte",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.0015376468428254,
+          "B": -0.47614137641010756
+        },
+        "domicilios": {
+          "A": 3.084436541157426,
+          "B": -0.48399777719789533
+        }
+      }
+    },
+    {
+      "name": "Rondônia",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Rondônia",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.2669652274266956,
+          "B": -0.47980481519340107
+        },
+        "domicilios": {
+          "A": 3.999887899408408,
+          "B": -0.5106893595927948
+        }
+      }
+    },
+    {
+      "name": "Acre",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Acre",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 2.7969839998486195,
+          "B": -0.4838300915334837
+        },
+        "domicilios": {
+          "A": 3.1021222442909706,
+          "B": -0.5074224165595949
+        }
+      }
+    },
+    {
+      "name": "Amazonas",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Amazonas",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.755159643647373,
+          "B": -0.48625117329443823
+        },
+        "domicilios": {
+          "A": 3.9603342567918185,
+          "B": -0.49911668489433564
+        }
+      }
+    },
+    {
+      "name": "Roraima",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Roraima",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 2.786424851654789,
+          "B": -0.48210913231810687
+        },
+        "domicilios": {
+          "A": 2.8824031615373062,
+          "B": -0.4984973901782445
+        }
+      }
+    },
+    {
+      "name": "Pará",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Pará",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.153104341716099,
+          "B": -0.4791942924323351
+        },
+        "domicilios": {
+          "A": 3.451900502302595,
+          "B": -0.4949993948233883
+        }
+      }
+    },
+    {
+      "name": "Amapá",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Amapá",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.3711079645670967,
+          "B": -0.46722469115763354
+        },
+        "domicilios": {
+          "A": 3.7291006691620954,
+          "B": -0.48993693833605884
+        }
+      }
+    },
+    {
+      "name": "Tocantins",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Tocantins",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 2.2629930602101265,
+          "B": -0.4683489708778287
+        },
+        "domicilios": {
+          "A": 2.6281164754283943,
+          "B": -0.4934272021513309
+        }
+      }
+    },
+    {
+      "name": "Região Nordeste",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Região Nordeste",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.0050516200282207,
+          "B": -0.4801901479860574
+        },
+        "domicilios": {
+          "A": 2.977633081123053,
+          "B": -0.4823074054022419
+        }
+      }
+    },
+    {
+      "name": "Maranhão",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Maranhão",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.0644604896850356,
+          "B": -0.4818240622287233
+        },
+        "domicilios": {
+          "A": 3.5254504815357244,
+          "B": -0.5017893649390888
+        }
+      }
+    },
+    {
+      "name": "Piauí",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Piauí",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.2052698005210574,
+          "B": -0.4865233240129993
+        },
+        "domicilios": {
+          "A": 2.8718906030140285,
+          "B": -0.47655098820533265
+        }
+      }
+    },
+    {
+      "name": "Ceará",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Ceará",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.3618994407732274,
+          "B": -0.4854500037570242
+        },
+        "domicilios": {
+          "A": 3.442139226754552,
+          "B": -0.4922628294545607
+        }
+      }
+    },
+    {
+      "name": "Rio Grande do Norte",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Rio Grande do Norte",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.393387496147299,
+          "B": -0.49208559227919635
+        },
+        "domicilios": {
+          "A": 3.101316518986009,
+          "B": -0.48853920992328753
+        }
+      }
+    },
+    {
+      "name": "Paraíba",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Paraíba",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 2.7972919880111657,
+          "B": -0.4756809658719336
+        },
+        "domicilios": {
+          "A": 2.9344272495438437,
+          "B": -0.4837848369387777
+        }
+      }
+    },
+    {
+      "name": "Pernambuco",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Pernambuco",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.2322212985353302,
+          "B": -0.4834009633003117
+        },
+        "domicilios": {
+          "A": 3.565261423472697,
+          "B": -0.49919400241270023
+        }
+      }
+    },
+    {
+      "name": "Alagoas",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Alagoas",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.294771436734921,
+          "B": -0.4823246083897209
+        },
+        "domicilios": {
+          "A": 3.311881972054753,
+          "B": -0.4879457658440736
+        }
+      }
+    },
+    {
+      "name": "Sergipe",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Sergipe",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.2543520728591355,
+          "B": -0.48252013871787786
+        },
+        "domicilios": {
+          "A": 3.1860786764352516,
+          "B": -0.484508345051996
+        }
+      }
+    },
+    {
+      "name": "Bahia",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Bahia",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.088980784899566,
+          "B": -0.4838990139028675
+        },
+        "domicilios": {
+          "A": 3.1656505842161473,
+          "B": -0.48947876717189176
+        }
+      }
+    },
+    {
+      "name": "Região Sudeste",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Região Sudeste",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.6291402736958287,
+          "B": -0.4851229766762331
+        },
+        "domicilios": {
+          "A": 3.4041674877722055,
+          "B": -0.48713642551046393
+        }
+      }
+    },
+    {
+      "name": "Minas Gerais",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Minas Gerais",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.2678833844208084,
+          "B": -0.49012800796435363
+        },
+        "domicilios": {
+          "A": 3.389280992355767,
+          "B": -0.49770225777535676
+        }
+      }
+    },
+    {
+      "name": "Espírito Santo",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Espírito Santo",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.2293199550321474,
+          "B": -0.4833696037091644
+        },
+        "domicilios": {
+          "A": 3.3783704085303747,
+          "B": -0.49498092343187966
+        }
+      }
+    },
+    {
+      "name": "Rio de Janeiro",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Rio de Janeiro",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 4.247822238425474,
+          "B": -0.49532851580186393
+        },
+        "domicilios": {
+          "A": 4.19762895036727,
+          "B": -0.5010100836437921
+        }
+      }
+    },
+    {
+      "name": "São Paulo",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - São Paulo",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 4.536214171431711,
+          "B": -0.5032007389991277
+        },
+        "domicilios": {
+          "A": 3.9284841020484373,
+          "B": -0.49834669183912544
+        }
+      }
+    },
+    {
+      "name": "Região Sul",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Região Sul",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 2.9092095555717568,
+          "B": -0.4788020683375875
+        },
+        "domicilios": {
+          "A": 3.034590282200416,
+          "B": -0.4874188058713627
+        }
+      }
+    },
+    {
+      "name": "Paraná",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Paraná",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.1870825580612587,
+          "B": -0.48692877718141275
+        },
+        "domicilios": {
+          "A": 3.4286972731451386,
+          "B": -0.4991009794265976
+        }
+      }
+    },
+    {
+      "name": "Santa Catarina",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Santa Catarina",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.319379240050467,
+          "B": -0.49121796927416905
+        },
+        "domicilios": {
+          "A": 3.2627485863740033,
+          "B": -0.49728437788660257
+        }
+      }
+    },
+    {
+      "name": "Rio Grande do Sul",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Rio Grande do Sul",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.390905149656544,
+          "B": -0.49278515451514193
+        },
+        "domicilios": {
+          "A": 3.369445286031352,
+          "B": -0.49885628348504346
+        }
+      }
+    },
+    {
+      "name": "Região Centro-Oeste",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Região Centro-Oeste",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 2.897604358011984,
+          "B": -0.47170126224007725
+        },
+        "domicilios": {
+          "A": 2.870428014323284,
+          "B": -0.47302536262447786
+        }
+      }
+    },
+    {
+      "name": "Mato Grosso do Sul",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Mato Grosso do Sul",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.273436645368533,
+          "B": -0.48053728977909593
+        },
+        "domicilios": {
+          "A": 3.452146198860553,
+          "B": -0.49209576321645243
+        }
+      }
+    },
+    {
+      "name": "Mato Grosso",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Mato Grosso",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.0525418062340424,
+          "B": -0.48148029808500903
+        },
+        "domicilios": {
+          "A": 3.0973390384837387,
+          "B": -0.4885258185732756
+        }
+      }
+    },
+    {
+      "name": "Goiás",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Goiás",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 3.323436431675281,
+          "B": -0.4865972743609741
+        },
+        "domicilios": {
+          "A": 3.20315005219041,
+          "B": -0.488075490169983
+        }
+      }
+    },
+    {
+      "name": "Distrito Federal",
+      "title": "Tabela - Coeficientes de regressão, segundo o tipo de estimativa - Distrito Federal",
+      "estimate_types": [
+        "Pessoas",
+        "Domicílios"
+      ],
+      "coefficients": {
+        "pessoas": {
+          "A": 4.506242140598089,
+          "B": -0.4911096524729271
+        },
+        "domicilios": {
+          "A": 4.665420624456839,
+          "B": -0.5042003067521312
+        }
+      }
+    }
+  ]
+}

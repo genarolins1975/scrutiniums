@@ -1,0 +1,11 @@
+arquivo_baixado,origem,resultado
+recorte_despesa_hab_2025,"Gastos, Baixar CSV do recorte","26 linhas; 0 valores diferentes da gold; n=25, mediana 1354.430959; razão numerador÷denominador confere"
+recorte_despesa_hab_2021,"Gastos, recorte 2021",26 linhas; 0 diferentes; n=25; Campo Grande fora
+recorte_icsap_2024,"Resultados, recorte",26 linhas; 0 diferentes; n=26
+recorte_asps_2025,"Gastos, recorte ASPS",26 linhas; 0 diferentes; n=26
+recorte_ubs_2025,"Rede, recorte UBS",26 linhas; 0 diferentes; n=26
+serie_sp_despesa_hab,"Gastos, Evolução, série de São Paulo","5 linhas; 0 diferentes da gold e da mediana do ano; marcas de base nao, sim, sim, nao, nao"
+serie_mediana_cobertura,"Rede, Evolução, mediana","5 linhas; 2021 com ""Ausente na coleta"" (rótulo impreciso); sem marca para a troca de 2024 para 2025"
+cmp_medida_icsap_2024,"Comparar, CSV da medida",26 linhas; 0 diferentes; n=26
+cmp_tabela_2025,"Comparar, CSV da tabela","260 células; 0 diferentes da gold; cabeçalho com unidade, tipo de período e ano; coluna Fontes das medidas; hash"
+cmp_tabela_2024,"Comparar, CSV da tabela",260 células; 0 diferentes da gold

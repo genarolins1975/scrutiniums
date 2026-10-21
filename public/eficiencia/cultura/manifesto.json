@@ -1,0 +1,24 @@
+{
+  "capturadoEm": "2026-10-11",
+  "fontes": [
+    {
+      "url": "https://cetic.br/media/microdados/942/tic_cultura_2024_tabelas_xlsx_v1.0.zip",
+      "titulo": "TIC Cultura 2024 · tabelas v1.0",
+      "publicadoEm": "2025-10-07",
+      "referencia": "2024",
+      "metodo": "https://cetic.br/media/microdados/990/tic_cultura_2024_relatorio_metodologico_v1.0.pdf",
+      "id": "tic",
+      "sha256": "5032a0a92946c87bfe9c067da0ad5acb538aca06987ce1ef507e8f70845c7b3c"
+    },
+    {
+      "url": "https://ftp.ibge.gov.br/Indicadores_Sociais/Sistema_de_Informacoes_e_Indicadores_Culturais/2024/xlsx/3_gastos_da_administracao_publica_20260310.xlsx",
+      "titulo": "IBGE · SIIC 2013–2024 · gastos da administração pública",
+      "publicadoEm": "2025-12-12",
+      "revisaoArquivo": "2026-03-10",
+      "referencia": "2013–2023",
+      "id": "ibge",
+      "sha256": "40d568853ddf051e62577d19d09d61c572fe1c51ed903c386a949b16f28d2781"
+    }
+  ],
+  "recorteSha256": "1a369ea11dbbb57f75497c1c50cde994397a40da375cf191185abb85b091b205"
+}

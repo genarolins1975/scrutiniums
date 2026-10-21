@@ -1,0 +1,35 @@
+{
+  "observacoesConferidas": 17049,
+  "divergencias": 0,
+  "capturas": [
+    {
+      "periodo": "202312",
+      "municipios": 5571,
+      "descartados": [],
+      "hashConfere": true
+    },
+    {
+      "periodo": "202412",
+      "municipios": 5571,
+      "descartados": [],
+      "hashConfere": true
+    },
+    {
+      "periodo": "202512",
+      "municipios": 5571,
+      "descartados": [],
+      "hashConfere": true
+    },
+    {
+      "periodo": "202609",
+      "municipios": 5571,
+      "descartados": [],
+      "hashConfere": true
+    }
+  ],
+  "novoTerritorio": {
+    "id": "5101837",
+    "nome": "Boa Esperança do Norte",
+    "nivel": "municipio"
+  }
+}

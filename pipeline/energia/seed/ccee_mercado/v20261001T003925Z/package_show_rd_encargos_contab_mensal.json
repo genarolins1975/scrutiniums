@@ -1,0 +1,140 @@
+{
+ "result": {
+  "author": "Gerência de Informações ao Mercado - GAIM",
+  "author_email": null,
+  "creator_user_id": "0704eba2-c489-4cbd-b791-d29f82ebe231",
+  "extras": [
+   {
+    "key": "Frequência de Atualização",
+    "value": "Mensal"
+   },
+   {
+    "key": "Referência de Publicação",
+    "value": "MS+22du"
+   },
+   {
+    "key": "Termo Legal",
+    "value": "O acesso a este site e/ou a utilização de conteúdos, dados e bases de dados nele disponibilizados se sujeita ao aceite dos termos e condições da licença aberta Creative Commons Attribution 4.0 International (CC-BY-4.0), bem como aos Termos de Uso do site e do aplicativo mobile (App) da CCEE (Link - https://www.ccee.org.br/en/web/guest/termos-de-uso). Ao utilizar esses recursos, você concorda em cumprir todos os requisitos dessa licença, que permitem que os reutilizadores distribuam, modifiquem, adaptem e desenvolvam o material sobre os dados, desde que seja atribuído o crédito apropriado ao criador (CCEE) e que sejam informadas as alterações. O Material Licenciado é disponibilizado no \"estado em que se encontra\" e \"como disponível\" apenas para fins informativos, sendo possível a interrupção da disponibilidade do conjunto de dados a qualquer momento e por qualquer motivo, sendo a sua utilização de livre iniciativa, não sendo atribuível qualquer tipo de responsabilização à CCEE por seu uso."
+   }
+  ],
+  "groups": [],
+  "id": "54b6f66d-2493-4e66-b614-b828d7e18c2a",
+  "isopen": true,
+  "license_id": "CC-BY-4.0",
+  "license_title": "Creative Commons Attribution 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "maintainer": "Gerência de Informações ao Mercado - GAIM",
+  "maintainer_email": null,
+  "metadata_created": "2024-08-01T21:14:06.199729",
+  "metadata_modified": "2026-09-28T17:48:53.836686",
+  "name": "rd_encargos_contab_mensal",
+  "notes": "Objetivo: Monitorar encargo associado à RD para repasse em forma de ESS para os consumidores. Dados contabilizados, consolidados por mês e submercado.",
+  "num_resources": 3,
+  "num_tags": 2,
+  "organization": {
+   "approval_status": "approved",
+   "created": "2024-06-03T17:08:44.480935",
+   "description": "A Resposta da Demanda (RD) é um mecanismo que possibilita a redução ou deslocamento voluntários da demanda de energia elétrica por grandes consumidores, que estão no mercado livre de energia. Instituída a partir de outubro de 2022 pela Resolução Normativa ANEEL 1.040/22, a iniciativa se tornou um programa estrutural e compõe de modo definitivo as opções do Operador Nacional do Sistema Elétrico (ONS) para gestão dos recursos e operação do Sistema Interligado Nacional (SIN).\n\nPodem participar da oferta, desde que estejam adimplentes junto à CCEE, os consumidores livres, os consumidores parcialmente livres, os consumidores com contratos baseado no art. 5º da Lei 13.182/15, os consumidores modelados sob agentes varejistas e agregadores, que são agentes que reúnem e centralizam as cargas dos consumidores do mercado livre.  \nPara o agente que quiser participar do mecanismo como agregador será necessário o cadastramento na CCEE, assim como suas cargas agregadas devem dar anuência, conforme o caso, nos termos do Procedimento de Comercialização Provisório.\nA Resposta da Demanda possui uma referência para comparação da redução, denominada linha base, que é calculada e publicada pela CCEE mensalmente. Já as ofertas de redução serão realizadas para o ONS conforme Rotina Operacional Provisória. \n\nA Câmara de Comercialização é responsável por contabilizar mensalmente o mecanismo. ",
+   "id": "508bae40-912a-459d-b5f0-aaf041309425",
+   "image_url": "",
+   "is_organization": true,
+   "name": "resposta_da_demanda",
+   "state": "active",
+   "title": "Resposta da Demanda",
+   "type": "organization"
+  },
+  "owner_org": "508bae40-912a-459d-b5f0-aaf041309425",
+  "private": false,
+  "relationships_as_object": [],
+  "relationships_as_subject": [],
+  "resources": [
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2024-08-01T21:14:35.350433",
+    "datastore_active": true,
+    "description": "**Objetivo**: Monitorar encargo associado à RD para repasse em forma de ESS para os consumidores. Dados contabilizados, consolidados por mês e submercado.\n\n**Campos contidos nesse conjunto de dados:**\n\n* **MES_REFERENCIA**: Representa o ano (AAAA) e o mês (MM) de competência dos dados apurados.  \n* **SUBMERCADO**: Representa os quatro (4) submercados de atuação no SIN - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \n* **RECEBIMENTO_ENCARGO_RD**: Corresponde ao Recebimento via Encargos de redução da Resposta da Demanda do perfil de agente ofertante “a”, no mês de contabilização “m” (R_ENC_RD a,m) [R$]",
+    "format": "CSV",
+    "hash": "",
+    "id": "8c07bd8d-76d8-4cbe-a863-a99cf666d9d2",
+    "last_modified": "2025-01-29T15:18:14.355000",
+    "metadata_modified": "2025-01-29T18:19:05.862155",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "rd_encargos_contab_mensal_2024",
+    "package_id": "54b6f66d-2493-4e66-b614-b828d7e18c2a",
+    "position": 0,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/r6tKNkg6RA-KGBpW4G6NdQ/content",
+    "url_type": null
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2025-03-31T18:38:47.635722",
+    "datastore_active": true,
+    "description": "**Objetivo**: Monitorar encargo associado à RD para repasse em forma de ESS para os consumidores. Dados contabilizados, consolidados por mês e submercado.\n\n**Campos contidos nesse conjunto de dados:**\n\n* **MES_REFERENCIA**: Representa o ano (AAAA) e o mês (MM) de competência dos dados apurados.  \n* **SUBMERCADO**: Representa os quatro (4) submercados de atuação no SIN - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \n* **RECEBIMENTO_ENCARGO_RD**: Corresponde ao Recebimento via Encargos de redução da Resposta da Demanda do perfil de agente ofertante “a”, no mês de contabilização “m” (R_ENC_RD a,m) [R$]",
+    "format": "CSV",
+    "hash": "",
+    "id": "9455af07-4664-41ef-ac9b-878b12f905c1",
+    "last_modified": "2026-01-30T18:08:01.027000",
+    "metadata_modified": "2026-01-30T21:08:01.096548",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "rd_encargos_contab_mensal_2025",
+    "package_id": "54b6f66d-2493-4e66-b614-b828d7e18c2a",
+    "position": 1,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/Hm3AygP0Rpqj3WUBb59aaA/content",
+    "url_type": null
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2026-03-02T21:43:09.072908",
+    "datastore_active": true,
+    "description": "**Objetivo**: Monitorar encargo associado à RD para repasse em forma de ESS para os consumidores. Dados contabilizados, consolidados por mês e submercado.\n\n**Campos contidos nesse conjunto de dados:**\n\n* **MES_REFERENCIA**: Representa o ano (AAAA) e o mês (MM) de competência dos dados apurados.  \n* **SUBMERCADO**: Representa os quatro (4) submercados de atuação no SIN - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \n* **RECEBIMENTO_ENCARGO_RD**: Corresponde ao Recebimento via Encargos de redução da Resposta da Demanda do perfil de agente ofertante “a”, no mês de contabilização “m” (R_ENC_RD a,m) [R$]",
+    "format": "CSV",
+    "hash": "",
+    "id": "3796db13-9f3c-4d98-9c12-658dc958a179",
+    "last_modified": "2026-09-28T14:48:53.676000",
+    "metadata_modified": "2026-09-28T17:48:53.844769",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "rd_encargos_contab_mensal_2026",
+    "package_id": "54b6f66d-2493-4e66-b614-b828d7e18c2a",
+    "position": 2,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/UvNX3SGTT1KFt9aCd27aVQ/content",
+    "url_type": null
+   }
+  ],
+  "state": "active",
+  "tags": [
+   {
+    "display_name": "encargos",
+    "id": "6d3ab074-8ac7-424d-82b7-5805c8266091",
+    "name": "encargos",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "resposta da demanda",
+    "id": "5630c5de-d42f-4014-a46c-89afe4c7c2ba",
+    "name": "resposta da demanda",
+    "state": "active",
+    "vocabulary_id": null
+   }
+  ],
+  "title": "RD_ENCARGOS_CONTAB_MENSAL",
+  "type": "dataset",
+  "url": null,
+  "version": null
+ }
+}

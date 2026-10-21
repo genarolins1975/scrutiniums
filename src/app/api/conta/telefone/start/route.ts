@@ -3,6 +3,7 @@ import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db";
 import { getSessionUser } from "@/lib/session";
+import { smsPermitido } from "@/lib/politica-sms";
 import { toE164 } from "@/lib/phone";
 import { maskPhone } from "@/lib/crypto";
 import { audit } from "@/lib/audit";
@@ -26,7 +27,7 @@ const GENERIC_ERROR =
 
 export async function POST(req: Request) {
   const user = await getSessionUser();
-  if (!user) {
+  if (!user || user.onboardingStatus !== "COMPLETE") {
     return NextResponse.json({ error: "Sessão inválida. Entre novamente." }, { status: 401 });
   }
 
@@ -42,8 +43,13 @@ export async function POST(req: Request) {
   }
 
   const phoneE164 = toE164(parsed.data.country, parsed.data.phone);
-  if (!phoneE164) {
+  if (!phoneE164 || !smsPermitido(phoneE164)) {
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
+  }
+
+  // Evita contornar a exigência de CPF trocando para +55 depois do cadastro.
+  if (phoneE164.startsWith("+55") && !user.cpf) {
+    return NextResponse.json({ error: "Cadastre seu CPF em Conta antes de usar um telefone brasileiro." }, { status: 400 });
   }
 
   if (phoneE164 === user.phoneE164) {

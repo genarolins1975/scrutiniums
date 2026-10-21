@@ -1,0 +1,25 @@
+{
+ "descricao": "Trechos de documentos primários usados como fonte literal de verbetes do Aprenda (P065). Cada verbete conferido cita um trecho que aparece literalmente num destes arquivos (teste em src/tests/energia-aprenda.test.ts).",
+ "arquivos": [
+  {
+   "arquivo": "decreto_5163_2004_trechos.txt",
+   "documento": "Decreto nº 5.163, de 30 de julho de 2004 (texto compilado do Planalto)",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/decreto/d5163.htm",
+   "capturado_em": "2026-10-06T21:28:51Z",
+   "sha256_original": "f08d4f67e436a7aa722752b843d30e7a4e681a1746ba7cba3ca8d38922463a14",
+   "bytes_original": 251148,
+   "transformacao": "Do HTML compilado foram removidos os trechos riscados (<strike>, redação revogada), as marcas HTML e os espaços repetidos; ficaram só o § 2º do art. 1º (até o inciso II), o art. 2º e o art. 59, na redação vigente em 06/10/2026, rotulados entre colchetes.",
+   "sha256": "a65eb7058277276da531f54bf6fa734c1890840f94b903938b92c4a9e8e2276b"
+  },
+  {
+   "arquivo": "infomercado_229_p12.txt",
+   "documento": "CCEE, InfoMercado mensal Nº 229 (julho de 2026), página 12 (Definições dos processos e Glossário)",
+   "url": "https://www.ccee.org.br/documents/80415/35773859/InfoMercado-mensal_JUL_26_229.pdf/92b947aa-21df-f603-a4dc-87876f30a94a",
+   "capturado_em": "2026-10-06T20:01:09Z",
+   "sha256_original": "c7efe73d4792c5ddda3148d68b4de8de840ad9f47187212e2a79c3bb4054aae5",
+   "transformacao": "Texto da página 12 extraído com pdftotext (poppler, sem -layout), com tabulações e espaços repetidos reduzidos a um espaço; as quebras de linha do PDF foram mantidas.",
+   "sha256": "a7add852c61f846bf1326df03811c46ea8dca9ccb9adf7cbf3dd0c17f0d79908"
+  }
+ ],
+ "canal": "Decreto: GET HTTP ao portal do Planalto a partir do ambiente de desenvolvimento, sem cabeçalho de navegador além do User-Agent do projeto. InfoMercado: coleta do módulo Mercado com o cliente do pipeline, autorizada pelo responsável em 06/10/2026 (ccee_mercado.DECISAO_ACESSO)."
+}

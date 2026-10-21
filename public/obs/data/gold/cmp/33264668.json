@@ -1,7 +1,7 @@
 {
  "cod": "33264668",
  "nome": "BANCO XP S.A.",
- "sr": "S2",
+ "sr": null,
  "tcb": "B1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -64,5 +64,5 @@
    "202606": 298533774.02
   }
  },
- "gerado_em": "2026-09-24T15:24:48+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

@@ -1,0 +1,897 @@
+{
+ "avaliador": "T-U06",
+ "papel": "tecnico",
+ "rodada": "inicial",
+ "versao_avaliada": "commit 51747baf8, servidor http://localhost:3100 (dados processados em 01/10/2026); repositório de leitura head_src no mesmo SHA",
+ "paginas": {
+  "/setor-eletrico/pld": {
+   "paineis": [
+    "P008"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz com pld_horario.csv a média do dia, mínimo, máximo, variação sobre o dia anterior, percentil (60,3; 59,0; 64,4 e 65,7 de 2.099 dias), desvio padrão, faixas e as cinco janelas (dia, 7 e 30 dias, 12 meses, histórico): tudo igual ao exibido.",
+      "Li os textos de Entender e Auditar, visoes.json (13 visões) e abri as dez etapas do diagrama de formação, com o estado atual de cada uma.",
+      "Fluxos de 28/09/2026 do diagrama conferem com o arquivo horário do ONS, mas a média diária esconde reversões: Sul para SE/CO teve 13 horas num sentido e 11 no outro; Norte para SE/CO, 17 contra 7.",
+      "A página cita o recurso semanal 2001 a 2020 da CCEE, catalogado e não integrado; história, percentis e sazonalidade começam em 2021."
+     ],
+     "atendidos": [
+      "Nível atual dos quatro submercados com média, faixa horária, variação e posição no histórico",
+      "Evolução em cinco janelas, do dia ao histórico mensal desde 2021",
+      "Dispersão horária (desvio padrão, permanência por faixa, picos) e diferença entre submercados",
+      "Formação do preço em etapas, com as duas ligações sem documento marcadas como pendentes",
+      "Previsão tratada como indisponível, com o estado real dos modelos"
+     ],
+     "problemas": [
+      "Diagrama regional usa saldo médio diário e esconde reversões horárias de fluxo",
+      "Relações com água, carga, renováveis e térmicas aparecem só como estado de um dia, sem série conjunta; duas ligações do diagrama seguem pendentes",
+      "Série semanal 2001 a 2020, publicada pela CCEE, não integrada: história e sazonalidade limitadas a 2021 em diante"
+     ],
+     "justificativa": "Cobre nível, evolução, dispersão horária, território e limitações, com cálculos reproduzidos. Faltam série longa, relação quantitativa com água e carga e fluxo horário no diagrama regional, que esconde reversões."
+    },
+    "F": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz o percentil por rank médio sobre as 2.099 médias diárias nominais desde 2021 e sobre os 150 dias de setembro de 2021 a 2025 (38,7); a página explica por que os dois percentis diferem.",
+      "Faixas baixa, central e alta usam P25 e P75 horários de 2021 a 2026 (SE: 61,07 e 242,91), distribuição nominal que mistura pisos de 49,77 a 69,04 e seis tetos anuais.",
+      "O diagrama do capítulo 4 põe o PLD médio de 30/09 ao lado do fluxo médio de 28/09, com as duas datas na legenda; o passo CMO usa a semana que termina em 02/10 e a tabela de Analisar, a de 19 a 25/09.",
+      "Em 30 dias, 12 meses e histórico, a resposta a 'Houve picos?' é R$ 1.611,04, que é o teto horário de 2026, sem dizer que é o limite."
+     ],
+     "atendidos": [
+      "Média simples identificada como tal, com a ponderada na página Histórico",
+      "Universo, janela e número de dias ou horas sempre visíveis",
+      "Extremos tratados como extremos observados",
+      "Submercados comparados sempre na mesma hora"
+     ],
+     "problemas": [
+      "Preço e fluxo de datas diferentes na mesma figura: intervalos incompatíveis para relacionar",
+      "Faixas e percentil dos cartões em valores nominais sobre distribuição que mistura regimes de limites",
+      "Máximo igual ao teto horário apresentado como pico, sem referência ao limite"
+     ],
+     "justificativa": "Referências com universo e n visíveis e média distinta da ponderada. Mas o diagrama relaciona preço e fluxo de dias diferentes, as faixas nominais misturam regimes de limites e o máximo de 30 dias é o próprio teto, sem aviso."
+    },
+    "G": {
+     "nota": 7.5,
+     "evidencia": [
+      "Refiz a participação hidráulica de 57,7% e a solar de 17,9% com o Balanço do ONS: a solar do Balanço inclui a MMGD estimada (12,1% do total em 7 dias, 68% da solar); sem ela, a hidráulica de 12 meses é 64,8%.",
+      "As caixas Sobre este dado e a regra 'menor valor do ano' dizem que os limites não foram auditados; o passo 'Regras e limites' da mesma página mostra os limites conferidos, e refiz os 8 atos nos PDFs (sha256 e valores iguais).",
+      "Passagens do Decreto 5.163 (art. 57) e da REN ANEEL 957/2021 conferidas literalmente nas cópias baixadas; exemplo sintético: 577,20 vezes 20 MWh dá R$ 11.544,00.",
+      "0 horas abaixo do piso ou acima do teto horário nos quatro submercados; menor observado igual ao piso nas 24 combinações de ano e submercado."
+     ],
+     "atendidos": [
+      "PLD distinto de tarifa, cotação de bolsa e previsão, com fonte em cada cartão",
+      "CMO rotulado Estimado e PLD calculado na véspera declarado",
+      "Exemplo de liquidação rotulado sintético, com simplificações listadas",
+      "Unidades R$/MWh nominais e MWmed consistentes; nenhuma hora ausente preenchida"
+     ],
+     "problemas": [
+      "Bloqueio de estimativa apresentada como medição: hidráulica e solar chamadas de geração verificada, com MMGD estimada dentro do total e sem ressalva na página",
+      "Ressalva desatualizada afirma que os limites não foram auditados, contra o próprio diagrama da página",
+      "Saldo diário de fluxo esconde reversões e aparece com PLD de outro dia",
+      "Máximo de 30 dias, 12 meses e histórico é o teto horário e aparece como pico"
+     ],
+     "justificativa": "Conceitos bem separados e números exatos, mas há bloqueio: participações chamadas de geração verificada incluem MMGD estimada, sem ressalva. Há ainda ressalva desatualizada sobre limites, saldo diário com PLD de outro dia e teto lido como pico."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Reproduzi média do dia, percentis, faixas, diferenças entre submercados e as 276 médias mensais com pld_horario.csv, seguindo as fórmulas da página; fluxos com intercambio_diario.csv e EAR com ear_diario.csv.",
+      "Manifesto de publicação: sha256 dos 18 arquivos pld_* confere; gold e CSV têm as mesmas linhas (curva do dia, 720 horas, 2.099 dias, 69 meses).",
+      "As caixas Sobre este dado trazem fonte, captura, fórmula, snapshot, revisões e limitações; código do processamento 196905461ac0 aqui e eec0a3121e05+alterado nas páginas filhas.",
+      "A página não tem ficha Comprove este número: cartões do dia (R$ 135,25) e percentis dependem só de fórmula e CSV; a limitação sobre limites está desatualizada."
+     ],
+     "atendidos": [
+      "Fonte específica (CCEE, PLD_HORARIO), período, captura e snapshot com sha256",
+      "Fórmula e unidade em cada caixa Sobre este dado",
+      "Downloads com dicionário de colunas",
+      "Histórico de revisões declarado (8 capturas, nenhuma revisão)",
+      "Gráfico, tabela, texto e CSV com o mesmo contrato"
+     ],
+     "problemas": [
+      "Limitação desatualizada nas caixas de proveniência (limites não auditados)",
+      "Sem ficha Comprove para cartões do dia e percentis",
+      "Versões de código diferentes entre a página principal e as filhas, e a das filhas com o sufixo +alterado (código fora de commit)",
+      "O sha256 exibido é do snapshot da captura, não do CSV baixável"
+     ],
+     "justificativa": "Reproduzi o CSV e o ONS com resultado exato e conferi o manifesto de hashes. Nota limitada por proveniência com ressalva desatualizada, ausência de fichas de prova nos cartões e versões de código diferentes entre páginas."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 0 erros de console, 0 falhas de rede, carga de laboratório de 0,97 a 1,15 s, sem rolagem horizontal de 320 a 1440 px; HTML de 678 KB (106 KB comprimido), acima da meta de cerca de 600 KB do contrato do projeto; JS de 653 a 682 KB.",
+      "Playwright: as cinco abas de período trocam estatísticas iguais ao meu recálculo; CLS de laboratório 0,096 em 1440 px (salto no bloco details do topo) e 0,034 em 390 px; só prefetch abortado de '/' (benigno).",
+      "CI roda vitest e unittest antes de publicar e reverte public/energia se falharem; viola_horizonte barra data futura no pld.json; testes com valores esperados por awk (86 em Python, 31 em TS).",
+      "Medição de laboratório (Chromium sem limitação de rede ou CPU), uma carga por combinação; sem dado de campo nem leitor de tela."
+     ],
+     "atendidos": [
+      "Cálculos e abas de período corretos",
+      "Teste de contrato sobre a gold real e retenção da publicação reprovada",
+      "Bloqueio de referência futura e sentinela de regressão",
+      "Protocolo de inspeção documentado como laboratório"
+     ],
+     "problemas": [
+      "HTML de 678 KB acima da meta de cerca de 600 KB do próprio contrato",
+      "CLS de 0,096 no limite do patamar bom; DOM de 2.692 nós",
+      "Sem dado de campo (LCP, INP, CLS reais) nem teste com leitor de tela",
+      "Os testes não cobrem coerência de ressalvas entre páginas: o texto desatualizado sobre limites passou"
+     ],
+     "justificativa": "Sem erros de console, cálculos corretos e testes orientados a risco, com retenção de publicação. HTML acima da meta do projeto, CLS no limite e medição só de laboratório mantêm a nota em 8,5."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "estimativa apresentada como medição",
+     "descricao": "A ideia central diz que a hidráulica respondeu por 57,7% da 'geração verificada do SIN' em 12 meses, e os passos Eólica e solar e Térmicas do diagrama dizem que a solar teve 17,9% e as térmicas 10,6% da 'geração verificada' em 7 dias. A solar do Balanço do ONS inclui a MMGD estimada desde 29/04/2023 (limitação da própria gold geracao.json), sem aviso na página; o selo exibido é Calculado.",
+     "evidencia": "Balanço do ONS 2025 e 2026 e carga_verificada_horaria.csv: em 7 dias até 28/09/2026 a MMGD é 12,1% do total e 68% da solar; em 12 meses é 10,9% do total; a hidráulica é 57,7% com a estimativa no denominador e 64,8% sem ela."
+    }
+   ],
+   "achados": [
+    {
+     "id": "pld_geracao_verificada_com_mmgd",
+     "gravidade": "alta",
+     "criterios": [
+      "G"
+     ],
+     "onde": "A ideia central do capítulo 1 e os passos Eólica e solar e Térmicas do diagrama do capítulo 2 (estadoRenovaveis e estadoTermicas em leituras.ts)",
+     "descricao": "As participações vêm do Balanço do ONS, cuja solar inclui a MMGD estimada (12,1% do total e 68% da solar em 7 dias), mas o texto chama o total de geração verificada. O selo é Calculado e não há a ressalva que a gold de geração já traz.",
+     "sugestao": "Escrever 'geração do Balanço do ONS, com MMGD estimada' e separar solar centralizada e MMGD como na página Geração, ou citar a participação sem MMGD ao lado."
+    },
+    {
+     "id": "pld_limites_nao_auditados_obsoleto",
+     "gravidade": "media",
+     "criterios": [
+      "G",
+      "H"
+     ],
+     "onde": "Limitações das caixas Sobre este dado (PLD horário, médias diárias e mensais) e regra 'Menor valor observado no ano' em Como classificamos; textos em pld.json (pipeline/energia/gold/pld.py)",
+     "descricao": "O texto diz que os limites regulatórios não foram auditados nesta fase, mas o passo Regras e limites da mesma página e a página Limites mostram oito atos conferidos. A medida 'menor valor do ano' foi criada para não usar o piso, embora o menor observado seja igual ao piso nas 24 combinações de ano e submercado.",
+     "sugestao": "Atualizar as limitações em pld.py e trocar 'menor valor do ano' por horas no piso do ato vigente, com ligação para a página Limites."
+    },
+    {
+     "id": "pld_diagrama_saldo_diario_e_datas",
+     "gravidade": "media",
+     "criterios": [
+      "E",
+      "F",
+      "G"
+     ],
+     "onde": "Capítulo 4, diagrama Quatro preços, quatro regiões; passo CMO do diagrama de formação",
+     "descricao": "O PLD médio de 30/09 aparece ao lado do fluxo médio de 28/09, e cada seta mostra só o sentido do saldo diário. No arquivo horário do ONS, o Sul para SE/CO (849 MWmed) teve 13 horas num sentido e 11 no outro, e o Norte para SE/CO (668 MWmed), 17 contra 7. O passo CMO cita a semana que termina em 02/10 e a tabela de Analisar, a de 19 a 25/09, sem escrever o intervalo.",
+     "sugestao": "Parear preço e fluxo do mesmo dia ou da mesma hora (a página Diferenças regionais já faz), mostrar a parcela de horas em cada sentido e escrever o intervalo das semanas do CMO."
+    },
+    {
+     "id": "pld_pico_igual_ao_teto",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "Resposta 'Houve picos?' nas abas 30 dias, 12 meses e Histórico",
+     "descricao": "O máximo mostrado, R$ 1.611,04/MWh, é o teto horário de 2026 (4 horas no ano), mas é apresentado como pico de preço sem citar o limite.",
+     "sugestao": "Acrescentar 'igual ao teto horário do ano' quando o máximo coincidir com o limite do ato."
+    },
+    {
+     "id": "pld_serie_desde_2021",
+     "gravidade": "media",
+     "criterios": [
+      "E",
+      "F"
+     ],
+     "onde": "Aba Histórico, percentil desde 2021 e faixas; referência sazonal na página Histórico",
+     "descricao": "Todas as referências começam em 2021, em valores nominais. A CCEE publica no mesmo conjunto PLD_HORARIO o recurso semanal de 2001 a 2020, que a página cita e o catálogo marca como catalogado, sem justificativa escrita para não integrar a série.",
+     "sugestao": "Integrar a série semanal (ou sua média mensal) como contexto separado, com a mudança de granularidade e de regime declarada."
+    },
+    {
+     "id": "pld_faixas_nominais_regimes_misturados",
+     "gravidade": "baixa",
+     "criterios": [
+      "F"
+     ],
+     "onde": "Cartões do capítulo 3 (Posição desde 2021) e coluna Horas em faixa baixa, central e alta",
+     "descricao": "Percentil e faixas usam a distribuição nominal de 2021 a 2026, que mistura pisos de R$ 49,77 a R$ 69,04, seis tetos anuais e três anos com 63,6% a 98,3% das horas no piso (SE). 'Faixa central' no cartão não indica nível de preço comparável entre anos. A página explica a diferença para o percentil do Histórico, não o efeito dos regimes.",
+     "sugestao": "Escrever no cartão que a distribuição é nominal e de regimes diferentes, com ligação para a página Histórico."
+    },
+    {
+     "id": "pld_sem_ficha_comprove",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Cartões do dia de referência e percentis do capítulo 3",
+     "descricao": "Nenhum número da página principal tem ficha Comprove este número. Reproduzi todos com pld_horario.csv, mas o leitor depende da fórmula da caixa Sobre este dado.",
+     "sugestao": "Publicar fichas para a média do dia e o percentil dos quatro submercados, como nas páginas filhas."
+    },
+    {
+     "id": "pld_html_acima_da_meta",
+     "gravidade": "baixa",
+     "criterios": [
+      "L"
+     ],
+     "onde": "HTML da página principal (678 KB) e salto de layout no topo (CLS 0,096 em 1440 px)",
+     "descricao": "O contrato do projeto fixa meta de cerca de 600 KB de HTML por página; a principal passa dela e tem 2.692 nós de DOM.",
+     "sugestao": "Mover para carregamento sob demanda os blocos de Analisar e Auditar ou reduzir o HTML renderizado; reservar altura do bloco details do topo."
+    }
+   ],
+   "nao_verificado": [
+    "PLD horário contra o arquivo da CCEE (HTTP 403 neste ambiente)",
+    "Passagens dos Procedimentos de Rede do ONS citadas no capítulo 1 (não reli os PDFs)",
+    "MMGD dentro da solar do Balanço: confirmada pela documentação do módulo Geração e por ordem de grandeza, não por documento do ONS",
+    "Previsão (modelo B0) e registro de modelos: escopo de outra unidade"
+   ]
+  },
+  "/setor-eletrico/pld/cmo-e-formacao": {
+   "paineis": [
+    "P009"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz as semanas de 19 a 25/09/2026 por submercado com pld_cmo_horario.csv e os arquivos do ONS (DECOMP 97,89 e 1.866,74; DESSEM 63,31; 58,29; 59,67; 86,54; PLD 124,09; 120,86; 124,09; 124,09): iguais, com diferenças de 60,78 e 26,20 para o SE/CO.",
+      "Tabela anual do SE/CO (6 linhas, 12 colunas) refeita com a série horária e os limites dos atos: todas as células iguais, exceto 2024, onde a tela mostra 2,1% e o valor exato, 2,049%, arredonda para 2,0% (arredondamento em duas etapas).",
+      "A02 refeito com os CSV do ONS: 61 semanas de zero, 19.632 de 20.496 meias horas publicadas, 17.904 zeros (91,2%), 18 dias sem publicação e PLD no piso em 98,5% das horas.",
+      "Trocar o submercado atualiza resposta, cartões e gráfico com valores que conferem (Sul: 22,97 e 62,57; Nordeste: 26,20 e 64,42; Norte: 1.742,65 abaixo e 37,55 acima)."
+     ],
+     "atendidos": [
+      "Semana de referência e série de 156 semanas, com CSV de 300 semanas",
+      "Relação anual separada por situação frente aos limites (piso, teto horário, dia no teto estrutural, entre os limites)",
+      "Momento do cálculo e resolução de cada produto",
+      "Cobertura do DESSEM por ano e dias sem publicação",
+      "Sequência de CMO semanal zero tratada como achado, sem causa atribuída"
+     ],
+     "problemas": [
+      "Sem recorte por hora do dia ou por estação para a diferença entre PLD e CMO",
+      "Relação semanal sem estatística resumo (só gráfico e tabela)",
+      "Água, carga e térmicas não aparecem relacionadas ao CMO, o que a página declara"
+     ],
+     "justificativa": "Análise ampla e correta de custo e preço: três produtos alinhados, relação anual por situação de limite, cobertura e anomalia de zeros, tudo reproduzido. Faltam recortes por hora do dia e estação e uma estatística resumo da relação semanal."
+    },
+    "F": {
+     "nota": 8.5,
+     "evidencia": [
+      "Comparações só no mesmo intervalo (semana de sábado a sexta, 336 meias horas e 168 horas; mesma hora): reproduzi com os arquivos primários do ONS, sem razões nem multiplicadores.",
+      "Na semana de referência o DECOMP do Norte é R$ 1.866,74/MWh (arquivo do ONS), acima do teto horário de 2026 (R$ 1.611,04) e 2,4 vezes o teto estrutural (R$ 785,27), enquanto SE, S e NE ficam em 97,89.",
+      "A resposta do Norte diz que o PLD ficou R$ 1.742,65/MWh abaixo do CMO semanal, sem linha de teto no gráfico semanal nem menção ao limite.",
+      "A tabela anual separa horas no piso, no teto e em dia no teto estrutural, onde a diferença mede o limite e não a formação do preço."
+     ],
+     "atendidos": [
+      "Três produtos diferentes comparados só no mesmo intervalo",
+      "Diferenças em R$/MWh, sem razão entre grandezas distintas",
+      "Universo e cobertura de cada média visíveis (336 e 168)",
+      "Limites aplicáveis separados na relação anual"
+     ],
+     "problemas": [
+      "Comparação semanal do Norte sem o contexto de que o DECOMP está acima dos tetos vigentes e dos demais subsistemas",
+      "Série semanal sem linhas de referência para piso e tetos"
+     ],
+     "justificativa": "Alinhamento de intervalos exemplar e limites tratados na relação anual. Falta contexto de teto na comparação semanal, em especial no Norte, onde o DECOMP supera o teto horário e a resposta mostra diferença de R$ 1.742,65."
+    },
+    "G": {
+     "nota": 9.0,
+     "evidencia": [
+      "Refiz com as fontes primárias do ONS (CMO de meia hora de 2022 a 2026 e CMO semanal): médias semanais, 61 semanas de zero e contagens da A02; sha256 dos três CSV anuais da tabela igual ao dos arquivos que baixei.",
+      "Unidade: o dicionário do ONS (versão de 02/05/2023) lista a média semanal em R$/MW e os patamares em R$/MWh; a página exibe R$/MWh e declara a divergência como inferência.",
+      "Dia 10/09/2026, sem CMO na captura, aparece como sem dado e nunca como zero; o arquivo atual do ONS já o traz, e as outras 127.680 comparações horárias (2022 a 2024 e 2026) conferem.",
+      "Semanas incompletas ficam sem média, dias sem meia hora são listados e o CMO do dia seguinte é identificado como programado: ausência e natureza explícitas."
+     ],
+     "atendidos": [
+      "DECOMP semanal, DESSEM de meia hora e PLD horário distintos em modelo, resolução e momento do cálculo",
+      "Zero publicado distinguido de ausência (A02 e dias sem publicação)",
+      "Natureza Estimado para o CMO e Calculado para as médias",
+      "Diferença entre produtos não tratada como erro nem explicada por causa",
+      "Unidade R$/MW contra R$/MWh declarada"
+     ],
+     "problemas": [
+      "Convenção do instante da meia hora marcada como aprovada com evidência estreita (erro médio 28,86 contra 31,45); o dicionário do ONS só diz data de referência",
+      "Arredondamento em duas etapas mostra 2,1% onde o valor é 2,049% (2024)"
+     ],
+     "justificativa": "Rigor alto, verificado nas fontes primárias: modelos, resolução, ausência, zeros e unidade tratados com clareza. Pesos menores: convenção da meia hora com evidência estreita e arredondamento duplo de 0,1 ponto. O contexto de teto do Norte está em F."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "sha256 dos três CSV anuais do ONS (2022, 2023, 2024) iguais aos publicados; manual do DESSEM do CEPEL com sha256 igual e passagens citadas encontradas literalmente.",
+      "Médias semanais do DESSEM, marcas de ausência e DECOMP refeitos dos arquivos primários; tabela e CSV semanal sem divergência nas linhas conferidas (o projeto confere 1.872 células).",
+      "A tabela de sequências de CMO zero mostra 41 linhas, só de 4 semanas seguidas ou mais (minimo=4 no código); o CSV do ONS tem 96 sequências de qualquer tamanho, e o filtro não está escrito na página.",
+      "Código eec0a3121e05+alterado; 3 fichas Comprove (DESSEM, PLD e A02) com fórmula, numerador e denominador."
+     ],
+     "atendidos": [
+      "Fonte, arquivo, hash e captura de cada produto",
+      "Fórmulas e variáveis das médias semanais e horárias",
+      "Conferência do CSV contra o Parquet oficial do ONS e contra a gold",
+      "Passagens normativas e técnicas literais, com documento e versão",
+      "Controles automáticos listados com resultado"
+     ],
+     "problemas": [
+      "Filtro de 4 semanas seguidas ou mais não declarado na tabela de sequências de CMO zero (41 linhas contra 96 sequências no CSV)",
+      "Versão de código com sufixo +alterado (alteração fora de commit) impede reconstruir o número no commit citado",
+      "Fichas Comprove só para a semana de referência e a A02, não para a relação anual"
+     ],
+     "justificativa": "Rastreio forte, com hashes dos arquivos do ONS e do manual do CEPEL conferidos e reprodução exata. Pontos fracos: filtro de quatro semanas não declarado na tabela de zeros, versão de código com sufixo +alterado e fichas só para a semana de referência."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 0 erros de console, 0 falhas de rede, carga de laboratório de 0,87 a 1,22 s, sem rolagem horizontal; HTML de 475 KB (74 KB comprimido).",
+      "Playwright: CLS de laboratório de 0,113 em 1440 px, repetido em três execuções (salto no NAV do topo aos 0,5 a 0,7 s), e 0,028 em 390 px.",
+      "A troca dos quatro submercados atualiza resposta, cartões e gráfico sem erro, com números iguais ao meu recálculo.",
+      "Testes com valores esperados por awk (semana alinhada, semana incompleta, CSV semanal, A02) e CI que retém a publicação se falharem; medição de laboratório."
+     ],
+     "atendidos": [
+      "Seletor de submercado e zoom sem erro",
+      "Teste de paridade entre gráfico, tabela e CSV semanal",
+      "Bloqueio de publicação por teste e sentinela",
+      "Protocolo de inspeção documentado como laboratório"
+     ],
+     "problemas": [
+      "CLS de 0,113 em 1440 px, acima de 0,1",
+      "Sem dado de campo nem teste com leitor de tela",
+      "DOM de cerca de 2.400 nós"
+     ],
+     "justificativa": "Sem erros de console, cálculos e interações corretos e testes orientados a risco com retenção de publicação. O salto de layout de 0,113 no topo e a medição só de laboratório mantêm a nota em 8,5."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "cmo_norte_sem_contexto_de_teto",
+     "gravidade": "media",
+     "criterios": [
+      "F"
+     ],
+     "onde": "Resposta e cartões do Norte; gráfico semanal; tabela do modo Analisar da página principal",
+     "descricao": "Na semana de 19 a 25/09/2026 o DECOMP do Norte é R$ 1.866,74/MWh (patamares leve 1.609,98 e médio e pesado 2.045,69), acima do teto horário de 2026 (1.611,04) e 2,4 vezes o teto estrutural (785,27); os outros subsistemas ficam em 97,89. A resposta diz que o PLD ficou R$ 1.742,65 abaixo, sem citar os limites nem a diferença entre subsistemas.",
+     "sugestao": "Desenhar piso e tetos vigentes no gráfico semanal e acrescentar à resposta que o CMO está acima do teto do ano quando for o caso."
+    },
+    {
+     "id": "cmo_zeros_filtro_nao_declarado",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Tabela Sequências de semanas com CMO semanal zero, por subsistema (desde 2005)",
+     "descricao": "A função sequencias_zero usa minimo=4: a tabela traz 41 linhas, só de 4 semanas seguidas ou mais, e o CSV do ONS tem 96 sequências de qualquer tamanho (SE 19, S 20, NE 28, N 29). O título não diz isso.",
+     "sugestao": "Escrever no título 'com 4 semanas seguidas ou mais' ou listar todas as sequências."
+    },
+    {
+     "id": "cmo_meia_hora_evidencia_estreita",
+     "gravidade": "baixa",
+     "criterios": [
+      "G",
+      "H"
+     ],
+     "onde": "Controle Convenção da meia hora do DESSEM (instante igual ao início) e alinhamento A01",
+     "descricao": "O controle é aprovado com erro médio de 28,86 contra 31,45 R$/MWh, diferença pequena; o dicionário do ONS só diz 'data de referência'. A estrutura do arquivo (48 instantes por dia, de 00:00 a 23:30) e o Submódulo 4.5 sustentam o início da meia hora, mas a página não os cita como prova.",
+     "sugestao": "Citar a estrutura do arquivo e o item dos Procedimentos de Rede como base da convenção, e rotular o erro médio como confirmação."
+    },
+    {
+     "id": "cmo_arredondamento_duplo",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Coluna 'Horas entre os limites com diferença até R$ 1,00' da tabela anual, 2024",
+     "descricao": "O valor exato é 64 de 3.123 horas, 2,049%; a gold guarda 0,0205 e a tela mostra 2,1%.",
+     "sugestao": "Formatar a fração sem arredondar antes, ou publicar a contagem."
+    },
+    {
+     "id": "cmo_cls_topo",
+     "gravidade": "baixa",
+     "criterios": [
+      "L"
+     ],
+     "onde": "Navegação do topo (NAV) no carregamento, 1440 px",
+     "descricao": "Salto de layout de 0,113 aos 0,5 a 0,7 s, reproduzido em três execuções de laboratório, acima do limite de 0,1 do patamar bom.",
+     "sugestao": "Reservar a altura da navegação antes da hidratação."
+    }
+   ],
+   "nao_verificado": [
+    "PLD horário contra o arquivo da CCEE (HTTP 403 neste ambiente)",
+    "Procedimentos de Rede do ONS (Submódulos 2.4, 4.3 e 4.5): não reli os PDFs; li o manual do DESSEM e os dicionários do ONS",
+    "Mecanismo do valor da água e manuais do DECOMP e do NEWAVE: não públicos, pendência declarada pela página"
+   ]
+  },
+  "/setor-eletrico/pld/diferencas-regionais": {
+   "paineis": [
+    "P012"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz as 8 linhas por período, os 6 pares e as 4 fronteiras com pld_horario.csv e os arquivos horários do ONS: iguais (ex.: 3.791 de 8.760 horas separadas, 2.266 acima de R$ 1,00, 1.953 acima de R$ 10,00, média 37,82, máximo 824,13 em 23/03/2026 15h).",
+      "Perfil horário de separação (144 valores) e fluxo por hora de 24/09/2026 (01h, 08h e 17h) conferem com o ONS: NE para N 3.929, NE para SE 1.954, S para SE 4.244, SE para N 1.930 MWmed às 01h.",
+      "Cobertura: frequência, amplitude (média, mediana, p95, máximo), pares, matriz, perfil por hora do dia, preço e fluxo na mesma hora e sentido do fluxo nas horas separadas.",
+      "Não há série mensal ou sazonal da separação nem limites de intercâmbio (declarado)."
+     ],
+     "atendidos": [
+      "Frequência de separação com três limiares (R$ 0,01, 1,00 e 10,00)",
+      "Distribuição da diferença (média, mediana, p95, máximo) por período",
+      "Seis pares, matriz 4 por 4 e perfil horário por par",
+      "Preço e fluxo verificado na mesma hora (168 horas)",
+      "Limites de intercâmbio ausentes declarados, sem classificar hora como congestionada"
+     ],
+     "problemas": [
+      "Sem série mensal ou sazonal da separação (só anos, 12 meses e 30 dias)",
+      "Sem limites de intercâmbio: não permite dizer se a fronteira estava no limite (declarado)",
+      "A resposta de Entender traz só a média, sem distribuição, embora a mediana seja 0,01"
+     ],
+     "justificativa": "Cobertura ampla e correta, com distribuição, pares, perfil horário e fluxo na mesma hora. Faltam série mensal ou sazonal da separação, limites de intercâmbio (declarado) e distribuição junto à média no primeiro nível."
+    },
+    "F": {
+     "nota": 8.5,
+     "evidencia": [
+      "Todas as diferenças usam a mesma hora e a mesma publicação; o limiar de separação (R$ 0,01) e as contagens a R$ 1,00 e R$ 10,00 mostram a sensibilidade; controle reconcilia 55 e 2.266 horas com pld.json.",
+      "Tabela por período: 2022 com 6,2% e 2023 com 0,1% das horas separadas; nesses anos os quatro submercados estavam juntos no piso em 6.917 e 8.611 horas (refeito), e a página não avisa.",
+      "Sentido do fluxo nas horas separadas refeito com o ONS (451 de 454; 1.397 de 1.397; 1.554 de 1.554; 1.129 de 1.130) e apresentado como associação, não causa.",
+      "Resposta de Entender: média de 37,82 sobre todas as 8.760 horas; nas 3.791 horas separadas a média é 87,37 e a mediana 12,35."
+     ],
+     "atendidos": [
+      "Mesma hora e mesma publicação em todas as diferenças",
+      "Limiares explícitos e sensibilidade mostrada",
+      "Matriz com sinal definido (positivo é a linha mais cara)",
+      "Associação de fluxo descrita sem causa",
+      "Ano parcial marcado"
+     ],
+     "problemas": [
+      "Comparação entre anos sem aviso de que, em 2022 e 2023, a separação quase nula vem de os quatro submercados estarem no piso",
+      "Média sobre todas as horas na resposta de Entender, sem distribuição, pode ser lida como média das horas separadas",
+      "A hora padrão do esquema de preço e fluxo (24/09/2026 01h) é a de maior diferença entre as horas com fluxo, e a página não diz isso"
+     ],
+     "justificativa": "Comparação sempre na mesma hora, com três limiares e sensibilidade visível. Mas a tabela por ano compara 2022 e 2023, anos de piso, com 2025 e 2026 sem aviso, e a média de todas as horas pode ser lida como a das horas separadas."
+    },
+    "G": {
+     "nota": 8.0,
+     "evidencia": [
+      "Separação, diferença média e extremos conferem com o CSV horário (6 pares: 13,03; 17,76; 15,95; 33,11; 35,53 e 5,21 por cento), com diferença de um centavo contada à parte (1.756 a 4.781 horas por par).",
+      "Em 2023, 8.611 de 8.760 horas têm os quatro submercados no piso de R$ 69,04: a separação de 0,08% é efeito do piso, não evidência de ausência de restrição; a tela mostra 0,1% e R$ 0,00 sem esse aviso.",
+      "A resposta de Entender mistura a fração de horas separadas (43,3%) com a média sobre todas as horas (R$ 37,82); a resposta completa escreve a média do período corretamente.",
+      "Fluxo em MWmed, positivo da primeira para a segunda ponta, nulo até 1 MWmed; sem fluxo depois de 28/09/2026, declarado e sem preenchimento."
+     ],
+     "atendidos": [
+      "Unidades e sinais consistentes (R$/MWh, MWmed, positivo da primeira para a segunda ponta)",
+      "Ausência de fluxo após 28/09/2026 tratada como ausência",
+      "Nenhuma hora chamada de congestionada sem limite de intercâmbio",
+      "Diferença de um centavo contada à parte",
+      "Controle com a gold de operação nas mesmas janelas"
+     ],
+     "problemas": [
+      "Resposta de Entender com fração das horas separadas e média de todas as horas na mesma frase",
+      "Separação quase nula em anos de piso (2022 e 2023) sem aviso de empate no piso, o que pode ser lido como integração sem restrições"
+     ],
+     "justificativa": "Cálculos exatos e limiares transparentes, mas a resposta de Entender mistura fração de horas separadas com média de todas as horas, e os anos de piso mostram separação quase nula sem aviso de que os quatro preços estavam no piso por regra."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Reproduzi tabelas e matriz seguindo a regra da página com pld_horario.csv e, para o fluxo, com INTERCAMBIO_NACIONAL 2025 e 2026 do ONS na orientação canônica: tabela de fronteiras igual, com 8.712 horas de fluxo até 28/09/2026 23h.",
+      "Controle automático reconcilia 2.266 e 55 horas com pld.json; pld_separacao_diaria.csv, pld_amplitude_diaria.csv e o JSON das 168 horas têm dicionário de colunas.",
+      "Sobre este dado: fontes, snapshot e sha256 do ONS, fórmula, revisões (nenhuma em 7 capturas), cobertura, licença e código eec0a3121e05+alterado; o manifesto confere os 18 hashes pld_*.",
+      "A ficha Comprove existe só para o par SE e Sul (13,03%); os outros números dependem de fórmula e CSV, que reproduzi."
+     ],
+     "atendidos": [
+      "Regra de separação, limiar e fluxo escrita em Auditar",
+      "Fonte, captura, versão e revisões por conjunto",
+      "CSV diário, amplitude e janela horária para reproduzir",
+      "Mesmas linhas no gráfico, na tabela e no CSV (testes do P012)",
+      "Cobertura do fluxo e ausência declaradas"
+     ],
+     "problemas": [
+      "Versão do processamento com sufixo +alterado (eec0a3121e05+alterado): alteração fora de commit, o número não se reconstrói no commit citado",
+      "Ficha Comprove só para um par (SE e Sul) e para 12 meses",
+      "Reprodução da ficha aponta comando interno do projeto"
+     ],
+     "justificativa": "Reprodução exata da separação a partir do CSV e dos arquivos do ONS, com dicionário de colunas, controle contra a gold e manifesto de hashes. A nota fica em 8,5 porque a versão do código traz o sufixo +alterado e a ficha de prova cobre um só par."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 0 erros de console, 0 falhas de rede, carga de laboratório de 1,09 a 1,30 s; HTML de 386 KB (55 KB comprimido), o menor da família.",
+      "Playwright: CLS de laboratório de 0,126 a 0,129 em 390 px (salto no topo) e 0,081 em 1440 px; os seletores de período e de par atualizam resposta e tabelas sem erro.",
+      "Telas de 2023, de 30 dias e de 2026 iguais ao recálculo (0,1% e R$ 0,00; 24,6% e R$ 2,67; 49,0% e R$ 46,58).",
+      "Testes do P012 (separação por par, matriz antissimétrica, perfil horário, fluxo nas quatro fronteiras contra awk) e CI com retenção; só laboratório."
+     ],
+     "atendidos": [
+      "Seletores de período e de par corretos",
+      "Paridade entre gráfico, tabela e CSV testada",
+      "Bloqueio de publicação por teste",
+      "Protocolo de inspeção documentado como laboratório"
+     ],
+     "problemas": [
+      "CLS de 0,126 a 0,129 em 390 px, acima de 0,1",
+      "Sem dado de campo nem teste com leitor de tela"
+     ],
+     "justificativa": "Cálculos e interações corretos, HTML leve e testes por awk com retenção de publicação. O salto de layout de 0,13 no celular, acima de 0,1, e a medição só de laboratório mantêm a nota em 8,5."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "reg_resposta_media_condicional",
+     "gravidade": "media",
+     "criterios": [
+      "G",
+      "E"
+     ],
+     "onde": "Resposta de Entender (vereditoP012) e cartão Diferença média entre o maior e o menor PLD",
+     "descricao": "A frase diz que os preços diferiram em 43,3% das horas e, na sequência, 'em média R$ 37,82/MWh'. O valor é a média das 8.760 horas; nas 3.791 horas separadas a média é R$ 87,37 e a mediana R$ 12,35 (mediana de todas as horas: R$ 0,01).",
+     "sugestao": "Escrever 'em média R$ 37,82/MWh considerando todas as horas (R$ 87,37 nas horas separadas, mediana R$ 12,35)'."
+    },
+    {
+     "id": "reg_anos_de_piso_sem_aviso",
+     "gravidade": "media",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "Tabela Amplitude entre submercados por período e resposta por ano (2022 e 2023)",
+     "descricao": "Em 2022 e 2023 a separação é 6,2% e 0,1% porque os quatro submercados estavam juntos no piso em 6.917 e 8.611 horas; a página mostra 0,1% e R$ 0,00 em 2023 sem esse aviso, que só existe na página Limites.",
+     "sugestao": "Acrescentar horas com os quatro no piso por período e a frase de empate no piso, com ligação para a página Limites."
+    },
+    {
+     "id": "reg_hora_padrao_extrema",
+     "gravidade": "baixa",
+     "criterios": [
+      "F"
+     ],
+     "onde": "Campo Hora no esquema e diagrama de preço e fluxo (24/09/2026 às 01h)",
+     "descricao": "A hora aberta por padrão é a de maior diferença entre submercados entre as horas com fluxo nas quatro fronteiras (Sul a R$ 57,31 contra R$ 113,35 nos demais, diferença de R$ 56,05). A página não rotula essa hora como a mais extrema do período; o critério está só na documentação do módulo.",
+     "sugestao": "Rotular 'hora de maior diferença com fluxo publicado' ou abrir na hora mais recente com fluxo."
+    },
+    {
+     "id": "reg_cls_celular",
+     "gravidade": "baixa",
+     "criterios": [
+      "L"
+     ],
+     "onde": "Topo da página em 390 px",
+     "descricao": "CLS de laboratório de 0,126 a 0,129 em duas execuções, acima de 0,1.",
+     "sugestao": "Reservar a altura dos blocos do topo antes da hidratação."
+    },
+    {
+     "id": "reg_ficha_so_um_par",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Cartões do capítulo (43,3%, 2.266 horas, R$ 37,82)",
+     "descricao": "Só o par SE e Sul tem ficha Comprove este número; os demais números dependem de fórmula e CSV. Reproduzi todos sem divergência.",
+     "sugestao": "Fichas para os cartões de 12 meses e para cada par, como nas outras páginas."
+    },
+    {
+     "id": "reg_sem_serie_da_separacao",
+     "gravidade": "baixa",
+     "criterios": [
+      "E"
+     ],
+     "onde": "Capítulo de análise (anos, 12 meses e 30 dias)",
+     "descricao": "A separação aparece por ano e por hora do dia, não por mês; a amplitude diária de 12 meses está só na página principal.",
+     "sugestao": "Série mensal da fração de horas separadas por par, com os anos de piso marcados."
+    }
+   ],
+   "nao_verificado": [
+    "PLD horário contra o arquivo da CCEE (HTTP 403 neste ambiente)",
+    "Limites de intercâmbio do ONS: não integrados na página; não avaliei se há dado público equivalente"
+   ]
+  },
+  "/setor-eletrico/pld/historico": {
+   "paineis": [
+    "P011"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz as 276 médias temporais mensais, os percentis sazonais (12 meses, SE), os quantis anuais (6 anos), o perfil hora por mês e a ponderada de ago/2026: iguais ao exibido e ao CSV.",
+      "Percentil do dia: 38,7 entre 150 dias de setembro de 2021 a 2025 (mediana 247,81) e 40,0 entre 35 dias da semana ISO 40; idem nos quatro submercados pelo seletor.",
+      "Dimensões: posição no mesmo mês e semana, série mensal com três médias, faixa sazonal, distribuição por regime anual de limites, perfil hora por mês, mapa de 30, 60 ou 90 dias e moeda constante.",
+      "Cada referência tem no máximo cinco anos anteriores; a série semanal 2001 a 2020 da CCEE, citada na página principal, não é integrada."
+     ],
+     "atendidos": [
+      "Posição do dia frente ao mesmo mês e à mesma semana de anos anteriores",
+      "Série mensal com média temporal e duas ponderadas pela carga",
+      "Faixa sazonal e distribuição do PLD horário por regime anual de limites",
+      "Perfil hora por mês e mapa hora por dia sob demanda",
+      "Limitações de perímetro, parcialidade e revisão declaradas"
+     ],
+     "problemas": [
+      "Sazonalidade e história com no máximo cinco anos (2021 a 2025), sem a série semanal 2001 a 2020 que a CCEE publica",
+      "Faixa sazonal e distribuição anual em valores nominais"
+     ],
+     "justificativa": "Cobertura muito ampla e reproduzida: posição sazonal, três médias, distribuição por regime, perfil e mapas. A nota fica abaixo de 9 porque a história e a sazonalidade têm no máximo cinco anos, sem integrar a série semanal de 2001 a 2020 publicada pela CCEE."
+    },
+    "F": {
+     "nota": 8.0,
+     "evidencia": [
+      "Percentil e faixa sazonal usam médias diárias nominais de 2021 a 2025; o IPCA subiu 36,9% de jan/2021 (5.574,49) a ago/2026 (7.633,23), índices conferidos no SIDRA do IBGE; moeda constante só na média temporal mensal.",
+      "Cada ano tem piso e tetos próprios, mostrados por ano (piso 49,77 a 69,04; teto estrutural 583,88 a 785,27); 2022 a 2024 têm de 63,6% a 98,3% das horas no piso (SE), e o P10 e o P25 de fevereiro a junho valem 55,70 e 61,07.",
+      "Média temporal, ponderada pelo balanço (peso com MMGD estimada desde 05/2023) e ponderada sem MMGD aparecem nomeadas; refiz a diferença de R$ 5,73 a R$ 9,26 em ago/2026.",
+      "A ponderada pelo balanço só se compara dentro do mesmo perímetro (P1, P2, P3), com marcas no gráfico."
+     ],
+     "atendidos": [
+      "Média temporal, ponderada e ponderada sem MMGD sempre nomeadas, com peso e perímetro",
+      "Percentil por rank médio com n visível e mesma semana ISO",
+      "Piso e tetos de cada ano ao lado da distribuição",
+      "Mês parcial e horas sem carga marcados",
+      "Percentil declarado como não previsão"
+     ],
+     "problemas": [
+      "Percentis e faixa sazonal em valores nominais, sem versão em moeda constante, numa série com 36,9% de inflação acumulada",
+      "Referência sazonal de no máximo cinco anos, com regimes de limites diferentes em cada um"
+     ],
+     "justificativa": "Média temporal, ponderadas e perímetros bem nomeados, com limites de cada ano ao lado da distribuição. A comparação principal, o percentil frente ao mesmo mês, usa valores nominais de poucos anos com regimes diferentes, sem versão em moeda constante."
+    },
+    "G": {
+     "nota": 9.0,
+     "evidencia": [
+      "Ponderada pelo balanço de ago/2026 refeita com BALANCO_ENERGIA_SUBSISTEMA_2026 do ONS (131,7331; 132,3642; 128,4730; 127,0851) e a sem MMGD com carga_verificada_horaria.csv do site (137,8176; 138,0939; 137,7320; 133,3280): iguais.",
+      "Perímetros P1, P2 e P3 conferem com a descrição do conjunto Carga de Energia no CKAN do ONS (até 02/2021; 03/2021 a 04/2023; desde 29/04/2023 com MMGD estimada).",
+      "Moeda constante refeita nas 272 linhas com índice (nominal vezes índice da base dividido pelo índice do mês) sem divergência; índices de 8 meses iguais ao SIDRA do IBGE.",
+      "Set/2026 tem 672 e 696 de 720 horas com carga (as duas ponderadas) e a coluna das mesmas horas marca 'não'; a revisão da carga do Nordeste (15 horas com troca de sinal na captura de 29/09) aparece em tabela."
+     ],
+     "atendidos": [
+      "Média temporal, ponderada pelo balanço e ponderada sem MMGD sempre nomeadas, com peso e perímetro",
+      "Quebras de perímetro (03/2021 e 29/04/2023) marcadas no gráfico e na tabela",
+      "Peso estimado e peso observado rotulados",
+      "Mês e horas parciais sinalizados, sem preencher ausência",
+      "Moeda constante com índice, mês base e fórmula"
+     ],
+     "problemas": [
+      "Carga do sistema do ONS usada como peso, não o consumo contabilizado na CCEE; correspondência de perímetro entre subsistema e submercado não conferida (declarado)",
+      "Arredondamento em duas etapas no texto de sensibilidade: R$ 0,39 onde o valor é 0,38 (N, ago/2026)"
+     ],
+     "justificativa": "Rigor alto e verificado: ponderadas refeitas nas fontes, perímetros conferidos no ONS, moeda constante exata e quebras, parcialidade e revisões sinalizadas. Ressalvas menores: peso é carga do sistema, não consumo da CCEE, e há arredondamento duplo de 0,01."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz a ponderada pelo balanço de ago/2026 com o arquivo do ONS e a sem MMGD com carga_verificada_horaria.csv, iguais; IPCA de 8 meses igual ao SIDRA; perímetros iguais à descrição do ONS no CKAN.",
+      "Os pesos não vão nos arquivos da página: a ficha traz a consulta (API cargaverificada e conjunto do ONS) e, como reprodução, um comando interno do projeto; o arquivo do balanço exige achar o endereço no ONS e alinhar a hora (API em UTC menos 3 h 30 min).",
+      "Fichas Comprove só para as duas ponderadas de ago/2026; a média do dia e o percentil não têm ficha, e a média temporal diz 'sem ficha de prova própria'.",
+      "Código eec0a3121e05+alterado; manifesto confere os hashes dos arquivos pld_*."
+     ],
+     "atendidos": [
+      "Fonte, captura, snapshot e sha256 por conjunto, com revisões da carga em tabela (689 horas revistas)",
+      "Fórmulas dos três tipos de média e do percentil escritas",
+      "Perímetros do peso com trecho literal conferido da descrição do ONS",
+      "Arquivos para baixar com colunas documentadas (mensal, sazonal, mapa hora por dia)",
+      "Gráfico, tabela e CSV mensal com as mesmas linhas"
+     ],
+     "problemas": [
+      "Pesos da ponderada fora dos arquivos da página; reprodução depende de arquivos do ONS e de procedimento interno",
+      "A página não aponta carga_verificada_horaria.csv, que o site publica desde 2024 e serve ao peso sem MMGD",
+      "Versão do processamento com sufixo +alterado (alteração fora de commit)",
+      "Fichas Comprove só para as ponderadas de ago/2026"
+     ],
+     "justificativa": "Rastreio detalhado, com perímetros, revisões e índices conferidos e reprodução exata. A nota fica em 8,5 porque os pesos não estão nos arquivos da página, a reprodução exige procedimento interno e a versão de código traz o sufixo +alterado."
+    },
+    "L": {
+     "nota": 9.0,
+     "evidencia": [
+      "objetivo.json: 0 erros de console, 0 falhas de rede, carga de laboratório de 1,0 a 1,4 s, sem rolagem horizontal de 320 a 1440 px; HTML de 585 KB (68 KB comprimido), abaixo da meta de cerca de 600 KB.",
+      "Playwright: trocar submercado, zoom, moeda constante, as quatro medidas e a janela do mapa (30, 60 e 90 dias; JSON de 95 KB só ao rolar até o bloco) funciona sem erro; CLS 0,058 em 1440 px e 0,031 em 390 px.",
+      "Testes do P011 comparam linhas do gráfico, da tabela e do CSV mensal e o recorte do mapa; CI retém publicação reprovada; 31 testes TS e 86 em Python.",
+      "Medição de laboratório; DOM de 3.579 nós; sem dado de campo nem leitor de tela."
+     ],
+     "atendidos": [
+      "Interações corretas e carga sob demanda do mapa hora por dia",
+      "Teste de paridade entre gráfico, tabela, CSV e mapa",
+      "Retenção de publicação reprovada e sentinela de regressão",
+      "Protocolo de inspeção documentado como laboratório"
+     ],
+     "problemas": [
+      "DOM de cerca de 3.600 nós, o maior da família",
+      "Sem dado de campo nem teste com leitor de tela"
+     ],
+     "justificativa": "Sem erros de console, estabilidade visual boa, HTML abaixo da meta, carga sob demanda do mapa, interações corretas e testes de paridade com retenção de publicação. Medição só de laboratório e DOM grande impedem nota mais alta."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "hist_percentis_nominais",
+     "gravidade": "media",
+     "criterios": [
+      "F"
+     ],
+     "onde": "Resposta e cartão de posição do dia; faixa sazonal; distribuição por regime anual",
+     "descricao": "Percentil, faixa de 10 a 90 e quantis anuais comparam preços nominais de 2021 a 2025. O IPCA subiu 36,9% de jan/2021 a ago/2026 (índices do SIDRA), e a moeda constante só existe para a média temporal mensal.",
+     "sugestao": "Oferecer percentil e faixa em moeda constante (ou escrever o efeito da inflação) e manter o nominal ao lado."
+    },
+    {
+     "id": "hist_serie_curta_2021",
+     "gravidade": "media",
+     "criterios": [
+      "E",
+      "F"
+     ],
+     "onde": "Percentil sazonal, faixa por mês e distribuição anual",
+     "descricao": "No máximo cinco anos anteriores, cada um com piso e tetos próprios (2022 a 2024 com 63,6% a 98,3% das horas no piso, SE). O recurso semanal de 2001 a 2020 da CCEE está catalogado e não integrado, sem justificativa escrita.",
+     "sugestao": "Integrar a série semanal como referência longa separada, com aviso da mudança de granularidade, ou justificar por escrito a não integração."
+    },
+    {
+     "id": "hist_pesos_fora_dos_arquivos",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Cartões e fichas das ponderadas de ago/2026",
+     "descricao": "O peso não vai nos arquivos da página e a reprodução indicada é um comando interno. Refiz as ponderadas com o arquivo do balanço do ONS e com carga_verificada_horaria.csv, que o site publica desde 2024 e a página não cita.",
+     "sugestao": "Apontar o endereço do arquivo do balanço e carga_verificada_horaria.csv, ou publicar a coluna de peso em CSV próprio."
+    },
+    {
+     "id": "hist_arredondamento_sensibilidade",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Texto de sensibilidade ao peso (O que mudou) e sensibilidade_peso da gold",
+     "descricao": "As diferenças saem de valores já arredondados a duas casas: no Norte, ago/2026, 127,09 menos 126,70 dá 0,39, mas o valor exato é 0,3827.",
+     "sugestao": "Calcular a diferença antes de arredondar."
+    }
+   ],
+   "nao_verificado": [
+    "PLD horário contra o arquivo da CCEE (HTTP 403 neste ambiente)",
+    "Revisão da carga do Nordeste de 26/09/2026 (carga negativa na captura de 29/09): a captura antiga não está acessível; usei o arquivo atual do ONS",
+    "Texto integral da descrição do Balanço de Energia nos Subsistemas: a página admite que ela não trata do perímetro da carga"
+   ]
+  },
+  "/setor-eletrico/pld/limites": {
+   "paineis": [
+    "P010"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 9.0,
+     "evidencia": [
+      "Refiz por submercado e ano: horas no piso, no teto horário, um centavo acima do piso, dias com média no teto estrutural (370 dias submercado, 196 com hora acima do teto no dia) e empates no piso (6 anos): iguais ao exibido e a pld_limites_diario.csv.",
+      "Seis combinações de ano e submercado selecionadas na tela (SE 2021: 91 dias; Sul 2024: 63,62%; NE 2025: 45,59%; Norte 2026: 27,41% e 4 horas no teto) iguais ao recálculo.",
+      "Calendário: 12 dias da tabela e dias da semana de 30/03/2026 conferidos hora a hora; limites por trecho iguais a regulacao_limites_pld_vigencias.csv.",
+      "Dimensões: nível do ano, permanência por ano, calendário, empates entre submercados, dias no teto estrutural, linha do tempo dos 8 atos e ligação com a sequência de CMO zero."
+     ],
+     "atendidos": [
+      "Permanência no piso e nos tetos por ano e submercado, com o limite do próprio ano",
+      "Calendário de horas no limite por dia (183 ou 366 dias)",
+      "Empates entre submercados no piso e dias no teto estrutural",
+      "Atos com publicação, vigência e nível de conferência",
+      "Relação com a sequência de CMO zero sem atribuir causa"
+     ],
+     "problemas": [
+      "O calendário cobre 183 ou 366 dias; a série diária completa só existe no CSV"
+     ],
+     "justificativa": "Responde à pergunta com todas as dimensões que o tema pede: nível do ano, permanência, calendário, empates entre submercados, dias no teto estrutural e atos, tudo reproduzido sem divergência. O calendário mostra no máximo 366 dias."
+    },
+    "F": {
+     "nota": 9.0,
+     "evidencia": [
+      "Cada ano é medido contra o próprio piso e tetos (percentual das horas com limite vigente), 2026 marcado parcial; valores dos 8 atos conferidos nos PDFs (cópias do Internet Archive com sha256 igual ao publicado): pisos de 49,77; 55,70; 69,04; 61,07; 58,60 e 57,31.",
+      "Piso igual entre os quatro submercados e menor observado igual ao piso em 24 de 24 combinações; 0 horas abaixo do piso ou acima do teto horário nos quatro submercados (refeito).",
+      "Hora no limite é igualdade ao centavo; um centavo acima fica à parte (1 hora em 2022 e 2 em 2025, refeito); média diária com tolerância de R$ 0,01 para o teto estrutural.",
+      "O teto estrutural é lido como limite da média diária, o que coincide com a REN ANEEL 1.032/2022, art. 23, § 3, que li."
+     ],
+     "atendidos": [
+      "Limite aplicável do próprio ano em cada comparação",
+      "Denominador visível (horas com limite vigente)",
+      "Ano parcial sem comparação direta com ano completo",
+      "Menor valor observado só como conferência, nunca como piso",
+      "Empates no piso explicados"
+     ],
+     "problemas": [],
+     "justificativa": "Cada ano é medido contra o próprio piso e tetos, com denominador visível, ano parcial marcado e empates no piso explicados; valores dos atos e contagens refeitos. Nenhum problema material de comparabilidade encontrado."
+    },
+    "G": {
+     "nota": 9.0,
+     "evidencia": [
+      "Tolerância monetária justificada e testada (R$ 0,005 na hora e R$ 0,01 na média diária), refeita sobre as 50.376 horas dos quatro submercados.",
+      "Vigência pelo ato mais recente que informa cada campo: 2022 usa o piso da REH 2.994/2021 e os tetos do Despacho 4.046/2021; 2023 usa os tetos retificados (684,73 e 1.404,77), conferidos na nota técnica.",
+      "Viradas de limite em 01/01 conferidas na série: nenhuma hora abaixo do novo piso ou acima do novo teto de 2021 a 2026.",
+      "Dia sem hora não entra; zero horas no limite aparece como 0, com legenda; ano parcial marcado."
+     ],
+     "atendidos": [
+      "Piso, teto horário e teto estrutural distintos, cada um com a regra",
+      "Hora, dia e média diária conferidos em escalas diferentes",
+      "PLD no limite do ato tratado como limite, não como formação de preço",
+      "Ato retificado (2023) tratado campo a campo",
+      "Leitura do teto estrutural declarada como empírica"
+     ],
+     "problemas": [],
+     "justificativa": "Tolerância justificada, vigência campo a campo, ato retificado tratado e viradas de ano sem violação, tudo refeito por mim. A rastreabilidade da regra do teto estrutural, que a página trata como empírica, está registrada em H."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Baixei as 8 cópias dos atos (Internet Archive dos endereços oficiais da ANEEL): sha256 igual ao da tabela em 8 de 8; piso, tetos e datas dos atos conferidos no texto; o Despacho 4.046 traz publicação no DOU de 17/12/2021.",
+      "REN ANEEL 1.032/2022 (sha256 igual ao registrado no módulo Regulação): o art. 23, §§ 3 a 5, escreve o ajuste da série horária até a média diária igualar o teto estrutural, e o art. 24 define o piso; esta página diz que a regra não tem citação e a chama de leitura empírica.",
+      "Três atos (REH 2.828/2020, REH 3.167/2022 e sua retificação) têm valores lidos em voto ou nota técnica e a REH 2.828/2020 não tem data de publicação; declarado na página.",
+      "Indicador reproduzido pelo CSV: horas no piso por ano (SE) em pld_limites_diario.csv iguais; código eec0a3121e05+alterado."
+     ],
+     "atendidos": [
+      "Endereço oficial, cópia lida e sha256 de cada ato",
+      "Vigência campo a campo e nível de conferência por ato",
+      "Trechos literais de cada ato",
+      "CSV diário com limites vigentes e atos de origem",
+      "Controles automáticos (limites iguais ao módulo Regulação, ato vigente no PDF)"
+     ],
+     "problemas": [
+      "Regra do teto estrutural apresentada como conferência empírica, embora a REN ANEEL 1.032/2022 (art. 23, §§ 3 a 5) já esteja integrada no módulo Regulação",
+      "Controle contra o módulo Regulação usa a mesma regra e não é conferência independente (declarado)",
+      "Três de oito atos lidos em voto ou nota técnica e data de publicação de 2021 ausente (declarado)",
+      "Versão do processamento com sufixo +alterado (alteração fora de commit)"
+     ],
+     "justificativa": "Rastreio de atos exemplar: hashes das oito cópias e valores conferidos por mim. Nota limitada: o teto estrutural é tratado como regra empírica, sem citar a REN 1.032/2022 que o módulo Regulação já cita; três atos foram lidos em voto; versão do código com sufixo +alterado."
+    },
+    "L": {
+     "nota": 9.0,
+     "evidencia": [
+      "objetivo.json: 0 erros de console, 0 falhas de rede, carga de laboratório de 0,98 a 1,19 s, sem rolagem horizontal de 320 a 1440 px; HTML de 534 KB (60 KB comprimido).",
+      "Playwright: CLS de laboratório de 0,0001 em 1440 px e 0,0004 em 390 px; seis combinações de ano e submercado atualizam resposta e cartões com valores iguais ao recálculo.",
+      "Testes do P010 (calendário por dia, permanência, um centavo acima do piso, CSV diário, tolerância) com valores por awk; CI retém a publicação se os testes falham.",
+      "Medição de laboratório, sem dado de campo nem leitor de tela; DOM de cerca de 3.400 nós."
+     ],
+     "atendidos": [
+      "Seletores de ano e submercado corretos",
+      "Paridade entre calendário, tabela e CSV diário testada",
+      "Retenção de publicação reprovada",
+      "Protocolo de inspeção documentado como laboratório"
+     ],
+     "problemas": [
+      "DOM de cerca de 3.400 nós",
+      "Sem dado de campo nem teste com leitor de tela"
+     ],
+     "justificativa": "Sem erros de console, estabilidade visual excelente, interações corretas, testes de risco com valores por awk e retenção de publicação. Medição de laboratório e DOM grande impedem nota mais alta."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "lim_regra_teto_estrutural_citavel",
+     "gravidade": "media",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Seção O que a norma diz sobre os limites e o parágrafo sobre 370 dias submercado no teto estrutural",
+     "descricao": "A página diz que a regra de aplicação do teto estrutural não está nos atos integrados e que a leitura sobre a média diária é conferência empírica. A REN ANEEL 1.032/2022 (art. 22 a 24; sha256 df67f43f igual ao do módulo Regulação) escreve a regra: se a média diária passa do teto estrutural, a CCEE ajusta a série horária de forma uniforme e proporcional, respeitado o piso, por submercado (art. 23, §§ 3 a 5), e define o piso (art. 24). O módulo Regulação já cita o art. 23, § 3.",
+     "sugestao": "Citar a REN 1.032/2022 e o verbete limites do PLD na seção da norma, explicar o ajuste proporcional dos dias no teto estrutural e manter a conferência empírica como confirmação."
+    },
+    {
+     "id": "lim_atos_lidos_em_voto",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Tabela de atos e linha do tempo (REH 2.828/2020, REH 3.167/2022 e retificação)",
+     "descricao": "Valores lidos em voto ou nota técnica porque o texto integral do ato não está acessível; REH 2.828/2020 sem data de publicação. Conferi os valores no voto e na nota técnica; limitação declarada pela página.",
+     "sugestao": "Buscar o texto do ato no Diário Oficial quando acessível e registrar a data de publicação de 2021."
+    },
+    {
+     "id": "lim_controle_mesma_regra",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Controle Limites vigentes por dia: mesma leitura do módulo Regulação",
+     "descricao": "Os 2.099 dias conferidos usam a mesma regra de vigência nos dois módulos, como a página declara. Refiz a vigência com outro código (horas e limites dos PDFs) sem divergência.",
+     "sugestao": "Acrescentar ao controle uma releitura independente da vigência a partir dos PDFs, como a que fiz."
+    }
+   ],
+   "nao_verificado": [
+    "Datas de publicação no DOU de 6 dos 8 atos (só o Despacho 4.046/2021 tem marca no PDF)",
+    "Textos integrais da REH 2.828/2020 e da REH 3.167/2022 (só voto e nota técnica)",
+    "Regras de Comercialização da CCEE (HTTP 403 neste ambiente)"
+   ]
+  }
+ },
+ "achados_entre_paginas": [
+  "Ressalvas sobre limites desatualizadas ou contraditórias: a página principal diz que os limites não foram auditados, mas mostra os limites conferidos no diagrama; a página Limites diz que a regra do teto estrutural não tem citação, mas o módulo Regulação a cita (REN ANEEL 1.032/2022, art. 23, § 3, mesmo sha256 que reproduzi).",
+  "Números de outro módulo reaproveitados sem a ressalva de origem: geração hidráulica e solar chamadas verificadas, com MMGD estimada dentro do total, na página principal; a gold de geração declara a MMGD na solar do Balanço (bloqueio 6).",
+  "Versão do processamento com sufixo +alterado (eec0a3121e05+alterado, alteração fora de commit) nas fichas e caixas das quatro páginas filhas, e código diferente (196905461ac0) na principal: o número das filhas não se reconstrói no commit citado.",
+  "Arredondamento em duas etapas (gold e tela): 2,049% aparece como 2,1%, 25,148% como 25,2% e 0,3827 como 0,39; diferenças de até 0,1 ponto, sem efeito material.",
+  "Histórico curto e nominal: referências sazonais e percentis usam 2021 a 2025 em valores nominais (IPCA subiu 36,9%); a série semanal 2001 a 2020 da CCEE está catalogada e não integrada, sem justificativa escrita.",
+  "Falta contexto de limite quando o PLD é comparado a grandeza sem limite ou aparece como máximo: DECOMP do Norte acima dos tetos (CMO), máximo igual ao teto horário (principal), separação quase nula em anos de piso (regionais).",
+  "Estabilidade e peso: CLS de laboratório de 0,096 a 0,129 no topo em três de dez combinações (principal em 1440 px, CMO em 1440 px, regionais em 390 px); HTML de 678 KB na principal; DOM de 2.300 a 3.600 nós em todas.",
+  "Fichas Comprove este número cobrem poucos números por página (principal 0, regionais 1, limites 1, histórico 2, CMO 3); o restante depende de fórmula e CSV, que reproduzi sem divergência."
+ ],
+ "limites_da_avaliacao": "Não consegui consultar a CCEE: portal de dados abertos, API e site respondem HTTP 403 com a página Acesso bloqueado neste ambiente (a página de metadados do conjunto abriu pela ferramenta de leitura web). O PLD horário foi validado por consistência interna (0 horas fora dos limites, paridade entre gold, CSV e tabelas, recálculos independentes) e pelos limites, fluxos, CMO, carga e IPCA das fontes primárias, não contra o arquivo da CCEE. A ANEEL também bloqueia (403): usei as cópias do Internet Archive que a própria página cita, com sha256 igual ao publicado. Baixei em 09/10/2026 arquivos do ONS mais novos que a captura de 30/09/2026; tudo conferiu, exceto o dia 10/09/2026 do CMO de meia hora, que o ONS publicou depois da captura e a página mostra, corretamente, como sem dado. Não reli os PDFs dos Procedimentos de Rede do ONS, nem as datas de publicação no DOU de seis atos, nem os textos integrais da REH 2.828/2020 e da REH 3.167/2022. Não executei testes, build nem servidor próprio: li os testes sem rodar nenhum. As medições de navegador são de laboratório (Chromium sem limitação, uma carga por combinação), sem dado de campo e sem leitor de tela. Classifiquei como bloqueio 6 a geração verificada com MMGD estimada na página principal; se o auditor a tratar como achado de texto, a correção continua necessária. As notas avaliam as páginas, não agentes, regiões ou fontes."
+}

@@ -1,11 +1,10 @@
 import type { MetadataRoute } from "next";
 
 /**
- * A área logada (/app) nunca deve ser indexada (dados atrás de cadastro).
- * O Observatório (/observatorio) e seus ativos (/obs, inclusive JS/CSS,
- * necessários para o Google renderizar a SPA) são públicos e indexáveis —
- * são a principal superfície de aquisição, junto com as páginas públicas
- * (home, dados, glossário, fontes, metodologia, imprensa).
+ * A abertura em src/lib/rotasPublicas.ts não elimina os bloqueios de
+ * rastreamento: as etapas SMS são públicas e constam no sitemap nos dois
+ * idiomas, mas conservam o bloqueio abaixo. Painéis e arquivos de dados
+ * exigem conta e redirecionam ao login (noindex); /app e APIs são bloqueados.
  */
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -13,7 +12,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/app", "/api/", "/entrar/sms", "/cadastro/telefone", "/cadastro/perfil", "/cadastro/acesso"],
+        disallow: ["/app", "/api/", "/entrar/sms", "/en/entrar/sms", "/cadastro/telefone", "/cadastro/perfil", "/cadastro/acesso"],
       },
     ],
     sitemap: "https://scrutiniums.com/sitemap.xml",

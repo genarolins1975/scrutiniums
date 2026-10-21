@@ -1,0 +1,18 @@
+{
+  "observacoesConferidas": 18756,
+  "divergenciasValores": 0,
+  "hashes": {
+    "pnad-trabalho": "06a88bab8624950da2797aabb197ee5711f4746b5d69cb7147a9eaba919d5b9c",
+    "pnad-rendimento": "11917519a0e8dbd5ea0a23ce93a72dacf39d6a2d56fa3f8737b405d3300bfe40",
+    "pnad-subutilizacao": "87d11be07aa20128d3a856e822522d2ad023d70c197eb464d61372335727fbd3",
+    "censo-renda": "f3a411db4391e3603e391837688935e2c5749244fbd80bec757f4592859af83a",
+    "censo-renda-sexo": "adf1f5a22e201b4cf60fb6d0e15fe522881846532f8e028206d3262e7d4ddbc7",
+    "censo-renda-raca": "d7f0d204f7ef6a1fe8f28fa7b4e665adfb4b409b39b760d668c39fdbc182aa0a"
+  },
+  "chavesDuplicadas": 0,
+  "limites": [
+    "Conferência do snapshot com respostas brutas; não substitui validação do significado conceitual nem autenticação remota da captura.",
+    "Rendimento real: base de preços deve ser verificada na nota oficial.",
+    "Legenda do símbolo SIDRA hífen deve ser respeitada em capturas futuras."
+  ]
+}

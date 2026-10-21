@@ -1,0 +1,137 @@
+{
+  "descricao": "Público e tarefa principal de cada página, por prefixo de rota (vale o prefixo mais longo). Fonte do inventário de visões e das notas de utilidade e impacto social. Tarefas T1 a T12 seguem RUBRICA.md, seção 8. Os perfis são os cinco do prompt de avaliação: consumidor; jornalista ou professor; pesquisador; analista de empresas; gestor público ou conselho.",
+  "familias": {
+    "/setor-eletrico": {
+      "nome": "Inicial",
+      "publico": ["consumidor", "jornalista ou professor", "gestor público ou conselho"],
+      "tarefa": "Entender como a energia chega da geração ao consumo e escolher a página que responde à própria pergunta; buscar um assunto, uma página, um conceito ou uma distribuidora.",
+      "tarefas_rubrica": ["T1"]
+    },
+    "/setor-eletrico/visao-geral": {
+      "nome": "Visão geral",
+      "publico": ["jornalista ou professor", "gestor público ou conselho", "analista de empresas"],
+      "tarefa": "Ver em poucos minutos preço, água, geração, carga e consumidor, cada medida com a sua data e a sua referência, e seguir para o módulo de origem.",
+      "tarefas_rubrica": ["T1", "T5"]
+    },
+    "/setor-eletrico/territorio": {
+      "nome": "Território",
+      "publico": ["consumidor", "jornalista ou professor", "gestor público ou conselho"],
+      "tarefa": "Localizar município, distribuidora, usinas e submercado e ver cada indicador no grão em que a fonte o publica, sem atribuir dado de distribuidora a município.",
+      "tarefas_rubrica": ["T3"]
+    },
+    "/setor-eletrico/agua-e-clima": {
+      "nome": "Água e clima",
+      "publico": ["pesquisador", "jornalista ou professor", "analista de empresas"],
+      "tarefa": "Comparar o armazenamento atual com a história da mesma época, por região, em percentual e em energia; acompanhar a água que chega (ENA e MLT), chuva, temperatura e o balanço por reservatório.",
+      "tarefas_rubrica": ["T5"]
+    },
+    "/setor-eletrico/geracao": {
+      "nome": "Geração",
+      "publico": ["jornalista ou professor", "pesquisador", "analista de empresas"],
+      "tarefa": "Entender de onde vem a eletricidade, como a composição evolui, a diferença entre medição, previsão e MMGD estimada, a capacidade e a utilização, a geração térmica e as restrições de renováveis.",
+      "tarefas_rubrica": ["T6"]
+    },
+    "/setor-eletrico/carga": {
+      "nome": "Carga",
+      "publico": ["pesquisador", "analista de empresas", "jornalista ou professor"],
+      "tarefa": "Comparar a carga com janelas de calendário equivalentes (mesmos dias da semana e mesmas datas), ver o perfil horário e o efeito de calendário e clima descrito, sem isolar causas.",
+      "tarefas_rubrica": ["T7"]
+    },
+    "/setor-eletrico/rede": {
+      "nome": "Rede",
+      "publico": ["pesquisador", "analista de empresas", "gestor público ou conselho"],
+      "tarefa": "Distinguir saldo de fluxos brutos nos dois sentidos entre regiões e com o exterior, o programado do verificado e as restrições documentadas, sem inferir congestionamento.",
+      "tarefas_rubrica": ["T8"]
+    },
+    "/setor-eletrico/pld": {
+      "nome": "PLD",
+      "publico": ["analista de empresas", "jornalista ou professor", "consumidor"],
+      "tarefa": "Ver o preço de curto prazo por submercado com dispersão horária, diferenças regionais, histórico e sazonalidade, limites vigentes e a formação do preço, sem confundir PLD com tarifa.",
+      "tarefas_rubrica": ["T9"]
+    },
+    "/setor-eletrico/pld/modelos": {
+      "nome": "Modelos de previsão do PLD",
+      "publico": ["pesquisador", "analista de empresas", "gestor público ou conselho"],
+      "tarefa": "Conferir o estado de cada modelo registrado (pesquisa, experimental, aprovado), o protocolo, o desempenho fora da amostra contra referências simples e a governança.",
+      "tarefas_rubrica": ["T10"]
+    },
+    "/setor-eletrico/pld/previsoes": {
+      "nome": "Previsões e arquivo",
+      "publico": ["pesquisador", "analista de empresas"],
+      "tarefa": "Verificar origem, corte, horizonte e entrega de cada emissão, a referência simples, o arquivo anterior ao resultado e os avisos da rodada.",
+      "tarefas_rubrica": ["T10"]
+    },
+    "/setor-eletrico/mercado": {
+      "nome": "Mercado",
+      "publico": ["analista de empresas", "pesquisador", "jornalista ou professor"],
+      "tarefa": "Entender como a energia é contratada, alocada e liquidada (ambientes, agentes, MRE e GSF, encargos), no estado real de integração dos dados.",
+      "tarefas_rubrica": []
+    },
+    "/setor-eletrico/conta-de-luz": {
+      "nome": "Conta de luz",
+      "publico": ["consumidor", "jornalista ou professor", "gestor público ou conselho"],
+      "tarefa": "Comparar a tarifa para o mesmo perfil de consumo entre distribuidoras, entender a composição, simular com hipóteses e exclusões claras e acompanhar bandeiras, reajustes e subsídios.",
+      "tarefas_rubrica": ["T2"]
+    },
+    "/setor-eletrico/perdas": {
+      "nome": "Perdas de energia",
+      "publico": ["pesquisador", "jornalista ou professor", "gestor público ou conselho"],
+      "tarefa": "Interpretar perdas com o denominador correto, separar técnicas e não técnicas, comparar distribuidoras com referência regulatória de perímetro compatível, ver custo e contexto.",
+      "tarefas_rubrica": ["T4"]
+    },
+    "/setor-eletrico/qualidade": {
+      "nome": "Qualidade do serviço",
+      "publico": ["consumidor", "gestor público ou conselho", "jornalista ou professor"],
+      "tarefa": "Localizar duração (DEC) e frequência (FEC) das interrupções da área de uma distribuidora, com o limite do próprio conjunto e ano, a dispersão entre conjuntos e as compensações.",
+      "tarefas_rubrica": ["T3"]
+    },
+    "/setor-eletrico/inclusao-energetica": {
+      "nome": "Inclusão energética",
+      "publico": ["gestor público ou conselho", "pesquisador", "jornalista ou professor"],
+      "tarefa": "Ver para quem a energia pesa mais (orçamento por renda), Tarifa Social, cobertura potencial e acesso, distinguindo unidade consumidora, fatura, família, domicílio e pessoa.",
+      "tarefas_rubrica": []
+    },
+    "/setor-eletrico/empresas": {
+      "nome": "Empresas",
+      "publico": ["analista de empresas", "jornalista ou professor", "pesquisador"],
+      "tarefa": "Encontrar uma empresa e a sua ficha: ativos, propriedade direta e controle, indicadores das distribuidoras, demonstrações e investimentos, por identificador oficial.",
+      "tarefas_rubrica": []
+    },
+    "/setor-eletrico/expansao": {
+      "nome": "Expansão",
+      "publico": ["analista de empresas", "gestor público ou conselho", "pesquisador"],
+      "tarefa": "Distinguir capacidade em operação, obras e obra não iniciada, ver cronogramas e coortes e separar a carteira dos cenários oficiais de planejamento.",
+      "tarefas_rubrica": ["T11"]
+    },
+    "/setor-eletrico/transicao": {
+      "nome": "Transição e ambiente",
+      "publico": ["pesquisador", "jornalista ou professor", "gestor público ou conselho"],
+      "tarefa": "Ver estoque e adição de micro e minigeração distribuída, energia estimada e participação na carga e a intensidade de emissões, sem atribuir causalidade.",
+      "tarefas_rubrica": []
+    },
+    "/setor-eletrico/regulacao": {
+      "nome": "Regulação",
+      "publico": ["analista de empresas", "gestor público ou conselho", "pesquisador"],
+      "tarefa": "Saber que regra vale em cada período, separando publicação, vigência e efeito declarado, e acompanhar consultas e agenda.",
+      "tarefas_rubrica": []
+    },
+    "/setor-eletrico/aprenda": {
+      "nome": "Aprenda",
+      "publico": ["jornalista ou professor", "consumidor", "pesquisador"],
+      "tarefa": "Entender um conceito em linguagem simples, ver o exemplo, conferir a fonte oficial e voltar ao painel onde o conceito aparece; seguir uma trilha curta.",
+      "tarefas_rubrica": ["T1"]
+    },
+    "/setor-eletrico/dados": {
+      "nome": "Dados e fontes",
+      "publico": ["pesquisador", "jornalista ou professor", "analista de empresas"],
+      "tarefa": "Encontrar uma fonte, conferir cobertura, atualidade e estado do conjunto (catalogado, verificado, publicado), baixar e reproduzir um indicador.",
+      "tarefas_rubrica": ["T12"]
+    },
+    "/setor-eletrico/metodologia": {
+      "nome": "Metodologia",
+      "publico": ["pesquisador", "gestor público ou conselho", "analista de empresas"],
+      "tarefa": "Seguir o caminho do arquivo ao número, consultar a regra de cada indicador, ver natureza, versões, validações e limites, e reproduzir um valor.",
+      "tarefas_rubrica": ["T12"]
+    }
+  }
+}

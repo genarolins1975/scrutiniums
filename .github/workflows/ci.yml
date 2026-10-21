@@ -33,7 +33,8 @@ concurrency:
 jobs:
   testes:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # build, pipeline e Vitest completos levavam cerca de 19 minutos; com o painel da Educação passaram de 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
@@ -49,6 +50,11 @@ jobs:
       - name: Dependências
         run: npm ci
 
+      - name: Chromium para verificar o DOM das páginas dinâmicas
+        # A home consulta sessão e usa Suspense: o HTML de transporte sozinho
+        # não comprova os textos que o leitor recebe. Versão fixada no lockfile.
+        run: npx --no-install playwright install --with-deps chromium
+
       - name: Gerar app.min.js
         # o minificado é gitignorado (artefato de build) e os testes de
         # exportação o comparam com o fonte — num clone limpo ele não existe.
@@ -61,10 +67,18 @@ jobs:
       - name: Tipos
         run: npx tsc --noEmit
 
+      - name: Contrato de grupos e publicação seletiva da gold
+        # Stdlib, fixtures sintéticas; um arquivo novo sem grupo bloqueia o PR.
+        run: python3 -m unittest pipeline.tests.test_publicar_gold
+
       - name: Módulos Python compilam
         # sem instalar dependências: o pipeline é stdlib + pypdf, e aqui só
         # interessa pegar erro de sintaxe/import antes do agendamento das 6h
         run: python3 -m compileall -q pipeline
+
+      - name: Dependências do pipeline de energia
+        # pyarrow: leitura dos Parquet da ANEEL nos módulos de energia
+        run: pip install -r pipeline/energia/requirements.txt
 
       - name: Testes Python (pipeline e camada de pesquisa)
         # stdlib, sem rede: regra nominal, relatório automático, pacote de fatos,
@@ -73,6 +87,69 @@ jobs:
         run: |
           python3 -m unittest discover -s pipeline/tests -t .
           python3 -m unittest discover -s pesquisa/tests -t .
+          python3 -m unittest pipeline.eficiencia_resultados.test_motor pipeline.eficiencia_resultados.test_expansao pipeline.eficiencia_resultados.test_saude_municipal pipeline.eficiencia_resultados.test_precisao_saude pipeline.eficiencia_resultados.test_captura_recaptura pipeline.eficiencia_resultados.test_habitacao pipeline.eficiencia_resultados.test_habitacao_cenarios pipeline.eficiencia_resultados.test_conectividade pipeline.eficiencia_resultados.test_cesta_conjunta pipeline.eficiencia_resultados.test_precisao_candidatas pipeline.eficiencia_resultados.test_revisao_v3
 
-      - name: Testes
+      - name: Reconciliação aritmética alternativa do OBEE
+        run: |
+          python3 -m unittest scripts.test_auditar_cesta_obee_v3
+          # o relatório versionado precisa ser exatamente o que o auditor produz hoje
+          python3 scripts/auditar-cesta-obee-v3.py | python3 -c "import json,sys; sys.exit(json.load(sys.stdin) != json.load(open('docs/obee/resultados/reconciliacao-aritmetica-v3.json')))"
+          python3 -m unittest scripts.test_obee_sensibilidade_pares scripts.test_obee_robustez_ampliada
+          # a prévia versionada precisa ser a saída do gerador (dados, robustez e ressalva)
+          python3 docs/obee/resultados/review-ui/generate.py
+          git diff --exit-code docs/obee/resultados/revisao-interativa-v3.html
+
+      - name: Precisão complementar da cesta OBEE
+        run: |
+          python3 -m unittest scripts.test_obee_precisao_cesta
+          python3 scripts/obee_precisao_cesta.py --check
+          python3 -m unittest scripts.test_obee_renda_sensibilidade
+          python3 scripts/obee_renda_sensibilidade.py --check
+
+      - name: Índice de resultados v4 do OBEE
+        run: |
+          python3 -m unittest pipeline.eficiencia_resultados.test_indice_v4
+          # as saídas versionadas precisam ser exatamente o que o cálculo produz hoje
+          python3 -m pipeline.eficiencia_resultados.indice_v4 --check
+          # código, saídas, decisões e fontes conferem com o pacote congelado da edição
+          python3 -m pipeline.eficiencia_resultados.indice_v4 --verificar
+          # a interface, fora do pacote, confere com o seu manifesto complementar
+          python3 scripts/obee_interface_v4.py --check
+          # os contornos da entrada são os do recorte versionado da malha do IBGE
+          python3 scripts/obee_contornos_capitais.py --check
+
+      - name: Build de produção
+        # gera o HTML pré-renderizado (.next/server/app) do MESMO commit testado, no mesmo
+        # job, sem credenciais de produção: as páginas são estáticas. Até 08/10/2026 este
+        # workflow não gerava build, e o teste que inspeciona o HTML (undefined, NaN, data
+        # ISO crua) retornava cedo por falta do diretório: passava sem verificar nada.
+        run: npm run build
+
+      - name: Fluxos e telas do Judiciário com sessão local
+        run: node scripts/obee/judiciario-verificacao.mjs
+
+      - name: Evidência funcional do Judiciário
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: judiciario-verificacao
+          path: /tmp/judiciario-qa/resultado.json
+          if-no-files-found: ignore
+
+      - name: Cobertura bilíngue confere com as fontes de código
+        # Não depende da gold nem de saídas dos materializadores.
+        run: node scripts/cobertura-i18n.mjs --check
+
+      - name: Testes (inclui a verificação obrigatória do HTML gerado)
+        # EXIGIR_BUILD_HTML=1 faz src/tests/html-gerado.test.ts reprovar se o build, uma rota
+        # esperada ou as páginas a inspecionar não existirem. O log mostra "HTML verificado
+        # (...): N páginas" quando a asserção realmente rodou.
+        env:
+          EXIGIR_BUILD_HTML: "1"
         run: npx vitest run
+
+      - name: Árvore versionada permanece limpa após build e testes
+        run: |
+          git diff --exit-code
+          git diff --cached --exit-code
+          test -z "$(git status --porcelain --untracked-files=normal)"

@@ -1,0 +1,3081 @@
+{
+ "gerado_em": "2026-10-01T06:06:09Z",
+ "unidades": "MWh e %",
+ "linhas": [
+  {
+   "ano": 2003,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 53,
+   "n_publicadas": 63,
+   "injetada_mwh": 246299542,
+   "perdas_totais_mwh": 36619392,
+   "taxa_total_pct": 14.87,
+   "n_com_tecnica": 51,
+   "injetada_com_tecnica_mwh": 243369877,
+   "cobertura_tecnica_pct": 98.8,
+   "perdas_tecnicas_mwh": 17906383,
+   "taxa_tecnica_pct": 7.36,
+   "taxa_tecnica_injetada_publicada_pct": 7.36,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 7,
+    "balanco_nao_fecha": 1,
+    "fornecida_maior_que_injetada": 2
+   },
+   "universo_igual_ano_anterior": null,
+   "mesmas_ano_anterior": null
+  },
+  {
+   "ano": 2003,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 53,
+   "n_publicadas": 63,
+   "injetada_mwh": 246299542,
+   "perdas_totais_mwh": 36619392,
+   "taxa_total_pct": 14.87,
+   "n_com_tecnica": 51,
+   "injetada_com_tecnica_mwh": 243369877,
+   "cobertura_tecnica_pct": 98.8,
+   "perdas_tecnicas_mwh": 17906383,
+   "taxa_tecnica_pct": 7.36,
+   "taxa_tecnica_injetada_publicada_pct": 7.36,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 7,
+    "balanco_nao_fecha": 1,
+    "fornecida_maior_que_injetada": 2
+   },
+   "universo_igual_ano_anterior": null,
+   "mesmas_ano_anterior": null
+  },
+  {
+   "ano": 2004,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 55,
+   "n_publicadas": 63,
+   "injetada_mwh": 259141952,
+   "perdas_totais_mwh": 39100473,
+   "taxa_total_pct": 15.09,
+   "n_com_tecnica": 52,
+   "injetada_com_tecnica_mwh": 255169231,
+   "cobertura_tecnica_pct": 98.5,
+   "perdas_tecnicas_mwh": 18672505,
+   "taxa_tecnica_pct": 7.32,
+   "taxa_tecnica_injetada_publicada_pct": 7.32,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 6,
+    "fornecida_maior_que_injetada": 2
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": true
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 53,
+    "taxa_total_pct": [
+     14.87,
+     15.02
+    ],
+    "n_tecnica": 51,
+    "taxa_tecnica_pct": [
+     7.36,
+     7.32
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2004,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 55,
+   "n_publicadas": 63,
+   "injetada_mwh": 259141952,
+   "perdas_totais_mwh": 39100473,
+   "taxa_total_pct": 15.09,
+   "n_com_tecnica": 52,
+   "injetada_com_tecnica_mwh": 255169231,
+   "cobertura_tecnica_pct": 98.5,
+   "perdas_tecnicas_mwh": 18672505,
+   "taxa_tecnica_pct": 7.32,
+   "taxa_tecnica_injetada_publicada_pct": 7.32,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 6,
+    "fornecida_maior_que_injetada": 2
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": true
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 53,
+    "taxa_total_pct": [
+     14.87,
+     15.02
+    ],
+    "n_tecnica": 51,
+    "taxa_tecnica_pct": [
+     7.36,
+     7.32
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2005,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 53,
+   "n_publicadas": 66,
+   "injetada_mwh": 310691547,
+   "perdas_totais_mwh": 44315268,
+   "taxa_total_pct": 14.26,
+   "n_com_tecnica": 52,
+   "injetada_com_tecnica_mwh": 309861203,
+   "cobertura_tecnica_pct": 99.7,
+   "perdas_tecnicas_mwh": 23317306,
+   "taxa_tecnica_pct": 7.53,
+   "taxa_tecnica_injetada_publicada_pct": 7.53,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 10,
+    "fornecida_maior_que_injetada": 2,
+    "balanco_nao_fecha": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": true
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 52,
+    "taxa_total_pct": [
+     15.12,
+     15.23
+    ],
+    "n_tecnica": 49,
+    "taxa_tecnica_pct": [
+     7.32,
+     7.52
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2005,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 53,
+   "n_publicadas": 66,
+   "injetada_mwh": 310691547,
+   "perdas_totais_mwh": 44315268,
+   "taxa_total_pct": 14.26,
+   "n_com_tecnica": 52,
+   "injetada_com_tecnica_mwh": 309861203,
+   "cobertura_tecnica_pct": 99.7,
+   "perdas_tecnicas_mwh": 23317306,
+   "taxa_tecnica_pct": 7.53,
+   "taxa_tecnica_injetada_publicada_pct": 7.53,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 10,
+    "fornecida_maior_que_injetada": 2,
+    "balanco_nao_fecha": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": true
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 52,
+    "taxa_total_pct": [
+     15.12,
+     15.23
+    ],
+    "n_tecnica": 49,
+    "taxa_tecnica_pct": [
+     7.32,
+     7.52
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2006,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 54,
+   "n_publicadas": 66,
+   "injetada_mwh": 298006733,
+   "perdas_totais_mwh": 45167756,
+   "taxa_total_pct": 15.16,
+   "n_com_tecnica": 53,
+   "injetada_com_tecnica_mwh": 297113971,
+   "cobertura_tecnica_pct": 99.7,
+   "perdas_tecnicas_mwh": 24078749,
+   "taxa_tecnica_pct": 8.1,
+   "taxa_tecnica_injetada_publicada_pct": 8.1,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 8,
+    "fornecida_maior_que_injetada": 1,
+    "perda_total_negativa": 1,
+    "balanco_nao_fecha": 1,
+    "perda_total_maior_que_injetada": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": true
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 49,
+    "taxa_total_pct": [
+     14.7,
+     15.22
+    ],
+    "n_tecnica": 48,
+    "taxa_tecnica_pct": [
+     7.65,
+     8.09
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2006,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 54,
+   "n_publicadas": 66,
+   "injetada_mwh": 298006733,
+   "perdas_totais_mwh": 45167756,
+   "taxa_total_pct": 15.16,
+   "n_com_tecnica": 53,
+   "injetada_com_tecnica_mwh": 297113971,
+   "cobertura_tecnica_pct": 99.7,
+   "perdas_tecnicas_mwh": 24078749,
+   "taxa_tecnica_pct": 8.1,
+   "taxa_tecnica_injetada_publicada_pct": 8.1,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 8,
+    "fornecida_maior_que_injetada": 1,
+    "perda_total_negativa": 1,
+    "balanco_nao_fecha": 1,
+    "perda_total_maior_que_injetada": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": true
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 49,
+    "taxa_total_pct": [
+     14.7,
+     15.22
+    ],
+    "n_tecnica": 48,
+    "taxa_tecnica_pct": [
+     7.65,
+     8.09
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2007,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 57,
+   "n_publicadas": 65,
+   "injetada_mwh": 338051943,
+   "perdas_totais_mwh": 50362922,
+   "taxa_total_pct": 14.9,
+   "n_com_tecnica": 56,
+   "injetada_com_tecnica_mwh": 337070391,
+   "cobertura_tecnica_pct": 99.7,
+   "perdas_tecnicas_mwh": 27442684,
+   "taxa_tecnica_pct": 8.14,
+   "taxa_tecnica_injetada_publicada_pct": 8.14,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 5,
+    "fornecida_maior_que_injetada": 2,
+    "balanco_nao_fecha": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": true
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 54,
+    "taxa_total_pct": [
+     15.16,
+     15.24
+    ],
+    "n_tecnica": 53,
+    "taxa_tecnica_pct": [
+     8.1,
+     8.28
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2007,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 57,
+   "n_publicadas": 65,
+   "injetada_mwh": 338051943,
+   "perdas_totais_mwh": 50362922,
+   "taxa_total_pct": 14.9,
+   "n_com_tecnica": 56,
+   "injetada_com_tecnica_mwh": 337070391,
+   "cobertura_tecnica_pct": 99.7,
+   "perdas_tecnicas_mwh": 27442684,
+   "taxa_tecnica_pct": 8.14,
+   "taxa_tecnica_injetada_publicada_pct": 8.14,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 5,
+    "fornecida_maior_que_injetada": 2,
+    "balanco_nao_fecha": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": true
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 54,
+    "taxa_total_pct": [
+     15.16,
+     15.24
+    ],
+    "n_tecnica": 53,
+    "taxa_tecnica_pct": [
+     8.1,
+     8.28
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2008,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 54,
+   "n_publicadas": 66,
+   "injetada_mwh": 332070755,
+   "perdas_totais_mwh": 48997606,
+   "taxa_total_pct": 14.76,
+   "n_com_tecnica": 52,
+   "injetada_com_tecnica_mwh": 330981352,
+   "cobertura_tecnica_pct": 99.7,
+   "perdas_tecnicas_mwh": 26544555,
+   "taxa_tecnica_pct": 8.02,
+   "taxa_tecnica_injetada_publicada_pct": 8.02,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 8,
+    "balanco_nao_fecha": 2,
+    "fornecida_maior_que_injetada": 2
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": true
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 54,
+    "taxa_total_pct": [
+     14.92,
+     14.76
+    ],
+    "n_tecnica": 52,
+    "taxa_tecnica_pct": [
+     8.06,
+     8.02
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2008,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 0,
+   "n_publicadas": 11,
+   "injetada_mwh": null,
+   "perdas_totais_mwh": null,
+   "taxa_total_pct": null,
+   "n_com_tecnica": 0,
+   "injetada_com_tecnica_mwh": null,
+   "cobertura_tecnica_pct": null,
+   "perdas_tecnicas_mwh": null,
+   "taxa_tecnica_pct": null,
+   "taxa_tecnica_injetada_publicada_pct": null,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 11
+   },
+   "universo_igual_ano_anterior": null,
+   "mesmas_ano_anterior": null
+  },
+  {
+   "ano": 2008,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 54,
+   "n_publicadas": 77,
+   "injetada_mwh": 332070755,
+   "perdas_totais_mwh": 48997606,
+   "taxa_total_pct": 14.76,
+   "n_com_tecnica": 52,
+   "injetada_com_tecnica_mwh": 330981352,
+   "cobertura_tecnica_pct": 99.7,
+   "perdas_tecnicas_mwh": 26544555,
+   "taxa_tecnica_pct": 8.02,
+   "taxa_tecnica_injetada_publicada_pct": 8.02,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 19,
+    "balanco_nao_fecha": 2,
+    "fornecida_maior_que_injetada": 2
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": true
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 54,
+    "taxa_total_pct": [
+     14.92,
+     14.76
+    ],
+    "n_tecnica": 52,
+    "taxa_tecnica_pct": [
+     8.06,
+     8.02
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2009,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 56,
+   "n_publicadas": 66,
+   "injetada_mwh": 335884967,
+   "perdas_totais_mwh": 51621507,
+   "taxa_total_pct": 15.37,
+   "n_com_tecnica": 55,
+   "injetada_com_tecnica_mwh": 334761119,
+   "cobertura_tecnica_pct": 99.7,
+   "perdas_tecnicas_mwh": 26895903,
+   "taxa_tecnica_pct": 8.03,
+   "taxa_tecnica_injetada_publicada_pct": 8.03,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 7,
+    "balanco_nao_fecha": 2,
+    "fornecida_maior_que_injetada": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": true
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 54,
+    "taxa_total_pct": [
+     14.76,
+     15.4
+    ],
+    "n_tecnica": 52,
+    "taxa_tecnica_pct": [
+     8.02,
+     8.04
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2009,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 13,
+   "n_publicadas": 25,
+   "injetada_mwh": 427963,
+   "perdas_totais_mwh": 58859,
+   "taxa_total_pct": 13.75,
+   "n_com_tecnica": 2,
+   "injetada_com_tecnica_mwh": 101415,
+   "cobertura_tecnica_pct": 23.7,
+   "perdas_tecnicas_mwh": 11898,
+   "taxa_tecnica_pct": 11.73,
+   "taxa_tecnica_injetada_publicada_pct": 11.73,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 12
+   },
+   "universo_igual_ano_anterior": null,
+   "mesmas_ano_anterior": null
+  },
+  {
+   "ano": 2009,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 69,
+   "n_publicadas": 91,
+   "injetada_mwh": 336312930,
+   "perdas_totais_mwh": 51680366,
+   "taxa_total_pct": 15.37,
+   "n_com_tecnica": 57,
+   "injetada_com_tecnica_mwh": 334862533,
+   "cobertura_tecnica_pct": 99.6,
+   "perdas_tecnicas_mwh": 26907801,
+   "taxa_tecnica_pct": 8.04,
+   "taxa_tecnica_injetada_publicada_pct": 8.04,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 19,
+    "balanco_nao_fecha": 2,
+    "fornecida_maior_que_injetada": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": true
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 54,
+    "taxa_total_pct": [
+     14.76,
+     15.4
+    ],
+    "n_tecnica": 52,
+    "taxa_tecnica_pct": [
+     8.02,
+     8.04
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2010,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 56,
+   "n_publicadas": 64,
+   "injetada_mwh": 396320439,
+   "perdas_totais_mwh": 60263213,
+   "taxa_total_pct": 15.21,
+   "n_com_tecnica": 55,
+   "injetada_com_tecnica_mwh": 392848957,
+   "cobertura_tecnica_pct": 99.1,
+   "perdas_tecnicas_mwh": 30656857,
+   "taxa_tecnica_pct": 7.8,
+   "taxa_tecnica_injetada_publicada_pct": 7.8,
+   "n_com_pnt_bt": 49,
+   "pnt_mwh": 24752562,
+   "mercado_bt_mwh": 151802522,
+   "cobertura_bt_pct": 98.9,
+   "pnt_bt_pct": 16.31,
+   "excluidos": {
+    "ano_incompleto": 4,
+    "fornecida_maior_que_injetada": 2,
+    "balanco_nao_fecha": 2
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 53,
+    "taxa_total_pct": [
+     15.3,
+     14.71
+    ],
+    "n_tecnica": 52,
+    "taxa_tecnica_pct": [
+     7.98,
+     7.8
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2010,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 21,
+   "n_publicadas": 37,
+   "injetada_mwh": 1056553,
+   "perdas_totais_mwh": 117007,
+   "taxa_total_pct": 11.07,
+   "n_com_tecnica": 5,
+   "injetada_com_tecnica_mwh": 217586,
+   "cobertura_tecnica_pct": 20.6,
+   "perdas_tecnicas_mwh": 22635,
+   "taxa_tecnica_pct": 10.4,
+   "taxa_tecnica_injetada_publicada_pct": 10.4,
+   "n_com_pnt_bt": 1,
+   "pnt_mwh": 1908,
+   "mercado_bt_mwh": 36332,
+   "cobertura_bt_pct": 9.4,
+   "pnt_bt_pct": 5.25,
+   "excluidos": {
+    "ano_incompleto": 14,
+    "balanco_nao_fecha": 2
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 11,
+    "taxa_total_pct": [
+     14.21,
+     12.2
+    ],
+    "n_tecnica": 1,
+    "taxa_tecnica_pct": [
+     12.0,
+     11.29
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2010,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 77,
+   "n_publicadas": 101,
+   "injetada_mwh": 397376992,
+   "perdas_totais_mwh": 60380220,
+   "taxa_total_pct": 15.19,
+   "n_com_tecnica": 60,
+   "injetada_com_tecnica_mwh": 393066543,
+   "cobertura_tecnica_pct": 98.9,
+   "perdas_tecnicas_mwh": 30679493,
+   "taxa_tecnica_pct": 7.81,
+   "taxa_tecnica_injetada_publicada_pct": 7.81,
+   "n_com_pnt_bt": 50,
+   "pnt_mwh": 24754470,
+   "mercado_bt_mwh": 151838854,
+   "cobertura_bt_pct": 98.7,
+   "pnt_bt_pct": 16.3,
+   "excluidos": {
+    "ano_incompleto": 18,
+    "fornecida_maior_que_injetada": 2,
+    "balanco_nao_fecha": 4
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 64,
+    "taxa_total_pct": [
+     15.3,
+     14.7
+    ],
+    "n_tecnica": 53,
+    "taxa_tecnica_pct": [
+     7.98,
+     7.81
+    ],
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2011,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 60,
+   "n_publicadas": 64,
+   "injetada_mwh": 458860591,
+   "perdas_totais_mwh": 64813084,
+   "taxa_total_pct": 14.12,
+   "n_com_tecnica": 58,
+   "injetada_com_tecnica_mwh": 457736191,
+   "cobertura_tecnica_pct": 99.8,
+   "perdas_tecnicas_mwh": 34546654,
+   "taxa_tecnica_pct": 7.55,
+   "taxa_tecnica_injetada_publicada_pct": 7.55,
+   "n_com_pnt_bt": 53,
+   "pnt_mwh": 26085074,
+   "mercado_bt_mwh": 176402205,
+   "cobertura_bt_pct": 99.6,
+   "pnt_bt_pct": 14.79,
+   "excluidos": {
+    "fornecida_maior_que_injetada": 2,
+    "balanco_nao_fecha": 1,
+    "ano_incompleto": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 56,
+    "taxa_total_pct": [
+     15.21,
+     14.86
+    ],
+    "n_tecnica": 54,
+    "taxa_tecnica_pct": [
+     7.79,
+     7.75
+    ],
+    "n_pnt_bt": 47,
+    "pnt_bt_pct": [
+     16.28,
+     15.43
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2011,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 34,
+   "n_publicadas": 37,
+   "injetada_mwh": 2431294,
+   "perdas_totais_mwh": 287853,
+   "taxa_total_pct": 11.84,
+   "n_com_tecnica": 11,
+   "injetada_com_tecnica_mwh": 1246867,
+   "cobertura_tecnica_pct": 51.3,
+   "perdas_tecnicas_mwh": 111588,
+   "taxa_tecnica_pct": 8.95,
+   "taxa_tecnica_injetada_publicada_pct": 8.95,
+   "n_com_pnt_bt": 6,
+   "pnt_mwh": 23729,
+   "mercado_bt_mwh": 538932,
+   "cobertura_bt_pct": 48.7,
+   "pnt_bt_pct": 4.4,
+   "excluidos": {
+    "ano_incompleto": 2,
+    "fornecida_maior_que_injetada": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 21,
+    "taxa_total_pct": [
+     11.07,
+     11.45
+    ],
+    "n_tecnica": 5,
+    "taxa_tecnica_pct": [
+     10.4,
+     9.95
+    ],
+    "n_pnt_bt": 1,
+    "pnt_bt_pct": [
+     5.25,
+     4.92
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2011,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 94,
+   "n_publicadas": 101,
+   "injetada_mwh": 461291885,
+   "perdas_totais_mwh": 65100938,
+   "taxa_total_pct": 14.11,
+   "n_com_tecnica": 69,
+   "injetada_com_tecnica_mwh": 458983058,
+   "cobertura_tecnica_pct": 99.5,
+   "perdas_tecnicas_mwh": 34658242,
+   "taxa_tecnica_pct": 7.55,
+   "taxa_tecnica_injetada_publicada_pct": 7.55,
+   "n_com_pnt_bt": 59,
+   "pnt_mwh": 26108804,
+   "mercado_bt_mwh": 176941138,
+   "cobertura_bt_pct": 99.3,
+   "pnt_bt_pct": 14.76,
+   "excluidos": {
+    "fornecida_maior_que_injetada": 3,
+    "balanco_nao_fecha": 1,
+    "ano_incompleto": 3
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 77,
+    "taxa_total_pct": [
+     15.19,
+     14.85
+    ],
+    "n_tecnica": 59,
+    "taxa_tecnica_pct": [
+     7.8,
+     7.75
+    ],
+    "n_pnt_bt": 48,
+    "pnt_bt_pct": [
+     16.28,
+     15.43
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2012,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 57,
+   "n_publicadas": 64,
+   "injetada_mwh": 472529829,
+   "perdas_totais_mwh": 68411172,
+   "taxa_total_pct": 14.48,
+   "n_com_tecnica": 54,
+   "injetada_com_tecnica_mwh": 467958521,
+   "cobertura_tecnica_pct": 99.0,
+   "perdas_tecnicas_mwh": 35510807,
+   "taxa_tecnica_pct": 7.59,
+   "taxa_tecnica_injetada_publicada_pct": 7.59,
+   "n_com_pnt_bt": 50,
+   "pnt_mwh": 32081994,
+   "mercado_bt_mwh": 186470027,
+   "cobertura_bt_pct": 99.1,
+   "pnt_bt_pct": 17.2,
+   "excluidos": {
+    "ano_incompleto": 4,
+    "fornecida_maior_que_injetada": 2,
+    "balanco_nao_fecha": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 57,
+    "taxa_total_pct": [
+     13.94,
+     14.48
+    ],
+    "n_tecnica": 54,
+    "taxa_tecnica_pct": [
+     7.51,
+     7.59
+    ],
+    "n_pnt_bt": 48,
+    "pnt_bt_pct": [
+     14.55,
+     15.58
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2012,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 32,
+   "n_publicadas": 37,
+   "injetada_mwh": 2540154,
+   "perdas_totais_mwh": 266809,
+   "taxa_total_pct": 10.5,
+   "n_com_tecnica": 11,
+   "injetada_com_tecnica_mwh": 1350895,
+   "cobertura_tecnica_pct": 53.2,
+   "perdas_tecnicas_mwh": 111977,
+   "taxa_tecnica_pct": 8.29,
+   "taxa_tecnica_injetada_publicada_pct": 8.29,
+   "n_com_pnt_bt": 6,
+   "pnt_mwh": 14343,
+   "mercado_bt_mwh": 575871,
+   "cobertura_bt_pct": 48.3,
+   "pnt_bt_pct": 2.49,
+   "excluidos": {
+    "fornecida_maior_que_injetada": 2,
+    "ano_incompleto": 3
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": true
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 32,
+    "taxa_total_pct": [
+     11.91,
+     10.5
+    ],
+    "n_tecnica": 10,
+    "taxa_tecnica_pct": [
+     8.94,
+     8.22
+    ],
+    "n_pnt_bt": 6,
+    "pnt_bt_pct": [
+     4.4,
+     2.49
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2012,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 89,
+   "n_publicadas": 101,
+   "injetada_mwh": 475069983,
+   "perdas_totais_mwh": 68677981,
+   "taxa_total_pct": 14.46,
+   "n_com_tecnica": 65,
+   "injetada_com_tecnica_mwh": 469309416,
+   "cobertura_tecnica_pct": 98.8,
+   "perdas_tecnicas_mwh": 35622784,
+   "taxa_tecnica_pct": 7.59,
+   "taxa_tecnica_injetada_publicada_pct": 7.59,
+   "n_com_pnt_bt": 56,
+   "pnt_mwh": 32096337,
+   "mercado_bt_mwh": 187045898,
+   "cobertura_bt_pct": 98.8,
+   "pnt_bt_pct": 17.16,
+   "excluidos": {
+    "ano_incompleto": 7,
+    "fornecida_maior_que_injetada": 4,
+    "balanco_nao_fecha": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 89,
+    "taxa_total_pct": [
+     13.93,
+     14.46
+    ],
+    "n_tecnica": 64,
+    "taxa_tecnica_pct": [
+     7.52,
+     7.59
+    ],
+    "n_pnt_bt": 54,
+    "pnt_bt_pct": [
+     14.52,
+     15.54
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2013,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 57,
+   "n_publicadas": 64,
+   "injetada_mwh": 488347464,
+   "perdas_totais_mwh": 68361211,
+   "taxa_total_pct": 14.0,
+   "n_com_tecnica": 53,
+   "injetada_com_tecnica_mwh": 483710075,
+   "cobertura_tecnica_pct": 99.1,
+   "perdas_tecnicas_mwh": 37190702,
+   "taxa_tecnica_pct": 7.69,
+   "taxa_tecnica_injetada_publicada_pct": 7.69,
+   "n_com_pnt_bt": 51,
+   "pnt_mwh": 30591625,
+   "mercado_bt_mwh": 200626612,
+   "cobertura_bt_pct": 99.0,
+   "pnt_bt_pct": 15.25,
+   "excluidos": {
+    "ano_incompleto": 4,
+    "fornecida_maior_que_injetada": 1,
+    "balanco_nao_fecha": 2
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 54,
+    "taxa_total_pct": [
+     14.39,
+     13.95
+    ],
+    "n_tecnica": 50,
+    "taxa_tecnica_pct": [
+     7.58,
+     7.68
+    ],
+    "n_pnt_bt": 47,
+    "pnt_bt_pct": [
+     17.02,
+     15.42
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2013,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 31,
+   "n_publicadas": 38,
+   "injetada_mwh": 2589401,
+   "perdas_totais_mwh": 290236,
+   "taxa_total_pct": 11.21,
+   "n_com_tecnica": 11,
+   "injetada_com_tecnica_mwh": 1395071,
+   "cobertura_tecnica_pct": 53.9,
+   "perdas_tecnicas_mwh": 131929,
+   "taxa_tecnica_pct": 9.46,
+   "taxa_tecnica_injetada_publicada_pct": 9.46,
+   "n_com_pnt_bt": 6,
+   "pnt_mwh": 23214,
+   "mercado_bt_mwh": 587855,
+   "cobertura_bt_pct": 51.5,
+   "pnt_bt_pct": 3.95,
+   "excluidos": {
+    "balanco_nao_fecha": 1,
+    "ano_incompleto": 6
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": true,
+    "pnt_bt": true
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 29,
+    "taxa_total_pct": [
+     10.51,
+     11.3
+    ],
+    "n_tecnica": 11,
+    "taxa_tecnica_pct": [
+     8.29,
+     9.46
+    ],
+    "n_pnt_bt": 6,
+    "pnt_bt_pct": [
+     2.49,
+     3.95
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2013,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 88,
+   "n_publicadas": 102,
+   "injetada_mwh": 490936865,
+   "perdas_totais_mwh": 68651447,
+   "taxa_total_pct": 13.98,
+   "n_com_tecnica": 64,
+   "injetada_com_tecnica_mwh": 485105147,
+   "cobertura_tecnica_pct": 98.8,
+   "perdas_tecnicas_mwh": 37322631,
+   "taxa_tecnica_pct": 7.69,
+   "taxa_tecnica_injetada_publicada_pct": 7.69,
+   "n_com_pnt_bt": 57,
+   "pnt_mwh": 30614839,
+   "mercado_bt_mwh": 201214467,
+   "cobertura_bt_pct": 98.7,
+   "pnt_bt_pct": 15.22,
+   "excluidos": {
+    "ano_incompleto": 10,
+    "fornecida_maior_que_injetada": 1,
+    "balanco_nao_fecha": 3
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 83,
+    "taxa_total_pct": [
+     14.37,
+     13.93
+    ],
+    "n_tecnica": 61,
+    "taxa_tecnica_pct": [
+     7.58,
+     7.69
+    ],
+    "n_pnt_bt": 53,
+    "pnt_bt_pct": [
+     16.98,
+     15.38
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2014,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 58,
+   "n_publicadas": 64,
+   "injetada_mwh": 500816124,
+   "perdas_totais_mwh": 70096536,
+   "taxa_total_pct": 14.0,
+   "n_com_tecnica": 54,
+   "injetada_com_tecnica_mwh": 490164841,
+   "cobertura_tecnica_pct": 97.9,
+   "perdas_tecnicas_mwh": 37463766,
+   "taxa_tecnica_pct": 7.64,
+   "taxa_tecnica_injetada_publicada_pct": 7.64,
+   "n_com_pnt_bt": 52,
+   "pnt_mwh": 30981940,
+   "mercado_bt_mwh": 208227339,
+   "cobertura_bt_pct": 97.7,
+   "pnt_bt_pct": 14.88,
+   "excluidos": {
+    "ano_incompleto": 3,
+    "fornecida_maior_que_injetada": 1,
+    "balanco_nao_fecha": 2
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 55,
+    "taxa_total_pct": [
+     13.88,
+     13.9
+    ],
+    "n_tecnica": 49,
+    "taxa_tecnica_pct": [
+     7.6,
+     7.63
+    ],
+    "n_pnt_bt": 47,
+    "pnt_bt_pct": [
+     15.1,
+     14.71
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2014,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 30,
+   "n_publicadas": 38,
+   "injetada_mwh": 2729999,
+   "perdas_totais_mwh": 261444,
+   "taxa_total_pct": 9.58,
+   "n_com_tecnica": 8,
+   "injetada_com_tecnica_mwh": 1388948,
+   "cobertura_tecnica_pct": 50.9,
+   "perdas_tecnicas_mwh": 116706,
+   "taxa_tecnica_pct": 8.4,
+   "taxa_tecnica_injetada_publicada_pct": 8.4,
+   "n_com_pnt_bt": 6,
+   "pnt_mwh": 12835,
+   "mercado_bt_mwh": 629244,
+   "cobertura_bt_pct": 46.8,
+   "pnt_bt_pct": 2.04,
+   "excluidos": {
+    "ano_incompleto": 8
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 26,
+    "taxa_total_pct": [
+     11.17,
+     9.56
+    ],
+    "n_tecnica": 8,
+    "taxa_tecnica_pct": [
+     9.58,
+     8.4
+    ],
+    "n_pnt_bt": 5,
+    "pnt_bt_pct": [
+     3.89,
+     2.03
+    ],
+    "fora_por_mudanca_de_universo": 1
+   }
+  },
+  {
+   "ano": 2014,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 88,
+   "n_publicadas": 102,
+   "injetada_mwh": 503546123,
+   "perdas_totais_mwh": 70357979,
+   "taxa_total_pct": 13.97,
+   "n_com_tecnica": 62,
+   "injetada_com_tecnica_mwh": 491553789,
+   "cobertura_tecnica_pct": 97.6,
+   "perdas_tecnicas_mwh": 37580472,
+   "taxa_tecnica_pct": 7.65,
+   "taxa_tecnica_injetada_publicada_pct": 7.65,
+   "n_com_pnt_bt": 58,
+   "pnt_mwh": 30994775,
+   "mercado_bt_mwh": 208856583,
+   "cobertura_bt_pct": 97.3,
+   "pnt_bt_pct": 14.84,
+   "excluidos": {
+    "ano_incompleto": 11,
+    "fornecida_maior_que_injetada": 1,
+    "balanco_nao_fecha": 2
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 81,
+    "taxa_total_pct": [
+     13.87,
+     13.88
+    ],
+    "n_tecnica": 57,
+    "taxa_tecnica_pct": [
+     7.6,
+     7.63
+    ],
+    "n_pnt_bt": 52,
+    "pnt_bt_pct": [
+     15.07,
+     14.67
+    ],
+    "fora_por_mudanca_de_universo": 1
+   }
+  },
+  {
+   "ano": 2015,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 59,
+   "n_publicadas": 64,
+   "injetada_mwh": 495645602,
+   "perdas_totais_mwh": 70478997,
+   "taxa_total_pct": 14.22,
+   "n_com_tecnica": 58,
+   "injetada_com_tecnica_mwh": 494877733,
+   "cobertura_tecnica_pct": 99.8,
+   "perdas_tecnicas_mwh": 38835969,
+   "taxa_tecnica_pct": 7.85,
+   "taxa_tecnica_injetada_publicada_pct": 7.85,
+   "n_com_pnt_bt": 56,
+   "pnt_mwh": 31587636,
+   "mercado_bt_mwh": 214277033,
+   "cobertura_bt_pct": 99.8,
+   "pnt_bt_pct": 14.74,
+   "excluidos": {
+    "ano_incompleto": 3,
+    "fornecida_maior_que_injetada": 1,
+    "balanco_nao_fecha": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 57,
+    "taxa_total_pct": [
+     13.98,
+     14.1
+    ],
+    "n_tecnica": 54,
+    "taxa_tecnica_pct": [
+     7.64,
+     7.81
+    ],
+    "n_pnt_bt": 52,
+    "pnt_bt_pct": [
+     14.88,
+     14.6
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2015,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 32,
+   "n_publicadas": 38,
+   "injetada_mwh": 2803943,
+   "perdas_totais_mwh": 270387,
+   "taxa_total_pct": 9.64,
+   "n_com_tecnica": 10,
+   "injetada_com_tecnica_mwh": 1573982,
+   "cobertura_tecnica_pct": 56.1,
+   "perdas_tecnicas_mwh": 122342,
+   "taxa_tecnica_pct": 7.77,
+   "taxa_tecnica_injetada_publicada_pct": 7.77,
+   "n_com_pnt_bt": 8,
+   "pnt_mwh": 24218,
+   "mercado_bt_mwh": 768332,
+   "cobertura_bt_pct": 51.9,
+   "pnt_bt_pct": 3.15,
+   "excluidos": {
+    "ano_incompleto": 6
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 28,
+    "taxa_total_pct": [
+     9.61,
+     9.48
+    ],
+    "n_tecnica": 8,
+    "taxa_tecnica_pct": [
+     8.4,
+     7.69
+    ],
+    "n_pnt_bt": 6,
+    "pnt_bt_pct": [
+     2.04,
+     2.57
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2015,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 91,
+   "n_publicadas": 102,
+   "injetada_mwh": 498449545,
+   "perdas_totais_mwh": 70749384,
+   "taxa_total_pct": 14.19,
+   "n_com_tecnica": 68,
+   "injetada_com_tecnica_mwh": 496451715,
+   "cobertura_tecnica_pct": 99.6,
+   "perdas_tecnicas_mwh": 38958311,
+   "taxa_tecnica_pct": 7.85,
+   "taxa_tecnica_injetada_publicada_pct": 7.85,
+   "n_com_pnt_bt": 64,
+   "pnt_mwh": 31611854,
+   "mercado_bt_mwh": 215045365,
+   "cobertura_bt_pct": 99.5,
+   "pnt_bt_pct": 14.7,
+   "excluidos": {
+    "ano_incompleto": 9,
+    "fornecida_maior_que_injetada": 1,
+    "balanco_nao_fecha": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 85,
+    "taxa_total_pct": [
+     13.95,
+     14.07
+    ],
+    "n_tecnica": 62,
+    "taxa_tecnica_pct": [
+     7.65,
+     7.81
+    ],
+    "n_pnt_bt": 58,
+    "pnt_bt_pct": [
+     14.84,
+     14.57
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2016,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 58,
+   "n_publicadas": 64,
+   "injetada_mwh": 494343312,
+   "perdas_totais_mwh": 72226996,
+   "taxa_total_pct": 14.61,
+   "n_com_tecnica": 58,
+   "injetada_com_tecnica_mwh": 494343312,
+   "cobertura_tecnica_pct": 100.0,
+   "perdas_tecnicas_mwh": 36490403,
+   "taxa_tecnica_pct": 7.38,
+   "taxa_tecnica_injetada_publicada_pct": 7.38,
+   "n_com_pnt_bt": 57,
+   "pnt_mwh": 35736594,
+   "mercado_bt_mwh": 214863629,
+   "cobertura_bt_pct": 100.0,
+   "pnt_bt_pct": 16.63,
+   "excluidos": {
+    "ano_incompleto": 4,
+    "fornecida_maior_que_injetada": 1,
+    "balanco_nao_fecha": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 58,
+    "taxa_total_pct": [
+     14.22,
+     14.61
+    ],
+    "n_tecnica": 57,
+    "taxa_tecnica_pct": [
+     7.85,
+     7.38
+    ],
+    "n_pnt_bt": 56,
+    "pnt_bt_pct": [
+     14.74,
+     16.66
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2016,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 29,
+   "n_publicadas": 38,
+   "injetada_mwh": 2738868,
+   "perdas_totais_mwh": 268435,
+   "taxa_total_pct": 9.8,
+   "n_com_tecnica": 9,
+   "injetada_com_tecnica_mwh": 1294578,
+   "cobertura_tecnica_pct": 47.3,
+   "perdas_tecnicas_mwh": 99168,
+   "taxa_tecnica_pct": 7.66,
+   "taxa_tecnica_injetada_publicada_pct": 7.66,
+   "n_com_pnt_bt": 7,
+   "pnt_mwh": 26577,
+   "mercado_bt_mwh": 626718,
+   "cobertura_bt_pct": 45.6,
+   "pnt_bt_pct": 4.24,
+   "excluidos": {
+    "ano_incompleto": 7,
+    "perda_total_negativa": 1,
+    "fornecida_maior_que_injetada": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 26,
+    "taxa_total_pct": [
+     9.6,
+     9.88
+    ],
+    "n_tecnica": 8,
+    "taxa_tecnica_pct": [
+     7.39,
+     7.61
+    ],
+    "n_pnt_bt": 6,
+    "pnt_bt_pct": [
+     4.25,
+     4.4
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2016,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 87,
+   "n_publicadas": 102,
+   "injetada_mwh": 497082180,
+   "perdas_totais_mwh": 72495432,
+   "taxa_total_pct": 14.58,
+   "n_com_tecnica": 67,
+   "injetada_com_tecnica_mwh": 495637890,
+   "cobertura_tecnica_pct": 99.7,
+   "perdas_tecnicas_mwh": 36589570,
+   "taxa_tecnica_pct": 7.38,
+   "taxa_tecnica_injetada_publicada_pct": 7.38,
+   "n_com_pnt_bt": 64,
+   "pnt_mwh": 35763170,
+   "mercado_bt_mwh": 215490347,
+   "cobertura_bt_pct": 99.6,
+   "pnt_bt_pct": 16.6,
+   "excluidos": {
+    "ano_incompleto": 11,
+    "fornecida_maior_que_injetada": 2,
+    "balanco_nao_fecha": 1,
+    "perda_total_negativa": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 84,
+    "taxa_total_pct": [
+     14.2,
+     14.59
+    ],
+    "n_tecnica": 65,
+    "taxa_tecnica_pct": [
+     7.85,
+     7.38
+    ],
+    "n_pnt_bt": 62,
+    "pnt_bt_pct": [
+     14.72,
+     16.63
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2017,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 58,
+   "n_publicadas": 62,
+   "injetada_mwh": 501496972,
+   "perdas_totais_mwh": 73580028,
+   "taxa_total_pct": 14.67,
+   "n_com_tecnica": 56,
+   "injetada_com_tecnica_mwh": 501217860,
+   "cobertura_tecnica_pct": 99.9,
+   "perdas_tecnicas_mwh": 37381920,
+   "taxa_tecnica_pct": 7.46,
+   "taxa_tecnica_injetada_publicada_pct": 7.46,
+   "n_com_pnt_bt": 55,
+   "pnt_mwh": 36168578,
+   "mercado_bt_mwh": 217798161,
+   "cobertura_bt_pct": 99.9,
+   "pnt_bt_pct": 16.61,
+   "excluidos": {
+    "fornecida_maior_que_injetada": 1,
+    "balanco_nao_fecha": 3
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 57,
+    "taxa_total_pct": [
+     14.61,
+     14.54
+    ],
+    "n_tecnica": 55,
+    "taxa_tecnica_pct": [
+     7.38,
+     7.41
+    ],
+    "n_pnt_bt": 54,
+    "pnt_bt_pct": [
+     16.65,
+     16.44
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2017,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 28,
+   "n_publicadas": 41,
+   "injetada_mwh": 2269947,
+   "perdas_totais_mwh": 202925,
+   "taxa_total_pct": 8.94,
+   "n_com_tecnica": 10,
+   "injetada_com_tecnica_mwh": 1373759,
+   "cobertura_tecnica_pct": 60.5,
+   "perdas_tecnicas_mwh": 103396,
+   "taxa_tecnica_pct": 7.53,
+   "taxa_tecnica_injetada_publicada_pct": 7.53,
+   "n_com_pnt_bt": 8,
+   "pnt_mwh": 13092,
+   "mercado_bt_mwh": 645394,
+   "cobertura_bt_pct": 53.0,
+   "pnt_bt_pct": 2.03,
+   "excluidos": {
+    "ano_incompleto": 9,
+    "perda_total_negativa": 2,
+    "balanco_nao_fecha": 2
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 25,
+    "taxa_total_pct": [
+     9.89,
+     8.74
+    ],
+    "n_tecnica": 8,
+    "taxa_tecnica_pct": [
+     8.11,
+     7.67
+    ],
+    "n_pnt_bt": 6,
+    "pnt_bt_pct": [
+     4.1,
+     1.84
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2017,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 86,
+   "n_publicadas": 103,
+   "injetada_mwh": 503766919,
+   "perdas_totais_mwh": 73782953,
+   "taxa_total_pct": 14.65,
+   "n_com_tecnica": 66,
+   "injetada_com_tecnica_mwh": 502591619,
+   "cobertura_tecnica_pct": 99.8,
+   "perdas_tecnicas_mwh": 37485316,
+   "taxa_tecnica_pct": 7.46,
+   "taxa_tecnica_injetada_publicada_pct": 7.46,
+   "n_com_pnt_bt": 63,
+   "pnt_mwh": 36181670,
+   "mercado_bt_mwh": 218443555,
+   "cobertura_bt_pct": 99.6,
+   "pnt_bt_pct": 16.56,
+   "excluidos": {
+    "fornecida_maior_que_injetada": 1,
+    "balanco_nao_fecha": 5,
+    "ano_incompleto": 9,
+    "perda_total_negativa": 2
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 82,
+    "taxa_total_pct": [
+     14.59,
+     14.51
+    ],
+    "n_tecnica": 63,
+    "taxa_tecnica_pct": [
+     7.38,
+     7.41
+    ],
+    "n_pnt_bt": 60,
+    "pnt_bt_pct": [
+     16.62,
+     16.41
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2018,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 50,
+   "n_publicadas": 62,
+   "injetada_mwh": 510401951,
+   "perdas_totais_mwh": 76369912,
+   "taxa_total_pct": 14.96,
+   "n_com_tecnica": 48,
+   "injetada_com_tecnica_mwh": 494011069,
+   "cobertura_tecnica_pct": 96.8,
+   "perdas_tecnicas_mwh": 37363189,
+   "taxa_tecnica_pct": 7.56,
+   "taxa_tecnica_injetada_publicada_pct": 7.56,
+   "n_com_pnt_bt": 44,
+   "pnt_mwh": 35961482,
+   "mercado_bt_mwh": 211799394,
+   "cobertura_bt_pct": 96.4,
+   "pnt_bt_pct": 16.98,
+   "excluidos": {
+    "ano_incompleto": 9,
+    "balanco_nao_fecha": 3
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 45,
+    "taxa_total_pct": [
+     14.78,
+     15.02
+    ],
+    "n_tecnica": 42,
+    "taxa_tecnica_pct": [
+     7.4,
+     7.58
+    ],
+    "n_pnt_bt": 41,
+    "pnt_bt_pct": [
+     16.77,
+     17.15
+    ],
+    "fora_por_mudanca_de_universo": 2
+   }
+  },
+  {
+   "ano": 2018,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 34,
+   "n_publicadas": 44,
+   "injetada_mwh": 3043511,
+   "perdas_totais_mwh": 272592,
+   "taxa_total_pct": 8.96,
+   "n_com_tecnica": 13,
+   "injetada_com_tecnica_mwh": 1274045,
+   "cobertura_tecnica_pct": 41.9,
+   "perdas_tecnicas_mwh": 98901,
+   "taxa_tecnica_pct": 7.76,
+   "taxa_tecnica_injetada_publicada_pct": 7.76,
+   "n_com_pnt_bt": 11,
+   "pnt_mwh": 21044,
+   "mercado_bt_mwh": 614543,
+   "cobertura_bt_pct": 38.1,
+   "pnt_bt_pct": 3.42,
+   "excluidos": {
+    "ano_incompleto": 7,
+    "perda_total_negativa": 2,
+    "balanco_nao_fecha": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 28,
+    "taxa_total_pct": [
+     8.94,
+     9.02
+    ],
+    "n_tecnica": 9,
+    "taxa_tecnica_pct": [
+     7.68,
+     7.62
+    ],
+    "n_pnt_bt": 7,
+    "pnt_bt_pct": [
+     1.85,
+     2.71
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2018,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 84,
+   "n_publicadas": 106,
+   "injetada_mwh": 513445462,
+   "perdas_totais_mwh": 76642503,
+   "taxa_total_pct": 14.93,
+   "n_com_tecnica": 61,
+   "injetada_com_tecnica_mwh": 495285114,
+   "cobertura_tecnica_pct": 96.5,
+   "perdas_tecnicas_mwh": 37462090,
+   "taxa_tecnica_pct": 7.56,
+   "taxa_tecnica_injetada_publicada_pct": 7.56,
+   "n_com_pnt_bt": 55,
+   "pnt_mwh": 35982526,
+   "mercado_bt_mwh": 212413937,
+   "cobertura_bt_pct": 96.0,
+   "pnt_bt_pct": 16.94,
+   "excluidos": {
+    "ano_incompleto": 16,
+    "balanco_nao_fecha": 4,
+    "perda_total_negativa": 2
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 73,
+    "taxa_total_pct": [
+     14.75,
+     14.99
+    ],
+    "n_tecnica": 51,
+    "taxa_tecnica_pct": [
+     7.4,
+     7.58
+    ],
+    "n_pnt_bt": 48,
+    "pnt_bt_pct": [
+     16.74,
+     17.12
+    ],
+    "fora_por_mudanca_de_universo": 2
+   }
+  },
+  {
+   "ano": 2019,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 49,
+   "n_publicadas": 54,
+   "injetada_mwh": 518254098,
+   "perdas_totais_mwh": 78312392,
+   "taxa_total_pct": 15.11,
+   "n_com_tecnica": 48,
+   "injetada_com_tecnica_mwh": 517614001,
+   "cobertura_tecnica_pct": 99.9,
+   "perdas_tecnicas_mwh": 39817295,
+   "taxa_tecnica_pct": 7.69,
+   "taxa_tecnica_injetada_publicada_pct": 7.69,
+   "n_com_pnt_bt": 46,
+   "pnt_mwh": 38423126,
+   "mercado_bt_mwh": 228134564,
+   "cobertura_bt_pct": 99.8,
+   "pnt_bt_pct": 16.84,
+   "excluidos": {
+    "balanco_nao_fecha": 2,
+    "ano_incompleto": 2,
+    "fornecida_maior_que_injetada": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 44,
+    "taxa_total_pct": [
+     15.25,
+     15.35
+    ],
+    "n_tecnica": 42,
+    "taxa_tecnica_pct": [
+     7.61,
+     7.69
+    ],
+    "n_pnt_bt": 39,
+    "pnt_bt_pct": [
+     17.59,
+     17.27
+    ],
+    "fora_por_mudanca_de_universo": 3
+   }
+  },
+  {
+   "ano": 2019,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 33,
+   "n_publicadas": 47,
+   "injetada_mwh": 2961997,
+   "perdas_totais_mwh": 292474,
+   "taxa_total_pct": 9.87,
+   "n_com_tecnica": 13,
+   "injetada_com_tecnica_mwh": 1615842,
+   "cobertura_tecnica_pct": 54.6,
+   "perdas_tecnicas_mwh": 132553,
+   "taxa_tecnica_pct": 8.2,
+   "taxa_tecnica_injetada_publicada_pct": 8.2,
+   "n_com_pnt_bt": 13,
+   "pnt_mwh": 29818,
+   "mercado_bt_mwh": 825935,
+   "cobertura_bt_pct": 53.1,
+   "pnt_bt_pct": 3.61,
+   "excluidos": {
+    "ano_incompleto": 7,
+    "perda_total_maior_que_injetada": 2,
+    "fornecida_maior_que_injetada": 1,
+    "balanco_nao_fecha": 3,
+    "perda_total_negativa": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 30,
+    "taxa_total_pct": [
+     9.16,
+     9.69
+    ],
+    "n_tecnica": 9,
+    "taxa_tecnica_pct": [
+     7.41,
+     7.58
+    ],
+    "n_pnt_bt": 9,
+    "pnt_bt_pct": [
+     3.47,
+     3.67
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2019,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 82,
+   "n_publicadas": 101,
+   "injetada_mwh": 521216095,
+   "perdas_totais_mwh": 78604866,
+   "taxa_total_pct": 15.08,
+   "n_com_tecnica": 61,
+   "injetada_com_tecnica_mwh": 519229842,
+   "cobertura_tecnica_pct": 99.6,
+   "perdas_tecnicas_mwh": 39949848,
+   "taxa_tecnica_pct": 7.69,
+   "taxa_tecnica_injetada_publicada_pct": 7.69,
+   "n_com_pnt_bt": 59,
+   "pnt_mwh": 38452944,
+   "mercado_bt_mwh": 228960499,
+   "cobertura_bt_pct": 99.4,
+   "pnt_bt_pct": 16.79,
+   "excluidos": {
+    "balanco_nao_fecha": 5,
+    "ano_incompleto": 9,
+    "fornecida_maior_que_injetada": 2,
+    "perda_total_maior_que_injetada": 2,
+    "perda_total_negativa": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 74,
+    "taxa_total_pct": [
+     15.22,
+     15.32
+    ],
+    "n_tecnica": 51,
+    "taxa_tecnica_pct": [
+     7.61,
+     7.69
+    ],
+    "n_pnt_bt": 48,
+    "pnt_bt_pct": [
+     17.56,
+     17.24
+    ],
+    "fora_por_mudanca_de_universo": 3
+   }
+  },
+  {
+   "ano": 2020,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 49,
+   "n_publicadas": 53,
+   "injetada_mwh": 517007971,
+   "perdas_totais_mwh": 81953251,
+   "taxa_total_pct": 15.85,
+   "n_com_tecnica": 46,
+   "injetada_com_tecnica_mwh": 509750933,
+   "cobertura_tecnica_pct": 98.6,
+   "perdas_tecnicas_mwh": 39058257,
+   "taxa_tecnica_pct": 7.66,
+   "taxa_tecnica_injetada_publicada_pct": 7.66,
+   "n_com_pnt_bt": 45,
+   "pnt_mwh": 41911241,
+   "mercado_bt_mwh": 226730169,
+   "cobertura_bt_pct": 98.3,
+   "pnt_bt_pct": 18.49,
+   "excluidos": {
+    "balanco_nao_fecha": 2,
+    "perda_total_negativa": 1,
+    "ano_incompleto": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 46,
+    "taxa_total_pct": [
+     15.23,
+     15.96
+    ],
+    "n_tecnica": 42,
+    "taxa_tecnica_pct": [
+     7.71,
+     7.69
+    ],
+    "n_pnt_bt": 41,
+    "pnt_bt_pct": [
+     17.15,
+     18.71
+    ],
+    "fora_por_mudanca_de_universo": 1
+   }
+  },
+  {
+   "ano": 2020,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 38,
+   "n_publicadas": 50,
+   "injetada_mwh": 3990976,
+   "perdas_totais_mwh": 342277,
+   "taxa_total_pct": 8.58,
+   "n_com_tecnica": 15,
+   "injetada_com_tecnica_mwh": 2195934,
+   "cobertura_tecnica_pct": 55.0,
+   "perdas_tecnicas_mwh": 147913,
+   "taxa_tecnica_pct": 6.74,
+   "taxa_tecnica_injetada_publicada_pct": 6.74,
+   "n_com_pnt_bt": 14,
+   "pnt_mwh": 17743,
+   "mercado_bt_mwh": 1127978,
+   "cobertura_bt_pct": 54.1,
+   "pnt_bt_pct": 1.57,
+   "excluidos": {
+    "perda_total_maior_que_injetada": 5,
+    "ano_incompleto": 3,
+    "perda_total_negativa": 2,
+    "balanco_nao_fecha": 1,
+    "fornecida_maior_que_injetada": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 31,
+    "taxa_total_pct": [
+     9.79,
+     8.94
+    ],
+    "n_tecnica": 9,
+    "taxa_tecnica_pct": [
+     8.26,
+     6.99
+    ],
+    "n_pnt_bt": 9,
+    "pnt_bt_pct": [
+     3.32,
+     0.59
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2020,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 87,
+   "n_publicadas": 103,
+   "injetada_mwh": 520998948,
+   "perdas_totais_mwh": 82295528,
+   "taxa_total_pct": 15.8,
+   "n_com_tecnica": 61,
+   "injetada_com_tecnica_mwh": 511946866,
+   "cobertura_tecnica_pct": 98.3,
+   "perdas_tecnicas_mwh": 39206169,
+   "taxa_tecnica_pct": 7.66,
+   "taxa_tecnica_injetada_publicada_pct": 7.66,
+   "n_com_pnt_bt": 59,
+   "pnt_mwh": 41928985,
+   "mercado_bt_mwh": 227858148,
+   "cobertura_bt_pct": 97.9,
+   "pnt_bt_pct": 18.4,
+   "excluidos": {
+    "balanco_nao_fecha": 3,
+    "perda_total_negativa": 3,
+    "ano_incompleto": 4,
+    "perda_total_maior_que_injetada": 5,
+    "fornecida_maior_que_injetada": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 77,
+    "taxa_total_pct": [
+     15.19,
+     15.92
+    ],
+    "n_tecnica": 51,
+    "taxa_tecnica_pct": [
+     7.71,
+     7.69
+    ],
+    "n_pnt_bt": 50,
+    "pnt_bt_pct": [
+     17.11,
+     18.65
+    ],
+    "fora_por_mudanca_de_universo": 1
+   }
+  },
+  {
+   "ano": 2021,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 49,
+   "n_publicadas": 53,
+   "injetada_mwh": 534053436,
+   "perdas_totais_mwh": 79418865,
+   "taxa_total_pct": 14.87,
+   "n_com_tecnica": 48,
+   "injetada_com_tecnica_mwh": 533790622,
+   "cobertura_tecnica_pct": 100.0,
+   "perdas_tecnicas_mwh": 40483169,
+   "taxa_tecnica_pct": 7.58,
+   "taxa_tecnica_injetada_publicada_pct": 7.58,
+   "n_com_pnt_bt": 47,
+   "pnt_mwh": 38916223,
+   "mercado_bt_mwh": 235348582,
+   "cobertura_bt_pct": 99.9,
+   "pnt_bt_pct": 16.54,
+   "excluidos": {
+    "ano_incompleto": 1,
+    "balanco_nao_fecha": 3
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 47,
+    "taxa_total_pct": [
+     15.87,
+     14.88
+    ],
+    "n_tecnica": 44,
+    "taxa_tecnica_pct": [
+     7.67,
+     7.55
+    ],
+    "n_pnt_bt": 43,
+    "pnt_bt_pct": [
+     18.5,
+     16.7
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2021,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 28,
+   "n_publicadas": 52,
+   "injetada_mwh": 3095609,
+   "perdas_totais_mwh": 260067,
+   "taxa_total_pct": 8.4,
+   "n_com_tecnica": 14,
+   "injetada_com_tecnica_mwh": 1833954,
+   "cobertura_tecnica_pct": 59.2,
+   "perdas_tecnicas_mwh": 142057,
+   "taxa_tecnica_pct": 7.75,
+   "taxa_tecnica_injetada_publicada_pct": 7.75,
+   "n_com_pnt_bt": 13,
+   "pnt_mwh": 18580,
+   "mercado_bt_mwh": 870107,
+   "cobertura_bt_pct": 56.9,
+   "pnt_bt_pct": 2.14,
+   "excluidos": {
+    "perda_total_maior_que_injetada": 4,
+    "perda_total_negativa": 4,
+    "ano_incompleto": 8,
+    "balanco_nao_fecha": 4,
+    "fornecida_maior_que_injetada": 4
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 28,
+    "taxa_total_pct": [
+     7.69,
+     8.4
+    ],
+    "n_tecnica": 13,
+    "taxa_tecnica_pct": [
+     6.76,
+     7.76
+    ],
+    "n_pnt_bt": 12,
+    "pnt_bt_pct": [
+     0.64,
+     2.14
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2021,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 77,
+   "n_publicadas": 105,
+   "injetada_mwh": 537149046,
+   "perdas_totais_mwh": 79678932,
+   "taxa_total_pct": 14.83,
+   "n_com_tecnica": 62,
+   "injetada_com_tecnica_mwh": 535624576,
+   "cobertura_tecnica_pct": 99.7,
+   "perdas_tecnicas_mwh": 40625225,
+   "taxa_tecnica_pct": 7.58,
+   "taxa_tecnica_injetada_publicada_pct": 7.58,
+   "n_com_pnt_bt": 60,
+   "pnt_mwh": 38934804,
+   "mercado_bt_mwh": 236218690,
+   "cobertura_bt_pct": 99.7,
+   "pnt_bt_pct": 16.48,
+   "excluidos": {
+    "ano_incompleto": 9,
+    "balanco_nao_fecha": 7,
+    "perda_total_maior_que_injetada": 4,
+    "perda_total_negativa": 4,
+    "fornecida_maior_que_injetada": 4
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 75,
+    "taxa_total_pct": [
+     15.82,
+     14.84
+    ],
+    "n_tecnica": 57,
+    "taxa_tecnica_pct": [
+     7.66,
+     7.56
+    ],
+    "n_pnt_bt": 55,
+    "pnt_bt_pct": [
+     18.44,
+     16.65
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2022,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 52,
+   "n_publicadas": 53,
+   "injetada_mwh": 543326812,
+   "perdas_totais_mwh": 78944362,
+   "taxa_total_pct": 14.53,
+   "n_com_tecnica": 47,
+   "injetada_com_tecnica_mwh": 541709776,
+   "cobertura_tecnica_pct": 99.7,
+   "perdas_tecnicas_mwh": 40324175,
+   "taxa_tecnica_pct": 7.44,
+   "taxa_tecnica_injetada_publicada_pct": 7.44,
+   "n_com_pnt_bt": 46,
+   "pnt_mwh": 38481753,
+   "mercado_bt_mwh": 235805895,
+   "cobertura_bt_pct": 99.6,
+   "pnt_bt_pct": 16.32,
+   "excluidos": {
+    "balanco_nao_fecha": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 49,
+    "taxa_total_pct": [
+     14.87,
+     14.55
+    ],
+    "n_tecnica": 45,
+    "taxa_tecnica_pct": [
+     7.59,
+     7.45
+    ],
+    "n_pnt_bt": 44,
+    "pnt_bt_pct": [
+     16.58,
+     16.35
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2022,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 39,
+   "n_publicadas": 52,
+   "injetada_mwh": 4042106,
+   "perdas_totais_mwh": 341412,
+   "taxa_total_pct": 8.45,
+   "n_com_tecnica": 21,
+   "injetada_com_tecnica_mwh": 2510495,
+   "cobertura_tecnica_pct": 62.1,
+   "perdas_tecnicas_mwh": 173010,
+   "taxa_tecnica_pct": 6.89,
+   "taxa_tecnica_injetada_publicada_pct": 6.89,
+   "n_com_pnt_bt": 20,
+   "pnt_mwh": 35332,
+   "mercado_bt_mwh": 1242107,
+   "cobertura_bt_pct": 60.6,
+   "pnt_bt_pct": 2.84,
+   "excluidos": {
+    "perda_total_negativa": 3,
+    "balanco_nao_fecha": 3,
+    "ano_incompleto": 3,
+    "fornecida_maior_que_injetada": 4
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 27,
+    "taxa_total_pct": [
+     8.42,
+     8.14
+    ],
+    "n_tecnica": 13,
+    "taxa_tecnica_pct": [
+     7.67,
+     6.89
+    ],
+    "n_pnt_bt": 12,
+    "pnt_bt_pct": [
+     2.42,
+     2.68
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2022,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 91,
+   "n_publicadas": 105,
+   "injetada_mwh": 547368918,
+   "perdas_totais_mwh": 79285774,
+   "taxa_total_pct": 14.48,
+   "n_com_tecnica": 68,
+   "injetada_com_tecnica_mwh": 544220272,
+   "cobertura_tecnica_pct": 99.4,
+   "perdas_tecnicas_mwh": 40497185,
+   "taxa_tecnica_pct": 7.44,
+   "taxa_tecnica_injetada_publicada_pct": 7.44,
+   "n_com_pnt_bt": 66,
+   "pnt_mwh": 38517085,
+   "mercado_bt_mwh": 237048002,
+   "cobertura_bt_pct": 99.3,
+   "pnt_bt_pct": 16.25,
+   "excluidos": {
+    "balanco_nao_fecha": 4,
+    "perda_total_negativa": 3,
+    "ano_incompleto": 3,
+    "fornecida_maior_que_injetada": 4
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 76,
+    "taxa_total_pct": [
+     14.83,
+     14.51
+    ],
+    "n_tecnica": 58,
+    "taxa_tecnica_pct": [
+     7.59,
+     7.45
+    ],
+    "n_pnt_bt": 56,
+    "pnt_bt_pct": [
+     16.53,
+     16.3
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2023,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 50,
+   "n_publicadas": 53,
+   "injetada_mwh": 571515686,
+   "perdas_totais_mwh": 84659698,
+   "taxa_total_pct": 14.81,
+   "n_com_tecnica": 48,
+   "injetada_com_tecnica_mwh": 570681223,
+   "cobertura_tecnica_pct": 99.9,
+   "perdas_tecnicas_mwh": 41383774,
+   "taxa_tecnica_pct": 7.25,
+   "taxa_tecnica_injetada_publicada_pct": 7.25,
+   "n_com_pnt_bt": 46,
+   "pnt_mwh": 43169530,
+   "mercado_bt_mwh": 254052727,
+   "cobertura_bt_pct": 99.7,
+   "pnt_bt_pct": 16.99,
+   "excluidos": {
+    "ano_incompleto": 2,
+    "balanco_nao_fecha": 1
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 50,
+    "taxa_total_pct": [
+     14.55,
+     14.81
+    ],
+    "n_tecnica": 45,
+    "taxa_tecnica_pct": [
+     7.45,
+     7.25
+    ],
+    "n_pnt_bt": 43,
+    "pnt_bt_pct": [
+     16.37,
+     17.01
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2023,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 38,
+   "n_publicadas": 52,
+   "injetada_mwh": 3533390,
+   "perdas_totais_mwh": 313100,
+   "taxa_total_pct": 8.86,
+   "n_com_tecnica": 18,
+   "injetada_com_tecnica_mwh": 1912861,
+   "cobertura_tecnica_pct": 54.1,
+   "perdas_tecnicas_mwh": 142245,
+   "taxa_tecnica_pct": 7.44,
+   "taxa_tecnica_injetada_publicada_pct": 7.44,
+   "n_com_pnt_bt": 18,
+   "pnt_mwh": 34602,
+   "mercado_bt_mwh": 1043213,
+   "cobertura_bt_pct": 56.8,
+   "pnt_bt_pct": 3.32,
+   "excluidos": {
+    "perda_total_negativa": 3,
+    "balanco_nao_fecha": 3,
+    "fornecida_maior_que_injetada": 5,
+    "ano_incompleto": 3
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 36,
+    "taxa_total_pct": [
+     8.66,
+     8.62
+    ],
+    "n_tecnica": 17,
+    "taxa_tecnica_pct": [
+     7.26,
+     7.85
+    ],
+    "n_pnt_bt": 17,
+    "pnt_bt_pct": [
+     2.87,
+     1.97
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2023,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 88,
+   "n_publicadas": 105,
+   "injetada_mwh": 575049076,
+   "perdas_totais_mwh": 84972798,
+   "taxa_total_pct": 14.78,
+   "n_com_tecnica": 66,
+   "injetada_com_tecnica_mwh": 572594085,
+   "cobertura_tecnica_pct": 99.6,
+   "perdas_tecnicas_mwh": 41526019,
+   "taxa_tecnica_pct": 7.25,
+   "taxa_tecnica_injetada_publicada_pct": 7.25,
+   "n_com_pnt_bt": 64,
+   "pnt_mwh": 43204132,
+   "mercado_bt_mwh": 255095940,
+   "cobertura_bt_pct": 99.4,
+   "pnt_bt_pct": 16.94,
+   "excluidos": {
+    "ano_incompleto": 5,
+    "balanco_nao_fecha": 4,
+    "perda_total_negativa": 3,
+    "fornecida_maior_que_injetada": 5
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 86,
+    "taxa_total_pct": [
+     14.51,
+     14.78
+    ],
+    "n_tecnica": 62,
+    "taxa_tecnica_pct": [
+     7.45,
+     7.26
+    ],
+    "n_pnt_bt": 60,
+    "pnt_bt_pct": [
+     16.32,
+     16.96
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2024,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 51,
+   "n_publicadas": 51,
+   "injetada_mwh": 605211913,
+   "perdas_totais_mwh": 89222823,
+   "taxa_total_pct": 14.74,
+   "n_com_tecnica": 32,
+   "injetada_com_tecnica_mwh": 316530460,
+   "cobertura_tecnica_pct": 52.3,
+   "perdas_tecnicas_mwh": 22427082,
+   "taxa_tecnica_pct": 7.09,
+   "taxa_tecnica_injetada_publicada_pct": 6.98,
+   "n_com_pnt_bt": 31,
+   "pnt_mwh": 23500078,
+   "mercado_bt_mwh": 147616095,
+   "cobertura_bt_pct": 54.1,
+   "pnt_bt_pct": 15.92,
+   "excluidos": {},
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 50,
+    "taxa_total_pct": [
+     14.81,
+     14.74
+    ],
+    "n_tecnica": 32,
+    "taxa_tecnica_pct": [
+     7.06,
+     7.09
+    ],
+    "n_pnt_bt": 30,
+    "pnt_bt_pct": [
+     16.12,
+     15.92
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2024,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 35,
+   "n_publicadas": 51,
+   "injetada_mwh": 3695643,
+   "perdas_totais_mwh": 404272,
+   "taxa_total_pct": 10.94,
+   "n_com_tecnica": 14,
+   "injetada_com_tecnica_mwh": 1580873,
+   "cobertura_tecnica_pct": 42.8,
+   "perdas_tecnicas_mwh": 115664,
+   "taxa_tecnica_pct": 7.32,
+   "taxa_tecnica_injetada_publicada_pct": 7.31,
+   "n_com_pnt_bt": 14,
+   "pnt_mwh": 20428,
+   "mercado_bt_mwh": 982939,
+   "cobertura_bt_pct": 49.0,
+   "pnt_bt_pct": 2.08,
+   "excluidos": {
+    "perda_total_negativa": 4,
+    "balanco_nao_fecha": 9,
+    "ano_incompleto": 3
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 25,
+    "taxa_total_pct": [
+     9.49,
+     9.02
+    ],
+    "n_tecnica": 11,
+    "taxa_tecnica_pct": [
+     7.61,
+     8.19
+    ],
+    "n_pnt_bt": 11,
+    "pnt_bt_pct": [
+     4.01,
+     0.1
+    ],
+    "fora_por_mudanca_de_universo": 4
+   }
+  },
+  {
+   "ano": 2024,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 86,
+   "n_publicadas": 102,
+   "injetada_mwh": 608907556,
+   "perdas_totais_mwh": 89627094,
+   "taxa_total_pct": 14.72,
+   "n_com_tecnica": 46,
+   "injetada_com_tecnica_mwh": 318111333,
+   "cobertura_tecnica_pct": 52.2,
+   "perdas_tecnicas_mwh": 22542746,
+   "taxa_tecnica_pct": 7.09,
+   "taxa_tecnica_injetada_publicada_pct": 6.98,
+   "n_com_pnt_bt": 45,
+   "pnt_mwh": 23520506,
+   "mercado_bt_mwh": 148599034,
+   "cobertura_bt_pct": 54.1,
+   "pnt_bt_pct": 15.83,
+   "excluidos": {
+    "perda_total_negativa": 4,
+    "balanco_nao_fecha": 9,
+    "ano_incompleto": 3
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 75,
+    "taxa_total_pct": [
+     14.79,
+     14.72
+    ],
+    "n_tecnica": 43,
+    "taxa_tecnica_pct": [
+     7.06,
+     7.09
+    ],
+    "n_pnt_bt": 41,
+    "pnt_bt_pct": [
+     16.07,
+     15.86
+    ],
+    "fora_por_mudanca_de_universo": 4
+   }
+  },
+  {
+   "ano": 2025,
+   "universo": "concessionarias",
+   "parcial": false,
+   "n_distribuidoras": 51,
+   "n_publicadas": 51,
+   "injetada_mwh": 612653776,
+   "perdas_totais_mwh": 90355796,
+   "taxa_total_pct": 14.75,
+   "n_com_tecnica": 18,
+   "injetada_com_tecnica_mwh": 199854780,
+   "cobertura_tecnica_pct": 32.6,
+   "perdas_tecnicas_mwh": 14302159,
+   "taxa_tecnica_pct": 7.16,
+   "taxa_tecnica_injetada_publicada_pct": 7.12,
+   "n_com_pnt_bt": 18,
+   "pnt_mwh": 13316474,
+   "mercado_bt_mwh": 88824719,
+   "cobertura_bt_pct": 32.1,
+   "pnt_bt_pct": 14.99,
+   "excluidos": {},
+   "universo_igual_ano_anterior": {
+    "total": true,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 51,
+    "taxa_total_pct": [
+     14.74,
+     14.75
+    ],
+    "n_tecnica": 17,
+    "taxa_tecnica_pct": [
+     7.19,
+     7.16
+    ],
+    "n_pnt_bt": 17,
+    "pnt_bt_pct": [
+     14.3,
+     15.0
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2025,
+   "universo": "permissionarias",
+   "parcial": false,
+   "n_distribuidoras": 32,
+   "n_publicadas": 52,
+   "injetada_mwh": 4533945,
+   "perdas_totais_mwh": 587609,
+   "taxa_total_pct": 12.96,
+   "n_com_tecnica": 1,
+   "injetada_com_tecnica_mwh": 15860,
+   "cobertura_tecnica_pct": 0.3,
+   "perdas_tecnicas_mwh": 1587,
+   "taxa_tecnica_pct": 10.01,
+   "taxa_tecnica_injetada_publicada_pct": 10.01,
+   "n_com_pnt_bt": 1,
+   "pnt_mwh": 403,
+   "mercado_bt_mwh": 13437,
+   "cobertura_bt_pct": 0.6,
+   "pnt_bt_pct": 3.0,
+   "excluidos": {
+    "balanco_nao_fecha": 11,
+    "perda_total_negativa": 2,
+    "fornecida_maior_que_injetada": 1,
+    "ano_incompleto": 6
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 25,
+    "taxa_total_pct": [
+     11.72,
+     12.04
+    ],
+    "n_tecnica": 0,
+    "taxa_tecnica_pct": null,
+    "n_pnt_bt": 0,
+    "pnt_bt_pct": null,
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2025,
+   "universo": "todas",
+   "parcial": false,
+   "n_distribuidoras": 83,
+   "n_publicadas": 103,
+   "injetada_mwh": 617187720,
+   "perdas_totais_mwh": 90943405,
+   "taxa_total_pct": 14.74,
+   "n_com_tecnica": 19,
+   "injetada_com_tecnica_mwh": 199870639,
+   "cobertura_tecnica_pct": 32.4,
+   "perdas_tecnicas_mwh": 14303747,
+   "taxa_tecnica_pct": 7.16,
+   "taxa_tecnica_injetada_publicada_pct": 7.12,
+   "n_com_pnt_bt": 19,
+   "pnt_mwh": 13316878,
+   "mercado_bt_mwh": 88838156,
+   "cobertura_bt_pct": 31.9,
+   "pnt_bt_pct": 14.99,
+   "excluidos": {
+    "balanco_nao_fecha": 11,
+    "perda_total_negativa": 2,
+    "fornecida_maior_que_injetada": 1,
+    "ano_incompleto": 6
+   },
+   "universo_igual_ano_anterior": {
+    "total": false,
+    "tecnica": false,
+    "pnt_bt": false
+   },
+   "mesmas_ano_anterior": {
+    "n_total": 76,
+    "taxa_total_pct": [
+     14.73,
+     14.73
+    ],
+    "n_tecnica": 17,
+    "taxa_tecnica_pct": [
+     7.19,
+     7.16
+    ],
+    "n_pnt_bt": 17,
+    "pnt_bt_pct": [
+     14.3,
+     15.0
+    ],
+    "fora_por_mudanca_de_universo": 0
+   }
+  },
+  {
+   "ano": 2026,
+   "universo": "concessionarias",
+   "parcial": true,
+   "n_distribuidoras": 0,
+   "n_publicadas": 51,
+   "injetada_mwh": null,
+   "perdas_totais_mwh": null,
+   "taxa_total_pct": null,
+   "n_com_tecnica": 0,
+   "injetada_com_tecnica_mwh": null,
+   "cobertura_tecnica_pct": null,
+   "perdas_tecnicas_mwh": null,
+   "taxa_tecnica_pct": null,
+   "taxa_tecnica_injetada_publicada_pct": null,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 51
+   },
+   "universo_igual_ano_anterior": null,
+   "mesmas_ano_anterior": null
+  },
+  {
+   "ano": 2026,
+   "universo": "permissionarias",
+   "parcial": true,
+   "n_distribuidoras": 0,
+   "n_publicadas": 52,
+   "injetada_mwh": null,
+   "perdas_totais_mwh": null,
+   "taxa_total_pct": null,
+   "n_com_tecnica": 0,
+   "injetada_com_tecnica_mwh": null,
+   "cobertura_tecnica_pct": null,
+   "perdas_tecnicas_mwh": null,
+   "taxa_tecnica_pct": null,
+   "taxa_tecnica_injetada_publicada_pct": null,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 52
+   },
+   "universo_igual_ano_anterior": null,
+   "mesmas_ano_anterior": null
+  },
+  {
+   "ano": 2026,
+   "universo": "todas",
+   "parcial": true,
+   "n_distribuidoras": 0,
+   "n_publicadas": 103,
+   "injetada_mwh": null,
+   "perdas_totais_mwh": null,
+   "taxa_total_pct": null,
+   "n_com_tecnica": 0,
+   "injetada_com_tecnica_mwh": null,
+   "cobertura_tecnica_pct": null,
+   "perdas_tecnicas_mwh": null,
+   "taxa_tecnica_pct": null,
+   "taxa_tecnica_injetada_publicada_pct": null,
+   "n_com_pnt_bt": 0,
+   "pnt_mwh": null,
+   "mercado_bt_mwh": null,
+   "cobertura_bt_pct": null,
+   "pnt_bt_pct": null,
+   "excluidos": {
+    "ano_incompleto": 103
+   },
+   "universo_igual_ano_anterior": null,
+   "mesmas_ano_anterior": null
+  }
+ ]
+}

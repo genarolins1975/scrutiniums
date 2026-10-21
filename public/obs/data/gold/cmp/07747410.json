@@ -1,7 +1,7 @@
 {
  "cod": "07747410",
  "nome": "M PAGAMENTOS S.A. - CRÉDITO FINANCIAMENTO E INVESTIMENTO",
- "sr": "S4",
+ "sr": null,
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -350,5 +350,5 @@
    "202412": 50.122732120596744
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

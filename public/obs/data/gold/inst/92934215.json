@@ -9,7 +9,7 @@
   "sede": "Porto Alegre/RS",
   "segmento": "S2",
   "grupo_pares": "S2 — porte entre 1% e 10% do PIB",
-  "n_pares": 11,
+  "n_pares": 7,
   "conglomerado_prudencial": "C0080154",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-24T15:24:42+00:00",
+  "atualizado_em": "2026-10-21T16:18:23+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 92.934.215"
  },
@@ -57,43 +57,23 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 11,
+  "quantidade": 7,
   "maiores_membros": [
    {
-    "cod": "33657248",
-    "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOM"
-   },
-   {
-    "cod": "C0052120",
-    "nome": "XP"
-   },
-   {
-    "cod": "C0010083",
-    "nome": "SAFRA"
+    "cod": "C0052058",
+    "nome": "NUBANK"
    },
    {
     "cod": "01181521",
     "nome": "BANCO COOPERATIVO SICREDI S.A."
    },
    {
-    "cod": "C0051750",
-    "nome": "BANCO SICOOB"
-   },
-   {
-    "cod": "C0030403",
-    "nome": "CITIBANK"
-   },
-   {
-    "cod": "C0030173",
-    "nome": "BANRISUL"
-   },
-   {
     "cod": "C0051011",
     "nome": "VOTORANTIM"
    },
    {
-    "cod": "07237373",
-    "nome": "BANCO DO NORDESTE DO BRASIL S.A."
+    "cod": "18236120",
+    "nome": "NU PAGAMENTOS S.A. - INSTITUIÇÃO DE PAGA"
    },
    {
     "cod": "92934215",
@@ -102,13 +82,13 @@
    {
     "cod": "13140088",
     "nome": "ACESSO SOLUÇÕES DE PAGAMENTO S.A. - INST"
+   },
+   {
+    "cod": "32219232",
+    "nome": "NUPAY FOR BUSINESS INSTITUICAO DE PAGAME"
    }
   ],
-  "quartis_basileia": {
-   "q1": 15.4,
-   "mediana": 15.9,
-   "q3": 20.2
-  },
+  "quartis_basileia": null,
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
  "kpis": [
@@ -205,8 +185,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 14.95,
-   "percentil": 0.0
+   "mediana_grupo": 11.85,
+   "percentil": 16.7
   },
   {
    "indicador": "ROE do período",
@@ -214,8 +194,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 6.29,
-   "percentil": 80.0
+   "mediana_grupo": 7.41,
+   "percentil": 66.7
   }
  ],
  "carteira": {
@@ -331,36 +311,28 @@
   "roe": {
    "valores": [
     2.97,
-    6.29,
-    6.17,
-    10.24,
-    4.73,
-    11.39,
     7.41,
-    6.57,
+    17.61,
     -150.52,
-    2.95,
+    27.93,
+    5.22,
     7.84
    ],
    "meu": 7.84,
-   "mediana": 6.29
+   "mediana": 7.41
   },
   "alav": {
    "valores": [
     42.77,
-    4.82,
-    5.94,
-    14.8,
-    14.95,
-    15.5,
     11.85,
-    31.95,
+    5.26,
     58.06,
-    27.91,
+    17.84,
+    1.03,
     1.95
    ],
    "meu": 1.95,
-   "mediana": 14.95
+   "mediana": 11.85
   }
  },
  "comparacao_pares": {

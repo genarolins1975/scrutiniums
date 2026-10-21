@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 export default defineConfig({
   plugins: [react()],
   test: {
+    globalSetup: ["./scripts/vitest-worktree-setup.mjs"],
     environment: "node",
     include: ["src/tests/**/*.test.ts"],
     // Forks: um processo por arquivo de teste, para que cada um tenha seu

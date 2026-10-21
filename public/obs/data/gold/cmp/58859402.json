@@ -1,7 +1,7 @@
 {
  "cod": "58859402",
  "nome": "FATURACRED SOCIEDADE DE CRÉDITO DIRETO S.A.",
- "sr": "S5",
+ "sr": null,
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -134,5 +134,5 @@
    "202512": 38.05934476567883
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

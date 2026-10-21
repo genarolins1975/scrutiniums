@@ -1,0 +1,720 @@
+{
+ "avaliador": "T2-U03",
+ "papel": "tecnico",
+ "rodada": "reavaliacao 2",
+ "versao_avaliada": "d616ae877 (build de produção local servido em http://localhost:3100, dados processados em 01/10/2026)",
+ "paginas": {
+  "/setor-eletrico/agua-e-clima": {
+   "paineis": [
+    "P017"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 9.0,
+     "evidencia": [
+      "Refiz do ONS (arquivos anuais da EAR por subsistema, 2000 a 2026) a série mensal do SIN em MWmês (321 meses) e os 63 eventos de capacidade: iguais, exceto set/2026, que a página marca como parcial (29/09).",
+      "Faixa de 29/09 refeita do ONS (2001 a 2025, quantil tipo 7): SIN 25,31, 49,11 e 67,21 %, percentil 80, e 73.604, 138.597 e 182.193 MWmês; subsistemas e a faixa dos 11 REE com base também iguais.",
+      "Reconfiguração dos REE refeita no arquivo de REE do ONS: soma de 290.261 MWmês em 28 e 30/12/2017; Sul 20.100 para 9.591, Paraná 152.313 para 140.227, Norte 15.018 para 14.245.",
+      "Cobertura da família conferida: EAR em % e MWmês, faixa sazonal, quatro regiões em escala comum, REE, bacias e mudanças de capacidade e de perímetro estão na página; ENA, chuva, temperatura e reservatórios ficam nas páginas irmãs."
+     ],
+     "atendidos": [
+      "Nível atual em % da EAR máxima e em MWmês, para SIN, subsistemas, REE e bacias.",
+      "Evolução com faixa da data: último ano a cada 14 dias, 120 dias e mensal desde 2000, com quatro regiões na mesma escala.",
+      "Capacidade e perímetro: 63 mudanças atribuídas a reservatórios e reconfiguração dos REE de 2017.",
+      "Referência por data (mediana, p10 e p90 de 25 anos) com período, amostra e sinal de capacidade mudada.",
+      "Limitações e cobertura à vista: provisório, revisões entre capturas e diferença para a Visão geral e o PLD."
+     ],
+     "problemas": [
+      "O saldo de 30 dias aparece sem os fluxos na mesma página (ENA em P018, defluência em P020) e a relação com preço, geração e carga é só remissão: a página diz o que a EAR não mede, mas não põe esses dados ao lado."
+     ],
+     "justificativa": "Todas as dimensões da família estão presentes e reproduzidas a partir do ONS: nível em % e em energia, faixa da data, quatro regiões, REE, bacias, capacidade e perímetro. Relação com outros temas fica por remissão, defeito menor."
+    },
+    "F": {
+     "nota": 9.0,
+     "evidencia": [
+      "Mediana, p10, p90 e percentil refeitos do ONS para SIN, SE, S, NE e N e para os 11 REE com base: iguais; em MWmês a classificação (dentro ou acima da faixa) coincide com a em % nos cinco recortes.",
+      "SIN como razão de somas: 61,54 % (179.724,3 sobre 292.068,2 MWmês); a média simples dos quatro percentuais daria 70,50 %, como a página diz.",
+      "Capacidade na base conferida no ONS: SIN de 236.566 a 292.145 MWmês (23,5 %), Sudeste/Centro-Oeste de 159.643 a 204.615 (28 %), Sul de 14.645 a 20.459 (40 %).",
+      "Teste de coerência: o texto diz que, acima de 25 % de variação da capacidade, a posição frente à faixa não é dita (a resposta de SE e S obedece), mas a tabela e o CSV exportado trazem dentro da faixa usual, em %."
+     ],
+     "atendidos": [
+      "Referência sazonal por data com mediana, p10 e p90, sem mínimo e máximo mecânicos.",
+      "Razão de somas para o SIN, distinta da média simples, com universo de quatro subsistemas dito.",
+      "Base, número de anos e período publicados por recorte; REE afetados pela reconfiguração só com anos do perímetro atual.",
+      "Faixa em % e em MWmês lado a lado, com aviso de que a capacidade mudou.",
+      "Sem benchmark internacional ou regulatório inadequado."
+     ],
+     "problemas": [
+      "A regra dos 25 % vale no texto e não na coluna Posição, no CSV nem na figura de diferença em p.p. (Sudeste/Centro-Oeste e Sul).",
+      "O corte de 25 % cria degrau: o Norte, com 24 % de variação, tem posição dita; o Sudeste/Centro-Oeste, com 28 %, não."
+     ],
+     "justificativa": "Referência sazonal reproduzida do ONS, SIN por razão de somas e faixa também em energia. Defeito menor: a regra de capacidade acima de 25 % vale no texto, mas não na tabela, no CSV nem na figura."
+    },
+    "G": {
+     "nota": 9.0,
+     "evidencia": [
+      "Unidade: glossário do ONS (Dados Relevantes 2010) define 1 MW/mês igual a 720 MWh/mês, como a página; o percentual do ONS contra EAR sobre EAR máxima, em 39.108 pares, difere no máximo 0,00776 p.p., igual ao que a página diz.",
+      "Universos sem sobreposição: no arquivo atual do ONS a soma de 23 bacias (179.698,435), de 12 REE (179.698,439) e de 4 subsistemas (179.698,437 MWmês) fecha, como a reconciliação da página.",
+      "Revisão: de jan a ago/2026 os valores publicados são iguais aos do ONS de hoje; em set/2026 a soma dos quatro subsistemas foi revisada em até 105 MWmês, dentro do aviso de provisório da página.",
+      "Rótulos e origem: a EAR derivada pelo ONS recebe o selo Observado (o texto ao lado diz não ser medição direta, por isso não tratei como bloqueio); o percentual de Doce e Amazonas vem da coluna do ONS, pois recalcular com MWmês inteiros de antes de 2018 difere até 5 p.p., e a página não diz qual usa."
+     ],
+     "atendidos": [
+      "MWmês, p.p. e percentuais com denominador explícito (EAR máxima do próprio recorte).",
+      "Capacidade zero tratada como não se aplica e ausência como sem dado, nunca zero.",
+      "Quebras tratadas: reconfiguração dos REE de 2017, recálculo de 01/01/2018 e mudanças de capacidade.",
+      "Revisão do ONS e mês parcial identificados.",
+      "Divergência dos reservatórios de 2010 a 2015 (até 88 MWmês) publicada como ressalva, sem correção."
+     ],
+     "problemas": [
+      "Selo Observado em série que a própria página diz derivada pelo ONS.",
+      "A equivalência 1 MWmês igual a 720 MWh aparece sem citar a fonte.",
+      "Não diz que o percentual de bacias e REE é o publicado pelo ONS e não EAR sobre EAR máxima."
+     ],
+     "justificativa": "Unidades, universos, quebras e revisões tratados com rigor e conferidos no ONS. Descontos pequenos: selo Observado em série derivada, equivalência de 720 MWh sem fonte citada e origem do percentual das bacias não dita."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz EAR 61,5 %, 179.724 MWmês, variação de 30 dias (menos 7.888,2 MWmês), 12 meses (mais 16.716) e a faixa só com agua_subsistemas_diario.csv e ear_diario.csv: iguais. Os 22 arquivos de água do servidor conferem o sha256 do manifesto.",
+      "Ficha Comprove: fonte, recurso, sha256, captura, fórmula, numerador, denominador, revisões e testes; a exportação em XLSX traz folha Sobre com fonte, versão, filtros e dicionário.",
+      "A série mensal do SIN em MWmês desde 2000 (321 linhas) está só na tabela recolhida e no JSON da gold; nenhum CSV a traz (o CSV por subsistema começa em 2022 e ear_diario.csv está em %).",
+      "O roteiro da ficha manda fazer checkout de ac7599ce6c86, que tinha alterações não confirmadas, e usar arquivo bronze interno; a própria página diz que a reprodução pode diferir."
+     ],
+     "atendidos": [
+      "Fonte específica (conjunto e arquivo do ONS), período, captura e publicação da fonte por número.",
+      "Fórmula, variáveis, unidades, filtros, exclusões e tratamento de ausência na ficha.",
+      "Gráfico, tabela, texto e CSV com o mesmo contrato (recalculado).",
+      "Histórico de revisões entre capturas e tabela de capturas usadas por ano.",
+      "Limitações e ressalvas da publicação listadas."
+     ],
+     "problemas": [
+      "Código publicado como ac7599ce6c86 mais alterado (26 de 31 bases): a versão exata não se reconstitui.",
+      "O passo a passo da ficha exige arquivos bronze e silver internos que o leitor não obtém; o procedimento público é o CSV.",
+      "Séries dos gráficos (SIN mensal desde 2000, 120 dias, a cada 14 dias) sem CSV próprio.",
+      "Método do quantil (tipo 7) e definição de percentil só no documento do módulo, não nas regras da página.",
+      "Mediana do SIN (49,1 %) e variação de 30 dias, números de destaque, não têm ficha Comprove."
+     ],
+     "justificativa": "Número reconstruído do CSV e do ONS, ficha completa e manifesto conferido. Teto de 8,5: o código publicado tem alterações não confirmadas, o roteiro depende de arquivos internos e há séries de gráfico sem CSV."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "Chromium: sem erro de console nem falha de rede em Entender, Analisar e Auditar; 13 controles exercitados sem falha (objetivo.json); testei recorte e unidade sem erro.",
+      "Medi no servidor local: carga 0,42 s, rede ociosa 1,3 s, LCP 0,40 s, CLS 0,0002; a 390 px com CPU 4x e 1,6 Mbps: carga 2,9 s, LCP 1,3 s, CLS 0,0004. HTML de 562 KB, 94 KB com gzip. É laboratório, não experiência real.",
+      "Testes lidos, não executados: 88 de vitest e 83 de unittest do módulo cobrem zero e ausência, razão de somas, quebra de REE, mês parcial e paridade entre gráfico, tabela e CSV.",
+      "O fluxo de atualização roda vitest e unittest antes de publicar e retém a publicação se falharem; a gold de água passou nas 7 checagens da publicação (as 3 reprovadas são de CSV de outros módulos)."
+     ],
+     "atendidos": [
+      "Cálculos refeitos a partir da fonte primária.",
+      "Console limpo e estabilidade visual (CLS próximo de zero).",
+      "Testes orientados aos riscos da página.",
+      "Retenção de publicação reprovada e sentinela que mantém a gold anterior."
+     ],
+     "problemas": [
+      "Só há medição de laboratório: o instrumento do projeto registra tempos e bytes, não mede LCP, INP nem CLS, e não há coleta de campo.",
+      "Protocolo de medição (dispositivo, rede, limites) não documentado para a página."
+     ],
+     "justificativa": "Console limpo, CLS próximo de zero, testes por risco e retenção de publicação reprovada. Teto de 8,5 porque a medição é só de laboratório e o projeto não documenta protocolo nem mede LCP, INP e CLS."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "p017_regra_capacidade",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "Coluna Posição da tabela, CSV exportado, figura de diferença em p.p. e o texto de O que não é possível concluir",
+     "descricao": "O texto diz que, com EAR máxima variando mais de 25 % na base, a posição frente à faixa não é dita, e a resposta do Sudeste/Centro-Oeste e do Sul obedece. A tabela e o CSV trazem dentro da faixa usual, em % (a capacidade variou 28 %), e a figura ordena por diferença em p.p. A classificação em MWmês coincide com a em % nos cinco recortes.",
+     "sugestao": "Aplicar a mesma regra em todas as vistas, ou dizer a posição em % e em MWmês juntas, já que coincidem."
+    },
+    {
+     "id": "p017_serie_mensal_sem_csv",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Tabela recolhida Dados do gráfico em tabela (321 linhas)",
+     "descricao": "A série mensal de EAR e de EAR máxima do SIN em MWmês desde 2000 só existe na tabela recolhida e no JSON da gold.",
+     "sugestao": "Publicar CSV mensal por subsistema e SIN em MWmês desde 2000, com a EAR máxima."
+    },
+    {
+     "id": "p017_quantil_e_unidade_sem_fonte",
+     "gravidade": "baixa",
+     "criterios": [
+      "H",
+      "G"
+     ],
+     "onde": "Regras, fontes e arquivos; bloco Unidade",
+     "descricao": "O método do quantil (tipo 7, interpolação linear) e a definição do percentil como parcela de anos com valor menor ou igual só estão no documento do módulo. A equivalência 1 MWmês igual a 720 MWh não cita a fonte, que existe no glossário do ONS (Dados Relevantes).",
+     "sugestao": "Escrever o método do quantil e citar o glossário do ONS na regra e em Unidade."
+    },
+    {
+     "id": "p017_percentual_bacia_origem",
+     "gravidade": "baixa",
+     "criterios": [
+      "G",
+      "H"
+     ],
+     "onde": "Faixa sazonal por bacia (recorte Bacias) e regra de EAR agregada",
+     "descricao": "O percentual por bacia vem da coluna do ONS, não de EAR sobre EAR máxima. Em bacias pequenas, com MWmês inteiros antes de 2018, os dois diferem até 5 p.p. (Doce em 2003: 85,71 contra 80,65; Amazonas em 2001: 104,55 contra 102,47) e mudam p10, mediana e p90 da faixa. A regra publicada só descreve a razão para o SIN.",
+     "sugestao": "Dizer na regra qual percentual cada recorte usa e por quê."
+    },
+    {
+     "id": "p017_selo_observado",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Lista de datas de referência em Fontes, datas e siglas",
+     "descricao": "A EAR, descrita como derivada pelo ONS e não medição direta, recebe o selo Observado, cuja definição (publicado diretamente pela fonte) só aparece na dica.",
+     "sugestao": "Explicar o selo no ponto de uso ou usar um rótulo de derivado pela fonte."
+    }
+   ],
+   "nao_verificado": [
+    "Faixa sazonal das 23 bacias: refiz todas; 16 conferem com a EAR sobre EAR máxima, 5 não se aplicam (sem armazenamento) e Doce e Amazonas só conferem com o percentual publicado pelo ONS.",
+    "Captura de 30/09 em si: comparei com o ONS de 08 e 09/10 (jan a ago/2026 iguais; set/2026 revisado) e com os CSV publicados, que reproduzem a página.",
+    "Leitor de tela e desempenho de campo.",
+    "Arquivos bronze e silver do projeto (não públicos)."
+   ]
+  },
+  "/setor-eletrico/agua-e-clima/afluencia": {
+   "paineis": [
+    "P018"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "ENA de 30 dias do SIN refeita do ONS: 1.889.781 sobre 1.096.498 MWmed·dia, 172,3 %; faixa p10, p50 e p90 de 2001 a 2025 igual à página (56,4, 81,8 e 128,9 %; percentil 96); subsistemas também iguais.",
+      "Tabela de 78 pontos semanais (312 valores) comparada com o ONS: diferença máxima de 0,05 p.p. até 30/06/2026 e de 0,84 p.p. nas semanas que o ONS revisou depois.",
+      "MLT: refiz dos arquivos por reservatório as 1.217 de 1.218 comparações iguais entre 2026 e 2025 e as mudanças de 04/11/2025 (94 usinas) e 20/01/2026 (126).",
+      "A evolução de 18 meses traz só a linha de 100 % da MLT: a página diz que a faixa usual de cada data não é publicada para a série, embora a EAR (P017) a traga."
+     ],
+     "atendidos": [
+      "Nível de 30 dias, do dia e armazenável, para SIN, subsistemas, REE e bacias.",
+      "Referência da mesma janela com p10, p50, p90 e percentil, e a MLT como régua de 100 %.",
+      "Análise própria da versão da MLT: PMO contra conjunto aberto, mudanças por usina e MLT implícita desde 2000.",
+      "Relação com a EAR dita como régua diferente, com remissão ao balanço por reservatório.",
+      "Limitações e cobertura visíveis: grupos sem MLT, revisões do ONS e provisório."
+     ],
+     "problemas": [
+      "A evolução de 18 meses não traz a faixa da data, que a página de armazenamento já traz.",
+      "A evolução cobre só subsistemas e SIN; REE e bacias aparecem apenas no ponto mais recente.",
+      "Sem geração hidráulica ou vertimento ao lado da ENA; só remissão ao painel de reservatórios."
+     ],
+     "justificativa": "Cobertura forte e verificada, com análise inédita da versão da MLT. Falta a faixa da data na evolução e a evolução de REE e bacias, o que impede nota 9."
+    },
+    "F": {
+     "nota": 8.5,
+     "evidencia": [
+      "Mediana e percentis da janela de 30 dias refeitos do ONS para SIN, SE, S, NE e N (por exemplo Sul 33,5, 74,0 e 194,4 %; Norte no percentil 4): iguais.",
+      "Relatório do PMO de 19/09 a 25/09/2026 aberto no ONS (página 10): MLT de setembro de 19.564, 11.681, 2.905 e 2.248 MWmed; o conjunto aberto dá 19.674,2 no Sudeste/Centro-Oeste (mais 0,56 %). O de julho também confere (25.510, 11.101, 3.721 e 5.214).",
+      "MLT implícita calculada dos percentuais do ONS reproduz as colunas da página (19.674,2 em set/2026; 25.626,2 em jul/2026).",
+      "ENA armazenável: o percentual do ONS é da mesma MLT da ENA bruta (diferença máxima de 0,07 % em 37.634 pares subsistema e dia desde 2001), mas a página o chama de % da MLT armazenável."
+     ],
+     "atendidos": [
+      "Razão de somas, nunca média de percentuais, dita e testada.",
+      "Referência sazonal da mesma janela, com base de 25 anos e mínimo de 5 anos declarados.",
+      "Diferença contra o PMO com tolerância de 0,05 % e sem subtrair dias diferentes.",
+      "Sem benchmark incompatível."
+     ],
+     "problemas": [
+      "ENA armazenável contra uma MLT armazenável que o ONS não define: o denominador é a MLT da ENA bruta.",
+      "A faixa de 25 anos mistura versões da MLT; a página avisa, mas não mede o efeito.",
+      "A evolução não tem faixa da data."
+     ],
+     "justificativa": "Referências corretas e conferidas no ONS e no PMO. Descontos: rótulo de MLT armazenável para uma referência que não existe, faixa histórica que mistura versões da MLT sem medir o efeito e evolução sem faixa."
+    },
+    "G": {
+     "nota": 8.5,
+     "evidencia": [
+      "Unidade: as colunas por subsistema que o dicionário do ONS chama de MWmês são MWmed; a soma das usinas é igual ao subsistema em 28/09/2026 (Sul 28.520,9 nos dois no arquivo atual), como a página conclui.",
+      "Denominador da ENA armazenável: MLT implícita das duas colunas coincide em 37.634 pares; a página trata como outra MLT, e a nota explica o numerador (vazões naturais menos as vertidas), não a referência.",
+      "Conferência de unidade: as 915 divergências de Sul, Nordeste e Norte (até 5,3 % no Sul) estão entre 01/01/2001 e 04/07/2003; a página diz que não informa quando.",
+      "ENA, que a página descreve como reconstituída, recebe o selo Observado; o texto ao lado diz não ser medição direta, por isso não tratei como bloqueio."
+     ],
+     "atendidos": [
+      "MWmed, MWmed·dia e % da MLT distinguidos, com a razão de somas explicada.",
+      "Ausência e janela incompleta tratadas: grupos sem MLT e dia faltante impede a razão.",
+      "Quebras: versões da MLT e REE novos em 30/12/2017.",
+      "Revisão do ONS e provisório avisados no corpo da página."
+     ],
+     "problemas": [
+      "Rótulo % da MLT armazenável sem suporte na fonte; a explicação descreve o numerador, não a referência, e 109,2 % pode parecer acima do normal da energia armazenável.",
+      "Selo Observado em ENA reconstituída.",
+      "Conferência da unidade não diz em que anos a soma das usinas difere."
+     ],
+     "justificativa": "Unidades, universos e versões da MLT tratados com rigor e conferidos no ONS. Descontos: denominador da ENA armazenável mal rotulado, selo Observado em série reconstituída e conferência de unidade sem dizer quando difere."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz 172,3 %, 109,2 % e a faixa só com agua_subsistemas_diario.csv (razão de somas 1.889.781,4 sobre 1.096.498,5) e ena_diario.csv: iguais.",
+      "A ficha da MLT cita relatório, edição, página 10 e sha256; abri o relatório do PMO no ONS e a tabela está na página 10 com os mesmos valores.",
+      "Ficha da ENA: fórmula, numerador, denominador, testes, captura, revisões (Sudeste/Centro-Oeste teve 30 dias revisados) e citação.",
+      "O roteiro exige checkout de ac7599ce6c86 (alterado) e arquivo bronze interno; as tabelas dos gráficos não têm exportação própria."
+     ],
+     "atendidos": [
+      "Fonte, período, captura e publicação da fonte por número.",
+      "Fórmula e variáveis, com a MLT implícita definida como ENA dividida pelo percentual.",
+      "CSV com a captura usada por linha; tabelas com CSV e XLSX e folha Sobre.",
+      "Tabela de revisões entre capturas e histórico de versões da MLT.",
+      "Limitações da série e da MLT."
+     ],
+     "problemas": [
+      "Código publicado alterado e passos que dependem de arquivos internos.",
+      "Séries dos gráficos (78 semanas, MLT implícita) sem CSV próprio, embora refaçam dos CSV diários.",
+      "Método do quantil e do percentil só no documento do módulo.",
+      "Conferência de unidade sem os anos de divergência.",
+      "Mediana da janela (81,8 %) e ENA do dia (72.323 MWmed), em destaque, não têm ficha Comprove."
+     ],
+     "justificativa": "Número reconstruído do CSV e conferido no relatório do PMO, com ficha completa. Teto de 8,5 pelo código com alterações não confirmadas, roteiro com arquivos internos e séries de gráfico sem CSV próprio."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "Sem erro de console nem falha de rede; 12 controles exercitados sem falha (objetivo.json); testei o comparador de regiões sem erro.",
+      "Medi: carga 0,44 s, rede ociosa 1,7 s, LCP 0,43 s, CLS 0,0002; a 390 px com CPU 4x e 1,6 Mbps: carga 2,7 s, LCP 1,2 s, CLS 0,0004. HTML de 396 KB, 60 KB com gzip. É laboratório.",
+      "Testes lidos: vitest refaz a razão de somas pelos CSV e a ficha da ENA armazenável; unittest cobre MLT em degraus, tabela do PMO, janela de 30 dias e soma das usinas.",
+      "O fluxo de atualização retém a publicação se os testes falham; a gold de água passou nas 7 checagens da publicação."
+     ],
+     "atendidos": [
+      "Cálculos refeitos a partir do ONS e do PMO.",
+      "Console limpo e CLS próximo de zero.",
+      "Testes por risco, inclusive MLT e PMO.",
+      "Retenção de publicação reprovada."
+     ],
+     "problemas": [
+      "Só laboratório: o instrumento do projeto não mede LCP, INP nem CLS e não há coleta de campo.",
+      "Protocolo de medição não documentado para a página."
+     ],
+     "justificativa": "Console limpo, CLS próximo de zero e testes dirigidos a risco. Teto de 8,5 porque só há medição de laboratório e o projeto não documenta protocolo nem mede LCP, INP e CLS."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "p018_mlt_armazenavel",
+     "gravidade": "media",
+     "criterios": [
+      "G",
+      "F",
+      "H"
+     ],
+     "onde": "Número ENA armazenável de 30 dias, sua nota, a ficha Comprove e as colunas mlt_arm_implicita_mwmed e ena_arm_pct_mlt do CSV",
+     "descricao": "A ENA armazenável aparece em % da MLT armazenável (vazões naturais menos as vertidas). No ONS o percentual da ENA armazenável é relativo à mesma MLT da ENA bruta: em 37.634 pares subsistema e dia desde 2001 a MLT implícita das duas colunas difere no máximo 0,07 %, e o dicionário só diz percentual por média de longo termo. O rótulo sugere uma referência que não existe e pode fazer 109,2 % parecer acima do normal da energia armazenável.",
+     "sugestao": "Chamar de % da MLT (a mesma da ENA bruta) e dizer que a parte vertida sai do numerador, não da referência."
+    },
+    {
+     "id": "p018_evolucao_sem_faixa",
+     "gravidade": "media",
+     "criterios": [
+      "E",
+      "F"
+     ],
+     "onde": "Gráfico Como a ENA de 30 dias evoluiu de abr/2025 a set/2026",
+     "descricao": "Só traz a linha de 100 % da MLT. A faixa p10 a p90 de cada data não é publicada, embora ena_diario.csv tenha a história desde 2001 e a EAR (P017) já a mostre a cada 14 dias.",
+     "sugestao": "Calcular a faixa da janela de 30 dias a cada 7 dias com a mesma regra do ponto mais recente."
+    },
+    {
+     "id": "p018_conferencia_unidade_sem_periodo",
+     "gravidade": "baixa",
+     "criterios": [
+      "H",
+      "G"
+     ],
+     "onde": "Tabela Soma da ENA das usinas contra a ENA do subsistema",
+     "descricao": "A tabela diz que não informa em que anos a soma das usinas difere (até 5,3 % no Sul). As 915 divergências de Sul, Nordeste e Norte estão entre 01/01/2001 e 04/07/2003; no Sudeste há mais de 200 dias fora depois disso.",
+     "sugestao": "Publicar o período das divergências e dizer que a conclusão de unidade vale para os dados depois de jul/2003."
+    },
+    {
+     "id": "p018_selo_observado_ena",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Lista de datas de referência e selos da ENA",
+     "descricao": "A ENA reconstituída a partir de vazões naturais recebe o selo Observado, definido como publicado pela fonte; só a dica traz a definição.",
+     "sugestao": "Usar rótulo de derivado pela fonte ou explicar o selo no ponto de uso."
+    }
+   ],
+   "nao_verificado": [
+    "ENA de 30 dias e faixa de REE e bacias.",
+    "Relatórios do PMO de outros meses (abri só os de setembro e julho de 2026).",
+    "Versão da MLT do conjunto aberto, que o ONS não publica.",
+    "Leitor de tela e desempenho de campo."
+   ]
+  },
+  "/setor-eletrico/agua-e-clima/chuva-e-temperatura": {
+   "paineis": [
+    "P019"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.0,
+     "evidencia": [
+      "Refiz no NASA POWER (IMERG_PRECTOT, comunidade AG, UTC, pesos do manifesto espacial) Paranaíba, Doce e Paraguaçu: 70,2, 78,9 e 9,8 mm; média, p10, p90 e percentil iguais (15,6, 16,8 e 2,4 mm; percentis 96, 100 e 96).",
+      "Temperatura por subsistema e SIN refeita do clima_diario.csv (22,87 contra 22,78 °C no SIN; percentis 56, 52, 32, 96 e 76) e dez anomalias mensais conferidas: iguais.",
+      "Correlação chuva e ENA refeita dos CSV mensais: 0,246 e 0,213 com n 300, igual a 0,25 e 0,21; previsão do Paranaíba refeita na API do Open-Meteo (rodada de 30/09 00Z, pesos do manifesto): 55,1 e 63,5 mm.",
+      "Faltas declaradas pela página: cenário não integrado, temperatura sem conferência com estação, previsão sem avaliação de acerto e conferência da chuva só de jan/2020 a out/2021."
+     ],
+     "atendidos": [
+      "Nível, evolução e distribuição por bacia (mapa, 12 meses, p10 e p90) e por subsistema (45 dias e 24 meses).",
+      "Observação, estimativa, previsão e cenário separados no corpo da página.",
+      "Cobertura da grade e da população publicadas (580 pontos, 97 células, cobertura por UF).",
+      "Relação chuva e ENA como associação, com n e período; remissão ao painel de carga para a demanda."
+     ],
+     "problemas": [
+      "Cenário climático não integrado; a página e o módulo dizem que o painel é parcial, embora a fonte de projeções responda.",
+      "Temperatura sem conferência com estação; chuva conferida só de jan/2020 a out/2021 e em IMERG Final.",
+      "Previsão de uma rodada, sem avaliação de acerto nem comparação com referência simples.",
+      "Relação com a demanda só por remissão a outro painel."
+     ],
+     "justificativa": "Cobertura ampla e reproduzida das fontes primárias, com separação clara entre estimativa, previsão e cenário. Nota 8,0: painel parcial, sem cenário, sem conferência de temperatura, sem avaliação da previsão e sem observação atual de estação."
+    },
+    "F": {
+     "nota": 8.0,
+     "evidencia": [
+      "Climatologia de 2001 a 2025 refeita no NASA POWER: Doce 16,76 mm (p10 1,66 e p90 36,13), Paraguaçu 2,37 mm e Paranaíba 15,55 mm; iguais à página.",
+      "As janelas de 30 dias de chuva (IMERG Late desde 14/06/2026) e de temperatura (GEOS-IT desde 03/08/2026) são inteiramente preliminares e comparadas com climatologia de produto final; vi nos CSV as marcas de preliminar.",
+      "Em 14 das 22 bacias a chuva de 30 dias está 100 % ou mais acima da média no período seco; a classe central (de menos 10 % a mais 10 %) é mais estreita que o viés do IMERG contra estações que a própria página publica (de menos 31,2 % a mais 24,3 % por bacia).",
+      "Em 22 dos últimos 24 meses a temperatura do SIN ficou acima da média de 2001 a 2025 (anomalia média de 0,72 °C); não há salto de nível na troca de MERRA-2 por GEOS-IT em 03/08."
+     ],
+     "atendidos": [
+      "Anomalia, percentil e milímetros juntos, com aviso de que o percentual cresce em base seca.",
+      "Média ponderada pela área (chuva) e pela população (temperatura) declarada, com universo e cobertura visíveis.",
+      "Previsão e climatologia de produtos diferentes ditas como ordem de grandeza, sem anomalia.",
+      "Classes fixas, iguais em todos os períodos."
+     ],
+     "problemas": [
+      "Janelas preliminares contra climatologia final sem estimar o viés (Late contra Final; GEOS-IT contra MERRA-2).",
+      "Classe central de mais ou menos 10 % mais estreita que o erro conhecido do IMERG por bacia.",
+      "A média de 25 anos não separa tendência de aquecimento: 22 de 24 meses acima da média, sem nota sobre isso."
+     ],
+     "justificativa": "Referências reproduzidas do NASA POWER, mas as duas janelas de destaque são preliminares e comparadas com produto final sem estimar o viés, e a classe central é mais estreita que o erro conhecido do IMERG. Falta ainda nota sobre a tendência de aquecimento."
+    },
+    "G": {
+     "nota": 8.5,
+     "evidencia": [
+      "Estimativa, previsão e cenário rotulados e separados; chuva por satélite e reanálise declaradas como não medição de estação.",
+      "Regras conferidas: pesos cos(lat) vezes passo ao quadrado com 80 % do peso, temperatura por população com 90 % de cobertura; 580 pontos únicos (581 linhas) e 97 células (98 linhas) conferem com o manifesto; duas UF de célula única (AM e DF) iguais ao NASA POWER em 4 dias cada.",
+      "As marcas de preliminar conferem com os CSV (chuva Late desde 14/06/2026; GEOS-IT desde 03/08/2026); o mapa de UF para subsistema é o de 2026 para toda a série, dito na página.",
+      "O bloco Universo chama o IMERG de calibrado por pluviômetros, mas o destaque usa só IMERG Late, sem calibração."
+     ],
+     "atendidos": [
+      "Ausência nunca vira zero (menos de 80 % do peso fica sem valor).",
+      "Preliminar marcado por dia no CSV e no texto.",
+      "Mapeamento de UF para subsistema declarado e conferido com a carga do ONS.",
+      "Previsão com rodada, modelo, dia UTC e idade; associação sem causa."
+     ],
+     "problemas": [
+      "O bloco Universo descreve o IMERG como calibrado, o que só vale para a versão final.",
+      "Anomalia percentual em base seca domina o mapa; a ressalva existe, mas a classe usa só o percentual.",
+      "Temperatura sem validação contra observação."
+     ],
+     "justificativa": "Separação rigorosa entre estimativa, previsão e cenário, com pesos, coberturas e preliminares conferidos. Descontos: Universo chama o IMERG de calibrado quando o destaque é Late, classes só em percentual na base seca e temperatura sem validação."
+    },
+    "H": {
+     "nota": 8.0,
+     "evidencia": [
+      "A chuva de 30 dias reproduz do CSV diário (Paranaíba 70,2 mm); a climatologia de 2001 a 2025 não, porque o CSV começa em 2016 (média de 2016 a 2025 do Paranaíba: 8,4 contra 15,6 mm); a página admite.",
+      "Refiz média, p10, p90 e percentil de três bacias na API do NASA POWER com os pesos do manifesto espacial; a temperatura do clima_diario.csv; a previsão da API do Open-Meteo: todas iguais.",
+      "Ficha da chuva e da temperatura com fórmula, captura, sha256 e ressalva; na temperatura o valor de cálculo já vem arredondado (0,1 °C) e as duas médias não aparecem na ficha.",
+      "O roteiro cita checkout de ac7599ce6c86 (alterado) e arquivo bronze interno; a ficha diz nenhuma revisão detectada, enquanto a página avisa que o IMERG Late será trocado pelo Final."
+     ],
+     "atendidos": [
+      "Fonte específica por parâmetro (IMERG_PRECTOT, T2M, ecmwf_ifs025), períodos e datas de captura.",
+      "Manifesto espacial com pontos, passos e pesos; tabelas de cobertura por bacia e por UF.",
+      "Previsão arquivada por rodada em CSV, com emissão e idade.",
+      "Limitações e conferências publicadas (IMERG contra estações, correlação com n e período)."
+     ],
+     "problemas": [
+      "Climatologia da chuva fora do CSV publicado: só se refaz pela API externa com o manifesto, o que a página não ensina.",
+      "Ficha da temperatura sem as duas médias e com valor de cálculo já arredondado.",
+      "Código publicado alterado e roteiro com arquivos internos.",
+      "Ficha diz nenhuma revisão detectada, mas a troca de Late por Final é revisão certa."
+     ],
+     "justificativa": "Fonte e fórmula claras e números reproduzidos, mas a climatologia da chuva não sai do CSV publicado, a ficha da temperatura omite as médias e o código é alterado e depende de arquivos internos."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "Sem erro de console nem falha de rede; 12 controles exercitados sem falha (objetivo.json); testei bacia e período do mapa sem erro (Doce, junho de 2026).",
+      "Medi: carga 0,50 s, rede ociosa 1,8 s, LCP 0,57 s, CLS 0,0002; a 390 px com CPU 4x e 1,6 Mbps: carga 2,8 s, LCP 1,2 s, CLS 0,0235. HTML de 434 KB, 69 KB com gzip; contornos das bacias (73 KB) buscados pelo cliente. É laboratório.",
+      "Testes lidos: mapa e tabela com a mesma anomalia em 13 períodos, chuva mensal e de 30 dias contra os CSV, temperatura contra clima_diario.csv, previsão contra o CSV da rodada, UF para subsistema contra a carga do ONS.",
+      "Retenção de publicação reprovada quando vitest ou unittest falham; agua_previsao.csv fica com ressalva esperada de datas futuras."
+     ],
+     "atendidos": [
+      "Cálculos refeitos da fonte primária.",
+      "Console limpo e estabilidade visual.",
+      "Testes por risco (ausência, preliminar, grade, previsão).",
+      "Camada do mapa em arquivo à parte, fora do HTML."
+     ],
+     "problemas": [
+      "Só laboratório: o instrumento do projeto não mede LCP, INP nem CLS e não há coleta de campo.",
+      "Protocolo de medição não documentado para a página."
+     ],
+     "justificativa": "Console limpo, CLS baixo mesmo com CPU e rede limitadas e testes por risco. Teto de 8,5 porque a medição é só de laboratório, sem protocolo documentado nem LCP, INP e CLS no instrumento do projeto."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "p019_produtos_sem_vies",
+     "gravidade": "media",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "Cartões de chuva e temperatura, mapa de anomalia e anomalia mensal",
+     "descricao": "Os dois números de destaque usam só dias preliminares (IMERG Late desde 14/06/2026; GEOS-IT desde 03/08/2026) contra climatologia de produto final. A página avisa, mas não estima o viés Late contra Final nem GEOS-IT contra MERRA-2. Catorze das 22 bacias aparecem 100 % ou mais acima da média no período seco, e a classe central (de menos 10 % a mais 10 %) é mais estreita que o viés do IMERG contra estações (de menos 31,2 % a mais 24,3 % por bacia).",
+     "sugestao": "Quantificar o viés Late contra Final em meses com os dois produtos, ou marcar a classe como indicativa enquanto a janela for preliminar."
+    },
+    {
+     "id": "p019_climatologia_fora_do_csv",
+     "gravidade": "media",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Tabela de chuva por bacia e cartão de chuva de 30 dias",
+     "descricao": "Média, p10, p90 e percentil de 2001 a 2025 não se reproduzem com o CSV diário, que começa em 2016 (média de 2016 a 2025 do Paranaíba: 8,4 mm contra 15,6 mm). Reproduzi 15,6, 16,8 e 2,4 mm direto na API do NASA POWER com os pesos do manifesto espacial, caminho que a página não descreve.",
+     "sugestao": "Publicar a climatologia por bacia e janela (média, p10, p90) em CSV, ou o passo a passo com a API."
+    },
+    {
+     "id": "p019_sem_validacao_atual_e_previsao",
+     "gravidade": "media",
+     "criterios": [
+      "E",
+      "G"
+     ],
+     "onde": "Ressalvas, bloco de previsão e conferência com estações",
+     "descricao": "A temperatura não tem conferência com estação (INMET sem resposta, também fora do ar neste ambiente). A chuva foi conferida com estações só de jan/2020 a out/2021, em IMERG Final. A previsão é de uma rodada, sem avaliação de acerto, e o cenário não foi integrado.",
+     "sugestao": "Integrar outra fonte de observação para conferência contínua e arquivar as rodadas para avaliar o acerto."
+    },
+    {
+     "id": "p019_previsao_envelhece",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Título e texto do bloco de previsão",
+     "descricao": "A regra de não publicar previsão com mais de 48 horas vale no processamento (a rodada de 30/09 tinha 32 horas). Numa página estática lida em 09/10, os primeiros oito dias da rodada já passaram e o título ainda diz próximos dias; as datas escritas no texto evitam o engano, mas o título não acompanha.",
+     "sugestao": "Mostrar a idade da rodada na data de leitura ou trocar o título por uma frase com as datas da rodada."
+    },
+    {
+     "id": "p019_universo_calibrado",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Bloco Universo do mapa de chuva",
+     "descricao": "O bloco diz IMERG, produto de chuva da NASA calibrado por pluviômetros, enquanto o destaque usa só IMERG Late, sem calibração; a nuance está em outro bloco.",
+     "sugestao": "Dizer em Universo que a calibração vale só para a versão final."
+    }
+   ],
+   "nao_verificado": [
+    "Viés do IMERG Late contra Final e do GEOS-IT contra MERRA-2 (a fonte não publica ambos para o mesmo período).",
+    "Temperatura das 97 células: refiz o SIN pelo CSV e duas UF de célula única direto no NASA POWER.",
+    "Contornos das bacias do ONS e correspondência de polígonos; tabela de conferência do IMERG com estações (22 bacias), que depende do polígono de cada estação.",
+    "Disponibilidade do INMET fora deste ambiente; leitor de tela; desempenho de campo."
+   ]
+  },
+  "/setor-eletrico/agua-e-clima/reservatorios": {
+   "paineis": [
+    "P020"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.0,
+     "evidencia": [
+      "Decomposição da EAR refeita do ONS (EAR diário por reservatório, 29/08 a 28/09): Sul igual (mais 453,1 MWmês); Sudeste/Centro-Oeste, Nordeste e Norte diferem de 0,6 a 1,3 % por revisão posterior do ONS; mesmos 45 reservatórios e mesmas 10 parcelas extremas.",
+      "Balanço de Serra da Mesa e de Furnas refeito dos dados hidráulicos do ONS: resíduos de menos 1,95 e menos 0,71 hm³ iguais; contagens 177, 153, 124 (série), 126 (janela) e convenções 119, 29, 28 e 1 refeitas do CSV.",
+      "Só 10 das 45 parcelas do Sudeste/Centro-Oeste aparecem; as 35 restantes somam menos 1.912,3 MWmês (60 % da variação líquida) e incluem, no ONS atual, Batalha, Furnas e Água Vermelha com queda de 270 a 334 MWmês cada.",
+      "Volume e balanço por reservatório não têm referência da mesma data em anos anteriores; só a EAR do subsistema tem (P017)."
+     ],
+     "atendidos": [
+      "Identidade contábil da variação da EAR com resíduo publicado.",
+      "Conta da água por reservatório: afluência, defluência (turbinada, vertida, outras estruturas), transferência e resíduo.",
+      "Qualidade do balanço (fecha por construção) e limites (6 reservatórios fora de 0 a 100 % do volume útil) à vista.",
+      "Contexto de ENA e geração hidráulica dito como não conciliável com a EAR."
+     ],
+     "problemas": [
+      "Decomposição incompleta: 35 de 45 reservatórios numa barra única, e o mesmo nos outros três subsistemas.",
+      "Sem referência sazonal por reservatório nem por subsistema nesta página.",
+      "Balanço de um reservatório por vez; a explicação do subsistema por fluxos só vem em médias de contexto.",
+      "A comparação de até quatro reservatórios abre vazia."
+     ],
+     "justificativa": "Decomposição e balanço corretos e reproduzidos, mas a página responde quais reservatórios pesaram só pelas dez parcelas extremas, deixa 60 % da variação líquida numa barra de resto e não traz referência da data por reservatório."
+    },
+    "F": {
+     "nota": 8.0,
+     "evidencia": [
+      "Identidade conferida: soma dos reservatórios igual à variação do subsistema (resíduo de menos 0,003 a 0,002 MWmês) e tolerância diária por reservatório de 0,01 % do volume útil mais 0,002 hm³.",
+      "A janela da decomposição (29/08 a 28/09) difere da de P017 (30 dias até 29/09); a página diz e mostra os dois valores (queda de 3.188,7 e de 3.297,8 MWmês) sem subtrair.",
+      "Sem referência sazonal ou de pares para volume, afluência ou variação por reservatório.",
+      "Seis reservatórios terminam a janela fora de 0 a 100 % do volume útil (Garibaldi 165,13 %); os números do ONS entram sem ajuste e são marcados."
+     ],
+     "atendidos": [
+      "Dois valores de janelas diferentes lado a lado, sem subtração entre dias distintos.",
+      "Contexto de ENA e geração hidráulica separado e rotulado como não fechando balanço.",
+      "Fechamento por construção distinguido de prova de medição."
+     ],
+     "problemas": [
+      "Sem referência da data para volume e balanço por reservatório.",
+      "A soma dos demais 35 por diferença junta reservatórios de sinais opostos sem mostrar a distribuição."
+     ],
+     "justificativa": "Comparações internas bem delimitadas e identidade conferida, mas o painel não oferece referência histórica nem de pares por reservatório e esconde a distribuição dos 35 reservatórios restantes numa soma."
+    },
+    "G": {
+     "nota": 8.5,
+     "evidencia": [
+      "Conversão m³/s para hm³ (vazão vezes 0,0864) e resíduo igual a variação do volume menos (afluência menos defluência) refeitos: Serra da Mesa menos 1,95 hm³, exato; a defluência de Serra da Mesa (no ONS) e a de Marimbondo (na tabela) é turbinada mais vertida, com outras estruturas à parte, como a página diz.",
+      "Glosa de parte própria como energia na própria usina contradiz o dicionário do ONS (EAR para o próprio subsistema): Serra da Mesa tem EAR máxima própria de 35.277,7 MWmês, cerca do dobro do que só a usina dela daria (perto de 17.400), porque inclui Cana Brava, São Salvador, Peixe Angical e Lajeado; só 6.620,4 estão no Norte.",
+      "Janela na zona de revisão do ONS sem aviso no corpo: comparado ao ONS de 08/10, a variação da EAR do Sudeste/Centro-Oeste passou de queda de 3.188,7 para 3.224,8 MWmês, a afluência de Serra da Mesa de 79,89 para 75,57 hm³ e o resíduo de Sobradinho de 38,49 para 6,96 hm³.",
+      "Afluência recebe o selo Observado e, na mesma linha, a nota de que o ONS a deriva do balanço; não tratei como bloqueio."
+     ],
+     "atendidos": [
+      "hm³, m³/s, MWmês e % do volume útil distinguidos; resíduo nunca zerado por ajuste.",
+      "Ausência dita como sem dado; dia faltante impede o balanço.",
+      "Afluência apresentada como derivada do balanço, no corpo da página.",
+      "Transferência e convenção da defluência declaradas como não documentadas pela fonte."
+     ],
+     "problemas": [
+      "Glosa errada de parte própria e parte a jusante (própria usina e usinas rio abaixo) em Universo e em Fontes, datas e siglas.",
+      "Sem aviso de provisoriedade do ONS no corpo da página, embora a janela caia na zona de revisão (9 de 153 reservatórios mudaram a afluência em mais de 1 %).",
+      "Selo Observado em afluência derivada."
+     ],
+     "justificativa": "Balanço e decomposição corretos, unidades e convenção da defluência conferidas. Descontos: glosa de parte própria contrária ao dicionário do ONS, ausência de aviso de provisoriedade no corpo e selo Observado em afluência derivada."
+    },
+    "H": {
+     "nota": 8.0,
+     "evidencia": [
+      "O balanço refaz dos dados hidráulicos do ONS e do CSV por reservatório (153 linhas, 365 dias, agua_reservatorios_diario.csv); as contagens de fechamento por construção conferem.",
+      "A variação da EAR por reservatório não está em arquivo: as 10 parcelas só se refazem no ONS; os demais 35 e os outros subsistemas não aparecem em nenhuma exportação.",
+      "Ficha do resíduo com fórmula, chaves de origem, sha256 e captura; revisões: não é possível detectar, há uma única captura.",
+      "Depois da captura o ONS revisou volume e vazões: afluência de Serra da Mesa de 79,89 para 75,57 hm³ e resíduo de Sobradinho de 38,49 para 6,96 hm³; sem captura anterior a página não mostra isso."
+     ],
+     "atendidos": [
+      "Fonte, período, captura e publicação da fonte nas fichas.",
+      "Fórmula e tolerância do resíduo explícitas; fração de dias dentro do arredondamento na janela e na série.",
+      "CSV com dicionário, séries de 45 dias em JSON e XLSX com folha Sobre.",
+      "Limitações do balanço: afluência derivada, convenção da defluência e 24 reservatórios sem balanço com motivo."
+     ],
+     "problemas": [
+      "Decomposição da EAR por reservatório sem arquivo.",
+      "Única captura: a página não mostra revisão de volume e vazões.",
+      "O número de destaque (variação da EAR do subsistema) e as parcelas não têm ficha Comprove; as duas fichas são do resíduo de Serra da Mesa e do fechamento por construção.",
+      "Código publicado alterado e roteiro com arquivos internos."
+     ],
+     "justificativa": "Balanço reproduzível por CSV e pela fonte, com ficha completa. Teto de 8,0 porque a decomposição por reservatório não tem arquivo, não há captura anterior para mostrar revisão e o código publicado é alterado."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "Sem erro de console nem falha de rede; 14 controles exercitados sem falha (objetivo.json); testei subsistema e reservatório (Sobradinho, resíduo de mais 38,49 hm³) sem erro.",
+      "Medi: carga 0,41 s, rede ociosa 1,6 s, LCP 0,42 s, CLS 0,0002; a 390 px com CPU 4x e 1,6 Mbps: carga 2,7 s, LCP 1,4 s, CLS 0,0004. HTML de 409 KB, 64 KB com gzip; séries de 45 dias em JSON de 92 KB, lido pelo cliente. É laboratório.",
+      "Testes lidos: identidade da decomposição, séries de 45 dias que refazem o balanço, convenção da defluência, dia ausente sem preenchimento e fechamento por construção refeito pelo CSV.",
+      "Retenção de publicação reprovada quando os testes falham."
+     ],
+     "atendidos": [
+      "Cálculos refeitos do ONS.",
+      "Console limpo e estabilidade visual.",
+      "Testes por risco (resíduo, convenção, ausência).",
+      "Séries diárias em arquivo à parte, fora do HTML."
+     ],
+     "problemas": [
+      "Só laboratório: o instrumento do projeto não mede LCP, INP nem CLS e não há coleta de campo.",
+      "Protocolo de medição não documentado para a página."
+     ],
+     "justificativa": "Console limpo, CLS próximo de zero e testes por risco. Teto de 8,5 porque só há medição de laboratório e o projeto não documenta protocolo nem mede LCP, INP e CLS."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "p020_demais_35",
+     "gravidade": "media",
+     "criterios": [
+      "E",
+      "H"
+     ],
+     "onde": "Gráfico e tabela da variação da EAR por reservatório",
+     "descricao": "Mostra 10 de 45 parcelas e a soma de 35 por diferença (queda de 1.912,3 MWmês, mais que as 10 parcelas juntas). A variação de cada um dos demais não está em arquivo algum, mas é pública no ONS. No ONS atual ficam escondidos Batalha, Furnas, Água Vermelha e Camargos (quedas de 242 a 334 MWmês) e Billings (alta de 284). O mesmo vale para os outros três subsistemas.",
+     "sugestao": "Publicar CSV com a variação da EAR dos 74 reservatórios por subsistema e janela, e mostrar a distribuição."
+    },
+    {
+     "id": "p020_gloss_parte_propria",
+     "gravidade": "media",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Blocos Universo e Fontes, datas e siglas",
+     "descricao": "Define parte própria como a energia que a água produz na própria usina e parte a jusante como a das usinas rio abaixo. No dicionário do ONS são a EAR para o próprio subsistema e para o subsistema a jusante. Serra da Mesa tem EAR máxima própria de 35.277,7 MWmês, cerca do dobro do que só a usina dela daria, porque inclui usinas do mesmo subsistema rio abaixo; só 6.620,4 estão no Norte.",
+     "sugestao": "Redefinir com as palavras do ONS: própria é a energia em usinas do mesmo subsistema, a jusante é a do subsistema seguinte."
+    },
+    {
+     "id": "p020_sem_aviso_provisorio",
+     "gravidade": "media",
+     "criterios": [
+      "G",
+      "H"
+     ],
+     "onde": "Corpo da página e O que não é possível concluir",
+     "descricao": "P017 e P018 avisam que o ONS revisa os dias recentes; P020 não, e sua janela (29/08 a 29/09) cai na zona de revisão. Comparado com o ONS de 08/10: variação da EAR do Sudeste/Centro-Oeste de queda de 3.188,7 para 3.224,8 MWmês, afluência de Serra da Mesa de 79,89 para 75,57 hm³, resíduo de Sobradinho de 38,49 para 6,96 hm³; 9 de 153 reservatórios mudaram a afluência em mais de 1 %.",
+     "sugestao": "Avisar no corpo da página que volume e vazões dos últimos dias são provisórios e guardar a captura anterior para mostrar a revisão."
+    },
+    {
+     "id": "p020_destaque_sem_ficha",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Faixa Variação da EAR do Sudeste/Centro-Oeste, parcela por parcela",
+     "descricao": "A resposta central da página (variação da EAR do subsistema, soma das 10 parcelas e soma dos demais) não tem ficha Comprove; as fichas da página são do resíduo de Serra da Mesa e da contagem de reservatórios que fecham por construção. A identidade se confere na tabela, mas o leitor não recebe fonte, arquivo e roteiro para esses números.",
+     "sugestao": "Criar ficha para a variação da EAR do subsistema e para a soma das parcelas, com o arquivo do ONS e as datas."
+    },
+    {
+     "id": "p020_sem_referencia_sazonal",
+     "gravidade": "baixa",
+     "criterios": [
+      "E",
+      "F"
+     ],
+     "onde": "Tabela dos 67 reservatórios e séries de 45 dias",
+     "descricao": "O volume útil e o balanço de cada reservatório não têm referência da mesma data em anos anteriores; só a EAR do subsistema tem (P017).",
+     "sugestao": "Acrescentar mediana e faixa da data para o volume útil dos reservatórios principais."
+    },
+    {
+     "id": "p020_selo_observado",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Cartões de afluência e defluência da conta da água",
+     "descricao": "A afluência traz o selo Observado e, na mesma linha, a nota de que o ONS a deriva do balanço na maioria dos reservatórios.",
+     "sugestao": "Usar rótulo de derivado pela fonte."
+    }
+   ],
+   "nao_verificado": [
+    "Convenção da defluência por reservatório (inferência do projeto; conferi dois casos).",
+    "Parcelas da decomposição de Sul, Nordeste e Norte além das somas e das maiores do Sul.",
+    "Valores de 30/09 de reservatórios revisados depois, que só comparei com o ONS de 08/10.",
+    "Leitor de tela e desempenho de campo."
+   ]
+  }
+ },
+ "achados_entre_paginas": [
+  "Código publicado com sufixo alterado (26 de 31 bases) e roteiro de reprodução das fichas que depende de arquivos internos (bronze e silver): o leitor refaz o número pelo CSV, não pelo roteiro. Quatro páginas.",
+  "Selo Observado em séries que as próprias páginas descrevem como derivadas ou reconstituídas (EAR, ENA, afluência), com a definição do selo só na dica; não tratei como bloqueio porque o texto ao lado diz que não é medição direta. P017, P018 e P020.",
+  "As 18 tabelas de dados de gráfico (recolhidas, nas quatro páginas) não têm exportação; a série mensal do SIN em MWmês desde 2000 só existe na tabela recolhida e no JSON da gold.",
+  "Desempenho medido só em laboratório; o instrumento do projeto não mede LCP, INP e CLS, não há coleta de campo e o protocolo de medição não está documentado. Quatro páginas.",
+  "Provisoriedade dita de modos diferentes: P017 e P018 avisam que o ONS revisa os dias recentes, P019 marca preliminar por dia, P020 não avisa embora sua janela caia na zona de revisão.",
+  "Referência da data (faixa p10 a p90) só na EAR do SIN: a evolução da ENA (P018) e o volume dos reservatórios (P020) não a trazem.",
+  "Comparações entre produtos ou versões diferentes (MLT por versão em P018; IMERG Late e GEOS-IT contra climatologia final e ECMWF contra IMERG em P019) têm aviso, mas nenhuma estima o viés.",
+  "Dois descuidos de definição que vêm de interpretar o dicionário do ONS: MLT armazenável (P018) e parte própria como própria usina (P020)."
+ ],
+ "limites_da_avaliacao": "Avaliei o estado servido em http://localhost:3100 (commit d616ae877) lendo o repositório no mesmo SHA, sem build, instalação nem execução de testes (os testes foram lidos e contados: 88 de vitest e 83 de unittest do módulo). Fontes primárias abertas: arquivos do ONS no S3 (EAR e ENA por subsistema, EAR por REE, EAR por bacia, EAR por reservatório, dados hidráulicos, cadastro, ENA por reservatório), CKAN e dicionários do ONS, relatórios do PMO de setembro e julho de 2026, glossário do ONS Dados Relevantes 2010 (1 MWmês igual a 720 MWh), NASA POWER (IMERG_PRECTOT e T2M) e Open-Meteo (rodada de 30/09/2026). Os arquivos do ONS que baixei são de 08 e 09/10/2026, uma semana depois da captura da página (30/09): jan a ago/2026 são idênticos aos publicados e as diferenças aparecem só nas três últimas semanas, como revisão do ONS; por isso também refiz tudo com os CSV da própria página, que reproduzem exatamente. Não consegui abrir o INMET deste ambiente (sem resposta), nem os arquivos bronze e silver do projeto. Não testei leitor de tela nem desempenho de campo; as medidas de carga, LCP e CLS são de laboratório (Chromium headless local, uma execução por página, com e sem CPU 4x e 1,6 Mbps) e não valem como experiência real. Não refiz a faixa sazonal das 23 bacias nem da ENA por REE e bacia. Arquivos temporários ficaram em saida/tmp_tecnico_U03, com os downloads em pastas separadas e os scripts à parte."
+}

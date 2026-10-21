@@ -1,0 +1,19 @@
+{
+  "reviewed_at": "2026-10-12T14:19:09.828428+00:00",
+  "source": "https://biblioteca.ibge.gov.br/visualizacao/livros/liv102149.pdf",
+  "sha256": "4af6ea89f67bc4c62642833f2c7a315e3e17358145adda663fec61e843aac3f8",
+  "printed_pages": [
+    22,
+    23,
+    24
+  ],
+  "document": "Nota metodológica 07/2024 — Processo de expansão da amostra para os resultados preliminares",
+  "observed_scope": [
+    "Brasil",
+    "Grandes Regiões",
+    "Unidades da Federação"
+  ],
+  "municipal_ratio_variance_supported": false,
+  "decision": "Não aplicar parâmetros nacionais ou estaduais à proporção municipal de adensamento. Precisão municipal continua pendente.",
+  "limits": "Auditoria da nota adquirida; não afirma inexistência de outras fontes. Totais expandidos não são tamanhos amostrais; razões exigem considerar covariância entre numerador e denominador."
+}

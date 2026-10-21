@@ -1,0 +1,97 @@
+"use client";
+
+import { useState } from "react";
+import { GraficoBarras, type ReferenciaBarra } from "@/components/energia/GraficoBarras";
+import { TransicaoOpcoes } from "@/components/energia/TransicaoOpcoes";
+import { useTx } from "@/lib/energia/useIdioma";
+
+/**
+ * Mercado livre por UF em duas medidas, no mesmo lugar: participação e volume de energia. A participação é uma razão e esconde a escala (um
+ * estado de consumo pequeno chega a participação alta com pouca energia, e o maior volume pode estar num estado de participação média); o
+ * volume mostra o tamanho do mercado livre de cada UF e, empilhado com o cativo, o consumo na rede da UF. As duas medidas saem da mesma
+ * janela de 12 meses da EPE e das mesmas UFs.
+ *
+ * O volume empilha livre e cativo porque as duas partes somam o consumo na rede (composição aditiva, a regra do GraficoBarras), e a ordem
+ * é a do volume livre: o livre parte da base e pode ser comparado de uma UF para outra. Sem o rádio de volume quando não há UF com dado.
+ *
+ * A medida inicial é a participação (o que o servidor já entregava); `medidaInicial` existe para a página abrir no volume e para o teste
+ * de servidor ler as duas visões. Cada visão é um GraficoBarras novo (`key`): dica, foco e "Mostrar todas" não passam de uma para outra.
+ */
+export type MedidaUf = "participacao" | "volume";
+
+export type LinhaParticipacaoUf = { uf: string; livre: number | null };
+export type LinhaVolumeUf = { uf: string; livre: number; cativo: number };
+
+/** As duas medidas, com o rótulo no idioma da página. */
+function opcoes(tx: <T>(pt: T, en: T) => T) {
+  return [
+    ["participacao", tx("Participação do livre (%)", "Free market share (%)")],
+    ["volume", tx("Volume de energia (GWh)", "Energy volume (GWh)")],
+  ] as const;
+}
+
+export function GraficoLivreUf({
+  janela,
+  participacao,
+  volume,
+  referencias = [],
+  medidaInicial = "participacao",
+}: {
+  /** Mês final da janela de 12 meses, por extenso (ex.: "jul/2026"), ou o texto que a substitui quando a fonte não publicou o mês. */
+  janela: string;
+  participacao: LinhaParticipacaoUf[];
+  volume: LinhaVolumeUf[];
+  /** Linhas de referência da participação (o total do Brasil); o volume não tem referência. */
+  referencias?: ReferenciaBarra[];
+  medidaInicial?: MedidaUf;
+}) {
+  const tx = useTx();
+  const OPCOES = opcoes(tx);
+  const temVolume = volume.length > 0;
+  const [escolhida, setMedida] = useState<MedidaUf>(medidaInicial);
+  const medida: MedidaUf = temVolume ? escolhida : "participacao";
+  const tituloParticipacao = tx(`Participação do livre por UF, 12 meses até ${janela}`, `Free market share by state, 12 months to ${janela}`);
+  const tituloVolume = tx(`Consumo na rede por UF, livre e cativo, 12 meses até ${janela}`, `Grid consumption by state, free and captive, 12 months to ${janela}`);
+
+  return (
+    <div className="space-y-3" data-livre-uf={medida}>
+      {temVolume && <TransicaoOpcoes rotulo={tx("Ver por", "View by")} nome="livre-uf-medida" opcoes={OPCOES} valor={medida} onMudar={setMedida} />}
+      {medida === "participacao" ? (
+        <GraficoBarras
+          key="participacao"
+          titulo={tituloParticipacao}
+          dados={participacao}
+          chaveCategoria="uf"
+          series={[{ id: "livre", rotulo: tx("Livre no consumo na rede", "Free market in grid consumption"), cor: "var(--cor-energia)" }]} // i18n: dado
+          unidade="%"
+          casas={1}
+          orientacao="horizontal"
+          alturaCategoria={28}
+          alturaMaxima={760}
+          referencias={referencias}
+        />
+      ) : (
+        <GraficoBarras
+          key="volume"
+          titulo={tituloVolume}
+          dados={volume}
+          chaveCategoria="uf"
+          series={[
+            { id: "livre", rotulo: tx("Livre", "Free"), cor: "var(--cor-energia)" }, // i18n: dado
+            { id: "cativo", rotulo: tx("Cativo", "Captive"), cor: "var(--serie-referencia)" },
+          ]}
+          unidade="GWh"
+          casas={0}
+          orientacao="horizontal"
+          empilhado
+          alturaCategoria={28}
+          alturaMaxima={760}
+        />
+      )}
+      {/* a troca de visão muda o gráfico abaixo do rádio: leitor de tela ouve qual passou a valer */}
+      <p className="sr-only" aria-live="polite">
+        {medida === "volume" ? tx(`Mostrando: ${tituloVolume}, em GWh.`, `Showing: ${tituloVolume}, in GWh.`) : tx(`Mostrando: ${tituloParticipacao}.`, `Showing: ${tituloParticipacao}.`)}
+      </p>
+    </div>
+  );
+}

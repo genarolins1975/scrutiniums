@@ -66,15 +66,15 @@ describe("resumo diário público", () => {
 });
 
 describe("integração: rotas públicas registradas", () => {
-  it("sitemap referencia /dados, /resumo e o catálogo; header e footer linkam", () => {
+  it("sitemap inventaria /dados, /resumo e o catálogo; o rodapé linka os dois", () => {
     const sitemap = readFileSync(join(process.cwd(), "src/app/sitemap.ts"), "utf-8");
     expect(sitemap).toContain('"/dados"');
     expect(sitemap).toContain('"/resumo"');
     expect(sitemap).toContain("INDICADORES");
-    const header = readFileSync(join(process.cwd(), "src/components/layout/PublicHeader.tsx"), "utf-8");
-    expect(header).toContain('href: "/dados"');
+    // o cabeçalho traz só as abas dos observatórios; dados e resumo do Crédito ficam no rodapé
     const footer = readFileSync(join(process.cwd(), "src/components/layout/Footer.tsx"), "utf-8");
-    expect(footer).toContain('href="/resumo"');
+    expect(footer).toContain('href="/dados"');
+    expect(footer).toContain('href={h("/resumo")}');
   });
 
   it("páginas estáticas: force-static declarado (nunca fs em runtime serverless)", () => {

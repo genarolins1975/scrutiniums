@@ -3,6 +3,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
 import { maskEmail, maskPhone } from "@/lib/crypto";
+import { opcoesPaisSms } from "@/lib/politica-sms";
+import { cpfObrigatorioParaTelefone } from "@/lib/cpf-telefone";
 import { maskCpf } from "@/lib/cpf";
 import { PageTitle, SectionHeading } from "@/components/ui/SectionHeading";
 import { PerfilForm } from "@/components/conta/PerfilForm";
@@ -11,6 +13,13 @@ import { AlterarTelefone } from "@/components/conta/AlterarTelefone";
 import { EncerrarSessoes } from "@/components/conta/EncerrarSessoes";
 import { BoletimPreferencia } from "@/components/conta/BoletimPreferencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { MeusRecortes } from "@/components/conta/MeusRecortes";
+import { MeusAlertas } from "@/components/conta/MeusAlertas";
+import { LIMITE_RECORTES, listarRecortes } from "@/lib/conta/recortes";
+import { envioLigado, listarAlertas } from "@/lib/conta/alertas";
+import { ENTRADA_DO_DOMINIO, nomeOrigem } from "@/lib/conta/origens";
+import { ehDominio } from "@/lib/conta/metadados";
+import { recuperacaoSenhaValida } from "@/components/onboarding/signedEmailCookie";
 
 export const metadata: Metadata = {
   title: "Conta",
@@ -29,6 +38,10 @@ export default async function ContaPage() {
   const user = await getSessionUser();
   // O layout de /app já protege a rota; isto é apenas defesa em profundidade.
   if (!user) redirect("/entrar");
+  const cpfObrigatorio = cpfObrigatorioParaTelefone(user) !== false;
+  // Código SMS aprovado em "esqueci minha senha": troca sem a senha atual.
+  const recuperacao = Boolean(user.passwordHash) && recuperacaoSenhaValida(user.id);
+  const [recortes, alertas, ligado] = await Promise.all([listarRecortes(user.id), listarAlertas(user.id), envioLigado()]);
 
   return (
     <div className="mx-auto w-full max-w-page px-6 py-12">
@@ -36,7 +49,7 @@ export default async function ContaPage() {
       <PageTitle
         label="Sua conta"
         title="Conta"
-        description="Dados de acesso, perfil e segurança da sua conta."
+        description="Perfil, recortes salvos, alertas de atualização, segurança e comunicações da sua conta."
       />
 
       <div className="mt-12 space-y-14">
@@ -61,47 +74,82 @@ export default async function ContaPage() {
             <div>
               <dt className="rotulo mb-2 text-mineral">CPF</dt>
               <dd className="flex flex-wrap items-center gap-3">
-                <span className="text-carvao">{user.cpf ? maskCpf(user.cpf) : "Não informado"}</span>
+                <span className="text-carvao">{user.cpf ? maskCpf(user.cpf) : cpfObrigatorio ? "Não informado" : "Dispensado para telefone estrangeiro"}</span>
                 {user.cpf && <Selo>Registrado</Selo>}
               </dd>
             </div>
           </dl>
           <PerfilForm
+            perfilUsoInicial={user.perfilUso ?? ""}
             orgTypeInicial={user.orgType ?? ""}
             orgAreaInicial={user.orgArea ?? ""}
             orgRoleInicial={user.orgRole ?? ""}
             ufInicial={user.uf ?? ""}
             temCpf={Boolean(user.cpf)}
+            cpfObrigatorio={cpfObrigatorio}
           />
         </section>
 
-        <section aria-label="Senha" className="border border-linha bg-papel p-8">
-          <SectionHeading number="02" label="Segurança do acesso" title="Senha" />
-          <AlterarSenha temSenha={Boolean(user.passwordHash)} />
+        <section id="recortes" aria-label="Meus recortes" className="scroll-mt-24 border border-linha bg-papel p-8">
+          <SectionHeading number="02" label="Recursos da conta" title="Meus recortes" />
+          <MeusRecortes
+            limite={LIMITE_RECORTES}
+            iniciais={recortes.map((r) => ({
+              id: r.id,
+              titulo: r.titulo,
+              caminho: r.caminho,
+              observatorio: nomeOrigem(r.observatorio),
+              criadoEm: r.criadoEm.toISOString(),
+            }))}
+          />
+        </section>
+
+        <section id="alertas" aria-label="Alertas de atualização" className="scroll-mt-24 border border-linha bg-papel p-8">
+          <SectionHeading number="03" label="Recursos da conta" title="Alertas de atualização" />
+          <MeusAlertas
+            envioLigado={ligado}
+            iniciais={alertas.flatMap((a) =>
+              ehDominio(a.dominio)
+                ? [{
+                    dominio: a.dominio,
+                    referenciaAvisada: a.referenciaAvisada,
+                    ultimoEnvioEm: a.ultimoEnvioEm?.toISOString() ?? null,
+                    criadoEm: a.criadoEm.toISOString(),
+                    entrada: ENTRADA_DO_DOMINIO[a.dominio],
+                  }]
+                : [],
+            )}
+          />
+        </section>
+
+        <section id="senha" aria-label="Senha" className="scroll-mt-24 border border-linha bg-papel p-8">
+          <SectionHeading number="04" label="Segurança do acesso" title="Senha" />
+          <AlterarSenha temSenha={Boolean(user.passwordHash)} recuperacao={recuperacao} />
         </section>
 
         <section aria-label="Alterar telefone" className="border border-linha bg-papel p-8">
-          <SectionHeading number="03" label="Segurança do acesso" title="Alterar telefone" />
-          <AlterarTelefone />
+          <SectionHeading number="05" label="Segurança do acesso" title="Alterar telefone" />
+          <AlterarTelefone paises={opcoesPaisSms()} />
         </section>
 
         <section aria-label="Sessões e segurança" className="border border-linha bg-papel p-8">
-          <SectionHeading number="04" label="Dispositivos" title="Sessões e segurança" />
+          <SectionHeading number="06" label="Dispositivos" title="Sessões e segurança" />
           <EncerrarSessoes />
         </section>
 
         <section aria-label="Boletim mensal" className="border border-linha bg-papel p-8">
-          <SectionHeading number="05" label="Comunicações" title="Boletim mensal" />
+          <SectionHeading number="07" label="Comunicações" title="Boletim mensal" />
           <BoletimPreferencia optInInicial={user.marketingOptIn} />
         </section>
 
         <section aria-label="Privacidade e dados" className="border border-linha bg-papel p-8">
-          <SectionHeading number="06" label="Seus dados" title="Privacidade e dados" />
+          <SectionHeading number="08" label="Seus dados" title="Privacidade e dados" />
           <div className="max-w-prose2 space-y-4 text-sm text-carvao-muted">
             <p>
               Pedimos apenas o necessário: o e-mail é seu dado de contato; o telefone valida, dá
               acesso e protege a conta; o CPF garante uma conta por pessoa e nunca é exibido
-              integralmente; o perfil (instituição, área, cargo e UF) contextualiza o uso. Nada
+              integralmente; o perfil (perfil de uso, UF e, nos perfis profissionais, instituição,
+              área e cargo) contextualiza o uso. Nada
               disso é exibido publicamente, e CPF, telefone, e-mail e códigos nunca são enviados a
               ferramentas de analytics. Os detalhes estão na{" "}
               <Link

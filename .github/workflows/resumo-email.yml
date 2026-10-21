@@ -1,0 +1,42 @@
+name: Resumo do crédito por e-mail
+
+# Envia o resumo às assinaturas confirmadas (src/app/api/resumo/enviar). A rota é
+# idempotente: a assinatura diária só recebe edição nova (gerado_em diferente do
+# último envio) e a semanal sai uma vez, às segundas-feiras. Por isso o disparo
+# pode acontecer depois de cada execução do pipeline e numa reserva diária.
+on:
+  workflow_run:
+    workflows: ["Atualizar dados do Observatório"]
+    types: [completed]
+  schedule:
+    - cron: "47 21 * * *" # reserva diária, 18:47 em São Paulo
+  workflow_dispatch:
+
+permissions: {}
+
+# um disparo por vez; a rota também reserva cada envio de forma atômica
+concurrency:
+  group: resumo-email
+  cancel-in-progress: false
+
+jobs:
+  enviar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Esperar o deploy da publicação nova
+        if: github.event_name == 'workflow_run'
+        # a rota lê o gold empacotado no deploy da Vercel, que nasce do push do pipeline
+        run: sleep 600
+
+      - name: Disparar envio do resumo
+        env:
+          BOLETIM_SECRET: ${{ secrets.BOLETIM_SECRET }}
+        run: |
+          if [ "${#BOLETIM_SECRET}" -lt 16 ]; then
+            echo "::error::BOLETIM_SECRET ausente ou com menos de 16 caracteres no GitHub Actions; o mesmo valor precisa estar na Vercel (OPERACOES.md)"
+            exit 1
+          fi
+          curl -sS --fail-with-body -X POST \
+            "https://scrutiniums.com/api/resumo/enviar" \
+            -H "Authorization: Bearer ${BOLETIM_SECRET}"

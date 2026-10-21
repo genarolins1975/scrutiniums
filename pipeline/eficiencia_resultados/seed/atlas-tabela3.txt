@@ -1,0 +1,56 @@
+18   Retrato dos Municípios Brasileiros
+
+
+           TABELA 3
+           Capitais brasileiras: Número e taxa de homicídios estimados por 100 mil habitantes (2022)
+                                                                               População           Homicídios           Homicídios          Homicídios        Taxa de homicídios estimados
+                         Município               UF           Região
+                                                                                 (2022)          registrados (A)        ocultos (B)       estimados (A+B)        por 100 mil habitantes
+      1      Salvador                            BA              NE            2.417.678              1.568                 37                 1.605                      66,4
+      2      Macapá                              AP              N              442.933                241                   6                  247                       55,8
+      3      Manaus                              AM              N             2.063.689              1.130                 19                  1.149                     55,7
+      4      Porto Velho                         RO              N              460.434                211                   8                  219                       47,6
+      5      Fortaleza                           CE              NE            2.428.708               918                  183                 1.101                     45,3
+      6      Recife                              PE              NE            1.488.920               635                  31                  666                       44,7
+      7      Aracaju                             SE              NE             602.757                240                  12                  252                       41,8
+      8      Maceió                               AL             NE             957.916                379                  19                  398                       41,5
+      9      Teresina                             PI             NE             866.300                343                   7                  350                       40,4
+      10     Boa Vista                           RR              N              413.486                148                  14                  162                       39,2
+      11     Natal                               RN              NE             751.300                241                  36                  277                       36,9
+      12     Palmas                              TO              N              302.692                94                    3                   97                       32,0
+      13     Porto Alegre                        RS              S             1.332.845               376                  10                  386                       29,0
+      14     Vitória                              ES             SE             322.869                90                    2                   92                       28,5
+      15     São Luís                            MA              NE            1.037.775               280                   2                  282                       27,2
+      16     Belém                                PA             N             1.303.403               339                   7                  346                       26,5
+      17     Rio Branco                          AC              N              364.756                93                    1                   94                       25,8
+      18     João Pessoa                         PB              NE             833.932                196                   0                  196                       23,5
+      19     Rio de Janeiro                       RJ             SE            6.211.223              1.042                283                 1.325                      21,3
+      20     Curitiba                            PR              S              1.773.718              361                  12                  373                       21,0
+      21     Campo Grande                        MS             CO              898.100                170                   8                  178                       19,8
+      22     Belo Horizonte                      MG              SE            2.315.560               312                  96                  408                       17,6
+      23     Goiânia                             GO             CO             1.437.366               214                  18                  232                       16,1
+      24     São Paulo                            SP             SE            11.451.999              344                 1.418               1.762                      15,4
+      25     Cuiabá                              MT             CO              650.877                90                    9                   99                       15,2
+      26     Brasília                            DF             CO              2.817.381              357                   8                  365                       13,0
+      27     Florianópolis                       SC              S              537.211                48                    0                   48                       8,9
+
+           Fonte: MS/SVS/CGIAE - Sistema de Informações sobre Mortalidade (SIM) e Censo Demográfico 2022 (IBGE). Elaboração: Diest/Ipea e FBSP. Nota: O número de homicídios estimados
+           no município de residência foi obtido pela soma das seguintes CIDs 10: X85-Y09 e Y35-Y36, ou seja, óbitos causados por agressão, intervenção legal e operações de guerra e ainda
+           dos homicídios ocultos estimados em Cerqueira e Lins (2024).
+
+
+
+
+          Em números absolutos, a maior capital brasileira em número de habitantes, São Paulo (SP), assumiu
+     também o maior número de homicídios em 2022, apesar da pequena taxa quando relativizado pelo tamanho
+     da população. Contudo, notamos, no Gráfico 2 e na Tabela 4, que outras capitais, mesmo com bem menos
+     habitantes, assumiram a liderança no número de mortes algumas vezes ao longo dos últimos anos. Foi o caso
+     de Salvador (BA) em 2021; do Rio de Janeiro (RJ), nos anos de 2016, 2018 e 2019; e de Fortaleza (CE), em
+     2013 e 2017. Além das já mencionadas, completa as cinco capitais com maior número de homicídios em 2022
+     a cidade de Manaus (AM), cujo total superou o da capital cearense em 2022.
+
+
+
+
+     Sumário
+

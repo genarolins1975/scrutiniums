@@ -1,0 +1,50 @@
+                                                                                                                       Data: 02-05-2023 - Página 1
+
+
+
+DADOS DO BALANÇO DE ENERGIA NOS SUBSISTEMAS
+
+
+Descrição do Dado: Informações da carga e oferta de energia verificados em periodicidade horária por subsistema. A oferta é representada pelos
+valores de geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas, em MWmed.
+
+
+ Descrição                             Código                   Tipo de Dado    Formato       Permite        Permite          Permite
+                                                                                              valor          valor            valor
+                                                                                              nulo           zerado           negativo
+
+ Código do Subsistema da Usina         id_subsistema            TEXTO           3 POSIÇÕES    Não            ----             ----
+
+ Nome do Subsistema                    nom_subsistema           TEXTO           20 POSIÇÕES   Não            ----             ----
+
+ Data de Referência                    din_instante             DATETIME        YYYY-MM-DD    Não            ----             ----
+                                                                                HH:MM:SS
+
+ Valor verificado de       geração     val_gerhidraulica        FLOAT                         Sim            Sim              Não
+ hidráulica, em MWmed
+
+ Valor verificado de       geração     val_gertermica           FLOAT                         Sim            Sim              Não
+ térmica, em MWmed
+
+ Valor verificado de geração eólica,   val_gereolica            FLOAT                         Sim            Sim              Não
+ em MWmed
+
+ Valor verificado de geração           val_gersolar             FLOAT                         Sim            Sim              Não
+ fotovoltaica, em MWmed
+                                                                                                 Data: 02-05-2023 - Página 2
+
+Descrição                         Código            Tipo de Dado   Formato   Permite   Permite          Permite
+                                                                             valor     valor            valor
+                                                                             nulo      zerado           negativo
+
+Valor verificado da carga, em     val_carga         FLOAT                    Não       Sim              Não
+MWmed
+
+Valor verificado do intercâmbio   val_intercambio   FLOAT                    Não       Sim              Sim
+líquido, em MWmed
+                                                                   Data: 02-05-2023 - Página 3
+
+Evoluções do Conjunto de Dados:
+
+Versão 1.0    02-05-2023          Criação do Dicionário de dados
+

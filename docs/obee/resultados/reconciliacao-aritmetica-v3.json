@@ -1,0 +1,22 @@
+{
+  "version": "reconciliacao-racional-v3-v1",
+  "status": "pass",
+  "scenarios": 18,
+  "city_scenario_rows": 468,
+  "csv_rows": 468,
+  "scenario_comparisons": 49,
+  "numeric_checks": 14558,
+  "max_absolute_difference": 1.865174681370263e-14,
+  "tolerance": 1e-09,
+  "input_sha256": {
+    "piloto-2022-v2.json": "61d9df0b252048e98731aaea3155f27ed0cdf487aa10867105671951443360ef",
+    "habitacao-adensamento-auditoria.json": "f5bd2f21d04b77a58096efd3522d9baebdad6b3d7a9852fb3d0fbf074791bfb5",
+    "conectividade-auditoria.json": "1bc723bc25124b73db7dd55d2c6fa6d041f94a267e1f6df8a2e577929a6fb41e",
+    "cesta-conjunta.json": "15339579dc2cceecd3c237569e011640aa2b7198329dbfd9c081075c3c1de7bd",
+    "cesta-conjunta.csv": "f7e17bb4242c3050e547fd295576b4d9fe74576282bbe075162675b9a0aac085",
+    "revisao-interativa-v3.html": "4cf56e884b43e2496bab808739a37c0187b681983453984ca7569d5535381f06"
+  },
+  "independent_methodological_review": false,
+  "publication_ready": false,
+  "scope": "Recalculo racional desde os valores originais nas auditorias; sem nova extração SIDRA ou inferência amostral."
+}

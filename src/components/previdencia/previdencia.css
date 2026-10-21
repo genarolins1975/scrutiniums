@@ -1,0 +1,183 @@
+/*
+ * Painel Previdência e INSS e a sua versão aperitivo. Mesmos tokens das Contas Federais (contas.css: papel, carvão,
+ * linha, acento obee); prefixo pv- para não colidir com cp-. Decisões de desenho (skills impeccable, emil e
+ * design-taste-frontend, subordinadas à observatorio-layout):
+ * - cor só no dado: o acento marca a série principal, a barra e a seleção; a cromia da página é neutra;
+ * - números como tipografia (serifada, algarismos tabulares), sem cartão com ícone nem número gigante;
+ * - separação por espaço e por um degrau de tom; filetes de 1px só em tabela e na faixa de números (regra da casa);
+ * - movimento só como resposta ao toque (scale 0.97 em 140 ms, curva de saída forte), nada entra animado.
+ */
+.pv-root { --pv-acento: var(--cor-obee); --pv-acento-escuro: var(--cor-obee-dark); --pv-fundo-acento: var(--cor-obee-fundo); --pv-ref: var(--cor-mineral); --pv-rural: var(--cor-bronze); --pv-saida: cubic-bezier(0.23, 1, 0.32, 1); }
+
+.pv-cabeca { padding-bottom: 8px; }
+.pv-cabeca h1 { max-width: 20ch; }
+.pv-cabeca .pv-lead { font-size: 18px; line-height: 1.6; max-width: 62ch; color: var(--cor-carvao); }
+.pv-achado { margin-top: 16px; max-width: 70ch; font-size: 16px; line-height: 1.6; color: var(--cor-carvao-muted); }
+.pv-achado strong { color: var(--cor-carvao); font-weight: 600; }
+
+/* faixa de números: tipo, não cartões; quatro colunas que se quebram em duas e em uma */
+.pv-numeros { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--cor-linha); margin: 32px 0 8px; }
+.pv-numeros > div { padding: 20px 20px 22px; display: grid; align-content: start; gap: 6px; border-right: 1px solid var(--cor-linha); min-width: 0; }
+.pv-numeros > div:first-child { padding-left: 0; }
+.pv-numeros > div:last-child { border-right: 0; }
+.pv-numeros dt { font-size: 14px; line-height: 1.4; color: var(--cor-carvao); }
+.pv-numeros dd { margin: 0; }
+.pv-valor { font-family: var(--font-serif), Georgia, serif; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.15; font-variant-numeric: tabular-nums lining-nums; color: var(--cor-carvao); letter-spacing: -0.01em; }
+.pv-unidade { font-family: var(--font-sans), system-ui, sans-serif; font-size: 14px; color: var(--cor-carvao-muted); letter-spacing: 0; margin-left: 4px; }
+.pv-prova { font-size: 13px; line-height: 1.5; color: var(--cor-carvao-muted); }
+.pv-numeros > div.pv-lider .pv-valor { color: var(--pv-acento-escuro); }
+@media (max-width: 1000px) { .pv-numeros { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pv-numeros > div:nth-child(2) { border-right: 0; } .pv-numeros > div:nth-child(-n+2) { border-bottom: 1px solid var(--cor-linha); } .pv-numeros > div:nth-child(3) { padding-left: 0; } }
+@media (max-width: 560px) { .pv-numeros { grid-template-columns: 1fr; } .pv-numeros > div, .pv-numeros > div:nth-child(3) { padding: 16px 0; border-right: 0; border-bottom: 1px solid var(--cor-linha); } .pv-numeros > div:last-child { border-bottom: 0; } }
+
+/* seções por pergunta */
+.pv-secao { margin-top: 72px; scroll-margin-top: 24px; }
+.pv-secao > h2 { max-width: 38ch; }
+.pv-secao > .pv-intro { margin-top: 12px; max-width: 68ch; font-size: 16px; line-height: 1.65; }
+@media (max-width: 760px) { .pv-secao { margin-top: 56px; } }
+
+/* busca do município */
+.pv-busca { margin-top: 24px; }
+
+/* o extrato do município: as palavras do INSS (competência, valor líquido, órgão pagador) */
+.pv-extrato { margin-top: 28px; background: var(--cor-superficie); border: 1px solid var(--cor-linha); padding: 28px 32px 24px; max-width: 980px; }
+.pv-extrato header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding-bottom: 16px; border-bottom: 1px solid var(--cor-linha); }
+.pv-extrato h2, .pv-extrato h3 { font-family: var(--font-serif), Georgia, serif; font-weight: 400; font-size: clamp(26px, 3vw, 34px); line-height: 1.15; margin: 0; }
+.pv-extrato .pv-competencia { font-size: 14px; color: var(--cor-carvao-muted); }
+.pv-extrato dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; margin: 22px 0 0; }
+.pv-extrato dt { font-size: 14px; color: var(--cor-carvao); }
+.pv-extrato dd { margin: 4px 0 0; }
+.pv-extrato .pv-valor { font-size: clamp(32px, 4vw, 44px); }
+.pv-extrato .pv-valor-acento { color: var(--pv-acento-escuro); }
+.pv-extrato .pv-detalhe { margin-top: 6px; font-size: 13px; line-height: 1.5; color: var(--cor-carvao-muted); }
+@media (max-width: 640px) { .pv-extrato { padding: 20px 18px 18px; } .pv-extrato dl { grid-template-columns: 1fr; gap: 18px; } }
+
+/* como ler: degrau de tom, sem faixa colorida lateral */
+.pv-ler { margin-top: 20px; background: var(--cor-marfim); padding: 16px 20px; max-width: 980px; font-size: 14px; line-height: 1.65; color: var(--cor-carvao); }
+.pv-ler p + p { margin-top: 6px; }
+.pv-ler strong { font-weight: 600; }
+.pv-fonte { margin-top: 14px; max-width: 980px; font-size: 13px; line-height: 1.6; color: var(--cor-carvao-muted); }
+.pv-fonte a { color: var(--pv-acento-escuro); text-decoration: underline; text-underline-offset: 3px; }
+.pv-aviso { margin-top: 20px; padding: 12px 16px; background: var(--cor-marfim); font-size: 14px; line-height: 1.6; max-width: 70ch; }
+
+/* tabelas: regras e alinhamento, sem zebra, cabeçalho cinza em caixa de frase, números à direita */
+.pv-tabela-rolagem { overflow-x: auto; margin-top: 8px; max-width: 100%; }
+.pv-legenda-tabela { margin-top: 24px; max-width: 80ch; font-size: 14px; line-height: 1.5; color: var(--cor-carvao-muted); }
+.pv-tabela { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums lining-nums; }
+.pv-tabela caption { text-align: left; font-size: 14px; line-height: 1.5; color: var(--cor-carvao-muted); padding-bottom: 10px; caption-side: top; }
+.pv-tabela th, .pv-tabela td { padding: 11px 10px; border-bottom: 1px solid var(--cor-grade); text-align: right; vertical-align: baseline; white-space: nowrap; }
+.pv-tabela thead th { font-weight: 400; font-size: 13px; color: var(--cor-carvao-muted); border-bottom: 1px solid var(--cor-linha); vertical-align: bottom; white-space: normal; }
+.pv-tabela th:first-child, .pv-tabela td:first-child { text-align: left; padding-left: 0; white-space: normal; }
+.pv-tabela tbody th { font-weight: 400; }
+.pv-tabela .pv-nivel-1 > :first-child { padding-left: 18px; }
+.pv-tabela .pv-nivel-2 > :first-child { padding-left: 36px; color: var(--cor-carvao-muted); }
+.pv-tabela .pv-forte > * { font-weight: 600; }
+.pv-tabela tr.pv-escolhido > * { background: var(--pv-fundo-acento); }
+.pv-tabela .pv-sem { color: var(--cor-mineral); }
+.pv-tabela small { display: block; font-size: 12px; color: var(--cor-carvao-muted); }
+.pv-tabela-larga { min-width: 760px; }
+.pv-tabela-rolagem:focus-visible { outline: 3px solid var(--cor-obee); outline-offset: 2px; }
+@media (max-width: 760px) {
+  .pv-legenda-tabela::after { content: " Deslize a tabela para o lado para ver todas as colunas."; }
+  .pv-tabela th:first-child, .pv-tabela td:first-child { position: sticky; left: 0; z-index: 1; background: var(--cor-papel); box-shadow: 1px 0 0 var(--cor-grade); padding-right: 10px; max-width: 42vw; }
+  .pv-tabela tr.pv-escolhido > :first-child { background: var(--pv-fundo-acento); }
+}
+@media (max-width: 760px) { .pv-tabela { font-size: 14px; } .pv-tabela th, .pv-tabela td { padding: 10px 8px; } }
+
+/* barras horizontais: a barra é o dado, no acento; o rótulo e o número ficam fora dela */
+.pv-barras { margin-top: 20px; display: grid; gap: 2px; }
+.pv-barra { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 7.5rem; align-items: center; gap: 12px; min-height: 36px; }
+.pv-barra > span:first-child { font-size: 14px; line-height: 1.35; }
+.pv-barra-trilho { height: 14px; background: var(--cor-grade); position: relative; }
+.pv-barra-trilho > i { position: absolute; inset: 0 auto 0 0; background: var(--pv-acento); }
+.pv-barra-trilho > b { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--cor-carvao); }
+.pv-barra > span:last-child { text-align: right; font-variant-numeric: tabular-nums; font-size: 14px; }
+.pv-barra.pv-escolhido > span:first-child { font-weight: 600; }
+.pv-barra.pv-escolhido .pv-barra-trilho > i { background: var(--pv-acento-escuro); }
+.pv-barra.pv-referencia .pv-barra-trilho > i { background: var(--pv-ref); }
+@media (max-width: 640px) { .pv-barra { grid-template-columns: minmax(0, 1fr) 6.5rem; grid-template-areas: "rotulo numero" "trilho trilho"; gap: 4px 10px; padding-block: 4px; } .pv-barra > span:first-child { grid-area: rotulo; } .pv-barra > span:last-child { grid-area: numero; } .pv-barra-trilho { grid-area: trilho; } }
+
+/* gráficos desenhados no servidor */
+.pv-figura { margin-top: 24px; }
+.pv-figura figcaption { margin-top: 8px; font-size: 13px; line-height: 1.6; color: var(--cor-carvao-muted); max-width: 80ch; }
+.pv-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.pv-svg text { font-family: var(--font-sans), system-ui, sans-serif; font-size: 15px; fill: var(--cor-carvao-muted); font-variant-numeric: tabular-nums; }
+.pv-svg .pv-rotulo-forte { fill: var(--cor-carvao); font-size: 15px; font-weight: 600; }
+.pv-svg .pv-grade { stroke: var(--cor-grade); stroke-width: 1; }
+.pv-svg .pv-base { stroke: var(--cor-carvao-muted); stroke-width: 1; }
+.pv-svg .pv-linha { fill: none; stroke: var(--pv-acento); stroke-width: 2.25; stroke-linejoin: round; }
+.pv-svg .pv-linha-ref { fill: none; stroke: var(--pv-ref); stroke-width: 1.75; stroke-linejoin: round; }
+.pv-svg .pv-linha-rural { fill: none; stroke: var(--pv-rural); stroke-width: 1.75; stroke-linejoin: round; }
+.pv-svg .pv-coluna { fill: var(--pv-acento); }
+.pv-svg .pv-coluna-neg { fill: var(--pv-acento-escuro); }
+.pv-svg .pv-ponto { fill: var(--pv-acento); }
+.pv-svg .pv-ponto-ref { fill: var(--pv-ref); }
+.pv-so-estreito { display: none; }
+@media (max-width: 640px) { .pv-so-largo { display: none; } .pv-so-estreito { display: block; } }
+.pv-graficos-dois { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+@media (max-width: 900px) { .pv-so-estreito { display: none; }
+@media (max-width: 640px) { .pv-so-largo { display: none; } .pv-so-estreito { display: block; } }
+.pv-graficos-dois { grid-template-columns: 1fr; } }
+.pv-legenda { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 10px; font-size: 13px; color: var(--cor-carvao); }
+.pv-legenda i { display: inline-block; width: 18px; height: 3px; vertical-align: middle; margin-right: 6px; }
+
+/* o mecanismo: quanto entra e quanto sai do Regime Geral, nas proporções reais do ano */
+.pv-mecanismo { margin-top: 28px; display: grid; gap: 28px; }
+.pv-fluxo { display: grid; gap: 14px; }
+.pv-fluxo-linha { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); gap: 16px; align-items: center; }
+.pv-fluxo-linha > span:first-child { font-size: 14px; line-height: 1.4; }
+.pv-fluxo-trilho { display: flex; height: 32px; }
+.pv-fluxo-trilho > span { display: block; min-width: 0; }
+.pv-fluxo-entra { background: var(--pv-acento); color: #fff; }
+.pv-fluxo-falta { background: repeating-linear-gradient(135deg, var(--cor-papel) 0 5px, var(--cor-bronze-soft) 5px 7px); color: var(--cor-carvao); box-shadow: inset 0 0 0 1px var(--cor-bronze); }
+.pv-fluxo-valores { display: flex; flex-wrap: wrap; gap: 2px 18px; margin-top: 6px; font-size: 13px; font-variant-numeric: tabular-nums; color: var(--cor-carvao); }
+.pv-fluxo-valores i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; }
+.pv-fluxo-nota { font-size: 13px; line-height: 1.6; color: var(--cor-carvao-muted); max-width: 80ch; }
+@media (max-width: 640px) { .pv-fluxo-linha { grid-template-columns: minmax(0, 1fr); gap: 6px; } .pv-fluxo-trilho { height: 28px; } }
+.pv-modelo { font-size: 13px; color: var(--cor-carvao-muted); }
+
+/* o ano inteiro e o atendimento (Anuário Estatístico da Previdência Social) */
+.pv-subtitulo { margin-top: 48px; font-family: var(--font-serif), Georgia, serif; font-weight: 400; font-size: 23px; line-height: 1.35; max-width: 38ch; }
+.pv-subtitulo + .pv-intro { margin-top: 10px; max-width: 68ch; font-size: 16px; line-height: 1.65; }
+.pv-legenda i.pv-pilha-rgps, .pv-pilha-rgps { background: var(--pv-acento); }
+.pv-legenda i.pv-pilha-assist, .pv-pilha-assist { background: var(--pv-ref); }
+.pv-legenda i.pv-pilha-epu, .pv-pilha-epu { background: var(--cor-carvao); }
+.pv-legenda i[class^="pv-pilha"] { height: 10px; width: 10px; }
+.pv-pilhas { margin-top: 14px; display: grid; gap: 10px; }
+.pv-pilha { display: grid; grid-template-columns: 4rem minmax(0, 1fr) 9.5rem; gap: 12px; align-items: center; min-height: 36px; }
+.pv-pilha > span:first-child { font-size: 14px; font-variant-numeric: tabular-nums; }
+.pv-pilha > span:last-child { text-align: right; font-size: 14px; font-variant-numeric: tabular-nums; }
+.pv-pilha-trilho { display: flex; height: 26px; }
+.pv-pilha-trilho > span { display: block; min-width: 0; }
+@media (max-width: 640px) { .pv-pilha { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "ano valor" "trilho trilho"; gap: 4px 10px; } .pv-pilha > span:first-child { grid-area: ano; } .pv-pilha > span:last-child { grid-area: valor; } .pv-pilha-trilho { grid-area: trilho; height: 22px; } }
+.pv-tabela tbody + tbody .pv-grupo > th { padding-top: 26px; }
+.pv-tabela .pv-grupo > th { text-align: left; font-weight: 600; font-size: 14px; color: var(--cor-carvao); border-bottom: 1px solid var(--cor-linha); padding-left: 0; }
+.pv-estoque .pv-barra-trilho { height: 18px; }
+.pv-tabela-media { min-width: 560px; max-width: 980px; }
+.pv-figura-media { max-width: 760px; }
+.pv-rede { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin-top: 24px; border-block: 1px solid var(--cor-linha); }
+.pv-rede > div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 4px; padding: 16px 20px 18px; border-right: 1px solid var(--cor-linha); min-width: 0; }
+.pv-rede > div:first-child { padding-left: 0; }
+.pv-rede > div:last-child { border-right: 0; }
+.pv-rede dt { font-size: 14px; line-height: 1.45; color: var(--cor-carvao-muted); }
+.pv-rede dd { margin: 0; }
+@media (max-width: 1000px) { .pv-rede { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pv-rede > div:nth-child(2) { border-right: 0; } .pv-rede > div:nth-child(-n+2) { border-bottom: 1px solid var(--cor-linha); } .pv-rede > div:nth-child(3) { padding-left: 0; } }
+@media (max-width: 560px) { .pv-rede { grid-template-columns: 1fr; } .pv-rede > div, .pv-rede > div:nth-child(3) { padding: 14px 0; border-right: 0; border-bottom: 1px solid var(--cor-linha); } .pv-rede > div:last-child { border-bottom: 0; } }
+
+/* método e arquivos, recolhidos no fim */
+.pv-metodo { margin-top: 72px; border-block: 1px solid var(--cor-linha); }
+.pv-metodo > summary { padding: 22px 0; cursor: pointer; font-family: var(--font-serif), Georgia, serif; font-size: 24px; line-height: 1.35; list-style-position: outside; }
+.pv-metodo > summary:focus-visible { outline: 3px solid var(--cor-obee); outline-offset: 4px; }
+.pv-metodo-corpo { padding-bottom: 28px; display: grid; gap: 24px; max-width: 80ch; font-size: 15px; line-height: 1.7; }
+.pv-metodo-corpo h3 { font-family: var(--font-serif), Georgia, serif; font-size: 21px; font-weight: 400; }
+.pv-metodo-corpo ul { list-style: disc; padding-left: 20px; display: grid; gap: 6px; }
+.pv-metodo-corpo a { color: var(--pv-acento-escuro); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.pv-arquivos { display: grid; gap: 4px; }
+.pv-arquivos a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+
+/* resposta ao toque, só em ponteiros que pairam; sem animação para o teclado */
+.pv-toque { transition: transform 140ms var(--pv-saida), background-color 160ms ease, color 160ms ease; }
+.pv-toque:active { transform: scale(0.97); }
+@media (prefers-reduced-motion: reduce) { .pv-toque, .pv-toque:active { transition: none; transform: none; } }
+
+.pv-links { display: flex; flex-wrap: wrap; gap: 4px 24px; margin-top: 12px; font-size: 14px; }
+.pv-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--pv-acento-escuro); text-decoration: underline; text-underline-offset: 3px; }

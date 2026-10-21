@@ -1,0 +1,809 @@
+{
+ "avaliador": "T2-U10",
+ "papel": "tecnico",
+ "rodada": "reavaliacao 2",
+ "versao_avaliada": "cbb5fbfeb964d614bda95d8c5895add99798d7cc, site em http://localhost:3101 (rodada 2, versão redesenhada)",
+ "paginas": {
+  "/setor-eletrico/perdas": {
+   "paineis": [
+    "P055"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.0,
+     "evidencia": [
+      "visoes.json e texto: 7 painéis (faixas, território, escolhida, comparador de até 4, tabela de 123 linhas, série 2003 a 2025, separação), 2 gráficos, 1 mapa, 4 fichas Comprove. A cobertura mínima da família exige também referência regulatória compatível.",
+      "Recalculei do CSV publicado as faixas 6, 27, 25, 18 e 7, a mediana 11,307%, o mínimo 3,249% (EFLUL) e o máximo 43,194% (ÂMBAR AMAZONAS): iguais ao exibido.",
+      "Série nacional 2003 a 2025 (23 linhas) igual a perdas_nacional.csv; mínimo 14,00% (2013) e máximo 15,85% (2020) conferidos.",
+      "Território: 440 municípios com 2 ou mais vínculos confirmados, 5 sem confirmação e código 4314530 inexistente (API de localidades do IBGE devolve lista vazia), como a página diz."
+     ],
+     "atendidos": [
+      "Nível atual, evolução desde 2003, distribuição por faixas, mediana e extremos, composição resumida e território presentes",
+      "Universo e cobertura (123, 103, 83 e 51) visíveis; fora da comparação (20) e sem dado (20) contados e explicados",
+      "Mapa por área de distribuidora, sem repartir valor entre municípios, com vínculos múltiplos marcados",
+      "Comparador de até 4 distribuidoras e histórico da escolhida com o agregado como referência",
+      "Tabela completa com filtros e exportação em CSV e XLSX"
+     ],
+     "problemas": [
+      "Sem referência regulatória por distribuidora (percentual técnico homologado ou não técnico), item exigido pela família; a Figura 7 do relatório ANEEL 2026/2025 traz o técnico de 2025 das 51 concessionárias e não é usada.",
+      "A distribuição se resume a faixas, mediana e extremos de um grupo que mistura 51 concessionárias e 32 permissionárias muito pequenas; sem quartis nem grupos por porte.",
+      "Não há evolução da dispersão (mediana ou faixas por ano); a série mostra só o agregado das concessionárias."
+     ],
+     "justificativa": "Cobre nível, evolução, distribuição, composição, território, cobertura e limitações, com números conferidos. Falta a referência regulatória compatível exigida pela família, e a distribuição fica em faixas, mediana e extremos de um grupo misto, sem quartis nem grupos por porte."
+    },
+    "F": {
+     "nota": 7.0,
+     "evidencia": [
+      "Agregado das concessionárias é razão de somas: refiz 90,36 TWh sobre 612,65 TWh e obtive 14,7485%. A mediana de 83 é simples e rotulada; nunca se somam percentuais de bases diferentes.",
+      "Com a energia injetada publicada no SAMP das mesmas 51 (632,05 TWh) a taxa de 2025 é 14,30%, igual aos 14,3% do relatório ANEEL 2026/2025 (90,2 TWh); a página não mostra nem cita esse valor oficial.",
+      "Mediana e extremos de 83 misturam 51 concessionárias e 32 permissionárias (algumas com 1 a 25 GWh), sem quartis nem pares por porte; a ANEEL compara por porte e complexidade.",
+      "Acumulado de 2026 comparado só ao mesmo período de 2025 nas 49 concessionárias: refiz 14,7708% e 14,7451% do arquivo bruto; página 14,77% e 14,74%."
+     ],
+     "atendidos": [
+      "Média simples, mediana e razão de somas com rótulos distintos",
+      "Universo, cobertura e elegibilidade (ano completo, sem alerta) visíveis em gráfico, tabela, frase e exportação",
+      "Variação só nas mesmas distribuidoras; ano aberto separado dos anos completos",
+      "Extremos nomeados e descritos como observados, sem meta nem ranking de qualidade",
+      "Nenhum benchmark internacional usado de forma enganosa"
+     ],
+     "problemas": [
+      "Sem limite ou referência regulatória por distribuidora: a comparação de perímetro compatível pedida na tarefa da família não existe.",
+      "O valor oficial da ANEEL para 2025 (14,3%, 90,2 TWh) não aparece; a conferência da página usa a edição 2025/2024 e só para 2024.",
+      "Grupo único de comparação, sem quartis, pares ou porte; mínimo, mediana e máximo são a única régua entre entidades.",
+      "KPI de mediana (83 distribuidoras) ao lado do agregado (51 concessionárias), universos diferentes."
+     ],
+     "justificativa": "Rótulos de média, mediana e razão de somas, universo e cobertura são exemplares. Faltam referência regulatória, quartis e pares por porte, e a taxa de 2025 não é confrontada com o valor oficial da ANEEL (14,3% contra 14,75%), que usa outro denominador."
+    },
+    "G": {
+     "nota": 7.5,
+     "evidencia": [
+      "Do samp-balanco.csv oficial recalculei 2025 (51 concessionárias): perdas 90.355.796 MWh, injetada de referência 612,64 TWh, 14,7485%; 2024 14,7424%; variação nas mesmas 51 de +0,006 p.p. Página: 14,75%, 14,74% e +0,01.",
+      "Técnica das 18 que fecham: 7,156% da injetada; não técnica 14,992% do mercado BT (cativo, consumo próprio e livre). Página: 7,16% e 14,99%.",
+      "Volume da ANEEL (Figura 4 do relatório 2026/2025) bate com o da página: 84,8, 89,2 e 90,2 TWh em 2023 a 2025 contra 84,66, 89,22 e 90,36. O denominador de 2025 difere: 612,7 TWh na página, cerca de 632 TWh na ANEEL.",
+      "Mercado BT medido das 51 é 43,77% da injetada publicada (ANEEL: cerca de 44,0%) e 45,15% da injetada de referência, o que indica que a ANEEL usa a linha publicada em 2025."
+     ],
+     "atendidos": [
+      "Taxa total sobre injetada de referência, técnica sobre injetada e não técnica sobre mercado BT, com bases medida e faturada separadas",
+      "Ausência escrita como sem dado, nunca zero; 20 com valor fora da comparação e 20 sem dado, com motivo",
+      "Quebra do leiaute de 2024, absorções e quebras de escala marcadas; variação só entre as mesmas distribuidoras",
+      "Natureza do dado rotulada (observado, calculado, estimado); ano aberto separado dos completos",
+      "Técnica e não técnica tratadas como estimativas, e não técnica não equiparada a furto"
+     ],
+     "problemas": [
+      "Denominador de 2025: a página usa fornecida + irregular + perdas (612,7 TWh); a ANEEL usa a injetada publicada e divulga 14,3%. As frases de abertura dizem 'da energia que entrou na rede' para o denominador implícito.",
+      "A linha Universo diz que a soma nacional usa as 51 concessionárias também em técnica e não técnica, cuja soma usa 18 em 2025 e 49 em 2010 (reproduzido com ?medida=pnt_bt e ?medida=tecnica).",
+      "Técnica do SAMP descrita como percentual regulatório do processo tarifário; a ANEEL cita escalonamento anual pela STD e a Figura 7 difere do SAMP em mais de 0,8 p.p. em 5 de 18 distribuidoras.",
+      "A coluna Fora da soma mostra sem dado onde nenhuma distribuidora foi excluída (2024 e 2025)."
+     ],
+     "justificativa": "Denominadores, bases, ausência, cobertura e quebras são tratados com rigor, e os números reproduzem do arquivo oficial. O denominador de 2025 diverge do usado pela ANEEL sem confronto, a técnica é chamada de regulatória além do que a fonte sustenta e há texto de universo errado."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "O sha256 do samp-balanco.parquet baixado hoje da ANEEL (964387dd...) é igual ao da ficha Comprove. Perdas, técnica e não técnica de perdas_mensal.csv são iguais ao arquivo bruto em 25.115, 18.805 e 17.983 meses, 0 diferenças.",
+      "Ficha da CEMIG-D 2025 refeita do bruto: 7.394.845,154 MWh, 60.989.116,579 MWh e 12,12486%, iguais dígito a dígito. CSV e XLSX da tabela (123 linhas) iguais a perdas_distribuidoras.csv e entre si (0 de 1.968 células).",
+      "Série nacional (23 linhas), tabela do gráfico, resumo e tabela do comparador (CEMIG-D, ENEL RJ e agregado) iguais aos CSV; perdas_anual.json igual ao CSV em 2.238 linhas e perdas_municipios.json igual ao CSV nos 5.571 municípios.",
+      "A ficha cita código d329b83c69a5+alterado (árvore suja) e avisa que a reprodução pode diferir; a reconciliação externa é só de 2024, contra a edição anterior do relatório (cópia de terceiro)."
+     ],
+     "atendidos": [
+      "Fonte e arquivo específicos com sha256, datas de publicação, captura e validação",
+      "Fórmula, numerador, denominador, filtros, exclusões, versão e revisões na ficha Comprove e em Sobre este dado",
+      "Oito CSV e passos de reprodução, inclusive o balanço mensal para auditoria",
+      "Gráfico, tabela, frase e exportação com o mesmo contrato nas amostras (0 divergências)",
+      "Limitações e bloqueios externos registrados com evidência e data"
+     ],
+     "problemas": [
+      "Código de publicação com alterações fora de commit; a reprodução oficial depende de silver e bronze não publicados.",
+      "A ficha do KPI principal não traz reconciliação por outro caminho; a conferência externa existente é de 2024 e da edição anterior do relatório ANEEL, por cópia de terceiro, enquanto a edição 2026/2025 circula desde julho.",
+      "As fichas mostram 14,7%, 14,8% e 15,0% onde os KPIs mostram 14,75%, 14,77% e 14,99%.",
+      "A linha Universo contradiz o dado em técnica e não técnica (51 contra 18).",
+      "O documento do módulo ainda trata como pendente a limitação 'cerca de metade', que a gold já traz com contagens."
+     ],
+     "justificativa": "Rastreabilidade forte: sha256 que confere com a ANEEL, mensal idêntico ao bruto, fichas com fórmula e passos, paridade entre tabela, CSV, XLSX e JSON. Perde pelo código com árvore suja, pela reprodução que exige arquivos não públicos e pela conferência externa desatualizada."
+    },
+    "L": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: 6 medições, status 200, 0 erros de console e 0 falhas de rede; carga de 1,38 a 1,70 s em laboratório (Chromium headless, sem limitação); HTML 582 KB, JS 574 a 665 KB, dados 1,9 MB.",
+      "O teste de peso exige HTML mais props abaixo de 450 KB; o HTML real mede 582 KB, perto da meta de 600 KB do contrato.",
+      "Pipeline devolve gold vazia com 'validação crítica' (linhas duplicadas, competência futura, taxa fora de 5% a 30%); 69 testes Python e 45 TS fixam valores, paridade de mapa, tabela e CSV.",
+      "9 controles exercitados sem falha e 51 links internos sem quebra. Não medido: campo (LCP, INP, CLS) e leitor de tela."
+     ],
+     "atendidos": [
+      "Sem erro de console nem falha de rede em 360, 390, 768 e 1440 px",
+      "Série anual e evidências carregadas sob demanda; malha e relação só quando o mapa aparece",
+      "Bloqueio de publicação de gold inválida e alertas físicos por agente e ano",
+      "Testes contra o arquivo original e paridade de mapa, tabela e exportação",
+      "Protocolo de medição documentado (energia-avaliacao.mjs e AVALIACAO_PAGINAS.md), com a ressalva de laboratório"
+     ],
+     "problemas": [
+      "HTML de 582 KB e 1,9 MB de dados também em 390 px, perto do orçamento.",
+      "Medida só de laboratório, sem limitação de rede ou CPU e sem dado de campo.",
+      "Os testes não pegam a linha de universo errada nem comparam a taxa de 2025 com a ANEEL."
+     ],
+     "justificativa": "Sem erros de console ou rede, boa cobertura de testes e bloqueio de gold inválida. Peso perto da meta, medida só de laboratório e um texto de universo errado que os testes não pegam mantêm a nota abaixo de 9."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "perdas-denominador-2025",
+     "gravidade": "alta",
+     "criterios": [
+      "F",
+      "G",
+      "H"
+     ],
+     "onde": "KPI 'Perdas totais das concessionárias, 2025' (14,75%), frases de abertura e bloco 'Conferência com o relatório da ANEEL' (Auditar)",
+     "descricao": "A taxa de 2025 usa como denominador fornecida + irregular + perdas (612,65 TWh). A ANEEL, no relatório 2026/2025 (extração de junho de 2026), divulga 14,3% e 90,2 TWh para 2025 (técnica 7,2%, não técnica 7,1%, mercado BT 44,0% da injetada). Com a energia injetada publicada no SAMP das mesmas 51 concessionárias (632,05 TWh) recalculei 14,30%. O volume em TWh coincide e a diferença é só o denominador. A página confronta apenas 2024 e a edição anterior do relatório, e diz 'da energia que entrou na rede' para o denominador implícito.",
+     "sugestao": "Mostrar junto do KPI as duas bases (14,75% sobre a injetada de referência e 14,30% sobre a injetada publicada, valor oficial 14,3%), explicar a diferença e trocar a conferência pela edição 2026/2025."
+    },
+    {
+     "id": "perdas-sem-referencia-regulatoria",
+     "gravidade": "alta",
+     "criterios": [
+      "E",
+      "F"
+     ],
+     "onde": "Tabela, mapa e KPIs",
+     "descricao": "Nenhuma referência regulatória por distribuidora aparece, embora a tarefa e a cobertura mínima da família a peçam. A Figura 7 do relatório ANEEL 2026/2025 traz o percentual técnico regulatório de 2025 das 51 concessionárias (3,7% a 11,8%) e a Figura 10, a não técnica ponderada (real 16,2% e regulatória 11,2% do mercado BT).",
+     "sugestao": "Transcrever com proveniência (captura manual, arquivo e sha256) ao menos a referência técnica por concessionária e a nacional, em coluna própria da tabela e sem ranking."
+    },
+    {
+     "id": "perdas-universo-linha",
+     "gravidade": "media",
+     "criterios": [
+      "G",
+      "H"
+     ],
+     "onde": "Linha Universo do painel principal, em técnica e não técnica",
+     "descricao": "A linha diz 'a soma nacional usa só as 51 concessionárias comparáveis', mas o texto seguinte e o dado usam 18 (2025) ou 49 (2010). Reproduzido com ?periodo=2025&medida=pnt_bt, ?periodo=2025&medida=tecnica e ?periodo=2010&medida=pnt_bt.",
+     "sugestao": "Usar o n da medida (n_com_tecnica e n_com_pnt_bt) em vez do n da taxa total."
+    },
+    {
+     "id": "perdas-grupo-unico",
+     "gravidade": "media",
+     "criterios": [
+      "F"
+     ],
+     "onde": "KPI Mediana simples, faixas e extremos",
+     "descricao": "A mediana (11,31%), o mínimo e o máximo valem para 83 distribuidoras que misturam 51 concessionárias e 32 permissionárias (algumas com 1 a 25 GWh de injetada), sem quartis nem grupos por porte, ao lado do agregado de 51.",
+     "sugestao": "Mediana e quartis por tipo e porte (a ANEEL usa mercado acima de 700 GWh) e rótulo do universo em cada KPI."
+    },
+    {
+     "id": "perdas-tecnica-regulatoria",
+     "gravidade": "media",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Definições (Auditar), verbetes e textos que chamam a técnica do SAMP de percentual regulatório",
+     "descricao": "A técnica do SAMP é descrita como o percentual regulatório do processo tarifário aplicado à injetada. A ANEEL (relatório 2026/2025, nota 4) fala em escalonamento anual pela STD, e a Figura 7 difere do SAMP em 9 de 18 distribuidoras comparáveis (COSERN 9,2% contra 7,36%, COCEL 4,2% contra 5,78%, ELETROCAR 5,2% contra 6,62%).",
+     "sugestao": "Dizer 'percentual técnico aplicado no SAMP no ano' e comparar com a Figura 7 em vez de chamá-lo de regulatório."
+    },
+    {
+     "id": "perdas-fora-da-soma",
+     "gravidade": "baixa",
+     "criterios": [
+      "G",
+      "H"
+     ],
+     "onde": "Resumo em tabela da série nacional, coluna Fora da soma",
+     "descricao": "2024 e 2025 mostram 'sem dado' onde nenhuma distribuidora foi excluída; ausência e 'nenhuma' ficam iguais.",
+     "sugestao": "Escrever 'nenhuma'."
+    },
+    {
+     "id": "perdas-comprove-casas",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Fichas Comprove dos KPIs",
+     "descricao": "As fichas mostram 14,7%, 14,8% e 15,0% enquanto os KPIs mostram 14,75%, 14,77% e 14,99% (decisão documentada de não arredondar duas vezes).",
+     "sugestao": "Mostrar também o valor de duas casas na ficha."
+    }
+   ],
+   "nao_verificado": [
+    "Definição exata de energia injetada usada pela ANEEL em 2025: inferida de 14,3%, 7,2%, 7,1% e 44,0% do mercado BT, que fecham com cerca de 632 TWh; o relatório não a declara.",
+    "Relatório ANEEL 2026/2025 lido em cópia hospedada em terceiro (original bloqueado por desafio do Cloudflare); Figuras 3, 4, 7, 8, 10 e 16 lidas visualmente.",
+    "Desempenho em campo (LCP, INP, CLS) e leitor de tela real."
+   ]
+  },
+  "/setor-eletrico/perdas/composicao": {
+   "paineis": [
+    "P056"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 7.5,
+     "evidencia": [
+      "Painéis: composição de 19 distribuidoras em 2025 (barras e tabela), séries de técnica e não técnica 2003 a 2025 e universo fixo de 16 concessionárias. Refiz o universo fixo do CSV: 13,63, 7,23, 14,35 e 11.779 GWh em 2023; 13,59, 7,19, 14,30 e 12.523 em 2024; 13,83, 7,16, 15,01 e 13.299 em 2025.",
+      "Cobertura da separação 48 de 50, 32 de 51 e 18 de 51 concessionárias (2023 a 2025) igual a perdas_nacional.csv; as 18 cobrem 32,6% da injetada e 32,1% do mercado BT.",
+      "Referência nacional pública não usada: o relatório ANEEL 2026/2025 traz técnica 7,2% (45,2 TWh) e não técnica 7,1% (45,0 TWh) da injetada em 2025 para todas as concessionárias e por região (Figura 5).",
+      "A cobertura mínima da família pede técnicas e não técnicas e referência regulatória; a página tem composição por entidade e evolução, sem referência."
+     ],
+     "atendidos": [
+      "Composição empilhada só onde técnica mais não técnica fecham o total sobre a mesma injetada",
+      "Não técnica sobre mercado BT em gráfico próprio, com denominador diferente e nunca somada",
+      "Evolução desde 2003 com marca de 2024 e contagem de quantas publicam a separação",
+      "Universo fixo para a tendência comparável e cobertura por ano",
+      "Limitações declaradas: estimativa, 62 sem separação e 2 que não fecham"
+     ],
+     "problemas": [
+      "A separação existe para só 18 a 19 distribuidoras (cerca de 32% da energia), sem a composição nacional oficial da ANEEL como referência nem por região.",
+      "Sem referência regulatória para a parcela técnica (percentual homologado) nem para a não técnica.",
+      "A tendência vem de 16 concessionárias que seguem publicando a separação, em geral grandes, e a página não descreve o perfil do grupo além da cobertura do mercado BT (32%).",
+      "O histórico por distribuidora só existe para as que publicam a separação."
+     ],
+     "justificativa": "Composição bem delimitada, com universo fixo, cobertura por ano e bases corretas. O alcance é de 19 distribuidoras, sem referência regulatória nem a composição nacional oficial da ANEEL, e a tendência vem de 16 concessionárias que continuam publicando a separação."
+    },
+    "F": {
+     "nota": 7.0,
+     "evidencia": [
+      "A linha tracejada de 14,75% (51 concessionárias) cruza barras de 19 distribuidoras de outro conjunto, e a página avisa. A taxa oficial da ANEEL para 2025 é 14,3%.",
+      "Não técnica da página: 14,99% do mercado BT (18 concessionárias, 32% do BT). A ANEEL pondera 16,2% real e 11,2% regulatória em todas as concessionárias (Figura 10): referência nacional não mostrada.",
+      "Comparei a técnica da página com a regulatória de 2025 da Figura 7: 9 de 18 dentro de 0,15 p.p.; COSERN 7,36% contra 9,2%, COELBA 9,64% contra 10,8%, ELETROCAR 6,62% contra 5,2%, COCEL 5,78% contra 4,2%.",
+      "Técnica e não técnica sobre a injetada e não técnica sobre o BT com denominadores separados; ordem das barras e universo declarados."
+     ],
+     "atendidos": [
+      "Denominadores diferentes não compartilham régua e não se somam",
+      "Universo, cobertura e elegibilidade (decomposição que fecha) visíveis",
+      "Série de universo fixo para comparar anos",
+      "Referência do agregado explicitada como outro conjunto",
+      "Nenhum benchmark internacional usado"
+     ],
+     "problemas": [
+      "Sem referência regulatória nem oficial para a composição, embora a ANEEL publique a técnica regulatória por concessionária (Figura 7) e a não técnica ponderada (Figura 10).",
+      "Linha do agregado de outro conjunto sobre barras de 19 distribuidoras, útil só com a leitura do aviso.",
+      "A técnica do SAMP é lida como se fosse a regulatória, mas difere da Figura 7 em mais de 0,8 p.p. em 5 de 18.",
+      "Ordenação e extremos sem pares por porte."
+     ],
+     "justificativa": "Boa disciplina de denominadores, universo e cobertura, e série de universo fixo para a tendência. Falta referência regulatória e nacional oficial da composição, a linha do agregado é de outro conjunto e a técnica do SAMP difere da regulatória de 2025 em mais de 0,8 p.p. em 5 de 18."
+    },
+    "G": {
+     "nota": 7.5,
+     "evidencia": [
+      "Recalculei do bruto, 18 concessionárias com separação fechando em 2025: técnica 7,156% da injetada e não técnica 14,992% do mercado BT. Página: 7,16% e 14,99%.",
+      "Foram 19 as concessionárias com técnica nos 12 meses; ELFSM sai porque a decomposição não fecha (resíduo de 457 MWh). O KPI diz que 18 de 51 publicaram a técnica.",
+      "Soma dos componentes arredondados difere do total em NEOENERGIA BRASÍLIA (14,22 contra 14,23) e COSERN (10,45 contra 10,44): rótulo e tabela de dados do gráfico contra a tabela principal.",
+      "Nota 4 do relatório ANEEL: a técnica por ano civil usa escalonamento da STD; SAMP e Figura 7 divergem até 1,8 p.p."
+     ],
+     "atendidos": [
+      "Técnica e não técnica sobre a mesma injetada só quando fecham; não técnica sobre o BT com outra base",
+      "Natureza estimada declarada para as duas parcelas; não técnica não equiparada a furto",
+      "Ausência tratada como sem separação (62 distribuidoras), nunca zero",
+      "Quebra de 2024 e tendência por universo fixo",
+      "Valores negativos de não técnica explicados (EFLUL, DMED)"
+     ],
+     "problemas": [
+      "A técnica do SAMP é chamada de percentual regulatório aplicado; a ANEEL fala em escalonamento e a Figura 7 difere em mais de 0,8 p.p. em 5 de 18 (COSERN 9,2% contra 7,36%). A não técnica, residual, herda a diferença.",
+      "O KPI diz que 18 de 51 publicaram a técnica nos 12 meses; foram 19, e uma saiu por decomposição que não fecha.",
+      "O total no fim da barra soma componentes arredondados e destoa da tabela em 2 de 19, sem aviso (a página de custo explica o mesmo efeito).",
+      "O denominador de injetada de referência (ver /perdas) é usado sem confronto com o valor oficial."
+     ],
+     "justificativa": "Bases e fechamento da decomposição estão corretos e reproduzem do bruto. A técnica é tratada como regulatória além do que a ANEEL descreve, o KPI conta 18 onde 19 publicaram, e os rótulos das barras somam parcelas arredondadas sem aviso."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz do bruto a tabela de universo fixo (16 concessionárias) e os KPIs: iguais ao exibido. Tabelas do gráfico e resumo da série de separação iguais a perdas_nacional.csv (0 divergências).",
+      "Tabela das 19 distribuidoras igual a perdas_distribuidoras.csv; XLSX e CSV exportados do site iguais entre si.",
+      "Rótulos das barras e tabela de dados do gráfico destoam da tabela principal em 0,01 p.p. em 2 de 19 (NEOENERGIA BRASÍLIA e COSERN).",
+      "A ficha Comprove da não técnica traz fórmula, universo e teste de universo fixo, com código d329b83c69a5+alterado."
+     ],
+     "atendidos": [
+      "Fonte, arquivo com sha256, captura e versão em Sobre este dado e na ficha",
+      "Fórmulas e variáveis por indicador, com filtros e exclusões",
+      "Balanço mensal e CSV relacionados para auditoria",
+      "Tabela e gráfico equivalentes e exportação com a mesma população",
+      "Limitações da série e do leiaute de 2024 declaradas"
+     ],
+     "problemas": [
+      "Código com alterações fora de commit na ficha; a reprodução oficial depende de arquivos não públicos.",
+      "Diferença de 0,01 p.p. entre rótulo da barra e tabela principal, sem nota nesta página.",
+      "Conferência externa só de 2024 e da edição anterior; não confronta a técnica com a Figura 7 do relatório 2026/2025."
+     ],
+     "justificativa": "Os valores reproduzem do arquivo bruto e a paridade com CSV e XLSX é total. Mantêm a nota abaixo de 9 o código publicado com árvore suja, a conferência externa desatualizada e rótulos de barra que somam parcelas arredondadas."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 6 medições, status 200, 0 erros de console, 0 falhas de rede; carga de 1,07 a 1,62 s (laboratório); HTML 327 KB, JS 526 a 728 KB.",
+      "9 controles exercitados sem falha e 49 links internos sem quebra.",
+      "O teste de composição aceita diferença de 0,02 p.p. entre soma das partes e total, o que deixa passar o rótulo de 0,01.",
+      "Não medido: campo (LCP, INP, CLS) e leitor de tela."
+     ],
+     "atendidos": [
+      "Sem erro de console nem falha de rede",
+      "HTML de 327 KB, abaixo da meta",
+      "Testes de composição que fecha, decomposição e universo fixo",
+      "Validação crítica que bloqueia gold inválida",
+      "Protocolo de medição documentado"
+     ],
+     "problemas": [
+      "Medida só de laboratório, sem dado de campo.",
+      "A tolerância do teste esconde a divergência de rótulo de 0,01 p.p."
+     ],
+     "justificativa": "Página leve, sem erros, com testes de composição e universo fixo. Medida só de laboratório e tolerância de teste que deixa passar a divergência de 0,01 p.p. nos rótulos mantêm a nota abaixo de 9."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "comp-tecnica-regulatoria",
+     "gravidade": "media",
+     "criterios": [
+      "G",
+      "F",
+      "H"
+     ],
+     "onde": "Abertura, KPI de perdas técnicas e bloco Como interpretar",
+     "descricao": "A técnica das barras é o valor do SAMP chamado de percentual regulatório aplicado à injetada. Contra a Figura 7 do relatório ANEEL 2026/2025, só 9 de 18 distribuidoras ficam em até 0,15 p.p. (COSERN 7,36% contra 9,2%, COELBA 9,64% contra 10,8%, ELETROCAR 6,62% contra 5,2%, COCEL 5,78% contra 4,2%). A não técnica, residual, herda a diferença.",
+     "sugestao": "Chamar de técnica aplicada no SAMP e mostrar a regulatória da Figura 7 ao lado."
+    },
+    {
+     "id": "comp-sem-referencia-nacional",
+     "gravidade": "media",
+     "criterios": [
+      "E",
+      "F"
+     ],
+     "onde": "Barras e KPIs de composição",
+     "descricao": "A separação existe para 18 a 19 distribuidoras (cerca de 32% da energia). A ANEEL publica a composição de todas as concessionárias em 2025 (técnica 7,2% e não técnica 7,1% da injetada; por região na Figura 5) e a página não a usa como referência.",
+     "sugestao": "Mostrar o nacional oficial como contexto separado do agregado das 18."
+    },
+    {
+     "id": "comp-rotulo-barra",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Rótulo do total das barras e tabela de dados do gráfico",
+     "descricao": "O total no fim da barra soma componentes já arredondados e destoa da tabela em 2 de 19 (NEOENERGIA BRASÍLIA 14,22 contra 14,23; COSERN 10,45 contra 10,44) sem aviso; o teste aceita diferença de 0,02.",
+     "sugestao": "Rotular o total da tabela ou explicar o efeito como faz a página de custo."
+    },
+    {
+     "id": "comp-kpi-18-19",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "KPI de perdas técnicas e resposta do painel",
+     "descricao": "Dizem que 18 de 51 concessionárias publicaram a técnica nos 12 meses; foram 19, e ELFSM saiu porque a decomposição não fecha (resíduo de 457 MWh).",
+     "sugestao": "Separar as que publicaram (19) das que fecham (18)."
+    },
+    {
+     "id": "comp-universo-fixo",
+     "gravidade": "baixa",
+     "criterios": [
+      "E",
+      "F"
+     ],
+     "onde": "Tabela de universo fixo",
+     "descricao": "A tendência comparável vem de 16 concessionárias que seguem publicando a separação (cerca de 32% do mercado BT), em geral grandes, e não representa as demais.",
+     "sugestao": "Dizer o perfil do grupo (porte e regiões)."
+    }
+   ],
+   "nao_verificado": [
+    "Escalonamento da perda técnica pela STD (PRODIST módulo 7): não consultado; a divergência com a Figura 7 foi medida, a causa não.",
+    "Figuras 5, 7 e 10 do relatório ANEEL lidas visualmente em cópia de terceiro.",
+    "Desempenho em campo e leitor de tela real."
+   ]
+  },
+  "/setor-eletrico/perdas/custo-e-contexto": {
+   "paineis": [
+    "P058"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 7.0,
+     "evidencia": [
+      "Painéis: componentes de perdas na tarifa B1 (80 vigentes, tabela de 115), dispersão renda e perdas (52 e 46 concessionárias) e tabela de território (104).",
+      "Recalculei do arquivo oficial de componentes (vintage de 08/10): 62 processos vigentes em comum, 0 divergências acima de 0,011 R$/MWh em perdas e tarifa; 21 processos de 22 a 30/09 não estavam na captura do site (27/09).",
+      "Sem história por processo na página, sem mediana ou distribuição do custo; custo total em R$ indisponível, embora o relatório ANEEL 2026/2025 traga R$ 11,7 bi (técnicas), R$ 7,9 bi (não técnicas regulatórias) e R$ 11,5 bi (não técnicas reais).",
+      "Spearman −0,606 (52) e −0,377 (46) refeitos dos pontos da gold: iguais; taxas de 2022 iguais ao CSV; população, área e renda de Poços de Caldas, Ijuí e Lagarto iguais à API do IBGE."
+     ],
+     "atendidos": [
+      "Nível por distribuidora em R$/MWh e em % da tarifa, com as três componentes",
+      "Contexto social com ρ de Spearman, n e período declarados, sem causa",
+      "Território e população em tabela, com cobertura de municípios exclusivos",
+      "Vigência tratada: encerradas ficam fora do gráfico e as 23 ativas sem tarifa em vigor são declaradas",
+      "Limites explícitos: nominal, sem tributos, não é custo real nem total em reais"
+     ],
+     "problemas": [
+      "Custo total reconhecido em reais indisponível; a ANEEL publica totais nacionais e a glosa por distribuidora de grande porte (Figuras 14 e 15) que não aparecem.",
+      "Sem história do componente por processo na página (só no CSV) e sem distribuição (mediana, quartis) do custo entre distribuidoras.",
+      "Sem referência regulatória (percentual) para ler o peso das perdas na tarifa.",
+      "Contexto por município inteiro atribui 11,7 milhões de habitantes à CERIS (24,7 GWh de injetada), que a tabela ordenada por população põe em 4º."
+     ],
+     "justificativa": "Cobre nível, composição, contexto social e território com valores que reproduzem. Faltam o custo total em reais, a história e a distribuição do custo e uma referência regulatória, e a leitura territorial por município inteiro distorce áreas pequenas."
+    },
+    "F": {
+     "nota": 6.0,
+     "evidencia": [
+      "Ordenação por R$/MWh nominal de processos de nov/2025 a set/2026 (vigentes em 01/10/2026); na tabela, CERR (processo de 2014 a 2016, 164,27 R$/MWh, 45,57%) aparece em 2º.",
+      "A participação das perdas divide pela Base Econômica; na Tarifa de Aplicação o máximo seria 29,07% (ÂMBAR AMAZONAS) e a mediana sobe de 5,95% para 6,77% nas 80 vigentes.",
+      "Sem mediana, quartis ou pares; só mínimo (CERPRO) e máximo (ÂMBAR AMAZONAS) no texto.",
+      "A dispersão compara 52 concessionárias de 2022 por renda média da área, com ρ e declaração de não causalidade."
+     ],
+     "atendidos": [
+      "Valores nominais e sem tributos declarados; vigência por processo",
+      "Associação medida com estatística adequada (ρ de Spearman), sem reta ajustada",
+      "Universo e cobertura (80 de 115; 23 sem tarifa em vigor) visíveis",
+      "Ausência de causalidade declarada",
+      "Nenhum benchmark internacional usado"
+     ],
+     "problemas": [
+      "Tarifa e participação calculadas sobre a Base Econômica, que a ANEEL define como de uso estritamente tarifário; a base não é nomeada junto do número.",
+      "Mínimo e máximo como única referência; sem mediana, quartis ou pares por tipo e porte.",
+      "A tabela mistura processos de 2014 e 2026 na mesma ordenação por valor nominal.",
+      "Nenhuma referência regulatória (por exemplo a participação das não técnicas nas tarifas residenciais, Figura 16 da ANEEL) para situar os valores."
+     ],
+     "justificativa": "A comparação entre distribuidoras é coerente no mesmo critério, mas a régua usa a base econômica sem nomeá-la, só há mínimo e máximo, a tabela mistura processos de 2014 e 2026 e não há referência regulatória para situar os valores."
+    },
+    "G": {
+     "nota": 6.5,
+     "evidencia": [
+      "Na Tarifa de Aplicação, ÂMBAR AMAZONAS (REH 3.588/2026) tem perdas de 254,57 R$/MWh e 29,07% de 875,71; a página mostra 192,66 e 22,01% de 875,53 (Base Econômica). CEMIG-D: 846,00 na página contra 903,29 R$/MWh aplicados.",
+      "A Tarifa B1 da página difere da aplicada em mais de 5% em 44 de 84 processos vigentes, até 87% (COOPERSUL 1.380,72 contra 737,71; CELETRO 1.381,70 contra 969,25). Dicionário ANEEL: aplicação é a do faturamento; base econômica e CVA, 'estritamente para cálculo tarifário'.",
+      "27 vigentes têm TUSD_PNT igual a 0 na fonte (quase todas permissionárias): TUSD_PT vale em mediana 15,9% da TE contra 11,6% nas demais, perto de PT mais PNT delas (16,3%); a página mostra técnicas e não técnicas 0,00.",
+      "O zero de TUSD_PNT é o valor do arquivo bruto (CELETRO, CERPRO e COOPERLUZ conferidos), não ausência tratada como zero."
+     ],
+     "atendidos": [
+      "Componentes de perdas somam o declarado e a participação divide pela soma de TUSD e TE do mesmo processo",
+      "Nominal, sem tributos e vigência na data; processo encerrado nunca apresentado como em vigor",
+      "Associação entre áreas com renda ponderada por moradores e perdas do mesmo ano do Censo",
+      "Perdas na Rede Básica identificadas como terceira componente",
+      "Limitação dita: não é custo das perdas reais nem total em reais"
+     ],
+     "problemas": [
+      "A Base Econômica é apresentada como 'Tarifa B1'; coluna, gráfico e frases não a nomeiam (só a gaveta Sobre este dado), e a tarifa faturada difere em mais de 5% em 44 de 84 processos.",
+      "Zero de não técnicas em 27 distribuidoras sem aviso; possível agregação das perdas totais na componente técnica das permissionárias (não verificado em fonte primária).",
+      "As perdas somam distribuição e Rede Básica sob a pergunta de perdas na distribuição, o que é dito só na legenda.",
+      "A área por município inteiro atribui a população de São Paulo à CERIS."
+     ],
+     "justificativa": "Os componentes e a vigência reproduzem do arquivo oficial. A tarifa e a participação usam a base econômica, de cálculo e não faturada, sem rotulá-la, com diferença de até 87%, e o zero de não técnicas em permissionárias não é explicado. Isso derruba a precisão setorial."
+    },
+    "H": {
+     "nota": 7.5,
+     "evidencia": [
+      "Refiz do arquivo oficial os componentes de 62 processos vigentes: 0 divergências. O perdas_tarifa_b1.csv traz as duas bases, mas a página usa só a econômica.",
+      "Fichas Comprove por distribuidora (192,66 R$/MWh) e do ρ, com arquivo e sha256; população, área e renda do IBGE conferidas em 3 municípios.",
+      "O filtro de base econômica só aparece na gaveta Sobre este dado (Transformações), sem definição; a coluna se chama Tarifa B1.",
+      "21 processos de permissionárias iniciados de 22 a 30/09/2026 estão no arquivo de 08/10, mas a página, capturada em 27/09, os trata como vigência encerrada; o atraso é declarado."
+     ],
+     "atendidos": [
+      "Fonte e arquivo com sha256, datas de publicação e captura",
+      "Fórmula, componentes e vigência por processo, com resolução homologatória",
+      "Fichas Comprove para valor por distribuidora e para o ρ, com passos de reprodução",
+      "Tabelas e exportação com a mesma população, e CSV com as duas bases",
+      "Limitações e bloqueio do custo total registrados"
+     ],
+     "problemas": [
+      "A base da tarifa só está na gaveta, sem definição, e o rótulo da coluna leva a procurar a tarifa homologada, que não bate.",
+      "Código d329b83c69a5+alterado e reprodução que depende de arquivos não públicos.",
+      "A conferência com o relatório da ANEEL não cobre custo nem tarifa."
+     ],
+     "justificativa": "Os valores reproduzem do arquivo oficial e as fichas são completas. A base econômica da tarifa só aparece numa gaveta, sem definição, sob um rótulo que sugere a tarifa homologada, e o código publicado tem árvore suja."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 6 medições, status 200, 0 erros de console e 0 falhas de rede; carga de 1,06 a 1,80 s (laboratório); HTML 504 KB, JS 654 a 728 KB.",
+      "11 controles exercitados sem falha e 51 links sem quebra; 2 alvos abaixo de 44 px.",
+      "Testes TS: componentes somam a componente de perdas, só vigentes no gráfico, 23 ativas encerradas, ρ com n; pipeline testa vigência e filtro de baixa renda.",
+      "Não medido: campo (LCP, INP, CLS) e leitor de tela."
+     ],
+     "atendidos": [
+      "Sem erro de console nem falha de rede",
+      "HTML de 504 KB, abaixo da meta, e dados lidos no servidor",
+      "Testes de soma de componentes, vigência e associação",
+      "Validação crítica que bloqueia gold inválida",
+      "Protocolo de medição documentado"
+     ],
+     "problemas": [
+      "Medida só de laboratório.",
+      "Os testes validam a soma e a vigência, não a semântica da base tarifária nem o zero de não técnicas."
+     ],
+     "justificativa": "Página sem erros de console ou rede, peso dentro da meta e testes de soma e vigência. Medida só de laboratório e testes que não cobrem a base tarifária mantêm abaixo de 9."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "ressalva essencial escondida",
+     "descricao": "A coluna 'Tarifa B1 (TUSD + TE)', 'Perdas na tarifa (%)', o gráfico e as frases usam a Base Econômica do arquivo de componentes, que a ANEEL define como 'estritamente para cálculo tarifário', e não a Tarifa de Aplicação, que é a faturada. A base só é nomeada dentro da gaveta Sobre este dado. A tarifa da página difere da aplicada em mais de 5% em 44 de 84 processos, até 87%, e muda os extremos (ÂMBAR AMAZONAS 254,57 R$/MWh e 29,07% na aplicação, 192,66 e 22,01% na página).",
+     "evidencia": "Arquivo oficial componentes-tarifarias-2026 (baixado em 09/10/2026) e perdas_tarifa_b1.csv: Base Econômica e Tarifa de Aplicação por processo; dicionário dm-componentes-tarifarias.pdf, campo DscBaseTarifaria; filtro 'base econômica' em pipeline/energia/modulos/perdas.py e na gaveta da página."
+    }
+   ],
+   "achados": [
+    {
+     "id": "custo-base-economica",
+     "gravidade": "alta",
+     "criterios": [
+      "G",
+      "H",
+      "F"
+     ],
+     "onde": "Coluna Tarifa B1, Perdas na tarifa (%), gráfico de barras, resposta e frase da distribuidora escolhida",
+     "descricao": "Os valores usam a Base Econômica (cálculo tarifário). Na Tarifa de Aplicação, a faturada: ÂMBAR AMAZONAS 254,57 R$/MWh e 29,07% de 875,71 (página: 192,66 e 22,01% de 875,53); CEMIG-D 903,29 R$/MWh (página: 846,00); CELETRO 969,25 (página: 1.381,70); a mediana da participação sobe de 5,95% para 6,77%. A base só é nomeada na gaveta Sobre este dado.",
+     "sugestao": "Usar a Tarifa de Aplicação como base principal ou mostrar as duas; nomear a base na coluna, no gráfico e nas frases e explicar o que é."
+    },
+    {
+     "id": "custo-pnt-zero",
+     "gravidade": "media",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Colunas Perdas técnicas e não técnicas (R$/MWh) e Não técnicas na tarifa (%) das permissionárias",
+     "descricao": "27 das 80 vigentes (quase todas permissionárias) têm TUSD_PNT igual a 0 no arquivo da fonte; nelas a TUSD_PT vale em mediana 15,9% da TE, contra 11,6% nas demais e 16,3% de PT mais PNT delas, o que sugere que a componente técnica reúne perdas totais. A página mostra técnicas e não técnicas 0,00 sem aviso. Não verificado no PRORET.",
+     "sugestao": "Explicar o zero como valor da fonte e, se o PRORET confirmar, rotular a componente das permissionárias como perdas totais."
+    },
+    {
+     "id": "custo-tabela-eras",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "Tabela de componentes de perdas na tarifa B1, ordenação padrão",
+     "descricao": "A tabela ordenada por R$/MWh nominal põe CERR (processo de 2014 a 2016, 164,27 R$/MWh, 45,57%) em 2º lugar, entre processos de 2026; o gráfico exclui as encerradas, a tabela não.",
+     "sugestao": "Ordenar só as vigentes por padrão ou separar as encerradas."
+    },
+    {
+     "id": "custo-ceris-populacao",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Tabela Território e contexto social, ordenação padrão por população",
+     "descricao": "A soma por município inteiro faz a CERIS (24,7 GWh de injetada) aparecer com 11,7 milhões de habitantes (São Paulo capital) e em 4º lugar; a nota diz municípios inteiros, mas a ordem padrão induz leitura errada.",
+     "sugestao": "Ordenar por população em municípios só da distribuidora ou destacar a cobertura exclusiva."
+    },
+    {
+     "id": "custo-total-reais",
+     "gravidade": "media",
+     "criterios": [
+      "E"
+     ],
+     "onde": "Bloco de limitações do painel de custo",
+     "descricao": "O custo total em reais fica indisponível. O relatório ANEEL 2026/2025 traz R$ 11,7 bi (técnicas), R$ 7,9 bi (não técnicas regulatórias) e R$ 11,5 bi (não técnicas reais) em 2025 e a glosa por distribuidora de grande porte (Figura 14).",
+     "sugestao": "Citar os totais nacionais oficiais como contexto, com fonte e data."
+    },
+    {
+     "id": "custo-sem-distribuicao",
+     "gravidade": "media",
+     "criterios": [
+      "E",
+      "F"
+     ],
+     "onde": "Resposta e gráfico de barras",
+     "descricao": "Só mínimo (CERPRO) e máximo (ÂMBAR AMAZONAS); sem mediana, quartis ou evolução por processo, embora o CSV tenha a história.",
+     "sugestao": "Mostrar mediana e quartis das vigentes e a série do componente da escolhida."
+    }
+   ],
+   "nao_verificado": [
+    "Significado de TUSD_PNT igual a 0 nas permissionárias: PRORET módulo 8 não consultado; a hipótese vem da comparação entre componentes.",
+    "Componentes de processos iniciados depois da captura do site (27/09): comparei só os processos presentes nos dois arquivos.",
+    "Desempenho em campo e leitor de tela real."
+   ]
+  },
+  "/setor-eletrico/perdas/regulatorio": {
+   "paineis": [
+    "P057"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 6.0,
+     "evidencia": [
+      "49 de 123 distribuidoras têm trecho de 6 meses ou mais; em 24 delas o trecho mais recente terminou antes de 2024 (de 2006 a 2023) e 22 só têm trechos curtos; recalculei no CSV.",
+      "A página não compara realizado e regulatório: técnica 'não se aplica' e não técnica 'indisponível nesta publicação'.",
+      "A cobertura mínima da família exige referência regulatória compatível; o relatório ANEEL 2026/2025 traz o percentual técnico homologado de 2025 de 51 concessionárias (3,7% a 11,8%) e a não técnica real e regulatória por UF (Figura 8).",
+      "Segmentos refeitos do bruto: ENEL RJ 8,001% por 37 meses, CEMIG-D 8,014% (jun a dez/2023), EQUATORIAL PA 11,648% (19 meses) e CERTAJA 6,420% (66 meses), todos exatos."
+     ],
+     "atendidos": [
+      "Evolução do percentual técnico por trecho, com início de vigência de REH quando coincide",
+      "Degraus mensais da distribuidora escolhida e tabela de todos os trechos (111 linhas)",
+      "Limites da inferência e do que não se compara declarados",
+      "Estado de cada comparação (disponível, não se aplica, indisponível) explícito"
+     ],
+     "problemas": [
+      "Falta a dimensão central da página, a referência regulatória compatível (técnica homologada e não técnica), em parte pública no relatório ANEEL 2026/2025.",
+      "Metade dos 'trechos mais recentes' é anterior a 2024 e não mostra o valor atual: CEMIG-D 8,014% de 2023 contra 7,2% oficial de 2025.",
+      "Cobre 49 de 123 distribuidoras; 22 só têm trechos curtos.",
+      "Não relaciona o percentual ao custo por distribuidora na mesma tela (só link)."
+     ],
+     "justificativa": "Mostra a evolução por trecho e declara bem o que não compara, mas falta a referência regulatória que dá nome à página, metade dos trechos mais recentes é anterior a 2024 e só 49 de 123 distribuidoras entram. O painel fica funcional, com lacuna central."
+    },
+    "F": {
+     "nota": 5.5,
+     "evidencia": [
+      "Gráfico: diferença do trecho mais recente menos o anterior de referência; tabela: 'Troca contra o trecho anterior' contra trecho curto ou mês anterior. Divergem em 14 de 49 (EQUATORIAL PA −1,014 no gráfico e +0,202 na tabela; CERTAJA −5,580 e −0,640; ENEL CE sem dado e −1,648).",
+      "Faixa 'regulatória' de 1,000% (CELETRO) a 20,360% (COOPERLUZ) contra 3,7% a 11,8% da Figura 7 da ANEEL para as 51 concessionárias em 2025; CELETRO repete 1,000% por 43 meses.",
+      "O ranking compara trechos mais recentes de eras diferentes (set/2006 a mar/2026) e pares separados por até uma década (CERTAJA 2009 e 2019 a 2025).",
+      "SAMP contra regulatório de 2025 (Figura 7) nos 12 trechos que terminam de set/2024 em diante: 8 em até 0,05 p.p.; ELETROCAR 6,60% contra 5,2%, ÂMBAR ENERGIA RR 7,62% contra 9,3%, DMED 4,43% contra 4,9%, ÂMBAR AMAZONAS 7,77% contra 8,0%."
+     ],
+     "atendidos": [
+      "Referência declarada como o trecho anterior da própria distribuidora, não como meta",
+      "Natureza estimada e inferência declaradas",
+      "Mudança de parâmetro separada de desempenho",
+      "Nenhum benchmark internacional usado"
+     ],
+     "problemas": [
+      "Sem limite ou percentual regulatório (técnico homologado ou não técnico) para comparar.",
+      "Duas definições de 'trecho anterior' (gráfico e tabela) com resultado diferente em 14 de 49.",
+      "Ranking e faixa misturam eras e entidades (cooperativas com percentuais redondos) e rotulam como regulatório o que não coincide com a Figura 7.",
+      "A diferença é apresentada como mudança entre processos tarifários mesmo entre trechos separados por vários anos ou sem REH (39 de 49)."
+     ],
+     "justificativa": "É honesta sobre a referência usada (trecho anterior da própria distribuidora), mas não tem limite regulatório, tem duas definições de anterior que divergem em 14 de 49, mistura eras no ranking e rotula como regulatória uma faixa de 1% a 20,4%, contra 3,7% a 11,8% oficiais."
+    },
+    "G": {
+     "nota": 5.5,
+     "evidencia": [
+      "Frase da distribuidora escolhida, reproduzida no navegador: EQUATORIAL PA '+0,202 p.p. em relação ao trecho anterior (12,662%)' para 11,648% (real −1,014); CERTAJA '−0,640 (12,000%)' para 6,420% (−5,580); ERO '0,000 (12,740%)' para 11,150% (−1,590); CERFOX '+1,010 (4,000%)' para 4,000%.",
+      "Mesmo erro em CEEE-D ('−0,005 (7,264%)' para 8,030%), ELEKTRO ('0,000 (5,920%)' para 5,778%) e ÂMBAR AMAZONAS ('+0,020 (7,770%)' para 7,770%): 7 de 49. A tabela exportada traz ainda troca de −49,709 p.p. na CERFOX, contra a razão de um mês isolado.",
+      "A página diz que técnica realizada contra regulatória daria zero 'por construção'; a Figura 7 difere do SAMP em mais de 0,8 p.p. em 5 de 18, e a nota 4 do relatório cita escalonamento da STD.",
+      "Contagens conferidas no CSV: 49 com referência, 22 só curtos, 10 trechos recentes com REH (todas com troca de ao menos 0,02 p.p.), 111 linhas, fim de set/2006 a mar/2026."
+     ],
+     "atendidos": [
+      "Inferência marcada como estimada e não lida de ato homologatório",
+      "Trechos de 6 meses ou mais; curtos fora da referência",
+      "Mês de troca sem valor, nunca repetido",
+      "REH associada só com troca real e coincidência de datas, dita como coincidência",
+      "Ausência escrita como sem dado"
+     ],
+     "problemas": [
+      "Frase da distribuidora escolhida com variação aritmeticamente errada em 7 de 49 (valor e sinal): mistura a troca contra trecho curto com o percentual do trecho de referência anterior.",
+      "Afirma que a técnica realizada contra a regulatória daria zero por construção; a diferença para o regulatório de 2025 passa de 0,8 p.p. em 5 de 18.",
+      "Rotula como regulatório o valor escalonado do SAMP e o apresenta como mudança de parâmetro entre processos.",
+      "A primeira troca de cada série é calculada contra a razão do mês anterior e chamada de troca contra o trecho anterior (ENEL CE −1,648; CERFOX −49,709)."
+     ],
+     "justificativa": "Erro aritmético verificado nas frases de 7 distribuidoras, afirmação de igualdade 'por construção' que a Figura 7 contradiz em vários casos e rótulo regulatório para um valor escalonado pela STD. A inferência por trechos, porém, reproduz do bruto e é marcada como estimada."
+    },
+    "H": {
+     "nota": 6.0,
+     "evidencia": [
+      "Segmentos de 4 distribuidoras refeitos do bruto: exatos. O CSV de trechos tem 331 linhas (169 de referência).",
+      "Gráfico, tabela exportada e frase divergem: Diferença do gráfico contra Troca da tabela em 14 de 49; frase errada em 7 de 49.",
+      "Ficha por distribuidora (perdas_evidencias_tecnica.json, 49) com razões mensais mínima e máxima e REH; código d329b83c69a5+alterado.",
+      "Contagens da página (49, 22 só curtos, 10 com REH, 111 linhas) batem com o CSV."
+     ],
+     "atendidos": [
+      "Fonte, fórmula, regra de trecho e limitações na gaveta e na ficha",
+      "CSV de trechos com classe curto e referência e com a REH associada",
+      "Contagens e períodos da página batem com o CSV",
+      "Bloqueio externo registrado com tentativas, datas e dependência"
+     ],
+     "problemas": [
+      "Gráfico, tabela e frase usam definições diferentes de 'trecho anterior' e divergem em 14 de 49.",
+      "Frase com variação errada em 7 de 49.",
+      "Ficha com código de árvore suja; reprodução depende de arquivos não públicos.",
+      "A conferência externa se limita ao relatório 2025/2024 (cópia de terceiro) e não usa a Figura 7 de 2026/2025."
+     ],
+     "justificativa": "Os trechos reproduzem do arquivo bruto e há ficha, CSV e bloqueio documentados. A coerência entre gráfico, tabela e frase falha em 14 de 49 distribuidoras e a frase está errada em 7, o que pesa mais que a documentação."
+    },
+    "L": {
+     "nota": 7.0,
+     "evidencia": [
+      "objetivo.json: 6 medições, status 200, 0 erros de console e 0 falhas de rede; carga de 0,98 a 1,83 s (laboratório); HTML 323 KB, JS 655 a 728 KB.",
+      "A interação de escolher a distribuidora gera frases com aritmética errada em 7 de 49. Os testes TS fixam CEMIG-D (8,014 e 8,766) e a resposta geral, mas não a frase por distribuidora nem a coerência entre gráfico e tabela.",
+      "10 controles exercitados sem falha e 48 links sem quebra.",
+      "Não medido: campo (LCP, INP, CLS) e leitor de tela."
+     ],
+     "atendidos": [
+      "Sem erro de console nem falha de rede",
+      "Página leve (323 KB) e dados por distribuidora sob demanda",
+      "Testes de degraus, trechos e REH com valores esperados",
+      "Validação crítica que bloqueia gold inválida",
+      "Protocolo de medição documentado"
+     ],
+     "problemas": [
+      "Cálculo textual errado em 7 de 49 (defeito de interação ao escolher a distribuidora).",
+      "Os testes não cobrem a frase por distribuidora nem a coerência entre gráfico e tabela.",
+      "Medida só de laboratório."
+     ],
+     "justificativa": "Leve e sem erros de console, mas a interação de escolher a distribuidora gera frases com cálculo errado em 7 de 49, e os testes não pegam isso nem a divergência entre gráfico e tabela. Medida só de laboratório."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "valor incorreto",
+     "descricao": "A frase da distribuidora escolhida informa variação errada em 7 de 49: EQUATORIAL PA '+0,202 p.p. (trecho anterior 12,662%)' para 11,648%, real −1,014; CERTAJA −0,640 contra −5,580; ERO 0,000 contra −1,590; CERFOX +1,010 com os dois trechos em 4,000%; ÂMBAR AMAZONAS +0,020 com os dois em 7,770%; CEEE-D −0,005 contra +0,766; ELEKTRO 0,000 contra −0,142.",
+     "evidencia": "Playwright contra http://localhost:3101/setor-eletrico/perdas/regulatorio?d=<cnpj>, elemento [data-resposta=regulatorio-distribuidora], 7 casos lidos. Causa em PerdasRegulatorio.tsx (linhas 108 a 111): usa troca_pp, contra trecho curto ou mês anterior, junto de anterior, o trecho de referência."
+    },
+    {
+     "tipo": "divergência entre gráfico, tabela e exportação",
+     "descricao": "A diferença do gráfico (trecho mais recente menos o anterior de referência) não é a coluna 'Troca contra o trecho anterior' da tabela e do CSV exportado: 14 de 49 divergem (7 com valores diferentes, como EQUATORIAL PA −1,014 contra +0,202, e 7 'sem dado' no gráfico com número na tabela, como ENEL CE −1,648). A tabela traz ainda −49,709 p.p. na CERFOX.",
+     "evidencia": "perdas_tecnicas_regulatorias.csv (classe referencia) comparado com o texto do gráfico e com o CSV exportado da tabela (111 linhas); PerdasRegulatorio.tsx usa l.anterior no gráfico e s.troca_pp na tabela."
+    },
+    {
+     "tipo": "barreira em tarefa essencial",
+     "descricao": "Comparar distribuidoras com referência regulatória de perímetro compatível, parte da tarefa da unidade, não é possível: técnica 'não se aplica' e não técnica 'indisponível'. A página explica com tentativas e datas, mas a rubrica não aceita a explicação no lugar da entrega; há fonte pública parcial (relatório ANEEL 2026/2025, Figuras 7, 8, 10 e 16) que a página não usa.",
+     "evidencia": "Reproduzi o bloqueio em 09/10/2026: 403 com cf-mitigated em git.aneel.gov.br, www2.aneel.gov.br e calculostarifarios; conexão encerrada em portalrelatorios. O CKAN da ANEEL não tem conjunto de perdas regulatórias (a busca 'perdas' devolve SAMP, Subsídios e BDGD). Relatório 2026/2025 lido em cópia hospedada, sha256 eca8f00b..."
+    }
+   ],
+   "achados": [
+    {
+     "id": "reg-frase-aritmetica",
+     "gravidade": "alta",
+     "criterios": [
+      "G",
+      "H",
+      "L"
+     ],
+     "onde": "Frase da distribuidora escolhida (?d=), painel Percentual técnico trecho a trecho",
+     "descricao": "A frase junta a troca contra o trecho adjacente (às vezes curto) com o percentual do trecho de referência anterior e afirma variações erradas em 7 de 49 distribuidoras (EQUATORIAL PA, CERTAJA, ERO, CERFOX, ÂMBAR AMAZONAS, CEEE-D, ELEKTRO), com valor e sinal trocados em alguns.",
+     "sugestao": "Calcular a diferença na interface a partir de atual e anterior de referência e testar a frase para todas as 49."
+    },
+    {
+     "id": "reg-grafico-vs-tabela",
+     "gravidade": "alta",
+     "criterios": [
+      "F",
+      "H"
+     ],
+     "onde": "Gráfico de pontos pareados e coluna 'Troca contra o trecho anterior' da tabela e do CSV",
+     "descricao": "Duas definições de trecho anterior: o gráfico usa o anterior de referência; a tabela usa o trecho adjacente ou a razão do mês anterior. Divergem em 14 de 49 e a tabela traz −49,709 p.p. na CERFOX e −7,91 na CERAL ARARUAMA.",
+     "sugestao": "Uma só definição em gráfico, tabela, frase e CSV; primeira troca sem valor."
+    },
+    {
+     "id": "reg-sem-referencia",
+     "gravidade": "alta",
+     "criterios": [
+      "E",
+      "F"
+     ],
+     "onde": "Quadro O que esta página compara e o que não compara",
+     "descricao": "A referência regulatória, razão de ser da página, não existe. A Figura 7 do relatório ANEEL 2026/2025 dá o percentual técnico homologado de 2025 de 51 concessionárias e a Figura 8 a não técnica real e regulatória por UF.",
+     "sugestao": "Transcrever com proveniência ao menos a técnica de 2025 e comparar com o SAMP sem chamá-lo de regulatório."
+    },
+    {
+     "id": "reg-trecho-antigo",
+     "gravidade": "alta",
+     "criterios": [
+      "E",
+      "F"
+     ],
+     "onde": "Gráfico ordenado por trecho mais recente e resposta do painel",
+     "descricao": "Em 24 de 49 o trecho mais recente terminou antes de 2024 (CELESC 2006, RGE 2011, CEMIG-D dez/2023) e o gráfico os ordena junto de trechos de 2026. CEMIG-D aparece com 8,014% enquanto a ANEEL divulga 7,2% para 2025.",
+     "sugestao": "Marcar visualmente o fim do trecho, separar vigentes de encerrados e não ordenar por valor misturando eras."
+    },
+    {
+     "id": "reg-faixa-nao-regulatoria",
+     "gravidade": "media",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "Resposta do painel (faixa de 1,000% a 20,360%)",
+     "descricao": "A faixa vem de CELETRO (1,000% por 43 meses, sem REH) e COOPERLUZ (20,360%), enquanto o regulatório de 2025 das 51 concessionárias vai de 3,7% a 11,8%. Valores redondos e constantes de cooperativas dificilmente são percentuais homologados. Não verificado nos atos.",
+     "sugestao": "Separar concessionárias e permissionárias e não chamar de regulatório o que não tem REH."
+    },
+    {
+     "id": "reg-por-construcao",
+     "gravidade": "media",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Linha Perda técnica realizada contra o percentual regulatório: Não se aplica",
+     "descricao": "A página afirma que a diferença seria zero por construção. Contra a Figura 7 de 2025, o SAMP difere de 0,3 a 1,8 p.p. em vários casos (ELETROCAR 6,60% contra 5,2%, ÂMBAR ENERGIA RR 7,62% contra 9,3%), e a nota 4 do relatório fala em escalonamento da STD.",
+     "sugestao": "Trocar 'zero por construção' por 'o SAMP usa percentual escalonado por ano' e mostrar a diferença para a Figura 7."
+    }
+   ],
+   "nao_verificado": [
+    "Se os percentuais de 1,000% (CELETRO) e 20,360% (COOPERLUZ) constam de REH: os atos não foram consultados.",
+    "Escalonamento da perda técnica pela STD (PRODIST módulo 7) não consultado.",
+    "Figura 7 do relatório ANEEL lida visualmente em cópia de terceiro; transcrição conferida por duas leituras."
+   ]
+  }
+ },
+ "achados_entre_paginas": [
+  "Denominador de 2025: a página usa a injetada de referência (612,7 TWh) e a ANEEL, no relatório 2026/2025, a injetada publicada (cerca de 632 TWh): 14,75% contra 14,3% oficial. A conferência das páginas usa a edição 2025/2024, por cópia de terceiro, e só para 2024.",
+  "Nenhuma página traz referência regulatória: o percentual técnico homologado de 2025 por concessionária (Figura 7), a não técnica real e regulatória ponderada (16,2% e 11,2% do BT) e por UF (Figuras 8 e 10) estão públicos em figuras e não são usados.",
+  "A técnica do SAMP é chamada de percentual regulatório do processo tarifário em títulos, verbetes e definições, mas a ANEEL descreve escalonamento anual pela STD e a Figura 7 difere do SAMP em mais de 0,8 p.p. em 5 de 18 distribuidoras (COSERN 9,2% contra 7,36%).",
+  "Textos gerados com contagem de universo errada ou ambígua: soma nacional de 51 concessionárias em técnica e não técnica (usa 18), '18 de 51 publicaram a técnica' (foram 19), 'sem dado' onde nenhuma foi excluída.",
+  "Bases e definições escolhidas dentro de gavetas ou do código, sem rótulo junto do número: base econômica da tarifa, 'trecho anterior' com duas definições, injetada de referência nos KPIs.",
+  "Comparações de eras diferentes na mesma ordenação: trecho mais recente de 2006 a 2026 no regulatório, tarifa de 2014 ao lado de 2026 no custo e território de 2026 para anos antigos no mapa (este declarado).",
+  "Rastreabilidade: toda ficha Comprove cita código d329b83c69a5+alterado (árvore suja) e a reprodução oficial exige silver e bronze não publicados; em compensação o sha256 do Parquet confere com o da ANEEL e os CSV mensais coincidem 100% com o arquivo bruto.",
+  "Os testes fixam os números do próprio projeto e a única reconciliação externa é a de 2024 contra a edição anterior; nenhum cobre a aritmética das frases de seleção, a coerência entre gráfico e tabela do regulatório nem a linha de universo."
+ ],
+ "limites_da_avaliacao": "Os hosts da ANEEL com o relatório e os percentuais regulatórios (git.aneel.gov.br, www2.aneel.gov.br, calculostarifarios, portalrelatorios) responderam 403 com desafio do Cloudflare ou encerraram a conexão em 09/10/2026. Li o relatório Perdas de Energia Elétrica na Distribuição 2026/2025 numa cópia hospedada em static.poder360.com.br (sha256 eca8f00b...), coerente com reportagem de 03/07/2026, e li as Figuras 3, 4, 5, 7, 8, 10 e 16 visualmente. Consultei diretamente o samp-balanco (CSV e Parquet), o arquivo de componentes tarifárias de 2026 e seu dicionário, o CKAN da ANEEL e a API do IBGE. Recalculei por código próprio, sem usar o pipeline do projeto. Não consultei o PRORET nem o PRODIST (escalonamento da técnica e significado de TUSD_PNT zero nas permissionárias ficam não verificados). Os componentes tarifários baixados são de 08/10 e posteriores à captura do site (27/09); comparei só os processos presentes nos dois. Desempenho vem de objetivo.json (laboratório, Chromium headless): não há dado de campo, leitor de tela real nem teste com usuários. Não executei testes nem build; li os testes."
+}

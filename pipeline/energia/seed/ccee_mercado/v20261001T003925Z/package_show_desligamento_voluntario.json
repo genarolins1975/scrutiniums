@@ -1,0 +1,131 @@
+{
+ "result": {
+  "author": "Gerência Jurídica de Penalidade e Desligamento - GJPD",
+  "author_email": "",
+  "creator_user_id": "2a2ea38a-463e-4151-ac0c-7c3e98318678",
+  "extras": [
+   {
+    "key": "Frequência de Atualização",
+    "value": "Mensal"
+   },
+   {
+    "key": "Referência de Publicação",
+    "value": "Primeira semana do mês"
+   },
+   {
+    "key": "Termo Legal",
+    "value": "O acesso a este site e/ou a utilização de conteúdos, dados e bases de dados nele disponibilizados se sujeita ao aceite dos termos e condições da licença aberta Creative Commons Attribution 4.0 International (CC-BY-4.0), bem como aos Termos de Uso do site e do aplicativo mobile (App) da CCEE (Link - https://www.ccee.org.br/en/web/guest/termos-de-uso). Ao utilizar esses recursos, você concorda em cumprir todos os requisitos dessa licença, que permitem que os reutilizadores distribuam, modifiquem, adaptem e desenvolvam o material sobre os dados, desde que seja atribuído o crédito apropriado ao criador (CCEE) e que sejam informadas as alterações. O Material Licenciado é disponibilizado no \"estado em que se encontra\" e \"como disponível\" apenas para fins informativos, sendo possível a interrupção da disponibilidade do conjunto de dados a qualquer momento e por qualquer motivo, sendo a sua utilização de livre iniciativa, não sendo atribuível qualquer tipo de responsabilização à CCEE por seu uso."
+   }
+  ],
+  "groups": [],
+  "id": "cfd8aff9-45ea-4e99-8008-bb656aa77fea",
+  "isopen": true,
+  "license_id": "CC-BY-4.0",
+  "license_title": "Creative Commons Attribution 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "maintainer": "Gerência Jurídica de Penalidade e Desligamento - GJPD",
+  "maintainer_email": "",
+  "metadata_created": "2026-01-09T21:31:48.494618",
+  "metadata_modified": "2026-09-28T19:33:34.913567",
+  "name": "desligamento_voluntario",
+  "notes": "Disponibilizar informações históricas referentes aos agentes que se desligaram voluntariamente da CCEE, com ou sem sucessão.\r\n",
+  "num_resources": 1,
+  "num_tags": 7,
+  "organization": {
+   "approval_status": "approved",
+   "created": "2026-01-08T22:32:20.194250",
+   "description": "A análise das contrapartes é uma etapa importante para a segurança de mercado. Para auxiliar nesta avaliação, a Câmara de Comercialização disponibiliza um boletim que permite a identificação dos agentes envolvidos em procedimentos de desligamento e o status em que se encontram.\nRessaltamos que é responsabilidade exclusiva dos agentes e demais interessados a obtenção de outros dados para realização de análises para tomada de decisões, definição de estratégias de atuação, assunção de compromissos e obrigações.",
+   "id": "a09d6e8f-6c0f-414b-b6ce-e5337d936f74",
+   "image_url": "",
+   "is_organization": true,
+   "name": "desligamento",
+   "state": "active",
+   "title": "Desligamento",
+   "type": "organization"
+  },
+  "owner_org": "a09d6e8f-6c0f-414b-b6ce-e5337d936f74",
+  "private": false,
+  "relationships_as_object": [],
+  "relationships_as_subject": [],
+  "resources": [
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2026-01-09T21:32:27.445597",
+    "datastore_active": true,
+    "description": "O desligamento voluntário está previsto na Convenção de Comercialização, podendo ser solicitado a qualquer tempo por agentes que estejam adimplentes com todas as suas obrigações no âmbito da CCEE. O agente deve fazer a solicitação do desligamento voluntário, garantindo que todas as ações necessárias para se desligar sejam executadas, inclusive indicando se será ou não sucedido por outro agente. Após as validações necessárias pela área técnica, cabe ao Conselho de Administração aprovar o desligamento. O boletim tem por objetivo dar visibilidade ao mercado dos agentes que se desligaram de forma voluntária e de eventuais sucessores, quando houver, e as informações são atualizadas mensalmente.\r\n",
+    "format": "CSV",
+    "hash": "",
+    "id": "f3a15d5d-31f3-4587-a030-a73c76d6931b",
+    "last_modified": "2026-05-12T09:18:59.681000",
+    "metadata_modified": "2026-06-09T04:31:21.808964",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "desligamento_voluntario_2026",
+    "package_id": "cfd8aff9-45ea-4e99-8008-bb656aa77fea",
+    "position": 0,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/9zMmbnFfTUOSP6PUqsew6g/content",
+    "url_type": ""
+   }
+  ],
+  "state": "active",
+  "tags": [
+   {
+    "display_name": "desligamento",
+    "id": "60597785-9bf2-4a90-9161-53ee36510977",
+    "name": "desligamento",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "finalização de contratos",
+    "id": "5e8b85ca-6fd0-422a-986f-3fdff90ac833",
+    "name": "finalização de contratos",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "sem sucessão",
+    "id": "c2684919-3bf6-422d-8fb4-306f65bfb76c",
+    "name": "sem sucessão",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "sucessão completa",
+    "id": "ee69bec6-09d1-4a58-a8d1-d6297de0bd0d",
+    "name": "sucessão completa",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "sucessão financeira",
+    "id": "c355d2fc-5b0d-4d25-89ee-e8174e4fadb7",
+    "name": "sucessão financeira",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "transferência de contratos",
+    "id": "047d2f94-a7eb-4573-85c7-cb1476659b24",
+    "name": "transferência de contratos",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "voluntário",
+    "id": "2731ec59-d9b4-4551-ac7c-10c2522bd4bb",
+    "name": "voluntário",
+    "state": "active",
+    "vocabulary_id": null
+   }
+  ],
+  "title": "DESLIGAMENTO_VOLUNTARIO",
+  "type": "dataset",
+  "url": "",
+  "version": ""
+ }
+}

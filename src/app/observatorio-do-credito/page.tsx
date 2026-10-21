@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -6,13 +6,23 @@ import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { BotaoLink } from "@/components/home/BotaoLink";
 import { LinkEntrarComDestino } from "@/components/home/LinkEntrarComDestino";
-import { fmtRefMes, resumoDiario } from "@/lib/dadosPublicos";
+import { SeloFrescor } from "@/components/dados/SeloFrescor";
+import { ACESSO } from "@/lib/acesso";
+import { fmtRefMes, geradoEmPublicado, resumoDiario } from "@/lib/dadosPublicos";
+import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
+import { ConviteAperitivo } from "@/components/acesso/ConviteAperitivo";
+import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
+import { prefetchDoLink } from "@/lib/rotasPublicas";
+import { goldJuros, rotuloModalidade } from "@/lib/credito/juros";
+import { janela as janelaJuros, num as numJuros } from "@/lib/credito/formato";
+import { paginaCredito } from "@/lib/credito/navegacao";
 
 /**
  * Vitrine pública do Observatório Brasileiro de Crédito.
  *
- * Com o Observatório aberto para leitura sem cadastro, esta página é a
- * porta de entrada editorial: números reais da última data-base, as
+ * Com os painéis atrás da conta gratuita, esta página é a vitrine aberta
+ * do Crédito e a porta de entrada editorial: números reais da última data-base, as
  * perguntas que cada área responde e o que diferencia o Observatório de
  * consultar as fontes primárias — com o convite direto para explorar.
  *
@@ -22,18 +32,22 @@ import { fmtRefMes, resumoDiario } from "@/lib/dadosPublicos";
  */
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
+const metadadosOriginais: Metadata = {
   title: "Observatório Brasileiro de Crédito",
   description:
-    "Crédito, instituições financeiras, Pix, juros e litigiosidade em uma plataforma gratuita: dados oficiais do Banco Central, CVM, IBGE e CNJ com metodologia aberta, distinguindo dado observado de indicador calculado.",
+    "Crédito, instituições financeiras, Pix, juros e litigiosidade em uma plataforma gratuita: dados oficiais do Banco Central, CVM, IBGE e CNJ com metodologia declarada, distinguindo dado observado de indicador calculado.",
   alternates: { canonical: "/observatorio-do-credito" },
   openGraph: {
     title: "Observatório Brasileiro de Crédito",
     description:
-      "O mercado de crédito brasileiro explicado com rigor: 12 fontes oficiais, metodologia aberta e gratuito.",
+      "O mercado de crédito brasileiro explicado com rigor: fontes oficiais, metodologia declarada e acesso gratuito.",
     type: "website",
   },
 };
+
+export async function generateMetadata(_props: { params?: Record<string, string> }, parent: ResolvingMetadata): Promise<Metadata> {
+  return metadadosPortuguesComAlternativas("/observatorio-do-credito", metadadosOriginais, await parent);
+}
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- leitura de gold JSON sem tipos gerados */
 function lerGold(nome: string): any {
@@ -45,6 +59,11 @@ function lerGold(nome: string): any {
     return null;
   }
 }
+/** Selo dos destinos fechados nesta página aberta: a promessa não pode parecer pública. */
+function ComConta() {
+  return <span className="ml-2 inline-block normal-case tracking-normal text-mineral">com conta</span>;
+}
+
 function nbr(v: number, dec = 1) {
   return v.toLocaleString("pt-BR", { minimumFractionDigits: dec, maximumFractionDigits: dec });
 }
@@ -81,11 +100,42 @@ function numerosVivos() {
     out.push({
       valor: `${nbr(n / 1e6, 1)} mi`,
       rotulo: "processos em temas bancários",
-      nota: `CNJ/DataJud · ${judicial.camada_nacional.n_tribunais} tribunais`,
+      nota: `CNJ/DataJud · ${judicial.camada_nacional.n_tribunais} tribunais · acervo coletado em ${String(judicial.coletado_em).slice(0, 10).split("-").reverse().join("/")}`,
     });
   }
   const vintages = meta?.vintages ?? {};
   return { numeros: out.slice(0, 4), vintages };
+}
+
+/**
+ * "Para o seu caso": as consultas de juros do Crédito (páginas com conta), cada uma com um número real da publicação
+ * do Banco Central, para o leitor ver antes do clique o que encontra lá.
+ */
+function consultasDoLeitor() {
+  const juros = goldJuros();
+  const banco = paginaCredito("quanto-meu-banco-cobra");
+  const simulador = paginaCredito("simulador-da-parcela");
+  let prova: string | null = null;
+  if (juros) {
+    const pf = juros.modalidades.filter((m) => m.segmento === "PF");
+    const maior = [...(pf.length ? pf : juros.modalidades)].sort((a, b) => b.stats.n - a.stats.n)[0];
+    const instituicoes = new Set(juros.modalidades.flatMap((m) => m.ranking.map((r) => r.cnpj8))).size;
+    prova = `${instituicoes} instituições em ${juros.modalidades.length} modalidades. Em ${rotuloModalidade(maior.modalidade).toLowerCase()}, a mediana entre ${maior.stats.n} instituições foi de ${numJuros(maior.stats.mediana)}% ao ano na semana de ${janelaJuros(maior.janela)} (Banco Central).`;
+  }
+  return [
+    {
+      href: banco.href,
+      titulo: banco.titulo,
+      resumo: "A taxa de juros que o seu banco informou ao Banco Central na modalidade escolhida, ao lado da mediana e da distribuição entre as instituições. Taxa não é CET: a página diz o que fica de fora.",
+      prova,
+    },
+    {
+      href: simulador.href,
+      titulo: simulador.titulo,
+      resumo: "Parcela, total pago e juros pela tabela Price, com a taxa publicada para o seu banco ou a do seu contrato, e quanto o CET muda o custo. É cálculo, não previsão nem oferta.",
+      prova: null,
+    },
+  ];
 }
 
 /** As perguntas que o acervo responde — o mesmo catálogo didático da aplicação. */
@@ -161,7 +211,9 @@ const DIFERENCAS = [
 
 export default function ObservatorioPublicoPage() {
   const { numeros, vintages } = numerosVivos();
+  const consultas = consultasDoLeitor();
   const r = resumoDiario();
+  const geradoEm = geradoEmPublicado();
 
   return (
     <>
@@ -199,17 +251,57 @@ export default function ObservatorioPublicoPage() {
             )}
 
             <div className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-4">
-              <BotaoLink href="/observatorio">Explorar o Observatório — aberto, sem cadastro</BotaoLink>
+              <BotaoLink href="/observatorio">Explorar o Observatório</BotaoLink>
               <LinkEntrarComDestino className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze" />
               <Link
                 href="/resumo"
+                prefetch={prefetchDoLink("/resumo")}
                 className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
               >
                 Ver o resumo diário
+                <ComConta />
               </Link>
             </div>
           </div>
         </section>
+
+        {/* ---------------- para o seu caso: consultas de juros ---------------- */}
+        <section aria-labelledby="seu-caso" className="border-b border-linha bg-papel">
+          <div className="mx-auto max-w-page px-6 py-14 md:py-16">
+            <h2 id="seu-caso" className="font-serif text-3xl tracking-[-0.012em] text-carvao">
+              Para o seu caso
+            </h2>
+            <div className="mt-10 grid gap-x-10 gap-y-10 md:grid-cols-2">
+              {consultas.map((c) => (
+                <article key={c.href} className="border-t border-carvao pt-5">
+                  <h3 className="font-serif text-xl leading-snug text-carvao">
+                    <Link href={c.href} prefetch={prefetchDoLink(c.href)} className="underline decoration-linha underline-offset-8 transition-colors hover:text-bronze">
+                      {c.titulo}
+                      <SeloComConta href={c.href} idioma="pt" className="font-sans" />
+                    </Link>
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{c.resumo}</p>
+                  {c.prova && <p className="mt-3 border-l-2 border-bronze pl-3 text-sm leading-relaxed text-carvao">{c.prova}</p>}
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------- princípio do aperitivo: o que o observatório completo tem a mais ---------------- */}
+        <div className="border-b border-linha bg-papel">
+          <ConviteAperitivo
+            rota="/observatorio"
+            className="mx-auto max-w-page px-6"
+            comConta={[
+              `As ${ABAS_OBSERVATORIO.filter((a) => a.gold).length} áreas com dados do observatório, do crédito por estado e por município aos juros de cada instituição`,
+              "Juros por instituição e por modalidade, a comparação entre instituições e o simulador da parcela",
+              "Consignado, crédito imobiliário, rural e direcionado, consórcios e o crédito a estados e municípios",
+              "Bancos na bolsa, captação, Pix, Open Finance, golpes e fraudes, sanções e reclamações",
+              "Sinais antecedentes, cenários, o resumo diário completo e a central de alertas",
+            ]}
+          />
+        </div>
 
         {/* ---------------- perguntas que responde ---------------- */}
         <section aria-labelledby="areas" className="border-b border-linha bg-papel">
@@ -224,7 +316,7 @@ export default function ObservatorioPublicoPage() {
             <div className="mt-12 grid gap-x-10 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
               {AREAS.map((a) => (
                 <article key={a.titulo}>
-                  <p className="rotulo text-bronze">{a.titulo}</p>
+                  <p className="rotulo text-bronze-dark">{a.titulo}</p>
                   <h3 className="mt-3 font-serif text-lg leading-snug text-carvao">{a.pergunta}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{a.detalhe}</p>
                 </article>
@@ -248,9 +340,11 @@ export default function ObservatorioPublicoPage() {
               <p className="mt-8">
                 <Link
                   href="/resumo"
+                prefetch={prefetchDoLink("/resumo")}
                   className="rotulo inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
                 >
                   Ler o resumo completo
+                  <ComConta />
                 </Link>
               </p>
             </div>
@@ -272,14 +366,20 @@ export default function ObservatorioPublicoPage() {
               ))}
             </div>
             <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3">
-              <Link href="/observatorio/methodology" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
+              <Link
+                href="/observatorio-do-credito/metodologia"
+                prefetch={prefetchDoLink("/observatorio-do-credito/metodologia")}
+                className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze"
+              >
                 Metodologia e fontes
+                <SeloComConta href="/observatorio-do-credito/metodologia" idioma="pt" />
               </Link>
               <Link href="/glossario" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
                 Glossário
               </Link>
               <Link href="/dados" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
-                Indicadores abertos
+                Indicadores com definição
+                <ComConta />
               </Link>
             </div>
           </div>
@@ -289,13 +389,15 @@ export default function ObservatorioPublicoPage() {
         <section aria-labelledby="acesso" className="bg-marfim">
           <div className="mx-auto max-w-page px-6 py-16 md:py-20">
             <h2 id="acesso" className="font-serif text-3xl tracking-[-0.012em] text-carvao">
-              Atualizado todos os dias, sem custo
+              Coleta diária, sem custo
             </h2>
             <p className="mt-6 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-              O pipeline roda diariamente e republica a base inteira. Cada fonte tem seu próprio
-              calendário — e a plataforma mostra a data-base real de cada uma, em vez de uma data
-              única de atualização que esconderia a diferença.
+              O pipeline roda todos os dias e só publica a base inteira quando ela passa nos testes
+              de conteúdo; reprovada, a última publicação aprovada segue no ar. Cada fonte tem seu
+              próprio calendário, e a plataforma mostra a data-base real de cada uma, em vez de uma
+              data única de atualização que esconderia a diferença.
             </p>
+            <SeloFrescor geradoEm={geradoEm} className="mt-4" />
             {Object.keys(vintages).length > 0 && (
               <dl className="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
                 {[
@@ -319,11 +421,11 @@ export default function ObservatorioPublicoPage() {
                 href="/cadastro"
                 className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
               >
-                Criar conta gratuita
+                {ACESSO.ctaConta}
               </Link>
-              <span className="rotulo text-mineral">
-                leitura aberta, sem cadastro · a conta guarda preferências e a área de painéis
-              </span>
+            </p>
+            <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+              {ACESSO.leitura} {ACESSO.conta}
             </p>
           </div>
         </section>

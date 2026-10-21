@@ -1,0 +1,12 @@
+
+
+ Test Files  142 passed (142)
+      Tests  2664 passed | 1 skipped (2665)
+   Start at  06:25:53
+   Duration  58.74s (transform 15.88s, setup 0ms, import 50.24s, tests 89.34s, environment 21ms)
+
+done-vitest
+
+real	0m59.812s
+user	2m7.930s
+sys	0m18.017s

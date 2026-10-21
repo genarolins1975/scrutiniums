@@ -1,0 +1,21 @@
+import { abre, BASE } from "./pw.mjs";
+const CAP = "/home/user/scrutiniums/docs/obee/avaliacao/rodada-2/evidencias/dados/capturas/";
+const { b, ctx } = await abre({w:1440,h:900}); const p = await ctx.newPage();
+const errs=[]; p.on("console",m=>{ if(["error","warning"].includes(m.type())) errs.push(m.text().slice(0,160)); }); p.on("pageerror",e=>errs.push("pageerror "+e.message));
+await p.addInitScript(()=>{ window.__cls=0; new PerformanceObserver(l=>{for(const e of l.getEntries()) if(!e.hadRecentInput) window.__cls+=e.value;}).observe({type:"layout-shift",buffered:true}); });
+await p.goto(BASE+"/gastos",{waitUntil:"networkidle"});
+const frase = async()=> (await p.innerText("main")).split("\n").find(l=>/vai de|é R\$/.test(l)&&/capitais com dado/.test(l));
+const passos=[];
+passos.push(["inicial",await frase()]);
+await p.locator("label",{hasText:"Por matrícula"}).first().click(); await p.waitForTimeout(500); passos.push(["clique Por matrícula",await frase(), p.url().split("?")[1]]);
+await p.locator("select").nth(1).selectOption("2022").catch(e=>passos.push(["select ano falhou",String(e).slice(0,80)])); await p.waitForTimeout(500); passos.push(["ano 2022",await frase(), p.url().split("?")[1]]);
+await p.locator("label",{hasText:"Reais de 2025"}).first().click(); await p.waitForTimeout(500); passos.push(["reais 2025",await frase(), p.url().split("?")[1]]);
+await p.locator("label",{hasText:/^Tabela$/}).first().click(); await p.waitForTimeout(500); passos.push(["tabela",await frase(), p.url().split("?")[1], (await p.$$("table")).length]);
+await p.goBack(); await p.waitForTimeout(500); passos.push(["voltar",await frase(), p.url().split("?")[1]]);
+await p.goBack(); await p.waitForTimeout(500); passos.push(["voltar 2",await frase(), p.url().split("?")[1]]);
+for (const x of passos) console.log(JSON.stringify(x));
+console.log("CLS acumulado nas interações:", await p.evaluate(()=>window.__cls), "| erros de console:", errs.length, errs.slice(0,2));
+// capturas de evidência
+await p.goto(BASE+"/comparar?med=despesa_hab&ano=2024&etapa=creche&vis=tabela",{waitUntil:"networkidle"});
+const tab = p.locator("table").first(); await tab.scrollIntoViewIfNeeded(); await p.screenshot({path:CAP+"comparar_tabela_creche_resumo_ausente.png", fullPage:false});
+await b.close();

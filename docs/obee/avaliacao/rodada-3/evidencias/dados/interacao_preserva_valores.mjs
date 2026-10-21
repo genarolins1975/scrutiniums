@@ -1,0 +1,38 @@
+// Alterna apresentações e confere que os valores se preservam (avaliador de dados, rodada 3).
+import { createRequire } from "node:module";
+const require = createRequire("/opt/node-tools/node_modules/");
+const { chromium } = require("playwright");
+const B = "http://localhost:3100/eficiencia-estatal/educacao-municipal-capitais";
+const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" });
+const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+const erros = []; p.on("pageerror", (e) => erros.push(e.message)); p.on("console", (m) => { if (m.type() === "error") erros.push(m.text().slice(0, 120)); });
+const res = [];
+const ok = (nome, cond, det = "") => { res.push([nome, cond ? "ok" : "FALHA", det]); };
+const pronto = async () => { await p.waitForFunction(() => !document.documentElement.hasAttribute("data-recorte"), null, { timeout: 15000 }); await p.waitForTimeout(200); };
+await p.goto(B + "/gastos?cap=recife&med=despesa_hab&ano=2023", { waitUntil: "domcontentloaded" }); await pronto();
+const txt = async () => p.evaluate(() => document.querySelector("main").innerText);
+let t = await txt();
+ok("gráfico: frase da capital 2023", /Recife \(PE\) registra R\$ 995; a mediana das 26 capitais é R\$ 1\.032/.test(t), (t.match(/Recife \(PE\) registra[^\n]*/) || [""])[0]);
+await p.getByRole("radio", { name: "Tabela" }).check({ force: true }).catch(async () => { await p.getByText("Tabela", { exact: true }).first().click(); });
+await pronto(); t = await txt();
+ok("URL registra vis=tabela e mantém cap e ano", /vis=tabela/.test(p.url()) && /cap=recife/.test(p.url()) && /ano=2023/.test(p.url()), p.url().split("?")[1]);
+const linhaRecife = await p.evaluate(() => { const tr = [...document.querySelectorAll("main table tbody tr")].find((r) => /Recife/.test(r.innerText)); return tr ? tr.innerText.replace(/\s+/g, " ") : null; });
+ok("tabela: Recife R$ 995 incluída", /R\$ 995/.test(linhaRecife || ""), linhaRecife);
+await p.getByText("Evolução", { exact: true }).first().click(); await pronto(); t = await txt();
+ok("evolução mantém capital", /Recife \(PE\)/.test(t) && /vis=evolucao/.test(p.url()) && /cap=recife/.test(p.url()), p.url().split("?")[1]);
+const h2 = await p.locator("#visao-titulo").innerText();
+ok("evolução: frase da série de Recife (2021 e 2025 em bases diferentes)", /não são diretamente comparáveis/.test(h2), h2);
+await p.getByText("Reais de 2025 (IPCA)", { exact: true }).first().click(); await pronto(); t = await txt();
+ok("moeda real na URL", /moeda=real/.test(p.url()), p.url().split("?")[1]);
+await p.getByText("Gráfico", { exact: true }).first().click(); await pronto(); t = await txt();
+ok("gráfico em reais de 2023: valor de Recife = 995,30 × 1,0960 = R$ 1.091", /Recife \(PE\) registra R\$ 1\.091/.test(t), (t.match(/Recife \(PE\) registra[^\n]*/) || [""])[0]);
+await p.goBack(); await pronto();
+ok("voltar restaura o estado anterior (evolução em reais)", /moeda=real/.test(p.url()) || /vis=evolucao/.test(p.url()), p.url().split("?")[1]);
+// copiar link e abrir em página nova
+const url = p.url();
+const q = await b.newPage({ viewport: { width: 1440, height: 900 } }); await q.goto(url, { waitUntil: "domcontentloaded" });
+await q.waitForFunction(() => !document.documentElement.hasAttribute("data-recorte"), null, { timeout: 15000 });
+ok("o link reabre o mesmo recorte", (await q.evaluate(() => document.querySelector("main").innerText)).includes("Recife (PE)"), url.split("?")[1]);
+ok("sem erros de página ou de console", erros.length === 0, erros.join(" | "));
+await b.close();
+for (const r of res) console.log(r.join(" | "));

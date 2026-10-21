@@ -1,0 +1,7 @@
+import {describe,it,expect} from 'vitest';
+import {consultaCursos,csvCursos,indiceCursos,filtraCursos,type Curso} from '@/lib/eficiencia/trabalho-renda/cursos';
+describe('consulta territorial do cadastro de aprendizagem',()=>{
+ it('todos os registros de uma UF fecham com o índice, preservando cursos repetidos por localidade',()=>{const {selecionados}=consultaCursos({uf:'AC',status:'todos'});const uf=indiceCursos().porUF.find(r=>r.uf==='AC')!;expect(selecionados).toHaveLength(uf.registros);expect(new Set(selecionados.map(c=>c.id)).size).toBe(uf.codigos);expect(selecionados.every(c=>c.uf==='AC')).toBe(true);});
+ it('a exportação contém todo o recorte filtrado, não só a primeira página de trinta registros',()=>{const {selecionados}=consultaCursos({uf:'AC',status:'vigente'});expect(selecionados.length).toBeGreaterThan(30);const csv=csvCursos(selecionados);for(const c of selecionados)expect(csv).toContain('"'+c.id+'"');expect(csv).toContain('Linha original');});
+ it('busca por palavras com acentos e modalidades não altera classificação de vigência',()=>{const c={id:'1',nome:'Logística e administração',programa:'',entidade:'',cidade:'Maceió',uf:'AL',modalidade:'Presencial',status:'vencido',cbo:'411005',ocupacoes:''} as Curso;expect(filtraCursos([c],{q:'LOGISTICA maceio',status:'todos'})).toHaveLength(1);expect(filtraCursos([c],{q:'logistica',status:'vigente'})).toHaveLength(0);expect(filtraCursos([c],{status:'todos',modalidade:'À distância'})).toHaveLength(0);});
+});

@@ -1,0 +1,169 @@
+{
+ "result": {
+  "author": "CCEE-GAIM",
+  "author_email": "",
+  "creator_user_id": "08bb46ea-324c-47b2-84b7-76a0ebb05a3f",
+  "extras": [
+   {
+    "key": "Frequência de Atualização",
+    "value": "Mensal"
+   },
+   {
+    "key": "Referência de Publicação",
+    "value": "MS+22du"
+   },
+   {
+    "key": "Termo Legal",
+    "value": "O acesso a este site e/ou a utilização de conteúdos, dados e bases de dados nele disponibilizados se sujeita ao aceite dos termos e condições da licença aberta Creative Commons Attribution 4.0 International (CC-BY-4.0), bem como aos Termos de Uso do site e do aplicativo mobile (App) da CCEE (Link - https://www.ccee.org.br/en/web/guest/termos-de-uso). Ao utilizar esses recursos, você concorda em cumprir todos os requisitos dessa licença, que permitem que os reutilizadores distribuam, modifiquem, adaptem e desenvolvam o material sobre os dados, desde que seja atribuído o crédito apropriado ao criador (CCEE) e que sejam informadas as alterações. O Material Licenciado é disponibilizado no \"estado em que se encontra\" e \"como disponível\" apenas para fins informativos, sendo possível a interrupção da disponibilidade do conjunto de dados a qualquer momento e por qualquer motivo, sendo a sua utilização de livre iniciativa, não sendo atribuível qualquer tipo de responsabilização à CCEE por seu uso."
+   }
+  ],
+  "groups": [],
+  "id": "7fb971b3-63c1-42c9-868d-eb8059b1b7b6",
+  "isopen": true,
+  "license_id": "CC-BY-4.0",
+  "license_title": "Creative Commons Attribution 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "maintainer": "CCEE-GAIM",
+  "maintainer_email": "",
+  "metadata_created": "2023-06-22T19:37:29.839541",
+  "metadata_modified": "2026-09-01T17:54:33.593165",
+  "name": "geracao_submercado",
+  "notes": "Dados de geração utilizados na contabilização do MCP - Mercado de Curto Prazo, com foco nos parâmetros de geração utilizados pelo MRE por submercado.",
+  "num_resources": 4,
+  "num_tags": 3,
+  "organization": {
+   "approval_status": "approved",
+   "created": "2023-03-02T11:15:44.108398",
+   "description": "O Infomercado é uma organização que agrupa os principais conjuntos de dados referentes ao resultado da contabilização do mercado de energia brasileiro.\r\n\r\nAs partes interessadas poderão acessar conjuntos de dados relacionados aos seguintes assuntos: geração; consumo; MRE; contratos; PLD; e demais temas do Mercado de Curto Prazo - MCP.\r\n\r\nOs conjuntos de dados do informercado, seus recursos e APIs são atualizados periodicamente nesse portal de dados, para o mês de referência relativo à finalização da liquidação do MCP (não são considerados eventos de recontabilização).\r\n\r\nPara consulta ao acervo de dados públicos, a parte interessada poderá consultar o portal da CCEE > dados e análises.",
+   "id": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+   "image_url": "https://www.ccee.org.br/documents/20121/1583681/icon_pda-infomercado.svg/029872ce-13b0-9153-3d63-0501ca687dff?t=1724955920662",
+   "is_organization": true,
+   "name": "infomercado",
+   "state": "active",
+   "title": "Infomercado",
+   "type": "organization"
+  },
+  "owner_org": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+  "private": false,
+  "relationships_as_object": [],
+  "relationships_as_subject": [],
+  "resources": [
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2023-06-22T19:38:02.740435",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados de geração de usinas do MRE; geração de usinas do MRE que participam do regime de cotas de garantia física por submercado.  \n  \n**Campos contidos nesse Dataset:**  \n  \n* **SUBMERCADO** : Representa os quatro (4) submercados de atuação no SIN  - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n* **GERACAO_MRE** : Geração no centro de gravidade por fonte primária para usinas participantes do MRE.  \n* **GERACAO_MRE_COTA_GF** : Geração no centro de gravidade de usinas do MRE que participam do Regime de Cotas de Garantia Física.",
+    "format": "CSV",
+    "hash": "",
+    "id": "be1bd507-4ab2-4d36-a91d-1ee46a134790",
+    "last_modified": "2024-02-01T11:22:27.840000",
+    "metadata_modified": "2025-11-21T00:41:16.896525",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "geracao_submercado_2023",
+    "package_id": "7fb971b3-63c1-42c9-868d-eb8059b1b7b6",
+    "position": 0,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/3eU2Qcx5SG2cBj5hVie4fA/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2024-03-04T01:21:36.866305",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados de geração de usinas do MRE; geração de usinas do MRE que participam do regime de cotas de garantia física por submercado.  \n  \n**Campos contidos nesse Dataset:**  \n  \n* **SUBMERCADO** : Representa os quatro (4) submercados de atuação no SIN  - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n* **GERACAO_MRE** : Geração no centro de gravidade por fonte primária para usinas participantes do MRE.  \n* **GERACAO_MRE_COTA_GF** : Geração no centro de gravidade de usinas do MRE que participam do Regime de Cotas de Garantia Física.",
+    "format": "CSV",
+    "hash": "",
+    "id": "4c4cf968-99f2-4d21-9339-039a6eb078c5",
+    "last_modified": "2025-01-31T20:15:24.520000",
+    "metadata_modified": "2025-01-31T23:15:24.580392",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "geracao_submercado_2024",
+    "package_id": "7fb971b3-63c1-42c9-868d-eb8059b1b7b6",
+    "position": 1,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/bpCCf9u8RtSXcstBRW63Zw/content",
+    "url_type": null
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2025-03-05T23:19:58.433427",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados de geração de usinas do MRE; geração de usinas do MRE que participam do regime de cotas de garantia física por submercado.  \n  \n**Campos contidos nesse Dataset:**  \n  \n* **SUBMERCADO** : Representa os quatro (4) submercados de atuação no SIN  - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n* **GERACAO_MRE** : Geração no centro de gravidade por fonte primária para usinas participantes do MRE.  \n* **GERACAO_MRE_COTA_GF** : Geração no centro de gravidade de usinas do MRE que participam do Regime de Cotas de Garantia Física.",
+    "format": "CSV",
+    "hash": "",
+    "id": "c615995d-d433-4674-88a1-f67d5a9e2659",
+    "last_modified": "2026-02-02T17:41:11.361000",
+    "metadata_modified": "2026-02-02T20:41:51.628242",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "geracao_submercado_2025",
+    "package_id": "7fb971b3-63c1-42c9-868d-eb8059b1b7b6",
+    "position": 2,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/CaoOYd-jTpCDecA1o6wjkA/content",
+    "url_type": null
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2026-03-04T20:59:10.919302",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados de geração de usinas do MRE; geração de usinas do MRE que participam do regime de cotas de garantia física por submercado.  \n  \n**Campos contidos nesse Dataset:**  \n  \n* **SUBMERCADO** : Representa os quatro (4) submercados de atuação no SIN  - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n* **GERACAO_MRE** : Geração no centro de gravidade por fonte primária para usinas participantes do MRE.  \n* **GERACAO_MRE_COTA_GF** : Geração no centro de gravidade de usinas do MRE que participam do Regime de Cotas de Garantia Física.",
+    "format": "CSV",
+    "hash": "",
+    "id": "e51aa241-e804-47a7-b5a5-afda00bb502f",
+    "last_modified": "2026-09-01T14:54:33.514000",
+    "metadata_modified": "2026-09-01T17:54:33.598110",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "geracao_submercado_2026",
+    "package_id": "7fb971b3-63c1-42c9-868d-eb8059b1b7b6",
+    "position": 3,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/QBDEsyhWQuqz58T499r4KA/content",
+    "url_type": null
+   }
+  ],
+  "state": "active",
+  "tags": [
+   {
+    "display_name": "dados gerais",
+    "id": "608eaa47-92c5-460b-a3d0-2069bff3b41d",
+    "name": "dados gerais",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "geração",
+    "id": "3f4552c2-d88f-48d6-bf46-c9c0de0071f3",
+    "name": "geração",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "submercado",
+    "id": "50db7f7f-0bf6-4cc4-a097-71902882e375",
+    "name": "submercado",
+    "state": "active",
+    "vocabulary_id": null
+   }
+  ],
+  "title": "GERACAO_SUBMERCADO",
+  "type": "dataset",
+  "url": "",
+  "version": ""
+ }
+}

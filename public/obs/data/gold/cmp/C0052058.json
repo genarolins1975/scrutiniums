@@ -1,7 +1,7 @@
 {
  "cod": "C0052058",
  "nome": "NUBANK",
- "sr": "S3",
+ "sr": "S2",
  "tcb": "N1",
  "porte_quartil": "P4",
  "nivel": "conglomerado prudencial",
@@ -358,5 +358,5 @@
    "202606": 73.9697501944045
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

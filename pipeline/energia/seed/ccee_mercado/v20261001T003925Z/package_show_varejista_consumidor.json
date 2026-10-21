@@ -1,0 +1,154 @@
+{
+ "result": {
+  "author": "Gerência de Regras, Procedimentos e Informações - GPRI",
+  "author_email": "",
+  "creator_user_id": "b881b710-e6a0-4aed-9162-d254420c1096",
+  "extras": [
+   {
+    "key": "Frequência de Atualização",
+    "value": "Mensal"
+   },
+   {
+    "key": "Referência de Publicação",
+    "value": "MS+22du"
+   },
+   {
+    "key": "Termo Legal",
+    "value": "O acesso a este site e/ou a utilização de conteúdos, dados e bases de dados nele disponibilizados se sujeita ao aceite dos termos e condições da licença aberta Creative Commons Attribution 4.0 International (CC-BY-4.0), bem como aos Termos de Uso do site e do aplicativo mobile (App) da CCEE (Link - https://www.ccee.org.br/en/web/guest/termos-de-uso). Ao utilizar esses recursos, você concorda em cumprir todos os requisitos dessa licença, que permitem que os reutilizadores distribuam, modifiquem, adaptem e desenvolvam o material sobre os dados, desde que seja atribuído o crédito apropriado ao criador (CCEE) e que sejam informadas as alterações. O Material Licenciado é disponibilizado no \"estado em que se encontra\" e \"como disponível\" apenas para fins informativos, sendo possível a interrupção da disponibilidade do conjunto de dados a qualquer momento e por qualquer motivo, sendo a sua utilização de livre iniciativa, não sendo atribuível qualquer tipo de responsabilização à CCEE por seu uso."
+   }
+  ],
+  "groups": [],
+  "id": "c6279a1a-9f14-4d4f-bd28-70887e551099",
+  "isopen": true,
+  "license_id": "CC-BY-4.0",
+  "license_title": "Creative Commons Attribution 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "maintainer": "Gerência de Regras, Procedimentos e Informações - GPRI",
+  "maintainer_email": "",
+  "metadata_created": "2025-03-05T22:51:15.660620",
+  "metadata_modified": "2026-09-02T02:17:18.065180",
+  "name": "varejista_consumidor",
+  "notes": "Dados de consumo de parcelas de carga dos varejistas\r\n\r\n_(*) No momento não são considerados os consumidores migrados no processo de migração simplificada, via API_",
+  "num_resources": 3,
+  "num_tags": 4,
+  "organization": {
+   "approval_status": "approved",
+   "created": "2023-03-02T11:15:44.108398",
+   "description": "O Infomercado é uma organização que agrupa os principais conjuntos de dados referentes ao resultado da contabilização do mercado de energia brasileiro.\r\n\r\nAs partes interessadas poderão acessar conjuntos de dados relacionados aos seguintes assuntos: geração; consumo; MRE; contratos; PLD; e demais temas do Mercado de Curto Prazo - MCP.\r\n\r\nOs conjuntos de dados do informercado, seus recursos e APIs são atualizados periodicamente nesse portal de dados, para o mês de referência relativo à finalização da liquidação do MCP (não são considerados eventos de recontabilização).\r\n\r\nPara consulta ao acervo de dados públicos, a parte interessada poderá consultar o portal da CCEE > dados e análises.",
+   "id": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+   "image_url": "https://www.ccee.org.br/documents/20121/1583681/icon_pda-infomercado.svg/029872ce-13b0-9153-3d63-0501ca687dff?t=1724955920662",
+   "is_organization": true,
+   "name": "infomercado",
+   "state": "active",
+   "title": "Infomercado",
+   "type": "organization"
+  },
+  "owner_org": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+  "private": false,
+  "relationships_as_object": [],
+  "relationships_as_subject": [],
+  "resources": [
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2025-04-16T01:58:14.649928",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os perfis varejistas cadastrados na CCEE com respectiva quantidade de parcelas de carga cadastradas e o total de consumo.\r\n\r\n**Campos contidos nesse conjunto de dados:**\r\n\r\n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \r\n* **COD_PERF_AGENTE** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar o perfil do agente em seus sistemas.  \r\n* **SIGLA_PERFIL_AGENTE** : Corresponde a sigla adotada pela CCEE para identificar o perfil de agente em seus sistemas.  \r\n* **NOME_EMPRESARIAL** : Corresponde a razão social cadastrada pelo agente na CCEE.  \r\n* **ESTADO_UF_CARGA** : Corresponde a Unidade Federativa (UF) da parcela de carga.  \r\n* **SUBMERCADO_CARGA** : Representa os quatro (4) submercados de atuação no SIN - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \r\n* **COD_PERF_AGENTE_CONECTADO** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar a o perfil do agente conectado.  \r\n* **SIGLA_PERFIL_AGENTE_CONECTADO** : Corresponde a sigla adotada pela CCEE para identificar o agente conectado.  \r\n* **QTD_PARCELA_CARGA** : Corresponde a quantidade de parcela de carga cadastrada no perfil de agente  \r\n* **CONSUMO_TOTAL** : Corresponde ao consumo de energia ajustado de uma parcela de carga (RC c,j) [MWh]",
+    "format": "CSV",
+    "hash": "",
+    "id": "6ee287fb-eeab-41b3-a67d-b5b4d77c6e46",
+    "last_modified": "2025-04-15T17:16:25.230000",
+    "metadata_modified": "2025-11-21T00:54:14.525645",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "varejista_consumidor_2024",
+    "package_id": "c6279a1a-9f14-4d4f-bd28-70887e551099",
+    "position": 0,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/xBFUWd8PQZOScpvPjuyH4Q/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2025-03-05T22:51:54.888615",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os perfis varejistas cadastrados na CCEE com respectiva quantidade de parcelas de carga cadastradas e o total de consumo.\r\n\r\n**Campos contidos nesse conjunto de dados:**\r\n\r\n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \r\n* **COD_PERF_AGENTE** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar o perfil do agente em seus sistemas.  \r\n* **SIGLA_PERFIL_AGENTE** : Corresponde a sigla adotada pela CCEE para identificar o perfil de agente em seus sistemas.  \r\n* **NOME_EMPRESARIAL** : Corresponde a razão social cadastrada pelo agente na CCEE.  \r\n* **ESTADO_UF_CARGA** : Corresponde a Unidade Federativa (UF) da parcela de carga.  \r\n* **SUBMERCADO_CARGA** : Representa os quatro (4) submercados de atuação no SIN - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \r\n* **COD_PERF_AGENTE_CONECTADO** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar a o perfil do agente conectado.  \r\n* **SIGLA_PERFIL_AGENTE_CONECTADO** : Corresponde a sigla adotada pela CCEE para identificar o agente conectado.  \r\n* **QTD_PARCELA_CARGA** : Corresponde a quantidade de parcela de carga cadastrada no perfil de agente  \r\n* **CONSUMO_TOTAL** : Corresponde ao consumo de energia ajustado de uma parcela de carga (RC c,j) [MWh]  \r\n\r\n_(*) No momento não são considerados os consumidores migrados no processo de migração simplificada, via API_",
+    "format": "CSV",
+    "hash": "",
+    "id": "34967af7-907b-4716-b733-1c00c9cbb599",
+    "last_modified": "2026-02-02T19:01:09.965000",
+    "metadata_modified": "2026-04-29T21:39:18.916423",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "varejista_consumidor_2025",
+    "package_id": "c6279a1a-9f14-4d4f-bd28-70887e551099",
+    "position": 1,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/ZIaKbA-zQrKWd3tMLmtYZw/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2026-03-05T21:21:40.131351",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os perfis varejistas cadastrados na CCEE com respectiva quantidade de parcelas de carga cadastradas e o total de consumo.\n\n**Campos contidos nesse conjunto de dados:**\n\n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n* **COD_PERF_AGENTE** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar o perfil do agente em seus sistemas.  \n* **SIGLA_PERFIL_AGENTE** : Corresponde a sigla adotada pela CCEE para identificar o perfil de agente em seus sistemas.  \n* **NOME_EMPRESARIAL** : Corresponde a razão social cadastrada pelo agente na CCEE.  \n* **ESTADO_UF_CARGA** : Corresponde a Unidade Federativa (UF) da parcela de carga.  \n* **SUBMERCADO_CARGA** : Representa os quatro (4) submercados de atuação no SIN - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \n* **COD_PERF_AGENTE_CONECTADO** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar a o perfil do agente conectado.  \n* **SIGLA_PERFIL_AGENTE_CONECTADO** : Corresponde a sigla adotada pela CCEE para identificar o agente conectado.  \n* **QTD_PARCELA_CARGA** : Corresponde a quantidade de parcela de carga cadastrada no perfil de agente  \n* **CONSUMO_TOTAL** : Corresponde ao consumo de energia ajustado de uma parcela de carga (RC c,j) [MWh]  ",
+    "format": "CSV",
+    "hash": "",
+    "id": "ba1e573c-0048-415a-a6e2-eb26c5b7748a",
+    "last_modified": "2026-06-02T18:49:33.649000",
+    "metadata_modified": "2026-06-09T04:31:35.894573",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "varejista_consumidor_2026",
+    "package_id": "c6279a1a-9f14-4d4f-bd28-70887e551099",
+    "position": 2,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/DAPE8m2yQOOSyFawf0WSSw/content",
+    "url_type": ""
+   }
+  ],
+  "state": "active",
+  "tags": [
+   {
+    "display_name": "acl",
+    "id": "f8fb6153-868b-41d8-8994-48afb86632f4",
+    "name": "acl",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "consumo",
+    "id": "cdf18cbb-5072-4d0e-9184-150957ce92a8",
+    "name": "consumo",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "dados gerais",
+    "id": "608eaa47-92c5-460b-a3d0-2069bff3b41d",
+    "name": "dados gerais",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "varejista",
+    "id": "8091beb9-f261-484e-9c6c-c97899dbb7e8",
+    "name": "varejista",
+    "state": "active",
+    "vocabulary_id": null
+   }
+  ],
+  "title": "VAREJISTA_CONSUMIDOR",
+  "type": "dataset",
+  "url": "",
+  "version": ""
+ }
+}

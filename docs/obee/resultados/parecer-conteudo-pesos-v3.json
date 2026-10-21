@@ -1,0 +1,72 @@
+{
+  "version": "parecer-conteudo-pesos-v3-v1",
+  "reviewed_at": "2026-10-12",
+  "base_commit": "6d66713cf354b1dfad52a5b9e97fb6ed1307fe4c",
+  "review_type": "technical_proposal_not_independent_review",
+  "decision": "retain_candidates_and_material40_as_experimental_reference_only",
+  "recommended_label": "Condições de vida — cesta experimental de sete indicadores",
+  "reference": {
+    "year": 2022,
+    "state_capitals": 26,
+    "df_included": false
+  },
+  "recommended_scenario": "conjunta__domicilios_gt2__materiais_40pct",
+  "mandatory_counterfactual": "conjunta__domicilios_gt2__iguais",
+  "proposed_weights": {
+    "educacao": 0.2,
+    "trabalho": 0.1,
+    "mobilidade": 0.2,
+    "saneamento": 0.1,
+    "seguranca": 0.2,
+    "habitacao": 0.1,
+    "conectividade": 0.1
+  },
+  "approved_weights": null,
+  "publication_ready": false,
+  "is_full_obee_score": false,
+  "independent_review_completed": false,
+  "municipal_precision_resolved": false,
+  "content_review_completed": true,
+  "normative_weights_proposal_completed": true,
+  "rationale": "Preservar o orçamento conjunto de renda e saneamento da v2 ao examinar novas facetas; convenção de continuidade, não peso ótimo ou validação social.",
+  "cost": "Renda e saneamento caem de 20% para 10%; cada indicador fora do bloco recebe o dobro do peso de cada item material.",
+  "aggregation": "weighted_arithmetic_mean_of_oriented_percentiles",
+  "compensation_example": {
+    "security_percentile_change": -10,
+    "connectivity_percentile_change": 20,
+    "aggregate_change_material40": 0,
+    "interpretation": "Identidade aritmética, não equivalência social nem mudança nas unidades originais."
+  },
+  "forbidden_interpretations": [
+    "eficiencia_causal_do_estado",
+    "satisfacao_declarada",
+    "sete_capitulos_completos",
+    "escore_integral_obee",
+    "pesos_otimos_estimados",
+    "confianca_dos_ranks"
+  ],
+  "pending": [
+    "independent_content_review",
+    "accept_housing_definition",
+    "normative_weights_and_compensation_acceptance",
+    "precision_or_explicit_descriptive_release_review",
+    "edition_approval"
+  ],
+  "next_deliverable": "Pacote de revisão independente e critérios de promoção da edição",
+  "source_artifacts": [
+    {
+      "path": "docs/obee/resultados/cesta-conjunta.json",
+      "sha256": "15339579dc2cceecd3c237569e011640aa2b7198329dbfd9c081075c3c1de7bd"
+    }
+  ],
+  "references": [
+    {
+      "url": "https://doi.org/10.1787/9789264043466-en",
+      "scope": "Weighting and aggregation, pp. 31–33; não prescreve 40%."
+    },
+    {
+      "url": "https://www.oecd.org/en/publications/built-environment-through-a-well-being-lens_1b5bebf4-en/full-report/component-4.html",
+      "scope": "Bem-estar multidimensional; não valida a cesta OBEE."
+    }
+  ]
+}

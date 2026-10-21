@@ -1,0 +1,728 @@
+grupo,capital,uf,regiao,ano,componente,recalculado,gold,diferenca,confere,observacao
+aps_cobertura_potencial_formula_NT2,Belo Horizonte,MG,SE,2021,,83.1709209046449,83.44,-0.2690790953550959,NAO,capacidade pela NT 2/2025 = 2097208; serviço informa 2104208; fórmula/pop=(83.1709)
+aps_cobertura_potencial_formula_NT2,Belo Horizonte,MG,SE,2025,,91.92708473438536,91.92,0.007084734385358615,sim,capacidade pela NT 2/2025 = 2221270; serviço informa 2221270; fórmula/pop=(91.9271)
+aps_cobertura_potencial_formula_NT2,Boa Vista,RR,N,2021,,50.04146292642475,50.54,-0.4985370735752497,NAO,capacidade pela NT 2/2025 = 210000; serviço informa 212103; fórmula/pop=(50.0415)
+aps_cobertura_potencial_formula_NT2,Boa Vista,RR,N,2024,,128.15258557726258,128.15,0.0025855772625789086,sim,capacidade pela NT 2/2025 = 529893; serviço informa 529893; fórmula/pop=(128.1526)
+aps_cobertura_potencial_formula_NT2,Boa Vista,RR,N,2025,,114.3746184882457,114.37,0.0046184882456969945,sim,capacidade pela NT 2/2025 = 537754; serviço informa 537754; fórmula/pop=(114.3746)
+aps_cobertura_potencial_formula_NT2,Campo Grande,MS,CO,2021,,69.61533707393951,89.35,-19.73466292606048,NAO,capacidade pela NT 2/2025 = 630779; serviço informa 809620; fórmula/pop=(69.6153)
+aps_cobertura_potencial_formula_NT2,Campo Grande,MS,CO,2025,,84.52841534691689,84.52,0.008415346916891053,sim,capacidade pela NT 2/2025 = 806855; serviço informa 806855; fórmula/pop=(84.5284)
+aps_cobertura_potencial_formula_NT2,Cuiabá,MT,CO,2021,,62.71816011026914,66.11,-3.3918398897308606,NAO,capacidade pela NT 2/2025 = 387676; serviço informa 408676; fórmula/pop=(62.7182)
+aps_cobertura_potencial_formula_NT2,Cuiabá,MT,CO,2025,,74.48896815495539,74.48,0.008968154955383056,sim,capacidade pela NT 2/2025 = 508709; serviço informa 508709; fórmula/pop=(74.4890)
+aps_cobertura_potencial_formula_NT2,Curitiba,PR,S,2021,,50.55711049734531,50.91,-0.35288950265468344,NAO,capacidade pela NT 2/2025 = 985169; serviço informa 992239; fórmula/pop=(50.5571)
+aps_cobertura_potencial_formula_NT2,Curitiba,PR,S,2025,,59.045934753789176,59.04,0.005934753789176739,sim,capacidade pela NT 2/2025 = 1080083; serviço informa 1080083; fórmula/pop=(59.0459)
+aps_cobertura_potencial_formula_NT2,Fortaleza,CE,NE,2021,,59.61069183045412,60.13,-0.5193081695458801,NAO,capacidade pela NT 2/2025 = 1601508; serviço informa 1615508; fórmula/pop=(59.6107)
+aps_cobertura_potencial_formula_NT2,Fortaleza,CE,NE,2025,,75.65261504374591,75.65,0.0026150437459051545,sim,capacidade pela NT 2/2025 = 1947610; serviço informa 1947610; fórmula/pop=(75.6526)
+aps_cobertura_potencial_formula_NT2,Goiânia,GO,CO,2021,,50.36791296382975,50.39,-0.022087036170248098,NAO,capacidade pela NT 2/2025 = 773700; serviço informa 774099; fórmula/pop=(50.3679)
+aps_cobertura_potencial_formula_NT2,Goiânia,GO,CO,2025,,53.70316720404603,53.7,0.003167204046029326,sim,capacidade pela NT 2/2025 = 802647; serviço informa 802647; fórmula/pop=(53.7032)
+aps_cobertura_potencial_formula_NT2,Macapá,AP,N,2021,,50.68590101032946,52.3,-1.6140989896705378,NAO,capacidade pela NT 2/2025 = 259969; serviço informa 268284; fórmula/pop=(50.6859)
+aps_cobertura_potencial_formula_NT2,Macapá,AP,N,2025,,113.52073070607554,113.52,0.0007307060755437078,sim,capacidade pela NT 2/2025 = 553073; serviço informa 553073; fórmula/pop=(113.5207)
+aps_cobertura_potencial_formula_NT2,Manaus,AM,N,2021,,64.0189134881374,64.06,-0.04108651186260204,NAO,capacidade pela NT 2/2025 = 1420951; serviço informa 1421951; fórmula/pop=(64.0189)
+aps_cobertura_potencial_formula_NT2,Manaus,AM,N,2025,,65.67075465656235,65.67,0.0007546565623499646,sim,capacidade pela NT 2/2025 = 1497087; serviço informa 1497087; fórmula/pop=(65.6708)
+aps_cobertura_potencial_formula_NT2,Porto Alegre,RS,S,2021,,80.43416034381275,82.75,-2.3158396561872507,NAO,capacidade pela NT 2/2025 = 1197063; serviço informa 1231659; fórmula/pop=(80.4342)
+aps_cobertura_potencial_formula_NT2,Porto Alegre,RS,S,2025,,93.82648514887117,93.82,0.006485148871178126,sim,capacidade pela NT 2/2025 = 1303552; serviço informa 1303552; fórmula/pop=(93.8265)
+aps_cobertura_potencial_formula_NT2,Porto Velho,RO,N,2021,,61.97228536360164,62.84,-0.867714636398361,NAO,capacidade pela NT 2/2025 = 334250; serviço informa 338939; fórmula/pop=(61.9723)
+aps_cobertura_potencial_formula_NT2,Porto Velho,RO,N,2025,,64.51649241657651,64.51,0.0064924165765063435,sim,capacidade pela NT 2/2025 = 332178; serviço informa 332178; fórmula/pop=(64.5165)
+aps_cobertura_potencial_formula_NT2,Recife,PE,NE,2021,,59.31031938461203,71.92,-12.609680615387973,NAO,capacidade pela NT 2/2025 = 980673; serviço informa 1189322; fórmula/pop=(59.3103)
+aps_cobertura_potencial_formula_NT2,Recife,PE,NE,2025,,89.37417294248876,89.37,0.004172942488750664,sim,capacidade pela NT 2/2025 = 1419000; serviço informa 1419000; fórmula/pop=(89.3742)
+aps_cobertura_potencial_formula_NT2,Rio de Janeiro,RJ,SE,2021,,61.5714568345457,62.2,-0.6285431654543032,NAO,capacidade pela NT 2/2025 = 4154728; serviço informa 4197325; fórmula/pop=(61.5715)
+aps_cobertura_potencial_formula_NT2,Rio de Janeiro,RJ,SE,2022,,66.8194412241289,66.81,0.009441224128892145,sim,capacidade pela NT 2/2025 = 4527392; serviço informa 4527392; fórmula/pop=(66.8194)
+aps_cobertura_potencial_formula_NT2,Rio de Janeiro,RJ,SE,2025,,73.92156548082333,73.92,0.001565480823330745,sim,capacidade pela NT 2/2025 = 4974843; serviço informa 4974843; fórmula/pop=(73.9216)
+aps_cobertura_potencial_formula_NT2,Salvador,BA,NE,2021,,51.140195475938256,53.2,-2.0598045240617466,NAO,capacidade pela NT 2/2025 = 1476263; serviço informa 1535881; fórmula/pop=(51.1402)
+aps_cobertura_potencial_formula_NT2,Salvador,BA,NE,2025,,63.20687072584362,63.2,0.006870725843619141,sim,capacidade pela NT 2/2025 = 1623739; serviço informa 1623739; fórmula/pop=(63.2069)
+aps_cobertura_potencial_formula_NT2,São Luís,MA,NE,2021,,51.55319100971618,52.5,-0.9468089902838202,NAO,capacidade pela NT 2/2025 = 571712; serviço informa 582244; fórmula/pop=(51.5532)
+aps_cobertura_potencial_formula_NT2,São Luís,MA,NE,2022,,53.43658932623134,53.43,0.006589326231342341,sim,capacidade pela NT 2/2025 = 596316; serviço informa 596316; fórmula/pop=(53.4366)
+aps_cobertura_potencial_formula_NT2,São Luís,MA,NE,2025,,60.07065806295074,60.07,0.0006580629507411118,sim,capacidade pela NT 2/2025 = 653603; serviço informa 653603; fórmula/pop=(60.0707)
+aps_cobertura_potencial_formula_NT2,São Paulo,SP,SE,2021,,46.672379067590775,47.04,-0.3676209324092241,NAO,capacidade pela NT 2/2025 = 5752479; serviço informa 5797979; fórmula/pop=(46.6724)
+aps_cobertura_potencial_formula_NT2,São Paulo,SP,SE,2025,,59.47035108340258,59.47,0.0003510834025846066,sim,capacidade pela NT 2/2025 = 7074342; serviço informa 7074342; fórmula/pop=(59.4704)
+aps_cobertura_potencial_serv,Belo Horizonte,MG,SE,2021,,83.44,83.44,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Belo Horizonte,MG,SE,2025,,91.92,91.92,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Boa Vista,RR,N,2021,,50.54,50.54,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Boa Vista,RR,N,2024,,128.15,128.15,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Boa Vista,RR,N,2025,,114.37,114.37,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Campo Grande,MS,CO,2021,,89.35,89.35,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Campo Grande,MS,CO,2025,,84.52,84.52,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Cuiabá,MT,CO,2021,,66.11,66.11,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Cuiabá,MT,CO,2025,,74.48,74.48,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Curitiba,PR,S,2021,,50.91,50.91,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Curitiba,PR,S,2025,,59.04,59.04,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Fortaleza,CE,NE,2021,,60.13,60.13,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Fortaleza,CE,NE,2025,,75.65,75.65,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Goiânia,GO,CO,2021,,50.39,50.39,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Goiânia,GO,CO,2025,,53.7,53.7,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Macapá,AP,N,2021,,52.3,52.3,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Macapá,AP,N,2025,,113.52,113.52,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Manaus,AM,N,2021,,64.06,64.06,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Manaus,AM,N,2025,,65.67,65.67,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Porto Alegre,RS,S,2021,,82.75,82.75,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Porto Alegre,RS,S,2025,,93.82,93.82,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Porto Velho,RO,N,2021,,62.84,62.84,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Porto Velho,RO,N,2025,,64.51,64.51,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Recife,PE,NE,2021,,71.92,71.92,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Recife,PE,NE,2025,,89.37,89.37,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Rio de Janeiro,RJ,SE,2021,,62.2,62.2,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Rio de Janeiro,RJ,SE,2022,,66.81,66.81,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Rio de Janeiro,RJ,SE,2025,,73.92,73.92,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Salvador,BA,NE,2021,,53.2,53.2,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,Salvador,BA,NE,2025,,63.2,63.2,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,São Luís,MA,NE,2021,,52.5,52.5,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,São Luís,MA,NE,2022,,53.43,53.43,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,São Luís,MA,NE,2025,,60.07,60.07,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,São Paulo,SP,SE,2021,,47.04,47.04,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_cobertura_potencial_serv,São Paulo,SP,SE,2025,,59.47,59.47,0.0,sim,valor do serviço contra a gold (2021 fora da regra vigente)
+aps_esf,Belo Horizonte,MG,SE,2021,esf,595,595,0.0,sim,
+aps_esf,Belo Horizonte,MG,SE,2025,esf,634,634,0.0,sim,
+aps_esf,Boa Vista,RR,N,2021,esf,60,60,0.0,sim,
+aps_esf,Boa Vista,RR,N,2024,esf,150,150,0.0,sim,
+aps_esf,Boa Vista,RR,N,2025,esf,152,152,0.0,sim,
+aps_esf,Campo Grande,MS,CO,2021,esf,180,180,0.0,sim,
+aps_esf,Campo Grande,MS,CO,2025,esf,227,227,0.0,sim,
+aps_esf,Cuiabá,MT,CO,2021,esf,107,107,0.0,sim,
+aps_esf,Cuiabá,MT,CO,2025,esf,144,144,0.0,sim,
+aps_esf,Curitiba,PR,S,2021,esf,183,183,0.0,sim,
+aps_esf,Curitiba,PR,S,2025,esf,181,181,0.0,sim,
+aps_esf,Fortaleza,CE,NE,2021,esf,451,451,0.0,sim,
+aps_esf,Fortaleza,CE,NE,2025,esf,543,543,0.0,sim,
+aps_esf,Goiânia,GO,CO,2021,esf,190,190,0.0,sim,
+aps_esf,Goiânia,GO,CO,2025,esf,192,192,0.0,sim,
+aps_esf,Macapá,AP,N,2021,esf,72,72,0.0,sim,
+aps_esf,Macapá,AP,N,2025,esf,157,157,0.0,sim,
+aps_esf,Manaus,AM,N,2021,esf,341,341,0.0,sim,
+aps_esf,Manaus,AM,N,2025,esf,359,359,0.0,sim,
+aps_esf,Porto Alegre,RS,S,2021,esf,248,248,0.0,sim,
+aps_esf,Porto Alegre,RS,S,2025,esf,326,326,0.0,sim,
+aps_esf,Porto Velho,RO,N,2021,esf,90,90,0.0,sim,
+aps_esf,Porto Velho,RO,N,2025,esf,85,85,0.0,sim,
+aps_esf,Recife,PE,NE,2021,esf,280,280,0.0,sim,
+aps_esf,Recife,PE,NE,2025,esf,403,403,0.0,sim,
+aps_esf,Rio de Janeiro,RJ,SE,2021,esf,1160,1160,0.0,sim,
+aps_esf,Rio de Janeiro,RJ,SE,2022,esf,1267,1267,0.0,sim,
+aps_esf,Rio de Janeiro,RJ,SE,2025,esf,1373,1373,0.0,sim,
+aps_esf,Salvador,BA,NE,2021,esf,360,360,0.0,sim,
+aps_esf,Salvador,BA,NE,2025,esf,387,387,0.0,sim,
+aps_esf,São Luís,MA,NE,2021,esf,163,163,0.0,sim,
+aps_esf,São Luís,MA,NE,2022,esf,170,170,0.0,sim,
+aps_esf,São Luís,MA,NE,2025,esf,184,184,0.0,sim,
+aps_esf,São Paulo,SP,SE,2021,esf,1623,1623,0.0,sim,
+aps_esf,São Paulo,SP,SE,2025,esf,1723,1723,0.0,sim,
+asps_percentual_publicado,Belo Horizonte,MG,SE,2021,,22.76,22.76,0.0,sim,
+asps_percentual_publicado,Belo Horizonte,MG,SE,2025,,23.22,23.22,0.0,sim,
+asps_percentual_publicado,Boa Vista,RR,N,2021,,18.41,18.41,0.0,sim,
+asps_percentual_publicado,Boa Vista,RR,N,2024,,18.27,18.27,0.0,sim,
+asps_percentual_publicado,Boa Vista,RR,N,2025,,18.69,18.69,0.0,sim,
+asps_percentual_publicado,Campo Grande,MS,CO,2021,,28.18,28.18,0.0,sim,
+asps_percentual_publicado,Campo Grande,MS,CO,2025,,30.62,30.62,0.0,sim,
+asps_percentual_publicado,Cuiabá,MT,CO,2021,,30.64,30.64,0.0,sim,
+asps_percentual_publicado,Cuiabá,MT,CO,2025,,25.19,25.19,0.0,sim,
+asps_percentual_publicado,Curitiba,PR,S,2021,,20.94,20.94,0.0,sim,
+asps_percentual_publicado,Curitiba,PR,S,2025,,21.2,21.2,0.0,sim,
+asps_percentual_publicado,Fortaleza,CE,NE,2021,,25.96,25.96,0.0,sim,
+asps_percentual_publicado,Fortaleza,CE,NE,2025,,23.9,23.9,0.0,sim,
+asps_percentual_publicado,Goiânia,GO,CO,2021,,20.91,20.91,0.0,sim,
+asps_percentual_publicado,Goiânia,GO,CO,2025,,21.54,21.54,0.0,sim,
+asps_percentual_publicado,Macapá,AP,N,2021,,15.98,15.98,0.0,sim,
+asps_percentual_publicado,Macapá,AP,N,2025,,16.37,16.37,0.0,sim,
+asps_percentual_publicado,Manaus,AM,N,2021,,18.8,18.8,0.0,sim,
+asps_percentual_publicado,Manaus,AM,N,2025,,18.18,18.18,0.0,sim,
+asps_percentual_publicado,Porto Alegre,RS,S,2021,,18.33,18.33,0.0,sim,
+asps_percentual_publicado,Porto Alegre,RS,S,2025,,20.46,20.46,0.0,sim,
+asps_percentual_publicado,Porto Velho,RO,N,2021,,21.35,21.35,0.0,sim,
+asps_percentual_publicado,Porto Velho,RO,N,2025,,23.58,23.58,0.0,sim,
+asps_percentual_publicado,Recife,PE,NE,2021,,23.39,23.39,0.0,sim,
+asps_percentual_publicado,Recife,PE,NE,2025,,19.75,19.75,0.0,sim,
+asps_percentual_publicado,Rio de Janeiro,RJ,SE,2021,,15.38,15.38,0.0,sim,
+asps_percentual_publicado,Rio de Janeiro,RJ,SE,2022,,19.29,19.29,0.0,sim,
+asps_percentual_publicado,Rio de Janeiro,RJ,SE,2025,,16.98,16.98,0.0,sim,
+asps_percentual_publicado,Salvador,BA,NE,2021,,22.28,22.28,0.0,sim,
+asps_percentual_publicado,Salvador,BA,NE,2025,,23.2,23.2,0.0,sim,
+asps_percentual_publicado,São Luís,MA,NE,2021,,22.06,22.06,0.0,sim,
+asps_percentual_publicado,São Luís,MA,NE,2022,,20.32,20.32,0.0,sim,
+asps_percentual_publicado,São Luís,MA,NE,2025,,23.22,23.22,0.0,sim,
+asps_percentual_publicado,São Paulo,SP,SE,2021,,20.57,20.57,0.0,sim,
+asps_percentual_publicado,São Paulo,SP,SE,2025,,23.02,23.02,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,Belo Horizonte,MG,SE,2021,,22.77,22.76,0.00999999999999801,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Belo Horizonte,MG,SE,2025,,23.23,23.22,0.010000000000001563,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Boa Vista,RR,N,2021,,18.41,18.41,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,Boa Vista,RR,N,2024,,18.27,18.27,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,Boa Vista,RR,N,2025,,18.69,18.69,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,Campo Grande,MS,CO,2021,,28.19,28.18,0.010000000000001563,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Campo Grande,MS,CO,2025,,30.62,30.62,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,Cuiabá,MT,CO,2021,,30.64,30.64,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,Cuiabá,MT,CO,2025,,25.2,25.19,0.00999999999999801,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Curitiba,PR,S,2021,,20.95,20.94,0.00999999999999801,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Curitiba,PR,S,2025,,21.21,21.2,0.010000000000001563,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Fortaleza,CE,NE,2021,,25.96,25.96,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,Fortaleza,CE,NE,2025,,23.91,23.9,0.010000000000001563,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Goiânia,GO,CO,2021,,20.92,20.91,0.010000000000001563,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Goiânia,GO,CO,2025,,21.55,21.54,0.010000000000001563,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Macapá,AP,N,2021,,15.98,15.98,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,Macapá,AP,N,2025,,16.37,16.37,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,Manaus,AM,N,2021,,18.81,18.8,0.00999999999999801,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Manaus,AM,N,2025,,18.18,18.18,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,Porto Alegre,RS,S,2021,,18.34,18.33,0.010000000000001563,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Porto Alegre,RS,S,2025,,20.46,20.46,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,Porto Velho,RO,N,2021,,21.35,21.35,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,Porto Velho,RO,N,2025,,23.59,23.58,0.010000000000001563,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Recife,PE,NE,2021,,23.4,23.39,0.00999999999999801,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Recife,PE,NE,2025,,19.76,19.75,0.010000000000001563,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Rio de Janeiro,RJ,SE,2021,,15.38,15.38,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,Rio de Janeiro,RJ,SE,2022,,19.3,19.29,0.010000000000001563,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Rio de Janeiro,RJ,SE,2025,,16.98,16.98,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,Salvador,BA,NE,2021,,22.29,22.28,0.00999999999999801,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,Salvador,BA,NE,2025,,23.21,23.2,0.010000000000001563,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_percentual_recalculado_XVI_sobre_III,São Luís,MA,NE,2021,,22.06,22.06,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,São Luís,MA,NE,2022,,20.32,20.32,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,São Luís,MA,NE,2025,,23.22,23.22,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,São Paulo,SP,SE,2021,,20.57,20.57,0.0,sim,
+asps_percentual_recalculado_XVI_sobre_III,São Paulo,SP,SE,2025,,23.03,23.02,0.010000000000001563,sim,"XVI÷III arredondado a duas casas; diferença de até 0,01 ponto indica truncamento na fonte"
+asps_valor_aplicado,Belo Horizonte,MG,SE,2021,nominal,1687632691.86,1687632691.86,0.0,sim,
+asps_valor_aplicado,Belo Horizonte,MG,SE,2025,nominal,2620482804.6,2620482804.6,0.0,sim,
+asps_valor_aplicado,Boa Vista,RR,N,2021,nominal,186154681.46,186154681.46,0.0,sim,
+asps_valor_aplicado,Boa Vista,RR,N,2024,nominal,284563907.92,284563907.92,0.0,sim,
+asps_valor_aplicado,Boa Vista,RR,N,2025,nominal,312766082.03,312766082.03,0.0,sim,
+asps_valor_aplicado,Campo Grande,MS,CO,2021,nominal,629508055.91,629508055.91,0.0,sim,
+asps_valor_aplicado,Campo Grande,MS,CO,2025,nominal,919352060.22,919352060.22,0.0,sim,
+asps_valor_aplicado,Cuiabá,MT,CO,2021,nominal,522464604.22,522464604.22,0.0,sim,
+asps_valor_aplicado,Cuiabá,MT,CO,2025,nominal,596814770.8,596814770.8,0.0,sim,
+asps_valor_aplicado,Curitiba,PR,S,2021,nominal,1169707627.13,1169707627.13,0.0,sim,
+asps_valor_aplicado,Curitiba,PR,S,2025,nominal,1815431544.42,1815431544.42,0.0,sim,
+asps_valor_aplicado,Fortaleza,CE,NE,2021,nominal,1301465999.12,1301465999.12,0.0,sim,
+asps_valor_aplicado,Fortaleza,CE,NE,2025,nominal,1761227278.77,1761227278.77,0.0,sim,
+asps_valor_aplicado,Goiânia,GO,CO,2021,nominal,806888310.24,806888310.24,0.0,sim,
+asps_valor_aplicado,Goiânia,GO,CO,2025,nominal,1301828372.25,1301828372.25,0.0,sim,
+asps_valor_aplicado,Macapá,AP,N,2021,nominal,110692568.37,110692568.37,0.0,sim,
+asps_valor_aplicado,Macapá,AP,N,2025,nominal,183010285.71,183010285.71,0.0,sim,
+asps_valor_aplicado,Manaus,AM,N,2021,nominal,833857039.44,833857039.44,0.0,sim,
+asps_valor_aplicado,Manaus,AM,N,2025,nominal,1316567690.91,1316567690.91,0.0,sim,
+asps_valor_aplicado,Porto Alegre,RS,S,2021,nominal,803459229.42,803459229.42,0.0,sim,
+asps_valor_aplicado,Porto Alegre,RS,S,2025,nominal,1116981636.59,1116981636.59,0.0,sim,
+asps_valor_aplicado,Porto Velho,RO,N,2021,nominal,224607296.1,224607296.1,0.0,sim,
+asps_valor_aplicado,Porto Velho,RO,N,2025,nominal,346616011.71,346616011.71,0.0,sim,
+asps_valor_aplicado,Recife,PE,NE,2021,nominal,899215084.81,899215084.81,0.0,sim,
+asps_valor_aplicado,Recife,PE,NE,2025,nominal,1111965826.08,1111965826.08,0.0,sim,
+asps_valor_aplicado,Rio de Janeiro,RJ,SE,2021,nominal,2735672412.06,2735672412.06,0.0,sim,
+asps_valor_aplicado,Rio de Janeiro,RJ,SE,2022,nominal,3531271738.03,3531271738.03,0.0,sim,
+asps_valor_aplicado,Rio de Janeiro,RJ,SE,2025,nominal,3927364651.06,3927364651.06,0.0,sim,
+asps_valor_aplicado,Salvador,BA,NE,2021,nominal,1050160962.86,1050160962.86,0.0,sim,
+asps_valor_aplicado,Salvador,BA,NE,2025,nominal,1720694879.03,1720694879.03,0.0,sim,
+asps_valor_aplicado,São Luís,MA,NE,2021,nominal,553413680.94,553413680.94,0.0,sim,
+asps_valor_aplicado,São Luís,MA,NE,2022,nominal,633077950.87,633077950.87,0.0,sim,
+asps_valor_aplicado,São Luís,MA,NE,2025,nominal,931253553.68,931253553.68,0.0,sim,
+asps_valor_aplicado,São Paulo,SP,SE,2021,nominal,11495250500.19,11495250500.19,0.0,sim,
+asps_valor_aplicado,São Paulo,SP,SE,2025,nominal,19065464730.45,19065464730.45,0.0,sim,
+despesa_nominal,Belo Horizonte,MG,SE,2021,nominal,4193517290.55,4193517290.55,0.0,sim,
+despesa_nominal,Belo Horizonte,MG,SE,2025,nominal,6164530838.18,6164530838.18,0.0,sim,
+despesa_nominal,Boa Vista,RR,N,2021,nominal,261215597.35,261215597.35,0.0,sim,
+despesa_nominal,Boa Vista,RR,N,2024,nominal,503187172.75,503187172.75,0.0,sim,
+despesa_nominal,Boa Vista,RR,N,2025,nominal,518272796.81,518272796.81,0.0,sim,
+despesa_nominal,Campo Grande,MS,CO,2021,nominal,1573583018.36,1573583018.36,0.0,sim,
+despesa_nominal,Campo Grande,MS,CO,2025,nominal,1815077091.98,1815077091.98,0.0,sim,
+despesa_nominal,Cuiabá,MT,CO,2021,nominal,1155823332.28,1155823332.28,0.0,sim,
+despesa_nominal,Cuiabá,MT,CO,2025,nominal,1340435281.69,1340435281.69,0.0,sim,
+despesa_nominal,Curitiba,PR,S,2021,nominal,2371603853.62,2371603853.62,0.0,sim,
+despesa_nominal,Curitiba,PR,S,2025,nominal,3238388804.17,3238388804.17,0.0,sim,
+despesa_nominal,Fortaleza,CE,NE,2021,nominal,2433667960.22,2433667960.22,0.0,sim,
+despesa_nominal,Fortaleza,CE,NE,2025,nominal,3560561177.85,3560561177.85,0.0,sim,
+despesa_nominal,Goiânia,GO,CO,2021,nominal,1669191901.8,1669191901.8,0.0,sim,
+despesa_nominal,Goiânia,GO,CO,2025,nominal,2111242839.69,2111242839.69,0.0,sim,
+despesa_nominal,Macapá,AP,N,2021,nominal,243913189.57,243913189.57,0.0,sim,
+despesa_nominal,Macapá,AP,N,2025,nominal,495269686.89,495269686.89,0.0,sim,
+despesa_nominal,Manaus,AM,N,2021,nominal,1020801741.09,1020801741.09,0.0,sim,
+despesa_nominal,Manaus,AM,N,2025,nominal,1757677831.63,1757677831.63,0.0,sim,
+despesa_nominal,Porto Alegre,RS,S,2021,nominal,1779050572.19,1779050572.19,0.0,sim,
+despesa_nominal,Porto Alegre,RS,S,2025,nominal,2673436620.99,2673436620.99,0.0,sim,
+despesa_nominal,Porto Velho,RO,N,2021,nominal,436307569.94,436307569.94,0.0,sim,
+despesa_nominal,Porto Velho,RO,N,2025,nominal,585497265.83,585497265.83,0.0,sim,
+despesa_nominal,Recife,PE,NE,2021,nominal,1459890173.13,1459890173.13,0.0,sim,
+despesa_nominal,Recife,PE,NE,2025,nominal,2103812026.05,2103812026.05,0.0,sim,
+despesa_nominal,Rio de Janeiro,RJ,SE,2021,nominal,5008023132.59,5008023132.59,0.0,sim,
+despesa_nominal,Rio de Janeiro,RJ,SE,2022,nominal,6544885413.18,6544885413.18,0.0,sim,
+despesa_nominal,Rio de Janeiro,RJ,SE,2025,nominal,7645003822.44,7645003822.44,0.0,sim,
+despesa_nominal,Salvador,BA,NE,2021,nominal,1980520161.04,1980520161.04,0.0,sim,
+despesa_nominal,Salvador,BA,NE,2025,nominal,2881440964.62,2881440964.62,0.0,sim,
+despesa_nominal,São Luís,MA,NE,2021,nominal,978258313.88,978258313.88,0.0,sim,
+despesa_nominal,São Luís,MA,NE,2022,nominal,1041712262.3,1041712262.3,0.0,sim,
+despesa_nominal,São Luís,MA,NE,2025,nominal,1508601585.28,1508601585.28,0.0,sim,
+despesa_nominal,São Paulo,SP,SE,2021,nominal,14598986643.15,14598986643.15,0.0,sim,
+despesa_nominal,São Paulo,SP,SE,2025,nominal,23342248911.99,23342248911.99,0.0,sim,
+despesa_por_habitante,Belo Horizonte,MG,SE,2021,nominal,1657.0575862379633,1657.057586,2.3796337700332515e-07,sim,
+despesa_por_habitante,Belo Horizonte,MG,SE,2025,nominal,2551.679409414075,2551.679409,4.1407520257052965e-07,sim,
+despesa_por_habitante,Boa Vista,RR,N,2021,nominal,598.3073342098211,598.307334,2.0982110982004087e-07,sim,
+despesa_por_habitante,Boa Vista,RR,N,2024,nominal,1070.2261798417164,1070.22618,-1.5828368304937612e-07,sim,
+despesa_por_habitante,Boa Vista,RR,N,2025,nominal,1067.5537601369374,1067.55376,1.369373876514146e-07,sim,
+despesa_por_habitante,Campo Grande,MS,CO,2021,nominal,1717.883515804022,1717.883516,-1.9597814571170602e-07,sim,
+despesa_por_habitante,Campo Grande,MS,CO,2025,nominal,1885.044280540834,1885.044281,-4.5916590352135245e-07,sim,
+despesa_por_habitante,Cuiabá,MT,CO,2021,nominal,1853.4274924552687,1853.427492,4.5526871872425545e-07,sim,
+despesa_por_habitante,Cuiabá,MT,CO,2025,nominal,1937.395167754291,1937.395168,-2.457090886309743e-07,sim,
+despesa_por_habitante,Curitiba,PR,S,2021,nominal,1207.7060922043095,1207.706092,2.0430957192729693e-07,sim,
+despesa_por_habitante,Curitiba,PR,S,2025,nominal,1768.8429366313542,1768.842937,-3.6864571484329645e-07,sim,
+despesa_por_habitante,Fortaleza,CE,NE,2021,nominal,900.227884246119,900.227884,2.461189296809607e-07,sim,
+despesa_por_habitante,Fortaleza,CE,NE,2025,nominal,1380.8744047759865,1380.874405,-2.2401354726753198e-07,sim,
+despesa_por_habitante,Goiânia,GO,CO,2021,nominal,1073.0033451485126,1073.003345,1.4851252672087867e-07,sim,
+despesa_por_habitante,Goiânia,GO,CO,2025,nominal,1404.446640951375,1404.446641,-4.862499736191239e-08,sim,
+despesa_por_habitante,Macapá,AP,N,2021,nominal,466.9472976718987,466.947298,-3.281012936895422e-07,sim,
+despesa_por_habitante,Macapá,AP,N,2025,nominal,1011.4232408572199,1011.423241,-1.4278009530244162e-07,sim,
+despesa_por_habitante,Manaus,AM,N,2021,nominal,452.50249726606154,452.502497,2.6606153369357344e-07,sim,
+despesa_por_habitante,Manaus,AM,N,2025,nominal,762.9697515292578,762.969752,-4.707421794591937e-07,sim,
+despesa_por_habitante,Porto Alegre,RS,S,2021,nominal,1191.9697240189478,1191.969724,1.8947730495710857e-08,sim,
+despesa_por_habitante,Porto Alegre,RS,S,2025,nominal,1925.0058835147615,1925.005884,-4.85238388137077e-07,sim,
+despesa_por_habitante,Porto Velho,RO,N,2021,nominal,794.8009478788674,794.800948,-1.2113252978451783e-07,sim,
+despesa_por_habitante,Porto Velho,RO,N,2025,nominal,1130.9389364102228,1130.938936,4.10222810387495e-07,sim,
+despesa_por_habitante,Recife,PE,NE,2021,nominal,878.9134446727518,878.913445,-3.2724824450269807e-07,sim,
+despesa_por_habitante,Recife,PE,NE,2025,nominal,1324.505045436345,1324.505045,4.3634486246446613e-07,sim,
+despesa_por_habitante,Rio de Janeiro,RJ,SE,2021,nominal,739.130403016075,739.130403,1.6074977793323342e-08,sim,
+despesa_por_habitante,Rio de Janeiro,RJ,SE,2022,nominal,1053.719277697806,1053.719278,-3.0219393920560833e-07,sim,
+despesa_por_habitante,Rio de Janeiro,RJ,SE,2025,nominal,1135.835928387549,1135.835928,3.8754910747229587e-07,sim,
+despesa_por_habitante,Salvador,BA,NE,2021,nominal,682.8628716496357,682.862872,-3.50364302903472e-07,sim,
+despesa_por_habitante,Salvador,BA,NE,2025,nominal,1123.7175219366322,1123.717522,-6.336767910397612e-08,sim,
+despesa_por_habitante,São Luís,MA,NE,2021,nominal,876.628964739787,876.628965,-2.602130280138226e-07,sim,
+despesa_por_habitante,São Luís,MA,NE,2022,nominal,1003.7939459902194,1003.793946,-9.780592336028349e-09,sim,
+despesa_por_habitante,São Luís,MA,NE,2025,nominal,1385.03563142263,1385.035631,4.2263013710908126e-07,sim,
+despesa_por_habitante,São Paulo,SP,SE,2021,nominal,1177.68219952983,1177.6822,-4.701698799181031e-07,sim,
+despesa_por_habitante,São Paulo,SP,SE,2025,nominal,1960.7161175908095,1960.716118,-4.091905339009827e-07,sim,
+despesa_real_2025,Belo Horizonte,MG,SE,2021,real_2025,5253493742.85,5253493742.9,-0.049999237060546875,sim,
+despesa_real_2025,Belo Horizonte,MG,SE,2025,real_2025,6164530838.18,6164530838.18,0.0,sim,
+despesa_real_2025,Boa Vista,RR,N,2021,real_2025,327241885.78,327241885.78,0.0,sim,
+despesa_real_2025,Boa Vista,RR,N,2024,real_2025,528430829.31,528430829.33,-0.019999980926513672,sim,
+despesa_real_2025,Boa Vista,RR,N,2025,real_2025,518272796.81,518272796.81,0.0,sim,
+despesa_real_2025,Campo Grande,MS,CO,2021,real_2025,1971330500.88,1971330500.89,-0.009999990463256836,sim,
+despesa_real_2025,Campo Grande,MS,CO,2025,real_2025,1815077091.98,1815077091.98,0.0,sim,
+despesa_real_2025,Cuiabá,MT,CO,2021,real_2025,1447975583.09,1447975583.1,-0.009999990463256836,sim,
+despesa_real_2025,Cuiabá,MT,CO,2025,real_2025,1340435281.69,1340435281.69,0.0,sim,
+despesa_real_2025,Curitiba,PR,S,2021,real_2025,2971063463.5,2971063463.53,-0.03000020980834961,sim,
+despesa_real_2025,Curitiba,PR,S,2025,real_2025,3238388804.17,3238388804.17,0.0,sim,
+despesa_real_2025,Fortaleza,CE,NE,2021,real_2025,3048815234.41,3048815234.44,-0.03000020980834961,sim,
+despesa_real_2025,Fortaleza,CE,NE,2025,real_2025,3560561177.85,3560561177.85,0.0,sim,
+despesa_real_2025,Goiânia,GO,CO,2021,real_2025,2091106010.58,2091106010.6,-0.019999980926513672,sim,
+despesa_real_2025,Goiânia,GO,CO,2025,real_2025,2111242839.69,2111242839.69,0.0,sim,
+despesa_real_2025,Macapá,AP,N,2021,real_2025,305566026.42,305566026.42,0.0,sim,
+despesa_real_2025,Macapá,AP,N,2025,real_2025,495269686.89,495269686.89,0.0,sim,
+despesa_real_2025,Manaus,AM,N,2021,real_2025,1278825193.26,1278825193.27,-0.009999990463256836,sim,
+despesa_real_2025,Manaus,AM,N,2025,real_2025,1757677831.63,1757677831.63,0.0,sim,
+despesa_real_2025,Porto Alegre,RS,S,2021,real_2025,2228733161.61,2228733161.63,-0.019999980926513672,sim,
+despesa_real_2025,Porto Alegre,RS,S,2025,real_2025,2673436620.99,2673436620.99,0.0,sim,
+despesa_real_2025,Porto Velho,RO,N,2021,real_2025,546591066.6,546591066.6,0.0,sim,
+despesa_real_2025,Porto Velho,RO,N,2025,real_2025,585497265.83,585497265.83,0.0,sim,
+despesa_real_2025,Recife,PE,NE,2021,real_2025,1828900027.93,1828900027.94,-0.009999990463256836,sim,
+despesa_real_2025,Recife,PE,NE,2025,real_2025,2103812026.05,2103812026.05,0.0,sim,
+despesa_real_2025,Rio de Janeiro,RJ,SE,2021,real_2025,6273878553.08,6273878553.13,-0.05000019073486328,sim,
+despesa_real_2025,Rio de Janeiro,RJ,SE,2022,real_2025,7502926995.87,7502926995.92,-0.05000019073486328,sim,
+despesa_real_2025,Rio de Janeiro,RJ,SE,2025,real_2025,7645003822.44,7645003822.44,0.0,sim,
+despesa_real_2025,Salvador,BA,NE,2021,real_2025,2481127309.78,2481127309.8,-0.019999980926513672,sim,
+despesa_real_2025,Salvador,BA,NE,2025,real_2025,2881440964.62,2881440964.62,0.0,sim,
+despesa_real_2025,São Luís,MA,NE,2021,real_2025,1225528255.83,1225528255.84,-0.009999990463256836,sim,
+despesa_real_2025,São Luís,MA,NE,2022,real_2025,1194198303.15,1194198303.16,-0.009999990463256836,sim,
+despesa_real_2025,São Luís,MA,NE,2025,real_2025,1508601585.28,1508601585.28,0.0,sim,
+despesa_real_2025,São Paulo,SP,SE,2021,real_2025,18289106653.89,18289106654.05,-0.15999984741210938,sim,
+despesa_real_2025,São Paulo,SP,SE,2025,real_2025,23342248911.99,23342248911.99,0.0,sim,
+fonte_publicacao_coerente,Belo Horizonte,MG,SE,2021,,1,1,0,sim,soma das 9 fontes 5300706854.08 vs total 5300706854.08
+fonte_publicacao_coerente,Belo Horizonte,MG,SE,2025,,1,1,0,sim,soma das 9 fontes 7299196675.14 vs total 7299196675.14
+fonte_publicacao_coerente,Boa Vista,RR,N,2021,,1,1,0,sim,soma das 9 fontes 284702855.99 vs total 284702855.99
+fonte_publicacao_coerente,Boa Vista,RR,N,2024,,1,1,0,sim,soma das 9 fontes 550474521.77 vs total 550474521.77
+fonte_publicacao_coerente,Boa Vista,RR,N,2025,,1,1,0,sim,soma das 9 fontes 624096699.75 vs total 624096699.75
+fonte_publicacao_coerente,Campo Grande,MS,CO,2021,,1,1,0,sim,soma das 9 fontes 1646302155.67 vs total 1646302155.67
+fonte_publicacao_coerente,Campo Grande,MS,CO,2025,,1,1,0,sim,soma das 9 fontes 1902947652.01 vs total 1902947652.01
+fonte_publicacao_coerente,Cuiabá,MT,CO,2021,,1,1,0,sim,soma das 9 fontes 1156319785.01 vs total 1156319785.01
+fonte_publicacao_coerente,Cuiabá,MT,CO,2025,,1,1,0,sim,soma das 9 fontes 1388506086.21 vs total 1388506086.21
+fonte_publicacao_coerente,Curitiba,PR,S,2021,,1,1,0,sim,soma das 9 fontes 2596774474.03 vs total 2596774474.03
+fonte_publicacao_coerente,Curitiba,PR,S,2025,,1,1,0,sim,soma das 9 fontes 3573710233.67 vs total 3573710233.67
+fonte_publicacao_coerente,Fortaleza,CE,NE,2021,,0,0,0,sim,soma das 9 fontes 2590306847.79 vs total 2589457645.87
+fonte_publicacao_coerente,Fortaleza,CE,NE,2025,,1,1,0,sim,soma das 9 fontes 3748501042.35 vs total 3748501042.35
+fonte_publicacao_coerente,Goiânia,GO,CO,2021,,1,1,0,sim,soma das 9 fontes 1760705471.78 vs total 1760705471.78
+fonte_publicacao_coerente,Goiânia,GO,CO,2025,,1,1,0,sim,soma das 9 fontes 2294070805.74 vs total 2294070805.74
+fonte_publicacao_coerente,Macapá,AP,N,2021,,1,1,0,sim,soma das 9 fontes 219278468.80 vs total 219278468.80
+fonte_publicacao_coerente,Macapá,AP,N,2025,,1,1,0,sim,soma das 9 fontes 537755505.09 vs total 537755505.09
+fonte_publicacao_coerente,Manaus,AM,N,2021,,1,1,0,sim,soma das 9 fontes 1162168611.60 vs total 1162168611.60
+fonte_publicacao_coerente,Manaus,AM,N,2025,,1,1,0,sim,soma das 9 fontes 1994959975.90 vs total 1994959975.90
+fonte_publicacao_coerente,Porto Alegre,RS,S,2021,,1,1,0,sim,soma das 9 fontes 2317411400.45 vs total 2317411400.45
+fonte_publicacao_coerente,Porto Alegre,RS,S,2025,,1,1,0,sim,soma das 9 fontes 3388535261.49 vs total 3388535261.49
+fonte_publicacao_coerente,Porto Velho,RO,N,2021,,1,1,0,sim,soma das 9 fontes 400665451.88 vs total 400665451.88
+fonte_publicacao_coerente,Porto Velho,RO,N,2025,,1,1,0,sim,soma das 9 fontes 562325463.00 vs total 562325463.00
+fonte_publicacao_coerente,Recife,PE,NE,2021,,1,1,0,sim,soma das 9 fontes 1466455685.80 vs total 1466455685.80
+fonte_publicacao_coerente,Recife,PE,NE,2025,,1,1,0,sim,soma das 9 fontes 2191080232.23 vs total 2191080232.23
+fonte_publicacao_coerente,Rio de Janeiro,RJ,SE,2021,,1,1,0,sim,soma das 9 fontes 5691934328.53 vs total 5691934328.53
+fonte_publicacao_coerente,Rio de Janeiro,RJ,SE,2022,,1,1,0,sim,soma das 9 fontes 7191975392.87 vs total 7191975392.87
+fonte_publicacao_coerente,Rio de Janeiro,RJ,SE,2025,,1,1,0,sim,soma das 9 fontes 8157072340.08 vs total 8157072340.08
+fonte_publicacao_coerente,Salvador,BA,NE,2021,,1,1,0,sim,soma das 9 fontes 2174793976.46 vs total 2174793976.46
+fonte_publicacao_coerente,Salvador,BA,NE,2025,,1,1,0,sim,soma das 9 fontes 3087909688.90 vs total 3087909688.90
+fonte_publicacao_coerente,São Luís,MA,NE,2021,,1,1,0,sim,soma das 9 fontes 1024124800.97 vs total 1024124800.97
+fonte_publicacao_coerente,São Luís,MA,NE,2022,,1,1,0,sim,soma das 9 fontes 1094314642.86 vs total 1094314642.86
+fonte_publicacao_coerente,São Luís,MA,NE,2025,,1,1,0,sim,soma das 9 fontes 1617069559.32 vs total 1617069559.32
+fonte_publicacao_coerente,São Paulo,SP,SE,2021,,0,0,0,sim,soma das 9 fontes 15671871881.45 vs total 15671012422.77
+fonte_publicacao_coerente,São Paulo,SP,SE,2025,,1,1,0,sim,soma das 9 fontes 25173757629.24 vs total 25173757629.24
+icsap_numero,Belo Horizonte,MG,SE,2021,,18955,18955,0.0,sim,
+icsap_numero,Belo Horizonte,MG,SE,2024,,27185,27185,0.0,sim,
+icsap_numero,Boa Vista,RR,N,2021,,4834,4834,0.0,sim,
+icsap_numero,Boa Vista,RR,N,2024,,5473,5473,0.0,sim,
+icsap_numero,Campo Grande,MS,CO,2021,,5626,5626,0.0,sim,
+icsap_numero,Campo Grande,MS,CO,2024,,8679,8679,0.0,sim,
+icsap_numero,Cuiabá,MT,CO,2021,,1662,1662,0.0,sim,
+icsap_numero,Cuiabá,MT,CO,2024,,4128,4128,0.0,sim,
+icsap_numero,Curitiba,PR,S,2021,,14107,14107,0.0,sim,
+icsap_numero,Curitiba,PR,S,2024,,17577,17577,0.0,sim,
+icsap_numero,Fortaleza,CE,NE,2021,,19313,19313,0.0,sim,
+icsap_numero,Fortaleza,CE,NE,2024,,25176,25176,0.0,sim,
+icsap_numero,Goiânia,GO,CO,2021,,7990,7990,0.0,sim,
+icsap_numero,Goiânia,GO,CO,2024,,9953,9953,0.0,sim,
+icsap_numero,Macapá,AP,N,2021,,2396,2396,0.0,sim,
+icsap_numero,Macapá,AP,N,2024,,4119,4119,0.0,sim,
+icsap_numero,Manaus,AM,N,2021,,15645,15645,0.0,sim,
+icsap_numero,Manaus,AM,N,2024,,20540,20540,0.0,sim,
+icsap_numero,Porto Alegre,RS,S,2021,,16172,16172,0.0,sim,
+icsap_numero,Porto Alegre,RS,S,2024,,21624,21624,0.0,sim,
+icsap_numero,Porto Velho,RO,N,2021,,4371,4371,0.0,sim,
+icsap_numero,Porto Velho,RO,N,2024,,3454,3454,0.0,sim,
+icsap_numero,Recife,PE,NE,2021,,15355,15355,0.0,sim,
+icsap_numero,Recife,PE,NE,2024,,17987,17987,0.0,sim,
+icsap_numero,Rio de Janeiro,RJ,SE,2021,,22868,22868,0.0,sim,
+icsap_numero,Rio de Janeiro,RJ,SE,2022,,27515,27515,0.0,sim,
+icsap_numero,Rio de Janeiro,RJ,SE,2024,,27652,27652,0.0,sim,
+icsap_numero,Salvador,BA,NE,2021,,13937,13937,0.0,sim,
+icsap_numero,Salvador,BA,NE,2024,,22663,22663,0.0,sim,
+icsap_numero,São Luís,MA,NE,2021,,5376,5376,0.0,sim,
+icsap_numero,São Luís,MA,NE,2022,,6470,6470,0.0,sim,
+icsap_numero,São Luís,MA,NE,2024,,6394,6394,0.0,sim,
+icsap_numero,São Paulo,SP,SE,2021,,68543,68543,0.0,sim,
+icsap_numero,São Paulo,SP,SE,2024,,83391,83391,0.0,sim,
+icsap_soma_grupos_vs_total,Belo Horizonte,MG,SE,2021,,18955,18955,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Belo Horizonte,MG,SE,2024,,27185,27185,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Boa Vista,RR,N,2021,,4834,4834,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Boa Vista,RR,N,2024,,5473,5473,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Campo Grande,MS,CO,2021,,5626,5626,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Campo Grande,MS,CO,2024,,8679,8679,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Cuiabá,MT,CO,2021,,1662,1662,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Cuiabá,MT,CO,2024,,4128,4128,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Curitiba,PR,S,2021,,14107,14107,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Curitiba,PR,S,2024,,17577,17577,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Fortaleza,CE,NE,2021,,19313,19313,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Fortaleza,CE,NE,2024,,25176,25176,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Goiânia,GO,CO,2021,,7990,7990,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Goiânia,GO,CO,2024,,9953,9953,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Macapá,AP,N,2021,,2396,2396,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Macapá,AP,N,2024,,4119,4119,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Manaus,AM,N,2021,,15645,15645,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Manaus,AM,N,2024,,20540,20540,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Porto Alegre,RS,S,2021,,16172,16172,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Porto Alegre,RS,S,2024,,21624,21624,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Porto Velho,RO,N,2021,,4371,4371,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Porto Velho,RO,N,2024,,3454,3454,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Recife,PE,NE,2021,,15355,15355,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Recife,PE,NE,2024,,17987,17987,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Rio de Janeiro,RJ,SE,2021,,22868,22868,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Rio de Janeiro,RJ,SE,2022,,27515,27515,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Rio de Janeiro,RJ,SE,2024,,27652,27652,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Salvador,BA,NE,2021,,13937,13937,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,Salvador,BA,NE,2024,,22663,22663,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,São Luís,MA,NE,2021,,5376,5376,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,São Luís,MA,NE,2022,,6470,6470,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,São Luís,MA,NE,2024,,6394,6394,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,São Paulo,SP,SE,2021,,68543,68543,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_soma_grupos_vs_total,São Paulo,SP,SE,2024,,83391,83391,0.0,sim,soma dos 19 grupos do seed contra o total do seed
+icsap_taxa_ripsa,Belo Horizonte,MG,SE,2021,ripsa,777.1318647843854,777.131865,-2.1561459107033443e-07,sim,
+icsap_taxa_ripsa,Belo Horizonte,MG,SE,2024,ripsa,1125.0490928632116,1125.049093,-1.367884578939993e-07,sim,
+icsap_taxa_ripsa,Boa Vista,RR,N,2021,ripsa,1131.6894104867388,1131.68941,4.867388270213269e-07,sim,
+icsap_taxa_ripsa,Boa Vista,RR,N,2024,ripsa,1164.0495226184628,1164.049523,-3.815371201199014e-07,sim,
+icsap_taxa_ripsa,Campo Grande,MS,CO,2021,ripsa,605.451430440884,605.45143,4.408840368341771e-07,sim,
+icsap_taxa_ripsa,Campo Grande,MS,CO,2024,ripsa,909.236624667247,909.236625,-3.327529611851787e-07,sim,
+icsap_taxa_ripsa,Cuiabá,MT,CO,2021,ripsa,251.6858560726406,251.685856,7.264060286615859e-08,sim,
+icsap_taxa_ripsa,Cuiabá,MT,CO,2024,ripsa,604.4525662877124,604.452566,2.8771239612979116e-07,sim,
+icsap_taxa_ripsa,Curitiba,PR,S,2021,ripsa,766.3132872542224,766.313287,2.542224137869198e-07,sim,
+icsap_taxa_ripsa,Curitiba,PR,S,2024,ripsa,960.89874127021,960.898741,2.7021008008887293e-07,sim,
+icsap_taxa_ripsa,Fortaleza,CE,NE,2021,ripsa,749.1175672006517,749.117567,2.0065169792360393e-07,sim,
+icsap_taxa_ripsa,Fortaleza,CE,NE,2024,ripsa,977.9320481725536,977.932048,1.7255354123335565e-07,sim,
+icsap_taxa_ripsa,Goiânia,GO,CO,2021,ripsa,540.0695804287977,540.06958,4.2879776174231665e-07,sim,
+icsap_taxa_ripsa,Goiânia,GO,CO,2024,ripsa,665.9311293530907,665.931129,3.5309062695887405e-07,sim,
+icsap_taxa_ripsa,Macapá,AP,N,2021,ripsa,500.8884707849901,500.888471,-2.1500989078049315e-07,sim,
+icsap_taxa_ripsa,Macapá,AP,N,2024,ripsa,845.4433497536946,845.44335,-2.4630537609482417e-07,sim,
+icsap_taxa_ripsa,Manaus,AM,N,2021,ripsa,709.150098678157,709.150099,-3.2184300380322384e-07,sim,
+icsap_taxa_ripsa,Manaus,AM,N,2024,ripsa,901.0012782462147,901.001278,2.4621476768516004e-07,sim,
+icsap_taxa_ripsa,Porto Alegre,RS,S,2021,ripsa,1141.3238707619387,1141.323871,-2.3806137505744118e-07,sim,
+icsap_taxa_ripsa,Porto Alegre,RS,S,2024,ripsa,1556.4426389274768,1556.442639,-7.252333489304874e-08,sim,
+icsap_taxa_ripsa,Porto Velho,RO,N,2021,ripsa,868.3145638859809,868.314564,-1.1401914434827631e-07,sim,
+icsap_taxa_ripsa,Porto Velho,RO,N,2024,ripsa,670.845043340785,670.845043,3.407849362702109e-07,sim,
+icsap_taxa_ripsa,Recife,PE,NE,2021,ripsa,961.365082068209,961.365082,6.820891940151341e-08,sim,
+icsap_taxa_ripsa,Recife,PE,NE,2024,ripsa,1132.8916481441474,1132.891648,1.441474068997195e-07,sim,
+icsap_taxa_ripsa,Rio de Janeiro,RJ,SE,2021,ripsa,338.4136320848325,338.413632,8.483249303026241e-08,sim,
+icsap_taxa_ripsa,Rio de Janeiro,RJ,SE,2022,ripsa,408.075913539815,408.075914,-4.60184992334689e-07,sim,
+icsap_taxa_ripsa,Rio de Janeiro,RJ,SE,2024,ripsa,410.88314318175,410.883143,1.8174995375375147e-07,sim,
+icsap_taxa_ripsa,Salvador,BA,NE,2021,ripsa,531.3557864862464,531.355786,4.862464493271546e-07,sim,
+icsap_taxa_ripsa,Salvador,BA,NE,2024,ripsa,882.196776242853,882.196776,2.4285304789373185e-07,sim,
+icsap_taxa_ripsa,São Luís,MA,NE,2021,ripsa,495.799171823556,495.799172,-1.7644401850702707e-07,sim,
+icsap_taxa_ripsa,São Luís,MA,NE,2022,ripsa,595.4917500922691,595.49175,9.226903330272762e-08,sim,
+icsap_taxa_ripsa,São Luís,MA,NE,2024,ripsa,587.6530365596655,587.653037,-4.403345883474685e-07,sim,
+icsap_taxa_ripsa,São Paulo,SP,SE,2021,ripsa,571.8267279002272,571.826728,-9.977281933970517e-08,sim,
+icsap_taxa_ripsa,São Paulo,SP,SE,2024,ripsa,701.0252044919549,701.025204,4.919548928228323e-07,sim,
+natureza_publicacao_coerente,Belo Horizonte,MG,SE,2021,,1,1,0,sim,MSC liquida 4193517290.55 (sem natureza identificavel 0.00) vs DCA 4193517290.55; linhas MSC 1142
+natureza_publicacao_coerente,Belo Horizonte,MG,SE,2025,,1,1,0,sim,MSC liquida 6164530838.18 (sem natureza identificavel 0.00) vs DCA 6164530838.18; linhas MSC 1264
+natureza_publicacao_coerente,Boa Vista,RR,N,2021,,1,1,0,sim,MSC liquida 261215597.35 (sem natureza identificavel 0.00) vs DCA 261215597.35; linhas MSC 600
+natureza_publicacao_coerente,Boa Vista,RR,N,2024,,1,1,0,sim,MSC liquida 503187172.75 (sem natureza identificavel 0.00) vs DCA 503187172.75; linhas MSC 592
+natureza_publicacao_coerente,Boa Vista,RR,N,2025,,1,1,0,sim,MSC liquida 518272796.81 (sem natureza identificavel 0.00) vs DCA 518272796.81; linhas MSC 690
+natureza_publicacao_coerente,Campo Grande,MS,CO,2021,,0,0,0,sim,MSC liquida 1499131890.72 (sem natureza identificavel 0.00) vs DCA 1573583018.36; linhas MSC 409
+natureza_publicacao_coerente,Campo Grande,MS,CO,2025,,1,1,0,sim,MSC liquida 1815077091.98 (sem natureza identificavel 0.00) vs DCA 1815077091.98; linhas MSC 409
+natureza_publicacao_coerente,Cuiabá,MT,CO,2021,,1,1,0,sim,MSC liquida 1155823332.28 (sem natureza identificavel 0.00) vs DCA 1155823332.28; linhas MSC 237
+natureza_publicacao_coerente,Cuiabá,MT,CO,2025,,1,1,0,sim,MSC liquida 1340435281.69 (sem natureza identificavel 0.00) vs DCA 1340435281.69; linhas MSC 299
+natureza_publicacao_coerente,Curitiba,PR,S,2021,,1,1,0,sim,MSC liquida 2371603853.62 (sem natureza identificavel 0.00) vs DCA 2371603853.62; linhas MSC 362
+natureza_publicacao_coerente,Curitiba,PR,S,2025,,1,1,0,sim,MSC liquida 3238388804.17 (sem natureza identificavel 0.00) vs DCA 3238388804.17; linhas MSC 304
+natureza_publicacao_coerente,Fortaleza,CE,NE,2021,,1,1,0,sim,MSC liquida 2433667960.22 (sem natureza identificavel 0.00) vs DCA 2433667960.22; linhas MSC 426
+natureza_publicacao_coerente,Fortaleza,CE,NE,2025,,1,1,0,sim,MSC liquida 3560561177.85 (sem natureza identificavel 0.00) vs DCA 3560561177.85; linhas MSC 400
+natureza_publicacao_coerente,Goiânia,GO,CO,2021,,0,0,0,sim,MSC liquida 1777707947.80 (sem natureza identificavel 0.00) vs DCA 1669191901.80; linhas MSC 345
+natureza_publicacao_coerente,Goiânia,GO,CO,2025,,1,1,0,sim,MSC liquida 2111242839.69 (sem natureza identificavel 0.00) vs DCA 2111242839.69; linhas MSC 148
+natureza_publicacao_coerente,Macapá,AP,N,2021,,1,1,0,sim,MSC liquida 243913189.57 (sem natureza identificavel 0.00) vs DCA 243913189.57; linhas MSC 357
+natureza_publicacao_coerente,Macapá,AP,N,2025,,0,0,0,sim,MSC liquida 503269686.89 (sem natureza identificavel 0.00) vs DCA 495269686.89; linhas MSC 138
+natureza_publicacao_coerente,Manaus,AM,N,2021,,1,1,0,sim,MSC liquida 1020801741.09 (sem natureza identificavel 0.00) vs DCA 1020801741.09; linhas MSC 525
+natureza_publicacao_coerente,Manaus,AM,N,2025,,1,1,0,sim,MSC liquida 1757677831.63 (sem natureza identificavel 0.00) vs DCA 1757677831.63; linhas MSC 422
+natureza_publicacao_coerente,Porto Alegre,RS,S,2021,,1,1,0,sim,MSC liquida 1779050572.19 (sem natureza identificavel 0.00) vs DCA 1779050572.19; linhas MSC 996
+natureza_publicacao_coerente,Porto Alegre,RS,S,2025,,1,1,0,sim,MSC liquida 2673436620.99 (sem natureza identificavel 0.00) vs DCA 2673436620.99; linhas MSC 1307
+natureza_publicacao_coerente,Porto Velho,RO,N,2021,,1,1,0,sim,MSC liquida 436307569.94 (sem natureza identificavel 0.00) vs DCA 436307569.94; linhas MSC 349
+natureza_publicacao_coerente,Porto Velho,RO,N,2025,,1,1,0,sim,MSC liquida 585497265.83 (sem natureza identificavel 0.00) vs DCA 585497265.83; linhas MSC 661
+natureza_publicacao_coerente,Recife,PE,NE,2021,,1,1,0,sim,MSC liquida 1459890173.13 (sem natureza identificavel 0.00) vs DCA 1459890173.13; linhas MSC 924
+natureza_publicacao_coerente,Recife,PE,NE,2025,,1,1,0,sim,MSC liquida 2103812026.05 (sem natureza identificavel 0.00) vs DCA 2103812026.05; linhas MSC 777
+natureza_publicacao_coerente,Rio de Janeiro,RJ,SE,2021,,0,0,0,sim,MSC liquida 3740996324.14 (sem natureza identificavel 0.00) vs DCA 5008023132.59; linhas MSC 1060
+natureza_publicacao_coerente,Rio de Janeiro,RJ,SE,2022,,0,0,0,sim,MSC liquida 0.00 (sem natureza identificavel 0.00) vs DCA 6544885413.18; linhas MSC 0
+natureza_publicacao_coerente,Rio de Janeiro,RJ,SE,2025,,1,1,0,sim,MSC liquida 7645003822.44 (sem natureza identificavel 0.00) vs DCA 7645003822.44; linhas MSC 1136
+natureza_publicacao_coerente,Salvador,BA,NE,2021,,1,1,0,sim,MSC liquida 1980520161.04 (sem natureza identificavel 0.00) vs DCA 1980520161.04; linhas MSC 840
+natureza_publicacao_coerente,Salvador,BA,NE,2025,,1,1,0,sim,MSC liquida 2881440964.62 (sem natureza identificavel 0.00) vs DCA 2881440964.62; linhas MSC 538
+natureza_publicacao_coerente,São Luís,MA,NE,2021,,0,0,0,sim,MSC liquida 248674243.51 (sem natureza identificavel 0.00) vs DCA 978258313.88; linhas MSC 101
+natureza_publicacao_coerente,São Luís,MA,NE,2022,,0,0,0,sim,MSC liquida 0.00 (sem natureza identificavel 0.00) vs DCA 1041712262.30; linhas MSC 0
+natureza_publicacao_coerente,São Luís,MA,NE,2025,,1,1,0,sim,MSC liquida 1508601585.28 (sem natureza identificavel 0.00) vs DCA 1508601585.28; linhas MSC 610
+natureza_publicacao_coerente,São Paulo,SP,SE,2021,,1,1,0,sim,MSC liquida 14598986643.15 (sem natureza identificavel 0.00) vs DCA 14598986643.15; linhas MSC 287
+natureza_publicacao_coerente,São Paulo,SP,SE,2025,,1,1,0,sim,MSC liquida 23342248911.99 (sem natureza identificavel 0.00) vs DCA 23342248911.99; linhas MSC 888
+natureza_valor,Belo Horizonte,MG,SE,2021,capital,77604627.98,77604627.98,0.0,sim,
+natureza_valor,Belo Horizonte,MG,SE,2021,outras_correntes,3097080072.66,3097080072.66,0.0,sim,
+natureza_valor,Belo Horizonte,MG,SE,2021,pessoal,1018832589.91,1018832589.91,0.0,sim,
+natureza_valor,Belo Horizonte,MG,SE,2025,capital,53882453.82,53882453.82,0.0,sim,
+natureza_valor,Belo Horizonte,MG,SE,2025,outras_correntes,4503718928.02,4503718928.02,0.0,sim,
+natureza_valor,Belo Horizonte,MG,SE,2025,pessoal,1606929456.34,1606929456.34,0.0,sim,
+natureza_valor,Boa Vista,RR,N,2021,capital,3711769.99,3711769.99,0.0,sim,
+natureza_valor,Boa Vista,RR,N,2021,outras_correntes,68219546.86,68219546.86,0.0,sim,
+natureza_valor,Boa Vista,RR,N,2021,pessoal,189284280.5,189284280.5,0.0,sim,
+natureza_valor,Boa Vista,RR,N,2024,capital,17944534.48,17944534.48,0.0,sim,
+natureza_valor,Boa Vista,RR,N,2024,outras_correntes,141772216.5,141772216.5,0.0,sim,
+natureza_valor,Boa Vista,RR,N,2024,pessoal,343470421.77,343470421.77,0.0,sim,
+natureza_valor,Boa Vista,RR,N,2025,capital,5618241.79,5618241.79,0.0,sim,
+natureza_valor,Boa Vista,RR,N,2025,outras_correntes,139952412.66,139952412.66,0.0,sim,
+natureza_valor,Boa Vista,RR,N,2025,pessoal,372702142.36,372702142.36,0.0,sim,
+natureza_valor,Campo Grande,MS,CO,2025,capital,3721367.28,3721367.28,0.0,sim,
+natureza_valor,Campo Grande,MS,CO,2025,outras_correntes,1015089550.09,1015089550.09,0.0,sim,
+natureza_valor,Campo Grande,MS,CO,2025,pessoal,796266174.61,796266174.61,0.0,sim,
+natureza_valor,Cuiabá,MT,CO,2021,capital,4315704.47,4315704.47,0.0,sim,
+natureza_valor,Cuiabá,MT,CO,2021,outras_correntes,690711672.4,690711672.4,0.0,sim,
+natureza_valor,Cuiabá,MT,CO,2021,pessoal,460795955.41,460795955.41,0.0,sim,
+natureza_valor,Cuiabá,MT,CO,2025,capital,1658529.21,1658529.21,0.0,sim,
+natureza_valor,Cuiabá,MT,CO,2025,outras_correntes,687905339.1,687905339.1,0.0,sim,
+natureza_valor,Cuiabá,MT,CO,2025,pessoal,650871413.38,650871413.38,0.0,sim,
+natureza_valor,Curitiba,PR,S,2021,capital,23349631.88,23349631.88,0.0,sim,
+natureza_valor,Curitiba,PR,S,2021,outras_correntes,1727582803.56,1727582803.56,0.0,sim,
+natureza_valor,Curitiba,PR,S,2021,pessoal,620671418.18,620671418.18,0.0,sim,
+natureza_valor,Curitiba,PR,S,2025,capital,7906096.42,7906096.42,0.0,sim,
+natureza_valor,Curitiba,PR,S,2025,outras_correntes,2439892314.98,2439892314.98,0.0,sim,
+natureza_valor,Curitiba,PR,S,2025,pessoal,790590392.77,790590392.77,0.0,sim,
+natureza_valor,Fortaleza,CE,NE,2021,capital,56423760.97,56423760.97,0.0,sim,
+natureza_valor,Fortaleza,CE,NE,2021,outras_correntes,1452902375.42,1452902375.42,0.0,sim,
+natureza_valor,Fortaleza,CE,NE,2021,pessoal,924341823.83,924341823.83,0.0,sim,
+natureza_valor,Fortaleza,CE,NE,2025,capital,21464700.33,21464700.33,0.0,sim,
+natureza_valor,Fortaleza,CE,NE,2025,outras_correntes,2127241186.57,2127241186.57,0.0,sim,
+natureza_valor,Fortaleza,CE,NE,2025,pessoal,1411855290.95,1411855290.95,0.0,sim,
+natureza_valor,Goiânia,GO,CO,2025,capital,1248.0,1248.0,0.0,sim,
+natureza_valor,Goiânia,GO,CO,2025,outras_correntes,1210722473.66,1210722473.66,0.0,sim,
+natureza_valor,Goiânia,GO,CO,2025,pessoal,900519118.03,900519118.03,0.0,sim,
+natureza_valor,Macapá,AP,N,2021,capital,11304603.99,11304603.99,0.0,sim,
+natureza_valor,Macapá,AP,N,2021,outras_correntes,105718276.08,105718276.08,0.0,sim,
+natureza_valor,Macapá,AP,N,2021,pessoal,126890309.5,126890309.5,0.0,sim,
+natureza_valor,Manaus,AM,N,2021,capital,12915491.89,12915491.89,0.0,sim,
+natureza_valor,Manaus,AM,N,2021,outras_correntes,346396988.57,346396988.57,0.0,sim,
+natureza_valor,Manaus,AM,N,2021,pessoal,661489260.63,661489260.63,0.0,sim,
+natureza_valor,Manaus,AM,N,2025,capital,40742498.14,40742498.14,0.0,sim,
+natureza_valor,Manaus,AM,N,2025,outras_correntes,735273837.2,735273837.2,0.0,sim,
+natureza_valor,Manaus,AM,N,2025,pessoal,981661496.29,981661496.29,0.0,sim,
+natureza_valor,Porto Alegre,RS,S,2021,capital,15359794.3,15359794.3,0.0,sim,
+natureza_valor,Porto Alegre,RS,S,2021,outras_correntes,1361887630.94,1361887630.94,0.0,sim,
+natureza_valor,Porto Alegre,RS,S,2021,pessoal,401803146.95,401803146.95,0.0,sim,
+natureza_valor,Porto Alegre,RS,S,2025,capital,28518673.31,28518673.31,0.0,sim,
+natureza_valor,Porto Alegre,RS,S,2025,outras_correntes,2163491629.77,2163491629.77,0.0,sim,
+natureza_valor,Porto Alegre,RS,S,2025,pessoal,481426317.91,481426317.91,0.0,sim,
+natureza_valor,Porto Velho,RO,N,2021,capital,5393691.85,5393691.85,0.0,sim,
+natureza_valor,Porto Velho,RO,N,2021,outras_correntes,180067927.25,180067927.25,0.0,sim,
+natureza_valor,Porto Velho,RO,N,2021,pessoal,250845950.84,250845950.84,0.0,sim,
+natureza_valor,Porto Velho,RO,N,2025,capital,23638393.74,23638393.74,0.0,sim,
+natureza_valor,Porto Velho,RO,N,2025,outras_correntes,256858609.75,256858609.75,0.0,sim,
+natureza_valor,Porto Velho,RO,N,2025,pessoal,305000262.34,305000262.34,0.0,sim,
+natureza_valor,Recife,PE,NE,2021,capital,16362458.49,16362458.49,0.0,sim,
+natureza_valor,Recife,PE,NE,2021,outras_correntes,763093166.24,763093166.24,0.0,sim,
+natureza_valor,Recife,PE,NE,2021,pessoal,680434548.4,680434548.4,0.0,sim,
+natureza_valor,Recife,PE,NE,2025,capital,79845594.63,79845594.63,0.0,sim,
+natureza_valor,Recife,PE,NE,2025,outras_correntes,1052543933.55,1052543933.55,0.0,sim,
+natureza_valor,Recife,PE,NE,2025,pessoal,971422497.87,971422497.87,0.0,sim,
+natureza_valor,Rio de Janeiro,RJ,SE,2025,capital,86260352.84,86260352.84,0.0,sim,
+natureza_valor,Rio de Janeiro,RJ,SE,2025,outras_correntes,5260101992.78,5260101992.78,0.0,sim,
+natureza_valor,Rio de Janeiro,RJ,SE,2025,pessoal,2298641476.82,2298641476.82,0.0,sim,
+natureza_valor,Salvador,BA,NE,2021,capital,18455487.32,18455487.32,0.0,sim,
+natureza_valor,Salvador,BA,NE,2021,outras_correntes,1365221891.13,1365221891.13,0.0,sim,
+natureza_valor,Salvador,BA,NE,2021,pessoal,596842782.59,596842782.59,0.0,sim,
+natureza_valor,Salvador,BA,NE,2025,capital,25075063.73,25075063.73,0.0,sim,
+natureza_valor,Salvador,BA,NE,2025,outras_correntes,2033302821.27,2033302821.27,0.0,sim,
+natureza_valor,Salvador,BA,NE,2025,pessoal,823063079.62,823063079.62,0.0,sim,
+natureza_valor,São Luís,MA,NE,2025,capital,12385142.51,12385142.51,0.0,sim,
+natureza_valor,São Luís,MA,NE,2025,outras_correntes,612011250.61,612011250.61,0.0,sim,
+natureza_valor,São Luís,MA,NE,2025,pessoal,884205192.16,884205192.16,0.0,sim,
+natureza_valor,São Paulo,SP,SE,2021,capital,243600960.09,243600960.09,0.0,sim,
+natureza_valor,São Paulo,SP,SE,2021,outras_correntes,12550221461.53,12550221461.53,0.0,sim,
+natureza_valor,São Paulo,SP,SE,2021,pessoal,1805164221.53,1805164221.53,0.0,sim,
+natureza_valor,São Paulo,SP,SE,2025,capital,479508654.77,479508654.77,0.0,sim,
+natureza_valor,São Paulo,SP,SE,2025,outras_correntes,20578151408.07,20578151408.07,0.0,sim,
+natureza_valor,São Paulo,SP,SE,2025,pessoal,2284588849.15,2284588849.15,0.0,sim,
+soma_subfuncoes_gold_vs_total_gold,Belo Horizonte,MG,SE,2021,,4193517290.55,4193517290.55,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Belo Horizonte,MG,SE,2025,,6164530838.18,6164530838.18,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Boa Vista,RR,N,2021,,261215597.35,261215597.35,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Boa Vista,RR,N,2024,,503187172.75,503187172.75,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Boa Vista,RR,N,2025,,518272796.81,518272796.81,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Campo Grande,MS,CO,2021,,1573583018.36,1573583018.36,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Campo Grande,MS,CO,2025,,1815077091.98,1815077091.98,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Cuiabá,MT,CO,2021,,1155823332.28,1155823332.28,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Cuiabá,MT,CO,2025,,1340435281.69,1340435281.69,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Curitiba,PR,S,2021,,2371603853.62,2371603853.62,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Curitiba,PR,S,2025,,3238388804.17,3238388804.17,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Fortaleza,CE,NE,2021,,2433667960.22,2433667960.22,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Fortaleza,CE,NE,2025,,3560561177.85,3560561177.85,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Goiânia,GO,CO,2021,,1669191901.8,1669191901.8,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Goiânia,GO,CO,2025,,2111242839.69,2111242839.69,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Macapá,AP,N,2021,,243913189.57,243913189.57,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Macapá,AP,N,2025,,495269686.89,495269686.89,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Manaus,AM,N,2021,,1020801741.09,1020801741.09,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Manaus,AM,N,2025,,1757677831.63,1757677831.63,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Porto Alegre,RS,S,2021,,1779050572.19,1779050572.19,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Porto Alegre,RS,S,2025,,2673436620.99,2673436620.99,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Porto Velho,RO,N,2021,,436307569.94,436307569.94,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Porto Velho,RO,N,2025,,585497265.83,585497265.83,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Recife,PE,NE,2021,,1459890173.13,1459890173.13,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Recife,PE,NE,2025,,2103812026.05,2103812026.05,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Rio de Janeiro,RJ,SE,2021,,5008023132.59,5008023132.59,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Rio de Janeiro,RJ,SE,2022,,6544885413.18,6544885413.18,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Rio de Janeiro,RJ,SE,2025,,7645003822.44,7645003822.44,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Salvador,BA,NE,2021,,1980520161.04,1980520161.04,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,Salvador,BA,NE,2025,,2881440964.62,2881440964.62,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,São Luís,MA,NE,2021,,978258313.88,978258313.88,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,São Luís,MA,NE,2022,,1041712262.3,1041712262.3,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,São Luís,MA,NE,2025,,1508601585.28,1508601585.28,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,São Paulo,SP,SE,2021,,14598986643.15,14598986643.15,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_gold_vs_total_gold,São Paulo,SP,SE,2025,,23342248911.99,23342248911.99,0.0,sim,soma das subfunções na gold contra a despesa da gold
+soma_subfuncoes_vs_total_dca,Belo Horizonte,MG,SE,2021,,4193517290.55,4193517290.55,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Belo Horizonte,MG,SE,2025,,6164530838.18,6164530838.18,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Boa Vista,RR,N,2021,,261215597.35,261215597.35,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Boa Vista,RR,N,2024,,503187172.75,503187172.75,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Boa Vista,RR,N,2025,,518272796.81,518272796.81,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Campo Grande,MS,CO,2021,,1573583018.36,1573583018.36,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Campo Grande,MS,CO,2025,,1815077091.98,1815077091.98,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Cuiabá,MT,CO,2021,,1155823332.28,1155823332.28,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Cuiabá,MT,CO,2025,,1340435281.69,1340435281.69,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Curitiba,PR,S,2021,,2371603853.62,2371603853.62,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Curitiba,PR,S,2025,,3238388804.17,3238388804.17,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Fortaleza,CE,NE,2021,,2433667960.22,2433667960.22,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Fortaleza,CE,NE,2025,,3560561177.85,3560561177.85,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Goiânia,GO,CO,2021,,1669191901.8,1669191901.8,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Goiânia,GO,CO,2025,,2111242839.69,2111242839.69,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Macapá,AP,N,2021,,243913189.57,243913189.57,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Macapá,AP,N,2025,,495269686.89,495269686.89,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Manaus,AM,N,2021,,1020801741.09,1020801741.09,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Manaus,AM,N,2025,,1757677831.63,1757677831.63,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Porto Alegre,RS,S,2021,,1779050572.19,1779050572.19,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Porto Alegre,RS,S,2025,,2673436620.99,2673436620.99,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Porto Velho,RO,N,2021,,436307569.94,436307569.94,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Porto Velho,RO,N,2025,,585497265.83,585497265.83,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Recife,PE,NE,2021,,1459890173.13,1459890173.13,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Recife,PE,NE,2025,,2103812026.05,2103812026.05,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Rio de Janeiro,RJ,SE,2021,,5008023132.59,5008023132.59,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Rio de Janeiro,RJ,SE,2022,,6544885413.18,6544885413.18,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Rio de Janeiro,RJ,SE,2025,,7645003822.44,7645003822.44,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Salvador,BA,NE,2021,,1980520161.04,1980520161.04,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,Salvador,BA,NE,2025,,2881440964.62,2881440964.62,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,São Luís,MA,NE,2021,,978258313.88,978258313.88,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,São Luís,MA,NE,2022,,1041712262.3,1041712262.3,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,São Luís,MA,NE,2025,,1508601585.28,1508601585.28,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,São Paulo,SP,SE,2021,,14598986643.15,14598986643.15,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+soma_subfuncoes_vs_total_dca,São Paulo,SP,SE,2025,,23342248911.99,23342248911.99,0.0,sim,soma das subfunções na DCA (10.xxx e FU10) contra o total 10 - Saúde
+ubs_por_10mil,Belo Horizonte,MG,SE,2021,publicas,0.6519932619459984,0.651993,2.6194599833662124e-07,sim,
+ubs_por_10mil,Belo Horizonte,MG,SE,2025,publicas,0.6788439122602522,0.678844,-8.77397478005193e-08,sim,
+ubs_por_10mil,Boa Vista,RR,N,2021,publicas,0.984903490910257,0.984903,4.90910257000543e-07,sim,
+ubs_por_10mil,Boa Vista,RR,N,2024,publicas,0.999640554779239,0.999641,-4.4522076103614694e-07,sim,
+ubs_por_10mil,Boa Vista,RR,N,2025,publicas,0.9887183120930548,0.988718,3.1209305484392047e-07,sim,
+ubs_por_10mil,Campo Grande,MS,CO,2021,publicas,0.8624444733138937,0.862444,4.733138937451642e-07,sim,
+ubs_por_10mil,Campo Grande,MS,CO,2025,publicas,0.8412237000757101,0.841224,-2.9992428984826347e-07,sim,
+ubs_por_10mil,Cuiabá,MT,CO,2021,publicas,1.443200441298624,1.4432,4.412986238655492e-07,sim,
+ubs_por_10mil,Cuiabá,MT,CO,2025,publicas,1.3297199638663053,1.32972,-3.613369470301109e-08,sim,
+ubs_por_10mil,Curitiba,PR,S,2021,publicas,0.560159614936096,0.56016,-3.8506390398485024e-07,sim,
+ubs_por_10mil,Curitiba,PR,S,2025,publicas,0.6062939870384177,0.606294,-1.296158225194688e-08,sim,
+ubs_por_10mil,Fortaleza,CE,NE,2021,publicas,0.42909072346545507,0.429091,-2.765345449295964e-07,sim,
+ubs_por_10mil,Fortaleza,CE,NE,2025,publicas,0.5623461546963854,0.562346,1.5469638536824704e-07,sim,
+ubs_por_10mil,Goiânia,GO,CO,2021,publicas,0.5271189861830543,0.527119,-1.3816945698685856e-08,sim,
+ubs_por_10mil,Goiânia,GO,CO,2025,publicas,0.5853959671539645,0.585396,-3.2846035558087294e-08,sim,
+ubs_por_10mil,Macapá,AP,N,2021,publicas,0.9954877602865474,0.995488,-2.3971345264328647e-07,sim,
+ubs_por_10mil,Macapá,AP,N,2025,publicas,1.143613327996471,1.143613,3.279964710944938e-07,sim,
+ubs_por_10mil,Manaus,AM,N,2021,publicas,0.9929504947686137,0.99295,4.947686137457552e-07,sim,
+ubs_por_10mil,Manaus,AM,N,2025,publicas,0.9462906275556359,0.946291,-3.724443641273112e-07,sim,
+ubs_por_10mil,Porto Alegre,RS,S,2021,publicas,0.9581046947130041,0.958105,-3.0528699590526287e-07,sim,
+ubs_por_10mil,Porto Alegre,RS,S,2025,publicas,1.0224698551405031,1.02247,-1.4485949684228672e-07,sim,
+ubs_por_10mil,Porto Velho,RO,N,2021,publicas,1.0565586790830528,1.056559,-3.2091694723845876e-07,sim,
+ubs_por_10mil,Porto Velho,RO,N,2025,publicas,1.1589522299206698,1.158952,2.2992066983640314e-07,sim,
+ubs_por_10mil,Recife,PE,NE,2021,publicas,0.9753060925926706,0.975306,9.259267064187782e-08,sim,
+ubs_por_10mil,Recife,PE,NE,2025,publicas,1.038796859181957,1.038797,-1.4081804300403178e-07,sim,
+ubs_por_10mil,Rio de Janeiro,RJ,SE,2021,publicas,0.38520795547409287,0.385208,-4.452590712800131e-08,sim,
+ubs_por_10mil,Rio de Janeiro,RJ,SE,2022,publicas,0.42181708819664016,0.421817,8.819664015780049e-08,sim,
+ubs_por_10mil,Rio de Janeiro,RJ,SE,2025,publicas,0.36994506835738,0.369945,6.835737997867852e-08,sim,
+ubs_por_10mil,Salvador,BA,NE,2021,publicas,0.572350834511652,0.572351,-1.6548834802510015e-07,sim,
+ubs_por_10mil,Salvador,BA,NE,2025,publicas,0.666873618479653,0.666874,-3.8152034698146764e-07,sim,
+ubs_por_10mil,São Luís,MA,NE,2021,publicas,0.5735116476631192,0.573512,-3.523368807822891e-07,sim,
+ubs_por_10mil,São Luís,MA,NE,2022,publicas,0.63597600635976,0.635976,6.359760051921626e-09,sim,
+ubs_por_10mil,São Luís,MA,NE,2025,publicas,0.6151218997167684,0.615122,-1.002832314966895e-07,sim,
+ubs_por_10mil,São Paulo,SP,SE,2021,publicas,0.38156325092535137,0.381563,2.509253513860443e-07,sim,
+ubs_por_10mil,São Paulo,SP,SE,2025,publicas,0.42083296198954373,0.420833,-3.8010456282489e-08,sim,
+ubs_retrato_publicas,Belo Horizonte,MG,SE,2026,publicas,165,165,0.0,sim,
+ubs_retrato_publicas,Boa Vista,RR,N,2026,publicas,47,47,0.0,sim,
+ubs_retrato_publicas,Campo Grande,MS,CO,2026,publicas,81,81,0.0,sim,
+ubs_retrato_publicas,Cuiabá,MT,CO,2026,publicas,92,92,0.0,sim,
+ubs_retrato_publicas,Curitiba,PR,S,2026,publicas,111,111,0.0,sim,
+ubs_retrato_publicas,Fortaleza,CE,NE,2026,publicas,147,147,0.0,sim,
+ubs_retrato_publicas,Goiânia,GO,CO,2026,publicas,86,86,0.0,sim,
+ubs_retrato_publicas,Macapá,AP,N,2026,publicas,56,56,0.0,sim,
+ubs_retrato_publicas,Manaus,AM,N,2026,publicas,217,217,0.0,sim,
+ubs_retrato_publicas,Porto Alegre,RS,S,2026,publicas,144,144,0.0,sim,
+ubs_retrato_publicas,Porto Velho,RO,N,2026,publicas,60,60,0.0,sim,
+ubs_retrato_publicas,Recife,PE,NE,2026,publicas,164,164,0.0,sim,
+ubs_retrato_publicas,Rio de Janeiro,RJ,SE,2026,publicas,252,252,0.0,sim,
+ubs_retrato_publicas,Salvador,BA,NE,2026,publicas,171,171,0.0,sim,
+ubs_retrato_publicas,São Luís,MA,NE,2026,publicas,69,69,0.0,sim,
+ubs_retrato_publicas,São Paulo,SP,SE,2026,publicas,508,508,0.0,sim,
+ubs_serie_publicas,Belo Horizonte,MG,SE,2021,publicas,165,165,0.0,sim,
+ubs_serie_publicas,Belo Horizonte,MG,SE,2025,publicas,164,164,0.0,sim,
+ubs_serie_publicas,Boa Vista,RR,N,2021,publicas,43,43,0.0,sim,
+ubs_serie_publicas,Boa Vista,RR,N,2024,publicas,47,47,0.0,sim,
+ubs_serie_publicas,Boa Vista,RR,N,2025,publicas,48,48,0.0,sim,
+ubs_serie_publicas,Campo Grande,MS,CO,2021,publicas,79,79,0.0,sim,
+ubs_serie_publicas,Campo Grande,MS,CO,2025,publicas,81,81,0.0,sim,
+ubs_serie_publicas,Cuiabá,MT,CO,2021,publicas,90,90,0.0,sim,
+ubs_serie_publicas,Cuiabá,MT,CO,2025,publicas,92,92,0.0,sim,
+ubs_serie_publicas,Curitiba,PR,S,2021,publicas,110,110,0.0,sim,
+ubs_serie_publicas,Curitiba,PR,S,2025,publicas,111,111,0.0,sim,
+ubs_serie_publicas,Fortaleza,CE,NE,2021,publicas,116,116,0.0,sim,
+ubs_serie_publicas,Fortaleza,CE,NE,2025,publicas,145,145,0.0,sim,
+ubs_serie_publicas,Goiânia,GO,CO,2021,publicas,82,82,0.0,sim,
+ubs_serie_publicas,Goiânia,GO,CO,2025,publicas,88,88,0.0,sim,
+ubs_serie_publicas,Macapá,AP,N,2021,publicas,52,52,0.0,sim,
+ubs_serie_publicas,Macapá,AP,N,2025,publicas,56,56,0.0,sim,
+ubs_serie_publicas,Manaus,AM,N,2021,publicas,224,224,0.0,sim,
+ubs_serie_publicas,Manaus,AM,N,2025,publicas,218,218,0.0,sim,
+ubs_serie_publicas,Porto Alegre,RS,S,2021,publicas,143,143,0.0,sim,
+ubs_serie_publicas,Porto Alegre,RS,S,2025,publicas,142,142,0.0,sim,
+ubs_serie_publicas,Porto Velho,RO,N,2021,publicas,58,58,0.0,sim,
+ubs_serie_publicas,Porto Velho,RO,N,2025,publicas,60,60,0.0,sim,
+ubs_serie_publicas,Recife,PE,NE,2021,publicas,162,162,0.0,sim,
+ubs_serie_publicas,Recife,PE,NE,2025,publicas,165,165,0.0,sim,
+ubs_serie_publicas,Rio de Janeiro,RJ,SE,2021,publicas,261,261,0.0,sim,
+ubs_serie_publicas,Rio de Janeiro,RJ,SE,2022,publicas,262,262,0.0,sim,
+ubs_serie_publicas,Rio de Janeiro,RJ,SE,2025,publicas,249,249,0.0,sim,
+ubs_serie_publicas,Salvador,BA,NE,2021,publicas,166,166,0.0,sim,
+ubs_serie_publicas,Salvador,BA,NE,2025,publicas,171,171,0.0,sim,
+ubs_serie_publicas,São Luís,MA,NE,2021,publicas,64,64,0.0,sim,
+ubs_serie_publicas,São Luís,MA,NE,2022,publicas,66,66,0.0,sim,
+ubs_serie_publicas,São Luís,MA,NE,2025,publicas,67,67,0.0,sim,
+ubs_serie_publicas,São Paulo,SP,SE,2021,publicas,473,473,0.0,sim,
+ubs_serie_publicas,São Paulo,SP,SE,2025,publicas,501,501,0.0,sim,

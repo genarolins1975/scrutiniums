@@ -1,0 +1,30 @@
+verificacao;escopo;resultado
+testes Python do módulo (python3 -m unittest pipeline.tests.test_eficiencia_saude);62 testes;"OK (15,6 s); eram 57"
+testes vitest do módulo (npx vitest run src/tests/obee-saude.test.ts);79 testes;"OK; eram 70"
+suíte vitest completa;143 arquivos;2.772 aprovados e 1 ignorado, como diz VALIDACOES_E_REPRODUCAO.md
+testes Python de Educação e Saúde juntos;159 testes;OK, como diz o documento
+reconstrução em cópia temporária fora do repositório;hash_dados 6a4bac828fb3918d, gerador-bc610c11ef07;"todas as seções da gold iguais às publicadas (só os carimbos de tempo e o commit da proveniência diferem); nos 24 CSV estáticos só a coluna dados_gerados_em difere (9.691 de 340.959 células)"
+receita do hash_dados da página;6a4bac828fb3918d;"reproduz com ensure_ascii=False; sem ele sai 15e302efd8528717"
+hash_dados recalculado nas 7 gold versionadas no git;7 commits, 6 hashes;o hash do meta é igual ao recalculado das observações em 7 de 7
+recomputação independente a partir do seed bruto;8.135 checagens;"8.110 iguais; 25 diferentes e as mesmas explicadas (23 de cobertura 2021 pela NT 2/2025; 2 de natureza de Florianópolis)"
+conferência da despesa (DCA x RREO x MSC) e marca de perímetro, refeitas do seed;130 pares;"situação e perímetro iguais ao CSV em 130 de 130; só Campo Grande 2021 tem perímetro distinto (MSC com R$ 74.451.127,64 de intraorçamentárias)"
+marcas de base e de perímetro nos CSV estáticos;6.573 pares de anos consecutivos em 20 arquivos;"0 violações da regra ""marcas iguais implicam mesma base""; quebra_perimetro sim só em despesa em saúde e despesa por habitante de Campo Grande 2021"
+frases das fichas e da interface contra as marcas;13 trechos;"9 coerentes, 1 parcial, 2 em desacordo (ficha da população e matriz de fontes F02) e 1 fora do escopo (Educação); ver U1"
+nota de natureza de Florianópolis 2022 e 2023 refeita no MSC do seed;2 exercícios;"24 e 30 linhas sem natureza; créditos iguais a débitos (R$ 24.464.371,33 e R$ 25.218.185,26); 5,2% e 4,8% da DCA; saldo líquido R$ 0,00"
+exemplo de ICSAP de São Paulo 2024 contra o arquivo original do RIPSA;24 células;"83.391 internações e 11.895.578 habitantes nas 24 células; taxa 701,0252; coluna celulas_sexo_faixa do seed igual a 24"
+histórico de revisões contra as gold do git;6 versões, 7 commits;"hash e número de observações iguais em 6 de 6; descrições com imprecisões (ver U4)"
+saude_referencias_nacionais.csv;14 linhas;"valor igual à gold e ao recálculo do seed em 14 de 14; fonte, registro e hash em todas; página oficial e data em 13 (a norma não tem)"
+dicionário das colunas;94 linhas;todas as colunas dos 24 CSV têm entrada
+"links ""Fonte e como reproduzir"" do Panorama";7 cartões;7 de 7 abrem a trilha da própria medida, aberta e com foco
+trilhas de reconstrução de São Paulo;20 trilhas;"valores iguais aos já conferidos; 20 âncoras trilha-... existem"
+"linha ""Cobertura"" da entrada";2 temas;"Saúde igual à gold (26 capitais, DF fora, 2021 a 2025, resultados até 2024, 20 indicadores); Educação igual à gold de Educação (26 entes, 2021 a 2025, Ideb de 2005 a 2025 bienal)"
+superfícies das páginas de exploração;15 recortes;0 divergências
+tabela do Comparar baixada do site (2021 a 2025);1.300 células;0 divergências
+Comparar, painel e CSV da medida;10 recortes (260 células);0 divergências
+CSV de série (12 medidas, capital e mediana);24 arquivos, 112 linhas;valor, n e base do denominador iguais à gold em 112 de 112
+razão agregada exibida;24 combinações;24 de 24
+composições agregadas;15 blocos;15 de 15
+Panorama: extremos, faixa central, n e exclusão;7 cartões;7 de 7 iguais à gold
+desempenho em laboratório;28 medições;"0 erros ou avisos de console; 0 px de rolagem horizontal; LCP de 72 a 220 ms; CLS máximo 0,0037 (Panorama a 1440 px, repetível)"
+links internos;67 links;nenhum quebrado
+consultas ao vivo;2 consultas;"Relatório APS Brasil dez. 2021 (87,91%; capacidade 186.077.438; população 211.664.078): igual ao CSV; SIOPS respondeu 500 neste ambiente (não verificado agora)"

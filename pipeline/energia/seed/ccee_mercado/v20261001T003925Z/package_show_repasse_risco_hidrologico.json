@@ -1,0 +1,147 @@
+{
+ "result": {
+  "author": "CCEE-GAIM",
+  "author_email": null,
+  "creator_user_id": "b769d7d0-5632-47ee-a5fa-f18004e7e791",
+  "extras": [
+   {
+    "key": "Frequência de Atualização",
+    "value": "Mensal"
+   },
+   {
+    "key": "Referência de Publicação",
+    "value": "MS+22du"
+   },
+   {
+    "key": "Termo Legal",
+    "value": "O acesso a este site e/ou a utilização de conteúdos, dados e bases de dados nele disponibilizados se sujeita ao aceite dos termos e condições da licença aberta Creative Commons Attribution 4.0 International (CC-BY-4.0), bem como aos Termos de Uso do site e do aplicativo mobile (App) da CCEE (Link - https://www.ccee.org.br/en/web/guest/termos-de-uso). Ao utilizar esses recursos, você concorda em cumprir todos os requisitos dessa licença, que permitem que os reutilizadores distribuam, modifiquem, adaptem e desenvolvam o material sobre os dados, desde que seja atribuído o crédito apropriado ao criador (CCEE) e que sejam informadas as alterações. O Material Licenciado é disponibilizado no \"estado em que se encontra\" e \"como disponível\" apenas para fins informativos, sendo possível a interrupção da disponibilidade do conjunto de dados a qualquer momento e por qualquer motivo, sendo a sua utilização de livre iniciativa, não sendo atribuível qualquer tipo de responsabilização à CCEE por seu uso."
+   }
+  ],
+  "groups": [],
+  "id": "b6f5c85e-f26e-4686-9b1b-a74d234bdfee",
+  "isopen": true,
+  "license_id": "CC-BY-4.0",
+  "license_title": "Creative Commons Attribution 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "maintainer": "CCEE-GAIM",
+  "maintainer_email": null,
+  "metadata_created": "2024-04-02T23:08:19.129949",
+  "metadata_modified": "2026-09-01T17:56:31.672737",
+  "name": "repasse_risco_hidrologico",
+  "notes": "Dados do repasse do risco hidrológico por perfil de agente.",
+  "num_resources": 3,
+  "num_tags": 3,
+  "organization": {
+   "approval_status": "approved",
+   "created": "2023-03-02T11:15:44.108398",
+   "description": "O Infomercado é uma organização que agrupa os principais conjuntos de dados referentes ao resultado da contabilização do mercado de energia brasileiro.\r\n\r\nAs partes interessadas poderão acessar conjuntos de dados relacionados aos seguintes assuntos: geração; consumo; MRE; contratos; PLD; e demais temas do Mercado de Curto Prazo - MCP.\r\n\r\nOs conjuntos de dados do informercado, seus recursos e APIs são atualizados periodicamente nesse portal de dados, para o mês de referência relativo à finalização da liquidação do MCP (não são considerados eventos de recontabilização).\r\n\r\nPara consulta ao acervo de dados públicos, a parte interessada poderá consultar o portal da CCEE > dados e análises.",
+   "id": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+   "image_url": "https://www.ccee.org.br/documents/20121/1583681/icon_pda-infomercado.svg/029872ce-13b0-9153-3d63-0501ca687dff?t=1724955920662",
+   "is_organization": true,
+   "name": "infomercado",
+   "state": "active",
+   "title": "Infomercado",
+   "type": "organization"
+  },
+  "owner_org": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+  "private": false,
+  "relationships_as_object": [],
+  "relationships_as_subject": [],
+  "resources": [
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2024-04-02T23:14:13.551552",
+    "datastore_active": true,
+    "description": "**Objetivo**: Dados do repasse do risco hidrologico por perfil de agente.    **Campos contidos nesse conjunto de dados:**    * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.    * **COD_AGENTE** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar o agente em seus sistemas.    * **NOME_EMPRESARIAL** : Corresponde a razão social cadastrada pelo agente na CCEE.    * **COD_PERF_AGENTE** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar o perfil do agente em seus sistemas.    * **SIGLA_PERFIL_AGENTE** : Corresponde a sigla adotada pela CCEE para identificar o perfil de agente em seus sistemas.    * **CNPJ** : Corresponde ao CNPJ cadastrado pelo agente nos sistemas da CCEE.    * **RESULTADO_FINAL_RRH** : Corresponde ao Resultado Final do Repasse do Risco Hidrológico por perfil de agente \"\"a\"\", no mês de referência \"\"m\"\" (RFV_RRHa,m) [R$]    * **FATOR_RATEIO_RRH** : Corresponde ao Fator de Rateio do Valor Total de Repasse do Risco Hidrológico do ACR do perfil de agente \"\"a\"\", no mês de referência \"\"m\"\" (F_RVRRHa,m)    * **RESULTADO_FINAL_ACR_RRH** : Corresponde ao Resultado Final do Repasse do Risco Hidrológico do perfil do agente “a”, comprador de contratos do ACR sujeitos a repassae do risco hidrológico no mês de referência \"\"m\"\" (RFC_RRHa,m) [R$]    * **EFEITO_RRH** : Corresponde ao Efeito de Repasse do Risco Hidrológico do perfil de agente \"\"a\"\", no mês de referência \"\"m\"\" (ERRHa,m) [R$]",
+    "format": "CSV",
+    "hash": "",
+    "id": "ee1d9d9c-9526-4693-a020-6b51fa0fa0ef",
+    "last_modified": "2025-01-31T20:09:55.345000",
+    "metadata_modified": "2025-01-31T23:09:55.417739",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "repasse_risco_hidrologico_2024",
+    "package_id": "b6f5c85e-f26e-4686-9b1b-a74d234bdfee",
+    "position": 0,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/PX_M8GmGRCC_Jj1xksY3dw/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2025-03-19T22:04:49.286116",
+    "datastore_active": true,
+    "description": "**Objetivo**: Dados do repasse do risco hidrologico por perfil de agente.    **Campos contidos nesse conjunto de dados:**    * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.    * **COD_AGENTE** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar o agente em seus sistemas.    * **NOME_EMPRESARIAL** : Corresponde a razão social cadastrada pelo agente na CCEE.    * **COD_PERF_AGENTE** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar o perfil do agente em seus sistemas.    * **SIGLA_PERFIL_AGENTE** : Corresponde a sigla adotada pela CCEE para identificar o perfil de agente em seus sistemas.    * **CNPJ** : Corresponde ao CNPJ cadastrado pelo agente nos sistemas da CCEE.    * **RESULTADO_FINAL_RRH** : Corresponde ao Resultado Final do Repasse do Risco Hidrológico por perfil de agente \"\"a\"\", no mês de referência \"\"m\"\" (RFV_RRHa,m) [R$]    * **FATOR_RATEIO_RRH** : Corresponde ao Fator de Rateio do Valor Total de Repasse do Risco Hidrológico do ACR do perfil de agente \"\"a\"\", no mês de referência \"\"m\"\" (F_RVRRHa,m)    * **RESULTADO_FINAL_ACR_RRH** : Corresponde ao Resultado Final do Repasse do Risco Hidrológico do perfil do agente “a”, comprador de contratos do ACR sujeitos a repassae do risco hidrológico no mês de referência \"\"m\"\" (RFC_RRHa,m) [R$]    * **EFEITO_RRH** : Corresponde ao Efeito de Repasse do Risco Hidrológico do perfil de agente \"\"a\"\", no mês de referência \"\"m\"\" (ERRHa,m) [R$]",
+    "format": "CSV",
+    "hash": "",
+    "id": "e4f3cf9a-5a68-49f3-9089-48ea7dc6dd4d",
+    "last_modified": "2026-02-02T17:36:34.207000",
+    "metadata_modified": "2026-02-02T20:36:34.317502",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "repasse_risco_hidrologico_2025",
+    "package_id": "b6f5c85e-f26e-4686-9b1b-a74d234bdfee",
+    "position": 1,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/I53ipiSARsmW4b0L7HI8iA/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2026-03-04T21:03:05.657636",
+    "datastore_active": true,
+    "description": "**Objetivo**: Dados do repasse do risco hidrologico por perfil de agente.    **Campos contidos nesse conjunto de dados:**    * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.    * **COD_AGENTE** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar o agente em seus sistemas.    * **NOME_EMPRESARIAL** : Corresponde a razão social cadastrada pelo agente na CCEE.    * **COD_PERF_AGENTE** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar o perfil do agente em seus sistemas.    * **SIGLA_PERFIL_AGENTE** : Corresponde a sigla adotada pela CCEE para identificar o perfil de agente em seus sistemas.    * **CNPJ** : Corresponde ao CNPJ cadastrado pelo agente nos sistemas da CCEE.    * **RESULTADO_FINAL_RRH** : Corresponde ao Resultado Final do Repasse do Risco Hidrológico por perfil de agente \"\"a\"\", no mês de referência \"\"m\"\" (RFV_RRHa,m) [R$]    * **FATOR_RATEIO_RRH** : Corresponde ao Fator de Rateio do Valor Total de Repasse do Risco Hidrológico do ACR do perfil de agente \"\"a\"\", no mês de referência \"\"m\"\" (F_RVRRHa,m)    * **RESULTADO_FINAL_ACR_RRH** : Corresponde ao Resultado Final do Repasse do Risco Hidrológico do perfil do agente “a”, comprador de contratos do ACR sujeitos a repassae do risco hidrológico no mês de referência \"\"m\"\" (RFC_RRHa,m) [R$]    * **EFEITO_RRH** : Corresponde ao Efeito de Repasse do Risco Hidrológico do perfil de agente \"\"a\"\", no mês de referência \"\"m\"\" (ERRHa,m) [R$]",
+    "format": "CSV",
+    "hash": "",
+    "id": "6d500021-9703-420c-bd10-305d115dfa17",
+    "last_modified": "2026-09-01T14:56:01.313000",
+    "metadata_modified": "2026-09-01T17:56:31.677478",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "repasse_risco_hidrologico_2026",
+    "package_id": "b6f5c85e-f26e-4686-9b1b-a74d234bdfee",
+    "position": 2,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/CKEfrqBTQN2ccleNUnPVyw/content",
+    "url_type": null
+   }
+  ],
+  "state": "active",
+  "tags": [
+   {
+    "display_name": "agente",
+    "id": "269aa4c4-3260-48b7-b270-184ff27f1eac",
+    "name": "agente",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "dados individuais",
+    "id": "d217946a-fb75-4e55-8768-c7f722710554",
+    "name": "dados individuais",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "rrh",
+    "id": "3459f8ff-b83f-4300-b734-8ac982a30a2b",
+    "name": "rrh",
+    "state": "active",
+    "vocabulary_id": null
+   }
+  ],
+  "title": "REPASSE_RISCO_HIDROLOGICO",
+  "type": "dataset",
+  "url": null,
+  "version": null
+ }
+}

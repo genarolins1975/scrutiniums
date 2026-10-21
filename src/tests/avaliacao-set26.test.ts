@@ -185,8 +185,10 @@ describe("2.1 — fonte em pane: vigília e faixa na aba", () => {
     expect(vig).toContain("COLETORES_ESSENCIAIS");
     expect(vig).toContain("PRAZO_VINTAGE_DIAS");
     const wf = readFileSync(join(raiz, ".github/workflows/vigilancia.yml"), "utf-8");
-    expect(wf).toContain("cheque: [frescor, fontes, pane]");
+    // cheques posteriores (dominios, faixa de frescor de 19/10/2026) entram depois dos quatro, sem tirar nenhum
+    expect(wf).toMatch(/cheque: \[frescor, fontes, pane, saneamento(, [a-z]+)*\]/);
     expect(wf).toMatch(/pane\)\s+TITULO=/);
+    expect(wf).toMatch(/saneamento\)\s+TITULO=/);
   });
 });
 
@@ -226,8 +228,23 @@ describe("2.2/2.3 — sem alert(), fontes do meta derivadas, uma metodologia", (
   });
 
   it("a versão dos ativos subiu junto com o app", () => {
-    expect(app).toContain('const APP_VERSION = "0.106.0";');
-    expect(html).toContain("?v=0.106.0");
+    // 0.107.0: seletor de observatório (Crédito, Setor Elétrico) no cabeçalho da SPA
+    // 0.108.0: o seletor fecha com Esc, clique fora e perda de foco
+    // 0.110.1: revisão editorial e orientação de leitura do Crédito
+    // 0.111.0: trilhas de entrada do Mapa (conselho e risco, imprensa, pesquisa)
+    // 0.112.0: Copiar citação e Incorporar em todo rodapé de gráfico
+    // 0.113.0: seletor de observatório na barra da marca no celular (fecha como o da barra lateral)
+    // 0.114.0: seis observatórios na barra e nos seletores; abas de outros observatórios dizem a que observatório pertencem
+    // 0.115.0: as abas de Contas Públicas levam à entrada própria do observatório
+    // 0.116.0: datas por grupo da gold do Crédito (publicação seletiva)
+    // 0.116.1: nota dos sinais antecedentes aponta para o painel da PGFN (banca de 19/10/2026)
+    // 0.117.0: barra comum da plataforma (marca, seletor, os seis observatórios e a conta), gerada do registro (achado A7)
+    // 0.118.0: molde de abertura (diagnóstico de 20/10/2026, item 2): limite à vista, como ler recolhido
+    // 0.119.0: Instituições (item 3): nome como link, lista de quem ficou fora do corte recolhida, régua da Basileia
+    // 0.120.0: Risco setorial (item 4): nome como link, régua do score, sem cor de juízo, método recolhido
+    expect(app).toContain('const APP_VERSION = "0.120.0";');
+    expect(html).toContain("app.min.js?v=0.120.0");
+    expect(html).not.toContain("?v=0.106.0");
     expect(html).not.toContain("?v=0.86.0");
   });
 });

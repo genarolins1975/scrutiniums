@@ -1,0 +1,70 @@
+{
+  "edition": "OBEE-servicos-v0.3-experimental",
+  "validated": false,
+  "basket": [
+    "education",
+    "health",
+    "work",
+    "food"
+  ],
+  "scale": [
+    0,
+    100
+  ],
+  "aggregation": "equal-weight geometric mean of three complete pillars; equal-weight geometric mean of fixed chapter basket",
+  "rules": {
+    "missing": "blocks score; never becomes zero",
+    "references": "fixed, documented and validated before normalization",
+    "equity": "transversal disaggregation, not inferred from averages",
+    "satisfaction": "separate representative survey",
+    "territory": "same territory and comparable reference periods required",
+    "new_chapter": "new edition and history recalculation",
+    "resources": "context only"
+  },
+  "chapters": [
+    {
+      "id": "education",
+      "name": "Educação",
+      "pillars": {
+        "access": "Atendimento efetivo da população elegível e exclusão escolar",
+        "response": "Tempo de matrícula, continuidade e cumprimento do calendário",
+        "quality": "Aprendizagem com universo e composição comparáveis"
+      },
+      "review": "IDEB, aprovação e Saeb não devem ser somados como evidências independentes: o IDEB já combina desempenho e fluxo. Matrícula não mede toda a demanda; recursos são contexto.",
+      "available": "IDEB e aprovação: 26 capitais. Evidências de resultado; referências pendentes e acesso/resposta incompletos."
+    },
+    {
+      "id": "health",
+      "name": "Saúde",
+      "pillars": {
+        "access": "Pessoas com necessidade atendidas e demanda não atendida",
+        "response": "Espera e continuidade do cuidado",
+        "quality": "Segurança e resultados do cuidado ajustados ao perfil da população"
+      },
+      "review": "Cobertura potencial de APS indica capacidade, não acesso realizado. ICSAP é desfecho contextual sem atribuição causal automática; taxa bruta exige ajuste e notas de série.",
+      "available": "APS potencial e ICSAP: 26 capitais. Não há cobertura dos três pilares."
+    },
+    {
+      "id": "work",
+      "name": "Trabalho e renda",
+      "pillars": {
+        "access": "Pessoas elegíveis que acessam intermediação, qualificação e proteção",
+        "response": "Espera, conclusão e continuidade do atendimento",
+        "quality": "Inserção e permanência após atendimento, com desenho de avaliação"
+      },
+      "review": "Desocupação e renda descrevem condições de vida; não medem diretamente a qualidade do atendimento público. Cadastro e orçamento não equivalem a inserção profissional.",
+      "available": "Séries de trabalho e renda publicadas no capítulo original, integradas à navegação; cobertura dos três pilares do serviço pendente."
+    },
+    {
+      "id": "food",
+      "name": "Segurança alimentar",
+      "pillars": {
+        "access": "Pessoas elegíveis efetivamente atendidas por modalidade, sem duplicidade",
+        "response": "Dias e entregas previstos efetivamente cumpridos; espera e interrupções",
+        "quality": "Entregas conformes a parâmetros nutricionais e sanitários verificáveis"
+      },
+      "review": "EBIA é necessidade/desfecho populacional. Existência de equipamentos, ações declaradas e orçamento são contexto. PNAE, refeições populares e auxílio emergencial exigem populações próprias.",
+      "available": "PNADC Brasil/regiões 2023–2024; dez variáveis MUNIC em 5570 municípios. Faltam atendimento efetivo, denominadores, continuidade e conformidade."
+    }
+  ]
+}

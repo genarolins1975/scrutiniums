@@ -1,0 +1,4 @@
+# Dependências do pipeline de energia além da biblioteca padrão.
+# pyarrow: a ANEEL publica Parquet dos conjuntos grandes (continuidade, compensações,
+# SAMP), de 10 a 20 vezes menores que o CSV equivalente.
+pyarrow>=15

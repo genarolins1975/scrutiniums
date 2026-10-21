@@ -18,6 +18,9 @@ export type RateLimitPolicy = {
 };
 
 export const POLICIES = {
+  // Tetos agregados por processo, comuns a cadastro, login e troca de telefone.
+  smsPorPais: { windowMs: 60 * 60 * 1000, max: 100, backoffBaseMs: 60_000 },
+  smsPorPrefixo: { windowMs: 60 * 60 * 1000, max: 20, backoffBaseMs: 60_000 },
   otpStartPerPhone: { windowMs: 60 * 60 * 1000, max: 5, backoffBaseMs: 30_000 },
   otpStartPerIp: { windowMs: 60 * 60 * 1000, max: 15, backoffBaseMs: 30_000 },
   otpCheckPerPhone: { windowMs: 10 * 60 * 1000, max: 8, backoffBaseMs: 30_000 },
@@ -32,6 +35,11 @@ export const POLICIES = {
   invitesPerAdmin: { windowMs: 10 * 60 * 1000, max: 3, backoffBaseMs: 30_000 },
   /** Telemetria de visitas: navegação intensa legítima cabe; flood não. */
   viewsPerUser: { windowMs: 60 * 1000, max: 40, backoffBaseMs: 30_000 },
+  /** Medição de uso agregada: por IP só em memória (chave com hash salgado por processo), nunca gravado. */
+  usoPorIp: { windowMs: 60 * 1000, max: 60, backoffBaseMs: 30_000 },
+  /** Assinatura do resumo por e-mail, sem conta: limita pedidos por IP e por endereço. */
+  assinaturaPorIp: { windowMs: 60 * 60 * 1000, max: 10, backoffBaseMs: 30_000 },
+  assinaturaPorEmail: { windowMs: 60 * 60 * 1000, max: 3, backoffBaseMs: 60_000 },
 } satisfies Record<string, RateLimitPolicy>;
 
 export function checkRateLimit(key: string, policy: RateLimitPolicy): { allowed: boolean; retryAfterMs: number } {

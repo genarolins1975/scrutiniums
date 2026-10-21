@@ -1,0 +1,1473 @@
+{
+ "versao": "1.0.0",
+ "data": "2026-10-13",
+ "base": "https://scrutiniums.com/obs/data/gold/",
+ "arquivos": [
+  {
+   "arquivo": "alertas_central.json",
+   "chaves": [
+    "alertas",
+    "ausencia",
+    "estado_local",
+    "familias",
+    "fontes_ausentes",
+    "gerado_em",
+    "nao_comparavel",
+    "niveis",
+    "sem_nivel",
+    "total"
+   ]
+  },
+  {
+   "arquivo": "alerts.json",
+   "chaves": [
+    "alertas",
+    "gerado_em",
+    "historico",
+    "niveis",
+    "regras_configuradas"
+   ]
+  },
+  {
+   "arquivo": "ampliado.json",
+   "chaves": [
+    "catalogo",
+    "cautelas",
+    "disponivel",
+    "emissoes",
+    "fidc",
+    "fontes",
+    "gerado_em",
+    "metodo",
+    "saldo",
+    "securitizacao",
+    "sintese"
+   ]
+  },
+  {
+   "arquivo": "antecedentes.json",
+   "chaves": [
+    "gerado_em",
+    "targets"
+   ]
+  },
+  {
+   "arquivo": "bets.json",
+   "chaves": [
+    "atualizacao",
+    "aviso",
+    "cadeia",
+    "corte_pesquisa",
+    "estudos",
+    "explorador",
+    "gerado_em",
+    "links_apoio",
+    "mercado_ilegal",
+    "metodologia",
+    "niveis",
+    "perfil",
+    "periodo_coberto",
+    "series",
+    "sintese",
+    "subtitulo",
+    "timeline",
+    "titulo",
+    "versao",
+    "vulnerabilidade"
+   ]
+  },
+  {
+   "arquivo": "bndes.json",
+   "chaves": [
+    "catalogo",
+    "cautelas",
+    "desembolsos",
+    "disponivel",
+    "fontes",
+    "funding",
+    "gerado_em",
+    "metodo",
+    "operacoes",
+    "saldo",
+    "sintese"
+   ]
+  },
+  {
+   "arquivo": "cobranca.json",
+   "chaves": [
+    "assuntos_bancarios",
+    "brasil",
+    "catalogo",
+    "cautelas",
+    "cobertura",
+    "cobertura_n",
+    "disponivel",
+    "fonte",
+    "grupos",
+    "janela_12m",
+    "limitacoes",
+    "mes",
+    "meses_parciais",
+    "metodo",
+    "serie",
+    "sintese",
+    "tipo",
+    "ufs"
+   ]
+  },
+  {
+   "arquivo": "compare.json",
+   "chaves": [
+    "anomes_list",
+    "consolidacao_nota",
+    "fonte",
+    "gerado_em",
+    "grupos",
+    "grupos_nota",
+    "metric_catalog",
+    "pendentes",
+    "stats",
+    "universo"
+   ]
+  },
+  {
+   "arquivo": "conduta.json",
+   "chaves": [
+    "bcb",
+    "catalogo",
+    "cautelas",
+    "cvm",
+    "disponivel",
+    "fontes",
+    "gerado_em",
+    "metodo",
+    "reclamacoes",
+    "sintese"
+   ]
+  },
+  {
+   "arquivo": "consignado.json",
+   "chaves": [
+    "ano",
+    "brasil",
+    "circularidade",
+    "dicionario",
+    "estados",
+    "fator_ipca",
+    "gerado_em",
+    "instituicoes",
+    "linha_do_tempo",
+    "municipios_arquivo",
+    "ok",
+    "populacao_fonte",
+    "rankings",
+    "reclamacoes",
+    "saturacao_criterios",
+    "scr",
+    "sgs",
+    "totais"
+   ]
+  },
+  {
+   "arquivo": "consignado_mun.json",
+   "chaves": [
+    "municipios"
+   ]
+  },
+  {
+   "arquivo": "consorcios.json",
+   "chaves": [
+    "catalogo",
+    "cautelas",
+    "conferencias",
+    "cotas_por_mil_hab_br",
+    "database",
+    "disponivel",
+    "fonte",
+    "limitacoes",
+    "metodo",
+    "panorama",
+    "segmentos",
+    "serie",
+    "sintese",
+    "tipo",
+    "trimestre",
+    "ufs",
+    "unidades_corrigidas"
+   ]
+  },
+  {
+   "arquivo": "custos_ti.json",
+   "chaves": [
+    "_comentario",
+    "agregado_sistema",
+    "documentos",
+    "observacoes"
+   ]
+  },
+  {
+   "arquivo": "desenrola.json",
+   "chaves": [
+    "avaliacao",
+    "aviso_cobertura",
+    "aviso_setembro",
+    "aviso_tipo3",
+    "bronze_sha",
+    "catalogo",
+    "coletado_em",
+    "como_ler",
+    "componentes",
+    "concentracao",
+    "data_base",
+    "data_base_min",
+    "disponivel",
+    "fonte",
+    "geo",
+    "gerado_em",
+    "instituicoes",
+    "lacunas",
+    "licenca",
+    "linha_do_tempo",
+    "linhas_base",
+    "mapa",
+    "matriz_viabilidade",
+    "meses",
+    "oficiais",
+    "pequenos_negocios",
+    "reconciliacao",
+    "selos",
+    "serie",
+    "series_contexto",
+    "totais_scr",
+    "url_dataset"
+   ]
+  },
+  {
+   "arquivo": "emprego.json",
+   "chaves": [
+    "brasil",
+    "catalogo",
+    "cautelas",
+    "disponivel",
+    "fontes",
+    "janela_z",
+    "limitacoes",
+    "mes",
+    "mes_preliminar",
+    "metodo",
+    "reconciliacao",
+    "secoes_z",
+    "serie",
+    "setores",
+    "sintese",
+    "tipo",
+    "ufs",
+    "ufs_mes",
+    "ufs_nao_identificado"
+   ]
+  },
+  {
+   "arquivo": "epae.json",
+   "chaves": [
+    "anuais",
+    "aviso",
+    "cobertura",
+    "comparacao",
+    "conceitos",
+    "fonte",
+    "gerado_em",
+    "leitura",
+    "limitacoes",
+    "revisao",
+    "secao",
+    "serie",
+    "taxonomia",
+    "titulo",
+    "unidades"
+   ]
+  },
+  {
+   "arquivo": "explorer.json",
+   "chaves": [
+    "data_base",
+    "datas_incluidas",
+    "fatos",
+    "nota"
+   ]
+  },
+  {
+   "arquivo": "exposures.json",
+   "chaves": [
+    "anomes",
+    "limitacoes",
+    "metodo",
+    "ok",
+    "pme_share_sistema_pct",
+    "portes_sistema",
+    "ranking_pme",
+    "setores",
+    "tipo"
+   ]
+  },
+  {
+   "arquivo": "fase2_observacoes.json",
+   "chaves": [
+    "atualizado_em",
+    "ausencias",
+    "metricas",
+    "observacoes",
+    "processo",
+    "versao"
+   ]
+  },
+  {
+   "arquivo": "fidc.json",
+   "chaves": [
+    "anomes",
+    "catalogo",
+    "cautelas",
+    "classes",
+    "disponivel",
+    "fonte",
+    "gerado_em",
+    "lastro",
+    "limitacoes",
+    "mes",
+    "mes_12m",
+    "meses_parciais",
+    "metodo",
+    "prazo",
+    "serie",
+    "sintese",
+    "sistema",
+    "tipo"
+   ]
+  },
+  {
+   "arquivo": "folha_balanco.json",
+   "chaves": [
+    "_comentario",
+    "documentos",
+    "observacoes"
+   ]
+  },
+  {
+   "arquivo": "folha_bancos.json",
+   "chaves": [
+    "balanco",
+    "catalogo",
+    "cautelas",
+    "disponivel",
+    "gerado_em",
+    "inss",
+    "leiloes",
+    "pncp",
+    "sintese",
+    "titulo"
+   ]
+  },
+  {
+   "arquivo": "folha_leiloes.json",
+   "chaves": [
+    "_comentario",
+    "inss_lotes",
+    "leiloes"
+   ]
+  },
+  {
+   "arquivo": "fraudes.json",
+   "chaves": [
+    "atualizacao",
+    "aviso",
+    "cadeia",
+    "corte_pesquisa",
+    "estudos",
+    "explorador",
+    "gerado_em",
+    "links_apoio",
+    "metodologia",
+    "mitigacao",
+    "niveis",
+    "perfil",
+    "periodo_coberto",
+    "series",
+    "sintese",
+    "subnotificacao",
+    "subtitulo",
+    "timeline",
+    "tipos",
+    "titulo",
+    "versao"
+   ]
+  },
+  {
+   "arquivo": "funding.json",
+   "chaves": [
+    "bancos",
+    "catalogo",
+    "cautelas",
+    "disponivel",
+    "fontes",
+    "fundos",
+    "limitacoes",
+    "metodo",
+    "sintese",
+    "sistema",
+    "tipo"
+   ]
+  },
+  {
+   "arquivo": "guidance.json",
+   "chaves": [
+    "acompanhamentos_em_revisao",
+    "cautelas",
+    "ciclos",
+    "disponivel",
+    "em_revisao",
+    "fonte",
+    "gerado_em",
+    "leitura",
+    "titulo"
+   ]
+  },
+  {
+   "arquivo": "ibcc.json",
+   "chaves": [
+    "atual",
+    "componentes",
+    "fase_ciclo",
+    "limitacoes",
+    "metodo",
+    "ok",
+    "segmento",
+    "segmentos",
+    "serie",
+    "tipo"
+   ]
+  },
+  {
+   "arquivo": "inst_index.json",
+   "chaves": [
+    "anomes",
+    "gerado_em",
+    "instituicoes",
+    "nota",
+    "paginas",
+    "sem_balanco_na_data_base"
+   ]
+  },
+  {
+   "arquivo": "inst_pages.json",
+   "chaves": [
+    "cobertura_top30",
+    "gerado_em",
+    "hierarquia_fontes",
+    "metodo",
+    "nota",
+    "ok",
+    "paginas"
+   ]
+  },
+  {
+   "arquivo": "institutions.json",
+   "chaves": [
+    "anomes",
+    "anomes_anterior",
+    "aviso",
+    "grupos",
+    "instituicoes",
+    "limitacoes",
+    "metodo",
+    "nota_regra_editorial",
+    "nota_universo",
+    "ok",
+    "regra_editorial",
+    "score_distribuicao_anonima",
+    "sem_balanco_na_data_base",
+    "tipo"
+   ]
+  },
+  {
+   "arquivo": "judicial.json",
+   "chaves": [
+    "aviso_permanente",
+    "camada_nacional",
+    "camada_nominal",
+    "catalogo",
+    "coletado_em",
+    "denominadores_indisponiveis",
+    "disponivel",
+    "gerado_em",
+    "limitacao_central",
+    "privacidade"
+   ]
+  },
+  {
+   "arquivo": "juros.json",
+   "chaves": [
+    "conceitos",
+    "fonte",
+    "gerado_em",
+    "modalidades",
+    "perfis_if",
+    "selic_meta",
+    "tipo"
+   ]
+  },
+  {
+   "arquivo": "leading.json",
+   "chaves": [
+    "alertas",
+    "buscas",
+    "catalogo",
+    "gerado_em",
+    "iaec",
+    "licencas",
+    "principio",
+    "regional",
+    "series",
+    "sintese",
+    "subindices",
+    "validacao",
+    "versao_metodologica"
+   ]
+  },
+  {
+   "arquivo": "lineage.json",
+   "chaves": [
+    "linhagem_recente",
+    "mapa",
+    "n_revisoes_total",
+    "revisoes_recentes"
+   ]
+  },
+  {
+   "arquivo": "market.json",
+   "chaves": [
+    "aviso",
+    "capital",
+    "cesta",
+    "congl_lookup",
+    "empresas",
+    "eventos",
+    "fontes",
+    "gerado_em",
+    "janelas",
+    "metodologia",
+    "piloto",
+    "pontes",
+    "series",
+    "universo",
+    "valuation"
+   ]
+  },
+  {
+   "arquivo": "meta.json",
+   "chaves": [
+    "builders_falhos",
+    "carteira_conceitos",
+    "fontes_demo",
+    "fontes_reais",
+    "fontes_status",
+    "gerado_em",
+    "if_contagens",
+    "inad_conceitos",
+    "plataforma",
+    "vintages"
+   ]
+  },
+  {
+   "arquivo": "method.json",
+   "chaves": [
+    "changelog",
+    "dicionario_indicadores",
+    "fontes_status",
+    "model_cards",
+    "score_cards"
+   ]
+  },
+  {
+   "arquivo": "moradia.json",
+   "chaves": [
+    "achados",
+    "brasil",
+    "censo",
+    "concentracao_contabil",
+    "datas",
+    "dicionario",
+    "estados",
+    "gerado_em",
+    "instituicoes",
+    "limitacoes",
+    "matriz_viabilidade",
+    "modelos",
+    "municipios_arquivo",
+    "nomes_instituicoes",
+    "ok",
+    "rankings",
+    "simulador",
+    "totais",
+    "verbete169"
+   ]
+  },
+  {
+   "arquivo": "moradia_mun.json",
+   "chaves": [
+    "municipios"
+   ]
+  },
+  {
+   "arquivo": "npl.json",
+   "chaves": [
+    "anomes",
+    "data_base",
+    "frases",
+    "grupos",
+    "instituicoes",
+    "limitacoes",
+    "metodo",
+    "n_instituicoes",
+    "nivel_consolidacao",
+    "ok",
+    "regras_tendencia",
+    "sistema",
+    "tipo",
+    "top_deterioracoes",
+    "top_melhoras"
+   ]
+  },
+  {
+   "arquivo": "openfinance.json",
+   "chaves": [
+    "alertas_of",
+    "concentracao",
+    "consentimentos_atual",
+    "demo",
+    "endpoints_top",
+    "fonte_nota",
+    "indices",
+    "limitacoes",
+    "metodo",
+    "ok",
+    "participantes",
+    "qualidade_dados",
+    "ranking",
+    "rankings_fase",
+    "relacao_credito",
+    "series",
+    "tipo"
+   ]
+  },
+  {
+   "arquivo": "operacional.json",
+   "chaves": [
+    "aviso",
+    "cobertura",
+    "correspondentes",
+    "custos_ti",
+    "dependencias",
+    "disponivel",
+    "fase2",
+    "flags",
+    "fontes",
+    "gerado_em",
+    "instituicoes",
+    "rede_por_cnpj8",
+    "remuneracao",
+    "sfn",
+    "sintese",
+    "subtitulo",
+    "titulo",
+    "versao"
+   ]
+  },
+  {
+   "arquivo": "overview.json",
+   "chaves": [
+    "diagnostico",
+    "gerado_em",
+    "ibcc_posicao",
+    "mudancas",
+    "novidades",
+    "projecoes_resumo"
+   ]
+  },
+  {
+   "arquivo": "panorama.json",
+   "chaves": [
+    "alertas",
+    "alertas_suprimidos",
+    "conceitos",
+    "data_base",
+    "data_base_anterior",
+    "datas",
+    "disponivel",
+    "fonte",
+    "geo",
+    "gerado_em",
+    "kpis",
+    "mapa",
+    "matriz_ocup_produto",
+    "matriz_renda_produto",
+    "melhoras",
+    "perfis",
+    "populacao_fonte",
+    "serie_br",
+    "sintese"
+   ]
+  },
+  {
+   "arquivo": "penetracao.json",
+   "chaves": [
+    "achados",
+    "ano_base_censo",
+    "benchmark_pares",
+    "cobertura",
+    "data_base_credito",
+    "data_base_excluida",
+    "datas_credito",
+    "disponivel",
+    "eixo_serie",
+    "fontes",
+    "gerado_em",
+    "malha_arquivo",
+    "modelo",
+    "municipios_arquivo",
+    "rankings",
+    "reconciliacao_scr",
+    "totais"
+   ]
+  },
+  {
+   "arquivo": "penetracao_malha.json",
+   "chaves": [
+    "fonte",
+    "municipios",
+    "paths",
+    "transform",
+    "viewBox"
+   ]
+  },
+  {
+   "arquivo": "penetracao_mun.json",
+   "chaves": [
+    "municipios"
+   ]
+  },
+  {
+   "arquivo": "pgfn.json",
+   "chaves": [
+    "ajuizado",
+    "aviso_safra",
+    "aviso_universo",
+    "catalogo",
+    "conjuntos",
+    "data_base",
+    "disponivel",
+    "faixas",
+    "fonte",
+    "fontes_ausentes",
+    "geo",
+    "gerado_em",
+    "licenca",
+    "limitacoes",
+    "mapa",
+    "privacidade",
+    "receitas",
+    "safras",
+    "safras_recentes",
+    "sintese",
+    "situacao",
+    "totais",
+    "trimestre",
+    "trimestres_absorvidos"
+   ]
+  },
+  {
+   "arquivo": "pilar3.json",
+   "chaves": [
+    "cautelas",
+    "cobertura",
+    "disponivel",
+    "fonte",
+    "gerado_em",
+    "instituicoes",
+    "leitura",
+    "metricas",
+    "titulo"
+   ]
+  },
+  {
+   "arquivo": "pix.json",
+   "chaves": [
+    "catalogo",
+    "cautelas",
+    "chaves",
+    "cobertura_tx_pct",
+    "disponivel",
+    "epae",
+    "epae_matriz",
+    "finalidades",
+    "formas",
+    "geografia",
+    "gerado_em",
+    "kpis",
+    "med",
+    "mes",
+    "mes_tx",
+    "natureza",
+    "series",
+    "sintese",
+    "spi",
+    "tri",
+    "usuarios_serie"
+   ]
+  },
+  {
+   "arquivo": "pix_mun.json",
+   "chaves": [
+    "mes",
+    "municipios",
+    "nota"
+   ]
+  },
+  {
+   "arquivo": "prazo.json",
+   "chaves": [
+    "brasil",
+    "catalogo",
+    "cautelas",
+    "data_base",
+    "data_base_12m",
+    "disponivel",
+    "faixas",
+    "fonte",
+    "gerado_em",
+    "limitacoes",
+    "metodo",
+    "serie",
+    "sintese",
+    "tipo",
+    "ufs"
+   ]
+  },
+  {
+   "arquivo": "presenca_mun.json",
+   "chaves": [
+    "aviso",
+    "classes",
+    "fontes",
+    "gerado_em",
+    "limitacoes",
+    "municipios",
+    "por_uf",
+    "posicao",
+    "titulo",
+    "totais"
+   ]
+  },
+  {
+   "arquivo": "prestamista.json",
+   "chaves": [
+    "catalogo",
+    "cautelas",
+    "coleta",
+    "disponivel",
+    "empresas",
+    "fonte",
+    "gerado_em",
+    "grupos",
+    "kpis",
+    "limitacoes",
+    "mes",
+    "meses_parciais",
+    "metodo",
+    "ramos",
+    "serie",
+    "sintese",
+    "tipo"
+   ]
+  },
+  {
+   "arquivo": "products.json",
+   "chaves": [
+    "anomes_list",
+    "consolidacao_nota",
+    "data_base",
+    "fonte",
+    "frequencia",
+    "gerado_em",
+    "npl_nota",
+    "npl_produto_estimado",
+    "pct_carteira_conceito",
+    "pct_carteira_nota",
+    "produtos"
+   ]
+  },
+  {
+   "arquivo": "pulse.json",
+   "chaves": [
+    "gerado_em",
+    "previsoes",
+    "series"
+   ]
+  },
+  {
+   "arquivo": "quality.json",
+   "chaves": [
+    "amp_ef",
+    "amp_ef_ext",
+    "amp_ef_fg",
+    "amp_ef_osf",
+    "amp_ef_pib",
+    "amp_ef_sec",
+    "amp_ef_sfn",
+    "amp_ef_tit",
+    "amp_gov",
+    "amp_pf",
+    "amp_pf_ext",
+    "amp_pf_fg",
+    "amp_pf_osf",
+    "amp_pf_pib",
+    "amp_pf_sec",
+    "amp_pf_sfn",
+    "amp_pib",
+    "amp_pj",
+    "amp_pj_ext",
+    "amp_pj_fg",
+    "amp_pj_osf",
+    "amp_pj_pib",
+    "amp_pj_sec",
+    "amp_pj_sfn",
+    "amp_pj_tit",
+    "amp_total",
+    "cambio",
+    "cambio_ptax",
+    "comprometimento",
+    "concessoes_pf",
+    "concessoes_pj",
+    "concessoes_total",
+    "consig_inss_atraso",
+    "consig_inss_conc",
+    "consig_inss_icc",
+    "consig_inss_inad",
+    "consig_inss_prazo_cart",
+    "consig_inss_prazo_conc",
+    "consig_inss_saldo",
+    "consig_inss_taxa",
+    "consig_priv_inad",
+    "consig_priv_saldo",
+    "consig_pub_inad",
+    "consig_pub_saldo",
+    "consig_total_inad",
+    "consig_total_saldo",
+    "consig_total_taxa",
+    "convolacao_falencia_agregado",
+    "credito_pib",
+    "desemprego",
+    "dir_conc_pf",
+    "dir_conc_pj",
+    "dir_conc_pj_bndes",
+    "dir_conc_total",
+    "dir_inad_pf",
+    "dir_inad_pj",
+    "dir_inad_pj_bndes",
+    "dir_inad_total",
+    "dir_prazo_pj",
+    "dir_prazo_pj_bndes",
+    "dir_saldo_pf",
+    "dir_saldo_pf_bndes",
+    "dir_saldo_pj",
+    "dir_saldo_pj_bndes",
+    "dir_saldo_total",
+    "dir_taxa_pf",
+    "dir_taxa_pj",
+    "dir_taxa_pj_bndes",
+    "dir_taxa_total",
+    "emp_A",
+    "emp_B",
+    "emp_C",
+    "emp_D",
+    "emp_E",
+    "emp_F",
+    "emp_G",
+    "emp_H",
+    "emp_I",
+    "emp_J",
+    "emp_K",
+    "emp_L",
+    "emp_M",
+    "emp_N",
+    "emp_O",
+    "emp_P",
+    "emp_Q",
+    "emp_S",
+    "emp_SERV",
+    "emp_SIUP",
+    "emp_sa_A",
+    "emp_sa_B",
+    "emp_sa_C",
+    "emp_sa_D",
+    "emp_sa_E",
+    "emp_sa_F",
+    "emp_sa_G",
+    "emp_sa_H",
+    "emp_sa_I",
+    "emp_sa_J",
+    "emp_sa_K",
+    "emp_sa_L",
+    "emp_sa_M",
+    "emp_sa_N",
+    "emp_sa_O",
+    "emp_sa_P",
+    "emp_sa_Q",
+    "emp_sa_S",
+    "emp_sa_SERV",
+    "emp_sa_SIUP",
+    "emp_sa_total",
+    "emp_total",
+    "endividamento",
+    "extincao_rj_agregado",
+    "falencia_agregado",
+    "falencia_tjba",
+    "falencia_tjgo",
+    "falencia_tjmg",
+    "falencia_tjpr",
+    "falencia_tjrj",
+    "falencia_tjrs",
+    "falencia_tjsc",
+    "falencia_tjsp",
+    "fd_compromissadas",
+    "fd_fundos_monetarios",
+    "fd_letras_credito",
+    "fd_lf",
+    "fd_m2",
+    "fd_m3",
+    "fd_m4",
+    "fd_nao_residentes",
+    "fd_outros_titulos",
+    "fd_papel_moeda",
+    "fd_poupanca",
+    "fd_poupanca_sbpe",
+    "fd_prazo",
+    "fd_titulos_federais",
+    "fd_titulos_privados",
+    "fd_vista",
+    "ibc_br",
+    "inad_pf",
+    "inad_pj",
+    "inad_total",
+    "ipca",
+    "ivgr",
+    "of_chamadas_dados_abertos",
+    "of_chamadas_dados_transacionais",
+    "of_chamadas_iniciacao_pagamento",
+    "of_consentimentos_recebidos",
+    "of_consentimentos_transmitidos",
+    "of_sucesso_dados_abertos",
+    "of_sucesso_dados_transacionais",
+    "of_sucesso_iniciacao_pagamento",
+    "papelao",
+    "pim_129314",
+    "pim_129315",
+    "pim_129316",
+    "pim_129317",
+    "pim_129318",
+    "pim_129319",
+    "pim_129320",
+    "pim_129321",
+    "pim_129322",
+    "pim_129323",
+    "pim_129324",
+    "pim_129325",
+    "pim_129326",
+    "pim_129330",
+    "pim_129331",
+    "pim_129332",
+    "pim_129333",
+    "pim_129334",
+    "pim_129335",
+    "pim_129336",
+    "pim_129337",
+    "pim_129338",
+    "pim_129339",
+    "pim_129340",
+    "pim_129341",
+    "pim_129342",
+    "pim_56689",
+    "pmc_103154",
+    "pmc_103155",
+    "pmc_103156",
+    "pmc_103157",
+    "pmc_103158",
+    "pmc_103159",
+    "pmc_2759",
+    "pmc_2762",
+    "pmc_31555",
+    "pmc_31556",
+    "pmc_56741",
+    "pmc_90671",
+    "pmc_90672",
+    "pmc_90673",
+    "pms_106869",
+    "pms_106870",
+    "pms_106874",
+    "pms_106876",
+    "pms_107071",
+    "pms_31396",
+    "pms_31397",
+    "pms_31398",
+    "pms_31399",
+    "pms_31400",
+    "pms_31421",
+    "pms_31422",
+    "pms_31423",
+    "pms_31424",
+    "pms_31425",
+    "pms_31426",
+    "pms_39321",
+    "pms_39322",
+    "pms_56692",
+    "pms_56693",
+    "pms_56694",
+    "pms_56695",
+    "pms_56696",
+    "pms_56697",
+    "pms_56698",
+    "pms_56699",
+    "pms_56700",
+    "pms_56701",
+    "pms_56702",
+    "recuperacao_judicial_agregado",
+    "recuperacao_judicial_tjba",
+    "recuperacao_judicial_tjgo",
+    "recuperacao_judicial_tjmg",
+    "recuperacao_judicial_tjpr",
+    "recuperacao_judicial_tjrj",
+    "recuperacao_judicial_tjrs",
+    "recuperacao_judicial_tjsc",
+    "recuperacao_judicial_tjsp",
+    "saldo_pf",
+    "saldo_pj",
+    "saldo_total",
+    "selic_meta",
+    "spread_pf",
+    "spread_pj",
+    "spread_total",
+    "taxa_pf",
+    "taxa_pj",
+    "taxa_total"
+   ]
+  },
+  {
+   "arquivo": "recordes.json",
+   "chaves": [
+    "cautelas",
+    "disponivel",
+    "fonte",
+    "gerado_em",
+    "janela_minima_meses",
+    "metodo",
+    "recordes",
+    "series_elegiveis",
+    "titulo"
+   ]
+  },
+  {
+   "arquivo": "regimes.json",
+   "chaves": [
+    "cautelas",
+    "disponivel",
+    "encerrados_ou_saidos",
+    "fonte",
+    "gerado_em",
+    "leitura",
+    "titulo",
+    "vigentes"
+   ]
+  },
+  {
+   "arquivo": "regimes_series.json",
+   "chaves": [
+    "limitacoes",
+    "metodo",
+    "series"
+   ]
+  },
+  {
+   "arquivo": "regulacao.json",
+   "chaves": [
+    "disponivel",
+    "fonte",
+    "gerado_em",
+    "leitura",
+    "marcos",
+    "paineis",
+    "timelines_tematicas",
+    "titulo"
+   ]
+  },
+  {
+   "arquivo": "rj.json",
+   "chaves": [
+    "demo",
+    "funil_processual",
+    "marcos_series",
+    "motivo",
+    "passivo_janela",
+    "selo",
+    "series_reais",
+    "series_reais_nota"
+   ]
+  },
+  {
+   "arquivo": "rural.json",
+   "chaves": [
+    "catalogo",
+    "cautelas",
+    "dicionario",
+    "disponivel",
+    "faixas",
+    "fonte",
+    "fontes",
+    "genero",
+    "gerado_em",
+    "instituicoes",
+    "janela",
+    "janela_anterior",
+    "kpis",
+    "mes_fechado",
+    "mes_recente",
+    "meses_parciais",
+    "metodo",
+    "municipios_arquivo",
+    "municipios_meta",
+    "populacao_fonte",
+    "produtos",
+    "programas",
+    "rankings",
+    "safras",
+    "serie_mensal",
+    "sintese",
+    "ufs",
+    "universo"
+   ]
+  },
+  {
+   "arquivo": "rural_mun.json",
+   "chaves": [
+    "municipios"
+   ]
+  },
+  {
+   "arquivo": "scenario.json",
+   "chaves": [
+    "base_forecast_inad_total",
+    "base_forecasts",
+    "elasticidades",
+    "elasticidades_detalhe",
+    "elasticidades_origem",
+    "expectativas",
+    "nota",
+    "presets",
+    "tipo"
+   ]
+  },
+  {
+   "arquivo": "screener.json",
+   "chaves": [
+    "aviso",
+    "data_base",
+    "linhas",
+    "n",
+    "nota",
+    "sem_balanco_na_data_base"
+   ]
+  },
+  {
+   "arquivo": "sectors.json",
+   "chaves": [
+    "aviso_demo",
+    "emprego_ref",
+    "limitacoes",
+    "metodo",
+    "ok",
+    "setores",
+    "tipo"
+   ]
+  },
+  {
+   "arquivo": "sfn.json",
+   "chaves": [
+    "cadastro",
+    "catalogo",
+    "cautelas",
+    "disponivel",
+    "fontes",
+    "gerado_em",
+    "ifdata",
+    "metodo",
+    "regimes",
+    "sintese"
+   ]
+  },
+  {
+   "arquivo": "subnacional.json",
+   "chaves": [
+    "catalogo",
+    "cautelas",
+    "coleta",
+    "credores_12m",
+    "credores_60m",
+    "disponivel",
+    "divida",
+    "finalidades_12m",
+    "fonte",
+    "garantias",
+    "gerado_em",
+    "janela_12m",
+    "kpis",
+    "limitacoes",
+    "maiores_12m",
+    "mes",
+    "mes_parcial",
+    "metodo",
+    "moedas_12m",
+    "serie_anual",
+    "serie_mensal",
+    "sintese",
+    "status_12m",
+    "tipo",
+    "tipos_credor_12m",
+    "ufs"
+   ]
+  },
+  {
+   "arquivo": "timeline_regulatoria.json",
+   "chaves": [
+    "_comentario",
+    "leitura",
+    "marcos",
+    "timelines_tematicas"
+   ]
+  },
+  {
+   "arquivo": "trends.json",
+   "chaves": [
+    "catalogo",
+    "defasagens",
+    "disclaimer",
+    "disponivel",
+    "familias",
+    "gerado_em",
+    "licenca",
+    "lotes",
+    "meta",
+    "painel",
+    "sazonalidade",
+    "selo",
+    "series"
+   ]
+  },
+  {
+   "arquivo": "ufs.json",
+   "chaves": [
+    "brasil",
+    "cautelas",
+    "datas",
+    "disponivel",
+    "fontes",
+    "gerado_em",
+    "metodo",
+    "populacao_fonte",
+    "ufs"
+   ]
+  }
+ ],
+ "diretorios": [
+  {
+   "diretorio": "inst",
+   "padrao": "inst/{codigo}.json",
+   "descricao": "Ficha por instituição (código IF.data)",
+   "quantidade": 1457,
+   "chaves": [
+    "atraso_produtos",
+    "cabecalho",
+    "capital_tabela",
+    "carteira",
+    "caso",
+    "cod_inst",
+    "comparacao_grupo",
+    "comparacao_pares",
+    "destaques",
+    "evolucao_base100",
+    "evolucao_nota",
+    "grupo_pares_composicao",
+    "indisponiveis",
+    "kpis",
+    "reclamacoes",
+    "resumo_executivo"
+   ]
+  },
+  {
+   "diretorio": "cmp",
+   "padrao": "cmp/{codigo}.json",
+   "descricao": "Comparador por instituição",
+   "quantidade": 2323,
+   "chaves": [
+    "anomes_list",
+    "cod",
+    "fonte",
+    "gerado_em",
+    "metrics",
+    "nivel",
+    "nome",
+    "porte_quartil",
+    "sr",
+    "tcb"
+   ]
+  },
+  {
+   "diretorio": "pano",
+   "padrao": "pano/{codigo}.json",
+   "descricao": "Panorama por recorte",
+   "quantidade": 27,
+   "chaves": [
+    "data_base",
+    "nome",
+    "ocupacao_pf",
+    "produtos_pf",
+    "produtos_pj",
+    "regiao",
+    "renda_pf",
+    "serie_inad",
+    "serie_saldo",
+    "setor_pj",
+    "uf"
+   ]
+  },
+  {
+   "diretorio": "prod",
+   "padrao": "prod/{codigo}.json",
+   "descricao": "Produto de crédito",
+   "quantidade": 13,
+   "chaves": [
+    "anomes_list",
+    "consolidacao_nota",
+    "data_base",
+    "fonte",
+    "frequencia",
+    "gerado_em",
+    "npl_nota",
+    "npl_produto_estimado",
+    "pct_carteira_conceito",
+    "pct_carteira_nota",
+    "produto"
+   ]
+  }
+ ],
+ "outros": [
+  "alerts.xml",
+  "report.html"
+ ]
+}

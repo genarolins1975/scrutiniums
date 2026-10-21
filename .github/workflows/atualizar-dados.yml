@@ -22,6 +22,7 @@ on:
 permissions:
   contents: write
   issues: write
+  actions: write # poda dos caches antigos do estado do pipeline
 
 concurrency:
   group: atualizar-dados
@@ -33,6 +34,8 @@ jobs:
     # 300 min: orçamento de coleta de 120 min (pipeline/run.py) + gold + publicação, com folga.
     # Em 08/09/2026 o teto de 150 min cancelou a coleta antes do gold e nada foi publicado.
     timeout-minutes: 300
+    outputs:
+      retida: ${{ steps.reter.outputs.retida }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -44,8 +47,10 @@ jobs:
 
       - name: Dependências do pipeline
         # pypdf: extração de texto dos releases de resultados (Fase 2). O
-        # restante do pipeline segue só com a biblioteca padrão.
-        run: pip install pypdf
+        # restante do pipeline segue só com a biblioteca padrão. pyarrow: as suítes
+        # Python do portão de publicação importam os módulos de energia (69 testes
+        # quebram sem ele); o ci.yml já o instala.
+        run: pip install pypdf -r pipeline/energia/requirements.txt
 
       # restore/save separados de propósito: com actions/cache@v4 o salvamento
       # acontece no post-job, que NÃO roda quando o job estoura o tempo ou é
@@ -64,6 +69,18 @@ jobs:
           restore-keys: |
             pipeline-estado-
 
+      # O cache do repositório tem limite de 10 GB e o estado do Setor Elétrico ocupa
+      # ~7,2 GB por cópia (15/10/2026): quando a energia grava a cópia nova, o total passa
+      # do limite e o estado do crédito é despejado (03/10 e 15/10/2026). A release
+      # pipeline-estado não conta para o limite (scripts/estado_duravel.sh).
+      - name: Restaurar estado da cópia durável (cache ausente)
+        id: duravel
+        if: steps.cache.outputs.cache-matched-key == ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/estado_duravel.sh restaurar
+
       - name: Semear histórico na primeira execução
         run: |
           mkdir -p data/silver data/bronze data/gold
@@ -75,6 +92,7 @@ jobs:
           fi
 
       - name: Executar pipeline
+        id: pipeline
         run: |
           # -u: sem buffer, para o log mostrar onde a coleta está quando o job é cancelado
           if [ "${{ inputs.somente_gold }}" = "true" ]; then
@@ -91,6 +109,26 @@ jobs:
             data/silver
             data/bronze
           key: pipeline-estado-${{ github.run_id }}
+
+      # Só o main publica a cópia: a release não tem separação por ramo, e uma execução
+      # manual num ramo de PR não pode substituir o estado que o main restaura.
+      - name: Cópia durável do estado (release pipeline-estado)
+        if: steps.pipeline.outcome == 'success' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/estado_duravel.sh salvar
+
+      # Em 03/10 e 15/10/2026 a restauração não achou nenhum cache (Cache not found) e o
+      # silver foi semeado de novo: o despejo veio do estado da energia (~7,2 GB por cópia)
+      # contra o limite de 10 GB do repositório. A proteção é a cópia durável acima, e a
+      # energia passou a apagar a cópia anterior antes de gravar a nova. Com a cópia
+      # durável, basta guardar a mais recente do ramo (~0,9 GB). Falha aqui não bloqueia.
+      - name: Podar caches antigos do estado
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/podar_cache.sh pipeline-estado- 1
 
       # A lição de 08/08: build quebrado publica stub de erro e o workflow
       # termina VERDE — painel fora do ar sem nenhum vigia acusar. O sentinela
@@ -126,58 +164,49 @@ jobs:
             gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
           fi
 
-      - name: Publicar gold no site
-        run: |
-          rsync -a --delete data/gold/ public/obs/data/gold/
-          git status --porcelain public/obs/data | head -20
-
-      # Até 24/09/2026 os testes de conteúdo só rodavam DEPOIS do push (ci.yml via
-      # workflow_run): número errado com cara de número ia ao ar e era acusado horas
-      # depois. Agora a gold do dia passa pela suíte inteira ANTES do commit; reprovada,
-      # nada é publicado, a última publicação íntegra segue no ar e a issue abaixo acusa.
+      # Até 24/09/2026 os testes só rodavam DEPOIS do push: número errado ia ao ar.
+      # Continuam antes do commit. Desde 18/10, cada grupo tem decisão própria;
+      # a composição final (inclusive UFs reconstruídas com fontes retidas) é retestada.
       - name: Node para os testes de conteúdo
         uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: npm
 
-      - name: Testes de conteúdo sobre a gold do dia (antes de publicar)
+      # As três suítes continuam completas, mesmo quando uma reprova: em 13/10/2026
+      # bash -e impediu as suítes Python de rodar depois do vitest. O orquestrador
+      # registra cada teste e captura cada código, sem interromper as outras suítes.
+      # Em 16/10, ENOBUFS abortou o vitest e a issue culpou Python indevidamente;
+      # em 17/10 o Chromium não carregou. Agora esses casos são INCONCLUSIVOS:
+      # uma repetição da suíte; reincidência bloqueia todos os grupos, com log.
+      - name: Publicar gold no site — testes completos e seleção antes do commit
         id: testes
         continue-on-error: true
         run: |
-          npm ci
-          node scripts/minify-obs.mjs
-          npx vitest run
-          python3 -m unittest discover -s pipeline/tests -t .
-          python3 -m unittest discover -s pesquisa/tests -t .
-
-      - name: Reter publicação reprovada
-        if: steps.testes.outcome == 'failure'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          git checkout -- public/obs/data
-          git clean -fdq public/obs/data
-          TITULO="Testes de conteúdo reprovaram a gold do dia: publicação retida"
-          CORPO="Execução de $(date -u +%d/%m/%Y\ %H:%M) UTC: ${RUN_URL}
-
-          A gold reconstruída hoje não passou na suíte de testes de conteúdo e NÃO foi
-          publicada. O site segue servindo a última publicação aprovada. O log do passo
-          *Testes de conteúdo* mostra cada teste reprovado."
-          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
-            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
-          if [ -n "$EXISTENTE" ]; then
-            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "Nova ocorrência: ${RUN_URL}"
-          else
-            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
+          set +e
+          python3 scripts/validar_publicar_gold.py
+          RESULTADO=$?
+          # Compatibilidade: códigos reais e logs permanecem disponíveis ao relatório
+          # anterior. A decisão usa resultado.json, não interpreta texto do terminal.
+          python3 scripts/testes_reprovados.py --suite vitest
+          V=$?
+          python3 scripts/testes_reprovados.py --suite pipeline 2>&1 | tee pipeline-testes.log
+          P=${PIPESTATUS[0]}
+          python3 scripts/testes_reprovados.py --suite pesquisa 2>&1 | tee pesquisa-testes.log
+          Q=${PIPESTATUS[0]}
+          echo "vitest=$V pipeline=$P pesquisa=$Q" | tee testes-codigos.txt
+          if [ "$RESULTADO" -le 1 ] && [ -f .gold-publicacao/resultado.json ]; then
+            echo "publicacao_segura=1" >> "$GITHUB_OUTPUT"
           fi
+          exit "$RESULTADO"
 
       - name: Commit e push das atualizações
-        if: steps.testes.outcome == 'success'
+        id: commit
+        if: always() && steps.testes.outputs.publicacao_segura == '1'
         run: |
           git config user.name "pipeline-observatorio[bot]"
           git config user.email "pipeline@scrutiniums.com"
+          BASE_GOLD=$(git rev-parse HEAD:public/obs/data/gold)
           git add public/obs/data
           if git diff --cached --quiet; then
             echo "Sem mudanças nos dados publicados."
@@ -186,14 +215,87 @@ jobs:
             # a execução leva mais de uma hora: é normal que main tenha andado
             # nesse intervalo. Sem o rebase, o push é rejeitado e o dia inteiro
             # de coleta se perde — foi o que aconteceu em 03/08.
+            # rebase e push no MESMO ramo que disparou a execução (main no agendamento;
+            # o ramo do PR no disparo manual de validação)
             for tentativa in 1 2 3 4; do
-              git pull --rebase origin main && git push && exit 0
+              if git fetch origin "$GITHUB_REF_NAME"; then
+                # A composição foi testada com esta base. Rebase sobre outra gold
+                # poderia trocar uma fonte retida sem reconstruir UFs: não publicar.
+                if [ "$(git rev-parse FETCH_HEAD:public/obs/data/gold)" != "$BASE_GOLD" ]; then
+                  echo "::error::a gold publicada mudou durante a execução; repetir o ciclo sobre a nova base antes de publicar"
+                  exit 1
+                fi
+                git rebase FETCH_HEAD && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
+              fi
               echo "push falhou (tentativa $tentativa); nova tentativa em $((tentativa * 5))s"
               sleep $((tentativa * 5))
             done
             echo "::error::não foi possível publicar os dados após 4 tentativas"
             exit 1
           fi
+
+      - name: Reter publicação reprovada — relatório dos grupos
+        id: reter
+        if: always() && steps.testes.outcome == 'failure' && steps.testes.outputs.publicacao_segura == '1'
+        env:
+          PUSH_CONFIRMADO: ${{ steps.commit.outcome == 'success' }}
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          # Não desfaz os grupos aprovados: os retidos já mantêm os bytes da base.
+          # Relata publicação só depois do push; falha de push fica explícita.
+          python3 - <<'PYSTATUS'
+          import json, os
+          from pathlib import Path
+          p = Path('.gold-publicacao/resultado.json')
+          r = json.loads(p.read_text())
+          r['publicacao_remota_confirmada'] = os.environ['PUSH_CONFIRMADO'] == 'true'
+          p.write_text(json.dumps(r, ensure_ascii=False, indent=2) + '\n')
+          PYSTATUS
+          echo "retida=1" >> "$GITHUB_OUTPUT"
+          python3 scripts/testes_reprovados.py --publicacao .gold-publicacao/resultado.json > .gold-publicacao/relatorio.md
+          # O relatório anterior segue como diagnóstico adicional (incidente 16/10).
+          python3 scripts/testes_reprovados.py vitest-resultado.json testes-codigos.txt pipeline-testes.log pesquisa-testes.log > .gold-publicacao/diagnostico-legado.md
+          python3 - <<'PYBODY'
+          import os
+          from pathlib import Path
+          texto = Path('.gold-publicacao/relatorio.md').read_text()
+          texto = texto[:55000] + ('\n\nRelatório completo no artefato gold-publicacao.' if len(texto) > 55000 else '')
+          Path('.gold-publicacao/issue.md').write_text('Execução: ' + os.environ['RUN_URL'] + '\n\n' + texto)
+          PYBODY
+          TITULO="Testes de conteúdo reprovaram a gold do dia: publicação retida"
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body-file .gold-publicacao/issue.md
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body-file .gold-publicacao/issue.md \
+              --assignee "$GITHUB_REPOSITORY_OWNER"
+          fi
+
+      - name: Guardar decisões, mapa de testes e logs de todas as tentativas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gold-publicacao
+          include-hidden-files: true
+          path: |
+            .gold-publicacao/
+            vitest-resultado.json
+            testes-codigos.txt
+            pipeline-testes.log
+            pesquisa-testes.log
+          retention-days: 30
+
+      # Retenção deixa a execução VERMELHA. De 25/09 a 12/10/2026 todas as execuções
+      # retidas terminaram verdes (o passo de testes tem continue-on-error), e a aba
+      # Actions mostrou 18 dias de sucesso com o gold parado. A issue já foi aberta ou
+      # comentada no passo anterior; o job `alertar` não duplica.
+      - name: Sinalizar publicação retida
+        if: always() && steps.testes.outcome == 'failure'
+        run: |
+          echo "::error::há retenção, falha de infraestrutura ou teste sem gold reprovado; ver o relatório e a issue 'Testes de conteúdo reprovaram a gold do dia'"
+          exit 1
 
   # A falha de 03-06/08 ficou quatro dias invisível: o pipeline morria em
   # silêncio e o gold envelhecia sem ninguém saber, até uma checagem manual.
@@ -203,7 +305,7 @@ jobs:
   alertar:
     runs-on: ubuntu-latest
     needs: pipeline
-    if: always() && (needs.pipeline.result == 'failure' || needs.pipeline.result == 'cancelled')
+    if: always() && needs.pipeline.outputs.retida != '1' && (needs.pipeline.result == 'failure' || needs.pipeline.result == 'cancelled')
     timeout-minutes: 5
     steps:
       - name: Abrir ou comentar issue de falha

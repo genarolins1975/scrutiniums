@@ -1,40 +1,17 @@
-import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { getSessionUser } from "@/lib/session";
-import { PublicHeader } from "@/components/layout/PublicHeader";
-import { Footer } from "@/components/layout/Footer";
-import { Hero } from "@/components/home/Hero";
-import { SecaoReune } from "@/components/home/SecaoReune";
-import { SecaoMetodo } from "@/components/home/SecaoMetodo";
-import { SecaoPrincipios } from "@/components/home/SecaoPrincipios";
-import { SecaoPlataforma } from "@/components/home/SecaoPlataforma";
-import { SecaoPublicos } from "@/components/home/SecaoPublicos";
-import { SecaoAcesso } from "@/components/home/SecaoAcesso";
+import type { Metadata, ResolvingMetadata } from "next";
+import { ACESSO, listaObservatorios } from "@/lib/acesso";
+import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
+import { Home } from "@/components/home/Home";
 
-export const metadata: Metadata = {
+const metadadosOriginais: Metadata = {
   description:
-    "Da informação dispersa ao conhecimento verificável: bases públicas, registros oficiais e séries setoriais organizados com estatística e método declarado. Plataforma gratuita, com leitura aberta e sem cadastro.",
+    `Da informação dispersa ao conhecimento verificável. Uma plataforma, observatórios de ${listaObservatorios()}, com bases públicas, registros oficiais e método declarado. Gratuita. ${ACESSO.curto}`,
 };
 
-export default async function HomePage() {
-  // Quem já tem sessão abre o app direto na Visão geral do Observatório:
-  // a página institucional é para quem ainda não entrou.
-  const user = await getSessionUser();
-  if (user && user.onboardingStatus === "COMPLETE") redirect("/observatorio");
+export async function generateMetadata(_props: { params?: Record<string, string> }, parent: ResolvingMetadata): Promise<Metadata> {
+  return metadadosPortuguesComAlternativas("/", metadadosOriginais, await parent);
+}
 
-  return (
-    <>
-      <PublicHeader />
-      <main>
-        <Hero />
-        <SecaoReune />
-        <SecaoMetodo />
-        <SecaoPrincipios />
-        <SecaoPlataforma />
-        <SecaoPublicos />
-        <SecaoAcesso />
-      </main>
-      <Footer />
-    </>
-  );
+export default async function HomePage() {
+  return Home({ idioma: "pt" });
 }

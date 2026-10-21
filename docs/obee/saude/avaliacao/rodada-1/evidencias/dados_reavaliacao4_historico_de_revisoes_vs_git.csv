@@ -1,0 +1,7 @@
+hash_dados_na_tabela_e_no_git;gerado_em_no_git_utc;hora_na_tabela;observacoes_na_tabela;observacoes_no_git;observacoes_iguais;observacoes_novas_vs_versao_anterior;observacoes_alteradas_vs_versao_anterior;das_quais_com_valor_diferente;tipo_na_tabela;descricao_resumida_na_tabela
+1cb7f82d0fffde46;2026-10-09T14:15:59Z;14h15;8721;8721;sim;0;0;0;dados;Primeira geração
+f111efb2ef09c540;2026-10-09T14:34:23Z;14h34;8751;8751;sim;30;661;661;dados;"30 obs. a mais; campos revisados em 661 obs. de UBS"
+ce882081d96f44d5;2026-10-09T16:06:10Z;16h06;8777;8777;sim;26;1044;0;método;"26 obs. a mais; campos revisados em 1.025 obs."
+159b76024a953f4d;2026-10-09T16:39:56Z;16h39;8777;8777;sim;0;78;0;método;78 obs. com marca e nota
+ea1565fee6907c1a;2026-10-09T17:19:36Z;17h19;8777;8777;sim;0;6;0;texto;"6 obs. (nota de Florianópolis); nenhum valor mudou"
+6a4bac828fb3918d;2026-10-09T17:57:12Z;quarta rodada;8777;8777;sim;0;188;0;texto;"188 obs. com registro ou nota revisados; nenhum valor mudou"

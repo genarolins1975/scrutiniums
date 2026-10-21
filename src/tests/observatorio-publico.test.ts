@@ -7,6 +7,7 @@ import {
   ROTAS_APOSENTADAS,
   abaPorCaminho,
 } from "@/lib/data/observatorioAbas";
+import { ehRotaPublica } from "@/lib/rotasPublicas";
 import { montarHtml, resolverMeta } from "@/lib/observatorioHead";
 
 /**
@@ -31,11 +32,14 @@ function extrairMapa(fonte: string, nome: string): Record<string, string> {
 }
 
 describe("camada pública de leitura", () => {
-  it("o middleware protege apenas /app", () => {
+  it("o middleware cobre todas as rotas e só libera a lista pública; Observatório e /obs exigem sessão", () => {
     const matcher = middleware.slice(middleware.indexOf("matcher:"));
-    expect(matcher).toContain('"/app/:path*"');
-    expect(matcher).not.toMatch(/observatorio/);
-    expect(matcher).not.toMatch(/"\/obs/);
+    expect(matcher).toContain('"/((?!_next/static|_next/image).*)"');
+    expect(middleware).toContain("if (ehRotaPublica(pathname)) return NextResponse.next();");
+    for (const p of ["/observatorio", "/observatorio/pix", "/obs/data/gold/meta.json", "/obs/embed.html", "/resumo/feed.xml", "/dados"]) {
+      expect(ehRotaPublica(p), p).toBe(false);
+    }
+    for (const p of ["/", "/observatorio-do-credito", "/entrar", "/cadastro/perfil", "/api/auth/eu"]) expect(ehRotaPublica(p), p).toBe(true);
   });
 
   it("a SPA oferece Entrar ao visitante e conta/sair só a quem tem sessão", () => {
@@ -219,7 +223,7 @@ describe("painéis sintéticos aposentados", () => {
 
   it("as rotas antigas redirecionam para o painel real equivalente", () => {
     const config = readFileSync(join(raiz, "next.config.mjs"), "utf-8");
-    expect(config).toContain('source: "/app", destination: "/observatorio"');
+    expect(config).toContain('source: "/app", destination: "/app/observatorios"');
     expect(config).toContain('source: "/app/atividade", destination: "/observatorio/credit"');
     expect(config).toContain('source: "/app/risco", destination: "/observatorio/sectors"');
     expect(config).toContain('source: "/app/regulatorio", destination: "/observatorio/alerts"');

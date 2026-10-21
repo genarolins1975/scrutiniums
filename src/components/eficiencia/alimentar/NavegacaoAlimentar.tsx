@@ -1,0 +1,4 @@
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+export function NavegacaoAlimentar(){const atual=usePathname();const base="/eficiencia-estatal/seguranca-alimentar";return <nav aria-label="Segurança alimentar" className="my-6 flex flex-wrap gap-x-5 gap-y-1 border-y border-linha py-2">{[["","Panorama"],["necessidades","Necessidades"],["acesso","Acesso"],["qualidade","Qualidade e continuidade"],["recursos","Recursos e estrutura"],["dados","Explorar dados"],["metodos","Método e fontes"]].map(([rota,nome])=>{const href=base+(rota?"/"+rota:"");return <Link key={href} href={href} aria-current={atual===href?"page":undefined} className={`inline-flex min-h-[44px] items-center text-sm underline-offset-4 ${atual===href?"font-semibold text-obee-tinta underline":"text-obee-dark hover:underline"}`}>{nome}</Link>})}</nav>}

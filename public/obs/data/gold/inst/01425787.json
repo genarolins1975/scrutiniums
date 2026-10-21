@@ -9,7 +9,7 @@
   "sede": "São Paulo/SP",
   "segmento": "S1",
   "grupo_pares": "S1 — grandes (≥10% do PIB ou atividade internacional)",
-  "n_pares": 10,
+  "n_pares": 5,
   "conglomerado_prudencial": "C0080099",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-24T15:24:40+00:00",
+  "atualizado_em": "2026-10-21T16:18:21+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 01.425.787"
  },
@@ -52,31 +52,11 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 10,
+  "quantidade": 5,
   "maiores_membros": [
-   {
-    "cod": "C0010069",
-    "nome": "ITAU"
-   },
-   {
-    "cod": "C0049906",
-    "nome": "BB"
-   },
-   {
-    "cod": "C0051626",
-    "nome": "CAIXA ECONÔMICA FEDERAL"
-   },
-   {
-    "cod": "C0010045",
-    "nome": "BRADESCO"
-   },
    {
     "cod": "C0030379",
     "nome": "SANTANDER"
-   },
-   {
-    "cod": "C0049944",
-    "nome": "BTG PACTUAL"
    },
    {
     "cod": "01425787",
@@ -187,17 +167,17 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 13.15,
-   "percentil": 11.1
+   "mediana_grupo": 4.38,
+   "percentil": 25.0
   },
   {
    "indicador": "ROE do período",
    "valor": 3.63,
    "unit": "%",
    "d_tri": null,
-   "vs_pares": "abaixo",
-   "mediana_grupo": 6.53,
-   "percentil": 33.3
+   "vs_pares": "na média",
+   "mediana_grupo": 3.63,
+   "percentil": 50.0
   }
  ],
  "carteira": {
@@ -496,66 +476,56 @@
  "comparacao_grupo": {
   "roe": {
    "valores": [
-    6.53,
-    11.11,
     7.52,
-    3.57,
-    11.85,
     3.63,
     13.83,
-    5.56,
     2.09,
     -81.74
    ],
    "meu": 3.63,
-   "mediana": 6.53
+   "mediana": 3.63
   },
   "alav": {
    "valores": [
-    11.0,
-    13.15,
     13.16,
-    14.15,
-    11.1,
     4.33,
     19.4,
-    20.01,
     1.0,
     4.38
    ],
    "meu": 4.33,
-   "mediana": 13.15
+   "mediana": 4.38
   }
  },
  "comparacao_pares": {
   "dimensoes": {
    "rentabilidade": {
     "valor": 3.63,
-    "percentil_pares": 14.3,
-    "mediana_pares": 7.02,
-    "q1_pares": 5.08,
-    "q3_pares": 11.29
+    "percentil_pares": 29.3,
+    "mediana_pares": 6.2,
+    "q1_pares": 3.28,
+    "q3_pares": 9.14
    },
    "alavancagem": {
     "valor": 4.33,
-    "percentil_pares": 0.0,
-    "mediana_pares": 13.16,
-    "q1_pares": 11.07,
-    "q3_pares": 15.46
+    "percentil_pares": 6.1,
+    "mediana_pares": 10.92,
+    "q1_pares": 6.89,
+    "q3_pares": 15.73
    },
    "concentracao_credito": {
     "valor": 0.0,
     "percentil_pares": 0.0,
-    "mediana_pares": 41.47,
-    "q1_pares": 14.85,
-    "q3_pares": 44.11
+    "mediana_pares": 45.43,
+    "q1_pares": 14.94,
+    "q3_pares": 58.82
    },
    "dependencia_captacoes": {
     "valor": 9.43,
-    "percentil_pares": 14.3,
-    "mediana_pares": 77.63,
-    "q1_pares": 55.65,
-    "q3_pares": 78.74
+    "percentil_pares": 10.1,
+    "mediana_pares": 73.68,
+    "q1_pares": 51.47,
+    "q3_pares": 82.12
    }
   },
   "dimensoes_disponiveis": "4/6",

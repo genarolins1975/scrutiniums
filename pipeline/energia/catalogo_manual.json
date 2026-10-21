@@ -1,0 +1,96 @@
+{
+ "nota": "Entradas cadastradas à mão: fontes candidatas ainda sem integração nem listagem colhida pelo pipeline. metadados_verificados=false até conferência na fonte; o endereço de cada uma é lido por requisição parcial na coleta do módulo dados (endereco_verificado no catálogo). Removidas em 01/10/2026 por terem entrada própria verificada: ccee:portal (a listagem package_search da CCEE passou a ser colhida, 204 conjuntos), epe:pde (epe:pde-2035, módulo Expansão), mme:boletim (mme:boletim-de-monitoramento-do-sistema-eletrico, módulo Mercado) e cvm:cia_aberta (cvm:cia_aberta-doc-dfp, -doc-itr e -cad, módulo Empresas).",
+ "entradas": [
+  {
+   "id": "epe:anuario",
+   "orgao": "EPE",
+   "nome": null,
+   "titulo": "Anuário Estatístico de Energia Elétrica",
+   "url": "https://www.epe.gov.br/pt/publicacoes-dados-abertos/publicacoes/anuario-estatistico-de-energia-eletrica",
+   "licenca": null,
+   "modificado_na_fonte": null,
+   "descricao": "Consumo por classe e região, capacidade e geração consolidadas anualmente. Endereço a conferir.",
+   "n_recursos": null,
+   "formatos": [],
+   "tema": "carga"
+  },
+  {
+   "id": "epe:ben",
+   "orgao": "EPE",
+   "nome": null,
+   "titulo": "Balanço Energético Nacional (BEN)",
+   "url": "https://www.epe.gov.br/pt/publicacoes-dados-abertos/publicacoes/balanco-energetico-nacional-ben",
+   "licenca": null,
+   "modificado_na_fonte": null,
+   "descricao": "Matriz energética e elétrica anual. Endereço a conferir.",
+   "n_recursos": null,
+   "formatos": [],
+   "tema": "geracao"
+  },
+  {
+   "id": "ana:hidroweb",
+   "orgao": "ANA",
+   "nome": null,
+   "titulo": "HidroWeb: séries hidrológicas (chuva, vazão, cota)",
+   "url": "https://www.snirh.gov.br/hidroweb/",
+   "licenca": null,
+   "modificado_na_fonte": null,
+   "descricao": "Estações pluviométricas e fluviométricas da rede hidrometeorológica nacional. Endereço a conferir.",
+   "n_recursos": null,
+   "formatos": [],
+   "tema": "hidrologia"
+  },
+  {
+   "id": "inmet:bdmep",
+   "orgao": "INMET",
+   "nome": null,
+   "titulo": "Dados históricos de estações meteorológicas",
+   "url": "https://portal.inmet.gov.br/dadoshistoricos",
+   "licenca": null,
+   "modificado_na_fonte": null,
+   "descricao": "Temperatura, precipitação e radiação por estação. Endereço a conferir.",
+   "n_recursos": null,
+   "formatos": [],
+   "tema": "hidrologia"
+  },
+  {
+   "id": "b3:cotacoes",
+   "orgao": "B3",
+   "nome": null,
+   "titulo": "Cotações históricas e índice setorial de energia elétrica",
+   "url": "https://www.b3.com.br/",
+   "licenca": null,
+   "modificado_na_fonte": null,
+   "descricao": "Preços das ações das companhias do setor. Condições de uso a conferir.",
+   "n_recursos": null,
+   "formatos": [],
+   "tema": "empresas"
+  },
+  {
+   "id": "anp:precos",
+   "orgao": "ANP",
+   "nome": null,
+   "titulo": "Preços de combustíveis",
+   "url": "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos",
+   "licenca": null,
+   "modificado_na_fonte": null,
+   "descricao": "Referência para custos de combustíveis de usinas térmicas. Endereço a conferir.",
+   "n_recursos": null,
+   "formatos": [],
+   "tema": "preco"
+  },
+  {
+   "id": "ibge:atividade",
+   "orgao": "IBGE",
+   "nome": null,
+   "titulo": "Indicadores de atividade econômica (SIDRA)",
+   "url": "https://sidra.ibge.gov.br/",
+   "licenca": null,
+   "modificado_na_fonte": null,
+   "descricao": "Contexto para carga e consumo, ainda não integrado no domínio Energia. População e IPCA do SIDRA já estão integrados e aparecem em entradas próprias do catálogo. Tabelas específicas a conferir.",
+   "n_recursos": null,
+   "formatos": [],
+   "tema": "carga"
+  }
+ ]
+}

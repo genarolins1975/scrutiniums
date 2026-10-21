@@ -1,0 +1,1154 @@
+{
+ "avaliador": "P-U01",
+ "papel": "produto",
+ "rodada": "inicial",
+ "versao_avaliada": "commit 51747baf8, estado do site servido em http://localhost:3100",
+ "paginas": {
+  "/setor-eletrico": {
+   "paineis": [],
+   "criterios": {
+    "A": {
+     "nota": 7.5,
+     "evidencia": [
+      "1440_dobra.png: título, abertura, dois atalhos e busca na primeira tela (atalho a 568 px, busca a 684 px).",
+      "Sonda em 390 px: botões e SVG do mapa conceitual sem caixa (display none) enquanto o texto 'Escolha um elo' segue visível; 'O mapa em texto' ocupa 5.863 px.",
+      "objetivo.json: 14.132 px (1440) e 33.374 px (390); os mesmos destinos aparecem no menu, no mapa, em 20 cartões, 9 perguntas, 4 trilhas, na tabela de fontes e no rodapé."
+     ],
+     "atendidos": [
+      "Pergunta e entrada principal reconhecíveis na primeira tela em 1440",
+      "Hierarquia por seções B a G, com âncoras em 'Nesta página'",
+      "Tipografia consistente: 77% a 80% do texto entre 14 e 16 px",
+      "Cartões de destino com estrutura fixa (pergunta, para que serve, o que você encontra, recorte)",
+      "Tabela de fontes vira 21 cartões legíveis no celular"
+     ],
+     "problemas": [
+      "Os mesmos destinos se repetem em cinco ou mais estruturas e a página passa de 14.000 px em 1440 e de 33.000 px em 390",
+      "No celular o diagrama some, mas o texto da seção continua mandando escolher um elo e olhar a forma do traço",
+      "20 cartões de destino com 2 a 6 links cada pesam mais do que a pergunta que o leitor traz",
+      "Cabeçalho em três camadas ocupa cerca de 185 px da primeira tela em 390"
+     ],
+     "justificativa": "Primeira tela e tipografia boas em 1440. A página é muito longa, repete os mesmos destinos em cinco ou mais estruturas e, no celular, perde o diagrama mantendo a instrução que o cita. Por isso fica abaixo de 9."
+    },
+    "B": {
+     "nota": 8.0,
+     "evidencia": [
+      "texto_entender.txt: sete elos com cinco tipos de ligação, bloco 'O que o mapa não diz' e 'Nomes e réguas que se confundem' (PLD e tarifa, CMO e PLD, subsistema e submercado, % da EAR e % da MLT, MWmed, MWh e MW).",
+      "texto_entender.txt: ONS aparece 28 vezes, CCEE 17 e ANEEL 12; nenhuma ocorrência de 'Operador Nacional' ou 'Agência Nacional'; EPE, IBGE e SIN também sem nome por extenso.",
+      "Teste em 1440: a dica de PLD abre por hover e por foco e fecha com Esc, mas traz a definição literal da fonte ('exposições dos agentes')."
+     ],
+     "atendidos": [
+      "Separação entre caminho físico, operação, regra de mercado e custo na tarifa",
+      "PLD distinto de tarifa e MW, MWh e MWmed distintos, com 'capacidade instalada não é energia gerada'",
+      "Cinco naturezas do número e exemplo real do arquivo à página (14,7%)",
+      "Limites do mapa declarados em 'O que o mapa não diz'",
+      "Perguntas e trilhas ajudam a escolher o caminho"
+     ],
+     "problemas": [
+      "ONS, CCEE, ANEEL, EPE, IBGE e SIN nunca aparecem por extenso e não têm dica de glossário",
+      "Definições do glossário copiam o texto oficial, sem uma frase leiga antes",
+      "No celular o exemplo visual central desaparece e a lista textual ocupa 5.863 px"
+     ],
+     "justificativa": "Explica bem o encadeamento e os nomes que se confundem, mas deixa agentes e siglas sem tradução numa página feita para leigos, usa definições oficiais literais e perde o diagrama no celular. Cumpre a maior parte do nível 9, não todo."
+    },
+    "C": {
+     "nota": 8.0,
+     "evidencia": [
+      "Busca em 1440: 'perdas', 'bandeira', 'reajuste', 'CEMIG' e 'metodologia' levam ao painel, conceito ou distribuidora certo, com âncora; 'zzzxyq' mostra estado vazio com saída.",
+      "'Sua distribuidora' mais 'Ver em Perdas': /perdas?d=06981180000116 abre com CEMIG-D carregada.",
+      "Falhas: 'o que é PLD' não devolve a página PLD nem o conceito PLD; 'energia solar', 'apagão' e 'Campinas' dão 'Nada no observatório'; 'EAR' devolve ENEL CE por coincidência com 'CEARÁ'."
+     ],
+     "atendidos": [
+      "Perguntas do dia a dia levam à página, com a distribuidora escolhida carregada",
+      "Busca cobre página, painel, pergunta, conceito e distribuidora, com âncora",
+      "Trilhas por perfil e atalho para a situação do sistema",
+      "Estado vazio com saída para as perguntas",
+      "Tabela de atualidade mostra o que está atrasado"
+     ],
+     "problemas": [
+      "Busca lexical: 'o que é PLD' não encontra a página nem o conceito PLD",
+      "Vocabulário leigo comum e nome de cidade dão 'Nada no observatório' sem apontar Minha região",
+      "'EAR' devolve distribuidora por coincidência de letras",
+      "No celular a tarefa T1 perde o diagrama"
+     ],
+     "justificativa": "T1 e a escolha da página funcionam bem em 1440, com perguntas, trilhas e distribuidora que viaja ao módulo. Fica abaixo de 9 porque a busca falha em perguntas leigas e em cidade e porque o celular perde o diagrama."
+    },
+    "D": {
+     "nota": 8.0,
+     "evidencia": [
+      "texto_entender.txt: perguntas de consumidor (conta subiu, perdas, qualidade, Tarifa Social, cobertura) e trilha 'Sou consumidor'.",
+      "Tabela de fontes: Tarifa Social (SCS) em jun/2025 marcada 'atrasada'; fontes 'sem calendário declarado' avisadas.",
+      "Ficha 'Comprove este número': 'Copiar citação' em ABNT e arquivo com sha256; objetivo.json: 0 botões de copiar link e 0 de baixar na raiz."
+     ],
+     "atendidos": [
+      "Foco em custo, continuidade, acesso e benefícios sociais",
+      "Atrasos e lacunas das fontes visíveis",
+      "Trilhas por perfil, incluindo consumidor e professor",
+      "Citação pronta e tempo de leitura declarado como estimativa editorial"
+     ],
+     "problemas": [
+      "Recorte territorial só por distribuidora; município exige ir a Minha região e a busca da raiz não o encontra",
+      "Sem link copiável por seção nem exportação na raiz",
+      "Definições literais da fonte limitam o leitor não especializado"
+     ],
+     "justificativa": "Boa atenção ao consumidor e às lacunas das fontes, com citação e prova do número. Faltam ligação direta por município e meios simples de compartilhar uma seção, e parte do vocabulário ainda exige leitura técnica."
+    },
+    "I": {
+     "nota": 8.0,
+     "evidencia": [
+      "Captura própria em 1440 e 768: sete elos, seleção realça as ligações do elo, cinco estilos de traço com legenda; botões com aria-pressed.",
+      "Sonda em 390: svg e botões com display none; 'O mapa em texto' (classe md:sr-only) vira lista visível de sete cartões.",
+      "Os sete botões respondem a clique e teclado; seta direita não percorre os elos."
+     ],
+     "atendidos": [
+      "Diagrama de nós e ligações escolhido pela tarefa T1",
+      "Legenda dos cinco tipos de ligação e realce da seleção",
+      "Alternativa textual completa em qualquer largura",
+      "Interação por clique e teclado, sem depender de hover"
+     ],
+     "problemas": [
+      "No celular não há diagrama, só texto de 5.863 px",
+      "Cinco tipos de ligação distinguidos só por padrão de traço, com traços claros e finos fora da seleção",
+      "A única visualização é conceitual; nenhum número ilustrado na abertura"
+     ],
+     "justificativa": "O diagrama é adequado à tarefa e tem alternativa textual e teclado, mas some no celular e separa cinco tipos de ligação apenas pelo traço. Não há gráfico de dados, o que é coerente com a função de página inicial."
+    },
+    "J": {
+     "nota": 8.0,
+     "evidencia": [
+      "Teclado em 1440: 'Pular para o conteúdo', 16 paradas até a busca, contorno de 2 px; menus de grupo do cabeçalho comum abrem com Enter e fecham com Esc devolvendo o foco.",
+      "Busca: resultados agrupados (Página, Painel, Pergunta, Conceito, Distribuidora) com âncora e contagem em aria-live; ArrowDown e Enter não abrem resultado; campo sem papel combobox.",
+      "Mapa conceitual: 7 botões trocam o painel sem mudar o URL; 'Explorar por pergunta' e 'Nesta página' levam às âncoras."
+     ],
+     "atendidos": [
+      "Organização previsível por seções com âncoras",
+      "Estado vazio e contagem de resultados anunciada",
+      "Distribuidora escolhida viaja para o módulo",
+      "Menus e diálogo com Esc e retorno do foco",
+      "Atalho para pular ao conteúdo"
+     ],
+     "problemas": [
+      "Busca sem padrão combobox: setas e Enter não abrem o resultado",
+      "Cabeçalho em três camadas, mais 'Nesta página' e cartões, repete a navegação",
+      "O item de menu 'Mapa do observatório' não diz que é o começo, e a página não é um mapa",
+      "Busca sem sinônimos nem tratamento de 'o que é'"
+     ],
+     "justificativa": "Navegação previsível, com busca agrupada, âncoras e seleção que viaja ao módulo. Abaixo de 9 por busca sem padrão de lista, sem sinônimos e sem municípios, e por três camadas de navegação que repetem os mesmos caminhos."
+    },
+    "K": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: axe 0 violações em 320, 390, 768 e 1440; sem rolagem horizontal; 0 erros de console; 0 alvos abaixo de 24 px e 30 abaixo de 44 px.",
+      "axe próprio (WCAG 2.2 AA e boas práticas) em 390 e 1440 com busca preenchida, elo aberto e ficha Comprove aberta: 0 violações; color-contrast incompleto em 30 a 147 nós.",
+      "CSS com prefers-reduced-motion global; dica de glossário abre por hover e foco e fecha com Esc; o diálogo Comprove devolve o foco ao botão."
+     ],
+     "atendidos": [
+      "Teclado e foco visível em todo o percurso testado",
+      "Semântica de radiogroup, details, dialog e marcos",
+      "Texto alternativo do diagrama em qualquer largura",
+      "Movimento reduzido respeitado por regra global",
+      "Leitura em 320, 390, 768 e 1440 sem rolagem horizontal"
+     ],
+     "problemas": [
+      "Leitor de tela real não testado",
+      "Campo de busca sem papel combobox e sem navegação por setas",
+      "Em 390 a frase 'Escolha um elo' cita um controle que não existe",
+      "Axe deixou o contraste como incompleto em 30 a 147 nós, sem revisão manual nó a nó"
+     ],
+     "justificativa": "Medições automáticas limpas, com teclado, foco, diálogo, dica de glossário e movimento reduzido bem resolvidos. Abaixo de 9 por leitor de tela não testado, busca sem padrão combobox, instrução de celular que cita controle ausente e contraste só estimado."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "raiz-mapa-390",
+     "gravidade": "media",
+     "criterios": [
+      "A",
+      "B",
+      "I",
+      "K"
+     ],
+     "onde": "Seção 'Como as partes do setor elétrico se ligam', abaixo de 768 px",
+     "descricao": "Os sete botões e o SVG ficam com display none, mas o parágrafo 'Escolha um elo... A forma do traço diz o tipo da ligação' continua. O 'mapa em texto' passa a ocupar 5.863 px (cerca de 18% da página de 33.374 px).",
+     "sugestao": "No celular trocar a frase por 'Leia os sete elos abaixo' e oferecer um diagrama vertical simples ou um resumo de uma tela antes da lista."
+    },
+    {
+     "id": "raiz-siglas-agentes",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Texto dos elos, 'Fontes e datas de referência' e tabela de fontes",
+     "descricao": "ONS (28 vezes), CCEE (17), ANEEL (12), EPE, IBGE e SIN nunca aparecem por extenso; o glossário com dica só cobre conceitos (EAR, PLD, CMO e outros).",
+     "sugestao": "Expandir na primeira ocorrência e incluir ONS, CCEE e ANEEL no glossário de dica."
+    },
+    {
+     "id": "raiz-busca-lexica",
+     "gravidade": "media",
+     "criterios": [
+      "C",
+      "J"
+     ],
+     "onde": "Campo 'Busque por pergunta, conceito, página ou distribuidora'",
+     "descricao": "'o que é PLD' devolve 'Quero baixar a série', 'Limites do PLD', 'Previsões e modelos' e 'MCP', sem a página PLD nem o conceito PLD; 'energia solar', 'apagão' e 'Campinas' devolvem 'Nada no observatório'; 'EAR' devolve a distribuidora ENEL CE por 'CEARÁ'.",
+     "sugestao": "Ignorar 'o que é', aceitar sinônimos, buscar por prefixo de palavra e, para nome de município, apontar Minha região."
+    },
+    {
+     "id": "raiz-repeticao-caminhos",
+     "gravidade": "media",
+     "criterios": [
+      "A",
+      "J"
+     ],
+     "onde": "Menu, mapa conceitual, 'Para que serve cada página', 'Explore pela sua pergunta', 'Trilhas por interesse', 'Onde aprofundar' e rodapé",
+     "descricao": "Os mesmos destinos aparecem em seis ou sete estruturas; página de 14.132 px em 1440 e 33.374 px em 390, com 20 cartões de destino de 2 a 6 links cada.",
+     "sugestao": "Recolher 'Destinos' por grupo, deixar perguntas e trilhas como entrada principal e reduzir os links por cartão."
+    },
+    {
+     "id": "raiz-busca-teclado",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "K"
+     ],
+     "onde": "Campo de busca da raiz",
+     "descricao": "Sem role combobox, aria-controls ou aria-expanded; ArrowDown e Enter não abrem resultado, é preciso Tab até o link. A contagem de resultados é anunciada por região aria-live.",
+     "sugestao": "Adotar o padrão combobox com setas e Enter, como já existe na busca de Minha região."
+    },
+    {
+     "id": "raiz-definicoes-literais",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Dicas de glossário e lista 'Conceitos' dos elos",
+     "descricao": "As definições copiam a fonte oficial ('exposições dos agentes', 'usinas a jusante na cascata') sem frase leiga antes.",
+     "sugestao": "Preceder a definição oficial por uma frase de uma linha em linguagem comum."
+    },
+    {
+     "id": "raiz-cabecalho-camadas",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "A"
+     ],
+     "onde": "Cabeçalho do observatório",
+     "descricao": "Seletor de observatório, seis menus de grupo e abas de página formam três camadas; são 16 paradas de Tab antes da busca (há link para pular) e cerca de 185 px da primeira tela em 390.",
+     "sugestao": "Fundir grupo e página em uma só camada ou recolher a camada de abas na raiz."
+    },
+    {
+     "id": "raiz-menu-nome",
+     "gravidade": "baixa",
+     "criterios": [
+      "J",
+      "B"
+     ],
+     "onde": "Menu 'Comece aqui', item 'Mapa do observatório'",
+     "descricao": "A página inicial se chama 'Entenda a energia que move o Brasil'; o menu a chama de 'Mapa do observatório', e o mapa é só uma seção.",
+     "sugestao": "Chamar o item de 'Início' ou 'Por onde começar', como já está no rodapé."
+    },
+    {
+     "id": "raiz-select-truncado",
+     "gravidade": "baixa",
+     "criterios": [
+      "A",
+      "K"
+     ],
+     "onde": "Selects 'Sua distribuidora' em 390 px",
+     "descricao": "O texto da opção 'Escolha (103 distribuidoras com dado de 2025)' é cortado ('...dado de 2').",
+     "sugestao": "Encurtar a opção padrão para 'Escolha a distribuidora' e mover a contagem para o rótulo."
+    },
+    {
+     "id": "raiz-atrasada-sem-destaque",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "A"
+     ],
+     "onde": "Tabela 'Fontes principais de cada tema' (21 linhas)",
+     "descricao": "'atrasada' (Tarifa Social, jun/2025) tem o mesmo peso visual das 19 linhas 'em dia'.",
+     "sugestao": "Marcar a situação com ícone e forma distinta, sem cor de aprovação ou reprovação."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver, TalkBack): não testado.",
+    "Ampliação a 200% e 400% e espaçamento de texto (WCAG 1.4.12): não testados; só 320, 390, 768 e 1440 px.",
+    "Contraste: o axe deixou 'color-contrast' como incompleto (1 a 147 nós conforme o estado); minha estimativa não achou texto abaixo de 4,5:1, mas não houve revisão nó a nó.",
+    "Safari, Firefox e aparelho de toque real: não testados (Chromium emulado)."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T1",
+     "perfil": "consumidor",
+     "largura": 1440,
+     "passos": [
+      "Abrir a raiz e ler a primeira tela",
+      "Rolar até o mapa conceitual e abrir os sete elos, um por vez",
+      "Ler 'O que o mapa não diz'",
+      "Usar 'Explorar por pergunta' e abrir 'Por que a conta de luz subiu?'"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "ONS, CCEE e ANEEL sem tradução nos textos dos elos",
+      "Os mesmos destinos repetidos em cinco ou mais estruturas"
+     ],
+     "erros": []
+    },
+    {
+     "tarefa": "T1",
+     "perfil": "consumidor",
+     "largura": 390,
+     "passos": [
+      "Abrir a raiz em 390 px",
+      "Procurar o diagrama sob 'Como as partes do setor elétrico se ligam'",
+      "Ler 'O mapa em texto'",
+      "Abrir o menu e escolher uma página"
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Sem diagrama; lista textual de 5.863 px",
+      "Busca a 840 px, fora da primeira tela"
+     ],
+     "erros": [
+      "O texto manda escolher um elo, mas não há botão em 390 px"
+     ]
+    },
+    {
+     "tarefa": "T1 (buscar assunto, página, conceito ou distribuidora)",
+     "perfil": "jornalista ou professor",
+     "largura": 1440,
+     "passos": [
+      "Buscar 'PLD', 'o que é PLD', 'bandeira', 'CEMIG', 'energia solar' e 'Campinas'",
+      "Escolher a distribuidora na pergunta 'Minha distribuidora perde muita energia?' e abrir Perdas"
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "Busca lexical sem sinônimos nem tratamento de 'o que é'",
+      "Cidade não é encontrada e o estado vazio não aponta Minha região"
+     ],
+     "erros": [
+      "'o que é PLD' não devolveu a página nem o conceito PLD",
+      "'EAR' devolveu ENEL CE por coincidência com 'CEARÁ'"
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/territorio": {
+   "paineis": [
+    "P002"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 7.5,
+     "evidencia": [
+      "Posições medidas: campo de busca a 991 px em 1440 e a 1.410 px em 390; mapa a 1.329 e 2.048 px; 1440_dobra.png não mostra busca nem mapa.",
+      "Captura própria da ficha de Campinas: em 390, 'MMGD cadastrada na distribuidora' fica numa coluna de 43 px (7 linhas) e 'Residenciais com Tarifa Social' quebra no meio da palavra; em 320 o rótulo vira uma letra por linha.",
+      "1440_inteira_01de02.png: mapa e ficha lado a lado; ficha por grão, com frase 'valor da distribuidora, não do município'."
+     ],
+     "atendidos": [
+      "Ficha organizada por grão (município, distribuidora, conjuntos, submercado, UF)",
+      "Mapa, legenda e nota 'Nesta camada' no mesmo bloco",
+      "Período, universo e unidade no topo do painel",
+      "Selos de natureza do dado e fonte por bloco",
+      "Tabela equivalente para cada camada"
+     ],
+     "problemas": [
+      "Controle principal fora da primeira tela em 1440 e a 1.410 px em 390",
+      "Em 390 e 320 rótulos da ficha quebram em palavras e letras e a coluna FEC dos conjuntos vira três linhas",
+      "Ficha com 3.280 px em 1440 (4.320 em 390), com 'Fonte' repetida em cada bloco",
+      "Tabelas do Analisar repetem texto (cerca de 77 px por linha na de UFs) e a de distribuidoras tem 16 colunas e 1.946 px",
+      "54% do texto abaixo de 14 px"
+     ],
+     "justificativa": "Ficha por grão e mapa em duas colunas organizam bem a leitura em 1440. Abaixo de 9 porque a busca fica fora da primeira tela e porque em 390 e 320 rótulos da ficha quebram em letras, comprometendo o bloco da distribuidora."
+    },
+    "B": {
+     "nota": 7.5,
+     "evidencia": [
+      "texto_entender.txt: a abertura diz que o preço é do submercado, a tarifa e as perdas da distribuidora inteira e a continuidade do conjunto elétrico; cada bloco da ficha repete 'não é um valor do município'.",
+      "Sonda: submercado e conjunto elétrico só são definidos em 'Ler a abertura da página' (recolhida); SIN aparece 15 vezes e SIGA, PASI, CadÚnico, REH e MWmês ficam sem definição; objetivo.json: 0 termos com dica.",
+      "1440_inteira_01de02.png: 'Por que isso importa', 'Como interpretar' e 'O que não é possível concluir' vêm depois do mapa, da ficha e dos downloads."
+     ],
+     "atendidos": [
+      "Grão de cada indicador explícito e repetido na ficha",
+      "Proxy e capacidade rotuladas ('proxy', 'capacidade instalada, não energia')",
+      "Fora do SIN e sem vínculo explicados em frase",
+      "Comparação de municípios traz distribuidora e submercado só como referência",
+      "Data e fonte de cada indicador"
+     ],
+     "problemas": [
+      "Submercado e conjunto elétrico aparecem na frase de abertura antes de definidos",
+      "SIN, SIGA, PASI, CadÚnico, REH e MWmês sem tradução; a lista de siglas cobre só 13 termos",
+      "Por que importa, como interpretar e limites vêm só depois do mapa e da ficha",
+      "Termos técnicos visíveis no Auditar: provado_com_area_sem_carga, fora_do_sin, WMS_Webmap_EPE_Data"
+     ],
+     "justificativa": "O tema do grão é ensinado com clareza e repetido na ficha. Mas termos centrais ficam sem definição visível, a abertura é recolhida, a lista de siglas é parcial e os limites aparecem só no fim do painel, abaixo do nível 9 para o leitor leigo."
+    },
+    "C": {
+     "nota": 8.0,
+     "evidencia": [
+      "Testes em 1440: Campinas, Itatinga (2 distribuidoras), Tabatinga (fora do SIN), Porto Rico do Maranhão (sem vínculo), UF AM e CEMIG-D abrem ficha por grão; o URL guarda ?sel=.",
+      "Links da ficha levam a Perdas, DEC e FEC e Tarifa com a distribuidora (?d=, ?dist=); 'Comparar até quatro municípios' lista distribuidora e submercado como referência, sem valor.",
+      "Falhas: 'Campinas' mais ArrowDown e Enter escolhe Campinas do Piauí; a ficha só conta usinas (2; 1,8 MW) e a lista exige tabela de 9.007 linhas; ES mostra desconto de R$ −11.456.619,05."
+     ],
+     "atendidos": [
+      "Localizar município, distribuidora, submercado e UF em dois passos",
+      "Indicador sempre no grão da fonte, sem passar dado de distribuidora ao município",
+      "Município compartilhado lista as distribuidoras e não escolhe uma",
+      "Saída para os módulos de origem com a distribuidora carregada",
+      "Comparação de até quatro municípios e exportação CSV e XLSX da tabela"
+     ],
+     "problemas": [
+      "A busca ordena por código IBGE: o nome exato não vem primeiro e São Paulo (capital) é o 4º resultado",
+      "Usinas do município só como contagem; ver quais exige trocar de camada, abrir 9.007 linhas e digitar o nome",
+      "Desconto negativo da Tarifa Social (ES) sem explicação junto ao número",
+      "Em 390 a ficha fica cerca de 1.000 px abaixo do campo, sem rolagem nem aviso"
+     ],
+     "justificativa": "T3 é cumprida: o leitor chega ao município, à distribuidora e ao submercado, cada valor no seu grão. Abaixo de 9 por busca que não prioriza o nome exato, usinas sem lista na ficha, valor negativo sem explicação e ficha distante da busca no celular."
+    },
+    "D": {
+     "nota": 8.5,
+     "evidencia": [
+      "Ficha: Tarifa Social (faturas e proxy por família), Luz para Todos, sistemas isolados com a nota 'isolamento não é falta de acesso', DEC e FEC com limite, perdas e tarifa B1.",
+      "Copiar link guarda seleção, camada e nível (testado); 6 CSV do painel; cada tabela exporta CSV e XLSX com o recorte no nome do arquivo.",
+      "Legendas com contagem que soma 5.571 municípios e nota 'Nesta camada, com ressalva' mostram as lacunas de vínculo; 'O que não foi possível obter' só aparece em Auditar."
+     ],
+     "atendidos": [
+      "Custo, continuidade, acesso e benefícios sociais no recorte municipal",
+      "Comparação de municípios sem atribuir dado de distribuidora",
+      "Compartilhar por link com estado e exportar com contexto",
+      "Lacunas de vínculo, SIN e polígono visíveis em notas da camada",
+      "Útil a consumidor, jornalista e gestor"
+     ],
+     "problemas": [
+      "Termos técnicos sem definição visível prejudicam o leitor leigo",
+      "A lista do que não foi possível obter (sem polígono de concessão) só aparece em Auditar",
+      "Mapas de faturas com Tarifa Social e de unidades de MMGD usam totais absolutos, que acompanham o tamanho do município"
+     ],
+     "justificativa": "Excelente aderência a custo, continuidade e acesso, com recorte municipal honesto, comparação e exportação com contexto. Abaixo de 9 por vocabulário técnico sem definição visível, lacunas do polígono só em Auditar e mapas de totais absolutos que acompanham a população."
+    },
+    "I": {
+     "nota": 8.5,
+     "evidencia": [
+      "Camadas testadas em 1440: submercados por UF, distribuidoras por municípios inteiros (nota 'não há polígono oficial de concessão'), municípios com 10 medidas em quantis ou quebras fixas com contagem e 'sem dado', usinas por cor, forma e tamanho.",
+      "Cada camada tem tabela equivalente com todas as linhas (27, 5.571, 5.571 e 9.007); o SVG tem título e descrição, e a alternativa por teclado é busca mais tabela.",
+      "Captura própria: no zoom inicial o município escolhido é um ponto de poucos pixels; a camada Usinas empilha milhares de pontos no Sudeste."
+     ],
+     "atendidos": [
+      "Mapa não atribui dado de distribuidora a município sem relação válida",
+      "Legendas completas, com contagem que soma 5.571 e classe 'sem dado' separada",
+      "Projeção de áreas iguais e qualidade da malha declaradas",
+      "Alternativas textuais e tabelas; interação por clique, botões e teclado fora do mapa",
+      "Sem eixo duplo, curva ou intervalo inventado"
+     ],
+     "problemas": [
+      "A seleção não aproxima o mapa sozinha: é preciso apertar '+'",
+      "Camada Usinas sem agrupamento: os pontos se sobrepõem no Sudeste em zoom inicial",
+      "Quatro cores pastel para submercados, sem padrão e com pouca diferença de luminosidade",
+      "Mapas de totais absolutos acompanham o tamanho do município"
+     ],
+     "justificativa": "Camadas honestas quanto à unidade territorial, com legendas completas, tabelas equivalentes e exportação. Abaixo de 9 por falta de aproximação automática à seleção, sobreposição de pontos em Usinas, paleta pastel de pouca diferença e mapas de totais absolutos."
+    },
+    "J": {
+     "nota": 8.0,
+     "evidencia": [
+      "Busca com papel combobox, aria-expanded e aria-controls aceita nome sem acento, UF, CNPJ e código IBGE; seleção, camada, medida e nível ficam no URL (?sel=, ?cam=, ?med=, ?modo=); tabela: busca, filtro e ordem mudam legenda, contagem e arquivo CSV e XLSX.",
+      "Profundidade: radiogroup com ?modo= preservado ao recarregar e ao trocar de módulo; Analisar e Auditar acrescentam tabelas e arquivos sem perder a seleção.",
+      "'Limpar a escolha' fica no fim da ficha (3.280 px abaixo do topo dela em 1440) e, ao clicar, o foco vai para o corpo da página."
+     ],
+     "atendidos": [
+      "Busca por município, distribuidora, UF e submercado, com estado vazio 'Nenhum resultado'",
+      "Seleção, camada, medida e nível no URL, com 'Copiar link'",
+      "Filtros e ordenação sincronizados com legenda, contagem e exportação",
+      "Comparação de até quatro municípios",
+      "Saídas da ficha para os módulos com a distribuidora carregada"
+     ],
+     "problemas": [
+      "Resultados ordenados por código IBGE e ArrowDown mais Enter escolhe o primeiro (Campinas do Piauí)",
+      "'Limpar a escolha' só no fim da ficha e foco perdido ao limpar",
+      "Em 390 nenhuma rolagem, foco ou aviso leva à ficha depois da escolha",
+      "Usinas do município sem atalho para a tabela filtrada"
+     ],
+     "justificativa": "Sincronia, estado em URL, comparação e saídas contextualizadas são fortes. Abaixo de 9 por ordem dos resultados que ignora o nome exato, limpeza da escolha escondida no fim de uma ficha de 3.300 px com perda de foco, e ficha fora de vista em 390."
+    },
+    "K": {
+     "nota": 7.5,
+     "evidencia": [
+      "axe próprio com município, UF, submercado ou distribuidora escolhidos (390 e 1440): violação serious 'definition-list' (dl com p como filho direto) em section[data-grao=submercado] e [data-grao=distribuidora]; sem seleção, 0 violações (objetivo.json).",
+      "Captura própria em 320 e 390: rótulos da ficha quebrados em letras; a barra Profundidade pegajosa (69 px em 1440) cobriu o botão 'Aproximar o mapa' em foco (y de 25 a 69 px).",
+      "Teclado: busca combobox, rádios de camada e tabelas roláveis com role region, tabindex 0 e nome; mapa só por clique (alternativa busca e tabela); tabela de 16 colunas com 1.946 px em 390."
+     ],
+     "atendidos": [
+      "Combobox com ARIA e anúncio de resultado",
+      "Alternativa por teclado e tabela para o mapa, com título e descrição no SVG",
+      "Tabelas largas em região rolável com nome e foco",
+      "Movimento reduzido respeitado por regra global",
+      "Leitura em 320, 390, 768 e 1440 sem rolagem horizontal da página"
+     ],
+     "problemas": [
+      "Violação serious definition-list nas fichas com seleção, não medida no pacote",
+      "Em 390 e 320 rótulos da ficha quebram em letras (sem perda de dado, mas ilegível)",
+      "A barra Profundidade pode ocultar o foco (WCAG 2.2, foco não obscurecido) e o foco vai ao corpo após limpar a escolha",
+      "Leitor de tela real não testado; 54% do texto abaixo de 14 px"
+     ],
+     "justificativa": "Teclado, ARIA do combobox e tabelas roláveis estão bem feitos, mas a ficha com seleção tem violação serious no axe, rótulos quebrados em 390 e 320, foco que pode ficar sob a barra pegajosa e perda de foco ao limpar. Leitor de tela não testado."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "ressalva essencial escondida",
+     "descricao": "Desconto da Tarifa Social negativo exibido como valor simples (ES, mar/2026: R$ −11.456.619,05) na ficha da UF e na tabela de UFs, sem a palavra 'líquido' e sem dizer que cancelamentos e refaturamentos entram no desconto e não na contagem de faturas.",
+     "evidencia": "?sel=uf:ES, bloco 'Da UF'; tabela 'UFs: capacidade, Tarifa Social e sistemas isolados' no Analisar; a explicação só está em 'Sobre este dado: Tarifa Social', item Limitações."
+    }
+   ],
+   "achados": [
+    {
+     "id": "terr-ficha-390-quebra",
+     "gravidade": "alta",
+     "criterios": [
+      "A",
+      "K"
+     ],
+     "onde": "Ficha do município, bloco 'Da distribuidora que atende o município', em 390 e 320 px (testado com Campinas, Itatinga, Nova Friburgo e Itapeva)",
+     "descricao": "O rótulo 'MMGD cadastrada na distribuidora' fica numa coluna de 43 px (7 linhas em 390; uma letra por linha em 320); 'Residenciais com Tarifa Social' quebra no meio da palavra; a coluna FEC do quadro de conjuntos vira três linhas ('3,80 / 7,00').",
+     "sugestao": "Empilhar rótulo e valor abaixo de 640 px, com quebra só entre palavras e largura mínima do rótulo."
+    },
+    {
+     "id": "terr-dl-invalido",
+     "gravidade": "alta",
+     "criterios": [
+      "K"
+     ],
+     "onde": "Ficha com seleção: section[data-grao=submercado] e [data-grao=distribuidora], elemento dl",
+     "descricao": "O axe aponta 'definition-list' (serious): dl com p como filho direto. Reproduzido em 6 de 7 seleções, em 390 e em 1440. As medições do pacote não selecionam nada e por isso mostram 0 violações.",
+     "sugestao": "Agrupar dt e dd em div dentro do dl ou trocar por lista; rodar o axe também com seleção e no Analisar."
+    },
+    {
+     "id": "terr-desconto-negativo",
+     "gravidade": "alta",
+     "criterios": [
+      "B",
+      "C"
+     ],
+     "onde": "Ficha da UF ES e tabela 'UFs: capacidade, Tarifa Social e sistemas isolados'",
+     "descricao": "'273.840 faturas' ao lado de 'desconto de R$ −11.456.619,05 no mês' sem 'líquido' nem nota; a explicação só está em 'Sobre este dado: Tarifa Social'. A conferência numérica fica com o avaliador técnico.",
+     "sugestao": "Rotular como desconto líquido de cancelamentos, explicar na própria linha e separar a contagem de faturas da base do desconto."
+    },
+    {
+     "id": "terr-busca-ordem",
+     "gravidade": "media",
+     "criterios": [
+      "C",
+      "J"
+     ],
+     "onde": "Combobox 'Encontre a sua região'",
+     "descricao": "As opções seguem o código IBGE: 'Campinas' lista Campinas do Piauí antes de Campinas (SP); 'São Paulo' põe a capital em 4º; ArrowDown mais Enter escolhe o primeiro e a ficha abre outro município.",
+     "sugestao": "Colocar o nome exato primeiro, depois por população, e mostrar UF e população em cada opção."
+    },
+    {
+     "id": "terr-ficha-390-distante",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "C"
+     ],
+     "onde": "Escolha de município em 390 px",
+     "descricao": "A ficha fica cerca de 1.000 px abaixo do campo; não há rolagem, foco nem aviso. O mapa de 314 px mostra só o contorno da UF.",
+     "sugestao": "Rolar até a ficha ao escolher e mover o foco para o título, com chip 'Escolhido: Campinas (SP)' junto ao campo."
+    },
+    {
+     "id": "terr-limpar-foco",
+     "gravidade": "media",
+     "criterios": [
+      "J",
+      "K"
+     ],
+     "onde": "Botão 'Limpar a escolha'",
+     "descricao": "Fica no fim da ficha (3.280 px abaixo do topo dela em 1440; 4.320 em 390) e, ao clicar, o foco vai para o corpo da página (document.body) e o leitor perde o ponto onde estava.",
+     "sugestao": "Colocar o botão junto ao título da ficha e devolver o foco ao campo de busca."
+    },
+    {
+     "id": "terr-termos-sem-definicao",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Frase de abertura, legenda, ficha e lista de siglas",
+     "descricao": "Submercado e conjunto elétrico só são definidos na abertura recolhida; SIN (15 vezes), SIGA, PASI, CadÚnico, REH e MWmês sem definição; 0 termos com dica; a lista de siglas cobre 13 termos.",
+     "sugestao": "Definir os termos no primeiro uso, ativar a dica de glossário e abrir a abertura por padrão no Entender."
+    },
+    {
+     "id": "terr-controle-abaixo-dobra",
+     "gravidade": "media",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Primeira tela em 1440×900 e 390",
+     "descricao": "Título, abertura recolhida, siglas, seletor de profundidade e texto de introdução ocupam a primeira tela; a busca começa a 991 px (1440) e a 1.410 px (390).",
+     "sugestao": "Subir a busca e a camada do mapa para logo após o título e mover siglas e abertura para depois do mapa."
+    },
+    {
+     "id": "terr-usinas-lista",
+     "gravidade": "media",
+     "criterios": [
+      "C",
+      "J"
+     ],
+     "onde": "Ficha do município, linha 'Usinas em operação declaradas só neste município'",
+     "descricao": "Só traz contagem e MW. Para saber quais usinas (Itatinga: 2 usinas, 1,8 MW) é preciso trocar para a camada Usinas, abrir a tabela de 9.007 linhas e digitar o município; a seleção não filtra o mapa nem a tabela.",
+     "sugestao": "Adicionar link 'Ver as usinas deste município' que abra a camada Usinas já filtrada."
+    },
+    {
+     "id": "terr-limites-no-fim",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Blocos 'Por que isso importa', 'Como interpretar' e 'O que não é possível concluir'",
+     "descricao": "Aparecem depois do mapa, da ficha e dos downloads (cerca de 2.800 px em 1440). No topo só há a frase 'cada número é da área da sua fonte'.",
+     "sugestao": "Antecipar o 'O que não é possível concluir' para junto do campo de busca."
+    },
+    {
+     "id": "terr-sticky-foco",
+     "gravidade": "media",
+     "criterios": [
+      "K"
+     ],
+     "onde": "Barra 'Profundidade' pegajosa (69 px em 1440, 61 px em 390, fundo translúcido)",
+     "descricao": "Com o botão 'Aproximar o mapa' a 25 px do topo e Tab, o foco ficou inteiro sob a barra. O scroll-padding de 80 px só atua quando o navegador rola; o texto aparece borrado por trás da barra.",
+     "sugestao": "Usar scroll-margin nos controles ou reduzir a barra; fundo opaco."
+    },
+    {
+     "id": "terr-zoom-selecao",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Mapa, zoom inicial",
+     "descricao": "Município escolhido aparece como ponto de poucos pixels e a área da distribuidora ocupa cerca de 60 px; é preciso apertar '+'. A camada Usinas sobrepõe milhares de pontos no Sudeste.",
+     "sugestao": "Aproximar automaticamente à seleção e agrupar pontos em zoom baixo."
+    },
+    {
+     "id": "terr-tabelas-analisar",
+     "gravidade": "baixa",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Analisar: tabelas de submercados, UFs e distribuidoras",
+     "descricao": "A coluna 'Pertença' repete 'provado pela carga das áreas do ONS' em 26 de 27 linhas e cada linha ocupa cerca de 77 px; a tabela de distribuidoras tem 16 colunas e 1.946 px (6 telas de rolagem lateral em 390).",
+     "sugestao": "Mostrar só a exceção, fixar a primeira coluna e oferecer visão em cartões no celular."
+    },
+    {
+     "id": "terr-profundidade-390",
+     "gravidade": "baixa",
+     "criterios": [
+      "B",
+      "K"
+     ],
+     "onde": "Seletor de profundidade em 390 px",
+     "descricao": "O rótulo 'Profundidade' e a descrição de cada nível somem; a descrição fica só em title (sem toque).",
+     "sugestao": "Mostrar uma linha curta sob os botões com o que cada nível acrescenta."
+    },
+    {
+     "id": "terr-jargao-auditar",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Auditar: tabelas e notas",
+     "descricao": "Visíveis: provado_com_area_sem_carga, com_localidade_isolada, fora_do_sin, parte_fora_do_sin, alternativas_que_fechariam_pelas_medias, gold, WMS_Webmap_EPE_Data, pipeline.",
+     "sugestao": "Traduzir os estados e manter o identificador em tipografia secundária."
+    },
+    {
+     "id": "terr-mapa-absolutos",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Camada Municípios, medidas 'Faturas com Tarifa Social' e 'Unidades de MMGD'",
+     "descricao": "Os mapas de totais absolutos acompanham o tamanho do município; só MMGD (W por habitante) e Tarifa Social (proxy) têm razão. 'Registros de até 10 kW' tem 5.513 de 5.571 municípios numa só classe.",
+     "sugestao": "Oferecer a razão por habitante como padrão ou avisar que o mapa mostra totais."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver, TalkBack): não testado.",
+    "Ampliação a 200% e 400% e espaçamento de texto (WCAG 1.4.12): não testados; só 320, 390, 768 e 1440 px.",
+    "Contraste: o axe deixou 'color-contrast' como incompleto (1 a 1.167 nós conforme o estado); minha estimativa não achou texto abaixo de 4,5:1, sem revisão nó a nó.",
+    "Gestos de toque no mapa (pinça e arraste) em aparelho real: não testados.",
+    "CSV aberto em planilha em português para conferir o separador ';' com ponto decimal e datas ISO: não testado.",
+    "Correção numérica dos valores da ficha, inclusive o sinal negativo da Tarifa Social: cabe ao avaliador técnico."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T3",
+     "perfil": "consumidor",
+     "largura": 1440,
+     "passos": [
+      "Abrir Minha região e digitar 'Campinas'",
+      "Escolher a opção com ArrowDown e Enter, depois repetir escolhendo Campinas (SP) com o mouse",
+      "Ler a ficha por grão e trocar a camada para Distribuidoras",
+      "Abrir 'Perdas desta distribuidora'"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "O nome exato não vem primeiro na lista",
+      "Siglas SIN, SIGA, PASI e REH sem definição"
+     ],
+     "erros": [
+      "ArrowDown mais Enter escolheu Campinas do Piauí em vez de Campinas (SP)"
+     ]
+    },
+    {
+     "tarefa": "T3",
+     "perfil": "consumidor",
+     "largura": 390,
+     "passos": [
+      "Rolar até o campo de busca (1.410 px) e tocar em Campinas (SP)",
+      "Procurar a ficha",
+      "Ler o bloco da distribuidora"
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "A ficha fica cerca de 1.000 px abaixo, sem rolagem nem aviso",
+      "Rótulos da ficha quebrados em palavras e letras"
+     ],
+     "erros": [
+      "'MMGD cadastrada na distribuidora' e 'Residenciais com Tarifa Social' ilegíveis em 390 e 320"
+     ]
+    },
+    {
+     "tarefa": "T3",
+     "perfil": "jornalista ou professor",
+     "largura": 1440,
+     "passos": [
+      "Escolher Itatinga (2 distribuidoras) e ler 'não escolhe uma'",
+      "Abrir Analisar, carregar municípios e comparar Campinas, Belo Horizonte, Manaus e Tabatinga",
+      "Filtrar a tabela de distribuidoras por MG, ordenar por DEC e baixar CSV",
+      "Copiar o link do painel"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Usinas do município só como contagem; lista exige a tabela de 9.007 linhas"
+     ],
+     "erros": []
+    },
+    {
+     "tarefa": "T3",
+     "perfil": "gestor público ou conselho",
+     "largura": 1440,
+     "passos": [
+      "Escolher Tabatinga (fora do SIN) e Porto Rico do Maranhão (sem vínculo)",
+      "Escolher CEMIG-D e a UF ES; trocar entre as camadas",
+      "Abrir as tabelas de UFs e distribuidoras no Analisar"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Desconto da Tarifa Social negativo em ES sem explicação junto ao número"
+     ],
+     "erros": [
+      "'desconto de R$ −11.456.619,05 no mês' sem rótulo 'líquido'"
+     ]
+    }
+   ]
+  },
+  "/setor-eletrico/visao-geral": {
+   "paineis": [
+    "P004",
+    "P005",
+    "P006",
+    "P007"
+   ],
+   "criterios": {
+    "A": {
+     "nota": 8.0,
+     "evidencia": [
+      "Posições medidas: resumo de alertas a 791 px; as seis frases a partir de 1.117 px em 1440 e de 1.626 px em 390; antes vêm fontes, siglas, quatro cartões de salto e o seletor.",
+      "1440_inteira_02de05.png e 390_inteira_05 a 09: cinco gráficos com título, valor, data e faixa de referência, legíveis também com 300 px de largura.",
+      "texto_entender.txt: 'O que observar' lista 13 itens, 9 em 'Normal', com texto e linha de estado (4.204 px em 1440, 6.942 px em 390); 390_inteira_15de17.png: marcador vazio em 'Limitações desta publicação'."
+     ],
+     "atendidos": [
+      "Pergunta e resposta curta no topo, com data e natureza em cada frase",
+      "Padrão repetido em cada painel (resposta, período, universo, unidade, evidência, o que não permite concluir)",
+      "Gráficos com espaço, eixos, unidades e faixa de referência legíveis",
+      "Celular preserva gráficos, tabelas e selos",
+      "Números e unidades legíveis sem ambiguidade"
+     ],
+     "problemas": [
+      "Os fatos principais começam a 1.117 px em 1440 e a 1.626 px em 390, depois de blocos de fonte, siglas e salto",
+      "Linhas de referência, notas e 'Para ler junto' sob cada frase aumentam o texto miúdo (57% abaixo de 14 px)",
+      "'O que observar' mostra por inteiro as 9 regras em Normal e ocupa 4.204 px em 1440 (32% da página)",
+      "Marcador vazio na quarta limitação em Entender"
+     ],
+     "justificativa": "Estrutura repetível, frases datadas e gráficos legíveis. Abaixo de 9 porque os fatos principais começam abaixo da primeira tela, há muito texto miúdo sob cada número, a lista de regras normais é longa e existe um marcador vazio nas limitações."
+    },
+    "B": {
+     "nota": 8.0,
+     "evidencia": [
+      "texto_entender.txt: cada frase traz data, defasagem e natureza; 'Para ler junto' explica 10,5% contra 14,6% e 4.842 contra 5.184 MWmed; 'Como ler' e 'O que não permite concluir' em cada painel.",
+      "Siglas: a lista cobre PLD, MWmed, ONS, ANEEL, DEC e FEC, CDE e CMO; EAR (17 vezes), ENA, MLT, SIN, MMGD, SCS e p.p. ficam sem tradução; objetivo.json: 1 termo com dica.",
+      "Nenhum painel traz 'por que isso importa' (existe em Território); 'Tarifa residencial de referência' não diz que é a mediana de 81 distribuidoras (a cobertura só aparece no Analisar)."
+     ],
+     "atendidos": [
+      "Cada número com data, referência e natureza",
+      "Diferenças entre janelas e datas explicadas ('Para ler junto')",
+      "O que não permite concluir declarado em cada painel, sem causalidade",
+      "Unidades distinguidas: % da EAR, % da MLT, MWmed, R$/MWh e R$/kWh",
+      "Trecho sublinhado leva ao painel de origem"
+     ],
+     "problemas": [
+      "EAR, ENA, MLT, SIN, MMGD, SCS e 'p.p.' sem tradução na lista de siglas",
+      "Nenhum painel responde por que a medida importa nem liga ao caminho físico (T1 só por link a outra página)",
+      "'Tarifa de referência' não diz que é mediana; PLD em R$/MWh e tarifa em R$/kWh sem nota de conversão",
+      "Vocabulário de regras (alerta, observação, duração mínima) é novo para o leitor"
+     ],
+     "justificativa": "Muito bom em datar, comparar e limitar o que se pode concluir, com explicação ao lado de números que parecem divergir. Abaixo de 9 porque faltam siglas traduzidas, o porquê de cada medida e o vínculo com o caminho físico, e a tarifa de referência não diz o que é."
+    },
+    "C": {
+     "nota": 8.0,
+     "evidencia": [
+      "Tarefa da página: em duas rolagens leem-se preço, água, geração, carga e rede e, nos cartões, tarifa, DEC e FEC, perdas e Tarifa Social, cada um com data e referência; 17 links específicos (frases, 'Ver no painel de origem' e 'Ver no módulo') levam ao módulo de origem, em geral com âncora.",
+      "T5: frase '61,6% da energia armazenável máxima, 12,4 p.p. acima da mediana histórica' e gráfico com faixa de 10º a 90º percentil da data (2001 a 2025); subsistema só no texto de 'O que observar' (Nordeste 68,9%).",
+      "O resumo do topo diz 'Nenhuma regra sobre o sistema está em alerta' e não cita a afluência de 168,6% da MLT em observação, que só aparece em 'O que observar' a 7.909 px (1440) e 14.965 px (390)."
+     ],
+     "atendidos": [
+      "Visão rápida de cinco determinantes e do consumidor, com data própria",
+      "Seguir para o módulo de origem por link específico",
+      "Comparação sazonal da água por faixa histórica da data",
+      "Filtro 'Em alerta ou observação' leva às três regras que importam",
+      "Alertas sobre os próprios dados (revisão, fonte atrasada) já no topo"
+     ],
+     "problemas": [
+      "O resumo do topo omite a regra em observação (afluência acima do 95º percentil)",
+      "T1 só parcial: a página não mostra o caminho da geração ao consumo nem liga ao mapa da raiz",
+      "T5 só no SIN; subsistemas só em texto",
+      "A mediana citada na frase não é desenhada no gráfico da água"
+     ],
+     "justificativa": "Cumpre a tarefa de visão rápida com datas e vínculos ao módulo, e T5 no SIN. Abaixo de 9 porque o resumo do topo não cita a regra em observação, T1 é só parcial, subsistemas ficam em texto e a mediana citada não aparece no gráfico."
+    },
+    "D": {
+     "nota": 8.0,
+     "evidencia": [
+      "Cartões 'Energia e sociedade': tarifa sem tributos, DEC e FEC com limite, perdas e Tarifa Social, com 'não é a situação do dia' e o atraso de 488 dias da Tarifa Social marcado em texto e em laranja.",
+      "'Copiar link deste painel' leva o estado (testado); 4 CSV; tabelas com CSV e XLSX; ficha Comprove com citação.",
+      "DEC e perdas aparecem só como média nacional (9,33 h; 14,7%); só a tarifa traz quartis entre distribuidoras; não há recorte territorial."
+     ],
+     "atendidos": [
+      "Custo, continuidade e acesso a benefícios no resumo",
+      "Atrasos e lacunas de fonte visíveis",
+      "Compartilhar com estado e exportar com contexto",
+      "Aviso de que ano ou mês não descreve o dia"
+     ],
+     "problemas": [
+      "Média nacional de DEC e perdas sem dispersão entre distribuidoras no Entender",
+      "Sem recorte territorial nem ligação a Minha região",
+      "O alcance da Tarifa Social (mai/2025, 17 meses) é o único número de acesso"
+     ],
+     "justificativa": "Boa seleção de custo, continuidade e acesso, com atrasos declarados e exportação com contexto. Abaixo de 9 porque DEC e perdas aparecem só como médias nacionais, sem dispersão nem território, e o número de acesso tem 17 meses."
+    },
+    "I": {
+     "nota": 8.5,
+     "evidencia": [
+      "Captura própria em 1440 e 390: cinco séries com faixa de referência, eixos com unidade, zero marcado em Rede e linha tracejada de 364 dias em Carga; cursor sincronizado entre gráficos (visto em Preço e Água), com tooltip no gráfico sob o mouse.",
+      "Teclado: SVG com tabindex 0, setas percorrem os pontos com aria-live ('28/09/2026: EAR do SIN 61,7 %'); legenda com aria-pressed; tabela do gráfico em details; janela 30, 60 e 90 atualiza gráficos e tabelas.",
+      "Água: frase, cartão e ficha Comprove dizem 61,6%, enquanto tabela, tooltip e CSV dizem 61,7 e 61.65; linha verde com 2,97:1 contra o fundo; cores repetidas com outro sentido em Preço e Rede."
+     ],
+     "atendidos": [
+      "Séries com faixa de referência, escalas próprias declaradas e zero marcado em Rede",
+      "Cursor sincronizado e valores por teclado e leitor de tela",
+      "Tabela e CSV de cada gráfico",
+      "Linhas de estado das regras com resumo textual",
+      "Sem eixo duplo, curva ou intervalo inventado"
+     ],
+     "problemas": [
+      "O mesmo valor de água sai como 61,6 e 61,7 (arredondamento duplo no gráfico e na tabela)",
+      "Quatro linhas de preço quase sobrepostas; o tooltip cobre a legenda",
+      "Linha verde abaixo de 3:1 e cores repetidas com significados diferentes em Preço e Rede",
+      "A mediana citada na frase não é desenhada em Água"
+     ],
+     "justificativa": "Séries com referência, cursor sincronizado, tabelas e uso por teclado de alto nível. Abaixo de 9 por valor de água com duas leituras (61,6 e 61,7), linhas de preço sobrepostas, verde abaixo de 3:1, cores repetidas com sentidos diferentes e mediana não desenhada."
+    },
+    "J": {
+     "nota": 8.5,
+     "evidencia": [
+      "Janela de 30, 60 e 90 dias: 'Exibindo N dias', cinco gráficos, tabelas, contagem de linhas e legendas mudam e vão para o URL (?p005.dias=); o campo 'Período' do painel segue em '03/07/2026 a 30/09/2026 (90 dias)'.",
+      "'O que observar': o filtro 'Em alerta ou observação (3)' mostra '3 de 13 itens' com 'Remover filtro' e URL; Analisar e Auditar persistem no URL e entre módulos; 'Copiar link' leva o estado.",
+      "Cursor sincronizado entre os cinco gráficos; o diálogo Comprove fecha com Esc e devolve o foco; 'Regras para comparar (até 4)' no Analisar foi lido no texto, não exercitado."
+     ],
+     "atendidos": [
+      "Janela comum sincroniza gráficos, tabelas, contagens e URL",
+      "Filtro com contagem, remoção e estado no URL",
+      "Profundidade preservada entre módulos",
+      "Exportação com o recorte (CSV da tabela com 30 linhas na janela de 30 dias)",
+      "Link específico para cada módulo de origem"
+     ],
+     "problemas": [
+      "O campo 'Período' do painel P005 não acompanha a janela (continua em 90 dias com 30 ou 60 selecionados)",
+      "O link estático 'Determinantes alinhados, últimos 90 dias (CSV)' não acompanha a janela, embora o botão da tabela acompanhe",
+      "Cabeçalho em três camadas e cartões de salto repetem a navegação"
+     ],
+     "justificativa": "Sincronia de janela, tabelas, contagens, filtros e URL é forte, com exportação do recorte. Abaixo de 9 porque o texto 'Período' do painel segue em 90 dias com janela de 30 ou 60, e há duas formas de exportar com recortes diferentes."
+    },
+    "K": {
+     "nota": 8.0,
+     "evidencia": [
+      "objetivo.json: axe 0 violações em 320, 390, 768 e 1440; axe próprio em 6 estados (base, Analisar com janela de 30 dias, Auditar, filtro de regras, Comprove aberto e tabela do gráfico aberta): 0 violações; color-contrast incompleto em 1 a 624 nós.",
+      "Teclado: SVG focável com setas e aria-live, legendas e rádios nativos, diálogo com retorno de foco; CSS com prefers-reduced-motion global.",
+      "A barra Profundidade pegajosa (69 px) pode cobrir o foco; linha verde com 2,97:1 (WCAG 1.4.11 pede 3:1); 56% a 57% do texto abaixo de 14 px."
+     ],
+     "atendidos": [
+      "Gráficos operáveis por teclado com anúncio dos valores",
+      "Rádios, details e diálogo nativos com foco devolvido",
+      "Estados da regra com ícone e texto, não só cor",
+      "Leitura em 320, 390, 768 e 1440 sem rolagem horizontal da página",
+      "Movimento reduzido por regra global"
+     ],
+     "problemas": [
+      "Barra Profundidade pegajosa pode ocultar o controle focado (WCAG 2.2)",
+      "Linha verde com 2,97:1 e cores repetidas em Preço e Rede",
+      "Leitor de tela não testado; contraste incompleto no axe",
+      "Texto miúdo: 56% a 57% abaixo de 14 px"
+     ],
+     "justificativa": "Gráficos operáveis por teclado, componentes nativos e axe limpo em seis estados. Abaixo de 9 por barra pegajosa que pode cobrir o foco, linha verde um pouco abaixo de 3:1, muito texto miúdo e leitor de tela não testado."
+    }
+   },
+   "bloqueios": [
+    {
+     "tipo": "divergência entre gráfico, tabela e texto",
+     "descricao": "O armazenamento do SIN em 28/09/2026 aparece como 61,6% (frase, cartão de Água, ficha Comprove, regra) e como 61,7 (tabela e dica do gráfico de Água, anúncio por teclado); o CSV traz 61.65 e a ficha mostra 61,647, o que indica arredondamento duplo (diferença de 0,1 ponto percentual).",
+     "evidencia": "texto_entender.txt: 'guardam 61,6%'; P005 Água, tabela do gráfico: '28/09/2026 | 61,7'; sintese_multiplos.csv: agua_SIN=61.65; ficha Comprove: valor de cálculo 61,64733748206308."
+    }
+   ],
+   "achados": [
+    {
+     "id": "vg-arredondamento-agua",
+     "gravidade": "alta",
+     "criterios": [
+      "I",
+      "J"
+     ],
+     "onde": "P004 e P005 (Água), tabela do gráfico, tooltip e anúncio por teclado em 28/09/2026",
+     "descricao": "61,6% na frase, no cartão e na ficha contra 61,7 na tabela e na dica do gráfico; o CSV tem 61.65. Provável arredondamento duplo (61,647 para 61,65 para 61,7). A correção do cálculo fica com o avaliador técnico.",
+     "sugestao": "Arredondar uma só vez, a partir do valor de cálculo, em texto, gráfico, tabela e CSV."
+    },
+    {
+     "id": "vg-periodo-janela",
+     "gravidade": "media",
+     "criterios": [
+      "J"
+     ],
+     "onde": "P005, campo 'Período' com a janela de 30 ou 60 dias",
+     "descricao": "Com 'Últimos 30 dias' a linha 'Exibindo 30 dias, de 01/09/2026 a 30/09/2026' muda, mas 'Período' continua '03/07/2026 a 30/09/2026 (90 dias alinhados pelo calendário)'.",
+     "sugestao": "Derivar o texto de 'Período' da janela escolhida."
+    },
+    {
+     "id": "vg-observacao-omitida",
+     "gravidade": "media",
+     "criterios": [
+      "C",
+      "B"
+     ],
+     "onde": "P004, texto do topo e frase 'Afluências'",
+     "descricao": "O topo diz 'Nenhuma regra sobre o sistema está em alerta' e a frase mostra 168,6% da média de longo termo sem marca. A regra em observação (acima do 95º percentil de 144,0%) só aparece em 'O que observar', a 7.909 px (1440) e 14.965 px (390).",
+     "sugestao": "Citar no topo as regras em observação e marcar a frase correspondente."
+    },
+    {
+     "id": "vg-primeira-tela",
+     "gravidade": "media",
+     "criterios": [
+      "A"
+     ],
+     "onde": "Primeira tela em 1440×900 e em 390",
+     "descricao": "Título, três linhas de fontes, siglas, abertura recolhida, quatro cartões de salto e seletor vêm antes dos fatos; as seis frases começam a 1.117 px (1440) e a 1.626 px (390).",
+     "sugestao": "Subir a primeira frase e mover siglas e fontes para depois do resumo."
+    },
+    {
+     "id": "vg-siglas",
+     "gravidade": "media",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Lista de siglas e frases do P004 e P005",
+     "descricao": "EAR (17 vezes), ENA, MLT, SIN, MMGD, SCS, UC e 'p.p.' sem tradução; só 7 siglas listadas e 1 termo com dica.",
+     "sugestao": "Ativar a dica de glossário nas frases e completar a lista de siglas."
+    },
+    {
+     "id": "vg-por-que-importa",
+     "gravidade": "media",
+     "criterios": [
+      "B",
+      "C"
+     ],
+     "onde": "Painéis P004 a P007",
+     "descricao": "Nenhum traz 'por que isso importa' (existe em Território). T1 (caminho da geração ao consumo) fica só parcial, sem link ao mapa conceitual da raiz.",
+     "sugestao": "Acrescentar uma linha de 'por que importa' por painel e um link para 'Como as partes se ligam'."
+    },
+    {
+     "id": "vg-observar-extenso",
+     "gravidade": "media",
+     "criterios": [
+      "A",
+      "J"
+     ],
+     "onde": "P007 'O que observar'",
+     "descricao": "Os 13 itens aparecem por inteiro, 9 deles 'Normal', com texto, valor avaliado e linha de estado (4.204 px em 1440 e 6.942 px em 390); a própria página diz que, na caixa de destaques, 'vazia é o normal'.",
+     "sugestao": "Abrir só as regras em alerta ou observação e recolher as normais por padrão."
+    },
+    {
+     "id": "vg-sticky-foco",
+     "gravidade": "media",
+     "criterios": [
+      "K"
+     ],
+     "onde": "Barra 'Profundidade' pegajosa (69 px em 1440, 61 px em 390)",
+     "descricao": "Mesma barra de Território: pode cobrir o controle focado quando ele já está nos 69 px superiores; reproduzido em Território, componente compartilhado.",
+     "sugestao": "Ver Território: scroll-margin nos controles e fundo opaco."
+    },
+    {
+     "id": "vg-limitacao-vazia",
+     "gravidade": "baixa",
+     "criterios": [
+      "A",
+      "B"
+     ],
+     "onde": "'Limitações desta publicação', 4º item, em Entender (1440 e 390)",
+     "descricao": "O marcador aparece sem texto visível; o texto sobre revisões entre capturas existe no DOM e só aparece no Analisar.",
+     "sugestao": "Ocultar o item inteiro, com marcador, ou mostrar a frase em linguagem comum."
+    },
+    {
+     "id": "vg-tarifa-referencia",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "P006, cartão 'Tarifa residencial de referência'",
+     "descricao": "R$ 0,8212/kWh não diz que é a mediana de 81 distribuidoras (cobertura só no Analisar); a página mostra PLD em R$/MWh e tarifa em R$/kWh sem nota de conversão.",
+     "sugestao": "Escrever 'mediana entre 81 distribuidoras' no cartão e uma nota 'R$ 0,8212/kWh = R$ 821,18/MWh'."
+    },
+    {
+     "id": "vg-cores-graficos",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "K"
+     ],
+     "onde": "Gráficos Preço e Rede",
+     "descricao": "Linha verde com 2,97:1 contra o fundo; as quatro cores se repetem com sentidos diferentes (laranja é Nordeste em Preço e Norte para Sudeste em Rede); as quatro linhas de preço quase coincidem; o tooltip cobre a legenda.",
+     "sugestao": "Cores distintas por entidade, verde mais escuro e tooltip fora da legenda."
+    },
+    {
+     "id": "vg-cores-cartoes",
+     "gravidade": "baixa",
+     "criterios": [
+      "I"
+     ],
+     "onde": "Cartões e linha do tempo de 'Energia e sociedade'",
+     "descricao": "Bordas e barras laranja (continuidade), verde (perdas) e azul (Tarifa Social) são identidade do cartão, mas lembram semáforo.",
+     "sugestao": "Usar um único tom neutro nas barras e marcar a identidade por rótulo."
+    },
+    {
+     "id": "vg-mediana-nao-desenhada",
+     "gravidade": "baixa",
+     "criterios": [
+      "I",
+      "C"
+     ],
+     "onde": "Gráfico de Água",
+     "descricao": "A frase compara com a mediana histórica (12,4 p.p. acima), mas o gráfico só desenha a faixa de 10º a 90º percentil.",
+     "sugestao": "Desenhar a mediana da data como linha fina."
+    },
+    {
+     "id": "vg-jargao-analisar",
+     "gravidade": "baixa",
+     "criterios": [
+      "B"
+     ],
+     "onde": "Analisar e Auditar; ficha Comprove aberta do Entender",
+     "descricao": "Visíveis: gold, silver, 'código ear_faixa', ena_bruta_pct_mlt, carga_mwmed e, na ficha Comprove, caminhos como data/energia/bronze/... e python3 pipeline/...",
+     "sugestao": "Manter os identificadores em tipografia secundária com tradução ao lado."
+    },
+    {
+     "id": "vg-enum-cru",
+     "gravidade": "baixa",
+     "criterios": [
+      "A",
+      "B"
+     ],
+     "onde": "Cartão 'Alcance da Tarifa Social'",
+     "descricao": "'o conjunto SCS está ATRASADO no painel de saúde dos dados' traz o valor de enumeração em caixa alta no texto corrido; o mesmo ocorre com 'EM DIA' e 'ATRASADO' nas tabelas.",
+     "sugestao": "Escrever 'atrasado' em minúsculas e em linguagem comum."
+    }
+   ],
+   "nao_verificado": [
+    "Leitor de tela real (NVDA, JAWS, VoiceOver, TalkBack): não testado.",
+    "Ampliação a 200% e 400% e espaçamento de texto (WCAG 1.4.12): não testados; só 320, 390, 768 e 1440 px.",
+    "Contraste: o axe deixou 'color-contrast' como incompleto (1 a 624 nós conforme o estado); minha estimativa não achou texto abaixo de 4,5:1, sem revisão nó a nó.",
+    "Ficha Comprove: só as de Água (Visão geral) e de perdas (raiz) foram lidas por inteiro; as outras 24 não.",
+    "Regras para comparar (até 4) e tabelas de sensibilidade e variantes (Analisar e Auditar): lidas no texto, não exercitadas no navegador.",
+    "Correção do cálculo da EAR e do arredondamento: cabe ao avaliador técnico; registrei só a divergência visível."
+   ],
+   "tarefas_inspecionadas": [
+    {
+     "tarefa": "T1",
+     "perfil": "jornalista ou professor",
+     "largura": 1440,
+     "passos": [
+      "Ler o título e o resumo do topo",
+      "Procurar na página o caminho da geração ao consumo",
+      "Seguir 'Ver no painel de origem' e o menu até a raiz"
+     ],
+     "resultado": "parcial",
+     "obstaculos": [
+      "A página alinha cinco determinantes e diz que não se explicam entre si; não mostra o caminho físico nem liga ao mapa conceitual"
+     ],
+     "erros": []
+    },
+    {
+     "tarefa": "T5",
+     "perfil": "analista de empresas",
+     "largura": 1440,
+     "passos": [
+      "Ler a frase 'Reservatórios' e o painel de Água",
+      "Conferir a faixa de 10º a 90º percentil da data no gráfico e abrir a tabela",
+      "Ler em 'O que observar' que o Nordeste (68,9%) está acima da faixa",
+      "Trocar a janela para 30 e 60 dias"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Subsistemas só em texto, sem gráfico",
+      "Mediana citada na frase não aparece no gráfico"
+     ],
+     "erros": [
+      "Frase e cartão dizem 61,6% e a tabela e a dica do gráfico dizem 61,7"
+     ]
+    },
+    {
+     "tarefa": "T1 e T5 (tarefa da página: ver preço, água, geração, carga e consumidor com data e referência e seguir para o módulo)",
+     "perfil": "gestor público ou conselho",
+     "largura": 390,
+     "passos": [
+      "Rolar até as seis frases (1.626 px) e até os cinco gráficos",
+      "Abrir 'Comprove este número' da Água e fechar com Esc",
+      "Ler os quatro cartões de Energia e sociedade e seguir 'Ver no módulo'",
+      "Abrir 'O que observar' e filtrar 'Em alerta ou observação'"
+     ],
+     "resultado": "sim",
+     "obstaculos": [
+      "Os fatos começam depois de uma tela e meia de fontes e siglas",
+      "A regra em observação (afluência) só aparece a 14.965 px"
+     ],
+     "erros": []
+    }
+   ]
+  }
+ },
+ "achados_entre_paginas": [
+  "Barra 'Profundidade' pegajosa (69 px em 1440, 61 px em 390, fundo translúcido) em Território e Visão geral pode cobrir o controle focado (reproduzido em Território); em 390 perde o rótulo e a descrição dos níveis.",
+  "Siglas e termos sem tradução onde o leitor precisa deles: ONS, CCEE e ANEEL na raiz; SIN, SIGA, PASI, CadÚnico e REH em Território; EAR, ENA, MLT e SIN em Visão geral. A dica de glossário só existe na raiz (34 termos); Território tem 0 e Visão geral 1.",
+  "Limites e 'o que não permite concluir' ficam no fim do painel, depois do mapa, dos gráficos e dos downloads, e 'por que isso importa' só existe em Território; a abertura recolhida esconde definições necessárias.",
+  "A primeira tela é gasta com fontes, siglas, abertura recolhida e seletor de profundidade antes do controle ou do fato principal (Território: busca a 991 px; Visão geral: primeira frase a 1.117 px; em 390, 1.410 e 1.626 px).",
+  "Adaptações para 390 com falhas: diagrama ausente na raiz com texto que o cita; rótulos da ficha quebrados em Território; tabelas de 9 a 16 colunas só com rolagem lateral (até 1.946 px).",
+  "Navegação sobreposta: cabeçalho em três camadas (observatório, grupo, página), 'Nesta página', cartões de salto e 'Próxima pergunta'; a raiz repete os mesmos destinos em seis ou sete estruturas.",
+  "Páginas muito longas (14.132 px na raiz, 13.209 px em Visão geral e até 22.331 px em Território no Auditar, em 1440; 33.374 px na raiz em 390) com blocos repetidos de fonte e referência.",
+  "Jargão interno nos níveis Analisar e Auditar e na ficha Comprove (gold, silver, bronze, pipeline, provado_com_area_sem_carga); e as medições automáticas do pacote só cobrem o estado inicial, sem seleção de município, onde o axe achou violação."
+ ],
+ "limites_da_avaliacao": "Não testei leitor de tela real (NVDA, JAWS, VoiceOver, TalkBack), nem ampliação a 200% e 400% ou espaçamento de texto, nem Safari, Firefox e aparelho de toque real: usei Chromium headless em 320, 390, 768 e 1440 px, com emulação de toque em 390. O pacote trazia só parte das fatias de tela; regerei as ausentes no mesmo servidor (alturas iguais às de objetivo.json) e abri todas as fatias de 1440 e de 390 das três páginas. O objetivo.json mede só o estado inicial; rodei o axe também com seleção, filtros, diálogo aberto e níveis Analisar e Auditar, e o contraste ficou 'incompleto' no axe (estimativa própria sem texto abaixo de 4,5:1, sem revisão nó a nó). Exercitei no navegador a busca da raiz, o mapa conceitual, a escolha de distribuidora, a busca e as camadas do Território, a comparação de municípios, tabelas (busca, filtro, ordem, CSV e XLSX), a janela de 30, 60 e 90 dias, o filtro de regras, a profundidade e o Copiar link; não exercitei 'Regras para comparar (até 4)' nem abri as 24 fichas Comprove restantes. Correção numérica, método e rastreabilidade (critérios E a H e L) ficam com o avaliador técnico: registrei só divergências visíveis. Todo resultado é inspeção heurística por agente, sem participantes, tempos medidos nem depoimentos. Capturas e scripts próprios ficam fora do repositório, em scratchpad/aval_produto_u01."
+}

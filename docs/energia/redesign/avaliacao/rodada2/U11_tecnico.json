@@ -1,0 +1,1014 @@
+{
+ "avaliador": "T2-U11",
+ "papel": "tecnico",
+ "rodada": "rodada 2 (versão redesenhada)",
+ "versao_avaliada": "commit cbb5fbfeb, servidor http://localhost:3101",
+ "paginas": {
+  "/setor-eletrico/inclusao-energetica": {
+   "paineis": [
+    "P059",
+    "P060",
+    "P061",
+    "P062"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "visoes.json: 1 gráfico de barras (7 faixas de renda), 1 tabela de 7 linhas, 5 painéis e 7 fichas Comprove; sem série temporal, mapa nem composição na abertura.",
+      "Refiz as 7 razões de médias e o total (2,5%) com inclusao_pof.csv e com a tabela 6715 do SIDRA (API do IBGE): 4,4; 3,7; 3,2; 2,4; 2,0; 1,4 e 0,9, iguais ao gráfico.",
+      "Conferi nas fontes primárias 17.246.524 UC e 21,1%, 17.155.135 faturas, 67,8, 135 mil domicílios e 1.964.825 pessoas: iguais. O LPT (3.863.418) é o instantâneo da captura; o arquivo do MME já soma 3.867.244."
+     ],
+     "atendidos": [
+      "Nível atual das quatro perguntas, cada um com unidade, data e natureza do dado.",
+      "Distribuição por faixa de renda com referência nacional, em gráfico e tabela equivalente.",
+      "Limitações em cada bloco (o que não é possível concluir) e universo declarado.",
+      "Análise visível: frases derivadas dos dados e três caminhos para aprofundar, não só índice."
+     ],
+     "problemas": [
+      "Sem evolução temporal, território nem composição na abertura; só a variação de 2,4% das UC em 12 meses.",
+      "O bloco O que mudou cita a média na renda (6,88%) e 40 famílias, medida que a abertura não exibe.",
+      "Benefício e acesso trazem valores pontuais de datas diferentes (mai/2025, mar/2026, 2025, ago/2026) sem comparação entre eles."
+     ],
+     "justificativa": "Abertura que responde às quatro perguntas, com unidade e data próprias e distribuição por renda, números conferidos na fonte. Faltam evolução, território e composição, que ficam nas páginas filhas, e há um trecho sobre medida que a abertura não mostra."
+    },
+    "F": {
+     "nota": 8.5,
+     "evidencia": [
+      "Razão de médias por classe e total comparada com a distribuição publicada pelo IBGE (tabela 6715): diferença máxima de 0,05 ponto percentual.",
+      "Proxy de 67,8: o numerador inclui a subclasse 3.5 (BPC), 1.867.488 faturas ou 10,9% em mar/2026, que calculei no arquivo da CDE; sem ela a razão seria 60,4.",
+      "Sensibilidade só do denominador (61,6 com todas as cadastradas); não há sensibilidade do numerador.",
+      "Busca nos textos da unidade: nenhuma referência internacional, coerente com a decisão do projeto de rejeitar a comparação com o Banco Mundial."
+     ],
+     "atendidos": [
+      "Referência nacional (2,5%) na mesma medida e na mesma data das faixas (reais de 15/01/2018).",
+      "Razão de médias, média das participações e mediana distinguidas e rotuladas.",
+      "Universo e ponderação visíveis: 58.039 famílias na amostra, 69.017.704 representadas.",
+      "Proxy identificada como medida indireta, sem leitura de taxa de atendimento."
+     ],
+     "problemas": [
+      "Proxy em destaque sem a ordem de grandeza do BPC no numerador (10,9%) nem do excesso de faturas sobre UC (2,12% em mai/2025).",
+      "Medidas de datas e unidades diferentes (UC de mai/2025, faturas de mar/2026) lado a lado, só com aviso de que não se somam."
+     ],
+     "justificativa": "Comparações por renda compatíveis e conferidas com a tabela do IBGE, sem benchmark enganoso. A proxy de cobertura é destacada sem quantificar a diferença entre numerador e denominador (BPC, fatura contra UC), embora os dados permitam medir."
+    },
+    "G": {
+     "nota": 8.5,
+     "evidencia": [
+      "Refiz com o CSV do SCS da ANEEL (hash igual ao da ficha): 17.246.524 UC, 21,09% das residenciais, alta de 2,36% sobre mai/2024, DMR por UC de R$ 31,45 e 150,2 kWh por UC.",
+      "IBGE, tabelas 6731 e 6737: 79.305 mil menos 79.170 mil domicílios dá 135 mil; 77.364 de 78.692 mil dá 98,3% em tempo integral; 2020 e 2021 não existem na fonte.",
+      "Tabela 6715: com despesas de consumo no denominador as razões seriam 3,06% (total), 4,73% e 1,42% (extremos); consumo é 81% da despesa total."
+     ],
+     "atendidos": [
+      "UC, fatura, família, domicílio e pessoa separados, com a unidade de cada fonte.",
+      "Ausência tratada: menos de 1 mil no lugar de zero e 2020 e 2021 como lacuna, conferido na fonte.",
+      "Natureza do dado (observado, calculado, estimado) coerente com a definição publicada.",
+      "Proxy e pesquisa histórica com data e limite de leitura ditos junto do número."
+     ],
+     "problemas": [
+      "O denominador despesa total do IBGE inclui impostos, contribuições e variação de ativos e dívidas (consumo é de 66% a 92,5% dela); a abertura não diz isso nem mostra a sensibilidade.",
+      "Que o tempo integral é interrupção declarada pelo morador, e não medida técnica, só consta em Sobre este dado.",
+      "População de localidades isoladas marcada como Observado, embora seja informada pelas distribuidoras (a frase de apoio diz isso).",
+      "A abertura diz que o numerador inclui critérios que o denominador não tem, sem nomear o BPC nem medir (10,9% das faturas; excesso de faturas sobre UC de 2,12%)."
+     ],
+     "justificativa": "Unidades, datas e ausência tratadas com rigor, e todos os números principais conferidos na fonte. Restam o denominador despesa total sem composição, a ressalva do tempo integral escondida em Sobre este dado e a proxy sem quantificar BPC e excesso de faturas."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Sete fichas Comprove com fonte, sha256, fórmula, filtros e testes. O SCS e o ZIP da CDE de mar/2026 que baixei têm hash idêntico ao das fichas.",
+      "Reproduzi 17.246.524 UC e 17.155.135 faturas só com a fórmula da ficha; refiz a POF a partir dos microdados do IBGE (hash igual) e as 121 estatísticas comparadas bateram.",
+      "Manifesto da publicação (270 arquivos): os 16 arquivos de dados da unidade e o gold têm sha256 igual ao manifesto."
+     ],
+     "atendidos": [
+      "Fonte específica com endereço do recurso, hash e datas de captura e de publicação.",
+      "Fórmula, variáveis, filtros e exclusões escritos na ficha com os nomes de campo da fonte.",
+      "Texto, gráfico, tabela e CSV com os mesmos números nas conferências que fiz (POF, SCS, CDE, PNAD, PASI e LPT).",
+      "Limitações e reconciliação com fonte independente declaradas na ficha."
+     ],
+     "problemas": [
+      "Versão do código 6d3bc3a2f759+alterado: refazer a base com ela pode dar outro resultado, como a página Dados e reprodução admite.",
+      "Fichas das faturas e do proxy dizem que a detecção de revisões não está disponível, embora a base da CDE seja retificada pela fonte.",
+      "O comando de reprodução usa um silver local não publicado; os arquivos brutos não são públicos e o MME já mudou desde a captura."
+     ],
+     "justificativa": "Cadeia fonte, hash, fórmula, filtros e testes verificada de ponta a ponta, com reprodução independente dos números principais. A nota é limitada pelo código marcado como alterado, pela falta de histórico de revisões nas faturas e por um procedimento que depende de base local."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 0 erros de console, 0 falhas de rede e 0 violações axe em 360, 390, 768 e 1440 px; carga de 0,8 a 1,2 s; HTML de 242 KB e JS de 411 a 519 KB.",
+      "Medi no Chromium headless local, sem limitar rede ou CPU: LCP de 220 a 228 ms e CLS de 0,0002 a 0,0004; é laboratório, não experiência real.",
+      "Testes: 56 casos de interface e 64 de pipeline cobrem contrato, unidades, ausência e paridade.",
+      "inclusao.py grava CSV e JSON (linhas 1716 a 2926) antes de validar_gold (linha 1055): um crítico mantém o gold antigo, mas os arquivos novos já foram publicados; nenhum teste usa validar_gold com entrada inválida."
+     ],
+     "atendidos": [
+      "Sem erro de console nem falha de rede nas quatro larguras medidas.",
+      "A abertura não baixa JSON de dados; as séries pesadas das páginas filhas são lidas sob demanda.",
+      "Testes por risco: contrato do gold, textos que mudam com o número, paridade com o CSV.",
+      "Protocolo de medição documentado (D11 e scripts de inspeção)."
+     ],
+     "problemas": [
+      "Bloqueio de publicação cobre só o gold: CSV e JSON da unidade são escritos antes da validação.",
+      "Sem teste do caminho negativo de validar_gold e da sentinela para esta unidade.",
+      "Desempenho só de laboratório; sem dado de campo (LCP, INP e CLS de usuários reais)."
+     ],
+     "justificativa": "Sem erros de console, falhas de rede ou violações axe, carga e LCP baixos em laboratório e testes fortes. Fica abaixo de 9 porque a validação de publicação não protege CSV e JSON, o caminho inválido não é testado e não há dado de campo."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "denominador_despesa_total_sem_composicao",
+     "gravidade": "media",
+     "criterios": [
+      "G",
+      "F"
+     ],
+     "onde": "Gráfico e frase de abertura (2,5% da despesa total)",
+     "descricao": "O denominador despesa total do IBGE inclui impostos, contribuições e variação de ativos e dívidas. Despesas de consumo são 81% dela no Brasil, 92,5% na classe até R$ 1.908 e 65,9% na classe acima de R$ 23.850. Com despesa de consumo as razões seriam 3,06%, 4,73% e 1,42% (tabela 6715, API do IBGE); a ordem entre as classes não muda, mas a diferença relativa cai de 4,7 para 3,3 vezes.",
+     "sugestao": "Dizer na abertura o que entra em despesa total e mostrar a razão sobre despesa de consumo como sensibilidade."
+    },
+    {
+     "id": "proxy_destaque_sem_quantificar_numerador",
+     "gravidade": "media",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "KPI 67,8 faturas por 100 famílias",
+     "descricao": "O numerador inclui BPC (1.867.488 faturas, 10,9%) e multifamiliar (138.896, 0,8%) em mar/2026; sem o BPC a razão nacional seria 60,4. As faturas excedem as UC em 2,12% em mai/2025. A abertura mostra só a sensibilidade do denominador.",
+     "sugestao": "Publicar a razão sem BPC ao lado, ou ao menos a participação do BPC e o excesso de faturas sobre UC."
+    },
+    {
+     "id": "texto_media_renda_na_abertura",
+     "gravidade": "baixa",
+     "criterios": [
+      "E"
+     ],
+     "onde": "Bloco O que mudou da abertura",
+     "descricao": "Cita a média das participações na renda (6,88%), a mediana (4,27%) e 40 famílias, medidas que só existem na página de orçamento.",
+     "sugestao": "Trocar por texto sobre o que a abertura exibe ou exibir a medida."
+    },
+    {
+     "id": "tempo_integral_declarado_so_no_sobre_este_dado",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Nota do KPI de domicílios sem energia (98,3% em tempo integral)",
+     "descricao": "O percentual é de interrupção declarada pelo morador entre os ligados à rede, não qualidade técnica (DEC e FEC); isso só aparece em Sobre este dado.",
+     "sugestao": "Dizer na própria nota que é declarado e que não substitui DEC e FEC."
+    },
+    {
+     "id": "codigo_alterado_sem_revisoes",
+     "gravidade": "media",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Fichas Comprove (versão e revisões)",
+     "descricao": "Código 6d3bc3a2f759+alterado e detecção de revisões indisponível para faturas e proxy. A página Dados e reprodução afirma que 26 das 31 bases têm sufixo alterado.",
+     "sugestao": "Regenerar a base com o código todo registrado e comparar as capturas da CDE."
+    },
+    {
+     "id": "desempenho_so_laboratorio",
+     "gravidade": "baixa",
+     "criterios": [
+      "L"
+     ],
+     "onde": "objetivo.json e medições locais",
+     "descricao": "LCP e CLS medidos em Chromium headless local, sem limitar rede ou CPU; sem dado de campo.",
+     "sugestao": "Registrar dado de campo quando houver tráfego e manter o protocolo de laboratório com limitação de rede."
+    }
+   ],
+   "nao_verificado": [
+    "Período de campo da POF (jul/2017 a jul/2018 na página): www.ibge.gov.br respondeu 403; não confirmei em fonte primária (um jornal de 2017 cita início em junho).",
+    "Leitor de tela e desempenho com usuários reais.",
+    "Efeito da reponderação do IBGE (SIDRA indica revisão em 22/08/2025 para 2016 a 2024) sobre a série da PNAD."
+   ]
+  },
+  "/setor-eletrico/inclusao-energetica/tarifa-social": {
+   "paineis": [
+    "P059"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 9.0,
+     "evidencia": [
+      "visoes.json: 4 gráficos, 1 mapa e 8 tabelas (série do SCS, meses da CDE, UF, modalidades, distribuidoras, conferências, incorporações, série antiga) e 4 fichas.",
+      "SCS de jan/2014 a jun/2025 (138 meses) e CDE de mai/2025 a mar/2026 (11 meses com valor), em gráficos separados porque as unidades diferem; refiz mai/2024 e mai/2025 no CSV da ANEEL.",
+      "Modalidades de mai/2025 somam 17.246.524 UC; custeio da CDE refeito do CSV da ANEEL: 2025 R$ 7,83 bilhões (15,9%) e 2026 orçado R$ 10,44 bilhões (19,8%).",
+      "Mapa e tabela por UF de mar/2026 (27 UF): faturas e desconto iguais à soma do arquivo da CDE que baixei, sem divergência."
+     ],
+     "atendidos": [
+      "Nível atual, evolução mensal, distribuição por UF e por distribuidora (102), composição por modalidade e por faixa de consumo.",
+      "Relação com outro tema: custeio anual da CDE e conferência do SCS contra a CDE.",
+      "Limitações visíveis: SCS termina em jun/2025, meses incompletos tracejados e fora da comparação.",
+      "Análise visível em gráficos, mapa e tabelas, não índice de capítulos."
+     ],
+     "problemas": [
+      "Sem ligação com o desconto social de 2026 nem com a página de Regulação, que o projeto já tem na linha do tempo.",
+      "As duas séries (SCS e CDE) não se emendam; a evolução recente tem 11 meses, 4 deles incompletos."
+     ],
+     "justificativa": "Tem nível, evolução, território, composição e custeio, com o corte do SCS e os meses incompletos explicados. A nota não sobe porque a série recente é curta e fragmentada e falta a relação com as mudanças regulatórias de 2025 e 2026."
+    },
+    "F": {
+     "nota": 8.5,
+     "evidencia": [
+      "Crescimento de 2,36% e participação de 21,09% comparam o mesmo mês e as mesmas 102 distribuidoras, como diz a página; refeito no SCS da ANEEL.",
+      "SCS contra CDE em mai/2025: 17.246.524 UC e 17.612.898 faturas na CDE (mais 2,12%); refiz as faturas por subclasse (3.2: 15.462.753; 3.5: 1.818.778; 3.6: 142.193).",
+      "Mapa padrão mostra faturas em valor absoluto por UF, com classes por quantis; desconto médio por UF (R$ 27,16 em SP e R$ 63,30 no PA) refeito do arquivo da CDE.",
+      "Série antiga contra SCS em 20 trimestres: diferenças de 0,0% a 5,61% em módulo, três fora de 2%, declaradas; a série antiga também mostra a queda de 2015."
+     ],
+     "atendidos": [
+      "Comparações do SCS com a mesma base de distribuidoras e meses completos; meses incompletos fora da comparação.",
+      "Razão de somas explícita na participação; DMR por UC e kWh por UC com fórmula.",
+      "Conferência com fonte independente (CDE) e com a série antiga, com tolerância e exceções listadas.",
+      "Sem benchmark internacional nem média, mínimo e máximo mecânicos."
+     ],
+     "problemas": [
+      "Mapa padrão de contagem absoluta de faturas por UF reflete população; a razão por 100 famílias está em outra página.",
+      "Desconto médio por UF compara tarifas e perfis de consumo diferentes sem aviso na própria página."
+     ],
+     "justificativa": "Comparações no mesmo universo e conferências cruzadas bem feitas, com exceções declaradas. Reduzem a nota o mapa padrão em contagem absoluta e o desconto médio entre UF sem aviso de que tarifas e consumos diferem."
+    },
+    "G": {
+     "nota": 8.0,
+     "evidencia": [
+      "Refiz do SCS (hash igual) e do ZIP da CDE de mar/2026 (hash igual): 17.246.524 UC, DMR de R$ 542.423.514,83, 17.155.135 faturas e R$ 787.959.101,54 (a página tem ,55; diferença de R$ 0,01 declarada no documento do módulo).",
+      "SCS: 13,19 milhões de UC em dez/2014, 11,36 em jan/2015, 9,22 em mai/2015 e 8,81 em jul/2015, todos meses completos; o gráfico marca só 2022 e 2025.",
+      "Lei nº 15.235/2025 (cópia do texto impresso do Planalto em 13/10/2025) converteu a MPV 1.300/2025 e criou, desde 1/1/2026, isenção das quotas da CDE até 120 kWh para famílias de meio a um salário mínimo; as páginas citam só a MPV.",
+      "CDE de mai/2025: subclasse 3.6 (multifamiliar) com 142.193 faturas; o SCS tem 0 UC multifamiliar em todos os meses e a página exibe Multifamiliar 0."
+     ],
+     "atendidos": [
+      "UC, fatura e DMR em unidades separadas, com regra de mês completo e de incorporação documentada e testada.",
+      "Meses incompletos, ausência (sem dado) e original não guardado tratados de forma explícita.",
+      "Desconto líquido separado do bruto e linhas de outras subclasses publicadas à parte.",
+      "Valores correntes e orçado do ano em curso ditos como tal."
+     ],
+     "problemas": [
+      "Base legal citada como MPV nº 1.300/2025, convertida na Lei nº 15.235/2025; o desconto social de 2026 não aparece.",
+      "Queda de 33% do SCS entre dez/2014 e jul/2015, em meses completos, sem evento nem nota na página.",
+      "Multifamiliar 0 no SCS contra 142.193 faturas da subclasse 3.6 na CDE, sem explicação; a diferença SCS contra CDE é atribuída só a outras referências e mais de uma fatura por UC.",
+      "O que mudou liga a regra de 80 kWh ao desconto médio por fatura (R$ 25,31, R$ 40,01, e R$ 56,49 em dez/2025) sem separar tarifa, consumo e sazonalidade.",
+      "Diz que em 2025 a Tarifa Social foi 15,9% da despesa da CDE, mas a fonte não separa orçado de executado; e a faixa de 101 a 220 kWh sai 44,2% por arredondamento duplo (exato 44,147)."
+     ],
+     "justificativa": "Números principais refeitos na fonte e batendo, com tratamento exemplar de meses incompletos. A nota cai por base legal desatualizada, queda de 2015 sem nota, multifamiliar sem explicação, atribuição da variação do desconto à regra e pequenas imprecisões (orçado como realizado, arredondamento duplo)."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Ficha das faturas: endereço do recurso, sha256, fórmula com nomes de campo e três exclusões; o ZIP baixado tem o mesmo hash e a fórmula dá 17.155.135 linhas.",
+      "SCS: hash igual ao da ficha; diagnósticos do arquivo (75.365 linhas, 14.053 pares, 1.018 em mais de um despacho, 2 divergentes) conferidos.",
+      "Meses da CDE, UF e distribuidoras: tabelas da página iguais ao CSV (11 meses, 27 UF; soma das UF mais 199 sem município válido igual ao total)."
+     ],
+     "atendidos": [
+      "Fonte específica com endereço, hash e datas de captura e de publicação.",
+      "Fórmula, filtros e exclusões escritos com os nomes de campo da fonte.",
+      "Texto, gráfico, tabela e CSV com os mesmos números (alternei as três medidas da série e bateram com o CSV).",
+      "Limitações e conferência SCS contra CDE com tolerância declarada."
+     ],
+     "problemas": [
+      "Código com sufixo alterado e fichas das faturas sem detecção de revisões.",
+      "O comando de reprodução é o mesmo em todas as fichas e usa o silver local; o SCS é regenerado todo mês e o bruto não é público."
+     ],
+     "justificativa": "Reproduzi UC, DMR, faturas e desconto direto dos arquivos da ANEEL com hash idêntico ao declarado, e a paridade com CSV e tabelas fecha. Limitam a nota o código alterado, a ausência de revisões nas faturas e a reprodução que depende de base local."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 0 erros de console, 0 falhas de rede e 0 violações axe; carga de 1,1 a 1,6 s; HTML de 548 KB (a meta do projeto é cerca de 600 KB) e JS de 592 a 663 KB.",
+      "Chromium headless local, sem limitar rede ou CPU: LCP de 304 a 332 ms e CLS de 0,0002 a 0,0004; laboratório, não experiência real.",
+      "Alternei UC, percentual e DMR no navegador: valores de jun/2025 (15,72 milhões, 19,87%, R$ 488,2 milhões) iguais ao CSV, sem erro de console.",
+      "inclusao.py grava CSV e JSON (linhas 1716 a 2926) antes de validar_gold (linha 1055): um crítico mantém o gold antigo, mas os arquivos novos já foram publicados; nenhum teste usa validar_gold com entrada inválida."
+     ],
+     "atendidos": [
+      "Interações do gráfico e do mapa corretas nas medidas testadas.",
+      "Estado na URL e tabelas equivalentes; séries por UF carregadas de JSON pequeno.",
+      "Testes por risco, incluindo série do SCS e da CDE iguais ao CSV e meses sem original sem valor.",
+      "Protocolo de medição documentado."
+     ],
+     "problemas": [
+      "Bloqueio de publicação cobre só o gold; CSV e JSON são escritos antes da validação.",
+      "Sem teste do caminho negativo da validação.",
+      "Desempenho só de laboratório."
+     ],
+     "justificativa": "Sem erro, com interações corretas, carga abaixo de 1,7 s e testes que cobrem a série e a paridade. A nota fica abaixo de 9 pela validação que não protege CSV e JSON, pelo caminho inválido sem teste e pela falta de dado de campo."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "base_legal_mpv_convertida",
+     "gravidade": "media",
+     "criterios": [
+      "G",
+      "H"
+     ],
+     "onde": "O que mudou e marco Gratuidade até 80 kWh (MPV nº 1.300/2025) no gráfico",
+     "descricao": "A MPV foi convertida na Lei nº 15.235, de 8/10/2025, quase 12 meses antes do processamento. A lei também criou, desde 1/1/2026, a isenção das quotas da CDE até 120 kWh para famílias de meio a um salário mínimo, e a REN 1.147/2025 criou a subclasse desconto social (segundo a linha do tempo do próprio projeto). A página da ANEEL (leitura em 09/10/2026, com última atualização indicada em 04/07/2025) ainda cita a MPV, o que explica a citação.",
+     "sugestao": "Citar a Lei nº 15.235/2025, acrescentar nota sobre o desconto social de 2026 e ligar à página de Regulação."
+    },
+    {
+     "id": "quebra_2015_sem_nota",
+     "gravidade": "media",
+     "criterios": [
+      "G",
+      "F"
+     ],
+     "onde": "Gráfico Unidades consumidoras com Tarifa Social por mês",
+     "descricao": "O SCS cai de 13.189.683 UC (dez/2014) para 8.805.549 (jul/2015), 33%, com todos os meses completos e 101 distribuidoras. O gráfico marca os eventos de 2022 e 2025 e não esse. A série antiga da ANEEL mostra a mesma queda (9,22 milhões em jun/2015), então não é artefato do SCS. A causa não está documentada na página.",
+     "sugestao": "Anotar o evento regulatório, ou dizer que a causa não foi identificada, e recomendar leitura a partir de mai/2015."
+    },
+    {
+     "id": "multifamiliar_zero_no_scs",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Tabela Modalidades em mai/2025 e conferência SCS contra CDE",
+     "descricao": "O SCS reporta 0 UC multifamiliar em todos os meses; a CDE tem 142.193 faturas da subclasse 3.6 em mai/2025 (39% da diferença de 366.374) e 138.896 em mar/2026. Fatura multifamiliar pode cobrir várias famílias.",
+     "sugestao": "Explicar a subclasse 3.6 na conferência e na tabela de modalidades."
+    },
+    {
+     "id": "desconto_medio_evento_e_efeito",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "O que mudou, desconto médio por fatura",
+     "descricao": "O texto associa a regra de 80 kWh ao desconto médio (R$ 25,31 em jun/2025, R$ 40,01 em jul/2025, R$ 45,93 em mar/2026), mas o valor chegou a R$ 56,49 em dez/2025 e depende de tarifa, consumo e sazonalidade.",
+     "sugestao": "Dizer que a série mistura regra, reajustes e consumo e não isola a causa."
+    },
+    {
+     "id": "custeio_orcado_x_executado_e_arredondamento",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Texto do custeio da CDE e gráfico de faixas de consumo",
+     "descricao": "Em 2025 a Tarifa Social é dita 15,9% da despesa da CDE (R$ 7,83 bilhões) embora a fonte não separe orçado de executado. A faixa de 101 a 220 kWh em mai/2025 sai 44,2% por arredondamento duplo (gold guarda 44,15; exato 44,147), e as cinco faixas somam 100,1%.",
+     "sugestao": "Dizer que os valores anuais são os da fonte, sem distinguir orçado de executado, e arredondar uma vez só, do valor exato."
+    },
+    {
+     "id": "mapa_contagem_absoluta",
+     "gravidade": "baixa",
+     "criterios": [
+      "F"
+     ],
+     "onde": "Mapa por UF com a medida Faturas com desconto",
+     "descricao": "A medida padrão é contagem absoluta de faturas, dominada pelo tamanho da população; a razão por 100 famílias fica em outra página.",
+     "sugestao": "Abrir o mapa em medida normalizada ou avisar que a contagem não compara UF."
+    },
+    {
+     "id": "validacao_nao_bloqueia_csv",
+     "gravidade": "media",
+     "criterios": [
+      "L",
+      "H"
+     ],
+     "onde": "pipeline energia modulos inclusao.py",
+     "descricao": "CSV e JSON desta página (série mensal, distribuidoras, série antiga e custeio) são gravados dentro do bloco (linhas 1716 a 2069) antes de validar_gold (linha 1055). Uma violação crítica mantém o gold anterior, mas deixa os arquivos novos publicados ao lado dele, o que quebraria a paridade entre página e exportação. Nenhum teste exercita esse caminho.",
+     "sugestao": "Gravar CSV e JSON só depois da validação, em área temporária, e testar a sentinela com uma entrada inválida."
+    },
+    {
+     "id": "codigo_alterado_sem_revisoes",
+     "gravidade": "media",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Fichas Comprove das faturas e do proxy",
+     "descricao": "Código com sufixo alterado e fichas sem detecção de revisões, embora o portal avise que a base da CDE muda por retificação.",
+     "sugestao": "Regenerar com código registrado e comparar as capturas mensais da CDE."
+    }
+   ],
+   "nao_verificado": [
+    "Texto original da Lei nº 15.235/2025: planalto.gov.br respondeu 503; li uma cópia impressa do site do Planalto (13/10/2025) hospedada por terceiro. A REN 1.147/2025 só pela linha do tempo do projeto.",
+    "Conferência SCS contra CDE por distribuidora (86 de 102 dentro de 2%): refiz só o total nacional e as subclasses de mai/2025.",
+    "Causa da queda de 2015 no SCS: não encontrei fonte; não afirmo causa.",
+    "Série antiga da ANEEL (cópia do Internet Archive): conferi só as diferenças contra o SCS em trimestres selecionados."
+   ]
+  },
+  "/setor-eletrico/inclusao-energetica/cobertura": {
+   "paineis": [
+    "P060"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "visoes.json: mapa por UF, gráfico da faixa de sensibilidade (27 UF), histograma municipal (6 faixas), série mensal de 121 meses e mapa municipal sob demanda; 2 fichas.",
+      "Refiz do arquivo da CDE e da API do MI Social: razões nacionais 67,79 e 61,64, 27 UF, histograma 488, 1.415, 2.490, 1.066, 64 e 11, e quantis 41,4; 54,8; 67,6; 78,0; 86,2.",
+      "Série mensal: os 121 meses iguais, um a um, à API do MDS (0 divergências) e ao SCS.",
+      "No navegador, o denominador das cadastradas dá classes 2, 9, 16, 0 e 0, iguais ao cálculo; o mapa municipal só baixa dados ao clicar e mostra 488, 1.415, 2.490, 1.066, 75 e 37."
+     ],
+     "atendidos": [
+      "Nível atual, distribuição municipal, território (UF e município) e evolução da razão.",
+      "Sensibilidade ao denominador por UF e na série, sem chamar de margem de erro.",
+      "Regra de elegibilidade com critérios dentro e fora do denominador.",
+      "Limitações visíveis no bloco O que não é possível concluir."
+     ],
+     "problemas": [
+      "Falta a composição do numerador: o BPC (subclasse 3.5) é 10,9% das faturas e não é mostrado, embora o arquivo da CDE traga a subclasse.",
+      "A evolução usa outra unidade (UC do SCS) e termina em mai/2025; o nível atual usa faturas de mar/2026 e as duas não se emendam."
+     ],
+     "justificativa": "Cobre nível, distribuição por UF e município, evolução e sensibilidade do denominador, tudo conferido. Falta separar o numerador por subclasse (BPC, multifamiliar), que o arquivo permite, e a evolução usa outra unidade e termina em mai/2025."
+    },
+    "F": {
+     "nota": 8.0,
+     "evidencia": [
+      "Numerador com todas as faturas contra denominador só do critério de renda: a subclasse 3.5 (BPC) é 10,9% das faturas (1.867.488); sem ela a razão nacional cai de 67,8 para 60,4.",
+      "Dos 72 municípios acima de 100, só 15 seguem acima de 100 sem o BPC; a mediana do BPC nas faturas desses municípios é 16,3%, contra 8,0% no conjunto.",
+      "Faturas excedem UC em mai/2025: mais 2,12% no total, mais 12,35% na CEMIG D e de 6,1% a 6,7% nas Equatorial PI, AL, PA e MA, o que pode inflar as razões de MG, AL, PI, MA e PA.",
+      "Cortes fixos em 40, 60, 80 e 100 definidos pela metodologia; faixa de sensibilidade só do denominador."
+     ],
+     "atendidos": [
+      "Proxy rotulada, com numerador e denominador declarados, sem leitura de taxa de atendimento.",
+      "Faixa de sensibilidade ao denominador com a ressalva de que não é intervalo estatístico.",
+      "Distribuição municipal com quantis e base pequena fora (37 municípios)."
+     ],
+     "problemas": [
+      "Universos só em parte compatíveis: a página não quantifica o BPC (10,9%) nem oferece a variante sem BPC, que os dados permitem.",
+      "Comparação entre UF sem aviso quantificado do excesso de faturas sobre UC (até 12,35%): a conferência está no Auditar da Tarifa Social e o dicionário do CSV só diz que há distribuidoras com mais faturas que UC.",
+      "Série mensal de 2015 a 2025 sem referência às quebras do denominador e do numerador."
+     ],
+     "justificativa": "A proxy é honesta e rotulada, mas cruza o total de faturas com um denominador só de renda. O BPC (10,9% das faturas e 16,3% nos municípios acima de 100) não é quantificado nem separado, e o excesso de faturas sobre UC também fica fora."
+    },
+    "G": {
+     "nota": 8.0,
+     "evidencia": [
+      "Refiz as faturas de mar/2026 do ZIP da CDE e os denominadores da API do MDS (hash e valores iguais): 25.305.223 e 27.829.708 famílias; razões 67,79 e 61,64.",
+      "Série de 121 meses: 65,4 (abr/2015), 56,1 (mai/2015), 45,1 (fev/2019), 82,7 (out/2021), 59,1 (abr/2023), 71,8 (mai/2025); famílias atualizadas de 18,6 milhões (abr/2019) a 15,0 (out/2021) e 25,4 (out/2022).",
+      "O bloco de elegibilidade diz que a MPV 1.300/2025 mudou o desconto e não o público; a Lei 15.235/2025 a converteu e isenta, desde 1/1/2026, quotas da CDE até 120 kWh de famílias de meio a um salário mínimo.",
+      "Por que isso importa diz que a razão mostra onde o benefício pode estar abaixo ou acima do cadastro; o bloco O que não é possível concluir diz que ela não responde quem fica de fora."
+     ],
+     "atendidos": [
+      "Numerador e denominador do mesmo mês e município, ligados pelo código do IBGE de 6 dígitos.",
+      "Ausência, base pequena e município inválido (199 faturas) tratados, com a contagem fechando o total.",
+      "Fatura, família e UC não intercambiáveis; proxy sem leitura de taxa.",
+      "Regra de elegibilidade conferida na página da ANEEL, com os critérios I, II e III."
+     ],
+     "problemas": [
+      "Série mensal sem notas de quebra: queda de 2015, subida de 2020 e 2021 e salto do denominador em 2022; a página não relaciona essas variações a mudanças do cadastro nem à concessão automática de jan/2022.",
+      "Base legal citada como MPV, já convertida na Lei 15.235/2025, e sem menção à faixa de meio a um salário mínimo de 2026, fora do denominador mas parte do desenho do benefício.",
+      "O excesso acima de 100 é atribuído ao BPC e ao equipamento médico sem medir o peso de cada um: o BPC é 10,9% das faturas e a subclasse 3.6 (multifamiliar), 0,8%; fatura multifamiliar pode cobrir várias famílias.",
+      "Por que isso importa contradiz o aviso de proxy."
+     ],
+     "justificativa": "Dados e cruzamento conferidos na fonte, com tratamento correto de ausência e base pequena. A nota cai por série mensal sem quebras anotadas, base legal desatualizada, excesso acima de 100 atribuído sem medir e uma frase de Por que isso importa que contradiz o aviso de proxy."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Ficha do 67,8: ZIP da CDE (hash igual), fórmula, numerador e denominador e exclusões; refiz 100 vezes 17.155.135 sobre 25.305.223 igual a 67,79.",
+      "Totais do MDS: os 121 meses da série batem com a API do MI Social hoje (0 divergências) e os 5.571 municípios com o CSV.",
+      "Regra de elegibilidade com data de conferência (30/09/2026) e base legal; CSV de municípios com dicionário."
+     ],
+     "atendidos": [
+      "Fonte específica com endereço do recurso, hash e datas de captura e de publicação.",
+      "Fórmula, filtros e exclusões escritos com os nomes de campo da fonte.",
+      "Mapa, faixa, tabela, histograma e CSV com os mesmos números (conferido por recálculo a partir do CSV de municípios).",
+      "Limitações e regra de elegibilidade documentadas no nível Auditar."
+     ],
+     "problemas": [
+      "Fichas sem detecção de revisões; o serviço do MDS não informa data de publicação.",
+      "Código com sufixo alterado.",
+      "A série mensal depende do SCS, regenerado todo mês, e o comando de reprodução usa o silver local."
+     ],
+     "justificativa": "O número principal e o denominador reproduzem exatamente a partir dos arquivos e do serviço do MDS, com hash idêntico e meses conferidos. Ficam o código alterado, a falta de histórico de revisões e a data de publicação do serviço do MDS não informada."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 0 erros de console, 0 falhas de rede e 0 violações axe; carga de 1,1 a 1,6 s; HTML de 287 KB, dados de 89 KB e JS de 592 a 663 KB.",
+      "Mapa municipal e CSV de 457 KB só baixam ao clicar (conferi as requisições antes e depois do clique); sem erro de console.",
+      "Chromium headless local, sem limitar rede ou CPU: LCP de 264 a 348 ms e CLS de 0,0002 a 0,0004; laboratório, não experiência real.",
+      "inclusao.py grava CSV e JSON (linhas 1716 a 2926) antes de validar_gold (linha 1055): um crítico mantém o gold antigo, mas os arquivos novos já foram publicados; nenhum teste usa validar_gold com entrada inválida."
+     ],
+     "atendidos": [
+      "Interações do denominador e do mapa municipal corretas no navegador.",
+      "Dados pesados carregados sob demanda.",
+      "Testes por risco: faturas e famílias por UF iguais à soma dos municípios, mapa, faixa e tabela com a mesma razão, 37 municípios de base pequena.",
+      "Protocolo de medição documentado."
+     ],
+     "problemas": [
+      "Bloqueio de publicação cobre só o gold; CSV e JSON são escritos antes da validação.",
+      "Sem teste do caminho negativo da validação.",
+      "Desempenho só de laboratório."
+     ],
+     "justificativa": "Sem erros, interações corretas, dados pesados sob demanda e testes por risco. A nota fica abaixo de 9 porque a validação não protege CSV e JSON, o caminho inválido não é testado e o desempenho é só de laboratório."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "bpc_no_numerador_nao_quantificado",
+     "gravidade": "media",
+     "criterios": [
+      "F",
+      "G",
+      "E"
+     ],
+     "onde": "KPI 67,8, mapa por UF e bloco O que não é possível concluir",
+     "descricao": "O numerador inclui a subclasse 3.5 (BPC): 1.867.488 faturas, 10,9%, em mar/2026 (calculado no arquivo da CDE). Sem o BPC a razão nacional é 60,4 e os municípios acima de 100 caem de 72 para 15. A página explica o excesso em texto e não mede nem oferece a variante.",
+     "sugestao": "Publicar a razão sem a subclasse 3.5 como sensibilidade do numerador e dizer o peso do BPC."
+    },
+    {
+     "id": "serie_mensal_sem_quebras",
+     "gravidade": "media",
+     "criterios": [
+      "G",
+      "F"
+     ],
+     "onde": "Gráfico A razão ao longo do tempo",
+     "descricao": "A razão vai de 65,4 (abr/2015) a 56,1 (mai/2015), 45,1 (fev/2019), 82,7 (out/2021), 59,1 (abr/2023) e 71,8 (mai/2025). Variam o denominador (famílias atualizadas: 18,6 milhões em abr/2019, 15,0 em out/2021, 25,4 em out/2022) e o numerador (de 8,8 milhões de UC em abr/2019 a 17,2 milhões em mai/2025, com queda do SCS em 2015). O gráfico não traz marcos nem nota de quebra.",
+     "sugestao": "Marcar os eventos do cadastro e do SCS e avisar que variações da série misturam mudanças administrativas."
+    },
+    {
+     "id": "base_legal_vigencia_mpv",
+     "gravidade": "media",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Bloco Regra de elegibilidade (Auditar)",
+     "descricao": "Base legal cita a MPV nº 1.300/2025 e diz que o público não mudou, o que vale para a Tarifa Social até mar/2026 mas ignora o novo grupo. A Lei nº 15.235/2025 converteu a MPV e, desde 1/1/2026, isenta quotas da CDE até 120 kWh de famílias de meio a um salário mínimo (outro mecanismo, fora do denominador). O projeto já registra a lei na página de Regulação.",
+     "sugestao": "Citar a lei, descrever o desconto social como grupo fora do denominador e atualizar a vigência."
+    },
+    {
+     "id": "fatura_x_uc_nao_quantificado_na_pagina",
+     "gravidade": "baixa",
+     "criterios": [
+      "G",
+      "F"
+     ],
+     "onde": "Nota do numerador e comparação entre UF",
+     "descricao": "A ficha diz que há em regra uma fatura por UC. Em mai/2025 a CDE tem 2,12% mais faturas que UC do SCS, até 12,35% na CEMIG D e 6,1% a 6,7% nas Equatorial; 39% da diferença é a subclasse 3.6 (multifamiliar), que o SCS reporta como zero. A quantificação só aparece no Auditar da Tarifa Social.",
+     "sugestao": "Trazer o excesso por distribuidora para a página de cobertura e avisar que infla as razões das UF afetadas."
+    },
+    {
+     "id": "por_que_importa_contradiz_aviso",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Bloco Por que isso importa",
+     "descricao": "A frase diz que a comparação mostra onde o benefício pode estar abaixo ou acima do que o cadastro sugere, o que lê a razão como lacuna; o mesmo painel diz que a pergunta Quem pode estar ficando de fora não tem resposta nesta razão.",
+     "sugestao": "Reescrever a frase como comparação descritiva entre bases diferentes."
+    },
+    {
+     "id": "validacao_nao_bloqueia_csv",
+     "gravidade": "media",
+     "criterios": [
+      "L",
+      "H"
+     ],
+     "onde": "pipeline energia modulos inclusao.py",
+     "descricao": "CSV e JSON são gravados nos blocos (linhas 1716 a 2926) antes de validar_gold (linha 1055); um crítico mantém o gold anterior e deixa os arquivos novos publicados. Sem teste do caminho negativo.",
+     "sugestao": "Gravar os arquivos só depois da validação e testar a sentinela."
+    },
+    {
+     "id": "desempenho_so_laboratorio",
+     "gravidade": "baixa",
+     "criterios": [
+      "L"
+     ],
+     "onde": "objetivo.json e medições locais",
+     "descricao": "LCP e CLS medidos em Chromium headless local, sem limitar rede ou CPU; sem dado de campo.",
+     "sugestao": "Registrar dado de campo e repetir o laboratório com limitação de rede."
+    }
+   ],
+   "nao_verificado": [
+    "Definição de cadastro atualizado do MDS (24 meses): não verifiquei em documento do MDS; conferi só que os totais da API batem com a página.",
+    "Se famílias com BPC já estão no denominador: não consegui verificar com dados públicos; mostrei só o efeito de excluir a subclasse 3.5.",
+    "Texto original da Lei nº 15.235/2025: planalto.gov.br respondeu 503; li cópia impressa do Planalto hospedada por terceiro."
+   ]
+  },
+  "/setor-eletrico/inclusao-energetica/orcamento": {
+   "paineis": [
+    "P061"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 8.5,
+     "evidencia": [
+      "visoes.json: gráfico por classe (3 medidas), gráfico de limiares, mapa por UF, 5 tabelas e 3 fichas; seletores de base (despesa ou renda), de limiar e de até 4 territórios.",
+      "Refiz com os microdados do IBGE (hash igual) 121 estatísticas por classe, entre elas as razões de 2,4813% (total), 4,3722% (até R$ 1.908) e 0,9335% (acima de R$ 23.850); maior diferença de 0,00005.",
+      "Médias de energia de 256 combinações de território e classe iguais à tabela 6715; razões de 67 combinações dentro de 0,05 ponto.",
+      "No navegador, alternei renda e limiares de 3% e 10%: valores da tabela iguais ao CSV."
+     ],
+     "atendidos": [
+      "Distribuição por classe com média, mediana e razão de médias lado a lado.",
+      "Território: Brasil e grandes regiões na mesma escala, UF só no total por limite amostral.",
+      "Precisão (CV) e estado de cada estimativa visíveis na tabela.",
+      "Limiares como sensibilidade e limitações explícitas (2026, sem município)."
+     ],
+     "problemas": [
+      "Sem evolução: só a POF 2017/2018, embora as edições de 2002/2003 e 2008/2009 estejam públicas no FTP do IBGE.",
+      "Sem ponte com a mudança de preços e de Tarifa Social desde 2018: a página só diz que mudaram.",
+      "Na base renda não há razão de médias, só média das participações e mediana."
+     ],
+     "justificativa": "Distribuição, território, precisão e sensibilidade bem cobertos e reproduzidos dos microdados. Falta a dimensão de evolução (edições anteriores públicas) e uma ponte com preços e tarifas desde 2018, e a base renda não traz a razão de médias."
+    },
+    "F": {
+     "nota": 8.5,
+     "evidencia": [
+      "Na classe até R$ 1.908: razão de médias sobre a renda 5,23%, média das participações 6,88% e mediana 4,27% (refeito); a página destaca 6,9% e não publica a razão de médias sobre a renda.",
+      "Sem as 40 famílias com energia acima da renda a média cai a 6,01% (refeito); na classe até R$ 1.908, 165 famílias da amostra (1% do peso da classe) têm renda de até R$ 200.",
+      "Referência nacional nas duas bases: razão de 2,48% na despesa e média das participações de 3,73% na renda.",
+      "Regra de precisão (CV de 15% a 30% cautela; acima de 30% suprimido) aplicada a todas as medidas, inclusive UF."
+     ],
+     "atendidos": [
+      "Média das participações, razão de médias e mediana distinguidas e explicadas.",
+      "Universo, amostra e ponderação visíveis (58.039 famílias; erro padrão por estrato e UPA).",
+      "Regiões na mesma escala, UF só no total, nada municipal.",
+      "Sem benchmark internacional nem média, mínimo e máximo mecânicos."
+     ],
+     "problemas": [
+      "Destaque de 6,9% usa o estimador mais sensível a rendas muito baixas, sem a razão de médias como contraparte da razão sobre a despesa.",
+      "Sem edições anteriores da POF como referência histórica, embora públicas.",
+      "Sem quartis ou percentis da participação por família, só média e mediana."
+     ],
+     "justificativa": "Estimadores distintos e precisão aplicada com rigor, mas o destaque na renda é o estimador mais sensível e falta a razão de médias para comparação direta com a despesa. Sem referência histórica nem quartis, que ajudariam a ler a dispersão."
+    },
+    "G": {
+     "nota": 8.5,
+     "evidencia": [
+      "A despesa total da tabela 6715 inclui impostos, contribuições e variação de ativos e dívidas: consumo é 81% dela (92,5% na classe mais baixa e 65,9% na mais alta); com despesa de consumo as razões são 3,06; 4,73 e 1,42.",
+      "A renda das classes e das participações é rendimento total e variação patrimonial (RENDA_TOTAL nos microdados; nome da classe no SIDRA); a página diz rendimento total mensal.",
+      "O gráfico de limiares mostra 0,0 para a classe acima de R$ 23.850 (zero na amostra) e sem dado para suprimidos; só a tabela explica zero na amostra.",
+      "Conferência com a tabela 6715: despesa média dentro de R$ 0,005 e distribuição dentro de 0,05 ponto em 75 de 75 combinações."
+     ],
+     "atendidos": [
+      "Razão de médias não substitui média das razões, e a diferença é mostrada com números.",
+      "Ausência, suprimido e zero na amostra com estados distintos no CSV e na tabela.",
+      "Pesquisa histórica com data, valores de 15/01/2018 e aviso de que não representa 2026.",
+      "Sensibilidade da média na renda a famílias com renda quase nula, com mediana ao lado."
+     ],
+     "problemas": [
+      "Denominador despesa total sem composição nem sensibilidade ao consumo.",
+      "Conceito de renda (rendimento total e variação patrimonial) escrito de forma simplificada.",
+      "Zero na amostra aparece como 0,0 no gráfico sem qualificador."
+     ],
+     "justificativa": "Rigor estatístico alto, com razão de médias, média das razões, CV e sensibilidade tratados e reproduzidos dos microdados. Restam o denominador despesa total sem composição, o conceito de renda simplificado e o zero na amostra mostrado como 0,0 no gráfico."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Ficha com ZIP dos microdados e do tradutor (hash igual ao baixado), fórmula, pesos, exclusões e três testes; refiz as estatísticas sem divergência.",
+      "Tabela de conferência com a 6715 (75 comparações) e diagnóstico dos microdados (linhas usadas e códigos fora do tradutor).",
+      "CSV da POF: a razão de médias refeita de energia_media e despesa_media é igual; o dicionário do CSV não traz os códigos de classe 47558 a 47564 nem dois dos seis estados."
+     ],
+     "atendidos": [
+      "Fonte específica com hash de microdados e tradutor e datas de captura.",
+      "Fórmula, pesos e plano amostral declarados; erros padrão por linearização documentados.",
+      "Conferência com a tabela 6715 do SIDRA publicada no nível Auditar.",
+      "Limitações e sensibilidade na ficha."
+     ],
+     "problemas": [
+      "Dicionário do CSV incompleto (códigos de classe e estados sem_erro_padrao e zero_na_amostra).",
+      "Código com sufixo alterado e reprodução com silver local.",
+      "A frase de resposta não acompanha o seletor: em Na renda continua dizendo 4,4% e 2,5% sobre a despesa enquanto o gráfico mostra 6,88% e 3,73%."
+     ],
+     "justificativa": "Microdados, tradutor e tabela do IBGE com hash e parâmetros declarados, e reprodução sem divergência. A nota fica abaixo de 9 pelo dicionário do CSV incompleto, pelo código alterado e pela frase de resposta que não acompanha o seletor de base."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 0 erros de console, 0 falhas de rede e 0 violações axe; carga de 1,1 a 1,7 s; HTML de 442 KB e JS de 592 a 663 KB.",
+      "Chromium headless local, sem limitar rede ou CPU: LCP de 304 a 340 ms e CLS de 0,0002 a 0,0004; laboratório, não experiência real.",
+      "Alternei base e limiares no navegador: tabelas iguais ao CSV, sem erro de console.",
+      "inclusao.py grava CSV e JSON (linhas 1716 a 2926) antes de validar_gold (linha 1055): um crítico mantém o gold antigo, mas os arquivos novos já foram publicados; nenhum teste usa validar_gold com entrada inválida."
+     ],
+     "atendidos": [
+      "Interações de base e limiar corretas.",
+      "Testes por risco: barras iguais ao CSV, razão de médias diferente da média das razões, UF só no total.",
+      "Suite do pipeline testa o estimador do plano amostral com famílias montadas à mão.",
+      "Protocolo de medição documentado."
+     ],
+     "problemas": [
+      "Bloqueio de publicação cobre só o gold; CSV e JSON são escritos antes da validação.",
+      "Sem teste do caminho negativo da validação.",
+      "Desempenho só de laboratório."
+     ],
+     "justificativa": "Sem erros, interações corretas e testes que cobrem estimador, precisão e paridade. A nota fica abaixo de 9 porque a validação não protege CSV e JSON, o caminho inválido não é testado e o desempenho é só de laboratório."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "denominador_despesa_total_sem_composicao",
+     "gravidade": "media",
+     "criterios": [
+      "G",
+      "F"
+     ],
+     "onde": "Gráfico por classe, KPIs e bloco Como interpretar",
+     "descricao": "A despesa total do IBGE inclui impostos, contribuições e variação de ativos e dívidas. Consumo é 81% dela no Brasil, 92,5% na classe até R$ 1.908 e 65,9% na acima de R$ 23.850. Com despesa de consumo as razões seriam 3,06%, 4,73% e 1,42%; o gradiente entre classes cai de 4,7 para 3,3 vezes.",
+     "sugestao": "Declarar a composição do denominador e publicar a razão sobre despesa de consumo como sensibilidade."
+    },
+    {
+     "id": "media_participacoes_renda_destaque",
+     "gravidade": "media",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "KPI Média das participações na renda, faixa até R$ 1.908 (6,9%)",
+     "descricao": "É o estimador mais sensível a rendas muito baixas: razão de médias sobre a renda 5,23%, mediana 4,27%, média 6,88% e, sem 40 famílias, 6,01%. A razão de médias, contraparte da usada na despesa, não é publicada. O aviso está ao lado do número.",
+     "sugestao": "Publicar a razão de médias sobre a renda e destacar essa medida, com a média e a mediana como complemento."
+    },
+    {
+     "id": "sem_edicoes_anteriores_da_pof",
+     "gravidade": "baixa",
+     "criterios": [
+      "E",
+      "F"
+     ],
+     "onde": "Página inteira",
+     "descricao": "Só há a POF 2017/2018. O FTP do IBGE traz os microdados das edições de 2002/2003 e 2008/2009. Falta também ponte com a evolução de preços e tarifas desde 2018.",
+     "sugestao": "Avaliar série histórica por múltiplos de salário mínimo e ligar à página de Conta de luz."
+    },
+    {
+     "id": "zero_na_amostra_no_grafico",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Gráfico Famílias acima do limiar",
+     "descricao": "A classe acima de R$ 23.850 aparece como 0,0 (zero na amostra) no gráfico; só a tabela diz que não prova zero na população.",
+     "sugestao": "Marcar o valor no gráfico (por exemplo, 0,0 na amostra)."
+    },
+    {
+     "id": "conceito_renda_simplificado",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "Como interpretar e fichas de renda",
+     "descricao": "As classes e a base das participações usam rendimento total e variação patrimonial; o texto diz rendimento total mensal.",
+     "sugestao": "Usar o nome do IBGE e dizer o que a variação patrimonial inclui."
+    },
+    {
+     "id": "dicionario_csv_pof_incompleto",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "arquivos.json e inclusao_pof.csv",
+     "descricao": "O dicionário não relaciona os códigos de classe 47558 a 47564 a faixas de renda nem lista os estados sem_erro_padrao e zero_na_amostra, que existem no CSV.",
+     "sugestao": "Completar o dicionário com classes, medidas e estados."
+    },
+    {
+     "id": "resposta_nao_acompanha_seletor",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Frase de resposta com a base Na renda",
+     "descricao": "Com a base renda o gráfico mostra média das participações (6,88%; referência 3,73%) e a frase acima continua falando de 4,4% e 2,5% da despesa.",
+     "sugestao": "Fazer a frase seguir a base escolhida."
+    },
+    {
+     "id": "validacao_nao_bloqueia_csv",
+     "gravidade": "media",
+     "criterios": [
+      "L",
+      "H"
+     ],
+     "onde": "pipeline energia modulos inclusao.py",
+     "descricao": "inclusao_pof.csv é gravado no bloco de orçamento (linha 2393) antes de validar_gold (linha 1055); um crítico mantém o gold anterior e deixa o CSV novo publicado. Sem teste do caminho negativo.",
+     "sugestao": "Gravar os arquivos só depois da validação e testar a sentinela."
+    }
+   ],
+   "nao_verificado": [
+    "Período de campo da POF (jul/2017 a jul/2018 na página): www.ibge.gov.br respondeu 403; não confirmei em fonte primária.",
+    "Coeficientes de variação publicados pelo IBGE (planilha de coeficientes): não reconferi; conferi médias e distribuição.",
+    "Erros padrão por linearização: não os reimplementei; reproduzi as estimativas pontuais."
+   ]
+  },
+  "/setor-eletrico/inclusao-energetica/acesso": {
+   "paineis": [
+    "P062"
+   ],
+   "criterios": {
+    "E": {
+     "nota": 9.0,
+     "evidencia": [
+      "visoes.json: 6 painéis (mais um de detalhe), 5 gráficos, mapa por UF, 8 tabelas (UF, localidades por UF, 25 localidades, ciclos do PASI, LPT por UF, LPT por ano, municípios e recursos) e 3 fichas.",
+      "PNAD de 2016 a 2025 por Brasil, região e UF: as 792 linhas do CSV são iguais à API do IBGE (tabelas 6731, 6737 e 6738), com 135 mil domicílios em 2025, 159 mil em 2016 e 98,3% de tempo integral; 2020 e 2021 não existem na fonte.",
+      "PASI: 196, 175 e 160 localidades e 2.689.153, 2.491.006 e 1.964.825 pessoas, por UF e ciclo, iguais à exportação da EPE.",
+      "LPT: totais anuais de 2004 a 2022 e de 2024 iguais ao arquivo do MME; 2023 (mais 3), 2025 (mais 210) e 2026 (mais 3.613) mudaram na fonte depois da captura."
+     ],
+     "atendidos": [
+      "Nível atual, evolução (PNAD, PASI, LPT), distribuição por UF e composição por programa.",
+      "Território: mapa por UF, histórico de até 4 UF, localidades e municípios.",
+      "Relação com outro tema: custeio anual da CDE para LPT e CCC.",
+      "Cada fonte na sua unidade, sem somar domicílios, pessoas e ligações.",
+      "Conferências, lacunas e fontes tentadas no nível Auditar."
+     ],
+     "problemas": [
+      "Localidades isoladas só em lista, sem mapa de pontos, embora latitude e longitude sejam publicadas.",
+      "Precisão amostral só em tabela e CSV, não no mapa nem nas séries."
+     ],
+     "justificativa": "Cobertura ampla das dimensões do tema, com cada fonte na sua unidade e território, evolução e custeio, tudo conferido na fonte. Pequenas faltas: localidades isoladas sem mapa de pontos e a precisão amostral fora do mapa e da série."
+    },
+    "F": {
+     "nota": 8.5,
+     "evidencia": [
+      "Mapa de sem energia usa quantis com muitos empates (valores de 0,0 a 0,3 com 1 casa); a classe 0,3 ou mais mistura 0,3 (CE, BA, AL e PI) com 1,4 (AC) e 1,6 (AM).",
+      "CV de ligados à rede geral chega a 24,8% (AP, rural), sem marca no mapa nem na tabela; a regra de cautela da POF (15% a 30%) não é aplicada aqui.",
+      "A soma das UF de domicílios sem energia em 2025 dá 137 mil e o Brasil 135 mil (diferença de números arredondados), sem aviso na tabela.",
+      "Sem referência internacional; PASI, PNAD e LPT apresentados como não somáveis."
+     ],
+     "atendidos": [
+      "Universo por fonte declarado (domicílios particulares permanentes, localidades do planejamento da EPE, atendimentos homologados).",
+      "Percentual de tempo integral sobre os ligados, não sobre todos.",
+      "Brasil e regiões na mesma escala; histórico de até 4 UF na mesma escala."
+     ],
+     "problemas": [
+      "Precisão por recorte sem a regra de cautela aplicada na POF.",
+      "Mapa por quantis com empates agrupa extremos com valores intermediários.",
+      "A soma das UF não fecha com o Brasil e a página não avisa."
+     ],
+     "justificativa": "Universos declarados e fontes sem soma indevida, e números refeitos na fonte. Reduzem a nota a precisão por recorte sem regra de cautela, o mapa por quantis com empates e a soma das UF que não fecha com o Brasil, sem aviso."
+    },
+    "G": {
+     "nota": 8.5,
+     "evidencia": [
+      "Domicílios sem energia: 135 mil é a diferença de duas estimativas arredondadas; 148 linhas de menos de 1 mil conferidas; 0,0% quer dizer menos de 0,05%.",
+      "Tempo integral (tabela 6738) é declarado pelo morador: só Sobre este dado diz interrupção declarada, não qualidade técnica.",
+      "Série do Brasil de 2016 a 2025 tem 1 casa decimal (0,2 e 0,3 em 2018) e o eixo vai de 0,200 a 0,300 com 3 casas, o que cria um pico em 2018.",
+      "LPT: o arquivo do MME de 05/10/2026 tem 56.921 domicílios em 2025 (página 56.711) e 3.867.244 no total (página 3.863.418); a página chama 2025 de completo."
+     ],
+     "atendidos": [
+      "Domicílio, pessoa e ligação separados, com unidade e fonte de cada um.",
+      "Ausência: sem dado, menos de 1 mil e população ausente do PASI (2 localidades) não viram zero.",
+      "Isolamento não é falta de acesso; carga do SIN não é medida de acesso.",
+      "Recursos contratados e pagos não somados; CDE e recursos por contrato como grandezas diferentes."
+     ],
+     "problemas": [
+      "O eixo da série do Brasil mostra precisão que o dado não tem (3 casas sobre 1) e destaca um pico de 2018.",
+      "Tempo integral declarado: ressalva essencial só em Sobre este dado, como a ambiguidade do dicionário do MME (vlrpagocaixa).",
+      "LPT 2025 rotulado completo embora a homologação ainda acrescente (210 domicílios em duas semanas).",
+      "PASI marcado como Observado; a população é informada pelas distribuidoras e o caderno da EPE cita Tefé com 61,5 mil contra 73.669 na exportação."
+     ],
+     "justificativa": "Domicílio, pessoa e ligação bem separados, ausência e arredondamento tratados e números refeitos na fonte. Descontam o eixo com precisão aparente, ressalvas essenciais só em Sobre este dado, 2025 do LPT como completo e a população do PASI marcada como observada."
+    },
+    "H": {
+     "nota": 8.5,
+     "evidencia": [
+      "Fichas do 135 mil (tabelas 6731 e 6737), da população isolada (hash da exportação) e do LPT (hash do CSV) com fórmula e testes; refiz o 135 mil e a população isolada exatamente e o LPT até as homologações posteriores à captura.",
+      "Caderno da EPE em PDF, página 11: 160 localidades e 1,965 milhão de pessoas; a exportação soma 1.964.825.",
+      "Os 16 arquivos de dados da unidade têm sha256 igual ao manifesto da publicação."
+     ],
+     "atendidos": [
+      "Fonte específica com endereço do recurso, hash e datas de captura.",
+      "Fórmula, filtros e exclusões escritos na ficha.",
+      "Texto, gráfico, tabela e CSV com os mesmos números (792 linhas da PNAD e 3 ciclos do PASI conferidos).",
+      "Limitações, conferência com o caderno em PDF e fontes tentadas declaradas."
+     ],
+     "problemas": [
+      "O LPT mudou depois da captura (3.867.244 contra 3.863.418) e o bruto não é público: a página não permite refazer o valor exato.",
+      "Código com sufixo alterado e reprodução com silver local.",
+      "Ambiguidade do dicionário do MME só na ficha Sobre este dado."
+     ],
+     "justificativa": "As três fichas reproduzem na fonte, com hash e conferência com o caderno da EPE. Fica abaixo de 9: o LPT já mudou na fonte sem snapshot público, o código é marcado como alterado e a ambiguidade do dicionário do MME está só no Sobre este dado."
+    },
+    "L": {
+     "nota": 8.5,
+     "evidencia": [
+      "objetivo.json: 0 erros de console, 0 falhas de rede e 0 violações axe; carga de 1,3 a 1,6 s; HTML de 527 KB, dados de 65 KB e JS de 592 a 663 KB.",
+      "Chromium headless local, sem limitar rede ou CPU: LCP de 360 a 396 ms e CLS de 0,0002 a 0,0004; laboratório, não experiência real.",
+      "No navegador, indicador tempo integral com situação rural: mapa de 84,7% a 100,0%, igual ao CSV, sem erro de console.",
+      "inclusao.py grava CSV e JSON (linhas 1716 a 2926) antes de validar_gold (linha 1055): um crítico mantém o gold antigo, mas os arquivos novos já foram publicados; nenhum teste usa validar_gold com entrada inválida."
+     ],
+     "atendidos": [
+      "Interações de indicador e situação corretas.",
+      "Testes por risco: 2020 e 2021 como lacuna, menos de 1 mil sem número, LPT por ano igual à soma do CSV, PASI com população ausente.",
+      "Dados detalhados sob demanda (histórico das UF e lista completa do PASI).",
+      "Protocolo de medição documentado."
+     ],
+     "problemas": [
+      "Bloqueio de publicação cobre só o gold; CSV e JSON são escritos antes da validação.",
+      "Sem teste do caminho negativo da validação.",
+      "Desempenho só de laboratório."
+     ],
+     "justificativa": "Sem erros, interações corretas e testes que cobrem lacuna, ausência e paridade. A nota fica abaixo de 9 porque a validação não protege CSV e JSON, o caminho inválido não é testado e o desempenho é só de laboratório."
+    }
+   },
+   "bloqueios": [],
+   "achados": [
+    {
+     "id": "eixo_falsa_precisao_brasil",
+     "gravidade": "media",
+     "criterios": [
+      "G",
+      "F"
+     ],
+     "onde": "Gráfico Como as UF escolhidas evoluíram desde 2016? (Brasil)",
+     "descricao": "O percentual tem 1 casa decimal (0,2; 0,3 em 2018) e o erro amostral da contagem não é publicado, mas o eixo vai de 0,200 a 0,300 com 3 casas e desenha um pico em 2018 (190 mil domicílios contra 161 mil), que é diferença de números arredondados.",
+     "sugestao": "Usar eixo de 0 a 0,5 com 1 casa, ou mostrar as contagens com aviso de que a diferença é de valores arredondados."
+    },
+    {
+     "id": "ressalvas_so_no_sobre_este_dado",
+     "gravidade": "baixa",
+     "criterios": [
+      "G",
+      "H"
+     ],
+     "onde": "KPI de tempo integral e tabela de recursos do LPT",
+     "descricao": "Que o tempo integral é interrupção declarada, e não qualidade técnica, e que o dicionário do MME descreve vlrpagocaixa como valor pago da RGR, só aparecem em Sobre este dado.",
+     "sugestao": "Levar as duas ressalvas para a nota visível dos blocos."
+    },
+    {
+     "id": "lpt_2025_completo_revisavel",
+     "gravidade": "baixa",
+     "criterios": [
+      "G",
+      "H"
+     ],
+     "onde": "Texto O que mudou e coluna Ano da tabela do LPT",
+     "descricao": "O ano de 2025 é chamado completo, mas o arquivo do MME de 05/10/2026 tem 56.921 domicílios em 2025 (página 56.711), 22.959 em 2026 (página 19.346) e mais 3 antes de 2025 no Amapá. A homologação chega depois.",
+     "sugestao": "Dizer que o último ano completo ainda pode crescer e mostrar a data da captura junto da série."
+    },
+    {
+     "id": "soma_uf_nao_fecha_brasil",
+     "gravidade": "baixa",
+     "criterios": [
+      "G",
+      "F"
+     ],
+     "onde": "Tabela Acesso à energia por UF",
+     "descricao": "Em 2025 as UF somam 137 mil domicílios sem energia e o Brasil, 135 mil; as regiões somam 134 mil. A diferença vem de arredondar milhares antes de subtrair; a tabela não avisa.",
+     "sugestao": "Avisar que as UF não somam o Brasil e que cada número tem erro de até 1 mil."
+    },
+    {
+     "id": "precisao_por_recorte_sem_marca",
+     "gravidade": "baixa",
+     "criterios": [
+      "F",
+      "G"
+     ],
+     "onde": "Mapa e tabela de ligados à rede geral e tempo integral por UF",
+     "descricao": "O maior CV de ligados à rede geral em 2025 é 24,8% (AP, rural) e o de tempo integral rural chega a 5,5%; a página só traz uma frase geral e o CV do tempo integral na tabela. A regra de cautela da POF não é usada aqui.",
+     "sugestao": "Marcar valores com CV entre 15% e 30% no mapa e na tabela."
+    },
+    {
+     "id": "pasi_observado_x_informado",
+     "gravidade": "baixa",
+     "criterios": [
+      "G"
+     ],
+     "onde": "KPI Pessoas em localidades isoladas",
+     "descricao": "A natureza do dado é Observado, mas a população é informada pelas distribuidoras. O caderno da EPE cita Tefé com 61,5 mil habitantes e Rondônia com 10 mil, e a exportação traz 73.669 e 9.368.",
+     "sugestao": "Marcar como informado pelas distribuidoras e avisar das diferenças entre o caderno e a exportação."
+    },
+    {
+     "id": "resposta_nao_acompanha_seletor",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Frase de resposta do painel Quem ainda precisa de acesso adequado?",
+     "descricao": "Ao trocar o indicador para rede em tempo integral, o gráfico e o mapa mudam e a frase de resposta continua sobre domicílios sem energia.",
+     "sugestao": "Fazer a frase seguir o indicador ou avisar que ela trata de sem energia."
+    },
+    {
+     "id": "validacao_nao_bloqueia_csv",
+     "gravidade": "media",
+     "criterios": [
+      "L",
+      "H"
+     ],
+     "onde": "pipeline energia modulos inclusao.py",
+     "descricao": "inclusao_acesso_pnad.csv, inclusao_sistemas_isolados.csv e os JSON são gravados nos blocos (linhas 2614 a 2926) antes de validar_gold (linha 1055); um crítico mantém o gold anterior e deixa os arquivos novos publicados. Sem teste do caminho negativo.",
+     "sugestao": "Gravar os arquivos só depois da validação e testar a sentinela."
+    },
+    {
+     "id": "fonte_movel_sem_snapshot_publico",
+     "gravidade": "baixa",
+     "criterios": [
+      "H"
+     ],
+     "onde": "Fichas do LPT e custeio da CDE",
+     "descricao": "O MME alterou o arquivo em 05/10/2026 (mais 3.826 domicílios) e a ANEEL atualizou o custeio da CDE em 01/10/2026. O bruto de cada captura não é público; só o hash fica na ficha.",
+     "sugestao": "Publicar o snapshot bruto, ou o recorte usado, das fontes móveis, ou dizer que a série pode mudar."
+    }
+   ],
+   "nao_verificado": [
+    "Mapeamento de vlrpagocaixa e vlrpago do MME: o dicionário é ambíguo e não há outra fonte.",
+    "Se o planejamento da EPE cobre todos os sistemas isolados do país: não consegui verificar (a página diz que ONS e ANEEL não têm conjunto equivalente).",
+    "Efeito da reponderação do IBGE (SIDRA indica revisão em 22/08/2025 para 2016 a 2024) sobre as comparações entre anos."
+   ]
+  }
+ },
+ "achados_entre_paginas": [
+  "Base legal citada como MPV nº 1.300/2025, convertida na Lei nº 15.235/2025, e omissão da isenção de quotas da CDE de meio a um salário mínimo desde 1/1/2026 (Tarifa Social e Cobertura; o projeto já tem a lei na linha do tempo de Regulação).",
+  "Numerador do proxy de cobertura com BPC (10,9% das faturas), multifamiliar (0,8%) e excesso de faturas sobre UC (2,12% em mai/2025, até 12,35%) sem quantificação (Síntese, Cobertura e Tarifa Social).",
+  "Validação de publicação que protege só o gold: CSV e JSON são gravados antes de validar_gold, e não há teste do caminho negativo (as cinco páginas).",
+  "Código com sufixo alterado, detecção de revisões indisponível nas faturas e fontes móveis sem snapshot público (as cinco páginas).",
+  "Ressalvas essenciais só em Sobre este dado: tempo integral é interrupção declarada e ambiguidade do dicionário do MME (Acesso e Síntese).",
+  "Denominador despesa total do IBGE (consumo de 66% a 92,5% dele) e estimador mais sensível em destaque na renda (Síntese e Orçamento).",
+  "Séries com quebras sem nota: queda do SCS em 2015 na Tarifa Social e variações do proxy na Cobertura; eixo de 3 casas sobre dado de 1 casa em Acesso.",
+  "Frase de resposta que não acompanha o seletor de base ou de indicador (Orçamento e Acesso)."
+ ],
+ "limites_da_avaliacao": "Conferi contra fontes primárias por curl e API: IBGE (SIDRA 6715, 6731, 6737 e 6738; microdados da POF e tradutor), ANEEL (SCS, ZIP da CDE de mar/2026 e de mai/2025, custeio da CDE, dicionários), MDS (API do MI Social), EPE (exportação do PASI e caderno em PDF) e MME (Luz para Todos). Os hashes do SCS, do ZIP da CDE e dos arquivos da POF são idênticos aos das fichas. O MME e a ANEEL (custeio) mudaram os arquivos depois da captura, então só comparei com o instantâneo quando a fonte não mudou. O site do IBGE (www.ibge.gov.br) respondeu 403 e planalto.gov.br respondeu 503: o período de campo da POF não foi confirmado e li a Lei nº 15.235/2025 numa cópia impressa do Planalto hospedada por terceiro; a REN 1.147/2025 só pela linha do tempo do projeto. Na POF, usei o leitor do próprio projeto para a despesa por família (validada contra as médias e a distribuição do IBGE) e reimplementei os estimadores; não refiz o erro padrão. Não conferi por distribuidora a conciliação SCS contra CDE nem a série antiga do Internet Archive. Não testei leitor de tela nem desempenho de campo; LCP e CLS vêm de Chromium headless local, sem limitar rede ou CPU. Não rodei build, servidor de desenvolvimento nem testes, conforme o protocolo; li os testes. Arquivos de apoio em saida/tmp_T2U11."
+}

@@ -4,6 +4,7 @@ import { and, eq, isNotNull, ne } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db";
 import { findUserByEmail } from "@/lib/onboarding";
 import { getSessionUser } from "@/lib/session";
+import { smsPermitido } from "@/lib/politica-sms";
 import { toE164 } from "@/lib/phone";
 import { startPhoneVerification } from "@/lib/twilio";
 import { checkRateLimit, POLICIES, requestIp } from "@/lib/ratelimit";
@@ -62,7 +63,7 @@ export async function POST(req: Request) {
   }
 
   const e164 = toE164(parsed.data.country.toUpperCase(), parsed.data.phone);
-  if (!e164) {
+  if (!e164 || !smsPermitido(e164)) {
     return NextResponse.json({ error: GENERIC_PHONE_ERROR }, { status: 400 });
   }
 

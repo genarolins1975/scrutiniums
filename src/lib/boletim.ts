@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { createHmac, timingSafeEqual } from "node:crypto";
 import { and, eq, gte } from "drizzle-orm";
 import { getDb, schema } from "./db";
+import { assinarToken, verificarToken } from "./tokenAssinado";
 import { ABAS_OBSERVATORIO } from "./data/observatorioAbas";
 
 /**
@@ -13,7 +13,7 @@ import { ABAS_OBSERVATORIO } from "./data/observatorioAbas";
  * clique, assinado por HMAC — sem login, sem expor e-mail na URL.
  */
 
-const BASE = "https://scrutiniums.com";
+export const BASE = "https://scrutiniums.com";
 
 /* ------------------------------------------------------------------ */
 /* Conteúdo (função sobre o gold; nada de texto livre por usuário)     */
@@ -129,7 +129,7 @@ export function montarBoletim(agora: Date): Boletim | null {
     `${BASE}/observatorio/alerts`,
     "",
     ...(linhasVintages.length > 0 ? ["DATA-BASE DAS FONTES", ...linhasVintages, ""] : []),
-    "Todo o Observatório é aberto, sem cadastro:",
+    "Os painéis completos estão na sua conta:",
     `- Visão geral: ${BASE}/observatorio`,
     `- Apostas e crédito das famílias: ${BASE}/observatorio/bets-financial-risk`,
     `- Fraudes financeiras: ${BASE}/observatorio/financial-fraud`,
@@ -159,30 +159,14 @@ export function rodapeBoletim(urlSair: string): string {
 /* Link de saída assinado (sem login, sem PII na URL)                  */
 /* ------------------------------------------------------------------ */
 
-function segredo(): string {
-  const s = process.env.COOKIE_SECRET;
-  if (s && s.length >= 16) return s;
-  if (process.env.NODE_ENV === "production") return "";
-  return "dev-cookie-secret-inseguro";
-}
-
 const PROPOSITO = "boletim-sair";
 
 export function assinarSaidaBoletim(userId: string): string {
-  const mac = createHmac("sha256", segredo()).update(`${PROPOSITO}.${userId}`).digest("hex");
-  return `${userId}.${mac}`;
+  return assinarToken(PROPOSITO, userId);
 }
 
 export function verificarSaidaBoletim(token: string): string | null {
-  if (!segredo()) return null;
-  const separador = token.lastIndexOf(".");
-  if (separador <= 0) return null;
-  const userId = token.slice(0, separador);
-  const mac = token.slice(separador + 1);
-  const esperado = createHmac("sha256", segredo()).update(`${PROPOSITO}.${userId}`).digest("hex");
-  if (mac.length !== esperado.length) return null;
-  if (!timingSafeEqual(Buffer.from(mac, "utf-8"), Buffer.from(esperado, "utf-8"))) return null;
-  return userId;
+  return verificarToken(PROPOSITO, token);
 }
 
 export function urlSaidaBoletim(userId: string): string {

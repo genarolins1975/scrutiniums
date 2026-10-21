@@ -1,0 +1,116 @@
+{
+ "descricao": "Trechos de leis, decretos e páginas institucionais do ONS usados como fonte literal dos verbetes de instituições do Aprenda (ONS, CCEE, ANEEL, EPE, IBGE e Sistemas Isolados), conferidos em 09/10/2026 por pedido da página inicial. Cada trecho citado por um verbete aparece literalmente neste arquivo, a menos de espaços (teste em src/tests/energia-aprenda.test.ts, que reúne os manifestos de todas as versões desta pasta).",
+ "arquivos": [
+  {
+   "arquivo": "lei_9427_1996_aneel_trechos.txt",
+   "documento": "Lei nº 9.427, de 26 de dezembro de 1996 (texto compilado do Planalto): art. 1º, art. 2º e art. 3º",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l9427cons.htm",
+   "capturado_em": "2026-10-09T10:35:21Z",
+   "sha256_original": "9535d1e6962e92fb4ade6fbbb8dc624a7f27946083eb62eab656abbfca0f49ea",
+   "bytes_original": 225417,
+   "transformacao": "Do HTML compilado do Planalto foram removidos os elementos riscados (<strike>, <del> e estilo line-through, que marcam redação revogada), as marcas HTML e os espaços repetidos; o ordinal que o HTML desenha com tags sobrescritas ou riscadas (Art. 1o, Lei no) foi restaurado como º. Ficaram só os dispositivos indicados, na redação vigente em 09/10/2026, rotulados entre colchetes, cada um em um parágrafo; as anotações de redação do compilado, como (Redação dada pela Lei nº ...), foram mantidas. Do art. 2º ficaram o caput e a anotação de redação; a anotação (Revogado pela Lei nº 10.848, de 2004) que o compilado deixa na sequência refere-se ao parágrafo único anterior, riscado, e foi omitida para não parecer revogação do artigo. Do art. 3º ficaram o caput e os incisos; os parágrafos foram omitidos.",
+   "sha256": "f432342a7b1afbe7e1e4c49426df6b4041d9f1f365d259bb427a921db0666dbc"
+  },
+  {
+   "arquivo": "lei_9648_1998_ons_trechos.txt",
+   "documento": "Lei nº 9.648, de 27 de maio de 1998 (texto compilado do Planalto): art. 13",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l9648cons.htm",
+   "capturado_em": "2026-10-09T10:35:22Z",
+   "sha256_original": "105627d9604bca987e81a15a73787a0011984c066800fee3a6386fb056f14711",
+   "bytes_original": 107773,
+   "transformacao": "Do HTML compilado do Planalto foram removidos os elementos riscados (<strike>, <del> e estilo line-through, que marcam redação revogada), as marcas HTML e os espaços repetidos; o ordinal que o HTML desenha com tags sobrescritas ou riscadas (Art. 1o, Lei no) foi restaurado como º. Ficaram só os dispositivos indicados, na redação vigente em 09/10/2026, rotulados entre colchetes, cada um em um parágrafo; as anotações de redação do compilado, como (Redação dada pela Lei nº ...), foram mantidas.",
+   "sha256": "d5952d5c51b83a35496624144aa612b73c4d874a5eeab39c7ea24af139e967d5"
+  },
+  {
+   "arquivo": "decreto_5081_2004_ons_trechos.txt",
+   "documento": "Decreto nº 5.081, de 14 de maio de 2004 (texto compilado do Planalto): art. 1º e art. 3º",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/decreto/d5081.htm",
+   "capturado_em": "2026-10-09T10:35:23Z",
+   "sha256_original": "0303b6fd0c7a865777aa43d26d19a857ed87b523a84cd65db809c4b8587ac718",
+   "bytes_original": 30161,
+   "transformacao": "Do HTML compilado do Planalto foram removidos os elementos riscados (<strike>, <del> e estilo line-through, que marcam redação revogada), as marcas HTML e os espaços repetidos; o ordinal que o HTML desenha com tags sobrescritas ou riscadas (Art. 1o, Lei no) foi restaurado como º. Ficaram só os dispositivos indicados, na redação vigente em 09/10/2026, rotulados entre colchetes, cada um em um parágrafo; as anotações de redação do compilado, como (Redação dada pela Lei nº ...), foram mantidas.",
+   "sha256": "81bb6b1c535eb03ce518d36f7ede0b733ddb70d2651934b4c733c110cdbfcd33"
+  },
+  {
+   "arquivo": "lei_10848_2004_ccee_trechos.txt",
+   "documento": "Lei nº 10.848, de 15 de março de 2004 (texto compilado do Planalto): art. 4º (caput e § 1º) e art. 4º-D",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/lei/l10.848.htm",
+   "capturado_em": "2026-10-09T10:35:25Z",
+   "sha256_original": "3ea9d5aedc8c002a03d5ece8574c741565fc91abcffb45d695b48b63394897a5",
+   "bytes_original": 242983,
+   "transformacao": "Do HTML compilado do Planalto foram removidos os elementos riscados (<strike>, <del> e estilo line-through, que marcam redação revogada), as marcas HTML e os espaços repetidos; o ordinal que o HTML desenha com tags sobrescritas ou riscadas (Art. 1o, Lei no) foi restaurado como º. Ficaram só os dispositivos indicados, na redação vigente em 09/10/2026, rotulados entre colchetes, cada um em um parágrafo; as anotações de redação do compilado, como (Redação dada pela Lei nº ...), foram mantidas. Do art. 4º ficaram o caput e o § 1º.",
+   "sha256": "0c68e89b031eafdc7508c114bc1c2caee24af1e892c7a6317e004aa7cf2dd26b"
+  },
+  {
+   "arquivo": "lei_15269_2025_ccee_vigencia.txt",
+   "documento": "Lei nº 15.269, de 24 de novembro de 2025 (texto do Planalto): art. 24 (vigência) e a nota de publicação no DOU",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/l15269.htm",
+   "capturado_em": "2026-10-09T10:35:27Z",
+   "sha256_original": "3cb00a30265df29df8cc3d0531beb16c030b4cdeeaad4729c534b725a07cfdad",
+   "bytes_original": 200515,
+   "transformacao": "Do HTML compilado do Planalto foram removidos os elementos riscados (<strike>, <del> e estilo line-through, que marcam redação revogada), as marcas HTML e os espaços repetidos; o ordinal que o HTML desenha com tags sobrescritas ou riscadas (Art. 1o, Lei no) foi restaurado como º. Ficaram só os dispositivos indicados, na redação vigente em 09/10/2026, rotulados entre colchetes, cada um em um parágrafo; as anotações de redação do compilado, como (Redação dada pela Lei nº ...), foram mantidas. Do fim da lei ficaram o art. 24 e a linha que informa a edição do DOU.",
+   "sha256": "cc3f4e6d3c115852d724e83701beacc2669a654ddbec814dab80a7942932b33d"
+  },
+  {
+   "arquivo": "lei_10847_2004_epe_trechos.txt",
+   "documento": "Lei nº 10.847, de 15 de março de 2004 (texto do Planalto): art. 1º, art. 2º e art. 4º",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/lei/l10.847.htm",
+   "capturado_em": "2026-10-09T10:35:28Z",
+   "sha256_original": "3a731b8ae998bbc21e8adb9561df94594af0d99e6e7d582db0a927758d1e9239",
+   "bytes_original": 25831,
+   "transformacao": "Do HTML compilado do Planalto foram removidos os elementos riscados (<strike>, <del> e estilo line-through, que marcam redação revogada), as marcas HTML e os espaços repetidos; o ordinal que o HTML desenha com tags sobrescritas ou riscadas (Art. 1o, Lei no) foi restaurado como º. Ficaram só os dispositivos indicados, na redação vigente em 09/10/2026, rotulados entre colchetes, cada um em um parágrafo; as anotações de redação do compilado, como (Redação dada pela Lei nº ...), foram mantidas.",
+   "sha256": "ede677b3f8444d5c1590d580d2f9c83c57991c1128ffceceffda268fb11fdf5f"
+  },
+  {
+   "arquivo": "lei_5878_1973_ibge_trechos.txt",
+   "documento": "Lei nº 5.878, de 11 de maio de 1973 (texto do Planalto): art. 1º, art. 2º e art. 3º",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l5878.htm",
+   "capturado_em": "2026-10-09T10:35:29Z",
+   "sha256_original": "8fadee43e5fb5520f94f88884df018dc10649a80222b3ca00128572c1817b520",
+   "bytes_original": 24784,
+   "transformacao": "Do HTML compilado do Planalto foram removidos os elementos riscados (<strike>, <del> e estilo line-through, que marcam redação revogada), as marcas HTML e os espaços repetidos; o ordinal que o HTML desenha com tags sobrescritas ou riscadas (Art. 1o, Lei no) foi restaurado como º. Ficaram só os dispositivos indicados, na redação vigente em 09/10/2026, rotulados entre colchetes, cada um em um parágrafo; as anotações de redação do compilado, como (Redação dada pela Lei nº ...), foram mantidas.",
+   "sha256": "b8c69b630ed5a51f59e41a4617678b78c94a0d6991ecc6a884bf3cfeeca41d0b"
+  },
+  {
+   "arquivo": "decreto_7246_2010_sistemas_isolados_trechos.txt",
+   "documento": "Decreto nº 7.246, de 28 de julho de 2010 (texto compilado do Planalto): art. 2º, definições",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2010/decreto/d7246.htm",
+   "capturado_em": "2026-10-09T10:35:30Z",
+   "sha256_original": "b8be315574f157866cc0beba18c59c325b8310d222847f150d1544b483399f2f",
+   "bytes_original": 78901,
+   "transformacao": "Do HTML compilado do Planalto foram removidos os elementos riscados (<strike>, <del> e estilo line-through, que marcam redação revogada), as marcas HTML e os espaços repetidos; o ordinal que o HTML desenha com tags sobrescritas ou riscadas (Art. 1o, Lei no) foi restaurado como º. Ficaram só os dispositivos indicados, na redação vigente em 09/10/2026, rotulados entre colchetes, cada um em um parágrafo; as anotações de redação do compilado, como (Redação dada pela Lei nº ...), foram mantidas. Do art. 2º ficaram o caput e os incisos na redação vigente (a do inciso III é a dada pelo Decreto nº 11.629, de 2023).",
+   "sha256": "1c1c1a9f7740386689ea6dac1530940205d5ea855bb9dd9ba70b85b6e76b4648"
+  },
+  {
+   "arquivo": "ons_o_que_e_ons.txt",
+   "documento": "ONS, página institucional O que é ONS",
+   "url": "https://www.ons.org.br/paginas/sobre-o-ons/o-que-e-ons",
+   "capturado_em": "2026-10-09T10:35:30Z",
+   "sha256_original": "3431b8aafcd0bd5b0207ae7827172891434d63968120088eeab87065bd03792f",
+   "bytes_original": 160917,
+   "transformacao": "Do HTML da página foi extraído o texto do corpo (entre o título Conteúdo da Página e o rodapé do site), sem menus, aviso de cookies nem modelos de interface; marcas HTML e espaços repetidos removidos, caracteres de largura zero retirados. A página não traz data de publicação nem de atualização.",
+   "sha256": "e62593e3a515091f2dec49ae19dccefa8285ccf8f0c9de9785987b42ce12e546"
+  },
+  {
+   "arquivo": "ons_o_sistema_interligado_nacional.txt",
+   "documento": "ONS, página institucional O Sistema Interligado Nacional",
+   "url": "https://www.ons.org.br/paginas/sobre-o-sin/o-que-e-o-sin",
+   "capturado_em": "2026-10-09T10:35:31Z",
+   "sha256_original": "522544c8cfb7e4f53b36bae3a8e4dc4af2a7625f7906da64fce8298df9302cca",
+   "bytes_original": 160498,
+   "transformacao": "Do HTML da página foi extraído o texto do corpo (entre o título Conteúdo da Página e o rodapé do site), sem menus, aviso de cookies nem modelos de interface; marcas HTML e espaços repetidos removidos, caracteres de largura zero retirados. A página não traz data de publicação nem de atualização.",
+   "sha256": "ccad4f039410f10d36069688d2783e6380a82d3bdbcded2cb972327898fadb65"
+  },
+  {
+   "arquivo": "ons_sistemas_isolados.txt",
+   "documento": "ONS, página institucional Sistemas Isolados",
+   "url": "https://www.ons.org.br/paginas/sobre-o-sin/sistemas-isolados",
+   "capturado_em": "2026-10-09T10:35:31Z",
+   "sha256_original": "eeb634c79e49b2e1c00bd6c971f8b82862add3bd106349fa0d8c5b55536f35d9",
+   "bytes_original": 162619,
+   "transformacao": "Do HTML da página foi extraído o texto do corpo (entre o título Conteúdo da Página e o rodapé do site), sem menus, aviso de cookies nem modelos de interface; marcas HTML e espaços repetidos removidos, caracteres de largura zero retirados. A página não traz data de publicação nem de atualização.",
+   "sha256": "055a4ad8fa9c6ae0ef4a37339e0eacdf108b6fce3e2ee8279c33157465e2a3da"
+  }
+ ],
+ "canal": "Planalto e ONS: GET HTTP a partir do ambiente de desenvolvimento, com User-Agent de navegador (o portal do Planalto recusa o cliente sem esse cabeçalho; o do ONS responde 200). O endereço da CCEE (www.ccee.org.br) respondeu HTTP 403 a uma consulta automática simples em 09/10/2026 e não foi contornado: nenhuma definição deste lote vem do portal da CCEE, e a da CCEE vem da lei que autoriza a sua criação. As páginas institucionais do ONS não têm data de publicação nem de atualização: valem como lidas em 09/10/2026."
+}

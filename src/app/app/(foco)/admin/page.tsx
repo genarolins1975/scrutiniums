@@ -5,10 +5,12 @@ import { isAdmin } from "@/lib/admin";
 import { fmtDate, fmtDateTime, fmtNumber } from "@/lib/format";
 import { getAdminStats } from "@/lib/adminStats";
 import { sectionLabel } from "@/lib/telemetry";
-import { AREAS_ATUACAO, NIVEIS_CARGO, TIPOS_INSTITUICAO, rotuloDe } from "@/lib/perfilOpcoes";
+import { AREAS_ATUACAO, NIVEIS_CARGO, PERFIS_USO, TIPOS_INSTITUICAO, rotuloDe } from "@/lib/perfilOpcoes";
 import { PageTitle, SectionHeading } from "@/components/ui/SectionHeading";
 import { EmptyState } from "@/components/ui/States";
 import { BarrasRanking, ColunasDiarias, Funil, Indicador } from "@/components/admin/Graficos";
+import { UsoPaginas } from "@/components/admin/UsoPaginas";
+import { getUsoDoPeriodo } from "@/lib/uso/painel";
 
 /**
  * A checagem de admin também roda aqui: generateMetadata resolve antes do
@@ -49,6 +51,7 @@ const AUDIT_LABELS: Record<string, string> = {
   PHONE_CHANGED: "Telefone alterado",
   SESSION_REVOKED: "Sessões encerradas",
   PASSWORD_CHANGED: "Senha alterada",
+  PASSWORD_RESET: "Senha redefinida",
   ACCOUNT_DELETED: "Conta excluída",
 };
 
@@ -62,7 +65,8 @@ function Th({ children }: { children: React.ReactNode }) {
 
 /**
  * Painel de administração (restrito a ADMIN_EMAILS): visão geral de uso,
- * atividade diária, seções mais visitadas, funil de onboarding, usuários,
+ * atividade diária, uso agregado por observatório e por página (inclusive sem
+ * conta, quando ligado), seções mais visitadas, funil de onboarding, usuários,
  * sugestões e auditoria. Usuário autenticado que não é admin recebe 404 —
  * a rota não é revelada.
  */
@@ -71,7 +75,7 @@ export default async function AdminPage() {
   if (!user) redirect("/entrar");
   if (!isAdmin(user)) notFound();
 
-  const stats = await getAdminStats();
+  const [stats, uso] = await Promise.all([getAdminStats(), getUsoDoPeriodo()]);
   const vg = stats.visaoGeral;
 
   return (
@@ -131,14 +135,28 @@ export default async function AdminPage() {
               descricaoVazia="Nenhum login no período."
             />
           </div>
+          <dl className="mt-8 grid gap-4 border-t border-linha pt-6 sm:grid-cols-3">
+            {([
+              ["Crédito", stats.visitasPorDominio.credito],
+              ["Setor Elétrico", stats.visitasPorDominio.energia],
+              ["Plataforma (conta e escolha)", stats.visitasPorDominio.plataforma],
+            ] as const).map(([rotulo, valor]) => (
+              <div key={rotulo}>
+                <dt className="rotulo text-mineral">Visitas 30 dias · {rotulo}</dt>
+                <dd className="mt-1 font-serif text-2xl text-carvao">{fmtNumber(valor)}</dd>
+              </div>
+            ))}
+          </dl>
           <p className="mt-6 text-xs text-mineral">
-            Visitas contam aberturas de seção na área logada (Observatório e Painéis), sem qualquer
-            dado pessoal: apenas a seção e o momento. Dias no fuso de Brasília.
+            Visitas contam aberturas de seção por usuários com sessão, nos observatórios, sem
+            qualquer dado pessoal: apenas a seção, o domínio e o momento. Dias no fuso de Brasília.
           </p>
         </section>
 
+        <UsoPaginas uso={uso} numero="03" />
+
         <section aria-label="Seções mais visitadas" className="border border-linha bg-papel p-8">
-          <SectionHeading number="03" label="Navegação" title="Seções mais visitadas" />
+          <SectionHeading number="04" label="Navegação" title="Seções mais visitadas" />
           {stats.ranking.length === 0 ? (
             <EmptyState
               title="Ainda não há visitas registradas"
@@ -149,20 +167,21 @@ export default async function AdminPage() {
               itens={stats.ranking.slice(0, 12).map((r) => ({
                 rotulo: sectionLabel(r.secao),
                 valor: r.visitas30d,
-                detalhe: `${fmtNumber(r.usuarios30d)} usuário${r.usuarios30d === 1 ? "" : "s"} · ${fmtNumber(r.visitasTotal)} desde o início`,
+                detalhe: `${r.dominio === "agro" ? "Usuários não identificados" : `${fmtNumber(r.usuarios30d)} usuário${r.usuarios30d === 1 ? "" : "s"}`} · ${fmtNumber(r.visitasTotal)} desde o início`,
               }))}
             />
           )}
           {stats.ranking.length > 0 && (
             <p className="mt-6 text-xs text-mineral">
               Janela de 30 dias, com o acumulado desde o início ao lado. Visitas de todas as contas,
-              inclusive administradores.
+              inclusive administradores. No Agronegócio, visitas são agregadas sem identificação;
+              não entram na contagem de usuários ativos.
             </p>
           )}
         </section>
 
         <section aria-label="Funil de onboarding" className="border border-linha bg-papel p-8">
-          <SectionHeading number="04" label="Aquisição" title="Funil de onboarding" />
+          <SectionHeading number="05" label="Aquisição" title="Funil de onboarding" />
           <Funil etapas={stats.funil} />
           <p className="mt-6 text-xs text-mineral">
             Eventos acumulados desde o lançamento. {fmtNumber(stats.falhasVerificacao30d)} falha
@@ -172,7 +191,23 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Usuários recentes" className="border border-linha bg-papel p-8">
-          <SectionHeading number="05" label="Contas" title="Usuários recentes" />
+          <SectionHeading number="06" label="Contas" title="Usuários recentes" />
+          {stats.perfisUso.length > 0 && (
+            <div className="mb-10">
+              <h3 className="mb-4 font-serif text-xl text-carvao">Perfil de uso das contas completas</h3>
+              <BarrasRanking
+                itens={stats.perfisUso.map((p) => ({
+                  rotulo: p.perfilUso ? rotuloDe(PERFIS_USO, p.perfilUso) : "Sem registro (conta anterior à pergunta)",
+                  valor: p.contas,
+                  detalhe: `${fmtNumber((p.contas / stats.visaoGeral.acessoCompleto) * 100, 1)}%`,
+                }))}
+              />
+              <p className="mt-4 text-xs text-mineral">
+                Contas com cadastro completo, por perfil de uso declarado. Contas concluídas antes de o
+                cadastro perguntar o perfil de uso aparecem sem registro, não em outra categoria.
+              </p>
+            </div>
+          )}
           {stats.usuariosRecentes.length === 0 ? (
             <EmptyState title="Nenhuma conta criada ainda" description="Os cadastros aparecem aqui." />
           ) : (
@@ -182,6 +217,7 @@ export default async function AdminPage() {
                   <tr className="border-b border-linha">
                     <Th>E-mail</Th>
                     <Th>Situação</Th>
+                    <Th>Perfil de uso</Th>
                     <Th>Instituição</Th>
                     <Th>Atuação</Th>
                     <Th>Cadastro em</Th>
@@ -199,9 +235,11 @@ export default async function AdminPage() {
                         </span>
                       </td>
                       <td className="px-3 py-3 text-carvao-muted">
-                        {u.orgType
-                          ? `${rotuloDe(TIPOS_INSTITUICAO, u.orgType)}${u.uf ? ` · ${u.uf}` : ""}`
-                          : u.company || "—"}
+                        {u.perfilUso ? rotuloDe(PERFIS_USO, u.perfilUso) : u.status === "COMPLETE" ? "Sem registro" : "—"}
+                        {u.uf ? ` · ${u.uf}` : ""}
+                      </td>
+                      <td className="px-3 py-3 text-carvao-muted">
+                        {u.orgType ? rotuloDe(TIPOS_INSTITUICAO, u.orgType) : u.company || "—"}
                       </td>
                       <td className="px-3 py-3 text-carvao-muted">
                         {u.orgArea
@@ -215,10 +253,37 @@ export default async function AdminPage() {
               </table>
             </div>
           )}
+          <h3 className="mt-10 font-serif text-xl text-carvao">Últimos acessos</h3>
+          <p className="mt-2 text-sm text-mineral">
+            Cada entrada na plataforma, por senha, código SMS ou ao concluir o cadastro, da mais recente para a
+            mais antiga.
+          </p>
+          {stats.acessosRecentes.length === 0 ? (
+            <EmptyState title="Nenhum acesso registrado" description="As entradas na plataforma aparecem aqui." />
+          ) : (
+            <div className="tabela-scroll mt-4 overflow-x-auto">
+              <table className="w-full border-collapse text-sm">
+                <thead>
+                  <tr className="border-b border-linha">
+                    <Th>Quando</Th>
+                    <Th>Conta</Th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stats.acessosRecentes.map((a) => (
+                    <tr key={a.id} className="border-b border-linha">
+                      <td className="whitespace-nowrap px-3 py-3 text-carvao-muted">{fmtDateTime(a.createdAt)}</td>
+                      <td className="px-3 py-3 text-carvao">{a.email ?? "conta removida"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </section>
 
         <section aria-label="Sugestões" className="border border-linha bg-papel p-8">
-          <SectionHeading number="06" label="Feedback" title="Sugestões dos usuários" />
+          <SectionHeading number="07" label="Feedback" title="Sugestões dos usuários" />
           {stats.sugestoesRecentes.length === 0 ? (
             <EmptyState
               title="Nenhuma sugestão ainda"
@@ -235,7 +300,7 @@ export default async function AdminPage() {
                 {stats.sugestoesRecentes.map((sg) => (
                   <li key={sg.id} className="border border-linha bg-marfim p-5">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                      <span className="rotulo text-bronze">{SUGESTAO_LABELS[sg.categoria] ?? sg.categoria}</span>
+                      <span className="rotulo text-bronze-dark">{SUGESTAO_LABELS[sg.categoria] ?? sg.categoria}</span>
                       <span className="text-xs text-mineral">
                         {sg.email ?? "conta removida"} · {fmtDateTime(sg.createdAt)}
                       </span>
@@ -249,7 +314,7 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Auditoria" className="border border-linha bg-papel p-8">
-          <SectionHeading number="07" label="Segurança" title="Auditoria de mudanças sensíveis" />
+          <SectionHeading number="08" label="Segurança" title="Auditoria de mudanças sensíveis" />
           {stats.auditoria.length === 0 ? (
             <EmptyState
               title="Nenhum registro de auditoria"

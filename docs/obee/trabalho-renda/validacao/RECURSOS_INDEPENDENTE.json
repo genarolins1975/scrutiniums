@@ -1,0 +1,11 @@
+{
+  "observacoesConferidas": 130,
+  "divergenciasExtracaoCalculo": 0,
+  "estados": {
+    "CONFERE": 100,
+    "NAO_CONFERIDO": 29,
+    "DIVERGENTE": 1
+  },
+  "bloqueioComparabilidade": "Campo Grande 2021 diverge do RREO; aviso material e regra de elegibilidade necessários enquanto não reconciliado.",
+  "limite": "RREO parcialmente armazenado no seed: hashResposta corresponde payload completo descartado; não permite reprodução integral desse hash desde seed."
+}

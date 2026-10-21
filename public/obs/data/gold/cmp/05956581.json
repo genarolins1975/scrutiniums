@@ -1,7 +1,7 @@
 {
  "cod": "05956581",
  "nome": "ATRIA S.A.- CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
- "sr": "S5",
+ "sr": null,
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -456,5 +456,5 @@
    "202512": 1.9199486468279736
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

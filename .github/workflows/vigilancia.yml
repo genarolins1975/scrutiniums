@@ -4,7 +4,8 @@ name: Vigília do Observatório
 #
 # - **frescor** (diário, 15:00 UTC — depois da janela do pipeline das 9:00):
 #   o gold publicado no main envelheceu além de 2 dias? Cobre o caso em que as
-#   execuções "concluem" sem publicar, que o alerta de falha não enxerga.
+#   execuções "concluem" sem publicar, que o alerta de falha não enxerga. Também
+#   confere que a produção serve o mesmo gold do main.
 # - **pane** (diário, 15:20 UTC): coletor essencial com zero chaves ok, ou
 #   vintage parado além do prazo da fonte, com o gold íntegro e em dia — o
 #   buraco entre as duas outras vigílias (SCR 3/3 e DJEN 8/8 falhando em
@@ -13,6 +14,14 @@ name: Vigília do Observatório
 #   documentadas (página de apresentações da SPA/MF)? É o gatilho da
 #   atualização manual do painel de bets — o Panorama do 1S2026 é esperado
 #   para o fim de agosto de 2026.
+# - **saneamento** (semanal, segunda): SINISA, SISAGUA e CadÚnico mudaram desde
+#   a coleta registrada em public/saneamento/gold/meta.json? O saneamento não tem
+#   coleta diária; sem este cheque, retificação ou edição nova passa em silêncio.
+# - **dominios** (diário, 20:00 UTC): algum observatório passou do limiar de
+#   frescor da sua cadência (src/lib/frescor/limiares.json, o mesmo da faixa
+#   de frescor das entradas)? Uma issue por domínio, "Vigília de frescor: <nome>":
+#   abre, comenta a aberta (nunca duplica) e fecha quando volta a ficar em dia.
+#   O próprio script fala com o gh e sai 0; saída diferente é vigia quebrado.
 #
 # Contrato com scripts/vigilancia.py: saída 0 = silêncio; saída 3 = o stdout é
 # o corpo da issue. Qualquer outra saída = o próprio vigia quebrou, e isso
@@ -27,6 +36,7 @@ on:
   schedule:
     - cron: "0 20 * * *" # frescor, reserva diária
     - cron: "30 9 * * 1" # fontes, segunda-feira
+    - cron: "40 9 * * 1" # saneamento, segunda-feira
     - cron: "20 20 * * *" # pane, reserva diária (fonte parada com o gold íntegro)
   workflow_dispatch:
 
@@ -41,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cheque: [frescor, fontes, pane]
+        cheque: [frescor, fontes, pane, saneamento, dominios]
     steps:
       - uses: actions/checkout@v4
 
@@ -49,15 +59,16 @@ jobs:
         id: horario
         run: |
           # no agendamento, cada cron roda só o seu cheque; no disparo manual, todos;
-          # após o pipeline (workflow_run), frescor e pane — fontes é semanal
+          # após o pipeline (workflow_run), frescor e pane — fontes e saneamento são semanais
           if [ "${{ github.event_name }}" = "schedule" ]; then
             case "${{ github.event.schedule }}" in
-              "0 20 * * *") [ "${{ matrix.cheque }}" = "frescor" ] || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
+              "0 20 * * *") case "${{ matrix.cheque }}" in frescor|dominios) ;; *) echo "pular=1" >> "$GITHUB_OUTPUT" ;; esac ;;
               "30 9 * * 1") [ "${{ matrix.cheque }}" = "fontes" ]  || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
+              "40 9 * * 1") [ "${{ matrix.cheque }}" = "saneamento" ] || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
               "20 20 * * *") [ "${{ matrix.cheque }}" = "pane" ]   || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
             esac
           elif [ "${{ github.event_name }}" = "workflow_run" ]; then
-            [ "${{ matrix.cheque }}" != "fontes" ] || echo "pular=1" >> "$GITHUB_OUTPUT"
+            case "${{ matrix.cheque }}" in fontes|saneamento|dominios) echo "pular=1" >> "$GITHUB_OUTPUT" ;; esac
             # o meta.json é lido do raw.githubusercontent do main: dá tempo ao push
             # do pipeline chegar e ao cache do raw virar (até 5 min)
             sleep 300
@@ -66,6 +77,9 @@ jobs:
       - name: Executar cheque
         if: steps.horario.outputs.pular != '1'
         id: cheque
+        env:
+          # o cheque dominios abre, comenta ou fecha a issue de cada domínio pelo gh
+          GH_TOKEN: ${{ github.token }}
         run: |
           set +e
           SAIDA=$(python3 scripts/vigilancia.py "${{ matrix.cheque }}" 2>&1)
@@ -91,14 +105,24 @@ jobs:
             frescor) TITULO="Vigília: gold publicado está defasado" ;;
             fontes)  TITULO="Vigília: documento novo em fonte manual (SPA/MF)" ;;
             pane)    TITULO="Vigília: fonte essencial em pane ou data-base parada" ;;
+            saneamento) TITULO="Vigília: fonte do saneamento mudou desde a coleta" ;;
+            dominios) TITULO="Vigília: frescor por domínio" ;;
           esac
           if [ "$CODIGO" != "3" ]; then
             TITULO="Vigília quebrada: cheque ${{ matrix.cheque }} falhou (código $CODIGO)"
           fi
           EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
             --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          # A issue de frescor de 26/09/2026 recebeu 33 comentários em 17 dias sem
+          # ninguém atribuído: comentário em issue sem responsável não chega a ninguém.
+          # Frescor e cheque quebrado passam a ter o mantenedor como responsável.
+          RESP=""
+          if [ "${{ matrix.cheque }}" = "frescor" ] || [ "${{ matrix.cheque }}" = "saneamento" ] || [ "$CODIGO" != "3" ]; then
+            RESP="$GITHUB_REPOSITORY_OWNER"
+          fi
           if [ -n "$EXISTENTE" ]; then
             gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "$CORPO"
+            [ -z "$RESP" ] || gh issue edit "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --add-assignee "$RESP" || true
           else
-            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO" ${RESP:+--assignee "$RESP"}
           fi

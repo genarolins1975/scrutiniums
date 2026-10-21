@@ -1,0 +1,1385 @@
+{
+ "data": "08/10/2026",
+ "natureza": "Medição própria por instrumento, sem revisor: a r9 com nove revisores não foi rodada. Não declara nota de didatismo nem de qualidade visual.",
+ "decisao": "Aplicação da recomendação da Rodada 8 (cabeçalho do módulo, faixa do celular, legenda de siglas, pacote ampliado) aceita pelo responsável.",
+ "codigo": "commits 4dfbd8feb (abertura recolhida, abas que quebram linha, legenda de siglas) e 2086e9950 (fontes e datas de referência voltam a ficar à vista)",
+ "posicao_da_primeira_resposta_em_entender": {
+  "instrumento": "scripts/energia-dobra-resposta.mjs",
+  "r8": {
+   "390x844": {
+    "paginas": 73,
+    "topo_mediano_px": 1071,
+    "comeca_na_primeira_tela": 1,
+    "inteira_na_primeira_tela": 0
+   },
+   "1440x900": {
+    "paginas": 73,
+    "topo_mediano_px": 909,
+    "comeca_na_primeira_tela": 30,
+    "inteira_na_primeira_tela": 11
+   }
+  },
+  "versao_1_fontes_tambem_recolhidas_descartada": {
+   "390x844": {
+    "paginas": 73,
+    "topo_mediano_px": 962,
+    "comeca_na_primeira_tela": 13,
+    "inteira_na_primeira_tela": 0
+   },
+   "1440x900": {
+    "paginas": 73,
+    "topo_mediano_px": 778,
+    "comeca_na_primeira_tela": 63,
+    "inteira_na_primeira_tela": 51
+   }
+  },
+  "versao_2_fontes_a_vista": {
+   "390x844": {
+    "paginas": 73,
+    "topo_mediano_px": 1054,
+    "comeca_na_primeira_tela": 1,
+    "inteira_na_primeira_tela": 0
+   },
+   "1440x900": {
+    "paginas": 73,
+    "topo_mediano_px": 820,
+    "comeca_na_primeira_tela": 56,
+    "inteira_na_primeira_tela": 38
+   }
+  },
+  "por_pagina_versao_2": [
+   {
+    "rota": "/setor-eletrico",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/agua-e-clima",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1067,
+    "base": 1249
+   },
+   {
+    "rota": "/setor-eletrico/agua-e-clima/afluencia",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 904,
+    "base": 1008
+   },
+   {
+    "rota": "/setor-eletrico/agua-e-clima/chuva-e-temperatura",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1749,
+    "base": 1879
+   },
+   {
+    "rota": "/setor-eletrico/agua-e-clima/reservatorios",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1008,
+    "base": 1112
+   },
+   {
+    "rota": "/setor-eletrico/aprenda",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/trilhas",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/trilhas/agua-operacao-preco",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/trilhas/custo-tarifa-orcamento",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/carga",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 822,
+    "base": 978
+   },
+   {
+    "rota": "/setor-eletrico/carga/clima-e-calendario",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 850,
+    "base": 1006
+   },
+   {
+    "rota": "/setor-eletrico/carga/perfil-horario",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 860,
+    "base": 990
+   },
+   {
+    "rota": "/setor-eletrico/conta-de-luz",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 2490,
+    "base": 2594
+   },
+   {
+    "rota": "/setor-eletrico/conta-de-luz/reajustes-e-subsidios",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1690,
+    "base": 1820
+   },
+   {
+    "rota": "/setor-eletrico/dados",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1025,
+    "base": 1181
+   },
+   {
+    "rota": "/setor-eletrico/dados/reproducao",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 848,
+    "base": 1030
+   },
+   {
+    "rota": "/setor-eletrico/dados/saude",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 895,
+    "base": 1051
+   },
+   {
+    "rota": "/setor-eletrico/empresas",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 908,
+    "base": 1090
+   },
+   {
+    "rota": "/setor-eletrico/empresas/ativos",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 909,
+    "base": 1091
+   },
+   {
+    "rota": "/setor-eletrico/empresas/controle",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1031,
+    "base": 1213
+   },
+   {
+    "rota": "/setor-eletrico/empresas/distribuidoras",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1056,
+    "base": 1238
+   },
+   {
+    "rota": "/setor-eletrico/empresas/financas",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1007,
+    "base": 1189
+   },
+   {
+    "rota": "/setor-eletrico/expansao",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 918,
+    "base": 1074
+   },
+   {
+    "rota": "/setor-eletrico/expansao/carteira",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1026,
+    "base": 1182
+   },
+   {
+    "rota": "/setor-eletrico/expansao/cenarios",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1083,
+    "base": 1213
+   },
+   {
+    "rota": "/setor-eletrico/expansao/cronograma",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 988,
+    "base": 1144
+   },
+   {
+    "rota": "/setor-eletrico/expansao/geracao-e-transmissao",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1029,
+    "base": 1211
+   },
+   {
+    "rota": "/setor-eletrico/geracao",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 881,
+    "base": 1011
+   },
+   {
+    "rota": "/setor-eletrico/geracao/capacidade",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 886,
+    "base": 1042
+   },
+   {
+    "rota": "/setor-eletrico/geracao/restricoes",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 921,
+    "base": 1051
+   },
+   {
+    "rota": "/setor-eletrico/geracao/termica",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 956,
+    "base": 1138
+   },
+   {
+    "rota": "/setor-eletrico/inclusao-energetica",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1603,
+    "base": 1707
+   },
+   {
+    "rota": "/setor-eletrico/inclusao-energetica/acesso",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1105,
+    "base": 1261
+   },
+   {
+    "rota": "/setor-eletrico/inclusao-energetica/cobertura",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1073,
+    "base": 1255
+   },
+   {
+    "rota": "/setor-eletrico/inclusao-energetica/orcamento",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1007,
+    "base": 1163
+   },
+   {
+    "rota": "/setor-eletrico/inclusao-energetica/tarifa-social",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1054,
+    "base": 1158
+   },
+   {
+    "rota": "/setor-eletrico/mercado",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 2457,
+    "base": 2613
+   },
+   {
+    "rota": "/setor-eletrico/mercado/agentes",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1039,
+    "base": 1195
+   },
+   {
+    "rota": "/setor-eletrico/mercado/encargos",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1102,
+    "base": 1258
+   },
+   {
+    "rota": "/setor-eletrico/mercado/mre-e-gsf",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1019,
+    "base": 1201
+   },
+   {
+    "rota": "/setor-eletrico/metodologia",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1025,
+    "base": 1129
+   },
+   {
+    "rota": "/setor-eletrico/perdas",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 919,
+    "base": 1049
+   },
+   {
+    "rota": "/setor-eletrico/perdas/composicao",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1015,
+    "base": 1197
+   },
+   {
+    "rota": "/setor-eletrico/perdas/custo-e-contexto",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1054,
+    "base": 1184
+   },
+   {
+    "rota": "/setor-eletrico/perdas/regulatorio",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1372,
+    "base": 1554
+   },
+   {
+    "rota": "/setor-eletrico/pld",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 4973,
+    "base": 5129
+   },
+   {
+    "rota": "/setor-eletrico/pld/cmo-e-formacao",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1008,
+    "base": 1190
+   },
+   {
+    "rota": "/setor-eletrico/pld/diferencas-regionais",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1166,
+    "base": 1322
+   },
+   {
+    "rota": "/setor-eletrico/pld/historico",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1119,
+    "base": 1249
+   },
+   {
+    "rota": "/setor-eletrico/pld/limites",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 921,
+    "base": 1051
+   },
+   {
+    "rota": "/setor-eletrico/pld/modelos",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1340,
+    "base": 1522
+   },
+   {
+    "rota": "/setor-eletrico/pld/modelos/b0",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1090,
+    "base": 1220
+   },
+   {
+    "rota": "/setor-eletrico/pld/modelos/c1",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1050,
+    "base": 1180
+   },
+   {
+    "rota": "/setor-eletrico/pld/modelos/c2-h",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1125,
+    "base": 1229
+   },
+   {
+    "rota": "/setor-eletrico/pld/modelos/c2-p",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1106,
+    "base": 1210
+   },
+   {
+    "rota": "/setor-eletrico/pld/modelos/s0",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1070,
+    "base": 1122
+   },
+   {
+    "rota": "/setor-eletrico/pld/previsoes",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1324,
+    "base": 1480
+   },
+   {
+    "rota": "/setor-eletrico/qualidade",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 2895,
+    "base": 3051
+   },
+   {
+    "rota": "/setor-eletrico/rede",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1102,
+    "base": 1258
+   },
+   {
+    "rota": "/setor-eletrico/rede/balanco-e-exterior",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1014,
+    "base": 1170
+   },
+   {
+    "rota": "/setor-eletrico/rede/programado",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 995,
+    "base": 1151
+   },
+   {
+    "rota": "/setor-eletrico/rede/restricoes",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1278,
+    "base": 1434
+   },
+   {
+    "rota": "/setor-eletrico/regulacao",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1042,
+    "base": 1172
+   },
+   {
+    "rota": "/setor-eletrico/regulacao/consultas-e-agenda",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 901,
+    "base": 1057
+   },
+   {
+    "rota": "/setor-eletrico/regulacao/linha-do-tempo",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1076,
+    "base": 1258
+   },
+   {
+    "rota": "/setor-eletrico/territorio",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 883,
+    "base": 1039
+   },
+   {
+    "rota": "/setor-eletrico/transicao",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1270,
+    "base": 1426
+   },
+   {
+    "rota": "/setor-eletrico/transicao/emissoes",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1026,
+    "base": 1182
+   },
+   {
+    "rota": "/setor-eletrico/transicao/energia-estimada",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1002,
+    "base": 1132
+   },
+   {
+    "rota": "/setor-eletrico/transicao/mmgd",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1058,
+    "base": 1188
+   },
+   {
+    "rota": "/setor-eletrico/visao-geral",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1062,
+    "base": 1218
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/acl",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/cde",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/dessem",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/gsf",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/percentual-regulatorio-de-perdas",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/tarifa-te-tusd",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/dados/aneel-agentes-geracao",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/dados/aneel-pautas-atas-diretoria",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/dados/ccee-lista-agente-associado",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/dados/ibge-pof-cv",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/dados/ons-ena-diario-por-bacia",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/dados/senado-leis-feriados",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/empresas/ambar-amazonas",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1202,
+    "base": 1384
+   },
+   {
+    "rota": "/setor-eletrico/empresas/cerbranorte",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1229,
+    "base": 1385
+   },
+   {
+    "rota": "/setor-eletrico/empresas/certhil",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1264,
+    "base": 1446
+   },
+   {
+    "rota": "/setor-eletrico/empresas/cpfl-piratining",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1229,
+    "base": 1411
+   },
+   {
+    "rota": "/setor-eletrico/empresas/emt",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1182,
+    "base": 1364
+   },
+   {
+    "rota": "/setor-eletrico/empresas/uhenpal",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1139,
+    "base": 1321
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/ear",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/pld",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/dados/aneel-scs",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/dados/ibge-pof-6715",
+    "largura": 390,
+    "altura_tela": 844
+   },
+   {
+    "rota": "/setor-eletrico/empresas/cemig-d",
+    "largura": 390,
+    "altura_tela": 844,
+    "topo": 1139,
+    "base": 1321
+   },
+   {
+    "rota": "/setor-eletrico",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/agua-e-clima",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 894,
+    "base": 972
+   },
+   {
+    "rota": "/setor-eletrico/agua-e-clima/afluencia",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 778,
+    "base": 830
+   },
+   {
+    "rota": "/setor-eletrico/agua-e-clima/chuva-e-temperatura",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 1131,
+    "base": 1209
+   },
+   {
+    "rota": "/setor-eletrico/agua-e-clima/reservatorios",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 820,
+    "base": 872
+   },
+   {
+    "rota": "/setor-eletrico/aprenda",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/trilhas",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/trilhas/agua-operacao-preco",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/trilhas/custo-tarifa-orcamento",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/carga",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 750,
+    "base": 828
+   },
+   {
+    "rota": "/setor-eletrico/carga/clima-e-calendario",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 750,
+    "base": 828
+   },
+   {
+    "rota": "/setor-eletrico/carga/perfil-horario",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 750,
+    "base": 828
+   },
+   {
+    "rota": "/setor-eletrico/conta-de-luz",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 1618,
+    "base": 1670
+   },
+   {
+    "rota": "/setor-eletrico/conta-de-luz/reajustes-e-subsidios",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 1293,
+    "base": 1345
+   },
+   {
+    "rota": "/setor-eletrico/dados",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 800,
+    "base": 878
+   },
+   {
+    "rota": "/setor-eletrico/dados/reproducao",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 705,
+    "base": 783
+   },
+   {
+    "rota": "/setor-eletrico/dados/saude",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 717,
+    "base": 795
+   },
+   {
+    "rota": "/setor-eletrico/empresas",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 704,
+    "base": 782
+   },
+   {
+    "rota": "/setor-eletrico/empresas/ativos",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 731,
+    "base": 809
+   },
+   {
+    "rota": "/setor-eletrico/empresas/controle",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 786,
+    "base": 864
+   },
+   {
+    "rota": "/setor-eletrico/empresas/distribuidoras",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 766,
+    "base": 844
+   },
+   {
+    "rota": "/setor-eletrico/empresas/financas",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 819,
+    "base": 897
+   },
+   {
+    "rota": "/setor-eletrico/expansao",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 731,
+    "base": 809
+   },
+   {
+    "rota": "/setor-eletrico/expansao/carteira",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 766,
+    "base": 844
+   },
+   {
+    "rota": "/setor-eletrico/expansao/cenarios",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 818,
+    "base": 870
+   },
+   {
+    "rota": "/setor-eletrico/expansao/cronograma",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 766,
+    "base": 844
+   },
+   {
+    "rota": "/setor-eletrico/expansao/geracao-e-transmissao",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 786,
+    "base": 864
+   },
+   {
+    "rota": "/setor-eletrico/geracao",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 803,
+    "base": 881
+   },
+   {
+    "rota": "/setor-eletrico/geracao/capacidade",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 766,
+    "base": 844
+   },
+   {
+    "rota": "/setor-eletrico/geracao/restricoes",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 866,
+    "base": 944
+   },
+   {
+    "rota": "/setor-eletrico/geracao/termica",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 847,
+    "base": 925
+   },
+   {
+    "rota": "/setor-eletrico/inclusao-energetica",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 999,
+    "base": 1051
+   },
+   {
+    "rota": "/setor-eletrico/inclusao-energetica/acesso",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 830,
+    "base": 908
+   },
+   {
+    "rota": "/setor-eletrico/inclusao-energetica/cobertura",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 786,
+    "base": 864
+   },
+   {
+    "rota": "/setor-eletrico/inclusao-energetica/orcamento",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 819,
+    "base": 897
+   },
+   {
+    "rota": "/setor-eletrico/inclusao-energetica/tarifa-social",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 766,
+    "base": 818
+   },
+   {
+    "rota": "/setor-eletrico/mercado",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 1402,
+    "base": 1480
+   },
+   {
+    "rota": "/setor-eletrico/mercado/agentes",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 852,
+    "base": 930
+   },
+   {
+    "rota": "/setor-eletrico/mercado/encargos",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 852,
+    "base": 930
+   },
+   {
+    "rota": "/setor-eletrico/mercado/mre-e-gsf",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 872,
+    "base": 950
+   },
+   {
+    "rota": "/setor-eletrico/metodologia",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 800,
+    "base": 852
+   },
+   {
+    "rota": "/setor-eletrico/perdas",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 782,
+    "base": 834
+   },
+   {
+    "rota": "/setor-eletrico/perdas/composicao",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 805,
+    "base": 883
+   },
+   {
+    "rota": "/setor-eletrico/perdas/custo-e-contexto",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 824,
+    "base": 876
+   },
+   {
+    "rota": "/setor-eletrico/perdas/regulatorio",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 943,
+    "base": 1021
+   },
+   {
+    "rota": "/setor-eletrico/pld",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 2629,
+    "base": 2707
+   },
+   {
+    "rota": "/setor-eletrico/pld/cmo-e-formacao",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 750,
+    "base": 828
+   },
+   {
+    "rota": "/setor-eletrico/pld/diferencas-regionais",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 842,
+    "base": 920
+   },
+   {
+    "rota": "/setor-eletrico/pld/historico",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 854,
+    "base": 932
+   },
+   {
+    "rota": "/setor-eletrico/pld/limites",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 750,
+    "base": 802
+   },
+   {
+    "rota": "/setor-eletrico/pld/modelos",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 1019,
+    "base": 1097
+   },
+   {
+    "rota": "/setor-eletrico/pld/modelos/b0",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 887,
+    "base": 965
+   },
+   {
+    "rota": "/setor-eletrico/pld/modelos/c1",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 887,
+    "base": 939
+   },
+   {
+    "rota": "/setor-eletrico/pld/modelos/c2-h",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 907,
+    "base": 959
+   },
+   {
+    "rota": "/setor-eletrico/pld/modelos/c2-p",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 887,
+    "base": 939
+   },
+   {
+    "rota": "/setor-eletrico/pld/modelos/s0",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 887,
+    "base": 913
+   },
+   {
+    "rota": "/setor-eletrico/pld/previsoes",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 1000,
+    "base": 1078
+   },
+   {
+    "rota": "/setor-eletrico/qualidade",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 1457,
+    "base": 1535
+   },
+   {
+    "rota": "/setor-eletrico/rede",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 803,
+    "base": 881
+   },
+   {
+    "rota": "/setor-eletrico/rede/balanco-e-exterior",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 750,
+    "base": 828
+   },
+   {
+    "rota": "/setor-eletrico/rede/programado",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 731,
+    "base": 809
+   },
+   {
+    "rota": "/setor-eletrico/rede/restricoes",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 916,
+    "base": 994
+   },
+   {
+    "rota": "/setor-eletrico/regulacao",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 866,
+    "base": 918
+   },
+   {
+    "rota": "/setor-eletrico/regulacao/consultas-e-agenda",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 731,
+    "base": 809
+   },
+   {
+    "rota": "/setor-eletrico/regulacao/linha-do-tempo",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 798,
+    "base": 876
+   },
+   {
+    "rota": "/setor-eletrico/territorio",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 738,
+    "base": 816
+   },
+   {
+    "rota": "/setor-eletrico/transicao",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 896,
+    "base": 974
+   },
+   {
+    "rota": "/setor-eletrico/transicao/emissoes",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 819,
+    "base": 897
+   },
+   {
+    "rota": "/setor-eletrico/transicao/energia-estimada",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 803,
+    "base": 881
+   },
+   {
+    "rota": "/setor-eletrico/transicao/mmgd",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 850,
+    "base": 928
+   },
+   {
+    "rota": "/setor-eletrico/visao-geral",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 791,
+    "base": 869
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/acl",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/cde",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/dessem",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/gsf",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/percentual-regulatorio-de-perdas",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/tarifa-te-tusd",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/dados/aneel-agentes-geracao",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/dados/aneel-pautas-atas-diretoria",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/dados/ccee-lista-agente-associado",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/dados/ibge-pof-cv",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/dados/ons-ena-diario-por-bacia",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/dados/senado-leis-feriados",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/empresas/ambar-amazonas",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 942,
+    "base": 1020
+   },
+   {
+    "rota": "/setor-eletrico/empresas/cerbranorte",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 914,
+    "base": 992
+   },
+   {
+    "rota": "/setor-eletrico/empresas/certhil",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 967,
+    "base": 1045
+   },
+   {
+    "rota": "/setor-eletrico/empresas/cpfl-piratining",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 914,
+    "base": 992
+   },
+   {
+    "rota": "/setor-eletrico/empresas/emt",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 914,
+    "base": 992
+   },
+   {
+    "rota": "/setor-eletrico/empresas/uhenpal",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 862,
+    "base": 940
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/ear",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/aprenda/pld",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/dados/aneel-scs",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/dados/ibge-pof-6715",
+    "largura": 1440,
+    "altura_tela": 900
+   },
+   {
+    "rota": "/setor-eletrico/empresas/cemig-d",
+    "largura": 1440,
+    "altura_tela": 900,
+    "topo": 862,
+    "base": 940
+   }
+  ]
+ },
+ "composicao_do_topo_a_390px_mediana_px": {
+  "nota": "Diferenças entre as medianas das posições medidas em 73 páginas (scripts ad hoc, Entender, 390x844 px); servem de ordem de grandeza, não de soma exata por página.",
+  "r8": {
+   "cabecalho_do_site_antes_do_main": 139,
+   "rotulo_e_titulo": 156,
+   "abertura": 197,
+   "fontes_e_datas": 88,
+   "siglas": 110,
+   "abas_de_secao": 49,
+   "topo_da_primeira_resposta": 1071
+  },
+  "versao_1_fontes_tambem_recolhidas": {
+   "cabecalho_do_site_antes_do_main": 185,
+   "rotulo_e_titulo": 159,
+   "botao_da_abertura_mais_siglas": 170,
+   "abas_de_secao": 139,
+   "topo_da_primeira_resposta": 962
+  }
+ },
+ "coleta_objetiva": {
+  "r8": {
+   "axe_violacoes": 0,
+   "rolagem_horizontal_medicoes": 0,
+   "erros_console": 0,
+   "transbordo_itens": 594,
+   "transbordo_rotas": 51,
+   "altura_mediana_390_entender_px": 8080.0,
+   "altura_mediana_1440_entender_px": 4686.5,
+   "rotas_acima_10000px_390_entender": 28,
+   "html_max_por_rota_kB": 849.1
+  },
+  "r9": {
+   "axe_violacoes": 0,
+   "rolagem_horizontal_medicoes": 0,
+   "erros_console": 0,
+   "transbordo_itens": 15,
+   "transbordo_rotas": 1,
+   "altura_mediana_390_entender_px": 8041.0,
+   "altura_mediana_1440_entender_px": 4586.5,
+   "rotas_acima_10000px_390_entender": 28,
+   "html_max_por_rota_kB": 850.3
+  }
+ },
+ "legenda_de_siglas": {
+  "paginas_com_legenda": 90,
+  "siglas_listadas": 424,
+  "siglas_que_nao_aparecem_no_texto_a_vista": 0
+ },
+ "jornadas": {
+  "J1": {
+   "resultado": "cumprida",
+   "passos": "12/12",
+   "interacoes": 10
+  },
+  "J2": {
+   "resultado": "cumprida",
+   "passos": "11/11",
+   "interacoes": 12
+  },
+  "J3": {
+   "resultado": "cumprida",
+   "passos": "8/8",
+   "interacoes": 5
+  },
+  "J4": {
+   "resultado": "cumprida",
+   "passos": "10/10",
+   "interacoes": 13
+  },
+  "J5": {
+   "resultado": "cumprida",
+   "passos": "12/12",
+   "interacoes": 12
+  },
+  "J6": {
+   "resultado": "cumprida",
+   "passos": "19/19",
+   "interacoes": 21
+  },
+  "J7": {
+   "resultado": "cumprida",
+   "passos": "18/18",
+   "interacoes": 164
+  },
+  "J8": {
+   "resultado": "cumprida",
+   "passos": "11/11",
+   "interacoes": 37
+  },
+  "J9": {
+   "resultado": "cumprida",
+   "passos": "13/13",
+   "interacoes": 27
+  },
+  "J10": {
+   "resultado": "cumprida",
+   "passos": "14/14",
+   "interacoes": 12
+  }
+ }
+}

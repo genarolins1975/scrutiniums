@@ -1,7 +1,7 @@
 {
  "cod": "92702067",
  "nome": "BANCO DO ESTADO DO RIO GRANDE DO SUL S.A.",
- "sr": "S2",
+ "sr": null,
  "tcb": "B1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -64,5 +64,5 @@
    "202606": 3855508889.32
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

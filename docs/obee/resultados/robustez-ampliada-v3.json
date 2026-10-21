@@ -1,0 +1,5129 @@
+{
+  "version": "robustez-ampliada-v3-v1",
+  "reference_year": 2022,
+  "publication_ready": false,
+  "independent_review": false,
+  "input_sha256": {
+    "docs/obee/resultados/cesta-conjunta.json": "15339579dc2cceecd3c237569e011640aa2b7198329dbfd9c081075c3c1de7bd",
+    "docs/obee/resultados/piloto-2022-v2.json": "61d9df0b252048e98731aaea3155f27ed0cdf487aa10867105671951443360ef",
+    "docs/obee/resultados/sensibilidade-pares-v3.json": "4425c29efe8e2f0be5d279230791302b674f35c8743d32da16943a0a20f6c070",
+    "pipeline/eficiencia_resultados/seed/expansao-2022.json": "cb4cfd1b894739829ecb9e3aa2715460041f775fd126542923a669278c6dfb60"
+  },
+  "reference_weights": {
+    "educacao": "1/5",
+    "trabalho": "1/10",
+    "mobilidade": "1/5",
+    "saneamento": "1/10",
+    "seguranca": "1/5",
+    "habitacao": "1/10",
+    "conectividade": "1/10"
+  },
+  "primary_housing_definition": "domicilios_gt2",
+  "experiments": {
+    "caixa_de_pesos": "Cada peso entre (1-r) e (1+r) vezes o peso de referência (material 40%), soma 1; extremos exatos.",
+    "exclusao_de_indicador": "Retira um indicador; pesos de referência restantes renormalizados; inversão estrita frente à cesta completa.",
+    "normalizacao": "Mínimo e máximo exato; escore z em ponto flutuante com empate abaixo de 1e-9; mesmos pesos de referência.",
+    "homicidios_registrados": "Taxa só de registros (SIM) no lugar da estimada, família contínua 40% a 4/7, quatro definições."
+  },
+  "classes": {
+    "dominancia": "Melhor ou igual nas sete medidas em todas as definições: ordem robusta a qualquer peso positivo e normalização monotônica, não a erro amostral.",
+    "estavel_so_na_familia": "Ordem estrita só garantida na família 40% a 4/7 com divisão igual nos blocos.",
+    "inversao_possivel": "A ordem pode inverter dentro da própria família.",
+    "empate_possivel": "Há escolha da família que empata, sem inverter."
+  },
+  "summary": {
+    "caixa_25pct_inversao_possivel": 53,
+    "caixa_50pct_inversao_possivel": 99,
+    "classe_dominancia": 55,
+    "classe_empate_possivel": 1,
+    "classe_estavel_so_na_familia": 239,
+    "classe_inversao_possivel": 30,
+    "escore_z_inversoes": 20,
+    "exclusao_conectividade": 5,
+    "exclusao_educacao": 27,
+    "exclusao_habitacao": 11,
+    "exclusao_mobilidade": 29,
+    "exclusao_saneamento": 10,
+    "exclusao_seguranca": 32,
+    "exclusao_trabalho": 8,
+    "homicidios_registrados_empate_possivel": 1,
+    "homicidios_registrados_estavel": 299,
+    "homicidios_registrados_inversao_possivel": 25,
+    "homicidios_registrados_muda_estado": 8,
+    "minmax_inversoes": 19
+  },
+  "limits": [
+    "Não é intervalo de confiança, probabilidade ou significância estatística.",
+    "Experimentos separados; não esgotam as especificações plausíveis.",
+    "Dados, coorte e ano fixos; erros das fontes não propagados."
+  ],
+  "pairs": [
+    {
+      "a": "2800308",
+      "b": "3106200",
+      "a_name": "Aracaju",
+      "b_name": "Belo Horizonte",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "1501402",
+      "a_name": "Aracaju",
+      "b_name": "Belém",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "1400100",
+      "a_name": "Aracaju",
+      "b_name": "Boa Vista",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "5002704",
+      "a_name": "Aracaju",
+      "b_name": "Campo Grande",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "5103403",
+      "a_name": "Aracaju",
+      "b_name": "Cuiabá",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "4106902",
+      "a_name": "Aracaju",
+      "b_name": "Curitiba",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "4205407",
+      "a_name": "Aracaju",
+      "b_name": "Florianópolis",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "2304400",
+      "a_name": "Aracaju",
+      "b_name": "Fortaleza",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "5208707",
+      "a_name": "Aracaju",
+      "b_name": "Goiânia",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "2507507",
+      "a_name": "Aracaju",
+      "b_name": "João Pessoa",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "1600303",
+      "a_name": "Aracaju",
+      "b_name": "Macapá",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "2704302",
+      "a_name": "Aracaju",
+      "b_name": "Maceió",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "1302603",
+      "a_name": "Aracaju",
+      "b_name": "Manaus",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "2408102",
+      "a_name": "Aracaju",
+      "b_name": "Natal",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "1721000",
+      "a_name": "Aracaju",
+      "b_name": "Palmas",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "4314902",
+      "a_name": "Aracaju",
+      "b_name": "Porto Alegre",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "conectividade",
+        "saneamento",
+        "seguranca",
+        "trabalho"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "1100205",
+      "a_name": "Aracaju",
+      "b_name": "Porto Velho",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "2611606",
+      "a_name": "Aracaju",
+      "b_name": "Recife",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "1200401",
+      "a_name": "Aracaju",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "3304557",
+      "a_name": "Aracaju",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "2927408",
+      "a_name": "Aracaju",
+      "b_name": "Salvador",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "2111300",
+      "a_name": "Aracaju",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "3550308",
+      "a_name": "Aracaju",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "seguranca"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2800308",
+      "b": "2211001",
+      "a_name": "Aracaju",
+      "b_name": "Teresina",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "mobilidade"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "2800308",
+      "b": "3205309",
+      "a_name": "Aracaju",
+      "b_name": "Vitória",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "1501402",
+      "a_name": "Belo Horizonte",
+      "b_name": "Belém",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "1400100",
+      "a_name": "Belo Horizonte",
+      "b_name": "Boa Vista",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "5002704",
+      "a_name": "Belo Horizonte",
+      "b_name": "Campo Grande",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "5103403",
+      "a_name": "Belo Horizonte",
+      "b_name": "Cuiabá",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "4106902",
+      "a_name": "Belo Horizonte",
+      "b_name": "Curitiba",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "4205407",
+      "a_name": "Belo Horizonte",
+      "b_name": "Florianópolis",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "2304400",
+      "a_name": "Belo Horizonte",
+      "b_name": "Fortaleza",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "5208707",
+      "a_name": "Belo Horizonte",
+      "b_name": "Goiânia",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "2507507",
+      "a_name": "Belo Horizonte",
+      "b_name": "João Pessoa",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "1600303",
+      "a_name": "Belo Horizonte",
+      "b_name": "Macapá",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "2704302",
+      "a_name": "Belo Horizonte",
+      "b_name": "Maceió",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "1302603",
+      "a_name": "Belo Horizonte",
+      "b_name": "Manaus",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "2408102",
+      "a_name": "Belo Horizonte",
+      "b_name": "Natal",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "1721000",
+      "a_name": "Belo Horizonte",
+      "b_name": "Palmas",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "habitacao",
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "4314902",
+      "a_name": "Belo Horizonte",
+      "b_name": "Porto Alegre",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "1100205",
+      "a_name": "Belo Horizonte",
+      "b_name": "Porto Velho",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "2611606",
+      "a_name": "Belo Horizonte",
+      "b_name": "Recife",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "1200401",
+      "a_name": "Belo Horizonte",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "3304557",
+      "a_name": "Belo Horizonte",
+      "b_name": "Rio de Janeiro",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "2927408",
+      "a_name": "Belo Horizonte",
+      "b_name": "Salvador",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "2111300",
+      "a_name": "Belo Horizonte",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "3550308",
+      "a_name": "Belo Horizonte",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "2211001",
+      "a_name": "Belo Horizonte",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3106200",
+      "b": "3205309",
+      "a_name": "Belo Horizonte",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "1400100",
+      "a_name": "Belém",
+      "b_name": "Boa Vista",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "5002704",
+      "a_name": "Belém",
+      "b_name": "Campo Grande",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "5103403",
+      "a_name": "Belém",
+      "b_name": "Cuiabá",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "4106902",
+      "a_name": "Belém",
+      "b_name": "Curitiba",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "4205407",
+      "a_name": "Belém",
+      "b_name": "Florianópolis",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "2304400",
+      "a_name": "Belém",
+      "b_name": "Fortaleza",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "5208707",
+      "a_name": "Belém",
+      "b_name": "Goiânia",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "2507507",
+      "a_name": "Belém",
+      "b_name": "João Pessoa",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "1600303",
+      "a_name": "Belém",
+      "b_name": "Macapá",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "2704302",
+      "a_name": "Belém",
+      "b_name": "Maceió",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "1501402",
+      "b": "1302603",
+      "a_name": "Belém",
+      "b_name": "Manaus",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "2408102",
+      "a_name": "Belém",
+      "b_name": "Natal",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "1721000",
+      "a_name": "Belém",
+      "b_name": "Palmas",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "4314902",
+      "a_name": "Belém",
+      "b_name": "Porto Alegre",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "1100205",
+      "a_name": "Belém",
+      "b_name": "Porto Velho",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "saneamento",
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "1501402",
+      "b": "2611606",
+      "a_name": "Belém",
+      "b_name": "Recife",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "conectividade",
+        "habitacao",
+        "trabalho"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "1200401",
+      "a_name": "Belém",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "3304557",
+      "a_name": "Belém",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "2927408",
+      "a_name": "Belém",
+      "b_name": "Salvador",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade",
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "1501402",
+      "b": "2111300",
+      "a_name": "Belém",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [
+        "educacao"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "3550308",
+      "a_name": "Belém",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "2211001",
+      "a_name": "Belém",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1501402",
+      "b": "3205309",
+      "a_name": "Belém",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "5002704",
+      "a_name": "Boa Vista",
+      "b_name": "Campo Grande",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "5103403",
+      "a_name": "Boa Vista",
+      "b_name": "Cuiabá",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "4106902",
+      "a_name": "Boa Vista",
+      "b_name": "Curitiba",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "4205407",
+      "a_name": "Boa Vista",
+      "b_name": "Florianópolis",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "2304400",
+      "a_name": "Boa Vista",
+      "b_name": "Fortaleza",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade",
+        "seguranca"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "1400100",
+      "b": "5208707",
+      "a_name": "Boa Vista",
+      "b_name": "Goiânia",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "2507507",
+      "a_name": "Boa Vista",
+      "b_name": "João Pessoa",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "1600303",
+      "a_name": "Boa Vista",
+      "b_name": "Macapá",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "2704302",
+      "a_name": "Boa Vista",
+      "b_name": "Maceió",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "1302603",
+      "a_name": "Boa Vista",
+      "b_name": "Manaus",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "2408102",
+      "a_name": "Boa Vista",
+      "b_name": "Natal",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "habitacao",
+        "trabalho"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "1721000",
+      "a_name": "Boa Vista",
+      "b_name": "Palmas",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "4314902",
+      "a_name": "Boa Vista",
+      "b_name": "Porto Alegre",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "1100205",
+      "a_name": "Boa Vista",
+      "b_name": "Porto Velho",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "2611606",
+      "a_name": "Boa Vista",
+      "b_name": "Recife",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "1400100",
+      "b": "1200401",
+      "a_name": "Boa Vista",
+      "b_name": "Rio Branco",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "1400100",
+      "b": "3304557",
+      "a_name": "Boa Vista",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "2927408",
+      "a_name": "Boa Vista",
+      "b_name": "Salvador",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade",
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "1400100",
+      "b": "2111300",
+      "a_name": "Boa Vista",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "habitacao",
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "3550308",
+      "a_name": "Boa Vista",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "2211001",
+      "a_name": "Boa Vista",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1400100",
+      "b": "3205309",
+      "a_name": "Boa Vista",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "5103403",
+      "a_name": "Campo Grande",
+      "b_name": "Cuiabá",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "seguranca"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "empate_possivel"
+    },
+    {
+      "a": "5002704",
+      "b": "4106902",
+      "a_name": "Campo Grande",
+      "b_name": "Curitiba",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "4205407",
+      "a_name": "Campo Grande",
+      "b_name": "Florianópolis",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "2304400",
+      "a_name": "Campo Grande",
+      "b_name": "Fortaleza",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "5208707",
+      "a_name": "Campo Grande",
+      "b_name": "Goiânia",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "2507507",
+      "a_name": "Campo Grande",
+      "b_name": "João Pessoa",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "1600303",
+      "a_name": "Campo Grande",
+      "b_name": "Macapá",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "2704302",
+      "a_name": "Campo Grande",
+      "b_name": "Maceió",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "1302603",
+      "a_name": "Campo Grande",
+      "b_name": "Manaus",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "2408102",
+      "a_name": "Campo Grande",
+      "b_name": "Natal",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "1721000",
+      "a_name": "Campo Grande",
+      "b_name": "Palmas",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "4314902",
+      "a_name": "Campo Grande",
+      "b_name": "Porto Alegre",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "5002704",
+      "b": "1100205",
+      "a_name": "Campo Grande",
+      "b_name": "Porto Velho",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "2611606",
+      "a_name": "Campo Grande",
+      "b_name": "Recife",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "1200401",
+      "a_name": "Campo Grande",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "3304557",
+      "a_name": "Campo Grande",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "2927408",
+      "a_name": "Campo Grande",
+      "b_name": "Salvador",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "2111300",
+      "a_name": "Campo Grande",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "3550308",
+      "a_name": "Campo Grande",
+      "b_name": "São Paulo",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "saneamento",
+        "seguranca"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "2211001",
+      "a_name": "Campo Grande",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "conectividade",
+        "habitacao",
+        "saneamento",
+        "seguranca",
+        "trabalho"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5002704",
+      "b": "3205309",
+      "a_name": "Campo Grande",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "4106902",
+      "a_name": "Cuiabá",
+      "b_name": "Curitiba",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "4205407",
+      "a_name": "Cuiabá",
+      "b_name": "Florianópolis",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "2304400",
+      "a_name": "Cuiabá",
+      "b_name": "Fortaleza",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "5208707",
+      "a_name": "Cuiabá",
+      "b_name": "Goiânia",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "2507507",
+      "a_name": "Cuiabá",
+      "b_name": "João Pessoa",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "habitacao",
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "1600303",
+      "a_name": "Cuiabá",
+      "b_name": "Macapá",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "2704302",
+      "a_name": "Cuiabá",
+      "b_name": "Maceió",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "1302603",
+      "a_name": "Cuiabá",
+      "b_name": "Manaus",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "2408102",
+      "a_name": "Cuiabá",
+      "b_name": "Natal",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "1721000",
+      "a_name": "Cuiabá",
+      "b_name": "Palmas",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "4314902",
+      "a_name": "Cuiabá",
+      "b_name": "Porto Alegre",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "5103403",
+      "b": "1100205",
+      "a_name": "Cuiabá",
+      "b_name": "Porto Velho",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "2611606",
+      "a_name": "Cuiabá",
+      "b_name": "Recife",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "1200401",
+      "a_name": "Cuiabá",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "3304557",
+      "a_name": "Cuiabá",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "2927408",
+      "a_name": "Cuiabá",
+      "b_name": "Salvador",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "2111300",
+      "a_name": "Cuiabá",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "3550308",
+      "a_name": "Cuiabá",
+      "b_name": "São Paulo",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "conectividade",
+        "educacao",
+        "saneamento"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "2211001",
+      "a_name": "Cuiabá",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "saneamento",
+        "seguranca",
+        "trabalho"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5103403",
+      "b": "3205309",
+      "a_name": "Cuiabá",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "4205407",
+      "a_name": "Curitiba",
+      "b_name": "Florianópolis",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "2304400",
+      "a_name": "Curitiba",
+      "b_name": "Fortaleza",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "5208707",
+      "a_name": "Curitiba",
+      "b_name": "Goiânia",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "2507507",
+      "a_name": "Curitiba",
+      "b_name": "João Pessoa",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "1600303",
+      "a_name": "Curitiba",
+      "b_name": "Macapá",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "2704302",
+      "a_name": "Curitiba",
+      "b_name": "Maceió",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "1302603",
+      "a_name": "Curitiba",
+      "b_name": "Manaus",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "2408102",
+      "a_name": "Curitiba",
+      "b_name": "Natal",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "1721000",
+      "a_name": "Curitiba",
+      "b_name": "Palmas",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "4314902",
+      "a_name": "Curitiba",
+      "b_name": "Porto Alegre",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "1100205",
+      "a_name": "Curitiba",
+      "b_name": "Porto Velho",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "2611606",
+      "a_name": "Curitiba",
+      "b_name": "Recife",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "1200401",
+      "a_name": "Curitiba",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "3304557",
+      "a_name": "Curitiba",
+      "b_name": "Rio de Janeiro",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "2927408",
+      "a_name": "Curitiba",
+      "b_name": "Salvador",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "2111300",
+      "a_name": "Curitiba",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "3550308",
+      "a_name": "Curitiba",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "2211001",
+      "a_name": "Curitiba",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4106902",
+      "b": "3205309",
+      "a_name": "Curitiba",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "2304400",
+      "a_name": "Florianópolis",
+      "b_name": "Fortaleza",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "5208707",
+      "a_name": "Florianópolis",
+      "b_name": "Goiânia",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "2507507",
+      "a_name": "Florianópolis",
+      "b_name": "João Pessoa",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "1600303",
+      "a_name": "Florianópolis",
+      "b_name": "Macapá",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "2704302",
+      "a_name": "Florianópolis",
+      "b_name": "Maceió",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "1302603",
+      "a_name": "Florianópolis",
+      "b_name": "Manaus",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "2408102",
+      "a_name": "Florianópolis",
+      "b_name": "Natal",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "1721000",
+      "a_name": "Florianópolis",
+      "b_name": "Palmas",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "4314902",
+      "a_name": "Florianópolis",
+      "b_name": "Porto Alegre",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "1100205",
+      "a_name": "Florianópolis",
+      "b_name": "Porto Velho",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "2611606",
+      "a_name": "Florianópolis",
+      "b_name": "Recife",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "1200401",
+      "a_name": "Florianópolis",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "3304557",
+      "a_name": "Florianópolis",
+      "b_name": "Rio de Janeiro",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "2927408",
+      "a_name": "Florianópolis",
+      "b_name": "Salvador",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "2111300",
+      "a_name": "Florianópolis",
+      "b_name": "São Luís",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "3550308",
+      "a_name": "Florianópolis",
+      "b_name": "São Paulo",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "2211001",
+      "a_name": "Florianópolis",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4205407",
+      "b": "3205309",
+      "a_name": "Florianópolis",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "5208707",
+      "a_name": "Fortaleza",
+      "b_name": "Goiânia",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "2507507",
+      "a_name": "Fortaleza",
+      "b_name": "João Pessoa",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "1600303",
+      "a_name": "Fortaleza",
+      "b_name": "Macapá",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "2704302",
+      "a_name": "Fortaleza",
+      "b_name": "Maceió",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "1302603",
+      "a_name": "Fortaleza",
+      "b_name": "Manaus",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "2408102",
+      "a_name": "Fortaleza",
+      "b_name": "Natal",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "1721000",
+      "a_name": "Fortaleza",
+      "b_name": "Palmas",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "4314902",
+      "a_name": "Fortaleza",
+      "b_name": "Porto Alegre",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "1100205",
+      "a_name": "Fortaleza",
+      "b_name": "Porto Velho",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "2611606",
+      "a_name": "Fortaleza",
+      "b_name": "Recife",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "saneamento"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "1200401",
+      "a_name": "Fortaleza",
+      "b_name": "Rio Branco",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade",
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "2304400",
+      "b": "3304557",
+      "a_name": "Fortaleza",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "2927408",
+      "a_name": "Fortaleza",
+      "b_name": "Salvador",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "2111300",
+      "a_name": "Fortaleza",
+      "b_name": "São Luís",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "2304400",
+      "b": "3550308",
+      "a_name": "Fortaleza",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "2211001",
+      "a_name": "Fortaleza",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2304400",
+      "b": "3205309",
+      "a_name": "Fortaleza",
+      "b_name": "Vitória",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "2507507",
+      "a_name": "Goiânia",
+      "b_name": "João Pessoa",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "1600303",
+      "a_name": "Goiânia",
+      "b_name": "Macapá",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "2704302",
+      "a_name": "Goiânia",
+      "b_name": "Maceió",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "1302603",
+      "a_name": "Goiânia",
+      "b_name": "Manaus",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "2408102",
+      "a_name": "Goiânia",
+      "b_name": "Natal",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "1721000",
+      "a_name": "Goiânia",
+      "b_name": "Palmas",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "5208707",
+      "b": "4314902",
+      "a_name": "Goiânia",
+      "b_name": "Porto Alegre",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "1100205",
+      "a_name": "Goiânia",
+      "b_name": "Porto Velho",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "2611606",
+      "a_name": "Goiânia",
+      "b_name": "Recife",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "1200401",
+      "a_name": "Goiânia",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "3304557",
+      "a_name": "Goiânia",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "2927408",
+      "a_name": "Goiânia",
+      "b_name": "Salvador",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "2111300",
+      "a_name": "Goiânia",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "3550308",
+      "a_name": "Goiânia",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "2211001",
+      "a_name": "Goiânia",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "5208707",
+      "b": "3205309",
+      "a_name": "Goiânia",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2507507",
+      "b": "1600303",
+      "a_name": "João Pessoa",
+      "b_name": "Macapá",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2507507",
+      "b": "2704302",
+      "a_name": "João Pessoa",
+      "b_name": "Maceió",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2507507",
+      "b": "1302603",
+      "a_name": "João Pessoa",
+      "b_name": "Manaus",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2507507",
+      "b": "2408102",
+      "a_name": "João Pessoa",
+      "b_name": "Natal",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2507507",
+      "b": "1721000",
+      "a_name": "João Pessoa",
+      "b_name": "Palmas",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2507507",
+      "b": "4314902",
+      "a_name": "João Pessoa",
+      "b_name": "Porto Alegre",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "2507507",
+      "b": "1100205",
+      "a_name": "João Pessoa",
+      "b_name": "Porto Velho",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2507507",
+      "b": "2611606",
+      "a_name": "João Pessoa",
+      "b_name": "Recife",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2507507",
+      "b": "1200401",
+      "a_name": "João Pessoa",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2507507",
+      "b": "3304557",
+      "a_name": "João Pessoa",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2507507",
+      "b": "2927408",
+      "a_name": "João Pessoa",
+      "b_name": "Salvador",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2507507",
+      "b": "2111300",
+      "a_name": "João Pessoa",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2507507",
+      "b": "3550308",
+      "a_name": "João Pessoa",
+      "b_name": "São Paulo",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "habitacao",
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "2507507",
+      "b": "2211001",
+      "a_name": "João Pessoa",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "habitacao",
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2507507",
+      "b": "3205309",
+      "a_name": "João Pessoa",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1600303",
+      "b": "2704302",
+      "a_name": "Macapá",
+      "b_name": "Maceió",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1600303",
+      "b": "1302603",
+      "a_name": "Macapá",
+      "b_name": "Manaus",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1600303",
+      "b": "2408102",
+      "a_name": "Macapá",
+      "b_name": "Natal",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1600303",
+      "b": "1721000",
+      "a_name": "Macapá",
+      "b_name": "Palmas",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1600303",
+      "b": "4314902",
+      "a_name": "Macapá",
+      "b_name": "Porto Alegre",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1600303",
+      "b": "1100205",
+      "a_name": "Macapá",
+      "b_name": "Porto Velho",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1600303",
+      "b": "2611606",
+      "a_name": "Macapá",
+      "b_name": "Recife",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1600303",
+      "b": "1200401",
+      "a_name": "Macapá",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1600303",
+      "b": "3304557",
+      "a_name": "Macapá",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1600303",
+      "b": "2927408",
+      "a_name": "Macapá",
+      "b_name": "Salvador",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1600303",
+      "b": "2111300",
+      "a_name": "Macapá",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1600303",
+      "b": "3550308",
+      "a_name": "Macapá",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1600303",
+      "b": "2211001",
+      "a_name": "Macapá",
+      "b_name": "Teresina",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1600303",
+      "b": "3205309",
+      "a_name": "Macapá",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2704302",
+      "b": "1302603",
+      "a_name": "Maceió",
+      "b_name": "Manaus",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2704302",
+      "b": "2408102",
+      "a_name": "Maceió",
+      "b_name": "Natal",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2704302",
+      "b": "1721000",
+      "a_name": "Maceió",
+      "b_name": "Palmas",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2704302",
+      "b": "4314902",
+      "a_name": "Maceió",
+      "b_name": "Porto Alegre",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2704302",
+      "b": "1100205",
+      "a_name": "Maceió",
+      "b_name": "Porto Velho",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "2704302",
+      "b": "2611606",
+      "a_name": "Maceió",
+      "b_name": "Recife",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2704302",
+      "b": "1200401",
+      "a_name": "Maceió",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2704302",
+      "b": "3304557",
+      "a_name": "Maceió",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2704302",
+      "b": "2927408",
+      "a_name": "Maceió",
+      "b_name": "Salvador",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "saneamento"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2704302",
+      "b": "2111300",
+      "a_name": "Maceió",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2704302",
+      "b": "3550308",
+      "a_name": "Maceió",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2704302",
+      "b": "2211001",
+      "a_name": "Maceió",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2704302",
+      "b": "3205309",
+      "a_name": "Maceió",
+      "b_name": "Vitória",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1302603",
+      "b": "2408102",
+      "a_name": "Manaus",
+      "b_name": "Natal",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1302603",
+      "b": "1721000",
+      "a_name": "Manaus",
+      "b_name": "Palmas",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1302603",
+      "b": "4314902",
+      "a_name": "Manaus",
+      "b_name": "Porto Alegre",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1302603",
+      "b": "1100205",
+      "a_name": "Manaus",
+      "b_name": "Porto Velho",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1302603",
+      "b": "2611606",
+      "a_name": "Manaus",
+      "b_name": "Recife",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1302603",
+      "b": "1200401",
+      "a_name": "Manaus",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1302603",
+      "b": "3304557",
+      "a_name": "Manaus",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1302603",
+      "b": "2927408",
+      "a_name": "Manaus",
+      "b_name": "Salvador",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1302603",
+      "b": "2111300",
+      "a_name": "Manaus",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1302603",
+      "b": "3550308",
+      "a_name": "Manaus",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1302603",
+      "b": "2211001",
+      "a_name": "Manaus",
+      "b_name": "Teresina",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1302603",
+      "b": "3205309",
+      "a_name": "Manaus",
+      "b_name": "Vitória",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2408102",
+      "b": "1721000",
+      "a_name": "Natal",
+      "b_name": "Palmas",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2408102",
+      "b": "4314902",
+      "a_name": "Natal",
+      "b_name": "Porto Alegre",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2408102",
+      "b": "1100205",
+      "a_name": "Natal",
+      "b_name": "Porto Velho",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2408102",
+      "b": "2611606",
+      "a_name": "Natal",
+      "b_name": "Recife",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2408102",
+      "b": "1200401",
+      "a_name": "Natal",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "conectividade",
+        "educacao",
+        "habitacao",
+        "trabalho"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2408102",
+      "b": "3304557",
+      "a_name": "Natal",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2408102",
+      "b": "2927408",
+      "a_name": "Natal",
+      "b_name": "Salvador",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2408102",
+      "b": "2111300",
+      "a_name": "Natal",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "habitacao",
+        "mobilidade",
+        "trabalho"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2408102",
+      "b": "3550308",
+      "a_name": "Natal",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2408102",
+      "b": "2211001",
+      "a_name": "Natal",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2408102",
+      "b": "3205309",
+      "a_name": "Natal",
+      "b_name": "Vitória",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1721000",
+      "b": "4314902",
+      "a_name": "Palmas",
+      "b_name": "Porto Alegre",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1721000",
+      "b": "1100205",
+      "a_name": "Palmas",
+      "b_name": "Porto Velho",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1721000",
+      "b": "2611606",
+      "a_name": "Palmas",
+      "b_name": "Recife",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1721000",
+      "b": "1200401",
+      "a_name": "Palmas",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1721000",
+      "b": "3304557",
+      "a_name": "Palmas",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1721000",
+      "b": "2927408",
+      "a_name": "Palmas",
+      "b_name": "Salvador",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1721000",
+      "b": "2111300",
+      "a_name": "Palmas",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1721000",
+      "b": "3550308",
+      "a_name": "Palmas",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1721000",
+      "b": "2211001",
+      "a_name": "Palmas",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1721000",
+      "b": "3205309",
+      "a_name": "Palmas",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4314902",
+      "b": "1100205",
+      "a_name": "Porto Alegre",
+      "b_name": "Porto Velho",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4314902",
+      "b": "2611606",
+      "a_name": "Porto Alegre",
+      "b_name": "Recife",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4314902",
+      "b": "1200401",
+      "a_name": "Porto Alegre",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4314902",
+      "b": "3304557",
+      "a_name": "Porto Alegre",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4314902",
+      "b": "2927408",
+      "a_name": "Porto Alegre",
+      "b_name": "Salvador",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4314902",
+      "b": "2111300",
+      "a_name": "Porto Alegre",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "4314902",
+      "b": "3550308",
+      "a_name": "Porto Alegre",
+      "b_name": "São Paulo",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "seguranca"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "4314902",
+      "b": "2211001",
+      "a_name": "Porto Alegre",
+      "b_name": "Teresina",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "mobilidade"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "4314902",
+      "b": "3205309",
+      "a_name": "Porto Alegre",
+      "b_name": "Vitória",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1100205",
+      "b": "2611606",
+      "a_name": "Porto Velho",
+      "b_name": "Recife",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1100205",
+      "b": "1200401",
+      "a_name": "Porto Velho",
+      "b_name": "Rio Branco",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1100205",
+      "b": "3304557",
+      "a_name": "Porto Velho",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1100205",
+      "b": "2927408",
+      "a_name": "Porto Velho",
+      "b_name": "Salvador",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "habitacao",
+        "saneamento"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "1100205",
+      "b": "2111300",
+      "a_name": "Porto Velho",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1100205",
+      "b": "3550308",
+      "a_name": "Porto Velho",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1100205",
+      "b": "2211001",
+      "a_name": "Porto Velho",
+      "b_name": "Teresina",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1100205",
+      "b": "3205309",
+      "a_name": "Porto Velho",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2611606",
+      "b": "1200401",
+      "a_name": "Recife",
+      "b_name": "Rio Branco",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade",
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "2611606",
+      "b": "3304557",
+      "a_name": "Recife",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2611606",
+      "b": "2927408",
+      "a_name": "Recife",
+      "b_name": "Salvador",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade",
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "2611606",
+      "b": "2111300",
+      "a_name": "Recife",
+      "b_name": "São Luís",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao",
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2611606",
+      "b": "3550308",
+      "a_name": "Recife",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2611606",
+      "b": "2211001",
+      "a_name": "Recife",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2611606",
+      "b": "3205309",
+      "a_name": "Recife",
+      "b_name": "Vitória",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1200401",
+      "b": "3304557",
+      "a_name": "Rio Branco",
+      "b_name": "Rio de Janeiro",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "educacao"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1200401",
+      "b": "2927408",
+      "a_name": "Rio Branco",
+      "b_name": "Salvador",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade",
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "1200401",
+      "b": "2111300",
+      "a_name": "Rio Branco",
+      "b_name": "São Luís",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade",
+        "seguranca"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "1200401",
+      "b": "3550308",
+      "a_name": "Rio Branco",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1200401",
+      "b": "2211001",
+      "a_name": "Rio Branco",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "1200401",
+      "b": "3205309",
+      "a_name": "Rio Branco",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3304557",
+      "b": "2927408",
+      "a_name": "Rio de Janeiro",
+      "b_name": "Salvador",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3304557",
+      "b": "2111300",
+      "a_name": "Rio de Janeiro",
+      "b_name": "São Luís",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3304557",
+      "b": "3550308",
+      "a_name": "Rio de Janeiro",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3304557",
+      "b": "2211001",
+      "a_name": "Rio de Janeiro",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "mobilidade"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "3304557",
+      "b": "3205309",
+      "a_name": "Rio de Janeiro",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2927408",
+      "b": "2111300",
+      "a_name": "Salvador",
+      "b_name": "São Luís",
+      "robustness": "inversao_possivel",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "seguranca"
+      ],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "inversao_possivel"
+    },
+    {
+      "a": "2927408",
+      "b": "3550308",
+      "a_name": "Salvador",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2927408",
+      "b": "2211001",
+      "a_name": "Salvador",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2927408",
+      "b": "3205309",
+      "a_name": "Salvador",
+      "b_name": "Vitória",
+      "robustness": "dominancia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2111300",
+      "b": "3550308",
+      "a_name": "São Luís",
+      "b_name": "São Paulo",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2111300",
+      "b": "2211001",
+      "a_name": "São Luís",
+      "b_name": "Teresina",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2111300",
+      "b": "3205309",
+      "a_name": "São Luís",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3550308",
+      "b": "2211001",
+      "a_name": "São Paulo",
+      "b_name": "Teresina",
+      "robustness": "empate_possivel",
+      "box_inversion_possible": {
+        "25pct": true,
+        "50pct": true
+      },
+      "leave_one_out_reversals": [
+        "saneamento",
+        "seguranca",
+        "trabalho"
+      ],
+      "minmax_reversal": true,
+      "zscore_reversal": true,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "3550308",
+      "b": "3205309",
+      "a_name": "São Paulo",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    },
+    {
+      "a": "2211001",
+      "b": "3205309",
+      "a_name": "Teresina",
+      "b_name": "Vitória",
+      "robustness": "estavel_so_na_familia",
+      "box_inversion_possible": {
+        "25pct": false,
+        "50pct": false
+      },
+      "leave_one_out_reversals": [],
+      "minmax_reversal": false,
+      "zscore_reversal": false,
+      "registered_homicides_family_state": "estavel"
+    }
+  ]
+}

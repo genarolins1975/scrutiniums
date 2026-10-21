@@ -1,0 +1,1426 @@
+{
+  "avaliador": "P2-U06",
+  "papel": "produto",
+  "rodada": "reavaliacao 2",
+  "versao_avaliada": "d616ae877 (build de produção local servido em http://localhost:3100; rodada 2, versão redesenhada)",
+  "unidade": "U06 PLD",
+  "paginas": {
+    "/setor-eletrico/pld": {
+      "paineis": [
+        "P008"
+      ],
+      "criterios": {
+        "A": {
+          "nota": 8.0,
+          "evidencia": [
+            "1440_dobra.png: H1 em pergunta, lede, três cartões em R$/MWh (R$ 124,93, R$ 135,25 e R$ 10,32) com data e natureza do dado, seletor de profundidade e início do primeiro gráfico na primeira tela.",
+            "objetivo.json (entender): altura de 11.043 px em 1440 e 19.993 px em 390, 10 painéis, 4 blocos Como interpretar e 5 O que não é possível concluir.",
+            "390_inteira_01de14.png e capturas próprias em 390: o eixo vertical cruza a primeira letra dos rótulos das barras; a tabela do exemplo sintético mostra 4 de 7 colunas."
+          ],
+          "atendidos": [
+            "Pergunta e informação principal reconhecíveis na primeira tela, em 1440 e em 390",
+            "Hierarquia entre síntese (cartões e frase), comparação (painéis) e aprofundamento (atalhos e níveis Analisar e Auditar)",
+            "Números com unidade, data e natureza do dado legíveis",
+            "Tipografia e espaçamento consistentes entre os painéis"
+          ],
+          "problemas": [
+            "Página longa: cerca de 24 telas no celular (19.993 px) e 12 em 1440, com 10 painéis; o rótulo 'O essencial em poucos minutos' não se cumpre.",
+            "O hub reproduz em resumo painéis de Diferenças regionais e de CMO e formação de preço e repete o trio de notas em vários painéis.",
+            "Em 390 o eixo corta a primeira letra dos rótulos e a tabela do exemplo sintético esconde as colunas de resultado.",
+            "Rótulos de eixo e valores de gráfico com 10 a 11 px."
+          ],
+          "justificativa": "A primeira tela e a hierarquia são fortes, com unidade, data e natureza do dado visíveis. A nota cai pela extensão (cerca de 24 telas no celular), pela repetição de painéis das subpáginas e de blocos de nota e por falhas de composição em 390 px."
+        },
+        "B": {
+          "nota": 8.0,
+          "evidencia": [
+            "texto_entender.txt: bloco 'O que é o PLD, e o que ele não é' (4 cartões), diagrama de formação, exemplo sintético de liquidação e termos em glossário (Mercado de Curto Prazo, submercado, NEWAVE, DECOMP, DESSEM, CMO).",
+            "Navegador: 'O PLD não é a tarifa nem a conta de luz' aparece em y≈1.210 px (1440) e y≈2.151 px (390); o bloco 'O que o PLD não é' em y≈6.115 e y≈11.186 px; 'Por que isso importa' fica recolhido.",
+            "Busca nos cinco textos: nenhuma ocorrência de kWh e nenhuma definição de MWh; CCEE, ONS e ANEEL só são expandidas no bloco recolhido 'Fontes, datas e siglas'."
+          ],
+          "atendidos": [
+            "Distinção entre PLD, CMO, tarifa e fatura explícita e repetida",
+            "Exemplo visual didático, identificado como sintético",
+            "Termos técnicos explicados por glossário no texto corrido",
+            "Conexão com o resto do sistema (água, carga, térmicas, rede) pelo diagrama e por links"
+          ],
+          "problemas": [
+            "A abertura não responde por que a medida importa nem o que ela não permite concluir: a ressalva sobre tarifa fica abaixo da primeira tela e 'Por que isso importa' está recolhido; o título 'Quanto custa a energia no curto prazo?' pode ser lido como preço pago.",
+            "R$/MWh, MWh e MWmed não são definidos para leigos nem convertidos em R$/kWh.",
+            "CCEE e ONS aparecem sem expansão na primeira tela.",
+            "Duas das 12 ligações do diagrama estão pendentes e uma delas é a etapa selecionada por padrão.",
+            "Percentis e 'faixa baixa, central, alta' sem exemplo para leitor leigo."
+          ],
+          "justificativa": "Conceito antes do uso, exemplos visuais e distinção entre PLD e tarifa estão bem feitos. Faltam, na abertura, por que importa e o que não permite concluir, e a unidade R$/MWh nunca é explicada nem ligada ao kWh da conta."
+        },
+        "C": {
+          "nota": 8.0,
+          "evidencia": [
+            "Navegador: alternar Dia 30/09, 7 dias, 30 dias, 12 meses e Histórico atualiza legenda, gráfico, respostas, tabela de estatísticas, URL (?per=) e CSV do período; no dia, 96 células da tabela e do CSV conferidas, 0 divergentes.",
+            "texto_entender.txt: 'Há diferença entre submercados?' (8 horas, 33,3%, maior R$ 187,71/MWh em 30/09 20h) e tabela com média, mínimo, máximo e desvio padrão por submercado.",
+            "Inspeção T9 (analista): dispersão horária e diferença regional localizadas em cerca de 4 passos, com atalho para Diferenças regionais."
+          ],
+          "atendidos": [
+            "T9: dispersão horária por período e resumo das diferenças regionais encontrados na própria página",
+            "Resposta curta com número, data e referência de comparação (dia anterior e 30 dias)",
+            "Limites vigentes e formação do preço acessíveis por texto, diagrama e atalhos"
+          ],
+          "problemas": [
+            "Períodos fixos: não há dia ou intervalo livre, e o dia de maior diferença citado no texto (23/03/2026, R$ 824,13/MWh em 12 meses) não pode ser aberto no gráfico.",
+            "Duas contagens de 'diferença entre submercados' (R$ 1,00 aqui e R$ 0,01 em Diferenças regionais) dão percentuais diferentes para a mesma pergunta.",
+            "A coluna 'Horas em faixa baixa, central, alta' usa percentis desde 2021 e ajuda pouco a ler um dia; 'menor valor horário do ano' é nome indireto para o piso.",
+            "O esquema de fluxos mistura 28/09 com os cartões de 30/09."
+          ],
+          "justificativa": "T9 é cumprida e os filtros acompanham o recorte, mas faltam seleção livre de dia e uma régua única de 'diferença'. Parte dos números (faixas por percentil, menor valor do ano) ajuda pouco a decidir."
+        },
+        "D": {
+          "nota": 7.5,
+          "evidencia": [
+            "texto_entender.txt: 'O PLD não é a tarifa nem a conta de luz', bloco 'Não é a sua tarifa de energia' e link 'Ver como a conta de luz é formada'.",
+            "Navegador: 'Copiar link deste período' copia a URL com o recorte; CSV do período e arquivos completos disponíveis; lacunas visíveis (previsão indisponível, série de 2001 a 2020 não integrada).",
+            "Busca nos textos: nenhuma lista de estados por submercado nem ligação com 'Minha região'; os CSV completos abrem com 'data_hora_local;SE;S;NE;N', sem unidade."
+          ],
+          "atendidos": [
+            "Lacunas relevantes visíveis, sem afirmar impacto comprovado",
+            "Meios de compartilhar (link com recorte) e exportar (CSV e XLSX nas tabelas)",
+            "Distinção entre PLD e tarifa útil ao consumidor",
+            "Recorte territorial pertinente (quatro submercados e suas diferenças)"
+          ],
+          "problemas": [
+            "O consumidor não encontra o próprio submercado: nenhuma lista de estados por submercado nem ligação com 'Minha região'.",
+            "Sem ponte do PLD para a conta de quem está no mercado cativo ou livre; o texto só diz o que o PLD não é.",
+            "Os CSV completos têm cabeçalho abreviado, sem unidade, fonte ou versão, e usam ';' com decimal '.', o que abre errado no Excel em português.",
+            "Vocabulário técnico denso para leitor leigo."
+          ],
+          "justificativa": "Há boa transparência de lacunas e bons meios de compartilhar, com o aviso de que PLD não é tarifa. O leitor leigo não localiza a própria região nem converte a unidade, e as exportações completas saem sem unidade e sem fonte."
+        },
+        "I": {
+          "nota": 8.0,
+          "evidencia": [
+            "1440_inteira_01de04.png: barras da média diária com eixo iniciado em zero e mesma escala, valores rotulados e empate sinalizado.",
+            "Navegador 1440 (7 e 30 dias): as quatro séries se sobrepõem a menos de R$ 0,01 (SE/CO e Norte); estilos de linha distintos e nota textual admitem a sobreposição.",
+            "texto_entender.txt: esquema de fluxos usa 28/09/2026 e os cartões usam 30/09/2026; figura de leque P10 a P90 sem dados, com aviso só na legenda."
+          ],
+          "atendidos": [
+            "Gráfico escolhido pela tarefa, com eixos corretos e referências visíveis (zero, máximo horário, limites)",
+            "Tabela equivalente e rótulo de leitura de tela em todos os gráficos; teclado com setas, Home e End",
+            "Natureza do dado com forma além da cor",
+            "Dado ausente tratado como 'sem dado'"
+          ],
+          "problemas": [
+            "No gráfico horário as linhas coincidem e a separação entre regiões, que dá nome ao painel, aparece só em trechos curtos.",
+            "O esquema de fluxos usa data diferente da dos cartões e é chamado de 'mapa' no texto, com legenda 'sem escala geográfica'.",
+            "A figura de leque P10 a P90 é uma curva desenhada sem dados; o aviso 'sem dados' está só na legenda abaixo.",
+            "Em 390 o eixo vertical cruza a primeira letra dos rótulos das barras."
+          ],
+          "justificativa": "Eixo, escala comum e tabela equivalente estão corretos, e a sobreposição é admitida no texto. Pesam a separação regional pouco visível no gráfico horário, a data diferente no esquema e a figura de previsão sem marca dentro dela."
+        },
+        "J": {
+          "nota": 8.5,
+          "evidencia": [
+            "Navegador: abas de período com setas, Home e End; URL ?per=7d; seletor de profundidade em radiogrupo com ?modo=analisar; recorte e profundidade preservados.",
+            "Navegador: o diagrama de formação muda o detalhe (?etapa=carga) com região aria-live e rolagem automática ao detalhe no celular.",
+            "Navegador: o hub não mostra a barra de abas locais; os atalhos para as subpáginas ficam em y≈1.550 px (1440) e y≈2.378 px (390)."
+          ],
+          "atendidos": [
+            "Filtros claros, com estado na URL e link de compartilhamento",
+            "Sincronização de legenda, gráfico, frase, tabela e exportação do período",
+            "Estado bloqueado compreensível (Previsão indisponível, com o que falta)",
+            "Atalhos para a próxima pergunta e ligações para o resto da família"
+          ],
+          "problemas": [
+            "O hub não mostra a barra de abas locais (Preço e explicação, CMO, Limites, Histórico, Diferenças) que as subpáginas mostram.",
+            "Há camadas de navegação acima do conteúdo (barra superior, grupos, páginas da seção) além do seletor de profundidade.",
+            "Sem seleção livre de dia ou intervalo no gráfico horário.",
+            "'Baixar CSV' do primeiro painel entrega a série diária desde 2021, não o dia mostrado; o recorte tem botão próprio ('Baixar este período') no painel de períodos."
+          ],
+          "justificativa": "A interação funciona de ponta a ponta, com URL, teclado e exportação do recorte. Descontam a ausência de abas locais no hub, as camadas de navegação, a falta de escolha livre de data e um download do primeiro painel que não segue o recorte."
+        },
+        "K": {
+          "nota": 8.0,
+          "evidencia": [
+            "objetivo.json: axe sem violações em 360, 390, 768 e 1440 (entender) e em 390 e 1440 (auditar), sem rolagem lateral e sem foco invisível; 320 px não medido no arquivo.",
+            "Navegador: link 'Pular para o conteúdo', foco de 2 px teal (6,17:1) em todos os controles, abas e radiogrupo com setas, gráfico com setas e região aria-live, diálogo 'Sobre este dado' com foco movido para dentro, mantido após 6 Tab e devolvido ao botão com Esc.",
+            "axe-core rodado com a página carregada: landmark-unique (moderate, 3 nós) nos aside repetidos; 143 a 172 verificações de contraste incompletas; 320 px sem rolagem; texto a 200% rola em 1280 px e em 390 px."
+          ],
+          "atendidos": [
+            "Teclado completo e foco visível, com link de pular",
+            "Semântica: idioma pt-BR, um h1, marcos, tabelas equivalentes e rótulos nos gráficos",
+            "Alternativas à cor (forma da natureza do dado, estilos de linha, hachura)",
+            "Sem rolagem horizontal em 320, 390, 768 e 1440 px; controles com 44 px de alvo",
+            "Movimento reduzido e cores forçadas tratados no CSS"
+          ],
+          "problemas": [
+            "Aside com o mesmo nome repetidos em vários painéis (landmark-unique, 3 nós).",
+            "Em 390 o eixo corta a primeira letra dos rótulos e a tabela do exemplo sintético esconde as colunas de resultado sem aviso de rolagem.",
+            "Texto ampliado a 200% estoura a largura em 1280 e 390 px; rótulos de gráfico de 10 a 11 px."
+          ],
+          "justificativa": "Base sólida em teclado, foco, rótulos e ausência de rolagem lateral de 320 a 1440 px. A nota cai por marcos repetidos, rótulo de eixo cortado, colunas de resultado ocultas no celular e texto ampliado que estoura a largura. Leitor de tela real não foi testado."
+        }
+      },
+      "bloqueios": [],
+      "achados": [
+        {
+          "id": "pld-ressalva-tarifa-abaixo-da-dobra",
+          "gravidade": "media",
+          "criterios": [
+            "A",
+            "B",
+            "D"
+          ],
+          "onde": "Cabeçalho e primeiro painel, 1440 e 390 (texto_entender.txt linhas 4 a 57)",
+          "descricao": "A primeira tela traz o título 'Quanto custa a energia no curto prazo?', o lede e três cartões em R$/MWh, sem dizer que o PLD não é tarifa nem conta de luz. A frase aparece em 'O que não é possível concluir' (y≈1.210 px em 1440; y≈2.151 px em 390) e o bloco 'O que o PLD não é' só em y≈6.115 px (1440) e y≈11.186 px (390). 'Por que isso importa' está recolhido.",
+          "sugestao": "Uma linha de ressalva sob o lede (PLD não é tarifa nem conta de luz), título menos ambíguo e 'por que importa' visível."
+        },
+        {
+          "id": "pld-unidade-e-siglas",
+          "gravidade": "media",
+          "criterios": [
+            "B",
+            "D"
+          ],
+          "onde": "Lede, cartões e blocos recolhidos 'Fontes, datas e siglas'",
+          "descricao": "R$/MWh está em todos os números e nenhum texto das cinco páginas define MWh ou o relaciona a R$/kWh (zero ocorrências de kWh); MWmed só é explicado no esquema de fluxos. CCEE, ONS e ANEEL só são expandidas no bloco recolhido de siglas.",
+          "sugestao": "Explicar MWh e kWh na primeira tela e expandir CCEE no lede."
+        },
+        {
+          "id": "pld-pagina-longa-e-repeticao",
+          "gravidade": "media",
+          "criterios": [
+            "A"
+          ],
+          "onde": "Entender, 10 painéis (1440: 11.043 px; 390: 19.993 px)",
+          "descricao": "Cerca de 24 telas no celular, com 4 blocos 'Como interpretar' e 5 'O que não é possível concluir'. O hub reproduz em resumo painéis de Diferenças regionais (esquema de fluxos e série de amplitude) e de CMO e formação de preço (tabela dos quatro submercados), que as subpáginas desenvolvem. O rótulo 'O essencial em poucos minutos' não se cumpre no celular.",
+          "sugestao": "Trocar os painéis resumidos por uma frase-resposta e um link, deixando no hub só o que responde ao título."
+        },
+        {
+          "id": "pld-linhas-sobrepostas",
+          "gravidade": "media",
+          "criterios": [
+            "I"
+          ],
+          "onde": "Painel 'Em que horas o preço sobe, e as regiões se separam?', abas 7 dias e 30 dias, 1440",
+          "descricao": "As quatro séries coincidem (SE/CO e Norte a menos de R$ 0,01/MWh) e se sobrepõem em 168 e 720 pontos; a separação entre regiões, que dá nome ao painel, só aparece em trechos curtos. A nota admite a sobreposição e remete à tabela.",
+          "sugestao": "Acrescentar sob o gráfico a série da diferença entre o maior e o menor preço, ou pequenos múltiplos por submercado."
+        },
+        {
+          "id": "pld-esquema-data-28-09",
+          "gravidade": "baixa",
+          "criterios": [
+            "I",
+            "A"
+          ],
+          "onde": "Painel 'Por que os preços dos submercados podem diferir?'",
+          "descricao": "O esquema desenha preços e fluxos de 28/09/2026 (R$ 105,27 e R$ 99,01), enquanto a frase logo abaixo e os cartões usam 30/09/2026 (R$ 10,32). O aviso está em texto pequeno sob a figura; o texto chama o esquema de 'mapa' e a legenda diz 'sem escala geográfica'. Em 390 o esquema vira quatro caixas e uma lista, sem perda de dado.",
+          "sugestao": "Pôr a data no título do esquema e chamá-lo de esquema."
+        },
+        {
+          "id": "pld-leque-sem-dados",
+          "gravidade": "baixa",
+          "criterios": [
+            "I",
+            "B"
+          ],
+          "onde": "Painel 'Para onde o PLD pode ir?', figura de leque",
+          "descricao": "A figura mostra mediana e faixas P10 a P90 desenhadas sem dados; o aviso 'sem dados e sem escala' está só na legenda abaixo, e a 'Última execução' cita 28 previsões do modelo B0 sem mostrar números. Recortada da legenda, a figura parece previsão.",
+          "sugestao": "Marca 'ilustração, sem dados' dentro da figura e uma linha explicando onde estão os números do B0."
+        },
+        {
+          "id": "pld-sem-abas-locais",
+          "gravidade": "media",
+          "criterios": [
+            "J"
+          ],
+          "onde": "Topo do hub, 1440 e 390",
+          "descricao": "O hub não mostra a barra de abas locais (Preço e explicação, CMO e formação de preço, Limites, Histórico, Diferenças regionais) que as subpáginas mostram. Os atalhos aparecem depois do primeiro painel (y≈1.550 px em 1440; y≈2.378 px em 390).",
+          "sugestao": "Exibir as abas locais também no hub."
+        },
+        {
+          "id": "pld-periodo-sem-selecao-livre",
+          "gravidade": "baixa",
+          "criterios": [
+            "C",
+            "J"
+          ],
+          "onde": "Painel de períodos (Dia 30/09, 7 dias, 30 dias, 12 meses, Histórico)",
+          "descricao": "Há cinco períodos fixos. O gráfico horário não aceita dia ou intervalo escolhido, e o dia de maior diferença citado no texto (23/03/2026, R$ 824,13/MWh em 12 meses) não pode ser aberto.",
+          "sugestao": "Seletor de data, ou link 'ver este dia' a partir de 'Maior diferença'."
+        },
+        {
+          "id": "pld-landmarks-repetidos",
+          "gravidade": "baixa",
+          "criterios": [
+            "K"
+          ],
+          "onde": "Blocos 'O que mudou', 'Como interpretar' e 'O que não é possível concluir' (aside)",
+          "descricao": "axe-core com a página carregada aponta landmark-unique (3 nós): os aside repetem o mesmo nome em vários painéis. O objetivo.json registra axe vazio.",
+          "sugestao": "Nomear cada aside com o título do painel."
+        },
+        {
+          "id": "pld-exemplo-390-colunas",
+          "gravidade": "media",
+          "criterios": [
+            "K",
+            "A"
+          ],
+          "onde": "Painel 'Como a diferença entre contratado e verificado é valorada ao PLD?', 390",
+          "descricao": "A tabela do exemplo sintético mostra 4 de 7 colunas (rolagem de 565 px em contêiner de 324 px). 'Consumo verificado', 'Diferença (MWh)' e 'Valor no MCP', que são o resultado do exemplo, ficam fora da tela sem aviso de rolagem.",
+          "sugestao": "Empilhar as linhas no celular ou avisar da rolagem."
+        },
+        {
+          "id": "pld-faixas-e-menor-valor-do-ano",
+          "gravidade": "baixa",
+          "criterios": [
+            "B",
+            "C"
+          ],
+          "onde": "Tabela 'Estatísticas do PLD no período por submercado' e resposta 'Quanto do período ficou no menor valor horário do ano?'",
+          "descricao": "A coluna 'Horas em faixa baixa, central, alta' classifica as horas pelos percentis 25 e 75 de toda a série desde 2021; o critério só aparece na nota sob a tabela e, no dia de referência, 'faixa baixa' coincide com horas no piso. A pergunta sobre o 'menor valor horário do ano' usa nome indireto para o piso, e em 12 meses e Histórico 'do ano' é ambíguo.",
+          "sugestao": "Dizer 'no piso' com o valor do piso e explicar as faixas no cabeçalho."
+        },
+        {
+          "id": "pld-csv-sem-unidade",
+          "gravidade": "media",
+          "criterios": [
+            "D",
+            "J"
+          ],
+          "onde": "Downloads 'Baixar CSV' e 'Baixar os dados' (pld_horario.csv, pld_diario.csv)",
+          "descricao": "Os arquivos abrem com 'data_hora_local;SE;S;NE;N' e 'data;SE;S;NE;N', sem unidade, fonte, fuso ou versão, com ';' e decimal '.' (lido como texto no Excel em português). O CSV do período exportado pelo botão do painel tem cabeçalho legível com unidade. O 'Baixar CSV' do primeiro painel entrega a série diária desde 2021, não o dia mostrado.",
+          "sugestao": "Cabeçalhos com unidade, linha de fonte e versão e separadores documentados."
+        },
+        {
+          "id": "pld-auditar-jargao",
+          "gravidade": "baixa",
+          "criterios": [
+            "B"
+          ],
+          "onde": "Nível Auditar",
+          "descricao": "Identificadores de coleta e erros brutos aparecem sem glossário (PLD_HORARIO, package_show, HTTP 403 com 'Acesso bloqueado'); o objetivo.json conta 8 termos internos.",
+          "sugestao": "Glossário curto para os termos de coleta."
+        }
+      ],
+      "nao_verificado": [
+        "Leitura com leitor de tela real (NVDA, JAWS, VoiceOver) e uso em dispositivo de toque real",
+        "Aparência de Analisar e Auditar em 1440 e 390 (sem capturas; avaliei por texto, axe e medidas de DOM)",
+        "Contraste de texto dentro de SVG e sobre fundo não sólido (143 a 172 verificações incompletas do axe)",
+        "Trechos de 390 não fornecidos (02 a 04, 06 a 09 e 11 a 13 de 14): cobri só períodos, dia em detalhe, esquema de submercados e exemplo sintético com capturas próprias",
+        "Efeito do movimento reduzido nas animações dos gráficos (li só o CSS)",
+        "Abertura dos CSV no Excel em português"
+      ],
+      "tarefas_inspecionadas": [
+        {
+          "tarefa": "T9",
+          "perfil": "analista de empresas",
+          "recorte_da_pagina": "dispersão horária, diferença regional, limites vigentes e formação do preço no hub",
+          "passos": [
+            "Abrir /setor-eletrico/pld em 1440 e ler a dobra: H1, lede, três cartões e seletor de profundidade.",
+            "Usar o link de pular e o teclado (14 Tab até a aba Dia 30/09) e trocar de período com as setas: 7 dias, 30 dias, 12 meses e Histórico.",
+            "Ler a curva horária, as respostas 'Há diferença entre submercados?', 'Quanto do período...' e 'Houve picos?' e a tabela de estatísticas; baixar o CSV do dia e comparar com a tabela (96 células, 0 divergentes).",
+            "Ler o esquema de fluxos e a série de amplitude de 12 meses e seguir o atalho 'Diferenças regionais'."
+          ],
+          "resultado": "sim",
+          "obstaculos": [
+            "Sem seleção livre de dia ou intervalo.",
+            "Duas contagens de 'diferença' (R$ 1,00 aqui, R$ 0,01 em Diferenças regionais).",
+            "Linhas coincidentes escondem a separação regional no gráfico.",
+            "Esquema com data 28/09 e cartões em 30/09."
+          ],
+          "erros": [
+            "Nenhum erro de console, de rede ou de script nas interações testadas (períodos, profundidade, diagrama, diálogo)."
+          ]
+        },
+        {
+          "tarefa": "T9",
+          "perfil": "consumidor",
+          "recorte_da_pagina": "entender o PLD sem confundi-lo com tarifa e achar a própria região",
+          "passos": [
+            "Abrir /setor-eletrico/pld em 390 e ler a primeira tela.",
+            "Procurar o que o preço significa para a conta: rolar até 'O que não é possível concluir' (y≈2.151 px) e até 'O que o PLD não é' (y≈11.186 px).",
+            "Procurar o próprio estado e a conversão para kWh: nenhum dos dois existe nas cinco páginas."
+          ],
+          "resultado": "parcial",
+          "obstaculos": [
+            "A ressalva de que PLD não é tarifa fica a cerca de 2,5 telas do topo no celular.",
+            "R$/MWh não é explicado nem convertido em kWh.",
+            "Sem lista de estados por submercado.",
+            "Vocabulário técnico (CMO, NEWAVE, DECOMP, DESSEM, MCP)."
+          ],
+          "erros": [
+            "Nenhum erro de console ou de rede."
+          ]
+        }
+      ]
+    },
+    "/setor-eletrico/pld/cmo-e-formacao": {
+      "paineis": [
+        "P009"
+      ],
+      "criterios": {
+        "A": {
+          "nota": 8.5,
+          "evidencia": [
+            "1440_dobra.png: kicker, H1 em pergunta, lede com termos em glossário, abas locais, seletor de profundidade, frase de resposta e seletor de submercado na primeira tela.",
+            "1440_inteira_01de02.png: gráfico semanal com marca da sequência de zeros, quatro cartões, tabela dos quatro submercados e três notas (altura de 5.064 px em 1440 e 8.636 px em 390).",
+            "390_inteira_04de06.png e captura própria em 390: pequenos múltiplos legíveis; o eixo cruza o primeiro algarismo dos rótulos de ano; o gráfico semanal tem cerca de 250 px depois de cerca de 450 px de controles e legenda."
+          ],
+          "atendidos": [
+            "Pergunta e resposta reconhecíveis na primeira tela",
+            "Hierarquia entre síntese, comparação e aprofundamento (frase, gráfico, cartões, tabela, notas)",
+            "Números, unidades e datas legíveis, com gráficos em espaço adequado em 1440",
+            "Celular preserva a informação essencial, com tabela que se reorganiza"
+          ],
+          "problemas": [
+            "Em 390 a legenda do gráfico semanal ocupa 3 linhas e a dos pequenos múltiplos cerca de 7; os controles somam cerca de 450 px e o gráfico semanal fica pequeno, com só dois rótulos de tempo (jan/25 e out/26).",
+            "A tabela dos quatro submercados repete o painel 'CMO e PLD: três produtos' do hub.",
+            "Em 390 o eixo corta o primeiro algarismo dos rótulos de ano do gráfico empilhado.",
+            "Valores de eixo com 10 a 11 px."
+          ],
+          "justificativa": "A primeira tela é objetiva e a hierarquia é clara, com bom aproveitamento do espaço em 1440. Descontos pelo gráfico pequeno atrás de muitos controles em 390, pela repetição da tabela do hub e por rótulos de eixo cortados."
+        },
+        "B": {
+          "nota": 7.5,
+          "evidencia": [
+            "texto_entender.txt: o lede define CMO, DECOMP e DESSEM com glossário; 'Como interpretar' explica a comparação só no mesmo intervalo.",
+            "texto_entender.txt: 'Unidade' cita que a média semanal do DECOMP 'aparece como R$/MW no dicionário do ONS'; semana de sábado a sexta, 336 meias horas, 168 horas e patamares sem exemplo visual.",
+            "Navegador: 'Por que isso importa' recolhido; nenhuma explicação de MWh nem de kWh."
+          ],
+          "atendidos": [
+            "Termos técnicos traduzidos por glossário na abertura",
+            "Distinção explícita entre três produtos (CMO semanal, CMO semi-horário, PLD) e do que não se pode concluir",
+            "Conexão com limites e histórico por 'Próxima pergunta'"
+          ],
+          "problemas": [
+            "Três conceitos novos (DECOMP, DESSEM, PLD) na abertura, sem exemplo visual de como se relacionam antes do gráfico.",
+            "Semana operativa, meias horas, patamares e a divergência R$/MW contra R$/MWh exigem leitura técnica.",
+            "'Por que isso importa' recolhido; MWh não definido.",
+            "A ideia de 'produto diferente no mesmo intervalo' só se completa nas notas abaixo do painel."
+          ],
+          "justificativa": "Separar CMO e PLD está bem posto, com glossário e notas de não conclusão. O conteúdo é denso para leigos: faltam exemplo visual antes do gráfico e definição de MWh e de semana operativa, e o motivo de importar fica recolhido."
+        },
+        "C": {
+          "nota": 8.0,
+          "evidencia": [
+            "Navegador: submercado (?sm=), 30 dias, 90 dias, 1 ano, Restaurar intervalo e controles de início e fim atualizam frase, gráfico, cartões e tabela; o link copia o recorte.",
+            "Navegador: com Norte e 10/07 a 02/10, a tabela exporta 13 linhas em CSV e XLSX, com submercado e intervalo no nome do arquivo.",
+            "texto_entender.txt: frase 'PLD ficou R$ 26,20/MWh acima do CMO semanal e R$ 60,78/MWh acima da média do DESSEM' e sequência de 61 semanas com CMO zero."
+          ],
+          "atendidos": [
+            "Formação do preço (parte da tarefa T9) com três produtos comparados no mesmo intervalo",
+            "Recorte por submercado e período, com exportação da tabela do recorte",
+            "Nenhuma causa atribuída às diferenças"
+          ],
+          "problemas": [
+            "Para T9 a dispersão horária aparece só em 168 horas e a diferença regional só na tabela de uma semana, e o PLD fica achatado na régua de 0 a 2.000.",
+            "Com Norte, o DECOMP de R$ 1.866,74 estica o eixo e a frase de destaque diz que o PLD ficou R$ 1.742,65/MWh abaixo do CMO, sem alerta fora da nota de tetos.",
+            "O rodapé 'Baixar os dados' entrega séries completas, não o recorte."
+          ],
+          "justificativa": "Boa ferramenta para o analista comparar CMO e PLD, com recortes e exportação do recorte. Para a tarefa T9 atende só em parte, e o caso do Norte produz uma frase de destaque difícil de interpretar sem alerta."
+        },
+        "D": {
+          "nota": 7.0,
+          "evidencia": [
+            "texto_entender.txt: 'Os dados não dizem por que o PLD difere do CMO' e 'Diferença entre produtos não é erro de nenhum deles'.",
+            "Navegador: 'Copiar link deste painel' e 'Baixar os dados (3 arquivos)' presentes; arquivos completos com cabeçalho interno (decomp_media_semanal, sm).",
+            "texto_entender.txt: a linha 'Fontes:' mistura órgãos e conjuntos (ONS; CCEE, CMO Semanal (DECOMP); ...; ANEEL, PLD horário por submercado)."
+          ],
+          "atendidos": [
+            "Lacunas e limites de interpretação visíveis",
+            "Compartilhar e exportar com contexto no nome do arquivo da tabela",
+            "Útil a analistas, jornalistas e pesquisadores"
+          ],
+          "problemas": [
+            "Pouca ponte para o consumidor: tema técnico (CMO, DECOMP, DESSEM) sem ligação com custo ou conta.",
+            "A linha 'Fontes:' atribui o CMO à CCEE e o PLD à ANEEL (registro para o avaliador técnico).",
+            "CSV completos sem unidade, fonte ou versão e com ';' e decimal '.'.",
+            "Nenhuma indicação de estados por submercado."
+          ],
+          "justificativa": "Serve a analistas e jornalistas, com limites de interpretação visíveis e exportação contextualizada na tabela. Para o leitor leigo e o consumidor o tema fica distante, a linha de fontes embaralha órgãos e os CSV completos saem sem unidade."
+        },
+        "I": {
+          "nota": 8.0,
+          "evidencia": [
+            "1440_inteira_01de02.png: três séries com estilos distintos (tracejado, azul, roxo), marca vertical 'última semana com CMO semanal zero' e rótulos diretos no fim das linhas.",
+            "Navegador: com Norte e 90 dias o eixo vai a cerca de 2.000 e PLD e DESSEM ficam rentes a zero; a nota sobre tetos aparece só nesse caso.",
+            "390_inteira_04de06.png: quatro painéis na mesma régua de 0 a 2.000, com PLD e DESSEM no terço inferior; barras empilhadas com o eixo cruzando o rótulo."
+          ],
+          "atendidos": [
+            "Séries comparáveis em escala comum declarada",
+            "Lacunas desenhadas como lacuna e 'sem dado' na tabela",
+            "Composição em horas no piso, entre limites e nos tetos, com categorias completas",
+            "Tabela equivalente e teclado nas visualizações"
+          ],
+          "problemas": [
+            "O valor atípico semanal do Norte achata PLD e DESSEM no gráfico.",
+            "A régua de 0 a 2.000 nos painéis horários reduz a leitura da diferença hora a hora.",
+            "No painel do Norte, PLD e DESSEM têm a mesma cor azul e se distinguem só pelo tracejado; legenda de oito itens.",
+            "Em 390 o eixo cruza a primeira letra dos rótulos."
+          ],
+          "justificativa": "Gráficos escolhidos pela tarefa, com escala comum e lacunas honestas. A leitura piora com o valor atípico do Norte e com a régua de 2.000 nos painéis horários, e há cores iguais no Norte e rótulo cortado no celular."
+        },
+        "J": {
+          "nota": 8.5,
+          "evidencia": [
+            "Navegador: ?sm=N&de=2026-07-10&ate=2026-10-02; 'Restaurar intervalo' volta a ?sm=N; controles de início e fim com aria-valuetext em datas.",
+            "Navegador: 'Ver a tabela completa (13 linhas)' acompanha o recorte e exporta CSV e XLSX com submercado e intervalo no nome; o rodapé 'Baixar os dados (3 arquivos)' entrega séries completas com o mesmo rótulo 'Baixar CSV'.",
+            "Navegador: o título do painel de limites muda com o submercado ('... Norte'); ao ir para outra página da família o submercado volta a SE/CO e só o modo persiste."
+          ],
+          "atendidos": [
+            "Filtros claros com limpeza (Restaurar intervalo) e estado na URL",
+            "Sincronização de frase, cartões, gráfico, tabela e exportação do recorte",
+            "Comparação de quatro submercados lado a lado",
+            "Download com contexto no nome do arquivo",
+            "Ausência tratada como 'sem dado' na tabela e célula vazia no CSV"
+          ],
+          "problemas": [
+            "O submercado não persiste entre páginas da família.",
+            "Dois downloads com o mesmo rótulo e escopos diferentes (recorte na tabela, série completa no rodapé).",
+            "Camadas de navegação acima do conteúdo (barra superior, grupos, páginas, abas locais) mais a barra de profundidade.",
+            "Em 390 controles e legenda ocupam cerca de 450 px antes de um gráfico de cerca de 250 px."
+          ],
+          "justificativa": "Interação rica e consistente, com estado na URL, limpeza de intervalo e exportação do recorte com contexto no nome. Descontos por submercado que não persiste, downloads de escopos distintos com o mesmo rótulo e camadas de navegação."
+        },
+        "K": {
+          "nota": 8.5,
+          "evidencia": [
+            "objetivo.json: axe 0 em todos os modos e larguras medidos, sem rolagem horizontal e sem foco invisível; 320 px não medido.",
+            "axe-core rodado por mim em 390 e 1440 nos três níveis: 0 violações e 83 a 101 verificações de contraste incompletas; texto HTML sobre fundo sólido conferido à mão, nenhum abaixo de 4,5:1 (3:1 em texto grande).",
+            "Navegador: legendas como botões com aria-pressed, controles de intervalo com aria-valuetext, diálogo com foco e Esc, 320 px sem rolagem lateral."
+          ],
+          "atendidos": [
+            "Teclado e foco visível, link de pular, alvos de 44 px nos controles",
+            "Semântica e rótulos, tabelas equivalentes, legendas operáveis por teclado",
+            "Alternativas à cor (traço, forma, rótulo direto)",
+            "320, 390, 768 e 1440 px sem rolagem lateral"
+          ],
+          "problemas": [
+            "Em 390 o eixo cruza o primeiro algarismo dos rótulos de ano.",
+            "Rótulos de eixo de 10 a 11 px; com texto a 200% em 390 há 15 px de rolagem lateral."
+          ],
+          "justificativa": "Sem violações no axe e com teclado, foco e legendas operáveis. A nota fica abaixo de 9 por rótulos cortados e pequenos e por rolagem lateral com texto a 200% em 390 px. Leitor de tela real não foi testado."
+        }
+      },
+      "bloqueios": [],
+      "achados": [
+        {
+          "id": "cmo-norte-valor-atipico",
+          "gravidade": "media",
+          "criterios": [
+            "I",
+            "A"
+          ],
+          "onde": "Painel 'Os três valores na mesma semana operativa' com submercado Norte; tabela 'Os quatro submercados na mesma semana'",
+          "descricao": "No Norte o CMO semanal do DECOMP é R$ 1.866,74/MWh contra R$ 97,89 nos outros três; o eixo vai a cerca de 2.000, PLD e DESSEM ficam rentes a zero e a frase de destaque diz 'PLD R$ 1.742,65/MWh abaixo do CMO semanal'. A nota sobre os tetos só aparece com o Norte selecionado; a tabela dos quatro submercados mostra o valor sem alerta.",
+          "sugestao": "Alerta fixo sobre valor atípico e opção de eixo próprio ou de segundo painel."
+        },
+        {
+          "id": "cmo-fontes-embaralhadas",
+          "gravidade": "media",
+          "criterios": [
+            "B",
+            "D"
+          ],
+          "onde": "Linha 'Fontes:' do rodapé do painel",
+          "descricao": "'Fontes: ONS; CCEE, CMO Semanal (DECOMP); CMO Semi-Horário (DESSEM); PLD horário por submercado (referência até 02/10/2026); ...; ANEEL, PLD horário por submercado; ...' junta órgãos e conjuntos e atribui o CMO à CCEE e o PLD à ANEEL; a data 02/10/2026 aparece ao lado do PLD, que vai até 30/09/2026. Registro para o avaliador técnico (H).",
+          "sugestao": "Uma linha por conjunto, com órgão e data corretos."
+        },
+        {
+          "id": "cmo-conceitos-densos",
+          "gravidade": "media",
+          "criterios": [
+            "B"
+          ],
+          "onde": "Lede e primeiro painel",
+          "descricao": "A abertura exige três produtos (CMO semanal do DECOMP, CMO semi-horário do DESSEM, PLD horário), semana operativa de sábado a sexta, 336 meias horas e patamares, com a unidade R$/MW do dicionário citada no Entender. Não há exemplo visual da relação entre eles antes do gráfico; a interpretação está nas notas abaixo do painel.",
+          "sugestao": "Esquema de linha do tempo com um exemplo numérico antes do gráfico."
+        },
+        {
+          "id": "cmo-multiplos-regua-2000",
+          "gravidade": "baixa",
+          "criterios": [
+            "I"
+          ],
+          "onde": "Painel 'Como o PLD e o CMO do DESSEM se comparam na mesma hora?' (4 pequenos múltiplos)",
+          "descricao": "A régua comum de 0 a 2.000 R$/MWh deixa PLD e DESSEM no terço inferior (a maior parte dos valores está abaixo de 600); a legenda tem oito itens e, no Norte, PLD e DESSEM compartilham o azul.",
+          "sugestao": "Opção de régua ajustada com aviso, mantendo a comum como padrão, e cor distinta para o DESSEM."
+        },
+        {
+          "id": "cmo-downloads-dois-escopos",
+          "gravidade": "baixa",
+          "criterios": [
+            "J",
+            "D"
+          ],
+          "onde": "'Baixar os dados (3 arquivos)' e 'Baixar CSV' da tabela",
+          "descricao": "O rodapé entrega séries completas (CSV semanal com 300 semanas; gráfico com 156) e a tabela exporta o recorte (Norte, 10/07 a 02/10: 13 linhas), ambos rotulados 'Baixar CSV'. O texto avisa a diferença entre 156 e 300 semanas, mas não liga cada botão ao seu escopo.",
+          "sugestao": "Rotular 'Baixar o recorte' e 'Baixar a série completa'."
+        },
+        {
+          "id": "cmo-grafico-pequeno-390",
+          "gravidade": "baixa",
+          "criterios": [
+            "A",
+            "I",
+            "K"
+          ],
+          "onde": "Painel 'Os três valores na mesma semana operativa', 390",
+          "descricao": "O gráfico semanal tem cerca de 250 px de altura, só dois rótulos de tempo (jan/25 e out/26) e vem depois de cerca de 450 px de seletor, períodos, legenda de 3 linhas e 'Ajustar início e fim'; o rótulo da marca vertical não traz a data. No gráfico empilhado de horas por ano o eixo cruza o primeiro algarismo dos anos.",
+          "sugestao": "Legenda em uma linha, mais rótulos no eixo e recuo dos rótulos em relação ao eixo."
+        }
+      ],
+      "nao_verificado": [
+        "Leitura com leitor de tela real e uso em dispositivo de toque real",
+        "Aparência de Analisar e Auditar em 1440 e 390 (sem capturas)",
+        "Contraste de texto em SVG (83 a 101 verificações incompletas do axe)",
+        "Trechos 02 e 05 de 06 em 390 não fornecidos: cobri o painel principal com captura própria",
+        "Efeito do movimento reduzido nas animações dos gráficos (li só o CSS)",
+        "Abertura dos CSV e XLSX no Excel em português"
+      ],
+      "tarefas_inspecionadas": [
+        {
+          "tarefa": "T9",
+          "perfil": "analista de empresas",
+          "recorte_da_pagina": "formação do preço: relação entre CMO semanal, CMO semi-horário e PLD",
+          "passos": [
+            "Abrir a página em 1440 e ler a frase de destaque (SE/CO: PLD R$ 26,20/MWh acima do DECOMP e R$ 60,78/MWh acima do DESSEM).",
+            "Trocar submercado para Sul, Nordeste e Norte e o período para 30 dias, 90 dias, 1 ano e Restaurar; abrir 'Ajustar início e fim'.",
+            "Ler a tabela dos quatro submercados, as notas e o gráfico de horas por ano entre os limites.",
+            "Abrir a tabela do recorte (Norte, 10/07 a 02/10) e exportar CSV e XLSX (13 linhas)."
+          ],
+          "resultado": "parcial",
+          "obstaculos": [
+            "A página cobre a formação do preço; a dispersão horária cobre só 168 horas e a diferença regional só uma semana.",
+            "Norte com DECOMP de R$ 1.866,74 estica o eixo e produz frase de destaque difícil de ler.",
+            "Régua de 0 a 2.000 nos painéis horários.",
+            "Conceitos densos (DECOMP, DESSEM, patamar, semana operativa)."
+          ],
+          "erros": [
+            "Nenhum erro de console ou de rede nas interações testadas."
+          ]
+        }
+      ]
+    },
+    "/setor-eletrico/pld/diferencas-regionais": {
+      "paineis": [
+        "P012"
+      ],
+      "criterios": {
+        "A": {
+          "nota": 8.5,
+          "evidencia": [
+            "1440_dobra.png: H1 em pergunta, lede, abas locais, profundidade, frase-resposta (43,3% das horas e R$ 37,82/MWh) e filtros Período e Par em destaque na primeira tela.",
+            "1440_inteira_01de02.png: barras por par, matriz 4 por 4, quatro cartões, nota, tabela de 12 linhas e pequenos múltiplos; altura de 4.231 px em 1440 e 7.950 px em 390.",
+            "390_inteira_03de06.png: a tabela equivalente da matriz mostra 3 de 4 colunas e corta números na borda (18,1 em vez de 18,14)."
+          ],
+          "atendidos": [
+            "Pergunta e informação principal na primeira tela",
+            "Hierarquia clara: frase, comparação (barras e matriz), cartões, tabela e perfil horário",
+            "Página mais curta, sem explicações longas repetidas",
+            "Unidades e referências legíveis"
+          ],
+          "problemas": [
+            "Barras e matriz simétrica repetem os mesmos 6 valores; as células não trazem número impresso.",
+            "Em 390 a tabela da matriz esconde a coluna 'Horas separadas (%)' e corta números na borda.",
+            "Em 390 o eixo cruza a primeira letra dos rótulos das barras."
+          ],
+          "justificativa": "Página enxuta e bem hierarquizada, com a resposta no topo. Descontos pela redundância entre barras e matriz sem números nas células, pela tabela com coluna oculta em 390 e por rótulos de eixo cortados."
+        },
+        "B": {
+          "nota": 8.0,
+          "evidencia": [
+            "texto_entender.txt: o lede explica 'Na maior parte das horas os quatro são iguais ou quase', com submercado em glossário; a nota 'Por que os preços se separam' cita o Decreto 5.163/2004, art. 57.",
+            "texto_entender.txt: 'Como interpretar' explica o critério de R$ 0,01 e que diferenças de um centavo ficam à parte; 'O que não é possível concluir' nega congestionamento sem limites integrados.",
+            "Busca nos textos: nenhuma lista de estados por submercado; o mecanismo físico em palavras simples está só no hub."
+          ],
+          "atendidos": [
+            "Conceito de submercado explicado na abertura",
+            "Limite do que se pode concluir explícito (sem causa, sem congestionamento)",
+            "Critério de contagem explicado"
+          ],
+          "problemas": [
+            "O mecanismo intuitivo (capacidade de transferência limita o fluxo) está no hub como 'leitura usual ainda não conferida'; aqui só há a norma.",
+            "O leitor não sabe quais estados compõem cada região.",
+            "Dois limiares (R$ 0,01 aqui e R$ 1,00 no hub) para 'diferença' confundem.",
+            "Classes de percentual e 'um centavo' exigem leitura atenta."
+          ],
+          "justificativa": "Abertura clara sobre o que se conta e o que não se conclui, com o critério de R$ 0,01 explicado. Falta o mecanismo em palavras simples, a lista de estados por submercado e uma régua única de 'diferença' com o hub."
+        },
+        "C": {
+          "nota": 8.5,
+          "evidencia": [
+            "Navegador: Período (8 opções), Par em destaque e matriz alternável para 'Diferença média' mudam frase, cartões, barras e matriz juntos (?per=30d: 24,6% das horas, R$ 2,67/MWh).",
+            "Inspeção T9: diferença regional por par em 3 passos; perfil por hora do dia de até 4 pares na mesma régua de 0 a 60%.",
+            "texto_auditar.txt: em Analisar, preço e fluxo na mesma hora, sentido do fluxo nas horas separadas e tabela de 168 horas com exportação."
+          ],
+          "atendidos": [
+            "T9 bem atendida: quando e quanto os preços se separam, por par e por hora do dia",
+            "Recortes por período e par; matriz com sinal da diferença",
+            "Os números respondem à pergunta (horas separadas, diferença média, p95 em Auditar)"
+          ],
+          "problemas": [
+            "O perfil por hora do dia é fixo nos últimos 12 meses, ignora o Período escolhido e abre sem o par em destaque (SE/CO e Sul).",
+            "Não há seleção de um dia específico para ver a hora de maior diferença (23/03/2026, R$ 824,13).",
+            "Dois limiares de 'diferença' entre o hub e esta página."
+          ],
+          "justificativa": "É a página que melhor atende T9 na unidade: por par, período, hora do dia e fluxo. Perde pontos porque o perfil horário ignora o período, abre sem o par em destaque e não deixa abrir o dia de maior diferença."
+        },
+        "D": {
+          "nota": 7.5,
+          "evidencia": [
+            "texto_entender.txt: recorte territorial por par de submercados; 'A contagem não diz o motivo'; limites de intercâmbio declarados como não integrados.",
+            "Navegador: 'Copiar link deste painel' copia ?hora.t.pag=7#p012 (parâmetro de tabela oculta); CSV com cabeçalho abreviado (data;par;horas;horas_separadas).",
+            "Busca nos textos: nenhuma lista de estados por submercado nem ligação com 'Minha região'."
+          ],
+          "atendidos": [
+            "Desigualdade regional de preço tratada de forma direta e descritiva",
+            "Lacunas visíveis (limites não integrados, ano parcial)",
+            "Link e exportações úteis a jornalistas e pesquisadores"
+          ],
+          "problemas": [
+            "O consumidor não vê quais estados pertencem a cada submercado nem o que a separação significa para a sua região.",
+            "O link copiado traz o parâmetro de tabela oculta (?hora.t.pag=7).",
+            "CSV completos sem unidade nem fonte no cabeçalho.",
+            "Texto técnico (MWmed, intercâmbio, congestionamento) para leitor leigo."
+          ],
+          "justificativa": "O tema é a desigualdade regional e a página o trata com neutralidade e lacunas visíveis. Falta ligar submercado a estados e a consequências para o consumidor, e o link copiado e os CSV saem com ruído e sem unidade."
+        },
+        "I": {
+          "nota": 8.0,
+          "evidencia": [
+            "1440_inteira_01de02.png: barras horizontais dos 6 pares e matriz com escala de 5 classes, 'sem dado' hachurado e 'não se aplica' tracejado.",
+            "Medição: classes claras (211,228,230) e (156,195,201) têm 1,14:1 e 1,65:1 contra o fundo; o valor de cada célula aparece em dica por hover, toque e foco de teclado.",
+            "1440_inteira_02de02.png: quatro pequenos múltiplos na mesma régua de 0 a 60%; o par em destaque inicial não aparece entre eles."
+          ],
+          "atendidos": [
+            "Gráficos pela tarefa, com escala comum e referência",
+            "Matriz com sinal, legenda e tratamento de 'não se aplica'",
+            "Interação além do hover (toque e teclado) e tabela equivalente",
+            "Sem curva ou intervalo inventado"
+          ],
+          "problemas": [
+            "As classes mais claras da escala quase somem contra o fundo (1,14:1).",
+            "A matriz simétrica, sem números nas células, repete as barras.",
+            "Os pequenos múltiplos abrem sem o par em destaque.",
+            "Em 390 o eixo cruza o primeiro caractere dos rótulos."
+          ],
+          "justificativa": "Bom uso de barras, matriz e pequenos múltiplos, com régua comum e leitura por hover, toque e teclado. Descontos pelo baixo contraste das classes claras, pela redundância da matriz e por descompassos entre par em destaque e perfil horário."
+        },
+        "J": {
+          "nota": 8.0,
+          "evidencia": [
+            "Navegador: Período, Par em destaque e matriz mudam a URL (?per=2023&par=S_N&mat=dif_media); os chips de pares removem e adicionam com a mensagem 'saiu da comparação: 3 de 4' e o combobox funciona por teclado.",
+            "Navegador: a URL abre com ?hora.t.pag=7 sem interação e 'Copiar link' o inclui.",
+            "Navegador: o perfil por hora ignora o Período; 'Par em destaque' não altera os pares dos gráficos."
+          ],
+          "atendidos": [
+            "Filtros claros, estado na URL e link com âncora",
+            "Comparação de até 4 pares com limite e mensagem",
+            "Sincronização de frase, cartões, barras e matriz",
+            "Exportação da tabela em CSV e XLSX"
+          ],
+          "problemas": [
+            "O parâmetro ?hora.t.pag=7 de uma tabela oculta entra na URL e no link copiado.",
+            "'Par em destaque' e 'Período' não comandam o perfil por hora do dia.",
+            "Sem 'restaurar padrão' para os filtros do painel.",
+            "O submercado não persiste entre páginas da família (só o modo persiste)."
+          ],
+          "justificativa": "Controles claros e sincronizados, com comparação de pares bem resolvida e estado na URL. Descontam o parâmetro de tabela oculta no link, o perfil horário desligado do período e do par em destaque e a falta de restaurar padrão."
+        },
+        "K": {
+          "nota": 8.0,
+          "evidencia": [
+            "objetivo.json: axe 0, sem rolagem horizontal e sem foco invisível em 360, 390, 768 e 1440; 320 px não medido.",
+            "axe-core rodado por mim: 0 violações e 55 a 85 verificações de contraste incompletas; as células da matriz têm rótulo por célula e dica por toque.",
+            "390_inteira_03de06.png e navegador: a tabela de 4 colunas rola lateralmente (scrollWidth 482 contra 358) com valores cortados na borda; controles de filtro com rótulo de 44 px de altura."
+          ],
+          "atendidos": [
+            "Teclado, foco visível e link de pular",
+            "Células da matriz navegáveis por setas, Home, End e Ctrl+Home, com rótulo por célula",
+            "Natureza do dado com forma; 'não se aplica' e 'sem dado' por borda tracejada e hachura",
+            "320 a 1440 px sem rolagem lateral da página"
+          ],
+          "problemas": [
+            "As classes claras da matriz ficam abaixo de 3:1 contra o fundo.",
+            "Em 390 uma coluna da tabela fica fora da tela e números são cortados; o eixo cruza os rótulos.",
+            "Rótulos de eixo de 10 px; texto a 200% rola 15 px em 390."
+          ],
+          "justificativa": "Teclado, rótulos por célula e ausência de rolagem lateral estão bem resolvidos. A nota cai pelo contraste das classes claras, pela tabela cortada e pelos rótulos de eixo cortados em 390 e por texto a 200%. Leitor de tela real não foi testado."
+        }
+      },
+      "bloqueios": [],
+      "achados": [
+        {
+          "id": "dif-url-param-oculto",
+          "gravidade": "baixa",
+          "criterios": [
+            "J"
+          ],
+          "onde": "URL ao abrir e botão 'Copiar link deste painel'",
+          "descricao": "A página acrescenta '?hora.t.pag=7' (paginação da tabela de Analisar, oculta em Entender) à URL sem interação, e o link copiado a inclui (diferencas-regionais?hora.t.pag=7#p012).",
+          "sugestao": "Não gravar na URL o estado de tabelas ocultas."
+        },
+        {
+          "id": "dif-par-destaque-desligado",
+          "gravidade": "baixa",
+          "criterios": [
+            "J",
+            "C"
+          ],
+          "onde": "Painel 'Em que horas do dia cada par se separa?'",
+          "descricao": "'Par em destaque' (padrão SE/CO e Sul) não comanda o perfil por hora do dia, que abre com Sul e Norte, Sul e Nordeste, SE/CO e Nordeste e SE/CO e Norte, e ignora o Período ('qualquer que seja o Período escolhido acima'). Quem escolhe um par acima não o vê abaixo.",
+          "sugestao": "Abrir o perfil com o par em destaque ou indicar o vínculo."
+        },
+        {
+          "id": "dif-matriz-redundante",
+          "gravidade": "baixa",
+          "criterios": [
+            "A",
+            "I"
+          ],
+          "onde": "Barras por par e matriz 4 por 4, 1440",
+          "descricao": "Com 'Horas separadas (%)' a matriz é simétrica e repete os 6 valores das barras ao lado; as células não trazem número (valor só por hover, toque, teclado ou tabela). A métrica 'Diferença média' acrescenta informação, mas fica atrás de um botão.",
+          "sugestao": "Escrever o valor dentro das células ou manter só a matriz."
+        },
+        {
+          "id": "dif-tabela-390-colunas",
+          "gravidade": "media",
+          "criterios": [
+            "K",
+            "A"
+          ],
+          "onde": "Tabela equivalente da matriz, 390 px",
+          "descricao": "Mostra 3 das 4 colunas (rolagem de 482 px em contêiner de 358 px); 'Horas separadas (%)' fica fora da tela e os números da terceira coluna são cortados na borda (18,1 em vez de 18,14); o aviso de rolagem é só um texto antes da tabela.",
+          "sugestao": "Cartões por linha no celular ou colunas essenciais fixas."
+        },
+        {
+          "id": "dif-limiares-de-diferenca",
+          "gravidade": "baixa",
+          "criterios": [
+            "B",
+            "C"
+          ],
+          "onde": "Primeira frase e 'Como interpretar'",
+          "descricao": "Para 'há diferença entre submercados?' o hub conta acima de R$ 1,00 (33,3% do dia; 25,9% em 12 meses) e esta página acima de R$ 0,01 (43,3% em 12 meses). A nota explica, mas o leitor vê dois percentuais para a mesma pergunta.",
+          "sugestao": "Mostrar os dois limiares lado a lado no cartão principal."
+        },
+        {
+          "id": "dif-estados-sem-lista",
+          "gravidade": "media",
+          "criterios": [
+            "B",
+            "D"
+          ],
+          "onde": "Toda a página (e as outras quatro da família)",
+          "descricao": "Nenhuma das cinco páginas diz quais estados formam cada submercado nem liga a 'Minha região'; um consumidor não consegue localizar o seu preço regional.",
+          "sugestao": "Lista ou mapa de estados por submercado e link para 'Minha região'."
+        },
+        {
+          "id": "dif-classes-claras",
+          "gravidade": "baixa",
+          "criterios": [
+            "I",
+            "K"
+          ],
+          "onde": "Matriz, escala de 5 classes",
+          "descricao": "As classes 'menos de 10,0' e '10,0 a menos de 20,0' têm 1,14:1 e 1,65:1 contra o fundo (#F3EFE5), abaixo de 3:1, e o passo entre classes vizinhas é de 1,45 a 1,77:1.",
+          "sugestao": "Escala com maior passo de luminosidade e contorno nas células."
+        },
+        {
+          "id": "dif-rotulos-390",
+          "gravidade": "baixa",
+          "criterios": [
+            "K"
+          ],
+          "onde": "Gráfico de barras por par, 390",
+          "descricao": "O eixo vertical cruza a primeira letra dos rótulos ('SE/CO e Sul' aparece como '$E/CO e Sul').",
+          "sugestao": "Recuar os rótulos em relação ao eixo."
+        }
+      ],
+      "nao_verificado": [
+        "Leitura com leitor de tela real e uso em dispositivo de toque real",
+        "Aparência de Analisar e Auditar em 1440 e 390 (sem capturas)",
+        "Contraste de texto em SVG (55 a 85 verificações incompletas do axe)",
+        "Trechos 02 e 05 de 06 em 390 não fornecidos: cobri o painel principal e a matriz com capturas próprias",
+        "Efeito do movimento reduzido nas animações dos gráficos (li só o CSS)",
+        "Abertura dos CSV e XLSX no Excel em português"
+      ],
+      "tarefas_inspecionadas": [
+        {
+          "tarefa": "T9",
+          "perfil": "jornalista ou professor",
+          "recorte_da_pagina": "diferenças regionais do PLD, por par e por hora do dia",
+          "passos": [
+            "Ler a frase (43,3% das horas separadas; R$ 37,82/MWh de diferença média) e a barra por par.",
+            "Trocar o Período (Últimos 30 dias e 2023), o Par em destaque (Sul e Norte) e a matriz para 'Diferença média'.",
+            "Passar o mouse e tocar na matriz (Sul e Nordeste: 33,1%); remover e adicionar pares no perfil por hora com o teclado.",
+            "Abrir em 390 a tabela equivalente da matriz."
+          ],
+          "resultado": "sim",
+          "obstaculos": [
+            "O perfil por hora ignora o Período e o par em destaque.",
+            "A tabela em 390 esconde uma coluna e corta números.",
+            "O parâmetro ?hora.t.pag=7 entra no link copiado.",
+            "Sem lista de estados por submercado."
+          ],
+          "erros": [
+            "Nenhum erro de console ou de rede; parâmetros inválidos caem no padrão sem erro."
+          ]
+        }
+      ]
+    },
+    "/setor-eletrico/pld/historico": {
+      "paineis": [
+        "P011"
+      ],
+      "criterios": {
+        "A": {
+          "nota": 8.0,
+          "evidencia": [
+            "1440_dobra.png: H1 em pergunta, lede com 'réguas', frase-resposta (38,7%), seletor de submercado e início do gráfico sazonal na primeira tela.",
+            "objetivo.json: altura de 5.323 px em 1440 e 9.060 px em 390; no navegador o documento chega a 10.928 px em 390 depois que o mapa hora por dia carrega.",
+            "1440_inteira_01de03.png: perímetro da carga, pesos e réguas explicados em três lugares (parágrafo dos cartões, nota do gráfico mensal e 'Como interpretar')."
+          ],
+          "atendidos": [
+            "Pergunta e resposta na primeira tela",
+            "Hierarquia: frase, faixa sazonal, cartões, evolução, distribuição e perfis",
+            "Números com unidade e perímetro identificados",
+            "Mapas de calor compactados em 4 faixas no celular, com botão para as 24 horas"
+          ],
+          "problemas": [
+            "O texto sobre perímetro da carga e pesos se repete em três blocos.",
+            "O gráfico das três médias parece uma linha só, o que desperdiça o painel de maior destaque.",
+            "O mapa hora por dia carrega ao rolar: o bloco de 209 px em 390 (164 px em 1440) cresce para 2.077 px (1.294 px) e empurra o conteúdo.",
+            "Rótulos de eixo e valores de 10 a 11 px."
+          ],
+          "justificativa": "Pergunta e resposta no topo e boa hierarquia, com adaptação cuidadosa dos mapas ao celular. A nota cai pela repetição de explicações, pelo gráfico das três médias que não separa as linhas e pelo bloco que cresce ao rolar."
+        },
+        "B": {
+          "nota": 7.5,
+          "evidencia": [
+            "texto_entender.txt: 'o mesmo PLD pode parecer alto ou baixo conforme a régua' e três réguas nomeadas; PLD e MMGD em glossário.",
+            "texto_entender.txt: 'ponderada pela carga do balanço', 'sem MMGD', 'perímetro' P1 a P3, 'moeda constante' e percentis explicados em notas longas.",
+            "Navegador: 'Por que isso importa' recolhido; percentil explicado só por 'percentil 60,3 de 2.099 dias' e nota de rodapé."
+          ],
+          "atendidos": [
+            "Conceito central (régua) explicado antes dos números",
+            "Distinção entre média simples e ponderada e entre nominal e constante, com exemplo numérico (IPCA de 37%: R$ 100 viram R$ 137)",
+            "O que não permite concluir explícito (percentil não é previsão)"
+          ],
+          "problemas": [
+            "Vocabulário técnico denso: ponderada, balanço, perímetro, MMGD, moeda constante, percentil.",
+            "Sem exemplo visual que mostre por que a ponderada difere da temporal.",
+            "'Por que isso importa' recolhido; MWh não definido.",
+            "O mesmo dia aparece com percentil 60,3 no hub e 38,7 aqui; a explicação está em nota de rodapé do hub."
+          ],
+          "justificativa": "A ideia de régua é bem posta e o IPCA tem exemplo numérico. O vocabulário de pesos, perímetro e percentil é técnico demais para leigos, sem exemplo visual, e o motivo de importar fica recolhido."
+        },
+        "C": {
+          "nota": 8.0,
+          "evidencia": [
+            "Navegador: submercado (?sm=), moeda (?moeda=constante), período 12 meses ou 5 anos (?de=&ate=) e janela do mapa (?hd=60) atualizam frase, cartões, gráficos e mapa.",
+            "texto_entender.txt: 'Em 38,7% dos 150 dias de setembro de anos anteriores a média foi menor' e três médias de ago/2026 (R$ 128,12, R$ 131,73 e R$ 137,82).",
+            "Inspeção T9 (jornalista): histórico e sazonalidade respondidos na frase; perfil por hora e mês no mapa de calor."
+          ],
+          "atendidos": [
+            "A pergunta 'está alto para esta época?' respondida com referência sazonal",
+            "Médias temporal e ponderadas identificadas e períodos parciais sinalizados",
+            "Perfil por hora e por mês e distribuição por regime de limites"
+          ],
+          "problemas": [
+            "A comparação das três médias não é legível no gráfico, só nos cartões do último mês.",
+            "Em 390 o padrão de faixas de 4 horas suaviza o pico (máximo de R$ 503,56 contra R$ 617,90 em 1440 no mapa por mês).",
+            "O mapa hora por dia só aceita 30, 60 ou 90 dias."
+          ],
+          "justificativa": "Responde bem à pergunta sazonal e traz perfis por hora e mês úteis. Perde pontos porque as três médias só se comparam nos cartões e porque o padrão do celular suaviza o pico do fim da tarde."
+        },
+        "D": {
+          "nota": 7.0,
+          "evidencia": [
+            "texto_entender.txt: 'não é o preço pago por nenhum consumidor'; IPCA acumulado de cerca de 37% (R$ 100 equivalem a R$ 137).",
+            "Navegador: 'Baixar os dados (5 arquivos)' e 'Copiar link' presentes; pld_mensal.csv com colunas internas (media_ponderada_carga, mesmas_horas) sem unidade.",
+            "texto_entender.txt: a linha 'Fontes: CCEE; ONS; IBGE, PLD horário por submercado; Balanço de Energia...' mistura órgãos e conjuntos."
+          ],
+          "atendidos": [
+            "Sinaliza a limitação da ponderação (não é preço pago)",
+            "Moeda constante para leitura de longo prazo",
+            "Exportação e link com recorte"
+          ],
+          "problemas": [
+            "Tema técnico sem ponte para a conta: o leitor leigo não sabe se um preço 'alto' importa para ele.",
+            "CSV sem unidades e com colunas internas.",
+            "A linha de fontes junta órgãos e conjuntos (registro para o avaliador técnico).",
+            "Sem lista de estados por submercado."
+          ],
+          "justificativa": "Há cuidado em dizer que a média ponderada não é preço pago e a moeda constante ajuda a ler o longo prazo. Para o leitor leigo o tema é distante, os CSV saem sem unidade e a linha de fontes é confusa."
+        },
+        "I": {
+          "nota": 7.5,
+          "evidencia": [
+            "1440_inteira_01de03.png: gráfico mensal com três linhas quase sobrepostas; a nota admite 'por isso as três linhas parecem juntas'; em ago/2026 as médias são R$ 128,12, R$ 131,73 e R$ 137,82.",
+            "1440_inteira_02de03.png: boxplot por ano com piso tracejado e teto pontilhado; mapas hora por mês e hora por dia com escala fixa e hachura para 'sem dado'.",
+            "Medição: classes claras dos mapas com 1,14:1 e 1,65:1 contra o fundo; em 390 os mapas mostram médias de 4 horas."
+          ],
+          "atendidos": [
+            "Faixa sazonal com mediana e P10 a P90 e linha do ano em curso",
+            "Marcas numeradas das quebras de perímetro no gráfico",
+            "Boxplot com referências de piso e teto do ano",
+            "Escala fixa e legendas nos mapas de calor"
+          ],
+          "problemas": [
+            "O gráfico das três médias não permite comparar as réguas, que é a razão do painel.",
+            "A faixa de médias diárias é comparada com a linha de média mensal de 2026; só a nota evita leitura errada.",
+            "Classes claras dos mapas de calor com contraste baixo contra o fundo.",
+            "Em 390 os mapas mostram médias de 4 horas, com picos menores."
+          ],
+          "justificativa": "A faixa sazonal, o boxplot e os mapas são boas escolhas, com referências e escala fixa. O painel central, que deveria comparar as três réguas, não as separa visualmente, e as classes claras dos mapas têm pouco contraste."
+        },
+        "J": {
+          "nota": 8.5,
+          "evidencia": [
+            "Navegador: ?sm=NE&moeda=constante&de=2021-10-01&ate=2026-09-01&hd=60; legenda e título do gráfico mudam com a moeda; 'Restaurar intervalo' disponível.",
+            "Navegador: o mapa hora por dia só carrega ao aparecer na tela, com o texto de espera 'carregado quando este bloco aparece na tela'.",
+            "Navegador: ao ir para outra página só o modo persiste; o submercado volta ao padrão."
+          ],
+          "atendidos": [
+            "Filtros claros com estado na URL e link de compartilhamento",
+            "Sincronização de frase, cartões, gráficos e mapa com o submercado, a moeda e o período",
+            "Comparação de submercados na mesma escala em Analisar",
+            "Estado bloqueado ou incompleto explicado (mês parcial, carga com 672 de 720 horas)"
+          ],
+          "problemas": [
+            "O mapa hora por dia sob demanda faz o documento crescer 1.868 px em 390 (de 9.060 para 10.928) com só uma frase de espera.",
+            "O submercado não persiste entre páginas da família.",
+            "O rodapé 'Baixar os dados (5 arquivos)' entrega arquivos completos independentes do recorte; a exportação do recorte pela tabela equivalente não foi testada aqui."
+          ],
+          "justificativa": "Interação consistente, com estado na URL e sincronização de todos os blocos com o recorte. Descontos por bloco sob demanda que muda a altura da página, submercado que não persiste e downloads de rodapé que não seguem o recorte."
+        },
+        "K": {
+          "nota": 8.0,
+          "evidencia": [
+            "objetivo.json: axe 0 em 360, 390, 768 e 1440 (entender) e em 390 e 1440 (auditar), sem rolagem horizontal; 320 px não medido.",
+            "axe-core rodado por mim: 0 violações e 53 a 92 verificações de contraste incompletas; mapas com rótulo por célula (classe e valor) e navegação por setas.",
+            "Medições: classes claras do mapa de calor (1,14:1 e 1,65:1); texto a 200% rola 15 px em 390; bloco sob demanda de 209 px que vira 2.077 px."
+          ],
+          "atendidos": [
+            "Teclado, foco visível e link de pular",
+            "Mapas de calor com rótulo por célula, legenda e hachura para 'sem dado'",
+            "Mapas compactados para o celular com aviso e botão para as 24 horas",
+            "320 a 1440 px sem rolagem lateral da página"
+          ],
+          "problemas": [
+            "As classes claras dos mapas ficam abaixo de 3:1 contra o fundo.",
+            "O bloco sob demanda muda a altura da página ao aparecer na tela, com indicação mínima de carga.",
+            "Texto a 200% rola 15 px em 390; rótulos de 10 a 11 px."
+          ],
+          "justificativa": "Teclado, rótulos por célula e adaptação dos mapas ao celular estão bons. A nota cai pelo contraste das classes claras, pelo bloco que muda a altura ao carregar e por texto a 200%. Leitor de tela real não foi testado."
+        }
+      },
+      "bloqueios": [],
+      "achados": [
+        {
+          "id": "hist-tres-linhas-juntas",
+          "gravidade": "media",
+          "criterios": [
+            "I"
+          ],
+          "onde": "Gráfico 'Como as três médias do mês evoluíram desde 2021?', 1440 e 390",
+          "descricao": "Com escala de 0 a cerca de 600, a média temporal, a ponderada pelo balanço e a ponderada sem MMGD se confundem em uma linha (em ago/2026: R$ 128,12, R$ 131,73 e R$ 137,82). A nota admite 'por isso as três linhas parecem juntas'; a comparação das réguas, razão do painel, só se lê nos quatro cartões do último mês.",
+          "sugestao": "Plotar a diferença entre as médias ou usar pequenos múltiplos."
+        },
+        {
+          "id": "hist-conceitos-de-peso",
+          "gravidade": "media",
+          "criterios": [
+            "B",
+            "D"
+          ],
+          "onde": "Cartões das médias e notas sobre perímetro",
+          "descricao": "Ponderada pela carga do balanço, sem MMGD, perímetro P1 a P3, moeda constante e percentil exigem vocabulário técnico; 'MMGD' tem glossário, 'perímetro' e 'balanço' não. O mesmo dia aparece com percentil 60,3 (hub) e 38,7 (aqui), e a explicação está em nota de rodapé do hub.",
+          "sugestao": "Exemplo curto de por que a ponderada difere da temporal e glossário de perímetro."
+        },
+        {
+          "id": "hist-texto-repetido",
+          "gravidade": "baixa",
+          "criterios": [
+            "A"
+          ],
+          "onde": "Parágrafo dos cartões, nota do gráfico mensal e 'Como interpretar'",
+          "descricao": "O perímetro da carga e os pesos são explicados em três blocos.",
+          "sugestao": "Um só lugar, com remissões nos outros."
+        },
+        {
+          "id": "hist-mapa-sob-demanda",
+          "gravidade": "baixa",
+          "criterios": [
+            "J",
+            "K"
+          ],
+          "onde": "Painel 'Como o PLD varia hora a hora nos últimos dias?'",
+          "descricao": "O mapa só carrega quando entra na tela: o bloco de 209 px (390) e 164 px (1440) cresce para 2.077 px e 1.294 px, e o documento em 390 vai de 9.060 a 10.928 px; há só a frase 'carregado quando este bloco aparece na tela'.",
+          "sugestao": "Reservar a altura e mostrar indicador de carga."
+        },
+        {
+          "id": "hist-390-faixas-de-4h",
+          "gravidade": "baixa",
+          "criterios": [
+            "I",
+            "K"
+          ],
+          "onde": "Mapas hora por mês e hora por dia, 390",
+          "descricao": "Em 390 px os mapas mostram faixas de 4 horas; o máximo cai para R$ 503,56 (mapa por mês; 617,90 em 1440) e R$ 744,79 (mapa por dia; 1.611,04 em 1440), suavizando o pico do fim da tarde. Há aviso e botão 'Ver as 24 horas', mas o padrão do celular muda a leitura.",
+          "sugestao": "Manter 24 colunas com rolagem ou destacar o pico por faixa."
+        },
+        {
+          "id": "hist-contraste-das-classes",
+          "gravidade": "media",
+          "criterios": [
+            "I",
+            "K"
+          ],
+          "onde": "Mapas de calor hora por mês e hora por dia",
+          "descricao": "As classes 'menos de 80' e '80 a menos de 150' têm 1,14:1 e 1,65:1 contra o fundo; 'menos de 80' quase se funde ao fundo, justamente nas horas de piso que dominam o meio do dia.",
+          "sugestao": "Escala com passo maior e contorno nas células."
+        },
+        {
+          "id": "hist-fontes-embaralhadas",
+          "gravidade": "media",
+          "criterios": [
+            "B",
+            "D"
+          ],
+          "onde": "Linha 'Fontes:' do rodapé do painel",
+          "descricao": "'Fontes: CCEE; ONS; IBGE, PLD horário por submercado; Balanço de Energia nos Subsistemas; ...; CCEE; ANEEL, PLD horário por submercado; Atos anuais de limites do PLD' junta órgãos e conjuntos e atribui o PLD à ANEEL. Registro para o avaliador técnico (H).",
+          "sugestao": "Uma linha por conjunto, com órgão e data corretos."
+        },
+        {
+          "id": "hist-faixa-diaria-contra-media-mensal",
+          "gravidade": "baixa",
+          "criterios": [
+            "I",
+            "B"
+          ],
+          "onde": "Gráfico 'Qual é a faixa das médias diárias nesta época do ano?'",
+          "descricao": "A faixa P10 a P90 reúne médias diárias e a linha de 2026 é uma média mensal; a nota explica ('naturalmente menos dispersa que os dias'), mas o desenho convida a ler a linha dentro ou fora da faixa.",
+          "sugestao": "Mostrar também os dias de 2026 ou marcar a linha como de outra resolução."
+        }
+      ],
+      "nao_verificado": [
+        "Leitura com leitor de tela real e uso em dispositivo de toque real",
+        "Aparência de Analisar e Auditar em 1440 e 390 (sem capturas)",
+        "Contraste de texto em SVG (53 a 92 verificações incompletas do axe)",
+        "Trechos 02, 04, 05 e 07 de 08 em 390 não fornecidos e trecho 08 em branco: cobri sazonal, boxplot, mapa por mês e mapa por dia com capturas próprias",
+        "Exportação do recorte pela tabela equivalente do histórico (testada só em CMO e formação de preço)",
+        "Efeito do movimento reduzido nas animações dos gráficos (li só o CSS)"
+      ],
+      "tarefas_inspecionadas": [
+        {
+          "tarefa": "T9",
+          "perfil": "jornalista ou professor",
+          "recorte_da_pagina": "histórico e sazonalidade do PLD e perfil por hora e mês",
+          "passos": [
+            "Ler a frase (38,7% dos 150 dias de setembro com média menor; mediana de R$ 247,81) e a faixa sazonal.",
+            "Trocar o submercado (Norte, Sul, Nordeste) e conferir frase, cartões e rótulos dos gráficos.",
+            "Trocar a moeda para constante, o período para 12 meses e 5 anos e a janela do mapa para 60 e 90 dias.",
+            "Ler as três médias de ago/2026, o boxplot por ano e o mapa hora por mês; repetir em 390 e ver as faixas de 4 horas."
+          ],
+          "resultado": "sim",
+          "obstaculos": [
+            "As três linhas do gráfico mensal se confundem.",
+            "Vocabulário de pesos, perímetro e percentil.",
+            "Mapa hora por dia sob demanda faz a página crescer.",
+            "Faixas de 4 horas no celular suavizam o pico."
+          ],
+          "erros": [
+            "Nenhum erro de console ou de rede; parâmetros inválidos caem no padrão sem erro."
+          ]
+        }
+      ]
+    },
+    "/setor-eletrico/pld/limites": {
+      "paineis": [
+        "P010"
+      ],
+      "criterios": {
+        "A": {
+          "nota": 8.5,
+          "evidencia": [
+            "1440_dobra.png e 1440_inteira_01de02.png: H1 em pergunta, frase-resposta (23,96% no piso; 4 horas no teto), filtros de submercado e ano, gráfico anual, cartões e limites do ano na mesma área de leitura.",
+            "objetivo.json: altura de 5.467 px em 1440 e 8.840 px em 390.",
+            "390_inteira_01de06.png e 390_inteira_04de06.png: calendário legível em 7 colunas; o eixo vertical cruza os algarismos dos anos nos gráficos de barras."
+          ],
+          "atendidos": [
+            "Pergunta e resposta na primeira tela",
+            "Hierarquia: frase, gráfico anual, cartões, calendário e comparação por submercado",
+            "Cartão de limites vigentes ao lado dos números, com o ato citado",
+            "Celular preserva o calendário em 7 colunas e as barras"
+          ],
+          "problemas": [
+            "A série de piso de SE/CO aparece no primeiro gráfico e de novo no gráfico por submercado.",
+            "A caixa de seleção de até 4 submercados abre com os 4 marcados e ocupa uma faixa inteira sem função imediata.",
+            "A série 'no teto horário' vira um fio no eixo (0,00% a 0,06%).",
+            "Em 390 o eixo cruza os algarismos dos anos."
+          ],
+          "justificativa": "Página enxuta, com resposta no topo e o cartão dos limites do ano à vista. Descontos por série repetida entre dois gráficos, controle de seleção que ocupa espaço sem função e rótulos de eixo cortados em 390 px."
+        },
+        "B": {
+          "nota": 8.0,
+          "evidencia": [
+            "texto_entender.txt: o lede define piso, teto horário e teto estrutural em linguagem direta, com glossário em 'três limites'.",
+            "texto_entender.txt: 'Como interpretar' explica o teto estrutural (REN 1.032/2022, art. 23, § 3º) e que um centavo acima do piso já é outro preço; nota condicional liga 2023 à sequência de 61 semanas com CMO zero.",
+            "Navegador: o cartão 'Limites de {ano}' acompanha o ano escolhido e cita o ato; por que os limites existem e como são calculados só aparece em Auditar."
+          ],
+          "atendidos": [
+            "Os três limites explicados antes dos números",
+            "O que não permite concluir explícito (permanência no piso não diz que o custo foi baixo)",
+            "Distinção entre piso regulatório e menor valor observado",
+            "Nota contextual liga a página ao CMO"
+          ],
+          "problemas": [
+            "O motivo dos limites (custos de referência) só aparece em Auditar.",
+            "'Hora no limite' é definida por tolerância de R$ 0,005/MWh no texto de Unidade, sem exemplo.",
+            "'Por que isso importa' recolhido; ANEEL e CCEE só no bloco recolhido de siglas."
+          ],
+          "justificativa": "Os três limites são explicados em linguagem direta e as restrições de leitura estão claras. O motivo dos limites e o critério de 'no limite' ficam em níveis mais profundos, e o 'por que importa' permanece recolhido."
+        },
+        "C": {
+          "nota": 8.5,
+          "evidencia": [
+            "Navegador: submercado, ano, calendário (piso ou teto), janela (183 ou 366 dias) e profundidade atualizam frase, cartões, gráfico, calendário e URL (?sm=S&ano=2023&lim=teto_horario&cal=12m).",
+            "Navegador: o calendário de teto horário em 366 dias resume '4 horas no teto horário em 3 dias: 30/03/2026 (2), 31/08/2026 (1) e 01/09/2026 (1)'.",
+            "Inspeção T9 (parte limites vigentes): limite do ano e permanência encontrados em 3 passos."
+          ],
+          "atendidos": [
+            "Limites vigentes por ano com o ato citado e a permanência no piso e nos tetos",
+            "Calendário diário e comparação entre submercados e entre quantos submercados estão no piso ao mesmo tempo",
+            "Zero tratado como valor (dia sem hora no limite)"
+          ],
+          "problemas": [
+            "Piso e tetos aparecem um ano por vez (seletor); a comparação lado a lado está em Analisar.",
+            "O calendário ignora o Ano escolhido e só cobre os 183 ou 366 dias mais recentes.",
+            "A exportação do Entender é o CSV diário completo; o recorte sai pela tabela."
+          ],
+          "justificativa": "Atende bem a pergunta sobre quando o preço encosta nos limites, com recortes úteis e resumo textual para casos raros. Perde pontos por mostrar os limites um ano por vez, por um calendário independente do ano escolhido e por downloads de escopos diferentes."
+        },
+        "D": {
+          "nota": 7.5,
+          "evidencia": [
+            "texto_entender.txt: 'Permanência no piso não diz que o custo de operar foi baixo nem por quê'; ano parcial não se compara com ano completo.",
+            "Navegador: pld_limites_diario.csv inclui o ato de cada limite (ato_pld_min) e os limites por dia; o link copia o recorte com a âncora #p010.",
+            "Busca nos textos: nenhuma lista de estados por submercado."
+          ],
+          "atendidos": [
+            "Neutralidade e lacunas visíveis",
+            "Exportação com o ato de cada limite",
+            "Link com recorte",
+            "Recorte por submercado"
+          ],
+          "problemas": [
+            "Sem ponte para o consumidor: o que piso e teto significam para custo ou conta não é dito.",
+            "Sem lista de estados por submercado.",
+            "CSV com cabeçalho abreviado e sem unidade (pld_media_dia, horas_no_piso).",
+            "Texto técnico e regulatório (REN, despachos) para leitor leigo."
+          ],
+          "justificativa": "A página trata os limites regulatórios com neutralidade e documenta cada ato, o que ajuda jornalistas e pesquisadores. O leitor comum não vê o efeito para o custo nem a própria região, e os CSV saem com cabeçalho abreviado."
+        },
+        "I": {
+          "nota": 8.0,
+          "evidencia": [
+            "1440_inteira_01de02.png: barras de piso e teto por ano, calendário em escala de 5 classes com hachura (sem dado) e borda tracejada (não se aplica), barras agrupadas por submercado com as mesmas cores do hub.",
+            "Medição: classes do calendário (211,228,230) e (156,195,201) têm 1,14:1 e 1,65:1 contra o fundo; o passo entre classes é de 1,45 a 1,77:1.",
+            "texto_entender.txt: a série 'no teto horário' (0,00% a 0,06%) é quase invisível; há resumo textual das 4 horas."
+          ],
+          "atendidos": [
+            "Calendário e barras adequados à pergunta",
+            "Cores por submercado consistentes entre páginas",
+            "Zero e ausência distintos (nenhuma hora contra sem dado)",
+            "Tabela equivalente e teclado nas células (setas, Home, End)"
+          ],
+          "problemas": [
+            "As classes claras do calendário quase somem contra o fundo (1,14:1).",
+            "A série do teto horário é invisível em escala percentual.",
+            "Em 390 o eixo cruza os algarismos dos anos."
+          ],
+          "justificativa": "Boa escolha de calendário, barras e empilhado, com zero, ausência e 'não se aplica' bem distinguidos. A leitura do calendário fica frágil nas classes claras, e o teto horário some na escala percentual."
+        },
+        "J": {
+          "nota": 8.5,
+          "evidencia": [
+            "Navegador: a URL guarda todo o recorte; 'Copiar link' devolve ?sm=S&ano=2023&lim=teto_horario&cal=12m#p010; Entender, Analisar e Auditar preservam o recorte.",
+            "Navegador: ao ir de Limites para Histórico só o modo (Analisar) persiste; o submercado volta a SE/CO.",
+            "Navegador: parâmetros inválidos (sm=ZZ, ano=1999) caem no padrão sem erro; a URL mantém o valor inválido."
+          ],
+          "atendidos": [
+            "Filtros claros com estado na URL",
+            "Sincronização de frase, cartões, gráfico e calendário, com texto-resumo para calendário quase vazio",
+            "Link com recorte e âncora",
+            "Estados vazios compreensíveis (nenhuma hora no teto)",
+            "Comparação de até 4 submercados"
+          ],
+          "problemas": [
+            "O submercado não persiste entre páginas da família.",
+            "O calendário ignora o Ano escolhido (explicado no texto).",
+            "Dois downloads chamados 'Baixar CSV' com escopos diferentes (série completa no rodapé, recorte na tabela).",
+            "Parâmetros inválidos permanecem na URL sem aviso."
+          ],
+          "justificativa": "Interação previsível e bem documentada na URL, com resumo textual para calendários vazios. Perde pontos pelo submercado que não persiste, pelo calendário independente do ano e por downloads de escopos distintos com o mesmo nome."
+        },
+        "K": {
+          "nota": 8.0,
+          "evidencia": [
+            "objetivo.json: axe 0 em 360, 390, 768 e 1440 (entender) e em 390 e 1440 (auditar), sem rolagem lateral; 320 px não medido.",
+            "axe-core rodado por mim: 0 violações nos três níveis e 54 a 68 verificações de contraste incompletas; calendário com 189 células de 43 por 44 px e rótulo por célula.",
+            "Medições: classes claras do calendário com 1,14:1 e 1,65:1; texto a 200% em 1280 px faz os valores do cartão de limites passarem da largura (R$ 785,27/MWh até x=1.391)."
+          ],
+          "atendidos": [
+            "Teclado, foco visível (6,17:1) e link de pular",
+            "Células navegáveis por setas, Home, End e Ctrl+Home, com rótulo por célula",
+            "Alternativas à cor (hachura, borda tracejada, rótulo textual, resumo)",
+            "320, 390, 768 e 1440 px sem rolagem lateral"
+          ],
+          "problemas": [
+            "As classes claras do calendário ficam abaixo de 3:1 contra o fundo.",
+            "Em 390 o eixo cruza os algarismos dos anos.",
+            "Texto a 200% gera rolagem lateral em 1280 e 390 px; rótulos de gráfico de 10 a 11 px."
+          ],
+          "justificativa": "Teclado, foco e rótulos por célula estão bem resolvidos e não há rolagem lateral de 320 a 1440 px. A nota cai pelo baixo contraste das classes claras, rótulos cortados em 390 e texto ampliado que estoura a largura. Leitor de tela real não foi testado."
+        }
+      },
+      "bloqueios": [],
+      "achados": [
+        {
+          "id": "lim-limites-um-ano-por-vez",
+          "gravidade": "baixa",
+          "criterios": [
+            "C",
+            "B"
+          ],
+          "onde": "Cartão 'Limites de {ano}' e gráfico anual, Entender",
+          "descricao": "O gráfico compara '% das horas no piso' ano a ano, mas piso e tetos de cada ano (R$ 49,77 a R$ 69,04/MWh de piso) só aparecem um por vez, ao trocar o seletor de Ano; a tabela com todos os atos está em Analisar e Auditar. A nota diz que a barra não mede o nível do preço.",
+          "sugestao": "Escrever o piso de cada ano no eixo ou na tabela equivalente do Entender."
+        },
+        {
+          "id": "lim-teto-horario-invisivel",
+          "gravidade": "baixa",
+          "criterios": [
+            "I"
+          ],
+          "onde": "Gráficos anuais de piso e teto",
+          "descricao": "A série 'no teto horário' (0,00% a 0,06%) vira um fio no eixo nos dois gráficos anuais; a informação (4 horas em 2026) está nos cartões e no resumo do calendário.",
+          "sugestao": "Mostrar horas absolutas ou anotar o valor sobre a barra."
+        },
+        {
+          "id": "lim-calendario-contraste",
+          "gravidade": "media",
+          "criterios": [
+            "I",
+            "K"
+          ],
+          "onde": "Calendário de horas no limite",
+          "descricao": "'Nenhuma hora' (211,228,230) tem 1,14:1 e '1 a 5 horas' 1,65:1 contra o fundo; em 390 são 189 células de 43 por 44 px e 'não se aplica' é branco com borda tracejada.",
+          "sugestao": "Contorno nas células e escala com maior passo de luminosidade."
+        },
+        {
+          "id": "lim-calendario-ignora-ano",
+          "gravidade": "baixa",
+          "criterios": [
+            "J"
+          ],
+          "onde": "Painel 'Em quais dos últimos dias o preço ficou no limite?'",
+          "descricao": "O calendário usa os últimos 183 ou 366 dias qualquer que seja o Ano escolhido acima; o texto explica, mas a ordem na página sugere vínculo.",
+          "sugestao": "Rotular o bloco como 'independe do ano' ou separá-lo visualmente."
+        },
+        {
+          "id": "lim-serie-repetida-e-caixa-de-selecao",
+          "gravidade": "baixa",
+          "criterios": [
+            "A"
+          ],
+          "onde": "Gráfico anual de SE/CO e painel 'Quantas horas no piso, por ano e por submercado?'",
+          "descricao": "A série de piso de SE/CO aparece nos dois gráficos; a caixa de seleção de até 4 submercados abre com os 4 marcados e ocupa uma faixa inteira (campo de texto 'Sul, Nordeste, Norte' sem efeito enquanto o limite está atingido).",
+          "sugestao": "Fundir os dois gráficos ou recolher a caixa quando todos estão marcados."
+        },
+        {
+          "id": "lim-rotulos-390",
+          "gravidade": "baixa",
+          "criterios": [
+            "K"
+          ],
+          "onde": "Gráficos de barras horizontais, 390",
+          "descricao": "O eixo vertical cruza o primeiro algarismo dos anos ('2021', '2022').",
+          "sugestao": "Recuar os rótulos em relação ao eixo."
+        },
+        {
+          "id": "lim-texto-200-por-cento",
+          "gravidade": "baixa",
+          "criterios": [
+            "K"
+          ],
+          "onde": "Cartão 'Limites de 2026', 1280 px com texto a 200%",
+          "descricao": "Os valores do cartão passam da largura (R$ 785,27/MWh até x=1.391 px) e surge rolagem horizontal; em 390 há 15 px de rolagem.",
+          "sugestao": "Permitir quebra de linha nos valores dos cartões."
+        },
+        {
+          "id": "lim-fontes-embaralhadas",
+          "gravidade": "baixa",
+          "criterios": [
+            "B",
+            "D"
+          ],
+          "onde": "Linha 'Fonte:' do rodapé do painel",
+          "descricao": "'Fonte: CCEE; ANEEL, PLD horário por submercado; Atos anuais de limites do PLD (via módulo Regulação)' atribui o PLD à ANEEL. Registro para o avaliador técnico (H).",
+          "sugestao": "Uma linha por conjunto, com órgão correto."
+        }
+      ],
+      "nao_verificado": [
+        "Leitura com leitor de tela real e uso em dispositivo de toque real",
+        "Aparência de Analisar e Auditar em 1440 e 390 (sem capturas)",
+        "Contraste de texto em SVG (54 a 68 verificações incompletas do axe)",
+        "Trechos 02 e 05 de 06 em 390 não fornecidos: cobri o painel principal com captura própria",
+        "Efeito do movimento reduzido nas animações dos gráficos (li só o CSS)",
+        "Abertura dos CSV e XLSX no Excel em português"
+      ],
+      "tarefas_inspecionadas": [
+        {
+          "tarefa": "T9",
+          "perfil": "jornalista ou professor",
+          "recorte_da_pagina": "limites vigentes e permanência do PLD no piso e nos tetos",
+          "passos": [
+            "Ler a frase (23,96% das horas no piso e 4 horas no teto em 2026) e o cartão 'Limites de 2026'.",
+            "Trocar submercado para Sul e ano para 2023 (98,30% no piso) e ler a nota sobre a sequência de 61 semanas com CMO zero.",
+            "Alternar o calendário para teto horário e 366 dias (4 horas em 3 dias) e ler o gráfico por submercado e o empilhado.",
+            "Copiar o link e conferir que recorte e profundidade são preservados; testar parâmetros inválidos."
+          ],
+          "resultado": "sim",
+          "obstaculos": [
+            "Limites de cada ano aparecem um por vez no Entender.",
+            "O calendário ignora o ano escolhido.",
+            "Classes claras do calendário e teto horário quase invisíveis.",
+            "Sem ponte para o custo do consumidor e sem lista de estados."
+          ],
+          "erros": [
+            "Nenhum erro de console ou de rede; parâmetros inválidos caem no padrão sem erro."
+          ]
+        }
+      ]
+    }
+  },
+  "achados_entre_paginas": [
+    "Rótulos de categoria cortados pelo eixo em 390 px nos gráficos de barras horizontais de /pld, /diferencas-regionais, /limites e /cmo-e-formacao: a primeira letra ou algarismo fica sob a linha do eixo.",
+    "Exportações completas sem unidade, fonte ou versão no cabeçalho (data_hora_local;SE;S;NE;N), com ';' e decimal '.'; nas subpáginas o rodapé do painel e a tabela equivalente oferecem, cada um, um 'Baixar CSV' de escopo diferente (série completa e recorte), sem rótulo que os distinga.",
+    "O submercado escolhido não persiste ao trocar de página da família (só o modo persiste); o hub não mostra as abas locais que as subpáginas mostram; há camadas de navegação acima do conteúdo.",
+    "R$/MWh, MWh e MWmed não são definidos nem convertidos em kWh; nenhuma página diz quais estados formam cada submercado; CCEE, ONS e ANEEL só são expandidas no bloco recolhido de siglas.",
+    "As linhas 'Fontes:' de /cmo-e-formacao, /historico e /limites juntam órgãos e conjuntos e atribuem CMO à CCEE e PLD à ANEEL (registro para o avaliador técnico).",
+    "Janelas de 'último ano' diferentes (365 dias em 12 meses e Diferenças regionais, 366 no calendário de Limites, 368 na série de amplitude do hub) e dois limiares de 'diferença entre submercados' (R$ 1,00 no hub, R$ 0,01 em Diferenças regionais).",
+    "Mapas de calor com classes claras abaixo de 3:1 contra o fundo (1,14:1 e 1,65:1) em /historico, /limites e /diferencas-regionais; a leitura depende da legenda e do rótulo de cada célula.",
+    "Rótulos e valores de gráfico com 10 a 11 px em todas as páginas; texto ampliado a 200% gera rolagem horizontal em /pld e /limites a 1280 px e em todas as páginas a 390 px."
+  ],
+  "verificacoes_da_familia": {
+    "PLD: média diária não substitui perfil horário e dispersão": "cumprido na apresentação: a frase da média do dia diz que ela 'não mostra a variação das horas, que está abaixo' e o painel horário traz desvio padrão, mínimo, máximo e faixas; a distribuição por hora do dia fica em Histórico (mapa hora por mês).",
+    "PLD: regiões com referência comparável": "cumprido: barras na mesma escala iniciada em zero, régua comum nos pequenos múltiplos e matriz com escala fixa; o esquema de fluxos usa 28/09 e os demais painéis 30/09, com aviso em texto pequeno.",
+    "PLD: limites na vigência correta": "cumprido na apresentação: o cartão 'Limites de {ano}' cita o ato de cada ano e o calendário e as barras usam o limite do próprio ano; a conferência normativa é do avaliador técnico.",
+    "PLD não é tarifa": "cumprido, porém abaixo da primeira tela: ressalva em y≈1.210 px (1440) e y≈2.151 px (390) e bloco 'O que o PLD não é' perto de 55% da página.",
+    "PLD: formação de preço sem causalidade simplista": "cumprido: 'Leitura usual do setor, ainda não conferida' identificada, ligações pendentes marcadas, 'o diagrama não mede quanto cada etapa pesou' e diferenças entre CMO e PLD descritas sem causa.",
+    "Estados vazios e bloqueados": "compreensíveis: 'Previsão indisponível' com o que falta, 'sem dado' em tabelas, 'nenhuma hora no teto horário' e resumo textual do calendário quase vazio; parâmetros inválidos de URL caem no padrão sem erro."
+  },
+  "limites_da_avaliacao": "Inspeção heurística feita por agente, sem usuários, tempos ou depoimentos. Leitor de tela real não foi testado; usei só Chromium headless e nenhum dispositivo de toque, Firefox ou Safari. O axe cobre regras automáticas: deixou de 53 a 172 verificações de contraste incompletas por página, e só conferi à mão o texto HTML sobre fundo sólido (todos acima de 4,5:1); texto em SVG e sobre gradiente não foi medido. Não havia capturas de Analisar e Auditar: avaliei esses níveis por texto, axe e medidas de DOM, sem inspeção visual. As capturas de 1440 vieram a 50% e os trechos de 390 vieram incompletos; completei com capturas e medidas próprias dos painéis principais e das larguras 320, 390 e 768, sem inspecionar todos os trechos ausentes. As faixas em branco após o rodapé nas capturas de 390 não se reproduzem na página ao vivo (o rodapé termina no fim do documento) e foram tratadas como artefato de captura. O objetivo.json mede 360 e não 320 px; medi 320 por DOM. O movimento reduzido foi avaliado só pelo CSS. Não avaliei a correção numérica (papel do avaliador técnico), exceto a conferência visível entre gráfico, tabela e CSV do dia em /pld (96 células, sem divergência) e o texto de notas entre páginas. Não abri CSV nem XLSX em planilha. Os testes de URL e de estado foram feitos no servidor local http://localhost:3100, que serve o commit d616ae877. Nenhum bloqueio da seção 7 da rubrica foi comprovado do ponto de vista de produto nas cinco páginas; a lista vazia significa nenhum comprovado, não verificação omitida."
+}

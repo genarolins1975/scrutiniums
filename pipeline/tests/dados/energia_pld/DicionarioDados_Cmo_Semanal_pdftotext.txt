@@ -1,0 +1,41 @@
+                                                                                                                  Data: 02-05-2023 - Página 1
+
+DADOS DO CMO SEMANAL (RESULTADO DO MODELO DECOMP)
+
+
+Descrição do Dado: Valores do custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN, chamado
+de Custo Marginal de Operação – CMO. Valores para cada semana operativa por subsistema, e por patamar de carga, além da média semanal,
+estimados pelo modelo Decomp.
+
+
+ Descrição                          Código                Tipo de Dado       Formato         Permite       Permite         Permite
+                                                                                             valor         valor           valor
+                                                                                             nulo          zerado          negativo
+
+ Código do Subsistema               id_subsistema         TEXTO              3 POSIÇÕES      Não           ----            ----
+
+ Nome do Subsistema                 nom_subsistema        TEXTO              20 POSIÇÕES     Não           ----            ----
+
+ Data de referência da Semana       din_instante          DATETIME           YYYY-MM-DD      Não           ----            ----
+ Operativa                                                                   HH:MM:SS
+
+ CMO Médio Semanal, em R$/MW        val_cmomediasemanal   FLOAT                              Não           Sim             Sim
+
+ CMO no patamar de carga leve, em   val_cmoleve           FLOAT                              Não           Sim             Sim
+ R$/MWh
+
+ CMO no patamar de carga média,     val_cmomedia          FLOAT                              Não           Sim             Sim
+ em R$/MWh
+
+ CMO no patamar de carga pesada,    val_cmopesada         FLOAT                              Não           Sim             Sim
+ em R$/MWh
+                                                                                                                Data: 02-05-2023 - Página 2
+
+Evoluções do Conjunto de Dados:
+
+Versão 1.0    26-08-2022      Criação do Dicionário de dados
+
+Versão 1.1    02-05-2023      Evolução do Dicionário de Dados para incorporar informações que apoiem o processo de validação e checagem
+                              de qualidade de dados. Informações sobre os dados com conteúdo nulas ou vazio; dados numéricos negativos
+                              e de numéricos de valor zero.
+

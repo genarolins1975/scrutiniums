@@ -1,0 +1,93 @@
+[
+  {
+    "NC": "Nível Territorial (Código)",
+    "NN": "Nível Territorial",
+    "MC": "Unidade de Medida (Código)",
+    "MN": "Unidade de Medida",
+    "V": "Valor",
+    "D1C": "Brasil (Código)",
+    "D1N": "Brasil",
+    "D2C": "Variável (Código)",
+    "D2N": "Variável",
+    "D3C": "Mês (Código)",
+    "D3N": "Mês"
+  },
+  {
+    "NC": "1",
+    "NN": "Brasil",
+    "MC": "30",
+    "MN": "Número-índice",
+    "V": "5486.5200000000000",
+    "D1C": "1",
+    "D1N": "Brasil",
+    "D2C": "2266",
+    "D2N": "IPCA - Número-índice (base: dezembro de 1993 = 100)",
+    "D3C": "202011",
+    "D3N": "novembro 2020"
+  },
+  {
+    "NC": "1",
+    "NN": "Brasil",
+    "MC": "30",
+    "MN": "Número-índice",
+    "V": "6075.6900000000000",
+    "D1C": "1",
+    "D1N": "Brasil",
+    "D2C": "2266",
+    "D2N": "IPCA - Número-índice (base: dezembro de 1993 = 100)",
+    "D3C": "202111",
+    "D3N": "novembro 2021"
+  },
+  {
+    "NC": "1",
+    "NN": "Brasil",
+    "MC": "30",
+    "MN": "Número-índice",
+    "V": "6434.2000000000000",
+    "D1C": "1",
+    "D1N": "Brasil",
+    "D2C": "2266",
+    "D2N": "IPCA - Número-índice (base: dezembro de 1993 = 100)",
+    "D3C": "202211",
+    "D3N": "novembro 2022"
+  },
+  {
+    "NC": "1",
+    "NN": "Brasil",
+    "MC": "30",
+    "MN": "Número-índice",
+    "V": "6735.5500000000000",
+    "D1C": "1",
+    "D1N": "Brasil",
+    "D2C": "2266",
+    "D2N": "IPCA - Número-índice (base: dezembro de 1993 = 100)",
+    "D3C": "202311",
+    "D3N": "novembro 2023"
+  },
+  {
+    "NC": "1",
+    "NN": "Brasil",
+    "MC": "30",
+    "MN": "Número-índice",
+    "V": "7063.7700000000000",
+    "D1C": "1",
+    "D1N": "Brasil",
+    "D2C": "2266",
+    "D2N": "IPCA - Número-índice (base: dezembro de 1993 = 100)",
+    "D3C": "202411",
+    "D3N": "novembro 2024"
+  },
+  {
+    "NC": "1",
+    "NN": "Brasil",
+    "MC": "30",
+    "MN": "Número-índice",
+    "V": "7378.9400000000000",
+    "D1C": "1",
+    "D1N": "Brasil",
+    "D2C": "2266",
+    "D2N": "IPCA - Número-índice (base: dezembro de 1993 = 100)",
+    "D3C": "202511",
+    "D3N": "novembro 2025"
+  }
+]

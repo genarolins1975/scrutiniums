@@ -1,7 +1,7 @@
 {
  "cod": "61024352",
- "nome": "BANCO VOITER S.A.",
- "sr": "S3",
+ "nome": "BANCO PLENO S.A.",
+ "sr": null,
  "tcb": "B1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -61,5 +61,5 @@
    "202509": 40637782.0
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

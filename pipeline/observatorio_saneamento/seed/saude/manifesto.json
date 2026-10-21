@@ -1,0 +1,611 @@
+{
+  "capturado_em": "2026-10-16T22:48:42+00:00",
+  "definicoes": {
+    "sim": {
+      "url": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?sim/cnv/obt10br.def",
+      "sha256": "fc074af9d5eb6220fb867b14cbee50ee0490222fc306419017377cd14a1c7eb2"
+    },
+    "sih": {
+      "url": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?sih/cnv/nrbr.def",
+      "sha256": "12cbb0691d9d947dc93b163e9efb8b8e166ab2b775566bab91a4f6f0b6ef5d79"
+    }
+  },
+  "consultas": [
+    {
+      "id": "sih-intestinais-int",
+      "sistema": "sih",
+      "grupo": "intestinais",
+      "medida": "int",
+      "rotulo": "Infecções intestinais (CID-10 A00 a A09): Internações hospitalares no SUS (SIH), por residência, ano de atendimento",
+      "def": "sih/cnv/nrbr.def",
+      "incremento": "Internações",
+      "coluna": "Ano_atendimento",
+      "selecao": "SLista_Morb__CID-10",
+      "itens": [
+        {
+          "valor": "1",
+          "rotulo": "Cólera"
+        },
+        {
+          "valor": "2",
+          "rotulo": "Febres tifóide e paratifóide"
+        },
+        {
+          "valor": "3",
+          "rotulo": "Shiguelose"
+        },
+        {
+          "valor": "4",
+          "rotulo": "Amebíase"
+        },
+        {
+          "valor": "5",
+          "rotulo": "Diarréia e gastroenterite origem infecc presumível"
+        },
+        {
+          "valor": "6",
+          "rotulo": "Outras doenças infecciosas intestinais"
+        }
+      ],
+      "arquivos": [
+        "nrbr2201.dbf",
+        "nrbr2202.dbf",
+        "nrbr2203.dbf",
+        "nrbr2204.dbf",
+        "nrbr2205.dbf",
+        "nrbr2206.dbf",
+        "nrbr2207.dbf",
+        "nrbr2208.dbf",
+        "nrbr2209.dbf",
+        "nrbr2210.dbf",
+        "nrbr2211.dbf",
+        "nrbr2212.dbf",
+        "nrbr2301.dbf",
+        "nrbr2302.dbf",
+        "nrbr2303.dbf",
+        "nrbr2304.dbf",
+        "nrbr2305.dbf",
+        "nrbr2306.dbf",
+        "nrbr2307.dbf",
+        "nrbr2308.dbf",
+        "nrbr2309.dbf",
+        "nrbr2310.dbf",
+        "nrbr2311.dbf",
+        "nrbr2312.dbf",
+        "nrbr2401.dbf",
+        "nrbr2402.dbf",
+        "nrbr2403.dbf",
+        "nrbr2404.dbf",
+        "nrbr2405.dbf",
+        "nrbr2406.dbf",
+        "nrbr2407.dbf",
+        "nrbr2408.dbf",
+        "nrbr2409.dbf",
+        "nrbr2410.dbf",
+        "nrbr2411.dbf",
+        "nrbr2412.dbf",
+        "nrbr2501.dbf",
+        "nrbr2502.dbf",
+        "nrbr2503.dbf",
+        "nrbr2504.dbf",
+        "nrbr2505.dbf",
+        "nrbr2506.dbf",
+        "nrbr2507.dbf",
+        "nrbr2508.dbf",
+        "nrbr2509.dbf",
+        "nrbr2510.dbf",
+        "nrbr2511.dbf",
+        "nrbr2512.dbf"
+      ],
+      "arquivo": "sih-intestinais-int.html.gz",
+      "sha256": "18f725062cf4c13f7d1b9ed5bde7414ea8ee6e45aeb34b1d37de17854e1686b7",
+      "bytes": 212144,
+      "notas": "Fonte: Ministério da Saúde - Sistema de Informações Hospitalares do SUS (SIH/SUS) Notas: Dados referentes aos últimos seis meses, sujeitos a atualização."
+    },
+    {
+      "id": "sih-intestinais-obt",
+      "sistema": "sih",
+      "grupo": "intestinais",
+      "medida": "obt",
+      "rotulo": "Infecções intestinais (CID-10 A00 a A09): Óbitos em internação hospitalar no SUS (SIH), por residência, ano de atendimento",
+      "def": "sih/cnv/nrbr.def",
+      "incremento": "Óbitos",
+      "coluna": "Ano_atendimento",
+      "selecao": "SLista_Morb__CID-10",
+      "itens": [
+        {
+          "valor": "1",
+          "rotulo": "Cólera"
+        },
+        {
+          "valor": "2",
+          "rotulo": "Febres tifóide e paratifóide"
+        },
+        {
+          "valor": "3",
+          "rotulo": "Shiguelose"
+        },
+        {
+          "valor": "4",
+          "rotulo": "Amebíase"
+        },
+        {
+          "valor": "5",
+          "rotulo": "Diarréia e gastroenterite origem infecc presumível"
+        },
+        {
+          "valor": "6",
+          "rotulo": "Outras doenças infecciosas intestinais"
+        }
+      ],
+      "arquivos": [
+        "nrbr2201.dbf",
+        "nrbr2202.dbf",
+        "nrbr2203.dbf",
+        "nrbr2204.dbf",
+        "nrbr2205.dbf",
+        "nrbr2206.dbf",
+        "nrbr2207.dbf",
+        "nrbr2208.dbf",
+        "nrbr2209.dbf",
+        "nrbr2210.dbf",
+        "nrbr2211.dbf",
+        "nrbr2212.dbf",
+        "nrbr2301.dbf",
+        "nrbr2302.dbf",
+        "nrbr2303.dbf",
+        "nrbr2304.dbf",
+        "nrbr2305.dbf",
+        "nrbr2306.dbf",
+        "nrbr2307.dbf",
+        "nrbr2308.dbf",
+        "nrbr2309.dbf",
+        "nrbr2310.dbf",
+        "nrbr2311.dbf",
+        "nrbr2312.dbf",
+        "nrbr2401.dbf",
+        "nrbr2402.dbf",
+        "nrbr2403.dbf",
+        "nrbr2404.dbf",
+        "nrbr2405.dbf",
+        "nrbr2406.dbf",
+        "nrbr2407.dbf",
+        "nrbr2408.dbf",
+        "nrbr2409.dbf",
+        "nrbr2410.dbf",
+        "nrbr2411.dbf",
+        "nrbr2412.dbf",
+        "nrbr2501.dbf",
+        "nrbr2502.dbf",
+        "nrbr2503.dbf",
+        "nrbr2504.dbf",
+        "nrbr2505.dbf",
+        "nrbr2506.dbf",
+        "nrbr2507.dbf",
+        "nrbr2508.dbf",
+        "nrbr2509.dbf",
+        "nrbr2510.dbf",
+        "nrbr2511.dbf",
+        "nrbr2512.dbf"
+      ],
+      "arquivo": "sih-intestinais-obt.html.gz",
+      "sha256": "31520a4b92ac9dc5aba704e8d7230c99b961e99743719e27842101eefedfc288",
+      "bytes": 197056,
+      "notas": "Fonte: Ministério da Saúde - Sistema de Informações Hospitalares do SUS (SIH/SUS) Notas: Dados referentes aos últimos seis meses, sujeitos a atualização."
+    },
+    {
+      "id": "sim-intestinais-obt",
+      "sistema": "sim",
+      "grupo": "intestinais",
+      "medida": "obt",
+      "rotulo": "Infecções intestinais (CID-10 A00 a A09): Óbitos pelo SIM, por residência, ano do óbito",
+      "def": "sim/cnv/obt10br.def",
+      "incremento": "Óbitos_p/Residênc",
+      "coluna": "Ano_do_Óbito",
+      "selecao": "SCategoria_CID-10",
+      "itens": [
+        {
+          "valor": "1",
+          "rotulo": "A00 Cólera"
+        },
+        {
+          "valor": "2",
+          "rotulo": "A01 Febres tifóide e paratifóide"
+        },
+        {
+          "valor": "3",
+          "rotulo": "A02 Outras infecções por Salmonella"
+        },
+        {
+          "valor": "4",
+          "rotulo": "A03 Shiguelose"
+        },
+        {
+          "valor": "5",
+          "rotulo": "A04 Outras infecções intestinais bacterianas"
+        },
+        {
+          "valor": "6",
+          "rotulo": "@A05 Outras intoxicações alimentares bacterianas, não classificadas em outra parte"
+        },
+        {
+          "valor": "7",
+          "rotulo": "A06 Amebíase"
+        },
+        {
+          "valor": "8",
+          "rotulo": "A07 Outras doenças intestinais por protozoários"
+        },
+        {
+          "valor": "9",
+          "rotulo": "A08 Infecções intestinais virais, outras e as não especificadas"
+        },
+        {
+          "valor": "10",
+          "rotulo": "@A09 Outras gastroenterites e colites de origem infecciosa e as não especificadas"
+        }
+      ],
+      "arquivos": [
+        "obtbr22.dbf",
+        "obtbr23.dbf",
+        "obtbr24.dbf"
+      ],
+      "arquivo": "sim-intestinais-obt.html.gz",
+      "sha256": "f4ec7e3bab60dab09491a2c1e849bbbf97b6d6a358558ddcb2be7524cdff8a9c",
+      "bytes": 175188,
+      "notas": "Fonte: MS/SVSA/CGIAE - Sistema de Informações sobre Mortalidade - SIM Notas : Dados finais disponíveis até 2024 - data de extração 02/12/2025. Dados de 2025 - Preliminares - data de extração 28/07/2026. Dados de 2026 - 2a prévia - data de extração 01/09/2026."
+    },
+    {
+      "id": "sih-leptospirose-int",
+      "sistema": "sih",
+      "grupo": "leptospirose",
+      "medida": "int",
+      "rotulo": "Leptospirose (CID-10 A27): Internações hospitalares no SUS (SIH), por residência, ano de atendimento",
+      "def": "sih/cnv/nrbr.def",
+      "incremento": "Internações",
+      "coluna": "Ano_atendimento",
+      "selecao": "SLista_Morb__CID-10",
+      "itens": [
+        {
+          "valor": "25",
+          "rotulo": "Leptospirose icterohemorrágica"
+        },
+        {
+          "valor": "26",
+          "rotulo": "Outras formas de leptospirose"
+        },
+        {
+          "valor": "27",
+          "rotulo": "Leptospirose não especificada"
+        }
+      ],
+      "arquivos": [
+        "nrbr2201.dbf",
+        "nrbr2202.dbf",
+        "nrbr2203.dbf",
+        "nrbr2204.dbf",
+        "nrbr2205.dbf",
+        "nrbr2206.dbf",
+        "nrbr2207.dbf",
+        "nrbr2208.dbf",
+        "nrbr2209.dbf",
+        "nrbr2210.dbf",
+        "nrbr2211.dbf",
+        "nrbr2212.dbf",
+        "nrbr2301.dbf",
+        "nrbr2302.dbf",
+        "nrbr2303.dbf",
+        "nrbr2304.dbf",
+        "nrbr2305.dbf",
+        "nrbr2306.dbf",
+        "nrbr2307.dbf",
+        "nrbr2308.dbf",
+        "nrbr2309.dbf",
+        "nrbr2310.dbf",
+        "nrbr2311.dbf",
+        "nrbr2312.dbf",
+        "nrbr2401.dbf",
+        "nrbr2402.dbf",
+        "nrbr2403.dbf",
+        "nrbr2404.dbf",
+        "nrbr2405.dbf",
+        "nrbr2406.dbf",
+        "nrbr2407.dbf",
+        "nrbr2408.dbf",
+        "nrbr2409.dbf",
+        "nrbr2410.dbf",
+        "nrbr2411.dbf",
+        "nrbr2412.dbf",
+        "nrbr2501.dbf",
+        "nrbr2502.dbf",
+        "nrbr2503.dbf",
+        "nrbr2504.dbf",
+        "nrbr2505.dbf",
+        "nrbr2506.dbf",
+        "nrbr2507.dbf",
+        "nrbr2508.dbf",
+        "nrbr2509.dbf",
+        "nrbr2510.dbf",
+        "nrbr2511.dbf",
+        "nrbr2512.dbf"
+      ],
+      "arquivo": "sih-leptospirose-int.html.gz",
+      "sha256": "0568e715474b0b7ee3d7bda752a4f3f8350a677a16db3bd608d4404ec3fb791f",
+      "bytes": 197069,
+      "notas": "Fonte: Ministério da Saúde - Sistema de Informações Hospitalares do SUS (SIH/SUS) Notas: Dados referentes aos últimos seis meses, sujeitos a atualização."
+    },
+    {
+      "id": "sih-leptospirose-obt",
+      "sistema": "sih",
+      "grupo": "leptospirose",
+      "medida": "obt",
+      "rotulo": "Leptospirose (CID-10 A27): Óbitos em internação hospitalar no SUS (SIH), por residência, ano de atendimento",
+      "def": "sih/cnv/nrbr.def",
+      "incremento": "Óbitos",
+      "coluna": "Ano_atendimento",
+      "selecao": "SLista_Morb__CID-10",
+      "itens": [
+        {
+          "valor": "25",
+          "rotulo": "Leptospirose icterohemorrágica"
+        },
+        {
+          "valor": "26",
+          "rotulo": "Outras formas de leptospirose"
+        },
+        {
+          "valor": "27",
+          "rotulo": "Leptospirose não especificada"
+        }
+      ],
+      "arquivos": [
+        "nrbr2201.dbf",
+        "nrbr2202.dbf",
+        "nrbr2203.dbf",
+        "nrbr2204.dbf",
+        "nrbr2205.dbf",
+        "nrbr2206.dbf",
+        "nrbr2207.dbf",
+        "nrbr2208.dbf",
+        "nrbr2209.dbf",
+        "nrbr2210.dbf",
+        "nrbr2211.dbf",
+        "nrbr2212.dbf",
+        "nrbr2301.dbf",
+        "nrbr2302.dbf",
+        "nrbr2303.dbf",
+        "nrbr2304.dbf",
+        "nrbr2305.dbf",
+        "nrbr2306.dbf",
+        "nrbr2307.dbf",
+        "nrbr2308.dbf",
+        "nrbr2309.dbf",
+        "nrbr2310.dbf",
+        "nrbr2311.dbf",
+        "nrbr2312.dbf",
+        "nrbr2401.dbf",
+        "nrbr2402.dbf",
+        "nrbr2403.dbf",
+        "nrbr2404.dbf",
+        "nrbr2405.dbf",
+        "nrbr2406.dbf",
+        "nrbr2407.dbf",
+        "nrbr2408.dbf",
+        "nrbr2409.dbf",
+        "nrbr2410.dbf",
+        "nrbr2411.dbf",
+        "nrbr2412.dbf",
+        "nrbr2501.dbf",
+        "nrbr2502.dbf",
+        "nrbr2503.dbf",
+        "nrbr2504.dbf",
+        "nrbr2505.dbf",
+        "nrbr2506.dbf",
+        "nrbr2507.dbf",
+        "nrbr2508.dbf",
+        "nrbr2509.dbf",
+        "nrbr2510.dbf",
+        "nrbr2511.dbf",
+        "nrbr2512.dbf"
+      ],
+      "arquivo": "sih-leptospirose-obt.html.gz",
+      "sha256": "b1555b289e8ee93e3cfaebdcd4fb7245a1c995a79543616968e4e2f2b8148d41",
+      "bytes": 196784,
+      "notas": "Fonte: Ministério da Saúde - Sistema de Informações Hospitalares do SUS (SIH/SUS) Notas: Dados referentes aos últimos seis meses, sujeitos a atualização."
+    },
+    {
+      "id": "sim-leptospirose-obt",
+      "sistema": "sim",
+      "grupo": "leptospirose",
+      "medida": "obt",
+      "rotulo": "Leptospirose (CID-10 A27): Óbitos pelo SIM, por residência, ano do óbito",
+      "def": "sim/cnv/obt10br.def",
+      "incremento": "Óbitos_p/Residênc",
+      "coluna": "Ano_do_Óbito",
+      "selecao": "SCategoria_CID-10",
+      "itens": [
+        {
+          "valor": "23",
+          "rotulo": "A27 Leptospirose"
+        }
+      ],
+      "arquivos": [
+        "obtbr22.dbf",
+        "obtbr23.dbf",
+        "obtbr24.dbf"
+      ],
+      "arquivo": "sim-leptospirose-obt.html.gz",
+      "sha256": "a500adebbd829c9ded9fb0246e1c99cebd09032b476b885366a3490b500ddab7",
+      "bytes": 174112,
+      "notas": "Fonte: MS/SVSA/CGIAE - Sistema de Informações sobre Mortalidade - SIM Notas : Dados finais disponíveis até 2024 - data de extração 02/12/2025. Dados de 2025 - Preliminares - data de extração 28/07/2026. Dados de 2026 - 2a prévia - data de extração 01/09/2026."
+    },
+    {
+      "id": "sih-esquistossomose-int",
+      "sistema": "sih",
+      "grupo": "esquistossomose",
+      "medida": "int",
+      "rotulo": "Esquistossomose (CID-10 B65): Internações hospitalares no SUS (SIH), por residência, ano de atendimento",
+      "def": "sih/cnv/nrbr.def",
+      "incremento": "Internações",
+      "coluna": "Ano_atendimento",
+      "selecao": "SLista_Morb__CID-10",
+      "itens": [
+        {
+          "valor": "66",
+          "rotulo": "Esquistossomose"
+        }
+      ],
+      "arquivos": [
+        "nrbr2201.dbf",
+        "nrbr2202.dbf",
+        "nrbr2203.dbf",
+        "nrbr2204.dbf",
+        "nrbr2205.dbf",
+        "nrbr2206.dbf",
+        "nrbr2207.dbf",
+        "nrbr2208.dbf",
+        "nrbr2209.dbf",
+        "nrbr2210.dbf",
+        "nrbr2211.dbf",
+        "nrbr2212.dbf",
+        "nrbr2301.dbf",
+        "nrbr2302.dbf",
+        "nrbr2303.dbf",
+        "nrbr2304.dbf",
+        "nrbr2305.dbf",
+        "nrbr2306.dbf",
+        "nrbr2307.dbf",
+        "nrbr2308.dbf",
+        "nrbr2309.dbf",
+        "nrbr2310.dbf",
+        "nrbr2311.dbf",
+        "nrbr2312.dbf",
+        "nrbr2401.dbf",
+        "nrbr2402.dbf",
+        "nrbr2403.dbf",
+        "nrbr2404.dbf",
+        "nrbr2405.dbf",
+        "nrbr2406.dbf",
+        "nrbr2407.dbf",
+        "nrbr2408.dbf",
+        "nrbr2409.dbf",
+        "nrbr2410.dbf",
+        "nrbr2411.dbf",
+        "nrbr2412.dbf",
+        "nrbr2501.dbf",
+        "nrbr2502.dbf",
+        "nrbr2503.dbf",
+        "nrbr2504.dbf",
+        "nrbr2505.dbf",
+        "nrbr2506.dbf",
+        "nrbr2507.dbf",
+        "nrbr2508.dbf",
+        "nrbr2509.dbf",
+        "nrbr2510.dbf",
+        "nrbr2511.dbf",
+        "nrbr2512.dbf"
+      ],
+      "arquivo": "sih-esquistossomose-int.html.gz",
+      "sha256": "e2fd982c8bb00a8490d2965cf76ecd404aa978518113e7833f01ee1af9f6ac68",
+      "bytes": 196704,
+      "notas": "Fonte: Ministério da Saúde - Sistema de Informações Hospitalares do SUS (SIH/SUS) Notas: Dados referentes aos últimos seis meses, sujeitos a atualização."
+    },
+    {
+      "id": "sih-esquistossomose-obt",
+      "sistema": "sih",
+      "grupo": "esquistossomose",
+      "medida": "obt",
+      "rotulo": "Esquistossomose (CID-10 B65): Óbitos em internação hospitalar no SUS (SIH), por residência, ano de atendimento",
+      "def": "sih/cnv/nrbr.def",
+      "incremento": "Óbitos",
+      "coluna": "Ano_atendimento",
+      "selecao": "SLista_Morb__CID-10",
+      "itens": [
+        {
+          "valor": "66",
+          "rotulo": "Esquistossomose"
+        }
+      ],
+      "arquivos": [
+        "nrbr2201.dbf",
+        "nrbr2202.dbf",
+        "nrbr2203.dbf",
+        "nrbr2204.dbf",
+        "nrbr2205.dbf",
+        "nrbr2206.dbf",
+        "nrbr2207.dbf",
+        "nrbr2208.dbf",
+        "nrbr2209.dbf",
+        "nrbr2210.dbf",
+        "nrbr2211.dbf",
+        "nrbr2212.dbf",
+        "nrbr2301.dbf",
+        "nrbr2302.dbf",
+        "nrbr2303.dbf",
+        "nrbr2304.dbf",
+        "nrbr2305.dbf",
+        "nrbr2306.dbf",
+        "nrbr2307.dbf",
+        "nrbr2308.dbf",
+        "nrbr2309.dbf",
+        "nrbr2310.dbf",
+        "nrbr2311.dbf",
+        "nrbr2312.dbf",
+        "nrbr2401.dbf",
+        "nrbr2402.dbf",
+        "nrbr2403.dbf",
+        "nrbr2404.dbf",
+        "nrbr2405.dbf",
+        "nrbr2406.dbf",
+        "nrbr2407.dbf",
+        "nrbr2408.dbf",
+        "nrbr2409.dbf",
+        "nrbr2410.dbf",
+        "nrbr2411.dbf",
+        "nrbr2412.dbf",
+        "nrbr2501.dbf",
+        "nrbr2502.dbf",
+        "nrbr2503.dbf",
+        "nrbr2504.dbf",
+        "nrbr2505.dbf",
+        "nrbr2506.dbf",
+        "nrbr2507.dbf",
+        "nrbr2508.dbf",
+        "nrbr2509.dbf",
+        "nrbr2510.dbf",
+        "nrbr2511.dbf",
+        "nrbr2512.dbf"
+      ],
+      "arquivo": "sih-esquistossomose-obt.html.gz",
+      "sha256": "84cdb1092d15b2e37e901d4138da192187885869764b0c6a06f6e4bcfa06cb11",
+      "bytes": 196674,
+      "notas": "Fonte: Ministério da Saúde - Sistema de Informações Hospitalares do SUS (SIH/SUS) Notas: Dados referentes aos últimos seis meses, sujeitos a atualização."
+    },
+    {
+      "id": "sim-esquistossomose-obt",
+      "sistema": "sim",
+      "grupo": "esquistossomose",
+      "medida": "obt",
+      "rotulo": "Esquistossomose (CID-10 B65): Óbitos pelo SIM, por residência, ano do óbito",
+      "def": "sim/cnv/obt10br.def",
+      "incremento": "Óbitos_p/Residênc",
+      "coluna": "Ano_do_Óbito",
+      "selecao": "SCategoria_CID-10",
+      "itens": [
+        {
+          "valor": "141",
+          "rotulo": "B65 Esquistossomose [bilharziose] [Schistosomíase]"
+        }
+      ],
+      "arquivos": [
+        "obtbr22.dbf",
+        "obtbr23.dbf",
+        "obtbr24.dbf"
+      ],
+      "arquivo": "sim-esquistossomose-obt.html.gz",
+      "sha256": "5d437ab674d5fcafefe87fcc092d48c362bd79c85e1f54ce35114ace1a653286",
+      "bytes": 174155,
+      "notas": "Fonte: MS/SVSA/CGIAE - Sistema de Informações sobre Mortalidade - SIM Notas : Dados finais disponíveis até 2024 - data de extração 02/12/2025. Dados de 2025 - Preliminares - data de extração 28/07/2026. Dados de 2026 - 2a prévia - data de extração 01/09/2026."
+    }
+  ]
+}

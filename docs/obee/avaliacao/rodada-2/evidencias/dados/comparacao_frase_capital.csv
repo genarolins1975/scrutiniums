@@ -1,0 +1,261 @@
+url,resultado,detalhe,frase
+/gastos?med=despesa_hab&cap=aracaju&ano=2023,ok,,Aracaju (SE) registra R$ 767; a mediana das 26 capitais é R$ 1.032 (R$ 265 abaixo).
+/gastos?med=despesa&cap=aracaju&ano=2025,ok,,"Aracaju (SE) registra R$ 566,4 milhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 441,8 milhões abaixo)."
+/gastos?med=despesa_mat&cap=aracaju&ano=2022,ok,,Aracaju (SE) registra R$ 11.014; a mediana das 23 capitais é R$ 11.285 (R$ 271 abaixo).
+/gastos?med=despesa_hab&cap=aracaju&ano=2025,ok,,Aracaju (SE) registra R$ 912; a mediana das 26 capitais é R$ 1.160 (R$ 248 abaixo).
+/resultados?med=ideb&cap=aracaju&ano=2023&etapa=anos_iniciais,ok,,"Aracaju (SE) registra 5,2; a mediana das 26 capitais é 5,7 (0,5 ponto abaixo)."
+/atendimento?med=atu&cap=aracaju&ano=2024&etapa=creche,ok,,"Aracaju (SE) registra 18,6; a mediana das 26 capitais é 18,5 (0,1 aluno por turma acima)."
+/resultados?med=saeb&cap=aracaju&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(7.86 x 7.869999999999976);,"Aracaju (SE) registra 245,33; a mediana das 22 capitais é 253,20 (7,86 pontos abaixo)."
+/atendimento?med=matriculas&cap=aracaju&ano=2025&etapa=total,ok,,Aracaju (SE) registra 33.933; a mediana das 26 capitais é 68.179 (34.246 matrículas abaixo).
+/resultados?med=aprovacao&cap=aracaju&ano=2022&etapa=anos_finais,ok,,"Aracaju (SE) registra 83,8%; a mediana das 23 capitais é 93,9% (10,1 pontos percentuais abaixo)."
+/atendimento?med=conveniadas&cap=aracaju&ano=2025&etapa=total,ok,,Aracaju (SE) registra 227; a mediana das 26 capitais é 2.495 (2.268 matrículas abaixo).
+/gastos?med=despesa_hab&cap=belem&ano=2023,ok,,Belém (PA) registra R$ 574; a mediana das 26 capitais é R$ 1.032 (R$ 458 abaixo).
+/gastos?med=despesa_hab&cap=belem&ano=2025,ok,,Belém (PA) registra R$ 702; a mediana das 26 capitais é R$ 1.160 (R$ 458 abaixo).
+/gastos?med=despesa&cap=belem&ano=2025,ok,,"Belém (PA) registra R$ 980,8 milhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 27,4 milhões abaixo)."
+/gastos?med=despesa_mat&cap=belem&ano=2022,ok,,Belém (PA) registra R$ 10.219; a mediana das 23 capitais é R$ 11.285 (R$ 1.066 abaixo).
+/resultados?med=ideb&cap=belem&ano=2023&etapa=anos_iniciais,ok,,"Belém (PA) registra 5,0; a mediana das 26 capitais é 5,7 (0,7 ponto abaixo)."
+/resultados?med=saeb&cap=belem&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(6.22 x 6.22999999999999);,"Belém (PA) registra 246,97; a mediana das 22 capitais é 253,20 (6,22 pontos abaixo)."
+/atendimento?med=atu&cap=belem&ano=2024&etapa=creche,ok,,"Belém (PA) registra 20,3; a mediana das 26 capitais é 18,5 (1,8 alunos por turma acima)."
+/atendimento?med=matriculas&cap=belem&ano=2025&etapa=total,ok,,Belém (PA) registra 58.394; a mediana das 26 capitais é 68.179 (9.785 matrículas abaixo).
+/resultados?med=aprovacao&cap=belem&ano=2022&etapa=anos_finais,ok,,"Belém (PA) registra 93,9%; a mediana das 23 capitais é 93,9% (igual à mediana)."
+/atendimento?med=conveniadas&cap=belem&ano=2025&etapa=total,ok,,Belém (PA) registra 5.207; a mediana das 26 capitais é 2.495 (2.712 matrículas acima).
+/gastos?med=despesa_hab&cap=belo-horizonte&ano=2023,ok,,Belo Horizonte (MG) registra R$ 1.172; a mediana das 26 capitais é R$ 1.032 (R$ 140 acima).
+/gastos?med=despesa&cap=belo-horizonte&ano=2025,ok,,"Belo Horizonte (MG) registra R$ 3,59 bilhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 2,58 bilhões acima)."
+/gastos?med=despesa_hab&cap=belo-horizonte&ano=2025,ok,,Belo Horizonte (MG) registra R$ 1.487; a mediana das 26 capitais é R$ 1.160 (R$ 327 acima).
+/gastos?med=despesa_mat&cap=belo-horizonte&ano=2022,ok,,Belo Horizonte (MG) registra R$ 12.946; a mediana das 23 capitais é R$ 11.285 (R$ 1.661 acima).
+/resultados?med=ideb&cap=belo-horizonte&ano=2023&etapa=anos_iniciais,ok,,"Belo Horizonte (MG) registra 5,8; a mediana das 26 capitais é 5,7 (0,1 ponto acima)."
+/resultados?med=saeb&cap=belo-horizonte&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(0.69 x 0.6999999999999886);,"Belo Horizonte (MG) registra 252,50; a mediana das 22 capitais é 253,20 (0,69 ponto abaixo)."
+/atendimento?med=atu&cap=belo-horizonte&ano=2024&etapa=creche,ok,,"Belo Horizonte (MG) registra 14,5; a mediana das 26 capitais é 18,5 (4,0 alunos por turma abaixo)."
+/atendimento?med=matriculas&cap=belo-horizonte&ano=2025&etapa=total,ok,,Belo Horizonte (MG) registra 160.186; a mediana das 26 capitais é 68.179 (92.007 matrículas acima).
+/resultados?med=aprovacao&cap=belo-horizonte&ano=2022&etapa=anos_finais,ok,,"Belo Horizonte (MG) registra 93,4%; a mediana das 23 capitais é 93,9% (0,5 ponto percentual abaixo)."
+/atendimento?med=conveniadas&cap=belo-horizonte&ano=2025&etapa=total,ok,,Belo Horizonte (MG) registra 28.932; a mediana das 26 capitais é 2.495 (26.437 matrículas acima).
+/gastos?med=despesa_hab&cap=boa-vista&ano=2023,ok,,Boa Vista (RR) registra R$ 1.270; a mediana das 26 capitais é R$ 1.032 (R$ 238 acima).
+/gastos?med=despesa_hab&cap=boa-vista&ano=2025,ok,,Boa Vista (RR) registra R$ 1.508; a mediana das 26 capitais é R$ 1.160 (R$ 348 acima).
+/gastos?med=despesa&cap=boa-vista&ano=2025,ok,,"Boa Vista (RR) registra R$ 732,0 milhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 276,2 milhões abaixo)."
+/resultados?med=ideb&cap=boa-vista&ano=2023&etapa=anos_iniciais,ok,,"Boa Vista (RR) registra 5,7; a mediana das 26 capitais é 5,7 (0,0 ponto acima)."
+/gastos?med=despesa_mat&cap=boa-vista&ano=2022,ok,,Boa Vista (RR) registra R$ 11.285; a mediana das 23 capitais é R$ 11.285 (igual à mediana).
+/resultados?med=saeb&cap=boa-vista&ano=2023&etapa=anos_finais&disc=portugues,ok,NAO_APLICAVEL,Boa Vista (RR) não tem valor observado para esta medida neste recorte.
+/atendimento?med=atu&cap=boa-vista&ano=2024&etapa=creche,ok,,"Boa Vista (RR) registra 27,8; a mediana das 26 capitais é 18,5 (9,3 alunos por turma acima)."
+/atendimento?med=matriculas&cap=boa-vista&ano=2025&etapa=total,ok,,Boa Vista (RR) registra 53.093; a mediana das 26 capitais é 68.179 (15.086 matrículas abaixo).
+/resultados?med=aprovacao&cap=boa-vista&ano=2022&etapa=anos_finais,ok,NAO_APLICAVEL,Boa Vista (RR) não tem valor observado para esta medida neste recorte.
+/atendimento?med=conveniadas&cap=boa-vista&ano=2025&etapa=total,ok,,Boa Vista (RR) registra 0; a mediana das 26 capitais é 2.495 (2.495 matrículas abaixo).
+/gastos?med=despesa_hab&cap=campo-grande&ano=2023,ok,,Campo Grande (MS) registra R$ 1.136; a mediana das 26 capitais é R$ 1.032 (R$ 104 acima).
+/gastos?med=despesa&cap=campo-grande&ano=2025,ok,,"Campo Grande (MS) registra R$ 1,63 bilhão; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 618,3 milhões acima)."
+/gastos?med=despesa_hab&cap=campo-grande&ano=2025,ok,,Campo Grande (MS) registra R$ 1.689; a mediana das 26 capitais é R$ 1.160 (R$ 529 acima).
+/gastos?med=despesa_mat&cap=campo-grande&ano=2022,ok,,Campo Grande (MS) registra R$ 8.709; a mediana das 23 capitais é R$ 11.285 (R$ 2.576 abaixo).
+/atendimento?med=atu&cap=campo-grande&ano=2024&etapa=creche,ok,,"Campo Grande (MS) registra 22,6; a mediana das 26 capitais é 18,5 (4,1 alunos por turma acima)."
+/resultados?med=ideb&cap=campo-grande&ano=2023&etapa=anos_iniciais,ok,,"Campo Grande (MS) registra 5,3; a mediana das 26 capitais é 5,7 (0,4 ponto abaixo)."
+/resultados?med=saeb&cap=campo-grande&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(2.65 x 2.640000000000015);,"Campo Grande (MS) registra 255,84; a mediana das 22 capitais é 253,20 (2,65 pontos acima)."
+/atendimento?med=matriculas&cap=campo-grande&ano=2025&etapa=total,ok,,Campo Grande (MS) registra 111.194; a mediana das 26 capitais é 68.179 (43.015 matrículas acima).
+/atendimento?med=conveniadas&cap=campo-grande&ano=2025&etapa=total,ok,,Campo Grande (MS) registra 2.801; a mediana das 26 capitais é 2.495 (306 matrículas acima).
+/resultados?med=aprovacao&cap=campo-grande&ano=2022&etapa=anos_finais,ok,,"Campo Grande (MS) registra 93,9%; a mediana das 23 capitais é 93,9% (igual à mediana)."
+/gastos?med=despesa_hab&cap=cuiaba&ano=2023,ok,,Cuiabá (MT) registra R$ 1.129; a mediana das 26 capitais é R$ 1.032 (R$ 97 acima).
+/gastos?med=despesa_hab&cap=cuiaba&ano=2025,ok,,Cuiabá (MT) registra R$ 1.465; a mediana das 26 capitais é R$ 1.160 (R$ 305 acima).
+/gastos?med=despesa_mat&cap=cuiaba&ano=2022,ok,,Cuiabá (MT) registra R$ 11.681; a mediana das 23 capitais é R$ 11.285 (R$ 396 acima).
+/gastos?med=despesa&cap=cuiaba&ano=2025,ok,,"Cuiabá (MT) registra R$ 1,01 bilhão; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 5,4 milhões acima)."
+/resultados?med=ideb&cap=cuiaba&ano=2023&etapa=anos_iniciais,ok,,"Cuiabá (MT) registra 5,8; a mediana das 26 capitais é 5,7 (0,1 ponto acima)."
+/resultados?med=saeb&cap=cuiaba&ano=2023&etapa=anos_finais&disc=portugues,ok,,"Cuiabá (MT) registra 255,23; a mediana das 22 capitais é 253,20 (2,03 pontos acima)."
+/atendimento?med=matriculas&cap=cuiaba&ano=2025&etapa=total,ok,,Cuiabá (MT) registra 59.411; a mediana das 26 capitais é 68.179 (8.768 matrículas abaixo).
+/atendimento?med=atu&cap=cuiaba&ano=2024&etapa=creche,ok,,"Cuiabá (MT) registra 28,5; a mediana das 26 capitais é 18,5 (10,0 alunos por turma acima)."
+/resultados?med=aprovacao&cap=cuiaba&ano=2022&etapa=anos_finais,ok,,"Cuiabá (MT) registra 99,7%; a mediana das 23 capitais é 93,9% (5,8 pontos percentuais acima)."
+/atendimento?med=conveniadas&cap=cuiaba&ano=2025&etapa=total,ok,,Cuiabá (MT) registra 2.189; a mediana das 26 capitais é 2.495 (306 matrículas abaixo).
+/gastos?med=despesa_hab&cap=curitiba&ano=2025,ok,,Curitiba (PR) registra R$ 1.187; a mediana das 26 capitais é R$ 1.160 (R$ 27 acima).
+/gastos?med=despesa_hab&cap=curitiba&ano=2023,ok,,Curitiba (PR) registra R$ 948; a mediana das 26 capitais é R$ 1.032 (R$ 84 abaixo).
+/gastos?med=despesa_mat&cap=curitiba&ano=2022,ok,,Curitiba (PR) registra R$ 13.763; a mediana das 23 capitais é R$ 11.285 (R$ 2.478 acima).
+/gastos?med=despesa&cap=curitiba&ano=2025,ok,,"Curitiba (PR) registra R$ 2,17 bilhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 1,16 bilhão acima)."
+/resultados?med=ideb&cap=curitiba&ano=2023&etapa=anos_iniciais,ok,,"Curitiba (PR) registra 6,3; a mediana das 26 capitais é 5,7 (0,6 ponto acima)."
+/atendimento?med=matriculas&cap=curitiba&ano=2025&etapa=total,ok,,Curitiba (PR) registra 116.709; a mediana das 26 capitais é 68.179 (48.530 matrículas acima).
+/resultados?med=saeb&cap=curitiba&ano=2023&etapa=anos_finais&disc=portugues,ok,,"Curitiba (PR) registra 263,52; a mediana das 22 capitais é 253,20 (10,32 pontos acima)."
+/atendimento?med=atu&cap=curitiba&ano=2024&etapa=creche,ok,,"Curitiba (PR) registra 20,0; a mediana das 26 capitais é 18,5 (1,5 alunos por turma acima)."
+/resultados?med=aprovacao&cap=curitiba&ano=2022&etapa=anos_finais,ok,,"Curitiba (PR) registra 99,4%; a mediana das 23 capitais é 93,9% (5,5 pontos percentuais acima)."
+/gastos?med=despesa_hab&cap=florianopolis&ano=2023,ok,,Florianópolis (SC) registra R$ 1.553; a mediana das 26 capitais é R$ 1.032 (R$ 521 acima).
+/atendimento?med=conveniadas&cap=curitiba&ano=2025&etapa=total,ok,,Curitiba (PR) registra 16.458; a mediana das 26 capitais é 2.495 (13.963 matrículas acima).
+/gastos?med=despesa_hab&cap=florianopolis&ano=2025,ok,,Florianópolis (SC) registra R$ 1.462; a mediana das 26 capitais é R$ 1.160 (R$ 302 acima).
+/gastos?med=despesa_mat&cap=florianopolis&ano=2022,ok,,Florianópolis (SC) registra R$ 18.119; a mediana das 23 capitais é R$ 11.285 (R$ 6.834 acima).
+/gastos?med=despesa&cap=florianopolis&ano=2025,ok,,"Florianópolis (SC) registra R$ 859,0 milhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 149,2 milhões abaixo)."
+/resultados?med=ideb&cap=florianopolis&ano=2023&etapa=anos_iniciais,ok,,"Florianópolis (SC) registra 5,8; a mediana das 26 capitais é 5,7 (0,1 ponto acima)."
+/resultados?med=saeb&cap=florianopolis&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(9.45 x 9.45999999999998);,"Florianópolis (SC) registra 243,74; a mediana das 22 capitais é 253,20 (9,45 pontos abaixo)."
+/atendimento?med=atu&cap=florianopolis&ano=2024&etapa=creche,ok,,"Florianópolis (SC) registra 8,0; a mediana das 26 capitais é 18,5 (10,5 alunos por turma abaixo)."
+/atendimento?med=matriculas&cap=florianopolis&ano=2025&etapa=total,ok,,Florianópolis (SC) registra 35.302; a mediana das 26 capitais é 68.179 (32.877 matrículas abaixo).
+/resultados?med=aprovacao&cap=florianopolis&ano=2022&etapa=anos_finais,ok,,"Florianópolis (SC) registra 97,5%; a mediana das 23 capitais é 93,9% (3,6 pontos percentuais acima)."
+/atendimento?med=conveniadas&cap=florianopolis&ano=2025&etapa=total,ok,,Florianópolis (SC) registra 1.445; a mediana das 26 capitais é 2.495 (1.050 matrículas abaixo).
+/gastos?med=despesa_hab&cap=fortaleza&ano=2025,DIVERGE, diferença(29.0 x 28.0);,Fortaleza (CE) registra R$ 1.188; a mediana das 26 capitais é R$ 1.160 (R$ 29 acima).
+/gastos?med=despesa_hab&cap=fortaleza&ano=2023,ok,,Fortaleza (CE) registra R$ 1.071; a mediana das 26 capitais é R$ 1.032 (R$ 39 acima).
+/gastos?med=despesa&cap=fortaleza&ano=2025,ok,,"Fortaleza (CE) registra R$ 3,06 bilhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 2,06 bilhões acima)."
+/gastos?med=despesa_mat&cap=fortaleza&ano=2022,ok,,Fortaleza (CE) registra R$ 9.179; a mediana das 23 capitais é R$ 11.285 (R$ 2.106 abaixo).
+/resultados?med=saeb&cap=fortaleza&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(8.66 x 8.650000000000034);,"Fortaleza (CE) registra 261,85; a mediana das 22 capitais é 253,20 (8,66 pontos acima)."
+/atendimento?med=atu&cap=fortaleza&ano=2024&etapa=creche,ok,,"Fortaleza (CE) registra 18,4; a mediana das 26 capitais é 18,5 (0,1 aluno por turma abaixo)."
+/resultados?med=ideb&cap=fortaleza&ano=2023&etapa=anos_iniciais,DIVERGE, diferença(0.3 x 0.20000000000000018);,"Fortaleza (CE) registra 5,9; a mediana das 26 capitais é 5,7 (0,3 ponto acima)."
+/atendimento?med=matriculas&cap=fortaleza&ano=2025&etapa=total,ok,,Fortaleza (CE) registra 224.060; a mediana das 26 capitais é 68.179 (155.881 matrículas acima).
+/gastos?med=despesa_hab&cap=goiania&ano=2023,ok,,Goiânia (GO) registra R$ 1.104; a mediana das 26 capitais é R$ 1.032 (R$ 72 acima).
+/resultados?med=aprovacao&cap=fortaleza&ano=2022&etapa=anos_finais,ok,,"Fortaleza (CE) registra 98,5%; a mediana das 23 capitais é 93,9% (4,6 pontos percentuais acima)."
+/atendimento?med=conveniadas&cap=fortaleza&ano=2025&etapa=total,ok,,Fortaleza (CE) registra 9.151; a mediana das 26 capitais é 2.495 (6.656 matrículas acima).
+/gastos?med=despesa_hab&cap=goiania&ano=2025,ok,,Goiânia (GO) registra R$ 1.267; a mediana das 26 capitais é R$ 1.160 (R$ 107 acima).
+/resultados?med=ideb&cap=goiania&ano=2023&etapa=anos_iniciais,ok,,"Goiânia (GO) registra 6,5; a mediana das 26 capitais é 5,7 (0,8 ponto acima)."
+/gastos?med=despesa_mat&cap=goiania&ano=2022,ok,,Goiânia (GO) registra R$ 13.352; a mediana das 23 capitais é R$ 11.285 (R$ 2.067 acima).
+/gastos?med=despesa&cap=goiania&ano=2025,ok,,"Goiânia (GO) registra R$ 1,90 bilhão; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 895,8 milhões acima)."
+/resultados?med=saeb&cap=goiania&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(13.98 x 13.970000000000027);,"Goiânia (GO) registra 267,17; a mediana das 22 capitais é 253,20 (13,98 pontos acima)."
+/resultados?med=aprovacao&cap=goiania&ano=2022&etapa=anos_finais,ok,,"Goiânia (GO) registra 96,0%; a mediana das 23 capitais é 93,9% (2,1 pontos percentuais acima)."
+/atendimento?med=matriculas&cap=goiania&ano=2025&etapa=total,ok,,Goiânia (GO) registra 101.462; a mediana das 26 capitais é 68.179 (33.283 matrículas acima).
+/atendimento?med=atu&cap=goiania&ano=2024&etapa=creche,ok,,"Goiânia (GO) registra 17,9; a mediana das 26 capitais é 18,5 (0,6 aluno por turma abaixo)."
+/atendimento?med=conveniadas&cap=goiania&ano=2025&etapa=total,ok,,Goiânia (GO) registra 10.695; a mediana das 26 capitais é 2.495 (8.200 matrículas acima).
+/gastos?med=despesa_hab&cap=joao-pessoa&ano=2025,ok,,João Pessoa (PB) registra R$ 987; a mediana das 26 capitais é R$ 1.160 (R$ 173 abaixo).
+/gastos?med=despesa_hab&cap=joao-pessoa&ano=2023,ok,,João Pessoa (PB) registra R$ 814; a mediana das 26 capitais é R$ 1.032 (R$ 218 abaixo).
+/gastos?med=despesa_mat&cap=joao-pessoa&ano=2022,ok,,João Pessoa (PB) registra R$ 7.967; a mediana das 23 capitais é R$ 11.285 (R$ 3.318 abaixo).
+/gastos?med=despesa&cap=joao-pessoa&ano=2025,ok,,"João Pessoa (PB) registra R$ 886,1 milhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 122,1 milhões abaixo)."
+/resultados?med=ideb&cap=joao-pessoa&ano=2023&etapa=anos_iniciais,ok,,"João Pessoa (PB) registra 5,2; a mediana das 26 capitais é 5,7 (0,5 ponto abaixo)."
+/resultados?med=saeb&cap=joao-pessoa&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(6.01 x 6.019999999999982);,"João Pessoa (PB) registra 247,18; a mediana das 22 capitais é 253,20 (6,01 pontos abaixo)."
+/atendimento?med=matriculas&cap=joao-pessoa&ano=2025&etapa=total,ok,,João Pessoa (PB) registra 76.947; a mediana das 26 capitais é 68.179 (8.768 matrículas acima).
+/atendimento?med=atu&cap=joao-pessoa&ano=2024&etapa=creche,ok,,"João Pessoa (PB) registra 26,2; a mediana das 26 capitais é 18,5 (7,7 alunos por turma acima)."
+/atendimento?med=conveniadas&cap=joao-pessoa&ano=2025&etapa=total,ok,,João Pessoa (PB) registra 0; a mediana das 26 capitais é 2.495 (2.495 matrículas abaixo).
+/gastos?med=despesa_hab&cap=macapa&ano=2023,ok,,Macapá (AP) registra R$ 918; a mediana das 26 capitais é R$ 1.032 (R$ 114 abaixo).
+/resultados?med=aprovacao&cap=joao-pessoa&ano=2022&etapa=anos_finais,ok,,"João Pessoa (PB) registra 85,7%; a mediana das 23 capitais é 93,9% (8,2 pontos percentuais abaixo)."
+/gastos?med=despesa_hab&cap=macapa&ano=2025,ok,,Macapá (AP) registra R$ 1.009; a mediana das 26 capitais é R$ 1.160 (R$ 151 abaixo).
+/gastos?med=despesa&cap=macapa&ano=2025,ok,,"Macapá (AP) registra R$ 494,1 milhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 514,1 milhões abaixo)."
+/resultados?med=ideb&cap=macapa&ano=2023&etapa=anos_iniciais,ok,,"Macapá (AP) registra 5,3; a mediana das 26 capitais é 5,7 (0,4 ponto abaixo)."
+/gastos?med=despesa_mat&cap=macapa&ano=2022,ok,,Macapá (AP) registra R$ 11.327; a mediana das 23 capitais é R$ 11.285 (R$ 42 acima).
+/resultados?med=saeb&cap=macapa&ano=2023&etapa=anos_finais&disc=portugues,ok,NAO_APLICAVEL,Macapá (AP) não tem valor observado para esta medida neste recorte.
+/atendimento?med=atu&cap=macapa&ano=2024&etapa=creche,ok,,"Macapá (AP) registra 17,0; a mediana das 26 capitais é 18,5 (1,5 alunos por turma abaixo)."
+/atendimento?med=matriculas&cap=macapa&ano=2025&etapa=total,ok,,Macapá (AP) registra 35.555; a mediana das 26 capitais é 68.179 (32.624 matrículas abaixo).
+/resultados?med=aprovacao&cap=macapa&ano=2022&etapa=anos_finais,ok,NAO_APLICAVEL,Macapá (AP) não tem valor observado para esta medida neste recorte.
+/atendimento?med=conveniadas&cap=macapa&ano=2025&etapa=total,ok,,Macapá (AP) registra 187; a mediana das 26 capitais é 2.495 (2.308 matrículas abaixo).
+/gastos?med=despesa_hab&cap=maceio&ano=2025,ok,,Maceió (AL) registra R$ 780; a mediana das 26 capitais é R$ 1.160 (R$ 380 abaixo).
+/gastos?med=despesa_hab&cap=maceio&ano=2023,ok,,Maceió (AL) registra R$ 648; a mediana das 26 capitais é R$ 1.032 (R$ 384 abaixo).
+/gastos?med=despesa&cap=maceio&ano=2025,ok,,"Maceió (AL) registra R$ 776,0 milhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 232,2 milhões abaixo)."
+/gastos?med=despesa_mat&cap=maceio&ano=2022,ok,,Maceió (AL) registra R$ 13.197; a mediana das 23 capitais é R$ 11.285 (R$ 1.912 acima).
+/resultados?med=saeb&cap=maceio&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(8.09 x 8.099999999999994);,"Maceió (AL) registra 245,10; a mediana das 22 capitais é 253,20 (8,09 pontos abaixo)."
+/resultados?med=ideb&cap=maceio&ano=2023&etapa=anos_iniciais,ok,,"Maceió (AL) registra 5,3; a mediana das 26 capitais é 5,7 (0,4 ponto abaixo)."
+/atendimento?med=matriculas&cap=maceio&ano=2025&etapa=total,ok,,Maceió (AL) registra 59.315; a mediana das 26 capitais é 68.179 (8.864 matrículas abaixo).
+/atendimento?med=atu&cap=maceio&ano=2024&etapa=creche,ok,,"Maceió (AL) registra 16,2; a mediana das 26 capitais é 18,5 (2,3 alunos por turma abaixo)."
+/atendimento?med=conveniadas&cap=maceio&ano=2025&etapa=total,ok,,Maceió (AL) registra 0; a mediana das 26 capitais é 2.495 (2.495 matrículas abaixo).
+/resultados?med=aprovacao&cap=maceio&ano=2022&etapa=anos_finais,ok,,"Maceió (AL) registra 77,2%; a mediana das 23 capitais é 93,9% (16,7 pontos percentuais abaixo)."
+/gastos?med=despesa_hab&cap=manaus&ano=2025,ok,,Manaus (AM) registra R$ 1.239; a mediana das 26 capitais é R$ 1.160 (R$ 79 acima).
+/gastos?med=despesa_hab&cap=manaus&ano=2023,ok,,Manaus (AM) registra R$ 1.043; a mediana das 26 capitais é R$ 1.032 (R$ 11 acima).
+/gastos?med=despesa_mat&cap=manaus&ano=2022,ok,,Manaus (AM) registra R$ 7.995; a mediana das 23 capitais é R$ 11.285 (R$ 3.290 abaixo).
+/gastos?med=despesa&cap=manaus&ano=2025,ok,,"Manaus (AM) registra R$ 2,85 bilhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 1,85 bilhão acima)."
+/resultados?med=saeb&cap=manaus&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(6.98 x 6.970000000000027);,"Manaus (AM) registra 260,17; a mediana das 22 capitais é 253,20 (6,98 pontos acima)."
+/resultados?med=ideb&cap=manaus&ano=2023&etapa=anos_iniciais,ok,,"Manaus (AM) registra 6,2; a mediana das 26 capitais é 5,7 (0,5 ponto acima)."
+/atendimento?med=matriculas&cap=manaus&ano=2025&etapa=total,ok,,Manaus (AM) registra 246.325; a mediana das 26 capitais é 68.179 (178.146 matrículas acima).
+/atendimento?med=atu&cap=manaus&ano=2024&etapa=creche,ok,,"Manaus (AM) registra 15,6; a mediana das 26 capitais é 18,5 (2,9 alunos por turma abaixo)."
+/atendimento?med=conveniadas&cap=manaus&ano=2025&etapa=total,ok,,Manaus (AM) registra 763; a mediana das 26 capitais é 2.495 (1.732 matrículas abaixo).
+/resultados?med=aprovacao&cap=manaus&ano=2022&etapa=anos_finais,ok,,"Manaus (AM) registra 92,0%; a mediana das 23 capitais é 93,9% (1,9 pontos percentuais abaixo)."
+/gastos?med=despesa_hab&cap=natal&ano=2025,ok,,Natal (RN) registra R$ 835; a mediana das 26 capitais é R$ 1.160 (R$ 325 abaixo).
+/gastos?med=despesa&cap=natal&ano=2025,ok,,"Natal (RN) registra R$ 654,6 milhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 353,6 milhões abaixo)."
+/gastos?med=despesa_hab&cap=natal&ano=2023,ok,,Natal (RN) registra R$ 714; a mediana das 26 capitais é R$ 1.032 (R$ 318 abaixo).
+/gastos?med=despesa_mat&cap=natal&ano=2022,ok,NAO_COMPARAVEL,Natal (RN) não tem valor observado para esta medida neste recorte.
+/resultados?med=ideb&cap=natal&ano=2023&etapa=anos_iniciais,ok,,"Natal (RN) registra 4,5; a mediana das 26 capitais é 5,7 (1,2 pontos abaixo)."
+/atendimento?med=atu&cap=natal&ano=2024&etapa=creche,ok,,"Natal (RN) registra 19,7; a mediana das 26 capitais é 18,5 (1,2 alunos por turma acima)."
+/atendimento?med=matriculas&cap=natal&ano=2025&etapa=total,ok,,Natal (RN) registra 54.645; a mediana das 26 capitais é 68.179 (13.534 matrículas abaixo).
+/resultados?med=saeb&cap=natal&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(15.98 x 15.98999999999998);,"Natal (RN) registra 237,21; a mediana das 22 capitais é 253,20 (15,98 pontos abaixo)."
+/resultados?med=aprovacao&cap=natal&ano=2022&etapa=anos_finais,ok,,"Natal (RN) registra 68,4%; a mediana das 23 capitais é 93,9% (25,5 pontos percentuais abaixo)."
+/atendimento?med=conveniadas&cap=natal&ano=2025&etapa=total,ok,,Natal (RN) registra 3.911; a mediana das 26 capitais é 2.495 (1.416 matrículas acima).
+/gastos?med=despesa_hab&cap=palmas&ano=2025,ok,,Palmas (TO) registra R$ 1.961; a mediana das 26 capitais é R$ 1.160 (R$ 801 acima).
+/gastos?med=despesa_hab&cap=palmas&ano=2023,ok,,Palmas (TO) registra R$ 1.781; a mediana das 26 capitais é R$ 1.032 (R$ 749 acima).
+/gastos?med=despesa&cap=palmas&ano=2025,ok,,"Palmas (TO) registra R$ 644,2 milhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 364,0 milhões abaixo)."
+/gastos?med=despesa_mat&cap=palmas&ano=2022,ok,,Palmas (TO) registra R$ 10.329; a mediana das 23 capitais é R$ 11.285 (R$ 956 abaixo).
+/resultados?med=ideb&cap=palmas&ano=2023&etapa=anos_iniciais,ok,,"Palmas (TO) registra 6,3; a mediana das 26 capitais é 5,7 (0,6 ponto acima)."
+/resultados?med=saeb&cap=palmas&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(15.63 x 15.620000000000005);,"Palmas (TO) registra 268,82; a mediana das 22 capitais é 253,20 (15,63 pontos acima)."
+/atendimento?med=atu&cap=palmas&ano=2024&etapa=creche,ok,,"Palmas (TO) registra 31,7; a mediana das 26 capitais é 18,5 (13,2 alunos por turma acima)."
+/atendimento?med=matriculas&cap=palmas&ano=2025&etapa=total,ok,,Palmas (TO) registra 43.886; a mediana das 26 capitais é 68.179 (24.293 matrículas abaixo).
+/resultados?med=aprovacao&cap=palmas&ano=2022&etapa=anos_finais,ok,,"Palmas (TO) registra 98,2%; a mediana das 23 capitais é 93,9% (4,3 pontos percentuais acima)."
+/atendimento?med=conveniadas&cap=palmas&ano=2025&etapa=total,ok,,Palmas (TO) registra 0; a mediana das 26 capitais é 2.495 (2.495 matrículas abaixo).
+/gastos?med=despesa_hab&cap=porto-alegre&ano=2023,ok,,Porto Alegre (RS) registra R$ 671; a mediana das 26 capitais é R$ 1.032 (R$ 361 abaixo).
+/gastos?med=despesa_hab&cap=porto-alegre&ano=2025,DIVERGE, diferença(274.0 x 275.0);,Porto Alegre (RS) registra R$ 885; a mediana das 26 capitais é R$ 1.160 (R$ 274 abaixo).
+/gastos?med=despesa&cap=porto-alegre&ano=2025,ok,,"Porto Alegre (RS) registra R$ 1,23 bilhão; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 221,3 milhões acima)."
+/gastos?med=despesa_mat&cap=porto-alegre&ano=2022,ok,,Porto Alegre (RS) registra R$ 14.190; a mediana das 23 capitais é R$ 11.285 (R$ 2.905 acima).
+/resultados?med=ideb&cap=porto-alegre&ano=2023&etapa=anos_iniciais,ok,,"Porto Alegre (RS) registra 4,7; a mediana das 26 capitais é 5,7 (1,0 ponto abaixo)."
+/resultados?med=saeb&cap=porto-alegre&ano=2023&etapa=anos_finais&disc=portugues,ok,,"Porto Alegre (RS) registra 234,14; a mediana das 22 capitais é 253,20 (19,06 pontos abaixo)."
+/atendimento?med=atu&cap=porto-alegre&ano=2024&etapa=creche,ok,,"Porto Alegre (RS) registra 17,1; a mediana das 26 capitais é 18,5 (1,4 alunos por turma abaixo)."
+/atendimento?med=matriculas&cap=porto-alegre&ano=2025&etapa=total,ok,,Porto Alegre (RS) registra 44.862; a mediana das 26 capitais é 68.179 (23.317 matrículas abaixo).
+/resultados?med=aprovacao&cap=porto-alegre&ano=2022&etapa=anos_finais,ok,,"Porto Alegre (RS) registra 87,3%; a mediana das 23 capitais é 93,9% (6,6 pontos percentuais abaixo)."
+/atendimento?med=conveniadas&cap=porto-alegre&ano=2025&etapa=total,ok,,Porto Alegre (RS) registra 22.295; a mediana das 26 capitais é 2.495 (19.800 matrículas acima).
+/gastos?med=despesa_hab&cap=porto-velho&ano=2023,ok,,Porto Velho (RO) registra R$ 1.054; a mediana das 26 capitais é R$ 1.032 (R$ 22 acima).
+/gastos?med=despesa_hab&cap=porto-velho&ano=2025,DIVERGE, diferença(12.0 x 13.0);,Porto Velho (RO) registra R$ 1.147; a mediana das 26 capitais é R$ 1.160 (R$ 12 abaixo).
+/gastos?med=despesa&cap=porto-velho&ano=2025,ok,,"Porto Velho (RO) registra R$ 594,0 milhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 414,2 milhões abaixo)."
+/resultados?med=ideb&cap=porto-velho&ano=2023&etapa=anos_iniciais,ok,,"Porto Velho (RO) registra 5,3; a mediana das 26 capitais é 5,7 (0,4 ponto abaixo)."
+/gastos?med=despesa_mat&cap=porto-velho&ano=2022,ok,,Porto Velho (RO) registra R$ 9.463; a mediana das 23 capitais é R$ 11.285 (R$ 1.822 abaixo).
+/resultados?med=saeb&cap=porto-velho&ano=2023&etapa=anos_finais&disc=portugues,ok,NAO_DIVULGADO,Porto Velho (RO) não tem valor observado para esta medida neste recorte.
+/atendimento?med=atu&cap=porto-velho&ano=2024&etapa=creche,ok,,"Porto Velho (RO) registra 16,6; a mediana das 26 capitais é 18,5 (1,9 alunos por turma abaixo)."
+/atendimento?med=matriculas&cap=porto-velho&ano=2025&etapa=total,ok,,Porto Velho (RO) registra 42.802; a mediana das 26 capitais é 68.179 (25.377 matrículas abaixo).
+/resultados?med=aprovacao&cap=porto-velho&ano=2022&etapa=anos_finais,ok,,"Porto Velho (RO) registra 96,7%; a mediana das 23 capitais é 93,9% (2,8 pontos percentuais acima)."
+/atendimento?med=conveniadas&cap=porto-velho&ano=2025&etapa=total,ok,,Porto Velho (RO) registra 0; a mediana das 26 capitais é 2.495 (2.495 matrículas abaixo).
+/gastos?med=despesa_hab&cap=recife&ano=2023,ok,,Recife (PE) registra R$ 995; a mediana das 26 capitais é R$ 1.032 (R$ 37 abaixo).
+/gastos?med=despesa_hab&cap=recife&ano=2025,ok,,Recife (PE) registra R$ 1.172; a mediana das 26 capitais é R$ 1.160 (R$ 12 acima).
+/gastos?med=despesa&cap=recife&ano=2025,ok,,"Recife (PE) registra R$ 1,86 bilhão; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 853,7 milhões acima)."
+/gastos?med=despesa_mat&cap=recife&ano=2022,ok,,Recife (PE) registra R$ 12.563; a mediana das 23 capitais é R$ 11.285 (R$ 1.278 acima).
+/resultados?med=ideb&cap=recife&ano=2023&etapa=anos_iniciais,ok,,"Recife (PE) registra 5,5; a mediana das 26 capitais é 5,7 (0,2 ponto abaixo)."
+/atendimento?med=atu&cap=recife&ano=2024&etapa=creche,ok,,"Recife (PE) registra 17,7; a mediana das 26 capitais é 18,5 (0,8 aluno por turma abaixo)."
+/resultados?med=saeb&cap=recife&ano=2023&etapa=anos_finais&disc=portugues,ok,,"Recife (PE) registra 253,89; a mediana das 22 capitais é 253,20 (0,69 ponto acima)."
+/atendimento?med=matriculas&cap=recife&ano=2025&etapa=total,ok,,Recife (PE) registra 94.975; a mediana das 26 capitais é 68.179 (26.796 matrículas acima).
+/resultados?med=aprovacao&cap=recife&ano=2022&etapa=anos_finais,ok,,"Recife (PE) registra 95,7%; a mediana das 23 capitais é 93,9% (1,8 pontos percentuais acima)."
+/atendimento?med=conveniadas&cap=recife&ano=2025&etapa=total,ok,,Recife (PE) registra 13.081; a mediana das 26 capitais é 2.495 (10.586 matrículas acima).
+/gastos?med=despesa_hab&cap=rio-branco&ano=2023,ok,,Rio Branco (AC) registra R$ 847; a mediana das 26 capitais é R$ 1.032 (R$ 185 abaixo).
+/gastos?med=despesa_hab&cap=rio-branco&ano=2025,DIVERGE, diferença(249.0 x 250.0);,Rio Branco (AC) registra R$ 910; a mediana das 26 capitais é R$ 1.160 (R$ 249 abaixo).
+/gastos?med=despesa&cap=rio-branco&ano=2025,ok,,"Rio Branco (AC) registra R$ 354,2 milhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 654,0 milhões abaixo)."
+/resultados?med=ideb&cap=rio-branco&ano=2023&etapa=anos_iniciais,DIVERGE, diferença(0.8 x 0.7000000000000002);,"Rio Branco (AC) registra 6,4; a mediana das 26 capitais é 5,7 (0,8 ponto acima)."
+/gastos?med=despesa_mat&cap=rio-branco&ano=2022,ok,,Rio Branco (AC) registra R$ 9.828; a mediana das 23 capitais é R$ 11.285 (R$ 1.457 abaixo).
+/resultados?med=saeb&cap=rio-branco&ano=2023&etapa=anos_finais&disc=portugues,ok,NAO_APLICAVEL,Rio Branco (AC) não tem valor observado para esta medida neste recorte.
+/atendimento?med=atu&cap=rio-branco&ano=2024&etapa=creche,ok,,"Rio Branco (AC) registra 19,7; a mediana das 26 capitais é 18,5 (1,2 alunos por turma acima)."
+/resultados?med=aprovacao&cap=rio-branco&ano=2022&etapa=anos_finais,ok,NAO_APLICAVEL,Rio Branco (AC) não tem valor observado para esta medida neste recorte.
+/atendimento?med=matriculas&cap=rio-branco&ano=2025&etapa=total,ok,,Rio Branco (AC) registra 21.858; a mediana das 26 capitais é 68.179 (46.321 matrículas abaixo).
+/atendimento?med=conveniadas&cap=rio-branco&ano=2025&etapa=total,ok,,Rio Branco (AC) registra 0; a mediana das 26 capitais é 2.495 (2.495 matrículas abaixo).
+/gastos?med=despesa_hab&cap=rio-de-janeiro&ano=2023,ok,,Rio de Janeiro (RJ) registra R$ 1.034; a mediana das 26 capitais é R$ 1.032 (R$ 2 acima).
+/gastos?med=despesa_hab&cap=rio-de-janeiro&ano=2025,DIVERGE, diferença(95.0 x 96.0);,Rio de Janeiro (RJ) registra R$ 1.064; a mediana das 26 capitais é R$ 1.160 (R$ 95 abaixo).
+/gastos?med=despesa&cap=rio-de-janeiro&ano=2025,ok,,"Rio de Janeiro (RJ) registra R$ 7,16 bilhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 6,16 bilhões acima)."
+/gastos?med=despesa_mat&cap=rio-de-janeiro&ano=2022,ok,NAO_COMPARAVEL,Rio de Janeiro (RJ) não tem valor observado para esta medida neste recorte.
+/resultados?med=ideb&cap=rio-de-janeiro&ano=2023&etapa=anos_iniciais,ok,,"Rio de Janeiro (RJ) registra 6,0; a mediana das 26 capitais é 5,7 (0,3 ponto acima)."
+/resultados?med=saeb&cap=rio-de-janeiro&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(9.63 x 9.620000000000005);,"Rio de Janeiro (RJ) registra 262,82; a mediana das 22 capitais é 253,20 (9,63 pontos acima)."
+/atendimento?med=atu&cap=rio-de-janeiro&ano=2024&etapa=creche,ok,,"Rio de Janeiro (RJ) registra 22,3; a mediana das 26 capitais é 18,5 (3,8 alunos por turma acima)."
+/atendimento?med=matriculas&cap=rio-de-janeiro&ano=2025&etapa=total,ok,,Rio de Janeiro (RJ) registra 586.022; a mediana das 26 capitais é 68.179 (517.843 matrículas acima).
+/resultados?med=aprovacao&cap=rio-de-janeiro&ano=2022&etapa=anos_finais,ok,,"Rio de Janeiro (RJ) registra 95,1%; a mediana das 23 capitais é 93,9% (1,2 pontos percentuais acima)."
+/atendimento?med=conveniadas&cap=rio-de-janeiro&ano=2025&etapa=total,ok,,Rio de Janeiro (RJ) registra 44.413; a mediana das 26 capitais é 2.495 (41.918 matrículas acima).
+/gastos?med=despesa_hab&cap=salvador&ano=2023,ok,,Salvador (BA) registra R$ 879; a mediana das 26 capitais é R$ 1.032 (R$ 153 abaixo).
+/gastos?med=despesa&cap=salvador&ano=2025,ok,,"Salvador (BA) registra R$ 2,44 bilhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 1,43 bilhão acima)."
+/gastos?med=despesa_hab&cap=salvador&ano=2025,ok,,Salvador (BA) registra R$ 951; a mediana das 26 capitais é R$ 1.160 (R$ 209 abaixo).
+/resultados?med=ideb&cap=salvador&ano=2023&etapa=anos_iniciais,ok,,"Salvador (BA) registra 5,3; a mediana das 26 capitais é 5,7 (0,4 ponto abaixo)."
+/gastos?med=despesa_mat&cap=salvador&ano=2022,ok,,Salvador (BA) registra R$ 11.221; a mediana das 23 capitais é R$ 11.285 (R$ 64 abaixo).
+/atendimento?med=atu&cap=salvador&ano=2024&etapa=creche,ok,,"Salvador (BA) registra 18,0; a mediana das 26 capitais é 18,5 (0,5 aluno por turma abaixo)."
+/resultados?med=saeb&cap=salvador&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(11.69 x 11.699999999999989);,"Salvador (BA) registra 241,50; a mediana das 22 capitais é 253,20 (11,69 pontos abaixo)."
+/atendimento?med=matriculas&cap=salvador&ano=2025&etapa=total,ok,,Salvador (BA) registra 133.485; a mediana das 26 capitais é 68.179 (65.306 matrículas acima).
+/gastos?med=despesa_hab&cap=sao-luis&ano=2023,ok,,São Luís (MA) registra R$ 868; a mediana das 26 capitais é R$ 1.032 (R$ 164 abaixo).
+/resultados?med=aprovacao&cap=salvador&ano=2022&etapa=anos_finais,ok,,"Salvador (BA) registra 84,4%; a mediana das 23 capitais é 93,9% (9,5 pontos percentuais abaixo)."
+/atendimento?med=conveniadas&cap=salvador&ano=2025&etapa=total,ok,,Salvador (BA) registra 29.481; a mediana das 26 capitais é 2.495 (26.986 matrículas acima).
+/gastos?med=despesa_hab&cap=sao-luis&ano=2025,ok,,São Luís (MA) registra R$ 1.068; a mediana das 26 capitais é R$ 1.160 (R$ 92 abaixo).
+/gastos?med=despesa_mat&cap=sao-luis&ano=2022,ok,NAO_COMPARAVEL,São Luís (MA) não tem valor observado para esta medida neste recorte.
+/gastos?med=despesa&cap=sao-luis&ano=2025,ok,,"São Luís (MA) registra R$ 1,16 bilhão; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 154,6 milhões acima)."
+/resultados?med=ideb&cap=sao-luis&ano=2023&etapa=anos_iniciais,ok,,"São Luís (MA) registra 5,5; a mediana das 26 capitais é 5,7 (0,2 ponto abaixo)."
+/resultados?med=saeb&cap=sao-luis&ano=2023&etapa=anos_finais&disc=portugues,ok,,"São Luís (MA) registra 244,07; a mediana das 22 capitais é 253,20 (9,13 pontos abaixo)."
+/atendimento?med=atu&cap=sao-luis&ano=2024&etapa=creche,ok,,"São Luís (MA) registra 12,3; a mediana das 26 capitais é 18,5 (6,2 alunos por turma abaixo)."
+/atendimento?med=matriculas&cap=sao-luis&ano=2025&etapa=total,ok,,São Luís (MA) registra 82.545; a mediana das 26 capitais é 68.179 (14.366 matrículas acima).
+/resultados?med=aprovacao&cap=sao-luis&ano=2022&etapa=anos_finais,ok,,"São Luís (MA) registra 91,2%; a mediana das 23 capitais é 93,9% (2,7 pontos percentuais abaixo)."
+/atendimento?med=conveniadas&cap=sao-luis&ano=2025&etapa=total,ok,,São Luís (MA) registra 31.107; a mediana das 26 capitais é 2.495 (28.612 matrículas acima).
+/gastos?med=despesa_hab&cap=sao-paulo&ano=2023,ok,,São Paulo (SP) registra R$ 1.675; a mediana das 26 capitais é R$ 1.032 (R$ 643 acima).
+/gastos?med=despesa_hab&cap=sao-paulo&ano=2025,ok,,São Paulo (SP) registra R$ 1.981; a mediana das 26 capitais é R$ 1.160 (R$ 821 acima).
+/gastos?med=despesa&cap=sao-paulo&ano=2025,ok,,"São Paulo (SP) registra R$ 23,58 bilhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 22,58 bilhões acima)."
+/resultados?med=ideb&cap=sao-paulo&ano=2023&etapa=anos_iniciais,ok,,"São Paulo (SP) registra 5,6; a mediana das 26 capitais é 5,7 (0,1 ponto abaixo)."
+/resultados?med=saeb&cap=sao-paulo&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(6.11 x 6.119999999999976);,"São Paulo (SP) registra 247,08; a mediana das 22 capitais é 253,20 (6,11 pontos abaixo)."
+/gastos?med=despesa_mat&cap=sao-paulo&ano=2022,ok,,São Paulo (SP) registra R$ 15.248; a mediana das 23 capitais é R$ 11.285 (R$ 3.963 acima).
+/atendimento?med=atu&cap=sao-paulo&ano=2024&etapa=creche,ok,,"São Paulo (SP) registra 9,7; a mediana das 26 capitais é 18,5 (8,8 alunos por turma abaixo)."
+/atendimento?med=matriculas&cap=sao-paulo&ano=2025&etapa=total,ok,,São Paulo (SP) registra 702.936; a mediana das 26 capitais é 68.179 (634.757 matrículas acima).
+/resultados?med=aprovacao&cap=sao-paulo&ano=2022&etapa=anos_finais,ok,,"São Paulo (SP) registra 97,8%; a mediana das 23 capitais é 93,9% (3,9 pontos percentuais acima)."
+/atendimento?med=conveniadas&cap=sao-paulo&ano=2025&etapa=total,ok,,São Paulo (SP) registra 285.770; a mediana das 26 capitais é 2.495 (283.275 matrículas acima).
+/gastos?med=despesa_hab&cap=teresina&ano=2023,ok,,Teresina (PI) registra R$ 1.030; a mediana das 26 capitais é R$ 1.032 (R$ 2 abaixo).
+/gastos?med=despesa_hab&cap=teresina&ano=2025,ok,,Teresina (PI) registra R$ 1.107; a mediana das 26 capitais é R$ 1.160 (R$ 53 abaixo).
+/gastos?med=despesa_mat&cap=teresina&ano=2022,ok,,Teresina (PI) registra R$ 7.464; a mediana das 23 capitais é R$ 11.285 (R$ 3.821 abaixo).
+/gastos?med=despesa&cap=teresina&ano=2025,ok,,"Teresina (PI) registra R$ 1,00 bilhão; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 5,4 milhões abaixo)."
+/resultados?med=ideb&cap=teresina&ano=2023&etapa=anos_iniciais,DIVERGE, diferença(0.8 x 0.7000000000000002);,"Teresina (PI) registra 6,4; a mediana das 26 capitais é 5,7 (0,8 ponto acima)."
+/resultados?med=saeb&cap=teresina&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(24.0 x 23.99000000000001);,"Teresina (PI) registra 277,19; a mediana das 22 capitais é 253,20 (24,00 pontos acima)."
+/atendimento?med=atu&cap=teresina&ano=2024&etapa=creche,ok,,"Teresina (PI) registra 19,1; a mediana das 26 capitais é 18,5 (0,6 aluno por turma acima)."
+/atendimento?med=matriculas&cap=teresina&ano=2025&etapa=total,ok,,Teresina (PI) registra 89.554; a mediana das 26 capitais é 68.179 (21.375 matrículas acima).
+/resultados?med=aprovacao&cap=teresina&ano=2022&etapa=anos_finais,ok,,"Teresina (PI) registra 94,9%; a mediana das 23 capitais é 93,9% (1,0 ponto percentual acima)."
+/atendimento?med=conveniadas&cap=teresina&ano=2025&etapa=total,ok,,Teresina (PI) registra 0; a mediana das 26 capitais é 2.495 (2.495 matrículas abaixo).
+/gastos?med=despesa_hab&cap=vitoria&ano=2023,ok,,Vitória (ES) registra R$ 1.997; a mediana das 26 capitais é R$ 1.032 (R$ 965 acima).
+/gastos?med=despesa_hab&cap=vitoria&ano=2025,ok,,Vitória (ES) registra R$ 2.362; a mediana das 26 capitais é R$ 1.160 (R$ 1.202 acima).
+/gastos?med=despesa&cap=vitoria&ano=2025,ok,,"Vitória (ES) registra R$ 810,9 milhões; a mediana das 26 capitais é R$ 1,01 bilhão (R$ 197,3 milhões abaixo)."
+/gastos?med=despesa_mat&cap=vitoria&ano=2022,ok,,Vitória (ES) registra R$ 12.219; a mediana das 23 capitais é R$ 11.285 (R$ 934 acima).
+/resultados?med=saeb&cap=vitoria&ano=2023&etapa=anos_finais&disc=portugues,DIVERGE, diferença(9.98 x 9.970000000000027);,"Vitória (ES) registra 263,17; a mediana das 22 capitais é 253,20 (9,98 pontos acima)."
+/resultados?med=ideb&cap=vitoria&ano=2023&etapa=anos_iniciais,ok,,"Vitória (ES) registra 6,1; a mediana das 26 capitais é 5,7 (0,4 ponto acima)."
+/atendimento?med=atu&cap=vitoria&ano=2024&etapa=creche,ok,,"Vitória (ES) registra 20,8; a mediana das 26 capitais é 18,5 (2,3 alunos por turma acima)."
+/atendimento?med=matriculas&cap=vitoria&ano=2025&etapa=total,ok,,Vitória (ES) registra 40.913; a mediana das 26 capitais é 68.179 (27.266 matrículas abaixo).
+/atendimento?med=conveniadas&cap=vitoria&ano=2025&etapa=total,ok,,Vitória (ES) registra 0; a mediana das 26 capitais é 2.495 (2.495 matrículas abaixo).
+/resultados?med=aprovacao&cap=vitoria&ano=2022&etapa=anos_finais,ok,,"Vitória (ES) registra 89,3%; a mediana das 23 capitais é 93,9% (4,6 pontos percentuais abaixo)."

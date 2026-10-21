@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<DetalheDocumento xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xsi:noNamespaceSchemaLocation='https://legis.senado.leg.br/dadosabertos/dados/DetalheDocumentov3.xsd'>
+    <Metadados>
+    <Versao>01/10/2026 03:19:11</Versao>
+    <VersaoServico>3</VersaoServico>
+    <DataVersaoServico>2017-02-01</DataVersaoServico>
+    <DescricaoDataSet>Obtém detalhes de uma Norma Jurídica por meio do código informado no parâmetro.</DescricaoDataSet>
+    
+</Metadados>
+
+    <documentos><documento id="34849049"><identificacao><tipo>LEI-n</tipo><descricao>Lei Numerada</descricao><numero>14203</numero><norma>LEI-14203-2021-09-10</norma><normaNome>Lei nº 14.203 de 10/09/2021</normaNome><dataassinatura>10/09/2021</dataassinatura><apelido>LEI-14203-2021-09-10</apelido><urlDocumento>https://normas.leg.br/?urn=urn:lex:br:federal:lei:2021-09-10;14203</urlDocumento></identificacao><publicacoes><publicacao><id>34849069</id><tipo>PUB</tipo><fonte>Diário Oficial da União  de 13/09/2021</fonte><siglaFonte>DOU-2021-09-13</siglaFonte><data>13/09/2021</data><pagina>1</pagina><coluna>2</coluna><dispositivo>Publicação Original   [Diário Oficial da União  de 13/09/2021] (p. 1, col. 2)</dispositivo><temTexto>S</temTexto></publicacao></publicacoes><vides></vides><edivs><ediv><codnormaAnterior>575854</codnormaAnterior><datAssinatura>20/01/2010</datAssinatura><nomeNormaAnterior>Lei nº 12.212 de 20/01/2010</nomeNormaAnterior><comentario>Declaração de Alteração Permanente</comentario><itens><item><dispositivo>Art. 4, Parágrafo Único </dispositivo><comentario>Alteração</comentario></item></itens></ediv></edivs><disps></disps><ementa>Altera a Lei nº 12.212, de 20 de janeiro de 2010, para tornar obrigatória a atualização do cadastro dos beneficiários da Tarifa Social de Energia Elétrica.</ementa><catalogo></catalogo><indexacao><frase> ALTERAÇÃO ,  LEI FEDERAL ,  OBRIGATORIEDADE ,  EXECUTIVO ,  CONCESSIONARIA ,  PERMISSIONARIA ,  ATUALIZAÇÃO ,  CADASTRO ,  BENEFICIARIO ,  TARIFAS ,  DESCONTO ,  ENERGIA ELETRICA ,  CONSUMIDOR ,  BAIXA RENDA .</frase></indexacao><classes><classe>Classificação Temática Unificada / Infraestrutura / Minas e Energia / Energia</classe><classe>Classificação Temática Unificada / Política Social / Proteção Social</classe></classes></documento></documentos>
+</DetalheDocumento>

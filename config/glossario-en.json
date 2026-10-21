@@ -1,0 +1,1131 @@
+{
+  "schema_version": 1,
+  "fontes": {
+    "bcb_fsr_202504": {
+      "orgao": "BCB",
+      "titulo": "Financial Stability Report, April 2025",
+      "url": "https://www.bcb.gov.br/content/publications/financialstabilityreport/202504/fsrFullRep.pdf",
+      "idioma": "en",
+      "formato": "pdf",
+      "sha256_consultado": "b4137a8846f2600d003175e2cacdeb20ccd6076ba4d05043074d8f505cb83376",
+      "url_pt": "https://www.bcb.gov.br/content/publicacoes/ref/202504/RELESTAB202504-refPub.pdf"
+    },
+    "bcb_fsr_202605": {
+      "orgao": "BCB",
+      "titulo": "Financial Stability Report, May 2026",
+      "url": "https://www.bcb.gov.br/content/publications/financialstabilityreport/202605/fsrFullRep.pdf",
+      "idioma": "en",
+      "formato": "pdf",
+      "sha256_consultado": "98a4e67c20ab238a721b8bb73ac97a0c7613cfa9417cfd1a331ab0b694ce2f77",
+      "url_pt": "https://www.bcb.gov.br/content/publicacoes/ref/202605/RELESTAB202605-refPub.pdf"
+    },
+    "ibge_contas": {
+      "orgao": "IBGE",
+      "titulo": "Public Finance Statistics and Government Intermediate Account",
+      "url": "https://www.ibge.gov.br/en/statistics/economic/national-accounts/16867-public-finance-statistics-and-government-intermediate-account.html",
+      "idioma": "en",
+      "formato": "html",
+      "sha256_consultado": "df4ab1d61c6a95081c6faea5825b4e6ad411777fcf7a747107258a1262ee7a60",
+      "url_pt": "https://www.ibge.gov.br/estatisticas/economicas/financas-publicas/9083-estatisticas-de-financas-publicas-e-conta-intermediaria-de-governo.html"
+    },
+    "ibge_munic": {
+      "orgao": "IBGE",
+      "titulo": "Survey of Basic Municipal Information",
+      "url": "https://www.ibge.gov.br/en/statistics/multi-domain/environment/19143-survey-of-basic-municipal-information-editions.html",
+      "idioma": "en",
+      "formato": "html",
+      "sha256_consultado": "b4ecb57ce206b27954f058ff12e092a54d2ae8b76c02183797ecdfc52c77e994",
+      "url_pt": "https://www.ibge.gov.br/estatisticas/sociais/administracao-publica-e-participacao-politica/10586-pesquisa-de-informacoes-basicas-municipais.html"
+    },
+    "ibge_pnsb": {
+      "orgao": "IBGE",
+      "titulo": "National Survey of Basic Sanitation",
+      "url": "https://www.ibge.gov.br/en/statistics/multi-domain/environment/17312-national-survey-of-basic-sanitation.html",
+      "idioma": "en",
+      "formato": "html",
+      "sha256_consultado": "ae00062b355e1492d9d6b0fadddfc7302a176e32511a383adea4e5bb00653b97",
+      "url_pt": "https://www.ibge.gov.br/estatisticas/multidominio/meio-ambiente/9073-pesquisa-nacional-de-saneamento-basico.html"
+    },
+    "iea_electricity_2026": {
+      "orgao": "IEA",
+      "titulo": "Electricity 2026",
+      "url": "https://www.iea.org/reports/electricity-2026",
+      "idioma": "en",
+      "formato": "html",
+      "sha256_consultado": "a4b036288745d6c24aefb9d4ab934e5f900a11ecf0f49d46d502d8956ec4558b"
+    },
+    "iea_electricity_summary_2026": {
+      "orgao": "IEA",
+      "titulo": "Executive summary, Electricity 2026",
+      "url": "https://www.iea.org/reports/electricity-2026/executive-summary",
+      "idioma": "en",
+      "formato": "html",
+      "sha256_consultado": "2cce057d81ba132f1e0286a4e67df36de6f36999b228e3cc3403a339c157fb21"
+    },
+    "iea_natural_gas": {
+      "orgao": "IEA",
+      "titulo": "Natural gas: Production and consumption",
+      "url": "https://www.iea.org/energy-system/fossil-fuels/natural-gas",
+      "idioma": "en",
+      "formato": "html",
+      "sha256_consultado": "d04d4d4521edd66991e17ae0c76d4430df5396d7b0901ccc0106eb278bb7cc64"
+    }
+  },
+  "entradas": {
+    "credito.carteira": {
+      "tipo": "termo",
+      "pt": "carteira de crédito",
+      "en": "credit portfolio",
+      "contexto": "Conjunto de operações de crédito de uma instituição ou universo declarado.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "expected losses of \nthe credit portfolio",
+          "localizacao": "Seção 1.2.2, parágrafo sobre provisões e perdas esperadas",
+          "pagina": 26
+        }
+      ],
+      "nota": "Contexto de carteira de operações de crédito; distingue da entrada de saldo."
+    },
+    "credito.credito": {
+      "tipo": "termo",
+      "pt": "crédito",
+      "en": "credit",
+      "contexto": "Crédito no domínio financeiro, sem renomear séries oficiais.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "1.2.2 Credit",
+          "localizacao": "Seção 1.2.2, Credit",
+          "pagina": 25
+        }
+      ],
+      "nota": "Termo geral no domínio financeiro; não converte nomes próprios ou nomes de séries oficiais."
+    },
+    "credito.inadimplencia": {
+      "tipo": "termo",
+      "pt": "inadimplência",
+      "en": "delinquency",
+      "contexto": "Inadimplência no crédito brasileiro, com critério de atraso, universo e denominador definidos pela série consumidora.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "Delinquency remains the main \ndriver of this increase",
+          "localizacao": "Executive Summary, parágrafo sobre materialização do risco no crédito às famílias",
+          "pagina": 6
+        }
+      ],
+      "nota": "Vocabulário do BCB no contexto de crédito brasileiro. Não altera atraso, universo, denominador nem regra de cálculo de cada série. Não substituir genericamente por default ou non-performing loans (NPLs)."
+    },
+    "credito.saldo_carteira_ativa_scr": {
+      "tipo": "termo",
+      "pt": "saldo de carteira ativa",
+      "en": "credit outstanding balance",
+      "contexto": "Saldo da carteira ativa dos clientes identificados no SCR, conforme a nota metodológica do relatório.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "credit outstanding \nbalance from identified clients in the Credit Information System (SCR).",
+          "localizacao": "Nota 18 da seção 1.2.2, Credit",
+          "pagina": 25
+        }
+      ],
+      "nota": "Nota 18, saldo da carteira de clientes identificados no SCR. A expressão abreviada credit outstanding aparece no gráfico 1.2.2.10. Não usar como tradução universal de saldo (contábil, fiscal, comercial etc.)."
+    },
+    "credito.taxa_inadimplencia": {
+      "tipo": "termo",
+      "pt": "taxa de inadimplência",
+      "en": "delinquency rate",
+      "contexto": "Taxa de inadimplência no crédito, mantendo o critério e o denominador da série consumidora.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "increase delinquency rates.",
+          "localizacao": "Executive Summary, parágrafo sobre rentabilidade e condições financeiras",
+          "pagina": 6
+        }
+      ],
+      "nota": "Fonte usa plural; singular flexionado. Preservar o critério de inadimplência e denominador da série; não usar NPL ratio sem equivalência metodológica documentada."
+    },
+    "energia.eletricidade": {
+      "tipo": "termo",
+      "pt": "energia elétrica",
+      "en": "electricity",
+      "contexto": "Energia elétrica, distinta do conceito geral de energia.",
+      "evidencias": [
+        {
+          "fonte": "iea_electricity_2026",
+          "trecho": "electricity generation sources",
+          "localizacao": "About this report, parágrafo iniciado por As electricity use grows"
+        }
+      ],
+      "nota": "Termo para energia elétrica, distinto de energia em geral."
+    },
+    "energia.geracao_eletrica": {
+      "tipo": "termo",
+      "pt": "geração de energia elétrica",
+      "en": "electricity generation",
+      "contexto": "Geração elétrica no contexto das fontes de geração, mantendo classificação e unidade.",
+      "evidencias": [
+        {
+          "fonte": "iea_electricity_2026",
+          "trecho": "electricity generation sources",
+          "localizacao": "About this report, parágrafo iniciado por As electricity use grows"
+        }
+      ],
+      "nota": "O composto generation sources sustenta uso do termo de geração elétrica, sem mudar unidade ou classificação."
+    },
+    "energia.setor_eletrico": {
+      "tipo": "termo",
+      "pt": "setor elétrico",
+      "en": "power sector",
+      "contexto": "Termo técnico para o setor da eletricidade; não define o nome do observatório ou outro nome próprio.",
+      "evidencias": [
+        {
+          "fonte": "iea_electricity_summary_2026",
+          "trecho": "prompted higher coal use in the power sector.",
+          "localizacao": "Executive summary, seção sobre geração a carvão, parágrafo iniciado por Coal use declined in India and China"
+        }
+      ],
+      "nota": "A IEA usa power sector nesta passagem; electricity systems e electricity markets descrevem outros recortes. A entrada não autoriza traduzir ou renomear Observatório Brasileiro do Setor Elétrico nem seu título curto de produto."
+    },
+    "estatistica.base_dados": {
+      "tipo": "termo",
+      "pt": "base de dados",
+      "en": "database",
+      "contexto": "Base de dados como conjunto organizado de informações estatísticas, contábeis ou fiscais; na introdução da home, bases oficiais é a forma contextual curta de bases de dados oficiais.",
+      "evidencias": [
+        {
+          "fonte": "ibge_contas",
+          "trecho": "the exchange and sharing of accounting and tax information between the databases of these entities",
+          "localizacao": "About, edição 2024, primeiro parágrafo"
+        }
+      ],
+      "nota": "O par português/inglês do IBGE usa bases de dados / databases, no plural; database é o singular regular. Não estender a qualquer ocorrência de base, nem equiparar automaticamente a dataset, arquivo, fonte de dados ou nome próprio de sistema. A qualificação oficial pertence ao contexto da home e não altera os dados publicados.",
+      "formas_contextuais": {
+        "home_oficiais_plural": {
+          "pt": "bases oficiais",
+          "en": "official databases",
+          "contexto": "Forma plural e contextual curta de bases de dados oficiais, usada em home.hero.introducao. A evidência da entrada documenta databases; a qualificação oficiais pertence à apresentação da plataforma. Não aplicar a qualquer base, arquivo, dataset ou nome de sistema."
+        }
+      }
+    },
+    "estatistica.fonte_dados": {
+      "tipo": "termo",
+      "pt": "fonte de dados",
+      "en": "data source",
+      "contexto": "Origem dos dados que alimentam uma estatística ou indicador; na apresentação da home, fonte é a forma curta desse conceito.",
+      "evidencias": [
+        {
+          "fonte": "ibge_contas",
+          "trecho": "harmonized and integrated production, maintenance and use of data sources",
+          "localizacao": "About, edição 2024, primeiro parágrafo"
+        },
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "because the data source is the credit outstanding \nbalance from identified clients in the Credit Information System (SCR).",
+          "localizacao": "Seção 1.2.2, Credit, nota 18",
+          "pagina": 25
+        }
+      ],
+      "nota": "O par português/inglês do IBGE usa fontes de dados / data sources, no plural. Data source é o singular regular e também aparece no BCB; a nota portuguesa do BCB diz fonte utilizada, não fonte de dados. Não estender a fontes de energia, fontes tipográficas nem nomes próprios de bases ou séries.",
+      "formas_contextuais": {
+        "home_curta": {
+          "pt": "fonte",
+          "en": "data source",
+          "contexto": "Forma curta de fonte de dados na frase Cada painel informa a fonte de home.hero.introducao. Mantém o conceito documentado na entrada, sem estender a fontes de energia, fontes tipográficas ou nomes próprios de bases."
+        },
+        "home_curta_inicial": {
+          "pt": "Fonte",
+          "en": "Data source",
+          "contexto": "A mesma forma curta de fonte de dados, com inicial maiúscula por abrir home.hero.beneficio_evidencia. A capitalização é literal deste uso, não regra geral de normalização ou nova acepção."
+        }
+      }
+    },
+    "estatistica.periodo_referencia": {
+      "tipo": "termo",
+      "pt": "período de referência",
+      "en": "reference period",
+      "contexto": "Período a que os dados ou resultados se referem; na apresentação da home, período identifica esse recorte temporal.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "Asset price volatility has increased to levels above \nthose observed during the reference period of the \nprevious FSR",
+          "localizacao": "Seção 1.1, International Financial System, parágrafo sobre volatilidade dos preços dos ativos financeiros",
+          "pagina": 11
+        }
+      ],
+      "nota": "O trecho corresponde a período de referência do REF anterior na versão portuguesa, também na página 11. Não confundir com data de publicação, captura, acesso ou atualização; não altera a periodicidade, as datas ou os números da série.",
+      "formas_contextuais": {
+        "home_curta": {
+          "pt": "período",
+          "en": "reference period",
+          "contexto": "Forma curta de período de referência em home.hero.beneficio_evidencia. Não aplicar a data de publicação, captura, acesso ou atualização; não altera periodicidade nem datas dos dados."
+        }
+      }
+    },
+    "federativo.estado": {
+      "tipo": "termo",
+      "pt": "estado",
+      "en": "state",
+      "contexto": "Estado como ente federado brasileiro; estados é sua forma plural na introdução da home.",
+      "evidencias": [
+        {
+          "fonte": "ibge_contas",
+          "trecho": "The information from the States, the Federal District and the Municipalities, in turn, comes from Finbra",
+          "localizacao": "About, edição 2024, segundo parágrafo"
+        }
+      ],
+      "nota": "A fonte usa Estados / States, no plural e com inicial maiúscula; state é o singular regular em prosa comum. Distingue expressamente estados, Distrito Federal e municípios. Não usar para Estado nacional, condição de um dado ou todos os entes subnacionais. Não inferir exclusão do Distrito Federal do observatório estadual, equiparar states a 27 unidades da Federação ou alterar o universo dos indicadores.",
+      "formas_contextuais": {
+        "plural": {
+          "pt": "estados",
+          "en": "states",
+          "contexto": "Plural em prosa comum de estado como ente federado brasileiro, usado em home.hero.introducao. A evidência da entrada usa States com inicial maiúscula. Não usar para Estado nacional ou condição de dado, nem equiparar a unidades da Federação, inferir exclusão do Distrito Federal do observatório ou alterar o universo dos indicadores."
+        }
+      }
+    },
+    "federativo.unidades_federacao": {
+      "tipo": "termo",
+      "pt": "unidades da Federação",
+      "en": "Federation Units",
+      "contexto": "Unidades da Federação como recorte territorial brasileiro; no índice da home, a quantidade vem de primariosEstaduais.cobertura.ufs e mantém o universo publicado de 27 entes, incluindo o Distrito Federal.",
+      "evidencias": [
+        {
+          "fonte": "ibge_pnsb",
+          "trecho": "These results are available for the country, Major Regions and Federation Units",
+          "localizacao": "Description, terceiro parágrafo; a passagem se repete em About, edição 2008, terceiro parágrafo"
+        }
+      ],
+      "nota": "A PNSB usa Federation Units, com esta capitalização, em correspondência a Unidades da Federação na versão portuguesa. O recorte abrange os estados e o Distrito Federal; não substituir por states, municípios ou países. A evidência sustenta a expressão territorial, não fornece a quantidade do índice nem autoriza importar os números da pesquisa PNSB para o observatório."
+    },
+    "financeiro.taxa_juros": {
+      "tipo": "termo",
+      "pt": "taxa de juros",
+      "en": "interest rate",
+      "contexto": "Taxa de juros de uma operação ou cenário financeiro; não o valor monetário dos juros.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "falling domestic demand, inflation and interest \nrates.",
+          "localizacao": "Cenários de estresse, descrição do cenário de recessão aguda",
+          "pagina": 45
+        }
+      ],
+      "nota": "Usar somente para a taxa. Juros como valor monetário requer outra entrada. Fonte usa plural interest rates; singular flexionado para a chave."
+    },
+    "fiscal.contas_publicas": {
+      "tipo": "termo",
+      "pt": "contas públicas",
+      "en": "public accounts",
+      "contexto": "Contas públicas no contexto fiscal, sem estabelecer nome editorial de observatório ou perímetro institucional de uma série.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202504",
+          "trecho": "Concerns \nabout the sustainability of public accounts and the \nimpact on the yield curve, the exchange rate, and the \nconduct of monetary policy stood out.",
+          "localizacao": "Seção 1.3, Financial Stability Survey, subseção Risks to financial stability, parágrafo sobre preocupações com riscos fiscais",
+          "pagina": 48
+        }
+      ],
+      "nota": "A versão portuguesa correspondente, página 49, usa sustentabilidade das contas públicas. O IBGE usa public finances para finanças públicas, conceito já registrado em entrada própria; manter public accounts para a expressão fiscal desta passagem. Não traduz por si só Contas Públicas Federais ou Contas Públicas Estaduais nem substitui governo federal por governo central.",
+      "formas_contextuais": {
+        "home_curta": {
+          "pt": "contas",
+          "en": "public accounts",
+          "contexto": "Forma curta de contas públicas na expressão contas da União e dos estados de home.hero.introducao. A fonte documenta public accounts; a abreviação pertence ao contexto fiscal desta mensagem, sem traduzir toda ocorrência de contas, como conta de usuário ou conta bancária. Não renomeia produtos nem define perímetro de série."
+        }
+      }
+    },
+    "fiscal.financas_publicas": {
+      "tipo": "termo",
+      "pt": "finanças públicas",
+      "en": "public finances",
+      "contexto": "Finanças públicas como conceito estatístico, sem definir o nome editorial de um observatório.",
+      "evidencias": [
+        {
+          "fonte": "ibge_contas",
+          "trecho": "statistics on the public finances of the General Government",
+          "localizacao": "About, edição 2024, primeiro parágrafo"
+        }
+      ],
+      "nota": "IBGE também usa public finance como modificador em Public Finance Statistics. Não decide por si só a tradução do nome editorial Contas Públicas."
+    },
+    "fiscal.governo_central": {
+      "tipo": "termo",
+      "pt": "governo central",
+      "en": "central government",
+      "contexto": "Governo central no recorte institucional da publicação; não o governo geral.",
+      "evidencias": [
+        {
+          "fonte": "ibge_contas",
+          "trecho": "The central government's information has as its primary sources",
+          "localizacao": "About, edição 2024, segundo parágrafo"
+        }
+      ],
+      "nota": "Conceito distinto de governo geral; manter o perímetro usado pela série brasileira."
+    },
+    "fiscal.governo_geral": {
+      "tipo": "termo",
+      "pt": "governo geral",
+      "en": "general government",
+      "contexto": "Setor institucional que abrange unidades dos governos central, estaduais e municipais e os fundos de previdência social por elas controlados.",
+      "evidencias": [
+        {
+          "fonte": "ibge_contas",
+          "trecho": "General Government – ​​an institutional sector that comprises all government units (central, state and municipal) and the social security funds controlled by them",
+          "localizacao": "About, edição 2024, primeiro parágrafo"
+        }
+      ],
+      "nota": "Preservar o perímetro institucional: central, estaduais, municipais e fundos de previdência controlados; não tratar como sinônimo de setor público ou governo central."
+    },
+    "gas.gas_natural": {
+      "tipo": "termo",
+      "pt": "gás natural",
+      "en": "natural gas",
+      "contexto": "Gás natural como combustível; as classificações de GLP, GNL e GNV exigem entradas próprias.",
+      "evidencias": [
+        {
+          "fonte": "iea_natural_gas",
+          "trecho": "Natural gas production, 2022-2025",
+          "localizacao": "Latest findings, título do gráfico Natural gas production, 2022-2025"
+        }
+      ],
+      "nota": "Não usar gas sozinho para substituir gás natural quando houver ambiguidade com GLP/GNL/GNV."
+    },
+    "macro.inflacao": {
+      "tipo": "termo",
+      "pt": "inflação",
+      "en": "inflation",
+      "contexto": "Conceito genérico de inflação; nomes de índices e séries oficiais permanecem preservados.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "falling domestic demand, inflation and interest \nrates.",
+          "localizacao": "Cenários de estresse, descrição do cenário de recessão aguda",
+          "pagina": 45
+        }
+      ],
+      "nota": "Termo geral; não renomeia IPCA, INPC ou outra série oficial."
+    },
+    "macro.produto_interno_bruto": {
+      "tipo": "termo",
+      "pt": "Produto Interno Bruto (PIB)",
+      "en": "gross domestic product (GDP)",
+      "contexto": "Conceito macroeconômico genérico, distinto do nome de uma série oficial.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "GDP\nGross Domestic Product",
+          "localizacao": "Abbreviations, verbete GDP",
+          "pagina": 99
+        }
+      ],
+      "nota": "Se o campo é o nome de série oficial do IBGE, preservar esse nome conforme a especificação e acrescentar explicação; a sigla genérica inglesa é GDP."
+    },
+    "nome.bcb": {
+      "tipo": "nome_proprio",
+      "pt": "BCB",
+      "en": "BCB",
+      "explicacao_en": "Central Bank of Brazil",
+      "contexto": "Instituição Banco Central do Brasil, quando identificada na interface por sua sigla ou pelas formas institucionais declaradas.",
+      "evidencias": [
+        {
+          "fonte": "ibge_contas",
+          "trecho": "This newsletter, the result of a partnership between the IBGE, the National Treasury Secretariat and the Central Bank of Brazil",
+          "localizacao": "About, 2024, primeiro parágrafo"
+        },
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "BCB\nBanco Central do Brasil",
+          "pagina": 99,
+          "localizacao": "Abbreviations, verbete BCB"
+        }
+      ],
+      "nota": "Nome próprio preservado. O trecho comprova a expansão em inglês do nome completo; a sigla BCB deve manter a identidade institucional já estabelecida no repositório.",
+      "formas_preservadas": [
+        "Banco Central",
+        "Banco Central do Brasil"
+      ]
+    },
+    "nome.cvm": {
+      "tipo": "nome_proprio",
+      "pt": "CVM",
+      "en": "CVM",
+      "explicacao_en": "Brazilian Securities and Exchange Commission",
+      "contexto": "Comissão de Valores Mobiliários brasileira citada como fonte da plataforma.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202504",
+          "trecho": "CVM\n(Brazilian) Securities and Exchange Commission (Comissão de \nValores Mobiliários, in Portuguese)",
+          "localizacao": "Abbreviations, verbete CVM",
+          "pagina": 92
+        }
+      ],
+      "nota": "A fonte apresenta Brazilian entre parênteses; o nome próprio original permanece CVM / Comissão de Valores Mobiliários."
+    },
+    "nome.ibge": {
+      "tipo": "nome_proprio",
+      "pt": "IBGE",
+      "en": "IBGE",
+      "explicacao_en": "Brazilian Institute of Geography and Statistics",
+      "contexto": "Órgão brasileiro de geografia e estatística citado como fonte da plataforma.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "Brazilian Institute of Geography and Statistics (IBGE).",
+          "localizacao": "Nota sobre as subclasses da CNAE",
+          "pagina": 82
+        }
+      ],
+      "nota": "Nome e sigla permanecem em português; explicação inglesa já usada pelo BCB."
+    },
+    "nome.observatorio_contas": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Contas Públicas Federais",
+      "en": "Contas Públicas Federais",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "contas",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory on the public accounts of the União (Brazil's federal government).",
+      "contexto": "Nome curto do produto Scrutiniums preservado literalmente do registro DOMINIOS. A explicação inglesa apresenta o assunto do produto; não é um título traduzido nem uma descrição exaustiva dos painéis.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "bcb_fsr_202504",
+          "trecho": "Concerns \nabout the sustainability of public accounts and the \nimpact on the yield curve, the exchange rate, and the \nconduct of monetary policy stood out.",
+          "localizacao": "Seção 1.3, Financial Stability Survey, subseção Risks to financial stability, parágrafo sobre preocupações com riscos fiscais",
+          "pagina": 48
+        },
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "Instruments eligible for CET1 are restricted\nto federally owned public banks.",
+          "localizacao": "Seção 1.2.4, Solvency, trecho sobre instrumentos elegíveis para CET1 e bancos públicos de propriedade federal",
+          "pagina": 42
+        },
+        {
+          "fonte": "ibge_contas",
+          "trecho": "Federal Government's Financial Administration System - Siafi",
+          "localizacao": "About, edição 2024, segundo parágrafo, referência ao Siafi"
+        }
+      ],
+      "nota": "A origem da denominação é o registro do projeto. O BCB sustenta public accounts no contexto fiscal; a explicação funcional de União reutiliza as evidências de propriedade federal do BCB e de Federal Government na expansão do Siafi pelo IBGE. Nenhuma dessas fontes nomeia o produto Scrutiniums. Preservar União e o título português; não apresentar a explicação como tradução jurídica formal, equiparação a central government ou general government, ou definição do perímetro de uma série. A pendência editorial.contas_publicas_federais permanece."
+    },
+    "nome.observatorio_credito": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Crédito",
+      "en": "Crédito",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "credito",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory on credit.",
+      "contexto": "Nome curto do produto Scrutiniums preservado literalmente do registro DOMINIOS. A explicação inglesa apresenta o assunto do produto; não é um título traduzido nem uma descrição exaustiva dos painéis.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "1.2.2 Credit",
+          "localizacao": "Seção 1.2.2, Credit",
+          "pagina": 25
+        }
+      ],
+      "nota": "A origem da denominação é o registro do projeto. O BCB sustenta credit como conceito financeiro na explicação; não nomeia o produto Scrutiniums nem estabelece seu título inglês. Preservar Crédito, inclusive o acento, sem converter nomes oficiais de séries."
+    },
+    "nome.observatorio_eficiencia": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Eficiência Estatal",
+      "en": "Eficiência Estatal",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "eficiencia",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory on public services, with scope and limitations stated on each page.",
+      "contexto": "Nome curto do produto Scrutiniums preservado literalmente do registro DOMINIOS. A explicação inglesa apresenta o assunto do produto; não é um título traduzido nem uma descrição exaustiva dos painéis.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "bcb_fsr_202504",
+          "trecho": "Provision of essential public services such as electricity, natural gas, water and wastewater services",
+          "localizacao": "Seção 2.2, Credit exposures at risk arising from physical climate risks, Table 2.2.2, coluna Description, linha Utilities",
+          "pagina": 66
+        }
+      ],
+      "nota": "A origem da denominação e do escopo descrito é o registro do projeto e suas páginas. A descrição da tabela do BCB contém public services; a categoria setorial dessa tabela é Utilities. A fonte sustenta somente esse vocabulário, não nomeia o produto, não define seu universo e não equipara Eficiência Estatal a public services, government efficiency ou government effectiveness. A explicação não anuncia conclusão sobre gestão e não resolve a pendência editorial.eficiencia_estatal."
+    },
+    "nome.observatorio_energia": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Setor Elétrico",
+      "en": "Setor Elétrico",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "energia",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory on the power sector.",
+      "contexto": "Nome curto do produto Scrutiniums preservado literalmente do registro DOMINIOS. A explicação inglesa apresenta o assunto do produto; não é um título traduzido nem uma descrição exaustiva dos painéis.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "iea_electricity_summary_2026",
+          "trecho": "prompted higher coal use in the power sector.",
+          "localizacao": "Executive summary, seção sobre geração a carvão, parágrafo iniciado por Coal use declined in India and China"
+        }
+      ],
+      "nota": "A origem da denominação é o registro do projeto. A IEA sustenta power sector como conceito da explicação; não nomeia o produto Scrutiniums. Essa explicação não adota Power Sector como título de produto e não resolve a pendência editorial.setor_eletrico."
+    },
+    "nome.observatorio_estados": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Contas Públicas Estaduais",
+      "en": "Contas Públicas Estaduais",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "estados",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory on public accounts of Brazil's Federation Units.",
+      "contexto": "Nome curto do produto Scrutiniums preservado literalmente do registro DOMINIOS. A explicação inglesa apresenta o assunto do produto; não é um título traduzido nem uma descrição exaustiva dos painéis.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "bcb_fsr_202504",
+          "trecho": "Concerns \nabout the sustainability of public accounts and the \nimpact on the yield curve, the exchange rate, and the \nconduct of monetary policy stood out.",
+          "localizacao": "Seção 1.3, Financial Stability Survey, subseção Risks to financial stability, parágrafo sobre preocupações com riscos fiscais",
+          "pagina": 48
+        },
+        {
+          "fonte": "ibge_pnsb",
+          "trecho": "These results are available for the country, Major Regions and Federation Units",
+          "localizacao": "Description, terceiro parágrafo; a passagem se repete em About, edição 2008, terceiro parágrafo"
+        }
+      ],
+      "nota": "A origem da denominação e da cobertura do produto é o registro do projeto e o dado estadual consumido. O BCB sustenta public accounts; o IBGE sustenta Federation Units. Nenhuma dessas fontes nomeia o produto Scrutiniums. A explicação conserva o alcance das 27 unidades da Federação, incluindo o Distrito Federal, sem incluir municípios ou reduzir o universo a estados. Não confere eficiência à execução financeira e não resolve a pendência editorial.contas_publicas_estaduais."
+    },
+    "nome.observatorio_gas": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Gás Natural",
+      "en": "Gás Natural",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "gas",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory on natural gas.",
+      "contexto": "Nome curto do produto Scrutiniums preservado literalmente do registro DOMINIOS. A explicação inglesa apresenta o assunto do produto; não é um título traduzido nem uma descrição exaustiva dos painéis.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "iea_natural_gas",
+          "trecho": "Natural gas production, 2022-2025",
+          "localizacao": "Latest findings, título do gráfico Natural gas production, 2022-2025"
+        }
+      ],
+      "nota": "A origem da denominação é o registro do projeto. A IEA sustenta natural gas como conceito da explicação; não nomeia o produto Scrutiniums. O enunciado é breve, não enumera todos os painéis e não funde gás natural, GLP, GNL ou GNV; a página própria de gás de cozinha e suas ressalvas continuam como publicadas."
+    },
+    "nome.observatorio_saneamento": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Saneamento",
+      "en": "Saneamento",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "saneamento",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory on water supply and sewage disposal.",
+      "contexto": "Nome curto do produto Scrutiniums preservado literalmente do registro DOMINIOS. A explicação inglesa apresenta o assunto do produto; não é um título traduzido nem uma descrição exaustiva dos painéis.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "ibge_pnsb",
+          "trecho": "four components: water supply, sewage disposal, management of solid residue and rainwater management.",
+          "localizacao": "Description, segundo parágrafo"
+        },
+        {
+          "fonte": "ibge_pnsb",
+          "trecho": "Sewage Disposal",
+          "localizacao": "Main results, cabeçalho antes da Table 49"
+        }
+      ],
+      "nota": "A origem da denominação e do foco atual do produto é o registro do projeto. O IBGE sustenta water supply e sewage disposal como conceitos da explicação; não nomeia o produto Scrutiniums. A explicação identifica o foco atual em água e esgoto, não redefine basic sanitation, cujo conceito brasileiro inclui quatro componentes, nem promete que todos os componentes tenham dados publicados. Preservar Saneamento; a pendência editorial.saneamento permanece."
+    },
+    "nome.pix": {
+      "tipo": "nome_proprio",
+      "pt": "Pix",
+      "en": "Pix",
+      "explicacao_en": "instant payment tool",
+      "contexto": "Nome próprio do instrumento de pagamento instantâneo referido pelo BCB.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "Pix continues to increase its relevance in the SFN \nand SPB. In the past semester, this instant payment \ntool",
+          "localizacao": "Seção 1.4, parágrafo sobre a participação do Pix nos pagamentos de varejo",
+          "pagina": 59
+        }
+      ],
+      "nota": "Explicação de função, sem substituir Pix por outro nome ou transferir os números citados na fonte para a UI."
+    },
+    "nome.scr": {
+      "tipo": "nome_proprio",
+      "pt": "SCR",
+      "en": "SCR",
+      "explicacao_en": "Credit Information System",
+      "contexto": "Sistema de Informações de Crédito do BCB, identificado pela sigla SCR.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "SCR\nCredit Information System",
+          "localizacao": "Abbreviations, verbete SCR",
+          "pagina": 100
+        }
+      ],
+      "nota": "Preservar SCR; expansão explicativa oficial."
+    },
+    "nome.sgs": {
+      "tipo": "nome_proprio",
+      "pt": "SGS",
+      "en": "SGS",
+      "explicacao_en": "Time Series Management System",
+      "contexto": "Sistema do BCB identificado por SGS nas séries consultadas pela plataforma.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202504",
+          "trecho": "SGS\nTime Series Management System",
+          "localizacao": "Abbreviations, verbete SGS",
+          "pagina": 94
+        }
+      ],
+      "nota": "Preservar SGS; expansão explicativa oficial."
+    },
+    "nome.siconfi": {
+      "tipo": "nome_proprio",
+      "pt": "Siconfi",
+      "en": "Siconfi",
+      "explicacao_en": "Brazilian Public Sector Accounting and Tax Information System",
+      "contexto": "Sistema de Informações Contábeis e Fiscais do Setor Público Brasileiro, na descrição da edição 2024 do IBGE.",
+      "evidencias": [
+        {
+          "fonte": "ibge_contas",
+          "trecho": "Brazilian Public Sector Accounting and Tax Information System - Siconfi",
+          "localizacao": "About, 2024, segundo parágrafo"
+        }
+      ],
+      "nota": "Preservar Siconfi. Usar esta expansão da edição 2024; a descrição histórica apresenta expansão inglesa diferente."
+    },
+    "nome.tesouro": {
+      "tipo": "nome_proprio",
+      "pt": "Secretaria do Tesouro Nacional",
+      "en": "Secretaria do Tesouro Nacional",
+      "explicacao_en": "National Treasury Secretariat",
+      "contexto": "Secretaria do Tesouro Nacional brasileira; formas curtas só se aplicam quando o contexto identifica esse órgão como fonte.",
+      "evidencias": [
+        {
+          "fonte": "ibge_contas",
+          "trecho": "This newsletter, the result of a partnership between the IBGE, the National Treasury Secretariat and the Central Bank of Brazil",
+          "localizacao": "About, 2024, primeiro parágrafo"
+        }
+      ],
+      "nota": "Preservar o nome português. Tesouro só pode receber esta explicação quando for a abreviação institucional da Secretaria do Tesouro Nacional; não aplicar a instrumento financeiro ou outro tesouro.",
+      "formas_preservadas": [
+        "Tesouro",
+        "Tesouro Nacional"
+      ]
+    },
+    "nome.uniao": {
+      "tipo": "nome_proprio",
+      "pt": "União",
+      "en": "União",
+      "explicacao_en": "Brazil's federal government",
+      "contexto": "Nome próprio do ente federal brasileiro, preservado na introdução da home e acompanhado de explicação funcional na primeira ocorrência.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "Instruments eligible for CET1 are restricted\nto federally owned public banks.",
+          "localizacao": "Seção 1.2.4, Solvency, trecho sobre instrumentos elegíveis para CET1 e bancos públicos de propriedade federal",
+          "pagina": 42
+        },
+        {
+          "fonte": "ibge_contas",
+          "trecho": "Federal Government's Financial Administration System - Siafi",
+          "localizacao": "About, edição 2024, segundo parágrafo, referência ao Siafi"
+        }
+      ],
+      "nota": "A explicação Brazil's federal government é uma síntese funcional contextual, não uma citação literal ou tradução jurídica formal de União. O BCB corresponde bancos públicos federais e de propriedade da União a federally owned public banks; o IBGE comprova Governo Federal / Federal Government na expansão do Siafi. Manter União na prosa. Não equiparar metodologicamente União a central government ou general government, não inferir o perímetro fiscal de uma série nem renomear um observatório."
+    },
+    "saneamento.abastecimento_agua": {
+      "tipo": "termo",
+      "pt": "abastecimento de água",
+      "en": "water supply",
+      "contexto": "Serviço de abastecimento de água no escopo da PNSB.",
+      "evidencias": [
+        {
+          "fonte": "ibge_pnsb",
+          "trecho": "four components: water supply, sewage disposal, management of solid residue and rainwater management.",
+          "localizacao": "Description, segundo parágrafo"
+        }
+      ],
+      "nota": "Equivalente confirmado também no título do suplemento MUNIC 2017; não confundir com water distribution, etapa da distribuição."
+    },
+    "saneamento.drenagem_manejo_pluvial": {
+      "tipo": "termo",
+      "pt": "drenagem e manejo de águas pluviais",
+      "en": "rainwater drainage and management",
+      "contexto": "Drenagem e manejo de águas pluviais no escopo da MUNIC 2023.",
+      "evidencias": [
+        {
+          "fonte": "ibge_munic",
+          "trecho": "2023 Basic Sanitation Management: Urban cleaning and solid waste management; rainwater drainage and management",
+          "localizacao": "Supplements, suplemento 2023"
+        }
+      ],
+      "nota": "O IBGE usa rainwater. Não adotar stormwater sem fonte própria ou decisão registrada. Urban drainage aparece na PNSB para drenagem urbana."
+    },
+    "saneamento.esgotamento_sanitario": {
+      "tipo": "termo",
+      "pt": "esgotamento sanitário",
+      "en": "sewage disposal",
+      "contexto": "Serviço de esgotamento sanitário no escopo da PNSB, não qualquer tipo de efluente.",
+      "evidencias": [
+        {
+          "fonte": "ibge_pnsb",
+          "trecho": "Sewage Disposal",
+          "localizacao": "Main results, cabeçalho antes da Table 49"
+        }
+      ],
+      "nota": "O IBGE usa sewage disposal na PNSB 2008 e sewage no título MUNIC 2017; registrar variante contextual. Não usar automaticamente para efluentes de qualquer tipo."
+    },
+    "saneamento.limpeza_urbana": {
+      "tipo": "termo",
+      "pt": "limpeza urbana",
+      "en": "urban cleaning",
+      "contexto": "Serviço de limpeza urbana no escopo do suplemento de saneamento da MUNIC 2023.",
+      "evidencias": [
+        {
+          "fonte": "ibge_munic",
+          "trecho": "2023 Basic Sanitation Management: Urban cleaning and solid waste management; rainwater drainage and management",
+          "localizacao": "Supplements, suplemento 2023"
+        }
+      ],
+      "nota": "Termo comprovado no título oficial do suplemento. Não inferir equivalência geral com waste collection."
+    },
+    "saneamento.manejo_residuos_solidos": {
+      "tipo": "termo",
+      "pt": "manejo de resíduos sólidos",
+      "en": "solid waste management",
+      "contexto": "Manejo de resíduos sólidos no escopo do suplemento de saneamento da MUNIC 2023.",
+      "evidencias": [
+        {
+          "fonte": "ibge_munic",
+          "trecho": "2023 Basic Sanitation Management: Urban cleaning and solid waste management; rainwater drainage and management",
+          "localizacao": "Supplements, suplemento 2023"
+        }
+      ],
+      "nota": "Também cabeçalho Solid Waste Management na PNSB. PNSB usa management of solid residue em uma descrição; preferir solid waste management em rótulos."
+    },
+    "saneamento.saneamento_basico": {
+      "tipo": "termo",
+      "pt": "saneamento básico",
+      "en": "basic sanitation",
+      "contexto": "Conceito brasileiro com quatro componentes: água, esgotamento sanitário, resíduos sólidos e águas pluviais.",
+      "evidencias": [
+        {
+          "fonte": "ibge_pnsb",
+          "trecho": "With the release of this publication, IBGE provides the public with the results of the survey conducted in 2008, in partnership with the Ministry of the Cities, at a moment when the issue of basic sanitation has gained prominence after the promulgation of Law no 11445, of January 5, 2007, which establishes the regulatory frameworks of this sector in terms of four components: water supply, sewage disposal, management of solid residue and rainwater management.",
+          "localizacao": "Description, segundo parágrafo"
+        }
+      ],
+      "nota": "O uso oficial do IBGE é amplo e inclui água, esgotamento, resíduos e águas pluviais. Não restringir a apenas água e esgoto. O nome do produto Saneamento e seu foco atual estão registrados separadamente em nome.observatorio_saneamento, sem redefinir este conceito amplo.",
+      "formas_contextuais": {
+        "home_curta": {
+          "pt": "saneamento",
+          "en": "basic sanitation",
+          "contexto": "Forma curta do conceito brasileiro de saneamento básico na enumeração técnica de home.hero.introducao, com os quatro componentes documentados pelo IBGE. Não renomeia o produto Saneamento, não decide sua pendência editorial e não amplia o conjunto de dados ou serviços cobertos pelo observatório."
+        }
+      }
+    },
+    "servicos.servicos_publicos": {
+      "tipo": "termo",
+      "pt": "serviços públicos",
+      "en": "public services",
+      "contexto": "Serviços públicos em sentido comum de prestação à população, sem definir classificação jurídica, macrossetor ou nome de observatório.",
+      "evidencias": [
+        {
+          "fonte": "bcb_fsr_202504",
+          "trecho": "Provision of essential public services such as electricity, natural gas, water and wastewater services",
+          "localizacao": "Seção 2.2, Credit exposures at risk arising from physical climate risks, Table 2.2.2, coluna Description, linha Utilities",
+          "pagina": 66
+        }
+      ],
+      "nota": "A descrição inglesa do BCB contém public services. No quadro português correspondente, página 67, Serviços Públicos é o rótulo do macrossetor cuja linha inglesa se chama Utilities; não é um par literal de descrições genéricas. Utilities designa o recorte setorial específico da fonte e não substitui genericamente serviços públicos. Não acrescentar essential à home, nem usar a expressão como sinônimo de civil service, public administration, government efficiency ou Eficiência Estatal."
+    },
+    "nome.observatorio_agro": {
+      "tipo": "nome_proprio_produto",
+      "pt": "Agronegócio",
+      "en": "Agronegócio",
+      "origem_nome": {
+        "arquivo": "src/lib/dominios.ts",
+        "id": "agro",
+        "campo": "nomeCurto"
+      },
+      "explicacao_en": "Scrutiniums observatory with credit data and learning tools.",
+      "contexto": "Nome curto preservado do registro DOMINIOS. A explicação descreve uma parte observada e a função didática do produto, sem traduzir sua denominação nem afirmar cobertura integral de produção, comércio e ambiente.",
+      "evidencias_explicacao": [
+        {
+          "fonte": "bcb_fsr_202605",
+          "trecho": "1.2.2 Credit",
+          "localizacao": "Seção 1.2.2, Credit",
+          "pagina": 25
+        }
+      ],
+      "nota": "O BCB sustenta credit como termo financeiro, não o nome do produto Scrutiniums nem seus resultados. Learning tools descreve os artefatos do próprio projeto. Não é uma tradução técnica abrangente de agronegócio e não afirma benefício econômico ou social comprovado."
+    }
+  },
+  "pendencias": [
+    {
+      "id": "editorial.contas_publicas_estaduais",
+      "pt": "Contas Públicas Estaduais",
+      "contexto": "Nome editorial do observatório.",
+      "motivo": "Os conceitos e nomes verificados neste glossário não estabelecem uma tradução contextual para este título. A escolha depende do mantenedor.",
+      "origens": [
+        "src/lib/dominios.ts"
+      ],
+      "depende_de": "mantenedor"
+    },
+    {
+      "id": "editorial.contas_publicas_federais",
+      "pt": "Contas Públicas Federais",
+      "contexto": "Nome editorial do observatório.",
+      "motivo": "Os conceitos e nomes verificados neste glossário não estabelecem uma tradução contextual para este título. A escolha depende do mantenedor.",
+      "origens": [
+        "src/lib/dominios.ts"
+      ],
+      "depende_de": "mantenedor"
+    },
+    {
+      "id": "editorial.eficiencia_estatal",
+      "pt": "Eficiência Estatal",
+      "contexto": "Nome editorial do observatório.",
+      "motivo": "Os conceitos e nomes verificados neste glossário não estabelecem uma tradução contextual para este título. A escolha depende do mantenedor.",
+      "origens": [
+        "src/lib/dominios.ts"
+      ],
+      "depende_de": "mantenedor"
+    },
+    {
+      "id": "editorial.saneamento",
+      "pt": "Saneamento",
+      "contexto": "Nome curto e nome completo do observatório.",
+      "motivo": "Basic sanitation documenta o conceito brasileiro de quatro componentes. Isso não decide o título editorial de um observatório cuja apresentação atual se concentra em água e esgoto.",
+      "origens": [
+        "src/lib/dominios.ts"
+      ],
+      "depende_de": "mantenedor"
+    },
+    {
+      "id": "editorial.setor_eletrico",
+      "pt": "Setor Elétrico",
+      "contexto": "Nome curto e nome completo do observatório.",
+      "motivo": "Power sector está registrado como termo técnico. A adoção como título de produto não foi definida por essa entrada.",
+      "origens": [
+        "src/lib/dominios.ts"
+      ],
+      "depende_de": "mantenedor"
+    },
+    {
+      "id": "financeiro.juros_valor",
+      "pt": "juros",
+      "contexto": "Uso como valor monetário ou rótulo sem identificação de taxa.",
+      "motivo": "Interest rate cobre taxa de juros. A tradução de juros como montante ainda precisa de evidência e de associação ao campo consumidor.",
+      "origens": [
+        "src/lib/dominios.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "financeiro.saldo_generico",
+      "pt": "saldo",
+      "contexto": "Rótulo abreviado sem recorte da operação ou da estatística.",
+      "motivo": "A entrada do saldo de carteira ativa do SCR não cobre saldos contábeis, fiscais, comerciais nem outros conceitos. Cada uso precisa de contexto e fonte.",
+      "origens": [
+        "src/lib/vitrine.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.aneel",
+      "pt": "ANEEL",
+      "contexto": "Nome próprio citado na apresentação da plataforma ou nas fontes dos observatórios.",
+      "motivo": "A explicação em inglês ainda não integra o conjunto de evidências versionadas deste glossário. Preservar o nome; revisar fonte oficial antes de acrescentar a explicação. Conforme o caso, a pesquisa disponível pode ser parcial. Nominação preservada não equivale a trecho traduzido.",
+      "origens": [
+        "src/lib/vitrine.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.anp",
+      "pt": "ANP",
+      "contexto": "Nome próprio citado na apresentação da plataforma ou nas fontes dos observatórios.",
+      "motivo": "A explicação em inglês ainda não integra o conjunto de evidências versionadas deste glossário. Preservar o nome; revisar fonte oficial antes de acrescentar a explicação. Conforme o caso, a pesquisa disponível pode ser parcial. Nominação preservada não equivale a trecho traduzido.",
+      "origens": [
+        "src/lib/dominios.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.bolsa_familia",
+      "pt": "Bolsa Família",
+      "contexto": "Nome próprio do programa, referenciado pelo identificador domicilios-bolsa-familia na página de proteção da renda.",
+      "motivo": "Nome próprio explicitamente preservado pela especificação. A explicação em inglês ainda precisa de fonte oficial verificada e de entrada versionada; não traduzir ou expandir o nome por aproximação.",
+      "origens": [
+        "src/app/eficiencia-estatal/trabalho-renda/protecao-da-renda/page.tsx",
+        "pipeline/curated/bets.json"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.ccee",
+      "pt": "CCEE",
+      "contexto": "Nome próprio citado na apresentação da plataforma ou nas fontes dos observatórios.",
+      "motivo": "A explicação em inglês ainda não integra o conjunto de evidências versionadas deste glossário. Preservar o nome; revisar fonte oficial antes de acrescentar a explicação. Conforme o caso, a pesquisa disponível pode ser parcial. Nominação preservada não equivale a trecho traduzido.",
+      "origens": [
+        "src/lib/vitrine.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.cnj",
+      "pt": "CNJ",
+      "contexto": "Nome próprio citado na apresentação da plataforma ou nas fontes dos observatórios.",
+      "motivo": "A explicação em inglês ainda não integra o conjunto de evidências versionadas deste glossário. Preservar o nome; revisar fonte oficial antes de acrescentar a explicação. Conforme o caso, a pesquisa disponível pode ser parcial. Nominação preservada não equivale a trecho traduzido.",
+      "origens": [
+        "src/lib/vitrine.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.comex_stat",
+      "pt": "Comex Stat",
+      "contexto": "Nome próprio citado na apresentação da plataforma ou nas fontes dos observatórios.",
+      "motivo": "A explicação em inglês ainda não integra o conjunto de evidências versionadas deste glossário. Preservar o nome; revisar fonte oficial antes de acrescentar a explicação. Conforme o caso, a pesquisa disponível pode ser parcial. Nominação preservada não equivale a trecho traduzido.",
+      "origens": [
+        "src/lib/dominios.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.desenrola",
+      "pt": "Desenrola",
+      "contexto": "Nome próprio do programa, apresentado como Desenrola Brasil no catálogo do Crédito.",
+      "motivo": "Nome próprio explicitamente preservado pela especificação. A explicação em inglês ainda precisa de fonte oficial verificada e de entrada versionada; não traduzir ou expandir o nome por aproximação.",
+      "origens": [
+        "src/lib/data/observatorioAbas.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.estban",
+      "pt": "ESTBAN",
+      "contexto": "Nome próprio citado na apresentação da plataforma ou nas fontes dos observatórios.",
+      "motivo": "A explicação em inglês ainda não integra o conjunto de evidências versionadas deste glossário. Preservar o nome; revisar fonte oficial antes de acrescentar a explicação. Conforme o caso, a pesquisa disponível pode ser parcial. Nominação preservada não equivale a trecho traduzido.",
+      "origens": [
+        "src/lib/vitrine.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.if_data",
+      "pt": "IF.data",
+      "contexto": "Nome próprio citado na apresentação da plataforma ou nas fontes dos observatórios.",
+      "motivo": "A explicação em inglês ainda não integra o conjunto de evidências versionadas deste glossário. Preservar o nome; revisar fonte oficial antes de acrescentar a explicação. Conforme o caso, a pesquisa disponível pode ser parcial. Nominação preservada não equivale a trecho traduzido.",
+      "origens": [
+        "src/lib/vitrine.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.inep",
+      "pt": "INEP",
+      "contexto": "Nome próprio citado na apresentação da plataforma ou nas fontes dos observatórios.",
+      "motivo": "A explicação em inglês ainda não integra o conjunto de evidências versionadas deste glossário. Preservar o nome; revisar fonte oficial antes de acrescentar a explicação. Conforme o caso, a pesquisa disponível pode ser parcial. Nominação preservada não equivale a trecho traduzido.",
+      "origens": [
+        "src/lib/vitrine.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.mds",
+      "pt": "MDS",
+      "contexto": "Nome próprio citado na apresentação da plataforma ou nas fontes dos observatórios.",
+      "motivo": "A explicação em inglês ainda não integra o conjunto de evidências versionadas deste glossário. Preservar o nome; revisar fonte oficial antes de acrescentar a explicação. Conforme o caso, a pesquisa disponível pode ser parcial. Nominação preservada não equivale a trecho traduzido.",
+      "origens": [
+        "src/lib/vitrine.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.ons",
+      "pt": "ONS",
+      "contexto": "Nome próprio citado na apresentação da plataforma ou nas fontes dos observatórios.",
+      "motivo": "A explicação em inglês ainda não integra o conjunto de evidências versionadas deste glossário. Preservar o nome; revisar fonte oficial antes de acrescentar a explicação. Conforme o caso, a pesquisa disponível pode ser parcial. Nominação preservada não equivale a trecho traduzido.",
+      "origens": [
+        "src/lib/vitrine.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.pgfn",
+      "pt": "PGFN",
+      "contexto": "Nome próprio citado na apresentação da plataforma ou nas fontes dos observatórios.",
+      "motivo": "A explicação em inglês ainda não integra o conjunto de evidências versionadas deste glossário. Preservar o nome; revisar fonte oficial antes de acrescentar a explicação. Conforme o caso, a pesquisa disponível pode ser parcial. Nominação preservada não equivale a trecho traduzido.",
+      "origens": [
+        "src/lib/vitrine.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.sinesp",
+      "pt": "Sinesp",
+      "contexto": "Nome próprio citado na apresentação da plataforma ou nas fontes dos observatórios.",
+      "motivo": "A explicação em inglês ainda não integra o conjunto de evidências versionadas deste glossário. Preservar o nome; revisar fonte oficial antes de acrescentar a explicação. Conforme o caso, a pesquisa disponível pode ser parcial. Nominação preservada não equivale a trecho traduzido.",
+      "origens": [
+        "src/lib/vitrine.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.sinisa",
+      "pt": "SINISA",
+      "contexto": "Nome próprio citado na apresentação da plataforma ou nas fontes dos observatórios.",
+      "motivo": "A explicação em inglês ainda não integra o conjunto de evidências versionadas deste glossário. Preservar o nome; revisar fonte oficial antes de acrescentar a explicação. Conforme o caso, a pesquisa disponível pode ser parcial. Nominação preservada não equivale a trecho traduzido.",
+      "origens": [
+        "src/lib/dominios.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.siop",
+      "pt": "SIOP",
+      "contexto": "Nome próprio citado na apresentação da plataforma ou nas fontes dos observatórios.",
+      "motivo": "A explicação em inglês ainda não integra o conjunto de evidências versionadas deste glossário. Preservar o nome; revisar fonte oficial antes de acrescentar a explicação. Conforme o caso, a pesquisa disponível pode ser parcial. Nominação preservada não equivale a trecho traduzido.",
+      "origens": [
+        "src/lib/dominios.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.sisagua",
+      "pt": "SISAGUA",
+      "contexto": "Nome próprio da base de qualidade da água mencionada no catálogo do Saneamento.",
+      "motivo": "Nome próprio explicitamente preservado pela especificação. A explicação em inglês ainda precisa de fonte oficial verificada e de entrada versionada; não traduzir ou expandir o nome por aproximação.",
+      "origens": [
+        "src/lib/saneamento/capitulos.ts"
+      ],
+      "depende_de": "pesquisa"
+    },
+    {
+      "id": "nome.tarifa_social",
+      "pt": "Tarifa Social",
+      "contexto": "Nome próprio do programa apresentado no observatório do Setor Elétrico.",
+      "motivo": "Nome próprio explicitamente preservado pela especificação. A explicação em inglês ainda precisa de fonte oficial verificada e de entrada versionada; não traduzir ou expandir o nome por aproximação.",
+      "origens": [
+        "src/app/setor-eletrico/inclusao-energetica/tarifa-social/page.tsx"
+      ],
+      "depende_de": "pesquisa"
+    }
+  ]
+}

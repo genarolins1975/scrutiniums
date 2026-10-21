@@ -1,0 +1,223 @@
+edicao;mes;tipo;rotulo;nivel;valor_mil_rs;traco;vigente
+2026-03;2026-01;deslocamento_hidraulico;Deslocamento hidráulico;tipo;14634.0;0;0
+2026-03;2026-01;importacao;Importação de energia;tipo;0.0;1;0
+2026-03;2026-01;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;0
+2026-03;2026-01;reserva_operativa;Reserva operativa;tipo;0.0;1;0
+2026-03;2026-01;resposta_demanda;Resposta da demanda;tipo;5859.0;0;0
+2026-03;2026-01;restricao_operacao;Restrição de operação;tipo;63245.0;0;0
+2026-03;2026-01;ro_constrained_off;Restrição de operação: constrained-off;parcela;46089.0;0;0
+2026-03;2026-01;ro_constrained_on;Restrição de operação: constrained-on;parcela;9416.0;0;0
+2026-03;2026-01;ro_unit_commitment;Restrição de operação: unit commitment;parcela;7741.0;0;0
+2026-03;2026-01;seguranca_energetica;Segurança energética;tipo;0.0;1;0
+2026-03;2026-01;sr_nao_vinculado_rd;Suporte de reativo não vinculado a resposta da demanda;parcela;21087.0;0;0
+2026-03;2026-01;sr_vinculado_rd;Suporte de reativo vinculado a resposta da demanda;parcela;0.0;1;0
+2026-03;2026-01;suporte_reativo;Suporte de reativo;tipo;21087.0;0;0
+2026-03;2026-01;total;Total;total;104825.0;0;0
+2026-03;2026-02;deslocamento_hidraulico;Deslocamento hidráulico;tipo;23771.0;0;0
+2026-03;2026-02;importacao;Importação de energia;tipo;59.0;0;0
+2026-03;2026-02;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;0
+2026-03;2026-02;reserva_operativa;Reserva operativa;tipo;0.0;1;0
+2026-03;2026-02;resposta_demanda;Resposta da demanda;tipo;9.0;0;0
+2026-03;2026-02;restricao_operacao;Restrição de operação;tipo;116286.0;0;0
+2026-03;2026-02;ro_constrained_off;Restrição de operação: constrained-off;parcela;44589.0;0;0
+2026-03;2026-02;ro_constrained_on;Restrição de operação: constrained-on;parcela;55595.0;0;0
+2026-03;2026-02;ro_unit_commitment;Restrição de operação: unit commitment;parcela;16102.0;0;0
+2026-03;2026-02;seguranca_energetica;Segurança energética;tipo;0.0;1;0
+2026-03;2026-02;sr_nao_vinculado_rd;Suporte de reativo não vinculado a resposta da demanda;parcela;15515.0;0;0
+2026-03;2026-02;sr_vinculado_rd;Suporte de reativo vinculado a resposta da demanda;parcela;0.0;1;0
+2026-03;2026-02;suporte_reativo;Suporte de reativo;tipo;15515.0;0;0
+2026-03;2026-02;total;Total;total;155640.0;0;0
+2026-03;2026-03;deslocamento_hidraulico;Deslocamento hidráulico;tipo;42039.0;0;0
+2026-03;2026-03;importacao;Importação de energia;tipo;3031.0;0;0
+2026-03;2026-03;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;0
+2026-03;2026-03;reserva_operativa;Reserva operativa;tipo;0.0;1;0
+2026-03;2026-03;resposta_demanda;Resposta da demanda;tipo;81.0;0;0
+2026-03;2026-03;restricao_operacao;Restrição de operação;tipo;260872.0;0;0
+2026-03;2026-03;ro_constrained_off;Restrição de operação: constrained-off;parcela;79180.0;0;0
+2026-03;2026-03;ro_constrained_on;Restrição de operação: constrained-on;parcela;55947.0;0;0
+2026-03;2026-03;ro_unit_commitment;Restrição de operação: unit commitment;parcela;125745.0;0;0
+2026-03;2026-03;seguranca_energetica;Segurança energética;tipo;16446.0;0;0
+2026-03;2026-03;sr_nao_vinculado_rd;Suporte de reativo não vinculado a resposta da demanda;parcela;22024.0;0;0
+2026-03;2026-03;sr_vinculado_rd;Suporte de reativo vinculado a resposta da demanda;parcela;280.0;0;0
+2026-03;2026-03;suporte_reativo;Suporte de reativo;tipo;22304.0;0;0
+2026-03;2026-03;total;Total;total;344773.0;0;0
+2026-04;2026-01;deslocamento_hidraulico;Deslocamento hidráulico;tipo;14634.0;0;0
+2026-04;2026-01;importacao;Importação de energia;tipo;0.0;1;0
+2026-04;2026-01;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;0
+2026-04;2026-01;reserva_operativa;Reserva operativa;tipo;0.0;1;0
+2026-04;2026-01;resposta_demanda;Resposta da demanda;tipo;5859.0;0;0
+2026-04;2026-01;restricao_operacao;Restrição de operação;tipo;63245.0;0;0
+2026-04;2026-01;ro_constrained_off;Restrição de operação: constrained-off;parcela;46089.0;0;0
+2026-04;2026-01;ro_constrained_on;Restrição de operação: constrained-on;parcela;9416.0;0;0
+2026-04;2026-01;ro_unit_commitment;Restrição de operação: unit commitment;parcela;7741.0;0;0
+2026-04;2026-01;seguranca_energetica;Segurança energética;tipo;0.0;1;0
+2026-04;2026-01;suporte_reativo;Suporte de reativo;tipo;21087.0;0;0
+2026-04;2026-01;total;Total;total;104825.0;0;0
+2026-04;2026-02;deslocamento_hidraulico;Deslocamento hidráulico;tipo;23771.0;0;0
+2026-04;2026-02;importacao;Importação de energia;tipo;59.0;0;0
+2026-04;2026-02;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;0
+2026-04;2026-02;reserva_operativa;Reserva operativa;tipo;0.0;1;0
+2026-04;2026-02;resposta_demanda;Resposta da demanda;tipo;9.0;0;0
+2026-04;2026-02;restricao_operacao;Restrição de operação;tipo;116286.0;0;0
+2026-04;2026-02;ro_constrained_off;Restrição de operação: constrained-off;parcela;44589.0;0;0
+2026-04;2026-02;ro_constrained_on;Restrição de operação: constrained-on;parcela;55595.0;0;0
+2026-04;2026-02;ro_unit_commitment;Restrição de operação: unit commitment;parcela;16102.0;0;0
+2026-04;2026-02;seguranca_energetica;Segurança energética;tipo;0.0;1;0
+2026-04;2026-02;suporte_reativo;Suporte de reativo;tipo;15515.0;0;0
+2026-04;2026-02;total;Total;total;155640.0;0;0
+2026-04;2026-03;deslocamento_hidraulico;Deslocamento hidráulico;tipo;42039.0;0;0
+2026-04;2026-03;importacao;Importação de energia;tipo;3031.0;0;0
+2026-04;2026-03;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;0
+2026-04;2026-03;reserva_operativa;Reserva operativa;tipo;0.0;1;0
+2026-04;2026-03;resposta_demanda;Resposta da demanda;tipo;81.0;0;0
+2026-04;2026-03;restricao_operacao;Restrição de operação;tipo;260872.0;0;0
+2026-04;2026-03;ro_constrained_off;Restrição de operação: constrained-off;parcela;79180.0;0;0
+2026-04;2026-03;ro_constrained_on;Restrição de operação: constrained-on;parcela;55947.0;0;0
+2026-04;2026-03;ro_unit_commitment;Restrição de operação: unit commitment;parcela;125745.0;0;0
+2026-04;2026-03;seguranca_energetica;Segurança energética;tipo;16446.0;0;0
+2026-04;2026-03;suporte_reativo;Suporte de reativo;tipo;22024.0;0;0
+2026-04;2026-03;total;Total;total;344493.0;0;0
+2026-04;2026-04;deslocamento_hidraulico;Deslocamento hidráulico;tipo;10863.0;0;0
+2026-04;2026-04;importacao;Importação de energia;tipo;220.0;0;0
+2026-04;2026-04;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;0
+2026-04;2026-04;reserva_operativa;Reserva operativa;tipo;0.0;1;0
+2026-04;2026-04;resposta_demanda;Resposta da demanda;tipo;57.0;0;0
+2026-04;2026-04;restricao_operacao;Restrição de operação;tipo;108276.0;0;0
+2026-04;2026-04;ro_constrained_off;Restrição de operação: constrained-off;parcela;29080.0;0;0
+2026-04;2026-04;ro_constrained_on;Restrição de operação: constrained-on;parcela;27066.0;0;0
+2026-04;2026-04;ro_unit_commitment;Restrição de operação: unit commitment;parcela;52130.0;0;0
+2026-04;2026-04;seguranca_energetica;Segurança energética;tipo;662.0;0;0
+2026-04;2026-04;suporte_reativo;Suporte de reativo;tipo;24534.0;0;0
+2026-04;2026-04;total;Total;total;144612.0;0;0
+2026-05;2026-01;deslocamento_hidraulico;Deslocamento hidráulico;tipo;14634.0;0;0
+2026-05;2026-01;importacao;Importação de energia;tipo;0.0;1;0
+2026-05;2026-01;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;0
+2026-05;2026-01;reserva_operativa;Reserva operativa;tipo;0.0;1;0
+2026-05;2026-01;resposta_demanda;Resposta da demanda;tipo;5859.0;0;0
+2026-05;2026-01;restricao_operacao;Restrição de operação;tipo;63245.0;0;0
+2026-05;2026-01;ro_constrained_off;Restrição de operação: constrained-off;parcela;46089.0;0;0
+2026-05;2026-01;ro_constrained_on;Restrição de operação: constrained-on;parcela;9416.0;0;0
+2026-05;2026-01;ro_unit_commitment;Restrição de operação: unit commitment;parcela;7741.0;0;0
+2026-05;2026-01;seguranca_energetica;Segurança energética;tipo;0.0;1;0
+2026-05;2026-01;suporte_reativo;Suporte de reativo;tipo;21087.0;0;0
+2026-05;2026-01;total;Total;total;104825.0;0;0
+2026-05;2026-02;deslocamento_hidraulico;Deslocamento hidráulico;tipo;23771.0;0;0
+2026-05;2026-02;importacao;Importação de energia;tipo;59.0;0;0
+2026-05;2026-02;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;0
+2026-05;2026-02;reserva_operativa;Reserva operativa;tipo;0.0;1;0
+2026-05;2026-02;resposta_demanda;Resposta da demanda;tipo;9.0;0;0
+2026-05;2026-02;restricao_operacao;Restrição de operação;tipo;116286.0;0;0
+2026-05;2026-02;ro_constrained_off;Restrição de operação: constrained-off;parcela;44589.0;0;0
+2026-05;2026-02;ro_constrained_on;Restrição de operação: constrained-on;parcela;55595.0;0;0
+2026-05;2026-02;ro_unit_commitment;Restrição de operação: unit commitment;parcela;16102.0;0;0
+2026-05;2026-02;seguranca_energetica;Segurança energética;tipo;0.0;1;0
+2026-05;2026-02;suporte_reativo;Suporte de reativo;tipo;15515.0;0;0
+2026-05;2026-02;total;Total;total;155640.0;0;0
+2026-05;2026-03;deslocamento_hidraulico;Deslocamento hidráulico;tipo;42039.0;0;0
+2026-05;2026-03;importacao;Importação de energia;tipo;3031.0;0;0
+2026-05;2026-03;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;0
+2026-05;2026-03;reserva_operativa;Reserva operativa;tipo;0.0;1;0
+2026-05;2026-03;resposta_demanda;Resposta da demanda;tipo;81.0;0;0
+2026-05;2026-03;restricao_operacao;Restrição de operação;tipo;260872.0;0;0
+2026-05;2026-03;ro_constrained_off;Restrição de operação: constrained-off;parcela;79180.0;0;0
+2026-05;2026-03;ro_constrained_on;Restrição de operação: constrained-on;parcela;55947.0;0;0
+2026-05;2026-03;ro_unit_commitment;Restrição de operação: unit commitment;parcela;125745.0;0;0
+2026-05;2026-03;seguranca_energetica;Segurança energética;tipo;16446.0;0;0
+2026-05;2026-03;suporte_reativo;Suporte de reativo;tipo;22024.0;0;0
+2026-05;2026-03;total;Total;total;344493.0;0;0
+2026-05;2026-04;deslocamento_hidraulico;Deslocamento hidráulico;tipo;10863.0;0;0
+2026-05;2026-04;importacao;Importação de energia;tipo;220.0;0;0
+2026-05;2026-04;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;0
+2026-05;2026-04;reserva_operativa;Reserva operativa;tipo;0.0;1;0
+2026-05;2026-04;resposta_demanda;Resposta da demanda;tipo;57.0;0;0
+2026-05;2026-04;restricao_operacao;Restrição de operação;tipo;108276.0;0;0
+2026-05;2026-04;ro_constrained_off;Restrição de operação: constrained-off;parcela;29080.0;0;0
+2026-05;2026-04;ro_constrained_on;Restrição de operação: constrained-on;parcela;27066.0;0;0
+2026-05;2026-04;ro_unit_commitment;Restrição de operação: unit commitment;parcela;52130.0;0;0
+2026-05;2026-04;seguranca_energetica;Segurança energética;tipo;662.0;0;0
+2026-05;2026-04;suporte_reativo;Suporte de reativo;tipo;24534.0;0;0
+2026-05;2026-04;total;Total;total;144612.0;0;0
+2026-05;2026-05;deslocamento_hidraulico;Deslocamento hidráulico;tipo;12987.0;0;0
+2026-05;2026-05;importacao;Importação de energia;tipo;0.0;1;0
+2026-05;2026-05;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;0
+2026-05;2026-05;reserva_operativa;Reserva operativa;tipo;0.0;1;0
+2026-05;2026-05;resposta_demanda;Resposta da demanda;tipo;0.0;1;0
+2026-05;2026-05;restricao_operacao;Restrição de operação;tipo;84534.0;0;0
+2026-05;2026-05;ro_constrained_off;Restrição de operação: constrained-off;parcela;45132.0;0;0
+2026-05;2026-05;ro_constrained_on;Restrição de operação: constrained-on;parcela;31212.0;0;0
+2026-05;2026-05;ro_unit_commitment;Restrição de operação: unit commitment;parcela;8190.0;0;0
+2026-05;2026-05;seguranca_energetica;Segurança energética;tipo;0.0;1;0
+2026-05;2026-05;suporte_reativo;Suporte de reativo;tipo;29002.0;0;0
+2026-05;2026-05;total;Total;total;126523.0;0;0
+2026-06;2026-01;deslocamento_hidraulico;Deslocamento hidráulico;tipo;14634.0;0;1
+2026-06;2026-01;importacao;Importação de energia;tipo;0.0;1;1
+2026-06;2026-01;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;1
+2026-06;2026-01;reserva_operativa;Reserva operativa;tipo;0.0;1;1
+2026-06;2026-01;resposta_demanda;Resposta da demanda;tipo;5859.0;0;1
+2026-06;2026-01;restricao_operacao;Restrição de operação;tipo;63245.0;0;1
+2026-06;2026-01;ro_constrained_off;Restrição de operação: constrained-off;parcela;46089.0;0;1
+2026-06;2026-01;ro_constrained_on;Restrição de operação: constrained-on;parcela;9416.0;0;1
+2026-06;2026-01;ro_unit_commitment;Restrição de operação: unit commitment;parcela;7741.0;0;1
+2026-06;2026-01;seguranca_energetica;Segurança energética;tipo;0.0;1;1
+2026-06;2026-01;suporte_reativo;Suporte de reativo;tipo;21087.0;0;1
+2026-06;2026-01;total;Total;total;104825.0;0;1
+2026-06;2026-02;deslocamento_hidraulico;Deslocamento hidráulico;tipo;23771.0;0;1
+2026-06;2026-02;importacao;Importação de energia;tipo;59.0;0;1
+2026-06;2026-02;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;1
+2026-06;2026-02;reserva_operativa;Reserva operativa;tipo;0.0;1;1
+2026-06;2026-02;resposta_demanda;Resposta da demanda;tipo;9.0;0;1
+2026-06;2026-02;restricao_operacao;Restrição de operação;tipo;116286.0;0;1
+2026-06;2026-02;ro_constrained_off;Restrição de operação: constrained-off;parcela;44589.0;0;1
+2026-06;2026-02;ro_constrained_on;Restrição de operação: constrained-on;parcela;55595.0;0;1
+2026-06;2026-02;ro_unit_commitment;Restrição de operação: unit commitment;parcela;16102.0;0;1
+2026-06;2026-02;seguranca_energetica;Segurança energética;tipo;0.0;1;1
+2026-06;2026-02;suporte_reativo;Suporte de reativo;tipo;15515.0;0;1
+2026-06;2026-02;total;Total;total;155640.0;0;1
+2026-06;2026-03;deslocamento_hidraulico;Deslocamento hidráulico;tipo;42039.0;0;1
+2026-06;2026-03;importacao;Importação de energia;tipo;3031.0;0;1
+2026-06;2026-03;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;1
+2026-06;2026-03;reserva_operativa;Reserva operativa;tipo;0.0;1;1
+2026-06;2026-03;resposta_demanda;Resposta da demanda;tipo;81.0;0;1
+2026-06;2026-03;restricao_operacao;Restrição de operação;tipo;260872.0;0;1
+2026-06;2026-03;ro_constrained_off;Restrição de operação: constrained-off;parcela;79180.0;0;1
+2026-06;2026-03;ro_constrained_on;Restrição de operação: constrained-on;parcela;55947.0;0;1
+2026-06;2026-03;ro_unit_commitment;Restrição de operação: unit commitment;parcela;125745.0;0;1
+2026-06;2026-03;seguranca_energetica;Segurança energética;tipo;16446.0;0;1
+2026-06;2026-03;suporte_reativo;Suporte de reativo;tipo;22024.0;0;1
+2026-06;2026-03;total;Total;total;344493.0;0;1
+2026-06;2026-04;deslocamento_hidraulico;Deslocamento hidráulico;tipo;10863.0;0;1
+2026-06;2026-04;importacao;Importação de energia;tipo;220.0;0;1
+2026-06;2026-04;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;1
+2026-06;2026-04;reserva_operativa;Reserva operativa;tipo;0.0;1;1
+2026-06;2026-04;resposta_demanda;Resposta da demanda;tipo;57.0;0;1
+2026-06;2026-04;restricao_operacao;Restrição de operação;tipo;108276.0;0;1
+2026-06;2026-04;ro_constrained_off;Restrição de operação: constrained-off;parcela;29080.0;0;1
+2026-06;2026-04;ro_constrained_on;Restrição de operação: constrained-on;parcela;27066.0;0;1
+2026-06;2026-04;ro_unit_commitment;Restrição de operação: unit commitment;parcela;52130.0;0;1
+2026-06;2026-04;seguranca_energetica;Segurança energética;tipo;662.0;0;1
+2026-06;2026-04;suporte_reativo;Suporte de reativo;tipo;24534.0;0;1
+2026-06;2026-04;total;Total;total;144612.0;0;1
+2026-06;2026-05;deslocamento_hidraulico;Deslocamento hidráulico;tipo;12987.0;0;1
+2026-06;2026-05;importacao;Importação de energia;tipo;0.0;1;1
+2026-06;2026-05;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;1
+2026-06;2026-05;reserva_operativa;Reserva operativa;tipo;0.0;1;1
+2026-06;2026-05;resposta_demanda;Resposta da demanda;tipo;0.0;1;1
+2026-06;2026-05;restricao_operacao;Restrição de operação;tipo;84534.0;0;1
+2026-06;2026-05;ro_constrained_off;Restrição de operação: constrained-off;parcela;45132.0;0;1
+2026-06;2026-05;ro_constrained_on;Restrição de operação: constrained-on;parcela;31212.0;0;1
+2026-06;2026-05;ro_unit_commitment;Restrição de operação: unit commitment;parcela;8190.0;0;1
+2026-06;2026-05;seguranca_energetica;Segurança energética;tipo;0.0;1;1
+2026-06;2026-05;suporte_reativo;Suporte de reativo;tipo;29002.0;0;1
+2026-06;2026-05;total;Total;total;126523.0;0;1
+2026-06;2026-06;deslocamento_hidraulico;Deslocamento hidráulico;tipo;7153.0;0;1
+2026-06;2026-06;importacao;Importação de energia;tipo;0.0;1;1
+2026-06;2026-06;outros_ancilares;Outros serviços ancilares;tipo;0.0;1;1
+2026-06;2026-06;reserva_operativa;Reserva operativa;tipo;0.0;1;1
+2026-06;2026-06;resposta_demanda;Resposta da demanda;tipo;0.0;1;1
+2026-06;2026-06;restricao_operacao;Restrição de operação;tipo;49259.0;0;1
+2026-06;2026-06;ro_constrained_off;Restrição de operação: constrained-off;parcela;33333.0;0;1
+2026-06;2026-06;ro_constrained_on;Restrição de operação: constrained-on;parcela;5119.0;0;1
+2026-06;2026-06;ro_unit_commitment;Restrição de operação: unit commitment;parcela;10807.0;0;1
+2026-06;2026-06;seguranca_energetica;Segurança energética;tipo;0.0;1;1
+2026-06;2026-06;suporte_reativo;Suporte de reativo;tipo;25561.0;0;1
+2026-06;2026-06;total;Total;total;81973.0;0;1

@@ -1,0 +1,15 @@
+referencia_id;ano;rotulo;valor_no_csv;valor_na_gold;valor_recalculado;confere;base_da_recalculacao;tem_pagina_oficial;tem_data_de_captura
+norma.minimo_asps_municipal;;Mínimo constitucional dos municípios;15.0;15.0;15.0;sim;LC 141/2012, art. 7º;não;não
+br.aps.cobertura_potencial.2021;2021;Brasil (Relatório APS);87.91;87.91;87.91;sim;Relatório APS Brasil, dezembro, no seed;sim;sim
+br.aps.cobertura_potencial.2022;2022;Brasil (Relatório APS);87.79;87.79;87.79;sim;Relatório APS Brasil, dezembro, no seed;sim;sim
+br.aps.cobertura_potencial.2023;2023;Brasil (Relatório APS);97.24;97.24;97.24;sim;Relatório APS Brasil, dezembro, no seed;sim;sim
+br.aps.cobertura_potencial.2024;2024;Brasil (Relatório APS);101.72;101.72;101.72;sim;Relatório APS Brasil, dezembro, no seed;sim;sim
+br.aps.cobertura_potencial.2025;2025;Brasil (Relatório APS);99.14;99.14;99.14;sim;Relatório APS Brasil, dezembro, no seed;sim;sim
+br.icsap.taxa.2021;2021;Brasil, todos os municípios (calculado pelo OBEE);782.35055059;782.3505505915981;782.35055059;sim;MRB.4.02 nacional no seed;sim;sim
+br_sem_capitais.icsap.taxa.2021;2021;Brasil sem as 26 capitais (calculado pelo OBEE);831.75708063;831.7570806260626;831.75708063;sim;MRB.4.02 nacional no seed;sim;sim
+br.icsap.taxa.2022;2022;Brasil, todos os municípios (calculado pelo OBEE);948.41729523;948.4172952253076;948.41729523;sim;MRB.4.02 nacional no seed;sim;sim
+br_sem_capitais.icsap.taxa.2022;2022;Brasil sem as 26 capitais (calculado pelo OBEE);1014.45358684;1014.4535868422191;1014.45358684;sim;MRB.4.02 nacional no seed;sim;sim
+br.icsap.taxa.2023;2023;Brasil, todos os municípios (calculado pelo OBEE);1006.43964658;1006.4396465789737;1006.43964658;sim;MRB.4.02 nacional no seed;sim;sim
+br_sem_capitais.icsap.taxa.2023;2023;Brasil sem as 26 capitais (calculado pelo OBEE);1074.62783697;1074.627836969383;1074.62783697;sim;MRB.4.02 nacional no seed;sim;sim
+br.icsap.taxa.2024;2024;Brasil, todos os municípios (calculado pelo OBEE);1026.02809481;1026.0280948096927;1026.02809481;sim;MRB.4.02 nacional no seed;sim;sim
+br_sem_capitais.icsap.taxa.2024;2024;Brasil sem as 26 capitais (calculado pelo OBEE);1095.40161215;1095.4016121497446;1095.40161215;sim;MRB.4.02 nacional no seed;sim;sim

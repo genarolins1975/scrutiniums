@@ -1,0 +1,244 @@
+{
+  "date": "2026-10-12",
+  "status": "municipal_counts_acquired_eligibility_pending",
+  "score_eligible": false,
+  "swagger": {
+    "url": "https://apidadosabertos.saude.gov.br/static/swagger.json",
+    "version": "1.8.32",
+    "sha256": "334d73652718c96422798e3154bdef7793dfdfbbbbe5d5bc93a2987dceb439b9",
+    "endpoints": {
+      "/vigilancia-e-meio-ambiente/sistema-de-informacao-sobre-mortalidade": {
+        "get": {
+          "tags": [
+            "Vigilância e Meio Ambiente"
+          ],
+          "summary": "O Sistema de Informação sobre Mortalidade (SIM), desenvolvido pelo Ministério da Saúde em 1975, é produto da unificação de mais de quarenta modelos de Declaração de Óbito utilizados ao longo dos anos, para coletar dados sobre mortalidade no país.",
+          "parameters": [
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "Quantidade de itens retornados por página. Deve ser menor ou igual 1000.",
+              "required": false,
+              "type": "integer",
+              "default": 100
+            },
+            {
+              "name": "offset",
+              "in": "query",
+              "description": "Número da página de itens que deve ser retornada. Observação: As páginas iniciam a contagem a partir de 0 (zero), por exemplo: offset=0",
+              "required": false,
+              "type": "integer",
+              "default": 0
+            }
+          ],
+          "produces": [
+            "application/json",
+            "text/csv"
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {},
+                "text/csv": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/vigilancia-e-meio-ambiente/sistema-de-informacao-sobre-nascidos-vivos": {
+        "get": {
+          "tags": [
+            "Vigilância e Meio Ambiente"
+          ],
+          "summary": "O Sistema de Informações sobre Nascidos Vivos (Sinasc), foi implantado oficialmente a partir de 1990, com o objetivo de coletar dados sobre os nascimentos informados em todo território nacional e fornecer dados sobre natalidade para todos os níveis do Sistema de Saúde.",
+          "parameters": [
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "Quantidade de itens retornados por página. Deve ser menor ou igual 1000.",
+              "required": false,
+              "type": "integer",
+              "default": 100
+            },
+            {
+              "name": "offset",
+              "in": "query",
+              "description": "Número da página de itens que deve ser retornada. Observação: As páginas iniciam a contagem a partir de 0 (zero), por exemplo: offset=0",
+              "required": false,
+              "type": "integer",
+              "default": 0
+            }
+          ],
+          "produces": [
+            "application/json",
+            "text/csv"
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {},
+                "text/csv": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "probes": [
+    {
+      "url": "https://apidadosabertos.saude.gov.br/vigilancia-e-meio-ambiente/sistema-de-informacao-sobre-mortalidade?limit=1&offset=0",
+      "http_status": 200,
+      "returned_rows": 1,
+      "fields": [
+        "acidtrab",
+        "altcausa",
+        "assistmed",
+        "atestado",
+        "atestante",
+        "causabas",
+        "causabas_o",
+        "causamat",
+        "cb_alt",
+        "cb_pre",
+        "circobito",
+        "cirurgia",
+        "codestab",
+        "codificado",
+        "codmunnatu",
+        "codmunocor",
+        "codmunres",
+        "comunsvoim",
+        "contador",
+        "difdata",
+        "dtatestado",
+        "dtcadastro",
+        "dtcadinf",
+        "dtcadinv",
+        "dtconcaso",
+        "dtconinv",
+        "dtinvestig",
+        "dtnasc",
+        "dtobito",
+        "dtrecebim",
+        "dtrecoriga",
+        "esc",
+        "esc2010",
+        "escfalagr1",
+        "escmae",
+        "escmae2010",
+        "escmaeagr1",
+        "estciv",
+        "exame",
+        "fonte",
+        "fonteinv",
+        "fontes",
+        "gestacao",
+        "gravidez",
+        "horaobito",
+        "idade",
+        "idademae",
+        "linhaa",
+        "linhab",
+        "linhac",
+        "linhad",
+        "linhaii",
+        "lococor",
+        "morteparto",
+        "natural",
+        "necropsia",
+        "nudiasobco",
+        "numerolote",
+        "obitograv",
+        "obitoparto",
+        "obitopuerp",
+        "ocup",
+        "ocupmae",
+        "opor_do",
+        "origem",
+        "parto",
+        "peso",
+        "qtdfilmort",
+        "qtdfilvivo",
+        "racacor",
+        "semagestac",
+        "seriescfal",
+        "seriescmae",
+        "sexo",
+        "stcodifica",
+        "stdoepidem",
+        "stdonova",
+        "tipobito",
+        "tp_altera",
+        "tpmorteoco",
+        "tpnivelinv",
+        "tpobitocor",
+        "tppos",
+        "tpresginfo",
+        "versaoscb",
+        "versaosist"
+      ],
+      "response_sha256": "5a83d886e6e73088f6bcc75004e954455ec75672ef048950d2117afdf0eac369",
+      "scope": "diagnostic only; not data coverage"
+    },
+    {
+      "url": "https://apidadosabertos.saude.gov.br/vigilancia-e-meio-ambiente/sistema-de-informacao-sobre-nascidos-vivos?limit=1&offset=0",
+      "http_status": 200,
+      "returned_rows": 0,
+      "fields": [],
+      "response_sha256": "3955114077086c8306fd9e814ad9bdd11b9ee99b8878cb446936a526577ebf97",
+      "scope": "diagnostic only; not data coverage"
+    },
+    {
+      "name": "SIM infantil",
+      "url": "https://tabnet.datasus.gov.br/cgi/deftohtm.exe?sim/cnv/inf10br.def",
+      "http_status": 502,
+      "result": "HTTP Error 502: Bad Gateway in this session; no tabulation acquired"
+    },
+    {
+      "name": "SINASC",
+      "url": "https://tabnet.datasus.gov.br/cgi/deftohtm.exe?sinasc/cnv/nvbr.def",
+      "http_status": 502,
+      "result": "HTTP Error 502: Bad Gateway in this session; no tabulation acquired"
+    },
+    {
+      "name": "SIM infantil TabNet HTTP",
+      "url": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?sim/cnv/inf10br.def",
+      "http_status": 200,
+      "result": "Official HTTP link worked; query returned 26 capitals x 3 years of counts"
+    },
+    {
+      "name": "SINASC TabNet HTTP",
+      "url": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?sinasc/cnv/nvbr.def",
+      "http_status": 200,
+      "result": "Official HTTP link worked; query returned 26 capitals x 3 years of counts"
+    }
+  ],
+  "proposed_contract": {
+    "years": [
+      2021,
+      2022,
+      2023
+    ],
+    "geography": "26 state capitals, residence",
+    "expected_aggregate_cells": 156,
+    "numerator": "non-fetal deaths under age one (SIM)",
+    "denominator": "live births by maternal residence (SINASC)",
+    "formula": "1000 * sum(deaths) / sum(live_births)",
+    "temporal_version_change_required": true,
+    "status": "applied_to_count_audit_only"
+  },
+  "decision": "No state imputation; preserve missing health in six-dimension contract; no external request sent.",
+  "count_manifest": "pipeline/eficiencia_resultados/seed/saude/manifest.json",
+  "observed_cells": 156
+}

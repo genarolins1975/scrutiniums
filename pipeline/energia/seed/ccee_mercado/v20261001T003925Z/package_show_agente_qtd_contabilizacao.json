@@ -1,0 +1,162 @@
+{
+ "result": {
+  "author": "CCEE-GAIM",
+  "author_email": null,
+  "creator_user_id": "b769d7d0-5632-47ee-a5fa-f18004e7e791",
+  "extras": [
+   {
+    "key": "Frequência de Atualização",
+    "value": "Mensal"
+   },
+   {
+    "key": "Referência de Publicação",
+    "value": "MS+22du"
+   },
+   {
+    "key": "Termo Legal",
+    "value": "O acesso a este site e/ou a utilização de conteúdos, dados e bases de dados nele disponibilizados se sujeita ao aceite dos termos e condições da licença aberta Creative Commons Attribution 4.0 International (CC-BY-4.0), bem como aos Termos de Uso do site e do aplicativo mobile (App) da CCEE (Link - https://www.ccee.org.br/en/web/guest/termos-de-uso). Ao utilizar esses recursos, você concorda em cumprir todos os requisitos dessa licença, que permitem que os reutilizadores distribuam, modifiquem, adaptem e desenvolvam o material sobre os dados, desde que seja atribuído o crédito apropriado ao criador (CCEE) e que sejam informadas as alterações. O Material Licenciado é disponibilizado no \"estado em que se encontra\" e \"como disponível\" apenas para fins informativos, sendo possível a interrupção da disponibilidade do conjunto de dados a qualquer momento e por qualquer motivo, sendo a sua utilização de livre iniciativa, não sendo atribuível qualquer tipo de responsabilização à CCEE por seu uso."
+   }
+  ],
+  "groups": [],
+  "id": "a38e0fbb-f050-452a-8147-2ff479ad93a0",
+  "isopen": true,
+  "license_id": "CC-BY-4.0",
+  "license_title": "Creative Commons Attribution 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "maintainer": "CCEE-GAIM",
+  "maintainer_email": null,
+  "metadata_created": "2024-02-01T14:25:56.399006",
+  "metadata_modified": "2026-09-01T17:58:18.255185",
+  "name": "agente_qtd_contabilizacao",
+  "notes": "Dados com a quantidade de agentes participantes da CCEE por  classe de comercialização.",
+  "num_resources": 4,
+  "num_tags": 2,
+  "organization": {
+   "approval_status": "approved",
+   "created": "2023-03-02T11:15:44.108398",
+   "description": "O Infomercado é uma organização que agrupa os principais conjuntos de dados referentes ao resultado da contabilização do mercado de energia brasileiro.\r\n\r\nAs partes interessadas poderão acessar conjuntos de dados relacionados aos seguintes assuntos: geração; consumo; MRE; contratos; PLD; e demais temas do Mercado de Curto Prazo - MCP.\r\n\r\nOs conjuntos de dados do informercado, seus recursos e APIs são atualizados periodicamente nesse portal de dados, para o mês de referência relativo à finalização da liquidação do MCP (não são considerados eventos de recontabilização).\r\n\r\nPara consulta ao acervo de dados públicos, a parte interessada poderá consultar o portal da CCEE > dados e análises.",
+   "id": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+   "image_url": "https://www.ccee.org.br/documents/20121/1583681/icon_pda-infomercado.svg/029872ce-13b0-9153-3d63-0501ca687dff?t=1724955920662",
+   "is_organization": true,
+   "name": "infomercado",
+   "state": "active",
+   "title": "Infomercado",
+   "type": "organization"
+  },
+  "owner_org": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+  "private": false,
+  "relationships_as_object": [],
+  "relationships_as_subject": [],
+  "resources": [
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2024-02-02T19:59:05.021588",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados com a quantidade de agentes participantes da CCEE por  classe de comercialização.  \n \n **Campos contidos nesse conjunto de dados:** \n  \n * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.   \n * **CLASSE** : Corresponde a classe de atividade no mercado de energia. Domínios possíveis: Autoprodutor, Consumidor Especial, Consumidor Livre, Distribuidor, Gerador, Comercializador, Exportador e Produtor Independente.   \n * **QUANTIDADE_AGENTE_CONTABILIZACAO** : Corresponde a quantidade de agentes pertencentes a classe de comercialização correspondente.",
+    "format": "CSV",
+    "hash": "",
+    "id": "7bb6bd3d-29c5-4f8e-a592-ab2948d6cb40",
+    "last_modified": "2024-02-05T18:43:59.817000",
+    "metadata_modified": "2025-11-21T00:33:56.642467",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "agente_qtd_contabilizacao_2023",
+    "package_id": "a38e0fbb-f050-452a-8147-2ff479ad93a0",
+    "position": 0,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/J1LvjYUYQgyLsl7HTseblQ/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2024-03-04T01:21:34.571315",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados com a quantidade de agentes participantes da CCEE por  classe de comercialização.  \n \n **Campos contidos nesse conjunto de dados:** \n  \n * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.   \n * **CLASSE** : Corresponde a classe de atividade no mercado de energia. Domínios possíveis: Autoprodutor, Consumidor Especial, Consumidor Livre, Distribuidor, Gerador, Comercializador, Exportador e Produtor Independente.   \n * **QUANTIDADE_AGENTE_CONTABILIZACAO** : Corresponde a quantidade de agentes pertencentes a classe de comercialização correspondente.",
+    "format": "CSV",
+    "hash": "",
+    "id": "dc4fcbcd-0ab3-437d-a77b-b5a60eefcd5a",
+    "last_modified": "2025-01-31T20:14:04.763000",
+    "metadata_modified": "2025-01-31T23:14:19.142754",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "agente_qtd_contabilizacao_2024",
+    "package_id": "a38e0fbb-f050-452a-8147-2ff479ad93a0",
+    "position": 1,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/_vZPPoZfTa-9ewORpTXJBA/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2025-03-05T23:56:47.137339",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados com a quantidade de agentes participantes da CCEE por  classe de comercialização.  \n \n **Campos contidos nesse conjunto de dados:** \n  \n * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.   \n * **CLASSE** : Corresponde a classe de atividade no mercado de energia. Domínios possíveis: Autoprodutor, Consumidor Especial, Consumidor Livre, Distribuidor, Gerador, Comercializador, Exportador e Produtor Independente.   \n * **QUANTIDADE_AGENTE_CONTABILIZACAO** : Corresponde a quantidade de agentes pertencentes a classe de comercialização correspondente.",
+    "format": "CSV",
+    "hash": "",
+    "id": "3b54d5a9-ce55-449c-b322-bf8a80cca584",
+    "last_modified": "2026-02-02T17:35:29.107000",
+    "metadata_modified": "2026-02-02T20:35:29.258127",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "agente_qtd_contabilizacao_2025",
+    "package_id": "a38e0fbb-f050-452a-8147-2ff479ad93a0",
+    "position": 2,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/KlZZVT4bSPq313uAFfYM_w/content",
+    "url_type": null
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2026-03-04T21:00:27.687966",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados com a quantidade de agentes participantes da CCEE por  classe de comercialização.  \n \n **Campos contidos nesse conjunto de dados:** \n  \n * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.   \n * **CLASSE** : Corresponde a classe de atividade no mercado de energia. Domínios possíveis: Autoprodutor, Consumidor Especial, Consumidor Livre, Distribuidor, Gerador, Comercializador, Exportador e Produtor Independente.   \n * **QUANTIDADE_AGENTE_CONTABILIZACAO** : Corresponde a quantidade de agentes pertencentes a classe de comercialização correspondente.",
+    "format": "CSV",
+    "hash": "",
+    "id": "3377c238-27d9-44a5-8c67-ca8c6aecc877",
+    "last_modified": "2026-09-01T14:58:18.161000",
+    "metadata_modified": "2026-09-01T17:58:18.260205",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "agente_qtd_contabilizacao_2026",
+    "package_id": "a38e0fbb-f050-452a-8147-2ff479ad93a0",
+    "position": 3,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/v3bY_Fm0T9uBcmLSctmFXQ/content",
+    "url_type": null
+   }
+  ],
+  "state": "active",
+  "tags": [
+   {
+    "display_name": "agente",
+    "id": "269aa4c4-3260-48b7-b270-184ff27f1eac",
+    "name": "agente",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "dados gerais",
+    "id": "608eaa47-92c5-460b-a3d0-2069bff3b41d",
+    "name": "dados gerais",
+    "state": "active",
+    "vocabulary_id": null
+   }
+  ],
+  "title": "AGENTE_QTD_CONTABILIZACAO",
+  "type": "dataset",
+  "url": null,
+  "version": null
+ }
+}

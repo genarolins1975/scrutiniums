@@ -1,0 +1,304 @@
+{
+  "estado": "ACEITE_INDEPENDENTE_LOCAL",
+  "avaliador": "agente independente validacao_independente, não implementou produto",
+  "criterioAceite": "Acima de9 emcada critério/rota, sem média compensatória; notas expressam julgamento editorial com evidências, não certificação absoluta.",
+  "rotas": [
+    {
+      "rota": "/eficiencia-estatal/trabalho-renda",
+      "notas": {
+        "Direção de arte": 9.3,
+        "Hierarquia": 9.2,
+        "Tipografia e acabamento": 9.2,
+        "Densidade e profundidade": 9.1,
+        "Didática visual": 9.2,
+        "Comparabilidade": 9.2,
+        "Interação e acessibilidade": 9.1,
+        "Responsividade": 9.2
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/trabalho-renda-1440-final.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/trabalho-renda-390-final.png",
+      "pendencias": [],
+      "fundamentoEspecifico": "Abertura substantiva com seletor UF, medidas com datas próprias, série e tabela, caminhos de leitura e agenda com estados explícitos."
+    },
+    {
+      "rota": "/eficiencia-estatal/trabalho-renda/acesso-ao-trabalho",
+      "notas": {
+        "Direção de arte": 9.2,
+        "Hierarquia": 9.2,
+        "Tipografia e acabamento": 9.2,
+        "Densidade e profundidade": 9.2,
+        "Didática visual": 9.2,
+        "Comparabilidade": 9.3,
+        "Interação e acessibilidade": 9.2,
+        "Responsividade": 9.2
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/acesso-ao-trabalho-1440-final.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/acesso-ao-trabalho-390-final.png",
+      "pendencias": [],
+      "fundamentoEspecifico": "Quatro conceitos distintos, referência anterior em p.p., 27UF, CV explicado, série e tabela/CSV sob o mesmo recorte."
+    },
+    {
+      "rota": "/eficiencia-estatal/trabalho-renda/ocupacoes",
+      "notas": {
+        "Direção de arte": 9.2,
+        "Hierarquia": 9.3,
+        "Tipografia e acabamento": 9.1,
+        "Densidade e profundidade": 9.3,
+        "Didática visual": 9.3,
+        "Comparabilidade": 9.2,
+        "Interação e acessibilidade": 9.1,
+        "Responsividade": 9.1
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/ocupacoes-1440-final.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/ocupacoes-390-final.png",
+      "pendencias": [],
+      "fundamentoEspecifico": "Onze grupos comparáveis lado a lado, quantidade com rendimento, média/mediana na mesma população, total separado da composição e recorte estrutural2022 declarado."
+    },
+    {
+      "rota": "/eficiencia-estatal/trabalho-renda/qualificacao",
+      "notas": {
+        "Direção de arte": 9.2,
+        "Hierarquia": 9.2,
+        "Tipografia e acabamento": 9.2,
+        "Densidade e profundidade": 9.3,
+        "Didática visual": 9.3,
+        "Comparabilidade": 9.3,
+        "Interação e acessibilidade": 9.2,
+        "Responsividade": 9.2
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/qualificacao-1440-final.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/qualificacao-390-final.png",
+      "pendencias": [],
+      "fundamentoEspecifico": "Catálogo real com busca, UF, modalidade, vigência, paginação e exportação completa. Distinção entre autorização, sede/oferta, vaga e atendimento é visível."
+    },
+    {
+      "rota": "/eficiencia-estatal/trabalho-renda/qualidade-do-trabalho",
+      "notas": {
+        "Direção de arte": 9.2,
+        "Hierarquia": 9.2,
+        "Tipografia e acabamento": 9.2,
+        "Densidade e profundidade": 9.1,
+        "Didática visual": 9.2,
+        "Comparabilidade": 9.2,
+        "Interação e acessibilidade": 9.1,
+        "Responsividade": 9.2
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/qualidade-do-trabalho-aceite1440.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/qualidade-do-trabalho-aceite390.png",
+      "pendencias": [],
+      "fundamentoEspecifico": "Informalidade PNAD corretamente enquadrada após reprovação inicial; jornada tem unidade editorial e inconsistência da origem declaradas, lacunas preservadas.",
+      "retesteFinal": "Build3021: revisão visual1440/390; mudança textual final de variação do estoque comprovada por HTML HTTP e código em TEXTOS_BUILD_FINAL.json."
+    },
+    {
+      "rota": "/eficiencia-estatal/trabalho-renda/renda-do-trabalho",
+      "notas": {
+        "Direção de arte": 9.2,
+        "Hierarquia": 9.2,
+        "Tipografia e acabamento": 9.2,
+        "Densidade e profundidade": 9.1,
+        "Didática visual": 9.2,
+        "Comparabilidade": 9.3,
+        "Interação e acessibilidade": 9.1,
+        "Responsividade": 9.2
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/renda-do-trabalho-1440-final.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/renda-do-trabalho-390-final.png",
+      "pendencias": [],
+      "fundamentoEspecifico": "Rendimento real com base de preços, mesma população e série trimestral; diferença monetária e CV contextualizados, sem equivalência com renda familiar."
+    },
+    {
+      "rota": "/eficiencia-estatal/trabalho-renda/renda-das-familias",
+      "notas": {
+        "Direção de arte": 9.2,
+        "Hierarquia": 9.3,
+        "Tipografia e acabamento": 9.2,
+        "Densidade e profundidade": 9.3,
+        "Didática visual": 9.3,
+        "Comparabilidade": 9.3,
+        "Interação e acessibilidade": 9.2,
+        "Responsividade": 9.1
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/renda-das-familias-1440-final.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/renda-das-familias-390-final.png",
+      "pendencias": [],
+      "fundamentoEspecifico": "Distribuição em dez decis disjuntos, série real anual e retrato municipal2022 com universos e preços separados; ressalva de visitas junto ao visual."
+    },
+    {
+      "rota": "/eficiencia-estatal/trabalho-renda/desigualdade",
+      "notas": {
+        "Direção de arte": 9.2,
+        "Hierarquia": 9.3,
+        "Tipografia e acabamento": 9.2,
+        "Densidade e profundidade": 9.3,
+        "Didática visual": 9.3,
+        "Comparabilidade": 9.3,
+        "Interação e acessibilidade": 9.1,
+        "Responsividade": 9.1
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/desigualdade-1440-final.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/desigualdade-390-final.png",
+      "pendencias": [],
+      "fundamentoEspecifico": "Gini em escala0–1 com três decimais e pontos de índice, distribuição complementar do mesmo universo, sem inferir pobreza ou eficácia."
+    },
+    {
+      "rota": "/eficiencia-estatal/trabalho-renda/cadastro-unico",
+      "notas": {
+        "Direção de arte": 9.2,
+        "Hierarquia": 9.2,
+        "Tipografia e acabamento": 9.1,
+        "Densidade e profundidade": 9.1,
+        "Didática visual": 9.3,
+        "Comparabilidade": 9.2,
+        "Interação e acessibilidade": 9.3,
+        "Responsividade": 9.2
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/cadastro-unico-aceite1440.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/cadastro-unico-aceite390.png",
+      "pendencias": [],
+      "fundamentoEspecifico": "Somas administrativas explicitadas; famílias cadastradas não viram beneficiários/pobreza. Novo município preservado. Busca territorial limitada na DOM preserva universo e seleção.",
+      "retesteFinal": "Build3021: revisão visual1440/390; mudança textual final de variação do estoque comprovada por HTML HTTP e código em TEXTOS_BUILD_FINAL.json."
+    },
+    {
+      "rota": "/eficiencia-estatal/trabalho-renda/protecao-da-renda",
+      "notas": {
+        "Direção de arte": 9.2,
+        "Hierarquia": 9.1,
+        "Tipografia e acabamento": 9.2,
+        "Densidade e profundidade": 9.2,
+        "Didática visual": 9.3,
+        "Comparabilidade": 9.3,
+        "Interação e acessibilidade": 9.1,
+        "Responsividade": 9.2
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/protecao-da-renda-1440-final.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/protecao-da-renda-390-final.png",
+      "pendencias": [],
+      "fundamentoEspecifico": "Domicílios declarantes e programas coexistentes distinguidos; ruptura da coleta2020–2022 junto ao gráfico e período/população explícitos."
+    },
+    {
+      "rota": "/eficiencia-estatal/trabalho-renda/emprego-formal",
+      "notas": {
+        "Direção de arte": 9.2,
+        "Hierarquia": 9.2,
+        "Tipografia e acabamento": 9.2,
+        "Densidade e profundidade": 9.2,
+        "Didática visual": 9.3,
+        "Comparabilidade": 9.3,
+        "Interação e acessibilidade": 9.1,
+        "Responsividade": 9.2
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/emprego-formal-aceite1440.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/emprego-formal-aceite390.png",
+      "pendencias": [],
+      "fundamentoEspecifico": "Estoque nacional e variação derivada em séries complementares; legenda final distingue fórmula de diferença de estoques do saldo oficial de admissões/desligamentos.",
+      "retesteFinal": "Build3021: revisão visual1440/390; mudança textual final de variação do estoque comprovada por HTML HTTP e código em TEXTOS_BUILD_FINAL.json."
+    },
+    {
+      "rota": "/eficiencia-estatal/trabalho-renda/recursos",
+      "notas": {
+        "Direção de arte": 9.2,
+        "Hierarquia": 9.2,
+        "Tipografia e acabamento": 9.1,
+        "Densidade e profundidade": 9.3,
+        "Didática visual": 9.3,
+        "Comparabilidade": 9.3,
+        "Interação e acessibilidade": 9.1,
+        "Responsividade": 9.2
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/recursos-1440-final.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/recursos-390-final.png",
+      "pendencias": [],
+      "fundamentoEspecifico": "Execução municipal e estágios definidos; conferênciaDCA/RREO governa elegibilidade; composição reconcilia, ausência e divergência permanecem visíveis."
+    },
+    {
+      "rota": "/eficiencia-estatal/trabalho-renda/comparar",
+      "notas": {
+        "Direção de arte": 9.2,
+        "Hierarquia": 9.2,
+        "Tipografia e acabamento": 9.2,
+        "Densidade e profundidade": 9.1,
+        "Didática visual": 9.2,
+        "Comparabilidade": 9.3,
+        "Interação e acessibilidade": 9.2,
+        "Responsividade": 9.2
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/comparar-1440-final.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/comparar-390-final.png",
+      "pendencias": [],
+      "fundamentoEspecifico": "Seleção por medida, universo e período mantém recortes compatíveis; 27UF, referência nacional própria nas pesquisas e busca municipal evitam fallback territorial."
+    },
+    {
+      "rota": "/eficiencia-estatal/trabalho-renda/metodos",
+      "notas": {
+        "Direção de arte": 9.2,
+        "Hierarquia": 9.3,
+        "Tipografia e acabamento": 9.2,
+        "Densidade e profundidade": 9.3,
+        "Didática visual": 9.3,
+        "Comparabilidade": 9.3,
+        "Interação e acessibilidade": 9.2,
+        "Responsividade": 9.2
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/metodos-1440-final.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/metodos-390-final.png",
+      "pendencias": [],
+      "fundamentoEspecifico": "Fichas por indicador, fontes reproduzíveis e agenda de lacunas; classificações de estado e perímetros separados; documentação detalhada acessível por expansão."
+    },
+    {
+      "rota": "/eficiencia-estatal",
+      "notas": {
+        "Direção de arte": 9.3,
+        "Hierarquia": 9.3,
+        "Tipografia e acabamento": 9.2,
+        "Densidade e profundidade": 9.2,
+        "Didática visual": 9.3,
+        "Comparabilidade": 9.3,
+        "Interação e acessibilidade": 9.2,
+        "Responsividade": 9.2
+      },
+      "decisao": "ACEITE_LOCAL_COM_LIMITES",
+      "evidenciaDesktop": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/eficiencia-estatal-aceite1440.png",
+      "evidenciaMobile": "/Users/gena/Documents/Codex/2026-10-09/m/outputs/trabalho-renda-validacao/eficiencia-estatal-aceite390.png",
+      "fundamentoEspecifico": "Três temas com recortes próprios, navegação e fontes preservadas. Mapa de serviços e cobertura reconhecem Trabalho e Renda; DF tratado conforme o universo financeiro ou estatístico.",
+      "retesteFinal": "Estrutura visual3021 em1440/390; texto final dos três temas conferido no HTML HTTP semscript/style."
+    }
+  ],
+  "evidenciasComuns": {
+    "Direção de arte": "Marca oficial, tipografia editorial e paleta comum ao OBEE; recursos visuais ligados à leitura e à comparação.",
+    "Hierarquia": "Pergunta, seleção e medida têm níveis distintos. Navegação compacta no celular e recorte expansível com seleção visível.",
+    "Tipografia e acabamento": "Títulos serifados, números alinhados, rótulos completos nas medidas e controles com alvo de 44 px. Ticks sobrepostos e valores longos foram corrigidos.",
+    "Densidade e profundidade": "Evolução, comparação estadual, tabelas e CSV; dez decis da renda e onze grupos ocupacionais; composição da despesa; catálogo de cursos com busca e paginação.",
+    "Didática visual": "Unidade, universo, fonte e período explícitos. CV explicado. Pontos percentuais e pontos de índice separados. Rupturas de coleta da pandemia sinalizadas junto ao gráfico.",
+    "Comparabilidade": "PNAD, Censo 2022 e registros administrativos preservam universos e calendários. DCA divergente do RREO recebe aviso material e fica fora do benchmark.",
+    "Interação e acessibilidade": "Recorte São Paulo/mulheres/1º trimestre 2025, persistência na URL, limpeza e tabela. CSV do explorador com 16 observações reconciliadas. Busca de cursos com 104 registros, paginação, resultado vazio e limpeza da UF. Busca municipal em 320 px mantém seleção e universo. Enter abre e fecha detalhes com foco visível.",
+    "Responsividade": "14 rotas em 320, 390, 768 e 1440 px: sem overflow da página e sem violações automáticas A/AA após correções. Capturas completas salvas para desktop e celular."
+  },
+  "limites": [
+    "Leitor de tela não executado. Automação axe não certifica conformidade integral.",
+    "Zoom nativo200%não confirmado pela ferramenta; reflow320/390/768/1440 e foco por teclado verificados.",
+    "56estados de14rotas auditados no desenvolvimento antes da última correção de nomes/legendas. As rotas alteradas foram reavaliadas no build local3021 em1440/390, com textos finais também comprovados via HTML HTTP.",
+    "Evento de download da ferramenta CUA travou; o CSV do explorador foi recebido no disco e reconciliado, e o catálogo foi validado por HTTP streaming efetivamente recebido:90587registros completos e104no recorte. Não atestei gravação final do CSV do catálogo por todas as combinações de navegador.",
+    "Agenda12dimensões permanece parcialmente implementada. Trajetórias e mobilidade não possuem base longitudinal publicada. As lacunas não recebem nota de funcionalidade concluída.",
+    "Implantação Vercel/GitHub não foi verificada por este agente; o aceite refere-se ao build local e deve ser acompanhado de verificação do alvo pelo responsável pela publicação."
+  ],
+  "data": "2026-10-09",
+  "minimoPorCriterio": 9.1,
+  "escopoAceite": "14 rotas implementadas de Trabalho e Renda e sua integração à entrada OBEE. Não equivale à implantação em produção nem ao preenchimento integral das12dimensões da agenda.",
+  "retestesBuild": "retestes-build.json",
+  "csvStreaming": "CSV_STREAM_INDEPENDENTE.json",
+  "textosFinais": "TEXTOS_BUILD_FINAL.json"
+}

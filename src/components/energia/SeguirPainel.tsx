@@ -1,0 +1,66 @@
+import { comNomes } from "@/components/i18n/comNomes";
+import Link from "@/components/i18n/LinkIdioma";
+import type { ReactNode } from "react";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
+import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
+import { LinkDoPainel } from "@/components/energia/LinkDoPainel";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+
+/**
+ * Próximos passos de um painel numa linha só: baixar os dados, copiar o link com o recorte e seguir para a próxima pergunta.
+ * Um arquivo vira link direto; vários arquivos ficam num bloco recolhível com a contagem, para a lista não ocupar a página (os
+ * links continuam no HTML do servidor). Numa página aberta, cada arquivo fechado leva o selo "com conta". Substitui os blocos `*Seguir` de cada módulo, que repetiam a mesma estrutura.
+ */
+export function SeguirPainel({
+  ancora,
+  downloads,
+  proximo,
+  extra,
+}: {
+  ancora: string;
+  downloads: { rotulo: string; url: string }[];
+  /** `nomes`: nomes próprios dentro da pergunta, marcados na página inglesa. */
+  proximo?: { href: string; pergunta: string; nomes?: readonly string[] };
+  extra?: ReactNode;
+}) {
+  const link = "inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao";
+  return (
+    <div className="space-y-2 border-t border-linha pt-1" data-seguir-painel="">
+      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-0">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-0">
+          {downloads.length === 1 && (
+            <a href={downloads[0].url} download className={link}>
+              {tx("Baixar os dados: ", "Download the data: ")}
+              {downloads[0].rotulo}
+              <SeloComConta href={downloads[0].url} />
+            </a>
+          )}
+          {downloads.length > 1 && (
+            <DetalheDoNivel resumo={tx(`Baixar os dados (${downloads.length} arquivos)`, `Download the data (${downloads.length} files)`)} abreEm="analisar" className="[&[open]]:basis-full" dados={{ "data-downloads": "" }}>
+              <ul className="flex flex-col gap-x-6 pb-2 md:flex-row md:flex-wrap">
+                {downloads.map((d) => (
+                  <li key={d.url}>
+                    <a href={d.url} download className={link}>
+                      {d.rotulo}
+                      <SeloComConta href={d.url} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </DetalheDoNivel>
+          )}
+          <LinkDoPainel ancora={ancora} />
+        </div>
+        {proximo && (
+          <p className="text-sm">
+            <span className="text-mineral">{tx("Próxima pergunta: ", "Next question: ")}</span>
+            <Link href={proximo.href} className={link}>
+              {comNomes(proximo.pergunta, proximo.nomes, idiomaEnergia())}
+            </Link>
+          </p>
+        )}
+      </div>
+      {extra}
+    </div>
+  );
+}

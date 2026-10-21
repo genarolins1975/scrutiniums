@@ -163,6 +163,34 @@ function lerGold(nome: string): Record<string, unknown> {
   );
 }
 
+/**
+ * Percentil histórico do IBCC por extenso, arredondado como o pipeline escreve a
+ * frase do diagnóstico (Python `:.0f`, metade para o par): 18,5 vira 18. Com
+ * arredondamento diferente, a frase e o número ao lado divergiam em /resumo.
+ */
+export function fmtPercentil(p: number): string {
+  const piso = Math.floor(p);
+  const frac = p - piso;
+  const r = Math.abs(frac - 0.5) < 1e-9 ? (piso % 2 === 0 ? piso : piso + 1) : Math.round(p);
+  return String(r);
+}
+
+/** Número com sinal tipográfico de menos (−), como no resto da plataforma. */
+export function fmtSinal(v: number, casas = 2, mostrarMais = false): string {
+  const s = Math.abs(v).toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
+  return v < 0 ? `−${s}` : mostrarMais ? `+${s}` : s;
+}
+
+/** Carimbo mais antigo entre grupos: limite conservador do frescor do conjunto. */
+export function geradoEmPublicado(): string | null {
+  try {
+    const g = lerGold("meta").gerado_em;
+    return typeof g === "string" ? g : null;
+  } catch {
+    return null;
+  }
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any -- leitura de gold JSON sem tipos gerados */
 
 /** Carrega os indicadores públicos a partir do pulse.json (build time). */
@@ -236,7 +264,7 @@ export function resumoDiario(): ResumoDiario | null {
     interpretacao: r.interpretacao,
   });
   return {
-    geradoEm: meta?.gerado_em ?? o.gerado_em,
+    geradoEm: o.gerado_em ?? meta?.gerado_em,
     frase: o.diagnostico.frase,
     refDiagnostico: o.diagnostico.ref,
     confianca: o.diagnostico.confianca,

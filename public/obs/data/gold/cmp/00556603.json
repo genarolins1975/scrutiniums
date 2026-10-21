@@ -1,7 +1,7 @@
 {
  "cod": "00556603",
  "nome": "BANCO BARI DE INVESTIMENTOS E FINANCIAMENTOS S.A.",
- "sr": "S4",
+ "sr": null,
  "tcb": "B1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -64,5 +64,5 @@
    "202606": 41968908.92
   }
  },
- "gerado_em": "2026-09-24T15:24:48+00:00"
+ "gerado_em": "2026-10-21T16:18:29+00:00"
 }

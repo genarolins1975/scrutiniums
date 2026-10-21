@@ -41,10 +41,12 @@ describe("T5: um só lugar para _r, _share, _mes_menos, _mil e _dec no pipeline"
 });
 
 describe("T4 rescopado: cache dos estáticos do Observatório", () => {
-  it("next.config dá uma hora aos golds e imutabilidade ao bundle e ao CSS versionados", () => {
+  it("next.config dá uma hora de cache privado aos golds e imutabilidade ao bundle e ao CSS versionados", () => {
     const cfg = read("next.config.mjs");
     expect(cfg).toContain('source: "/obs/data/gold/:path*"');
-    expect(cfg).toContain("public, max-age=3600, stale-while-revalidate=86400");
+    // golds exigem sessão: cache só no navegador, nunca em cache compartilhado
+    expect(cfg).toContain('{key: "Cache-Control", value: "private, max-age=3600"}');
+    expect(cfg).not.toMatch(/gold[^\n]*public, max-age=3600/);
     expect(cfg).toContain("app.min.js|app-municipal.min.js|app-emergentes.min.js|styles.css");
     expect(cfg).toContain("public, max-age=31536000, immutable");
     // imutável só faz sentido com versão na URL

@@ -1,0 +1,73 @@
+{
+  "version": "irc-health-capture-recapture-review-v1",
+  "review_date": "2026-10-12",
+  "required_geography": "municipality",
+  "required_years": [
+    2021,
+    2022,
+    2023
+  ],
+  "tables": [
+    {
+      "file": "cobertura-SIM.xlsx",
+      "sheet": "Cobertura SIM Infantil",
+      "metric": "infant_registration_coverage",
+      "territories": 33,
+      "levels": [
+        "country",
+        "region",
+        "state"
+      ],
+      "selected_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "selected_cells": 99
+    },
+    {
+      "file": "cobertura-SIM.xlsx",
+      "sheet": "Cobertura SIM Total",
+      "metric": "all_age_registration_coverage",
+      "territories": 33,
+      "levels": [
+        "country",
+        "region",
+        "state"
+      ],
+      "selected_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "selected_cells": 99
+    },
+    {
+      "file": "taxa-mortalidade-infantil.xlsx",
+      "sheet": "TMI",
+      "metric": "infant_mortality_rate",
+      "territories": 33,
+      "levels": [
+        "country",
+        "region",
+        "state"
+      ],
+      "selected_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "selected_cells": 99
+    }
+  ],
+  "expected_municipal_infant_coverage_cells": 78,
+  "available_municipal_infant_coverage_cells_in_inspected_files": 0,
+  "interpretation": "Zero eligible evidence cells does not mean zero coverage of the registers.",
+  "decision": "state_context_only",
+  "health_score": null,
+  "score_eligible": false,
+  "correction_applied": false,
+  "publication_ready": false,
+  "next_requirement": "Municipal infant-specific coverage or corrected events/rates with documented denominators and a compatible temporal contract.",
+  "input_sha256": "48056f0747caf31fdace39c63238111ee4cd191e370f13345c069a7261cca937"
+}

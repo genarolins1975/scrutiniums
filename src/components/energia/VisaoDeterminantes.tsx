@@ -1,0 +1,317 @@
+"use client";
+
+import { useId, useMemo } from "react";
+import { ComproveNumero } from "@/components/energia/ComproveNumero";
+import Link from "@/components/energia/LinkSemPrefetch";
+
+import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
+import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
+import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
+import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
+import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
+import { formatos } from "@/lib/energia/formato";
+import { goldNoBloco, valorProvaNoIdioma } from "@/lib/energia/i18n/entrada-visao";
+import { useIdioma, useTx } from "@/lib/energia/useIdioma";
+import type { IdPainelMultiplo, LinhaMultiplos } from "@/lib/energia/tipos-visao";
+import {
+  JANELAS_P005,
+  ROTA_VISAO,
+  URL_GOLD_VISAO,
+  bandaDeterminante,
+  comUnidade,
+  dadosDeterminante,
+  linhasDeColunas,
+  linhasMultiplos,
+  periodoDaJanela,
+  seriesDeterminante,
+  type DeterminantesLeves,
+  type JanelaP005,
+  type PainelLeve,
+} from "@/lib/energia/visao";
+
+/**
+ * Determinantes alinhados (P005): cinco gráficos pequenos sobre o mesmo calendário (os últimos 30, 60 ou 90 dias do recorte
+ * publicado), cada um com a sua referência de comparação (faixa histórica, quartis, mesmo dia da semana do ano anterior, zero), o
+ * valor do dia de referência com "Comprove este número" e a leitura frente à referência. O cursor é sincronizado pela data; a
+ * tabela de Analisar tem exatamente as linhas da janela exibida (as mesmas que a exportação grava).
+ *
+ * O valor do cartão, o gráfico, a tabela, o anúncio por teclado e o arquivo exportado leem a mesma célula (a EAR do SIN com a
+ * precisão da série publicada, arredondada uma só vez). O campo "Período" segue a janela escolhida. A mediana da data da água é
+ * uma série desenhada, não só uma faixa. As fichas de prova não viajam nas props: são lidas da gold ao abrir.
+ *
+ * Estado na URL: janela (p005.dias), submercados ocultos no preço (p005.sm) e fronteiras ocultas na rede (p005.fr), com voltar e
+ * avançar. As âncoras antigas da página inicial (preco, agua, geracao, consumo, rede e as variantes -painel) chegam aqui pelo id de
+ * cada cartão.
+ */
+
+const ESQUEMA = {
+  dias: campo(tiposUrl.opcao(JANELAS_P005), "90" as JanelaP005, { param: "p005.dias" }), // i18n: dado
+  sm: campo(tiposUrl.lista(tiposUrl.texto({ max: 24 }), { max: 4 }), [] as string[], { param: "p005.sm" }),
+  fr: campo(tiposUrl.lista(tiposUrl.texto({ max: 24 }), { max: 4 }), [] as string[], { param: "p005.fr" }),
+};
+
+export type AncorasDeterminante = { id: string; painel: string };
+
+/** Valor de uma coluna no dia dado, ou null se o dia não existe ou não tem valor. */
+function valorNoDia(todas: readonly LinhaMultiplos[], dia: string, coluna: string): number | null {
+  const x = todas.find((l) => l.d === dia)?.[coluna];
+  return typeof x === "number" ? x : null;
+}
+
+function Cartao({
+  p,
+  d,
+  todas,
+  linhas,
+  ancoras,
+  ocultas,
+  onOcultas,
+  notas,
+  notasAVista = false,
+  largo = false,
+}: {
+  p: PainelLeve;
+  d: DeterminantesLeves;
+  todas: readonly LinhaMultiplos[];
+  linhas: readonly LinhaMultiplos[];
+  ancoras?: AncorasDeterminante;
+  ocultas?: string[];
+  onOcultas?: (ids: string[]) => void;
+  /** Pontes entre este número e o da mesma grandeza em outro corte ou em outro módulo, escritas a partir da gold (visao.ts). */
+  notas?: readonly string[];
+  /** As notas deste cartão são ressalva da referência (não só ponte com outro corte) e ficam no Entender. */
+  notasAVista?: boolean;
+  /** Último cartão de uma quantidade ímpar: ocupa as duas colunas, para a grade não terminar com metade vazia. */
+  largo?: boolean;
+}) {
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { dataBR } = formatos(idioma);
+  const extras = d.extras[p.id] ?? [];
+  const dados = dadosDeterminante(p, linhas, extras);
+  const banda = bandaDeterminante(p);
+  const series = seriesDeterminante(p, extras);
+  const multi = p.colunas.length > 1;
+  const fmt = (v: number | null) => comUnidade(v, p.unidade, p.casas, idioma);
+  // o valor das séries extras (a mediana da data) no dia de referência do painel, lido da mesma linha do gráfico
+  const doDia = extras.map((e) => ({ rotulo: e.rotulo, valor: valorNoDia(todas, p.dataReferencia, e.id) })).filter((x) => x.valor !== null);
+  return (
+    <section id={ancoras?.id} aria-labelledby={`p005-${p.id}-titulo`} className={`scroll-mt-28 min-w-0 border border-linha bg-superficie p-4 ${largo ? "lg:col-span-2" : ""}`}>
+      <div id={ancoras?.painel} className="scroll-mt-28">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-0">
+          <h3 id={`p005-${p.id}-titulo`} className="ed-h3 font-serif text-carvao">
+            {p.titulo}
+          </h3>
+          {p.comprove ? (
+            <ComproveNumero
+              sobDemanda={{ url: URL_GOLD_VISAO, caminho: p.comprove.caminho, indicador: p.comprove.indicador, valorExibido: valorProvaNoIdioma(p.comprove.valorExibido, idioma) }}
+              endereco={`${ROTA_VISAO}#${ancoras?.id ?? "determinantes"}`}
+            />
+          ) : (
+            <span className="text-xs text-aviso">
+              {tx("Prova do valor não publicada nesta execução", "Proof of the value not published in this run")}
+              {p.semEvidencia ? <>: {goldNoBloco(p.semEvidencia, idioma, `visao-determinante-${p.id}-prova-ausente`)}</> : "."}
+            </span>
+          )}
+        </div>
+        <p data-nivel="analisar" className="text-xs text-carvao-muted">
+          {p.pergunta}
+        </p>
+        <p className="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
+          <span className="font-serif text-[1.625rem] leading-tight tabular-nums text-carvao" data-valor-atual={p.id}>
+            {p.valorTexto}
+          </span>
+          {p.rotuloValor && <span className="text-sm text-carvao-muted">{p.rotuloValor}</span>}
+          <span className="text-xs text-carvao-muted">{p.id === "geracao" ? tx(`7 dias até ${dataBR(p.dataReferencia)}`, `7 days through ${dataBR(p.dataReferencia)}`) : dataBR(p.dataReferencia)}</span>
+        </p>
+      </div>
+      <div className="mt-1">
+        <GraficoLinhas
+          titulo={`${p.titulo}: ${p.colunas.map((c) => c.rotulo).join(", ")}`}
+          dados={dados}
+          chaveX="d"
+          series={series}
+          unidade={p.unidade}
+          casas={p.casas}
+          banda={banda}
+          zeroNoEixo={p.referencia.tipo === "zero"}
+          altura={200}
+          rotulosDiretos={p.id === "rede"}
+          legendaInterativa={multi}
+          ocultas={multi ? ocultas : undefined}
+          onOcultas={multi ? onOcultas : undefined}
+        />
+      </div>
+      <p className="mt-2 text-sm leading-relaxed text-carvao">{p.leitura}</p>
+      {doDia.length > 0 && (
+        <p data-nivel="analisar" className="mt-1 text-xs leading-relaxed text-carvao-muted" data-referencia-do-dia={p.id}>
+          {doDia.map((x) => `${x.rotulo}: ${fmt(x.valor)}`).join("; ")}.
+        </p>
+      )}
+      {p.id === "preco" && (
+        <p data-nivel="analisar" className="mt-1 text-xs leading-relaxed text-carvao-muted" data-precos-do-dia="">
+          {tx(
+            <>
+              Mesmo dia nos quatro submercados: {p.colunas.map((c) => `${c.rotulo} ${fmt(valorNoDia(todas, p.dataReferencia, c.id))}`).join("; ")}. Quando os preços coincidem, as linhas se sobrepõem: a do Norte é tracejada para a do
+              Sudeste/Centro-Oeste continuar visível.
+            </>,
+            <>
+              Same day in the four submarkets: {p.colunas.map((c) => `${c.rotulo} ${fmt(valorNoDia(todas, p.dataReferencia, c.id))}`).join("; ")}. When the prices coincide, the lines overlap: the North line is dashed so that the
+              Southeast/Center-West line stays visible.
+            </>,
+          )}
+        </p>
+      )}
+      <p data-nivel="analisar" className="mt-1 text-xs text-mineral">
+        {p.defasagem}
+      </p>
+      {notas && notas.length > 0 && (
+        // diagnóstico de layout de 20/10/2026, item 7: no Entender o cartão é número, gráfico, leitura, referência e o link; os valores do dia
+        // e as pontes com outros cortes descem para Analisar (seguem no HTML); nota que é ressalva da referência fica à vista
+        <div data-nivel={notasAVista ? undefined : "analisar"} className="mt-3 space-y-1.5 border-t border-linha pt-3 text-xs leading-relaxed text-carvao" data-nota-determinante={p.id}>
+          {notas.map((n, i) => (
+            <p key={n}>
+              {i === 0 && <span className="rotulo mr-2 text-mineral">{tx("Para ler junto", "Read together")}</span>}
+              {n}
+            </p>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-xs leading-relaxed text-carvao-muted">
+        {tx(
+          <>
+            Referência: {p.referencia.rotulo}.{extras.length > 0 ? ` Linha tracejada: ${extras.map((e) => e.rotulo.toLowerCase()).join("; ")}.` : ""} {p.nota}
+          </>,
+          <>
+            Reference: {p.referencia.rotulo}.{extras.length > 0 ? ` Dashed line: ${extras.map((e) => e.rotulo.toLowerCase()).join("; ")}.` : ""} {p.nota}
+          </>,
+        )}
+      </p>
+      <Link href={p.href} className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4">
+        {tx("Ver no painel de origem", "See it in the source panel")}
+      </Link>
+    </section>
+  );
+}
+
+export function VisaoDeterminantes({
+  d,
+  ancoras,
+  fonte,
+  notas = {},
+  notasAVista = [],
+}: {
+  d: DeterminantesLeves;
+  ancoras: Partial<Record<string, AncorasDeterminante>>;
+  fonte: string;
+  notas?: Partial<Record<IdPainelMultiplo, readonly string[]>>;
+  /** Painéis cujas notas são ressalva da referência e ficam no Entender. */
+  notasAVista?: readonly IdPainelMultiplo[];
+}) {
+  const [v, definir] = useEstadoUrl(ESQUEMA);
+  const nome = useId();
+  const idioma = useIdioma();
+  const tx = useTx();
+  const { dataBR } = formatos(idioma);
+  const todas = useMemo(() => linhasDeColunas(d.campos, d.linhas), [d.campos, d.linhas]);
+  const n = Number(v.dias);
+  const linhas = useMemo(() => todas.slice(-Math.max(1, Math.min(n, todas.length))), [todas, n]);
+  const inicio = linhas[0]?.d;
+  const fim = linhas[linhas.length - 1]?.d;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
+        <div role="radiogroup" aria-labelledby={`${nome}-rotulo`} className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
+          <span id={`${nome}-rotulo`} className="rotulo text-mineral">
+            {tx("Janela dos cinco gráficos", "Window of the five charts")}
+          </span>
+          <div className="flex flex-wrap gap-1.5">
+            {JANELAS_P005.map((j) => {
+              const ativo = j === v.dias;
+              return (
+                <label
+                  key={j}
+                  className={`inline-flex min-h-[44px] cursor-pointer items-center border px-3 text-sm focus-within:outline focus-within:outline-2 focus-within:outline-energia ${
+                    ativo ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia hover:text-carvao"
+                  }`}
+                >
+                  <input type="radio" name={nome} value={j} checked={ativo} onChange={() => definir({ dias: j })} className="sr-only" />
+                  {tx(`Últimos ${j} dias`, `Last ${j} days`)}
+                </label>
+              );
+            })}
+          </div>
+        </div>
+        <p className="min-w-0 text-xs leading-relaxed text-carvao-muted" data-periodo-determinantes="" aria-live="polite">
+          <span className="rotulo mr-1.5 text-mineral">{tx("Período", "Period")}</span>
+          {tx(
+            <>
+              {dataBR(inicio)} a {dataBR(fim)} ({linhas.length} dias)
+            </>,
+            <>
+              {dataBR(inicio)} to {dataBR(fim)} ({linhas.length} {linhas.length === 1 ? "day" : "days"})
+            </>,
+          )}
+        </p>
+      </div>
+      <CursorSincronizado>
+        <div className="grid gap-4 lg:grid-cols-2">
+          {d.paineis.map((p, i) => (
+            <Cartao
+              key={p.id}
+              largo={d.paineis.length % 2 === 1 && i === d.paineis.length - 1}
+              p={p}
+              d={d}
+              todas={todas}
+              linhas={linhas}
+              ancoras={ancoras[p.id]}
+              notas={notas[p.id]}
+              notasAVista={notasAVista.includes(p.id)}
+              ocultas={p.id === "preco" ? v.sm : p.id === "rede" ? v.fr : undefined}
+              onOcultas={p.id === "preco" ? (ids) => definir({ sm: ids }) : p.id === "rede" ? (ids) => definir({ fr: ids }) : undefined}
+            />
+          ))}
+        </div>
+      </CursorSincronizado>
+      <dl className="grid gap-x-6 gap-y-2 text-xs text-carvao-muted sm:grid-cols-3" data-recorte-determinantes="">
+        <div>
+          <dt className="rotulo text-mineral">{tx("Período", "Period")}</dt>
+          <dd className="mt-0.5 leading-relaxed">{periodoDaJanela(linhas, idioma)}</dd>
+        </div>
+        <div>
+          <dt className="rotulo text-mineral">{tx("Universo", "Universe")}</dt>
+          <dd className="mt-0.5 leading-relaxed">
+            {tx(
+              "PLD por submercado; EAR e carga do SIN; participação térmica do SIN em 7 dias; intercâmbio nas fronteiras do ONS. O cursor de um gráfico marca a mesma data nos outros quatro.",
+              "PLD by submarket; SIN EAR and load; SIN thermal share over 7 days; interchange on the ONS borders. The cursor of one chart marks the same date in the other four.",
+            )}
+          </dd>
+        </div>
+        <div>
+          <dt className="rotulo text-mineral">{tx("Unidade", "Unit")}</dt>
+          <dd className="mt-0.5 leading-relaxed">{d.paineis.map((p) => tx(`${p.titulo.toLowerCase()} em ${p.unidade}`, `${p.titulo.toLowerCase()} in ${p.unidade}`)).join("; ")}</dd>
+        </div>
+      </dl>
+      <SecaoDoPainel nivel="analisar" id="determinantes-tabela" titulo={tx("Os cinco determinantes como tabela, dia a dia", "The five determinants as a table, day by day")}>
+        <TabelaInterativa
+          titulo={tx(`Os cinco determinantes, dia a dia, de ${dataBR(inicio)} a ${dataBR(fim)}`, `The five determinants, day by day, from ${dataBR(inicio)} to ${dataBR(fim)}`)}
+          colunas={d.colunasTabela}
+          linhas={linhasMultiplos(linhas)}
+          chaveLinha="id"
+          colunaRotulo="d"
+          fonte={fonte}
+          versao={d.janela.fim}
+          nomeArquivo="visao-geral-determinantes"
+          chaveUrl="p005.t"
+          ordemInicial={{ coluna: "d", direcao: "desc" }}
+          nota={tx(
+            "Célula vazia é dia sem valor na base publicada de origem (nunca zero). Mesmas linhas dos cinco gráficos, na janela escolhida, e a mesma EAR do cartão, arredondada uma só vez.",
+            "An empty cell is a day with no value in the published source base (never zero). The same rows as the five charts, in the chosen window, and the same EAR as the card, rounded only once.",
+          )}
+        />
+      </SecaoDoPainel>
+    </div>
+  );
+}

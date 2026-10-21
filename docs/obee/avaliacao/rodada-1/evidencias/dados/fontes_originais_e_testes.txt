@@ -1,0 +1,23 @@
+Verificações contra as fontes originais e resultados de testes (avaliador de dados e método, rodada 1, 09/10/2026)
+
+1. Siconfi, API pública da DCA (apidatalake.tesouro.gov.br, anexo DCA-Anexo I-E, conta "12 - Educação", coluna "Despesas Liquidadas"):
+   130 de 130 pares capital x exercício (2021 a 2025) idênticos à gold, ao centavo. Arquivo: dca_siconfi_api_130.csv.
+2. IBGE, SIDRA: tabela 6579 (variável 9324, 2021, 2024, 2025) e tabela 4714 (variável 93, Censo 2022):
+   130 de 130 valores de população idênticos (2022 e 2023 comparados com o Censo 2022). Arquivo: populacao_sidra_130.csv.
+   A população de 2023 não foi verificada contra a relação do DOU de 31/08/2023; verificada só a igualdade com a tabela 4714.
+3. Siconfi, API da MSC (msc_orcamentaria, classe 6, dezembro, MSCC, saldo final), numerador da razão por matrícula refeito do zero
+   pela regra documentada (modalidades 90, 93 e 94, sem subfunção 364, sem elementos 01, 03 e 05 do grupo 31, saldo C menos D, sem modalidade 91):
+   6 de 6 pares conferem ao centavo (Rio Branco 2024, Palmas 2023, Recife 2025, Natal 2025, Boa Vista 2024, Porto Alegre 2021).
+   Sobre as sementes versionadas: 127 pares com MSC, 123 com valor publicado e 4 sem fechamento; 0 divergências.
+4. INEP, arquivos originais baixados do download.inep.gov.br com a cadeia de certificados completada (verificação TLS mantida):
+   - Ideb anos iniciais 2025, sha256 89100286... igual ao manifesto: 26 capitais x 11 edições, 284 valores e 2 códigos de não divulgação, 0 divergências.
+   - ATU municípios 2025 (sha256 1d14f67c...) e taxas de rendimento 2025 (sha256 69d23849...): 152 valores, 0 divergências.
+   - ATU Brasil 2025 (rede municipal: 14,9; 18,2; 22,0; 25,1) e Ideb Brasil 2025 (rede municipal: anos iniciais 6,1; anos finais 4,9): idênticos à referência exibida.
+   - Sinopse Estatística 2024 e 2025, tabela 1.2, matrículas da educação básica na dependência municipal: 26 de 26 capitais idênticas ao total da gold nos dois anos.
+   Não verificado: matrículas por etapa e conveniadas contra os microdados do Censo (pacotes de centenas de MB); Ideb dos anos finais, Saeb e aprovação de 2021 a 2024 contra os originais.
+5. Reprodução da gold com o código do repositório: gold.constroi() a partir do seed gera as mesmas 9.137 observações, o mesmo hash_dados (a488bfcb...) e os 15 CSV de séries byte a byte iguais aos publicados; só meta.proveniencia.git difere (estado do git).
+   O site em produção (scrutiniums.com) serve a mesma gold (sha256 do arquivo d22d067d... igual ao local).
+6. Testes: vitest dos 5 arquivos obee-*.test.ts: 126 testes passam. Suíte completa do repositório: 140 arquivos, 2.634 testes passam, 1 ignorado (gate de HTML sem EXIGIR_BUILD_HTML).
+   unittest pipeline.tests.test_eficiencia e test_eficiencia_comparacoes: 97 testes passam em 66 s.
+7. Referência nacional calculada pelo OBEE (CSV referencia_nacional_despesa_habitante_2025.csv): mediana 2.125,30; média simples 2.281,00; razão agregada 1.720,13; 5.060 de 5.570 municípios; 93,2% da população; divisões linha a linha corretas.
+   Não verificado contra a API do Siconfi município a município (5.570).

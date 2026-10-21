@@ -1,0 +1,24 @@
+{
+  "observacoesConferidas": 29972,
+  "divergencias": 0,
+  "amostraDivergencias": [],
+  "hashes": {
+    "pnad-trabalho": true,
+    "pnad-rendimento": true,
+    "pnad-subutilizacao": true,
+    "censo-renda": true,
+    "censo-renda-sexo": true,
+    "censo-renda-raca": true,
+    "caged-sgs": true,
+    "pnad-gini": true,
+    "pnad-programas": true,
+    "pnad-deciles": true,
+    "censo-ocupacoes": true,
+    "pnad-jornada": true
+  },
+  "duplicadas": 0,
+  "limites": [
+    "A unidade horas/semana da PNAD 10370 é uma normalização editorial baseada no título oficial da variável. O campo MN (%) e o campo de unidade dos metadados entram em conflito com esse título. A nota publicada preserva e declara a inconsistência da origem.",
+    "Recomputar a extração não demonstra eficácia causal de políticas públicas."
+  ]
+}
