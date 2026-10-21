@@ -93,10 +93,15 @@ export const DESTINO_TEMAS_EFICIENCIA: Record<string, Destino> = {
   mobilidade: ["energia-e-infraestrutura", "mobilidade"],
   energia: ["energia-e-infraestrutura", "conectividade"],
   ambiente: ["territorio-e-clima", "cidades-clima"],
+  // o tema aponta para o painel Previdência e INSS (21/10/2026), registrado pelo dono nas Contas Federais
+  previdencia: ["contas-publicas", "federais"],
 };
 
+/** Temas do mapa cujo painel é da própria Eficiência Estatal; os demais (href em outro observatório) são registrados pelo dono. */
+const temaProprio = (href: string) => href.startsWith("/eficiencia-estatal/");
+
 function paineisEficiencia(): Painel[] {
-  const temas = DIMENSOES.filter((d) => d.href).map((d) => {
+  const temas = DIMENSOES.filter((d) => d.href && temaProprio(d.href)).map((d) => {
     const destino = DESTINO_TEMAS_EFICIENCIA[d.id];
     if (!destino) throw new Error(`tema da Eficiência Estatal sem observatório: ${d.id}`);
     const [observatorio, colecao] = destino;
