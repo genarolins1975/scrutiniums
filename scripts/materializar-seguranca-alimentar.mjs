@@ -88,5 +88,26 @@ extras.set('pnae.csv', csv(
 ));
 extras.set('ipca-alimentacao.csv', csv(['medida', 'categoria', 'periodo', 'variacao_pct', 'estado', 'fonte'], gold.ipca.map((x) => [x.medida, x.categoria, x.periodo, x.valor, 'publicado', 'IBGE IPCA, tabela 7060'])));
 extras.set('sisvan.csv', csv(['fase_da_vida', 'individuos_avaliados', 'cobertura_pct', 'periodo', 'estado', 'fonte'], gold.sisvan.map((s) => [s.fase, s.avaliados, s.cobertura, '2025 preliminar', 'publicado', 'MS Relatório de Gestão Integrado 2025, tabela 10'])));
+/*
+ * Recortes sociais da EBIA (tabelas SIDRA 9553 a 9562, follow-up do PR #325): o seed próprio tem hash fixado no
+ * manifesto e a gold traz o bloco ebia_social desse seed. Uma linha por tabela, ano, situação, grupo e classe, com
+ * a orientação do percentual (composição ou distribuição) e, nas de composição, a parcela no grupo calculada.
+ */
+const manSocial = JSON.parse(read('pipeline/eficiencia_alimentar/seed/ebia-social-manifesto.json'));
+const seedSocial = read('pipeline/eficiencia_alimentar/seed/ebia-social.json.gz');
+if (createHash('sha256').update(seedSocial).digest('hex') !== manSocial.seed_sha256) throw Error('Seed dos recortes sociais da EBIA com hash divergente');
+if (gold.ebia_social?.manifesto?.seed_sha256 !== manSocial.seed_sha256) {
+  throw Error('Gold sem os recortes sociais da EBIA deste seed: rode python3 -m pipeline.eficiencia_alimentar.complementos');
+}
+const NOME_CLASSE = { total: 'total', segura: 'segurança alimentar', insegura: 'insegurança (total)', leve: 'insegurança leve', moderada: 'insegurança moderada', grave: 'insegurança grave', moderada_grave: 'insegurança moderada ou grave' };
+extras.set('ebia-grupos-sociais.csv', csv(
+  ['tabela_sidra', 'recorte', 'ano', 'situacao_domicilio', 'grupo', 'classe_ebia', 'orientacao_do_percentual', 'percentual_publicado', 'cv_percentual', 'mil_domicilios', 'cv_mil_domicilios', 'pct_no_grupo_calculado', 'cv_acima_do_limiar_do_painel', 'territorio', 'fonte'],
+  gold.ebia_social.recortes.flatMap((r) => r.linhas.flatMap((l) => r.classes.map((k) => {
+    const v = l.classes[k];
+    const alto = [v.cv_pct, v.cv_domicilios].some((cv) => cv !== null && cv >= gold.ebia_social.limiar_cv);
+    return [r.tabela, r.rotulo, l.ano, l.situacao, l.grupo, NOME_CLASSE[k], r.orientacao === 'composicao' ? '% dos domicílios da classe que estão no grupo' : '% dos domicílios do grupo que estão na classe',
+      v.pct, v.cv_pct, v.mil_domicilios, v.cv_domicilios, v.pct_no_grupo_calculado ?? '', alto ? 'sim' : 'não', 'Brasil', `IBGE SIDRA ${r.tabela}, captura ${manSocial.capturado_em}`];
+  }))),
+));
 for (const [name, body] of extras) { const temp = new URL(name + '.tmp', out); writeFileSync(temp, body); renameSync(temp, new URL(name, out)); }
-console.log(`Segurança alimentar, bases complementares: ${muni.size} municípios em arquivos por UF e seis CSV materializados.`);
+console.log(`Segurança alimentar, bases complementares: ${muni.size} municípios em arquivos por UF e sete CSV materializados.`);

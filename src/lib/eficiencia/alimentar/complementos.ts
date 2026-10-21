@@ -26,6 +26,7 @@ export type FichaComplementar = {
   grupo: string;
   capitulo: "necessidades" | "acesso" | "qualidade" | "recursos";
   fonte_id: string;
+  fontes_adicionais?: string[];
   definicao: string;
   universo: string;
   periodo: string;
@@ -68,6 +69,42 @@ export type LinhaPnae = {
 export type PontoIpca = { medida: "mensal" | "doze_meses"; categoria: CategoriaIpca; periodo: string; valor: number | null };
 export type CategoriaIpca = "geral" | "alimentacao_bebidas" | "alimentacao_domicilio" | "alimentacao_fora";
 
+/** Classe da EBIA nos recortes sociais; na tabela de renda (9558) o IBGE publica moderada e grave juntas. */
+export type ClasseSocial = "total" | "segura" | "insegura" | "leve" | "moderada" | "grave" | "moderada_grave";
+export type ValorSocial = ValorEbia & { pct_no_grupo_calculado?: number | null };
+export type LinhaSocial = { ano: number; grupo: string; situacao: "total" | "urbana" | "rural"; classes: Partial<Record<ClasseSocial, ValorSocial>> };
+/**
+ * Um recorte social nacional da EBIA (tabelas SIDRA 9553 a 9562). `orientacao` diz o que o percentual publicado
+ * mede: "composicao", a parcela dos domicílios da classe que está no grupo (os grupos somam 100%); "distribuicao",
+ * a parcela dos domicílios do grupo em cada classe (as classes somam 100%).
+ */
+export type RecorteSocial = {
+  id: "sexo" | "cor_raca" | "instrucao" | "ocupacao" | "moradores" | "renda" | "menores_5" | "menores_18" | "idosos";
+  tabela: string;
+  fonte_id: string;
+  dimensao: string;
+  rotulo: string;
+  orientacao: "composicao" | "distribuicao";
+  particao: boolean;
+  classes: ClasseSocial[];
+  grupos: string[];
+  situacao?: boolean;
+  fora_da_particao?: string;
+  universo_menor?: string;
+  linhas: LinhaSocial[];
+};
+export type EbiaSocial = {
+  versao: string;
+  manifesto: { versao: string; capturado_em: string; origem: string; seed_sha256: string; fontes: (FonteComplementar & { territorio: string })[] };
+  limiar_cv: number;
+  tolerancias: { pct_por_parcela: number; mil_por_parcela: number };
+  tabela_ausente: { tabela: string; motivo: string };
+  recortes: RecorteSocial[];
+  conferencias: { classes_mil: number; classes_pct: number; grupos_pct: number; grupos_mil: number; totais_9552: number };
+  ausencias: { tabela: string; ano: number; grupo: string; situacao: string; classe: string; variavel: string }[];
+  diferencas_9552: { tabela: string; ano: number; classe: string; mil_domicilios: number; mil_domicilios_9552: number }[];
+};
+
 export type Complementos = {
   versao: string;
   manifesto: { versao: string; capturado_em: string; origem: string; seed_sha256: string; fontes: FonteComplementar[] };
@@ -75,6 +112,7 @@ export type Complementos = {
   nao_integrados: { base: string; motivo: string }[];
   ufs: { sigla: string; codigo: string; nome: string; regiao: string }[];
   ebia: LinhaEbia[];
+  ebia_social: EbiaSocial;
   cadinsan: { brasil: SomaCadinsan; ufs: Record<string, SomaCadinsan>; divergencias_cenario: number };
   paa: Record<string, { brasil: SomaPaa; ufs: Record<string, SomaPaa> }>;
   pnae: {
@@ -109,8 +147,13 @@ export function dadosComplementares(): Complementos {
 
 export const BASE_COMPLEMENTOS = "/eficiencia/seguranca-alimentar";
 
+/** Todas as fontes da gold: as das bases complementares e as dos recortes sociais da EBIA, cada uma com seu manifesto. */
+export function fontesComplementares(c: Complementos): FonteComplementar[] {
+  return [...c.manifesto.fontes, ...c.ebia_social.manifesto.fontes];
+}
+
 export function fonte(c: Complementos, id: string): FonteComplementar {
-  const f = c.manifesto.fontes.find((x) => x.id === id);
+  const f = fontesComplementares(c).find((x) => x.id === id);
   if (!f) throw new Error(`Fonte não registrada: ${id}`);
   return f;
 }

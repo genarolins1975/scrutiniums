@@ -5,6 +5,7 @@ import { NecessidadesAlimentares } from "@/components/eficiencia/alimentar/Neces
 import { EbiaPorEstado } from "@/components/eficiencia/alimentar/EbiaPorEstado";
 import { ConsultaMunicipalAlimentar } from "@/components/eficiencia/alimentar/ConsultaMunicipalAlimentar";
 import { CadinsanEstados, EbiaUrbanoRural, FonteDaMedida, SecaoComplementar } from "@/components/eficiencia/alimentar/Complementos";
+import { QuemPassaFome } from "@/components/eficiencia/alimentar/QuemPassaFome";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = { title: "Necessidades alimentares dos domicílios" };
@@ -21,12 +22,21 @@ export default function Necessidades() {
         A Escala Brasileira de Insegurança Alimentar (EBIA) organiza as experiências dos domicílios em segurança alimentar ou insegurança leve, moderada e grave. Esse retrato informa a necessidade social; não é uma nota de atendimento público.
       </p>
       <nav aria-label="Nesta página" className="mt-5 flex flex-wrap gap-x-5 text-sm">
+        <a href="#quem-passa-fome" className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Quem passa fome</a>
         <a href="#estados" className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Por estado</a>
         <a href="#urbano-rural" className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Urbano e rural</a>
         <a href="#cadinsan" className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Risco no Cadastro Único, por município</a>
       </nav>
       <NecessidadesAlimentares rows={dadosAlimentares().needs} />
       <a href="/eficiencia/seguranca-alimentar/pnad.csv" download className="mt-5 inline-flex min-h-[44px] items-center text-sm text-obee-dark underline">Baixar tabela completa · CSV ↓</a>
+
+      <SecaoComplementar
+        id="quem-passa-fome"
+        pergunta="Quem passa fome no Brasil?"
+        contexto={<p>O IBGE separa os domicílios brasileiros em insegurança alimentar por quem é a pessoa responsável (sexo, cor ou raça, escolaridade e trabalho), pelo número de moradores, pela renda por pessoa e pela presença de crianças, adolescentes ou pessoas idosas. São nove tabelas da PNAD Contínua, só para o Brasil, de 2023 e 2024.</p>}
+      >
+        <QuemPassaFome c={c} />
+      </SecaoComplementar>
 
       <SecaoComplementar
         id="estados"

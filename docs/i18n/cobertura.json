@@ -12,7 +12,7 @@
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
     "arquivos_analisados": 1509,
-    "fontes_sha256": "e85ba43b7c828521842ebc89f3126ce455369e6983468f0984fbb78fa6e4122c",
+    "fontes_sha256": "3fa8c8d127211552d3fa9d3b4c1b01e8741488e6ea5597820f28a2ef0af8c6da",
     "pendencias_sha256": "4b9aa49ff38c0f7c07078370c244a3e101900c683f057ef346460126aeb9a9e1",
     "nao_classificadas": [
       {
@@ -183,7 +183,7 @@
           "jsx_text": 2422,
           "atributos": 519,
           "props": 1114,
-          "outros_literais": 8560,
+          "outros_literais": 8561,
           "templates": 1184,
           "expressoes_nao_resolvidas": 7502,
           "chaves_objetos": 6772
@@ -200,7 +200,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 28073,
+        "candidatos_nao_catalogados": 28074,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -373,18 +373,18 @@
       "interface": {
         "arquivos": 241,
         "candidatos": {
-          "jsx_text": 3273,
-          "atributos": 1083,
-          "props": 1479,
-          "outros_literais": 8024,
-          "templates": 851,
-          "expressoes_nao_resolvidas": 8399,
-          "chaves_objetos": 4911
+          "jsx_text": 3344,
+          "atributos": 1086,
+          "props": 1481,
+          "outros_literais": 8151,
+          "templates": 862,
+          "expressoes_nao_resolvidas": 8545,
+          "chaves_objetos": 4944
         },
         "exclusoes": {
           "importacoes": 955,
-          "atributos_tecnicos": 3645,
-          "tipos": 513
+          "atributos_tecnicos": 3734,
+          "tipos": 537
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -393,7 +393,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 28020,
+        "candidatos_nao_catalogados": 28413,
         "percentual_traduzido": null
       },
       "rotas": {

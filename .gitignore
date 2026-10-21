@@ -28,6 +28,7 @@ __pycache__/
 # Bases complementares (21/10/2026): geradas do seed complementos.json.gz no mesmo script.
 /public/eficiencia/seguranca-alimentar/complementos-uf-*.json
 /public/eficiencia/seguranca-alimentar/ebia-territorios.csv
+/public/eficiencia/seguranca-alimentar/ebia-grupos-sociais.csv
 /public/eficiencia/seguranca-alimentar/cadinsan.csv
 /public/eficiencia/seguranca-alimentar/paa.csv
 /public/eficiencia/seguranca-alimentar/pnae.csv
