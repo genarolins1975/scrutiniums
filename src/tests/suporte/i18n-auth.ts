@@ -6,6 +6,49 @@ export type EstadoAuth = "inicial" | "vazio";
 export type ComparacaoAuth = { caminho: CaminhoAuth; estado: EstadoAuth };
 export const CAMINHOS_AUTH = ["/entrar", "/cadastro"] as const;
 
+/**
+ * Textos literais esperados de /entrar em cada idioma (não lidos do dicionário sob teste).
+ * O cadastro continua só em português: na irmã /en ele fica inteiro na ilha marcada.
+ */
+const ENTRAR = {
+  pt: {
+    h1: "Entrar", marca: ["/", "Scrutiniums — página inicial"], troca: ["/cadastro", "Criar acesso"],
+    rodape: [["/termos", "Termos de uso"], ["/privacidade", "Privacidade"]],
+    seletor: { rotulo: "Idioma", links: [["pt-BR", "/entrar", "Português"], ["en", "/en/entrar", "Inglês"]] },
+    email: "E-mail", senha: "Senha", erroEmail: "Informe um e-mail válido.", erroSenha: "Informe sua senha.", submit: "Entrar",
+    links: [["/entrar/sms?recuperar=1", "Esqueci minha senha"], ["/entrar/sms", "Entrar com código por SMS"], ["/cadastro", "Ainda não tenho cadastro"]],
+  },
+  en: {
+    h1: "Sign in", marca: ["/en", "Scrutiniums home page"], troca: ["/cadastro", "Sign up"],
+    rodape: [["/termos", "Terms of use"], ["/privacidade", "Privacy"]],
+    seletor: { rotulo: "Language", links: [["pt-BR", "/entrar", "Portuguese"], ["en", "/en/entrar", "English"]] },
+    email: "Email", senha: "Password", erroEmail: "Enter a valid email address.", erroSenha: "Enter your password.", submit: "Sign in",
+    links: [["/en/entrar/sms?recuperar=1", "Forgot your password?"], ["/en/entrar/sms", "Sign in with an SMS code"], ["/cadastro", "I don't have an account yet"]],
+  },
+} as const;
+const CADASTRO = {
+  h1: "Crie seu acesso", marca: ["/", "Scrutiniums — página inicial"], troca: ["/entrar", "Entrar"],
+  rodape: [["/termos", "Termos de uso"], ["/privacidade", "Privacidade"]],
+  email: "E-mail", erroEmail: "Informe um e-mail válido.", submit: "Continuar",
+} as const;
+
+/** Seletor de idioma no cabeçalho: só nas páginas com tradução publicada. O destino pode levar query e fragmento. */
+export function verificarSeletorIdioma(header: No, esperado: { rotulo: string; links: readonly (readonly [string, string, string])[] } | null): void {
+  const grupos = elementos(header).filter((e) => attr(e, "role") === "group");
+  if (!esperado) {
+    expect(grupos).toEqual([]);
+    expect(elementos(header).filter((e) => attr(e, "hreflang") !== undefined)).toEqual([]);
+    return;
+  }
+  expect(grupos).toHaveLength(1);
+  expect(attr(grupos[0], "aria-label")).toBe(esperado.rotulo);
+  expect(oculto(grupos[0])).toBe(false);
+  const links = elementos(grupos[0]).filter((e) => e.tagName === "a")
+    .map((e) => [attr(e, "hreflang"), (attr(e, "href") ?? "").split(/[?#]/)[0], texto(e)]);
+  expect(links).toEqual(esperado.links.map((l) => [...l]));
+  expect(elementos(header).filter((e) => attr(e, "hreflang") !== undefined)).toHaveLength(2);
+}
+
 function dentro(no: No, ancestral: No): boolean {
   return no === ancestral || ("parentNode" in no && no.parentNode !== null && dentro(no.parentNode, ancestral));
 }
@@ -29,20 +72,22 @@ export function verificarPaginaAuth(doc: No, caminho: CaminhoAuth, estado: Estad
     }
   }
 
+  const traduzida = caminho === "/entrar";
+  const t = traduzida ? ENTRAR[idioma === "en" ? "en" : "pt"] : CADASTRO;
   const header = tag(doc, "header"), main = tag(doc, "main"), footer = tag(doc, "footer");
   for (const regiao of [header, main, footer]) expect(oculto(regiao)).toBe(false);
-  expect(texto(tag(main, "h1"))).toBe(caminho === "/entrar" ? "Entrar" : "Crie seu acesso");
+  expect(texto(tag(main, "h1"))).toBe(t.h1);
   tag(main, "section");
-  unico(header, (e) => e.tagName === "a" && attr(e, "href") === "/"
-    && attr(e, "aria-label") === "Scrutiniums — página inicial", "marca do cabeçalho próprio");
-  const troca = unico(header, (e) => e.tagName === "a" && attr(e, "href") === (caminho === "/entrar" ? "/cadastro" : "/entrar"), "troca de entrada existente");
-  expect(texto(troca)).toBe(caminho === "/entrar" ? "Criar acesso" : "Entrar");
-  expect(elementos(header).filter((e) => attr(e, "hreflang") === "en" || attr(e, "aria-label") === "Idioma")).toEqual([]);
+  unico(header, (e) => e.tagName === "a" && attr(e, "href") === t.marca[0]
+    && attr(e, "aria-label") === t.marca[1], "marca do cabeçalho próprio");
+  const troca = unico(header, (e) => e.tagName === "a" && attr(e, "href") === t.troca[0], "troca de entrada existente");
+  expect(texto(troca)).toBe(t.troca[1]);
+  verificarSeletorIdioma(header, "seletor" in t ? t.seletor : null);
   expect(elementos(footer).filter((e) => e.tagName === "a").map((e) => [attr(e, "href"), texto(e)]))
-    .toEqual([["/termos", "Termos de uso"], ["/privacidade", "Privacidade"]]);
+    .toEqual(t.rodape.map((l) => [...l]));
   expect(texto(footer)).toContain("scrutiniums.com");
 
-  if (idioma === "en") {
+  if (idioma === "en" && !traduzida) {
     const ilha = unico(doc, (e) => attr(e, "data-i18n-estado") !== undefined, "ilha de autenticação");
     const aviso = unico(doc, (e) => attr(e, "data-i18n-aviso") !== undefined, "aviso da autenticação");
     expect(attr(ilha, "data-i18n-estado")).toBe("portugues_marcado");
@@ -102,24 +147,20 @@ export function verificarPaginaAuth(doc: No, caminho: CaminhoAuth, estado: Estad
     expect(attr(input, "disabled")).toBeUndefined();
     expect(attr(input, "value")).toBe("");
     expect(attr(input, "checked")).toBeUndefined();
-    erro(input, `${id}-erro`, label === "E-mail" ? "Informe um e-mail válido." : "Informe sua senha.");
+    erro(input, `${id}-erro`, label === t.email ? t.erroEmail : ENTRAR[idioma === "en" ? "en" : "pt"].erroSenha);
   }
 
-  campo(inputs[0], "E-mail", "email", caminho === "/entrar" ? "254" : undefined);
+  campo(inputs[0], t.email, "email", caminho === "/entrar" ? "254" : undefined);
   expect(attr(inputs[0], "inputmode")).toBe("email");
   const submit = tag(form, "button");
   expect(attr(submit, "type")).toBe("submit");
   expect(attr(submit, "disabled")).toBeUndefined();
   expect(oculto(submit)).toBe(false);
-  expect(texto(submit)).toBe(caminho === "/entrar" ? "Entrar" : "Continuar");
+  expect(texto(submit)).toBe(t.submit);
   const links = elementos(form).filter((e) => e.tagName === "a").map((e) => [attr(e, "href"), texto(e)]);
-  if (caminho === "/entrar") {
-    campo(inputs[1], "Senha", "current-password", "72");
-    expect(links).toEqual([
-      ["/entrar/sms?recuperar=1", "Esqueci minha senha"],
-      ["/entrar/sms", "Entrar com código por SMS"],
-      ["/cadastro", "Ainda não tenho cadastro"],
-    ]);
+  if ("senha" in t) {
+    campo(inputs[1], t.senha, "current-password", "72");
+    expect(links).toEqual(t.links.map((l) => [...l]));
   } else {
     const consentimentos = [
       "Li e aceito os Termos de uso e a Política de privacidade. Seu e-mail é usado para contato e comunicações essenciais.",
@@ -149,6 +190,8 @@ export function verificarPaginaAuth(doc: No, caminho: CaminhoAuth, estado: Estad
  * Os documentos originais, inclusive o usado pelo detector, permanecem intactos.
  */
 export function projetarIlhaAuth(pt: No, en: No, { caminho, estado }: ComparacaoAuth): Forma[] {
+  // /entrar tem tradução publicada: sua prova é verificarEntradaTraduzida, não o fallback integral
+  expect(caminho, "fallback integral só para o cadastro").toBe("/cadastro");
   verificarPaginaAuth(pt, caminho, estado);
   verificarPaginaAuth(en, caminho, estado);
   expect(attr(tag(pt, "html"), "lang")).toBe("pt-BR");

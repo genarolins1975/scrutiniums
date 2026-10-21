@@ -99,17 +99,19 @@ function Cartao({ it, i, ctx, nota }: { it: ItemSociedade; i: number; ctx: Conte
           ))}
         </div>
       )}
-      <p className={`mt-2 text-xs leading-relaxed ${atrasado ? "text-aviso" : "text-carvao-muted"}`}>
+      {/* diagnóstico de layout de 20/10/2026, item 7: no Entender o cartão fica com o número, o período, a ressalva e o aviso; defasagem,
+          pontes, complementos, limite agregado e dispersão descem para Analisar (seguem no HTML) */}
+      <p data-nivel={atrasado ? undefined : "analisar"} className={`mt-2 text-xs leading-relaxed ${atrasado ? "text-aviso" : "text-carvao-muted"}`}>
         <Defasagem texto={it.defasagem.texto} id={it.id} idioma={idioma} />
       </p>
       {nota && (
-        <p className="mt-2 text-xs leading-relaxed text-carvao" data-nota-sociedade={it.id}>
+        <p data-nivel="analisar" className="mt-2 text-xs leading-relaxed text-carvao" data-nota-sociedade={it.id}>
           <span className="rotulo mr-2 text-mineral">{tx("Para ler junto", "Read together")}</span>
           {expandeSiglas(enumLegivel(nota, idioma), ["SCS"], idioma)}
         </p>
       )}
       {it.complementos.length > 0 && (
-        <ul className="mt-2 space-y-1 border-t border-linha pt-2 text-xs leading-relaxed text-carvao-muted">
+        <ul data-nivel="analisar" className="mt-2 space-y-1 border-t border-linha pt-2 text-xs leading-relaxed text-carvao-muted">
           {it.complementos.map((c) => {
             // o aviso do complemento: em inglês, a forma do modelo (mesmos números); sem ela, o português marcado
             const avisoEn = c.aviso && idioma === "en" ? traduzModeloDaGold(c.aviso) : null;
@@ -132,13 +134,13 @@ function Cartao({ it, i, ctx, nota }: { it: ItemSociedade; i: number; ctx: Conte
         </ul>
       )}
       {limite && (
-        <p className="mt-2 text-xs leading-relaxed text-carvao-muted" data-limite-agregado="">
+        <p data-nivel="analisar" className="mt-2 text-xs leading-relaxed text-carvao-muted" data-limite-agregado="">
           <span className="rotulo mr-2 text-mineral">{tx("Sobre o limite agregado", "About the aggregate limit")}</span>
           {comNomesProprios(limite, idioma, dec?.universo?.parciais.map((x) => x.sigla))}
         </p>
       )}
       {dispersaoDec && (
-        <p className="mt-2 text-xs leading-relaxed text-carvao-muted" data-dispersao="continuidade">
+        <p data-nivel="analisar" className="mt-2 text-xs leading-relaxed text-carvao-muted" data-dispersao="continuidade">
           <span className="rotulo mr-2 text-mineral">{tx("Entre os conjuntos", "Across the sets")}</span>
           {dispersaoDec}
         </p>

@@ -6,7 +6,8 @@ import type { BrowserContext, Page } from "playwright";
 import { afterAll, beforeAll, describe, expect, it, type TestContext } from "vitest";
 import { modoDaPagina } from "./suporte/i18n-build";
 import { aguardarPagina, capturarAnunciador, criarNavegadorI18n, prepararPaginaSms, type NavegadorI18n } from "./suporte/i18n-browser";
-import { verificarFallbackDinamico } from "./suporte/i18n-dinamico";
+import { validarAnunciador } from "./suporte/i18n-dinamico";
+import { verificarEntradaTraduzida } from "./suporte/i18n-entrada";
 import { attr, elementos, texto } from "./suporte/i18n-dom";
 import { CAMINHOS_SMS, verificarPaginaSms, type CaminhoSms, type ComparacaoSms, type EstadoSms } from "./suporte/i18n-sms";
 
@@ -30,6 +31,16 @@ beforeAll(async () => {
   ambiente = await criarNavegadorI18n();
 }, 90_000);
 afterAll(async () => { await ambiente?.fechar(); });
+
+type Idioma = "pt-BR" | "en";
+const idiomaDa = (rota: string): Idioma => rota.startsWith("/en/") ? "en" : "pt-BR";
+/** Textos literais por idioma usados nas esperas e nas relações dos campos. */
+const TEXTOS = {
+  "pt-BR": { pais: "País", telefone: "Telefone celular", codigo: "Código recebido por SMS", erroTelefone: "Informe um telefone válido com DDD.",
+    erroCodigo: "Informe o código de 6 dígitos.", reenviar: "Reenviar código", reenviarEm: "Reenviar código em 30s", seletor: "Idioma" },
+  en: { pais: "Country", telefone: "Mobile phone", codigo: "Code received by SMS", erroTelefone: "Enter a valid phone number with area code.",
+    erroCodigo: "Enter the 6-digit code.", reenviar: "Resend code", reenviarEm: "Resend code in 30s", seletor: "Language" },
+} as const;
 
 function comparacao(caminho: CaminhoSms, estado: EstadoSms): ComparacaoSms {
   return caminho === "/entrar/sms" ? { caminho, estado } : { caminho, estado, contador: "liberado" };
@@ -55,7 +66,8 @@ function observarFalhas(page: Page): string[] {
   return falhas;
 }
 
-async function relacoesNoNavegador(page: Page, caminho: CaminhoSms, estado: EstadoSms): Promise<void> {
+async function relacoesNoNavegador(page: Page, caminho: CaminhoSms, estado: EstadoSms, idioma: Idioma): Promise<void> {
+  const t = TEXTOS[idioma];
   const controles = await page.locator("form select, form input").evaluateAll((nodes) => nodes.map((elemento) => {
     const controle = elemento as HTMLInputElement | HTMLSelectElement;
     return {
@@ -72,8 +84,8 @@ async function relacoesNoNavegador(page: Page, caminho: CaminhoSms, estado: Esta
   }));
   expect(controles.map((c) => [c.tag, c.tipo, c.labels.map((label) => label.texto)]), "identidade por tipo e label, sem depender de name").toEqual(
     caminho === "/entrar/sms"
-      ? [["SELECT", null, ["País"]], ["INPUT", "tel", ["Telefone celular"]]]
-      : [["INPUT", "text", ["Código recebido por SMS"]]],
+      ? [["SELECT", null, [t.pais]], ["INPUT", "tel", [t.telefone]]]
+      : [["INPUT", "text", [t.codigo]]],
   );
   for (const controle of controles) {
     expect(controle.labels).toHaveLength(1);
@@ -90,8 +102,8 @@ async function relacoesNoNavegador(page: Page, caminho: CaminhoSms, estado: Esta
       for (const descricao of controle.descricoes) {
         expect(descricao.quantidade).toBe(1);
         expect(descricao.dentroDoForm).toBe(true);
-        expect(descricao.idioma).toBe("pt-BR");
-        expect(descricao.texto).toBe(caminho === "/entrar/sms" ? "Informe um telefone válido com DDD." : "Informe o código de 6 dígitos.");
+        expect(descricao.idioma).toBe(idioma);
+        expect(descricao.texto).toBe(caminho === "/entrar/sms" ? t.erroTelefone : t.erroCodigo);
       }
     }
   }
@@ -119,26 +131,26 @@ function semNovas(antes: string[], depois: string[], descricao: string): void {
   expect(novas, descricao).toEqual([]);
 }
 
-async function capturar(page: Page, caminho: CaminhoSms, estado: EstadoSms) {
+async function capturar(page: Page, caminho: CaminhoSms, estado: EstadoSms, idioma: Idioma) {
   const html = await page.content();
   verificarPaginaSms(parse(html), comparacao(caminho, estado));
-  await relacoesNoNavegador(page, caminho, estado);
+  await relacoesNoNavegador(page, caminho, estado, idioma);
   return { html, anunciador: await capturarAnunciador(page), axe: await auditoria(page),
     largura: await page.evaluate(() => document.documentElement.scrollWidth),
     foco: await page.evaluate(() => ({ tag: document.activeElement?.tagName, tipo: document.activeElement?.getAttribute("type"), texto: document.activeElement?.textContent })) };
 }
 
-function verificarOtpBruto(html: string, idioma: "pt-BR" | "en"): void {
+function verificarOtpBruto(html: string, idioma: Idioma): void {
   const nodes = elementos(parse(html));
   expect(attr(nodes.find((e) => e.tagName === "html")!, "lang")).toBe(idioma);
   const reenvios = nodes.filter((e) => e.tagName === "button" && attr(e, "type") === "button");
   expect(reenvios).toHaveLength(1);
-  expect(texto(reenvios[0])).toBe("Reenviar código em 30s");
+  expect(texto(reenvios[0])).toBe(TEXTOS[idioma].reenviarEm);
   expect(attr(reenvios[0], "disabled")).toBe("");
   expect(nodes.filter((e) => e.tagName === "span" && texto(e) === "+55 •• •••••-5678")).toHaveLength(1);
 }
 
-describe.each(CAMINHOS_SMS)("%s: fallback PT integral no browser", (caminho) => {
+describe.each(CAMINHOS_SMS)("%s: PT e EN traduzido no browser", (caminho) => {
   it.for([320, 1440])("preserva formulário, submit vazio, foco e WCAG sem enviar SMS a %i px", { timeout: 60_000 }, async (largura, ctx) => {
     const servidor = pronto(ctx);
     const resultados: { inicial: Awaited<ReturnType<typeof capturar>>; vazio: Awaited<ReturnType<typeof capturar>> }[] = [];
@@ -157,19 +169,16 @@ describe.each(CAMINHOS_SMS)("%s: fallback PT integral no browser", (caminho) => 
         expect(headers.location).toBeUndefined();
         expect(headers["set-cookie"] === undefined, "GET não emite cookie").toBe(true);
         await aguardarPagina(page, rota);
-        if (rota.startsWith("/en/")) {
-          expect(await page.locator("[data-i18n-aviso]").isVisible()).toBe(true);
-          expect(await page.locator('[data-i18n-estado="portugues_marcado"]').isVisible()).toBe(true);
-        }
+        const idioma = idiomaDa(rota), t = TEXTOS[idioma];
+        expect(await page.locator("[data-i18n-aviso], [data-i18n-estado]").count(), "tradução publicada, sem ilha portuguesa").toBe(0);
         if (caminho === "/entrar/sms/verificar") {
-          expect(await page.getByLabel("Código recebido por SMS", { exact: true }).evaluate((e) => e === document.activeElement)).toBe(true);
-          expect(await page.getByRole("button", { name: "Reenviar código", exact: true }).isEnabled()).toBe(true);
+          expect(await page.getByLabel(t.codigo, { exact: true }).evaluate((e) => e === document.activeElement)).toBe(true);
+          expect(await page.getByRole("button", { name: t.reenviar, exact: true }).isEnabled()).toBe(true);
         }
-        const inicial = await capturar(page, caminho, "inicial");
+        const inicial = await capturar(page, caminho, "inicial", idioma);
         await page.locator('form button[type="submit"]').click();
-        const erro = caminho === "/entrar/sms" ? "Informe um telefone válido com DDD." : "Informe o código de 6 dígitos.";
-        await page.getByText(erro, { exact: true }).waitFor({ state: "visible" });
-        const vazio = await capturar(page, caminho, "vazio");
+        await page.getByText(caminho === "/entrar/sms" ? t.erroTelefone : t.erroCodigo, { exact: true }).waitFor({ state: "visible" });
+        const vazio = await capturar(page, caminho, "vazio", idioma);
         resultados.push({ inicial, vazio });
         expect(page.url()).toBe(servidor.origem + rota);
         expect(tentativas, "montagem e submit incompleto não alcançam APIs").toEqual([]);
@@ -178,17 +187,22 @@ describe.each(CAMINHOS_SMS)("%s: fallback PT integral no browser", (caminho) => 
     }
     for (const estado of ["inicial", "vazio"] as const) {
       const pt = resultados[0][estado], en = resultados[1][estado];
-      verificarFallbackDinamico(parse(pt.html), parse(en.html), pt.anunciador, en.anunciador, comparacao(caminho, estado));
+      validarAnunciador(pt.anunciador);
+      validarAnunciador(en.anunciador);
+      expect([pt.anunciador.idioma, en.anunciador.idioma]).toEqual(["pt-BR", "en"]);
+      verificarEntradaTraduzida(parse(pt.html), parse(en.html));
       expect(pt.largura, "baseline PT sem overflow horizontal").toBe(largura);
       expect(en.largura).toBeLessThanOrEqual(pt.largura);
       semNovas(pt.axe.violacoes, en.axe.violacoes, `${estado}: nenhuma nova violação WCAG`);
       semNovas(pt.axe.inconclusivas, en.axe.inconclusivas, `${estado}: nenhum novo achado inconclusivo`);
       // Só o OTP promete foco automático; no telefone comparamos o foco após submit.
-      if (estado === "vazio" || caminho === "/entrar/sms/verificar") expect(en.foco).toEqual(pt.foco);
+      // o texto do controle focado muda com o idioma; a identidade do controle não
+      const semTexto = ({ tag, tipo }: { tag?: string; tipo?: string | null }) => ({ tag, tipo });
+      if (estado === "vazio" || caminho === "/entrar/sms/verificar") expect(semTexto(en.foco)).toEqual(semTexto(pt.foco));
     }
   });
 
-  it("preserva query, fragmento e cookie de fluxo sem oferecer inglês no fallback", async (ctx) => {
+  it("preserva query, fragmento e cookie de fluxo, sem redirecionar pela preferência, e oferece a irmã com o mesmo endereço", async (ctx) => {
     const servidor = pronto(ctx);
     const contexto = await servidor.contexto(caminho === "/entrar/sms/verificar" ? { loginSms: "valido" } : undefined);
     const tentativas = await impedirEnvios(contexto);
@@ -206,8 +220,11 @@ describe.each(CAMINHOS_SMS)("%s: fallback PT integral no browser", (caminho) => 
       for (const prefixo of ["", "/en"]) {
         await page.goto(servidor.origem + prefixo + caminho + sufixo, { waitUntil: "load" });
         await aguardarPagina(page, prefixo + caminho);
-        expect(await page.getByRole("group", { name: "Idioma", exact: true }).count()).toBe(0);
-        expect(await page.locator('a[hreflang="en"]').count()).toBe(0);
+        const grupo = page.getByRole("group", { name: TEXTOS[idiomaDa(prefixo + caminho)].seletor, exact: true });
+        expect(await grupo.count()).toBe(1);
+        // o seletor leva à irmã com a mesma query e o mesmo fragmento (destino pós-login preservado)
+        await page.waitForFunction((esperado) => document.querySelector('a[hreflang="en"]')?.getAttribute("href") === esperado, "/en" + caminho + sufixo);
+        expect(await grupo.locator('a[hreflang="pt-BR"]').getAttribute("href")).toBe(caminho + sufixo);
         expect(page.url()).toBe(servidor.origem + prefixo + caminho + sufixo);
         verificarPaginaSms(parse(await page.content()), comparacao(caminho, "inicial"));
         expect((await contexto.cookies()).find((cookie) => cookie.name === "login_phone")?.value === cookieFluxo?.value).toBe(true);
@@ -243,7 +260,7 @@ it("aceita somente o cookie de fluxo válido, preserva o redirect em streaming e
           const nodes = elementos(parse(html));
           const redirects = nodes.filter((e) => e.tagName === "meta" && attr(e, "http-equiv") === "refresh");
           expect(redirects).toHaveLength(1);
-          expect(attr(redirects[0], "content")).toBe("1;url=/entrar/sms");
+          expect(attr(redirects[0], "content")).toBe(rota.startsWith("/en/") ? "1;url=/en/entrar/sms" : "1;url=/entrar/sms");
           expect(nodes.filter((e) => e.tagName === "input" && attr(e, "autocomplete") === "one-time-code")).toHaveLength(0);
         }
         const eu = await contexto.request.get(servidor.origem + "/api/auth/eu", { maxRedirects: 0 });
@@ -252,7 +269,7 @@ it("aceita somente o cookie de fluxo válido, preserva o redirect em streaming e
         const page = await contexto.newPage(), falhas = observarFalhas(page);
         if (cenario === "valido") await prepararPaginaSms(page, rota);
         await page.goto(servidor.origem + rota, { waitUntil: "load" });
-        const destino = cenario === "valido" ? rota : "/entrar/sms";
+        const destino = cenario === "valido" ? rota : rota.replace(/\/verificar$/, "");
         await page.waitForURL(servidor.origem + destino);
         await aguardarPagina(page, destino);
         verificarPaginaSms(parse(await page.content()), comparacao(cenario === "valido" ? "/entrar/sms/verificar" : "/entrar/sms", "inicial"));
@@ -263,3 +280,88 @@ it("aceita somente o cookie de fluxo válido, preserva o redirect em streaming e
     }
   }
 }, 60_000);
+
+/** Recuperação de senha (?recuperar=1), nos dois idiomas: portas, telas próprias e volta sem o telefone do fluxo. */
+const RECUPERACAO = {
+  "pt-BR": { esqueci: "Esqueci minha senha", recuperar: "Recuperar acesso" },
+  en: { esqueci: "Forgot your password?", recuperar: "Recover access" },
+} as const;
+
+/**
+ * Espera própria do modo ?recuperar=1: o contrato genérico de aguardarPagina só conhece os endereços
+ * canônicos; aqui a página concluída é conferida por verificarPaginaSms com o cenário de recuperação.
+ */
+async function aguardarRecuperacao(page: Page, caminho: CaminhoSms, idioma: Idioma): Promise<void> {
+  await page.locator("main h1").waitFor({ state: "visible" });
+  await page.locator(caminho === "/entrar/sms" ? 'form input[type="tel"]' : 'form input[autocomplete="one-time-code"]').waitFor({ state: "visible" });
+  await page.locator('form button[type="submit"]').waitFor({ state: "visible" });
+  await page.waitForFunction(() => document.querySelectorAll("main").length === 1
+    && !document.querySelector('main[aria-busy="true"], template[id^="B:"], [hidden][id^="S:"]'));
+  if (caminho === "/entrar/sms/verificar") {
+    await page.waitForFunction(() => document.activeElement === document.querySelector('form input[autocomplete="one-time-code"]'));
+    await page.clock.runFor(30_000);
+    await page.getByRole("button", { name: TEXTOS[idioma].reenviar, exact: true }).waitFor({ state: "visible" });
+  }
+  await page.evaluate(() => document.fonts.ready.then(() => undefined));
+}
+
+it("leva de \"Esqueci minha senha\" à recuperação no mesmo idioma, sem enviar SMS", async (ctx) => {
+  const servidor = pronto(ctx);
+  for (const prefixo of ["", "/en"]) {
+    const pedido = prefixo + "/entrar/sms", verificar = pedido + "/verificar";
+    const recuperacao = servidor.origem + pedido + "?recuperar=1";
+    const idioma = idiomaDa(pedido), r = RECUPERACAO[idioma], t = TEXTOS[idioma];
+
+    const anonimo = await servidor.contexto();
+    const tentativasAnonimo = await impedirEnvios(anonimo);
+    try {
+      const page = await anonimo.newPage(), falhas = observarFalhas(page);
+      // porta 1: o link do login por e-mail e senha
+      await page.goto(servidor.origem + prefixo + "/entrar", { waitUntil: "load" });
+      await aguardarPagina(page, prefixo + "/entrar");
+      await page.getByRole("link", { name: r.esqueci, exact: true }).click();
+      await page.waitForURL(recuperacao);
+      expect(await page.locator("main h1").textContent()).toBe(r.recuperar);
+      // a navegação no cliente não reescreve atributos do HTML do servidor: a prova completa usa o documento carregado
+      await page.goto(recuperacao, { waitUntil: "load" });
+      await aguardarRecuperacao(page, "/entrar/sms", idioma);
+      verificarPaginaSms(parse(await page.content()), { caminho: "/entrar/sms", estado: "inicial", recuperar: true });
+      await relacoesNoNavegador(page, "/entrar/sms", "inicial", idioma);
+      // validação local do telefone também no modo recuperar, sem chamar a API
+      await page.locator('form button[type="submit"]').click();
+      await page.getByText(t.erroTelefone, { exact: true }).waitFor({ state: "visible" });
+      verificarPaginaSms(parse(await page.content()), { caminho: "/entrar/sms", estado: "vazio", recuperar: true });
+      expect(page.url()).toBe(recuperacao);
+      // porta 2: o link da tela de pedir código
+      await page.goto(servidor.origem + pedido, { waitUntil: "load" });
+      await aguardarPagina(page, pedido);
+      await page.getByRole("link", { name: r.recuperar, exact: true }).click();
+      await page.waitForURL(recuperacao);
+      expect(await page.locator("main h1").textContent()).toBe(r.recuperar);
+      // sem o telefone do fluxo, a tela do código volta ao pedido de código sem sair da recuperação
+      await page.goto(servidor.origem + verificar + "?recuperar=1", { waitUntil: "load" });
+      await page.waitForURL(recuperacao);
+      await aguardarRecuperacao(page, "/entrar/sms", idioma);
+      verificarPaginaSms(parse(await page.content()), { caminho: "/entrar/sms", estado: "inicial", recuperar: true });
+      expect(tentativasAnonimo).toEqual([]);
+      expect(falhas).toEqual([]);
+    } finally { await anonimo.close(); }
+
+    const fluxo = await servidor.contexto({ loginSms: "valido" });
+    const tentativasFluxo = await impedirEnvios(fluxo);
+    try {
+      const page = await fluxo.newPage(), falhas = observarFalhas(page);
+      await prepararPaginaSms(page, verificar);
+      const resposta = await page.goto(servidor.origem + verificar + "?recuperar=1", { waitUntil: "load" });
+      expect(resposta?.status()).toBe(200);
+      await aguardarRecuperacao(page, "/entrar/sms/verificar", idioma);
+      expect(page.url()).toBe(servidor.origem + verificar + "?recuperar=1");
+      verificarPaginaSms(parse(await page.content()), { caminho: "/entrar/sms/verificar", estado: "inicial", contador: "liberado", recuperar: true });
+      await page.locator('form button[type="submit"]').click();
+      await page.getByText(t.erroCodigo, { exact: true }).waitFor({ state: "visible" });
+      verificarPaginaSms(parse(await page.content()), { caminho: "/entrar/sms/verificar", estado: "vazio", contador: "liberado", recuperar: true });
+      expect(tentativasFluxo).toEqual([]);
+      expect(falhas).toEqual([]);
+    } finally { await fluxo.close(); }
+  }
+}, 90_000);
