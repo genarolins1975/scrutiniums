@@ -279,6 +279,13 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.fixa)
         s["total_mensal"]["acessos"][-1] = 200
         self.assertTrue(any("arquivo da Anatel" in p for p in V.validar_fixa(s)))
+        # mês antigo negativo na série de totais retém (24ª revisão do Codex); mês vazio (None) segue lacuna legítima
+        s = copy.deepcopy(self.fixa)
+        s["total_mensal"]["acessos"][0] = -5
+        self.assertTrue(any("acessos negativos em 2025-12" in p for p in V.validar_fixa(s)))
+        s = copy.deepcopy(self.movel)
+        s["total_mensal"]["acessos"][0] = -1
+        self.assertTrue(any("acessos negativos" in p for p in V.validar_movel(s)))
 
     def test_densidade_fora_da_faixa_e_referencia(self):
         s = copy.deepcopy(self.fixa)
@@ -373,6 +380,10 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.cob)
         s["municipios"]["2207777"][8][0] = (s["municipios"]["2207777"][7][0] or 0) + 1
         self.assertEqual([p for p in V.validar_cobertura(s) if "2207777" in p], [])
+        # operadora no município: "4G ou 5G" acima de "todas" retém (24ª revisão do Codex)
+        s = copy.deepcopy(self.cob)
+        s["municipios"]["2207777"][6]["CLARO"] = [99.0, 1.0]
+        self.assertTrue(any("operadora CLARO com 4G ou 5G" in p and "2207777" in p for p in V.validar_cobertura(s)))
         # invariantes de união também em domicílios e área (23ª revisão do Codex): 5G da área acima de "4G ou 5G" retém
         s = copy.deepcopy(self.cob)
         s["municipios"]["2207777"][5]["g5"][2] = s["municipios"]["2207777"][5]["g4g5"][2] + 1

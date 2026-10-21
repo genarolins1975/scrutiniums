@@ -229,6 +229,14 @@ describe("painel completo", () => {
     expect(html).not.toContain(`<span class="cn-unidade">de ${num(d.municipios)}</span>`);
     expect(t).toContain(`${num(d.sem_5g)} dos ${num(d.municipios_com_5g_publicado)} municípios com cobertura 5G publicada`);
     expect(t).toContain(`${num(d.g4_abaixo_50)} dos ${num(d.municipios_com_4g_publicado)} com cobertura 4G publicada`);
+    // distribuição: o universo de cada linha é o seu próprio n (24ª revisão do Codex)
+    expect(html).toContain(`<th scope="row">Moradores dentro da cobertura 5G</th><td>${num(g.distribuicao.cobertura_g5_moradores!.n)}</td>`);
+    expect(html).toContain(`<th scope="row">Acessos fixos por 100 habitantes</th><td>${num(g.distribuicao.fixa_densidade!.n)}</td>`);
+    expect(t).toContain("a coluna Municípios diz quantos entram em cada linha");
+    // o título dos maiores do estado conta a lista: o DF tem um município só
+    const hdf = texto(renderToStaticMarkup(createElement(PainelPage, { searchParams: { ibge: "5300108" } })));
+    expect(hdf).toContain("O único município do Distrito Federal com mais acessos fixos por 100 habitantes");
+    expect(hdf).not.toContain("Os dez municípios do Distrito Federal");
     // 5G acima do 4G em trimestres antigos é contado e declarado, não escondido (22ª revisão do Codex)
     const acima = g.brasil.cobertura.g5_acima_do_4g;
     expect(acima.pares).toBeGreaterThan(0);

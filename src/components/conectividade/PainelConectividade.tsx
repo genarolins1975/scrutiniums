@@ -144,13 +144,13 @@ function Distribuicao({ g }: { g: GoldConectividade }) {
       <div className="cn-tabela-rolagem" tabIndex={0}>
         <table className="cn-tabela">
           <caption>
-            Distribuição por medida, cada uma no seu universo e mês: acessos fixos entre {num(d.fixa_densidade?.n)} municípios ({mesExtenso(g.referencia.fixa)}), linhas móveis entre{" "}
-            {num(d.movel_g5_pct?.n)} ({mesExtenso(g.referencia.movel)}), cobertura entre {num(d.cobertura_g5_moradores?.n)} ({mesExtenso(g.referencia.cobertura)}). Cálculo da Scrutiniums
-            sobre os dados da Anatel.
+            Distribuição por medida, cada uma no seu universo e mês: acessos fixos ({mesExtenso(g.referencia.fixa)}), linhas móveis ({mesExtenso(g.referencia.movel)}) e cobertura (
+            {mesExtenso(g.referencia.cobertura)}); a coluna Municípios diz quantos entram em cada linha (só os com o valor publicado). Cálculo da Scrutiniums sobre os dados da Anatel.
           </caption>
           <thead>
             <tr>
               <th scope="col">Medida</th>
+              <th scope="col">Municípios</th>
               <th scope="col">10% abaixo de</th>
               <th scope="col">Um quarto abaixo de</th>
               <th scope="col">Metade abaixo de</th>
@@ -162,6 +162,7 @@ function Distribuicao({ g }: { g: GoldConectividade }) {
             {linhas.map((l) => (
               <tr key={l.rotulo}>
                 <th scope="row">{l.rotulo}</th>
+                <td>{l.q ? num(l.q.n) : SEM_DADO}</td>
                 {(["p10", "p25", "p50", "p75", "p90"] as const).map((p) => (
                   <td key={p}>{l.q ? `${num(l.q[p], l.casas)}${l.unidade}` : SEM_DADO}</td>
                 ))}
@@ -319,7 +320,10 @@ function MaioresDaUf({ arquivo, uf, escolhido }: { arquivo: ArquivoUf; uf: strin
   const max = lista[0].fixa!.densidade!;
   return (
     <>
-      <h3>Os dez municípios {DO_ESTADO[uf]} com mais acessos fixos por 100 habitantes</h3>
+      <h3>
+        {lista.length >= 10 ? "Os dez municípios" : lista.length === 1 ? "O único município" : `Os ${num(lista.length)} municípios`} {DO_ESTADO[uf]} com mais acessos fixos por 100
+        habitantes
+      </h3>
       <div className="cn-barras" role="list">
         {lista.map((x) => (
           <div key={x.id} className={`cn-barra${x.id === escolhido ? " cn-escolhido" : ""}`} role="listitem">

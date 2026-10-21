@@ -109,6 +109,10 @@ def _acessos_comuns(seed: dict, campos, partes_a, partes_b, nome: str) -> list[s
             p.append(f"{nome}: UF {uf} com {seed['ufs'].get(uf, [None])[0]} acessos, municípios somam {s}")
     tm = seed["total_mensal"]
     ref = seed["referencia"]
+    # a série inteira vai ao gráfico nacional e ao CSV: mês vazio é lacuna legítima (None), contagem negativa retém
+    negativos = [m for m, a in zip(tm["meses"], tm["acessos"]) if a is not None and a < 0]
+    if negativos:
+        p.append(f"{nome}: o arquivo de totais tem acessos negativos em {', '.join(negativos[:5])}")
     if ref not in tm["meses"]:
         p.append(f"{nome}: o arquivo de totais não tem o mês {ref}")
     else:
@@ -247,6 +251,10 @@ def validar_cobertura(seed: dict, anterior: dict | None = None, hoje: date | Non
                 erros += 1
                 if erros <= 5:
                     p.append(f"cobertura: município {cod} ({nomem}), operadora {op} fora de 0 a 100")
+            elif a is not None and b is not None and a > b + 0.05:              # "4G ou 5G" é parte de "todas": união nunca acima do conjunto
+                erros += 1
+                if erros <= 5:
+                    p.append(f"cobertura: município {cod} ({nomem}), operadora {op} com 4G ou 5G ({a}) acima de todas ({b})")
     if erros > 5:
         p.append(f"cobertura: {erros} municípios com inconsistência interna")
     br = seed["brasil"]

@@ -251,7 +251,10 @@ def _total(z: Zip, membro: str) -> dict:
         if primeiro:
             exigir_colunas(membro, x.keys(), ["Ano", "Mês", "Acessos"])
             primeiro = False
-        serie[mes_iso(x["Ano"], x["Mês"])] = inteiro(x["Acessos"])
+        a = inteiro(x["Acessos"])
+        if a is not None and a < 0:
+            raise ValueError(f"{membro}: acessos negativos em {mes_iso(x['Ano'], x['Mês'])} ({a}); a fonte fica retida")
+        serie[mes_iso(x["Ano"], x["Mês"])] = a
     meses = sorted(serie)
     return {"meses": meses, "acessos": [serie[m] for m in meses]}
 
