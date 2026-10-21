@@ -739,12 +739,17 @@ describe("r10: DEC apurado, perdas, tarifa de referência e EAR com a ressalva j
   it("a rede diz que o fluxo é o saldo líquido do dia e quantas horas foram contra o saldo, relidas de rede_detalhe.json", () => {
     const r = JSON.parse(ler("public/energia/gold/rede_detalhe.json"));
     const d = r.circulacao.diario;
-    const dia = M.paineis.find((p) => p.id === "rede")!.data_referencia;
+    const diaVisao = M.paineis.find((p) => p.id === "rede")!.data_referencia;
+    // dia da Visão geral ainda sem as 24 horas no módulo Rede (gold retida em 21/10/2026): o saldo é o do último dia detalhado, com as duas datas ditas
+    const dia = d.dias.includes(diaVisao) ? diaVisao : d.dias[d.dias.length - 1];
     const i = d.dias.indexOf(dia);
     const sul = d.por_par.S_SE;
     const contra = sul.liquido_mwh[i] >= 0 ? sul.horas_inverso[i] : sul.horas[i] - sul.horas_inverso[i];
+    expect(ctx.saldoRede).toContain(`Saldo líquido do dia ${dia.split("-").reverse().join("/")}`);
     expect(ctx.saldoRede).toContain(`Sul → Sudeste/Centro-Oeste, ${num(contra, 0)} de ${num(sul.horas[i], 0)}`);
     expect(ctx.saldoRede).toContain("Saldo líquido do dia");
+    if (dia !== diaVisao) expect(ctx.saldoRede).toContain(`aponta ${diaVisao.split("-").reverse().join("/")}, dia que a página Rede ainda não detalha hora a hora`);
+    else expect(ctx.saldoRede).not.toContain("ainda não detalha hora a hora");
     const rede = leituraDeterminante(M.paineis.find((p) => p.id === "rede")!, M);
     expect(rede).toContain("saldo líquido do dia");
     expect(html).toContain('data-nota-determinante="rede"');

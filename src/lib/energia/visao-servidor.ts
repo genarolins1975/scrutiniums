@@ -211,16 +211,21 @@ export function contextoVisao(g: SinteseVisaoGold): ContextoVisao {
   /* rede: horas contra o saldo no dia de referência da Visão geral */
   const diaRede = painel("rede")?.data_referencia ?? null;
   const dias = redeDet?.circulacao.diario.dias ?? [];
-  const i = diaRede ? dias.indexOf(diaRede) : -1;
+  // o módulo Rede só detalha hora a hora os dias com as 24 horas verificadas: quando a Visão geral já aponta um dia que o
+  // módulo ainda não traz (21/10/2026: gold retida com o saldo vazio), o saldo é o do último dia do módulo, dito com as duas datas
+  const iVisao = diaRede ? dias.indexOf(diaRede) : -1;
+  const diaSaldo = iVisao >= 0 ? diaRede : dias.length ? dias[dias.length - 1] : null;
+  const i = diaSaldo ? dias.indexOf(diaSaldo) : -1;
   const saldoRede =
-    diaRede && redeDet && i >= 0
+    diaSaldo && redeDet && i >= 0
       ? textoSaldoLiquidoRede({
-          dia: diaRede,
+          dia: diaSaldo,
           fronteiras: FRONTEIRAS.map((f) => {
             const c = redeDet.circulacao.diario.por_par[f.par];
             return { rotulo: f.rotulo, horasContra: horasContraOSaldo(c, i), horas: c.horas[i] ?? 24 };
           }),
           diaModulo: redeDet.referencia.dia,
+          diaVisao: diaRede && diaRede !== diaSaldo ? diaRede : null,
         })
       : null;
 

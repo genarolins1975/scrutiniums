@@ -2288,7 +2288,7 @@ export function horasContraOSaldo(c: { liquido_mwh: readonly (number | null)[]; 
 
 /** Saldo líquido do dia e as horas contra o saldo em cada fronteira, com a ligação para a página Rede escrita pelo componente. */
 export function textoSaldoLiquidoRede(
-  a: { dia: string; fronteiras: readonly { rotulo: string; horasContra: number | null; horas: number }[]; diaModulo: string | null },
+  a: { dia: string; fronteiras: readonly { rotulo: string; horasContra: number | null; horas: number }[]; diaModulo: string | null; diaVisao?: string | null },
   idioma: Idioma = idiomaEnergia(),
 ): string {
   const listadas = a.fronteiras
@@ -2305,9 +2305,17 @@ export function textoSaldoLiquidoRede(
     : "";
   const outroDia = a.diaModulo ? dataBR(a.diaModulo, idioma) : "";
   const modulo = a.diaModulo && a.diaModulo !== a.dia ? tx(` A página Rede traz também ${outroDia}.`, ` The Grid page also shows ${outroDia}.`, idioma) : "";
+  // a Visão geral já aponta um dia que o módulo Rede ainda não detalha hora a hora: o saldo é do último dia detalhado, e isso fica dito
+  const visao = a.diaVisao
+    ? tx(
+        ` O cartão desta página aponta ${dataBR(a.diaVisao, "pt")}, dia que a página Rede ainda não detalha hora a hora; o saldo acima é o do último dia detalhado.`,
+        ` The card on this page points to ${dataBR(a.diaVisao, "en")}, a day the Grid page does not yet detail hour by hour; the balance above is for the last detailed day.`,
+        idioma,
+      )
+    : "";
   return tx(
-    `Saldo líquido do dia ${dataBR(a.dia, "pt")}: a média das 24 horas do fluxo verificado em cada fronteira, positiva da primeira para a segunda ponta; as horas em sentido contrário ficam compensadas no saldo.${horas}${modulo}`,
-    `Net balance of the day ${dataBR(a.dia, "en")}: the average of the 24 hours of verified flow on each border, positive from the first to the second end; the hours in the opposite direction are offset in the balance.${horas}${modulo}`,
+    `Saldo líquido do dia ${dataBR(a.dia, "pt")}: a média das 24 horas do fluxo verificado em cada fronteira, positiva da primeira para a segunda ponta; as horas em sentido contrário ficam compensadas no saldo.${horas}${modulo}${visao}`,
+    `Net balance of the day ${dataBR(a.dia, "en")}: the average of the 24 hours of verified flow on each border, positive from the first to the second end; the hours in the opposite direction are offset in the balance.${horas}${modulo}${visao}`,
     idioma,
   );
 }
