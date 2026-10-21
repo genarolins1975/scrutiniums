@@ -345,6 +345,9 @@ class TestValidacoesRetem(unittest.TestCase):
 
     def test_cobertura(self):
         s = copy.deepcopy(self.cob)
+        s["municipios"]["2207777"][2] = None                           # moradores vazios retêm a fonte
+        self.assertTrue(any("sem moradores ou domicílios" in p for p in V.validar_cobertura(s)))
+        s = copy.deepcopy(self.cob)
         s["municipios"]["2207777"][5]["g5"][0] = 99.0                 # 5G acima do 4G ou 5G
         self.assertTrue(any("5G" in p for p in V.validar_cobertura(s)))
         s = copy.deepcopy(self.cob)

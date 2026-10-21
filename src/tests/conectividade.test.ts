@@ -197,6 +197,13 @@ describe("versão aperitivo: só o município, com os números da gold", () => {
     expect(c[0]).toContain("ainda não tem cobertura publicada");
     expect(c[1]).not.toContain("cobertura 4G");
     expect(c[2]).toContain("nos municípios com cobertura publicada");
+    // município sem a banda larga fixa (até três diferenças entre as bases passam na validação cruzada)
+    const semFixa = { ...municipioComTudo(), fixa: null };
+    const cf = comConta(g, "SP", semFixa);
+    expect(cf[0]).toContain("não registra acessos de banda larga fixa nele");
+    expect(cf[0]).not.toContain("velocidade contratada por faixa");
+    expect(cf[1]).toContain("as posições em acessos fixos e em fibra ficam sem dado");
+    expect(cf[1]).toContain("colocação estadual em cobertura 4G");
     expect(itens[1]).not.toMatch(/em fibra, velocidade, 5G e cobertura/);
     const outros = arquivoUf("AC")!.municipios.find((x) => x.fixa && x.fixa.maior_grupo === "OUTROS")!;
     expect(comConta(g, "AC", outros)[0]).toContain("provedores regionais e locais, que ali é a maior");
