@@ -29,6 +29,8 @@ let senha: typeof import("@/lib/password");
 let conferirCodigo: typeof import("@/app/api/auth/entrar/check/route").POST;
 let trocarSenha: typeof import("@/app/api/conta/senha/route").POST;
 let EntrarSmsPage: typeof import("@/app/entrar/sms/page").default;
+let EntrarSmsInglesPage: typeof import("@/app/en/entrar/sms/page").default;
+let VerificarInglesPage: typeof import("@/app/en/entrar/sms/verificar/page").default;
 let EntrarForm: typeof import("@/components/onboarding/EntrarForm").EntrarForm;
 let serial = 0;
 
@@ -44,6 +46,8 @@ beforeAll(async () => {
   ({ POST: conferirCodigo } = await import("@/app/api/auth/entrar/check/route"));
   ({ POST: trocarSenha } = await import("@/app/api/conta/senha/route"));
   ({ default: EntrarSmsPage } = await import("@/app/entrar/sms/page"));
+  ({ default: EntrarSmsInglesPage } = await import("@/app/en/entrar/sms/page"));
+  ({ default: VerificarInglesPage } = await import("@/app/en/entrar/sms/verificar/page"));
   ({ EntrarForm } = await import("@/components/onboarding/EntrarForm"));
 });
 
@@ -207,6 +211,17 @@ describe("Esqueci minha senha: código SMS abre a troca sem a senha atual", () =
     const arvore = elementos(await EntrarSmsPage({ searchParams: { recuperar: "1" } }));
     expect(arvore.some((e) => e.type === "h1" && e.props.children === "Recuperar acesso")).toBe(true);
     expect(arvore.filter((e) => e.type === EntrarForm).map((e) => e.props.recuperar)).toEqual([true]);
+  });
+
+  it("em inglês, o modo recuperar abre a mesma recuperação traduzida e não sai de /en", async () => {
+    const user = await usuario();
+    await sessao.createSession(user.id);
+    const arvore = elementos(await EntrarSmsInglesPage({ searchParams: { recuperar: "1" } }));
+    expect(arvore.some((e) => e.type === "h1" && e.props.children === "Recover access")).toBe(true);
+    expect(arvore.filter((e) => e.type === EntrarForm).map((e) => [e.props.recuperar, e.props.idioma])).toEqual([[true, "en"]]);
+    // sem o telefone do fluxo, a tela do código volta ao pedido de código na recuperação inglesa
+    await expect(VerificarInglesPage({ searchParams: { recuperar: "1" } }))
+      .rejects.toMatchObject({ digest: expect.stringContaining(";/en/entrar/sms?recuperar=1;") });
   });
 
   it("conta antiga sem senha vai à Conta sem abrir janela e não ganha segunda troca", async () => {

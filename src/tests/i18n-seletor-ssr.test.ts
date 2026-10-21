@@ -7,6 +7,7 @@ import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { PARES_DE_IDIOMA, traducaoPublicada } from "@/lib/i18n-rotas";
 import { pt } from "@/i18n/pt";
 import EntrarPage from "@/app/entrar/page";
+import EntrarEnPage from "@/app/en/entrar/page";
 import CadastroLayout from "@/app/cadastro/layout";
 
 const rota = vi.hoisted(() => ({ pathname: "/sobre" as string | null }));
@@ -145,26 +146,28 @@ describe("integração estática no cabeçalho público", () => {
 });
 
 describe("seletor nos cabeçalhos próprios das entradas de autenticação", () => {
-  it("renderiza o formulário real de login anônimo com o mesmo seletor dentro do cabeçalho PT e EN", async () => {
+  it("renderiza o formulário real de login anônimo com o seletor no idioma do cabeçalho, PT e EN", async () => {
     autenticacao.sessao.mockResolvedValue(null);
-    const cabecalhos: string[] = [];
-    for (const pathname of ["/entrar", "/en/entrar"]) {
+    const casos = [
+      { pathname: "/entrar", pagina: EntrarPage, marca: "/", rotulo: "Idioma" },
+      { pathname: "/en/entrar", pagina: EntrarEnPage, marca: "/en", rotulo: "Language" },
+    ] as const;
+    for (const { pathname, pagina, marca, rotulo } of casos) {
       rota.pathname = pathname;
-      const todos = elementos(parseFragment(renderToStaticMarkup(await EntrarPage({}))));
+      const todos = elementos(parseFragment(renderToStaticMarkup(await pagina({}))));
       const headers = todos.filter((no) => no.tagName === "header");
       expect(headers, pathname).toHaveLength(1);
-      const htmlHeader = serialize(headers[0]);
-      cabecalhos.push(htmlHeader);
       expect(elementos(headers[0]).filter((no) => no.tagName === "a").map((no) => attr(no, "href")))
-        .toEqual(["/", "/cadastro"]);
-      expect(todos.filter((no) => attr(no, "aria-label") === "Idioma")).toHaveLength(0);
+        .toEqual([marca, "/cadastro", "/entrar", "/en/entrar"]);
+      const grupos = todos.filter((no) => attr(no, "role") === "group");
+      expect(grupos.map((no) => attr(no, "aria-label"))).toEqual([rotulo]);
+      expect(elementos(headers[0])).toContain(grupos[0]);
       expect(todos.filter((no) => no.tagName === "main")).toHaveLength(1);
       expect(todos.filter((no) => no.tagName === "form")).toHaveLength(1);
       expect(todos.filter((no) => no.tagName === "input").map((no) => attr(no, "name")))
         .toEqual(["email", "current-password"]);
       expect(todos.filter((no) => no.tagName === "footer")).toHaveLength(1);
     }
-    expect(cabecalhos[1]).toBe(cabecalhos[0]);
     expect(autenticacao.sessao).toHaveBeenCalledTimes(2);
     expect(autenticacao.navegar).not.toHaveBeenCalled();
   });
