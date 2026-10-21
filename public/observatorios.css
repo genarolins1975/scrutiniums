@@ -218,10 +218,25 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
 .observatorio-credito .card h4 { font-size:16px; color:var(--text); margin-bottom:12px; }
 .observatorio-credito .sechead { margin-top:48px; padding-top:24px; }
 .observatorio-credito .sechead h3 { text-wrap:balance; }
+/* Diagnóstico de layout de 20/10/2026, item 2: a caixa de leitura vem depois do primeiro bloco de números
+   (editorial.js) e deixa de ser um cartão: filete no topo, sem fundo, o limite à vista e o resto recolhido. */
 .observatorio-credito .guia-leitura {
-  margin:20px 0 28px; padding:20px 24px; border-left:3px solid var(--accent);
-  background:var(--surface); color:var(--text-2);
+  margin:24px 0 32px; padding:16px 0 0; border-top:1px solid var(--border);
+  background:transparent; color:var(--text-2);
 }
+/* Faixa de números: um contêiner com divisórias internas, sem cartão, borda ou sombra por número. As margens
+   negativas escondem a divisória da primeira coluna e a da primeira linha, em qualquer quebra da grade. */
+.observatorio-credito :is(.kpirow, .pan-kpi) {
+  gap:0; margin-top:16px; border-block:1px solid var(--border); overflow:hidden;
+}
+.observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi {
+  background:transparent; border:0; border-radius:0; box-shadow:none;
+  border-left:1px solid var(--border); border-top:1px solid var(--border);
+  margin:-1px 0 0 -1px; padding:16px 20px;
+}
+.observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi h4 { font-family:inherit; font-size:14px; font-weight:400; color:var(--text-2); margin-bottom:6px; }
+.observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi .big { font-variant-numeric:tabular-nums; }
+.observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi.clickable:hover { background:var(--surface-2); }
 .observatorio-credito .guia-pergunta { font:400 22px/1.35 var(--serif); color:var(--text); margin:0 0 12px; }
 .observatorio-credito .guia-como, .observatorio-credito .guia-limite { max-width:75ch; margin:8px 0; font-size:14px; line-height:1.65; }
 .observatorio-credito .guia-leitura .guia { border:0; border-top:1px solid var(--border); border-radius:0; margin:16px 0 0; background:transparent; }
@@ -244,7 +259,8 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
 @media(max-width:639px) {
   .observatorio-credito .obs-hero, .dominio-energia .obs-hero { padding:20px 0; }
   .observatorio-credito .pagehead, .dominio-energia .cab-modulo { padding:20px 0; }
-  .observatorio-credito .guia-leitura { padding:16px; }
+  .observatorio-credito .guia-leitura { padding:14px 0 0; }
+  .observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi { padding:14px 16px; }
   .observatorio-credito .guia-pergunta { font-size:20px; }
   .observatorio-credito .guiamais { white-space:normal; }
   .observatorio-credito .grid { gap:16px; }

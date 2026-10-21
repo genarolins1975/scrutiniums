@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.117.0";
+const APP_VERSION = "0.118.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -2950,12 +2950,13 @@ const GUIA = {
 function guiaPagina(view) {
   const g = GUIA[view];
   if (!g) return "";
+  /* Diagnóstico de layout de 20/10/2026, item 2: a caixa desce para depois do primeiro bloco de números (editorial.js).
+     O limite é ressalva material e fica à vista; como ler e por que acompanhar ficam recolhidos. */
   return `<aside class="guia-leitura" aria-label="Orientação de leitura">
     <p class="guia-pergunta">${g.q}</p>
-    <p class="guia-como"><strong>Como ler.</strong> ${g.ler}</p>
     <p class="guia-limite"><strong>Limites da leitura.</strong> ${g.nao}</p>
-    <details class="guia"><summary><span class="guiaq">Por que acompanhar este tema?</span><span class="guiamais">saiba mais</span></summary>
-      <div class="guiabody"><div><p>${g.importa}</p></div></div>
+    <details class="guia"><summary><span class="guiaq">Como ler e por que acompanhar</span><span class="guiamais">abrir</span></summary>
+      <div class="guiabody"><p class="guia-como"><strong>Como ler.</strong> ${g.ler}</p><p><strong>Por que acompanhar.</strong> ${g.importa}</p></div>
     </details>
   </aside>`;
 }
