@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
-    "arquivos_analisados": 1484,
-    "fontes_sha256": "cf839e68cf6b390087a2349d32e46d8d3971e5a8e39724051721b2baae672529",
-    "pendencias_sha256": "f3c89d0559bfe21c5192154a4be742bea65bcd9528e3a2b9ed6d043cebe9d8b7",
+    "arquivos_analisados": 1485,
+    "fontes_sha256": "82505b58b0ee0c82845594787f7cbb49523827cd6a266fd624dd66a354e0eff4",
+    "pendencias_sha256": "4b1a0562d41ba720e95198d5986f6ce79f4b1938be1780e6ec25ef9f9cadbf55",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -414,19 +414,19 @@
     "contas_federais": {
       "nome": "Contas Públicas Federais",
       "interface": {
-        "arquivos": 76,
+        "arquivos": 77,
         "candidatos": {
-          "jsx_text": 965,
-          "atributos": 199,
+          "jsx_text": 972,
+          "atributos": 203,
           "props": 107,
-          "outros_literais": 1810,
-          "templates": 151,
-          "expressoes_nao_resolvidas": 1638,
-          "chaves_objetos": 962
+          "outros_literais": 1838,
+          "templates": 156,
+          "expressoes_nao_resolvidas": 1676,
+          "chaves_objetos": 988
         },
         "exclusoes": {
-          "importacoes": 274,
-          "atributos_tecnicos": 750,
+          "importacoes": 277,
+          "atributos_tecnicos": 761,
           "tipos": 67
         },
         "scripts_embutidos": {},
@@ -436,7 +436,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 5832,
+        "candidatos_nao_catalogados": 5940,
         "percentual_traduzido": null
       },
       "rotas": {
