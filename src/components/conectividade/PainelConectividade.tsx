@@ -650,8 +650,8 @@ function Metodo({ g, logos }: { g: GoldConectividade; logos: Logos }) {
             <li>
               A publicação é retida se alguma fonte vier com estrutura diferente, se a contagem de municípios sair de 5.565 a 5.575, se duas das bases diferirem entre si em mais de
               três municípios (fixa e móvel, fixa e cobertura, móvel e cobertura; a diferença tolerada fica declarada acima, em municípios sem dado), se as partes de um município não somarem o total, se o Brasil do mês não for
-              o do arquivo de totais da Anatel, se a cobertura passar de 100% ou se uma geração passar da união que a contém (4G e 5G nunca acima de &quot;todas&quot;, 5G nunca acima de &quot;4G ou 5G&quot;), no município, na série histórica
-              ou na série nacional (pipeline/conectividade/validacoes.py). O 5G acima do 4G não retém: é contado e declarado (item acima).
+              o do arquivo de totais da Anatel, se a cobertura passar de 100% ou se uma geração passar da união que a contém (4G e 5G nunca acima de &quot;todas&quot;, 5G nunca acima de &quot;4G ou 5G&quot;), no município (último trimestre)
+              ou na série nacional (pipeline/conectividade/validacoes.py); a série histórica do município guarda só 4G e 5G e é conferida no intervalo de 0 a 100%. O 5G acima do 4G não retém: é contado e declarado (item acima).
               Hash dos dados: <code>{g.hash_dados.slice(0, 16)}</code>.
             </li>
           </ul>
