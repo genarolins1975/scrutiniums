@@ -416,6 +416,12 @@ class TestGoldSintetica(unittest.TestCase):
         self.assertEqual(ufpi(g)["cobertura"]["municipios_com_5g_publicado"], ufpi(self.g)["cobertura"]["municipios_com_5g_publicado"] - 1)
         self.assertEqual(ufpi(g)["cobertura"]["municipios_com_4g_publicado"], ufpi(self.g)["cobertura"]["municipios_com_4g_publicado"] - 1)
         self.assertEqual(ufpi(g)["cobertura"]["municipios_com_dado"], ufpi(self.g)["cobertura"]["municipios_com_dado"])
+        # e do universo do ranking daquela medida, por UF e no Brasil
+        self.assertEqual(ufpi(g)["ranqueados"]["cobertura_g4_moradores"], ufpi(self.g)["ranqueados"]["cobertura_g4_moradores"] - 1)
+        self.assertEqual(g["destaques"]["ranqueados"]["cobertura_g5_moradores"], self.g["destaques"]["ranqueados"]["cobertura_g5_moradores"] - 1)
+        self.assertEqual(ufpi(g)["ranqueados"]["fixa_densidade"], ufpi(self.g)["ranqueados"]["fixa_densidade"])
+        for n, q in self.g["distribuicao"].items():
+            self.assertEqual(self.g["destaques"]["ranqueados"][n], q["n"] if q else 0)
         self.assertEqual(g["destaques"]["municipios_com_5g_publicado"], self.g["destaques"]["municipios_com_5g_publicado"] - 1)
         self.assertEqual(ufpi(self.g)["cobertura"]["municipios_sem_5g"], 0)       # com o valor (48%), também não é "sem 5G"
         pi2 = copy.deepcopy(self.seeds)

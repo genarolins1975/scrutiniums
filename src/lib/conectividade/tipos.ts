@@ -93,6 +93,8 @@ export type UfGold = {
   uf: string;
   nome: string;
   municipios: number;
+  /** universo de cada ranking: municípios da UF que receberam posição na medida */
+  ranqueados: Record<MedidaPosicao, number>;
   fixa: Fixa | null;
   movel: Movel | null;
   cobertura: {
@@ -159,6 +161,7 @@ export type GoldConectividade = {
     municipios: number;
     sem_fibra: number;
     uma_prestadora: number;
+    ranqueados: Record<MedidaPosicao, number>;
     municipios_com_5g_publicado: number;
     municipios_com_4g_publicado: number;
     sem_5g: number;

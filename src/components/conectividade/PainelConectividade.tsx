@@ -199,8 +199,9 @@ function Municipio({ g, m, uf, arquivo, logos }: { g: GoldConectividade; m: Muni
   const c = m.cobertura;
   const u = g.ufs.find((x) => x.uf === uf)!;
   const r = g.referencia;
-  const nUf = u.municipios;
-  const nBr = g.destaques.municipios;
+  // denominador de cada posição: só os municípios ranqueados naquela medida (sem valor não entra no ranking)
+  const nUf = u.ranqueados.fixa_densidade;
+  const nBr = g.destaques.ranqueados.fixa_densidade;
   const tri = arquivo.trimestres_cobertura;
   // da operadora que mais alcança à que não tem rede na cidade (0%)
   const ops = arquivo.operadoras.filter((o) => c?.operadoras[o]).sort((a, b) => (c!.operadoras[b].g4g5_moradores ?? 0) - (c!.operadoras[a].g4g5_moradores ?? 0));
@@ -237,7 +238,7 @@ function Municipio({ g, m, uf, arquivo, logos }: { g: GoldConectividade; m: Muni
           <div>
             <dt>Moradores dentro da cobertura 4G</dt>
             <dd className="cn-valor">{pct(cobertos(m, "g4"))}</dd>
-            <dd className="cn-detalhe">{c ? `${posicao(m.posicao.cobertura_g4_moradores.uf, u.cobertura.municipios_com_dado)} no estado · ${pct(c.tecnologias.todas?.[0])} com qualquer geração` : "A Anatel não publica a cobertura deste município (instalado depois do Censo 2022)."}</dd>
+            <dd className="cn-detalhe">{c ? `${posicao(m.posicao.cobertura_g4_moradores.uf, u.ranqueados.cobertura_g4_moradores)} no estado · ${pct(c.tecnologias.todas?.[0])} com qualquer geração` : "A Anatel não publica a cobertura deste município (instalado depois do Censo 2022)."}</dd>
           </div>
           <div>
             <dt>Moradores dentro da cobertura 5G</dt>
@@ -463,13 +464,13 @@ function SecaoEvolucao({ g }: { g: GoldConectividade }) {
   // mês que a Anatel entregou vazio parte a linha (ausência nunca vira zero)
   const mi = (v: number | null) => (v === null ? null : v / 1e6);
   const serieF: Serie = { nome: "Banda larga fixa", classe: "cn-linha", pontos: f.map((p) => ({ x: anoDecimal(p.mes), y: mi(p.acessos) })), rotuloFim: `${num(mi(f[f.length - 1].acessos), 1)} mi` };
-  const serieM: Serie = { nome: "Linhas móveis", classe: "cn-linha", pontos: m.map((p) => ({ x: anoDecimal(p.mes), y: mi(p.acessos) })), rotuloFim: `${num(mi(m[m.length - 1].acessos), 1)} mi` };
+  const serieM: Serie = { nome: "Acessos móveis", classe: "cn-linha", pontos: m.map((p) => ({ x: anoDecimal(p.mes), y: mi(p.acessos) })), rotuloFim: `${num(mi(m[m.length - 1].acessos), 1)} mi` };
   return (
     <section className="cn-secao" id="evolucao" aria-labelledby="evolucao-titulo">
       <h2 id="evolucao-titulo">Como a internet cresceu no Brasil?</h2>
       <p className="cn-intro">
-        Os acessos de banda larga fixa desde {mesExtenso(g.brasil.fixa.acessos_mensal.meses[0])} e as linhas móveis desde {mesExtenso(g.brasil.movel.acessos_mensal.meses[0])},
-        pela série de totais da Anatel: dezembro de cada ano e o mês mais recente.
+        Os acessos de banda larga fixa desde {mesExtenso(g.brasil.fixa.acessos_mensal.meses[0])} e os acessos de telefonia móvel (sem máquinas e pontos de serviço) desde{" "}
+        {mesExtenso(g.brasil.movel.acessos_mensal.meses[0])}, pela série de totais da Anatel: dezembro de cada ano e o mês mais recente.
       </p>
       <div className="cn-graficos-dois">
         <figure className="cn-figura">
@@ -486,11 +487,11 @@ function SecaoEvolucao({ g }: { g: GoldConectividade }) {
           <GraficoLinhas
             series={[serieM]}
             marcasX={marcasAnos([...new Set(anosM)])}
-            unidade="milhões de linhas"
+            unidade="milhões de acessos"
             altura={220}
-            descricao={`Linhas de telefonia móvel no Brasil, de ${num(mi(m[0].acessos), 1)} milhões em ${mesExtenso(m[0].mes)} a ${num(mi(m[m.length - 1].acessos), 1)} milhões em ${mesExtenso(m[m.length - 1].mes)}.`}
+            descricao={`Acessos de telefonia móvel no Brasil (sem máquinas e pontos de serviço), de ${num(mi(m[0].acessos), 1)} milhões em ${mesExtenso(m[0].mes)} a ${num(mi(m[m.length - 1].acessos), 1)} milhões em ${mesExtenso(m[m.length - 1].mes)}.`}
           />
-          <figcaption>Telefonia móvel: linhas em operação sem M2M e pontos de serviço, dezembro de cada ano e {mesExtenso(m[m.length - 1].mes)}. Anatel, série de totais.</figcaption>
+          <figcaption>Telefonia móvel: acessos em operação, sem M2M e pontos de serviço (o total que a Anatel usa na densidade), dezembro de cada ano e {mesExtenso(m[m.length - 1].mes)}. Anatel, série de totais.</figcaption>
         </figure>
       </div>
     </section>

@@ -6,7 +6,7 @@ import type { GoldConectividade, MunicipioGold } from "./tipos";
  * (src/components/conectividade/PainelConectividade.tsx), dimensionado pela própria gold.
  */
 export function comConta(g: GoldConectividade, uf: string | null, m?: MunicipioGold): string[] {
-  const n = uf ? g.ufs.find((u) => u.uf === uf)?.municipios ?? null : null;
+  const n = uf ? g.ufs.find((u) => u.uf === uf)?.ranqueados.fixa_densidade ?? null : null;   // universo do ranking de acessos fixos
   const tri = g.trimestres_cobertura;
   const mensalFixa = g.brasil.fixa.acessos_mensal.meses[0];
   const mensalMovel = g.brasil.movel.acessos_mensal.meses[0];
@@ -23,7 +23,7 @@ export function comConta(g: GoldConectividade, uf: string | null, m?: MunicipioG
   // estado na cobertura 4G, faixa entre os municípios do país na fibra e no 5G
   const posicoes = semFixa
     ? `A Anatel não registra acessos de banda larga fixa neste município, então as posições em acessos fixos e em fibra ficam sem dado${m && !m.cobertura ? "" : "; o painel mostra a colocação estadual em cobertura 4G e a faixa nacional em cobertura 5G"}`
-    : `${n ? `A posição do município entre os ${num(n)} do estado e os ${num(g.destaques.municipios)} do país` : `A posição do município entre os do estado e os ${num(g.destaques.municipios)} do país`} em acessos fixos por 100 habitantes e a faixa em que ele cai, entre os municípios do país, em fibra${m && !m.cobertura ? "" : ", a colocação estadual em cobertura 4G e a faixa nacional em cobertura 5G"}`;
+    : `${n ? `A posição do município entre os ${num(n)} do estado e os ${num(g.destaques.ranqueados.fixa_densidade)} do país com acessos fixos` : `A posição do município entre os do estado e os ${num(g.destaques.ranqueados.fixa_densidade)} do país com acessos fixos`} em acessos fixos por 100 habitantes e a faixa em que ele cai, entre os municípios do país, em fibra${m && !m.cobertura ? "" : ", a colocação estadual em cobertura 4G e a faixa nacional em cobertura 5G"}`;
   // município publicado sem uma das fontes (Boa Esperança do Norte, instalado depois do Censo 2022, não tem telefonia
   // móvel nem cobertura): o convite diz a ausência em vez de prometer o que o painel não mostra
   const semMovel = !!m && !m.movel;
@@ -41,7 +41,7 @@ export function comConta(g: GoldConectividade, uf: string | null, m?: MunicipioG
     serieTexto,
     `Onde a fibra ainda não chegou: os ${num(g.destaques.sem_fibra)} municípios sem acesso por fibra${g.destaques.uma_prestadora ? ` e os ${num(g.destaques.uma_prestadora)} atendidos por uma única prestadora` : ""}, estado a estado`,
     `Os ${num(g.ufs.length)} estados lado a lado: acessos por 100 habitantes, fibra, 100 Mbps ou mais, prestadoras, 5G nas linhas e moradores cobertos por 4G e 5G`,
-    `Como a internet cresceu no Brasil: acessos de banda larga fixa mês a mês desde ${mesExtenso(mensalFixa)} e linhas móveis desde ${mesExtenso(mensalMovel)}, e a cobertura 4G e 5G trimestre a trimestre`,
+    `Como a internet cresceu no Brasil: acessos de banda larga fixa mês a mês desde ${mesExtenso(mensalFixa)} e acessos móveis desde ${mesExtenso(mensalMovel)}, e a cobertura 4G e 5G trimestre a trimestre`,
     "Os arquivos para baixar (CSV): conectividade por município, por estado e o Brasil mês a mês",
   ];
 }

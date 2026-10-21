@@ -229,6 +229,11 @@ describe("painel completo", () => {
     expect(html).not.toContain(`<span class="cn-unidade">de ${num(d.municipios)}</span>`);
     expect(t).toContain(`${num(d.sem_5g)} dos ${num(d.municipios_com_5g_publicado)} municípios com cobertura 5G publicada`);
     expect(t).toContain(`${num(d.g4_abaixo_50)} dos ${num(d.municipios_com_4g_publicado)} com cobertura 4G publicada`);
+    // a série histórica móvel é a de acessos (sem M2M e pontos de serviço), não a de linhas ativas
+    expect(html).toContain('aria-label="Acessos de telefonia móvel no Brasil (sem máquinas e pontos de serviço)');
+    const evolucao = html.slice(html.indexOf('id="evolucao"'), html.indexOf('id="estados"'));
+    expect(evolucao).not.toContain("milhões de linhas");
+    expect(evolucao).toContain("milhões de acessos");
     // o bloco didático nomeia os dois totais da móvel: linhas ativas (tudo) e acessos (sem M2M e pontos de serviço, base da densidade)
     expect(t).toContain("A Anatel publica dois totais: as linhas ativas");
     expect(t).not.toContain("só as primeiras entram no total");
@@ -248,7 +253,13 @@ describe("painel completo", () => {
     const html = renderToStaticMarkup(createElement(PainelPage, { searchParams: { ibge: m.id } }));
     const t = texto(html);
     expect(html).toContain("data-resultado-municipio");
-    expect(t).toContain(`${num(m.posicao.fixa_densidade.uf)}ª de ${num(g.ufs.find((u) => u.uf === "SP")!.municipios)} no estado`);
+    const sp = g.ufs.find((u) => u.uf === "SP")!;
+    expect(t).toContain(`${num(m.posicao.fixa_densidade.uf)}ª de ${num(sp.ranqueados.fixa_densidade)} no estado`);
+    // denominador de cada posição é o universo ranqueado da medida, não o total de municípios (15ª revisão do Codex)
+    expect(t).toContain(`${num(m.posicao.cobertura_g4_moradores.uf)}ª de ${num(sp.ranqueados.cobertura_g4_moradores)} no estado`);
+    const mt = g.ufs.find((u) => u.uf === "MT")!;
+    expect(mt.ranqueados.cobertura_g4_moradores).toBe(mt.municipios - 1);                     // Boa Esperança do Norte não é ranqueado
+    expect(g.destaques.ranqueados.cobertura_g5_moradores).toBe(g.distribuicao.cobertura_g5_moradores!.n);
     expect(t).toContain(pct(m.cobertura!.operadoras.CLARO.g4g5_moradores));
     expect(html).toContain(`aria-label="Parte dos moradores de ${m.nome} dentro da cobertura 4G e 5G por trimestre`);
     expect(html).toContain('<tr class=" cn-escolhido">');

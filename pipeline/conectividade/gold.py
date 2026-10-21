@@ -250,6 +250,8 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
         moradores = sum(c["moradores"] or 0 for c in cob_uf)
         ufs.append({
             "uf": uf, "nome": F.NOME_UF[uf], "municipios": len(cods),
+            # universo de cada ranking: quantos municípios da UF receberam posição naquela medida (sem valor não entra)
+            "ranqueados": {n: sum(1 for c in cods if c in posicoes_uf[n]) for n in medidas},
             "fixa": None if fl is None else {**_fixa_de(fl, fixa["grupos"]), "densidade": fixa["densidade"]["ufs"].get(uf)},
             "movel": None if ml is None else {**_movel_de(ml, movel["grupos"]), "densidade": movel["densidade"]["ufs"].get(uf)},
             "cobertura": {
@@ -303,6 +305,7 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
         "sem_fibra": sum(u["sem_fibra"] for u in ufs),
         "uma_prestadora": sum(u["uma_prestadora"] for u in ufs),
         # universo de cada contagem de cobertura: só os municípios com o valor daquela tecnologia publicado (sem dado não é avaliado)
+        "ranqueados": {n: len(posicoes_br[n]) for n in medidas},
         "municipios_com_5g_publicado": sum(u["cobertura"]["municipios_com_5g_publicado"] for u in ufs),
         "municipios_com_4g_publicado": sum(u["cobertura"]["municipios_com_4g_publicado"] for u in ufs),
         "sem_5g": sum(u["cobertura"]["municipios_sem_5g"] for u in ufs),
