@@ -414,6 +414,9 @@ def _agregar_movel(linhas, membro: str) -> tuple[str, dict, dict]:
             d["pre"] += a
         elif mod.startswith("P"):
             d["pos"] += a
+        else:
+            # modalidade fora de pré e pós-pago entraria no total sem entrar nas partes: a fonte fica retida
+            raise ValueError(f"{membro}: modalidade de cobrança desconhecida {mod!r} em {m} (município {cod}); a fonte fica retida")
         if x["Tipo de Pessoa"] == "Pessoa Física":
             d["pf"] += a
         if x["Tipo de Produto"] == "M2M":
@@ -480,7 +483,7 @@ def coletar_movel(url: str = F.MOVEL["url"], arquivo=None) -> dict:
 def _periodo_iso(p: str) -> str:
     """'09-2026' (arquivos da Anatel) vira '2026-09'."""
     m = re.fullmatch(r"(\d{2})-(\d{4})", p.strip())
-    if not m:
+    if not m or not 1 <= int(m.group(1)) <= 12:
         raise ValueError(f"período inesperado: {p!r}")
     return f"{m.group(2)}-{m.group(1)}"
 

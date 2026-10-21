@@ -373,6 +373,28 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.movel)
         s["municipios"]["3550308"][2][i["g5"]] += 1
         self.assertTrue(any("somam" in p for p in V.validar_movel(s)))
+        # pré e pós-pago têm de fechar o total (31ª revisão do Codex): soma menor também retém
+        s = copy.deepcopy(self.movel)
+        s["municipios"]["3550308"][2][i["pre"]] -= 1
+        self.assertTrue(any("somam" in p and "pre" in p for p in V.validar_movel(s)))
+        # densidade por UF fora da faixa retém, na móvel e na fixa
+        s = copy.deepcopy(self.movel)
+        s["densidade"]["ufs"]["SP"] = -5
+        self.assertTrue(any("UFs com densidade fora" in p for p in V.validar_movel(s)))
+        s = copy.deepcopy(self.fixa)
+        s["densidade"]["ufs"]["SP"] = -5
+        self.assertTrue(any("UFs com densidade fora" in p for p in V.validar_fixa(s)))
+        # modalidade desconhecida na coleta retém a fonte; período nacional com mês inválido também
+        z = zipfile.ZipFile(zip_movel())
+        membros = {n: z.read(n).decode("utf-8-sig") for n in z.namelist()}
+        nome_csv = next(n for n in membros if "Pós-pago" in membros[n])
+        alterado = membros[nome_csv].replace("Pós-pago", "Corporativo", 1)
+        self.assertNotEqual(alterado, membros[nome_csv])
+        membros[nome_csv] = alterado
+        with self.assertRaises(ValueError):
+            coleta.coletar_movel("memoria://movel.zip", _zip(membros))
+        with self.assertRaises(ValueError):
+            coleta._periodo_iso("99-2021")
 
     def test_cobertura(self):
         s = copy.deepcopy(self.cob)

@@ -92,7 +92,7 @@ def _acessos_comuns(seed: dict, campos, partes_a, partes_b, nome: str) -> list[s
                 p.append(f"{nome}: município {cod} ({nomem}) com UF {uf} fora do prefixo IBGE")
         for partes in (partes_a, partes_b):
             s = sum(v[i[c]] for c in partes)
-            if s != a and not (partes is partes_b and s < a and nome == "telefonia móvel"):
+            if s != a:
                 erros += 1
                 if erros <= 5:
                     p.append(f"{nome}: município {cod} ({nomem}): {partes} somam {s}, acessos {a}")
@@ -137,6 +137,10 @@ def _acessos_comuns(seed: dict, campos, partes_a, partes_b, nome: str) -> list[s
     fora = [cod for cod, v in d["municipios"].items() if v is None or not 0 <= v <= F.DENSIDADE_MUNICIPIO_MAX]
     if fora:
         p.append(f"{nome}: {len(fora)} municípios com densidade fora de 0 a {F.DENSIDADE_MUNICIPIO_MAX} (ex.: {fora[:3]})")
+    # as densidades por UF vão direto à tabela de estados e ao CSV: mesma faixa dos municípios
+    fora_uf = [uf for uf, v in d.get("ufs", {}).items() if v is None or not 0 <= v <= F.DENSIDADE_MUNICIPIO_MAX]
+    if fora_uf:
+        p.append(f"{nome}: UFs com densidade fora de 0 a {F.DENSIDADE_MUNICIPIO_MAX}: {fora_uf[:5]}")
     return p
 
 
