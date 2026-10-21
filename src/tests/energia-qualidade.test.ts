@@ -12,7 +12,6 @@ import { QualidadeConjuntosDoMunicipio } from "@/components/energia/QualidadeCon
 import { QualidadeEscala } from "@/components/energia/QualidadeEscala";
 import { QualidadeLimites } from "@/components/energia/QualidadeLimites";
 import { QualidadeMapa } from "@/components/energia/QualidadeMapa";
-import { destinoComEscolha } from "@/components/energia/QualidadeLevaEscolha";
 import { lerEstado } from "@/lib/energia/estadoUrl";
 import { problemasEvidencia } from "@/lib/energia/evidencia";
 import { mesAno, num, pct } from "@/lib/energia/formato";
@@ -60,6 +59,7 @@ import {
   COLUNAS_LIMITES,
   COLUNAS_MUNICIPIOS,
   PAINEIS_QUALIDADE,
+  destinoComEscolha,
   hrefPainelQualidade,
   anoApuradoUniforme,
   arquivoConjuntosDoAno,

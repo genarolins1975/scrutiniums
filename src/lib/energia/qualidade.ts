@@ -2108,6 +2108,30 @@ export function hrefPainelQualidade(id: PainelQualidade, de: PaginaQualidade, id
   return `${destino === "comparar" ? ROTA_COMPARAR_DISTRIBUIDORAS : ROTA_QUALIDADE}#${ancora}`;
 }
 
+const PAGINA_QUALIDADE = /^(\/en)?\/setor-eletrico\/qualidade(\/comparar-distribuidoras)?\/?$/;
+const LISTA_CNPJ = /^\d{14}(,\d{14})*$/;
+
+/**
+ * Destino de um clique entre as duas páginas de Qualidade com a escolha de distribuidora (?dist=) da página de origem, ou null quando o
+ * link segue como está: mesma página, outra origem, fora de Qualidade, link com ?dist= próprio ou origem sem escolha válida.
+ */
+export function destinoComEscolha(href: string, atual: string): string | null {
+  let alvo: URL;
+  let origem: URL;
+  try {
+    origem = new URL(atual);
+    alvo = new URL(href, atual);
+  } catch {
+    return null;
+  }
+  const dist = origem.searchParams.get("dist");
+  if (!dist || !LISTA_CNPJ.test(dist)) return null;
+  if (alvo.origin !== origem.origin || !PAGINA_QUALIDADE.test(alvo.pathname)) return null;
+  if (alvo.pathname === origem.pathname || alvo.searchParams.has("dist")) return null;
+  alvo.searchParams.set("dist", dist);
+  return alvo.toString();
+}
+
 /** As duas páginas como itens de navegação local: o nome curto e a pergunta de cada uma. */
 export function paginasQualidade(idioma: Idioma = idiomaEnergia()): { id: PaginaQualidade; href: string; rotulo: string; pergunta: string }[] {
   return [
