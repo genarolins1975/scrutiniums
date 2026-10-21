@@ -76,6 +76,8 @@ const MOTOR: [string, string][] = [
   ["atualizar-previdencia.yml", "previdencia"],
   // capítulo 7.1 do Saneamento (dívida e alavancagem dos prestadores), 20/10/2026: DFP e ITR da CVM, trimestral
   ["atualizar-saneamento-divida.yml", "saneamento-divida"],
+  // capítulo 15 do Saneamento (o que está contratado desde o novo marco), 21/10/2026: vigília mensal dos documentos por sha256
+  ["atualizar-saneamento-contratos.yml", "saneamento-contratos"],
   // painel Educação nos municípios (Serviços Públicos), 20/10/2026: Ideb, Censo Escolar e população no motor por grupo
   ["atualizar-educacao.yml", "educacao"],
 ];

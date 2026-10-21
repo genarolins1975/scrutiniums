@@ -1,6 +1,6 @@
 # Observatório Brasileiro do Saneamento
 
-Domínio `saneamento` da plataforma Scrutiniums, em `/saneamento`. Organizado por perguntas sociais: catorze capítulos em cinco eixos, mais ferramentas transversais. Toda página publica fonte, período, universo, o que o dado permite observar e o que não permite concluir.
+Domínio `saneamento` da plataforma Scrutiniums, em `/saneamento`. Organizado por perguntas sociais: quinze capítulos em cinco eixos, mais ferramentas transversais. Toda página publica fonte, período, universo, o que o dado permite observar e o que não permite concluir.
 
 Documentos desta pasta:
 

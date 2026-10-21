@@ -1,0 +1,138 @@
+name: Vigiar os contratos de saneamento desde o novo marco
+
+# Observatório do Saneamento, capítulo 15 (o que está contratado desde o novo marco legal): vigília mensal dos
+# documentos transcritos (contratos e anexos de metas) pelo motor comum por grupo (scripts/atualizacao_por_grupo.py,
+# config/atualizacao/saneamento-contratos.json). As fontes não têm API: a coleta só baixa de novo cada PDF do seed e
+# compara o SHA-256 com o registrado; PDF trocado na mesma URL ou URL que não responde vira falha de coleta (issue
+# aberta, execução vermelha) e nada muda no seed. Leilão novo, aditivo ou repactuação entra por PR, com a fonte e o
+# novo hash. A gold (public/saneamento/contratos) é reconstruída do seed e só é publicada com os testes verdes.
+#
+# Cadência mensal: dia 15, 11:17 UTC (08:17 em São Paulo), uma semana depois da atualização do SINISA (dia 6).
+on:
+  schedule:
+    - cron: "17 11 15 * *" # dia 15, 08:17 em São Paulo
+  workflow_dispatch:
+    inputs:
+      sem_coleta:
+        description: "Pular a coleta e só reconstruir a gold a partir do seed (publica se mudou e os testes passarem)"
+        type: boolean
+        default: false
+      grupos:
+        description: "Coletar só estes grupos (ids separados por vírgula; vazio = todos)"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: atualizar-saneamento-contratos
+  cancel-in-progress: false
+
+env:
+  CONFIG: config/atualizacao/saneamento-contratos.json
+  TITULO_ISSUE: "Vigília dos contratos de saneamento desde o novo marco: documento trocado, fora do ar ou publicação retida"
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    # poucos PDFs; cada comando tem teto próprio na configuração
+    timeout-minutes: 45
+    outputs:
+      relatado: ${{ steps.issue.outcome == 'success' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Node para os testes de contrato
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Dependências da interface
+        run: npm ci
+
+      - name: Coletar, reconstruir e decidir a publicação por grupo
+        id: ciclo
+        continue-on-error: true
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          SEM_COLETA: ${{ inputs.sem_coleta }}
+          GRUPOS: ${{ inputs.grupos }}
+        run: |
+          ARGS=()
+          if [ "$SEM_COLETA" = "true" ]; then ARGS+=(--sem-coleta); fi
+          if [ -n "$GRUPOS" ]; then ARGS+=(--grupos "$GRUPOS"); fi
+          python3 -u scripts/atualizacao_por_grupo.py ciclo "$CONFIG" "${ARGS[@]}"
+
+      # Só os grupos aprovados e a gold, com rebase sobre o ramo e quatro tentativas. Se a gold ou o seed mudaram no
+      # ramo durante a execução, não publica (a composição foi testada sobre outra base); se o código mudou, reconstrói
+      # e testa com o código novo antes de empurrar.
+      - name: Commit e push dos grupos aprovados
+        id: publicar
+        if: always() && steps.ciclo.outputs.publicavel == '1'
+        run: |
+          git config user.name "pipeline-observatorio[bot]"
+          git config user.email "pipeline@scrutiniums.com"
+          python3 -u scripts/atualizacao_por_grupo.py publicar "$CONFIG" --ramo "$GITHUB_REF_NAME"
+
+      - name: Abrir ou comentar a issue de retenção
+        id: issue
+        if: always() && (steps.ciclo.outcome != 'success' || steps.publicar.outcome == 'failure')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PUBLICACAO: ${{ steps.publicar.outcome }}
+        run: |
+          CORPO=.atualizacao/saneamento-contratos/relatorio.md
+          mkdir -p .atualizacao/saneamento-contratos
+          if [ ! -s "$CORPO" ]; then
+            printf 'Execução: %s\n\nO ciclo terminou sem relatório (falha antes de gravar). Ver o log do passo *Coletar, reconstruir e decidir*.\n' "$RUN_URL" > "$CORPO"
+          fi
+          if [ "$PUBLICACAO" = "failure" ]; then
+            printf '\n**A publicação dos grupos aprovados falhou** (passo *Commit e push*): nada foi empurrado.\n' >> "$CORPO"
+          fi
+          scripts/issue_dedup.sh "$TITULO_ISSUE" "$CORPO"
+
+      - name: Guardar resultado, relatório e logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atualizacao-saneamento-contratos
+          include-hidden-files: true
+          path: .atualizacao/saneamento-contratos/
+          if-no-files-found: warn
+          retention-days: 30
+
+      # Retenção deixa a execução VERMELHA: de 25/09 a 12/10/2026 o Crédito reteve a gold com o
+      # workflow verde e ninguém viu (OPERACOES.md, terceira memória).
+      - name: Sinalizar publicação retida
+        if: always() && (steps.ciclo.outcome != 'success' || steps.publicar.outcome == 'failure')
+        run: |
+          echo "::error::grupo retido, coleta com falha ou publicação não concluída; ver a issue '$TITULO_ISSUE'"
+          exit 1
+
+  # Tempo esgotado ou cancelamento não chegam ao passo da issue: este job cobre esses casos.
+  alertar:
+    runs-on: ubuntu-latest
+    needs: pipeline
+    if: always() && needs.pipeline.outputs.relatado != 'true' && (needs.pipeline.result == 'failure' || needs.pipeline.result == 'cancelled')
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Abrir ou comentar issue de interrupção
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULTADO: ${{ needs.pipeline.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          printf 'Execução de %s UTC terminou com **%s** antes do relatório (tempo esgotado, cancelamento ou falha de preparo): %s\n\nNada foi publicado.\n' \
+            "$(date -u +%d/%m/%Y\ %H:%M)" "$RESULTADO" "$RUN_URL" > /tmp/corpo.md
+          scripts/issue_dedup.sh "$TITULO_ISSUE" /tmp/corpo.md

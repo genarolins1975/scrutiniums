@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
-    "arquivos_analisados": 1485,
-    "fontes_sha256": "052e31ec12c3a021f497d39d3228063876fe91cf3d6cec7df8493f200200c3f2",
+    "arquivos_analisados": 1489,
+    "fontes_sha256": "674f6c20e60c5bf7a807ec6f62c7914c976520162f9d4ae16c5baeb9b1a7f4dd",
     "pendencias_sha256": "a1ad3716368a4d5530bc76978db4255963d730a7f624b817d4abf5b8965e21bd",
     "nao_classificadas": [
       {
@@ -178,13 +178,13 @@
           "jsx_text": 2077,
           "atributos": 456,
           "props": 1087,
-          "outros_literais": 7926,
-          "templates": 1073,
-          "expressoes_nao_resolvidas": 6806,
+          "outros_literais": 7928,
+          "templates": 1074,
+          "expressoes_nao_resolvidas": 6810,
           "chaves_objetos": 6374
         },
         "exclusoes": {
-          "importacoes": 1719,
+          "importacoes": 1720,
           "atributos_tecnicos": 3595,
           "tipos": 461
         },
@@ -195,7 +195,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 25799,
+        "candidatos_nao_catalogados": 25806,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -318,20 +318,20 @@
     "saneamento": {
       "nome": "Saneamento",
       "interface": {
-        "arquivos": 70,
+        "arquivos": 74,
         "candidatos": {
-          "jsx_text": 1404,
-          "atributos": 377,
-          "props": 1896,
-          "outros_literais": 3514,
-          "templates": 498,
-          "expressoes_nao_resolvidas": 3490,
-          "chaves_objetos": 4621
+          "jsx_text": 1564,
+          "atributos": 386,
+          "props": 1951,
+          "outros_literais": 3667,
+          "templates": 546,
+          "expressoes_nao_resolvidas": 3840,
+          "chaves_objetos": 4744
         },
         "exclusoes": {
-          "importacoes": 495,
-          "atributos_tecnicos": 1860,
-          "tipos": 216
+          "importacoes": 516,
+          "atributos_tecnicos": 2036,
+          "tipos": 264
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -340,17 +340,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 15800,
+        "candidatos_nao_catalogados": 16698,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 27,
+        "paginas_pt": 28,
         "paginas_en": 0,
         "handlers": 0,
         "templates_com_parametros": 2,
-        "paginas_pt_literais": 25,
+        "paginas_pt_literais": 26,
         "paginas_pt_fora_do_adaptador": 2,
-        "paginas_pt_literais_sem_irma": 25,
+        "paginas_pt_literais_sem_irma": 26,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false

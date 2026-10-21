@@ -138,7 +138,7 @@ export default function Pagina() {
 
         <section aria-labelledby="eixos" className="ed-pagina border-t border-linha py-12">
           <h2 id="eixos" className="font-serif text-[1.7rem] leading-snug text-carvao md:text-[2rem]">
-            Cinco eixos, catorze perguntas
+            Cinco eixos, quinze perguntas
           </h2>
           <p className="mt-3 max-w-prose2 text-[0.95rem] leading-relaxed text-carvao-muted">
             Cada capítulo traz a resposta curta, o número que a sustenta e a fonte; a cobertura, o método e os limites estão no capítulo.
