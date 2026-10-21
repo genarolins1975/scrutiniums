@@ -52,11 +52,14 @@ def _estrutura(seed: dict, chaves) -> list[str]:
 def _referencia(seed: dict, hoje: date | None, maximo: int, anterior: dict | None) -> list[str]:
     p = []
     ref = seed.get("referencia")
-    if not isinstance(ref, str) or not MES.match(ref):
+    if not isinstance(ref, str) or not MES.match(ref) or not 1 <= int(ref[5:7]) <= 12:
         return [f"referência inválida: {ref!r}"]
     h = _hoje(seed, hoje)
     if MES.match(h) and _meses_entre(ref, h) > maximo:
         p.append(f"referência {ref} a mais de {maximo} meses da captura ({h})")
+    # competência futura gravada faria as competências reais seguintes parecerem retrocesso: fica retida
+    if MES.match(h) and _meses_entre(ref, h) < 0:
+        p.append(f"referência {ref} posterior à captura ({h})")
     if anterior and isinstance(anterior.get("referencia"), str) and ref < anterior["referencia"]:
         p.append(f"referência voltou de {anterior['referencia']} para {ref}")
     return p

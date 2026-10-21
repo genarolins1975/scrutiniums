@@ -204,6 +204,14 @@ describe("versão aperitivo: só o município, com os números da gold", () => {
     expect(cf[0]).not.toContain("velocidade contratada por faixa");
     expect(cf[1]).toContain("as posições em acessos fixos e em fibra ficam sem dado");
     expect(cf[1]).toContain("colocação estadual em cobertura 4G");
+    // registro de cobertura sem o valor de 5G: o convite não promete a faixa nacional em 5G (25ª revisão do Codex)
+    const base = municipioComTudo();
+    const semG5 = { ...base, cobertura: { ...base.cobertura!, tecnologias: { ...base.cobertura!.tecnologias, g5: null } } };
+    const c5 = comConta(g, "SP", semG5);
+    expect(c5[1]).toContain("a colocação estadual em cobertura 4G");
+    expect(c5[1]).not.toContain("faixa nacional em cobertura 5G");
+    const semG4 = { ...base, cobertura: { ...base.cobertura!, tecnologias: { ...base.cobertura!.tecnologias, g4: null } } };
+    expect(comConta(g, "SP", semG4)[1]).not.toContain("colocação estadual em cobertura 4G");
     expect(itens[1]).not.toMatch(/em fibra, velocidade, 5G e cobertura/);
     const outros = arquivoUf("AC")!.municipios.find((x) => x.fixa && x.fixa.maior_grupo === "OUTROS")!;
     expect(comConta(g, "AC", outros)[0]).toContain("provedores regionais e locais, que ali é a maior");
@@ -269,6 +277,9 @@ describe("painel completo", () => {
     const semG5 = { ...mtFontes, cobertura: { ...mtFontes.cobertura, municipios_com_5g_publicado: mtFontes.cobertura.municipios_com_5g_publicado - 1 } };
     expect(linhaEstado(g, semG5).universo).toBe(`fixa ${num(mtFontes.municipios)} · móvel ${num(mtFontes.municipios - 1)} · 4G ${num(mtFontes.municipios - 1)} · 5G ${num(mtFontes.municipios - 2)}`);
     expect(linhaEstado(g, g.ufs.find((u) => u.uf === "SP")!).universo).toBe(num(g.ufs.find((u) => u.uf === "SP")!.municipios));
+    // linha do Brasil: a cobertura é o número nacional da Anatel, não um agregado municipal (25ª revisão do Codex)
+    expect(linhaEstado(g, null).universo).toBe(`fixa ${num(g.destaques.municipios_por_fonte.fixa)} · móvel ${num(g.destaques.municipios_por_fonte.movel)} · 4G e 5G: número nacional da Anatel`);
+    expect(t).toContain("na linha do Brasil, a cobertura 4G e 5G é o número nacional publicado pela Anatel");
     expect(html).toContain(`<td>fixa ${num(mtFontes.municipios)} · móvel ${num(mtFontes.municipios - 1)} · 4G ${num(mtFontes.municipios - 1)} · 5G ${num(mtFontes.municipios - 1)}</td>`);
     expect(t).toContain("nos municípios que a Anatel publica (nesta edição, 1 sem telefonia móvel e 1 sem cobertura)");
     expect(t).not.toContain("Para cada um dos");

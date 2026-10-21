@@ -132,7 +132,8 @@ export function linhaEstado(g: GoldConectividade, u: UfGold | null): {
     fixa: g.brasil.fixa,
     movel: g.brasil.movel,
     cobertura: { g4: bc.g4?.[0] ?? null, g5: bc.g5?.[0] ?? null, sem5: d.sem_5g, com5: d.municipios_com_5g_publicado },
-    universo: universo(d.municipios, { ...d.municipios_por_fonte, g4: d.municipios_com_4g_publicado, g5: d.municipios_com_5g_publicado }),
+    // na linha do Brasil a cobertura é o número nacional publicado pela Anatel, não um agregado dos municípios: o universo diz isso
+    universo: `fixa ${num(d.municipios_por_fonte.fixa)} · móvel ${num(d.municipios_por_fonte.movel)} · 4G e 5G: número nacional da Anatel`,
   };
 }
 

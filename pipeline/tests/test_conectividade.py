@@ -294,6 +294,11 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.fixa)
         s["densidade"]["municipios"]["3550308"] = F.DENSIDADE_MUNICIPIO_MAX + 1
         self.assertTrue(any("densidade fora" in p for p in V.validar_fixa(s)))
+        # mês calendário inválido e competência posterior à captura retêm (25ª revisão do Codex)
+        s = self._fixa(referencia="2026-99")
+        self.assertTrue(any("referência inválida" in p for p in V.validar_fixa(s)))
+        s = self._fixa(referencia="2027-01")
+        self.assertTrue(any("posterior à captura" in p for p in V.validar_fixa(s)))
         s = self._fixa(referencia="2026-01")
         s["densidade"]["ultimo"] = "2026-01"
         self.assertTrue(any("meses da captura" in p for p in V.validar_fixa(s)))
