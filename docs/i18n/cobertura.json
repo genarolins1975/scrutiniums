@@ -10,10 +10,10 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "8b01bb738512c96663dac36e5e990db70a2bc1f94891c10b9a506dd130638a57",
-    "arquivos_analisados": 1474,
-    "fontes_sha256": "0b05f65a0426aa4948917fc2b578332b86765550528e8dde840bae21dc5e4b08",
-    "pendencias_sha256": "cf1847e2bc833204b99e8e8bc8629629deb3baef0c9a2c7bf7053a1c202d778b",
+    "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
+    "arquivos_analisados": 1478,
+    "fontes_sha256": "bc23defb85b202a5f50d21cd41b79a8be623c89168bcec2b98b19988fa0999f5",
+    "pendencias_sha256": "44341fc4a1ef91fb8b35461aeeba4a4a031ea49284045a3db9dc84c6f9d59b67",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -222,20 +222,20 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 572,
+        "arquivos": 576,
         "candidatos": {
-          "jsx_text": 7648,
+          "jsx_text": 7674,
           "atributos": 2903,
-          "props": 18825,
-          "outros_literais": 51086,
-          "templates": 12762,
-          "expressoes_nao_resolvidas": 55521,
-          "chaves_objetos": 36015
+          "props": 18871,
+          "outros_literais": 51149,
+          "templates": 12780,
+          "expressoes_nao_resolvidas": 55615,
+          "chaves_objetos": 36036
         },
         "exclusoes": {
-          "importacoes": 4958,
-          "atributos_tecnicos": 8681,
-          "tipos": 3729
+          "importacoes": 4998,
+          "atributos_tecnicos": 8697,
+          "tipos": 3734
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -244,18 +244,18 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 184760,
+        "candidatos_nao_catalogados": 185028,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 79,
-        "paginas_en": 79,
+        "paginas_pt": 80,
+        "paginas_en": 80,
         "handlers": 1,
         "templates_com_parametros": 12,
-        "paginas_pt_literais": 73,
+        "paginas_pt_literais": 74,
         "paginas_pt_fora_do_adaptador": 6,
         "paginas_pt_literais_sem_irma": -6,
-        "pares_estruturais": 79,
+        "pares_estruturais": 80,
         "fallbacks_declarados": 0,
         "paridade_verificada": false
       },
@@ -464,17 +464,17 @@
       "interface": {
         "arquivos": 29,
         "candidatos": {
-          "jsx_text": 422,
+          "jsx_text": 418,
           "atributos": 97,
-          "props": 16,
-          "outros_literais": 696,
+          "props": 6,
+          "outros_literais": 699,
           "templates": 21,
-          "expressoes_nao_resolvidas": 586,
-          "chaves_objetos": 410
+          "expressoes_nao_resolvidas": 580,
+          "chaves_objetos": 401
         },
         "exclusoes": {
-          "importacoes": 68,
-          "atributos_tecnicos": 333,
+          "importacoes": 67,
+          "atributos_tecnicos": 329,
           "tipos": 5
         },
         "scripts_embutidos": {},
@@ -484,7 +484,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 2248,
+        "candidatos_nao_catalogados": 2222,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -1605,6 +1605,17 @@
         "arquivos_presentes": true
       },
       {
+        "pt": "/setor-eletrico/qualidade/comparar-distribuidoras",
+        "en": "/en/setor-eletrico/qualidade/comparar-distribuidoras",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/qualidade/comparar-distribuidoras/page.tsx",
+          "en": "src/app/en/setor-eletrico/qualidade/comparar-distribuidoras/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
         "pt": "/setor-eletrico/rede",
         "en": "/en/setor-eletrico/rede",
         "dominio": "energia",
@@ -1814,7 +1825,7 @@
         "arquivos_presentes": true
       }
     ],
-    "pares_estruturais": 93,
+    "pares_estruturais": 94,
     "fallbacks_declarados": 6,
     "html_verificado_pelo_inventario": false,
     "acesso_verificado_pelo_inventario": false
