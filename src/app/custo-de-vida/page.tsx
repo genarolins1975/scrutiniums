@@ -13,13 +13,14 @@ import { ROTA_COMIDA, paginaInflacao } from "@/lib/inflacao/paginas";
 import { BRASIL } from "@/lib/inflacao/tipos";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 
 const pagina = paginaInflacao("painel");
 
 export const metadata: Metadata = {
-  title: "Quanto subiu o custo de vida na minha cidade?",
+  title: tituloNaColecao("Quanto subiu o custo de vida na minha cidade?", "/custo-de-vida"),
   description: pagina.descricao,
   alternates: { canonical: pagina.href },
 };

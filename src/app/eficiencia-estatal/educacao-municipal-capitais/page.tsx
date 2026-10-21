@@ -9,11 +9,12 @@ import { contextos } from "@/lib/eficiencia/contexto";
 import { dadosPainel, goldEducacao } from "@/lib/eficiencia/dados";
 import { dataBr, decimal } from "@/lib/eficiencia/formato";
 import { montaPanorama } from "@/lib/eficiencia/panorama";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Educação nas capitais",
+  title: tituloNaColecao("Educação nas capitais", "/eficiencia-estatal/educacao-municipal-capitais"),
   description: "Recursos, atendimento e resultados da educação municipal nas 26 capitais estaduais, com referências para entender cada número.",
   alternates: { canonical: "/eficiencia-estatal/educacao-municipal-capitais" },
 };

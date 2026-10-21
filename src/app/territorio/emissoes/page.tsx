@@ -4,11 +4,12 @@ import { NOME_SETOR, SETORES, lerEmissoes, mt } from "@/lib/territorio/emissoes"
 import { Figura, dataBr, n } from "@/components/territorio/Queimadas";
 import { CincoSetores, SerieSetores, TabelaCategorias, TabelaSerieEmissoes } from "@/components/territorio/Emissoes";
 import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Emissões de gases de efeito estufa",
+  title: tituloNaColecao("Emissões de gases de efeito estufa", "/territorio/emissoes"),
   description: "Emissões de gases de efeito estufa do Brasil pelo inventário oficial do MCTI, de 1990 ao último ano publicado, por setor e categoria, com 2005 como referência da meta climática.",
 };
 

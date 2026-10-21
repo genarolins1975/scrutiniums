@@ -11,6 +11,7 @@ import { NOME_ETAPA, PERGUNTA_APERITIVO, ROTA_CAPITAIS, ROTA_EDUCACAO, SECAO_APE
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { ETAPAS, type GoldEducacao, type MunicipioGold } from "@/lib/educacao/tipos";
 import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 /**
  * Versão aperitivo da Educação nos municípios (princípio do aperitivo, decisão do dono de 20/10/2026). Quem acessa
@@ -30,7 +31,7 @@ type Busca = { searchParams: Record<string, string | string[] | undefined> };
 export function generateMetadata({ searchParams }: Busca): Metadata {
   const c = consultarMunicipio(searchParams.ibge);
   return {
-    title: c.estado === "ok" ? `${c.m.nome} (${c.uf}): a escola pública da cidade · Educação nos municípios` : `${PERGUNTA_APERITIVO} · Educação nos municípios`,
+    title: c.estado === "ok" ? tituloNaColecao(`${c.m.nome} (${c.uf}): a escola pública da cidade · Educação nos municípios`, "/educacao-municipal") : tituloNaColecao(`${PERGUNTA_APERITIVO} · Educação nos municípios`, "/educacao-municipal"),
     description: "Busque o município e veja o Ideb mais recente das escolas da prefeitura, nos anos iniciais e finais do ensino fundamental, com fonte e data.",
     alternates: { canonical: ROTA_EDUCACAO },
   };

@@ -3,8 +3,9 @@ import Link from 'next/link';
 import {Abertura,Nota,Numeros,Secao,Fonte,Barras} from '@/components/eficiencia/habitacao/Editoria';
 import {brasil as b} from '@/lib/eficiencia/habitacao/dados';
 import {ROTA,n,pct} from '@/lib/eficiencia/habitacao/modelo';
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 export const dynamic='force-static';
-export const metadata:Metadata={"title": "Habitação — panorama", "alternates": {"canonical": "/eficiencia-estatal/habitacao"}};
+export const metadata:Metadata={"title": tituloNaColecao("Habitação — panorama", "/eficiencia-estatal/habitacao"), "alternates": {"canonical": "/eficiencia-estatal/habitacao"}};
 export default function Pagina(){return <><Abertura titulo="O que falta para morar com dignidade?" texto="Parte das necessidades habitacionais envolve uma nova solução de moradia. Outra parte exige melhorar a casa, a infraestrutura ou a segurança da ocupação. São problemas distintos, que pedem respostas diferentes."/>
 <Numeros itens={[{titulo:'Déficit habitacional estimado',valor:n(b.deficit/1e6,2)+' milhões',nota:n(pct(b.deficit,b.domicilios),1)+'% dos domicílios particulares ocupados. Brasil, 2024.'},{titulo:'Ônus excessivo com aluguel',valor:n(b.aluguel/1e6,2)+' milhões',nota:n(pct(b.aluguel,b.deficit),1)+'% do déficit. Renda de até 3 salários mínimos e aluguel superior a 30% da renda.'},{titulo:'Domicílios com alguma inadequação',valor:n(b.inadequados/1e6,2)+' milhões',nota:n(pct(b.inadequados,b.urbanosDuraveis),1)+'% dos domicílios duráveis urbanos. Universo próprio.'}]}/>
 <Fonte/>

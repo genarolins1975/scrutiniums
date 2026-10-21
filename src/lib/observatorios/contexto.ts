@@ -76,3 +76,14 @@ export function modeloDeTitulo(rota: string): { default: string; template: strin
   if (!nome) throw new Error(`rota fora do registro: ${rota}`);
   return { default: nome, template: `%s · ${nome} · Scrutiniums` };
 }
+
+/**
+ * Título absoluto "Página · Coleção · Scrutiniums" para a página que mora no mesmo segmento do layout (o modelo do layout
+ * só vale para os segmentos abaixo dele) ou que pertence a outra coleção que a do layout (Comida no prato, no Agronegócio,
+ * é do Custo de vida). Quando a página tem o nome da coleção, fica "Coleção · Scrutiniums".
+ */
+export function tituloNaColecao(pagina: string, rota: string): { absolute: string } {
+  const ctx = contextoDaRota(rota);
+  const nome = ctx?.colecao?.nome ?? ctx?.observatorio.nome;
+  return { absolute: nome && nome !== pagina ? `${pagina} · ${nome} · Scrutiniums` : `${pagina} · Scrutiniums` };
+}

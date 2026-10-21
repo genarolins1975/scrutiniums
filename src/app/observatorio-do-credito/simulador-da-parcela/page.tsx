@@ -7,6 +7,7 @@ import { ehPosFixada, goldJuros, hrefConsulta, naoEhParcelada, opcoesSeletor, re
 import { diaBrasilia, janela, num } from "@/lib/credito/formato";
 import { paginaCredito } from "@/lib/credito/navegacao";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 /**
  * Simulador do custo da dívida (Onda 2 da banca de 19/10/2026): parcela pela tabela Price, total pago e juros totais
@@ -20,7 +21,7 @@ export const dynamic = "force-dynamic";
 const pagina = paginaCredito("simulador-da-parcela");
 
 export const metadata: Metadata = {
-  title: `${pagina.titulo} Simulador do custo da dívida`,
+  title: tituloNaColecao(`${pagina.titulo} Simulador do custo da dívida`, pagina.href),
   description: pagina.descricao,
   alternates: { canonical: pagina.href },
   robots: { index: false },

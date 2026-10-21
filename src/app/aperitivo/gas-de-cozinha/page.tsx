@@ -8,6 +8,7 @@ import { carimbo, mesExtenso } from "@/lib/gas/formato";
 import { fontesPorId, goldGas } from "@/lib/gas/gold";
 import { paginaGas } from "@/lib/gas/navegacao";
 import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 
@@ -15,7 +16,7 @@ const pagina = paginaGas("gas-de-cozinha");
 const PERGUNTA = "Quanto custa o botijão de gás no meu estado?";
 
 export const metadata: Metadata = {
-  title: PERGUNTA,
+  title: tituloNaColecao(PERGUNTA, "/gas-natural/gas-de-cozinha"),
   description: "Preço médio do botijão de 13 kg de gás de cozinha no seu estado, no último mês da pesquisa da ANP, comparado com a média do Brasil.",
   alternates: { canonical: pagina.href },
 };

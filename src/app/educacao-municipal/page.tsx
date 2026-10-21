@@ -6,6 +6,7 @@ import { consultarMunicipio, goldEducacao } from "@/lib/educacao/dados";
 import { dataBr, num } from "@/lib/educacao/formato";
 import { PERGUNTA_PAINEL, ROTA_EDUCACAO, SECAO_PAINEL, TITULO_PAINEL } from "@/lib/educacao/paginas";
 import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 /**
  * Painel "Educação nos municípios" (aprovado pelo dono em 20/10/2026), com conta. O endereço é público, mas sem sessão o
@@ -20,7 +21,7 @@ export function generateMetadata({ searchParams }: Busca): Metadata {
   const g = goldEducacao();
   const c = consultarMunicipio(searchParams.ibge);
   return {
-    title: c.estado === "ok" ? `${c.m.nome} (${c.uf}): a escola pública · ${TITULO_PAINEL}` : `${PERGUNTA_PAINEL} · ${TITULO_PAINEL} · Serviços Públicos`,
+    title: tituloNaColecao(c.estado === "ok" ? `${c.m.nome} (${c.uf}): a escola pública · ${TITULO_PAINEL}` : `${PERGUNTA_PAINEL} · ${TITULO_PAINEL}`, "/educacao-municipal"),
     description: `O Ideb das redes municipais e públicas de ${num(g.municipios.total)} municípios desde ${g.ideb.anos[0]}, com aprendizagem, aprovação, comparação com o estado, o Brasil e cidades do mesmo porte, e as matrículas do Censo Escolar ${g.censo.ano}. Dados do INEP.`,
     alternates: { canonical: ROTA_EDUCACAO },
   };

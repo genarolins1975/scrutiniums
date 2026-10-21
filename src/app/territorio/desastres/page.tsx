@@ -4,11 +4,12 @@ import { NOME_UF } from "@/lib/territorio/queimadas";
 import { Figura, dataBr, n } from "@/components/territorio/Queimadas";
 import { DoDesastreAoReconhecimento, SerieEmpilhada, TabelaDanos, TabelaSerie, TabelaUFDesastres } from "@/components/territorio/Desastres";
 import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Desastres reconhecidos",
+  title: tituloNaColecao("Desastres reconhecidos", "/territorio/desastres"),
   description: "Registros municipais de desastre com reconhecimento federal, de 2003 a 2025, por tipo e por estado, e os danos humanos registrados desde 2013, a partir do Atlas Digital de Desastres no Brasil.",
 };
 

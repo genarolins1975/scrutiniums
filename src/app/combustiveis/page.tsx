@@ -12,13 +12,14 @@ import { brasilNoUltimoMes, dadosDoEstado, dataNota, goldCombustiveis, marcosDaP
 import { paginaCombustiveis } from "@/lib/combustiveis/paginas";
 import type { IdCombustivel } from "@/lib/gas/gold";
 import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 
 const pagina = paginaCombustiveis("painel");
 
 export const metadata: Metadata = {
-  title: "Preço da gasolina, do etanol e do diesel por estado",
+  title: tituloNaColecao("Preço da gasolina, do etanol e do diesel por estado", "/combustiveis"),
   description: pagina.descricao,
   alternates: { canonical: pagina.href },
 };

@@ -7,6 +7,7 @@ import { goldJuros, hrefConsulta, opcoesSeletor, resolverConsulta, rotuloModalid
 import { contagem, dataBr, diaBrasilia, diasDesde, janela, num, taxa } from "@/lib/credito/formato";
 import { PAINEL_JUROS, paginaCredito } from "@/lib/credito/navegacao";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 /**
  * "Quanto meu banco cobra?" (Onda 2 da banca de 19/10/2026, consulta pessoal do Crédito). Lê no servidor a gold
@@ -21,7 +22,7 @@ export const dynamic = "force-dynamic";
 const pagina = paginaCredito("quanto-meu-banco-cobra");
 
 export const metadata: Metadata = {
-  title: `${pagina.titulo} Taxas de juros por banco e modalidade`,
+  title: tituloNaColecao(`${pagina.titulo} Taxas de juros por banco e modalidade`, pagina.href),
   description: pagina.descricao,
   alternates: { canonical: pagina.href },
   robots: { index: false },

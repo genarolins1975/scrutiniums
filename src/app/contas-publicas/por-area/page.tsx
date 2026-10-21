@@ -12,7 +12,7 @@ import {ROTA_AREAS,lerRecorte} from '@/lib/contas-publicas/areas';
  * conta (não consta de src/lib/rotasPublicas.ts). O recorte (exercício, estágio, base e área) vive na URL e é lido no
  * servidor: a base por subfunção de 2000 em diante não vai para o navegador.
  */
-export const metadata:Metadata={title:'Para onde vai o dinheiro federal, por área? · Contas Públicas',description:'Cada R$ 100 pagos pelo orçamento da União por área de governo, com a dívida pública à parte, de 2000 ao ano corrente, pelos dados abertos do SIOP.',alternates:{canonical:ROTA_AREAS}};
+export const metadata:Metadata={title:'Para onde vai o dinheiro federal, por área?',description:'Cada R$ 100 pagos pelo orçamento da União por área de governo, com a dívida pública à parte, de 2000 ao ano corrente, pelos dados abertos do SIOP.',alternates:{canonical:ROTA_AREAS}};
 
 export default function Page({searchParams}:{searchParams:Record<string,string|string[]|undefined>}){
  const r=lerRecorte(searchParams);

@@ -3,11 +3,12 @@ import { lerQueimadas, lerQueimadasMunicipios, municipiosDeFocos, municipiosPara
 import { FocosNoMunicipio } from "@/components/territorio/FocosNoMunicipio";
 import { BarrasComparadas, DoSateliteAoFoco, Figura, MesAMes, SerieAnual, TabelaAnual, TabelaMensal, TabelaMunicipios, TabelaUF, dataBr, mesAno, n } from "@/components/territorio/Queimadas";
 import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Queimadas e focos de calor",
+  title: tituloNaColecao("Queimadas e focos de calor", "/territorio/queimadas"),
   description: "Focos de calor do satélite de referência do INPE desde 2003, o ano em curso contra o mesmo período do ano anterior, estados e biomas, e a área queimada mapeada.",
 };
 

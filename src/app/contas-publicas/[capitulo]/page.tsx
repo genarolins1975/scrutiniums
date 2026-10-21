@@ -24,7 +24,7 @@ import {FichaIndicador} from '@/components/contas-publicas/FichaIndicador';
  */
 export const dynamicParams=false;
 export function generateStaticParams(){return CAPITULOS_PUBLICADOS.map(c=>({capitulo:c.id}))}
-export function generateMetadata({params}:{params:{capitulo:string}}):Metadata{const c=CAPITULOS_PUBLICADOS.find(c=>c.id===params.capitulo);return {title:c?`${c.titulo} · Contas Públicas`:'Capítulo não encontrado',alternates:{canonical:`/contas-publicas/${params.capitulo}`}}}
+export function generateMetadata({params}:{params:{capitulo:string}}):Metadata{const c=CAPITULOS_PUBLICADOS.find(c=>c.id===params.capitulo);return {title:c?c.titulo:'Capítulo não encontrado',alternates:{canonical:`/contas-publicas/${params.capitulo}`}}}
 export default function Page({params}:{params:{capitulo:string}}){
  const c=CAPITULOS_PUBLICADOS.find(c=>c.id===params.capitulo);if(!c)notFound();
  const cobertura=coberturaCapitulo(c.id),indicadores=INDICADORES.filter(i=>i.capitulo===c.id);

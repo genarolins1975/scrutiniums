@@ -4,10 +4,11 @@ import { dadosAlimentares, fmtAlimentar } from "@/lib/eficiencia/alimentar/dados
 import { dadosComplementares } from "@/lib/eficiencia/alimentar/complementos";
 import { numerosComplementares } from "@/components/eficiencia/alimentar/Complementos";
 import { EscoresServicos } from "@/components/eficiencia/EscoresServicos";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
-  title: "Segurança alimentar",
+  title: tituloNaColecao("Segurança alimentar", "/eficiencia-estatal/seguranca-alimentar"),
   description: "Situação alimentar dos domicílios por estado, risco estimado entre famílias do Cadastro Único por município, alimentação escolar, compras da agricultura familiar, preço dos alimentos e atuação pública municipal, com fontes oficiais e critérios de avaliação dos serviços.",
   alternates: { canonical: "/eficiencia-estatal/seguranca-alimentar" },
 };

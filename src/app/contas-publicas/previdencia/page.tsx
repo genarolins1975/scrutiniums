@@ -19,7 +19,7 @@ export const dynamic = "force-dynamic";
 export function generateMetadata(): Metadata {
   const g = goldPrevidencia();
   return {
-    title: `${PERGUNTA_PAINEL} · Previdência e INSS · Contas Públicas`,
+    title: `${PERGUNTA_PAINEL} · Previdência e INSS`,
     description: `Benefícios do INSS por tipo, por estado e por município, com a série desde ${g.serie.meses[0].slice(0, 4)} e o resultado do Regime Geral desde ${g.rgps.anos[0]}, pelos dados do Ministério da Previdência Social e do Tesouro Nacional.`,
     alternates: { canonical: ROTA_PREVIDENCIA },
   };

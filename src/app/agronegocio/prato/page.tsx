@@ -4,8 +4,9 @@ import { dadosAgro } from '@/lib/agro/dados';
 import { AberturaAgro, SecaoAgro } from '@/components/agro/Editorial';
 import { PerguntasAgro } from '@/components/agro/Economia';
 import { PratoAgro } from '@/components/agro/Sociedade';
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 export const dynamic = 'force-static';
-export const metadata: Metadata = { title: 'Quanto custa a comida para as famílias?', description: 'Inflação de alimentos no IPCA, itens da cesta e segurança alimentar dos domicílios.', alternates: { canonical: '/agronegocio/prato' } };
+export const metadata: Metadata = { title: tituloNaColecao('Quanto custa a comida para as famílias?', '/agronegocio/prato'), description: 'Inflação de alimentos no IPCA, itens da cesta e segurança alimentar dos domicílios.', alternates: { canonical: '/agronegocio/prato' } };
 export default function PaginaPratoAgro() {
     const e = dadosAgro.economia;
     if (!e)

@@ -7,6 +7,7 @@ import { goldJuros } from "@/lib/credito/juros";
 import { dataBr, diaBrasilia, num } from "@/lib/credito/formato";
 import { METODO_SPA, paginaCredito } from "@/lib/credito/navegacao";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 /**
  * Metodologia e fontes do Crédito em página estática (Onda 2 da banca de 19/10/2026): o mesmo conteúdo da vista
@@ -20,7 +21,7 @@ export const dynamic = "force-static";
 const pagina = paginaCredito("metodologia");
 
 export const metadata: Metadata = {
-  title: pagina.titulo,
+  title: tituloNaColecao(pagina.titulo, pagina.href),
   description: pagina.descricao,
   alternates: { canonical: pagina.href },
 };
