@@ -12,7 +12,7 @@
   "escopo": {
     "inventario_sha256": "d932a71658c21a96d3844ed462f3be1a0b7b2937f80a5b937f3a8e5ad23f56df",
     "arquivos_analisados": 1473,
-    "fontes_sha256": "4ba20c7d4d37d2431ea635aa81821837a6cb8a61eda90898b269396e8079debb",
+    "fontes_sha256": "cfadc5adbf137c025357b6437b2b46afd47ffc37be33e65d8886e3500eab8152",
     "pendencias_sha256": "44341fc4a1ef91fb8b35461aeeba4a4a031ea49284045a3db9dc84c6f9d59b67",
     "nao_classificadas": [
       {
@@ -177,7 +177,7 @@
         "candidatos": {
           "jsx_text": 2108,
           "atributos": 457,
-          "props": 1106,
+          "props": 1107,
           "outros_literais": 7942,
           "templates": 1074,
           "expressoes_nao_resolvidas": 6762,
@@ -185,7 +185,7 @@
         },
         "exclusoes": {
           "importacoes": 1709,
-          "atributos_tecnicos": 3611,
+          "atributos_tecnicos": 3613,
           "tipos": 459
         },
         "scripts_embutidos": {},
@@ -195,7 +195,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 25799,
+        "candidatos_nao_catalogados": 25800,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -322,7 +322,7 @@
         "candidatos": {
           "jsx_text": 1404,
           "atributos": 377,
-          "props": 1895,
+          "props": 1896,
           "outros_literais": 3514,
           "templates": 498,
           "expressoes_nao_resolvidas": 3490,
@@ -330,7 +330,7 @@
         },
         "exclusoes": {
           "importacoes": 495,
-          "atributos_tecnicos": 1858,
+          "atributos_tecnicos": 1860,
           "tipos": 216
         },
         "scripts_embutidos": {},
@@ -340,7 +340,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 15799,
+        "candidatos_nao_catalogados": 15800,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -563,10 +563,10 @@
           "jsx_text": 153,
           "atributos": 211,
           "props": 170,
-          "outros_literais": 12941,
-          "templates": 2629,
-          "expressoes_nao_resolvidas": 9196,
-          "chaves_objetos": 5084,
+          "outros_literais": 12982,
+          "templates": 2667,
+          "expressoes_nao_resolvidas": 9307,
+          "chaves_objetos": 5094,
           "textos": 158
         },
         "exclusoes": {
@@ -587,7 +587,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 30542,
+        "candidatos_nao_catalogados": 30742,
         "percentual_traduzido": null
       },
       "rotas": {
