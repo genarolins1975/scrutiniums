@@ -186,6 +186,13 @@ describe("versão aperitivo: só o município, com os números da gold", () => {
     expect(itens.join(" ")).toContain(`${num(g.destaques.sem_fibra)} municípios sem acesso por fibra`);
     expect(itens.join(" ")).toContain(`${num(g.ufs.find((u) => u.uf === "SP")!.municipios)} do estado`);
     expect(itens.join(" ")).toContain(mesExtenso(g.trimestres_cobertura[0]));
+    // o convite só promete o que o cartão mostra, e não promete líder única onde a fonte só traz a soma dos regionais
+    expect(itens[1]).toContain("em acessos fixos por 100 habitantes, a colocação estadual em cobertura 4G e a faixa");
+    expect(itens[1]).not.toMatch(/em fibra, velocidade, 5G e cobertura/);
+    const outros = arquivoUf("AC")!.municipios.find((x) => x.fixa && x.fixa.maior_grupo === "OUTROS")!;
+    expect(comConta(g, "AC", outros)[0]).toContain("provedores regionais e locais, que ali é a maior");
+    expect(comConta(g, "AC", outros)[0]).not.toContain("a parte da maior delas");
+    expect(comConta(g, null)[0]).toContain("se um grande grupo lidera");
   });
 });
 

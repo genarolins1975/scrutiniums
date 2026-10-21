@@ -142,7 +142,11 @@ function Distribuicao({ g }: { g: GoldConectividade }) {
       </p>
       <div className="cn-tabela-rolagem" tabIndex={0}>
         <table className="cn-tabela">
-          <caption>Distribuição entre os {num(d.fixa_densidade?.n)} municípios, {mesExtenso(g.referencia.fixa)} (acessos) e {mesExtenso(g.referencia.cobertura)} (cobertura). Cálculo da Scrutiniums sobre os dados da Anatel.</caption>
+          <caption>
+            Distribuição por medida, cada uma no seu universo e mês: acessos fixos entre {num(d.fixa_densidade?.n)} municípios ({mesExtenso(g.referencia.fixa)}), linhas móveis entre{" "}
+            {num(d.movel_g5_pct?.n)} ({mesExtenso(g.referencia.movel)}), cobertura entre {num(d.cobertura_g5_moradores?.n)} ({mesExtenso(g.referencia.cobertura)}). Cálculo da Scrutiniums
+            sobre os dados da Anatel.
+          </caption>
           <thead>
             <tr>
               <th scope="col">Medida</th>
