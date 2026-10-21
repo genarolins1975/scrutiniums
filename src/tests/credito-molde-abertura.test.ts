@@ -42,6 +42,31 @@ describe("molde de abertura do Crédito: contrato no código", () => {
   });
 });
 
+describe("Instituições (item 3 do diagnóstico): busca antes, exclusões depois, régua da Basileia", () => {
+  const i0 = app.indexOf("function renderInstitutions() {");
+  const aba = app.slice(i0, app.indexOf("\n}\n", i0));
+  it("o nome de cada linha é o link para a ficha, sem um botão por linha", () => {
+    expect(aba).toContain('<a class="inst-nome" href="/observatorio/institutions/${i.cod_inst}"');
+    expect(aba).not.toContain("página completa →</button>");
+  });
+  it("a síntese não lista mais as exclusões nome a nome; a lista fica num recolhível depois da tabela", () => {
+    expect(aba).not.toContain("semBalGrandes.slice(0, 6)");
+    const tabela = aba.indexOf("<tbody>${rows}</tbody></table></div>");
+    expect(aba.indexOf("${instForaDoCorte(inst)}")).toBeGreaterThan(tabela);
+    expect(app).toContain("function instForaDoCorte(inst)");
+    // a ressalva continua: ausência na data-base não é saída nem zero
+    expect(app).toMatch(/Não é saída nem zero: a ficha de cada uma segue disponível na última entrega/);
+  });
+  it("a régua da Basileia lê a faixa e a mediana do próprio grupo e diz quantos ficam fora", () => {
+    expect(aba.indexOf("${instReguaBasileia(inst)}")).toBeGreaterThan(aba.indexOf("${instForaDoCorte(inst)}"));
+    const regua = app.slice(app.indexOf("function instReguaBasileia(inst)"), app.indexOf("function renderInstitutions() {"));
+    expect(regua).toContain("(inst.grupos[g].stats || {}).basileia_pct");
+    expect(regua).toContain("pool_fallback");
+    expect(regua).toContain("não reportam Basileia e ficam fora do gráfico");
+    expect(regua).toContain('<details class="charttable">');
+  });
+});
+
 /* Comportamento no navegador: a mesma página mínima que a SPA monta, com o editorial.js de verdade. */
 const pagina = (corpo: string) => `<!doctype html><html><body><main id="main"><section class="view active" id="view-teste">
   <div class="pagehead"><h2>Aba de teste</h2></div>${corpo}</section></main></body></html>`;
