@@ -1,14 +1,46 @@
 import { expect } from "vitest";
-import { attr, conteudo, elementos, filhos, oculto, tag, texto, unico, type Elemento, type Forma, type No } from "./i18n-dom";
+import { attr, elementos, oculto, tag, texto, unico, type No } from "./i18n-dom";
+import { verificarSeletorIdioma } from "./i18n-auth";
 
 export const CAMINHOS_SMS = ["/entrar/sms", "/entrar/sms/verificar"] as const;
 export type CaminhoSms = typeof CAMINHOS_SMS[number];
 export type EstadoSms = "inicial" | "vazio";
+/** `recuperar`: modo ?recuperar=1, aberto pelo link "Esqueci minha senha" de /entrar. */
 export type ComparacaoSms =
-  | { caminho: "/entrar/sms"; estado: EstadoSms; contador?: never }
-  | { caminho: "/entrar/sms/verificar"; estado: EstadoSms; contador: "30s" | "liberado" };
+  | { caminho: "/entrar/sms"; estado: EstadoSms; contador?: never; recuperar?: boolean }
+  | { caminho: "/entrar/sms/verificar"; estado: EstadoSms; contador: "30s" | "liberado"; recuperar?: boolean };
 
-const PAISES = [["BR", "Brasil (+55)"]] as const;
+/** Textos literais esperados em cada idioma; as duas telas têm tradução publicada. */
+const TEXTOS = {
+  pt: {
+    marca: ["/", "Scrutiniums — página inicial"], criar: ["/cadastro", "Criar acesso"],
+    rodape: [["/termos", "Termos de uso"], ["/privacidade", "Privacidade"]], rotuloSeletor: "Idioma", portugues: "Português", ingles: "Inglês",
+    h1Sms: "Entrar com código por SMS", h1Otp: "Código de acesso", pais: "País", telefone: "Telefone celular", codigo: "Código recebido por SMS",
+    erroTelefone: "Informe um telefone válido com DDD.", erroCodigo: "Informe o código de 6 dígitos.",
+    submitSms: "Receber código por SMS", submitOtp: "Entrar", paises: [["BR", "Brasil (+55)"]],
+    destino: "Se houver cadastro para +55 •• •••••-5678, você receberá um código de 6 dígitos por SMS.", destinoInicio: "Se houver cadastro para",
+    reenviarEm: "Reenviar código em 30s", reenviar: "Reenviar código",
+    linksOtp: [["/entrar/sms", "Alterar telefone"]],
+    linksSms: [["/entrar", "Entrar com e-mail e senha"], ["/cadastro", "Ainda não tenho cadastro"]],
+    recuperarHref: "/entrar/sms?recuperar=1", esqueceu: "Esqueceu a senha?", recuperarAcesso: "Recuperar acesso",
+    h1Recuperar: "Recuperar acesso", submitRecuperar: "Continuar para nova senha",
+    introRecuperar: "Informe o telefone cadastrado. Enviamos um código por SMS e, ao confirmá-lo, você define uma nova senha.",
+  },
+  en: {
+    marca: ["/en", "Scrutiniums home page"], criar: ["/cadastro", "Sign up"],
+    rodape: [["/termos", "Terms of use"], ["/privacidade", "Privacy"]], rotuloSeletor: "Language", portugues: "Portuguese", ingles: "English",
+    h1Sms: "Sign in with an SMS code", h1Otp: "Access code", pais: "Country", telefone: "Mobile phone", codigo: "Code received by SMS",
+    erroTelefone: "Enter a valid phone number with area code.", erroCodigo: "Enter the 6-digit code.",
+    submitSms: "Get a code by SMS", submitOtp: "Sign in", paises: [["BR", "Brazil (+55)"]],
+    destino: "If there is an account for +55 •• •••••-5678, you will receive a 6-digit code by SMS.", destinoInicio: "If there is an account for",
+    reenviarEm: "Resend code in 30s", reenviar: "Resend code",
+    linksOtp: [["/en/entrar/sms", "Change phone number"]],
+    linksSms: [["/en/entrar", "Sign in with email and password"], ["/cadastro", "I don't have an account yet"]],
+    recuperarHref: "/en/entrar/sms?recuperar=1", esqueceu: "Forgot your password?", recuperarAcesso: "Recover access",
+    h1Recuperar: "Recover access", submitRecuperar: "Continue to new password",
+    introRecuperar: "Enter the phone number on your account. We send a code by SMS and, once you confirm it, you set a new password.",
+  },
+} as const;
 
 function dentro(no: No, ancestral: No): boolean {
   return no === ancestral || ("parentNode" in no && no.parentNode !== null && dentro(no.parentNode, ancestral));
@@ -20,6 +52,7 @@ export function verificarPaginaSms(doc: No, cenario: ComparacaoSms): void {
   expect(CAMINHOS_SMS).toContain(caminho);
   expect(["inicial", "vazio"]).toContain(estado);
   const otp = caminho === "/entrar/sms/verificar";
+  const recuperar = cenario.recuperar === true;
   if (otp) expect(["30s", "liberado"]).toContain(cenario.contador);
   else expect(cenario.contador).toBeUndefined();
   const idioma = attr(tag(doc, "html"), "lang");
@@ -37,31 +70,29 @@ export function verificarPaginaSms(doc: No, cenario: ComparacaoSms): void {
     }
   }
 
+  const t = TEXTOS[idioma === "en" ? "en" : "pt"];
   const header = tag(doc, "header"), main = tag(doc, "main"), footer = tag(doc, "footer");
   for (const regiao of [header, main, footer]) expect(oculto(regiao)).toBe(false);
-  expect(texto(tag(main, "h1"))).toBe(otp ? "Código de acesso" : "Entrar com código por SMS");
-  tag(main, "section");
-  unico(header, (e) => e.tagName === "a" && attr(e, "href") === "/"
-    && attr(e, "aria-label") === "Scrutiniums — página inicial", "marca do cabeçalho SMS");
-  expect(texto(unico(header, (e) => e.tagName === "a" && attr(e, "href") === "/cadastro", "criar acesso"))).toBe("Criar acesso");
-  expect(elementos(header).filter((e) => attr(e, "hreflang") === "en" || attr(e, "aria-label") === "Idioma")).toEqual([]);
-  expect(elementos(footer).filter((e) => e.tagName === "a").map((e) => [attr(e, "href"), texto(e)]))
-    .toEqual([["/termos", "Termos de uso"], ["/privacidade", "Privacidade"]]);
-  expect(texto(footer)).toContain("scrutiniums.com");
-  if (idioma === "en") {
-    const ilha = unico(doc, (e) => attr(e, "data-i18n-estado") !== undefined, "ilha SMS");
-    const aviso = unico(doc, (e) => attr(e, "data-i18n-aviso") !== undefined, "aviso SMS");
-    expect(attr(ilha, "data-i18n-estado")).toBe("portugues_marcado");
-    expect(attr(ilha, "lang")).toBe("pt-BR");
-    expect(attr(aviso, "lang")).toBe("en");
-    expect(texto(aviso).trim()).toBe("Portuguese only");
-    expect(oculto(aviso) || oculto(ilha)).toBe(false);
-    expect([header, main, footer].every((e) => dentro(e, ilha)), "shell inteiro na ilha").toBe(true);
-    const irmaos = filhos(ilha.parentNode!).filter((e): e is Elemento => "tagName" in e);
-    expect(irmaos[irmaos.indexOf(ilha) - 1]).toBe(aviso);
-  } else {
-    expect(todos.filter((e) => attr(e, "data-i18n-estado") !== undefined || attr(e, "data-i18n-aviso") !== undefined)).toHaveLength(0);
+  expect(texto(tag(main, "h1"))).toBe(recuperar ? t.h1Recuperar : otp ? t.h1Otp : t.h1Sms);
+  const secao = tag(main, "section");
+  // Recuperação de senha: a tela de pedir código oferece a porta; no modo recuperar, a instrução própria.
+  const portas = elementos(secao).filter((e) => e.tagName === "a" && attr(e, "href") === t.recuperarHref && !dentro(e, tag(doc, "form")));
+  if (!otp && !recuperar) {
+    expect(portas.map((e) => texto(e)), "porta da recuperação de senha").toEqual([t.recuperarAcesso]);
+    expect(texto(portas[0].parentNode as No)).toBe(`${t.esqueceu} ${t.recuperarAcesso}`);
+  } else expect(portas).toHaveLength(0);
+  if (!otp && recuperar) {
+    expect(elementos(secao).filter((e) => e.tagName === "p" && texto(e) === t.introRecuperar), "instrução da recuperação").toHaveLength(1);
   }
+  unico(header, (e) => e.tagName === "a" && attr(e, "href") === t.marca[0]
+    && attr(e, "aria-label") === t.marca[1], "marca do cabeçalho SMS");
+  expect(texto(unico(header, (e) => e.tagName === "a" && attr(e, "href") === t.criar[0], "criar acesso"))).toBe(t.criar[1]);
+  verificarSeletorIdioma(header, { rotulo: t.rotuloSeletor, links: [["pt-BR", caminho, t.portugues], ["en", "/en" + caminho, t.ingles]] });
+  expect(elementos(footer).filter((e) => e.tagName === "a").map((e) => [attr(e, "href"), texto(e)]))
+    .toEqual(t.rodape.map((l) => [...l]));
+  expect(texto(footer)).toContain("scrutiniums.com");
+  // tradução publicada: nenhuma ilha portuguesa nem aviso em nenhum dos idiomas
+  expect(todos.filter((e) => attr(e, "data-i18n-estado") !== undefined || attr(e, "data-i18n-aviso") !== undefined)).toHaveLength(0);
 
   const form = tag(doc, "form");
   expect(dentro(form, main) && !oculto(form)).toBe(true);
@@ -78,7 +109,7 @@ export function verificarPaginaSms(doc: No, cenario: ComparacaoSms): void {
     const id = attr(controle, "id");
     expect(id, "useId do controle SMS").toMatch(/^:[Rr][0-9a-v]+:$/);
     const label = unico(form, (e) => e.tagName === "label" && attr(e, "for") === id, "label do controle SMS");
-    expect(texto(label)).toBe(otp ? "Código recebido por SMS" : i === 0 ? "País" : "Telefone celular");
+    expect(texto(label)).toBe(otp ? t.codigo : i === 0 ? t.pais : t.telefone);
     for (const nome of ["name", "required", "disabled"]) expect(attr(controle, nome), nome).toBeUndefined();
   }
   const input = tag(form, "input");
@@ -98,7 +129,7 @@ export function verificarPaginaSms(doc: No, cenario: ComparacaoSms): void {
     expect(erro.tagName).toBe("p");
     expect(attr(erro, "role")).toBe("alert");
     expect(oculto(erro)).toBe(false);
-    expect(texto(erro)).toBe(otp ? "Informe o código de 6 dígitos." : "Informe um telefone válido com DDD.");
+    expect(texto(erro)).toBe(otp ? t.erroCodigo : t.erroTelefone);
   } else {
     expect(attr(input, "aria-invalid")).toBeUndefined();
     expect(attr(input, "aria-describedby")).toBeUndefined();
@@ -108,79 +139,25 @@ export function verificarPaginaSms(doc: No, cenario: ComparacaoSms): void {
   expect(botoes.every((e) => dentro(e, form) && !oculto(e))).toBe(true);
   const submit = unico(form, (e) => e.tagName === "button" && attr(e, "type") === "submit", "submit SMS");
   expect(attr(submit, "disabled")).toBeUndefined();
-  expect(texto(submit)).toBe(otp ? "Entrar" : "Receber código por SMS");
+  expect(texto(submit)).toBe(otp ? (recuperar ? t.submitRecuperar : t.submitOtp) : t.submitSms);
   const links = elementos(form).filter((e) => e.tagName === "a").map((e) => [attr(e, "href"), texto(e)]);
   if (otp) {
-    expect(texto(unico(form, (e) => e.tagName === "p" && texto(e).includes("Se houver cadastro para"), "destino mascarado")))
-      .toBe("Se houver cadastro para +55 •• •••••-5678, você receberá um código de 6 dígitos por SMS.");
+    expect(texto(unico(form, (e) => e.tagName === "p" && texto(e).includes(t.destinoInicio), "destino mascarado")))
+      .toBe(t.destino);
     const reenviar = unico(form, (e) => e.tagName === "button" && attr(e, "type") === "button", "reenvio SMS");
     expect(attr(reenviar, "aria-live")).toBe("polite");
-    expect(texto(reenviar)).toBe(cenario.contador === "30s" ? "Reenviar código em 30s" : "Reenviar código");
+    expect(texto(reenviar)).toBe(cenario.contador === "30s" ? t.reenviarEm : t.reenviar);
     expect(attr(reenviar, "disabled")).toBe(cenario.contador === "30s" ? "" : undefined);
-    expect(links).toEqual([["/entrar/sms", "Alterar telefone"]]);
+    // no modo recuperar, trocar o telefone volta ao pedido de código sem sair da recuperação
+    expect(links).toEqual(recuperar ? [[t.recuperarHref, t.linksOtp[0][1]]] : t.linksOtp.map((l) => [...l]));
     expect(todos.filter((e) => e.tagName === "option")).toHaveLength(0);
   } else {
     const pais = tag(form, "select");
     for (const nome of ["multiple", "aria-invalid", "aria-describedby"]) expect(attr(pais, nome), nome).toBeUndefined();
     const opcoes = todos.filter((e) => e.tagName === "option");
     expect(opcoes.every((e) => e.parentNode === pais && attr(e, "disabled") === undefined)).toBe(true);
-    expect(opcoes.map((e) => [attr(e, "value"), texto(e)])).toEqual(PAISES);
+    expect(opcoes.map((e) => [attr(e, "value"), texto(e)])).toEqual(t.paises.map((p) => [...p]));
     expect(opcoes.map((e) => attr(e, "selected"))).toEqual([""]);
-    expect(links).toEqual([["/entrar", "Entrar com e-mail e senha"], ["/cadastro", "Ainda não tenho cadastro"]]);
+    expect(links).toEqual(t.linksSms.map((l) => [...l]));
   }
-}
-
-/** Projeta somente os useId dos controles SMS e referências comprovados no build. */
-export function projetarIlhaSms(pt: No, en: No, cenario: ComparacaoSms): Forma[] {
-  verificarPaginaSms(pt, cenario);
-  verificarPaginaSms(en, cenario);
-  expect(attr(tag(pt, "html"), "lang")).toBe("pt-BR");
-  expect(attr(tag(en, "html"), "lang")).toBe("en");
-  const campos = cenario.caminho === "/entrar/sms"
-    ? [["select", undefined, "País"], ["input", "tel", "Telefone celular"]] as const
-    : [["input", "text", "Código recebido por SMS"]] as const;
-  const substituicoes = new Map<Elemento, Map<string, string>>();
-  const bijecao = new Map<string, string>();
-  const destinos = new Set<string>();
-
-  function campo(doc: No, nomeTag: string, tipo: string | undefined, rotulo: string) {
-    const form = tag(doc, "form"), controle = tag(form, nomeTag);
-    const id = attr(controle, "id")!;
-    const label = unico(form, (e) => e.tagName === "label" && attr(e, "for") === id, `label de ${rotulo}`);
-    const identidade = [controle.tagName, attr(controle, "type"), texto(label)];
-    expect(identidade).toEqual([nomeTag, tipo, rotulo]);
-    const erro = cenario.estado === "vazio" && nomeTag === "input"
-      ? unico(form, (e) => attr(e, "id") === `${id}-erro`, `erro de ${rotulo}`) : undefined;
-    return { controle, label, id, identidade, erro };
-  }
-
-  for (const [nomeTag, tipo, rotulo] of campos) {
-    const campoPt = campo(pt, nomeTag, tipo, rotulo), campoEn = campo(en, nomeTag, tipo, rotulo);
-    expect(campoEn.identidade).toEqual(campoPt.identidade);
-    expect(bijecao.has(campoEn.id) || destinos.has(campoPt.id), "bijeção SMS sem colisões").toBe(false);
-    bijecao.set(campoEn.id, campoPt.id);
-    destinos.add(campoPt.id);
-    const atributosControle = new Map([["id", campoPt.id]]);
-    if (campoEn.erro) {
-      atributosControle.set("aria-describedby", `${campoPt.id}-erro`);
-      substituicoes.set(campoEn.erro, new Map([["id", `${campoPt.id}-erro`]]));
-    }
-    substituicoes.set(campoEn.controle, atributosControle);
-    substituicoes.set(campoEn.label, new Map([["for", campoPt.id]]));
-  }
-  expect(bijecao.size).toBe(campos.length);
-  expect(destinos.size).toBe(campos.length);
-
-  function copiar<T extends No>(no: T): T {
-    if ("tagName" in no) {
-      const atributos = substituicoes.get(no);
-      return { ...no, attrs: no.attrs.map((a) => ({ ...a, value: atributos?.get(a.name) ?? a.value })), childNodes: no.childNodes.map((filho) => copiar(filho)) };
-    }
-    if ("childNodes" in no) return { ...no, childNodes: no.childNodes.map((filho) => copiar(filho)) };
-    return { ...no };
-  }
-  const ilha = unico(en, (e) => attr(e, "data-i18n-estado") === "portugues_marcado", "ilha SMS validada");
-  // Identidade dos nós, sem troca global de strings; números, atributos adicionais
-  // e o DOM original entregue ao detector permanecem intactos.
-  return conteudo(copiar(ilha));
 }

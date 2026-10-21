@@ -13,8 +13,13 @@ export function toE164(country: string, rawPhone: string): string | null {
 
 export type PaisTelefone = Readonly<{ code: string; ddi: string; name: string }>;
 
-const nomes = new Intl.DisplayNames(["pt-BR"], { type: "region" });
+function listarPaises(locale: "pt-BR" | "en"): readonly PaisTelefone[] {
+  const nomes = new Intl.DisplayNames([locale], { type: "region" });
+  return Object.freeze(getCountries()
+    .map((code) => ({ code, ddi: "+" + getCountryCallingCode(code), name: nomes.of(code) ?? code }))
+    .sort((a, b) => a.code === "BR" ? -1 : b.code === "BR" ? 1 : a.name.localeCompare(b.name, locale)));
+}
 /** Todos os países reconhecidos; a oferta de SMS é filtrada no servidor. */
-export const COUNTRIES: readonly PaisTelefone[] = Object.freeze(getCountries()
-  .map((code) => ({ code, ddi: "+" + getCountryCallingCode(code), name: nomes.of(code) ?? code }))
-  .sort((a, b) => a.code === "BR" ? -1 : b.code === "BR" ? 1 : a.name.localeCompare(b.name, "pt-BR")));
+export const COUNTRIES: readonly PaisTelefone[] = listarPaises("pt-BR");
+/** Mesma lista com os nomes em inglês, para as páginas /en. */
+export const COUNTRIES_EN: readonly PaisTelefone[] = listarPaises("en");
