@@ -11,6 +11,7 @@ import {seriePlano} from '@/lib/contas-publicas/planejamento';
 import {FONTE_RIGIDEZ,serieRigidez} from '@/lib/contas-publicas/riscos';
 import {PainelFiscal,PainelOrcamento} from '@/components/contas-publicas/PaineisDados';
 import {RecorteCompartilhavel} from '@/components/contas-publicas/RecorteCompartilhavel';
+import {ResumoFiscalAbertura} from '@/components/contas-publicas/ResumoFiscalAbertura';
 import type {Metadata} from 'next';
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
@@ -27,15 +28,18 @@ export function generateMetadata({params}:{params:{capitulo:string}}):Metadata{c
 export default function Page({params}:{params:{capitulo:string}}){
  const c=CAPITULOS_PUBLICADOS.find(c=>c.id===params.capitulo);if(!c)notFound();
  const cobertura=coberturaCapitulo(c.id),indicadores=INDICADORES.filter(i=>i.capitulo===c.id);
+ // os complementos saíram do topo (diagnóstico de 20/10/2026, item 9): viram links depois do painel, onde a leitura pede o próximo passo
+ const complementos=cobertura.complementares.filter(p=>!p.href.startsWith(`/contas-publicas/${c.id}`));
  return <main id="conteudo-contas" className="cp-wrap cp-main">
   <div className="cp-breadcrumb"><Link href="/contas-publicas#capitulos">← Todos os temas</Link><span>{c.titulo}</span></div>
   <header className="cp-chapter-header"><p className="cp-eyebrow">{c.etapa} · Dados disponíveis · recorte parcial</p><h1>{c.pergunta}</h1><p className="cp-lead">{c.entrega}</p><p className="cp-note cp-chapter-limit">{c.limite}</p></header>
+  {c.id==='panorama'&&<ResumoFiscalAbertura/>}
   <div className="cp-chapter-tools"><nav className="cp-panel-nav" aria-label="Painéis com dados">{PAINEIS_NAVEGACAO.map(([href,nome])=><Link key={href} href={href} aria-current={href===`/contas-publicas/${c.id}`?'page':undefined}>{nome}</Link>)}</nav><RecorteCompartilhavel/></div>
-  {cobertura.complementares.filter(p=>!p.href.startsWith(`/contas-publicas/${c.id}`)).map(p=><p key={p.href} className="cp-status">Complemento deste capítulo: <Link href={p.href}>{p.nome} →</Link></p>)}
   {c.id==='panorama'&&<PainelFiscal/>}{c.id==='execucao'&&<PainelOrcamento/>}{c.id==='restos-a-pagar'&&<PainelRAP/>}{c.id==='custos'&&<PainelCustos/>}{c.id==='metas'&&<PainelMetas inicial={consultarMetas({busca:'',orgao:'',estado:'calculavel'})} info={META_INFO}/>}
   {c.id==='planejamento'&&<PainelPlanejamento anos={seriePlano()}/>}
   {c.id==='beneficios'&&<PainelBeneficios/>}
   {c.id==='riscos'&&<><PainelRigidez anos={serieRigidez()} fonte={FONTE_RIGIDEZ}/><PainelDivida/></>}
+  {complementos.length>0&&<section className="cp-section cp-complementos" aria-labelledby="complementos-capitulo"><h2 id="complementos-capitulo">O que completa este capítulo?</h2><div className="cp-links">{complementos.map(p=><Link key={p.href} href={p.href}>{p.nome} →</Link>)}</div></section>}
   <section className="cp-section" aria-label="Indicadores do capítulo">
    <details className="cp-method-fold"><summary>Definições, cobertura e indicadores ainda pendentes <span>{cobertura.observados.length} com integração parcial · {cobertura.pendentes.length} pendentes{cobertura.complementares.length>0?` · complemento com dados: ${cobertura.complementares.map(p=>p.nome.toLowerCase()).join(', ')}`:''}</span></summary>{indicadores.map(i=><FichaIndicador key={i.id} indicador={i}/>)}</details>
   </section>
