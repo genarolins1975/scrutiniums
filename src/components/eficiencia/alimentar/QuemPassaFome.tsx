@@ -224,11 +224,11 @@ export function QuemPassaFome({ c }: { c: Complementos }) {
       <h3 className="mt-10 font-serif text-2xl">Quem são os domicílios em insegurança grave</h3>
       <figure className="mt-3" aria-labelledby="fome-figura-titulo">
         <figcaption id="fome-figura-titulo" className="text-sm">
-          Parcela de cada grupo entre os domicílios em insegurança alimentar grave e entre todos os domicílios · % · Brasil · {ANO}
+          Parcela de cada grupo entre os domicílios em insegurança alimentar grave (na renda, moderada ou grave, que o IBGE publica juntas) e entre todos os domicílios · % · Brasil · {ANO}
         </figcaption>
         <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm" aria-hidden="true">
           <span className="inline-flex items-center gap-2"><span className="inline-block h-2.5 w-6 bg-obee-neutro" />Parcela entre todos os domicílios</span>
-          <span className="inline-flex items-center gap-2"><span className="inline-block h-2.5 w-6 bg-obee" />Parcela entre os domicílios em insegurança grave</span>
+          <span className="inline-flex items-center gap-2"><span className="inline-block h-2.5 w-6 bg-obee" />Parcela entre os domicílios em insegurança grave (na renda, moderada ou grave)</span>
         </div>
         <div className="mt-6 grid gap-x-14 gap-y-10 lg:grid-cols-2">
           {composicao.map((r) => <Quadro key={r.id} r={r} maximo={maximo} limiar={limiar} />)}

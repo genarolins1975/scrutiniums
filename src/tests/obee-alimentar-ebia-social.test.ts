@@ -126,6 +126,9 @@ describe("Quem passa fome no Brasil: páginas e acesso", () => {
     expect(h).toContain('id="quem-passa-fome"');
     expect(h).toContain('href="#quem-passa-fome"');
     expect(texto(h)).toContain("Quem passa fome no Brasil?");
+    // a renda só tem moderada e grave juntas: título e legenda não podem chamar a barra escura dela de grave
+    expect(texto(h)).toContain("insegurança alimentar grave (na renda, moderada ou grave, que o IBGE publica juntas)");
+    expect(texto(h)).toContain("Parcela entre os domicílios em insegurança grave (na renda, moderada ou grave)");
   });
 
   it("o método (aberto) traz as nove fontes com hash e as fichas, sem valores dos dados", () => {
@@ -140,6 +143,7 @@ describe("Quem passa fome no Brasil: páginas e acesso", () => {
     expect(ehRotaPublica("/eficiencia/seguranca-alimentar/ebia-grupos-sociais.csv")).toBe(false);
     const aperitivo = readFileSync(join(raiz, "src/app/aperitivo/minha-capital/page.tsx"), "utf8");
     expect(aperitivo).toContain("quem passa fome no Brasil");
+    expect(aperitivo).toContain("os em insegurança moderada ou grave por renda");
     expect(aperitivo).not.toMatch(/ebia_social|QuemPassaFome|57,6/);
   });
 });

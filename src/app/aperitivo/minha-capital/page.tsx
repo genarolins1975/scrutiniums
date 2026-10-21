@@ -29,7 +29,7 @@ const COM_CONTA = [
   'O atlas da capital e o mapa de cobertura do que se sabe e do que ainda não se sabe em cada tema',
   'O índice de resultados, com faixa, contribuições e estabilidade de cada comparação',
   'Os 13 temas do observatório, com painéis, comparações e métodos',
-  'Em Segurança alimentar, quem passa fome no Brasil: os domicílios em insegurança grave por sexo, cor ou raça, escolaridade e trabalho da pessoa responsável, renda e moradores, em nove tabelas do IBGE de 2023 e 2024',
+  'Em Segurança alimentar, quem passa fome no Brasil: os domicílios em insegurança grave por sexo, cor ou raça, escolaridade e trabalho da pessoa responsável e por moradores, e os em insegurança moderada ou grave por renda, em nove tabelas do IBGE de 2023 e 2024',
   'Os arquivos para baixar, com os valores das 26 capitais',
 ] as const;
 
