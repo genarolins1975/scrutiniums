@@ -229,6 +229,12 @@ describe("painel completo", () => {
     expect(html).not.toContain(`<span class="cn-unidade">de ${num(d.municipios)}</span>`);
     expect(t).toContain(`${num(d.sem_5g)} dos ${num(d.municipios_com_5g_publicado)} municípios com cobertura 5G publicada`);
     expect(t).toContain(`${num(d.g4_abaixo_50)} dos ${num(d.municipios_com_4g_publicado)} com cobertura 4G publicada`);
+    // densidade móvel rotulada como acessos (o numerador exclui M2M e pontos de serviço) e a coluna de 5G por estado com o seu universo (16ª revisão do Codex)
+    expect(t).not.toContain("Linhas móveis por 100");
+    expect(t).toContain("Acessos móveis por 100 hab.");
+    const mtUf = g.ufs.find((u) => u.uf === "MT")!;
+    expect(html).toContain(`<td>${num(mtUf.cobertura.municipios_sem_5g)} de ${num(mtUf.cobertura.municipios_com_5g_publicado)}</td>`);
+    expect(html).toContain(`<td>${num(g.destaques.sem_5g)} de ${num(g.destaques.municipios_com_5g_publicado)}</td>`);
     // a série histórica móvel é a de acessos (sem M2M e pontos de serviço), não a de linhas ativas
     expect(html).toContain('aria-label="Acessos de telefonia móvel no Brasil (sem máquinas e pontos de serviço)');
     const evolucao = html.slice(html.indexOf('id="evolucao"'), html.indexOf('id="estados"'));

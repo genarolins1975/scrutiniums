@@ -246,9 +246,9 @@ function Municipio({ g, m, uf, arquivo, logos }: { g: GoldConectividade; m: Muni
             <dd className="cn-detalhe">{c ? `${faixaNaDistribuicao(cobertos(m, "g5"), g.distribuicao.cobertura_g5_moradores) ?? SEM_DADO} · ${pct(c.tecnologias.g5?.[2])} da área do município` : "Sem dado."}</dd>
           </div>
           <div>
-            <dt>Linhas móveis por 100 habitantes</dt>
+            <dt>Acessos móveis por 100 habitantes</dt>
             <dd className="cn-valor">{mv ? num(mv.densidade, 1) : SEM_DADO}</dd>
-            <dd className="cn-detalhe">{mv ? `${num(mv.acessos)} linhas sem máquinas e pontos de serviço · das ${num(mv.linhas)} linhas ativas, ${pct(mv.g5_pct)} em 5G e ${pct(mv.pre_pct)} pré-pagas` : "A Anatel não registra linhas móveis neste município."}</dd>
+            <dd className="cn-detalhe">{mv ? `${num(mv.acessos)} acessos, sem máquinas e pontos de serviço · das ${num(mv.linhas)} linhas ativas, ${pct(mv.g5_pct)} em 5G e ${pct(mv.pre_pct)} pré-pagas` : "A Anatel não registra linhas móveis neste município."}</dd>
           </div>
         </dl>
         {c && (
@@ -505,7 +505,10 @@ function SecaoEstados({ g, escolhida }: { g: GoldConectividade; escolhida: strin
   const linha = (u: UfGold | null, nome: string, uf: string, forte = false) => {
     const f = u?.fixa ?? g.brasil.fixa;
     const m = u?.movel ?? g.brasil.movel;
-    const cob = u ? { g4: u.cobertura.g4_moradores, g5: u.cobertura.g5_moradores, sem5: u.cobertura.municipios_sem_5g } : { g4: g.brasil.cobertura.tecnologias.g4?.[0] ?? null, g5: g.brasil.cobertura.tecnologias.g5?.[0] ?? null, sem5: g.destaques.sem_5g };
+    // contagem ao lado do seu universo: só os municípios com o valor de 5G publicado (MT: 98 de 141, não de 142)
+    const cob = u
+      ? { g4: u.cobertura.g4_moradores, g5: u.cobertura.g5_moradores, sem5: u.cobertura.municipios_sem_5g, com5: u.cobertura.municipios_com_5g_publicado }
+      : { g4: g.brasil.cobertura.tecnologias.g4?.[0] ?? null, g5: g.brasil.cobertura.tecnologias.g5?.[0] ?? null, sem5: g.destaques.sem_5g, com5: g.destaques.municipios_com_5g_publicado };
     return (
       <tr key={uf} className={`${forte ? "cn-forte" : ""}${escolhida === uf ? " cn-escolhido" : ""}`}>
         <th scope="row">{nome}</th>
@@ -517,7 +520,7 @@ function SecaoEstados({ g, escolhida }: { g: GoldConectividade; escolhida: strin
         <td>{m ? pct(m.g5_pct) : SEM_DADO}</td>
         <td>{pct(cob.g4)}</td>
         <td>{pct(cob.g5)}</td>
-        <td>{num(cob.sem5)}</td>
+        <td>{num(cob.sem5)} de {num(cob.com5)}</td>
       </tr>
     );
   };
@@ -526,7 +529,7 @@ function SecaoEstados({ g, escolhida }: { g: GoldConectividade; escolhida: strin
       <h2 id="estados-titulo">Os estados lado a lado</h2>
       <p className="cn-intro">As mesmas medidas da sua cidade para cada estado e para o Brasil. A cobertura por estado é a média dos municípios ponderada pelos moradores.</p>
       <p className="cn-legenda-tabela">
-        {mesAcessos(r, true)}; cobertura de {mesExtenso(r.cobertura)}. Linhas móveis por 100 habitantes sem máquinas e pontos de serviço; linhas em 5G como parte de todas as linhas ativas. Prestadoras: empresas com ao menos um acesso fixo no estado.
+        {mesAcessos(r, true)}; cobertura de {mesExtenso(r.cobertura)}. Acessos móveis por 100 habitantes: o total da Anatel sem máquinas e pontos de serviço; linhas em 5G como parte de todas as linhas ativas. Prestadoras: empresas com ao menos um acesso fixo no estado. Municípios sem 5G: menos de 1% dos moradores cobertos, entre os municípios com cobertura 5G publicada.
       </p>
       <div className="cn-tabela-rolagem" tabIndex={0}>
         <table className="cn-tabela cn-tabela-larga">
@@ -538,11 +541,11 @@ function SecaoEstados({ g, escolhida }: { g: GoldConectividade; escolhida: strin
               <th scope="col">Por fibra</th>
               <th scope="col">100 Mbps ou mais</th>
               <th scope="col">Prestadoras</th>
-              <th scope="col">Linhas móveis por 100 hab.</th>
+              <th scope="col">Acessos móveis por 100 hab.</th>
               <th scope="col">Linhas em 5G</th>
               <th scope="col">Moradores com 4G</th>
               <th scope="col">Moradores com 5G</th>
-              <th scope="col">Municípios sem 5G</th>
+              <th scope="col">Municípios sem 5G, de quantos com 5G publicado</th>
             </tr>
           </thead>
           <tbody>
