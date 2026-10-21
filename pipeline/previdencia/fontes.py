@@ -22,6 +22,19 @@
    Transparente (conjunto ab56485b-9c40-4efb-8563-9ce3e1973c4b; a edição de julho de 2026 foi publicada em
    27/08/2026). Tabela 2.2 (anual, R$ milhões correntes): arrecadação líquida e benefícios do RGPS, com a divisão urbana
    e rural, BPC/LOAS e RMV; tabela 2.1-A: PIB nominal e as mesmas linhas em % do PIB, usadas para conferir a conta.
+
+4. Anuário Estatístico da Previdência Social (AEPS), Ministério da Previdência Social (conferido em 21/10/2026). Anual,
+   publicado em outubro do ano seguinte (a 33ª edição, AEPS 2024, em 22/10/2025, com as tabelas atualizadas na mesma
+   data), em páginas HTML, uma por tabela, em .../previdencia-social/arquivos/aeps-{edição}/... (os mesmos endereços
+   servem a edição 2023, com 2021 a 2023: o coletor procura a edição seguinte no mesmo desenho). Entra só o que o
+   BEPS e o arquivo municipal não trazem:
+   - A.1 e A.14: benefícios concedidos no ano, por grupo de espécie e por UF, com a clientela urbana e rural;
+   - B.1, B.2 e B.3: benefícios emitidos em dezembro (quantidade e valor) e valor emitido no ano inteiro, por grupo de
+     espécie, separando o Regime Geral, os assistenciais e os encargos previdenciários da União (EPU);
+   - 43.1 e 43.2: rede de unidades do INSS por UF (dezembro) e atendimentos mês a mês nas unidades, por UF.
+   Ficam de fora B.13 a B.17 (emitidos por UF, em dezembro e mês a mês), que repetem o que o painel já mostra pela
+   tabela 19 do BEPS e pelo arquivo municipal. Cada tabela traz três anos (ou os doze meses do último), e o Anuário não
+   define o traço: ele vira ausência (null), nunca zero.
 """
 from __future__ import annotations
 
@@ -42,6 +55,85 @@ PAGINA_RESULTADO_RGPS = f"{BASE_MPS}/resultados-do-rgps"
 NOME_BEPS = "Boletim Estatístico da Previdência Social (BEPS)"
 NOME_MUNICIPIOS = "Benefícios emitidos por município, por grupo de espécie"
 NOME_RTN = "Resultado do Tesouro Nacional, série histórica"
+NOME_AEPS = "Anuário Estatístico da Previdência Social (AEPS)"
+
+# AEPS: página das edições, raiz de cada edição e o caminho de cada tabela dentro dela (os mesmos de 2023 e 2024; as
+# partes "2017-2019" e "2013-2019" dos endereços são herança do portal, não o período da tabela).
+PAGINA_AEPS = f"{BASE_MPS}/Dados-estatisticos-previdencia-social-e-inss/anuarios-da-previdencia-social"
+BASE_AEPS = f"{BASE_MPS}/arquivos/aeps-{{edicao}}"
+_B = "secao-i-beneficios/subsecao-b-beneficios-emitidos/beneficios-emitidos"
+_A = "secao-i-beneficios/subsecao-a-beneficios-concedidos/capitulo-1-aposentadorias"
+_AT = "secao-xii-atendimento/capitulo-43-2013-atendimento"
+# id: (caminho, forma, unidade). Formas: "especies" (33 linhas de grupos de espécie, total/urbana/rural x três anos),
+# "uf_clientela" (Brasil, regiões e UFs, total/urbana/rural x três anos), "rede" (unidades por tipo, dezembro do último
+# ano) e "meses" (os doze meses do último ano).
+TABELAS_AEPS = {
+    "a.1": (f"{_A}/a-1-quantidade-de-beneficios-concedidos-por-clientela-segundo-os-grupos-de-especies", "especies", "benefícios"),
+    "a.14": (f"{_A}/a-14-quantidade-de-beneficios-concedidos-por-clientela-segundo-as-grandes-regioes-e-unidades-da-federacao", "uf_clientela", "benefícios"),
+    "b.1": (f"{_B}/b-1-quantidade-de-beneficios-emitidos-por-clientela-segundo-os-grupos-de-especies-posicao-em-dezembro-2017-2019", "especies", "benefícios"),
+    "b.2": (f"{_B}/b-2-valor-de-beneficios-emitidos-por-clientela-segundo-os-grupos-de-especies-posicao-em-dezembro-2017-2019", "especies", "R$ mil"),
+    "b.3": (f"{_B}/b-3-valor-de-beneficios-emitidos-por-clientela-segundo-os-grupos-de-especies-acumulado-no-ano-2017-2019", "especies", "R$ mil"),
+    "43.1": (f"{_AT}/43-1-unidades-de-atendimentos-do-inss-segundo-as-grandes-regioes-e-unidades-da-federacao-2013-2019", "rede", "unidades"),
+    "43.2": (f"{_AT}/43-2-quantidade-mensal-de-atendimentos-nas-unidades-do-inss-2013-2019", "meses", "atendimentos"),
+}
+PRIMEIRA_EDICAO_AEPS = 2024  # a primeira integrada; edições anteriores não entram na gold
+
+# Tabelas por grupo de espécie (A.1, B.1, B.2, B.3): a sequência exata das 33 linhas (rótulo normalizado), com o
+# identificador e o pai. Linha nova, fora de ordem ou renomeada reprova a coleta, como na tabela 15 do BEPS.
+ESPECIES_AEPS = [
+    ("total", "total", None),
+    ("rgps", "beneficios do rgps", "total"),
+    ("previdenciarios", "previdenciarios", "rgps"),
+    ("aposentadorias", "aposentadorias", "previdenciarios"),
+    ("apo_tempo", "tempo de contribuicao", "aposentadorias"),
+    ("apo_idade", "idade", "aposentadorias"),
+    ("apo_invalidez", "invalidez", "aposentadorias"),
+    ("pensoes", "pensao por morte", "previdenciarios"),
+    ("auxilios", "auxilios", "previdenciarios"),
+    ("aux_doenca", "doenca", "auxilios"),
+    ("aux_reclusao", "reclusao", "auxilios"),
+    ("aux_acidente", "acidente", "auxilios"),
+    ("salario_maternidade", "salario maternidade", "previdenciarios"),
+    ("prev_outros", "outros", "previdenciarios"),
+    ("salario_familia", "salario familia", "prev_outros"),
+    ("abono_permanencia", "abono de permanencia", "prev_outros"),
+    ("vantagem_servidor", "vantagem de servidor", "prev_outros"),
+    ("acidentarios", "acidentarios", "rgps"),
+    ("acid_apo_invalidez", "aposentadoria por invalidez", "acidentarios"),
+    ("acid_pensao", "pensao por morte", "acidentarios"),
+    ("acid_auxilios", "auxilios", "acidentarios"),
+    ("acid_aux_doenca", "doenca", "acid_auxilios"),
+    ("acid_aux_acidente", "acidente", "acid_auxilios"),
+    ("acid_aux_suplementar", "suplementar", "acid_auxilios"),
+    ("assistenciais", "beneficios assistenciais", "total"),
+    ("bpc", "amparos assistenciais", "assistenciais"),
+    ("bpc_deficiencia", "portador de deficiencia", "bpc"),
+    ("bpc_idoso", "idoso", "bpc"),
+    ("pmv", "pensao mensal vitalicia", "assistenciais"),
+    ("rmv", "rendas mensais vitalicias", "assistenciais"),
+    ("rmv_invalidez", "invalidez", "rmv"),
+    ("rmv_idade", "idade", "rmv"),
+    ("epu", "encargos prev uniao epu", "total"),
+]
+
+# Tabela 43.1: as colunas de unidades, na ordem da fonte (rótulo normalizado do cabeçalho, sem as notas).
+REDE_AEPS = [
+    ("superintendencias", "superintendencia regional"),
+    ("gerencias", "gerencia executiva"),
+    ("aps_fixas", "fixas"),
+    ("aps_adj", "adj"),
+    ("aps_ai", "ai"),
+    ("aps_tel", "tel"),
+    ("aps_moveis", "moveis"),
+    ("prevcidade", "prevcidade"),
+    ("auditorias", "auditoria regional"),
+    ("procuradorias_regionais", "procuradorias regionais"),
+    ("procuradorias_seccionais", "procuradorias seccionais"),
+    ("corregedorias", "corregedorias regionais"),
+]
+
+REVISAO_MAXIMA_AEPS = 0.01                # um ano repetido numa edição nova não pode mudar mais de 1% num total
+DIFERENCA_MAXIMA_AEPS_BEPS = 0.0001       # total de dezembro do AEPS contra o BEPS (0,01%); o RGPS tem de ser igual
 
 # Unidades da Federação pelo prefixo de dois dígitos do código IBGE do município.
 UFS = [

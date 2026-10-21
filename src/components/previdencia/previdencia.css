@@ -135,6 +135,34 @@
 @media (max-width: 640px) { .pv-fluxo-linha { grid-template-columns: minmax(0, 1fr); gap: 6px; } .pv-fluxo-trilho { height: 28px; } }
 .pv-modelo { font-size: 13px; color: var(--cor-carvao-muted); }
 
+/* o ano inteiro e o atendimento (Anuário Estatístico da Previdência Social) */
+.pv-subtitulo { margin-top: 48px; font-family: var(--font-serif), Georgia, serif; font-weight: 400; font-size: 23px; line-height: 1.35; max-width: 38ch; }
+.pv-subtitulo + .pv-intro { margin-top: 10px; max-width: 68ch; font-size: 16px; line-height: 1.65; }
+.pv-legenda i.pv-pilha-rgps, .pv-pilha-rgps { background: var(--pv-acento); }
+.pv-legenda i.pv-pilha-assist, .pv-pilha-assist { background: var(--pv-ref); }
+.pv-legenda i.pv-pilha-epu, .pv-pilha-epu { background: var(--cor-carvao); }
+.pv-legenda i[class^="pv-pilha"] { height: 10px; width: 10px; }
+.pv-pilhas { margin-top: 14px; display: grid; gap: 10px; }
+.pv-pilha { display: grid; grid-template-columns: 4rem minmax(0, 1fr) 9.5rem; gap: 12px; align-items: center; min-height: 36px; }
+.pv-pilha > span:first-child { font-size: 14px; font-variant-numeric: tabular-nums; }
+.pv-pilha > span:last-child { text-align: right; font-size: 14px; font-variant-numeric: tabular-nums; }
+.pv-pilha-trilho { display: flex; height: 26px; }
+.pv-pilha-trilho > span { display: block; min-width: 0; }
+@media (max-width: 640px) { .pv-pilha { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "ano valor" "trilho trilho"; gap: 4px 10px; } .pv-pilha > span:first-child { grid-area: ano; } .pv-pilha > span:last-child { grid-area: valor; } .pv-pilha-trilho { grid-area: trilho; height: 22px; } }
+.pv-tabela tbody + tbody .pv-grupo > th { padding-top: 26px; }
+.pv-tabela .pv-grupo > th { text-align: left; font-weight: 600; font-size: 14px; color: var(--cor-carvao); border-bottom: 1px solid var(--cor-linha); padding-left: 0; }
+.pv-estoque .pv-barra-trilho { height: 18px; }
+.pv-tabela-media { min-width: 560px; max-width: 980px; }
+.pv-figura-media { max-width: 760px; }
+.pv-rede { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin-top: 24px; border-block: 1px solid var(--cor-linha); }
+.pv-rede > div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 4px; padding: 16px 20px 18px; border-right: 1px solid var(--cor-linha); min-width: 0; }
+.pv-rede > div:first-child { padding-left: 0; }
+.pv-rede > div:last-child { border-right: 0; }
+.pv-rede dt { font-size: 14px; line-height: 1.45; color: var(--cor-carvao-muted); }
+.pv-rede dd { margin: 0; }
+@media (max-width: 1000px) { .pv-rede { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pv-rede > div:nth-child(2) { border-right: 0; } .pv-rede > div:nth-child(-n+2) { border-bottom: 1px solid var(--cor-linha); } .pv-rede > div:nth-child(3) { padding-left: 0; } }
+@media (max-width: 560px) { .pv-rede { grid-template-columns: 1fr; } .pv-rede > div, .pv-rede > div:nth-child(3) { padding: 14px 0; border-right: 0; border-bottom: 1px solid var(--cor-linha); } .pv-rede > div:last-child { border-bottom: 0; } }
+
 /* método e arquivos, recolhidos no fim */
 .pv-metodo { margin-top: 72px; border-block: 1px solid var(--cor-linha); }
 .pv-metodo > summary { padding: 22px 0; cursor: pointer; font-family: var(--font-serif), Georgia, serif; font-size: 24px; line-height: 1.35; list-style-position: outside; }

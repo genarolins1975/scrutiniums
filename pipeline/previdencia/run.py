@@ -4,15 +4,18 @@
     python3 -m pipeline.previdencia.run --check                  confere se a gold versionada é a dos seeds
     python3 -m pipeline.previdencia.run --coleta beps            recoleta o BEPS, grava o seed e reconstrói
     python3 -m pipeline.previdencia.run --coleta rtn --so-coleta só recoleta o RTN e grava o seed (motor por grupo)
+    python3 -m pipeline.previdencia.run --coleta aeps            procura a edição seguinte do AEPS (ou recoleta a atual)
 
 Fontes de coleta: beps (Boletim Estatístico da Previdência Social, mensal), municipios (benefícios emitidos por
-município, anual) e rtn (Resultado do Tesouro Nacional, série histórica), ou todas. A coleta valida o que trouxe antes
+município, anual), rtn (Resultado do Tesouro Nacional, série histórica) e aeps (Anuário Estatístico da Previdência
+Social, anual: concessões, valor do ano, rede e atendimento), ou todas. A coleta valida o que trouxe antes
 de gravar o seed: planilha trocada, tabela que não fecha ou revisão acima do limite não substituem o seed anterior
 (saída 1). A construção da gold valida de novo, com a conferência cruzada entre o arquivo municipal e o BEPS, e não
 grava nada se reprovar; nesse caso a saída é 1 e a publicação anterior continua no ar.
 
-A coleta do BEPS lê planilha Excel 97 com a biblioteca xlrd; as demais, com openpyxl. Os dois só são importados na
-coleta: a reconstrução e os testes usam só a biblioteca padrão.
+A coleta do BEPS lê planilha Excel 97 com a biblioteca xlrd; o arquivo municipal e o RTN, com openpyxl; o AEPS, páginas
+HTML com a biblioteca padrão. As duas bibliotecas só são importadas na coleta: a reconstrução e os testes usam só a
+biblioteca padrão.
 """
 from __future__ import annotations
 
@@ -23,7 +26,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from . import coleta, gold, validacoes
+from . import aeps, coleta, gold, validacoes
 
 RAIZ = Path(__file__).resolve().parents[2]
 SEED = RAIZ / "pipeline" / "previdencia" / "seed"
@@ -31,6 +34,7 @@ SEEDS = {
     "beps": SEED / "beps.json",
     "municipios": SEED / "municipios.json",
     "rtn": SEED / "rtn.json",
+    "aeps": SEED / "aeps.json",
 }
 PASTA = RAIZ / "public" / "previdencia" / "gold"
 GOLD = PASTA / "previdencia.json"
@@ -62,8 +66,14 @@ def saidas(seeds: dict) -> dict[Path, str]:
     return out
 
 
-COLETORES = {"beps": coleta.coletar_beps, "municipios": coleta.coletar_municipios, "rtn": coleta.coletar_rtn}
-VALIDADORES = {"beps": validacoes.validar_beps, "municipios": validacoes.validar_municipios, "rtn": validacoes.validar_rtn}
+# Cada coletor recebe o seed publicado: o do AEPS parte da edição publicada para procurar a seguinte.
+COLETORES = {
+    "beps": lambda _anterior: coleta.coletar_beps(),
+    "municipios": lambda _anterior: coleta.coletar_municipios(),
+    "rtn": lambda _anterior: coleta.coletar_rtn(),
+    "aeps": aeps.coletar_aeps,
+}
+VALIDADORES = {"beps": validacoes.validar_beps, "municipios": validacoes.validar_municipios, "rtn": validacoes.validar_rtn, "aeps": validacoes.validar_aeps}
 
 
 def main(argv=None) -> int:
@@ -76,8 +86,8 @@ def main(argv=None) -> int:
     if a.coleta:
         for fonte in COLETORES if a.coleta == "todas" else [a.coleta]:
             print(f"coletando {fonte}...", flush=True)
-            novo = COLETORES[fonte]()
             anterior = json.loads(SEEDS[fonte].read_text(encoding="utf-8")) if SEEDS[fonte].exists() else None
+            novo = COLETORES[fonte](anterior)
             problemas = VALIDADORES[fonte](novo, anterior)
             if problemas:
                 print(f"coleta {fonte} reprovada; o seed anterior foi mantido:", file=sys.stderr)
@@ -108,7 +118,8 @@ def main(argv=None) -> int:
     g = json.loads(out[GOLD])
     print(
         f"gold gravada: BEPS {g['referencia']}, municípios {g['anual']['anos'][0]} a {g['anual']['anos'][-1]} "
-        f"({g['municipios']['total']}), RTN {g['rgps']['anos'][0]} a {g['rgps']['anos'][-1]}, hash {g['hash_dados'][:12]}"
+        f"({g['municipios']['total']}), RTN {g['rgps']['anos'][0]} a {g['rgps']['anos'][-1]}, AEPS {g['aeps']['edicao']}, "
+        f"hash {g['hash_dados'][:12]}"
     )
     return 0
 

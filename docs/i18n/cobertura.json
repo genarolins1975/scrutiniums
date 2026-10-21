@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
-    "arquivos_analisados": 1506,
-    "fontes_sha256": "2e3bfaabf5ae4cf270aa2af9586705fee09f0e52273ad7fee544c20ee0d68179",
-    "pendencias_sha256": "c896c76f8c497583b9592425d5a2c764a5b90338cd8a48e3818030ad62239e9f",
+    "arquivos_analisados": 1508,
+    "fontes_sha256": "6ba32c97c1338cc00698b0d1c85dcd3a4b2ed155765bbc806758d829448cf116",
+    "pendencias_sha256": "4b9aa49ff38c0f7c07078370c244a3e101900c683f057ef346460126aeb9a9e1",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -178,20 +178,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 408,
+        "arquivos": 409,
         "candidatos": {
-          "jsx_text": 2293,
-          "atributos": 490,
-          "props": 1113,
-          "outros_literais": 8360,
-          "templates": 1156,
-          "expressoes_nao_resolvidas": 7282,
-          "chaves_objetos": 6651
+          "jsx_text": 2422,
+          "atributos": 519,
+          "props": 1114,
+          "outros_literais": 8560,
+          "templates": 1184,
+          "expressoes_nao_resolvidas": 7502,
+          "chaves_objetos": 6772
         },
         "exclusoes": {
-          "importacoes": 1772,
-          "atributos_tecnicos": 3763,
-          "tipos": 505
+          "importacoes": 1778,
+          "atributos_tecnicos": 3854,
+          "tipos": 557
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -200,7 +200,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 27345,
+        "candidatos_nao_catalogados": 28073,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -376,13 +376,13 @@
           "jsx_text": 3273,
           "atributos": 1083,
           "props": 1479,
-          "outros_literais": 8011,
-          "templates": 850,
-          "expressoes_nao_resolvidas": 8392,
-          "chaves_objetos": 4898
+          "outros_literais": 8024,
+          "templates": 851,
+          "expressoes_nao_resolvidas": 8399,
+          "chaves_objetos": 4911
         },
         "exclusoes": {
-          "importacoes": 954,
+          "importacoes": 955,
           "atributos_tecnicos": 3645,
           "tipos": 513
         },
@@ -393,7 +393,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 27986,
+        "candidatos_nao_catalogados": 28020,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -419,18 +419,18 @@
     "contas_federais": {
       "nome": "Contas Públicas Federais",
       "interface": {
-        "arquivos": 77,
+        "arquivos": 78,
         "candidatos": {
           "jsx_text": 972,
           "atributos": 203,
           "props": 107,
-          "outros_literais": 1838,
+          "outros_literais": 1839,
           "templates": 156,
           "expressoes_nao_resolvidas": 1676,
           "chaves_objetos": 988
         },
         "exclusoes": {
-          "importacoes": 277,
+          "importacoes": 278,
           "atributos_tecnicos": 761,
           "tipos": 67
         },
@@ -441,13 +441,13 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 5940,
+        "candidatos_nao_catalogados": 5941,
         "percentual_traduzido": null
       },
       "rotas": {
         "paginas_pt": 7,
         "paginas_en": 0,
-        "handlers": 15,
+        "handlers": 16,
         "templates_com_parametros": 1,
         "paginas_pt_literais": 6,
         "paginas_pt_fora_do_adaptador": 1,

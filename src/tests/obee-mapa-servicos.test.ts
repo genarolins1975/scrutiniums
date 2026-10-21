@@ -11,7 +11,7 @@ describe("descoberta de serviços públicos", () => {
     expect(filtraDimensoes("termo inexistente", "Todas")).toEqual([]);
   });
   it("combina busca, grupo e disponibilidade, sem sugerir dados para as áreas sem publicação", () => {
-    expect(filtraDimensoes("", "Todas", true).map(d => d.id)).toEqual(["educacao", "saude", "trabalho", "alimentacao", "assistencia", "seguranca", "justica", "habitacao", "saneamento", "mobilidade", "energia", "ambiente", "cultura"]);
+    expect(filtraDimensoes("", "Todas", true).map(d => d.id)).toEqual(["educacao", "saude", "trabalho", "alimentacao", "assistencia", "previdencia", "seguranca", "justica", "habitacao", "saneamento", "mobilidade", "energia", "ambiente", "cultura"]);
     expect(filtraDimensoes("", GRUPOS[2], true).map(d => d.id)).toEqual(["habitacao", "saneamento", "mobilidade", "energia", "ambiente"]);
     expect(filtraDimensoes("", GRUPOS[1]).every(d => d.grupo === GRUPOS[1])).toBe(true);
     expect(filtraDimensoes("", "Todas")).toEqual(DIMENSOES);
@@ -22,5 +22,12 @@ describe("descoberta de serviços públicos", () => {
       expect(existsSync(join(process.cwd(), "src/app", d.href!, arquivo))).toBe(true);
     }
     expect(new Set(DIMENSOES.map(d => d.id)).size).toBe(DIMENSOES.length);
+  });
+  it("Previdência aponta para o painel canônico das Contas Públicas, sem cópia na Eficiência Estatal", async () => {
+    const { donoDaRota } = await import("@/lib/observatorios/registro");
+    const d = DIMENSOES.find(x => x.id === "previdencia")!;
+    expect(d.href).toBe("/contas-publicas/previdencia");
+    expect(donoDaRota(d.href!)).toMatchObject({ observatorio: "contas-publicas", colecao: "federais", titulo: "Previdência e INSS" });
+    expect(existsSync(join(process.cwd(), "src/app/eficiencia-estatal/previdencia"))).toBe(false);
   });
 });

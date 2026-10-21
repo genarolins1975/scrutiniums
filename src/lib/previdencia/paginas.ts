@@ -10,7 +10,7 @@
  * O painel mantém pipeline e gold próprios (pipeline/previdencia, public/previdencia/gold) e a fonte de frescor
  * "previdencia" (src/lib/frescor/limiares.json). Nomes de exibição sem hífen: a plataforma não usa hífen como pontuação.
  */
-import type { CampoQ, CampoV, IdTipo } from "./tipos";
+import type { CampoQ, CampoV, IdEspecieAeps, IdTipo } from "./tipos";
 
 export const ROTA_PREVIDENCIA = "/contas-publicas/previdencia";
 export const VERSAO_ABERTA = "/aperitivo/previdencia";
@@ -30,6 +30,7 @@ export const DOWNLOADS = [
   { arquivo: "beneficios-por-estado.csv", rotulo: "Benefícios por estado", descricao: "Os dezembros do arquivo municipal somados por UF e o mês mais recente do BEPS (Regime Geral)" },
   { arquivo: "beneficios-brasil-mensal.csv", rotulo: "Benefícios no Brasil, mês a mês", descricao: "Quantidade e valor por grande grupo, da série do BEPS" },
   { arquivo: "resultado-rgps.csv", rotulo: "Resultado do Regime Geral, ano a ano", descricao: "Arrecadação, benefícios, necessidade de financiamento, BPC e PIB, do Resultado do Tesouro Nacional" },
+  { arquivo: "anuario-inss.csv", rotulo: "Concessões, valor do ano e atendimento, do Anuário", descricao: "As sete tabelas do Anuário Estatístico da Previdência Social usadas no painel, valor a valor, com a linha e a coluna da fonte" },
 ] as const;
 
 /** O estado com a preposição certa ("do Maranhão", "de São Paulo", "da Bahia"), pela sigla. */
@@ -95,3 +96,43 @@ export const NOME_GRUPO_V: Record<CampoV, string> = {
   outros_prev: "Outros previdenciários",
   assistenciais: "Assistenciais e de legislação específica",
 };
+
+/** Grupos de espécie do Anuário (AEPS) para leitura leiga; o rótulo da fonte fica na gold (rotulo_fonte). */
+export const NOME_ESPECIE_AEPS: Record<IdEspecieAeps, string> = {
+  total: "Todos os benefícios",
+  rgps: "Regime Geral (RGPS)",
+  previdenciarios: "Previdenciários",
+  aposentadorias: "Aposentadorias",
+  apo_tempo: "Aposentadoria por tempo de contribuição",
+  apo_idade: "Aposentadoria por idade",
+  apo_invalidez: "Aposentadoria por invalidez",
+  pensoes: "Pensão por morte",
+  auxilios: "Auxílios",
+  aux_doenca: "Auxílio doença",
+  aux_reclusao: "Auxílio reclusão",
+  aux_acidente: "Auxílio acidente",
+  salario_maternidade: "Salário maternidade",
+  prev_outros: "Outros previdenciários",
+  salario_familia: "Salário família",
+  abono_permanencia: "Abono de permanência",
+  vantagem_servidor: "Vantagem de servidor",
+  acidentarios: "Por acidente de trabalho",
+  acid_apo_invalidez: "Aposentadoria por invalidez (acidente de trabalho)",
+  acid_pensao: "Pensão por morte (acidente de trabalho)",
+  acid_auxilios: "Auxílios (acidente de trabalho)",
+  acid_aux_doenca: "Auxílio doença (acidente de trabalho)",
+  acid_aux_acidente: "Auxílio acidente (acidente de trabalho)",
+  acid_aux_suplementar: "Auxílio suplementar (acidente de trabalho)",
+  assistenciais: "Assistenciais",
+  bpc: "Benefício de Prestação Continuada (BPC)",
+  bpc_deficiencia: "BPC da pessoa com deficiência",
+  bpc_idoso: "BPC da pessoa idosa",
+  pmv: "Pensão mensal vitalícia",
+  rmv: "Renda mensal vitalícia",
+  rmv_invalidez: "Renda mensal vitalícia por invalidez",
+  rmv_idade: "Renda mensal vitalícia por idade",
+  epu: "Encargos previdenciários da União (EPU)",
+};
+
+/** Os três grandes grupos do Anuário: o que o BEPS chama de legislação específica aparece aqui separado. */
+export const GRANDES_GRUPOS_AEPS = ["rgps", "assistenciais", "epu"] as const satisfies readonly IdEspecieAeps[];
