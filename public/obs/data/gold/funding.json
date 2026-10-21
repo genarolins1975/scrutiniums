@@ -1852,8 +1852,8 @@
   "por_segmento": [
    {
     "sr": "n/d",
-    "n": 283,
-    "captacoes": 11198449483674.283,
+    "n": 282,
+    "captacoes": 11198447274896.303,
     "share_sfn": 78.48,
     "varejo_share": 50.86,
     "mercado_share": 36.74,
@@ -1892,8 +1892,8 @@
    },
    {
     "sr": "S4",
-    "n": 241,
-    "captacoes": 389362239779.2499,
+    "n": 242,
+    "captacoes": 389364448557.22986,
     "share_sfn": 2.73,
     "varejo_share": 81.79,
     "mercado_share": 9.64,
@@ -3276,6 +3276,24 @@
    }
   ],
   "serie": [
+   {
+    "anomes": "201503",
+    "captacoes": 5556198275566.756,
+    "dep_vista": 249348714755.79,
+    "dep_poupanca": 657103779215.1299,
+    "dep_prazo": 898341476367.3994,
+    "lci": 181771923273.66006,
+    "lca": 169300193429.08997,
+    "dep_outros": 38708472846.97002,
+    "dep_interfin": 141027767350.13007,
+    "compromissadas": 1502507303096.4294,
+    "lf": 284557050766.79004,
+    "tvm_exterior": 137054227119.62,
+    "outros_titulos": 11874558225.360012,
+    "emprestimos_repasses": 1284602809120.3906,
+    "varejo_share": 39.5,
+    "mercado_share": 37.38
+   },
    {
     "anomes": "201506",
     "captacoes": 5543084977022.792,
@@ -4907,6 +4925,42 @@
   },
   "anomes_ifdata_razao": "202606",
   "serie": [
+   {
+    "mes": "2025-01",
+    "valor": 713931754375.8402,
+    "n_emissores": 179,
+    "lf": 549061380672.9902,
+    "cdb": 139023611516.14,
+    "ligado_share": 18.7,
+    "n_classes": 3102,
+    "parcial": false,
+    "sob_sigilo": 0.0,
+    "sigilo_ate": null
+   },
+   {
+    "mes": "2025-02",
+    "valor": 750486458623.6907,
+    "n_emissores": 181,
+    "lf": 575169578820.5306,
+    "cdb": 151323704273.42,
+    "ligado_share": 19.15,
+    "n_classes": 3274,
+    "parcial": false,
+    "sob_sigilo": 0.0,
+    "sigilo_ate": null
+   },
+   {
+    "mes": "2025-03",
+    "valor": 762536830744.4894,
+    "n_emissores": 186,
+    "lf": 586985720836.1394,
+    "cdb": 150938882680.75,
+    "ligado_share": 18.84,
+    "n_classes": 3279,
+    "parcial": false,
+    "sob_sigilo": 0.0,
+    "sigilo_ate": null
+   },
    {
     "mes": "2025-04",
     "valor": 765937597892.2394,
