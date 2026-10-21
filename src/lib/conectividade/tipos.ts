@@ -157,6 +157,7 @@ export type GoldConectividade = {
     municipios: number;
     sem_fibra: number;
     uma_prestadora: number;
+    municipios_com_cobertura: number;
     sem_5g: number;
     g4_abaixo_50: number;
     sem_dado: { fixa: string[]; movel: string[]; cobertura: string[] };

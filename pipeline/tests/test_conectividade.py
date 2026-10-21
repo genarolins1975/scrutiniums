@@ -551,6 +551,11 @@ class TestSeedsVersionados(unittest.TestCase):
         self.assertTrue(lo <= self.g["brasil"]["fixa"]["densidade"] <= hi)
         for x in ("sem_fibra", "uma_prestadora", "sem_5g", "g4_abaixo_50"):
             self.assertIsInstance(self.g["destaques"][x], int)
+        # o universo das contagens de cobertura é o dos municípios com cobertura publicada, não o das três fontes
+        d = self.g["destaques"]
+        self.assertEqual(d["municipios_com_cobertura"], sum(u["cobertura"]["municipios_com_dado"] for u in self.g["ufs"]))
+        self.assertEqual(d["municipios_com_cobertura"], d["municipios"] - len(d["sem_dado"]["cobertura"]))
+        self.assertLessEqual(d["sem_5g"], d["municipios_com_cobertura"])
 
 
 if __name__ == "__main__":

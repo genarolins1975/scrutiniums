@@ -300,6 +300,8 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
         "municipios": len(ids),
         "sem_fibra": sum(u["sem_fibra"] for u in ufs),
         "uma_prestadora": sum(u["uma_prestadora"] for u in ufs),
+        # universo das duas contagens de cobertura: só os municípios com cobertura publicada (o sem dado não é avaliado)
+        "municipios_com_cobertura": sum(u["cobertura"]["municipios_com_dado"] for u in ufs),
         "sem_5g": sum(u["cobertura"]["municipios_sem_5g"] for u in ufs),
         "g4_abaixo_50": sum(u["cobertura"]["municipios_4g_abaixo_50"] for u in ufs),
         "sem_dado": {x: sorted(c for c in ids if x in municipios[c]["ausencias"]) for x in ("fixa", "movel", "cobertura")},

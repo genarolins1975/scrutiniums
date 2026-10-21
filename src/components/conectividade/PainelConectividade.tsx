@@ -57,8 +57,8 @@ function Abertura({ g }: { g: GoldConectividade }) {
       <p className="cn-achado">
         Em {mesExtenso(r.fixa)}, o Brasil tinha <strong>{milhoes(f.acessos)} de acessos de banda larga fixa</strong>, {num(f.densidade, 1)} para cada 100 habitantes, e{" "}
         <strong>{pct(f.fibra_pct)} deles por fibra óptica</strong>. Nas redes móveis{r.movel !== r.fixa ? `, em ${mesExtenso(r.movel)}` : ""}, {milhoes(m.linhas)} de linhas ativas, {pct(m.g5_pct)} já em 5G. Em {mesExtenso(r.cobertura)},{" "}
-        <strong>{pct(c.tecnologias.g5?.[0])} dos moradores</strong> do país estavam dentro da cobertura 5G declarada pelas operadoras, e em {num(g.destaques.sem_5g)} municípios
-        menos de 1% dos moradores estavam dentro de alguma cobertura 5G.
+        <strong>{pct(c.tecnologias.g5?.[0])} dos moradores</strong> do país estavam dentro da cobertura 5G declarada pelas operadoras, e em {num(g.destaques.sem_5g)} dos{" "}
+        {num(g.destaques.municipios_com_cobertura)} municípios com cobertura publicada menos de 1% dos moradores estavam dentro de alguma cobertura 5G.
       </p>
       <dl className="cn-numeros" aria-label="O tema em quatro números">
         <div className="cn-lider">
@@ -78,8 +78,8 @@ function Abertura({ g }: { g: GoldConectividade }) {
         </div>
         <div>
           <dt>Municípios ainda sem 5G</dt>
-          <dd className="cn-valor">{num(g.destaques.sem_5g)}<span className="cn-unidade">de {num(g.destaques.municipios)}</span></dd>
-          <dd className="cn-prova">{mesExtenso(r.cobertura)} · menos de 1% dos moradores cobertos · Anatel</dd>
+          <dd className="cn-valor">{num(g.destaques.sem_5g)}<span className="cn-unidade">de {num(g.destaques.municipios_com_cobertura)}</span></dd>
+          <dd className="cn-prova">{mesExtenso(r.cobertura)} · menos de 1% dos moradores cobertos · municípios com cobertura publicada · Anatel</dd>
         </div>
       </dl>
     </>
@@ -445,7 +445,7 @@ function SecaoCobertura({ g, logos }: { g: GoldConectividade; logos: Logos }) {
         <span><i style={{ background: "#182B36", height: 12, width: 2 }} />Brasil, {pct(c.tecnologias.g5?.[0])}</span>
       </div>
       <p className="cn-fonte">
-        Média dos municípios de cada estado ponderada pelos moradores (cálculo da Scrutiniums). Em {mesExtenso(g.referencia.cobertura)}, {num(g.destaques.sem_5g)} municípios tinham
+        Média dos municípios de cada estado ponderada pelos moradores (cálculo da Scrutiniums). Em {mesExtenso(g.referencia.cobertura)}, dos {num(g.destaques.municipios_com_cobertura)} municípios com cobertura publicada, {num(g.destaques.sem_5g)} tinham
         menos de 1% dos moradores dentro de alguma cobertura 5G, e em {num(g.destaques.g4_abaixo_50)} a cobertura 4G alcançava menos da metade dos moradores.
       </p>
     </section>
