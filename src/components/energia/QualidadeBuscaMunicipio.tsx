@@ -42,7 +42,7 @@ const BOTAO =
 export function QualidadeBuscaMunicipio({
   ano,
   urlMunicipios,
-  idFicha = "municipio-escolhido",
+  idMapa = "mapa-municipios",
   brasil = null,
   distribuidoras = [],
   fonteConjuntos = "ANEEL",
@@ -50,8 +50,8 @@ export function QualidadeBuscaMunicipio({
 }: {
   ano: number;
   urlMunicipios: string;
-  /** `id` da ficha do município, no mapa. */
-  idFicha?: string;
+  /** `id` da seção do mapa: o botão leva ao mapa, com o município aceso e, logo abaixo dele, o histórico da distribuidora. */
+  idMapa?: string;
   /** DEC e FEC do Brasil, ao lado da resposta só quando o ano é o mesmo do mapa. */
   brasil?: { ano: number; dec: number | null; fec: number | null } | null;
   /** Nome de exibição de cada distribuidora, pelo CNPJ. */
@@ -284,7 +284,7 @@ export function QualidadeBuscaMunicipio({
               </LinkSemPrefetch>
             )}
             {selecionado.cnpjs.length > 0 && (
-              <a href={`#${idFicha}`} className={BOTAO}>
+              <a href={`#${idMapa}`} className={BOTAO}>
                 {tx("Ver no mapa, com o histórico da distribuidora", "See it on the map, with the distribution utility's history")}
               </a>
             )}

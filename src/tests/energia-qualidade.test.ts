@@ -12,6 +12,7 @@ import { QualidadeConjuntosDoMunicipio } from "@/components/energia/QualidadeCon
 import { QualidadeEscala } from "@/components/energia/QualidadeEscala";
 import { QualidadeLimites } from "@/components/energia/QualidadeLimites";
 import { QualidadeMapa } from "@/components/energia/QualidadeMapa";
+import { destinoComEscolha } from "@/components/energia/QualidadeLevaEscolha";
 import { lerEstado } from "@/lib/energia/estadoUrl";
 import { problemasEvidencia } from "@/lib/energia/evidencia";
 import { mesAno, num, pct } from "@/lib/energia/formato";
@@ -1932,6 +1933,9 @@ describe.skipIf(!disponivel)("rodada 2: frase do recorte, quebra de 2022, busca 
     expect(notaValoresMunicipio({ relacao: "conjunto_compartilhado", conjuntos: ["1"] })).toMatch(/do conjunto inteiro, não medidos só aqui/);
     // o botão de comparar leva a escolha a Comparar distribuidoras (?dist=), na fonte da busca e na do mapa
     for (const arq of ["QualidadeBuscaMunicipio", "QualidadeMapa"]) expect(ler(`src/components/energia/${arq}.tsx`), arq).toContain("${ROTA_COMPARAR_DISTRIBUIDORAS}?dist=${cnpjsSel.join(\",\")}#comparar-distribuidoras");
+    // "Ver no mapa" leva à seção do mapa (o município aceso, e o histórico logo abaixo), não à ficha que fica depois dele
+    expect(ler("src/components/energia/QualidadeBuscaMunicipio.tsx")).toContain('idMapa = "mapa-municipios"');
+    expect(entrada).toContain('id="mapa-municipios"');
     expect(html).toMatch(/role="combobox"/);
     expect(html).toContain('id="municipio-escolhido"');
     const isolado = renderToStaticMarkup(createElement(QualidadeBuscaMunicipio, { ano: ref, urlMunicipios: "/x.csv" }));
@@ -1953,6 +1957,25 @@ describe.skipIf(!disponivel)("rodada 2: frase do recorte, quebra de 2022, busca 
     // a abertura traz a linha "Não permite concluir" e a razão no lead; os avisos essenciais têm 14 px, não 12
     expect(html).toContain('data-limite=""');
     for (const arq of ["QualidadeLimites", "QualidadeMapa", "QualidadeConjuntosDoMunicipio"]) expect(ler(`src/components/energia/${arq}.tsx`), arq).not.toMatch(/<p className="[^"]*\btext-xs\b[^"]*">/);
+  });
+});
+
+describe("a escolha de distribuidora acompanha o leitor entre as duas páginas de Qualidade", () => {
+  const base = "https://scrutiniums.com";
+  const rge = "02016440000162";
+  it("o link para a outra página leva o ?dist= da origem; a mesma página, outra origem e escolha própria seguem como estão", () => {
+    expect(destinoComEscolha("/setor-eletrico/qualidade#compensacoes", `${base}/setor-eletrico/qualidade/comparar-distribuidoras?dist=${rge}`)).toBe(`${base}/setor-eletrico/qualidade?dist=${rge}#compensacoes`);
+    expect(destinoComEscolha("/en/setor-eletrico/qualidade/comparar-distribuidoras#limites", `${base}/en/setor-eletrico/qualidade?dist=${rge},33050196000188`)).toBe(
+      `${base}/en/setor-eletrico/qualidade/comparar-distribuidoras?dist=${rge}%2C33050196000188#limites`,
+    );
+    expect(destinoComEscolha("#limites", `${base}/setor-eletrico/qualidade/comparar-distribuidoras?dist=${rge}`)).toBeNull();
+    expect(destinoComEscolha("/setor-eletrico/perdas", `${base}/setor-eletrico/qualidade?dist=${rge}`)).toBeNull();
+    expect(destinoComEscolha("/setor-eletrico/qualidade?dist=33050196000188", `${base}/setor-eletrico/qualidade/comparar-distribuidoras?dist=${rge}`)).toBeNull();
+    expect(destinoComEscolha("/setor-eletrico/qualidade", `${base}/setor-eletrico/qualidade/comparar-distribuidoras?dist=abc`)).toBeNull();
+    expect(destinoComEscolha("/setor-eletrico/qualidade", `${base}/setor-eletrico/qualidade/comparar-distribuidoras`)).toBeNull();
+  });
+  it("as duas páginas montam o componente", () => {
+    for (const f of ["src/app/setor-eletrico/qualidade/page.tsx", "src/app/setor-eletrico/qualidade/comparar-distribuidoras/page.tsx"]) expect(ler(f), f).toContain("<QualidadeLevaEscolha />");
   });
 });
 

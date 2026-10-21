@@ -20,6 +20,7 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { QualidadeLevaEscolha } from "@/components/energia/QualidadeLevaEscolha";
 import { carimbo, dataBR, num, pct } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
@@ -127,6 +128,7 @@ export default function CompararDistribuidorasPage() {
     <>
       <CabecalhoEnergia atual="qualidade" />
       <MarcaVisita secao="energia:qualidade" />
+      <QualidadeLevaEscolha />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo
           rotulo={tx("Qualidade do serviço · Comparar distribuidoras", "Quality of supply · Compare distribution utilities")}
