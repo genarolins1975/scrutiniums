@@ -11,6 +11,7 @@ import { DadosArquivos, itensDeArquivos } from "@/components/energia/DadosArquiv
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { gold } from "@/lib/energia/gold";
+import { capturasDoConjunto } from "@/lib/energia/capturas-servidor";
 import { carimbo, dataBR, plural } from "@/lib/energia/formato";
 import { tx } from "@/lib/energia/idioma";
 import { LICENCA_EN, PAINEIS_EN, codigo, identificadorDaFicha, marcado, rotuloDado, traduzido } from "@/lib/energia/i18n/regulacao-dados-metodo";
@@ -102,7 +103,16 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
   const oficial = urlDoConjunto(e);
   const paginaInicial = eApenasPaginaInicial(oficial);
   const cadencias = integr.flatMap((c) => c.frequencia?.cadencias ?? []).filter((c, i, a) => a.indexOf(c) === i);
-  const capturas = f?.historico?.length ? f.historico : (f?.capturas ?? []).map((x) => ({ ...x, vigente: true }));
+  // divergência entre o resumo de meta.json e o CSV de capturas é falha de contrato que os testes retêm antes
+  // da publicação; aqui ela não derruba o build do site inteiro (review #283): a ficha diz que o histórico
+  // ficou indisponível, sem mostrar amostra como se fosse o total
+  let capturas: ReturnType<typeof capturasDoConjunto> = [];
+  let capturasIndisponiveis = false;
+  try {
+    capturas = capturasDoConjunto(f, d.interno);
+  } catch {
+    capturasIndisponiveis = true;
+  }
   const notasDeQuebra = integr.length ? notasDeQuebraPosterior(e.quebras, integr[0]) : [];
   const quebrasEn = integr.length ? quebrasPosteriores(e.quebras, integr[0]) : [];
   // indicadores publicados que listam este conjunto entre as fontes (metricas.json)
@@ -514,13 +524,58 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                       )}
                     </dl>
                   )}
+                  {(f?.snapshots_familias?.length ?? 0) > 1 && (
+                    <div className="space-y-3" data-snapshots-familias="true">
+                      <p className="max-w-prose2 text-sm text-carvao-muted">
+                        {tx("As contagens distinguem famílias de armazenamento. Uma mesma captura pode ter registros em mais de uma família; cada versão é identificada abaixo.", "Counts distinguish storage families. The same capture can have records in more than one family; each version is identified below.")}
+                      </p>
+                      {f!.snapshots_familias!.map((s) => (
+                        <dl key={s.familia} className="border-l border-linha pl-3 text-xs text-carvao-muted [overflow-wrap:anywhere]">
+                          <dt>{tx("Família", "Family")}</dt><dd>{codigo(s.familia)}</dd>
+                          <dt>{tx("Snapshot", "Snapshot")}</dt><dd>{s.snapshot ? codigo(s.snapshot) : tx("não informado", "not reported")}</dd>
+                          <dt>sha256</dt><dd>{s.snapshot_sha256 ? codigo(s.snapshot_sha256) : tx("não informado", "not reported")}</dd>
+                          <dt>{tx("Downloads idênticos posteriores", "Later identical downloads")}</dt>
+                          <dd>{s.recapturas_sem_mudanca ?? tx("não informados", "not reported")}</dd>
+                          <dt>{tx("Última tentativa de coleta direta", "Latest direct collection attempt")}</dt>
+                          <dd data-tentativa-familia={s.familia}>
+                            {s.ultima_tentativa ? <>
+                              {`${carimbo(s.ultima_tentativa.tentado_em)} · ${s.ultima_tentativa.ok ? "ok" : tx("falhou", "failed")} · `}
+                              <TrechoPortugues regiao="ficha-tentativa-familia">{s.ultima_tentativa.detalhe}</TrechoPortugues>
+                            </> : tx("não registrada", "not recorded")}
+                          </dd>
+                        </dl>
+                      ))}
+                    </div>
+                  )}
                   <p className="max-w-prose2 text-sm text-carvao-muted">
                     {tx(
-                      "Cada arquivo baixado com conteúdo novo é guardado sem alteração; um download idêntico a um já guardado não cria registro novo. A tabela lista todas as capturas, inclusive as que uma captura posterior do mesmo arquivo substituiu.",
-                      "Each file downloaded with new content is stored unchanged; a download identical to one already stored does not create a new record. The table lists all the captures, including those that a later capture of the same file replaced.",
+                      "Cada família registra as versões capturadas de cada recurso. Uma recaptura idêntica não cria uma versão nova nessa família. A tabela inclui versões vigentes e substituídas.",
+                      "Each family records the captured versions of each resource. An identical recapture does not create a new version within that family. The table includes current and replaced versions.",
                     )}
                   </p>
-                  {capturas.length === 0 ? (
+                  {f?.resumo_capturas && !capturasIndisponiveis && (
+                    <p className="max-w-prose2 text-sm text-carvao-muted" data-resumo-capturas="true">
+                      {tx(
+                        `${plural(f.resumo_capturas.total_historico, "registro de captura", "registros de captura")}, dos quais ${plural(f.resumo_capturas.total_capturas, "vigente", "vigentes")}.`,
+                        `${plural(f.resumo_capturas.total_historico, "capture record", "capture records")}; current: ${f.resumo_capturas.total_capturas}.`,
+                      )}
+                      {f.resumo_capturas.primeira && f.resumo_capturas.ultima && <> {tx(
+                        `Capturas de ${carimbo(f.resumo_capturas.primeira)} a ${carimbo(f.resumo_capturas.ultima)}.`,
+                        `Captures from ${carimbo(f.resumo_capturas.primeira)} to ${carimbo(f.resumo_capturas.ultima)}.`,
+                      )}</>}{" "}
+                      <a className="underline underline-offset-4" href={f.historico_csv} download>
+                        {tx("Baixar histórico completo de todos os conjuntos (CSV)", "Download full history of all datasets (CSV)")}
+                      </a>
+                    </p>
+                  )}
+                  {capturasIndisponiveis ? (
+                    <p className="border border-linha bg-papel p-3 text-sm text-carvao" data-capturas-indisponiveis="true">
+                      {tx(
+                        "O histórico de capturas deste conjunto está indisponível nesta publicação: o resumo e o arquivo completo não conferem. Nenhuma lista parcial é mostrada no lugar.",
+                        "The capture history of this dataset is unavailable in this release: the summary and the full file do not match. No partial list is shown instead.",
+                      )}
+                    </p>
+                  ) : capturas.length === 0 ? (
                     <p className="border border-linha bg-papel p-3 text-sm text-carvao" data-sem-capturas="true">
                       {ultimaCaptura
                         ? tx(
@@ -534,13 +589,13 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                     </p>
                   ) : (
                     <div className="tabela-scroll" tabIndex={0} role="region" aria-label={tx("Capturas do conjunto (tabela rolável)", "Captures of the dataset (scrollable table)")}>
-                      <table className="w-full min-w-[50rem] border-collapse text-xs">
-                        <caption className="sr-only">{tx("Todas as capturas integradas, por recurso", "All integrated captures, by resource")}</caption>
+                      <table className="w-full min-w-[60rem] border-collapse text-xs">
+                        <caption className="sr-only">{tx("Todos os registros de captura, por família e recurso", "All capture records, by family and resource")}</caption>
                         <thead>
                           <tr className="text-left text-mineral">
                             {tx(
-                              ["Recurso", "Capturado em", "Publicado pela fonte (metadado)", "Origem", "Situação", "sha256"],
-                              ["Resource", "Captured on", "Published by the source (metadata)", "Origin", "Status", "sha256"],
+                              ["Família", "Recurso", "Capturado em", "Publicado pela fonte (metadado)", "Origem", "Situação na família", "sha256"],
+                              ["Family", "Resource", "Captured on", "Published by the source (metadata)", "Origin", "Status within the family", "sha256"],
                             ).map((c) => (
                               <th key={c} scope="col" className="border-b border-linha px-2 py-2 font-medium">
                                 {c}
@@ -550,11 +605,15 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                         </thead>
                         <tbody>
                           {capturas.map((cpt) => (
-                            <tr key={`${cpt.recurso}:${cpt.sha256}`} className="border-b border-linha">
+                            <tr key={`${cpt.familia}:${cpt.recurso}:${cpt.sha256}`} className="border-b border-linha">
+                              <td className="px-2 py-1.5 text-carvao">{codigo(cpt.familia ?? "energia")}</td>
                               <td className="px-2 py-1.5 text-carvao">{codigo(cpt.recurso)}</td>
                               <td className="px-2 py-1.5 text-carvao">{carimbo(cpt.capturado_em)}</td>
                               <td className="px-2 py-1.5 text-carvao-muted">{dataFonte(cpt.publicado_em)}</td>
-                              <td className="px-2 py-1.5 text-carvao-muted">{cpt.origem === "seed" ? tx("captura primária versionada", "versioned primary capture") : tx("coleta direta", "direct collection")}</td>
+                              <td className="px-2 py-1.5 text-carvao-muted">{["seed", "seed_versionado"].includes(cpt.origem)
+                                ? tx("captura primária versionada", "versioned primary capture")
+                                : cpt.origem === "coleta_direta" ? tx("coleta direta", "direct collection")
+                                : cpt.origem ? codigo(cpt.origem) : tx("não informada", "not reported")}</td>
                               <td className="px-2 py-1.5 text-carvao-muted">{cpt.vigente ? tx("vigente", "current") : tx("substituída", "replaced")}</td>
                               <td className="break-all px-2 py-1.5 font-mono text-xs text-mineral">{codigo(cpt.sha256)}</td>
                             </tr>
