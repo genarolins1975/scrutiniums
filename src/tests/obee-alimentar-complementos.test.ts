@@ -11,7 +11,7 @@ import { existsSync, readFileSync, statSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { gunzipSync } from "node:zlib";
 import { join } from "node:path";
-import { dadosComplementares, type MunicipioComplementar } from "@/lib/eficiencia/alimentar/complementos";
+import { dadosComplementares, fontesComplementares, type MunicipioComplementar } from "@/lib/eficiencia/alimentar/complementos";
 import { colunas } from "@/components/eficiencia/alimentar/ConsultaMunicipalAlimentar";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
 import Panorama from "@/app/eficiencia-estatal/seguranca-alimentar/page";
@@ -45,9 +45,9 @@ describe("Segurança alimentar, bases complementares: procedência", () => {
       expect(f.periodo).toBeTruthy();
       expect(f.sha256 ?? f.conteudo).toMatch(/^[0-9a-f]{64}$/);
     }
-    const ids = new Set(c.manifesto.fontes.map((f) => f.id));
+    const ids = new Set(fontesComplementares(c).map((f) => f.id));
     for (const f of c.fichas) {
-      expect(ids.has(f.fonte_id), f.id).toBe(true);
+      for (const id of [f.fonte_id, ...(f.fontes_adicionais ?? [])]) expect(ids.has(id), `${f.id} → ${id}`).toBe(true);
       for (const campo of ["definicao", "universo", "periodo", "unidade", "territorio", "formula", "ausencias", "limitacoes"] as const) expect(f[campo], `${f.id}.${campo}`).toBeTruthy();
     }
     expect(c.nao_integrados.every((n) => n.base && n.motivo)).toBe(true);

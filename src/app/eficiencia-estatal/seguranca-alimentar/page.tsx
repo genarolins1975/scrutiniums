@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 const PERGUNTAS: [string, string, string][] = [
-  ["necessidades", "Quais famílias enfrentam restrição alimentar?", "EBIA no Brasil, nas regiões e nos 27 estados, urbano e rural, 2023 e 2024; risco estimado entre famílias do Cadastro Único em cada município, janeiro de 2025."],
+  ["necessidades", "Quais famílias enfrentam restrição alimentar?", "Quem passa fome no Brasil, por sexo, cor ou raça, escolaridade e trabalho da pessoa responsável, renda e moradores; EBIA nas regiões e nos 27 estados, urbano e rural, 2023 e 2024; risco estimado entre famílias do Cadastro Único em cada município, janeiro de 2025."],
   ["acesso", "Quem consegue receber a ação pública?", "Alunos e escolas da alimentação escolar desde 2009 e por município em 2025; inflação dos alimentos até setembro de 2026; ações declaradas na MUNIC."],
   ["qualidade", "A entrega cumpre o compromisso?", "Acompanhamento do estado nutricional na atenção primária em 2025; critérios e dados que ainda faltam para continuidade, espera e conformidade."],
   ["recursos", "Que recursos e estrutura existem?", "Repasses federais da alimentação escolar, compras do PAA à agricultura familiar de 2023 a 2025 e estrutura municipal declarada."],

@@ -12,6 +12,7 @@ const TEMAS: [string, string][] = [
   ['habitacao', 'src/app/eficiencia-estatal/habitacao/layout.tsx'],
   ['assistencia-social', 'src/app/eficiencia-estatal/assistencia-social/layout.tsx'],
   ['cultura', 'src/app/eficiencia-estatal/cultura/layout.tsx'],
+  ['seguranca-alimentar', 'src/app/eficiencia-estatal/seguranca-alimentar/layout.tsx'],
   ['mobilidade-transporte', 'src/app/eficiencia-estatal/mobilidade-transporte/[[...painel]]/page.tsx'],
   ['energia-conectividade', 'src/app/eficiencia-estatal/energia-conectividade/[[...painel]]/page.tsx'],
   ['meio-ambiente-clima', 'src/app/eficiencia-estatal/meio-ambiente-clima/[[...painel]]/page.tsx'],

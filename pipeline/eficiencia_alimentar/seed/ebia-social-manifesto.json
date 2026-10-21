@@ -1,0 +1,90 @@
+{
+  "versao": "2026-10-21.1",
+  "capturado_em": "2026-10-21",
+  "origem": "Originais baixados da API de valores do SIDRA em 21/10/2026 (duas capturas idênticas) e metadados conferidos na API de agregados do IBGE; recorte extraído por este módulo.",
+  "seed_arquivo": "ebia-social.json.gz",
+  "seed_sha256": "8b69da8002b3d4e3479dda8d4c6dea6a79ca5a0b8b9f989655e36d3a93b620ba",
+  "fontes": [
+    {
+      "id": "sidra-9553",
+      "nome": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9553, domicílios por situação de segurança alimentar e sexo da pessoa responsável, com coeficiente de variação",
+      "url": "https://apisidra.ibge.gov.br/values/t/9553/n1/all/v/162,5123,9784,9785/p/all/c293/all/c12404/all",
+      "pagina": "https://sidra.ibge.gov.br/tabela/9553",
+      "periodo": "2023 e 2024",
+      "territorio": "Brasil",
+      "sha256": "e1cbf2f9c52c4d1bdec79ba70ae95a30f1f38a7c2ebff1bfb8a028e42114eced"
+    },
+    {
+      "id": "sidra-9554",
+      "nome": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9554, domicílios por situação de segurança alimentar e cor ou raça da pessoa responsável, com coeficiente de variação",
+      "url": "https://apisidra.ibge.gov.br/values/t/9554/n1/all/v/162,5123,9784,9785/p/all/c1828/all/c12404/all",
+      "pagina": "https://sidra.ibge.gov.br/tabela/9554",
+      "periodo": "2023 e 2024",
+      "territorio": "Brasil",
+      "sha256": "b69dfbee38db9a3652f1df31339c9ab24a3c4f424b5543b6745d2ae4b2b1a87b"
+    },
+    {
+      "id": "sidra-9555",
+      "nome": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9555, domicílios por situação de segurança alimentar e escolaridade da pessoa responsável, com coeficiente de variação",
+      "url": "https://apisidra.ibge.gov.br/values/t/9555/n1/all/v/162,5123,9784,9785/p/all/c1829/all/c12404/all",
+      "pagina": "https://sidra.ibge.gov.br/tabela/9555",
+      "periodo": "2023 e 2024",
+      "territorio": "Brasil",
+      "sha256": "c9a34a387d79dbb4f29940432201938c426ae641fa37199821802f092888a927"
+    },
+    {
+      "id": "sidra-9556",
+      "nome": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9556, domicílios por situação de segurança alimentar e trabalho da pessoa responsável, com coeficiente de variação",
+      "url": "https://apisidra.ibge.gov.br/values/t/9556/n1/all/v/162,5123,9784,9785/p/all/c1830/all/c12404/all",
+      "pagina": "https://sidra.ibge.gov.br/tabela/9556",
+      "periodo": "2023 e 2024",
+      "territorio": "Brasil",
+      "sha256": "4162dfe364f8dfa21ff20e73949ea076beeda0175114e51cc64fcc3bf15e8d7a"
+    },
+    {
+      "id": "sidra-9557",
+      "nome": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9557, domicílios por situação de segurança alimentar e número de moradores, com coeficiente de variação",
+      "url": "https://apisidra.ibge.gov.br/values/t/9557/n1/all/v/162,5123,9784,9785/p/all/c68/all/c12404/all",
+      "pagina": "https://sidra.ibge.gov.br/tabela/9557",
+      "periodo": "2023 e 2024",
+      "territorio": "Brasil",
+      "sha256": "75bf9308ce1a9db96a12bb03a8a866b9745e036e5fde8ab0000a4ed08685ca6f"
+    },
+    {
+      "id": "sidra-9558",
+      "nome": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9558, domicílios por situação de segurança alimentar e renda por pessoa do domicílio, com coeficiente de variação",
+      "url": "https://apisidra.ibge.gov.br/values/t/9558/n1/all/v/162,5123,9784,9785/p/all/c652/all/c1/all/c12404/all",
+      "pagina": "https://sidra.ibge.gov.br/tabela/9558",
+      "periodo": "2023 e 2024",
+      "territorio": "Brasil",
+      "sha256": "5a541b6b6283e06a3f81601466d2eb6708f7e5a61a2a3c06731fe553f05d2be8"
+    },
+    {
+      "id": "sidra-9559",
+      "nome": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9559, domicílios por situação de segurança alimentar e criança menor de 5 anos em casa, com coeficiente de variação",
+      "url": "https://apisidra.ibge.gov.br/values/t/9559/n1/all/v/162,5123,9784,9785/p/all/c1824/all/c12404/all",
+      "pagina": "https://sidra.ibge.gov.br/tabela/9559",
+      "periodo": "2023 e 2024",
+      "territorio": "Brasil",
+      "sha256": "f5d4a118b2f1903eddd42453f3346b9adb2a95ee2a70c9163e1304ae8b11e908"
+    },
+    {
+      "id": "sidra-9562",
+      "nome": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9562, domicílios por situação de segurança alimentar e morador menor de 18 anos em casa, com coeficiente de variação",
+      "url": "https://apisidra.ibge.gov.br/values/t/9562/n1/all/v/162,5123,9784,9785/p/all/c1827/all/c12404/all",
+      "pagina": "https://sidra.ibge.gov.br/tabela/9562",
+      "periodo": "2023 e 2024",
+      "territorio": "Brasil",
+      "sha256": "ed3f031f0695bd7ad77c5cb55ebdc0dde30f68723ef132acd072cee796257d4d"
+    },
+    {
+      "id": "sidra-9560",
+      "nome": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9560, domicílios por situação de segurança alimentar e morador com 60 anos ou mais em casa, com coeficiente de variação",
+      "url": "https://apisidra.ibge.gov.br/values/t/9560/n1/all/v/162,5123,9784,9785/p/all/c1825/all/c12404/all",
+      "pagina": "https://sidra.ibge.gov.br/tabela/9560",
+      "periodo": "2023 e 2024",
+      "territorio": "Brasil",
+      "sha256": "c8ce632f319b408aceb5630a7340bec9a9f85ae3e11d0a99bd9db9049d30b51f"
+    }
+  ]
+}

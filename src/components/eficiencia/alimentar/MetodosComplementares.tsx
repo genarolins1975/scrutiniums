@@ -3,7 +3,7 @@
  * foi integrado e por quê, e downloads. A página de método é aberta (METODOS_EFICIENCIA); por isso
  * aqui só há definição e procedência, sem valores dos dados. Os downloads continuam com conta.
  */
-import { BASE_COMPLEMENTOS, type Complementos } from "@/lib/eficiencia/alimentar/complementos";
+import { BASE_COMPLEMENTOS, fontesComplementares, type Complementos } from "@/lib/eficiencia/alimentar/complementos";
 import { dataBr } from "@/lib/eficiencia/formato";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 
@@ -11,6 +11,7 @@ const CAPITULOS: Record<string, string> = { necessidades: "Necessidades", acesso
 
 const DOWNLOADS: [string, string][] = [
   ["ebia-territorios.csv", "EBIA por Brasil, região e estado, com coeficiente de variação · CSV"],
+  ["ebia-grupos-sociais.csv", "EBIA por grupo social no Brasil (tabelas 9553 a 9562), com coeficiente de variação · CSV"],
   ["cadinsan.csv", "CadINSAN por município, estado e Brasil · CSV"],
   ["pnae.csv", "PNAE por exercício, estado e rede, e por município em 2025 · CSV"],
   ["paa.csv", "PAA por ano, município, estado e Brasil · CSV"],
@@ -21,12 +22,14 @@ const DOWNLOADS: [string, string][] = [
 
 export function MetodosComplementares({ c }: { c: Complementos }) {
   const captura = dataBr(c.manifesto.capturado_em);
+  const social = c.ebia_social;
+  const todas = fontesComplementares(c);
   return (
     <>
       <section id="bases-complementares" className="mt-8 border-t border-linha pt-6">
         <h2 className="font-serif text-2xl">Bases complementares</h2>
         <p className="mt-3 max-w-prose2 text-sm leading-relaxed">
-          EBIA por estado, CadINSAN, alimentação escolar (PNAE), aquisição de alimentos (PAA), inflação dos alimentos (IPCA) e acompanhamento nutricional (SISVAN). Cada original foi baixado da fonte oficial em {captura}, conferido pelo SHA-256 abaixo e extraído pelo pipeline do painel.
+          EBIA por estado e por grupo social, CadINSAN, alimentação escolar (PNAE), aquisição de alimentos (PAA), inflação dos alimentos (IPCA) e acompanhamento nutricional (SISVAN). Cada original foi baixado da fonte oficial em {captura}, conferido pelo SHA-256 abaixo e extraído pelo pipeline do painel.
         </p>
         <p className="mt-3 max-w-prose2 text-sm leading-relaxed">
           Regras comuns: o valor publicado pela fonte é mantido como está; quando o painel soma municípios para formar o estado ou o Brasil, o resultado é marcado como calculado e diz quantos municípios entraram. Campo vazio na fonte continua vazio, nunca zero. Valores em reais são nominais. Nenhuma dessas medidas gera ponto no escore de serviço.
@@ -45,6 +48,22 @@ export function MetodosComplementares({ c }: { c: Complementos }) {
             </li>
           ))}
         </ul>
+        <h3 id="recortes-sociais" className="mt-8 font-serif text-xl">Recortes sociais da EBIA (tabelas 9553 a 9562)</h3>
+        <p className="mt-3 max-w-prose2 text-sm leading-relaxed">
+          Nove tabelas nacionais da PNAD Contínua, 2023 e 2024, baixadas da API do SIDRA em {dataBr(social.manifesto.capturado_em)} com domicílios, distribuição percentual e os dois coeficientes de variação; duas capturas no mesmo dia deram arquivos idênticos. A tabela {social.tabela_ausente.tabela} não existe no SIDRA. Antes de publicar, o pipeline confere que as classes somam 100%, que os domicílios dos grupos somam o total e que o total de cada tabela repete o da tabela 9552; qualquer falha retém a publicação.
+        </p>
+        <ul className="mt-4 space-y-4 text-sm">
+          {social.manifesto.fontes.map((f) => (
+            <li key={f.id} className="border-t border-linha pt-4">
+              <a href={f.pagina} className="text-obee-dark underline underline-offset-2">{f.nome}</a>
+              <p className="mt-1">Período: {f.periodo}. Território: {f.territorio}. Captura: {dataBr(social.manifesto.capturado_em)}. <a href={f.url} className="text-obee-dark underline underline-offset-2">Consulta exata usada na captura</a>.</p>
+              <p className="mt-1 break-all text-xs text-carvao-muted">SHA-256 do arquivo: {f.sha256}</p>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-4 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
+          Reprodução dos recortes sociais: <code>python3 -m pipeline.eficiencia_alimentar.ebia_social --originais pasta --coletar</code> baixa as nove consultas, confere os hashes e compara a reextração com o recorte versionado. SHA-256 do recorte: <span className="break-all">{social.manifesto.seed_sha256}</span>.
+        </p>
         <p className="mt-4 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
           Reprodução: <code>python3 -m pipeline.eficiencia_alimentar.complementos --originais pasta --coletar</code> baixa os originais, confere os hashes e compara a reextração com o recorte versionado; sem argumentos, o mesmo módulo valida o recorte e gera a base agregada. SHA-256 do recorte versionado: <span className="break-all">{c.manifesto.seed_sha256}</span>.
         </p>
@@ -74,8 +93,11 @@ export function MetodosComplementares({ c }: { c: Complementos }) {
                 <dt className="font-medium">Fonte</dt>
                 <dd className="mt-1">
                   {(() => {
-                    const fonte = c.manifesto.fontes.find((x) => x.id === f.fonte_id)!;
-                    return <a href={fonte.pagina} className="text-obee-dark underline underline-offset-2">{fonte.nome}</a>;
+                    const ids = [f.fonte_id, ...(f.fontes_adicionais ?? [])];
+                    return ids.map((id, i) => {
+                      const fonte = todas.find((x) => x.id === id)!;
+                      return <span key={id}>{i ? "; " : ""}<a href={fonte.pagina} className="text-obee-dark underline underline-offset-2">{fonte.nome}</a></span>;
+                    });
                   })()}
                 </dd>
               </div>
