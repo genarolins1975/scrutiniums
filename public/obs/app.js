@@ -6767,10 +6767,12 @@ function instForaDoCorte(inst) {
   if (!lista.length) return "";
   const tri = fmtTri(inst.anomes);
   const grandes = lista.filter(x => (x.ativo_ultima_entrega || 0) >= 1e9).length;
+  const nunca = lista.filter(x => x.nunca_entregou).length;
+  const comFicha = lista.length - nunca;
   const ordem = lista.slice().sort((a, b) => (b.ativo_ultima_entrega || 0) - (a.ativo_ultima_entrega || 0));
   const nome = x => x.nunca_entregou ? x.nome : `<a href="/observatorio/institutions/${x.cod_inst}" onclick="nav('inst',{instCod:'${x.cod_inst}'});return false">${x.nome}</a>`;
   return `<details class="decomp" id="inst-fora-do-corte" style="margin:8px 0"><summary>Fora do corte por falta de balanço em ${tri}: ${fmt.n0(lista.length)} na lista do IF.data, ${fmt.n0(grandes)} com ativo acima de R$ 1 bi</summary>
-    <div class="note" style="margin-top:6px">Constam da lista do IF.data com saldo nulo em ${tri}: atraso, RAET ou retardatário. Não é saída nem zero: a ficha de cada uma segue disponível na última entrega.</div>
+    <div class="note" style="margin-top:6px">Constam da lista do IF.data com saldo nulo em ${tri}: atraso, RAET ou retardatário. Não é saída nem zero.${comFicha ? ` ${comFicha === lista.length ? "A ficha de cada uma" : `A ficha das ${fmt.n0(comFicha)} que já entregaram balanço`} segue disponível na última entrega.` : ""}${nunca ? ` ${nunca === 1 ? "Uma nunca entregou balanço e não tem ficha" : `${fmt.n0(nunca)} nunca entregaram balanço e não têm ficha`}: aparece${nunca === 1 ? "" : "m"} na lista sem link.` : ""}</div>
     <div class="tblwrap"><table class="data compact"><thead><tr><th>Instituição</th><th>Segmento</th><th>Última entrega</th><th style="text-align:right">Ativo na última entrega</th></tr></thead>
     <tbody>${ordem.map(x => `<tr><td>${nome(x)}</td><td>${x.sr || "–"}</td><td>${x.nunca_entregou ? "nunca entregou" : fmtTri(x.ultima_entrega)}</td><td style="text-align:right">${x.ativo_ultima_entrega != null ? fmt.money(x.ativo_ultima_entrega) : "–"}</td></tr>`).join("")}</tbody></table></div>
   </details>`;
@@ -6815,6 +6817,11 @@ function instReguaBasileia(inst) {
   const tabela = `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap"><table class="data compact"><thead><tr><th>Grupo</th><th style="text-align:right">Com Basileia</th><th style="text-align:right">Menor</th><th style="text-align:right">1º quartil</th><th style="text-align:right">Mediana</th><th style="text-align:right">3º quartil</th><th style="text-align:right">Maior</th></tr></thead><tbody>` +
     linhas.map(l => { const v = l.pts.map(p => p.basileia_pct); const q = n => l.st && l.st[n] != null ? fmt.n(l.st[n], 1) + "%" : "–";
       return `<tr><td>${l.g === "S?" ? "Sem segmento no cadastro" : l.g}</td><td style="text-align:right">${l.pts.length} de ${l.n}</td><td style="text-align:right">${v.length ? fmt.n(Math.min(...v), 1) + "%" : "–"}</td><td style="text-align:right">${q("q1")}</td><td style="text-align:right">${q("mediana")}</td><td style="text-align:right">${q("q3")}</td><td style="text-align:right">${v.length ? fmt.n(Math.max(...v), 1) + "%" : "–"}</td></tr>`; }).join("") +
+    `</tbody></table>` +
+    // um por linha: a mesma informação dos pontos, para quem não usa o tooltip (teclado, leitor de tela, toque)
+    `<table class="data compact" style="margin-top:12px"><caption class="src" style="text-align:left;caption-side:top">Cada conglomerado com Basileia reportada, por grupo e do maior para o menor índice</caption><thead><tr><th>Conglomerado</th><th>Grupo</th><th style="text-align:right">Basileia</th></tr></thead><tbody>` +
+    linhas.flatMap(l => l.pts.slice().sort((a, b) => b.basileia_pct - a.basileia_pct).map(p =>
+      `<tr><td><a href="/observatorio/institutions/${p.cod_inst}" onclick="nav('inst',{instCod:'${p.cod_inst}'});return false">${p.nome}</a></td><td>${l.rot}</td><td style="text-align:right">${fmt.n(p.basileia_pct, 1)}%</td></tr>`)).join("") +
     `</tbody></table></div></details>`;
   return `<div class="card" id="inst-regua-basileia" style="margin-top:24px">
     <h4>Onde cada conglomerado está no Índice de Basileia, dentro do seu grupo de pares</h4>

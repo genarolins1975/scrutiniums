@@ -55,7 +55,9 @@ describe("Instituições (item 3 do diagnóstico): busca antes, exclusões depoi
     expect(aba.indexOf("${instForaDoCorte(inst)}")).toBeGreaterThan(tabela);
     expect(app).toContain("function instForaDoCorte(inst)");
     // a ressalva continua: ausência na data-base não é saída nem zero
-    expect(app).toMatch(/Não é saída nem zero: a ficha de cada uma segue disponível na última entrega/);
+    expect(app).toContain("Não é saída nem zero.");
+    // quem nunca entregou balanço não tem ficha: a nota diz isso em vez de prometer a última entrega (achado do Codex no #315)
+    expect(app).toContain("nunca entregou balanço e não tem ficha");
   });
   it("a régua da Basileia lê a faixa e a mediana do próprio grupo e diz quantos ficam fora", () => {
     expect(aba.indexOf("${instReguaBasileia(inst)}")).toBeGreaterThan(aba.indexOf("${instForaDoCorte(inst)}"));
@@ -64,6 +66,8 @@ describe("Instituições (item 3 do diagnóstico): busca antes, exclusões depoi
     expect(regua).toContain("pool_fallback");
     expect(regua).toContain("não reportam Basileia e ficam fora do gráfico");
     expect(regua).toContain('<details class="charttable">');
+    // a tabela equivalente traz cada conglomerado, não só os agregados (achado do Codex no #315)
+    expect(regua).toContain("Cada conglomerado com Basileia reportada");
   });
 });
 
