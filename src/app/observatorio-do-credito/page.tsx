@@ -17,6 +17,7 @@ import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { goldJuros, rotuloModalidade } from "@/lib/credito/juros";
 import { janela as janelaJuros, num as numJuros } from "@/lib/credito/formato";
 import { paginaCredito } from "@/lib/credito/navegacao";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 /**
  * Vitrine pública do Observatório Brasileiro de Crédito.
@@ -222,7 +223,7 @@ export default function ObservatorioPublicoPage() {
         {/* ---------------- proposta ---------------- */}
         <section aria-labelledby="titulo" className="border-b border-linha bg-marfim">
           <div className="mx-auto max-w-page px-6 pb-16 pt-14 md:pb-20 md:pt-20">
-            <p className="rotulo text-mineral">Plataforma pública · gratuita</p>
+            <RotuloContexto rota="/observatorio" className="text-mineral" />
             <h1
               id="titulo"
               className="mt-6 max-w-4xl font-serif text-[clamp(2.2rem,5.4vw,3.9rem)] leading-[1.07] tracking-[-0.015em] text-carvao"

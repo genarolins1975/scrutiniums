@@ -7,6 +7,7 @@ import { dataCaptura, mesExtenso, milhoes, num, pct, SEM_DADO } from "@/lib/cone
 import { comConta } from "@/lib/conectividade/convite";
 import { hrefMunicipio, PERGUNTA_APERITIVO, ROTA_CONECTIVIDADE, SECAO_APERITIVO } from "@/lib/conectividade/paginas";
 import type { MunicipioGold } from "@/lib/conectividade/tipos";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 /**
  * Versão aperitivo da Conectividade (princípio do aperitivo, decisão do dono de 20/10/2026). Quem acessa /conectividade
@@ -41,6 +42,7 @@ export default function AperitivoConectividade({ searchParams }: Busca) {
     <main id="conteudo" className="cn-wrap cn-main" data-aperitivo="conectividade">
       <MarcaVisita secao={SECAO_APERITIVO} />
       <header className="cn-cabeca">
+        <RotuloContexto rota="/conectividade" className="text-mineral" />
         <h1>{PERGUNTA_APERITIVO}</h1>
         <p className="cn-lead">Busque o município e veja quantos acessos de internet fixa ele tem, quantos são por fibra, quantas empresas atendem e quem está dentro da cobertura 4G e 5G.</p>
       </header>

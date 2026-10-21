@@ -7,6 +7,7 @@ import { dataBr, num, reais, reaisGrandes } from "@/lib/previdencia/formato";
 import { PERGUNTA_APERITIVO, ROTA_PREVIDENCIA, SECAO_APERITIVO, hrefMunicipio } from "@/lib/previdencia/paginas";
 import { comConta } from "@/lib/previdencia/convite";
 import type { MunicipioGold } from "@/lib/previdencia/tipos";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 /**
  * Versão aperitivo da Previdência e INSS (princípio do aperitivo, decisão do dono de 20/10/2026). Quem acessa
@@ -42,6 +43,7 @@ export default function AperitivoPrevidencia({ searchParams }: Busca) {
     <main id="conteudo-previdencia" className="cp-wrap cp-main" data-aperitivo="previdencia">
       <MarcaVisita secao={SECAO_APERITIVO} />
       <header className="pv-cabeca">
+        <RotuloContexto rota="/contas-publicas/previdencia" className="text-mineral" />
         <h1>{PERGUNTA_APERITIVO}</h1>
         <p className="pv-lead">
           Busque o município e veja quantos benefícios o INSS pagou por meio das agências da cidade em dezembro de {br.ano} e quanto vale, em média, cada um.

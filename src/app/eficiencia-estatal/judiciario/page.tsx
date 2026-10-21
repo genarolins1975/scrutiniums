@@ -10,6 +10,7 @@ import {BuscaTribunalJudiciario,RamosEntradaJudiciario} from '@/components/efici
 import {HalteresTribunais} from '@/components/eficiencia/judiciario/Halteres';
 import {PerguntasJudiciario,type PerguntaEntrada} from '@/components/eficiencia/judiciario/Respostas';
 import {EntradaInternacionalJudiciario} from '@/components/eficiencia/judiciario/EntradaInternacional';
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 export const dynamic='force-static';
 export const metadata:Metadata={title:'Por dentro da Justiça · Judiciário brasileiro',description:'Quanto a Justiça demora, quanto custa por habitante e se a espera depende de onde você mora. 57 tribunais, o acervo parado e a comparação com 143 países.',alternates:{canonical:BASE_JUDICIARIO}};
 export default function EntradaJudiciario(){
@@ -45,7 +46,7 @@ export default function EntradaJudiciario(){
  ];
  return <>
   <section className={s.hero} aria-labelledby="judiciario-titulo">
-   <div className={s.heroCopy}><p className={s.eyebrow}>Observatório Brasileiro do Judiciário</p><h1 id="judiciario-titulo">Quanto a Justiça <em>demora</em>, quanto custa e de que depende?</h1><p className={s.heroLead}>Tempos, custos e acervo de 57 tribunais da Justiça Estadual, Federal e do Trabalho, com a referência nacional do CNJ e a comparação com {i.cobertura.paises} países.</p><div className={s.heroActions}><a className={s.primaryButton} href="#endereco">A espera no seu estado<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" aria-hidden="true"><path d="M8 2v12M3 9l5 5 5-5"/></svg></a><Link className={s.textLink} href={BASE_JUDICIARIO+'/comparar'}>Comparar tribunais<SetaJudiciario/></Link></div></div>
+   <div className={s.heroCopy}><RotuloContexto rota="/eficiencia-estatal/judiciario" className={s.eyebrow} /><h1 id="judiciario-titulo">Quanto a Justiça <em>demora</em>, quanto custa e de que depende?</h1><p className={s.heroLead}>Tempos, custos e acervo de 57 tribunais da Justiça Estadual, Federal e do Trabalho, com a referência nacional do CNJ e a comparação com {i.cobertura.paises} países.</p><div className={s.heroActions}><a className={s.primaryButton} href="#endereco">A espera no seu estado<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" aria-hidden="true"><path d="M8 2v12M3 9l5 5 5-5"/></svg></a><Link className={s.textLink} href={BASE_JUDICIARIO+'/comparar'}>Comparar tribunais<SetaJudiciario/></Link></div></div>
    <div className={s.heroReading}><p className={s.eyebrow}>Brasil, em uma leitura · {d.ano}</p><dl>
     <div><dt>Duração média dos processos baixados</dt><dd>{duracao(d.nacional.tempoBaixados)}</dd><dd>Média nacional publicada; com execuções fiscais, que duraram {duracao(d.nacional.tempoBaixadosFiscal)}. Não é prazo individual · p. 24</dd></div>
     <div><dt>Processos pendentes em dezembro</dt><dd>{n(d.nacional.pendentesMilhoes,1)} milhões</dd><dd>{n(suspensos.processosMilhoes,1)} milhões ({n(suspensos.percentualPendentes,1)}%) suspensos, sobrestados ou em arquivo provisório · p. 22 e {suspensos.pagina}</dd></div>

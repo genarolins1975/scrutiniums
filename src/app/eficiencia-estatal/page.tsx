@@ -5,6 +5,8 @@ import {CabecalhoEntrada} from '@/components/eficiencia/CabecalhoEntrada';
 import {goldSaude} from '@/lib/eficiencia/saude/dados';
 import {metaEducacao} from '@/lib/eficiencia/dados';
 import {AtlasCidadao} from '@/components/eficiencia/AtlasCidadao';
+import {RotuloContexto} from '@/components/layout/RotuloContexto';
+import entradaStyles from '@/components/eficiencia/entrada/Entrada.module.css';
 import {MapaCobertura, type TemaCobertura} from '@/components/eficiencia/entrada/MapaCobertura';
 import {montarRetrato} from '@/lib/eficiencia/entrada';
 import {dadosAssistencia} from '@/lib/eficiencia/assistencia/dados';
@@ -50,7 +52,7 @@ export default function PaginaEntradaEficiencia(){
  <main id="conteudo" className="pb-20">
  <FaixaFrescor dominios={FRESCOR_DAS_COLECOES['/eficiencia-estatal']} conteiner="mx-auto max-w-page px-4 sm:px-6"/>
  {/* Página aberta desde 19/10/2026 (estratégia "aberto e com conta", leva 1): o retrato vai por prop e fica no HTML aberto, só com as posições, os valores das sete condições e dos três recursos das 26 capitais, população e contorno; nenhuma nota composta. A nota experimental fica em /eficiencia-estatal/indice-de-resultados e o CSV das 26 capitais na rota fechada /eficiencia-estatal/retrato-26-capitais.csv, ambos com conta. */}
- <AtlasCidadao retrato={retrato} cobertura={<MapaCobertura temas={temas}/>} paraVoce={<ParaVoce entrada="/eficiencia-estatal" conteiner="mx-auto max-w-page px-4 sm:px-6"/>}/>
+ <AtlasCidadao rotulo={<RotuloContexto rota="/eficiencia-estatal" pagina="Retrato das capitais" className={entradaStyles.kicker}/>} retrato={retrato} cobertura={<MapaCobertura temas={temas}/>} paraVoce={<ParaVoce entrada="/eficiencia-estatal" conteiner="mx-auto max-w-page px-4 sm:px-6"/>}/>
  <div className="mx-auto max-w-page px-4 sm:px-6">
  <aside className="mt-8 grid gap-5 border-l-4 border-obee bg-obee-fundo p-5 md:grid-cols-2"><div><h2 className="font-serif text-xl">Quem financia, quem entrega, quem responde?</h2><p className="mt-2 text-sm leading-relaxed">A análise completa precisa distinguir recursos da União, dos estados e dos municípios, transferências e a instituição responsável pelo atendimento.</p></div><div><h3 className="text-sm font-semibold">Estrutura e funcionamento do Estado</h3><p className="mt-2 text-sm leading-relaxed">Administração, arrecadação, pessoal e Legislativo atravessam essas dimensões. O Judiciário tem recorte próprio de recursos, filas e tempos; a comparação de despesas entre esferas e poderes ainda não está publicada.</p></div></aside>
  <FaixaFrescor dominios={FRESCOR_DAS_COLECOES['/eficiencia-estatal']} variante="metodo" className="mt-10"/>

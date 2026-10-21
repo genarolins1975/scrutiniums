@@ -14,6 +14,7 @@ import { periodoPorExtenso, resumoDivida } from "@/lib/saneamento/divida";
 import { resumoContratado } from "@/lib/saneamento/contratos";
 import type { FichaMunicipio, Municipio } from "@/lib/saneamento/tipos";
 import { BuscaAperitivo } from "./BuscaAperitivo";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 /**
  * Versão aperitivo do Saneamento (princípio do aperitivo, decisão do dono de 20/10/2026). Quem acessa
@@ -123,7 +124,7 @@ export default function Pagina({ searchParams }: Busca) {
         <MarcaVisita secao="saneamento:municipio-aperitivo" />
         <main id="conteudo" className="ed-pagina pb-16 pt-8" data-aperitivo="saneamento">
           <header className="mb-8 border-b border-linha pb-6">
-            <p className="rotulo text-obee-dark">Observatório Brasileiro do Saneamento · Meu município</p>
+            <RotuloContexto rota="/saneamento/municipio" pagina="Meu município" className="text-obee-dark" />
             <h1 className="mt-3 max-w-4xl font-serif text-[2rem] leading-tight text-carvao [text-wrap:balance] md:text-[2.75rem]">
               Como está o saneamento na minha cidade?
             </h1>

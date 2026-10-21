@@ -4,6 +4,7 @@ import { GRUPOS, ROTULO_CURTO, lerDesastres, serieReconhecida } from "@/lib/terr
 import { NOME_UF } from "@/lib/territorio/queimadas";
 import { Figura, dataBr, n } from "@/components/territorio/Queimadas";
 import { DoDesastreAoReconhecimento, SerieEmpilhada, TabelaDanos, TabelaSerie, TabelaUFDesastres } from "@/components/territorio/Desastres";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 export const dynamic = "force-static";
 
@@ -47,7 +48,7 @@ export default function PaginaDesastres() {
             <span aria-hidden="true" className="mx-2 text-mineral">/</span>
             <span aria-current="page">Desastres</span>
           </nav>
-          <p className="rotulo mt-8 flex items-center gap-3 text-mineral"><span aria-hidden="true" className="h-[3px] w-8 bg-obee" />Desastres</p>
+          <RotuloContexto rota="/territorio/desastres" className="mt-8 flex flex-wrap items-center gap-x-3 text-mineral" marca={<span aria-hidden="true" className="h-[3px] w-8 bg-obee" />} />
           <h1 id="desastres-titulo" className="mt-5 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.1] text-carvao [text-wrap:balance]">
             Onde os desastres atingem os municípios?
           </h1>

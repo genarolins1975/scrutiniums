@@ -1,5 +1,7 @@
 import {GuiaLeitura} from '@/components/contas-publicas/GuiaLeitura';
 import {AberturaFederal} from '@/components/contas-publicas/AberturaFederal';
+import {RotuloContexto} from '@/components/layout/RotuloContexto';
+import aberturaStyles from '@/components/observatorios/EntradaEstado.module.css';
 import {IndiceFederal} from '@/components/contas-publicas/IndiceFederal';
 import {ParaVoce} from '@/components/observatorios/ParaVoce';
 import {ArteTriptico} from '@/components/observatorios/ArteParaVoce';
@@ -29,7 +31,7 @@ const CICLO = ([
 }));
 export default function Page(){return <main id="conteudo-contas" className="cp-wrap cp-main cp-home">
  <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/contas-publicas"]} className="-mt-2 mb-6"/>
- <AberturaFederal/>
+ <AberturaFederal rotulo={<RotuloContexto rota="/contas-publicas" className={aberturaStyles.eyebrow}/>}/>
  {/* "Para você" (Onda 2): substitui o tríptico de caminhos, com os mesmos destinos (panorama e metas) e o do estado do leitor, cada um com o número que a página mostra */}
  <ParaVoce entrada="/contas-publicas" conteiner="" artes={{previdencia:<ArteTriptico tema="federal" cena={0}/>,metas:<ArteTriptico tema="federal" cena={1}/>,"estado-contas":<ArteTriptico tema="federal" cena={2}/>}}/>
  <div className="cp-home-section-heading"><p className="cp-eyebrow">01 / Primeiras respostas</p><h2>Três perspectivas das contas federais.</h2><p>Pagamento, resultado fiscal e compromissos de outros exercícios têm conceitos distintos.</p></div>

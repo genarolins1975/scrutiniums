@@ -9,6 +9,7 @@ import { ParaVoce } from "@/components/observatorios/ParaVoce";
 import { goldGas } from "@/lib/gas/gold";
 import { carimbo, mesExtenso, num, periodoLegivel } from "@/lib/gas/formato";
 import { GRUPOS_GAS, PAGINAS_GAS } from "@/lib/gas/navegacao";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 export const dynamic = "force-static";
 
@@ -103,7 +104,7 @@ export default function InicialGasPage() {
       <main id="conteudo" className="ed-pagina pb-12">
         <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/gas-natural"]} />
         <div className="cab-modulo">
-          <p className="rotulo text-gas-dark">Observatório Brasileiro de Gás Natural</p>
+          <RotuloContexto rota="/gas-natural" className="text-gas-dark" />
           <h1 className="ed-h1 mt-3 max-w-4xl font-serif text-carvao">Do poço ao consumidor: produção, oferta e preços do gás</h1>
           <div className="ed-lead mt-4 max-w-prose2 space-y-3 text-carvao-muted">
             <p>

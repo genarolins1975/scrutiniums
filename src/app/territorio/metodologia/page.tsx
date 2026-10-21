@@ -3,6 +3,7 @@ import Link from "next/link";
 import { TextoReadme } from "@/components/territorio/TextoReadme";
 import { dataBr } from "@/lib/perguntas/leitura";
 import { ROTULO_NAO_CONCLUIR, ROTULO_VALIDACOES, atualizacaoTerritorio, fontesTerritorio, frase, itemReadme, lacunasTerritorio } from "@/lib/territorio/metodo";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 export const dynamic = "force-static";
 
@@ -66,7 +67,7 @@ export default function MetodologiaTerritorio() {
             <span aria-hidden="true" className="mx-2 text-mineral">/</span>
             <span aria-current="page">Método</span>
           </nav>
-          <p className="rotulo mt-8 flex items-center gap-3 text-mineral"><span aria-hidden="true" className="h-[3px] w-8 bg-obee" />Observatório do Território e Clima · Método</p>
+          <RotuloContexto rota="/territorio/metodologia" className="mt-8 flex flex-wrap items-center gap-x-3 text-mineral" marca={<span aria-hidden="true" className="h-[3px] w-8 bg-obee" />} />
           <h1 id="metodo-titulo" className="mt-5 max-w-4xl font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.12] text-carvao [text-wrap:balance]">
             Como o observatório mede o fogo, os desastres e as emissões
           </h1>

@@ -1,6 +1,8 @@
 import type {Metadata} from 'next';
 import {CabecalhoEntrada} from '@/components/eficiencia/CabecalhoEntrada';
 import {MinhaCapitalAperitivo} from '@/components/eficiencia/entrada/MinhaCapitalAperitivo';
+import {RotuloContexto} from '@/components/layout/RotuloContexto';
+import entradaStyles from '@/components/eficiencia/entrada/MinhaCapitalAperitivo.module.css';
 import {Footer} from '@/components/layout/Footer';
 import {montarRetrato} from '@/lib/eficiencia/entrada';
 import {montarAperitivoCapital} from '@/lib/eficiencia/aperitivo-capital';
@@ -40,7 +42,7 @@ export default function AperitivoMinhaCapital() {
     <div className="flex-1"><CabecalhoEntrada/>
       <main id="conteudo" className="pb-12">
         {/* fecho obrigatório: ConviteAperitivo com rota="/eficiencia-estatal", dentro do componente cliente */}
-        <MinhaCapitalAperitivo dados={dados} comConta={COM_CONTA}/>
+        <MinhaCapitalAperitivo dados={dados} comConta={COM_CONTA} rotulo={<RotuloContexto rota="/eficiencia-estatal" pagina="Minha capital" className={entradaStyles.kicker}/>}/>
       </main>
     </div>
     <Footer/>

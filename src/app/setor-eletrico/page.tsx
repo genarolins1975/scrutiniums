@@ -88,6 +88,7 @@ import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { ORGAOS_EN, comNomesProprios, legendaDeOrgaosEn, listaEn, traduzDaGold, traduzModeloDaGold } from "@/lib/energia/i18n/entrada-visao";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 export const dynamic = "force-static";
 
@@ -809,7 +810,7 @@ export default function MapaDoObservatorio() {
         <header id="proposito" className="scroll-mt-24 pb-6 pt-6 md:pb-8 md:pt-10">
           <div className="energia-abertura">
             <div className="energia-abertura-texto">
-              <p className="rotulo">{tx<ReactNode>("Observatório Brasileiro do Setor Elétrico", <><Nome>Setor Elétrico</Nome> · Brazilian power sector observatory</>)}</p>
+              <RotuloContexto rota="/setor-eletrico" />
               <h1>{tx("De onde vem a energia e quanto ela custa?", "Where does power come from, at what cost?")}</h1>
               <p>
                 {tx(
@@ -836,7 +837,7 @@ export default function MapaDoObservatorio() {
           <details className="energia-contexto"><summary>{tx("Sobre o observatório, caminhos e fontes", "About the observatory, paths and sources")} <span aria-hidden="true">+</span></summary>
           <div className="obs-hero grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
             <div className="min-w-0">
-              <p className="rotulo text-mineral">{tx<ReactNode>("Observatório Brasileiro do Setor Elétrico", <><Nome>Setor Elétrico</Nome> · Brazilian power sector observatory</>)}</p>
+              <RotuloContexto rota="/setor-eletrico" className="text-mineral" />
               <p className="font-serif text-2xl">{tx("Energia, do sistema à sua conta", "Energy, from the system to your bill")}</p>
               <p className="ed-lead mt-3 max-w-3xl text-carvao-muted">
                 {tx(

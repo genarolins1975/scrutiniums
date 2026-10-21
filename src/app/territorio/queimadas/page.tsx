@@ -3,6 +3,7 @@ import Link from "next/link";
 import { lerQueimadas, lerQueimadasMunicipios, municipiosDeFocos, municipiosParaMetade, recorte, NOME_UF, PISO_FOCOS_DENSIDADE } from "@/lib/territorio/queimadas";
 import { FocosNoMunicipio } from "@/components/territorio/FocosNoMunicipio";
 import { BarrasComparadas, DoSateliteAoFoco, Figura, MesAMes, SerieAnual, TabelaAnual, TabelaMensal, TabelaMunicipios, TabelaUF, dataBr, mesAno, n } from "@/components/territorio/Queimadas";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 export const dynamic = "force-static";
 
@@ -72,7 +73,7 @@ export default function PaginaQueimadas() {
             <span aria-hidden="true" className="mx-2 text-mineral">/</span>
             <span aria-current="page">Fogo e queimadas</span>
           </nav>
-          <p className="rotulo mt-8 flex items-center gap-3 text-mineral"><span aria-hidden="true" className="h-[3px] w-8 bg-obee" />Fogo e queimadas</p>
+          <RotuloContexto rota="/territorio/queimadas" className="mt-8 flex flex-wrap items-center gap-x-3 text-mineral" marca={<span aria-hidden="true" className="h-[3px] w-8 bg-obee" />} />
           <h1 id="queimadas-titulo" className="mt-5 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.1] text-carvao [text-wrap:balance]">
             Onde e quanto o fogo aparece no Brasil?
           </h1>

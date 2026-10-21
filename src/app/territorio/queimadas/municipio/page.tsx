@@ -7,6 +7,7 @@ import { DoSateliteAoFoco, dataBr, mesAno } from "@/components/territorio/Queima
 import { leva2Aprovada, prefetchDoLink } from "@/lib/rotasPublicas";
 import { ROTA_FOCOS_MUNICIPIO } from "@/lib/territorio/consultaFocos";
 import { lerQueimadasMunicipios } from "@/lib/territorio/queimadas";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 export const dynamic = "force-static";
 
@@ -50,7 +51,7 @@ export default function BuscaFocosPagina() {
             <span aria-hidden="true" className="mx-2 text-mineral">/</span>
             <span aria-current="page">Meu município</span>
           </nav>
-          <p className="rotulo mt-8 flex items-center gap-3 text-mineral"><span aria-hidden="true" className="h-[3px] w-8 bg-obee" />Fogo no meu município</p>
+          <RotuloContexto rota="/territorio/queimadas/municipio" pagina="Fogo no meu município" className="mt-8 flex flex-wrap items-center gap-x-3 text-mineral" marca={<span aria-hidden="true" className="h-[3px] w-8 bg-obee" />} />
           <h1 id="busca-focos-titulo" className="mt-5 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.1] text-carvao [text-wrap:balance]">
             Teve fogo perto de mim?
           </h1>

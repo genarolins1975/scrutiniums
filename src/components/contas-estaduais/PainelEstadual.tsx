@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { type FiltrosComparacao } from "@/lib/contas-estaduais/comparacao";
 import {AberturaEstadual} from './AberturaEstadual';
 import ComparacaoEstadual from "./ComparacaoEstadual";
@@ -49,7 +49,7 @@ function Trajetoria({ estado }: { estado: Estado }) {
  </figure>;
 }
 
-export default function PainelEstadual({ inicial, comparacaoInicial }: { inicial: { uf: string; ano: number }; comparacaoInicial: FiltrosComparacao }) {
+export default function PainelEstadual({ inicial, comparacaoInicial, rotulo }: { inicial: { uf: string; ano: number }; comparacaoInicial: FiltrosComparacao; rotulo?: ReactNode }) {
  const [selecao, setSelecao] = useState(inicial), [busca, setBusca] = useState(""), [grupo, setGrupo] = useState("Todos"), [catalogoAberto, setCatalogoAberto] = useState(false);
  const estado = snapshot.ufs.find(u => u.uf === selecao.uf)!;
  const obs = observacao(estado, selecao.ano), atual = selecao.ano === estado.exercicio;
@@ -64,7 +64,7 @@ export default function PainelEstadual({ inicial, comparacaoInicial }: { inicial
  function selecionar(uf: string, ano: number, abrirFicha = false) { setSelecao({ uf, ano }); const url = new URL(window.location.href); url.searchParams.set("uf", uf); url.searchParams.set("ano", String(ano)); if (abrirFicha) url.hash = "ficha"; window.history.pushState(null, "", url); if (abrirFicha) requestAnimationFrame(() => { const ficha = document.getElementById("ficha"); ficha?.focus({ preventScroll: true }); ficha?.scrollIntoView({ block: "start" }); }); }
 
  return <main id="conteudo-estados" className="ce-main">
- <AberturaEstadual uf={selecao.uf} ano={selecao.ano} selecionar={selecionar}/>
+ <AberturaEstadual uf={selecao.uf} ano={selecao.ano} selecionar={selecionar} rotulo={rotulo}/>
  <ComparacaoEstadual inicial={comparacaoInicial} uf={selecao.uf} ano={selecao.ano} selecionar={selecionar}/>
  <details id="leitura-gestao" className="ce-learning"><summary>Entender o caminho do orçamento à entrega</summary><PercursoOrcamentario/>
  <section className="ce-dimensions" aria-label="Como ler a gestão pública"><h2>São perguntas diferentes.</h2><div>{[["Economicidade","Quanto se paga por um objeto equivalente?"],["Eficiência","Que recursos são usados por entrega, com qualidade comparável?"],["Eficácia","As metas físicas foram cumpridas no prazo?"],["Efetividade","Que resultados mudaram para a população?"],["Sustentabilidade","Os compromissos podem ser mantidos ao longo do tempo?"]].map(([t,d]) => <div key={t}><h3>{t}</h3><p>{d}</p></div>)}</div><p className="ce-note">Equidade e qualidade dos dados atravessam todas as dimensões. Executar o orçamento, sozinho, não demonstra eficiência.</p></section>

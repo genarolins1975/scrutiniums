@@ -6,6 +6,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { consultarMunicipio, goldEducacao } from "@/lib/educacao/dados";
 import { dataBr, num } from "@/lib/educacao/formato";
 import { PERGUNTA_PAINEL, ROTA_EDUCACAO, SECAO_PAINEL, TITULO_PAINEL } from "@/lib/educacao/paginas";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 /**
  * Painel "Educação nos municípios" (aprovado pelo dono em 20/10/2026), com conta. O endereço é público, mas sem sessão o
@@ -39,6 +40,7 @@ export default function Page({ searchParams }: Busca) {
           <span>Coleção Educação</span>
         </nav>
         <header className="edm-cabeca">
+          <RotuloContexto rota="/educacao-municipal" className="text-mineral" />
           <h1>{PERGUNTA_PAINEL}</h1>
           <p className="edm-lead">
             O Ideb, a aprendizagem e a aprovação das escolas municipais e públicas de cada cidade, com as matrículas e as escolas da rede. Dados do INEP: Ideb {g.ideb.ano}, divulgado em{" "}

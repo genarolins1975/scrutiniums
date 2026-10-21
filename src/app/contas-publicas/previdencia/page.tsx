@@ -7,6 +7,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { PAINEIS_NAVEGACAO } from "@/lib/contas-publicas/catalogo";
 import { consultarMunicipio, goldPrevidencia } from "@/lib/previdencia/dados";
 import { PERGUNTA_PAINEL, ROTA_PREVIDENCIA, SECAO_PAINEL } from "@/lib/previdencia/paginas";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 /**
  * Painel "Previdência e INSS" (aprovado pelo dono em 20/10/2026), com conta. O endereço é público, mas sem sessão o
@@ -37,6 +38,7 @@ export default function Page({ searchParams }: { searchParams: Record<string, st
         </span>
       </div>
       <header className="cp-chapter-header pv-cabeca">
+        <RotuloContexto rota="/contas-publicas/previdencia" className="text-mineral" />
         <h1>{PERGUNTA_PAINEL}</h1>
         <p className="pv-lead">
           Os benefícios do INSS por tipo, por estado e no seu município, e quanto o Regime Geral arrecada e paga a cada ano. Dados do Ministério da Previdência Social e do Tesouro Nacional.

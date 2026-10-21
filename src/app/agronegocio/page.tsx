@@ -8,6 +8,7 @@ import { DestaquesAgro, PerguntasAgro } from '@/components/agro/Economia';
 import { SecaoAgro, LimiteAgro } from '@/components/agro/Editorial';
 import { ExploradorCadeiaAgro } from '@/components/agro/ExploradorCadeia';
 import s from '@/components/agro/Agro.module.css';
+import { RotuloContexto } from '@/components/layout/RotuloContexto';
 import { FaixaFrescor } from '@/components/frescor/FaixaFrescor';
 import { FRESCOR_DAS_COLECOES } from '@/lib/frescor/entradas';
 import { ParaVoce } from '@/components/observatorios/ParaVoce';
@@ -15,7 +16,7 @@ export const dynamic = 'force-static';
 export const metadata: Metadata = { title: { absolute: 'Observatório do Agronegócio Brasileiro · Scrutiniums' }, description: 'Como está o agronegócio brasileiro: tamanho na economia, safra, custo dos insumos e destino das exportações, com dados oficiais, fonte e período em cada número.', alternates: { canonical: '/agronegocio' } };
 export default function InicioAgro() {
     const d = dadosAgro, c = d.credito, f = d.trabalho.formal, e = d.economia;
-    return <><FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/agronegocio"]} /><section className={s.intro}><p className={s.eyebrow}>Observatório do Agronegócio Brasileiro</p><h1>Como está o agronegócio brasileiro?</h1><p>O tamanho do setor na economia, o ritmo da safra, quanto custam os insumos importados e para quem o país vende. Dados oficiais com fonte, período e limite em cada número.</p><p className={s.sourceLine}>Crédito rural, trabalho e alimentação vêm de recortes preservados, cada um com seu período. A data da coleta mais recente e a situação da atualização estão na faixa acima.</p></section>
+    return <><FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/agronegocio"]} /><section className={s.intro}><RotuloContexto rota="/agronegocio" className={s.eyebrow} /><h1>Como está o agronegócio brasileiro?</h1><p>O tamanho do setor na economia, o ritmo da safra, quanto custam os insumos importados e para quem o país vende. Dados oficiais com fonte, período e limite em cada número.</p><p className={s.sourceLine}>Crédito rural, trabalho e alimentação vêm de recortes preservados, cada um com seu período. A data da coleta mais recente e a situação da atualização estão na faixa acima.</p></section>
  {e && <DestaquesAgro e={e}/>}
  {/* "Para você" (Onda 2): a comida em casa e o que o estado do leitor produz, a um clique, logo depois dos números de abertura */}
  <ParaVoce entrada="/agronegocio" conteiner=""/>

@@ -10,6 +10,7 @@ import { dataBr, ideb } from "@/lib/educacao/formato";
 import { NOME_ETAPA, PERGUNTA_APERITIVO, ROTA_CAPITAIS, ROTA_EDUCACAO, SECAO_APERITIVO, SERIES_ETAPA, TEXTO_MOTIVO, TITULO_CAPITAIS, hrefMunicipio } from "@/lib/educacao/paginas";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { ETAPAS, type GoldEducacao, type MunicipioGold } from "@/lib/educacao/tipos";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 /**
  * Versão aperitivo da Educação nos municípios (princípio do aperitivo, decisão do dono de 20/10/2026). Quem acessa
@@ -43,6 +44,7 @@ export default function AperitivoEducacao({ searchParams }: Busca) {
     <main id="conteudo-educacao" className="ed-pagina edm-main" data-aperitivo="educacao-municipal">
       <MarcaVisita secao={SECAO_APERITIVO} />
       <header className="edm-cabeca">
+        <RotuloContexto rota="/educacao-municipal" className="text-mineral" />
         <h1>{PERGUNTA_APERITIVO}</h1>
         <p className="edm-lead">
           Busque o município e veja o Ideb {g.ideb.ano} das escolas da prefeitura, o índice do INEP que junta o aprendizado dos alunos e a aprovação, nos anos iniciais e finais do

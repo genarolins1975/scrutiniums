@@ -8,6 +8,7 @@ import { carimbo, mesExtenso } from "@/lib/gas/formato";
 import { dadosDoEstado, dataNota, goldCombustiveis } from "@/lib/combustiveis/dados";
 import { ROTA_COMBUSTIVEIS, paginaCombustiveis } from "@/lib/combustiveis/paginas";
 import { leva2Aprovada } from "@/lib/rotasPublicas";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 export const dynamic = "force-static";
 
@@ -44,7 +45,7 @@ export default function ConsultaTanquePagina() {
       )}
       <main id="conteudo" className="ed-pagina pb-12">
         <div className="cab-modulo gas-abertura">
-          <p className="rotulo text-gas-dark">Combustíveis · {pagina.rotulo}</p>
+          <RotuloContexto rota={pagina.href} pagina={pagina.rotulo} className="text-gas-dark" />
           <h1 className="ed-h1 mt-3 max-w-4xl font-serif text-carvao">{pagina.pergunta}</h1>
           <div className="ed-lead mt-4 max-w-prose2 text-carvao-muted">
             <p>Escolha o estado para ver o preço médio do litro de gasolina, etanol e diesel em {mesExtenso(g.ultimo_mes)}, comparado com a média do Brasil.</p>

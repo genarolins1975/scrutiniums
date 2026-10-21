@@ -3,6 +3,7 @@ import Link from "next/link";
 import { NOME_SETOR, SETORES, lerEmissoes, mt } from "@/lib/territorio/emissoes";
 import { Figura, dataBr, n } from "@/components/territorio/Queimadas";
 import { CincoSetores, SerieSetores, TabelaCategorias, TabelaSerieEmissoes } from "@/components/territorio/Emissoes";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 export const dynamic = "force-static";
 
@@ -42,7 +43,7 @@ export default function PaginaEmissoes() {
             <span aria-hidden="true" className="mx-2 text-mineral">/</span>
             <span aria-current="page">Emissões</span>
           </nav>
-          <p className="rotulo mt-8 flex items-center gap-3 text-mineral"><span aria-hidden="true" className="h-[3px] w-8 bg-obee" />Desmatamento e emissões</p>
+          <RotuloContexto rota="/territorio/emissoes" className="mt-8 flex flex-wrap items-center gap-x-3 text-mineral" marca={<span aria-hidden="true" className="h-[3px] w-8 bg-obee" />} />
           <h1 id="emissoes-titulo" className="mt-5 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.1] text-carvao [text-wrap:balance]">
             Quanto o Brasil emite de gases de efeito estufa?
           </h1>

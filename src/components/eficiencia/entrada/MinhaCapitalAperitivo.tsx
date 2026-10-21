@@ -17,7 +17,7 @@ const DIRECAO = {maior: 'Valor maior, condição mais favorável', menor: 'Valor
  * O convite do fecho é renderizado aqui, no cliente: `ConviteAperitivo` usa o módulo de hooks `sessao.ts`
  * e não pode ser importado direto por página de servidor.
  */
-export function MinhaCapitalAperitivo({dados, comConta}: {dados: AperitivoCapital; comConta: readonly string[]}) {
+export function MinhaCapitalAperitivo({dados, comConta, rotulo = null}: {dados: AperitivoCapital; comConta: readonly string[]; rotulo?: React.ReactNode}) {
   const [id, setId] = useState(PADRAO);
   useEffect(() => {
     const ler = () => {
@@ -38,7 +38,7 @@ export function MinhaCapitalAperitivo({dados, comConta}: {dados: AperitivoCapita
   return <><div className={styles.pagina}>
     <section className={styles.abertura} aria-labelledby="titulo-minha-capital">
       <div className={styles.aberturaInterna}>
-        <p className={styles.kicker}>Eficiência Estatal · Consulta aberta</p>
+        {rotulo}
         <h1 id="titulo-minha-capital" className={styles.titulo}>Como está a minha capital?</h1>
         <p className={styles.lead}>Escolha uma das {total} capitais estaduais e veja quatro resultados na vida dos moradores, cada um com o ano, a fonte e a posição da capital entre as {total}.</p>
         <label className={styles.escolha}>Sua capital
