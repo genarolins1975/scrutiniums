@@ -106,7 +106,7 @@ export const COPIAS: Copia[] = [
     titulo: "Inclusão energética",
     onde: "na coleção Setor Elétrico",
     texto:
-      "Os números de energia desta página vêm das mesmas bases do Setor Elétrico, que aprofunda acesso, Tarifa Social, qualidade do serviço e conta de luz por distribuidora, UF e município. O uso da internet fica aqui.",
+      "Os números de energia desta página vêm das mesmas bases do Setor Elétrico, que aprofunda acesso, Tarifa Social, qualidade do serviço e conta de luz por distribuidora, UF e município. O uso da internet por domicílio (PNAD TIC) fica aqui; os acessos, as prestadoras e a cobertura 4G e 5G por município estão no painel Conectividade (/conectividade).",
   },
   // Emissões: a série principal é o inventário oficial (MCTI, SIRENE); o SEEG é explicado onde aparece.
   {

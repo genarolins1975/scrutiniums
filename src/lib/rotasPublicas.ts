@@ -100,6 +100,9 @@ export const APERITIVOS: readonly Aperitivo[] = Object.freeze([
   // painel novo Previdência e INSS (Contas Públicas), aprovado pelo dono em 20/10/2026: sem sessão, "Quanto o INSS paga na
   // minha cidade?" (só o município escolhido, último dezembro); com sessão, o painel completo no mesmo endereço
   { tema: "Previdência", rota: "/contas-publicas/previdencia", versaoAberta: "/aperitivo/previdencia", painelCompleto: "/contas-publicas/previdencia" },
+  // painel novo Conectividade (Energia e Infraestrutura, dados abertos da Anatel por município), 20/10/2026: sem sessão,
+  // "Como é a internet na minha cidade?" (só o município escolhido); com sessão, o painel completo no mesmo endereço
+  { tema: "Conectividade", rota: "/conectividade", versaoAberta: "/aperitivo/conectividade", painelCompleto: "/conectividade" },
   // painel novo Educação nos municípios (Serviços Públicos), aprovado pelo dono em 20/10/2026: sem sessão, "Como está a escola
   // pública da minha cidade?" (só o Ideb mais recente da rede municipal do município escolhido); com sessão, o painel completo
   { tema: "Educação nos municípios", rota: "/educacao-municipal", versaoAberta: "/aperitivo/educacao-municipal", painelCompleto: "/educacao-municipal" },

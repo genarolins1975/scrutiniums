@@ -80,6 +80,7 @@ const MOTOR: [string, string][] = [
   ["atualizar-saneamento-contratos.yml", "saneamento-contratos"],
   // painel Educação nos municípios (Serviços Públicos), 20/10/2026: Ideb, Censo Escolar e população no motor por grupo
   ["atualizar-educacao.yml", "educacao"],
+  ["atualizar-conectividade.yml", "conectividade"],
 ];
 
 describe.each(MOTOR)("%s (motor por grupo)", (arquivo, dominio) => {

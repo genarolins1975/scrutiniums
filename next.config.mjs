@@ -62,6 +62,10 @@ const nextConfig = {
       // dinâmicos (município na URL), leem a cada instância a gold e o arquivo da UF do município pedido
       "/contas-publicas/previdencia": ["./public/previdencia/gold/**/*.json"],
       "/aperitivo/previdencia": ["./public/previdencia/gold/**/*.json"],
+      // painel Conectividade e a sua versão aperitivo (servida em /conectividade a quem não tem sessão): dinâmicos
+      // (município na URL), leem a cada instância a gold e o arquivo da UF do município pedido
+      "/conectividade": ["./public/conectividade/gold/**/*.json"],
+      "/aperitivo/conectividade": ["./public/conectividade/gold/**/*.json"],
       // painel Educação nos municípios e a sua versão aperitivo (servida em /educacao-municipal a quem não tem sessão):
       // dinâmicos (município na URL), leem a gold e o arquivo da UF do município pedido; os CSV leem todas as UFs no build
       "/educacao-municipal": ["./public/educacao/gold/**/*.json"],
@@ -113,6 +117,7 @@ const nextConfig = {
       // logos oficiais: SVG aberto direto no navegador não roda script nem carrega nada de fora
       {source: "/energia/logos/:path*", headers: [{key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox"}, {key: "X-Content-Type-Options", value: "nosniff"}]},
       {source: "/saneamento/logos/:path*", headers: [{key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox"}, {key: "X-Content-Type-Options", value: "nosniff"}]},
+      {source: "/conectividade/logos/:path*", headers: [{key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox"}, {key: "X-Content-Type-Options", value: "nosniff"}]},
       // marcas de parceiros (pasta aberta): mesma política dos logos
       {source: "/home/parceiros/:path*", headers: [{key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox"}, {key: "X-Content-Type-Options", value: "nosniff"}]},
       {source: "/energia/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
@@ -122,6 +127,7 @@ const nextConfig = {
       {source: "/agro/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/saneamento/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/previdencia/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
+      {source: "/conectividade/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/saneamento/divida/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/educacao/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/gas/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},

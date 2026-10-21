@@ -54,6 +54,11 @@ export const CONSULTAS = {
     href: "/eficiencia-estatal",
   },
   // painel Previdência e INSS (20/10/2026): sem sessão, o endereço mostra só o município escolhido no último dezembro
+  internet: {
+    pergunta: "Como é a internet na minha cidade?",
+    resumo: "Quantos acessos de banda larga fixa o seu município tem por 100 habitantes, quantos por fibra, quantas empresas atendem e quem está dentro da cobertura 4G e 5G, pela Anatel.",
+    href: "/conectividade",
+  },
   inss: {
     pergunta: "Quanto o INSS paga na minha cidade?",
     resumo: "Quantos benefícios o INSS pagou por agências da sua cidade em dezembro e o valor médio de cada um, pelo Ministério da Previdência Social.",
@@ -506,7 +511,7 @@ function porta_energia(): Porta {
       caminho("gas", "Quanto custa encher o tanque no meu estado?", "Gasolina, etanol e diesel por estado e no Brasil, mês a mês desde 2013.", "/combustiveis"),
       caminho("eficiencia", "Como as pessoas se deslocam nas cidades?", "Oferta e uso do transporte público nos recortes disponíveis.", "/eficiencia-estatal/mobilidade-transporte"),
     ],
-    paraOSeuCaso: [CONSULTAS.luz, CONSULTAS.municipio, CONSULTAS.botijao],
+    paraOSeuCaso: [CONSULTAS.luz, CONSULTAS.internet, CONSULTAS.municipio, CONSULTAS.botijao],
     lacunas: [
       "Valor final da conta de luz com tributos e bandeira tarifária.",
       "Rodovias, ferrovias e portos.",
