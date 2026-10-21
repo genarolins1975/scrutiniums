@@ -24,6 +24,18 @@ describe('Aberturas editoriais: números e perímetros preservados',()=>{
   expect(html).toContain('Fonte: SIOP');
   expect(html).toContain('2026 · parcial');
  });
+ it('Federal abre com a pergunta e uma cascata só, com o que fica para trás em cada passo (diagnóstico de 20/10/2026, item 9)',()=>{
+  const html=renderToStaticMarkup(createElement(AberturaFederal));
+  const b=DADOS.orcamento.find(b=>b.ano===2025)!.total;
+  expect(html).toMatch(/<h1[^>]*>Quanto do orçamento federal vira <em>pagamento<\/em>\?<\/h1>/);
+  expect(html).not.toContain('à <em>entrega.</em>');
+  // uma barra encaixada no lugar das quatro barras soltas, e sem a escala comum delas
+  expect(html.match(/role="img"/g)).toHaveLength(1);
+  expect(html).not.toContain('Escala comum');
+  for(const [de,para] of [['atualizada','empenhado'],['empenhado','liquidado'],['liquidado','pago']] as const)expect(html).toContain(moeda(b[de]-b[para],'reais'));
+  expect(html).toContain('não empenhados');
+  expect(html).toContain('liquidados e não pagos');
+ });
  it.each(snapshot.ufs)('Estadual mantém os números conferidos de $uf e as 27 bandeiras',u=>{
   const html=renderToStaticMarkup(createElement(AberturaEstadual,{uf:u.uf,ano:2025,selecionar:()=>{}}));
   const execucao=comparar(2025,'CE-04','Todas',true).linhas.find(l=>l.uf===u.uf)!.valor!;
