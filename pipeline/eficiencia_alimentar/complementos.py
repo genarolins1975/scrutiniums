@@ -1,5 +1,8 @@
 """Bases complementares de segurança alimentar: EBIA por UF, CadINSAN, PAA, PNAE, IPCA e SISVAN.
 
+Desde o follow-up do PR #325, a gold também leva o bloco `ebia_social` (recortes sociais nacionais da EBIA,
+tabelas SIDRA 9553 a 9562), com seed, manifesto e portão próprios em ebia_social.py.
+
 Integração autorizada pelo responsável em 21/10/2026. As bases vieram do PR #131 (fechado) apenas
 como matéria-prima: cada original foi baixado de novo da fonte oficial em 21/10/2026, conferido
 byte a byte (ou, no serviço Solr do MDS, documento a documento) com a captura daquele PR e
@@ -34,6 +37,8 @@ import unicodedata
 import urllib.request
 from decimal import Decimal
 from pathlib import Path
+
+from pipeline.eficiencia_alimentar import ebia_social
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = Path(__file__).resolve().parent
@@ -472,8 +477,10 @@ def _soma_paa(linhas):
     return out
 
 
-def agrega(rec, manifesto, catalogo):
+def agrega(rec, manifesto, catalogo, social=None):
+    """`social`: (registro, manifesto) dos recortes sociais da EBIA; sem ele, lê o seed versionado de ebia_social."""
     municipios = valida(rec)
+    rec_social, man_social = social if social is not None else ebia_social.le_seed()
     uf_de = {c: m[2] for c, m in municipios.items()}
     ufs = [{"sigla": u[0], "codigo": u[1], "nome": u[2], "regiao": u[3]} for u in rec["ufs"]]
     cad = {"brasil": _soma_cadinsan(rec["cadinsan"]),
@@ -489,7 +496,7 @@ def agrega(rec, manifesto, catalogo):
     ipca = [dict(zip(["medida", "categoria", "periodo", "valor"], x)) for x in rec["ipca"]]
     sisvan = [dict(zip(["fase", "avaliados", "cobertura"], s)) for s in rec["sisvan"]]
     return {"versao": rec["versao"], "manifesto": manifesto, "fichas": catalogo["indicadores"], "nao_integrados": catalogo["nao_integrados"],
-            "ufs": ufs, "ebia": rec["ebia"], "cadinsan": cad, "paa": paa, "pnae": pnae, "ipca": ipca, "sisvan": sisvan}
+            "ufs": ufs, "ebia": rec["ebia"], "ebia_social": ebia_social.agrega(rec_social, man_social, rec["ebia"]), "cadinsan": cad, "paa": paa, "pnae": pnae, "ipca": ipca, "sisvan": sisvan}
 
 
 CAMPOS_FICHA = ("id", "nome", "grupo", "capitulo", "fonte_id", "definicao", "universo", "periodo", "unidade", "territorio",
@@ -501,11 +508,11 @@ def le_catalogo():
 
 
 def valida_catalogo(cat):
-    ids_fonte = {f["id"] for f in FONTES}
+    ids_fonte = {f["id"] for f in FONTES} | {f["id"] for f in ebia_social.FONTES}
     for ficha in cat["indicadores"]:
         if any(not ficha.get(k) for k in CAMPOS_FICHA):
             raise ValueError("Ficha complementar incompleta: " + ficha.get("id", "?"))
-        if ficha["fonte_id"] not in ids_fonte:
+        if ficha["fonte_id"] not in ids_fonte or any(f not in ids_fonte for f in ficha.get("fontes_adicionais", [])):
             raise ValueError("Ficha sem fonte registrada: " + ficha["id"])
     for item in cat["nao_integrados"]:
         if not item.get("base") or not item.get("motivo"):
@@ -513,8 +520,8 @@ def valida_catalogo(cat):
     return cat
 
 
-def promove(rec, manifesto, catalogo, destino=None):
-    gold = agrega(rec, manifesto, valida_catalogo(catalogo))  # portão antes de qualquer escrita
+def promove(rec, manifesto, catalogo, destino=None, social=None):
+    gold = agrega(rec, manifesto, valida_catalogo(catalogo), social)  # portão antes de qualquer escrita
     alvo = Path(destino) if destino else GOLD
     alvo.parent.mkdir(parents=True, exist_ok=True)
     corpo = json.dumps(gold, ensure_ascii=False, separators=(",", ":")).encode()
@@ -559,6 +566,7 @@ def main():
     rec, manifesto = le_seed()
     gold = promove(rec, manifesto, le_catalogo())
     print(f"Segurança alimentar, bases complementares: {len(gold['ebia'])} recortes EBIA, "
+          f"{len(gold['ebia_social']['recortes'])} recortes sociais EBIA (tabelas {', '.join(r['tabela'] for r in gold['ebia_social']['recortes'])}), "
           f"{gold['cadinsan']['brasil']['municipios']} municípios CadINSAN, PAA {sorted(gold['paa'])}, "
           f"{len(gold['pnae']['linhas'])} agregados PNAE; portão aprovado.")
 

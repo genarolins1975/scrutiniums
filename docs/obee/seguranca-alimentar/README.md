@@ -57,6 +57,32 @@ Integração autorizada pelo responsável em 21/10/2026. O PR #131 (fechado) mon
 
 Diferenças em relação ao PR #131, corrigidas aqui: a EBIA usa o percentual publicado pelo IBGE em vez de razão recalculada de contagens arredondadas (61 valores estaduais, somadas as cinco classes, diferiam do publicado em 0,1 a 0,2 ponto percentual); o hífen do SIDRA nas células urbana e rural por UF, que o PR convertia em zero (108 observações), fica fora como não publicado.
 
-Não integrado, com motivo na página de método: poder de compra em reais; estado nutricional por território; série de cobertura do gráfico 19 do relatório do Ministério da Saúde; EBIA municipal (não existe); recortes sociais nacionais da EBIA (tabelas 9553 a 9562, fora desta etapa); PNAE municipal fora de 2025 e as 18 entidades sem correspondência exata de nome.
+Não integrado, com motivo na página de método: poder de compra em reais; estado nutricional por território; série de cobertura do gráfico 19 do relatório do Ministério da Saúde; EBIA municipal (não existe); PNAE municipal fora de 2025 e as 18 entidades sem correspondência exata de nome.
 
 Reprodução: `python3 -m pipeline.eficiencia_alimentar.complementos --originais <pasta> --coletar` baixa, confere os hashes e compara a reextração com `seed/complementos.json.gz`; sem argumentos, valida o seed e grava `public/eficiencia/seguranca-alimentar/complementos.json` (versionado). `scripts/materializar-seguranca-alimentar.mjs` gera, do mesmo seed, um arquivo municipal por UF e seis CSV (gitignorados). Fichas em `pipeline/eficiencia_alimentar/catalogo-complementos.json`. Testes: `pipeline/tests/test_eficiencia_alimentar_complementos.py` e `src/tests/obee-alimentar-complementos.test.ts`.
+
+## Recortes sociais da EBIA: "Quem passa fome no Brasil?" (21/10/2026)
+
+Follow-up do PR #325, aprovado pelo responsável. Nove tabelas nacionais da PNAD Contínua (Segurança alimentar), 2023 e 2024, só Brasil, baixadas da API de valores do SIDRA em 21/10/2026 (duas capturas no mesmo dia, idênticas byte a byte), cada uma com domicílios em mil (variável 162), distribuição percentual (9784) e os dois coeficientes de variação publicados (5123 e 9785):
+
+| Tabela | Recorte | Orientação do percentual |
+|---|---|---|
+| 9553 | Sexo da pessoa responsável | composição: % dos domicílios da classe que estão no grupo |
+| 9554 | Cor ou raça da pessoa responsável (só branca, preta e parda) | composição |
+| 9555 | Nível de instrução da pessoa responsável | composição |
+| 9556 | Posição na ocupação e categoria do emprego da pessoa responsável | composição |
+| 9557 | Número de moradores | composição |
+| 9558 | Rendimento mensal domiciliar per capita, por situação urbana e rural (moderada e grave publicadas juntas) | composição |
+| 9559 | Morador menor de 5 anos | distribuição: % dos domicílios do grupo em cada classe |
+| 9562 | Morador menor de 18 anos | distribuição |
+| 9560 | Morador com 60 anos ou mais | distribuição |
+
+A tabela 9561 não existe no SIDRA (a API responde "Tabela inválida"; o catálogo de agregados não a lista). O IBGE não publica idade da pessoa responsável nem recortes por estado nessas tabelas; a 9751 (moradores por grupo de idade) conta pessoas e ficou fora.
+
+Pipeline: `pipeline/eficiencia_alimentar/ebia_social.py`, seed `seed/ebia-social.json.gz` e manifesto `seed/ebia-social-manifesto.json` com o SHA-256 de cada original. `python3 -m pipeline.eficiencia_alimentar.ebia_social --originais <pasta> [--coletar]` confere os hashes (sem `--coletar`, original ausente reprova, nunca baixa) e compara a reextração com o seed. A gold única continua sendo `complementos.json`, agora com o bloco `ebia_social`, gravada por `python3 -m pipeline.eficiencia_alimentar.complementos`.
+
+Portão (reprova antes de qualquer escrita): cobertura completa; classes da EBIA somam 100% e leve + moderada + grave = insegurança, em percentuais e em domicílios; grupos somam 100% em cada classe e os domicílios dos grupos somam o total (na cor ou raça, que não é partição, não passam do total); o total de cada tabela repete os domicílios da 9552. Tolerância declarada: 0,05 ponto percentual e 0,5 mil domicílios por parcela somada (arredondamento do IBGE). Exceção declarada: a 9558 tem 59 mil domicílios a menos que a 9552 em 2024 (44 mil em 2023), sem explicação na tabela; a diferença fica registrada e não é distribuída. Hífen, X, .. e ... viram ausência declarada; nas edições capturadas o único hífen é o CV de percentuais fixados em 100%.
+
+Estimativa amostral: o painel marca com asterisco CV de 15% ou mais (limiar próprio, não regra do IBGE; hoje só "Empregador" em insegurança grave e moderada). Nenhuma diferença é apresentada como significativa: o IBGE não publica o teste nem a covariância. A única conta do painel é a parcela do grupo em cada classe nas tabelas de composição (domicílios do grupo na classe ÷ domicílios do grupo), marcada como calculada e sem CV.
+
+Interface: seção "Quem passa fome no Brasil?" em `/eficiencia-estatal/seguranca-alimentar/necessidades` (com conta), componente de servidor `QuemPassaFome`: frases factuais, seis quadros de barras pareadas (parcela do grupo entre todos os domicílios e entre os em insegurança grave, escala comum desde zero), tabela das casas com crianças, adolescentes e idosos, tabelas de apoio com 2023 e 2024 e nota de método. Arquivo `ebia-grupos-sociais.csv` (com conta), gerado por `scripts/materializar-seguranca-alimentar.mjs`. O aperitivo da Eficiência Estatal só anuncia a seção. O tema passou ao cabeçalho comum (`CabecalhoEntrada` com `tema`, molde do PR #323). Testes: `pipeline/tests/test_eficiencia_alimentar_ebia_social.py` e `src/tests/obee-alimentar-ebia-social.test.ts`.

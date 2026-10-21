@@ -36,6 +36,75 @@
       "limitacoes": "Domicílios não são moradores nem famílias. Classes leve, moderada e grave somam a insegurança total; a insegurança total não se soma às parcelas."
     },
     {
+      "id": "san.ebia.social.composicao",
+      "nome": "Quem são os domicílios em cada classe da EBIA: sexo, cor ou raça, escolaridade e trabalho da pessoa responsável, número de moradores e renda",
+      "grupo": "EBIA por grupo social",
+      "capitulo": "necessidades",
+      "fonte_id": "sidra-9553",
+      "fontes_adicionais": [
+        "sidra-9554",
+        "sidra-9555",
+        "sidra-9556",
+        "sidra-9557",
+        "sidra-9558"
+      ],
+      "definicao": "Parcela dos domicílios de cada classe da Escala Brasileira de Insegurança Alimentar (EBIA) que pertence a cada grupo. Exemplo de leitura: dos domicílios com insegurança alimentar grave, que parte tem uma mulher como pessoa responsável. A mesma tabela traz a parcela do grupo entre todos os domicílios, que serve de referência.",
+      "universo": "Domicílios particulares permanentes da PNAD Contínua, Brasil. Grupos definidos pela pessoa responsável pelo domicílio (sexo, cor ou raça, nível de instrução, posição na ocupação no trabalho principal), pelo número de moradores ou pela faixa de rendimento mensal domiciliar per capita em salários mínimos (esta também por situação urbana e rural).",
+      "periodo": "2023 e 2024",
+      "unidade": "% dos domicílios da classe (os grupos somam 100% em cada classe) e mil domicílios",
+      "territorio": "Brasil",
+      "frequencia": "Suplemento de segurança alimentar da PNAD Contínua; duas edições integradas.",
+      "formula": "Percentual publicado pelo IBGE (variável 9784) e domicílios em mil unidades (variável 162), cada um com o coeficiente de variação publicado (9785 e 5123), sem recálculo. Na tabela de renda (9558) o IBGE publica as classes moderada e grave juntas.",
+      "estado_do_dado": "Observado: valor publicado pela fonte.",
+      "ausencias": "Hífen, X, .. ou ... do SIDRA viram ausência declarada, nunca zero. Nas edições capturadas, o único hífen é o coeficiente de variação do grupo Total, que vale 100% por construção e não tem erro amostral.",
+      "limitacoes": "Estimativa amostral. O painel sinaliza coeficiente de variação a partir de 15%, limiar próprio e não regra do IBGE. Nenhuma diferença entre grupos ou entre anos é apresentada como estatisticamente significativa: o IBGE não publica o teste e o painel não o calcula. Na cor ou raça, o IBGE publica só branca, preta e parda; amarela, indígena e sem declaração ficam fora e somam de 1% a 2% dos domicílios de cada classe. Associação entre grupo e insegurança não indica causa."
+    },
+    {
+      "id": "san.ebia.social.distribuicao",
+      "nome": "Insegurança alimentar nos domicílios com crianças, adolescentes ou pessoas idosas",
+      "grupo": "EBIA por grupo social",
+      "capitulo": "necessidades",
+      "fonte_id": "sidra-9559",
+      "fontes_adicionais": [
+        "sidra-9562",
+        "sidra-9560"
+      ],
+      "definicao": "Percentual dos domicílios de cada grupo em cada classe da EBIA, conforme exista ou não morador menor de 5 anos, menor de 18 anos ou com 60 anos ou mais.",
+      "universo": "Domicílios particulares permanentes da PNAD Contínua, Brasil, separados pela existência de morador na faixa de idade.",
+      "periodo": "2023 e 2024",
+      "unidade": "% dos domicílios do grupo (as classes somam 100% em cada grupo) e mil domicílios",
+      "territorio": "Brasil",
+      "frequencia": "Suplemento de segurança alimentar da PNAD Contínua; duas edições integradas.",
+      "formula": "Percentual publicado pelo IBGE (variável 9784) e domicílios em mil unidades (162), com os coeficientes de variação publicados (9785 e 5123), sem recálculo.",
+      "estado_do_dado": "Observado: valor publicado pela fonte.",
+      "ausencias": "Hífen do SIDRA vira ausência declarada, nunca zero; nas edições capturadas, só o coeficiente de variação da classe Total (100% por construção) vem com hífen.",
+      "limitacoes": "Os grupos se sobrepõem entre tabelas: um domicílio com criança de 3 anos está também entre os que têm morador menor de 18. A idade é dos moradores, não da pessoa responsável; o IBGE não publica nestas tabelas a idade da pessoa responsável. Estimativa amostral, sem teste de significância das diferenças."
+    },
+    {
+      "id": "san.ebia.social.no_grupo",
+      "nome": "A cada 100 domicílios do grupo, quantos estão em cada classe da EBIA (calculado)",
+      "grupo": "EBIA por grupo social",
+      "capitulo": "necessidades",
+      "fonte_id": "sidra-9553",
+      "fontes_adicionais": [
+        "sidra-9554",
+        "sidra-9555",
+        "sidra-9556",
+        "sidra-9557",
+        "sidra-9558"
+      ],
+      "definicao": "Nas tabelas em que o IBGE publica a composição de cada classe por grupo (9553 a 9558), a parcela de cada grupo em cada classe é calculada pelo painel com os domicílios publicados.",
+      "universo": "O mesmo das tabelas de composição.",
+      "periodo": "2023 e 2024",
+      "unidade": "% dos domicílios do grupo, uma casa decimal",
+      "territorio": "Brasil",
+      "frequencia": "Recalculado a cada edição integrada.",
+      "formula": "Domicílios do grupo na classe (mil, variável 162) ÷ domicílios do grupo no total (mil, variável 162) × 100, com uma casa decimal.",
+      "estado_do_dado": "Calculado pelo painel a partir de valores publicados.",
+      "ausencias": "Se o numerador ou o denominador estiver ausente, a parcela fica ausente.",
+      "limitacoes": "Não tem coeficiente de variação publicado; a precisão é menor que a dos percentuais do IBGE, porque os domicílios vêm arredondados em mil (o erro de arredondamento chega a alguns décimos de ponto nos grupos pequenos). Serve para leitura, não para teste entre grupos."
+    },
+    {
       "id": "san.cadinsan.risco",
       "nome": "Famílias do Cadastro Único em risco estimado de insegurança alimentar grave",
       "grupo": "CadINSAN",
@@ -207,12 +276,24 @@
       "motivo": "A PNAD Contínua não produz estimativa municipal da EBIA. O CadINSAN, que tem número por município, mede outra coisa: risco estimado entre famílias cadastradas."
     },
     {
-      "base": "EBIA por sexo, cor ou raça, renda e composição do domicílio (tabelas SIDRA 9553 a 9562)",
-      "motivo": "Disponíveis só para o Brasil; ficaram fora desta etapa, que integra o recorte territorial."
-    },
-    {
       "base": "PNAE por município em outros anos e nas 18 entidades de 2025 sem correspondência exata de nome",
       "motivo": "O arquivo do FNDE não traz o código IBGE do município. A associação é feita só por nome e UF idênticos e só para 2025; as 18 entidades sem correspondência continuam nos totais de UF e Brasil."
+    },
+    {
+      "base": "Tabela SIDRA 9561",
+      "motivo": "Não existe: a API do SIDRA responde \"Tabela inválida\" e o catálogo de agregados da PNAD Contínua anual não a lista (conferido em 21/10/2026). A série de recortes sociais publicada vai de 9553 a 9560 e segue em 9562."
+    },
+    {
+      "base": "EBIA por sexo, cor ou raça, renda e composição do domicílio por estado ou região",
+      "motivo": "O IBGE publica as tabelas 9553 a 9562 só para o Brasil. Nada foi estimado para os estados."
+    },
+    {
+      "base": "Moradores por grupo de idade (tabela SIDRA 9751) e idade da pessoa responsável",
+      "motivo": "A 9751 conta pessoas, não domicílios, e não entrou neste recorte, que compara domicílios. A idade da pessoa responsável não é publicada nas tabelas de recortes sociais."
+    },
+    {
+      "base": "Teste de significância das diferenças entre grupos",
+      "motivo": "O IBGE não publica o teste nem a covariância entre as estimativas, e o painel não usa microdados. As diferenças são mostradas com o coeficiente de variação e sem afirmar significância."
     }
   ]
 }
