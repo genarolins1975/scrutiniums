@@ -3157,7 +3157,7 @@ function linhaObservatorio(view) {
   const id = VIEW_OBSERVATORIO[view];
   if (!id) return "";
   const [nome, href] = OBSERVATORIOS_DESTINO[id];
-  return `<p class="ph-obs">Este painel faz parte do <a href="${href}">${nome}</a>, além da coleção Crédito.</p>`;
+  return `<p class="ph-obs">Este painel faz parte do <a href="${href}">${nome}</a>; quem o mantém é a coleção Crédito e sistema financeiro.</p>`;
 }
 function pageHead(o) {
   ULTIMO_HEAD = o || {};

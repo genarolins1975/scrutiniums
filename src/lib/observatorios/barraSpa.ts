@@ -71,7 +71,7 @@ export function htmlTrilhaSpa(caminho: string): string {
     const antes = i ? sep : "";
     return i === pecas.length - 1 && ctx.exato ? `<li>${antes}<span aria-current="page">${esc(t)}</span></li>` : `<li>${antes}<a href="${h}">${esc(t)}</a></li>`;
   });
-  return `<nav aria-label="Você está em" class="bp-trilha obs-trilha" id="obsTrilha" data-trilha=""><ol>${itens.join("")}</ol></nav>`;
+  return `<nav aria-label="Você está em" class="trilha bp-trilha obs-trilha" id="obsTrilha" data-trilha=""><ol>${itens.join("")}</ol></nav>`;
 }
 
 /**

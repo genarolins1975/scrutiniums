@@ -43,6 +43,18 @@
 /* Trilha "Você está em" logo abaixo da barra comum (Iniciativa 1 do parecer de UX, 21/10/2026): mesma largura e margens da
    barra, sem caixa nem regra própria, para não somar mais uma faixa de cromo ao cabeçalho. */
 .bp-trilha { box-sizing:border-box; width:100%; max-width:var(--bp-largura,77.5rem); margin-inline:auto; padding-inline:var(--bp-margem,clamp(1rem,4vw,2.5rem)); padding-block:4px; }
+/* Celular: a trilha fica numa linha só, para não somar duas faixas de cromo antes do título. Ficam as duas últimas peças
+   (observatório e coleção, ou coleção e página); o observatório segue nas abas e no rótulo acima do H1, e o seletor ao
+   lado da marca leva a todos. A primeira peça visível encurta com reticências se preciso; a última fica inteira. */
+@media (max-width:639px) {
+  .trilha ol { flex-wrap:nowrap; }
+  .trilha li, .observatorio-credito .obs-trilha li { min-width:0; flex:0 1 auto; }
+  .trilha li:not(:nth-last-child(-n+2)), .observatorio-credito .obs-trilha li:not(:nth-last-child(-n+2)) { display:none; }
+  .trilha li:nth-last-child(2) > [aria-hidden="true"] { display:none; }
+  .trilha li:last-child { flex-shrink:0; max-width:70%; }
+  .trilha li > a, .trilha li > [aria-current] { display:block; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; line-height:32px; }
+}
+@media (max-width:639px) and (pointer:coarse) { .trilha li > a, .trilha li > [aria-current] { line-height:44px; } }
 /* Itens do seletor de coleção (SwitcherObservatorio): 34 itens por página, então classes curtas em vez das utilitárias */
 .sel-item { display:flex; align-items:center; min-height:36px; padding:6px 12px; }
 @media (pointer:coarse) { .sel-item { min-height:44px; } }
