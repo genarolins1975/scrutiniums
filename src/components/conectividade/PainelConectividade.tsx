@@ -569,7 +569,11 @@ function Mecanismo() {
         </div>
         <div>
           <h3>Linha móvel</h3>
-          <p>Um chip ativo, pré ou pós-pago. A Anatel separa as linhas de pessoas das de máquinas (M2M, como medidores e rastreadores) e dos pontos de serviço, e só as primeiras entram no total e na densidade.</p>
+          <p>
+            Um chip ativo, pré ou pós-pago. A Anatel publica dois totais: as linhas ativas, que somam tudo o que está registrado no município, inclusive as de máquinas (M2M,
+            como medidores e rastreadores) e os pontos de serviço; e os acessos, que deixam essas duas categorias de fora e são a base da densidade por 100 habitantes. As
+            partes por geração e por modalidade são calculadas sobre todas as linhas ativas.
+          </p>
           <p className="cn-mede">Mede chips, não pessoas: uma pessoa pode ter dois, e a linha é contada no município do cadastro.</p>
         </div>
         <div>

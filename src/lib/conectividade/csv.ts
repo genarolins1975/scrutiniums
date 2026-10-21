@@ -51,17 +51,21 @@ function linhaMunicipio(m: MunicipioGold, ref: { fixa: string; movel: string; co
 export function csvPorEstado(): string {
   const g = goldConectividade();
   const cab = ["uf", "nome", "municipios", "referencia_fixa", "referencia_movel", "referencia_cobertura", ...CAB_FIXA, ...CAB_MOVEL,
-    "moradores_censo_2022", "cobertura_todas_moradores_pct", "cobertura_4g_moradores_pct", "cobertura_5g_moradores_pct", "municipios_sem_fibra", "municipios_uma_prestadora", "municipios_sem_5g", "municipios_4g_abaixo_de_50pct"];
+    "moradores_censo_2022", "cobertura_todas_moradores_pct", "cobertura_4g_moradores_pct", "cobertura_5g_moradores_pct", "municipios_sem_fibra", "municipios_uma_prestadora",
+    // universo próprio de cada contagem de cobertura: só os municípios com o valor daquela tecnologia publicado
+    "municipios_com_5g_publicado", "municipios_sem_5g", "municipios_com_4g_publicado", "municipios_4g_abaixo_de_50pct"];
   const r = g.referencia;
   const linhas = [linha(cab)];
   for (const u of g.ufs) {
     linhas.push(linha([u.uf, u.nome, u.municipios, r.fixa, r.movel, r.cobertura, ...colunasFixa(u.fixa), ...colunasMovel(u.movel),
-      u.cobertura.moradores, u.cobertura.todas_moradores, u.cobertura.g4_moradores, u.cobertura.g5_moradores, u.sem_fibra, u.uma_prestadora, u.cobertura.municipios_sem_5g, u.cobertura.municipios_4g_abaixo_50]));
+      u.cobertura.moradores, u.cobertura.todas_moradores, u.cobertura.g4_moradores, u.cobertura.g5_moradores, u.sem_fibra, u.uma_prestadora,
+      u.cobertura.municipios_com_5g_publicado, u.cobertura.municipios_sem_5g, u.cobertura.municipios_com_4g_publicado, u.cobertura.municipios_4g_abaixo_50]));
   }
   const b = g.brasil;
   const bc = b.cobertura.tecnologias;
   linhas.push(linha(["BR", "Brasil", g.destaques.municipios, r.fixa, r.movel, r.cobertura, ...colunasFixa(b.fixa), ...colunasMovel(b.movel),
-    b.cobertura.populacao?.moradores ?? null, bc.todas?.[0] ?? null, bc.g4?.[0] ?? null, bc.g5?.[0] ?? null, g.destaques.sem_fibra, g.destaques.uma_prestadora, g.destaques.sem_5g, g.destaques.g4_abaixo_50]));
+    b.cobertura.populacao?.moradores ?? null, bc.todas?.[0] ?? null, bc.g4?.[0] ?? null, bc.g5?.[0] ?? null, g.destaques.sem_fibra, g.destaques.uma_prestadora,
+    g.destaques.municipios_com_5g_publicado, g.destaques.sem_5g, g.destaques.municipios_com_4g_publicado, g.destaques.g4_abaixo_50]));
   return "﻿" + linhas.join("\n") + "\n";
 }
 

@@ -229,6 +229,9 @@ describe("painel completo", () => {
     expect(html).not.toContain(`<span class="cn-unidade">de ${num(d.municipios)}</span>`);
     expect(t).toContain(`${num(d.sem_5g)} dos ${num(d.municipios_com_5g_publicado)} municípios com cobertura 5G publicada`);
     expect(t).toContain(`${num(d.g4_abaixo_50)} dos ${num(d.municipios_com_4g_publicado)} com cobertura 4G publicada`);
+    // o bloco didático nomeia os dois totais da móvel: linhas ativas (tudo) e acessos (sem M2M e pontos de serviço, base da densidade)
+    expect(t).toContain("A Anatel publica dois totais: as linhas ativas");
+    expect(t).not.toContain("só as primeiras entram no total");
     // o método não atribui o número nacional de cobertura ao cálculo local
     expect(t).toContain("O número do Brasil é o publicado pela Anatel");
     for (const id of ["municipio", "fibra", "cobertura", "evolucao", "estados", "mecanismo", "metodo"]) expect(html).toContain(`id="${id}"`);
@@ -284,6 +287,17 @@ describe("arquivos CSV", () => {
     const est = csvPorEstado().replace(/^﻿/, "").trimEnd().split("\n");
     expect(est.length).toBe(29);
     expect(est[est.length - 1].startsWith("BR;Brasil;")).toBe(true);
+    // cada contagem de cobertura sai ao lado do seu universo (municípios com o valor da tecnologia publicado), não do total de municípios
+    const cab = est[0].split(";");
+    expect(cab.slice(-4)).toEqual(["municipios_com_5g_publicado", "municipios_sem_5g", "municipios_com_4g_publicado", "municipios_4g_abaixo_de_50pct"]);
+    const mt = est.find((l) => l.startsWith("MT;"))!.split(";");
+    const ufMT = g.ufs.find((u) => u.uf === "MT")!;
+    expect(mt[cab.indexOf("municipios")]).toBe(String(ufMT.municipios));
+    expect(mt[cab.indexOf("municipios_com_5g_publicado")]).toBe(String(ufMT.cobertura.municipios_com_5g_publicado));
+    expect(ufMT.cobertura.municipios_com_5g_publicado).toBeLessThan(ufMT.municipios);        // Boa Esperança do Norte não tem cobertura
+    const brasil = est[est.length - 1].split(";");
+    expect(brasil[cab.indexOf("municipios_com_5g_publicado")]).toBe(String(g.destaques.municipios_com_5g_publicado));
+    expect(brasil[cab.indexOf("municipios_sem_5g")]).toBe(String(g.destaques.sem_5g));
     const br = csvBrasilMensal().replace(/^﻿/, "").trimEnd().split("\n");
     expect(br[0]).toBe("mes;banda_larga_fixa_acessos;telefonia_movel_acessos");
     const ultimo = br[br.length - 1].split(";");
