@@ -244,9 +244,12 @@ describe("painel completo", () => {
     // universo dos agregados por fonte (20ª revisão do Codex): MT tem 142 municípios, 141 com móvel e com cobertura
     const mtFontes = g.ufs.find((u) => u.uf === "MT")!;
     expect(mtFontes.municipios_por_fonte).toEqual({ fixa: mtFontes.municipios, movel: mtFontes.municipios - 1, cobertura: mtFontes.municipios - 1 });
-    expect(linhaEstado(g, mtFontes).universo).toBe(`fixa ${num(mtFontes.municipios)} · móvel ${num(mtFontes.municipios - 1)} · cobertura ${num(mtFontes.municipios - 1)}`);
+    expect(linhaEstado(g, mtFontes).universo).toBe(`fixa ${num(mtFontes.municipios)} · móvel ${num(mtFontes.municipios - 1)} · 4G ${num(mtFontes.municipios - 1)} · 5G ${num(mtFontes.municipios - 1)}`);
+    // universo por geração: município com registro de cobertura mas sem o valor de 5G sai só do universo do 5G (21ª revisão do Codex)
+    const semG5 = { ...mtFontes, cobertura: { ...mtFontes.cobertura, municipios_com_5g_publicado: mtFontes.cobertura.municipios_com_5g_publicado - 1 } };
+    expect(linhaEstado(g, semG5).universo).toBe(`fixa ${num(mtFontes.municipios)} · móvel ${num(mtFontes.municipios - 1)} · 4G ${num(mtFontes.municipios - 1)} · 5G ${num(mtFontes.municipios - 2)}`);
     expect(linhaEstado(g, g.ufs.find((u) => u.uf === "SP")!).universo).toBe(num(g.ufs.find((u) => u.uf === "SP")!.municipios));
-    expect(html).toContain(`<td>fixa ${num(mtFontes.municipios)} · móvel ${num(mtFontes.municipios - 1)} · cobertura ${num(mtFontes.municipios - 1)}</td>`);
+    expect(html).toContain(`<td>fixa ${num(mtFontes.municipios)} · móvel ${num(mtFontes.municipios - 1)} · 4G ${num(mtFontes.municipios - 1)} · 5G ${num(mtFontes.municipios - 1)}</td>`);
     expect(t).toContain("nos municípios que a Anatel publica (nesta edição, 1 sem telefonia móvel e 1 sem cobertura)");
     expect(t).not.toContain("Para cada um dos");
     expect(t).toContain("se duas das bases diferirem entre si em mais de três municípios (fixa e móvel, fixa e cobertura, móvel e cobertura");

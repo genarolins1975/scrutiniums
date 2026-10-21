@@ -107,25 +107,32 @@ export function linhaEstado(g: GoldConectividade, u: UfGold | null): {
   fixa: Fixa | null;
   movel: Movel | null;
   cobertura: { g4: number | null; g5: number | null; sem5: number; com5: number };
-  /** texto do universo das colunas: o total quando as três fontes trazem todos os municípios, senão a contagem por fonte */
+  /**
+   * texto do universo das colunas: o total quando todas as colunas agregam todos os municípios, senão a contagem de cada
+   * uma (fixa, móvel, e a cobertura 4G e 5G cada uma com o seu universo: município com registro mas sem o valor da
+   * tecnologia fica fora da média daquela tecnologia)
+   */
   universo: string;
 } {
-  const universo = (total: number, f: { fixa: number; movel: number; cobertura: number }) =>
-    f.fixa === total && f.movel === total && f.cobertura === total ? num(total) : `fixa ${num(f.fixa)} · móvel ${num(f.movel)} · cobertura ${num(f.cobertura)}`;
+  const universo = (total: number, f: { fixa: number; movel: number; g4: number; g5: number }) =>
+    f.fixa === total && f.movel === total && f.g4 === total && f.g5 === total
+      ? num(total)
+      : `fixa ${num(f.fixa)} · móvel ${num(f.movel)} · 4G ${num(f.g4)} · 5G ${num(f.g5)}`;
   if (u) {
     return {
       fixa: u.fixa,
       movel: u.movel,
       cobertura: { g4: u.cobertura.g4_moradores, g5: u.cobertura.g5_moradores, sem5: u.cobertura.municipios_sem_5g, com5: u.cobertura.municipios_com_5g_publicado },
-      universo: universo(u.municipios, u.municipios_por_fonte),
+      universo: universo(u.municipios, { ...u.municipios_por_fonte, g4: u.cobertura.municipios_com_4g_publicado, g5: u.cobertura.municipios_com_5g_publicado }),
     };
   }
   const bc = g.brasil.cobertura.tecnologias;
+  const d = g.destaques;
   return {
     fixa: g.brasil.fixa,
     movel: g.brasil.movel,
-    cobertura: { g4: bc.g4?.[0] ?? null, g5: bc.g5?.[0] ?? null, sem5: g.destaques.sem_5g, com5: g.destaques.municipios_com_5g_publicado },
-    universo: universo(g.destaques.municipios, g.destaques.municipios_por_fonte),
+    cobertura: { g4: bc.g4?.[0] ?? null, g5: bc.g5?.[0] ?? null, sem5: d.sem_5g, com5: d.municipios_com_5g_publicado },
+    universo: universo(d.municipios, { ...d.municipios_por_fonte, g4: d.municipios_com_4g_publicado, g5: d.municipios_com_5g_publicado }),
   };
 }
 

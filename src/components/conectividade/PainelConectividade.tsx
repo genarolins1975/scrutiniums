@@ -527,7 +527,7 @@ function SecaoEstados({ g, escolhida }: { g: GoldConectividade; escolhida: strin
       <h2 id="estados-titulo">Os estados lado a lado</h2>
       <p className="cn-intro">As mesmas medidas da sua cidade para cada estado e para o Brasil. A cobertura por estado é a média dos municípios ponderada pelos moradores.</p>
       <p className="cn-legenda-tabela">
-        {mesAcessos(r, true)}; cobertura de {mesExtenso(r.cobertura)}. Acessos móveis por 100 habitantes: o total da Anatel sem máquinas e pontos de serviço; linhas em 5G como parte de todas as linhas ativas. Prestadoras: empresas com ao menos um acesso fixo no estado. Municípios na base: cada coluna agrega só os municípios que a sua fonte traz no estado, e a célula diz a contagem por fonte quando alguma fica abaixo do total. Municípios sem 5G: menos de 1% dos moradores cobertos, entre os municípios com cobertura 5G publicada.
+        {mesAcessos(r, true)}; cobertura de {mesExtenso(r.cobertura)}. Acessos móveis por 100 habitantes: o total da Anatel sem máquinas e pontos de serviço; linhas em 5G como parte de todas as linhas ativas. Prestadoras: empresas com ao menos um acesso fixo no estado. Municípios na base: cada coluna agrega só os municípios que a sua fonte traz no estado (a cobertura 4G e a 5G, cada uma só os municípios com o valor daquela geração publicado), e a célula diz a contagem de cada uma quando alguma fica abaixo do total. Municípios sem 5G: menos de 1% dos moradores cobertos, entre os municípios com cobertura 5G publicada.
       </p>
       <div className="cn-tabela-rolagem" tabIndex={0}>
         <table className="cn-tabela cn-tabela-larga">
