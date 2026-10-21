@@ -21,7 +21,10 @@ O que reprova:
 - AEPS: tabela faltando, edição com outros anos, linhas por grupo de espécie que não fecham (partes com o todo,
   urbana e rural com o total), UFs ou regiões que não somam o Brasil, concessões da A.1 diferentes da A.14,
   atendimentos dos estados que não somam o Brasil em algum mês, edição velha demais, edição mais antiga que a
-  publicada e revisão acima de 1% num total de ano repetido entre edições;
+  publicada e revisão acima de 1% num total de ano repetido entre edições; nas edições anteriores (só atendimento e
+  rede, desde 2022): edição faltando ou repetida, tabela de outro ano, endereço fora da raiz da edição, UFs que não
+  somam o Brasil em algum mês ou coluna, tabela fora da série declarada (fontes.FORA_DA_SERIE_AEPS) que aparece, e ano
+  repetido entre edições ou coletas com diferença acima de 1% nos atendimentos do ano ou nas agências fixas;
 - cruzada AEPS e BEPS: em cada dezembro do Anuário, o Regime Geral tem de ser igual ao do BEPS (quantidade exata, valor
   a R$ 1 mil), a pensão mensal vitalícia mais os encargos da União têm de ser os benefícios de legislação específica do
   BEPS, e o total não pode se afastar do BEPS mais de 0,01%.
@@ -301,9 +304,108 @@ def _linhas(tabela: dict | None) -> dict[str, list]:
     return {l["id"]: l["v"] for l in (tabela or {}).get("linhas") or []}
 
 
-def validar_aeps(seed: dict, anterior: dict | None = None, hoje: date | None = None) -> list[str]:
+# largura das linhas e colunas que a tabela sempre publica em todas as UFs (43.1: gerências e agências fixas)
+_TERRITORIO_AEPS = {"a.14": (9, range(3)), "43.1": (12, (1, 2)), "43.2": (12, range(12))}
+
+
+def _conferir_territorio(tid: str, tabela: dict, edicao: int) -> list[str]:
+    """As 27 UFs somam cada região e o Brasil em cada coluna (em cada mês, na 43.2); coluna obrigatória sem número
+    reprova."""
     from .coleta import normalizar  # sem rede: só a normalização de rótulos
 
+    p: list[str] = []
+    rotulo = f"AEPS {edicao} {tid}"
+    largura, obrigatorias = _TERRITORIO_AEPS[tid]
+    regioes = {normalizar(r): [s for s in F.SIGLAS if F.REGIAO_UF[s] == r] for r in F.REGIOES}
+    t = _linhas(tabela)
+    if any(u not in t for u in F.SIGLAS) or "brasil" not in t or any(r not in t for r in regioes):
+        return [f"{rotulo}: sem as 27 UFs, as regiões e o Brasil"]
+    if any(len(v) != largura or any(x is not None and (not _num(x) or x < 0) for x in v) for v in t.values()):
+        return [f"{rotulo}: linha fora do formato (esperadas {largura} colunas, sem negativos)"]
+    for col in range(largura):
+        for nome, ufs in [("brasil", F.SIGLAS), *regioes.items()]:
+            alvo, s = t[nome][col], _soma(t[u][col] for u in ufs)
+            if (alvo is None) != (s is None) or (alvo is not None and alvo != s):
+                p.append(f"{rotulo}: as UFs não somam {nome} (coluna {col}: {s} contra {alvo})")
+    for u in F.SIGLAS:
+        if any(t[u][c] is None for c in obrigatorias):
+            p.append(f"{rotulo}, {u}: valor ausente onde a tabela sempre publica")
+    return p
+
+
+def atendimento_anual(tabelas: dict) -> int | None:
+    """Atendimentos do Brasil no ano: a soma dos doze meses (a 43.2 não publica total anual; se um mês faltar, None)."""
+    v = _linhas(tabelas.get("43.2")).get("brasil") or []
+    return sum(v) if len(v) == 12 and all(_num(x) for x in v) else None
+
+
+def _quadros_atendimento(seed: dict) -> list[tuple[int, dict]]:
+    """(edição, tabelas) de cada ano de atendimento e rede no seed: as edições anteriores e a principal (uma edição traz
+    um único ano dessas tabelas, o da própria edição)."""
+    out = [(a.get("edicao"), a.get("tabelas") or {}) for a in seed.get("anteriores") or []]
+    if isinstance(seed.get("edicao"), int):
+        out.append((seed["edicao"], seed.get("tabelas") or {}))
+    return out
+
+
+def _conferir_anteriores(seed: dict) -> list[str]:
+    """Edições anteriores (só 43.1 e 43.2): da primeira integrada até a véspera da principal, sem lacuna nem repetição,
+    cada uma com endereço oficial da edição, sha256 da página e da tabela, data de atualização, linha de fonte, um único
+    ano (o da edição) e as mesmas somas por território da edição principal."""
+    p: list[str] = []
+    edicao = seed["edicao"]
+    anteriores = seed.get("anteriores")
+    if not isinstance(anteriores, list):
+        return ["AEPS sem as edições anteriores do atendimento e da rede"]
+    edicoes = [a.get("edicao") for a in anteriores]
+    esperadas = list(range(F.PRIMEIRA_EDICAO_ATENDIMENTO_AEPS, edicao))
+    if edicoes != esperadas:
+        p.append(f"AEPS: edições anteriores do atendimento {edicoes}, esperadas {esperadas} (sem lacuna nem repetição)")
+    for a in anteriores:
+        e = a.get("edicao")
+        if not isinstance(e, int):
+            p.append("AEPS: edição anterior sem número")
+            continue
+        tabelas = a.get("tabelas") or {}
+        if sorted(tabelas) != sorted(F.tabelas_atendimento_aeps(e)):
+            p.append(f"AEPS {e}: tabelas {sorted(tabelas)}, esperadas {list(F.tabelas_atendimento_aeps(e))}")
+            continue
+        if a.get("anos") != [e] or a.get("raiz") != F.raiz_aeps(e):
+            p.append(f"AEPS {e}: ano ou raiz da edição diferente do esperado")
+        for tid, t in tabelas.items():
+            if t.get("url") != F.raiz_aeps(e) + "/" + F.TABELAS_AEPS[tid][0] or len(t.get("sha256_tabela") or "") != 64 or len(t.get("sha256") or "") != 64:
+                p.append(f"AEPS {e} {tid}: endereço da edição ou sha256 ausente")
+            if t.get("anos") != [e] or not str(t.get("titulo", "")).rstrip().endswith(str(e)):
+                p.append(f"AEPS {e} {tid}: tabela de outro ano")
+            if not t.get("atualizado_em") or not str(t.get("fonte", "")).upper().startswith("FONTE"):
+                p.append(f"AEPS {e} {tid}: sem data de atualização ou linha de fonte")
+            p += _conferir_territorio(tid, t, e)
+    return p
+
+
+def _conferir_sobreposicao(seed: dict, anterior: dict | None) -> list[str]:
+    """Um ano de atendimento e rede que aparece duas vezes (em duas edições do seed, ou no seed publicado e no novo)
+    não pode mudar além de REVISAO_MAXIMA_AEPS no total do Brasil: atendimentos do ano e agências fixas."""
+    p: list[str] = []
+
+    def medidas(tabelas: dict) -> dict:
+        rede = _linhas(tabelas.get("43.1")).get("brasil") or []
+        return {"atendimentos no ano": atendimento_anual(tabelas), "agências fixas": rede[2] if len(rede) > 2 else None}
+
+    vistos: dict = {}
+    for ano, tabelas in _quadros_atendimento(seed) + (_quadros_atendimento(anterior) if anterior else []):
+        m = medidas(tabelas)
+        if ano not in vistos:
+            vistos[ano] = m
+            continue
+        for k, b in vistos[ano].items():
+            a = m[k]
+            if _num(a) and _num(b) and b and abs(a - b) / b > F.REVISAO_MAXIMA_AEPS:
+                p.append(f"AEPS {ano}: revisão de {100 * (a - b) / b:.2f}% em {k} entre edições ou coletas")
+    return p
+
+
+def validar_aeps(seed: dict, anterior: dict | None = None, hoje: date | None = None) -> list[str]:
     p: list[str] = []
     edicao = seed.get("edicao")
     tabelas = seed.get("tabelas") or {}
@@ -357,24 +459,14 @@ def validar_aeps(seed: dict, anterior: dict | None = None, hoje: date | None = N
             p.append(f"AEPS {tid}: total ou Regime Geral ausente no último ano")
 
     # por território: UFs somam a região e o Brasil (traço não soma nada; só se compara onde há número)
-    regioes = {normalizar(r): [s for s in F.SIGLAS if F.REGIAO_UF[s] == r] for r in F.REGIOES}
-    for tid, largura in (("a.14", 9), ("43.1", 12), ("43.2", 12)):
-        t = _linhas(tabelas[tid])
-        if any(u not in t for u in F.SIGLAS) or "brasil" not in t or any(r not in t for r in regioes):
-            p.append(f"AEPS {tid}: sem as 27 UFs, as regiões e o Brasil")
-            continue
-        for col in range(largura):
-            for nome, ufs in [("brasil", F.SIGLAS), *regioes.items()]:
-                alvo, s = t[nome][col], _soma(t[u][col] for u in ufs)
-                if (alvo is None) != (s is None) or (alvo is not None and alvo != s):
-                    p.append(f"AEPS {tid}: as UFs não somam {nome} (coluna {col}: {s} contra {alvo})")
-        obrigatorias = range(3) if tid == "a.14" else range(12) if tid == "43.2" else (1, 2)  # 43.1: gerências e agências fixas
-        for u in F.SIGLAS:
-            if any(t[u][c] is None for c in obrigatorias):
-                p.append(f"AEPS {tid}, {u}: valor ausente onde a tabela sempre publica")
+    for tid in ("a.14", "43.1", "43.2"):
+        p += _conferir_territorio(tid, tabelas[tid], edicao)
     a1, a14 = _linhas(tabelas["a.1"]), _linhas(tabelas["a.14"])
     if a1.get("total") and a14.get("brasil") and a1["total"] != a14["brasil"]:
         p.append("AEPS: concessões da A.1 diferentes das da A.14 no Brasil")
+
+    p += _conferir_anteriores(seed)
+    p += _conferir_sobreposicao(seed, anterior)
 
     if anterior and isinstance(anterior.get("edicao"), int):
         if edicao < anterior["edicao"]:
