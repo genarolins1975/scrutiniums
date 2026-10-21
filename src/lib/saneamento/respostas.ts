@@ -12,6 +12,7 @@ import { ANOS_SAUDE } from "@/lib/saneamento/medidas";
 import { TARIFAS, periodoConsultaTarifas } from "@/lib/saneamento/tarifas";
 import { calcularConta } from "@/lib/saneamento/conta";
 import { inteiro, numero, reais } from "@/lib/saneamento/formato";
+import { resumoContratado } from "@/lib/saneamento/contratos";
 
 /**
  * Capítulos cujo número de prova seria um valor financeiro autodeclarado ao SINISA (investimento e origem dos recursos). Pela decisão de
@@ -179,6 +180,17 @@ export function respostasDosCapitulos(): Partial<Record<number, Resposta>> {
       rotulo: `pontos percentuais por ano para chegar a ${metaEsgoto}% de coleta com tratamento até 2033`,
       frase: `Com ${pct(es.IES0007)} dos domicílios com coleta e tratamento em 2024 (IES0007), chegar a ${metaEsgoto}% até 2033 exige ${numero(ritmo, 2)} pontos por ano; ${inteiro(g!.plano_sim)} municípios declaram ter plano municipal de saneamento.`,
       fonte: "SINISA 2024; Lei 11.445/2007, art. 11-B",
+    };
+  }
+
+  // 15. Contratado desde o novo marco: contagem própria da tabela curada (nunca a de parte interessada).
+  const rc = resumoContratado();
+  if (rc && rc.contratos_de_servico_adjudicados > 0) {
+    out[15] = {
+      valor: inteiro(rc.contratos_de_servico_adjudicados),
+      rotulo: "leilões de concessão ou PPP com contrato adjudicado desde 2020, na tabela curada",
+      frase: `Desde o novo marco, ${inteiro(rc.leiloes_registrados)} leilões e desestatizações estão registrados, ${inteiro(rc.contratos_de_servico_adjudicados)} com contrato de serviço adjudicado; ${inteiro(rc.contratos_com_metas)} ${rc.contratos_com_metas === 1 ? "contrato tem" : "contratos têm"} metas transcritas e ${inteiro(rc.municipios_proxy_sinisa)} municípios declaram ao SINISA concessão iniciada de 2020 em diante.`,
+      fonte: `Tabela curada (fontes por linha), capturada em ${rc.capturado_em.slice(8, 10)}/${rc.capturado_em.slice(5, 7)}/${rc.capturado_em.slice(0, 4)}; SINISA 2024`,
     };
   }
 

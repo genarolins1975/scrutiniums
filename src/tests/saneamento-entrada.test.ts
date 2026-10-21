@@ -33,8 +33,8 @@ describe("Entrada: resposta curta e número com prova por capítulo", () => {
   const respostas = respostasDosCapitulos();
 
   it("os capítulos sem valor financeiro autodeclarado têm resposta com valor, o que ele mede, frase e fonte", () => {
-    expect(todos).toHaveLength(14);
-    expect(capitulos).toHaveLength(14 - semManchete.size);
+    expect(todos).toHaveLength(15);
+    expect(capitulos).toHaveLength(15 - semManchete.size);
     for (const n of semManchete) expect(respostas[n], `capítulo ${n} sem manchete financeira`).toBeUndefined();
     for (const c of capitulos) {
       const r = respostas[c.numero];
@@ -74,7 +74,7 @@ describe("Nesta página: atalhos completos, na ordem, sem âncora ausente", () =
   const PAGINAS: [string, string, object?][] = [
     ...[
       "acesso", "desigualdades", "continuidade", "esgoto", "tarifa-social", "investimento", "financiamento", "planejamento",
-      "responsaveis", "saude-ambiente", "resiliencia", "internacional", "metodologia",
+      "responsaveis", "saude-ambiente", "resiliencia", "contratado", "internacional", "metodologia",
     ].map((s): [string, string] => [s, modulo(s)]),
     ["ficha do município", "@/app/saneamento/municipio/[id]/page", { params: { id: "3550308" } }],
     ["ficha de prestador com controle", "@/app/saneamento/prestadores/[id]/page", { params: { id: sabesp } }],

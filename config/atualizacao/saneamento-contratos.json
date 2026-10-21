@@ -1,0 +1,46 @@
+{
+  "dominio": "saneamento-contratos",
+  "titulo": "Saneamento, o que está contratado desde o novo marco (capítulo 15)",
+  "descricao": "Vigília mensal dos documentos do capítulo 15 (contratos e anexos de metas transcritos): baixa de novo cada PDF do seed e compara o SHA-256 com o registrado; PDF trocado na mesma URL ou URL que não responde vira pendência (a issue é aberta) e nada é alterado no seed. As fontes não têm API: leilão novo, aditivo ou repactuação entra por PR, com a fonte e o novo hash. A gold é reconstruída do seed e só é publicada se cada linha tiver fonte, data e grau válidos, se os totais somarem só contratos de serviço adjudicados e conferidos, se toda meta transcrita tiver documento com sha256 e cláusula e série monotônica, e se nenhum município estiver em dois blocos com vigências sobrepostas.",
+  "codigo": [
+    "pipeline/saneamento_contratos/*.py",
+    "pipeline/tests/test_saneamento_contratos.py",
+    "src/lib/saneamento/contratos.ts",
+    "src/components/saneamento/Contratado.tsx",
+    "src/app/saneamento/contratado",
+    "src/app/saneamento/page.tsx",
+    "src/app/aperitivo/saneamento",
+    "src/components/acesso/ConviteAperitivo.tsx",
+    "src/lib/rotasPublicas.ts",
+    "src/tests/saneamento-contratos.test.ts",
+    "src/tests/saneamento-entrada.test.ts",
+    "src/tests/aperitivo.test.ts"
+  ],
+  "reconstruir": [["python3", "-m", "pipeline.saneamento_contratos.run"]],
+  "timeout_reconstruir_min": 5,
+  "saidas": ["public/saneamento/contratos"],
+  "sinal_de_mudanca": [
+    {"arquivo": "public/saneamento/contratos/contratado.json", "json_chave": "hash_dados"}
+  ],
+  "testes": [
+    {
+      "nome": "pipeline do contratado (Python): validações que retêm a publicação, totais só com contrato adjudicado e conferido, metas com documento e hash",
+      "comando": ["python3", "-m", "unittest", "pipeline.tests.test_saneamento_contratos"],
+      "timeout_min": 10
+    },
+    {
+      "nome": "contratos da página do capítulo 15, da entrada e do aperitivo do Saneamento (vitest)",
+      "comando": ["npx", "vitest", "run", "--testTimeout=60000", "src/tests/saneamento-contratos.test.ts", "src/tests/saneamento-entrada.test.ts", "src/tests/aperitivo.test.ts"],
+      "timeout_min": 15
+    }
+  ],
+  "grupos": [
+    {
+      "id": "documentos",
+      "nome": "Vigília dos documentos transcritos (contratos e anexos de metas): download e comparação do SHA-256, sem alterar o seed",
+      "coleta": [["python3", "-m", "pipeline.saneamento_contratos.run", "--vigiar"]],
+      "caminhos": ["pipeline/saneamento_contratos/seed"],
+      "timeout_min": 20
+    }
+  ]
+}

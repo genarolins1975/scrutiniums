@@ -1,0 +1,63 @@
+{
+ "contratos": [
+  {
+   "id": "sp-sabesp-urae1-2024",
+   "nome": "Sabesp, Contrato de Concessão 01/2024 (URAE 1 Sudeste)",
+   "uf": "SP",
+   "concessionaria": "Sabesp",
+   "documento": {
+    "titulo": "Contrato 01/2024, Anexo VII (Fator U, Fator Q e indicadores), apostilado",
+    "url": "https://semil.sp.gov.br/urae1/wp-content/uploads/sites/26/2025/02/ANEXO-VII_Apostilado.pdf",
+    "sha256": "cf1215d6a652ee5e149a7c705960ed30fd6a1c841a8920dc299e8b080e642cce",
+    "capturado_em": "2026-10-14"
+   },
+   "clausula": "Anexo VII, item 3.7; Contrato, PDF p.6 e p.26",
+   "fim_contrato": null,
+   "metas": [
+    {
+     "indicador": "ICA",
+     "ano": 2026,
+     "valor": 97
+    },
+    {
+     "indicador": "ICA",
+     "ano": 2027,
+     "valor": 99
+    },
+    {
+     "indicador": "ICE",
+     "ano": 2026,
+     "valor": 90
+    },
+    {
+     "indicador": "ICE",
+     "ano": 2027,
+     "valor": 93
+    },
+    {
+     "indicador": "ICE",
+     "ano": 2028,
+     "valor": 96
+    },
+    {
+     "indicador": "ICE",
+     "ano": 2029,
+     "valor": 99
+    },
+    {
+     "indicador": "IEC",
+     "ano": 2026,
+     "valor": 85
+    },
+    {
+     "indicador": "IEC",
+     "ano": 2029,
+     "valor": 99
+    }
+   ],
+   "observacoes": "Metas de 2027 (ICA) e 2029 (ICE, IEC) valem de cada ano em diante. Anos sem linha não constam da transcrição e não são interpolados.",
+   "situacao": "transcrito"
+  }
+ ],
+ "nao_lidos": []
+}
