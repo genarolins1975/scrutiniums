@@ -96,3 +96,8 @@
 .ce-root{--bp-largura:1280px;--bp-margem:40px}@media(max-width:1000px){.ce-root{--bp-margem:24px}}@media(max-width:650px){.ce-root{--bp-margem:16px}}.ce-nav .ce-edition{align-self:center}
 /* o seletor de observatório é o mesmo dos outros cabeçalhos: não herda a cor, o corpo e o recuo dos resumos do catálogo */
 .ce-root .bp details{margin-top:0}.ce-root .bp summary{color:var(--bp-tinta);font-size:0.75rem;padding:0}
+/* Diagnóstico de layout de 20/10/2026, item 5: o título virou pergunta, mais longa que o slogan; a medida de 12ch do módulo
+   compartilhado (EntradaEstado) quebrava em três linhas. Só nesta página: mais largura e um tamanho menor, duas linhas. */
+.ce-root #titulo-estadual{max-width:19ch;font-size:clamp(30px,3.3vw,46px)}
+@media(max-width:760px){.ce-root #titulo-estadual{font-size:32px;max-width:none}}
+@media(max-width:380px){.ce-root #titulo-estadual{font-size:28px}}

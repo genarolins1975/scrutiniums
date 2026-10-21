@@ -71,10 +71,16 @@ export function VisaoFrases({
             <p className="mt-1.5 font-serif text-lg leading-relaxed text-carvao md:text-xl">
               {idioma === "en" && !trechosEn ? <TrechoPortugues regiao={`visao-frase-${f.id}`}>{corpo}</TrechoPortugues> : corpo}
             </p>
-            <p className="mt-1.5 text-xs leading-relaxed text-carvao-muted">
+            {/* diagnóstico de layout de 20/10/2026, item 7: a defasagem desce para Analisar; o que não é medição e a ponte entre números que
+                diferem (carga, rede) ficam à vista */}
+            <p data-nivel="analisar" className="mt-1.5 text-xs leading-relaxed text-carvao-muted">
               {goldNoBloco(f.qualidade.texto_defasagem, idioma, `visao-frase-defasagem-${f.id}`)} {textoAtualidadeFrase(f, idioma)}
-              {componentes ? tx(` Parte da série não é medição: ${componentes}.`, ` Part of the series is not a measurement: ${componentes}.`) : ""}
             </p>
+            {componentes && (
+              <p className="mt-1.5 text-xs leading-relaxed text-carvao-muted" data-nao-medicao={f.id}>
+                {tx(`Parte da série não é medição: ${componentes}.`, `Part of the series is not a measurement: ${componentes}.`)}
+              </p>
+            )}
             {(marcas[f.id] ?? []).map((r) => (
               <p key={r.id} className="mt-1.5 text-xs leading-relaxed text-carvao" data-marca-regra={r.id}>
                 <span className="rotulo mr-2 text-mineral">{rotuloEstado(r.estado, idioma)}</span>

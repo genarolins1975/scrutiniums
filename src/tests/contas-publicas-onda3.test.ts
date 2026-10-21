@@ -73,6 +73,25 @@ describe('navegação: nenhum capítulo em desenvolvimento', () => {
       expect(html, c.id).not.toContain('NaN');
     }
   });
+  it('o Panorama responde na primeira tela e deixa os complementos para o fim (diagnóstico de 20/10/2026, item 9)', async () => {
+    const {default: Pagina} = await import('@/app/contas-publicas/[capitulo]/page');
+    const {DADOS, fiscalAcumulado} = await import('@/lib/contas-publicas/dados');
+    const {moeda} = await import('@/lib/contas-publicas/formato');
+    const html = renderToStaticMarkup(Pagina({params: {capitulo: 'panorama'}}));
+    const [anoRef, mesRef] = DADOS.referenciaRTN.split('-').map(Number);
+    const ano = mesRef === 12 ? anoRef : anoRef - 1;
+    const v = fiscalAcumulado(ano, 12)!;
+    const resumo = html.indexOf('id="resumo-fiscal"');
+    expect(resumo).toBeGreaterThan(html.indexOf('</h1>'));
+    expect(resumo).toBeLessThan(html.indexOf('cp-chapter-tools'));
+    const trecho = html.slice(resumo, html.indexOf('cp-chapter-tools'));
+    for (const n of [v.receitaLiquida, v.despesa, Math.abs(v.resultado)]) expect(trecho).toContain(moeda(n, 'milhoes'));
+    expect(trecho).toContain('Fonte: Tesouro Nacional');
+    expect(trecho).toContain('não atesta cumprimento da meta fiscal');
+    expect(html).not.toContain('Complemento deste capítulo');
+    expect(html.indexOf('id="complementos-capitulo"')).toBeGreaterThan(html.indexOf('id="fiscal-observado"'));
+    for (const c of CAPITULOS_PUBLICADOS.filter((c) => c.id !== 'panorama')) expect(renderToStaticMarkup(Pagina({params: {capitulo: c.id}})), c.id).not.toContain('id="resumo-fiscal"');
+  });
   it('a entrada, o mapa do observatório e a navegação entre painéis não levam a capítulo em preparação', async () => {
     const {default: Entrada} = await import('@/app/contas-publicas/page');
     const html = renderToStaticMarkup(createElement(Entrada));

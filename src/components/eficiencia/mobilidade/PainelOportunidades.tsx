@@ -2,7 +2,7 @@ import Link from 'next/link';
 import {dadosOportunidades} from '@/lib/eficiencia/mobilidade/oportunidades-dados';
 import {dadosMobilidade} from '@/lib/eficiencia/mobilidade/dados';
 import {MODOS_AOP,HORARIOS_AOP,recorteAop,rotuloGrupoAop,fontesAop,type GrupoAop} from '@/lib/eficiencia/mobilidade/oportunidades';
-import {PAGINAS_MOBILIDADE,ROTA_MOBILIDADE,type Parametros} from '@/lib/eficiencia/mobilidade/modelo';
+import {ROTA_MOBILIDADE,type Parametros} from '@/lib/eficiencia/mobilidade/modelo';
 import s from './mobilidade.module.css';
 const url=ROTA_MOBILIDADE+'/oportunidades';
 const f=(n:number|null,d=1)=>n===null?'Não disponível':new Intl.NumberFormat('pt-BR',{maximumFractionDigits:d}).format(n);
@@ -19,7 +19,7 @@ export function PainelOportunidades({p}:{p:Parametros}){
  const registro=r.city?rows[0]?.record:null;
  const renda=registro?.groups.filter(x=>x.group!=='all')??[],maxRenda=Math.max(1,...renda.map(x=>x.mean??0));
  const sources=registro?fontesAop(g,registro):[];
- return <><Link className={s.acao} href="/eficiencia-estatal">← Panorama do OBEE</Link><nav className={s.nav} aria-label="Mobilidade e transporte">{PAGINAS_MOBILIDADE.map(x=><Link key={x.slug} href={ROTA_MOBILIDADE+(x.slug?'/'+x.slug:'')} aria-current={x.slug==='oportunidades'?'page':undefined}>{x.nome}</Link>)}</nav>
+ return <>
  <p className="rotulo text-obee">Mobilidade e transporte · acesso espacial</p><h1 id="titulo-mobilidade" className="font-serif mt-3">O que cabe no alcance de uma viagem?</h1><p className={s.intro}>Compare quantos empregos, escolas e serviços podem ser alcançados a partir de onde as pessoas moram. A cidade, o modo de transporte e o tempo de viagem definem o recorte.</p>
  <p className={s.aviso}><strong>Retrato histórico:</strong> acessibilidade de {g.referenceYear}, ponderada pela distribuição espacial da população de {g.populationYear}. Não descreve a rede nem a população atuais. Acesso espacial não garante contratação, matrícula, consulta ou atendimento.</p>
  <form key={JSON.stringify([r.metric.id,r.mode,r.city?.id??'',r.peak])} action={url} method="get" className={s.controles}><label>Oportunidade e tempo<select name="indicador" aria-label="Oportunidade e tempo" defaultValue={r.metric.id}>{g.metrics.map(m=><option key={m.id} value={m.id}>{m.opportunity} · {m.minutes} minutos</option>)}</select></label><label>Modo de transporte<select name="modo" aria-label="Modo de transporte" defaultValue={r.mode}>{Object.entries(MODOS_AOP).map(([id,label])=><option key={id} value={id}>{label}</option>)}</select></label><label>Cidade<select name="cidade" aria-label="Cidade" defaultValue={r.city?.id??''}><option value="">Todas as cidades da base</option>{[...g.cities].sort((a,b)=>nome(a.id).localeCompare(nome(b.id),'pt-BR')).map(c=><option key={c.id} value={c.id}>{nome(c.id)}</option>)}</select></label><label>Horário dos modos motorizados<select name="pico" aria-label="Horário dos modos motorizados" defaultValue={r.peak==='na'?'1':r.peak}><option value="1">Pico</option><option value="0">Fora do pico</option></select></label><button type="submit">Aplicar oportunidades</button><Link href={url}>Limpar filtros</Link></form>

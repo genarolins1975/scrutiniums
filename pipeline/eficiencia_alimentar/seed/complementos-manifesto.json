@@ -1,0 +1,92 @@
+{
+  "versao": "2026-10-21.1",
+  "capturado_em": "2026-10-21",
+  "origem": "Originais baixados de novo das fontes oficiais em 21/10/2026 e conferidos com a captura do PR #131 (10/10/2026); recorte reextraído por este módulo.",
+  "seed_arquivo": "complementos.json.gz",
+  "seed_sha256": "dd03c501b920323560f758606da0d864ed85986c85bc7e34ec330c3cae6d4b04",
+  "fontes": [
+    {
+      "id": "sidra-9552-percentual",
+      "nome": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9552, distribuição percentual dos domicílios e coeficiente de variação",
+      "url": "https://apisidra.ibge.gov.br/values/t/9552/n1/all/n2/all/n3/all/v/9784,9785/p/all/c1/all/c12404/all",
+      "pagina": "https://sidra.ibge.gov.br/tabela/9552",
+      "periodo": "2023 e 2024",
+      "sha256": "fcbb313f97e77125b530eb8008856739d7e10d3c04c4b56dedc9cee1d8c6ae2f"
+    },
+    {
+      "id": "sidra-9552-domicilios",
+      "nome": "IBGE · PNAD Contínua · Segurança alimentar · tabela 9552, domicílios em mil unidades e coeficiente de variação",
+      "url": "https://apisidra.ibge.gov.br/values/t/9552/n1/all/n2/all/n3/all/v/162,5123/p/all/c1/all/c12404/all",
+      "pagina": "https://sidra.ibge.gov.br/tabela/9552",
+      "periodo": "2023 e 2024",
+      "sha256": "959a5fd62b7654598f3e2c755b18843d72b8fa5d479c0ae52236a35460b56f80"
+    },
+    {
+      "id": "mds-cadinsan-2025",
+      "nome": "MDS · CadINSAN 2025 · relatório com anexo municipal",
+      "url": "https://www.gov.br/mds/pt-br/Sisan/vigilancia-do-sisan/CADINSAN2025.pdf",
+      "pagina": "https://www.gov.br/mds/pt-br/Sisan/vigilancia-do-sisan/CADinsan/",
+      "periodo": "Cadastro Único de janeiro de 2025",
+      "sha256": "8b08097877af02780843c27639c61894387c55ad5b09947633b6fd0f506af3a3"
+    },
+    {
+      "id": "mds-paa-2023",
+      "nome": "MDS · MI Social · PAA, fornecedores e pagamentos no ano, referência dezembro de 2023",
+      "url": "https://aplicacoes.mds.gov.br/sagi/servicos/misocial?q=*%3A*&fq=anomes_s%3A202312&rows=6000&wt=json&fl=codigo_ibge%2Cmunicipio%2Csigla_uf%2Canomes_s%2Cagricultores_fornec_paa_i%2Crecur_pagos_agricul_paa_f",
+      "pagina": "https://wiki-sagi.mds.gov.br/home/DS/PAA/I/IN002",
+      "periodo": "2023",
+      "sha256_bytes": "6a16ad9596daa82e82505c7cc9041e7c7aa19e4d3c90241793276e25530b0520",
+      "conteudo": "d2f18b66d0c162d360d15adcf81c9e869eefc1984bc47fe0dac47576441a1b86"
+    },
+    {
+      "id": "mds-paa-2024",
+      "nome": "MDS · MI Social · PAA, fornecedores e pagamentos no ano, referência dezembro de 2024",
+      "url": "https://aplicacoes.mds.gov.br/sagi/servicos/misocial?q=*%3A*&fq=anomes_s%3A202412&rows=6000&wt=json&fl=codigo_ibge%2Cmunicipio%2Csigla_uf%2Canomes_s%2Cagricultores_fornec_paa_i%2Crecur_pagos_agricul_paa_f",
+      "pagina": "https://wiki-sagi.mds.gov.br/home/DS/PAA/I/IN002",
+      "periodo": "2024",
+      "sha256_bytes": "e37bc569d694dafd04c32b2fde306aea6901a82978b23e6c6407999224a8bde4",
+      "conteudo": "d03cdf41426b467ead9ac5a90c3e89ed37d7e6d23b5c2b8c16c12d8d71b47fc0"
+    },
+    {
+      "id": "mds-paa-2025",
+      "nome": "MDS · MI Social · PAA, fornecedores e pagamentos no ano, referência dezembro de 2025",
+      "url": "https://aplicacoes.mds.gov.br/sagi/servicos/misocial?q=*%3A*&fq=anomes_s%3A202512&rows=6000&wt=json&fl=codigo_ibge%2Cmunicipio%2Csigla_uf%2Canomes_s%2Cagricultores_fornec_paa_i%2Crecur_pagos_agricul_paa_f",
+      "pagina": "https://wiki-sagi.mds.gov.br/home/DS/PAA/I/IN002",
+      "periodo": "2025",
+      "sha256_bytes": "c8512f54f4ba62ba820a7a5573704f0d7dd733113084a12d170fa341e8ff58dc",
+      "conteudo": "683d938d07275868f54f32e03a461e023b3471a12e10596500ca5d89e341a9cf"
+    },
+    {
+      "id": "ibge-municipios",
+      "nome": "IBGE · API de localidades · relação de municípios",
+      "url": "https://servicodados.ibge.gov.br/api/v1/localidades/municipios",
+      "pagina": "https://servicodados.ibge.gov.br/api/docs/localidades",
+      "periodo": "relação vigente em 21/10/2026",
+      "sha256": "86ecdccdf97d72e7e5e46f0854cfcea8bacc28154cc1bc4ed0e6110e3a6c9c02"
+    },
+    {
+      "id": "fnde-pnae",
+      "nome": "FNDE · Plataforma Antonieta de Barros · produto de dados 82, PNAE: repasses, alunos e escolas por entidade executora",
+      "url": "https://www.fnde.gov.br/plataforma-antonieta-de-barros-api/products/data-products/82/artifact",
+      "pagina": "https://www.fnde.gov.br/plataforma-antonieta-de-barros/dados/produtos-de-dados/visualizar/82",
+      "periodo": "2009 a 2026",
+      "sha256": "2825b55c7205590c382c288f0671ef12f7f4b49b3b9b63056cba308a956c75f4"
+    },
+    {
+      "id": "ibge-ipca-7060",
+      "nome": "IBGE · IPCA · tabela 7060, variação mensal e em 12 meses",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/7060/periodos/202301-202609/variaveis/63|2265?localidades=N1[all]&classificacao=315[7169,7170,7171,7432]",
+      "pagina": "https://sidra.ibge.gov.br/tabela/7060",
+      "periodo": "janeiro de 2023 a setembro de 2026",
+      "sha256": "26531a4f24f5b9f74109cb698382cd60abed617ab135e57a5d42bc2335e3f137"
+    },
+    {
+      "id": "ms-rgi-2025",
+      "nome": "Ministério da Saúde · Relatório de Gestão Integrado 2025 · tabela 10 (SISVAN), página impressa 56",
+      "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/auditorias/2025/relatorio-de-gestao-integrado/@@download/file/Relat%C3%B3rio%20de%20Gest%C3%A3o%20Integrado.pdf",
+      "pagina": "https://www.gov.br/saude/pt-br/acesso-a-informacao/auditorias/2025/relatorio-de-gestao-integrado",
+      "periodo": "2025, dados preliminares",
+      "sha256": "17a1f8fd301d2c8b4370b519c5c363f0f4e0cd21bbc5b5fefb08290dfbdbcbc6"
+    }
+  ]
+}

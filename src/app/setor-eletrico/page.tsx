@@ -701,6 +701,7 @@ function BlocoPergunta({ p, sinal, escolhas }: { p: PerguntaDoCartao; sinal: Sin
               emParte={dados.emParte}
               semDado={dados.semDado}
               emParteTexto={dados.emParteTexto}
+              destinoEscolhida={por.hrefEscolhida}
               className={`rotulo ${link}`}
             />
             {termo}

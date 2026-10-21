@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
 import { OtpInput } from "./OtpInput";
 import { ResendCountdown } from "./ResendCountdown";
+import type { Idioma } from "@/lib/idioma";
+import { hrefNoIdioma } from "@/lib/i18n-href";
+import { TEXTOS_ENTRAR } from "@/i18n/paginas/entrar";
 
 /**
  * Verificação do código SMS de acesso (login alternativo, /entrar/sms).
@@ -15,12 +18,15 @@ import { ResendCountdown } from "./ResendCountdown";
  */
 export function EntrarVerificarForm({
   maskedPhone,
+  idioma = "pt",
   recuperar = false,
 }: {
   maskedPhone: string;
+  idioma?: Idioma;
   recuperar?: boolean;
 }) {
-  const inicio = recuperar ? "/entrar/sms?recuperar=1" : "/entrar/sms";
+  const t = TEXTOS_ENTRAR[idioma];
+  const inicio = hrefNoIdioma(recuperar ? "/entrar/sms?recuperar=1" : "/entrar/sms", idioma);
   const router = useRouter();
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | undefined>();
@@ -36,7 +42,7 @@ export function EntrarVerificarForm({
     e.preventDefault();
     setInfo(undefined);
     if (code.length !== 6) {
-      setError("Informe o código de 6 dígitos.");
+      setError(t.erroCodigoTamanho);
       return;
     }
     setError(undefined);
@@ -58,12 +64,12 @@ export function EntrarVerificarForm({
       }
       setError(
         res.status === 429
-          ? "Muitas tentativas. Aguarde um instante e tente novamente."
-          : "Código inválido ou expirado.",
+          ? t.erroMuitasTentativas
+          : t.erroCodigo,
       );
       otpRef.current?.focus();
     } catch {
-      setError("Não foi possível verificar agora. Tente novamente.");
+      setError(t.erroVerificar);
     } finally {
       setSubmitting(false);
     }
@@ -79,29 +85,28 @@ export function EntrarVerificarForm({
         body: JSON.stringify({ resend: true }),
       });
       if (res.ok) {
-        setInfo("Se o telefone estiver cadastrado, enviamos um novo código por SMS.");
+        setInfo(t.reenviado);
       } else if (res.status === 429) {
-        setError("Muitas tentativas. Aguarde um instante e tente novamente.");
+        setError(t.erroMuitasTentativas);
       } else {
-        setError("Não foi possível reenviar agora. Tente novamente.");
+        setError(t.erroReenviar);
       }
     } catch {
-      setError("Não foi possível reenviar agora. Tente novamente.");
+      setError(t.erroReenviar);
     }
   }
 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
       <p className="text-sm text-carvao-muted">
-        Se houver cadastro para <span className="font-medium text-carvao">{maskedPhone}</span>,
-        você receberá um código de 6 dígitos por SMS.
+        {t.destinoAntes} <span className="font-medium text-carvao">{maskedPhone}</span>{t.destinoDepois}
       </p>
 
       {info && <Alert kind="sucesso">{info}</Alert>}
 
       <OtpInput
         ref={otpRef}
-        label="Código recebido por SMS"
+        label={t.codigo}
         value={code}
         onChange={setCode}
         error={error}
@@ -109,16 +114,16 @@ export function EntrarVerificarForm({
       />
 
       <Button type="submit" full disabled={submitting}>
-        {submitting ? "Verificando…" : recuperar ? "Continuar para nova senha" : "Entrar"}
+        {submitting ? t.verificando : recuperar ? t.continuarNovaSenha : t.entrar}
       </Button>
 
       <div className="flex items-center justify-between gap-4">
-        <ResendCountdown onResend={resend} />
+        <ResendCountdown onResend={resend} idioma={idioma} />
         <Link
           href={inicio}
           className="rotulo min-h-[44px] py-3 text-carvao-muted underline underline-offset-4 hover:text-bronze"
         >
-          Alterar telefone
+          {t.alterarTelefone}
         </Link>
       </div>
     </form>

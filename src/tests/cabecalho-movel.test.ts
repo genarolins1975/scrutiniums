@@ -151,6 +151,8 @@ describe("barra comum da plataforma nas entradas dos observatórios", () => {
       "src/app/entrar/page.tsx",
       "src/app/entrar/sms/page.tsx",
       "src/app/entrar/sms/verificar/page.tsx",
+      // as páginas de entrada, em português e em inglês, desenham a marca pelo componente comum (PR #261)
+      "src/components/onboarding/PaginasEntrar.tsx",
       "src/app/cadastro/layout.tsx",
     ];
     const usam = fontes(join(raiz, "src"))
