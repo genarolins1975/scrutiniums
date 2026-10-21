@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import QualidadePage from "@/app/setor-eletrico/qualidade/page";
+import CompararDistribuidorasPage from "@/app/setor-eletrico/qualidade/comparar-distribuidoras/page";
 import { QualidadeBuscaMunicipio } from "@/components/energia/QualidadeBuscaMunicipio";
 import { QualidadeComparador } from "@/components/energia/QualidadeComparador";
 import { QualidadeConjuntos } from "@/components/energia/QualidadeConjuntos";
@@ -58,6 +59,7 @@ import {
   COLUNAS_LIMITES,
   COLUNAS_MUNICIPIOS,
   PAINEIS_QUALIDADE,
+  hrefPainelQualidade,
   anoApuradoUniforme,
   arquivoConjuntosDoAno,
   avisoDefasagem,
@@ -118,6 +120,7 @@ import {
 import {
   anosDivulgados,
   notaQuantidadeDivulgada,
+  notaValoresMunicipio,
   orientacaoSemDado,
   quebraCompensacao,
   regimesCompensacao,
@@ -690,25 +693,33 @@ describe.skipIf(!disponivel)("respostas curtas derivadas dos números", () => {
 /* ------------------------------------------------------------------ renderização no servidor */
 
 describe.skipIf(!disponivel)("página renderizada no servidor", () => {
-  const html = renderToStaticMarkup(createElement(QualidadePage));
+  // duas páginas desde o diagnóstico de layout de 20/10/2026, item 6: a entrada (P051, P053, P054) e Comparar distribuidoras (P052)
+  const entrada = renderToStaticMarkup(createElement(QualidadePage));
+  const comparar = renderToStaticMarkup(createElement(CompararDistribuidorasPage));
+  const html = entrada + comparar;
 
   it("renderiza com os quatro painéis, na ordem, cada um com o título próprio, e a página com a pergunta como título", () => {
     let ultimo = -1;
-    for (const id of ["p051", "p052", "p053", "p054"]) {
-      const i = html.indexOf(`id="${id}"`);
+    for (const id of ["p051", "p053", "p054"]) {
+      const i = entrada.indexOf(`id="${id}"`);
       expect(i, id).toBeGreaterThan(ultimo);
       ultimo = i;
     }
-    // o título da página é a pergunta; o de cada painel é o dele (o do primeiro painel não repete o da página)
-    const h1 = /<h1[^>]*>([^<]*)<\/h1>/.exec(html)?.[1] ?? "";
+    expect(entrada).not.toContain('id="p052"');
+    expect(comparar).toContain('id="p052"');
+    // o título de cada página é a pergunta; o de cada painel é o dele (o do primeiro painel não repete o da página)
+    const h1 = /<h1[^>]*>([^<]*)<\/h1>/.exec(entrada)?.[1] ?? "";
     expect(h1).toBe("Quanto tempo e quantas vezes falta luz?");
     expect(h1.trim().split(/\s+/).length).toBeGreaterThanOrEqual(5);
     expect(h1.trim().split(/\s+/).length).toBeLessThanOrEqual(9);
+    const h1Comparar = /<h1[^>]*>([^<]*)<\/h1>/.exec(comparar)?.[1] ?? "";
+    expect(h1Comparar).toBe("Como cada distribuidora fica diante do próprio limite?");
     for (const p of PAINEIS_QUALIDADE) {
-      expect(html, p.id).toContain(`<h2 id="${p.id}-titulo"`);
-      expect(html, p.id).toContain(p.titulo);
+      const h = p.id === "p052" ? comparar : entrada;
+      expect(h, p.id).toContain(`<h2 id="${p.id}-titulo"`);
+      expect(h, p.id).toContain(p.titulo);
       expect(p.titulo, p.id).not.toBe(h1);
-      expect(html, p.id).toContain(`id="${p.ancora}"`);
+      expect(h, p.id).toContain(`id="${p.ancora}"`);
     }
     // nada de julgamento no título dos painéis
     for (const p of PAINEIS_QUALIDADE) expect(p.titulo + p.descricao).not.toMatch(/cumpriu|melhor|pior|ruim|bom\b/i);
@@ -744,7 +755,10 @@ describe.skipIf(!disponivel)("página renderizada no servidor", () => {
     expect((html.match(/Próxima pergunta/g) ?? []).length).toBe(4);
     expect(html).toContain('data-nivel="analisar"');
     expect(html).toContain('data-nivel="auditar"');
-    for (const h of ['href="#limites"', 'href="#compensacoes"', 'href="#atendimento"', 'href="/setor-eletrico/conta-de-luz"']) expect(html).toContain(h);
+    for (const h of ['href="/setor-eletrico/qualidade/comparar-distribuidoras#limites"', 'href="#compensacoes"', 'href="#atendimento"', 'href="/setor-eletrico/conta-de-luz"']) expect(entrada).toContain(h);
+    // a próxima pergunta de Comparar distribuidoras volta à entrada, e a faixa das duas páginas marca a atual
+    expect(comparar).toContain('href="/setor-eletrico/qualidade#compensacoes"');
+    expect(comparar).toContain('data-navegacao-local="faixa"');
     expect(html).toContain('aria-current="page"');
   });
 
@@ -798,7 +812,9 @@ describe.skipIf(!disponivel)("página renderizada no servidor", () => {
     // O HTML servido soma a marcação e o fluxo RSC (self.__next_f), que repete o conteúdo dos componentes de servidor e as props dos de cliente: em
     // 09/10/2026, medidos no servidor, 407 KB de HTML e 339 KB de fluxo, 746 KB no total, contra a meta de 600 KB do contrato. Este teste vigia a
     // marcação (não deixa a parte local crescer); a meta do contrato só se confere medindo o servidor (ver o relatório da rodada 2).
-    expect(Buffer.byteLength(html, "utf-8")).toBeLessThan(400_000);
+    // cada página vigiada por si (desde o item 6 do diagnóstico de 20/10/2026, a entrada e Comparar distribuidoras), e as duas ficam menores
+    for (const [nome, h] of [["entrada", entrada], ["comparar", comparar]] as const) expect(Buffer.byteLength(h, "utf-8"), nome).toBeLessThan(400_000);
+    expect(Buffer.byteLength(entrada, "utf-8")).toBeLessThan(330_000);
   });
 });
 
@@ -1005,6 +1021,7 @@ describe.skipIf(!disponivel)("redesenho: seletores da abertura e dos painéis", 
 
 describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
   const html = renderToStaticMarkup(createElement(QualidadePage));
+  const comparar = renderToStaticMarkup(createElement(CompararDistribuidorasPage));
   const fonte = ler("src/app/setor-eletrico/qualidade/page.tsx");
   const esc = (x: string) => x.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;").replace(/</g, "&lt;");
   const ate = (marca: string) => html.indexOf(marca);
@@ -1013,27 +1030,33 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
     const i = {
       h1: ate("<h1"),
       lead: ate('class="ed-lead'),
+      busca: ate("data-busca-municipio-topo"),
       recorte: ate('data-recorte=""'),
       faixa: ate("data-faixa-metricas"),
       painel: ate('id="p051"'),
     };
     expect(i.h1).toBeGreaterThan(0);
     expect(i.h1).toBeLessThan(i.lead);
-    expect(i.lead).toBeLessThan(i.recorte);
+    // a busca do município é a primeira ação: logo depois do lead, antes do recorte e dos números do Brasil (diagnóstico de 20/10/2026, item 6)
+    expect(i.lead).toBeLessThan(i.busca);
+    expect(i.busca).toBeLessThan(i.recorte);
     expect(i.recorte).toBeLessThan(i.faixa);
     expect(i.faixa).toBeLessThan(i.painel);
     expect(html).not.toContain("Como ler as unidades");
-    // quatro medidas na faixa, cada uma com a sua unidade por UC e o ano
+    // três medidas do Brasil na faixa, cada uma com a sua unidade por UC e o ano
     const faixa = html.slice(i.faixa, i.painel);
-    expect((faixa.match(/data-metrica=""/g) ?? []).length).toBe(4);
+    expect((faixa.match(/data-metrica=""/g) ?? []).length).toBe(3);
     const m = metricasAbertura(gold);
-    for (const t of [num(m.dec, 2), num(m.fec, 2), `${num(m.conjuntos.pct, 1)}%`, num(m.decTodasOrigens, 2), m.decHorasMinutos, `${num(m.conjuntos.acima, 0)} de ${num(m.conjuntos.comLimite, 0)} conjuntos`]) {
-      expect(faixa, t).toContain(t);
-    }
+    for (const t of [num(m.dec, 2), num(m.fec, 2), num(m.decTodasOrigens, 2), m.decHorasMinutos]) expect(faixa, t).toContain(t);
     expect(faixa).toContain("h por UC");
     expect(faixa).toContain("interrupções por UC");
-    // as três fichas de prova da faixa
-    expect((faixa.match(/Comprove este número/g) ?? []).length).toBe(3);
+    // as duas fichas de prova da faixa
+    expect((faixa.match(/Comprove este número/g) ?? []).length).toBe(2);
+    // os conjuntos acima do limite abrem Comparar distribuidoras, com a sua prova e as unidades consumidoras como leitura principal
+    const faixaComparar = comparar.slice(comparar.indexOf("data-faixa-metricas"), comparar.indexOf('id="p052"'));
+    expect((faixaComparar.match(/data-metrica=""/g) ?? []).length).toBe(2);
+    for (const t of [`${num(m.conjuntos.pct, 1)}%`, `${num(m.conjuntos.acima, 0)} de ${num(m.conjuntos.comLimite, 0)} conjuntos`, `${num(gold.conjuntos.pct_ucs_acima_limite_dec, 1)}%`]) expect(faixaComparar, t).toContain(t);
+    expect((faixaComparar.match(/Comprove este número/g) ?? []).length).toBe(1);
   });
 
   it("DEC e FEC em gráficos próprios, com eixos e unidades distintos, e a resposta logo depois das duas figuras", () => {
@@ -1067,8 +1090,9 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
   });
 
   it("cada seção da página está no nível que a rubrica pede: o que responde pergunta própria em Entender, o detalhe em Analisar, o método em Auditar", () => {
+    const P052 = ["comparar-distribuidoras", "distribuicao-dos-conjuntos", "ano-a-ano", "matriz-limite-razao", "pontas", "dgc"];
     const nivel = (id: string) => {
-      const tag = new RegExp(`<section id="${id}"([^>]*)>`).exec(html);
+      const tag = new RegExp(`<section id="${id}"([^>]*)>`).exec(P052.includes(id) ? comparar : html);
       expect(tag, id).not.toBeNull();
       return /data-nivel="(analisar|auditar)"/.exec(tag![1])?.[1] ?? "entender";
     };
@@ -1099,7 +1123,8 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
     };
     for (const [id, n] of Object.entries(esperado)) expect(nivel(id), id).toBe(n);
     // as âncoras antigas e as dos painéis continuam
-    for (const id of ["duracao", "limites", "compensacoes", "atendimento", "auditoria-qualidade", "p051", "p052", "p053", "p054"]) expect(html, id).toContain(`id="${id}"`);
+    for (const id of ["duracao", "compensacoes", "atendimento", "auditoria-qualidade", "p051", "p053", "p054"]) expect(html, id).toContain(`id="${id}"`);
+    for (const id of ["limites", "p052"]) expect(comparar, id).toContain(`id="${id}"`);
   });
 
   it("uma navegação local só, sem título de seção: o rótulo dos capítulos é texto, e eles apontam para as outras três perguntas da página", () => {
@@ -1107,27 +1132,31 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
     expect(html).not.toContain('data-navegacao-local="faixa"');
     expect(html).not.toContain("As outras perguntas desta página");
     for (const p of PAINEIS_QUALIDADE.filter((x) => x.id !== "p051")) {
-      expect(html, p.id).toContain(`href="#${p.ancora}"`);
+      expect(html, p.id).toContain(`href="${hrefPainelQualidade(p.id, "entrada")}"`);
       expect(html, p.id).toContain(esc(p.descricao));
     }
+    expect(hrefPainelQualidade("p052", "entrada")).toBe("/setor-eletrico/qualidade/comparar-distribuidoras#limites");
+    // Comparar distribuidoras leva a faixa das duas páginas, e só ela (as duas formas nunca aparecem juntas)
+    expect((comparar.match(/data-navegacao-local="faixa"/g) ?? []).length).toBe(1);
+    expect(comparar).not.toContain('data-navegacao-local="capitulos"');
     // o índice de cartões antigo ("Perguntas desta página" com quatro caixas numeradas) não volta
     expect(html).not.toContain("hover:border-energia\"><span class=\"rotulo text-mineral\">1</span>");
   });
 
   it("downloads de cada painel com nome legível em Entender, e os nomes de arquivo só em Auditar", () => {
-    for (const p of PAINEIS_QUALIDADE) for (const d of downloadsDoPainel(gold, p.id)) expect(html, d.url).toContain(esc(d.rotulo));
+    for (const p of PAINEIS_QUALIDADE) for (const d of downloadsDoPainel(gold, p.id)) expect(p.id === "p052" ? comparar : html, d.url).toContain(esc(d.rotulo));
     const auditar = html.slice(html.indexOf('id="auditoria-qualidade"'));
     for (const d of gold.downloads) expect(auditar, d.url).toContain(`${d.rotulo} (`);
   });
 
   it("as ressalvas vão para onde evitam a leitura errada: média por UC na abertura, conjunto no mapa, expurgo na figura, divulgado na compensação", () => {
     const lead = /<p class="ed-lead[^>]*>([^<]*)<\/p>/.exec(html)?.[1] ?? "";
-    // O lead distingue duração e frequência MÉDIAS; os limites são próprios de cada distribuidora.
-    expect(lead).toMatch(/DEC mede a duração média.*FEC, a frequência média/);
-    expect(lead).toMatch(/cada distribuidora com o próprio limite/);
+    // O lead fala com o leitor (o município dele, o limite da área); as siglas e a média por UC vêm na linha "Não permite concluir".
+    expect(lead).toMatch(/Procure o seu município/);
+    expect(lead).toMatch(/diante do limite fixado pela ANEEL/);
     const limite = /data-limite="">([\s\S]*?)<\/p>/.exec(html)?.[1] ?? "";
     expect(limite).toContain("Não permite concluir");
-    expect(limite).toMatch(/o que cada consumidor viveu: DEC e FEC são médias por UC/);
+    expect(limite).toMatch(/DEC e FEC são médias por unidade consumidora \(UC\), e há UCs bem acima delas/);
     // o mapa diz que o valor é do conjunto, não do município, e que não há média municipal
     const mapa = html.slice(ate('id="mapa-municipios"'), ate('id="mensal"'));
     expect(mapa).toMatch(/Cada cor é o valor de um conjunto, não do município/);
@@ -1136,7 +1165,7 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
     // a conversão de horas decimais vem junto da unidade do gráfico
     expect(html).toContain(esc(gold.regras.centesimos));
     // o DGC diz a sua origem (calculado aqui e publicado pela ANEEL) na unidade do painel de limites
-    const limites = html.slice(ate('id="limites"'), ate('id="compensacoes"'));
+    const limites = comparar.slice(comparar.indexOf('id="limites"'));
     expect(limites).toMatch(/DGC, o desempenho global de continuidade/);
     expect(limites).toMatch(/calculada\s+aqui e publicada no ranking da ANEEL/);
     // o total divulgado pela ANEEL, quando difere além da precisão, está na leitura da compensação (e não só em Auditar)
@@ -1629,6 +1658,7 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: seletore
 
 describe.skipIf(!disponivel)("ressalvas das avaliações independentes: a página e os componentes no servidor", () => {
   const html = renderToStaticMarkup(createElement(QualidadePage));
+  const comparar = renderToStaticMarkup(createElement(CompararDistribuidorasPage));
   const ref = gold.ano_referencia;
   const esc = (x: string) => x.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;").replace(/</g, "&lt;");
   const ate = (marca: string) => html.indexOf(marca);
@@ -1640,9 +1670,10 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: a págin
     const f = faixa();
     expect(f).toContain(esc(notaPerimetroAbertura(gold, "dec")));
     expect(f).toContain(esc(notaPerimetroAbertura(gold, "fec")));
-    expect(f).toContain(esc(DEFINICAO_CONJUNTO_CURTA));
+    // o cartão dos conjuntos, que define o conjunto, abre Comparar distribuidoras
+    expect(comparar.slice(comparar.indexOf("data-faixa-metricas"), comparar.indexOf('id="p052"'))).toContain(esc(DEFINICAO_CONJUNTO_CURTA));
     expect(f).not.toMatch(/expurgad/);
-    // o quarto cartão diz com palavras o que soma
+    // o cartão de todas as origens diz com palavras o que soma
     expect(f).toMatch(/Inclui o que a regra deixa fora do limite: emergências, dias críticos, origem externa e cortes do operador do sistema \(ONS\)/);
     // código do apurado só depois, na seção própria
     expect(f).not.toMatch(/IP \+ IND|XN|XP/);
@@ -1664,16 +1695,16 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: a págin
 
   it("o que mudou do P051 traz a quebra do apurado junto da frase do maior DEC; o do P052 traz a contagem mínima de FEC; o universo dos conjuntos vem na seção ano a ano", () => {
     expect(html).toContain(esc(textoQuebraApurado(gold)));
-    expect(html).toContain(esc(textoContagemFec(gold, resumoSemRazaoFec(csvAno, gold.conjuntos.ano))));
-    expect(html).toContain(esc(textoUniversosConjuntos(gold)));
-    const ano = secao('id="ano-a-ano"', 'id="matriz-limite-razao"');
+    expect(comparar).toContain(esc(textoContagemFec(gold, resumoSemRazaoFec(csvAno, gold.conjuntos.ano))));
+    expect(comparar).toContain(esc(textoUniversosConjuntos(gold)));
+    const ano = comparar.slice(comparar.indexOf('id="ano-a-ano"'), comparar.indexOf('id="matriz-limite-razao"'));
     expect(ano.indexOf("% das unidades consumidoras (leitura principal)")).toBeGreaterThan(0);
     expect(ano.indexOf("% das unidades consumidoras (leitura principal)")).toBeLessThan(ano.indexOf("% dos conjuntos"));
     expect(ano).toContain("Unidades consumidoras e conjuntos acima do limite de DEC");
   });
 
   it("DGC no Auditar: a lista das divergências e a regra da cobertura parcial do FEC, com a distribuidora marcada e o efeito nulo no Brasil", () => {
-    const dgc = secao('id="dgc"', 'id="p053"');
+    const dgc = comparar.slice(comparar.indexOf('id="dgc"'));
     expect(dgc).toContain(esc(textoDivergenciasDgc(gold)));
     expect(dgc).toMatch(/Posição no ranking e DGC publicado são da ANEEL; o DGC calculado é do observatório/);
     const cob = html.slice(ate('data-texto="cobertura-fec"'), ate('data-texto="cobertura-fec"') + 2500);
@@ -1744,9 +1775,12 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: a págin
     expect(fonteLimites).toContain('data-aviso="fec-cobertura-parcial"');
     expect(fonteLimites).toContain("FEC de cobertura parcial");
     const pagina = ler("src/app/setor-eletrico/qualidade/page.tsx");
-    expect(pagina).toMatch(/<QualidadeLimites[\s\S]*avisosFec=\{avisos\}/);
-    expect(pagina).toMatch(/<QualidadeComparador[\s\S]*avisosFec=\{avisos\}/);
+    const paginaComparar = ler("src/app/setor-eletrico/qualidade/comparar-distribuidoras/page.tsx");
+    expect(paginaComparar).toMatch(/<QualidadeLimites[\s\S]*avisosFec=\{avisos\}/);
+    expect(paginaComparar).toMatch(/<QualidadeComparador[\s\S]*avisosFec=\{avisos\}/);
     expect(pagina).toMatch(/<QualidadeMapa[\s\S]*avisosFec=\{avisos\}/);
+    // as duas páginas leem os avisos da mesma função de servidor
+    for (const f of [pagina, paginaComparar]) expect(f).toContain("avisosFecDaPagina(g)");
   });
 
   it("peso: a marcação do servidor não cresce, e as props dos gráficos levam só as colunas que eles leem (o fluxo RSC repete essas props)", () => {
@@ -1760,7 +1794,9 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: a págin
 
 describe.skipIf(!disponivel)("rodada 2: frase do recorte, quebra de 2022, busca na primeira tela, definições e orientação", () => {
   const ref = gold.ano_referencia;
-  const html = renderToStaticMarkup(createElement(QualidadePage));
+  const entrada = renderToStaticMarkup(createElement(QualidadePage));
+  const comparar = renderToStaticMarkup(createElement(CompararDistribuidorasPage));
+  const html = entrada + comparar;
   const esc = (x: string) => x.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;").replace(/</g, "&lt;");
   const itens = itensLimites(gold);
   const anoRef = () => gold.compensacoes.anual.find((x) => x.ano === gold.compensacoes.ano_referencia)!;
@@ -1884,11 +1920,18 @@ describe.skipIf(!disponivel)("rodada 2: frase do recorte, quebra de 2022, busca 
     expect(orientacaoSemDado({ relacao: "sem_relacao_na_fonte" })).toMatch(/Sem dado não quer dizer sem energia/);
     expect(orientacaoSemDado({ relacao: "sem_conjunto_ativo" })).toMatch(/distribuidora e, depois, à Ouvidoria da ANEEL/);
     for (const r of ["conjunto_exclusivo", "conjunto_compartilhado", "varios_conjuntos"] as const) expect(orientacaoSemDado({ relacao: r })).toBe("");
-    // na página: depois do lead e da linha "Não permite concluir", antes da faixa de métricas; campo com rótulo, combobox e a ficha do mapa com âncora
-    const busca = html.indexOf("data-busca-municipio-topo");
-    expect(busca).toBeGreaterThan(html.indexOf('data-limite=""'));
-    expect(busca).toBeLessThan(html.indexOf("data-faixa-metricas"));
-    expect(html).toContain("Procure o seu município");
+    // na página: a primeira ação, logo depois do lead e antes do recorte, da linha "Não permite concluir" e da faixa de métricas
+    // (diagnóstico de layout de 20/10/2026, item 6); campo com rótulo, combobox e a ficha do mapa com âncora
+    const busca = entrada.indexOf("data-busca-municipio-topo");
+    expect(busca).toBeGreaterThan(entrada.indexOf('class="ed-lead'));
+    expect(busca).toBeLessThan(entrada.indexOf('data-limite=""'));
+    expect(busca).toBeLessThan(entrada.indexOf("data-faixa-metricas"));
+    expect(entrada).toContain("Como foi no seu município?");
+    // a nota dos números do município: do conjunto inteiro, do menor ao maior dos conjuntos, nunca média municipal
+    expect(notaValoresMunicipio(m)).toMatch(/do menor ao maior deles, e a ANEEL não publica média por município/);
+    expect(notaValoresMunicipio({ relacao: "conjunto_compartilhado", conjuntos: ["1"] })).toMatch(/do conjunto inteiro, não medidos só aqui/);
+    // o botão de comparar leva a escolha a Comparar distribuidoras (?dist=), na fonte da busca e na do mapa
+    for (const arq of ["QualidadeBuscaMunicipio", "QualidadeMapa"]) expect(ler(`src/components/energia/${arq}.tsx`), arq).toContain("${ROTA_COMPARAR_DISTRIBUIDORAS}?dist=${cnpjsSel.join(\",\")}#comparar-distribuidoras");
     expect(html).toMatch(/role="combobox"/);
     expect(html).toContain('id="municipio-escolhido"');
     const isolado = renderToStaticMarkup(createElement(QualidadeBuscaMunicipio, { ano: ref, urlMunicipios: "/x.csv" }));

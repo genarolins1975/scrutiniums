@@ -30,6 +30,7 @@ export function CabecalhoModulo({
   datas,
   metricas,
   limite,
+  acao,
 }: {
   /** Rótulo acima do título (módulo ou seção). Omitido na abertura de módulo, onde repetiria a navegação; útil em página filha, como migalha. */
   rotulo?: string;
@@ -59,6 +60,11 @@ export function CabecalhoModulo({
    * = abas e níveis). Sempre à vista, abaixo do recorte e da fonte. Só na abertura editorial (com `lead`); não repete a nota do painel: é a versão curta.
    */
   limite?: ReactNode;
+  /**
+   * A primeira ação do leitor, logo abaixo do lead e antes do recorte (ex.: a busca do município em Qualidade, diagnóstico de layout de
+   * 20/10/2026, item 6). Só na abertura editorial (com `lead`).
+   */
+  acao?: ReactNode;
 }) {
   if (lead === undefined) {
     const abertura = children && <div className="cab-lead ed-lead max-w-prose2 text-carvao-muted">{children}</div>;
@@ -84,6 +90,7 @@ export function CabecalhoModulo({
         {rotulo && <p className="rotulo text-mineral">{rotulo}</p>}
         <h1 className={`ed-h1 max-w-4xl font-serif text-carvao ${rotulo ? "mt-2" : ""}`}>{titulo}</h1>
         <p className="ed-lead mt-3 max-w-3xl text-carvao-muted">{lead}</p>
+        {acao && <div className="mt-5 mb-4">{acao}</div>}
         {(recorte || fonte || haBloco) && (
           <div className="ed-meta mt-1 items-center text-xs text-carvao-muted" data-recorte="">
             {recorte && <span>{recorte}</span>}
