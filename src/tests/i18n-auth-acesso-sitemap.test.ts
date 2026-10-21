@@ -8,16 +8,16 @@ import { middleware } from "@/middleware";
 
 const ORIGEM = "https://scrutiniums.com";
 const PAGINAS = [
-  { pt: "/entrar", en: "/en/entrar", prioridade: 0.3 },
-  { pt: "/cadastro", en: "/en/cadastro", prioridade: 0.6 },
-  { pt: "/entrar/sms", en: "/en/entrar/sms", prioridade: 0.3 },
-  { pt: "/entrar/sms/verificar", en: "/en/entrar/sms/verificar", prioridade: 0.3 },
+  { pt: "/entrar", en: "/en/entrar", prioridade: 0.3, conteudo: "traduzido" },
+  { pt: "/cadastro", en: "/en/cadastro", prioridade: 0.6, conteudo: "portugues_marcado" },
+  { pt: "/entrar/sms", en: "/en/entrar/sms", prioridade: 0.3, conteudo: "traduzido" },
+  { pt: "/entrar/sms/verificar", en: "/en/entrar/sms/verificar", prioridade: 0.3, conteudo: "traduzido" },
 ] as const;
 
 describe.each(PAGINAS)("entrada pública de autenticação $pt", (par) => {
   it("abre somente a irmã exata, sem preferência automática nem cookie no GET", async () => {
     for (const caminho of [par.pt, par.en, par.pt + "/", par.en + "/"]) {
-      expect(parDeIdioma(caminho), caminho).toEqual({ pt: par.pt, en: par.en, conteudo: "portugues_marcado" });
+      expect(parDeIdioma(caminho), caminho).toEqual({ pt: par.pt, en: par.en, conteudo: par.conteudo });
       expect(ehRotaPublica(caminho), caminho).toBe(true);
       expect(prefetchDoLink(caminho + "?de=%2Fen%2Fapp%2Fconta#formulario")).toBeUndefined();
       for (const preferencia of ["pt", "en"]) {
@@ -38,14 +38,17 @@ describe.each(PAGINAS)("entrada pública de autenticação $pt", (par) => {
     }
   });
 
-  it("publica prioridade e frequência explícitas da entrada PT com uma única irmã canônica", () => {
+  it("publica prioridade e frequência explícitas da entrada PT e a irmã inglesa só quando traduzida", () => {
     const entradas = sitemap();
     const portuguesas = entradas.filter((entrada) => entrada.url === ORIGEM + par.pt);
     const inglesas = entradas.filter((entrada) => entrada.url === ORIGEM + par.en);
-    expect(portuguesas).toEqual(par.pt.startsWith("/entrar/sms") ? [] : [{
-      url: ORIGEM + par.pt, lastModified: expect.any(Date), changeFrequency: "yearly", priority: par.prioridade,
-    }]);
-    expect(inglesas).toEqual([]);
+    const traduzida = par.conteudo === "traduzido";
+    const alternates = traduzida ? { alternates: { languages: { "pt-BR": ORIGEM + par.pt, en: ORIGEM + par.en, "x-default": ORIGEM + par.pt } } } : {};
+    const entrada = (url: string) => ({ url, lastModified: expect.any(Date), changeFrequency: "yearly", priority: par.prioridade, ...alternates });
+    // as telas SMS ficam fora do sitemap nos dois idiomas
+    const sms = par.pt.startsWith("/entrar/sms");
+    expect(portuguesas).toEqual(sms ? [] : [entrada(ORIGEM + par.pt)]);
+    expect(inglesas).toEqual(sms || !traduzida ? [] : [entrada(ORIGEM + par.en)]);
     for (const caminho of [par.pt, par.en]) expect(entradas.map((entrada) => entrada.url)).not.toContain(ORIGEM + caminho + "/");
   });
 });

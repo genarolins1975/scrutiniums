@@ -10,10 +10,10 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "d932a71658c21a96d3844ed462f3be1a0b7b2937f80a5b937f3a8e5ad23f56df",
-    "arquivos_analisados": 1475,
-    "fontes_sha256": "222aa4ce51d34c5fe53e61f3a4b9815775732d7ec515c8d943b2c8d1a452552e",
-    "pendencias_sha256": "9e1561c33c06ebede4dbe041bb3a605479222be293afc4c42b6ae338437946ca",
+    "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
+    "arquivos_analisados": 1508,
+    "fontes_sha256": "c22b34039581d900574aead7ef4521a9886b4372a7e9ab7255b124b0b7961daf",
+    "pendencias_sha256": "4b9aa49ff38c0f7c07078370c244a3e101900c683f057ef346460126aeb9a9e1",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -73,6 +73,11 @@
       {
         "path": "src/components/agro/Agro.module.css",
         "dominio": "agro",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/conectividade/conectividade.css",
+        "dominio": "plataforma",
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       },
       {
@@ -173,20 +178,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 391,
+        "arquivos": 409,
         "candidatos": {
-          "jsx_text": 2237,
-          "atributos": 486,
-          "props": 1108,
-          "outros_literais": 8142,
-          "templates": 1102,
-          "expressoes_nao_resolvidas": 6982,
-          "chaves_objetos": 6471
+          "jsx_text": 2422,
+          "atributos": 519,
+          "props": 1114,
+          "outros_literais": 8560,
+          "templates": 1184,
+          "expressoes_nao_resolvidas": 7502,
+          "chaves_objetos": 6772
         },
         "exclusoes": {
-          "importacoes": 1715,
-          "atributos_tecnicos": 3704,
-          "tipos": 511
+          "importacoes": 1778,
+          "atributos_tecnicos": 3854,
+          "tipos": 557
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -195,19 +200,19 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 26528,
+        "candidatos_nao_catalogados": 28073,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 48,
+        "paginas_pt": 50,
         "paginas_en": 13,
-        "handlers": 41,
+        "handlers": 44,
         "templates_com_parametros": 6,
-        "paginas_pt_literais": 41,
+        "paginas_pt_literais": 43,
         "paginas_pt_fora_do_adaptador": 7,
-        "paginas_pt_literais_sem_irma": 28,
+        "paginas_pt_literais_sem_irma": 30,
         "pares_estruturais": 13,
-        "fallbacks_declarados": 8,
+        "fallbacks_declarados": 5,
         "paridade_verificada": false,
         "parciais_declarados": 1
       },
@@ -222,20 +227,20 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 572,
+        "arquivos": 576,
         "candidatos": {
-          "jsx_text": 7648,
-          "atributos": 2903,
-          "props": 18825,
-          "outros_literais": 51086,
-          "templates": 12762,
-          "expressoes_nao_resolvidas": 55521,
-          "chaves_objetos": 36015
+          "jsx_text": 7674,
+          "atributos": 2915,
+          "props": 18872,
+          "outros_literais": 51150,
+          "templates": 12780,
+          "expressoes_nao_resolvidas": 55623,
+          "chaves_objetos": 36036
         },
         "exclusoes": {
-          "importacoes": 4958,
-          "atributos_tecnicos": 8681,
-          "tipos": 3729
+          "importacoes": 4998,
+          "atributos_tecnicos": 8699,
+          "tipos": 3734
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -244,18 +249,18 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 184760,
+        "candidatos_nao_catalogados": 185050,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 79,
-        "paginas_en": 79,
+        "paginas_pt": 80,
+        "paginas_en": 80,
         "handlers": 1,
         "templates_com_parametros": 12,
-        "paginas_pt_literais": 73,
+        "paginas_pt_literais": 74,
         "paginas_pt_fora_do_adaptador": 6,
         "paginas_pt_literais_sem_irma": -6,
-        "pares_estruturais": 79,
+        "pares_estruturais": 80,
         "fallbacks_declarados": 0,
         "paridade_verificada": false
       },
@@ -318,20 +323,20 @@
     "saneamento": {
       "nome": "Saneamento",
       "interface": {
-        "arquivos": 70,
+        "arquivos": 74,
         "candidatos": {
-          "jsx_text": 1404,
-          "atributos": 377,
-          "props": 1896,
-          "outros_literais": 3514,
-          "templates": 498,
-          "expressoes_nao_resolvidas": 3490,
-          "chaves_objetos": 4621
+          "jsx_text": 1564,
+          "atributos": 386,
+          "props": 1951,
+          "outros_literais": 3667,
+          "templates": 546,
+          "expressoes_nao_resolvidas": 3840,
+          "chaves_objetos": 4744
         },
         "exclusoes": {
-          "importacoes": 495,
-          "atributos_tecnicos": 1860,
-          "tipos": 216
+          "importacoes": 516,
+          "atributos_tecnicos": 2036,
+          "tipos": 264
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -340,17 +345,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 15800,
+        "candidatos_nao_catalogados": 16698,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 27,
+        "paginas_pt": 28,
         "paginas_en": 0,
         "handlers": 0,
         "templates_com_parametros": 2,
-        "paginas_pt_literais": 25,
+        "paginas_pt_literais": 26,
         "paginas_pt_fora_do_adaptador": 2,
-        "paginas_pt_literais_sem_irma": 25,
+        "paginas_pt_literais_sem_irma": 26,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false
@@ -366,20 +371,20 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 235,
+        "arquivos": 241,
         "candidatos": {
-          "jsx_text": 3120,
-          "atributos": 1071,
-          "props": 1339,
-          "outros_literais": 7790,
-          "templates": 801,
-          "expressoes_nao_resolvidas": 8035,
-          "chaves_objetos": 4796
+          "jsx_text": 3273,
+          "atributos": 1083,
+          "props": 1479,
+          "outros_literais": 8024,
+          "templates": 851,
+          "expressoes_nao_resolvidas": 8399,
+          "chaves_objetos": 4911
         },
         "exclusoes": {
-          "importacoes": 924,
-          "atributos_tecnicos": 3368,
-          "tipos": 467
+          "importacoes": 955,
+          "atributos_tecnicos": 3645,
+          "tipos": 513
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -388,7 +393,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 26952,
+        "candidatos_nao_catalogados": 28020,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -414,19 +419,19 @@
     "contas_federais": {
       "nome": "Contas Públicas Federais",
       "interface": {
-        "arquivos": 77,
+        "arquivos": 78,
         "candidatos": {
-          "jsx_text": 965,
-          "atributos": 199,
+          "jsx_text": 972,
+          "atributos": 203,
           "props": 107,
-          "outros_literais": 1811,
-          "templates": 151,
-          "expressoes_nao_resolvidas": 1638,
-          "chaves_objetos": 962
+          "outros_literais": 1839,
+          "templates": 156,
+          "expressoes_nao_resolvidas": 1676,
+          "chaves_objetos": 988
         },
         "exclusoes": {
-          "importacoes": 275,
-          "atributos_tecnicos": 750,
+          "importacoes": 278,
+          "atributos_tecnicos": 761,
           "tipos": 67
         },
         "scripts_embutidos": {},
@@ -436,7 +441,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 5833,
+        "candidatos_nao_catalogados": 5941,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -821,7 +826,7 @@
         "pt": "/entrar",
         "en": "/en/entrar",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/entrar/page.tsx",
           "en": "src/app/en/entrar/page.tsx"
@@ -832,7 +837,7 @@
         "pt": "/entrar/sms",
         "en": "/en/entrar/sms",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/entrar/sms/page.tsx",
           "en": "src/app/en/entrar/sms/page.tsx"
@@ -843,7 +848,7 @@
         "pt": "/entrar/sms/verificar",
         "en": "/en/entrar/sms/verificar",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/entrar/sms/verificar/page.tsx",
           "en": "src/app/en/entrar/sms/verificar/page.tsx"
@@ -1605,6 +1610,17 @@
         "arquivos_presentes": true
       },
       {
+        "pt": "/setor-eletrico/qualidade/comparar-distribuidoras",
+        "en": "/en/setor-eletrico/qualidade/comparar-distribuidoras",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/qualidade/comparar-distribuidoras/page.tsx",
+          "en": "src/app/en/setor-eletrico/qualidade/comparar-distribuidoras/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
         "pt": "/setor-eletrico/rede",
         "en": "/en/setor-eletrico/rede",
         "dominio": "energia",
@@ -1814,8 +1830,8 @@
         "arquivos_presentes": true
       }
     ],
-    "pares_estruturais": 93,
-    "fallbacks_declarados": 9,
+    "pares_estruturais": 94,
+    "fallbacks_declarados": 6,
     "html_verificado_pelo_inventario": false,
     "acesso_verificado_pelo_inventario": false
   },

@@ -5,7 +5,7 @@ import {brasil as b,dados} from '@/lib/eficiencia/habitacao/dados';
 import {n,pct} from '@/lib/eficiencia/habitacao/modelo';
 export const dynamic='force-static';
 export const metadata:Metadata={"title": "Habitação — déficit habitacional", "alternates": {"canonical": "/eficiencia-estatal/habitacao/deficit"}};
-export default function Pagina(){return <><Abertura numero="02" titulo="Onde se concentram as necessidades de moradia?" texto="O número estimado dimensiona o problema. O percentual usa os domicílios particulares ocupados como referência. Compare as duas leituras antes de interpretar diferenças entre estados."/>
+export default function Pagina(){return <><Abertura titulo="Onde se concentram as necessidades de moradia?" texto="O número estimado dimensiona o problema. O percentual usa os domicílios particulares ocupados como referência. Compare as duas leituras antes de interpretar diferenças entre estados."/>
 <Numeros itens={[{titulo:'Déficit habitacional — Brasil',valor:n(b.deficit),nota:'Estimativa de 2024; valores exibidos arredondados à unidade.'},{titulo:'Déficit relativo',valor:n(pct(b.deficit,b.domicilios),1)+'%',nota:'Denominador: '+n(b.domicilios)+' domicílios particulares ocupados.'},{titulo:'Parcela urbana do déficit',valor:n(pct(b.urbano,b.deficit),1)+'%',nota:n(b.urbano)+' na área urbana; '+n(b.rural)+' na rural.'}]}/>
 <Fonte>Abas Deficit_habitacional e Total_domicilios_ocupados.</Fonte>
 <Secao titulo="Tamanho, proporção e composição." texto="Alterne o indicador, a unidade e o nível territorial. A ordenação é descritiva e não atribui qualidade à gestão."><Comparacao dados={dados.territorios} grupo="deficit"/><Fonte/></Secao>

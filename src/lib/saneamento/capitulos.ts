@@ -1,5 +1,5 @@
 /**
- * Arquitetura do Observatório Brasileiro do Saneamento: cinco eixos, catorze
+ * Arquitetura do Observatório Brasileiro do Saneamento: cinco eixos, quinze
  * capítulos e as ferramentas transversais. Fonte única para cabeçalho, índice
  * da página inicial, vitrine da plataforma, sitemap e testes.
  *
@@ -191,6 +191,17 @@ export const EIXOS: Eixo[] = [
         resumo: "Metas do art. 11-B, indicadores da NR ANA 8/2024, situação observada, ritmo aritmético e planos municipais declarados.",
         situacao: "parcial",
         pendencia: "Os indicadores da NR ANA 8/2024 são aproximações sem ICA, ICE e soluções alternativas; nenhum município é declarado em cumprimento de meta.",
+      },
+      {
+        numero: 15,
+        slug: "contratado",
+        rotulo: "O que está contratado",
+        pergunta: "O que já está contratado para universalizar até 2033?",
+        resumo:
+          "Leilões de concessão e PPP desde o novo marco legal, com vencedor, outorga, investimento previsto e prazo; metas contratuais ano a ano transcritas dos contratos; posição 2024 das áreas concedidas; cenário didático para 2033 e as estimativas do custo da universalização lado a lado.",
+        situacao: "parcial",
+        pendencia:
+          "Tabela curada à mão, com grau de verificação por linha; metas transcritas só dos contratos com anexo público localizado; aferição oficial de cumprimento (NR ANA 8/2024, art. 31) suspensa em 2026. Totais só somam contratos de serviço adjudicados e conferidos na fonte.",
       },
       {
         numero: 12,

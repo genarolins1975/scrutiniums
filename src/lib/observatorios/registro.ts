@@ -25,6 +25,7 @@ import { CAPITULOS as CAPITULOS_SANEAMENTO, FERRAMENTAS as FERRAMENTAS_SANEAMENT
 import { PAGINAS_GAS } from "@/lib/gas/navegacao";
 import { PAGINAS_COMBUSTIVEIS, ROTA_COMBUSTIVEIS } from "@/lib/combustiveis/paginas";
 import { ROTA_INFLACAO, TITULO_PAINEL as TITULO_PAINEL_INFLACAO } from "@/lib/inflacao/paginas";
+import { ROTA_CONECTIVIDADE, TITULO_PAINEL as TITULO_PAINEL_CONECTIVIDADE } from "@/lib/conectividade/paginas";
 import { ROTA_EDUCACAO, TITULO_PAINEL as TITULO_PAINEL_EDUCACAO } from "@/lib/educacao/paginas";
 import { CAPITULOS_PUBLICADOS as CAPITULOS_CONTAS, PAINEL_AREAS, PAINEL_PREVIDENCIA } from "@/lib/contas-publicas/catalogo";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
@@ -242,6 +243,15 @@ function paineisServicos(): Painel[] {
 }
 
 /**
+ * Painel mantido pelo próprio Observatório de Energia e Infraestrutura, com pipeline e gold próprios
+ * (pipeline/conectividade, public/conectividade): dados abertos da Anatel por município. É o painel principal da coleção
+ * Conectividade; a página "Energia e conectividade" da Eficiência Estatal continua na coleção como cópia do Setor Elétrico.
+ */
+function paineisConectividade(): Painel[] {
+  return [{ rota: ROTA_CONECTIVIDADE, titulo: TITULO_PAINEL_CONECTIVIDADE, observatorio: "energia-e-infraestrutura", colecao: "conectividade", origem: null }];
+}
+
+/**
  * Painel registrado que é cópia integral de outro (copias.ts) leva `duplicataDe`.
  * Cópia parcial, uma seção da página, não: o resto da página é próprio e continua nas listas.
  */
@@ -250,7 +260,7 @@ const PRINCIPAL_DA_COPIA = new Map(COPIAS.filter((c) => !c.parcial).map((c) => [
 export function paineis(): Painel[] {
   // o painel das Famílias vem primeiro: na coleção Custo de vida, a inflação de todo o orçamento abre a lista, antes da comida
   // o painel dos Serviços Públicos vem antes da Eficiência Estatal: na coleção Educação, os municípios abrem a lista, antes das capitais
-  return [...paineisFamilias(), ...paineisServicos(), ...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras(), ...paineisTerritorio()]
+  return [...paineisFamilias(), ...paineisServicos(), ...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras(), ...paineisConectividade(), ...paineisTerritorio()]
     .map((p) => (PRINCIPAL_DA_COPIA.has(p.rota) ? { ...p, duplicataDe: PRINCIPAL_DA_COPIA.get(p.rota) } : p));
 }
 

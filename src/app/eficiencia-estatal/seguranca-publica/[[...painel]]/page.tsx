@@ -106,8 +106,8 @@ function Panorama({g}: {g: GoldSeguranca}) {
 
     <section className="mt-12">
       <h2 className="font-serif text-2xl sm:text-3xl">Escolha a pergunta que deseja explorar</h2>
-      <div className="mt-5 grid gap-x-10 md:grid-cols-2">{caminhos.map((c, n) => <Link key={c.href} href={`${ROTA}/${c.href}`} prefetch={prefetchDoLink(`${ROTA}/${c.href}`)} className="group border-t border-linha py-6">
-        <p className="text-xs text-obee-dark">{String(n + 1).padStart(2, '0')} · {c.titulo}</p>
+      <div className="mt-5 grid gap-x-10 md:grid-cols-2">{caminhos.map((c) => <Link key={c.href} href={`${ROTA}/${c.href}`} prefetch={prefetchDoLink(`${ROTA}/${c.href}`)} className="group border-t border-linha py-6">
+        <p className="text-xs text-obee-dark">{c.titulo}</p>
         <h3 className="mt-2 font-serif text-2xl group-hover:underline">{c.pergunta}<SeloComConta href={`${ROTA}/${c.href}`}/></h3>
         <p className="mt-3 text-sm text-carvao-muted">{c.prova} →</p>
       </Link>)}</div>

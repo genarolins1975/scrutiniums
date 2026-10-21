@@ -87,8 +87,8 @@ export function CadeiasInfra({ cadeias }: Readonly<{ cadeias: Cadeia[] }>) {
           </div>
         ))}
         <p className="mt-6 text-xs leading-relaxed text-mineral">
-          Modelo didático: descreve o caminho de cada serviço, não avalia preço nem qualidade. Mobilidade e conectividade
-          ainda não têm cadeia descrita aqui; estão nos painéis da coleção.
+          Modelo didático: descreve o caminho de cada serviço, não avalia preço nem qualidade. Mobilidade ainda não tem
+          cadeia descrita aqui; a conectividade está no painel Conectividade, com a internet de cada município.
         </p>
       </div>
     </section>

@@ -330,6 +330,44 @@
         }
       ],
       "referenciaRotulo": "exercício financeiro"
+    },
+    "conectividade": {
+      "nome": "Conectividade",
+      "nomeEn": "Connectivity",
+      "rotulo": "Fonte: Anatel, dados abertos",
+      "cadencia": "mensal",
+      "nota": "A Anatel atualiza os acessos de banda larga fixa e de telefonia móvel no começo de cada mês, com o mês de referência cerca de dois meses antes, e a cobertura das redes móveis a cada trimestre. A plataforma recoleta nos dias 12 e 26 e só republica quando um número muda; a data é a da captura mais antiga entre as duas bases mensais, para que uma base retida apareça mesmo quando a outra segue em dia. A cobertura, trimestral, conta como parte: o pipeline a retém acima de oito meses.",
+      "publicacao": [
+        {
+          "arquivo": "public/conectividade/gold/conectividade.json",
+          "campo": "fontes.fixa.capturado_em"
+        },
+        {
+          "arquivo": "public/conectividade/gold/conectividade.json",
+          "campo": "fontes.movel.capturado_em"
+        }
+      ],
+      "partes": [
+        {
+          "arquivo": "public/conectividade/gold/conectividade.json",
+          "campo": "fontes.fixa.capturado_em"
+        },
+        {
+          "arquivo": "public/conectividade/gold/conectividade.json",
+          "campo": "fontes.movel.capturado_em"
+        },
+        {
+          "arquivo": "public/conectividade/gold/conectividade.json",
+          "campo": "fontes.cobertura.capturado_em"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/conectividade/gold/conectividade.json",
+          "campo": "referencia.*"
+        }
+      ],
+      "referenciaRotulo": "mês mais recente da Anatel"
     }
   }
 }

@@ -80,7 +80,7 @@ describe("O Brasil em perguntas", () => {
     expect(comBloco["familias"]).toEqual(["/gas-natural/gas-de-cozinha", "/setor-eletrico/conta-de-luz", "/combustiveis/no-meu-estado"]);
     // "Como está a escola pública da minha cidade?" (painel Educação nos municípios, 20/10/2026) abre o bloco dos Serviços Públicos
     expect(comBloco["servicos-publicos"]).toEqual(["/educacao-municipal", "/eficiencia-estatal"]);
-    expect(comBloco["energia-e-infraestrutura"]).toEqual(["/setor-eletrico/conta-de-luz", "/saneamento/municipio", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado"]);
+    expect(comBloco["energia-e-infraestrutura"]).toEqual(["/setor-eletrico/conta-de-luz", "/conectividade", "/saneamento/municipio", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado"]);
     for (const p of todas) {
       for (const c of p.paraOSeuCaso) {
         expect(rotaExiste(c.href), `${p.id}: ${c.href}`).toBe(true);

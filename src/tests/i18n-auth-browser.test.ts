@@ -7,7 +7,8 @@ import { afterAll, beforeAll, describe, expect, it, type TestContext } from "vit
 import { CAMINHOS_AUTH, verificarPaginaAuth, type CaminhoAuth, type EstadoAuth } from "./suporte/i18n-auth";
 import { modoDaPagina } from "./suporte/i18n-build";
 import { aguardarPagina, capturarAnunciador, criarNavegadorI18n, type NavegadorI18n } from "./suporte/i18n-browser";
-import { verificarFallbackDinamico } from "./suporte/i18n-dinamico";
+import { validarAnunciador, verificarFallbackDinamico } from "./suporte/i18n-dinamico";
+import { verificarEntradaTraduzida } from "./suporte/i18n-entrada";
 
 const require = createRequire(import.meta.url);
 const APP = join(process.cwd(), ".next", "server", "app");
@@ -50,7 +51,14 @@ function observarFalhas(page: Page): string[] {
   return falhas;
 }
 
-async function relacoesNoNavegador(page: Page): Promise<void> {
+/** /entrar tem tradução publicada; o cadastro inglês continua na ilha portuguesa. */
+const traduzida = (rota: string) => rota === "/en/entrar";
+const ERROS = {
+  pt: { email: "Informe um e-mail válido.", senha: "Informe sua senha." },
+  en: { email: "Enter a valid email address.", senha: "Enter your password." },
+} as const;
+
+async function relacoesNoNavegador(page: Page, idiomaErros: "pt-BR" | "en" = "pt-BR"): Promise<void> {
   const controles = await page.locator("form input").evaluateAll((inputs) => inputs.map((elemento) => {
     const input = elemento as HTMLInputElement;
     return { name: input.name, tipo: input.type, valor: input.value, marcado: input.checked,
@@ -70,7 +78,7 @@ async function relacoesNoNavegador(page: Page): Promise<void> {
     for (const descricao of controle.descricoes) {
       expect(descricao.quantidade).toBe(1);
       expect(descricao.dentroDoForm).toBe(true);
-      expect(descricao.idioma).toBe("pt-BR");
+      expect(descricao.idioma).toBe(idiomaErros);
     }
   }
 }
@@ -97,10 +105,10 @@ function semNovas(antes: string[], depois: string[], descricao: string): void {
   expect(novas, descricao).toEqual([]);
 }
 
-async function capturar(page: Page, caminho: CaminhoAuth, estado: EstadoAuth) {
+async function capturar(page: Page, caminho: CaminhoAuth, estado: EstadoAuth, rota: string) {
   const html = await page.content();
   verificarPaginaAuth(parse(html), caminho, estado);
-  await relacoesNoNavegador(page);
+  await relacoesNoNavegador(page, traduzida(rota) ? "en" : "pt-BR");
   return { html, anunciador: await capturarAnunciador(page), axe: await auditoria(page),
     largura: await page.evaluate(() => document.documentElement.scrollWidth),
     foco: await page.evaluate(() => ({ tag: document.activeElement?.tagName, tipo: document.activeElement?.getAttribute("type"), texto: document.activeElement?.textContent })) };
@@ -121,16 +129,17 @@ describe.each(CAMINHOS_AUTH)("%s: formulário PT/EN no build", (caminho) => {
           expect(page.url()).toBe(servidor.origem + rota);
           expect((await resposta!.allHeaders())["set-cookie"]).toBeUndefined();
           await aguardarPagina(page, rota);
-          if (rota.startsWith("/en/")) {
+          if (rota.startsWith("/en/") && !traduzida(rota)) {
             expect(await page.locator("[data-i18n-aviso]").isVisible()).toBe(true);
             expect(await page.locator('[data-i18n-estado="portugues_marcado"]').isVisible()).toBe(true);
-          }
-          const inicial = await capturar(page, caminho, "inicial");
+          } else expect(await page.locator("[data-i18n-aviso], [data-i18n-estado]").count()).toBe(0);
+          const erros = ERROS[traduzida(rota) ? "en" : "pt"];
+          const inicial = await capturar(page, caminho, "inicial", rota);
           await page.locator('form button[type="submit"]').click();
-          await page.getByText("Informe um e-mail válido.", { exact: true }).waitFor({ state: "visible" });
-          const outra = caminho === "/entrar" ? "Informe sua senha." : "É preciso aceitar os termos para continuar.";
+          await page.getByText(erros.email, { exact: true }).waitFor({ state: "visible" });
+          const outra = caminho === "/entrar" ? erros.senha : "É preciso aceitar os termos para continuar.";
           await page.getByText(outra, { exact: true }).waitFor({ state: "visible" });
-          const vazio = await capturar(page, caminho, "vazio");
+          const vazio = await capturar(page, caminho, "vazio", rota);
           resultados.push({ inicial, vazio });
           expect(page.url()).toBe(servidor.origem + rota);
           expect(tentativas, "submit inválido não pode alcançar APIs de autenticação/onboarding").toEqual([]);
@@ -139,18 +148,24 @@ describe.each(CAMINHOS_AUTH)("%s: formulário PT/EN no build", (caminho) => {
       }
       for (const estado of ["inicial", "vazio"] as const) {
         const pt = resultados[0][estado], en = resultados[1][estado];
-        verificarFallbackDinamico(parse(pt.html), parse(en.html), pt.anunciador, en.anunciador, { caminho, estado });
+        if (caminho === "/entrar") {
+          validarAnunciador(pt.anunciador);
+          validarAnunciador(en.anunciador);
+          expect([pt.anunciador.idioma, en.anunciador.idioma]).toEqual(["pt-BR", "en"]);
+          verificarEntradaTraduzida(parse(pt.html), parse(en.html));
+        } else verificarFallbackDinamico(parse(pt.html), parse(en.html), pt.anunciador, en.anunciador, { caminho, estado });
         expect(pt.largura, "baseline PT sem overflow horizontal").toBe(largura);
         expect(en.largura).toBeLessThanOrEqual(pt.largura);
         semNovas(pt.axe.violacoes, en.axe.violacoes, `${estado}: nenhuma nova violação WCAG`);
         semNovas(pt.axe.inconclusivas, en.axe.inconclusivas, `${estado}: nenhum novo achado inconclusivo`);
       }
-      // Os formulários atuais não prometem foco automático no primeiro erro.
-      expect(resultados[1].vazio.foco).toEqual(resultados[0].vazio.foco);
+      // Os formulários atuais não prometem foco automático no primeiro erro; o texto do controle focado muda com o idioma.
+      const semTexto = ({ tag, tipo }: { tag?: string; tipo?: string | null }) => ({ tag, tipo });
+      expect(semTexto(resultados[1].vazio.foco)).toEqual(semTexto(resultados[0].vazio.foco));
     } finally { await contexto.close(); }
   });
 
-  it("preserva o destino sem oferecer inglês nem redirecionar pela preferência", async (ctx) => {
+  it("preserva o destino sem redirecionar pela preferência; só a entrada traduzida oferece a irmã", async (ctx) => {
     const servidor = pronto(ctx), contexto = await servidor.contexto(), tentativas = await impedirEnvios(contexto);
     try {
       await contexto.addCookies([{ name: "scrutiniums_idioma", value: "en", url: servidor.origem, sameSite: "Lax" }]);
@@ -163,8 +178,16 @@ describe.each(CAMINHOS_AUTH)("%s: formulário PT/EN no build", (caminho) => {
       for (const prefixo of ["", "/en"]) {
         await page.goto(servidor.origem + prefixo + caminho + sufixo, { waitUntil: "load" });
         await aguardarPagina(page, prefixo + caminho);
-        expect(await page.getByRole("group", { name: "Idioma", exact: true }).count()).toBe(0);
-        expect(await page.locator('a[hreflang="en"]').count()).toBe(0);
+        if (caminho === "/entrar") {
+          const grupo = page.getByRole("group", { name: prefixo ? "Language" : "Idioma", exact: true });
+          expect(await grupo.count()).toBe(1);
+          // a irmã leva o mesmo destino pós-login (?de=...) e o mesmo fragmento
+          await page.waitForFunction((esperado) => document.querySelector('a[hreflang="en"]')?.getAttribute("href") === esperado, "/en" + caminho + sufixo);
+          expect(await grupo.locator('a[hreflang="pt-BR"]').getAttribute("href")).toBe(caminho + sufixo);
+        } else {
+          expect(await page.getByRole("group", { name: "Idioma", exact: true }).count()).toBe(0);
+          expect(await page.locator('a[hreflang="en"]').count()).toBe(0);
+        }
         expect(page.url()).toBe(servidor.origem + prefixo + caminho + sufixo);
       }
       expect(await contexto.cookies()).toEqual([]);
@@ -174,7 +197,7 @@ describe.each(CAMINHOS_AUTH)("%s: formulário PT/EN no build", (caminho) => {
   }, 60_000);
 });
 
-it("conserva os destinos PT dos links existentes e as relações dos campos após navegação cliente", async (ctx) => {
+it("leva da entrada inglesa ao cadastro português e de volta à entrada portuguesa por navegação cliente", async (ctx) => {
   const servidor = pronto(ctx), contexto = await servidor.contexto(), tentativas = await impedirEnvios(contexto);
   try {
     const page = await contexto.newPage(), falhas = observarFalhas(page), documentos: string[] = [];

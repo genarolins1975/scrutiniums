@@ -1,6 +1,6 @@
 export const ROTA_MOBILIDADE = '/eficiencia-estatal/mobilidade-transporte';
 export const PAGINAS_MOBILIDADE = [
-  {slug:'', nome:'Panorama', pergunta:'Chegar aonde precisa', descricao:'Tempo, custo e condições de deslocamento. Conheça as evidências disponíveis e os limites de cada fonte.'},
+  {slug:'', nome:'Panorama', pergunta:'Quanto custa, em tempo e dinheiro, chegar aonde se precisa?', descricao:'Tempo, custo e condições de deslocamento. Conheça as evidências disponíveis e os limites de cada fonte.'},
   {slug:'tempo', nome:'Tempo e deslocamentos', pergunta:'Quanto do dia fica no caminho?', descricao:'Faixas de duração e meio principal de transporte até o trabalho, no universo específico do Censo 2022.'},
   {slug:'transporte', nome:'Transporte e custo', pergunta:'Que transporte está disponível?', descricao:'Tarifa, frota e infraestrutura declaradas pelas prefeituras. Oferta registrada não é garantia de regularidade.'},
   {slug:'acesso', nome:'Acessibilidade física', pergunta:'Quais barreiras físicas a rede declara?', descricao:'Abrigos, rampas e embarque em nível. Esses atributos não medem quantos empregos ou serviços podem ser alcançados.'},
@@ -22,7 +22,8 @@ export type Linha = Observacao & {local:Territorio};
 export const ESTADOS:Record<string,string> = {observado:'Informado',nao_informado:'Não informado',nao_aplicavel:'Não aplicável',nao_disponivel:'Não disponível',suprimido:'Suprimido na fonte',invalido:'Não elegível: valor inconsistente',sinal_convencional:'Sinal convencional da fonte'};
 export const primeiro=(v:string|string[]|undefined)=> (Array.isArray(v)?v[0]:v)?.slice(0,160) ?? '';
 export const normaliza=(s:string)=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').trim();
-export const valor=(n:number|null,unidade='')=>n===null?'Não disponível':new Intl.NumberFormat('pt-BR',{maximumFractionDigits:unidade==='R$'?2:unidade==='%'?1:2,minimumFractionDigits:unidade==='R$'?2:0}).format(n)+(unidade==='%'?'%':unidade?' '+unidade:'');
+// reais no padrão brasileiro, com o símbolo antes do número ("R$ 5,00"; diagnóstico de 20/10/2026, item 10)
+export const valor=(n:number|null,unidade='')=>{if(n===null)return 'Não disponível';const t=new Intl.NumberFormat('pt-BR',{maximumFractionDigits:unidade==='R$'?2:unidade==='%'?1:2,minimumFractionDigits:unidade==='R$'?2:0}).format(n);return unidade==='R$'?'R$ '+t:t+(unidade==='%'?'%':unidade?' '+unidade:'');};
 export function mediana(ns:number[]):number|null {if(!ns.length)return null;const a=[...ns].sort((x,y)=>x-y);const i=Math.floor(a.length/2);return a.length%2?a[i]:(a[i-1]+a[i])/2;}
 export function validarBase(g:BaseMobilidade):void {
   if(g.schemaVersion!==1||!Array.isArray(g.observations)||!g.metrics.length)throw new Error('Snapshot de mobilidade incompatível');

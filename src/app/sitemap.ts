@@ -88,6 +88,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/saneamento/municipio", 0.8, "monthly"),
     // Previdência e INSS (20/10/2026): o endereço é a página aberta do tema (aperitivo sem sessão)
     rota("/contas-publicas/previdencia", 0.8, "monthly"),
+    // Conectividade (20/10/2026): o endereço é a página aberta do tema (aperitivo sem sessão)
+    rota("/conectividade", 0.8, "monthly"),
     // Educação nos municípios (20/10/2026): o endereço é a página aberta do tema (aperitivo sem sessão)
     rota("/educacao-municipal", 0.8, "monthly"),
     // leva 2 (src/lib/rotasPublicas.ts, LEVA_2): fica de fora pelo filtro abaixo até a data da aprovação do dono

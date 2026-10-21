@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-20T15:56:30+00:00",
+ "gerado_em": "2026-10-21T16:18:37+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -273,7 +273,7 @@
     "npl_inst_pct": 2.33,
     "basileia_pct": 15.35,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 56.12
+     "Crédito pessoal não consignado - Prefixado": 57.89
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -400,7 +400,7 @@
     "npl_inst_pct": 8.35,
     "basileia_pct": 15.88,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 36.4
+     "Crédito pessoal não consignado - Prefixado": 36.57
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -452,7 +452,7 @@
     "npl_inst_pct": 6.64,
     "basileia_pct": 16.04,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 37.88
+     "Crédito pessoal não consignado - Prefixado": 36.53
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -479,7 +479,7 @@
     "npl_inst_pct": 3.36,
     "basileia_pct": 13.89,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 162.32
+     "Crédito pessoal não consignado - Prefixado": 163.32
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -531,7 +531,7 @@
     "npl_inst_pct": 41.44,
     "basileia_pct": 49.08,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 309.23
+     "Crédito pessoal não consignado - Prefixado": 308.59
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -558,7 +558,7 @@
     "npl_inst_pct": 5.07,
     "basileia_pct": 14.4,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -685,7 +685,7 @@
     "npl_inst_pct": 1.04,
     "basileia_pct": 15.69,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 26.51
+     "Crédito pessoal não consignado - Prefixado": 26.54
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -787,7 +787,7 @@
     "npl_inst_pct": 0.1,
     "basileia_pct": 15.04,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -863,8 +863,10 @@
     "pct_carteira_inst": 8.7,
     "npl_inst_pct": 3.61,
     "basileia_pct": 16.74,
-    "taxas_novas": null,
-    "taxa_casamento": null,
+    "taxas_novas": {
+     "Crédito pessoal não consignado - Prefixado": 123.64
+    },
+    "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 8.28,
      "m_produto": 0.92,
@@ -889,7 +891,7 @@
     "npl_inst_pct": 6.43,
     "basileia_pct": 13.02,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 31.31
+     "Crédito pessoal não consignado - Prefixado": 30.23
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1141,7 +1143,7 @@
     "npl_inst_pct": 23.01,
     "basileia_pct": 12.62,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 151.79
+     "Crédito pessoal não consignado - Prefixado": 151.05
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1168,7 +1170,7 @@
     "npl_inst_pct": 6.2,
     "basileia_pct": 18.54,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 330.32
+     "Crédito pessoal não consignado - Prefixado": 350.29
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1220,7 +1222,7 @@
     "npl_inst_pct": 26.65,
     "basileia_pct": 18.22,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 210.25
+     "Crédito pessoal não consignado - Prefixado": 187.88
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1247,7 +1249,7 @@
     "npl_inst_pct": 7.82,
     "basileia_pct": 13.35,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 47.35
+     "Crédito pessoal não consignado - Prefixado": 47.23
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1515,7 +1517,7 @@
     "npl_inst_pct": 13.24,
     "basileia_pct": 14.63,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 53.92
+     "Crédito pessoal não consignado - Prefixado": 53.91
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1767,7 +1769,7 @@
     "npl_inst_pct": 2.85,
     "basileia_pct": 24.26,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1794,7 +1796,7 @@
     "npl_inst_pct": 31.4,
     "basileia_pct": 24.59,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 363.82
+     "Crédito pessoal não consignado - Prefixado": 366.59
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1821,7 +1823,7 @@
     "npl_inst_pct": 35.68,
     "basileia_pct": 14.15,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 203.4
+     "Crédito pessoal não consignado - Prefixado": 205.82
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1923,7 +1925,7 @@
     "npl_inst_pct": 4.44,
     "basileia_pct": 22.53,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2175,7 +2177,7 @@
     "npl_inst_pct": 2.68,
     "basileia_pct": 14.89,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 77.02
+     "Crédito pessoal não consignado - Prefixado": 75.92
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2352,7 +2354,7 @@
     "npl_inst_pct": 6.24,
     "basileia_pct": 16.67,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2479,7 +2481,7 @@
     "npl_inst_pct": 12.63,
     "basileia_pct": 13.89,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 80.87
+     "Crédito pessoal não consignado - Prefixado": 82.85
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2556,7 +2558,7 @@
     "npl_inst_pct": 23.12,
     "basileia_pct": 16.73,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 130.49
+     "Crédito pessoal não consignado - Prefixado": 133.52
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -2658,7 +2660,7 @@
     "npl_inst_pct": 32.05,
     "basileia_pct": 23.57,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 296.05
+     "Crédito pessoal não consignado - Prefixado": 296.01
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -2835,7 +2837,7 @@
     "npl_inst_pct": 4.93,
     "basileia_pct": 19.44,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2862,7 +2864,7 @@
     "npl_inst_pct": 5.93,
     "basileia_pct": 14.68,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2914,7 +2916,7 @@
     "npl_inst_pct": 10.36,
     "basileia_pct": 23.72,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 304.28
+     "Crédito pessoal não consignado - Prefixado": 304.82
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -2966,7 +2968,7 @@
     "npl_inst_pct": 29.45,
     "basileia_pct": 14.85,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 411.1
+     "Crédito pessoal não consignado - Prefixado": 419.92
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -2993,7 +2995,7 @@
     "npl_inst_pct": 5.21,
     "basileia_pct": 16.68,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3220,7 +3222,7 @@
     "npl_inst_pct": 9.1,
     "basileia_pct": 19.01,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3322,7 +3324,7 @@
     "npl_inst_pct": 6.02,
     "basileia_pct": 15.64,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3499,7 +3501,7 @@
     "npl_inst_pct": 2.52,
     "basileia_pct": 12.84,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 174.09
+     "Crédito pessoal não consignado - Prefixado": 166.88
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3576,7 +3578,7 @@
     "npl_inst_pct": 5.88,
     "basileia_pct": 18.26,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3653,7 +3655,7 @@
     "npl_inst_pct": 4.1,
     "basileia_pct": 24.16,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3780,7 +3782,7 @@
     "npl_inst_pct": 6.25,
     "basileia_pct": 26.45,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 26.51
+     "Crédito pessoal não consignado - Prefixado": 26.54
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3882,7 +3884,7 @@
     "npl_inst_pct": 6.45,
     "basileia_pct": 14.7,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 26.51
+     "Crédito pessoal não consignado - Prefixado": 26.54
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4034,7 +4036,7 @@
     "npl_inst_pct": 4.93,
     "basileia_pct": 15.73,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4161,7 +4163,7 @@
     "npl_inst_pct": 3.3,
     "basileia_pct": 15.41,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4188,7 +4190,7 @@
     "npl_inst_pct": 3.9,
     "basileia_pct": 15.91,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4215,7 +4217,7 @@
     "npl_inst_pct": 4.02,
     "basileia_pct": 20.43,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 26.51
+     "Crédito pessoal não consignado - Prefixado": 26.54
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4242,7 +4244,7 @@
     "npl_inst_pct": 7.35,
     "basileia_pct": 17.94,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4369,7 +4371,7 @@
     "npl_inst_pct": 9.22,
     "basileia_pct": 17.86,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4520,10 +4522,8 @@
     "pct_carteira_inst": 8.5,
     "npl_inst_pct": 35.66,
     "basileia_pct": 8.68,
-    "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 18.16
-    },
-    "taxa_casamento": "cnpj8",
+    "taxas_novas": null,
+    "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 43.54,
      "m_produto": 0.92,
@@ -4648,7 +4648,7 @@
     "npl_inst_pct": 8.5,
     "basileia_pct": 17.34,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4725,7 +4725,7 @@
     "npl_inst_pct": 9.48,
     "basileia_pct": 14.2,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4777,7 +4777,7 @@
     "npl_inst_pct": 5.59,
     "basileia_pct": 15.99,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4854,7 +4854,7 @@
     "npl_inst_pct": 8.77,
     "basileia_pct": 13.21,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5031,7 +5031,7 @@
     "npl_inst_pct": 7.19,
     "basileia_pct": 15.75,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5108,7 +5108,7 @@
     "npl_inst_pct": 6.47,
     "basileia_pct": 14.04,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5160,7 +5160,7 @@
     "npl_inst_pct": 15.51,
     "basileia_pct": null,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 164.91
+     "Crédito pessoal não consignado - Prefixado": 165.11
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -5287,7 +5287,7 @@
     "npl_inst_pct": 6.22,
     "basileia_pct": 15.45,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5514,7 +5514,7 @@
     "npl_inst_pct": 10.69,
     "basileia_pct": 16.36,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5816,7 +5816,7 @@
     "npl_inst_pct": 5.01,
     "basileia_pct": 17.47,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6193,7 +6193,7 @@
     "npl_inst_pct": 6.12,
     "basileia_pct": 20.94,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6320,7 +6320,7 @@
     "npl_inst_pct": 4.35,
     "basileia_pct": 18.65,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6347,7 +6347,7 @@
     "npl_inst_pct": 5.04,
     "basileia_pct": 21.82,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6649,7 +6649,7 @@
     "npl_inst_pct": 5.62,
     "basileia_pct": 16.86,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6676,7 +6676,7 @@
     "npl_inst_pct": 9.1,
     "basileia_pct": 15.55,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6703,7 +6703,7 @@
     "npl_inst_pct": 15.78,
     "basileia_pct": 34.33,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 226.85
+     "Crédito pessoal não consignado - Prefixado": 227.53
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -6780,7 +6780,7 @@
     "npl_inst_pct": 5.28,
     "basileia_pct": 18.61,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6807,7 +6807,7 @@
     "npl_inst_pct": 15.0,
     "basileia_pct": 42.72,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 261.51
+     "Crédito pessoal não consignado - Prefixado": 248.33
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -6859,7 +6859,7 @@
     "npl_inst_pct": 7.47,
     "basileia_pct": 15.77,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6886,7 +6886,7 @@
     "npl_inst_pct": 4.83,
     "basileia_pct": 12.43,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6913,7 +6913,7 @@
     "npl_inst_pct": 6.79,
     "basileia_pct": 13.45,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6940,7 +6940,7 @@
     "npl_inst_pct": 5.53,
     "basileia_pct": 23.49,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7092,7 +7092,7 @@
     "npl_inst_pct": 10.15,
     "basileia_pct": 13.31,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 311.08
+     "Crédito pessoal não consignado - Prefixado": 320.52
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -7119,7 +7119,7 @@
     "npl_inst_pct": 5.31,
     "basileia_pct": 17.01,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7421,7 +7421,7 @@
     "npl_inst_pct": 8.02,
     "basileia_pct": 15.15,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7448,7 +7448,7 @@
     "npl_inst_pct": 5.97,
     "basileia_pct": 19.29,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7500,7 +7500,7 @@
     "npl_inst_pct": 4.51,
     "basileia_pct": 14.52,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7602,7 +7602,7 @@
     "npl_inst_pct": 1.1,
     "basileia_pct": 32.62,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7854,7 +7854,7 @@
     "npl_inst_pct": 9.85,
     "basileia_pct": null,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 184.13
+     "Crédito pessoal não consignado - Prefixado": 184.88
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7905,8 +7905,10 @@
     "pct_carteira_inst": 100.0,
     "npl_inst_pct": 48.24,
     "basileia_pct": 86.6,
-    "taxas_novas": null,
-    "taxa_casamento": null,
+    "taxas_novas": {
+     "Crédito pessoal não consignado - Prefixado": 412.87
+    },
+    "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 48.24,
      "m_produto": 0.92,
@@ -8006,7 +8008,7 @@
     "npl_inst_pct": 3.78,
     "basileia_pct": 26.69,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 24.47
+     "Crédito pessoal não consignado - Prefixado": 24.46
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8058,7 +8060,7 @@
     "npl_inst_pct": 5.18,
     "basileia_pct": 15.56,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8135,7 +8137,7 @@
     "npl_inst_pct": 3.24,
     "basileia_pct": 14.88,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8212,7 +8214,7 @@
     "npl_inst_pct": 28.5,
     "basileia_pct": 12.11,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 295.38
+     "Crédito pessoal não consignado - Prefixado": 298.62
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -8289,7 +8291,7 @@
     "npl_inst_pct": 27.36,
     "basileia_pct": 16.83,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 343.66
+     "Crédito pessoal não consignado - Prefixado": 339.91
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -8441,7 +8443,7 @@
     "npl_inst_pct": 7.2,
     "basileia_pct": 16.25,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8518,7 +8520,7 @@
     "npl_inst_pct": 5.18,
     "basileia_pct": 14.49,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8695,7 +8697,7 @@
     "npl_inst_pct": 7.2,
     "basileia_pct": 8.94,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 284.57
+     "Crédito pessoal não consignado - Prefixado": 287.6
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -8872,7 +8874,7 @@
     "npl_inst_pct": 6.16,
     "basileia_pct": 16.19,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8899,7 +8901,7 @@
     "npl_inst_pct": 5.86,
     "basileia_pct": 30.15,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 26.51
+     "Crédito pessoal não consignado - Prefixado": 26.54
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8976,7 +8978,7 @@
     "npl_inst_pct": 7.06,
     "basileia_pct": 17.07,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9003,7 +9005,7 @@
     "npl_inst_pct": 5.36,
     "basileia_pct": 23.4,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9230,7 +9232,7 @@
     "npl_inst_pct": 15.7,
     "basileia_pct": 14.32,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9507,7 +9509,7 @@
     "npl_inst_pct": 5.79,
     "basileia_pct": 16.01,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9609,7 +9611,7 @@
     "npl_inst_pct": 7.0,
     "basileia_pct": 14.59,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9927,7 +9929,7 @@
     "npl_inst_pct": 5.13,
     "basileia_pct": 19.55,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10029,7 +10031,7 @@
     "npl_inst_pct": 9.92,
     "basileia_pct": 18.48,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10181,7 +10183,7 @@
     "npl_inst_pct": 3.77,
     "basileia_pct": 13.74,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10308,7 +10310,7 @@
     "npl_inst_pct": 5.85,
     "basileia_pct": 22.83,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10460,7 +10462,7 @@
     "npl_inst_pct": 5.01,
     "basileia_pct": 20.47,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10537,7 +10539,7 @@
     "npl_inst_pct": 2.31,
     "basileia_pct": 22.33,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -11464,7 +11466,7 @@
     "npl_inst_pct": 5.27,
     "basileia_pct": 16.23,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -11516,7 +11518,7 @@
     "npl_inst_pct": 5.59,
     "basileia_pct": 15.6,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -11568,7 +11570,7 @@
     "npl_inst_pct": 8.04,
     "basileia_pct": 15.14,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 56.08
+     "Crédito pessoal não consignado - Prefixado": 59.94
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -11770,7 +11772,7 @@
     "npl_inst_pct": 1.15,
     "basileia_pct": null,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 24.47
+     "Crédito pessoal não consignado - Prefixado": 24.46
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -11847,7 +11849,7 @@
     "npl_inst_pct": 4.44,
     "basileia_pct": 12.48,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -12274,7 +12276,7 @@
     "npl_inst_pct": 18.62,
     "basileia_pct": 17.05,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 86.64
+     "Crédito pessoal não consignado - Prefixado": 79.36
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -13001,7 +13003,7 @@
     "npl_inst_pct": 3.55,
     "basileia_pct": 18.28,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -13078,7 +13080,7 @@
     "npl_inst_pct": 7.76,
     "basileia_pct": 14.44,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -13405,7 +13407,7 @@
     "npl_inst_pct": 1.92,
     "basileia_pct": 13.28,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 80.03
+     "Crédito pessoal não consignado - Prefixado": 87.27
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -13457,7 +13459,7 @@
     "npl_inst_pct": 2.91,
     "basileia_pct": 18.54,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -13700,7 +13702,7 @@
     "npl_inst_pct": 26.18,
     "basileia_pct": 16.77,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 406.37
+     "Crédito pessoal não consignado - Prefixado": 416.25
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -14220,7 +14222,7 @@
     "npl_inst_pct": 5.13,
     "basileia_pct": 14.91,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 367.56
+     "Crédito pessoal não consignado - Prefixado": 320.71
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -14397,7 +14399,7 @@
     "npl_inst_pct": 4.96,
     "basileia_pct": 19.29,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -15024,7 +15026,7 @@
     "npl_inst_pct": 10.97,
     "basileia_pct": 53.16,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -16326,7 +16328,7 @@
     "npl_inst_pct": 17.18,
     "basileia_pct": 41.67,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 431.37
+     "Crédito pessoal não consignado - Prefixado": 431.11
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -16503,7 +16505,7 @@
     "npl_inst_pct": 5.33,
     "basileia_pct": 98.08,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -16671,7 +16673,7 @@
     "npl_inst_pct": 0.51,
     "basileia_pct": 13.01,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 32.35
+     "Crédito pessoal não consignado - Prefixado": 31.16
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -16773,7 +16775,7 @@
     "npl_inst_pct": null,
     "basileia_pct": 14.62,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 25.33
+     "Crédito pessoal não consignado - Prefixado": 26.26
     },
     "taxa_casamento": "cnpj8"
    },
@@ -17664,7 +17666,7 @@
     "npl_inst_pct": 2.9,
     "basileia_pct": 20.98,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 75.26
+     "Crédito pessoal não consignado - Prefixado": 71.99
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -17716,7 +17718,7 @@
     "npl_inst_pct": 0.76,
     "basileia_pct": 101.55,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -17893,7 +17895,7 @@
     "npl_inst_pct": 1.38,
     "basileia_pct": 109.58,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -17920,7 +17922,7 @@
     "npl_inst_pct": 0.19,
     "basileia_pct": 20.38,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 20.65
+     "Crédito pessoal não consignado - Prefixado": 20.8
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -18691,7 +18693,7 @@
    {
     "cod": "C0052656",
     "nome": "BARU",
-    "sr": null,
+    "sr": "S4",
     "nivel": "conglomerado",
     "carteira_brl": 553035.25,
     "atraso15_pct": 7.38,
@@ -18729,7 +18731,7 @@
     "npl_inst_pct": 1.47,
     "basileia_pct": 37.12,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -18906,7 +18908,7 @@
     "npl_inst_pct": null,
     "basileia_pct": 51.4,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome"
    },
@@ -20720,7 +20722,7 @@
     "npl_inst_pct": 3.24,
     "basileia_pct": 99.88,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -20888,7 +20890,7 @@
     "npl_inst_pct": 3.86,
     "basileia_pct": null,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 36.4
+     "Crédito pessoal não consignado - Prefixado": 36.57
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -21495,7 +21497,7 @@
     "npl_inst_pct": 5.16,
     "basileia_pct": 15.86,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 23.78
+     "Crédito pessoal não consignado - Prefixado": 23.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -21597,7 +21599,7 @@
     "npl_inst_pct": 8.96,
     "basileia_pct": 17.17,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -21699,7 +21701,7 @@
     "npl_inst_pct": 0.59,
     "basileia_pct": 115.94,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 48.73
+     "Crédito pessoal não consignado - Prefixado": 54.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -21726,7 +21728,7 @@
     "npl_inst_pct": 4.74,
     "basileia_pct": 89.4,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 53.92
+     "Crédito pessoal não consignado - Prefixado": 53.91
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -21753,7 +21755,7 @@
     "npl_inst_pct": 1.71,
     "basileia_pct": 112.96,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 36.4
+     "Crédito pessoal não consignado - Prefixado": 36.57
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -21994,7 +21996,7 @@
     "npl_inst_pct": 0.16,
     "basileia_pct": 12.1,
     "taxas_novas": {
-     "Crédito pessoal não consignado - Prefixado": 122.23
+     "Crédito pessoal não consignado - Prefixado": 199.29
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -22261,18 +22263,18 @@
      },
      {
       "anomes": "202512",
-      "total_brl": 27185306716.23,
-      "n_inst": 142
+      "total_brl": 27185470053.19,
+      "n_inst": 143
      },
      {
       "anomes": "202603",
-      "total_brl": 26844472395.48,
-      "n_inst": 141
+      "total_brl": 26844819573.55,
+      "n_inst": 142
      },
      {
       "anomes": "202606",
-      "total_brl": 26807055228.83,
-      "n_inst": 145
+      "total_brl": 26807608264.08,
+      "n_inst": 146
      }
     ],
     "atraso_serie": [
@@ -22294,17 +22296,17 @@
      {
       "anomes": "202512",
       "agg_pct": 11.54,
-      "n": 142
+      "n": 143
      },
      {
       "anomes": "202603",
       "agg_pct": 13.08,
-      "n": 141
+      "n": 142
      },
      {
       "anomes": "202606",
       "agg_pct": 14.36,
-      "n": 145
+      "n": 146
      }
     ]
    },
@@ -22383,14 +22385,14 @@
     {
      "segmento": "PESSOA FÍSICA",
      "modalidade": "Crédito pessoal não consignado - Prefixado",
-     "inicio": "2026-09-29",
-     "fim": "2026-10-05",
-     "n_inst": 76,
-     "mediana_aa": 90.75,
-     "p25_aa": 37.91,
-     "p75_aa": 253.52,
-     "min_aa": 15.61,
-     "max_aa": 948.73,
+     "inicio": "2026-09-30",
+     "fim": "2026-10-06",
+     "n_inst": 77,
+     "mediana_aa": 110.38,
+     "p25_aa": 38.14,
+     "p75_aa": 254.32,
+     "min_aa": 15.09,
+     "max_aa": 903.73,
      "moeda_estrangeira": false,
      "serie": [
       {
@@ -22849,19 +22851,19 @@
        "n": 77
       },
       {
-       "inicio": "2026-09-29",
-       "mediana_aa": 90.75,
-       "p25_aa": 37.91,
-       "p75_aa": 253.52,
-       "n": 76
+       "inicio": "2026-09-30",
+       "mediana_aa": 110.38,
+       "p25_aa": 38.14,
+       "p75_aa": 254.32,
+       "n": 77
       }
      ],
      "por_segmento": {
       "S3": {
-       "n": 7,
-       "mediana_aa": 77.02,
-       "p25_aa": 32.35,
-       "p75_aa": 90.75,
+       "n": 8,
+       "mediana_aa": 92.19,
+       "p25_aa": 31.16,
+       "p75_aa": 123.64,
        "serie": [
         {
          "inicio": "2025-07-09",
@@ -23319,19 +23321,19 @@
          "n": 7
         },
         {
-         "inicio": "2026-09-29",
-         "mediana_aa": 77.02,
-         "p25_aa": 32.35,
-         "p75_aa": 90.75,
-         "n": 7
+         "inicio": "2026-09-30",
+         "mediana_aa": 92.19,
+         "p25_aa": 31.16,
+         "p75_aa": 123.64,
+         "n": 8
         }
        ]
       },
       "S4": {
-       "n": 19,
-       "mediana_aa": 253.52,
-       "p25_aa": 80.03,
-       "p75_aa": 311.08,
+       "n": 18,
+       "mediana_aa": 254.32,
+       "p25_aa": 87.27,
+       "p75_aa": 320.52,
        "serie": [
         {
          "inicio": "2025-07-08",
@@ -23789,19 +23791,19 @@
          "n": 19
         },
         {
-         "inicio": "2026-09-29",
-         "mediana_aa": 253.52,
-         "p25_aa": 80.03,
-         "p75_aa": 311.08,
-         "n": 19
+         "inicio": "2026-09-30",
+         "mediana_aa": 254.32,
+         "p25_aa": 87.27,
+         "p75_aa": 320.52,
+         "n": 18
         }
        ]
       },
       "S5": {
-       "n": 7,
-       "mediana_aa": 203.4,
-       "p25_aa": 196.28,
-       "p75_aa": 261.51,
+       "n": 8,
+       "mediana_aa": 248.33,
+       "p25_aa": 199.29,
+       "p75_aa": 366.59,
        "serie": [
         {
          "inicio": "2025-07-09",
@@ -24259,11 +24261,11 @@
          "n": 7
         },
         {
-         "inicio": "2026-09-29",
-         "mediana_aa": 203.4,
-         "p25_aa": 196.28,
-         "p75_aa": 261.51,
-         "n": 7
+         "inicio": "2026-09-30",
+         "mediana_aa": 248.33,
+         "p25_aa": 199.29,
+         "p75_aa": 366.59,
+         "n": 8
         }
        ]
       }
@@ -24272,36 +24274,27 @@
       {
        "cnpj8": "91669747",
        "nome": "DM SCFI",
-       "taxa_am": 1.22,
-       "taxa_aa": 15.61,
+       "taxa_am": 1.18,
+       "taxa_aa": 15.09,
        "posicao": 1,
        "cod_congl": "C0083467",
        "sr": null
       },
       {
-       "cnpj8": "04814563",
-       "nome": "BCO AFINZ S.A. - BM",
-       "taxa_am": 1.4,
-       "taxa_aa": 18.16,
-       "posicao": 2,
-       "cod_congl": "C0083539",
-       "sr": "S4"
-      },
-      {
        "cnpj8": "41498340",
        "nome": "TENTOS S.A. CFI",
-       "taxa_am": 1.58,
-       "taxa_aa": 20.65,
-       "posicao": 3,
+       "taxa_am": 1.59,
+       "taxa_aa": 20.8,
+       "posicao": 2,
        "cod_congl": "C0085788",
        "sr": null
       },
       {
        "cnpj8": "58160789",
        "nome": "BCO SAFRA S.A.",
-       "taxa_am": 1.67,
-       "taxa_aa": 22.03,
-       "posicao": 4,
+       "taxa_am": 1.61,
+       "taxa_aa": 21.15,
+       "posicao": 3,
        "cod_congl": "C0080109",
        "sr": null
       },
@@ -24309,8 +24302,8 @@
        "cnpj8": "03017677",
        "nome": "BCO. J.SAFRA S.A.",
        "taxa_am": 1.67,
-       "taxa_aa": 22.05,
-       "posicao": 5,
+       "taxa_aa": 21.99,
+       "posicao": 4,
        "cod_congl": "C0080109",
        "sr": null
       },
@@ -24318,17 +24311,17 @@
        "cnpj8": "00416968",
        "nome": "BANCO INTER",
        "taxa_am": 1.79,
-       "taxa_aa": 23.78,
-       "posicao": 6,
+       "taxa_aa": 23.76,
+       "posicao": 5,
        "cod_congl": "C0080996",
        "sr": "S3"
       },
       {
        "cnpj8": "61348538",
        "nome": "BCO C6 CONSIG",
-       "taxa_am": 1.83,
-       "taxa_aa": 24.38,
-       "posicao": 7,
+       "taxa_am": 1.84,
+       "taxa_aa": 24.44,
+       "posicao": 6,
        "cod_congl": "C0084844",
        "sr": null
       },
@@ -24336,35 +24329,35 @@
        "cnpj8": "92894922",
        "nome": "BANCO ORIGINAL",
        "taxa_am": 1.84,
-       "taxa_aa": 24.47,
-       "posicao": 8,
+       "taxa_aa": 24.46,
+       "posicao": 7,
        "cod_congl": "C0080903",
+       "sr": null
+      },
+      {
+       "cnpj8": "02682287",
+       "nome": "PAN FINAN",
+       "taxa_am": 1.93,
+       "taxa_aa": 25.75,
+       "posicao": 8,
+       "cod_congl": "C0080336",
        "sr": null
       },
       {
        "cnpj8": "35551187",
        "nome": "PLANTAE CFI",
-       "taxa_am": 1.9,
-       "taxa_aa": 25.33,
+       "taxa_am": 1.96,
+       "taxa_aa": 26.26,
        "posicao": 9,
        "cod_congl": "C0085630",
        "sr": "S4"
       },
       {
-       "cnpj8": "02682287",
-       "nome": "PAN FINAN",
-       "taxa_am": 1.94,
-       "taxa_aa": 25.96,
-       "posicao": 10,
-       "cod_congl": "C0080336",
-       "sr": null
-      },
-      {
        "cnpj8": "14388334",
        "nome": "PARANA BCO S.A.",
        "taxa_am": 1.98,
-       "taxa_aa": 26.51,
-       "posicao": 11,
+       "taxa_aa": 26.54,
+       "posicao": 10,
        "cod_congl": "C0080233",
        "sr": null
       },
@@ -24373,27 +24366,36 @@
        "nome": "SINOSSERRA S/A - SCFI",
        "taxa_am": 2.07,
        "taxa_aa": 27.8,
-       "posicao": 12,
+       "posicao": 11,
        "cod_congl": "C0084552",
        "sr": "S4"
       },
       {
        "cnpj8": "04902979",
        "nome": "BCO DA AMAZONIA S.A.",
-       "taxa_am": 2.3,
-       "taxa_aa": 31.31,
-       "posicao": 13,
+       "taxa_am": 2.23,
+       "taxa_aa": 30.23,
+       "posicao": 12,
        "cod_congl": "C0081249",
        "sr": "S3"
       },
       {
        "cnpj8": "03215790",
        "nome": "BCO TOYOTA DO BRASIL S.A.",
-       "taxa_am": 2.36,
-       "taxa_aa": 32.35,
-       "posicao": 14,
+       "taxa_am": 2.29,
+       "taxa_aa": 31.16,
+       "posicao": 13,
        "cod_congl": "C0081562",
        "sr": "S3"
+      },
+      {
+       "cnpj8": "31872495",
+       "nome": "BCO C6 S.A.",
+       "taxa_am": 2.56,
+       "taxa_aa": 35.39,
+       "posicao": 14,
+       "cod_congl": "C0084844",
+       "sr": null
       },
       {
        "cnpj8": "42723848",
@@ -24405,19 +24407,19 @@
        "sr": null
       },
       {
-       "cnpj8": "31872495",
-       "nome": "BCO C6 S.A.",
-       "taxa_am": 2.58,
-       "taxa_aa": 35.67,
+       "cnpj8": "30306294",
+       "nome": "BANCO BTG PACTUAL S.A.",
+       "taxa_am": 2.63,
+       "taxa_aa": 36.53,
        "posicao": 16,
-       "cod_congl": "C0084844",
+       "cod_congl": "C0080336",
        "sr": null
       },
       {
        "cnpj8": "59588111",
        "nome": "BCO VOTORANTIM S.A.",
-       "taxa_am": 2.62,
-       "taxa_aa": 36.4,
+       "taxa_am": 2.63,
+       "taxa_aa": 36.57,
        "posicao": 17,
        "cod_congl": "C0080484",
        "sr": "S2"
@@ -24425,45 +24427,36 @@
       {
        "cnpj8": "07207996",
        "nome": "BCO BRADESCO FINANC. S.A.",
-       "taxa_am": 2.68,
-       "taxa_aa": 37.32,
+       "taxa_am": 2.65,
+       "taxa_aa": 36.88,
        "posicao": 18,
        "cod_congl": "C0080075",
        "sr": null
       },
       {
-       "cnpj8": "30306294",
-       "nome": "BANCO BTG PACTUAL S.A.",
+       "cnpj8": "00360305",
+       "nome": "CAIXA ECONOMICA FEDERAL",
        "taxa_am": 2.71,
-       "taxa_aa": 37.88,
+       "taxa_aa": 37.75,
        "posicao": 19,
-       "cod_congl": "C0080336",
+       "cod_congl": "C0080738",
        "sr": null
       },
       {
        "cnpj8": "07707650",
        "nome": "SANTANDER SCFI S.A.",
-       "taxa_am": 2.71,
-       "taxa_aa": 37.91,
+       "taxa_am": 2.73,
+       "taxa_aa": 38.14,
        "posicao": 20,
        "cod_congl": "C0080185",
        "sr": "S1"
-      },
-      {
-       "cnpj8": "00360305",
-       "nome": "CAIXA ECONOMICA FEDERAL",
-       "taxa_am": 2.78,
-       "taxa_aa": 38.96,
-       "posicao": 21,
-       "cod_congl": "C0080738",
-       "sr": null
       },
       {
        "cnpj8": "31895683",
        "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
        "taxa_am": 2.93,
        "taxa_aa": 41.37,
-       "posicao": 22,
+       "posicao": 21,
        "cod_congl": "C0080477",
        "sr": null
       },
@@ -24471,17 +24464,17 @@
        "cnpj8": "33264668",
        "nome": "BCO XP S.A.",
        "taxa_am": 3.23,
-       "taxa_aa": 46.46,
-       "posicao": 23,
+       "taxa_aa": 46.51,
+       "posicao": 22,
        "cod_congl": "C0082475",
        "sr": null
       },
       {
        "cnpj8": "90400888",
        "nome": "BCO SANTANDER (BRASIL) S.A.",
-       "taxa_am": 3.24,
-       "taxa_aa": 46.67,
-       "posicao": 24,
+       "taxa_am": 3.25,
+       "taxa_aa": 46.71,
+       "posicao": 23,
        "cod_congl": "C0080185",
        "sr": "S1"
       },
@@ -24489,99 +24482,99 @@
        "cnpj8": "13009717",
        "nome": "BCO DO EST. DE SE S.A.",
        "taxa_am": 3.28,
-       "taxa_aa": 47.35,
-       "posicao": 25,
+       "taxa_aa": 47.23,
+       "posicao": 24,
        "cod_congl": "C0081634",
-       "sr": null
-      },
-      {
-       "cnpj8": "00000000",
-       "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 3.36,
-       "taxa_aa": 48.73,
-       "posicao": 26,
-       "cod_congl": "C0080329",
        "sr": null
       },
       {
        "cnpj8": "92228410",
        "nome": "OMNI SA CFI",
        "taxa_am": 3.66,
-       "taxa_aa": 53.92,
-       "posicao": 27,
+       "taxa_aa": 53.91,
+       "posicao": 25,
        "cod_congl": "C0080460",
        "sr": "S4"
       },
       {
-       "cnpj8": "07237373",
-       "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-       "taxa_am": 3.78,
-       "taxa_aa": 56.08,
-       "posicao": 28,
-       "cod_congl": "C0081593",
+       "cnpj8": "00000000",
+       "nome": "BCO DO BRASIL S.A.",
+       "taxa_am": 3.7,
+       "taxa_aa": 54.67,
+       "posicao": 26,
+       "cod_congl": "C0080329",
        "sr": null
       },
       {
        "cnpj8": "60701190",
        "nome": "ITAÚ UNIBANCO S.A.",
-       "taxa_am": 3.78,
-       "taxa_aa": 56.12,
-       "posicao": 29,
+       "taxa_am": 3.88,
+       "taxa_aa": 57.89,
+       "posicao": 27,
        "cod_congl": "C0080099",
        "sr": null
       },
       {
        "cnpj8": "92702067",
        "nome": "BCO DO ESTADO DO RS S.A.",
-       "taxa_am": 3.84,
-       "taxa_aa": 57.22,
-       "posicao": 30,
+       "taxa_am": 3.94,
+       "taxa_aa": 58.96,
+       "posicao": 28,
        "cod_congl": "C0080154",
+       "sr": null
+      },
+      {
+       "cnpj8": "07237373",
+       "nome": "BCO DO NORDESTE DO BRASIL S.A.",
+       "taxa_am": 3.99,
+       "taxa_aa": 59.94,
+       "posicao": 29,
+       "cod_congl": "C0081593",
        "sr": null
       },
       {
        "cnpj8": "00556603",
        "nome": "BANCO BARI S.A.",
-       "taxa_am": 4.79,
-       "taxa_aa": 75.26,
-       "posicao": 31,
+       "taxa_am": 4.62,
+       "taxa_aa": 71.99,
+       "posicao": 30,
        "cod_congl": "C0080893",
        "sr": null
       },
       {
        "cnpj8": "28127603",
        "nome": "BCO BANESTES S.A.",
-       "taxa_am": 4.87,
-       "taxa_aa": 77.02,
-       "posicao": 32,
+       "taxa_am": 4.82,
+       "taxa_aa": 75.92,
+       "posicao": 31,
        "cod_congl": "C0080147",
        "sr": "S3"
       },
       {
-       "cnpj8": "00000208",
-       "nome": "BRB - BCO DE BRASILIA S.A.",
-       "taxa_am": 5.02,
-       "taxa_aa": 79.98,
-       "posicao": 33,
-       "cod_congl": "C0080288",
-       "sr": null
-      },
-      {
-       "cnpj8": "68900810",
-       "nome": "BCO RENDIMENTO S.A.",
-       "taxa_am": 5.02,
-       "taxa_aa": 80.03,
-       "posicao": 34,
-       "cod_congl": "C0080659",
-       "sr": "S4"
+       "cnpj8": "00411939",
+       "nome": "FINAMAX S.A. CFI",
+       "taxa_am": 4.99,
+       "taxa_aa": 79.36,
+       "posicao": 32,
+       "cod_congl": "C0083436",
+       "sr": "S5"
       },
       {
        "cnpj8": "04862600",
        "nome": "PORTOSEG S.A. CFI",
-       "taxa_am": 5.06,
-       "taxa_aa": 80.87,
-       "posicao": 35,
+       "taxa_am": 5.16,
+       "taxa_aa": 82.85,
+       "posicao": 33,
        "cod_congl": "C0080642",
+       "sr": null
+      },
+      {
+       "cnpj8": "00000208",
+       "nome": "BRB - BCO DE BRASILIA S.A.",
+       "taxa_am": 5.2,
+       "taxa_aa": 83.67,
+       "posicao": 34,
+       "cod_congl": "C0080288",
        "sr": null
       },
       {
@@ -24589,97 +24582,88 @@
        "nome": "RPW S.A. SCFI",
        "taxa_am": 5.25,
        "taxa_aa": 84.88,
-       "posicao": 36,
+       "posicao": 35,
        "cod_congl": "C0083209",
        "sr": "S4"
       },
       {
-       "cnpj8": "00411939",
-       "nome": "FINAMAX S.A. CFI",
-       "taxa_am": 5.34,
-       "taxa_aa": 86.64,
-       "posicao": 37,
-       "cod_congl": "C0083436",
-       "sr": "S5"
+       "cnpj8": "68900810",
+       "nome": "BCO RENDIMENTO S.A.",
+       "taxa_am": 5.37,
+       "taxa_aa": 87.27,
+       "posicao": 36,
+       "cod_congl": "C0080659",
+       "sr": "S4"
       },
       {
        "cnpj8": "60746948",
        "nome": "BCO BRADESCO S.A.",
-       "taxa_am": 5.35,
-       "taxa_aa": 86.91,
-       "posicao": 38,
+       "taxa_am": 5.57,
+       "taxa_aa": 91.6,
+       "posicao": 37,
        "cod_congl": "C0080075",
        "sr": null
       },
       {
        "cnpj8": "10264663",
        "nome": "BANCOSEGURO S.A.",
-       "taxa_am": 5.53,
-       "taxa_aa": 90.75,
-       "posicao": 39,
+       "taxa_am": 5.6,
+       "taxa_aa": 92.19,
+       "posicao": 38,
        "cod_congl": "C0084813",
        "sr": "S3"
       },
       {
        "cnpj8": "30680829",
        "nome": "NU FINANCEIRA S.A. CFI",
-       "taxa_am": 6.36,
-       "taxa_aa": 109.47,
-       "posicao": 40,
+       "taxa_am": 6.39,
+       "taxa_aa": 110.38,
+       "posicao": 39,
        "cod_congl": "C0084693",
        "sr": "S2"
       },
       {
        "cnpj8": "27098060",
        "nome": "BANCO DIGIO",
-       "taxa_am": 6.53,
-       "taxa_aa": 113.67,
-       "posicao": 41,
+       "taxa_am": 6.48,
+       "taxa_aa": 112.54,
+       "posicao": 40,
        "cod_congl": "C0080075",
        "sr": null
       },
       {
-       "cnpj8": "48703388",
-       "nome": "ASA SCFI S.A.",
-       "taxa_am": 6.88,
-       "taxa_aa": 122.23,
-       "posicao": 42,
-       "cod_congl": "C0086608",
-       "sr": "S5"
+       "cnpj8": "04913711",
+       "nome": "BCO DO EST. DO PA S.A.",
+       "taxa_am": 6.94,
+       "taxa_aa": 123.64,
+       "posicao": 41,
+       "cod_congl": "C0081586",
+       "sr": "S3"
       },
       {
        "cnpj8": "06040559",
        "nome": "KREDILIG S.A. - CFI",
-       "taxa_am": 7.21,
-       "taxa_aa": 130.49,
-       "posicao": 43,
+       "taxa_am": 7.32,
+       "taxa_aa": 133.52,
+       "posicao": 42,
        "cod_congl": "C0083498",
        "sr": null
       },
       {
        "cnpj8": "11285104",
        "nome": "NEON FINANCEIRA - SCFI S.A.",
-       "taxa_am": 8.0,
-       "taxa_aa": 151.79,
-       "posicao": 44,
+       "taxa_am": 7.97,
+       "taxa_aa": 151.05,
+       "posicao": 43,
        "cod_congl": "C0085702",
        "sr": "S4"
       },
       {
-       "cnpj8": "59285411",
-       "nome": "BANCO PAN",
-       "taxa_am": 8.34,
-       "taxa_aa": 161.46,
-       "posicao": 45,
-       "cod_congl": "C0080336",
-       "sr": null
-      },
-      {
        "cnpj8": "10664513",
        "nome": "BCO AGIBANK S.A.",
-       "taxa_am": 8.37,
-       "taxa_aa": 162.32,
-       "posicao": 46,
+       "taxa_am": 8.4,
+       "taxa_aa": 163.32,
+       "posicao": 44,
        "cod_congl": "C0083694",
        "sr": null
       },
@@ -24687,142 +24671,160 @@
        "cnpj8": "11760553",
        "nome": "GAZINCRED S.A. SCFI",
        "taxa_am": 8.46,
-       "taxa_aa": 164.91,
-       "posicao": 47,
+       "taxa_aa": 165.11,
+       "posicao": 45,
        "cod_congl": "C0080824",
        "sr": "S4"
       },
       {
        "cnpj8": "62232889",
        "nome": "BCO DAYCOVAL S.A",
-       "taxa_am": 8.77,
-       "taxa_aa": 174.09,
-       "posicao": 48,
+       "taxa_am": 8.52,
+       "taxa_aa": 166.88,
+       "posicao": 46,
        "cod_congl": "C0081744",
+       "sr": null
+      },
+      {
+       "cnpj8": "59285411",
+       "nome": "BANCO PAN",
+       "taxa_am": 8.6,
+       "taxa_aa": 168.98,
+       "posicao": 47,
+       "cod_congl": "C0080336",
        "sr": null
       },
       {
        "cnpj8": "37679449",
        "nome": "MERCADO CRÉDITO SCFI S.A.",
-       "taxa_am": 8.91,
-       "taxa_aa": 178.49,
-       "posicao": 49,
+       "taxa_am": 8.98,
+       "taxa_aa": 180.72,
+       "posicao": 48,
        "cod_congl": "C0084820",
        "sr": "S3"
       },
       {
        "cnpj8": "20443996",
        "nome": "BECKER FINANCEIRA SA - CFI",
-       "taxa_am": 9.09,
-       "taxa_aa": 184.13,
-       "posicao": 50,
+       "taxa_am": 9.12,
+       "taxa_aa": 184.88,
+       "posicao": 49,
        "cod_congl": "C0084507",
        "sr": "S4"
       },
       {
+       "cnpj8": "09464032",
+       "nome": "MIDWAY S.A. - SCFI",
+       "taxa_am": 9.21,
+       "taxa_aa": 187.88,
+       "posicao": 50,
+       "cod_congl": "C0083553",
+       "sr": null
+      },
+      {
        "cnpj8": "59379565",
        "nome": "99PAY SCFI",
-       "taxa_am": 9.47,
-       "taxa_aa": 196.28,
+       "taxa_am": 9.46,
+       "taxa_aa": 195.89,
        "posicao": 51,
        "cod_congl": "C0087793",
        "sr": "S5"
       },
       {
-       "cnpj8": "36321990",
-       "nome": "AGORACRED S/A SCFI",
-       "taxa_am": 9.69,
-       "taxa_aa": 203.4,
+       "cnpj8": "48703388",
+       "nome": "ASA SCFI S.A.",
+       "taxa_am": 9.57,
+       "taxa_aa": 199.29,
        "posicao": 52,
-       "cod_congl": "C0083618",
+       "cod_congl": "C0086608",
        "sr": "S5"
       },
       {
        "cnpj8": "09516419",
        "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
-       "taxa_am": 9.74,
-       "taxa_aa": 204.98,
+       "taxa_am": 9.63,
+       "taxa_aa": 201.43,
        "posicao": 53,
        "cod_congl": "C0088022",
        "sr": "S3"
       },
       {
-       "cnpj8": "09464032",
-       "nome": "MIDWAY S.A. - SCFI",
-       "taxa_am": 9.89,
-       "taxa_aa": 210.25,
+       "cnpj8": "36321990",
+       "nome": "AGORACRED S/A SCFI",
+       "taxa_am": 9.76,
+       "taxa_aa": 205.82,
        "posicao": 54,
-       "cod_congl": "C0083553",
-       "sr": null
+       "cod_congl": "C0083618",
+       "sr": "S5"
       },
       {
        "cnpj8": "06339468",
        "nome": "GRAZZIOTIN FINANCEIRA S/A",
-       "taxa_am": 10.37,
-       "taxa_aa": 226.85,
+       "taxa_am": 10.39,
+       "taxa_aa": 227.53,
        "posicao": 55,
        "cod_congl": "C0083481",
        "sr": null
       },
       {
+       "cnpj8": "26225776",
+       "nome": "CENTROCRED S.A. CFI",
+       "taxa_am": 10.96,
+       "taxa_aa": 248.33,
+       "posicao": 56,
+       "cod_congl": "C0084727",
+       "sr": "S5"
+      },
+      {
        "cnpj8": "11271860",
        "nome": "LEBES FINANCEIRA S.A. - CFI",
-       "taxa_am": 11.06,
-       "taxa_aa": 252.1,
-       "posicao": 56,
+       "taxa_am": 11.03,
+       "taxa_aa": 250.99,
+       "posicao": 57,
        "cod_congl": "C0083656",
        "sr": null
       },
       {
        "cnpj8": "37122487",
        "nome": "CALCRED S.A.",
-       "taxa_am": 11.1,
-       "taxa_aa": 253.52,
-       "posicao": 57,
+       "taxa_am": 11.12,
+       "taxa_aa": 254.32,
+       "posicao": 58,
        "cod_congl": "C0088170",
        "sr": "S4"
       },
       {
-       "cnpj8": "26225776",
-       "nome": "CENTROCRED S.A. CFI",
-       "taxa_am": 11.3,
-       "taxa_aa": 261.51,
-       "posicao": 58,
-       "cod_congl": "C0084727",
-       "sr": "S5"
-      },
-      {
        "cnpj8": "54403563",
        "nome": "BCO ARBI S.A.",
-       "taxa_am": 11.88,
-       "taxa_aa": 284.57,
+       "taxa_am": 11.95,
+       "taxa_aa": 287.6,
        "posicao": 59,
        "cod_congl": "C0081201",
-       "sr": null
-      },
-      {
-       "cnpj8": "43180355",
-       "nome": "PEFISA S.A. - C.F.I.",
-       "taxa_am": 12.14,
-       "taxa_aa": 295.38,
-       "posicao": 60,
-       "cod_congl": "C0080305",
        "sr": null
       },
       {
        "cnpj8": "05676026",
        "nome": "CREDIARE CFI S.A.",
        "taxa_am": 12.15,
-       "taxa_aa": 296.05,
-       "posicao": 61,
+       "taxa_aa": 296.01,
+       "posicao": 60,
        "cod_congl": "C0085427",
        "sr": "S4"
+      },
+      {
+       "cnpj8": "43180355",
+       "nome": "PEFISA S.A. - C.F.I.",
+       "taxa_am": 12.21,
+       "taxa_aa": 298.62,
+       "posicao": 61,
+       "cod_congl": "C0080305",
+       "sr": null
       },
       {
        "cnpj8": "05503849",
        "nome": "CLOUDWALK FINANCEIRA S.A. CFI",
        "taxa_am": 12.3,
-       "taxa_aa": 302.26,
+       "taxa_aa": 302.15,
        "posicao": 62,
        "cod_congl": "C0086581",
        "sr": "S4"
@@ -24830,8 +24832,8 @@
       {
        "cnpj8": "05351887",
        "nome": "ZEMA CFI S/A",
-       "taxa_am": 12.35,
-       "taxa_aa": 304.28,
+       "taxa_am": 12.36,
+       "taxa_aa": 304.82,
        "posicao": 63,
        "cod_congl": "C0083584",
        "sr": "S4"
@@ -24839,8 +24841,8 @@
       {
        "cnpj8": "17184037",
        "nome": "BCO MERCANTIL DO BRASIL S.A.",
-       "taxa_am": 12.38,
-       "taxa_aa": 305.71,
+       "taxa_am": 12.43,
+       "taxa_aa": 307.73,
        "posicao": 64,
        "cod_congl": "C0080123",
        "sr": null
@@ -24848,8 +24850,8 @@
       {
        "cnpj8": "60779196",
        "nome": "CREFISA S.A. CFI",
-       "taxa_am": 12.46,
-       "taxa_aa": 309.23,
+       "taxa_am": 12.45,
+       "taxa_aa": 308.59,
        "posicao": 65,
        "cod_congl": "C0083632",
        "sr": "S4"
@@ -24857,72 +24859,81 @@
       {
        "cnpj8": "00795423",
        "nome": "BANCO SEMEAR",
-       "taxa_am": 12.5,
-       "taxa_aa": 311.08,
+       "taxa_am": 12.72,
+       "taxa_aa": 320.52,
        "posicao": 66,
        "cod_congl": "C0081380",
        "sr": "S4"
       },
       {
-       "cnpj8": "15581638",
-       "nome": "FACTA S.A. CFI",
-       "taxa_am": 12.93,
-       "taxa_aa": 330.32,
+       "cnpj8": "11970623",
+       "nome": "BCO SENFF S.A.",
+       "taxa_am": 12.72,
+       "taxa_aa": 320.71,
        "posicao": 67,
-       "cod_congl": "C0083704",
-       "sr": null
+       "cod_congl": "C0083670",
+       "sr": "S4"
       },
       {
        "cnpj8": "07512441",
        "nome": "HS FINANCEIRA",
-       "taxa_am": 13.22,
-       "taxa_aa": 343.66,
+       "taxa_am": 13.14,
+       "taxa_aa": 339.91,
        "posicao": 68,
        "cod_congl": "C0083522",
        "sr": "S4"
       },
       {
+       "cnpj8": "15581638",
+       "nome": "FACTA S.A. CFI",
+       "taxa_am": 13.36,
+       "taxa_aa": 350.29,
+       "posicao": 69,
+       "cod_congl": "C0083704",
+       "sr": null
+      },
+      {
        "cnpj8": "04379829",
        "nome": "NEGRESCO S.A. - CFI",
-       "taxa_am": 13.64,
-       "taxa_aa": 363.82,
-       "posicao": 69,
+       "taxa_am": 13.7,
+       "taxa_aa": 366.59,
+       "posicao": 70,
        "cod_congl": "C0083450",
        "sr": "S5"
       },
       {
-       "cnpj8": "11970623",
-       "nome": "BCO SENFF S.A.",
-       "taxa_am": 13.72,
-       "taxa_aa": 367.56,
-       "posicao": 70,
-       "cod_congl": "C0083670",
-       "sr": "S4"
-      },
-      {
        "cnpj8": "61186680",
        "nome": "BCO BMG S.A.",
-       "taxa_am": 14.2,
-       "taxa_aa": 392.12,
+       "taxa_am": 14.24,
+       "taxa_aa": 394.1,
        "posicao": 71,
        "cod_congl": "C0080178",
        "sr": null
       },
       {
+       "cnpj8": "04230630",
+       "nome": "JBCRED S.A. SCFI",
+       "taxa_am": 14.6,
+       "taxa_aa": 412.87,
+       "posicao": 72,
+       "cod_congl": "C0083137",
+       "sr": "S5"
+      },
+      {
        "cnpj8": "27351731",
        "nome": "REALIZE SCFI S.A.",
-       "taxa_am": 14.47,
-       "taxa_aa": 406.37,
-       "posicao": 72,
+       "taxa_am": 14.66,
+       "taxa_aa": 416.25,
+       "posicao": 73,
        "cod_congl": "C0084703",
        "sr": null
       },
       {
        "cnpj8": "05192316",
        "nome": "VIA CERTA FINANCIADORA S.A. - CFI",
-       "taxa_am": 14.56,
-       "taxa_aa": 411.1,
-       "posicao": 73,
+       "taxa_am": 14.73,
+       "taxa_aa": 419.92,
+       "posicao": 74,
        "cod_congl": "C0080831",
        "sr": "S4"
       },
@@ -24930,26 +24941,26 @@
        "cnpj8": "07799277",
        "nome": "VALOR S/A SCFI",
        "taxa_am": 14.93,
-       "taxa_aa": 431.37,
-       "posicao": 74,
+       "taxa_aa": 431.11,
+       "posicao": 75,
        "cod_congl": "C0083223",
        "sr": "S5"
       },
       {
        "cnpj8": "36947229",
        "nome": "COBUCCIO S.A. SCFI",
-       "taxa_am": 16.59,
-       "taxa_aa": 530.85,
-       "posicao": 75,
+       "taxa_am": 16.39,
+       "taxa_aa": 518.19,
+       "posicao": 76,
        "cod_congl": "C0085173",
        "sr": null
       },
       {
        "cnpj8": "37241230",
        "nome": "SUMUP SCFI S.A",
-       "taxa_am": 21.63,
-       "taxa_aa": 948.73,
-       "posicao": 76,
+       "taxa_am": 21.19,
+       "taxa_aa": 903.73,
+       "posicao": 77,
        "cod_congl": "C0085238",
        "sr": "S4"
       }

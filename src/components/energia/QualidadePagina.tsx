@@ -4,30 +4,36 @@ import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { tx } from "@/lib/energia/idioma";
-import { paineisQualidade } from "@/lib/energia/qualidade";
+import { hrefPainelQualidade, paineisQualidade, paginasQualidade, type PaginaQualidade } from "@/lib/energia/qualidade";
 import type { Natureza } from "@/lib/energia/tipos";
 
 /**
- * Peças de servidor da página Qualidade do serviço (uma rota, quatro painéis: P051 a P054): estado de ausência, capítulos da página,
- * recorte (período, universo e unidade) sob a figura principal de cada painel, aviso de defasagem, datas de cada parte e o par de
- * figuras lado a lado. A página (page.tsx) monta a abertura, a faixa de métricas e os painéis com elas.
+ * Peças de servidor das páginas de Qualidade do serviço (a entrada, com P051, P053 e P054, e Comparar distribuidoras, com o P052):
+ * estado de ausência, capítulos, navegação entre as duas páginas, recorte (período, universo e unidade) sob a figura principal de cada
+ * painel, aviso de defasagem, datas de cada parte e o par de figuras lado a lado.
  *
- * Por que uma página só: DEC e FEC, limites, compensações e atendimento se leem em sequência, e o leitor que escolhe uma
- * distribuidora ou um município leva a escolha (?dist=, ?mun=) de um painel ao outro sem trocar de rota.
+ * Por que duas páginas (diagnóstico de layout de 20/10/2026, item 6): a entrada era a página mais longa do módulo (27 mil px no
+ * celular) para um leitor que chega querendo saber da própria cidade. A busca do município abre a entrada; a comparação entre
+ * distribuidoras, o maior capítulo, foi para página própria. A escolha (?dist=) segue no endereço de uma página à outra.
  */
 
 /**
  * Capítulos da página: os outros três painéis, cada um com a pergunta que responde (âncoras do mesmo documento). O rótulo do bloco é
  * texto, não título: os títulos de seção que vêm depois são do painel, e um título aqui os faria parecer filhos deste bloco.
  */
-export function QualidadeCapitulos({ atual = "duracao" }: { atual?: string }) {
-  const itens = paineisQualidade().map((p) => ({ id: p.ancora, href: `#${p.ancora}`, rotulo: p.rotulo, descricao: p.descricao }));
+export function QualidadeCapitulos({ atual = "duracao", pagina = "entrada" }: { atual?: string; pagina?: PaginaQualidade }) {
+  const itens = paineisQualidade().map((p) => ({ id: p.ancora, href: hrefPainelQualidade(p.id, pagina), rotulo: p.rotulo, descricao: p.descricao }));
   return (
     <div data-capitulos-pagina="">
-      <p className="rotulo mb-2 text-mineral">{tx("Nesta página, as outras perguntas", "On this page, the other questions")}</p>
+      <p className="rotulo mb-2 text-mineral">{tx("As outras perguntas sobre a qualidade do serviço", "The other questions about quality of supply")}</p>
       <NavegacaoLocal rotulo={tx("Perguntas desta página", "Questions on this page")} itens={itens} atual={atual} variante="capitulos" />
     </div>
   );
+}
+
+/** Faixa das duas páginas no alto de Comparar distribuidoras (a entrada mostra os mesmos destinos como capítulos). */
+export function QualidadeNavegacao({ atual }: { atual: PaginaQualidade }) {
+  return <NavegacaoLocal rotulo={tx("Páginas da qualidade do serviço", "Quality of supply pages")} itens={paginasQualidade().map((p) => ({ id: p.id, href: p.href, rotulo: p.rotulo }))} atual={atual} />;
 }
 
 /** Estado de ausência da gold inteira: a página diz o que falta, nunca mostra número de reserva. */

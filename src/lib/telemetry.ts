@@ -139,6 +139,9 @@ export const VIEW_SECTIONS = [
   // Previdência e INSS (painel com conta e a versão aperitivo no mesmo endereço)
   "contas:previdencia",
   "contas:previdencia-aperitivo",
+  // Conectividade (Energia e Infraestrutura; painel com conta e a versão aperitivo no mesmo endereço)
+  "infra:conectividade",
+  "infra:conectividade-aperitivo",
   // Educação nos municípios (Serviços Públicos: painel com conta e a versão aperitivo no mesmo endereço)
   "servicos:educacao-municipal",
   "servicos:educacao-municipal-aperitivo",
@@ -282,6 +285,8 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "contas:por-area": "Contas Federais · Despesa por área",
   "contas:previdencia": "Contas Federais · Previdência e INSS",
   "contas:previdencia-aperitivo": "Contas Federais · Previdência e INSS: versão aperitivo (sem conta)",
+  "infra:conectividade": "Energia e Infraestrutura · Conectividade",
+  "infra:conectividade-aperitivo": "Energia e Infraestrutura · Conectividade: versão aperitivo (sem conta)",
   "servicos:educacao-municipal": "Serviços Públicos · Educação nos municípios",
   "servicos:educacao-municipal-aperitivo": "Serviços Públicos · Educação nos municípios: versão aperitivo (sem conta)",
   "familias:custo-de-vida": "Custo de vida · Inflação por cidade",

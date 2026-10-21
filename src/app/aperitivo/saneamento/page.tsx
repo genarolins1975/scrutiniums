@@ -11,6 +11,7 @@ import { ANOS_SISAGUA, FONTE_ROTULO, medida } from "@/lib/saneamento/medidas";
 import { TARIFAS } from "@/lib/saneamento/tarifas";
 import { ATENDIMENTO_REDE, CASAS_ATENDIMENTO, atendimentoRede } from "@/lib/saneamento/atendimento";
 import { periodoPorExtenso, resumoDivida } from "@/lib/saneamento/divida";
+import { resumoContratado } from "@/lib/saneamento/contratos";
 import type { FichaMunicipio, Municipio } from "@/lib/saneamento/tipos";
 import { BuscaAperitivo } from "./BuscaAperitivo";
 
@@ -81,6 +82,7 @@ function comConta(): string[] {
     `Comparação de até quatro municípios lado a lado e mapas por município, para os ${inteiro(cob?.municipios_ibge)} municípios`,
     `Fichas dos ${inteiro(regionais)} prestadores regionais, com volumes, perdas, consumo médio por pessoa e os valores financeiros que eles declaram ao SINISA, com a mesma ressalva`,
     ...dividaComConta(),
+    ...contratadoComConta(),
     `Os ${inteiro(capitulos.length)} capítulos do observatório, em ${inteiro(EIXOS.length)} eixos: ${EIXOS.map((e) => e.rotulo.toLowerCase()).join("; ")}`,
   ];
 }
@@ -91,6 +93,15 @@ function dividaComConta(): string[] {
   if (!r || !r.companhias || !r.primeiro_ano) return [];
   return [
     `Dívida e alavancagem das ${inteiro(r.companhias)} companhias de água e esgoto com demonstrações financeiras na CVM (${inteiro(r.operadoras)} prestadoras e ${inteiro(r.holdings)} holdings de grupo): dívida bruta e líquida, dívida sobre o EBITDA, o que vence em até 12 meses, série anual desde ${r.primeiro_ano} e fotografia do ${periodoPorExtenso(trimestreDe(r.referencia_trimestral))}`,
+  ];
+}
+
+/** Capítulo 15 (contratado desde o novo marco), dimensionado pelo resumo da própria publicação; sem a publicação, não entra. */
+function contratadoComConta(): string[] {
+  const r = resumoContratado();
+  if (!r || !r.leiloes_registrados) return [];
+  return [
+    `Concessões contratadas desde o novo marco de 2020: ${inteiro(r.leiloes_registrados)} leilões e desestatizações registrados (${inteiro(r.contratos_de_servico_adjudicados)} com contrato de serviço adjudicado), com lotes, vencedores, outorga e investimento previsto por linha, as metas contratuais até 2033 transcritas de ${inteiro(r.contratos_com_metas)} ${r.contratos_com_metas === 1 ? "contrato" : "contratos"}, o cenário didático "se tudo for cumprido" e as estimativas do custo da universalização lado a lado`,
   ];
 }
 

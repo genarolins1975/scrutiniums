@@ -5,7 +5,7 @@ import {brasil as b,dados} from '@/lib/eficiencia/habitacao/dados';
 import {n,pct} from '@/lib/eficiencia/habitacao/modelo';
 export const dynamic='force-static';
 export const metadata:Metadata={"title": "Habitação — condições da moradia", "alternates": {"canonical": "/eficiencia-estatal/habitacao/inadequacao"}};
-export default function Pagina(){return <><Abertura numero="04" titulo="A casa existe. Em que condições?" texto="A inadequação descreve carências em domicílios duráveis urbanos. Infraestrutura, edificação e situação fundiária podem exigir melhorias diferentes e coexistir na mesma moradia."/>
+export default function Pagina(){return <><Abertura titulo="A casa existe. Em que condições?" texto="A inadequação descreve carências em domicílios duráveis urbanos. Infraestrutura, edificação e situação fundiária podem exigir melhorias diferentes e coexistir na mesma moradia."/>
 <Numeros itens={[{titulo:'Com alguma inadequação',valor:n(b.inadequados),nota:'Domicílios duráveis urbanos em 2024; contados uma vez no total.'},{titulo:'Parcela do universo analisado',valor:n(pct(b.inadequados,b.urbanosDuraveis),1)+'%',nota:'Base: '+n(b.urbanosDuraveis)+' domicílios duráveis urbanos.'},{titulo:'Inadequação fundiária total',valor:n(b.fundiaria),nota:'Inclui coexistência com outras carências; tabela 30 do relatório.'}]}/>
 <Fonte/>
 <Nota>Os componentes se sobrepõem. Somar infraestrutura, edificação e situação fundiária contaria alguns domicílios mais de uma vez. O universo exclui áreas rurais e os componentes improvisados, rústicos e cômodos do déficit; pode incluir domicílios com ônus excessivo de aluguel.</Nota>

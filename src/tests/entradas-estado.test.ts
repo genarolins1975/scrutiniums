@@ -25,6 +25,19 @@ describe('Aberturas editoriais: números e perímetros preservados',()=>{
   expect(html).toContain('Fonte: SIOP');
   expect(html).toContain('2026 · parcial');
  });
+ it('Federal abre com a pergunta e uma cascata só, com o que fica para trás em cada passo (diagnóstico de 20/10/2026, item 9)',()=>{
+  const html=renderToStaticMarkup(createElement(AberturaFederal));
+  const b=DADOS.orcamento.find(b=>b.ano===2025)!.total;
+  expect(html).toMatch(/<h1[^>]*>Quanto do orçamento federal vira <em>pagamento<\/em>\?<\/h1>/);
+  expect(html).not.toContain('à <em>entrega.</em>');
+  // uma barra encaixada no lugar das quatro barras soltas, e sem a escala comum delas
+  expect(html.match(/role="img"/g)).toHaveLength(1);
+  expect(html).not.toContain('Escala comum');
+  for(const [de,para] of [['atualizada','empenhado'],['empenhado','liquidado'],['liquidado','pago']] as const)expect(html).toContain(moeda(b[de]-b[para],'reais'));
+  expect(html).toContain('não empenhados');
+  expect(html).toContain('liquidados e não pagos');
+  expect(html).toContain('cada um está dentro do anterior');
+ });
  it.each(snapshot.ufs)('Estadual mantém os números conferidos de $uf e as 27 bandeiras',u=>{
   const html=renderToStaticMarkup(createElement(AberturaEstadual,{uf:u.uf,ano:2025,selecionar:()=>{}}));
   const execucao=comparar(2025,'CE-04','Todas',true).linhas.find(l=>l.uf===u.uf)!.valor!;
@@ -63,6 +76,27 @@ describe('Aberturas editoriais: números e perímetros preservados',()=>{
   expect(city.populacao).toBeGreaterThan(0);expect(html).toContain(Math.round(city.populacao!).toLocaleString('pt-BR'));
   expect(html).toContain('Posição relativa, não nota nem meta');
   expect(html).not.toContain('NaN');
+ });
+ it('o retrato mostra uma régua de posição por resultado, sem pétalas nem fundo escuro (decisão do dono de 21/10/2026, diagnóstico de 20/10/2026, item 8)',()=>{
+  const html=retratoDe('2611606','4106902');
+  const reguas=html.match(/<svg[^>]*role="img"[^>]*aria-label="[^"]*na posição \d+ de 100; Curitiba na posição \d+"/g)??[];
+  expect(reguas).toHaveLength(retrato.condicoes.length);
+  expect(html).toContain('Onde Recife fica entre as 26 capitais');
+  // os valores das duas capitais em cada régua: a escolhida e, com o losango, a de comparação
+  for(const m of retrato.condicoes){expect(html).toContain(numero(m.valores['2611606'].valor,m.unidade));expect(html).toContain(numero(m.valores['4106902'].valor,m.unidade));}
+  expect((html.match(/<dt class="sr-only">Curitiba<\/dt>/g)??[]).length).toBe(retrato.condicoes.length);
+  expect(html).not.toMatch(/pétala/i);
+  const css=readFileSync('src/components/eficiencia/entrada/Entrada.module.css','utf8');
+  expect(css).not.toMatch(/repeating-linear-gradient/);
+  expect(css).toMatch(/\.hero\{[^}]*background:var\(--cor-obee-atlas-papel\)/);
+ });
+ it('empate de posição entre a capital e o comparador: os dois marcadores continuam visíveis (Porto Velho e São Luís na renda)',()=>{
+  const renda=retrato.condicoes.find(m=>m.posicoes&&Math.abs(m.posicoes['1100205']-m.posicoes['2111300'])<0.01);
+  expect(renda).toBeDefined();
+  const html=retratoDe('1100205','2111300');
+  // a capital sobe (cy 8) e o losango do comparador desce (centro em 21) na régua do empate
+  expect(html).toMatch(/<circle cx="[\d.]+" cy="8" r="6.5"/);
+  expect(html).toMatch(/<path d="M[\d.]+ 15l6 6l-6 6l-6 -6Z"/);
  });
  it('o retrato declara partes remotas fora do enquadramento',()=>{
   const vitoria=retrato.capitais.find(c=>c.nome==='Vitória')!;

@@ -128,7 +128,9 @@ describe('Segurança pública: navegação e acesso', () => {
     const layout = ler('src/app/eficiencia-estatal/seguranca-publica/layout.tsx');
     expect(layout.indexOf("['estados', 'Por estado']")).toBeGreaterThan(layout.indexOf("['', 'Panorama']"));
     expect(layout.indexOf("['estados', 'Por estado']")).toBeLessThan(layout.indexOf("['letalidade'"));
-    expect(layout).toContain('<SeloComConta href={href}/>');
+    // as abas moram no subcabeçalho comum da Eficiência Estatal (item 10 do diagnóstico de 20/10/2026), que leva o selo em cada destino
+    expect(layout).toContain('<CabecalhoEntrada tema=');
+    expect(ler('src/components/eficiencia/NavegacaoTemaObee.tsx')).toContain('<SeloComConta href={href(c)} />');
     expect(ehRotaPublica('/eficiencia-estatal/seguranca-publica/estados')).toBe(false);
     expect(ehRotaPublica('/eficiencia-estatal/seguranca-publica')).toBe(false);
     expect(ehRotaPublica('/eficiencia-estatal/seguranca-publica/metodos')).toBe(true);
