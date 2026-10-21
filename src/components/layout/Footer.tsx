@@ -6,7 +6,6 @@ import { ACESSO } from "@/lib/acesso";
 import { TEXTOS_LAYOUT } from "@/i18n/paginas/layout";
 import { hrefNoIdioma } from "@/lib/i18n-href";
 import type { Idioma } from "@/lib/idioma";
-import { Nome } from "@/components/i18n/Nome";
 import LinkIdioma from "@/components/i18n/LinkIdioma";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { OBSERVATORIOS } from "@/lib/observatorios/lista";
@@ -66,6 +65,10 @@ export function Footer({ compacto = false, idioma = "pt" }: { compacto?: boolean
  */
 function ColunasObservatorios({ idioma, link }: { idioma: Idioma; link: string }) {
   const t = TEXTOS_LAYOUT[idioma];
+  // nome de produto marcado pelo idioma do rodapé, e não pelo endereço: o <N> só reconhece o inglês do Setor Elétrico,
+  // e em /en/sobre os nomes das coleções saíam como português sem marca
+  const N = ({ children }: { children: string }) =>
+    idioma === "en" ? <span lang="pt-BR" translate="no" data-i18n-nome="">{children}</span> : <>{children}</>;
   const h = (href: string) => hrefNoIdioma(href, idioma);
   return (
     <>
@@ -77,18 +80,18 @@ function ColunasObservatorios({ idioma, link }: { idioma: Idioma; link: string }
         return (
           <nav key={o.id} aria-label={o.nome} className="min-w-0">
             <p className="rotulo mb-3 text-mineral-soft">
-              <Link href={h(rotaPorta(o.id))} prefetch={prefetchDoLink(h(rotaPorta(o.id)))} className="hover:text-bronze-soft"><Nome>{o.nomeCurto}</Nome></Link>
+              <Link href={h(rotaPorta(o.id))} prefetch={prefetchDoLink(h(rotaPorta(o.id)))} className="hover:text-bronze-soft"><N>{o.nomeCurto}</N></Link>
             </p>
             <ul className="text-sm">
               {o.colecoes.map((c) => (
-                <li key={c.id}><Link href={h(c.href)} prefetch={prefetchDoLink(h(c.href))} className={link}><Nome>{c.nome}</Nome></Link></li>
+                <li key={c.id}><Link href={h(c.href)} prefetch={prefetchDoLink(h(c.href))} className={link}><N>{c.nome}</N></Link></li>
               ))}
             </ul>
             {referencias.length > 0 && (
               <ul className="mt-3 space-y-1 text-xs text-mineral-soft">
                 {referencias.map((r) => (
                   <li key={r.id}>
-                    <Nome>{r.nome}</Nome>:{" "}
+                    <N>{r.nome}</N>:{" "}
                     {r.metodo && <Link href={h(r.metodo)} prefetch={prefetchDoLink(h(r.metodo))} className="underline-offset-2 hover:text-bronze-soft hover:underline">{t.metodo}</Link>}
                     {r.metodo && r.glossario && " · "}
                     {r.glossario && <Link href={h(r.glossario)} prefetch={prefetchDoLink(h(r.glossario))} className="underline-offset-2 hover:text-bronze-soft hover:underline">{t.glossario}</Link>}
