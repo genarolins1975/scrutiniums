@@ -132,6 +132,7 @@ def posicao_blocos(blocos: list[dict], municipios: dict[str, dict], contratos: d
                     meta_2024[m["indicador"]] = m["valor"]  # a última meta até 2024 (série ordenada abaixo)
         out.append({
             "bloco": b["id"],
+            "rotulo": b.get("rotulo") or b["id"],
             "contrato": b["contrato"],
             "municipios": len(ms),
             "municipios_divididos_por_zona": parciais,
@@ -190,14 +191,17 @@ def construir(seed: dict) -> dict:
         ],
         "nao_lidos": seed["metas"].get("nao_lidos", []),
         "abrangencia": [
-            {"id": b["id"], "contrato": b["contrato"], "inicio": b["inicio"], "fim": b.get("fim"), "fonte": b["fonte"], "declarado_municipios": b.get("declarado_municipios"),
+            {"id": b["id"], "rotulo": b.get("rotulo") or b["id"], "contrato": b["contrato"], "inicio": b["inicio"], "fim": b.get("fim"), "fonte": b["fonte"], "declarado_municipios": b.get("declarado_municipios"), "observacoes": b.get("observacoes"),
              "municipios": [{"ibge": str(m["ibge"]), "nome": municipios[str(m["ibge"])]["nome"], "uf": municipios[str(m["ibge"])]["uf"], "parcial": m.get("parcial")} for m in b.get("municipios") or []]}
             for b in blocos
         ],
         "posicao_2024": posicao_blocos(blocos, municipios, por_contrato),
+        "abrangencia_nao_localizada": seed["abrangencia"].get("nao_localizadas", []),
+        "em_estruturacao": seed["leiloes"].get("em_estruturacao", []),
         "custos": custos,
+        "custos_nao_localizados": seed["custos"].get("nao_localizadas", []),
     }
-    g["hash_dados"] = _hash({k: g[k] for k in ("leiloes", "contratos", "abrangencia", "custos", "proxy_sinisa")})
+    g["hash_dados"] = _hash({k: g[k] for k in ("leiloes", "contratos", "abrangencia", "custos", "proxy_sinisa", "abrangencia_nao_localizada", "em_estruturacao", "custos_nao_localizados")})
     return g
 
 

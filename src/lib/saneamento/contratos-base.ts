@@ -67,11 +67,13 @@ export type NaoLido = { id: string; nome: string; motivo: string; tentativas?: s
 
 export type Bloco = {
   id: string;
+  rotulo: string;
   contrato: string;
   inicio: string;
   fim: string | null;
   fonte: { url: string; titulo?: string; grau: "oficial" | "secundaria"; acessado_em: string };
   declarado_municipios: number | null;
+  observacoes?: string | null;
   municipios: { ibge: string; nome: string; uf: string; parcial: string | null }[];
 };
 
@@ -79,6 +81,7 @@ export type Ponderado = { valor: number | null; municipios_com_dado: number; pop
 
 export type Posicao = {
   bloco: string;
+  rotulo: string;
   contrato: string;
   municipios: number;
   municipios_divididos_por_zona: string[];
@@ -116,7 +119,12 @@ export type GoldContratado = {
   nao_lidos: NaoLido[];
   abrangencia: Bloco[];
   posicao_2024: Posicao[];
+  /** Blocos cuja composição municipal não foi localizada em documento público, ou sem contrato adjudicado: fora da posição. */
+  abrangencia_nao_localizada: { id: string; contrato: string; declarado_municipios: number | null; motivo: string; fonte: { url: string; titulo?: string | null; grau: "oficial" | "secundaria"; acessado_em: string } }[];
+  /** Projetos em estruturação, ainda sem leilão: só registro, nunca contados. */
+  em_estruturacao: { nome: string; uf: string | null; investimento_previsto_rs_mi: number | null; situacao: string | null; fonte: { url?: string; titulo?: string; data?: string; grau?: string } | null; observacoes: string | null }[];
   custos: Estimativa[];
+  custos_nao_localizados: { id: string; autor: string; titulo: string; motivo: string; observacoes?: string | null }[];
   hash_dados: string;
 };
 

@@ -92,13 +92,14 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
         }
       : null;
   const porContrato = new Map(g.contratos.map((c) => [c.id, c]));
+  const porLeilao = new Map(g.leiloes.map((l) => [l.id, l]));
   const areas: AreaLab[] = g.posicao_2024.map((p) => {
     const c = porContrato.get(p.contrato);
     const ica = c ? metaNoAno(c, "ICA", anoLegal) : null;
     const ice = c ? metaNoAno(c, "ICE", anoLegal) : null;
     return {
       id: p.bloco,
-      nome: c?.nome ?? p.bloco,
+      nome: p.rotulo,
       pop22: p.pop22,
       agua: p.censo.agua_rede_2022 == null ? null : { v2022: p.censo.agua_rede_2022, meta2033: ica },
       esgoto: p.censo.esgoto_rede_2022 == null ? null : { v2022: p.censo.esgoto_rede_2022, meta2033: ice },
@@ -404,14 +405,17 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
               </thead>
               <tbody>
                 {g.posicao_2024.map((p) => {
-                  const c = porContrato.get(p.contrato);
+                  const leilao = porLeilao.get(p.contrato);
                   const pond = (x: { valor: number | null; municipios_com_dado: number }) =>
                     x.valor == null ? "sem dado" : `${numero(x.valor, 1)}% (${inteiro(x.municipios_com_dado)} mun.)`;
                   return (
                     <tr key={p.bloco} className="border-b border-linha align-top" data-bloco={p.bloco}>
                       <td className="py-2 pr-3">
-                        <span className="font-medium text-carvao">{c?.nome ?? p.bloco}</span>
-                        <span className="block text-xs text-carvao-muted">{p.bloco}{p.municipios_divididos_por_zona.length ? ` · ${inteiro(p.municipios_divididos_por_zona.length)} município(s) divididos por zona` : ""}</span>
+                        <span className="font-medium text-carvao">{p.rotulo}</span>
+                        <span className="block text-xs text-carvao-muted">
+                          {leilao ? `${leilao.uf}, leilão de ${data(leilao.data_leilao)}` : p.contrato}
+                          {p.municipios_divididos_por_zona.length ? ` · ${inteiro(p.municipios_divididos_por_zona.length)} ${p.municipios_divididos_por_zona.length === 1 ? "município dividido" : "municípios divididos"} por zona` : ""}
+                        </span>
                       </td>
                       <td className={`py-2 pr-3 ${NUM}`}>{inteiro(p.municipios)}</td>
                       <td className={`py-2 pr-3 ${NUM}`}>{inteiro(p.pop24)}</td>
@@ -590,6 +594,51 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
             </ul>
           </div>
         </div>
+        {(g.abrangencia_nao_localizada.length > 0 || g.em_estruturacao.length > 0 || g.custos_nao_localizados.length > 0) && (
+          <div className="mt-8 grid gap-8 md:grid-cols-2">
+            {g.abrangencia_nao_localizada.length > 0 && (
+              <div>
+                <h3 className="rotulo text-mineral">Blocos fora da posição {sinisaAno}, e por quê</h3>
+                <ul className="mt-2 space-y-2 text-sm" data-abrangencia-fora="">
+                  {g.abrangencia_nao_localizada.map((b) => (
+                    <li key={b.id}>
+                      <span className="font-medium text-carvao">{b.id}</span>
+                      {b.declarado_municipios != null && <span className="text-carvao-muted"> · {inteiro(b.declarado_municipios)} municípios declarados</span>}
+                      <span className="block text-xs text-carvao-muted">{b.motivo}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div>
+              {g.em_estruturacao.length > 0 && (
+                <>
+                  <h3 className="rotulo text-mineral">Em estruturação, ainda sem leilão (só registro)</h3>
+                  <ul className="mt-2 space-y-1 text-sm text-carvao-muted" data-em-estruturacao="">
+                    {g.em_estruturacao.map((e) => (
+                      <li key={e.nome}>
+                        {e.nome}
+                        {e.investimento_previsto_rs_mi != null ? ` · ${reaisMi(e.investimento_previsto_rs_mi)} previstos` : ""}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              {g.custos_nao_localizados.length > 0 && (
+                <>
+                  <h3 className="rotulo mt-6 text-mineral">Números citados e não localizados em fonte aberta</h3>
+                  <ul className="mt-2 space-y-1 text-sm text-carvao-muted">
+                    {g.custos_nao_localizados.map((e) => (
+                      <li key={e.id}>
+                        {e.titulo}: {e.motivo}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
+          </div>
+        )}
         <Nota titulo="Fontes que não entram">
           ABCON SINDCON (acesso automatizado recusado), Hub de Projetos do BNDES (aplicação só com JavaScript) e Radar PPP (assinatura, sem metas, licença restrita). Os
           números da ABCON e do BNDES entram só na seção de custos, como parte interessada, quando conferidos em documento ou veículo que os reproduz.

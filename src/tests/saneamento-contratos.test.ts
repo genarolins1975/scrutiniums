@@ -123,8 +123,9 @@ describe("página /saneamento/contratado", () => {
     }
     for (const f of g.totais.fora_dos_totais) expect(t).toContain(f.motivo);
     expect(t).not.toMatch(/undefined|NaN/);
-    // naturezas de valor somadas em separado: nunca um "valor total" único
-    expect(t).not.toMatch(/valor total/i);
+    // naturezas de valor somadas em separado: cada uma com a sua soma e nunca um total geral
+    for (const r of ["Outorga, soma", "Contraprestação, soma", "Investimento previsto, soma"]) expect(t).toContain(r);
+    expect(t).not.toMatch(/total geral|outorga mais contraprestação|somando outorga e contraprestação/i);
   });
 
   it("metas com cláusula e hash; ausência escrita como ausência; laboratório identificado como modelo didático", () => {

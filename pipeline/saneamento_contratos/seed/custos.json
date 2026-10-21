@@ -1,3 +1,214 @@
 {
- "estimativas": []
+ "descricao": "Estimativas do custo da universalização e do montante contratado, cada uma com base de preço, horizonte e perímetro da própria fonte; nunca subtraídas entre si. Pesquisa de 21/10/2026.",
+ "estimativas": [
+  {
+   "id": "plansab-2013",
+   "natureza": "custo_universalizacao",
+   "autor": "Governo Federal (Ministério das Cidades): Plansab versão original",
+   "titulo": "Plano Nacional de Saneamento Básico (Plansab) 2013",
+   "valor_rs_bi": 508.4,
+   "base_preco": "dezembro/2012 (preços ajustados ao Sinapi; a revisão de 2019 declara que a versão original usava dez/2012)",
+   "horizonte": "2014-2033",
+   "perimetro": "4 componentes (água, esgoto, resíduos sólidos, drenagem), expansão + reposição; metas do Plansab (não as da Lei 14.026)",
+   "metodo": "custos unitários Sinapi/PMSS aplicados ao déficit por macrorregião",
+   "parte_interessada": false,
+   "fonte": {
+    "url": "https://cecol.fsp.usp.br/dcms/uploads/arquivos/1446465969_Brasil-PlanoNacionalDeSaneamentoB%C3%A1sico-2013.pdf",
+    "titulo": "Plansab 2013 (cópia em repositório USP)",
+    "data": "2013-12",
+    "grau": "S",
+    "acessado_em": "2026-10-21"
+   },
+   "observacoes": "Valor 'R$ 508,4 bilhões para 2014-2033' citado em busca (CNM/outros); documento original não aberto. A base dez/2012 está confirmada (V) no texto da revisão 2019: 'Todos os preços foram ajustados para dezembro de 2012'."
+  },
+  {
+   "id": "plansab-revisao-2019",
+   "natureza": "custo_universalizacao",
+   "autor": "Ministério do Desenvolvimento Regional / Ministério das Cidades: Plansab, revisão 2017-2019 (versão preliminar para os Conselhos; aprovação não concluída)",
+   "titulo": "Plansab: versão revisada 2019, Tabela 7.2 'Necessidade de investimentos em abastecimento de água potável e esgotamento sanitário no Brasil, segundo os custos em expansão e reposição'",
+   "valor_rs_bi": 357.15,
+   "base_preco": "dezembro/2017 (reajuste pelo IGP-DI da FGV)",
+   "horizonte": "2019-2033",
+   "perimetro": "água e esgoto, áreas urbanas e rurais, expansão + reposição; inclui fossas sépticas na coleta; metas do Plansab revisado (anteriores à Lei 14.026)",
+   "metodo": "déficit por macrorregião x custos unitários (Sinapi e orçamentos de referência)",
+   "parte_interessada": false,
+   "fonte": {
+    "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/saneamento/plano-nacional-de-saneamento-basico-plansab/arquivos/Versao_Conselhos_Resoluo_Alta__Capa_Atualizada.pdf",
+    "titulo": "Plansab: versão para os Conselhos (revisão 2019), PDF oficial gov.br",
+    "data": "2019",
+    "grau": "V",
+    "acessado_em": "2026-10-21"
+   },
+   "observacoes": "agua total R$ 142.2 bi; agua expansao R$ 79.4 bi; agua reposicao R$ 62.8 bi; esgoto total R$ 215.0 bi; esgoto expansao R$ 172.4 bi; esgoto reposicao R$ 42.6 bi; subperiodo 2019 2023 R$ 67.9 bi"
+  },
+  {
+   "id": "kpmg-abcon-2020",
+   "natureza": "custo_universalizacao",
+   "autor": "KPMG, em parceria com ABCON Sindcon",
+   "titulo": "Quanto custa universalizar o saneamento no Brasil?",
+   "valor_rs_bi": 753.0,
+   "base_preco": "NÃO CONFIRMADA: o PDF original (assets.kpmg.com e abconsindcon.com.br) não abriu (404/403) e o Wayback recusou conexão. O IPEA registra que a KPMG 'extrai o número de R$ 357 bilhões do Plansab' (base dez/2017), o que sugere preços de 2017-2019, mas isso é inferência.",
+   "horizonte": "até 2033",
+   "perimetro": "água e esgoto; expansão (R$ 498 bi) + reposição da depreciação de ativos existentes e novos (R$ 255 bi); metas 99% água / 90% esgoto",
+   "metodo": "metodologia própria da KPMG com mapeamento da extensão de redes por município (S)",
+   "parte_interessada": true,
+   "fonte": {
+    "url": "https://repositorio.ipea.gov.br/bitstream/11058/12164/1/BRUA_29_Artigo_3_A_necessidade_de_investimentos_para_a_universalizacao_do_saneamento_no_Brasil.pdf",
+    "titulo": "IPEA: Boletim Regional, Urbano e Ambiental 29, art. 3: 'A necessidade de investimentos para a universalização do saneamento no Brasil' (Pompermayer e Silveira Sobrinho), cita KPMG (2020): R$ 753 bi, R$ 498 bi expansão",
+    "data": "2023",
+    "grau": "V",
+    "acessado_em": "2026-10-21"
+   },
+   "observacoes": "grau declarado na pesquisa: V (R$ 753 bi e R$ 498 bi via IPEA); S (composição e base de preços); expansao total R$ 498.0 bi; expansao agua R$ 144.0 bi (S); expansao esgoto R$ 354.0 bi (S); reposicao total R$ 255.0 bi (S); reposicao ativos existentes R$ 145.0 bi (S); reposicao novos ativos R$ 110.0 bi (S)"
+  },
+  {
+   "id": "pilpi-2021",
+   "natureza": "custo_universalizacao",
+   "autor": "Governo Federal (Ministério da Economia): Plano Integrado de Longo Prazo da Infraestrutura (Pilpi)",
+   "titulo": "Pilpi 2021: necessidade de investimento em água e esgoto até 2033",
+   "valor_rs_bi": 539.0,
+   "base_preco": "não informada no IPEA (derivado do Plansab 2018, extrapolando metas para 99%/90%)",
+   "horizonte": "até 2033",
+   "perimetro": "água e esgoto, expansão + reposição, metas da Lei 14.026",
+   "metodo": null,
+   "parte_interessada": false,
+   "fonte": {
+    "url": "https://repositorio.ipea.gov.br/bitstream/11058/12164/1/BRUA_29_Artigo_3_A_necessidade_de_investimentos_para_a_universalizacao_do_saneamento_no_Brasil.pdf",
+    "titulo": "IPEA: BRUA 29, art. 3 ('O investimento total previsto no Pilpi até 2033 ficou em R$ 539 bilhões, dos quais R$ 429 bilhões para expansão')",
+    "data": "2023",
+    "grau": "V",
+    "acessado_em": "2026-10-21"
+   },
+   "observacoes": "grau declarado na pesquisa: V (via IPEA); expansao R$ 429.0 bi; reposicao R$ 110.0 bi"
+  },
+  {
+   "id": "plansab-mcid-511bi-dez2021",
+   "natureza": "custo_universalizacao",
+   "autor": "Ministério das Cidades: Plansab (estimativa citada pelo Instituto Trata Brasil como do Plano Nacional de Saneamento Básico)",
+   "titulo": "Necessidade de investimento para universalização de água e esgoto até 2033 ('aproximadamente R$ 511 bilhões, a preços de dezembro de 2021')",
+   "valor_rs_bi": 511.0,
+   "base_preco": "dezembro/2021",
+   "horizonte": "até 2033",
+   "perimetro": "água e esgoto (metas da Lei 14.026: 99% e 90%); inclusão de reposição não explicitada na citação",
+   "metodo": null,
+   "parte_interessada": false,
+   "fonte": {
+    "url": "https://tratabrasil.org.br/investimento-para-universalizacao-do-saneamento-o-que-ainda-falta/",
+    "titulo": "Instituto Trata Brasil: Investimento para universalização do saneamento: o que ainda falta?",
+    "data": "2024-08-13",
+    "grau": "V",
+    "acessado_em": "2026-10-21"
+   },
+   "observacoes": "grau declarado na pesquisa: V (citação) / S (documento oficial de origem não localizado: provavelmente Relatório de Avaliação Anual do Plansab); É a única cifra atribuída ao Ministério das Cidades para o custo total pós-marco encontrada em fonte aberta. A revisão do Plansab ano-base 2022 (consulta pública 20/10 a 18/11/2025, Participa + Brasil) atualiza os valores, mas o número não foi publicado nas fontes abertas em 2026-10-21; a ata do CISB menciona apenas 'necessidades de investimentos para se atingir as metas' sem cifra (V)."
+  },
+  {
+   "id": "trata-brasil-2024",
+   "natureza": "custo_universalizacao",
+   "autor": "Instituto Trata Brasil (com GO Associados, segundo fontes S)",
+   "titulo": "Investimento para universalização do saneamento: o que ainda falta? (atualização do Plansab para jun/2022 e saldo até 2033)",
+   "valor_rs_bi": 509.0,
+   "base_preco": "junho/2022",
+   "horizonte": "2023-2033 (11 anos)",
+   "perimetro": "água e esgoto; metas 99%/90% até 31/12/2033; não menciona reposição explicitamente",
+   "metodo": "Plansab R$ 511 bi (dez/2021) atualizado para jun/2022 (R$ 551 bi) menos investimentos realizados em 2021 e 2022 (SNIS)",
+   "parte_interessada": false,
+   "fonte": {
+    "url": "https://tratabrasil.org.br/investimento-para-universalizacao-do-saneamento-o-que-ainda-falta/",
+    "titulo": "Instituto Trata Brasil: Investimento para universalização do saneamento: o que ainda falta?",
+    "data": "2024-08-13",
+    "grau": "V",
+    "acessado_em": "2026-10-21"
+   },
+   "observacoes": "total atualizado jun2022 R$ 551.0 bi; investido 2021 R$ 19.2 bi; investido 2022 R$ 22.5 bi; media 2018 2022 anual R$ 20.9 bi; necessidade anual R$ 46.3 bi"
+  },
+  {
+   "id": "trata-brasil-2025",
+   "natureza": "custo_universalizacao",
+   "autor": "Instituto Trata Brasil",
+   "titulo": "Avanços do Marco Legal do Saneamento Básico no Brasil de 2025",
+   "valor_rs_bi": 454.1,
+   "base_preco": "2023 (saldo); referência Plansab R$ 511 bi a preços de dez/2021",
+   "horizonte": "2024-2033",
+   "perimetro": "água e esgoto, nacional; metas 99%/90%",
+   "metodo": null,
+   "parte_interessada": false,
+   "fonte": {
+    "url": "https://www.folhape.com.br/noticias/estudo-aponta-estagnacao-no-saneamento-5-anos-apos-novo-marco-legal/432103/",
+    "titulo": "Agência Brasil (via Folha de Pernambuco): Estudo aponta estagnação no saneamento 5 anos após novo Marco Legal",
+    "data": "2025-08-19",
+    "grau": "V",
+    "acessado_em": "2026-10-21"
+   },
+   "observacoes": "A expressão 'mais que dobrar' aparece no estudo de 2024 (R$ 20,9 bi/ano investidos vs R$ 46,3 bi necessários), não na matéria de 2025. O Ranking do Saneamento 2025 (100 maiores cidades) usa o mesmo referencial de R$ 223,82/hab/ano (S).; necessidade anual R$ 45.1 bi; necessidade por habitante ano R$ 0.0 bi; investimento atual por habitante ano R$ 0.0 bi; municipios com contratos irregulares 363; investimento por habitante em municipios irregulares R$ 0.0 bi"
+  },
+  {
+   "id": "bndes-2023-anual",
+   "natureza": "custo_universalizacao",
+   "autor": "BNDES (economista do banco em audiência pública na Câmara, 21/09/2023)",
+   "titulo": "Necessidade anual de investimento para universalizar água e esgoto até 2033",
+   "valor_rs_bi": 31.5,
+   "base_preco": "não informada",
+   "horizonte": "2022-2033",
+   "perimetro": "água e esgoto",
+   "metodo": null,
+   "parte_interessada": false,
+   "fonte": {
+    "url": "https://www2.camara.leg.br/atividade-legislativa/comissoes/comissoes-permanentes/cdu/apresentacoes-em-eventos/eventos-de-2023/21-09-2023-audiencia-publica-sobre-o-marco-regulatorio-do-saneamento-basico/banco-nacional-de-desenvolvimento-economico-e-social-bndes/view",
+    "titulo": "Câmara dos Deputados: apresentação do BNDES na audiência sobre o marco regulatório do saneamento",
+    "data": "2023-09-21",
+    "grau": "S",
+    "acessado_em": "2026-10-21"
+   },
+   "observacoes": "Média 2008-2021 pouco acima da metade disso; expectativa de meta escorregar para ~2040 (S). Poder360 noticiou como 'R$ 310,5 bi em 10 anos' (S)."
+  },
+  {
+   "id": "abcon-panorama-2026",
+   "natureza": "contratado",
+   "autor": "ABCON Sindcon",
+   "titulo": "Panorama da Universalização do Saneamento 2026",
+   "valor_rs_bi": 227.5,
+   "base_preco": "não informada (soma nominal dos valores declarados em cada leilão, presumivelmente)",
+   "horizonte": "2020 a junho/2026",
+   "perimetro": "leilões de concessão, PPP e desestatização, regionais e municipais; 'aportes contratualizados' = investimento previsto, não outorga",
+   "metodo": null,
+   "parte_interessada": true,
+   "fonte": {
+    "url": "https://www.brasil247.com/brasil/investimento-em-saneamento-cresce-9-e-bate-recorde-em-2024-aponta-abcon/",
+    "titulo": "Brasil 247: Investimento em saneamento cresce 9% e bate recorde em 2024, aponta ABCON (Panorama 2026: 70 leilões, R$ 227,5 bi)",
+    "data": "2026-08-10",
+    "grau": "V",
+    "acessado_em": "2026-10-21"
+   },
+   "observacoes": "grau declarado na pesquisa: V (via Brasil 247, 10/08/2026; site da ABCON retornou 403); projetos em estruturacao 31; investimento em estruturacao R$ 32.0 bi; municipios com operacao privada 2720; % municipios 48.8; participacao privada investimentos 2020 % 15.1; participacao privada investimentos 2024 % 32.4; investimento total setor 2024 R$ 29.1 bi; esgoto tratado 2024 % 51.8"
+  },
+  {
+   "id": "mcid-jader-filho-2026",
+   "natureza": "contratado",
+   "autor": "Ministério das Cidades (ministro Jader Filho)",
+   "titulo": "Expectativa de ~R$ 100 bilhões de investimento em saneamento no mandato (4 anos)",
+   "valor_rs_bi": 100.0,
+   "base_preco": "não informada",
+   "horizonte": "2023-2026",
+   "perimetro": "R$ bilhões em 4 anos (investimento total do setor, não só contratado em leilões)",
+   "metodo": null,
+   "parte_interessada": false,
+   "fonte": {
+    "url": "https://agenciainfra.com/blog/ministro-pede-avanco-nos-investimentos-para-cumprir-metas-do-saneamento/",
+    "titulo": "Agência iNFRA: Ministro pede avanço nos investimentos para cumprir metas do saneamento",
+    "data": "2026-03-20",
+    "grau": "S",
+    "acessado_em": "2026-10-21"
+   },
+   "observacoes": "Declaração em evento (Agência iNFRA, 20/03/2026): nível atual ainda insuficiente para universalizar até 2033. Não é estimativa de custo de universalização."
+  }
+ ],
+ "nao_localizadas": [
+  {
+   "id": "bndes-84-2bi-16-leiloes",
+   "autor": "BNDES",
+   "titulo": "Leilões de saneamento estruturados pelo BNDES: 'R$ 84,2 bilhões em 16 leilões' (2025)",
+   "motivo": "grau NÃO LOCALIZADO: não localizado em fonte aberta",
+   "observacoes": "Nenhuma fonte aberta ou trecho de busca com 'R$ 84,2 bilhões' + '16 leilões' foi encontrada em 2026-10-21. O acervo da Agência BNDES de Notícias está fora do ar (defeso eleitoral, 04/07 a 25/10/2026) e o Hub de Projetos exige JavaScript. Cifras do BNDES que apareceram: (a) set/out 2024: 'R$ 83 bi em projetos de água e esgoto de sete estados, com R$ 29,5 bi do BNDES', leilões até 2026 (S); (b) Valor, 2024: '12 leilões desde 2020 + 10 projetos = R$ 120 bi, dos quais R$ 61 bi já contratados' (S); (c) Hub de Projetos, mar/2026: leilões realizados + estruturação ≈ R$ 154 bi; investimento do setor em 2024 R$ 29,5 bi a preços de 2025 (S); (d) Agência BNDES: '20 leilões, mais de R$ 100 bi em investimentos previstos até 2033' (S, sem data); (e) CNN 22/12/2025 (V): 9 projetos em estruturação, R$ 47,6 bi, ~20 mi de pessoas. Cálculo próprio (não publicado): a soma dos investimentos declarados nos leilões estruturados pelo BNDES verificados em leiloes.json até dez/2025 (AL A 2,5; AL B/C 4,5; Cedae 1-2-4 27; Cedae 3 4,7; AP 3; Cariacica 0,58; SE 6,3; PI 9,5; PA A-B-D 15,21; PA C 3,6; PE 18,3) dá ≈ R$ 95 bi (≈ R$ 92-93 bi com AL B/C = 2,9 e PI = 8,6), acima de 'R$ 84,2 bi'; a cifra do BNDES deve usar outro recorte (p.ex. sem a Cedae-3 ou sem PE) — não reconciliada."
+  }
+ ]
 }
