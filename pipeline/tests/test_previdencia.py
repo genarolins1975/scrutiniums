@@ -3,11 +3,14 @@
 Os casos sintéticos provam que cada validação retém a publicação: mês faltando na série do BEPS, linha renomeada na
 tabela 15, UF a menos na tabela 19, município que não fecha, ano municipal faltando, revisão acima do limite, RTN com
 divisão urbana e rural que não soma, conta em % do PIB que não confere, e a conferência cruzada entre o arquivo
-municipal e o BEPS. Provam também a regra de ausência: linha do RTN ainda não segregada vira null, não zero.
+municipal e o BEPS. Provam também a regra de ausência: linha do RTN ainda não segregada vira null, não zero. No AEPS, as
+edições anteriores (só atendimento e rede, um ano por edição) passam pelas mesmas somas por território, sem lacuna, e
+um ano que se repete entre edições ou coletas não pode mudar além do limite de revisão.
 """
 import copy
 import json
 import unittest
+from unittest import mock
 from datetime import date
 
 from pipeline.previdencia import aeps, coleta, gold, run, validacoes
@@ -330,6 +333,49 @@ class TestAepsVersionado(unittest.TestCase):
             self.assertEqual(c["rgps_aeps"], c["rgps_beps"])
             self.assertEqual(c["pmv_epu_aeps"], c["ble_beps"])
 
+    def test_atendimento_das_edicoes_anteriores_com_endereco_hashes_e_datas(self):
+        a = self.s["aeps"]
+        anteriores = a["anteriores"]
+        self.assertEqual([x["edicao"] for x in anteriores], list(range(F.PRIMEIRA_EDICAO_ATENDIMENTO_AEPS, a["edicao"])))
+        for x in anteriores:
+            e = x["edicao"]
+            self.assertEqual(x["raiz"], F.raiz_aeps(e))
+            self.assertEqual(sorted(x["tabelas"]), sorted(F.tabelas_atendimento_aeps(e)))
+            for tid, t in x["tabelas"].items():
+                self.assertEqual(t["url"], aeps.url_tabela(tid, e))
+                self.assertTrue(t["titulo"].startswith(f"{tid} - ") and t["titulo"].endswith(str(e)))
+                self.assertEqual(t["anos"], [e])
+                self.assertRegex(t["sha256"], r"^[0-9a-f]{64}$")
+                self.assertRegex(t["sha256_tabela"], r"^[0-9a-f]{64}$")
+                self.assertGreater(t["bytes"], 0)
+                self.assertRegex(t["atualizado_em"], r"^\d{4}-\d{2}-\d{2}$")
+                self.assertTrue(t["capturado_em"].endswith("Z"))
+                self.assertTrue(t["fonte"].upper().startswith("FONTE"))
+        # a edição 2022 está numa raiz própria do portal, e a rede dela fica fora da série, com o motivo
+        self.assertIn("copy_of_onlinte-aeps-2022-", F.raiz_aeps(2022))
+        self.assertEqual(F.tabelas_atendimento_aeps(2022), ("43.2",))
+
+    def test_gold_traz_a_serie_do_atendimento_e_da_rede(self):
+        a = self.g["aeps"]
+        at, rede = a["atendimento"], a["rede"]
+        self.assertEqual(at["anos"], list(range(F.PRIMEIRA_EDICAO_ATENDIMENTO_AEPS, a["edicao"] + 1)))
+        self.assertEqual(rede["anos"], [x["edicao"] for x in self.s["aeps"]["anteriores"] if "43.1" in x["tabelas"]] + [a["edicao"]])
+        for x in at["serie"]:
+            self.assertEqual(x["total"], sum(x["brasil"]))
+            self.assertEqual(len(x["brasil"]), 12)
+            for m in range(12):  # em cada mês, as UFs somam o Brasil
+                self.assertEqual(sum(u["v"][m] for u in x["ufs"]), x["brasil"][m])
+            self.assertEqual(sum(u["total"] for u in x["ufs"]), x["total"])
+        ultimo = at["serie"][-1]
+        self.assertEqual((ultimo["ano"], ultimo["brasil"], ultimo["total"]), (at["ano"], at["brasil"], at["total"]))
+        self.assertEqual(rede["serie"][-1]["brasil"], rede["brasil"])
+        self.assertEqual([(x["edicao"], x["tabela"]) for x in a["fora_da_serie"]], [(2022, "43.1")])
+        f = self.g["fontes"]["aeps"]["anteriores"]
+        self.assertEqual([x["edicao"] for x in f], at["anos"][:-1])
+        for x in f:
+            for t in x["tabelas"].values():
+                self.assertTrue(t["url"].startswith(F.raiz_aeps(x["edicao"])))
+
     def test_gold_traz_a_fonte_do_aeps(self):
         f = self.g["fontes"]["aeps"]
         self.assertEqual(f["edicao"], self.s["aeps"]["edicao"])
@@ -389,6 +435,55 @@ class TestAepsRetem(unittest.TestCase):
         novo, anterior = self._a(), self._a()
         self._linha(anterior, "b.3", "total")["v"][1] *= 0.95
         self.assertTrue(any("revisão" in p for p in validacoes.validar_aeps(novo, anterior, hoje=AEPS_HOJE)))
+
+    def test_edicao_anterior_com_ufs_que_nao_somam_o_brasil_num_mes(self):
+        a = self._a()
+        sp = next(l for l in a["anteriores"][0]["tabelas"]["43.2"]["linhas"] if l["id"] == "SP")
+        sp["v"][7] += 10
+        self.assertTrue(any(f"AEPS {a['anteriores'][0]['edicao']} 43.2: as UFs não somam" in p for p in validacoes.validar_aeps(a, hoje=AEPS_HOJE)))
+
+    def test_edicao_anterior_faltando_ou_fora_de_ordem(self):
+        a = self._a()
+        del a["anteriores"][-1]
+        self.assertTrue(any("edições anteriores do atendimento" in p for p in validacoes.validar_aeps(a, hoje=AEPS_HOJE)))
+        a = self._a()
+        del a["anteriores"]
+        self.assertTrue(any("sem as edições anteriores" in p for p in validacoes.validar_aeps(a, hoje=AEPS_HOJE)))
+
+    def test_tabela_fora_da_serie_nao_entra_e_tabela_de_outro_ano_reprova(self):
+        a = self._a()
+        a["anteriores"][0]["tabelas"]["43.1"] = copy.deepcopy(a["anteriores"][1]["tabelas"]["43.1"])
+        self.assertTrue(any("esperadas ['43.2']" in p for p in validacoes.validar_aeps(a, hoje=AEPS_HOJE)))
+        a = self._a()
+        a["anteriores"][1]["tabelas"]["43.2"]["titulo"] = a["anteriores"][1]["tabelas"]["43.2"]["titulo"][:-4] + "2024"
+        self.assertTrue(any("tabela de outro ano" in p for p in validacoes.validar_aeps(a, hoje=AEPS_HOJE)))
+
+    def test_ano_que_se_sobrepoe_entre_edicoes_ou_coletas_acima_do_limite(self):
+        novo, anterior = self._a(), self._a()
+        for l in anterior["anteriores"][1]["tabelas"]["43.2"]["linhas"]:
+            l["v"] = [round(x * 1.05) for x in l["v"]]
+        self.assertTrue(any("revisão" in p and "atendimentos no ano" in p for p in validacoes.validar_aeps(novo, anterior, hoje=AEPS_HOJE)))
+        # a mesma coleta repetida não reprova
+        self.assertEqual(validacoes.validar_aeps(novo, self._a(), hoje=AEPS_HOJE), [])
+
+    def test_gold_nao_e_construida_com_edicao_anterior_reprovada(self):
+        s = copy.deepcopy(self.s)
+        rj = next(l for l in s["aeps"]["anteriores"][0]["tabelas"]["43.2"]["linhas"] if l["id"] == "RJ")
+        rj["v"][0] = None
+        with self.assertRaises(gold.GoldInvalida):
+            gold.construir(s)
+
+    def test_coleta_guarda_a_captura_anterior_se_a_edicao_nao_responde(self):
+        a = self._a()
+        with mock.patch.object(aeps, "coletar_atendimento", side_effect=RuntimeError("404")):
+            out = aeps._anteriores(a["edicao"], a)
+        self.assertEqual(out, a["anteriores"])
+        # numa edição nova, a principal de antes passa a anterior só com o atendimento e a rede
+        with mock.patch.object(aeps, "coletar_atendimento", side_effect=RuntimeError("404")):
+            out = aeps._anteriores(a["edicao"] + 1, a)
+        self.assertEqual([x["edicao"] for x in out], list(range(F.PRIMEIRA_EDICAO_ATENDIMENTO_AEPS, a["edicao"] + 1)))
+        self.assertEqual(sorted(out[-1]["tabelas"]), ["43.1", "43.2"])
+        self.assertEqual(out[-1]["tabelas"]["43.2"], a["tabelas"]["43.2"])
 
     def test_cruzada_reprova_regime_geral_diferente_do_beps(self):
         a = self._a()

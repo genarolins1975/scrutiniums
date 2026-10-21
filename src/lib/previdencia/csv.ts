@@ -87,17 +87,23 @@ export function csvBrasilMensal(): Response {
 /**
  * As sete tabelas do Anuário usadas no painel, valor a valor (formato longo): uma linha por célula da fonte, com a
  * tabela, o grupo ou território, o ano ou mês, a clientela ou o tipo de unidade, a unidade e o endereço da página. O
- * traço da fonte fica vazio, com a observação; nada é somado aqui.
+ * atendimento (43.2) e a rede (43.1) entram em série, um ano por edição, cada linha com a fonte e o endereço da sua
+ * edição. O traço da fonte fica vazio, com a observação; nada é somado aqui.
  */
 export function csvAnuario(): Response {
   const g = goldPrevidencia();
   const a = g.aeps;
   const f = g.fontes.aeps;
-  const fonte = (tid: keyof typeof f.tabelas) => `${f.orgao}, ${f.nome}, edição ${f.edicao}, tabela ${tid.toUpperCase()}`;
+  const fonte = (tid: keyof typeof f.tabelas, edicao = f.edicao) => `${f.orgao}, ${f.nome}, edição ${edicao}, tabela ${tid.toUpperCase()}`;
   const clientelas = ["total", "urbana", "rural"] as const;
   const linhas: Celula[][] = [];
-  const celula = (tid: keyof typeof f.tabelas, rotulo: string, id: string, periodo: string, recorte: string, v: number | null) =>
-    linhas.push([tid.toUpperCase(), f.tabelas[tid].titulo, id, rotulo, periodo, recorte, v, f.tabelas[tid].unidade, v === null ? "traço na fonte" : "", f.tabelas[tid].url, fonte(tid)]);
+  // a tabela de cada edição: a principal, ou uma anterior (só atendimento e rede)
+  const tabela = (tid: keyof typeof f.tabelas, edicao: number) =>
+    edicao === f.edicao ? f.tabelas[tid] : (f.anteriores.find((x) => x.edicao === edicao)?.tabelas[tid as "43.1" | "43.2"] ?? f.tabelas[tid]);
+  const celula = (tid: keyof typeof f.tabelas, rotulo: string, id: string, periodo: string, recorte: string, v: number | null, edicao = f.edicao) => {
+    const tb = tabela(tid, edicao);
+    linhas.push([tid.toUpperCase(), tb.titulo, id, rotulo, periodo, recorte, v, tb.unidade, v === null ? "traço na fonte" : "", tb.url, fonte(tid, edicao)]);
+  };
   const medidas = [
     ["a.1", "concedidos"],
     ["b.1", "emitidos"],
@@ -111,9 +117,13 @@ export function csvAnuario(): Response {
   }
   const ufs = [{ uf: "BR", nome: "Brasil", v: a.concessoes_uf.brasil }, ...a.concessoes_uf.ufs];
   for (const u of ufs) clientelas.forEach((c, j) => a.anos.forEach((ano, k) => celula("a.14", u.nome, u.uf, String(ano), `clientela ${c}`, u.v[3 * j + k])));
-  for (const u of [{ uf: "BR", nome: "Brasil", v: a.rede.brasil }, ...a.rede.ufs]) a.rede.colunas.forEach((c, j) => celula("43.1", u.nome, u.uf, a.rede.referencia, c, u.v[j]));
-  const meses = [{ uf: "BR", nome: "Brasil", v: a.atendimento.brasil as (number | null)[] }, ...a.atendimento.ufs];
-  for (const u of meses) u.v.forEach((v, j) => celula("43.2", u.nome, u.uf, `${a.atendimento.ano}-${String(j + 1).padStart(2, "0")}`, "atendimentos no mês", v));
+  for (const r of a.rede.serie) {
+    for (const u of [{ uf: "BR", nome: "Brasil", v: r.brasil }, ...r.ufs]) a.rede.colunas.forEach((c, j) => celula("43.1", u.nome, u.uf, r.referencia, c, u.v[j], r.edicao));
+  }
+  for (const x of a.atendimento.serie) {
+    const meses = [{ uf: "BR", nome: "Brasil", v: x.brasil as (number | null)[] }, ...x.ufs];
+    for (const u of meses) u.v.forEach((v, j) => celula("43.2", u.nome, u.uf, `${x.ano}-${String(j + 1).padStart(2, "0")}`, "atendimentos no mês", v, x.ano));
+  }
   return respostaCsv(
     "previdencia-anuario-inss.csv",
     ["tabela", "titulo_tabela", "id", "rotulo_fonte", "periodo", "recorte", "valor", "unidade", "observacao", "url_tabela", "fonte"],
