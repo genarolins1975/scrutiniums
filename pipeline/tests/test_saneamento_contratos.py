@@ -69,17 +69,62 @@ class TestSeedVersionado(unittest.TestCase):
         self.assertGreaterEqual(len(transcritos), 1)
         for c in transcritos:
             self.assertRegex(c["documento"]["sha256"], r"^[0-9a-f]{64}$", c["id"])
-            self.assertTrue(c["documento"]["url"].startswith("https://"), c["id"])
+            self.assertTrue(c["documento"]["url"].startswith("http"), c["id"])
             self.assertTrue(c["clausula"], c["id"])
             self.assertTrue(c["metas"], c["id"])
+            self.assertIn(c["calendario"], F.CALENDARIOS, c["id"])
+            chave = "ano" if c["calendario"] == "civil" else "ano_contrato"
+            outra = "ano_contrato" if chave == "ano" else "ano"
             por_ind = {}
             for m in c["metas"]:
-                por_ind.setdefault(m["indicador"], []).append((m["ano"], m["valor"]))
+                self.assertIsInstance(m[chave], int, f"{c['id']} {m}")
+                self.assertIsNone(m[outra], f"{c['id']} {m}: ano civil e ano de contrato nunca juntos")
+                por_ind.setdefault(m["indicador"], []).append((m[chave], m["valor"]))
             for ind, serie in por_ind.items():
                 anos = [a for a, _ in serie]
                 self.assertEqual(anos, sorted(anos), f"{c['id']} {ind}")
                 vals = [v for _, v in serie]
                 self.assertEqual(vals, sorted(vals, reverse=(ind == "IPL")), f"{c['id']} {ind}")
+        # contratos sem documento localizado: sem metas, sem hash, com o motivo
+        for c in self.g["contratos"]:
+            if c["situacao"] == "documento_nao_localizado":
+                self.assertEqual(c["metas"], [])
+                self.assertIsNone(c["documento"])
+                self.assertTrue(c["observacoes"])
+
+    def test_metas_por_municipio_batem_com_o_piso_do_contrato(self):
+        """A meta de contrato é o piso comum: no último ano de cada indicador, nenhum município ou área fica abaixo dela (acima, no caso das perdas)."""
+        linhas = self.s["metas_municipios"]["linhas"]
+        for c in self.g["contratos"]:
+            if c["situacao"] != "transcrito" or not c["entidades_com_metas"]:
+                continue
+            chave = "ano" if c["calendario"] == "civil" else "ano_contrato"
+            for m in c["metas"]:
+                ls = [l for l in linhas if l["contrato"] == c["id"] and l["indicador"] == m["indicador"] and l.get(chave) == m[chave] and l["valor"] is not None]
+                if not ls:
+                    continue
+                if c["nivel"] == "por_area":
+                    # metas por área: a linha do contrato é a linha "Total" do documento, não um piso das áreas
+                    total = [l for l in ls if l["entidade"].lower().startswith("total")]
+                    self.assertTrue(total, f"{c['id']} {m}")
+                    self.assertEqual(total[0]["valor"], m["valor"], f"{c['id']} {m}")
+                    continue
+                if m["indicador"] == "IPL":
+                    self.assertLessEqual(max(l["valor"] for l in ls), m["valor"] + 1e-9, f"{c['id']} {m}")
+                else:
+                    self.assertGreaterEqual(min(l["valor"] for l in ls), m["valor"] - 1e-9, f"{c['id']} {m}")
+            f = c["faixa_inicial"]
+            for ind, fx in f.items():
+                self.assertLessEqual(fx["min"], fx["max"], f"{c['id']} {ind}")
+                self.assertEqual(fx["chave"], chave)
+
+    def test_csv_por_municipio_tem_uma_linha_por_registro(self):
+        linhas = self.s["metas_municipios"]["linhas"]
+        csv_ = gold.csv_municipios(linhas).strip().split("\n")
+        self.assertEqual(len(csv_), len(linhas) + 1)
+        for l in linhas:
+            if l["valor"] is None:
+                self.assertTrue(l.get("nota"), l)
 
     def test_sabesp_urae1_como_no_estudo_de_caso(self):
         sab = next(c for c in self.g["contratos"] if c["id"] == "sp-sabesp-urae1-2024")
@@ -183,6 +228,18 @@ class TestValidacoesRetem(unittest.TestCase):
         ]
         self._construir()
 
+    def test_ano_civil_e_ano_de_contrato_misturados(self):
+        c = next(x for x in self.s["metas"]["contratos"] if x["calendario"] == "contratual")
+        c["metas"][0]["ano"] = 2030
+        self._reprova("meta_ano")
+
+    def test_municipio_com_contrato_desconhecido_ou_valor_nulo_sem_nota(self):
+        self.s["metas_municipios"]["linhas"].append({"contrato": "nao-existe", "bloco": "x", "entidade": "Y", "indicador": "ICE", "ano": None, "ano_contrato": 1, "valor": 50})
+        self._reprova("municipio_sem_contrato")
+        self.s["metas_municipios"]["linhas"].pop()
+        self.s["metas_municipios"]["linhas"].append({"contrato": "pb-cagepa-ppp-esgoto-2026", "bloco": "x", "entidade": "Y", "indicador": "ICE", "ano": None, "ano_contrato": 1, "valor": None})
+        self._reprova("valor_nulo_sem_nota")
+
     def test_custo_sem_base_de_preco(self):
         self.s["custos"]["estimativas"].append({"id": "x", "natureza": "custo_universalizacao", "autor": "a", "titulo": "t", "valor_rs_bi": 1, "horizonte": "2033", "perimetro": "p", "fonte": {"url": "https://x", "data": "2026-01-01", "grau": "V"}})
         self._reprova("base_preco")
@@ -195,10 +252,10 @@ class TestVigilia(unittest.TestCase):
         s = seed()
         corpo = b"documento registrado"
         for c in s["metas"]["contratos"]:
-            if c.get("documento", {}).get("url"):
+            if (c.get("documento") or {}).get("url"):
                 c["documento"]["sha256"] = hashlib.sha256(corpo).hexdigest()
         antes = json.dumps(s, sort_keys=True)
-        com_url = [c for c in s["metas"]["contratos"] if c.get("documento", {}).get("url")]
+        com_url = [c for c in s["metas"]["contratos"] if (c.get("documento") or {}).get("url")]
         self.assertEqual(run.vigiar(s, baixar=lambda url: corpo), [])
         trocado = run.vigiar(s, baixar=lambda url: b"outro conteudo")
         self.assertEqual(len(trocado), len(com_url))

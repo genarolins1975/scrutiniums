@@ -9,6 +9,7 @@ GoldInvalida e nada é gravado.
 from __future__ import annotations
 
 import csv
+import gzip
 import hashlib
 import io
 import json
@@ -33,6 +34,8 @@ def ler_seed(pasta: Path = SEED) -> dict:
     out = {}
     for chave, nome in ARQUIVOS_SEED.items():
         out[chave] = json.loads((pasta / nome).read_text(encoding="utf-8"))
+    with gzip.open(pasta / "metas_municipios.json.gz", "rt", encoding="utf-8") as f:
+        out["metas_municipios"] = json.load(f)
     return out
 
 
@@ -126,9 +129,9 @@ def posicao_blocos(blocos: list[dict], municipios: dict[str, dict], contratos: d
         parciais = [str(m["ibge"]) for m in b.get("municipios") or [] if m.get("parcial")]
         c = contratos.get(b["contrato"])
         meta_2024 = {}
-        if c:
+        if c and c.get("calendario") == "civil":
             for m in c.get("metas") or []:
-                if m["ano"] <= 2024:
+                if m.get("ano") is not None and m["ano"] <= 2024:
                     meta_2024[m["indicador"]] = m["valor"]  # a última meta até 2024 (série ordenada abaixo)
         out.append({
             "bloco": b["id"],
@@ -161,9 +164,11 @@ def construir(seed: dict) -> dict:
     blocos = seed["abrangencia"]["blocos"]
     custos = seed["custos"]["estimativas"]
     municipios = ler_municipios()
+    linhas_mun = seed["metas_municipios"]["linhas"]
     problemas = (
         V.validar_leiloes(leiloes)
         + V.validar_metas(contratos, leiloes)
+        + V.validar_metas_municipios(linhas_mun, contratos)
         + V.validar_abrangencia(blocos, leiloes, contratos, set(municipios))
         + V.validar_custos(custos)
     )
@@ -172,7 +177,9 @@ def construir(seed: dict) -> dict:
 
     leiloes_ord = sorted(leiloes, key=lambda l: (l["data_leilao"], l["id"]))
     for c in contratos:
-        c["metas"] = sorted(c.get("metas") or [], key=lambda m: (m["indicador"], m["ano"]))
+        chave = "ano" if c.get("calendario") == "civil" else "ano_contrato"
+        c["metas"] = sorted(c.get("metas") or [], key=lambda m: (m["indicador"], m.get(chave) or 0))
+        c.update(resumo_municipios(c, [l for l in linhas_mun if l["contrato"] == c["id"]]))
     por_contrato = {c["id"]: c for c in contratos}
     blocos_por_contrato: dict[str, list[str]] = {}
     for b in blocos:
@@ -180,13 +187,18 @@ def construir(seed: dict) -> dict:
     meta_sinisa = ler_meta()
     g = {
         "versao": 1,
-        "capturado_em": max([l["fonte"].get("acessado_em", "") for l in leiloes] + [c.get("documento", {}).get("capturado_em", "") for c in contratos]),
+        "capturado_em": max([l["fonte"].get("acessado_em", "") for l in leiloes] + [(c.get("documento") or {}).get("capturado_em", "") for c in contratos]),
         "marco": {"lei": "Lei 14.026/2020", "ano": F.ANO_MARCO, "meta_legal": {"agua": meta_sinisa["metas"]["agua"], "esgoto": meta_sinisa["metas"]["esgoto"], "ano": F.ANO_META_LEGAL}},
         "leiloes": leiloes_ord,
         "totais": totais_leiloes(leiloes_ord),
         "proxy_sinisa": proxy_sinisa(),
         "contratos": [
-            {**c, "blocos": blocos_por_contrato.get(c["id"], []), "ultimo_ano_meta": max((m["ano"] for m in c["metas"]), default=None)}
+            {
+                **c,
+                "blocos": blocos_por_contrato.get(c["id"], []),
+                "ultimo_ano_meta": max((m["ano"] for m in c["metas"] if m.get("ano") is not None), default=None),
+                "ultimo_ano_contrato": max((m["ano_contrato"] for m in c["metas"] if m.get("ano_contrato") is not None), default=None),
+            }
             for c in contratos
         ],
         "nao_lidos": seed["metas"].get("nao_lidos", []),
@@ -201,8 +213,45 @@ def construir(seed: dict) -> dict:
         "custos": custos,
         "custos_nao_localizados": seed["custos"].get("nao_localizadas", []),
     }
-    g["hash_dados"] = _hash({k: g[k] for k in ("leiloes", "contratos", "abrangencia", "custos", "proxy_sinisa", "abrangencia_nao_localizada", "em_estruturacao", "custos_nao_localizados")})
+    g["hash_dados"] = _hash({**{k: g[k] for k in ("leiloes", "contratos", "abrangencia", "custos", "proxy_sinisa", "abrangencia_nao_localizada", "em_estruturacao", "custos_nao_localizados")}, "metas_municipios": linhas_mun})
+    g["_metas_municipios"] = linhas_mun  # só para o CSV; run.py retira antes de gravar o JSON
     return g
+
+
+def resumo_municipios(c: dict, linhas: list[dict]) -> dict:
+    """Contagem e faixa inicial das metas por município ou área de um contrato: quantas entidades, e o menor e o maior valor
+    na primeira coluna de cada indicador (o leitor vê a dispersão sem precisar da tabela inteira)."""
+    if not linhas:
+        return {"entidades_com_metas": 0, "faixa_inicial": {}}
+    chave = "ano" if c.get("calendario") == "civil" else "ano_contrato"
+    faixa = {}
+    for ind in F.INDICADORES:
+        ls = [l for l in linhas if l["indicador"] == ind and l.get("valor") is not None and isinstance(l.get(chave), int)]
+        if not ls:
+            continue
+        primeiro = min(l[chave] for l in ls)
+        vs = [l["valor"] for l in ls if l[chave] == primeiro]
+        ultimo = max(l[chave] for l in ls)
+        vu = [l["valor"] for l in ls if l[chave] == ultimo]
+        faixa[ind] = {
+            "chave": chave, "primeiro": primeiro, "min": min(vs), "max": max(vs), "entidades": len({l["entidade"] for l in ls}),
+            "ultimo": ultimo, "min_ultimo": min(vu), "max_ultimo": max(vu),
+            "rotulo_primeiro": next((l.get("rotulo_coluna") for l in ls if l[chave] == primeiro and l.get("rotulo_coluna")), None),
+            "rotulo_ultimo": next((l.get("rotulo_coluna") for l in ls if l[chave] == ultimo and l.get("rotulo_coluna")), None),
+        }
+    return {"entidades_com_metas": len({l["entidade"] for l in linhas}), "faixa_inicial": faixa}
+
+
+CSV_MUNICIPIOS = ["contrato", "bloco", "entidade", "indicador", "nome_no_documento", "ano", "ano_contrato", "rotulo_coluna", "valor", "nota"]
+
+
+def csv_municipios(linhas: list[dict]) -> str:
+    s = io.StringIO()
+    w = csv.writer(s, delimiter=";", lineterminator="\n")
+    w.writerow(CSV_MUNICIPIOS)
+    for l in linhas:
+        w.writerow(["" if l.get(c) is None else l[c] for c in CSV_MUNICIPIOS])
+    return s.getvalue()
 
 
 def resumo(g: dict) -> dict:
@@ -217,6 +266,8 @@ def resumo(g: dict) -> dict:
         "investimento_previsto_rs_mi": t["investimento_previsto_rs_mi"]["soma"],
         "investimento_linhas": t["investimento_previsto_rs_mi"]["linhas_que_informam"],
         "contratos_com_metas": len(transcritos),
+        "contratos_calendario_civil": len([c for c in transcritos if c.get("calendario") == "civil"]),
+        "entidades_com_metas": sum(c.get("entidades_com_metas", 0) for c in transcritos),
         "indicadores_transcritos": sorted({m["indicador"] for c in transcritos for m in c["metas"]}),
         "blocos_com_abrangencia": len(g["abrangencia"]),
         "municipios_proxy_sinisa": g["proxy_sinisa"]["municipios"],

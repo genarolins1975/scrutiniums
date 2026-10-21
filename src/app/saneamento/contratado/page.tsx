@@ -10,8 +10,10 @@ import { data, inteiro, numero } from "@/lib/saneamento/formato";
 import { razaoPct } from "@/lib/saneamento/municipios";
 import {
   goldContratado,
+  chaveTempo,
   metaNoAno,
   reaisMi,
+  rotuloTempo,
   ROTULO_GRAU,
   ROTULO_INDICADOR,
   ROTULO_RESULTADO,
@@ -19,6 +21,7 @@ import {
   ROTULO_TIPO,
   ROTULO_TIPO_FONTE,
   URL_CONTRATOS,
+  type Contrato,
   type GoldContratado,
   type Indicador,
 } from "@/lib/saneamento/contratos";
@@ -174,7 +177,9 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
             valor: inteiro(transcritos.length),
             contexto: (
               <>
-                Do anexo de metas, com cláusula e sha256 do PDF: {transcritos.map((c) => c.concessionaria).join(", ") || "nenhum"}.
+                Do anexo de metas de cada um, com cláusula e sha256 do PDF; {inteiro(transcritos.filter((c) => c.calendario === "civil").length)} com ano-calendário fixado
+                no documento e {inteiro(transcritos.filter((c) => c.calendario === "contratual").length)} contados em anos de contrato;{" "}
+                {inteiro(transcritos.reduce((s, c) => s + c.entidades_com_metas, 0))} municípios ou áreas com curva própria.
                 {semDocumento.length ? ` ${inteiro(semDocumento.length)} sem documento público localizado (método).` : ""}
               </>
             ),
@@ -307,8 +312,9 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
         texto={
           <p>
             Metas transcritas do anexo de metas de cada contrato, com a cláusula e o sha256 do PDF lido. ICA e ICE são a cobertura de água e de esgoto definidas no
-            próprio contrato; IEC é o tratamento do esgoto coletado; IPL são perdas. Ano sem linha no contrato repete a última meta, como o contrato prevê. Metas são
-            obrigações contratuais, não resultados.
+            próprio contrato; IEC é o tratamento do esgoto coletado; IPL são perdas. Quando o documento fixa metas por município, a linha do contrato é o piso comum
+            e a curva de cada município está no arquivo por município. Quando o documento conta anos de contrato sem data de eficácia, as metas ficam em &quot;Ano
+            N&quot; e não são convertidas a ano civil. Ano sem linha repete a última meta, como o contrato prevê. Metas são obrigações contratuais, não resultados.
           </p>
         }
       >
@@ -316,18 +322,37 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
           <div className="space-y-10">
             {transcritos.map((c) => {
               const indicadores = Array.from(new Set(c.metas.map((m) => m.indicador))) as Indicador[];
-              const anos = Array.from(new Set(c.metas.map((m) => m.ano))).sort((a, b) => a - b);
+              const chave = chaveTempo(c);
+              const anos = Array.from(new Set(c.metas.map((m) => m[chave]).filter((a): a is number => a != null))).sort((a, b) => a - b);
+              const doc = c.documento!;
               return (
                 <article key={c.id} aria-label={c.nome} data-contrato={c.id} className="border-t border-linha pt-6">
                   <h3 className="font-serif text-xl text-carvao">{c.nome}</h3>
                   <p className="mt-1 text-sm text-carvao-muted">
                     {c.clausula} ·{" "}
-                    <a href={c.documento.url} target="_blank" rel="noopener noreferrer" className="text-obee-dark underline underline-offset-2">
-                      {c.documento.titulo}
+                    <a href={doc.url} target="_blank" rel="noopener noreferrer" className="text-obee-dark underline underline-offset-2">
+                      {doc.titulo}
                     </a>{" "}
-                    · sha256 <code className="text-xs">{c.documento.sha256.slice(0, 12)}…</code> · capturado em {data(c.documento.capturado_em)}
+                    · sha256 <code className="text-xs">{doc.sha256.slice(0, 12)}…</code> · capturado em {data(doc.capturado_em)}
                     {c.blocos.length ? ` · ${inteiro(c.blocos.length)} ${c.blocos.length === 1 ? "bloco com abrangência" : "blocos com abrangência"}` : " · sem composição municipal pública nesta publicação"}
                   </p>
+                  <p className="mt-1 max-w-prose2 text-xs leading-relaxed text-carvao-muted [overflow-wrap:anywhere]">
+                    <span className="font-medium text-carvao">Versão do documento:</span> {c.versao_documento ?? "não informada"}.{" "}
+                    <span className="font-medium text-carvao">Tempo:</span>{" "}
+                    {c.calendario === "contratual" ? `anos de contrato (${c.inicio_contagem ?? "sem data de eficácia conhecida"}); sem conversão a ano civil` : `ano-calendário (${c.inicio_contagem ?? "fixado no documento"})`}.{" "}
+                    <span className="font-medium text-carvao">Nível:</span>{" "}
+                    {c.nivel === "contrato" ? "meta única do contrato" : c.nivel === "por_area" ? `metas por área (${inteiro(c.entidades_com_metas)} áreas; a linha "Total" abaixo)` : `metas por município (${inteiro(c.entidades_com_metas)} municípios; abaixo, o piso comum)`}.
+                  </p>
+                  {Object.keys(c.faixa_inicial).length > 0 && (
+                    <ul className="mt-2 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-faixa-inicial="">
+                      {(Object.entries(c.faixa_inicial) as [Indicador, NonNullable<Contrato["faixa_inicial"][Indicador]>][]).map(([i, f]) => (
+                        <li key={i}>
+                          {ROTULO_INDICADOR[i]}: em {f.rotulo_primeiro ?? rotuloTempo(c, f.primeiro)}, de {numero(f.min, 1)}% a {numero(f.max, 1)}% conforme o município ou área; em{" "}
+                          {f.rotulo_ultimo ?? rotuloTempo(c, f.ultimo)}, de {numero(f.min_ultimo, 1)}% a {numero(f.max_ultimo, 1)}%.
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   <Rolavel rotulo={`Metas por ano: ${c.nome}`} className="mt-4">
                     <table className="min-w-[420px] border-collapse text-sm">
                       <thead>
@@ -335,7 +360,7 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
                           <th className="py-2 pr-4 font-medium">Indicador</th>
                           {anos.map((a) => (
                             <th key={a} className={`py-2 pr-4 font-medium ${NUM}`}>
-                              {a}
+                              {rotuloTempo(c, a)}
                             </th>
                           ))}
                         </tr>
@@ -345,7 +370,7 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
                           <tr key={i} className="border-b border-linha">
                             <td className="py-2 pr-4">{ROTULO_INDICADOR[i]}</td>
                             {anos.map((a) => {
-                              const m = c.metas.find((x) => x.indicador === i && x.ano === a);
+                              const m = c.metas.find((x) => x.indicador === i && x[chave] === a);
                               return (
                                 <td key={a} className={`py-2 pr-4 ${NUM}`}>
                                   {m ? `${numero(m.valor, 0)}%` : <span className="text-carvao-muted">·</span>}
@@ -362,9 +387,9 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
                   </div>
                   {c.observacoes && <p className="mt-2 max-w-prose2 text-xs leading-relaxed text-carvao-muted">{c.observacoes}</p>}
                   <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao">
-                    Diferença para a meta legal: a lei pede {numero(g.marco.meta_legal.agua, 0)}% de água e {numero(g.marco.meta_legal.esgoto, 0)}% de esgoto até {anoLegal}; este contrato
-                    prevê {metaNoAno(c, "ICA", anoLegal) == null ? "sem meta de água transcrita" : `${numero(metaNoAno(c, "ICA", anoLegal), 0)}% de ICA`} e{" "}
-                    {metaNoAno(c, "ICE", anoLegal) == null ? "sem meta de esgoto transcrita" : `${numero(metaNoAno(c, "ICE", anoLegal), 0)}% de ICE`} em {anoLegal}.
+                    {c.calendario === "contratual"
+                      ? `Diferença para a meta legal: a lei pede ${numero(g.marco.meta_legal.agua, 0)}% de água e ${numero(g.marco.meta_legal.esgoto, 0)}% de esgoto até ${anoLegal}; este contrato conta as metas em anos de contrato e, sem a data de eficácia no documento, não é possível dizer em que ano civil cada meta vence.`
+                      : `Diferença para a meta legal: a lei pede ${numero(g.marco.meta_legal.agua, 0)}% de água e ${numero(g.marco.meta_legal.esgoto, 0)}% de esgoto até ${anoLegal}; este contrato prevê ${metaNoAno(c, "ICA", anoLegal) == null ? "sem meta de água transcrita" : `${numero(metaNoAno(c, "ICA", anoLegal), 0)}% de ICA`} e ${metaNoAno(c, "ICE", anoLegal) == null ? "sem meta de esgoto transcrita" : `${numero(metaNoAno(c, "ICE", anoLegal), 0)}% de ICE`} em ${anoLegal}.`}
                   </p>
                 </article>
               );
@@ -372,6 +397,13 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
           </div>
         ) : (
           <Indisponivel titulo="Nenhum contrato com metas transcritas nesta publicação">Os contratos lidos e os não lidos, com o motivo, estão no método.</Indisponivel>
+        )}
+        {transcritos.some((c) => c.entidades_com_metas > 0) && (
+          <p className="mt-6 text-sm">
+            <a href={`${URL_CONTRATOS}/metas_municipios.csv`} className="text-obee-dark underline underline-offset-2">
+              Baixar as metas por município e área (CSV, uma linha por município, indicador e ano, como no documento)
+            </a>
+          </p>
         )}
         <Fonte>Contratos e anexos de metas dos próprios poderes concedentes e reguladores, lidos nos PDFs cujo sha256 está em cada ficha.</Fonte>
       </Secao>
@@ -564,21 +596,22 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
         }
       >
         <div className="grid gap-8 md:grid-cols-2">
-          <div>
+          <div className="min-w-0">
             <h3 className="rotulo text-mineral">Contratos lidos</h3>
             <ul className="mt-2 space-y-2 text-sm">
               {transcritos.map((c) => (
                 <li key={c.id}>
                   <span className="font-medium text-carvao">{c.nome}</span>
-                  <span className="block text-xs text-carvao-muted">
-                    {c.documento.titulo} · sha256 <span className="break-all">{c.documento.sha256}</span> · {data(c.documento.capturado_em)}
+                  <span className="block break-all text-xs text-carvao-muted">
+                    {c.documento?.titulo} · sha256 {c.documento?.sha256} · {data(c.documento?.capturado_em)}
+                    {c.versao_documento ? ` · ${c.versao_documento}` : ""}
                   </span>
                 </li>
               ))}
               {!transcritos.length && <li className="text-carvao-muted">nenhum</li>}
             </ul>
           </div>
-          <div>
+          <div className="min-w-0">
             <h3 className="rotulo text-mineral">Não lidos, e por quê</h3>
             <ul className="mt-2 space-y-2 text-sm" data-nao-lidos="">
               {[...semDocumento.map((c) => ({ id: c.id, nome: c.nome, motivo: c.situacao === "documento_nao_localizado" ? "documento público não localizado" : "documento sem metas por ano", tentativas: c.observacoes ? [c.observacoes] : [] })), ...g.nao_lidos].map((n) => (
@@ -651,6 +684,10 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
           ,{" "}
           <a href={`${URL_CONTRATOS}/leiloes.csv`} className="text-obee-dark underline underline-offset-2">
             leiloes.csv
+          </a>
+          ,{" "}
+          <a href={`${URL_CONTRATOS}/metas_municipios.csv`} className="text-obee-dark underline underline-offset-2">
+            metas_municipios.csv
           </a>{" "}
           e{" "}
           <a href={`${URL_CONTRATOS}/resumo.json`} className="text-obee-dark underline underline-offset-2">

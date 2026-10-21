@@ -46,21 +46,44 @@ export type Totais = {
   populacao_mi: SomaNatureza;
 };
 
-export type Meta = { indicador: Indicador; ano: number; valor: number };
+/** Meta de contrato: ano civil quando o documento fixa o calendário; ano de contrato (0 = início) quando só conta anos do contrato. */
+export type Meta = { indicador: Indicador; ano: number | null; ano_contrato: number | null; valor: number };
+export type Calendario = "civil" | "contratual";
+export type NivelMetas = "contrato" | "por_municipio" | "por_area";
+export type FaixaInicial = {
+  chave: "ano" | "ano_contrato";
+  primeiro: number;
+  min: number;
+  max: number;
+  entidades: number;
+  ultimo: number;
+  min_ultimo: number;
+  max_ultimo: number;
+  rotulo_primeiro: string | null;
+  rotulo_ultimo: string | null;
+};
 
 export type Contrato = {
   id: string;
   nome: string;
   uf: string;
   concessionaria: string;
-  documento: { titulo: string; url: string; sha256: string; capturado_em: string };
-  clausula: string;
+  documento: { titulo: string; url: string; sha256: string; capturado_em: string; paginas_metas?: string | null } | null;
+  clausula: string | null;
+  versao_documento: string | null;
+  calendario: Calendario | null;
+  nivel: NivelMetas | null;
+  inicio_contagem: string | null;
   fim_contrato: number | null;
   metas: Meta[];
   observacoes: string | null;
   situacao: "transcrito" | "documento_nao_localizado" | "documento_sem_metas_por_ano";
   blocos: string[];
   ultimo_ano_meta: number | null;
+  ultimo_ano_contrato: number | null;
+  /** Municípios ou áreas com curva própria no documento (arquivo metas_municipios.csv). */
+  entidades_com_metas: number;
+  faixa_inicial: Partial<Record<Indicador, FaixaInicial>>;
 };
 
 export type NaoLido = { id: string; nome: string; motivo: string; tentativas?: string[] };
@@ -136,6 +159,8 @@ export type ResumoContratado = {
   investimento_previsto_rs_mi: number;
   investimento_linhas: number;
   contratos_com_metas: number;
+  contratos_calendario_civil: number;
+  entidades_com_metas: number;
   indicadores_transcritos: Indicador[];
   blocos_com_abrangencia: number;
   municipios_proxy_sinisa: number;
@@ -193,18 +218,35 @@ export function reaisMi(v: number | null | undefined): string {
   return v >= 1000 ? `R$ ${f(v / 1000, 1)} bi` : `R$ ${f(v, 0)} mi`;
 }
 
-/** Valor da meta num ano: a última meta do indicador com ano menor ou igual ao pedido ("vale de cada ano em diante"). */
-export function metaNoAno(c: Pick<Contrato, "metas">, indicador: Indicador, ano: number): number | null {
-  const serie = c.metas.filter((m) => m.indicador === indicador && m.ano <= ano).sort((a, b) => a.ano - b.ano);
+/** Chave de tempo das metas do contrato: ano civil ou ano de contrato. */
+export function chaveTempo(c: Pick<Contrato, "calendario">): "ano" | "ano_contrato" {
+  return c.calendario === "contratual" ? "ano_contrato" : "ano";
+}
+
+/** Valor da meta num ano civil: a última meta do indicador com ano menor ou igual ao pedido ("vale de cada ano em diante"). Só
+ * para contratos de calendário civil; os de calendário contratual devolvem null, porque não se situam em ano civil sem inferência. */
+export function metaNoAno(c: Pick<Contrato, "metas" | "calendario">, indicador: Indicador, ano: number): number | null {
+  if (c.calendario === "contratual") return null;
+  const serie = c.metas.filter((m) => m.indicador === indicador && m.ano != null && m.ano <= ano).sort((a, b) => a.ano! - b.ano!);
   return serie.length ? serie[serie.length - 1].valor : null;
 }
 
-/** Série de um indicador ano a ano, com os anos sem linha preenchidos pela regra "vale em diante", para o gráfico. */
-export function serieAnual(c: Pick<Contrato, "metas">, indicador: Indicador, ate: number): { ano: number; valor: number | null }[] {
-  const anos = c.metas.filter((m) => m.indicador === indicador).map((m) => m.ano);
-  if (!anos.length) return [];
-  const inicio = Math.min(...anos);
+/** Série de um indicador, no tempo do contrato (ano civil ou ano de contrato), com os anos sem linha preenchidos pela regra "vale em diante". */
+export function serieAnual(c: Pick<Contrato, "metas" | "calendario">, indicador: Indicador, ate: number): { ano: number; valor: number | null }[] {
+  const chave = chaveTempo(c);
+  const pontos = c.metas.filter((m) => m.indicador === indicador && m[chave] != null).map((m) => ({ t: m[chave] as number, v: m.valor })).sort((a, b) => a.t - b.t);
+  if (!pontos.length) return [];
+  const inicio = pontos[0].t;
+  const fim = Math.max(ate, pontos[pontos.length - 1].t);
   const out: { ano: number; valor: number | null }[] = [];
-  for (let a = inicio; a <= Math.max(ate, Math.max(...anos)); a++) out.push({ ano: a, valor: metaNoAno(c, indicador, a) });
+  for (let a = inicio; a <= fim; a++) {
+    const ate_a = pontos.filter((p) => p.t <= a);
+    out.push({ ano: a, valor: ate_a.length ? ate_a[ate_a.length - 1].v : null });
+  }
   return out;
+}
+
+/** Rótulo de um instante no tempo do contrato: "2033" ou "Ano 12". */
+export function rotuloTempo(c: Pick<Contrato, "calendario">, t: number): string {
+  return c.calendario === "contratual" ? `Ano ${t}` : String(t);
 }

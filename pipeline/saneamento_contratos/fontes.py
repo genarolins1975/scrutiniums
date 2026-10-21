@@ -13,6 +13,8 @@ TIPOS_FONTE = ("documento_oficial", "noticia_oficial", "imprensa")
 SERVICOS = ("agua_esgoto", "agua", "esgoto")
 INDICADORES = ("ICA", "ICE", "IEC", "IPL")  # cobertura de água, de esgoto, tratamento do esgoto coletado, perdas
 SITUACOES_CONTRATO = ("transcrito", "documento_nao_localizado", "documento_sem_metas_por_ano")
+CALENDARIOS = ("civil", "contratual")  # civil: o documento fixa o ano-calendário; contratual: conta anos do contrato, sem conversão por inferência
+NIVEIS = ("contrato", "por_municipio", "por_area")
 GRAUS_ABRANGENCIA = ("oficial", "secundaria")
 NATUREZAS_CUSTO = ("custo_universalizacao", "contratado")
 

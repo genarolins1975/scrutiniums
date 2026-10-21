@@ -4,7 +4,7 @@ import { useId, useState } from "react";
 import { GraficoLinhas, type SerieLinha } from "@/components/energia/GraficoLinhas";
 import { inteiro, numero } from "@/lib/saneamento/formato";
 import { ANO_CENSO_2010, ANO_CENSO_2022, ANO_PRAZO } from "@/lib/saneamento/laboratorios";
-import { ROTULO_INDICADOR, serieAnual, type Contrato, type Indicador } from "@/lib/saneamento/contratos-base";
+import { ROTULO_INDICADOR, rotuloTempo, serieAnual, type Contrato, type Indicador } from "@/lib/saneamento/contratos-base";
 
 /**
  * Peças interativas do capítulo 15 (contratado desde o novo marco). As curvas de metas leem só a gold. O laboratório é
@@ -16,17 +16,18 @@ const CORES: Record<Indicador, string> = { ICA: "var(--cor-obee)", ICE: "var(--s
 
 export function CurvaMetas({ contrato, anoLegal }: { contrato: Contrato; anoLegal: number }) {
   const indicadores = Array.from(new Set(contrato.metas.map((m) => m.indicador))) as Indicador[];
-  const ate = Math.max(anoLegal, contrato.ultimo_ano_meta ?? anoLegal);
+  const contratual = contrato.calendario === "contratual";
+  const ate = contratual ? (contrato.ultimo_ano_contrato ?? 0) : Math.max(anoLegal, contrato.ultimo_ano_meta ?? anoLegal);
   const series: SerieLinha[] = indicadores.map((i) => ({ id: i, rotulo: ROTULO_INDICADOR[i], sigla: i, cor: CORES[i] }));
   const anos = new Set<number>();
   const porInd = Object.fromEntries(indicadores.map((i) => [i, new Map(serieAnual(contrato, i, ate).map((p) => [p.ano, p.valor]))])) as Record<Indicador, Map<number, number | null>>;
   for (const i of indicadores) for (const a of porInd[i].keys()) anos.add(a);
   const dados = Array.from(anos)
     .sort((a, b) => a - b)
-    .map((ano) => ({ x: String(ano), ...Object.fromEntries(indicadores.map((i) => [i, porInd[i].get(ano) ?? null])) }));
+    .map((ano) => ({ x: rotuloTempo(contrato, ano), ...Object.fromEntries(indicadores.map((i) => [i, porInd[i].get(ano) ?? null])) }));
   return (
     <GraficoLinhas
-      titulo={`${contrato.nome}: metas contratuais por ano (anos sem linha no contrato repetem a última meta, como o próprio contrato prevê)`}
+      titulo={`${contrato.nome}: metas contratuais por ${contratual ? "ano de contrato" : "ano"} (anos sem linha no contrato repetem a última meta, como o próprio contrato prevê)`}
       nomesNoTitulo={[contrato.nome]}
       dados={dados}
       chaveX="x"
@@ -35,7 +36,7 @@ export function CurvaMetas({ contrato, anoLegal }: { contrato: Contrato; anoLega
       unidade="%"
       casas={0}
       zeroNoEixo
-      marcos={[{ x: String(anoLegal), rotulo: `Meta legal: ${anoLegal}` }]}
+      marcos={contratual ? undefined : [{ x: String(anoLegal), rotulo: `Meta legal: ${anoLegal}` }]}
     />
   );
 }
@@ -146,8 +147,9 @@ export function LabContratado({ brasil, areas, metas }: { brasil: TrajetoriaBr; 
           : `Sem bloco com meta transcrita e composição municipal pública, o modelo só mostra o ritmo: ${pct(r.semContratos)} em ${ANO_PRAZO - 1}. A meta legal é ${numero(meta, 0)}%.`}
       </p>
       <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
-        O que fica de fora: contratos sem meta transcrita ou sem composição pública dos municípios; a diferença entre cobertura por rede (Censo), ICA e
-        ICE (contrato) e atendimento (SINISA); repactuações e aditivos; o cumprimento real, que só a aferição do regulador pode dizer.
+        O que fica de fora: contratos sem meta transcrita ou sem composição pública dos municípios; contratos cujas metas são contadas em anos de contrato
+        sem data de eficácia conhecida (não se situam em {ANO_PRAZO - 1} sem inferência); a diferença entre cobertura por rede (Censo), ICA e ICE (contrato) e
+        atendimento (SINISA); repactuações e aditivos; o cumprimento real, que só a aferição do regulador pode dizer.
       </p>
     </div>
   );

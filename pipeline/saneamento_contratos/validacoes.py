@@ -73,6 +73,7 @@ def validar_metas(contratos: list[dict], leiloes: list[dict]) -> list[Problema]:
         if i not in datas:
             p.append(("contrato_sem_leilao", f"{i}: contrato sem linha correspondente em leiloes.json"))
         doc = c.get("documento") or {}
+        cal = c.get("calendario")
         if c.get("situacao") == "transcrito":
             if not (doc.get("url") and doc.get("sha256") and doc.get("capturado_em")):
                 p.append(("documento", f"{i}: contrato transcrito sem URL, sha256 ou data de captura do documento"))
@@ -80,17 +81,26 @@ def validar_metas(contratos: list[dict], leiloes: list[dict]) -> list[Problema]:
                 p.append(("clausula", f"{i}: contrato transcrito sem cláusula"))
             if not c.get("metas"):
                 p.append(("metas", f"{i}: contrato transcrito sem metas"))
+            if cal not in F.CALENDARIOS:
+                p.append(("calendario", f"{i}: calendário {cal!r} fora de {F.CALENDARIOS}"))
+            if c.get("nivel") not in F.NIVEIS:
+                p.append(("nivel", f"{i}: nível {c.get('nivel')!r} fora de {F.NIVEIS}"))
         por_ind: dict[str, list[tuple[int, float]]] = {}
         for m in c.get("metas") or []:
             if m.get("indicador") not in F.INDICADORES:
                 p.append(("indicador", f"{i}: indicador {m.get('indicador')!r} fora de {F.INDICADORES}"))
                 continue
-            v, ano = m.get("valor"), m.get("ano")
+            v = m.get("valor")
+            # civil: ano-calendário, nunca anterior ao leilão; contratual: ano do contrato (0 = início), sem ano civil
+            ano = m.get("ano") if cal == "civil" else m.get("ano_contrato")
             if not isinstance(v, (int, float)) or not 0 <= v <= 100:
                 p.append(("meta_valor", f"{i}: {m['indicador']} {ano}: valor fora de 0 a 100"))
-            if not isinstance(ano, int) or (datas.get(i) and ano < datas[i].year):
-                p.append(("meta_ano", f"{i}: {m['indicador']}: ano {ano!r} ausente ou anterior ao leilão"))
-            por_ind.setdefault(m["indicador"], []).append((ano, v))
+            if cal == "civil" and (not isinstance(ano, int) or (datas.get(i) and ano < datas[i].year) or m.get("ano_contrato") is not None):
+                p.append(("meta_ano", f"{i}: {m['indicador']}: ano civil {ano!r} ausente, anterior ao leilão ou misturado com ano de contrato"))
+            if cal == "contratual" and (not isinstance(ano, int) or ano < 0 or m.get("ano") is not None):
+                p.append(("meta_ano", f"{i}: {m['indicador']}: ano de contrato {ano!r} ausente, negativo ou misturado com ano civil"))
+            if isinstance(ano, int):
+                por_ind.setdefault(m["indicador"], []).append((ano, v))
         for ind, serie in por_ind.items():
             serie.sort()
             anos = [a for a, _ in serie]
@@ -157,4 +167,31 @@ def validar_custos(estimativas: list[dict]) -> list[Problema]:
         f = e.get("fonte") or {}
         if not (f.get("url") and f.get("data")) or f.get("grau") not in F.GRAUS:
             p.append(("fonte", f"{i}: estimativa sem URL, data ou grau válido"))
+    return p
+
+
+def validar_metas_municipios(linhas: list[dict], contratos: list[dict]) -> list[Problema]:
+    """Metas por município ou área: contrato conhecido e transcrito, indicador permitido, valor de 0 a 100 ou null com nota,
+    e exatamente a chave de ano do calendário do contrato."""
+    p: list[Problema] = []
+    por_id = {c["id"]: c for c in contratos}
+    for n, l in enumerate(linhas):
+        c = por_id.get(l.get("contrato"))
+        if not c or c.get("situacao") != "transcrito":
+            p.append(("municipio_sem_contrato", f"linha {n}: contrato {l.get('contrato')!r} não é um contrato transcrito"))
+            continue
+        if l.get("indicador") not in F.INDICADORES:
+            p.append(("indicador", f"linha {n} ({l.get('contrato')}): indicador {l.get('indicador')!r} fora de {F.INDICADORES}"))
+        if not l.get("entidade"):
+            p.append(("entidade", f"linha {n} ({l.get('contrato')}): sem município ou área"))
+        v = l.get("valor")
+        if v is None:
+            if not l.get("nota"):
+                p.append(("valor_nulo_sem_nota", f"linha {n} ({l.get('contrato')}, {l.get('entidade')}): valor null sem nota"))
+        elif not isinstance(v, (int, float)) or not 0 <= v <= 100:
+            p.append(("meta_valor", f"linha {n} ({l.get('contrato')}, {l.get('entidade')}): valor fora de 0 a 100"))
+        chave = "ano" if c.get("calendario") == "civil" else "ano_contrato"
+        # linha sem valor e com nota (ex.: esgoto fora do escopo) pode não ter coluna de ano
+        if v is not None and not isinstance(l.get(chave), int):
+            p.append(("meta_ano", f"linha {n} ({l.get('contrato')}, {l.get('entidade')}): sem {chave}"))
     return p

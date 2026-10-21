@@ -68,8 +68,21 @@ describe("gold do capítulo 15", () => {
     const transcritos = g.contratos.filter((c) => c.situacao === "transcrito");
     expect(transcritos.length).toBeGreaterThanOrEqual(1);
     for (const c of transcritos) {
-      expect(c.documento.sha256).toMatch(/^[0-9a-f]{64}$/);
-      expect(c.clausula.length).toBeGreaterThan(3);
+      expect(c.documento!.sha256).toMatch(/^[0-9a-f]{64}$/);
+      expect(c.documento!.url).toMatch(/^https?:\/\//);
+      expect(c.clausula!.length).toBeGreaterThan(3);
+      expect(["civil", "contratual"]).toContain(c.calendario);
+      const chave = c.calendario === "contratual" ? "ano_contrato" : "ano";
+      for (const m of c.metas) expect(typeof m[chave], `${c.id} ${m.indicador}`).toBe("number");
+    }
+    // calendário contratual não se situa em ano civil: metaNoAno devolve null e a série vem em anos de contrato
+    const contratual = transcritos.find((c) => c.calendario === "contratual");
+    if (contratual) {
+      expect(metaNoAno(contratual, "ICA", 2033)).toBeNull();
+      const ind = contratual.metas[0].indicador;
+      const serie = serieAnual(contratual, ind, 0);
+      expect(serie[serie.length - 1].ano).toBe(Math.max(...contratual.metas.filter((m) => m.indicador === ind).map((m) => m.ano_contrato!)));
+      expect(serie[0].valor).toBe(contratual.metas.filter((m) => m.indicador === ind).sort((a, b) => a.ano_contrato! - b.ano_contrato!)[0].valor);
     }
     const sab = g.contratos.find((c) => c.id === "sp-sabesp-urae1-2024")!;
     expect(metaNoAno(sab, "ICA", 2026)).toBe(97);
@@ -131,9 +144,13 @@ describe("página /saneamento/contratado", () => {
   it("metas com cláusula e hash; ausência escrita como ausência; laboratório identificado como modelo didático", () => {
     for (const c of g.contratos.filter((x) => x.situacao === "transcrito")) {
       expect(html).toContain(`data-contrato="${c.id}"`);
-      expect(t).toContain(c.clausula);
-      expect(t).toContain(c.documento.sha256.slice(0, 12));
+      expect(t).toContain(c.clausula!);
+      expect(t).toContain(c.documento!.sha256.slice(0, 12));
+      if (c.calendario === "contratual") expect(t).toContain("não é possível dizer em que ano civil cada meta vence");
+      if (c.entidades_com_metas > 0) expect(html).toContain('data-faixa-inicial=""');
     }
+    for (const c of g.contratos.filter((x) => x.situacao !== "transcrito")) expect(t).toContain(c.nome);
+    expect(existsSync(join(raiz, "public", "saneamento", "contratos", "metas_municipios.csv"))).toBe(true);
     if (!g.posicao_2024.length) expect(t).toContain("Nenhum bloco com composição municipal pública");
     if (!g.custos.length) expect(t).toContain("Nenhuma estimativa de custo conferida");
     expect(t).toContain("Modelo didático");

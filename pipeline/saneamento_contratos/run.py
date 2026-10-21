@@ -26,6 +26,7 @@ PASTA = RAIZ / "public" / "saneamento" / "contratos"
 GOLD = PASTA / "contratado.json"
 RESUMO = PASTA / "resumo.json"
 CSV = PASTA / "leiloes.csv"
+CSV_MUNICIPIOS = PASTA / "metas_municipios.csv"
 
 
 def _gravar(caminho: Path, texto: str) -> None:
@@ -39,10 +40,12 @@ def _gravar(caminho: Path, texto: str) -> None:
 
 def saidas(seed: dict) -> dict[Path, str]:
     g = gold.construir(seed)
+    linhas_mun = g.pop("_metas_municipios")
     return {
         GOLD: json.dumps(g, ensure_ascii=False, separators=(",", ":")) + "\n",
         RESUMO: json.dumps(gold.resumo(g), ensure_ascii=False, separators=(",", ":")) + "\n",
         CSV: gold.csv_texto(g["leiloes"]),
+        CSV_MUNICIPIOS: gold.csv_municipios(linhas_mun),
     }
 
 
