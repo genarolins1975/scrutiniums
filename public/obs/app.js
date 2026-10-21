@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.117.0";
+const APP_VERSION = "0.120.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -2950,12 +2950,13 @@ const GUIA = {
 function guiaPagina(view) {
   const g = GUIA[view];
   if (!g) return "";
+  /* Diagnóstico de layout de 20/10/2026, item 2: a caixa desce para depois do primeiro bloco de números (editorial.js).
+     O limite é ressalva material e fica à vista; como ler e por que acompanhar ficam recolhidos. */
   return `<aside class="guia-leitura" aria-label="Orientação de leitura">
     <p class="guia-pergunta">${g.q}</p>
-    <p class="guia-como"><strong>Como ler.</strong> ${g.ler}</p>
     <p class="guia-limite"><strong>Limites da leitura.</strong> ${g.nao}</p>
-    <details class="guia"><summary><span class="guiaq">Por que acompanhar este tema?</span><span class="guiamais">saiba mais</span></summary>
-      <div class="guiabody"><div><p>${g.importa}</p></div></div>
+    <details class="guia"><summary><span class="guiaq">Como ler e por que acompanhar</span><span class="guiamais">abrir</span></summary>
+      <div class="guiabody"><p class="guia-como"><strong>Como ler.</strong> ${g.ler}</p><p><strong>Por que acompanhar.</strong> ${g.importa}</p></div>
     </details>
   </aside>`;
 }
@@ -4305,6 +4306,56 @@ function blocoProtocolo() {
 }
 
 /* ---------- SETORES ---------- */
+/* Diagnóstico de layout de 20/10/2026, item 4: a aba tinha o primeiro gráfico a 5 mil px. Esta régua mostra todas as
+   atividades de uma vez, uma linha por pesquisa, cada ponto um score. A referência é o 50 do próprio método (score =
+   50 + 20 × Σ peso × z: a média da história da atividade). Sem faixas coloridas: os cortes das faixas não vêm na gold,
+   e cor de juízo por ponto não entra. */
+function setorRegua(sectors) {
+  const st = (sectors.setores || []).filter(x => x.score != null);
+  if (st.length < 5) return "";
+  const PESQ = [["industria", "Indústria"], ["servicos", "Serviços"], ["comercio", "Comércio"]];
+  const linhas = PESQ.map(([p, rot]) => ({ p, rot, pts: st.filter(x => (x.pesquisa || "industria") === p) })).filter(l => l.pts.length);
+  const v = st.map(x => x.score);
+  const lo = Math.max(0, Math.floor(Math.min(...v, 50) / 10) * 10), hi = Math.min(100, Math.ceil(Math.max(...v, 50) / 10) * 10);
+  const W = 760, esq = 112, dir = 16, passo = 46, topo = 22, H = topo + linhas.length * passo + 30;
+  const x = s => esq + (s - lo) / (hi - lo) * (W - esq - dir);
+  const refMax = st.map(s => s.ref).filter(Boolean).sort().pop();
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" style="min-width:600px;max-width:none;height:auto" aria-label="Score de estresse de ${st.length} atividades, de ${lo} a ${hi}, por pesquisa do IBGE">`;
+  for (let t = lo; t <= hi; t += 10) {
+    svg += `<line x1="${x(t)}" x2="${x(t)}" y1="${topo}" y2="${H - 26}" style="stroke:var(--border)" stroke-width="1"/>`;
+    svg += `<text x="${x(t)}" y="${H - 8}" font-size="12" text-anchor="middle" style="fill:var(--text-2)">${t}</text>`;
+  }
+  svg += `<line x1="${x(50)}" x2="${x(50)}" y1="${topo - 4}" y2="${H - 26}" style="stroke:var(--text)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+  svg += `<text x="${x(50) + 6}" y="${topo - 8}" font-size="12" style="fill:var(--text)">50 = média da própria história</text>`;
+  linhas.forEach((l, k) => {
+    const cy = topo + k * passo + passo / 2;
+    svg += `<text x="0" y="${cy - 2}" font-size="13" style="fill:var(--text)">${l.rot}</text>`;
+    svg += `<text x="0" y="${cy + 13}" font-size="12" style="fill:var(--text-2)">${l.pts.length} atividades</text>`;
+    /* pontos que se tocariam (score igual ou vizinho) sobem ou descem uma faixa de 10 px: nenhum encobre o outro */
+    const postos = [];
+    l.pts.slice().sort((a, b) => a.score - b.score).forEach(s => {
+      const cx = x(s.score);
+      let dy = 0;
+      for (let i = 0; i < 9; i++) {
+        dy = (i % 2 ? 1 : -1) * Math.ceil(i / 2) * 10;
+        if (!postos.some(q => q.dy === dy && Math.abs(q.cx - cx) < 10)) break;
+      }
+      postos.push({ cx, dy });
+      const tip = encodeURIComponent(`<div class="tt-date">${s.nome}</div><div class="tt-row"><span class="tt-lbl">score · ${s.tendencia}</span><span class="tt-val">${fmt.n(s.score, 1)}</span></div>`);
+      svg += `<circle cx="${cx}" cy="${cy + dy}" r="4.5" data-tip="${tip}" style="fill:color-mix(in srgb, var(--accent) 72%, transparent);stroke:var(--surface)" stroke-width="1"/>`;
+    });
+  });
+  svg += `</svg>`;
+  const tabela = `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap" style="max-height:320px"><table class="data compact"><thead><tr><th>Atividade</th><th>Pesquisa</th><th style="text-align:right">Score</th><th>Tendência em 3 meses</th></tr></thead><tbody>` +
+    linhas.flatMap(l => l.pts.slice().sort((a, b) => b.score - a.score).map(s => `<tr><td><a href="/observatorio/sectors/${s.codigo}" onclick="nav('sector',{sectorCod:'${s.codigo}'});return false">${s.nome}</a></td><td>${l.rot}</td><td style="text-align:right">${fmt.n(s.score, 1)}</td><td>${s.tendencia}</td></tr>`)).join("") +
+    `</tbody></table></div></details>`;
+  return `<div class="card" id="setor-regua" style="margin-top:8px">
+    <h4>Onde cada atividade está no score de estresse</h4>
+    <p class="src">Score de 0 a 100${refMax ? `, IBGE até ${fmt.my(refMax)}` : ""}. Cada ponto é uma atividade; acima de 50, mais estresse que a média da sua própria história. Compare posições dentro de cada pesquisa: os universos são distintos, e o score compara cada atividade com o próprio passado, não os níveis entre pesquisas.</p>
+    <div class="tblwrap" style="overflow-x:auto">${svg}</div>
+    ${tabela}
+  </div>`;
+}
 function renderSectors() {
   const el = document.getElementById("view-sectors");
   const { sectors, pulse } = state.data;
@@ -4317,12 +4368,12 @@ function renderSectors() {
                 ["comercio", "Comércio varejista ampliado — volume de vendas (PMC)"]];
   const linhaSetor = s => `
     <tr>
-      <td>${s.nome} ${favStar("sectors", s.codigo, s.nome)}<br><button class="btn ghost small" onclick="openSectorPage('${s.codigo}')">ficha do setor →</button></td>
+      <td><a href="/observatorio/sectors/${s.codigo}" onclick="nav('sector',{sectorCod:'${s.codigo}'});return false">${s.nome}</a> ${favStar("sectors", s.codigo, s.nome)}</td>
       <td><span class="scorebar"><i style="left:${s.score * 0.9}px"></i></span> <b>${s.score}</b><div class="src">${s.faixa}</div></td>
-      <td class="${s.tendencia === "piorando" ? "up" : s.tendencia === "melhorando" ? "down good" : "neutral"}">${s.tendencia} <span class="src">(${fmt.pp(s.tendencia_valor_pp)} p.p./3m)</span></td>
-      <td class="${s.velocidade === "momento piorando" ? "up" : s.velocidade === "momento melhorando" ? "down good" : "neutral"}">${s.velocidade} <span class="src">(${fmt.pp(s.velocidade_valor_pp)} p.p.)</span></td>
+      <td>${s.tendencia} <span class="src">(${fmt.pp(s.tendencia_valor_pp)} p.p./3m)</span></td>
+      <td>${s.velocidade} <span class="src">(${fmt.pp(s.velocidade_valor_pp)} p.p.)</span></td>
       <td>${fmt.n(s.yoy_producao_pct, 1)}% <span class="src">(${fmt.my(s.ref)})</span></td>
-      <td><details class="decomp"><summary>ficha</summary>
+      <td><details class="decomp"><summary>abrir</summary>
         <h5>Contribuições para o score (waterfall)</h5>
         ${Object.entries(s.contribuicoes).map(([k, v]) => contribBar(k.replace(/_/g, " ") + (s.componentes[k].status === "demonstrativo" ? " ⚠demo" : ""), v, 6)).join("")}
         <h5>Componentes</h5>
@@ -4334,12 +4385,12 @@ function renderSectors() {
     const lista = sectors.setores.filter(s => (s.pesquisa || "industria") === p);
     if (!lista.length) return "";
     return `<h3>${titulo} <span class="src">${lista.length} atividades</span></h3>
-  <div class="tblwrap"><table class="data"><thead><tr><th>Atividade</th><th>Nível</th><th>Tendência</th><th>Velocidade</th><th>Volume a/a</th><th>Ficha</th></tr></thead><tbody>${lista.map(linhaSetor).join("")}</tbody></table></div>`;
+  <div class="tblwrap"><table class="data"><thead><tr><th>Atividade</th><th>Score</th><th>Tendência</th><th>Velocidade</th><th>Volume a/a</th><th>Composição</th></tr></thead><tbody>${lista.map(linhaSetor).join("")}</tbody></table></div>`;
   }).join("");
   const papel = pulse && pulse.series.papelao;
   el.innerHTML = `
   ${pageHead({ title: "Risco setorial",
-    desc: "Score de estresse por atividade a partir do volume real de cada setor — indústria (PIM), serviços (PMS) e comércio (PMC) —, das condições de crédito PJ e do emprego formal da seção CNAE (Novo Caged). Não é inadimplência setorial (indisponível nas fontes públicas). Cada setor abre uma ficha completa.",
+    desc: "Score de estresse por atividade a partir do volume real de cada setor — indústria (PIM), serviços (PMS) e comércio (PMC) —, das condições de crédito PJ e do emprego formal da seção CNAE (Novo Caged). Não é inadimplência setorial (indisponível nas fontes públicas). O nome de cada atividade abre a sua ficha completa.",
     fontes: "IBGE PIM-PF · PMS · PMC, BCB/SGS (crédito PJ), MTE/Novo Caged via BCB/SGS (emprego), BCB IF.data (exposições)" })}
   ${(() => {
     const st = sectors.setores || [];
@@ -4363,8 +4414,11 @@ function renderSectors() {
       ref: `IBGE ${refMax ? fmt.my(refMax) : "–"} · emprego ${sectors.emprego_ref || "–"} · regras em Metodologia`,
     });
   })()}
-  <div class="note warn"><b>Transparência:</b> ${sectors.aviso_demo}<br>Método: ${sectors.metodo}<br>Limitações: ${sectors.limitacoes}</div>
+  ${setorRegua(sectors)}
+  <div class="note warn"><b>Transparência:</b> ${sectors.aviso_demo}</div>
   ${blocos}
+  <details class="decomp" style="margin:8px 0 14px"><summary>método do score e limitações</summary>
+    <div class="note" style="margin-top:6px"><b>Método:</b> ${sectors.metodo}<br><b>Limitações:</b> ${sectors.limitacoes}</div></details>
   ${renderExposuresSection()}
   ${papel ? `<h3>Indicador antecedente em triagem</h3>
   <div class="grid g2"><div class="card"><h4>${papel.meta.name} ${badge("observado")} <span class="seal aprox">ANTECEDENTE EM TRIAGEM</span></h4>
@@ -6759,6 +6813,77 @@ function instDetalheHtml(i) {
         </div>` : ""}
         <div class="src">Percentil dentro do grupo de pares; dimensão sem dado é omitida, nunca imputada. Score composto e faixa de risco não são publicados por instituição (regra editorial de 24/09/2026).</div>`;
 }
+/* Diagnóstico de layout de 20/10/2026, item 3: quem consta da lista do IF.data sem balanço na data-base sai da síntese
+   (eram cinco linhas antes da tabela) e fica aqui, nome a nome, com a última entrega. Ausência declarada, nunca omitida. */
+function instForaDoCorte(inst) {
+  const lista = Array.isArray(inst.sem_balanco_na_data_base) ? inst.sem_balanco_na_data_base : [];
+  if (!lista.length) return "";
+  const tri = fmtTri(inst.anomes);
+  const grandes = lista.filter(x => (x.ativo_ultima_entrega || 0) >= 1e9).length;
+  const nunca = lista.filter(x => x.nunca_entregou).length;
+  const comFicha = lista.length - nunca;
+  const ordem = lista.slice().sort((a, b) => (b.ativo_ultima_entrega || 0) - (a.ativo_ultima_entrega || 0));
+  const nome = x => x.nunca_entregou ? x.nome : `<a href="/observatorio/institutions/${x.cod_inst}" onclick="nav('inst',{instCod:'${x.cod_inst}'});return false">${x.nome}</a>`;
+  return `<details class="decomp" id="inst-fora-do-corte" style="margin:8px 0"><summary>Fora do corte por falta de balanço em ${tri}: ${fmt.n0(lista.length)} na lista do IF.data, ${fmt.n0(grandes)} com ativo acima de R$ 1 bi</summary>
+    <div class="note" style="margin-top:6px">Constam da lista do IF.data com saldo nulo em ${tri}: atraso, RAET ou retardatário. Não é saída nem zero.${comFicha ? ` ${comFicha === lista.length ? "A ficha de cada uma" : `A ficha das ${fmt.n0(comFicha)} que já entregaram balanço`} segue disponível na última entrega.` : ""}${nunca ? ` ${nunca === 1 ? "Uma nunca entregou balanço e não tem ficha" : `${fmt.n0(nunca)} nunca entregaram balanço e não têm ficha`}: aparece${nunca === 1 ? "" : "m"} na lista sem link.` : ""}</div>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Instituição</th><th>Segmento</th><th>Última entrega</th><th style="text-align:right">Ativo na última entrega</th></tr></thead>
+    <tbody>${ordem.map(x => `<tr><td>${nome(x)}</td><td>${x.sr || "–"}</td><td>${x.nunca_entregou ? "nunca entregou" : fmtTri(x.ultima_entrega)}</td><td style="text-align:right">${x.ativo_ultima_entrega != null ? fmt.money(x.ativo_ultima_entrega) : "–"}</td></tr>`).join("")}</tbody></table></div>
+  </details>`;
+}
+/* Régua da Basileia por grupo de pares (item 3): cada conglomerado é um ponto na linha do seu grupo; a faixa é a metade
+   central do grupo e o traço, a mediana, ambos lidos de grupos[g].stats. Grupo que usa o conjunto completo como régua
+   (pool_fallback) mostra só os pontos. Sem linha de mínimo regulatório: o S5 segue regime simplificado, com outra régua. */
+function instReguaBasileia(inst) {
+  const ordem = ["S1", "S2", "S3", "S4", "S5", "S?"];
+  const linhas = ordem.filter(g => inst.grupos && inst.grupos[g]).map(g => {
+    const membros = (inst.instituicoes || []).filter(i => i.grupo_pares === g);
+    const st = inst.grupos[g].pool_fallback ? null : ((inst.grupos[g].stats || {}).basileia_pct || null);
+    return { g, rot: g === "S?" ? "Sem segmento" : g, n: membros.length, pts: membros.filter(i => i.basileia_pct != null), st };
+  }).filter(l => l.n);
+  const valores = linhas.flatMap(l => l.pts.map(p => p.basileia_pct));
+  if (valores.length < 5) return "";
+  const tri = fmtTri(inst.anomes);
+  const max = Math.ceil(Math.max(...valores) / 10) * 10;
+  const W = 760, esq = 128, dir = 16, passo = 44, topo = 8, H = topo + linhas.length * passo + 30;
+  const x = v => esq + (v / max) * (W - esq - dir);
+  const semDado = (inst.instituicoes || []).filter(i => i.basileia_pct == null).length;
+  // largura mínima fixa: no celular o gráfico rola dentro da moldura (tblwrap) em vez de encolher até cortar o extremo
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" style="min-width:600px;max-width:none;height:auto" aria-label="Índice de Basileia de ${valores.length} conglomerados em ${tri}, por grupo de pares, de 0 a ${max}%">`;
+  for (let t = 0; t <= max; t += 10) {
+    svg += `<line x1="${x(t)}" x2="${x(t)}" y1="${topo}" y2="${H - 26}" style="stroke:var(--border)" stroke-width="1"/>`;
+    svg += `<text x="${x(t)}" y="${H - 8}" font-size="12" text-anchor="middle" style="fill:var(--text-2)">${t}%</text>`;
+  }
+  linhas.forEach((l, k) => {
+    const cy = topo + k * passo + passo / 2;
+    svg += `<text x="0" y="${cy - 2}" font-size="13" style="fill:var(--text)">${l.rot}</text>`;
+    svg += `<text x="0" y="${cy + 13}" font-size="12" style="fill:var(--text-2)">${l.pts.length} de ${l.n}</text>`;
+    if (l.st && l.st.q1 != null && l.st.q3 != null) {
+      svg += `<rect x="${x(l.st.q1)}" y="${cy - 11}" width="${Math.max(1, x(l.st.q3) - x(l.st.q1))}" height="22" style="fill:color-mix(in srgb, var(--accent) 16%, transparent)"/>`;
+      if (l.st.mediana != null) svg += `<line x1="${x(l.st.mediana)}" x2="${x(l.st.mediana)}" y1="${cy - 13}" y2="${cy + 13}" style="stroke:var(--text)" stroke-width="2"/>`;
+    }
+    l.pts.forEach(p => {
+      const tip = encodeURIComponent(`<div class="tt-date">${p.nome}</div><div class="tt-row"><span class="tt-lbl">Basileia · ${l.rot}</span><span class="tt-val">${fmt.n(p.basileia_pct, 1)}%</span></div>`);
+      svg += `<circle cx="${x(p.basileia_pct)}" cy="${cy}" r="4.5" data-tip="${tip}" style="fill:color-mix(in srgb, var(--accent) 72%, transparent);stroke:var(--surface)" stroke-width="1"/>`;
+    });
+  });
+  svg += `</svg>`;
+  const tabela = `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap"><table class="data compact"><thead><tr><th>Grupo</th><th style="text-align:right">Com Basileia</th><th style="text-align:right">Menor</th><th style="text-align:right">1º quartil</th><th style="text-align:right">Mediana</th><th style="text-align:right">3º quartil</th><th style="text-align:right">Maior</th></tr></thead><tbody>` +
+    linhas.map(l => { const v = l.pts.map(p => p.basileia_pct); const q = n => l.st && l.st[n] != null ? fmt.n(l.st[n], 1) + "%" : "–";
+      return `<tr><td>${l.g === "S?" ? "Sem segmento no cadastro" : l.g}</td><td style="text-align:right">${l.pts.length} de ${l.n}</td><td style="text-align:right">${v.length ? fmt.n(Math.min(...v), 1) + "%" : "–"}</td><td style="text-align:right">${q("q1")}</td><td style="text-align:right">${q("mediana")}</td><td style="text-align:right">${q("q3")}</td><td style="text-align:right">${v.length ? fmt.n(Math.max(...v), 1) + "%" : "–"}</td></tr>`; }).join("") +
+    `</tbody></table>` +
+    // um por linha: a mesma informação dos pontos, para quem não usa o tooltip (teclado, leitor de tela, toque)
+    `<table class="data compact" style="margin-top:12px"><caption class="src" style="text-align:left;caption-side:top">Cada conglomerado com Basileia reportada, por grupo e do maior para o menor índice</caption><thead><tr><th>Conglomerado</th><th>Grupo</th><th style="text-align:right">Basileia</th></tr></thead><tbody>` +
+    linhas.flatMap(l => l.pts.slice().sort((a, b) => b.basileia_pct - a.basileia_pct).map(p =>
+      `<tr><td><a href="/observatorio/institutions/${p.cod_inst}" onclick="nav('inst',{instCod:'${p.cod_inst}'});return false">${p.nome}</a></td><td>${l.rot}</td><td style="text-align:right">${fmt.n(p.basileia_pct, 1)}%</td></tr>`)).join("") +
+    `</tbody></table></div></details>`;
+  return `<div class="card" id="inst-regua-basileia" style="margin-top:24px">
+    <h4>Onde cada conglomerado está no Índice de Basileia, dentro do seu grupo de pares</h4>
+    <p class="src">Índice de Basileia (%), ${tri}. Cada ponto é um conglomerado; a faixa é a metade central do grupo e o traço, a mediana. A contagem diz quantos do grupo têm Basileia reportada. Grupo com régua do conjunto completo mostra só os pontos.</p>
+    <div class="tblwrap" style="overflow-x:auto">${svg}</div>
+    ${tabela}
+    <div class="src">Fonte: BCB IF.data (Olinda), conglomerados prudenciais, ${tri}. ${semDado ? `${fmt.n0(semDado)} dos ${fmt.n0((inst.instituicoes || []).length)} avaliados não reportam Basileia e ficam fora do gráfico. ` : ""}A posição no grupo não é nota de solidez: o requisito de capital depende do segmento e dos colchões de cada instituição.</div>
+  </div>`;
+}
 function renderInstitutions() {
   const el = document.getElementById("view-institutions");
   const inst = state.data.institutions;
@@ -6785,8 +6910,7 @@ function renderInstitutions() {
     const nd = Object.keys(i.dimensoes).length;
     return `
     <tr>
-      <td><b>${i.nome}</b> ${favStar("institutions", i.cod_inst, i.nome)}
-        <button class="btn ghost small" onclick="openInstPage('${i.cod_inst}')">página completa →</button>
+      <td><a class="inst-nome" href="/observatorio/institutions/${i.cod_inst}" onclick="nav('inst',{instCod:'${i.cod_inst}'});return false"><b>${i.nome}</b></a> ${favStar("institutions", i.cod_inst, i.nome)}
         <div class="src">${i.grupo_pares_label}${i.grupo_fallback ? " · <i>grupo pequeno: comparado ao conjunto completo</i>" : ""}</div></td>
       <td>${fmt.money(i.ativo_total_brl)}<div class="src">carteira ${fmt.money(i.carteira_brl)}</div></td>
       <td>${i.basileia_pct != null ? fmt.n(i.basileia_pct, 1) + "%" : "<span class='src'>não reportado</span>"}${i.capital_principal_pct != null ? `<div class="src">CP ${fmt.n(i.capital_principal_pct, 1)}%</div>` : ""}</td>
@@ -6801,7 +6925,7 @@ function renderInstitutions() {
   }).join("");
   el.innerHTML = `
   ${pageHead({ title: "Instituições",
-    desc: "Conglomerados prudenciais comparados dentro do próprio grupo de pares (S1–S5), com mediana, quartis e variação trimestral. Cada linha abre a página completa da instituição.",
+    desc: "Conglomerados prudenciais comparados dentro do próprio grupo de pares (S1–S5), com mediana, quartis e variação trimestral. O nome de cada instituição abre a sua ficha completa.",
     fontes: "BCB IF.data (Olinda + interface)" })}
   ${(() => {
     const todos = inst.instituicoes || [];
@@ -6820,7 +6944,8 @@ function renderInstitutions() {
       ],
       sintese: [
         todos.length ? `Os ${todos.length} maiores conglomerados por ativo em ${tri} aparecem com métricas observadas e sua posição no próprio grupo de pares.` : null,
-        semBalGrandes.length ? `Fora do corte por falta de balanço em ${tri} (constam da lista do IF.data com saldo nulo: atraso, RAET ou retardatário), com ativo acima de R$ 1 bi na última entrega: ${semBalGrandes.slice(0, 6).map(x => `${x.nome} (última entrega ${fmtTri(x.ultima_entrega)}, ${fmt.money(x.ativo_ultima_entrega)})`).join("; ")}${semBalGrandes.length > 6 ? ` e mais ${semBalGrandes.length - 6}` : ""}. Não é saída: a ficha de cada uma segue disponível na última entrega.` : null,
+        // diagnóstico de 20/10/2026, item 3: a lista nome a nome saiu da síntese para o recolhível abaixo da tabela
+        semBalGrandes.length ? `${fmt.n0(semBalGrandes.length)} ${semBalGrandes.length === 1 ? "conglomerado com" : "conglomerados com"} ativo acima de R$ 1 bi na última entrega ${semBalGrandes.length === 1 ? "ficou" : "ficaram"} fora do corte por falta de balanço em ${tri}; não é saída, e a lista está abaixo da tabela.` : null,
         basMed != null ? `A Basileia mediana é ${fmt.pct(basMed, 1)}${N ? `; entre as ${fmt.n0(N.n_instituicoes)} instituições com carteira, a inadimplência mediana é ${fmt.pct(N.sistema.mediana_inad_pct, 2)}, subindo em ${fmt.n0(N.sistema.subindo_no_trimestre)} delas no trimestre` : ""}.` : null,
         "Score composto e faixa de risco não são publicados por instituição nomeada: as faixas não foram calibradas contra desfechos (regra editorial de 24/09/2026). A distribuição anônima do score por grupo está no JSON da aba.",
       ],
@@ -6838,6 +6963,8 @@ function renderInstitutions() {
     <button class="btn ghost small" onclick="exportInstitutions()">baixar JSON</button>
   </div>
   <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / ${termo("carteira-de-credito","carteira")}</th><th>${termo("indice-de-basileia","Basileia")}</th><th>${termo("inadimplencia-90","Inadimplência")} ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>${termo("roe","ROE")} per.</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
+  ${instForaDoCorte(inst)}
+  ${instReguaBasileia(inst)}
   <details class="decomp" style="margin:8px 0 14px"><summary>método do score e limitações</summary>
     <div class="note" style="margin-top:6px"><b>Método:</b> ${inst.metodo}<br><b>Limitações:</b> ${inst.limitacoes}</div></details>
   ${guidanceSecao()}
