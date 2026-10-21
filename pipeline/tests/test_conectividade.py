@@ -373,6 +373,20 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.cob)
         s["municipios"]["2207777"][8][0] = (s["municipios"]["2207777"][7][0] or 0) + 1
         self.assertEqual([p for p in V.validar_cobertura(s) if "2207777" in p], [])
+        # invariantes de união também em domicílios e área (23ª revisão do Codex): 5G da área acima de "4G ou 5G" retém
+        s = copy.deepcopy(self.cob)
+        s["municipios"]["2207777"][5]["g5"][2] = s["municipios"]["2207777"][5]["g4g5"][2] + 1
+        self.assertTrue(any("em área" in p and "2207777" in p for p in V.validar_cobertura(s)))
+        s = copy.deepcopy(self.cob)
+        s["brasil"]["serie"][ref]["g4"][1] = s["brasil"]["serie"][ref]["todas"][1] + 1
+        self.assertTrue(any("Brasil em" in p and "em domicílios" in p for p in V.validar_cobertura(s)))
+        # agregado nacional por operadora: negativo ou "4G ou 5G" acima de "todas" retém
+        s = copy.deepcopy(self.cob)
+        s["brasil"]["operadoras_ultimo"]["CLARO"]["g4g5"] = -5
+        self.assertTrue(any("operadora CLARO fora de 0 a 100" in p for p in V.validar_cobertura(s)))
+        s = copy.deepcopy(self.cob)
+        s["brasil"]["operadoras_ultimo"]["CLARO"]["g4g5"] = s["brasil"]["operadoras_ultimo"]["CLARO"]["todas"] + 1
+        self.assertTrue(any("operadora CLARO com 4G ou 5G" in p for p in V.validar_cobertura(s)))
         # as três medidas da série nacional ficam em 0 a 100: área negativa retém (18ª revisão do Codex)
         s = copy.deepcopy(self.cob)
         s["brasil"]["serie"][ref]["g4"][2] = -5

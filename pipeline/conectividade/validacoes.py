@@ -234,19 +234,14 @@ def validar_cobertura(seed: dict, anterior: dict | None = None, hoje: date | Non
                 erros += 1
                 if erros <= 5:
                     p.append(f"cobertura: município {cod} ({nomem}) com {campo} fora de 0 a 100: {vals}")
-        g5 = (tec.get("g5") or [None])[0]
-        g4 = (tec.get("g4") or [None])[0]
-        g45 = (tec.get("g4g5") or [None])[0]
-        # invariantes de união: 5G nunca acima de "4G ou 5G" nem de "todas", 4G nunca acima de "todas". 5G acima do 4G não é
-        # invariante da fonte (a Anatel publica isso em trimestres antigos de dezenas de municípios): a gold conta e declara
-        if g5 is not None and ((g45 is not None and g5 > g45 + 0.05) or g5 > todas[0] + 0.05):
+        # invariantes de união nas três medidas (moradores, domicílios, área): 5G nunca acima de "4G ou 5G" nem de "todas",
+        # 4G nunca acima de "todas". 5G acima do 4G não é invariante da fonte (a Anatel publica isso em trimestres antigos
+        # de dezenas de municípios): a gold conta e declara
+        quebra = _uniao_quebrada(tec)
+        if quebra:
             erros += 1
             if erros <= 5:
-                p.append(f"cobertura: município {cod} ({nomem}) com 5G ({g5}) acima do 4G ou 5G ({g45}) ou de todas ({todas[0]}); 4G {g4}")
-        if g4 is not None and g4 > todas[0] + 0.05:
-            erros += 1
-            if erros <= 5:
-                p.append(f"cobertura: município {cod} ({nomem}) com 4G ({g4}) acima de todas ({todas[0]})")
+                p.append(f"cobertura: município {cod} ({nomem}) com {quebra}")
         for op, (a, b) in ops.items():
             if any(x is not None and not 0 <= x <= 100 for x in (a, b)):
                 erros += 1
@@ -263,17 +258,36 @@ def validar_cobertura(seed: dict, anterior: dict | None = None, hoje: date | Non
             p.append(f"cobertura: os municípios somam {moradores} moradores, o Brasil do arquivo de evolução tem {pop}")
     # a série nacional vai direto aos cartões e ao gráfico do Brasil: a mesma relação entre gerações vale em cada trimestre
     for t, tec in sorted((br.get("serie") or {}).items()):
-        primeiro = lambda campo: ((tec.get(campo) or [None])[0])  # noqa: E731
-        g5, g4, g45, todas = primeiro("g5"), primeiro("g4"), primeiro("g4g5"), primeiro("todas")
-        if g5 is not None and any(x is not None and g5 > x + 0.05 for x in (g45, todas)):
-            p.append(f"cobertura: Brasil em {t} com 5G ({g5}) acima do 4G ou 5G ({g45}) ou de todas ({todas}); 4G {g4}")
-        if g4 is not None and todas is not None and g4 > todas + 0.05:
-            p.append(f"cobertura: Brasil em {t} com 4G ({g4}) acima de todas ({todas})")
+        quebra = _uniao_quebrada(tec)
+        if quebra:
+            p.append(f"cobertura: Brasil em {t} com {quebra}")
         # as três medidas (moradores, domicílios e área) de cada tecnologia, como nos registros municipais
         for campo, vals in tec.items():
             if vals is not None and any(x is not None and not 0 <= x <= 100 for x in vals):
                 p.append(f"cobertura: Brasil em {t} com {campo} fora de 0 a 100: {vals}")
+    # o agregado nacional por operadora vai direto ao gráfico por operadora: 0 a 100 e "4G ou 5G" nunca acima de "todas"
+    for op, v in sorted((br.get("operadoras_ultimo") or {}).items()):
+        a, b = v.get("g4g5"), v.get("todas")
+        if any(x is not None and not 0 <= x <= 100 for x in (a, b)):
+            p.append(f"cobertura: Brasil, operadora {op} fora de 0 a 100: {v}")
+        elif a is not None and b is not None and a > b + 0.05:
+            p.append(f"cobertura: Brasil, operadora {op} com 4G ou 5G ({a}) acima de todas ({b})")
     return p
+
+
+_MEDIDAS_COBERTURA = ("moradores", "domicílios", "área")
+
+
+def _uniao_quebrada(tec: dict) -> str | None:
+    """Primeira quebra das invariantes de união nas três medidas: 5G acima de "4G ou 5G" ou de "todas", 4G acima de "todas"."""
+    for i, medida in enumerate(_MEDIDAS_COBERTURA):
+        valor = lambda campo: ((tec.get(campo) or [None, None, None]) + [None, None, None])[i]  # noqa: E731
+        g5, g4, g45, todas = valor("g5"), valor("g4"), valor("g4g5"), valor("todas")
+        if g5 is not None and any(x is not None and g5 > x + 0.05 for x in (g45, todas)):
+            return f"5G ({g5}) acima do 4G ou 5G ({g45}) ou de todas ({todas}) em {medida}; 4G {g4}"
+        if g4 is not None and todas is not None and g4 > todas + 0.05:
+            return f"4G ({g4}) acima de todas ({todas}) em {medida}"
+    return None
 
 
 def validar_cruzado(fixa: dict, movel: dict, cobertura: dict) -> list[str]:

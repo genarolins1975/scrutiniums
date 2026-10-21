@@ -538,8 +538,8 @@ def _evolucao_brasil(z: Zip, membro: str) -> dict:
             primeiro = False
         p = _periodo_iso(x["Período"])
         vals = [numero(x["% moradores cobertos"]), numero(x["% domicilios cobertos"]), numero(x["% área coberta"])]
-        if any(v is not None and v > 100.0001 for v in vals):
-            raise ValueError(f"{membro}: cobertura acima de 100%")
+        if any(v is not None and not -0.0001 <= v <= 100.0001 for v in vals):
+            raise ValueError(f"{membro}: cobertura fora de 0 a 100% ({x['Operadora']}, {x['Tecnologia']}, {p})")
         if x["Tecnologia"] in tec_rotulo:
             if x["Operadora"] == F.OPERADORA_TODAS:
                 serie[p][tec_rotulo[x["Tecnologia"]]] = [None if v is None else round(v, 2) for v in vals]
