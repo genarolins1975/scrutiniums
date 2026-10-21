@@ -102,6 +102,18 @@ describe("onde a marca aparece", () => {
     expect(c.indexOf('variante="linha"')).toBeLessThan(c.indexOf("<Atalhos atual="));
   });
 
+  it("no Saneamento e em Combustíveis a marca entra numa linha que o cabeçalho já tem; a faixa própria só existe abaixo dela", () => {
+    const san = ler("src/components/saneamento/Cabecalho.tsx");
+    // a linha dos atalhos só existe de 1024 px em diante (lista hidden lg:flex): a faixa própria some no mesmo ponto
+    expect(san.indexOf('variante="linha"')).toBeLessThan(san.indexOf("<Atalhos atual={atual} />"));
+    expect(san).toMatch(/<div className="lg:hidden">\s*<ParceriaTecnica variante="faixa" \/>/);
+    const comb = ler("src/components/combustiveis/CabecalhoCombustiveis.tsx");
+    expect(comb).toMatch(/<div className="hidden shrink-0 md:block">\s*<ParceriaTecnica variante="linha" \/>/);
+    expect(comb).toMatch(/<div className="md:hidden">\s*<ParceriaTecnica variante="faixa" \/>/);
+    // no Gás a navegação ocupa duas linhas cheias: a marca ali pareceria mais um grupo do menu, e a faixa própria fica
+    expect(ler("src/components/gas/CabecalhoGas.tsx")).not.toContain('variante="linha"');
+  });
+
   it("na entrada e no mapa do Observatório de Energia e Infraestrutura, e só nele", () => {
     const entrada = ler("src/app/observatorios/[id]/page.tsx");
     expect(entrada).toContain('id === "energia-e-infraestrutura" ? <ParceriaTecnica variante="compacto" />');
