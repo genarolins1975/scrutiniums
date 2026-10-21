@@ -1,6 +1,5 @@
 import {readFileSync} from 'node:fs';
 import {describe,expect,it} from 'vitest';
-import {readFileSync} from 'node:fs';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {AberturaFederal} from '@/components/contas-publicas/AberturaFederal';
