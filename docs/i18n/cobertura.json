@@ -12,8 +12,8 @@
   "escopo": {
     "inventario_sha256": "d932a71658c21a96d3844ed462f3be1a0b7b2937f80a5b937f3a8e5ad23f56df",
     "arquivos_analisados": 1473,
-    "fontes_sha256": "22ce208bf1c5bcea6691d1f84408cd76c25a4036ea42ef12e090abe00d17b7a0",
-    "pendencias_sha256": "cf1847e2bc833204b99e8e8bc8629629deb3baef0c9a2c7bf7053a1c202d778b",
+    "fontes_sha256": "df29388eb256a838e805d230cd9c29c0a07b052b5994e29507d6a483fe9e6163",
+    "pendencias_sha256": "b8b249d86eb80a1e2fc18d841f86dd08449ce57a9bb077b344183272ba743417",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -368,17 +368,17 @@
       "interface": {
         "arquivos": 235,
         "candidatos": {
-          "jsx_text": 3120,
-          "atributos": 1071,
+          "jsx_text": 3123,
+          "atributos": 1063,
           "props": 1339,
-          "outros_literais": 7777,
-          "templates": 800,
-          "expressoes_nao_resolvidas": 8028,
-          "chaves_objetos": 4783
+          "outros_literais": 7774,
+          "templates": 798,
+          "expressoes_nao_resolvidas": 7998,
+          "chaves_objetos": 4781
         },
         "exclusoes": {
           "importacoes": 923,
-          "atributos_tecnicos": 3368,
+          "atributos_tecnicos": 3365,
           "tipos": 467
         },
         "scripts_embutidos": {},
@@ -388,7 +388,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 26918,
+        "candidatos_nao_catalogados": 26876,
         "percentual_traduzido": null
       },
       "rotas": {

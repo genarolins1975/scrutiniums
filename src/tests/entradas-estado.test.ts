@@ -1,4 +1,5 @@
 import {describe,expect,it} from 'vitest';
+import {readFileSync} from 'node:fs';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {AberturaFederal} from '@/components/contas-publicas/AberturaFederal';
@@ -49,6 +50,16 @@ describe('Aberturas editoriais: números e perímetros preservados',()=>{
   expect(city.populacao).toBeGreaterThan(0);expect(html).toContain(Math.round(city.populacao!).toLocaleString('pt-BR'));
   expect(html).toContain('Posição relativa, não nota nem meta');
   expect(html).not.toContain('NaN');
+ });
+ it('o retrato mostra uma régua de posição por resultado, sem pétalas nem fundo escuro (decisão do dono de 21/10/2026, diagnóstico de 20/10/2026, item 8)',()=>{
+  const html=retratoDe('2611606','4106902');
+  const reguas=html.match(/<svg[^>]*role="img"[^>]*aria-label="[^"]*na posição \d+ de 100; Curitiba na posição \d+"/g)??[];
+  expect(reguas).toHaveLength(retrato.condicoes.length);
+  expect(html).toContain('Onde Recife fica entre as 26 capitais');
+  expect(html).not.toMatch(/pétala/i);
+  const css=readFileSync('src/components/eficiencia/entrada/Entrada.module.css','utf8');
+  expect(css).not.toMatch(/repeating-linear-gradient/);
+  expect(css).toMatch(/\.hero\{[^}]*background:var\(--cor-obee-atlas-papel\)/);
  });
  it('o retrato declara partes remotas fora do enquadramento',()=>{
   const vitoria=retrato.capitais.find(c=>c.nome==='Vitória')!;
