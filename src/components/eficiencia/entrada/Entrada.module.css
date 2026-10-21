@@ -40,9 +40,12 @@
 .chavePonto{width:7px;height:7px;border-radius:50%;background:var(--cor-obee-atlas-ponto)}
 .reguaLista{list-style:none;margin:0;padding:0}
 .reguaItem{display:grid;grid-template-columns:minmax(0,16rem) minmax(0,1fr);gap:16px;align-items:center;padding:10px 0;border-bottom:1px solid var(--cor-obee-atlas-linha)}
-.reguaRotulo{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0!important}
-.reguaRotulo span{font-size:14px;line-height:1.3;color:var(--cor-obee-atlas-tinta)}
-.reguaRotulo strong{white-space:nowrap;font-family:"Playfair Display Variable",Georgia,serif;font-weight:400;font-size:19px;font-variant-numeric:tabular-nums;color:var(--cor-obee-atlas-serie-territorio)}
+.reguaRotulo{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.reguaRotulo>span{font-size:14px;line-height:1.3;color:var(--cor-obee-atlas-tinta)}
+.reguaValores{margin:0;display:grid;justify-items:end;gap:1px}
+.reguaValores dd{margin:0;white-space:nowrap;font-variant-numeric:tabular-nums}
+.valorFoco{font-family:"Playfair Display Variable",Georgia,serif;font-size:19px;line-height:1.2;color:var(--cor-obee-atlas-serie-territorio)}
+.valorPar{display:inline-flex;align-items:center;gap:6px;font-size:14px;line-height:1.3;color:var(--cor-obee-atlas-serie-par)}
 .reguaTrilho{display:block;width:100%;height:28px;overflow:visible}
 .reguaLinha{stroke:var(--cor-obee-atlas-trilho);stroke-width:2}
 .reguaMetade{stroke:var(--cor-obee-atlas-texto-secundario);stroke-width:1;stroke-dasharray:2 3}

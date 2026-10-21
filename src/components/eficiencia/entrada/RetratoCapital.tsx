@@ -92,13 +92,20 @@ export function RetratoCapital({a, b, condicoes, capitais, onSelect, fonteContor
         </div>
         <ol className={styles.reguaLista}>
           {condicoes.map(m => <li key={m.id} className={styles.reguaItem}>
-            <p className={styles.reguaRotulo}><span>{m.curto}</span><strong>{numero(m.valores[a.id]?.valor ?? null, m.unidade)}</strong></p>
+            {/* os dois valores lado a lado: quem compara precisa do número das duas capitais, não só da posição (pedido do dono de 21/10/2026) */}
+            <div className={styles.reguaRotulo}>
+              <span>{m.curto}</span>
+              <dl className={styles.reguaValores}>
+                <div><dt className="sr-only">{a.nome}</dt><dd className={styles.valorFoco}>{numero(m.valores[a.id]?.valor ?? null, m.unidade)}</dd></div>
+                <div><dt className="sr-only">{b.nome}</dt><dd className={styles.valorPar}><i className={styles.chavePar} aria-hidden="true"/>{numero(m.valores[b.id]?.valor ?? null, m.unidade)}</dd></div>
+              </dl>
+            </div>
             {temPosicoes ? <Regua m={m} a={a} b={b} capitais={capitais}/> : null}
           </li>)}
         </ol>
         {temPosicoes && <p className={styles.reguaEixo} aria-hidden="true"><span>menos favorável</span><span>metade</span><span>mais favorável</span></p>}
         <figcaption id="retrato-legenda" className={styles.retratoLegenda}>
-          <p>Posição relativa, não nota nem meta: a posição conta metade dos empates e não diz quanto uma capital está acima da outra. O valor ao lado de cada régua é o original, na unidade da fonte. Precisão municipal não quantificada nas medidas amostrais.{temPosicoes ? '' : ' Posições indisponíveis nesta publicação: só os valores.'}</p>
+          <p>Posição relativa, não nota nem meta: a posição conta metade dos empates e não diz quanto uma capital está acima da outra. Os valores ao lado de cada régua são os originais, na unidade da fonte: em cima a capital escolhida, embaixo, com o losango, a de comparação. Precisão municipal não quantificada nas medidas amostrais.{temPosicoes ? '' : ' Posições indisponíveis nesta publicação: só os valores.'}</p>
           <p>Contorno: {fonteContornos.fonte}{contorno && contorno.partesDistantes > 0 ? `; ${contorno.partesDistantes} ${contorno.partesDistantes === 1 ? 'parte remota fica' : 'partes remotas ficam'} fora do enquadramento` : ''}. População: {fontePopulacao}.</p>
         </figcaption>
       </figure>

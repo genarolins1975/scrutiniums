@@ -56,6 +56,9 @@ describe('Aberturas editoriais: números e perímetros preservados',()=>{
   const reguas=html.match(/<svg[^>]*role="img"[^>]*aria-label="[^"]*na posição \d+ de 100; Curitiba na posição \d+"/g)??[];
   expect(reguas).toHaveLength(retrato.condicoes.length);
   expect(html).toContain('Onde Recife fica entre as 26 capitais');
+  // os valores das duas capitais em cada régua: a escolhida e, com o losango, a de comparação
+  for(const m of retrato.condicoes){expect(html).toContain(numero(m.valores['2611606'].valor,m.unidade));expect(html).toContain(numero(m.valores['4106902'].valor,m.unidade));}
+  expect((html.match(/<dt class="sr-only">Curitiba<\/dt>/g)??[]).length).toBe(retrato.condicoes.length);
   expect(html).not.toMatch(/pétala/i);
   const css=readFileSync('src/components/eficiencia/entrada/Entrada.module.css','utf8');
   expect(css).not.toMatch(/repeating-linear-gradient/);
