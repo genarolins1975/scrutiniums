@@ -17,13 +17,16 @@ function Regua({m, a, b, capitais}: {m: Medida; a: CapitalRetrato; b: CapitalRet
   const pos = m.posicoes!;
   const pa = pos[a.id], pb = pos[b.id];
   const demais = capitais.filter(c => c.id !== a.id && c.id !== b.id && pos[c.id] !== undefined);
+  // empate ou quase: os dois marcadores se tocariam; a capital sobe e o comparador desce, para os dois continuarem visíveis
+  const juntos = Math.abs(xDaPosicao(pa) - xDaPosicao(pb)) < 13;
+  const yFoco = juntos ? 8 : 14, yPar = juntos ? 21 : 14;
   return <svg viewBox={`0 0 ${LARGURA} 28`} className={styles.reguaTrilho} role="img"
     aria-label={`${m.curto}: ${a.nome} na posição ${Math.round(pa)} de 100; ${b.nome} na posição ${Math.round(pb)}`}>
     <line x1={MARGEM} x2={LARGURA - MARGEM} y1={14} y2={14} className={styles.reguaLinha}/>
     <line x1={xDaPosicao(50)} x2={xDaPosicao(50)} y1={5} y2={23} className={styles.reguaMetade}/>
     {demais.map(c => <circle key={c.id} cx={xDaPosicao(pos[c.id])} cy={14} r={3} className={styles.reguaPonto}/>)}
-    <path d={`M${xDaPosicao(pb)} ${14 - 6}l6 6l-6 6l-6 -6Z`} className={styles.reguaPar}/>
-    <circle cx={xDaPosicao(pa)} cy={14} r={6.5} className={styles.reguaFoco}/>
+    <path d={`M${xDaPosicao(pb)} ${yPar - 6}l6 6l-6 6l-6 -6Z`} className={styles.reguaPar}/>
+    <circle cx={xDaPosicao(pa)} cy={yFoco} r={6.5} className={styles.reguaFoco}/>
   </svg>;
 }
 

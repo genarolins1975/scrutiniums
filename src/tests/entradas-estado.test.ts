@@ -61,6 +61,14 @@ describe('Aberturas editoriais: números e perímetros preservados',()=>{
   expect(css).not.toMatch(/repeating-linear-gradient/);
   expect(css).toMatch(/\.hero\{[^}]*background:var\(--cor-obee-atlas-papel\)/);
  });
+ it('empate de posição entre a capital e o comparador: os dois marcadores continuam visíveis (Porto Velho e São Luís na renda)',()=>{
+  const renda=retrato.condicoes.find(m=>m.posicoes&&Math.abs(m.posicoes['1100205']-m.posicoes['2111300'])<0.01);
+  expect(renda).toBeDefined();
+  const html=retratoDe('1100205','2111300');
+  // a capital sobe (cy 8) e o losango do comparador desce (centro em 21) na régua do empate
+  expect(html).toMatch(/<circle cx="[\d.]+" cy="8" r="6.5"/);
+  expect(html).toMatch(/<path d="M[\d.]+ 15l6 6l-6 6l-6 -6Z"/);
+ });
  it('o retrato declara partes remotas fora do enquadramento',()=>{
   const vitoria=retrato.capitais.find(c=>c.nome==='Vitória')!;
   expect(vitoria.contorno!.partesDistantes).toBeGreaterThan(0);
