@@ -472,16 +472,35 @@ export type CatalogoGold = {
   entradas: EntradaCatalogo[];
 };
 
+export type CapturaEnergia = { familia?: string; recurso: string; sha256: string; capturado_em: string; publicado_em: string | null; origem: string };
+export type CapturaHistoricaEnergia = CapturaEnergia & { vigente: boolean };
+
 export type MetaGold = Cabecalho & {
   golds: Record<string, { disponivel: boolean; gerado_em: string | null }>;
   fontes: Record<string, {
+    familia?: string | null;
+    snapshots_familias?: {
+      familia: string; snapshot: string | null; snapshot_sha256: string | null; ultima_captura: string | null;
+      recapturas_sem_mudanca?: number | null;
+      ultima_tentativa?: { tentado_em: string; ok: boolean; detalhe: string } | null;
+    }[];
     ultima_captura: string | null;
     snapshot: string | null;
     snapshot_sha256: string | null;
     ultima_tentativa: { tentado_em: string; ok: boolean; detalhe: string } | null;
-    capturas: { recurso: string; sha256: string; capturado_em: string; publicado_em: string | null; origem: string }[];
+    /** Amostra recente quando resumo_capturas existe; lista completa no CSV. */
+    capturas: CapturaEnergia[];
     recapturas_sem_mudanca?: number | null;
-    historico?: { recurso: string; sha256: string; capturado_em: string; publicado_em: string | null; origem: string; vigente: boolean }[];
+    historico?: CapturaHistoricaEnergia[];
+    historico_csv?: string;
+    resumo_capturas?: {
+      total_capturas: number;
+      total_historico: number;
+      primeira: string | null;
+      ultima: string | null;
+      recapturas_sem_mudanca: number | null;
+      limite_recentes: number;
+    };
   }>;
   regressoes: { gold: string; motivo: string }[];
   builders_falhos: { gold: string; motivo: string }[];

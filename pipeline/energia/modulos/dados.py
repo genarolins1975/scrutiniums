@@ -129,7 +129,9 @@ REGISTRO = {
     "id": "dados",
     "gold": GOLD,
     "familia": FAMILIA,
-    "ordem": 95,
+    # Depois de todas as fontes temáticas, inclusive Minha região (97), e antes
+    # da Visão geral (98, id "visao"): valida os CSV finais desta execução.
+    "ordem": 98,
     "datasets": [
         {"orgao": "ONS", "nome": "api-package-search", "slug": "ons-catalogo-ckan", "dataset_silver": "catalogo_ckan_ons",
          "titulo": "Listagem dos conjuntos do portal de dados abertos do ONS (API CKAN package_search)",
@@ -278,6 +280,8 @@ def dicionario_arquivos():
     """{url: descrição} dos arquivos para download: REGISTRO de todos os módulos
     (arquivos.json é derivado deles) e as golds de operação (catalogo.ARQUIVOS_OPERACAO)."""
     out = dict(catalogo.ARQUIVOS_OPERACAO)
+    from pipeline.energia.metadados import dicionario_historico
+    out.update({url: item['colunas'] for url, item in dicionario_historico().items()})
     for m in catalogo.modulos_validos():
         for url, desc in (m.REGISTRO.get("arquivos") or {}).items():
             out[url] = desc

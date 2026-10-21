@@ -17,7 +17,7 @@ import traceback
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from pipeline.energia import base, metricas, modulos  # noqa: E402
+from pipeline.energia import base, metadados, metricas, modulos  # noqa: E402
 from pipeline.energia.gold import comum as c  # noqa: E402
 from pipeline.energia.modulos import dados as modulo_dados  # noqa: E402
 
@@ -62,7 +62,7 @@ def main(argv):
     else:
         base.escreve_gold(reg["gold"], g)
     base.escreve_gold("metricas.json", {**c.cabecalho("metricas.json"), "metricas": metricas.todas()})
-    arquivos = {}
+    arquivos = metadados.dicionario_historico() if os.path.isfile(os.path.join(base.SERIES, metadados.NOME_CSV)) else {}
     for m in mods.values():
         for url, desc in (m.REGISTRO.get("arquivos") or {}).items():
             arquivos[url] = {"colunas": desc, "modulo": m.REGISTRO["id"], "gold": m.REGISTRO["gold"]}

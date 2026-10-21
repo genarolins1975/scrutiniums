@@ -115,6 +115,34 @@ jobs:
           gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver.db.gz" --dir /tmp
           gunzip -c /tmp/energia-silver.db.gz > data/energia/silver/energia.db
 
+      - name: Restaurar metadados da cópia durável
+        id: meta_restaurada
+        if: steps.feita.outputs.sim == '0'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/energia-meta-restaurada
+          # Upload interrompido pode deixar asset em state=starter: só vale uploaded.
+          if gh api "repos/$GITHUB_REPOSITORY/releases/tags/energia-estado" \
+            --jq '.assets[] | select(.state == "uploaded" and (.name | startswith("energia-meta-") and endswith(".tar.gz"))) | .name' > /tmp/energia-meta-geracoes.txt; then
+            ULTIMO=$(sort /tmp/energia-meta-geracoes.txt | tail -n 1)
+            if [ -n "$ULTIMO" ]; then
+              gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "$ULTIMO" --dir /tmp/energia-meta-restaurada
+              python3 -m pipeline.energia.estado_meta restaurar "/tmp/energia-meta-restaurada/$ULTIMO"
+            else
+              echo "::warning::release sem metadados duráveis; primeira cópia será criada após a coleta"
+            fi
+          else
+            echo "::warning::não foi possível consultar a cópia durável dos metadados"
+            exit 1
+          fi
+          rm -rf /tmp/energia-meta-restaurada
+
+      - name: Avisar falha na restauração dos metadados da previsão
+        if: steps.meta_restaurada.outcome == 'failure'
+        run: echo "::warning::metadados duráveis não restaurados; arquivos existentes foram preservados"
+
       - name: Verificação e retentativa antes do corte
         id: verificar
         if: steps.feita.outputs.sim == '0'
@@ -176,14 +204,45 @@ jobs:
         continue-on-error: true
         run: python3 -m unittest pipeline.tests.test_energia_previsoes
 
+      # A previsão não promove meta de uma restauração antiga sobre a coleta noturna.
+      # Só o conteúdo do cache fica sem meta; o diretório de trabalho volta após salvar.
+      # Na migração, não retirar a única cópia antes de confirmar um asset durável.
+      - name: Proteger metadados antes do cache da previsão
+        id: meta_cache
+        if: always() && steps.feita.outputs.sim == '0' && steps.verificar.outputs.coletou == '1'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ -d data/energia/meta ]; then
+            mkdir -p /tmp/energia-meta-previsao
+            gh api "repos/$GITHUB_REPOSITORY/releases/tags/energia-estado" \
+              --jq '.assets[] | select(.state == "uploaded" and (.name | startswith("energia-meta-") and endswith(".tar.gz"))) | .name' > /tmp/energia-meta-previsao/geracoes.txt
+            ULTIMO=$(sort /tmp/energia-meta-previsao/geracoes.txt | tail -n 1)
+            if [ -z "$ULTIMO" ] && [ -n "$(find data/energia/meta -type f -print -quit)" ]; then
+              # Bootstrap tem prioridade inferior às gerações da coleta de energia,
+              # mesmo se uma previsão antiga terminar depois dela. Não usa --clobber.
+              ASSET="energia-meta-0-bootstrap-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.tar.gz"
+              python3 -m pipeline.energia.estado_meta guardar "/tmp/energia-meta-previsao/$ASSET"
+              gh release upload energia-estado "/tmp/energia-meta-previsao/$ASSET" --repo "$GITHUB_REPOSITORY"
+            fi
+            mv data/energia/meta /tmp/energia-meta-previsao/pasta
+          fi
+
+      - name: Avisar proteção de metadados inconclusiva
+        if: always() && steps.meta_cache.outcome == 'failure'
+        run: echo "::warning::cache da previsão não será substituído; não foi possível proteger os metadados antes de retirá-los do payload"
+
       # Uma cópia do estado da energia tem ~7,2 GB (15/10/2026) e o limite de cache do
       # repositório é 10 GB: gravar a nova com a anterior ainda lá passa do limite, e o
       # GitHub despeja o que foi acessado há mais tempo, o estado do crédito, em 03/10 e
       # 15/10/2026. A anterior sai ANTES de gravar, e só quando o estado completo foi
       # restaurado: o que será gravado contém tudo o que ela tinha. Se a gravação falhar,
-      # o silver volta da release energia-estado.
+      # o silver e os metadados voltam da release energia-estado.
+      # Falha na proteção inicial de meta impede tanto a poda quanto a gravação.
       - name: Liberar a cópia anterior do estado antes de gravar
-        if: always() && steps.feita.outputs.sim == '0' && steps.verificar.outputs.coletou == '1' && steps.restaurar.outputs.cache-matched-key != ''
+        if: always() && steps.feita.outputs.sim == '0' && steps.verificar.outputs.coletou == '1' && steps.meta_cache.outcome == 'success' && steps.restaurar.outputs.cache-matched-key != ''
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
@@ -196,7 +255,8 @@ jobs:
           scripts/podar_cache.sh energia-estado- 0
 
       - name: Guardar estado (vintages coletadas antes do corte)
-        if: always() && steps.feita.outputs.sim == '0' && steps.verificar.outputs.coletou == '1'
+        id: guardar
+        if: always() && steps.feita.outputs.sim == '0' && steps.verificar.outputs.coletou == '1' && steps.meta_cache.outcome == 'success'
         uses: actions/cache/save@v4
         with:
           path: data/energia
@@ -208,11 +268,18 @@ jobs:
       # coexistem; podar de novo logo depois de gravar, mantendo só a mais recente,
       # limita essa sobreposição a minutos.
       - name: Manter só a cópia mais recente do estado
-        if: always() && steps.feita.outputs.sim == '0' && steps.verificar.outputs.coletou == '1' && steps.restaurar.outputs.cache-matched-key != ''
+        if: always() && steps.feita.outputs.sim == '0' && steps.verificar.outputs.coletou == '1' && steps.guardar.outcome == 'success' && steps.restaurar.outputs.cache-matched-key != ''
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: scripts/podar_cache.sh energia-estado- 1
+
+      - name: Repor metadados no diretório de trabalho da previsão
+        if: always() && steps.feita.outputs.sim == '0' && steps.verificar.outputs.coletou == '1'
+        run: |
+          if [ -d /tmp/energia-meta-previsao/pasta ]; then
+            mv /tmp/energia-meta-previsao/pasta data/energia/meta
+          fi
 
       - name: Commit do arquivo de emissões (e da gold, se os testes passaram)
         if: always() && steps.feita.outputs.sim == '0' && steps.emitir.outputs.pular != '1'

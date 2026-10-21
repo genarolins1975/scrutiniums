@@ -4,7 +4,7 @@ name: Atualizar dados do Setor Elétrico
 # CCEE direta (acesso automatizado instável; o seed versionado com sha256 garante o
 # PLD até a última captura), reconstrói a gold em public/energia e publica.
 # O histórico de vintages (silver) fica no cache do Actions e, como cópia durável,
-# na release "energia-estado", junto do bronze vigente em partes menores que 2 GB;
+# na release "energia-estado", junto do bronze vigente em partes menores que 2 GB e dos metadados auxiliares;
 # sem os dois, o alerta abre issue. Separado do workflow do Crédito: falha de um domínio
 # não atrasa o outro. O ONS atualiza os conjuntos às 12h e às 19h de Brasília.
 on:
@@ -81,6 +81,49 @@ jobs:
             fi
           fi
           echo "restaurado=sim" >> "$GITHUB_OUTPUT"
+
+      # Meta contém notas literais da fonte, catálogos CKAN e conferência do bronze.
+      # Completa também cache parcial; nunca substitui arquivo que veio do cache.
+      - name: Restaurar metadados da cópia durável
+        id: meta_restaurada
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/energia-meta-restaurada
+          # Upload interrompido pode deixar asset em state=starter: só vale uploaded.
+          if gh api "repos/$GITHUB_REPOSITORY/releases/tags/energia-estado" \
+            --jq '.assets[] | select(.state == "uploaded" and (.name | startswith("energia-meta-") and endswith(".tar.gz"))) | .name' > /tmp/energia-meta-geracoes.txt; then
+            ULTIMO=$(sort /tmp/energia-meta-geracoes.txt | tail -n 1)
+            if [ -n "$ULTIMO" ]; then
+              gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "$ULTIMO" --dir /tmp/energia-meta-restaurada
+              python3 -m pipeline.energia.estado_meta restaurar "/tmp/energia-meta-restaurada/$ULTIMO"
+            else
+              echo "::warning::release sem metadados duráveis; primeira cópia será criada após a coleta"
+            fi
+          else
+            echo "::warning::não foi possível consultar a cópia durável dos metadados"
+            exit 1
+          fi
+          rm -rf /tmp/energia-meta-restaurada
+
+      - name: Alertar falha na restauração dos metadados
+        if: steps.meta_restaurada.outcome == 'failure'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          echo "::warning::metadados duráveis não restaurados; notas da fonte podem estar indisponíveis"
+          TITULO="Setor Elétrico: metadados duráveis não restaurados"
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          CORPO="Execução ${RUN_URL}: falhou a extração da cópia durável de data/energia/meta. Os arquivos existentes no cache foram preservados; consulte o log antes de publicar notas de fonte incompletas."
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "$CORPO"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
+          fi
 
       # Passo próprio: falha no bronze não se confunde com o silver já restaurado e
       # não passa em silêncio (o alerta abaixo abre issue).
@@ -181,12 +224,78 @@ jobs:
           REG=$(grep '^REGRESSOES_ENERGIA=' energia.log | sed 's/^REGRESSOES_ENERGIA=//' || true)
           echo "regressoes=${REG}" >> "$GITHUB_OUTPUT"
 
+      - name: Cópia durável do silver (release energia-estado)
+        id: silver_duravel
+        if: steps.pipeline.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gzip -c data/energia/silver/energia.db > /tmp/energia-silver.db.gz
+          FAMILIAS=$(cd data/energia/silver && ls *.db 2>/dev/null | grep -v '^energia.db$' || true)
+          if [ -n "$FAMILIAS" ]; then
+            tar -czf /tmp/energia-silver-familias.tar.gz -C data/energia/silver $FAMILIAS
+          fi
+          gh release view energia-estado --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
+            gh release create energia-estado --repo "$GITHUB_REPOSITORY" --title "Estado do pipeline de energia" \
+              --notes "Cópia durável do silver com vintages, do bronze vigente e dos metadados auxiliares (uso interno). Não é dado publicado." --prerelease
+          gh release upload energia-estado /tmp/energia-silver.db.gz --repo "$GITHUB_REPOSITORY" --clobber
+          if [ -f /tmp/energia-silver-familias.tar.gz ]; then
+            gh release upload energia-estado /tmp/energia-silver-familias.tar.gz --repo "$GITHUB_REPOSITORY" --clobber
+          fi
+          rm -f /tmp/energia-silver.db.gz /tmp/energia-silver-familias.tar.gz
+
+      # Independente do silver e do bronze: falha aqui não impede salvá-los.
+      # Arquivo temporário fora de data/energia, sem ampliar o cache do Actions.
+      - name: Cópia durável dos metadados (release energia-estado)
+        id: meta_duravel
+        if: steps.pipeline.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/energia-meta-duravel
+          META_NOVO="energia-meta-$(date -u +%Y%m%dT%H%M%SZ)-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.tar.gz"
+          python3 -m pipeline.energia.estado_meta guardar "/tmp/energia-meta-duravel/$META_NOVO"
+          # Sem --clobber: a cópia anterior só sai depois de confirmado o upload novo.
+          gh release upload energia-estado "/tmp/energia-meta-duravel/$META_NOVO" --repo "$GITHUB_REPOSITORY"
+          gh release view energia-estado --repo "$GITHUB_REPOSITORY" --json assets \
+            --jq '.assets[].name | select(startswith("energia-meta-") and endswith(".tar.gz"))' > /tmp/energia-meta-assets.txt
+          while IFS= read -r nome; do
+            if [ "$nome" != "$META_NOVO" ]; then
+              gh release delete-asset energia-estado "$nome" --repo "$GITHUB_REPOSITORY" --yes
+            fi
+          done < /tmp/energia-meta-assets.txt
+          rm -rf /tmp/energia-meta-duravel
+
+      - name: Alertar falha na cópia durável dos metadados
+        if: steps.meta_duravel.outcome == 'failure'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          echo "::warning::cópia durável dos metadados falhou; o silver tem cópia em passo anterior"
+          TITULO="Setor Elétrico: cópia durável dos metadados falhou"
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          CORPO="Execução ${RUN_URL}: falhou a cópia de data/energia/meta na release energia-estado. O silver é salvo antes, em passo próprio. Nenhum asset meta anterior é substituído; uma falha no upload preserva a geração anterior."
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "$CORPO"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
+          fi
+
+      # A gravação do cache não depende das cópias duráveis (review #283): o cache é a única
+      # cópia das vintages coletadas nesta execução até a próxima cópia durável, e uma falha
+      # do pipeline ou do upload não pode descartá-las. meta é regenerado na coleta seguinte;
+      # vintages não se recuperam.
       # Uma cópia do estado da energia tem ~7,2 GB (15/10/2026) e o limite de cache do
       # repositório é 10 GB: gravar a nova com a anterior ainda lá passa do limite, e o
       # GitHub despeja o que foi acessado há mais tempo, o estado do crédito, em 03/10 e
       # 15/10/2026. A anterior sai ANTES de gravar, e só quando o estado completo foi
       # restaurado: o que será gravado contém tudo o que ela tinha. Se a gravação falhar,
-      # o silver e o bronze vigente voltam da release energia-estado (issue #116).
+      # o silver, meta e o bronze vigente voltam da release energia-estado (issue #116).
       - name: Liberar a cópia anterior do estado antes de gravar
         if: always() && steps.restaurar.outputs.cache-matched-key != ''
         continue-on-error: true
@@ -218,26 +327,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: scripts/podar_cache.sh energia-estado- 1
-
-      - name: Cópia durável do silver (release energia-estado)
-        if: steps.pipeline.outcome == 'success'
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gzip -c data/energia/silver/energia.db > /tmp/energia-silver.db.gz
-          FAMILIAS=$(cd data/energia/silver && ls *.db 2>/dev/null | grep -v '^energia.db$' || true)
-          if [ -n "$FAMILIAS" ]; then
-            tar -czf /tmp/energia-silver-familias.tar.gz -C data/energia/silver $FAMILIAS
-          fi
-          gh release view energia-estado --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
-            gh release create energia-estado --repo "$GITHUB_REPOSITORY" --title "Estado do pipeline de energia" \
-              --notes "Cópia durável do silver com vintages e do bronze vigente (uso interno). Não é dado publicado." --prerelease
-          gh release upload energia-estado /tmp/energia-silver.db.gz --repo "$GITHUB_REPOSITORY" --clobber
-          if [ -f /tmp/energia-silver-familias.tar.gz ]; then
-            gh release upload energia-estado /tmp/energia-silver-familias.tar.gz --repo "$GITHUB_REPOSITORY" --clobber
-          fi
-          rm -f /tmp/energia-silver.db.gz /tmp/energia-silver-familias.tar.gz
 
       # Depois do silver e em passo próprio: uma falha aqui (disco, SQLite, upload)
       # nunca impede a cópia do silver, que é o ativo que não se recupera (review #278).
