@@ -2091,6 +2091,66 @@ export type PainelQualidade = (typeof PAINEIS_QUALIDADE)[number]["id"];
 export const painelQualidade = (id: PainelQualidade, idioma: Idioma = idiomaEnergia()) => paineisQualidade(idioma).find((p) => p.id === id)!;
 
 /**
+ * Duas páginas (diagnóstico de layout de 20/10/2026, item 6): a entrada responde ao leitor pelo município e mostra a duração, as
+ * compensações e o atendimento (P051, P053, P054); a comparação entre distribuidoras diante do próprio limite (P052) tem página própria,
+ * como a Carga. A escolha de distribuidora segue no endereço (`?dist=`) de uma página à outra.
+ */
+export const ROTA_QUALIDADE = "/setor-eletrico/qualidade";
+export const ROTA_COMPARAR_DISTRIBUIDORAS = `${ROTA_QUALIDADE}/comparar-distribuidoras`;
+export type PaginaQualidade = "entrada" | "comparar";
+export const paginaDoPainelQualidade = (id: PainelQualidade): PaginaQualidade => (id === "p052" ? "comparar" : "entrada");
+
+/** Endereço de um painel visto de uma das duas páginas: âncora no mesmo documento, ou rota e âncora quando o painel mora na outra. */
+export function hrefPainelQualidade(id: PainelQualidade, de: PaginaQualidade, idioma: Idioma = idiomaEnergia()): string {
+  const ancora = painelQualidade(id, idioma).ancora;
+  const destino = paginaDoPainelQualidade(id);
+  if (destino === de) return `#${ancora}`;
+  return `${destino === "comparar" ? ROTA_COMPARAR_DISTRIBUIDORAS : ROTA_QUALIDADE}#${ancora}`;
+}
+
+const PAGINA_QUALIDADE = /^(\/en)?\/setor-eletrico\/qualidade(\/comparar-distribuidoras)?\/?$/;
+const LISTA_CNPJ = /^\d{14}(,\d{14})*$/;
+
+/**
+ * Destino de um clique entre as duas páginas de Qualidade com a escolha de distribuidora (?dist=) da página de origem, ou null quando o
+ * link segue como está: mesma página, outra origem, fora de Qualidade, link com ?dist= próprio ou origem sem escolha válida.
+ */
+export function destinoComEscolha(href: string, atual: string): string | null {
+  let alvo: URL;
+  let origem: URL;
+  try {
+    origem = new URL(atual);
+    alvo = new URL(href, atual);
+  } catch {
+    return null;
+  }
+  const dist = origem.searchParams.get("dist");
+  if (!dist || !LISTA_CNPJ.test(dist)) return null;
+  if (alvo.origin !== origem.origin || !PAGINA_QUALIDADE.test(alvo.pathname)) return null;
+  if (alvo.pathname === origem.pathname || alvo.searchParams.has("dist")) return null;
+  alvo.searchParams.set("dist", dist);
+  return alvo.toString();
+}
+
+/** As duas páginas como itens de navegação local: o nome curto e a pergunta de cada uma. */
+export function paginasQualidade(idioma: Idioma = idiomaEnergia()): { id: PaginaQualidade; href: string; rotulo: string; pergunta: string }[] {
+  return [
+    {
+      id: "entrada",
+      href: ROTA_QUALIDADE,
+      rotulo: tx("No meu município e no Brasil", "In my municipality and in Brazil", idioma),
+      pergunta: tx("Quanto tempo e quantas vezes falta luz?", "How long and how often is the power cut?", idioma),
+    },
+    {
+      id: "comparar",
+      href: ROTA_COMPARAR_DISTRIBUIDORAS,
+      rotulo: tx("Comparar distribuidoras", "Compare distribution utilities", idioma),
+      pergunta: tx("Como cada distribuidora fica diante do próprio limite?", "How does each distribution utility stand against its own limit?", idioma),
+    },
+  ];
+}
+
+/**
  * Valores da faixa de métricas da abertura. São os mesmos que a resposta, o gráfico e a tabela do P051 e do P052 leem (o ano de
  * referência da gold e o anterior); a faixa não calcula nada, só escolhe e converte a unidade de exibição (horas e minutos).
  */
@@ -3228,6 +3288,34 @@ export function textoConcessionariasDesde(g: QualidadeGold, desde: number | null
  * Orientação para quem mora num município que o mapa deixa sem valor: sem dado não quer dizer sem energia, e a pessoa precisa saber a quem
  * perguntar. Vazio quando o município tem valor. O link para a página Conta de luz (que acha a distribuidora pelo município) fica no componente.
  */
+/**
+ * O que os números da resposta do município são, em uma frase de leitor: do conjunto inteiro, do menor ao maior dos conjuntos, nunca
+ * uma média municipal (a fonte não diz quantas unidades de cada conjunto ficam no município), e médias por unidade.
+ */
+export function notaValoresMunicipio(m: Pick<MunicipioQualidade, "relacao" | "conjuntos">, idioma: Idioma = idiomaEnergia()): string {
+  const medias = tx(" São médias por unidade consumidora: há casas bem acima delas.", " They are averages per consumer unit: some homes are well above them.", idioma);
+  switch (m.relacao) {
+    case "conjunto_exclusivo":
+      return tx("Um conjunto elétrico atende só este município: os números são dele.", "One consumer set serves only this municipality: the figures are its own.", idioma) + medias;
+    case "conjunto_compartilhado":
+      return (
+        tx(
+          "O conjunto que atende o município também atende outros: os números são do conjunto inteiro, não medidos só aqui.",
+          "The consumer set serving the municipality also serves others: the figures are for the whole set, not measured here alone.",
+          idioma,
+        ) + medias
+      );
+    default:
+      return (
+        tx(
+          `${num(m.conjuntos.length, 0)} conjuntos atendem o município: os números vão do menor ao maior deles, e a ANEEL não publica média por município.`,
+          `${num(m.conjuntos.length, 0, idioma)} consumer sets serve the municipality: the figures range from the lowest to the highest of them, and ANEEL does not publish a municipal average.`,
+          idioma,
+        ) + medias
+      );
+  }
+}
+
 export function orientacaoSemDado(m: Pick<MunicipioQualidade, "relacao">, idioma: Idioma = idiomaEnergia()): string {
   if (m.relacao !== "sem_relacao_na_fonte" && m.relacao !== "sem_conjunto_ativo") return "";
   return tx(

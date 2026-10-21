@@ -10,10 +10,10 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "d932a71658c21a96d3844ed462f3be1a0b7b2937f80a5b937f3a8e5ad23f56df",
-    "arquivos_analisados": 1473,
-    "fontes_sha256": "c109c958f9b8fdf36530dcbadae3153edd86567016ffcef7fec6e2b61f0464f7",
-    "pendencias_sha256": "1086e76ace00c845dd7532369acb9e361d314f2ad30ab5b229d3cab1c945437f",
+    "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
+    "arquivos_analisados": 1484,
+    "fontes_sha256": "2893f6557e1c3a10c9164a681a2aa684ccd14899cc56381ddb60e0cee93440f4",
+    "pendencias_sha256": "f3c89d0559bfe21c5192154a4be742bea65bcd9528e3a2b9ed6d043cebe9d8b7",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -173,20 +173,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 390,
+        "arquivos": 391,
         "candidatos": {
-          "jsx_text": 2108,
-          "atributos": 457,
-          "props": 1106,
-          "outros_literais": 7942,
-          "templates": 1074,
-          "expressoes_nao_resolvidas": 6762,
-          "chaves_objetos": 6350
+          "jsx_text": 2077,
+          "atributos": 456,
+          "props": 1087,
+          "outros_literais": 7926,
+          "templates": 1073,
+          "expressoes_nao_resolvidas": 6806,
+          "chaves_objetos": 6374
         },
         "exclusoes": {
-          "importacoes": 1709,
-          "atributos_tecnicos": 3611,
-          "tipos": 459
+          "importacoes": 1719,
+          "atributos_tecnicos": 3595,
+          "tipos": 461
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -207,7 +207,7 @@
         "paginas_pt_fora_do_adaptador": 7,
         "paginas_pt_literais_sem_irma": 28,
         "pares_estruturais": 13,
-        "fallbacks_declarados": 8,
+        "fallbacks_declarados": 5,
         "paridade_verificada": false,
         "parciais_declarados": 1
       },
@@ -222,20 +222,20 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 572,
+        "arquivos": 576,
         "candidatos": {
-          "jsx_text": 7648,
-          "atributos": 2903,
-          "props": 18825,
-          "outros_literais": 51086,
-          "templates": 12762,
-          "expressoes_nao_resolvidas": 55521,
-          "chaves_objetos": 36015
+          "jsx_text": 7674,
+          "atributos": 2915,
+          "props": 18872,
+          "outros_literais": 51150,
+          "templates": 12780,
+          "expressoes_nao_resolvidas": 55623,
+          "chaves_objetos": 36036
         },
         "exclusoes": {
-          "importacoes": 4958,
-          "atributos_tecnicos": 8681,
-          "tipos": 3729
+          "importacoes": 4998,
+          "atributos_tecnicos": 8699,
+          "tipos": 3734
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -244,18 +244,18 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 184760,
+        "candidatos_nao_catalogados": 185050,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 79,
-        "paginas_en": 79,
+        "paginas_pt": 80,
+        "paginas_en": 80,
         "handlers": 1,
         "templates_com_parametros": 12,
-        "paginas_pt_literais": 73,
+        "paginas_pt_literais": 74,
         "paginas_pt_fora_do_adaptador": 6,
         "paginas_pt_literais_sem_irma": -6,
-        "pares_estruturais": 79,
+        "pares_estruturais": 80,
         "fallbacks_declarados": 0,
         "paridade_verificada": false
       },
@@ -322,7 +322,7 @@
         "candidatos": {
           "jsx_text": 1404,
           "atributos": 377,
-          "props": 1895,
+          "props": 1896,
           "outros_literais": 3514,
           "templates": 498,
           "expressoes_nao_resolvidas": 3490,
@@ -330,7 +330,7 @@
         },
         "exclusoes": {
           "importacoes": 495,
-          "atributos_tecnicos": 1858,
+          "atributos_tecnicos": 1860,
           "tipos": 216
         },
         "scripts_embutidos": {},
@@ -340,7 +340,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 15799,
+        "candidatos_nao_catalogados": 15800,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -366,20 +366,20 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 235,
+        "arquivos": 241,
         "candidatos": {
-          "jsx_text": 3123,
-          "atributos": 1063,
-          "props": 1339,
-          "outros_literais": 7774,
-          "templates": 798,
-          "expressoes_nao_resolvidas": 8006,
-          "chaves_objetos": 4781
+          "jsx_text": 3269,
+          "atributos": 1089,
+          "props": 1500,
+          "outros_literais": 7987,
+          "templates": 848,
+          "expressoes_nao_resolvidas": 8387,
+          "chaves_objetos": 4864
         },
         "exclusoes": {
-          "importacoes": 923,
-          "atributos_tecnicos": 3368,
-          "tipos": 467
+          "importacoes": 958,
+          "atributos_tecnicos": 3613,
+          "tipos": 510
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -388,7 +388,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 26884,
+        "candidatos_nao_catalogados": 27944,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -464,17 +464,17 @@
       "interface": {
         "arquivos": 29,
         "candidatos": {
-          "jsx_text": 422,
+          "jsx_text": 418,
           "atributos": 97,
-          "props": 16,
-          "outros_literais": 696,
+          "props": 6,
+          "outros_literais": 699,
           "templates": 21,
-          "expressoes_nao_resolvidas": 586,
-          "chaves_objetos": 410
+          "expressoes_nao_resolvidas": 580,
+          "chaves_objetos": 401
         },
         "exclusoes": {
-          "importacoes": 68,
-          "atributos_tecnicos": 333,
+          "importacoes": 67,
+          "atributos_tecnicos": 329,
           "tipos": 5
         },
         "scripts_embutidos": {},
@@ -484,7 +484,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 2248,
+        "candidatos_nao_catalogados": 2222,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -563,10 +563,10 @@
           "jsx_text": 153,
           "atributos": 211,
           "props": 170,
-          "outros_literais": 12941,
-          "templates": 2629,
-          "expressoes_nao_resolvidas": 9196,
-          "chaves_objetos": 5084,
+          "outros_literais": 12982,
+          "templates": 2667,
+          "expressoes_nao_resolvidas": 9307,
+          "chaves_objetos": 5094,
           "textos": 158
         },
         "exclusoes": {
@@ -587,7 +587,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 30542,
+        "candidatos_nao_catalogados": 30742,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -821,7 +821,7 @@
         "pt": "/entrar",
         "en": "/en/entrar",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/entrar/page.tsx",
           "en": "src/app/en/entrar/page.tsx"
@@ -832,7 +832,7 @@
         "pt": "/entrar/sms",
         "en": "/en/entrar/sms",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/entrar/sms/page.tsx",
           "en": "src/app/en/entrar/sms/page.tsx"
@@ -843,7 +843,7 @@
         "pt": "/entrar/sms/verificar",
         "en": "/en/entrar/sms/verificar",
         "dominio": "plataforma",
-        "conteudo_declarado": "portugues_marcado",
+        "conteudo_declarado": "traduzido",
         "fontes": {
           "pt": "src/app/entrar/sms/verificar/page.tsx",
           "en": "src/app/en/entrar/sms/verificar/page.tsx"
@@ -1605,6 +1605,17 @@
         "arquivos_presentes": true
       },
       {
+        "pt": "/setor-eletrico/qualidade/comparar-distribuidoras",
+        "en": "/en/setor-eletrico/qualidade/comparar-distribuidoras",
+        "dominio": "energia",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/setor-eletrico/qualidade/comparar-distribuidoras/page.tsx",
+          "en": "src/app/en/setor-eletrico/qualidade/comparar-distribuidoras/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
         "pt": "/setor-eletrico/rede",
         "en": "/en/setor-eletrico/rede",
         "dominio": "energia",
@@ -1814,8 +1825,8 @@
         "arquivos_presentes": true
       }
     ],
-    "pares_estruturais": 93,
-    "fallbacks_declarados": 9,
+    "pares_estruturais": 94,
+    "fallbacks_declarados": 6,
     "html_verificado_pelo_inventario": false,
     "acesso_verificado_pelo_inventario": false
   },

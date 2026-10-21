@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import LinkSemPrefetch from "@/components/energia/LinkSemPrefetch";
 import { MapaCoropletico } from "@/components/energia/MapaCoropletico";
 import { PequenosMultiplos } from "@/components/energia/PequenosMultiplos";
-import { QualidadeConjuntosDoMunicipio } from "@/components/energia/QualidadeConjuntosDoMunicipio";
 import { QualidadeEscala } from "@/components/energia/QualidadeEscala";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
@@ -23,6 +22,7 @@ import {
   CORES_MAPA,
   CORTES_MAPA,
   MEDIDAS_MAPA,
+  ROTA_COMPARAR_DISTRIBUIDORAS,
   carregarMunicipios,
   carregarUmaVez,
   colunasMunicipios,
@@ -52,8 +52,8 @@ import type { QualidadeSeriesDistribuidorasGold } from "@/lib/energia/tipos-qual
  * tabela grava `?mun=` na URL; o mapa acende o município, a tabela marca a linha e o
  * quadro ao lado mostra os conjuntos, as distribuidoras e o histórico anual delas diante
  * do limite, em DEC e em FEC, cada um no seu bloco. "Comparar estas distribuidoras" leva a escolha para
- * `?dist=`, lida pelos pequenos múltiplos e pelo painel de limites, e o link leva o leitor até a seção
- * de comparação. Voltar e avançar restauram tudo.
+ * `?dist=` na página Comparar distribuidoras, lida pelos pequenos múltiplos e pelo painel de limites. Os conjuntos do município, com
+ * o limite de cada um, ficam na resposta da busca no alto da página (a mesma escolha `?mun=`), para a tabela não aparecer duas vezes. Voltar e avançar restauram tudo.
  *
  * Peso: a malha municipal (1,3 MB), o CSV de municípios (o mesmo arquivo de download)
  * e as séries por distribuidora só são buscados quando o mapa chega perto da tela ou
@@ -77,7 +77,6 @@ export function QualidadeMapa({
   fonte,
   versao,
   avisosFec = {},
-  tamanhoConjuntos,
 }: {
   ano: number;
   urlMunicipios: string;
@@ -92,8 +91,6 @@ export function QualidadeMapa({
   versao: string;
   /** Distribuidoras cujo FEC do ano é de cobertura parcial (nota no histórico do FEC). */
   avisosFec?: AvisosFec;
-  /** Tamanho do arquivo anual dos conjuntos, dito antes de baixar os valores da ficha do município. */
-  tamanhoConjuntos?: string;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const idioma = useIdioma();
@@ -325,12 +322,12 @@ export function QualidadeMapa({
             </dl>
             <div className="flex flex-wrap gap-2">
               {selecionado.cnpjs.length > 0 && (
-                <a href="#comparar-distribuidoras" className={BOTAO} onClick={() => definir({ dist: cnpjsSel })}>
+                <LinkSemPrefetch href={`${ROTA_COMPARAR_DISTRIBUIDORAS}?dist=${cnpjsSel.join(",")}#comparar-distribuidoras`} className={BOTAO}>
                   {tx(
                     <>Comparar {cnpjsSel.length === 1 ? "esta distribuidora" : "estas distribuidoras"} com o próprio limite</>,
                     <>Compare {cnpjsSel.length === 1 ? "this distribution utility" : "these distribution utilities"} with its own limit</>,
                   )}
-                </a>
+                </LinkSemPrefetch>
               )}
               <button type="button" className={BOTAO} onClick={() => selecionar(null)}>
                 {tx("Limpar município", "Clear municipality")}
@@ -350,14 +347,18 @@ export function QualidadeMapa({
                 )}
               </p>
             )}
-            <QualidadeConjuntosDoMunicipio
-              ano={ano}
-              codigoMunicipio={selecionado.cod}
-              municipio={`${selecionado.nome} (${selecionado.uf})`}
-              codigos={selecionado.conjuntos}
-              fonte={fonte}
-              tamanho={tamanhoConjuntos}
-            />
+            {selecionado.conjuntos.length > 0 && (
+              <p className="text-sm">
+                <a href="#busca-municipio" className="text-energia-dark underline underline-offset-4">
+                  {tx(
+                    <>Os conjuntos que atendem {selecionado.nome}, com o limite de cada um, estão na resposta do alto da página ↑</>,
+                    <>
+                      The consumer sets serving <Nome>{selecionado.nome}</Nome>, with the limit of each one, are in the answer at the top of the page ↑
+                    </>,
+                  )}
+                </a>
+              </p>
+            )}
             {selecionado.cnpjs.length > 1 && serie && <QualidadeEscala valor={escala} onMudar={setEscala} />}
             {selecionado.cnpjs.length > 0 &&
               (serie ? (

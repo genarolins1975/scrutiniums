@@ -2,6 +2,8 @@
 
 import { useId } from "react";
 import { COUNTRIES, type PaisTelefone } from "@/lib/phone";
+import type { Idioma } from "@/lib/idioma";
+import { TEXTOS_ENTRAR } from "@/i18n/paginas/entrar";
 
 /** Seleção de país com label real. Padrão: Brasil. */
 export function CountrySelect({
@@ -9,17 +11,19 @@ export function CountrySelect({
   onChange,
   disabled,
   paises = COUNTRIES,
+  idioma = "pt",
 }: {
   value: string;
   onChange: (code: string) => void;
   disabled?: boolean;
   paises?: readonly PaisTelefone[];
+  idioma?: Idioma;
 }) {
   const id = useId();
   return (
     <div className="flex flex-col gap-1.5">
       <label htmlFor={id} className="rotulo text-carvao-muted">
-        País
+        {TEXTOS_ENTRAR[idioma].pais}
       </label>
       <select
         id={id}

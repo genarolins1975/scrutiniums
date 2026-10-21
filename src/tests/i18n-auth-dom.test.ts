@@ -2,6 +2,7 @@ import { parse, serialize } from "parse5";
 import { describe, expect, it } from "vitest";
 import { verificarPaginaAuth, type CaminhoAuth } from "./suporte/i18n-auth";
 import { verificarFallbackDinamico, type CapturaAnunciador } from "./suporte/i18n-dinamico";
+import { verificarEntradaTraduzida } from "./suporte/i18n-entrada";
 import { attr, elementos, filhos, texto, type Elemento, type No } from "./suporte/i18n-dom";
 
 type Estado = "inicial" | "vazio";
@@ -12,14 +13,32 @@ const SENHA_ID = ":R2:";
 const HOST = '<next-route-announcer style="position: absolute;"></next-route-announcer>';
 const AVISO = '<p data-i18n-aviso lang="en">Portuguese only</p>';
 
-function campoEmail(caminho: CaminhoAuth, estado: Estado, id: string): string {
+/** Textos de /entrar em cada idioma; o cadastro só existe em português. */
+const ENTRAR = {
+  pt: {
+    titulo: "Entrar", marca: ["/", "Scrutiniums — página inicial"], criar: "Criar acesso", seletor: ["Idioma", "Português", "Inglês"],
+    introducao: "Use o e-mail e a senha da sua conta.", email: "E-mail", erroEmail: "Informe um e-mail válido.", senha: "Senha", erroSenha: "Informe sua senha.",
+    submit: "Entrar", esqueci: '<a href="/entrar/sms?recuperar=1">Esqueci minha senha</a>', fim: '<div><p>Prefere entrar sem senha? <a href="/entrar/sms">Entrar com código por SMS</a></p><a href="/cadastro">Ainda não tenho cadastro</a></div>',
+    termos: "Termos de uso", privacidade: "Privacidade",
+  },
+  en: {
+    titulo: "Sign in", marca: ["/en", "Scrutiniums home page"], criar: "Sign up", seletor: ["Language", "Portuguese", "English"],
+    introducao: "Use your account email and password.", email: "Email", erroEmail: "Enter a valid email address.", senha: "Password", erroSenha: "Enter your password.",
+    submit: "Sign in", esqueci: '<a href="/en/entrar/sms?recuperar=1">Forgot your password?</a>', fim: '<div><p>Prefer to sign in without a password? <a href="/en/entrar/sms">Sign in with an SMS code</a></p><a href="/cadastro">I don&#39;t have an account yet</a></div>',
+    termos: "Terms of use", privacidade: "Privacy",
+  },
+} as const;
+
+function campoEmail(caminho: CaminhoAuth, estado: Estado, id: string, idioma: Idioma): string {
   const erro = estado === "vazio";
-  return `<div><label for="${id}">E-mail</label><input id="${id}" name="email" type="email" autocomplete="email" inputmode="email" required value=""${caminho === "/entrar" ? ' maxlength="254"' : ""}${erro ? ` aria-invalid="true" aria-describedby="${id}-erro"` : ""}>${erro ? `<p id="${id}-erro" role="alert">Informe um e-mail válido.</p>` : ""}</div>`;
+  const t = caminho === "/entrar" ? ENTRAR[idioma] : ENTRAR.pt;
+  return `<div><label for="${id}">${t.email}</label><input id="${id}" name="email" type="email" autocomplete="email" inputmode="email" required value=""${caminho === "/entrar" ? ' maxlength="254"' : ""}${erro ? ` aria-invalid="true" aria-describedby="${id}-erro"` : ""}>${erro ? `<p id="${id}-erro" role="alert">${t.erroEmail}</p>` : ""}</div>`;
 }
 
-function campoSenha(estado: Estado, id: string): string {
+function campoSenha(estado: Estado, id: string, idioma: Idioma): string {
   const erro = estado === "vazio";
-  return `<div><label for="${id}">Senha</label><input id="${id}" name="current-password" type="password" autocomplete="current-password" maxlength="72" required value=""${erro ? ` aria-invalid="true" aria-describedby="${id}-erro"` : ""}>${erro ? `<p id="${id}-erro" role="alert">Informe sua senha.</p>` : ""}</div>`;
+  const t = ENTRAR[idioma];
+  return `<div><label for="${id}">${t.senha}</label><input id="${id}" name="current-password" type="password" autocomplete="current-password" maxlength="72" required value=""${erro ? ` aria-invalid="true" aria-describedby="${id}-erro"` : ""}>${erro ? `<p id="${id}-erro" role="alert">${t.erroSenha}</p>` : ""}</div>`;
 }
 
 function consentimentos(estado: Estado): string {
@@ -30,20 +49,22 @@ function consentimentos(estado: Estado): string {
 /** Fixtures de contrato: preservam IDs e relações, sem reproduzir CSS do produto. */
 function documento(caminho: CaminhoAuth, idioma: Idioma = "pt", estado: Estado = "inicial", ids = { email: EMAIL_ID, senha: SENHA_ID }) {
   const entrar = caminho === "/entrar";
-  const titulo = entrar ? "Entrar" : "Crie seu acesso";
-  const seletor = "";
-  const header = `<header><a href="/" aria-label="Scrutiniums — página inicial">Scrutiniums</a><a href="${entrar ? "/cadastro" : "/entrar"}">${entrar ? "Criar acesso" : "Entrar"}</a>${seletor}</header>`;
+  const t = entrar ? ENTRAR[idioma] : ENTRAR.pt;
+  const titulo = entrar ? t.titulo : "Crie seu acesso";
+  const seletor = entrar ? `<div role="group" aria-label="${t.seletor[0]}"><span aria-hidden="true">${t.seletor[0]}</span>`
+    + `<a href="/entrar" hreflang="pt-BR">${t.seletor[1]}</a><a href="/en/entrar" hreflang="en">${t.seletor[2]}</a></div>` : "";
+  const header = `<header><a href="${t.marca[0]}" aria-label="${t.marca[1]}">Scrutiniums</a><a href="${entrar ? "/cadastro" : "/entrar"}">${entrar ? t.criar : "Entrar"}</a>${seletor}</header>`;
   const introducao = entrar
-    ? "<p>Use o e-mail e a senha da sua conta.</p>"
+    ? `<p>${t.introducao}</p>`
     : '<div aria-label="Etapa 1 de 3"><span aria-hidden="true">01</span><span>Etapa 1 de 3</span></div>';
   const fimFormulario = entrar
-    ? '<div><p>Prefere entrar sem senha? <a href="/entrar/sms">Entrar com código por SMS</a></p><a href="/cadastro">Ainda não tenho cadastro</a></div>'
+    ? t.fim
     : '<div><a href="/entrar">Já tenho cadastro</a><p>100% gratuito · sem assinatura · sem cobrança</p></div>';
-  const form = `<form novalidate>${campoEmail(caminho, estado, ids.email)}${entrar ? campoSenha(estado, ids.senha) + '<a href="/entrar/sms?recuperar=1">Esqueci minha senha</a>' : consentimentos(estado)}<button type="submit">${entrar ? "Entrar" : "Continuar"}</button>${fimFormulario}</form>`;
+  const form = `<form novalidate>${campoEmail(caminho, estado, ids.email, idioma)}${entrar ? campoSenha(estado, ids.senha, idioma) + t.esqueci : consentimentos(estado)}<button type="submit">${entrar ? t.submit : "Continuar"}</button>${fimFormulario}</form>`;
   const main = `<main><section>${entrar ? "" : introducao}<h1>${titulo}</h1>${entrar ? introducao : "<p>Informe seu e-mail de contato para começar.</p>"}${form}</section></main>`;
-  const footer = '<footer><p>scrutiniums.com</p><p><a href="/termos">Termos de uso</a> · <a href="/privacidade">Privacidade</a></p></footer>';
+  const footer = `<footer><p>scrutiniums.com</p><p><a href="/termos">${t.termos}</a> · <a href="/privacidade">${t.privacidade}</a></p></footer>`;
   const produto = `<div>${header}${main}${footer}</div>`;
-  const corpo = idioma === "en" ? `${AVISO}<div data-i18n-estado="portugues_marcado" lang="pt-BR">${produto}</div>` : produto;
+  const corpo = idioma === "en" && !entrar ? `${AVISO}<div data-i18n-estado="portugues_marcado" lang="pt-BR">${produto}</div>` : produto;
   return parse(`<html lang="${idioma === "en" ? "en" : "pt-BR"}"><head><title>${titulo} · Scrutiniums</title></head><body>${corpo}${HOST}</body></html>`);
 }
 
@@ -101,9 +122,11 @@ describe.each(["/entrar", "/cadastro"] as const)("contrato DOM de %s", (caminho)
     ["autocomplete do e-mail alterado", (doc) => atributo(input(doc, "email"), "autocomplete", "off")],
     ["campo de e-mail removido", (doc) => remover(input(doc, "email"))],
     ["rodapé removido", (doc) => remover(encontrar(doc, (e) => e.tagName === "footer"))],
-    ["oferta indevida de inglês", (doc) => atributo(encontrar(doc, (e) => e.tagName === "header"), "aria-label", "Idioma")],
+    caminho === "/cadastro"
+      ? ["oferta indevida de inglês", (doc) => atributo(encontrar(doc, (e) => e.tagName === "header"), "role", "group")]
+      : ["seletor de idioma removido", (doc) => remover(encontrar(doc, (e) => attr(e, "role") === "group"))],
   ];
-  it.each(adulteracoes)("reprova %s no PT e na ilha EN", (_nome, adulterar) => {
+  it.each(adulteracoes)("reprova %s em PT e EN", (_nome, adulterar) => {
     for (const idioma of ["pt", "en"] as const) {
       const doc = documento(caminho, idioma);
       adulterar(doc);
@@ -121,7 +144,7 @@ describe.each(["/entrar", "/cadastro"] as const)("contrato DOM de %s", (caminho)
     expect(() => verificarPaginaAuth(documento(caminho), caminho, "vazio")).toThrow();
   });
 
-  it("reprova a ilha EN sem aviso visível", () => {
+  it.runIf(caminho === "/cadastro")("reprova a ilha EN sem aviso visível", () => {
     const doc = documento(caminho, "en");
     atributo(encontrar(doc, (e) => attr(e, "data-i18n-aviso") !== undefined), "hidden", "");
     expect(() => verificarPaginaAuth(doc, caminho)).toThrow();
@@ -202,88 +225,124 @@ function mudarParagrafo(doc: No, anterior: string, novo: string): void {
   no.value = novo;
 }
 
-describe("comparação integral com adaptação explícita dos IDs dos Fields", () => {
-  const cenarios: [CaminhoAuth, Estado][] = [
-    ["/entrar", "inicial"], ["/entrar", "vazio"],
-    ["/cadastro", "inicial"], ["/cadastro", "vazio"],
-  ];
-  it.each(cenarios)("compara %s no estado %s sem modificar os documentos", (caminho, estado) => {
-    const { pt, en } = par(caminho, estado);
+describe("cadastro: comparação integral com adaptação explícita dos IDs dos Fields", () => {
+  const estados: Estado[] = ["inicial", "vazio"];
+  it.each(estados)("compara /cadastro no estado %s sem modificar os documentos", (estado) => {
+    const { pt, en } = par("/cadastro", estado);
     const antes = [serialize(pt), serialize(en)];
-    verificarFallbackDinamico(pt, en, anunciador("pt-BR"), anunciador("en"), { caminho, estado });
+    verificarFallbackDinamico(pt, en, anunciador("pt-BR"), anunciador("en"), { caminho: "/cadastro", estado });
     expect([serialize(pt), serialize(en)]).toEqual(antes);
     expect(attr(input(pt, "email"), "id")).toBe(EMAIL_ID);
     expect(attr(input(en, "email"), "id")).toBe(EMAIL_EN);
   });
 
-  it.each(cenarios)("sem opção mantém a comparação literal de %s no estado %s", (caminho, estado) => {
-    const { pt, en } = par(caminho, estado);
+  it.each(estados)("sem opção mantém a comparação literal de /cadastro no estado %s", (estado) => {
+    const { pt, en } = par("/cadastro", estado);
     expect(() => verificarFallbackDinamico(pt, en, anunciador("pt-BR"), anunciador("en"))).toThrow();
   });
 
   it("reprova estado inicial explícito quando os dois documentos já exibem erros", () => {
-    const { pt, en } = par("/entrar", "vazio");
+    const { pt, en } = par("/cadastro", "vazio");
     const antes = [serialize(pt), serialize(en)];
-    expect(() => verificarFallbackDinamico(pt, en, anunciador("pt-BR"), anunciador("en"), { caminho: "/entrar", estado: "inicial" })).toThrow();
+    expect(() => verificarFallbackDinamico(pt, en, anunciador("pt-BR"), anunciador("en"), { caminho: "/cadastro", estado: "inicial" })).toThrow();
     expect([serialize(pt), serialize(en)]).toEqual(antes);
   });
 
-  type Adulteracao = {
-    nome: string;
-    caminho: CaminhoAuth;
-    estado: Estado;
-    alterar: (pt: No, en: No) => void;
-    contratosIntactos?: boolean;
-  };
+  it("não aceita o login traduzido como fallback integral", () => {
+    const { pt, en } = par("/entrar", "inicial");
+    expect(() => verificarFallbackDinamico(pt, en, anunciador("pt-BR"), anunciador("en"), { caminho: "/entrar", estado: "inicial" })).toThrow();
+  });
+
+  type Adulteracao = { nome: string; estado: Estado; alterar: (pt: No, en: No) => void; contratosIntactos?: boolean };
   const adulteracoes: Adulteracao[] = [
-    { nome: "ID duplicado", caminho: "/entrar", estado: "inicial", alterar: (_pt, en) => {
-      atributo(encontrar(en, (e) => e.tagName === "section"), "id", EMAIL_EN);
-    } },
-    { nome: "label cruzada com a senha", caminho: "/entrar", estado: "inicial", alterar: (_pt, en) => {
-      atributo(encontrar(en, (e) => e.tagName === "label" && attr(e, "for") === EMAIL_EN), "for", SENHA_EN);
-    } },
-    { nome: "referência ao erro do outro campo", caminho: "/entrar", estado: "vazio", alterar: (_pt, en) => {
-      atributo(input(en, "email"), "aria-describedby", SENHA_EN + "-erro");
-    } },
-    { nome: "ID React adicional fora de Field", caminho: "/cadastro", estado: "inicial", contratosIntactos: true, alterar: (_pt, en) => {
+    { nome: "ID React adicional fora de Field", estado: "inicial", contratosIntactos: true, alterar: (_pt, en) => {
       atributo(encontrar(en, (e) => e.tagName === "section"), "id", ":Rb:");
     } },
-    { nome: "ID de Field fora do formato React", caminho: "/entrar", estado: "inicial", contratosIntactos: true, alterar: (_pt, en) => {
+    { nome: "ID de Field fora do formato React", estado: "inicial", contratosIntactos: true, alterar: (_pt, en) => {
       atributo(input(en, "email"), "id", "email-fixo");
       atributo(encontrar(en, (e) => e.tagName === "label" && attr(e, "for") === EMAIL_EN), "for", "email-fixo");
     } },
-    { nome: "atributo adicional do controle", caminho: "/cadastro", estado: "vazio", contratosIntactos: true, alterar: (_pt, en) => {
+    { nome: "atributo adicional do controle", estado: "vazio", contratosIntactos: true, alterar: (_pt, en) => {
       atributo(input(en, "email"), "data-campo", "extra");
     } },
-    { nome: "atributo existente do controle alterado", caminho: "/entrar", estado: "inicial", contratosIntactos: true, alterar: (pt, en) => {
-      atributo(input(pt, "email"), "class", "campo");
-      atributo(input(en, "email"), "class", "campo-alterado");
-    } },
-    { nome: "texto fora das asserções locais do formulário", caminho: "/entrar", estado: "inicial", contratosIntactos: true, alterar: (_pt, en) => {
-      mudarParagrafo(en, "scrutiniums.com", "scrutiniums.com Texto adicional.");
-    } },
-    { nome: "número fora das asserções locais do formulário", caminho: "/cadastro", estado: "vazio", contratosIntactos: true, alterar: (pt, en) => {
+    { nome: "número fora das asserções locais do formulário", estado: "vazio", contratosIntactos: true, alterar: (pt, en) => {
       mudarParagrafo(pt, "scrutiniums.com", "scrutiniums.com 42");
       mudarParagrafo(en, "scrutiniums.com", "scrutiniums.com 43");
     } },
-    { nome: "termos-erro renomeado junto com sua referência", caminho: "/cadastro", estado: "vazio", alterar: (_pt, en) => {
+    { nome: "termos-erro renomeado junto com sua referência", estado: "vazio", alterar: (_pt, en) => {
       atributo(encontrar(en, (e) => attr(e, "id") === "termos-erro"), "id", "consentimento-erro");
       atributo(encontrar(en, (e) => e.tagName === "input" && attr(e, "aria-describedby") === "termos-erro"), "aria-describedby", "consentimento-erro");
     } },
-    { nome: "aria-controls diferente apontando campos existentes", caminho: "/entrar", estado: "inicial", contratosIntactos: true, alterar: (pt, en) => {
+  ];
+  it.each(adulteracoes)("reprova $nome", ({ estado, alterar, contratosIntactos }) => {
+    const { pt, en } = par("/cadastro", estado);
+    alterar(pt, en);
+    if (contratosIntactos) {
+      verificarPaginaAuth(pt, "/cadastro", estado);
+      verificarPaginaAuth(en, "/cadastro", estado);
+    }
+    const antes = [serialize(pt), serialize(en)];
+    expect(() => verificarFallbackDinamico(pt, en, anunciador("pt-BR"), anunciador("en"), { caminho: "/cadastro", estado })).toThrow();
+    expect([serialize(pt), serialize(en)]).toEqual(antes);
+  });
+});
+
+describe("entrar: paridade da tradução publicada", () => {
+  const estados: Estado[] = ["inicial", "vazio"];
+  it.each(estados)("aceita /entrar traduzido no estado %s sem modificar os documentos", (estado) => {
+    const { pt, en } = par("/entrar", estado);
+    const antes = [serialize(pt), serialize(en)];
+    verificarPaginaAuth(pt, "/entrar", estado);
+    verificarPaginaAuth(en, "/entrar", estado);
+    verificarEntradaTraduzida(pt, en);
+    expect([serialize(pt), serialize(en)]).toEqual(antes);
+  });
+
+  type Adulteracao = { nome: string; estado: Estado; alterar: (pt: No, en: No) => void; contratosIntactos?: boolean };
+  const adulteracoes: Adulteracao[] = [
+    { nome: "ID duplicado", estado: "inicial", alterar: (_pt, en) => {
+      atributo(encontrar(en, (e) => e.tagName === "section"), "id", EMAIL_EN);
+    } },
+    { nome: "label cruzada com a senha", estado: "inicial", alterar: (_pt, en) => {
+      atributo(encontrar(en, (e) => e.tagName === "label" && attr(e, "for") === EMAIL_EN), "for", SENHA_EN);
+    } },
+    { nome: "referência ao erro do outro campo", estado: "vazio", alterar: (_pt, en) => {
+      atributo(input(en, "email"), "aria-describedby", SENHA_EN + "-erro");
+    } },
+    { nome: "atributo existente do controle alterado", estado: "inicial", contratosIntactos: true, alterar: (pt, en) => {
+      atributo(input(pt, "email"), "class", "campo");
+      atributo(input(en, "email"), "class", "campo-alterado");
+    } },
+    { nome: "texto português fora das asserções locais", estado: "inicial", contratosIntactos: true, alterar: (_pt, en) => {
+      mudarParagrafo(en, "scrutiniums.com", "scrutiniums.com Texto adicional para conferir.");
+    } },
+    { nome: "número fora das asserções locais", estado: "vazio", contratosIntactos: true, alterar: (pt, en) => {
+      mudarParagrafo(pt, "scrutiniums.com", "scrutiniums.com 42");
+      mudarParagrafo(en, "scrutiniums.com", "scrutiniums.com 43");
+    } },
+    { nome: "aria-controls diferente apontando campos existentes", estado: "inicial", contratosIntactos: true, alterar: (pt, en) => {
       atributo(input(pt, "email"), "aria-controls", SENHA_ID);
       atributo(input(en, "email"), "aria-controls", SENHA_EN);
     } },
+    { nome: "introdução esquecida em português", estado: "inicial", alterar: (_pt, en) => {
+      mudarParagrafo(en, "Use your account email and password.", "Use o e-mail e a senha da sua conta.");
+    } },
+    { nome: "link do SMS apontando a irmã portuguesa", estado: "inicial", alterar: (_pt, en) => {
+      atributo(encontrar(en, (e) => e.tagName === "a" && attr(e, "href") === "/en/entrar/sms"), "href", "/entrar/sms");
+    } },
   ];
-  it.each(adulteracoes)("reprova $nome", ({ caminho, estado, alterar, contratosIntactos }) => {
-    const { pt, en } = par(caminho, estado);
+  it.each(adulteracoes)("reprova $nome", ({ estado, alterar, contratosIntactos }) => {
+    const { pt, en } = par("/entrar", estado);
     alterar(pt, en);
     if (contratosIntactos) {
-      verificarPaginaAuth(pt, caminho, estado);
-      verificarPaginaAuth(en, caminho, estado);
+      verificarPaginaAuth(pt, "/entrar", estado);
+      verificarPaginaAuth(en, "/entrar", estado);
     }
     const antes = [serialize(pt), serialize(en)];
-    expect(() => verificarFallbackDinamico(pt, en, anunciador("pt-BR"), anunciador("en"), { caminho, estado })).toThrow();
+    expect(() => {
+      verificarPaginaAuth(en, "/entrar", estado);
+      verificarEntradaTraduzida(pt, en);
+    }).toThrow();
     expect([serialize(pt), serialize(en)]).toEqual(antes);
   });
 });
