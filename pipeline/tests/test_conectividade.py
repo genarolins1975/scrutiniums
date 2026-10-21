@@ -377,6 +377,10 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.movel)
         s["municipios"]["3550308"][2][i["pre"]] -= 1
         self.assertTrue(any("somam" in p and "pre" in p for p in V.validar_movel(s)))
+        # UF com acessos mas sem densidade no mês retém (32ª revisão do Codex)
+        s = copy.deepcopy(self.movel)
+        s["densidade"]["ufs"].pop("SP")
+        self.assertTrue(any("sem densidade" in p for p in V.validar_movel(s)))
         # densidade por UF fora da faixa retém, na móvel e na fixa
         s = copy.deepcopy(self.movel)
         s["densidade"]["ufs"]["SP"] = -5
@@ -456,6 +460,10 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.cob)
         s["brasil"]["serie"][ref]["g4"][1] = s["brasil"]["serie"][ref]["todas"][1] + 1
         self.assertTrue(any("Brasil em" in p and "em domicílios" in p for p in V.validar_cobertura(s)))
+        # operadora presente nos municípios e ausente do agregado nacional retém (32ª revisão do Codex)
+        s = copy.deepcopy(self.cob)
+        s["brasil"]["operadoras_ultimo"].pop("CLARO")
+        self.assertTrue(any("ausentes do agregado nacional" in p for p in V.validar_cobertura(s)))
         # agregado nacional por operadora: negativo ou "4G ou 5G" acima de "todas" retém
         s = copy.deepcopy(self.cob)
         s["brasil"]["operadoras_ultimo"]["CLARO"]["g4g5"] = -5

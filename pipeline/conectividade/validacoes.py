@@ -141,6 +141,10 @@ def _acessos_comuns(seed: dict, campos, partes_a, partes_b, nome: str) -> list[s
     fora_uf = [uf for uf, v in d.get("ufs", {}).items() if v is None or not 0 <= v <= F.DENSIDADE_MUNICIPIO_MAX]
     if fora_uf:
         p.append(f"{nome}: UFs com densidade fora de 0 a {F.DENSIDADE_MUNICIPIO_MAX}: {fora_uf[:5]}")
+    # atualização parcial do arquivo de densidade (UF inteira ausente no mês) deixaria "Sem dado" na tabela e no CSV estaduais
+    sem_densidade = sorted(set(seed["ufs"]) - set(d.get("ufs", {})))
+    if sem_densidade:
+        p.append(f"{nome}: UFs com acessos mas sem densidade em {ref}: {sem_densidade[:5]}")
     return p
 
 
@@ -295,7 +299,11 @@ def validar_cobertura(seed: dict, anterior: dict | None = None, hoje: date | Non
         for campo, vals in tec.items():
             if vals is not None and any(x is not None and not 0 <= x <= 100 for x in vals):
                 p.append(f"cobertura: Brasil em {t} com {campo} fora de 0 a 100: {vals}")
-    # o agregado nacional por operadora vai direto ao gráfico por operadora: 0 a 100 e "4G ou 5G" nunca acima de "todas"
+    # o agregado nacional por operadora vai direto ao gráfico por operadora: todas as operadoras dos municípios, 0 a 100 e
+    # "4G ou 5G" nunca acima de "todas"
+    sem_agregado = sorted(set(seed.get("operadoras") or []) - set(br.get("operadoras_ultimo") or {}))
+    if sem_agregado:
+        p.append(f"cobertura: operadoras presentes nos municípios e ausentes do agregado nacional em {ref}: {sem_agregado}")
     for op, v in sorted((br.get("operadoras_ultimo") or {}).items()):
         a, b = v.get("g4g5"), v.get("todas")
         if any(x is not None and not 0 <= x <= 100 for x in (a, b)):
