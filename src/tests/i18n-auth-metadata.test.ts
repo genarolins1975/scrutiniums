@@ -9,11 +9,15 @@ import { generateMetadata as smsVerificarPt, dynamic as modoSmsVerificarPt } fro
 import { metadata as smsEn, dynamic as modoSmsEn } from "@/app/en/entrar/sms/page";
 import { metadata as smsVerificarEn, dynamic as modoSmsVerificarEn } from "@/app/en/entrar/sms/verificar/page";
 
+// Entrada e SMS têm tradução publicada; o cadastro continua só em português.
 const PAGINAS = [
-  { pt: "/entrar", en: "/en/entrar", titulo: "Entrar", gerarPt: entrarPt, metadataEn: entrarEn, modos: [modoEntrarPt, modoEntrarEn] },
-  { pt: "/cadastro", en: "/en/cadastro", titulo: "Crie seu acesso", gerarPt: cadastroPt, metadataEn: cadastroEn, modos: [modoCadastroPt, modoCadastroEn] },
-  { pt: "/entrar/sms", en: "/en/entrar/sms", titulo: "Entrar com código por SMS", gerarPt: smsPt, metadataEn: smsEn, modos: [modoSmsPt, modoSmsEn] },
-  { pt: "/entrar/sms/verificar", en: "/en/entrar/sms/verificar", titulo: "Código de acesso", gerarPt: smsVerificarPt, metadataEn: smsVerificarEn, modos: [modoSmsVerificarPt, modoSmsVerificarEn] },
+  { pt: "/entrar", en: "/en/entrar", titulo: "Entrar", gerarPt: entrarPt, metadataEn: entrarEn, modos: [modoEntrarPt, modoEntrarEn],
+    traducao: { titulo: "Sign in", descricao: "Sign in to Scrutiniums with your email and password to open the observatory dashboards." } },
+  { pt: "/cadastro", en: "/en/cadastro", titulo: "Crie seu acesso", gerarPt: cadastroPt, metadataEn: cadastroEn, modos: [modoCadastroPt, modoCadastroEn], traducao: null },
+  { pt: "/entrar/sms", en: "/en/entrar/sms", titulo: "Entrar com código por SMS", gerarPt: smsPt, metadataEn: smsEn, modos: [modoSmsPt, modoSmsEn],
+    traducao: { titulo: "Sign in with an SMS code", descricao: "Sign in to Scrutiniums with a code sent by SMS to the phone number on your account." } },
+  { pt: "/entrar/sms/verificar", en: "/en/entrar/sms/verificar", titulo: "Código de acesso", gerarPt: smsVerificarPt, metadataEn: smsVerificarEn, modos: [modoSmsVerificarPt, modoSmsVerificarEn],
+    traducao: { titulo: "Access code", descricao: "Enter the access code sent by SMS to sign in to Scrutiniums." } },
 ] as const;
 
 function ogDoPai(): NonNullable<Awaited<ResolvingMetadata>["openGraph"]> {
@@ -43,6 +47,7 @@ describe.each(PAGINAS)("metadados da entrada de autenticação $pt", (pagina) =>
       title: pagina.titulo,
       alternates: {
         canonical: pagina.pt,
+        ...(pagina.traducao ? { languages: { "pt-BR": pagina.pt, en: pagina.en, "x-default": pagina.pt } } : {}),
       },
       openGraph: {
         ...antes, title: { absolute: antes.title.absolute }, url: pagina.pt,
@@ -57,7 +62,26 @@ describe.each(PAGINAS)("metadados da entrada de autenticação $pt", (pagina) =>
     expect(openGraph).toEqual(antes);
   });
 
-  it("anuncia fallback integral em EN com alternativas recíprocas e sem cartão PT", () => {
+  it.runIf(pagina.traducao !== null)("publica o head inglês próprio, indexável e com alternativas recíprocas", () => {
+    const { titulo, descricao } = pagina.traducao!;
+    expect(pagina.metadataEn).toEqual({
+      title: titulo,
+      description: descricao,
+      alternates: {
+        canonical: pagina.en,
+        languages: { "pt-BR": pagina.pt, en: pagina.en, "x-default": pagina.pt },
+      },
+      openGraph: {
+        title: `${titulo} · Scrutiniums`, description: descricao,
+        siteName: "Scrutiniums", type: "website", url: pagina.en,
+        locale: "en_US", alternateLocale: "pt_BR", images: [],
+      },
+      twitter: { card: "summary", title: `${titulo} · Scrutiniums`, description: descricao, images: [] },
+    });
+    expect(pagina.metadataEn).not.toHaveProperty("robots");
+  });
+
+  it.runIf(pagina.traducao === null)("anuncia fallback integral em EN com alternativas recíprocas e sem cartão PT", () => {
     expect(pagina.metadataEn).toEqual({
       title: { absolute: "Scrutiniums · Portuguese only" },
       description: "Portuguese only",

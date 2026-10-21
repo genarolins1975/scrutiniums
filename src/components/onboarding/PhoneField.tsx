@@ -1,6 +1,8 @@
 "use client";
 
 import { useId } from "react";
+import type { Idioma } from "@/lib/idioma";
+import { TEXTOS_ENTRAR } from "@/i18n/paginas/entrar";
 
 /**
  * Campo de telefone com máscara visual brasileira quando o país é BR:
@@ -23,13 +25,16 @@ export function PhoneField({
   onChange,
   error,
   disabled,
+  idioma = "pt",
 }: {
   country: string;
   value: string;
   onChange: (value: string) => void;
   error?: string;
   disabled?: boolean;
+  idioma?: Idioma;
 }) {
+  const t = TEXTOS_ENTRAR[idioma];
   const id = useId();
   const errorId = `${id}-erro`;
   const isBr = country === "BR";
@@ -45,7 +50,7 @@ export function PhoneField({
   return (
     <div className="flex flex-col gap-1.5">
       <label htmlFor={id} className="rotulo text-carvao-muted">
-        Telefone celular
+        {t.telefone}
       </label>
       <input
         id={id}
@@ -55,7 +60,7 @@ export function PhoneField({
         disabled={disabled}
         value={value}
         onChange={(e) => handleChange(e.target.value)}
-        placeholder={isBr ? "(11) 91234-5678" : "Número com DDD"}
+        placeholder={isBr ? "(11) 91234-5678" : t.telefonePlaceholder}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? errorId : undefined}
         className={`min-h-[44px] border bg-papel px-3 py-2 text-base text-carvao placeholder:text-mineral focus:border-bronze disabled:opacity-50 ${

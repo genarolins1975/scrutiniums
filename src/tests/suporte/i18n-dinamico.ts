@@ -4,7 +4,7 @@ import { LINKEDIN_URL } from "@/lib/contato";
 import { PRIVACY_VERSION } from "@/lib/versoesPoliticas";
 import { attr, conteudo, elementos, filhos, oculto, tag, texto, unico, vazamentos, type Elemento, type Forma, type No } from "./i18n-dom";
 import { projetarIlhaAuth, verificarPaginaAuth, type ComparacaoAuth } from "./i18n-auth";
-import { projetarIlhaSms, verificarPaginaSms, type ComparacaoSms } from "./i18n-sms";
+import { verificarPaginaSms } from "./i18n-sms";
 
 type NoAnunciador = { tipo: number; nome: string; atributos: [string, string][]; filhos: number; texto: string };
 export type CapturaAnunciador = {
@@ -150,7 +150,7 @@ function corpoSemAnunciador(doc: No, captura: CapturaAnunciador): Forma[] {
   return conteudo({ ...body, childNodes: body.childNodes.filter((no) => no !== host) });
 }
 
-export function verificarFallbackDinamico(pt: No, en: No, anunciadorPt: CapturaAnunciador, anunciadorEn: CapturaAnunciador, formulario?: ComparacaoAuth | ComparacaoSms): void {
+export function verificarFallbackDinamico(pt: No, en: No, anunciadorPt: CapturaAnunciador, anunciadorEn: CapturaAnunciador, formulario?: ComparacaoAuth): void {
   verificarAusenciaDeTransporte(pt);
   verificarAusenciaDeTransporte(en);
   expect(anunciadorPt.idioma).toBe("pt-BR");
@@ -167,10 +167,7 @@ export function verificarFallbackDinamico(pt: No, en: No, anunciadorPt: CapturaA
   expect(texto(aviso).trim()).toBe("Portuguese only");
   expect(oculto(aviso)).toBe(false);
   expect(oculto(ilha)).toBe(false);
-  let produtoEn = conteudo(ilha);
-  if (formulario?.caminho === "/entrar/sms" || formulario?.caminho === "/entrar/sms/verificar") {
-    produtoEn = projetarIlhaSms(pt, en, formulario);
-  } else if (formulario) produtoEn = projetarIlhaAuth(pt, en, formulario);
+  const produtoEn = formulario ? projetarIlhaAuth(pt, en, formulario) : conteudo(ilha);
   expect(produtoEn, "produto PT integral; somente controles de formulários explicitamente validados admitem bijeção de IDs").toEqual(corpoPt);
   expect(corpoEn).toHaveLength(2);
   expect(corpoEn).toEqual([forma(aviso), forma(ilha)]);

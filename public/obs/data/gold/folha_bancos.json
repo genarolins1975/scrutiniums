@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-20T15:56:00+00:00",
+ "gerado_em": "2026-10-21T16:18:11+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,8 +131,8 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 188,
-  "total_editais": 536,
+  "total_contratos_if": 189,
+  "total_editais": 538,
   "backfill_completo": false,
   "ranking": [
    {
@@ -145,7 +145,7 @@
    {
     "cnpj8": "60746948",
     "banco": "BANCO BRADESCO S.A.",
-    "contratos": 49,
+    "contratos": 50,
     "ufs": 16,
     "como_receita": 16
    },
@@ -447,6 +447,21 @@
     "banco": "CAIXA ECONOMICA FEDERAL",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/87366159000102/2026/474"
+   },
+   {
+    "controle": "01612483000148-2-000057/2026",
+    "ente": "MUNICIPIO DE FRUTA DE LEITE",
+    "esfera": "Municipal",
+    "municipio": "Fruta de Leite",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-10-02",
+    "vig_fim": "2031-10-02",
+    "valor": 136000.0,
+    "receita": false,
+    "banco": "Banco Bradesco SA",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/01612483000148/2026/57"
    },
    {
     "controle": "18307462000111-2-000074/2026",
@@ -987,24 +1002,27 @@
     "banco": "COOPERATIVA DE POUPANCA E CREDITO DO VALE DO RIO DOCE LTDA. - SICOOB CREDIRIODOCE",
     "cnpj8": "25606237",
     "url": "https://pncp.gov.br/contratos/18307496000106/2026/43"
-   },
-   {
-    "controle": "08109126000100-2-000482/2026",
-    "ente": "MUNICIPIO DE CURRAIS NOVOS",
-    "esfera": "Municipal",
-    "municipio": "Currais Novos",
-    "uf": "RN",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-08-05",
-    "vig_fim": "2031-08-04",
-    "valor": 2000000.0,
-    "receita": false,
-    "banco": "CAIXA ECONOMICA FEDERAL",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/08109126000100/2026/482"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "CENTRO UNIVERSITARIO MUNICIPAL DE FRANCA",
+    "municipio": "Franca",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-20",
+    "url": "https://pncp.gov.br/compras/47987136000109/2026/396"
+   },
+   {
+    "ente": "CENTRO UNIVERSITARIO MUNICIPAL DE FRANCA",
+    "municipio": "Franca",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-20",
+    "url": "https://pncp.gov.br/compras/47987136000109/2026/390"
+   },
    {
     "ente": "MUNICIPIO DE NAVIRAI",
     "municipio": "Naviraí",
@@ -1094,24 +1112,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-15",
     "url": "https://pncp.gov.br/compras/40893646000160/2026/48"
-   },
-   {
-    "ente": "MUNICIPIO DE PRESIDENTE DUTRA",
-    "municipio": "Presidente Dutra",
-    "uf": "MA",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-14",
-    "url": "https://pncp.gov.br/compras/06138366000108/2026/28"
-   },
-   {
-    "ente": "MUNICIPIO DE SEVERINIA",
-    "municipio": "Severínia",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-09",
-    "url": "https://pncp.gov.br/compras/46596235000199/2026/104"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

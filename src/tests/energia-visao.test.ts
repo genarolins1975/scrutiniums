@@ -817,7 +817,8 @@ describe("r2: Visão geral", () => {
     expect(html).toContain('data-limite=""');
     expect(T).toContain("Não permite concluir Alinhar as medidas pelo calendário não diz que uma determina a outra");
     expect(T).toContain("no mesmo calendário, cada um com a data da sua fonte");
-    expect(T).toMatch(/A ligação entre essas partes, da geração ao consumidor, está no mapa do sistema\s*\./);
+    // lead mais curto desde o diagnóstico de layout de 20/10/2026, item 7: o "sem afirmar que uma explica outra" fica na linha "Não permite concluir"
+    expect(T).toMatch(/Como essas partes se ligam, da geração ao consumidor, está no mapa do sistema\s*\./);
     expect(html).not.toContain("data-por-que-importa");
     expect(T).not.toContain("Por que isso importa");
   });
