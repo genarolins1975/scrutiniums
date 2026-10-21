@@ -170,3 +170,14 @@ class SeedEGoldTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class OriginaisSemRede(unittest.TestCase):
+    def test_original_ausente_sem_coletar_nao_baixa(self):
+        import tempfile
+        from unittest import mock
+        from pipeline.eficiencia_alimentar import complementos as c
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(c, "_baixa") as baixa:
+            with self.assertRaises(FileNotFoundError):
+                c.confere_originais(d)
+            baixa.assert_not_called()

@@ -340,8 +340,11 @@ def confere_originais(pasta, coletar=False):
     out = {}
     for f in FONTES:
         p = Path(pasta) / f["arquivo"]
-        if coletar or not p.exists():
+        # sem rede por padrão: só baixa com --coletar; original ausente é reportado, nunca buscado em silêncio
+        if coletar:
             _baixa(f["url"], p)
+        elif not p.exists():
+            raise FileNotFoundError(f"Original ausente: {p} ({f['id']}). Use --coletar para baixar de {f['url']}")
         raw = p.read_bytes()
         if "conteudo" in f:
             if hash_conteudo_paa(raw) != f["conteudo"]:
