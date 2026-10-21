@@ -146,6 +146,8 @@ class TestLeitura(unittest.TestCase):
         self.assertEqual(coleta.numero("1.234,5"), 1234.5)
         self.assertIsNone(coleta.numero(""))
         self.assertEqual(coleta.mes_iso("2026", "8"), "2026-08")
+        with self.assertRaises(ValueError):                           # mês fora de 1 a 12 retém a fonte (30ª revisão do Codex)
+            coleta.mes_iso("2025", "99")
         self.assertEqual([coleta._faixa_velocidade(v) for v in (None, 0.5, 9.99, 10, 24.9, 25, 99.9, 100, 10000)],
                          [None, "vel_ate_10", "vel_ate_10", "vel_10_25", "vel_10_25", "vel_25_100", "vel_25_100", "vel_100_mais", "vel_100_mais"])
         self.assertEqual(coleta._periodo_iso("09-2026"), "2026-09")
@@ -279,6 +281,10 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.fixa)
         s["total_mensal"]["acessos"][-1] = 200
         self.assertTrue(any("arquivo da Anatel" in p for p in V.validar_fixa(s)))
+        # competência inválida num mês histórico da série de totais retém (30ª revisão do Codex)
+        s = copy.deepcopy(self.fixa)
+        s["total_mensal"]["meses"][0] = "2025-99"
+        self.assertTrue(any("competências inválidas" in p for p in V.validar_fixa(s)))
         # arquivo de totais à frente do CSV municipal retém (27ª revisão do Codex)
         s = copy.deepcopy(self.fixa)
         s["total_mensal"]["meses"].append("2026-09")
@@ -414,6 +420,13 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.cob)
         s["municipios"]["2207777"][6]["CLARO"] = [99.0, 1.0]
         self.assertTrue(any("operadora CLARO com 4G ou 5G" in p and "2207777" in p for p in V.validar_cobertura(s)))
+        # hierarquia completa das uniões (30ª revisão do Codex): "4G ou 5G" acima de "todas" e 4G acima de "4G ou 5G" retêm
+        s = copy.deepcopy(self.cob)
+        s["municipios"]["2207777"][5]["g4g5"][0] = s["municipios"]["2207777"][5]["todas"][0] + 1
+        self.assertTrue(any("4G ou 5G" in p and "acima de todas" in p and "2207777" in p for p in V.validar_cobertura(s)))
+        s = copy.deepcopy(self.cob)
+        s["municipios"]["2207777"][5]["g4"][0] = s["municipios"]["2207777"][5]["g4g5"][0] + 1
+        self.assertTrue(any("4G (" in p and "acima de 4G ou 5G" in p for p in V.validar_cobertura(s)))
         # invariantes de união também em domicílios e área (23ª revisão do Codex): 5G da área acima de "4G ou 5G" retém
         s = copy.deepcopy(self.cob)
         s["municipios"]["2207777"][5]["g5"][2] = s["municipios"]["2207777"][5]["g4g5"][2] + 1

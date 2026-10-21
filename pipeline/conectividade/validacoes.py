@@ -113,6 +113,9 @@ def _acessos_comuns(seed: dict, campos, partes_a, partes_b, nome: str) -> list[s
     tm = seed["total_mensal"]
     ref = seed["referencia"]
     # a série inteira vai ao gráfico nacional e ao CSV: mês vazio é lacuna legítima (None), contagem negativa retém
+    invalidos = [m for m in tm["meses"] if not isinstance(m, str) or not MES.match(m) or not 1 <= int(m[5:7]) <= 12]
+    if invalidos:
+        p.append(f"{nome}: o arquivo de totais tem competências inválidas: {invalidos[:5]}")
     negativos = [m for m, a in zip(tm["meses"], tm["acessos"]) if a is not None and a < 0]
     if negativos:
         p.append(f"{nome}: o arquivo de totais tem acessos negativos em {', '.join(negativos[:5])}")
@@ -306,10 +309,12 @@ def _uniao_quebrada(tec: dict) -> str | None:
     for i, medida in enumerate(_MEDIDAS_COBERTURA):
         valor = lambda campo: ((tec.get(campo) or [None, None, None]) + [None, None, None])[i]  # noqa: E731
         g5, g4, g45, todas = valor("g5"), valor("g4"), valor("g4g5"), valor("todas")
-        if g5 is not None and any(x is not None and g5 > x + 0.05 for x in (g45, todas)):
-            return f"5G ({g5}) acima do 4G ou 5G ({g45}) ou de todas ({todas}) em {medida}; 4G {g4}"
-        if g4 is not None and todas is not None and g4 > todas + 0.05:
-            return f"4G ({g4}) acima de todas ({todas}) em {medida}"
+        # cada geração dentro de "4G ou 5G", "4G ou 5G" dentro de "todas", e toda geração dentro de "todas"
+        pares = (("5G", g5, "4G ou 5G", g45), ("4G", g4, "4G ou 5G", g45), ("4G ou 5G", g45, "todas", todas),
+                 ("5G", g5, "todas", todas), ("4G", g4, "todas", todas), ("3G", valor("g3"), "todas", todas), ("2G", valor("g2"), "todas", todas))
+        for nome_a, a, nome_b, b in pares:
+            if a is not None and b is not None and a > b + 0.05:
+                return f"{nome_a} ({a}) acima de {nome_b} ({b}) em {medida}"
     return None
 
 

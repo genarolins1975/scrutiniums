@@ -48,7 +48,11 @@ def inteiro(v) -> int | None:
 
 
 def mes_iso(ano, mes) -> str:
-    return f"{int(ano):04d}-{int(mes):02d}"
+    """AAAA-MM; mês fora de 1 a 12 não vira competência (a fonte fica retida), em qualquer arquivo que traga Ano e Mês."""
+    a, m = int(ano), int(mes)
+    if not 1 <= m <= 12:
+        raise ValueError(f"mês inválido na fonte: {ano}-{mes}; a fonte fica retida")
+    return f"{a:04d}-{m:02d}"
 
 
 # ----------------------------------------------------------------------------------------------- leitura por faixa
