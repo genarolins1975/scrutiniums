@@ -123,7 +123,7 @@ function Retrato({ m, uf, nomeUf }: { m: MunicipioGold; uf: string; nomeUf: stri
         <div>
           <dt>Moradores dentro da cobertura 5G</dt>
           <dd className="cn-valor cn-valor-acento">{pct(cobertos(m, "g5"))}</dd>
-          <dd className="cn-detalhe">{c ? `${pct(cobertos(m, "g4"))} dentro da cobertura 4G, por qualquer operadora, em ${mesExtenso(r.cobertura)}; ${num(c.moradores)} moradores no Censo 2022.` : "A Anatel não publica a cobertura deste município (instalado depois do Censo 2022)."}</dd>
+          <dd className="cn-detalhe">{c ? `${pct(cobertos(m, "g4"))} dentro da cobertura 4G, por qualquer operadora, em ${mesExtenso(r.cobertura)}; ${num(c.moradores)} moradores no Censo 2022.` : "A Anatel não publica a cobertura deste município nesta edição; o motivo não vem na fonte."}</dd>
         </div>
       </dl>
       <ComoLer />

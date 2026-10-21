@@ -27,7 +27,7 @@ export const hrefMunicipio = (ibge: string) => `${ROTA_CONECTIVIDADE}?ibge=${ibg
 export const DOWNLOADS = [
   { arquivo: "por-municipio.csv", rotulo: "Conectividade por município", descricao: "Banda larga fixa, telefonia móvel e cobertura de cada município no mês e no trimestre mais recentes" },
   { arquivo: "por-estado.csv", rotulo: "Conectividade por estado", descricao: "Os 27 estados e o Brasil: acessos, densidade, fibra, velocidade, prestadoras, 5G e cobertura" },
-  { arquivo: "brasil-mensal.csv", rotulo: "Acessos no Brasil, mês a mês", descricao: "Banda larga fixa desde 2007 e telefonia móvel desde 2005, da série de totais da Anatel" },
+  { arquivo: "brasil-mensal.csv", rotulo: "Acessos no Brasil, por mês", descricao: "Série de totais da Anatel: banda larga fixa só nos fins de trimestre de 2007 a 2010 e mês a mês desde 2011; telefonia móvel mês a mês desde 2005" },
 ] as const;
 
 /** O estado com a preposição certa ("do Maranhão", "de São Paulo", "da Bahia"), pela sigla. */

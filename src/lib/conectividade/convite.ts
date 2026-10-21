@@ -1,4 +1,4 @@
-import { mesExtenso, num } from "./formato";
+import { frequenciaSerie, mesExtenso, num } from "./formato";
 import type { GoldConectividade, MunicipioGold } from "./tipos";
 
 /**
@@ -8,8 +8,8 @@ import type { GoldConectividade, MunicipioGold } from "./tipos";
 export function comConta(g: GoldConectividade, uf: string | null, m?: MunicipioGold): string[] {
   const n = uf ? g.ufs.find((u) => u.uf === uf)?.ranqueados.fixa_densidade ?? null : null;   // universo do ranking de acessos fixos
   const tri = g.trimestres_cobertura;
-  const mensalFixa = g.brasil.fixa.acessos_mensal.meses[0];
-  const mensalMovel = g.brasil.movel.acessos_mensal.meses[0];
+  const serieFixa = frequenciaSerie(g.brasil.fixa.acessos_mensal.meses);
+  const serieMovel = frequenciaSerie(g.brasil.movel.acessos_mensal.meses);
   const ops = g.operadoras.length;
   // município publicado sem a banda larga fixa (validar_cruzado aceita até três diferenças entre as bases): o convite diz
   // a ausência em vez de prometer velocidade, meio, prestadoras e posições que o painel mostra como "Sem dado"
@@ -41,7 +41,7 @@ export function comConta(g: GoldConectividade, uf: string | null, m?: MunicipioG
     serieTexto,
     `Onde a fibra ainda não chegou: os ${num(g.destaques.sem_fibra)} municípios sem acesso por fibra${g.destaques.uma_prestadora ? ` e os ${num(g.destaques.uma_prestadora)} atendidos por uma única prestadora` : ""}, estado a estado`,
     `Os ${num(g.ufs.length)} estados lado a lado: acessos por 100 habitantes, fibra, 100 Mbps ou mais, prestadoras, 5G nas linhas e moradores cobertos por 4G e 5G`,
-    `Como a internet cresceu no Brasil: acessos de banda larga fixa mês a mês desde ${mesExtenso(mensalFixa)} e acessos móveis desde ${mesExtenso(mensalMovel)}, e a cobertura 4G e 5G trimestre a trimestre`,
-    "Os arquivos para baixar (CSV): conectividade por município, por estado e o Brasil mês a mês",
+    `Como a internet cresceu no Brasil: acessos de banda larga fixa (${serieFixa}) e acessos móveis (${serieMovel}), e a cobertura 4G e 5G trimestre a trimestre`,
+    "Os arquivos para baixar (CSV): conectividade por município, por estado e a série do Brasil (acessos fixos e móveis, nos meses que a Anatel publica)",
   ];
 }

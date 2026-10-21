@@ -16,7 +16,7 @@ import { csvBrasilMensal, csvPorEstado, csvPorMunicipio } from "@/lib/conectivid
 import { comConta } from "@/lib/conectividade/convite";
 import { lerManifestoLogosConectividade, logosConectividade } from "@/lib/conectividade/logos";
 import { arquivoUf, cobertos, consultarMunicipio, faixaNaDistribuicao, goldConectividade, linhaEstado, UF_DO_PREFIXO } from "@/lib/conectividade/dados";
-import { dataCaptura, mesAcessos, mesExtenso, milhoes, num, pct } from "@/lib/conectividade/formato";
+import { dataCaptura, frequenciaSerie, mesAcessos, mesExtenso, milhoes, num, pct } from "@/lib/conectividade/formato";
 import { hrefMunicipio, nomeGrupo, PERGUNTA_APERITIVO, PERGUNTA_PAINEL, ROTA_CONECTIVIDADE, SECAO_APERITIVO, SECAO_PAINEL, VERSAO_ABERTA } from "@/lib/conectividade/paginas";
 import { colecoesDe } from "@/lib/observatorios/colecoes";
 import { donoDaRota, paineis } from "@/lib/observatorios/registro";
@@ -229,6 +229,12 @@ describe("painel completo", () => {
     expect(html).not.toContain(`<span class="cn-unidade">de ${num(d.municipios)}</span>`);
     expect(t).toContain(`${num(d.sem_5g)} dos ${num(d.municipios_com_5g_publicado)} municípios com cobertura 5G publicada`);
     expect(t).toContain(`${num(d.g4_abaixo_50)} dos ${num(d.municipios_com_4g_publicado)} com cobertura 4G publicada`);
+    // a série fixa antiga só tem os fins de trimestre: o texto não promete "mês a mês desde 2007" (19ª revisão do Codex)
+    expect(frequenciaSerie(g.brasil.fixa.acessos_mensal.meses)).toBe("só os fins de trimestre de março de 2007 a dezembro de 2010 e mês a mês desde janeiro de 2011");
+    expect(frequenciaSerie(g.brasil.movel.acessos_mensal.meses)).toBe("mês a mês desde fevereiro de 2005");
+    expect(frequenciaSerie(["2024-01", "2024-02", "2024-03"])).toBe("mês a mês desde janeiro de 2024");
+    expect(t).toContain("só os fins de trimestre de março de 2007 a dezembro de 2010 e mês a mês desde janeiro de 2011");
+    expect(t).not.toContain("mês a mês desde março de 2007");
     // linha de estado sem uma fonte fica sem dado: o Brasil nunca entra no lugar de um estado (17ª revisão do Codex)
     const df = g.ufs.find((u) => u.uf === "DF")!;
     const semFixaUf = linhaEstado(g, { ...df, fixa: null, movel: null });
@@ -284,7 +290,8 @@ describe("painel completo", () => {
     const sem = g.destaques.sem_dado.cobertura[0];
     if (!sem) return;
     const t = texto(renderToStaticMarkup(createElement(PainelPage, { searchParams: { ibge: sem } })));
-    expect(t).toContain("A Anatel não publica a cobertura deste município");
+    expect(t).toContain("A Anatel não publica a cobertura deste município nesta edição; o motivo não vem na fonte.");
+    expect(t).not.toContain("instalado depois do Censo");                       // a gold registra a ausência, não o motivo (19ª revisão do Codex)
     expect(t).not.toMatch(/\bNaN\b|undefined/);
   });
 });

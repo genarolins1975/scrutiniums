@@ -25,6 +25,27 @@ export function mesExtenso(m: string | null | undefined): string {
 }
 
 /**
+ * Frequência real de uma série mensal da Anatel: a banda larga fixa de 2007 a 2010 só tem os fins de trimestre, e fica
+ * mensal a partir de 2011; a telefonia móvel é mensal desde o início. O texto diz o que a série tem, nunca "mês a mês" onde não há.
+ */
+export function frequenciaSerie(meses: string[]): string {
+  if (meses.length === 0) return "";
+  const n = (m: string) => Number(m.slice(0, 4)) * 12 + Number(m.slice(5, 7));
+  let desde = 0;
+  for (let i = meses.length - 1; i > 0; i--) {
+    if (n(meses[i]) - n(meses[i - 1]) !== 1) {
+      desde = i;
+      break;
+    }
+  }
+  if (desde === 0) return `mês a mês desde ${mesExtenso(meses[0])}`;
+  // meses[desde] é o último fim de trimestre e o primeiro mês do trecho contínuo: o trecho mensal começa no mês seguinte
+  const t = n(meses[desde]) + 1;
+  const seguinte = `${Math.floor((t - 1) / 12)}-${String(((t - 1) % 12) + 1).padStart(2, "0")}`;
+  return `só os fins de trimestre de ${mesExtenso(meses[0])} a ${mesExtenso(meses[desde])} e mês a mês desde ${mesExtenso(seguinte)}`;
+}
+
+/**
  * Mês dos acessos fixos e das linhas móveis: um só quando coincidem, os dois quando a atualização por grupo reteve
  * uma base e publicou a outra. Com `longo`, a frase começa por "Acessos ...".
  */

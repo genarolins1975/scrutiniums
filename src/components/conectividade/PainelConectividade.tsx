@@ -10,7 +10,7 @@ import { ListadasLogo } from "@/components/energia/ListadasLogo";
 import { anoDecimal, GraficoLinhas, marcasAnos, type Serie } from "./Graficos";
 import { cobertos, faixaNaDistribuicao, linhaEstado, pontosAnuais, serieCobertura, ufsPor, type ConsultaMunicipio } from "@/lib/conectividade/dados";
 import { logosConectividade, type LogoDaOperadora } from "@/lib/conectividade/logos";
-import { dataBr, dataCaptura, mesAcessos, mesCurto, mesExtenso, milhoes, num, pct, plural, posicao, SEM_DADO } from "@/lib/conectividade/formato";
+import { dataBr, dataCaptura, frequenciaSerie, mesAcessos, mesCurto, mesExtenso, milhoes, num, pct, plural, posicao, SEM_DADO } from "@/lib/conectividade/formato";
 import { DO_ESTADO, DOWNLOADS, hrefMunicipio, MEIOS, nomeGrupo, ROTA_CONECTIVIDADE, TECNOLOGIAS, VELOCIDADES } from "@/lib/conectividade/paginas";
 import type { ArquivoUf, GoldConectividade, MunicipioGold, UfGold } from "@/lib/conectividade/tipos";
 
@@ -238,7 +238,7 @@ function Municipio({ g, m, uf, arquivo, logos }: { g: GoldConectividade; m: Muni
           <div>
             <dt>Moradores dentro da cobertura 4G</dt>
             <dd className="cn-valor">{pct(cobertos(m, "g4"))}</dd>
-            <dd className="cn-detalhe">{c ? `${posicao(m.posicao.cobertura_g4_moradores.uf, u.ranqueados.cobertura_g4_moradores)} no estado · ${pct(c.tecnologias.todas?.[0])} com qualquer geração` : "A Anatel não publica a cobertura deste município (instalado depois do Censo 2022)."}</dd>
+            <dd className="cn-detalhe">{c ? `${posicao(m.posicao.cobertura_g4_moradores.uf, u.ranqueados.cobertura_g4_moradores)} no estado · ${pct(c.tecnologias.todas?.[0])} com qualquer geração` : "A Anatel não publica a cobertura deste município nesta edição; o motivo não vem na fonte."}</dd>
           </div>
           <div>
             <dt>Moradores dentro da cobertura 5G</dt>
@@ -469,8 +469,8 @@ function SecaoEvolucao({ g }: { g: GoldConectividade }) {
     <section className="cn-secao" id="evolucao" aria-labelledby="evolucao-titulo">
       <h2 id="evolucao-titulo">Como a internet cresceu no Brasil?</h2>
       <p className="cn-intro">
-        Os acessos de banda larga fixa desde {mesExtenso(g.brasil.fixa.acessos_mensal.meses[0])} e os acessos de telefonia móvel (sem máquinas e pontos de serviço) desde{" "}
-        {mesExtenso(g.brasil.movel.acessos_mensal.meses[0])}, pela série de totais da Anatel: dezembro de cada ano e o mês mais recente.
+        Os acessos de banda larga fixa ({frequenciaSerie(g.brasil.fixa.acessos_mensal.meses)}) e os acessos de telefonia móvel, sem máquinas e pontos de serviço (
+        {frequenciaSerie(g.brasil.movel.acessos_mensal.meses)}), pela série de totais da Anatel: o gráfico mostra dezembro de cada ano e o mês mais recente.
       </p>
       <div className="cn-graficos-dois">
         <figure className="cn-figura">
