@@ -35,6 +35,7 @@ import urllib.request
 from datetime import date
 
 from pipeline import common
+from pipeline.sources.datajud import exige_resposta_completa
 
 GRUPOS = {
     "execucao": ("Execução de título extrajudicial", [12154, 159]),
@@ -70,7 +71,7 @@ def _es(base, key, tribunal, payload, timeout=180, retries=3):
             req = urllib.request.Request(f"{base}/api_publica_{tribunal}/_search", data=body, method="POST",
                                          headers={"Authorization": f"APIKey {key}", "Content-Type": "application/json", "User-Agent": common.USER_AGENT})
             with urllib.request.urlopen(req, timeout=timeout) as r:
-                return json.loads(r.read())
+                return exige_resposta_completa(json.loads(r.read()))
         except Exception as e:
             last = e
             time.sleep(3 * (i + 1))
@@ -133,6 +134,18 @@ def coleta_tribunal(con, cfg, trib):
     return len(linhas)
 
 
+def incoerentes(con):
+    """Tribunais cujo silver tem, em algum grupo e mês, mais casos bancários que no total.
+
+    O bancário é subconjunto do total; a inversão só aparece quando uma das consultas
+    voltou parcial. Antes da trava de shards (25/09/2026) essas respostas eram gravadas,
+    e o tribunal só seria refeito na sua vez no rodízio, com a publicação retida até lá."""
+    rows = con.execute("""SELECT DISTINCT b.tribunal FROM cobranca_mensal b JOIN cobranca_mensal t
+        ON t.tribunal = b.tribunal AND t.grupo = b.grupo AND t.mes = b.mes AND t.recorte = 'todos'
+        WHERE b.recorte = 'bancario' AND b.casos > t.casos""").fetchall()
+    return sorted(r[0] for r in rows)
+
+
 def collect(con, cfg):
     _ensure(con)
     results = []
@@ -141,9 +154,11 @@ def collect(con, cfg):
     # Tribunal nunca coletado entra todo na rodada, fora da cota: com a cota de 9 o
     # primeiro run do runner publicaria 9 de 27 tribunais e o gold cairia de
     # 821 mil para 144 mil casos em 12 meses (run de 06/09/2026). A cota vale
-    # para o refresco dos já coletados.
+    # para o refresco dos já coletados. Tribunal com silver incoerente também entra
+    # fora da cota, para não reter a publicação até a sua vez no rodízio.
     faltantes = [t for t in ordem if t not in ultimo]
-    lote = faltantes if faltantes else ordem[:TRIBUNAIS_POR_EXECUCAO]
+    suspeitos = [t for t in incoerentes(con) if t in ultimo]
+    lote = faltantes if faltantes else suspeitos + [t for t in ordem if t not in suspeitos][:TRIBUNAIS_POR_EXECUCAO]
     for trib in lote:
         try:
             n = coleta_tribunal(con, cfg, trib)
