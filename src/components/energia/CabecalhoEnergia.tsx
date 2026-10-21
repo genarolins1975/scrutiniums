@@ -152,12 +152,18 @@ export function CabecalhoEnergia({ atual, comSelo = false, rotaPublica }: { atua
             </ul>
           )}
           <div className="ml-auto flex shrink-0 items-center gap-5">
+            {/* em tela larga a parceria entra nesta faixa, antes dos atalhos: o cabeçalho perde uma faixa e a marca continua nele */}
+            <div className="hidden pr-3 xl:block">
+              <ParceriaTecnica variante="linha" />
+            </div>
             <Atalhos atual={atual} comSelo={comSelo} />
           </div>
         </div>
       </div>
-      {/* parceria técnica com o FGV CERI: a marca fecha o cabeçalho de todos os painéis de infraestrutura */}
-      <ParceriaTecnica variante="faixa" />
+      {/* parceria técnica com o FGV CERI: a marca fecha o cabeçalho de todos os painéis de infraestrutura; abaixo de 1280 px, numa faixa própria */}
+      <div className="xl:hidden">
+        <ParceriaTecnica variante="faixa" />
+      </div>
       <AtivoVisivel alvo="modulos-energia" />
       <RetornoContexto rotulos={rotulosRetorno()} />
     </header>

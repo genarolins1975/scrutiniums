@@ -52,11 +52,11 @@ describe("marca do FGV CERI", () => {
 });
 
 describe("componente ParceriaTecnica", () => {
-  const html = (variante: "faixa" | "bloco" | "compacto", idioma: "pt" | "en" = "pt") =>
+  const html = (variante: "faixa" | "linha" | "bloco" | "compacto", idioma: "pt" | "en" = "pt") =>
     renderToStaticMarkup(createElement(ParceriaTecnica, { variante, idioma }));
 
   it("sempre liga a marca oficial ao site do centro, em nova aba e com o nome completo no alt", () => {
-    for (const v of ["faixa", "bloco", "compacto"] as const) {
+    for (const v of ["faixa", "linha", "bloco", "compacto"] as const) {
       const h = html(v);
       expect(h, v).toContain(`href="${CERI.url}"`);
       expect(h, v).toContain('target="_blank"');
@@ -92,6 +92,14 @@ describe("onde a marca aparece", () => {
       "src/components/saneamento/Cabecalho.tsx",
       "src/components/combustiveis/CabecalhoCombustiveis.tsx",
     ]) expect(ler(f), f).toContain('<ParceriaTecnica variante="faixa" />');
+  });
+
+  it("no Setor Elétrico, em tela larga, a marca entra na faixa das páginas do grupo e a faixa própria só existe abaixo de 1280 px", () => {
+    const c = ler("src/components/energia/CabecalhoEnergia.tsx");
+    expect(c).toMatch(/<div className="hidden [^"]*xl:block">\s*<ParceriaTecnica variante="linha" \/>/);
+    expect(c).toMatch(/<div className="xl:hidden">\s*<ParceriaTecnica variante="faixa" \/>/);
+    // a variante em linha fica antes dos atalhos de dados e método, na mesma faixa
+    expect(c.indexOf('variante="linha"')).toBeLessThan(c.indexOf("<Atalhos atual="));
   });
 
   it("na entrada e no mapa do Observatório de Energia e Infraestrutura, e só nele", () => {

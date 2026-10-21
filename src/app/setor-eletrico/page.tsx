@@ -803,39 +803,28 @@ export default function MapaDoObservatorio() {
       <main id="conteudo" tabIndex={-1} className="ed-pagina energia-atlas-inicial pb-12">
         {/* frescor dos dados diários na primeira tela: em 19/10/2026 a entrada mostrava o PLD de 30/09 sem dizer que a publicação estava parada */}
         <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/setor-eletrico"]} idioma={idiomaEnergia()} />
-        {/* hero: a proposta, a busca e os quatro caminhos, tudo na primeira tela */}
-        <header id="proposito" className="scroll-mt-24 pb-8 pt-6 md:pb-10 md:pt-10">
-          <div className="energia-cenario">
-            <Image
-              className="energia-cenario-imagem"
-              src="/energia/arte/sistema-gravura-v1.webp"
-              alt={tx(
-                "Gravura conceitual de uma paisagem imaginária com reservatório, hidrelétrica, eólicas, painéis solares, linhas de transmissão, subestação e cidade.",
-                "Conceptual engraving of an imaginary landscape with a reservoir, a hydropower plant, wind turbines, solar panels, transmission lines, a substation and a city.",
-              )}
-              width={1440}
-              height={720}
-              sizes="(max-width: 1240px) 100vw, 1240px"
-              priority
-            />
-            <div className="energia-cenario-texto">
+        {/* abertura (20/10/2026): a pergunta do observatório e, ao lado, os três números de entrada com fonte e período, tudo na
+            primeira tela; a gravura do sistema saiu daqui e abre o percurso da usina à tomada, depois do "Para você" */}
+        <header id="proposito" className="scroll-mt-24 pb-6 pt-6 md:pb-8 md:pt-10">
+          <div className="energia-abertura">
+            <div className="energia-abertura-texto">
               <p className="rotulo">{tx<ReactNode>("Observatório Brasileiro do Setor Elétrico", <><Nome>Setor Elétrico</Nome> · Brazilian power sector observatory</>)}</p>
-              <h1>{tx("A energia que move o Brasil.", "The energy that powers Brazil.")}</h1>
-              <p>{tx("Explore o sistema. Compare regiões. Entenda sua conta.", "Explore the system. Compare regions. Understand your bill.")}</p>
+              <h1>{tx("De onde vem a energia e quanto ela custa?", "Where does power come from, at what cost?")}</h1>
+              <p>
+                {tx(
+                  "Preço, reservatórios, geração, consumo e rede do sistema elétrico, e o que chega à sua conta de luz. Cada número traz fonte, período e referência.",
+                  "Price, reservoirs, generation, consumption and the grid of the power system, and what reaches your electricity bill. Every number carries its source, period and reference.",
+                )}
+              </p>
               <a className="energia-explorar" href="#percurso-energia">{tx("Explorar o sistema", "Explore the system")} <span aria-hidden="true">↓</span></a>
             </div>
-            <nav className="energia-cenario-pontos" aria-label={tx("Explore as etapas do sistema elétrico", "Explore the stages of the power system")}>
-              {ETAPAS_ENERGIA_IDIOMAS[idiomaEnergia()].map(e =>
- <a key={e.id} href={`#etapa-${e.id}`} data-etapa={e.id}><span>{e.numero}</span>{e.nome}</a>)}
-            </nav>
-            <p className="energia-cenario-legenda">{tx("Ilustração conceitual gerada por IA · sem escala geográfica", "AI-generated conceptual illustration · not to geographic scale")}</p>
-          </div>
-          <div className="energia-abertura-medidas" aria-label={tx("Três medidas de entrada, com períodos próprios", "Three opening measures, each with its own period")}>
-            {["agua", "pld", "qualidade"].map(id => { const s = sinais.find(x => x.id === id)!; return <a href={`#pergunta-${id}`} key={id}>
-              <span>{s.medida}</span><strong>{s.estado === "disponivel" ? s.valorTexto : tx("Sem dado", "No data")}</strong>
-              <span>{s.estado === "disponivel" ? s.unidade : s.motivo}</span><small>{s.periodo ?? tx("Período indisponível", "Period unavailable")} · {orgaoPorExtenso(id === "agua" ? "ONS" : id === "pld" ? "CCEE" : "ANEEL")}</small>
-              <span className="energia-abertura-link">{tx("Ver universo, referência e fonte ↓", "See universe, reference and source ↓")}</span>
-            </a>; })}
+            <div className="energia-abertura-medidas" aria-label={tx("Três medidas de entrada, com períodos próprios", "Three opening measures, each with its own period")}>
+              {["agua", "pld", "qualidade"].map(id => { const s = sinais.find(x => x.id === id)!; return <a href={`#pergunta-${id}`} key={id}>
+                <span>{s.medida}</span><strong>{s.estado === "disponivel" ? s.valorTexto : tx("Sem dado", "No data")}</strong>
+                <span>{s.estado === "disponivel" ? s.unidade : s.motivo}</span><small>{s.periodo ?? tx("Período indisponível", "Period unavailable")} · {orgaoPorExtenso(id === "agua" ? "ONS" : id === "pld" ? "CCEE" : "ANEEL")}</small>
+                <span className="energia-abertura-link">{tx("Ver universo, referência e fonte ↓", "See universe, reference and source ↓")}</span>
+              </a>; })}
+            </div>
           </div>
           <p className="energia-medidas-nota">
             {tx(
@@ -969,6 +958,29 @@ export default function MapaDoObservatorio() {
           conteiner=""
           artes={{ luz: <ArteFoto src="/energia/arte/conta-gravura-v1.webp" />, "falta-luz": <ArtePrancha etapa="distribuicao" />, "tarifa-social-luz": <ArtePrancha etapa="consumo" /> }}
         />
+        {/* a gravura do sistema abre o percurso: as quatro etapas levam a cada trecho dele */}
+        <figure className="energia-cenario" aria-label={tx("Da geração ao consumo, em quatro etapas", "From generation to consumption, in four stages")}>
+          <Image
+            className="energia-cenario-imagem"
+            src="/energia/arte/sistema-gravura-v1.webp"
+            alt={tx(
+              "Gravura conceitual de uma paisagem imaginária com reservatório, hidrelétrica, eólicas, painéis solares, linhas de transmissão, subestação e cidade.",
+              "Conceptual engraving of an imaginary landscape with a reservoir, a hydropower plant, wind turbines, solar panels, transmission lines, a substation and a city.",
+            )}
+            width={1440}
+            height={720}
+            sizes="(max-width: 1240px) 100vw, 1240px"
+          />
+          <nav className="energia-cenario-pontos" aria-label={tx("Explore as etapas do sistema elétrico", "Explore the stages of the power system")}>
+            {ETAPAS_ENERGIA_IDIOMAS[idiomaEnergia()].map((e) => (
+              <a key={e.id} href={`#etapa-${e.id}`} data-etapa={e.id}>
+                <span>{e.numero}</span>
+                {e.nome}
+              </a>
+            ))}
+          </nav>
+          <figcaption className="energia-cenario-legenda">{tx("Ilustração conceitual gerada por IA · sem escala geográfica", "AI-generated conceptual illustration · not to geographic scale")}</figcaption>
+        </figure>
         <PercursoVisualEnergia />
         <DuasCamadasEnergia compacto />
         <LeiturasIntegradas />

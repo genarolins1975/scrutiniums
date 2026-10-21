@@ -2,7 +2,7 @@ import { CERI } from "@/lib/parceiros";
 import { tx } from "@/lib/energia/idioma";
 import type { Idioma } from "@/lib/idioma";
 
-type Variante = "faixa" | "bloco" | "compacto";
+type Variante = "faixa" | "linha" | "bloco" | "compacto";
 
 /**
  * Crédito da parceria técnica com o FGV CERI, sempre com a marca oficial
@@ -12,6 +12,9 @@ type Variante = "faixa" | "bloco" | "compacto";
  *  - `faixa`: linha discreta no fim do cabeçalho dos módulos de infraestrutura
  *    (Setor Elétrico, Gás Natural, Saneamento e Combustíveis), alinhada à
  *    direita, presente com e sem sessão;
+ *  - `linha`: o mesmo crédito sem faixa própria, para entrar numa faixa que o
+ *    cabeçalho já tem (no Setor Elétrico, a das páginas do grupo, em tela
+ *    larga): a marca fica no cabeçalho e o cabeçalho perde uma faixa;
  *  - `bloco`: faixa no fim da primeira seção da página inicial, com a frase
  *    que diz o que a parceria é e onde a marca aparece (em português nas duas
  *    homes: a home inglesa só traduz o herói e fixa as seções do <main>);
@@ -67,6 +70,18 @@ export function ParceriaTecnica({ variante = "faixa", idioma, escuro = false }: 
     return (
       <p data-parceria={CERI.id} className="flex flex-wrap items-center gap-x-3 gap-y-2">
         <span className="rotulo text-mineral">{rotulo}</span>
+        <a {...ligacao} className="inline-flex min-h-[44px] items-center">
+          {imagem("h-8")}
+        </a>
+      </p>
+    );
+  }
+
+  if (variante === "linha") {
+    return (
+      <p data-parceria={CERI.id} className="flex shrink-0 items-center gap-3">
+        {/* a faixa do Setor Elétrico tem fundo energia-fundo, onde o mineral fica abaixo de 4,5:1: o rótulo usa o cinza dos atalhos vizinhos */}
+        <span className="rotulo whitespace-nowrap text-carvao-muted">{rotulo}</span>
         <a {...ligacao} className="inline-flex min-h-[44px] items-center">
           {imagem("h-8")}
         </a>
