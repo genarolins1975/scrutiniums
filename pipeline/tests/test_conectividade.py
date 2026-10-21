@@ -589,6 +589,10 @@ class TestSeedsVersionados(unittest.TestCase):
             self.assertEqual(d[f"municipios_com_{tec}_publicado"], sum(u["cobertura"][f"municipios_com_{tec}_publicado"] for u in self.g["ufs"]))
             self.assertEqual(d[f"municipios_com_{tec}_publicado"], d["municipios"] - len(d["sem_dado"]["cobertura"]))   # na fixture, quem tem cobertura tem as duas
         self.assertLessEqual(d["sem_5g"], d["municipios_com_5g_publicado"])
+        # universo dos agregados por fonte, por UF e no Brasil (20ª revisão do Codex)
+        for x in ("fixa", "movel", "cobertura"):
+            self.assertEqual(d["municipios_por_fonte"][x], d["municipios"] - len(d["sem_dado"][x]))
+            self.assertEqual(d["municipios_por_fonte"][x], sum(u["municipios_por_fonte"][x] for u in self.g["ufs"]))
         self.assertLessEqual(d["g4_abaixo_50"], d["municipios_com_4g_publicado"])
         # a nota separa o que é da Anatel (Brasil) do que é cálculo da Scrutiniums (UFs)
         self.assertIn("evolucao_cobertura_brasil.csv", self.g["notas"]["cobertura"])

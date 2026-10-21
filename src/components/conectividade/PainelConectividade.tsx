@@ -108,8 +108,9 @@ function SecaoMunicipio({ g, c, logos }: { g: GoldConectividade; c: ConsultaMuni
     <section className="cn-secao" id="municipio" aria-labelledby="municipio-titulo">
       <h2 id="municipio-titulo">Como é a internet na sua cidade?</h2>
       <p className="cn-intro">
-        Para cada um dos {num(g.destaques.municipios)} municípios: os acessos de banda larga fixa e por qual meio chegam, quantas empresas atendem, as linhas móveis por geração e
-        a parte dos moradores dentro da cobertura 4G e 5G, com a posição no estado e no país.
+        Para os {num(g.destaques.municipios)} municípios do país: os acessos de banda larga fixa e por qual meio chegam e quantas empresas atendem; as linhas móveis por geração e
+        a parte dos moradores dentro da cobertura 4G e 5G nos municípios que a Anatel publica (nesta edição, {num(g.destaques.sem_dado.movel.length)} sem telefonia móvel e{" "}
+        {num(g.destaques.sem_dado.cobertura.length)} sem cobertura); a posição no estado e no país em cada medida, entre os municípios com o valor publicado.
       </p>
       <div className="cn-busca">
         <BuscaConectividade rotulo={c.estado === "ok" ? "Escolher outro município" : "Escolha o município"} ancora="municipio" />
@@ -504,10 +505,11 @@ function SecaoEstados({ g, escolhida }: { g: GoldConectividade; escolhida: strin
   const r = g.referencia;
   const linha = (u: UfGold | null, nome: string, uf: string, forte = false) => {
     // fonte ausente num estado fica "Sem dado" (o Brasil só entra na própria linha); a contagem de 5G sai ao lado do seu universo
-    const { fixa: f, movel: m, cobertura: cob } = linhaEstado(g, u);
+    const { fixa: f, movel: m, cobertura: cob, universo } = linhaEstado(g, u);
     return (
       <tr key={uf} className={`${forte ? "cn-forte" : ""}${escolhida === uf ? " cn-escolhido" : ""}`}>
         <th scope="row">{nome}</th>
+        <td>{universo}</td>
         <td>{f ? num(f.densidade, 1) : SEM_DADO}</td>
         <td>{f ? pct(f.fibra_pct) : SEM_DADO}</td>
         <td>{f ? pct(f.vel_100_mais_pct) : SEM_DADO}</td>
@@ -525,7 +527,7 @@ function SecaoEstados({ g, escolhida }: { g: GoldConectividade; escolhida: strin
       <h2 id="estados-titulo">Os estados lado a lado</h2>
       <p className="cn-intro">As mesmas medidas da sua cidade para cada estado e para o Brasil. A cobertura por estado é a média dos municípios ponderada pelos moradores.</p>
       <p className="cn-legenda-tabela">
-        {mesAcessos(r, true)}; cobertura de {mesExtenso(r.cobertura)}. Acessos móveis por 100 habitantes: o total da Anatel sem máquinas e pontos de serviço; linhas em 5G como parte de todas as linhas ativas. Prestadoras: empresas com ao menos um acesso fixo no estado. Municípios sem 5G: menos de 1% dos moradores cobertos, entre os municípios com cobertura 5G publicada.
+        {mesAcessos(r, true)}; cobertura de {mesExtenso(r.cobertura)}. Acessos móveis por 100 habitantes: o total da Anatel sem máquinas e pontos de serviço; linhas em 5G como parte de todas as linhas ativas. Prestadoras: empresas com ao menos um acesso fixo no estado. Municípios na base: cada coluna agrega só os municípios que a sua fonte traz no estado, e a célula diz a contagem por fonte quando alguma fica abaixo do total. Municípios sem 5G: menos de 1% dos moradores cobertos, entre os municípios com cobertura 5G publicada.
       </p>
       <div className="cn-tabela-rolagem" tabIndex={0}>
         <table className="cn-tabela cn-tabela-larga">
@@ -533,6 +535,7 @@ function SecaoEstados({ g, escolhida }: { g: GoldConectividade; escolhida: strin
           <thead>
             <tr>
               <th scope="col">Estado</th>
+              <th scope="col">Municípios na base</th>
               <th scope="col">Acessos fixos por 100 hab.</th>
               <th scope="col">Por fibra</th>
               <th scope="col">100 Mbps ou mais</th>

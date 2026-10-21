@@ -252,6 +252,8 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
             "uf": uf, "nome": F.NOME_UF[uf], "municipios": len(cods),
             # universo de cada ranking: quantos municípios da UF receberam posição naquela medida (sem valor não entra)
             "ranqueados": {n: sum(1 for c in cods if c in posicoes_uf[n]) for n in medidas},
+            # universo dos agregados de cada fonte no estado: os municípios que a fonte traz (os sem dado ficam fora da soma e das médias)
+            "municipios_por_fonte": {"fixa": sum(1 for c in cods if municipios[c]["fixa"]), "movel": sum(1 for c in cods if municipios[c]["movel"]), "cobertura": len(cob_uf)},
             "fixa": None if fl is None else {**_fixa_de(fl, fixa["grupos"]), "densidade": fixa["densidade"]["ufs"].get(uf)},
             "movel": None if ml is None else {**_movel_de(ml, movel["grupos"]), "densidade": movel["densidade"]["ufs"].get(uf)},
             "cobertura": {
@@ -311,6 +313,7 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
         "sem_5g": sum(u["cobertura"]["municipios_sem_5g"] for u in ufs),
         "g4_abaixo_50": sum(u["cobertura"]["municipios_4g_abaixo_50"] for u in ufs),
         "sem_dado": {x: sorted(c for c in ids if x in municipios[c]["ausencias"]) for x in ("fixa", "movel", "cobertura")},
+        "municipios_por_fonte": {x: sum(u["municipios_por_fonte"][x] for u in ufs) for x in ("fixa", "movel", "cobertura")},
         "nao_municipios_descartados": F.NAO_MUNICIPIOS,
     }
 

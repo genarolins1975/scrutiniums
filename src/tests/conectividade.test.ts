@@ -241,6 +241,14 @@ describe("painel completo", () => {
     expect(semFixaUf.fixa).toBeNull();
     expect(semFixaUf.movel).toBeNull();
     expect(linhaEstado(g, null).fixa).toBe(g.brasil.fixa);
+    // universo dos agregados por fonte (20ª revisão do Codex): MT tem 142 municípios, 141 com móvel e com cobertura
+    const mtFontes = g.ufs.find((u) => u.uf === "MT")!;
+    expect(mtFontes.municipios_por_fonte).toEqual({ fixa: mtFontes.municipios, movel: mtFontes.municipios - 1, cobertura: mtFontes.municipios - 1 });
+    expect(linhaEstado(g, mtFontes).universo).toBe(`fixa ${num(mtFontes.municipios)} · móvel ${num(mtFontes.municipios - 1)} · cobertura ${num(mtFontes.municipios - 1)}`);
+    expect(linhaEstado(g, g.ufs.find((u) => u.uf === "SP")!).universo).toBe(num(g.ufs.find((u) => u.uf === "SP")!.municipios));
+    expect(html).toContain(`<td>fixa ${num(mtFontes.municipios)} · móvel ${num(mtFontes.municipios - 1)} · cobertura ${num(mtFontes.municipios - 1)}</td>`);
+    expect(t).toContain("nos municípios que a Anatel publica (nesta edição, 1 sem telefonia móvel e 1 sem cobertura)");
+    expect(t).not.toContain("Para cada um dos");
     expect(t).toContain("se duas das bases diferirem entre si em mais de três municípios (fixa e móvel, fixa e cobertura, móvel e cobertura");
     expect(t).not.toContain("se faltar município");
     // densidade móvel rotulada como acessos (o numerador exclui M2M e pontos de serviço) e a coluna de 5G por estado com o seu universo (16ª revisão do Codex)
@@ -325,6 +333,7 @@ describe("arquivos CSV", () => {
     const mt = est.find((l) => l.startsWith("MT;"))!.split(";");
     const ufMT = g.ufs.find((u) => u.uf === "MT")!;
     expect(mt[cab.indexOf("municipios")]).toBe(String(ufMT.municipios));
+    expect(mt[cab.indexOf("municipios_com_movel")]).toBe(String(ufMT.municipios_por_fonte.movel));
     expect(mt[cab.indexOf("municipios_com_5g_publicado")]).toBe(String(ufMT.cobertura.municipios_com_5g_publicado));
     expect(ufMT.cobertura.municipios_com_5g_publicado).toBeLessThan(ufMT.municipios);        // Boa Esperança do Norte não tem cobertura
     const brasil = est[est.length - 1].split(";");
