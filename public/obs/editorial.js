@@ -60,6 +60,24 @@
       filtrar();
     }
   }
+  /* Diagnóstico de layout de 20/10/2026, item 2: o número vem antes do método. A caixa de leitura que o cabeçalho
+     comum escreve logo abaixo do título desce para depois do primeiro bloco de números da aba (a abertura padrão,
+     com placar e síntese, ou a primeira faixa de números, .kpirow ou .pan-kpi), desde que nenhum título de seção
+     fique entre os dois. Quando a síntese vem logo depois da faixa (Pix, Panorama), a caixa desce também abaixo dela.
+     O aviso de fonte em pane continua acima dos números: é ressalva sobre eles. Sem bloco de números, nada muda. */
+  function guiaDepoisDosNumeros(view) {
+    const guia = view.querySelector('.guia-leitura');
+    if (!guia) return;
+    const depois = el => guia.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING;
+    // em ordem de documento: a abertura padrão vem antes da faixa de números que ela contém
+    const bloco = Array.from(view.querySelectorAll('.abertura, .kpirow, .pan-kpi')).find(el => depois(el) && !el.closest('.card, details'));
+    if (!bloco) return;
+    const entre = Array.from(view.querySelectorAll('h3')).some(h => depois(h) && (h.compareDocumentPosition(bloco) & Node.DOCUMENT_POSITION_FOLLOWING));
+    if (entre) return;
+    let ancora = bloco;
+    while (ancora.nextElementSibling?.matches('.pan-sintese, .pan-sintese + .src')) ancora = ancora.nextElementSibling;
+    ancora.after(guia);
+  }
   function indiceDaPagina(view) {
     if (view.id === 'view-mapa' || !view.querySelector('.pagehead')) return;
     const titulos = Array.from(view.querySelectorAll('h3')).filter(h =>
@@ -106,7 +124,7 @@
           tabela.setAttribute('aria-label', `Tabela rolável${titulo ? ': ' + titulo : ''}. Use as setas para percorrer.`);
         }
       }
-      for (const view of main.querySelectorAll('.view.active')) indiceDaPagina(view);
+      for (const view of main.querySelectorAll('.view.active')) { guiaDepoisDosNumeros(view); indiceDaPagina(view); }
       const mapa = document.getElementById('view-mapa');
       if (mapa) {
         mapaEntrada(mapa);
