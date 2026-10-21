@@ -9,7 +9,7 @@
   "sede": "São José dos Campos/SP",
   "segmento": "S5",
   "grupo_pares": "S5 — porte reduzido / metodologia simplificada",
-  "n_pares": 684,
+  "n_pares": 682,
   "conglomerado_prudencial": "C0087250",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-18T15:09:14+00:00",
+  "atualizado_em": "2026-10-21T16:18:23+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 52.440.987"
  },
@@ -60,7 +60,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 684,
+  "quantidade": 682,
   "maiores_membros": [
    {
     "cod": "32430233",
@@ -124,7 +124,7 @@
    }
   ],
   "quartis_basileia": {
-   "q1": 18.3,
+   "q1": 18.4,
    "mediana": 28.5,
    "q3": 89.0
   },
@@ -234,7 +234,7 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.89,
+   "mediana_grupo": 4.91,
    "percentil": 93.4
   },
   {
@@ -243,8 +243,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 4.57,
-   "percentil": 7.0
+   "mediana_grupo": 4.59,
+   "percentil": 6.9
   }
  ],
  "carteira": {
@@ -465,7 +465,6 @@
     3.22,
     0.53,
     6.64,
-    -0.11,
     7.22,
     4.57,
     1.47,
@@ -661,6 +660,7 @@
     -2.88,
     11.04,
     9.12,
+    1.62,
     43.91,
     -6.57,
     13.78,
@@ -710,11 +710,9 @@
     4.21,
     9.54,
     7.05,
-    13.73,
     2.45,
     0.09,
     -4.91,
-    1.78,
     5.7,
     3.62,
     -1.36,
@@ -735,21 +733,23 @@
     8.83,
     5.18,
     -0.26,
-    12.54,
-    2.34,
     -29.7,
     -12.67,
     8.3,
     5.95,
-    0.16,
     1.49,
     2.49,
     -1.2,
     0.43,
-    -0.56
+    -0.56,
+    5.81,
+    6.45,
+    -3.68,
+    2.1,
+    12.7
    ],
    "meu": -9.44,
-   "mediana": 4.57
+   "mediana": 4.59
   },
   "alav": {
    "valores": [
@@ -871,7 +871,6 @@
     8.73,
     1.06,
     4.05,
-    1.22,
     6.87,
     5.55,
     7.94,
@@ -1067,6 +1066,7 @@
     8.14,
     8.7,
     7.82,
+    1.02,
     1.88,
     2.49,
     5.6,
@@ -1116,11 +1116,9 @@
     8.82,
     6.43,
     1.11,
-    8.45,
     5.67,
     7.57,
     1.15,
-    10.07,
     7.09,
     3.41,
     3.85,
@@ -1141,21 +1139,23 @@
     10.92,
     5.84,
     10.23,
-    2.47,
-    4.53,
     12.42,
     1.15,
     6.83,
     1.2,
-    1.05,
     1.15,
     1.05,
     1.39,
     1.02,
-    1.07
+    1.07,
+    1.08,
+    1.08,
+    7.37,
+    1.05,
+    7.08
    ],
    "meu": 10.01,
-   "mediana": 4.89
+   "mediana": 4.91
   }
  },
  "comparacao_pares": {

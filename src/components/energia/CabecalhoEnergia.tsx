@@ -1,22 +1,21 @@
 import Link from "@/components/i18n/LinkIdioma";
-import { NavegacaoObservatorios } from "@/components/observatorios/NavegacaoObservatorios";
-import { LogoMark } from "@/components/ui/Logo";
-import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { DetalhesFechaveis } from "@/components/layout/DetalhesFechaveis";
-import { AcessoConta } from "@/components/energia/AcessoConta";
 import { AtivoVisivel } from "@/components/energia/AtivoVisivel";
 import { RetornoContexto } from "@/components/energia/RetornoContexto";
 import { rotulosRetorno } from "@/lib/energia/conteudo/rotulos-retorno";
 import { listaPorExtenso, menuNavegacao, type DestinoNavegacao, type ItemMenu } from "@/lib/energia/navegacao";
 import { tx } from "@/lib/energia/idioma";
 import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
+import { prefetchDoLink } from "@/lib/rotasPublicas";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
+import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
 
 /**
- * Cabeçalho do Observatório Brasileiro do Setor Elétrico: marca Scrutiniums, seletor de observatório, atalhos de dados e método e a
- * navegação em seis grupos (seção 5.1). Estático (sem leitura de sessão no servidor): a conta é resolvida no cliente.
- *
- * Três linhas no desktop, no total de cerca de 130 px (eram 190): marca e atalhos; os seis grupos; as páginas do grupo atual. O
- * nome do observatório inteiro mora no seletor e no título da aba, e não numa linha própria em serifa.
+ * Cabeçalho do Observatório Brasileiro do Setor Elétrico: a barra comum da plataforma (CabecalhoPlataforma: marca, seletor de
+ * observatório, as abas dos seis observatórios, idioma e conta) e, abaixo dela, a navegação do observatório em seis grupos
+ * (seção 5.1), com os atalhos de dados e método à direita. Estático (sem leitura de sessão no servidor): a conta é resolvida no
+ * cliente. O nome do observatório inteiro mora no seletor e no título da aba, e não numa linha própria em serifa.
  *
  * A navegação tem três peças, todas renderizadas no servidor:
  *
@@ -31,46 +30,18 @@ import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
  *
  * Quem chega de um verbete ou de uma trilha do Aprenda (?volta=) ganha o botão fixo de volta ao contexto (RetornoContexto), que só
  * existe no cliente.
+ *
+ * `comSelo`: na versão aperitivo (servida sem sessão no endereço público), cada destino que pede conta leva o selo "com conta"
+ * (SeloComConta), para o visitante saber antes do clique. O painel completo não o pede: ali todos têm sessão. `rotaPublica` é o
+ * endereço público da versão aperitivo, que o seletor de idioma usa no lugar do caminho interno.
  */
-export function CabecalhoEnergia({ atual }: { atual: string }) {
+export function CabecalhoEnergia({ atual, comSelo = false, rotaPublica }: { atual: string; comSelo?: boolean; rotaPublica?: string }) {
   const { itens, grupoAtual } = menuNavegacao(atual);
   const paginaAtual = grupoAtual?.links.find((d) => d.slug === atual) ?? null;
   return (
     <header className="obs-identidade border-b border-linha bg-superficie">
-      <div className="ed-pagina flex flex-wrap items-center justify-between gap-x-6">
-        <div className="flex min-w-0 items-center gap-3 max-sm:order-first">
-          <Link href="/" aria-label={tx("Scrutiniums: página inicial", "Scrutiniums: home page")} className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-2.5 sm:justify-start">
-            <LogoMark size={20} />
-            {/* // i18n: dado (marca, igual nos dois idiomas) */}
-            <span className="hidden font-serif text-base uppercase tracking-wide2 text-carvao sm:inline">Scrutiniums</span>
-          </Link>
-          <span aria-hidden="true" className="h-5 w-px bg-linha" />
-          <SwitcherObservatorio atual="energia" />
-        </div>
-        <NavegacaoObservatorios atual="energia" />
-        {/* no celular este grupo se desfaz (contents): a conta sobe para a linha da marca e o idioma ocupa a linha de baixo */}
-        <div className="flex items-center gap-4 max-sm:contents sm:gap-5">
-          <Link
-            href="/setor-eletrico/dados"
-            aria-current={atual === "dados" ? "page" : undefined}
-            className="rotulo hidden min-h-[44px] items-center text-carvao-muted hover:text-energia-dark md:inline-flex"
-          >
-            {tx("Dados e fontes", "Data and sources")}
-          </Link>
-          <Link
-            href="/setor-eletrico/metodologia"
-            aria-current={atual === "metodologia" ? "page" : undefined}
-            className="rotulo hidden min-h-[44px] items-center text-carvao-muted hover:text-energia-dark md:inline-flex"
-          >
-            {tx("Metodologia", "Methodology")}
-          </Link>
-          <SeletorIdiomaPublico idioma={tx("pt", "en")} />
-          <span className="max-sm:order-first">
-            <AcessoConta destino="/setor-eletrico" />
-          </span>
-        </div>
-      </div>
-      <nav aria-label={tx("Navegação do Observatório do Setor Elétrico", "Setor Elétrico observatory navigation")} className="border-t border-linha">
+      <CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" complementos={<SeletorIdiomaPublico idioma={tx("pt", "en")} rotaPublica={rotaPublica} />} />
+      <nav aria-label={tx("Navegação do Observatório do Setor Elétrico", "Setor Elétrico observatory navigation")}>
         <div className="ed-pagina relative">
           {/* tela larga: os seis grupos numa linha */}
           <ul className="hidden flex-wrap gap-x-1 xl:flex">
@@ -99,7 +70,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
                       <ul aria-label={item.grupo.rotulo}>
                         {item.links.map((d) => (
                           <li key={d.slug}>
-                            <ItemDestino d={d} atual={atual} comPergunta />
+                            <ItemDestino d={d} atual={atual} comPergunta comSelo={comSelo} />
                           </li>
                         ))}
                       </ul>
@@ -132,7 +103,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
                           <ul aria-labelledby={idRotulo}>
                             {item.links.map((d) => (
                               <li key={d.slug}>
-                                <ItemDestino d={d} atual={atual} />
+                                <ItemDestino d={d} atual={atual} comSelo={comSelo} />
                               </li>
                             ))}
                           </ul>
@@ -154,10 +125,11 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
           </div>
         </div>
       </nav>
-      {grupoAtual && (
-        <div className="hidden border-t border-linha bg-energia-fundo md:block">
-          <div className="ed-pagina">
-            <ul id="modulos-energia" aria-label={tx(`Páginas do grupo ${grupoAtual.grupo.rotulo}`, `Pages in the ${grupoAtual.grupo.rotulo} group`)} className="tabela-scroll relative flex min-w-0 gap-1">
+      {/* de 768 px em diante: a faixa com as páginas do grupo atual e, à direita, os atalhos de dados e método */}
+      <div className="hidden border-t border-linha bg-energia-fundo md:block">
+        <div className="ed-pagina flex items-center gap-6">
+          {grupoAtual && (
+            <ul id="modulos-energia" aria-label={tx(`Páginas do grupo ${grupoAtual.grupo.rotulo}`, `Pages in the ${grupoAtual.grupo.rotulo} group`)} className="tabela-scroll relative flex min-w-0 flex-1 gap-1">
               {grupoAtual.links.map((d) => {
                 const ativo = d.slug === atual;
                 return (
@@ -172,26 +144,65 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
                     >
                       {d.rotulo}
                       <MarcaIntegracao d={d} />
+                      {comSelo && <SeloComConta href={d.href} />}
                     </Link>
                   </li>
                 );
               })}
             </ul>
+          )}
+          <div className="ml-auto flex shrink-0 items-center gap-5">
+            {/* em tela larga a parceria entra nesta faixa, antes dos atalhos: o cabeçalho perde uma faixa e a marca continua nele */}
+            <div className="hidden pr-3 xl:block">
+              <ParceriaTecnica variante="linha" />
+            </div>
+            <Atalhos atual={atual} comSelo={comSelo} />
           </div>
         </div>
-      )}
+      </div>
+      {/* parceria técnica com o FGV CERI: a marca fecha o cabeçalho de todos os painéis de infraestrutura; abaixo de 1280 px, numa faixa própria */}
+      <div className="xl:hidden">
+        <ParceriaTecnica variante="faixa" />
+      </div>
       <AtivoVisivel alvo="modulos-energia" />
       <RetornoContexto rotulos={rotulosRetorno()} />
     </header>
   );
 }
 
+/** Atalhos de dados e método, à direita da faixa do grupo (de 768 px em diante; no celular estão no Menu). */
+function Atalhos({ atual, comSelo }: { atual: string; comSelo: boolean }) {
+  return (
+    <>
+      <Link
+        href="/setor-eletrico/dados"
+        prefetch={prefetchDoLink("/setor-eletrico/dados")}
+        aria-current={atual === "dados" ? "page" : undefined}
+        className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-energia-dark"
+      >
+        {tx("Dados e fontes", "Data and sources")}
+        {comSelo && <SeloComConta href="/setor-eletrico/dados" />}
+      </Link>
+      <Link
+        href="/setor-eletrico/metodologia"
+        prefetch={prefetchDoLink("/setor-eletrico/metodologia")}
+        aria-current={atual === "metodologia" ? "page" : undefined}
+        className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-energia-dark"
+      >
+        {tx("Metodologia", "Methodology")}
+        {comSelo && <SeloComConta href="/setor-eletrico/metodologia" />}
+      </Link>
+    </>
+  );
+}
+
 /** Link de um destino dentro de um painel aberto (grupo ou Menu). */
-function ItemDestino({ d, atual, comPergunta = false }: { d: DestinoNavegacao; atual: string; comPergunta?: boolean }) {
+function ItemDestino({ d, atual, comPergunta = false, comSelo }: { d: DestinoNavegacao; atual: string; comPergunta?: boolean; comSelo: boolean }) {
   const ativo = d.slug === atual;
   return (
     <Link
       href={d.href}
+      prefetch={prefetchDoLink(d.href)}
       aria-current={ativo ? "page" : undefined}
       className={`flex min-h-[44px] flex-col justify-center px-3 py-2 ${ativo ? "bg-energia-fundo" : "hover:bg-papel"}`}
     >
@@ -199,6 +210,7 @@ function ItemDestino({ d, atual, comPergunta = false }: { d: DestinoNavegacao; a
         {ativo && <span aria-hidden="true" className="inline-block h-2 w-2 shrink-0 bg-energia" />}
         {d.rotulo}
         <MarcaIntegracao d={d} />
+        {comSelo && <SeloComConta href={d.href} />}
       </span>
       {comPergunta && <span className="mt-0.5 text-[0.8rem] leading-snug text-carvao-muted">{d.pergunta}</span>}
     </Link>

@@ -731,7 +731,10 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
     expect(nomeAgenda(gold.agenda)).toBe("Agenda Regulatória de 2026 e 2027");
     expect(h).toContain(`Atividades da ${nomeAgenda(gold.agenda)}`);
     expect(h).toContain(`Consultas e audiências desde ${anoInicioHistorico(gold)}, por situação`);
-    expect(h).toContain("decisões de abertura ainda não têm resultado formal na ata");
+    // a seção das decisões de abertura sem resultado formal só existe quando a gold tem alguma (havia em 01/10/2026; a de
+    // 20/10/2026 não tem); o texto com decisões pendentes é conferido com dados sintéticos no teste das decisões pendentes
+    if ((gold.consultas.decisoes_sem_resultado_formal ?? []).length) expect(h).toContain("decisões de abertura ainda não têm resultado formal na ata");
+    else expect(h).not.toContain("data-decisoes-sem-resultado");
     expect(h).toContain("https://www.gov.br/aneel/pt-br/acesso-a-informacao/participacao-social/consultas-publicas");
     expect((h.match(/<table/g) ?? []).length).toBeGreaterThanOrEqual(5);
   });

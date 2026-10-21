@@ -10,6 +10,7 @@ import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { ROTA_GERACAO, emPortugues, paineisGeracao, rotaPainel, type PainelGeracao } from "@/lib/energia/geracao";
 import { tx } from "@/lib/energia/idioma";
+import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import type { Natureza } from "@/lib/energia/tipos";
 import type { EvidenciaDocumental } from "@/lib/energia/tipos-geracao";
 
@@ -26,12 +27,17 @@ import type { EvidenciaDocumental } from "@/lib/energia/tipos-geracao";
 
 /**
  * Páginas do módulo como itens da navegação local; a descrição de cada capítulo é a pergunta do painel (a mesma do Anexo A).
- * Painel ainda não publicado não é link: sai da lista (os quatro estão publicados).
+ * Painel ainda não publicado não é link: sai da lista (os quatro estão publicados). A seção Curtailment fecha a lista, com o
+ * mesmo rótulo e a mesma pergunta do destino do menu (navegacao.ts), para a página não ficar escondida atrás das restrições.
  */
 function itensGeracao() {
-  return paineisGeracao()
-    .filter((p) => p.publicado)
-    .map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta }));
+  const curtailment = DESTINOS_NAVEGACAO.find((d) => d.slug === "curtailment");
+  return [
+    ...paineisGeracao()
+      .filter((p) => p.publicado)
+      .map((p) => ({ id: p.id, href: rotaPainel(p.id), rotulo: p.rotulo, descricao: p.pergunta })),
+    ...(curtailment?.publicado ? [{ id: curtailment.slug, href: curtailment.href, rotulo: curtailment.rotulo, descricao: curtailment.pergunta }] : []),
+  ];
 }
 
 /**

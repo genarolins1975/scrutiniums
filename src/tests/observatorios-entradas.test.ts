@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { OBSERVATORIOS, donoDaRota, rotasDoObservatorio } from "@/lib/observatorios/registro";
 import { escalaFamilias, orcamentoFamilia } from "@/lib/observatorios/entradas/familias";
 import { escalaServicos, recursoAoResultado } from "@/lib/observatorios/entradas/servicos";
-import { escalaTerritorio, frentesTerritorio } from "@/lib/observatorios/entradas/territorio";
+import { cartoesTerritorio, escalaTerritorio, numeroDoCaminho } from "@/lib/observatorios/entradas/territorio";
 import { escalaContas, fluxoImposto } from "@/lib/observatorios/entradas/contas";
 import { cadeias, escalaEnergia } from "@/lib/observatorios/entradas/energia";
 import { circuitoCredito, escalaEconomia } from "@/lib/observatorios/entradas/economia";
@@ -23,14 +23,19 @@ function conferir(n: NumeroPorta, id: ObservatorioId) {
 import { ehRotaPublica } from "@/lib/rotasPublicas";
 
 describe("entradas com conta dos observatórios", () => {
-  it("toda entrada declarada no registro é rota fechada e tem página", () => {
+  it("toda entrada declarada no registro é rota fechada e tem página", async () => {
     const comEntrada = OBSERVATORIOS.filter((o) => o.entrada);
     expect(comEntrada.map((o) => o.id)).toEqual(OBSERVATORIOS.map((o) => o.id));
     for (const o of comEntrada) {
-      expect(o.entrada).toBe(`/observatorios/${o.id}`);
+      // o Território e Clima mantém os próprios painéis e tem a entrada junto deles, em /territorio
+      expect(o.entrada).toBe(o.id === "territorio-e-clima" ? "/territorio" : `/observatorios/${o.id}`);
       expect(ehRotaPublica(o.entrada as string), o.entrada).toBe(false);
     }
     expect(existsSync(join(process.cwd(), "src", "app", "observatorios", "[id]", "page.tsx"))).toBe(true);
+    expect(existsSync(join(process.cwd(), "src", "app", "territorio", "page.tsx"))).toBe(true);
+    // o endereço genérico antigo continua levando à entrada
+    const config = (await import("../../next.config.mjs")).default as { redirects: () => Promise<{ source: string; destination: string }[]> };
+    expect((await config.redirects()).find((r) => r.source === "/observatorios/territorio-e-clima")?.destination).toBe("/territorio");
   });
 
   it("os números de escala das Famílias são lidos das bases, com fonte e período, e no máximo quatro", () => {
@@ -87,17 +92,17 @@ describe("entradas com conta dos observatórios", () => {
     }
   });
 
-  it("Território e Clima: escala e frentes lidas das bases, com destinos do próprio observatório ou atalhos", () => {
-    const permitidas = rotasDoObservatorio("territorio-e-clima");
-    const frentes = frentesTerritorio();
-    expect(frentes.map((f) => f.id)).toEqual(["floresta", "cidades", "agua"]);
-    for (const n of [...escalaTerritorio(), ...frentes.flatMap((f) => f.numeros)]) {
-      expect(n.valor, n.rotulo).not.toBeNull();
-      expect(n.periodo, n.rotulo).not.toMatch(/indisponível/);
-      expect(permitidas.has(n.href) || donoDaRota(n.href)?.observatorio === "territorio-e-clima", n.href).toBe(true);
-    }
-    for (const p of frentes.flatMap((f) => f.paineis)) {
-      expect(permitidas.has(p.href) || donoDaRota(p.href)?.observatorio === "territorio-e-clima", p.href).toBe(true);
+  it("Território e Clima: escala, cartões dos painéis e números dos caminhos lidos das bases, com destinos do próprio observatório ou atalhos", () => {
+    const escala = escalaTerritorio();
+    expect(escala.length).toBeLessThanOrEqual(4);
+    const cartoes = cartoesTerritorio();
+    expect(cartoes.map((c) => c.id)).toEqual(["queimadas", "desastres", "emissoes"]);
+    const caminhos = ["/agronegocio/ambiente", "/eficiencia-estatal/meio-ambiente-clima", "/saneamento/resiliencia", "/setor-eletrico/agua-e-clima"].map((h) => numeroDoCaminho(h)!);
+    for (const n of [...escala, ...cartoes.map((c) => c.numero), ...caminhos]) conferir(n, "territorio-e-clima");
+    for (const c of cartoes) {
+      expect(donoDaRota(c.href)?.observatorio, c.href).toBe("territorio-e-clima");
+      expect(c.lista, c.id).not.toBeNull();
+      for (const it of c.lista!.itens) expect(it.valor, `${c.id}: ${it.nome}`).not.toMatch(/NaN|undefined|Infinity/);
     }
   });
 

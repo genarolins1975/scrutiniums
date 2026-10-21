@@ -84,9 +84,24 @@ function verificarIndiceHome(indicePt: Elemento, indiceEn: Elemento, corpoPt: El
     if (typeof f === "string") throw new Error(descricao);
     return f;
   };
-  expect(esperado.filhos).toHaveLength(2);
-  const lista = objeto(esperado.filhos[0], "índice PT sem lista");
-  const ressalva = objeto(esperado.filhos[1], "índice PT sem ressalva");
+  // Desde 19/10/2026 (achado A9 da banca) o índice fica recolhido num <details> dentro do nav:
+  // o resumo repete o nome do índice (mesma chave traduzida) e um sinal decorativo sem filhos.
+  expect(esperado.filhos).toHaveLength(1);
+  const recolhido = objeto(esperado.filhos[0], "índice PT sem bloco recolhido");
+  expect(recolhido.tag).toBe("details");
+  expect(atributo(recolhido, "open"), "o índice começa recolhido").toBeUndefined();
+  expect(recolhido.filhos).toHaveLength(3);
+  const resumo = objeto(recolhido.filhos[0], "índice PT sem resumo");
+  expect(resumo.tag).toBe("summary");
+  expect(resumo.filhos).toHaveLength(2);
+  expect(resumo.filhos[0]).toBe("Índice das coleções");
+  resumo.filhos[0] = inglesa("home.indice.rotulo");
+  const sinal = objeto(resumo.filhos[1], "resumo sem sinal de abrir");
+  expect(sinal.tag).toBe("span");
+  expect(atributo(sinal, "aria-hidden")).toBe("true");
+  expect(sinal.filhos).toEqual([]);
+  const lista = objeto(recolhido.filhos[1], "índice PT sem lista");
+  const ressalva = objeto(recolhido.filhos[2], "índice PT sem ressalva");
   expect(lista.tag).toBe("ol");
   expect(lista.filhos).toHaveLength(8);
   expect(ressalva.tag).toBe("p");
@@ -273,6 +288,8 @@ export function verificarHomeParcial(pt: No, en: No): void {
     expect(anchor.tag).toBe("a");
     expect(anchor.filhos).toEqual([catalogoPt[chave]]);
     anchor.filhos = [inglesa(chave)];
+    // a entrada tem tradução publicada: o atalho inglês leva à irmã /en; o cadastro continua em português
+    if (href === "/entrar") anchor.atributos = anchor.atributos.map(([nome, valor]): [string, string] => [nome, nome === "href" ? "/en/entrar" : valor]);
   }
   const rotuloEsperado = forma(rotuloPt);
   expect(rotuloEsperado.tag).toBe("p");

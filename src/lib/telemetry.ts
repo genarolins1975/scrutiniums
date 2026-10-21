@@ -104,6 +104,7 @@ export const VIEW_SECTIONS = [
   "energia:metodologia",
   "energia:conta-de-luz",
   "energia:conta-de-luz:reajustes",
+  "energia:conta-de-luz:aperitivo",
   "energia:perdas",
   "energia:perdas:composicao",
   "energia:perdas:regulatorio",
@@ -130,6 +131,27 @@ export const VIEW_SECTIONS = [
   "gas:regulacao",
   "gas:dados",
   "gas:metodologia",
+  // Combustíveis nos postos (coleção própria, gold do pipeline do Gás)
+  "gas:combustiveis",
+  "gas:combustiveis-no-meu-estado",
+  // Contas Públicas Federais
+  "contas:por-area",
+  // Previdência e INSS (painel com conta e a versão aperitivo no mesmo endereço)
+  "contas:previdencia",
+  "contas:previdencia-aperitivo",
+  // Conectividade (Energia e Infraestrutura; painel com conta e a versão aperitivo no mesmo endereço)
+  "infra:conectividade",
+  "infra:conectividade-aperitivo",
+  // Educação nos municípios (Serviços Públicos: painel com conta e a versão aperitivo no mesmo endereço)
+  "servicos:educacao-municipal",
+  "servicos:educacao-municipal-aperitivo",
+  // Inflação por cidade (Observatório das Famílias, coleção Custo de vida; pipeline e gold próprios)
+  "familias:custo-de-vida",
+  "familias:custo-de-vida-na-minha-cidade",
+  // Crédito (páginas Next fora da aplicação de página única)
+  "credito:quanto-meu-banco-cobra",
+  "credito:simulador-da-parcela",
+  "credito:metodologia",
   // Plataforma (páginas Next)
   // Agro usa somente contagem agregada, sem identificar usuários ou parâmetros.
   "agro:paginas",
@@ -233,6 +255,7 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "energia:metodologia": "Setor Elétrico · Metodologia",
   "energia:conta-de-luz": "Setor Elétrico · Conta de luz",
   "energia:conta-de-luz:reajustes": "Setor Elétrico · Conta de luz: reajustes, bandeiras e subsídios",
+  "energia:conta-de-luz:aperitivo": "Setor Elétrico · Conta de luz: versão aperitivo (sem conta)",
   "energia:perdas": "Setor Elétrico · Perdas",
   "energia:perdas:composicao": "Setor Elétrico · Perdas: técnicas e não técnicas",
   "energia:perdas:regulatorio": "Setor Elétrico · Perdas: percentual técnico regulatório",
@@ -257,6 +280,20 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "gas:regulacao": "Gás Natural · Regulação e marcos legais",
   "gas:dados": "Gás Natural · Dados e downloads",
   "gas:metodologia": "Gás Natural · Método e glossário",
+  "gas:combustiveis": "Combustíveis · Preços nos postos",
+  "gas:combustiveis-no-meu-estado": "Combustíveis · Consulta por estado",
+  "contas:por-area": "Contas Federais · Despesa por área",
+  "contas:previdencia": "Contas Federais · Previdência e INSS",
+  "contas:previdencia-aperitivo": "Contas Federais · Previdência e INSS: versão aperitivo (sem conta)",
+  "infra:conectividade": "Energia e Infraestrutura · Conectividade",
+  "infra:conectividade-aperitivo": "Energia e Infraestrutura · Conectividade: versão aperitivo (sem conta)",
+  "servicos:educacao-municipal": "Serviços Públicos · Educação nos municípios",
+  "servicos:educacao-municipal-aperitivo": "Serviços Públicos · Educação nos municípios: versão aperitivo (sem conta)",
+  "familias:custo-de-vida": "Custo de vida · Inflação por cidade",
+  "familias:custo-de-vida-na-minha-cidade": "Custo de vida · Consulta por cidade",
+  "credito:quanto-meu-banco-cobra": "Crédito · Quanto meu banco cobra?",
+  "credito:simulador-da-parcela": "Crédito · Simulador da parcela",
+  "credito:metodologia": "Crédito · Metodologia e fontes",
   "app:conta": "Plataforma · Conta",
   "agro:paginas": "Agronegócio · Páginas",
   "app:observatorios": "Plataforma · Escolha do observatório",

@@ -1,6 +1,7 @@
 import { comNomes } from "@/components/i18n/comNomes";
 import Link from "@/components/i18n/LinkIdioma";
 import type { ReactNode } from "react";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
 import { LinkDoPainel } from "@/components/energia/LinkDoPainel";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
@@ -8,7 +9,7 @@ import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 /**
  * Próximos passos de um painel numa linha só: baixar os dados, copiar o link com o recorte e seguir para a próxima pergunta.
  * Um arquivo vira link direto; vários arquivos ficam num bloco recolhível com a contagem, para a lista não ocupar a página (os
- * links continuam no HTML do servidor). Substitui os blocos `*Seguir` de cada módulo, que repetiam a mesma estrutura.
+ * links continuam no HTML do servidor). Numa página aberta, cada arquivo fechado leva o selo "com conta". Substitui os blocos `*Seguir` de cada módulo, que repetiam a mesma estrutura.
  */
 export function SeguirPainel({
   ancora,
@@ -31,6 +32,7 @@ export function SeguirPainel({
             <a href={downloads[0].url} download className={link}>
               {tx("Baixar os dados: ", "Download the data: ")}
               {downloads[0].rotulo}
+              <SeloComConta href={downloads[0].url} />
             </a>
           )}
           {downloads.length > 1 && (
@@ -40,6 +42,7 @@ export function SeguirPainel({
                   <li key={d.url}>
                     <a href={d.url} download className={link}>
                       {d.rotulo}
+                      <SeloComConta href={d.url} />
                     </a>
                   </li>
                 ))}

@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { Idioma } from "@/lib/idioma";
+import { TEXTOS_ENTRAR } from "@/i18n/paginas/entrar";
 
 /**
  * Botão de reenvio de código com contagem regressiva de 30 segundos.
@@ -11,11 +13,14 @@ export function ResendCountdown({
   onResend,
   seconds = 30,
   disabled = false,
+  idioma = "pt",
 }: {
   onResend: () => Promise<void> | void;
   seconds?: number;
   disabled?: boolean;
+  idioma?: Idioma;
 }) {
+  const t = TEXTOS_ENTRAR[idioma];
   const [remaining, setRemaining] = useState(seconds);
   const [sending, setSending] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -63,10 +68,10 @@ export function ResendCountdown({
       className="rotulo min-h-[44px] text-carvao-muted underline underline-offset-4 hover:text-bronze disabled:cursor-not-allowed disabled:no-underline disabled:opacity-60"
     >
       {remaining > 0
-        ? `Reenviar código em ${remaining}s`
+        ? t.reenviarEm(remaining)
         : sending
-          ? "Reenviando…"
-          : "Reenviar código"}
+          ? t.reenviando
+          : t.reenviar}
     </button>
   );
 }

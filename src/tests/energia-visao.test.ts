@@ -69,6 +69,8 @@ import {
   valorSociedade,
 } from "@/lib/energia/visao";
 import { contextoVisao } from "@/lib/energia/visao-servidor";
+import { textoEstadoDoArquivo } from "@/lib/energia/dados-leitor";
+import { estadoDoArquivo, manifestoDados, publicacaoDados } from "@/lib/energia/dados-servidor";
 
 /**
  * Visão geral (P004 a P007): contrato da gold sintese.json, equivalência célula a célula
@@ -371,7 +373,12 @@ describe("P005: recorte, séries, posição e leitura dos determinantes", () => 
     expect(leituras).toHaveLength(M.paineis.length);
     for (const [i, p] of Array.from(M.paineis.entries())) {
       expect(leituras[i]).toContain(p.titulo);
-      if (p.valor_atual.valor !== null) expect(leituras[i]).toContain(comUnidade(p.valor_atual.valor, p.unidade, p.casas).replace(/^R\$ /, ""));
+      if (p.valor_atual.valor === null) continue;
+      // a rede é um sentido: o saldo vai sem sinal, com a origem e o destino trocados quando o fluxo é negativo (−1.846 MWmed de
+      // Nordeste para Sudeste/Centro-Oeste é escrito 1.846 MWmed de Sudeste/Centro-Oeste para Nordeste, 20/10/2026)
+      const v = p.id === "rede" ? Math.abs(p.valor_atual.valor) : p.valor_atual.valor;
+      expect(leituras[i], p.id).toContain(comUnidade(v, p.unidade, p.casas).replace(/^R\$ /, ""));
+      if (p.id === "rede") expect(leituras[i]).not.toMatch(/Rede: −/);
     }
     const p = clone(M.paineis.find((x) => x.id === "carga") as PainelDeterminante);
     const antes = leituraDeterminante(p, M);
@@ -646,6 +653,16 @@ describe("r10: DEC apurado, perdas, tarifa de referência e EAR com a ressalva j
     expect(b).toContain(`${num(ctx.tarifa!.comTarifa, 0)} distribuidoras`);
     // o cartão mostra R$/kWh e diz que é o mesmo valor que a página Conta de luz traz em R$/MWh
     expect(b).toContain("R$/MWh");
+    // singular e plural nos dois grupos de fora, qualquer que seja a contagem do dia
+    const um = textoCoberturaTarifa({ ...ctx.tarifa!, fora: 2, foraRecente: 1, foraAntigas: 1, naVespera: 0, incorporadas: 0 });
+    expect(um).toContain("1 teve a vigência encerrada nos 90 dias anteriores");
+    expect(um).toContain("1 está sem tarifa há mais de 90 dias");
+    const dois = textoCoberturaTarifa({ ...ctx.tarifa!, fora: 4, foraRecente: 2, foraAntigas: 2, naVespera: 0, incorporadas: 0 });
+    expect(dois).toContain("2 tiveram a vigência encerrada nos 90 dias anteriores");
+    expect(dois).toContain("2 estão sem tarifa há mais de 90 dias");
+    const en = textoCoberturaTarifa({ ...ctx.tarifa!, fora: 2, foraRecente: 1, foraAntigas: 1, naVespera: 0, incorporadas: 0 }, "en");
+    expect(en).toContain("1 had its validity period end");
+    expect(en).toContain("1 has had no tariff for more than 90 days");
   });
 
   it("a EAR do SIN é arredondada uma só vez: cartão, gráfico, tabela e arquivo leem a mesma célula", () => {
@@ -800,7 +817,8 @@ describe("r2: Visão geral", () => {
     expect(html).toContain('data-limite=""');
     expect(T).toContain("Não permite concluir Alinhar as medidas pelo calendário não diz que uma determina a outra");
     expect(T).toContain("no mesmo calendário, cada um com a data da sua fonte");
-    expect(T).toMatch(/A ligação entre essas partes, da geração ao consumidor, está no mapa do sistema\s*\./);
+    // lead mais curto desde o diagnóstico de layout de 20/10/2026, item 7: o "sem afirmar que uma explica outra" fica na linha "Não permite concluir"
+    expect(T).toMatch(/Como essas partes se ligam, da geração ao consumidor, está no mapa do sistema\s*\./);
     expect(html).not.toContain("data-por-que-importa");
     expect(T).not.toContain("Por que isso importa");
   });
@@ -869,10 +887,22 @@ describe("r2: Visão geral", () => {
   it("os dois CSV de Regras mostram o estado da validação junto do link; o 'reprovado' de uma versão anterior vem explicado sem tocar na publicação", () => {
     expect(html).toContain('data-arquivo="/energia/series/sintese_regras_diario.csv"');
     expect(T).toContain("Arquivos para baixar e o estado de cada um");
-    expect(html).toContain('data-estado-arquivo="reprovado"');
-    expect(T).toContain("Validação automática: reprovada na versão de");
-    expect(T).toContain("o arquivo publicado é outra versão");
-    expect(T).toContain("Relido como CSV, o arquivo publicado tem");
+    // o estado vem da validação da publicação: em 01/10/2026 o CSV fora reprovado numa versão anterior (texto explicado na página);
+    // em 20/10/2026 foi aprovado. O texto do caso reprovado em outra versão é conferido com um estado sintético
+    const estado = estadoDoArquivo("/energia/series/sintese_regras_diario.csv", publicacaoDados(), manifestoDados());
+    expect(html).toContain(`data-estado-arquivo="${estado.veredito}"`);
+    const frase = textoEstadoDoArquivo(estado).frase;
+    if (frase) expect(T).toContain(frase);
+    if (estado.veredito !== "reprovado") expect(T).not.toContain("Validação automática: reprovada");
+    const sintetico = textoEstadoDoArquivo({
+      caminho: "/energia/series/sintese_regras_diario.csv", veredito: "reprovado",
+      problemas: [{ tipo: "esquema", resultado: "reprovado", detalhe: "2 linhas com 9 colunas" }],
+      releitura: { linhas: 120, colunas: 8, divergentes: 0 },
+      outraVersao: { julgada: "aaaa", publicada: "bbbb", julgadaEm: "2026-09-30T05:00:00Z" },
+    }).frase;
+    expect(sintetico).toContain("Validação automática: reprovada na versão de");
+    expect(sintetico).toContain("o arquivo publicado é outra versão");
+    expect(sintetico).toContain("Relido como CSV, o arquivo publicado tem 8 colunas em todas as 120 linhas.");
   });
 
   it("o CSV do painel diz o que não traz, e a mediana de tarifa diz que é simples e que muda com o conjunto do arquivo", () => {

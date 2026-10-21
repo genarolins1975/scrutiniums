@@ -623,7 +623,10 @@ def data_local(instante_utc):
 
 
 def _abs(caminho):
-    return caminho if os.path.isabs(caminho) else os.path.join(base.RAIZ, caminho)
+    """Caminho absoluto do original, ou da cópia idêntica do bronze (mesma pasta, mesmo sha256 no nome) quando o
+    gravado na vintage não existe: o bronze restaurado da cópia durável traz a recaptura de um recurso órfão com
+    outro carimbo no nome (base.caminho_bronze). Sem isso, o original vigente contava como ausente."""
+    return base.caminho_bronze(caminho)
 
 
 def sha256_do_bronze(caminho):
@@ -674,7 +677,7 @@ def confere_bronze(vs, limite_hash=LIMITE_HASH_BYTES, recalcular=True, cache=Non
     por_rec = defaultdict(list)
     for v in vs:
         por_rec[v["recurso"]].append(v)
-    presentes = ausentes = conferidos = divergentes = grandes = 0
+    presentes = ausentes = ausentes_vigentes = conferidos = divergentes = grandes = 0
     exemplos_ausentes, exemplos_divergentes = [], []
     drift = []
     cabecalhos = {}
@@ -686,6 +689,7 @@ def confere_bronze(vs, limite_hash=LIMITE_HASH_BYTES, recalcular=True, cache=Non
             arq = v.get("arquivo")
             if not arq or not os.path.exists(_abs(arq)):
                 ausentes += 1
+                ausentes_vigentes += v is alvo[-1]
                 if len(exemplos_ausentes) < 5:
                     exemplos_ausentes.append({"recurso": rec, "capturado_em": v["capturado_em"], "arquivo": arq})
                 cabs.append(None)
@@ -733,7 +737,8 @@ def confere_bronze(vs, limite_hash=LIMITE_HASH_BYTES, recalcular=True, cache=Non
                 diferentes.append({"recurso": rec, "removidas": [c for c in ref if c not in cab],
                                    "novas": [c for c in cab if c not in ref]})
     return {
-        "arquivos_presentes": presentes, "arquivos_ausentes": ausentes, "sha256_conferidos": conferidos,
+        "arquivos_presentes": presentes, "arquivos_ausentes": ausentes, "ausentes_vigentes": ausentes_vigentes,
+        "sha256_conferidos": conferidos,
         "sha256_divergentes": divergentes, "acima_do_limite_de_hash": grandes,
         "exemplos_ausentes": exemplos_ausentes, "exemplos_divergentes": exemplos_divergentes,
         "csv_com_cabecalho": len(cabecalhos), "drift": drift[:10], "drift_total": len(drift),

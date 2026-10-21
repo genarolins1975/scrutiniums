@@ -1,30 +1,40 @@
 import Link from "next/link";
-import { NavegacaoObservatorios } from "@/components/observatorios/NavegacaoObservatorios";
-import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
-import { LogoMark } from "@/components/ui/Logo";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoTemaObee, type AbaTema } from "./NavegacaoTemaObee";
+
+/** Um tema da Eficiência Estatal no cabeçalho: nome, rota, visões e ações de conferência. */
+export type TemaCabecalho = { nome: string; rota: string; abas: readonly AbaTema[]; acoes?: readonly AbaTema[]; levar?: readonly string[] };
 
 /**
- * Cabeçalho da entrada do observatório: marca, nome e nada de navegação de painel. No celular o nome por extenso dá lugar ao
- * seletor de observatório, que guarda os destinos da lista de observatórios (oculta abaixo de 640 px).
+ * Cabeçalho da entrada e dos temas da Eficiência Estatal: a barra comum da plataforma (marca, seletor com a coleção
+ * corrente, abas dos seis observatórios e conta). Com `tema`, abaixo dela vêm o caminho (observatório, que volta à
+ * entrada, e o tema) e as abas do tema, no molde da Saúde nas capitais: um só subcabeçalho no observatório
+ * (diagnóstico de layout de 20/10/2026, item 10). Alinhado à grade das páginas do observatório (max-w-page).
  */
-export function CabecalhoEntrada() {
+export function CabecalhoEntrada({ tema }: { tema?: TemaCabecalho } = {}) {
+  if (!tema)
+    return (
+      <header className="grade-pagina">
+        <CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal" />
+      </header>
+    );
   return (
-    <header className="border-b border-linha bg-superficie">
-      <div className="mx-auto flex max-w-page flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2 sm:px-6">
-        <Link href="/" aria-label="Scrutiniums: página inicial" className="inline-flex min-h-[44px] min-w-[44px] items-center gap-2.5">
-          <LogoMark size={20} />
-          <span className="hidden font-serif text-base uppercase tracking-wide2 text-carvao sm:inline">Scrutiniums</span>
-        </Link>
-        <span aria-hidden="true" className="h-5 w-px bg-linha" />
-        <div className="sm:hidden">
-          <SwitcherObservatorio atual="eficiencia" />
-        </div>
-        <p className="hidden text-sm text-carvao-muted sm:block">
+    <header className="grade-pagina border-b border-linha bg-superficie">
+      <CabecalhoPlataforma colecao="eficiencia" destinoConta={tema.rota} />
+      <div className="mx-auto flex max-w-page flex-wrap items-center gap-x-4 gap-y-1 px-4 pt-1 sm:px-6">
+        <p className="min-w-0 text-sm text-carvao-muted">
           <span aria-hidden="true" className="mr-2 inline-block h-2 w-2 bg-obee align-middle" />
-          Observatório Brasileiro de Eficiência Estatal
+          <Link href="/eficiencia-estatal" className="inline-flex min-h-[44px] items-center underline-offset-4 hover:underline">
+            <span className="sm:hidden">Eficiência Estatal</span>
+            <span className="hidden sm:inline">Observatório Brasileiro de Eficiência Estatal</span>
+          </Link>
+          <span aria-hidden="true" className="mx-2">
+            /
+          </span>
+          <span className="text-obee-tinta">{tema.nome}</span>
         </p>
       </div>
-      <div className="mx-auto hidden max-w-page border-t border-linha px-4 sm:block sm:px-6"><NavegacaoObservatorios atual="eficiencia" /></div>
+      <NavegacaoTemaObee rota={tema.rota} nome={tema.nome} abas={tema.abas} acoes={tema.acoes} levar={tema.levar} />
     </header>
   );
 }

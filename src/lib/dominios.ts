@@ -118,10 +118,10 @@ export const DOMINIOS: Dominio[] = [
     nomeCurto: "Saneamento",
     pergunta: "Quem ainda está sem água e esgoto adequados, quanto custa o serviço, quem o presta e se o planejamento vira atendimento?",
     descricao:
-      "Acesso à água e ao esgoto em cada município, pelo Censo 2022 e pelo SINISA 2024, com prestadores, reguladores, investimentos declarados, planos e metas de universalização. O preço regulado tem eixo próprio: como a tarifa é autorizada, o que financia e como chega à conta, a partir das decisões dos reguladores.",
+      "Acesso à água e ao esgoto em cada município, pelo Censo 2022 e pelo SINISA 2024, com prestadores, reguladores, investimentos declarados, planos e metas de universalização. A tarifa tem eixo próprio: como é autorizada, o que financia e como chega à conta, a partir das decisões dos reguladores.",
     descricaoCurta:
-      "Água e esgoto nos 5.570 municípios: Censo 2022, SINISA 2024, prestadores, reguladores, investimentos, metas e preço regulado a partir de atos oficiais.",
-    chips: ["Acesso", "Preço regulado", "Prestadores", "Investimento", "Metas"],
+      "Água e esgoto nos 5.570 municípios: Censo 2022, SINISA 2024, prestadores, reguladores, investimentos, metas e tarifas a partir de atos oficiais.",
+    chips: ["Acesso", "Tarifa", "Prestadores", "Investimento", "Metas"],
     rotaRaiz: "/saneamento",
     rotaApresentacao: "/saneamento",
     cta: "Explorar Saneamento",

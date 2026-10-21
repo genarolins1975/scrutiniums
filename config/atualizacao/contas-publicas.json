@@ -1,0 +1,61 @@
+{
+  "dominio": "contas-publicas",
+  "titulo": "Contas Públicas Federais",
+  "descricao": "Recoleta semanal da execução orçamentária do SIOP (consulta SPARQL pública) para os exercícios integrados, e por função e subfunção para o ano corrente e o anterior (os exercícios desde 2000 ficam no snapshot); e da dívida bruta do governo geral do Banco Central (SGS 13761 e 13762). A edição do RTN, o IPCA, os restos a pagar, as metas físicas, os custos, os gastos tributários da Receita e os denominadores do IBGE são integrados por edição, à mão (OPERACOES.md).",
+  "codigo": [
+    "scripts/contas-publicas/importar.py",
+    "scripts/contas-publicas/esferas.rq",
+    "scripts/contas-publicas/gnd.rq",
+    "scripts/contas-publicas/importar-funcoes.py",
+    "scripts/contas-publicas/funcoes.rq",
+    "scripts/contas-publicas/totais.rq",
+    "scripts/contas-publicas/importar-divida.py",
+    "src/lib/contas-publicas",
+    "src/tests/contas-publicas*.test.ts"
+  ],
+  "reconstruir": [],
+  "saidas": [],
+  "sinal_de_mudanca": [
+    {"arquivo": "src/lib/contas-publicas/snapshots/dados.json", "json_sem": ["capturaSIOP"]},
+    {"arquivo": "src/lib/contas-publicas/snapshots/funcoes.json", "json_sem": ["captura"]},
+    {"arquivo": "src/lib/contas-publicas/snapshots/divida.json", "json_sem": ["captura"]},
+    {"caminho": "data/contas-publicas/fontes"}
+  ],
+  "testes": [
+    {
+      "nome": "importadores (Python)",
+      "comando": ["python3", "-m", "unittest", "discover", "-s", "scripts/contas-publicas", "-p", "test_*.py"],
+      "timeout_min": 5
+    },
+    {
+      "nome": "contratos do painel e das entradas (vitest)",
+      "comando": ["npx", "vitest", "run", "--testTimeout=60000", "src/tests/contas-publicas", "src/tests/entradas-estado.test.ts", "src/tests/observatorios-entradas.test.ts", "src/tests/perguntas-portas.test.ts"],
+      "timeout_min": 15
+    }
+  ],
+  "grupos": [
+    {
+      "id": "siop",
+      "nome": "SIOP: execução orçamentária da União (esferas e GND dos exercícios integrados; função e subfunção do ano corrente e do anterior)",
+      "coleta": [["python3", "scripts/contas-publicas/importar.py", "--so-siop"], ["python3", "scripts/contas-publicas/importar-funcoes.py", "--recentes"]],
+      "caminhos": [
+        "src/lib/contas-publicas/snapshots/dados.json",
+        "src/lib/contas-publicas/snapshots/funcoes.json",
+        "data/contas-publicas/fontes/funcoes",
+        "data/contas-publicas/fontes/siop*.json",
+        "data/contas-publicas/fontes/gnd*.json"
+      ],
+      "timeout_min": 25
+    },
+    {
+      "id": "bcb",
+      "nome": "Banco Central: dívida bruta do governo geral (SGS 13761 e 13762, mensal)",
+      "coleta": [["python3", "scripts/contas-publicas/importar-divida.py"]],
+      "caminhos": [
+        "src/lib/contas-publicas/snapshots/divida.json",
+        "data/contas-publicas/fontes/bcb"
+      ],
+      "timeout_min": 5
+    }
+  ]
+}

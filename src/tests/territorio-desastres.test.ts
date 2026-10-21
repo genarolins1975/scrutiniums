@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { GRUPOS, lerDesastres, serieReconhecida } from "@/lib/territorio/desastres";
 import { donoDaRota } from "@/lib/observatorios/registro";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
-import { frentesTerritorio } from "@/lib/observatorios/entradas/territorio";
+import { cartoesTerritorio } from "@/lib/observatorios/entradas/territorio";
 
 describe("desastres do Território e Clima", () => {
   const g = lerDesastres();
@@ -42,11 +42,11 @@ describe("desastres do Território e Clima", () => {
     expect(fonte).not.toMatch(/afetados<\/td>/);
   });
 
-  it("a entrada liga o painel na frente das cidades e não anuncia mais desastres como lacuna", () => {
-    const cidades = frentesTerritorio().find((f) => f.id === "cidades")!;
-    expect(cidades.paineis.map((p) => p.href)).toContain("/territorio/desastres");
-    expect(cidades.numeros.find((x) => x.href === "/territorio/desastres")?.valor).not.toBeNull();
-    const frentes = readFileSync(join(process.cwd(), "src", "components", "observatorios", "FrentesTerritorio.tsx"), "utf-8");
-    expect(frentes).not.toMatch(/desastres da Defesa Civil ainda não/);
+  it("a entrada liga o painel num cartão com número lido e não anuncia desastres como lacuna", () => {
+    const cartao = cartoesTerritorio().find((c) => c.id === "desastres")!;
+    expect(cartao.href).toBe("/territorio/desastres");
+    expect(cartao.numero.valor).not.toBeNull();
+    const entrada = readFileSync(join(process.cwd(), "src", "app", "territorio", "page.tsx"), "utf-8");
+    expect(entrada).not.toMatch(/desastres da Defesa Civil ainda não/);
   });
 });

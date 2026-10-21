@@ -19,6 +19,7 @@ import json
 import os
 import sqlite3
 import subprocess
+import time
 from datetime import datetime, timezone
 from decimal import ROUND_HALF_UP, Decimal, InvalidOperation
 
@@ -195,8 +196,84 @@ def caminho_bronze(arquivo):
     return caminho if os.path.isfile(caminho) else (_bronze_mesmo_conteudo(caminho) or caminho)
 
 
+def arquivo_publicavel(arquivo):
+    """Caminho a publicar numa evidência: o gravado na vintage, ou a cópia idêntica que está no
+    bronze (mesma pasta, mesmo sha256 no nome) quando o gravado não existe.
+
+    O bronze restaurado da cópia durável traz a recaptura de um recurso órfão (o conteúdo é o
+    mesmo, o carimbo do nome é o da recaptura), e a vintage continua apontando o arquivo da
+    primeira captura, que não existe mais em nenhum ambiente. Publicar esse caminho dá uma
+    evidência que ninguém consegue abrir (20/10/2026: p026_mmgd_mes apontava
+    cargaverificada_SECO_2026-09/20261006T033320Z…, e o bronze tinha 20261016T014137Z… com o mesmo
+    sha256). Sem cópia idêntica, devolve o caminho gravado: a ausência continua visível."""
+    if not arquivo:
+        return arquivo
+    resolvido = caminho_bronze(arquivo)
+    if not os.path.isfile(resolvido) or os.path.isabs(arquivo):
+        return arquivo
+    return os.path.relpath(resolvido, RAIZ).replace(os.sep, "/")
+
+
 def bronze_disponivel(vintage):
     return bool(vintage and vintage.get("arquivo") and os.path.isfile(caminho_bronze(vintage["arquivo"])))
+
+
+# Vintage órfã: a última captura está no silver, mas o bronze não está no disco (cache despejado
+# ou podado). Desde o #278 ela é recapturada. Na primeira execução com essa regra (19/10/2026),
+# as recapturas passaram do limite de 150 min do job (água 30 min; carga mais de 107 min: as
+# séries da NASA e da Open-Meteo, cuja coleta falhava por bronze ausente desde 06/10) e nada foi
+# publicado. A recaptura de órfãs passa a ter um orçamento de tempo por execução, e toda recoleta
+# não forçada, um prazo contado do início do processo: o que exceder fica para a próxima execução.
+# Coleta forçada e recurso sem nenhuma vintage não esperam.
+ORCAMENTO_ORFAS_S = float(os.environ.get("ENERGIA_ORCAMENTO_ORFAS_MIN", "40")) * 60
+PRAZO_COLETA_S = float(os.environ.get("ENERGIA_PRAZO_COLETA_MIN", "80")) * 60
+_INICIO = time.monotonic()
+_ORFAS = {"gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "adiadas_prazo": 0}
+
+
+def relogio():
+    """Relógio monotônico das recapturas (separado para os testes)."""
+    return time.monotonic()
+
+
+def vintage_orfa(vintage):
+    return bool(vintage) and not bronze_disponivel(vintage)
+
+
+def orcamento_orfas_disponivel():
+    return _ORFAS["gasto_s"] < ORCAMENTO_ORFAS_S
+
+
+def prazo_coleta_vencido():
+    return time.monotonic() - _INICIO >= PRAZO_COLETA_S
+
+
+def registra_recaptura_orfa(segundos):
+    _ORFAS["gasto_s"] += max(0.0, segundos)
+    _ORFAS["recapturadas"] += 1
+
+
+def registra_orfa_adiada():
+    _ORFAS["adiadas"] += 1
+
+
+def registra_adiada_prazo():
+    _ORFAS["adiadas_prazo"] += 1
+
+
+def resumo_orfas():
+    return {"orcamento_s": round(ORCAMENTO_ORFAS_S), "gasto_s": round(_ORFAS["gasto_s"], 1),
+            "recapturadas": _ORFAS["recapturadas"], "adiadas": _ORFAS["adiadas"],
+            "prazo_coleta_s": round(PRAZO_COLETA_S), "adiadas_prazo": _ORFAS["adiadas_prazo"]}
+
+
+def vintage_legivel(con, dataset, recurso):
+    """Última vintage do recurso com bronze no disco: a mais recente, ou a anterior mais recente
+    com bronze quando a última é órfã (recaptura adiada). None se nenhuma tem bronze."""
+    ultima = ultima_vintage(con, dataset, recurso)
+    if not vintage_orfa(ultima):
+        return ultima
+    return vintages_com_bronze(con, dataset).get(recurso)
 
 
 def vintages_com_bronze(con, dataset):
@@ -470,10 +547,18 @@ def _escreve_atomico(caminho, texto):
     return caminho
 
 
+# Golds de catálogo do módulo Dados, gravadas sem indentação, como a avaliacao.json. Crescem com o número de
+# conjuntos integrados e de entradas dos portais, e a página Catálogo baixa a publicacao.json no navegador. A
+# indentação era um quarto dos bytes: em 20/10/2026, 511.958 contra 388.328 bytes (publicacao.json) e 417.915
+# contra 323.720 (catalogo.json), com o teto de 400 KB do contrato dos módulos. O conteúdo não muda.
+GOLDS_COMPACTAS = frozenset({"publicacao.json", "catalogo.json"})
+
+
 def escreve_gold(nome, payload, destino=None):
     base = destino or GOLD
+    formato = {"separators": (",", ":")} if nome in GOLDS_COMPACTAS else {"indent": 1}
     return _escreve_atomico(os.path.join(base, nome),
-                            json.dumps(payload, ensure_ascii=False, indent=1, allow_nan=False))
+                            json.dumps(payload, ensure_ascii=False, allow_nan=False, **formato))
 
 
 def escreve_csv(nome, cabecalho, linhas, destino=None):

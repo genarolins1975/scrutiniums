@@ -23,9 +23,15 @@ import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { CAPITULOS as CAPITULOS_SANEAMENTO, FERRAMENTAS as FERRAMENTAS_SANEAMENTO } from "@/lib/saneamento/capitulos";
 import { PAGINAS_GAS } from "@/lib/gas/navegacao";
-import { CAPITULOS as CAPITULOS_CONTAS } from "@/lib/contas-publicas/catalogo";
+import { PAGINAS_COMBUSTIVEIS, ROTA_COMBUSTIVEIS } from "@/lib/combustiveis/paginas";
+import { ROTA_INFLACAO, TITULO_PAINEL as TITULO_PAINEL_INFLACAO } from "@/lib/inflacao/paginas";
+import { ROTA_CONECTIVIDADE, TITULO_PAINEL as TITULO_PAINEL_CONECTIVIDADE } from "@/lib/conectividade/paginas";
+import { ROTA_EDUCACAO, TITULO_PAINEL as TITULO_PAINEL_EDUCACAO } from "@/lib/educacao/paginas";
+import { CAPITULOS_PUBLICADOS as CAPITULOS_CONTAS, PAINEL_AREAS, PAINEL_PREVIDENCIA } from "@/lib/contas-publicas/catalogo";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from "@/lib/agro/modelo";
+import { COPIAS } from "./copias";
+import { PAGINAS_CREDITO } from "@/lib/credito/navegacao";
 
 export type { Atalho, Colecao, Observatorio, ObservatorioId, Painel } from "./lista";
 export { OBSERVATORIOS } from "./lista";
@@ -59,7 +65,9 @@ export const ABAS_INSTITUCIONAIS_CREDITO = new Set(["/suggestions", "/about"]);
 
 function paineisCredito(): Painel[] {
   const raiz: Painel = { rota: "/observatorio", titulo: "Crédito", observatorio: "economia", colecao: "credito", origem: "credito" };
-  return [raiz, ...ABAS_OBSERVATORIO.filter((a) => !ABAS_INSTITUCIONAIS_CREDITO.has(a.caminho) && !a.caminho.endsWith("/")).map((a): Painel => {
+  // páginas Next do Crédito (consultas de juros e método), logo depois da raiz: são as mais procuradas pelo leitor
+  const next = PAGINAS_CREDITO.map((p): Painel => ({ rota: p.href, titulo: p.titulo, observatorio: "economia", colecao: "credito", origem: "credito" }));
+  return [raiz, ...next, ...ABAS_OBSERVATORIO.filter((a) => !ABAS_INSTITUCIONAIS_CREDITO.has(a.caminho) && !a.caminho.endsWith("/")).map((a): Painel => {
     const destino = DESTINO_ABAS_CREDITO[a.caminho];
     if (!destino) throw new Error(`aba do Crédito sem observatório: ${a.caminho}`);
     const [observatorio, colecao] = destino;
@@ -86,29 +94,35 @@ export const DESTINO_TEMAS_EFICIENCIA: Record<string, Destino> = {
   mobilidade: ["energia-e-infraestrutura", "mobilidade"],
   energia: ["energia-e-infraestrutura", "conectividade"],
   ambiente: ["territorio-e-clima", "cidades-clima"],
+  // o tema aponta para o painel Previdência e INSS (21/10/2026), registrado pelo dono nas Contas Federais
+  previdencia: ["contas-publicas", "federais"],
 };
 
+/** Temas do mapa cujo painel é da própria Eficiência Estatal; os demais (href em outro observatório) são registrados pelo dono. */
+const temaProprio = (href: string) => href.startsWith("/eficiencia-estatal/");
+
 function paineisEficiencia(): Painel[] {
-  const temas = DIMENSOES.filter((d) => d.href).map((d) => {
+  const temas = DIMENSOES.filter((d) => d.href && temaProprio(d.href)).map((d) => {
     const destino = DESTINO_TEMAS_EFICIENCIA[d.id];
     if (!destino) throw new Error(`tema da Eficiência Estatal sem observatório: ${d.id}`);
     const [observatorio, colecao] = destino;
     return {
       rota: d.href as string, titulo: d.titulo, observatorio, colecao, origem: "eficiencia" as const,
-      ...(d.id === "saneamento" ? { duplicataDe: "/saneamento" } : {}),
-      ...(d.id === "energia" ? { duplicataDe: "/setor-eletrico/inclusao-energetica" } : {}),
     };
   });
   return [
     { rota: "/eficiencia-estatal", titulo: "Comparação entre capitais", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
-    { rota: "/eficiencia-estatal/laboratorio-cesta", titulo: "Índice experimental de resultados", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
+    { rota: "/eficiencia-estatal/indice-de-resultados", titulo: "Índice de resultados das capitais", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
+    { rota: "/eficiencia-estatal/laboratorio-cesta", titulo: "Laboratório do índice (revisão v3)", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
     { rota: "/eficiencia-estatal/judiciario", titulo: "Judiciário: filas e tempos", observatorio: "servicos-publicos", colecao: "justica", origem: "eficiencia" },
-    // duplicatas resolvidas em 18/10/2026 (REAGRUPAMENTO.md): a página fica publicada e avisa qual é o painel dono
-    { rota: "/eficiencia-estatal/trabalho-renda/emprego-formal", titulo: "Emprego formal nacional", observatorio: "familias", colecao: "renda", origem: "eficiencia", duplicataDe: "/observatorio/formal-employment" },
-    // resíduos e drenagem só existem aqui e tratam de cidades e clima
+    // duplicata resolvida em 18/10/2026 (REAGRUPAMENTO.md): a página fica publicada e avisa qual é o painel principal (copias.ts)
+    { rota: "/eficiencia-estatal/trabalho-renda/emprego-formal", titulo: "Emprego formal nacional", observatorio: "familias", colecao: "renda", origem: "eficiencia" },
+    // resíduos e drenagem tratam de cidades e clima; o painel principal é Meio ambiente e clima (copias.ts)
     { rota: "/eficiencia-estatal/saneamento/residuos", titulo: "Resíduos sólidos", observatorio: "territorio-e-clima", colecao: "cidades-clima", origem: "eficiencia" },
     { rota: "/eficiencia-estatal/saneamento/drenagem", titulo: "Drenagem e risco de inundação", observatorio: "territorio-e-clima", colecao: "cidades-clima", origem: "eficiencia" },
     ...temas,
+    // comparação por UF do painel Segurança pública (pipeline/seguranca, 20/10/2026): o destino mais procurado do tema
+    { rota: "/eficiencia-estatal/seguranca-publica/estados", titulo: "Violência por estado", observatorio: "servicos-publicos", colecao: "seguranca", origem: "eficiencia" },
   ];
 }
 
@@ -151,6 +165,10 @@ function paineisColecoesInteiras(): Painel[] {
       { rota: "/gas-natural", titulo: "Gás Natural" },
       ...PAGINAS_GAS.map((p) => ({ rota: p.href, titulo: p.rotulo })),
     ]),
+    // coleção própria com a gold do pipeline do Gás (a mesma planilha da ANP do botijão e do GNV): origem gas. A consulta
+    // por estado (/combustiveis/no-meu-estado) herda o dono do painel e só entra nas listas com a aprovação da LEVA_2
+    ...inteira("gas", "energia-e-infraestrutura", "combustiveis",
+      PAGINAS_COMBUSTIVEIS.filter((p) => p.href === ROTA_COMBUSTIVEIS).map((p) => ({ rota: p.href, titulo: "Combustíveis nos postos" }))),
     ...inteira("saneamento", "energia-e-infraestrutura", "saneamento", [
       { rota: "/saneamento", titulo: "Saneamento" },
       ...CAPITULOS_SANEAMENTO.map((c) => ({ rota: `/saneamento/${c.slug}`, titulo: c.rotulo })),
@@ -158,6 +176,12 @@ function paineisColecoesInteiras(): Painel[] {
     ]),
     ...inteira("contas", "contas-publicas", "federais", [
       { rota: "/contas-publicas", titulo: "Contas Federais" },
+      // painel Previdência e INSS (20/10/2026): benefícios do INSS por tipo, estado e município e resultado do Regime Geral,
+      // com pipeline e gold próprios (pipeline/previdencia); o endereço é o único aberto do tema, como aperitivo sem sessão
+      { rota: PAINEL_PREVIDENCIA.href, titulo: PAINEL_PREVIDENCIA.titulo },
+      // complemento do capítulo Panorama (20/10/2026): a despesa por área, pela classificação funcional do SIOP
+      { rota: PAINEL_AREAS.href, titulo: PAINEL_AREAS.titulo },
+      // só os capítulos com dados; os em preparação não têm página (Onda 3)
       ...CAPITULOS_CONTAS.map((c) => ({ rota: `/contas-publicas/${c.id}`, titulo: c.titulo })),
       { rota: "/contas-publicas/metodologia", titulo: "Metodologia" },
       { rota: "/contas-publicas/glossario", titulo: "Glossário" },
@@ -172,6 +196,8 @@ function paineisColecoesInteiras(): Painel[] {
 /** Temas que aparecem também em outro observatório, sempre apontando para o painel do dono. */
 export const ATALHOS: Atalho[] = [
   { rota: "/observatorio/credit", observatorio: "familias", colecao: "divida" },
+  { rota: "/observatorio-do-credito/quanto-meu-banco-cobra", observatorio: "familias", colecao: "divida" },
+  { rota: "/observatorio-do-credito/simulador-da-parcela", observatorio: "familias", colecao: "divida" },
   { rota: "/setor-eletrico/inclusao-energetica", observatorio: "familias", colecao: "protecao" },
   { rota: "/saneamento/tarifa-social", observatorio: "familias", colecao: "protecao" },
   { rota: "/gas-natural/gas-de-cozinha", observatorio: "familias", colecao: "custo-de-vida" },
@@ -197,8 +223,45 @@ function paineisTerritorio(): Painel[] {
   ];
 }
 
+/**
+ * Painéis mantidos pelo próprio Observatório das Famílias, com pipeline e gold próprios (pipeline/inflacao, public/inflacao).
+ * A consulta por cidade (/custo-de-vida/na-minha-cidade) herda o dono do painel e só entra nas listas com a aprovação da LEVA_2.
+ */
+function paineisFamilias(): Painel[] {
+  return [{ rota: ROTA_INFLACAO, titulo: TITULO_PAINEL_INFLACAO, observatorio: "familias", colecao: "custo-de-vida", origem: null }];
+}
+
+/**
+ * Painéis mantidos pelo próprio Observatório dos Serviços Públicos, com pipeline e gold próprios (pipeline/educacao,
+ * public/educacao). "Educação nos municípios" (20/10/2026) é a porta da coleção Educação: cobre a rede pública dos
+ * municípios pelo resultado (Ideb, Saeb, aprovação) e pelo tamanho da rede (Censo Escolar). O painel "Educação nas
+ * capitais" (Eficiência Estatal) continua na coleção como o canônico da eficiência das 26 capitais (gasto por matrícula
+ * ao lado do resultado), e o painel novo leva a ele quando o município é capital: os dois não repetem a mesma análise.
+ */
+function paineisServicos(): Painel[] {
+  return [{ rota: ROTA_EDUCACAO, titulo: TITULO_PAINEL_EDUCACAO, observatorio: "servicos-publicos", colecao: "educacao", origem: null }];
+}
+
+/**
+ * Painel mantido pelo próprio Observatório de Energia e Infraestrutura, com pipeline e gold próprios
+ * (pipeline/conectividade, public/conectividade): dados abertos da Anatel por município. É o painel principal da coleção
+ * Conectividade; a página "Energia e conectividade" da Eficiência Estatal continua na coleção como cópia do Setor Elétrico.
+ */
+function paineisConectividade(): Painel[] {
+  return [{ rota: ROTA_CONECTIVIDADE, titulo: TITULO_PAINEL_CONECTIVIDADE, observatorio: "energia-e-infraestrutura", colecao: "conectividade", origem: null }];
+}
+
+/**
+ * Painel registrado que é cópia integral de outro (copias.ts) leva `duplicataDe`.
+ * Cópia parcial, uma seção da página, não: o resto da página é próprio e continua nas listas.
+ */
+const PRINCIPAL_DA_COPIA = new Map(COPIAS.filter((c) => !c.parcial).map((c) => [c.rota, c.principal]));
+
 export function paineis(): Painel[] {
-  return [...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras(), ...paineisTerritorio()];
+  // o painel das Famílias vem primeiro: na coleção Custo de vida, a inflação de todo o orçamento abre a lista, antes da comida
+  // o painel dos Serviços Públicos vem antes da Eficiência Estatal: na coleção Educação, os municípios abrem a lista, antes das capitais
+  return [...paineisFamilias(), ...paineisServicos(), ...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras(), ...paineisConectividade(), ...paineisTerritorio()]
+    .map((p) => (PRINCIPAL_DA_COPIA.has(p.rota) ? { ...p, duplicataDe: PRINCIPAL_DA_COPIA.get(p.rota) } : p));
 }
 
 export function observatorio(id: ObservatorioId): Observatorio {

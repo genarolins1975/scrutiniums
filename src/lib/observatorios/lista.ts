@@ -21,8 +21,14 @@ export type Observatorio = {
   nomeCurto: string;
   /** Pergunta que o observatório responde, usada na home, na página aberta e na escolha pós login. */
   pergunta: string;
-  /** Entrada com conta do observatório, quando ele já tem uma (src/app/observatorios/[id]). */
+  /**
+   * Entrada com conta do observatório, quando ele já tem uma: a genérica
+   * (src/app/observatorios/[id]) ou, no Território e Clima, que mantém os próprios
+   * painéis, /territorio (src/app/territorio/page.tsx).
+   */
   entrada?: string;
+  /** Página aberta de método do próprio observatório, quando ele mantém painéis com pipeline próprio. */
+  metodo?: string;
   acento: Dominio["acento"];
   colecoes: Colecao[];
 };
@@ -34,7 +40,7 @@ export type Painel = {
   colecao: string;
   /** Domínio de origem, que mantém a rota, a gold e o cabeçalho; null quando o próprio observatório mantém o painel (Território e Clima). */
   origem: DominioId | null;
-  /** Outro painel que trata do mesmo tema; a escolha do dono depende de comparar os conteúdos. */
+  /** Painel principal do mesmo tema (copias.ts); a página avisa com <PainelPrincipal>. */
   duplicataDe?: string;
 };
 
@@ -53,7 +59,9 @@ export const OBSERVATORIOS: Observatorio[] = [
       { id: "divida", nome: "Dívida e crédito das famílias", href: "/observatorio/payroll-lending-aging" },
       { id: "protecao", nome: "Proteção social", href: "/eficiencia-estatal/assistencia-social" },
       { id: "moradia", nome: "Moradia", href: "/eficiencia-estatal/habitacao" },
-      { id: "custo-de-vida", nome: "Custo de vida", href: "/agronegocio/prato" },
+      // porta da coleção desde 20/10/2026: o painel Inflação por cidade (todos os itens do orçamento); a comida item por
+      // item continua no painel canônico /agronegocio/prato, que segue na coleção
+      { id: "custo-de-vida", nome: "Custo de vida", href: "/custo-de-vida" },
     ],
   },
   {
@@ -64,7 +72,10 @@ export const OBSERVATORIOS: Observatorio[] = [
     entrada: "/observatorios/servicos-publicos",
     acento: "obee",
     colecoes: [
-      { id: "educacao", nome: "Educação", href: "/eficiencia-estatal/educacao-municipal-capitais" },
+      // porta da coleção desde 20/10/2026: o painel Educação nos municípios (rede pública de todos os municípios); a
+      // eficiência da rede municipal das capitais continua no painel canônico /eficiencia-estatal/educacao-municipal-capitais,
+      // que segue na coleção
+      { id: "educacao", nome: "Educação", href: "/educacao-municipal" },
       { id: "saude", nome: "Saúde", href: "/eficiencia-estatal/saude-capitais" },
       { id: "seguranca", nome: "Segurança pública", href: "/eficiencia-estatal/seguranca-publica" },
       { id: "justica", nome: "Justiça", href: "/eficiencia-estatal/judiciario" },
@@ -95,9 +106,11 @@ export const OBSERVATORIOS: Observatorio[] = [
     colecoes: [
       { id: "setor-eletrico", nome: "Setor Elétrico", href: "/setor-eletrico" },
       { id: "gas", nome: "Gás Natural", href: "/gas-natural" },
+      { id: "combustiveis", nome: "Combustíveis", href: "/combustiveis" },
       { id: "saneamento", nome: "Saneamento", href: "/saneamento" },
       { id: "mobilidade", nome: "Mobilidade", href: "/eficiencia-estatal/mobilidade-transporte" },
-      { id: "conectividade", nome: "Conectividade", href: "/eficiencia-estatal/energia-conectividade" },
+      // desde 20/10/2026 a porta da coleção é o painel Conectividade (Anatel por município); a página da Eficiência segue na coleção
+      { id: "conectividade", nome: "Conectividade", href: "/conectividade" },
     ],
   },
   {
@@ -119,7 +132,8 @@ export const OBSERVATORIOS: Observatorio[] = [
     nome: "Observatório do Território e Clima",
     nomeCurto: "Território e Clima",
     pergunta: "O que está mudando no ambiente e quem sente primeiro?",
-    entrada: "/observatorios/territorio-e-clima",
+    entrada: "/territorio",
+    metodo: "/territorio/metodologia",
     acento: "obee",
     colecoes: [
       { id: "desmatamento", nome: "Desmatamento e emissões", href: "/agronegocio/ambiente" },

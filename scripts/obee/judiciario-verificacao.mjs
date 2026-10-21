@@ -53,7 +53,10 @@ try{
  browser=await chromium.launch({executablePath:process.env.I18N_CHROMIUM_EXECUTABLE||undefined});
  const anonymous=await browser.newContext();
  const observatoryRoots=['/observatorio','/setor-eletrico','/eficiencia-estatal','/contas-publicas','/contas-publicas-estaduais','/saneamento','/gas-natural','/agronegocio'];
- for(const path of observatoryRoots){
+ // Consulta aberta desde 19/10/2026 (leva 1 da estratégia "aberto e com conta"): a entrada da Eficiência Estatal abre sem sessão.
+ const consultasAbertas=['/eficiencia-estatal'];
+ for(const path of consultasAbertas)check('Consulta aberta sem sessão: '+path,(await anonymous.request.get(origin+path,{maxRedirects:0})).status()===200);
+ for(const path of observatoryRoots.filter(p=>!consultasAbertas.includes(p))){
   const response=await anonymous.request.get(origin+path,{maxRedirects:0});
   check('Observatório exige sessão: '+path,response.status()===307&&response.headers().location.includes('/entrar'));
  }
@@ -65,9 +68,11 @@ try{
  check('Ilustração conceitual pública sem abrir dados',(await anonymous.request.get(origin+'/home/judiciario-por-dentro.webp')).status()===200);
  const anonPage=await anonymous.newPage();
  await anonPage.goto(origin+PREFIX+'/metodos',{waitUntil:'networkidle'});
- await anonPage.getByLabel('Trocar de observatório e acessar a conta').click();
- check('Cabeçalho anônimo oferece entrada com retorno ao método',(await anonPage.getByRole('banner').getByRole('link',{name:'Entrar',exact:true}).getAttribute('href')).includes(encodeURIComponent(PREFIX+'/metodos')));
- check('Cabeçalho anônimo mantém nove destinos',await anonPage.getByRole('navigation',{name:'Observatórios da plataforma'}).getByRole('link').count()===9);
+ // Barra comum dos seis observatórios (Onda 1, 19/10/2026): a conta aparece depois da consulta de sessão.
+ const entrarAnonimo=anonPage.getByRole('banner').getByRole('link',{name:'Entrar',exact:true});
+ await entrarAnonimo.waitFor({timeout:15000});
+ check('Cabeçalho anônimo oferece entrada com retorno ao método',(await entrarAnonimo.getAttribute('href')).includes(encodeURIComponent(PREFIX+'/metodos')));
+ check('Cabeçalho anônimo mostra os seis observatórios',await anonPage.getByRole('navigation',{name:'Observatórios da Scrutiniums'}).getByRole('link').count()===6);
 
  check('Seletor exige sessão',(await anonymous.request.get(origin+'/app/observatorios',{maxRedirects:0})).status()===307);
  check('Escolha do Judiciário exige sessão',(await anonymous.request.post(origin+'/app/observatorios/entrar',{form:{d:'judiciario'},headers:{origin},maxRedirects:0})).status()===307);
@@ -129,13 +134,16 @@ try{
   }
  }
  await page.goto(origin+PREFIX,{waitUntil:'networkidle'});
- const platformMenu=page.getByLabel('Trocar de observatório e acessar a conta');
+ // Seletor da barra comum: observatórios e coleções; o Judiciário segue pela Eficiência Estatal e pela navegação do módulo.
+ const platformMenu=page.locator('summary[aria-label^="Coleção atual"]').first();
  await platformMenu.click();
- const platformNav=page.getByRole('navigation',{name:'Observatórios da plataforma'});
- check('Cabeçalho logado vai à conta, sem convite de login',await page.getByRole('banner').getByRole('link',{name:'Minha conta',exact:true}).isVisible()&&await page.getByRole('banner').getByRole('link',{name:'Entrar',exact:true}).count()===0);
- for(const route of [...observatoryRoots,PREFIX])check('Menu mantém destino '+route,await platformNav.locator('a[href="'+route+'"]').count()===1);
+ const platformNav=platformMenu.locator('xpath=..');
+ const minhaConta=page.getByRole('banner').getByRole('link',{name:'Minha conta',exact:true});
+ await minhaConta.waitFor({timeout:15000});
+ check('Cabeçalho logado vai à conta, sem convite de login',await minhaConta.isVisible()&&await page.getByRole('banner').getByRole('link',{name:'Entrar',exact:true}).count()===0);
+ for(const route of observatoryRoots)check('Menu mantém destino '+route,await platformNav.locator('a[href="'+route+'"]').count()===1);
  await platformMenu.press('Escape');
- check('Menu fecha por Escape',!(await platformNav.isVisible()));
+ check('Menu fecha por Escape',!(await platformMenu.evaluate(e=>e.parentElement.open)));
  const branchButtons=page.getByRole('group',{name:'Conhecer os ramos da Justiça'});
  await branchButtons.getByRole('button',{name:/Federal/}).click();
  check('Ramo Federal tem contexto e comparação próprios',(await page.locator('#ramo-em-foco').innerText()).includes('Justiça Federal')&&(await page.locator('#ramo-em-foco a').getAttribute('href')).includes('ramo=federal'));

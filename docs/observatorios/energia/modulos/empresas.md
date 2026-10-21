@@ -2,6 +2,8 @@
 
 Documento de método do módulo `empresas` (rotas `/setor-eletrico/empresas` e `/setor-eletrico/empresas/[entidade]`, família de silver `empresas`, ordem 60). Estado em 01/10/2026, fim da fase de dados com as correções das duas rodadas de verificação adversarial (seção 7): coleta, silver, gold, métricas, tipos TypeScript e testes prontos; as páginas ainda não foram escritas (fase de interface).
 
+Os números deste documento são os da gold publicada até 01/10/2026 e não mudam com a coleta diária. Os vigentes estão na gold `public/energia/gold/empresas.json`, nos campos `financas.revisoes` (valores reapresentados, documentos com mais de uma versão e inversões de escala), `financas.exclusoes.escala.documentos_corrigidos`, `cadastro.agentes` (total e ramos) e `cadastro.transmissao.resumo.modulos`, e no arquivo `public/energia/series/empresas_evidencias.json` (número de evidências). O teste `test_documento_cita_os_numeros_da_gold` exige os números da gold em toda publicação até a data deste estado e, nas posteriores, que o documento diga onde estão os vigentes.
+
 Arquivos do módulo:
 
 | Camada | Caminho |

@@ -1,0 +1,151 @@
+name: Atualizar dados da Previdência e INSS
+
+# Observatório das Contas Públicas, painel Previdência e INSS: recoleta das quatro fontes e publicação pelo motor comum
+# por grupo (scripts/atualizacao_por_grupo.py, config/atualizacao/previdencia.json). A gold
+# (public/previdencia/gold/previdencia.json e um arquivo por UF em public/previdencia/gold/municipios) é reconstruída
+# dos seeds e só é publicada com os testes verdes: série mensal do BEPS contínua e fechando com os grupos, tipos de
+# benefício com as linhas esperadas, 27 UFs que somam o Brasil, cada município fechando por grupo, soma dos municípios
+# igual ao BEPS em cada dezembro, divisão urbana e rural do RTN somando o total, % do PIB conferindo com a do Tesouro e
+# nenhuma revisão de ano fechado acima do limite; do Anuário (AEPS), grupos de benefício e estados fechando e o Regime
+# Geral de cada dezembro igual ao do BEPS. Reprovado, a publicação anterior continua no ar, a issue é aberta ou
+# comentada e a execução fica vermelha.
+#
+# Cadência pela fonte: o Ministério da Previdência publica o BEPS do mês cerca de quatro semanas depois (o de agosto de
+# 2026 foi gravado em 29/09/2026); o Tesouro publica o RTN no fim do mês seguinte; o arquivo municipal sai uma vez por
+# ano, no meio do ano; o Anuário, uma vez por ano, em outubro (o coletor procura a edição seguinte e, sem ela, recoleta a
+# publicada, o que não muda nenhum número). Duas execuções por mês, nos dias 2 e 18, cobrem as duas publicações mensais; dado igual não gera
+# commit (o sinal é o hash_dados da gold).
+on:
+  schedule:
+    - cron: "41 12 2,18 * *" # dias 2 e 18, 09:41 em São Paulo
+  workflow_dispatch:
+    inputs:
+      sem_coleta:
+        description: "Pular a coleta e só reconstruir a gold a partir dos seeds (publica se mudou e os testes passarem)"
+        type: boolean
+        default: false
+      grupos:
+        description: "Coletar só estes grupos (ids separados por vírgula; vazio = todos)"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: atualizar-previdencia
+  cancel-in-progress: false
+
+env:
+  CONFIG: config/atualizacao/previdencia.json
+  TITULO_ISSUE: "Atualização agendada da Previdência e INSS: publicação retida ou coleta com falha"
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    # um BEPS (cerca de 3 MB), sete planilhas municipais (cerca de 3 MB cada) e a série do RTN (cerca de 4 MB); cada
+    # comando tem teto próprio na configuração
+    timeout-minutes: 90
+    outputs:
+      relatado: ${{ steps.issue.outcome == 'success' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # xlrd: o BEPS é planilha Excel 97 (.xls); openpyxl: arquivo municipal e RTN (.xlsx). Só os coletores usam; a gold
+      # e os testes usam a biblioteca padrão
+      - name: Dependências da coleta
+        run: pip install "xlrd==2.0.1" openpyxl
+
+      - name: Node para os testes de contrato
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Dependências da interface
+        run: npm ci
+
+      - name: Coletar, reconstruir e decidir a publicação por grupo
+        id: ciclo
+        continue-on-error: true
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          SEM_COLETA: ${{ inputs.sem_coleta }}
+          GRUPOS: ${{ inputs.grupos }}
+        run: |
+          ARGS=()
+          if [ "$SEM_COLETA" = "true" ]; then ARGS+=(--sem-coleta); fi
+          if [ -n "$GRUPOS" ]; then ARGS+=(--grupos "$GRUPOS"); fi
+          python3 -u scripts/atualizacao_por_grupo.py ciclo "$CONFIG" "${ARGS[@]}"
+
+      # Só os grupos aprovados e a gold, com rebase sobre o ramo e quatro tentativas. Se a gold ou os seeds da
+      # previdência mudaram no ramo durante a execução, não publica (a composição foi testada sobre outra base); se o
+      # código mudou, reconstrói e testa com o código novo antes de empurrar.
+      - name: Commit e push dos grupos aprovados
+        id: publicar
+        if: always() && steps.ciclo.outputs.publicavel == '1'
+        run: |
+          git config user.name "pipeline-observatorio[bot]"
+          git config user.email "pipeline@scrutiniums.com"
+          python3 -u scripts/atualizacao_por_grupo.py publicar "$CONFIG" --ramo "$GITHUB_REF_NAME"
+
+      - name: Abrir ou comentar a issue de retenção
+        id: issue
+        if: always() && (steps.ciclo.outcome != 'success' || steps.publicar.outcome == 'failure')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PUBLICACAO: ${{ steps.publicar.outcome }}
+        run: |
+          CORPO=.atualizacao/previdencia/relatorio.md
+          mkdir -p .atualizacao/previdencia
+          if [ ! -s "$CORPO" ]; then
+            printf 'Execução: %s\n\nO ciclo terminou sem relatório (falha antes de gravar). Ver o log do passo *Coletar, reconstruir e decidir*.\n' "$RUN_URL" > "$CORPO"
+          fi
+          if [ "$PUBLICACAO" = "failure" ]; then
+            printf '\n**A publicação dos grupos aprovados falhou** (passo *Commit e push*): nada foi empurrado.\n' >> "$CORPO"
+          fi
+          scripts/issue_dedup.sh "$TITULO_ISSUE" "$CORPO"
+
+      - name: Guardar resultado, relatório e logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atualizacao-previdencia
+          include-hidden-files: true
+          path: .atualizacao/previdencia/
+          if-no-files-found: warn
+          retention-days: 30
+
+      # Retenção deixa a execução VERMELHA: de 25/09 a 12/10/2026 o Crédito reteve a gold com o
+      # workflow verde e ninguém viu (OPERACOES.md, terceira memória).
+      - name: Sinalizar publicação retida
+        if: always() && (steps.ciclo.outcome != 'success' || steps.publicar.outcome == 'failure')
+        run: |
+          echo "::error::grupo retido, coleta com falha ou publicação não concluída; ver a issue '$TITULO_ISSUE'"
+          exit 1
+
+  # Tempo esgotado ou cancelamento não chegam ao passo da issue: este job cobre esses casos.
+  alertar:
+    runs-on: ubuntu-latest
+    needs: pipeline
+    if: always() && needs.pipeline.outputs.relatado != 'true' && (needs.pipeline.result == 'failure' || needs.pipeline.result == 'cancelled')
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Abrir ou comentar issue de interrupção
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULTADO: ${{ needs.pipeline.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          printf 'Execução de %s UTC terminou com **%s** antes do relatório (tempo esgotado, cancelamento ou falha de preparo): %s\n\nNada foi publicado.\n' \
+            "$(date -u +%d/%m/%Y\ %H:%M)" "$RESULTADO" "$RUN_URL" > /tmp/corpo.md
+          scripts/issue_dedup.sh "$TITULO_ISSUE" /tmp/corpo.md

@@ -25,6 +25,14 @@ __pycache__/
 /public/eficiencia/seguranca-alimentar/uf-*.json
 /public/eficiencia/seguranca-alimentar/municipios.csv
 /public/eficiencia/seguranca-alimentar/pnad.csv
+# Bases complementares (21/10/2026): geradas do seed complementos.json.gz no mesmo script.
+/public/eficiencia/seguranca-alimentar/complementos-uf-*.json
+/public/eficiencia/seguranca-alimentar/ebia-territorios.csv
+/public/eficiencia/seguranca-alimentar/cadinsan.csv
+/public/eficiencia/seguranca-alimentar/paa.csv
+/public/eficiencia/seguranca-alimentar/pnae.csv
+/public/eficiencia/seguranca-alimentar/ipca-alimentacao.csv
+/public/eficiencia/seguranca-alimentar/sisvan.csv
 
 # Build-only SUAS payloads; canonical seed has a pinned SHA-256
 /public/eficiencia/assistencia-social/
@@ -37,3 +45,5 @@ __pycache__/
 /pesquisa-testes.log
 /dist/
 /.gold-publicacao/
+# Trabalho da atualização agendada por grupo (scripts/atualizacao_por_grupo.py)
+/.atualizacao/

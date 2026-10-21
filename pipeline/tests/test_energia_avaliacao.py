@@ -494,6 +494,23 @@ class GoldPublicada(unittest.TestCase):
         for chave in ("paginas", "modulos", "defeitos"):
             self.assertEqual(json.loads(json.dumps(nova[chave])), self.a[chave], chave)
         self.assertEqual(nova["resumo"], self.a["resumo"])
+        self.assertEqual(nova["rodada"]["referencia_dos_dados"], self.a["rodada"]["referencia_dos_dados"])
+
+    def test_coleta_diaria_nao_muda_as_notas_da_rodada(self):
+        """As golds do dia não entram na rodada: em 20/10/2026 a publicacao.json nova mudou uma nota de 8,7 para 8,5
+        sem inspeção nova. Com a pasta de golds vazia, a rodada se refaz igual, das entradas versionadas."""
+        import tempfile
+        from unittest.mock import patch
+
+        class Args:
+            rodada = self.a["rodada"]["id"]
+        self.assertTrue(os.path.exists(ea.EVIDENCIA_GOLDS))
+        with tempfile.TemporaryDirectory() as vazia, patch.object(ea, "GOLD_DIR", vazia):
+            nova, _ = ea.monta_saida(Args)
+        self.assertEqual(json.loads(json.dumps(nova["paginas"])), self.a["paginas"])
+        # a projeção gravada é a da data de referência declarada pela rodada
+        with open(ea.EVIDENCIA_GOLDS, encoding="utf-8") as f:
+            self.assertEqual(json.load(f)["referencia_dos_dados"], self.a["rodada"]["referencia_dos_dados"])
 
     def test_jornadas_sao_dez_e_nao_se_chamam_teste_com_usuarios(self):
         self.assertEqual(len(self.a["jornadas"]), 10)

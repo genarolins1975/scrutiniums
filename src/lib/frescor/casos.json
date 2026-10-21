@@ -1,0 +1,87 @@
+{
+  "descricao": "Casos sintéticos da regra de frescor, conferidos pelos testes de TypeScript (src/tests/frescor-dominios.test.ts) e de Python (pipeline/tests/test_vigilancia_frescor.py). Se a regra mudar numa linguagem e não na outra, um dos dois testes reprova.",
+  "situacao": [
+    { "nome": "diária publicada hoje: em dia", "dados": { "id": "credito", "publicadoEm": "2026-10-18T15:09:35+00:00", "parteMaisRecente": null, "referencia": "2026-08" }, "agora": "2026-10-19T12:00:00Z", "esperado": { "estado": "em-dia", "dias": 0, "atrasoDias": 0 } },
+    { "nome": "diária um minuto antes do limiar: em dia", "dados": { "id": "credito", "publicadoEm": "2026-09-24T15:25:15+00:00", "parteMaisRecente": null, "referencia": null }, "agora": "2026-09-26T15:24:00Z", "esperado": { "estado": "em-dia", "dias": 1, "atrasoDias": 0 } },
+    { "nome": "diária no limiar: atrasada há 1 dia", "dados": { "id": "credito", "publicadoEm": "2026-09-24T15:25:15+00:00", "parteMaisRecente": null, "referencia": null }, "agora": "2026-09-26T15:26:00Z", "esperado": { "estado": "atrasado", "dias": 2, "atrasoDias": 1 } },
+    { "nome": "Setor Elétrico em 19/10/2026: golds diárias de 30/09, atrasada há 18 dias", "dados": { "id": "energia", "publicadoEm": "2026-09-30T02:20:25Z", "parteMaisRecente": "2026-09-30T02:20:41Z", "referencia": "2026-09-30" }, "agora": "2026-10-19T12:00:00Z", "esperado": { "estado": "atrasado", "dias": 19, "atrasoDias": 18 } },
+    { "nome": "Crédito com grupo retido desde 24/09 e outros publicados ontem: retida em parte", "dados": { "id": "credito", "publicadoEm": "2026-09-24T15:25:15+00:00", "parteMaisRecente": "2026-10-18T15:09:35+00:00", "referencia": "2026-08" }, "agora": "2026-10-19T12:00:00Z", "esperado": { "estado": "retida", "dias": 24, "atrasoDias": 23 } },
+    { "nome": "partes também paradas: atrasada pela parte mais recente", "dados": { "id": "energia", "publicadoEm": "2026-09-20T02:00:00Z", "parteMaisRecente": "2026-09-30T02:00:00Z", "referencia": null }, "agora": "2026-10-19T12:00:00Z", "esperado": { "estado": "atrasado", "dias": 29, "atrasoDias": 18 } },
+    { "nome": "sem data: situação não avaliada", "dados": { "id": "gas", "publicadoEm": null, "parteMaisRecente": null, "referencia": null }, "agora": "2026-10-19T12:00:00Z", "esperado": { "estado": "sem-data", "dias": null, "atrasoDias": null } },
+    { "nome": "data ilegível conta como sem data", "dados": { "id": "gas", "publicadoEm": "não é data", "parteMaisRecente": null, "referencia": null }, "agora": "2026-10-19T12:00:00Z", "esperado": { "estado": "sem-data", "dias": null, "atrasoDias": null } },
+    { "nome": "mensal com data sem hora, um minuto antes do limiar: em dia", "dados": { "id": "agro", "publicadoEm": "2026-09-01", "parteMaisRecente": null, "referencia": "2026-08" }, "agora": "2026-10-16T02:59:00Z", "esperado": { "estado": "em-dia", "dias": 44, "atrasoDias": 0 } },
+    { "nome": "mensal com data sem hora, no limiar: atrasada há 14 dias", "dados": { "id": "agro", "publicadoEm": "2026-09-01", "parteMaisRecente": null, "referencia": "2026-08" }, "agora": "2026-10-16T03:00:00Z", "esperado": { "estado": "atrasado", "dias": 45, "atrasoDias": 14 } },
+    { "nome": "mensal com microssegundos no carimbo", "dados": { "id": "contas-federais", "publicadoEm": "2026-10-12T08:10:31.130658+00:00", "parteMaisRecente": null, "referencia": "2026-07" }, "agora": "2026-11-26T08:10:32Z", "esperado": { "estado": "atrasado", "dias": 45, "atrasoDias": 14 } },
+    { "nome": "quinzenal antes do limiar", "dados": { "id": "territorio", "publicadoEm": "2026-10-02T10:00:00+00:00", "parteMaisRecente": null, "referencia": "2026-09-30" }, "agora": "2026-10-22T09:59:00Z", "esperado": { "estado": "em-dia", "dias": 19, "atrasoDias": 0 } },
+    { "nome": "anual no limiar: atrasada há 35 dias", "dados": { "id": "saneamento", "publicadoEm": "2025-09-14T03:31:11Z", "parteMaisRecente": null, "referencia": "2024" }, "agora": "2026-10-19T12:00:00Z", "esperado": { "estado": "atrasado", "dias": 400, "atrasoDias": 35 } },
+    { "nome": "relógio do leitor antes da publicação: zero dias, em dia", "dados": { "id": "credito", "publicadoEm": "2026-10-18T15:09:35+00:00", "parteMaisRecente": null, "referencia": null }, "agora": "2026-10-10T00:00:00Z", "esperado": { "estado": "em-dia", "dias": 0, "atrasoDias": 0 } }
+  ],
+  "campos": [
+    { "objeto": { "a": { "x": { "g": "1" }, "y": { "g": "2" } } }, "campo": "a.*.g", "valores": ["1", "2"] },
+    { "objeto": { "r": [{ "ano": 2024 }, { "ano": 2025 }, { "ano": null }, {}] }, "campo": "r.*.ano", "valores": [2024, 2025] },
+    { "objeto": { "a": 1 }, "campo": "b.c", "valores": [] },
+    { "objeto": { "a": 1 }, "campo": "a.b", "valores": [] },
+    { "objeto": null, "campo": "a", "valores": [] },
+    { "objeto": { "a": { "b": "x" } }, "campo": "a.b", "valores": ["x"] }
+  ],
+  "instantes": [
+    { "valor": "2026-10-17", "iso": "2026-10-17T03:00:00.000Z" },
+    { "valor": "2026-10-13T02:10:00", "iso": "2026-10-13T02:10:00.000Z" },
+    { "valor": "2026-10-10T02:32:19.522-03:00", "iso": "2026-10-10T05:32:19.522Z" },
+    { "valor": "2026-10-12T08:10:31.130658+00:00", "iso": "2026-10-12T08:10:31.130Z" },
+    { "valor": "2026-02-30", "iso": null },
+    { "valor": "ontem", "iso": null },
+    { "valor": 2024, "iso": null },
+    { "valor": "", "iso": null }
+  ],
+  "referencias": [
+    { "valor": 2024, "normal": "2024" },
+    { "valor": "2026-08", "normal": "2026-08" },
+    { "valor": "2026-09-30", "normal": "2026-09-30" },
+    { "valor": "2026-09-30T23:00", "normal": "2026-09-30" },
+    { "valor": "202412", "normal": null },
+    { "valor": "set/2026", "normal": null },
+    { "valor": null, "normal": null }
+  ],
+  "extracao": [
+    {
+      "nome": "Crédito sem grupos: publicação e referência do meta",
+      "dominio": "credito",
+      "arquivos": { "public/obs/data/gold/meta.json": { "gerado_em": "2026-10-18T15:09:35+00:00", "vintages": { "sgs": "2026-08" } } },
+      "esperado": { "id": "credito", "publicadoEm": "2026-10-18T15:09:35+00:00", "parteMaisRecente": null, "referencia": "2026-08" }
+    },
+    {
+      "nome": "Crédito com grupo retido: o global é o mais antigo e a parte mais recente vem dos grupos",
+      "dominio": "credito",
+      "arquivos": { "public/obs/data/gold/meta.json": { "gerado_em": "2026-09-24T15:25:15+00:00", "grupos": { "pulse": { "gerado_em": "2026-10-18T15:09:35+00:00" }, "juros": { "gerado_em": "2026-09-24T15:25:15+00:00" }, "vazio": { "gerado_em": null } }, "vintages": { "sgs": "2026-08" } } },
+      "esperado": { "id": "credito", "publicadoEm": "2026-09-24T15:25:15+00:00", "parteMaisRecente": "2026-10-18T15:09:35+00:00", "referencia": "2026-08" }
+    },
+    {
+      "nome": "Setor Elétrico: a mais antiga e a mais recente entre as golds diárias; referência do PLD",
+      "dominio": "energia",
+      "arquivos": {
+        "public/energia/gold/meta.json": { "golds": { "pld.json": { "gerado_em": "2026-10-18T23:50:00Z" }, "rede.json": { "gerado_em": "2026-10-15T23:50:00Z" } } },
+        "public/energia/gold/pld.json": { "dia_referencia": "2026-10-19" }
+      },
+      "esperado": { "id": "energia", "publicadoEm": "2026-10-15T23:50:00Z", "parteMaisRecente": "2026-10-18T23:50:00Z", "referencia": "2026-10-19" }
+    },
+    {
+      "nome": "Gás sem meta publicado: data e referência não informadas",
+      "dominio": "gas",
+      "arquivos": {},
+      "esperado": { "id": "gas", "publicadoEm": null, "parteMaisRecente": null, "referencia": null }
+    },
+    {
+      "nome": "Saneamento: captura mais antiga entre as três fontes; ano de referência numérico",
+      "dominio": "saneamento",
+      "arquivos": { "public/saneamento/gold/meta.json": { "sinisa": { "capturado_em": "2026-10-14T03:31:11Z", "ano_referencia": 2024 }, "censo": { "capturado_em": "2026-10-14T03:25:58Z" }, "cadunico": { "capturado_em": "ilegível" } } },
+      "esperado": { "id": "saneamento", "publicadoEm": "2026-10-14T03:25:58Z", "parteMaisRecente": null, "referencia": "2024" }
+    },
+    {
+      "nome": "Gás: referência é o mês mais recente entre os conjuntos",
+      "dominio": "gas",
+      "arquivos": { "public/gas/gold/meta.json": { "dados_capturados_em": "2026-10-14T02:35:43Z", "ultimos_meses": { "producao": "2026-08", "precos": "2026-06", "mercado": "2026-09" } } },
+      "esperado": { "id": "gas", "publicadoEm": "2026-10-14T02:35:43Z", "parteMaisRecente": null, "referencia": "2026-09" }
+    }
+  ]
+}

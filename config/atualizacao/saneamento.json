@@ -1,0 +1,86 @@
+{
+  "dominio": "saneamento",
+  "titulo": "Saneamento",
+  "descricao": "Observatório do Saneamento. Recoleta mensal das fontes com coletor automatizável; cada grupo de fontes é reconstruído, testado e publicado por si. Fontes de integração manual estão em OPERACOES.md.",
+  "codigo": [
+    "pipeline/observatorio_saneamento/*.py",
+    "pipeline/observatorio_saneamento/curadoria",
+    "pipeline/saneamento",
+    "src/lib/saneamento",
+    "src/tests/saneamento-*.test.ts",
+    "pipeline/tests/test_observatorio_saneamento.py"
+  ],
+  "reconstruir": [["python3", "-m", "pipeline.observatorio_saneamento.gold"]],
+  "timeout_reconstruir_min": 15,
+  "saidas": ["public/saneamento/gold"],
+  "sinal_de_mudanca": [
+    {"caminho": "public/saneamento/gold", "exceto": ["public/saneamento/gold/meta.json"]},
+    {"arquivo": "public/saneamento/gold/meta.json", "json_sem": ["capturado_em", "cadunico.meses.*.sha256"]}
+  ],
+  "testes": [
+    {
+      "nome": "pipeline do saneamento (Python)",
+      "comando": ["python3", "-m", "unittest", "pipeline.tests.test_observatorio_saneamento", "pipeline.tests.test_saude", "pipeline.tests.test_controle", "pipeline.tests.test_jmp", "pipeline.tests.test_ods", "pipeline.tests.test_saneamento", "pipeline.tests.test_vigilancia_saneamento"],
+      "timeout_min": 15
+    },
+    {
+      "nome": "contratos da gold e das páginas (vitest)",
+      "comando": ["npx", "vitest", "run", "--testTimeout=60000", "src/tests/saneamento-", "src/tests/obee-saneamento.test.ts", "src/tests/entradas-estado.test.ts", "src/tests/observatorios-entradas.test.ts", "src/tests/perguntas-portas.test.ts"],
+      "timeout_min": 20
+    }
+  ],
+  "grupos": [
+    {
+      "id": "sinisa",
+      "nome": "SINISA (Ministério das Cidades): planilhas da edição integrada e módulo Gestão Municipal",
+      "coleta": [["python3", "-m", "pipeline.observatorio_saneamento.coletar", "--so-sinisa"]],
+      "caminhos": ["pipeline/observatorio_saneamento/seed/sinisa_*.json.gz"],
+      "timeout_min": 40
+    },
+    {
+      "id": "cadunico",
+      "nome": "CadÚnico (MDS, API MI Social): meses integrados",
+      "coleta": [["python3", "-m", "pipeline.observatorio_saneamento.coletar", "--so-cadunico"]],
+      "caminhos": ["pipeline/observatorio_saneamento/seed/cadunico.json.gz"],
+      "timeout_min": 15
+    },
+    {
+      "id": "sisagua",
+      "nome": "SISAGUA (Ministério da Saúde): controle, plano, vigilância, cadastro e substâncias químicas",
+      "coleta": [
+        ["python3", "-m", "pipeline.observatorio_saneamento.sisagua", "--coletar"],
+        ["python3", "-m", "pipeline.observatorio_saneamento.sisagua_quimicos", "--coletar"]
+      ],
+      "caminhos": ["pipeline/observatorio_saneamento/seed/sisagua"],
+      "timeout_min": 150
+    },
+    {
+      "id": "datasus",
+      "nome": "DATASUS (TabNet): internações do SIH e óbitos do SIM",
+      "coleta": [["python3", "-m", "pipeline.observatorio_saneamento.saude", "--coletar"]],
+      "caminhos": ["pipeline/observatorio_saneamento/seed/saude"],
+      "timeout_min": 30
+    },
+    {
+      "id": "cvm",
+      "nome": "CVM, Formulário de Referência: posição acionária das companhias abertas",
+      "coleta": [["python3", "-m", "pipeline.observatorio_saneamento.controle", "--coletar"]],
+      "caminhos": ["pipeline/observatorio_saneamento/seed/cvm"],
+      "timeout_min": 20
+    },
+    {
+      "id": "jmp",
+      "nome": "JMP (OMS e UNICEF): base mundial de domicílios",
+      "coleta": [["python3", "-m", "pipeline.observatorio_saneamento.jmp", "--coletar"]],
+      "caminhos": ["pipeline/observatorio_saneamento/seed/jmp"],
+      "timeout_min": 20
+    },
+    {
+      "id": "ods",
+      "nome": "Base global dos ODS (ONU): séries de água e saneamento",
+      "coleta": [["python3", "-m", "pipeline.observatorio_saneamento.ods", "--coletar"]],
+      "caminhos": ["pipeline/observatorio_saneamento/seed/ods"],
+      "timeout_min": 20
+    }
+  ]
+}

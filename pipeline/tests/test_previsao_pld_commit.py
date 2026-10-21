@@ -88,8 +88,31 @@ class CommitDaRodada(unittest.TestCase):
         self.assertIn("concorrente", log)
         self.assertIn("pipeline/energia/previsoes/emissoes/2026-10.jsonl", self._arquivos_no_main())
         self.assertEqual(_git(self.runner, "show", "origin/main:public/energia/gold/previsoes.json"), '{"rodada": 1}\n')
-        # derivados que a rodada não publica não entram no main
+        # derivados que a rodada não publica não entram no main (aqui o manifesto não pode ser refeito: não há pipeline)
         self.assertEqual(_git(self.runner, "show", "origin/main:public/energia/gold/metricas.json"), "{}\n")
+        self.assertNotIn("public/energia/gold/manifesto.json", self._arquivos_no_main())
+
+    def _python_falso(self):
+        """python3 falso: grava o manifesto como escreve_manifesto faria, sobre a árvore já rebaseada."""
+        with open(os.path.join(self.bin, "python3"), "w") as f:
+            f.write('#!/bin/sh\nprintf \'{"refeito": true}\\n\' > public/energia/gold/manifesto.json\n')
+        os.chmod(os.path.join(self.bin, "python3"), 0o755)
+
+    def test_manifesto_refeito_depois_do_rebase_acompanha_a_gold(self):
+        # rodada de 19/10/2026: a gold entrou no main sem o manifesto e o sha256 dela divergiu do publicado
+        self._python_falso()
+        p = self._roda()
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+        log = _git(self.runner, "log", "--format=%s", "origin/main").splitlines()
+        self.assertEqual(log[0], "Setor Elétrico: manifesto acompanha a rodada da previsão do PLD")
+        self.assertIn("Previsão do PLD: rodada de", log[1])
+        self.assertEqual(_git(self.runner, "show", "origin/main:public/energia/gold/manifesto.json"), '{"refeito": true}\n')
+        self.assertEqual(_git(self.runner, "show", "origin/main:public/energia/gold/metricas.json"), "{}\n")
+
+    def test_sem_gold_publicada_o_manifesto_nao_muda(self):
+        self._python_falso()
+        p = self._roda(testes="failure")
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
         self.assertNotIn("public/energia/gold/manifesto.json", self._arquivos_no_main())
 
     def test_testes_reprovados_registram_so_a_emissao(self):

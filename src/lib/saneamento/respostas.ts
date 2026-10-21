@@ -6,13 +6,20 @@
  */
 
 import type { Agregado, Investimento } from "@/lib/saneamento/tipos";
-import { agregado, agregados, fichas, meta, municipios, prestadores, reguladores } from "@/lib/saneamento/gold";
-import { referencias } from "@/lib/saneamento/referencias";
+import { agregado, fichas, meta, municipios, prestadores, reguladores } from "@/lib/saneamento/gold";
 import { razaoPct } from "@/lib/saneamento/municipios";
 import { ANOS_SAUDE } from "@/lib/saneamento/medidas";
 import { TARIFAS, periodoConsultaTarifas } from "@/lib/saneamento/tarifas";
 import { calcularConta } from "@/lib/saneamento/conta";
-import { inteiro, numero, reais, reaisCompacto } from "@/lib/saneamento/formato";
+import { inteiro, numero, reais } from "@/lib/saneamento/formato";
+import { resumoContratado } from "@/lib/saneamento/contratos";
+
+/**
+ * Capítulos cujo número de prova seria um valor financeiro autodeclarado ao SINISA (investimento e origem dos recursos). Pela decisão de
+ * 20/10/2026 (src/lib/saneamento/autodeclarado.ts), esses valores não vão para a entrada: o capítulo aparece com o resumo e a marca,
+ * e o número fica dentro dele.
+ */
+export const CAPITULOS_SEM_MANCHETE_FINANCEIRA = [9, 10] as const;
 
 export type Resposta = {
   /** Número exibido, no mesmo formato da página do capítulo. */
@@ -161,30 +168,7 @@ export function respostasDosCapitulos(): Partial<Record<number, Resposta>> {
     };
   }
 
-  // 9. Investimento: por habitante, pela mesma referência do atlas do capítulo.
-  const ia = br.sinisa.agua.investimento;
-  const ie = br.sinisa.esgoto.investimento;
-  const MED = "sinisa-investimento-por-habitante";
-  const brHab = referencias(agregados(), municipios(), [MED])[MED]?.BR?.pct ?? null;
-  if (tem(ia?.total, ie?.total, brHab)) {
-    out[9] = {
-      valor: `R$ ${numero(brHab, 0)}`,
-      rotulo: "investidos por habitante nos municípios declarantes",
-      frase: `Prestadores e Estados declararam ${reaisCompacto(ia!.total! + ie!.total!)} investidos em água e esgoto em 2024, ou R$ ${numero(brHab, 0)} por habitante nos municípios declarantes.`,
-      fonte: "SINISA 2024, reais correntes",
-    };
-  }
-
-  // 10. Financiamento.
-  const fb = fontesDe(br);
-  if (fb.proprios + fb.onerosos + fb.nao_onerosos > 0) {
-    out[10] = {
-      valor: reaisCompacto(fb.proprios),
-      rotulo: "de recursos próprios de prestadores e Estados",
-      frase: `Do investimento declarado em 2024, ${reaisCompacto(fb.proprios)} vieram de recursos próprios, ${reaisCompacto(fb.onerosos)} de empréstimos e financiamentos e ${reaisCompacto(fb.nao_onerosos)} de transferências e doações.`,
-      fonte: "SINISA 2024, reais correntes",
-    };
-  }
+  // 9 e 10 (investimento e origem dos recursos): sem resposta na entrada, ver CAPITULOS_SEM_MANCHETE_FINANCEIRA.
 
   // 11. Planejamento: o ritmo aritmético da tabela do capítulo, no indicador oficial consolidado.
   const metaEsgoto = meta()?.metas.esgoto ?? 90;
@@ -196,6 +180,17 @@ export function respostasDosCapitulos(): Partial<Record<number, Resposta>> {
       rotulo: `pontos percentuais por ano para chegar a ${metaEsgoto}% de coleta com tratamento até 2033`,
       frase: `Com ${pct(es.IES0007)} dos domicílios com coleta e tratamento em 2024 (IES0007), chegar a ${metaEsgoto}% até 2033 exige ${numero(ritmo, 2)} pontos por ano; ${inteiro(g!.plano_sim)} municípios declaram ter plano municipal de saneamento.`,
       fonte: "SINISA 2024; Lei 11.445/2007, art. 11-B",
+    };
+  }
+
+  // 15. Contratado desde o novo marco: contagem própria da tabela curada (nunca a de parte interessada).
+  const rc = resumoContratado();
+  if (rc && rc.contratos_de_servico_adjudicados > 0) {
+    out[15] = {
+      valor: inteiro(rc.contratos_de_servico_adjudicados),
+      rotulo: "leilões de concessão ou PPP com contrato adjudicado desde 2020, na tabela curada",
+      frase: `Desde o novo marco, ${inteiro(rc.leiloes_registrados)} leilões e desestatizações estão registrados, ${inteiro(rc.contratos_de_servico_adjudicados)} com contrato de serviço adjudicado; ${inteiro(rc.contratos_com_metas)} ${rc.contratos_com_metas === 1 ? "contrato tem" : "contratos têm"} metas transcritas e ${inteiro(rc.municipios_proxy_sinisa)} municípios declaram ao SINISA concessão iniciada de 2020 em diante.`,
+      fonte: `Tabela curada (fontes por linha), capturada em ${rc.capturado_em.slice(8, 10)}/${rc.capturado_em.slice(5, 7)}/${rc.capturado_em.slice(0, 4)}; SINISA 2024`,
     };
   }
 

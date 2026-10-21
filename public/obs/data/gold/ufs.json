@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-18T15:09:34+00:00",
+ "gerado_em": "2026-10-21T16:18:46+00:00",
  "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
  "datas": {
   "scr": "2026-08",
@@ -17,7 +17,7 @@
    "ini": "2025-04",
    "fim": "2026-03"
   },
-  "pgfn": "2026-06",
+  "pgfn": "2026-09",
   "emprego": "2026-08",
   "consorcios": "2026-T2",
   "cobranca": "2026-07",
@@ -229,7 +229,7 @@
     "valor_hab": 488.44
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 92430,
     "valor": 5165006282.82,
     "part_br": 0.147,
@@ -514,7 +514,7 @@
     "valor_hab": 160.91
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 366603,
     "valor": 29431844744.03,
     "part_br": 0.838,
@@ -799,7 +799,7 @@
     "valor_hab": 435.86
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 367774,
     "valor": 52806448341.15,
     "part_br": 1.503,
@@ -1084,7 +1084,7 @@
     "valor_hab": 593.23
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 85682,
     "valor": 7359802093.46,
     "part_br": 0.21,
@@ -1369,7 +1369,7 @@
     "valor_hab": 373.12
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 1611146,
     "valor": 124542208065.99,
     "part_br": 3.545,
@@ -1654,7 +1654,7 @@
     "valor_hab": 290.2
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 996644,
     "valor": 66025065389.41,
     "part_br": 1.88,
@@ -1939,7 +1939,7 @@
     "valor_hab": 148.83
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 821850,
     "valor": 74474245860.17,
     "part_br": 2.12,
@@ -2224,7 +2224,7 @@
     "valor_hab": 1100.76
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 644952,
     "valor": 66881893311.17,
     "part_br": 1.904,
@@ -2509,7 +2509,7 @@
     "valor_hab": 738.56
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 1237719,
     "valor": 95035365167.61,
     "part_br": 2.705,
@@ -2794,7 +2794,7 @@
     "valor_hab": 254.43
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 554773,
     "valor": 43327026396.34,
     "part_br": 1.233,
@@ -3079,7 +3079,7 @@
     "valor_hab": 702.43
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 3234179,
     "valor": 215240628846.45,
     "part_br": 6.127,
@@ -3364,7 +3364,7 @@
     "valor_hab": 2837.0
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 548008,
     "valor": 36832160846.21,
     "part_br": 1.049,
@@ -3649,7 +3649,7 @@
     "valor_hab": 2831.56
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 861622,
     "valor": 59629739351.47,
     "part_br": 1.698,
@@ -3934,7 +3934,7 @@
     "valor_hab": 396.11
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 729326,
     "valor": 69890079687.82,
     "part_br": 1.99,
@@ -4219,7 +4219,7 @@
     "valor_hab": 262.76
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 449709,
     "valor": 22770009667.01,
     "part_br": 0.648,
@@ -4504,7 +4504,7 @@
     "valor_hab": 200.96
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 1115989,
     "valor": 80149141911.57,
     "part_br": 2.282,
@@ -4789,7 +4789,7 @@
     "valor_hab": 346.53
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 368857,
     "valor": 17740526864.54,
     "part_br": 0.505,
@@ -5074,7 +5074,7 @@
     "valor_hab": 1556.1
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 2316867,
     "valor": 164237490965.38,
     "part_br": 4.675,
@@ -5359,7 +5359,7 @@
     "valor_hab": 395.33
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 2999023,
     "valor": 492629293766.78,
     "part_br": 14.024,
@@ -5389,7 +5389,7 @@
     "mes": "2026-07",
     "casos_12m": 30274,
     "var_12m_pct": -23.57,
-    "casos_12m_todos": 66318,
+    "casos_12m_todos": 48591,
     "por_mil_hab": 1.76,
     "por_bi_carteira": 52.3
    },
@@ -5644,7 +5644,7 @@
     "valor_hab": 687.87
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 469114,
     "valor": 23556232359.38,
     "part_br": 0.671,
@@ -5929,7 +5929,7 @@
     "valor_hab": 544.33
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 263078,
     "valor": 15245566115.09,
     "part_br": 0.434,
@@ -6214,7 +6214,7 @@
     "valor_hab": 193.89
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 66365,
     "valor": 3887393282.19,
     "part_br": 0.111,
@@ -6499,7 +6499,7 @@
     "valor_hab": 2410.78
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 2344761,
     "valor": 171335398524.39,
     "part_br": 4.877,
@@ -6784,7 +6784,7 @@
     "valor_hab": 1965.34
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 1932797,
     "valor": 130377772232.25,
     "part_br": 3.712,
@@ -7069,7 +7069,7 @@
     "valor_hab": 164.46
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 265158,
     "valor": 18244528135.71,
     "part_br": 0.519,
@@ -7354,7 +7354,7 @@
     "valor_hab": 1085.65
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 10008087,
     "valor": 1412289257885.65,
     "part_br": 40.204,
@@ -7639,7 +7639,7 @@
     "valor_hab": 852.58
    },
    "pgfn": {
-    "data_base": "2026-06",
+    "data_base": "2026-09",
     "inscricoes": 238445,
     "valor": 13472732212.2,
     "part_br": 0.384,

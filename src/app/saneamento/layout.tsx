@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s · Saneamento · Scrutiniums",
   },
   description:
-    "Acesso à água e ao esgoto nos 5.570 municípios, preço regulado, prestadores, reguladores, investimentos, planos e metas de universalização, com fonte, período e limitações em cada número.",
+    "Acesso à água e ao esgoto nos 5.570 municípios, tarifas, prestadores, reguladores, investimentos, planos e metas de universalização, com fonte, período e limitações em cada número.",
 };
 
 /**

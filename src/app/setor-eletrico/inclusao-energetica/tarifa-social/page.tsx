@@ -8,7 +8,7 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { InclusaoDatas, InclusaoIndisponivel, InclusaoNavegacao, InclusaoRecorte, InclusaoSeguir } from "@/components/energia/InclusaoPagina";
 import { InclusaoPorMedidaTsee } from "@/components/energia/InclusaoPorEstado";
 import { InclusaoHistoricoUfTsee, InclusaoMapaTsee, InclusaoSerieTsee } from "@/components/energia/InclusaoTarifaSocial";
-import { InclusaoBaseLegal, TarifaSocialResposta } from "@/components/energia/InclusaoTextos";
+import { InclusaoBaseLegal, TarifaSocialRegraVigente, TarifaSocialResposta } from "@/components/energia/InclusaoTextos";
 import { Numero } from "@/components/energia/Numero";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -41,6 +41,7 @@ import {
   reaisTexto,
   rotaPainel,
   textoCusteioTarifaSocial,
+  textosRegraTarifaSocial,
   ufsAtingidasPorAusencia,
 } from "@/lib/energia/inclusao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
@@ -138,6 +139,12 @@ export default function TarifaSocialPage() {
   const marcosCde = marcosEventos(t.eventos, cdeComValor[0]?.mes ?? "", cdeComValor.at(-1)?.mes ?? "");
   const ultimoScs = g.referencias.scs_ultimo_mes_no_arquivo;
   const geracaoScs = t.diagnostico_scs?.data_geracao.at(-1) ?? null;
+  // a regra de 80 kWh separa os números: UC do SCS são anteriores a ela; faturas da CDE do mês do mapa, posteriores quando houver
+  const regra = textosRegraTarifaSocial(t, idioma);
+  const notaAntesDaRegra =
+    regra && t.periodos_da_regra?.antes
+      ? tx(`${mes(t.mes_referencia)}, antes da regra de ${regra.vigencia}: o SCS não tem mês completo depois dela.`, `${mes(t.mes_referencia)}, before the rule of ${regra.vigencia}: the SCS has no complete month after it.`)
+      : undefined;
   const ufsComFaturas = t.ufs.length;
   const municipiosComFaturas = t.ufs.reduce((s, u) => s + u.municipios_com_faturas, 0);
   const linhasConferencia = conf
@@ -275,6 +282,7 @@ export default function TarifaSocialPage() {
                 casas={0}
                 unidade={tx("UC", "consumer units")}
                 cor="var(--cor-energia)"
+                nota={notaAntesDaRegra}
                 endereco={`${rotaPainel("p059")}#p059`}
               />
               <Numero
@@ -337,6 +345,7 @@ export default function TarifaSocialPage() {
             "The figures are aggregated, by distribution utility, state and month: no individual beneficiary appears here.",
           )}
         </CabecalhoModulo>
+        <TarifaSocialRegraVigente t={t} className="mb-10" />
         <ModoProfundidade>
           <Bloco id="tarifa-social">
             <PainelEvidencia

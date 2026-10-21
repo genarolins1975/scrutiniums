@@ -659,6 +659,21 @@ class GoldPublicada(unittest.TestCase):
         with open(os.path.join(RAIZ, "public") + url, encoding="utf-8") as f:
             return list(csv.DictReader(f, delimiter=";"))
 
+    def test_eolica_abaixo_do_balanco_e_a_lista_inteira(self):
+        # a página nomeia esses dias: a lista não pode depender do corte das 15 maiores divergências
+        rec = self.g["matriz"]["reconciliacao_balanco"]
+        # a lista entrou na gold com o código de 20/10/2026; gold gerada depois disso sem ela reprova
+        if "eolica_abaixo_de_10pct_das_usinas" not in rec and self.g["gerado_em"] < "2026-10-20":
+            self.skipTest(f"gold publicada em {self.g['gerado_em']}, anterior à lista dos dias da eólica")
+        lista = rec["eolica_abaixo_de_10pct_das_usinas"]
+        for x in lista:
+            self.assertLess(x["balanco_mwh"], gd.LIMIAR_BALANCO_EOLICA * x["usinas_mwh"], x)
+        chaves = [(x["d"], x["sm"]) for x in lista]
+        self.assertEqual(chaves, sorted(set(chaves)))
+        for x in rec["maiores_divergencias"]:
+            if x["fonte"] == "eolica" and x["usinas_mwh"] and x["balanco_mwh"] < gd.LIMIAR_BALANCO_EOLICA * x["usinas_mwh"]:
+                self.assertIn((x["d"], x["sm"]), chaves)
+
     def test_disponivel_tamanho_e_paineis(self):
         self.assertTrue(self.g["disponivel"])
         self.assertEqual(self.g["paineis"], ["P021", "P022", "P023", "P024"])
@@ -710,12 +725,24 @@ class GoldPublicada(unittest.TestCase):
             r = self.g["restricoes"][fonte]
             u = r["ultimos_12m"]
             eng = ger = 0.0
+            n_eng = n_ger = casas = 0
             for x in self._csv("/energia/series/geracao_restricao_usina_mensal.csv"):
                 if x["fonte"] == fonte and u["inicio"] <= x["mes"] <= u["fim"]:
-                    eng += sum(float(x[f"eng_{k}_mwh"] or 0) for k in ("REL", "CNF", "ENE", "PAR", "SEM"))
-                    ger += float(x["geracao_verificada_mwh"] or 0)
-            self.assertAlmostEqual(eng, u["energia_nao_gerada_mwh"], delta=1.0)  # arredondamento de 0,001 MWh por linha
-            self.assertAlmostEqual(ger, u["geracao_verificada_mwh"], delta=1.0)
+                    vs = [x[f"eng_{k}_mwh"] for k in ("REL", "CNF", "ENE", "PAR", "SEM") if x[f"eng_{k}_mwh"]]
+                    eng += sum(float(v) for v in vs)
+                    n_eng += len(vs)
+                    if x["geracao_verificada_mwh"]:
+                        ger += float(x["geracao_verificada_mwh"])
+                        n_ger += 1
+                    casas = max([casas] + [len(v.split(".")[1]) for v in vs + [x["geracao_verificada_mwh"]] if "." in v])
+            # Limite do arredondamento, não um número fixo: o cartão arredonda a soma a 0,1 MWh (até 0,05)
+            # e cada valor do CSV erra até meia unidade da última casa publicada. Com três casas, a energia de
+            # meia hora (MW × 0,5 h, quarta casa 0 ou 5) sobe 0,0005 MWh em metade dos valores, sempre para
+            # cima: 1,088 MWh em 9.215 valores da eólica (20/10/2026), acima da tolerância fixa de 1,0 que
+            # supunha erros que se compensam. Desde 20/10/2026 o CSV sai com quatro casas, as do silver.
+            meia = 0.5 * 10 ** -max(casas, 1)
+            self.assertAlmostEqual(eng, u["energia_nao_gerada_mwh"], delta=0.05 + meia * n_eng + 1e-6)
+            self.assertAlmostEqual(ger, u["geracao_verificada_mwh"], delta=0.05 + meia * n_ger + 1e-6)
             self.assertAlmostEqual(100 * eng / (eng + ger), u["taxa_pct"], delta=0.01)
 
     def test_termica_12m_igual_ao_csv_por_usina_e_combustivel_separado(self):

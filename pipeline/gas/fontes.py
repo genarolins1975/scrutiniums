@@ -28,6 +28,21 @@ ANP_SHLP = f"{ANP}/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revend
 LICENCA_ANP = "Dados abertos da ANP, uso livre com citação da fonte (Política de Dados Abertos do Poder Executivo federal, Decreto 8.777/2016)"
 LICENCA_GOV = "Dados abertos do governo federal, uso livre com citação da fonte (Decreto 8.777/2016)"
 
+# Produtos do Levantamento de Preços que o seed guarda, com as grafias da unidade que a planilha usa para cada um (o GNV
+# passou de "R$/m3" a "R$/m³" em agosto de 2020). Um só download por planilha alimenta o gás de cozinha, o GNV e o painel
+# de combustíveis; produto que some ou muda de unidade na origem interrompe a coleta (o seed anterior fica, e a gold não
+# é refeita com um recorte incompleto).
+PRODUTOS_PRECOS = {
+    "GLP": ("R$/13kg",),
+    "GNV": ("R$/m3", "R$/m³"),
+    "GASOLINA COMUM": ("R$/l",),
+    "ETANOL HIDRATADO": ("R$/l",),
+    "OLEO DIESEL": ("R$/l",),
+    "OLEO DIESEL S10": ("R$/l",),
+}
+RECORTE_PRECOS = ("linhas dos produtos GLP, GNV, gasolina comum, etanol hidratado, óleo diesel e óleo diesel S10, "
+                  "todas as colunas; as observações da planilha (lacunas e mudanças de abrangência) ficam no manifesto")
+
 FONTES = {
     "anp_producao": {
         "orgao": "ANP", "conjunto": "Produção de gás natural por estado e localização",
@@ -104,19 +119,19 @@ FONTES = {
         "nota": "Vendas das distribuidoras de GLP por UF e vasilhame (até P13 e outros). Volume em m³ de GLP, como publicado.",
     },
     "anp_precos_estados": {
-        "orgao": "ANP", "conjunto": "Levantamento de Preços de Combustíveis: série mensal por estado (recorte GLP P13 e GNV)",
+        "orgao": "ANP", "conjunto": "Levantamento de Preços de Combustíveis: série mensal por estado (recorte GLP, GNV, gasolina, etanol e diesel)",
         "pagina": f"{ANP}/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis/serie-historica-do-levantamento-de-precos",
         "url": f"{ANP_SHLP}/mensal-estados-desde-jan2013.xlsx",
-        "seed": "anp/precos-mensais-estados-glp-gnv.csv.gz", "unidade": "R$/13 kg (GLP) e R$/m³ (GNV)",
-        "frequencia": "mensal", "licenca": LICENCA_ANP, "recorte": "linhas dos produtos GLP e GNV, todas as colunas",
+        "seed": "anp/precos-mensais-estados.csv.gz", "unidade": "R$/13 kg (GLP), R$/m³ (GNV) e R$/l (gasolina, etanol e diesel)",
+        "frequencia": "mensal", "licenca": LICENCA_ANP, "recorte": RECORTE_PRECOS,
         "nota": "Pesquisa por amostra de revendas. Não houve pesquisa entre 18/8/2020 e 17/10/2020; a abrangência mudou em 2017 e em 2018 (notas da própria planilha).",
     },
     "anp_precos_brasil": {
-        "orgao": "ANP", "conjunto": "Levantamento de Preços de Combustíveis: série mensal Brasil (recorte GLP P13 e GNV)",
+        "orgao": "ANP", "conjunto": "Levantamento de Preços de Combustíveis: série mensal Brasil (recorte GLP, GNV, gasolina, etanol e diesel)",
         "pagina": f"{ANP}/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis/serie-historica-do-levantamento-de-precos",
         "url": f"{ANP_SHLP}/mensal-brasil-desde-jan2013.xlsx",
-        "seed": "anp/precos-mensais-brasil-glp-gnv.csv.gz", "unidade": "R$/13 kg (GLP) e R$/m³ (GNV)",
-        "frequencia": "mensal", "licenca": LICENCA_ANP, "recorte": "linhas dos produtos GLP e GNV, todas as colunas",
+        "seed": "anp/precos-mensais-brasil.csv.gz", "unidade": "R$/13 kg (GLP), R$/m³ (GNV) e R$/l (gasolina, etanol e diesel)",
+        "frequencia": "mensal", "licenca": LICENCA_ANP, "recorte": RECORTE_PRECOS,
         "nota": "Média nacional calculada pela ANP sobre a amostra pesquisada.",
     },
     "anp_autorizacoes": {
@@ -181,8 +196,11 @@ def _baixar(url, dados=None, cabecalhos=None, tentativas=4):
 def _registrar(manifesto, fid, url, original, recorte=None, extra=None):
     sha = base.sha256_bytes(original) if isinstance(original, bytes) else original
     anterior = manifesto.get(fid)
-    if anterior and anterior.get("sha256_original") == sha and anterior.get("url") == url:
-        # arquivo idêntico ao já integrado: o manifesto e a gold não mudam, e o pipeline automático não gera commit vazio
+    mesmo_recorte = anterior and anterior.get("seed") == FONTES[fid]["seed"] and anterior.get("recorte") == recorte and all(
+        anterior.get(k) == v for k, v in (extra or {}).items())
+    if anterior and anterior.get("sha256_original") == sha and anterior.get("url") == url and mesmo_recorte:
+        # arquivo idêntico ao já integrado, no mesmo recorte: o manifesto e a gold não mudam, e o pipeline automático
+        # não gera commit vazio
         return
     manifesto[fid] = {
         "url": url,
@@ -202,6 +220,45 @@ def _coleta_inteiro(fid, manifesto):
     _registrar(manifesto, fid, f["url"], b)
 
 
+def recortar_precos(caminho):
+    """Recorte da planilha mensal de preços: (csv em texto, observações da planilha, {produto: meses}).
+
+    Guarda as linhas dos produtos de PRODUTOS_PRECOS com todas as colunas e o mês em AAAA-MM. As observações que a
+    ANP escreve acima do cabeçalho (lacuna de 2020, mudanças de abrangência, unidade do diesel) voltam como texto, na
+    ordem da planilha. Produto ausente ou com unidade diferente da declarada é erro: a coleta não grava o seed."""
+    saida = io.StringIO()
+    w = csv.writer(saida, delimiter=";", lineterminator="\n")
+    cabecalho = None
+    notas = []
+    meses = defaultdict(set)
+    for linha in xlsx.linhas(caminho):
+        if cabecalho is None:
+            if linha and linha[0].strip().upper() == "MÊS":
+                cabecalho = [c.strip() for c in linha]
+                w.writerow(cabecalho)
+                i_unidade = cabecalho.index("UNIDADE DE MEDIDA")
+            elif notas or (linha and linha[0].strip().lower().startswith("obs")):
+                texto = re.sub(r"^obs\s*:\s*", "", " ".join((linha[0] if linha else "").split()), flags=re.I)
+                if texto:
+                    notas.append(texto)
+            continue
+        produto = linha[1].strip().upper() if len(linha) > 1 else ""
+        if produto in PRODUTOS_PRECOS:
+            unidade = linha[i_unidade].strip() if len(linha) > i_unidade else ""
+            if unidade not in PRODUTOS_PRECOS[produto]:
+                raise RuntimeError(f"unidade inesperada para {produto}: {unidade!r} (esperada {' ou '.join(PRODUTOS_PRECOS[produto])})")
+            linha = list(linha)
+            linha[0] = xlsx.data_serial(linha[0]).isoformat()[:7]
+            meses[produto].add(linha[0])
+            w.writerow(linha[: len(cabecalho)])
+    if cabecalho is None:
+        raise RuntimeError("cabeçalho MÊS/PRODUTO não encontrado na planilha de preços")
+    faltam = [p for p in PRODUTOS_PRECOS if not meses[p]]
+    if faltam:
+        raise RuntimeError(f"produtos ausentes na planilha de preços: {', '.join(faltam)}")
+    return saida.getvalue(), notas, dict(meses)
+
+
 def _recorte_precos(fid, manifesto):
     f = FONTES[fid]
     b = _baixar(f["url"])
@@ -209,25 +266,11 @@ def _recorte_precos(fid, manifesto):
         t.write(b)
         tmp = t.name
     try:
-        saida = io.StringIO()
-        w = csv.writer(saida, delimiter=";", lineterminator="\n")
-        cabecalho = None
-        for linha in xlsx.linhas(tmp):
-            if cabecalho is None:
-                if linha and linha[0].strip().upper() == "MÊS":
-                    cabecalho = [c.strip() for c in linha]
-                    w.writerow(cabecalho)
-                continue
-            if len(linha) > 1 and linha[1].strip().upper() in ("GLP", "GNV"):
-                linha = list(linha)
-                linha[0] = xlsx.data_serial(linha[0]).isoformat()[:7]
-                w.writerow(linha[: len(cabecalho)])
-        if cabecalho is None:
-            raise RuntimeError("cabeçalho MÊS/PRODUTO não encontrado na planilha de preços")
+        texto, notas, _ = recortar_precos(tmp)
     finally:
         os.unlink(tmp)
-    base.gravar_seed(f["seed"], saida.getvalue().encode("utf-8"))
-    _registrar(manifesto, fid, f["url"], b, recorte=f["recorte"])
+    base.gravar_seed(f["seed"], texto.encode("utf-8"))
+    _registrar(manifesto, fid, f["url"], b, recorte=f["recorte"], extra={"notas_da_planilha": notas})
 
 
 def _coleta_wb(manifesto):

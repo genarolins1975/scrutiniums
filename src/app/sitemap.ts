@@ -10,7 +10,7 @@ import { TRILHAS_APRENDA } from "@/lib/energia/conteudo/trilhas";
 import { PAGINAS as PAINEIS_TRABALHO_RENDA } from "@/components/eficiencia/trabalho-renda/modelo";
 import { PAGINAS_MOBILIDADE, ROTA_MOBILIDADE } from "@/lib/eficiencia/mobilidade/modelo";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
-import { ehRotaPublica } from "@/lib/rotasPublicas";
+import { LEVA_2, ehRotaPublica } from "@/lib/rotasPublicas";
 import { parDeIdioma, traducaoPublicada } from "@/lib/i18n-rotas";
 import { IDS_PORTAS, rotaPorta } from "@/lib/perguntas/rotas";
 
@@ -30,6 +30,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   try {municipios = JSON.parse(readFileSync(join(process.cwd(), "public", "obs", "data", "gold", "presenca_mun.json"), "utf-8")).municipios;} catch {municipios = [];}
   let ufs: { uf: string }[] = [];
   try {ufs = JSON.parse(readFileSync(join(process.cwd(), "public", "obs", "data", "gold", "ufs.json"), "utf-8")).ufs;} catch {ufs = [];}
+  // fichas do saneamento por município (consulta aberta desde 19/10/2026): o mesmo índice da busca
+  let municipiosSaneamento: string[] = [];
+  try {municipiosSaneamento = (JSON.parse(readFileSync(join(process.cwd(), "public", "saneamento", "gold", "indice.json"), "utf-8")) as [string, string, string][]).map((m) => m[0]);} catch {municipiosSaneamento = [];}
   let modelosEnergia: string[] = [];
   try {modelosEnergia = JSON.parse(readFileSync(join(process.cwd(), "public", "energia", "gold", "modelos.json"), "utf-8")).modelos.map((m: { id: string }) => m.id);} catch {modelosEnergia = [];}
   const entradas: MetadataRoute.Sitemap = [
@@ -81,6 +84,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/contas-publicas/metodologia", 0.5, "monthly"),
     rota("/contas-publicas/glossario", 0.5, "monthly"),
     rota("/saneamento/metodologia", 0.6, "monthly"),
+    rota("/territorio/metodologia", 0.6, "monthly"),
+    rota("/saneamento/municipio", 0.8, "monthly"),
+    // Previdência e INSS (20/10/2026): o endereço é a página aberta do tema (aperitivo sem sessão)
+    rota("/contas-publicas/previdencia", 0.8, "monthly"),
+    // Conectividade (20/10/2026): o endereço é a página aberta do tema (aperitivo sem sessão)
+    rota("/conectividade", 0.8, "monthly"),
+    // Educação nos municípios (20/10/2026): o endereço é a página aberta do tema (aperitivo sem sessão)
+    rota("/educacao-municipal", 0.8, "monthly"),
+    // leva 2 (src/lib/rotasPublicas.ts, LEVA_2): fica de fora pelo filtro abaixo até a data da aprovação do dono
+    ...LEVA_2.flatMap((i) => i.rotas).map((r) => rota(r, 0.7, "monthly")),
+    ...LEVA_2.flatMap((i) => (i.fichasIbge ? municipiosSaneamento.map((id) => rota(`${i.fichasIbge}/${id}`, 0.4, "yearly")) : [])),
     rota("/gas-natural", 0.8, "monthly"),
     ...PAGINAS_GAS.map((p) => rota(p.href, 0.6, "monthly")),
     rota("/cadastro", 0.6, "yearly"),

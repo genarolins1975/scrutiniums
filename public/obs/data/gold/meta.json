@@ -1,1290 +1,3623 @@
 {
- "plataforma": {
-  "name": "Observatório Brasileiro de Crédito",
-  "short_name": "OBC",
-  "version": "0.1.0",
-  "disclaimer": "Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento."
- },
- "gerado_em": "2026-10-18T15:09:35+00:00",
- "vintages": {
-  "sgs": "2026-08",
-  "ifdata": "2026-06",
-  "scr": "2026-08",
-  "b3": "2026-10",
-  "fidc": "2026-09",
-  "datajud": "2026-08",
-  "trends": "2026-06",
-  "txjuros": "2026-10",
-  "susep": "2026-08",
-  "sadipem": "2026-10",
-  "siconfi": "2026-08",
-  "tesouro_garantias": "2026-08",
-  "sicor": "2026-09",
-  "cvm_ofertas": "2026-10",
-  "securit": "2026-09",
-  "bndes": "2026-03",
-  "focus": "2026-10",
-  "sfn_cadastro": "2026-10",
-  "bcb_pas": "2026-10",
-  "cvm_pas": "2026-10",
-  "caged": "2026-08",
-  "cda": "2026-09",
-  "consorcios": "2026-06",
-  "cobranca": "2026-10",
-  "pix": "2026-09",
-  "estban": "2026-06",
-  "openfinance": "2026-10",
-  "pgfn": "2026-06",
-  "desenrola": null
- },
- "inad_conceitos": {
-  "sgs": {
-   "v": 5.04,
-   "ref": "2026-08",
-   "def": "parcelas em atraso superior a 90 dias ÷ carteira do crédito referencial (BCB/SGS 21082)."
+  "plataforma": {
+    "name": "Observatório Brasileiro de Crédito",
+    "short_name": "OBC",
+    "version": "0.1.0",
+    "disclaimer": "Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento."
   },
-  "scr": {
-   "v": 5.01,
-   "ref": "2026-08",
-   "def": "inadimplência ARRASTADA: operações com qualquer parcela vencida >90d contadas por inteiro ÷ carteira ativa (SCR.data)."
+  "gerado_em": "2026-10-18T15:09:35+00:00",
+  "vintages": {
+    "sgs": "2026-08",
+    "ifdata": "2026-06",
+    "scr": "2026-08",
+    "b3": "2026-10",
+    "fidc": "2026-09",
+    "datajud": "2026-08",
+    "trends": "2026-06",
+    "txjuros": "2026-10",
+    "susep": "2026-08",
+    "sadipem": "2026-10",
+    "siconfi": "2026-08",
+    "tesouro_garantias": "2026-08",
+    "sicor": "2026-09",
+    "cvm_ofertas": "2026-10",
+    "securit": "2026-09",
+    "bndes": "2026-03",
+    "focus": "2026-10",
+    "sfn_cadastro": "2026-10",
+    "bcb_pas": "2026-10",
+    "cvm_pas": "2026-10",
+    "caged": "2026-08",
+    "cda": "2026-09",
+    "consorcios": "2026-06",
+    "cobranca": "2026-10",
+    "pix": "2026-09",
+    "estban": "2026-06",
+    "openfinance": "2026-10",
+    "pgfn": "2026-06",
+    "desenrola": null
   },
-  "atraso15": {
-   "v": null,
-   "ref": "2026-06",
-   "def": "atraso ≥15 dias por operação (coluna 'Vencido a Partir de 15 Dias', IF.data) — varia por produto e instituição; não existe como taxa única nacional."
+  "inad_conceitos": {
+    "sgs": {
+      "v": 5.04,
+      "ref": "2026-08",
+      "def": "parcelas em atraso superior a 90 dias ÷ carteira do crédito referencial (BCB/SGS 21082)."
+    },
+    "scr": {
+      "v": 5.01,
+      "ref": "2026-08",
+      "def": "inadimplência ARRASTADA: operações com qualquer parcela vencida >90d contadas por inteiro ÷ carteira ativa (SCR.data)."
+    },
+    "atraso15": {
+      "v": null,
+      "ref": "2026-06",
+      "def": "atraso ≥15 dias por operação (coluna 'Vencido a Partir de 15 Dias', IF.data) — varia por produto e instituição; não existe como taxa única nacional."
+    }
+  },
+  "carteira_conceitos": {
+    "sgs": {
+      "v": 7397.7,
+      "ref": "2026-08",
+      "nome": "Saldo das operações de crédito (SGS 20539)",
+      "def": "carteira do SFN no conceito das estatísticas monetárias do BCB: operações de crédito das instituições financeiras, sem TVM nem crédito externo."
+    },
+    "scr": {
+      "v": 7720.1,
+      "ref": "2026-08",
+      "nome": "Carteira ativa (SCR.data)",
+      "def": "soma da carteira ativa por UF do cliente nos agregados públicos do SCR, que inclui operações abaixo do piso e classificações que o SGS agrega de outro modo; fica alguns por cento acima do SGS."
+    },
+    "ampliado": {
+      "v": 7021.9,
+      "ref": "2026-08",
+      "nome": "Empréstimos e financiamentos do SFN a empresas e famílias (crédito ampliado)",
+      "def": "parcela bancária do crédito ampliado ao setor não financeiro (BCB), conceito do balanço de pagamentos e da dívida; exclui o que o SGS conta como crédito a governo."
+    },
+    "estban": {
+      "v": 12739.9,
+      "ref": "2026-06",
+      "nome": "Operações de crédito por agência (ESTBAN)",
+      "def": "saldo contábil por agência, atribuído ao município da agência e não ao do cliente: as sedes em Brasília e São Paulo concentram carteiras nacionais, por isso o total supera em muito as demais réguas e a página municipal usa o ESTBAN só para penetração relativa."
+    }
+  },
+  "if_contagens": {
+    "ifdata_resumo": {
+      "n": 1406,
+      "ref": "202606",
+      "def": "instituições e conglomerados com balanço (Ativo Total) entregue no Resumo do IF.data na data-base; é o universo do ranking, do screener e das estatísticas de pares das fichas."
+    },
+    "ifdata_lista": {
+      "n": 1458,
+      "ref": "202606",
+      "sem_balanco": 52,
+      "def": "códigos na relação do Resumo do IF.data na data-base, com ou sem balanço entregue (saldo nulo na fonte = atraso, RAET, retardatário); é a régua de entradas e saídas do painel Quem entra e quem sai."
+    },
+    "ifdata_qualquer_relatorio": {
+      "n": 2370,
+      "ref": "202606",
+      "def": "entidades com pelo menos uma métrica em qualquer relatório do IF.data na data-base (Resumo, Carteiras, Capital, DRE); universo do Comparar."
+    },
+    "cadastro_sedes": {
+      "n": 1740,
+      "ref": "2026-10-18",
+      "def": "sedes autorizadas e em funcionamento no cadastro do BCB (Unicad) na data da coleta; inclui cooperativas, IPs e SCDs que não reportam ao IF.data."
+    }
+  },
+  "fontes_status": {
+    "bcb_sgs": {
+      "ok": 0,
+      "falhas": [
+        {
+          "key": "saldo_total",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "saldo_pj",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "saldo_pf",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "concessoes_total",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "concessoes_pj",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "concessoes_pf",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "taxa_total",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "taxa_pj",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "taxa_pf",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "spread_total",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "spread_pj",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "spread_pf",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "inad_total",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "inad_pj",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "inad_pf",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "credito_pib",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "endividamento",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "comprometimento",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "selic_meta",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "ipca",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "ibc_br",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "ivgr",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_inss_saldo",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_inss_conc",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_inss_taxa",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_inss_prazo_conc",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_inss_prazo_cart",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_inss_atraso",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_inss_inad",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_inss_icc",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_priv_saldo",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_priv_inad",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_pub_saldo",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_pub_inad",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_total_saldo",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_total_inad",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "consig_total_taxa",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_total",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_gov",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pib",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_ef",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_ef_sfn",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_ef_osf",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_ef_fg",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_ef_tit",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_ef_sec",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_ef_ext",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_ef_pib",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pj",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pj_sfn",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pj_osf",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pj_fg",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pj_tit",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pj_sec",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pj_ext",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pj_pib",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pf",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pf_sfn",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pf_osf",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pf_fg",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pf_sec",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pf_ext",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "amp_pf_pib",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_saldo_total",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_saldo_pj",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_saldo_pf",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_saldo_pj_bndes",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_saldo_pf_bndes",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_conc_total",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_conc_pj",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_conc_pf",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_conc_pj_bndes",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_taxa_total",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_taxa_pj",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_taxa_pf",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_taxa_pj_bndes",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_inad_total",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_inad_pj",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_inad_pf",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_inad_pj_bndes",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_prazo_pj",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "dir_prazo_pj_bndes",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "desemprego",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "cambio_ptax",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_total",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_total",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_A",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_A",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_B",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_B",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_C",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_C",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_SIUP",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_SIUP",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_D",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_D",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_E",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_E",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_F",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_F",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_G",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_G",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_SERV",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_SERV",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_H",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_H",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_I",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_I",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_J",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_J",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_K",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_K",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_L",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_L",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_M",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_M",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_N",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_N",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_O",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_O",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_P",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_P",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_Q",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_Q",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_S",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "emp_sa_S",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_vista",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_poupanca",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_poupanca_sbpe",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_prazo",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_lf",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_letras_credito",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_outros_titulos",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_titulos_privados",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_m2",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_fundos_monetarios",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_compromissadas",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_m3",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_titulos_federais",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_m4",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_nao_residentes",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "key": "fd_papel_moeda",
+          "erro": "Expecting value: line 1 column 1 (char 0)"
+        }
+      ],
+      "segundos": 2685
+    },
+    "ibge": {
+      "ok": 4,
+      "falhas": [],
+      "segundos": 4
+    },
+    "ipeadata": {
+      "ok": 2,
+      "falhas": [],
+      "segundos": 48
+    },
+    "ifdata": {
+      "ok": 14,
+      "falhas": [],
+      "segundos": 224
+    },
+    "ifdata_ui": {
+      "ok": 5,
+      "falhas": [],
+      "segundos": 5
+    },
+    "ifdata_carteiras": {
+      "ok": 5,
+      "falhas": [],
+      "segundos": 50
+    },
+    "djen": {
+      "ok": 0,
+      "falhas": [
+        {
+          "key": "djen_TJSP",
+          "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
+        },
+        {
+          "key": "djen_TJRJ",
+          "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
+        },
+        {
+          "key": "djen_TJMG",
+          "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
+        },
+        {
+          "key": "djen_TJRS",
+          "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
+        },
+        {
+          "key": "djen_TJPR",
+          "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
+        },
+        {
+          "key": "djen_TJSC",
+          "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
+        },
+        {
+          "key": "djen_TJBA",
+          "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
+        },
+        {
+          "key": "djen_TJGO",
+          "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
+        }
+      ],
+      "segundos": 97
+    },
+    "djen_credores": {
+      "ok": 1,
+      "falhas": [
+        {
+          "key": "credores_TJSP",
+          "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+        },
+        {
+          "key": "credores_TJRJ",
+          "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+        },
+        {
+          "key": "credores_TJMG",
+          "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+        },
+        {
+          "key": "credores_TJRS",
+          "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+        },
+        {
+          "key": "credores_TJPR",
+          "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+        },
+        {
+          "key": "credores_TJSC",
+          "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+        },
+        {
+          "key": "credores_TJBA",
+          "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+        },
+        {
+          "key": "credores_TJGO",
+          "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
+        }
+      ],
+      "segundos": 97
+    },
+    "openfinance": {
+      "ok": 18,
+      "falhas": [],
+      "segundos": 31
+    },
+    "reclamacoes": {
+      "ok": 4,
+      "falhas": [],
+      "segundos": 7
+    },
+    "txjuros": {
+      "ok": 20,
+      "falhas": [],
+      "segundos": 76
+    },
+    "b3_market": {
+      "ok": 22,
+      "falhas": [],
+      "segundos": 154
+    },
+    "fidc": {
+      "ok": 0,
+      "falhas": [],
+      "segundos": 0
+    },
+    "trends_manual": {
+      "ok": 0,
+      "falhas": [
+        {
+          "key": "trends_manual",
+          "erro": "arquivo manual ausente (data/manual/Google_Trends_Temperatura_Credito.xlsx) — fonte segue indisponível"
+        }
+      ],
+      "segundos": 0
+    },
+    "scr_data": {
+      "ok": 2,
+      "falhas": [],
+      "segundos": 41
+    },
+    "geo_ibge": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 0
+    },
+    "pix_bcb": {
+      "ok": 11,
+      "falhas": [],
+      "segundos": 81
+    },
+    "pgfn": {
+      "ok": 3,
+      "falhas": [],
+      "segundos": 1
+    },
+    "desenrola": {
+      "ok": 0,
+      "falhas": [
+        {
+          "key": "desenrola",
+          "erro": "resposta HTML no lugar do CSV (bloqueio ou manutenção do portal): b'<?xml version=\"1.0\" encoding=\"pt-br\"?>\\r\\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\\r\\n  \"http://www.w3.org/T'"
+        }
+      ],
+      "segundos": 1
+    },
+    "censo2022": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 0
+    },
+    "estban": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 4
+    },
+    "mercado_imobiliario": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 17
+    },
+    "previdencia": {
+      "ok": 4,
+      "falhas": [],
+      "segundos": 0
+    },
+    "reclamacoes_consig": {
+      "ok": 10,
+      "falhas": [
+        {
+          "key": "reclamacoes_consig:2026-09",
+          "erro": "Falha ao coletar https://www.consumidor.gov.br/pages/publicacao/externo/20261000000011035/download: HTTP Error 503: Service Unavailable"
+        }
+      ],
+      "segundos": 605
+    },
+    "operacional": {
+      "ok": 2,
+      "falhas": [],
+      "segundos": 5
+    },
+    "releases": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 0
+    },
+    "releases_ext": {
+      "ok": 2,
+      "falhas": [],
+      "segundos": 0
+    },
+    "epae": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 0
+    },
+    "dependencias": {
+      "ok": 3,
+      "falhas": [],
+      "segundos": 0
+    },
+    "pncp_folha": {
+      "ok": 2,
+      "falhas": [],
+      "segundos": 141
+    },
+    "ifdata_funding": {
+      "ok": 5,
+      "falhas": [],
+      "segundos": 1
+    },
+    "pilar3": {
+      "ok": 11,
+      "falhas": [
+        {
+          "key": "pilar3:17184037",
+          "erro": "HTTP Error 503: Service Unavailable"
+        },
+        {
+          "key": "pilar3:00416968",
+          "erro": "HTTP Error 404: Not Found"
+        },
+        {
+          "key": "pilar3:07237373",
+          "erro": "HTTP Error 400: Bad Request"
+        },
+        {
+          "key": "pilar3:00309024",
+          "erro": "HTTP Error 520: <none>"
+        },
+        {
+          "key": "pilar3:00655522",
+          "erro": "HTTP Error 404: Not Found"
+        },
+        {
+          "key": "pilar3:01181521",
+          "erro": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>"
+        },
+        {
+          "key": "pilar3:01522368",
+          "erro": "HTTP Error 404: Not Found"
+        },
+        {
+          "key": "pilar3:02038232",
+          "erro": "HTTP Error 520: <none>"
+        },
+        {
+          "key": "pilar3:02332886",
+          "erro": "HTTP Error 503: Service Unavailable"
+        },
+        {
+          "key": "pilar3:02992446",
+          "erro": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1010)>"
+        },
+        {
+          "key": "pilar3:04332281",
+          "erro": "HTTP Error 404: Not Found"
+        },
+        {
+          "key": "pilar3:04862600",
+          "erro": "HTTP Error 403: Forbidden"
+        },
+        {
+          "key": "pilar3:04913711",
+          "erro": "<urlopen error timed out>"
+        },
+        {
+          "key": "pilar3:05040481",
+          "erro": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>"
+        },
+        {
+          "key": "pilar3:07450604",
+          "erro": "<urlopen error [Errno -5] No address associated with hostname>"
+        },
+        {
+          "key": "pilar3:08357240",
+          "erro": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1010)>"
+        },
+        {
+          "key": "pilar3:10664513",
+          "erro": "HTTP Error 403: Forbidden"
+        },
+        {
+          "key": "pilar3:25683434",
+          "erro": "HTTP Error 520: <none>"
+        },
+        {
+          "key": "pilar3:29030467",
+          "erro": "trimestreReferencia fora do padrão: ''"
+        },
+        {
+          "key": "pilar3:33172537",
+          "erro": "Expecting value: line 1 column 103 (char 102)"
+        },
+        {
+          "key": "pilar3:33657248",
+          "erro": "HTTP Error 404: Not Found"
+        },
+        {
+          "key": "pilar3:43818780",
+          "erro": "trimestreReferencia fora do padrão: ''"
+        },
+        {
+          "key": "pilar3:54037916",
+          "erro": "HTTP Error 520: <none>"
+        },
+        {
+          "key": "pilar3:58017179",
+          "erro": "trimestreReferencia fora do padrão: ''"
+        },
+        {
+          "key": "pilar3:60770336",
+          "erro": "<urlopen error [Errno -2] Name or service not known>"
+        },
+        {
+          "key": "pilar3:62073200",
+          "erro": "HTTP Error 404: Not Found"
+        },
+        {
+          "key": "pilar3:62232889",
+          "erro": "HTTP Error 404: Not Found"
+        },
+        {
+          "key": "pilar3:62331228",
+          "erro": "HTTP Error 404: Not Found"
+        },
+        {
+          "key": "pilar3:63917579",
+          "erro": "HTTP Error 520: <none>"
+        },
+        {
+          "key": "pilar3:71328769",
+          "erro": "HTTP Error 520: <none>"
+        },
+        {
+          "key": "pilar3:80160260",
+          "erro": "HTTP Error 520: <none>"
+        }
+      ],
+      "segundos": 220
+    },
+    "regimes": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 3
+    },
+    "remuneracao": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 0
+    },
+    "correspondentes": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 0
+    },
+    "cvm_ofertas": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 0
+    },
+    "cvm_securit": {
+      "ok": 4,
+      "falhas": [],
+      "segundos": 1
+    },
+    "bndes": {
+      "ok": 18,
+      "falhas": [],
+      "segundos": 31
+    },
+    "focus": {
+      "ok": 6,
+      "falhas": [],
+      "segundos": 6
+    },
+    "sfn_cadastro": {
+      "ok": 4,
+      "falhas": [],
+      "segundos": 13
+    },
+    "bcb_pas": {
+      "ok": 3,
+      "falhas": [],
+      "segundos": 9
+    },
+    "cvm_pas": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 1
+    },
+    "ifdata_passivo": {
+      "ok": 10,
+      "falhas": [],
+      "segundos": 79
+    },
+    "cvm_cda": {
+      "ok": 4,
+      "falhas": [],
+      "segundos": 13
+    },
+    "bcb_consorcios": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 0
+    },
+    "susep_ses": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 1
+    },
+    "sadipem": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 11
+    },
+    "siconfi_rgf": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 110
+    },
+    "tesouro_garantias": {
+      "ok": 1,
+      "falhas": [],
+      "segundos": 4
+    },
+    "sicor": {
+      "ok": 40,
+      "falhas": [],
+      "segundos": 1002
+    },
+    "ipea_caged": {
+      "ok": 2,
+      "falhas": [],
+      "segundos": 0
+    },
+    "datajud": {
+      "ok": 8,
+      "falhas": [
+        {
+          "key": "recuperacao_judicial_tjpr",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "falencia_tjpr",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "recuperacao_judicial_tjsc",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "falencia_tjsc",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "recuperacao_judicial_tjba",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "falencia_tjba",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "recuperacao_judicial_tjgo",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "falencia_tjgo",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "funil_tjsp",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "funil_tjrj",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "funil_tjmg",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "funil_tjrs",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "funil_tjpr",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "funil_tjsc",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "funil_tjba",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        },
+        {
+          "key": "funil_tjgo",
+          "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+        }
+      ],
+      "segundos": 998
+    },
+    "datajud_cobranca": {
+      "ok": 9,
+      "falhas": [],
+      "segundos": 453
+    },
+    "judicial": {
+      "ok": 2,
+      "falhas": [
+        {
+          "key": "tst_ranking",
+          "erro": "bloqueio WAF do TST (HTTP 202, desafio JavaScript da AWS): a página só abre em navegador"
+        }
+      ],
+      "segundos": 603
+    },
+    "cvm_dfp": {
+      "ok": 3,
+      "falhas": [],
+      "segundos": 6
+    }
+  },
+  "fontes_reais": [
+    "B3",
+    "BCB/Correspondentes",
+    "BCB/DASFN Pilar 3",
+    "BCB/EPAE",
+    "BCB/ESTBAN",
+    "BCB/Focus",
+    "BCB/IF.data",
+    "BCB/Mercado Imobiliário",
+    "BCB/PAS (Gepad)",
+    "BCB/Pix",
+    "BCB/Reclamações",
+    "BCB/SCR.data",
+    "BCB/Unicad",
+    "BCB/Unicad (instituições em funcionamento)",
+    "BCB/regimes",
+    "BCB/txjuros",
+    "BNDES/Dados abertos",
+    "CNJ/DJEN",
+    "CNJ/DataJud",
+    "CVM/DFP e ITR",
+    "CVM/FRE",
+    "CVM/FRE e FCA",
+    "CVM/IPE",
+    "CVM/Ofertas públicas",
+    "CVM/Processos sancionadores",
+    "CVM/Securitizadoras (CRI e CRA)",
+    "IBGE",
+    "IBGE/Censo 2022",
+    "Ipeadata",
+    "MPS/INSS",
+    "Open Finance Brasil",
+    "PGFN",
+    "PNCP",
+    "RI das companhias",
+    "SUSEP/SES",
+    "TST",
+    "Tesouro/Garantias da União",
+    "Tesouro/Sadipem",
+    "Tesouro/Siconfi (RGF)",
+    "bcb_consorcios",
+    "consumidor.gov.br",
+    "cvm_cda",
+    "datajud_cobranca",
+    "ifdata_passivo",
+    "ipea_caged",
+    "sicor"
+  ],
+  "fontes_demo": [],
+  "builders_falhos": [],
+  "restaurados": {
+    "desenrola.json": {
+      "motivo": "stub de erro",
+      "gerado_em_publicado": "2026-09-24T15:25:02+00:00",
+      "dias": 23
+    },
+    "judicial.json": {
+      "motivo": "stub de erro",
+      "gerado_em_publicado": "2026-09-24T15:24:50+00:00",
+      "dias": 23
+    }
+  },
+  "grupos": {
+    "alerts": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "alerts.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "ampliado": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "ampliado.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "antecedentes": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "antecedentes.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "bets": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "bets.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "bndes": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "bndes.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "central-alertas": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "alertas_central.json",
+        "alerts.xml"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "cobranca": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "cobranca.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "comparador": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "compare.json",
+        "cmp/*.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "conduta": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "conduta.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "consignado": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "consignado.json",
+        "consignado_mun.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "consorcios": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "consorcios.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "custos-ti": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "custos_ti.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "desenrola": {
+      "gerado_em": "2026-10-18T15:09:35+00:00",
+      "arquivos": [
+        "desenrola.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-06",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "emprego-setores-ufs": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "emprego.json",
+        "sectors.json",
+        "ufs.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "epae": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "epae.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "exposures": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "exposures.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "fase2-observacoes": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "fase2_observacoes.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "fidc": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "fidc.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "folha": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "folha_bancos.json",
+        "folha_balanco.json",
+        "folha_leiloes.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "fraudes": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "fraudes.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "funding": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "funding.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "guidance": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "guidance.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "ibcc": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "ibcc.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "instituicoes": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "institutions.json",
+        "inst_pages.json",
+        "inst_index.json",
+        "inst/*.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "judicial": {
+      "gerado_em": "2026-10-18T15:09:35+00:00",
+      "arquivos": [
+        "judicial.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-06",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "juros": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "juros.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "leading": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "leading.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "lineage": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "lineage.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "market": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "market.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "meta": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "meta.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "method": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "method.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "moradia": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "moradia.json",
+        "moradia_mun.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "npl": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "npl.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "openfinance": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "openfinance.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "operacional": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "operacional.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "overview": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "overview.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "panorama": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "panorama.json",
+        "explorer.json",
+        "pano/*.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "penetracao": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "penetracao.json",
+        "penetracao_mun.json",
+        "penetracao_malha.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "pgfn": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "pgfn.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "pilar3": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "pilar3.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "pix": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "pix.json",
+        "pix_mun.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "prazo": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "prazo.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "presenca-mun": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "presenca_mun.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "prestamista": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "prestamista.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "produtos": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "products.json",
+        "prod/*.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "pulse": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "pulse.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "quality": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "quality.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "recordes": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "recordes.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "regimes": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "regimes.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "regimes-series": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "regimes_series.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "regulacao": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "regulacao.json",
+        "timeline_regulatoria.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "report": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "report.html"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "rj": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "rj.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "rural": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "rural.json",
+        "rural_mun.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "scenario": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "scenario.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "screener": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "screener.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "sfn": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "sfn.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "subnacional": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "subnacional.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "trends": {
+      "gerado_em": "2026-10-21T16:18:46+00:00",
+      "arquivos": [
+        "trends.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-09",
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    }
+  },
+  "snapshots": {
+    "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75": {
+      "inad_conceitos": {
+        "sgs": {
+          "v": 5.04,
+          "ref": "2026-08",
+          "def": "parcelas em atraso superior a 90 dias ÷ carteira do crédito referencial (BCB/SGS 21082)."
+        },
+        "scr": {
+          "v": 5.01,
+          "ref": "2026-08",
+          "def": "inadimplência ARRASTADA: operações com qualquer parcela vencida >90d contadas por inteiro ÷ carteira ativa (SCR.data)."
+        },
+        "atraso15": {
+          "v": null,
+          "ref": "2026-06",
+          "def": "atraso ≥15 dias por operação (coluna 'Vencido a Partir de 15 Dias', IF.data) — varia por produto e instituição; não existe como taxa única nacional."
+        }
+      },
+      "carteira_conceitos": {
+        "sgs": {
+          "v": 7397.7,
+          "ref": "2026-08",
+          "nome": "Saldo das operações de crédito (SGS 20539)",
+          "def": "carteira do SFN no conceito das estatísticas monetárias do BCB: operações de crédito das instituições financeiras, sem TVM nem crédito externo."
+        },
+        "scr": {
+          "v": 7720.1,
+          "ref": "2026-08",
+          "nome": "Carteira ativa (SCR.data)",
+          "def": "soma da carteira ativa por UF do cliente nos agregados públicos do SCR, que inclui operações abaixo do piso e classificações que o SGS agrega de outro modo; fica alguns por cento acima do SGS."
+        },
+        "ampliado": {
+          "v": 7021.9,
+          "ref": "2026-08",
+          "nome": "Empréstimos e financiamentos do SFN a empresas e famílias (crédito ampliado)",
+          "def": "parcela bancária do crédito ampliado ao setor não financeiro (BCB), conceito do balanço de pagamentos e da dívida; exclui o que o SGS conta como crédito a governo."
+        },
+        "estban": {
+          "v": 12739.9,
+          "ref": "2026-06",
+          "nome": "Operações de crédito por agência (ESTBAN)",
+          "def": "saldo contábil por agência, atribuído ao município da agência e não ao do cliente: as sedes em Brasília e São Paulo concentram carteiras nacionais, por isso o total supera em muito as demais réguas e a página municipal usa o ESTBAN só para penetração relativa."
+        }
+      },
+      "if_contagens": {
+        "ifdata_resumo": {
+          "n": 1406,
+          "ref": "202606",
+          "def": "instituições e conglomerados com balanço (Ativo Total) entregue no Resumo do IF.data na data-base; é o universo do ranking, do screener e das estatísticas de pares das fichas."
+        },
+        "ifdata_lista": {
+          "n": 1458,
+          "ref": "202606",
+          "sem_balanco": 52,
+          "def": "códigos na relação do Resumo do IF.data na data-base, com ou sem balanço entregue (saldo nulo na fonte = atraso, RAET, retardatário); é a régua de entradas e saídas do painel Quem entra e quem sai."
+        },
+        "ifdata_qualquer_relatorio": {
+          "n": 2370,
+          "ref": "202606",
+          "def": "entidades com pelo menos uma métrica em qualquer relatório do IF.data na data-base (Resumo, Carteiras, Capital, DRE); universo do Comparar."
+        },
+        "cadastro_sedes": {
+          "n": 1740,
+          "ref": "2026-10-18",
+          "def": "sedes autorizadas e em funcionamento no cadastro do BCB (Unicad) na data da coleta; inclui cooperativas, IPs e SCDs que não reportam ao IF.data."
+        }
+      }
+    }
   }
- },
- "carteira_conceitos": {
-  "sgs": {
-   "v": 7397.7,
-   "ref": "2026-08",
-   "nome": "Saldo das operações de crédito (SGS 20539)",
-   "def": "carteira do SFN no conceito das estatísticas monetárias do BCB: operações de crédito das instituições financeiras, sem TVM nem crédito externo."
-  },
-  "scr": {
-   "v": 7720.1,
-   "ref": "2026-08",
-   "nome": "Carteira ativa (SCR.data)",
-   "def": "soma da carteira ativa por UF do cliente nos agregados públicos do SCR, que inclui operações abaixo do piso e classificações que o SGS agrega de outro modo; fica alguns por cento acima do SGS."
-  },
-  "ampliado": {
-   "v": 7021.9,
-   "ref": "2026-08",
-   "nome": "Empréstimos e financiamentos do SFN a empresas e famílias (crédito ampliado)",
-   "def": "parcela bancária do crédito ampliado ao setor não financeiro (BCB), conceito do balanço de pagamentos e da dívida; exclui o que o SGS conta como crédito a governo."
-  },
-  "estban": {
-   "v": 12739.9,
-   "ref": "2026-06",
-   "nome": "Operações de crédito por agência (ESTBAN)",
-   "def": "saldo contábil por agência, atribuído ao município da agência e não ao do cliente: as sedes em Brasília e São Paulo concentram carteiras nacionais, por isso o total supera em muito as demais réguas e a página municipal usa o ESTBAN só para penetração relativa."
-  }
- },
- "if_contagens": {
-  "ifdata_resumo": {
-   "n": 1406,
-   "ref": "202606",
-   "def": "instituições e conglomerados com balanço (Ativo Total) entregue no Resumo do IF.data na data-base; é o universo do ranking, do screener e das estatísticas de pares das fichas."
-  },
-  "ifdata_lista": {
-   "n": 1458,
-   "ref": "202606",
-   "sem_balanco": 52,
-   "def": "códigos na relação do Resumo do IF.data na data-base, com ou sem balanço entregue (saldo nulo na fonte = atraso, RAET, retardatário); é a régua de entradas e saídas do painel Quem entra e quem sai."
-  },
-  "ifdata_qualquer_relatorio": {
-   "n": 2370,
-   "ref": "202606",
-   "def": "entidades com pelo menos uma métrica em qualquer relatório do IF.data na data-base (Resumo, Carteiras, Capital, DRE); universo do Comparar."
-  },
-  "cadastro_sedes": {
-   "n": 1740,
-   "ref": "2026-10-18",
-   "def": "sedes autorizadas e em funcionamento no cadastro do BCB (Unicad) na data da coleta; inclui cooperativas, IPs e SCDs que não reportam ao IF.data."
-  }
- },
- "fontes_status": {
-  "bcb_sgs": {
-   "ok": 0,
-   "falhas": [
-    {
-     "key": "saldo_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "saldo_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "saldo_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "concessoes_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "concessoes_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "concessoes_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "taxa_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "taxa_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "taxa_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "spread_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "spread_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "spread_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "inad_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "inad_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "inad_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "credito_pib",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "endividamento",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "comprometimento",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "selic_meta",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "ipca",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "ibc_br",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "ivgr",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_saldo",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_conc",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_taxa",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_prazo_conc",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_prazo_cart",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_atraso",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_inad",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_inss_icc",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_priv_saldo",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_priv_inad",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_pub_saldo",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_pub_inad",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_total_saldo",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_total_inad",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "consig_total_taxa",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_gov",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pib",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef_sfn",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef_osf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef_fg",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef_tit",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef_sec",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef_ext",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_ef_pib",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj_sfn",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj_osf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj_fg",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj_tit",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj_sec",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj_ext",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj_pib",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pf_sfn",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pf_osf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pf_fg",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pf_sec",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pf_ext",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pf_pib",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_saldo_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_saldo_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_saldo_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_saldo_pj_bndes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_saldo_pf_bndes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_conc_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_conc_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_conc_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_conc_pj_bndes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_taxa_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_taxa_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_taxa_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_taxa_pj_bndes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_inad_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_inad_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_inad_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_inad_pj_bndes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_prazo_pj",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_prazo_pj_bndes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "desemprego",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "cambio_ptax",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_total",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_A",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_A",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_B",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_B",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_C",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_C",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_SIUP",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_SIUP",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_D",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_D",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_E",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_E",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_F",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_F",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_G",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_G",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_SERV",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_SERV",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_H",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_H",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_I",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_I",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_J",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_J",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_K",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_K",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_L",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_L",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_M",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_M",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_N",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_N",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_O",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_O",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_P",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_P",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_Q",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_Q",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_S",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_S",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_vista",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_poupanca",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_poupanca_sbpe",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_prazo",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_lf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_letras_credito",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_outros_titulos",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_titulos_privados",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_m2",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_fundos_monetarios",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_compromissadas",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_m3",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_titulos_federais",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_m4",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_nao_residentes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_papel_moeda",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    }
-   ],
-   "segundos": 2685
-  },
-  "ibge": {
-   "ok": 4,
-   "falhas": [],
-   "segundos": 4
-  },
-  "ipeadata": {
-   "ok": 2,
-   "falhas": [],
-   "segundos": 48
-  },
-  "ifdata": {
-   "ok": 14,
-   "falhas": [],
-   "segundos": 224
-  },
-  "ifdata_ui": {
-   "ok": 5,
-   "falhas": [],
-   "segundos": 5
-  },
-  "ifdata_carteiras": {
-   "ok": 5,
-   "falhas": [],
-   "segundos": 50
-  },
-  "djen": {
-   "ok": 0,
-   "falhas": [
-    {
-     "key": "djen_TJSP",
-     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
-    },
-    {
-     "key": "djen_TJRJ",
-     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
-    },
-    {
-     "key": "djen_TJMG",
-     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
-    },
-    {
-     "key": "djen_TJRS",
-     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
-    },
-    {
-     "key": "djen_TJPR",
-     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
-    },
-    {
-     "key": "djen_TJSC",
-     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
-    },
-    {
-     "key": "djen_TJBA",
-     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
-    },
-    {
-     "key": "djen_TJGO",
-     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
-    }
-   ],
-   "segundos": 97
-  },
-  "djen_credores": {
-   "ok": 1,
-   "falhas": [
-    {
-     "key": "credores_TJSP",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
-    },
-    {
-     "key": "credores_TJRJ",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
-    },
-    {
-     "key": "credores_TJMG",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
-    },
-    {
-     "key": "credores_TJRS",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
-    },
-    {
-     "key": "credores_TJPR",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
-    },
-    {
-     "key": "credores_TJSC",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
-    },
-    {
-     "key": "credores_TJBA",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
-    },
-    {
-     "key": "credores_TJGO",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-08-19&dataDisponibilizacaoFim=2026-10-18: HTTP Error 403: Forbidden"
-    }
-   ],
-   "segundos": 97
-  },
-  "openfinance": {
-   "ok": 18,
-   "falhas": [],
-   "segundos": 31
-  },
-  "reclamacoes": {
-   "ok": 4,
-   "falhas": [],
-   "segundos": 7
-  },
-  "txjuros": {
-   "ok": 20,
-   "falhas": [],
-   "segundos": 76
-  },
-  "b3_market": {
-   "ok": 22,
-   "falhas": [],
-   "segundos": 154
-  },
-  "fidc": {
-   "ok": 0,
-   "falhas": [],
-   "segundos": 0
-  },
-  "trends_manual": {
-   "ok": 0,
-   "falhas": [
-    {
-     "key": "trends_manual",
-     "erro": "arquivo manual ausente (data/manual/Google_Trends_Temperatura_Credito.xlsx) — fonte segue indisponível"
-    }
-   ],
-   "segundos": 0
-  },
-  "scr_data": {
-   "ok": 2,
-   "falhas": [],
-   "segundos": 41
-  },
-  "geo_ibge": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 0
-  },
-  "pix_bcb": {
-   "ok": 11,
-   "falhas": [],
-   "segundos": 81
-  },
-  "pgfn": {
-   "ok": 3,
-   "falhas": [],
-   "segundos": 1
-  },
-  "desenrola": {
-   "ok": 0,
-   "falhas": [
-    {
-     "key": "desenrola",
-     "erro": "resposta HTML no lugar do CSV (bloqueio ou manutenção do portal): b'<?xml version=\"1.0\" encoding=\"pt-br\"?>\\r\\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\\r\\n  \"http://www.w3.org/T'"
-    }
-   ],
-   "segundos": 1
-  },
-  "censo2022": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 0
-  },
-  "estban": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 4
-  },
-  "mercado_imobiliario": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 17
-  },
-  "previdencia": {
-   "ok": 4,
-   "falhas": [],
-   "segundos": 0
-  },
-  "reclamacoes_consig": {
-   "ok": 10,
-   "falhas": [
-    {
-     "key": "reclamacoes_consig:2026-09",
-     "erro": "Falha ao coletar https://www.consumidor.gov.br/pages/publicacao/externo/20261000000011035/download: HTTP Error 503: Service Unavailable"
-    }
-   ],
-   "segundos": 605
-  },
-  "operacional": {
-   "ok": 2,
-   "falhas": [],
-   "segundos": 5
-  },
-  "releases": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 0
-  },
-  "releases_ext": {
-   "ok": 2,
-   "falhas": [],
-   "segundos": 0
-  },
-  "epae": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 0
-  },
-  "dependencias": {
-   "ok": 3,
-   "falhas": [],
-   "segundos": 0
-  },
-  "pncp_folha": {
-   "ok": 2,
-   "falhas": [],
-   "segundos": 141
-  },
-  "ifdata_funding": {
-   "ok": 5,
-   "falhas": [],
-   "segundos": 1
-  },
-  "pilar3": {
-   "ok": 11,
-   "falhas": [
-    {
-     "key": "pilar3:17184037",
-     "erro": "HTTP Error 503: Service Unavailable"
-    },
-    {
-     "key": "pilar3:00416968",
-     "erro": "HTTP Error 404: Not Found"
-    },
-    {
-     "key": "pilar3:07237373",
-     "erro": "HTTP Error 400: Bad Request"
-    },
-    {
-     "key": "pilar3:00309024",
-     "erro": "HTTP Error 520: <none>"
-    },
-    {
-     "key": "pilar3:00655522",
-     "erro": "HTTP Error 404: Not Found"
-    },
-    {
-     "key": "pilar3:01181521",
-     "erro": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>"
-    },
-    {
-     "key": "pilar3:01522368",
-     "erro": "HTTP Error 404: Not Found"
-    },
-    {
-     "key": "pilar3:02038232",
-     "erro": "HTTP Error 520: <none>"
-    },
-    {
-     "key": "pilar3:02332886",
-     "erro": "HTTP Error 503: Service Unavailable"
-    },
-    {
-     "key": "pilar3:02992446",
-     "erro": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1010)>"
-    },
-    {
-     "key": "pilar3:04332281",
-     "erro": "HTTP Error 404: Not Found"
-    },
-    {
-     "key": "pilar3:04862600",
-     "erro": "HTTP Error 403: Forbidden"
-    },
-    {
-     "key": "pilar3:04913711",
-     "erro": "<urlopen error timed out>"
-    },
-    {
-     "key": "pilar3:05040481",
-     "erro": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>"
-    },
-    {
-     "key": "pilar3:07450604",
-     "erro": "<urlopen error [Errno -5] No address associated with hostname>"
-    },
-    {
-     "key": "pilar3:08357240",
-     "erro": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1010)>"
-    },
-    {
-     "key": "pilar3:10664513",
-     "erro": "HTTP Error 403: Forbidden"
-    },
-    {
-     "key": "pilar3:25683434",
-     "erro": "HTTP Error 520: <none>"
-    },
-    {
-     "key": "pilar3:29030467",
-     "erro": "trimestreReferencia fora do padrão: ''"
-    },
-    {
-     "key": "pilar3:33172537",
-     "erro": "Expecting value: line 1 column 103 (char 102)"
-    },
-    {
-     "key": "pilar3:33657248",
-     "erro": "HTTP Error 404: Not Found"
-    },
-    {
-     "key": "pilar3:43818780",
-     "erro": "trimestreReferencia fora do padrão: ''"
-    },
-    {
-     "key": "pilar3:54037916",
-     "erro": "HTTP Error 520: <none>"
-    },
-    {
-     "key": "pilar3:58017179",
-     "erro": "trimestreReferencia fora do padrão: ''"
-    },
-    {
-     "key": "pilar3:60770336",
-     "erro": "<urlopen error [Errno -2] Name or service not known>"
-    },
-    {
-     "key": "pilar3:62073200",
-     "erro": "HTTP Error 404: Not Found"
-    },
-    {
-     "key": "pilar3:62232889",
-     "erro": "HTTP Error 404: Not Found"
-    },
-    {
-     "key": "pilar3:62331228",
-     "erro": "HTTP Error 404: Not Found"
-    },
-    {
-     "key": "pilar3:63917579",
-     "erro": "HTTP Error 520: <none>"
-    },
-    {
-     "key": "pilar3:71328769",
-     "erro": "HTTP Error 520: <none>"
-    },
-    {
-     "key": "pilar3:80160260",
-     "erro": "HTTP Error 520: <none>"
-    }
-   ],
-   "segundos": 220
-  },
-  "regimes": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 3
-  },
-  "remuneracao": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 0
-  },
-  "correspondentes": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 0
-  },
-  "cvm_ofertas": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 0
-  },
-  "cvm_securit": {
-   "ok": 4,
-   "falhas": [],
-   "segundos": 1
-  },
-  "bndes": {
-   "ok": 18,
-   "falhas": [],
-   "segundos": 31
-  },
-  "focus": {
-   "ok": 6,
-   "falhas": [],
-   "segundos": 6
-  },
-  "sfn_cadastro": {
-   "ok": 4,
-   "falhas": [],
-   "segundos": 13
-  },
-  "bcb_pas": {
-   "ok": 3,
-   "falhas": [],
-   "segundos": 9
-  },
-  "cvm_pas": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 1
-  },
-  "ifdata_passivo": {
-   "ok": 10,
-   "falhas": [],
-   "segundos": 79
-  },
-  "cvm_cda": {
-   "ok": 4,
-   "falhas": [],
-   "segundos": 13
-  },
-  "bcb_consorcios": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 0
-  },
-  "susep_ses": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 1
-  },
-  "sadipem": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 11
-  },
-  "siconfi_rgf": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 110
-  },
-  "tesouro_garantias": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 4
-  },
-  "sicor": {
-   "ok": 40,
-   "falhas": [],
-   "segundos": 1002
-  },
-  "ipea_caged": {
-   "ok": 2,
-   "falhas": [],
-   "segundos": 0
-  },
-  "datajud": {
-   "ok": 8,
-   "falhas": [
-    {
-     "key": "recuperacao_judicial_tjpr",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "falencia_tjpr",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "recuperacao_judicial_tjsc",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "falencia_tjsc",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "recuperacao_judicial_tjba",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "falencia_tjba",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "recuperacao_judicial_tjgo",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "falencia_tjgo",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjsp",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjrj",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjmg",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjrs",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjpr",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjsc",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjba",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjgo",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    }
-   ],
-   "segundos": 998
-  },
-  "datajud_cobranca": {
-   "ok": 9,
-   "falhas": [],
-   "segundos": 453
-  },
-  "judicial": {
-   "ok": 2,
-   "falhas": [
-    {
-     "key": "tst_ranking",
-     "erro": "bloqueio WAF do TST (HTTP 202, desafio JavaScript da AWS): a página só abre em navegador"
-    }
-   ],
-   "segundos": 603
-  },
-  "cvm_dfp": {
-   "ok": 3,
-   "falhas": [],
-   "segundos": 6
-  }
- },
- "fontes_reais": [
-  "B3",
-  "BCB/Correspondentes",
-  "BCB/DASFN Pilar 3",
-  "BCB/EPAE",
-  "BCB/ESTBAN",
-  "BCB/Focus",
-  "BCB/IF.data",
-  "BCB/Mercado Imobiliário",
-  "BCB/PAS (Gepad)",
-  "BCB/Pix",
-  "BCB/Reclamações",
-  "BCB/SCR.data",
-  "BCB/Unicad",
-  "BCB/Unicad (instituições em funcionamento)",
-  "BCB/regimes",
-  "BCB/txjuros",
-  "BNDES/Dados abertos",
-  "CNJ/DJEN",
-  "CNJ/DataJud",
-  "CVM/DFP e ITR",
-  "CVM/FRE",
-  "CVM/FRE e FCA",
-  "CVM/IPE",
-  "CVM/Ofertas públicas",
-  "CVM/Processos sancionadores",
-  "CVM/Securitizadoras (CRI e CRA)",
-  "IBGE",
-  "IBGE/Censo 2022",
-  "Ipeadata",
-  "MPS/INSS",
-  "Open Finance Brasil",
-  "PGFN",
-  "PNCP",
-  "RI das companhias",
-  "SUSEP/SES",
-  "TST",
-  "Tesouro/Garantias da União",
-  "Tesouro/Sadipem",
-  "Tesouro/Siconfi (RGF)",
-  "bcb_consorcios",
-  "consumidor.gov.br",
-  "cvm_cda",
-  "datajud_cobranca",
-  "ifdata_passivo",
-  "ipea_caged",
-  "sicor"
- ],
- "fontes_demo": [],
- "builders_falhos": [],
- "restaurados": {
-  "desenrola.json": {
-   "motivo": "stub de erro",
-   "gerado_em_publicado": "2026-09-24T15:25:02+00:00",
-   "dias": 23
-  },
-  "judicial.json": {
-   "motivo": "stub de erro",
-   "gerado_em_publicado": "2026-09-24T15:24:50+00:00",
-   "dias": 23
-  }
- }
 }

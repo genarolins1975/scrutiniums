@@ -8,6 +8,8 @@ import {indice,indiceSnapshot,boxExtremes,STATUS_LABELS,RESSALVA_FAIXA} from '@/
 import {IndiceResultados} from '@/components/eficiencia/IndiceResultados';
 import {AtlasCidadao} from '@/components/eficiencia/AtlasCidadao';
 import {montarRetrato} from '@/lib/eficiencia/entrada';
+import PaginaIndiceResultados from '@/app/eficiencia-estatal/indice-de-resultados/page';
+import {indiceNumber as fmtNota} from '@/lib/eficiencia/indice-v4-nucleo';
 
 type Par={a:string;b:string;difference:number;status:keyof typeof STATUS_LABELS;families_reversing:string[];families_tying:string[];dominance:boolean;ranges:Record<string,[number,number]>};
 const completo=JSON.parse(readFileSync(join(process.cwd(),'docs/obee/resultados/v4/indice-resultados-v4.json'),'utf8')) as {pairs:Par[];rows:{id:string;score:number}[];edition:string};
@@ -108,22 +110,24 @@ describe('Índice de resultados v4: apresentação',()=>{
   expect(html).not.toMatch(/Nota do índice/);
  });
 
- it('a abertura mostra as notas das duas capitais e o perfil nos sete resultados',()=>{
-  const html=renderToStaticMarkup(createElement(AtlasCidadao,{retrato:montarRetrato(),indice:indiceSnapshot}));
+ it('a abertura mostra só as posições e leva ao painel do índice com o par escolhido (decisão de 19/10/2026)',()=>{
+  const html=renderToStaticMarkup(createElement(AtlasCidadao,{retrato:montarRetrato()}));
   const abertura=html.slice(0,html.indexOf('id="perguntas"'));
   const fmt=(v:number)=>v.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1});
-  for(const id of ['2611606','4106902'])expect(abertura).toContain(fmt(indiceSnapshot.rows.find(r=>r.id===id)!.score));
-  expect(abertura).toContain(STATUS_LABELS[indice.stability('2611606','4106902')!.status]);
+  for(const id of ['2611606','4106902'])expect(abertura).not.toContain(fmt(indiceSnapshot.rows.find(r=>r.id===id)!.score));
+  expect(abertura).not.toMatch(/Índice de resultados ·/);
   expect(abertura).toContain('Moradia adensada');expect(abertura).toContain('Mais de 1 h até o trabalho');
-  expect(abertura).toMatch(/Precisão municipal não quantificada/);expect(abertura).toMatch(/Saúde ainda fora da nota/);
-  expect(abertura).toContain('href="#atlas-indice"');
+  expect(abertura).toMatch(/Precisão municipal não quantificada/);
+  expect(abertura).toContain('href="/eficiencia-estatal/indice-de-resultados?territorio=2611606&amp;comparador=4106902"');
+  expect(html).not.toContain('id="atlas-indice"');expect(html).not.toContain('Nota do índice');
  });
 
- it('a entrada recebe o índice por prop e não o exibe sem ele',()=>{
-  const retrato=montarRetrato();
-  expect(renderToStaticMarkup(createElement(AtlasCidadao,{retrato,indice:indiceSnapshot}))).toContain('id="atlas-indice"');
-  const sem=renderToStaticMarkup(createElement(AtlasCidadao,{retrato}));
-  expect(sem).not.toContain('id="atlas-indice"');expect(sem).not.toContain('Nota do índice');
+ it('o painel do índice mostra nota, distribuição e composição dos escores',()=>{
+  const html=renderToStaticMarkup(createElement(PaginaIndiceResultados));
+  expect(html).toContain('id="atlas-indice"');expect(html).toContain('Nota do índice');
+  expect(html).toContain('id="atlas-score-method"');
+  expect(html).toContain(fmtNota(indiceSnapshot.rows.find(r=>r.id==='2611606')!.score));
+  expect(html).toMatch(/não mede eficiência/);
  });
 });
 

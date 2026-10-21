@@ -129,7 +129,12 @@ export function destinos(corpo: No): string[] {
 }
 
 export function destinosEsperadosEmIngles(corpoPt: No): string[] {
-  return destinos(corpoPt).map((href) => hrefNoIdioma(href, "en"));
+  return destinos(corpoPt).map((href) => {
+    // convite ao login das consultas abertas: a irmã inglesa leva ao login inglês e volta à própria página inglesa
+    const login = href.match(/^\/entrar\?de=([^&#]+)$/);
+    if (login) return `/en/entrar?de=${encodeURIComponent(hrefNoIdioma(decodeURIComponent(login[1]), "en"))}`;
+    return hrefNoIdioma(href, "en");
+  });
 }
 
 export function estruturaDeTitulos(corpo: No): string[] {

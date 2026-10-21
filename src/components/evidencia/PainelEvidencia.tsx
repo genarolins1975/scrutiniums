@@ -1,3 +1,4 @@
+import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { comNomes } from "@/components/i18n/comNomes";
 import { fonteLegivel } from "@/lib/energia/bastidor";
 import type { ReactNode } from "react";
@@ -139,6 +140,7 @@ export function PainelEvidencia({
           {r.proveniencia.download && (
             <a href={r.proveniencia.download} download className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao">
               {tx("Baixar CSV da série completa", "Download CSV of the full series")}
+              <SeloComConta href={r.proveniencia.download} />
             </a>
           )}
           <SobreEsteDado p={r.proveniencia} />

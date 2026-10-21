@@ -50,7 +50,7 @@ function usuario(onboardingStatus: OnboardingStatus): User {
   return {
     id: "usuario-sintetico-auth-i18n", email: "auth@example.invalid", onboardingStatus,
     emailVerifiedAt: null, phoneE164: null, phoneVerifiedAt: null,
-    company: null, jobTitle: null, cpf: null, orgType: null, orgArea: null, orgRole: null,
+    company: null, jobTitle: null, cpf: null, perfilUso: null, orgType: null, orgArea: null, orgRole: null,
     uf: null, passwordHash: null, termsAcceptedAt: null, privacyVersion: null, marketingOptIn: false,
     createdAt: new Date("2026-10-01T00:00:00Z"), updatedAt: new Date("2026-10-01T00:00:00Z"),
   };
@@ -66,16 +66,12 @@ function elementos(children: ReactNode): ReactElement<Record<string, unknown>>[]
   return encontrados;
 }
 
+// Cada página chama a mesma entrada com o idioma do endereço. Isto testa a
+// decisão do servidor, não uma sessão HTTP autenticada.
 async function entrar(idioma: "pt" | "en", searchParams?: { de?: string }) {
-  if (idioma === "pt") return EntrarPage({ searchParams });
-  const moldura = EntrarEnPage({ searchParams });
-  expect(moldura.type).toBe(PortuguesApenas);
-  const filha = moldura.props.children as ReactElement<{ searchParams?: { de?: string } }>;
-  expect(filha.type).toBe(EntrarPage);
-  expect(filha.props.searchParams).toBe(searchParams);
-  // Executa somente a filha conhecida, cuja identidade e props foram provadas.
-  // Isto testa a decisão do servidor, não uma sessão HTTP autenticada.
-  return EntrarPage(filha.props);
+  const arvore = await (idioma === "pt" ? EntrarPage({ searchParams }) : EntrarEnPage({ searchParams }));
+  expect(elementos(arvore).filter((e) => e.type === PortuguesApenas), "entrada traduzida, sem ilha portuguesa").toHaveLength(0);
+  return arvore;
 }
 
 async function cadastrar(idioma: "pt" | "en") {
@@ -97,7 +93,7 @@ describe.each(["pt", "en"] as const)("entrada %s: fluxo real da página", (idiom
     const arvore = elementos(await entrar(idioma, { de }));
     const formularios = arvore.filter((e) => e.type === EntrarSenhaForm);
     expect(formularios).toHaveLength(1);
-    expect(formularios[0].props).toEqual({ de: esperado });
+    expect(formularios[0].props).toEqual({ de: esperado, idioma });
     expect(dependencias.sessao).toHaveBeenCalledExactlyOnceWith();
     expect(dependencias.redirect).not.toHaveBeenCalled();
     expect(dependencias.emailPendente).not.toHaveBeenCalled();

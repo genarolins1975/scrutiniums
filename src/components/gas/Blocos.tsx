@@ -1,3 +1,5 @@
+import { prefetchDoLink } from "@/lib/rotasPublicas";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
 import Link from "next/link";
 import { GuiaLeituraGas } from "./GuiaLeituraGas";
 import type { ReactNode } from "react";
@@ -58,6 +60,7 @@ function listaOrgaos(orgaos: string[]): string {
 export function MedidaGas({ ind, casas = 1, rotulo, comparacao, variacao = false }: { ind: Indicador; casas?: number; rotulo?: string; comparacao?: ReactNode; variacao?: boolean }) {
   const { valor, unidade } = valorComUnidade(ind.valor, ind.unidade, casas, variacao);
   const fontes = fontesPorId(ind.fontes);
+  const hrefFonte = fontes.length === 1 ? `/gas-natural/dados#fonte-${fontes[0].id}` : "/gas-natural/dados#fontes";
   return (
     <div className="min-w-0 border-t-2 border-gas pt-3">
       <p className="text-sm leading-snug text-carvao-muted">{rotulo ?? ind.rotulo}</p>
@@ -72,8 +75,9 @@ export function MedidaGas({ ind, casas = 1, rotulo, comparacao, variacao = false
         <p className="mt-2 text-xs leading-relaxed text-carvao-muted">
           {/* uma chamada só: a lista completa, com data de captura, fica em "Como este número é obtido" e em Dados */}
           Fonte:{" "}
-          <Link href={fontes.length === 1 ? `/gas-natural/dados#fonte-${fontes[0].id}` : "/gas-natural/dados#fontes"} className="underline underline-offset-4">
+          <Link href={hrefFonte} prefetch={prefetchDoLink(hrefFonte)} className="underline underline-offset-4">
             {fontes.length === 1 ? `${fontes[0].orgao}, ${fontes[0].conjunto}` : `${listaOrgaos(fontes.map((f) => f.orgao))}, ${fontes.length} conjuntos`}
+            <SeloComConta href={hrefFonte} />
           </Link>
         </p>
       )}
@@ -90,7 +94,7 @@ export function MedidaGas({ ind, casas = 1, rotulo, comparacao, variacao = false
             {fontes.map((f, i) => (
               <span key={f.id}>
                 {i > 0 && "; "}
-                <a href={f.pagina} className="underline underline-offset-2" rel="noopener noreferrer">{f.orgao}, {f.conjunto}</a>
+                <a href={f.pagina} className="underline underline-offset-2" rel="noopener noreferrer">{f.orgao}, {f.conjunto}<SeloComConta href={f.pagina} /></a>
                 {f.capturado_em && `, capturado em ${carimbo(f.capturado_em)}`}
               </span>
             ))}
@@ -125,7 +129,7 @@ export function FonteFigura({ ids, extra }: { ids: string[]; extra?: ReactNode }
       {fontes.map((f, i) => (
         <span key={f.id}>
           {i > 0 && "; "}
-          <a href={f.pagina} className="underline underline-offset-2" rel="noopener noreferrer">{f.orgao}, {f.conjunto}</a>
+          <a href={f.pagina} className="underline underline-offset-2" rel="noopener noreferrer">{f.orgao}, {f.conjunto}<SeloComConta href={f.pagina} /></a>
           {f.capturado_em && ` (captura ${carimbo(f.capturado_em)})`}
         </span>
       ))}
@@ -181,6 +185,7 @@ export function ProximasPerguntas({ itens }: { itens: { href: string; pergunta: 
         <li key={i.href} className="border-t border-linha pt-3">
           <Link href={i.href} prefetch={false} className="font-serif text-lg leading-snug text-carvao underline decoration-linha underline-offset-4 hover:decoration-gas">
             {i.pergunta}
+            <SeloComConta href={i.href} />
           </Link>
           <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{i.motivo}</p>
         </li>
@@ -189,7 +194,7 @@ export function ProximasPerguntas({ itens }: { itens: { href: string; pergunta: 
   );
 }
 
-/** Download das séries da página (arquivos em /gas/series, com conta). */
+/** Download das séries da página (arquivos em /gas/series, com conta; na página aberta, com o selo). */
 export function DownloadsGas({ series }: { series: { id: string; descricao: string }[] }) {
   return (
     <ul className="space-y-1 text-sm">
@@ -197,6 +202,7 @@ export function DownloadsGas({ series }: { series: { id: string; descricao: stri
         <li key={s.id}>
           <a href={`/gas/series/${s.id}.csv`} download className="inline-flex min-h-[44px] items-center text-gas-dark underline underline-offset-4">
             {s.id}.csv
+            <SeloComConta href={`/gas/series/${s.id}.csv`} />
           </a>
           <span className="text-carvao-muted"> · {s.descricao}</span>
         </li>

@@ -10,11 +10,12 @@ import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvi
 import { Termo } from "@/components/evidencia/Termo";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, dataBR, num } from "@/lib/energia/formato";
+import { carimbo, dataBR, horaLocal, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { tx } from "@/lib/energia/idioma";
-import { NOME_PAIS, curtoFronteira, ehFronteira, nomePais, perguntaPainel, provenienciaLegivel, rotaPainel, situacaoAtualidade, textoConferenciaPdo } from "@/lib/energia/rede";
-import type { GoldRedeDetalhe, PaisRede } from "@/lib/energia/tipos-rede";
+import { FRONTEIRAS, NOME_PAIS, curtoFronteira, ehFronteira, nomeFronteira, nomePais, perguntaPainel, provenienciaLegivel, rotaPainel, situacaoAtualidade, textoConferenciaPdo } from "@/lib/energia/rede";
+import { ParaLer } from "@/components/energia/Didatica";
+import type { FronteiraRede, GoldRedeDetalhe, PaisRede } from "@/lib/energia/tipos-rede";
 
 export const dynamic = "force-static";
 /** Descrição com o início do programado lido da gold (nenhuma data escrita à mão). */
@@ -47,6 +48,9 @@ export default function RedeProgramadoPage() {
   if (!integra(g)) return <RedeIndisponivel motivo={(g as { motivo?: string } | null)?.motivo} />;
   const FONTE = fonteProgramado();
   const p = g.programado;
+  // glossário: a primeira fronteira (a da faixa de métricas) e o maior desvio com sentido invertido fora dos dias rotulados
+  const dist0 = p.distribuicao[FRONTEIRAS[0]] ?? null;
+  const inversao = p.maiores_desvios_fora_dos_dias_rotulados.find((x) => x.inversao && ehFronteira(x.par)) ?? null;
   const vp = p.versao_programa;
   const ev = g.evidencias;
   const atual = situacaoAtualidade(g.referencia.dia, g.gerado_em);
@@ -161,6 +165,65 @@ export default function RedeProgramadoPage() {
           )}
         </CabecalhoModulo>
         <RedeNavegacao atual="p031" />
+        <ParaLer
+          id="para-ler-programado"
+          itens={[
+            {
+              termo: tx("Programado", "Scheduled"),
+              definicao: tx(
+                "Quanto o ONS planejou, antes da operação, que passaria em cada fronteira em cada hora. É o plano.",
+                "How much ONS planned, before operation, would pass at each boundary in each hour. It is the plan.",
+              ),
+            },
+            {
+              termo: tx("Verificado", "Verified"),
+              definicao: tx(
+                "Quanto de fato passou, medido nas linhas da fronteira. É o que aconteceu.",
+                "How much actually passed, measured on the boundary lines. It is what happened.",
+              ),
+            },
+            {
+              termo: tx("Desvio e desvio absoluto", "Deviation and absolute deviation"),
+              definicao: tx(
+                "Desvio é verificado menos programado na mesma hora. O absoluto ignora o sinal: conta só o tamanho da diferença. Desvio não é falha: a operação se ajusta à carga, ao vento, ao sol e às máquinas disponíveis depois de fechado o plano.",
+                "Deviation is verified minus scheduled in the same hour. The absolute one ignores the sign: it counts only the size of the difference. A deviation is not a failure: operation adjusts to load, wind, sun and available machines after the plan is closed.",
+              ),
+              exemplo: dist0
+                ? tx(
+                    `${nomeFronteira(FRONTEIRAS[0], "pt")}: desvio absoluto médio de ${num(dist0.desvio_abs_medio_mwmed, 1)} MWmed, ${num((100 * dist0.desvio_abs_medio_mwmed) / dist0.programado_abs_mediano_mwmed, 0)}% do programa mediano da fronteira (${num(dist0.programado_abs_mediano_mwmed, 1)} MWmed, em módulo).`,
+                    `${nomeFronteira(FRONTEIRAS[0], "en")}: average absolute deviation of ${num(dist0.desvio_abs_medio_mwmed, 1)} MWavg, ${num((100 * dist0.desvio_abs_medio_mwmed) / dist0.programado_abs_mediano_mwmed, 0)}% of the boundary's median schedule (${num(dist0.programado_abs_mediano_mwmed, 1)} MWavg, in absolute value).`,
+                  )
+                : undefined,
+            },
+            {
+              termo: tx("Mediana, percentil 90 e percentil 99", "Median, 90th and 99th percentile"),
+              definicao: tx(
+                "Ordene as horas do menor ao maior desvio. A mediana é o desvio do meio; o percentil 90 é o desvio que só 10% das horas superam; o 99, só 1%. Mostram o desvio comum e o raro.",
+                "Sort the hours from smallest to largest deviation. The median is the middle one; the 90th percentile is the deviation only 10% of hours exceed; the 99th, only 1%. They show the usual deviation and the rare one.",
+              ),
+            },
+            {
+              termo: tx("Limiar de desvio material", "Material deviation threshold"),
+              definicao: tx(
+                `${num(p.limiar_material_mwmed, 0)} MWmed numa hora: escolha do observatório para contar as horas com desvio acima do habitual, não um critério do ONS. As contagens com outros limiares estão em Analisar.`,
+                `${num(p.limiar_material_mwmed, 0)} MWavg in an hour: the observatory's choice to count hours with a deviation above the usual, not an ONS criterion. Counts with other thresholds are under Analyze.`,
+              ),
+            },
+            {
+              termo: tx("Sinal negativo e sentido oposto", "Negative sign and opposite direction"),
+              definicao: tx(
+                "Valor negativo é energia no sentido contrário ao nome da fronteira. Sentido oposto ao programado é quando o plano previa um sentido e a energia passou no outro.",
+                "A negative value is energy in the direction opposite to the boundary's name. Opposite to the schedule is when the plan expected one direction and energy passed in the other.",
+              ),
+              exemplo: inversao
+                ? tx(
+                    `Em ${horaLocal(inversao.hora)}, ${nomeFronteira(inversao.par as FronteiraRede, "pt")}: programado ${num(inversao.programado_mwmed, 1)} MWmed, verificado ${num(inversao.verificado_mwmed, 1)} MWmed.`,
+                    `At ${horaLocal(inversao.hora)}, ${nomeFronteira(inversao.par as FronteiraRede, "en")}: scheduled ${num(inversao.programado_mwmed, 1)} MWavg, verified ${num(inversao.verificado_mwmed, 1)} MWavg.`,
+                  )
+                : undefined,
+            },
+          ]}
+        />
         <ModoProfundidade>
           <Bloco id="programado">
             <PainelEvidencia

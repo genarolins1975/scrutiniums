@@ -1,12 +1,12 @@
 {
- "gerado_em": "2026-10-18T15:09:04+00:00",
+ "gerado_em": "2026-10-21T16:18:11+00:00",
  "diagnostico": {
   "ok": true,
   "tipo": "DADO CALCULADO",
   "frase": "As condições de crédito permanecem restritivas (IBCC 93,3, percentil histórico 7), em fase de recuperação, com deterioração predominante nos indicadores monitorados.",
   "ref": "2026-07-01",
   "confianca": "moderada",
-  "confianca_motivo": "qualidade média dos dados 74/100; score setorial com 1 de 4 componentes demonstrativo (estresse empresarial (RJ)), com peso zero; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
+  "confianca_motivo": "qualidade média dos dados 72/100; score setorial com 1 de 4 componentes demonstrativo (estresse empresarial (RJ)), com peso zero; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
   "evidencias": [
    {
     "texto": "componente mais negativo do IBCC: Qualidade da carteira (-3.35)",
@@ -372,24 +372,6 @@
    {
     "tipo": "regime",
     "titulo": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DO CENTRO UNIVERSITÁRIO NEWTON PAIVA LTDA. - CREDIPAIVA sob LIQUIDAÇÃO EXTRAJUDICIAL desde 16/10/2026",
-    "detalhe": "entrada recente na lista oficial de regimes do BCB (janela de 45 dias)",
-    "link": {
-     "view": "institutions",
-     "sec": "sec-regimes"
-    }
-   },
-   {
-    "tipo": "regime",
-    "titulo": "BANVOX DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA sob LIQUIDAÇÃO EXTRAJUDICIAL desde 03/09/2026",
-    "detalhe": "entrada recente na lista oficial de regimes do BCB (janela de 45 dias)",
-    "link": {
-     "view": "institutions",
-     "sec": "sec-regimes"
-    }
-   },
-   {
-    "tipo": "regime",
-    "titulo": "TRUSTEE DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA. sob LIQUIDAÇÃO EXTRAJUDICIAL desde 03/09/2026",
     "detalhe": "entrada recente na lista oficial de regimes do BCB (janela de 45 dias)",
     "link": {
      "view": "institutions",

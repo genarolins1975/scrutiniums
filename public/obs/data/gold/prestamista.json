@@ -9,10 +9,10 @@
   "licenca": "dados abertos da SUSEP",
   "nivel": "A — estatística oficial do supervisor de seguros, mensal"
  },
- "gerado_em": "2026-10-18T15:09:37+00:00",
+ "gerado_em": "2026-10-21T16:18:48+00:00",
  "coleta": {
-  "last_modified": "Fri, 16 Oct 2026 02:54:11 GMT",
-  "coletado_em": "2026-10-16T14:30:05+00:00",
+  "last_modified": "Mon, 19 Oct 2026 03:45:21 GMT",
+  "coletado_em": "2026-10-19T16:37:40+00:00",
   "requisicoes": 13,
   "mb_lidos": 41.9
  },
@@ -53,7 +53,7 @@
    "cogrupo": "sem_grupo",
    "nome": "Sem grupo econômico (empresas independentes)",
    "premio": 10390764700.7579,
-   "sinistro": 1961848266.6676087,
+   "sinistro": 1961837936.1776087,
    "comissao": 4371703854.432011,
    "n_empresas": 66,
    "share_pct": 33.88,
@@ -989,7 +989,7 @@
   {
    "mes": "2025-12",
    "premio": 2228636295.3599997,
-   "premio_ganho": 2411555089.5629997,
+   "premio_ganho": 2411688086.453,
    "sinistro_ocorrido": 440857210.52799994,
    "comissao": 981765166.1099998,
    "sinistralidade_pct": 18.28,
@@ -1003,9 +1003,9 @@
    "mes": "2026-01",
    "premio": 2495033125.680001,
    "premio_ganho": 2388239162.6679993,
-   "sinistro_ocorrido": 491385444.8729999,
+   "sinistro_ocorrido": 491375114.3829999,
    "comissao": 942683034.3700004,
-   "sinistralidade_pct": 20.58,
+   "sinistralidade_pct": 20.57,
    "comissao_pct": 37.78,
    "n_empresas": 63,
    "concessoes_pf": 364450000000.0,
@@ -1015,7 +1015,7 @@
   {
    "mes": "2026-02",
    "premio": 2539496342.0860004,
-   "premio_ganho": 2261847730.635,
+   "premio_ganho": 2261714733.7850003,
    "sinistro_ocorrido": 434942062.524,
    "comissao": 885752859.24,
    "sinistralidade_pct": 19.23,

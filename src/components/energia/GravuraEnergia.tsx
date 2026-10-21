@@ -8,5 +8,5 @@ export function GravuraEnergia({ etapa, className = "" }: {
 }) {
   const index = ETAPAS_ENERGIA.findIndex(item => item.id === etapa);
   return <span aria-hidden="true" className={`${styles.gravura} ${className}`}
-    style={{ backgroundPosition: `${(index % 2) * 100}% ${index < 2 ? 0 : 100}%` }} />;
+    style={{ backgroundPosition: `${(index % 2) * 100}% ${index < 2 ? 0 : 100}%`, ["--linha" as string]: index < 2 ? 0 : 1 }} />;
 }

@@ -10,8 +10,10 @@ describe('Matriz de cobertura da entrada',()=>{
   const html=renderToStaticMarkup(createElement(PaginaEntradaEficiencia));
   it('traz os 16 temas, com ficha para cada painel publicado',()=>{
     for(const d of DIMENSOES)expect(html).toContain(`id="cobertura-${d.id}"`);
-    expect(html.match(/Painel publicado/g)).toHaveLength(13);
-    expect(html.match(/Em desenvolvimento/g)).toHaveLength(3);
+    // Previdência (21/10/2026) aponta para o painel Previdência e INSS das Contas Públicas
+    expect(html.match(/Painel publicado/g)).toHaveLength(14);
+    expect(html.match(/Em desenvolvimento/g)).toHaveLength(2);
+    expect(html).toContain('href="/contas-publicas/previdencia"');
     for(const t of ['O que não inclui','Última captura de dados','Até onde cada tema chega.','Aprendizagem · Saeb'])expect(html).toContain(t);
     expect(html).toContain('href="/eficiencia-estatal/saude-capitais/comparar"');
   });

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Indisponivel, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, Indisponivel, MarcaAutodeclarado, NestaPagina, Nota, Numeros, Ressalva, RessalvaAutodeclarado, Secao } from "@/components/saneamento/Editorial";
+import { AUTODECLARADO, QUEM_DECLARA_INVESTIMENTO } from "@/lib/saneamento/autodeclarado";
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -16,7 +17,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Onde o investimento está chegando?",
   description:
-    "Investimento em água e esgoto declarado ao SINISA 2024 por município e UF, por habitante, por destino (ampliação, reposição e outros) e ao lado da carência medida pelo Censo 2022.",
+    "Investimento em água e esgoto autodeclarado pelos prestadores ao SINISA 2024, sem conferência com demonstrações financeiras auditadas, por município e UF, por habitante, por destino (ampliação, reposição e outros) e ao lado da carência medida pelo Censo 2022.",
   alternates: { canonical: "/saneamento/investimento" },
 };
 
@@ -36,14 +37,16 @@ export default function Pagina() {
   const med = medida(MED);
   const ia = br?.sinisa.agua.investimento;
   const ie = br?.sinisa.esgoto.investimento;
-  const total = (ia?.total ?? 0) + (ie?.total ?? 0);
+  // ausência não vira zero: sem um dos dois serviços no consolidado, o total fica sem dado
+  const total = ia?.total != null && ie?.total != null ? ia.total + ie.total : null;
   const brHab = refs[MED]?.BR?.pct ?? null;
   const declarantes = lista.filter((m) => m.inv_ag != null || m.inv_es != null);
   const zero = declarantes.filter((m) => (m.inv_ag ?? 0) + (m.inv_es ?? 0) === 0).length;
 
+  // valor autodeclarado não vira ranking: UFs em ordem alfabética (src/lib/saneamento/autodeclarado.ts)
   const porUf = ufs
     .map((u) => ({ id: u.id, rotulo: u.nome, v: agregarMedida(med, lista.filter((m) => m.uf === u.id)).pct }))
-    .sort((a, b) => (b.v ?? 0) - (a.v ?? 0));
+    .sort((a, b) => a.rotulo.localeCompare(b.rotulo, "pt-BR"));
 
   const pd = ia?.prestador_destino ?? {};
   const ed = ia?.estado_destino ?? {};
@@ -102,9 +105,9 @@ export default function Pagina() {
           titulo={cap.pergunta}
           texto={
             <p>
-              Prestadores e governos estaduais declaram ao SINISA quanto investiram em cada município, em água e em esgoto, com a origem do dinheiro
-              e o destino: ampliar, repor ou outros itens. Este capítulo põe esse investimento ao lado da população e da carência medida pelo Censo.
-              Valores correntes de 2024, sem correção.
+              Os prestadores declaram ao SINISA quanto investiram em cada município, em água e em esgoto, e quanto o governo estadual investiu nos
+              mesmos sistemas, com a origem do dinheiro e o destino: ampliar, repor ou outros itens. Este capítulo põe esse investimento ao lado da
+              população e da carência medida pelo Censo. Valores correntes de 2024, sem correção, {AUTODECLARADO}.
             </p>
           }
           recorte={
@@ -129,29 +132,69 @@ export default function Pagina() {
         <Numeros
           colunas={4}
           itens={[
-            { rotulo: "Investimento declarado em água e esgoto", valor: reaisCompacto(total), contexto: <>SINISA 2024, valores correntes; prestador e Estado.</> },
-            { rotulo: "Em água", valor: reaisCompacto(ia?.total), contexto: <>Do qual {reaisCompacto(ia?.estado)} declarado pelos Estados.</> },
-            { rotulo: "Em esgoto", valor: reaisCompacto(ie?.total), contexto: <>Do qual {reaisCompacto(ie?.estado)} declarado pelos Estados.</> },
+            {
+              rotulo: "Investimento declarado em água e esgoto, 2024",
+              valor: reaisCompacto(total),
+              contexto: (
+                <>
+                  Reais correntes de 2024. {QUEM_DECLARA_INVESTIMENTO}. SINISA 2025 (ano de referência 2024), campos GFI2024, GFI2036, GFI2124 e GFI2136.
+                  <MarcaAutodeclarado className="mt-1" />
+                </>
+              ),
+            },
+            {
+              rotulo: "Em água",
+              valor: reaisCompacto(ia?.total),
+              contexto: (
+                <>
+                  Do qual {reaisCompacto(ia?.estado)} feito pelo governo estadual, segundo o prestador.
+                  <MarcaAutodeclarado className="mt-1" />
+                </>
+              ),
+            },
+            {
+              rotulo: "Em esgoto",
+              valor: reaisCompacto(ie?.total),
+              contexto: (
+                <>
+                  Do qual {reaisCompacto(ie?.estado)} feito pelo governo estadual, segundo o prestador.
+                  <MarcaAutodeclarado className="mt-1" />
+                </>
+              ),
+            },
             {
               rotulo: "Por habitante, nos municípios declarantes",
               valor: `R$ ${numero(brHab, 0)}`,
-              contexto: <>Soma do investimento ÷ população estimada de 2024 dos mesmos municípios. {inteiro(zero)} municípios declararam zero.</>,
+              contexto: (
+                <>
+                  Soma do investimento ÷ população estimada de 2024 dos mesmos municípios. {inteiro(zero)} municípios declararam zero.
+                  <MarcaAutodeclarado className="mt-1" />
+                </>
+              ),
             },
           ]}
         />
+        <RessalvaAutodeclarado />
 
         <Secao
           id="atlas"
           titulo="Quanto foi investido por habitante em cada município?"
-          texto="Investimento de 2024 em água e esgoto, somando prestador e Estado, dividido pela população estimada pelo IBGE para 2024."
+          texto="Investimento de 2024 em água e esgoto, somando o do prestador e o do governo estadual informado pelo prestador, dividido pela população estimada pelo IBGE para 2024. Valores autodeclarados ao SINISA, sem conferência com demonstrações financeiras auditadas; por isso o atlas não lista municípios em ordem de valor."
         >
           <AtlasMunicipal ids={ATLAS} referencias={refs} nomesUf={nomesUf} titulo="Atlas municipal do investimento por habitante" />
-          <Fonte>Ministério das Cidades, SINISA 2025 (ano de referência 2024), informações financeiras GFI2024, GFI2036, GFI2124 e GFI2136; IBGE, estimativa de população 2024.</Fonte>
+          <Fonte>
+            Ministério das Cidades, SINISA 2025 (ano de referência 2024), informações financeiras GFI2024, GFI2036, GFI2124 e GFI2136, {AUTODECLARADO};
+            IBGE, estimativa de população 2024.
+          </Fonte>
         </Secao>
 
-        <Secao id="por-uf" titulo="Como o investimento por habitante varia entre UFs?" texto="Soma do investimento dos municípios declarantes de cada UF dividida pela população estimada desses municípios.">
+        <Secao
+          id="por-uf"
+          titulo="Como o investimento por habitante varia entre UFs?"
+          texto="Soma do investimento dos municípios declarantes de cada UF dividida pela população estimada desses municípios. UFs em ordem alfabética: o valor é autodeclarado e não forma ranking."
+        >
           <GraficoBarras
-            titulo="Investimento em água e esgoto por habitante, por UF (R$ correntes de 2024)"
+            titulo="Investimento autodeclarado em água e esgoto por habitante, por UF (R$ correntes de 2024)"
             dados={porUf}
             chaveCategoria="id"
             chaveRotulo="rotulo"
@@ -160,8 +203,8 @@ export default function Pagina() {
             casas={0}
             orientacao="horizontal"
             referencias={brHab != null ? [{ valor: brHab, rotulo: "Brasil" }] : undefined}
-            limiteInicial={14}
           />
+          <MarcaAutodeclarado className="mt-2" />
           <Ressalva
             permite="Comparar o esforço de investimento declarado em 2024 entre UFs, em relação à população."
             naoPermite="Concluir que uma UF investe pouco ou muito em relação à necessidade: um ano isolado reflete o ciclo de obras, e o custo por habitante varia com densidade, relevo e o estágio da rede."
@@ -174,7 +217,7 @@ export default function Pagina() {
           texto="Destino declarado do investimento: ampliação (produção e distribuição de água; coleta e tratamento de esgoto), reposição dos mesmos sistemas e outros investimentos, em bilhões de reais."
         >
           <GraficoBarras
-            titulo="Investimento por destino declarado (R$ bilhões correntes de 2024)"
+            titulo="Investimento autodeclarado por destino (R$ bilhões correntes de 2024)"
             dados={destinos}
             chaveCategoria="id"
             chaveRotulo="rotulo"
@@ -191,7 +234,7 @@ export default function Pagina() {
           <Nota>
             Os destinos detalhados somam {reaisCompacto(somaDestinos)}, {numero(razaoPct(somaDestinos, total), 1)}% do total declarado de{" "}
             {reaisCompacto(total)}; a diferença foi declarada sem destino. &quot;Outros investimentos&quot; é a maior parcela nos dois serviços, e o
-            SINISA não a detalha.
+            SINISA não a detalha. Valores {AUTODECLARADO}.
           </Nota>
           <Ressalva
             permite="Ver a parcela declarada como expansão de sistemas e a parcela de reposição."
@@ -233,6 +276,7 @@ export default function Pagina() {
               </tbody>
             </table>
           </div>
+          <MarcaAutodeclarado className="mt-2" />
           <Ressalva
             permite="Ver se, em 2024, o investimento declarado por habitante foi maior ou menor nos municípios com mais carência de esgoto."
             naoPermite="Inferir causalidade nem eficiência: os períodos diferem (carência de 2022, investimento de 2024), municípios com carência alta podem ser atendidos por soluções individuais, e um investimento regional pode ter sido lançado num único município."

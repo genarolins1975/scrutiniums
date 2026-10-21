@@ -3,6 +3,7 @@ import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { BandeiraDoMes } from "@/components/energia/BandeiraDoMes";
 import { ContaComposicao } from "@/components/energia/ContaComposicao";
 import { ContaFaixa } from "@/components/energia/ContaFaixa";
 import { ContaHistorico } from "@/components/energia/ContaHistorico";
@@ -19,6 +20,8 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
 import {
   comProcedimentoExterno,
   compactarLinhasTabela,
@@ -39,7 +42,6 @@ import {
   respostaComposicao,
   respostaReajustes,
   respostaSubsidios,
-  minuscula,
   nomeLigacao,
   resumoSerieReal,
   rotuloDistribuidora,
@@ -50,6 +52,7 @@ import {
   vereditoReajustes,
   vereditoSubsidios,
 } from "@/lib/energia/conta";
+import { mesCorrenteBrasilia } from "@/lib/energia/bandeira-do-mes";
 import { carimbo, dataBR, mesAno, num, reais } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
@@ -166,6 +169,9 @@ export default function ContaDeLuzPage() {
   const sub = g.subsidios;
   const cde = g.financiamento_cde;
   const ref = g.data_referencia;
+  // mês em que a página estática foi gerada; o navegador refaz a situação da bandeira com o mês de quem lê
+  const mesDaPagina = mesCorrenteBrasilia();
+  const ultimaBandeira = band.acionamento.at(-1)?.m ?? null;
   const evolucao = linhasEvolucao(t.evolucao);
   // a mediana do ranking contra a do dia 1º só vale no mesmo conjunto de distribuidoras: a comparação sai da linha do tempo de cada uma
   const historico = lerHistoricoB1();
@@ -301,19 +307,15 @@ export default function ContaDeLuzPage() {
       lighting are not in the ratified tariff.
     </>,
   );
-  const bandeiraDoMes = sim.bandeira_vigente?.bandeira
-    ? `${minuscula(bandeiraNoIdioma(sim.bandeira_vigente.bandeira, idioma))} (${mesAno(`${sim.bandeira_vigente.mes}-01`)})`
-    : tx("não publicada", "not published");
+  const bandeiraDoMes = <BandeiraDoMes vigente={sim.bandeira_vigente} mesInicial={mesDaPagina} forma="frase" />;
   const oQueMudouSimulador = tx(
     <>
       Desde {dataBR(sim.regras.desconto_social_desde)}, o Desconto Social isenta das quotas da CDE o consumo de até {sim.regras.desconto_social_limite_kwh} kWh no mês; a Tarifa Social dá
-      desconto integral até {sim.regras.tarifa_social_limite_kwh} kWh. Bandeira do mês publicado:{" "}
-      {bandeiraDoMes}.
+      desconto integral até {sim.regras.tarifa_social_limite_kwh} kWh. {bandeiraDoMes}
     </>,
     <>
       Since {dataBR(sim.regras.desconto_social_desde)}, the <Nome>Desconto Social</Nome> (social discount) exempts consumption of up to {sim.regras.desconto_social_limite_kwh} kWh a month from
-      CDE quotas; the <Nome>Tarifa Social</Nome> (social electricity tariff) gives a full discount up to {sim.regras.tarifa_social_limite_kwh} kWh. Tariff flag of the published month:{" "}
-      {bandeiraDoMes}.
+      CDE quotas; the <Nome>Tarifa Social</Nome> (social electricity tariff) gives a full discount up to {sim.regras.tarifa_social_limite_kwh} kWh. {bandeiraDoMes}
     </>,
   );
   const comoInterpretarSimulador = tx(
@@ -342,6 +344,14 @@ export default function ContaDeLuzPage() {
   return (
     <>
       <CabecalhoEnergia atual="conta-de-luz" />
+      {/* consulta aberta (leva 1, 19/10/2026): o histórico por distribuidora, os arquivos e a página de reajustes seguem com conta */}
+      <AvisoConsultaAberta
+        className="ed-pagina"
+        comConta={tx(
+          "O histórico de cada distribuidora, os arquivos, a página de reajustes e as demais páginas do observatório",
+          "Each distribution utility's history, the files, the adjustments page and the observatory's other pages",
+        )}
+      />
       <MarcaVisita secao="energia:conta-de-luz" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <Navegacao atual="tarifas" />
@@ -369,13 +379,13 @@ export default function ContaDeLuzPage() {
           fonte={tx("ANEEL, tarifas de aplicação das distribuidoras", "ANEEL, applied tariffs of the distribution utilities")}
           referencia={tx(
             <>
-              Tarifas de aplicação da ANEEL vigentes em {dataBR(ref)} (arquivo gerado pela fonte em {dataBR(g.gerado_pela_fonte_em)}); bandeira de{" "}
-              {band.vigente ? mesAno(`${band.vigente.mes}-01`) : "mês não publicado"}; IPCA até {ultimoIpca ? mesAno(`${ultimoIpca}-01`) : "mês não publicado"}. Processado em{" "}
+              Tarifas de aplicação da ANEEL vigentes em {dataBR(ref)} (arquivo gerado pela fonte em {dataBR(g.gerado_pela_fonte_em)}); bandeiras registradas até{" "}
+              {ultimaBandeira ? mesAno(`${ultimaBandeira}-01`) : "mês não publicado"}; IPCA até {ultimoIpca ? mesAno(`${ultimoIpca}-01`) : "mês não publicado"}. Processado em{" "}
               {carimbo(g.gerado_em)}.
             </>,
             <>
-              ANEEL applied tariffs in force on {dataBR(ref)} (file generated by the source on {dataBR(g.gerado_pela_fonte_em)}); tariff flag for{" "}
-              {band.vigente ? mesAno(`${band.vigente.mes}-01`) : "month not published"}; IPCA up to {ultimoIpca ? mesAno(`${ultimoIpca}-01`) : "month not published"}. Processed on{" "}
+              ANEEL applied tariffs in force on {dataBR(ref)} (file generated by the source on {dataBR(g.gerado_pela_fonte_em)}); tariff flags recorded up to{" "}
+              {ultimaBandeira ? mesAno(`${ultimaBandeira}-01`) : "month not published"}; IPCA up to {ultimoIpca ? mesAno(`${ultimoIpca}-01`) : "month not published"}. Processed on{" "}
               {carimbo(g.gerado_em)}.
             </>,
           )}
@@ -384,8 +394,8 @@ export default function ContaDeLuzPage() {
               itens={[
                 { rotulo: tx("Tarifas e componentes", "Tariffs and components"), texto: tx(`até ${dataBR(ref)}`, `up to ${dataBR(ref)}`), natureza: "CALCULADO" },
                 {
-                  rotulo: tx("Bandeira do simulador", "Simulator tariff flag"),
-                  texto: band.vigente ? mesAno(`${band.vigente.mes}-01`) : tx("sem dado nesta publicação", "no data in this publication"),
+                  rotulo: tx("Bandeira do mês", "Tariff flag of the month"),
+                  texto: <BandeiraDoMes vigente={sim.bandeira_vigente} mesInicial={mesDaPagina} forma="rotulo" />,
                   natureza: "OBSERVADO",
                 },
                 {
@@ -575,6 +585,7 @@ export default function ContaDeLuzPage() {
                     {dadoNo(g.conflitos_fonte.regra, "conta-conflitos-regra", idioma)}{" "}
                     <a href={g.conflitos_fonte.download} download className="text-energia-dark underline underline-offset-4">
                       {tx("Baixar os casos e a escolha feita (CSV)", "Download the cases and the choice made (CSV)")}
+                      <SeloComConta href={g.conflitos_fonte.download} />
                     </a>
                     .
                   </p>
@@ -887,15 +898,16 @@ export default function ContaDeLuzPage() {
                   }}
                   evidencia={comProcedimentoExterno(sim.evidencia)}
                   dataReferencia={ref}
+                  mesDaPagina={mesDaPagina}
                   info={info}
                 />
                 <Recorte
                   periodo={tx(
                     <>
-                      Tarifas vigentes em {dataBR(ref)}; bandeira de {sim.bandeira_vigente ? mesAno(`${sim.bandeira_vigente.mes}-01`) : "mês não publicado"}
+                      Tarifas vigentes em {dataBR(ref)}; bandeira: <BandeiraDoMes vigente={sim.bandeira_vigente} mesInicial={mesDaPagina} forma="rotulo" />
                     </>,
                     <>
-                      Tariffs in force on {dataBR(ref)}; tariff flag for {sim.bandeira_vigente ? mesAno(`${sim.bandeira_vigente.mes}-01`) : "month not published"}
+                      Tariffs in force on {dataBR(ref)}; tariff flag: <BandeiraDoMes vigente={sim.bandeira_vigente} mesInicial={mesDaPagina} forma="rotulo" />
                     </>,
                   )}
                   universo={tx(
@@ -1003,7 +1015,7 @@ export default function ContaDeLuzPage() {
                     ancora: "bandeiras",
                     pergunta: tx("Quando a bandeira encareceu a conta?", "When did the tariff flag make the bill more expensive?"),
                     veredito: vereditoBandeira(band),
-                    resposta: respostaBandeira(band),
+                    resposta: respostaBandeira(band, idioma, mesDaPagina),
                   },
                   {
                     ancora: "subsidios",
@@ -1115,6 +1127,7 @@ export default function ContaDeLuzPage() {
                     <li key={d.url}>
                       <a href={d.url} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
                         {dadoNo(d.rotulo, "conta-download", idioma)}
+                        <SeloComConta href={d.url} />
                       </a>
                     </li>
                   ))}

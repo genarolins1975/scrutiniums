@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-10-18T15:09:04+00:00",
+ "gerado_em": "2026-10-21T16:18:11+00:00",
  "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
  "paginas": [
   {
@@ -20,7 +20,7 @@
     "modelo": "banco universal",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T2",
-    "atualizado_em": "2026-10-18T15:09:04+00:00",
+    "atualizado_em": "2026-10-21T16:18:11+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -34,6 +34,46 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "2015-T1",
+       "v": 1206461770401.34
+      },
+      {
+       "p": "2015-T2",
+       "v": 1144469128667.85
+      },
+      {
+       "p": "2015-T3",
+       "v": 1264095531013.12
+      },
+      {
+       "p": "2015-T4",
+       "v": 1285393163372.74
+      },
+      {
+       "p": "2016-T1",
+       "v": 1204787151004.34
+      },
+      {
+       "p": "2016-T2",
+       "v": 1324027104146.97
+      },
+      {
+       "p": "2016-T3",
+       "v": 1319086106911.59
+      },
+      {
+       "p": "2016-T4",
+       "v": 1331840736743.03
+      },
+      {
+       "p": "2017-T1",
+       "v": 1318016842946.84
+      },
+      {
+       "p": "2017-T2",
+       "v": 1350470686758.3
+      },
       {
        "p": "2017-T3",
        "v": 1363806931887.43
@@ -193,6 +233,46 @@
      "status": "observado regulatório",
      "historico": [
       {
+       "p": "2015-T1",
+       "v": 103149275965.08
+      },
+      {
+       "p": "2015-T2",
+       "v": 106688590325.21
+      },
+      {
+       "p": "2015-T3",
+       "v": 109100446373.25
+      },
+      {
+       "p": "2015-T4",
+       "v": 111806212002.14
+      },
+      {
+       "p": "2016-T1",
+       "v": 111716405102.56
+      },
+      {
+       "p": "2016-T2",
+       "v": 126874289752.61
+      },
+      {
+       "p": "2016-T3",
+       "v": 130758955004.96
+      },
+      {
+       "p": "2016-T4",
+       "v": 129934937761.19
+      },
+      {
+       "p": "2017-T1",
+       "v": 128774490315.29
+      },
+      {
+       "p": "2017-T2",
+       "v": 132275483280.95
+      },
+      {
        "p": "2017-T3",
        "v": 136983583857.03
       },
@@ -351,6 +431,46 @@
      "status": "observado regulatório",
      "historico": [
       {
+       "p": "2015-T1",
+       "v": 468049346346.84
+      },
+      {
+       "p": "2015-T2",
+       "v": 457359181899.53
+      },
+      {
+       "p": "2015-T3",
+       "v": 479671677840.51
+      },
+      {
+       "p": "2015-T4",
+       "v": 477943044559.81
+      },
+      {
+       "p": "2016-T1",
+       "v": 450043801798.85
+      },
+      {
+       "p": "2016-T2",
+       "v": 503045915846.49
+      },
+      {
+       "p": "2016-T3",
+       "v": 500175678905.55
+      },
+      {
+       "p": "2016-T4",
+       "v": 498307138722.37
+      },
+      {
+       "p": "2017-T1",
+       "v": 486453518565.87
+      },
+      {
+       "p": "2017-T2",
+       "v": 489887177965.91
+      },
+      {
        "p": "2017-T3",
        "v": 479027591884.02
       },
@@ -508,6 +628,46 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "2015-T1",
+       "v": 5783161671.05
+      },
+      {
+       "p": "2015-T2",
+       "v": 11089205840.7
+      },
+      {
+       "p": "2015-T3",
+       "v": 5945441427.62
+      },
+      {
+       "p": "2015-T4",
+       "v": 10938678413.02
+      },
+      {
+       "p": "2016-T1",
+       "v": 4463212697.42
+      },
+      {
+       "p": "2016-T2",
+       "v": 9338480506.97
+      },
+      {
+       "p": "2016-T3",
+       "v": 4959767566.74
+      },
+      {
+       "p": "2016-T4",
+       "v": 9743077225.96
+      },
+      {
+       "p": "2017-T1",
+       "v": 5736905514.9
+      },
+      {
+       "p": "2017-T2",
+       "v": 10942825765.44
+      },
       {
        "p": "2017-T3",
        "v": 5813206810.36
@@ -1060,7 +1220,7 @@
     {
      "severidade": "atencao",
      "indicador": "Crescimento da carteira (4 trim.)",
-     "valor": 148.6,
+     "valor": 154.4,
      "benchmark": 30,
      "periodo": "12m",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
@@ -1142,7 +1302,7 @@
     "modelo": "banco médio (crédito a empresas e consignado)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T2",
-    "atualizado_em": "2026-10-18T15:09:04+00:00",
+    "atualizado_em": "2026-10-21T16:18:11+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -1156,6 +1316,34 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "2015-T4",
+       "v": 22049028875.73
+      },
+      {
+       "p": "2016-T1",
+       "v": 20423820849.34
+      },
+      {
+       "p": "2016-T2",
+       "v": 20668857221.42
+      },
+      {
+       "p": "2016-T3",
+       "v": 21002027787.79
+      },
+      {
+       "p": "2016-T4",
+       "v": 21909571696.09
+      },
+      {
+       "p": "2017-T1",
+       "v": 22548560146.26
+      },
+      {
+       "p": "2017-T2",
+       "v": 23475707797.11
+      },
       {
        "p": "2017-T3",
        "v": 23814012632.33
@@ -1315,6 +1503,34 @@
      "status": "observado regulatório",
      "historico": [
       {
+       "p": "2015-T4",
+       "v": 2786751477.7
+      },
+      {
+       "p": "2016-T1",
+       "v": 2830928714.49
+      },
+      {
+       "p": "2016-T2",
+       "v": 2854889703.04
+      },
+      {
+       "p": "2016-T3",
+       "v": 2537474775.12
+      },
+      {
+       "p": "2016-T4",
+       "v": 2657437886.15
+      },
+      {
+       "p": "2017-T1",
+       "v": 2741797413.44
+      },
+      {
+       "p": "2017-T2",
+       "v": 2827657960.24
+      },
+      {
        "p": "2017-T3",
        "v": 2922944823.31
       },
@@ -1473,6 +1689,34 @@
      "status": "observado regulatório",
      "historico": [
       {
+       "p": "2015-T4",
+       "v": 13678173546.9
+      },
+      {
+       "p": "2016-T1",
+       "v": 12743449681.54
+      },
+      {
+       "p": "2016-T2",
+       "v": 12960648157.8
+      },
+      {
+       "p": "2016-T3",
+       "v": 12958284629.81
+      },
+      {
+       "p": "2016-T4",
+       "v": 13832380705.59
+      },
+      {
+       "p": "2017-T1",
+       "v": 12887968901.29
+      },
+      {
+       "p": "2017-T2",
+       "v": 13208392103.84
+      },
+      {
        "p": "2017-T3",
        "v": 13310853362.78
       },
@@ -1630,6 +1874,34 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "2015-T4",
+       "v": 251136836.32
+      },
+      {
+       "p": "2016-T1",
+       "v": 85232271.66
+      },
+      {
+       "p": "2016-T2",
+       "v": 154459376.78
+      },
+      {
+       "p": "2016-T3",
+       "v": 90564645.89
+      },
+      {
+       "p": "2016-T4",
+       "v": 252411464.66
+      },
+      {
+       "p": "2017-T1",
+       "v": 122318943.45
+      },
+      {
+       "p": "2017-T2",
+       "v": 247877988.35
+      },
       {
        "p": "2017-T3",
        "v": 143635281.7
@@ -2184,7 +2456,7 @@
     {
      "severidade": "atencao",
      "indicador": "Crescimento da carteira (4 trim.)",
-     "valor": 375.7,
+     "valor": 362.9,
      "benchmark": 30,
      "periodo": "12m",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
@@ -2261,7 +2533,7 @@
     "modelo": "financeira de montadora (financiamento de veículos)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T2",
-    "atualizado_em": "2026-10-18T15:09:04+00:00",
+    "atualizado_em": "2026-10-21T16:18:11+00:00",
     "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
    },
    "indicadores": [
@@ -2275,6 +2547,46 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "2015-T1",
+       "v": 25946245183.1
+      },
+      {
+       "p": "2015-T2",
+       "v": 23747831632.37
+      },
+      {
+       "p": "2015-T3",
+       "v": 23206502935.97
+      },
+      {
+       "p": "2015-T4",
+       "v": 23098689891.43
+      },
+      {
+       "p": "2016-T1",
+       "v": 21578912539.2
+      },
+      {
+       "p": "2016-T2",
+       "v": 19678319957.25
+      },
+      {
+       "p": "2016-T3",
+       "v": 19179161723.65
+      },
+      {
+       "p": "2016-T4",
+       "v": 17514094659.11
+      },
+      {
+       "p": "2017-T1",
+       "v": 16518295556.76
+      },
+      {
+       "p": "2017-T2",
+       "v": 16060535070.67
+      },
       {
        "p": "2017-T3",
        "v": 15401533537.02
@@ -2430,6 +2742,46 @@
      "status": "observado regulatório",
      "historico": [
       {
+       "p": "2015-T1",
+       "v": 2708088428.07
+      },
+      {
+       "p": "2015-T2",
+       "v": 2783367883.28
+      },
+      {
+       "p": "2015-T3",
+       "v": 2958758960.98
+      },
+      {
+       "p": "2015-T4",
+       "v": 2602070349.85
+      },
+      {
+       "p": "2016-T1",
+       "v": 2596829648.49
+      },
+      {
+       "p": "2016-T2",
+       "v": 2620628733.91
+      },
+      {
+       "p": "2016-T3",
+       "v": 2663467061.61
+      },
+      {
+       "p": "2016-T4",
+       "v": 2629873894.3
+      },
+      {
+       "p": "2017-T1",
+       "v": 2740090478.8
+      },
+      {
+       "p": "2017-T2",
+       "v": 2861217395.2
+      },
+      {
        "p": "2017-T3",
        "v": 2962174597.72
       },
@@ -2584,6 +2936,46 @@
      "status": "observado regulatório",
      "historico": [
       {
+       "p": "2015-T1",
+       "v": 21752278745.11
+      },
+      {
+       "p": "2015-T2",
+       "v": 20715346999.75
+      },
+      {
+       "p": "2015-T3",
+       "v": 19948150204.61
+      },
+      {
+       "p": "2015-T4",
+       "v": 19271838538.13
+      },
+      {
+       "p": "2016-T1",
+       "v": 18264107430.99
+      },
+      {
+       "p": "2016-T2",
+       "v": 17025077133.32
+      },
+      {
+       "p": "2016-T3",
+       "v": 15887480013.57
+      },
+      {
+       "p": "2016-T4",
+       "v": 15126575132.97
+      },
+      {
+       "p": "2017-T1",
+       "v": 14185617812.95
+      },
+      {
+       "p": "2017-T2",
+       "v": 13681561710.3
+      },
+      {
        "p": "2017-T3",
        "v": 12990128889.29
       },
@@ -2737,6 +3129,46 @@
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "2015-T1",
+       "v": 86718433.9
+      },
+      {
+       "p": "2015-T2",
+       "v": 161997889.11
+      },
+      {
+       "p": "2015-T3",
+       "v": 175391077.7
+      },
+      {
+       "p": "2015-T4",
+       "v": 268702466.57
+      },
+      {
+       "p": "2016-T1",
+       "v": -5240701.36
+      },
+      {
+       "p": "2016-T2",
+       "v": 18558384.06
+      },
+      {
+       "p": "2016-T3",
+       "v": 42838327.7
+      },
+      {
+       "p": "2016-T4",
+       "v": 124245160.39
+      },
+      {
+       "p": "2017-T1",
+       "v": 110216584.5
+      },
+      {
+       "p": "2017-T2",
+       "v": 231343500.9
+      },
       {
        "p": "2017-T3",
        "v": 100957202.52
@@ -3274,7 +3706,7 @@
     {
      "severidade": "atencao",
      "indicador": "Crescimento da carteira (4 trim.)",
-     "valor": 287.6,
+     "valor": 131.4,
      "benchmark": 30,
      "periodo": "12m",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",

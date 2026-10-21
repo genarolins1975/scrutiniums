@@ -3,7 +3,7 @@
  *
  * Números de escala e o modelo didático "do recurso ao resultado", lidos das
  * golds da Eficiência Estatal (educação e saúde nas capitais, Judiciário,
- * segurança pública). Os estágios recursos, atendimento e resultados vêm do
+ * segurança pública) e da Educação nos municípios (public/educacao/gold). Os estágios recursos, atendimento e resultados vêm do
  * mapa de temas da Eficiência Estatal (src/lib/eficiencia/dimensoes.ts); a
  * plataforma não estabelece relação causal entre eles nem calcula eficiência.
  */
@@ -26,10 +26,13 @@ function referenciaCapitais(arquivo: string, filtro: (r: any) => boolean): any {
   return refs.reduce((a, b) => (b.ano > a.ano ? b : a));
 }
 
-function seguranca(id: string): { valor: number; variacao: number | null; unidade: string; ano: number; fonte: string } {
-  const s = lerPublico("eficiencia", "seguranca-publica", "snapshot.json");
-  const i = (s.indicadores as any[]).find((x) => x.id === id);
-  return { valor: i.valor, variacao: i.variacao, unidade: i.unidade, ano: s.referencia, fonte: s.fonte };
+/** Brasil no último ano em que as 27 UFs têm dado publicado, na gold do painel Segurança pública (pipeline/seguranca). */
+function seguranca(id: string): { valor: number; taxa: number | null; variacao: number | null; ano: number; cobertura: number } {
+  const g = lerPublico("eficiencia", "seguranca-publica", "gold", "seguranca.json");
+  const br = g.series[id].BR;
+  let k = g.anos.length - 1;
+  while (k > 0 && br.situacao[k] !== "ok") k--;
+  return { valor: br.n[k], taxa: br.taxa ? br.taxa[k] : null, variacao: br.variacao[k], ano: g.anos[k], cobertura: br.cobertura[k] };
 }
 
 const ideb = () => numero(
@@ -37,6 +40,17 @@ const ideb = () => numero(
   () => {
     const r = referenciaCapitais("educacao_capitais.json", (x) => x.indicador === "edu.ideb.rede_municipal" && x.componente === "ideb" && x.etapa === "anos_iniciais" && x.grupo === "todas");
     return { valor: num(r.mediana, 2), periodo: String(r.ano), nota: `${r.n} capitais, de ${num(r.minimo, 1)} a ${num(r.maximo, 1)}.` };
+  },
+);
+
+/** Ideb dos anos iniciais das redes municipais do Brasil, o primeiro número do painel Educação nos municípios (pipeline/educacao). */
+const idebMunicipios = () => numero(
+  { rotulo: "Ideb do 1º ao 5º ano nas escolas municipais do Brasil", unidade: "de 0 a 10", fonte: "INEP, Ideb", href: "/educacao-municipal" },
+  () => {
+    const g = lerPublico("educacao", "gold", "educacao.json");
+    const k = g.ideb.anos.length - 1;
+    const d = g.distribuicao.ai.brasil;
+    return { valor: num(g.ideb.brasil.ai.municipal.ideb[k], 1), periodo: String(g.ideb.ano), nota: `${num(d.n, 0)} redes municipais com resultado; metade entre ${num(d.p25, 1)} e ${num(d.p75, 1)}.` };
   },
 );
 
@@ -57,16 +71,28 @@ const pendentes = () => numero(
 );
 
 const homicidios = () => numero(
-  { rotulo: "Vítimas de homicídio doloso registradas", unidade: "vítimas no ano", fonte: "Ministério da Justiça, Sinesp", href: "/eficiencia-estatal/seguranca-publica", nota: "Registros policiais consolidados pelo Sinesp; não é taxa por habitante." },
+  { rotulo: "Vítimas de homicídio doloso registradas", unidade: "vítimas no ano", fonte: "Ministério da Justiça, Sinesp VDE", href: "/eficiencia-estatal/seguranca-publica", nota: "Registros das polícias estaduais consolidados pelo Sinesp." },
   () => {
     const s = seguranca("homicidio");
-    return { valor: num(s.valor, 0), periodo: String(s.ano), nota: s.variacao === null ? undefined : `Variação sobre o ano anterior informada pela fonte: ${s.variacao > 0 ? "+" : "−"}${num(Math.abs(s.variacao), 1)}%. Registros policiais; não é taxa por habitante.` };
+    const taxa = s.taxa === null ? "" : `${num(s.taxa, 1)} por 100 mil habitantes. `;
+    const variacao = s.variacao === null ? "" : `Variação sobre o ano anterior: ${s.variacao > 0 ? "+" : "−"}${num(Math.abs(s.variacao), 1)}%. `;
+    return { valor: num(s.valor, 0), periodo: String(s.ano), nota: `${taxa}${variacao}Registros das polícias estaduais, soma das 27 UFs.` };
+  },
+);
+
+const despesaSeguranca = () => numero(
+  { rotulo: "Despesa dos governos estaduais com segurança pública por habitante", unidade: "por habitante no ano", fonte: "Tesouro Nacional, Siconfi, e IBGE", href: "/eficiencia-estatal/seguranca-publica/recursos", nota: "Só o governo estadual e o do DF; não inclui a União nem os municípios. Valores nominais." },
+  () => {
+    const s = seguranca("despesa_habitante");
+    return { valor: `R$ ${num(s.taxa as number, 0)}`, periodo: `${s.ano}, ${s.cobertura} governos estaduais` };
   },
 );
 
 /** Até quatro números de escala do tema. */
 export function escalaServicos(): NumeroPorta[] {
-  return [ideb(), saudePorHabitante(), pendentes(), homicidios()];
+  // a escola pública de todos os municípios (painel Educação nos municípios, 20/10/2026) abre a faixa; o Ideb das capitais
+  // segue no modelo do recurso ao resultado, abaixo, ao lado do gasto
+  return [idebMunicipios(), saudePorHabitante(), pendentes(), homicidios()];
 }
 
 export type EstagioServico = { texto: string; numero: NumeroPorta | null };
@@ -109,7 +135,7 @@ export function recursoAoResultado(): TemaServico[] {
   return [
     { id: "educacao", titulo: educacao.titulo, href: educacao.href, recursos: { texto: educacao.recursos, numero: null }, atendimento: { texto: educacao.acesso, numero: null }, resultados: { texto: educacao.resultados, numero: ideb() } },
     { id: "saude", titulo: saude.titulo, href: saude.href, recursos: { texto: saude.recursos, numero: saudePorHabitante() }, atendimento: { texto: saude.acesso, numero: null }, resultados: { texto: saude.resultados, numero: null } },
-    { id: "seguranca", titulo: seg.titulo, href: seg.href, recursos: { texto: seg.recursos, numero: null }, atendimento: { texto: seg.acesso, numero: armas }, resultados: { texto: seg.resultados, numero: homicidios() } },
+    { id: "seguranca", titulo: seg.titulo, href: seg.href, recursos: { texto: seg.recursos, numero: despesaSeguranca() }, atendimento: { texto: seg.acesso, numero: armas }, resultados: { texto: seg.resultados, numero: homicidios() } },
     { id: "justica", titulo: justica.titulo, href: "/eficiencia-estatal/judiciario", recursos: { texto: justica.recursos, numero: despesaJustica }, atendimento: { texto: justica.acesso, numero: pendentes() }, resultados: { texto: justica.resultados, numero: tempo } },
   ];
 }

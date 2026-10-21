@@ -4,6 +4,7 @@ import { useMemo, type ReactNode } from "react";
 import { CargaEscolha, CargaLista } from "@/components/energia/CargaControles";
 import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
+import { LeituraGuiada } from "@/components/energia/Didatica";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
@@ -248,6 +249,7 @@ export function CargaClima({
   fonte,
   versao,
   notas,
+  didatico,
 }: {
   p027: Pick<NonNullable<P027>, "metricas" | "periodo_avaliacao" | "sensibilidade" | "por_origem_sin" | "recente_sin" | "resposta_temperatura">;
   a07: Pick<A07, "decomposicao" | "comparacoes">;
@@ -258,6 +260,8 @@ export function CargaClima({
   versao: string;
   /** Notas do painel (NotasDoPainel: o que mudou e a ressalva essencial), logo depois da figura principal e da tabela. */
   notas?: ReactNode;
+  /** Artefato didático (montado no servidor), logo depois das notas. */
+  didatico?: ReactNode;
 }) {
   const idioma = useIdioma();
   const tx = useTx();
@@ -344,6 +348,19 @@ export function CargaClima({
               orientacao="horizontal"
               referencias={[{ valor: d.real_log100, rotulo: tx("Diferença real", "Actual difference") }]}
             />
+            {barras.length > 0 &&
+              (() => {
+                const maior = barras.reduce((a, b) => (Math.abs(b.valor) > Math.abs(a.valor) ? b : a));
+                const quaseZero = barras.filter((b) => Math.abs(b.valor) < 0.05);
+                return (
+                  <LeituraGuiada id="p027-partes" rotulo={tx("Como ler", "How to read it")}>
+                    {tx(
+                      `Cada barra é uma peça da diferença, em pontos; a linha marca a diferença real (${num(d.real_log100, 2)}). A maior peça nesta janela é ${maior.rotulo.toLowerCase()} (${num(maior.valor, 2)}).${quaseZero.length ? ` ${quaseZero.map((b) => b.rotulo).join(" e ")} ${quaseZero.length > 1 ? "ficam" : "fica"} perto de zero: a peça quase não muda a previsão nesta janela, o que não é falta de dado.` : ""} A mesma conta, em cascata, está mais abaixo.`,
+                      `Each bar is a piece of the difference, in points; the line marks the actual difference (${num(d.real_log100, 2)}). The largest piece in this window is ${maior.rotulo.toLowerCase()} (${num(maior.valor, 2)}).${quaseZero.length ? ` ${quaseZero.map((b) => b.rotulo).join(" and ")} ${quaseZero.length > 1 ? "stay" : "stays"} near zero: the piece barely changes the prediction in this window, which is not missing data.` : ""} The same sum, as a waterfall, is further below.`,
+                    )}
+                  </LeituraGuiada>
+                );
+              })()}
             <TabelaInterativa
               titulo={tx("Tabela equivalente: partes da diferença", "Equivalent table: parts of the difference")}
               colunas={colunasBarras(idioma)}
@@ -415,6 +432,8 @@ export function CargaClima({
       </dl>
 
       {notas}
+
+      {didatico}
 
       <SecaoDoPainel
         id="validacao"

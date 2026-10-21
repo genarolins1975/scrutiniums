@@ -50,7 +50,7 @@ function usuario(onboardingStatus: string): User {
   return {
     id: "usuario-sintetico-home", email: "home@example.invalid", onboardingStatus,
     emailVerifiedAt: null, phoneE164: null, phoneVerifiedAt: null,
-    company: null, jobTitle: null, cpf: null, orgType: null, orgArea: null, orgRole: null,
+    company: null, jobTitle: null, cpf: null, perfilUso: null, orgType: null, orgArea: null, orgRole: null,
     uf: null, passwordHash: null, termsAcceptedAt: null, privacyVersion: null, marketingOptIn: false,
     createdAt: new Date("2026-10-01T00:00:00Z"), updatedAt: new Date("2026-10-01T00:00:00Z"),
   };

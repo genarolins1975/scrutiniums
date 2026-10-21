@@ -189,7 +189,9 @@ describe("Visão geral: veredito à vista e resposta completa por trás", () => 
     const carga = G.multiplos!.paineis.find((p) => p.id === "carga")!;
     const hoje = carga.valor_atual.valor!;
     const ano = G.multiplos!.dados.find((l) => l.d === carga.data_referencia)!.carga_ano_anterior as number;
-    const pct = (100 * (hoje / ano - 1)).toFixed(1).replace(".", ",");
+    // o sentido vai na palavra (acima, abaixo) e o percentual sem sinal: em 01/10/2026 a carga estava acima, e o teste
+    // escrevia o sinal junto ("-1,6% abaixo", 20/10/2026), o que a página corretamente não faz
+    const pct = Math.abs(100 * (hoje / ano - 1)).toFixed(1).replace(".", ",");
     expect(v).toContain(`${pct}% ${hoje > ano ? "acima" : "abaixo"} do mesmo dia da semana do ano anterior`);
     expect(v).toContain("sem comparação com limites de intercâmbio");
   });
@@ -230,12 +232,14 @@ describe("Visão geral: veredito à vista e resposta completa por trás", () => 
     expect(e).not.toMatch(/\b(ear_faixa|ena_faixa|carga_extrema|pld_piso|pld_teto|restricao_eolica|restricao_solar|revisao_material)\b/i);
     expect(e).not.toMatch(/\bEAR_FAIXA|ENA_FAIXA|CARGA_EXTREMA|PLD_PISO|PLD_TETO|RESTRICAO_EOLICA|RESTRICAO_SOLAR|REVISAO_MATERIAL/);
     expect(e).not.toMatch(IDENTIFICADOR);
-    expect(e).not.toMatch(/silver principal|sintese\.json|energia-0\.1\.0|685bb4bc29fd|aneel_scs|\bhoje\b/);
+    expect(e).not.toMatch(/silver principal|sintese\.json|energia-0\.1\.0|aneel_scs|\bhoje\b/);
+    expect(e).not.toContain(G.versao_codigo!.split("+")[0]);
     // em Analisar o código volta
     expect(texto(html)).toContain("código ear_faixa");
     // o código do painel (P004) é nome interno: nenhum nível o mostra mais
     expect(html).not.toMatch(/data-nivel="analisar"[^>]*>\s*P004/);
-    expect(html).toContain("685bb4bc29fd");
+    // a versão do código é a da gold (685bb4bc29fd na publicação de 01/10/2026)
+    expect(html).toContain(G.versao_codigo!.split("+")[0]);
   });
 
   it("o botão de prova anuncia o nome do número, e não o identificador da gold", () => {
@@ -294,8 +298,10 @@ describe("Visão geral: carga em duas janelas (7 dias e o dia), classificação 
     expect(sete.replace("-", "")).toBe(f1(v7));
     expect(um.replace("-", "")).toBe(f1(100 * (painel.valor_atual.valor! / ano - 1)));
     const nota = notaCarga(G)!;
-    expect(nota).toContain(`${sete}%`);
-    expect(nota).toContain(`${um}%`);
+    // percentual sem sinal e o sentido em palavra (o sinal só aparecia certo quando a variação era positiva)
+    const sentido = (t: string) => `${t.replace("-", "")}% ${t.startsWith("-") ? "abaixo" : "acima"}`;
+    expect(nota).toContain(`ficou ${sentido(sete)}`);
+    expect(nota).toContain(`ficou ${sentido(um)}`);
     expect(nota).toContain("não precisam coincidir");
     // as datas da nota são as das janelas reais
     expect(nota).toContain(`${dia(fim, -6).split("-").reverse().join("/")} a ${fim.split("-").reverse().join("/")}`);
@@ -315,8 +321,10 @@ describe("Visão geral: rede, média de 30 dias e fluxo do dia (4.842 e 5.184 MW
     const r = json<{ dia_referencia: string; fronteiras: { par: string; fluxo_dia: number; fluxo_media_30d: number }[] }>("public/energia/gold/rede.json");
     const f = r.fronteiras.find((x) => x.par === "NE_SE")!;
     const nota = notaRede(G)!;
-    expect(nota).toContain(f.fluxo_media_30d.toLocaleString("pt-BR"));
-    expect(nota).toContain(f.fluxo_dia.toLocaleString("pt-BR"));
+    // número com o sinal de menos tipográfico, como a página escreve (o fluxo do dia de 20/10/2026 é negativo: −1.846)
+    const n0 = (v: number) => (v < 0 ? "−" : "") + Math.abs(v).toLocaleString("pt-BR");
+    expect(nota).toContain(`(${n0(f.fluxo_media_30d)} MWmed)`);
+    expect(nota).toContain(`(${n0(f.fluxo_dia)} MWmed)`);
     expect(nota).toContain(r.dia_referencia.split("-").reverse().join("/"));
     expect(nota).toContain("Média de 30 dias e valor de um dia não precisam coincidir");
     expect(pagina.visao()).toContain('data-nota-frase="rede"');
@@ -384,6 +392,10 @@ describe("Visão geral: CMO do Norte contra os outros três subsistemas, classif
     expect(nota).toContain("não informa o motivo");
     expect(nota).not.toMatch(/porque|devido|causa(do)? por/i);
     expect(pagina.visao()).toContain('data-nota-regra="cmo_semana"');
+    // a natureza do CMO (resultado de modelo do ONS) fica à vista no Entender (diagnóstico de layout de 20/10/2026, item 7)
+    expect(texto(entender(pagina.visao()))).toContain("Resultado de modelo do ONS (DECOMP), não previsão da Scrutiniums");
+    // a ressalva da faixa da água também fica no Entender; as pontes entre cortes (preço, carga, rede) descem para Analisar
+    expect(texto(entender(pagina.visao()))).toContain("o mesmo percentual em épocas diferentes não é a mesma energia");
   });
 
   it("série sintética: três semanas seguidas com o Norte à parte dão a contagem e a data de início", () => {

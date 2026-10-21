@@ -229,6 +229,10 @@ class TestSelecaoEBronzeDuravel(unittest.TestCase):
             self.addCleanup(p.stop)
         self.con = base.conecta(os.path.join(self.silver, "familia.db"))
         self.addCleanup(self.con.close)
+        # orçamento de recaptura de órfãs zerado a cada teste (estado do processo em base._ORFAS)
+        p = patch.dict(base._ORFAS, {"gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "adiadas_prazo": 0})
+        p.start()
+        self.addCleanup(p.stop)
 
     def vintage(self, ds, rec, corpo=b"conteudo original", captura="2026-10-01T00:00:00Z"):
         arquivo, sha = base.salva_bronze("fonte", ds, rec, corpo, "json", captura)
@@ -371,6 +375,97 @@ class TestSelecaoEBronzeDuravel(unittest.TestCase):
         self.assertTrue(base.bronze_disponivel(r["vintage"]))
         self.assertNotEqual(r["vintage"]["sha256"], anterior["sha256"])
 
+    def _orfa_recente(self, rec):
+        v = self.vintage("ds", rec)
+        os.remove(base.caminho_bronze(v["arquivo"]))
+        base.registra_coleta(self.con, "ds", rec, True)
+        self.con.commit()
+        return v
+
+    def _baixa(self, rec, chamadas, max_idade_dias=30, forcar=False):
+        from datetime import datetime, timezone
+        from pipeline.energia.fontes import ckan
+        def baixar(url, destino):
+            chamadas.append(url)
+            with open(destino, "wb") as f:
+                f.write(b"conteudo novo " + rec.encode())
+            return destino, 20
+        return ckan.baixar_recurso(self.con, orgao="fonte", dataset="ds", recurso=rec,
+                                   url=f"https://fonte.test/{rec}", publicado_em=None, ext="json",
+                                   max_idade_dias=max_idade_dias, forcar=forcar,
+                                   agora=datetime.now(timezone.utc), baixador=baixar)
+
+    def test_orcamento_esgotado_adia_recaptura_de_orfa(self):
+        """19/10/2026: as recapturas de órfãs passaram do limite de 150 min do job e nada foi
+        publicado. Esgotado o orçamento da execução, a órfã fica para a próxima; a recaptura
+        anterior a isso conta no orçamento. A adiada volta sem vintage (review #286): os
+        consumidores abrem o arquivo de qualquer vintage não nula."""
+        self._orfa_recente("a")
+        self._orfa_recente("b")
+        chamadas = []
+        with patch.object(base, "ORCAMENTO_ORFAS_S", 10.0), \
+                patch.object(base, "relogio", side_effect=[0.0, 15.0]):
+            r_a = self._baixa("a", chamadas)
+            r_b = self._baixa("b", chamadas)
+            resumo = base.resumo_orfas()
+        self.assertEqual(r_a["status"], "nova")
+        self.assertEqual((r_b["status"], r_b["vintage"]), ("pulada", None))
+        self.assertIn("orçamento", r_b["detalhe"])
+        self.assertEqual(chamadas, ["https://fonte.test/a"])
+        self.assertEqual((resumo["gasto_s"], resumo["recapturadas"], resumo["adiadas"]), (15.0, 1, 1))
+
+    def test_orfa_com_coleta_vencida_tambem_usa_orcamento(self):
+        """Review #286: a NASA e a Open-Meteo falhavam por bronze ausente desde 06/10; a última
+        coleta ok é antiga e a recoleta já é devida. Órfã devida também entra no orçamento."""
+        antiga = self.vintage("ds", "antiga")
+        os.remove(base.caminho_bronze(antiga["arquivo"]))  # nenhuma coleta ok registrada
+        chamadas = []
+        with patch.object(base, "ORCAMENTO_ORFAS_S", 0.0):
+            r = self._baixa("antiga", chamadas, max_idade_dias=1)
+        self.assertEqual((r["status"], r["vintage"], chamadas), ("pulada", None, []))
+
+    def test_prazo_de_coleta_adia_recoleta_devida_e_preserva_vintage_com_bronze(self):
+        disponivel = self.vintage("ds", "disp")  # bronze presente, nenhuma coleta ok: recoleta devida
+        chamadas = []
+        with patch.object(base, "PRAZO_COLETA_S", 0.0):
+            r = self._baixa("disp", chamadas, max_idade_dias=1)
+            nova = self._baixa("inedito", chamadas)  # recurso sem vintage não espera
+            resumo = base.resumo_orfas()
+        self.assertEqual((r["status"], r["vintage"]), ("pulada", disponivel))
+        self.assertIn("prazo", r["detalhe"])
+        self.assertEqual(nova["status"], "nova")
+        self.assertEqual(chamadas, ["https://fonte.test/inedito"])
+        self.assertEqual(resumo["adiadas_prazo"], 1)
+
+    def test_coleta_forcada_nao_espera_orcamento_nem_prazo(self):
+        self._orfa_recente("forcada")
+        chamadas = []
+        with patch.object(base, "ORCAMENTO_ORFAS_S", 0.0), patch.object(base, "PRAZO_COLETA_S", 0.0):
+            r = self._baixa("forcada", chamadas, forcar=True)
+        self.assertEqual(r["status"], "nova")
+        self.assertEqual(len(chamadas), 1)
+        self.assertEqual(base.resumo_orfas()["recapturadas"], 0)
+
+    def test_releitura_depois_de_orfa_adiada_usa_vintage_legivel(self):
+        """Review #286: consumidores que releem o silver depois do download (centroides da carga,
+        _vigente das listadas) recebem a vintage anterior com bronze, não a órfã adiada."""
+        from pipeline.energia.modulos import carga_detalhe, listadas
+        from pipeline.energia.fontes import clima_carga as clima
+        uf, (cod, _) = next(iter(clima.CAPITAIS.items()))
+        rec = f"centroide_{cod}"
+        corpo = json.dumps({"centroide": {"latitude": -10.0, "longitude": -50.0}}).encode()
+        anterior = self.vintage(carga_detalhe.DS_IBGE_GEO, rec, corpo)
+        orfa = self.vintage(carga_detalhe.DS_IBGE_GEO, rec, corpo + b" ", "2026-10-07T00:00:00Z")
+        os.remove(base.caminho_bronze(orfa["arquivo"]))
+        self.assertEqual(base.vintage_legivel(self.con, carga_detalhe.DS_IBGE_GEO, rec), anterior)
+        with patch.object(clima, "parse_centroide", return_value=(-10.0, -50.0)):
+            pontos = carga_detalhe.centroides(self.con)
+        self.assertEqual(pontos[uf][4], anterior)
+        self.assertEqual(listadas._vigente(self.con, carga_detalhe.DS_IBGE_GEO, rec), anterior)
+        os.remove(base.caminho_bronze(anterior["arquivo"]))
+        self.assertIsNone(base.vintage_legivel(self.con, carga_detalhe.DS_IBGE_GEO, rec))
+        self.assertIsNone(listadas._vigente(self.con, carga_detalhe.DS_IBGE_GEO, rec))
+
     def test_recaptura_identica_religa_bronze_sem_alterar_data_da_vintage(self):
         from pipeline.energia.fontes import ckan
         anterior = self.vintage("ds", "rec")
@@ -384,6 +479,40 @@ class TestSelecaoEBronzeDuravel(unittest.TestCase):
         self.assertEqual(r["status"], "identica")
         self.assertEqual(r["vintage"]["capturado_em"], anterior["capturado_em"])
         self.assertTrue(base.bronze_disponivel(r["vintage"]))
+
+    def test_evidencia_publica_a_copia_identica_que_existe(self):
+        # 20/10/2026: a vintage da carga verificada apontava a captura de 06/10, que nenhum ambiente
+        # tinha mais; o bronze restaurado trazia a recaptura de 16/10 com o mesmo sha256, e a
+        # evidência p026_mmgd_mes publicava um caminho que não abre.
+        from pipeline.energia import evidencia as ev
+        anterior = self.vintage("ds", "rec")
+        os.remove(base.caminho_bronze(anterior["arquivo"]))
+        self.assertEqual(ev.fonte_de_vintage("ONS", "c", "u", anterior)["arquivo"], anterior["arquivo"])  # sem cópia: ausência visível
+        copia, _ = base.salva_bronze("fonte", "ds", "rec", b"conteudo original", "json", "2026-10-16T01:41:37Z")
+        self.assertNotEqual(copia, anterior["arquivo"])
+        for item in (ev.fonte_de_vintage("ONS", "c", "u", anterior), ev.arquivo_de_vintage(anterior)):
+            self.assertEqual(item["arquivo"], os.path.relpath(base.caminho_bronze(copia), self.raiz))
+            self.assertTrue(os.path.isfile(os.path.join(self.raiz, item["arquivo"])))
+            self.assertEqual((item["sha256"], item["capturado_em"]), (anterior["sha256"], anterior["capturado_em"]))
+        # a conferência dos originais do módulo Dados acha a mesma cópia: a captura vigente não conta como ausente
+        from pipeline.energia.fontes import silver_dados as sd
+        from pipeline.energia import validacoes as val
+        r = sd.confere_bronze([anterior])
+        self.assertEqual((r["arquivos_presentes"], r["arquivos_ausentes"], r["ausentes_vigentes"], r["sha256_divergentes"]), (1, 0, 0, 0))
+        # a captura anterior que a cópia durável não guarda é ressalva, dita como tal
+        nova = self.vintage("ds", "rec", b"conteudo novo", "2026-10-18T00:00:00Z")
+        os.remove(base.caminho_bronze(copia))
+        r = sd.confere_bronze([anterior, nova])
+        self.assertEqual((r["arquivos_presentes"], r["arquivos_ausentes"], r["ausentes_vigentes"]), (1, 1, 0))
+        chk = next(x for x in val.valida_conjunto("f/ds", {"_vintages": [anterior, nova], "bronze": r}) if x["tipo"] == "original")
+        self.assertEqual(chk["resultado"], "ressalva")
+        self.assertIn("0 da captura vigente e 1 da anterior, que a cópia durável não guarda", chk["detalhe"])
+        self.assertNotIn("só o silver", chk["detalhe"])
+        # outro conteúdo na mesma pasta não serve
+        outra = self.vintage("ds", "rec2", b"outro conteudo")
+        os.remove(base.caminho_bronze(outra["arquivo"]))
+        base.salva_bronze("fonte", "ds", "rec2", b"conteudo diferente", "json", "2026-10-16T01:41:37Z")
+        self.assertEqual(ev.arquivo_de_vintage(outra)["arquivo"], outra["arquivo"])
 
     def test_historico_mensal_respeita_captura_do_bronze_selecionado(self):
         v = self.vintage(expansao.DS_RALIE, "historico", b"primeiro")

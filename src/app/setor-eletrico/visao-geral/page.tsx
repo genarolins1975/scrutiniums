@@ -305,16 +305,16 @@ export default function VisaoGeralEnergia() {
           titulo={PAGINAS_MAPA["visao-geral"].pergunta}
           lead={tx(
             <>
-              Preço, água, geração e carga do <Termo slug="sin">Sistema Interligado Nacional (SIN)</Termo> no mesmo calendário, cada um com a data da sua fonte e uma referência ao lado, para ver o que mudou nos
-              mesmos dias sem afirmar que uma medida explica outra. A ligação entre essas partes, da geração ao consumidor, está no{" "}
+              Preço, água, geração, carga e rede do <Termo slug="sin">Sistema Interligado Nacional (SIN)</Termo> no mesmo calendário, cada um com a data da sua fonte e uma referência ao lado. Como
+              essas partes se ligam, da geração ao consumidor, está no{" "}
               <Link href="/setor-eletrico#mapa-conceitual" className="text-energia-dark underline underline-offset-4 hover:text-carvao">
                 mapa do sistema
               </Link>
               .
             </>,
             <>
-              Price, water, generation and load of the <Termo slug="sin">National Interconnected System (SIN)</Termo> on the same calendar, each with the date of its source and a reference beside it, to see what
-              changed on the same days without claiming that one measure explains another. How these parts connect, from generation to the consumer, is shown on the{" "}
+              Price, water, generation, load and grid of the <Termo slug="sin">National Interconnected System (SIN)</Termo> on the same calendar, each with the date of its source and a reference beside it. How
+              these parts connect, from generation to the consumer, is shown on the{" "}
               <Link href="/setor-eletrico#mapa-conceitual" className="text-energia-dark underline underline-offset-4 hover:text-carvao">
                 system map
               </Link>
@@ -494,6 +494,8 @@ export default function VisaoGeralEnergia() {
                   d={det.leves}
                   ancoras={ANCORAS_DETERMINANTES}
                   fonte={fonteTabelas}
+                  // a da água diz que o mesmo percentual em épocas diferentes não é a mesma energia: ressalva da faixa, fica no Entender
+                  notasAVista={["agua"]}
                   notas={{
                     preco: ctx.doisCriteriosPld ? [ctx.doisCriteriosPld] : [],
                     agua: [ctx.capacidadeAgua, ctx.earNoModulo].filter((x): x is string => !!x),
@@ -682,6 +684,9 @@ export default function VisaoGeralEnergia() {
                 "R$/kWh, hours and interruptions per consumer unit (UC), % of injected energy, consumer units with a discount",
               )}
             />
+            {/* diagnóstico de layout de 20/10/2026, item 7: o período de cada número fica no cartão ("não é a situação do dia"); o aviso e a linha do
+                tempo que o detalham descem para Analisar */}
+            <div data-nivel="analisar" className="space-y-4">
             <VisaoAviso>
               {tx(
                 <>
@@ -694,6 +699,7 @@ export default function VisaoGeralEnergia() {
                 </>,
               )}
             </VisaoAviso>
+            </div>
             <VisaoSociedadeCartoes s={g.sociedade} ctx={ctx.sociedade} notas={{ beneficios: notaTS }} />
             {g.sociedade.ausentes.length > 0 && (
               <ul className="space-y-1 text-sm text-carvao-muted">
@@ -704,7 +710,9 @@ export default function VisaoGeralEnergia() {
                 ))}
               </ul>
             )}
-            <VisaoLinhaTempo s={g.sociedade} dataProcessamento={g.data_processamento} />
+            <div data-nivel="analisar">
+              <VisaoLinhaTempo s={g.sociedade} dataProcessamento={g.data_processamento} />
+            </div>
             <NotasDoPainel
               nome={P.sociedade.pergunta}
               oQueMudou={oQueMudouSociedade}

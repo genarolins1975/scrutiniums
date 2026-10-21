@@ -1,6 +1,6 @@
 # Observatório Brasileiro do Saneamento
 
-Domínio `saneamento` da plataforma Scrutiniums, em `/saneamento`. Organizado por perguntas sociais: catorze capítulos em cinco eixos, mais ferramentas transversais. Toda página publica fonte, período, universo, o que o dado permite observar e o que não permite concluir.
+Domínio `saneamento` da plataforma Scrutiniums, em `/saneamento`. Organizado por perguntas sociais: quinze capítulos em cinco eixos, mais ferramentas transversais. Toda página publica fonte, período, universo, o que o dado permite observar e o que não permite concluir.
 
 Documentos desta pasta:
 
@@ -56,7 +56,7 @@ npx vitest run src/tests/saneamento-gold.test.ts src/tests/saneamento-conta.test
 
 ## Atualização e vigilância
 
-O saneamento não tem coleta diária: a gold sai do seed versionado, e a proveniência de cada original (tamanho, sha256, Last-Modified) fica em `public/saneamento/gold/meta.json`. A vigília semanal (`python3 scripts/vigilancia.py saneamento`, job `saneamento` de `.github/workflows/vigilancia.yml`, segunda 09:40 UTC) compara essa proveniência com o que as fontes servem e abre a issue "Vigília: fonte do saneamento mudou desde a coleta" com o mantenedor como responsável.
+O saneamento não tem coleta diária: a gold sai do seed versionado, e a proveniência de cada original (tamanho, sha256, Last-Modified) fica em `public/saneamento/gold/meta.json`. A recoleta é mensal (`.github/workflows/atualizar-saneamento.yml`, dia 6, 11:23 UTC): SINISA, CadÚnico, SISAGUA, DATASUS, CVM, JMP e ODS, cada um como grupo próprio, com a gold reconstruída e os testes do domínio decidindo a publicação de cada grupo (`config/atualizacao/saneamento.json`; detalhes e o que fica manual em `OPERACOES.md`, seção "Atualização agendada por domínio"). A vigília semanal (`python3 scripts/vigilancia.py saneamento`, job `saneamento` de `.github/workflows/vigilancia.yml`, segunda 09:40 UTC) compara essa proveniência com o que as fontes servem e abre a issue "Vigília: fonte do saneamento mudou desde a coleta" com o mantenedor como responsável.
 
 | Fonte | O que acusa | Silêncio |
 |---|---|---|

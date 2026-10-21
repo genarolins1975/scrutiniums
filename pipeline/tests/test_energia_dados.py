@@ -839,6 +839,15 @@ class TestGoldPublicada(unittest.TestCase):
         self.assertTrue(self.g["disponivel"])
         for nome in ("publicacao.json", "catalogo.json"):
             self.assertLessEqual(os.path.getsize(os.path.join(GOLD, nome)), val.LIMITE_GOLD_BYTES, nome)
+        # o que cresce a cada captura fica na janela do calendário: a contagem de revisões por dia de captura não
+        # passa de JANELA_CALENDARIO_DIAS (20/10/2026: 386 dias de captura em 161 conjuntos, sem limite antes)
+        from datetime import date, timedelta
+        inicio = (date.fromisoformat(self.g["gerado_em"][:10]) - timedelta(days=dados.JANELA_CALENDARIO_DIAS)).isoformat()
+        for c in self.g["conjuntos"]:
+            rv = c.get("revisoes") or {}
+            for pc in (rv.get("por_captura") or {}, (rv.get("registros") or {}).get("por_captura") or {}):
+                self.assertFalse([d for d in pc if d < inicio], c["id"])
+        self.assertLessEqual(len(self.g["calendario"]), dados.JANELA_CALENDARIO_DIAS + 1)
 
     def test_proveniencias_e_evidencias_completas(self):
         provs = val.proveniencias(self.g)

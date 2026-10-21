@@ -120,21 +120,22 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
     expect(() => validarUsoInterface({ uso_interface: declaracao() }, irmas, en)).toThrow("sem tradução disponível");
   });
 
-  it("mantém a home parcial, as três institucionais traduzidas e os nove pares integrais no registro único real", () => {
+  it("mantém a home parcial, as seis institucionais e de entrada traduzidas e os seis pares integrais no registro único real", () => {
     expect(parDeIdioma("/")).toEqual({ pt: "/", en: "/en", conteudo: "parcialmente_traduzido" });
     expect(parDeIdioma("/en")).toEqual(parDeIdioma("/"));
     // O Setor Elétrico (fase 3) declara todas as páginas literais como traduzidas; a prova delas é energia-i18n-html.test.ts.
-    const plataforma = PARES_DE_IDIOMA.filter((par) => !par.pt.startsWith("/setor-eletrico"));
-    const setor = PARES_DE_IDIOMA.filter((par) => par.pt.startsWith("/setor-eletrico"));
+    // a versão aperitivo da Conta de luz (servida por rewrite em /setor-eletrico/conta-de-luz) conta com o Setor Elétrico
+    const doSetor = (pt: string) => pt.startsWith("/setor-eletrico") || pt === "/aperitivo/conta-de-luz";
+    const plataforma = PARES_DE_IDIOMA.filter((par) => !doSetor(par.pt));
+    const setor = PARES_DE_IDIOMA.filter((par) => doSetor(par.pt));
     expect(plataforma).toHaveLength(13);
     expect(setor.length).toBeGreaterThanOrEqual(73);
     expect(setor.every((par) => par.conteudo === "traduzido")).toBe(true);
     expect(plataforma.filter((par) => par.conteudo === "traduzido").map((par) => par.pt)).toEqual([
-      "/sobre", "/sobre/erros", "/sobre/governanca",
+      "/entrar", "/entrar/sms", "/entrar/sms/verificar", "/sobre", "/sobre/erros", "/sobre/governanca",
     ]);
     expect(PARES_DE_IDIOMA.filter((par) => par.conteudo === "portugues_marcado").map((par) => par.pt)).toEqual([
-      "/cadastro", "/entrar", "/entrar/sms", "/entrar/sms/verificar", "/glossario", "/imprensa", "/observatorio-do-credito", "/privacidade",
-      "/termos",
+      "/cadastro", "/glossario", "/imprensa", "/observatorio-do-credito", "/privacidade", "/termos",
     ]);
     // O estado publicado evolui sem transformar a fixture sintética 4/7
     // em uma cópia da implementação real.

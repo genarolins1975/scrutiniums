@@ -333,7 +333,7 @@ export default function CurtailmentPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="geracao" />
+      <CabecalhoEnergia atual="curtailment" />
       <MarcaVisita secao="energia:geracao" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <NavegacaoLocal rotulo={tx("Páginas de geração", "Generation pages")} itens={itens()} atual="curtailment" />

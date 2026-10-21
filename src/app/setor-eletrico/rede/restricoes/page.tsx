@@ -7,6 +7,7 @@ import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { Numero } from "@/components/energia/Numero";
 import { RedeAviso, RedeCapitulos, RedeDatas, RedeDicionarios, RedeDocumentos, RedeIndisponivel, RedeNavegacao, RedeRegras, RedeSeguir } from "@/components/energia/RedePagina";
 import { RedeRestricoes } from "@/components/energia/RedeRestricoes";
+import { ParaLer } from "@/components/energia/Didatica";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -52,6 +53,10 @@ export default function RedeRestricoesPage() {
   // regras de contagem citadas do documento (trechos conferidos no arquivo), nunca reescritas à mão
   const trechosSubmodulo = r.documentos.ons_submodulo_9_1.trechos.filter((t) => t.confere && t.id !== "atls_definicao").map((t) => t.texto);
   const citacoes = trechosSubmodulo.map((t) => `“${t}”`).join("; ");
+  // glossário: as duas regras de contagem pelos trechos conferidos do mesmo documento
+  const trechoDe = (id: string) => r.documentos.ons_submodulo_9_1.trechos.find((t) => t.id === id && t.confere)?.texto ?? null;
+  const trecho10 = trechoDe("atls_10min");
+  const trechoBanda = trechoDe("atls_banda_morta");
   // a faixa lê o mesmo arquivo do ATLS do gráfico de barras, da tabela e da exportação
   const m = medidasRestricoes(r);
   const fichaMaisHoras = m.maisHoras ? (ev[`atls_12m.${m.maisHoras.fluxo}`] ?? null) : null;
@@ -208,6 +213,75 @@ export default function RedeRestricoesPage() {
           )}
         </CabecalhoModulo>
         <RedeNavegacao atual="p030" />
+        <ParaLer
+          id="para-ler-restricoes"
+          itens={[
+            {
+              termo: tx("Fluxo acompanhado e limite", "Monitored flow and limit"),
+              definicao: tx(
+                "O ONS escolhe alguns fluxos importantes para a segurança da rede (por exemplo, quanto a região Sul recebe) e define, em estudos, a faixa em que cada um pode operar com segurança. As siglas dos fluxos (RSUL, FBTA e outras) são do ONS.",
+                "ONS picks some flows that matter for grid security (for example, how much the South region receives) and sets, in studies, the range in which each can operate safely. The flow codes (RSUL, FBTA and others) are ONS codes.",
+              ),
+            },
+            {
+              termo: <Termo slug="atls">ATLS</Termo>,
+              definicao: tx(
+                <>
+                  Atendimento aos Limites Sistêmicos: a parte do tempo em que cada fluxo ficou dentro da faixa. A página mostra o outro lado, as horas fora dela, somadas em 12 meses.
+                  {trecho10 ? <> Pelo Submódulo 9.1 do ONS: &ldquo;{trecho10}&rdquo;</> : null}
+                </>,
+                <>
+                  Compliance with System Limits (ATLS): the share of time each flow stayed within its range. The page shows the other side, the hours outside it, added up over 12
+                  months.
+                  {trecho10 ? (
+                    <>
+                      {" "}
+                      Under ONS <Nome>Submódulo 9.1</Nome>: &ldquo;<TrechoPortugues regiao="trecho do Submódulo 9.1">{trecho10}</TrechoPortugues>&rdquo;
+                    </>
+                  ) : null}
+                </>,
+              ),
+            },
+            ...(trechoBanda
+              ? [
+                  {
+                    termo: tx("Banda morta", "Dead band"),
+                    definicao: tx(
+                      <>Uma folga acima do limite que o ONS não conta como violação: &ldquo;{trechoBanda}&rdquo;.</>,
+                      <>
+                        A margin above the limit that ONS does not count as a violation: &ldquo;<TrechoPortugues regiao="trecho do Submódulo 9.1">{trechoBanda}</TrechoPortugues>&rdquo;.
+                      </>,
+                    ),
+                  },
+                ]
+              : []),
+            {
+              termo: tx("Corte de carga e perturbação", "Load cut and disturbance"),
+              definicao: tx(
+                "Perturbação é um defeito ou desligamento na rede. Às vezes ela obriga a cortar o fornecimento de uma parte dos consumidores: é o corte de carga. Uma perturbação pode ter mais de um registro de corte.",
+                "A disturbance is a fault or outage on the grid. Sometimes it forces supply to part of the consumers to be cut: that is a load cut. One disturbance can have more than one cut record.",
+              ),
+            },
+            {
+              termo: tx("Energia não suprida", "Energy not supplied"),
+              definicao: tx(
+                "A energia que os consumidores deixaram de receber durante os cortes, em MWh.",
+                "The energy consumers did not receive during the cuts, in MWh.",
+              ),
+              exemplo: tx(
+                `De ${dataBR(u12.inicio)} a ${dataBR(u12.fim)}: ${num(u12.ens_mwh, 1)} MWh em ${num(u12.registros, 0)} registros de corte de ${num(u12.perturbacoes, 0)} perturbações.`,
+                `From ${dataBR(u12.inicio)} to ${dataBR(u12.fim)}: ${num(u12.ens_mwh, 1)} MWh in ${num(u12.registros, 0)} cut records from ${num(u12.perturbacoes, 0)} disturbances.`,
+              ),
+            },
+            {
+              termo: tx("Limite de intercâmbio", "Interchange limit"),
+              definicao: tx(
+                "Quanto pode passar entre duas regiões, valor que muda com a rede ligada. Não é público em dados abertos, e a capacidade de uma linha não o substitui; por isso nenhum percentual de uso da rede é calculado.",
+                "How much can pass between two regions, a value that changes with the grid in service. It is not public as open data, and a line's capacity does not replace it; that is why no grid usage percentage is calculated.",
+              ),
+            },
+          ]}
+        />
         <ModoProfundidade>
           <Bloco id="restricoes">
             <PainelEvidencia

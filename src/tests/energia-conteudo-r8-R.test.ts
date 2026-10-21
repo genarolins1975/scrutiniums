@@ -487,7 +487,8 @@ describe("termos explicados no ponto de uso", () => {
   it("Rede: 'energia escondida pelo saldo' definida antes dos cartões, e o lead não cita mais o 'arquivo de 2026'", () => {
     const t = entender.rede;
     expect(t).toContain("A energia escondida pelo saldo é o menor dos dois sentidos; zero quer dizer que o fluxo foi sempre no mesmo sentido");
-    expect(t.indexOf("A energia escondida pelo saldo é o menor")).toBeLessThan(t.indexOf("Energia escondida pelo saldo de 30 dias, Norte"));
+    expect(t.indexOf("A energia escondida pelo saldo é o menor")).toBeLessThan(t.indexOf("Energia escondida pelo saldo de 30 dias, entre Norte"));
+    expect(t.indexOf("Energia escondida pelo saldo de 30 dias, entre Norte")).toBeGreaterThan(-1);
     expect(t).not.toContain("no arquivo de");
     expect(t).not.toContain("Quatro painéis");
   });
@@ -688,12 +689,19 @@ describe("números que parecem divergir: causa, classificação e explicação n
   });
 
   it("Reservatórios, −3.188,7 e −3.297,8 MWmês (classe 2, janelas que terminam em dias diferentes): as duas variações saem da EAR diária do SE publicada", () => {
+    // as janelas e as variações são as da gold do dia (em 01/10/2026: 29/08 a 28/09, −3.188,7; 30 dias até 29/09, −3.297,8),
+    // e as duas variações se refazem da EAR diária do CSV
     const se = new Map(csv("agua_subsistemas_diario.csv").filter((r) => r.recorte === "SE").map((r) => [r.data, Number(r.ear_mwmes)]));
-    expect(se.get("2026-09-28")! - se.get("2026-08-29")!).toBeCloseTo(DEC_SE.delta_ear_mwmes!, 0);
-    expect(se.get("2026-09-29")! - se.get("2026-08-30")!).toBeCloseTo(ENT_EAR.find((e) => e.id === "SE")!.variacao_30d_mwmes!, 0);
+    const entSe = ENT_EAR.find((e) => e.id === "SE")!;
+    const menos30 = (iso: string) => new Date(Date.parse(`${iso}T00:00:00Z`) - 30 * 86_400_000).toISOString().slice(0, 10);
+    const dmy = (iso: string) => iso.split("-").reverse().join("/");
+    const n1 = (v: number) => (v < 0 ? "−" : "") + Math.abs(v).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    expect(entSe.dia).not.toBe(DEC_SE.fim);
+    expect(se.get(DEC_SE.fim)! - se.get(DEC_SE.inicio)!).toBeCloseTo(DEC_SE.delta_ear_mwmes!, 0);
+    expect(se.get(entSe.dia!)! - se.get(menos30(entSe.dia!))!).toBeCloseTo(entSe.variacao_30d_mwmes!, 0);
     const frase = A.textoOutraJanelaDaEar(DEC_SE, ENT_EAR);
-    expect(frase).toContain("A página de armazenamento mostra −3.297,8 MWmês do Sudeste/Centro-Oeste em 30 dias até 29/09/2026");
-    expect(frase).toContain("Aqui a janela vai de 29/08/2026 a 28/09/2026, o último dia com EAR por reservatório, e a variação é −3.188,7 MWmês");
+    expect(frase).toContain(`A página de armazenamento mostra ${n1(entSe.variacao_30d_mwmes!)} MWmês do Sudeste/Centro-Oeste em 30 dias até ${dmy(entSe.dia!)}`);
+    expect(frase).toContain(`Aqui a janela vai de ${dmy(DEC_SE.inicio)} a ${dmy(DEC_SE.fim)}, o último dia com EAR por reservatório, e a variação é ${n1(DEC_SE.delta_ear_mwmes!)} MWmês`);
     expect(html.reservatorios).toContain(esc(frase));
     // se as duas janelas terminam no mesmo dia, não há o que explicar
     const mesmo = copia(ENT_EAR);
@@ -703,10 +711,11 @@ describe("números que parecem divergir: causa, classificação e explicação n
 
   it("Água, 61,5% em 29/09 (Visão geral traz 61,6% em 28/09): a EAR do SIN no dia de cada página sai da EAR diária publicada", () => {
     const sin = new Map(csv("agua_subsistemas_diario.csv").filter((r) => r.recorte === "SIN").map((r) => [r.data, Number(r.ear_pct)]));
+    // o dia é o da EAR da gold (29/09/2026 na publicação de 01/10/2026)
     const e = ENT_EAR.find((x) => x.id === "SIN")!;
-    expect(e.dia).toBe("2026-09-29");
-    expect(sin.get("2026-09-29")!).toBeCloseTo(e.ear_pct!, 1);
-    expect(A.vereditoArmazenamento(e)).toContain(`Em 29/09/2026, o SIN guardava ${e.ear_pct!.toFixed(1).replace(".", ",")}%`);
+    expect(e.dia).toBe(GA.dias_referencia.ear);
+    expect(sin.get(e.dia!)!).toBeCloseTo(e.ear_pct!, 1);
+    expect(A.vereditoArmazenamento(e)).toContain(`Em ${e.dia!.split("-").reverse().join("/")}, o SIN guardava ${e.ear_pct!.toFixed(1).replace(".", ",")}%`);
   });
 });
 

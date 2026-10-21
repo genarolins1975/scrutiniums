@@ -460,8 +460,9 @@ export function TresTs({ proprios, onerosos, naoOnerosos }: { proprios: number; 
       legenda={
         <>
           A divisão em tarifas, tributos e transferências é a da OCDE (Managing Water for All, 2009), que não recomenda uma proporção entre as três:
-          pede que cada uma seja medida. Os valores são o investimento de 2024 declarado por prestadores e Estados ao SINISA, em reais correntes; a
-          ligação entre as origens do SINISA e as três fontes é aproximação do Observatório, porque o SINISA não as separa assim.
+          pede que cada uma seja medida. Os valores são o investimento de 2024 que os prestadores declararam ao SINISA, o próprio e o do governo
+          estadual, em reais correntes, autodeclarado ao SINISA, sem conferência com demonstrações financeiras auditadas; a ligação entre as
+          origens do SINISA e as três fontes é aproximação do Observatório, porque o SINISA não as separa assim.
         </>
       }
     >

@@ -16,6 +16,9 @@ const TITULOS_TRADUZIDOS: Record<string, { pt: string; en: string }> = {
   "/sobre": { pt: "Sobre a Scrutiniums", en: "About Scrutiniums" },
   "/sobre/erros": { pt: "Registro público de erros", en: "Public error log" },
   "/sobre/governanca": { pt: "Governança editorial", en: "Editorial governance" },
+  "/entrar": { pt: "Entrar", en: "Sign in" },
+  "/entrar/sms": { pt: "Entrar com código por SMS", en: "Sign in with an SMS code" },
+  "/entrar/sms/verificar": { pt: "Código de acesso", en: "Access code" },
 };
 import { ACESSO, listaObservatorios, observatoriosPorExtenso } from "@/lib/acesso";
 
@@ -155,7 +158,9 @@ function documentosDoPar(ctx: TestContext, par: ParDeIdioma) {
 
 // Não filtrar por existência de HTML ou acesso público: toda declaração precisa de prova.
 // O Setor Elétrico tem prova própria, mais exigente e com as páginas de parâmetro: energia-i18n-html.test.ts.
-const PARES_FORA_DO_SETOR = PARES_DE_IDIOMA.filter((par) => !par.pt.startsWith("/setor-eletrico"));
+// A versão aperitivo da Conta de luz é do Setor Elétrico e tem head do endereço público (o caminho interno nunca é canonical):
+// a prova dela é energia-conta-aperitivo.test.ts.
+const PARES_FORA_DO_SETOR = PARES_DE_IDIOMA.filter((par) => !par.pt.startsWith("/setor-eletrico") && par.pt !== "/aperitivo/conta-de-luz");
 describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", (par) => {
   beforeAll(async () => {
     if (!exigirBuild()) return;
@@ -218,10 +223,7 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         "/glossario": { titulo: "Glossário", descricao: "Definições, fórmulas, fontes e limitações de todos os indicadores da Scrutiniums. Fonte única de nomes e definições da plataforma." },
         "/termos": { titulo: "Termos de uso", descricao: "Condições de uso da plataforma Scrutiniums: acesso gratuito mediante cadastro, caráter estritamente informativo, isenção de garantias e limitação de responsabilidade." },
         "/privacidade": { titulo: "Política de privacidade", descricao: "Quais dados a Scrutiniums coleta, por que coleta, por quanto tempo guarda e como você exerce seus direitos." },
-        "/entrar": { titulo: "Entrar", descricao: `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}` },
         "/cadastro": { titulo: "Crie seu acesso", descricao: `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}` },
-        "/entrar/sms": { titulo: "Entrar com código por SMS", descricao: `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}` },
-        "/entrar/sms/verificar": { titulo: "Código de acesso", descricao: `Plataforma gratuita de inteligência analítica baseada em dados verificáveis: ${observatoriosPorExtenso()} (${listaObservatorios()}), com bases públicas, registros oficiais e método declarado. ${ACESSO.curto}` },
       };
       expect(originais[par.pt], "head PT original de cada cenário dinâmico").toBeDefined();
       expect(texto(tag(pt, "title"))).toBe(`${originais[par.pt].titulo} · Scrutiniums`);
@@ -255,10 +257,8 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
     }
     expect(par.conteudo).toBe("portugues_marcado");
     if (documentos.modo === "dinamico") {
-      if (par.pt === "/entrar" || par.pt === "/cadastro" || par.pt === "/entrar/sms") {
+      if (par.pt === "/cadastro") {
         verificarFallbackDinamico(pt, en, documentos.anunciadorPt, documentos.anunciadorEn, { caminho: par.pt, estado: "inicial" });
-      } else if (par.pt === "/entrar/sms/verificar") {
-        verificarFallbackDinamico(pt, en, documentos.anunciadorPt, documentos.anunciadorEn, { caminho: par.pt, estado: "inicial", contador: "liberado" });
       } else {
         verificarFallbackDinamico(pt, en, documentos.anunciadorPt, documentos.anunciadorEn);
       }
@@ -487,8 +487,10 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         ["nome com elemento adicional", (doc) => cartao(doc).nome.childNodes.push(...parseFragment("<span>Additional text</span>").childNodes)],
         ["texto extra no índice", (doc) => indice(doc).childNodes.push(...parseFragment("<p>Additional sentence.</p>").childNodes)],
         ["ressalva omitida", (doc) => {
+          // desde a home recolhida (banca de 19/10/2026) a ressalva fica dentro do details do índice
           const nav = indice(doc), ressalva = tag(nav, "p");
-          nav.childNodes = nav.childNodes.filter((no) => no !== ressalva);
+          const pai = [nav, ...elementos(nav)].find((e) => e.childNodes.includes(ressalva))!;
+          pai.childNodes = pai.childNodes.filter((no) => no !== ressalva);
         }],
         ["ressalva alterada", (doc) => substituirTexto(tag(indice(doc), "p"), () => "The illustrations represent specific places.")],
         ["nome acessível português", (doc) => atributo(indice(doc), "aria-label", "Índice das coleções")],

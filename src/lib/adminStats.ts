@@ -34,16 +34,25 @@ export type SecaoRanking = {
   visitasTotal: number;
 };
 export type EtapaFunil = { rotulo: string; valor: number };
+/** Contas completas por perfil de uso; null = conta anterior à pergunta (sem registro). */
+export type ContagemPerfilUso = { perfilUso: string | null; contas: number };
 export type UsuarioRecente = {
   id: string;
   email: string;
   status: string;
   company: string | null;
   jobTitle: string | null;
+  perfilUso: string | null;
   orgType: string | null;
   orgArea: string | null;
   orgRole: string | null;
   uf: string | null;
+  createdAt: Date;
+};
+/** Entrada na plataforma: cada sessão criada (senha, código SMS ou fim do cadastro). */
+export type AcessoRecente = {
+  id: string;
+  email: string | null;
   createdAt: Date;
 };
 export type RegistroAuditoria = {
@@ -78,8 +87,11 @@ export type AdminStats = {
   sessoesPorDia: PontoDiario[];
   ranking: SecaoRanking[];
   funil: EtapaFunil[];
+  /** Distribuição das contas completas por perfil de uso, da maior para a menor; sem registro por último. */
+  perfisUso: ContagemPerfilUso[];
   falhasVerificacao30d: number;
   usuariosRecentes: UsuarioRecente[];
+  acessosRecentes: AcessoRecente[];
   auditoria: RegistroAuditoria[];
   sugestoesTotal: number;
   sugestoes30d: number;
@@ -125,10 +137,10 @@ export async function getAdminStats(agora = new Date(), idioma: Idioma = "pt"): 
   const corte30d = new Date(agora.getTime() - DIAS_SERIE * 24 * 60 * 60 * 1000);
   const janela = janelaDias(agora, DIAS_SERIE, idioma);
 
-  const [usuariosStatus, sessoesAtivasRows, sessoes30d, eventosTotais, eventos30d, usuariosRecentes, auditoriaRows, sugestoesRows, sugestoesRecentesRows] =
+  const [usuariosStatus, sessoesAtivasRows, sessoes30d, eventosTotais, eventos30d, usuariosRecentes, acessosRecentes, auditoriaRows, sugestoesRows, sugestoesRecentesRows] =
     await Promise.all([
       db
-        .select({ status: schema.users.onboardingStatus, createdAt: schema.users.createdAt })
+        .select({ status: schema.users.onboardingStatus, createdAt: schema.users.createdAt, perfilUso: schema.users.perfilUso })
         .from(schema.users),
       db
         .select({ total: sql<number>`count(*)` })
@@ -157,6 +169,7 @@ export async function getAdminStats(agora = new Date(), idioma: Idioma = "pt"): 
           status: schema.users.onboardingStatus,
           company: schema.users.company,
           jobTitle: schema.users.jobTitle,
+          perfilUso: schema.users.perfilUso,
           orgType: schema.users.orgType,
           orgArea: schema.users.orgArea,
           orgRole: schema.users.orgRole,
@@ -166,6 +179,16 @@ export async function getAdminStats(agora = new Date(), idioma: Idioma = "pt"): 
         .from(schema.users)
         .orderBy(desc(schema.users.createdAt))
         .limit(12),
+      db
+        .select({
+          id: schema.sessions.id,
+          email: schema.users.email,
+          createdAt: schema.sessions.createdAt,
+        })
+        .from(schema.sessions)
+        .leftJoin(schema.users, eq(schema.sessions.userId, schema.users.id))
+        .orderBy(desc(schema.sessions.createdAt))
+        .limit(15),
       db
         .select({
           id: schema.auditLogs.id,
@@ -205,6 +228,13 @@ export async function getAdminStats(agora = new Date(), idioma: Idioma = "pt"): 
     if (u.createdAt >= corte7d) novos7d++;
     if (u.createdAt >= corte30d) novos30d++;
   }
+  const porPerfilUso = new Map<string | null, number>();
+  for (const u of usuariosStatus) {
+    if (u.status !== "COMPLETE") continue;
+    porPerfilUso.set(u.perfilUso, (porPerfilUso.get(u.perfilUso) ?? 0) + 1);
+  }
+  const perfisUso: ContagemPerfilUso[] = Array.from(porPerfilUso, ([perfilUso, contas]) => ({ perfilUso, contas }))
+    .sort((a, b) => (a.perfilUso === null ? 1 : 0) - (b.perfilUso === null ? 1 : 0) || b.contas - a.contas);
   const emOnboarding = STATUS_ONBOARDING.reduce((acc, s) => acc + (porStatus.get(s) ?? 0), 0);
 
   // ---- Eventos: totais all-time por nome
@@ -263,8 +293,10 @@ export async function getAdminStats(agora = new Date(), idioma: Idioma = "pt"): 
     sessoesPorDia: serieDiaria(janela, sessoes30d.map((s) => s.createdAt)),
     ranking,
     funil,
+    perfisUso,
     falhasVerificacao30d,
     usuariosRecentes,
+    acessosRecentes,
     auditoria: auditoriaRows,
     sugestoesTotal: sugestoesRows.length,
     sugestoes30d: sugestoesRows.filter((s) => s.createdAt >= corte30d).length,

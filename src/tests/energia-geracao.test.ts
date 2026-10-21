@@ -26,6 +26,7 @@ import {
   datasDoModulo,
   deContraido,
   diasDoBalancoForaDoPadrao,
+  textoDiasDoBalancoForaDoPadrao,
   diferencasAneelOns,
   downloadsDoPainel,
   emPortugues,
@@ -77,6 +78,7 @@ import type { GoldGeracaoDetalhe } from "@/lib/energia/tipos-geracao";
  */
 const raiz = process.cwd();
 const G: GoldGeracaoDetalhe = JSON.parse(readFileSync(join(raiz, "public/energia/gold/geracao_detalhe.json"), "utf-8"));
+const GOLD_COM_LISTA_EOLICA = "2026-10-20";
 const UF: CamadaGeo = JSON.parse(readFileSync(join(raiz, "public/energia/geo/uf.json"), "utf-8"));
 const clone = <T,>(x: T): T => structuredClone(x);
 const ocorrencias = (h: string, t: string) => h.split(t).length - 1;
@@ -792,11 +794,22 @@ describe("o que mudou, notas de universo e referências ao lado do dado", () => 
     for (let i = 1; i < padrao.length; i++) expect(padrao[i - 1].mwmed ?? 0).toBeGreaterThanOrEqual(padrao[i].mwmed ?? 0);
   });
 
-  it("os dias em que o Balanço registra a eólica muito abaixo da soma das usinas saem das maiores divergências da própria gold", () => {
-    const dias = diasDoBalancoForaDoPadrao(G.matriz.reconciliacao_balanco);
-    expect(dias.map((x) => x.d)).toEqual(expect.arrayContaining(["2026-01-16", "2026-05-09"]));
+  it("os dias em que o Balanço registra a eólica muito abaixo da soma das usinas são a lista inteira da gold, não só os das maiores divergências", (ctx) => {
+    const rec = G.matriz.reconciliacao_balanco;
+    // a lista entrou na gold com o código de 20/10/2026; gold gerada depois disso sem ela reprova
+    if (rec.eolica_abaixo_de_10pct_das_usinas === undefined && G.gerado_em < GOLD_COM_LISTA_EOLICA)
+      ctx.skip(`gold publicada em ${G.gerado_em}, anterior à lista dos dias da eólica`);
+    const dias = diasDoBalancoForaDoPadrao(rec);
+    expect(rec.eolica_abaixo_de_10pct_das_usinas).toBeDefined();
+    expect(dias.length).toBe(rec.eolica_abaixo_de_10pct_das_usinas!.length);
     for (const x of dias) expect(x.balanco_mwh).toBeLessThan(0.1 * x.usinas_mwh);
-    expect(dias.map((x) => x.d)).toEqual([...dias.map((x) => x.d)].sort());
+    // todo caso da regra que aparece entre as maiores divergências está na lista (tirados só delas, a frase perdia 07/03/2026
+    // no Sul na gold de 20/10/2026, abaixo das 15 maiores)
+    const chave = (x: { d: string; sm: string }) => `${x.d}|${x.sm}`;
+    const naLista = new Set(dias.map(chave));
+    for (const x of rec.maiores_divergencias)
+      if (x.fonte === "eolica" && x.usinas_mwh && x.balanco_mwh !== null && x.balanco_mwh < 0.1 * x.usinas_mwh) expect(naLista.has(chave(x)), chave(x)).toBe(true);
+    expect(dias.map(chave)).toEqual([...dias.map(chave)].sort());
   });
 
   it("a lacuna de usinas sem dado aparece ao lado da variação das categorias que seguem comparáveis, e a categoria suprimida fica de fora", () => {
@@ -931,8 +944,20 @@ describe("páginas com as correções das avaliações independentes", () => {
     expect(x).toContain("CVU 0,00 é valor publicado pela fonte");
     expect(x).toContain("nunca é tratado como ausência");
     expect(x).toContain("que reúnem todas as estações do ano, não só esta época");
-    expect(x).toContain("No Balanço, a eólica fica muito abaixo da soma das usinas em 16/01/2026 (Nordeste), 07/03/2026 (Nordeste e Sul) e 09/05/2026 (Nordeste e Sul); por exemplo, 10,8 GWh contra 329,9 GWh no Nordeste em 16/01/2026");
-    expect(x).toContain("podem ter a participação térmica distorcida");
+    // os dias vêm das maiores divergências da gold do dia (em 01/10/2026: 16/01, 07/03 e 09/05/2026, com 10,8 contra 329,9 GWh
+    // no Nordeste em 16/01/2026 como exemplo); cada dia, com o subsistema, e o maior caso estão na nota
+    const dias = diasDoBalancoForaDoPadrao(G.matriz.reconciliacao_balanco);
+    if (dias.length) {
+      const nota = textoDiasDoBalancoForaDoPadrao(dias);
+      expect(x).toContain(nota);
+      for (const d of dias) expect(nota, d.d).toContain(d.d.split("-").reverse().join("/"));
+      const ex = [...dias].sort((a, b) => b.usinas_mwh - a.usinas_mwh)[0];
+      const gwh = (v: number) => (v / 1000).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+      expect(nota).toContain(`por exemplo, ${gwh(ex.balanco_mwh)} GWh contra ${gwh(ex.usinas_mwh)} GWh`);
+      expect(x).toContain("podem ter a participação térmica distorcida");
+    } else {
+      expect(x).not.toContain("No Balanço, a eólica fica muito abaixo");
+    }
     // o que mudou traz a variação mensal da térmica
     expect(x).toContain(`A geração das térmicas despachadas em ${mesAno(t.ultimo_mes_completo)}:`);
   });

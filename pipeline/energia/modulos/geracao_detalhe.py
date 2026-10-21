@@ -226,7 +226,8 @@ REGISTRO = {
                                   "gnra_fonte_mwh (campo publicado pelo ONS, quando existe); meias_horas_limitadas; e, na linha "
                                   "razao = TOTAL, geracao_verificada_mwh, meias_horas e potencia_max_cortada_mw."),
         CSV["restricao_usina"]: ("mes; fonte; id_ons; nome; subsistema; uf; geracao_verificada_mwh; energia não gerada estimada "
-                                 "por razão (eng_REL, eng_CNF, eng_ENE, eng_PAR, eng_SEM, em MWh); meias_horas; meias_horas_limitadas."),
+                                 "por razão (eng_REL, eng_CNF, eng_ENE, eng_PAR, eng_SEM, em MWh); meias_horas; meias_horas_limitadas. Energias com "
+                                 "quatro casas decimais, a precisão do silver: a soma das linhas reproduz o total do painel."),
         CSV["capacidade_unidades"]: ("cod_equipamento; usina; ceg; tipo; combustivel (rótulo da unidade); categoria (a da usina "
                                      "na Geração por Usina, a mesma do fator de capacidade); origem_categoria (geracao_por_usina, "
                                      "geracao_por_usina_ceg_base, conjunto, rotulo_da_unidade, demais_unidades_do_ceg); modalidade; "
@@ -952,6 +953,7 @@ ROTULO_NATUREZA = {
 # (até 24 × 700 parcelas de ±0,0005) tem desvio-padrão de cerca de 0,04 MWh; 1 MWh é 25
 # desvios, e qualquer diferença de definição (uma usina a mais ou a menos) passa disso.
 TOL_DIA_MWH = 1.0
+LIMIAR_BALANCO_EOLICA = 0.1  # eólica do Balanço abaixo de 10% da soma das usinas no subsistema e dia: registro fora do padrão
 # Fator de capacidade mensal acima de 100% numa usina é fisicamente impossível com a
 # potência certa: indica potência do cadastro menor que a real no mês (unidade em teste
 # gerando antes da operação comercial, repotenciação não registrada). Fica na conta e é
@@ -1828,6 +1830,12 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
                         "soma_diferencas_mwh": c.r(sum(x["dif_ajustada"] for x in xs), 1),
                         "soma_balanco_mwh": c.r(sum(x["bal"] for x in xs), 1)}
     maiores = sorted(rec, key=lambda x: -abs(x["dif_ajustada"]))[:15]
+    # Dias em que o Balanço registra a eólica de um subsistema abaixo de 10% da soma das usinas: a lista inteira. A página
+    # nomeia esses dias; tirados das 15 maiores divergências, saíam da frase quando outras divergências as superavam (07/03/2026
+    # no Sul, gold de 20/10/2026), e a frase deixava de ser a lista dos dias.
+    eolica_abaixo = [{"d": x["d"], "sm": x["sm"], "balanco_mwh": c.r(x["bal"], 1), "usinas_mwh": c.r(x["us"], 1)}
+                     for x in sorted(rec, key=lambda x: (x["d"], x["sm"]))
+                     if x["f"] == "eolica" and x["us"] > 0 and x["bal"] < LIMIAR_BALANCO_EOLICA * x["us"]]
     reconciliacao = {
         "tolerancia_mwh_por_subsistema_dia": TOL_DIA_MWH,
         "por_fonte": por_fonte,
@@ -1837,6 +1845,7 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
                     "primeiro_dia_sem_exclusao_apos": min((d for d in rr_dias if rr_excl and d > max(rr_excl)), default=None),
                     "regra": ("Dia em que o balanço exclui Roraima: diferença balanço − usinas no Norte igual, dentro da tolerância, "
                               "à térmica das usinas de Roraima (UF RR) na Geração por Usina. Só nesses dias a diferença é ajustada.")},
+        "eolica_abaixo_de_10pct_das_usinas": eolica_abaixo,
         "maiores_divergencias": [{"d": x["d"], "fonte": x["f"], "sm": x["sm"], "balanco_mwh": c.r(x["bal"], 1),
                                   "usinas_mwh": c.r(x["us"], 1), "diferenca_mwh": c.r(x["dif_ajustada"], 1)} for x in maiores],
         "mensal_ultimos_6": [x for x in rec_mensal if x["mes"] >= _meses_entre(ok[0][:7], dia_ref[:7])[-6]],
@@ -3070,10 +3079,13 @@ def escreve_csvs(ctx, D_u, cat_dia, horas, rotulos, cache, bal, matriz, termica,
         for (d, sm), x in sorted(b["_sm_dia"].items()):
             lin_d.append([d, fonte, sm, "TOTAL", "", c.r(eng_tot.get((d, sm), 0.0), 3), None, int(x.get("l", 0)), c.r(x.get("g"), 3),
                           int(x.get("m", 0)), c.r(b["_pot"].get((d, sm)), 3) if (d, sm) in b["_pot"] else 0.0])
+        # Quatro casas, as do silver: a energia de meia hora é MW × 0,5 h e termina em 0 ou 5 na
+        # quarta casa; com três casas, o arredondamento meio para cima subia metade dos valores em
+        # 0,0005 MWh e a soma de 12 meses do CSV passava a do cartão em 1,088 MWh (eólica, 20/10/2026).
         for (m, ido), x in sorted(b["_usina"].items()):
             r_ = b["_cad"].get(ido, {})
-            lin_u.append([m, fonte, ido, r_.get("nome"), r_.get("sm"), r_.get("uf"), c.r(x.get("ger"), 3)] +
-                         [c.r(x.get(f"eng_{r}", 0.0), 3) for r in RAZOES] + [int(x.get("meias", 0)), int(x.get("lim", 0))])
+            lin_u.append([m, fonte, ido, r_.get("nome"), r_.get("sm"), r_.get("uf"), c.r(x.get("ger"), 4)] +
+                         [c.r(x.get(f"eng_{r}", 0.0), 4) for r in RAZOES] + [int(x.get("meias", 0)), int(x.get("lim", 0))])
     _csv(ctx, nome(CSV["restricao_diaria"]), ["data", "fonte", "regiao", "razao", "origem", "energia_nao_gerada_mwh", "gnra_fonte_mwh",
                                               "meias_horas_limitadas", "geracao_verificada_mwh", "meias_horas",
                                               "potencia_max_cortada_mw"], lin_d)

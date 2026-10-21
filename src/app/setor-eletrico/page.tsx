@@ -1,4 +1,3 @@
-import { GravuraEnergia } from "@/components/energia/GravuraEnergia";
 import { DuasCamadasEnergia } from "@/components/energia/ComercializacaoDidatica";
 import { LeiturasIntegradas } from "@/components/energia/LeiturasIntegradas";
 import Image from "next/image";
@@ -23,6 +22,10 @@ import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
 import { conjuntoLegivel, descreverVariacao, valorDestaque } from "@/lib/energia/evidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { ParaVoce } from "@/components/observatorios/ParaVoce";
+import { ArteFoto, ArtePrancha } from "@/components/observatorios/ArteParaVoce";
+import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import { LINKEDIN_URL } from "@/lib/contato";
 import { conceito, conceitos } from "@/lib/energia/conteudo/conceitos";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
@@ -698,6 +701,7 @@ function BlocoPergunta({ p, sinal, escolhas }: { p: PerguntaDoCartao; sinal: Sin
               emParte={dados.emParte}
               semDado={dados.semDado}
               emParteTexto={dados.emParteTexto}
+              destinoEscolhida={por.hrefEscolhida}
               className={`rotulo ${link}`}
             />
             {termo}
@@ -798,39 +802,30 @@ export default function MapaDoObservatorio() {
       <MarcaVisita secao="energia:mapa" />
       <RedirecionaAncoraAntiga ancoras={ANCORAS_VISAO_GERAL} destino="/setor-eletrico/visao-geral" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina energia-atlas-inicial pb-12">
-        {/* hero: a proposta, a busca e os quatro caminhos, tudo na primeira tela */}
-        <header id="proposito" className="scroll-mt-24 pb-8 pt-6 md:pb-10 md:pt-10">
-          <div className="energia-cenario">
-            <Image
-              className="energia-cenario-imagem"
-              src="/energia/arte/sistema-gravura-v1.webp"
-              alt={tx(
-                "Gravura conceitual de uma paisagem imaginária com reservatório, hidrelétrica, eólicas, painéis solares, linhas de transmissão, subestação e cidade.",
-                "Conceptual engraving of an imaginary landscape with a reservoir, a hydropower plant, wind turbines, solar panels, transmission lines, a substation and a city.",
-              )}
-              width={1440}
-              height={720}
-              sizes="(max-width: 1240px) 100vw, 1240px"
-              priority
-            />
-            <div className="energia-cenario-texto">
+        {/* frescor dos dados diários na primeira tela: em 19/10/2026 a entrada mostrava o PLD de 30/09 sem dizer que a publicação estava parada */}
+        <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/setor-eletrico"]} idioma={idiomaEnergia()} />
+        {/* abertura (20/10/2026): a pergunta do observatório e, ao lado, os três números de entrada com fonte e período, tudo na
+            primeira tela; a gravura do sistema saiu daqui e abre o percurso da usina à tomada, depois do "Para você" */}
+        <header id="proposito" className="scroll-mt-24 pb-6 pt-6 md:pb-8 md:pt-10">
+          <div className="energia-abertura">
+            <div className="energia-abertura-texto">
               <p className="rotulo">{tx<ReactNode>("Observatório Brasileiro do Setor Elétrico", <><Nome>Setor Elétrico</Nome> · Brazilian power sector observatory</>)}</p>
-              <h1>{tx("A energia que move o Brasil.", "The energy that powers Brazil.")}</h1>
-              <p>{tx("Explore o sistema. Compare regiões. Entenda sua conta.", "Explore the system. Compare regions. Understand your bill.")}</p>
+              <h1>{tx("De onde vem a energia e quanto ela custa?", "Where does power come from, at what cost?")}</h1>
+              <p>
+                {tx(
+                  "Preço, reservatórios, geração, consumo e rede do sistema elétrico, e o que chega à sua conta de luz. Cada número traz fonte, período e referência.",
+                  "Price, reservoirs, generation, consumption and the grid of the power system, and what reaches your electricity bill. Every number carries its source, period and reference.",
+                )}
+              </p>
               <a className="energia-explorar" href="#percurso-energia">{tx("Explorar o sistema", "Explore the system")} <span aria-hidden="true">↓</span></a>
             </div>
-            <nav className="energia-cenario-pontos" aria-label={tx("Explore as etapas do sistema elétrico", "Explore the stages of the power system")}>
-              {ETAPAS_ENERGIA_IDIOMAS[idiomaEnergia()].map(e =>
- <a key={e.id} href={`#etapa-${e.id}`} data-etapa={e.id}><span>{e.numero}</span>{e.nome}</a>)}
-            </nav>
-            <p className="energia-cenario-legenda">{tx("Ilustração conceitual gerada por IA · sem escala geográfica", "AI-generated conceptual illustration · not to geographic scale")}</p>
-          </div>
-          <div className="energia-abertura-medidas" aria-label={tx("Três medidas de entrada, com períodos próprios", "Three opening measures, each with its own period")}>
-            {["agua", "pld", "qualidade"].map(id => { const s = sinais.find(x => x.id === id)!; return <a href={`#pergunta-${id}`} key={id}>
-              <span>{s.medida}</span><strong>{s.estado === "disponivel" ? s.valorTexto : tx("Sem dado", "No data")}</strong>
-              <span>{s.estado === "disponivel" ? s.unidade : s.motivo}</span><small>{s.periodo ?? tx("Período indisponível", "Period unavailable")} · {orgaoPorExtenso(id === "agua" ? "ONS" : id === "pld" ? "CCEE" : "ANEEL")}</small>
-              <span className="energia-abertura-link">{tx("Ver universo, referência e fonte ↓", "See universe, reference and source ↓")}</span>
-            </a>; })}
+            <div className="energia-abertura-medidas" aria-label={tx("Três medidas de entrada, com períodos próprios", "Three opening measures, each with its own period")}>
+              {["agua", "pld", "qualidade"].map(id => { const s = sinais.find(x => x.id === id)!; return <a href={`#pergunta-${id}`} key={id}>
+                <span>{s.medida}</span><strong>{s.estado === "disponivel" ? s.valorTexto : tx("Sem dado", "No data")}</strong>
+                <span>{s.estado === "disponivel" ? s.unidade : s.motivo}</span><small>{s.periodo ?? tx("Período indisponível", "Period unavailable")} · {orgaoPorExtenso(id === "agua" ? "ONS" : id === "pld" ? "CCEE" : "ANEEL")}</small>
+                <span className="energia-abertura-link">{tx("Ver universo, referência e fonte ↓", "See universe, reference and source ↓")}</span>
+              </a>; })}
+            </div>
           </div>
           <p className="energia-medidas-nota">
             {tx(
@@ -957,42 +952,39 @@ export default function MapaDoObservatorio() {
           </dl>
           </details>
         </header>
+        {/* "Para você" (Onda 2): as perguntas do leitor sobre o próprio caso, a um clique, logo depois das medidas de abertura; substitui os dois cartões "Qual pergunta você quer responder?" */}
+        <ParaVoce
+          entrada="/setor-eletrico"
+          idioma={idiomaEnergia()}
+          conteiner=""
+          artes={{ luz: <ArteFoto src="/energia/arte/conta-gravura-v1.webp" />, "falta-luz": <ArtePrancha etapa="distribuicao" />, "tarifa-social-luz": <ArtePrancha etapa="consumo" /> }}
+        />
+        {/* a gravura do sistema abre o percurso: as quatro etapas levam a cada trecho dele */}
+        <figure className="energia-cenario" aria-label={tx("Da geração ao consumo, em quatro etapas", "From generation to consumption, in four stages")}>
+          <Image
+            className="energia-cenario-imagem"
+            src="/energia/arte/sistema-gravura-v1.webp"
+            alt={tx(
+              "Gravura conceitual de uma paisagem imaginária com reservatório, hidrelétrica, eólicas, painéis solares, linhas de transmissão, subestação e cidade.",
+              "Conceptual engraving of an imaginary landscape with a reservoir, a hydropower plant, wind turbines, solar panels, transmission lines, a substation and a city.",
+            )}
+            width={1440}
+            height={720}
+            sizes="(max-width: 1240px) 100vw, 1240px"
+          />
+          <nav className="energia-cenario-pontos" aria-label={tx("Explore as etapas do sistema elétrico", "Explore the stages of the power system")}>
+            {ETAPAS_ENERGIA_IDIOMAS[idiomaEnergia()].map((e) => (
+              <a key={e.id} href={`#etapa-${e.id}`} data-etapa={e.id}>
+                <span>{e.numero}</span>
+                {e.nome}
+              </a>
+            ))}
+          </nav>
+          <figcaption className="energia-cenario-legenda">{tx("Ilustração conceitual gerada por IA · sem escala geográfica", "AI-generated conceptual illustration · not to geographic scale")}</figcaption>
+        </figure>
         <PercursoVisualEnergia />
         <DuasCamadasEnergia compacto />
         <LeiturasIntegradas />
-        <section className="energia-portas" aria-labelledby="energia-portas-titulo">
-          <h2 id="energia-portas-titulo">{tx("Qual pergunta você quer responder?", "Which question do you want to answer?")}</h2>
-          <div className="energia-portas-grade">
-            <Link href="/setor-eletrico/conta-de-luz" className="energia-porta energia-porta-conta">
-              <div>
-                <h3>{tx("Por que minha conta tem esse valor?", "Why is my bill this amount?")}</h3>
-                <p>
-                  {tx(
-                    "Explore TE e TUSD, tributos e bandeiras. Simule o consumo em kWh e veja o efeito de cada hipótese na conta.",
-                    "Explore the TE and TUSD (energy tariff and distribution system use tariff), taxes and tariff flags. Simulate consumption in kWh and see the effect of each assumption on the bill.",
-                  )}
-                </p>
-                <small>{tx("Tarifa homologada não é o valor final da fatura. A página mostra fontes, vigência e hipóteses.", "The approved tariff is not the final amount on the bill. The page shows sources, validity periods and assumptions.")}</small>
-                <span>{tx("Entender e simular a conta ↗", "Understand and simulate the bill ↗")}</span>
-              </div>
-              <Image src="/energia/arte/conta-gravura-v1.webp" alt="" width={720} height={720} sizes="(max-width: 480px) 100vw, 280px" />
-            </Link>
-            <Link href="/setor-eletrico/territorio" className="energia-porta energia-porta-regiao">
-              <div>
-                <h3>{tx("Como é o serviço na minha região?", "What is the service like in my region?")}</h3>
-                <p>
-                  {tx(
-                    "Localize seu município ou estado, identifique distribuidoras e usinas e siga para tarifas e qualidade do serviço.",
-                    "Find your municipality or state, identify distribution utilities and power plants, and go on to tariffs and quality of supply.",
-                  )}
-                </p>
-                <small>{tx("Os indicadores têm recortes próprios; a localização não estima o serviço de uma residência.", "The indicators have their own scopes; the location does not estimate the service of a household.")}</small>
-                <span>{tx("Explorar minha região ↗", "Explore my region ↗")}</span>
-              </div>
-              <GravuraEnergia etapa="distribuicao" className="energia-porta-arte" />
-            </Link>
-          </div>
-        </section>
         <div className="obs-home-search">              <div>
                 <BuscaObservatorio
                   itens={busca}
@@ -1510,6 +1502,7 @@ export default function MapaDoObservatorio() {
             "The latest period of each main source, on the source's own calendar. Nothing here is real time: each source publishes at its own pace.",
           )}
         >
+          <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/setor-eletrico"]} variante="metodo" idioma={idiomaEnergia()} className="mb-8" />
           <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-4" data-resumo-atualidade="">
             {pubFontes && (
               <div>

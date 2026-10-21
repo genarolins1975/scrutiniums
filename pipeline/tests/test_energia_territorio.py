@@ -626,19 +626,44 @@ class GoldPublicada(unittest.TestCase):
         # ao menos 10 empreendimentos e 5% do município = vínculo 2. Resultado: 6.259
         # vínculos na malha (6.044 / 191 / 24), 5.566 municípios com distribuidora, 440
         # compartilhados, CEMIG-D com 800 (776 + 24), só 2109056 sem vínculo e 4314530 fora da malha.
+        # Os números acima valem para a relação daquela data (perdas_municipios.json de sha256 ca26a40b…); a cada
+        # captura nova do cadastro de MMGD um vínculo 0 pode virar 1 (20/10/2026: 6.046 / 189 / 24 e 442
+        # compartilhados). Regra para qualquer data: o território conta a relação que o módulo Perdas publica,
+        # recontada aqui do arquivo dele, sem código do território.
         r = self.g["resumo"]
-        self.assertEqual(r["municipios"], 5571)
-        self.assertEqual(r["municipios_compartilhados"], 440)
-        self.assertEqual(r["municipios_com_distribuidora"], 5566)
+        fonte = self.g["evidencias"]["municipios_compartilhados"]["fonte"]
+        with open(os.path.join(base.RAIZ, fonte["arquivo"]), encoding="utf-8") as f:
+            rel = json.load(f)
+        malha = set(self.linhas)
+        validos = {cod: {i for i, e in x["d"] if e in (1, 2)} for cod, x in rel["municipios"].items() if cod in malha}
+        estados_rel = defaultdict(int)
+        for cod, x in rel["municipios"].items():
+            if cod in malha:
+                for _i, e in x["d"]:
+                    estados_rel[e] += 1
         estados = defaultdict(int)
         for l in self.m["linhas"]:
             for _i, e in l[self.C["dist"]]:
                 estados[e] += 1
-        self.assertEqual(dict(estados), {1: 6044, 0: 191, 2: 24})
-        self.assertEqual([x["codigo"] for x in r["municipios_sem_vinculo"]], ["2109056"])
-        self.assertEqual([x["codigo"] for x in r["codigos_da_relacao_fora_da_malha"]], ["4314530"])
+        self.assertEqual(r["municipios"], len(malha))
+        self.assertEqual(r["municipios_compartilhados"], sum(1 for v in validos.values() if len(v) > 1))
+        self.assertEqual(r["municipios_com_distribuidora"], sum(1 for v in validos.values() if v))
+        self.assertEqual(dict(estados), dict(estados_rel))
+        self.assertEqual([x["codigo"] for x in r["municipios_sem_vinculo"]],
+                         sorted(c for c in malha if not (rel["municipios"].get(c) or {}).get("d")))
+        self.assertEqual([x["codigo"] for x in r["codigos_da_relacao_fora_da_malha"]], sorted(c for c in rel["municipios"] if c not in malha))
         cemig = self.dist["CEMIG-D"]
-        self.assertEqual((cemig["area"]["municipios"], cemig["area"]["confirmados"], cemig["area"]["nao_confirmados"]), (800, 776, 24))
+        i_cemig = rel["distribuidoras"].index(cemig["cnpj"])
+        e_cemig = [e for cod, x in rel["municipios"].items() if cod in malha for i, e in x["d"] if i == i_cemig]
+        self.assertEqual((cemig["area"]["municipios"], cemig["area"]["confirmados"], cemig["area"]["nao_confirmados"]),
+                         (len(e_cemig), e_cemig.count(1), e_cemig.count(0)))
+        if fonte["sha256"] == "ca26a40bd3092949748644640517361b5e2bef76ef022afe102afe6abbc15143":
+            # a relação da reconstrução independente de 01/10/2026: os números dela, escritos
+            self.assertEqual((r["municipios"], r["municipios_compartilhados"], r["municipios_com_distribuidora"]), (5571, 440, 5566))
+            self.assertEqual(dict(estados), {1: 6044, 0: 191, 2: 24})
+            self.assertEqual([x["codigo"] for x in r["municipios_sem_vinculo"]], ["2109056"])
+            self.assertEqual([x["codigo"] for x in r["codigos_da_relacao_fora_da_malha"]], ["4314530"])
+            self.assertEqual((cemig["area"]["municipios"], cemig["area"]["confirmados"], cemig["area"]["nao_confirmados"]), (800, 776, 24))
 
     def test_tarifa_da_distribuidora_igual_ao_arquivo_original(self):
         # tarifas-homologadas-distribuidoras-energia-eletrica.csv (bronze de 30/09/2026), linha
@@ -702,7 +727,10 @@ class GoldPublicada(unittest.TestCase):
         self.assertEqual((amb["area"]["confirmados"], amb["area"]["fora_do_sin"], amb["area"]["com_localidade_isolada"]), (58, 49, 3))
         self.assertEqual(amb["submercados"], [{"sm": "N", "municipios": 9}])     # só os 9 municípios no SIN
         self.assertTrue(amb["parte_fora_do_sin"])
-        rr = self.dist["ÂMBAR ENERGIA RR"]
+        # a sigla vem do cadastro da ANEEL e mudou (ÂMBAR ENERGIA RR em 01/10/2026, ÂMBAR RORAIMA em 20/10/2026):
+        # a distribuidora de Roraima é procurada pelo CNPJ
+        rr = next(d for d in self.g["distribuidoras"] if d["cnpj"] == "02341470000144")
+        self.assertIn("RORAIMA", rr["nome"].upper())
         self.assertEqual((rr["area"]["confirmados"], rr["area"]["fora_do_sin"], rr["submercados"]), (15, 3, [{"sm": "N", "municipios": 12}]))
         self.assertFalse(self.dist["CEMIG-D"]["parte_fora_do_sin"])
         # 52 no AM: os 49 da Âmbar com vínculo válido mais Amaturá, Santo Antônio do Içá e São
@@ -735,10 +763,19 @@ class GoldPublicada(unittest.TestCase):
         self.assertIsNone(self.col("3550308", "lpt_dom"))                  # sem linha no arquivo: nulo, não zero
         self.assertEqual(self.col("2109056", "usi_op_n"), 0)                # SIGA é cadastro completo: zero real
         self.assertEqual(self.col("3550308", "isol_n"), 0)
-        cod = self.dist["CODESAM"]["indicadores"]["tarifa"]
-        self.assertFalse(cod["disponivel"])
-        self.assertTrue(cod["motivo"])
-        self.assertNotIn("valor", cod)
+        # tarifa ausente: motivo e nenhum número (a CODESAM, sem tarifa em 01/10/2026, tem a REH 3.780/2026 desde 30/09;
+        # a regra vale para toda distribuidora sem tarifa, e há sempre as encerradas ou incorporadas)
+        sem = [d["indicadores"]["tarifa"] for d in self.g["distribuidoras"] if not d["indicadores"]["tarifa"]["disponivel"]]
+        self.assertTrue(sem)
+        for cod in sem:
+            self.assertTrue(cod["motivo"])
+            for campo in ("valor", "total_rs_mwh", "te_rs_mwh", "tusd_rs_mwh"):
+                self.assertNotIn(campo, cod)
+        com = [d["indicadores"]["tarifa"] for d in self.g["distribuidoras"] if d["indicadores"]["tarifa"]["disponivel"]]
+        self.assertTrue(com)
+        for cod in com:
+            self.assertGreater(cod["total_rs_mwh"], 0)
+            self.assertNotIn("motivo", cod)
         nao = [x for x in self.g["compatibilidade"] if not x["valida"]]
         self.assertEqual({(x["de"], x["para"]) for x in nao},
                          {("submercado", "municipio"), ("usina", "submercado"), ("usina", "distribuidora")})
@@ -782,28 +819,39 @@ class GoldPublicada(unittest.TestCase):
         self.assertEqual(ind["pld_dia"]["natureza"], "CALCULADO")
         self.assertEqual(P["pld_dia"]["natureza"], "CALCULADO")
         self.assertIn("PLD_dia", P["pld_dia"]["formula"])
-        self.assertEqual(P["pld_dia"]["periodo_referencia"], {"inicio": "2026-09-30", "fim": "2026-09-30"})
-        self.assertEqual(P["pld_mes"]["periodo_referencia"], {"inicio": "2026-09", "fim": "2026-09"})
+        # período do valor exibido: o dos indicadores dos submercados, que é o que a página mostra (em 01/10/2026,
+        # PLD do dia 30/09, PLD do mês 09/2026, EAR de 29/09 e MMGD do ONS 08/2026)
+        def exibido(k):
+            return {json.dumps(s_["indicadores"][k]["periodo"]) for s_ in self.g["submercados"]
+                    if (s_["indicadores"].get(k) or {}).get("disponivel")}
+        for k_prov, k_ind in (("pld_dia", "pld_dia"), ("pld_mes", "pld_mes"), ("ear", "ear"), ("mmgd_ons", "mmgd_ons")):
+            self.assertEqual(exibido(k_ind), {json.dumps(P[k_prov]["periodo_referencia"])}, k_prov)
+        self.assertEqual(P["pld_dia"]["periodo_referencia"]["inicio"], self.g["referencias"]["pld_dia"])
+        self.assertEqual(P["ear"]["periodo_referencia"]["inicio"], self.g["referencias"]["ear_dia"])
+        self.assertRegex(P["pld_mes"]["periodo_referencia"]["inicio"], r"^\d{4}-\d{2}$")
         # EAR do subsistema: observada pelo ONS, sem a fórmula do SIN, métrica própria
         self.assertEqual((P["ear"]["natureza"], P["ear"]["formula"]), ("OBSERVADO", None))
         self.assertNotIn("SIN", " ".join(P["ear"]["transformacoes"]))
         self.assertEqual(ind["ear_pct"]["metrica"], "territorio_ear_subsistema_pct")
-        self.assertEqual(P["ear"]["periodo_referencia"], {"inicio": "2026-09-29", "fim": "2026-09-29"})
+        self.assertEqual(P["ear"]["periodo_referencia"]["inicio"], P["ear"]["periodo_referencia"]["fim"])  # um dia
         # período do valor exibido, não a cobertura da fonte
         self.assertEqual(P["distribuidora_perdas"]["periodo_referencia"], {"inicio": "2025", "fim": "2025"})
         self.assertEqual(P["isolados"]["periodo_referencia"], {"inicio": "2025", "fim": "2025"})
-        self.assertEqual(P["mmgd_ons"]["periodo_referencia"], {"inicio": "2026-08", "fim": "2026-08"})
+        self.assertRegex(P["mmgd_ons"]["periodo_referencia"]["inicio"], r"^\d{4}-\d{2}$")              # um mês, não a série
         self.assertNotIn("scrutiniums.com", P["indice"]["fonte"]["url_dataset"])
 
     def test_evidencia_com_captura_original_e_consulta_atual(self):
         E = self.g["evidencias"]
         f = E["municipios_compartilhados"]["fonte"]
-        # captura do IndQual pelo módulo Perdas, não a geração do arquivo intermediário
-        self.assertEqual(f["capturado_em"], "2026-09-30T22:32:46Z")
-        self.assertTrue(f["processado_em"] and f["processado_em"] != f["capturado_em"])
+        # captura do IndQual pelo módulo Perdas (a do snapshot do original), não a geração do arquivo intermediário
+        # (01/10/2026: 2026-09-30T22:32:46Z, e o SIGA em 2026-09-30T22:18:54Z)
+        for ev_, ds in ((f, "aneel_indqual_municipio"), (E["usinas_municipio_reconhecido"]["fonte"], "aneel_siga")):
+            self.assertEqual(ev_["snapshot_original"]["id"], f"{ds}@{ev_['capturado_em']}")
+            self.assertTrue(ev_["processado_em"] and ev_["processado_em"] != ev_["capturado_em"])
+            self.assertLessEqual(ev_["capturado_em"], ev_["processado_em"])
         u = E["usinas_municipio_reconhecido"]["fonte"]
-        self.assertEqual(u["capturado_em"], "2026-09-30T22:18:54Z")        # captura do SIGA
         self.assertTrue(u["publicado_em"])
+        self.assertLessEqual(u["publicado_em"], u["capturado_em"])
         self.assertIn("meia_hora.", E["municipios_com_submercado"]["consulta"])
         self.assertNotIn("carga_global_mwmed", E["municipios_com_submercado"]["consulta"])
 
@@ -828,17 +876,36 @@ class GoldPublicada(unittest.TestCase):
     def test_areas_publicam_as_duas_estatisticas(self):
         ac = self.g["areas_carga"]
         self.assertEqual(ac["mapeamento_epe"], UF_SM)
-        d16 = next(c for c in ac["conferencias"] if c["dia"] == "2026-09-16")
-        self.assertEqual(d16["menor_alternativa"]["descricao"], "troca AC e RR")
-        self.assertEqual(d16["menor_alternativa_pelas_medias"]["descricao"], "troca RO e TON")
-        self.assertEqual(d16["alternativas_que_fechariam_pelas_medias"], ["troca RO e TON", "troca RS e BASE"])
         with open(os.path.join(base.SERIES, "territorio_areas_alternativas.csv"), encoding="utf-8") as f:
             alts = list(csv.DictReader(f, delimiter=";"))
-        self.assertEqual(len(alts), 2 * 297)
+        # as duas estatísticas de cada conferência relidas do CSV: a menor pela mediana das meias horas, a menor pelo
+        # resíduo das médias do dia e as que fechariam pelas médias (resíduo dentro da tolerância). Os dias mudam com a
+        # coleta (01/10/2026: 16/09 e 13/09; 20/10/2026: 17/09 e 13/09)
+        self.assertEqual(len(alts), sum(c["alternativas_avaliadas"] for c in ac["conferencias"]))
+        for c_ in ac["conferencias"]:
+            do_dia = [a for a in alts if a["dia"] == c_["dia"]]
+            self.assertEqual(len(do_dia), c_["alternativas_avaliadas"], c_["dia"])
+            menor = min(do_dia, key=lambda a: (float(a["mediana_abs_meia_hora_mwmed"]), a["alternativa"]))
+            menor_md = min(do_dia, key=lambda a: (float(a["residuo_medias_dia_mwmed"]), a["alternativa"]))
+            self.assertEqual(c_["menor_alternativa"]["descricao"], menor["alternativa"], c_["dia"])
+            self.assertEqual(c_["menor_alternativa_pelas_medias"]["descricao"], menor_md["alternativa"], c_["dia"])
+            self.assertEqual(c_["alternativas_que_fechariam_pelas_medias"],
+                             sorted(a["alternativa"] for a in do_dia if float(a["residuo_medias_dia_mwmed"]) <= c_["tolerancia_mwmed"]))
+            if c_["dia"] == "2026-09-16":  # a conferência lida em 01/10/2026
+                self.assertEqual((c_["menor_alternativa"]["descricao"], c_["menor_alternativa_pelas_medias"]["descricao"],
+                                  c_["alternativas_que_fechariam_pelas_medias"]),
+                                 ("troca AC e RR", "troca RO e TON", ["troca RO e TON", "troca RS e BASE"]))
         self.assertFalse([a for a in alts if a["fecha"] == "1"])
 
     def test_tamanhos(self):
         self.assertLess(os.path.getsize(GOLD), 400 * 1024)
+        # a lista de exemplos de revisão reapresentada fica no que a ficha mostra; a completa está na gold de origem
+        # (20/10/2026: 90 exemplos repetidos de outras golds passaram a gold de 400 KB)
+        for nome, p in self.g["proveniencia"].items():
+            rev = (p or {}).get("revisoes_conhecidas")
+            if isinstance(rev, dict):
+                self.assertLessEqual(len(rev.get("exemplos") or []), t.EXEMPLOS_REVISAO_REAPRESENTADOS, nome)
+                self.assertLessEqual(len(rev.get("exemplos") or []), rev["total"], nome)
         for nome in ("territorio_municipios.json", "territorio_usinas.json", "territorio_municipios.csv",
                      "territorio_usinas.csv"):
             self.assertLess(os.path.getsize(os.path.join(base.SERIES, nome)), 5 * 1024 * 1024, nome)

@@ -1,0 +1,171 @@
+name: Atualizar dados das Contas Públicas Federais
+
+# Contas Públicas Federais: recoleta semanal da execução orçamentária do SIOP (consulta SPARQL
+# pública, sem credencial) para os exercícios integrados, com o RTN do snapshot mantido como está
+# (scripts/contas-publicas/importar.py --so-siop; config/atualizacao/contas-publicas.json), e a mesma execução
+# por função e subfunção do ano corrente e do anterior (importar-funcoes.py --recentes; os exercícios desde
+# 2000 ficam no snapshot e se refazem com --todos), e a dívida bruta do governo geral do Banco Central
+# (importar-divida.py, SGS 13761 e 13762, grupo "bcb"). O SIOP
+# atualiza a base de madrugada, em geral a cada poucos dias; uma execução por semana mantém a
+# execução de 2026 em dia. Publicação só com os testes do painel verdes; retenção abre issue e deixa
+# a execução vermelha. Base sem mudança não gera commit (a data de captura não conta).
+#
+# O RTN é integrado por edição, à mão e por decisão (OPERACOES.md): a edição nova muda a base de
+# preços do IPCA, o aviso de atualidade e os testes que fixam a edição. O que se automatiza é a
+# detecção: o passo "Vigiar edição nova do RTN" abre a issue própria quando o Tesouro publica o
+# boletim do mês seguinte ao integrado ou troca a planilha da série histórica no CKAN.
+# Restos a pagar (relatório anual), metas físicas (AFFO anual), custos (RFC anual, hash fixado), gastos
+# tributários (DGT Bases Efetivas da Receita, anual, hash fixado) e
+# os denominadores do IBGE também são integrados por edição.
+on:
+  schedule:
+    - cron: "19 10 * * 2" # terças, 07:19 em São Paulo
+  workflow_dispatch:
+    inputs:
+      sem_coleta:
+        description: "Pular a coleta (só confere que o snapshot passa nos testes)"
+        type: boolean
+        default: false
+      grupos:
+        description: "Coletar só estes grupos (ids separados por vírgula; vazio = todos)"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: atualizar-contas-publicas
+  cancel-in-progress: false
+
+env:
+  CONFIG: config/atualizacao/contas-publicas.json
+  TITULO_ISSUE: "Atualização agendada das Contas Públicas Federais: publicação retida ou coleta com falha"
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    # oito consultas SPARQL e os testes do painel; cada comando tem teto próprio na configuração
+    timeout-minutes: 45
+    outputs:
+      relatado: ${{ steps.issue.outcome == 'success' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # requests e openpyxl: dependências do importador (scripts/contas-publicas/importar.py)
+      - name: Dependências da coleta
+        run: pip install requests openpyxl
+
+      - name: Node para os testes de contrato
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Dependências da interface
+        run: npm ci
+
+      - name: Coletar, reconstruir e decidir a publicação por grupo
+        id: ciclo
+        continue-on-error: true
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          SEM_COLETA: ${{ inputs.sem_coleta }}
+          GRUPOS: ${{ inputs.grupos }}
+        run: |
+          ARGS=()
+          if [ "$SEM_COLETA" = "true" ]; then ARGS+=(--sem-coleta); fi
+          if [ -n "$GRUPOS" ]; then ARGS+=(--grupos "$GRUPOS"); fi
+          python3 -u scripts/atualizacao_por_grupo.py ciclo "$CONFIG" "${ARGS[@]}"
+
+      # Só o snapshot e as respostas do SIOP, com rebase sobre o ramo e quatro tentativas. Se o snapshot
+      # mudou no ramo durante a execução, não publica (os testes rodaram sobre outra base); se o código
+      # do painel mudou, testa de novo com o código novo antes de empurrar.
+      - name: Commit e push dos grupos aprovados
+        id: publicar
+        if: always() && steps.ciclo.outputs.publicavel == '1'
+        run: |
+          git config user.name "pipeline-observatorio[bot]"
+          git config user.email "pipeline@scrutiniums.com"
+          python3 -u scripts/atualizacao_por_grupo.py publicar "$CONFIG" --ramo "$GITHUB_REF_NAME"
+
+      - name: Abrir ou comentar a issue de retenção
+        id: issue
+        if: always() && (steps.ciclo.outcome != 'success' || steps.publicar.outcome == 'failure')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PUBLICACAO: ${{ steps.publicar.outcome }}
+        run: |
+          CORPO=.atualizacao/contas-publicas/relatorio.md
+          mkdir -p .atualizacao/contas-publicas
+          if [ ! -s "$CORPO" ]; then
+            printf 'Execução: %s\n\nO ciclo terminou sem relatório (falha antes de gravar). Ver o log do passo *Coletar, reconstruir e decidir*.\n' "$RUN_URL" > "$CORPO"
+          fi
+          if [ "$PUBLICACAO" = "failure" ]; then
+            printf '\n**A publicação dos grupos aprovados falhou** (passo *Commit e push*): nada foi empurrado.\n' >> "$CORPO"
+          fi
+          scripts/issue_dedup.sh "$TITULO_ISSUE" "$CORPO"
+
+      # Não faz a execução falhar: edição nova do RTN é integração manual pendente, não pane. A linha
+      # "Assinatura:" impede comentário repetido enquanto a mesma edição estiver pendente.
+      - name: Vigiar edição nova do RTN
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          python3 scripts/contas-publicas/vigiar_rtn.py > /tmp/rtn.md
+          CODIGO=$?
+          set -e
+          cat /tmp/rtn.md
+          if [ "$CODIGO" = "3" ]; then
+            scripts/issue_dedup.sh "Contas Públicas Federais: edição nova do RTN aguardando integração" /tmp/rtn.md
+          elif [ "$CODIGO" != "0" ]; then
+            printf 'O vigia de edição do RTN quebrou (código %s): %s/%s/actions/runs/%s\n\nVigia cego é pior que alerta falso.\n' \
+              "$CODIGO" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > /tmp/rtn-erro.md
+            scripts/issue_dedup.sh "Contas Públicas Federais: edição nova do RTN aguardando integração" /tmp/rtn-erro.md
+          fi
+
+      - name: Guardar resultado, relatório e logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atualizacao-contas-publicas
+          include-hidden-files: true
+          path: .atualizacao/contas-publicas/
+          if-no-files-found: warn
+          retention-days: 30
+
+      # Retenção deixa a execução VERMELHA: de 25/09 a 12/10/2026 o Crédito reteve a gold com o
+      # workflow verde e ninguém viu (OPERACOES.md, terceira memória).
+      - name: Sinalizar publicação retida
+        if: always() && (steps.ciclo.outcome != 'success' || steps.publicar.outcome == 'failure')
+        run: |
+          echo "::error::grupo retido, coleta com falha ou publicação não concluída; ver a issue '$TITULO_ISSUE'"
+          exit 1
+
+  # Tempo esgotado ou cancelamento não chegam ao passo da issue: este job cobre esses casos.
+  alertar:
+    runs-on: ubuntu-latest
+    needs: pipeline
+    if: always() && needs.pipeline.outputs.relatado != 'true' && (needs.pipeline.result == 'failure' || needs.pipeline.result == 'cancelled')
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Abrir ou comentar issue de interrupção
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULTADO: ${{ needs.pipeline.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          printf 'Execução de %s UTC terminou com **%s** antes do relatório (tempo esgotado, cancelamento ou falha de preparo): %s\n\nNada foi publicado.\n' \
+            "$(date -u +%d/%m/%Y\ %H:%M)" "$RESULTADO" "$RUN_URL" > /tmp/corpo.md
+          scripts/issue_dedup.sh "$TITULO_ISSUE" /tmp/corpo.md

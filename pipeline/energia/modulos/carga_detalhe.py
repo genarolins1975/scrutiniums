@@ -359,8 +359,9 @@ def centroides(con):
     """{UF: (lat, lon, nome_ibge, codigo)} da última captura; confere código da UF e nome."""
     out = {}
     for uf, (cod, nome) in clima.CAPITAIS.items():
-        v = base.ultima_vintage(con, DS_IBGE_GEO, f"centroide_{cod}")
-        m = base.ultima_vintage(con, DS_IBGE_GEO, f"municipio_{cod}")
+        # recaptura adiada deixa a última vintage sem bronze: vale a anterior legível (geografia estável)
+        v = base.vintage_legivel(con, DS_IBGE_GEO, f"centroide_{cod}")
+        m = base.vintage_legivel(con, DS_IBGE_GEO, f"municipio_{cod}")
         if not v:
             continue
         lat, lon = clima.parse_centroide(le_bronze(v["arquivo"]))

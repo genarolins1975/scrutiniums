@@ -3,14 +3,9 @@ import { ACENTO } from "@/components/home/acentos";
 import type { NumeroPorta } from "@/lib/perguntas/tipos";
 import type { ReactNode } from "react";
 import type { Dominio } from "@/lib/dominios";
+import type { ColecaoEntrada } from "@/lib/observatorios/colecoes";
 
-export type ColecaoEntrada = {
-  id: string;
-  nome: string;
-  href: string;
-  /** Painéis que a coleção mantém e atalhos para painéis de outro observatório, com a coleção de origem. */
-  paineis: { titulo: string; href: string; origem?: string }[];
-};
+export type { ColecaoEntrada } from "@/lib/observatorios/colecoes";
 
 export function Numero({ n, grande = false }: Readonly<{ n: NumeroPorta; grande?: boolean }>) {
   return (
@@ -51,11 +46,11 @@ function ListaPaineis({ paineis }: Readonly<{ paineis: ColecaoEntrada["paineis"]
 /**
  * Entrada com conta de um observatório que reúne várias coleções, pelo
  * checklist de página de entrada: pergunta e escala na primeira tela,
- * coleções a um clique, um modelo didático do mecanismo, caminhos por
+ * as perguntas do leitor sobre o próprio caso ("Para você") e as coleções a um clique, um modelo didático do mecanismo, caminhos por
  * pergunta e método recolhido no fim.
  */
 export function EntradaObservatorio({
-  nomeCurto, nomeCompleto, acento, pergunta, descricao, escala, colecoes, artefato, caminhos, metodo,
+  nomeCurto, nomeCompleto, acento, pergunta, descricao, escala, paraVoce = null, colecoes, artefato, caminhos, metodo, frescor = null, frescorMetodo = null, parceria = null,
 }: Readonly<{
   nomeCurto: string;
   nomeCompleto: string;
@@ -63,15 +58,24 @@ export function EntradaObservatorio({
   pergunta: string;
   descricao: string;
   escala: NumeroPorta[];
+  /** Bloco "Para você" (ParaVoce), logo depois dos números de abertura. */
+  paraVoce?: ReactNode;
   colecoes: ColecaoEntrada[];
   artefato: ReactNode;
   caminhos: { pergunta: string; resumo: string; href: string; colecao: string }[];
   metodo: ReactNode;
+  /** Faixa de frescor da primeira tela (FaixaFrescor, variante "linha"). */
+  frescor?: ReactNode;
+  /** Frescor por fonte no rodapé de método (FaixaFrescor, variante "metodo"). */
+  frescorMetodo?: ReactNode;
+  /** Crédito de parceria técnica (ParceriaTecnica compacta), à direita do nome do observatório. */
+  parceria?: ReactNode;
 }>) {
   const a = ACENTO[acento];
   return (
     <main className="bg-papel">
       <section aria-labelledby="entrada-titulo" className="border-b border-linha bg-marfim">
+        {frescor}
         <div className="mx-auto max-w-page px-6 pb-12 pt-10 md:pb-16 md:pt-14">
           <nav aria-label="Trilha" className="text-sm text-carvao-muted">
             <Link href="/app/observatorios" className="underline decoration-linha underline-offset-4 hover:text-carvao">
@@ -80,10 +84,13 @@ export function EntradaObservatorio({
             <span aria-hidden="true" className="mx-2 text-mineral">/</span>
             <span aria-current="page">{nomeCurto}</span>
           </nav>
-          <p className="rotulo mt-8 flex items-center gap-3 text-mineral">
-            <span aria-hidden="true" className={`h-[3px] w-8 ${a.filete}`} />
-            {nomeCompleto}
-          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
+            <p className="rotulo flex items-center gap-3 text-mineral">
+              <span aria-hidden="true" className={`h-[3px] w-8 ${a.filete}`} />
+              {nomeCompleto}
+            </p>
+            {parceria}
+          </div>
           <h1 id="entrada-titulo" className="mt-5 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.1] text-carvao [text-wrap:balance]">
             {pergunta}
           </h1>
@@ -108,6 +115,8 @@ export function EntradaObservatorio({
           </p>
         </div>
       </section>
+
+      {paraVoce}
 
       <section aria-labelledby="colecoes-titulo" className="mx-auto max-w-page px-6 py-14 md:py-16">
         <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
@@ -164,6 +173,7 @@ export function EntradaObservatorio({
         <details className="mt-12 border-t border-linha pt-4">
           <summary className="rotulo flex min-h-[44px] cursor-pointer items-center text-carvao-muted hover:text-carvao">Método e fontes</summary>
           <div className="mt-2 max-w-prose2 space-y-3 text-sm leading-relaxed text-carvao-muted">{metodo}</div>
+          {frescorMetodo && <div className="mt-6">{frescorMetodo}</div>}
         </details>
       </section>
     </main>

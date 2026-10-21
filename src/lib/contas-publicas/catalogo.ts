@@ -1,4 +1,5 @@
 /** Contrato v0.1: catálogo metodológico, não uma série de dados fiscais. */
+import {PERGUNTA_PAINEL, ROTA_PREVIDENCIA, ROTULO_NAVEGACAO, TITULO_PAINEL} from '@/lib/previdencia/paginas';
 export const VERSAO = '0.1.0';
 export const FONTES = {
   rap: {nome:'Tesouro · Avaliação dos Restos a Pagar',url:'https://www.tesourotransparente.gov.br/publicacoes/relatorio-de-avaliacao-dos-restos-a-pagar/2026/114',uso:'Posições de RAP por origem, tipo e órgão; base 2025 ajustada por revalidações.'},
@@ -10,11 +11,25 @@ export const FONTES = {
   pncp: { nome: 'PNCP · Dados abertos', url: 'https://www.gov.br/pncp/pt-br/acesso-a-informacao/dados-abertos', uso: 'Contratações; filtrar União e validar cobertura temporal.' },
   rfb: { nome: 'Receita Federal · Gastos tributários', url: 'https://www.gov.br/receitafederal/pt-br/centrais-de-conteudo/publicacoes/relatorios/renuncia/gastos-tributarios-bases-efetivas/', uso: 'Estimativas com base em dados efetivos; não são receita recuperável automaticamente.' },
   cmap: { nome: 'CMAP · Avaliação de políticas', url: 'https://www.gov.br/planejamento/pt-br/assuntos/avaliacao-de-politicas-publicas-1/conselho-de-monitoramento-e-avaliacao-de-politicas-publicas/metodologia/ciclo-de-avaliacao', uso: 'Catálogo de avaliações e recomendações; evitar dupla contagem de políticas.' },
+  bcb: { nome: 'Banco Central · Estatísticas fiscais', url: 'https://www.bcb.gov.br/estatisticas/estatisticasfiscais', uso: 'Dívida bruta do governo geral (SGS 13761 e 13762); perímetro do governo geral, não do orçamento da União.' },
   tcu: { nome: 'TCU · Controle de políticas públicas', url: 'https://portal.tcu.gov.br/publicacoes-institucionais/cartilha-manual-ou-tutorial/referencial-de-controle-de-politicas-publicas', uso: 'Referencial e evidências de controle; achados não são condenações.' },
 } as const;
 export type FonteId = keyof typeof FONTES;
-/** Capítulos com painel de dados publicado (id do capítulo, rótulo da navegação). Os demais mostram só o método proposto. */
-export const PAINEIS_COM_DADOS = [['execucao','Pagamentos'],['panorama','Resultado fiscal'],['restos-a-pagar','Restos a pagar'],['custos','Custos'],['metas','Entregas']] as const;
+/**
+ * Capítulos com painel de dados publicado (id do capítulo, rótulo da navegação), na ordem da procura. É a mesma lista
+ * dos capítulos com situacao 'com-dados' (teste de contrato); os capítulos em preparação ficam fora da navegação.
+ */
+export const PAINEIS_COM_DADOS = [['execucao','Pagamentos'],['panorama','Resultado fiscal'],['riscos','Dívida e rigidez'],['beneficios','Gastos tributários'],['planejamento','Plano e execução'],['restos-a-pagar','Restos a pagar'],['custos','Custos'],['metas','Entregas']] as const;
+/** Painel complementar do Panorama (não é capítulo): a despesa por área, pela classificação funcional do SIOP. */
+export const PAINEL_AREAS = {href:'/contas-publicas/por-area',rotulo:'Por área',titulo:'Despesa por área',pergunta:'Para onde vai o dinheiro federal, por área?',capitulo:'panorama'} as const;
+/**
+ * Painel Previdência e INSS (aprovado pelo dono em 20/10/2026), também complemento do Panorama: benefícios do INSS por
+ * tipo, estado e município e o resultado do Regime Geral, com pipeline e gold próprios (pipeline/previdencia). Rota e
+ * títulos vêm de src/lib/previdencia/paginas.ts.
+ */
+export const PAINEL_PREVIDENCIA = {href:ROTA_PREVIDENCIA,rotulo:ROTULO_NAVEGACAO,titulo:TITULO_PAINEL,pergunta:PERGUNTA_PAINEL,capitulo:'panorama'} as const;
+/** Navegação entre os painéis com dados, na ordem da procura: a Previdência e a despesa por área primeiro, depois os capítulos. */
+export const PAINEIS_NAVEGACAO:readonly (readonly [string,string])[] = [[PAINEL_PREVIDENCIA.href,PAINEL_PREVIDENCIA.rotulo],[PAINEL_AREAS.href,PAINEL_AREAS.rotulo],...PAINEIS_COM_DADOS.map(([id,nome])=>[`/contas-publicas/${id}`,nome] as const)];
 export const REFERENCIAS = [
   {nome:'PEFA', papel:'Confiabilidade, execução e controle do orçamento.', url:'https://www.pefa.org/node/119'},
   {nome:'OCDE · Government at a Glance', papel:'Orçamento orientado a desempenho e comparações internacionais.', url:'https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report.html'},
@@ -24,27 +39,39 @@ export const REFERENCIAS = [
   {nome:'Canadá · GC InfoBase', papel:'Navegação entre recursos, organizações e resultados.', url:'https://www.canada.ca/en/government/system/government-wide-reporting-spending-operations/government-spending.html'},
   {nome:'França · Performance budgétaire', papel:'Objetivos, indicadores, metas e realizações.', url:'https://www.budget.gouv.fr/reperes/performance'},
 ];
+/**
+ * Situação de cada capítulo (banca de 19/10/2026, achado A4; Onda 3 do roteiro):
+ * - 'com-dados': tem painel com dado oficial integrado; entra na navegação, no índice, no ciclo da entrada e no mapa.
+ * - 'em-preparacao': em preparação, fora da navegação. O desenho (pergunta, limite e indicadores propostos) fica
+ *   registrado aqui e no catálogo para download, mas não há página, link, cartão nem contagem que o anuncie;
+ *   `pendencia` diz o que falta, sem data prometida. Passa a 'com-dados' só junto com o painel e o teste.
+ */
 export const CAPITULOS = [
-  {id:'panorama', titulo:'Panorama das contas', etapa:'Planejar', pergunta:'De onde vêm os recursos e para onde vão?', limite:'Separar despesas primárias, juros, amortização e refinanciamento.', entrega:'Ponte entre receitas, despesas e resultado; composição do gasto.'},
-  {id:'planejamento', titulo:'Qualidade do planejamento', etapa:'Planejar', pergunta:'O realizado se aproxima do plano original?', limite:'Revisões legítimas não caracterizam, por si, falha de gestão.', entrega:'Previsão original, revisões e realizado na mesma base.'},
-  {id:'execucao', titulo:'Execução e previsibilidade', etapa:'Executar', pergunta:'Quanto foi autorizado, comprometido e pago?', limite:'Execução financeira não comprova entrega física.', entrega:'Avanço entre autorização, empenho, liquidação e pagamento; perfil mensal comparável ainda pendente.'},
-  {id:'restos-a-pagar', titulo:'Restos a pagar', etapa:'Executar', pergunta:'Que compromissos atravessam os exercícios?', limite:'Restos a pagar não equivalem automaticamente a obrigações vencidas.', entrega:'Estoque por origem, processamento, pagamento e cancelamento.'},
-  {id:'custos', titulo:'Custos e produtividade', etapa:'Entregar', pergunta:'Quais recursos são consumidos para prestar serviços?', limite:'Custo agregado não mede produtividade; custos por entrega exigem atribuição a serviços equivalentes.', entrega:'Composição dos custos da União em 2025 e comparação revisada com 2024; vínculo com entregas ainda pendente.'},
-  {id:'metas', titulo:'Metas e entregas', etapa:'Entregar', pergunta:'As entregas prometidas foram realizadas?', limite:'Cumprir uma meta não comprova impacto social.', entrega:'Metas originais e revisadas, entregas e cobertura do público.'},
-  {id:'compras', titulo:'Compras e contratos', etapa:'Executar', pergunta:'Em que condições o governo compra?', limite:'Diferença para valor estimado não comprova economia real.', entrega:'Preços comparáveis, competição e execução contratual.'},
-  {id:'investimentos', titulo:'Investimentos públicos', etapa:'Entregar', pergunta:'Os projetos chegam à operação?', limite:'Separar mudança de escopo, inflação e variação real de custo.', entrega:'Prazo, custo, avanço físico e uso do ativo.'},
-  {id:'beneficios', titulo:'Subsídios e benefícios', etapa:'Planejar', pergunta:'Quais benefícios existem e o que entregam?', limite:'Renúncias estimadas não devem ser somadas mecanicamente ao gasto pago.', entrega:'Montante, duração, objetivo e avaliação de cada benefício.'},
-  {id:'equidade', titulo:'Território e equidade', etapa:'Entregar', pergunta:'Quem recebe recursos e quem acessa os serviços?', limite:'Local do pagamento pode diferir do local do benefício.', entrega:'Recursos territorializáveis, população elegível e cobertura.'},
-  {id:'riscos', titulo:'Sustentabilidade e riscos', etapa:'Prestar contas', pergunta:'Quais compromissos pressionam o futuro?', limite:'Dívida Pública Federal e dívida do Governo Geral têm perímetros diferentes.', entrega:'Rigidez, compromissos e cenários com hipóteses declaradas.'},
-  {id:'avaliacao', titulo:'Avaliação e transparência', etapa:'Prestar contas', pergunta:'O que sabemos sobre os resultados do gasto?', limite:'Ausência de avaliação é ausência de conhecimento, não prova de ineficácia.', entrega:'Cobertura de avaliações, força da evidência e recomendações.'},
+  {id:'panorama', situacao:'com-dados', titulo:'Panorama das contas', etapa:'Planejar', pergunta:'De onde vêm os recursos e para onde vão?', limite:'Separar despesas primárias, juros, amortização e refinanciamento.', entrega:'Ponte entre receitas, despesas e resultado; composição do gasto.'},
+  {id:'planejamento', situacao:'com-dados', titulo:'Qualidade do planejamento', etapa:'Planejar', pergunta:'O realizado se aproxima do plano original?', limite:'Revisões legítimas não caracterizam, por si, falha de gestão.', entrega:'Lei original, autorizado e liquidado na mesma base, de 2015 ao último exercício encerrado; previsão de receita ainda pendente.'},
+  {id:'execucao', situacao:'com-dados', titulo:'Execução e previsibilidade', etapa:'Executar', pergunta:'Quanto foi autorizado, comprometido e pago?', limite:'Execução financeira não comprova entrega física.', entrega:'Avanço entre autorização, empenho, liquidação e pagamento; perfil mensal comparável ainda pendente.'},
+  {id:'restos-a-pagar', situacao:'com-dados', titulo:'Restos a pagar', etapa:'Executar', pergunta:'Que compromissos atravessam os exercícios?', limite:'Restos a pagar não equivalem automaticamente a obrigações vencidas.', entrega:'Estoque por origem, processamento, pagamento e cancelamento.'},
+  {id:'custos', situacao:'com-dados', titulo:'Custos e produtividade', etapa:'Entregar', pergunta:'Quais recursos são consumidos para prestar serviços?', limite:'Custo agregado não mede produtividade; custos por entrega exigem atribuição a serviços equivalentes.', entrega:'Composição dos custos da União em 2025 e comparação revisada com 2024; vínculo com entregas ainda pendente.'},
+  {id:'metas', situacao:'com-dados', titulo:'Metas e entregas', etapa:'Entregar', pergunta:'As entregas prometidas foram realizadas?', limite:'Cumprir uma meta não comprova impacto social.', entrega:'Metas originais e revisadas, entregas e cobertura do público.'},
+  {id:'compras', situacao:'em-preparacao', pendencia:'Falta uma base integrada de itens comparáveis e de propostas por certame; os dados abertos de contratações ainda não trazem esses campos de forma conciliável.', titulo:'Compras e contratos', etapa:'Executar', pergunta:'Em que condições o governo compra?', limite:'Diferença para valor estimado não comprova economia real.', entrega:'Preços comparáveis, competição e execução contratual.'},
+  {id:'investimentos', situacao:'em-preparacao', pendencia:'Falta um cadastro de projetos com orçamento-base, cronograma original e revisões conciliado com a execução.', titulo:'Investimentos públicos', etapa:'Entregar', pergunta:'Os projetos chegam à operação?', limite:'Separar mudança de escopo, inflação e variação real de custo.', entrega:'Prazo, custo, avanço físico e uso do ativo.'},
+  {id:'beneficios', situacao:'com-dados', titulo:'Subsídios e benefícios', etapa:'Planejar', pergunta:'Quais benefícios existem e o que entregam?', limite:'Renúncias estimadas não devem ser somadas mecanicamente ao gasto pago.', entrega:'Gastos tributários estimados pela Receita: total, tributo, área e principais benefícios; avaliação de cada benefício ainda pendente.'},
+  {id:'equidade', situacao:'em-preparacao', pendencia:'Falta separar a parcela do gasto federal que tem destino territorial identificado e um denominador de população elegível compatível.', titulo:'Território e equidade', etapa:'Entregar', pergunta:'Quem recebe recursos e quem acessa os serviços?', limite:'Local do pagamento pode diferir do local do benefício.', entrega:'Recursos territorializáveis, população elegível e cobertura.'},
+  {id:'riscos', situacao:'com-dados', titulo:'Sustentabilidade e riscos', etapa:'Prestar contas', pergunta:'Quais compromissos pressionam o futuro?', limite:'Dívida Pública Federal e dívida do Governo Geral têm perímetros diferentes.', entrega:'Rigidez do orçamento e dívida bruta do governo geral; garantias e passivos contingentes ainda pendentes.'},
+  {id:'avaliacao', situacao:'em-preparacao', pendencia:'Falta um inventário de avaliações vinculado às ações orçamentárias, sem dupla contagem de políticas.', titulo:'Avaliação e transparência', etapa:'Prestar contas', pergunta:'O que sabemos sobre os resultados do gasto?', limite:'Ausência de avaliação é ausência de conhecimento, não prova de ineficácia.', entrega:'Cobertura de avaliações, força da evidência e recomendações.'},
 ] as const;
 export type CapituloId = typeof CAPITULOS[number]['id'];
+export type Capitulo = typeof CAPITULOS[number];
+/** Capítulos na navegação, no índice, no ciclo da entrada, no mapa e nas rotas: só os que têm dados. */
+export const CAPITULOS_PUBLICADOS = CAPITULOS.filter((c) => c.situacao === 'com-dados');
+/** Em preparação, fora da navegação: desenho registrado, sem página. */
+export const CAPITULOS_EM_PREPARACAO = CAPITULOS.filter((c): c is Extract<Capitulo, {situacao: 'em-preparacao'}> => c.situacao === 'em-preparacao');
 export type Indicador = {
   id: string; capitulo: CapituloId; nome: string; unidade: string; formula: string;
   fonte: FonteId; periodicidade: string; referencia: string; ressalva: string;
   perimetro: string; requisitos: string; status: 'aguardando-integracao'|'integracao-parcial';
 };
-const indicador = (id:string, capitulo:CapituloId, nome:string, unidade:string, formula:string, fonte:FonteId, referencia:string, ressalva:string, requisitos:string, perimetro='Orçamento Fiscal e da Seguridade Social da União', periodicidade='Anual; acompanhamento mensal quando conciliado'):Indicador => ({id,capitulo,nome,unidade,formula,fonte,referencia,ressalva,requisitos,perimetro,periodicidade,status:['resultado-primario','execucao-liquidada','rap-idade','meta-entrega'].includes(id)?'integracao-parcial':'aguardando-integracao'});
+const indicador = (id:string, capitulo:CapituloId, nome:string, unidade:string, formula:string, fonte:FonteId, referencia:string, ressalva:string, requisitos:string, perimetro='Orçamento Fiscal e da Seguridade Social da União', periodicidade='Anual; acompanhamento mensal quando conciliado'):Indicador => ({id,capitulo,nome,unidade,formula,fonte,referencia,ressalva,requisitos,perimetro,periodicidade,status:['resultado-primario','composicao','desvio-plano','execucao-liquidada','rap-idade','meta-entrega','gasto-tributario','rigidez','divida-bruta'].includes(id)?'integracao-parcial':'aguardando-integracao'});
 export const INDICADORES: Indicador[] = [
   indicador('resultado-primario','panorama','Resultado primário','R$ e % do PIB','Receita primária líquida − despesa primária','rtn','Série comparável e meta com vigência identificada','Apresentar resultado observado e ajustes para a meta separadamente.','Receitas, despesas e PIB com bases consistentes.','Governo Central'),
   indicador('composicao','panorama','Composição funcional da despesa','%','100 × despesa da função / despesa total do mesmo universo','siop','Composição histórica','As parcelas precisam reconciliar com o total e o mesmo estágio.','Função, exercício, estágio e total conciliado.'),
@@ -67,6 +94,7 @@ export const INDICADORES: Indicador[] = [
   indicador('territorial','equidade','Recursos por pessoa elegível','R$ por pessoa','Despesa territorializável / população elegível no território','siop','Territórios com necessidades e atribuições comparáveis','Não distribuir gasto nacional pela localização da sede do órgão.','Destino do benefício, gasto e denominador compatíveis.','Parcela territorializável do gasto federal'),
   indicador('lacuna-cobertura','equidade','Diferença de cobertura entre grupos','Pontos percentuais','Cobertura do grupo A − cobertura do grupo B','ppa','Grupos com mesma definição de elegibilidade','Mostrar incerteza amostral quando aplicável; diferença não demonstra causalidade.','Pessoas únicas, elegibilidade e recortes válidos.','Público elegível da política','Conforme monitoramento da política'),
   indicador('rigidez','riscos','Participação das despesas obrigatórias','%','100 × despesas primárias obrigatórias / despesas primárias totais','siop','Histórico com classificação harmonizada','Obrigatoriedade não determina qualidade do gasto.','Classificação vigente e despesa no mesmo estágio.'),
+  indicador('divida-bruta','riscos','Dívida bruta do governo geral','R$ e % do PIB','Saldo no fim do mês da dívida bruta do governo geral; razão ao PIB dos últimos 12 meses','bcb','Série mensal desde dezembro de 2006, mesma metodologia','Perímetro do governo geral (União, INSS, estados e municípios), não do orçamento da União; dívida bruta não desconta ativos.','Saldo, PIB acumulado em 12 meses e metodologia identificados pela fonte.','Governo geral, sem Banco Central e empresas estatais','Mensal'),
   indicador('compromissos','riscos','Compromissos e riscos identificados','R$ por categoria','Estoque de exposição por instrumento e data-base','rtn','Relatórios oficiais e cenários identificados','Não somar exposição nominal e perda esperada; fonte complementar de riscos a homologar.','Registro de garantias e passivos, probabilidade e horizonte quando disponíveis.','União; perímetro de cada instrumento explícito','Conforme relatório de riscos'),
   indicador('avaliacao-gasto','avaliacao','Gasto com avaliação de resultados','%','100 × gasto de políticas avaliadas / gasto elegível','cmap','Janela de avaliação e abrangência declaradas','Evitar contar o mesmo gasto em avaliações sobrepostas; publicar qualidade da evidência.','Mapa política–ação–gasto e avaliações deduplicadas.','Políticas federais elegíveis','Anual'),
   indicador('tempestividade','avaliacao','Defasagem de publicação','Dias','Data de publicação − fim do período de referência','tcu','Calendário da fonte','Publicação, captura e referência são datas diferentes.','Metadados de origem e calendário de cada conjunto.','Conjuntos publicados no observatório','Por publicação'),

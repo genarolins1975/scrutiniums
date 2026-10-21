@@ -94,11 +94,12 @@ def _num_planilha(v):
 
 
 def precos_estados():
-    """[{mes, produto, uf, postos, medio, desvio, minimo, maximo, margem, distribuicao}]"""
+    """[{mes, produto, unidade, uf, postos, medio, desvio, minimo, maximo, margem, distribuicao}]"""
     out = []
-    for r in _csv("anp/precos-mensais-estados-glp-gnv.csv.gz", "utf-8"):
+    for r in _csv("anp/precos-mensais-estados.csv.gz", "utf-8"):
         out.append({
-            "mes": r["MÊS"], "produto": r["PRODUTO"].strip().upper(), "uf": base.UF_SIGLA[r["ESTADO"].strip().upper()],
+            "mes": r["MÊS"], "produto": r["PRODUTO"].strip().upper(), "unidade": r["UNIDADE DE MEDIDA"].strip(),
+            "uf": base.UF_SIGLA[r["ESTADO"].strip().upper()],
             "postos": _num_planilha(r["NÚMERO DE POSTOS PESQUISADOS"]), "medio": _num_planilha(r["PREÇO MÉDIO REVENDA"]),
             "desvio": _num_planilha(r["DESVIO PADRÃO REVENDA"]), "minimo": _num_planilha(r["PREÇO MÍNIMO REVENDA"]),
             "maximo": _num_planilha(r["PREÇO MÁXIMO REVENDA"]), "margem": _num_planilha(r["MARGEM MÉDIA REVENDA"]),
@@ -109,14 +110,22 @@ def precos_estados():
 
 def precos_brasil():
     out = []
-    for r in _csv("anp/precos-mensais-brasil-glp-gnv.csv.gz", "utf-8"):
+    for r in _csv("anp/precos-mensais-brasil.csv.gz", "utf-8"):
         out.append({
-            "mes": r["MÊS"], "produto": r["PRODUTO"].strip().upper(), "postos": _num_planilha(r["NÚMERO DE POSTOS PESQUISADOS"]),
-            "medio": _num_planilha(r["PREÇO MÉDIO REVENDA"]), "minimo": _num_planilha(r["PREÇO MÍNIMO REVENDA"]),
+            "mes": r["MÊS"], "produto": r["PRODUTO"].strip().upper(), "unidade": r["UNIDADE DE MEDIDA"].strip(),
+            "postos": _num_planilha(r["NÚMERO DE POSTOS PESQUISADOS"]),
+            "medio": _num_planilha(r["PREÇO MÉDIO REVENDA"]), "desvio": _num_planilha(r["DESVIO PADRÃO REVENDA"]),
+            "minimo": _num_planilha(r["PREÇO MÍNIMO REVENDA"]),
             "maximo": _num_planilha(r["PREÇO MÁXIMO REVENDA"]), "margem": _num_planilha(r["MARGEM MÉDIA REVENDA"]),
             "distribuicao": _num_planilha(r["PREÇO MÉDIO DISTRIBUIÇÃO"]),
         })
     return out
+
+
+def notas_precos():
+    """Observações que a ANP escreve na planilha mensal de preços, como o manifesto as guardou na coleta."""
+    m = base.ler_manifesto()
+    return list(m.get("anp_precos_brasil", {}).get("notas_da_planilha") or m.get("anp_precos_estados", {}).get("notas_da_planilha") or [])
 
 
 def autorizacoes():

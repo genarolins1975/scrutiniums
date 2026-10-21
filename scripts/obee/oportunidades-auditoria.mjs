@@ -73,6 +73,11 @@ try{
    assert(await page.getByRole('combobox',{name,exact:true}).inputValue()===value,'Limpar não restaurou '+name);
   }
   await page.goBack({waitUntil:'networkidle'});
+  // Same race as goForward below: wait for the restored form, bounded, then assert.
+  await page.waitForFunction(()=>{
+   const value=name=>document.querySelector('select[name="'+name+'"]')?.value;
+   return value('cidade')==='1501402'&&value('modo')==='walk'&&document.querySelectorAll('main figure').length===2;
+  },null,{timeout:5000}).catch(()=>{});
   assert(new URL(page.url()).searchParams.get('cidade')==='1501402','Voltar perdeu a cidade');
   assert(await page.getByRole('combobox',{name:'Cidade',exact:true}).inputValue()==='1501402','Voltar não restaurou o campo Cidade');
   assert(await page.getByRole('combobox',{name:'Modo de transporte',exact:true}).inputValue()==='walk','Voltar não restaurou o modo');

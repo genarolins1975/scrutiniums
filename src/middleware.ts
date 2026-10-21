@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifySessionCookie } from "@/lib/sessionCookie";
 import { estadoRotaMobilidade } from "@/lib/eficiencia/mobilidade/roteamento";
-import { COOKIE_DESTINO, ehApiDeDados, ehRotaPublica } from "@/lib/rotasPublicas";
+import { COOKIE_DESTINO, desvioDoAperitivo, ehApiDeDados, ehRotaPublica, fichaComSessao } from "@/lib/rotasPublicas";
 import { analisarUrlPagina } from "@/lib/i18n-url";
 import { parDeIdioma } from "@/lib/i18n-rotas";
 import type { Idioma } from "@/lib/idioma";
@@ -16,8 +16,9 @@ import type { Idioma } from "@/lib/idioma";
  *
  * Os painéis dos observatórios exigem conta (decisão de produto de
  * 13/10/2026). Ficam abertas só as rotas listadas em src/lib/rotasPublicas.ts:
- * página inicial, apresentação do Crédito, método, glossário, institucionais
- * e o fluxo de entrada e cadastro. Rota nova nasce fechada.
+ * página inicial, apresentação do Crédito, método, glossário, institucionais,
+ * o fluxo de entrada e cadastro e, desde 19/10/2026, as consultas pessoais da
+ * leva 1 ("aberto e com conta"). Rota nova nasce fechada.
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -30,6 +31,37 @@ export async function middleware(request: NextRequest) {
       headers: { "Content-Type": "text/plain; charset=utf-8", "X-Robots-Tag": "noindex" },
     });
   }
+  // Princípio do aperitivo (20/10/2026): o endereço público do tema serve, sem
+  // sessão, a versão aperitivo (rewrite, mesmo endereço) e, com sessão, o painel
+  // completo; a ficha do painel volta, sem sessão, à página aberta do tema. O
+  // caminho interno /aperitivo não existe como endereço.
+  const desvio = desvioDoAperitivo(pathname);
+  if (desvio?.tipo === "interno") {
+    const naoEncontrado = pathname.startsWith("/en/") ? "/en/nao-encontrado-404" : "/nao-encontrado-404";
+    return NextResponse.rewrite(new URL(naoEncontrado, request.url));
+  }
+  const sessaoAperitivo = desvio ? await verifySessionCookie(request.cookies.get("scrutiniums_session")?.value) : null;
+  if (desvio && sessaoAperitivo) {
+    const ficha = fichaComSessao(pathname, request.nextUrl.searchParams.get("ibge"));
+    if (ficha) {
+      const url = request.nextUrl.clone();
+      url.pathname = ficha;
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
+  }
+  if (desvio && !sessaoAperitivo) {
+    const url = request.nextUrl.clone();
+    if (desvio.tipo === "aperitivo") {
+      url.pathname = desvio.destino;
+      return NextResponse.rewrite(url);
+    }
+    const [caminho, consulta] = desvio.destino.split("?");
+    url.pathname = caminho;
+    url.search = consulta ? `?${consulta}` : "";
+    return NextResponse.redirect(url);
+  }
+
   if (ehRotaPublica(pathname)) return NextResponse.next();
 
   const verified = await verifySessionCookie(

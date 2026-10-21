@@ -249,6 +249,20 @@ export function indiceBusca(destinos: readonly DestinoNavegacao[], verbetes: rea
   for (const p of PERGUNTAS_PRIORITARIAS) itens.push({ tipo: "Pergunta", titulo: p.pergunta, detalhe: p.link.rotulo, href: p.link.href });
   // i18n: dado
   for (const p of PERGUNTAS_COTIDIANAS) itens.push({ tipo: "Pergunta", titulo: p.pergunta, detalhe: p.destinos.map((x) => x.rotulo).join(" · "), href: p.destinos[0].href });
+  // a coleção Combustíveis, do mesmo Observatório de Energia e Infraestrutura, responde à pergunta de quem procura gasolina,
+  // etanol ou diesel aqui. Só em português: o painel não tem versão inglesa (fora do escopo de tradução da 1.0)
+  if (idiomaEnergia() === "pt") {
+    // i18n: dado
+    itens.push({ tipo: "Pergunta", titulo: "Quanto custa encher o tanque no meu estado?", detalhe: "Combustíveis nos postos", href: "/combustiveis", sinonimos: ["gasolina", "etanol", "diesel", "combustível", "posto de gasolina", "álcool", "preço da gasolina", "preço do etanol", "preço do diesel"] });
+    // esta é a única busca de texto da plataforma: quem procura inflação ou IPCA aqui (a energia elétrica é um dos itens de
+    // maior peso no índice) acha o painel Inflação por cidade, do Observatório das Famílias. Só em português, como o painel
+    // i18n: dado
+    itens.push({ tipo: "Pergunta", titulo: "Quanto subiu o custo de vida na minha cidade?", detalhe: "Inflação por cidade (IPCA), Observatório das Famílias", href: "/custo-de-vida", sinonimos: ["inflação", "IPCA", "custo de vida", "inflação da minha cidade", "carestia", "índice de preços"] });
+    // quem procura escola, Ideb ou Saeb acha o painel Educação nos municípios, do Observatório dos Serviços Públicos
+    // (20/10/2026). Só em português, como o painel
+    // i18n: dado
+    itens.push({ tipo: "Pergunta", titulo: "Como está a escola pública da minha cidade?", detalhe: "Educação nos municípios (Ideb), Observatório dos Serviços Públicos", href: "/educacao-municipal", sinonimos: ["Ideb", "Saeb", "escola", "educação", "escola municipal", "escola pública", "nota da escola", "ensino fundamental"] });
+  }
   for (const d of destinos) {
     const c = CARTOES[d.slug];
     // módulo em integração não promete painel na busca: só a página entra

@@ -76,3 +76,20 @@ describe('dados oficiais e limites de comparação',()=>{
   }
  });
 });
+
+describe('entrada das Contas Públicas Federais (banca de 19/10/2026, achado A4)',()=>{
+ it('o percurso da gestão só leva a capítulos com dados; etapa sem dados aparece como em preparação, sem link',async()=>{
+  const {createElement}=await import('react');
+  const {renderToStaticMarkup}=await import('react-dom/server');
+  const {coberturaCapitulo}=await import('../lib/contas-publicas/cobertura');
+  const {default:Pagina}=await import('../app/contas-publicas/page');
+  const html=renderToStaticMarkup(createElement(Pagina));
+  const ciclo=html.slice(html.indexOf('class="cp-cycle"'),html.indexOf('</div>',html.indexOf('class="cp-cycle"')+20));
+  const destinos=[...ciclo.matchAll(/href="\/contas-publicas\/([a-z-]+)"/g)].map(m=>m[1]);
+  expect(destinos.length).toBeGreaterThan(0);
+  for(const id of destinos){const c=coberturaCapitulo(id as (typeof CAPITULOS)[number]['id']);expect(c.observados.length+c.complementares.length,id).toBeGreaterThan(0);}
+  for(const etapa of ['Planejar','Executar','Entregar','Prestar contas'])expect(html).toContain(`<strong>${etapa}</strong>`);
+  const semDados=['Planejar','Executar','Entregar','Prestar contas'].filter(e=>!CAPITULOS.some(c=>c.etapa===e&&destinos.includes(c.id)));
+  for(const e of semDados)expect(ciclo).toContain(`aria-label="${e}: em preparação, ainda sem dados"`);
+ });
+});

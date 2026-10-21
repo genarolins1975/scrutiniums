@@ -5,7 +5,7 @@ import { lerQueimadas, lerQueimadasMunicipios, municipiosDeFocos, municipiosPara
 import { portas } from "@/lib/perguntas/portas";
 import { donoDaRota } from "@/lib/observatorios/registro";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
-import { escalaTerritorio, frentesTerritorio } from "@/lib/observatorios/entradas/territorio";
+import { cartoesTerritorio, escalaTerritorio } from "@/lib/observatorios/entradas/territorio";
 
 describe("queimadas do Território e Clima", () => {
   const g = lerQueimadas();
@@ -50,9 +50,9 @@ describe("queimadas do Território e Clima", () => {
   it("a entrada do observatório lê os focos da gold e não anuncia mais queimadas como lacuna", () => {
     const focos = escalaTerritorio().find((x) => x.href === "/territorio/queimadas");
     expect(focos?.valor).not.toBeNull();
-    expect(frentesTerritorio().find((f) => f.id === "floresta")!.paineis.map((p) => p.href)).toContain("/territorio/queimadas");
-    const frentes = readFileSync(join(process.cwd(), "src", "components", "observatorios", "FrentesTerritorio.tsx"), "utf-8");
-    expect(frentes).not.toMatch(/queimadas e desastres da Defesa Civil ainda não/);
+    expect(cartoesTerritorio().map((c) => c.href)).toContain("/territorio/queimadas");
+    const entrada = readFileSync(join(process.cwd(), "src", "app", "territorio", "page.tsx"), "utf-8");
+    expect(entrada).not.toMatch(/queimadas e desastres da Defesa Civil ainda não/);
   });
 
   it("focos por município: códigos IBGE únicos, cada período reconcilia com o recorte e a área vem do Censo 2022", () => {

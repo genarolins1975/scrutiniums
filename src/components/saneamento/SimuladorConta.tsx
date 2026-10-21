@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { ExportacaoComConta } from "@/components/acesso/ExportacaoComConta";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
@@ -316,9 +317,12 @@ export function SimuladorConta() {
       </section>
 
       <div className="mt-8">
-        <button type="button" onClick={exportar} className="inline-flex min-h-[44px] items-center border border-obee px-4 text-sm font-medium text-obee-dark hover:bg-obee-fundo">
-          Baixar CSV: todas as tabelas e categorias a 5, 10, 15, 20 e 30 m³
-        </button>
+        {/* CSV montado no navegador: na página aberta, só com sessão */}
+        <ExportacaoComConta rotulo="Baixar CSV: todas as tabelas e categorias a 5, 10, 15, 20 e 30 m³">
+          <button type="button" onClick={exportar} className="inline-flex min-h-[44px] items-center border border-obee px-4 text-sm font-medium text-obee-dark hover:bg-obee-fundo">
+            Baixar CSV: todas as tabelas e categorias a 5, 10, 15, 20 e 30 m³
+          </button>
+        </ExportacaoComConta>
       </div>
     </div>
   );

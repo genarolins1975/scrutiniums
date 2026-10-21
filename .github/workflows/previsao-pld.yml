@@ -308,7 +308,22 @@ jobs:
           git stash push --include-untracked --quiet -m "derivados que a rodada não publica"
           for tentativa in 1 2 3 4 5; do
             if git pull --rebase origin main; then
+              # o manifesto traz o sha256 de cada arquivo publicado: sem ele, a gold das previsões entrava no main
+              # com sha256 diferente do manifesto e o CI do main ficava vermelho (rodada de 19/10/2026). Ele é
+              # refeito sobre o main já atualizado, num commit à parte que sai se o push for recusado, para a
+              # tentativa seguinte rebasear só a rodada e refazer o manifesto de novo.
+              MANIFESTO=0
+              if [ "${{ steps.testes.outcome }}" = "success" ] && python3 -c "from pipeline.energia.modulos import dados; dados.escreve_manifesto(final=True)"; then
+                git add public/energia/gold/manifesto.json
+                if ! git diff --cached --quiet; then
+                  git commit -q -m "Setor Elétrico: manifesto acompanha a rodada da previsão do PLD"
+                  MANIFESTO=1
+                fi
+              fi
+              # manifesto que falhou ao ser refeito não pode sujar a árvore do rebase seguinte
+              git checkout -- public/energia/gold/manifesto.json 2>/dev/null || true
               git push && exit 0
+              if [ "$MANIFESTO" = 1 ]; then git reset --hard -q HEAD~1; fi
             else
               git rebase --abort 2>/dev/null || true
             fi

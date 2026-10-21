@@ -10,7 +10,7 @@ import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { DOMINIOS } from "@/lib/dominios";
 
 /** Diretórios das coleções no App Router; toda página dentro deles precisa de dono. */
-const RAIZES = ["setor-eletrico", "gas-natural", "saneamento", "contas-publicas", "contas-publicas-estaduais", "eficiencia-estatal", "agronegocio", "territorio"];
+const RAIZES = ["setor-eletrico", "gas-natural", "combustiveis", "custo-de-vida", "saneamento", "contas-publicas", "contas-publicas-estaduais", "eficiencia-estatal", "agronegocio", "territorio"];
 
 /** Rotas de página (page.tsx) sob uma raiz, com segmentos dinâmicos preservados. */
 function paginas(raiz: string): string[] {
@@ -69,7 +69,11 @@ describe("registro dos seis observatórios", () => {
 
   it("toda página das coleções no App Router tem dono", () => {
     for (const raiz of RAIZES) {
-      for (const rota of paginas(raiz)) expect(donoDaRota(rota), `${rota} sem observatório`).not.toBeNull();
+      for (const rota of paginas(raiz)) {
+        // a entrada e o método do próprio observatório (Território e Clima) pertencem a ele, não a uma coleção
+        if (OBSERVATORIOS.some((o) => o.entrada === rota || o.metodo === rota)) continue;
+        expect(donoDaRota(rota), `${rota} sem observatório`).not.toBeNull();
+      }
     }
   });
 
@@ -124,6 +128,14 @@ describe("registro dos seis observatórios", () => {
       const layout = readFileSync(join(process.cwd(), "src", "app", raiz, "layout.tsx"), "utf-8");
       expect(layout, raiz).toContain("<ParaIrAlem mapa={mapaParaIrAlem()} />");
     }
+  });
+
+  it("o bloco Para ir além marca com o selo 'com conta' cada link, porque também aparece nas consultas abertas", async () => {
+    const { readFileSync } = await import("node:fs");
+    const fonte = readFileSync(join(process.cwd(), "src", "components", "observatorios", "ParaIrAlem.tsx"), "utf-8");
+    const links = fonte.match(/<Link\b[\s\S]*?<\/Link>/g) ?? [];
+    expect(links.length).toBeGreaterThan(0);
+    for (const l of links) expect(l, l).toMatch(/<SeloComConta href=\{[^}]+\} \/>/);
   });
 });
 

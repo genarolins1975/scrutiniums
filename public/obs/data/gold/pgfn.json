@@ -1,14 +1,15 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-18T15:09:28+00:00",
- "trimestre": "2026_trimestre_02",
- "data_base": "2026-06",
+ "gerado_em": "2026-10-21T16:18:38+00:00",
+ "trimestre": "2026_trimestre_03",
+ "data_base": "2026-09",
  "fonte": "PGFN — dados abertos da Dívida Ativa da União (dadosabertos.pgfn.gov.br)",
  "licenca": "dados abertos publicados sob a Lei de Acesso à Informação",
  "trimestres_absorvidos": [
+  "2026_trimestre_03",
   "2026_trimestre_02"
  ],
- "sintese": "São 35,0 milhões de inscrições em dívida ativa da União, R$ 3,51 trilhões na data-base 2026-06. 47,9% do valor está em 34.225 inscrições acima de R$ 10 milhões, e 78,9% do valor já foi ajuizado.",
+ "sintese": "São 35,0 milhões de inscrições em dívida ativa da União, R$ 3,51 trilhões na data-base 2026-09. 47,9% do valor está em 34.225 inscrições acima de R$ 10 milhões, e 78,9% do valor já foi ajuizado.",
  "aviso_universo": "Dívida ativa da União é crédito tributário, não carteira do Sistema Financeiro Nacional. Não some estes valores ao saldo de crédito do SCR.data nem às séries do SGS: são universos, devedores e conceitos diferentes.",
  "aviso_safra": "Estoque remanescente por safra, não fluxo de novas inscrições. Cada arquivo é uma fotografia do que ainda estava em cobrança na data-base: inscrições quitadas, canceladas ou extintas desaparecem. Safras antigas aparecem menores do que foram, porque o que sobrou delas é justamente o que ninguém pagou.",
  "privacidade": "A fonte publica nome, CPF mascarado e CNPJ do devedor. Nada disso é lido para dentro do Observatório: as colunas são descartadas na própria linha e o que persiste são apenas contagens e somas. Número de inscrição também não é retido.",

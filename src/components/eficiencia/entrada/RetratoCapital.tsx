@@ -1,42 +1,53 @@
 'use client';
 import {daCapital,inteiro,escala,naCapital,numero,type CapitalRetrato,type Medida} from '@/lib/eficiencia/entrada-nucleo';
 import styles from './Entrada.module.css';
+import {SeloComConta} from '@/components/acesso/SeloComConta';
 
-const C = 300, R0 = 124, RMAX = 266;
-const um = (v: number) => v.toLocaleString('pt-BR', {minimumFractionDigits: 1, maximumFractionDigits: 1});
-const angulo = (i: number, n: number) => (-90 + i * 360 / n) * Math.PI / 180;
-const ponto = (r: number, a: number) => [C + r * Math.cos(a), C + r * Math.sin(a)] as const;
-const raio = (posicao: number) => R0 + 6 + Math.max(0, Math.min(100, posicao)) / 100 * (RMAX - R0 - 6);
+/** Desenho do contorno no quadro pequeno do retrato (unidades do viewBox). */
+const QUADRO = 132;
+/** Trilho da régua: largura do desenho e margem para o ponto não sair pela borda. */
+const LARGURA = 320, MARGEM = 8;
+const xDaPosicao = (posicao: number) => MARGEM + Math.max(0, Math.min(100, posicao)) / 100 * (LARGURA - 2 * MARGEM);
 
-/** Pétala em folha: base sobre o disco, ponta no raio da posição. Só forma; o valor está no rótulo. */
-function petala(i: number, n: number, posicao: number) {
-  const a = angulo(i, n), meia = Math.PI / n * 0.46, r = raio(posicao), base = R0 + 3, h = r - base;
-  const f = (x: number) => x.toFixed(1);
-  const [bx1, by1] = ponto(base, a - meia), [bx2, by2] = ponto(base, a + meia), [tx, ty] = ponto(r, a);
-  const [c1x, c1y] = ponto(base + h * 0.42, a - meia * 1.32), [c2x, c2y] = ponto(base + h * 0.9, a - meia * 0.3);
-  const [c3x, c3y] = ponto(base + h * 0.9, a + meia * 0.3), [c4x, c4y] = ponto(base + h * 0.42, a + meia * 1.32);
-  return `M${f(bx1)} ${f(by1)}C${f(c1x)} ${f(c1y)} ${f(c2x)} ${f(c2y)} ${f(tx)} ${f(ty)}C${f(c3x)} ${f(c3y)} ${f(c4x)} ${f(c4y)} ${f(bx2)} ${f(by2)}A${base} ${base} 0 0 0 ${f(bx1)} ${f(by1)}Z`;
+/**
+ * Régua de uma condição: as 26 capitais em pontos sobre a posição de 0 a 100 (à direita, condição mais favorável), a capital escolhida
+ * em destaque, o comparador em losango e a metade marcada. Lê-se sem legenda; o valor original vem escrito ao lado.
+ */
+function Regua({m, a, b, capitais}: {m: Medida; a: CapitalRetrato; b: CapitalRetrato; capitais: CapitalRetrato[]}) {
+  const pos = m.posicoes!;
+  const pa = pos[a.id], pb = pos[b.id];
+  const demais = capitais.filter(c => c.id !== a.id && c.id !== b.id && pos[c.id] !== undefined);
+  // empate ou quase: os dois marcadores se tocariam; a capital sobe e o comparador desce, para os dois continuarem visíveis
+  const juntos = Math.abs(xDaPosicao(pa) - xDaPosicao(pb)) < 13;
+  const yFoco = juntos ? 8 : 14, yPar = juntos ? 21 : 14;
+  return <svg viewBox={`0 0 ${LARGURA} 28`} className={styles.reguaTrilho} role="img"
+    aria-label={`${m.curto}: ${a.nome} na posição ${Math.round(pa)} de 100; ${b.nome} na posição ${Math.round(pb)}`}>
+    <line x1={MARGEM} x2={LARGURA - MARGEM} y1={14} y2={14} className={styles.reguaLinha}/>
+    <line x1={xDaPosicao(50)} x2={xDaPosicao(50)} y1={5} y2={23} className={styles.reguaMetade}/>
+    {demais.map(c => <circle key={c.id} cx={xDaPosicao(pos[c.id])} cy={14} r={3} className={styles.reguaPonto}/>)}
+    <path d={`M${xDaPosicao(pb)} ${yPar - 6}l6 6l-6 6l-6 -6Z`} className={styles.reguaPar}/>
+    <circle cx={xDaPosicao(pa)} cy={yFoco} r={6.5} className={styles.reguaFoco}/>
+  </svg>;
 }
 
-/** Retrato da capital: contorno oficial do IBGE no centro e as sete condições de 2022 em volta. */
-export type NotaPar = {a: number; b: number; faixaA: [number, number]; estabilidade: string; ano: number};
-
-export function RetratoCapital({a, b, condicoes, capitais, onSelect, fonteContornos, fontePopulacao, nota = null}: {
+/**
+ * Retrato da capital: título com a capital, seletores, população, área e densidade, e ao lado a posição da capital entre as 26 em sete
+ * resultados de 2022, uma régua por resultado, com o contorno oficial do IBGE. Só posições: a nota experimental fica no painel do índice
+ * (decisão do dono de 19/10/2026). Fundo marfim como o resto da plataforma e régua no lugar das pétalas (decisão do dono de 21/10/2026,
+ * diagnóstico de layout de 20/10/2026, item 8): as pétalas pediam legenda, a régua se lê sozinha.
+ */
+export function RetratoCapital({a, b, condicoes, capitais, onSelect, fonteContornos, fontePopulacao}: {
   a: CapitalRetrato; b: CapitalRetrato; condicoes: Medida[]; capitais: CapitalRetrato[];
   onSelect: (campo: 'territorio' | 'comparador', id: string) => void;
   fonteContornos: {fonte: string; url: string; capturadoEm: string; tratamento: string}; fontePopulacao: string;
-  /** Nota experimental do índice v4 para as duas capitais; ausente quando o índice não chega à página. */
-  nota?: NotaPar | null;
 }) {
-  const n = condicoes.length;
   const contorno = a.contorno;
-  const lado = 2 * (R0 - 22);
+  const lado = QUADRO - 34;
   const k = contorno ? lado / Math.max(contorno.largura, contorno.altura) : 1;
-  const ox = contorno ? C - contorno.largura * k / 2 : 0, oy = contorno ? C - contorno.altura * k / 2 - 8 : 0;
+  const ox = contorno ? QUADRO / 2 - contorno.largura * k / 2 : 0, oy = contorno ? QUADRO / 2 - contorno.altura * k / 2 - 12 : 0;
   const barra = contorno ? escala(contorno.kmPorUnidade / k, lado) : null;
   const densidade = a.populacao !== null && a.areaKm2 ? a.populacao / a.areaKm2 : null;
-  const temPosicoes = condicoes.every(m => m.posicoes && m.posicoes[a.id] !== undefined);
-  const poligonoB = temPosicoes ? condicoes.map((m, i) => ponto(raio(m.posicoes![b.id]), angulo(i, n)).map(v => v.toFixed(1)).join(',')).join(' ') : '';
+  const temPosicoes = condicoes.every(m => m.posicoes && m.posicoes[a.id] !== undefined && m.posicoes[b.id] !== undefined);
   return <section className={styles.hero} aria-labelledby="titulo-eficiencia">
     <div className={styles.heroInner}>
       <div className={styles.heroText}>
@@ -52,50 +63,50 @@ export function RetratoCapital({a, b, condicoes, capitais, onSelect, fonteContor
           <div><dt>Área</dt><dd>{a.areaKm2 === null ? 'Não disponível' : <>{a.areaKm2.toLocaleString('pt-BR', {maximumFractionDigits: 1})}<span className={styles.unit}> km²</span></>}<small>IBGE, área territorial</small></dd></div>
           <div><dt>Densidade</dt><dd>{densidade === null ? 'Não disponível' : <>{inteiro(densidade)}<span className={styles.unit}> hab./km²</span></>}<small>população ÷ área</small></dd></div>
         </dl>
-        {nota && <div className={styles.score}>
-          <p className={styles.scoreKicker}>Índice de resultados · {nota.ano} · edição experimental</p>
-          <dl>
-            <div><dt><i className={styles.scoreDot} aria-hidden="true"/>{a.nome}</dt><dd className={styles.scoreMain}>{um(nota.a)}</dd></div>
-            <div><dt><i className={styles.scoreDiamond} aria-hidden="true"/>{b.nome}</dt><dd>{um(nota.b)}</dd></div>
-          </dl>
-          <p className={styles.scoreNote}>{nota.estabilidade} entre as duas capitais. Faixa {daCapital(a.nome)} nos testes: {um(nota.faixaA[0])} a {um(nota.faixaA[1])}. A nota é a média das sete posições do retrato. Saúde ainda fora da nota. <a href="#atlas-indice">Ver de onde vem cada ponto ↓</a></p>
-        </div>}
         <nav className={styles.heroNav} aria-label="Nesta página">
           <a href="#perguntas">Sete perguntas <span aria-hidden="true">↓</span></a>
           <a href="#recursos">O que a prefeitura aplica <span aria-hidden="true">↓</span></a>
-          <a href="#atlas-indice">A nota que se explica <span aria-hidden="true">↓</span></a>
           <a href="#cobertura">O que ainda não se sabe <span aria-hidden="true">↓</span></a>
+          <a href={`/eficiencia-estatal/indice-de-resultados?territorio=${a.id}&comparador=${b.id}`} aria-label="Índice experimental, no painel do índice, com conta">Índice experimental <span aria-hidden="true">↗</span><SeloComConta href="/eficiencia-estatal/indice-de-resultados"/></a>
         </nav>
       </div>
-      <figure className={styles.rosette} aria-labelledby="retrato-legenda">
-        <div className={styles.rosetteStage}>
-          <svg viewBox="0 0 600 600" role="img" aria-labelledby="retrato-titulo retrato-desc">
-            <title id="retrato-titulo">{`Retrato ${daCapital(a.nome)}: contorno oficial do município e posição em sete resultados de 2022`}</title>
-            <desc id="retrato-desc">{condicoes.map(m => `${m.curto}: ${numero(m.valores[a.id]?.valor ?? null, m.unidade)}${m.posicoes ? `, posição ${Math.round(m.posicoes[a.id])} de 100` : ''}`).join('; ')}.</desc>
+      <figure className={styles.retrato} aria-labelledby="retrato-titulo">
+        <div className={styles.retratoTopo}>
+          {contorno && <svg viewBox={`0 0 ${QUADRO} ${QUADRO}`} className={styles.contorno} role="img" aria-label={`Contorno oficial ${daCapital(a.nome)}`}>
             <defs>
-              {/* O padrão vive no espaço do contorno, que é reduzido por k: medidas divididas por k mantêm 4,5 px na tela. */}
-              <pattern id="retrato-hachura" width={4.5 / k} height={4.5 / k} patternUnits="userSpaceOnUse" patternTransform="rotate(38)"><line x1="0" y1="0" x2="0" y2={4.5 / k} className={styles.hatch} strokeWidth={1.1 / k}/></pattern>
-              <radialGradient id="retrato-disco" cx="50%" cy="45%" r="60%"><stop offset="0%" className={styles.discoCentro}/><stop offset="100%" className={styles.discoBorda}/></radialGradient>
+              {/* O padrão vive no espaço do contorno, que é reduzido por k: medidas divididas por k mantêm 4 px na tela. */}
+              <pattern id="retrato-hachura" width={4 / k} height={4 / k} patternUnits="userSpaceOnUse" patternTransform="rotate(38)"><line x1="0" y1="0" x2="0" y2={4 / k} className={styles.hatch} strokeWidth={1 / k}/></pattern>
             </defs>
-            <circle cx={C} cy={C} r={RMAX} className={styles.ringOuter}/>
-            <circle cx={C} cy={C} r={raio(50)} className={styles.ringHalf}/>
-            {condicoes.map((_, i) => { const [x, y] = ponto(RMAX, angulo(i, n)); const [x0, y0] = ponto(R0, angulo(i, n)); return <line key={i} x1={x0} y1={y0} x2={x} y2={y} className={styles.spoke}/>; })}
-            {temPosicoes && condicoes.map((m, i) => <path key={m.id} d={petala(i, n, m.posicoes![a.id])} className={styles.petal}/>)}
-            {temPosicoes && <polygon points={poligonoB} className={styles.peerShape}/>}
-            {temPosicoes && condicoes.map((m, i) => { const [x, y] = ponto(raio(m.posicoes![b.id]), angulo(i, n)); return <path key={m.id} d={`M${x} ${y - 7}l7 7l-7 7l-7 -7Z`} className={styles.peerMark}/>; })}
-            <circle cx={C} cy={C} r={R0} fill="url(#retrato-disco)" className={styles.disc}/>
-            {contorno && <g transform={`translate(${ox.toFixed(2)} ${oy.toFixed(2)}) scale(${k.toFixed(5)})`}><path d={contorno.d} fill="url(#retrato-hachura)" fillRule="evenodd" className={styles.outline} vectorEffect="non-scaling-stroke"/></g>}
-            {barra && <g className={styles.scaleBar}><line x1={C - barra.comprimento / 2} x2={C + barra.comprimento / 2} y1={C + R0 - 18} y2={C + R0 - 18}/><text x={C} y={C + R0 - 24} textAnchor="middle">{barra.km.toLocaleString('pt-BR')} km</text></g>}
-            {condicoes.map((m, i) => { const [x, y] = ponto(RMAX + 18, angulo(i, n)); return <text key={m.id} x={x} y={y + 5} textAnchor="middle" className={styles.petalNumber}>{i + 1}</text>; })}
-          </svg>
-          {condicoes.map((m, i) => { const ang = angulo(i, n), [x, y] = ponto(RMAX + 30, ang), cos = Math.cos(ang);
-            const lado = Math.abs(cos) < 0.2 ? styles.labelCenter : cos > 0 ? styles.labelRight : styles.labelLeft;
-            return <p key={m.id} className={`${styles.petalLabel} ${lado}`} style={{left: `${x / 6}%`, top: `${y / 6}%`}}><span>{m.curto}</span><strong>{numero(m.valores[a.id]?.valor ?? null, m.unidade)}</strong></p>; })}
+            <g transform={`translate(${ox.toFixed(2)} ${oy.toFixed(2)}) scale(${k.toFixed(5)})`}><path d={contorno.d} fill="url(#retrato-hachura)" fillRule="evenodd" className={styles.outline} vectorEffect="non-scaling-stroke"/></g>
+            {barra && <g className={styles.scaleBar}><line x1={QUADRO / 2 - barra.comprimento / 2} x2={QUADRO / 2 + barra.comprimento / 2} y1={QUADRO - 8} y2={QUADRO - 8}/><text x={QUADRO / 2} y={QUADRO - 13} textAnchor="middle">{barra.km.toLocaleString('pt-BR')} km</text></g>}
+          </svg>}
+          <div>
+            <h2 id="retrato-titulo" className={styles.retratoTitulo}>Onde {a.nome} fica entre as 26 capitais</h2>
+            <p className={styles.retratoSub}>Posição em sete resultados de 2022, de 0 a 100. Quanto mais à direita, mais favorável a condição.</p>
+            <p className={styles.retratoChave}>
+              <span><i className={styles.chaveFoco} aria-hidden="true"/>{a.nome}</span>
+              <span><i className={styles.chavePar} aria-hidden="true"/>{b.nome}</span>
+              <span><i className={styles.chavePonto} aria-hidden="true"/>Demais capitais</span>
+            </p>
+          </div>
         </div>
-        <ol className={styles.petalList}>{condicoes.map((m, i) => <li key={m.id}><span><b aria-hidden="true">{i + 1}</b>{m.curto}</span><strong>{numero(m.valores[a.id]?.valor ?? null, m.unidade)}</strong></li>)}</ol>
-        <figcaption id="retrato-legenda" className={styles.rosetteCaption}>
-          <p><span className={styles.keyPetal} aria-hidden="true"/> Cada pétala é um resultado de 2022: quanto mais longa, mais favorável a posição {daCapital(a.nome)} entre as 26 capitais estaduais (0 a 100, contando metade dos empates). <span className={styles.keyHalf} aria-hidden="true"/> O círculo tracejado marca a metade. <span className={styles.keyPeer} aria-hidden="true"/> {b.nome}.</p>
-          <p>Posição relativa, não nota nem meta. Precisão municipal não quantificada nas medidas amostrais. Contorno: {fonteContornos.fonte}{contorno && contorno.partesDistantes > 0 ? `; ${contorno.partesDistantes} ${contorno.partesDistantes === 1 ? 'parte remota fica' : 'partes remotas ficam'} fora do enquadramento` : ''}. População: {fontePopulacao}.</p>
+        <ol className={styles.reguaLista}>
+          {condicoes.map(m => <li key={m.id} className={styles.reguaItem}>
+            {/* os dois valores lado a lado: quem compara precisa do número das duas capitais, não só da posição (pedido do dono de 21/10/2026) */}
+            <div className={styles.reguaRotulo}>
+              <span>{m.curto}</span>
+              <dl className={styles.reguaValores}>
+                <div><dt className="sr-only">{a.nome}</dt><dd className={styles.valorFoco}>{numero(m.valores[a.id]?.valor ?? null, m.unidade)}</dd></div>
+                <div><dt className="sr-only">{b.nome}</dt><dd className={styles.valorPar}><i className={styles.chavePar} aria-hidden="true"/>{numero(m.valores[b.id]?.valor ?? null, m.unidade)}</dd></div>
+              </dl>
+            </div>
+            {temPosicoes ? <Regua m={m} a={a} b={b} capitais={capitais}/> : null}
+          </li>)}
+        </ol>
+        {temPosicoes && <p className={styles.reguaEixo} aria-hidden="true"><span>menos favorável</span><span>metade</span><span>mais favorável</span></p>}
+        <figcaption id="retrato-legenda" className={styles.retratoLegenda}>
+          <p>Posição relativa, não nota nem meta: a posição conta metade dos empates e não diz quanto uma capital está acima da outra. Os valores ao lado de cada régua são os originais, na unidade da fonte: em cima a capital escolhida, embaixo, com o losango, a de comparação. Precisão municipal não quantificada nas medidas amostrais.{temPosicoes ? '' : ' Posições indisponíveis nesta publicação: só os valores.'}</p>
+          <p>Contorno: {fonteContornos.fonte}{contorno && contorno.partesDistantes > 0 ? `; ${contorno.partesDistantes} ${contorno.partesDistantes === 1 ? 'parte remota fica' : 'partes remotas ficam'} fora do enquadramento` : ''}. População: {fontePopulacao}.</p>
         </figcaption>
       </figure>
     </div>

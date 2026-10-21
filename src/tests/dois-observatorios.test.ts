@@ -16,6 +16,16 @@ import { MODULOS_ENERGIA } from "@/lib/energia/navegacao";
 const raiz = process.cwd();
 const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
 
+/**
+ * Destino a que um href da SPA do Crédito leva: ele mesmo ou o redirecionamento do
+ * next.config.mjs. O endereço antigo da entrada do Território e Clima
+ * (/observatorios/territorio-e-clima) continua na SPA e redireciona para /territorio.
+ */
+async function destinoFinal(href: string | undefined): Promise<string | undefined> {
+  const config = (await import("../../next.config.mjs")).default as { redirects: () => Promise<{ source: string; destination: string }[]> };
+  return (await config.redirects()).find((r) => r.source === href)?.destination ?? href;
+}
+
 function paginas(dir: string, out: string[] = []): string[] {
   for (const n of readdirSync(dir)) {
     const p = join(dir, n);
@@ -61,9 +71,11 @@ describe("registro de domínios", () => {
     expect(existsSync(join(raiz, "src", "app", "eficiencia-estatal", "page.tsx"))).toBe(true);
     expect(existsSync(join(raiz, "src", "app", "eficiencia-estatal", "educacao-municipal-capitais", "page.tsx"))).toBe(true);
     expect(existsSync(join(raiz, "src", "app", "eficiencia-estatal", "saude-capitais", "page.tsx"))).toBe(true);
-    // painel exige conta: fica fora do sitemap; a página de método do tema entra
+    // a entrada (retrato das capitais) é consulta aberta desde 19/10/2026 e entra no sitemap; os painéis de tema
+    // exigem conta e ficam fora; a página de método do tema entra
     const urls = sitemap().map((u) => u.url);
-    expect(urls).not.toContain("https://scrutiniums.com" + DOMINIOS[2].rotaRaiz);
+    expect(urls).toContain("https://scrutiniums.com" + DOMINIOS[2].rotaRaiz);
+    expect(urls).not.toContain("https://scrutiniums.com/eficiencia-estatal/educacao-municipal-capitais");
     expect(urls).toContain("https://scrutiniums.com/eficiencia-estatal/educacao-municipal-capitais/metodos");
   });
 
@@ -89,7 +101,10 @@ describe("registro de domínios", () => {
     const spa = ler("public/obs/index.html");
     const barraSpa = spa.slice(spa.indexOf('class="obs-dominios"'), spa.indexOf("</nav>", spa.indexOf('class="obs-dominios"')));
     expect(ABAS_OBSERVATORIOS.map((a) => a.href)).toEqual(OBSERVATORIOS.map(destinoObservatorio));
-    for (const o of OBSERVATORIOS) expect(barraSpa, o.id).toContain(`<a href="${destinoObservatorio(o)}"`);
+    for (const o of OBSERVATORIOS) {
+      const href = barraSpa.match(new RegExp(`<a href="([^"]+)"[^>]*>${o.nomeCurto}</a>`))?.[1];
+      expect(await destinoFinal(href), o.id).toBe(destinoObservatorio(o));
+    }
     expect(barraSpa).toContain('aria-current="true">Economia</a>');
   });
 
@@ -160,7 +175,8 @@ describe("Crédito preservado", () => {
 
   it("a SPA do Crédito oferece a troca de observatório no desktop e no celular", () => {
     const html = ler("public/obs/index.html");
-    expect(html).toContain('class="obs-switcher"');
+    // o seletor da barra comum (desktop e celular) substituiu o da barra lateral, que o repetia
+    expect(html).toContain('class="obs-trocar"');
     expect(html).toContain('href="/setor-eletrico"');
     expect(html).toContain('class="mobile-obs"');
     expect(html).toContain('href="/app/observatorios"');

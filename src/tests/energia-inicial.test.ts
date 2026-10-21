@@ -640,7 +640,13 @@ const secao = (id: string) => {
 describe("a página renderizada", () => {
   it("a abertura preserva título, contexto e cinco caminhos: orientação, cobertura, busca, mapa e perguntas antes da referência", () => {
     const h1 = /<h1[^>]*>([^<]+)<\/h1>/.exec(html)![1];
-    expect(h1).toBe("A energia que move o Brasil.");
+    // redesenho de 20/10/2026: o título é a pergunta do observatório, não um slogan (checklist da página de entrada, item 1)
+    expect(h1).toBe("De onde vem a energia e quanto ela custa?");
+    expect(h1.endsWith("?")).toBe(true);
+    // os três números de abertura vêm logo depois do título, antes da gravura do sistema, que abre o percurso
+    expect(html.indexOf('class="energia-abertura-medidas"')).toBeGreaterThan(html.indexOf("<h1"));
+    expect(html.indexOf('class="energia-abertura-medidas"')).toBeLessThan(html.indexOf('class="energia-cenario"'));
+    expect(html.indexOf('class="energia-cenario"')).toBeLessThan(html.indexOf('id="percurso-energia"'));
     expect(h1.split(/\s+/).length).toBeGreaterThanOrEqual(5);
     expect(h1.split(/\s+/).length).toBeLessThanOrEqual(9);
     const ordem = [html.indexOf("<h1"), html.indexOf('aria-label="Por onde começar"'), html.indexOf('class="obs-metrics"'), html.indexOf('type="search"'), html.indexOf('<section id="perguntas"'), html.indexOf('aria-label="Conhecimento e fontes"')];
@@ -731,10 +737,10 @@ describe("a página renderizada", () => {
     expect(cod).toContain("useSyncExternalStore");
   });
 
-  it("o índice lista os 21 destinos, agrupados nos seis grupos, cada um com a pergunta curta e o estado vindo de navegacao.ts", () => {
+  it("o índice lista os 22 destinos, agrupados nos seis grupos, cada um com a pergunta curta e o estado vindo de navegacao.ts", () => {
     const indice = secao("destinos").html;
     const destinos = DESTINOS_NAVEGACAO.filter((d) => d.slug !== "mapa");
-    expect(destinos).toHaveLength(21);
+    expect(destinos).toHaveLength(22);
     for (const d of destinos) {
       expect(indice, d.slug).toContain(`href="${d.href}"`);
       expect(texto(indice), d.slug).toContain(d.pergunta);
@@ -743,7 +749,7 @@ describe("a página renderizada", () => {
     // sem módulo em integração nesta publicação, a página não escreve "Em integração" no índice (só no cartão condicional, que não aparece)
     const emIntegracao = destinos.filter((d) => d.publicado && !d.integrado).length;
     expect(texto(indice.replace(/<details[\s\S]*?<\/details>/g, " ")).includes("Em integração")).toBe(emIntegracao > 0);
-    expect(texto(indice)).toContain(emIntegracao === 0 ? "As 21 páginas publicam números." : "em integração");
+    expect(texto(indice)).toContain(emIntegracao === 0 ? "As 22 páginas publicam números." : "em integração");
     // o resumo de cada grupo, que antes ficava no bloco "Detalhe de cada página", abre o grupo
     for (const g of GRUPOS_NAVEGACAO) expect(texto(indice), g.id).toContain(g.resumo);
   });

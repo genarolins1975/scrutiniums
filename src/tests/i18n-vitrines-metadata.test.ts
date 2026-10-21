@@ -21,9 +21,9 @@ const VITRINES = [
   {
     caminho: "/observatorio-do-credito",
     titulo: "Observatório Brasileiro de Crédito · Scrutiniums",
-    descricao: "Crédito, instituições financeiras, Pix, juros e litigiosidade em uma plataforma gratuita: dados oficiais do Banco Central, CVM, IBGE e CNJ com metodologia aberta, distinguindo dado observado de indicador calculado.",
+    descricao: "Crédito, instituições financeiras, Pix, juros e litigiosidade em uma plataforma gratuita: dados oficiais do Banco Central, CVM, IBGE e CNJ com metodologia declarada, distinguindo dado observado de indicador calculado.",
     tituloSocial: "Observatório Brasileiro de Crédito",
-    descricaoSocial: "O mercado de crédito brasileiro explicado com rigor: 12 fontes oficiais, metodologia aberta e gratuito.",
+    descricaoSocial: "O mercado de crédito brasileiro explicado com rigor: fontes oficiais, metodologia declarada e acesso gratuito.",
   },
 ] as const;
 

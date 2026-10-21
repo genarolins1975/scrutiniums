@@ -1,0 +1,455 @@
+{
+ "descricao": "Metas contratuais transcritas dos anexos de metas, com cláusula, documento e sha256. Calendário 'civil' quando o documento fixa o ano-calendário; 'contratual' quando conta anos do contrato sem data de eficácia conhecida (nunca convertidos a ano civil por inferência). As metas de contrato são o piso comum a todos os municípios quando o documento é por município; a curva de cada município está em metas_municipios.json.gz. Pesquisa de 21/10/2026.",
+ "contratos": [
+  {
+   "id": "sp-sabesp-urae1-2024",
+   "nome": "Sabesp, Contrato de Concessão 01/2024 (URAE 1 Sudeste)",
+   "uf": "SP",
+   "concessionaria": "Sabesp",
+   "documento": {
+    "titulo": "Contrato 01/2024, Anexo VII (Fator U, Fator Q e indicadores), apostilado",
+    "url": "https://semil.sp.gov.br/urae1/wp-content/uploads/sites/26/2025/02/ANEXO-VII_Apostilado.pdf",
+    "sha256": "cf1215d6a652ee5e149a7c705960ed30fd6a1c841a8920dc299e8b080e642cce",
+    "capturado_em": "2026-10-14"
+   },
+   "clausula": "Anexo VII, item 3.7; Contrato, PDF p.6 e p.26",
+   "fim_contrato": null,
+   "metas": [
+    {
+     "indicador": "ICA",
+     "ano": 2026,
+     "valor": 97,
+     "ano_contrato": null
+    },
+    {
+     "indicador": "ICA",
+     "ano": 2027,
+     "valor": 99,
+     "ano_contrato": null
+    },
+    {
+     "indicador": "ICE",
+     "ano": 2026,
+     "valor": 90,
+     "ano_contrato": null
+    },
+    {
+     "indicador": "ICE",
+     "ano": 2027,
+     "valor": 93,
+     "ano_contrato": null
+    },
+    {
+     "indicador": "ICE",
+     "ano": 2028,
+     "valor": 96,
+     "ano_contrato": null
+    },
+    {
+     "indicador": "ICE",
+     "ano": 2029,
+     "valor": 99,
+     "ano_contrato": null
+    },
+    {
+     "indicador": "IEC",
+     "ano": 2026,
+     "valor": 85,
+     "ano_contrato": null
+    },
+    {
+     "indicador": "IEC",
+     "ano": 2029,
+     "valor": 99,
+     "ano_contrato": null
+    }
+   ],
+   "observacoes": "Metas de 2027 (ICA) e 2029 (ICE, IEC) valem de cada ano em diante. Anos sem linha não constam da transcrição e não são interpolados.",
+   "situacao": "transcrito",
+   "calendario": "civil",
+   "nivel": "contrato",
+   "versao_documento": "anexo apostilado do contrato assinado (fev/2025)",
+   "inicio_contagem": null
+  },
+  {
+   "id": "ce-ppp-esgoto-rmf-cariri-2022",
+   "nome": "Ceará, PPP de esgoto da RMF e do Cariri (Ambiental Ceará, blocos 1 e 2)",
+   "uf": "CE",
+   "concessionaria": "Ambiental Ceará (Aegea)",
+   "documento": {
+    "titulo": "Contrato, Anexo III, Indicadores de Desempenho e Metas de Atendimento (Quadro de Indicadores de Desempenho), Concorrência Pública Internacional nº 20220002 (publicação 2022/07948), PPP de esgotamento sanitário, Blocos 1 e 2",
+    "url": "https://www.papp.seplag.ce.gov.br/wp-content/uploads/sites/142/2023/03/CONTRATO-ANEXO-III-QUADRO-DE-INDICADORES-DE-DESEMPENHO.pdf",
+    "sha256": "d9e0555691a148ab0e7625a0f207098a7e4f31e616cebe602efa964f28b5aa21",
+    "capturado_em": "2026-10-21",
+    "paginas_metas": "41-42 (Apêndice II – metas municipais de cobertura de esgoto, ICE, por ano); 43-45 (Apêndice III – marcos 2025/2030/2033/2040 dos contratos de programa e do marco legal); 40 (Apêndice I – meta anual dos demais indicadores)"
+   },
+   "clausula": "Anexo III, Indicadores de Desempenho e Metas de Atendimento, item 2.3.1 (IACE, Indicador de ampliação de cobertura de esgoto) e Apêndice II, Metas municipais de cobertura de esgoto: ICE, por ano (Tabela 1)",
+   "versao_documento": "Anexo III do contrato (mesma tabela no Contrato 0020/2023 assinado, pp. 649 e 650)",
+   "calendario": "civil",
+   "nivel": "por_municipio",
+   "inicio_contagem": "ano 1 = 2023, coluna Marco do próprio documento",
+   "fim_contrato": 2052,
+   "metas": [
+    {
+     "indicador": "ICE",
+     "ano": 2033,
+     "ano_contrato": null,
+     "valor": 90
+    },
+    {
+     "indicador": "ICE",
+     "ano": 2040,
+     "ano_contrato": null,
+     "valor": 95
+    }
+   ],
+   "observacoes": "Só esgoto (sem ICA nem perdas). Curva anual de ICE por município de 2023 a 2052: 90% em 2033 em todos os 24 municípios (Paraipaba 90,90% e São Gonçalo do Amarante 91,55%) e 95% de 2040 em diante; em 2023 a meta vai de 0% a 82,58% conforme o município (Fortaleza 72,87%). As metas de contrato aqui são o piso comum; a curva de cada município está no arquivo por município.",
+   "situacao": "transcrito"
+  },
+  {
+   "id": "pi-2024",
+   "nome": "Piauí, Contrato de Concessão 648/2024 (Águas do Piauí)",
+   "uf": "PI",
+   "concessionaria": "Águas do Piauí (Aegea)",
+   "documento": {
+    "titulo": "Contrato de Concessão dos Serviços Públicos de Abastecimento de Água e Esgotamento Sanitário da MRAE Piauí, Anexo III, Indicadores de Desempenho e Metas de Atendimento",
+    "url": "https://www.aguasdopiaui.com.br/wp-content/uploads/2025/02/Anexo-III-Indicadores-de-Desempenho-e-Metas-de-Atendimento.pdf",
+    "sha256": "8796f7294b8dd01723ba0b4c338ae6ee8c410e61ab8775d31bb899fa3345aa03",
+    "capturado_em": "2026-10-21",
+    "paginas_metas": "6 (Tabela 1, ICTA), 7 (Tabela 2, ICTE), 14 (Tabela 5, IPD), 18 (Tabela 8, ITE); 34-39 (Apêndice II, municípios por macrorregião)"
+   },
+   "clausula": "Anexo III, Indicadores de Desempenho e Metas de Atendimento, itens 2.1.1 (ICTA), 2.1.2 (ICTE), 2.2.3 (IPD) e 2.3.2 (ITE)",
+   "versao_documento": "Anexo III publicado pela concessionária (contrato assinado em 26/12/2024)",
+   "calendario": "contratual",
+   "nivel": "por_area",
+   "inicio_contagem": "ano 1 contado da data de eficácia plena (Anexo I, Glossário), sem correspondência a ano civil no documento",
+   "fim_contrato": null,
+   "metas": [
+    {
+     "indicador": "ICA",
+     "ano": null,
+     "ano_contrato": 3,
+     "valor": 92
+    },
+    {
+     "indicador": "ICA",
+     "ano": null,
+     "ano_contrato": 4,
+     "valor": 94
+    },
+    {
+     "indicador": "ICA",
+     "ano": null,
+     "ano_contrato": 5,
+     "valor": 95
+    },
+    {
+     "indicador": "ICA",
+     "ano": null,
+     "ano_contrato": 6,
+     "valor": 96
+    },
+    {
+     "indicador": "ICA",
+     "ano": null,
+     "ano_contrato": 7,
+     "valor": 98
+    },
+    {
+     "indicador": "ICA",
+     "ano": null,
+     "ano_contrato": 8,
+     "valor": 99
+    },
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 4,
+     "valor": 33
+    },
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 5,
+     "valor": 38
+    },
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 6,
+     "valor": 44
+    },
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 7,
+     "valor": 49
+    },
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 8,
+     "valor": 54
+    },
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 9,
+     "valor": 59
+    },
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 10,
+     "valor": 64
+    },
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 11,
+     "valor": 69
+    },
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 12,
+     "valor": 75
+    },
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 13,
+     "valor": 80
+    },
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 14,
+     "valor": 85
+    },
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 15,
+     "valor": 90
+    },
+    {
+     "indicador": "IPL",
+     "ano": null,
+     "ano_contrato": 3,
+     "valor": 43
+    },
+    {
+     "indicador": "IPL",
+     "ano": null,
+     "ano_contrato": 4,
+     "valor": 40
+    },
+    {
+     "indicador": "IPL",
+     "ano": null,
+     "ano_contrato": 5,
+     "valor": 38
+    },
+    {
+     "indicador": "IPL",
+     "ano": null,
+     "ano_contrato": 6,
+     "valor": 35
+    },
+    {
+     "indicador": "IPL",
+     "ano": null,
+     "ano_contrato": 7,
+     "valor": 33
+    },
+    {
+     "indicador": "IPL",
+     "ano": null,
+     "ano_contrato": 8,
+     "valor": 30
+    },
+    {
+     "indicador": "IEC",
+     "ano": null,
+     "ano_contrato": 2,
+     "valor": 80
+    },
+    {
+     "indicador": "IEC",
+     "ano": null,
+     "ano_contrato": 3,
+     "valor": 90
+    },
+    {
+     "indicador": "IEC",
+     "ano": null,
+     "ano_contrato": 15,
+     "valor": 100
+    }
+   ],
+   "observacoes": "Linhas 'Total' das tabelas 1 (ICTA, água), 2 (ICTE, esgoto), 5 (IPD, perdas) e 8 (ITE, tratamento); o documento traz também metas por macrorregião urbana e aglomerado rural (arquivo por área). Sem meta de água nos anos 1 e 2 e de esgoto nos anos 1 a 3. A meta final vale do ano indicado em diante.",
+   "situacao": "transcrito"
+  },
+  {
+   "id": "rj-cedae-blocos-1-2-4-2021",
+   "nome": "Cedae, blocos 1, 2 e 4 (Águas do Rio e Iguá Rio)",
+   "uf": "RJ",
+   "concessionaria": "Águas do Rio (blocos 1 e 4) e Iguá Rio (bloco 2)",
+   "documento": {
+    "titulo": "Anexo III, Indicadores de Desempenho e Metas de Atendimento, Edital de Concorrência Internacional nº 01/2020 (concessão regionalizada de água e esgoto, Estado do Rio de Janeiro / Cedae)",
+    "url": "http://www.concessaosaneamento.rj.gov.br/documentos/grupo2/ANEXO-III-Indicadores-de-Desempenho.pdf",
+    "sha256": "69d82fd9ebb5f3758c0c425cd0c422e8323778a1fa60dd121fd53f9ff04ddf2e",
+    "capturado_em": "2026-10-21",
+    "paginas_metas": "28-30 (Apêndice II)"
+   },
+   "clausula": "Anexo III, Apêndices II (bloco 1, pp. 28 a 30), III (bloco 2, pp. 32 e 33) e V (bloco 4, pp. 36 e 37): metas de IAA, IAE e IPD por município",
+   "versao_documento": "Anexo III do Edital de Concorrência Internacional 01/2020 (arquivo de 11/01/2021); o anexo do contrato assinado não foi obtido (Agenersa com HTTP 500)",
+   "calendario": "contratual",
+   "nivel": "por_municipio",
+   "inicio_contagem": "colunas 'Início da Concessão' (ano 0), Ano 3 a Ano 11 e 'Ano 12 em diante'; sem correspondência a ano civil no anexo",
+   "fim_contrato": null,
+   "metas": [
+    {
+     "indicador": "ICA",
+     "ano": null,
+     "ano_contrato": 12,
+     "valor": 99
+    },
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 12,
+     "valor": 90
+    },
+    {
+     "indicador": "IPL",
+     "ano": null,
+     "ano_contrato": 10,
+     "valor": 25
+    }
+   ],
+   "observacoes": "No documento a cobertura chama-se IAA (atendimento urbano de água) e IAE (esgoto); a sigla ICA no RJ designa continuidade do abastecimento (98% a partir do ano 5). Metas por município: no início da concessão o IAA vai de 46% a 99% (bloco 1), 85% a 95% (bloco 2) e 72% a 97% (bloco 4); o IAE, de 0% a 90%, 4% a 70% e 0% a 75%; o IPD, de 25% a 52%, 35% a 60% e 35% a 53%. Todos chegam a 99% (IAA) e 90% (IAE) no 'Ano 12 em diante' e a 25% (IPD) no 'Ano 10 em diante'. Duas localidades (Maricá e São João de Meriti) têm o esgoto fora do escopo da concessionária.",
+   "situacao": "transcrito"
+  },
+  {
+   "id": "pe-compesa-2025",
+   "nome": "Compesa, blocos Sertão e RMR Pajeú",
+   "uf": "PE",
+   "concessionaria": "VITA Sertão (Pátria) e BASA Saneamento Ambiental (Acciona e BRK)",
+   "documento": {
+    "titulo": "Contrato de Concessão, Anexo 03, Indicadores de Desempenho (concessão regionalizada de água e esgoto das MRAE Sertão e RMR-Pajeú / Compesa), minuta da consulta pública de 28/11/2024",
+    "url": "https://srhs.pe.gov.br/images/MRAE-I-consulta-publica/Contrato_PE-Anexo_03-Indicadores_de_Desempenho_2024.11.28%201.pdf",
+    "sha256": "b493d1b80fcd57bb8910af4c2e3b86cd85029d00b3ff25d3011bddef01b7d544",
+    "capturado_em": "2026-10-21",
+    "paginas_metas": "64 (Tabela 11, ICA), 69 (Tabela 13, IPD), 89 (Tabela 21, ICE); 100-104 (metas por grupo)"
+   },
+   "clausula": "Anexo 03, item 2.4, Apêndice II (tabelas 11 e 12, ICA; 13 e 14, IPD; 21 e 22, ICE) e Apêndice III (metas por grupo)",
+   "versao_documento": "minuta submetida à consulta pública (28/11/2024); o anexo do edital de set/2025 e os dos contratos assinados (RMR Pajeú em 29/04/2026) não foram localizados",
+   "calendario": "contratual",
+   "nivel": "por_municipio",
+   "inicio_contagem": "colunas Ano 1 a Ano 8 e 'Ano 9 ao 35' (ano civil do contrato); sem correspondência a ano civil na minuta",
+   "fim_contrato": null,
+   "metas": [
+    {
+     "indicador": "ICA",
+     "ano": null,
+     "ano_contrato": 9,
+     "valor": 99
+    },
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 9,
+     "valor": 90
+    },
+    {
+     "indicador": "IPL",
+     "ano": null,
+     "ano_contrato": 9,
+     "valor": 25
+    }
+   ],
+   "observacoes": "Metas por município (24 no Sertão; 160 mais Fernando de Noronha na RMR Pajeú). No ano 1 o ICA vai de 82,1% a 100% (Sertão) e de 3,4% a 100% (RMR Pajeú); o ICE, de 0% a 98,8% e de 0% a 100%; o IPD, de 25% a 61% e de 25% a 68%. Todos chegam a 99% (ICA), 90% (ICE) e 25% (IPD) no 'Ano 9 ao 35'; 15 municípios da RMR Pajeú, Recife entre eles, ficam sem meta de esgoto porque já são atendidos pela PPP de esgoto existente. Os títulos de algumas tabelas da minuta trazem siglas trocadas.",
+   "situacao": "transcrito"
+  },
+  {
+   "id": "pb-cagepa-ppp-esgoto-2026",
+   "nome": "Cagepa, PPP de esgoto (Contrato 0213/2026, Acciona)",
+   "uf": "PB",
+   "concessionaria": "Acciona",
+   "documento": {
+    "titulo": "Anexo III, Indicadores de Desempenho e Metas de Atendimento (minuta da consulta pública nº 01/2025 da Cagepa, dez/2025; 'EDITAL Nº [●]')",
+    "url": "https://www.cagepa.pb.gov.br/wp-content/uploads/2025/12/ANEXO-III-INDICADORES-DE-DESEMPENHO-E-METAS-DE-ATENDIMENTO.pdf",
+    "sha256": "72527db3fcd9dd54d34feb1347637507b013f2ccbe0fdb6bdc3119612a017768",
+    "capturado_em": "2026-10-21",
+    "paginas_metas": "22-25 (Apêndice I – Meta do IAE e ICE por município)"
+   },
+   "clausula": "Anexo III, Indicadores de Desempenho e Metas de Atendimento, item 2.3 e Apêndice I, Meta do IAE e ICE por MUNICÍPIO e por GRUPO",
+   "versao_documento": "minuta da consulta pública (dez/2025); o contrato assinado (CT 0213/2026, sha256 2a88eb56b808863631291d4d8af9ca02dfff55f5adc0e3a4fa2ce57166b26ec0) não incorpora os anexos",
+   "calendario": "contratual",
+   "nivel": "por_municipio",
+   "inicio_contagem": "colunas 0 a 12 e '13º em diante' (anos civis contados da assinatura, segundo a minuta); correspondência a ano civil a confirmar no contrato",
+   "fim_contrato": null,
+   "metas": [
+    {
+     "indicador": "ICE",
+     "ano": null,
+     "ano_contrato": 13,
+     "valor": 90
+    }
+   ],
+   "observacoes": "Só esgoto. Curva única IAE | ICE por município: na coluna 0 vai de 0% a 69,4% (João Pessoa 69,4%; Cabedelo 27,6%; Cajazeiras 16,6%); todos os 85 municípios chegam a 90,0% na coluna '13º em diante'.",
+   "situacao": "transcrito"
+  },
+  {
+   "id": "rj-cedae-bloco-3-2021",
+   "nome": "Cedae, bloco 3 (Rio+Saneamento, relicitação de 29/12/2021)",
+   "uf": "RJ",
+   "concessionaria": "Rio+Saneamento (Águas do Brasil)",
+   "documento": null,
+   "clausula": null,
+   "versao_documento": null,
+   "calendario": null,
+   "nivel": null,
+   "inicio_contagem": null,
+   "fim_contrato": null,
+   "metas": [],
+   "observacoes": "O edital e o contrato da relicitação do Bloco 3 (2021) estavam em concessaosaneamentorj2021.rj.gov.br, que hoje não resolve DNS; a página da Agenersa 'Contratos de concessão e documentos associados' (que lista 'Anexo II: Plano de Metas' de 01/02/2022 e 1º Termo Aditivo de 29/10/2024 para o Bloco 3) devolve HTTP 500 via proxy, assim como a cópia da Wayback (403/bloqueio de egresso). riomaissaneamento.com.br não publica o contrato. Valores transcritos do Anexo III do Edital de Concorrência Internacional nº 01/2020 (Processo 120207/000707/2020), versão publicada no portal oficial da concessão (arquivo gerado em 11/01/2021). No documento, os indicadores de cobertura chamam-se IAA (Índice de Atendimento Urbano de Água) e IAE (Índice de Atendimento Urbano de Esgoto); a sigla 'ICA' no Anexo III do RJ designa o Índice de Continuidade do Abastecimento (meta 98% a partir do Ano 5, Tabela 6, p. 27), não cobertura. Colunas: 'Início da Concessão' (valor de partida), 'Ano 3' a 'Ano 11' e 'Ano 12 em diante' (IAA/IAE); 'Ano 5' a 'Ano 9' e 'Ano 10 em diante' (IPD). O anexo não fixa correspondência entre 'Ano n' e ano-calendário; a contagem segue a data de início da concessão definida no contrato (assinaturas em 2021). O município 'Rio de Janeiro' refere-se apenas à área de planejamento da capital incluída no bloco. Não foi possível obter a versão do Anexo III anexada ao contrato assinado nem eventuais aditivos: www.rj.gov.br (Agenersa, consulta pública) devolveu HTTP 500 em todas as tentativas via proxy, e a Deliberação Agenersa 4939/2025 (curvas ajustadas por município) não foi acessível pelo mesmo motivo. Edital (EDITAL.pdf, sha256 69f360bc4d616a4a23f6edd4c2e995514e65042e82747cd992380061594cd871) e minuta do contrato (Contrato-de-Concessao.pdf, sha256 c0d27eff7ccba9e9ec83adcd983ecafa39a211a7771a466606b1574e9654c4a5) baixados do mesmo portal.",
+   "situacao": "documento_nao_localizado"
+  },
+  {
+   "id": "se-deso-2024",
+   "nome": "Sergipe, concessão de 74 municípios (Iguá Sergipe)",
+   "uf": "SE",
+   "concessionaria": "Iguá Sergipe",
+   "documento": null,
+   "clausula": null,
+   "versao_documento": null,
+   "calendario": null,
+   "nivel": null,
+   "inicio_contagem": null,
+   "fim_contrato": null,
+   "metas": [],
+   "observacoes": "Nenhum documento oficial com metas ano a ano pôde ser baixado. Tentativas: (1) pasta oficial do edital na Sefaz-SE, https://www.sefaz.se.gov.br/Edital%20Concorrencia%20Publica/Contrato%20e%20Anexos/ (onde está publicado o 'Anexo XIII: Glossário', localizado por busca), o túnel TLS via proxy foi encerrado pelo destino em todas as tentativas (curl 35, 'Connection reset by peer'); em HTTP puro, 503; (2) agrese.se.gov.br (reguladora; Nota Técnica 12/2025 com contribuições da Iguá ao Caderno de Encargos), conexão reiniciada; (3) www.se.gov.br, desenvolve.se.gov.br, sedurbs/seplan, inacessíveis (503/sem rota); (4) iguasergipe.com.br, falha de DNS/CONNECT 502; igua.com.br e ri.igua.com.br não publicam o contrato; (5) hubdeprojetos.bndes.gov.br, a API /cms/projeto devolve HTTP 500; (6) Wayback Machine (CDX), bloqueado pela política de egresso do proxy; (7) WebFetch na pasta da Sefaz, 503; (8) deso-se.com.br e transparencia.deso-se.com.br, sem documentos da concessão. Fontes secundárias (BNDES, IDB Invest, imprensa) citam metas de 99% de água, 90% de esgoto e perdas de 25% até 2033, mas não foram transcritas por não serem o documento contratual.",
+   "situacao": "documento_nao_localizado"
+  },
+  {
+   "id": "ap-2021",
+   "nome": "Amapá, concessão dos 16 municípios (CSA, Equatorial)",
+   "uf": "AP",
+   "concessionaria": "Companhia de Saneamento do Amapá (Equatorial)",
+   "documento": null,
+   "clausula": null,
+   "versao_documento": null,
+   "calendario": null,
+   "nivel": null,
+   "inicio_contagem": null,
+   "fim_contrato": null,
+   "metas": [],
+   "observacoes": "O portal oficial da licitação existe (https://concessaosaneamento.portal.ap.gov.br/, Concorrência Internacional nº 01/2021, com publicações e anexos), mas o servidor envia apenas o certificado folha (falta o intermediário 'Sectigo Public Server Authentication CA DV R36'), o que impede a verificação TLS pelo curl; a inclusão manual do intermediário foi vetada pela política de segurança da sessão e o acesso por HTTP devolve 503. Demais tentativas: portal.ap.gov.br e arsap.portal.ap.gov.br (503/sem rota), amapa.gov.br, csaamapa.com.br (DNS), hubdeprojetos.bndes.gov.br (API /cms/projeto com HTTP 500), WebFetch (503), Wayback (bloqueado). Comunicado ao mercado da Equatorial (api.mziq.com, sha256 9423b120ef2c91b4601c243fd70a31d23214472bcf52517612ca98afa6212704) confirma apenas a assinatura do Termo de Transferência do Sistema (12/07/2022).",
+   "situacao": "documento_nao_localizado"
+  }
+ ],
+ "nao_lidos": []
+}
