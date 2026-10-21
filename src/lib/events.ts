@@ -1,4 +1,5 @@
 import { getDb, newId, schema } from "./db";
+import type { ObservatorioId } from "./observatorios/lista";
 
 /**
  * Eventos de produto não sensíveis.
@@ -20,6 +21,13 @@ export type ProductEventName =
   | "resumo_assinatura_confirmada"
   | "resumo_assinatura_cancelada"
   | "resumo_enviado"
+  // recursos da conta (Onda 2): só o fato, nunca o endereço salvo
+  | "recorte_salvo"
+  | "alerta_assinado"
+  | "alerta_cancelado"
+  | "alerta_enviado"
+  // cada execução autorizada do disparo dos alertas: prova de que a verificação diária está rodando
+  | "alertas_verificacao"
   | "onboarding_completed"
   | "verification_failed"
   | "onboarding_abandoned"
@@ -30,7 +38,13 @@ export type ProductEventName =
   | "observatorio_escolhido:contas"
   | "observatorio_escolhido:estados"
   | "observatorio_escolhido:saneamento"
-  | "observatorio_escolhido:gas";
+  | "observatorio_escolhido:gas"
+  | "observatorio_escolhido:agro"
+  // coleção ou entrada aberta pelo bloco de um dos seis observatórios
+  | `observatorio_aberto:${ObservatorioId}`
+  | "agro_simulacao_calculada"
+  | "agro_exportacao_solicitada"
+  | "agro_percurso_trocado";
 
 export async function trackEvent(name: ProductEventName, userId?: string): Promise<void> {
   try {

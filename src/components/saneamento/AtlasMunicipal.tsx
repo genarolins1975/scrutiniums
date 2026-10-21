@@ -17,6 +17,7 @@ import type { Municipio } from "@/lib/saneamento/tipos";
 import { classePorte, ROTULO_PORTE, mediana } from "@/lib/saneamento/pares";
 import { baixarCsv } from "@/lib/saneamento/csv";
 import { inteiro } from "@/lib/saneamento/formato";
+import { AUTODECLARADO, MARCA_AUTODECLARADO } from "@/lib/saneamento/autodeclarado";
 import { useMunicipios } from "./useMunicipios";
 
 /** Só a primeira letra em minúscula: preserva siglas e nomes científicos (SAA, CadÚnico, E. coli). */
@@ -81,8 +82,9 @@ export function AtlasMunicipal({
   const resumoRecorte = useMemo(() => agregarMedida(med, doRecorte), [med, doRecorte]);
   const comValor = doRecorte.filter((m) => valorMedida(med, m, "pct") != null).length;
 
+  // valor financeiro autodeclarado não vira ranking (src/lib/saneamento/autodeclarado.ts)
   const rankingPessoas = useMemo(() => {
-    if (!med.contagem) return [];
+    if (!med.contagem || med.financeira) return [];
     return doRecorte
       .map((m) => ({ id: m.id, rotulo: `${m.nome} (${m.uf})`, v: med.contagem!(m), pct: med.pct(m) }))
       .filter((r) => r.v != null)
@@ -91,7 +93,9 @@ export function AtlasMunicipal({
   }, [doRecorte, med]);
   const rankingPct = useMemo(
     () =>
-      doRecorte
+      med.financeira
+        ? []
+        : doRecorte
         .filter((m) => (m.pop22 ?? 0) >= LIMIAR_PROPORCAO)
         .map((m) => ({ id: m.id, rotulo: `${m.nome} (${m.uf})`, v: med.pct(m) }))
         .filter((r) => r.v != null)
@@ -125,8 +129,8 @@ export function AtlasMunicipal({
   }, [sel, lista, med]);
 
   const exportar = () => {
-    const cab = ["codigo_ibge", "municipio", "uf", "medida", "fonte", "periodo", "valor_percentual", "contagem", "universo", "unidade_percentual"];
-    const linhas = doRecorte.map((m) => [m.id, m.nome, m.uf, med.titulo, FONTE_ROTULO[med.fonte], med.periodo, med.pct(m), med.contagem ? med.contagem(m) : null, med.universo, med.unidadePct]);
+    const cab = ["codigo_ibge", "municipio", "uf", "medida", "fonte", "periodo", "valor_percentual", "contagem", "universo", "unidade_percentual", "ressalva"];
+    const linhas = doRecorte.map((m) => [m.id, m.nome, m.uf, med.titulo, FONTE_ROTULO[med.fonte], med.periodo, med.pct(m), med.contagem ? med.contagem(m) : null, med.universo, med.unidadePct, med.financeira ? AUTODECLARADO : ""]);
     baixarCsv(`saneamento-${med.id}-${s.uf}.csv`, cab, linhas);
   };
 
@@ -185,6 +189,11 @@ export function AtlasMunicipal({
             {nomeRecorte}: <strong className="font-medium text-carvao">{textoRef(refTerritorio)}</strong>
             {s.uf !== "BR" && <> · Brasil: {textoRef(refBrasil)}</>} · {FONTE_ROTULO[med.fonte]}, {med.periodo}. Universo: {inicialMinuscula(med.universo)}.
           </p>
+          {med.financeira && (
+            <p data-autodeclarado="" className="mt-1 text-sm font-medium leading-relaxed text-carvao">
+              {MARCA_AUTODECLARADO}
+            </p>
+          )}
           {carga.estado === "pronto" && (
             <p className="mt-1 text-xs text-carvao-muted">
               {inteiro(comValor)} de {inteiro(doRecorte.length)} municípios com valor no recorte. {med.ausencia}
@@ -268,11 +277,18 @@ export function AtlasMunicipal({
               />
             )}
           </div>
-          <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
-            Os dois rankings respondem a perguntas diferentes: onde está o maior número de {unidadeContagem} e onde a proporção é maior. O corte
-            de {inteiro(LIMIAR_PROPORCAO)} moradores evita que municípios muito pequenos ocupem a lista por poucos casos; a tabela do mapa traz
-            todos.
-          </p>
+          {med.financeira ? (
+            <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted">
+              Sem ranking de municípios nesta medida: o valor é {AUTODECLARADO}, e a ordem de uma lista o apresentaria como fato apurado. O mapa,
+              a distribuição e o arquivo do recorte trazem todos os municípios.
+            </p>
+          ) : (
+            <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
+              Os dois rankings respondem a perguntas diferentes: onde está o maior número de {unidadeContagem} e onde a proporção é maior. O corte
+              de {inteiro(LIMIAR_PROPORCAO)} moradores evita que municípios muito pequenos ocupem a lista por poucos casos; a tabela do mapa traz
+              todos.
+            </p>
+          )}
 
           {histograma && (
             <div className="mt-10">
@@ -353,6 +369,11 @@ function PainelSelecao({
             </dd>
           )}
           {v == null && <dd className="text-xs text-carvao-muted">{med.ausencia}</dd>}
+          {med.financeira && (
+            <dd data-autodeclarado="" className="text-xs text-carvao-muted">
+              {MARCA_AUTODECLARADO}
+            </dd>
+          )}
         </div>
         <div className="border-t border-linha pt-3">
           <dt className="text-carvao-muted">{nomeUf}</dt>

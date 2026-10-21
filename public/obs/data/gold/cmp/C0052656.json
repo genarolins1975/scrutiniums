@@ -1,7 +1,7 @@
 {
  "cod": "C0052656",
  "nome": "BARU",
- "sr": "S4",
+ "sr": null,
  "tcb": "N1",
  "porte_quartil": "P1",
  "nivel": "conglomerado prudencial",
@@ -177,5 +177,5 @@
    "202606": 8.893810686937805
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

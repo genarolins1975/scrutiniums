@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
+import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { Footer } from "@/components/layout/Footer";
 import { MarcaRolagem } from "@/components/energia/MarcaRolagem";
 
@@ -8,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s · Saneamento · Scrutiniums",
   },
   description:
-    "Acesso à água e ao esgoto nos 5.570 municípios, preço regulado, prestadores, reguladores, investimentos, planos e metas de universalização, com fonte, período e limitações em cada número.",
+    "Acesso à água e ao esgoto nos 5.570 municípios, tarifas, prestadores, reguladores, investimentos, planos e metas de universalização, com fonte, período e limitações em cada número.",
 };
 
 /**
@@ -28,6 +30,7 @@ export default function SaneamentoLayout({ children }: { children: React.ReactNo
       </a>
       <MarcaRolagem />
       <div className="flex-1">{children}</div>
+      <ParaIrAlem mapa={mapaParaIrAlem()} />
       <Footer compacto />
     </div>
   );

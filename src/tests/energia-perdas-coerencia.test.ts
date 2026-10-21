@@ -10,6 +10,7 @@ import { diferencaPar, formatarDiferenca, formatarValor } from "@/lib/energia/es
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
 import {
   componentesParaBarra,
+  divergenciaArredondamentoCusto,
   fraseSelecaoRegulatorio,
   linhasComposicao,
   linhasCusto,
@@ -146,13 +147,26 @@ describe("custo: o total no fim da barra é a coluna Perdas da tabela, e a base 
   });
 
   it("CERPRO tem 14,65 na barra, na tabela e na frase de abertura, e a página não explica mais uma divergência por nota", () => {
-    const cerpro = custo.find((l) => l.rotulo === "CERPRO")!;
-    expect(formatarValor(cerpro.perdas, 2)).toBe("14,65");
-    expect(vereditoCusto(custo, g.referencia.tarifa_consultada_em)).toContain("14,65 R$/MWh (CERPRO)");
+    // a distribuidora em que as componentes arredondadas somam um centavo a menos que o total (CERPRO em 30/09/2026: 14,64 contra 14,65)
+    // mostra só o total da tabela; e a frase de abertura cita o menor e o maior valor da tabela
+    const ex = divergenciaArredondamentoCusto(custo).exemplo!;
+    expect(ex.barra).not.toBe(ex.tabela);
+    const linha = custo.find((l) => l.rotulo === ex.rotulo)!;
+    expect(formatarValor(linha.perdas, 2)).toBe(formatarValor(ex.tabela, 2));
+    const vigentes = custo.filter((l) => l.situacao === "vigente");
+    const menor = vigentes.reduce((m, l) => (l.perdas < m.perdas ? l : m));
+    const maior = vigentes.reduce((m, l) => (l.perdas > m.perdas ? l : m));
+    const v = vereditoCusto(custo, g.referencia.tarifa_consultada_em);
+    expect(v).toContain(`${formatarValor(menor.perdas, 2)} R$/MWh (${menor.rotulo})`);
+    expect(v).toContain(`${formatarValor(maior.perdas, 2)} R$/MWh (${maior.rotulo})`);
     const h = renderToStaticMarkup(createElement(PerdasCustoContextoPage));
-    const trechos = Array.from(h.matchAll(/CERPRO/g), (m) => h.slice(m.index!, m.index! + 420)).filter((t) => /14,6[45]/.test(t));
+    const certo = formatarValor(ex.tabela, 2);
+    const errado = formatarValor(ex.barra, 2);
+    const trechos = Array.from(h.matchAll(new RegExp(ex.rotulo.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")), (m) => h.slice(m.index!, m.index! + 420)).filter(
+      (t) => t.includes(certo) || t.includes(errado),
+    );
     expect(trechos.length).toBeGreaterThan(0);
-    for (const t of trechos) expect(t).not.toContain("14,64");
+    for (const t of trechos) expect(t).not.toContain(errado);
     expect(h).not.toContain("data-arredondamento");
   });
 

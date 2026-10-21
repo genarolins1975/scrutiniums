@@ -1,7 +1,7 @@
 {
  "cod": "40475846",
  "nome": "J17 - SOCIEDADE DE CRÉDITO DIRETO S/A",
- "sr": "S5",
+ "sr": null,
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -283,5 +283,5 @@
    "202509": 0.14634677779858996
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:20+00:00"
 }

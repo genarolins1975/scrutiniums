@@ -1,7 +1,7 @@
 {
  "cod": "C0088125",
  "nome": "CONLIFE SCD - PRUDENCIAL",
- "sr": null,
+ "sr": "S5",
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "conglomerado prudencial",
@@ -65,5 +65,5 @@
    "202509": 374637.5
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

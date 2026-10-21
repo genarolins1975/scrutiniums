@@ -1228,16 +1228,34 @@ class ContratoDaGold(unittest.TestCase):
         self.assertEqual(evid.validar(self.g["cadastro"]["transmissao"]["evidencia"]), [])
 
     def test_documento_cita_os_numeros_da_gold(self):
+        """O documento de método é datado ("Estado em DD/MM/AAAA") e é escrito à mão; a gold muda com a coleta
+        diária (20/10/2026: o SIGET passou de 16.856 para 16.854 módulos). Regra: toda gold gerada até a data
+        do documento tem os números que ele cita; numa gold posterior, o documento diz onde estão os vigentes
+        (o campo de cada número), e um número da gold que mude não o desmente sem aviso."""
         doc = _texto(DOC_MODULO)
         br = lambda n: f"{n:,}".replace(",", ".")  # noqa: E731
         rev = self.g["financas"]["revisoes"]
         with open(os.path.join(base.SERIES, "empresas_evidencias.json"), encoding="utf-8") as f:
             n_ev = len(json.load(f)["evidencias"])
-        for n in (rev["valores_reapresentados"], rev["documentos_com_mais_de_uma_versao"], rev["inversoes_de_escala_resolvidas"], n_ev,
-                  self.g["cadastro"]["agentes"]["total"], self.g["cadastro"]["agentes"]["ramos"]["transmissao"],
-                  self.g["cadastro"]["agentes"]["ramos_incluindo_inativos"]["transmissao"],
-                  self.g["cadastro"]["transmissao"]["resumo"]["modulos"], self.g["financas"]["exclusoes"]["escala"]["documentos_corrigidos"]):
-            self.assertIn(br(n), doc, n)
+        numeros = {
+            "financas.revisoes": (rev["valores_reapresentados"], rev["documentos_com_mais_de_uma_versao"], rev["inversoes_de_escala_resolvidas"]),
+            "empresas_evidencias.json": (n_ev,),
+            "cadastro.agentes": (self.g["cadastro"]["agentes"]["total"], self.g["cadastro"]["agentes"]["ramos"]["transmissao"],
+                                 self.g["cadastro"]["agentes"]["ramos_incluindo_inativos"]["transmissao"]),
+            "cadastro.transmissao.resumo.modulos": (self.g["cadastro"]["transmissao"]["resumo"]["modulos"],),
+            "financas.exclusoes.escala.documentos_corrigidos": (self.g["financas"]["exclusoes"]["escala"]["documentos_corrigidos"],),
+        }
+        m = re.search(r"Estado em (\d{2})/(\d{2})/(\d{4})", doc)
+        self.assertTrue(m, "o documento precisa dizer a data do estado que descreve")
+        estado = f"{m.group(3)}-{m.group(2)}-{m.group(1)}"
+        if self.g["gerado_em"][:10] <= estado:
+            for campo, ns in numeros.items():
+                for n in ns:
+                    self.assertIn(br(n), doc, f"{campo}: {n}")
+        else:
+            self.assertIn(f"Os números deste documento são os da gold publicada até {m.group(1)}/{m.group(2)}/{m.group(3)}", doc)
+            for campo in numeros:
+                self.assertIn(campo, doc, campo)
 
 
 class MetricasDeContas(unittest.TestCase):

@@ -146,6 +146,12 @@
   #view-mapa.has-credit-atlas .atlas-doors .atlas-door-art,
   .energia-atlas-inicial .energia-porta > img,
   .energia-atlas-inicial .energia-porta-arte { justify-self:center; }
+  /* No celular a gravura vira faixa (16:9): a mesma cena, sem empurrar a pergunta para a dobra seguinte (banca de 19/10/2026). */
+  .energia-atlas-inicial .energia-porta > img { width:100%; max-width:none; aspect-ratio:16/9; object-fit:cover; object-position:center; }
+  /* A cena da prancha 2 × 2 em faixa 16:9, centrada na própria cena: 15,217% e 84,783% são o centro vertical da
+     linha de cima e da de baixo quando a janela tem 9/16 da largura e a prancha, o dobro dela. */
+  .energia-atlas-inicial .energia-porta-arte { width:100%; max-width:none; aspect-ratio:16/9; background-size:200% auto;
+    background-position-y:calc(15.217% + var(--linha, 0) * 69.565%) !important; }
 }
 @media(max-width:390px) {
   #view-mapa.has-credit-atlas .atlas-wheel { grid-template-columns:1fr; gap:28px; }

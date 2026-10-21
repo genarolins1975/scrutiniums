@@ -487,7 +487,8 @@ describe("termos explicados no ponto de uso", () => {
   it("Rede: 'energia escondida pelo saldo' definida antes dos cartões, e o lead não cita mais o 'arquivo de 2026'", () => {
     const t = entender.rede;
     expect(t).toContain("A energia escondida pelo saldo é o menor dos dois sentidos; zero quer dizer que o fluxo foi sempre no mesmo sentido");
-    expect(t.indexOf("A energia escondida pelo saldo é o menor")).toBeLessThan(t.indexOf("Energia escondida pelo saldo de 30 dias, Norte"));
+    expect(t.indexOf("A energia escondida pelo saldo é o menor")).toBeLessThan(t.indexOf("Energia escondida pelo saldo de 30 dias, entre Norte"));
+    expect(t.indexOf("Energia escondida pelo saldo de 30 dias, entre Norte")).toBeGreaterThan(-1);
     expect(t).not.toContain("no arquivo de");
     expect(t).not.toContain("Quatro painéis");
   });
@@ -515,12 +516,18 @@ describe("números que parecem divergir: causa, classificação e explicação n
   const dias = (a: string, b: string) => diaria.filter((x) => x.d >= a && x.d <= b).map((x) => x.v);
 
   it("Rede, saldo do exterior (classe 1, arredondamento único): o veredito, o cartão e a soma do CSV mensal publicado dão o mesmo valor", () => {
-    const meses = csv("rede_exterior_mensal.csv").filter((r) => ["ARGENTINA", "URUGUAI"].includes(r.pais) && r.mes >= "2025-09" && r.mes <= "2026-08" && r.liquido_mwh !== "");
+    // janela de 12 meses declarada na ficha; a soma vem do CSV mensal (outro arquivo), país a país, sem Itaipu (identidade à parte)
+    const per = GR.evidencias.exterior_12m!.periodo as { inicio: string; fim: string };
+    const meses = csv("rede_exterior_mensal.csv").filter((r) => r.pais !== "ITAIPU" && r.mes >= per.inicio && r.mes <= per.fim && r.liquido_mwh !== "");
+    const paises = new Set(meses.map((r) => r.pais));
+    expect(paises.size).toBeGreaterThan(0);
+    expect(meses.length).toBe(12 * paises.size);
     const soma = meses.reduce((s, r) => s + Number(r.liquido_mwh), 0);
-    expect(meses.length).toBe(24);
-    expect(Math.abs(soma - 2_754_057)).toBeLessThan(1);
-    expect(R.vereditoExterior(GR.exterior)).toContain("2.754.057 MWh");
-    expect(GR.evidencias.exterior_12m!.valor_exibido).toBe("2.754.057 MWh");
+    const exibido = `${Math.round(Math.abs(soma)).toLocaleString("pt-BR")} MWh`;
+    // um arredondamento só: o veredito e o cartão escrevem o mesmo inteiro que a soma do CSV
+    expect(R.vereditoExterior(GR.exterior)).toContain(exibido);
+    expect(R.vereditoExterior(GR.exterior)).toContain(soma > 0 ? "exportou" : "importou");
+    expect(GR.evidencias.exterior_12m!.valor_exibido).toBe(exibido);
   });
 
   it("Rede, programado: o desvio médio e a mediana do programa, relidos do arquivo horário de 2026, são os do veredito", () => {
@@ -545,7 +552,12 @@ describe("números que parecem divergir: causa, classificação e explicação n
     const horas = new Map<string, number>();
     for (const r of atls) if (ativos.has(r.fluxo) && janela.includes(r.mes) && r.horas_violacao !== "") horas.set(r.fluxo, (horas.get(r.fluxo) ?? 0) + Number(r.horas_violacao));
     const acima = Array.from(ativos).filter((f) => (horas.get(f) ?? 0) > 0).length;
-    const cortes = csv("rede_interrupcoes_carga.csv").filter((r) => r.instante.slice(0, 10) >= "2025-09-30" && r.instante.slice(0, 10) <= "2026-09-29");
+    // janela de 12 meses que termina no último corte do registro publicado: fim = data do último corte, início = um ano antes, mais um dia
+    const registro = csv("rede_interrupcoes_carga.csv");
+    const fimCortes = registro.map((r) => r.instante.slice(0, 10)).sort().at(-1)!;
+    const umAnoAntes = new Date(Date.UTC(Number(fimCortes.slice(0, 4)) - 1, Number(fimCortes.slice(5, 7)) - 1, Number(fimCortes.slice(8, 10)) + 1)).toISOString().slice(0, 10);
+    expect([GR.restricoes.interrupcoes.ultimos_12_meses!.inicio, GR.restricoes.interrupcoes.ultimos_12_meses!.fim]).toEqual([umAnoAntes, fimCortes]);
+    const cortes = registro.filter((r) => r.instante.slice(0, 10) >= umAnoAntes && r.instante.slice(0, 10) <= fimCortes);
     const v = R.vereditoRestricoes(GR.restricoes);
     expect(v).toContain(`${acima} dos ${ativos.size} fluxos`);
     expect(v).toContain(`${cortes.length} cortes de carga`);
@@ -553,14 +565,19 @@ describe("números que parecem divergir: causa, classificação e explicação n
 
   it("Carga, 11,4% e 11,45% (classe 1, mesmas casas para a mesma medida): o cartão, o veredito, a resposta e a tabela mostram 11,45%, como o CSV de comparações", () => {
     const linha = comparacao.find((r) => r.submercado === "SIN" && r.janela === "7d" && r.tipo === "equivalente")!;
-    const variacao = Number(linha.variacao_pct).toFixed(2).replace(".", ",");
-    expect(variacao).toBe("11,45");
-    expect(C.vereditoNivel(GC.p025, "SIN", "7d", "equivalente")).toContain(`${variacao}% acima`);
-    expect(C.respostaNivel(GC.p025, "SIN", "7d", "equivalente")).toContain(`+${variacao}%`);
+    const v = Number(linha.variacao_pct);
+    expect(Number.isFinite(v) && linha.variacao_pct !== "").toBe(true);
+    const variacao = Math.abs(v).toFixed(2).replace(".", ",");
+    // a mesma medida tem duas casas em todo lugar: a versão de uma casa nunca aparece
+    const umaCasa = Math.abs(v).toFixed(1).replace(".", ",");
+    expect(C.vereditoNivel(GC.p025, "SIN", "7d", "equivalente")).toContain(`${variacao}% ${v > 0 ? "acima" : "abaixo"}`);
+    expect(C.vereditoNivel(GC.p025, "SIN", "7d", "equivalente")).not.toContain(`${umaCasa}% ${v > 0 ? "acima" : "abaixo"}`);
+    expect(C.respostaNivel(GC.p025, "SIN", "7d", "equivalente")).toContain(`${v > 0 ? "+" : "−"}${variacao}%`);
     // o cartão (duas casas) e o outro cartão do mesmo bloco, da reprodução do diagnóstico
-    expect(html.carga).toContain("11,45");
+    expect(html.carga).toContain(variacao);
     const repro = (GC.evidencias.a07_reproducao!.valor_calculo as number).toFixed(2).replace(".", ",");
-    expect(html.carga).toContain(`>${repro}<`);
+    // o cartão da reprodução (bloco a07, duas casas) escreve o valor com o sinal de porcentagem colado
+    expect(html.carga).toContain(`>${repro}%<`);
     // o valor completo da ficha (valor_calculo) arredonda para a mesma casa do cartão
     expect((GC.evidencias.p025_7d_equivalente!.valor_calculo as number).toFixed(2).replace(".", ",")).toBe(variacao);
   });
@@ -568,11 +585,25 @@ describe("números que parecem divergir: causa, classificação e explicação n
   it("Carga, 'últimos 28 dias' e 'mês corrente' (classe 2, mesma janela): o CSV mostra as duas com os mesmos dias e a mesma média, e a página diz isso", () => {
     const a = comparacao.find((r) => r.submercado === "SIN" && r.janela === "28d" && r.tipo === "equivalente")!;
     const b = comparacao.find((r) => r.submercado === "SIN" && r.janela === "mes_corrente" && r.tipo === "equivalente")!;
-    expect([a.inicio, a.fim, a.media_mwmed]).toEqual([b.inicio, b.fim, b.media_mwmed]);
+    const br = (iso: string) => iso.split("-").reverse().join("/");
     const frase = C.textoJanelasIguais(GC.p025.comparacoes.janelas);
-    expect(frase).toContain("são a mesma janela e têm a mesma média");
-    expect(frase).toContain(`${a.inicio.split("-").reverse().join("/")} a ${a.fim.split("-").reverse().join("/")}`);
-    expect(html.carga).toContain(esc(frase));
+    // as duas janelas só coincidem quando o último dia é o 28º do mês; o CSV decide qual ramo a página publica
+    if (a.inicio === b.inicio && a.fim === b.fim) {
+      expect(a.media_mwmed).toBe(b.media_mwmed);
+      expect(frase).toContain("são a mesma janela e têm a mesma média");
+      expect(frase).toContain(`${br(a.inicio)} a ${br(a.fim)}`);
+      expect(html.carga).toContain(esc(frase));
+    } else {
+      expect(frase).not.toContain(`${br(a.inicio)} a ${br(a.fim)}`);
+      expect(html.carga).not.toContain("são a mesma janela e têm a mesma média");
+    }
+    // o ramo das janelas iguais continua testado num clone em que o mês corrente cobre os mesmos dias das 4 semanas
+    const iguais = copia(GC.p025.comparacoes.janelas);
+    const j28 = iguais.find((j) => j.id === "28d")!;
+    Object.assign(iguais.find((j) => j.id === "mes_corrente")!, { inicio: j28.inicio, fim: j28.fim });
+    const fraseIgual = C.textoJanelasIguais(iguais);
+    expect(fraseIgual).toContain("são a mesma janela e têm a mesma média");
+    expect(fraseIgual).toContain(`${br(j28.inicio)} a ${br(j28.fim)}`);
     // janelas distintas não ganham a frase
     const distintas = copia(GC.p025.comparacoes.janelas);
     distintas.find((j) => j.id === "mes_corrente")!.inicio = "2000-01-01";
@@ -580,21 +611,41 @@ describe("números que parecem divergir: causa, classificação e explicação n
   });
 
   it("Clima e calendário, +11,06% (6 dias) e +11,45% (7 dias) (classe 2, janela e método): os dois valores saem da série diária publicada e a página diz os dois motivos", () => {
-    const aritmetica7 = (media(dias("2026-09-22", "2026-09-28")) / media(dias("2025-09-23", "2025-09-29")) - 1) * 100;
-    expect(aritmetica7).toBeCloseTo(11.45, 1);
-    const logs = (xs: number[]) => media(xs.map((x) => Math.log(x)));
-    const log6 = (Math.exp(logs(dias("2026-09-22", "2026-09-27")) - logs(dias("2025-09-23", "2025-09-28"))) - 1) * 100;
-    expect(log6).toBeCloseTo(11.06, 1);
-    // a média simples dos mesmos 6 dias daria outro valor: por isso a página fala em janela e em método, não só em janela
-    const aritmetica6 = (media(dias("2026-09-22", "2026-09-27")) / media(dias("2025-09-23", "2025-09-28")) - 1) * 100;
-    expect(Math.abs(aritmetica6 - log6)).toBeGreaterThan(0.1);
+    // a janela do diagnóstico (a07) é fixa na gold; as datas e as variações vêm dela, e as médias são refeitas da série diária publicada
+    const ref = GC.a07.referencia;
+    const cmp = GC.a07.comparacoes.find((x) => x.sm === "SIN")!.equivalente!;
     const d = GC.a07.decomposicao.find((x) => x.sm === "SIN" && x.variante === "principal" && x.comparacao === "equivalente")!;
+    const sgn = (v: number) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(2).replace(".", ",")}`;
+    const aritmetica7 = (media(dias(ref.inicio, ref.fim)) / media(dias(cmp.inicio_ant, cmp.fim_ant)) - 1) * 100;
+    expect(dias(ref.inicio, ref.fim).length).toBe(GC.a07.janela_modelo.dias_janela);
+    expect(aritmetica7).toBeCloseTo(cmp.variacao_pct!, 1);
+    const logs = (xs: number[]) => media(xs.map((x) => Math.log(x)));
+    const logD = (Math.exp(logs(dias(d.inicio, d.fim)) - logs(dias(d.inicio_ant, d.fim_ant))) - 1) * 100;
+    expect(dias(d.inicio, d.fim).length).toBe(d.dias);
+    expect(logD).toBeCloseTo(d.variacao_real_pct, 1);
     const frase = C.textoJanelaCurta(d, { fim: GC.a07.referencia.fim, dias_janela: GC.a07.janela_modelo.dias_janela }, GC.a07.comparacoes);
-    expect(frase).toContain("calculada sobre o logaritmo da carga diária: +11,06%");
-    expect(frase).toContain("A página Carga usa a média simples de 7 dias: +11,45%");
-    // a causa (a temperatura do último dia ainda não publicada) está na frase anterior do mesmo parágrafo
-    expect(html.clima).toContain("a temperatura da NASA POWER chega com defasagem");
-    expect(html.clima).toContain(esc(frase));
+    if (d.fim < ref.fim) {
+      // janela curta: a média simples dos mesmos dias daria outro valor, por isso a página fala em janela e em método
+      const aritmeticaD = (media(dias(d.inicio, d.fim)) / media(dias(d.inicio_ant, d.fim_ant)) - 1) * 100;
+      expect(Math.abs(aritmeticaD - logD)).toBeGreaterThan(0.1);
+      expect(frase).toContain(`calculada sobre o logaritmo da carga diária: ${sgn(d.variacao_real_pct)}%`);
+      expect(frase).toContain(`A página Carga usa a média simples de ${GC.a07.janela_modelo.dias_janela} dias: ${sgn(cmp.variacao_pct!)}%`);
+      // a causa (a temperatura do último dia ainda não publicada) está na frase anterior do mesmo parágrafo
+      expect(html.clima).toContain("a temperatura da NASA POWER chega com defasagem");
+      expect(html.clima).toContain(esc(frase));
+    } else {
+      // a decomposição cobre a janela inteira: não há o que explicar
+      expect(frase).toBe("");
+      expect(html.clima).not.toContain("A página Carga usa a média simples");
+    }
+    // o ramo da janela curta continua testado num clone com um dia a menos
+    const curta = copia(d);
+    curta.fim = new Date(Date.parse(`${ref.fim}T00:00:00Z`) - 86_400_000).toISOString().slice(0, 10);
+    curta.dias = GC.a07.janela_modelo.dias_janela - 1;
+    curta.variacao_real_pct = 9.87;
+    const fraseCurta = C.textoJanelaCurta(curta, { fim: ref.fim, dias_janela: GC.a07.janela_modelo.dias_janela }, GC.a07.comparacoes);
+    expect(fraseCurta).toContain(`a janela tem ${curta.dias} dias, e a variação é calculada sobre o logaritmo da carga diária: +9,87%`);
+    expect(fraseCurta).toContain(`A página Carga usa a média simples de ${GC.a07.janela_modelo.dias_janela} dias: ${sgn(cmp.variacao_pct!)}%`);
     // a resposta completa diz o que a variação mede
     expect(C.respostaDecomposicao(d)).toContain("calculada sobre a média dos logaritmos de cada janela");
     // sem janela curta, sem frase
@@ -602,33 +653,55 @@ describe("números que parecem divergir: causa, classificação e explicação n
   });
 
   it("Perfil horário, 83.065 e 80.189 MWmed (classe 2, dois produtos do ONS): as médias de ago/2026 saem dos dois CSV e a nota fica na página", () => {
-    const global = media(csv("carga_verificada_diaria.csv").filter((r) => r.submercado === "SIN" && r.data.startsWith("2026-08")).map((r) => Number(r.carga_global_mwmed)));
-    const energiaDiaria = media(dias("2026-08-01", "2026-08-31"));
-    expect(Math.abs(global - 83_065)).toBeLessThan(1);
-    expect(Math.abs(energiaDiaria - 80_189)).toBeLessThan(1);
-    const nota = C.textoGlobalContraDiaria(GC.p026, [{ m: "2026-08", SIN: 80_189 }]);
-    expect(nota).toContain("83.065 MWmed");
-    expect(nota).toContain("80.189 MWmed");
+    // o mês é o último completo da carga verificada do SIN, contado aqui pelos dias do CSV
+    const verif = csv("carga_verificada_diaria.csv").filter((r) => r.submercado === "SIN" && r.carga_global_mwmed !== "");
+    const porMes = new Map<string, number[]>();
+    for (const r of verif) porMes.set(r.data.slice(0, 7), [...(porMes.get(r.data.slice(0, 7)) ?? []), Number(r.carga_global_mwmed)]);
+    const diasDoMes = (m: string) => new Date(Date.UTC(Number(m.slice(0, 4)), Number(m.slice(5, 7)), 0)).getUTCDate();
+    const mes = Array.from(porMes.keys()).filter((m) => porMes.get(m)!.length === diasDoMes(m)).sort().at(-1)!;
+    expect(mes).toBe(C.ultimoMesCompletoMmgd(GC.p026, "SIN")!.m);
+    const global = media(porMes.get(mes)!);
+    const energiaDiaria = media(dias(`${mes}-01`, `${mes}-${diasDoMes(mes)}`));
+    expect(dias(`${mes}-01`, `${mes}-${diasDoMes(mes)}`).length).toBe(diasDoMes(mes));
+    expect(Math.abs(global - C.ultimoMesCompletoMmgd(GC.p026, "SIN")!.global)).toBeLessThan(1);
+    // dois produtos do ONS: no mesmo mês, médias diferentes
+    expect(Math.abs(global - energiaDiaria)).toBeGreaterThan(100);
+    const mw = (v: number) => `${Math.round(v).toLocaleString("pt-BR")} MWmed`;
+    const nota = C.textoGlobalContraDiaria(GC.p026, [{ m: mes, SIN: energiaDiaria }]);
+    expect(nota).toContain(mw(global));
+    expect(nota).toContain(mw(energiaDiaria));
     expect(nota).toContain("São produtos diferentes do ONS");
-    expect(html.perfil).toContain("a Carga de Energia Diária, usada na página Carga, de 80.189 MWmed");
+    expect(html.perfil).toContain(`a Carga de Energia Diária, usada na página Carga, de ${mw(energiaDiaria)}`);
     expect(C.textoGlobalContraDiaria(GC.p026, [])).toBe("");
   });
 
   it("Perfil horário, séries por subsistema só desde set/2025 (classe 2, cobertura): a nota diz o primeiro mês de cada série, lido dos meses publicados", () => {
     const nota = C.textoInicioSeriesMmgd(GC.p026);
-    expect(nota).toBe("A série mensal do SIN começa em fev/2019; a de cada subsistema publicada aqui, em set/2025.");
-    const sin = csv("carga_verificada_diaria.csv").filter((r) => r.submercado === "SIN").map((r) => r.data).sort()[0];
-    expect(sin.slice(0, 7)).toBe("2019-02");
+    // o primeiro mês de cada série relido do CSV diário (outro arquivo) e escrito aqui como mês abreviado
+    const verif = csv("carga_verificada_diaria.csv");
+    const sin = verif.filter((r) => r.submercado === "SIN").map((r) => r.data).sort()[0].slice(0, 7);
+    const sub = GC.p026.mmgd_mensal.filter((x) => x.sm !== "SIN").map((x) => x.m).sort()[0];
+    expect(sub > sin).toBe(true);
+    const ABREV = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+    const mesAbrev = (m: string) => `${ABREV[Number(m.slice(5, 7)) - 1]}/${m.slice(0, 4)}`;
+    expect(nota).toBe(`A série mensal do SIN começa em ${mesAbrev(sin)}; a de cada subsistema publicada aqui, em ${mesAbrev(sub)}.`);
     expect(html.perfil).toContain(nota);
   });
 
   it("Reservatórios, −3.188,7 e −3.297,8 MWmês (classe 2, janelas que terminam em dias diferentes): as duas variações saem da EAR diária do SE publicada", () => {
+    // as janelas e as variações são as da gold do dia (em 01/10/2026: 29/08 a 28/09, −3.188,7; 30 dias até 29/09, −3.297,8),
+    // e as duas variações se refazem da EAR diária do CSV
     const se = new Map(csv("agua_subsistemas_diario.csv").filter((r) => r.recorte === "SE").map((r) => [r.data, Number(r.ear_mwmes)]));
-    expect(se.get("2026-09-28")! - se.get("2026-08-29")!).toBeCloseTo(DEC_SE.delta_ear_mwmes!, 0);
-    expect(se.get("2026-09-29")! - se.get("2026-08-30")!).toBeCloseTo(ENT_EAR.find((e) => e.id === "SE")!.variacao_30d_mwmes!, 0);
+    const entSe = ENT_EAR.find((e) => e.id === "SE")!;
+    const menos30 = (iso: string) => new Date(Date.parse(`${iso}T00:00:00Z`) - 30 * 86_400_000).toISOString().slice(0, 10);
+    const dmy = (iso: string) => iso.split("-").reverse().join("/");
+    const n1 = (v: number) => (v < 0 ? "−" : "") + Math.abs(v).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    expect(entSe.dia).not.toBe(DEC_SE.fim);
+    expect(se.get(DEC_SE.fim)! - se.get(DEC_SE.inicio)!).toBeCloseTo(DEC_SE.delta_ear_mwmes!, 0);
+    expect(se.get(entSe.dia!)! - se.get(menos30(entSe.dia!))!).toBeCloseTo(entSe.variacao_30d_mwmes!, 0);
     const frase = A.textoOutraJanelaDaEar(DEC_SE, ENT_EAR);
-    expect(frase).toContain("A página de armazenamento mostra −3.297,8 MWmês do Sudeste/Centro-Oeste em 30 dias até 29/09/2026");
-    expect(frase).toContain("Aqui a janela vai de 29/08/2026 a 28/09/2026, o último dia com EAR por reservatório, e a variação é −3.188,7 MWmês");
+    expect(frase).toContain(`A página de armazenamento mostra ${n1(entSe.variacao_30d_mwmes!)} MWmês do Sudeste/Centro-Oeste em 30 dias até ${dmy(entSe.dia!)}`);
+    expect(frase).toContain(`Aqui a janela vai de ${dmy(DEC_SE.inicio)} a ${dmy(DEC_SE.fim)}, o último dia com EAR por reservatório, e a variação é ${n1(DEC_SE.delta_ear_mwmes!)} MWmês`);
     expect(html.reservatorios).toContain(esc(frase));
     // se as duas janelas terminam no mesmo dia, não há o que explicar
     const mesmo = copia(ENT_EAR);
@@ -638,10 +711,11 @@ describe("números que parecem divergir: causa, classificação e explicação n
 
   it("Água, 61,5% em 29/09 (Visão geral traz 61,6% em 28/09): a EAR do SIN no dia de cada página sai da EAR diária publicada", () => {
     const sin = new Map(csv("agua_subsistemas_diario.csv").filter((r) => r.recorte === "SIN").map((r) => [r.data, Number(r.ear_pct)]));
+    // o dia é o da EAR da gold (29/09/2026 na publicação de 01/10/2026)
     const e = ENT_EAR.find((x) => x.id === "SIN")!;
-    expect(e.dia).toBe("2026-09-29");
-    expect(sin.get("2026-09-29")!).toBeCloseTo(e.ear_pct!, 1);
-    expect(A.vereditoArmazenamento(e)).toContain(`Em 29/09/2026, o SIN guardava ${e.ear_pct!.toFixed(1).replace(".", ",")}%`);
+    expect(e.dia).toBe(GA.dias_referencia.ear);
+    expect(sin.get(e.dia!)!).toBeCloseTo(e.ear_pct!, 1);
+    expect(A.vereditoArmazenamento(e)).toContain(`Em ${e.dia!.split("-").reverse().join("/")}, o SIN guardava ${e.ear_pct!.toFixed(1).replace(".", ",")}%`);
   });
 });
 

@@ -1,0 +1,116 @@
+name: Atualizar dados do Território e Clima
+
+# Observatório do Território e Clima: recoleta os focos de calor do satélite de
+# referência e a área queimada do INPE (servidor de dados abertos COIDS) e a base do
+# Atlas Digital de Desastres (Sedec/MIDR, atualização anual) e o inventário oficial de
+# emissões do MCTI (SIRENE, edição bienal), grava o seed com o
+# sha256 de cada original, reconstrói a gold em public/territorio e
+# publica só se os testes do pipeline passarem. O arquivo mensal do INPE fecha o mês
+# nos primeiros dias do mês seguinte e o do mês em curso muda todo dia; duas
+# execuções por mês bastam para os meses completos. Separado dos outros domínios:
+# falha de um não atrasa o outro.
+on:
+  schedule:
+    - cron: "41 11 2,16 * *" # dias 2 e 16, 08:41 em São Paulo
+  workflow_dispatch:
+    inputs:
+      sem_coleta:
+        description: "Pular coleta e só reconstruir a gold a partir do seed"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: atualizar-territorio
+  cancel-in-progress: false
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    # o ano corrente exige os arquivos mensais de todos os satélites (centenas de MB nos meses de pico)
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Cada fonte é coletada à parte: se uma estiver fora do ar, o seed dela fica como estava
+      # (com aviso visível) e a outra segue. A gold é sempre reconstruída a partir dos seeds.
+      - name: Coletar queimadas (INPE)
+        if: inputs.sem_coleta != true
+        id: queimadas
+        continue-on-error: true
+        run: python3 -m pipeline.territorio.run --coleta queimadas
+
+      - name: Coletar desastres (Atlas Digital, Sedec/MIDR)
+        if: inputs.sem_coleta != true
+        id: desastres
+        continue-on-error: true
+        run: python3 -m pipeline.territorio.run --coleta desastres
+
+      # o firewall do gov.br recusa o urllib; o módulo usa o curl do sistema como alternativa
+      - name: Coletar emissões (inventário oficial do MCTI)
+        if: inputs.sem_coleta != true
+        id: emissoes
+        continue-on-error: true
+        run: python3 -m pipeline.territorio.run --coleta emissoes
+
+      - name: Avisar coleta que falhou
+        if: steps.queimadas.outcome == 'failure' || steps.desastres.outcome == 'failure' || steps.emissoes.outcome == 'failure'
+        run: |
+          [ "${{ steps.queimadas.outcome }}" = "failure" ] && echo "::warning title=Queimadas não coletadas::o seed anterior foi mantido; ver o log do passo"
+          [ "${{ steps.desastres.outcome }}" = "failure" ] && echo "::warning title=Desastres não coletados::o seed anterior foi mantido; ver o log do passo"
+          [ "${{ steps.emissoes.outcome }}" = "failure" ] && echo "::warning title=Emissões não coletadas::o seed anterior foi mantido; ver o log do passo"
+          true
+
+      - name: Reconstruir a gold
+        run: python3 -m pipeline.territorio.run
+
+      - name: Testes do pipeline
+        id: testes
+        continue-on-error: true
+        run: python3 -m unittest pipeline.tests.test_territorio -v
+
+      - name: Reter publicação reprovada
+        if: steps.testes.outcome == 'failure'
+        run: |
+          git checkout -- public/territorio pipeline/territorio/seed
+          git clean -fdq public/territorio pipeline/territorio/seed
+          echo "::error::testes reprovaram a gold do Território e Clima; publicação retida"
+          exit 1
+
+      - name: Commit e push
+        if: steps.testes.outcome == 'success'
+        run: |
+          git config user.name "pipeline-observatorio[bot]"
+          git config user.email "pipeline@scrutiniums.com"
+          git add public/territorio pipeline/territorio/seed
+          if git diff --cached --quiet; then
+            echo "Sem mudanças nos dados do Território e Clima."
+            exit 0
+          fi
+          git commit -m "Atualiza dados do Território e Clima (pipeline automático)"
+          for tentativa in 1 2 3 4; do
+            git fetch origin main
+            # se o main avançou durante a coleta, a gold é refeita a partir do seed já capturado, com o código novo,
+            # e só segue com os testes verdes: nunca se publica gold gerada por código antigo
+            if ! git rebase origin/main; then
+              git rebase --abort
+              echo "::error::conflito ao trazer o main; publicação retida"
+              exit 1
+            fi
+            python3 -m pipeline.territorio.run
+            python3 -m unittest pipeline.tests.test_territorio
+            git add public/territorio pipeline/territorio/seed
+            git diff --cached --quiet || git commit --amend --no-edit
+            git push origin HEAD:main && exit 0
+            sleep $((tentativa * 5))
+          done
+          echo "::error::não foi possível publicar após 4 tentativas"
+          exit 1

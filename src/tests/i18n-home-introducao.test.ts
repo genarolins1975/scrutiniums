@@ -6,12 +6,12 @@ const MENSAGENS = [
   {
     idioma: "pt",
     texto: pt["home.hero.introducao"],
-    esperado: "{observatorios} sobre crédito, setor elétrico, gás natural, saneamento, serviços públicos e contas da União e dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o que o dado não permite afirmar.",
+    esperado: "{observatorios} sobre crédito, setor elétrico, agronegócio, gás natural, saneamento, serviços públicos e contas da União e dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o que o dado não permite afirmar.",
   },
   {
     idioma: "en",
     texto: en["home.hero.introducao"].texto,
-    esperado: "{observatorios} on credit, the power sector, natural gas, basic sanitation, public services and the public accounts of the União (Brazil's federal government) and the states, built on official databases. Each dashboard identifies the data source, the reference period and what the data cannot establish.",
+    esperado: "{observatorios} on credit, the power sector, agribusiness, natural gas, basic sanitation, public services and the public accounts of the União (Brazil's federal government) and the states, built on official databases. Each dashboard identifies the data source, the reference period and what the data cannot establish.",
   },
 ] as const;
 
@@ -38,16 +38,16 @@ const CONTAGENS = [
 ] as const;
 
 afterEach(() => {
-  vi.doUnmock("@/lib/dominios");
+  vi.doUnmock("@/lib/observatorios/lista");
   vi.resetModules();
 });
 
 describe("contagem da introdução derivada do registro", () => {
   it.each(CONTAGENS)("localiza $quantidade sem alterar as chamadas portuguesas existentes", async (esperado) => {
     vi.resetModules();
-    vi.doMock("@/lib/dominios", () => ({
-      DOMINIOS: Array.from({ length: esperado.quantidade }, (_, indice) => ({
-        id: `dominio-sintetico-${indice}`, nomeCurto: `Domínio sintético ${indice}`,
+    vi.doMock("@/lib/observatorios/lista", () => ({
+      OBSERVATORIOS: Array.from({ length: esperado.quantidade }, (_, indice) => ({
+        id: `observatorio-sintetico-${indice}`, nomeCurto: `Observatório sintético ${indice}`,
       })),
     }));
     const { N_OBSERVATORIOS, observatoriosPorExtenso } = await import("@/lib/acesso");

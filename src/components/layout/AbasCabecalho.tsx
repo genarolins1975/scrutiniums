@@ -1,41 +1,18 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { navCabecalho } from "@/components/layout/navCabecalho";
+import { N_ABAS_OBSERVATORIOS, navCabecalho } from "@/components/layout/navCabecalho";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import type { Idioma } from "@/lib/idioma";
 
-// Uma consulta por carregamento de página, compartilhada pelas duas linhas de abas.
-let consulta: Promise<boolean> | null = null;
-function temSessao(): Promise<boolean> {
-  consulta ??= fetch("/api/auth/eu", { cache: "no-store", credentials: "same-origin" })
-    .then((r) => r.status === 204)
-    .catch(() => false);
-  return consulta;
-}
-
 /**
- * Abas do cabeçalho. Em páginas dinâmicas o servidor já sabe se há sessão
- * (`logadoNoServidor`). Em páginas estáticas ele não sabe: a aba começa com o
- * destino do visitante (funciona sem JavaScript) e, se o navegador tiver sessão,
- * passa a apontar para o painel, como para quem entrou pela página inicial.
+ * Abas do cabeçalho público. Os seis observatórios levam às páginas abertas,
+ * com o mesmo destino para quem tem conta e para quem não tem: não há consulta
+ * de sessão no navegador. `soObservatorios` deixa de fora as abas que não são
+ * observatório (Imprensa), para o seletor de observatórios do celular.
  */
-export function AbasCabecalho({ logadoNoServidor, className, idioma = "pt" }: { logadoNoServidor: boolean; className: string; idioma?: Idioma }) {
-  const [logado, setLogado] = useState(logadoNoServidor);
-  useEffect(() => {
-    if (logadoNoServidor) return;
-    let ativo = true;
-    temSessao().then((ok) => {
-      if (ativo && ok) setLogado(true);
-    });
-    return () => {
-      ativo = false;
-    };
-  }, [logadoNoServidor]);
+export function AbasCabecalho({ className, idioma = "pt", soObservatorios = false }: { className: string; idioma?: Idioma; soObservatorios?: boolean }) {
   return (
     <>
-      {navCabecalho(logado, idioma).map((item) => (
+      {navCabecalho(idioma).slice(0, soObservatorios ? N_ABAS_OBSERVATORIOS : undefined).map((item) => (
         <Link key={item.label} href={item.href} prefetch={prefetchDoLink(item.href)} className={className}>
           {item.label}
         </Link>

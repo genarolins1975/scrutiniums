@@ -11,10 +11,22 @@ import type { Idioma } from "@/lib/idioma";
 import { hrefNoIdioma } from "@/lib/i18n-href";
 import { TEXTOS_ENTRAR } from "@/i18n/paginas/entrar";
 
-/** Verificação do código SMS de acesso (login alternativo, /entrar/sms). */
-export function EntrarVerificarForm({ maskedPhone, idioma = "pt" }: { maskedPhone: string; idioma?: Idioma }) {
+/**
+ * Verificação do código SMS de acesso (login alternativo, /entrar/sms).
+ * Com `recuperar`, a API abre a troca de senha sem a atual e devolve
+ * /app/conta#senha como destino.
+ */
+export function EntrarVerificarForm({
+  maskedPhone,
+  idioma = "pt",
+  recuperar = false,
+}: {
+  maskedPhone: string;
+  idioma?: Idioma;
+  recuperar?: boolean;
+}) {
   const t = TEXTOS_ENTRAR[idioma];
-  const pedirCodigo = hrefNoIdioma("/entrar/sms", idioma);
+  const inicio = hrefNoIdioma(recuperar ? "/entrar/sms?recuperar=1" : "/entrar/sms", idioma);
   const router = useRouter();
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | undefined>();
@@ -39,7 +51,7 @@ export function EntrarVerificarForm({ maskedPhone, idioma = "pt" }: { maskedPhon
       const res = await fetch("/api/auth/entrar/check", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
+        body: JSON.stringify(recuperar ? { code, recuperar: true } : { code }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.next) {
@@ -47,7 +59,7 @@ export function EntrarVerificarForm({ maskedPhone, idioma = "pt" }: { maskedPhon
         return;
       }
       if (res.status === 401) {
-        router.push(pedirCodigo);
+        router.push(inicio);
         return;
       }
       setError(
@@ -102,13 +114,13 @@ export function EntrarVerificarForm({ maskedPhone, idioma = "pt" }: { maskedPhon
       />
 
       <Button type="submit" full disabled={submitting}>
-        {submitting ? t.verificando : t.entrar}
+        {submitting ? t.verificando : recuperar ? t.continuarNovaSenha : t.entrar}
       </Button>
 
       <div className="flex items-center justify-between gap-4">
         <ResendCountdown onResend={resend} idioma={idioma} />
         <Link
-          href={pedirCodigo}
+          href={inicio}
           className="rotulo min-h-[44px] py-3 text-carvao-muted underline underline-offset-4 hover:text-bronze"
         >
           {t.alterarTelefone}

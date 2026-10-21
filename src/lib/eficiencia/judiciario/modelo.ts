@@ -6,14 +6,17 @@ export const CAPITULOS = [
   ['tempo', 'Tempo de resposta', 'Onde se acumula a espera?'],
   ['filas', 'Filas e capacidade', 'As saídas acompanham as entradas?'],
   ['entrega', 'Entrega e efetividade', 'Uma baixa significa direito cumprido?'],
+  ['consistencia', 'Consistência', 'Casos iguais recebem decisões iguais?'],
+  ['criminal', 'Justiça criminal', 'Como a Justiça responde ao crime?'],
   ['acesso', 'Acesso e desigualdade', 'Onde a Justiça e a assistência estão presentes?'],
   ['comparar', 'Comparar tribunais', 'Como um tribunal se situa entre seus pares?'],
   ['metodos', 'Dados e método', 'Qual é a cobertura e como reproduzir?'],
 ] as const;
 export type CapituloJudiciario = typeof CAPITULOS[number][0];
 export type RamoJudiciario = 'estadual' | 'federal' | 'trabalho';
-export type TribunalJudiciario = {id:string;sigla:string;uf:string|null;ramo:RamoJudiciario;ano:number;tempoBaixados:number;idadePendentes:number;pagina:number;porte:string|null;despesaTotal:number|null;novos:number|null;pendentes:number|null;magistrados:number|null;servidores:number|null;ipcJus:number;ipcPagina:number;congestionamento:number;congestionamentoPagina:number;estruturaPagina:number|null};
-export type RamoAgregado = {id:RamoJudiciario;nome:string;ano:number;novos:number;baixados:number;pendentes:number;idadePendente:number;conhecimento:number;execucao:number;cejuscs:number;atendimentoAproximado:number;resolucaoVolumes:number;nota:string;despesaTotal:number;despesaPorBaixaAproximada:number;iadOficial:number;congestionamentoBruto:number;congestionamentoLiquido:number;desempenhoPagina:number;conciliacaoDespesas?:{somaTribunais:number;totalRamo:number;residuo:number;tolerancia:number;regra:string}};
+export type TribunalJudiciario = {id:string;sigla:string;uf:string|null;ramo:RamoJudiciario;ano:number;tempoBaixados:number;idadePendentes:number;pagina:number;porte:string|null;despesaTotal:number|null;novos:number|null;pendentes:number|null;magistrados:number|null;servidores:number|null;ipcJus:number;ipcPagina:number;congestionamento:number;congestionamentoPagina:number;estruturaPagina:number|null;despesaPorHabitante:number|null;despesaPorHabitanteSemInativos:number|null;porHabitantePagina:number|null;execucaoBaixados:number;execucaoPendentes:number;execucaoPagina:number;recorribilidadeInterna:number;recorribilidadeExterna:number;recorribilidadePagina:number;justicaGratuita:number|null;justicaGratuitaPagina:number|null;historico:PontoHistorico[]};
+export type PontoHistorico = {ano:number;edicao:number;tempoBaixados:number|null;idadePendentes:number|null};
+export type RamoAgregado = {id:RamoJudiciario;nome:string;ano:number;novos:number;baixados:number;pendentes:number;idadePendente:number;conhecimento:number;execucao:number;cejuscs:number;atendimentoAproximado:number;resolucaoVolumes:number;nota:string;despesaTotal:number;despesaPorBaixaAproximada:number;iadOficial:number;congestionamentoBruto:number;congestionamentoLiquido:number;desempenhoPagina:number;despesaPorHabitante?:number;despesaPorHabitanteSemInativos?:number;conciliacaoDespesas?:{somaTribunais:number;totalRamo:number;residuo:number;tolerancia:number;regra:string}};
 export type MedidaTribunal = 'tempoBaixados' | 'idadePendentes';
 export const MEDIDAS_TRIBUNAL: Record<MedidaTribunal,{titulo:string;nota:string}> = {
   tempoBaixados:{titulo:'Duração média dos processos baixados',nota:'Da entrada à primeira baixa dos processos baixados no ano. Não acompanha uma coorte única de ingressantes.'},

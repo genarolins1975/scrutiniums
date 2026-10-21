@@ -361,6 +361,24 @@ class Emissao(unittest.TestCase):
         w1 = next(x for x in regs30 if x["horizonte"] == "W1" and x["submercado"] == "SE")
         self.assertAlmostEqual(w1["previsao"], SEMANA_0919["SE"] + 100.0 / 168, places=4)
 
+    def test_gatilho_da_execucao_fica_no_arquivo_e_na_rodada(self):
+        """Agendador externo (workflow_dispatch no horário, 19/10/2026): a rodada é agendada, sem alerta de
+        execução manual, e o gatilho fica registrado; o arquivo continua válido."""
+        con = _silver()
+        regs = self._emite(con, date(2026, 9, 28), datetime(2026, 9, 28, 10, 30, tzinfo=timezone.utc),
+                           modo="agendada", gatilho="agendador externo", acionado_por="genarolins1975")
+        self.assertEqual({r["execucao"]["gatilho"] for r in regs}, {"agendador externo"})
+        self.assertEqual({r["execucao"]["acionado_por"] for r in regs}, {"genarolins1975"})
+        self.assertTrue(all("EXECUCAO_MANUAL" not in r["alertas"] for r in regs))
+        todos = arq.le_tudo(self.pasta, self.legado)
+        self.assertEqual(g.valida_arquivo(todos, {m["codigo"]: m for m in em.le_registro()["modelos"]},
+                                          resultados_liberados=False), [])
+        rod = next(x for x in mod._rodadas(todos) if x["origem"] == "2026-09-28")
+        self.assertEqual((rod["modo"], rod["gatilho"]), ("agendada", "agendador externo"))
+        # sem gatilho informado (registros anteriores), o campo não aparece no arquivo
+        regs29 = self._emite(con, date(2026, 9, 29), datetime(2026, 9, 29, 10, 30, tzinfo=timezone.utc))
+        self.assertTrue(all("gatilho" not in r["execucao"] for r in regs29))
+
     def test_horas_ja_publicadas_sao_separadas_da_previsao(self):
         """Simulação: captura datada antes do corte de uma origem de domingo (20/09), cuja W1
         (26/09 a 03/10) já tem 26 e 27/09 no recorte. A previsão cobre só o desconhecido e a
@@ -772,6 +790,53 @@ class Rotina(unittest.TestCase):
         r = mod._rotina(ag, _utc(2026, 10, 8, 12))
         self.assertTrue(r["comprovada"])                       # 7 no prazo, 1 atrasada, nenhum dia faltante
         self.assertEqual(r["atrasadas"], 1)
+
+    def test_rodadas_perdidas_de_outubro_contam_como_faltantes(self):
+        """De 02 a 18/10/2026 as execuções agendadas emitiram e não registraram (#282): sem rodada registrada,
+        a contagem começa na primeira execução agendada, e esses dias aparecem como faltantes."""
+        r = mod._rotina([], _utc(2026, 10, 18, 12))
+        self.assertEqual(r["inicio_operacao_agendada"], "2026-10-02")
+        self.assertEqual(r["dias_sem_rodada_total"], 17)
+        self.assertEqual((r["dias_sem_rodada"][0], r["dias_sem_rodada"][-1]), ("2026-10-02", "2026-10-18"))
+        self.assertFalse(r["comprovada"])
+        self.assertIn("17 dias sem rodada", r["leitura"])
+        self.assertEqual([(x["de"], x["ate"], x["execucoes"]) for x in r["incidentes"]], [("2026-10-02", "2026-10-18", 84)])
+        # antes da primeira execução agendada não há início nem incidente
+        r = mod._rotina([], _utc(2026, 9, 30, 12))
+        self.assertEqual((r["inicio_operacao_agendada"], r["dias_sem_rodada_total"], r["incidentes"]), (None, 0, []))
+
+    def test_comprovacao_olha_os_ultimos_30_dias_e_o_total_guarda_o_historico(self):
+        def rodadas(de, ate):
+            d, out = de, []
+            while d <= ate:
+                out.append({"origem": d.isoformat(), "modo": "agendada", "no_prazo": True, "falha": False})
+                d += timedelta(days=1)
+            return out
+        # sete rodadas no prazo logo depois da falha: os dias de outubro ainda estão na janela
+        r = mod._rotina(rodadas(date(2026, 10, 19), date(2026, 10, 25)), _utc(2026, 10, 25, 12))
+        self.assertEqual(r["no_prazo"], 7)
+        self.assertEqual(r["janela_comprovacao"]["dias_sem_rodada"], 17)
+        self.assertFalse(r["comprovada"])
+        # um mês de rodadas no prazo depois: a janela já não alcança 02 a 18/10, o total continua com os 17 dias
+        r = mod._rotina(rodadas(date(2026, 10, 19), date(2026, 11, 20)), _utc(2026, 11, 20, 12))
+        self.assertEqual(r["janela_comprovacao"], {"dias": 30, "inicio": "2026-10-22", "fim": "2026-11-20",
+                                                   "no_prazo": 30, "dias_sem_rodada": 0})
+        self.assertTrue(r["comprovada"])
+        self.assertEqual(r["dias_sem_rodada_total"], 17)
+        self.assertIn("17 dias sem rodada", r["leitura"])
+        # um dia faltante dentro da janela volta a impedir
+        sem_um = [x for x in rodadas(date(2026, 10, 19), date(2026, 11, 20)) if x["origem"] != "2026-11-10"]
+        self.assertFalse(mod._rotina(sem_um, _utc(2026, 11, 20, 12))["comprovada"])
+
+    def test_rotina_conta_agendadas_por_gatilho_e_nao_afirma_comprovacao_fixa(self):
+        ag = [{"origem": "2026-10-19", "modo": "agendada", "no_prazo": True, "falha": False, "gatilho": "agendador externo"},
+              {"origem": "2026-10-20", "modo": "agendada", "no_prazo": False, "falha": False, "gatilho": "cron do GitHub"},
+              {"origem": "2026-10-21", "modo": "agendada", "no_prazo": True, "falha": False, "gatilho": "agendador externo"},
+              {"origem": "2026-10-01", "modo": "agendada", "no_prazo": True, "falha": False}]
+        r = mod._rotina(ag, _utc(2026, 10, 21, 12))
+        self.assertEqual(r["agendadas_por_gatilho"], {"agendador externo": 2, "cron do GitHub": 1, "não registrado": 1})
+        self.assertNotIn("ainda não comprovado", r["horarios"])
+        self.assertIn("agendador externo", r["horarios"])
 
     def test_dia_ainda_no_prazo_nao_conta_como_faltante(self):
         """Às 07h30 de Brasília de 09/10 (10h30 UTC) a rodada de 09/10 ainda está no prazo:

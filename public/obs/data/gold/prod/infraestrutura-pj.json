@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-24T15:25:01+00:00",
+ "gerado_em": "2026-10-20T15:56:30+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -59,18 +59,18 @@
   "disponivel": true,
   "modelo": "est(i,p) = phi_i × beta × m_p × atraso15(i,p) — piso 0, teto de sanidade 100",
   "sem_intercepto": "MQO pela origem, de propósito: um intercepto de nível dominava os produtos de atraso baixo e o teto virava a estimativa. Migração: atraso zero ⇒ estimado zero.",
-  "beta": 1.106,
-  "r2_nao_centrado": 0.822,
-  "ep_beta": 0.0166,
+  "beta": 1.111,
+  "r2_nao_centrado": 0.825,
+  "ep_beta": 0.0165,
   "n_ifs": 957,
   "m_produtos": {
-   "capital-de-giro-pj": 1.07,
-   "cartao-de-credito-pf": 0.7,
-   "comercio-exterior-pj": 0.27,
-   "consignado-pf": 1.49,
-   "credito-pessoal-pf": 0.91,
-   "recebiveis-pj": 0.69,
-   "veiculos-pf": 1.17
+   "capital-de-giro-pj": 1.02,
+   "cartao-de-credito-pf": 0.77,
+   "comercio-exterior-pj": 0.31,
+   "consignado-pf": 1.47,
+   "credito-pessoal-pf": 0.92,
+   "recebiveis-pj": 0.67,
+   "veiculos-pf": 1.14
   },
   "phi_winsorizados": 39,
   "phi_limites": [
@@ -79,7 +79,7 @@
   ],
   "estimativas": 6012,
   "estimativas_baixa_cobertura": 19,
-  "estimativas_teto_sanidade": 61,
+  "estimativas_teto_sanidade": 64,
   "reconciliacao": "a média ponderada por carteira das estimativas de cada IF reproduz o >90d TOTAL observado da instituição — exata, exceto onde o phi foi winsorizado (contado)",
   "conceito_atraso": "o \"vencido >=15d\" dos rel. 123/128 comporta-se empiricamente como banda curta (consignado do BB: 0,45% vs banda 15-90 do SCR 0,42%) — por isso a estimativa de >90d PODE exceder o atraso do produto: é a migração acumulada no estoque, não uma fração do atraso corrente.",
   "hipoteses": "(1) dentro da IF, a migração relativa entre produtos segue o perfil do sistema (SCR); (2) o perfil do SCR (arrastada ÷ banda 15-90) vale como razão ENTRE produtos, nunca como nível; (3) produtos sem par no SCR recebem perfil neutro 1,0, sinalizado por linha.",
@@ -187,7 +187,7 @@
    {
     "cod": "33657248",
     "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOMICO E SOCIAL",
-    "sr": "S2",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 354948643354.71,
     "atraso15_pct": 0.03,
@@ -212,7 +212,7 @@
    {
     "cod": "C0051626",
     "nome": "CAIXA ECONÔMICA FEDERAL",
-    "sr": "S1",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 115651823522.19,
     "atraso15_pct": 0.01,
@@ -227,7 +227,7 @@
     "npl_prod_est": {
      "pct": 0.02,
      "m_produto": null,
-     "phi_if": 1.68,
+     "phi_if": 1.67,
      "cobertura_if_pct": 95.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -237,7 +237,7 @@
    {
     "cod": "C0049906",
     "nome": "BB",
-    "sr": "S1",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 40856937686.88,
     "atraso15_pct": 0.37,
@@ -250,9 +250,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.59,
+     "pct": 0.58,
      "m_produto": null,
-     "phi_if": 1.44,
+     "phi_if": 1.41,
      "cobertura_if_pct": 91.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -262,7 +262,7 @@
    {
     "cod": "C0010045",
     "nome": "BRADESCO",
-    "sr": "S1",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 36962183329.76,
     "atraso15_pct": 0.38,
@@ -275,9 +275,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.62,
+     "pct": 0.6,
      "m_produto": null,
-     "phi_if": 1.48,
+     "phi_if": 1.43,
      "cobertura_if_pct": 80.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -287,7 +287,7 @@
    {
     "cod": "C0010069",
     "nome": "ITAU",
-    "sr": "S1",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 27884410840.7,
     "atraso15_pct": 0.24,
@@ -300,9 +300,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.28,
+     "pct": 0.27,
      "m_produto": null,
-     "phi_if": 1.07,
+     "phi_if": 1.01,
      "cobertura_if_pct": 61.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -325,7 +325,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.57,
+     "pct": 1.58,
      "m_produto": null,
      "phi_if": 1.14,
      "cobertura_if_pct": 98.7,
@@ -337,7 +337,7 @@
    {
     "cod": "92816560",
     "nome": "BANCO REGIONAL DE DESENVOLVIMENTO DO EXTREMO SUL",
-    "sr": "S3",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 10391584591.25,
     "atraso15_pct": 0.5,
@@ -375,7 +375,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.76,
+     "pct": 0.77,
      "m_produto": null,
      "phi_if": 1.72,
      "cobertura_if_pct": 100.0,
@@ -387,7 +387,7 @@
    {
     "cod": "C0049944",
     "nome": "BTG PACTUAL",
-    "sr": "S1",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 7659311229.42,
     "atraso15_pct": 0.01,
@@ -402,7 +402,7 @@
     "npl_prod_est": {
      "pct": 0.01,
      "m_produto": null,
-     "phi_if": 1.06,
+     "phi_if": 1.05,
      "cobertura_if_pct": 65.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -437,7 +437,7 @@
    {
     "cod": "C0010083",
     "nome": "SAFRA",
-    "sr": "S2",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 7305547610.12,
     "atraso15_pct": 0.08,
@@ -452,7 +452,7 @@
     "npl_prod_est": {
      "pct": 0.13,
      "m_produto": null,
-     "phi_if": 1.47,
+     "phi_if": 1.49,
      "cobertura_if_pct": 80.2,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -462,7 +462,7 @@
    {
     "cod": "58017179",
     "nome": "BANCO VOLVO BRASIL S.A.",
-    "sr": "S3",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 7231291808.06,
     "atraso15_pct": 0.7,
@@ -477,7 +477,7 @@
     "npl_prod_est": {
      "pct": 1.34,
      "m_produto": null,
-     "phi_if": 1.73,
+     "phi_if": 1.72,
      "cobertura_if_pct": 98.4,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -487,7 +487,7 @@
    {
     "cod": "07237373",
     "nome": "BANCO DO NORDESTE DO BRASIL S.A.",
-    "sr": "S2",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 5934481257.72,
     "atraso15_pct": 0.03,
@@ -502,7 +502,7 @@
     "npl_prod_est": {
      "pct": 0.08,
      "m_produto": null,
-     "phi_if": 2.38,
+     "phi_if": 2.47,
      "cobertura_if_pct": 82.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -525,9 +525,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.04,
+     "pct": 1.03,
      "m_produto": null,
-     "phi_if": 1.15,
+     "phi_if": 1.13,
      "cobertura_if_pct": 76.2,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -537,7 +537,7 @@
    {
     "cod": "C0051750",
     "nome": "BANCO SICOOB",
-    "sr": "S2",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 4676041194.28,
     "atraso15_pct": 0.0,
@@ -552,7 +552,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 0.83,
+     "phi_if": 0.77,
      "cobertura_if_pct": 85.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -577,7 +577,7 @@
     "npl_prod_est": {
      "pct": 0.05,
      "m_produto": null,
-     "phi_if": 1.17,
+     "phi_if": 1.21,
      "cobertura_if_pct": 75.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -600,7 +600,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.28,
+     "pct": 2.29,
      "m_produto": null,
      "phi_if": 2.04,
      "cobertura_if_pct": 98.7,
@@ -612,7 +612,7 @@
    {
     "cod": "38486817",
     "nome": "BANCO DE DESENVOLVIMENTO DE MINAS GERAIS S.A.-BDMG",
-    "sr": "S3",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 2440851376.75,
     "atraso15_pct": 0.48,
@@ -625,9 +625,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.7,
+     "pct": 0.72,
      "m_produto": null,
-     "phi_if": 1.32,
+     "phi_if": 1.35,
      "cobertura_if_pct": 95.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -637,7 +637,7 @@
    {
     "cod": "C0030173",
     "nome": "BANRISUL",
-    "sr": "S2",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 1697156973.36,
     "atraso15_pct": 0.2,
@@ -652,7 +652,7 @@
     "npl_prod_est": {
      "pct": 0.38,
      "m_produto": null,
-     "phi_if": 1.73,
+     "phi_if": 1.71,
      "cobertura_if_pct": 89.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -687,7 +687,7 @@
    {
     "cod": "28517628",
     "nome": "BANCO PACCAR S.A.",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 1348887320.88,
     "atraso15_pct": 1.0,
@@ -702,7 +702,7 @@
     "npl_prod_est": {
      "pct": 2.8,
      "m_produto": null,
-     "phi_if": 2.53,
+     "phi_if": 2.52,
      "cobertura_if_pct": 100.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -727,7 +727,7 @@
     "npl_prod_est": {
      "pct": 0.17,
      "m_produto": null,
-     "phi_if": 1.53,
+     "phi_if": 1.5,
      "cobertura_if_pct": 96.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -737,7 +737,7 @@
    {
     "cod": "C0031873",
     "nome": "SOFISA",
-    "sr": "S3",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 1293208695.64,
     "atraso15_pct": 5.49,
@@ -750,9 +750,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 8.69,
+     "pct": 8.64,
      "m_produto": null,
-     "phi_if": 1.43,
+     "phi_if": 1.42,
      "cobertura_if_pct": 90.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -762,7 +762,7 @@
    {
     "cod": "02885855",
     "nome": "BADESUL DESENVOLVIMENTO S.A - AGÊNCIA DE FOMENTO/RS",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 1205413170.78,
     "atraso15_pct": 3.16,
@@ -777,7 +777,7 @@
     "npl_prod_est": {
      "pct": 10.16,
      "m_produto": null,
-     "phi_if": 2.91,
+     "phi_if": 2.89,
      "cobertura_if_pct": 96.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -787,7 +787,7 @@
    {
     "cod": "07441209",
     "nome": "BANCO MONEO S.A.",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 1183650150.92,
     "atraso15_pct": 0.6,
@@ -802,7 +802,7 @@
     "npl_prod_est": {
      "pct": 0.44,
      "m_produto": null,
-     "phi_if": 0.67,
+     "phi_if": 0.66,
      "cobertura_if_pct": 92.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -812,7 +812,7 @@
    {
     "cod": "11476673",
     "nome": "BANCO RANDON S.A.",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 1009234117.25,
     "atraso15_pct": 2.05,
@@ -825,9 +825,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.81,
+     "pct": 4.84,
      "m_produto": null,
-     "phi_if": 2.12,
+     "phi_if": 2.13,
      "cobertura_if_pct": 93.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -862,7 +862,7 @@
    {
     "cod": "82937293",
     "nome": "AGÊNCIA DE FOMENTO DO ESTADO DE SANTA CATARINA S.A.-BADESC",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 831127194.32,
     "atraso15_pct": 1.07,
@@ -877,7 +877,7 @@
     "npl_prod_est": {
      "pct": 2.11,
      "m_produto": null,
-     "phi_if": 1.79,
+     "phi_if": 1.78,
      "cobertura_if_pct": 99.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -887,7 +887,7 @@
    {
     "cod": "C0051987",
     "nome": "DAYCOVAL",
-    "sr": "S3",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 751777436.5,
     "atraso15_pct": 0.11,
@@ -900,9 +900,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.18,
+     "pct": 0.17,
      "m_produto": null,
-     "phi_if": 1.45,
+     "phi_if": 1.43,
      "cobertura_if_pct": 86.4,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -911,7 +911,7 @@
    },
    {
     "cod": "08075352",
-    "nome": "COOPERATIVA DE CRÉDITO DOS EMPRESÁRIOS E EMPREGADOS DOS TRANSPORTES E CORREIOS DO SUL DO BRASIL - TRANSPOCRED",
+    "nome": "COOPERATIVA DE CRÉDITO DOS TRANSPORTES, CORREIOS E LOGÍSTICA DO BRASIL - TRANSPOCRED",
     "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 685092922.89,
@@ -925,9 +925,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 5.02,
+     "pct": 5.07,
      "m_produto": null,
-     "phi_if": 2.67,
+     "phi_if": 2.69,
      "cobertura_if_pct": 88.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -937,7 +937,7 @@
    {
     "cod": "61088183",
     "nome": "BANCO MIZUHO DO BRASIL S.A.",
-    "sr": "S4",
+    "sr": "S3",
     "nivel": "individual",
     "carteira_brl": 598555562.81,
     "atraso15_pct": 0.0,
@@ -953,7 +953,7 @@
    {
     "cod": "92894922",
     "nome": "BANCO ORIGINAL S.A.",
-    "sr": "S3",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 554386704.49,
     "atraso15_pct": 0.05,
@@ -966,9 +966,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.12,
+     "pct": 0.13,
      "m_produto": null,
-     "phi_if": 2.22,
+     "phi_if": 2.29,
      "cobertura_if_pct": 55.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -978,7 +978,7 @@
    {
     "cod": "28145829",
     "nome": "BANCO DE DESENVOLVIMENTO DO ESPIRITO SANTO S.A.",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 553437873.97,
     "atraso15_pct": 1.84,
@@ -993,7 +993,7 @@
     "npl_prod_est": {
      "pct": 5.82,
      "m_produto": null,
-     "phi_if": 2.86,
+     "phi_if": 2.85,
      "cobertura_if_pct": 98.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1003,7 +1003,7 @@
    {
     "cod": "03584906",
     "nome": "AGÊNCIA DE FOMENTO DO PARANÁ S.A.",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 434832458.41,
     "atraso15_pct": 2.91,
@@ -1016,7 +1016,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 8.31,
+     "pct": 8.33,
      "m_produto": null,
      "phi_if": 2.58,
      "cobertura_if_pct": 95.0,
@@ -1041,9 +1041,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 13.25,
+     "pct": 13.58,
      "m_produto": null,
-     "phi_if": 2.63,
+     "phi_if": 2.68,
      "cobertura_if_pct": 98.4,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1053,7 +1053,7 @@
    {
     "cod": "C0031976",
     "nome": "BRB",
-    "sr": "S3",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 296690607.29,
     "atraso15_pct": 0.57,
@@ -1066,9 +1066,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.23,
+     "pct": 1.12,
      "m_produto": null,
-     "phi_if": 1.94,
+     "phi_if": 1.78,
      "cobertura_if_pct": 86.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1078,7 +1078,7 @@
    {
     "cod": "59109165",
     "nome": "BANCO VOLKSWAGEN S.A.",
-    "sr": "S3",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 295965298.75,
     "atraso15_pct": 3.0,
@@ -1091,9 +1091,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 7.08,
+     "pct": 7.15,
      "m_produto": null,
-     "phi_if": 2.13,
+     "phi_if": 2.14,
      "cobertura_if_pct": 99.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1116,9 +1116,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 5.33,
+     "pct": 5.41,
      "m_produto": null,
-     "phi_if": 2.82,
+     "phi_if": 2.85,
      "cobertura_if_pct": 89.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1141,9 +1141,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 9.47,
+     "pct": 9.54,
      "m_produto": null,
-     "phi_if": 2.71,
+     "phi_if": 2.72,
      "cobertura_if_pct": 86.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1166,9 +1166,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.71,
+     "pct": 4.66,
      "m_produto": null,
-     "phi_if": 2.12,
+     "phi_if": 2.09,
      "cobertura_if_pct": 95.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1191,9 +1191,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.82,
+     "pct": 2.76,
      "m_produto": null,
-     "phi_if": 2.2,
+     "phi_if": 2.14,
      "cobertura_if_pct": 96.4,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1228,7 +1228,7 @@
    {
     "cod": "17359351",
     "nome": "STARA FINANCEIRA S.A. - CRÉDITO FINANCIAMENTO E INVESTIMENTO",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 190396204.51,
     "atraso15_pct": 0.0,
@@ -1253,7 +1253,7 @@
    {
     "cod": "C0050988",
     "nome": "INDUSTRIAL DO BRASIL",
-    "sr": "S4",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 188175953.97,
     "atraso15_pct": 1.26,
@@ -1266,9 +1266,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.22,
+     "pct": 3.12,
      "m_produto": null,
-     "phi_if": 2.31,
+     "phi_if": 2.23,
      "cobertura_if_pct": 94.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1278,7 +1278,7 @@
    {
     "cod": "23903068",
     "nome": "BANCO KOMATSU DO BRASIL S.A.",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 169663528.97,
     "atraso15_pct": 0.43,
@@ -1293,7 +1293,7 @@
     "npl_prod_est": {
      "pct": 0.61,
      "m_produto": null,
-     "phi_if": 1.28,
+     "phi_if": 1.27,
      "cobertura_if_pct": 100.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1316,9 +1316,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.59,
+     "pct": 1.61,
      "m_produto": null,
-     "phi_if": 1.73,
+     "phi_if": 1.74,
      "cobertura_if_pct": 81.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1341,7 +1341,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.92,
+     "pct": 3.95,
      "m_produto": null,
      "phi_if": 1.7,
      "cobertura_if_pct": 92.7,
@@ -1353,7 +1353,7 @@
    {
     "cod": "15163587",
     "nome": "DESENBAHIA - AGENCIA DE FOMENTO DO ESTADO DA BAHIA S.A.",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 146367762.85,
     "atraso15_pct": 4.68,
@@ -1366,9 +1366,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 13.88,
+     "pct": 14.04,
      "m_produto": null,
-     "phi_if": 2.68,
+     "phi_if": 2.7,
      "cobertura_if_pct": 91.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1378,7 +1378,7 @@
    {
     "cod": "06284531",
     "nome": "AGÊNCIA DE FOMENTO DO ESTADO DE MATO GROSSO S/A - DESENVOLVE MT",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 144465439.08,
     "atraso15_pct": 2.84,
@@ -1391,7 +1391,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 12.57,
+     "pct": 12.61,
      "m_produto": null,
      "phi_if": 4.0,
      "cobertura_if_pct": 100.1,
@@ -1416,9 +1416,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.0,
+     "pct": 3.06,
      "m_produto": null,
-     "phi_if": 1.95,
+     "phi_if": 1.98,
      "cobertura_if_pct": 83.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1441,9 +1441,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 11.29,
+     "pct": 11.46,
      "m_produto": null,
-     "phi_if": 2.55,
+     "phi_if": 2.57,
      "cobertura_if_pct": 90.4,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1466,9 +1466,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 40.08,
+     "pct": 39.66,
      "m_produto": null,
-     "phi_if": 1.68,
+     "phi_if": 1.66,
      "cobertura_if_pct": 54.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1478,7 +1478,7 @@
    {
     "cod": "C0030290",
     "nome": "BMG",
-    "sr": "S3",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 115519661.06,
     "atraso15_pct": 0.0,
@@ -1493,7 +1493,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.15,
+     "phi_if": 1.1,
      "cobertura_if_pct": 94.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1516,7 +1516,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.59,
+     "pct": 1.6,
      "m_produto": null,
      "phi_if": 1.8,
      "cobertura_if_pct": 86.9,
@@ -1566,9 +1566,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 8.18,
+     "pct": 8.31,
      "m_produto": null,
-     "phi_if": 2.73,
+     "phi_if": 2.76,
      "cobertura_if_pct": 90.2,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1578,7 +1578,7 @@
    {
     "cod": "05940203",
     "nome": "AGENCIA DE FOMENTO DO ESTADO DO RIO DE JANEIRO S.A.",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 103159393.05,
     "atraso15_pct": 0.38,
@@ -1603,7 +1603,7 @@
    {
     "cod": "01401771",
     "nome": "COOPERATIVA CENTRAL DE CRÉDITO COM INTERAÇÃO SOLIDÁRIA - CENTRAL CRESOL BASER",
-    "sr": "S4",
+    "sr": "S3",
     "nivel": "individual",
     "carteira_brl": 99055330.46,
     "atraso15_pct": 0.0,
@@ -1641,7 +1641,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.78,
+     "pct": 4.81,
      "m_produto": null,
      "phi_if": 1.64,
      "cobertura_if_pct": 98.8,
@@ -1666,9 +1666,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.97,
+     "pct": 0.98,
      "m_produto": null,
-     "phi_if": 2.25,
+     "phi_if": 2.26,
      "cobertura_if_pct": 84.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1678,7 +1678,7 @@
    {
     "cod": "26529420",
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO OURO VERDE DO MATO GROSSO - SICREDI OURO VERDE MT",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 92207112.93,
     "atraso15_pct": 0.25,
@@ -1691,9 +1691,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.35,
+     "pct": 0.34,
      "m_produto": null,
-     "phi_if": 1.27,
+     "phi_if": 1.24,
      "cobertura_if_pct": 50.4,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1702,7 +1702,7 @@
    },
    {
     "cod": "02910987",
-    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA CENTRO SUL RS/MS - CRESOL CENTRO SUL RS/MS",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA CENTRO SUL - CRESOL CENTRO SUL",
     "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 85379970.99,
@@ -1716,9 +1716,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.58,
+     "pct": 0.59,
      "m_produto": null,
-     "phi_if": 1.94,
+     "phi_if": 1.97,
      "cobertura_if_pct": 87.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1741,7 +1741,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.79,
+     "pct": 1.8,
      "m_produto": null,
      "phi_if": 1.84,
      "cobertura_if_pct": 75.6,
@@ -1766,9 +1766,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 10.88,
+     "pct": 11.05,
      "m_produto": null,
-     "phi_if": 2.74,
+     "phi_if": 2.77,
      "cobertura_if_pct": 87.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1791,9 +1791,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.23,
+     "pct": 4.3,
      "m_produto": null,
-     "phi_if": 1.85,
+     "phi_if": 1.88,
      "cobertura_if_pct": 85.2,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1816,9 +1816,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.44,
+     "pct": 2.46,
      "m_produto": null,
-     "phi_if": 2.16,
+     "phi_if": 2.17,
      "cobertura_if_pct": 86.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1841,9 +1841,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.65,
+     "pct": 4.72,
      "m_produto": null,
-     "phi_if": 2.58,
+     "phi_if": 2.61,
      "cobertura_if_pct": 93.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1852,8 +1852,8 @@
    },
    {
     "cod": "52067630",
-    "nome": "BANCO VOLKSWAGEN TRUCK & BUS S.A.",
-    "sr": "S3",
+    "nome": "BANCO TRATON BRASIL S.A.",
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 72356482.06,
     "atraso15_pct": 0.0,
@@ -1868,7 +1868,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 3.73,
+     "phi_if": 3.72,
      "cobertura_if_pct": 100.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1891,9 +1891,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.66,
+     "pct": 0.61,
      "m_produto": null,
-     "phi_if": 0.79,
+     "phi_if": 0.72,
      "cobertura_if_pct": 96.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1903,7 +1903,7 @@
    {
     "cod": "71027866",
     "nome": "BANCO BS2 S.A.",
-    "sr": "S3",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 64036513.88,
     "atraso15_pct": 20.8,
@@ -1916,9 +1916,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 25.7,
+     "pct": 26.49,
      "m_produto": null,
-     "phi_if": 1.12,
+     "phi_if": 1.15,
      "cobertura_if_pct": 95.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1941,9 +1941,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.31,
+     "pct": 3.34,
      "m_produto": null,
-     "phi_if": 2.58,
+     "phi_if": 2.59,
      "cobertura_if_pct": 83.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2016,7 +2016,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.39,
+     "pct": 3.42,
      "m_produto": null,
      "phi_if": 2.56,
      "cobertura_if_pct": 80.8,
@@ -2057,9 +2057,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.59,
+     "pct": 1.62,
      "m_produto": null,
-     "phi_if": 2.02,
+     "phi_if": 2.05,
      "cobertura_if_pct": 87.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2082,9 +2082,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.37,
+     "pct": 0.38,
      "m_produto": null,
-     "phi_if": 2.25,
+     "phi_if": 2.27,
      "cobertura_if_pct": 86.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2107,7 +2107,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.88,
+     "pct": 1.89,
      "m_produto": null,
      "phi_if": 2.05,
      "cobertura_if_pct": 84.2,
@@ -2119,7 +2119,7 @@
    {
     "cod": "87795639",
     "nome": "COOPERATIVA DE CRÉDITO ALIANÇA RS/SC/ES - SICREDI ALIANÇA RS/SC/ES",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 43209758.2,
     "atraso15_pct": 0.0,
@@ -2134,7 +2134,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 2.13,
+     "phi_if": 2.07,
      "cobertura_if_pct": 88.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2157,7 +2157,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 6.35,
+     "pct": 6.4,
      "m_produto": null,
      "phi_if": 1.96,
      "cobertura_if_pct": 85.5,
@@ -2182,9 +2182,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.65,
+     "pct": 2.68,
      "m_produto": null,
-     "phi_if": 2.18,
+     "phi_if": 2.19,
      "cobertura_if_pct": 82.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2207,9 +2207,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 29.11,
+     "pct": 29.13,
      "m_produto": null,
-     "phi_if": 2.73,
+     "phi_if": 2.72,
      "cobertura_if_pct": 100.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2232,7 +2232,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.54,
+     "pct": 1.55,
      "m_produto": null,
      "phi_if": 0.88,
      "cobertura_if_pct": 82.0,
@@ -2257,7 +2257,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.11,
+     "pct": 3.14,
      "m_produto": null,
      "phi_if": 2.37,
      "cobertura_if_pct": 78.1,
@@ -2282,9 +2282,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.98,
+     "pct": 2.01,
      "m_produto": null,
-     "phi_if": 1.66,
+     "phi_if": 1.68,
      "cobertura_if_pct": 84.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2307,7 +2307,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.39,
+     "pct": 4.41,
      "m_produto": null,
      "phi_if": 0.86,
      "cobertura_if_pct": 91.1,
@@ -2332,9 +2332,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.84,
+     "pct": 0.77,
      "m_produto": null,
-     "phi_if": 1.14,
+     "phi_if": 1.04,
      "cobertura_if_pct": 94.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2357,7 +2357,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.96,
+     "pct": 1.97,
      "m_produto": null,
      "phi_if": 2.27,
      "cobertura_if_pct": 80.0,
@@ -2384,7 +2384,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.99,
+     "phi_if": 1.97,
      "cobertura_if_pct": 87.4,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2409,7 +2409,7 @@
     "npl_prod_est": {
      "pct": 1.81,
      "m_produto": null,
-     "phi_if": 1.69,
+     "phi_if": 1.68,
      "cobertura_if_pct": 77.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2432,9 +2432,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 6.57,
+     "pct": 6.67,
      "m_produto": null,
-     "phi_if": 2.01,
+     "phi_if": 2.03,
      "cobertura_if_pct": 71.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2459,7 +2459,7 @@
     "npl_prod_est": {
      "pct": 0.53,
      "m_produto": null,
-     "phi_if": 1.98,
+     "phi_if": 2.0,
      "cobertura_if_pct": 87.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2484,7 +2484,7 @@
     "npl_prod_est": {
      "pct": 1.31,
      "m_produto": null,
-     "phi_if": 1.75,
+     "phi_if": 1.74,
      "cobertura_if_pct": 71.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2532,9 +2532,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.46,
+     "pct": 2.52,
      "m_produto": null,
-     "phi_if": 3.14,
+     "phi_if": 3.19,
      "cobertura_if_pct": 83.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2559,7 +2559,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.8,
+     "phi_if": 1.77,
      "cobertura_if_pct": 80.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2582,9 +2582,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.71,
+     "pct": 4.75,
      "m_produto": null,
-     "phi_if": 2.2,
+     "phi_if": 2.22,
      "cobertura_if_pct": 81.4,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2594,7 +2594,7 @@
    {
     "cod": "00517645",
     "nome": "BANCO RIBEIRAO PRETO S.A.",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 26253199.22,
     "atraso15_pct": 0.0,
@@ -2609,7 +2609,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.15,
+     "phi_if": 1.2,
      "cobertura_if_pct": 98.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2634,7 +2634,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.41,
+     "phi_if": 1.44,
      "cobertura_if_pct": 67.2,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2657,7 +2657,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.94,
+     "pct": 2.95,
      "m_produto": null,
      "phi_if": 1.27,
      "cobertura_if_pct": 86.1,
@@ -2684,7 +2684,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.57,
+     "phi_if": 1.62,
      "cobertura_if_pct": 99.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2707,9 +2707,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.45,
+     "pct": 2.47,
      "m_produto": null,
-     "phi_if": 1.8,
+     "phi_if": 1.81,
      "cobertura_if_pct": 81.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2732,9 +2732,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.41,
+     "pct": 0.42,
      "m_produto": null,
-     "phi_if": 1.78,
+     "phi_if": 1.79,
      "cobertura_if_pct": 85.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2759,7 +2759,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 2.02,
+     "phi_if": 1.99,
      "cobertura_if_pct": 92.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2769,7 +2769,7 @@
    {
     "cod": "C0050304",
     "nome": "PINE",
-    "sr": "S3",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 21189816.0,
     "atraso15_pct": 0.0,
@@ -2784,7 +2784,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.13,
+     "phi_if": 1.14,
      "cobertura_if_pct": 95.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2807,9 +2807,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 7.81,
+     "pct": 7.91,
      "m_produto": null,
-     "phi_if": 3.57,
+     "phi_if": 3.59,
      "cobertura_if_pct": 84.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2832,7 +2832,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.31,
+     "pct": 3.33,
      "m_produto": null,
      "phi_if": 1.24,
      "cobertura_if_pct": 82.6,
@@ -2857,9 +2857,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.43,
+     "pct": 0.44,
      "m_produto": null,
-     "phi_if": 1.4,
+     "phi_if": 1.41,
      "cobertura_if_pct": 82.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2884,7 +2884,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 2.36,
+     "phi_if": 2.33,
      "cobertura_if_pct": 88.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2909,7 +2909,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.65,
+     "phi_if": 1.61,
      "cobertura_if_pct": 89.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2932,9 +2932,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 10.52,
+     "pct": 10.96,
      "m_produto": null,
-     "phi_if": 2.95,
+     "phi_if": 3.06,
      "cobertura_if_pct": 96.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2957,7 +2957,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.37,
+     "pct": 2.39,
      "m_produto": null,
      "phi_if": 1.87,
      "cobertura_if_pct": 86.0,
@@ -2994,7 +2994,7 @@
    {
     "cod": "05040481",
     "nome": "BANCO DE LAGE LANDEN BRASIL S.A.",
-    "sr": "S3",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 18544400.68,
     "atraso15_pct": 0.1,
@@ -3032,9 +3032,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.34,
+     "pct": 1.36,
      "m_produto": null,
-     "phi_if": 1.66,
+     "phi_if": 1.67,
      "cobertura_if_pct": 80.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3057,7 +3057,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.68,
+     "pct": 1.69,
      "m_produto": null,
      "phi_if": 1.53,
      "cobertura_if_pct": 88.8,
@@ -3082,9 +3082,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 18.54,
+     "pct": 18.69,
      "m_produto": null,
-     "phi_if": 3.16,
+     "phi_if": 3.17,
      "cobertura_if_pct": 89.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3109,7 +3109,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 2.72,
+     "phi_if": 2.68,
      "cobertura_if_pct": 83.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3134,7 +3134,7 @@
     "npl_prod_est": {
      "pct": 0.6,
      "m_produto": null,
-     "phi_if": 2.07,
+     "phi_if": 2.08,
      "cobertura_if_pct": 91.2,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3157,7 +3157,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.97,
+     "pct": 1.98,
      "m_produto": null,
      "phi_if": 1.73,
      "cobertura_if_pct": 65.3,
@@ -3184,7 +3184,7 @@
     "npl_prod_est": {
      "pct": 0.05,
      "m_produto": null,
-     "phi_if": 2.45,
+     "phi_if": 2.38,
      "cobertura_if_pct": 88.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3207,7 +3207,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.78,
+     "pct": 1.79,
      "m_produto": null,
      "phi_if": 1.29,
      "cobertura_if_pct": 78.4,
@@ -3234,7 +3234,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 2.41,
+     "phi_if": 2.38,
      "cobertura_if_pct": 88.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3257,9 +3257,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 6.64,
+     "pct": 6.68,
      "m_produto": null,
-     "phi_if": 1.21,
+     "phi_if": 1.22,
      "cobertura_if_pct": 84.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3269,7 +3269,7 @@
    {
     "cod": "11836226",
     "nome": "AGÊNCIA DE FOMENTO E DESENVOLVIMENTO DO ESTADO DO PIAUÍ S.A.",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 13187129.58,
     "atraso15_pct": 0.87,
@@ -3282,9 +3282,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.53,
+     "pct": 3.63,
      "m_produto": null,
-     "phi_if": 3.67,
+     "phi_if": 3.75,
      "cobertura_if_pct": 80.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3334,7 +3334,7 @@
     "npl_prod_est": {
      "pct": 0.2,
      "m_produto": null,
-     "phi_if": 1.29,
+     "phi_if": 1.3,
      "cobertura_if_pct": 75.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3357,9 +3357,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.15,
+     "pct": 0.14,
      "m_produto": null,
-     "phi_if": 2.19,
+     "phi_if": 2.15,
      "cobertura_if_pct": 80.4,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3384,7 +3384,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.78,
+     "phi_if": 1.76,
      "cobertura_if_pct": 84.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3407,9 +3407,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.41,
+     "pct": 2.43,
      "m_produto": null,
-     "phi_if": 1.83,
+     "phi_if": 1.84,
      "cobertura_if_pct": 90.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3432,9 +3432,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.01,
+     "pct": 2.03,
      "m_produto": null,
-     "phi_if": 1.78,
+     "phi_if": 1.79,
      "cobertura_if_pct": 94.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3457,7 +3457,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.75,
+     "pct": 1.76,
      "m_produto": null,
      "phi_if": 2.11,
      "cobertura_if_pct": 93.0,
@@ -3469,7 +3469,7 @@
    {
     "cod": "02766672",
     "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA PLANALTO SUL - CRESOL PLANALTO SUL",
-    "sr": "S5",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 10009895.83,
     "atraso15_pct": 1.02,
@@ -3482,7 +3482,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.43,
+     "pct": 1.44,
      "m_produto": null,
      "phi_if": 1.27,
      "cobertura_if_pct": 85.4,
@@ -3509,7 +3509,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 2.79,
+     "phi_if": 2.78,
      "cobertura_if_pct": 80.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3534,7 +3534,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.19,
+     "phi_if": 1.09,
      "cobertura_if_pct": 89.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3582,9 +3582,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.29,
+     "pct": 1.31,
      "m_produto": null,
-     "phi_if": 2.04,
+     "phi_if": 2.07,
      "cobertura_if_pct": 84.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3609,7 +3609,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.41,
+     "phi_if": 1.39,
      "cobertura_if_pct": 83.4,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3619,7 +3619,7 @@
    {
     "cod": "03848103",
     "nome": "AGENCIA DE FOMENTO DO RIO GRANDE DO NORTE S.A.",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 9182364.1,
     "atraso15_pct": 3.02,
@@ -3634,7 +3634,7 @@
     "npl_prod_est": {
      "pct": 5.54,
      "m_produto": null,
-     "phi_if": 1.66,
+     "phi_if": 1.65,
      "cobertura_if_pct": 78.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3657,7 +3657,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.82,
+     "pct": 3.83,
      "m_produto": null,
      "phi_if": 1.32,
      "cobertura_if_pct": 82.6,
@@ -3669,7 +3669,7 @@
    {
     "cod": "26555235",
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SORRISO - SICREDI CELEIRO MT/RR",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 9038778.93,
     "atraso15_pct": 1.12,
@@ -3682,9 +3682,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.8,
+     "pct": 1.74,
      "m_produto": null,
-     "phi_if": 1.45,
+     "phi_if": 1.4,
      "cobertura_if_pct": 52.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3707,9 +3707,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.91,
+     "pct": 0.93,
      "m_produto": null,
-     "phi_if": 1.62,
+     "phi_if": 1.64,
      "cobertura_if_pct": 89.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3732,9 +3732,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.21,
+     "pct": 0.2,
      "m_produto": null,
-     "phi_if": 1.25,
+     "phi_if": 1.22,
      "cobertura_if_pct": 66.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3757,9 +3757,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.53,
+     "pct": 2.47,
      "m_produto": null,
-     "phi_if": 1.84,
+     "phi_if": 1.8,
      "cobertura_if_pct": 84.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3807,9 +3807,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 6.85,
+     "pct": 6.95,
      "m_produto": null,
-     "phi_if": 2.59,
+     "phi_if": 2.62,
      "cobertura_if_pct": 88.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3834,7 +3834,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.81,
+     "phi_if": 1.77,
      "cobertura_if_pct": 81.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3857,9 +3857,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.41,
+     "pct": 0.4,
      "m_produto": null,
-     "phi_if": 1.6,
+     "phi_if": 1.56,
      "cobertura_if_pct": 76.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3869,7 +3869,7 @@
    {
     "cod": "90497256",
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO INTERESTADOS - SICREDI INTERESTADOS RS/ES",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 6810090.1,
     "atraso15_pct": 0.0,
@@ -3884,7 +3884,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 0.97,
+     "phi_if": 0.96,
      "cobertura_if_pct": 87.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3932,9 +3932,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.23,
+     "pct": 1.24,
      "m_produto": null,
-     "phi_if": 1.19,
+     "phi_if": 1.18,
      "cobertura_if_pct": 81.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3957,9 +3957,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.22,
+     "pct": 4.29,
      "m_produto": null,
-     "phi_if": 2.23,
+     "phi_if": 2.26,
      "cobertura_if_pct": 88.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3982,7 +3982,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 6.16,
+     "pct": 6.19,
      "m_produto": null,
      "phi_if": 2.44,
      "cobertura_if_pct": 86.3,
@@ -4007,9 +4007,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 5.21,
+     "pct": 5.13,
      "m_produto": null,
-     "phi_if": 2.68,
+     "phi_if": 2.63,
      "cobertura_if_pct": 90.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4019,7 +4019,7 @@
    {
     "cod": "C0052508",
     "nome": "STELLANTIS",
-    "sr": "S4",
+    "sr": null,
     "nivel": "conglomerado",
     "carteira_brl": 4451870.42,
     "atraso15_pct": 0.0,
@@ -4034,7 +4034,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 2.16,
+     "phi_if": 2.18,
      "cobertura_if_pct": 99.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4059,7 +4059,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.47,
+     "phi_if": 1.45,
      "cobertura_if_pct": 84.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4084,7 +4084,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.75,
+     "phi_if": 1.72,
      "cobertura_if_pct": 88.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4109,7 +4109,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.04,
+     "phi_if": 1.09,
      "cobertura_if_pct": 100.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4134,7 +4134,7 @@
     "npl_prod_est": {
      "pct": 0.08,
      "m_produto": null,
-     "phi_if": 2.53,
+     "phi_if": 2.49,
      "cobertura_if_pct": 80.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4173,9 +4173,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 6.02,
+     "pct": 5.92,
      "m_produto": null,
-     "phi_if": 1.56,
+     "phi_if": 1.53,
      "cobertura_if_pct": 88.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4198,9 +4198,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.29,
+     "pct": 3.33,
      "m_produto": null,
-     "phi_if": 1.52,
+     "phi_if": 1.54,
      "cobertura_if_pct": 93.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4225,7 +4225,7 @@
     "npl_prod_est": {
      "pct": 0.33,
      "m_produto": null,
-     "phi_if": 1.36,
+     "phi_if": 1.35,
      "cobertura_if_pct": 64.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4250,7 +4250,7 @@
     "npl_prod_est": {
      "pct": 0.24,
      "m_produto": null,
-     "phi_if": 1.47,
+     "phi_if": 1.46,
      "cobertura_if_pct": 79.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4273,9 +4273,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.12,
+     "pct": 1.15,
      "m_produto": null,
-     "phi_if": 2.66,
+     "phi_if": 2.72,
      "cobertura_if_pct": 93.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4298,9 +4298,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 5.55,
+     "pct": 5.5,
      "m_produto": null,
-     "phi_if": 1.48,
+     "phi_if": 1.45,
      "cobertura_if_pct": 80.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4323,9 +4323,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.16,
+     "pct": 4.06,
      "m_produto": null,
-     "phi_if": 2.67,
+     "phi_if": 2.59,
      "cobertura_if_pct": 87.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4350,7 +4350,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.94,
+     "phi_if": 1.98,
      "cobertura_if_pct": 88.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4375,7 +4375,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.88,
+     "phi_if": 1.85,
      "cobertura_if_pct": 83.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4400,7 +4400,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 0.68,
+     "phi_if": 0.67,
      "cobertura_if_pct": 90.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4425,7 +4425,7 @@
     "npl_prod_est": {
      "pct": 0.29,
      "m_produto": null,
-     "phi_if": 1.52,
+     "phi_if": 1.51,
      "cobertura_if_pct": 87.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4450,7 +4450,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.98,
+     "phi_if": 1.94,
      "cobertura_if_pct": 85.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4473,9 +4473,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 16.94,
+     "pct": 16.82,
      "m_produto": null,
-     "phi_if": 1.52,
+     "phi_if": 1.5,
      "cobertura_if_pct": 80.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4498,9 +4498,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 6.93,
+     "pct": 6.74,
      "m_produto": null,
-     "phi_if": 0.86,
+     "phi_if": 0.84,
      "cobertura_if_pct": 48.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4525,7 +4525,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 2.53,
+     "phi_if": 2.48,
      "cobertura_if_pct": 76.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4548,9 +4548,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 12.04,
+     "pct": 11.81,
      "m_produto": null,
-     "phi_if": 1.94,
+     "phi_if": 1.89,
      "cobertura_if_pct": 82.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4573,9 +4573,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 17.07,
+     "pct": 16.84,
      "m_produto": null,
-     "phi_if": 2.02,
+     "phi_if": 1.98,
      "cobertura_if_pct": 72.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4598,9 +4598,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 39.71,
+     "pct": 38.98,
      "m_produto": null,
-     "phi_if": 2.5,
+     "phi_if": 2.44,
      "cobertura_if_pct": 67.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4625,7 +4625,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.59,
+     "phi_if": 1.65,
      "cobertura_if_pct": 95.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4635,7 +4635,7 @@
    {
     "cod": "74828799",
     "nome": "NOVO BANCO CONTINENTAL S.A. - BANCO MÚLTIPLO",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 633211.55,
     "atraso15_pct": 0.0,
@@ -4650,7 +4650,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 2.08,
+     "phi_if": 2.1,
      "cobertura_if_pct": 98.4,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4673,9 +4673,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 21.37,
+     "pct": 21.6,
      "m_produto": null,
-     "phi_if": 1.62,
+     "phi_if": 1.64,
      "cobertura_if_pct": 94.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4700,7 +4700,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.18,
+     "phi_if": 1.19,
      "cobertura_if_pct": 100.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4725,7 +4725,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.62,
+     "phi_if": 1.59,
      "cobertura_if_pct": 83.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4735,7 +4735,7 @@
    {
     "cod": "87510475",
     "nome": "COOPERATIVA DE CRÉDITO ROTA DAS TERRAS - SICREDI ROTA DAS TERRAS RS/MG",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 535298.17,
     "atraso15_pct": 4.24,
@@ -4748,9 +4748,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 7.32,
+     "pct": 7.26,
      "m_produto": null,
-     "phi_if": 1.56,
+     "phi_if": 1.54,
      "cobertura_if_pct": 73.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4773,9 +4773,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.4,
+     "pct": 3.3,
      "m_produto": null,
-     "phi_if": 1.87,
+     "phi_if": 1.81,
      "cobertura_if_pct": 84.2,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4798,9 +4798,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 15.12,
+     "pct": 14.75,
      "m_produto": null,
-     "phi_if": 1.63,
+     "phi_if": 1.58,
      "cobertura_if_pct": 89.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4835,7 +4835,7 @@
    {
     "cod": "01023570",
     "nome": "BANCO RABOBANK INTERNATIONAL BRASIL S.A.",
-    "sr": "S3",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 160774.31,
     "atraso15_pct": 0.0,
@@ -4873,9 +4873,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 10.91,
+     "pct": 10.62,
      "m_produto": null,
-     "phi_if": 2.23,
+     "phi_if": 2.16,
      "cobertura_if_pct": 76.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4898,9 +4898,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.88,
+     "pct": 5.01,
      "m_produto": null,
-     "phi_if": 3.34,
+     "phi_if": 3.42,
      "cobertura_if_pct": 88.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4923,9 +4923,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 18.34,
+     "pct": 18.18,
      "m_produto": null,
-     "phi_if": 2.1,
+     "phi_if": 2.07,
      "cobertura_if_pct": 87.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4935,7 +4935,7 @@
    {
     "cod": "03183937",
     "nome": "AGÊNCIA DE FOMENTO DO ESTADO DO AMAZONAS S.A. - AFEAM",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 93287.07,
     "atraso15_pct": 24.47,
@@ -4950,7 +4950,7 @@
     "npl_prod_est": {
      "pct": 65.61,
      "m_produto": null,
-     "phi_if": 2.42,
+     "phi_if": 2.41,
      "cobertura_if_pct": 98.2,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4973,9 +4973,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 30.68,
+     "pct": 30.27,
      "m_produto": null,
-     "phi_if": 1.15,
+     "phi_if": 1.13,
      "cobertura_if_pct": 36.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -5000,7 +5000,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 3.09,
+     "phi_if": 3.1,
      "cobertura_if_pct": 75.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -5023,9 +5023,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 23.23,
+     "pct": 24.43,
      "m_produto": null,
-     "phi_if": 2.32,
+     "phi_if": 2.43,
      "cobertura_if_pct": 85.4,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -5050,7 +5050,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 3.23,
+     "phi_if": 3.21,
      "cobertura_if_pct": 71.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -5073,9 +5073,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 88.81,
+     "pct": 92.17,
      "m_produto": null,
-     "phi_if": 1.57,
+     "phi_if": 1.62,
      "cobertura_if_pct": 97.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -5098,9 +5098,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 80.83,
+     "pct": 79.27,
      "m_produto": null,
-     "phi_if": 1.92,
+     "phi_if": 1.88,
      "cobertura_if_pct": 64.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -5125,7 +5125,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 2.38,
+     "phi_if": 2.39,
      "cobertura_if_pct": 81.2,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -5150,7 +5150,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.81,
+     "phi_if": 1.79,
      "cobertura_if_pct": 91.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -5160,7 +5160,7 @@
    {
     "cod": "72257793",
     "nome": "SICREDI CEARÁ - COOPERATIVA DE CRÉDITO DO ESTADO DO CEARÁ",
-    "sr": "S4",
+    "sr": null,
     "nivel": "individual",
     "carteira_brl": 11510.33,
     "atraso15_pct": 89.64,
@@ -5175,7 +5175,7 @@
     "npl_prod_est": {
      "pct": 100.0,
      "m_produto": null,
-     "phi_if": 1.53,
+     "phi_if": 1.52,
      "cobertura_if_pct": 91.2,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -5200,7 +5200,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.91,
+     "phi_if": 1.94,
      "cobertura_if_pct": 96.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -5225,7 +5225,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 2.11,
+     "phi_if": 2.15,
      "cobertura_if_pct": 98.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -5250,7 +5250,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 2.41,
+     "phi_if": 2.44,
      "cobertura_if_pct": 98.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -5259,201 +5259,69 @@
    }
   ],
   "por_segmento": {
-   "S1": {
-    "serie": [
-     {
-      "anomes": "202503",
-      "total_brl": 205909353511.06,
-      "n_inst": 6
-     },
-     {
-      "anomes": "202506",
-      "total_brl": 206128207024.2,
-      "n_inst": 6
-     },
-     {
-      "anomes": "202509",
-      "total_brl": 215480751480.98,
-      "n_inst": 6
-     },
-     {
-      "anomes": "202512",
-      "total_brl": 227590058855.21,
-      "n_inst": 6
-     },
-     {
-      "anomes": "202603",
-      "total_brl": 229075860710.26,
-      "n_inst": 6
-     },
-     {
-      "anomes": "202606",
-      "total_brl": 234831670383.67,
-      "n_inst": 6
-     }
-    ],
-    "atraso_serie": [
-     {
-      "anomes": "202503",
-      "agg_pct": 0.17,
-      "n": 6
-     },
-     {
-      "anomes": "202506",
-      "agg_pct": 0.15,
-      "n": 6
-     },
-     {
-      "anomes": "202509",
-      "agg_pct": 0.13,
-      "n": 6
-     },
-     {
-      "anomes": "202512",
-      "agg_pct": 0.17,
-      "n": 6
-     },
-     {
-      "anomes": "202603",
-      "agg_pct": 0.18,
-      "n": 6
-     },
-     {
-      "anomes": "202606",
-      "agg_pct": 0.18,
-      "n": 6
-     }
-    ]
-   },
-   "S2": {
-    "serie": [
-     {
-      "anomes": "202503",
-      "total_brl": 349032773676.41,
-      "n_inst": 7
-     },
-     {
-      "anomes": "202506",
-      "total_brl": 353149021922.75,
-      "n_inst": 7
-     },
-     {
-      "anomes": "202509",
-      "total_brl": 359636070131.61,
-      "n_inst": 7
-     },
-     {
-      "anomes": "202512",
-      "total_brl": 375327875857.03,
-      "n_inst": 7
-     },
-     {
-      "anomes": "202603",
-      "total_brl": 376977994959.85,
-      "n_inst": 7
-     },
-     {
-      "anomes": "202606",
-      "total_brl": 383287780963.46,
-      "n_inst": 7
-     }
-    ],
-    "atraso_serie": [
-     {
-      "anomes": "202503",
-      "agg_pct": 0.04,
-      "n": 7
-     },
-     {
-      "anomes": "202506",
-      "agg_pct": 0.01,
-      "n": 7
-     },
-     {
-      "anomes": "202509",
-      "agg_pct": 0.03,
-      "n": 7
-     },
-     {
-      "anomes": "202512",
-      "agg_pct": 0.03,
-      "n": 7
-     },
-     {
-      "anomes": "202603",
-      "agg_pct": 0.04,
-      "n": 7
-     },
-     {
-      "anomes": "202606",
-      "agg_pct": 0.04,
-      "n": 7
-     }
-    ]
-   },
    "S3": {
     "serie": [
      {
       "anomes": "202503",
-      "total_brl": 47821319558.71,
-      "n_inst": 22
+      "total_brl": 24861297128.67,
+      "n_inst": 12
      },
      {
       "anomes": "202506",
-      "total_brl": 49197327722.84,
-      "n_inst": 22
+      "total_brl": 25792927156.67,
+      "n_inst": 12
      },
      {
       "anomes": "202509",
-      "total_brl": 50716257719.66,
-      "n_inst": 22
+      "total_brl": 28748216075.24,
+      "n_inst": 12
      },
      {
       "anomes": "202512",
-      "total_brl": 53771579278.35,
-      "n_inst": 24
+      "total_brl": 31277810690.77,
+      "n_inst": 13
      },
      {
       "anomes": "202603",
-      "total_brl": 53970351676.14,
-      "n_inst": 25
+      "total_brl": 31599781423.85,
+      "n_inst": 13
      },
      {
       "anomes": "202606",
-      "total_brl": 55977867235.59,
-      "n_inst": 25
+      "total_brl": 33127913962.14,
+      "n_inst": 13
      }
     ],
     "atraso_serie": [
      {
       "anomes": "202503",
-      "agg_pct": 0.5,
-      "n": 22
+      "agg_pct": 0.34,
+      "n": 12
      },
      {
       "anomes": "202506",
-      "agg_pct": 0.54,
-      "n": 22
+      "agg_pct": 0.47,
+      "n": 12
      },
      {
       "anomes": "202509",
-      "agg_pct": 0.71,
-      "n": 22
+      "agg_pct": 0.62,
+      "n": 12
      },
      {
       "anomes": "202512",
-      "agg_pct": 0.71,
-      "n": 24
+      "agg_pct": 0.64,
+      "n": 13
      },
      {
       "anomes": "202603",
-      "agg_pct": 0.81,
-      "n": 25
+      "agg_pct": 0.73,
+      "n": 13
      },
      {
       "anomes": "202606",
-      "agg_pct": 0.87,
-      "n": 25
+      "agg_pct": 0.84,
+      "n": 13
      }
     ]
    },
@@ -5461,65 +5329,65 @@
     "serie": [
      {
       "anomes": "202503",
-      "total_brl": 9240469117.4,
-      "n_inst": 66
+      "total_brl": 2160342542.07,
+      "n_inst": 39
      },
      {
       "anomes": "202506",
-      "total_brl": 9136227490.22,
-      "n_inst": 67
+      "total_brl": 2102075745.44,
+      "n_inst": 40
      },
      {
       "anomes": "202509",
-      "total_brl": 9503533931.26,
-      "n_inst": 66
+      "total_brl": 2018224906.7,
+      "n_inst": 40
      },
      {
       "anomes": "202512",
-      "total_brl": 10027848886.19,
-      "n_inst": 72
+      "total_brl": 2289131802.59,
+      "n_inst": 46
      },
      {
       "anomes": "202603",
-      "total_brl": 10348654293.0,
-      "n_inst": 78
+      "total_brl": 2367868578.2,
+      "n_inst": 52
      },
      {
       "anomes": "202606",
-      "total_brl": 11165875927.84,
-      "n_inst": 82
+      "total_brl": 2826197337.07,
+      "n_inst": 56
      }
     ],
     "atraso_serie": [
      {
       "anomes": "202503",
-      "agg_pct": 0.71,
-      "n": 66
+      "agg_pct": 1.09,
+      "n": 39
      },
      {
       "anomes": "202506",
-      "agg_pct": 0.97,
-      "n": 67
+      "agg_pct": 1.43,
+      "n": 40
      },
      {
       "anomes": "202509",
-      "agg_pct": 1.32,
-      "n": 66
+      "agg_pct": 1.77,
+      "n": 40
      },
      {
       "anomes": "202512",
-      "agg_pct": 1.25,
-      "n": 72
+      "agg_pct": 1.34,
+      "n": 46
      },
      {
       "anomes": "202603",
-      "agg_pct": 1.33,
-      "n": 78
+      "agg_pct": 1.31,
+      "n": 52
      },
      {
       "anomes": "202606",
-      "agg_pct": 1.42,
-      "n": 82
+      "agg_pct": 1.14,
+      "n": 56
      }
     ]
    },
@@ -5527,65 +5395,65 @@
     "serie": [
      {
       "anomes": "202503",
-      "total_brl": 3764939891.02,
-      "n_inst": 93
+      "total_brl": 3670739337.93,
+      "n_inst": 89
      },
      {
       "anomes": "202506",
-      "total_brl": 3744808550.65,
-      "n_inst": 94
-     },
-     {
-      "anomes": "202509",
-      "total_brl": 3698211710.05,
+      "total_brl": 3652400312.95,
       "n_inst": 90
      },
      {
-      "anomes": "202512",
-      "total_brl": 3776248341.27,
-      "n_inst": 88
-     },
-     {
-      "anomes": "202603",
-      "total_brl": 3775369206.68,
+      "anomes": "202509",
+      "total_brl": 3608957671.03,
       "n_inst": 86
      },
      {
-      "anomes": "202606",
-      "total_brl": 3767335236.0,
+      "anomes": "202512",
+      "total_brl": 3721672574.41,
+      "n_inst": 86
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 3723387761.93,
       "n_inst": 84
+     },
+     {
+      "anomes": "202606",
+      "total_brl": 3757325340.17,
+      "n_inst": 83
      }
     ],
     "atraso_serie": [
      {
       "anomes": "202503",
       "agg_pct": 1.14,
-      "n": 93
+      "n": 89
      },
      {
       "anomes": "202506",
-      "agg_pct": 1.38,
-      "n": 94
+      "agg_pct": 1.37,
+      "n": 90
      },
      {
       "anomes": "202509",
       "agg_pct": 1.78,
-      "n": 90
+      "n": 86
      },
      {
       "anomes": "202512",
-      "agg_pct": 1.76,
-      "n": 88
+      "agg_pct": 1.73,
+      "n": 86
      },
      {
       "anomes": "202603",
-      "agg_pct": 2.06,
-      "n": 86
+      "agg_pct": 2.03,
+      "n": 84
      },
      {
       "anomes": "202606",
       "agg_pct": 2.3,
-      "n": 84
+      "n": 83
      }
     ]
    }

@@ -1,7 +1,7 @@
 {
  "cod": "17411307",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DAS EMPRESAS PLASCAR",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -432,5 +432,5 @@
    "202512": 1.072659948623485
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:20+00:00"
 }

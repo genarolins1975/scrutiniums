@@ -604,6 +604,61 @@ class Metricas(unittest.TestCase):
         self.assertTrue(all(m["id"].startswith("inclusao.") for m in metricas_inclusao.METRICAS))
 
 
+class RegraTarifaSocial(unittest.TestCase):
+    """Regra vigente com ato e data; o que é anterior e posterior a ela, cada lado com fonte, unidade e mês; sem mês posterior, ausência declarada."""
+
+    def _ts(self, cde):
+        return {"mes_referencia": "2025-05",
+                "kpis": {"uc_tsee": {"valor": 17246524.0}, "dmr_mes_reais": {"valor": 542423514.83}},
+                "serie_mensal": [{"m": "2025-05", "uc_tsee": 17246524.0, "dmr_reais": 542423514.83}],
+                "cde_meses": cde}
+
+    @staticmethod
+    def _cde(mes, completo=True, bronze=True, faturas=17000000.0, medio=40.0):
+        return {"mes": mes, "completo": completo, "original_no_bronze": bronze, "faturas_tsee": faturas if bronze else None,
+                "desconto_faturas_reais": faturas * medio if bronze else None, "desconto_medio_por_fatura_reais": medio if bronze else None,
+                "distribuidoras": 103, "recurso": f"cde-{mes}.zip"}
+
+    CONTA = {"simulador": {"normas": [
+        {"id": "lei_15235_2025", "titulo": "Lei nº 15.235", "estado": "CONFERIDA", "conferido_em": "2026-10-02T04:43:59Z", "url": "https://lei"},
+        {"id": "aneel_tarifa_social", "titulo": "ANEEL", "estado": "CONFERIDA", "conferido_em": "2026-10-16T02:04:53Z", "url": "https://aneel"}]}}
+
+    def test_regra_com_ato_data_e_vigencia(self):
+        ts = mod.regra_e_periodos(self._ts([]), self.CONTA)
+        r = ts["regra_vigente"]
+        self.assertEqual((r["ato_curto"], r["ato_data"], r["vigencia"], r["lei_data"]), ("MPV nº 1.300/2025", "2025-05-21", "2025-07-05", "2025-10-08"))
+        # vigência no dia 5: julho mistura as duas regras; o primeiro mês inteiro é agosto
+        self.assertEqual((r["mes_transicao"], r["primeiro_mes_inteiro"]), ("2025-07", "2025-08"))
+        self.assertEqual([c["estado"] for c in r["conferencia"]], ["CONFERIDA", "CONFERIDA"])
+        self.assertNotIn("normas_conferidas", r)
+
+    def test_sem_gold_da_conta_a_conferencia_fica_nao_executada(self):
+        r = mod.regra_e_periodos(self._ts([]), None)["regra_vigente"]
+        self.assertEqual([c["estado"] for c in r["conferencia"]], ["NAO_EXECUTADA", "NAO_EXECUTADA"])
+
+    def test_antes_e_depois_com_fonte_unidade_e_mes(self):
+        cde = [self._cde("2025-06", medio=25.31), self._cde("2025-07", medio=40.01), self._cde("2025-09", completo=False),
+               self._cde("2026-03", medio=45.93), self._cde("2026-05", bronze=False)]
+        p = mod.regra_e_periodos(self._ts(cde), self.CONTA)["periodos_da_regra"]
+        self.assertEqual((p["antes"]["fonte"], p["antes"]["unidade"], p["antes"]["mes"]), ("SCS", "UC", "2025-05"))
+        self.assertEqual((p["antes_cde"]["unidade"], p["antes_cde"]["mes"], p["antes_cde"]["desconto_medio_por_fatura_reais"]), ("faturas", "2025-06", 25.31))
+        # julho (transição) não entra em nenhum dos lados; setembro incompleto e maio/2026 sem original ficam fora
+        self.assertEqual(p["transicao"]["mes"], "2025-07")
+        self.assertEqual((p["depois"]["fonte"], p["depois"]["unidade"], p["depois"]["mes"]), ("Beneficiários da CDE", "faturas", "2026-03"))
+        self.assertEqual(p["depois"]["meses_completos_depois"], ["2026-03"])
+        self.assertEqual(p["mes_referencia_pos_regra"], "2026-03")
+        self.assertIsNone(p["motivo_sem_depois"])
+
+    def test_sem_mes_posterior_ausencia_declarada_sem_estimativa(self):
+        cde = [self._cde("2025-05"), self._cde("2025-06"), self._cde("2025-07"), self._cde("2025-08", completo=False)]
+        p = mod.regra_e_periodos(self._ts(cde), self.CONTA)["periodos_da_regra"]
+        self.assertIsNone(p["depois"])
+        self.assertIsNone(p["mes_referencia_pos_regra"])
+        # agosto/2025 está no arquivo mas incompleto: não vira referência posterior à regra
+        self.assertEqual(p["motivo_sem_depois"], "Nenhuma fonte oficial lida tem mês completo posterior à regra de 05/07/2025; "
+                                                 "o último mês completo é jul/2025, anterior ao primeiro mês inteiro sob a regra (ago/2025).")
+
+
 class Gold(unittest.TestCase):
     """Contrato e reconciliações da gold publicada (pulado se a gold não existir)."""
 

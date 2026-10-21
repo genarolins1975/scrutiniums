@@ -4,6 +4,8 @@ import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { CargaHistorico } from "@/components/energia/CargaHistorico";
+import { ModeloDidatico, ParaLer } from "@/components/energia/Didatica";
+import { HorasDoDia, type DiaHoras } from "@/components/energia/HorasDoDia";
 import { CargaMetricas, CargaNivel } from "@/components/energia/CargaNivel";
 import { CargaAviso, CargaCapitulos, CargaFontes, CargaIndisponivel, CargaSeguir } from "@/components/energia/CargaPagina";
 import { Numero } from "@/components/energia/Numero";
@@ -20,6 +22,7 @@ import {
   REGIOES,
   colunasComparacoesTodas,
   curtoRegiao,
+  linhaDaJanela,
   linhasComparacoesTodas,
   marcosRegimes,
   nomeRegiao,
@@ -139,6 +142,8 @@ export default function CargaPage() {
   const ROTULO_AUSENCIA = rotuloAusencia();
   const p = g.p025;
   const a = g.a07;
+  // captura que repete os valores da janela vira contagem na gold; o título conta todas
+  const capturasA07 = a.por_captura_2026.reduce((t, cap) => t + 1 + (cap.capturas_identicas ?? 0), 0);
   const atual = situacaoAtualidade(g.dia_referencia, g.gerado_em);
   const ev = g.evidencias;
   const versao = g.dia_referencia;
@@ -155,6 +160,24 @@ export default function CargaPage() {
         }`,
     )
     .join(", ");
+  // abertura e glossário: a mesma linha da faixa de métricas (SIN, últimos 7 dias, mesmos dias da semana)
+  const l7 = linhaDaJanela(p, "SIN", "7d", "equivalente");
+  const horas7 = l7 ? l7.dias * 24 : null;
+  const energia7 = l7 && l7.media !== null && horas7 ? l7.media * horas7 : null;
+  const energiaDia = l7 && l7.media !== null ? l7.media * 24 : null;
+  const regimeDesp = g.regimes.find((x) => /não despachadas/.test(x.descricao));
+  const regimeMmgd = g.regimes.find((x) => /MMGD/.test(x.descricao));
+  // artefato: a curva horária do SIN dos últimos dias (P026, mesmo arquivo), dia a dia, com a Carga de Energia Diária do mesmo dia
+  const diariaPorDia = new Map(c.serie.map((x) => [x.d, x.SIN ?? null]));
+  const horasPorDia = new Map<string, (number | null)[]>();
+  for (const h of g.p026.recente) {
+    const dia = h.h.slice(0, 10);
+    const hora = Number(h.h.slice(11, 13));
+    if (!horasPorDia.has(dia)) horasPorDia.set(dia, Array.from({ length: 24 }, () => null));
+    horasPorDia.get(dia)![hora] = h.SIN ?? null;
+  }
+  const diasCurva: DiaHoras[] = [...horasPorDia.entries()].map(([dia, horas]) => ({ dia, horas, referenciaDiaria: diariaPorDia.get(dia) ?? null }));
+  const diaInicialCurva = horasPorDia.has(g.dia_referencia) ? g.dia_referencia : diasCurva[diasCurva.length - 1]?.dia;
   const oQueMudou = (
     <>
       {atual.texto} {textoRevisoes(p.revisoes)}
@@ -194,10 +217,17 @@ export default function CargaPage() {
         <CabecalhoModulo
           siglas={["MWmed", "MMGD", "SIN", "ONS"]}
           titulo={perguntaPainel("p025")}
-          lead={tx(
-            "A carga média do sistema interligado (SIN) numa janela de dias, ao lado da janela de um ano antes. Mesmos dias da semana e mesmas datas dão taxas diferentes.",
-            "The average load of the interconnected system (SIN) over a window of days, next to the window one year earlier. Same days of the week and same dates give different rates.",
-          )}
+          lead={
+            l7 && l7.media !== null && l7.variacao_pct !== null && energiaDia !== null
+              ? tx(
+                  `Em média, ${num(l7.media, 0)} MWmed nos ${l7.dias} dias até ${dataBR(l7.fim)}: o sistema interligado (SIN) atendeu ${num(energiaDia, 0)} MWh por dia, ${num(Math.abs(l7.variacao_pct), 2)}% ${l7.variacao_pct >= 0 ? "acima" : "abaixo"} dos mesmos dias da semana um ano antes. Abaixo, o que cada unidade quer dizer e como a carga muda de janela para janela.`,
+                  `On average, ${num(l7.media, 0)} MWavg over the ${l7.dias} days through ${dataBR(l7.fim)}: the interconnected system (SIN) served ${num(energiaDia, 0)} MWh per day, ${num(Math.abs(l7.variacao_pct), 2)}% ${l7.variacao_pct >= 0 ? "above" : "below"} the same days of the week a year earlier. Below, what each unit means and how the load changes from one window to another.`,
+                )
+              : tx(
+                  "A carga média do sistema interligado (SIN) numa janela de dias, ao lado da janela de um ano antes. Mesmos dias da semana e mesmas datas dão taxas diferentes.",
+                  "The average load of the interconnected system (SIN) over a window of days, next to the window one year earlier. Same days of the week and same dates give different rates.",
+                )
+          }
           recorte={tx(`até ${dataBR(g.dia_referencia)} · SIN e subsistemas · MWmed e %`, `through ${dataBR(g.dia_referencia)} · SIN and subsystems · MWavg and %`)}
           fonte={tx("ONS, Carga de Energia Diária", "ONS, Daily Energy Load")}
           referencia={tx(
@@ -227,6 +257,84 @@ export default function CargaPage() {
             </>,
           )}
         </CabecalhoModulo>
+        <ParaLer
+          id="para-ler-carga"
+          itens={[
+            {
+              termo: tx("MW: potência", "MW: power"),
+              definicao: tx(
+                "Quanto o sistema entrega a cada instante. É o que precisa estar disponível na hora de maior consumo.",
+                "How much the system delivers at each instant. It is what has to be available at the hour of highest consumption.",
+              ),
+            },
+            {
+              termo: tx("MWh: energia", "MWh: energy"),
+              definicao: tx(
+                "Potência ao longo do tempo: 1 MW durante 1 hora é 1 MWh. É o que se soma no dia, no mês e no ano.",
+                "Power over time: 1 MW for 1 hour is 1 MWh. It is what adds up over the day, the month and the year.",
+              ),
+            },
+            {
+              termo: <Unidade u="MWmed" />,
+              definicao: tx(
+                "A potência média de um período: a energia do período dividida pelas horas dele. É a unidade em que o ONS publica a carga diária.",
+                "The average power of a period: the period's energy divided by its hours. It is the unit in which ONS publishes the daily load.",
+              ),
+              exemplo:
+                l7 && l7.media !== null && energia7 !== null && horas7 !== null
+                  ? tx(
+                      `${num(l7.media, 0)} MWmed durante ${l7.dias} dias (${num(horas7, 0)} horas) são ${num(energia7, 0)} MWh.`,
+                      `${num(l7.media, 0)} MWavg over ${l7.dias} days (${num(horas7, 0)} hours) is ${num(energia7, 0)} MWh.`,
+                    )
+                  : undefined,
+            },
+            {
+              termo: tx("Carga não é geração", "Load is not generation"),
+              definicao: tx(
+                <>
+                  <Termo slug="carga">Carga</Termo> é a energia que o sistema atende para quem está ligado a ele; geração é a que as usinas produzem. Cada região pode gerar mais ou
+                  menos do que consome: a diferença passa pelas linhas entre regiões, na página{" "}
+                  <Link href="/setor-eletrico/rede" className="text-energia-dark underline underline-offset-4">
+                    Rede
+                  </Link>
+                  .
+                </>,
+                <>
+                  <Termo slug="carga">Load</Termo> is the energy the system serves to those connected to it; generation is what the plants produce. Each region can generate more or less
+                  than it consumes: the difference passes over the lines between regions, on the{" "}
+                  <Link href="/setor-eletrico/rede" className="text-energia-dark underline underline-offset-4">
+                    Grid
+                  </Link>{" "}
+                  page.
+                </>,
+              ),
+            },
+            {
+              termo: tx("SIN e subsistemas", "SIN and subsystems"),
+              definicao: tx(
+                <>
+                  O <Termo slug="sin">SIN</Termo> é a rede interligada do país, dividida pelo ONS em quatro subsistemas: Sudeste/Centro-Oeste, Sul, Nordeste e Norte. A carga do SIN
+                  é a soma dos quatro; as localidades isoladas, fora da rede, não entram.
+                </>,
+                <>
+                  The <Termo slug="sin">SIN</Termo> is the country&apos;s interconnected grid, divided by ONS into four subsystems: Southeast/Center-West, South, Northeast and North.
+                  The SIN load is the sum of the four; isolated localities, outside the grid, are not included.
+                </>,
+              ),
+            },
+            {
+              termo: tx("Regime do ONS", "ONS regime"),
+              definicao: tx(
+                `O que o ONS conta como carga mudou${regimeDesp ? ` em ${dataBR(regimeDesp.inicio)} (usinas não despachadas)` : ""}${regimeMmgd ? ` e em ${dataBR(regimeMmgd.inicio)} (micro e minigeração nos telhados, a MMGD)` : ""}. Cada período com a mesma regra é um regime; a página só compara datas do mesmo regime.`,
+                `What ONS counts as load changed${regimeDesp ? ` on ${dataBR(regimeDesp.inicio)} (non-dispatched plants)` : ""}${regimeMmgd ? ` and on ${dataBR(regimeMmgd.inicio)} (rooftop micro and mini generation, the MMGD)` : ""}. Each period with the same rule is a regime; the page only compares dates within the same regime.`,
+              ),
+            },
+          ]}
+          nota={tx(
+            "Mesmos dias da semana é a comparação principal: cada segunda contra uma segunda, cada domingo contra um domingo. Mesmas datas reproduz a taxa que o observatório publicava antes. Validação física: antes de publicar, cada valor diário é conferido (positivo e plausível); o que falha fica como ausência, nunca como zero.",
+            "Same days of the week is the main comparison: each Monday against a Monday, each Sunday against a Sunday. Same dates reproduces the rate the observatory used to publish. Physical validation: before publishing, each daily value is checked (positive and plausible); what fails stays as missing, never as zero.",
+          )}
+        />
         <ModoProfundidade>
           <Bloco id="nivel">
             <PainelEvidencia
@@ -263,7 +371,50 @@ export default function CargaPage() {
                   fonte={FONTE}
                   versao={versao}
                   notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
-                  aposPrincipal={<CargaCapitulos />}
+                  aposPrincipal={
+                    <>
+                      {diasCurva.length > 0 && (
+                        <ModeloDidatico
+                          id="um-dia-de-carga"
+                          nivelTitulo={3}
+                          titulo={tx("Potência e energia num dia: a carga do SIN hora a hora", "Power and energy in one day: the SIN load hour by hour")}
+                          intro={tx(
+                            <>
+                              Cada barra é a carga de uma hora. Numa hora, a potência média em MW e a energia em MWh são o mesmo número. Somadas, as 24 barras dão a energia do dia;
+                              divididas por 24, a média do dia em MWmed, a unidade dos cartões acima. O pico é a barra mais alta: a potência que o sistema precisa ter disponível
+                              naquela hora, mesmo que a média seja menor.
+                            </>,
+                            <>
+                              Each bar is the load of one hour. Within one hour, the average power in MW and the energy in MWh are the same number. Added up, the 24 bars give the
+                              day&apos;s energy; divided by 24, the day average in MWavg, the unit of the cards above. The peak is the highest bar: the power the system needs to
+                              have available at that hour, even if the average is lower.
+                            </>,
+                          )}
+                          deixaDeFora={[
+                            tx(
+                              "Dentro de cada hora a carga muda minuto a minuto; a barra é a média da hora.",
+                              "Within each hour the load changes minute by minute; the bar is the hour's average.",
+                            ),
+                            tx(
+                              "A curva inclui a estimativa de micro e minigeração (MMGD) feita pelo ONS, que não aparece separada; a parcela dela está na página MMGD e perfil horário.",
+                              "The curve includes the ONS estimate of micro and mini generation (MMGD), which does not appear separately; its share is on the MMGD and hourly profile page.",
+                            ),
+                            tx(
+                              "Não mostra de onde a energia veio (usinas e linhas entre regiões) nem o preço de cada hora.",
+                              "It does not show where the energy came from (plants and lines between regions) nor the price of each hour.",
+                            ),
+                          ]}
+                          fonte={tx(
+                            `ONS, Curva de Carga Horária do SIN, ${diasCurva.length} dias, de ${dataBR(diasCurva[0].dia)} a ${dataBR(diasCurva[diasCurva.length - 1].dia)}; a média diária de comparação é a da Carga de Energia Diária.`,
+                            `ONS, SIN Hourly Load Curve, ${diasCurva.length} days, from ${dataBR(diasCurva[0].dia)} to ${dataBR(diasCurva[diasCurva.length - 1].dia)}; the daily average for comparison is that of the Daily Energy Load.`,
+                          )}
+                        >
+                          <HorasDoDia id="carga-horas" modo="carga" series={[{ id: "SIN", rotulo: "SIN", dias: diasCurva }]} diaInicial={diaInicialCurva} />
+                        </ModeloDidatico>
+                      )}
+                      <CargaCapitulos />
+                    </>
+                  }
                   historia={
                     <SecaoDoPainel
                       id="historico"
@@ -424,8 +575,8 @@ export default function CargaPage() {
                   id="a07-capturas"
                   nivel="auditar"
                   titulo={tx(
-                    `${a.por_captura_2026.length === 1 ? "A captura" : `As ${num(a.por_captura_2026.length, 0)} capturas`} do arquivo de ${a.referencia.fim.slice(0, 4)} usadas na variação de 7 dias`,
-                    `${a.por_captura_2026.length === 1 ? "The capture" : `The ${num(a.por_captura_2026.length, 0)} captures`} of the ${a.referencia.fim.slice(0, 4)} file used in the 7-day change`,
+                    `${capturasA07 === 1 ? "A captura" : `As ${num(capturasA07, 0)} capturas`} do arquivo de ${a.referencia.fim.slice(0, 4)} usadas na variação de 7 dias`,
+                    `${capturasA07 === 1 ? "The capture" : `The ${num(capturasA07, 0)} captures`} of the ${a.referencia.fim.slice(0, 4)} file used in the 7-day change`,
                   )}
                 >
                   {a.por_captura_2026.map((cap) => (
@@ -436,12 +587,18 @@ export default function CargaPage() {
                           {cap.janela_completa && cap.variacao_pct !== null
                             ? `janela completa, variação de ${sinal(cap.variacao_pct, 2)}% sobre as mesmas datas de ${a.referencia.inicio_anterior.slice(0, 4)}.`
                             : "janela incompleta ou com valor fora do domínio: a variação não existe com esta captura."}
+                          {cap.capturas_identicas && cap.ultima_captura_identica
+                            ? ` ${plural(cap.capturas_identicas, "captura seguinte repetiu", "capturas seguintes repetiram")} os mesmos valores da janela, até ${carimbo(cap.ultima_captura_identica)}.`
+                            : ""}
                         </>,
                         <>
                           Capture of {carimbo(cap.capturado_em)} (sha256 <code>{cap.sha256.slice(0, 12)}…</code>):{" "}
                           {cap.janela_completa && cap.variacao_pct !== null
                             ? `complete window, change of ${sinal(cap.variacao_pct, 2)}% over the same dates of ${a.referencia.inicio_anterior.slice(0, 4)}.`
                             : "incomplete window or with an out-of-domain value: the change does not exist with this capture."}
+                          {cap.capturas_identicas && cap.ultima_captura_identica
+                            ? ` ${plural(cap.capturas_identicas, "later capture repeated", "later captures repeated", "en")} the same window values, until ${carimbo(cap.ultima_captura_identica)}.`
+                            : ""}
                         </>,
                       )}
                     </p>
@@ -467,7 +624,14 @@ export default function CargaPage() {
                 <SecaoDoPainel id="revisoes" nivel="auditar" titulo={tx("Revisões da fonte entre capturas", "Source revisions between captures")}>
                   <p className="text-sm text-carvao-muted">{textoRevisoes(p.revisoes)}</p>
                   <TabelaInterativa
-                    titulo={tx("Valores revisados pela fonte", "Values revised by the source")}
+                    titulo={
+                      p.revisoes.linhas_so_no_csv
+                        ? tx(
+                            `As ${num(p.revisoes.linhas.length, 0)} revisões mais recentes, de ${num(p.revisoes.total, 0)}; todas estão no CSV de revisões`,
+                            `The ${num(p.revisoes.linhas.length, 0)} most recent revisions, of ${num(p.revisoes.total, 0)}; all are in the revisions CSV`,
+                          )
+                        : tx("Valores revisados pela fonte", "Values revised by the source")
+                    }
                     colunas={colunasRevisoes()}
                     linhas={paraTabela(
                       p.revisoes.linhas.map((l) => ({

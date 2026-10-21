@@ -18,7 +18,12 @@ Regras que valem para toda a rubrica (seção 15.1 e anexo A10):
 
 Uso:
   python3 scripts/energia_avaliacao.py [--rodada ID] [--relatorio relatorio.json] [--jornadas jornadas.json]
-                                       [--rotas-construidas rotas.txt] [--registrar-rodada]
+                                       [--rotas-construidas rotas.txt] [--registrar-rodada] [--golds-atuais]
+
+A parte das golds que a rubrica usa (vereditos, fichas, manifesto, conjuntos e fichas de modelo) fica gravada na
+rodada em docs/observatorios/energia/avaliacao/evidencia_golds.json. Rodada nova (--relatorio ou --golds-atuais)
+lê as golds publicadas e regrava o arquivo; sem isso, a rodada é refeita com as golds da data de referência dela,
+e a coleta diária não muda as notas publicadas.
 """
 import argparse
 import hashlib
@@ -877,6 +882,57 @@ def carrega_evidencia_golds():
     }
 
 
+# Evidência das golds congelada na rodada. A rodada declara "dados de referência das golds em <data>"
+# (rodada.referencia_dos_dados), mas as dimensões Correção, Rastreabilidade e Atualidade eram refeitas das golds
+# do dia: a coleta de 20/10/2026 mudou publicacao.json, uma página passou de 8,7 para 8,5 e o teste que refaz a
+# gold das entradas versionadas (test_gold_sai_das_entradas_versionadas) reteve a publicação. A parte das golds
+# que a avaliação usa fica gravada nas entradas da rodada, como a inspeção e as jornadas.
+EVIDENCIA_GOLDS = os.path.join(ENT, "evidencia_golds.json")
+
+
+def projeta_evidencia_golds(g, modelos_fichas):
+    """Só o que as dimensões leem das golds (resumo_golds, conjuntos_da_pagina, manifesto, data de referência e as
+    fichas de modelo), em formato que volta a ser `g` por le_evidencia_golds."""
+    return {
+        "referencia_dos_dados": g["pub"]["referencia"].get("hoje"), "publicacao_gerada_em": g["pub"].get("gerado_em"),
+        "por_gold": g["por_gold"], "vereditos": {k: v.get("veredito") for k, v in sorted(g["vered"].items())},
+        "sem_teste": g["sem_teste"], "manifesto": sorted(g["manifesto"]), "csv": g["csv"],
+        "golds_integras": g["golds_integras"], "golds_total": g["golds_total"],
+        "conjuntos": [{"id": c["id"], "slug": c.get("slug"), "golds": c["golds"],
+                       "atualidade": {"situacao": (c.get("atualidade") or {}).get("situacao"),
+                                      "dias_atraso": (c.get("atualidade") or {}).get("dias_atraso")},
+                       "coleta": {"falhas_consecutivas": (c.get("coleta") or {}).get("falhas_consecutivas")},
+                       "capturas": {"fonte_mais_nova": True} if "fonte_mais_nova" in (c.get("capturas") or {}) else {}}
+                      for c in g["conjuntos"]],
+        "modelos_fichas": [{"codigo": f.get("codigo"), "aprovacao": ({"estado": f["aprovacao"].get("estado"),
+                                                                       "referencia_experimental": f["aprovacao"].get("referencia_experimental")}
+                                                                      if isinstance(f.get("aprovacao"), dict) else f.get("aprovacao"))}
+                           for f in modelos_fichas or [] if isinstance(f, dict)],
+    }
+
+
+def le_evidencia_golds(e):
+    """(g, modelos_fichas) a partir da projeção gravada na rodada."""
+    g = {"pub": {"referencia": {"hoje": e["referencia_dos_dados"]}, "gerado_em": e.get("publicacao_gerada_em")},
+         "por_gold": e["por_gold"], "vered": {k: {"gold": k, "veredito": v} for k, v in e["vereditos"].items()},
+         "sem_teste": e["sem_teste"], "manifesto": set(e["manifesto"]), "csv": e["csv"],
+         "golds_integras": e["golds_integras"], "golds_total": e["golds_total"], "conjuntos": e["conjuntos"]}
+    return g, e.get("modelos_fichas") or []
+
+
+def evidencia_golds(golds_atuais=False):
+    """(g, modelos_fichas): das golds publicadas agora (rodada nova, gravando a projeção) ou da projeção da rodada."""
+    gravada = lj(EVIDENCIA_GOLDS)
+    if gravada is not None and not golds_atuais:
+        return le_evidencia_golds(gravada)
+    g = carrega_evidencia_golds()
+    modelos = (lj(os.path.join(GOLD_DIR, "previsoes_desempenho.json"), {}) or {}).get("fichas", [])
+    projecao = projeta_evidencia_golds(g, modelos)
+    if golds_atuais:
+        escreve_json(EVIDENCIA_GOLDS, projecao)
+    return le_evidencia_golds(projecao)
+
+
 def resumo_golds(g, golds):
     r = {"fichas": 0, "reconciliadas": 0, "controles": 0, "ressalva": 0, "divergencia": 0, "pendencia": 0, "fichas_sem_teste": 0,
          "golds_reprovadas": [], "golds_ressalva": [], "golds_integras": g["golds_integras"], "golds_total": g["golds_total"],
@@ -942,7 +998,7 @@ def monta(args):
         posteriores = []
     testes = lj(os.path.join(ENT, "testes.json"), {"vitest": {}, "python": {}})
     historico = lj(os.path.join(ENT, "rodadas.json"), {"rodadas": []})
-    g = carrega_evidencia_golds()
+    g, modelos_rodada = evidencia_golds(getattr(args, "golds_atuais", False))
     titulos = Counter()
     for r in insp["rotas"]:
         for m in r["medicoes"]:
@@ -958,7 +1014,7 @@ def monta(args):
     dimensoes_ids = [d["id"] for d in DIMENSOES]
     rodada_corrente = args.rodada or (historico["rodadas"][-1]["id"] if historico["rodadas"] else None)
     regra_modelo = regra_modelo_sem_numero_ativa(rodada_corrente)
-    modelos_fichas = (lj(os.path.join(GOLD_DIR, "previsoes_desempenho.json"), {}) or {}).get("fichas", []) if regra_modelo else []
+    modelos_fichas = modelos_rodada if regra_modelo else []
     for r in insp["rotas"]:
         rota = r["rota"]
         ms = r["medicoes"]
@@ -1199,7 +1255,7 @@ def sha256_arquivo(caminho):
 
 def arquivos_de_entrada(insp_gerado_em):
     out = []
-    for nome in ("inspecao.json", "jornadas.json", "revisao_visual.json", "testes.json"):
+    for nome in ("inspecao.json", "jornadas.json", "revisao_visual.json", "testes.json", "evidencia_golds.json"):
         c = os.path.join(ENT, nome)
         if os.path.exists(c):
             out.append({"arquivo": f"docs/observatorios/energia/avaliacao/{nome}", "recurso": nome, "sha256": sha256_arquivo(c),
@@ -1344,7 +1400,12 @@ def main():
     ap.add_argument("--sem-publicacao", action="store_true", help="não atualiza publicacao.json nem o manifesto")
     ap.add_argument("--sem-revisao", action="store_true", help="ignora a revisão visual e didática (rodada de base)")
     ap.add_argument("--reprocessada", default=None, help="texto que declara por que a rodada foi recalculada com outra regra")
+    ap.add_argument("--golds-atuais", action="store_true",
+                    help="lê as golds publicadas agora e grava a projeção em avaliacao/evidencia_golds.json (rodada nova); "
+                         "sem a opção, a rodada usa a projeção gravada, e a coleta diária não muda as notas")
     args = ap.parse_args()
+    if args.relatorio:
+        args.golds_atuais = True  # inspeção nova é rodada nova: as golds de referência são as de agora
     os.makedirs(ENT, exist_ok=True)
     if args.relatorio:
         c = condensa(lj(args.relatorio))

@@ -2,6 +2,8 @@
 import Link from 'next/link';
 import {aCapital,daCapital,diferenca,faixa,hrefPainel,numero,type CapitalRetrato,type Medida} from '@/lib/eficiencia/entrada-nucleo';
 import styles from './Entrada.module.css';
+import {SeloComConta} from '@/components/acesso/SeloComConta';
+import {prefetchDoLink} from '@/lib/rotasPublicas';
 
 const DIRECAO = {maior: 'Valor maior, condição mais favorável', menor: 'Valor menor, condição mais favorável', nenhuma: 'Sem direção: mais não é melhor nem pior por si'};
 
@@ -31,7 +33,7 @@ function Linha({m, a, b, nomes}: {m: Medida; a: CapitalRetrato; b: CapitalRetrat
       </svg>
       <div className={styles.stripScale} aria-hidden="true"><span>mín. {numero(f.pontos[0]?.valor ?? null, m.unidade)}</span><span>mediana {numero(f.mediana, m.unidade)}</span><span>máx. {numero(f.pontos.at(-1)?.valor ?? null, m.unidade)}</span></div>
       <p className={styles.rowNote}>{m.nota} {f.pontos.length} de {Object.keys(nomes).length} capitais na faixa.{fora.length ? ` ${fora.map(c => `${c.nome}: ${m.valores[c.id]!.foraDaComparacao}`).join('; ')}; valor exibido, fora da faixa e da mediana.` : ''}</p>
-      <p className={styles.rowLinks}><a href={m.fonteUrl}>{m.fonte} ↗</a>{m.painel && (m.painel.href.startsWith('#') ? <a href={m.painel.href}>{m.painel.rotulo} ↓</a> : <Link href={hrefPainel(m.painel, a.id, b.id)}>{m.painel.rotulo} →</Link>)}</p>
+      <p className={styles.rowLinks}><a href={m.fonteUrl}>{m.fonte} ↗</a>{m.painel && (m.painel.href.startsWith('#') ? <a href={m.painel.href}>{m.painel.rotulo} ↓</a> : <Link href={hrefPainel(m.painel, a.id, b.id)} prefetch={prefetchDoLink(m.painel.href)}>{m.painel.rotulo} →<SeloComConta href={m.painel.href}/></Link>)}</p>
     </div>
   </article>;
 }

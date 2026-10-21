@@ -6,6 +6,7 @@ import { SimuladorConta } from "@/components/saneamento/SimuladorConta";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { ROTA } from "@/lib/saneamento/capitulos";
 import { TARIFAS, periodoConsultaTarifas } from "@/lib/saneamento/tarifas";
+import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function Pagina() {
   return (
     <>
       <Cabecalho atual="preco-regulado/simulador" />
+      <AvisoConsultaAberta className="ed-pagina" comConta="Os capítulos 5.2 a 5.5, o CSV com todas as tabelas e os demais capítulos do observatório" />
       <MarcaVisita secao="saneamento:preco-simulador" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">
         <Abertura

@@ -1,0 +1,136 @@
+import { describe, expect, it } from "vitest";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
+import { CERI } from "@/lib/parceiros";
+import { ehRotaPublica } from "@/lib/rotasPublicas";
+
+/**
+ * Parceria técnica com o FGV CERI (decisão do mantenedor, 20/10/2026): a marca
+ * oficial, servida localmente e registrada em manifesto, com link para o site
+ * do centro, na página inicial e nos painéis de infraestrutura.
+ */
+const raiz = process.cwd();
+const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
+const manifesto = JSON.parse(ler("public/home/parceiros/manifesto.json")) as {
+  parceiros: { id: string; url: string; arquivos: { arquivo: string; sha256: string; bytes: number }[] }[];
+};
+const ceri = manifesto.parceiros.find((p) => p.id === CERI.id)!;
+
+describe("marca do FGV CERI", () => {
+  it("os arquivos publicados são os do manifesto (sha256 e bytes) e abrem sem sessão", () => {
+    expect(ceri).toBeDefined();
+    expect(ceri.url).toBe(CERI.url);
+    expect(ceri.arquivos.map((a) => a.arquivo).sort()).toEqual([CERI.arquivo, CERI.arquivoEscuro].sort());
+    for (const a of ceri.arquivos) {
+      const bytes = readFileSync(join(raiz, "public", a.arquivo));
+      expect(bytes.length, a.arquivo).toBe(a.bytes);
+      expect(createHash("sha256").update(bytes).digest("hex"), a.arquivo).toBe(a.sha256);
+      expect(ehRotaPublica(a.arquivo), `${a.arquivo} precisa carregar nas páginas abertas`).toBe(true);
+    }
+  });
+
+  it("a pasta responde com a mesma CSP restritiva dos logos de empresas", () => {
+    const config = ler("next.config.mjs");
+    const regra = (pasta: string) => config.match(new RegExp(`\\{source: "${pasta}/:path\\*", headers: \\[(.*?)\\]\\}`))?.[1];
+    expect(regra("/home/parceiros"), "regra de cabeçalhos da pasta de parceiros").toBeDefined();
+    expect(regra("/home/parceiros")).toBe(regra("/energia/logos"));
+  });
+
+  it("o SVG é só desenho: sem script, evento, conteúdo embutido ou referência externa", () => {
+    for (const a of ceri.arquivos) {
+      const svg = ler(join("public", a.arquivo));
+      expect(svg.startsWith("<svg "), a.arquivo).toBe(true);
+      expect(svg, a.arquivo).not.toMatch(/<script|<image|<foreignObject|<use|<a\b|\son\w+=|xlink:href|\bhref=|<!ENTITY|@import/i);
+      // url() só para o clip-path interno do próprio arquivo
+      for (const m of svg.matchAll(/url\(([^)]*)\)/g)) expect(m[1], a.arquivo).toMatch(/^#clip-\d+$/);
+    }
+  });
+});
+
+describe("componente ParceriaTecnica", () => {
+  const html = (variante: "faixa" | "linha" | "bloco" | "compacto", idioma: "pt" | "en" = "pt") =>
+    renderToStaticMarkup(createElement(ParceriaTecnica, { variante, idioma }));
+
+  it("sempre liga a marca oficial ao site do centro, em nova aba e com o nome completo no alt", () => {
+    for (const v of ["faixa", "linha", "bloco", "compacto"] as const) {
+      const h = html(v);
+      expect(h, v).toContain(`href="${CERI.url}"`);
+      expect(h, v).toContain('target="_blank"');
+      expect(h, v).toContain('rel="noopener noreferrer"');
+      expect(h, v).toContain(`src="${CERI.arquivo}"`);
+      expect(h, v).toContain(`alt="${CERI.nome}, ${CERI.descricao}"`);
+      expect(h, v).toContain("Parceria técnica");
+      expect(h, v).toContain(`data-parceria="${CERI.id}"`);
+      // alvo de toque de 44 px no próprio link, em toda variante
+      expect(h, v).toMatch(/<a [^>]*href="https:\/\/ceri\.fgv\.br\/"[^>]*class="[^"]*min-h-\[44px\]/);
+    }
+  });
+
+  it("segue o idioma da página e o bloco da home diz onde a marca aparece", () => {
+    expect(html("faixa", "en")).toContain("Technical partnership");
+    expect(html("faixa", "en")).not.toContain("Parceria técnica");
+    const bloco = html("bloco");
+    for (const nome of ["Setor Elétrico", "Gás Natural", "Saneamento", "Combustíveis"]) expect(bloco).toContain(nome);
+  });
+});
+
+describe("onde a marca aparece", () => {
+  it("na página inicial, no fim da primeira seção, em português nas duas homes (contrato da home inglesa)", () => {
+    const home = ler("src/components/home/Home.tsx");
+    expect(home).toContain('rodape={<ParceriaTecnica variante="bloco" idioma="pt" />}');
+    expect(ler("src/components/home/HeroPerguntas.tsx")).toContain("{rodape}");
+  });
+
+  it("no cabeçalho dos quatro módulos de infraestrutura, que servem painel e aperitivo", () => {
+    for (const f of [
+      "src/components/energia/CabecalhoEnergia.tsx",
+      "src/components/gas/CabecalhoGas.tsx",
+      "src/components/saneamento/Cabecalho.tsx",
+      "src/components/combustiveis/CabecalhoCombustiveis.tsx",
+    ]) expect(ler(f), f).toContain('<ParceriaTecnica variante="faixa" />');
+  });
+
+  it("no Setor Elétrico, em tela larga, a marca entra na faixa das páginas do grupo e a faixa própria só existe abaixo de 1280 px", () => {
+    const c = ler("src/components/energia/CabecalhoEnergia.tsx");
+    expect(c).toMatch(/<div className="hidden [^"]*xl:block">\s*<ParceriaTecnica variante="linha" \/>/);
+    expect(c).toMatch(/<div className="xl:hidden">\s*<ParceriaTecnica variante="faixa" \/>/);
+    // a variante em linha fica antes dos atalhos de dados e método, na mesma faixa
+    expect(c.indexOf('variante="linha"')).toBeLessThan(c.indexOf("<Atalhos atual="));
+  });
+
+  it("no Saneamento e em Combustíveis a marca entra numa linha que o cabeçalho já tem; a faixa própria só existe abaixo dela", () => {
+    const san = ler("src/components/saneamento/Cabecalho.tsx");
+    // a linha dos atalhos só existe de 1024 px em diante (lista hidden lg:flex): a faixa própria some no mesmo ponto
+    expect(san.indexOf('variante="linha"')).toBeLessThan(san.indexOf("<Atalhos atual={atual} />"));
+    expect(san).toMatch(/<div className="lg:hidden">\s*<ParceriaTecnica variante="faixa" \/>/);
+    const comb = ler("src/components/combustiveis/CabecalhoCombustiveis.tsx");
+    expect(comb).toMatch(/<div className="hidden shrink-0 md:block">\s*<ParceriaTecnica variante="linha" \/>/);
+    expect(comb).toMatch(/<div className="md:hidden">\s*<ParceriaTecnica variante="faixa" \/>/);
+    // no Gás a navegação ocupa duas linhas cheias: a marca ali pareceria mais um grupo do menu, e a faixa própria fica
+    expect(ler("src/components/gas/CabecalhoGas.tsx")).not.toContain('variante="linha"');
+  });
+
+  it("na entrada e no mapa do Observatório de Energia e Infraestrutura, e só nele", () => {
+    const entrada = ler("src/app/observatorios/[id]/page.tsx");
+    expect(entrada).toContain('id === "energia-e-infraestrutura" ? <ParceriaTecnica variante="compacto" />');
+    const mapa = ler("src/app/app/(foco)/observatorios/page.tsx");
+    expect(mapa).toContain('o.id === "energia-e-infraestrutura" && (');
+    expect(mapa.match(/<ParceriaTecnica/g)).toHaveLength(1);
+  });
+
+  it("nenhum outro cabeçalho de observatório leva a marca", () => {
+    for (const f of [
+      "src/components/credito/CabecalhoCredito.tsx",
+      "src/components/agro/Cabecalho.tsx",
+      "src/components/eficiencia/CabecalhoEntrada.tsx",
+      "src/components/inflacao/CabecalhoCustoDeVida.tsx",
+      "src/components/layout/CabecalhoPlataforma.tsx",
+      "src/components/layout/PublicHeader.tsx",
+      "src/components/layout/Footer.tsx",
+    ]) expect(ler(f), f).not.toContain("ParceriaTecnica");
+  });
+});

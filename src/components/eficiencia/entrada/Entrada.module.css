@@ -109,7 +109,7 @@
 .rowLinks a{display:inline-flex;align-items:center;min-height:44px;font-size:14px;color:var(--cor-obee-atlas-serie-territorio)}
 .sectionFoot{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:20px 0}
 .sectionFoot p{font-size:13px;color:var(--muted);max-width:44rem}
-.sectionFoot button{flex-shrink:0;min-height:44px;padding:10px 14px;border:1px solid var(--cor-obee-atlas-serie-territorio);background:var(--cor-obee-atlas-superficie);color:var(--cor-obee-atlas-serie-territorio);cursor:pointer;font-size:14px}
+.sectionFoot a{flex-shrink:0;display:inline-flex;flex-wrap:wrap;align-items:center;min-height:44px;padding:10px 14px;border:1px solid var(--cor-obee-atlas-serie-territorio);background:var(--cor-obee-atlas-superficie);color:var(--cor-obee-atlas-serie-territorio);font-size:14px;text-decoration:none}
 .tableDetails{border-bottom:1px solid var(--line);padding:6px 0}
 .tableDetails summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600;font-size:15px}
 .tableScroll{overflow-x:auto;padding-bottom:12px}
@@ -127,7 +127,7 @@
 .matrix{margin-top:8px}
 .matrixHead,.matrixRow summary{display:grid;grid-template-columns:minmax(0,1fr) repeat(6,minmax(44px,76px));align-items:center;gap:0}
 .matrixHead{position:sticky;top:0;z-index:1;background:var(--paper);padding:14px 0 10px;border-bottom:1px solid var(--ink);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.matrixHead span+span{text-align:center}
+.matrixHead span+span{text-align:center;font-size:11px;letter-spacing:.03em}
 .matrixGroupTitle{padding:22px 0 8px;font-size:12px!important;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .matrixRow{border-bottom:1px solid var(--line);scroll-margin-top:72px}
 .matrixRow summary{list-style:none;cursor:pointer;min-height:56px;padding:6px 0}

@@ -850,6 +850,38 @@ def linhas_csv_subsidios(csv_s, sigla):
             for (a, cn, cat, mt), v in sorted(csv_s.items())]
 
 
+def bandeira_do_mes(acionamentos, mes_ref, fonte=None):
+    """Bandeira do mês de referência a partir do acionamento publicado: [(mes 'AAAA-MM', nome, R$/MWh)].
+
+    O mês de referência (`mes_ref`, o da data de referência em Brasília) é o único que pode ser
+    chamado de vigente. Sem acionamento desse mês, devolve a última bandeira registrada ATÉ ele
+    com `situacao` "mes_ausente" e o aviso de que o mês corrente ainda não está no arquivo: o mês
+    que falta não é preenchido nem copiado do anterior. Mês posterior já publicado (a ANEEL anuncia
+    a bandeira do mês seguinte no fim do mês) fica em `anunciadas`, nunca no lugar da vigente.
+    `recentes` leva os últimos meses publicados para que a página refaça a escolha com a data de
+    quem lê (a página é estática e pode ser lida num mês posterior ao da gold).
+    Sem nenhum acionamento até o mês de referência, devolve None."""
+    ordenados = sorted(acionamentos, key=lambda x: x[0])
+    ate = [x for x in ordenados if x[0] <= mes_ref]
+    if not ate:
+        return None
+    m, b, val = ate[-1]
+    corrente = m == mes_ref
+    f = fonte or {}
+    return {
+        "mes": m, "bandeira": b, "rs_mwh": c.r(val, 2),
+        "mes_referencia": mes_ref,
+        "situacao": "mes_corrente" if corrente else "mes_ausente",
+        "aviso": (None if corrente else
+                  f"A bandeira de {c.mes_br(mes_ref)} ainda não está no arquivo da ANEEL; a última registrada é a de "
+                  f"{c.mes_br(m)} ({(b or 'sem nome').lower()})."),
+        "anunciadas": [{"mes": x[0], "bandeira": x[1], "rs_mwh": c.r(x[2], 2)} for x in ordenados if x[0] > mes_ref],
+        "recentes": [{"mes": x[0], "bandeira": x[1], "rs_mwh": c.r(x[2], 2)} for x in ordenados[-4:]],
+        "fonte_publicada_em": f.get("publicado_em"), "fonte_capturada_em": f.get("capturado_em"),
+        "fonte_url": f.get("url"),
+    }
+
+
 def custo_perfil(total, kwh):
     """R$ no mês para `kwh` kWh a `total` R$/MWh (sem tributos e sem bandeira)."""
     return None if total is None else kwh * total / 1000.0
@@ -1748,12 +1780,8 @@ def construir(con, ctx):
             vig, val = None, 0.0  # verde: sem acréscimo (ANEEL); a tabela de adicionais não lista a verde
         patamares.append({"bandeira": nomeb, "rs_mwh": c.r(val, 2), "rs_kwh": c.r(val / 1000, 5) if val is not None else None,
                           "vigencia_tabela": vig})
-    band_vigente = None
-    if acion:
-        m, b, val = acion[-1]
-        band_vigente = {"mes": m, "bandeira": b, "rs_mwh": c.r(val, 2),
-                        "aviso": (None if m >= dia_ref[:7] else
-                                  f"O conjunto traz acionamentos até {c.mes_br(m)}; o mês de referência ({c.mes_br(dia_ref[:7])}) ainda não consta.")}
+    # bandeira do mês de referência: só o mês corrente é vigente; sem ele, a última registrada com aviso
+    band_vigente = bandeira_do_mes(acion, dia_ref[:7], _fonte_ev(con, DS_BAND, "ANEEL", "Bandeiras Tarifárias", URL_BAND, "Acionamento"))
     band_csv, band_confere = [], {"meses": 0, "conferem": 0, "divergem": []}
     for m, b, val in acion:
         tab = 0.0 if b == "Verde" else adicional_em(b, m + "-01")[1] if b else None

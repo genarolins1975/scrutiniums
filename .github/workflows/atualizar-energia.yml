@@ -4,7 +4,8 @@ name: Atualizar dados do Setor Elétrico
 # CCEE direta (acesso automatizado instável; o seed versionado com sha256 garante o
 # PLD até a última captura), reconstrói a gold em public/energia e publica.
 # O histórico de vintages (silver) fica no cache do Actions e, como cópia durável,
-# num asset da release "energia-estado"; sem os dois, o alerta abre issue. Separado do workflow do Crédito: falha de um domínio
+# na release "energia-estado", junto do bronze vigente em partes menores que 2 GB;
+# sem os dois, o alerta abre issue. Separado do workflow do Crédito: falha de um domínio
 # não atrasa o outro. O ONS atualiza os conjuntos às 12h e às 19h de Brasília.
 on:
   schedule:
@@ -58,22 +59,86 @@ jobs:
           restore-keys: |
             energia-estado-
 
-      - name: Restaurar silver da cópia durável (cache ausente)
+      # A previsão do PLD usa o mesmo prefixo e pode salvar só energia.db depois
+      # de um cache miss. Chave encontrada não prova estado completo (review #278).
+      - name: Completar estado durável (cache ausente ou parcial)
         id: duravel
-        if: steps.restaurar.outputs.cache-matched-key == ''
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p data/energia/silver
-          gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver.db.gz" --dir /tmp
-          gunzip -c /tmp/energia-silver.db.gz > data/energia/silver/energia.db
-          # silvers das famílias dos módulos temáticos (ANEEL, IBGE, CVM...): opcional,
-          # ausente na primeira execução depois da criação dos módulos
-          if gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver-familias.tar.gz" --dir /tmp; then
-            tar -xzf /tmp/energia-silver-familias.tar.gz -C data/energia/silver
+          if [ ! -s data/energia/silver/energia.db ]; then
+            gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver.db.gz" --dir /tmp
+            gunzip -c /tmp/energia-silver.db.gz > data/energia/silver/energia.db
+          fi
+          # Completa só famílias ausentes; nunca sobrescreve um banco mais recente
+          # já restaurado do cache, inclusive o principal coletado pela previsão.
+          FALTANTES=$(python3 -c 'from pipeline.energia.estado_bronze import familias_ausentes; print("\n".join(familias_ausentes()))')
+          if [ -n "$FALTANTES" ]; then
+            if gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver-familias.tar.gz" --dir /tmp; then
+              tar -xzf /tmp/energia-silver-familias.tar.gz -C data/energia/silver --skip-old-files
+            fi
           fi
           echo "restaurado=sim" >> "$GITHUB_OUTPUT"
+
+      # Passo próprio: falha no bronze não se confunde com o silver já restaurado e
+      # não passa em silêncio (o alerta abaixo abre issue).
+      - name: Restaurar bronze vigente da cópia durável
+        id: bronze
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # A release anterior à correção da issue #116 pode conter só o silver.
+          # Nesse primeiro ciclo, os coletores recapturam órfãs e os blocos opcionais
+          # sem bronze ficam indisponíveis com motivo (nunca zero nem data de hoje).
+          mkdir -p /tmp/energia-bronze-restaurado
+          # Cada geração publica um manifesto com nome próprio (energia-bronze-manifesto-<UTC>.json);
+          # vale o mais recente, e as partes dele subiram antes dele.
+          if gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-bronze-manifesto-*.json" --dir /tmp/energia-bronze-restaurado; then
+            ULTIMO=$(ls /tmp/energia-bronze-restaurado/energia-bronze-manifesto-*.json | sort | tail -n 1)
+            mv "$ULTIMO" /tmp/energia-bronze-restaurado/energia-bronze-manifesto.json
+            NECESSARIO=$(python3 -m pipeline.energia.estado_bronze necessario /tmp/energia-bronze-restaurado)
+            if [ "$NECESSARIO" = "sim" ]; then
+              python3 - <<'PYBRONZE' > /tmp/energia-bronze-partes.txt
+          import json
+          from pathlib import Path
+          doc = json.loads(Path("/tmp/energia-bronze-restaurado/energia-bronze-manifesto.json").read_text())
+          for parte in doc["partes"]:
+              nome = parte["nome"]
+              if Path(nome).name != nome or not nome.startswith("energia-bronze.parte-"):
+                  raise ValueError(f"parte de bronze inválida: {nome}")
+              print(nome)
+          PYBRONZE
+              while IFS= read -r parte; do
+                gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "$parte" --dir /tmp/energia-bronze-restaurado
+              done < /tmp/energia-bronze-partes.txt
+              python3 -m pipeline.energia.estado_bronze restaurar /tmp/energia-bronze-restaurado
+            else
+              echo "Bronze do manifesto já presente no cache; partes não baixadas."
+            fi
+          else
+            echo "::warning::release sem bronze durável; recursos órfãos serão recapturados ou declarados indisponíveis"
+          fi
+          rm -rf /tmp/energia-bronze-restaurado
+
+      - name: Alertar falha na restauração do bronze
+        if: steps.bronze.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          echo "::warning::bronze durável não restaurado; recursos órfãos serão recapturados ou declarados indisponíveis"
+          TITULO="Setor Elétrico: bronze durável não restaurado"
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          CORPO="Execução ${RUN_URL}: a restauração do bronze vigente falhou (parte ausente ou corrompida, manifesto de versão desconhecida ou erro na extração). O silver foi restaurado; os recursos sem bronze serão recapturados ou declarados indisponíveis."
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "$CORPO"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
+          fi
 
       - name: Alertar perda do histórico de vintages
         if: steps.restaurar.outputs.cache-matched-key == '' && steps.duravel.outputs.restaurado != 'sim'
@@ -121,7 +186,7 @@ jobs:
       # GitHub despeja o que foi acessado há mais tempo, o estado do crédito, em 03/10 e
       # 15/10/2026. A anterior sai ANTES de gravar, e só quando o estado completo foi
       # restaurado: o que será gravado contém tudo o que ela tinha. Se a gravação falhar,
-      # o silver volta da release energia-estado.
+      # o silver e o bronze vigente voltam da release energia-estado (issue #116).
       - name: Liberar a cópia anterior do estado antes de gravar
         if: always() && steps.restaurar.outputs.cache-matched-key != ''
         continue-on-error: true
@@ -167,10 +232,73 @@ jobs:
           fi
           gh release view energia-estado --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
             gh release create energia-estado --repo "$GITHUB_REPOSITORY" --title "Estado do pipeline de energia" \
-              --notes "Cópia durável do silver com vintages (uso interno do pipeline). Não é dado publicado." --prerelease
+              --notes "Cópia durável do silver com vintages e do bronze vigente (uso interno). Não é dado publicado." --prerelease
           gh release upload energia-estado /tmp/energia-silver.db.gz --repo "$GITHUB_REPOSITORY" --clobber
           if [ -f /tmp/energia-silver-familias.tar.gz ]; then
             gh release upload energia-estado /tmp/energia-silver-familias.tar.gz --repo "$GITHUB_REPOSITORY" --clobber
+          fi
+          rm -f /tmp/energia-silver.db.gz /tmp/energia-silver-familias.tar.gz
+
+      # Depois do silver e em passo próprio: uma falha aqui (disco, SQLite, upload)
+      # nunca impede a cópia do silver, que é o ativo que não se recupera (review #278).
+      - name: Cópia durável do bronze vigente (release energia-estado)
+        id: bronze_duravel
+        if: steps.pipeline.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          df -h /tmp
+          # Não entra em data/energia nem no cache do Actions. Cada asset de bronze
+          # tem no máximo 1.900.000.000 bytes; o manifesto é publicado por último.
+          python3 -m pipeline.energia.estado_bronze guardar /tmp/energia-bronze-duravel
+          # O nome de cada parte leva o sha256 do conteúdo: parte já publicada com o
+          # mesmo nome e tamanho é a mesma e não sobe de novo; nenhuma é substituída.
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/energia-estado" \
+            --jq '.assets[] | select(.state == "uploaded") | "\(.name) \(.size)"' > /tmp/energia-bronze-publicadas.txt
+          for parte in /tmp/energia-bronze-duravel/energia-bronze.parte-*; do
+            if grep -qxF "$(basename "$parte") $(stat -c %s "$parte")" /tmp/energia-bronze-publicadas.txt; then
+              echo "Parte já publicada: $(basename "$parte")"
+            else
+              gh release upload energia-estado "$parte" --repo "$GITHUB_REPOSITORY"
+            fi
+          done
+          # Manifesto com nome novo, sem --clobber: o gh apaga o asset antes de subir o substituto,
+          # e uma falha no upload deixaria a release sem manifesto (review #278). O anterior só
+          # sai depois de confirmado o novo; com set -e, falha no upload encerra antes das remoções.
+          MANIFESTO_NOVO="energia-bronze-manifesto-$(date -u +%Y%m%dT%H%M%SZ).json"
+          cp /tmp/energia-bronze-duravel/energia-bronze-manifesto.json "/tmp/energia-bronze-duravel/$MANIFESTO_NOVO"
+          gh release upload energia-estado "/tmp/energia-bronze-duravel/$MANIFESTO_NOVO" --repo "$GITHUB_REPOSITORY"
+          # Depois do manifesto novo, os manifestos anteriores e as partes que ele não referencia saem.
+          gh release view energia-estado --repo "$GITHUB_REPOSITORY" --json assets \
+            --jq '.assets[].name | select(startswith("energia-bronze"))' > /tmp/energia-bronze-assets.txt
+          while IFS= read -r nome; do
+            case "$nome" in
+              energia-bronze-manifesto*.json) OBSOLETO=$([ "$nome" != "$MANIFESTO_NOVO" ] && echo sim || true) ;;
+              energia-bronze.parte-*) OBSOLETO=$([ ! -f "/tmp/energia-bronze-duravel/$nome" ] && echo sim || true) ;;
+              *) OBSOLETO= ;;
+            esac
+            if [ "$OBSOLETO" = "sim" ]; then
+              gh release delete-asset energia-estado "$nome" --repo "$GITHUB_REPOSITORY" --yes
+            fi
+          done < /tmp/energia-bronze-assets.txt
+          rm -rf /tmp/energia-bronze-duravel
+
+      - name: Alertar falha na cópia durável do bronze
+        if: steps.bronze_duravel.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          echo "::warning::cópia durável do bronze falhou; a do silver foi feita em passo anterior"
+          TITULO="Setor Elétrico: cópia durável do bronze falhou"
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          CORPO="Execução ${RUN_URL}: a gravação do bronze vigente na release energia-estado falhou. A cópia do silver é feita antes, em passo próprio; o manifesto anterior continua válido, porque nenhuma parte é substituída."
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "$CORPO"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
           fi
 
       - name: Alertar regressão
@@ -195,21 +323,61 @@ jobs:
           node-version: "22"
           cache: npm
 
+      # As duas suítes rodam sempre e o passo reprova se qualquer uma reprovar. Com o
+      # bash -e padrão, uma falha do vitest impedia a suíte Python de rodar (mesmo
+      # defeito corrigido no Crédito em 13/10/2026). A lista de testes reprovados vai
+      # para a issue: a causa muda de um dia para outro e a issue precisa dizer qual é.
       - name: Testes antes de publicar
         id: testes
         continue-on-error: true
         run: |
-          npm ci
-          node scripts/minify-obs.mjs
-          npx vitest run
-          python3 -m unittest discover -s pipeline/tests -t .
+          set +e
+          npm ci || exit 1
+          # Issue #116: em 18/10/2026 os testes também retiveram a publicação
+          # porque o executável do Chromium não existia. Mesma instalação do CI.
+          npx --no-install playwright install --with-deps chromium || exit 1
+          node scripts/minify-obs.mjs || exit 1
+          npx vitest run --reporter=default --reporter=json --outputFile.json=vitest-resultado.json
+          V=$?
+          python3 -m unittest discover -s pipeline/tests -t . 2>&1 | tee pipeline-testes.log
+          P=${PIPESTATUS[0]}
+          echo "vitest=$V pipeline=$P" | tee testes-codigos.txt
+          [ "$V$P" = "00" ]
 
+      # De 01/10 a 18/10/2026 a gold de energia ficou retida todos os dias sem que
+      # ninguém soubesse: este passo só emitia ::error e a execução terminava verde,
+      # sem issue. Agora a retenção abre ou comenta uma issue com os testes reprovados
+      # e a execução termina vermelha.
       - name: Reter publicação reprovada
+        id: reter
         if: steps.testes.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           git checkout -- public/energia
           git clean -fdq public/energia
-          echo "::error::testes reprovaram a gold de energia; publicação retida"
+          echo "retida=1" >> "$GITHUB_OUTPUT"
+          ULTIMA=$(python3 -c "import json;print(json.load(open('public/energia/gold/manifesto.json')).get('gerado_em') or 'data não informada')")
+          {
+            echo "Execução de $(date -u +%d/%m/%Y\ %H:%M) UTC: ${RUN_URL}"
+            echo
+            echo "A gold de energia reconstruída hoje não passou nos testes e NÃO foi publicada. O site segue"
+            echo "servindo a gold publicada, gerada em ${ULTIMA}."
+            echo
+            echo "Testes reprovados nesta execução:"
+            python3 scripts/testes_reprovados.py vitest-resultado.json testes-codigos.txt pipeline-testes.log
+          } > /tmp/energia-retida.md
+          TITULO="Setor Elétrico: testes reprovaram a gold do dia; publicação retida"
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body-file /tmp/energia-retida.md
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body-file /tmp/energia-retida.md \
+              --assignee "$GITHUB_REPOSITORY_OWNER"
+          fi
+          echo "::error::testes reprovaram a gold de energia; publicação retida (issue: $TITULO)"
 
       - name: Commit e push
         if: steps.testes.outcome == 'success'
@@ -228,3 +396,11 @@ jobs:
             echo "::error::não foi possível publicar após 4 tentativas"
             exit 1
           fi
+
+      # A retenção deixa a execução VERMELHA. A issue já foi aberta ou comentada no
+      # passo anterior.
+      - name: Sinalizar publicação retida
+        if: always() && steps.reter.outputs.retida == '1'
+        run: |
+          echo "::error::gold de energia retida pelos testes; ver a issue 'Setor Elétrico: testes reprovaram a gold do dia'"
+          exit 1

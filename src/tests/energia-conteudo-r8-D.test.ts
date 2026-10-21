@@ -155,18 +155,23 @@ describe("P067 a P070: veredito em duas camadas", () => {
   });
 
   it("os números do veredito conferem com os artefatos publicados (CSV e JSON), não com a fórmula do código", () => {
-    // P067: 415 conjuntos e 126 publicados, lidos de dados_catalogo.csv
-    expect(linhasCat.length).toBe(415);
+    // P067: conjuntos e publicados lidos de dados_catalogo.csv; o CSV tem uma linha por entrada de catalogo.json
+    expect(linhasCat.length).toBe(cat.total);
     const publicados = linhasCat.filter((l) => l[cCat.estado] === "PUBLICADO").length;
     expect(casos[0].veredito).toContain(`${linhasCat.length} conjuntos`);
     expect(casos[0].veredito).toContain(`${publicados} chegaram`);
     // P068: o maior atraso e o número de integrações com revisão, lidos de dados_conjuntos.csv
     const atrasadas = linhasConj.filter((l) => l[cConj.situacao] === "ATRASADO");
-    expect(atrasadas.length).toBe(1);
-    expect(casos[1].veredito).toContain(`${atrasadas[0][cConj.dias_atraso]} dias além do prazo`);
+    const dias = (n: number) => `${n} ${n === 1 ? "dia" : "dias"} além do prazo`;
+    if (atrasadas.length === 0) expect(casos[1].veredito).toContain("nenhuma integração estava atrasada");
+    else if (atrasadas.length === 1) expect(casos[1].veredito).toContain(`só uma integração estava atrasada`);
+    else expect(casos[1].veredito).toContain(`${atrasadas.length} integrações estavam atrasadas`);
+    if (atrasadas.length) expect(casos[1].veredito).toContain(dias(Math.max(...atrasadas.map((l) => Number(l[cConj.dias_atraso])))));
     const comRevisao = linhasConj.filter((l) => Number(l[cConj.revisoes_observacoes] || 0) > 0).length;
-    expect(casos[1].veredito).toContain(`Em ${comRevisao} integrações`);
-    expect(casos[1].veredito).toContain("não prova erro");
+    if (comRevisao) {
+      expect(casos[1].veredito).toContain(`Em ${comRevisao} ${comRevisao === 1 ? "integração" : "integrações"} a fonte revisou`);
+      expect(casos[1].veredito).toContain("não prova erro");
+    } else expect(casos[1].veredito).toContain("Nenhuma revisão de valores já publicados foi detectada.");
     expect(casos[1].veredito).toContain("sem prazo declarado não entram");
     // P069: o número de arquivos do manifesto publicado
     const arquivos = json<{ arquivos: unknown[] }>("public/energia/gold/manifesto.json").arquivos.length;
@@ -223,9 +228,13 @@ describe("O que mudou diz o que mudou", () => {
     const maior = [...linhasConj].sort((a, b) => Number(b[cConj.maior_revisao_rel_pct] || 0) - Number(a[cConj.maior_revisao_rel_pct] || 0))[0];
     const observacoes = linhasConj.reduce((s, l) => s + Number(l[cConj.revisoes_observacoes] || 0), 0);
     const t = textoMudancaSaude(resumoSaude(pub));
-    // o título do conjunto, lido do catálogo publicado em CSV (órgão e nome da linha da saúde)
-    const tituloDoMaior = linhasCat.find((l) => l[cCat.id] === `${maior[cConj.orgao].toLowerCase()}:${maior[cConj.conjunto]}`)![cCat.titulo];
-    expect(t).toContain(tituloDoMaior);
+    // o título do conjunto da linha da saúde (id família/dataset do CSV), o mesmo que a página Saúde usa em toda a lista. O
+    // catálogo traz o título do portal, que difere em 87 de 161 conjuntos (20/10/2026: "Dados de Restrição de Operação por
+    // Constrained-off de Usinas Eólicas" no portal); em 01/10/2026 o maior salto era de um conjunto com os dois iguais
+    const bruto = json<{ conjuntos: { id: string; titulo: string; orgao: string }[] }>("public/energia/gold/publicacao.json");
+    const doMaior = bruto.conjuntos.find((c) => c.id === maior[cConj.id])!;
+    expect(doMaior.orgao).toBe(maior[cConj.orgao]);
+    expect(t).toContain(`${doMaior.titulo} (${doMaior.orgao})`);
     expect(t).toContain(observacoes.toLocaleString("pt-BR"));
     expect(t).toContain("não prova erro");
     expect(entender(paginas.saude)).toContain(t);
@@ -459,7 +468,10 @@ describe("ficha de conjunto: situação dos dados com o critério", () => {
   it("cadastro sem período: o prazo parte da data de publicação da fonte, que a ficha diz", () => {
     const e = entender(fichas["aneel-pautas-atas-diretoria"]);
     expect(e).toContain("A lista não traz um período de referência.");
-    expect(e).toContain("O prazo parte da data da última publicação informada pela fonte (25/09/2026), mais um período semanal e 7 dias de tolerância: 09/10/2026.");
+    // as duas datas vêm do JSON publicado (25/09 e 09/10/2026 na publicação de 01/10/2026)
+    const c = conj("aneel_pautas_atas_diretoria");
+    expect(c.atualidade.base).toBe("publicacao_da_fonte");
+    expect(e).toContain(`O prazo parte da data da última publicação informada pela fonte (${carimbo(c.capturas.ultima_publicacao_fonte!).slice(0, 10)}), mais um período semanal e 7 dias de tolerância: ${dmy(c.atualidade.prazo_proximo!)}.`);
   });
 
   it("sem prazo declarado: a consequência para o leitor e a referência registrada (POF, dados de 2017-2018)", () => {
@@ -495,12 +507,14 @@ describe("ficha de conjunto: situação dos dados com o critério", () => {
   it("data de referência: período já publicado antes de terminar (CCEE), referência única (POF) e cadastro", () => {
     const e = entender(fichas["ccee-lista-agente-associado"]);
     const c = json<{ conjuntos: { id: string; capturas: { ultima_publicacao_fonte: string; ultima: string } }[] }>("public/energia/gold/publicacao.json").conjuntos.find((x) => x.id.endsWith("/ccee_lista_agente_associado"))!;
-    expect(e).toContain(`último período disponível 09/2026. Esse período ainda não tinha terminado na última captura (${carimbo(c.capturas.ultima).slice(0, 10)}): a fonte já o havia publicado em ${carimbo(c.capturas.ultima_publicacao_fonte).slice(0, 10)}.`);
+    // o último período é o do JSON publicado (09/2026 em 01/10/2026, 10/2026 em 20/10/2026), mês ainda em curso na captura
+    const ult = conj("ccee_lista_agente_associado").atualidade.ultimo_periodo!;
+    expect(e).toContain(`último período disponível ${ult.split("-").reverse().join("/")}. Esse período ainda não tinha terminado na última captura (${carimbo(c.capturas.ultima).slice(0, 10)}): a fonte já o havia publicado em ${carimbo(c.capturas.ultima_publicacao_fonte).slice(0, 10)}.`);
     expect(entender(fichas["ibge-pof-6715"])).toContain("uma única referência, 2017-2018: o conjunto não é uma série no tempo");
     expect(entender(fichas["senado-leis-feriados"])).toContain("sem período de referência: a lista não traz um período a que se refira");
     expect(fraseReferencia(undefined, true)).toBe("sem período registrado para este conjunto");
     // diário, com a captura depois do fim do período: sem a frase de período em curso
-    expect(entender(fichas["ons-ena-diario-por-bacia"])).toContain("último período disponível 29/09/2026");
+    expect(entender(fichas["ons-ena-diario-por-bacia"])).toContain(`último período disponível ${dmy(conj("ons_ena_bacia_di").atualidade.ultimo_periodo!)}`);
     expect(entender(fichas["ons-ena-diario-por-bacia"])).not.toContain("ainda não tinha terminado");
   });
 });
@@ -612,7 +626,7 @@ describe("ficha de conjunto: licença, página oficial, formatos e arquivos", ()
 
 /* ---------------------------------------------------------------- conciliações */
 
-describe("conciliação 1: 415 conjuntos de 18 órgãos no catálogo e 151 integrações de 13 órgãos no rodapé", () => {
+describe("conciliação 1: conjuntos e órgãos do catálogo contra integrações e órgãos do rodapé", () => {
   const conc = conciliarCatalogoEIntegracoes(cat, pub);
 
   it("as contagens do catálogo e da saúde batem com dados_catalogo.csv e dados_conjuntos.csv", () => {
@@ -644,25 +658,29 @@ describe("conciliação 1: 415 conjuntos de 18 órgãos no catálogo e 151 integ
     for (const o of conc.orgaosSoNoCatalogo) expect(t).toContain(o);
     expect(entender(paginas.catalogo)).toContain(t);
     expect(entender(paginas.saude)).toContain(t);
-    expect(conc.conjuntos).toBe(415);
-    expect(conc.orgaos).toBe(18);
-    expect(conc.integracoes).toBe(151);
-    expect(conc.orgaosComIntegracao).toBe(13);
+    // as quatro contagens relidas das golds (outro artefato que os CSV do teste anterior)
+    expect(conc.conjuntos).toBe(cat.total);
+    expect(conc.orgaos).toBe(new Set(cat.entradas.map((e) => e.orgao)).size);
+    expect(conc.integracoes).toBe(pub.conjuntos.length);
+    expect(conc.orgaosComIntegracao).toBe(new Set(pub.conjuntos.map((c) => c.orgao)).size);
   });
 
   it("a Saúde chama de integração o que conta (cartões e gráfico)", () => {
     const t = entender(paginas.saude);
+    const n = linhasConj.length;
     expect(t).toContain("Integrações em dia");
-    expect(t).toContain("de 151 integrações");
-    expect(t).not.toMatch(/de 151 integrados|conjuntos em dia/i);
+    expect(t).toContain(`de ${n} integrações`);
+    expect(t).not.toMatch(new RegExp(`de ${n} integrados|conjuntos em dia`, "i"));
   });
 
   it("o texto que o rodapé precisaria: integrações no lugar de conjuntos, com a ponte para o catálogo", () => {
     const orgaos = Array.from(new Set(linhasConj.map((l) => l[cConj.orgao])));
     const r = textoRodapeDasFontes(conc, orgaos);
-    expect(r.resumo).toBe("13 órgãos, 151 integrações");
-    expect(r.detalhe).toContain("em 151 integrações de conjuntos (132 dos 415 conjuntos do catálogo)");
-    expect(r.detalhe).toContain("O catálogo traz 18 órgãos.");
+    const comIntegracao = linhasCat.filter((l) => l[cCat.integracoes]).length;
+    const orgaosCat = new Set(linhasCat.map((l) => l[cCat.orgao])).size;
+    expect(r.resumo).toBe(`${orgaos.length} órgãos, ${linhasConj.length} integrações`);
+    expect(r.detalhe).toContain(`em ${linhasConj.length} integrações de conjuntos (${comIntegracao} dos ${linhasCat.length} conjuntos do catálogo)`);
+    expect(r.detalhe).toContain(`O catálogo traz ${orgaosCat} órgãos.`);
   });
 });
 
@@ -716,11 +734,17 @@ describe("conciliação 3: a coleta autorizada em 06/10/2026 e a data de referê
     const e = entender(paginas.metodologia);
     expect(e).toContain(`coleta autorizada pelo responsável em ${dmy(decisao)}`);
     expect(e).toContain(`${dmy(decisao)} é a data da decisão do responsável, um registro de autorização, e não uma data dos dados; a data de referência dos dados do catálogo e da saúde é ${dmy(publicacao.referencia.hoje)}.`);
+    // captura da CCEE posterior ao processamento da publicação: havia na de 01/10/2026 (coleta autorizada em 06/10); numa
+    // publicação processada depois das capturas não há, e a frase não aparece (o caso com captura posterior também é
+    // conferido com dados sintéticos no teste seguinte)
     const depois = mercado.acesso_ccee.capturas.filter((c) => c.ultima_captura > publicacao.gerado_em);
-    expect(depois.length).toBeGreaterThan(0);
-    expect(e).toContain(`${depois.length} fontes da CCEE (conjuntos abertos e InfoMercado) foram capturadas depois dele`);
-    expect(e).toContain(`a última captura é de ${carimbo(depois.map((c) => c.ultima_captura).sort().at(-1))}`);
-    expect(e).toContain("A página Mercado já usa essas capturas; as contagens do catálogo e da saúde só as incluem na próxima atualização.");
+    if (depois.length) {
+      expect(e).toContain(`${depois.length} fontes da CCEE (conjuntos abertos e InfoMercado) foram capturadas depois dele`);
+      expect(e).toContain(`a última captura é de ${carimbo(depois.map((c) => c.ultima_captura).sort().at(-1))}`);
+      expect(e).toContain("A página Mercado já usa essas capturas; as contagens do catálogo e da saúde só as incluem na próxima atualização.");
+    } else {
+      expect(e).not.toContain("foram capturadas depois dele");
+    }
   });
 
   it("a frase de captura posterior só aparece quando há captura posterior ao processamento", () => {
@@ -730,6 +754,12 @@ describe("conciliação 3: a coleta autorizada em 06/10/2026 e a data de referê
     expect(t).toContain("06/10/2026 é a data da decisão do responsável");
     expect(t).not.toContain("posterior ao processamento");
     expect(textoDatasDaColetaCcee({ decididaEm: null, ultimaCaptura: null, conjuntosCapturadosDepois: 0 }, "2026-10-01", "2026-10-01T11:22:00Z")).toBe("");
+    // com captura posterior (o caso da publicação de 01/10/2026): a frase diz quantas e a última
+    const d = resumirAcessoCcee({ decisao: { decidida_em: "2026-10-06" }, capturas: [{ ultima_captura: "2026-10-06T12:00:00Z" }, { ultima_captura: "2026-10-07T09:30:00Z" }] }, "2026-10-01T11:22:00Z");
+    expect(d.conjuntosCapturadosDepois).toBe(2);
+    const td = textoDatasDaColetaCcee(d, "2026-10-01", "2026-10-01T11:22:00Z");
+    expect(td).toContain("2 fontes da CCEE (conjuntos abertos e InfoMercado) foram capturadas depois dele");
+    expect(td).toContain(`a última captura é de ${carimbo("2026-10-07T09:30:00Z")}`);
   });
 
   it("a limitação do início do registro junta a primeira captura, a reconstrução do histórico e a primeira revisão, lidas do calendário e da gold", () => {

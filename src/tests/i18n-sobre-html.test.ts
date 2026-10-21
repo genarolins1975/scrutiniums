@@ -158,7 +158,9 @@ function documentosDoPar(ctx: TestContext, par: ParDeIdioma) {
 
 // Não filtrar por existência de HTML ou acesso público: toda declaração precisa de prova.
 // O Setor Elétrico tem prova própria, mais exigente e com as páginas de parâmetro: energia-i18n-html.test.ts.
-const PARES_FORA_DO_SETOR = PARES_DE_IDIOMA.filter((par) => !par.pt.startsWith("/setor-eletrico"));
+// A versão aperitivo da Conta de luz é do Setor Elétrico e tem head do endereço público (o caminho interno nunca é canonical):
+// a prova dela é energia-conta-aperitivo.test.ts.
+const PARES_FORA_DO_SETOR = PARES_DE_IDIOMA.filter((par) => !par.pt.startsWith("/setor-eletrico") && par.pt !== "/aperitivo/conta-de-luz");
 describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", (par) => {
   beforeAll(async () => {
     if (!exigirBuild()) return;
@@ -322,7 +324,7 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         trecho.value = valor;
       };
       const adulteracoes: [string, (doc: No) => void][] = [
-        ["rótulo em português", (doc) => substituirTexto(rotulo(doc), "Observatórios de dados públicos")],
+        ["rótulo em português", (doc) => substituirTexto(rotulo(doc), "As coleções de dados")],
         ["chave aparente no rótulo", (doc) => substituirTexto(rotulo(doc), "home.hero.rotulo")],
         ["benefício trocado por outro", (doc) => substituirTexto(itens(doc)[0], "Free, with no subscription")],
         ["texto de benefício omitido", (doc) => substituirTexto(itens(doc)[1], "")],
@@ -369,11 +371,11 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         no.value = no.value.replace(antes, depois);
       };
       const adulteracoes: [string, (doc: No) => void][] = [
-        ["quantidade por extenso divergente do registro", (doc) => substituirTrecho(doc, "Seven observatories", "Eight observatories")],
-        ["quantidade numérica divergente do registro", (doc) => substituirTrecho(doc, "Seven observatories", "8 observatories")],
+        ["quantidade por extenso divergente do registro", (doc) => substituirTrecho(doc, "Six observatories", "Nine observatories")],
+        ["quantidade numérica divergente do registro", (doc) => substituirTrecho(doc, "Six observatories", "9 observatories")],
         ["última frase omitida", (doc) => substituirTrecho(doc,
           " Each dashboard identifies the data source, the reference period and what the data cannot establish.", "")],
-        ["placeholder não resolvido", (doc) => substituirTrecho(doc, "Seven observatories", "{observatorios}")],
+        ["placeholder não resolvido", (doc) => substituirTrecho(doc, "Six observatories", "{observatorios}")],
         ["classe da introdução alterada", (doc) => {
           const classe = introducao(doc).attrs.find((a) => a.name === "class");
           if (!classe) throw new Error("Introdução sem classes");
@@ -384,7 +386,8 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         ["introdução movida antes do título", (doc) => {
           const paragrafo = introducao(doc), pai = paragrafo.parentNode;
           if (!pai || !("childNodes" in pai)) throw new Error("Introdução sem pai");
-          const titulo = tag(pai, "h1");
+          // o título do índice das coleções é H2: o H1 da página é a abertura por perguntas
+          const titulo = tag(pai, "h2");
           pai.childNodes = pai.childNodes.filter((no) => no !== paragrafo);
           const posicao = pai.childNodes.indexOf(titulo);
           expect(posicao).toBeGreaterThanOrEqual(0);
@@ -459,7 +462,7 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         ["cartão removido", (doc) => {
           const lista = tag(indice(doc), "ol");
           const itens = filhos(lista).filter((e): e is Elemento => "tagName" in e);
-          expect(itens).toHaveLength(7);
+          expect(itens).toHaveLength(8);
           lista.childNodes = lista.childNodes.filter((no) => no !== itens[0]);
         }],
         ["cartões reordenados", (doc) => {
@@ -484,11 +487,13 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         ["nome com elemento adicional", (doc) => cartao(doc).nome.childNodes.push(...parseFragment("<span>Additional text</span>").childNodes)],
         ["texto extra no índice", (doc) => indice(doc).childNodes.push(...parseFragment("<p>Additional sentence.</p>").childNodes)],
         ["ressalva omitida", (doc) => {
+          // desde a home recolhida (banca de 19/10/2026) a ressalva fica dentro do details do índice
           const nav = indice(doc), ressalva = tag(nav, "p");
-          nav.childNodes = nav.childNodes.filter((no) => no !== ressalva);
+          const pai = [nav, ...elementos(nav)].find((e) => e.childNodes.includes(ressalva))!;
+          pai.childNodes = pai.childNodes.filter((no) => no !== ressalva);
         }],
         ["ressalva alterada", (doc) => substituirTexto(tag(indice(doc), "p"), () => "The illustrations represent specific places.")],
-        ["nome acessível português", (doc) => atributo(indice(doc), "aria-label", "Índice dos observatórios")],
+        ["nome acessível português", (doc) => atributo(indice(doc), "aria-label", "Índice das coleções")],
         ["índice escondido", (doc) => atributo(indice(doc), "hidden", "")],
         ["nome escondido", (doc) => atributo(cartao(doc).nome, "hidden", "")],
         ["quantidade escondida", (doc) => atributo(cartao(doc).valor, "hidden", "")],

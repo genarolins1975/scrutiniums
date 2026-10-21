@@ -1,7 +1,7 @@
 {
  "cod": "C0050816",
  "nome": "SANTINVEST",
- "sr": "S4",
+ "sr": null,
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "conglomerado prudencial",
@@ -147,5 +147,5 @@
    "201709": 82.2182629711418
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { Histograma } from "@/components/energia/Histograma";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { FiguraJmp, FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
+import { NiveisTratamento } from "@/components/saneamento/Ilustracoes";
 import { montaHistograma } from "@/lib/energia/distribuicao";
 import { acimaDaCapacidade, agregado, agregados, etes, meta, municipios } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
@@ -105,6 +106,16 @@ export default function Pagina() {
               serviço delegado sem atendimento, que entram no denominador da consolidação oficial.
             </>
           }
+        />
+        <NestaPagina
+          itens={[
+            { id: "destino", rotulo: "Destino do esgoto" },
+            { id: "cadeia", rotulo: "Do consumo ao tratamento" },
+            { id: "mundo", rotulo: "No mundo" },
+            { id: "atlas", rotulo: "Atlas municipal" },
+            { id: "factiveis", rotulo: "Ligações possíveis" },
+            { id: "estacoes", rotulo: "Estações de tratamento" },
+          ]}
         />
 
         <Numeros
@@ -274,18 +285,10 @@ export default function Pagina() {
               },
             ]}
           />
-          <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-2">
-            <GraficoBarras
-              titulo="Estações em operação por nível de tratamento informado"
-              dados={porNivel}
-              chaveCategoria="id"
-              chaveRotulo="rotulo"
-              series={[{ id: "v", rotulo: "estações", cor: "var(--cor-obee)" }]}
-              unidade="estações"
-              casas={0}
-              orientacao="horizontal"
-              rotulosValor
-            />
+          <div className="mt-10">
+            <NiveisTratamento contagem={Object.fromEntries(porNivel.map((n) => [n.id, n.v]))} emOperacao={operando.length} semNivel={semNivel} />
+          </div>
+          <div className="mt-10 max-w-3xl">
             <GraficoBarras
               titulo="Estações em operação por UF"
               dados={etesUf}

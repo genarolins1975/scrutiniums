@@ -9,7 +9,15 @@ export async function generateMetadata(_props: { params?: Record<string, string>
   return metadadosPortuguesComAlternativas("/entrar/sms", metadadosOriginais, await parent);
 }
 
-/** Entrada alternativa por código SMS, também usada por quem esqueceu a senha. */
-export default async function EntrarSmsPage() {
-  return PaginaEntrarSms({ idioma: "pt" });
+/**
+ * Entrada alternativa por código SMS. Com ?recuperar=1 (link "Esqueci minha
+ * senha" de /entrar), o código leva direto à definição de nova senha em
+ * /app/conta, sem pedir a atual.
+ */
+export default async function EntrarSmsPage({
+  searchParams,
+}: {
+  searchParams?: { recuperar?: string };
+}) {
+  return PaginaEntrarSms({ idioma: "pt", searchParams });
 }

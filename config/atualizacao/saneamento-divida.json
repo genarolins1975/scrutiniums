@@ -1,0 +1,46 @@
+{
+  "dominio": "saneamento-divida",
+  "titulo": "Saneamento, dívida e alavancagem dos prestadores (capítulo 7.1)",
+  "descricao": "Recoleta trimestral das demonstrações financeiras padronizadas da CVM (DFP anual desde 2010 e ITR trimestral desde 2015) e do cadastro de companhias abertas, filtradas para as prestadoras de água e esgoto declaradas no SINISA 2024 e as holdings de grupo que as controlam. A gold só é publicada se cada demonstração usada fechar (ativo igual a passivo, passivo igual a circulante mais não circulante mais patrimônio líquido), se a linha de empréstimos e financiamentos somar as subcontas publicadas, se a escala declarada for plausível, se a depreciação tiver o sinal certo, se as companhias esperadas estiverem na DFP mais recente e se nenhum indicador ficar ausente sem motivo. Inconsistências já conferidas da própria companhia saem da série como ausência com o motivo.",
+  "codigo": [
+    "pipeline/saneamento_divida/*.py",
+    "pipeline/tests/test_saneamento_divida.py",
+    "src/lib/saneamento/divida.ts",
+    "src/components/saneamento/Divida.tsx",
+    "src/app/saneamento/prestadores/divida",
+    "src/app/saneamento/page.tsx",
+    "src/app/aperitivo/saneamento",
+    "src/components/acesso/ConviteAperitivo.tsx",
+    "src/lib/rotasPublicas.ts",
+    "src/tests/saneamento-divida.test.ts",
+    "src/tests/saneamento-entrada.test.ts",
+    "src/tests/aperitivo.test.ts"
+  ],
+  "reconstruir": [["python3", "-m", "pipeline.saneamento_divida.run"]],
+  "timeout_reconstruir_min": 5,
+  "saidas": ["public/saneamento/divida"],
+  "sinal_de_mudanca": [
+    {"arquivo": "public/saneamento/divida/divida.json", "json_chave": "hash_dados"}
+  ],
+  "testes": [
+    {
+      "nome": "pipeline da dívida dos prestadores (Python): validações que retêm a publicação e conferência com as contas publicadas",
+      "comando": ["python3", "-m", "unittest", "pipeline.tests.test_saneamento_divida"],
+      "timeout_min": 10
+    },
+    {
+      "nome": "contratos da página do capítulo 7.1, da entrada e do aperitivo do Saneamento (vitest)",
+      "comando": ["npx", "vitest", "run", "--testTimeout=60000", "src/tests/saneamento-divida.test.ts", "src/tests/saneamento-entrada.test.ts", "src/tests/aperitivo.test.ts"],
+      "timeout_min": 15
+    }
+  ],
+  "grupos": [
+    {
+      "id": "cvm-dfp-itr",
+      "nome": "CVM, dados abertos: cadastro de companhias abertas, DFP (anual) e ITR (trimestral)",
+      "coleta": [["python3", "-m", "pipeline.saneamento_divida.run", "--coletar", "--so-coleta"]],
+      "caminhos": ["pipeline/saneamento_divida/seed"],
+      "timeout_min": 45
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+ "capturado_em": "2026-10-20T02:43:44Z",
+ "tabela": "7060",
+ "originais": {
+  "https://servicodados.ibge.gov.br/api/v3/agregados/7060/metadados": {
+   "status": 200,
+   "bytes": 32987,
+   "sha256": "902ed456885cc95a52bd6e4d824de7b4d6126d5209dbde1ae5d3f4ffd2f4c81a"
+  },
+  "https://servicodados.ibge.gov.br/api/v3/agregados/7060/periodos": {
+   "status": 200,
+   "bytes": 7122,
+   "sha256": "dad0536eb5afafba37a0e696ce69d31da5e12fa9fe4fa4a8b71038f12e54c450"
+  },
+  "https://apisidra.ibge.gov.br/values/t/7060/n1/all/n7/all/n6/all/v/63,69/p/all/c315/7169,7170,7445,7486,7558,7625,7660,7712,7766,7786": {
+   "status": 200,
+   "bytes": 9100471,
+   "sha256": "06fccc3bb2eba274b8f66b5915d3b4ca49823e94e778f21e22be4ccf463ff044"
+  },
+  "https://apisidra.ibge.gov.br/values/t/7060/n1/all/n7/all/n6/all/v/2265,66/p/all/c315/7169,7170,7445,7486,7558,7625,7660,7712,7766,7786": {
+   "status": 200,
+   "bytes": 9141658,
+   "sha256": "ff4f68c0aefec524a63882d091d64f19434d793a22615fcfe5540d02edea197e"
+  },
+  "https://apisidra.ibge.gov.br/values/t/7060/n1/all/n7/all/n6/all/v/2265,66/p/202510,202609/c315/allxt": {
+   "status": 200,
+   "bytes": 10461273,
+   "sha256": "2c8eb271371e6509a0900aae4a8ae27d87170c211d74f7c4c18087ed1280c807"
+  },
+  "https://servicodados.ibge.gov.br/api/v3/calendario/9256?qtd=20&de=10-20-2026&ate=05-08-2027": {
+   "status": 200,
+   "bytes": 1551,
+   "sha256": "f44832780e9dd220e0b80255c11080efb9a0c345aaddca2a16cc37178f872267"
+  }
+ }
+}

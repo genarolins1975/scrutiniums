@@ -1,0 +1,215 @@
+/*
+ * Painel Educação nos municípios e a sua versão aperitivo (Observatório dos Serviços Públicos, acento obee). Prefixo edm-.
+ * Decisões de desenho (skills emil-design-eng, impeccable e design-taste-frontend, subordinadas à observatorio-layout):
+ * - cor só no dado: o acento marca a rede do município (a linha, a coluna da distribuição, o número do Ideb); estado e
+ *   Brasil vão em tinta neutra; a página é papel e carvão;
+ * - números como tipografia (serifada, algarismos tabulares e alinhados), sem cartão com ícone nem número gigante;
+ * - separação por espaço e por um degrau de tom; filete de 1px só em tabela, na faixa de números e no extrato;
+ * - nenhum rótulo pequeno acima de título: a navegação fica numa linha de trilha, e cada seção abre com a pergunta;
+ * - movimento só como resposta ao toque (scale 0.97 em 140 ms, curva de saída forte), nada entra animado, e o
+ *   movimento reduzido tira até isso.
+ */
+.edm-raiz { --edm-acento: var(--cor-obee); --edm-acento-escuro: var(--cor-obee-dark); --edm-fundo-acento: var(--cor-obee-fundo); --edm-ref: var(--cor-carvao-muted); --edm-br: var(--cor-mineral); --edm-neutro: #8b8d89; --edm-saida: cubic-bezier(0.23, 1, 0.32, 1); background: var(--cor-papel); color: var(--cor-carvao); }
+.edm-raiz ::selection { background: var(--cor-obee); color: #fff; }
+.edm-raiz :focus-visible { outline: 3px solid var(--cor-obee); outline-offset: 3px; }
+.edm-raiz h1, .edm-raiz h2, .edm-raiz h3 { font-family: var(--font-serif), Georgia, serif; font-weight: 400; text-wrap: balance; overflow-wrap: anywhere; }
+.edm-raiz h1 { font-size: clamp(30px, 3.6vw, 44px); line-height: 1.1; letter-spacing: -0.012em; max-width: 30ch; margin: 0; }
+.edm-raiz h2 { font-size: clamp(24px, 2.6vw, 30px); line-height: 1.2; }
+.edm-raiz h3 { font-size: 21px; line-height: 1.3; }
+.edm-main { padding-top: 28px; padding-bottom: 64px; }
+.edm-pular { position: absolute; left: 16px; top: -100px; background: var(--cor-superficie); padding: 12px; z-index: 99; }
+.edm-pular:focus { top: 12px; }
+
+/* trilha: onde a página está, em vez de rótulo acima do título */
+.edm-trilha { display: flex; flex-wrap: wrap; align-items: center; gap: 0 16px; font-size: 14px; color: var(--cor-carvao-muted); margin-bottom: 12px; }
+.edm-trilha > span { display: inline-flex; align-items: center; min-height: 44px; }
+.edm-trilha a { color: var(--edm-acento-escuro); text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; min-height: 44px; }
+
+.edm-cabeca .edm-lead { margin-top: 16px; font-size: 18px; line-height: 1.6; max-width: 64ch; }
+.edm-achado { margin-top: 16px; max-width: 72ch; font-size: 16px; line-height: 1.65; color: var(--cor-carvao-muted); }
+.edm-achado strong { color: var(--cor-carvao); font-weight: 600; }
+
+/* faixa de números: tipo, não cartões; quatro colunas que viram duas e uma */
+.edm-numeros { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--cor-linha); margin: 32px 0 8px; }
+.edm-numeros > div { padding: 20px 20px 22px; display: grid; align-content: start; gap: 6px; border-right: 1px solid var(--cor-linha); min-width: 0; }
+.edm-numeros > div:first-child { padding-left: 0; }
+.edm-numeros > div:last-child { border-right: 0; }
+.edm-numeros dt { font-size: 14px; line-height: 1.4; }
+.edm-numeros dd { margin: 0; }
+.edm-valor { font-family: var(--font-serif), Georgia, serif; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.15; font-variant-numeric: tabular-nums lining-nums; letter-spacing: -0.01em; }
+.edm-unidade { font-family: var(--font-sans), system-ui, sans-serif; font-size: 14px; color: var(--cor-carvao-muted); letter-spacing: 0; margin-left: 6px; }
+.edm-prova { font-size: 13px; line-height: 1.5; color: var(--cor-carvao-muted); }
+.edm-numeros > div.edm-lider .edm-valor { color: var(--edm-acento-escuro); }
+@media (max-width: 1000px) { .edm-numeros { grid-template-columns: repeat(2, minmax(0, 1fr)); } .edm-numeros > div:nth-child(2) { border-right: 0; } .edm-numeros > div:nth-child(-n+2) { border-bottom: 1px solid var(--cor-linha); } .edm-numeros > div:nth-child(3) { padding-left: 0; } }
+@media (max-width: 560px) { .edm-numeros { grid-template-columns: 1fr; } .edm-numeros > div, .edm-numeros > div:nth-child(3) { padding: 16px 0; border-right: 0; border-bottom: 1px solid var(--cor-linha); } .edm-numeros > div:last-child { border-bottom: 0; } }
+
+/* seções por pergunta */
+.edm-secao { margin-top: 80px; scroll-margin-top: 24px; }
+.edm-secao > h2 { max-width: 40ch; }
+.edm-intro { margin-top: 12px; max-width: 70ch; font-size: 16px; line-height: 1.65; }
+.edm-sub { margin-top: 48px; }
+.edm-sub > h3 + p { margin-top: 8px; max-width: 70ch; font-size: 15px; line-height: 1.6; color: var(--cor-carvao-muted); }
+@media (max-width: 760px) { .edm-secao { margin-top: 60px; } .edm-sub { margin-top: 40px; } }
+
+.edm-busca { margin-top: 24px; max-width: 760px; }
+
+/* o extrato do município: a rede, o ano, a escala e a fonte junto do número */
+.edm-extrato { margin-top: 28px; background: var(--cor-superficie); border: 1px solid var(--cor-linha); padding: 28px 32px 24px; max-width: 1000px; }
+.edm-extrato > header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding-bottom: 16px; border-bottom: 1px solid var(--cor-linha); }
+.edm-extrato h2, .edm-extrato h3 { font-size: clamp(26px, 3vw, 34px); line-height: 1.15; margin: 0; }
+.edm-extrato .edm-competencia { font-size: 14px; color: var(--cor-carvao-muted); }
+.edm-extrato dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; margin: 22px 0 0; }
+.edm-extrato dt { font-size: 15px; font-weight: 500; }
+.edm-extrato dt small { display: block; font-weight: 400; font-size: 13px; color: var(--cor-carvao-muted); margin-top: 2px; }
+.edm-extrato dd { margin: 6px 0 0; }
+.edm-extrato .edm-valor { font-size: clamp(36px, 4.4vw, 48px); color: var(--edm-acento-escuro); }
+.edm-extrato .edm-valor .edm-unidade { color: var(--cor-carvao-muted); }
+.edm-extrato .edm-detalhe { margin-top: 6px; font-size: 13px; line-height: 1.55; color: var(--cor-carvao-muted); }
+.edm-extrato .edm-sem { font-size: 15px; line-height: 1.55; color: var(--cor-carvao); max-width: 46ch; }
+.edm-extrato .edm-sem strong { display: block; font-family: var(--font-serif), Georgia, serif; font-weight: 400; font-size: 24px; color: var(--cor-carvao-muted); margin-bottom: 4px; }
+@media (max-width: 640px) { .edm-extrato { padding: 20px 18px 18px; } .edm-extrato dl { grid-template-columns: 1fr; gap: 20px; } }
+
+/* como ler: degrau de tom, sem faixa colorida lateral */
+.edm-ler { margin-top: 20px; background: var(--cor-marfim); padding: 16px 20px; max-width: 1000px; font-size: 14px; line-height: 1.65; }
+.edm-ler p + p { margin-top: 6px; }
+.edm-ler strong { font-weight: 600; }
+.edm-fonte { margin-top: 14px; max-width: 1000px; font-size: 13px; line-height: 1.6; color: var(--cor-carvao-muted); }
+.edm-fonte a, .edm-link { color: var(--edm-acento-escuro); text-decoration: underline; text-underline-offset: 3px; }
+.edm-aviso { margin-top: 20px; padding: 12px 16px; background: var(--cor-marfim); font-size: 14px; line-height: 1.6; max-width: 72ch; }
+
+/* aprofundamento nas capitais: uma linha de ação, não um cartão */
+.edm-capital { margin-top: 20px; max-width: 1000px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 15px; line-height: 1.55; }
+.edm-capital a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--edm-acento-escuro); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+
+/* tabelas: regras e alinhamento, sem zebra, cabeçalho cinza em caixa de frase, números à direita */
+.edm-tabela-rolagem { overflow-x: auto; margin-top: 8px; max-width: 100%; }
+.edm-tabela-rolagem:focus-visible { outline: 3px solid var(--cor-obee); outline-offset: 2px; }
+.edm-legenda-tabela { margin-top: 20px; max-width: 80ch; font-size: 14px; line-height: 1.5; color: var(--cor-carvao-muted); }
+.edm-tabela { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums lining-nums; }
+.edm-tabela th, .edm-tabela td { padding: 11px 10px; border-bottom: 1px solid var(--cor-grade); text-align: right; vertical-align: baseline; white-space: nowrap; }
+.edm-tabela thead th { font-weight: 400; font-size: 13px; color: var(--cor-carvao-muted); border-bottom: 1px solid var(--cor-linha); vertical-align: bottom; white-space: normal; }
+.edm-tabela th:first-child, .edm-tabela td:first-child { text-align: left; padding-left: 0; white-space: normal; }
+.edm-tabela tbody th { font-weight: 400; }
+.edm-tabela .edm-forte > * { font-weight: 600; }
+.edm-tabela tr.edm-escolhido > * { background: var(--edm-fundo-acento); }
+.edm-tabela .edm-vazio { color: var(--cor-mineral); }
+.edm-tabela small { display: block; font-size: 12px; color: var(--cor-carvao-muted); white-space: normal; }
+.edm-tabela-larga { min-width: 720px; }
+@media (max-width: 760px) {
+  .edm-legenda-tabela::after { content: " Deslize a tabela para o lado para ver todas as colunas."; }
+  .edm-tabela { font-size: 14px; }
+  .edm-tabela th, .edm-tabela td { padding: 10px 8px; }
+  .edm-tabela th:first-child, .edm-tabela td:first-child { position: sticky; left: 0; z-index: 1; background: var(--cor-papel); box-shadow: 1px 0 0 var(--cor-grade); padding-right: 10px; max-width: 40vw; }
+  .edm-tabela tr.edm-escolhido > :first-child { background: var(--edm-fundo-acento); }
+}
+
+/* faixas por porte: a barra vai do primeiro ao terceiro quartil, o traço é a mediana, o ponto é o município */
+.edm-faixas { margin-top: 16px; display: grid; gap: 2px; max-width: 1100px; }
+.edm-faixa { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 13rem; align-items: center; gap: 20px; min-height: 44px; font-size: 14px; }
+.edm-faixa-trilho { position: relative; height: 22px; }
+.edm-faixa-trilho::before { content: ""; position: absolute; left: 0; right: 0; top: 10px; height: 2px; background: var(--cor-grade); }
+.edm-faixa-trilho > u { position: absolute; top: 4px; height: 14px; width: 1px; background: var(--cor-grade); }
+.edm-faixa-trilho > i { position: absolute; top: 4px; height: 14px; background: var(--edm-neutro); }
+.edm-faixa-trilho > b { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--cor-carvao); }
+.edm-faixa-trilho > em { position: absolute; top: 3px; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: var(--edm-acento); box-shadow: 0 0 0 2px var(--cor-papel); }
+.edm-faixa > span:last-child { text-align: right; font-variant-numeric: tabular-nums; color: var(--cor-carvao); }
+.edm-faixa > span:last-child small { display: block; font-size: 12px; color: var(--cor-carvao-muted); }
+.edm-faixa.edm-escolhido > span:first-child { font-weight: 600; }
+.edm-faixa.edm-escolhido .edm-faixa-trilho > i { background: var(--edm-fundo-acento); box-shadow: inset 0 0 0 1px var(--edm-acento); }
+.edm-escala { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 13rem; gap: 20px; font-size: 12px; color: var(--cor-carvao-muted); height: 18px; }
+.edm-escala-marcas { position: relative; font-variant-numeric: tabular-nums; }
+.edm-escala-marcas > span { position: absolute; top: 0; transform: translateX(-50%); }
+.edm-chave { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 12px; font-size: 13px; color: var(--cor-carvao-muted); }
+.edm-chave i { display: inline-block; vertical-align: -2px; margin-right: 6px; }
+.edm-chave .edm-chave-faixa { width: 22px; height: 12px; background: var(--edm-neutro); }
+.edm-chave .edm-chave-mediana { width: 2px; height: 14px; background: var(--cor-carvao); }
+.edm-chave .edm-chave-ponto { width: 12px; height: 12px; border-radius: 50%; background: var(--edm-acento); }
+@media (max-width: 760px) {
+  .edm-faixa { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "rotulo numero" "trilho trilho"; gap: 2px 12px; padding-block: 6px; }
+  .edm-faixa > span:first-child { grid-area: rotulo; }
+  .edm-faixa > span:last-child { grid-area: numero; }
+  .edm-faixa-trilho { grid-area: trilho; }
+  .edm-escala { grid-template-columns: minmax(0, 1fr); margin-inline: 0; }
+  .edm-escala > span:first-child, .edm-escala > span:last-child { display: none; }
+}
+
+/* gráficos desenhados no servidor */
+.edm-figura { margin-top: 24px; }
+.edm-figura figcaption { margin-top: 8px; font-size: 13px; line-height: 1.6; color: var(--cor-carvao-muted); max-width: 80ch; }
+.edm-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.edm-svg text { font-family: var(--font-sans), system-ui, sans-serif; font-size: 14px; fill: var(--cor-carvao-muted); font-variant-numeric: tabular-nums; }
+.edm-svg .edm-rotulo-forte { fill: var(--edm-acento-escuro); font-weight: 600; }
+.edm-svg .edm-rotulo { fill: var(--cor-carvao); }
+.edm-svg .edm-grade { stroke: var(--cor-grade); stroke-width: 1; }
+.edm-svg .edm-base { stroke: var(--cor-carvao-muted); stroke-width: 1; }
+.edm-svg .edm-linha { fill: none; stroke: var(--edm-acento); stroke-width: 2.5; stroke-linejoin: round; }
+.edm-svg .edm-linha-ref { fill: none; stroke: var(--edm-ref); stroke-width: 1.75; stroke-linejoin: round; }
+.edm-svg .edm-linha-br { fill: none; stroke: var(--edm-br); stroke-width: 1.75; stroke-dasharray: 6 4; stroke-linejoin: round; }
+.edm-svg .edm-linha-ponto { fill: var(--edm-acento); }
+.edm-svg .edm-linha-ref-ponto { fill: var(--edm-ref); }
+.edm-svg .edm-linha-br-ponto { fill: var(--edm-br); }
+.edm-svg .edm-meta { fill: var(--cor-papel); stroke: var(--edm-acento-escuro); stroke-width: 1.5; }
+.edm-svg .edm-nota-linha { stroke: var(--cor-mineral); stroke-width: 1; stroke-dasharray: 3 3; }
+.edm-svg .edm-nota-texto { font-size: 12px; fill: var(--cor-carvao-muted); }
+.edm-svg .edm-coluna { fill: var(--edm-neutro); }
+.edm-svg .edm-coluna-destaque { fill: var(--edm-acento); }
+.edm-svg .edm-mediana { stroke: var(--cor-carvao); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.edm-so-estreito { display: none; }
+@media (max-width: 640px) { .edm-so-largo { display: none; } .edm-so-estreito { display: block; } }
+.edm-graficos-dois { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; }
+@media (max-width: 960px) { .edm-graficos-dois { grid-template-columns: 1fr; gap: 8px; } }
+@media (min-width: 641px) and (max-width: 960px) { .edm-graficos-dois .edm-so-largo { display: block; } }
+.edm-figura h4 { font-size: 15px; font-weight: 600; }
+.edm-legenda { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 8px; font-size: 13px; color: var(--cor-carvao); }
+.edm-legenda i { display: inline-block; width: 20px; height: 0; vertical-align: middle; margin-right: 6px; border-top: 2.5px solid var(--edm-acento); }
+.edm-legenda i.edm-l-ref { border-top: 1.75px solid var(--edm-ref); }
+.edm-legenda i.edm-l-br { border-top: 1.75px dashed var(--edm-br); }
+.edm-legenda i.edm-l-meta { width: 10px; height: 10px; border: 1.5px solid var(--edm-acento-escuro); border-radius: 50%; }
+
+/* o mecanismo: Ideb = aprendizagem × fluxo, com os números da rede */
+.edm-mecanismo { margin-top: 24px; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr); align-items: start; gap: 12px 20px; max-width: 1000px; }
+.edm-mecanismo > div { display: grid; gap: 4px; }
+.edm-mecanismo > span { font-family: var(--font-serif), Georgia, serif; font-size: 32px; line-height: 1.2; color: var(--cor-carvao-muted); padding-top: 18px; }
+.edm-mecanismo .edm-valor { font-size: clamp(30px, 3vw, 40px); }
+.edm-mecanismo .edm-mecanismo-ideb .edm-valor { color: var(--edm-acento-escuro); }
+.edm-mecanismo p { font-size: 13px; line-height: 1.55; color: var(--cor-carvao-muted); }
+.edm-mecanismo h4 { font-size: 15px; font-weight: 600; }
+@media (max-width: 760px) { .edm-mecanismo { grid-template-columns: 1fr; } .edm-mecanismo > span { padding-top: 0; font-size: 24px; } }
+
+.edm-lab { margin-top: 24px; background: var(--cor-superficie); border: 1px solid var(--cor-linha); padding: 22px 24px; max-width: 1000px; }
+.edm-lab-controles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 32px; }
+.edm-lab label { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 1.4; }
+.edm-lab output { font-variant-numeric: tabular-nums; font-weight: 600; }
+.edm-lab input[type="range"] { width: 100%; min-height: 44px; accent-color: var(--cor-obee); }
+.edm-lab-conta { margin-top: 12px; font-family: var(--font-serif), Georgia, serif; font-size: 26px; line-height: 1.3; font-variant-numeric: tabular-nums lining-nums; }
+.edm-lab-conta strong { font-weight: 400; color: var(--edm-acento-escuro); }
+.edm-lab-conta small { display: block; font-family: var(--font-sans), system-ui, sans-serif; font-size: 13px; color: var(--cor-carvao-muted); }
+.edm-lab-nota { margin-top: 12px; font-size: 13px; line-height: 1.6; color: var(--cor-carvao-muted); max-width: 80ch; }
+.edm-lab-voltar { margin-top: 12px; min-height: 44px; padding: 0 16px; border: 1px solid var(--cor-carvao); font-size: 14px; background: transparent; color: var(--cor-carvao); cursor: pointer; }
+@media (hover: hover) and (pointer: fine) { .edm-lab-voltar:hover { background: var(--cor-carvao); color: var(--cor-papel); } }
+@media (max-width: 640px) { .edm-lab { padding: 18px; } .edm-lab-controles { grid-template-columns: 1fr; } }
+
+/* fatos da comparação, em lista curta */
+.edm-pontos { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 6px; font-size: 15px; line-height: 1.5; max-width: 60ch; }
+.edm-pontos strong { font-family: var(--font-serif), Georgia, serif; font-weight: 400; font-size: 20px; color: var(--edm-acento-escuro); font-variant-numeric: tabular-nums lining-nums; }
+
+/* lista de municípios para escolher (painel sem município) */
+.edm-lista { margin-top: 16px; columns: 2; column-gap: 40px; max-width: 1000px; font-size: 15px; }
+.edm-lista li { break-inside: avoid; display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--cor-grade); }
+.edm-lista a { display: inline-flex; align-items: center; min-height: 44px; color: var(--edm-acento-escuro); text-decoration: underline; text-underline-offset: 3px; }
+.edm-lista span { align-self: center; font-variant-numeric: tabular-nums; color: var(--cor-carvao-muted); }
+@media (max-width: 640px) { .edm-lista { columns: 1; } }
+
+/* método e arquivos, recolhidos no fim */
+.edm-metodo { margin-top: 80px; border-block: 1px solid var(--cor-linha); }
+.edm-metodo > summary { padding: 22px 0; cursor: pointer; font-family: var(--font-serif), Georgia, serif; font-size: 24px; line-height: 1.35; display: flex; align-items: center; min-height: 44px; }
+.edm-metodo-corpo { padding-bottom: 28px; display: grid; gap: 24px; max-width: 80ch; font-size: 15px; line-height: 1.7; }
+.edm-metodo-corpo ul { list-style: disc; padding-left: 20px; display: grid; gap: 6px; }
+.edm-metodo-corpo a { color: var(--edm-acento-escuro); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.edm-arquivos { display: grid; gap: 4px; }
+.edm-arquivos a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+
+/* resposta ao toque, sem animação para o teclado */
+.edm-toque { transition: transform 140ms var(--edm-saida), background-color 160ms ease, color 160ms ease; }
+.edm-toque:active { transform: scale(0.97); }
+@media (prefers-reduced-motion: reduce) { .edm-toque, .edm-toque:active { transition: none; transform: none; } }

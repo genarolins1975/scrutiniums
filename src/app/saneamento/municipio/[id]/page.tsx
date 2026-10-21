@@ -1,8 +1,11 @@
+import { prefetchDoLink } from "@/lib/rotasPublicas";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Fonte, Nota, Secao } from "@/components/saneamento/Editorial";
+import { Fonte, MarcaAutodeclarado, NestaPagina, Nota, Secao } from "@/components/saneamento/Editorial";
+import { PosicaoMunicipio } from "@/components/saneamento/PosicaoMunicipio";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { agregado, fichaMunicipio, meta, municipio, municipios, prestadores } from "@/lib/saneamento/gold";
 import { ROTA } from "@/lib/saneamento/capitulos";
@@ -11,8 +14,11 @@ import { classePorte, mediana, ROTULO_PORTE } from "@/lib/saneamento/pares";
 import { data, inteiro, mesAno, numero, reais, reaisCompacto } from "@/lib/saneamento/formato";
 import { MOTIVO_TEXTO, NATUREZA_CURTA, SITUACAO_AGUA, SITUACAO_ESGOTO } from "@/lib/saneamento/rotulos";
 import { prestadorComTarifa } from "@/lib/saneamento/tarifas";
-import { ANOS_SISAGUA, LIMITE_RAZAO_TARIFA_SOCIAL, razaoTarifaSocial } from "@/lib/saneamento/medidas";
+import { ANOS_SISAGUA, LIMITE_RAZAO_TARIFA_SOCIAL, medida, razaoTarifaSocial } from "@/lib/saneamento/medidas";
+import { ATENDIMENTO_REDE, CASAS_ATENDIMENTO, atendimentoRede, type Atendimento, type Servico } from "@/lib/saneamento/atendimento";
+import { QUEM_DECLARA_INVESTIMENTO } from "@/lib/saneamento/autodeclarado";
 import type { Agregado, FichaMunicipio, Municipio } from "@/lib/saneamento/tipos";
+import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
 
 export const dynamicParams = true;
 export const revalidate = false;
@@ -94,6 +100,9 @@ export default function Pagina({ params }: { params: { id: string } }) {
   const catalogo = prestadores();
   const vinculos = ficha.sinisa.prestadores ?? [];
   const pop24 = m.pop24;
+  // população atendida com rede (IAG0001 e IES0001): mesmos valores, rótulos e motivos da página aberta
+  const atAgua = atendimentoRede(m, ficha, "agua");
+  const atEsgoto = atendimentoRede(m, ficha, "esgoto");
   const confRetificacao = meta()?.conferencias.find((c) => c.id === "agua_retificacao_contagens");
   const retificacao = (confRetificacao?.detalhe ?? []).filter((d) => d.uf === m.uf);
   const retificacaoDatas = confRetificacao?.datas;
@@ -120,26 +129,26 @@ export default function Pagina({ params }: { params: { id: string } }) {
       casas: 1,
     },
     {
-      rotulo: "Atendimento da população com rede de água (IAG0001)",
-      fonte: "SINISA 2024",
-      m: m.IAG0001,
+      rotulo: `${ATENDIMENTO_REDE.agua.rotulo} (IAG0001)`,
+      fonte: "SINISA 2024, declarado pelo prestador",
+      m: atAgua.pct,
       uf: uf?.sinisa.agua.indicadores.IAG0001 ?? null,
       br: br?.sinisa.agua.indicadores.IAG0001 ?? null,
       pares: med((x) => x.IAG0001),
       unidade: "%",
-      casas: 2,
-      motivo: MOTIVO_TEXTO[ag.motivos?.IAG0001 ?? ""] ?? SITUACAO_AGUA[ag.situacao],
+      casas: CASAS_ATENDIMENTO,
+      motivo: atAgua.motivo ?? undefined,
     },
     {
-      rotulo: "Atendimento da população com rede de esgoto (IES0001)",
-      fonte: "SINISA 2024",
-      m: m.IES0001,
+      rotulo: `${ATENDIMENTO_REDE.esgoto.rotulo} (IES0001)`,
+      fonte: "SINISA 2024, declarado pelo prestador",
+      m: atEsgoto.pct,
       uf: uf?.sinisa.esgoto.indicadores.IES0001 ?? null,
       br: br?.sinisa.esgoto.indicadores.IES0001 ?? null,
       pares: med((x) => x.IES0001),
       unidade: "%",
-      casas: 2,
-      motivo: MOTIVO_TEXTO[es.motivos?.IES0001 ?? ""] ?? SITUACAO_ESGOTO[es.situacao],
+      casas: CASAS_ATENDIMENTO,
+      motivo: atEsgoto.motivo ?? undefined,
     },
     {
       rotulo: "Esgoto tratado sobre coletado (IES2004)",
@@ -176,11 +185,13 @@ export default function Pagina({ params }: { params: { id: string } }) {
   return (
     <>
       <Cabecalho atual="municipio" />
+      <AvisoConsultaAberta className="ed-pagina" comConta="A comparação entre municípios, o atlas, as fichas dos prestadores e os demais capítulos do observatório" />
       <MarcaVisita secao="saneamento:municipio" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">
         <p className="text-sm">
-          <Link href={`${ROTA}/municipio`} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
+          <Link href={`${ROTA}/municipio`} prefetch={prefetchDoLink(`${ROTA}/municipio`)} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
             ← Buscar outro município
+            <SeloComConta href={`${ROTA}/municipio`} />
           </Link>
         </p>
         <header className="mb-8 border-b border-linha pb-8">
@@ -207,18 +218,36 @@ export default function Pagina({ params }: { params: { id: string } }) {
             </div>
           </dl>
           <p className="mt-5 flex flex-wrap gap-x-6 text-sm">
-            <Link href={`${ROTA}/comparar?m=${m.id}`} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
+            <Link href={`${ROTA}/comparar?m=${m.id}`} prefetch={prefetchDoLink(`${ROTA}/comparar?m=${m.id}`)} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
               Comparar com outros municípios
+              <SeloComConta href={`${ROTA}/comparar?m=${m.id}`} />
             </Link>
-            <Link href={`${ROTA}/acesso?uf=${m.uf}&m=${m.id}`} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
+            <Link href={`${ROTA}/acesso?uf=${m.uf}&m=${m.id}`} prefetch={prefetchDoLink(`${ROTA}/acesso?uf=${m.uf}&m=${m.id}`)} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">
               Ver no atlas
+              <SeloComConta href={`${ROTA}/acesso?uf=${m.uf}&m=${m.id}`} />
             </Link>
           </p>
         </header>
+        <NestaPagina
+          itens={[
+            { id: "comparacao", rotulo: "Comparação" },
+            { id: "agua-esgoto", rotulo: "Água e esgoto" },
+            { id: "quem-presta", rotulo: "Quem presta e regula" },
+            { id: "conta", rotulo: "Conta e tarifa social" },
+            { id: "metas", rotulo: "Metas e plano" },
+            { id: "investimento", rotulo: "Investimento" },
+            { id: "continuidade", rotulo: "Continuidade" },
+            { id: "qualidade", rotulo: "Qualidade da água" },
+          ]}
+        />
 
         <Secao id="comparacao" titulo="Como o município se compara?" texto={
           <>Cada linha tem sua fonte e seu ano. Pares: mediana dos municípios da mesma região com {porte != null ? ROTULO_PORTE[porte] : "porte semelhante"} ({inteiro(grupo.length)} municípios). A mediana dos pares não é meta nem referência de eficiência.</>
         }>
+          <PosicaoMunicipio
+            uf={m.uf}
+            linhas={linhas.map((l) => ({ rotulo: l.rotulo, fonte: l.fonte, m: l.m, uf: l.uf, br: l.br, pares: l.pares.v }))}
+          />
           <Comparacao linhas={linhas} uf={m.uf} grupo={grupo.length} />
           <Nota>
             As colunas não têm o mesmo universo. Município e pares comparam só municípios com indicador. UF e Brasil são os consolidados do SINISA e do
@@ -237,8 +266,17 @@ export default function Pagina({ params }: { params: { id: string } }) {
           </Nota>
         </Secao>
 
-        <Secao id="agua-esgoto" titulo="Como os moradores recebem água e destinam o esgoto?" texto="Censo 2022, moradores em domicílios particulares permanentes ocupados.">
-          {mor ? <Composicao f={ficha} /> : <Nota>O município não tem resultado no Censo 2022 (foi criado depois da coleta).</Nota>}
+        <Secao
+          id="agua-esgoto"
+          titulo="Como os moradores recebem água e destinam o esgoto?"
+          texto="Duas fontes, lado a lado e nunca somadas: o que o prestador declara ao SINISA sobre a população que atende com rede, em 2024, e o que cada domicílio respondeu ao Censo 2022."
+        >
+          <AtendimentoRede agua={atAgua} esgoto={atEsgoto} uf={m.uf} ufAgua={uf?.sinisa.agua.indicadores.IAG0001 ?? null} ufEsgoto={uf?.sinisa.esgoto.indicadores.IES0001 ?? null} />
+          <h3 className="mt-10 font-serif text-xl text-carvao">O que os moradores responderam ao Censo 2022</h3>
+          <p className="mt-1 max-w-prose2 text-sm text-carvao-muted">Moradores em domicílios particulares permanentes ocupados, por forma principal.</p>
+          <div className="mt-4">
+            {mor ? <Composicao f={ficha} /> : <Nota>O município não tem resultado no Censo 2022 (foi criado depois da coleta).</Nota>}
+          </div>
         </Secao>
 
         <Secao id="quem-presta" titulo="Quem presta o serviço e quem regula?" texto="Declarações dos prestadores (SINISA, Informações) e do município (SINISA, Gestão Municipal), referência 2024.">
@@ -253,8 +291,9 @@ export default function Pagina({ params }: { params: { id: string } }) {
                     <p className="rotulo text-mineral">{v.servico === "agua" ? "Água" : "Esgoto"}</p>
                     <p className="mt-1 font-serif text-lg text-carvao">
                       {p && p.abrangencia !== "Local" ? (
-                        <Link href={`${ROTA}/prestadores/${p.id}`} className="underline decoration-linha underline-offset-4 hover:decoration-obee">
+                        <Link href={`${ROTA}/prestadores/${p.id}`} prefetch={prefetchDoLink(`${ROTA}/prestadores/${p.id}`)} className="underline decoration-linha underline-offset-4 hover:decoration-obee">
                           {p.nome}
+                          <SeloComConta href={`${ROTA}/prestadores/${p.id}`} />
                         </Link>
                       ) : (
                         p?.nome
@@ -292,8 +331,9 @@ export default function Pagina({ params }: { params: { id: string } }) {
         <Secao id="conta" titulo="Quanto custa e há tarifa social?" texto="O que o prestador declarou ao SINISA sobre tarifa mínima e tarifa social. A conta simulada só existe para tarifas verificadas em atos oficiais.">
           {comTarifa ? (
             <p className="mb-4 text-sm">
-              <Link href={`${ROTA}/preco-regulado/simulador?t=${comTarifa}`} className="inline-flex min-h-[44px] items-center border border-obee px-4 font-medium text-obee-dark hover:bg-obee-fundo">
+              <Link href={`${ROTA}/preco-regulado/simulador?t=${comTarifa}`} prefetch={prefetchDoLink(`${ROTA}/preco-regulado/simulador?t=${comTarifa}`)} className="inline-flex min-h-[44px] items-center border border-obee px-4 font-medium text-obee-dark hover:bg-obee-fundo">
                 Simular a conta com a tarifa verificada deste prestador
+                <SeloComConta href={`${ROTA}/preco-regulado/simulador?t=${comTarifa}`} />
               </Link>
             </p>
           ) : (
@@ -312,7 +352,10 @@ export default function Pagina({ params }: { params: { id: string } }) {
                   )}
                   <dt className="text-carvao-muted">Cobra tarifa mínima de água?</dt>
                   <dd className="text-carvao">{String(t.GFI1008 ?? "sem dado")}</dd>
-                  <dt className="text-carvao-muted">Valor declarado da tarifa mínima residencial</dt>
+                  <dt className="text-carvao-muted">
+                    Valor declarado da tarifa mínima residencial (GFI1018, 2024)
+                    <MarcaAutodeclarado />
+                  </dt>
                   <dd className="tabular-nums text-carvao">{typeof t.GFI1018 === "number" ? reais(t.GFI1018) : "sem dado"}</dd>
                   <dt className="text-carvao-muted">Tem tarifa social de água?</dt>
                   <dd className="text-carvao">{String(t.GFI1019 ?? "sem dado")}</dd>
@@ -350,8 +393,9 @@ export default function Pagina({ params }: { params: { id: string } }) {
           <Nota>
             Valores declarados pelo prestador, sem verificação do Observatório. A razão usa a soma das economias de todos os prestadores de água do
             município. Economia não é família: a razão compara contagens diferentes e não diz quantas famílias elegíveis recebem o desconto.{" "}
-            <Link href={`${ROTA}/tarifa-social#cobertura`} className="text-obee-dark underline underline-offset-2">
+            <Link href={`${ROTA}/tarifa-social#cobertura`} prefetch={prefetchDoLink(`${ROTA}/tarifa-social#cobertura`)} className="text-obee-dark underline underline-offset-2">
               Como ler a razão
+              <SeloComConta href={`${ROTA}/tarifa-social#cobertura`} />
             </Link>
             . O valor médio declarado da tarifa social (GFI1037) tem registros incompatíveis com uma conta mensal e não é publicado. Fonte do
             CadÚnico: MDS, SAGI, API MI Social.
@@ -404,7 +448,11 @@ export default function Pagina({ params }: { params: { id: string } }) {
           </Nota>
         </Secao>
 
-        <Secao id="investimento" titulo="Quanto foi investido em 2024?" texto="Investimento declarado por prestadores e pelo Estado ao SINISA, em reais correntes de 2024.">
+        <Secao
+          id="investimento"
+          titulo="Quanto foi investido em 2024?"
+          texto={<>{QUEM_DECLARA_INVESTIMENTO}. Reais correntes de 2024.</>}
+        >
           <dl className="grid grid-cols-1 gap-x-10 gap-y-4 text-sm md:grid-cols-2">
             {[["Água", invAg], ["Esgoto", invEs]].map(([rot, inv]) => {
               const i = inv as FichaMunicipio["sinisa"]["agua"]["investimento"];
@@ -414,15 +462,19 @@ export default function Pagina({ params }: { params: { id: string } }) {
                   <dd className="font-serif text-2xl tabular-nums text-carvao">{i?.total != null ? reaisCompacto(i.total) : "sem dado"}</dd>
                   <dd className="text-xs text-carvao-muted">
                     {i?.total != null && m.dfe0001 ? `${reais(i.total / m.dfe0001)} por residente estimado. ` : ""}
-                    Prestador: {reaisCompacto(i?.prestador)}; Estado: {i?.estado_informado ? reaisCompacto(i?.estado) : "não informado"}.
+                    Prestador: {reaisCompacto(i?.prestador)}; governo estadual, segundo o prestador: {i?.estado_informado ? reaisCompacto(i?.estado) : "não informado"}.
+                  </dd>
+                  <dd>
+                    <MarcaAutodeclarado className="mt-1" />
                   </dd>
                 </div>
               );
             })}
           </dl>
           <Nota>
+            O SINISA publica o investimento como o prestador o declarou; o Observatório não o conferiu com as demonstrações financeiras auditadas.
             Investimento declarado não identifica obras nem prova entrada em operação. Por residente é razão descritiva sobre a população
-            estimada, não custo de atender quem falta.
+            estimada, não custo de atender quem falta. Campos GFI2024, GFI2036, GFI2124 e GFI2136.
           </Nota>
         </Secao>
 
@@ -467,8 +519,9 @@ export default function Pagina({ params }: { params: { id: string } }) {
           <Nota>
             Análise é o exame de um parâmetro. Com poucas análises, uma única amostra muda muito a proporção. Sem registro não quer dizer água boa
             nem ruim: é falta de informação no sistema.{" "}
-            <Link href={`${ROTA}/continuidade?uf=${m.uf}&m=${m.id}#qualidade-atlas`} className="text-obee-dark underline underline-offset-2">
+            <Link href={`${ROTA}/continuidade?uf=${m.uf}&m=${m.id}#qualidade-atlas`} prefetch={prefetchDoLink(`${ROTA}/continuidade?uf=${m.uf}&m=${m.id}#qualidade-atlas`)} className="text-obee-dark underline underline-offset-2">
               Ver no atlas da qualidade da água
+              <SeloComConta href={`${ROTA}/continuidade?uf=${m.uf}&m=${m.id}#qualidade-atlas`} />
             </Link>
             .
           </Nota>
@@ -564,6 +617,57 @@ function QualidadeMunicipio({ q }: { q?: Record<string, number> }) {
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+/**
+ * População atendida com rede de abastecimento de água (IAG0001) e com rede coletora de esgoto (IES0001), declarada pelo prestador ao
+ * SINISA 2024: percentual, pessoas, a UF como referência de território e o motivo publicado quando falta. Mesmo rótulo, mesmas casas e mesma
+ * regra de ausência da página aberta (src/lib/saneamento/atendimento.ts).
+ */
+function AtendimentoRede({
+  agua,
+  esgoto,
+  uf,
+  ufAgua,
+  ufEsgoto,
+}: {
+  agua: Atendimento;
+  esgoto: Atendimento;
+  uf: string;
+  ufAgua: number | null;
+  ufEsgoto: number | null;
+}) {
+  const itens: [Servico, Atendimento, number | null][] = [
+    ["agua", agua, ufAgua],
+    ["esgoto", esgoto, ufEsgoto],
+  ];
+  return (
+    <div data-atendimento-rede="">
+      <dl className="grid grid-cols-1 gap-x-10 gap-y-4 text-sm md:grid-cols-2">
+        {itens.map(([s, a, ref]) => (
+          <div key={s} className="border-t border-carvao pt-3" data-codigo={ATENDIMENTO_REDE[s].codigo}>
+            <dt className="text-carvao">
+              {ATENDIMENTO_REDE[s].rotulo} <span className="text-carvao-muted">({ATENDIMENTO_REDE[s].codigo}, 2024)</span>
+            </dt>
+            <dd className="mt-2 font-serif text-[2rem] leading-none tabular-nums text-carvao">
+              {a.pct == null ? <span className="font-sans text-base text-carvao-muted">sem dado</span> : `${numero(a.pct, CASAS_ATENDIMENTO)}%`}
+            </dd>
+            {a.pessoas != null && <dd className="mt-1 tabular-nums text-carvao">{inteiro(a.pessoas)} pessoas atendidas, declarado</dd>}
+            <dd className="mt-1 text-xs leading-relaxed text-carvao-muted">
+              {a.pct == null ? a.motivo : `${ATENDIMENTO_REDE[s].contexto} Fórmula: ${ATENDIMENTO_REDE[s].formula}.`}
+            </dd>
+            <dd className="mt-1 text-xs tabular-nums text-carvao-muted">
+              {uf}, consolidado oficial: {ref == null ? "sem dado" : `${numero(ref, CASAS_ATENDIMENTO)}%`}
+            </dd>
+          </div>
+        ))}
+      </dl>
+      <Nota>
+        <span className="font-medium text-carvao">Não permite concluir.</span> Água: {medida(ATENDIMENTO_REDE.agua.medida).naoPermite} Esgoto:{" "}
+        {medida(ATENDIMENTO_REDE.esgoto.medida).naoPermite}
+      </Nota>
     </div>
   );
 }

@@ -1,10 +1,11 @@
-"""Vigília do arcabouço operacional — quatro cheques, todos viram issue quando acusam.
+"""Vigília do arcabouço operacional — cinco cheques, todos viram issue quando acusam.
 
 Uso:
     python3 scripts/vigilancia.py frescor   # o gold publicado envelheceu?
     python3 scripts/vigilancia.py fontes    # saiu documento novo nas fontes manuais?
     python3 scripts/vigilancia.py pane      # fonte essencial parada com o gold íntegro?
     python3 scripts/vigilancia.py saneamento  # as fontes do saneamento mudaram desde a coleta?
+    python3 scripts/vigilancia.py dominios  # algum observatório passou do limiar de frescor? (uma issue por domínio)
 
 Contrato com o workflow: saída 0 = nada a fazer (silêncio); saída 3 = o texto
 impresso em stdout é o corpo da issue a abrir. Qualquer outra saída é erro do
@@ -40,7 +41,9 @@ RAIZ = Path(__file__).resolve().parent.parent
 
 META_PUBLICADO = ("https://raw.githubusercontent.com/genarolins1975/scrutiniums/"
                   "main/public/obs/data/gold/meta.json")
-LIMITE_DIAS = 2
+# Limiar da cadência diária na fonte única de limiares (a mesma da faixa de
+# frescor das páginas e do selo do Crédito): src/lib/frescor/limiares.json.
+LIMITE_DIAS = json.loads((RAIZ / "src" / "lib" / "frescor" / "limiares.json").read_text(encoding="utf-8"))["cadencias"]["diaria"]["limite"]
 # O que a Vercel serve. Até 13/10/2026 nada conferia que a produção servia o mesmo
 # gold do main (OPERACOES.md, pontos únicos de falha).
 META_PRODUCAO = "https://scrutiniums.com/obs/data/gold/meta.json"
@@ -216,6 +219,12 @@ def main():
         return pane()
     if modo == "saneamento":
         return saneamento()
+    if modo == "dominios":
+        # Abre, comenta ou fecha uma issue por domínio pelo gh (scripts/vigilancia_frescor.py);
+        # saída 0 mesmo com issues abertas: o workflow não abre a issue genérica do cheque.
+        sys.path.insert(0, str(RAIZ / "scripts"))
+        import vigilancia_frescor
+        return vigilancia_frescor.main(sys.argv[2:])
     if modo == "semear-saneamento":
         sys.path.insert(0, str(RAIZ / "scripts"))
         import vigilancia_saneamento as v
@@ -229,7 +238,7 @@ def main():
         SNAPSHOT_SPA.write_text("\n".join(hrefs) + "\n")
         print(f"snapshot com {len(hrefs)} hrefs gravado em {SNAPSHOT_SPA}")
         return 0
-    print("uso: vigilancia.py [frescor|fontes|pane|saneamento|semear|semear-saneamento]", file=sys.stderr)
+    print("uso: vigilancia.py [frescor|fontes|pane|saneamento|dominios|semear|semear-saneamento]", file=sys.stderr)
     return 2
 
 

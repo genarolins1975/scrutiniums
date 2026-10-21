@@ -12,8 +12,10 @@ import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvi
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { REGIOES, ROTULO_GRUPO, nomeRegiao, perguntaPainel, rotaPainel, rotuloGrupo } from "@/lib/energia/carga";
-import { carimbo, dataBR, mesAno, num, normaLegivel } from "@/lib/energia/formato";
+import { REGIOES, ROTULO_GRUPO, decomposicaoEscolhida, nomeRegiao, partesDaDiferenca, perguntaPainel, rotaPainel, rotuloGrupo } from "@/lib/energia/carga";
+import { CargaCascata } from "@/components/energia/CargaCascata";
+import { ParaLer } from "@/components/energia/Didatica";
+import { carimbo, dataBR, mesAno, num, normaLegivel, sinal } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { CATEGORIA_CALENDARIO_EN, rotuloDaGold } from "@/lib/energia/i18n/agua-carga-rede";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
@@ -74,6 +76,10 @@ export default function ClimaCalendarioPage() {
   const nao = tx("não", "no");
   const p = g.p027;
   const ev = g.evidencias;
+  // abertura: a mesma decomposição da faixa de métricas no estado padrão (SIN, variante principal, mesmos dias da semana)
+  const dSin = decomposicaoEscolhida(g.a07, "SIN", "principal", "equivalente");
+  const partesSin = dSin ? partesDaDiferenca(dSin) : null;
+  const mSin = p?.metricas.SIN ?? null;
   const t = g.temperatura;
   const fontesMes = Object.entries(t.fontes_por_mes);
   const porProduto = new Map<string, string[]>();
@@ -161,10 +167,17 @@ export default function ClimaCalendarioPage() {
           rotulo={tx("Carga · Clima e calendário", "Load · Climate and calendar")}
           siglas={["MWmed", "SIN", "MMGD", "ONS", "IBGE"]}
           titulo={perguntaPainel("p027")}
-          lead={tx(
-            "Quanto da diferença de carga entre duas janelas acompanha calendário, temperatura e estação do ano, segundo um modelo testado em dias que não viu. É associação, não causa.",
-            "How much of the load difference between two windows goes along with calendar, temperature and season, according to a model tested on days it did not see. It is association, not cause.",
-          )}
+          lead={
+            dSin && partesSin
+              ? tx(
+                  `Uma parte. De ${dataBR(dSin.inicio)} a ${dataBR(dSin.fim)}, a carga do SIN ficou ${sinal(partesSin.diferenca, 2)} pontos (${sinal(dSin.variacao_real_pct, 2)}%) contra os mesmos dias da semana um ano antes. Um modelo estatístico, testado em dias que não viu, associa ${sinal(partesSin.clima, 2)} pontos a calendário, temperatura e estação do ano e ${sinal(partesSin.nivelTendencia, 2)} ao nível e à tendência; ${sinal(partesSin.residuo, 2)} pontos ficam sem explicação no modelo. É associação, não causa.`,
+                  `Part of it. From ${dataBR(dSin.inicio)} to ${dataBR(dSin.fim)}, the SIN load was ${sinal(partesSin.diferenca, 2)} points (${sinal(dSin.variacao_real_pct, 2)}%) against the same days of the week a year earlier. A statistical model, tested on days it did not see, associates ${sinal(partesSin.clima, 2)} points with calendar, temperature and season and ${sinal(partesSin.nivelTendencia, 2)} with level and trend; ${sinal(partesSin.residuo, 2)} points remain unexplained by the model. It is association, not cause.`,
+                )
+              : tx(
+                  "Quanto da diferença de carga entre duas janelas acompanha calendário, temperatura e estação do ano, segundo um modelo testado em dias que não viu. É associação, não causa.",
+                  "How much of the load difference between two windows goes along with calendar, temperature and season, according to a model tested on days it did not see. It is association, not cause.",
+                )
+          }
           recorte={
             p
               ? tx(
@@ -212,6 +225,69 @@ export default function ClimaCalendarioPage() {
           )}
         </CabecalhoModulo>
         <CargaNavegacao atual="p027" />
+        <ParaLer
+          id="para-ler-clima"
+          itens={[
+            {
+              termo: tx("Pontos (log × 100)", "Points (log × 100)"),
+              definicao: tx(
+                "A escala em que o modelo soma as peças. Para diferenças pequenas, 1 ponto é quase 1%; quanto maior a diferença, mais os dois se afastam, e por isso a página mostra os dois.",
+                "The scale in which the model adds up the pieces. For small differences, 1 point is almost 1%; the larger the difference, the more the two drift apart, which is why the page shows both.",
+              ),
+              exemplo:
+                dSin && partesSin
+                  ? tx(
+                      `${sinal(partesSin.diferenca, 2)} pontos correspondem a ${sinal(dSin.variacao_real_pct, 2)}% nesta janela.`,
+                      `${sinal(partesSin.diferenca, 2)} points correspond to ${sinal(dSin.variacao_real_pct, 2)}% in this window.`,
+                    )
+                  : undefined,
+            },
+            {
+              termo: tx("Modelo estatístico (estimado)", "Statistical model (estimated)"),
+              definicao: tx(
+                "Uma conta que aprende, com os anos anteriores, como a carga costuma variar com o dia da semana, os feriados, a temperatura e a época do ano. Os números dele são estimativas, marcadas como Estimado.",
+                "A calculation that learns, from previous years, how the load usually varies with the day of the week, holidays, temperature and time of year. Its figures are estimates, marked as Estimated.",
+              ),
+            },
+            {
+              termo: tx("Fora da amostra", "Out of sample"),
+              definicao: tx(
+                "O modelo é testado em dias que ele não usou para aprender, como uma prova com perguntas novas. É o teste honesto de quanto ele acerta.",
+                "The model is tested on days it did not use to learn, like an exam with new questions. It is the honest test of how well it does.",
+              ),
+            },
+            {
+              termo: tx("Erro absoluto médio", "Mean absolute error"),
+              definicao: tx(
+                "Quanto, em média, a previsão errou para mais ou para menos em cada dia, em % da carga real.",
+                "How much, on average, the prediction missed up or down on each day, in % of the actual load.",
+              ),
+              exemplo: mSin
+                ? tx(
+                    `No SIN, ${num(mSin.mape_pct, 2)}% em ${num(mSin.dias, 0)} dias; repetir a carga do mesmo dia da semana um ano antes (a referência ingênua) erraria ${num(mSin.mape_referencia_364d_pct, 2)}%.`,
+                    `In the SIN, ${num(mSin.mape_pct, 2)}% over ${num(mSin.dias, 0)} days; repeating the load of the same weekday a year earlier (the naive baseline) would miss by ${num(mSin.mape_referencia_364d_pct, 2)}%.`,
+                  )
+                : undefined,
+            },
+            {
+              termo: tx("Resíduo", "Residual"),
+              definicao: tx(
+                "O que sobra da diferença depois das peças do modelo. Não é atividade econômica: junta tudo o que o modelo não vê, inclusive erro de medida.",
+                "What is left of the difference after the model's pieces. It is not economic activity: it gathers everything the model does not see, including measurement error.",
+              ),
+            },
+            {
+              termo: tx("Intervalo de 80%", "80% interval"),
+              definicao: tx(
+                "A faixa em que, pelos erros passados do modelo, a carga real deveria cair em cerca de 8 de cada 10 dias. Dia fora da faixa é dia que o modelo não esperava.",
+                "The range in which, given the model's past errors, the actual load should fall on about 8 out of 10 days. A day outside the range is a day the model did not expect.",
+              ),
+              exemplo: mSin
+                ? tx(`No SIN, a carga real caiu dentro da faixa em ${num(mSin.cobertura_80_pct, 1)}% dos dias testados.`, `In the SIN, the actual load fell within the range on ${num(mSin.cobertura_80_pct, 1)}% of the days tested.`)
+                : undefined,
+            },
+          ]}
+        />
         <ModoProfundidade>
           <Bloco id="clima">
             <PainelEvidencia
@@ -266,6 +342,7 @@ export default function ClimaCalendarioPage() {
                     fonte={FONTE}
                     versao={p.periodo_avaliacao.fim}
                     notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
+                    didatico={<CargaCascata a07={{ decomposicao: g.a07.decomposicao }} />}
                   />
                 ) : (
                   <CargaAviso tipo="alerta">

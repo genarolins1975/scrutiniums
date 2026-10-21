@@ -17,6 +17,16 @@ import { goldGas } from "@/lib/gas/gold";
 import { mesExtenso } from "@/lib/gas/formato";
 
 export function atualizacaoObservatorio(id: OpcaoObservatorioId): { rotulo: string; linhas: string[] } {
+  if (id === "agro") {
+    try {
+      const s = JSON.parse(readFileSync(join(process.cwd(), "public", "agro", "gold", "snapshot.json"), "utf-8"));
+      return { rotulo: "Fontes e cobertura", linhas: [
+        `Crédito rural: ${s.credito.janela.ini} a ${s.credito.janela.fim}; snapshot original de ${s.credito.capturaOriginal.slice(0, 10)}.`,
+        `Emprego formal nacional, seção A: ${s.trabalho.formal.periodo}. Grupo ocupacional por UF: Censo 2022.`,
+        "Cobertura parcial. Produção, comércio e ambiente sem bases validadas; cenários não são medições.",
+      ] };
+    } catch { return { rotulo: "Fontes e cobertura", linhas: ["Dados indisponíveis no momento."] }; }
+  }
   if (id === "judiciario") {
     try {
       const s = JSON.parse(readFileSync(join(process.cwd(), "public", "eficiencia", "judiciario", "snapshot.json"), "utf-8"));
@@ -39,7 +49,7 @@ export function atualizacaoObservatorio(id: OpcaoObservatorioId): { rotulo: stri
         `IBGE, Censo 2022 e 2010: ${m.cobertura.municipios_censo_2022.toLocaleString("pt-BR")} municípios.`,
         `Captura em ${dataBR(m.sinisa.capturado_em.slice(0, 10))}. Base municipal de água retificada em ${dataBR(m.sinisa.retificacao_agua_municipal)}.`,
         `Saúde e ambiente: internações (SIH) e óbitos (SIM) de ${m.saude.periodo[0]} a ${m.saude.periodo[m.saude.periodo.length - 1]}, tabulações do DATASUS capturadas em ${dataBR(m.saude.capturado_em.slice(0, 10))}.`,
-        "Preço regulado em amostra de atos verificados; qualidade da água bruta em preparação.",
+        "Tarifas em amostra de atos verificados; qualidade da água bruta em preparação.",
       ] };
     } catch {
       return { rotulo: "Fontes e cobertura", linhas: ["Dados indisponíveis no momento."] };
@@ -81,7 +91,7 @@ export function atualizacaoObservatorio(id: OpcaoObservatorioId): { rotulo: stri
       const linhas = [];
       if (meta?.vintages?.sgs) linhas.push(`Crédito do SFN (BCB/SGS): data-base ${mesAno(meta.vintages.sgs)}`);
       if (meta?.vintages?.ifdata) linhas.push(`Instituições (IF.data): data-base ${mesAno(meta.vintages.ifdata)}`);
-      if (meta?.gerado_em) linhas.push(`Processado em ${carimbo(meta.gerado_em)}`);
+      if (meta?.gerado_em) linhas.push(`${meta.grupos ? "Processamento mais antigo entre os grupos" : "Processado em"}: ${carimbo(meta.gerado_em)}`);
       return { rotulo: "Último dado disponível", linhas: linhas.length ? linhas : ["Data-base indisponível no momento."] };
     } catch {
       return { rotulo: "Último dado disponível", linhas: ["Data-base indisponível no momento."] };

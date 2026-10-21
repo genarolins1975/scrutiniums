@@ -352,6 +352,55 @@ class BlocoConsultasNoSilver(unittest.TestCase):
                                         "linha_do_tempo": {"eventos": []}}, "2026-09-30"))
 
 
+class DocumentoSemBronze(unittest.TestCase):
+    """O silver pode voltar da cópia durável sem o bronze. A vintage do PDF continua com o sha256
+    registrado, mas o arquivo não existe: o documento tem de ser baixado de novo, e não dado como
+    já capturado (antes, o texto da Portaria nº 7.030/2025 ficava indisponível para sempre)."""
+
+    def _coleta(self, existe):
+        from unittest import mock
+        corpo = b"%PDF-1.4 portaria"
+        sha = base.sha256_bytes(corpo)
+        doc = {"id": "prt_teste", "formato": "pdf", "sha256": sha, "copia_publica": "https://web.archive.org/x.pdf"}
+        con = base.conecta(":memory:")
+        with tempfile.TemporaryDirectory() as tmp:
+            arquivo = os.path.join(tmp, f"20261003T040551Z.{sha[:12]}.pdf.gz")
+            if existe:
+                with gzip.open(arquivo, "wb") as f:
+                    f.write(corpo)
+            base.registra_vintage(con, m.DS_DOCS, "prt_teste", doc["copia_publica"], "2026-10-03T04:05:51Z", None,
+                                  sha, len(corpo), "teste", arquivo)
+            chamadas = []
+
+            def baixar(con_, **kw):
+                chamadas.append(kw)
+                return {"status": "identica", "vintage": base.ultima_vintage(con_, m.DS_DOCS, "prt_teste"), "detalhe": ""}
+
+            status = {}
+            with mock.patch.object(rg, "documentos", return_value={"prt_teste": doc}), \
+                    mock.patch.object(m.ckan, "baixar_recurso", side_effect=baixar):
+                m._coleta_documentos(con, status)
+        return chamadas, status[m.DS_DOCS]
+
+    def test_bronze_presente_nao_baixa(self):
+        chamadas, st = self._coleta(existe=True)
+        self.assertEqual(chamadas, [])
+        self.assertEqual(st["iguais"], 1)
+
+    def test_bronze_ausente_baixa_de_novo(self):
+        chamadas, st = self._coleta(existe=False)
+        self.assertEqual([c["recurso"] for c in chamadas], ["prt_teste"])
+        self.assertTrue(chamadas[0]["forcar"])
+        self.assertEqual(st["falhas"], [])
+
+    def test_orfao_so_quando_ha_vintage_sem_arquivo(self):
+        con = base.conecta(":memory:")
+        self.assertFalse(m._bronze_orfao(con, m.DS_PAG, "agenda"))  # sem vintage: a política normal decide
+        base.registra_vintage(con, m.DS_PAG, "agenda", "https://www.gov.br/x", "2026-10-03T04:05:51Z", None,
+                              "0" * 64, 1, "teste", "/caminho/que/nao/existe/20261003T040551Z.000000000000.html.gz")
+        self.assertTrue(m._bronze_orfao(con, m.DS_PAG, "agenda"))
+
+
 class AgendaEProcedimentos(unittest.TestCase):
     def test_anexo_da_agenda(self):
         itens = ar.agenda_do_anexo(_ler("prt20257030_anexo_amostra.txt"))
@@ -965,7 +1014,9 @@ class GoldPublicada(unittest.TestCase):
     def test_resumo_igual_ao_detalhe(self):
         abertas = [i for i in self.g["consultas"]["itens"] if i["situacao"] == "aberta"]
         self.assertEqual(self.g["resumo"]["consultas_abertas"], len(abertas))
-        self.assertEqual(self.g["resumo"]["atividades_agenda"], len(self.g["agenda"]["itens"]))
+        # agenda não lida não é agenda vazia: a contagem fica nula, nunca zero
+        self.assertEqual(self.g["resumo"]["atividades_agenda"],
+                         len(self.g["agenda"]["itens"]) if self.g["agenda"]["disponivel"] else None)
         hoje = self.g["limites_pld"]["vigente_hoje"]
         self.assertEqual(hoje, rg.limites_em(hoje["data"]) | {"data": hoje["data"]})
 
@@ -979,7 +1030,7 @@ class GoldPublicada(unittest.TestCase):
         self.assertEqual([(x["vigencia_fim"], x["vigencia_fim_mes"]) for x in esc], [(None, "2022-04")])
         m11 = next(i for i in g["procedimentos"]["itens"] if i["conjunto"] == "PRODIST" and i["modulo"] == "Módulo 11")
         self.assertEqual((m11["conferencia"], m11["ato_vigente"]), ("pagina_possivelmente_desatualizada", None))
-        self.assertEqual(sorted(x["codigo"] for x in g["limites_em_revisao"]), ["AR24-05", "AR24-18"])
+        self.assertEqual(sorted(x["codigo"] for x in (g["limites_em_revisao"] or [])), ["AR24-05", "AR24-18"])
         self.assertEqual(g["proveniencia"]["agenda"]["natureza"], "PREVISTO")
         nomes = [t["nome"] for t in g["evidencias"]["consultas_abertas"]["testes"]]
         self.assertFalse(any("relida do trecho" in n for n in nomes))
@@ -991,8 +1042,11 @@ class GoldPublicada(unittest.TestCase):
     def test_segunda_verificacao_nao_volta(self):
         g = self.g
         cont = g["consultas"]["contagem_por_situacao"]
-        # antes da correção: 108 encerradas aguardando e 411 decididas no histórico de 542
-        self.assertEqual(g["consultas"]["total_historico"], 542)
+        # antes da correção: 108 encerradas aguardando e 411 decididas no histórico de 542 (atas de 30/09/2026). O histórico só
+        # cresce com as atas novas; o total publicado é o número de linhas do CSV do histórico (outro caminho)
+        self.assertGreaterEqual(g["consultas"]["total_historico"], 542)
+        with open(os.path.join(base.RAIZ, "public", "energia", "series", m.CSV_CONS), encoding="utf-8", newline="") as f:
+            self.assertEqual(g["consultas"]["total_historico"], sum(1 for _ in csv.reader(f, delimiter=";")) - 1)
         self.assertLessEqual(cont["encerrada_aguardando"], 92)
         self.assertGreaterEqual(cont["decidida"], 427)
         itens = {i["id"]: i for i in g["consultas"]["itens"]}
@@ -1008,7 +1062,15 @@ class GoldPublicada(unittest.TestCase):
         self.assertEqual(proc[("PRORET", "Submódulo 3.1 A")]["ato_na_pagina"], "Resolução Normativa nº 1.114/2025")
         self.assertEqual(proc[("PRORET", "Submódulo 9.3")]["ato_na_pagina"], "Despacho nº 3.606/2025")
         p73 = proc[("PRORET", "Submódulo 7.3")]["atos_posteriores"][0]
-        self.assertEqual((p73["ato"], p73["ato_na_fonte"], p73["ato_suspeito"]), (None, "Resolução Normativa nº 3.354/2024", True))
+        # A ata de 23/07/2024 registrava "Resolução Normativa nº 3.354/2024", número fora da faixa das REN
+        # (mediana perto de 1.100) e dentro da das Resoluções Homologatórias: suspeito, sem ato exibido como
+        # certo. Na captura de 17/10/2026 a ANEEL corrigiu o tipo da linha para Resolução Homologatória. A
+        # regra vale para os dois registros: o REN nº 3.354/2024 continua suspeito, e o ato corrigido é exibido.
+        self.assertEqual((p73["data"], p73["versao_aprovada"]), ("2024-07-23", "2.7"))
+        self.assertIn(p73["ato_na_fonte"], ("Resolução Normativa nº 3.354/2024", "Resolução Homologatória nº 3.354/2024"))
+        self.assertEqual(p73["ato_suspeito"], p73["ato_na_fonte"].startswith("Resolução Normativa"))
+        self.assertEqual(p73["ato"], None if p73["ato_suspeito"] else p73["ato_na_fonte"])
+        self.assertEqual(bool(p73["motivo_ato_suspeito"]), p73["ato_suspeito"])  # a faixa: NumeroDoAto.test_faixa_por_tipo_e_ano
         ev = {e["id"]: e for e in g["linha_do_tempo"]["eventos"]}
         self.assertIn("bandeiras-acionamento-2015-09-vermelha-p1", ev)
         self.assertIn("bandeiras-acionamento-2017-11-vermelha-p2", ev)

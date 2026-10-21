@@ -156,12 +156,14 @@ describe("números das respostas conferidos nos CSV publicados (outro artefato, 
   });
 
   it("P028: a janela horária do mapa traz o fluxo e o PLD da mesma hora do CSV", () => {
+    // a gold guarda uma casa: a diferença para o CSV chega a meia unidade da casa (0,05), mais o erro de representação binária
+    const MEIA_CASA = 0.05 + 1e-9;
     for (const hora of [J.horas[0], J.horas[100], J.horas.at(-1)!]) {
       const l = HORARIO_2026.find((x) => x.data_hora === hora)!;
       const linhas = R.linhasHora(J, R.indiceHora(J, hora));
       for (const x of linhas) {
-        expect(Math.abs(x.fluxo_mwmed! - n(l[`fluxo_${x.id}`])!), `${hora} ${x.id}`).toBeLessThanOrEqual(0.05);
-        expect(Math.abs(x.programado_mwmed! - n(l[`prog_${x.id}`])!), `${hora} ${x.id}`).toBeLessThanOrEqual(0.05);
+        expect(Math.abs(x.fluxo_mwmed! - n(l[`fluxo_${x.id}`])!), `${hora} ${x.id}`).toBeLessThanOrEqual(MEIA_CASA);
+        expect(Math.abs(x.programado_mwmed! - n(l[`prog_${x.id}`])!), `${hora} ${x.id}`).toBeLessThanOrEqual(MEIA_CASA);
         const [a, b] = R.PONTAS[x.id];
         expect(x.pld_de).toBeCloseTo(n(l[`pld_${a}`])!, 2);
         expect(x.pld_para).toBeCloseTo(n(l[`pld_${b}`])!, 2);
@@ -474,7 +476,8 @@ describe("páginas renderizadas no servidor", () => {
     expect(h).toContain('role="group"');
     expect((h.match(/aria-pressed="false"/g) ?? []).length).toBeGreaterThanOrEqual(8);
     expect(h).toContain('id="fluxo-e-preco"');
-    expect(h).toContain(`Energia escondida pelo saldo de 30 dias, ${R.nomeFronteira("N_SE")}`);
+    // o cartão nomeia a fronteira sem sentido (o sentido do saldo vem na nota), para o nome não parecer o sentido do fluxo
+    expect(h).toContain(`Energia escondida pelo saldo de 30 dias, ${R.entreFronteira("N_SE")}`);
   });
 
   it("P029 e P030: frases do A05, bloqueio dos limites e documentos conferidos visíveis", () => {

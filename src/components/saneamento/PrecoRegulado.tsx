@@ -1,3 +1,5 @@
+import { prefetchDoLink } from "@/lib/rotasPublicas";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
 import Link from "next/link";
 import { ROTA, capituloPorSlug } from "@/lib/saneamento/capitulos";
 import { TARIFAS } from "@/lib/saneamento/tarifas";
@@ -8,25 +10,29 @@ import { inteiro, numero } from "@/lib/saneamento/formato";
 export function SubnavPreco({ atual }: { atual: string }) {
   const cap = capituloPorSlug("preco-regulado")!;
   return (
-    <nav aria-label="Subpainéis do preço regulado" className="mb-10 border-y border-linha">
+    <nav aria-label="Subpainéis da tarifa" className="mb-10 border-y border-linha">
       <ol className="flex flex-wrap gap-x-1">
         <li>
           <Link
             href={`${ROTA}/preco-regulado`}
+            prefetch={prefetchDoLink(`${ROTA}/preco-regulado`)}
             aria-current={atual === "" ? "page" : undefined}
             className={`flex min-h-[44px] items-center border-b-2 px-3 text-sm ${atual === "" ? "border-obee text-carvao" : "border-transparent text-carvao-muted hover:text-carvao"}`}
           >
             Visão do capítulo
+            <SeloComConta href={`${ROTA}/preco-regulado`} />
           </Link>
         </li>
         {cap.subpaineis!.map((s) => (
           <li key={s.slug}>
             <Link
               href={`${ROTA}/preco-regulado/${s.slug}`}
+              prefetch={prefetchDoLink(`${ROTA}/preco-regulado/${s.slug}`)}
               aria-current={atual === s.slug ? "page" : undefined}
               className={`flex min-h-[44px] items-center gap-1.5 border-b-2 px-3 text-sm ${atual === s.slug ? "border-obee text-carvao" : "border-transparent text-carvao-muted hover:text-carvao"}`}
             >
               <span className="tabular-nums text-mineral">{s.numero}</span> {s.rotulo}
+              <SeloComConta href={`${ROTA}/preco-regulado/${s.slug}`} />
             </Link>
           </li>
         ))}

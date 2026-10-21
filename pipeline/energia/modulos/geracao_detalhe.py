@@ -31,6 +31,7 @@ grupos de MMGD. O dicionário da Geração por Usina declara que os grupos de pe
 ("Solar MMGD, estimativa do ONS"), separada da solar centralizada; comparações que
 atravessam a data usam o perímetro sem MMGD, que este conjunto permite montar.
 """
+import base64
 import json
 import math
 import os
@@ -39,6 +40,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import zlib
 from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta, timezone
 
@@ -158,7 +160,9 @@ REGISTRO = {
     "id": "geracao",
     "gold": GOLD,
     "familia": FAMILIA,
-    "ordem": 22,
+    # depois de Expansão (30) e Transição (31): o contexto da capacidade lê expansao.json e transicao.json
+    # da mesma execução (run.py só põe no ctx as golds já construídas)
+    "ordem": 32,
     "datasets": [
         _dataset_registro("usina", "UTILIZADO EM INDICADOR", [CSV["matriz_diaria"], CSV["matriz_horaria"], CSV["rotulos"], CSV["a11"],
                                                               CSV["reconciliacao"], CSV["capacidade_usina"]],
@@ -222,7 +226,8 @@ REGISTRO = {
                                   "gnra_fonte_mwh (campo publicado pelo ONS, quando existe); meias_horas_limitadas; e, na linha "
                                   "razao = TOTAL, geracao_verificada_mwh, meias_horas e potencia_max_cortada_mw."),
         CSV["restricao_usina"]: ("mes; fonte; id_ons; nome; subsistema; uf; geracao_verificada_mwh; energia não gerada estimada "
-                                 "por razão (eng_REL, eng_CNF, eng_ENE, eng_PAR, eng_SEM, em MWh); meias_horas; meias_horas_limitadas."),
+                                 "por razão (eng_REL, eng_CNF, eng_ENE, eng_PAR, eng_SEM, em MWh); meias_horas; meias_horas_limitadas. Energias com "
+                                 "quatro casas decimais, a precisão do silver: a soma das linhas reproduz o total do painel."),
         CSV["capacidade_unidades"]: ("cod_equipamento; usina; ceg; tipo; combustivel (rótulo da unidade); categoria (a da usina "
                                      "na Geração por Usina, a mesma do fator de capacidade); origem_categoria (geracao_por_usina, "
                                      "geracao_por_usina_ceg_base, conjunto, rotulo_da_unidade, demais_unidades_do_ceg); modalidade; "
@@ -310,11 +315,31 @@ def _importado(ctrl, vid):
     return bool(ctrl.get(vid, {}).get(_campo(vid, "importado")))
 
 
-def _marca_importado(con, vid, relatorio, manifesto=None):
+# Conjuntos cujo manifesto também registra as referências de cada série. O manifesto só de
+# séries não basta quando a fonte reclassifica um dia: a série continua no arquivo (outros
+# dias), e o valor antigo daquele dia, que a recaptura não traz mais, seguia vigente. Foi o
+# caso da restrição eólica de 05/09/2026 (e|NE|REL|SIS, 319,698 MWh), capturada em 02/10 e
+# reclassificada em 03/10: o total do SIN ficou 319,7 MWh acima da soma por usina.
+CONJUNTOS_MANIFESTO_REFS = ("coff_eolica", "coff_solar")
+
+
+def _marca_importado(con, vid, relatorio, manifesto=None, refs=None):
+    """refs: (serie, ref, valor) gravados pela importação; valor None não entra (ausência)."""
     linhas = [(vid, _campo(vid, "importado"), json.dumps(relatorio, ensure_ascii=False, sort_keys=True, default=str))]
     if manifesto is not None:
         linhas.append((vid, _campo(vid, "manifesto"), json.dumps(sorted(manifesto), ensure_ascii=False)))
+    if refs is not None:
+        por_serie = defaultdict(set)
+        for s_, r_, v_ in refs:
+            if v_ is not None:
+                por_serie[s_].add(r_)
+        bruto = json.dumps({s_: sorted(rs) for s_, rs in sorted(por_serie.items())}, ensure_ascii=False).encode("utf-8")
+        linhas.append((vid, _campo(vid, "manifesto_refs"), base64.b64encode(zlib.compress(bruto, 9)).decode("ascii")))
     base.grava_registros(con, DS_CONTROLE, vid, linhas)
+
+
+def _tem_manifesto_refs(ctrl, vid):
+    return bool(ctrl.get(vid, {}).get(_campo(vid, "manifesto_refs")))
 
 
 def _parquet_temporario(vintage):
@@ -489,7 +514,7 @@ def _importa_coff(con, k, v, periodo):
     base.grava_registros(con, ds, v["vintage_id"], regs)
     rel = {**a["rel"], "periodo": periodo, "observacoes": len(obs), "novas": novas, "revisoes": revs,
            "usinas": len(a["cadastro"])}
-    _marca_importado(con, v["vintage_id"], rel, manif)
+    _marca_importado(con, v["vintage_id"], rel, manif, refs=obs)
     return rel
 
 
@@ -684,7 +709,12 @@ def importa_pendentes(con, k, alvo, status):
     vig = ckan.vintages_vigentes(con, ds)
     for recurso, v in sorted(vig.items(), key=lambda x: og.periodo_do_arquivo(x[0] + ".parquet") or ""):
         if _importado(ctrl, v["vintage_id"]):
-            continue
+            # importada antes do manifesto de referências: relê uma vez, se o bronze existe;
+            # sem bronze, segue com o manifesto de séries (o comportamento anterior)
+            if (k not in CONJUNTOS_MANIFESTO_REFS or _tem_manifesto_refs(ctrl, v["vintage_id"])
+                    or not os.path.isfile(base.caminho_bronze(v["arquivo"]) if hasattr(base, "caminho_bronze")
+                                          else os.path.join(base.RAIZ, v["arquivo"]))):
+                continue
         if not cfg.get("arquivo") and recurso not in alvo and alvo:
             continue  # arquivo que saiu da seleção (ex.: detalhamento mais antigo)
         periodo = og.periodo_do_arquivo(recurso + ".parquet")
@@ -862,16 +892,34 @@ def manifestos(con, ds):
     return out
 
 
-def filtra_manifesto(obs, man):
+def manifestos_refs(con, ds):
+    """{periodo do arquivo: {serie: set(refs)}} das vintages vigentes que registram as
+    referências (CONJUNTOS_MANIFESTO_REFS); período sem esse registro fica de fora."""
+    ctrl = _controle(con)
+    out = {}
+    for recurso, v in ckan.vintages_vigentes(con, ds).items():
+        bruto = ctrl.get(v["vintage_id"], {}).get(_campo(v["vintage_id"], "manifesto_refs"))
+        per = og.periodo_do_arquivo(recurso + ".parquet")
+        if bruto and per:
+            out[per] = {s_: set(rs) for s_, rs in json.loads(zlib.decompress(base64.b64decode(bruto))).items()}
+    return out
+
+
+def filtra_manifesto(obs, man, refs=None):
     """Mantém (serie, ref) só quando a série consta do manifesto do arquivo que cobre a
-    referência (arquivo mensal AAAA-MM, senão o anual AAAA)."""
+    referência (arquivo mensal AAAA-MM, senão o anual AAAA). Com `refs` (manifestos_refs)
+    para o período, exige também a referência: um dia que a recaptura não traz mais sai."""
+    refs = refs or {}
     out = {}
     for (serie, ref), v in obs.items():
-        m = man.get(ref[:7])
-        if m is None:
-            m = man.get(ref[:4])
-        if m is not None and serie in m:
-            out[(serie, ref)] = v
+        per = ref[:7] if ref[:7] in man else ref[:4]
+        m = man.get(per)
+        if m is None or serie not in m:
+            continue
+        r = refs.get(per)
+        if r is not None and ref not in r.get(serie, ()):
+            continue
+        out[(serie, ref)] = v
     return out
 
 
@@ -905,6 +953,7 @@ ROTULO_NATUREZA = {
 # (até 24 × 700 parcelas de ±0,0005) tem desvio-padrão de cerca de 0,04 MWh; 1 MWh é 25
 # desvios, e qualquer diferença de definição (uma usina a mais ou a menos) passa disso.
 TOL_DIA_MWH = 1.0
+LIMIAR_BALANCO_EOLICA = 0.1  # eólica do Balanço abaixo de 10% da soma das usinas no subsistema e dia: registro fora do padrão
 # Fator de capacidade mensal acima de 100% numa usina é fisicamente impossível com a
 # potência certa: indica potência do cadastro menor que a real no mês (unidade em teste
 # gerando antes da operação comercial, repotenciação não registrada). Fica na conta e é
@@ -1781,6 +1830,12 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
                         "soma_diferencas_mwh": c.r(sum(x["dif_ajustada"] for x in xs), 1),
                         "soma_balanco_mwh": c.r(sum(x["bal"] for x in xs), 1)}
     maiores = sorted(rec, key=lambda x: -abs(x["dif_ajustada"]))[:15]
+    # Dias em que o Balanço registra a eólica de um subsistema abaixo de 10% da soma das usinas: a lista inteira. A página
+    # nomeia esses dias; tirados das 15 maiores divergências, saíam da frase quando outras divergências as superavam (07/03/2026
+    # no Sul, gold de 20/10/2026), e a frase deixava de ser a lista dos dias.
+    eolica_abaixo = [{"d": x["d"], "sm": x["sm"], "balanco_mwh": c.r(x["bal"], 1), "usinas_mwh": c.r(x["us"], 1)}
+                     for x in sorted(rec, key=lambda x: (x["d"], x["sm"]))
+                     if x["f"] == "eolica" and x["us"] > 0 and x["bal"] < LIMIAR_BALANCO_EOLICA * x["us"]]
     reconciliacao = {
         "tolerancia_mwh_por_subsistema_dia": TOL_DIA_MWH,
         "por_fonte": por_fonte,
@@ -1790,6 +1845,7 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
                     "primeiro_dia_sem_exclusao_apos": min((d for d in rr_dias if rr_excl and d > max(rr_excl)), default=None),
                     "regra": ("Dia em que o balanço exclui Roraima: diferença balanço − usinas no Norte igual, dentro da tolerância, "
                               "à térmica das usinas de Roraima (UF RR) na Geração por Usina. Só nesses dias a diferença é ajustada.")},
+        "eolica_abaixo_de_10pct_das_usinas": eolica_abaixo,
         "maiores_divergencias": [{"d": x["d"], "fonte": x["f"], "sm": x["sm"], "balanco_mwh": c.r(x["bal"], 1),
                                   "usinas_mwh": c.r(x["us"], 1), "diferenca_mwh": c.r(x["dif_ajustada"], 1)} for x in maiores],
         "mensal_ultimos_6": [x for x in rec_mensal if x["mes"] >= _meses_entre(ok[0][:7], dia_ref[:7])[-6]],
@@ -2298,7 +2354,7 @@ RAZOES = ("REL", "CNF", "ENE", "PAR", "SEM")
 def bloco_restricao(con, k, k_det, fc_cad, hoje):
     ds = _ds(k)
     man = manifestos(con, ds)
-    tudo = filtra_manifesto(vigentes(con, ds), man)
+    tudo = filtra_manifesto(vigentes(con, ds), man, manifestos_refs(con, ds))
     if not tudo:
         return None
     cad = base.registros_como_estavam_em(con, ds)
@@ -3023,10 +3079,13 @@ def escreve_csvs(ctx, D_u, cat_dia, horas, rotulos, cache, bal, matriz, termica,
         for (d, sm), x in sorted(b["_sm_dia"].items()):
             lin_d.append([d, fonte, sm, "TOTAL", "", c.r(eng_tot.get((d, sm), 0.0), 3), None, int(x.get("l", 0)), c.r(x.get("g"), 3),
                           int(x.get("m", 0)), c.r(b["_pot"].get((d, sm)), 3) if (d, sm) in b["_pot"] else 0.0])
+        # Quatro casas, as do silver: a energia de meia hora é MW × 0,5 h e termina em 0 ou 5 na
+        # quarta casa; com três casas, o arredondamento meio para cima subia metade dos valores em
+        # 0,0005 MWh e a soma de 12 meses do CSV passava a do cartão em 1,088 MWh (eólica, 20/10/2026).
         for (m, ido), x in sorted(b["_usina"].items()):
             r_ = b["_cad"].get(ido, {})
-            lin_u.append([m, fonte, ido, r_.get("nome"), r_.get("sm"), r_.get("uf"), c.r(x.get("ger"), 3)] +
-                         [c.r(x.get(f"eng_{r}", 0.0), 3) for r in RAZOES] + [int(x.get("meias", 0)), int(x.get("lim", 0))])
+            lin_u.append([m, fonte, ido, r_.get("nome"), r_.get("sm"), r_.get("uf"), c.r(x.get("ger"), 4)] +
+                         [c.r(x.get(f"eng_{r}", 0.0), 4) for r in RAZOES] + [int(x.get("meias", 0)), int(x.get("lim", 0))])
     _csv(ctx, nome(CSV["restricao_diaria"]), ["data", "fonte", "regiao", "razao", "origem", "energia_nao_gerada_mwh", "gnra_fonte_mwh",
                                               "meias_horas_limitadas", "geracao_verificada_mwh", "meias_horas",
                                               "potencia_max_cortada_mw"], lin_d)

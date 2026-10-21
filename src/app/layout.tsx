@@ -5,6 +5,7 @@ import "../../public/observatorios.css";
 import "../../public/observatorios-gravuras.css";
 import { ACESSO, listaObservatorios, observatoriosPorExtenso } from "@/lib/acesso";
 import { DocumentoIdioma } from "@/components/i18n/DocumentoIdioma";
+import { MedeUso } from "@/components/telemetria/MedeUso";
 
 /**
  * Fontes auto-hospedadas (variáveis, subsets latin + latin-ext via
@@ -64,6 +65,8 @@ export default function RootLayout({
   return (
     <DocumentoIdioma className={`${serif.variable} ${sans.variable} ${label.variable}`} bodyClassName="min-h-screen bg-marfim text-carvao">
       {children}
+      {/* Medição de uso agregada, sem dado pessoal (docs/observatorios/MEDICAO_DE_USO.md). */}
+      <MedeUso />
     </DocumentoIdioma>
   );
 }

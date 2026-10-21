@@ -103,6 +103,44 @@ export type PrecoConsumidorGold = Cabecalho & {
   };
 };
 
+/** Combustíveis nos postos (/combustiveis): gasolina, etanol e diesel na mesma pesquisa da ANP que o botijão e o GNV. */
+export type IdCombustivel = "gasolina" | "etanol" | "diesel" | "diesel_s10";
+
+export type ProdutoCombustivel = { id: IdCombustivel; nome: string; curto: string; produto_anp: string; unidade: "R$/l"; nota: string | null };
+
+export type PrecoCombustivelUf = {
+  medio: number; minimo: number | null; maximo: number | null; desvio: number | null; postos: number | null;
+  medio_12m_antes: number | null; variacao_12m_pct: number | null; dif_brasil: number; dif_brasil_pct: number;
+};
+
+export type LinhaUfCombustiveis = { uf: string; codigo: string; nome: string; regiao: string; etanol_gasolina_pct: number | null } & Record<IdCombustivel, PrecoCombustivelUf | null>;
+
+export type SituacaoMesPesquisa = "completo" | "parcial" | "sem_pesquisa" | "sem_dado";
+
+export type EventoPesquisa = { tipo: "sem_pesquisa" | "abrangencia" | "amostra_reduzida" | "outro"; inicio: string; fim: string; meses: string[]; texto: string };
+
+export type CombustiveisGold = Cabecalho & {
+  ultimo_mes: string;
+  primeiro_mes: string;
+  mes_base_real: string;
+  produtos: ProdutoCombustivel[];
+  indicadores: Record<string, Indicador>;
+  /** Um ponto por mês desde o primeiro: `<id>`, `<id>_minimo`, `<id>_maximo`, `<id>_postos` e `<id>_real` de cada produto. */
+  serie: (Record<string, string | number | null> & { mes: string; situacao: SituacaoMesPesquisa })[];
+  por_uf: LinhaUfCombustiveis[];
+  serie_uf: { meses: string[]; valores: Record<IdCombustivel, Record<string, (number | null)[]>> };
+  pesquisa: {
+    notas: string[];
+    eventos: EventoPesquisa[];
+    meses_sem_pesquisa: string[];
+    meses_parciais: string[];
+    meses_sem_dado: string[];
+    conferencia_ultimo_mes: { produto: IdCombustivel; media_anp: number; postos_brasil: number; soma_postos_ufs: number; media_simples_ufs: number; media_ponderada_postos_ufs: number | null }[];
+    /** Soma dos postos das UFs contra o total do Brasil em todos os meses e produtos; divergência retém a publicação. */
+    conferencia_postos: { meses_produtos_conferidos: number; divergencias: { mes: string; produto: IdCombustivel; postos_brasil: number; soma_postos_ufs: number }[] };
+  };
+};
+
 export type MercadoGold = Cabecalho & {
   ultimo_mes: string;
   indicadores: Record<string, Indicador>;
@@ -152,6 +190,7 @@ export const goldGas = {
   precos: () => ler<PrecosGold>("precos"),
   glp: () => ler<PrecoConsumidorGold>("gas-de-cozinha"),
   gnv: () => ler<PrecoConsumidorGold>("gnv-e-gas-encanado"),
+  combustiveis: () => ler<CombustiveisGold>("combustiveis"),
   mercado: () => ler<MercadoGold>("mercado"),
   infraestrutura: () => ler<InfraestruturaGold>("infraestrutura"),
   meta: () => ler<MetaGold>("meta"),

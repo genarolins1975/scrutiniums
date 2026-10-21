@@ -1,7 +1,7 @@
 {
  "cod": "74220948",
  "nome": "SICOOB UNISP - COOPERATIVA DE CRÉDITO",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -450,5 +450,5 @@
    "202509": 0.0
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

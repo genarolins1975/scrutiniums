@@ -471,18 +471,53 @@ describe("conciliação: GSF de 12 meses com 81,8%, 80,43% e 92,55% (/mercado/mr
     const janelaBoletim = gsf(M.mesesAntes(div.mes, 11), div.mes);
     expect(doCartao).toBeCloseTo(k.valor_pct, 1);
     expect(janelaBoletim).toBeCloseTo(div.calculado!, 1);
-    expect(div.publicado).toBe(92.55);
-    expect(Math.abs(doCartao - janelaBoletim)).toBeGreaterThan(1);
-
+    // o boletim publica com duas casas, e a diferença registrada é a do calculado contra o publicado, acima da tolerância
+    expect(div.publicado).not.toBeNull();
+    expect(Math.round(div.publicado! * 100) / 100).toBe(div.publicado);
+    expect(div.diferenca!).toBeCloseTo(div.calculado! - div.publicado!, 3);
+    expect(Math.abs(div.diferenca!)).toBeGreaterThan(0.006);
     const f2 = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const h = entender(HTML["mre-e-gsf"]);
-    expect(h).toContain("Três valores, três recortes");
-    expect(h).toContain(`publica ${f2(div.publicado!)}% para o ajuste médio de 12 meses até ${M.textoPeriodoMes({ inicio: div.mes, fim: div.mes })}`);
-    expect(h).toContain(`na mesma janela (${M.textoPeriodoMes({ inicio: M.mesesAntes(div.mes, 11), fim: div.mes }).replace(" a ", " a ")}) a razão de energias do observatório dá ${f2(janelaBoletim)}%`);
-    expect(h).toContain(`o cartão mostra ${(Math.round(doCartao * 10) / 10).toLocaleString("pt-BR", { minimumFractionDigits: 1 })}%, de ${M.textoPeriodoMes(k.periodo)}`);
-    expect(h).toContain("diferença que a fonte não explica");
-    expect(h).toContain("O valor do cartão é o da janela mais recente");
+    const lado = div.diferenca! < 0 ? "abaixo" : "acima";
+    expect(h).toContain(`publica ${f2(div.publicado!)}% para o ajuste médio de 12 meses`);
+    expect(h).toContain(`${f2(Math.abs(div.diferenca!))} pontos percentuais ${lado}, diferença que a fonte não explica`);
     expect(h).not.toContain("diferença que não foi explicada");
+    if (div.mes === k.periodo.fim) {
+      // o boletim já cobre a janela do cartão: dois valores no mesmo recorte, e o do observatório é o do cartão
+      expect(doCartao).toBeCloseTo(janelaBoletim, 6);
+      expect(h).toContain(`Dois valores, o mesmo recorte (${M.textoPeriodoMes(k.periodo)})`);
+      expect(h).toContain(`a razão de energias do observatório, que é o valor do cartão, dá ${f2(janelaBoletim)}%`);
+      expect(h).not.toContain("Três valores, três recortes");
+    } else {
+      // o boletim termina antes: três valores em três recortes, e as duas janelas do observatório diferem
+      expect(Math.abs(doCartao - janelaBoletim)).toBeGreaterThan(0.005);
+      expect(h).toContain("Três valores, três recortes");
+      expect(h).toContain(`publica ${f2(div.publicado!)}% para o ajuste médio de 12 meses até ${M.textoPeriodoMes({ inicio: div.mes, fim: div.mes })}`);
+      expect(h).toContain(`na mesma janela (${M.textoPeriodoMes({ inicio: M.mesesAntes(div.mes, 11), fim: div.mes })}) a razão de energias do observatório dá ${f2(janelaBoletim)}%`);
+      expect(h).toContain(`o cartão mostra ${(Math.round(doCartao * 10) / 10).toLocaleString("pt-BR", { minimumFractionDigits: 1 })}%, de ${M.textoPeriodoMes(k.periodo)}`);
+      expect(h).toContain("O valor do cartão é o da janela mais recente");
+    }
+  });
+
+  it("nota do GSF de 12 meses nos dois casos de janela, com a direção da diferença pelo sinal (clones da gold)", () => {
+    const base = structuredClone(MG);
+    const k = base.mre_gsf.kpis.gsf_12m!;
+    const div = base.mre_gsf.reconciliacao_infomercado.find((x) => x.medida === "gsf_12m_pct" && x.resultado !== "aprovado")!;
+    div.publicado = 81.89;
+    div.calculado = 81.84;
+    div.diferenca = -0.05;
+    div.mes = k.periodo.fim;
+    const mesma = M.notaGsfDozeMeses(base);
+    expect(mesma).toContain(`Dois valores, o mesmo recorte (${M.textoPeriodoMes(k.periodo)})`);
+    expect(mesma).toContain("dá 81,84%, 0,05 pontos percentuais abaixo");
+    expect(mesma).not.toContain("Três valores");
+    div.mes = M.mesesAntes(k.periodo.fim, 1);
+    div.calculado = 92.6;
+    div.diferenca = 0.05;
+    const antes = M.notaGsfDozeMeses(base);
+    expect(antes).toContain("Três valores, três recortes");
+    expect(antes).toContain("dá 92,60%, 0,05 pontos percentuais acima");
+    expect(antes).toContain("O valor do cartão é o da janela mais recente");
   });
 
   it("o exemplo de leitura do GSF do mês sai da razão publicada", () => {
@@ -493,29 +528,37 @@ describe("conciliação: GSF de 12 meses com 81,8%, 80,43% e 92,55% (/mercado/mr
 
 describe("conciliação: ESS do boletim do MME, R$ 958,1 milhões, contra R$ 1,60 bilhão em 12 meses (/mercado/encargos)", () => {
   it("o boletim soma seis meses com a resposta da demanda; o conjunto da CCEE nos mesmos meses fecha com ele sem ela: relido dos CSV", () => {
-    const mme = csv("public/energia/series/mercado_encargos_mme.csv").filter((r) => r.vigente === "1" && r.mes >= "2026-01" && r.mes <= "2026-06");
+    // a janela do cartão do boletim (meses do ano até a edição) e a dos 12 meses vêm da gold; os valores, dos CSV publicados
+    const sc = M.conciliacaoEssMme(MG)!;
+    expect(sc).not.toBeNull();
+    const ini = sc.periodo.inicio, fim = sc.periodo.fim;
+    const mme = csv("public/energia/series/mercado_encargos_mme.csv").filter((r) => r.vigente === "1" && r.mes >= ini && r.mes <= fim);
     const totalMme = mme.filter((r) => r.nivel === "total").reduce((s, r) => s + Number(r.valor_mil_rs), 0);
     const rdMme = mme.filter((r) => r.tipo === "resposta_demanda").reduce((s, r) => s + Number(r.valor_mil_rs), 0);
-    expect(totalMme).toBe(958066);
+    const nMeses = new Set(mme.filter((r) => r.nivel === "total").map((r) => r.mes)).size;
+    expect(Math.abs(totalMme - sc.mmeMilRs)).toBeLessThanOrEqual(0.5);
 
     const tipos = ["ENCARGO_CONST_ON", "ENCARGO_CONST_OFF", "ENCARGO_REST_OP_UNIT_COMT", "ENCARGO_CS", "OUTROS_SERVICOS_ANCILARES", "ENCARGO_SEG_ENER", "RECEBIMENTO_ENCARGO_DH", "ENCARGO_IMPORTACAO", "RECEBIMENTO_ENCARGO_RESERVA_OP"];
     const ccee = csv("public/energia/series/mercado_ccee_mensal.csv").filter((r) => r.conjunto === "encargo_ess_ancilar" && tipos.includes(r.serie) && r.valor !== "");
-    const soma = (ini: string, fim: string) => ccee.filter((r) => r.mes >= ini && r.mes <= fim).reduce((s, r) => s + Number(r.valor), 0);
-    const cceeSeis = soma("2026-01", "2026-06");
-    const cceeDoze = soma("2025-09", "2026-08");
-    // o conjunto aberto da CCEE nos seis meses fecha com o boletim menos a resposta da demanda (tolerância de 6 mil R$ do controle)
-    expect(Math.abs(cceeSeis / 1e3 - (totalMme - rdMme))).toBeLessThanOrEqual(6);
-    expect(cceeDoze / 1e9).toBeCloseTo(1.6029, 3);
-    expect(cceeDoze).toBeGreaterThan(cceeSeis * 1.5);
+    const soma = (a: string, b: string) => ccee.filter((r) => r.mes >= a && r.mes <= b).reduce((s, r) => s + Number(r.valor), 0);
+    const cceeMeses = soma(ini, fim);
+    const cceeDoze = soma(sc.periodo12m.inicio, sc.periodo12m.fim);
+    // o conjunto aberto da CCEE nos meses do boletim fecha com o boletim menos a resposta da demanda (tolerância de 6 mil R$ do controle)
+    expect(Math.abs(cceeMeses / 1e3 - (totalMme - rdMme))).toBeLessThanOrEqual(6);
+    expect(cceeDoze).toBeCloseTo(sc.ess12mRs, -1);
+    // as duas janelas não são a mesma: é isso que a nota explica
+    expect(`${sc.periodo.inicio}|${sc.periodo.fim}`).not.toBe(`${sc.periodo12m.inicio}|${sc.periodo12m.fim}`);
 
     const h = entender(HTML.encargos);
-    const sc = M.conciliacaoEssMme(MG)!;
-    expect(sc.meses).toBe(6);
-    expect(sc.mmeMilRs).toBe(totalMme);
+    expect(sc.meses).toBe(nMeses);
     expect(sc.respostaDemandaMilRs).toBe(rdMme);
-    expect(sc.cceeRs).toBeCloseTo(cceeSeis, -1);
-    expect(h).toContain("O cartão do boletim do MME (R$ 958,1 milhões) soma 6 meses, jan/2026 a jun/2026, e inclui R$ 6,0 milhões de resposta da demanda; nesses meses, o ESS da CCEE é R$ 952,1 milhões.");
-    expect(h).toContain("Por isso ele não se compara com os R$ 1,60 bilhão de 12 meses (set/2025 a ago/2026), que não incluem a resposta da demanda.");
+    expect(sc.cceeRs).toBeCloseTo(cceeMeses, -1);
+    // reaisCurto escreve "R$" com espaço inseparável; o texto da página passa pela mesma normalização (nbsp)
+    const rs = (v: number) => nbsp(M.reaisCurto(v));
+    expect(h).toContain(
+      `O cartão do boletim do MME (${rs(totalMme * 1e3)}) soma ${nMeses} meses, ${M.textoPeriodoMes({ inicio: ini, fim: ini })} a ${M.textoPeriodoMes({ inicio: fim, fim })}, e inclui ${rs(rdMme * 1e3)} de resposta da demanda; nesses meses, o ESS da CCEE é ${rs(cceeMeses)}.`,
+    );
+    expect(h).toContain(`Por isso ele não se compara com os ${rs(cceeDoze)} de 12 meses (${M.textoPeriodoMes({ inicio: sc.periodo12m.inicio, fim: sc.periodo12m.inicio })} a ${M.textoPeriodoMes({ inicio: sc.periodo12m.fim, fim: sc.periodo12m.fim })}), que não incluem a resposta da demanda.`);
   });
 
   it("sem os meses do conjunto da CCEE a nota não é escrita", () => {
@@ -571,24 +614,31 @@ describe("conciliação: eólicas, 51,3 GW em operação e implantação contra 
 });
 
 describe("conciliação: RALIE com 2.246 usinas e 95.888,3 MW contra SIGA com 145 + 2.099 usinas e 96.298,0 MW (/expansao/carteira)", () => {
-  it("os totais são próximos e de listas diferentes: relidos dos CSV do RALIE e do SIGA, e a página diz a medida, a data e as fases", () => {
+  it("os totais são de listas diferentes: relidos dos CSV do RALIE e do SIGA, e a página diz a medida, a data e as fases", () => {
     const ralie = csv("public/energia/series/expansao_carteira_ralie.csv");
     const siga = csv("public/energia/series/expansao_usinas_siga.csv").filter((r) => r.estagio === "construcao" || r.estagio === "construcao_nao_iniciada");
     const mwRalie = ralie.reduce((s, r) => s + Number(r.kw_ugs_em_implantacao || 0), 0) / 1e3;
     const mwSiga = siga.reduce((s, r) => s + Number(r.kw_outorgado || 0), 0) / 1e3;
-    expect(ralie).toHaveLength(2246);
-    expect(siga).toHaveLength(2244);
-    expect(mwRalie).toBeCloseTo(95888.3, 0);
-    expect(mwSiga).toBeCloseTo(96298.0, 0);
+    // contagens e somas relidas dos dois CSV; a página diz as mesmas, com a data de cada fotografia (em 01/10/2026: RALIE de
+    // 18/09 com 2.246 usinas e 95.888,3 MW, 2.078/139/23/6 por fase do SIGA; SIGA de 30/09 com 2.244 usinas e 96.298,0 MW)
+    const f1 = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const n0 = (v: number) => v.toLocaleString("pt-BR");
+    const dmy = (iso: string) => iso.split("-").reverse().join("/");
+    expect(ralie.length).toBeGreaterThan(0);
+    expect(siga.length).toBeGreaterThan(0);
     // não é a mesma lista: parte das usinas do RALIE está em outra fase do SIGA (ou fora dele)
     const fasesRalie = new Map<string, number>();
     for (const r of ralie) fasesRalie.set(r.fase_siga, (fasesRalie.get(r.fase_siga) ?? 0) + 1);
-    expect(fasesRalie.get("Operação")).toBe(23);
-    expect(fasesRalie.get("Construção não iniciada")).toBe(2078);
+    expect(fasesRalie.get("Operação")).toBeGreaterThan(0);
     const h = entender(HTML.carteira);
-    expect(h).toContain("Os totais do RALIE e do SIGA são próximos, mas não são a mesma lista nem a mesma medida");
-    expect(h).toContain("o RALIE (18/09/2026) acompanha 2.246 usinas, com 95.888,3 MW em unidades geradoras em implantação (2.078 na fase Construção não iniciada do SIGA, 139 na fase Construção do SIGA, 23 na fase Operação do SIGA e 6 fora do arquivo aberto do SIGA)");
-    expect(h).toContain("o SIGA (30/09/2026) soma 2.244 usinas, com 96.298,0 MW de potência outorgada");
+    // sem qualificar os totais como próximos: 95,9 e 96,3 GW em 01/10/2026, 107,7 e 96,3 GW em 20/10/2026
+    expect(h).toContain("Os totais do RALIE e do SIGA não são a mesma lista nem a mesma medida");
+    expect(h).not.toContain("são próximos");
+    expect(h).toContain(`o RALIE (${dmy(XG.referencias.ralie!)}) acompanha ${n0(ralie.length)} usinas, com ${f1(mwRalie)} MW em unidades geradoras em implantação (`);
+    for (const [fase, k] of fasesRalie) {
+      expect(h, fase || "fora").toContain(fase ? `${n0(k)} na fase ${fase} do SIGA` : `${n0(k)} fora do arquivo aberto do SIGA`);
+    }
+    expect(h).toContain(`o SIGA (${dmy(XG.referencias.siga!)}) soma ${n0(siga.length)} usinas, com ${f1(mwSiga)} MW de potência outorgada`);
   });
 
   it("em operação: o cartão (fiscalizada) e o gráfico (outorgada) têm medidas diferentes, e a página diz isso antes do gráfico", () => {
@@ -596,8 +646,9 @@ describe("conciliação: RALIE com 2.246 usinas e 95.888,3 MW contra SIGA com 14
     const fisc = siga.reduce((s, r) => s + Number(r.kw_fiscalizado || 0), 0) / 1e3;
     const outor = siga.reduce((s, r) => s + Number(r.kw_outorgado || 0), 0) / 1e3;
     const f1 = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-    expect(f1(fisc)).toBe("220.658,9");
-    expect(f1(outor)).toBe("221.382,6");
+    // somas relidas do CSV (220.658,9 e 221.382,6 MW em 01/10/2026): o texto da página tem de trazer as duas
+    expect(fisc).toBeGreaterThan(0);
+    expect(outor).toBeGreaterThan(0);
     const h = entender(HTML.carteira);
     expect(h).toContain(`o cartão mostra a potência fiscalizada (${f1(fisc)} MW) e o gráfico, a outorgada (${f1(outor)} MW)`);
     expect(h.indexOf("Em operação aparecem dois valores")).toBeLessThan(h.indexOf("Usinas do SIGA por estágio"));
@@ -613,10 +664,13 @@ describe("conciliação: RALIE com 2.246 usinas e 95.888,3 MW contra SIGA com 14
 
 describe("conciliação: 177, 63 e 50 fotografias e as datas 22/09/2025 e 22/08/2025 (/expansao/cronograma)", () => {
   it("50 é o número de janelas de confiabilidade (CSV); 177 e 63 são as fotografias publicadas e mensais; a página diz o uso de cada contagem", () => {
+    // uma janela por fotografia mensal com 12 meses já encerrados (50 em 01/10/2026, a última de 22/08/2025 a 22/08/2026):
+    // a última janela termina 12 meses depois da previsão e já terminou na fotografia mais recente
     const conf = csv("public/energia/series/expansao_confiabilidade_previsoes.csv").filter((r) => r.tipo === "TOTAL");
-    expect(conf).toHaveLength(50);
-    expect(conf.at(-1)!.ralie).toBe("2025-08-22");
-    expect(conf.at(-1)!.fim_janela).toBe("2026-08-22");
+    expect(conf.length).toBeGreaterThan(0);
+    const ult = conf.at(-1)!;
+    expect(ult.fim_janela).toBe(`${Number(ult.ralie.slice(0, 4)) + 1}${ult.ralie.slice(4)}`);
+    expect(ult.fim_janela <= XG.referencias.ralie!).toBe(true);
     const c = XG.cronograma;
     expect(c.confiabilidade.length).toBe(conf.length);
     expect(c.historico_fonte.fotografias).toBeGreaterThan(c.historico_fonte.fotografias_mensais);
@@ -630,12 +684,14 @@ describe("conciliação: 177, 63 e 50 fotografias e as datas 22/09/2025 e 22/08/
   });
 
   it("as duas datas do 'O que mudou' são de leituras diferentes: a última janela encerrada (22/08/2025) e o último par de 12 meses (22/09/2025 a 18/09/2026)", () => {
+    // datas da gold e do CSV (01/10/2026: janela de 22/08/2025 a 22/08/2026; par de 22/09/2025 e 18/09/2026; 367 dias)
     const d = XG.cronograma.deslizamento.at(-1)!;
-    expect(d.ralie).toBe("2025-09-22");
-    expect(d.ralie_seguinte).toBe("2026-09-18");
+    expect(d.ralie_seguinte).toBe(XG.referencias.ralie);
+    const conf = csv("public/energia/series/expansao_confiabilidade_previsoes.csv").filter((r) => r.tipo === "TOTAL").at(-1)!;
+    const dmy = (iso: string) => iso.split("-").reverse().join("/");
     const h = entender(HTML.cronograma);
-    expect(h).toContain("As duas leituras terminam em fotografias diferentes: a confiabilidade usa a última janela de 12 meses já encerrada (previsões de 22/08/2025, janela até 22/08/2026), e a revisão compara a fotografia de 22/09/2025 com a de 18/09/2026");
-    expect(h).toContain("adiamento mediano, ponderado pela potência: 367 dias");
+    expect(h).toContain(`As duas leituras terminam em fotografias diferentes: a confiabilidade usa a última janela de 12 meses já encerrada (previsões de ${dmy(conf.ralie)}, janela até ${dmy(conf.fim_janela)}), e a revisão compara a fotografia de ${dmy(d.ralie)} com a de ${dmy(d.ralie_seguinte)}`);
+    expect(h).toContain(`adiamento mediano, ponderado pela potência: ${d.mediana_dias_ponderada!.toLocaleString("pt-BR")} dias`);
     expect(h).not.toContain("mediana ponderada de 367 dias");
   });
 
@@ -711,24 +767,46 @@ describe("'O que mudou' sem mudança: diz o que o bloco mede, em vez de repetir 
   it("MMGD: o 'O que mudou' diz a mudança real (conexões do último ano) e a revisão dos meses provisórios passa a Analisar", () => {
     const h = HTML.mmgd;
     const m = TR.mudancaMmgdAno(TG.mmgd);
-    expect(m).toContain("Em 2025, último ano completo, foram conectados 9.633,5 MW, menos que os 10.671,6 MW de 2024.");
+    const um = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const mesBR = (iso: string) => `${["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][Number(iso.slice(5, 7)) - 1]}/${iso.slice(0, 4)}`;
+    // o ano de referência e o anterior relidos da série anual, com a direção dita pelos valores arredondados
+    const ref = TG.mmgd.anual.find((a) => a.ano === TG.mmgd.ano_referencia)!;
+    const ant = TG.mmgd.anual.find((a) => a.ano === TG.mmgd.ano_referencia - 1)!;
+    const [pRef, pAnt] = [ref.potencia_mw!, ant.potencia_mw!];
+    const dirAno = um(pRef) === um(pAnt) ? "igual aos" : pRef > pAnt ? "mais que os" : "menos que os";
+    expect(m).toContain(`Em ${ref.ano}, último ano completo, foram conectados ${um(pRef)} MW, ${dirAno} ${um(pAnt)} MW de ${ant.ano}.`);
     expect(entender(h)).toContain(m);
-    expect(entender(h)).not.toMatch(/caem de 862,4 MW/);
-    expect(tudo(h)).toMatch(/caem de 862,4 MW/);
+    // os meses provisórios (depois do corte) com o primeiro e o último valor: a frase vai para Analisar, não para Entender
+    const prov = TG.mmgd.mensal.filter((x) => x.m > TG.mmgd.corte_provisorio);
+    expect(prov.length).toBeGreaterThan(1);
+    const [p0, p1] = [prov[0], prov[prov.length - 1]];
+    const trecho = `de ${um(p0.potencia_mw!)} MW em ${mesBR(p0.m)} para ${um(p1.potencia_mw!)} MW em ${mesBR(p1.m)}`;
+    expect(entender(h)).not.toContain(trecho);
+    expect(tudo(h)).toContain(trecho);
   });
 
   it("Energia estimada: o 'O que mudou' compara o último mês com o mesmo mês do ano anterior; a razão com a capacidade passa a Analisar", () => {
     const o = TG.ons_mmgd!;
     const m = TR.mudancaOnsMes(o);
-    expect(m).toMatch(/^Em ago\/2026, a MMGD estimada foi de 8\.967,9 MWmed no SIN, acima do mesmo mês do ano anterior \(7\.387,5 MWmed em ago\/2025\)\.$/);
-    // os dois meses relidos do CSV mensal publicado (linha do SIN)
+    // os dois meses relidos do CSV mensal publicado (linha do SIN): o último mês completo e o mesmo mês do ano anterior
     const csvOns = csv("public/energia/series/transicao_ons_mmgd_mensal.csv").filter((r) => r.submercado === "SIN");
-    expect(Number(csvOns.find((r) => r.mes === "2025-08")!.mmgd_mwmed)).toBeCloseTo(7387.5, 1);
-    expect(Number(csvOns.find((r) => r.mes === "2026-08")!.mmgd_mwmed)).toBeCloseTo(8967.9, 1);
+    const mUlt = o.ultimo_mes_completo!.m;
+    const mAnt = `${Number(mUlt.slice(0, 4)) - 1}${mUlt.slice(4)}`;
+    const vUlt = Number(csvOns.find((r) => r.mes === mUlt)!.mmgd_mwmed);
+    const vAnt = Number(csvOns.find((r) => r.mes === mAnt)!.mmgd_mwmed);
+    const um = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const mesBR = (iso: string) => `${["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][Number(iso.slice(5, 7)) - 1]}/${iso.slice(0, 4)}`;
+    const dir = um(vUlt) === um(vAnt) ? "igual ao" : vUlt > vAnt ? "acima do" : "abaixo do";
+    expect(m).toBe(`Em ${mesBR(mUlt)}, a MMGD estimada foi de ${um(vUlt)} MWmed no SIN, ${dir} mesmo mês do ano anterior (${um(vAnt)} MWmed em ${mesBR(mAnt)}).`);
     const h = HTML["energia-estimada"];
     expect(entender(h)).toContain(m);
-    expect(entender(h)).not.toContain("17,7%");
-    expect(tudo(h)).toContain("17,7%");
+    // a razão com a capacidade cadastrada (último mês com valor, antes dos meses provisórios) fica em Analisar
+    const comRazao = o.mensal.filter((x) => x.razao_estimativa_ons_capacidade_pct !== null && x.razao_estimativa_ons_capacidade_pct !== undefined);
+    expect(comRazao.length).toBeGreaterThan(0);
+    const ur = comRazao[comRazao.length - 1];
+    const frase = `A razão entre a energia estimada e a capacidade cadastrada foi ${um(ur.razao_estimativa_ons_capacidade_pct!)}% em ${mesBR(ur.m)}`;
+    expect(entender(h)).not.toContain(frase);
+    expect(tudo(h)).toContain(frase);
   });
 });
 
@@ -737,7 +815,8 @@ describe("termos explicados no ponto de uso, só com texto já publicado", () =>
     const h = HTML["energia-estimada"];
     const o = TG.ons_mmgd!;
     expect(entender(h)).toContain(TR.comoLerOns(o));
-    expect(entender(h)).toContain("quer dizer que, de cada 100 MWh da carga global, cerca de 10,8 MWh vieram da MMGD, segundo a estimativa do ONS");
+    const part = o.ultimo_mes_completo!.participacao_carga_global_sin_pct!;
+    expect(entender(h)).toContain(`quer dizer que, de cada 100 MWh da carga global, cerca de ${part.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} MWh vieram da MMGD, segundo a estimativa do ONS`);
     expect(entender(h)).not.toMatch(/× 0,5 h|nunca média de médias/);
     expect(tudo(h)).toMatch(/× 0,5 h/);
     expect(h).toContain('href="/setor-eletrico/aprenda/carga-global"');

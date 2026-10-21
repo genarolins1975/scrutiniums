@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { prefetchDoLink } from "@/lib/rotasPublicas";
 import type { ReactNode } from "react";
 
 type Variant = "primary" | "secondary" | "dark";
@@ -25,7 +26,7 @@ export function BotaoLink({
     dark: "bg-marfim text-carvao border-marfim hover:bg-papel",
   };
   return (
-    <Link href={href} className={`${base} ${variants[variant]}`}>
+    <Link href={href} prefetch={prefetchDoLink(href)} className={`${base} ${variants[variant]}`}>
       {children}
     </Link>
   );

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
+import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { Footer } from "@/components/layout/Footer";
 import { MarcaRolagem } from "@/components/energia/MarcaRolagem";
 import { RodapeEnergia } from "@/components/energia/RodapeEnergia";
@@ -16,8 +18,8 @@ export const metadata: Metadata = {
 
 /**
  * Casca do domínio Energia. O cabeçalho é de cada página (marca o módulo
- * ativo); aqui ficam o fundo do domínio e os rodapés. Público para leitura,
- * como o Crédito: o middleware só protege /app.
+ * ativo); aqui ficam o fundo do domínio e os rodapés. Os painéis exigem conta;
+ * só metodologia e Aprenda são abertos (src/lib/rotasPublicas.ts).
  */
 export default function SetorEletricoLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -31,6 +33,7 @@ export default function SetorEletricoLayout({ children }: { children: React.Reac
       <MarcaRolagem />
       <div className="flex-1">{children}</div>
       <RodapeEnergia />
+      <ParaIrAlem mapa={mapaParaIrAlem()} />
       <Footer compacto />
     </div>
   );

@@ -1,12 +1,29 @@
 import Link from 'next/link';
 import {internacionalJudiciario as d} from '@/lib/eficiencia/judiciario/internacional-dados';
-import {escore} from '@/lib/eficiencia/judiciario/internacional';
+import {escore,paisesReferencia,referenciaIndicador,INDICADORES_INTERNACIONAIS,type IndicadorInternacional} from '@/lib/eficiencia/judiciario/internacional';
 import {BASE_JUDICIARIO} from '@/lib/eficiencia/judiciario/modelo';
 import {n} from '@/lib/eficiencia/justica/modelo';
 import {SetaJudiciario} from './Editoria';
 import s from './Judiciario.module.css';
 
+const DESTAQUES:IndicadorInternacional[]=['f_7_1','f_7_5','f_7_6','f_7_2','f_8_4'];
+
+/** Posição entre os países com valor na edição; empate recebe a mesma posição. */
+function posicao(indicador:IndicadorInternacional,valor:number){
+ return d.paises.filter(p=>{const v=escore(p,indicador);return v!==null&&v>valor;}).length+1;
+}
+
 export function EntradaInternacionalJudiciario(){
- const brasil=d.paises.find(p=>p.iso3==='BRA')!,portugal=d.paises.find(p=>p.iso3==='PRT')!;
- return <section className={s.internationalTeaser} aria-labelledby="entrada-internacional-titulo"><div><p className={s.eyebrow}>Brasil e outros países</p><h2 id="entrada-internacional-titulo">O que a Justiça<br/>entrega às pessoas?</h2><p>Compare experiências de acesso, demora e cumprimento em {d.cobertura.paises} países e jurisdições. Mesmas perguntas, referências regionais e países que você escolhe.</p><Link className={s.primaryButton} href={BASE_JUDICIARIO+'/internacional'}>Explorar a comparação internacional<SetaJudiciario/></Link></div><figure><figcaption>Mesma edição. Dimensões diferentes.<span>Escores WJP · {d.edicao} · escala de 0 a 1</span></figcaption><table><thead><tr><th scope="col">Justiça civil</th><th scope="col">Brasil</th><th scope="col">Portugal</th></tr></thead><tbody>{([['f_7_1','Acesso e custo'],['f_7_5','Resposta sem demora excessiva'],['f_7_6','Cumprimento das decisões']] as const).map(([id,nome])=><tr key={id}><th scope="row">{nome}</th><td>{n(escore(brasil,id),3)}</td><td>{n(escore(portugal,id),3)}</td></tr>)}</tbody></table><p>Quanto mais perto de 1, maior a aderência ao critério. Não são percentuais de pessoas, meses de espera ou taxas administrativas.</p><p><a href={d.fonte.url}>Fonte: World Justice Project, edição {d.edicao}.</a></p></figure></section>;
+ const brasil=d.paises.find(p=>p.iso3==='BRA')!,outros=paisesReferencia(d.paises,'mundo',[]);
+ const linhas=DESTAQUES.map(id=>{const valor=escore(brasil,id);const ref=referenciaIndicador(outros,id);const comValor=d.paises.filter(p=>escore(p,id)!==null).length;return {id,valor,mediana:ref.mediana,posicao:valor===null?null:posicao(id,valor),comValor};});
+ const imparcialidade=linhas.find(l=>l.id==='f_8_4')!;
+ const pos=(id:IndicadorInternacional)=>{const l=linhas.find(l=>l.id===id)!;return l.posicao===null?'posição não informada':l.posicao+'º';};
+ return <section className={s.internationalTeaser} aria-labelledby="entrada-internacional-titulo"><div><p className={s.eyebrow}>Brasil e outros países · tratamento igual</p><h2 id="entrada-internacional-titulo">Todos são tratados<br/>igualmente?</h2><p>Na pesquisa do World Justice Project, o Brasil fica em {pos('f_7_1')} em acesso e custo da Justiça civil, em {pos('f_7_5')} em demora, em {pos('f_7_6')} no cumprimento das decisões e em {pos('f_8_4')} na imparcialidade do sistema criminal, entre {imparcialidade.comValor} países.</p><p>Os escores medem experiências e percepções de pesquisas domiciliares e de especialistas, de 0 a 1. Não são taxas administrativas nem meses de espera.</p><Link className={s.primaryButton} href={BASE_JUDICIARIO+'/internacional'}>Explorar a comparação internacional<SetaJudiciario/></Link></div><figure><figcaption>Posição do Brasil entre {d.cobertura.paises} países<span>Escores WJP · edição {d.edicao} · escala de 0 a 1 · referência: mediana dos outros países com valor, peso igual por país</span></figcaption><table><thead><tr><th scope="col">Subfator</th><th scope="col">Brasil</th><th scope="col">Mediana dos outros</th><th scope="col">Posição entre {d.cobertura.paises}</th></tr></thead><tbody>{linhas.map(l=><tr key={l.id} className={l.posicao!==null&&l.posicao>l.comValor*0.75?s.lowerQuartile:undefined}><th scope="row">{INDICADORES_INTERNACIONAIS[l.id].titulo}</th><td>{n(l.valor,3)}</td><td>{n(l.mediana,3)}</td><td>{l.posicao===null?'Sem valor':`${l.posicao}º`}</td></tr>)}</tbody></table><p>Linhas marcadas: Brasil no quarto inferior dos países com valor. Sem intervalo de incerteza; diferenças pequenas não demonstram significância.</p><p><a href={d.fonte.url}>Fonte: World Justice Project, Rule of Law Index, edição {d.edicao}.</a></p></figure></section>;
+}
+
+/** Posição do Brasil em subfatores escolhidos, contra a mediana dos outros países com valor. */
+export function TabelaPosicoesWjp({ids,legenda}:{ids:IndicadorInternacional[];legenda:string}){
+ const brasil=d.paises.find(p=>p.iso3==='BRA')!,outros=paisesReferencia(d.paises,'mundo',[]);
+ const linhas=ids.map(id=>{const valor=escore(brasil,id);const comValor=d.paises.filter(p=>escore(p,id)!==null).length;return {id,valor,mediana:referenciaIndicador(outros,id).mediana,posicao:valor===null?null:posicao(id,valor),comValor};});
+ return <div className={s.tableWrap} tabIndex={0} role="region" aria-label={legenda}><table className={s.table}><caption>{legenda} · WJP, edição {d.edicao} · escala de 0 a 1 · mediana dos outros países com valor</caption><thead><tr><th scope="col">Subfator</th><th scope="col">Brasil</th><th scope="col">Mediana dos outros</th><th scope="col">Posição</th></tr></thead><tbody>{linhas.map(l=><tr key={l.id} className={l.posicao!==null&&l.posicao>l.comValor*0.75?s.selected:undefined}><th scope="row">{INDICADORES_INTERNACIONAIS[l.id].titulo}</th><td>{n(l.valor,3)}</td><td>{n(l.mediana,3)}</td><td>{l.posicao===null?'Sem valor':`${l.posicao}º de ${l.comValor}`}</td></tr>)}</tbody></table><p className={s.muted}>Linhas destacadas: Brasil no quarto inferior. Percepções de pesquisas domiciliares e de especialistas; sem intervalo de incerteza. <a className="underline" href={d.fonte.url}>Fonte: World Justice Project, Rule of Law Index {d.edicao}.</a></p></div>;
 }

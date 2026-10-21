@@ -7,6 +7,7 @@
     "schema_version": 1,
     "literais": [
       { "pt": "/", "conteudo": "parcialmente_traduzido" },
+      { "pt": "/aperitivo/conta-de-luz", "conteudo": "traduzido" },
       { "pt": "/cadastro", "conteudo": "portugues_marcado" },
       { "pt": "/entrar", "conteudo": "traduzido" },
       { "pt": "/entrar/sms", "conteudo": "traduzido" },
@@ -110,6 +111,7 @@
         { "id": "home-titulo", "estado": "traduzido", "chaves": ["home.hero.titulo_inicio", "home.hero.titulo_destaque"] },
         { "id": "home-acoes", "estado": "traduzido", "chaves": ["acesso.criar_conta", "home.hero.ja_cadastrado"] },
         { "id": "home-cabecalho", "estado": "portugues_marcado" },
+        { "id": "home-perguntas", "estado": "portugues_marcado" },
         { "id": "home-rotulo", "estado": "traduzido", "chaves": ["home.hero.rotulo"] },
         { "id": "home-introducao", "estado": "traduzido", "chaves": ["home.hero.introducao"] },
         { "id": "home-beneficios", "estado": "traduzido", "chaves": ["home.hero.beneficio_conta", "home.hero.beneficio_evidencia", "home.hero.beneficio_gratuidade"] },
@@ -133,6 +135,7 @@
     { "id": "eficiencia", "nome": "Eficiência Estatal", "ui": ["src/app/eficiencia-estatal", "src/components/eficiencia", "src/lib/eficiencia"], "gold": ["public/eficiencia", "src/lib/eficiencia", "data/eficiencia_mobilidade/gold.json", "data/eficiencia_mobilidade/aop/resumo.json", "data/eficiencia_mobilidade/resumo.json", "docs/obee/resultados/v4/indice-resultados-v4.json", "pipeline/eficiencia/catalogo_indicadores.json", "pipeline/eficiencia_escores/fichas.json"] },
     { "id": "contas_federais", "nome": "Contas Públicas Federais", "ui": ["src/app/contas-publicas", "src/components/contas-publicas", "src/lib/contas-publicas"], "gold": ["src/lib/contas-publicas/snapshots"] },
     { "id": "contas_estaduais", "nome": "Contas Públicas Estaduais", "ui": ["src/app/contas-publicas-estaduais", "src/components/contas-estaduais", "src/lib/contas-estaduais"], "gold": ["src/lib/contas-estaduais"] },
+    { "id": "agro", "nome": "Agronegócio", "ui": ["src/app/agronegocio", "src/app/api/agro", "src/components/agro", "src/lib/agro"], "gold": ["public/agro/gold"] },
     { "id": "credito", "nome": "Crédito", "ui": ["public/obs", "src/app/observatorio", "src/app/observatorio-do-credito", "src/lib/observatorioHead.ts", "src/lib/data/observatorioAbas.ts"], "gold": ["public/obs/data/gold"] }
   ],
   "conteudo": [
@@ -143,7 +146,7 @@
     { "path": "docs/api/contrato-gold.json", "dominio": "plataforma", "formato": "json" },
     { "path": "public/obs/data/gold/report.html", "dominio": "credito", "formato": "html" }
   ],
-  "observar": ["src/app", "src/components", "src/lib", "src/i18n", "public/obs", "public/energia", "public/gas", "public/saneamento", "public/eficiencia", "public/contas-estaduais", "data/eficiencia_mobilidade"],
+  "observar": ["src/app", "src/components", "src/lib", "src/i18n", "public/obs", "public/energia", "public/gas", "public/saneamento", "public/eficiencia", "public/agro", "public/contas-estaduais", "data/eficiencia_mobilidade"],
   "exclusoes": [
     { "sufixo": ".min.js", "motivo": "Bundle gerado a partir das fontes JavaScript já contadas." },
     { "sufixo": ".d.ts", "motivo": "Declaração de tipos, sem implementação executável de interface." },

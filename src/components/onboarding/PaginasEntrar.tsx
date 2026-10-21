@@ -58,7 +58,8 @@ function Moldura({ idioma, children }: { idioma: Idioma; children: ReactNode }) 
 
 /**
  * Login principal: e-mail + senha (senha criada na etapa 3 do cadastro).
- * O código por SMS permanece como alternativa e recuperação em /entrar/sms.
+ * O código por SMS permanece como alternativa em /entrar/sms, e o link
+ * "Esqueci minha senha" abre a recuperação em /entrar/sms?recuperar=1.
  */
 export async function PaginaEntrar({ idioma, searchParams }: { idioma: Idioma; searchParams?: { de?: string } }) {
   // Destino pós-login (?de=...) definido pelo middleware ao barrar rota
@@ -94,13 +95,15 @@ export async function PaginaEntrar({ idioma, searchParams }: { idioma: Idioma; s
 }
 
 /**
- * Entrada alternativa por código SMS no telefone verificado. Também cobre
- * recuperação de acesso de quem esqueceu a senha: depois de entrar,
- * a nova senha é definida em /app/conta.
+ * Entrada alternativa por código SMS no telefone verificado. Com
+ * ?recuperar=1 (link "Esqueci minha senha" de /entrar), o código leva
+ * direto à definição de nova senha em /app/conta, sem pedir a atual.
  */
-export async function PaginaEntrarSms({ idioma }: { idioma: Idioma }) {
+export async function PaginaEntrarSms({ idioma, searchParams }: { idioma: Idioma; searchParams?: { recuperar?: string } }) {
+  const recuperar = searchParams?.recuperar === "1";
   const user = await getSessionUser();
-  if (user) {
+  // Recuperação pode ser reiniciada já logado (janela vencida em Conta).
+  if (user && !recuperar) {
     redirect(nextStepPath(user.onboardingStatus as OnboardingStatus));
   }
 
@@ -109,27 +112,45 @@ export async function PaginaEntrarSms({ idioma }: { idioma: Idioma }) {
     idioma,
     children: (
       <section className="border border-linha bg-papel p-8 md:p-10">
-        <h1 className="font-serif text-3xl text-carvao">{t.tituloSms}</h1>
-        <p className="mt-3 text-sm text-carvao-muted">{t.introducaoSms}</p>
-        <p className="mt-2 text-sm text-mineral">{t.recuperacaoSms}</p>
+        <h1 className="font-serif text-3xl text-carvao">{recuperar ? t.tituloRecuperar : t.tituloSms}</h1>
+        {recuperar ? (
+          <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{t.introducaoRecuperar}</p>
+        ) : (
+          <>
+            <p className="mt-3 text-sm text-carvao-muted">{t.introducaoSms}</p>
+            <p className="mt-2 text-sm text-mineral">
+              {t.esqueceuSenha}{" "}
+              <Link
+                href={hrefNoIdioma("/entrar/sms?recuperar=1", idioma)}
+                className="text-bronze-dark underline underline-offset-4 hover:text-carvao"
+              >
+                {t.recuperarAcesso}
+              </Link>
+            </p>
+          </>
+        )}
         <div className="mt-8">
-          <EntrarForm paises={opcoesPaisSms(idioma)} idioma={idioma} />
+          <EntrarForm paises={opcoesPaisSms(idioma)} idioma={idioma} {...(recuperar ? { recuperar: true } : {})} />
         </div>
       </section>
     ),
   });
 }
 
-/** Segunda tela do login por SMS: código de 6 dígitos enviado por SMS. */
-export async function PaginaVerificarSms({ idioma }: { idioma: Idioma }) {
+/**
+ * Segunda tela do login por SMS: código de 6 dígitos enviado por SMS.
+ * Com ?recuperar=1, o código leva à definição de nova senha.
+ */
+export async function PaginaVerificarSms({ idioma, searchParams }: { idioma: Idioma; searchParams?: { recuperar?: string } }) {
+  const recuperar = searchParams?.recuperar === "1";
   const user = await getSessionUser();
-  if (user) {
+  if (user && !recuperar) {
     redirect(nextStepPath(user.onboardingStatus as OnboardingStatus));
   }
 
   const phone = readSignedPhoneCookie(LOGIN_PHONE_COOKIE);
   if (!phone) {
-    redirect(hrefNoIdioma("/entrar/sms", idioma));
+    redirect(hrefNoIdioma(recuperar ? "/entrar/sms?recuperar=1" : "/entrar/sms", idioma));
   }
 
   const t = TEXTOS_ENTRAR[idioma];
@@ -137,10 +158,14 @@ export async function PaginaVerificarSms({ idioma }: { idioma: Idioma }) {
     idioma,
     children: (
       <section className="border border-linha bg-papel p-8 md:p-10">
-        <h1 className="font-serif text-3xl text-carvao">{t.tituloVerificar}</h1>
+        <h1 className="font-serif text-3xl text-carvao">{recuperar ? t.tituloRecuperar : t.tituloVerificar}</h1>
         <p className="mt-3 text-sm text-carvao-muted">{t.introducaoVerificar}</p>
         <div className="mt-8">
-          <EntrarVerificarForm maskedPhone={maskPhone(phone)} idioma={idioma} />
+          <EntrarVerificarForm
+            maskedPhone={maskPhone(phone)}
+            idioma={idioma}
+            {...(recuperar ? { recuperar: true } : {})}
+          />
         </div>
       </section>
     ),

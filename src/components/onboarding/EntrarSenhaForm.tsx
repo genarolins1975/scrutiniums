@@ -90,6 +90,13 @@ export function EntrarSenhaForm({ de, idioma = "pt" }: { de?: string; idioma?: I
         error={passwordError}
       />
 
+      <Link
+        href={hrefNoIdioma("/entrar/sms?recuperar=1", idioma)}
+        className="-mt-3 self-end min-h-[44px] py-3 text-sm text-bronze-dark underline underline-offset-4 hover:text-carvao"
+      >
+        {t.esqueciSenha}
+      </Link>
+
       <Button type="submit" full disabled={submitting}>
         {submitting ? t.entrando : t.entrar}
       </Button>

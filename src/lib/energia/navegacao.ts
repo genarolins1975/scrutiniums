@@ -243,6 +243,18 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
     publicado: true,
     get pergunta() { return tx("De onde vem a eletricidade?", "Where does the electricity come from?"); },
   }),
+  // seção do módulo Geração com destino próprio no menu (pedido do dono de 20/10/2026: a página ficava oculta,
+  // alcançável só por um link no painel de restrições, pelo mapa e pela busca)
+  {
+    slug: "curtailment",
+    href: "/setor-eletrico/geracao/curtailment",
+    get rotulo() { return tx("Curtailment", "Curtailment"); },
+    get pergunta() { return tx("Por que eólicas e solares são cortadas e quem perde?", "Why are wind and solar plants cut, and who loses?"); },
+    get resumo() { return tx("O que é o corte de geração renovável, por que acontece, quanto custa e para quem, com laboratórios interativos identificados como modelo didático.", "What renewable curtailment is, why it happens, how much it costs and to whom, with interactive labs labelled as didactic models."); },
+    grupo: "operacao",
+    publicado: true,
+    integrado: true,
+  },
   doModulo("carga", {
     get rotulo() { return tx("Carga", "Load"); },
     grupo: "operacao",

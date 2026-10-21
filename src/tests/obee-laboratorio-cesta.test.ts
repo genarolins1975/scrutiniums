@@ -33,6 +33,10 @@ describe('OBEE: laboratório público por decisão editorial, com desligamento',
     expect(response.headers.get('X-Robots-Tag')).toContain('noindex');
     expect(response.headers.get('Cache-Control')).toContain('no-store');
     expect(html).toContain('id="backlink"');
+    // O índice saiu da entrada (19/10/2026): o retorno, inclusive o reescrito com o par escolhido, leva ao painel do índice.
+    expect(html).toContain('href="/eficiencia-estatal/indice-de-resultados#atlas-indice"');
+    expect(html).toContain("'/eficiencia-estatal/indice-de-resultados?territorio='");
+    expect(html).not.toContain('/eficiencia-estatal?visao=cidades');expect(html).not.toContain('#atlas-piloto');
     expect(html).toContain('Prévia experimental para revisão');
     expect(html).toContain('Precisão municipal não quantificada');
     const payload = JSON.parse(html.match(/<script id="data" type="application\/json">([\s\S]*?)<\/script>/)![1]);

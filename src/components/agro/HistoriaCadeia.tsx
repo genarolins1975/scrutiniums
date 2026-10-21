@@ -1,0 +1,11 @@
+'use client';
+import Link from 'next/link';
+import { useState } from 'react';
+import type { CadeiaId, SnapshotAgro } from '@/lib/agro/tipos';
+import { CADEIAS, numeroAgro } from '@/lib/agro/modelo';
+import s from './Agro.module.css';
+export function HistoriaCadeiaAgro({ cadeia, credito, janela }: {
+    cadeia: CadeiaId;
+    credito: SnapshotAgro['credito']['produtos'];
+    janela: string;
+}) { const c = CADEIAS.find(c => c.id === cadeia)!, [passo, setPasso] = useState(0), items = credito.filter(r => r.cadeia === cadeia); const passos = [{ titulo: 'Reconheça o produto', texto: c.mecanismo }, { titulo: 'Separe o que está medido', texto: 'Produção física e comércio exterior estão no início desta ficha, com estados e série anual. O financiamento registrado abaixo é outra medida, não um substituto da safra.' }, { titulo: 'Leia o financiamento', texto: items.length ? 'O item declarado na cédula aparece entre os maiores itens preservados. Seu valor descreve contratação, sem identificar produção, beneficiários únicos ou resultado da atividade.' : 'O item não aparece entre os 15 maiores de cada finalidade preservados. Isso não demonstra valor zero, ausência de financiamento ou falta de acesso.' }, { titulo: 'Chegue ao consumo, sem pular a evidência', texto: c.consumo + ' ' + c.limite }]; return <div id="t2" className={s.mechanism}><span className={s.status}>Explicação conceitual · T2 · história da cadeia</span><nav aria-label={'Passos da história de ' + c.nome}>{passos.map((p, i) => <button key={p.titulo} aria-pressed={passo === i} onClick={() => setPasso(i)}>{i + 1}. {p.titulo}</button>)}</nav><div className={s.sectionHeading}><div><p className={s.eyebrow}>{c.nome} · passo {passo + 1} de 4</p><h2>{passos[passo].titulo}</h2></div><p>{passos[passo].texto}</p></div>{passo === 2 && items.length > 0 && <p className={s.note}>{items.map(r => `${r.nome} · ${r.finalidade}: R$ ${numeroAgro(r.valor, 2)}`).join('; ')}. Janela: {janela}. Fonte BCB/MDCR preservada. Bovinos não separa corte de leite.</p>}<p className={s.note}>Uma estrutura de história, com conteúdo próprio das doze cadeias. As doze instâncias não contam como doze artefatos distintos.</p><Link href="/agronegocio/metodologia#cobertura" className={s.button} prefetch={false}>Conferir a cobertura da cadeia</Link></div>; }

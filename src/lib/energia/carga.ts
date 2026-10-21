@@ -324,9 +324,22 @@ export function textoOutraBase(p: Pick<P025, "comparacoes">, sm: Regiao, janela:
       ? tx("nas mesmas datas, os dias do ano anterior caem em outros dias da semana", "on the same dates, the days of the previous year fall on other days of the week", idioma)
       : tx("nos mesmos dias da semana, a janela de comparação é deslocada 364 dias", "on the same days of the week, the comparison window is shifted by 364 days", idioma);
   const d = (x: string) => dataBR(x, idioma);
+  // qual das duas ler primeiro: a de mesmos dias da semana é a principal; a de mesmas datas reproduz a taxa publicada antes
+  const qual =
+    outra === "mesmas_datas"
+      ? tx(
+          " A taxa principal é a de cima: cada dia útil contra um dia útil, cada domingo contra um domingo; a de mesmas datas reproduz a que o observatório publicava antes.",
+          " The main rate is the one above: each working day against a working day, each Sunday against a Sunday; the same-dates rate reproduces the one the observatory used to publish.",
+          idioma,
+        )
+      : tx(
+          " A taxa principal é a de mesmos dias da semana; a de cima reproduz a que o observatório publicava antes.",
+          " The main rate is the same-days-of-the-week one; the one above reproduces the rate the observatory used to publish.",
+          idioma,
+        );
   return tx(
-    `Com ${nome} (${d(l.inicio_ant)} a ${d(l.fim_ant)}), a variação da mesma janela é ${sinal(l.variacao_pct, 2, "", idioma)}%. As duas taxas usam bases diferentes: ${diferenca}.`,
-    `With ${nome} (${d(l.inicio_ant)} to ${d(l.fim_ant)}), the change for the same window is ${sinal(l.variacao_pct, 2, "", idioma)}%. The two rates use different bases: ${diferenca}.`,
+    `Com ${nome} (${d(l.inicio_ant)} a ${d(l.fim_ant)}), a variação da mesma janela é ${sinal(l.variacao_pct, 2, "", idioma)}%. As duas taxas usam bases diferentes: ${diferenca}.${qual}`,
+    `With ${nome} (${d(l.inicio_ant)} to ${d(l.fim_ant)}), the change for the same window is ${sinal(l.variacao_pct, 2, "", idioma)}%. The two rates use different bases: ${diferenca}.${qual}`,
     idioma,
   );
 }
@@ -787,11 +800,20 @@ export function textoRevisoes(r: P025["revisoes"], idioma: Idioma = idiomaEnergi
           `in the ${plural(r.revisoes_com_percentual, "revision", "revisions", "en")} with a positive previous value, a median of ${num(r.mediana_abs_pct, 4, "en")}% and a maximum of ${num(r.max_abs_pct, 2, "en")}% in absolute value`,
           idioma,
         );
-  const corr = r.linhas.filter((l) => l.situacao === "correcao_de_valor_fora_do_dominio").length;
+  const corr = r.correcoes_fora_do_dominio ?? r.linhas.filter((l) => l.situacao === "correcao_de_valor_fora_do_dominio").length;
+  // dias_revisados conta pares (subsistema, dia): dito como "dias", exagerava o alcance (110 contra 39 datas em 17/10/2026)
+  const onde =
+    r.datas_revisadas == null
+      ? tx(`em ${plural(r.dias_revisados, "combinação", "combinações")} de subsistema e dia`, `across ${plural(r.dias_revisados, "subsystem-day pair", "subsystem-day pairs", "en")}`, idioma)
+      : tx(
+          `em ${plural(r.datas_revisadas, "data", "datas")} (${plural(r.dias_revisados, "combinação", "combinações")} de subsistema e dia)`,
+          `on ${plural(r.datas_revisadas, "date", "dates", "en")} (${plural(r.dias_revisados, "subsystem-day pair", "subsystem-day pairs", "en")})`,
+          idioma,
+        );
   return tx(
-    `Entre ${plural(r.capturas_diaria.length, "captura", "capturas")} da carga diária, ${plural(r.total, "valor foi revisado", "valores foram revisados")} em ${plural(r.dias_revisados, "dia", "dias")}: ${mag}` +
+    `Entre ${plural(r.capturas_diaria.length, "captura", "capturas")} da carga diária, ${plural(r.total, "valor foi revisado", "valores foram revisados")} ${onde}: ${mag}` +
       (corr ? `; ${plural(corr, "correção", "correções")} de valor fora do domínio (não positivo) fica à parte.` : "."),
-    `Across ${plural(r.capturas_diaria.length, "capture", "captures", "en")} of the daily load, ${plural(r.total, "value was revised", "values were revised", "en")} on ${plural(r.dias_revisados, "day", "days", "en")}: ${mag}` +
+    `Across ${plural(r.capturas_diaria.length, "capture", "captures", "en")} of the daily load, ${plural(r.total, "value was revised", "values were revised", "en")} ${onde}: ${mag}` +
       (corr ? `; ${plural(corr, "correction", "corrections", "en")} of an out-of-domain value (not positive) ${corr === 1 ? "is" : "are"} kept apart.` : "."),
     idioma,
   );

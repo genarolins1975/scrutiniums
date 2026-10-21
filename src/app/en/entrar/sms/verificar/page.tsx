@@ -8,6 +8,11 @@ export const metadata = metadadosIngleses("/entrar/sms/verificar", {
   descricao: "Enter the access code sent by SMS to sign in to Scrutiniums.",
 });
 
-export default async function EntrarSmsVerificarInglesPage() {
-  return PaginaVerificarSms({ idioma: "en" });
+/** Mesma página em inglês; ?recuperar=1 abre a recuperação de senha. */
+export default async function EntrarSmsVerificarInglesPage({
+  searchParams,
+}: {
+  searchParams?: { recuperar?: string };
+}) {
+  return PaginaVerificarSms({ idioma: "en", searchParams });
 }

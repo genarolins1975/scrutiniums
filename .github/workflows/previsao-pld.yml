@@ -40,6 +40,15 @@ on:
         description: "Dia de origem AAAA-MM-DD (padrão: hoje em Brasília). Rodada fora do horário é registrada como manual e atrasada."
         required: false
         default: ""
+      agendador:
+        # O cron do GitHub chegou a disparar entre 09h48 e 11h08 de Brasília (18/10/2026), depois do prazo
+        # das 08h00. Um agendador externo chama este workflow pela API no horário, com agendador=externo:
+        # a rodada do dia conta como agendada, com o gatilho registrado no arquivo. Disparo à mão usa "manual".
+        description: "Quem dispara: manual (pessoa) ou externo (agendador externo, conta como rodada agendada do dia)."
+        required: false
+        default: "manual"
+        type: choice
+        options: ["manual", "externo"]
 
 permissions:
   contents: write
@@ -55,7 +64,11 @@ jobs:
     # espera máxima até o corte (~75 min a partir do primeiro gatilho) + coleta + gold + testes
     timeout-minutes: 120
     env:
-      MODO: ${{ github.event_name == 'schedule' && 'agendada' || 'manual' }}
+      # agendada: cron do GitHub, ou agendador externo pedindo a rodada do próprio dia (sem origem informada)
+      MODO: ${{ (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.agendador == 'externo' && inputs.origem == '')) && 'agendada' || 'manual' }}
+      # quem acionou o disparo (no agendador externo, o dono do token): fica no arquivo para auditoria
+      ACIONADO_POR: ${{ github.triggering_actor }}
+      GATILHO: ${{ github.event_name == 'schedule' && 'cron do GitHub' || (inputs.agendador == 'externo' && inputs.origem == '') && 'agendador externo' || 'manual' }}
       ORIGEM: ${{ inputs.origem }}
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
@@ -140,13 +153,13 @@ jobs:
             echo "Rodada registrada por outra execução durante a espera; nada a fazer."
             exit 0
           fi
-          python3 -m pipeline.energia.previsoes.emissao emitir --modo "$MODO" --run-url "$RUN_URL" $ARG
+          python3 -m pipeline.energia.previsoes.emissao emitir --modo "$MODO" --gatilho "$GATILHO" --acionado-por "$ACIONADO_POR" --run-url "$RUN_URL" $ARG
 
       - name: Registrar falha da rodada
         if: failure() && steps.feita.outputs.sim == '0' && steps.emitir.outcome != 'success'
         run: |
           ARG=""; [ -n "$ORIGEM" ] && ARG="--origem $ORIGEM"
-          python3 -m pipeline.energia.previsoes.emissao falha --modo "$MODO" --run-url "$RUN_URL" \
+          python3 -m pipeline.energia.previsoes.emissao falha --modo "$MODO" --gatilho "$GATILHO" --acionado-por "$ACIONADO_POR" --run-url "$RUN_URL" \
             --mensagem "falha no workflow antes da emissão (${{ github.run_id }})" $ARG || true
 
       - name: Gold das previsões (arquivo, desempenho e fichas)
@@ -221,8 +234,32 @@ jobs:
             exit 0
           fi
           git commit -m "Previsão do PLD: rodada de $(TZ=America/Sao_Paulo date +%d/%m/%Y) ($MODO)"
+          # o que a rodada não publica (metricas.json, arquivos.json e o manifesto, reescritos por
+          # executar_modulo, e qualquer outro derivado) sai da árvore antes do rebase: com eles, o
+          # pull --rebase recusava ("You have unstaged changes") e nenhuma das 84 execuções de 02 a
+          # 18/10/2026 registrou a rodada. Rebase em conflito é abortado antes da tentativa seguinte.
+          git stash push --include-untracked --quiet -m "derivados que a rodada não publica"
           for tentativa in 1 2 3 4 5; do
-            git pull --rebase origin main && git push && exit 0
+            if git pull --rebase origin main; then
+              # o manifesto traz o sha256 de cada arquivo publicado: sem ele, a gold das previsões entrava no main
+              # com sha256 diferente do manifesto e o CI do main ficava vermelho (rodada de 19/10/2026). Ele é
+              # refeito sobre o main já atualizado, num commit à parte que sai se o push for recusado, para a
+              # tentativa seguinte rebasear só a rodada e refazer o manifesto de novo.
+              MANIFESTO=0
+              if [ "${{ steps.testes.outcome }}" = "success" ] && python3 -c "from pipeline.energia.modulos import dados; dados.escreve_manifesto(final=True)"; then
+                git add public/energia/gold/manifesto.json
+                if ! git diff --cached --quiet; then
+                  git commit -q -m "Setor Elétrico: manifesto acompanha a rodada da previsão do PLD"
+                  MANIFESTO=1
+                fi
+              fi
+              # manifesto que falhou ao ser refeito não pode sujar a árvore do rebase seguinte
+              git checkout -- public/energia/gold/manifesto.json 2>/dev/null || true
+              git push && exit 0
+              if [ "$MANIFESTO" = 1 ]; then git reset --hard -q HEAD~1; fi
+            else
+              git rebase --abort 2>/dev/null || true
+            fi
             sleep $((tentativa * 5))
           done
           echo "::error::não foi possível registrar a rodada após 5 tentativas"

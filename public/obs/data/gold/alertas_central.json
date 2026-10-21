@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-24T15:25:14+00:00",
+ "gerado_em": "2026-10-20T15:56:39+00:00",
  "familias": [
   {
    "id": "macro",
@@ -12,7 +12,7 @@
    "persistencia": "número de execuções anteriores em que a mesma regra disparou",
    "limitacao": "Séries agregadas: um alerta macro descreve o sistema, nunca uma instituição.",
    "view": "pulse",
-   "ativos": 2,
+   "ativos": 3,
    "arquivo": "alerts.json",
    "disponivel": true
   },
@@ -27,7 +27,7 @@
    "persistencia": "a própria regra exige alta em 2 datas-base consecutivas",
    "limitacao": "Inadimplência arrastada por submodalidade: o ciclo do cartão migra saldos entre à vista, rotativo e parcelamento entre datas-base, então o nível por submodalidade não é comparável às séries SGS por modalidade.",
    "view": "panorama",
-   "ativos": 4,
+   "ativos": 19,
    "arquivo": "panorama.json",
    "disponivel": true
   },
@@ -42,7 +42,7 @@
    "persistencia": "semanas consecutivas fora do limiar",
    "limitacao": "Métrica de disponibilidade técnica do ecossistema; não mede risco de crédito.",
    "view": "openfinance",
-   "ativos": 2,
+   "ativos": 3,
    "arquivo": "openfinance.json",
    "disponivel": true
   },
@@ -82,18 +82,18 @@
    "id": "macro:stale_data",
    "familia": "macro",
    "nivel": "informativo",
-   "titulo": "5 séries mensais além do limiar de atualidade (100 dias desde a referência)",
-   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (146 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (146 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (115 dias). Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 5,
+   "titulo": "13 séries mensais além do limiar de atualidade (100 dias desde a referência)",
+   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (172 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (172 dias); Falências ajuizadas — TJBA (novos processos/mês) (172 dias). Ausência de dado novo NÃO foi interpretada como zero.",
+   "valor": 13,
    "limiar": 100,
    "referencia": null,
    "fonte": "múltiplas",
-   "evidencia_persistencia": "32 execuções anteriores",
+   "evidencia_persistencia": "5 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "method"
    },
-   "ordem": 0.95,
+   "ordem": 0.87,
    "serie_recente": null
   },
   {
@@ -101,22 +101,18 @@
    "familia": "macro",
    "nivel": "atencao",
    "titulo": "Comprometimento de renda acima de 28%",
-   "detalhe": "Comprometimento de renda das famílias com o serviço da dívida do SFN: level = 28.85 acima do limiar 28.0 (referência 2026-06-01, fonte BCB/SGS, série 29034).",
-   "valor": 28.85,
+   "detalhe": "Comprometimento de renda das famílias com o serviço da dívida do SFN: level = 28.72 acima do limiar 28.0 (referência 2026-07-01, fonte BCB/SGS, série 29034).",
+   "valor": 28.72,
    "limiar": 28.0,
-   "referencia": "2026-06",
+   "referencia": "2026-07",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "85 execuções anteriores",
+   "evidencia_persistencia": "43 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
    },
-   "ordem": 0.030357,
+   "ordem": 0.025714,
    "serie_recente": [
-    {
-     "p": "2024-07-01",
-     "v": 26.53
-    },
     {
      "p": "2024-08-01",
      "v": 26.73
@@ -203,57 +199,454 @@
     },
     {
      "p": "2026-05-01",
-     "v": 28.49
+     "v": 28.47
     },
     {
      "p": "2026-06-01",
-     "v": 28.85
+     "v": 28.66
+    },
+    {
+     "p": "2026-07-01",
+     "v": 28.72
     }
    ]
   },
   {
-   "id": "carteira:produto_pf_deterioracao:Veículos · PF",
+   "id": "macro:inad_pf_level",
+   "familia": "macro",
+   "nivel": "relevante",
+   "titulo": "Inadimplência PF acima de 6%",
+   "detalhe": "Inadimplência (>90 dias) - Pessoas físicas: level = 6.03 acima do limiar 6.0 (referência 2026-08-01, fonte BCB/SGS, série 21084).",
+   "valor": 6.03,
+   "limiar": 6.0,
+   "referencia": "2026-08",
+   "fonte": "BCB/SGS",
+   "evidencia_persistencia": "5 execuções anteriores",
+   "recorrente": true,
+   "link": {
+    "view": "pulse"
+   },
+   "ordem": 0.005,
+   "serie_recente": [
+    {
+     "p": "2024-09-01",
+     "v": 3.83
+    },
+    {
+     "p": "2024-10-01",
+     "v": 3.79
+    },
+    {
+     "p": "2024-11-01",
+     "v": 3.75
+    },
+    {
+     "p": "2024-12-01",
+     "v": 3.63
+    },
+    {
+     "p": "2025-01-01",
+     "v": 3.89
+    },
+    {
+     "p": "2025-02-01",
+     "v": 3.96
+    },
+    {
+     "p": "2025-03-01",
+     "v": 4.03
+    },
+    {
+     "p": "2025-04-01",
+     "v": 4.25
+    },
+    {
+     "p": "2025-05-01",
+     "v": 4.36
+    },
+    {
+     "p": "2025-06-01",
+     "v": 4.41
+    },
+    {
+     "p": "2025-07-01",
+     "v": 4.66
+    },
+    {
+     "p": "2025-08-01",
+     "v": 4.92
+    },
+    {
+     "p": "2025-09-01",
+     "v": 4.89
+    },
+    {
+     "p": "2025-10-01",
+     "v": 4.99
+    },
+    {
+     "p": "2025-11-01",
+     "v": 5.12
+    },
+    {
+     "p": "2025-12-01",
+     "v": 5.12
+    },
+    {
+     "p": "2026-01-01",
+     "v": 5.38
+    },
+    {
+     "p": "2026-02-01",
+     "v": 5.56
+    },
+    {
+     "p": "2026-03-01",
+     "v": 5.39
+    },
+    {
+     "p": "2026-04-01",
+     "v": 5.51
+    },
+    {
+     "p": "2026-05-01",
+     "v": 5.63
+    },
+    {
+     "p": "2026-06-01",
+     "v": 5.42
+    },
+    {
+     "p": "2026-07-01",
+     "v": 5.8
+    },
+    {
+     "p": "2026-08-01",
+     "v": 6.03
+    }
+   ]
+  },
+  {
+   "id": "carteira:produto_pf_deterioracao:Rural · PF",
    "familia": "carteira",
    "nivel": null,
-   "titulo": "Veículos · PF — inadimplência (arrastada)",
-   "detalhe": "6.30% → 6.69% (2026-04 → 2026-07). Δ3m +0.39 p.p. · Δ12m +1.14 p.p. · carteira R$ 422.1 bi.",
-   "valor": 6.69,
+   "titulo": "Rural · PF — inadimplência (arrastada)",
+   "detalhe": "7.01% → 8.70% (2026-05 → 2026-08). Δ3m +1.69 p.p. · Δ12m +3.79 p.p. · carteira R$ 686.7 bi.",
+   "valor": 8.7,
    "limiar": null,
-   "referencia": "2026-07",
+   "referencia": "2026-08",
    "fonte": "BCB/SCR.data",
    "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
    "recorrente": null,
    "link": {
     "view": "panorama"
    },
-   "ordem": 1.14
+   "ordem": 3.79
+  },
+  {
+   "id": "carteira:ocupacao_deterioracao:Autônomo · PF",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Autônomo · PF — inadimplência (arrastada)",
+   "detalhe": "7.42% → 8.27% (2026-05 → 2026-08). Δ3m +0.85 p.p. · Δ12m +2.33 p.p. · carteira R$ 408.4 bi.",
+   "valor": 8.27,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama"
+   },
+   "ordem": 2.33
+  },
+  {
+   "id": "carteira:produto_pf_deterioracao:Crédito pessoal · PF",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Crédito pessoal · PF — inadimplência (arrastada)",
+   "detalhe": "11.23% → 11.62% (2026-05 → 2026-08). Δ3m +0.39 p.p. · Δ12m +2.05 p.p. · carteira R$ 379.9 bi.",
+   "valor": 11.62,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama"
+   },
+   "ordem": 2.05
+  },
+  {
+   "id": "carteira:renda_deterioracao:Acima de 20 salários mínimos · PF",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Acima de 20 salários mínimos · PF — inadimplência (arrastada)",
+   "detalhe": "5.09% → 6.13% (2026-05 → 2026-08). Δ3m +1.04 p.p. · Δ12m +1.99 p.p. · carteira R$ 977.7 bi.",
+   "valor": 6.13,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama"
+   },
+   "ordem": 1.99
+  },
+  {
+   "id": "carteira:ocupacao_deterioracao:Outros · PF",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Outros · PF — inadimplência (arrastada)",
+   "detalhe": "8.05% → 8.29% (2026-05 → 2026-08). Δ3m +0.24 p.p. · Δ12m +1.60 p.p. · carteira R$ 1.334.5 bi. 'Outros' é o agregado residual do SCR (soma do que não cabe nas demais categorias) — a taxa é real, mas não aponta um produto único.",
+   "valor": 8.29,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama"
+   },
+   "ordem": 1.6
+  },
+  {
+   "id": "carteira:ocupacao_deterioracao:Empresário · PF",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Empresário · PF — inadimplência (arrastada)",
+   "detalhe": "5.41% → 5.96% (2026-05 → 2026-08). Δ3m +0.55 p.p. · Δ12m +1.55 p.p. · carteira R$ 862.7 bi.",
+   "valor": 5.96,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama"
+   },
+   "ordem": 1.55
+  },
+  {
+   "id": "carteira:uf_deterioracao:Mato Grosso do Sul (MS)",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Mato Grosso do Sul (MS) — inadimplência (arrastada)",
+   "detalhe": "6.59% → 8.04% (2026-05 → 2026-08). Δ3m +1.45 p.p..",
+   "valor": 8.04,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama",
+    "uf": "MS"
+   },
+   "ordem": 1.45
+  },
+  {
+   "id": "carteira:renda_deterioracao:Mais de 1 a 2 salários mínimos · PF",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Mais de 1 a 2 salários mínimos · PF — inadimplência (arrastada)",
+   "detalhe": "8.17% → 7.90% (2026-05 → 2026-08). Δ3m -0.27 p.p. · Δ12m +1.40 p.p. · carteira R$ 634.1 bi.",
+   "valor": 7.9,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama"
+   },
+   "ordem": 1.4
+  },
+  {
+   "id": "carteira:produto_pj_deterioracao:Veículos · PJ",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Veículos · PJ — inadimplência (arrastada)",
+   "detalhe": "4.14% → 4.21% (2026-05 → 2026-08). Δ3m +0.07 p.p. · Δ12m +1.24 p.p. · carteira R$ 186.0 bi.",
+   "valor": 4.21,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama"
+   },
+   "ordem": 1.24
   },
   {
    "id": "carteira:produto_pf_deterioracao:Consignado · PF",
    "familia": "carteira",
    "nivel": null,
    "titulo": "Consignado · PF — inadimplência (arrastada)",
-   "detalhe": "3.23% → 3.68% (2026-04 → 2026-07). Δ3m +0.45 p.p. · Δ12m +1.01 p.p. · carteira R$ 791.8 bi.",
-   "valor": 3.68,
+   "detalhe": "3.38% → 3.87% (2026-05 → 2026-08). Δ3m +0.49 p.p. · Δ12m +1.21 p.p. · carteira R$ 813.7 bi.",
+   "valor": 3.87,
    "limiar": null,
-   "referencia": "2026-07",
+   "referencia": "2026-08",
    "fonte": "BCB/SCR.data",
    "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
    "recorrente": null,
    "link": {
     "view": "panorama"
    },
-   "ordem": 1.01
+   "ordem": 1.21
+  },
+  {
+   "id": "carteira:renda_deterioracao:Mais de 10 a 20 salários mínimos · PF",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Mais de 10 a 20 salários mínimos · PF — inadimplência (arrastada)",
+   "detalhe": "3.93% → 4.29% (2026-05 → 2026-08). Δ3m +0.36 p.p. · Δ12m +1.21 p.p. · carteira R$ 618.4 bi.",
+   "valor": 4.29,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama"
+   },
+   "ordem": 1.21
+  },
+  {
+   "id": "carteira:uf_deterioracao:Tocantins (TO)",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Tocantins (TO) — inadimplência (arrastada)",
+   "detalhe": "8.17% → 9.23% (2026-05 → 2026-08). Δ3m +1.06 p.p..",
+   "valor": 9.23,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama",
+    "uf": "TO"
+   },
+   "ordem": 1.06
+  },
+  {
+   "id": "carteira:produto_pj_deterioracao:Capital de giro · PJ",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Capital de giro · PJ — inadimplência (arrastada)",
+   "detalhe": "5.26% → 5.49% (2026-05 → 2026-08). Δ3m +0.23 p.p. · Δ12m +0.98 p.p. · carteira R$ 852.7 bi.",
+   "valor": 5.49,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama"
+   },
+   "ordem": 0.98
+  },
+  {
+   "id": "carteira:produto_pf_deterioracao:Comércio exterior · PF",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Comércio exterior · PF — inadimplência (arrastada)",
+   "detalhe": "3.09% → 3.28% (2026-05 → 2026-08). Δ3m +0.19 p.p. · Δ12m +0.89 p.p. · carteira R$ 34.3 bi.",
+   "valor": 3.28,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama"
+   },
+   "ordem": 0.89
+  },
+  {
+   "id": "carteira:uf_deterioracao:Mato Grosso (MT)",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Mato Grosso (MT) — inadimplência (arrastada)",
+   "detalhe": "5.77% → 6.48% (2026-05 → 2026-08). Δ3m +0.71 p.p..",
+   "valor": 6.48,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama",
+    "uf": "MT"
+   },
+   "ordem": 0.71
+  },
+  {
+   "id": "carteira:uf_deterioracao:Goiás (GO)",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Goiás (GO) — inadimplência (arrastada)",
+   "detalhe": "6.72% → 7.39% (2026-05 → 2026-08). Δ3m +0.67 p.p..",
+   "valor": 7.39,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama",
+    "uf": "GO"
+   },
+   "ordem": 0.67
+  },
+  {
+   "id": "carteira:uf_deterioracao:Maranhão (MA)",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Maranhão (MA) — inadimplência (arrastada)",
+   "detalhe": "9.00% → 9.63% (2026-05 → 2026-08). Δ3m +0.63 p.p..",
+   "valor": 9.63,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama",
+    "uf": "MA"
+   },
+   "ordem": 0.63
+  },
+  {
+   "id": "carteira:uf_deterioracao:Rondônia (RO)",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Rondônia (RO) — inadimplência (arrastada)",
+   "detalhe": "6.74% → 7.13% (2026-05 → 2026-08). Δ3m +0.39 p.p..",
+   "valor": 7.13,
+   "limiar": null,
+   "referencia": "2026-08",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama",
+    "uf": "RO"
+   },
+   "ordem": 0.39
   },
   {
    "id": "carteira:uf_variacao_saldo:Distrito Federal (DF)",
    "familia": "carteira",
    "nivel": null,
    "titulo": "Distrito Federal (DF) — carteira ativa (variação entre datas-base)",
-   "detalhe": "179129638267.00% → 159079623208.00% (2026-06 → 2026-07). . Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",
-   "valor": 159079623208,
+   "detalhe": "159715995077.00% → 181030449674.00% (2026-07 → 2026-08). . Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",
+   "valor": 181030449674,
    "limiar": null,
-   "referencia": "2026-07",
+   "referencia": "2026-08",
    "fonte": "BCB/SCR.data",
    "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
    "recorrente": null,
@@ -264,56 +657,55 @@
    "ordem": 0
   },
   {
-   "id": "carteira:uf_variacao_saldo:Sergipe (SE)",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Sergipe (SE) — carteira ativa (variação entre datas-base)",
-   "detalhe": "47797731099.00% → 42573426349.00% (2026-06 → 2026-07). . Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",
-   "valor": 42573426349,
-   "limiar": null,
-   "referencia": "2026-07",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama",
-    "uf": "SE"
-   },
-   "ordem": 0
-  },
-  {
-   "id": "openfinance:taxa de sucesso — dados transacionais",
-   "familia": "openfinance",
-   "nivel": "relevante",
-   "titulo": "taxa de sucesso — dados transacionais",
-   "detalhe": "94.93 contra limiar 97 há 18 semanas (dado de 2026-08-28).",
-   "valor": 94.93,
-   "limiar": 97,
-   "referencia": "2026-08-28",
-   "fonte": "Dashboard do Cidadão",
-   "evidencia_persistencia": "18 semanas consecutivas fora do limiar",
-   "recorrente": true,
-   "link": {
-    "view": "openfinance"
-   },
-   "ordem": 18
-  },
-  {
    "id": "openfinance:taxa de sucesso — iniciacao pagamento",
    "familia": "openfinance",
    "nivel": "relevante",
    "titulo": "taxa de sucesso — iniciacao pagamento",
-   "detalhe": "91.93 contra limiar 97 há 10 semanas (dado de 2026-08-28).",
-   "valor": 91.93,
+   "detalhe": "91.83 contra limiar 97 há 12 semanas (dado de 2026-09-25).",
+   "valor": 91.83,
    "limiar": 97,
-   "referencia": "2026-08-28",
+   "referencia": "2026-09-25",
    "fonte": "Dashboard do Cidadão",
-   "evidencia_persistencia": "10 semanas consecutivas fora do limiar",
+   "evidencia_persistencia": "12 semanas consecutivas fora do limiar",
    "recorrente": true,
    "link": {
     "view": "openfinance"
    },
-   "ordem": 10
+   "ordem": 12
+  },
+  {
+   "id": "openfinance:taxa de sucesso — dados transacionais",
+   "familia": "openfinance",
+   "nivel": "atencao",
+   "titulo": "taxa de sucesso — dados transacionais",
+   "detalhe": "96.45 contra limiar 97 há 1 semanas (dado de 2026-09-25).",
+   "valor": 96.45,
+   "limiar": 97,
+   "referencia": "2026-09-25",
+   "fonte": "Dashboard do Cidadão",
+   "evidencia_persistencia": "1 semanas consecutivas fora do limiar",
+   "recorrente": false,
+   "link": {
+    "view": "openfinance"
+   },
+   "ordem": 1
+  },
+  {
+   "id": "openfinance:consentimentos transmitidos",
+   "familia": "openfinance",
+   "nivel": "atencao",
+   "titulo": "consentimentos transmitidos",
+   "detalhe": "279370534.00 contra limiar 297742823.0 há 1 semanas (dado de 2026-09-25).",
+   "valor": 279370534.0,
+   "limiar": 297742823.0,
+   "referencia": "2026-09-25",
+   "fonte": "Dashboard do Cidadão",
+   "evidencia_persistencia": "1 semanas consecutivas fora do limiar",
+   "recorrente": false,
+   "link": {
+    "view": "openfinance"
+   },
+   "ordem": 1
   },
   {
    "id": "operacional:rede:queda_12m:Brb Banco De Brasilia S.A.:2026-06",
@@ -469,7 +861,7 @@
    "ordem": 0.0
   }
  ],
- "total": 17,
+ "total": 34,
  "niveis": [
   "informativo",
   "atencao",

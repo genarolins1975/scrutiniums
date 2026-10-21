@@ -9,7 +9,7 @@
   "sede": "Rio de Janeiro/RJ",
   "segmento": "S3",
   "grupo_pares": "S3 — porte entre 0,1% e 1% do PIB",
-  "n_pares": 64,
+  "n_pares": 44,
   "conglomerado_prudencial": "C0087621",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-24T15:24:40+00:00",
+  "atualizado_em": "2026-10-20T15:56:12+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 87.963.450"
  },
@@ -29,7 +29,7 @@
   "pontos_fortes": [
    {
     "tipo": "ok",
-    "texto": "Basileia de 24.6% (acima da mediana do grupo S3: 16.6%).",
+    "texto": "Basileia de 24.6% (acima da mediana do grupo S3: 16.1%).",
     "base": "BCB IF.data (Informações de Capital)"
    }
   ],
@@ -66,31 +66,23 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 64,
+  "quantidade": 44,
   "maiores_membros": [
    {
-    "cod": "C0052058",
-    "nome": "NUBANK"
-   },
-   {
-    "cod": "C0052072",
-    "nome": "C6 BANK"
-   },
-   {
-    "cod": "18236120",
-    "nome": "NU PAGAMENTOS S.A. - INSTITUIÇÃO DE PAGA"
-   },
-   {
-    "cod": "C0020107",
-    "nome": "JP MORGAN CHASE"
-   },
-   {
-    "cod": "C0051987",
-    "nome": "DAYCOVAL"
+    "cod": "10573521",
+    "nome": "MERCADO PAGO INSTITUIÇÃO DE PAGAMENTO LT"
    },
    {
     "cod": "C0051884",
     "nome": "INTER"
+   },
+   {
+    "cod": "16501555",
+    "nome": "STONE INSTITUIÇÃO DE PAGAMENTO S.A."
+   },
+   {
+    "cod": "08561701",
+    "nome": "PAGSEGURO INTERNET INSTITUIÇÃO DE PAGAME"
    },
    {
     "cod": "C0041856",
@@ -101,37 +93,45 @@
     "nome": "BANCO DA AMAZONIA S.A."
    },
    {
-    "cod": "59109165",
-    "nome": "BANCO VOLKSWAGEN S.A."
-   },
-   {
     "cod": "01522368",
     "nome": "BANCO BNP PARIBAS BRASIL S.A."
    },
    {
-    "cod": "01023570",
-    "nome": "BANCO RABOBANK INTERNATIONAL BRASIL S.A."
-   },
-   {
-    "cod": "C0051956",
-    "nome": "AGIBANK"
-   },
-   {
-    "cod": "C0030290",
-    "nome": "BMG"
+    "cod": "C0052182",
+    "nome": "PAGBANK-PAGSEGURO"
    },
    {
     "cod": "C0052632",
     "nome": "PICPAY - FINANCEIRO"
    },
    {
-    "cod": "C0020152",
-    "nome": "MERCANTIL DO BRASIL"
+    "cod": "C0030159",
+    "nome": "BANESTES"
+   },
+   {
+    "cod": "C0084686",
+    "nome": "STONE IP - PRUDENCIAL"
+   },
+   {
+    "cod": "25683434",
+    "nome": "COOPERATIVA CENTRAL DE CRÉDITO DE MINAS "
+   },
+   {
+    "cod": "80160260",
+    "nome": "COOPERATIVA CENTRAL DE CRÉDITO DE SANTA "
+   },
+   {
+    "cod": "00309024",
+    "nome": "CENTRAL DAS COOPERATIVAS DE ECONOMIA E C"
+   },
+   {
+    "cod": "02992446",
+    "nome": "BANCO CNH INDUSTRIAL CAPITAL S.A."
    }
   ],
   "quartis_basileia": {
-   "q1": 14.0,
-   "mediana": 16.6,
+   "q1": 14.4,
+   "mediana": 16.1,
    "q3": 24.6
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
@@ -230,7 +230,7 @@
  "destaques": [
   {
    "tipo": "ok",
-   "texto": "Basileia de 24.6% (acima da mediana do grupo S3: 16.6%).",
+   "texto": "Basileia de 24.6% (acima da mediana do grupo S3: 16.1%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -246,7 +246,7 @@
    "unit": "%",
    "d_tri": -10.96,
    "vs_pares": "acima",
-   "mediana_grupo": 16.58,
+   "mediana_grupo": 16.1,
    "percentil": 75.0
   },
   {
@@ -255,8 +255,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 9.26,
-   "percentil": 7.9
+   "mediana_grupo": 9.56,
+   "percentil": 7.0
   },
   {
    "indicador": "ROE do período",
@@ -264,7 +264,7 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 4.81,
+   "mediana_grupo": 4.8,
    "percentil": 0.0
   }
  ],
@@ -477,205 +477,145 @@
   "roe": {
    "valores": [
     5.01,
+    5.43,
     1.55,
-    4.76,
+    7.33,
     -3.81,
     9.9,
     4.85,
     4.49,
-    -5.33,
     0.0,
     8.73,
     -6.03,
     6.52,
-    0.25,
-    2.88,
     4.44,
-    4.76,
     10.62,
-    -3.86,
     9.49,
     2.65,
     1.19,
     6.65,
-    4.5,
     2.36,
     6.07,
     4.81,
     11.01,
-    0.0,
-    5.46,
-    8.59,
-    17.52,
     9.03,
-    7.05,
     -4.93,
-    3.42,
     0.04,
     6.8,
-    17.51,
-    7.95,
     1.63,
-    6.22,
-    -2.78,
-    11.7,
     9.56,
-    11.78,
-    5.64,
-    4.89,
-    14.14,
     3.29,
-    17.61,
-    17.98,
+    27.02,
+    7.69,
+    -6.35,
     -0.72,
     -57.45,
     12.46,
-    27.93,
+    3.02,
     4.8,
     2.5,
-    3.27,
+    3.65,
     1.84,
-    5.22,
-    6.72,
     0.15,
+    7.01,
     -0.47,
-    1.88
+    7.35
    ],
    "meu": -57.45,
-   "mediana": 4.81
+   "mediana": 4.8
   },
   "basileia": {
    "valores": [
     13.87,
+    26.38,
     58.73,
-    14.21,
+    15.86,
     15.75,
     13.01,
     13.02,
     16.74,
-    9.08,
     36.62,
     15.68,
     12.87,
     14.74,
-    22.01,
-    20.95,
     29.3,
-    24.97,
     11.23,
-    12.49,
     19.43,
     34.56,
     27.8,
     17.29,
-    13.98,
     18.74,
     16.1,
     13.06,
     33.81,
-    25.52,
-    22.04,
-    21.69,
-    17.22,
     14.89,
-    13.32,
     35.86,
-    16.5,
     15.32,
     16.18,
-    14.31,
-    26.72,
     13.08,
-    28.73,
-    13.89,
-    29.79,
     14.4,
-    12.84,
-    23.36,
-    13.89,
-    17.21,
     17.91,
-    12.57,
+    12.67,
+    15.04,
+    13.85,
     24.61,
-    15.51,
+    21.26,
     32.29,
-    28.85,
     16.58,
-    15.93,
-    23.4
+    15.93
    ],
    "meu": 24.61,
-   "mediana": 16.58
+   "mediana": 16.1
   },
   "alav": {
    "valores": [
     27.55,
+    22.72,
     1.42,
-    9.6,
+    22.53,
     9.26,
     9.29,
     9.26,
     9.56,
-    8.25,
     14.2,
     6.93,
     12.0,
     18.99,
-    1.88,
-    6.22,
     5.09,
-    3.91,
     15.58,
-    11.64,
     6.17,
     7.21,
     4.62,
     20.72,
-    8.98,
     7.23,
     10.76,
     18.86,
     4.76,
-    1.07,
-    5.35,
-    8.73,
-    13.76,
     17.0,
-    11.56,
     3.42,
-    15.65,
     11.75,
     9.3,
-    20.85,
-    5.49,
     8.56,
-    2.55,
-    19.08,
-    5.73,
     13.62,
-    14.06,
-    10.24,
-    14.91,
-    20.0,
     7.06,
-    5.26,
-    24.43,
+    27.8,
+    12.19,
+    35.37,
     3.12,
     1.56,
     4.39,
-    17.84,
+    11.27,
     5.15,
     1.34,
-    4.8,
+    29.6,
     12.48,
-    1.03,
-    15.99,
     18.67,
+    39.04,
     1.07,
-    4.61
+    5.76
    ],
    "meu": 1.56,
-   "mediana": 9.26
+   "mediana": 9.56
   }
  },
  "comparacao_pares": {

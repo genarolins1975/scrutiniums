@@ -18,13 +18,13 @@ const ENTRAR = {
   pt: {
     titulo: "Entrar", marca: ["/", "Scrutiniums — página inicial"], criar: "Criar acesso", seletor: ["Idioma", "Português", "Inglês"],
     introducao: "Use o e-mail e a senha da sua conta.", email: "E-mail", erroEmail: "Informe um e-mail válido.", senha: "Senha", erroSenha: "Informe sua senha.",
-    submit: "Entrar", fim: '<div><p>Prefere ou precisa entrar sem senha? <a href="/entrar/sms">Entrar com código por SMS</a></p><a href="/cadastro">Ainda não tenho cadastro</a></div>',
+    submit: "Entrar", esqueci: '<a href="/entrar/sms?recuperar=1">Esqueci minha senha</a>', fim: '<div><p>Prefere entrar sem senha? <a href="/entrar/sms">Entrar com código por SMS</a></p><a href="/cadastro">Ainda não tenho cadastro</a></div>',
     termos: "Termos de uso", privacidade: "Privacidade",
   },
   en: {
     titulo: "Sign in", marca: ["/en", "Scrutiniums home page"], criar: "Sign up", seletor: ["Language", "Portuguese", "English"],
     introducao: "Use your account email and password.", email: "Email", erroEmail: "Enter a valid email address.", senha: "Password", erroSenha: "Enter your password.",
-    submit: "Sign in", fim: '<div><p>Prefer or need to sign in without a password? <a href="/en/entrar/sms">Sign in with an SMS code</a></p><a href="/cadastro">I don&#39;t have an account yet</a></div>',
+    submit: "Sign in", esqueci: '<a href="/en/entrar/sms?recuperar=1">Forgot your password?</a>', fim: '<div><p>Prefer to sign in without a password? <a href="/en/entrar/sms">Sign in with an SMS code</a></p><a href="/cadastro">I don&#39;t have an account yet</a></div>',
     termos: "Terms of use", privacidade: "Privacy",
   },
 } as const;
@@ -60,7 +60,7 @@ function documento(caminho: CaminhoAuth, idioma: Idioma = "pt", estado: Estado =
   const fimFormulario = entrar
     ? t.fim
     : '<div><a href="/entrar">Já tenho cadastro</a><p>100% gratuito · sem assinatura · sem cobrança</p></div>';
-  const form = `<form novalidate>${campoEmail(caminho, estado, ids.email, idioma)}${entrar ? campoSenha(estado, ids.senha, idioma) : consentimentos(estado)}<button type="submit">${entrar ? t.submit : "Continuar"}</button>${fimFormulario}</form>`;
+  const form = `<form novalidate>${campoEmail(caminho, estado, ids.email, idioma)}${entrar ? campoSenha(estado, ids.senha, idioma) + t.esqueci : consentimentos(estado)}<button type="submit">${entrar ? t.submit : "Continuar"}</button>${fimFormulario}</form>`;
   const main = `<main><section>${entrar ? "" : introducao}<h1>${titulo}</h1>${entrar ? introducao : "<p>Informe seu e-mail de contato para começar.</p>"}${form}</section></main>`;
   const footer = `<footer><p>scrutiniums.com</p><p><a href="/termos">${t.termos}</a> · <a href="/privacidade">${t.privacidade}</a></p></footer>`;
   const produto = `<div>${header}${main}${footer}</div>`;

@@ -4,7 +4,8 @@ name: Atualizar dados do Gás Natural
 # grava o seed versionado com o sha256 de cada original, reconstrói a gold em
 # public/gas e publica só se os testes do pipeline passarem. A ANP atualiza a maior
 # parte dos conjuntos até o último dia do mês seguinte ao de referência; a pesquisa de
-# preços do botijão e do GNV fecha o mês na primeira quinzena. Separado dos outros
+# preços do botijão, do GNV e dos combustíveis nos postos (gasolina, etanol e diesel, gold
+# public/gas/gold/combustiveis.json) fecha o mês na primeira quinzena. Separado dos outros
 # domínios: falha de um não atrasa o outro.
 on:
   schedule:

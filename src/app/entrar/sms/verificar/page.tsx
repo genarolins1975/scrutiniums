@@ -9,7 +9,14 @@ export async function generateMetadata(_props: { params?: Record<string, string>
   return metadadosPortuguesComAlternativas("/entrar/sms/verificar", metadadosOriginais, await parent);
 }
 
-/** Segunda tela do login por SMS: código de 6 dígitos enviado por SMS. */
-export default async function EntrarSmsVerificarPage() {
-  return PaginaVerificarSms({ idioma: "pt" });
+/**
+ * Segunda tela do login por SMS: código de 6 dígitos enviado por SMS.
+ * Com ?recuperar=1, o código leva à definição de nova senha.
+ */
+export default async function EntrarSmsVerificarPage({
+  searchParams,
+}: {
+  searchParams?: { recuperar?: string };
+}) {
+  return PaginaVerificarSms({ idioma: "pt", searchParams });
 }

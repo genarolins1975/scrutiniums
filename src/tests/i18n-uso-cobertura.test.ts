@@ -124,8 +124,10 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
     expect(parDeIdioma("/")).toEqual({ pt: "/", en: "/en", conteudo: "parcialmente_traduzido" });
     expect(parDeIdioma("/en")).toEqual(parDeIdioma("/"));
     // O Setor Elétrico (fase 3) declara todas as páginas literais como traduzidas; a prova delas é energia-i18n-html.test.ts.
-    const plataforma = PARES_DE_IDIOMA.filter((par) => !par.pt.startsWith("/setor-eletrico"));
-    const setor = PARES_DE_IDIOMA.filter((par) => par.pt.startsWith("/setor-eletrico"));
+    // a versão aperitivo da Conta de luz (servida por rewrite em /setor-eletrico/conta-de-luz) conta com o Setor Elétrico
+    const doSetor = (pt: string) => pt.startsWith("/setor-eletrico") || pt === "/aperitivo/conta-de-luz";
+    const plataforma = PARES_DE_IDIOMA.filter((par) => !doSetor(par.pt));
+    const setor = PARES_DE_IDIOMA.filter((par) => doSetor(par.pt));
     expect(plataforma).toHaveLength(13);
     expect(setor.length).toBeGreaterThanOrEqual(73);
     expect(setor.every((par) => par.conteudo === "traduzido")).toBe(true);
@@ -141,6 +143,7 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
       { id: "home-titulo", estado: "traduzido", chaves: ["home.hero.titulo_inicio", "home.hero.titulo_destaque"] },
       { id: "home-acoes", estado: "traduzido", chaves: ["acesso.criar_conta", "home.hero.ja_cadastrado"] },
       { id: "home-cabecalho", estado: "portugues_marcado" },
+      { id: "home-perguntas", estado: "portugues_marcado" },
       { id: "home-rotulo", estado: "traduzido", chaves: ["home.hero.rotulo"] },
       { id: "home-introducao", estado: "traduzido", chaves: ["home.hero.introducao"] },
       { id: "home-beneficios", estado: "traduzido", chaves: [
@@ -168,15 +171,15 @@ describe("declaração fechada de uso em rotas parcialmente traduzidas", () => {
     expect(usoReal).toMatchObject({
       schema_version: 1, rotas_parciais_declaradas: 1,
       chaves_en_declaradas_em_uso: 18, ocorrencias_en_declaradas: 18,
-      regioes_pt_nao_catalogadas: 3, html_verificado_pelo_inventario: false,
+      regioes_pt_nao_catalogadas: 4, html_verificado_pelo_inventario: false,
     });
     expect(usoReal?.rotas).toHaveLength(1);
     expect(usoReal?.rotas[0]).toMatchObject({ pt: "/", en: "/en", dominio: "plataforma" });
-    expect(usoReal?.rotas[0].regioes).toHaveLength(9);
+    expect(usoReal?.rotas[0].regioes).toHaveLength(10);
     expect(usoReal?.rotas[0].regioes.filter((regiao) => regiao.estado === "traduzido").map((regiao) => regiao.id))
       .toEqual(["home-acoes", "home-beneficios", "home-indice", "home-introducao", "home-rotulo", "home-titulo"]);
     expect(usoReal?.rotas[0].regioes.filter((regiao) => regiao.estado === "portugues_marcado").map((regiao) => regiao.id))
-      .toEqual(["home-cabecalho", "home-rodape", "home-secoes"]);
+      .toEqual(["home-cabecalho", "home-perguntas", "home-rodape", "home-secoes"]);
   });
 });
 

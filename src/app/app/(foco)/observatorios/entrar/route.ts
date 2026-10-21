@@ -3,14 +3,17 @@ import { getSessionUser } from "@/lib/session";
 import { trackEvent } from "@/lib/events";
 import { COOKIE_OBSERVATORIO } from "@/lib/dominios";
 import { opcaoObservatorio } from "@/lib/opcoesObservatorios";
+import { escolhaObservatorio } from "@/lib/observatorios/lista";
 
 export const runtime = "nodejs";
 
 /**
  * "Entrar" da tela de escolha. Só POST altera estado: guarda o último
  * observatório ou módulo escolhido (cookie sem PII, só o id da opção), registra o evento
- * e leva à raiz do observatório. GET não grava nada (o prefetch de links do
- * Next faria GET sem clique) e volta à tela de escolha. A rota está sob /app:
+ * e leva à raiz do observatório. Os blocos dos seis observatórios enviam
+ * observatório (o) e coleção (c), resolvidos pela allowlist do registro.
+ * GET não grava nada (o prefetch de links do Next faria GET sem clique) e
+ * volta à tela de escolha. A rota está sob /app:
  * o middleware exige sessão. POST de outra origem é recusado.
  */
 const HOSTS_CANONICOS = ["scrutiniums.com", "www.scrutiniums.com"];
@@ -41,20 +44,23 @@ export async function POST(req: Request) {
   if (!hostOrigem || !permitidos.has(hostOrigem)) {
     return new NextResponse("Origem não permitida", { status: 403 });
   }
-  let d: FormDataEntryValue | null = null;
+  let form: FormData | null = null;
   try {
-    d = (await req.formData()).get("d");
+    form = await req.formData();
   } catch {
-    d = null;
+    form = null;
   }
-  const opcao = opcaoObservatorio(d);
-  if (!opcao) {
+  const opcao = opcaoObservatorio(form?.get("d"));
+  const escolha = opcao ? undefined : escolhaObservatorio(form?.get("o"), form?.get("c"));
+  if (!opcao && !escolha) {
     return NextResponse.redirect(new URL("/app/observatorios", url), 303);
   }
   const user = await getSessionUser();
-  if (user) await trackEvent(`observatorio_escolhido:${opcao.dominioId}`, user.id);
-  const res = NextResponse.redirect(new URL(opcao.rotaRaiz, url), 303);
-  res.cookies.set(COOKIE_OBSERVATORIO, opcao.id, {
+  if (user) {
+    await trackEvent(opcao ? `observatorio_escolhido:${opcao.dominioId}` : `observatorio_aberto:${escolha!.observatorio.id}`, user.id);
+  }
+  const res = NextResponse.redirect(new URL(opcao ? opcao.rotaRaiz : escolha!.href, url), 303);
+  res.cookies.set(COOKIE_OBSERVATORIO, opcao ? opcao.id : escolha!.observatorio.id, {
     path: "/",
     maxAge: 60 * 60 * 24 * 365,
     sameSite: "lax",

@@ -46,7 +46,7 @@ function usuario(onboardingStatus: OnboardingStatus): User {
   return {
     id: "usuario-sintetico-sms-i18n", email: "sms@example.invalid", onboardingStatus,
     emailVerifiedAt: null, phoneE164: null, phoneVerifiedAt: null,
-    company: null, jobTitle: null, cpf: null, orgType: null, orgArea: null, orgRole: null,
+    company: null, jobTitle: null, cpf: null, perfilUso: null, orgType: null, orgArea: null, orgRole: null,
     uf: null, passwordHash: null, termsAcceptedAt: null, privacyVersion: null, marketingOptIn: false,
     createdAt: new Date("2026-10-01T00:00:00Z"), updatedAt: new Date("2026-10-01T00:00:00Z"),
   };
@@ -64,7 +64,7 @@ function elementos(children: ReactNode): ReactElement<Record<string, unknown>>[]
 
 // Decisões com sessão mockada não constituem autenticação HTTP completa.
 async function abrir(pagina: Pagina, idioma: "pt" | "en") {
-  return idioma === "pt" ? pagina.pt() : pagina.en();
+  return idioma === "pt" ? pagina.pt({}) : pagina.en({});
 }
 
 beforeEach(() => {

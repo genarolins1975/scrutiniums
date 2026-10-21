@@ -1,9 +1,9 @@
 'use client';
 import {daCapital,inteiro,escala,naCapital,numero,type CapitalRetrato,type Medida} from '@/lib/eficiencia/entrada-nucleo';
 import styles from './Entrada.module.css';
+import {SeloComConta} from '@/components/acesso/SeloComConta';
 
 const C = 300, R0 = 124, RMAX = 266;
-const um = (v: number) => v.toLocaleString('pt-BR', {minimumFractionDigits: 1, maximumFractionDigits: 1});
 const angulo = (i: number, n: number) => (-90 + i * 360 / n) * Math.PI / 180;
 const ponto = (r: number, a: number) => [C + r * Math.cos(a), C + r * Math.sin(a)] as const;
 const raio = (posicao: number) => R0 + 6 + Math.max(0, Math.min(100, posicao)) / 100 * (RMAX - R0 - 6);
@@ -18,15 +18,14 @@ function petala(i: number, n: number, posicao: number) {
   return `M${f(bx1)} ${f(by1)}C${f(c1x)} ${f(c1y)} ${f(c2x)} ${f(c2y)} ${f(tx)} ${f(ty)}C${f(c3x)} ${f(c3y)} ${f(c4x)} ${f(c4y)} ${f(bx2)} ${f(by2)}A${base} ${base} 0 0 0 ${f(bx1)} ${f(by1)}Z`;
 }
 
-/** Retrato da capital: contorno oficial do IBGE no centro e as sete condições de 2022 em volta. */
-export type NotaPar = {a: number; b: number; faixaA: [number, number]; estabilidade: string; ano: number};
-
-export function RetratoCapital({a, b, condicoes, capitais, onSelect, fonteContornos, fontePopulacao, nota = null}: {
+/**
+ * Retrato da capital: contorno oficial do IBGE no centro e as sete condições de 2022 em volta.
+ * Só posições: a nota experimental fica no painel do índice (decisão do dono de 19/10/2026).
+ */
+export function RetratoCapital({a, b, condicoes, capitais, onSelect, fonteContornos, fontePopulacao}: {
   a: CapitalRetrato; b: CapitalRetrato; condicoes: Medida[]; capitais: CapitalRetrato[];
   onSelect: (campo: 'territorio' | 'comparador', id: string) => void;
   fonteContornos: {fonte: string; url: string; capturadoEm: string; tratamento: string}; fontePopulacao: string;
-  /** Nota experimental do índice v4 para as duas capitais; ausente quando o índice não chega à página. */
-  nota?: NotaPar | null;
 }) {
   const n = condicoes.length;
   const contorno = a.contorno;
@@ -52,19 +51,11 @@ export function RetratoCapital({a, b, condicoes, capitais, onSelect, fonteContor
           <div><dt>Área</dt><dd>{a.areaKm2 === null ? 'Não disponível' : <>{a.areaKm2.toLocaleString('pt-BR', {maximumFractionDigits: 1})}<span className={styles.unit}> km²</span></>}<small>IBGE, área territorial</small></dd></div>
           <div><dt>Densidade</dt><dd>{densidade === null ? 'Não disponível' : <>{inteiro(densidade)}<span className={styles.unit}> hab./km²</span></>}<small>população ÷ área</small></dd></div>
         </dl>
-        {nota && <div className={styles.score}>
-          <p className={styles.scoreKicker}>Índice de resultados · {nota.ano} · edição experimental</p>
-          <dl>
-            <div><dt><i className={styles.scoreDot} aria-hidden="true"/>{a.nome}</dt><dd className={styles.scoreMain}>{um(nota.a)}</dd></div>
-            <div><dt><i className={styles.scoreDiamond} aria-hidden="true"/>{b.nome}</dt><dd>{um(nota.b)}</dd></div>
-          </dl>
-          <p className={styles.scoreNote}>{nota.estabilidade} entre as duas capitais. Faixa {daCapital(a.nome)} nos testes: {um(nota.faixaA[0])} a {um(nota.faixaA[1])}. A nota é a média das sete posições do retrato. Saúde ainda fora da nota. <a href="#atlas-indice">Ver de onde vem cada ponto ↓</a></p>
-        </div>}
         <nav className={styles.heroNav} aria-label="Nesta página">
           <a href="#perguntas">Sete perguntas <span aria-hidden="true">↓</span></a>
           <a href="#recursos">O que a prefeitura aplica <span aria-hidden="true">↓</span></a>
-          <a href="#atlas-indice">A nota que se explica <span aria-hidden="true">↓</span></a>
           <a href="#cobertura">O que ainda não se sabe <span aria-hidden="true">↓</span></a>
+          <a href={`/eficiencia-estatal/indice-de-resultados?territorio=${a.id}&comparador=${b.id}`} aria-label="Índice experimental, no painel do índice, com conta">Índice experimental <span aria-hidden="true">↗</span><SeloComConta href="/eficiencia-estatal/indice-de-resultados"/></a>
         </nav>
       </div>
       <figure className={styles.rosette} aria-labelledby="retrato-legenda">

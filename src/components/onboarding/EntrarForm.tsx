@@ -15,9 +15,17 @@ import { TEXTOS_ENTRAR } from "@/i18n/paginas/entrar";
 
 /**
  * Login alternativo sem senha: telefone → código SMS (rota /entrar/sms).
- * Cobre entrada e recuperação de quem esqueceu a senha.
+ * Com `recuperar`, o código leva à definição de nova senha (esqueci minha senha).
  */
-export function EntrarForm({ paises = COUNTRIES, idioma = "pt" }: { paises?: readonly PaisTelefone[]; idioma?: Idioma }) {
+export function EntrarForm({
+  paises = COUNTRIES,
+  idioma = "pt",
+  recuperar = false,
+}: {
+  paises?: readonly PaisTelefone[];
+  idioma?: Idioma;
+  recuperar?: boolean;
+}) {
   const t = TEXTOS_ENTRAR[idioma];
   const router = useRouter();
   const [country, setCountry] = useState(paises[0]?.code ?? "");
@@ -42,7 +50,7 @@ export function EntrarForm({ paises = COUNTRIES, idioma = "pt" }: { paises?: rea
         body: JSON.stringify({ country, phone }),
       });
       if (res.ok) {
-        router.push(hrefNoIdioma("/entrar/sms/verificar", idioma));
+        router.push(hrefNoIdioma(recuperar ? "/entrar/sms/verificar?recuperar=1" : "/entrar/sms/verificar", idioma));
         return;
       }
       setServerError(

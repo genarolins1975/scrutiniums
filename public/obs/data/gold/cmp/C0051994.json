@@ -1,7 +1,7 @@
 {
  "cod": "C0051994",
  "nome": "XP INVESTIMENTOS",
- "sr": "S4",
+ "sr": null,
  "tcb": "N2",
  "porte_quartil": null,
  "nivel": "conglomerado prudencial",
@@ -105,5 +105,5 @@
    "201712": 0.026760843525108227
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

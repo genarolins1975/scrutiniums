@@ -9,6 +9,8 @@
     python3 -m pipeline.eficiencia.run --inep-nacional <pasta>  extrai as referências nacionais do INEP dos .zip da pasta
     python3 -m pipeline.eficiencia.run --inep <pasta>  reextrai os recortes do INEP a partir dos .zip
                                                        oficiais já baixados nessa pasta
+    python3 -m pipeline.eficiencia.run --coleta-siconfi --so-coleta   só coleta, sem gold
+                                                       (atualizar-eficiencia.yml)
 
 A coleta do INEP não baixa os pacotes (até 540 MB cada): a pasta informada deve
 conter os .zip com o nome original do INEP. O seed versionado registra URL,
@@ -83,6 +85,8 @@ def main(argv=None):
     ap.add_argument("--coleta-siope", action="store_true", help="recoleta os indicadores por aluno do SIOPE, examinados e não adotados (rede)")
     ap.add_argument("--inep-nacional", metavar="PASTA", help="extrai as referências nacionais dos .zip do INEP (ATU, rendimento e Ideb do Brasil; investimento por estudante)")
     ap.add_argument("--inep", metavar="PASTA")
+    ap.add_argument("--so-coleta", action="store_true",
+                    help="só coleta, sem reconstruir a gold (a atualização agendada reconstrói e testa depois, por grupo)")
     a = ap.parse_args(argv)
     if a.coleta_siconfi:
         from pipeline.eficiencia.fontes import ibge_ipca, siconfi
@@ -116,6 +120,8 @@ def main(argv=None):
         inep_nacional.extrai(a.inep_nacional)
     if a.inep:
         _inep(a.inep)
+    if a.so_coleta:
+        return 0
     g = gold.constroi()
     promovido, caminho = gold.promove(g)
     for v in g["validacoes"]:

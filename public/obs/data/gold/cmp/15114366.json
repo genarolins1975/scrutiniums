@@ -1,7 +1,7 @@
 {
  "cod": "15114366",
  "nome": "BANCO BOCOM BBM S.A.",
- "sr": "S3",
+ "sr": null,
  "tcb": "B1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -64,5 +64,5 @@
    "202606": 117226890.84
   }
  },
- "gerado_em": "2026-09-24T15:24:48+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

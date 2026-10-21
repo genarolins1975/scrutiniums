@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getSessionUser } from "@/lib/session";
+import { getSessionUser, revokeOtherSessions } from "@/lib/session";
 import { updateUser } from "@/lib/onboarding";
 import {
   hashPassword,
@@ -9,6 +9,10 @@ import {
   PASSWORD_MIN_LENGTH,
 } from "@/lib/password";
 import { audit } from "@/lib/audit";
+import {
+  clearRecuperacaoSenhaCookie,
+  recuperacaoSenhaValida,
+} from "@/components/onboarding/signedEmailCookie";
 
 export const runtime = "nodejs";
 
@@ -16,10 +20,14 @@ export const runtime = "nodejs";
  * Define ou troca a senha da conta. Sessão obrigatória.
  * - Conta COM senha: exige a senha atual correta (erro genérico em falha).
  * - Conta SEM senha (cadastro antigo, entrada por SMS): define direto.
+ * - Recuperação (código SMS aprovado em "esqueci minha senha", até 10 min):
+ *   define sem a atual, uma única vez, e encerra as demais sessões.
  * Somente o hash scrypt é gravado; senhas NUNCA são logadas.
  */
 
 const GENERIC_ERROR = "Não foi possível alterar a senha. Verifique os dados informados.";
+const RECUPERACAO_EXPIRADA =
+  "O prazo de 10 minutos para definir a senha sem a atual terminou. Peça um novo código por SMS.";
 
 const bodySchema = z.object({
   currentPassword: z.string().min(1).max(PASSWORD_MAX_LENGTH).optional(),
@@ -43,7 +51,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
 
-  if (user.passwordHash) {
+  const recuperacao = Boolean(user.passwordHash) && recuperacaoSenhaValida(user.id);
+  if (user.passwordHash && !recuperacao) {
+    // Sem a senha atual numa conta que tem senha: a janela de recuperação
+    // venceu (ou nunca existiu). Sessão já autenticada; nada a enumerar.
+    if (parsed.data.currentPassword === undefined) {
+      return NextResponse.json(
+        { error: RECUPERACAO_EXPIRADA, codigo: "recuperacao_expirada" },
+        { status: 400 },
+      );
+    }
     const ok = await verifyPassword(parsed.data.currentPassword ?? "", user.passwordHash);
     if (!ok) {
       return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
@@ -52,6 +69,17 @@ export async function POST(req: Request) {
 
   const passwordHash = await hashPassword(parsed.data.newPassword);
   await updateUser(user.id, { passwordHash });
+  // Qualquer definição de senha consome a janela de recuperação.
+  clearRecuperacaoSenhaCookie();
+
+  if (recuperacao) {
+    // Quem tinha a senha antiga perde o acesso; este dispositivo segue logado
+    // na mesma sessão (sem nova linha em sessions, que conta como acesso).
+    await revokeOtherSessions(user.id);
+    await audit(user.id, "PASSWORD_RESET", "sms");
+    return NextResponse.json({ ok: true });
+  }
+
   await audit(user.id, "PASSWORD_CHANGED");
 
   return NextResponse.json({ ok: true });

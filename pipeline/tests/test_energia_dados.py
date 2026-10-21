@@ -795,6 +795,24 @@ class TestConfereAfirmacoes(unittest.TestCase):
         self.assertTrue(any("não está no catálogo gravado" in p for p in prob))
 
 
+# ---------------------------------------------------------------- fichas com contagem zero
+
+
+class TestFichaComContagemZero(unittest.TestCase):
+    """Publicação de 18/10/2026: sem checagem reprovada, a ficha de P070 ficava sem chaves_origem e sem consulta, a
+    validação da evidência derrubava publicacao.json e a sentinela mantinha a publicação anterior. Zero é um resultado
+    publicável: a ficha diz como selecionar as linhas no CSV."""
+
+    def test_zero_checagens_reprovadas_publica_a_ficha_com_consulta(self):
+        todas = [{"id": "pld.json:esquema", "resultado": "aprovado", "alvo": "/energia/gold/pld.json"}]
+        f = dados._evidencia_publicacao([], [], [], [], todas, "2026-10-18T01:00:00Z", date(2026, 10, 18))
+        e = f["checagens_reprovadas"]
+        self.assertEqual(e["valor_calculo"], 0.0)
+        self.assertEqual(e["chaves_origem"], [])
+        self.assertIn("dados_validacoes.csv", e["consulta"])
+        self.assertEqual(ev.validar(e), [])
+
+
 # ---------------------------------------------------------------- métricas
 
 
@@ -821,6 +839,15 @@ class TestGoldPublicada(unittest.TestCase):
         self.assertTrue(self.g["disponivel"])
         for nome in ("publicacao.json", "catalogo.json"):
             self.assertLessEqual(os.path.getsize(os.path.join(GOLD, nome)), val.LIMITE_GOLD_BYTES, nome)
+        # o que cresce a cada captura fica na janela do calendário: a contagem de revisões por dia de captura não
+        # passa de JANELA_CALENDARIO_DIAS (20/10/2026: 386 dias de captura em 161 conjuntos, sem limite antes)
+        from datetime import date, timedelta
+        inicio = (date.fromisoformat(self.g["gerado_em"][:10]) - timedelta(days=dados.JANELA_CALENDARIO_DIAS)).isoformat()
+        for c in self.g["conjuntos"]:
+            rv = c.get("revisoes") or {}
+            for pc in (rv.get("por_captura") or {}, (rv.get("registros") or {}).get("por_captura") or {}):
+                self.assertFalse([d for d in pc if d < inicio], c["id"])
+        self.assertLessEqual(len(self.g["calendario"]), dados.JANELA_CALENDARIO_DIAS + 1)
 
     def test_proveniencias_e_evidencias_completas(self):
         provs = val.proveniencias(self.g)

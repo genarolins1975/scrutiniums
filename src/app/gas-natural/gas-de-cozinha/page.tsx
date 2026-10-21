@@ -6,6 +6,7 @@ import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MapaUf } from "@/components/gas/MapaUf";
 import { SeriePorUf } from "@/components/gas/SeriePorUf";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
 import { goldGas } from "@/lib/gas/gold";
 import { COR } from "@/lib/gas/cores";
 import { mesAno, mesExtenso, num, periodoLegivel, sinal } from "@/lib/gas/formato";
@@ -35,6 +36,7 @@ export default function GasDeCozinhaPage() {
     <>
       <MarcaVisita secao="gas:gas-de-cozinha" />
       <CabecalhoGas atual="gas-de-cozinha" />
+      <AvisoConsultaAberta className="ed-pagina" comConta="Os arquivos para baixar, a página de dados e as demais páginas do observatório" />
       <main id="conteudo" className="ed-pagina pb-12">
         <AberturaGas pagina={pagina} dadosAte={<>Preços da ANP até {mesExtenso(g.ultimo_mes)}; IPCA do IBGE até {mesExtenso(g.ipca.ultimo_mes)}.</>}>
           <p>

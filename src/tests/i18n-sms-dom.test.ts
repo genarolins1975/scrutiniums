@@ -12,12 +12,18 @@ const SOLICITACAO_VAZIA: ComparacaoSms = { caminho: "/entrar/sms", estado: "vazi
 const OTP_30: ComparacaoSms = { caminho: "/entrar/sms/verificar", estado: "inicial", contador: "30s" };
 const OTP_LIBERADO: ComparacaoSms = { caminho: "/entrar/sms/verificar", estado: "inicial", contador: "liberado" };
 const OTP_VAZIO: ComparacaoSms = { caminho: "/entrar/sms/verificar", estado: "vazio", contador: "liberado" };
+// Recuperação de senha (?recuperar=1), aberta por "Esqueci minha senha" em /entrar.
+const RECUPERAR: ComparacaoSms = { caminho: "/entrar/sms", estado: "inicial", recuperar: true };
+const RECUPERAR_OTP: ComparacaoSms = { caminho: "/entrar/sms/verificar", estado: "inicial", contador: "30s", recuperar: true };
 
 const TEXTOS = {
   pt: {
     tituloSms: "Entrar com código por SMS", tituloOtp: "Código de acesso", marca: ["/", "Scrutiniums — página inicial"], criar: "Criar acesso",
     seletor: ["Idioma", "Português", "Inglês"], termos: "Termos de uso", privacidade: "Privacidade",
-    introSms: "<p>Enviamos um código por SMS para o telefone cadastrado.</p><p>Use também este caminho se esqueceu sua senha: depois de entrar, defina uma nova em Conta.</p>",
+    introSms: '<p>Enviamos um código por SMS para o telefone cadastrado.</p><p>Esqueceu a senha? <a href="/entrar/sms?recuperar=1">Recuperar acesso</a></p>',
+    tituloRecuperar: "Recuperar acesso", submitRecuperar: "Continuar para nova senha",
+    introRecuperar: "<p>Informe o telefone cadastrado. Enviamos um código por SMS e, ao confirmá-lo, você define uma nova senha.</p>",
+    alterarRecuperar: '<a href="/entrar/sms?recuperar=1">Alterar telefone</a>',
     introOtp: "<p>Enviamos um código de acesso por SMS ao telefone cadastrado.</p>",
     pais: "País", brasil: "Brasil (+55)", telefone: "Telefone celular", erroTelefone: "Informe um telefone válido com DDD.", submitSms: "Receber código por SMS",
     linksSms: '<a href="/entrar">Entrar com e-mail e senha</a><a href="/cadastro">Ainda não tenho cadastro</a>',
@@ -28,7 +34,10 @@ const TEXTOS = {
   en: {
     tituloSms: "Sign in with an SMS code", tituloOtp: "Access code", marca: ["/en", "Scrutiniums home page"], criar: "Sign up",
     seletor: ["Language", "Portuguese", "English"], termos: "Terms of use", privacidade: "Privacy",
-    introSms: "<p>We send a code by SMS to the phone number on your account.</p><p>Use this option too if you forgot your password: after signing in, set a new one under Account.</p>",
+    introSms: '<p>We send a code by SMS to the phone number on your account.</p><p>Forgot your password? <a href="/en/entrar/sms?recuperar=1">Recover access</a></p>',
+    tituloRecuperar: "Recover access", submitRecuperar: "Continue to new password",
+    introRecuperar: "<p>Enter the phone number on your account. We send a code by SMS and, once you confirm it, you set a new password.</p>",
+    alterarRecuperar: '<a href="/en/entrar/sms?recuperar=1">Change phone number</a>',
     introOtp: "<p>We sent an access code by SMS to the phone number on your account.</p>",
     pais: "Country", brasil: "Brazil (+55)", telefone: "Mobile phone", erroTelefone: "Enter a valid phone number with area code.", submitSms: "Get a code by SMS",
     linksSms: '<a href="/en/entrar">Sign in with email and password</a><a href="/cadastro">I don&#39;t have an account yet</a>',
@@ -42,7 +51,8 @@ const TEXTOS = {
 function documento(cenario: ComparacaoSms, idioma: "pt" | "en" = "pt", ids = idioma === "pt" ? IDS : IDS_EN) {
   const t = TEXTOS[idioma];
   const solicitar = cenario.caminho === "/entrar/sms";
-  const titulo = solicitar ? t.tituloSms : t.tituloOtp;
+  const recuperar = cenario.recuperar === true;
+  const titulo = recuperar ? t.tituloRecuperar : solicitar ? t.tituloSms : t.tituloOtp;
   const id = solicitar ? ids.telefone : ids.otp;
   const erro = cenario.estado === "vazio";
   const atributosErro = erro ? ` aria-invalid="true" aria-describedby="${id}-erro"` : "";
@@ -53,11 +63,11 @@ function documento(cenario: ComparacaoSms, idioma: "pt" | "en" = "pt", ids = idi
       + `<button type="submit">${t.submitSms}</button><div>${t.linksSms}</div>`
     : `<p>${t.destino[0]} <span class="font-medium text-carvao">+55 •• •••••-5678</span>${t.destino[1]}</p>`
       + `<div><label for="${id}">${t.codigo}</label><input id="${id}" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="••••••" value=""${atributosErro}>${alerta}</div>`
-      + `<button type="submit">${t.submitOtp}</button><div><button type="button" aria-live="polite"${cenario.contador === "30s" ? ' disabled=""' : ""}>${cenario.contador === "30s" ? t.reenviarEm : t.reenviar}</button>${t.alterar}</div>`;
+      + `<button type="submit">${recuperar ? t.submitRecuperar : t.submitOtp}</button><div><button type="button" aria-live="polite"${cenario.contador === "30s" ? ' disabled=""' : ""}>${cenario.contador === "30s" ? t.reenviarEm : t.reenviar}</button>${recuperar ? t.alterarRecuperar : t.alterar}</div>`;
   const seletor = `<div role="group" aria-label="${t.seletor[0]}"><span aria-hidden="true">${t.seletor[0]}</span>`
     + `<a href="${cenario.caminho}" hreflang="pt-BR">${t.seletor[1]}</a><a href="/en${cenario.caminho}" hreflang="en">${t.seletor[2]}</a></div>`;
   const header = `<header><a href="${t.marca[0]}" aria-label="${t.marca[1]}">Scrutiniums</a><a href="/cadastro">${t.criar}</a>${seletor}</header>`;
-  const corpo = `<div>${header}<main><section><h1>${titulo}</h1>${solicitar ? t.introSms : t.introOtp}<form novalidate>${formulario}</form></section></main>`
+  const corpo = `<div>${header}<main><section><h1>${titulo}</h1>${solicitar ? (recuperar ? t.introRecuperar : t.introSms) : t.introOtp}<form novalidate>${formulario}</form></section></main>`
     + `<footer><p>scrutiniums.com</p><p><a href="/termos">${t.termos}</a> · <a href="/privacidade">${t.privacidade}</a></p></footer></div>`;
   return parse(`<html lang="${idioma === "en" ? "en" : "pt-BR"}"><head><title>${titulo} · Scrutiniums</title></head><body>${corpo}<next-route-announcer style="position: absolute;"></next-route-announcer></body></html>`);
 }
@@ -88,7 +98,8 @@ function substituirTexto(no: Elemento, valor: string): void {
 
 describe("contratos DOM das duas telas de login por SMS", () => {
   const cenarios: ComparacaoSms[] = [SOLICITACAO, SOLICITACAO_VAZIA, OTP_30, OTP_LIBERADO,
-    { caminho: "/entrar/sms/verificar", estado: "vazio", contador: "30s" }, OTP_VAZIO];
+    { caminho: "/entrar/sms/verificar", estado: "vazio", contador: "30s" }, OTP_VAZIO,
+    RECUPERAR, { ...RECUPERAR, estado: "vazio" }, RECUPERAR_OTP, { ...RECUPERAR_OTP, estado: "vazio", contador: "liberado" }];
   it.each(cenarios)("aceita PT e EN traduzido sem alterar os originais: %j", (cenario) => {
     const pt = documento(cenario), en = documento(cenario, "en");
     const antes = [serialize(pt), serialize(en)];
@@ -124,6 +135,12 @@ describe("contratos DOM das duas telas de login por SMS", () => {
     { nome: "rótulo do telefone esquecido em português", cenario: SOLICITACAO, alterar: (doc) => substituirTexto(encontrar(doc, (e) => e.tagName === "label" && texto(e) === "Mobile phone"), "Telefone celular") },
     { nome: "troca de telefone apontando a irmã portuguesa", cenario: OTP_30, alterar: (doc) => atributo(encontrar(doc, (e) => e.tagName === "a" && texto(e) === "Change phone number"), "href", "/entrar/sms") },
     { nome: "seletor de idioma removido", cenario: SOLICITACAO, alterar: (doc) => remover(encontrar(doc, (e) => attr(e, "role") === "group")) },
+    { nome: "porta da recuperação de senha removida", cenario: SOLICITACAO, alterar: (doc) => remover(encontrar(doc, (e) => e.tagName === "a" && attr(e, "href") === "/en/entrar/sms?recuperar=1")) },
+    { nome: "porta da recuperação apontando a irmã portuguesa", cenario: SOLICITACAO, alterar: (doc) => atributo(encontrar(doc, (e) => e.tagName === "a" && texto(e) === "Recover access"), "href", "/entrar/sms?recuperar=1") },
+    { nome: "recuperação com o título da entrada", cenario: RECUPERAR, alterar: (doc) => substituirTexto(encontrar(doc, (e) => e.tagName === "h1"), "Sign in with an SMS code") },
+    { nome: "recuperação sem a instrução da nova senha", cenario: RECUPERAR, alterar: (doc) => remover(encontrar(doc, (e) => e.tagName === "p" && texto(e).startsWith("Enter the phone number on your account."))) },
+    { nome: "código da recuperação com o botão de entrar", cenario: RECUPERAR_OTP, alterar: (doc) => substituirTexto(encontrar(doc, (e) => e.tagName === "button" && attr(e, "type") === "submit"), "Sign in") },
+    { nome: "troca de telefone saindo da recuperação", cenario: RECUPERAR_OTP, alterar: (doc) => atributo(encontrar(doc, (e) => e.tagName === "a" && texto(e) === "Change phone number"), "href", "/en/entrar/sms") },
     { nome: "página marcada como só em português", cenario: SOLICITACAO, alterar: (doc) => atributo(encontrar(doc, (e) => e.tagName === "main"), "data-i18n-estado", "portugues_marcado") },
   ];
   it.each(adulteracoes)("reprova $nome", ({ cenario, alterar }) => {

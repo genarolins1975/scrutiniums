@@ -1,7 +1,7 @@
 {
  "cod": "C0051822",
  "nome": "BR PARTNERS",
- "sr": "S4",
+ "sr": null,
  "tcb": "B2",
  "porte_quartil": null,
  "nivel": "conglomerado prudencial",
@@ -231,5 +231,5 @@
    "202009": 5.669322621644943
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

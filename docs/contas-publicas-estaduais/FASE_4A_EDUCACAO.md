@@ -80,3 +80,14 @@ O job retorna falha quando qualquer pacote não é obtido, e preserva o manifest
 Verificação local: 30 testes Python aprovados; 81 capturas fiscais íntegras e 162 observações reproduzidas. A interface e a cobertura educacional continuam inalteradas. A próxima etapa depende de uma captura válida: examinar ensino médio regular/rede estadual, preservar supressões e participação e só então implementar a visão educacional.
 
 Para repetir a captura: `python3 -m pipeline.contas_estaduais.capturar_educacao --destino /tmp/contas-estaduais-educacao`. Para testar sem rede: `python3 -m unittest pipeline.contas_estaduais.test_capturar_educacao -v`.
+
+## Captura corrigida em 18/10/2026
+
+Diagnóstico das duas falhas do GitHub Actions:
+
+- **Sinopse, cadeia TLS:** `download.inep.gov.br` entrega só o certificado folha (`*.inep.gov.br`, emitido pela RNP ICPEdu GR46 OV TLS CA 2025) e omite o intermediário. O intermediário oficial, obtido no endereço "CA Issuers" do próprio certificado, está versionado em `pipeline/contas_estaduais/certificados/` com origem e sha256; o script confere o sha256 e o usa como CA adicional só para esse host, exigindo a raiz do sistema (GlobalSign Root R46). A verificação de nome e de cadeia continua ligada.
+- **Ideb, conexão reiniciada:** o corte ocorre na primeira conexão vinda do runner, antes do handshake. Inferência: proteção de rede do lado do Inep. O script repete erros de transporte (reinício, tempo esgotado, 5xx e 429) com espera de 10 s e 30 s; falha de certificado e HTTP 4xx nunca são repetidos.
+
+Em PR, fonte inacessível após as tentativas vira aviso visível (`::warning::`) e o manifesto registra `fonte_indisponivel`; TLS reprovado, 4xx e pacote inválido continuam falhando. A execução manual (`workflow_dispatch`) não tolera indisponibilidade. Em PR o artefato traz só o manifesto; os pacotes completos sobem na execução manual.
+
+Verificação local em 18/10/2026: captura completa em 4 min 11 s (Ideb 757.970 bytes e Sinopse 232.142.480 bytes, CRC e planilhas conferidos); 8 testes de captura e 53 do job de contratos aprovados.

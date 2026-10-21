@@ -57,7 +57,13 @@ const slugsEmpresas = (): Set<string> => {
 
 /** Arquivo de página da rota, resolvendo as rotas dinâmicas pelo que elas geram. */
 function paginaDaRota(href: string): string | null {
-  const caminho = href.split(/[?#]/)[0].replace(/^\/setor-eletrico\/?/, "");
+  // a busca também leva a outra coleção do mesmo observatório (Combustíveis): a página precisa existir no App Router
+  const semConsulta = href.split(/[?#]/)[0];
+  if (!/^\/setor-eletrico(\/|$)/.test(semConsulta)) {
+    const fora = join("src", "app", ...semConsulta.split("/").filter(Boolean), "page.tsx");
+    return existsSync(join(raiz, fora)) ? fora : null;
+  }
+  const caminho = semConsulta.replace(/^\/setor-eletrico\/?/, "");
   const direto = join("src", "app", "setor-eletrico", caminho, "page.tsx");
   if (existsSync(join(raiz, direto))) return direto;
   const m = caminho.match(/^(aprenda|dados|empresas)\/([^/]+)$/);
@@ -328,6 +334,24 @@ describe("busca da página inicial", () => {
     for (const d of DESTINOS_NAVEGACAO.filter((x) => !x.integrado && CARTOES[x.slug])) {
       expect(indice.some((i) => i.tipo === "Página" && i.href === d.href), d.slug).toBe(true);
       expect(indice.some((i) => i.tipo === "Painel" && i.detalhe === d.rotulo), d.slug).toBe(false);
+    }
+  });
+
+  it("quem procura gasolina, etanol ou diesel acha o painel de combustíveis do mesmo observatório", () => {
+    for (const q of ["gasolina", "etanol", "preço da gasolina", "combustível"]) {
+      expect(buscar(indice, q).itens.map((i) => i.href), q).toContain("/combustiveis");
+    }
+  });
+
+  it("quem procura escola, Ideb ou Saeb acha o painel Educação nos municípios, dos Serviços Públicos", () => {
+    for (const q of ["ideb", "escola", "saeb"]) {
+      expect(buscar(indice, q).itens.map((i) => i.href), q).toContain("/educacao-municipal");
+    }
+  });
+
+  it("quem procura inflação ou IPCA acha o painel Inflação por cidade, do Observatório das Famílias", () => {
+    for (const q of ["inflação", "ipca", "custo de vida"]) {
+      expect(buscar(indice, q).itens.map((i) => i.href), q).toContain("/custo-de-vida");
     }
   });
 

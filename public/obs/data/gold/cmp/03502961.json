@@ -1,7 +1,7 @@
 {
  "cod": "03502961",
  "nome": "STELLANTIS FINANCIAMENTOS SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A",
- "sr": "S4",
+ "sr": null,
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -64,5 +64,5 @@
    "202606": 344010107.34
   }
  },
- "gerado_em": "2026-09-24T15:24:48+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

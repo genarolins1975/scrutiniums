@@ -5,9 +5,10 @@ import { verificarSeletorIdioma } from "./i18n-auth";
 export const CAMINHOS_SMS = ["/entrar/sms", "/entrar/sms/verificar"] as const;
 export type CaminhoSms = typeof CAMINHOS_SMS[number];
 export type EstadoSms = "inicial" | "vazio";
+/** `recuperar`: modo ?recuperar=1, aberto pelo link "Esqueci minha senha" de /entrar. */
 export type ComparacaoSms =
-  | { caminho: "/entrar/sms"; estado: EstadoSms; contador?: never }
-  | { caminho: "/entrar/sms/verificar"; estado: EstadoSms; contador: "30s" | "liberado" };
+  | { caminho: "/entrar/sms"; estado: EstadoSms; contador?: never; recuperar?: boolean }
+  | { caminho: "/entrar/sms/verificar"; estado: EstadoSms; contador: "30s" | "liberado"; recuperar?: boolean };
 
 /** Textos literais esperados em cada idioma; as duas telas têm tradução publicada. */
 const TEXTOS = {
@@ -21,6 +22,9 @@ const TEXTOS = {
     reenviarEm: "Reenviar código em 30s", reenviar: "Reenviar código",
     linksOtp: [["/entrar/sms", "Alterar telefone"]],
     linksSms: [["/entrar", "Entrar com e-mail e senha"], ["/cadastro", "Ainda não tenho cadastro"]],
+    recuperarHref: "/entrar/sms?recuperar=1", esqueceu: "Esqueceu a senha?", recuperarAcesso: "Recuperar acesso",
+    h1Recuperar: "Recuperar acesso", submitRecuperar: "Continuar para nova senha",
+    introRecuperar: "Informe o telefone cadastrado. Enviamos um código por SMS e, ao confirmá-lo, você define uma nova senha.",
   },
   en: {
     marca: ["/en", "Scrutiniums home page"], criar: ["/cadastro", "Sign up"],
@@ -32,6 +36,9 @@ const TEXTOS = {
     reenviarEm: "Resend code in 30s", reenviar: "Resend code",
     linksOtp: [["/en/entrar/sms", "Change phone number"]],
     linksSms: [["/en/entrar", "Sign in with email and password"], ["/cadastro", "I don't have an account yet"]],
+    recuperarHref: "/en/entrar/sms?recuperar=1", esqueceu: "Forgot your password?", recuperarAcesso: "Recover access",
+    h1Recuperar: "Recover access", submitRecuperar: "Continue to new password",
+    introRecuperar: "Enter the phone number on your account. We send a code by SMS and, once you confirm it, you set a new password.",
   },
 } as const;
 
@@ -45,6 +52,7 @@ export function verificarPaginaSms(doc: No, cenario: ComparacaoSms): void {
   expect(CAMINHOS_SMS).toContain(caminho);
   expect(["inicial", "vazio"]).toContain(estado);
   const otp = caminho === "/entrar/sms/verificar";
+  const recuperar = cenario.recuperar === true;
   if (otp) expect(["30s", "liberado"]).toContain(cenario.contador);
   else expect(cenario.contador).toBeUndefined();
   const idioma = attr(tag(doc, "html"), "lang");
@@ -65,8 +73,17 @@ export function verificarPaginaSms(doc: No, cenario: ComparacaoSms): void {
   const t = TEXTOS[idioma === "en" ? "en" : "pt"];
   const header = tag(doc, "header"), main = tag(doc, "main"), footer = tag(doc, "footer");
   for (const regiao of [header, main, footer]) expect(oculto(regiao)).toBe(false);
-  expect(texto(tag(main, "h1"))).toBe(otp ? t.h1Otp : t.h1Sms);
-  tag(main, "section");
+  expect(texto(tag(main, "h1"))).toBe(recuperar ? t.h1Recuperar : otp ? t.h1Otp : t.h1Sms);
+  const secao = tag(main, "section");
+  // Recuperação de senha: a tela de pedir código oferece a porta; no modo recuperar, a instrução própria.
+  const portas = elementos(secao).filter((e) => e.tagName === "a" && attr(e, "href") === t.recuperarHref && !dentro(e, tag(doc, "form")));
+  if (!otp && !recuperar) {
+    expect(portas.map((e) => texto(e)), "porta da recuperação de senha").toEqual([t.recuperarAcesso]);
+    expect(texto(portas[0].parentNode as No)).toBe(`${t.esqueceu} ${t.recuperarAcesso}`);
+  } else expect(portas).toHaveLength(0);
+  if (!otp && recuperar) {
+    expect(elementos(secao).filter((e) => e.tagName === "p" && texto(e) === t.introRecuperar), "instrução da recuperação").toHaveLength(1);
+  }
   unico(header, (e) => e.tagName === "a" && attr(e, "href") === t.marca[0]
     && attr(e, "aria-label") === t.marca[1], "marca do cabeçalho SMS");
   expect(texto(unico(header, (e) => e.tagName === "a" && attr(e, "href") === t.criar[0], "criar acesso"))).toBe(t.criar[1]);
@@ -122,7 +139,7 @@ export function verificarPaginaSms(doc: No, cenario: ComparacaoSms): void {
   expect(botoes.every((e) => dentro(e, form) && !oculto(e))).toBe(true);
   const submit = unico(form, (e) => e.tagName === "button" && attr(e, "type") === "submit", "submit SMS");
   expect(attr(submit, "disabled")).toBeUndefined();
-  expect(texto(submit)).toBe(otp ? t.submitOtp : t.submitSms);
+  expect(texto(submit)).toBe(otp ? (recuperar ? t.submitRecuperar : t.submitOtp) : t.submitSms);
   const links = elementos(form).filter((e) => e.tagName === "a").map((e) => [attr(e, "href"), texto(e)]);
   if (otp) {
     expect(texto(unico(form, (e) => e.tagName === "p" && texto(e).includes(t.destinoInicio), "destino mascarado")))
@@ -131,7 +148,8 @@ export function verificarPaginaSms(doc: No, cenario: ComparacaoSms): void {
     expect(attr(reenviar, "aria-live")).toBe("polite");
     expect(texto(reenviar)).toBe(cenario.contador === "30s" ? t.reenviarEm : t.reenviar);
     expect(attr(reenviar, "disabled")).toBe(cenario.contador === "30s" ? "" : undefined);
-    expect(links).toEqual(t.linksOtp.map((l) => [...l]));
+    // no modo recuperar, trocar o telefone volta ao pedido de código sem sair da recuperação
+    expect(links).toEqual(recuperar ? [[t.recuperarHref, t.linksOtp[0][1]]] : t.linksOtp.map((l) => [...l]));
     expect(todos.filter((e) => e.tagName === "option")).toHaveLength(0);
   } else {
     const pais = tag(form, "select");

@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-24T15:25:08+00:00",
+ "gerado_em": "2026-10-20T15:56:36+00:00",
  "fontes": {
   "sgs": {
    "nome": "BCB — Estatísticas de crédito com recursos direcionados (SGS)",
@@ -17,39 +17,39 @@
    "nivel": "A — registro administrativo do próprio banco"
   }
  },
- "sintese": "Em 2026-07, o crédito com recursos direcionados somava R$ 3221 bi, 44% da carteira do SFN; nas empresas, 42% do saldo é direcionado e os repasses do BNDES respondem por 18% de todo o crédito PJ. O Sistema BNDES desembolsou R$ 181 bi entre 2025-04 e 2026-03 (+33% sobre os 12 meses anteriores), 41% para micro, pequenas e médias empresas e 33% para infraestrutura; 58% passou por agentes financeiros em 2025. Nas operações não automáticas, 1484 contratos somaram R$ 83.8 bi entre 2025-07 e 2026-06, com juros médio ponderado de 3.0% a.a. sobre o custo financeiro e amortização média de 184 meses.",
+ "sintese": "Em 2026-08, o crédito com recursos direcionados somava R$ 3250 bi, 44% da carteira do SFN; nas empresas, 42% do saldo é direcionado e os repasses do BNDES respondem por 18% de todo o crédito PJ. O Sistema BNDES desembolsou R$ 181 bi entre 2025-04 e 2026-03 (+33% sobre os 12 meses anteriores), 41% para micro, pequenas e médias empresas e 33% para infraestrutura; 58% passou por agentes financeiros em 2025. Nas operações não automáticas, 1454 contratos somaram R$ 86.3 bi entre 2025-08 e 2026-07, com juros médio ponderado de 3.0% a.a. sobre o custo financeiro e amortização média de 183 meses.",
  "saldo": {
   "disponivel": true,
-  "mes": "2026-07",
+  "mes": "2026-08",
   "unidade": "R$ milhões (saldo de fim de mês, nominal)",
   "kpis": {
-   "mes": "2026-07",
-   "saldo_direcionado": 3221371.0,
-   "share_direcionado": 43.7,
-   "var_12m_pct": 12.8,
+   "mes": "2026-08",
+   "saldo_direcionado": 3250246.0,
+   "share_direcionado": 43.94,
+   "var_12m_pct": 12.9,
    "pj": {
-    "saldo": 1141022.0,
-    "share_no_pj": 41.77,
-    "bndes": 494519.0,
-    "bndes_share_direcionado": 43.34,
-    "bndes_share_total_pj": 18.1,
-    "bndes_var_12m_pct": 10.2,
-    "taxa_direcionado": 13.88,
-    "taxa_bndes": 13.24,
-    "taxa_total_pj": 20.97,
-    "inad_direcionado": 2.08,
-    "inad_bndes": 0.73,
-    "inad_total_pj": 3.31,
-    "prazo_direcionado": 72.54,
-    "prazo_bndes": 83.85,
-    "concessoes_12m_bndes": 106892.0
+    "saldo": 1152141.0,
+    "share_no_pj": 42.24,
+    "bndes": 496536.0,
+    "bndes_share_direcionado": 43.1,
+    "bndes_share_total_pj": 18.2,
+    "bndes_var_12m_pct": 10.3,
+    "taxa_direcionado": 12.73,
+    "taxa_bndes": 11.73,
+    "taxa_total_pj": 19.75,
+    "inad_direcionado": 2.02,
+    "inad_bndes": 0.66,
+    "inad_total_pj": 3.35,
+    "prazo_direcionado": 81.31,
+    "prazo_bndes": 105.06,
+    "concessoes_12m_bndes": 107538.0
    },
    "pf": {
-    "saldo": 2080349.0,
-    "share_no_pf": 44.83,
-    "bndes": 95680.0,
-    "taxa_direcionado": 11.46,
-    "inad_direcionado": 3.37
+    "saldo": 2098105.0,
+    "share_no_pf": 44.93,
+    "bndes": 96531.0,
+    "taxa_direcionado": 11.33,
+    "inad_direcionado": 3.6
    }
   },
   "serie": [
@@ -3152,7 +3152,7 @@
    {
     "mes": "2026-05",
     "direcionado": 3169489.0,
-    "livre_total": 4135817.0,
+    "livre_total": 4135833.0,
     "share_direcionado": 43.39,
     "share_pj_direcionado": 41.18,
     "share_pf_direcionado": 44.68,
@@ -3170,7 +3170,7 @@
    {
     "mes": "2026-06",
     "direcionado": 3196525.0,
-    "livre_total": 4156768.0,
+    "livre_total": 4156777.0,
     "share_direcionado": 43.47,
     "share_pj_direcionado": 41.06,
     "share_pf_direcionado": 44.91,
@@ -3179,7 +3179,7 @@
     "bndes_share_pj_total": 17.85,
     "taxa_dir_pj": 14.87,
     "taxa_livre_pj": null,
-    "taxa_pj": 20.73,
+    "taxa_pj": 20.74,
     "taxa_bndes_pj": 14.93,
     "inad_dir_pj": 2.02,
     "inad_pj": 3.18,
@@ -3187,21 +3187,39 @@
    },
    {
     "mes": "2026-07",
-    "direcionado": 3221371.0,
-    "livre_total": 4150872.0,
-    "share_direcionado": 43.7,
-    "share_pj_direcionado": 41.77,
-    "share_pf_direcionado": 44.83,
-    "bndes_pj": 494519.0,
-    "bndes_share_pj_dir": 43.34,
-    "bndes_share_pj_total": 18.1,
-    "taxa_dir_pj": 13.88,
+    "direcionado": 3224987.0,
+    "livre_total": 4137318.0,
+    "share_direcionado": 43.8,
+    "share_pj_direcionado": 41.9,
+    "share_pf_direcionado": 44.93,
+    "bndes_pj": 494597.0,
+    "bndes_share_pj_dir": 43.25,
+    "bndes_share_pj_total": 18.12,
+    "taxa_dir_pj": 13.82,
     "taxa_livre_pj": null,
-    "taxa_pj": 20.97,
+    "taxa_pj": 20.81,
     "taxa_bndes_pj": 13.24,
-    "inad_dir_pj": 2.08,
-    "inad_pj": 3.31,
+    "inad_dir_pj": 2.09,
+    "inad_pj": 3.32,
     "inad_bndes_pj": 0.73
+   },
+   {
+    "mes": "2026-08",
+    "direcionado": 3250246.0,
+    "livre_total": 4147423.0,
+    "share_direcionado": 43.94,
+    "share_pj_direcionado": 42.24,
+    "share_pf_direcionado": 44.93,
+    "bndes_pj": 496536.0,
+    "bndes_share_pj_dir": 43.1,
+    "bndes_share_pj_total": 18.2,
+    "taxa_dir_pj": 12.73,
+    "taxa_livre_pj": null,
+    "taxa_pj": 19.75,
+    "taxa_bndes_pj": 11.73,
+    "inad_dir_pj": 2.02,
+    "inad_pj": 3.35,
+    "inad_bndes_pj": 0.66
    }
   ],
   "nota": "Recursos direcionados: operações com taxa regulada ou funding público (BNDES, rural, imobiliário, microcrédito). O saldo com recursos do BNDES é o que está nos balanços das instituições financeiras como repasse ou operação direta do banco."
@@ -8383,291 +8401,291 @@
  "operacoes": {
   "disponivel": true,
   "janela": {
-   "ini": "2025-07",
-   "fim": "2026-06"
+   "ini": "2025-08",
+   "fim": "2026-07"
   },
-  "ultimo_mes": "2026-07",
-  "n_total": 23815,
+  "ultimo_mes": "2026-08",
+  "n_total": 23896,
   "kpis": {
-   "n_12m": 1484,
-   "contratado_12m": 83804188899.8,
-   "desembolsado_12m": 18417803140.49,
-   "clientes_12m": 366,
-   "var_12m_pct": 4.1,
-   "juros_medio": 2.99,
-   "amortizacao_media_meses": 184.0,
+   "n_12m": 1454,
+   "contratado_12m": 86341569952.29,
+   "desembolsado_12m": 17286682574.75,
+   "clientes_12m": 378,
+   "var_12m_pct": 8.4,
+   "juros_medio": 2.97,
+   "amortizacao_media_meses": 183.0,
    "carencia_media_meses": 31.0,
-   "hhi_clientes": 308,
-   "sem_municipio_share": 66.38
+   "hhi_clientes": 294,
+   "sem_municipio_share": 64.59
   },
   "por_produto": [
    {
     "nome": "BNDES FINEM",
-    "n": 556,
-    "valor": 44175720876.93,
-    "share": 52.71
+    "n": 559,
+    "valor": 46729645901.45,
+    "share": 54.12
    },
    {
     "nome": "BNDES DEBENTURES SIMPLES",
     "n": 50,
     "valor": 31073400000.0,
-    "share": 37.08
+    "share": 35.99
    },
    {
     "nome": "BNDES MÁQUINAS E SERVIÇOS",
-    "n": 672,
-    "valor": 5366390603.26,
-    "share": 6.4
+    "n": 652,
+    "valor": 5216578969.16,
+    "share": 6.04
    },
    {
     "nome": "BNDES NÃO REEMBOLSÁVEL",
-    "n": 58,
-    "valor": 1676667918.76,
-    "share": 2.0
+    "n": 61,
+    "valor": 1915257017.23,
+    "share": 2.22
    },
    {
     "nome": "BNDES FINAME",
-    "n": 130,
-    "valor": 889170978.49,
-    "share": 1.06
+    "n": 114,
+    "valor": 783849542.09,
+    "share": 0.91
    },
    {
     "nome": "BNDES GARANTIA",
     "n": 7,
     "valor": 521665522.35,
-    "share": 0.62
+    "share": 0.6
    },
    {
     "nome": "BNDES MICROCRÉDITO",
     "n": 4,
     "valor": 80000000.0,
-    "share": 0.1
+    "share": 0.09
    },
    {
     "nome": "BNDES CADEIAS PRODUTIVAS",
     "n": 7,
     "valor": 21173000.009999998,
-    "share": 0.03
+    "share": 0.02
    }
   ],
   "por_natureza": [
    {
     "nome": "PRIVADA",
-    "n": 1435,
-    "valor": 73909902450.27,
-    "share": 88.19
+    "n": 1411,
+    "valor": 75929431088.92,
+    "share": 87.94
    },
    {
     "nome": "ADMINISTRAÇÃO PÚBLICA DIRETA - GOVERNO ESTADUAL",
     "n": 18,
-    "valor": 7469088178.33,
-    "share": 8.91
+    "valor": 8264845350.0,
+    "share": 9.57
    },
    {
     "nome": "PÚBLICA INDIRETA",
     "n": 15,
     "valor": 1290259783.1,
-    "share": 1.54
+    "share": 1.49
    },
    {
     "nome": "ADMINISTRAÇÃO PÚBLICA DIRETA - GOVERNO MUNICIPAL",
-    "n": 15,
-    "valor": 984938488.1,
-    "share": 1.18
+    "n": 9,
+    "valor": 707033730.27,
+    "share": 0.82
    },
    {
     "nome": "ADMINISTRAÇÃO PÚBLICA DIRETA - GOVERNO FEDERAL",
     "n": 1,
     "valor": 150000000.0,
-    "share": 0.18
+    "share": 0.17
    }
   ],
   "por_porte": [
    {
     "nome": "GRANDE",
-    "n": 1227,
-    "valor": 75848457757.65,
-    "share": 90.51
+    "n": 1209,
+    "valor": 78118661594.82,
+    "share": 90.48
    },
    {
     "nome": "MÉDIA",
-    "n": 217,
-    "valor": 6700251332.52,
-    "share": 8.0
+    "n": 211,
+    "valor": 6871025320.38,
+    "share": 7.96
    },
    {
     "nome": "PEQUENA",
-    "n": 27,
-    "valor": 810617891.32,
-    "share": 0.97
+    "n": 20,
+    "valor": 803550479.78,
+    "share": 0.93
    },
    {
     "nome": "MICRO",
-    "n": 13,
-    "valor": 444861918.31,
-    "share": 0.53
+    "n": 14,
+    "valor": 548332557.31,
+    "share": 0.64
    }
   ],
   "por_setor_bndes": [
    {
     "nome": "ATV. AUX. TRANSPORTES",
-    "n": 55,
-    "valor": 22232367630.35,
-    "share": 26.53
+    "n": 57,
+    "valor": 22290067630.35,
+    "share": 25.82
    },
    {
     "nome": "ENERGIA ELÉTRICA",
-    "n": 126,
-    "valor": 13341479288.7,
-    "share": 15.92
-   },
-   {
-    "nome": "OUTROS TRANSPORTES",
-    "n": 187,
-    "valor": 8244631098.91,
-    "share": 9.84
+    "n": 120,
+    "valor": 13424131456.7,
+    "share": 15.55
    },
    {
     "nome": "QUÍMICA E PETROQUÍMICA",
-    "n": 131,
-    "valor": 7914369840.0,
-    "share": 9.44
+    "n": 126,
+    "valor": 8414237289.53,
+    "share": 9.75
    },
    {
-    "nome": "COMÉRCIO E SERVIÇOS",
-    "n": 232,
-    "valor": 7080024306.17,
-    "share": 8.45
+    "nome": "OUTROS TRANSPORTES",
+    "n": 183,
+    "valor": 8130722807.32,
+    "share": 9.42
    },
    {
     "nome": "CONSTRUÇÃO",
-    "n": 20,
-    "valor": 6578037730.26,
-    "share": 7.85
+    "n": 21,
+    "valor": 7468037730.26,
+    "share": 8.65
    },
    {
-    "nome": "SERV. UTILIDADE PÚBLICA",
-    "n": 30,
-    "valor": 3397957096.42,
-    "share": 4.05
+    "nome": "COMÉRCIO E SERVIÇOS",
+    "n": 220,
+    "valor": 6760321036.26,
+    "share": 7.83
    },
    {
     "nome": "AGROPECUÁRIA",
-    "n": 44,
-    "valor": 3217391504.47,
-    "share": 3.84
+    "n": 43,
+    "valor": 3189013252.14,
+    "share": 3.69
+   },
+   {
+    "nome": "SERV. UTILIDADE PÚBLICA",
+    "n": 22,
+    "valor": 3115857096.42,
+    "share": 3.61
    },
    {
     "nome": "TRANSPORTE FERROVIÁRIO",
     "n": 8,
     "valor": 2655211000.0,
-    "share": 3.17
+    "share": 3.08
    },
    {
     "nome": "MECÂNICA",
-    "n": 362,
-    "valor": 1678367775.23,
-    "share": 2.0
+    "n": 363,
+    "valor": 2099222500.75,
+    "share": 2.43
    },
    {
     "nome": "METALURGIA E PRODUTOS",
-    "n": 14,
-    "valor": 1657796345.24,
-    "share": 1.98
+    "n": 15,
+    "valor": 1957796345.24,
+    "share": 2.27
    },
    {
-    "nome": "ALIMENTO E BEBIDA",
-    "n": 120,
-    "valor": 1645205280.49,
-    "share": 1.96
+    "nome": "TRANSPORTE RODOVIÁRIO",
+    "n": 24,
+    "valor": 1593812029.73,
+    "share": 1.85
    }
   ],
   "por_custo": [
    {
     "nome": "TLP",
-    "n": 367,
-    "valor": 42336198673.76,
-    "share": 50.52
+    "n": 351,
+    "valor": 42899827682.97,
+    "share": 49.69
    },
    {
     "nome": "TAXA FIXA",
-    "n": 216,
-    "valor": 13660324466.59,
-    "share": 16.3
+    "n": 259,
+    "valor": 15763943652.26,
+    "share": 18.26
    },
    {
     "nome": "US$ / CESTA",
-    "n": 241,
-    "valor": 11108830181.1,
-    "share": 13.26
+    "n": 235,
+    "valor": 10893144567.7,
+    "share": 12.62
    },
    {
     "nome": "TAXA REFERENCIAL (TR)",
-    "n": 341,
-    "valor": 6257785954.15,
-    "share": 7.47
+    "n": 310,
+    "valor": 6274492782.94,
+    "share": 7.27
    },
    {
     "nome": "SELIC",
-    "n": 247,
-    "valor": 5587716183.09,
-    "share": 6.67
+    "n": 224,
+    "valor": 5418238726.84,
+    "share": 6.28
    },
    {
     "nome": "IPCA",
     "n": 7,
     "valor": 2655000000.0,
-    "share": 3.17
+    "share": 3.07
    },
    {
     "nome": "SEM CUSTO",
-    "n": 65,
-    "valor": 2198333441.11,
-    "share": 2.62
+    "n": 68,
+    "valor": 2436922539.58,
+    "share": 2.82
    }
   ],
   "por_garantia": [
    {
     "nome": "PESSOAL",
-    "n": 504,
-    "valor": 32824894667.38,
-    "share": 39.17
+    "n": 525,
+    "valor": 35178789977.5,
+    "share": 40.74
    },
    {
     "nome": "REAL / PESSOAL",
-    "n": 485,
-    "valor": 24919233087.7,
-    "share": 29.74
+    "n": 439,
+    "valor": 25102825215.09,
+    "share": 29.07
    },
    {
     "nome": "REAL",
-    "n": 336,
-    "valor": 18562010300.86,
-    "share": 22.15
+    "n": 342,
+    "valor": 18609704514.18,
+    "share": 21.55
    },
    {
     "nome": "SEM REGISTRO DE GARANTIA",
-    "n": 68,
-    "valor": 4033560319.86,
-    "share": 4.81
+    "n": 60,
+    "valor": 4025075380.88,
+    "share": 4.66
    },
    {
     "nome": "NÃO SE APLICA",
-    "n": 58,
-    "valor": 1676667918.76,
-    "share": 2.0
+    "n": 61,
+    "valor": 1915257017.23,
+    "share": 2.22
    },
    {
     "nome": "OUTRA, DE NATUREZA ESPECÍFICA OU MISTA",
-    "n": 23,
-    "valor": 1390874929.24,
-    "share": 1.66
+    "n": 17,
+    "valor": 1112970171.41,
+    "share": 1.29
    },
    {
     "nome": "REAL / PESSOAL / OUTRA, DE NATUREZA ESPECÍFICA OU MISTA",
     "n": 2,
     "valor": 331090945.0,
-    "share": 0.4
+    "share": 0.38
    },
    {
     "nome": "PESSOAL / OUTRA, DE NATUREZA ESPECÍFICA OU MISTA",
@@ -8679,169 +8697,169 @@
   "por_forma": [
    {
     "nome": "DIRETA",
-    "n": 1484,
-    "valor": 83804188899.8,
+    "n": 1454,
+    "valor": 86341569952.29,
     "share": 100.0
    }
   ],
   "por_modalidade": [
    {
     "nome": "REEMBOLSÁVEL",
-    "n": 1426,
-    "valor": 82127520981.04,
-    "share": 98.0
+    "n": 1393,
+    "valor": 84426312935.06,
+    "share": 97.78
    },
    {
     "nome": "NÃO REEMBOLSÁVEL",
-    "n": 58,
-    "valor": 1676667918.76,
-    "share": 2.0
+    "n": 61,
+    "valor": 1915257017.23,
+    "share": 2.22
    }
   ],
   "por_uf": [
    {
     "nome": "SP",
-    "n": 477,
-    "valor": 19474379596.34,
-    "share": 23.24
+    "n": 482,
+    "valor": 20321792297.9,
+    "share": 23.54
    },
    {
     "nome": "IE",
-    "n": 129,
-    "valor": 14126273296.44,
-    "share": 16.86
+    "n": 116,
+    "valor": 14034330493.65,
+    "share": 16.25
    },
    {
     "nome": "PR",
-    "n": 107,
-    "valor": 11686400683.19,
-    "share": 13.94
+    "n": 102,
+    "valor": 12092634721.57,
+    "share": 14.01
    },
    {
     "nome": "SC",
-    "n": 223,
-    "valor": 6471889022.08,
-    "share": 7.72
+    "n": 214,
+    "valor": 6819180459.42,
+    "share": 7.9
    },
    {
     "nome": "BA",
     "n": 30,
-    "valor": 5285188197.4,
-    "share": 6.31
+    "valor": 5326549156.73,
+    "share": 6.17
    },
    {
     "nome": "MT",
     "n": 38,
-    "valor": 4342008878.89,
-    "share": 5.18
+    "valor": 4838118996.79,
+    "share": 5.6
    },
    {
     "nome": "MS",
-    "n": 93,
-    "valor": 3739133564.14,
-    "share": 4.46
-   },
-   {
-    "nome": "RS",
-    "n": 67,
-    "valor": 3620691069.89,
-    "share": 4.32
+    "n": 94,
+    "valor": 3719603870.52,
+    "share": 4.31
    },
    {
     "nome": "MG",
-    "n": 105,
-    "valor": 3517863174.72,
-    "share": 4.2
+    "n": 98,
+    "valor": 3351363758.16,
+    "share": 3.88
+   },
+   {
+    "nome": "RS",
+    "n": 55,
+    "valor": 3222901767.4,
+    "share": 3.73
    },
    {
     "nome": "RJ",
-    "n": 77,
-    "valor": 2702716425.33,
-    "share": 3.23
+    "n": 95,
+    "valor": 2957640948.86,
+    "share": 3.43
    },
    {
     "nome": "CE",
     "n": 23,
-    "valor": 1861528622.1,
-    "share": 2.22
+    "valor": 1804450623.43,
+    "share": 2.09
+   },
+   {
+    "nome": "ES",
+    "n": 4,
+    "valor": 1719853000.0,
+    "share": 1.99
    },
    {
     "nome": "GO",
-    "n": 35,
-    "valor": 1568324352.03,
-    "share": 1.87
+    "n": 27,
+    "valor": 1505586150.15,
+    "share": 1.74
    },
    {
     "nome": "RN",
     "n": 8,
     "valor": 832800000.0,
-    "share": 0.99
-   },
-   {
-    "nome": "ES",
-    "n": 3,
-    "valor": 829853000.0,
-    "share": 0.99
+    "share": 0.96
    },
    {
     "nome": "PA",
-    "n": 11,
-    "valor": 768342167.52,
-    "share": 0.92
+    "n": 12,
+    "valor": 779162085.27,
+    "share": 0.9
    },
    {
     "nome": "TO",
-    "n": 4,
-    "valor": 704994287.0,
-    "share": 0.84
+    "n": 5,
+    "valor": 760996350.0,
+    "share": 0.88
    },
    {
     "nome": "AC",
     "n": 5,
-    "valor": 364000000.0,
-    "share": 0.43
+    "valor": 409000000.0,
+    "share": 0.47
    },
    {
     "nome": "PI",
-    "n": 10,
-    "valor": 359072718.29,
-    "share": 0.43
+    "n": 9,
+    "valor": 358633396.53000003,
+    "share": 0.42
    },
    {
     "nome": "AM",
-    "n": 8,
-    "valor": 345424346.98,
-    "share": 0.41
+    "n": 7,
+    "valor": 344020346.98,
+    "share": 0.4
    },
    {
     "nome": "PB",
     "n": 3,
     "valor": 301000000.0,
-    "share": 0.36
+    "share": 0.35
    },
    {
     "nome": "PE",
     "n": 8,
     "valor": 272862147.12,
-    "share": 0.33
-   },
-   {
-    "nome": "SE",
-    "n": 2,
-    "valor": 150244891.32999998,
-    "share": 0.18
+    "share": 0.32
    },
    {
     "nome": "RR",
     "n": 2,
     "valor": 140000000.0,
-    "share": 0.17
+    "share": 0.16
    },
    {
     "nome": "AP",
     "n": 5,
     "valor": 134846131.29,
     "share": 0.16
+   },
+   {
+    "nome": "DF",
+    "n": 3,
+    "valor": 107200922.8,
+    "share": 0.12
    },
    {
     "nome": "AL",
@@ -8853,19 +8871,13 @@
     "nome": "MA",
     "n": 2,
     "valor": 63392600.0,
-    "share": 0.08
+    "share": 0.07
    },
    {
     "nome": "RO",
     "n": 1,
     "valor": 55473843.62,
-    "share": 0.07
-   },
-   {
-    "nome": "DF",
-    "n": 2,
-    "valor": 17310000.0,
-    "share": 0.02
+    "share": 0.06
    }
   ],
   "top_clientes": [
@@ -8875,7 +8887,7 @@
     "uf": "PR",
     "n": 16,
     "valor": 9200000000.0,
-    "share": 10.98,
+    "share": 10.66,
     "setor": "ATV. AUX. TRANSPORTES",
     "natureza": "PRIVADA"
    },
@@ -8885,7 +8897,7 @@
     "uf": "SP",
     "n": 10,
     "valor": 5742333000.0,
-    "share": 6.85,
+    "share": 6.65,
     "setor": "ATV. AUX. TRANSPORTES",
     "natureza": "PRIVADA"
    },
@@ -8895,7 +8907,7 @@
     "uf": "SP",
     "n": 2,
     "valor": 5600000000.0,
-    "share": 6.68,
+    "share": 6.49,
     "setor": "OUTROS TRANSPORTES",
     "natureza": "ADMINISTRAÇÃO PÚBLICA DIRETA - GOVERNO ESTADUAL"
    },
@@ -8905,7 +8917,7 @@
     "uf": "IE",
     "n": 3,
     "valor": 4640000000.0,
-    "share": 5.54,
+    "share": 5.37,
     "setor": "ATV. AUX. TRANSPORTES",
     "natureza": "PRIVADA"
    },
@@ -8915,7 +8927,7 @@
     "uf": "IE",
     "n": 2,
     "valor": 2761000000.0,
-    "share": 3.29,
+    "share": 3.2,
     "setor": "ENERGIA ELÉTRICA",
     "natureza": "PRIVADA"
    },
@@ -8925,7 +8937,7 @@
     "uf": "SC",
     "n": 52,
     "valor": 2535030748.0,
-    "share": 3.02,
+    "share": 2.94,
     "setor": "OUTROS TRANSPORTES",
     "natureza": "PRIVADA"
    },
@@ -8935,7 +8947,7 @@
     "uf": "SC",
     "n": 64,
     "valor": 2303470470.0,
-    "share": 2.75,
+    "share": 2.67,
     "setor": "OUTROS TRANSPORTES",
     "natureza": "PRIVADA"
    },
@@ -8945,7 +8957,7 @@
     "uf": "RS",
     "n": 3,
     "valor": 2015000000.0,
-    "share": 2.4,
+    "share": 2.33,
     "setor": "SERV. UTILIDADE PÚBLICA",
     "natureza": "PRIVADA"
    },
@@ -8955,9 +8967,19 @@
     "uf": "MT",
     "n": 4,
     "valor": 2000000000.0,
-    "share": 2.39,
+    "share": 2.32,
     "setor": "TRANSPORTE FERROVIÁRIO",
     "natureza": "PRIVADA"
+   },
+   {
+    "cliente": "ESTADO DO ESPIRITO SANTO",
+    "cnpj": "27.080.530/0001-43",
+    "uf": "ES",
+    "n": 3,
+    "valor": 1240000000.0,
+    "share": 1.44,
+    "setor": "CONSTRUÇÃO",
+    "natureza": "ADMINISTRAÇÃO PÚBLICA DIRETA - GOVERNO ESTADUAL"
    },
    {
     "cliente": "ELDORADO BRASIL CELULOSE S/A",
@@ -8965,7 +8987,7 @@
     "uf": "MS",
     "n": 2,
     "valor": 1050000000.0,
-    "share": 1.25,
+    "share": 1.22,
     "setor": "CONSTRUÇÃO",
     "natureza": "PRIVADA"
    },
@@ -8975,7 +8997,7 @@
     "uf": "MT",
     "n": 3,
     "valor": 1000000000.0,
-    "share": 1.19,
+    "share": 1.16,
     "setor": "QUÍMICA E PETROQUÍMICA",
     "natureza": "PRIVADA"
    },
@@ -8985,7 +9007,7 @@
     "uf": "MG",
     "n": 2,
     "valor": 990000000.0,
-    "share": 1.18,
+    "share": 1.15,
     "setor": "ENERGIA ELÉTRICA",
     "natureza": "PRIVADA"
    },
@@ -8995,28 +9017,18 @@
     "uf": "BA",
     "n": 2,
     "valor": 950000000.0,
-    "share": 1.13,
+    "share": 1.1,
     "setor": "QUÍMICA E PETROQUÍMICA",
     "natureza": "PRIVADA"
    },
    {
-    "cliente": "GRANDE SERTAO III TRANSMISSORA DE ENERGIA S/A.",
-    "cnpj": "48.400.777/0001-70",
-    "uf": "BA",
-    "n": 3,
-    "valor": 893000000.0,
-    "share": 1.07,
-    "setor": "ENERGIA ELÉTRICA",
-    "natureza": "PRIVADA"
-   },
-   {
-    "cliente": "TECON SALVADOR S/A",
-    "cnpj": "03.642.342/0001-01",
-    "uf": "BA",
+    "cliente": "ELETROPAULO METROPOLITANA ELETRICIDADE DE SAO PAULO S.A",
+    "cnpj": "61.695.227/0001-93",
+    "uf": "SP",
     "n": 4,
-    "valor": 848186163.0,
-    "share": 1.01,
-    "setor": "ATV. AUX. TRANSPORTES",
+    "valor": 931052168.0,
+    "share": 1.08,
+    "setor": "ENERGIA ELÉTRICA",
     "natureza": "PRIVADA"
    }
   ],
@@ -9026,8 +9038,8 @@
     "nome": "SAO PAULO",
     "uf": "SP",
     "n": 48,
-    "valor": 2937071071.1,
-    "share": 3.5
+    "valor": 2920383756.19,
+    "share": 3.38
    },
    {
     "cod": "4208203",
@@ -9035,7 +9047,15 @@
     "uf": "SC",
     "n": 62,
     "valor": 2876783294.58,
-    "share": 3.43
+    "share": 3.33
+   },
+   {
+    "cod": "4106902",
+    "nome": "CURITIBA",
+    "uf": "PR",
+    "n": 31,
+    "valor": 1085547556.64,
+    "share": 1.26
    },
    {
     "cod": "2927408",
@@ -9043,7 +9063,7 @@
     "uf": "BA",
     "n": 8,
     "valor": 1030398163.0,
-    "share": 1.23
+    "share": 1.19
    },
    {
     "cod": "5108006",
@@ -9051,7 +9071,7 @@
     "uf": "MT",
     "n": 3,
     "valor": 1000000000.0,
-    "share": 1.19
+    "share": 1.16
    },
    {
     "cod": "3104502",
@@ -9059,7 +9079,7 @@
     "uf": "MG",
     "n": 2,
     "valor": 990000000.0,
-    "share": 1.18
+    "share": 1.15
    },
    {
     "cod": "2919553",
@@ -9067,15 +9087,15 @@
     "uf": "BA",
     "n": 2,
     "valor": 950000000.0,
-    "share": 1.13
+    "share": 1.1
    },
    {
-    "cod": "4106902",
-    "nome": "CURITIBA",
-    "uf": "PR",
-    "n": 31,
-    "valor": 787261950.89,
-    "share": 0.94
+    "cod": "3549904",
+    "nome": "SAO JOSE DOS CAMPOS",
+    "uf": "SP",
+    "n": 1,
+    "valor": 879403366.08,
+    "share": 1.02
    },
    {
     "cod": "3306305",
@@ -9083,7 +9103,7 @@
     "uf": "RJ",
     "n": 1,
     "valor": 625822000.0,
-    "share": 0.75
+    "share": 0.72
    },
    {
     "cod": "5218508",
@@ -9091,7 +9111,7 @@
     "uf": "GO",
     "n": 2,
     "valor": 625000000.0,
-    "share": 0.75
+    "share": 0.72
    },
    {
     "cod": "2402105",
@@ -9099,15 +9119,7 @@
     "uf": "RN",
     "n": 1,
     "valor": 600000000.0,
-    "share": 0.72
-   },
-   {
-    "cod": "2304400",
-    "nome": "FORTALEZA",
-    "uf": "CE",
-    "n": 5,
-    "valor": 596109141.91,
-    "share": 0.71
+    "share": 0.69
    },
    {
     "cod": "3536505",
@@ -9115,7 +9127,15 @@
     "uf": "SP",
     "n": 4,
     "valor": 547743353.08,
-    "share": 0.65
+    "share": 0.63
+   },
+   {
+    "cod": "2304400",
+    "nome": "FORTALEZA",
+    "uf": "CE",
+    "n": 4,
+    "valor": 538461141.91,
+    "share": 0.62
    },
    {
     "cod": "2929206",
@@ -9123,7 +9143,15 @@
     "uf": "BA",
     "n": 1,
     "valor": 503040600.0,
-    "share": 0.6
+    "share": 0.58
+   },
+   {
+    "cod": "5102637",
+    "nome": "CAMPO NOVO DO PARECIS",
+    "uf": "MT",
+    "n": 2,
+    "valor": 500000000.0,
+    "share": 0.58
    },
    {
     "cod": "3548906",
@@ -9131,7 +9159,7 @@
     "uf": "SP",
     "n": 2,
     "valor": 500000000.0,
-    "share": 0.6
+    "share": 0.58
    },
    {
     "cod": "3205200",
@@ -9139,14 +9167,6 @@
     "uf": "ES",
     "n": 1,
     "valor": 479853000.0,
-    "share": 0.57
-   },
-   {
-    "cod": "5205471",
-    "nome": "CHAPADAO DO CEU",
-    "uf": "GO",
-    "n": 22,
-    "valor": 466816817.06,
     "share": 0.56
    },
    {
@@ -9155,7 +9175,7 @@
     "uf": "PA",
     "n": 2,
     "valor": 435836755.0,
-    "share": 0.52
+    "share": 0.5
    },
    {
     "cod": "3305000",
@@ -9163,7 +9183,7 @@
     "uf": "RJ",
     "n": 3,
     "valor": 428213573.0,
-    "share": 0.51
+    "share": 0.5
    },
    {
     "cod": "3169604",
@@ -9171,14 +9191,6 @@
     "uf": "MG",
     "n": 3,
     "valor": 415500000.0,
-    "share": 0.5
-   },
-   {
-    "cod": "3505708",
-    "nome": "BARUERI",
-    "uf": "SP",
-    "n": 9,
-    "valor": 404857444.57,
     "share": 0.48
    }
   ],
@@ -9208,7 +9220,7 @@
     "ano": "2018",
     "n": 603,
     "contratado": 51238290183.81,
-    "desembolsado": 40012140223.8,
+    "desembolsado": 40011693823.8,
     "n_publico": 39
    },
    {
@@ -9220,52 +9232,52 @@
    },
    {
     "ano": "2020",
-    "n": 488,
-    "contratado": 37597448447.54,
-    "desembolsado": 35546436402.64,
+    "n": 483,
+    "contratado": 37514448447.54,
+    "desembolsado": 35463436402.64,
     "n_publico": 39
    },
    {
     "ano": "2021",
-    "n": 614,
-    "contratado": 34857442723.06,
-    "desembolsado": 29659637838.61,
+    "n": 608,
+    "contratado": 34819432708.06,
+    "desembolsado": 29650137838.61,
     "n_publico": 20
    },
    {
     "ano": "2022",
-    "n": 549,
+    "n": 550,
     "contratado": 47232284662.82,
     "desembolsado": 26086910937.43,
     "n_publico": 19
    },
    {
     "ano": "2023",
-    "n": 558,
+    "n": 557,
     "contratado": 43853214236.59,
     "desembolsado": 23677534302.920002,
     "n_publico": 10
    },
    {
     "ano": "2024",
-    "n": 980,
-    "contratado": 94475714027.84,
+    "n": 978,
+    "contratado": 94472614027.5,
     "desembolsado": 39707359995.68,
-    "n_publico": 60
+    "n_publico": 58
    },
    {
     "ano": "2025",
     "n": 1334,
-    "contratado": 73497796793.79,
+    "contratado": 73497796793.78,
     "desembolsado": 21126619808.31,
     "n_publico": 44
    },
    {
     "ano": "2026",
-    "n": 626,
-    "contratado": 33092944703.93,
-    "desembolsado": 3648671494.5,
-    "n_publico": 18
+    "n": 723,
+    "contratado": 37092908535.27,
+    "desembolsado": 3649117894.5,
+    "n_publico": 19
    }
   ],
   "custo_anual": [
@@ -9331,27 +9343,27 @@
    },
    {
     "ano": "2020",
-    "total": 37420001284.58,
+    "total": 37337001284.58,
     "TJLP": 0.21,
-    "TLP": 87.04,
-    "SELIC": 1.96,
-    "TAXA FIXA": 2.44,
+    "TLP": 87.24,
+    "SELIC": 1.74,
+    "TAXA FIXA": 2.45,
     "US$ / CESTA": 0.41,
     "IPCA": 0.24,
-    "TAXA REFERENCIAL (TR)": 0.6,
-    "outros": 7.09
+    "TAXA REFERENCIAL (TR)": 0.61,
+    "outros": 7.11
    },
    {
     "ano": "2021",
-    "total": 34614392628.35,
+    "total": 34576382613.35,
     "TJLP": 1.03,
-    "TLP": 72.94,
-    "SELIC": 5.34,
+    "TLP": 73.02,
+    "SELIC": 5.23,
     "TAXA FIXA": 2.66,
-    "US$ / CESTA": 1.49,
+    "US$ / CESTA": 1.5,
     "IPCA": 1.24,
     "TAXA REFERENCIAL (TR)": 0.58,
-    "outros": 14.72
+    "outros": 14.74
    },
    {
     "ano": "2022",
@@ -9391,7 +9403,7 @@
    },
    {
     "ano": "2025",
-    "total": 70880894617.27,
+    "total": 70880894617.26001,
     "TJLP": 0.0,
     "TLP": 54.5,
     "SELIC": 6.07,
@@ -9403,15 +9415,15 @@
    },
    {
     "ano": "2026",
-    "total": 32273442664.920002,
+    "total": 36190647768.39,
     "TJLP": 0.0,
-    "TLP": 49.66,
-    "SELIC": 7.09,
-    "TAXA FIXA": 22.63,
-    "US$ / CESTA": 7.91,
+    "TLP": 49.48,
+    "SELIC": 6.74,
+    "TAXA FIXA": 23.88,
+    "US$ / CESTA": 7.59,
     "IPCA": 0.0,
-    "TAXA REFERENCIAL (TR)": 12.3,
-    "outros": 0.41
+    "TAXA REFERENCIAL (TR)": 11.95,
+    "outros": 0.36
    }
   ],
   "nota": "Contratações diretas e indiretas NÃO automáticas, pela data da contratação; as operações indiretas automáticas (Finame, BNDES Automático, cartão), que respondem pela maior parte do número de operações, não estão nesta base. 'IE' e 'SEM MUNICÍPIO' marcam operações sem localização única (multi-UF, exportação). Valor contratado não é desembolso: a liberação segue o cronograma do projeto."

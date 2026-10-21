@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ROTA, ROTULO_SITUACAO, eixoDoCapitulo, type Situacao } from "@/lib/saneamento/capitulos";
+import { MARCA_AUTODECLARADO, RESSALVA_AUTODECLARADO } from "@/lib/saneamento/autodeclarado";
 
 /**
  * Peças editoriais do Observatório do Saneamento. Todas no servidor.
@@ -112,6 +113,30 @@ export function Ressalva({ permite, naoPermite }: { permite: ReactNode; naoPermi
   );
 }
 
+/** Marca de valor financeiro declarado pelo prestador ao SINISA, junto ao número (src/lib/saneamento/autodeclarado.ts). */
+export function MarcaAutodeclarado({ className = "" }: { className?: string }) {
+  return (
+    <span data-autodeclarado="" className={`block text-xs leading-snug text-carvao-muted ${className}`}>
+      {MARCA_AUTODECLARADO}
+    </span>
+  );
+}
+
+/** A explicação da marca, uma vez por capítulo, perto do primeiro valor financeiro. */
+export function RessalvaAutodeclarado({ children }: { children?: ReactNode }) {
+  return (
+    <aside
+      aria-label="Valores financeiros autodeclarados"
+      data-ressalva-autodeclarado=""
+      className="mt-6 max-w-prose2 border-l-2 border-aviso pl-4 text-sm leading-relaxed text-carvao"
+    >
+      <p className="font-medium">Valores autodeclarados ao SINISA, sem conferência com demonstrações financeiras auditadas</p>
+      <p className="mt-1 text-carvao-muted">{RESSALVA_AUTODECLARADO}</p>
+      {children && <div className="mt-1 text-carvao-muted">{children}</div>}
+    </aside>
+  );
+}
+
 export function Nota({ children, titulo }: { children: ReactNode; titulo?: string }) {
   return (
     <aside className="mt-6 max-w-prose2 border-l-2 border-linha pl-4 text-sm leading-relaxed text-carvao-muted">
@@ -152,5 +177,35 @@ export function Indisponivel({ titulo, children }: { titulo: string; children: R
       <p className="font-medium text-carvao">{titulo}</p>
       <div className="mt-1">{children}</div>
     </div>
+  );
+}
+
+/**
+ * Atalhos para as seções de uma página longa, logo depois da abertura. No celular os atalhos ficam numa linha que rola só dentro da
+ * barra (a página não rola de lado); no desktop quebram em linhas. Cada item aponta para o `id` de uma `Secao`; o teste
+ * `saneamento-entrada` confere que a lista cobre todas as seções da página, na ordem, e que nenhum atalho aponta para âncora ausente.
+ */
+export function NestaPagina({ itens }: { itens: { id: string; rotulo: string }[] }) {
+  return (
+    <nav aria-label="Nesta página" data-nesta-pagina="" className="mb-10 border-y border-linha py-3">
+      <p className="rotulo text-mineral">
+        Nesta página · {itens.length} seções
+      </p>
+      <ol className="tabela-scroll mt-2 flex gap-2 pb-1 lg:flex-wrap">
+        {itens.map((x, i) => (
+          <li key={x.id} className="shrink-0">
+            <a
+              href={`#${x.id}`}
+              className="inline-flex min-h-[44px] items-center gap-2 whitespace-nowrap border border-linha bg-superficie px-3 text-sm text-carvao hover:border-obee hover:text-obee-dark"
+            >
+              <span aria-hidden="true" className="text-xs tabular-nums text-mineral">
+                {i + 1}
+              </span>
+              {x.rotulo}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
   );
 }

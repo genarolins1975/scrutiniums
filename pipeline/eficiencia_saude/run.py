@@ -6,6 +6,7 @@
     python3 -m pipeline.eficiencia_saude.run --coleta-cnes      recoleta o retrato do CNES e o histórico por estabelecimento (rede; longa)
     python3 -m pipeline.eficiencia_saude.run --coleta-aps       recoleta o Relatório APS (cobertura e equipes), capitais e Brasil (rede)
     python3 -m pipeline.eficiencia_saude.run --coleta-ripsa     reextrai ICSAP, internações e planos dos arquivos do RIPSA (rede, 80 MB)
+    --so-coleta junto de uma coleta: só coleta, sem gold (atualizar-eficiencia.yml reconstrói e testa por grupo)
 
 A reconstrução sem rede imprime as validações e termina com código 1 se alguma for reprovada; nesse caso a saída pública anterior fica intacta.
 Nenhuma etapa escreve em arquivos de Educação.
@@ -23,6 +24,8 @@ def main(argv=None):
     ap.add_argument("--coleta-cnes", action="store_true")
     ap.add_argument("--coleta-aps", action="store_true")
     ap.add_argument("--coleta-ripsa", action="store_true")
+    ap.add_argument("--so-coleta", action="store_true",
+                    help="só coleta, sem reconstruir a gold (a atualização agendada reconstrói e testa depois, por grupo)")
     a = ap.parse_args(argv)
     if a.coleta_siconfi:
         from pipeline.eficiencia_saude.fontes import siconfi
@@ -44,6 +47,8 @@ def main(argv=None):
         ripsa.extrai_icsap()
         ripsa.extrai_internacoes()
         ripsa.extrai_planos()
+    if a.so_coleta:
+        return 0
     g = gold.constroi()
     promovido, caminho = gold.promove(g)
     for id_, res in gold.resumo_validacoes(g):

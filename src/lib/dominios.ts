@@ -6,7 +6,7 @@
  * telemetria e sitemap leem daqui. Um novo observatório é uma entrada nova.
  */
 
-export type DominioId = "credito" | "energia" | "eficiencia" | "contas" | "estados" | "saneamento" | "gas";
+export type DominioId = "credito" | "energia" | "eficiencia" | "contas" | "estados" | "saneamento" | "gas" | "agro";
 
 export type Dominio = {
   id: DominioId;
@@ -118,10 +118,10 @@ export const DOMINIOS: Dominio[] = [
     nomeCurto: "Saneamento",
     pergunta: "Quem ainda está sem água e esgoto adequados, quanto custa o serviço, quem o presta e se o planejamento vira atendimento?",
     descricao:
-      "Acesso à água e ao esgoto em cada município, pelo Censo 2022 e pelo SINISA 2024, com prestadores, reguladores, investimentos declarados, planos e metas de universalização. O preço regulado tem eixo próprio: como a tarifa é autorizada, o que financia e como chega à conta, a partir das decisões dos reguladores.",
+      "Acesso à água e ao esgoto em cada município, pelo Censo 2022 e pelo SINISA 2024, com prestadores, reguladores, investimentos declarados, planos e metas de universalização. A tarifa tem eixo próprio: como é autorizada, o que financia e como chega à conta, a partir das decisões dos reguladores.",
     descricaoCurta:
-      "Água e esgoto nos 5.570 municípios: Censo 2022, SINISA 2024, prestadores, reguladores, investimentos, metas e preço regulado a partir de atos oficiais.",
-    chips: ["Acesso", "Preço regulado", "Prestadores", "Investimento", "Metas"],
+      "Água e esgoto nos 5.570 municípios: Censo 2022, SINISA 2024, prestadores, reguladores, investimentos, metas e tarifas a partir de atos oficiais.",
+    chips: ["Acesso", "Tarifa", "Prestadores", "Investimento", "Metas"],
     rotaRaiz: "/saneamento",
     rotaApresentacao: "/saneamento",
     cta: "Explorar Saneamento",
@@ -143,6 +143,20 @@ export const DOMINIOS: Dominio[] = [
     cta: "Explorar Gás Natural",
     acento: "gas",
     prefixosTelemetria: ["gas:"],
+  },
+  {
+    id: "agro",
+    nome: "Observatório do Agronegócio Brasileiro",
+    nomeCurto: "Agronegócio",
+    pergunta: "Como está o agronegócio brasileiro e o que ele representa para o país?",
+    descricao: "Oito perguntas sobre o setor com dados oficiais atualizados automaticamente: peso na economia, safra, insumos importados, exportações, produtores e trabalho, juros e subsídios, desmatamento e emissões, preço da comida. Doze cadeias, com produção por estado e exportação, e cenários de margem e orçamento completam o observatório. A cobertura de cada medição e as limitações aparecem junto do conteúdo.",
+    descricaoCurta: "Peso na economia, safra, insumos, exportações, trabalho, apoio público, desmatamento e preço da comida, com dados oficiais atualizados e limites explícitos.",
+    chips: ["Peso na economia", "Safra", "Insumos", "Exportações"],
+    rotaRaiz: "/agronegocio",
+    rotaApresentacao: "/agronegocio",
+    cta: "Explorar Agronegócio",
+    acento: "energia",
+    prefixosTelemetria: ["agro:"],
   },
 ];
 
@@ -175,5 +189,6 @@ export function dominioDoCaminho(caminho: string): DominioId | null {
   if (caminho === "/contas-publicas-estaduais" || caminho.startsWith("/contas-publicas-estaduais/")) return "estados";
   if (caminho === "/saneamento" || caminho.startsWith("/saneamento/")) return "saneamento";
   if (caminho === "/gas-natural" || caminho.startsWith("/gas-natural/")) return "gas";
+  if (caminho === "/agronegocio" || caminho.startsWith("/agronegocio/")) return "agro";
   return null;
 }

@@ -16,14 +16,14 @@ const ENTRAR = {
     rodape: [["/termos", "Termos de uso"], ["/privacidade", "Privacidade"]],
     seletor: { rotulo: "Idioma", links: [["pt-BR", "/entrar", "Português"], ["en", "/en/entrar", "Inglês"]] },
     email: "E-mail", senha: "Senha", erroEmail: "Informe um e-mail válido.", erroSenha: "Informe sua senha.", submit: "Entrar",
-    links: [["/entrar/sms", "Entrar com código por SMS"], ["/cadastro", "Ainda não tenho cadastro"]],
+    links: [["/entrar/sms?recuperar=1", "Esqueci minha senha"], ["/entrar/sms", "Entrar com código por SMS"], ["/cadastro", "Ainda não tenho cadastro"]],
   },
   en: {
     h1: "Sign in", marca: ["/en", "Scrutiniums home page"], troca: ["/cadastro", "Sign up"],
     rodape: [["/termos", "Terms of use"], ["/privacidade", "Privacy"]],
     seletor: { rotulo: "Language", links: [["pt-BR", "/entrar", "Portuguese"], ["en", "/en/entrar", "English"]] },
     email: "Email", senha: "Password", erroEmail: "Enter a valid email address.", erroSenha: "Enter your password.", submit: "Sign in",
-    links: [["/en/entrar/sms", "Sign in with an SMS code"], ["/cadastro", "I don't have an account yet"]],
+    links: [["/en/entrar/sms?recuperar=1", "Forgot your password?"], ["/en/entrar/sms", "Sign in with an SMS code"], ["/cadastro", "I don't have an account yet"]],
   },
 } as const;
 const CADASTRO = {

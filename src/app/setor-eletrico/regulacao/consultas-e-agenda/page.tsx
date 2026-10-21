@@ -387,7 +387,7 @@ export default function ConsultasEAgendaPage() {
                       <TabelaInterativa
                         titulo={tx(`Atividades da ${agenda}`, `Activities of the ${agenda}`)}
                         colunas={COLUNAS_AGENDA}
-                        linhas={linhasAgenda(A.itens, limitesEmRevisao)}
+                        linhas={linhasAgenda(A.itens, limitesEmRevisao ?? [])}
                         chaveLinha="id"
                         colunaRotulo="codigo"
                         fonte={`ANEEL, ${A.versao ? versaoDaAgenda(A.versao) : tx("Agenda Regulatória", "regulatory agenda")}`}

@@ -228,10 +228,16 @@ describe.skipIf(!disponivel)("gold regulacao.json", () => {
     if (cp6) expect([cp6.situacao, cp6.resultado?.ato, cp6.resultado?.forma]).toEqual(["decidida", "Despacho nº 2.266/2026", "consolidacao"]);
     const cp3 = gold.consultas.itens.find((x) => x.id === "CP-3-2026");
     if (cp3) {
-      // a ata registra "Portaria nº 1.160/2026"; a página do PRORET diz REN nº 1.160/2026: ato suspeito, não exibido
-      expect([cp3.situacao, cp3.resultado?.vinculo, cp3.resultado?.ato, cp3.resultado?.ato_na_ata]).toEqual([
-        "decidida", "processo_e_objeto", null, "Portaria nº 1.160/2026",
-      ]);
+      // a ata de 16/06/2026 registrava "Portaria nº 1.160/2026", número da faixa de REN (a página do PRORET diz REN nº 1.160/2026):
+      // ato suspeito, não exibido. A ANEEL corrigiu a ata depois (na coleta de 18/10/2026 já vem "Resolução Normativa nº 1.160/2026").
+      // Vale a regra, não a redação de uma data: ato suspeito nunca é exibido; ato plausível é o que a ata escreve.
+      // O caso da Portaria segue conferido com as linhas reais da ata no teste do pipeline (NumeroDoAto).
+      expect([cp3.situacao, cp3.resultado?.vinculo]).toEqual(["decidida", "processo_e_objeto"]);
+      expect(cp3.resultado?.ato_na_ata).toMatch(/nº 1\.160\/2026$/);
+      expect(cp3.resultado?.ato).toBe(cp3.resultado?.ato_suspeito ? null : cp3.resultado?.ato_na_ata);
+    }
+    for (const x of gold.consultas.itens) {
+      if (x.resultado?.ato_suspeito) expect([x.id, x.resultado.ato, !!x.resultado.motivo_ato_suspeito]).toEqual([x.id, null, true]);
     }
     // CP 1/2026: 2ª fase instaurada em 30/06/2026 pelo prazo de 45 dias, sem datas: entra na janela pela fase atual
     expect(gold.consultas.itens.find((x) => x.id === "CP-1-2026")?.situacao).toBe("prazo_nao_datado");
@@ -252,7 +258,7 @@ describe.skipIf(!disponivel)("gold regulacao.json", () => {
   });
 
   it("agenda: só atividades sobre limites entram em limites_em_revisao", () => {
-    expect(gold.limites_em_revisao.map((x) => x.codigo).sort()).toEqual(["AR24-05", "AR24-18"]);
+    expect(gold.limites_em_revisao?.map((x) => x.codigo).sort()).toEqual(["AR24-05", "AR24-18"]);
   });
 
   it("linha do tempo nunca traz impacto estimado", () => {
@@ -497,7 +503,7 @@ describe.skipIf(!disponivel)("interface: linhas do gráfico, da tabela e da expo
   });
 
   it("P046: agenda com as mesmas linhas na tabela e contagens que fecham com a portaria", () => {
-    const l = linhasAgenda(gold.agenda.itens, gold.limites_em_revisao);
+    const l = linhasAgenda(gold.agenda.itens, gold.limites_em_revisao ?? []);
     expect(l.length).toBe(gold.agenda.itens.length);
     expect(l.filter((x) => x.limites_pld === "sim").map((x) => x.id).sort()).toEqual(["AR24-05", "AR24-18"]);
     const c = contagemAgendaPorPainel(gold.agenda.itens);
@@ -583,8 +589,25 @@ describe.skipIf(!disponivel)("textos derivados dos números", () => {
     const n = gold.resumo.consultas_abertas;
     expect(t).toContain(`${n} consultas e audiências públicas da ANEEL recebem contribuições`);
     expect(t).toContain(`entre as ${gold.consultas.itens.length} consultas com atividade nos últimos ${gold.consultas.janela_dias} dias`);
-    // decisões da pauta de 29/09/2026 sem resultado formal: fora da contagem, ditas à parte
-    expect(t).toContain(`Outras ${gold.consultas.decisoes_sem_resultado_formal!.length} decisões de abertura`);
+    // decisões da última pauta sem resultado formal (na gold de 01/10/2026, as duas de 29/09/2026): fora da contagem, ditas à
+    // parte quando, confirmadas, estariam abertas ou a abrir na data; sem nenhuma, a frase não aparece
+    const data = gold.consultas.data_referencia;
+    const pend = gold.consultas.decisoes_sem_resultado_formal ?? [];
+    const vivas = pend.filter((d) => ["aberta", "a_abrir"].includes(situacaoSeConfirmada(d, data) ?? ""));
+    if (!vivas.length) expect(t).not.toContain("decisões de abertura da última pauta");
+    else if (pend.length === 1) expect(t).toContain("Outra decisão de abertura da última pauta ainda não tem resultado formal");
+    else expect(t).toContain(`Outras ${pend.length} decisões de abertura da última pauta ainda não têm resultado formal`);
+    // o ramo das pendentes fica conferido sempre, num clone com duas decisões: uma com janela em curso, outra por começar
+    const mais = (d: string, n: number) => new Date(Date.parse(`${d}T12:00:00Z`) + n * 864e5).toISOString().slice(0, 10);
+    const decisao = (inicio: string) => ({
+      data: mais(data, -1), reuniao: "sintética", processos: ["48500.000000/2026-00"], assunto: "Proposta de abertura de Consulta Pública",
+      decisao: "decisão sintética", inicio, fim: mais(inicio, 45), janela_origem: null, situacao_se_confirmada: null,
+    });
+    const clone = { ...gold.consultas, decisoes_sem_resultado_formal: [decisao(data), decisao(mais(data, 1))] };
+    expect(respostaConsultas(clone, data)).toContain(
+      "Outras 2 decisões de abertura da última pauta ainda não têm resultado formal na ata e ficam fora da contagem: se confirmadas, 1 estaria aberta e 1 estaria a abrir.",
+    );
+    expect(respostaConsultas({ ...gold.consultas, decisoes_sem_resultado_formal: [] }, data)).not.toContain("decisões de abertura da última pauta");
   });
 
   it("P045: resposta com contagem por origem e o evento mais recente com publicação e vigência", () => {
@@ -608,7 +631,7 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
   const literais = [
     ...gold.linha_do_tempo.eventos.flatMap((e) => [e.efeito_declarado, e.vigencia_regra, e.trecho, e.dispositivo]),
     ...gold.agenda.itens.map((i) => i.atividade),
-    ...gold.limites_em_revisao.map((i) => i.atividade),
+    ...(gold.limites_em_revisao ?? []).map((i) => i.atividade),
     ...gold.consultas.itens.flatMap((c) => [c.tema, c.deliberacao_abertura.decisao, c.resultado?.decisao]),
     ...gold.limites_pld.atos.flatMap((a) => [a.trecho, a.dispositivo, a.dou, ...a.observacoes]),
   ]
@@ -708,7 +731,10 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
     expect(nomeAgenda(gold.agenda)).toBe("Agenda Regulatória de 2026 e 2027");
     expect(h).toContain(`Atividades da ${nomeAgenda(gold.agenda)}`);
     expect(h).toContain(`Consultas e audiências desde ${anoInicioHistorico(gold)}, por situação`);
-    expect(h).toContain("decisões de abertura ainda não têm resultado formal na ata");
+    // a seção das decisões de abertura sem resultado formal só existe quando a gold tem alguma (havia em 01/10/2026; a de
+    // 20/10/2026 não tem); o texto com decisões pendentes é conferido com dados sintéticos no teste das decisões pendentes
+    if ((gold.consultas.decisoes_sem_resultado_formal ?? []).length) expect(h).toContain("decisões de abertura ainda não têm resultado formal na ata");
+    else expect(h).not.toContain("data-decisoes-sem-resultado");
     expect(h).toContain("https://www.gov.br/aneel/pt-br/acesso-a-informacao/participacao-social/consultas-publicas");
     expect((h.match(/<table/g) ?? []).length).toBeGreaterThanOrEqual(5);
   });
@@ -938,7 +964,7 @@ describe.skipIf(!disponivel)("seletores da migração editorial da Regulação",
     expect(semTravessao("Metodologia de cálculo do PLD.")).toBe("Metodologia de cálculo do PLD.");
     // intervalo escrito com hífen, sem espaços, não é separador de frase
     expect(semTravessao("2026-2027")).toBe("2026-2027");
-    for (const a of gold.limites_em_revisao) expect(semTravessao(a.atividade)).not.toMatch(/[–—]/);
+    for (const a of gold.limites_em_revisao ?? []) expect(semTravessao(a.atividade)).not.toMatch(/[–—]/);
   });
 
   it("linha do tempo: órgãos emissores do mais ao menos frequente e contagem por origem que fecha com o total", () => {

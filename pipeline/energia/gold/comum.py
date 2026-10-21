@@ -140,11 +140,11 @@ FONTE_CCEE_PLD = {
 SEM_DATA_DE_PUBLICACAO_CONFIAVEL = {"ccee_pld_horario"}
 
 
-def snapshot_de(con, dataset):
+def snapshot_de(con, dataset, vintages=None):
     """Identificador e sha256 do conjunto de vintages vigentes do dataset: sha256 dos
     sha256 das capturas mais recentes de cada recurso, em ordem de recurso."""
     import hashlib
-    vs = base.vintages_do_dataset(con, dataset)
+    vs = base.vintages_do_dataset(con, dataset) if vintages is None else list(vintages)
     ultimo = {}
     for v in vs:
         ultimo[v["recurso"]] = v

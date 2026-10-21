@@ -40,7 +40,7 @@ python3 -m pipeline.contas_estaduais.coletar --ano 2026 --quadrimestre 1 --somen
 
 O coletor cria uma pasta nova por captura. Diretório existente é recusado, evitando sobrescrever evidência. Falhas parciais ficam distintas de zero linhas; bytes já recebidos são preservados. O mapeamento recusa contas duplicadas e diferenças de UF, exercício, código ou período. Paginação inconclusiva impede sucesso.
 
-O workflow adicional roda testes Python e captura primária em PR, sem credenciais. Artefatos de CI duram 30 dias: devem ser incorporados a armazenamento permanente de evidências antes de qualquer promoção de dados. Nenhuma captura é automaticamente promovida ao painel.
+Todo dia 5, `.github/workflows/atualizar-contas-estaduais.yml` refaz as 81 consultas arquivadas (`python3 -m pipeline.contas_estaduais.conferir`), acusa conteúdo diferente do arquivado e período novo disponível para as 27 UFs e guarda as respostas do dia como artefato; não promove nada. O workflow adicional roda testes Python e captura primária em PR, sem credenciais. Artefatos de CI duram 30 dias: devem ser incorporados a armazenamento permanente de evidências antes de qualquer promoção de dados. Nenhuma captura é automaticamente promovida ao painel.
 
 ## Passos de promoção
 

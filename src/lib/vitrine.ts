@@ -1,3 +1,4 @@
+import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from '@/lib/agro/modelo';
 /**
  * Vitrine da página inicial: o que cada observatório já publica.
  *
@@ -22,12 +23,14 @@ import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
 import { orgaosDasFontes } from "@/lib/energia/dados";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
-import { CAPITULOS, PAINEIS_COM_DADOS } from "@/lib/contas-publicas/catalogo";
+import { PERGUNTA_PAINEL as PERGUNTA_EDUCACAO, ROTA_EDUCACAO, TITULO_PAINEL as TITULO_EDUCACAO } from "@/lib/educacao/paginas";
+import { CAPITULOS, PAINEIS_COM_DADOS, PAINEL_AREAS, PAINEL_PREVIDENCIA } from "@/lib/contas-publicas/catalogo";
 import { MEDIDAS } from "@/lib/contas-estaduais/comparacao";
 import primariosEstaduais from "@/lib/contas-estaduais/primarios.json";
 import catalogoEstadual from "@/lib/contas-estaduais/catalogo.json";
 import { CAPITULOS as CAPITULOS_SANEAMENTO, ROTA as ROTA_SANEAMENTO, rotaCapitulo } from "@/lib/saneamento/capitulos";
 import { PAGINAS_GAS } from "@/lib/gas/navegacao";
+import { ROTA_COMBUSTIVEIS, paginaCombustiveis } from "@/lib/combustiveis/paginas";
 import { goldGas } from "@/lib/gas/gold";
 
 export type PainelVitrine = { titulo: string; href: string; descricao: string };
@@ -152,11 +155,16 @@ function vitrineEficiencia(fmt: FormatarNumero): Vitrine {
     imagem: "/home/eficiencia.webp",
     contagem: { valor: fmt(quantidade), unidade: "temas publicados" },
     contagemIndice: { tipo: "simples", quantidade, unidade: "temas_publicados" },
-    paineis: publicadas.flatMap((d) => [{ titulo: d.titulo, href: d.href as string, descricao: d.descricao }, ...(d.id === "justica" ? [{ titulo: "Judiciário: filas e tempos", href: "/eficiencia-estatal/judiciario", descricao: "Despesas, filas e tempos em três ramos; 57 tribunais e comparação internacional WJP de acesso, demora e cumprimento, sem nota própria de eficiência." }] : [])]),
+    // painel Educação nos municípios (Serviços Públicos, 20/10/2026): abre a lista, porque responde à consulta pessoal do tema
+    // (a escola pública da cidade do leitor); fora da contagem de temas da Eficiência Estatal, que ele não é
+    paineis: [
+      { titulo: TITULO_EDUCACAO, href: ROTA_EDUCACAO, descricao: PERGUNTA_EDUCACAO },
+      ...publicadas.flatMap((d) => [{ titulo: d.titulo, href: d.href as string, descricao: d.descricao }, ...(d.id === "justica" ? [{ titulo: "Judiciário: filas e tempos", href: "/eficiencia-estatal/judiciario", descricao: "Despesas, filas e tempos em três ramos; 57 tribunais e comparação internacional WJP de acesso, demora e cumprimento, sem nota própria de eficiência." }] : [])]),
+    ],
     fontes:
       "Tesouro (Siconfi), INEP, IBGE, Ministério da Saúde, MDS, Ministério das Cidades, CNJ, Sinesp e WJP, declaradas tema a tema, com a página de métodos de cada tema.",
     situacao:
-      `Valores e referências por tema e um índice experimental de resultados nas 26 capitais, com memória de cálculo e testes de sensibilidade; sem conclusões sobre a gestão.` +
+      `O Ideb e as matrículas da escola pública de cada município, valores e referências por tema e um índice experimental de resultados nas 26 capitais, com memória de cálculo e testes de sensibilidade; sem conclusões sobre a gestão.` +
       (semPainel > 0 ? ` ${semPainel} temas do mapa ainda não têm painel publicado.` : ""),
   };
 }
@@ -166,18 +174,22 @@ function vitrineEficiencia(fmt: FormatarNumero): Vitrine {
 function vitrineContas(): Vitrine {
   const publicados = PAINEIS_COM_DADOS.length;
   const total = CAPITULOS.length;
-  const paineis = PAINEIS_COM_DADOS.map(([id, rotulo]) => {
+  const paineis: { titulo: string; href: string; descricao: string }[] = PAINEIS_COM_DADOS.map(([id, rotulo]) => {
     const c = CAPITULOS.find((x) => x.id === id);
     if (!c) throw new Error(`capítulo das Contas Federais fora do catálogo: ${id}`);
     return { titulo: rotulo, href: `/contas-publicas/${id}`, descricao: c.pergunta };
   });
+  // complemento do Panorama, não capítulo: entra entre os painéis, fora da contagem de capítulos com dados
+  paineis.unshift({ titulo: PAINEL_AREAS.titulo, href: PAINEL_AREAS.href, descricao: PAINEL_AREAS.pergunta });
+  // painel Previdência e INSS (20/10/2026): abre a lista, porque responde à consulta pessoal do tema (o INSS na cidade do leitor)
+  paineis.unshift({ titulo: PAINEL_PREVIDENCIA.titulo, href: PAINEL_PREVIDENCIA.href, descricao: PAINEL_PREVIDENCIA.pergunta });
   return {
     id: "contas",
     imagem: "/home/contas.webp",
     contagem: { valor: `${publicados} de ${total}`, unidade: "capítulos com dados" },
     contagemIndice: { tipo: "parcial", publicados, total, unidade: "capitulos_com_dados" },
     paineis,
-    situacao: `Projeto metodológico: os outros ${CAPITULOS.length - PAINEIS_COM_DADOS.length} capítulos apresentam o método proposto, ainda sem série publicada.`,
+    situacao: `Orçamento, previdência e INSS, resultado fiscal, dívida, gastos tributários, restos a pagar, custos e entregas físicas com fonte e data em cada painel. Os outros ${CAPITULOS.length - PAINEIS_COM_DADOS.length} capítulos do desenho estão em preparação, fora da navegação.`,
     metodologia: { href: "/contas-publicas/metodologia", rotulo: "Metodologia" },
   };
 }
@@ -223,7 +235,7 @@ function vitrineSaneamento(): Vitrine {
       { titulo: "Meu município", href: `${ROTA_SANEAMENTO}/municipio`, descricao: "Carência, prestador, regulador, plano, investimento e comparação com a UF." },
     ],
     situacao:
-      "Primeira entrega. Capítulos com cobertura parcial declaram o que falta; preço regulado em amostra de atos verificados; saúde e ambiente com três grupos de doenças e qualidade da água bruta em preparação.",
+      "Primeira entrega. Capítulos com cobertura parcial declaram o que falta; tarifas em amostra de atos verificados; saúde e ambiente com três grupos de doenças e qualidade da água bruta em preparação.",
     metodologia: { href: `${ROTA_SANEAMENTO}/metodologia`, rotulo: "Método e fontes" },
   };
 }
@@ -240,7 +252,11 @@ function vitrineGas(fmt: FormatarNumero): Vitrine {
     focoImagem: "50% 22%",
     contagem: { valor: fmt(quantidade), unidade: "páginas por pergunta" },
     contagemIndice: { tipo: "simples", quantidade, unidade: "paginas_por_pergunta" },
-    paineis: PAGINAS_GAS.filter((p) => p.grupo !== "dados").map((p) => ({ titulo: p.rotulo, href: p.href, descricao: p.pergunta })),
+    paineis: [
+      ...PAGINAS_GAS.filter((p) => p.grupo !== "dados").map((p) => ({ titulo: p.rotulo, href: p.href, descricao: p.pergunta })),
+      // coleção Combustíveis: painel próprio no Observatório de Energia e Infraestrutura, com a gold deste pipeline
+      { titulo: "Combustíveis nos postos", href: ROTA_COMBUSTIVEIS, descricao: `${paginaCombustiveis("painel").pergunta} Coleção Combustíveis, pela mesma pesquisa de preços da ANP.` },
+    ],
     fontes: `${fmt(meta.fontes.length)} conjuntos de ${listaPt(orgaos)}.`,
     metodologia: { href: "/gas-natural/dados", rotulo: "Dados e método" },
   };
@@ -256,5 +272,24 @@ export function vitrines(idioma: Idioma = "pt"): Record<DominioId, Vitrine> {
     estados: vitrineEstados(fmt),
     saneamento: vitrineSaneamento(),
     gas: vitrineGas(fmt),
+    agro: {
+      id: "agro",
+      imagem: "/home/agro.svg",
+      contagem: { valor: fmt(CAPITULOS_AGRO.length + PERGUNTAS_AGRO.length), unidade: "páginas por pergunta" },
+      contagemIndice: { tipo: "simples", quantidade: CAPITULOS_AGRO.length + PERGUNTAS_AGRO.length, unidade: "paginas_por_pergunta" },
+      paineis: [
+        { titulo: "Tamanho na economia", href: "/agronegocio/tamanho", descricao: "Parcela da agropecuária no valor adicionado, crescimento em volume e peso nas exportações." },
+        { titulo: "Conjuntura do ano", href: "/agronegocio/conjuntura", descricao: "Safra estimada pelo IBGE, ritmo trimestral, exportações do ano e crédito rural." },
+        { titulo: "Insumos importados", href: "/agronegocio/insumos", descricao: "Fertilizantes e defensivos importados, valor por tonelada e relação com a soja exportada." },
+        { titulo: "Mercados e dependência", href: "/agronegocio/mercados", descricao: "O que o agro exporta, para quais países, e de onde vêm os fertilizantes." },
+        { titulo: "Produtores e trabalho", href: "/agronegocio/produtores", descricao: "Agricultura familiar e tamanho dos estabelecimentos no Censo Agro; ocupação e renda no campo." },
+        { titulo: "Apoio público", href: "/agronegocio/apoio", descricao: "Juros do crédito rural por programa e subvenções pagas pelo Tesouro." },
+        { titulo: "Desmatamento e emissões", href: "/agronegocio/ambiente", descricao: "Desmatamento PRODES por bioma, emissões do SEEG e uso da terra do MapBiomas." },
+        { titulo: "Comida no prato", href: "/agronegocio/prato", descricao: "Inflação de alimentos, itens da cesta e segurança alimentar dos domicílios." },
+      ],
+      fontes: "IBGE, MDIC, BCB, Tesouro Nacional, INPE, SEEG e MapBiomas por coleta automática; BCB/MDCR, MTE/Novo Caged e IBGE por snapshots preservados na plataforma.",
+      situacao: "Cobertura parcial: calendário agrícola, custos de referência da Conab, seguro rural e camadas ambientais territoriais ainda sem coleta validada. Explicações e cenários não substituem essas medições.",
+      metodologia: { href: "/agronegocio/metodologia", rotulo: "Cobertura, fontes e método" },
+    },
   };
 }

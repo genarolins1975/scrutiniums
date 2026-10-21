@@ -1,7 +1,7 @@
 {
  "cod": "C0031976",
  "nome": "BRB",
- "sr": "S3",
+ "sr": null,
  "tcb": "B1",
  "porte_quartil": null,
  "nivel": "conglomerado prudencial",
@@ -532,5 +532,5 @@
    "202606": 0.0
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

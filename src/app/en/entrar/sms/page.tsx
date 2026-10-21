@@ -8,6 +8,11 @@ export const metadata = metadadosIngleses("/entrar/sms", {
   descricao: "Sign in to Scrutiniums with a code sent by SMS to the phone number on your account.",
 });
 
-export default async function EntrarSmsInglesPage() {
-  return PaginaEntrarSms({ idioma: "en" });
+/** Mesma página em inglês; ?recuperar=1 abre a recuperação de senha. */
+export default async function EntrarSmsInglesPage({
+  searchParams,
+}: {
+  searchParams?: { recuperar?: string };
+}) {
+  return PaginaEntrarSms({ idioma: "en", searchParams });
 }

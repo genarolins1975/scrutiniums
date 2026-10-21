@@ -28,8 +28,14 @@ export function idiomaDoCaminho(caminho: string | null | undefined): Idioma {
  */
 export function idiomaDoCaminhoEnergia(caminho: string | null | undefined): Idioma {
   const c = caminho?.split(/[?#]/)[0] ?? "";
-  return c === "/en/setor-eletrico" || c.startsWith("/en/setor-eletrico/") ? "en" : "pt";
+  return c === "/en/setor-eletrico" || c.startsWith("/en/setor-eletrico/") || APERITIVOS_ENERGIA_EN.has(c.replace(/\/+$/, "")) ? "en" : "pt";
 }
+
+/**
+ * Versões aperitivo inglesas do Setor Elétrico (princípio do aperitivo, 20/10/2026). O middleware as serve por rewrite no endereço
+ * público (/en/setor-eletrico/...): no HTML estático o caminho é o interno, no navegador é o público, e os dois têm de dar inglês.
+ */
+const APERITIVOS_ENERGIA_EN = new Set(["/en/aperitivo/conta-de-luz"]);
 
 export function idiomaEnergia(): Idioma {
   const store = staticGenerationAsyncStorage.getStore();

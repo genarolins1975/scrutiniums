@@ -1,7 +1,7 @@
 {
  "cod": "61384004",
  "nome": "AVENUE SECURITIES DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
- "sr": "S4",
+ "sr": null,
  "tcb": "N2",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -191,5 +191,5 @@
    "202512": 0.0
   }
  },
- "gerado_em": "2026-09-24T15:24:48+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

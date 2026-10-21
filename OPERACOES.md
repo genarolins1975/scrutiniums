@@ -30,6 +30,8 @@ A data da posição é publicada no gold: pular dias não esconde nada do leitor
 | portão de testes (no diário) | a cada execução | gold do dia reprovada pelas suítes vitest, pipeline e pesquisa | issue "Testes de conteúdo reprovaram a gold do dia", com a lista dos testes reprovados; execução **vermelha** |
 | `vigilancia.yml frescor` | após cada execução do diário | gold do main com 2 dias ou mais; produção servindo gold mais antigo que o main | issue "gold publicado está defasado", atribuída ao mantenedor |
 | selo de frescor (no site) | a cada leitura | publicação com 2 dias ou mais, calculada no navegador | aviso "Atualização atrasada" em /resumo, /dados, /dados/[slug] e /observatorio-do-credito |
+| `vigilancia.yml dominios` | diário, 20:00 UTC | cada observatório (Crédito, Setor Elétrico, Gás, Saneamento, Agro, Território, Contas federais e estaduais, Eficiência) além do limiar da sua cadência em `src/lib/frescor/limiares.json` (diária 2 dias, quinzenal 20, mensal 45, anual 400), publicação retida em parte ou sem data | uma issue por domínio, "Vigília de frescor: <nome>", atribuída ao mantenedor; comenta a aberta e a fecha quando o domínio volta a ficar em dia |
+| faixa de frescor (no site) | a cada leitura | os mesmos limiares, calculados no navegador | linha "Atualização dos dados" no topo e lista por fonte no método das entradas com conta (/setor-eletrico, /gas-natural, /saneamento, /eficiencia-estatal, /contas-publicas, /agronegocio e /observatorios/*) |
 | `vigilancia.yml fontes` | segunda 9:30 UTC | documento novo nas fontes manuais (SPA/MF) | issue "documento novo em fonte manual" |
 | CI (`ci.yml`) | todo PR/push | regressão de código, dado ou invariante editorial | check vermelho no PR |
 
@@ -53,7 +55,14 @@ novas viram comentários nela. Um cheque de vigília que quebre (código ≠ 0 e
   com `ZENODO_RASCUNHO=1` e o segredo `ZENODO_TOKEN`; a publicação é sempre
   manual. Pendências: conta no Zenodo, criadores e licença dos dados derivados em
   `config/institucional.json`, e a primeira publicação.
-- **Pendência de configuração dos dois envios** (não resolvível no código):
+- `alertas-atualizacao.yml` (todo dia, 11:37 UTC): verifica os alertas que as
+  contas assinam em "Avisar quando atualizar" e envia e-mail só a quem assinou
+  uma fonte cuja data de referência avançou (`src/lib/conta/alertas.ts`).
+  Idempotente. Cada execução autorizada grava o evento `alertas_verificacao`;
+  sem ele nos últimos três dias (ou sem `RESEND_API_KEY`), a conta e a barra
+  dos painéis dizem que o envio por e-mail ainda não está ligado.
+- **Pendência de configuração dos três envios** (não resolvível no código; em
+  19/10/2026 o segredo do item 1 faltava e o `resumo-email.yml` falhava):
   1. segredo `BOLETIM_SECRET` (16 caracteres ou mais) no GitHub Actions;
   2. variável `BOLETIM_SECRET` com o mesmo valor na Vercel;
   3. `RESEND_API_KEY` e `MAIL_FROM` na Vercel, com o domínio do remetente
@@ -62,6 +71,92 @@ novas viram comentários nela. Um cheque de vigília que quebre (código ≠ 0 e
      ele, em produção nenhum link é emitido nem aceito).
   Sem o item 1, os workflows falham com mensagem explícita; sem o item 2, a
   rota responde 403.
+
+## Atualização agendada por domínio
+
+Cada domínio tem workflow próprio: falha de um não atrasa o outro. Horários em UTC
+(São Paulo = UTC−3).
+
+| Workflow | Domínio | Agenda (UTC) | O que coleta | O que bloqueia a publicação |
+|---|---|---|---|---|
+| `atualizar-dados.yml` | Crédito | todo dia, 09:00 | ~30 fontes (BCB, IBGE, Ipeadata, CNJ...) | três suítes, por grupo da gold (`docs/PUBLICACAO_GOLD_POR_GRUPO.md`) |
+| `atualizar-energia.yml` | Setor Elétrico | todo dia, 23:40 | ONS, CCEE, ANEEL | testes da energia |
+| `previsao-pld.yml` | Setor Elétrico, previsão do PLD | todo dia, cinco horários entre 08:47 e 10:37 | rodada da previsão | testes da rodada |
+| `atualizar-gas.yml` | Gás Natural | dias 3 e 18, 12:17 | ANP, IBGE, BCB, Comex Stat, Banco Mundial | `pipeline.tests.test_gas` (tudo ou nada) |
+| `atualizar-territorio.yml` | Território e Clima | dias 2 e 16, 11:41 | INPE, Atlas de Desastres, SIRENE | `pipeline.tests.test_territorio` (tudo ou nada) |
+| `atualizar-agro.yml` | Agronegócio | dias 9 e 24, 11:41 | IBGE, Comex Stat, BCB, Tesouro, INPE, SEEG, MapBiomas | `pipeline.tests.test_agro` (tudo ou nada) |
+| `atualizar-saneamento.yml` | Saneamento | dia 6, 11:23 | SINISA, CadÚnico, SISAGUA, DATASUS, CVM, JMP, ODS | por grupo de fonte: testes Python do saneamento e contratos vitest da gold |
+| `atualizar-saneamento-divida.yml` | Saneamento, capítulo 7.1 (dívida e alavancagem dos prestadores) | 7 e 28 de abril; dia 22 de maio, agosto e novembro; dia 12 de junho, setembro e dezembro, 11:23 | CVM, dados abertos: cadastro de companhias abertas, DFP (anual, desde 2010) e ITR (trimestral, desde 2015), filtrados para as prestadoras declaradas no SINISA 2024 e as holdings que as controlam | por grupo: `pipeline.tests.test_saneamento_divida` (balanço que fecha, dívida que soma as subcontas, escala plausível, depreciação com o sinal certo, companhias esperadas na DFP mais recente, nenhum indicador ausente sem motivo; inconsistências já conferidas saem da série com o motivo) e contratos vitest da página, da entrada e do aperitivo |
+| `atualizar-contas-publicas.yml` | Contas Públicas Federais | terças, 10:19 | SIOP (execução orçamentária por esfera e grupo de despesa; por função e subfunção do ano corrente e do anterior, `importar-funcoes.py --recentes`), Banco Central (dívida bruta do governo geral, SGS 13761 e 13762, `importar-divida.py`) e vigia de edição do RTN | por grupo: testes dos importadores e contratos vitest do painel |
+| `atualizar-contas-estaduais.yml` | Contas Públicas Estaduais | dia 5, 11:29 | conferência das 81 respostas do Siconfi e sondagem de período novo | não publica (promoção revisada); contratos e `consolidar --check` deixam a execução vermelha |
+| `atualizar-eficiencia.yml` | Eficiência Estatal (Educação e Saúde nas capitais) | dia 12, 10:53 | Siconfi (DCA, RREO, MSC), IPCA e SIOPS | por grupo: testes Python do OBEE, conferências derivadas do `ci.yml` e contratos vitest |
+| `atualizar-inflacao.yml` | Famílias, Inflação por cidade (IPCA) | dias 10 e 14, 13:47 | IBGE, SIDRA tabela 7060 (índice geral, grupos e subitens nas 16 áreas e no Brasil) e calendário de divulgação | por grupo: `pipeline.tests.test_inflacao` (pesos somam 100 por área e mês, mês faltando, faixa plausível, encadeamento e contribuições) e contratos vitest do painel |
+| `atualizar-seguranca.yml` | Eficiência Estatal, Segurança pública por UF | dia 21, 12:37 | MJSP (Sinesp VDE, planilhas anuais desde 2015), DATASUS (SIM pelo TabNet: agressões, intenção indeterminada e causas externas por UF), Siconfi (DCA Anexo I-E dos 27 governos estaduais, função 06) e IBGE (Projeções da População, Revisão 2024) | por grupo: `pipeline.tests.test_seguranca` (27 UFs e anos completos, eventos com o nome esperado, faixas plausíveis, revisão de ano fechado até 10%, total do TabNet igual à soma das UFs, população que soma o Brasil, regra de ausência) e contratos vitest do painel |
+| `atualizar-previdencia.yml` | Contas Públicas, Previdência e INSS | dias 2 e 18, 12:41 | Ministério da Previdência Social (BEPS mensal, tabelas 14, 15 e 19; benefícios emitidos por município, anual, desde 2019) e Tesouro Nacional (Resultado do Tesouro Nacional, série histórica, tabelas 2.2 e 2.1-A) | por grupo: `pipeline.tests.test_previdencia` (série mensal contínua e fechando com os grupos, tipos de benefício com as linhas esperadas, 27 UFs que somam o Brasil, municípios que fecham por grupo, soma dos municípios igual ao BEPS em cada dezembro, divisão urbana e rural e % do PIB do RTN conferidos, revisão de ano fechado até 1% e 2%) e contratos vitest do painel e do aperitivo |
+| `atualizar-educacao.yml` | Serviços Públicos, Educação nos municípios | dia 9, 11:23 | INEP (Ideb por município, UF e Brasil, bienal; Sinopse Estatística do Censo Escolar, anual: matrículas por rede e etapa e escolas por rede) e IBGE (estimativas de população, SIDRA 6579, só para o porte) | por grupo: `pipeline.tests.test_educacao` (MD5 do INEP conferido, Ideb igual a N × P, contagem de municípios com Ideb igual à nota informativa, 27 UFs e Brasil, Censo somando municípios, UFs e Brasil com as redes fechando, população somando o Brasil, rede com Ideb e sem matrícula, Ideb publicado revisto ou sumido, Ideb das capitais igual ao do painel das capitais) e contratos vitest do painel e do aperitivo |
+
+**Motor comum dos novos que publicam (Saneamento, Contas Federais, Eficiência Estatal e, desde 20/10/2026, Inflação por cidade, Segurança pública por UF, Previdência e INSS e Educação nos municípios)** (`scripts/atualizacao_por_grupo.py`,
+configuração em `config/atualizacao/<domínio>.json`). Cada grupo de fontes é coletado à
+parte; coleta que falha, ou que troca dado íntegro por erro (guarda
+`manifesto_sem_erro_novo` do OBEE), devolve o seed do grupo ao commit e não para os
+outros. A gold é reconstruída do seed publicado: se não se reproduz com o código atual,
+a reprodução é testada como grupo próprio. Depois cada grupo coletado é aplicado sobre os
+já aprovados, reconstruído e testado; reprovado, volta ao estado anterior. Dado igual não
+publica (o sinal de mudança ignora a data de captura e, no OBEE, olha só o `hash_dados`).
+No saneamento, arquivo reescrito pela fonte com os mesmos números publica só a
+proveniência nova, para a vigília semanal não acusar de novo. Mudanças são comparadas
+por conteúdo, nunca pelo cache de stat do Git: no mesmo segundo e com o mesmo tamanho, o
+Git dá o arquivo por inalterado e o commit sairia sem ele (medido no teste do motor).
+
+**As correções permanentes dos incidentes, aplicadas aos novos workflows.** Push com
+rebase e quatro tentativas, sem publicar se os dados do domínio mudaram no `main`
+durante a execução e retestando se o código mudou (pane de 03/08); concorrência por
+domínio sem cancelamento e teto de tempo por job e por comando; retenção deixa a
+execução **vermelha** e abre ou comenta a issue do domínio, atribuída ao mantenedor, com
+a lista dos testes reprovados e a saída de cada um (correção 4 de 13/10); o job `alertar`
+cobre tempo esgotado e cancelamento, que não chegam ao passo da issue; todas as suítes do
+domínio rodam até o fim, sem `bash -e` interrompendo a seguinte (correção 4); o vitest
+roda com `--testTimeout=60000`, porque três testes do OBEE estouraram o limite padrão de
+5 s sob carga em 19/10/2026 sem nenhuma asserção reprovada. Esses domínios não têm
+silver em cache: o estado é o seed versionado, e as correções de cache (5, 10 e 11) não
+se aplicam.
+
+**O que só a primeira execução real comprova.** Alcance das fontes a partir dos runners
+do GitHub (o firewall do gov.br já recusou o `urllib` no Território), o tempo da coleta do
+SISAGUA (cerca de 40 arquivos de 100 a 200 MB, não rodada nesta sessão), a criação das
+issues pelo `GITHUB_TOKEN` e o push no `main`. O ciclo rodou de ponta a ponta nesta sessão
+em 19/10/2026, sem publicar (o commit ficou fora do `main`):
+- Contas Federais: o SIOP respondeu, a base de 17/10/2026 passou nos testes e o grupo seria
+  publicado;
+- Saneamento: SINISA (86 s), CadÚnico, JMP e ODS sem número novo; a CVM trouxe a versão 7
+  do Formulário de Referência da COPASA (BlackRock com 5,005%) e o grupo seria publicado com
+  os testes verdes; o DATASUS revisou contagens do SIH fora da janela publicada e só a
+  proveniência seria publicada;
+- Eficiência Estatal: Siconfi da Educação (452 s) e Siconfi e SIOPS da Saúde (491 s) sem
+  nenhum `hash_dados` novo: nada a publicar, árvore limpa;
+- Contas Estaduais: 81 de 81 respostas conferidas, uma divergente (SC, RGF do 1º
+  quadrimestre de 2026: 60 linhas arquivadas, 0 servidas hoje) e o RGF do 2º quadrimestre
+  de 2026 disponível para as 27 UFs;
+- o vigia do RTN acusou o boletim de agosto de 2026, ainda não integrado.
+
+### O que permanece manual nesses quatro domínios, com fonte e motivo
+
+| Domínio | O que | Fonte | Por que é manual |
+|---|---|---|---|
+| Saneamento | Edição nova do SINISA | Ministério das Cidades, página de resultados do SINISA | URLs e nomes de planilha mudam a cada edição (`pipeline/observatorio_saneamento/fontes.py`) e a edição muda o ano de referência de todo o painel; a vigília semanal acusa a página nova |
+| Saneamento | Mês novo do CadÚnico e ano novo do SISAGUA | MDS (API MI Social); Ministério da Saúde (S3 do SISAGUA) | Meses e anos são fixados no código (`fontes.CADUNICO`, `sisagua.ANOS_SERIE`) e mudam o período do painel; a vigília acusa |
+| Saneamento | Censo 2022 e 2010, estimativa de população e desigualdades | IBGE, SIDRA | Edições fechadas (decenal); recoletar não traz dado novo |
+| Saneamento | Tabelas tarifárias e atos dos reguladores | ARSESP, ARSAE-MG, AGEPAR, ARPE, ADASA e outros (PDFs) | Curadoria de documentos com localizador por página (`curadoria/`, `tarifas.py`); não há API |
+| Contas Federais | Edição nova do RTN | Tesouro Transparente (boletim e CKAN) | Muda a base de preços do IPCA, o aviso de atualidade e os testes da edição; o vigia do workflow abre a issue "edição nova do RTN aguardando integração" |
+| Contas Federais | IPCA, denominadores do IBGE, restos a pagar, metas físicas (AFFO), custos (RFC), gastos tributários (DGT Bases Efetivas) | IBGE (SIDRA); Tesouro (relatório de RAP, RFC); SIOP (AFFO); Receita Federal (DGT, planilha anual) | Integração por edição com hash fixado (`importar-ipca.py`, `importar-escala.py`, `importar-etapa3.py`, `importar-custos.py`, `importar-beneficios.py`; este guarda os quadros usados em `data/contas-publicas/beneficios-dgt-2023` e recusa planilha de edição nova até a revisão) |
+| Contas Federais | Exercício novo do SIOP | SIOP | `ANOS_SIOP` em `importar.py` e a leitura do painel mudam junto |
+| Contas Federais | Exercícios antigos por função (2000 até o ano retrasado) | SIOP | Ficam no snapshot `funcoes.json` com as respostas guardadas em `data/contas-publicas/fontes/funcoes`; a coleta agendada refaz só o ano corrente e o anterior. Para reconferir a série inteira: `python3 scripts/contas-publicas/importar-funcoes.py --todos`. Em janeiro, se o grafo do ano novo ainda não existir no endpoint, a coleta retém a publicação e abre a issue |
+| Contas Estaduais | Promoção de captura nova (retificação ou período novo) | Siconfi (API pública) | A base publicada reproduz só bytes arquivados e a promoção é alteração revisada (`docs/contas-publicas-estaduais/FASE_1.md`, passo 3); o workflow acusa e guarda a evidência |
+| Contas Estaduais | Dívida consolidada (CE-11, `snapshot.json`) | gold do Crédito em commit fixado | Snapshot herdado por decisão, fixado por blob Git |
+| Eficiência Estatal | Exercício novo (2026 em diante) | Siconfi, SIOPS | `ANOS_FINANCEIROS` e fichas de indicador mudam junto (CONTINUIDADE.md, T1) |
+| Eficiência Estatal | Pacotes do INEP (Censo Escolar, ATU, rendimento, Ideb, Sinopse) | INEP | Até 540 MB cada, baixados à mão; o coletor só extrai (`run.py --inep`) |
+| Eficiência Estatal | CNES, Relatório APS, RIPSA, OCDE, SIOPE e os demais capítulos (assistência, alimentar, trabalho, mobilidade, cultura, habitação, justiça, judiciário, segurança, saneamento, resultados, escores) | Ministério da Saúde, OCDE, FNDE, MDS, IBGE, CNJ, Ipea | Fixados por edição, com transcrição conferida ou referência congelada que exige revisão antes de regenerar |
+| Eficiência Estatal | Derivados que fixam a gold da Saúde por hash | `src/lib/eficiencia/panorama-atlas.json`, `docs/obee/resultados/piloto-2022.json` | Mudança real na gold da Saúde é retida pelos testes até a regeneração revisada desses derivados |
 
 ## O que permanece manual, o que deixou de ser, e por quê
 
@@ -289,6 +384,41 @@ buffer; não foi isolado. Reproduzido localmente com um arquivo de 36 MB reescri
     de 1 s, com 49 MB de memória). O texto da issue passa a receber os códigos de saída
     das três suítes e a saída do unittest: aponta o processo abortado, lista os testes
     Python reprovados e não atribui a causa quando não há como saber.
+
+**Quinta execução depois das correções (17/10/2026, run 39033304284).** O guarda
+corrigido funcionou: o vitest rodou os 299 arquivos (293 passaram, 5 reprovaram com 9
+testes), as suítes Python passaram (1.884 e 69 testes) e a cópia durável foi salva (482
+MB). Cinco causas, quatro delas herdadas do silver semeado de novo em 15/10:
+- **Consignado** (6 testes): o bloco de reclamações saiu vazio. Em 15/10 o estban não
+  carregou o índice de municípios do IBGE (tempo esgotado) e o `reclamacoes_consig`
+  gravou as 12 competências com zero municípios, dando-as por absorvidas; o estado
+  contaminado seguiu no cache e na cópia durável.
+- **Judicial** (1 teste): o silver semeado não tinha as tabelas `jud_*`, e o orçamento
+  de 600 s do coletor acabou no TJSP. O builder publicou 1 tribunal e 2 categorias,
+  com total trabalhista 0, contra 15 tribunais e 7 categorias em 24/09.
+- **Rural** (1 teste): UFs R$ 60.975.420,30 acima do total, soma exata de 2026-08,
+  2026-06 e 2026-02. Em 15/10 a Olinda serviu a um dos recortes, na mesma execução, a
+  fotografia de 14/10; a regra do #198 comparava só a hora da coleta.
+- **Inventário de tradução** (1 teste): `cmp/00058338.json` saiu da base, o `rsync
+  --delete` o apagou e a descoberta de fontes, que usa `git ls-files --cached`, falhou
+  com ENOENT.
+- **Conta e CPF** (arquivo não carregou): `conta-cpf-browser.test.ts` (15/10) exige
+  Chromium, que o `ci.yml` instala e este workflow não instalava.
+13. O `reclamacoes_consig` não coleta sem índice de ao menos 5.500 municípios, trata
+    competência sem município casado como falha e recoleta a herdada com reclamações e
+    zero municípios (autocura, sem limpar cache).
+14. O builder judicial grava stub declarado, com a lista de lacunas, quando falta
+    qualquer par tribunal e categoria da taxonomia; a sentinela mantém a última
+    publicação íntegra. Com o silver real de 17/10: 48 lacunas e a gold de 24/09 no ar.
+    Custo declarado: tribunal fora do ar de forma permanente congela a camada nacional.
+15. O Sicor recoleta o municipal do mês em que municipal e FonteRecursos diferem em
+    mais de R$ 0,05, e o FonteRecursos é refeito na mesma execução.
+16. A descoberta de fontes de tradução ignora arquivo rastreado e apagado da pasta de
+    trabalho; o workflow instala o Chromium antes do vitest, como o `ci.yml`.
+Pendências fora desta correção: ordem fixa dos tribunais no coletor judicial (todo dia
+lento gasta o orçamento no TJSP), `ok=True` com tribunais pulados, o ZIP de 2026-05 do
+consumidor.gov.br que traz `.7z` em vez de CSV, e a gold de energia, retida em 17/10 por
+outros testes com o workflow verde.
 
 **Produção e main.** Em 13/10/2026 às 10:43 UTC a produção servia o mesmo
 `gerado_em` do main (2026-09-24T15:25), em `/resumo` e em

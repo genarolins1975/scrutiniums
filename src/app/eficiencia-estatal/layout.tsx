@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
+import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
@@ -11,8 +13,9 @@ export const metadata: Metadata = {
 };
 
 /**
- * Casca do domínio OBEE. Público para leitura, como os demais observatórios
- * (o middleware só protege /app). Na etapa inicial há um único painel.
+ * Casca do domínio OBEE. Os painéis exigem conta, como nos demais observatórios;
+ * a entrada (retrato das capitais) e as páginas de método são abertas
+ * (src/lib/rotasPublicas.ts).
  */
 export default function EficienciaLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -24,6 +27,7 @@ export default function EficienciaLayout({ children }: { children: React.ReactNo
         Pular para o conteúdo
       </a>
       <div className="flex-1">{children}</div>
+      <ParaIrAlem mapa={mapaParaIrAlem()} />
       <Footer />
     </div>
   );

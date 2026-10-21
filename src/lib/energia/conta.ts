@@ -52,6 +52,7 @@ import { AUSENTE, formatos, valorExibidoNoIdioma } from "./formato";
 import { idiomaEnergia } from "./idioma";
 import { LIMITE_COMPARACAO, type ColunaTabela } from "./tabela";
 import { bandeiraNoIdioma, dadoTexto, txEm } from "./i18n/conta-inclusao";
+import { fraseBandeira, situacaoBandeira } from "./bandeira-do-mes";
 import type { Idioma } from "@/lib/idioma";
 
 /* ---------- identidade visual (só tokens; cor nunca é o único portador) ---------- */
@@ -1017,14 +1018,20 @@ export function respostaReajustes(j: JanelaInflacao, idioma: Idioma = idiomaEner
   const v = verboVariacao(j.mediana_pct, 2, idioma);
   return tx(
     `De ${dataBR(j.de)} a ${dataBR(j.ate)} (${j.meses} meses), a tarifa B1 residencial ${v} na mediana de ${j.n} distribuidoras, ` +
-      `contra IPCA de ${pct(j.ipca_pct, 2)}: ${j.acima_ipca} ficaram acima da inflação e ${j.abaixo_ou_igual_ipca} abaixo ou igual.${foraTxt}`,
+      `contra IPCA de ${pct(j.ipca_pct, 2)}: ${j.acima_ipca} ficaram acima da inflação e ${j.abaixo_ou_igual_ipca} abaixo ou igual.${foraTxt} ` +
+      "É a variação da tarifa homologada entre as duas datas, não o efeito médio do processo tarifário de cada distribuidora.",
     `From ${dataBR(j.de)} to ${dataBR(j.ate)} (${j.meses} months), the residential B1 tariff ${v} at the median of ${j.n} distribution utilities, ` +
-      `against IPCA of ${pct(j.ipca_pct, 2)}: ${j.acima_ipca} were above inflation and ${j.abaixo_ou_igual_ipca} at or below it.${foraTxt}`,
+      `against IPCA of ${pct(j.ipca_pct, 2)}: ${j.acima_ipca} were above inflation and ${j.abaixo_ou_igual_ipca} at or below it.${foraTxt} ` +
+      "It is the change in the ratified tariff between the two dates, not the average effect of each utility's tariff process.",
   );
 }
 
 /** P050: bandeira do mês e quantos meses publicados tiveram acréscimo. */
-export function respostaBandeira(b: Bandeiras, idioma: Idioma = idiomaEnergia()): string {
+/**
+ * Resposta do P050 (bandeiras). `mesCorrente` ('AAAA-MM') é o mês em que a página foi gerada; sem ele, vale o mês de referência da gold.
+ * Quando o mês corrente ainda não está no arquivo, a resposta diz isso e qual é a última registrada (nunca chama a anterior de vigente).
+ */
+export function respostaBandeira(b: Bandeiras, idioma: Idioma = idiomaEnergia(), mesCorrente?: string): string {
   const tx = txEm(idioma);
   const { mesAno } = formatos(idioma);
   const v = b.vigente;
@@ -1041,7 +1048,8 @@ export function respostaBandeira(b: Bandeiras, idioma: Idioma = idiomaEnergia())
     : "";
   if (!v || !v.bandeira) return tx(`O conjunto de bandeiras não traz acionamento publicado.${historico}`, `The tariff flag dataset has no published activation.${historico}`);
   const valor = v.bandeira === "Verde" ? tx("sem acréscimo", "no surcharge") : tx(`acréscimo de ${rsKwh(v.rs_mwh, 5, idioma)} consumido`, `a surcharge of ${rsKwh(v.rs_mwh, 5, idioma)} consumed`); // i18n: dado
-  const aviso = v.aviso ? ` ${dadoTexto(v.aviso, idioma)}` : "";
+  const situacao = situacaoBandeira(v, mesCorrente ?? v.mes_referencia ?? v.mes);
+  const aviso = situacao.estado === "corrente" ? "" : ` ${fraseBandeira(situacao, idioma)}`;
   const nome = minuscula(bandeiraNoIdioma(v.bandeira, idioma));
   return tx(
     `A bandeira de ${mesAno(`${v.mes}-01`)} é ${nome}: ${valor}, fora dos sistemas isolados.${historico}${aviso}`,
@@ -1541,6 +1549,8 @@ export function notaFaixaTarifa(
     perfil: Perfil;
     /** Mediana do custo do perfil ponderada pelas UCs (`medianaPonderadaDoPerfil`); null sem UCs. */
     ponderada: number | null;
+    /** Distribuidoras do ranking que ficaram fora da ponderada por não terem UCs publicadas (`medianaPonderadaDoPerfil`). */
+    semUcs?: number;
     cobertura: CoberturaRanking | null;
     /** Menor e maior custo do perfil no ranking (e quem são), para dizer o que mudaria. */
     extremos: { menor: number | null; maior: number | null; siglaMenor?: string | null; siglaMaior?: string | null };
@@ -1554,8 +1564,14 @@ export function notaFaixaTarifa(
   const pond =
     mais && mais.ponderada !== null
       ? tx(
-          `Ponderada pelas UCs de cada distribuidora, a mediana de ${mais.perfil} kWh é ${reais(mais.ponderada)}${simples !== null ? ` (a simples é ${reais(simples)})` : ""}.`,
-          `Weighted by each distribution utility's consumer units, the median for ${mais.perfil} kWh is ${reais(mais.ponderada)}${simples !== null ? ` (the simple median is ${reais(simples)})` : ""}.`,
+          `Ponderada pelas UCs de cada distribuidora, a mediana de ${mais.perfil} kWh é ${reais(mais.ponderada)}${simples !== null ? ` (a simples é ${reais(simples)})` : ""}.` +
+            (mais.semUcs
+              ? ` A ponderada deixa de fora ${mais.semUcs === 1 ? "1 distribuidora sem UCs publicadas" : `${mais.semUcs} distribuidoras sem UCs publicadas`} na Qualidade.`
+              : ""),
+          `Weighted by each distribution utility's consumer units, the median for ${mais.perfil} kWh is ${reais(mais.ponderada)}${simples !== null ? ` (the simple median is ${reais(simples)})` : ""}.` +
+            (mais.semUcs
+              ? ` The weighted median leaves out ${mais.semUcs === 1 ? "1 distribution utility without published consumer units" : `${mais.semUcs} distribution utilities without published consumer units`} in the Quality data.`
+              : ""),
         )
       : tx(
           `Mediana simples das ${resumo.n} distribuidoras com tarifa vigente: cada uma conta uma vez, sem ponderar por consumidores.`,
@@ -1821,19 +1837,37 @@ export type InfoDistribuidora = {
 
 export type FonteQualidade = { cnpj: string; classificacao?: string | null; ucs?: number | null; ano?: number | null };
 export type FonteTerritorio = { cnpj: string; area?: { ufs?: readonly string[] | null } | null };
+/** Cadastro do SAMP publicado na gold de Perdas: o grupo (concessionária ou permissionária) de cada CNPJ com balanço em algum ano. */
+export type FonteCadastro = { cnpj: string; grupo?: string | null };
 
 /**
  * UF, tipo e UCs de cada CNPJ do ranking, lidos das golds de Território (UFs da área de atuação, pela relação oficial da ANEEL) e de
- * Qualidade (classificação e UCs médias do ano). A ausência fica null: nunca se completa com palpite.
+ * Qualidade (classificação e UCs médias do ano). A distribuidora que não está na Qualidade (sem conjuntos de DEC publicados, como a
+ * CODESAM em out/2026) recebe o tipo do cadastro do SAMP (gold de Perdas), que é a mesma classificação da ANEEL; as UCs continuam
+ * vindo só da Qualidade. A ausência fica null: nunca se completa com palpite.
  */
-export function infoDistribuidoras(cnpjs: readonly string[], qualidade: readonly FonteQualidade[] | null, territorio: readonly FonteTerritorio[] | null): Record<string, InfoDistribuidora> {
+export function infoDistribuidoras(
+  cnpjs: readonly string[],
+  qualidade: readonly FonteQualidade[] | null,
+  territorio: readonly FonteTerritorio[] | null,
+  cadastro: readonly FonteCadastro[] | null = null,
+): Record<string, InfoDistribuidora> {
   const q = new Map((qualidade ?? []).map((x) => [x.cnpj, x]));
   const t = new Map((territorio ?? []).map((x) => [x.cnpj, x]));
+  const c = new Map((cadastro ?? []).map((x) => [x.cnpj, x.grupo ?? null]));
   const out: Record<string, InfoDistribuidora> = {};
   for (const cnpj of cnpjs) {
     const ufs = [...(t.get(cnpj)?.area?.ufs ?? [])].sort();
     const qd = q.get(cnpj);
-    const tipo = qd?.classificacao === "Concessionária" ? "concessionaria" : qd?.classificacao === "Permissionária" ? "permissionaria" : null;
+    const doCadastro = c.get(cnpj);
+    const tipo: TipoDistribuidora | null =
+      qd?.classificacao === "Concessionária"
+        ? "concessionaria"
+        : qd?.classificacao === "Permissionária"
+          ? "permissionaria"
+          : !qd && (doCadastro === "concessionaria" || doCadastro === "permissionaria")
+            ? doCadastro
+            : null;
     const ucs = typeof qd?.ucs === "number" && Number.isFinite(qd.ucs) ? qd.ucs : null;
     out[cnpj] = { uf: ufs.length ? ufs.join(", ") : null, tipo, ucs, anoUcs: ucs === null ? null : (qd?.ano ?? null) };
   }
@@ -2251,8 +2285,7 @@ export function textoCobertura(
 export function textoMunicipioEncontrado(m: MunicipioEncontrado, linhas: readonly LinhaRanking[], perfil: Perfil, dataReferencia: string, idioma: Idioma = idiomaEnergia()): string {
   const tx = txEm(idioma);
   const { reais, dataBR } = formatos(idioma);
-  const validos = m.vinculos.filter((v) => v.estado !== 0);
-  const usados = validos.length ? validos : m.vinculos;
+  const usados = distribuidorasDoMunicipio(m);
   const porId = new Map(linhas.map((l) => [l.id, l]));
   const semConfirmacao = tx(", vínculo sem confirmação na relação da ANEEL", ", link not confirmed in ANEEL's list");
   const partes = usados.map((v) => {
@@ -2347,6 +2380,15 @@ const semAcento = (s: string) =>
 
 export type MunicipioEncontrado = { nome: string; uf: string; vinculos: { cnpj: string; sigla: string; estado: 0 | 1 | 2 }[] };
 
+/**
+ * As distribuidoras que a relação oficial liga ao município, pela regra de vínculo da busca: as de vínculo confirmado (ou só pelo
+ * cadastro de MMGD); a de vínculo sem confirmação só entra quando o município não tem outra.
+ */
+export function distribuidorasDoMunicipio(m: MunicipioEncontrado): MunicipioEncontrado["vinculos"] {
+  const validos = m.vinculos.filter((v) => v.estado !== 0);
+  return validos.length ? validos : m.vinculos;
+}
+
 /** Nomes sem acento nem caixa, para buscar sem recalcular a cada tecla. */
 export function prepararBuscaMunicipios(indice: IndiceMunicipios): string[] {
   return indice.m.map(([nome, uf]) => `${semAcento(nome)}|${uf.toLowerCase()}`);
@@ -2386,8 +2428,7 @@ export function buscarMunicipios(indice: IndiceMunicipios, preparado: readonly s
 export function textoMunicipioReajuste(m: MunicipioEncontrado, linhas: readonly LinhaJanela[], janela: Pick<JanelaInflacao, "meses" | "ipca_pct">, idioma: Idioma = idiomaEnergia()): string {
   const tx = txEm(idioma);
   const { pct } = formatos(idioma);
-  const validos = m.vinculos.filter((v) => v.estado !== 0);
-  const usados = validos.length ? validos : m.vinculos;
+  const usados = distribuidorasDoMunicipio(m);
   const porId = new Map(linhas.map((l) => [l.id, l]));
   const partes = usados.map((v) => {
     const l = porId.get(v.cnpj);

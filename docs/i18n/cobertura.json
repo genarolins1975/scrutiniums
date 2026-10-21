@@ -10,10 +10,10 @@
     "uso_interface": "Chaves e regiões declaradas por rota, com catálogo validado. O inventário não renderiza HTML: a prova DOM deve conferir cada ID e uso declarado. Regiões portuguesas não catalogadas permanecem pendências, sem percentual de tradução."
   },
   "escopo": {
-    "inventario_sha256": "389ed7cba49ed2c7571b39facfa5d7c6d10758158490734c5066c6be244ee6b4",
-    "arquivos_analisados": 1179,
-    "fontes_sha256": "b391ede0a999e5ad882c6dbfb594e1c0f33e4bee75c6d2375dcf67f7ec606751",
-    "pendencias_sha256": "6aec7fb6213b86ab065379f940f3ba6abc04684d423da747daf4e84cbff94363",
+    "inventario_sha256": "8b01bb738512c96663dac36e5e990db70a2bc1f94891c10b9a506dd130638a57",
+    "arquivos_analisados": 1474,
+    "fontes_sha256": "b44369b8b31a3e442fca70add47acaa38fa7a96b1fc02204e913b2d5deb1dee8",
+    "pendencias_sha256": "cf1847e2bc833204b99e8e8bc8629629deb3baef0c9a2c7bf7053a1c202d778b",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -38,6 +38,11 @@
       {
         "path": "src/app/contas-publicas/contas.css",
         "dominio": "contas_federais",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/app/custo-de-vida/custo-de-vida.css",
+        "dominio": "plataforma",
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       },
       {
@@ -66,8 +71,18 @@
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       },
       {
+        "path": "src/components/agro/Agro.module.css",
+        "dominio": "agro",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
         "path": "src/components/contas-publicas/IndiceFederal.module.css",
         "dominio": "contas_federais",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/educacao/educacao.css",
+        "dominio": "plataforma",
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       },
       {
@@ -82,6 +97,11 @@
       },
       {
         "path": "src/components/eficiencia/entrada/Entrada.module.css",
+        "dominio": "eficiencia",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/eficiencia/entrada/MinhaCapitalAperitivo.module.css",
         "dominio": "eficiencia",
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       },
@@ -126,7 +146,22 @@
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       },
       {
+        "path": "src/components/observatorios/DiretorioPaineis.module.css",
+        "dominio": "plataforma",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
         "path": "src/components/observatorios/EntradaEstado.module.css",
+        "dominio": "plataforma",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/observatorios/ParaVoce.module.css",
+        "dominio": "plataforma",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "src/components/previdencia/previdencia.css",
         "dominio": "plataforma",
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       }
@@ -138,20 +173,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 214,
+        "arquivos": 391,
         "candidatos": {
-          "jsx_text": 507,
-          "atributos": 200,
-          "props": 639,
-          "outros_literais": 3524,
-          "templates": 413,
-          "expressoes_nao_resolvidas": 2341,
-          "chaves_objetos": 2561
+          "jsx_text": 2077,
+          "atributos": 456,
+          "props": 1087,
+          "outros_literais": 7926,
+          "templates": 1073,
+          "expressoes_nao_resolvidas": 6806,
+          "chaves_objetos": 6374
         },
         "exclusoes": {
-          "importacoes": 929,
-          "atributos_tecnicos": 1144,
-          "tipos": 208
+          "importacoes": 1719,
+          "atributos_tecnicos": 3595,
+          "tipos": 461
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -160,18 +195,18 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 10185,
+        "candidatos_nao_catalogados": 25799,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 28,
-        "paginas_en": 12,
-        "handlers": 29,
-        "templates_com_parametros": 1,
-        "paginas_pt_literais": 24,
-        "paginas_pt_fora_do_adaptador": 4,
-        "paginas_pt_literais_sem_irma": 12,
-        "pares_estruturais": 12,
+        "paginas_pt": 48,
+        "paginas_en": 13,
+        "handlers": 41,
+        "templates_com_parametros": 6,
+        "paginas_pt_literais": 41,
+        "paginas_pt_fora_do_adaptador": 7,
+        "paginas_pt_literais_sem_irma": 28,
+        "pares_estruturais": 13,
         "fallbacks_declarados": 5,
         "paridade_verificada": false,
         "parciais_declarados": 1
@@ -187,20 +222,20 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 561,
+        "arquivos": 572,
         "candidatos": {
-          "jsx_text": 7496,
-          "atributos": 2846,
-          "props": 18488,
-          "outros_literais": 50584,
-          "templates": 12497,
-          "expressoes_nao_resolvidas": 54360,
-          "chaves_objetos": 35700
+          "jsx_text": 7648,
+          "atributos": 2903,
+          "props": 18825,
+          "outros_literais": 51086,
+          "templates": 12762,
+          "expressoes_nao_resolvidas": 55521,
+          "chaves_objetos": 36015
         },
         "exclusoes": {
-          "importacoes": 4860,
-          "atributos_tecnicos": 8481,
-          "tipos": 3705
+          "importacoes": 4958,
+          "atributos_tecnicos": 8681,
+          "tipos": 3729
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -209,7 +244,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 181971,
+        "candidatos_nao_catalogados": 184760,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -235,20 +270,20 @@
     "gas": {
       "nome": "Gás Natural",
       "interface": {
-        "arquivos": 27,
+        "arquivos": 29,
         "candidatos": {
-          "jsx_text": 287,
-          "atributos": 23,
-          "props": 705,
-          "outros_literais": 539,
-          "templates": 74,
-          "expressoes_nao_resolvidas": 707,
-          "chaves_objetos": 813
+          "jsx_text": 301,
+          "atributos": 26,
+          "props": 711,
+          "outros_literais": 555,
+          "templates": 78,
+          "expressoes_nao_resolvidas": 749,
+          "chaves_objetos": 830
         },
         "exclusoes": {
-          "importacoes": 151,
-          "atributos_tecnicos": 298,
-          "tipos": 17
+          "importacoes": 164,
+          "atributos_tecnicos": 320,
+          "tipos": 30
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -257,7 +292,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 3148,
+        "candidatos_nao_catalogados": 3250,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -283,20 +318,20 @@
     "saneamento": {
       "nome": "Saneamento",
       "interface": {
-        "arquivos": 59,
+        "arquivos": 70,
         "candidatos": {
-          "jsx_text": 1121,
-          "atributos": 264,
-          "props": 1551,
-          "outros_literais": 2953,
-          "templates": 351,
-          "expressoes_nao_resolvidas": 2340,
-          "chaves_objetos": 3883
+          "jsx_text": 1404,
+          "atributos": 377,
+          "props": 1896,
+          "outros_literais": 3514,
+          "templates": 498,
+          "expressoes_nao_resolvidas": 3490,
+          "chaves_objetos": 4621
         },
         "exclusoes": {
-          "importacoes": 416,
-          "atributos_tecnicos": 1429,
-          "tipos": 150
+          "importacoes": 495,
+          "atributos_tecnicos": 1860,
+          "tipos": 216
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -305,17 +340,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 12463,
+        "candidatos_nao_catalogados": 15800,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 26,
+        "paginas_pt": 27,
         "paginas_en": 0,
         "handlers": 0,
         "templates_com_parametros": 2,
-        "paginas_pt_literais": 24,
+        "paginas_pt_literais": 25,
         "paginas_pt_fora_do_adaptador": 2,
-        "paginas_pt_literais_sem_irma": 24,
+        "paginas_pt_literais_sem_irma": 25,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false
@@ -331,20 +366,20 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 222,
+        "arquivos": 235,
         "candidatos": {
-          "jsx_text": 2812,
-          "atributos": 969,
-          "props": 1207,
-          "outros_literais": 7183,
-          "templates": 665,
-          "expressoes_nao_resolvidas": 7092,
-          "chaves_objetos": 4334
+          "jsx_text": 3120,
+          "atributos": 1071,
+          "props": 1339,
+          "outros_literais": 7777,
+          "templates": 800,
+          "expressoes_nao_resolvidas": 8028,
+          "chaves_objetos": 4783
         },
         "exclusoes": {
-          "importacoes": 839,
-          "atributos_tecnicos": 3136,
-          "tipos": 420
+          "importacoes": 923,
+          "atributos_tecnicos": 3368,
+          "tipos": 467
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -353,17 +388,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 24262,
+        "candidatos_nao_catalogados": 26918,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 68,
+        "paginas_pt": 69,
         "paginas_en": 0,
-        "handlers": 3,
+        "handlers": 4,
         "templates_com_parametros": 7,
-        "paginas_pt_literais": 61,
+        "paginas_pt_literais": 62,
         "paginas_pt_fora_do_adaptador": 7,
-        "paginas_pt_literais_sem_irma": 61,
+        "paginas_pt_literais_sem_irma": 62,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false
@@ -379,20 +414,20 @@
     "contas_federais": {
       "nome": "Contas Públicas Federais",
       "interface": {
-        "arquivos": 52,
+        "arquivos": 76,
         "candidatos": {
-          "jsx_text": 573,
-          "atributos": 110,
-          "props": 70,
-          "outros_literais": 1275,
-          "templates": 67,
-          "expressoes_nao_resolvidas": 862,
-          "chaves_objetos": 628
+          "jsx_text": 965,
+          "atributos": 199,
+          "props": 107,
+          "outros_literais": 1810,
+          "templates": 151,
+          "expressoes_nao_resolvidas": 1638,
+          "chaves_objetos": 962
         },
         "exclusoes": {
-          "importacoes": 182,
-          "atributos_tecnicos": 475,
-          "tipos": 42
+          "importacoes": 274,
+          "atributos_tecnicos": 750,
+          "tipos": 67
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -401,17 +436,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 3585,
+        "candidatos_nao_catalogados": 5832,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 5,
+        "paginas_pt": 7,
         "paginas_en": 0,
-        "handlers": 7,
+        "handlers": 15,
         "templates_com_parametros": 1,
-        "paginas_pt_literais": 4,
+        "paginas_pt_literais": 6,
         "paginas_pt_fora_do_adaptador": 1,
-        "paginas_pt_literais_sem_irma": 4,
+        "paginas_pt_literais_sem_irma": 6,
         "pares_estruturais": 0,
         "fallbacks_declarados": 0,
         "paridade_verificada": false
@@ -429,17 +464,17 @@
       "interface": {
         "arquivos": 29,
         "candidatos": {
-          "jsx_text": 424,
+          "jsx_text": 422,
           "atributos": 97,
-          "props": 15,
+          "props": 16,
           "outros_literais": 696,
           "templates": 21,
-          "expressoes_nao_resolvidas": 585,
+          "expressoes_nao_resolvidas": 586,
           "chaves_objetos": 410
         },
         "exclusoes": {
-          "importacoes": 67,
-          "atributos_tecnicos": 337,
+          "importacoes": 68,
+          "atributos_tecnicos": 333,
           "tipos": 5
         },
         "scripts_embutidos": {},
@@ -472,26 +507,74 @@
       },
       "cobertura_completa": false
     },
+    "agro": {
+      "nome": "Agronegócio",
+      "interface": {
+        "arquivos": 54,
+        "candidatos": {
+          "jsx_text": 468,
+          "atributos": 266,
+          "props": 834,
+          "outros_literais": 2897,
+          "templates": 230,
+          "expressoes_nao_resolvidas": 2141,
+          "chaves_objetos": 1760
+        },
+        "exclusoes": {
+          "importacoes": 278,
+          "atributos_tecnicos": 78,
+          "tipos": 97
+        },
+        "scripts_embutidos": {},
+        "chaves_catalogadas": {
+          "traduzidas": 0,
+          "portugues_marcado": 0,
+          "sem_traducao": 0,
+          "nomes_preservados": 0
+        },
+        "candidatos_nao_catalogados": 8596,
+        "percentual_traduzido": null
+      },
+      "rotas": {
+        "paginas_pt": 19,
+        "paginas_en": 0,
+        "handlers": 1,
+        "templates_com_parametros": 2,
+        "paginas_pt_literais": 17,
+        "paginas_pt_fora_do_adaptador": 2,
+        "paginas_pt_literais_sem_irma": 17,
+        "pares_estruturais": 0,
+        "fallbacks_declarados": 0,
+        "paridade_verificada": false
+      },
+      "conteudo_adicional": {
+        "arquivos": 0,
+        "linhas_nao_vazias": 0,
+        "candidatos_nao_catalogados": 0,
+        "scripts_embutidos": {}
+      },
+      "cobertura_completa": false
+    },
     "credito": {
       "nome": "Crédito",
       "interface": {
-        "arquivos": 11,
+        "arquivos": 14,
         "candidatos": {
-          "jsx_text": 19,
-          "atributos": 193,
-          "props": 16,
-          "outros_literais": 12785,
-          "templates": 2609,
-          "expressoes_nao_resolvidas": 8863,
-          "chaves_objetos": 5020,
-          "textos": 149
+          "jsx_text": 153,
+          "atributos": 211,
+          "props": 170,
+          "outros_literais": 12946,
+          "templates": 2629,
+          "expressoes_nao_resolvidas": 9196,
+          "chaves_objetos": 5084,
+          "textos": 158
         },
         "exclusoes": {
-          "importacoes": 21,
-          "atributos_tecnicos": 459,
-          "tipos": 0,
+          "importacoes": 55,
+          "atributos_tecnicos": 654,
+          "tipos": 4,
           "estilos": 1,
-          "comentarios": 1
+          "comentarios": 3
         },
         "scripts_embutidos": {
           "inlinePendentes": 7,
@@ -504,17 +587,17 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 29654,
+        "candidatos_nao_catalogados": 30547,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 1,
+        "paginas_pt": 4,
         "paginas_en": 1,
         "handlers": 1,
         "templates_com_parametros": 1,
-        "paginas_pt_literais": 1,
+        "paginas_pt_literais": 4,
         "paginas_pt_fora_do_adaptador": 0,
-        "paginas_pt_literais_sem_irma": 0,
+        "paginas_pt_literais_sem_irma": 3,
         "pares_estruturais": 1,
         "fallbacks_declarados": 1,
         "paridade_verificada": false
@@ -530,10 +613,10 @@
   },
   "glossario": {
     "path": "config/glossario-en.json",
-    "sha256": "dafbad57c988602d2b3d055e15dcae2309dbf3f4af7c39ddc7638e9d548182a6",
+    "sha256": "f4ed12518809fd6b8043ee342b627e491b0d04fd771a83bf0520e7c0d4632e84",
     "fontes": 8,
     "termos": 28,
-    "nomes_preservados": 16,
+    "nomes_preservados": 17,
     "pendencias": [
       {
         "id": "editorial.contas_publicas_estaduais",
@@ -671,11 +754,11 @@
     "arquivos": {
       "pt": {
         "path": "src/i18n/pt.ts",
-        "sha256": "8258165bb69836877f5227bb44a2e26ab4b50e8e0e31c927fd834e6f9cf4c169"
+        "sha256": "188c9ad6224a2c1c58987d3520fbaf885e55a15662bb5038684f192e905701b9"
       },
       "en": {
         "path": "src/i18n/en.ts",
-        "sha256": "77bfb16177abe514bdeff95be2b1a3c25fae858793ce8c0e944e4069f3bb2ce2"
+        "sha256": "8703cc0f6e2679e53f9621e77f798f16e10fb9cbdc2511d3f291325b62dd2e72"
       }
     },
     "chaves": 22,
@@ -685,7 +768,7 @@
   },
   "terminologia_catalogo": {
     "path": "config/i18n-terminologia.json",
-    "sha256": "e8196fa2f174dff6c3902a5c678fb0e696c3229a27ab89971c79939eebae4e36",
+    "sha256": "4157c9c20d5a0f0d550caf7fb37a13a68a5a5071fa042d86e36a6bb809f648d0",
     "schema_version": 1,
     "mensagens": 22,
     "mensagens_vinculadas": 3,
@@ -709,6 +792,17 @@
         "fontes": {
           "pt": "src/app/page.tsx",
           "en": "src/app/en/page.tsx"
+        },
+        "arquivos_presentes": true
+      },
+      {
+        "pt": "/aperitivo/conta-de-luz",
+        "en": "/en/aperitivo/conta-de-luz",
+        "dominio": "plataforma",
+        "conteudo_declarado": "traduzido",
+        "fontes": {
+          "pt": "src/app/aperitivo/conta-de-luz/page.tsx",
+          "en": "src/app/en/aperitivo/conta-de-luz/page.tsx"
         },
         "arquivos_presentes": true
       },
@@ -1720,7 +1814,7 @@
         "arquivos_presentes": true
       }
     ],
-    "pares_estruturais": 92,
+    "pares_estruturais": 93,
     "fallbacks_declarados": 6,
     "html_verificado_pelo_inventario": false,
     "acesso_verificado_pelo_inventario": false
@@ -1777,6 +1871,10 @@
             ]
           },
           {
+            "id": "home-perguntas",
+            "estado": "portugues_marcado"
+          },
+          {
             "id": "home-rodape",
             "estado": "portugues_marcado"
           },
@@ -1805,7 +1903,7 @@
     "rotas_parciais_declaradas": 1,
     "chaves_en_declaradas_em_uso": 18,
     "ocorrencias_en_declaradas": 18,
-    "regioes_pt_nao_catalogadas": 3,
+    "regioes_pt_nao_catalogadas": 4,
     "html_verificado_pelo_inventario": false
   }
 }

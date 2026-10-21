@@ -1,7 +1,7 @@
 {
  "cod": "53236808",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DE LIVRE ADMISSÃO DE ARARAQUARA E REGIÃO - SICOOB",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -483,5 +483,5 @@
    "202512": 0.0
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

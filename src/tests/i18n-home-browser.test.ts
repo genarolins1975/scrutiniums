@@ -84,14 +84,14 @@ describe("home PT/EN: navegador do build de produção", () => {
           expect(await page.locator("html").getAttribute("lang")).toBe(caminho === "/en" ? "en" : "pt-BR");
           if (caminho === "/en") {
             const avisos = page.locator("[data-i18n-aviso]");
-            expect(await avisos.count()).toBe(3);
+            expect(await avisos.count()).toBe(4);
             for (const aviso of await avisos.all()) {
               expect(await aviso.isVisible()).toBe(true);
               expect(await aviso.getAttribute("lang")).toBe("en");
               expect(await aviso.textContent()).toBe("Portuguese only");
             }
             const regioes = page.locator("[data-i18n-regiao]");
-            expect(await regioes.count()).toBe(9);
+            expect(await regioes.count()).toBe(10);
             for (const regiao of await regioes.all()) expect(await regiao.isVisible()).toBe(true);
           }
           await page.addScriptTag({ path: require.resolve("axe-core/axe.min.js") });
@@ -101,6 +101,7 @@ describe("home PT/EN: navegador do build de produção", () => {
             return auditoria.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => ({ html: n.html })) }));
           });
           resultados.push({ html: await page.content(), violacoes, larguraDocumento: await page.evaluate(() => document.documentElement.scrollWidth) });
+          expect(resultados.at(-1)!.larguraDocumento, caminho + " cabe no viewport").toBeLessThanOrEqual(largura + 1);
           expect(falhas, caminho).toEqual([]);
         } finally { await page.close(); }
       }
@@ -159,12 +160,18 @@ describe("home PT/EN: navegador do build de produção", () => {
       expect(await acoes.locator('a[href="/cadastro"]').textContent()).toBe(en["acesso.criar_conta"].texto);
       // a entrada tem tradução publicada: o atalho inglês leva à irmã /en
       expect(await acoes.locator('a[href="/en/entrar"]').textContent()).toBe(en["home.hero.ja_cadastrado"].texto);
-      const nav = page.getByRole("navigation", { name: "Observatory index", exact: true });
+      const nav = page.getByRole("navigation", { name: "Collection index", exact: true });
       expect(await nav.count()).toBe(1);
       expect(await nav.getAttribute("data-i18n-regiao")).toBe("home-indice");
-      expect(await nav.locator(":scope > p").textContent()).toBe(en["home.indice.ilustracoes"].texto);
+      // O índice começa recolhido (achado A9 da banca, 19/10/2026): o resumo traduzido abre as lâminas.
+      const resumo = nav.locator("details > summary");
+      expect(await resumo.textContent()).toBe(en["home.indice.rotulo"].texto);
+      expect(await nav.locator("details").getAttribute("open")).toBeNull();
+      await resumo.click();
+      expect(await nav.locator("details").getAttribute("open")).not.toBeNull();
+      expect(await nav.locator("details > p").textContent()).toBe(en["home.indice.ilustracoes"].texto);
       const indice = nav.locator("ol > li > a");
-      expect(await indice.count()).toBe(7);
+      expect(await indice.count()).toBe(8);
       for (const [i, esperado] of INDICE_HOME.entries()) {
         const anchor = indice.nth(i);
         expect(await anchor.getAttribute("href")).toBe(esperado.href);
@@ -184,6 +191,8 @@ describe("home PT/EN: navegador do build de produção", () => {
       await indice.last().click();
       expect(new URL(page.url()).pathname).toBe("/en");
       expect(new URL(page.url()).hash).toBe(destinos.at(-1)!.href);
+      // A âncora abre o capítulo recolhido da coleção, que fica visível.
+      await expect.poll(() => page.locator(destinos.at(-1)!.href).isVisible()).toBe(true);
       expect(falhas).toEqual([]);
     } finally { await contexto.close(); }
   }, 60_000);

@@ -2,8 +2,8 @@ import type { Locator, Page } from "playwright";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { criarNavegadorPerfil, type NavegadorPerfil, type PaginaPerfil, type PropsPerfil } from "./suporte/conta-cpf-browser";
 
-const INICIAIS = { orgTypeInicial: "banco", orgAreaInicial: "dados", orgRoleInicial: "analista", ufInicial: "SP" };
-const CORPO = { orgType: "academia", orgArea: "pesquisa", orgRole: "professor", uf: "EX" };
+const INICIAIS = { perfilUsoInicial: "mercado_financeiro", orgTypeInicial: "banco", orgAreaInicial: "dados", orgRoleInicial: "analista", ufInicial: "SP" };
+const CORPO = { perfilUso: "pesquisa_academica", orgType: "academia", orgArea: "pesquisa", orgRole: "professor", uf: "EX" };
 const CORPO_COM_CPF = { ...CORPO, cpf: "52998224725" };
 const HINT_OPCIONAL = "Para seu telefone estrangeiro, o CPF é opcional. Você precisará dele antes de trocar para um telefone brasileiro.";
 const HINT_BR = "Sua conta é anterior à exigência de CPF. Usado apenas para garantir uma conta por pessoa; nunca é exibido nem compartilhado.";
@@ -31,14 +31,15 @@ async function comPerfil(props: PropsPerfil, corpo: typeof CORPO | typeof CORPO_
     expect(pedido.contentType).toBe("application/json");
     expect(pedido.corpo).toEqual(corpo);
     expect(pedido.corpoBruto).toBe("cpf" in corpo
-      ? '{"orgType":"academia","orgArea":"pesquisa","orgRole":"professor","uf":"EX","cpf":"52998224725"}'
-      : '{"orgType":"academia","orgArea":"pesquisa","orgRole":"professor","uf":"EX"}');
+      ? '{"perfilUso":"pesquisa_academica","orgType":"academia","orgArea":"pesquisa","orgRole":"professor","uf":"EX","cpf":"52998224725"}'
+      : '{"perfilUso":"pesquisa_academica","orgType":"academia","orgArea":"pesquisa","orgRole":"professor","uf":"EX"}');
   } catch (e) { erros.push(e); }
   if (erros.length === 1) throw erros[0];
   if (erros.length) throw new AggregateError(erros, "Falhas na interação ou limpeza do perfil");
 }
 
 async function alterarPerfil(page: Page) {
+  await page.getByRole("radio", { name: "Pesquisa acadêmica", exact: true }).check();
   await page.getByLabel("Tipo de instituição", { exact: true }).selectOption("academia");
   await page.getByLabel("Área de atuação", { exact: true }).selectOption("pesquisa");
   await page.getByLabel("Nível de cargo", { exact: true }).selectOption("professor");

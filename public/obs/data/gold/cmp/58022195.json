@@ -1,7 +1,7 @@
 {
  "cod": "58022195",
  "nome": "COPERCRED - COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DAS EMPRESAS ZILLO LORENZETTI",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -469,5 +469,5 @@
    "202506": 100.0
   }
  },
- "gerado_em": "2026-09-24T15:24:48+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

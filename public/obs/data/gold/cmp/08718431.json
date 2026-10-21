@@ -1,7 +1,7 @@
 {
  "cod": "08718431",
  "nome": "WIRECARD BRAZIL INSTITUIÇÃO DE PAGAMENTO S.A.",
- "sr": "S4",
+ "sr": "S3",
  "tcb": "N4",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -259,5 +259,5 @@
    "202509": 0.0
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:20+00:00"
 }

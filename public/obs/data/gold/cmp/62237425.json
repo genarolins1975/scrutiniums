@@ -1,7 +1,7 @@
 {
  "cod": "62237425",
  "nome": "BANCO STELLANTIS S.A.",
- "sr": "S4",
+ "sr": "S3",
  "tcb": "B2",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -323,5 +323,5 @@
    "202309": 88.2828060854935
   }
  },
- "gerado_em": "2026-09-24T15:24:48+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

@@ -273,6 +273,28 @@ TARIFA_AGUA = ["GFI1008", "GFI1016", "GFI1016A", "GFI1017", "GFI1018", "GFI1019"
 COBRANCA_ESGOTO = ["GFI1108", "GFI1109", "GFI1109A"]
 
 
+# Consumo total médio per capita de água, fórmula do IAG2006 do SINISA:
+# {[(GTA1211 + GTA1207) / 365] / [(GTA0001 + GTA0002 + GTA0001_A + GTA0002_A) / 2]} x 1.000.000, em l/hab/dia.
+# As planilhas de 2024 não trazem a população atendida do ano anterior (os campos _A), então o denominador é só a
+# de 2024; a conferência "agua_consumo_per_capita_sem_media_anual" mede o efeito disso contra o IAG2006 publicado.
+CAMPOS_CONSUMO = ("GTA1211", "GTA1207", "GTA0001", "GTA0002")
+
+
+def consumo_per_capita(linhas):
+    """IAG2006 sem a média anual da população, sobre as linhas com os quatro campos obrigatórios e população
+    positiva (as mesmas condições que bloqueiam o cálculo oficial). Devolve (l/hab/dia ou None, linhas usadas)."""
+    vol = pop = 0.0
+    n = 0
+    for l in linhas:
+        v = [num(l.get(c)) for c in CAMPOS_CONSUMO]
+        if any(x is None for x in v) or v[2] + v[3] <= 0:
+            continue
+        vol += v[0] + v[1]
+        pop += v[2] + v[3]
+        n += 1
+    return (r2(vol / 365 / pop * 1_000_000) if n else None), n
+
+
 def indicadores(linha, codigos):
     out, motivos = {}, {}
     for c in codigos:
@@ -825,6 +847,7 @@ def construir():
         receita_ag = somaf(fa, "GFI1001")
         faturado = vol["GTA1221"]
         dex_ag = somaf(fa, "GFI2008")
+        consumo, consumo_n = consumo_per_capita(ta)
         lista_prest.append({
             "id": k,
             "nome": p["nome"], "sigla": p["sigla"], "natureza": p["natureza"], "abrangencia": p["abrangencia"],
@@ -837,6 +860,9 @@ def construir():
             "ligacoes_esgoto": somaf(te, "GTE0003"),
             "volumes_mil_m3": vol,
             "perdas_distribuicao_pct": perdas,
+            # IAG2006 sobre as somas, sem a média com a população de 2023 (ver consumo_per_capita)
+            "consumo_per_capita_agua": consumo,
+            "consumo_per_capita_municipios": consumo_n,
             "receita_direta_usuarios_agua": r2(receita_ag),
             "despesa_exploracao_agua": r2(dex_ag),
             "receita_por_m3_faturado_agua": r2(receita_ag / (faturado * 1000)) if receita_ag and faturado else None,
@@ -1152,6 +1178,46 @@ def construir():
                      "a soma dos municípios deve reproduzir o consolidado Brasil.",
     })
 
+    # IAG2006 sem a média anual da população (prestadores, capítulo 5.4) contra o publicado, município a município
+    difs = []
+    for cod, l in ag_tec.items():
+        oficial = num(ag_ind.get(cod, {}).get("IAG2006"))
+        calc, _ = consumo_per_capita([l])
+        if oficial is None or calc is None or oficial <= 0:
+            continue
+        difs.append((calc - oficial) / oficial * 100)
+    absd = sorted(abs(d) for d in difs)
+
+    def quantil(xs, q):
+        return xs[min(len(xs) - 1, int(q * len(xs)))] if xs else None
+
+    br_calc, _ = consumo_per_capita([ag_uf_tec.get("BR", {})])
+    br_pub = num(ag_uf_ind.get("BR", {}).get("IAG2006"))
+    med_sinal = r2(sorted(difs)[len(difs) // 2]) if difs else None
+    conferencias.append({
+        "id": "agua_consumo_per_capita_sem_media_anual",
+        "descricao": "Consumo médio per capita de água (fórmula do IAG2006) com a população atendida de 2024, sem a média com a "
+                     "de 2023, versus o IAG2006 publicado, município a município e no Brasil.",
+        "valores": {
+            "municipios_comparados": len(difs),
+            "mediana_da_diferenca_pct": med_sinal,
+            "mediana_da_diferenca_absoluta_pct": r2(quantil(absd, 0.5)),
+            "percentil_90_da_diferenca_absoluta_pct": r2(quantil(absd, 0.9)),
+            "municipios_ate_5pct": sum(1 for d in absd if d <= 5),
+            "brasil_calculado_l_hab_dia": br_calc,
+            "brasil_publicado_l_hab_dia": br_pub,
+        },
+        "conclusao": (
+            "A fórmula oficial divide o volume consumido mais o autorizado não faturado pela média da população atendida em 2023 e "
+            "2024; as planilhas de 2024 não trazem a de 2023. O Observatório só usa esse cálculo no consumo por prestador do "
+            "capítulo 5.4, somando os municípios em que cada um atua, e o rotula como aproximação. "
+            + (f"Contra o indicador publicado, a diferença mediana é de {str(med_sinal).replace('.', ',')}% "
+               f"({len(difs)} municípios)" if difs else "Sem municípios comparáveis")
+            + (f"; no Brasil, {str(br_calc).replace('.', ',')} contra {str(br_pub).replace('.', ',')} l/hab/dia."
+               if br_calc is not None and br_pub is not None else ".")
+        ),
+    })
+
     consistentes, inconsistentes = 0, 0
     for mes in (CAD_MES, CAD_MES_ATUAL):
         for v in cad_seed["meses"][mes]["municipios"].values():
@@ -1334,8 +1400,10 @@ CAMPOS_MUNICIPIOS = [
     ("iaa_rede", "IAA da NR ANA 8/2024, parcela de rede pública, calculado pelo Observatório (%)"),
     ("nr8_es_num", "SINISA 2024: economias residenciais ativas com tratamento de esgoto (GTE0009 + GTE0019)"),
     ("iae_rede", "IAE da NR ANA 8/2024, parcela de rede pública com tratamento, calculado pelo Observatório (%)"),
-    ("inv_ag", "SINISA 2024: investimento em água, prestador + Estado (R$ correntes)"),
-    ("inv_es", "SINISA 2024: investimento em esgoto, prestador + Estado (R$ correntes)"),
+    ("inv_ag", "SINISA 2024: investimento em água realizado pelo prestador e pelo governo estadual, informado no formulário do prestador "
+               "(R$ correntes; autodeclarado ao SINISA, sem conferência com demonstrações financeiras auditadas)"),
+    ("inv_es", "SINISA 2024: investimento em esgoto realizado pelo prestador e pelo governo estadual, informado no formulário do prestador "
+               "(R$ correntes; autodeclarado ao SINISA, sem conferência com demonstrações financeiras auditadas)"),
     ("n_prest_ag", "SINISA 2024: prestadores de água declarados no município"),
     ("n_prest_es", "SINISA 2024: prestadores de esgoto declarados no município"),
     ("nat_ag", "SINISA 2024: natureza jurídica do prestador de água"),
@@ -1488,11 +1556,12 @@ def arquivos(g):
     out["ods_paises.csv"] = csv_bytes(cab_o, linhas_o)
     cab_p = ["id", "nome", "sigla", "natureza", "abrangencia", "ufs", "municipios_agua", "municipios_esgoto",
              "populacao_atendida_agua", "populacao_atendida_esgoto", "perdas_distribuicao_pct",
-             "investimento_agua", "investimento_esgoto"]
+             "investimento_agua", "investimento_esgoto", "consumo_per_capita_agua_l_hab_dia"]
     out["prestadores.csv"] = csv_bytes(cab_p, [[
         p["id"], p["nome"], p["sigla"], p["natureza"], p["abrangencia"], ",".join(p["ufs"]),
         len(p["municipios_agua"]), len(p["municipios_esgoto"]), p["populacao_atendida_agua"],
         p["populacao_atendida_esgoto"], p["perdas_distribuicao_pct"], p["investimento_agua"], p["investimento_esgoto"],
+        p["consumo_per_capita_agua"],
     ] for p in g["prestadores"]])
     cab_e = ["codigo", "nome", "municipio", "uf", "prestador", "em_operacao", "nivel", "capacidade_nominal_ls",
              "volume_tratado_mil_m3", "utilizacao_pct", "eficiencia_dbo_pct", "corpo_receptor"]

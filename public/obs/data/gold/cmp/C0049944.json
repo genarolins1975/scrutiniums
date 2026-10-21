@@ -1,7 +1,7 @@
 {
  "cod": "C0049944",
  "nome": "BTG PACTUAL",
- "sr": "S1",
+ "sr": null,
  "tcb": "B1",
  "porte_quartil": "P4",
  "nivel": "conglomerado prudencial",
@@ -584,5 +584,5 @@
    "202606": 0.012880964755817991
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

@@ -1,7 +1,7 @@
 {
  "cod": "13058743",
  "nome": "ACCESSCRÉDITO - SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE S.A",
- "sr": "S5",
+ "sr": null,
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -245,5 +245,5 @@
    "202103": 88.90268826777637
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

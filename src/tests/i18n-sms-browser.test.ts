@@ -280,3 +280,88 @@ it("aceita somente o cookie de fluxo válido, preserva o redirect em streaming e
     }
   }
 }, 60_000);
+
+/** Recuperação de senha (?recuperar=1), nos dois idiomas: portas, telas próprias e volta sem o telefone do fluxo. */
+const RECUPERACAO = {
+  "pt-BR": { esqueci: "Esqueci minha senha", recuperar: "Recuperar acesso" },
+  en: { esqueci: "Forgot your password?", recuperar: "Recover access" },
+} as const;
+
+/**
+ * Espera própria do modo ?recuperar=1: o contrato genérico de aguardarPagina só conhece os endereços
+ * canônicos; aqui a página concluída é conferida por verificarPaginaSms com o cenário de recuperação.
+ */
+async function aguardarRecuperacao(page: Page, caminho: CaminhoSms, idioma: Idioma): Promise<void> {
+  await page.locator("main h1").waitFor({ state: "visible" });
+  await page.locator(caminho === "/entrar/sms" ? 'form input[type="tel"]' : 'form input[autocomplete="one-time-code"]').waitFor({ state: "visible" });
+  await page.locator('form button[type="submit"]').waitFor({ state: "visible" });
+  await page.waitForFunction(() => document.querySelectorAll("main").length === 1
+    && !document.querySelector('main[aria-busy="true"], template[id^="B:"], [hidden][id^="S:"]'));
+  if (caminho === "/entrar/sms/verificar") {
+    await page.waitForFunction(() => document.activeElement === document.querySelector('form input[autocomplete="one-time-code"]'));
+    await page.clock.runFor(30_000);
+    await page.getByRole("button", { name: TEXTOS[idioma].reenviar, exact: true }).waitFor({ state: "visible" });
+  }
+  await page.evaluate(() => document.fonts.ready.then(() => undefined));
+}
+
+it("leva de \"Esqueci minha senha\" à recuperação no mesmo idioma, sem enviar SMS", async (ctx) => {
+  const servidor = pronto(ctx);
+  for (const prefixo of ["", "/en"]) {
+    const pedido = prefixo + "/entrar/sms", verificar = pedido + "/verificar";
+    const recuperacao = servidor.origem + pedido + "?recuperar=1";
+    const idioma = idiomaDa(pedido), r = RECUPERACAO[idioma], t = TEXTOS[idioma];
+
+    const anonimo = await servidor.contexto();
+    const tentativasAnonimo = await impedirEnvios(anonimo);
+    try {
+      const page = await anonimo.newPage(), falhas = observarFalhas(page);
+      // porta 1: o link do login por e-mail e senha
+      await page.goto(servidor.origem + prefixo + "/entrar", { waitUntil: "load" });
+      await aguardarPagina(page, prefixo + "/entrar");
+      await page.getByRole("link", { name: r.esqueci, exact: true }).click();
+      await page.waitForURL(recuperacao);
+      expect(await page.locator("main h1").textContent()).toBe(r.recuperar);
+      // a navegação no cliente não reescreve atributos do HTML do servidor: a prova completa usa o documento carregado
+      await page.goto(recuperacao, { waitUntil: "load" });
+      await aguardarRecuperacao(page, "/entrar/sms", idioma);
+      verificarPaginaSms(parse(await page.content()), { caminho: "/entrar/sms", estado: "inicial", recuperar: true });
+      await relacoesNoNavegador(page, "/entrar/sms", "inicial", idioma);
+      // validação local do telefone também no modo recuperar, sem chamar a API
+      await page.locator('form button[type="submit"]').click();
+      await page.getByText(t.erroTelefone, { exact: true }).waitFor({ state: "visible" });
+      verificarPaginaSms(parse(await page.content()), { caminho: "/entrar/sms", estado: "vazio", recuperar: true });
+      expect(page.url()).toBe(recuperacao);
+      // porta 2: o link da tela de pedir código
+      await page.goto(servidor.origem + pedido, { waitUntil: "load" });
+      await aguardarPagina(page, pedido);
+      await page.getByRole("link", { name: r.recuperar, exact: true }).click();
+      await page.waitForURL(recuperacao);
+      expect(await page.locator("main h1").textContent()).toBe(r.recuperar);
+      // sem o telefone do fluxo, a tela do código volta ao pedido de código sem sair da recuperação
+      await page.goto(servidor.origem + verificar + "?recuperar=1", { waitUntil: "load" });
+      await page.waitForURL(recuperacao);
+      await aguardarRecuperacao(page, "/entrar/sms", idioma);
+      verificarPaginaSms(parse(await page.content()), { caminho: "/entrar/sms", estado: "inicial", recuperar: true });
+      expect(tentativasAnonimo).toEqual([]);
+      expect(falhas).toEqual([]);
+    } finally { await anonimo.close(); }
+
+    const fluxo = await servidor.contexto({ loginSms: "valido" });
+    const tentativasFluxo = await impedirEnvios(fluxo);
+    try {
+      const page = await fluxo.newPage(), falhas = observarFalhas(page);
+      await prepararPaginaSms(page, verificar);
+      const resposta = await page.goto(servidor.origem + verificar + "?recuperar=1", { waitUntil: "load" });
+      expect(resposta?.status()).toBe(200);
+      await aguardarRecuperacao(page, "/entrar/sms/verificar", idioma);
+      expect(page.url()).toBe(servidor.origem + verificar + "?recuperar=1");
+      verificarPaginaSms(parse(await page.content()), { caminho: "/entrar/sms/verificar", estado: "inicial", contador: "liberado", recuperar: true });
+      await page.locator('form button[type="submit"]').click();
+      await page.getByText(t.erroCodigo, { exact: true }).waitFor({ state: "visible" });
+      verificarPaginaSms(parse(await page.content()), { caminho: "/entrar/sms/verificar", estado: "vazio", contador: "liberado", recuperar: true });
+      expect(tentativasFluxo).toEqual([]);
+      expect(falhas).toEqual([]);
+    } finally { await fluxo.close(); }
+  }
+}, 90_000);

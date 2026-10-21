@@ -1,7 +1,7 @@
 {
  "cod": "02827982",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS  EMPREGADOS DO BANCO DA AMAZÔNIA",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -175,5 +175,5 @@
    "201809": 94.9475700354537
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

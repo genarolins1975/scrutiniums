@@ -69,7 +69,7 @@ export function ContaFaixa({
   const todas = useMemo(() => expandirVigentes(vigentes), [vigentes]);
   const info = useMemo(() => expandirInfo(infoCompacta), [infoCompacta]);
   const r = referenciasDoPerfil(todas, resumo, perfil);
-  const ponderada = useMemo(() => medianaPonderadaDoPerfil(todas, info, perfil).valor, [todas, info, perfil]);
+  const { valor: ponderada, semUcs } = useMemo(() => medianaPonderadaDoPerfil(todas, info, perfil), [todas, info, perfil]);
   const data = dataBR(dataReferencia, idioma);
   const ucsDe = (cnpj: string | undefined) => (cnpj ? textoUcs(info[cnpj]?.ucs, idioma) : "");
   const nota = notaFaixaTarifa(
@@ -78,6 +78,7 @@ export function ContaFaixa({
     {
       perfil,
       ponderada,
+      semUcs,
       cobertura,
       extremos: { menor: r.menor?.valor ?? null, maior: r.maior?.valor ?? null, siglaMenor: r.menor?.sigla ?? null, siglaMaior: r.maior?.sigla ?? null },
     },

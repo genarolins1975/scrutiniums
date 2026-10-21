@@ -365,6 +365,29 @@ def _desalinhados(con):
     return out
 
 
+# Coletar na mesma hora não basta. Em 15/10/2026, na mesma execução e com o nacional
+# coletado DEPOIS do municipal, o FonteRecursos de 2026-08 (16:17) veio idêntico ao
+# centavo à medição de 14/10 enquanto o municipal (16:00) já somava R$ 71,06 mi a mais,
+# e o municipal de 2026-06 é que veio igual ao de 14/10 (FonteRecursos R$ 9,98 mi acima).
+# Em 17/10 o municipal de 2026-09 veio byte a byte igual ao de 16/10 (sha256) quatro
+# minutos antes de FonteRecursos e Faixa já trazerem a fotografia nova; às 18:53 do mesmo
+# dia os três fechavam ao centavo. A prova da mesma fotografia é o valor: mês do
+# municipal cujo total difere do FonteRecursos em mais de TOLERANCIA_PAR_RS volta a ser
+# coletado (municipal primeiro; o nacional, então anterior, é refeito por _desalinhados).
+TOLERANCIA_PAR_RS = 0.05   # por mês; o teste da gold exige R$ 1 na soma dos 12 meses
+
+
+def _divergentes(con):
+    """Meses da janela do municipal em que municipal e FonteRecursos não fecham ao centavo."""
+    out = []
+    for mes in _meses_atras(MESES_MUN):
+        vm = con.execute("SELECT SUM(vl_c+vl_i+vl_com+vl_ind) FROM sicor_mun WHERE mes=?", (mes,)).fetchone()[0]
+        vf = con.execute("SELECT SUM(vl_c+vl_i+vl_com+vl_ind) FROM sicor_fonte WHERE mes=?", (mes,)).fetchone()[0]
+        if vm is not None and vf is not None and abs(vm - vf) > TOLERANCIA_PAR_RS:
+            out.append(mes)
+    return out
+
+
 def _resumo_erro(e, limite=300):
     """Mensagem curta que preserva a causa: a URL da Olinda tem mais de 300
     caracteres e, cortada pelo começo, escondia o "HTTP Error 500" no log."""
@@ -396,11 +419,12 @@ def collect(con, cfg):
     t0 = _time.monotonic()
     pesados = [("mun", _coleta_mun, MESES_MUN), ("if", _coleta_if, MESES_IF), ("produto", _coleta_produto, MESES_PRODUTO)]
     gasto = 0
+    divergentes = set(_divergentes(con))
     for recurso, fn, n_meses in pesados:
         for mes in _meses_atras(n_meses):
             if gasto >= CAP_PESADOS or _time.monotonic() - t0 > ORCAMENTO_PESADOS_S:
                 break
-            if _ja_coletado(con, recurso, mes):
+            if _ja_coletado(con, recurso, mes) and not (recurso == "mun" and mes in divergentes):
                 continue
             gasto += 1
             _executa(recurso, fn, mes, "rural_mun.json" if recurso == "mun" else "rural.json")

@@ -1,7 +1,7 @@
 {
  "cod": "26408187",
  "nome": "COOPERATIVA DE CRÉDITO POUPANÇA E INVESTIMENTO PANTANAL DO MATO GROSSO DO SUL - SICREDI PANTANAL MS",
- "sr": "S4",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -481,5 +481,5 @@
    "202509": 0.0
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:20+00:00"
 }

@@ -1,0 +1,335 @@
+{
+  "versao": 1,
+  "descricao": "Fonte única do frescor das entradas: cadência esperada e limiar de atraso de cada domínio, e onde cada um publica as próprias datas. Lida pela faixa de frescor (src/lib/frescor/) e pela vigília (scripts/vigilancia_frescor.py). Os caminhos de campo usam pontos e '*' para percorrer todos os itens de um objeto ou lista.",
+  "cadencias": {
+    "diaria": {
+      "intervalo": 1,
+      "limite": 2,
+      "rotulo": "diária",
+      "rotuloEn": "daily"
+    },
+    "quinzenal": {
+      "intervalo": 15,
+      "limite": 20,
+      "rotulo": "quinzenal",
+      "rotuloEn": "fortnightly"
+    },
+    "mensal": {
+      "intervalo": 31,
+      "limite": 45,
+      "rotulo": "mensal",
+      "rotuloEn": "monthly"
+    },
+    "anual": {
+      "intervalo": 365,
+      "limite": 400,
+      "rotulo": "anual",
+      "rotuloEn": "annual"
+    }
+  },
+  "dominios": {
+    "credito": {
+      "nome": "Crédito",
+      "nomeEn": "Credit",
+      "rotulo": "Fontes: Banco Central e outras",
+      "cadencia": "diaria",
+      "nota": "Coleta diária com publicação por grupo, depois dos testes de conteúdo. A data é a do grupo publicado há mais tempo; quando um grupo fica retido pelos testes, os demais seguem publicados.",
+      "publicacao": [
+        {
+          "arquivo": "public/obs/data/gold/meta.json",
+          "campo": "gerado_em"
+        }
+      ],
+      "partes": [
+        {
+          "arquivo": "public/obs/data/gold/meta.json",
+          "campo": "grupos.*.gerado_em"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/obs/data/gold/meta.json",
+          "campo": "vintages.sgs"
+        }
+      ],
+      "referenciaRotulo": "séries SGS do Banco Central"
+    },
+    "energia": {
+      "nome": "Setor Elétrico",
+      "nomeEn": "Power sector",
+      "rotulo": "Dados diários de preço e operação",
+      "rotuloEn": "Daily price and operation data",
+      "cadencia": "diaria",
+      "nota": "O ONS e a CCEE publicam todos os dias, e a plataforma publica a cada noite. A data é a mais antiga entre as sete publicações diárias: preço, reservatórios, carga, geração, rede, custo marginal e síntese.",
+      "notaEn": "ONS and CCEE publish every day, and the platform publishes every night. The date is the oldest among the seven daily publications: price, reservoirs, load, generation, grid, marginal cost and summary.",
+      "publicacao": [
+        {
+          "arquivo": "public/energia/gold/meta.json",
+          "campo": "golds.*.gerado_em"
+        }
+      ],
+      "partes": [
+        {
+          "arquivo": "public/energia/gold/meta.json",
+          "campo": "golds.*.gerado_em"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/energia/gold/pld.json",
+          "campo": "dia_referencia"
+        }
+      ],
+      "referenciaRotulo": "PLD",
+      "referenciaRotuloEn": "PLD"
+    },
+    "gas": {
+      "nome": "Gás Natural",
+      "nomeEn": "Natural gas",
+      "rotulo": "Fontes: ANP, IBGE, BCB, Comex Stat e Banco Mundial",
+      "cadencia": "mensal",
+      "nota": "A ANP publica a maior parte dos conjuntos todo mês. A plataforma recoleta nos dias 3 e 18 e só republica quando um arquivo de origem muda; a data é a da captura mais recente que mudou um conjunto.",
+      "publicacao": [
+        {
+          "arquivo": "public/gas/gold/meta.json",
+          "campo": "dados_capturados_em"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/gas/gold/meta.json",
+          "campo": "ultimos_meses.*"
+        }
+      ],
+      "referenciaRotulo": "último mês da ANP"
+    },
+    "saneamento": {
+      "nome": "Saneamento",
+      "nomeEn": "Sanitation",
+      "rotulo": "Fontes: SINISA, IBGE, CadÚnico e outras",
+      "cadencia": "anual",
+      "nota": "O SINISA é anual. A data é a captura mais antiga entre SINISA, Censo e CadÚnico; uma edição nova na fonte é conferida toda semana pela vigília do saneamento.",
+      "publicacao": [
+        {
+          "arquivo": "public/saneamento/gold/meta.json",
+          "campo": "sinisa.capturado_em"
+        },
+        {
+          "arquivo": "public/saneamento/gold/meta.json",
+          "campo": "censo.capturado_em"
+        },
+        {
+          "arquivo": "public/saneamento/gold/meta.json",
+          "campo": "cadunico.capturado_em"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/saneamento/gold/meta.json",
+          "campo": "sinisa.ano_referencia"
+        }
+      ],
+      "referenciaRotulo": "SINISA"
+    },
+    "agro": {
+      "nome": "Agronegócio",
+      "nomeEn": "Agribusiness",
+      "rotulo": "Fontes: IBGE, Comex Stat, BCB e outras",
+      "cadencia": "mensal",
+      "nota": "IBGE e Comex Stat publicam todo mês. A plataforma recoleta nos dias 9 e 24; a data é a da última publicação da gold do Agronegócio.",
+      "publicacao": [
+        {
+          "arquivo": "public/agro/gold/snapshot.json",
+          "campo": "geradoEm"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/agro/gold/snapshot.json",
+          "campo": "economia.comercio.ultimoMes"
+        },
+        {
+          "arquivo": "public/agro/gold/snapshot.json",
+          "campo": "economia.safra.mesReferencia"
+        },
+        {
+          "arquivo": "public/agro/gold/snapshot.json",
+          "campo": "economia.prato.ultimoMes"
+        }
+      ],
+      "referenciaRotulo": "comércio, safra e alimentos"
+    },
+    "territorio": {
+      "nome": "Território e Clima",
+      "nomeEn": "Territory and climate",
+      "rotulo": "Fontes: INPE, Defesa Civil e MCTI",
+      "cadencia": "quinzenal",
+      "nota": "O INPE publica focos de calor todos os dias e a Defesa Civil registra desastres continuamente. A plataforma recoleta nos dias 2 e 16; a data é a captura mais antiga entre focos de calor e desastres.",
+      "publicacao": [
+        {
+          "arquivo": "public/territorio/gold/queimadas.json",
+          "campo": "capturadoEm"
+        },
+        {
+          "arquivo": "public/territorio/gold/desastres.json",
+          "campo": "capturadoEm"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/territorio/gold/queimadas.json",
+          "campo": "comparacao.periodoAtual.fim"
+        }
+      ],
+      "referenciaRotulo": "focos de calor"
+    },
+    "inflacao": {
+      "nome": "Inflação por cidade (IPCA)",
+      "nomeEn": "Inflation by city (IPCA)",
+      "rotulo": "Fonte: IBGE, IPCA",
+      "cadencia": "mensal",
+      "nota": "O IBGE divulga o IPCA do mês anterior entre os dias 8 e 12. A plataforma recoleta nos dias 10 e 14 e só republica quando um número muda; a data é a da captura que trouxe o mês novo.",
+      "publicacao": [
+        {
+          "arquivo": "public/inflacao/gold/ipca.json",
+          "campo": "capturado_em"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/inflacao/gold/ipca.json",
+          "campo": "ultimo_mes"
+        }
+      ],
+      "referenciaRotulo": "IPCA"
+    },
+    "previdencia": {
+      "nome": "Previdência e INSS",
+      "nomeEn": "Social security (INSS)",
+      "rotulo": "Fontes: Ministério da Previdência Social e Tesouro Nacional",
+      "cadencia": "mensal",
+      "nota": "O Ministério da Previdência publica o boletim estatístico do mês cerca de quatro semanas depois, e o Tesouro publica o Resultado do Tesouro Nacional no fim do mês seguinte; o arquivo por município é anual. A plataforma recoleta nos dias 2 e 18 e só republica quando um número muda; a data é a da captura que trouxe o dado novo.",
+      "publicacao": [
+        {
+          "arquivo": "public/previdencia/gold/previdencia.json",
+          "campo": "capturado_em"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/previdencia/gold/previdencia.json",
+          "campo": "referencia"
+        }
+      ],
+      "referenciaRotulo": "BEPS"
+    },
+    "educacao": {
+      "nome": "Educação nos municípios",
+      "nomeEn": "Education in municipalities",
+      "rotulo": "Fonte: INEP, Ideb e Censo Escolar",
+      "cadencia": "anual",
+      "nota": "O INEP divulga o Ideb a cada dois anos, no ano seguinte ao do Saeb, e a Sinopse do Censo Escolar uma vez por ano. A plataforma recoleta todo mês e só republica quando um número muda; a data é a da captura que trouxe o dado novo.",
+      "publicacao": [
+        {
+          "arquivo": "public/educacao/gold/educacao.json",
+          "campo": "capturado_em"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/educacao/gold/educacao.json",
+          "campo": "referencia"
+        }
+      ],
+      "referenciaRotulo": "Ideb"
+    },
+    "contas-federais": {
+      "nome": "Contas federais",
+      "nomeEn": "Federal accounts",
+      "rotulo": "Fontes: Tesouro Nacional e SIOP",
+      "cadencia": "mensal",
+      "nota": "O Tesouro publica o Resultado do Tesouro Nacional todo mês. A coleta ainda é manual; a data é a da última captura.",
+      "publicacao": [
+        {
+          "arquivo": "src/lib/contas-publicas/snapshots/dados.json",
+          "campo": "captura"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "src/lib/contas-publicas/snapshots/dados.json",
+          "campo": "referenciaRTN"
+        }
+      ],
+      "referenciaRotulo": "RTN"
+    },
+    "contas-estaduais": {
+      "nome": "Contas estaduais",
+      "nomeEn": "State accounts",
+      "rotulo": "Fonte: Siconfi",
+      "cadencia": "anual",
+      "nota": "Os números principais são anuais, do último bimestre do RREO e do último quadrimestre do RGF. A coleta ainda é manual; a data é a da última captura.",
+      "publicacao": [
+        {
+          "arquivo": "src/lib/contas-estaduais/primarios.json",
+          "campo": "captura"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "src/lib/contas-estaduais/primarios.json",
+          "campo": "rreo.*.ano"
+        }
+      ],
+      "referenciaRotulo": "RREO"
+    },
+    "eficiencia": {
+      "nome": "Eficiência Estatal",
+      "nomeEn": "Public services",
+      "rotulo": "Fontes dos temas: Siconfi, INEP e outras",
+      "cadencia": "anual",
+      "nota": "As fontes dos temas são anuais. A data é a captura mais antiga entre os temas; cada tema mostra a sua no mapa de cobertura.",
+      "publicacao": [
+        {
+          "arquivo": "public/eficiencia/gold/educacao_capitais.json",
+          "campo": "meta.gerado_em"
+        },
+        {
+          "arquivo": "public/eficiencia/gold/saude_capitais.json",
+          "campo": "meta.gerado_em"
+        },
+        {
+          "arquivo": "public/eficiencia/cultura/snapshot.json",
+          "campo": "capturadoEm"
+        },
+        {
+          "arquivo": "public/eficiencia/habitacao/snapshot.json",
+          "campo": "capturadoEm"
+        },
+        {
+          "arquivo": "public/eficiencia/judiciario/snapshot.json",
+          "campo": "capturadoEm"
+        },
+        {
+          "arquivo": "public/eficiencia/justica/snapshot.json",
+          "campo": "capturadoEm"
+        },
+        {
+          "arquivo": "public/eficiencia/saneamento/snapshot.json",
+          "campo": "captura"
+        },
+        {
+          "arquivo": "public/eficiencia/seguranca-publica/gold/seguranca.json",
+          "campo": "capturado_em"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/eficiencia/gold/saude_capitais.json",
+          "campo": "periodos.financeiros.*"
+        }
+      ],
+      "referenciaRotulo": "exercício financeiro"
+    }
+  }
+}

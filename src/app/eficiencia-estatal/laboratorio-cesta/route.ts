@@ -17,9 +17,12 @@ export async function GET() {
     return new Response('Not found', {status: 404, headers});
   }
   const html = await readFile(join(process.cwd(), 'docs/obee/resultados/revisao-interativa-v3.html'), 'utf8');
-  const navigation = '<nav aria-label="Voltar ao OBEE" style="max-width:1240px;margin:auto;padding:16px 40px 0"><a id="backlink" href="/eficiencia-estatal?visao=cidades#atlas-indice">← Voltar ao panorama das capitais</a></nav>';
-  // O piloto v2 deu lugar ao índice v4 na entrada; o modelo congelado da v3 ainda aponta para a âncora antiga.
-  const page = html.replace('</header><main>', `</header>${navigation}<main>`).replaceAll('#atlas-piloto', '#atlas-indice');
+  const navigation = '<nav aria-label="Voltar ao OBEE" style="max-width:1240px;margin:auto;padding:16px 40px 0"><a id="backlink" href="/eficiencia-estatal/indice-de-resultados#atlas-indice">← Voltar ao índice de resultados das capitais</a></nav>';
+  // O modelo congelado da v3 ainda aponta para a entrada e para a âncora do piloto v2. O índice v4 saiu da entrada
+  // para o próprio painel (decisão do dono de 19/10/2026): o retorno leva o par de capitais para lá.
+  const page = html.replace('</header><main>', `</header>${navigation}<main>`)
+    .replaceAll("'/eficiencia-estatal?visao=cidades&territorio='", "'/eficiencia-estatal/indice-de-resultados?territorio='")
+    .replaceAll('#atlas-piloto', '#atlas-indice');
   return new Response(page, {
     headers: {...headers, 'Content-Type': 'text/html; charset=utf-8'},
   });

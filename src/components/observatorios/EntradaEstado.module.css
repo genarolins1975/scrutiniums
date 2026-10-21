@@ -133,6 +133,9 @@
   .illustratedHeading { display: block; }
   .illustratedHeading > span { display: block; margin-top: 8px; }
   .illustratedLinks { grid-template-columns: 1fr; gap: 24px; }
+  /* No celular cada janela do tríptico vira faixa 16:9, centrada na cena: a mesma imagem, sem três quadros de tela inteira. */
+  .scene { aspect-ratio: 16 / 9; }
+  .sceneImage { height: auto; top: 50%; transform: translateY(-50%); }
   .illustratedLinks > a {
     display: grid;
     grid-template-columns: minmax(140px, .8fr) minmax(0, 1.2fr);

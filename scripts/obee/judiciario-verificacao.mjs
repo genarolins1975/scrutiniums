@@ -52,8 +52,11 @@ try{
  assert.ok(origin,'Next não informou a origem local');
  browser=await chromium.launch({executablePath:process.env.I18N_CHROMIUM_EXECUTABLE||undefined});
  const anonymous=await browser.newContext();
- const observatoryRoots=['/observatorio','/setor-eletrico','/eficiencia-estatal','/contas-publicas','/contas-publicas-estaduais','/saneamento','/gas-natural'];
- for(const path of observatoryRoots){
+ const observatoryRoots=['/observatorio','/setor-eletrico','/eficiencia-estatal','/contas-publicas','/contas-publicas-estaduais','/saneamento','/gas-natural','/agronegocio'];
+ // Consulta aberta desde 19/10/2026 (leva 1 da estratégia "aberto e com conta"): a entrada da Eficiência Estatal abre sem sessão.
+ const consultasAbertas=['/eficiencia-estatal'];
+ for(const path of consultasAbertas)check('Consulta aberta sem sessão: '+path,(await anonymous.request.get(origin+path,{maxRedirects:0})).status()===200);
+ for(const path of observatoryRoots.filter(p=>!consultasAbertas.includes(p))){
   const response=await anonymous.request.get(origin+path,{maxRedirects:0});
   check('Observatório exige sessão: '+path,response.status()===307&&response.headers().location.includes('/entrar'));
  }
@@ -65,9 +68,11 @@ try{
  check('Ilustração conceitual pública sem abrir dados',(await anonymous.request.get(origin+'/home/judiciario-por-dentro.webp')).status()===200);
  const anonPage=await anonymous.newPage();
  await anonPage.goto(origin+PREFIX+'/metodos',{waitUntil:'networkidle'});
- await anonPage.getByLabel('Trocar de observatório e acessar a conta').click();
- check('Cabeçalho anônimo oferece entrada com retorno ao método',(await anonPage.getByRole('banner').getByRole('link',{name:'Entrar',exact:true}).getAttribute('href')).includes(encodeURIComponent(PREFIX+'/metodos')));
- check('Cabeçalho anônimo mantém oito destinos',await anonPage.getByRole('navigation',{name:'Observatórios da plataforma'}).getByRole('link').count()===8);
+ // Barra comum dos seis observatórios (Onda 1, 19/10/2026): a conta aparece depois da consulta de sessão.
+ const entrarAnonimo=anonPage.getByRole('banner').getByRole('link',{name:'Entrar',exact:true});
+ await entrarAnonimo.waitFor({timeout:15000});
+ check('Cabeçalho anônimo oferece entrada com retorno ao método',(await entrarAnonimo.getAttribute('href')).includes(encodeURIComponent(PREFIX+'/metodos')));
+ check('Cabeçalho anônimo mostra os seis observatórios',await anonPage.getByRole('navigation',{name:'Observatórios da Scrutiniums'}).getByRole('link').count()===6);
 
  check('Seletor exige sessão',(await anonymous.request.get(origin+'/app/observatorios',{maxRedirects:0})).status()===307);
  check('Escolha do Judiciário exige sessão',(await anonymous.request.post(origin+'/app/observatorios/entrar',{form:{d:'judiciario'},headers:{origin},maxRedirects:0})).status()===307);
@@ -78,13 +83,19 @@ try{
  for(const path of observatoryRoots)check('Observatório com sessão: '+path,(await context.request.get(origin+path)).status()===200);
  const page=await context.newPage();page.on('pageerror',e=>errors.push(page.url()+': '+e.message));
  page.on('console',message=>{if(message.type()==='error')errors.push('Console: '+message.text());});
+ // O Next pré-carrega links visíveis em fila, depois do networkidle; navegar no meio da fila aborta o pré-carregamento
+ // e o framework registra erro no console. Esperar a fila esvaziar antes de navegar ou recarregar mantém a checagem de erros estrita.
+ let pendentes=0;page.on('request',()=>pendentes++);page.on('requestfinished',()=>pendentes--);page.on('requestfailed',()=>pendentes--);
+ const ocioso=async()=>{for(let quieto=0,i=0;quieto<6&&i<160;i++){await page.waitForTimeout(125);quieto=pendentes>0?0:quieto+1;}};
+ const captura=async opcoes=>{await page.screenshot(opcoes);await ocioso();};
+ for(const metodo of ['goto','reload']){const original=page[metodo].bind(page);page[metodo]=async(...args)=>{await ocioso();return original(...args);};}
  const axe=await readFile(require.resolve('axe-core/axe.min.js'),'utf8');
  for(const width of [320,390,768,1440]){
   await page.setViewportSize({width,height:width===390?844:1000});
   await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
   const card=page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true});
   check('Cartão próprio do Judiciário '+width+'px',await card.isVisible()&&await card.getByRole('button',{name:/Explorar Judiciário/}).isVisible());
-  check('Sete observatórios e Judiciário no seletor '+width+'px',await page.locator('input[name="d"]').count()===observatoryRoots.length+1);
+  check('Oito observatórios e Judiciário no seletor '+width+'px',await page.locator('input[name="d"]').count()===observatoryRoots.length+1);
   await card.locator('summary').click();
   check('Fonte e cobertura reais no cartão '+width+'px',(await card.innerText()).includes('57 tribunais')&&(await card.innerText()).includes('2009–2025'));
   await page.addScriptTag({content:axe});
@@ -92,44 +103,47 @@ try{
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
   check('Seletor acessível e sem overflow '+width+'px',!overflow&&violations.length===0);
   screens.push({slug:'seletor-observatorios',width,status:200,overflow,violations});
-  await page.screenshot({path:join(out,'seletor-'+width+'.png'),fullPage:true});
+  await captura({path:join(out,'seletor-'+width+'.png'),fullPage:true});
  }
  const choice=page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true});
  await choice.getByRole('button',{name:/Explorar Judiciário/}).focus();
  const navigation=page.waitForNavigation({waitUntil:'networkidle',timeout:20000});
  await page.keyboard.press('Enter');await navigation;
- await page.screenshot({path:join(out,'seletor-destino.png'),fullPage:true});
+ await captura({path:join(out,'seletor-destino.png'),fullPage:true});
  check('Cartão abre o Judiciário por teclado',new URL(page.url()).pathname===PREFIX);
  check('Escolha preserva a sessão',(await context.request.get(origin+'/api/auth/eu')).status()===204);
  check('Cookie guarda o Judiciário',(await context.cookies()).some(c=>c.name==='scrutiniums_observatorio'&&c.value==='judiciario'&&c.httpOnly));
  await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
  check('Último acesso identifica o cartão do Judiciário',await page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true}).getByText('Último acesso',{exact:true}).isVisible());
- const slugs=['','panorama','internacional','recursos','tempo','filas','entrega','acesso','comparar','metodos','tribunais/tjsp','tribunais/tjdft','tribunais/trf3','tribunais/trt3'];
+ const slugs=['','panorama','internacional','recursos','tempo','filas','entrega','consistencia','criminal','acesso','comparar','metodos','tribunais/tjsp','tribunais/tjdft','tribunais/trf3','tribunais/trt3'];
  for(const width of [320,390,768,1440]){
   await page.setViewportSize({width,height:width===390?844:1000});
   for(const slug of slugs){
    const response=await page.goto(origin+PREFIX+(slug?'/'+slug:''),{waitUntil:'networkidle'});
    await page.evaluate(()=>document.fonts.ready);
    if(slug===''){
-    check('Ilustração carregada '+width+'px',await page.locator('img[alt^="Ilustração conceitual de um tribunal"]').evaluate(img=>img.complete&&img.naturalWidth>0));
-    if([390,1440].includes(width))await page.screenshot({path:join(out,'entrada-primeira-tela-'+width+'.png')});
+    check('Entrada mostra as duas medidas dos 27 TJs '+width+'px',await page.locator('#endereco ol li').count()===27&&await page.locator('#endereco [data-serie="1"]').count()>=27);
+    if([390,1440].includes(width))await captura({path:join(out,'entrada-primeira-tela-'+width+'.png')});
    }
    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
    await page.addScriptTag({content:axe});
    const violations=await page.evaluate(async()=>{const result=await axe.run(document.querySelector('main'),{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}});return result.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)}));});
    const row={slug:slug||'entrada',width,status:response.status(),overflow,h1:await page.locator('h1').count(),violations};screens.push(row);
    check(`Tela ${row.slug} ${width}px`,row.status===200&&!overflow&&row.h1===1&&violations.length===0);
-   if([390,1440].includes(width))await page.screenshot({path:join(out,`${(slug||'entrada').replaceAll('/','-')}-${width}.png`),fullPage:true});
+   if([390,1440].includes(width))await captura({path:join(out,`${(slug||'entrada').replaceAll('/','-')}-${width}.png`),fullPage:true});
   }
  }
  await page.goto(origin+PREFIX,{waitUntil:'networkidle'});
- const platformMenu=page.getByLabel('Trocar de observatório e acessar a conta');
+ // Seletor da barra comum: observatórios e coleções; o Judiciário segue pela Eficiência Estatal e pela navegação do módulo.
+ const platformMenu=page.locator('summary[aria-label^="Coleção atual"]').first();
  await platformMenu.click();
- const platformNav=page.getByRole('navigation',{name:'Observatórios da plataforma'});
- check('Cabeçalho logado vai à conta, sem convite de login',await page.getByRole('banner').getByRole('link',{name:'Minha conta',exact:true}).isVisible()&&await page.getByRole('banner').getByRole('link',{name:'Entrar',exact:true}).count()===0);
- for(const route of [...observatoryRoots,PREFIX])check('Menu mantém destino '+route,await platformNav.locator('a[href="'+route+'"]').count()===1);
+ const platformNav=platformMenu.locator('xpath=..');
+ const minhaConta=page.getByRole('banner').getByRole('link',{name:'Minha conta',exact:true});
+ await minhaConta.waitFor({timeout:15000});
+ check('Cabeçalho logado vai à conta, sem convite de login',await minhaConta.isVisible()&&await page.getByRole('banner').getByRole('link',{name:'Entrar',exact:true}).count()===0);
+ for(const route of observatoryRoots)check('Menu mantém destino '+route,await platformNav.locator('a[href="'+route+'"]').count()===1);
  await platformMenu.press('Escape');
- check('Menu fecha por Escape',!(await platformNav.isVisible()));
+ check('Menu fecha por Escape',!(await platformMenu.evaluate(e=>e.parentElement.open)));
  const branchButtons=page.getByRole('group',{name:'Conhecer os ramos da Justiça'});
  await branchButtons.getByRole('button',{name:/Federal/}).click();
  check('Ramo Federal tem contexto e comparação próprios',(await page.locator('#ramo-em-foco').innerText()).includes('Justiça Federal')&&(await page.locator('#ramo-em-foco a').getAttribute('href')).includes('ramo=federal'));
@@ -142,14 +156,19 @@ try{
  await page.waitForURL('**/tribunais/trf3');
  check('Busca abre ficha regional por teclado',(await page.locator('h1').innerText()).includes('TRF3'));
  await page.goto(origin+PREFIX,{waitUntil:'networkidle'});
- await page.getByRole('link',{name:/Começar esta comparação/}).click();
- check('Exemplo da entrada mantém três TJs de grande porte',await page.getByLabel('Porte oficial',{exact:true}).inputValue()==='Grande'&&await page.getByLabel('Tribunal 1',{exact:true}).inputValue()==='tjsp'&&await page.getByLabel('Tribunal 2',{exact:true}).inputValue()==='tjmg'&&await page.getByLabel('Tribunal 3',{exact:true}).inputValue()==='tjrs');
+ await page.locator('#endereco').getByRole('link',{name:'TJSP',exact:true}).click();
+ await page.waitForURL('**/tribunais/tjsp');
+ check('Halteres da entrada abrem a ficha do tribunal',(await page.locator('h1').innerText()).includes('TJSP'));
+ await page.goto(origin+PREFIX,{waitUntil:'networkidle'});
+ await page.getByRole('link',{name:/Comparar os tribunais/}).click();
+ await page.waitForURL('**/comparar');
+ check('Pergunta do endereço leva ao comparador',new URL(page.url()).pathname===PREFIX+'/comparar');
  await page.goto(origin+PREFIX+'/comparar',{waitUntil:'networkidle'});
  await page.getByLabel('Tribunal 1',{exact:true}).selectOption('tjsp');
  await page.getByLabel('Tribunal 2',{exact:true}).selectOption('tjpe');
  await page.getByLabel('Tribunal 3',{exact:true}).selectOption('tjac');
  await page.getByLabel('Medida dos tribunais',{exact:true}).selectOption('idadePendentes');
- await page.screenshot({path:join(out,'comparacao-tres-tribunais.png'),fullPage:true});
+ await captura({path:join(out,'comparacao-tres-tribunais.png'),fullPage:true});
  const shared=page.url();check('Seleção compartilhável',shared.includes('t1=tjsp')&&shared.includes('t3=tjac')&&shared.includes('medida=idadePendentes'));
  await page.reload({waitUntil:'networkidle'});
  check('Reload preserva recorte',await page.getByLabel('Tribunal 2',{exact:true}).inputValue()==='tjpe'&&await page.getByLabel('Medida dos tribunais',{exact:true}).inputValue()==='idadePendentes');
@@ -231,12 +250,17 @@ try{
   const series=await seriesDownload;await series.saveAs(join(out,'internacional-historico-'+width+'.csv'));
   const seriesCsv=await readFile(join(out,'internacional-historico-'+width+'.csv'),'utf8');
   check('CSV histórico não duplica 2017–2018 nem promove 2026 '+width+'px',seriesCsv.split('\r\n').length===41&&(seriesCsv.match(/"2017-2018"/g)||[]).length===4&&!seriesCsv.includes('"2026"'));
-  const social=page.getByRole('button',{name:/Ver a decisão cumprida/});await social.focus();await page.keyboard.press('Enter');
+  const social=page.getByRole('button',{name:/Ver a decisão cumprida/});
+  await social.evaluate(e=>{window.__contrastePergunta=null;const observer=new MutationObserver(()=>{if(e.getAttribute('aria-pressed')!=='true')return;const style=getComputedStyle(e);const luminancia=color=>{const rgb=color.match(/[\d.]+/g).slice(0,3).map(Number).map(v=>{const c=v/255;return c<=.04045?c/12.92:((c+.055)/1.055)**2.4;});return rgb[0]*.2126+rgb[1]*.7152+rgb[2]*.0722;};const a=luminancia(style.color),b=luminancia(style.backgroundColor);window.__contrastePergunta={valor:(Math.max(a,b)+.05)/(Math.min(a,b)+.05),texto:style.color,fundo:style.backgroundColor};observer.disconnect();});observer.observe(e,{attributes:true,attributeFilter:['aria-pressed']});});
+  await social.focus();await page.keyboard.press('Enter');
+  const primeiroQuadro=await page.evaluate(()=>window.__contrastePergunta);if(!primeiroQuadro||primeiroQuadro.valor<4.5)console.error('Contraste da pergunta selecionada: '+JSON.stringify(primeiroQuadro));check('Pergunta mantém contraste desde a seleção '+width+'px',!!primeiroQuadro&&primeiroQuadro.valor>=4.5);
   check('Pergunta social muda o indicador por teclado '+width+'px',await page.getByLabel('Indicador internacional',{exact:true}).inputValue()==='f_7_6'&&await social.getAttribute('aria-pressed')==='true');
   await page.addScriptTag({content:axe});
-  const issues=await page.evaluate(async()=>{const r=await axe.run(document.querySelector('main'),{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}});return r.violations.map(v=>v.id);});
-  check('Histórico e controles internacionais acessíveis '+width+'px',issues.length===0&&await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-  await page.screenshot({path:join(out,'internacional-historico-'+width+'.png'),fullPage:true});
+  const issues=await page.evaluate(async()=>{const r=await axe.run(document.querySelector('main'),{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}});return r.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({html:n.html,summary:n.failureSummary}))}));});
+  const overflowInternacional=await page.evaluate(()=>({documento:document.documentElement.scrollWidth,janela:innerWidth,elementos:[...document.querySelectorAll('main *')].filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&(r.right>innerWidth+1||r.left< -1);}).slice(0,8).map(e=>({tag:e.tagName,classe:e.className,html:e.outerHTML.slice(0,500)}))}));
+  if(issues.length||overflowInternacional.documento>overflowInternacional.janela+1)console.error('Diagnóstico internacional '+width+'px: '+JSON.stringify({issues,overflow:overflowInternacional}));
+  check('Histórico e controles internacionais acessíveis '+width+'px',issues.length===0&&overflowInternacional.documento<=overflowInternacional.janela+1);
+  await captura({path:join(out,'internacional-historico-'+width+'.png'),fullPage:true});
   await page.goto(origin+PREFIX+'/internacional?referencia=selecionados&p1=&p2=&p3=',{waitUntil:'networkidle'});
   check('Referência vazia permanece ausência, sem overflow '+width+'px',await page.getByText('Selecione ao menos um país estrangeiro para formar esta referência.',{exact:true}).isVisible()&&await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   await page.goto(origin+PREFIX+'/internacional?referencia=selecionados&p1=PRT&p2=PRT&p3=',{waitUntil:'networkidle'});

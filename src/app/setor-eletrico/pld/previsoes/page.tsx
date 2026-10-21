@@ -735,6 +735,15 @@ export default function PrevisoesPage() {
                           `${g.rotina.execucoes_agendadas} recorded: ${g.rotina.no_prazo} on time, ${g.rotina.atrasadas} late, ${g.rotina.falhas} failed; ${g.rotina.dias_sem_rodada_total} ${g.rotina.dias_sem_rodada_total === 1 ? "day" : "days"} without a run since ${g.rotina.inicio_operacao_agendada ? dataBR(g.rotina.inicio_operacao_agendada) : "the start of scheduled operation, which has not happened yet"}.`,
                         )}
                       </PrevisoesFichaLinha>
+                      {(g.rotina.incidentes ?? []).map((x) => (
+                        <PrevisoesFichaLinha key={x.de} rotulo={tx("Rodadas não registradas", "Runs not recorded")}>
+                          {tx(`De ${dataBR(x.de)} a ${dataBR(x.ate)}, ${x.execucoes} execuções agendadas: `, `From ${dataBR(x.de)} to ${dataBR(x.ate)}, ${x.execucoes} scheduled runs: `)}
+                          <Gold texto={x.motivo} />{" "}
+                          <a href={x.fonte} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">{tx("execuções", "runs")}</a>
+                          {" · "}
+                          <a href={x.correcao} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">{tx("correção", "fix")}</a>
+                        </PrevisoesFichaLinha>
+                      ))}
                       <PrevisoesFichaLinha rotulo={tx("Critério", "Criterion")}>
                         <Gold texto={g.rotina.criterio_comprovacao} />
                       </PrevisoesFichaLinha>

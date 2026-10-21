@@ -1,7 +1,7 @@
 {
  "cod": "62223733",
  "nome": "COOPERATIVA DE CRÉDITO DE SERVIDORES DO PODER JUDICIÁRIO DO ESTADO DA BAHIA LTDA. - COOPEJUS BAHIA",
- "sr": null,
+ "sr": "S4",
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -77,5 +77,5 @@
    "202509": 0.0
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

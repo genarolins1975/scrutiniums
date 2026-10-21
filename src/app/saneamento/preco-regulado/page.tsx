@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
 import { Abertura, Fonte, Nota, Secao } from "@/components/saneamento/Editorial";
 import { AmostraTarifas, SubnavPreco } from "@/components/saneamento/PrecoRegulado";
+import { LabReceitaTarifa } from "@/components/saneamento/Laboratorios";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { ROTA, capituloPorSlug } from "@/lib/saneamento/capitulos";
 import { TARIFAS, periodoConsultaTarifas } from "@/lib/saneamento/tarifas";
@@ -13,7 +14,7 @@ import { reais } from "@/lib/saneamento/formato";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
-  title: "Preço regulado: o que pagamos, por que foi autorizado e o que ele financia",
+  title: "Tarifa: o que pagamos, por que foi autorizada e o que ela financia",
   description:
     "Simulador com tabelas verificadas, formação da tarifa pelo regulador em dois modelos, reajustes, contrapartidas de serviço e repartição de riscos, a partir de atos oficiais.",
   alternates: { canonical: `${ROTA}/preco-regulado` },
@@ -137,9 +138,12 @@ export default function Pagina() {
               </li>
             ))}
           </ol>
+          <div className="mt-8">
+            <LabReceitaTarifa />
+          </div>
         </Secao>
 
-        <Secao id="subpaineis" titulo="Cinco perguntas sobre o preço">
+        <Secao id="subpaineis" titulo="Cinco perguntas sobre a tarifa">
           <ul className="grid grid-cols-1 gap-x-10 md:grid-cols-2">
             <li className="border-t border-linha py-4">
               <Link href={`${ROTA}/preco-regulado/simulador`} className="font-serif text-xl text-carvao underline decoration-linha underline-offset-4 hover:decoration-obee">
@@ -168,10 +172,10 @@ export default function Pagina() {
             </li>
             <li className="border-t border-linha py-4">
               <Link href={`${ROTA}/preco-regulado/contrapartidas`} className="font-serif text-xl text-carvao underline decoration-linha underline-offset-4 hover:decoration-obee">
-                5.4 O preço está associado a melhor serviço?
+                5.4 A tarifa está associada a melhor serviço?
               </Link>
               <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
-                Da premissa da decisão à obrigação, ao resultado observado e à providência do regulador; preço e indicadores de serviço lado a lado, sem nota
+                Da premissa da decisão à obrigação, ao resultado observado e à providência do regulador; tarifa e indicadores de serviço lado a lado, sem nota
                 composta.
               </p>
             </li>

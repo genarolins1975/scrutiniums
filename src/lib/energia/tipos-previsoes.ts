@@ -223,6 +223,8 @@ export type Rodada = {
   /** "agendada", "manual" ou o texto do registro transcrito de artefato externo. */
   modo: string;
   executor: string | null;
+  /** O que disparou a execução (cron do GitHub, agendador externo ou manual); null nas rodadas anteriores a 19/10/2026. */
+  gatilho?: string | null;
   run_url: string | null;
   tipos: TipoRegistro[];
   modelos: CodigoModelo[];
@@ -316,7 +318,13 @@ export type Rotina = {
   falhas: number;
   dias_sem_rodada: string[];
   dias_sem_rodada_total: number;
+  /** Rodadas agendadas por gatilho registrado; ausente nas golds anteriores a 19/10/2026. */
+  agendadas_por_gatilho?: Record<string, number>;
+  /** Janela da comprovação (últimos 30 dias vencidos); ausente nas golds anteriores a 18/10/2026. */
+  janela_comprovacao?: { dias: number; inicio: string; fim: string; no_prazo: number; dias_sem_rodada: number } | null;
   comprovada: boolean;
+  /** Períodos em que as execuções agendadas não registraram a rodada, com motivo, fonte e correção. */
+  incidentes?: { de: string; ate: string; execucoes: number; motivo: string; fonte: string; correcao: string }[];
   leitura: string;
   criterio_comprovacao: string;
 };
@@ -348,7 +356,16 @@ export type RegistroEmissao = {
   snapshot: string | null;
   snapshot_sha256?: string | null;
   elegibilidade?: "LAT1D";
-  execucao?: { modo: "agendada" | "manual"; executor: string; run_url: string | null; iniciado_em: string };
+  execucao?: {
+    modo: "agendada" | "manual";
+    executor: string;
+    run_url: string | null;
+    iniciado_em: string;
+    /** O que disparou a execução; ausente nos registros anteriores a 19/10/2026. */
+    gatilho?: "cron do GitHub" | "agendador externo" | "manual";
+    /** Conta do GitHub que acionou a execução; ausente nos registros anteriores a 19/10/2026. */
+    acionado_por?: string;
+  };
   status: "DISPONIVEL" | "INDISPONIVEL";
   previsao: number | null;
   previsao_bruta?: number;

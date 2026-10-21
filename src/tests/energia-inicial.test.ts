@@ -122,8 +122,13 @@ describe("os seis sinais da inicial: o número é o da gold do módulo", () => {
     expect(s.universo).toContain(`outros ${fora} CNPJs ficam de fora`);
     expect(s.universo).toContain("o valor muda quando a ANEEL completar o arquivo");
     // a mediana ponderada pelas unidades consumidoras, refeita por outro caminho: tarifa em ordem crescente até metade das unidades
-    const ucs = new Map(QUALIDADE.distribuidoras.filter((d) => d.ano === QUALIDADE.ano_referencia).map((d) => [d.cnpj, d.ucs!]));
-    const linhas = CONTA.tarifas.vigentes.map((v) => ({ t: v.total!, u: ucs.get(v.cnpj)! })).sort((x, y) => x.t - y.t);
+    const ucs = new Map(QUALIDADE.distribuidoras.filter((d) => d.ano === QUALIDADE.ano_referencia && d.ucs).map((d) => [d.cnpj, d.ucs!]));
+    // com todas as distribuidoras da tarifa pesando, o arquivo do dia; com alguma sem unidades consumidoras publicadas (a CODESAM em
+    // 18/10/2026, sem conjuntos de DEC), o mesmo arquivo só com as que as têm, para o cálculo seguir conferido
+    const todasComUc = CONTA.tarifas.vigentes.every((v) => ucs.has(v.cnpj));
+    const contaComUc = clone(CONTA);
+    contaComUc.tarifas.vigentes = contaComUc.tarifas.vigentes.filter((v) => ucs.has(v.cnpj));
+    const linhas = contaComUc.tarifas.vigentes.map((v) => ({ t: v.total!, u: ucs.get(v.cnpj)! })).sort((x, y) => x.t - y.t);
     const total = linhas.reduce((acc, l) => acc + l.u, 0);
     let acc = 0;
     let esperada = 0;
@@ -134,11 +139,20 @@ describe("os seis sinais da inicial: o número é o da gold do módulo", () => {
         break;
       }
     }
-    const w = medianaPonderadaPorUc(CONTA, QUALIDADE)!;
+    const w = medianaPonderadaPorUc(contaComUc, QUALIDADE)!;
     expect(w.valorMwh).toBe(esperada);
-    expect(w.n).toBe(r.n);
+    expect(w.n).toBe(contaComUc.tarifas.vigentes.length);
     expect(w.cobertura).toBeGreaterThan(0.99);
-    expect(s.ressalva).toContain(`Pesada pelas unidades consumidoras de ${QUALIDADE.ano_referencia}, a mediana seria ${kwh(esperada)} por kWh`);
+    const frasePesada = `Pesada pelas unidades consumidoras de ${QUALIDADE.ano_referencia}, a mediana seria ${kwh(esperada)} por kWh`;
+    expect(disponivel(sinalConta(contaComUc, QUALIDADE)).ressalva).toContain(frasePesada);
+    if (todasComUc) {
+      expect(w.n).toBe(r.n);
+      expect(s.ressalva).toContain(frasePesada);
+    } else {
+      // uma faltando: o peso dela seria inventado, e a inicial só diz que a mediana pesada seria outra
+      expect(medianaPonderadaPorUc(CONTA, QUALIDADE)).toBeNull();
+      expect(s.ressalva).toContain("pesada por elas, a mediana seria outra");
+    }
     // sem as unidades consumidoras de uma das distribuidoras o peso seria inventado: a função não devolve valor, e o texto só diz que seria outra
     const q = clone(QUALIDADE);
     q.distribuidoras = q.distribuidoras.filter((d) => d.cnpj !== CONTA.tarifas.vigentes[0].cnpj);
@@ -361,14 +375,20 @@ describe("os seis sinais da inicial: o número é o da gold do módulo", () => {
       const c = PLD.cartoes.find((x) => x.sm === sm)!;
       expect(s.referencias[1], sm).toContain(`${c.nome} ${reais(c.media_dia)}`);
     }
+    // o valor é o do Sudeste, nunca a média dos quatro: quando os quatro diferem, os dois números se separam; no dia em que os quatro
+    // submercados ficam no mesmo preço (o piso, por exemplo, como em 17/10/2026), a média coincide com o Sudeste por construção
     const media = PLD.cartoes.reduce((a, c) => a + c.media_dia, 0) / PLD.cartoes.length;
-    expect(s.valor).not.toBeCloseTo(media, 6);
+    if (new Set(PLD.cartoes.map((c) => c.media_dia)).size > 1) expect(s.valor).not.toBeCloseTo(media, 6);
+    else expect(s.valor).toBeCloseTo(media, 9);
     // a posição do dia: contra os dias do mesmo mês da série e contra todos, os dois percentis que a Visão geral mostra
     const det = gold<PldDetalheGold>("pld_detalhe.json");
     const mm = det.historico.posicao_referencia.find((x) => x.sm === "SE" && x.dia === PLD.dia_referencia)!.mesmo_mes;
     expect(s.figura).toMatchObject({ extremos: [mm.p10, mm.p90], caixa: [mm.p25, mm.p75], mediana: mm.p50, valor: se.media_dia });
     expect(s.figura!.legenda).toContain(`${mm.n_dias} dias de`);
-    expect(s.figura!.legenda).toContain(`percentil ${String(mm.percentil).replace(".", ",")} entre esses dias e no ${String(se.posicao.percentil).replace(".", ",")} entre todos os`);
+    // percentis com uma casa fixa, como a página escreve (String(20) daria "20" e a página diz "20,0", caso de 17/10/2026)
+    expect(mm.percentil).not.toBeNull();
+    expect(se.posicao.percentil).not.toBeNull();
+    expect(s.figura!.legenda).toContain(`percentil ${mm.percentil!.toFixed(1).replace(".", ",")} entre esses dias e no ${se.posicao.percentil!.toFixed(1).replace(".", ",")} entre todos os`);
     // PLD não é tarifa
     expect(s.ressalva).toMatch(/não a tarifa/);
     // sem a gold de detalhe, não há figura (e a média segue)
@@ -620,7 +640,13 @@ const secao = (id: string) => {
 describe("a página renderizada", () => {
   it("a abertura preserva título, contexto e cinco caminhos: orientação, cobertura, busca, mapa e perguntas antes da referência", () => {
     const h1 = /<h1[^>]*>([^<]+)<\/h1>/.exec(html)![1];
-    expect(h1).toBe("A energia que move o Brasil.");
+    // redesenho de 20/10/2026: o título é a pergunta do observatório, não um slogan (checklist da página de entrada, item 1)
+    expect(h1).toBe("De onde vem a energia e quanto ela custa?");
+    expect(h1.endsWith("?")).toBe(true);
+    // os três números de abertura vêm logo depois do título, antes da gravura do sistema, que abre o percurso
+    expect(html.indexOf('class="energia-abertura-medidas"')).toBeGreaterThan(html.indexOf("<h1"));
+    expect(html.indexOf('class="energia-abertura-medidas"')).toBeLessThan(html.indexOf('class="energia-cenario"'));
+    expect(html.indexOf('class="energia-cenario"')).toBeLessThan(html.indexOf('id="percurso-energia"'));
     expect(h1.split(/\s+/).length).toBeGreaterThanOrEqual(5);
     expect(h1.split(/\s+/).length).toBeLessThanOrEqual(9);
     const ordem = [html.indexOf("<h1"), html.indexOf('aria-label="Por onde começar"'), html.indexOf('class="obs-metrics"'), html.indexOf('type="search"'), html.indexOf('<section id="perguntas"'), html.indexOf('aria-label="Conhecimento e fontes"')];
@@ -711,10 +737,10 @@ describe("a página renderizada", () => {
     expect(cod).toContain("useSyncExternalStore");
   });
 
-  it("o índice lista os 21 destinos, agrupados nos seis grupos, cada um com a pergunta curta e o estado vindo de navegacao.ts", () => {
+  it("o índice lista os 22 destinos, agrupados nos seis grupos, cada um com a pergunta curta e o estado vindo de navegacao.ts", () => {
     const indice = secao("destinos").html;
     const destinos = DESTINOS_NAVEGACAO.filter((d) => d.slug !== "mapa");
-    expect(destinos).toHaveLength(21);
+    expect(destinos).toHaveLength(22);
     for (const d of destinos) {
       expect(indice, d.slug).toContain(`href="${d.href}"`);
       expect(texto(indice), d.slug).toContain(d.pergunta);
@@ -723,7 +749,7 @@ describe("a página renderizada", () => {
     // sem módulo em integração nesta publicação, a página não escreve "Em integração" no índice (só no cartão condicional, que não aparece)
     const emIntegracao = destinos.filter((d) => d.publicado && !d.integrado).length;
     expect(texto(indice.replace(/<details[\s\S]*?<\/details>/g, " ")).includes("Em integração")).toBe(emIntegracao > 0);
-    expect(texto(indice)).toContain(emIntegracao === 0 ? "As 21 páginas publicam números." : "em integração");
+    expect(texto(indice)).toContain(emIntegracao === 0 ? "As 22 páginas publicam números." : "em integração");
     // o resumo de cada grupo, que antes ficava no bloco "Detalhe de cada página", abre o grupo
     for (const g of GRUPOS_NAVEGACAO) expect(texto(indice), g.id).toContain(g.resumo);
   });

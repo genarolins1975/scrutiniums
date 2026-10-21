@@ -3,7 +3,8 @@ import type { TextosPagina } from "./tipos";
 
 /**
  * Entrada por e-mail e senha e entrada alternativa por código SMS (/entrar,
- * /entrar/sms, /entrar/sms/verificar). O cadastro continua só em português.
+ * /entrar/sms, /entrar/sms/verificar), inclusive a recuperação de senha
+ * (?recuperar=1). O cadastro continua só em português.
  */
 const pt = {
   marcaRotulo: "Scrutiniums — página inicial",
@@ -22,7 +23,8 @@ const pt = {
   erroSenha: "Informe sua senha.",
   entrando: "Entrando…",
   entrar: "Entrar",
-  prefereSms: "Prefere ou precisa entrar sem senha?",
+  esqueciSenha: "Esqueci minha senha",
+  prefereSms: "Prefere entrar sem senha?",
   entrarComSms: "Entrar com código por SMS",
   semCadastro: "Ainda não tenho cadastro",
   erroCredenciais: "E-mail ou senha inválidos.",
@@ -33,7 +35,12 @@ const pt = {
   // /entrar/sms
   tituloSms: "Entrar com código por SMS",
   introducaoSms: "Enviamos um código por SMS para o telefone cadastrado.",
-  recuperacaoSms: "Use também este caminho se esqueceu sua senha: depois de entrar, defina uma nova em Conta.",
+  esqueceuSenha: "Esqueceu a senha?",
+  recuperarAcesso: "Recuperar acesso",
+
+  // /entrar/sms?recuperar=1 (esqueci minha senha)
+  tituloRecuperar: "Recuperar acesso",
+  introducaoRecuperar: "Informe o telefone cadastrado. Enviamos um código por SMS e, ao confirmá-lo, você define uma nova senha.",
   pais: "País",
   telefone: "Telefone celular",
   telefonePlaceholder: "Número com DDD",
@@ -54,6 +61,7 @@ const pt = {
   erroCodigo: "Código inválido ou expirado.",
   erroVerificar: "Não foi possível verificar agora. Tente novamente.",
   verificando: "Verificando…",
+  continuarNovaSenha: "Continuar para nova senha",
   reenviado: "Se o telefone estiver cadastrado, enviamos um novo código por SMS.",
   erroReenviar: "Não foi possível reenviar agora. Tente novamente.",
   alterarTelefone: "Alterar telefone",
@@ -78,7 +86,8 @@ const en: TextosPagina<typeof pt> = {
   erroSenha: "Enter your password.",
   entrando: "Signing in…",
   entrar: "Sign in",
-  prefereSms: "Prefer or need to sign in without a password?",
+  esqueciSenha: "Forgot your password?",
+  prefereSms: "Prefer to sign in without a password?",
   entrarComSms: "Sign in with an SMS code",
   semCadastro: "I don't have an account yet",
   erroCredenciais: "Invalid email or password.",
@@ -88,7 +97,11 @@ const en: TextosPagina<typeof pt> = {
 
   tituloSms: "Sign in with an SMS code",
   introducaoSms: "We send a code by SMS to the phone number on your account.",
-  recuperacaoSms: "Use this option too if you forgot your password: after signing in, set a new one under Account.",
+  esqueceuSenha: "Forgot your password?",
+  recuperarAcesso: "Recover access",
+
+  tituloRecuperar: "Recover access",
+  introducaoRecuperar: "Enter the phone number on your account. We send a code by SMS and, once you confirm it, you set a new password.",
   pais: "Country",
   telefone: "Mobile phone",
   telefonePlaceholder: "Number with area code",
@@ -108,6 +121,7 @@ const en: TextosPagina<typeof pt> = {
   erroCodigo: "Invalid or expired code.",
   erroVerificar: "We couldn't verify the code right now. Try again.",
   verificando: "Verifying…",
+  continuarNovaSenha: "Continue to new password",
   reenviado: "If the phone number has an account, we sent a new code by SMS.",
   erroReenviar: "We couldn't resend the code right now. Try again.",
   alterarTelefone: "Change phone number",

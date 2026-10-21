@@ -6,10 +6,15 @@ import { DiagramaSistema } from "@/components/saneamento/DiagramaSistema";
 import { FaixaMundo } from "@/components/saneamento/ReferenciaMundial";
 import { SeloSituacao } from "@/components/saneamento/Editorial";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
+import { ParaVoce } from "@/components/observatorios/ParaVoce";
 import { agregado, meta } from "@/lib/saneamento/gold";
 import { EIXOS, FERRAMENTAS, ROTA, rotaCapitulo } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
-import { data, inteiro, numero, reaisCompacto } from "@/lib/saneamento/formato";
+import { CAPITULOS_SEM_MANCHETE_FINANCEIRA, respostasDosCapitulos } from "@/lib/saneamento/respostas";
+import { AUTODECLARADO } from "@/lib/saneamento/autodeclarado";
+import { data, inteiro, numero } from "@/lib/saneamento/formato";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -22,11 +27,9 @@ export const metadata: Metadata = {
 export default function Pagina() {
   const m = meta();
   const br = agregado("BR");
+  const respostas = respostasDosCapitulos();
   const mor = br?.censo2022.moradores;
-  const invTotal =
-    br?.sinisa.agua.investimento?.total != null && br?.sinisa.esgoto.investimento?.total != null
-      ? br.sinisa.agua.investimento.total + br.sinisa.esgoto.investimento.total
-      : null;
+  // Números de abertura: sem valores financeiros autodeclarados ao SINISA (src/lib/saneamento/autodeclarado.ts); o investimento fica no capítulo 9.
   const medidas = [
     {
       rotulo: "dos moradores sem ligação à rede geral de água",
@@ -46,19 +49,15 @@ export default function Pagina() {
       contexto: `Sobre a água consumida: ${numero(br?.sinisa.esgoto.indicadores.IES2003, 1)}% · SINISA 2024`,
       href: `${ROTA}/esgoto`,
     },
-    {
-      rotulo: "investidos em água e esgoto em 2024",
-      valor: reaisCompacto(invTotal),
-      contexto: "Declarado por prestadores e Estados, reais correntes · SINISA 2024",
-      href: `${ROTA}/investimento`,
-    },
   ];
+  const semManchete = new Set<number>(CAPITULOS_SEM_MANCHETE_FINANCEIRA);
 
   return (
     <>
       <Cabecalho atual="" />
       <MarcaVisita secao="saneamento:inicio" />
       <main id="conteudo" className="pb-20">
+        <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/saneamento"]} conteiner="ed-pagina" />
         <section className="ed-pagina grid grid-cols-1 gap-10 pb-12 pt-10 lg:grid-cols-12 lg:gap-12 lg:pt-14">
           <div className="lg:col-span-7">
             <p className="rotulo text-obee-dark">Observatório Brasileiro do Saneamento</p>
@@ -66,7 +65,7 @@ export default function Pagina() {
               Quem ainda está sem água e esgoto, quanto custa o serviço e se o planejamento vira atendimento.
             </h1>
             <p className="mt-5 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">
-              Dados oficiais de acesso, preço regulado, prestadores, reguladores, investimentos e metas, organizados pelas perguntas da
+              Dados oficiais de acesso, tarifa, prestadores, reguladores, investimentos e metas, organizados pelas perguntas da
               sociedade. Os números trazem fonte, período e limitação; a conclusão fica com o leitor.
             </p>
             <div className="mt-8">
@@ -96,13 +95,16 @@ export default function Pagina() {
           </div>
         </section>
 
+        {/* "Para você" (Onda 2): o município, a conta de água e a tarifa social, a um clique, logo depois dos números de abertura */}
+        <ParaVoce entrada="/saneamento" conteiner="ed-pagina" />
+
         <section aria-labelledby="como-funciona" className="border-y border-linha bg-superficie py-12">
           <div className="ed-pagina">
             <h2 id="como-funciona" className="font-serif text-[1.7rem] leading-snug text-carvao md:text-[2rem]">
               Como o serviço funciona e onde cada capítulo mede
             </h2>
             <p className="mt-3 max-w-prose2 text-[0.95rem] leading-relaxed text-carvao-muted">
-              A água percorre um caminho físico; o preço, as metas e o dinheiro percorrem outro, institucional. Os dois aparecem separados.
+              A água percorre um caminho físico; a tarifa, as metas e o dinheiro percorrem outro, institucional. Os dois aparecem separados.
             </p>
             <div className="mt-8">
               <DiagramaSistema />
@@ -139,8 +141,8 @@ export default function Pagina() {
             Cinco eixos, catorze perguntas
           </h2>
           <p className="mt-3 max-w-prose2 text-[0.95rem] leading-relaxed text-carvao-muted">
-            Cada capítulo responde a uma pergunta e declara sua situação. Capítulo em preparação não vira link: diz o que falta e de que
-            depende.
+            Cada capítulo traz a resposta curta, o número que a sustenta e a fonte; a cobertura, o método e os limites estão no capítulo.
+            Capítulo em preparação não vira link: diz o que falta e de que depende.
           </p>
           <div className="mt-8">
             {EIXOS.map((e) => (
@@ -155,8 +157,10 @@ export default function Pagina() {
                 </h3>
                 <p className="mt-1 max-w-prose2 text-sm text-carvao-muted">{e.resumo}</p>
                 <ol className="mt-4 grid grid-cols-1 gap-x-10 md:grid-cols-2">
-                  {e.capitulos.map((c) => (
-                    <li key={c.numero} className="border-t border-linha py-3">
+                  {e.capitulos.map((c) => {
+                    const r = c.situacao === "em_preparacao" ? undefined : respostas[c.numero];
+                    return (
+                    <li key={c.numero} className="border-t border-linha py-4" data-capitulo={c.numero}>
                       <div className="flex flex-wrap items-baseline justify-between gap-2">
                         {c.situacao === "em_preparacao" ? (
                           <p className="text-base text-carvao-muted">
@@ -171,7 +175,23 @@ export default function Pagina() {
                         )}
                         <SeloSituacao situacao={c.situacao} />
                       </div>
-                      <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{c.situacao === "em_preparacao" ? c.pendencia : c.resumo}</p>
+                      {r ? (
+                        <div data-resposta="">
+                          <p className="mt-3 flex flex-wrap items-baseline gap-x-2">
+                            <span className="font-serif text-[1.55rem] leading-none tabular-nums text-carvao">{r.valor}</span>
+                            <span className="text-sm text-carvao">{r.rotulo}</span>
+                          </p>
+                          <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{r.frase}</p>
+                          <p className="mt-1 text-xs text-mineral">{r.fonte}</p>
+                        </div>
+                      ) : (
+                        <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{c.situacao === "em_preparacao" ? c.pendencia : c.resumo}</p>
+                      )}
+                      {semManchete.has(c.numero) && (
+                        <p data-autodeclarado="" className="mt-1 max-w-prose2 text-xs leading-relaxed text-mineral">
+                          Os valores ficam dentro do capítulo, com a ressalva: {AUTODECLARADO}.
+                        </p>
+                      )}
                       {c.subpaineis && (
                         <ul className="mt-3 grid grid-cols-1 gap-x-6 sm:grid-cols-2">
                           {c.subpaineis.map((s) => (
@@ -184,7 +204,8 @@ export default function Pagina() {
                         </ul>
                       )}
                     </li>
-                  ))}
+                    );
+                  })}
                 </ol>
               </section>
             ))}
@@ -229,6 +250,7 @@ export default function Pagina() {
               </dd>
             </div>
           </dl>
+          <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/saneamento"]} variante="metodo" className="mt-8" />
           <p className="mt-6">
             <Link href={`${ROTA}/metodologia`} className="inline-flex min-h-[44px] items-center border border-obee px-4 text-sm font-medium text-obee-dark hover:bg-obee-fundo">
               Método, conferências entre bases e downloads

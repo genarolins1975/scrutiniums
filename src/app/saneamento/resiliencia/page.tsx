@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Indisponivel, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, Indisponivel, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -8,6 +8,7 @@ import { FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMu
 import { agregado, agregados, fichas, municipios } from "@/lib/saneamento/gold";
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
 import { inteiro } from "@/lib/saneamento/formato";
+import { MANANCIAL } from "@/lib/saneamento/respostas";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -17,7 +18,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/saneamento/resiliencia" },
 };
 
-const MANANCIAL = "Baixa disponibilidade do manancial";
 
 export default function Pagina() {
   const cap = capituloPorSlug("resiliencia")!;
@@ -67,13 +67,22 @@ export default function Pagina() {
           texto={
             <p>
               Seca e escassez aparecem no SINISA de forma indireta: o motivo declarado para o racionamento e os dias em que o sistema ficou em colapso.
-              É o que existe de público e municipal sobre o tema no sistema nacional. Mananciais, bacias e eventos registrados pela Defesa Civil ainda
-              não foram integrados.
+              É o que existe de público e municipal sobre o tema no sistema nacional. Mananciais e bacias ainda não foram integrados; os desastres
+              reconhecidos pela União, como secas e estiagens, estão no <a href="/territorio/desastres" className="underline decoration-linha underline-offset-4">painel de desastres</a> do Território e Clima, por estado e tipo.
             </p>
           }
           recorte={<>{inteiro(c?.municipios_participantes)} municípios do módulo de água do SINISA 2024; motivo informado só por quem declarou interrupção sistemática.</>}
           situacao={cap.situacao}
           pendencia={cap.pendencia}
+        />
+        <NestaPagina
+          itens={[
+            { id: "motivos", rotulo: "Motivos do racionamento" },
+            { id: "manancial", rotulo: "Falta de água bruta" },
+            { id: "colapso", rotulo: "Colapso do sistema" },
+            { id: "mundo", rotulo: "Estresse hídrico" },
+            { id: "lacunas", rotulo: "O que ainda falta" },
+          ]}
         />
 
         <Numeros
@@ -196,8 +205,9 @@ export default function Pagina() {
         <Secao id="lacunas" titulo="O que ainda não está aqui">
           <Indisponivel titulo="Mananciais, eventos extremos e contingência">
             <p>
-              Disponibilidade hídrica dos mananciais (ANA), decretos de situação de emergência por estiagem e inundação (Defesa Civil), alertas do
-              Cemaden e planos de contingência dos prestadores ainda não foram integrados. Sem eles, o capítulo não mede exposição nem preparo; mostra
+              Disponibilidade hídrica dos mananciais (ANA), alertas do Cemaden e planos de contingência dos prestadores ainda não foram integrados.
+              Os reconhecimentos de situação de emergência por estiagem e inundação estão no painel de desastres do Território e Clima, por estado, sem
+              cruzamento com o município de cada prestador. Sem eles, o capítulo não mede exposição nem preparo; mostra
               apenas os eventos que os prestadores declararam.
             </p>
           </Indisponivel>

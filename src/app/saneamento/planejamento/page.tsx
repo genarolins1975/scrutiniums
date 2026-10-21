@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import { Cabecalho } from "@/components/saneamento/Cabecalho";
-import { Abertura, Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
+import { Abertura, Fonte, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { FiguraOds, MundoNoCapitulo } from "@/components/saneamento/ReferenciaMundial";
+import { LabRitmoMeta, type TerritorioRitmo } from "@/components/saneamento/Laboratorios";
 import { agregado, agregados, meta, municipios } from "@/lib/saneamento/gold";
 import { referencias } from "@/lib/saneamento/referencias";
 import { capituloPorSlug } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
 import { inteiro, numero, sinal } from "@/lib/saneamento/formato";
+import { ANOS_ATE_META } from "@/lib/saneamento/respostas";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -20,8 +22,6 @@ export const metadata: Metadata = {
 };
 
 const ATLAS = ["nr8-iaa-rede", "nr8-iae-rede"];
-/** Anos de 2025 a 2033: do ano de referência do SINISA (2024) ao prazo legal (31/12/2033). */
-const ANOS_ATE_META = 9;
 
 export default function Pagina() {
   const cap = capituloPorSlug("planejamento")!;
@@ -64,6 +64,23 @@ export default function Pagina() {
     };
   });
 
+  // Régua do Censo, igual em 2010 e 2022: água pela rede geral como forma principal, esgoto pela rede geral ou pluvial.
+  const territoriosRitmo: TerritorioRitmo[] = ags
+    .map((a) => {
+      const ag10 = razaoPct(a.censo2010?.agua_rede, a.censo2010?.moradores);
+      const ag22 = razaoPct(a.censo2022.moradores?.agua.rede, a.censo2022.moradores?.agua.total);
+      const es10 = razaoPct(a.censo2010?.esgoto_rede_pluvial, a.censo2010?.esgoto_moradores);
+      const es22 = razaoPct(a.censo2022.moradores?.esgoto.rede_pluvial, a.censo2022.moradores?.esgoto.total);
+      return {
+        id: a.id,
+        nome: a.tipo === "Região" ? `Região ${a.nome}` : a.nome,
+        grupo: a.tipo === "UF" ? ("Unidades da Federação" as const) : ("Brasil e regiões" as const),
+        agua: ag10 == null || ag22 == null ? null : { v2010: ag10, v2022: ag22 },
+        esgoto: es10 == null || es22 == null ? null : { v2010: es10, v2022: es22 },
+      };
+    })
+    .filter((t) => t.agua && t.esgoto);
+
   const g = br?.gestao;
   const anos = g ? Object.entries(g.plano_anos).map(([a, n]) => ({ a: Number(a), n })) : [];
   const porDecada = [
@@ -98,6 +115,15 @@ export default function Pagina() {
               responderam.
             </>
           }
+        />
+        <NestaPagina
+          itens={[
+            { id: "atlas", rotulo: "Atlas da NR 8" },
+            { id: "ritmo", rotulo: "Ritmo até a meta" },
+            { id: "laboratorio-ritmo", rotulo: "Se o ritmo continuasse" },
+            { id: "mundo", rotulo: "No mundo" },
+            { id: "planos", rotulo: "Planos municipais" },
+          ]}
         />
 
         <Numeros
@@ -208,6 +234,14 @@ export default function Pagina() {
             valor de 2024) ÷ {ANOS_ATE_META}, zero quando o valor já supera a meta. &quot;Sem dado&quot;: o consolidado oficial publica a UF sem o indicador; o
             Observatório não o recalcula.
           </Fonte>
+        </Secao>
+
+        <Secao
+          id="laboratorio-ritmo"
+          titulo="E se o ritmo dos Censos continuasse?"
+          texto="Para comparar o ritmo exigido com o observado, as duas pontas precisam ser medidas da mesma forma. O Censo é a única régua igual em 2010 e 2022; o laboratório a usa para as duas contas."
+        >
+          <LabRitmoMeta territorios={territoriosRitmo} metas={{ agua: metaAgua, esgoto: metaEsgoto }} />
         </Secao>
 
         <Secao

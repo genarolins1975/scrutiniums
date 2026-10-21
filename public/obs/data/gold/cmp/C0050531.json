@@ -1,7 +1,7 @@
 {
  "cod": "C0050531",
  "nome": "VOITER",
- "sr": "S4",
+ "sr": "S3",
  "tcb": "B1",
  "porte_quartil": null,
  "nivel": "conglomerado prudencial",
@@ -329,5 +329,5 @@
    "202403": 12.366043333489921
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

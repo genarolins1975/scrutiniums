@@ -31,7 +31,7 @@ import math
 import os
 import subprocess
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -458,6 +458,7 @@ def _rodadas(registros):
             "atraso_min": atraso, "atraso_origem": origem_atraso, "no_prazo": atraso == 0 if atraso is not None else None,
             "modo": modo,
             "executor": (r0.get("execucao") or {}).get("executor"), "run_url": (r0.get("execucao") or {}).get("run_url"),
+            "gatilho": (r0.get("execucao") or {}).get("gatilho"),
             "tipos": sorted({x["tipo"] for x in rs}), "modelos": sorted({x["modelo"] for x in rs}),
             "versao_codigo": r0.get("versao_codigo"), "celulas": len(rs), "com_numero": com, "falha": falha,
             "motivos": sorted({x["motivo"] for x in rs if x.get("motivo")}),
@@ -475,11 +476,29 @@ def ultimo_dia_vencido(agora):
     return hoje if agora >= cal.prazo_de(hoje) else hoje - timedelta(days=1)
 
 
+# Primeira execução agendada de previsao-pld.yml (run 37024308353, 02/10/2026, API do Actions consultada em
+# 18/10/2026). De 02 a 18/10/2026 as 84 execuções emitiram a rodada e falharam no commit (corrigido no #282): nenhuma
+# rodada desses dias chegou ao arquivo. A contagem começa aqui, e não na primeira rodada registrada, para que esses
+# dias apareçam como faltantes em vez de sumirem.
+INICIO_OPERACAO_AGENDADA = "2026-10-02"
+INCIDENTES_ROTINA = [{
+    "de": "2026-10-02", "ate": "2026-10-18", "execucoes": 84,
+    "motivo": ("As execuções agendadas emitiram a rodada, mas falharam ao registrá-la no repositório: arquivos derivados "
+               "que a rodada não publica impediam a atualização antes do envio. Nenhuma rodada desses dias foi registrada, "
+               "e elas não podem ser refeitas, porque cada previsão depende do dado como estava no corte do dia."),
+    "fonte": "https://github.com/genarolins1975/scrutiniums/actions/workflows/previsao-pld.yml",
+    "correcao": "https://github.com/genarolins1975/scrutiniums/pull/282",
+}]
+# janela da comprovação: dias faltantes antigos continuam contados no total, mas não impedem para sempre a comprovação
+JANELA_COMPROVACAO_DIAS = 30
+
+
 def _rotina(rodadas, agora):
     agendadas = [r for r in rodadas if r["modo"] == "agendada"]
-    inicio = min((r["origem"] for r in agendadas), default=None)
     faltantes = []
     ate = ultimo_dia_vencido(agora)
+    inicio = min([r["origem"] for r in agendadas]
+                 + ([INICIO_OPERACAO_AGENDADA] if INICIO_OPERACAO_AGENDADA <= ate.isoformat() else []), default=None)
     if inicio:
         d = date.fromisoformat(inicio)
         feitas = {r["origem"] for r in agendadas if not r["falha"]}
@@ -488,31 +507,46 @@ def _rotina(rodadas, agora):
                 faltantes.append(d.isoformat())
             d += timedelta(days=1)
     no_prazo = [r for r in agendadas if r["no_prazo"] and not r["falha"]]
+    janela_inicio = max(inicio, (ate - timedelta(days=JANELA_COMPROVACAO_DIAS - 1)).isoformat()) if inicio else None
+    faltantes_janela = [d for d in faltantes if janela_inicio and d >= janela_inicio]
+    no_prazo_janela = [r for r in no_prazo if janela_inicio and janela_inicio <= r["origem"] <= ate.isoformat()]
+    comprovada = bool(agendadas) and len(no_prazo_janela) >= 7 and not faltantes_janela
     crons = _crons_do_workflow()
     return {
         "workflow": WORKFLOW, "cron_utc": crons,
-        "horarios": (f"Gatilhos às {', '.join(_hora_brasilia(x) for x in crons)} de Brasília: o primeiro que rodar confere o dado, "
+        "horarios": (f"Gatilhos do cron do GitHub às {', '.join(_hora_brasilia(x) for x in crons)} de Brasília, que o GitHub pode "
+                     "atrasar em horas, e, quando configurado, um agendador externo que dispara o mesmo workflow no horário "
+                     "(docs/observatorios/energia/previsao-disparo-externo.md). O primeiro que rodar confere o dado, "
                      "tenta coletar o que falta antes do corte, espera as 07h00 e emite com o dado como estava no corte; os "
                      "seguintes ficam na fila do mesmo grupo de concorrência, partem do main atual (não do commit em que o "
                      "gatilho foi criado), conferem de novo logo antes de emitir e saem ao ver a rodada registrada. O arquivo "
-                     "de emissões é commitado em seguida (prazo 08h00). Pré-carga: coleta noturna das 20h40 "
-                     "(atualizar-energia.yml). Comportamento ainda não comprovado por execução agendada real."),
+                     "de emissões é commitado em seguida (prazo 08h00). Pré-carga: coleta noturna (atualizar-energia.yml). "
+                     "O gatilho de cada rodada fica no arquivo; a comprovação segue o critério publicado."),
         "fuso": "America/Sao_Paulo; o cron do GitHub é em UTC e supõe UTC−3 (sem horário de verão desde 2019). Se o horário de "
                 "verão voltar, o cron precisa mudar; a emissão calcula o corte pelo fuso e marca o atraso de qualquer forma.",
         "inicio_operacao_agendada": inicio,
         "verificado_em": cal.utc_iso(agora), "dias_vencidos_ate": ate.isoformat(),
         "execucoes_agendadas": len(agendadas), "no_prazo": len(no_prazo),
+        # rodadas agendadas por gatilho registrado (cron do GitHub, agendador externo; "não registrado" antes de 19/10/2026)
+        "agendadas_por_gatilho": dict(sorted(Counter(r.get("gatilho") or "não registrado" for r in agendadas).items())),
         "atrasadas": sum(1 for r in agendadas if r["no_prazo"] is False and not r["falha"]),
         "falhas": sum(1 for r in agendadas if r["falha"]), "dias_sem_rodada": faltantes[-60:],
         "dias_sem_rodada_total": len(faltantes),
-        "comprovada": bool(agendadas) and len(no_prazo) >= 7 and not faltantes,
+        "janela_comprovacao": {"dias": JANELA_COMPROVACAO_DIAS, "inicio": janela_inicio, "fim": ate.isoformat(),
+                               "no_prazo": len(no_prazo_janela), "dias_sem_rodada": len(faltantes_janela)} if inicio else None,
+        "comprovada": comprovada,
+        "incidentes": [x for x in INCIDENTES_ROTINA if x["de"] <= ate.isoformat()],
         "leitura": ("Nenhuma execução agendada registrada até a data da coleta: a rotina está escrita no código, mas ainda não foi comprovada "
-                    "por execução real." if not agendadas else
-                    f"{len(agendadas)} execuções agendadas registradas desde {c.data_br(inicio)}, {len(no_prazo)} no prazo; "
-                    + ("rotina comprovada no período." if (len(no_prazo) >= 7 and not faltantes) else
-                       "ainda não há sete rodadas no prazo sem dia faltante; a rotina não é declarada comprovada.")),
-        "criterio_comprovacao": ("Pelo menos sete rodadas agendadas no prazo, sem dia faltante desde o início da operação agendada. "
-                                 "Dia faltante é dia de Brasília cujo prazo das 08h00 já passou sem rodada agendada registrada."),
+                    "por execução real." if not inicio else
+                    f"Nenhuma rodada agendada registrada desde {c.data_br(inicio)}: {len(faltantes)} "
+                    f"{'dia' if len(faltantes) == 1 else 'dias'} sem rodada; a rotina não é declarada comprovada." if not agendadas else
+                    f"{len(agendadas)} execuções agendadas registradas desde {c.data_br(inicio)}, {len(no_prazo)} no prazo, "
+                    f"{len(faltantes)} {'dia' if len(faltantes) == 1 else 'dias'} sem rodada; "
+                    + ("rotina comprovada nos últimos 30 dias." if comprovada else
+                       "ainda não há sete rodadas no prazo sem dia faltante nos últimos 30 dias; a rotina não é declarada comprovada.")),
+        "criterio_comprovacao": ("Pelo menos sete rodadas agendadas no prazo e nenhum dia faltante nos últimos 30 dias vencidos (ou desde o "
+                                 "início da operação agendada, se for mais recente). Dia faltante é dia de Brasília cujo prazo das 08h00 já "
+                                 "passou sem rodada agendada registrada; os dias faltantes anteriores à janela continuam contados no total."),
     }
 
 

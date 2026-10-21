@@ -13,11 +13,11 @@ import { formatarContagemIndice } from "@/lib/i18n-home-indice";
 import { vitrines, type ContagemIndice, type UnidadeSimplesIndice, type Vitrine } from "@/lib/vitrine";
 
 const MENSAGENS = [
-  { chave: "home.indice.rotulo", pt: "Índice dos observatórios", en: "Observatory index" },
+  { chave: "home.indice.rotulo", pt: "Índice das coleções", en: "Collection index" },
   {
     chave: "home.indice.ilustracoes",
-    pt: "Ilustrações editoriais de cada observatório. Não representam dados nem lugares específicos.",
-    en: "Editorial illustrations for each observatory. They do not represent data or specific places.",
+    pt: "Ilustrações editoriais de cada coleção. Não representam dados nem lugares específicos.",
+    en: "Editorial illustrations for each collection. They do not represent data or specific places.",
   },
   { chave: "home.indice.paginas_tematicas", pt: "páginas temáticas", en: "thematic pages" },
   { chave: "home.indice.secoes_publicadas", pt: "seções publicadas", en: "published sections" },
@@ -63,6 +63,7 @@ describe("mensagens literais do índice da home", () => {
 // As expectativas vêm dos registros de origem, não de contagem, contagemIndice
 // ou de outro resultado do adaptador. Nenhuma fonte publicada é simulada ou alterada.
 const CONTAGENS_REAIS = {
+  agro: { tipo: "simples", quantidade: 16, unidade: "paginas_por_pergunta" },
   credito: {
     tipo: "simples",
     quantidade: ABAS_OBSERVATORIO.reduce((n, aba) => n + Number(
@@ -91,7 +92,7 @@ const CONTAGENS_REAIS = {
   gas: { tipo: "simples", quantidade: PAGINAS_GAS.length, unidade: "paginas_por_pergunta" },
 } satisfies Record<DominioId, ContagemIndice>;
 
-describe("sete contagens semânticas derivadas das fontes reais", () => {
+describe("oito contagens semânticas derivadas das fontes reais", () => {
   let padrao: ReturnType<typeof vitrines>;
   let portugues: ReturnType<typeof vitrines>;
   let ingles: ReturnType<typeof vitrines>;

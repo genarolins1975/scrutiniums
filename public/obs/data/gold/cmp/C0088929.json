@@ -1,7 +1,7 @@
 {
  "cod": "C0088929",
  "nome": "CANAL SCD - PRUDENCIAL",
- "sr": "S5",
+ "sr": null,
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "conglomerado prudencial",
@@ -62,5 +62,5 @@
    "202606": 3000000.0
   }
  },
- "gerado_em": "2026-09-24T15:24:49+00:00"
+ "gerado_em": "2026-10-20T15:56:21+00:00"
 }

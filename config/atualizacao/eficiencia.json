@@ -1,0 +1,75 @@
+{
+  "dominio": "eficiencia",
+  "titulo": "Eficiência Estatal (Educação e Saúde nas capitais)",
+  "descricao": "Recoleta mensal do Siconfi (DCA, RREO e MSC) e do SIOPS para os exercícios integrados, que capta retificações dos entes. Exercício novo, INEP e os demais capítulos do OBEE são integrados à mão (OPERACOES.md).",
+  "codigo": [
+    "pipeline/eficiencia/*.py",
+    "pipeline/eficiencia/fontes",
+    "pipeline/eficiencia/catalogo_indicadores.json",
+    "pipeline/eficiencia_saude/*.py",
+    "pipeline/eficiencia_saude/fontes",
+    "pipeline/eficiencia_saude/catalogo_indicadores.json",
+    "src/lib/eficiencia",
+    "src/tests/obee-*.test.ts",
+    "pipeline/tests/test_eficiencia.py",
+    "pipeline/tests/test_eficiencia_saude.py",
+    "pipeline/tests/test_eficiencia_comparacoes.py"
+  ],
+  "reconstruir": [
+    ["python3", "-m", "pipeline.eficiencia.run"],
+    ["python3", "-m", "pipeline.eficiencia_saude.run"]
+  ],
+  "timeout_reconstruir_min": 20,
+  "saidas": [
+    "public/eficiencia/gold/educacao_capitais.json",
+    "public/eficiencia/gold/saude_capitais.json",
+    "public/eficiencia/series"
+  ],
+  "sinal_de_mudanca": [
+    {"arquivo": "public/eficiencia/gold/educacao_capitais.json", "json_chave": "meta.hash_dados"},
+    {"arquivo": "public/eficiencia/gold/saude_capitais.json", "json_chave": "meta.hash_dados"}
+  ],
+  "testes": [
+    {
+      "nome": "pipeline do OBEE, Educação e Saúde (Python)",
+      "comando": ["python3", "-m", "unittest", "pipeline.tests.test_eficiencia", "pipeline.tests.test_eficiencia_saude", "pipeline.tests.test_eficiencia_comparacoes"],
+      "timeout_min": 20
+    },
+    {
+      "nome": "derivados do OBEE que leem a gold (mesmas conferências do ci.yml)",
+      "comando": ["bash", "-c", "set -e; python3 -m unittest pipeline.eficiencia_resultados.test_motor pipeline.eficiencia_resultados.test_expansao pipeline.eficiencia_resultados.test_saude_municipal pipeline.eficiencia_resultados.test_precisao_saude pipeline.eficiencia_resultados.test_captura_recaptura pipeline.eficiencia_resultados.test_habitacao pipeline.eficiencia_resultados.test_habitacao_cenarios pipeline.eficiencia_resultados.test_conectividade pipeline.eficiencia_resultados.test_cesta_conjunta pipeline.eficiencia_resultados.test_precisao_candidatas pipeline.eficiencia_resultados.test_revisao_v3 pipeline.eficiencia_resultados.test_indice_v4; python3 -m pipeline.eficiencia_resultados.indice_v4 --check; python3 -m pipeline.eficiencia_resultados.indice_v4 --verificar; python3 scripts/obee_interface_v4.py --check; python3 scripts/obee_contornos_capitais.py --check; python3 scripts/obee_precisao_cesta.py --check; python3 scripts/obee_renda_sensibilidade.py --check"],
+      "timeout_min": 20
+    },
+    {
+      "nome": "contratos do OBEE e das entradas (vitest)",
+      "comando": ["npx", "vitest", "run", "--testTimeout=60000", "src/tests/obee-", "src/tests/entradas-estado.test.ts", "src/tests/observatorios-entradas.test.ts", "src/tests/perguntas-portas.test.ts"],
+      "timeout_min": 25
+    }
+  ],
+  "grupos": [
+    {
+      "id": "educacao-siconfi",
+      "nome": "Educação: Siconfi (DCA I-E, RREO 02, entes, MSC dos pares divergentes) e IPCA",
+      "coleta": [["python3", "-m", "pipeline.eficiencia.run", "--coleta-siconfi", "--so-coleta"]],
+      "caminhos": [
+        "pipeline/eficiencia/seed/siconfi",
+        "pipeline/eficiencia/seed/ibge_ipca",
+        "pipeline/eficiencia/seed/manifesto.json"
+      ],
+      "guardas": [{"tipo": "manifesto_sem_erro_novo", "arquivo": "pipeline/eficiencia/seed/manifesto.json"}],
+      "timeout_min": 60
+    },
+    {
+      "id": "saude-siconfi-siops",
+      "nome": "Saúde: Siconfi (DCA I-E, RREO 02, MSC da função 10) e SIOPS",
+      "coleta": [["python3", "-m", "pipeline.eficiencia_saude.run", "--coleta-siconfi", "--coleta-siops", "--so-coleta"]],
+      "caminhos": [
+        "pipeline/eficiencia_saude/seed/siconfi",
+        "pipeline/eficiencia_saude/seed/siops",
+        "pipeline/eficiencia_saude/seed/manifesto.json"
+      ],
+      "guardas": [{"tipo": "manifesto_sem_erro_novo", "arquivo": "pipeline/eficiencia_saude/seed/manifesto.json"}],
+      "timeout_min": 90
+    }
+  ]
+}
