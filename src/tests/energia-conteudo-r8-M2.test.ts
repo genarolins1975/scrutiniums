@@ -392,6 +392,10 @@ describe("Visão geral: CMO do Norte contra os outros três subsistemas, classif
     expect(nota).toContain("não informa o motivo");
     expect(nota).not.toMatch(/porque|devido|causa(do)? por/i);
     expect(pagina.visao()).toContain('data-nota-regra="cmo_semana"');
+    // a natureza do CMO (resultado de modelo do ONS) fica à vista no Entender (diagnóstico de layout de 20/10/2026, item 7)
+    expect(texto(entender(pagina.visao()))).toContain("Resultado de modelo do ONS (DECOMP), não previsão da Scrutiniums");
+    // a ressalva da faixa da água também fica no Entender; as pontes entre cortes (preço, carga, rede) descem para Analisar
+    expect(texto(entender(pagina.visao()))).toContain("o mesmo percentual em épocas diferentes não é a mesma energia");
   });
 
   it("série sintética: três semanas seguidas com o Norte à parte dão a contagem e a data de início", () => {

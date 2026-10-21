@@ -114,8 +114,10 @@ export function VisaoRegraResumo({
           {tx("Evidência do número não publicada:", "Evidence for the number not published:")} {goldNoBloco(o.evidencia_problemas.join("; "), idioma, `visao-regra-problemas-${o.id}`)}
         </p>
       ) : null}
+      {/* diagnóstico de layout de 20/10/2026, item 7: a linha de 365 dias desce para Analisar; o estado, o fato, a nota (que traz ressalvas de
+          natureza, como o CMO ser resultado de modelo do ONS), o valor e a prova ficam */}
       {le?.inicio && fim && trechos.length > 0 && (
-        <div className="pt-1">
+        <div data-nivel="analisar" className="pt-1">
           <VisaoFaixaEstados
             trechos={trechos}
             inicio={le.inicio}
