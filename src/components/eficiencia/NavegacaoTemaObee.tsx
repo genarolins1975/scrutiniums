@@ -16,7 +16,8 @@ export type AbaTema = readonly [caminho: string, rotulo: string];
  * `levar` lista os parâmetros do recorte que acompanham a pessoa entre as visões (ex.: território na Mobilidade): lidos
  * no clique, do endereço atual, para valerem também depois de uma troca de filtro feita na mesma página.
  */
-export function NavegacaoTemaObee({ rota, nome, abas, acoes = [], levar = [] }: { rota: string; nome: string; abas: readonly AbaTema[]; acoes?: readonly AbaTema[]; levar?: readonly string[] }) {
+/** `colecao`: nome da coleção dona do tema no registro (aria-label "Navegação da coleção X"); sem ela, o nome do tema. */
+export function NavegacaoTemaObee({ rota, nome, colecao, abas, acoes = [], levar = [] }: { rota: string; nome: string; colecao?: string; abas: readonly AbaTema[]; acoes?: readonly AbaTema[]; levar?: readonly string[] }) {
   const caminho = (usePathname() ?? "").replace(/\/$/, "");
   const router = useRouter();
   const href = (c: string) => (c ? `${rota}/${c}` : rota);
@@ -36,7 +37,7 @@ export function NavegacaoTemaObee({ rota, nome, abas, acoes = [], levar = [] }: 
   const classeAcao = (ativa: boolean) =>
     `inline-flex min-h-[44px] items-center gap-1.5 px-1 text-[0.8125rem] underline-offset-4 sm:text-[0.9375rem] ${ativa ? "font-semibold text-obee-tinta underline" : "text-obee-dark hover:underline"}`;
   return (
-    <nav aria-label={`Visões do tema ${nome}`} className="mx-auto max-w-page px-4 sm:px-6">
+    <nav aria-label={`Navegação da coleção ${colecao ?? nome}`} className="mx-auto max-w-page px-4 sm:px-6">
       <div className="flex flex-col gap-x-8 lg:flex-row lg:items-end lg:justify-between">
         <ul className="flex flex-wrap gap-x-3 sm:gap-x-2">
           {abas.map(([c, rotulo]) => (

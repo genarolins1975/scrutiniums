@@ -15,7 +15,7 @@ export const runtime='nodejs';
 export function generateStaticParams(){return PAGINAS_MOBILIDADE.map(p=>({painel:p.slug?[p.slug]:[]}));}
 type Props={params:{painel?:string[]};searchParams:Parametros};
 function pagina(params:Props['params']){const p=params.painel??[];if(p.length>1)notFound();const found=PAGINAS_MOBILIDADE.find(x=>x.slug===(p[0]??''));if(!found)notFound();return found;}
-export function generateMetadata({params}:Props):Metadata{const p=pagina(params);return {title:p.nome+' · Mobilidade e transporte',description:p.descricao,alternates:{canonical:ROTA_MOBILIDADE+(p.slug?'/'+p.slug:'')}};}
+export function generateMetadata({params}:Props):Metadata{const p=pagina(params);return {title:p.nome,description:p.descricao,alternates:{canonical:ROTA_MOBILIDADE+(p.slug?'/'+p.slug:'')}};}
 export default function Pagina({params,searchParams}:Props){
  const p=pagina(params);
  // Navegação por Link preserva controles não controlados. Uma nova seleção na

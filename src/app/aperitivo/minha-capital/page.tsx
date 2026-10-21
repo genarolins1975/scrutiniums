@@ -20,7 +20,7 @@ import {montarAperitivoCapital} from '@/lib/eficiencia/aperitivo-capital';
  */
 export const dynamic = 'force-static';
 export const metadata: Metadata = {
-  title: 'Como está a minha capital? · Eficiência Estatal',
+  title: 'Minha capital · Síntese das capitais',
   description: 'Escolha uma das 26 capitais estaduais e veja quatro resultados na vida dos moradores em 2022: renda por pessoa, crianças de 4 e 5 anos na escola, tempo até o trabalho e homicídios, cada um com fonte, ano e posição entre as capitais.',
   alternates: {canonical: '/eficiencia-estatal'},
 };

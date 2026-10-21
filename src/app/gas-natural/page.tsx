@@ -14,7 +14,7 @@ import { RotuloContexto } from "@/components/layout/RotuloContexto";
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: { absolute: "Observatório Brasileiro de Gás Natural · Scrutiniums" },
+  title: { absolute: "Gás Natural · Scrutiniums" },
   description:
     "Quanto gás o Brasil produz, quanto chega ao mercado, de onde vem o importado e quanto custa em cada elo, do poço ao botijão e ao gás encanado, com fonte, período e fórmula em cada número.",
   alternates: { canonical: "/gas-natural" },

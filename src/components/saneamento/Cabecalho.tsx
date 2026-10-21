@@ -6,7 +6,7 @@ import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { EIXOS, ROTA, ROTULO_SITUACAO, rotaCapitulo, type Capitulo } from "@/lib/saneamento/capitulos";
 
 /**
- * Cabeçalho do Observatório Brasileiro do Saneamento: a barra comum da
+ * Cabeçalho da coleção Saneamento: a barra comum da
  * plataforma (CabecalhoPlataforma: marca, seletor de observatório, abas dos
  * seis observatórios e conta) e, abaixo dela, a navegação pelos cinco eixos,
  * com os atalhos (Meu município, Brasil no mundo, Método) à direita. Cada eixo
@@ -20,7 +20,7 @@ export function Cabecalho({ atual }: { atual: string }) {
   return (
     <header className="border-b border-linha bg-superficie">
       <CabecalhoPlataforma colecao="saneamento" destinoConta={ROTA} />
-      <nav aria-label="Navegação do Observatório do Saneamento">
+      <nav aria-label="Navegação da coleção Saneamento">
         <div className="ed-pagina relative">
           <ul className="hidden flex-wrap gap-x-1 lg:flex">
             <li>

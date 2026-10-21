@@ -21,7 +21,7 @@ import {ParaVoce} from '@/components/observatorios/ParaVoce';
 import {goldSeguranca} from '@/lib/eficiencia/seguranca/dados';
 import {goldPrevidencia} from '@/lib/previdencia/dados';
 export const dynamic='force-static';
-export const metadata:Metadata={title:'Observatório Brasileiro de Eficiência Estatal',description:'Indicadores públicos sobre recursos, atendimento e resultados, com fonte, período e limites: Educação, Saúde, Trabalho e renda, Segurança alimentar, Assistência social, Mobilidade, Justiça, Habitação, Saneamento, Energia e conectividade, Meio ambiente e clima, Segurança pública e Cultura.',alternates:{canonical:'/eficiencia-estatal'}};
+export const metadata:Metadata={title:'Síntese das capitais',description:'Indicadores públicos sobre recursos, atendimento e resultados, com fonte, período e limites: Educação, Saúde, Trabalho e renda, Segurança alimentar, Assistência social, Mobilidade, Justiça, Habitação, Saneamento, Energia e conectividade, Meio ambiente e clima, Segurança pública e Cultura.',alternates:{canonical:'/eficiencia-estatal'}};
 
 export default function PaginaEntradaEficiencia(){
  const assistencia=dadosAssistencia(),edu=metaEducacao(),g=goldSaude(),mob=dadosMobilidade().base,aop=dadosOportunidades().base;

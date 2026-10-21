@@ -20,9 +20,10 @@ const VITRINES = [
   },
   {
     caminho: "/observatorio-do-credito",
-    titulo: "Observatório Brasileiro de Crédito · Scrutiniums",
+    // Iniciativa 1 do parecer de UX (21/10/2026): o título segue "Página · Coleção · Scrutiniums"
+    titulo: "Apresentação · Crédito e sistema financeiro · Scrutiniums",
     descricao: "Crédito, instituições financeiras, Pix, juros e litigiosidade em uma plataforma gratuita: dados oficiais do Banco Central, CVM, IBGE e CNJ com metodologia declarada, distinguindo dado observado de indicador calculado.",
-    tituloSocial: "Observatório Brasileiro de Crédito",
+    tituloSocial: "Crédito e sistema financeiro · Scrutiniums",
     descricaoSocial: "O mercado de crédito brasileiro explicado com rigor: fontes oficiais, metodologia declarada e acesso gratuito.",
   },
 ] as const;

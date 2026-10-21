@@ -12,7 +12,7 @@ import {PerguntasJudiciario,type PerguntaEntrada} from '@/components/eficiencia/
 import {EntradaInternacionalJudiciario} from '@/components/eficiencia/judiciario/EntradaInternacional';
 import { RotuloContexto } from "@/components/layout/RotuloContexto";
 export const dynamic='force-static';
-export const metadata:Metadata={title:'Por dentro da Justiça · Judiciário brasileiro',description:'Quanto a Justiça demora, quanto custa por habitante e se a espera depende de onde você mora. 57 tribunais, o acervo parado e a comparação com 143 países.',alternates:{canonical:BASE_JUDICIARIO}};
+export const metadata:Metadata={title:'Por dentro da Justiça',description:'Quanto a Justiça demora, quanto custa por habitante e se a espera depende de onde você mora. 57 tribunais, o acervo parado e a comparação com 143 países.',alternates:{canonical:BASE_JUDICIARIO}};
 export default function EntradaJudiciario(){
  const estaduais=d.tribunais.filter(t=>t.ramo==='estadual');
  const porTempo=[...estaduais].sort((a,b)=>a.tempoBaixados-b.tempoBaixados);

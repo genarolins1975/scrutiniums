@@ -94,7 +94,7 @@ export const dynamic = "force-static";
 
 export async function generateMetadata(_props: unknown, anterior: ResolvingMetadata): Promise<Metadata> {
   return metadadosEnergia("/setor-eletrico", {
-    title: { absolute: tx("Observatório Brasileiro do Setor Elétrico · Scrutiniums", "Setor Elétrico, the Brazilian power sector observatory · Scrutiniums") },
+    title: { absolute: "Setor Elétrico · Scrutiniums" }, // i18n: dado (nome da coleção, igual nas duas línguas)
     description: tx(
       "Entenda a energia que move o Brasil: como água, geração, rede, consumo, preço, contratos e tarifa se ligam, a pergunta que cada página responde, trilhas por interesse, como conferir cada número e a data de cada fonte.",
       "Understand the energy that powers Brazil: how water, generation, the grid, consumption, prices, contracts and tariffs connect, the question each page answers, learning paths by interest, how to check every number and the date of each source.",

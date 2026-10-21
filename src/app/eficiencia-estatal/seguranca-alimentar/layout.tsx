@@ -1,4 +1,9 @@
 import { CabecalhoEntrada } from "@/components/eficiencia/CabecalhoEntrada";
+import type { Metadata } from "next";
+import { modeloDeTitulo } from "@/lib/observatorios/contexto";
+
+/** Títulos "Página · Coleção · Scrutiniums", com a coleção dona do tema no registro. */
+export const metadata: Metadata = { title: modeloDeTitulo("/eficiencia-estatal/seguranca-alimentar") };
 
 /** Visões do tema, no molde comum dos temas da Eficiência Estatal (CabecalhoEntrada com tema, PR #323). */
 const ROTA = "/eficiencia-estatal/seguranca-alimentar";

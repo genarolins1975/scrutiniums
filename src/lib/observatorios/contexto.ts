@@ -65,3 +65,14 @@ export function colecaoDoDominio(id: DominioId): { observatorio: Observatorio; c
   const colecao = o.colecoes.find((x) => x.dominio === id);
   return colecao ? { observatorio: o, colecao } : null;
 }
+
+/**
+ * Modelo de título de um layout de coleção ("Página · Coleção · Scrutiniums"). O `default` é o nome da coleção, que o
+ * modelo do layout acima completa ("Coleção · Scrutiniums" na entrada). Nome lido do registro, nunca escrito à mão.
+ */
+export function modeloDeTitulo(rota: string): { default: string; template: string } {
+  const ctx = contextoDaRota(rota);
+  const nome = ctx?.colecao?.nome ?? ctx?.observatorio.nome;
+  if (!nome) throw new Error(`rota fora do registro: ${rota}`);
+  return { default: nome, template: `%s · ${nome} · Scrutiniums` };
+}

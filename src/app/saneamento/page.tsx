@@ -19,7 +19,7 @@ import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
-  title: { absolute: "Observatório Brasileiro do Saneamento · Scrutiniums" },
+  title: { absolute: "Saneamento · Scrutiniums" },
   description:
     "Quem ainda está sem água e esgoto, quanto custa o serviço, quem o presta e fiscaliza, onde o dinheiro é investido e se o planejamento vira atendimento, município a município.",
   alternates: { canonical: ROTA },

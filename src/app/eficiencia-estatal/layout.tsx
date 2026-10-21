@@ -4,9 +4,11 @@ import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
+  // a Eficiência Estatal reparte os temas entre coleções de vários observatórios: cada tema tem o seu layout com o modelo
+  // "Página · Coleção · Scrutiniums" (modeloDeTitulo); aqui só a Síntese das capitais e o modelo neutro da plataforma
   title: {
-    default: "Observatório Brasileiro de Eficiência Estatal",
-    template: "%s · Eficiência Estatal · Scrutiniums",
+    default: "Síntese das capitais",
+    template: "%s · Scrutiniums",
   },
   description:
     "Indicadores públicos sobre recursos, atendimento e resultados do Estado brasileiro, com definição, fonte, período e limitações declarados em cada número.",

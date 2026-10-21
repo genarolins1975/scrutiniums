@@ -35,7 +35,7 @@ export function NavegacaoSaude() {
   const classeAcao = (ativa: boolean) =>
     `inline-flex min-h-[44px] items-center gap-1.5 px-1 text-[0.8125rem] underline-offset-4 sm:text-[0.9375rem] ${ativa ? "font-semibold text-obee-tinta underline" : "text-obee-dark hover:underline"}`;
   return (
-    <nav aria-label="Visões do módulo Saúde nas capitais" className="mx-auto max-w-page px-4 sm:px-6">
+    <nav aria-label="Navegação da coleção Saúde" className="mx-auto max-w-page px-4 sm:px-6">
       <div className="flex flex-col gap-x-6 sm:flex-row sm:items-end sm:justify-between">
         <ul className="grid grid-cols-4 sm:flex sm:gap-1">
           {ABAS_SAUDE.map((a) => (

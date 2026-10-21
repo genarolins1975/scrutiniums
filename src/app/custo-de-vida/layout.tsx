@@ -6,7 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: {
-    default: "Inflação por cidade",
+    default: "Inflação por cidade · Custo de vida",
     template: "%s · Custo de vida · Scrutiniums",
   },
   description:

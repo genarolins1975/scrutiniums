@@ -8,7 +8,7 @@ import {dadosEnergia,ROTA,numero,data,internet} from '@/lib/eficiencia/energia/d
 const abas=[['','Panorama'],['acesso','Acesso à energia'],['continuidade','Continuidade'],['custo','Custo e proteção'],['internet','Conectividade'],['metodos','Dados e métodos']];
 export const dynamic='force-static';
 export function generateStaticParams(){return abas.map(([slug])=>({painel:slug?[slug]:[]}));}
-export function generateMetadata({params}:{params:{painel?:string[]}}):Metadata {const slug=params.painel?.join('/')??'';return {title:'Energia e conectividade — '+(abas.find(a=>a[0]===slug)?.[1]??'Painel'),alternates:{canonical:ROTA+(slug?'/'+slug:'')}};}
+export function generateMetadata({params}:{params:{painel?:string[]}}):Metadata {const slug=params.painel?.join('/')??'';return {title:'Energia e conectividade · '+(abas.find(a=>a[0]===slug)?.[1]??'Painel'),alternates:{canonical:ROTA+(slug?'/'+slug:'')}};}
 function Secao({titulo,children}:{titulo:string;children:React.ReactNode}){return <section className="mt-10 border-t border-linha pt-7"><h2 className="font-serif text-2xl md:text-3xl">{titulo}</h2><div className="mt-4 space-y-4 text-base leading-relaxed">{children}</div></section>}
 function Nota({children}:{children:React.ReactNode}){return <aside className="my-6 max-w-prose2 border-l-4 border-obee bg-obee-fundo p-5 text-sm leading-relaxed">{children}</aside>}
 type AnualDec=ReturnType<typeof dadosEnergia>['qualidade']['brasil']['anual'];

@@ -5,7 +5,7 @@ import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
 import { GRUPOS_GAS, PAGINAS_GAS } from "@/lib/gas/navegacao";
 
 /**
- * Cabeçalho do Observatório Brasileiro de Gás Natural: a barra comum da plataforma (CabecalhoPlataforma: marca, seletor
+ * Cabeçalho da coleção Gás Natural: a barra comum da plataforma (CabecalhoPlataforma: marca, seletor
  * de observatório, abas dos seis observatórios e conta) e, abaixo dela, a navegação por pergunta em quatro grupos,
  * renderizada no servidor e sem JavaScript. A página atual leva aria-current. No celular os grupos viram uma faixa rolável
  * só na própria faixa, nunca na página.
@@ -14,7 +14,7 @@ export function CabecalhoGas({ atual }: { atual: string }) {
   return (
     <header className="border-b border-linha bg-superficie">
       <CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />
-      <nav aria-label="Navegação do Observatório de Gás Natural">
+      <nav aria-label="Navegação da coleção Gás Natural">
         <div className="ed-pagina">
           <ul className="-mx-1 flex gap-x-1 overflow-x-auto py-1 [scrollbar-width:thin] lg:flex-wrap lg:overflow-visible">
             <li className="shrink-0">

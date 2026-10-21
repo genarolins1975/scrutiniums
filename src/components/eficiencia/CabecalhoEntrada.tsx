@@ -1,4 +1,5 @@
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { contextoDaRota } from "@/lib/observatorios/contexto";
 import { NavegacaoTemaObee, type AbaTema } from "./NavegacaoTemaObee";
 
 /** Um tema da Eficiência Estatal no cabeçalho: nome, rota, visões e ações de conferência. */
@@ -20,7 +21,7 @@ export function CabecalhoEntrada({ tema }: { tema?: TemaCabecalho } = {}) {
   return (
     <header className="grade-pagina border-b border-linha bg-superficie">
       <CabecalhoPlataforma colecao="eficiencia" destinoConta={tema.rota} />
-      <NavegacaoTemaObee rota={tema.rota} nome={tema.nome} abas={tema.abas} acoes={tema.acoes} levar={tema.levar} />
+      <NavegacaoTemaObee rota={tema.rota} nome={tema.nome} colecao={contextoDaRota(tema.rota)?.colecao?.nome} abas={tema.abas} acoes={tema.acoes} levar={tema.levar} />
     </header>
   );
 }

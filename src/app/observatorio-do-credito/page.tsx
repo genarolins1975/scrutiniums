@@ -20,7 +20,7 @@ import { paginaCredito } from "@/lib/credito/navegacao";
 import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 /**
- * Vitrine pública do Observatório Brasileiro de Crédito.
+ * Vitrine pública da coleção Crédito e sistema financeiro.
  *
  * Com os painéis atrás da conta gratuita, esta página é a vitrine aberta
  * do Crédito e a porta de entrada editorial: números reais da última data-base, as
@@ -34,12 +34,13 @@ import { RotuloContexto } from "@/components/layout/RotuloContexto";
 export const dynamic = "force-static";
 
 const metadadosOriginais: Metadata = {
-  title: "Observatório Brasileiro de Crédito",
+  // "Página · Coleção · Scrutiniums" (Iniciativa 1 do parecer de UX, 21/10/2026); o H1 da página muda na Iniciativa 4
+  title: "Apresentação · Crédito e sistema financeiro",
   description:
     "Crédito, instituições financeiras, Pix, juros e litigiosidade em uma plataforma gratuita: dados oficiais do Banco Central, CVM, IBGE e CNJ com metodologia declarada, distinguindo dado observado de indicador calculado.",
   alternates: { canonical: "/observatorio-do-credito" },
   openGraph: {
-    title: "Observatório Brasileiro de Crédito",
+    title: "Crédito e sistema financeiro · Scrutiniums",
     description:
       "O mercado de crédito brasileiro explicado com rigor: fontes oficiais, metodologia declarada e acesso gratuito.",
     type: "website",
