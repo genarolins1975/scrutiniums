@@ -28,6 +28,7 @@ export function QualidadeConjuntosDoMunicipio({
   codigos,
   fonte,
   tamanho,
+  nivelTitulo = 5,
 }: {
   ano: number;
   /** Código IBGE do município (nome estável do arquivo exportado). */
@@ -38,6 +39,8 @@ export function QualidadeConjuntosDoMunicipio({
   fonte: string;
   /** Tamanho do arquivo anual (dito antes de baixar). */
   tamanho?: string;
+  /** Nível do título: 3 na resposta do alto da página, logo abaixo do título do município. */
+  nivelTitulo?: 3 | 4 | 5;
 }) {
   const arquivo = arquivoConjuntosDoAno(ano);
   const idioma = useIdioma();
@@ -63,10 +66,11 @@ export function QualidadeConjuntosDoMunicipio({
 
   if (!codigos.length) return null;
   const n = codigos.length;
+  const Titulo = `h${nivelTitulo}` as const;
 
   return (
     <div className="space-y-3 border-t border-linha pt-4" data-conjuntos-do-municipio="">
-      <h5 className="font-serif text-base text-carvao">
+      <Titulo className="font-serif text-base text-carvao">
         {tx(
           <>
             {n === 1 ? "O conjunto que atende" : `Os ${n.toLocaleString("pt-BR")} conjuntos que atendem`} {municipio}, com o limite de cada um
@@ -75,7 +79,7 @@ export function QualidadeConjuntosDoMunicipio({
             {n === 1 ? "The consumer set that serves" : `The ${n.toLocaleString("en-US")} consumer sets that serve`} <Nome>{municipio}</Nome>, with the limit of each one
           </>,
         )}
-      </h5>
+      </Titulo>
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
         {definicaoConjunto(idioma)}{" "}
         {tx(

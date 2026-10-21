@@ -73,7 +73,8 @@ export type PerguntaPrioritaria = {
    * A pergunta tem resposta própria por distribuidora (Conta de luz, Qualidade e Perdas): a escolha é uma só, no alto da seção, e o link do
    * cartão leva a página com ela já selecionada. `rotuloEscolhida` é o texto do link com a escolha feita, com `{sigla}` no lugar da sigla.
    */
-  porDistribuidora?: { tema: "conta" | "qualidade" | "perdas"; parametro: "d" | "dist"; rotuloEscolhida: string };
+  /** `hrefEscolhida`: destino quando há distribuidora escolhida, se não for o do link (Qualidade leva a Comparar distribuidoras). */
+  porDistribuidora?: { tema: "conta" | "qualidade" | "perdas"; parametro: "d" | "dist"; rotuloEscolhida: string; hrefEscolhida?: string };
 };
 
 export const PERGUNTAS_PRIORITARIAS: PerguntaPrioritaria[] = [
@@ -91,7 +92,7 @@ export const PERGUNTAS_PRIORITARIAS: PerguntaPrioritaria[] = [
     get importa() { return tx("Para saber quanto tempo, no ano, a unidade consumidora média ficou sem energia.", "To know how long, over the year, the average consumer unit went without power."); },
     slug: "qualidade",
     link: { get rotulo() { return tx("Ver a duração e a frequência das interrupções", "See the duration and frequency of interruptions"); }, href: "/setor-eletrico/qualidade#p051" },
-    porDistribuidora: { tema: "qualidade", parametro: "dist", get rotuloEscolhida() { return tx("Ver as interrupções de {sigla} em Qualidade", "See the interruptions of {sigla} in Quality of supply"); } },
+    porDistribuidora: { tema: "qualidade", parametro: "dist", hrefEscolhida: "/setor-eletrico/qualidade/comparar-distribuidoras#comparar-distribuidoras", get rotuloEscolhida() { return tx("Ver as interrupções de {sigla} em Qualidade", "See the interruptions of {sigla} in Quality of supply"); } },
   },
   {
     id: "perdas",
@@ -639,7 +640,7 @@ export const CARTOES: Record<string, CartaoDestino> = {
     get utilidade() { return tx("Comparar quanto tempo e quantas vezes falta energia em cada distribuidora e conjunto, diante dos limites, e o que é pago em compensação.", "Compare how long and how often the power goes out in each distribution utility and consumer set, against the limits, and what is paid in compensation."); },
     encontra: [
       { get texto() { return tx("DEC e FEC do Brasil, das distribuidoras e dos conjuntos", "DEC and FEC for Brazil, the distribution utilities and the consumer sets"); }, href: "/setor-eletrico/qualidade#p051" },
-      { get texto() { return tx("Distribuidoras diante do próprio limite", "Distribution utilities against their own limit"); }, href: "/setor-eletrico/qualidade#p052" },
+      { get texto() { return tx("Distribuidoras diante do próprio limite", "Distribution utilities against their own limit"); }, href: "/setor-eletrico/qualidade/comparar-distribuidoras#p052" },
       { get texto() { return tx("Quanto as regras tiram do tempo apurado", "How much the rules remove from the computed time"); }, href: "/setor-eletrico/qualidade#expurgos" },
       { get texto() { return tx("Compensações pagas por violação de limite", "Compensation paid for limit violations"); }, href: "/setor-eletrico/qualidade#p053" },
       { get texto() { return tx("Atendimento e recuperação da rede", "Customer service and grid recovery"); }, href: "/setor-eletrico/qualidade#p054" },
@@ -754,7 +755,7 @@ export const PERGUNTAS_COTIDIANAS: PerguntaCotidiana[] = [
   {
     get pergunta() { return tx("O serviço da minha distribuidora melhorou?", "Has my distribution utility's service improved?"); },
     get resposta() { return tx("Qualidade mostra quanto tempo (DEC) e quantas vezes (FEC) falta energia em cada distribuidora, ano a ano, e o limite fixado para ela.", "Quality of supply shows how long (DEC) and how often (FEC) the power goes out in each distribution utility, year by year, and the limit set for it."); },
-    destinos: [{ get rotulo() { return tx("Qualidade", "Quality of supply"); }, href: "/setor-eletrico/qualidade#p051" }],
+    destinos: [{ get rotulo() { return tx("Comparar distribuidoras", "Compare distribution utilities"); }, href: "/setor-eletrico/qualidade/comparar-distribuidoras#comparar-distribuidoras" }],
     porDistribuidora: "qualidade",
   },
   {
@@ -840,7 +841,7 @@ export const TRILHAS: Trilha[] = [
     paradas: [
       { get rotulo() { return tx("Conta de luz", "Electricity bill"); }, href: "/setor-eletrico/conta-de-luz#simulador", get aprende() { return tx("a tarifa da sua distribuidora e o valor estimado para o seu consumo.", "the tariff of your distribution utility and the estimated amount for your consumption."); } },
       { get rotulo() { return tx("Reajustes e bandeiras", "Tariff adjustments and tariff flags"); }, href: "/setor-eletrico/conta-de-luz/reajustes-e-subsidios#bandeiras", get aprende() { return tx("o que mudou na tarifa e qual bandeira valeu em cada mês.", "what changed in the tariff and which tariff flag applied in each month."); } },
-      { get rotulo() { return tx("Qualidade", "Quality of supply"); }, href: "/setor-eletrico/qualidade#p052", get aprende() { return tx("quanto falta energia na sua distribuidora diante do limite.", "how often the power goes out at your distribution utility against the limit."); } },
+      { get rotulo() { return tx("Qualidade", "Quality of supply"); }, href: "/setor-eletrico/qualidade/comparar-distribuidoras#p052", get aprende() { return tx("quanto falta energia na sua distribuidora diante do limite.", "how often the power goes out at your distribution utility against the limit."); } },
       { get rotulo() { return tx("Perdas", "Losses"); }, href: "/setor-eletrico/perdas#painel-mapa", get aprende() { return tx("quanto a sua distribuidora perde, a evolução e o percentual técnico regulatório.", "how much your distribution utility loses, its evolution and the regulatory technical percentage."); } },
       { rotulo: "Tarifa Social", href: "/setor-eletrico/inclusao-energetica/tarifa-social#p059", get aprende() { return tx("quem recebe o desconto e como a cobertura varia.", "who receives the discount and how coverage varies."); } },
       { get rotulo() { return tx("Ficha da distribuidora", "Distribution utility sheet"); }, href: "/setor-eletrico/empresas/distribuidoras#p037", get aprende() { return tx("perdas, continuidade, tarifa e controle no mesmo lugar, pelo CNPJ.", "losses, continuity, tariff and control in the same place, by CNPJ."); } },

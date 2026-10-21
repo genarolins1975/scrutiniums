@@ -160,7 +160,7 @@ function montarExemploEvidencia(tx: TxIdioma): Record<string, FonteExemplo> {
       arquivo: "gold/qualidade.json",
       caminho: ["evidencias", "conjuntos_acima_limite"],
       natureza: "CALCULADO",
-      painel: { rotulo: tx("Qualidade: conjuntos e limites", "Quality of supply: sets and limits"), href: "/setor-eletrico/qualidade#p052" },
+      painel: { rotulo: tx("Qualidade: conjuntos e limites", "Quality of supply: sets and limits"), href: "/setor-eletrico/qualidade/comparar-distribuidoras#p052" },
       leitura: tx("Parcela dos conjuntos com 12 meses apurados cujo DEC anual passou do limite fixado para o próprio conjunto.", "Share of the groups with 12 months determined whose annual DEC exceeded the limit defined for the group itself."),
     },
     "compensacao-continuidade": {

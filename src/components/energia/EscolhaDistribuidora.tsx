@@ -146,6 +146,7 @@ export function LinkPorDistribuidora({
   semDado,
   emParteTexto,
   className,
+  destinoEscolhida,
 }: {
   destino: string;
   parametro: "d" | "dist";
@@ -161,6 +162,8 @@ export function LinkPorDistribuidora({
   semDado: string;
   emParteTexto?: string;
   className: string;
+  /** Destino ("rota#âncora") quando há escolha com dado, se a página que lê a escolha não for a do link padrão. */
+  destinoEscolhida?: string;
 }) {
   const escolha = useSyncExternalStore(assinar, escolhaAtual, semEscolhaNoServidor);
   const idioma = useIdioma();
@@ -168,7 +171,8 @@ export function LinkPorDistribuidora({
   const parcial = !!escolha && emParte.includes(escolha.cnpj);
   const aberta = tem || parcial;
   // LinkIdioma leva à irmã /en quando a página tem tradução publicada
-  const href = `${destino}${aberta ? `?${parametro}=${escolha!.cnpj}` : ""}#${ancora}`;
+  const [rotaEscolhida, ancoraEscolhida] = aberta && destinoEscolhida ? destinoEscolhida.split("#") : [destino, ancora];
+  const href = `${rotaEscolhida}${aberta ? `?${parametro}=${escolha!.cnpj}` : ""}#${ancoraEscolhida}`;
   // os textos chegam da página inicial em português; em inglês saem da tabela exata (o que já chega em inglês passa como veio)
   const t = (s: string) => linkDistribuidoraNoIdioma(s, idioma);
   const aviso = escolha && !aberta ? t(semDado) : escolha && parcial && emParteTexto ? t(emParteTexto) : null;
