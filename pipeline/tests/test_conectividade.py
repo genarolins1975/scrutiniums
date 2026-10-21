@@ -350,6 +350,14 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.cob)
         s["municipios"]["2207777"][5]["g5"][0] = 99.0                 # 5G acima do 4G ou 5G
         self.assertTrue(any("5G" in p for p in V.validar_cobertura(s)))
+        # a série nacional também: 5G acima do 4G (ou de todas) no trimestre de referência retém (17ª revisão do Codex)
+        s = copy.deepcopy(self.cob)
+        ref = s["referencia"]
+        s["brasil"]["serie"][ref]["g5"][0] = 99.0
+        self.assertTrue(any("Brasil em" in p and "5G" in p for p in V.validar_cobertura(s)))
+        s = copy.deepcopy(self.cob)
+        s["brasil"]["serie"][ref]["g4"][0] = s["brasil"]["serie"][ref]["todas"][0] + 1
+        self.assertTrue(any("Brasil em" in p and "4G" in p for p in V.validar_cobertura(s)))
         s = copy.deepcopy(self.cob)
         pi = s["municipios"]["2207777"][5]
         pi["g4"][0] = pi["g5"][0] - 1                                  # só o 4G abaixo do 5G; 4G ou 5G e todas seguem acima

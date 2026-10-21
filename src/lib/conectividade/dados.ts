@@ -6,7 +6,7 @@
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import type { ArquivoUf, GoldConectividade, MedidaPosicao, MunicipioGold, Quantis, UfGold } from "./tipos";
+import type { ArquivoUf, Fixa, GoldConectividade, MedidaPosicao, Movel, MunicipioGold, Quantis, UfGold } from "./tipos";
 
 export const ARQUIVO_GOLD = join("public", "conectividade", "gold", "conectividade.json");
 export const PASTA_UF = join("public", "conectividade", "gold", "municipios");
@@ -98,6 +98,16 @@ export function maioresDaUf(arquivo: ArquivoUf, n = 10): MunicipioGold[] {
 }
 
 /** As UFs ordenadas por uma medida (maior primeiro), sem as que não têm o valor. */
+/**
+ * Valores da linha de um estado (ou do Brasil, com `u === null`) na tabela dos estados. Fonte ausente numa UF fica
+ * ausente (`null`): o Brasil só entra na linha do Brasil, nunca no lugar de um estado sem dado.
+ */
+export function linhaEstado(g: GoldConectividade, u: UfGold | null): { fixa: Fixa | null; movel: Movel | null; cobertura: { g4: number | null; g5: number | null; sem5: number; com5: number } } {
+  if (u) return { fixa: u.fixa, movel: u.movel, cobertura: { g4: u.cobertura.g4_moradores, g5: u.cobertura.g5_moradores, sem5: u.cobertura.municipios_sem_5g, com5: u.cobertura.municipios_com_5g_publicado } };
+  const bc = g.brasil.cobertura.tecnologias;
+  return { fixa: g.brasil.fixa, movel: g.brasil.movel, cobertura: { g4: bc.g4?.[0] ?? null, g5: bc.g5?.[0] ?? null, sem5: g.destaques.sem_5g, com5: g.destaques.municipios_com_5g_publicado } };
+}
+
 export function ufsPor(g: GoldConectividade, valor: (u: UfGold) => number | null): { u: UfGold; v: number }[] {
   return g.ufs
     .map((u) => ({ u, v: valor(u) }))

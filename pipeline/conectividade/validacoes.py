@@ -252,6 +252,16 @@ def validar_cobertura(seed: dict, anterior: dict | None = None, hoje: date | Non
         pop = (br.get("populacao") or {}).get(ref, {}).get("moradores")
         if not pop or not _perto(moradores, pop, F.TOLERANCIA_POPULACAO_COBERTURA):
             p.append(f"cobertura: os municípios somam {moradores} moradores, o Brasil do arquivo de evolução tem {pop}")
+    # a série nacional vai direto aos cartões e ao gráfico do Brasil: a mesma relação entre gerações vale em cada trimestre
+    for t, tec in sorted((br.get("serie") or {}).items()):
+        primeiro = lambda campo: ((tec.get(campo) or [None])[0])  # noqa: E731
+        g5, g4, g45, todas = primeiro("g5"), primeiro("g4"), primeiro("g4g5"), primeiro("todas")
+        if g5 is not None and any(x is not None and g5 > x + 0.05 for x in (g4, g45, todas)):
+            p.append(f"cobertura: Brasil em {t} com 5G ({g5}) acima do 4G ({g4}), do 4G ou 5G ({g45}) ou de todas ({todas})")
+        if g4 is not None and todas is not None and g4 > todas + 0.05:
+            p.append(f"cobertura: Brasil em {t} com 4G ({g4}) acima de todas ({todas})")
+        if any(x is not None and not 0 <= x <= 100 for x in (g5, g4, g45, todas)):
+            p.append(f"cobertura: Brasil em {t} com cobertura fora de 0 a 100")
     return p
 
 

@@ -15,7 +15,7 @@ import { GraficoLinhas } from "@/components/conectividade/Graficos";
 import { csvBrasilMensal, csvPorEstado, csvPorMunicipio } from "@/lib/conectividade/csv";
 import { comConta } from "@/lib/conectividade/convite";
 import { lerManifestoLogosConectividade, logosConectividade } from "@/lib/conectividade/logos";
-import { arquivoUf, cobertos, consultarMunicipio, faixaNaDistribuicao, goldConectividade, UF_DO_PREFIXO } from "@/lib/conectividade/dados";
+import { arquivoUf, cobertos, consultarMunicipio, faixaNaDistribuicao, goldConectividade, linhaEstado, UF_DO_PREFIXO } from "@/lib/conectividade/dados";
 import { dataCaptura, mesAcessos, mesExtenso, milhoes, num, pct } from "@/lib/conectividade/formato";
 import { hrefMunicipio, nomeGrupo, PERGUNTA_APERITIVO, PERGUNTA_PAINEL, ROTA_CONECTIVIDADE, SECAO_APERITIVO, SECAO_PAINEL, VERSAO_ABERTA } from "@/lib/conectividade/paginas";
 import { colecoesDe } from "@/lib/observatorios/colecoes";
@@ -229,6 +229,14 @@ describe("painel completo", () => {
     expect(html).not.toContain(`<span class="cn-unidade">de ${num(d.municipios)}</span>`);
     expect(t).toContain(`${num(d.sem_5g)} dos ${num(d.municipios_com_5g_publicado)} municípios com cobertura 5G publicada`);
     expect(t).toContain(`${num(d.g4_abaixo_50)} dos ${num(d.municipios_com_4g_publicado)} com cobertura 4G publicada`);
+    // linha de estado sem uma fonte fica sem dado: o Brasil nunca entra no lugar de um estado (17ª revisão do Codex)
+    const df = g.ufs.find((u) => u.uf === "DF")!;
+    const semFixaUf = linhaEstado(g, { ...df, fixa: null, movel: null });
+    expect(semFixaUf.fixa).toBeNull();
+    expect(semFixaUf.movel).toBeNull();
+    expect(linhaEstado(g, null).fixa).toBe(g.brasil.fixa);
+    expect(t).toContain("se as bases diferirem entre si em mais de três municípios");
+    expect(t).not.toContain("se faltar município");
     // densidade móvel rotulada como acessos (o numerador exclui M2M e pontos de serviço) e a coluna de 5G por estado com o seu universo (16ª revisão do Codex)
     expect(t).not.toContain("Linhas móveis por 100");
     expect(t).toContain("Acessos móveis por 100 hab.");

@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
 import { BuscaConectividade } from "./BuscaConectividade";
 import { ListadasLogo } from "@/components/energia/ListadasLogo";
 import { anoDecimal, GraficoLinhas, marcasAnos, type Serie } from "./Graficos";
-import { cobertos, faixaNaDistribuicao, pontosAnuais, serieCobertura, ufsPor, type ConsultaMunicipio } from "@/lib/conectividade/dados";
+import { cobertos, faixaNaDistribuicao, linhaEstado, pontosAnuais, serieCobertura, ufsPor, type ConsultaMunicipio } from "@/lib/conectividade/dados";
 import { logosConectividade, type LogoDaOperadora } from "@/lib/conectividade/logos";
 import { dataBr, dataCaptura, mesAcessos, mesCurto, mesExtenso, milhoes, num, pct, plural, posicao, SEM_DADO } from "@/lib/conectividade/formato";
 import { DO_ESTADO, DOWNLOADS, hrefMunicipio, MEIOS, nomeGrupo, ROTA_CONECTIVIDADE, TECNOLOGIAS, VELOCIDADES } from "@/lib/conectividade/paginas";
@@ -503,12 +503,8 @@ function SecaoEvolucao({ g }: { g: GoldConectividade }) {
 function SecaoEstados({ g, escolhida }: { g: GoldConectividade; escolhida: string | null }) {
   const r = g.referencia;
   const linha = (u: UfGold | null, nome: string, uf: string, forte = false) => {
-    const f = u?.fixa ?? g.brasil.fixa;
-    const m = u?.movel ?? g.brasil.movel;
-    // contagem ao lado do seu universo: só os municípios com o valor de 5G publicado (MT: 98 de 141, não de 142)
-    const cob = u
-      ? { g4: u.cobertura.g4_moradores, g5: u.cobertura.g5_moradores, sem5: u.cobertura.municipios_sem_5g, com5: u.cobertura.municipios_com_5g_publicado }
-      : { g4: g.brasil.cobertura.tecnologias.g4?.[0] ?? null, g5: g.brasil.cobertura.tecnologias.g5?.[0] ?? null, sem5: g.destaques.sem_5g, com5: g.destaques.municipios_com_5g_publicado };
+    // fonte ausente num estado fica "Sem dado" (o Brasil só entra na própria linha); a contagem de 5G sai ao lado do seu universo
+    const { fixa: f, movel: m, cobertura: cob } = linhaEstado(g, u);
     return (
       <tr key={uf} className={`${forte ? "cn-forte" : ""}${escolhida === uf ? " cn-escolhido" : ""}`}>
         <th scope="row">{nome}</th>
@@ -639,8 +635,10 @@ function Metodo({ g, logos }: { g: GoldConectividade; logos: Logos }) {
               publicados. Nada é estimado nem interpolado; trimestre ou mês sem publicação fica em branco.
             </li>
             <li>
-              A publicação é retida se alguma fonte vier com estrutura diferente, se faltar município, se as partes de um município não somarem o total, se o Brasil do mês não
-              for o do arquivo de totais da Anatel ou se a cobertura passar de 100% (pipeline/conectividade/validacoes.py). Hash dos dados: <code>{g.hash_dados.slice(0, 16)}</code>.
+              A publicação é retida se alguma fonte vier com estrutura diferente, se a contagem de municípios sair de 5.565 a 5.575, se as bases diferirem entre si em mais de
+              três municípios (a diferença tolerada fica declarada acima, em municípios sem dado), se as partes de um município não somarem o total, se o Brasil do mês não for
+              o do arquivo de totais da Anatel, se a cobertura passar de 100% ou se o 5G passar do 4G, no município ou na série nacional (pipeline/conectividade/validacoes.py).
+              Hash dos dados: <code>{g.hash_dados.slice(0, 16)}</code>.
             </li>
           </ul>
         </div>
