@@ -401,6 +401,10 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.cob)
         s["municipios"]["2207777"][8][0] = (s["municipios"]["2207777"][7][0] or 0) + 1
         self.assertEqual([p for p in V.validar_cobertura(s) if "2207777" in p], [])
+        # trimestre histórico com mês inválido retém (29ª revisão do Codex)
+        s = copy.deepcopy(self.cob)
+        s["trimestres"][0] = "2021-99"
+        self.assertTrue(any("período inválido" in p for p in V.validar_cobertura(s)))
         # evolução nacional à frente do trimestre municipal retém (27ª revisão do Codex)
         s = copy.deepcopy(self.cob)
         s["brasil"]["serie"]["2026-12"] = copy.deepcopy(s["brasil"]["serie"][ref])

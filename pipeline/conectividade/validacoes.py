@@ -203,6 +203,10 @@ def validar_cobertura(seed: dict, anterior: dict | None = None, hoje: date | Non
     ref = seed["referencia"]
     if tri != sorted(tri) or tri[-1] != ref:
         p.append(f"cobertura: trimestres {tri} fora de ordem ou sem a referência {ref}")
+    # cada trimestre histórico vai para a grade e para os rótulos do gráfico: tem de ser um mês calendário válido
+    invalidos = [t for t in tri if not isinstance(t, str) or not MES.match(t) or not 1 <= int(t[5:7]) <= 12]
+    if invalidos:
+        p.append(f"cobertura: trimestres com período inválido: {invalidos}")
     mun = seed["municipios"]
     n = len(mun)
     if not F.MUNICIPIOS_MIN <= n <= F.MUNICIPIOS_MAX:

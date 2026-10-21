@@ -5,8 +5,9 @@ name: Atualizar dados da Conectividade
 # (public/conectividade/gold/conectividade.json e um arquivo por UF em public/conectividade/gold/municipios) é
 # reconstruída dos seeds e só é publicada com os testes verdes: cada fonte com todos os municípios, as partes de cada
 # município somando o total, os municípios somando as UFs e o Brasil, o Brasil do mês igual ao arquivo de totais da
-# Anatel, densidades nacionais na faixa plausível, nenhuma cobertura acima de 100% nem 5G acima do 4G, moradores
-# fechando com o Brasil e nenhuma recoleta do mesmo mês mudando o total acima do limite. Reprovado, a publicação
+# Anatel, densidades nacionais na faixa plausível, cobertura entre 0 e 100% e nenhuma geração acima da união que a
+# contém (4G e 5G nunca acima de "todas", 5G nunca acima de "4G ou 5G"; 5G acima do 4G é contado e declarado na gold,
+# não retido), moradores fechando com o Brasil e nenhuma recoleta do mesmo mês mudando o total acima do limite. Reprovado, a publicação
 # anterior continua no ar, a issue é aberta ou comentada e a execução fica vermelha.
 #
 # Cadência pela fonte: a Anatel atualiza os zips de acessos no começo de cada mês (os de banda larga fixa e telefonia
