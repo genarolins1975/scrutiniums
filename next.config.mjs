@@ -54,8 +54,9 @@ const nextConfig = {
         "./public/saneamento/gold/meta.json",
         "./public/saneamento/gold/prestadores.json",
         "./public/saneamento/gold/uf/*.json",
-        // contagens e datas do capítulo 7.1 (dívida dos prestadores) para o convite do painel completo
+        // contagens e datas do capítulo 7.1 (dívida dos prestadores) e do capítulo 15 (contratado) para o convite do painel completo
         "./public/saneamento/divida/resumo.json",
+        "./public/saneamento/contratos/resumo.json",
       ],
       // painel Previdência e INSS e a sua versão aperitivo (servida em /contas-publicas/previdencia a quem não tem sessão):
       // dinâmicos (município na URL), leem a cada instância a gold e o arquivo da UF do município pedido

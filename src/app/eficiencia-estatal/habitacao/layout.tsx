@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import {CabecalhoEntrada} from '@/components/eficiencia/CabecalhoEntrada';
-import {Navegacao} from '@/components/eficiencia/habitacao/Navegacao';
-export default function Layout({children}:{children:React.ReactNode}){return <><CabecalhoEntrada/><main id="conteudo" className="mx-auto max-w-page px-4 pb-20 pt-7 sm:px-6"><Link href="/eficiencia-estatal" className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline">← Panorama do OBEE</Link><Navegacao/>{children}</main></>}
+import {ROTA,PAGINAS} from '@/lib/eficiencia/habitacao/modelo';
+export default function Layout({children}:{children:React.ReactNode}){return <><CabecalhoEntrada tema={{nome:'Habitação',rota:ROTA,abas:PAGINAS.filter(([s])=>s!=='dados'),acoes:PAGINAS.filter(([s])=>s==='dados')}}/><main id="conteudo" className="mx-auto max-w-page px-4 pb-20 pt-8 sm:px-6 md:pt-10">{children}</main></>}

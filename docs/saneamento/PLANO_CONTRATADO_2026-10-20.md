@@ -1,6 +1,6 @@
 # Plano: "O que está contratado desde o novo marco legal" (Observatório do Saneamento)
 
-Data: 20/10/2026. Estado: plano para decisão do dono; nenhuma página, gold ou pipeline foi criada. Implementação em PR próprio, depois deste documento aprovado e depois do merge do PR 305 (que altera `capitulos.ts`, a entrada, o aperitivo e `respostas.ts`).
+Data: 20/10/2026. Estado em 21/10/2026: as cinco decisões da seção 8 foram tomadas pelo dono em 21/10/2026, todas pela recomendação (capítulo 15 próprio; curadoria com grau por linha; ABCON e BNDES como parte interessada na seção de custos; nove contratos na etapa 2; sem Radar PPP). Etapa 1 e parte da etapa 2 implementadas em `pipeline/saneamento_contratos`, `src/app/saneamento/contratado` e `src/lib/saneamento/contratos*.ts`; o que ficou de fora e por quê está na seção "Método" da própria página e nos seeds (`nao_lidos`, `nao_localizadas`, `em_estruturacao`).
 
 ## 1. Origem
 
