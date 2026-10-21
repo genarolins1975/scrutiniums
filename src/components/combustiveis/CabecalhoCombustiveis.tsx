@@ -16,8 +16,8 @@ export function CabecalhoCombustiveis({ atual }: { atual: string }) {
     <header className="border-b border-linha bg-superficie">
       <CabecalhoPlataforma observatorio="energia-e-infraestrutura" destinoConta="/combustiveis" fontes={["gas"]} />
       <nav aria-label="Navegação da coleção Combustíveis">
-        <div className="ed-pagina">
-          <ul className="-mx-1 flex items-center gap-x-1 overflow-x-auto py-1 [scrollbar-width:thin]">
+        <div className="ed-pagina flex items-center gap-6">
+          <ul className="-mx-1 flex min-w-0 flex-1 items-center gap-x-1 overflow-x-auto py-1 [scrollbar-width:thin]">
             <li className="shrink-0">
               <span className="rotulo hidden px-2 text-mineral sm:inline">Combustíveis</span>
             </li>
@@ -35,10 +35,16 @@ export function CabecalhoCombustiveis({ atual }: { atual: string }) {
               </li>
             ))}
           </ul>
+          {/* a parceria entra na linha da coleção, à direita: o cabeçalho perde uma faixa a partir de 768 px */}
+          <div className="hidden shrink-0 md:block">
+            <ParceriaTecnica variante="linha" />
+          </div>
         </div>
       </nav>
-      {/* parceria técnica com o FGV CERI: a marca fecha o cabeçalho de todos os painéis de infraestrutura */}
-      <ParceriaTecnica variante="faixa" />
+      {/* parceria técnica com o FGV CERI: a marca fecha o cabeçalho de todos os painéis de infraestrutura; abaixo de 768 px, numa faixa própria */}
+      <div className="md:hidden">
+        <ParceriaTecnica variante="faixa" />
+      </div>
     </header>
   );
 }
