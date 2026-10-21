@@ -6,7 +6,7 @@
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { CAMPOS_Q, CAMPOS_V, type ArquivoUf, type CampoQ, type CampoV, type GoldPrevidencia, type IdTipo, type MunicipioGold, type TipoMes } from "./tipos";
+import { CAMPOS_Q, CAMPOS_V, type ArquivoUf, type CampoQ, type CampoV, type EspecieAeps, type GoldPrevidencia, type IdEspecieAeps, type IdTipo, type MunicipioGold, type TipoMes } from "./tipos";
 
 export const ARQUIVO_GOLD = join("public", "previdencia", "gold", "previdencia.json");
 export const PASTA_UF = join("public", "previdencia", "gold", "municipios");
@@ -79,6 +79,11 @@ export function consultarMunicipio(ibge: string | string[] | undefined): Consult
 /** O município no último ano com dado (o mais recente da gold, ou null se ele não aparece nesse ano). */
 export function municipioNoAno(m: MunicipioGold, i: number): GruposAno | null {
   return grupos(m.q[i], m.v[i]);
+}
+
+/** Grupos de espécie do Anuário (AEPS) por id: concedidos, emitidos em dezembro e valor de dezembro e do ano. */
+export function especiesAeps(g: GoldPrevidencia = goldPrevidencia()): Record<IdEspecieAeps, EspecieAeps> {
+  return Object.fromEntries(g.aeps.especies.map((e) => [e.id, e])) as Record<IdEspecieAeps, EspecieAeps>;
 }
 
 /** Tipos da tabela 15 por id. */

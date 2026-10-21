@@ -18,6 +18,13 @@ O que reprova:
   total, conta em % do PIB que não confere com a publicada pelo Tesouro, benefícios fora da faixa de % do PIB, e revisão
   de ano fechado acima de 2% numa linha;
 - cruzada: em cada dezembro, a soma dos municípios tem de ser igual à quantidade e ao valor da série do BEPS.
+- AEPS: tabela faltando, edição com outros anos, linhas por grupo de espécie que não fecham (partes com o todo,
+  urbana e rural com o total), UFs ou regiões que não somam o Brasil, concessões da A.1 diferentes da A.14,
+  atendimentos dos estados que não somam o Brasil em algum mês, edição velha demais, edição mais antiga que a
+  publicada e revisão acima de 1% num total de ano repetido entre edições;
+- cruzada AEPS e BEPS: em cada dezembro do Anuário, o Regime Geral tem de ser igual ao do BEPS (quantidade exata, valor
+  a R$ 1 mil), a pensão mensal vitalícia mais os encargos da União têm de ser os benefícios de legislação específica do
+  BEPS, e o total não pode se afastar do BEPS mais de 0,01%.
 """
 from __future__ import annotations
 
@@ -278,4 +285,133 @@ def validar_cruzado(beps: dict, municipios: dict) -> list[str]:
             p.append(f"dezembro de {a['ano']}: municípios somam {prev} benefícios do RGPS, o BEPS publica {x['q']['rgps']:.0f}")
         if not _perto(tv, x["v"]["total"], rel=1e-5):
             p.append(f"dezembro de {a['ano']}: valor dos municípios ({tv:.2f}) diferente do BEPS ({x['v']['total']:.2f})")
+    return p
+
+
+# ------------------------------------------------------------------------------------------------------- AEPS
+
+
+def _soma(valores) -> float | None:
+    """Soma das partes informadas; None quando nenhuma parte tem número (traço em todas)."""
+    nums = [v for v in valores if _num(v)]
+    return sum(nums) if nums else None
+
+
+def _linhas(tabela: dict | None) -> dict[str, list]:
+    return {l["id"]: l["v"] for l in (tabela or {}).get("linhas") or []}
+
+
+def validar_aeps(seed: dict, anterior: dict | None = None, hoje: date | None = None) -> list[str]:
+    from .coleta import normalizar  # sem rede: só a normalização de rótulos
+
+    p: list[str] = []
+    edicao = seed.get("edicao")
+    tabelas = seed.get("tabelas") or {}
+    if not isinstance(edicao, int):
+        return ["AEPS sem edição"]
+    faltam = [t for t in F.TABELAS_AEPS if t not in tabelas]
+    if faltam:
+        return [f"AEPS {edicao} sem as tabelas {faltam}"]
+    anos = [edicao - 2, edicao - 1, edicao]
+    if seed.get("anos") != anos:
+        p.append(f"AEPS {edicao}: anos {seed.get('anos')}, esperados {anos}")
+    hoje = hoje or date.today()
+    if edicao < hoje.year - 3:
+        p.append(f"AEPS {edicao} velho demais")
+    for tid, t in tabelas.items():
+        if not str(t.get("url", "")).startswith(F.BASE_AEPS.format(edicao=edicao)) or len(t.get("sha256_tabela") or "") != 64:
+            p.append(f"AEPS {tid}: endereço ou sha256 da tabela ausente")
+
+    # por grupo de espécie: urbana e rural somam o total; as partes somam o todo (quantidade exata; valor em R$ mil,
+    # com a folga do arredondamento que a própria tabela declara)
+    filhos: dict[str, list[str]] = {}
+    for i, _r, pai in F.ESPECIES_AEPS:
+        if pai:
+            filhos.setdefault(pai, []).append(i)
+    for tid in ("a.1", "b.1", "b.2", "b.3"):
+        linhas = tabelas[tid].get("linhas") or []
+        if [l.get("id") for l in linhas] != [i for i, _r, _p in F.ESPECIES_AEPS]:
+            p.append(f"AEPS {tid}: linhas diferentes das esperadas")
+            continue
+        valor = F.TABELAS_AEPS[tid][2] == "R$ mil"
+        por_id = _linhas(tabelas[tid])
+        for l in linhas:
+            v = l["v"]
+            if len(v) != 9 or any(x is not None and (not _num(x) or x < 0) for x in v):
+                p.append(f"AEPS {tid}, {l['id']}: valor negativo ou fora do formato")
+                continue
+            for k in range(3):
+                tot, s = v[k], _soma([v[3 + k], v[6 + k]])
+                if tot is not None and s is not None and abs(tot - s) > (2 if valor else 0):
+                    p.append(f"AEPS {tid}, {l['id']}, {anos[k]}: urbana e rural não somam o total")
+        for pai, fs in filhos.items():
+            for col in range(9):
+                todo, s = por_id[pai][col], _soma(por_id[f][col] for f in fs)
+                if todo is None or s is None:
+                    if (todo is None) != (s is None):
+                        p.append(f"AEPS {tid}: {pai} com traço e partes com número, ou o contrário (coluna {col})")
+                    continue
+                if abs(todo - s) > (len(fs) + 1 if valor else 0):
+                    p.append(f"AEPS {tid}: as partes de {pai} não somam o todo (coluna {col}: {s} contra {todo})")
+        if por_id["total"][2] is None or por_id["rgps"][2] is None:
+            p.append(f"AEPS {tid}: total ou Regime Geral ausente no último ano")
+
+    # por território: UFs somam a região e o Brasil (traço não soma nada; só se compara onde há número)
+    regioes = {normalizar(r): [s for s in F.SIGLAS if F.REGIAO_UF[s] == r] for r in F.REGIOES}
+    for tid, largura in (("a.14", 9), ("43.1", 12), ("43.2", 12)):
+        t = _linhas(tabelas[tid])
+        if any(u not in t for u in F.SIGLAS) or "brasil" not in t or any(r not in t for r in regioes):
+            p.append(f"AEPS {tid}: sem as 27 UFs, as regiões e o Brasil")
+            continue
+        for col in range(largura):
+            for nome, ufs in [("brasil", F.SIGLAS), *regioes.items()]:
+                alvo, s = t[nome][col], _soma(t[u][col] for u in ufs)
+                if (alvo is None) != (s is None) or (alvo is not None and alvo != s):
+                    p.append(f"AEPS {tid}: as UFs não somam {nome} (coluna {col}: {s} contra {alvo})")
+        obrigatorias = range(3) if tid == "a.14" else range(12) if tid == "43.2" else (1, 2)  # 43.1: gerências e agências fixas
+        for u in F.SIGLAS:
+            if any(t[u][c] is None for c in obrigatorias):
+                p.append(f"AEPS {tid}, {u}: valor ausente onde a tabela sempre publica")
+    a1, a14 = _linhas(tabelas["a.1"]), _linhas(tabelas["a.14"])
+    if a1.get("total") and a14.get("brasil") and a1["total"] != a14["brasil"]:
+        p.append("AEPS: concessões da A.1 diferentes das da A.14 no Brasil")
+
+    if anterior and isinstance(anterior.get("edicao"), int):
+        if edicao < anterior["edicao"]:
+            p.append(f"AEPS {edicao} é mais antigo que o publicado ({anterior['edicao']})")
+        anos_antes = anterior.get("anos") or []
+        for tid in ("a.1", "b.1", "b.3"):
+            novo = _linhas(tabelas[tid]).get("total")
+            velho = _linhas((anterior.get("tabelas") or {}).get(tid)).get("total")
+            if not novo or not velho:
+                continue
+            for k, ano in enumerate(anos):
+                if ano in anos_antes:
+                    a, b = novo[k], velho[anos_antes.index(ano)]
+                    if _num(a) and _num(b) and b and abs(a - b) / b > F.REVISAO_MAXIMA_AEPS:
+                        p.append(f"AEPS {tid}, {ano}: revisão de {100 * (a - b) / b:.2f}% no total entre edições")
+    return p
+
+
+def validar_cruzado_aeps(beps: dict, aeps: dict) -> list[str]:
+    """Os dezembros do Anuário fecham com a série do BEPS: o mesmo cadastro, publicado em dois lugares."""
+    p: list[str] = []
+    serie = {x["mes"]: x for x in (beps.get("tabela14") or {}).get("serie") or []}
+    tab = aeps.get("tabelas") or {}
+    q, v = _linhas(tab.get("b.1")), _linhas(tab.get("b.2"))
+    if not q or not v:
+        return ["AEPS sem as tabelas B.1 e B.2 para conferir com o BEPS"]
+    for k, ano in enumerate(aeps.get("anos") or []):
+        x = serie.get(f"{ano}-12")
+        if not x:
+            p.append(f"BEPS sem dezembro de {ano} para conferir o AEPS")
+            continue
+        if q["rgps"][k] != x["q"]["rgps"]:
+            p.append(f"dezembro de {ano}: Regime Geral no AEPS ({q['rgps'][k]}) diferente do BEPS ({x['q']['rgps']:.0f})")
+        if (q["pmv"][k] or 0) + (q["epu"][k] or 0) != x["q"]["ble"]:
+            p.append(f"dezembro de {ano}: pensão mensal vitalícia e EPU do AEPS diferentes da legislação específica do BEPS")
+        if abs(q["total"][k] - x["q"]["total"]) > F.DIFERENCA_MAXIMA_AEPS_BEPS * x["q"]["total"]:
+            p.append(f"dezembro de {ano}: total do AEPS ({q['total'][k]}) longe do BEPS ({x['q']['total']:.0f})")
+        if abs(v["rgps"][k] * 1000 - x["v"]["rgps"]) > 1000:
+            p.append(f"dezembro de {ano}: valor do Regime Geral no AEPS diferente do BEPS")
     return p
