@@ -257,7 +257,9 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
                 "municipios_com_dado": len(cob_uf),
                 **{f"{campo}_moradores": _media_ponderada([((c["tecnologias"].get(campo) or [None])[0], c["moradores"]) for c in cob_uf])
                    for campo in ("todas", "g4", "g5", "g4g5")},
-                # ausência da tecnologia não é zero: município sem o valor fica fora das duas contagens
+                # ausência da tecnologia não é zero: município sem o valor fica fora das duas contagens e dos seus universos
+                "municipios_com_5g_publicado": sum(1 for c in cob_uf if (c["tecnologias"].get("g5") or [None])[0] is not None),
+                "municipios_com_4g_publicado": sum(1 for c in cob_uf if (c["tecnologias"].get("g4") or [None])[0] is not None),
                 "municipios_sem_5g": sum(1 for c in cob_uf if (v := (c["tecnologias"].get("g5") or [None])[0]) is not None and v < 1),
                 "municipios_4g_abaixo_50": sum(1 for c in cob_uf if (v := (c["tecnologias"].get("g4") or [None])[0]) is not None and v < 50),
             },
@@ -300,8 +302,9 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
         "municipios": len(ids),
         "sem_fibra": sum(u["sem_fibra"] for u in ufs),
         "uma_prestadora": sum(u["uma_prestadora"] for u in ufs),
-        # universo das duas contagens de cobertura: só os municípios com cobertura publicada (o sem dado não é avaliado)
-        "municipios_com_cobertura": sum(u["cobertura"]["municipios_com_dado"] for u in ufs),
+        # universo de cada contagem de cobertura: só os municípios com o valor daquela tecnologia publicado (sem dado não é avaliado)
+        "municipios_com_5g_publicado": sum(u["cobertura"]["municipios_com_5g_publicado"] for u in ufs),
+        "municipios_com_4g_publicado": sum(u["cobertura"]["municipios_com_4g_publicado"] for u in ufs),
         "sem_5g": sum(u["cobertura"]["municipios_sem_5g"] for u in ufs),
         "g4_abaixo_50": sum(u["cobertura"]["municipios_4g_abaixo_50"] for u in ufs),
         "sem_dado": {x: sorted(c for c in ids if x in municipios[c]["ausencias"]) for x in ("fixa", "movel", "cobertura")},
@@ -321,8 +324,9 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
             "movel_acessos": "Na telefonia móvel, acessos é o total que a Anatel publica e usa na densidade, sem M2M (máquina a máquina) "
                              "e sem pontos de serviço; linhas é a soma de tudo o que a Anatel registra no município.",
             "cobertura": "Parte dos moradores, dos domicílios e da área de cada município dentro da mancha de cobertura declarada pelas "
-                         "operadoras (setores censitários, Censo 2022 a partir de 2025 e Censo 2010 antes). Médias por UF e Brasil "
-                         "ponderadas pelos moradores: cálculo da Scrutiniums.",
+                         "operadoras (setores censitários, Censo 2022 a partir de 2025 e Censo 2010 antes). O número do Brasil é o "
+                         "publicado pela Anatel (evolucao_cobertura_brasil.csv); as médias por UF, ponderadas pelos moradores dos "
+                         "municípios, são cálculo da Scrutiniums.",
             "ausencia": "Município sem dado numa fonte fica com o campo vazio, nunca com zero; a lista está em destaques.sem_dado.",
         },
         "operadoras": operadoras,

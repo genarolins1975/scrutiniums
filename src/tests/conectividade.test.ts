@@ -222,10 +222,15 @@ describe("painel completo", () => {
     expect(t).toContain(`${num(g.brasil.fixa.densidade, 1)}`);
     expect(t).toContain(`${num(g.destaques.sem_5g)}`);
     // o cartão dos municípios sem 5G usa o universo da cobertura publicada, não o das três fontes (12ª revisão do Codex)
-    expect(g.destaques.municipios_com_cobertura).toBe(g.destaques.municipios - g.destaques.sem_dado.cobertura.length);
-    expect(html).toContain(`<span class="cn-unidade">de ${num(g.destaques.municipios_com_cobertura)}</span>`);
-    expect(html).not.toContain(`<span class="cn-unidade">de ${num(g.destaques.municipios)}</span>`);
-    expect(t).toContain(`${num(g.destaques.sem_5g)} dos ${num(g.destaques.municipios_com_cobertura)} municípios com cobertura publicada`);
+    const d = g.destaques;
+    expect(d.municipios_com_5g_publicado).toBeLessThanOrEqual(d.municipios - d.sem_dado.cobertura.length);
+    expect(d.municipios_com_5g_publicado).toBe(g.ufs.reduce((t, u) => t + u.cobertura.municipios_com_5g_publicado, 0));
+    expect(html).toContain(`<span class="cn-unidade">de ${num(d.municipios_com_5g_publicado)}</span>`);
+    expect(html).not.toContain(`<span class="cn-unidade">de ${num(d.municipios)}</span>`);
+    expect(t).toContain(`${num(d.sem_5g)} dos ${num(d.municipios_com_5g_publicado)} municípios com cobertura 5G publicada`);
+    expect(t).toContain(`${num(d.g4_abaixo_50)} dos ${num(d.municipios_com_4g_publicado)} com cobertura 4G publicada`);
+    // o método não atribui o número nacional de cobertura ao cálculo local
+    expect(t).toContain("O número do Brasil é o publicado pela Anatel");
     for (const id of ["municipio", "fibra", "cobertura", "evolucao", "estados", "mecanismo", "metodo"]) expect(html).toContain(`id="${id}"`);
     expect(t).toContain("Modelo didático");
     for (const arq of ["por-municipio.csv", "por-estado.csv", "brasil-mensal.csv"]) expect(html).toContain(`href="${ROTA_CONECTIVIDADE}/${arq}"`);

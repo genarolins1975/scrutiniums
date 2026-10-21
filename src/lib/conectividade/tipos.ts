@@ -102,6 +102,8 @@ export type UfGold = {
     g4_moradores: number | null;
     g5_moradores: number | null;
     g4g5_moradores: number | null;
+    municipios_com_5g_publicado: number;
+    municipios_com_4g_publicado: number;
     municipios_sem_5g: number;
     municipios_4g_abaixo_50: number;
   };
@@ -157,7 +159,8 @@ export type GoldConectividade = {
     municipios: number;
     sem_fibra: number;
     uma_prestadora: number;
-    municipios_com_cobertura: number;
+    municipios_com_5g_publicado: number;
+    municipios_com_4g_publicado: number;
     sem_5g: number;
     g4_abaixo_50: number;
     sem_dado: { fixa: string[]; movel: string[]; cobertura: string[] };

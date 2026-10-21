@@ -412,6 +412,11 @@ class TestGoldSintetica(unittest.TestCase):
         ufpi = lambda gold_: next(u for u in gold_["ufs"] if u["uf"] == "PI")  # noqa: E731
         self.assertEqual(ufpi(g)["cobertura"]["municipios_sem_5g"], 0)
         self.assertEqual(ufpi(g)["cobertura"]["municipios_4g_abaixo_50"], 0)
+        # e sai também do universo de cada contagem, embora siga em municipios_com_dado (tem registro de cobertura)
+        self.assertEqual(ufpi(g)["cobertura"]["municipios_com_5g_publicado"], ufpi(self.g)["cobertura"]["municipios_com_5g_publicado"] - 1)
+        self.assertEqual(ufpi(g)["cobertura"]["municipios_com_4g_publicado"], ufpi(self.g)["cobertura"]["municipios_com_4g_publicado"] - 1)
+        self.assertEqual(ufpi(g)["cobertura"]["municipios_com_dado"], ufpi(self.g)["cobertura"]["municipios_com_dado"])
+        self.assertEqual(g["destaques"]["municipios_com_5g_publicado"], self.g["destaques"]["municipios_com_5g_publicado"] - 1)
         self.assertEqual(ufpi(self.g)["cobertura"]["municipios_sem_5g"], 0)       # com o valor (48%), também não é "sem 5G"
         pi2 = copy.deepcopy(self.seeds)
         pi2["cobertura"]["municipios"]["2207777"][5]["g5"] = [0.5, 0.5, 0.5]
@@ -553,9 +558,14 @@ class TestSeedsVersionados(unittest.TestCase):
             self.assertIsInstance(self.g["destaques"][x], int)
         # o universo das contagens de cobertura é o dos municípios com cobertura publicada, não o das três fontes
         d = self.g["destaques"]
-        self.assertEqual(d["municipios_com_cobertura"], sum(u["cobertura"]["municipios_com_dado"] for u in self.g["ufs"]))
-        self.assertEqual(d["municipios_com_cobertura"], d["municipios"] - len(d["sem_dado"]["cobertura"]))
-        self.assertLessEqual(d["sem_5g"], d["municipios_com_cobertura"])
+        for tec in ("5g", "4g"):
+            self.assertEqual(d[f"municipios_com_{tec}_publicado"], sum(u["cobertura"][f"municipios_com_{tec}_publicado"] for u in self.g["ufs"]))
+            self.assertEqual(d[f"municipios_com_{tec}_publicado"], d["municipios"] - len(d["sem_dado"]["cobertura"]))   # na fixture, quem tem cobertura tem as duas
+        self.assertLessEqual(d["sem_5g"], d["municipios_com_5g_publicado"])
+        self.assertLessEqual(d["g4_abaixo_50"], d["municipios_com_4g_publicado"])
+        # a nota separa o que é da Anatel (Brasil) do que é cálculo da Scrutiniums (UFs)
+        self.assertIn("evolucao_cobertura_brasil.csv", self.g["notas"]["cobertura"])
+        self.assertNotIn("UF e Brasil", self.g["notas"]["cobertura"])
 
 
 if __name__ == "__main__":
