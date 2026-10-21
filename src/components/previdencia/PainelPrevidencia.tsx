@@ -1,11 +1,14 @@
 /**
  * Painel completo "Previdência e INSS" (com conta). Seções por pergunta, na ordem da procura: o município do leitor,
- * os tipos de benefício, como o Regime Geral fecha a conta (com o artefato do mecanismo), os estados, a evolução e o
- * método recolhido no fim. Tudo desenhado no servidor a partir da gold; nenhum número escrito à mão.
+ * os tipos de benefício, o ano inteiro pelo Anuário (valor do ano, concessões e a divisão entre Regime Geral,
+ * assistenciais e encargos da União), como o Regime Geral fecha a conta (com o artefato do mecanismo), os estados, o
+ * atendimento nas unidades do INSS, a evolução e o método recolhido no fim. Tudo desenhado no servidor a partir da
+ * gold; nenhum número escrito à mão.
  */
 import type { ReactNode } from "react";
 import { BuscaPrevidencia } from "./BuscaPrevidencia";
 import { GraficoColunas, GraficoLinhas, marcasAnos } from "./Graficos";
+import { SecaoAnuario, SecaoAtendimento } from "./SecoesAnuario";
 import { grupos, maioresDoBrasil, manchete, municipioNoAno, rankingUf, tiposPorId, type ConsultaMunicipio, type GruposAno } from "@/lib/previdencia/dados";
 import { bilhoesDeMilhoes, dataBr, mesCurto, mesExtenso, milhoes, num, pct, razao, reais, reaisGrandes, SEM_DADO } from "@/lib/previdencia/formato";
 import { DO_ESTADO, DOWNLOADS, NOME_GRUPO_Q, NOME_TIPO, ROTA_PREVIDENCIA, hrefMunicipio } from "@/lib/previdencia/paginas";
@@ -25,8 +28,10 @@ export function PainelPrevidencia({ g, consulta, ferramentas }: { g: GoldPrevide
       {ferramentas}
       <SecaoMunicipio g={g} c={consulta} />
       <SecaoTipos g={g} />
+      <SecaoAnuario g={g} />
       <SecaoResultado g={g} />
       <SecaoEstados g={g} />
+      <SecaoAtendimento g={g} />
       <SecaoEvolucao g={g} />
       <Metodo g={g} />
     </>
@@ -683,6 +688,14 @@ function Metodo({ g }: { g: GoldPrevidencia }) {
               <strong>Necessidade de financiamento</strong>: benefícios previdenciários menos arrecadação líquida do Regime Geral, a mesma conta do Tesouro e do Ministério da Previdência. Valores
               nominais; a comparação entre anos usa o % do PIB.
             </li>
+            <li>
+              <strong>Benefício concedido</strong>: benefício que começou a ser pago no ano (fluxo). Os benefícios emitidos são os que estão em pagamento no mês (estoque). <strong>Valor emitido no
+              ano</strong>: soma dos doze meses publicada pelo Anuário, em R$ mil correntes. <strong>Encargos previdenciários da União (EPU)</strong>: benefícios pagos pelo INSS por conta do Tesouro,
+              que o Anuário separa; o BEPS os soma à pensão mensal vitalícia como legislação específica.
+            </li>
+            <li>
+              <strong>Atendimento</strong>: serviço registrado numa unidade do INSS (administrativo, perícia médica, serviço social ou reabilitação). Conta atendimentos, não pessoas.
+            </li>
           </ul>
         </div>
         <div>
@@ -700,6 +713,17 @@ function Metodo({ g }: { g: GoldPrevidencia }) {
               {f.rtn.orgao}, <a href={f.rtn.pagina}>{f.rtn.nome}</a>, edição de {mesExtenso(f.rtn.edicao)}{f.rtn.publicado_em ? `, publicada em ${dataBr(f.rtn.publicado_em)}` : ""}, tabelas 2.2 e 2.1-A (
               <a href={f.rtn.url}>planilha</a>). Capturado em {dataBr(f.rtn.capturado_em)}. Método do resultado: <a href={f.rtn.metodo_resultado}>Ministério da Previdência</a>.
             </li>
+            <li>
+              {f.aeps.orgao}, <a href={f.aeps.pagina}>{f.aeps.nome}</a>, edição {f.aeps.edicao} (anos de {g.aeps.anos[0]} a {g.aeps.anos[g.aeps.anos.length - 1]}), tabelas{" "}
+              {(Object.keys(f.aeps.tabelas) as (keyof typeof f.aeps.tabelas)[]).map((id, i, ids) => (
+                <span key={id}>
+                  <a href={f.aeps.tabelas[id].url}>{id.toUpperCase()}</a>
+                  {i < ids.length - 2 ? ", " : i === ids.length - 2 ? " e " : ""}
+                </span>
+              ))}
+              , uma página por tabela. Anual. Tabelas atualizadas no portal em {dataBr(f.aeps.atualizado_em)}; capturadas em {dataBr(f.aeps.capturado_em)}, com o sha256 de cada página e o
+              de cada tabela. Ficam de fora as tabelas do Anuário com benefícios emitidos por estado (B.13 a B.17), que repetem o BEPS e o arquivo municipal, e as demais seções do Anuário.
+            </li>
           </ul>
         </div>
         <div>
@@ -707,7 +731,9 @@ function Metodo({ g }: { g: GoldPrevidencia }) {
           <p>
             A atualização é agendada duas vezes por mês. Nada é publicado se a série mensal tiver mês faltando ou não fechar com os grupos, se a tabela dos tipos mudar de linhas ou as partes não
             somarem o todo, se os 27 estados não somarem o Brasil, se um município não fechar por grupo, se a soma dos municípios em algum dezembro diferir do BEPS, se a divisão urbana e rural do
-            Tesouro não somar o total, se o % do PIB não conferir com o publicado ou se um ano fechado for revisto além do limite. Ausência fica como ausência: nunca vira zero nem estimativa.
+            Tesouro não somar o total, se o % do PIB não conferir com o publicado ou se um ano fechado for revisto além do limite. Do Anuário, nada é publicado se uma tabela faltar, se as partes
+            de um grupo de benefício não somarem o todo, se os estados não somarem o Brasil, se o Regime Geral de algum dezembro diferir do BEPS ou se uma edição nova rever um ano além de 1%. Ausência
+            fica como ausência: nunca vira zero nem estimativa.
           </p>
         </div>
         <div>

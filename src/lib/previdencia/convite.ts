@@ -23,14 +23,19 @@ export function comConta(g: GoldPrevidencia, uf: string | null, municipio?: { m:
   const r = g.rgps;
   const serieMensal = g.serie.meses.find((m) => m.endsWith("-01"));
   const n = uf ? g.municipios.por_uf[uf] : null;
+  const a = g.aeps;
+  const anosAeps = `de ${a.anos[0]} a ${a.anos[a.anos.length - 1]}`;
+  const tiposConcedidos = a.especies.filter((e) => !a.especies.some((x) => x.pai === e.id) && e.concedidos.slice(0, a.anos.length).some((v) => v !== null)).length;
   return [
     `${serieMun}, separado em aposentadorias (por idade, por invalidez e por tempo de contribuição), pensões por morte, auxílios, outros previdenciários e assistenciais, com o valor médio de cada grupo`,
     n ? `O município ao lado do estado e do Brasil, e a posição dele entre os ${num(n)} municípios do estado` : `O município ao lado do estado e do Brasil, e a posição dele entre os municípios do estado (${num(g.municipios.total)} municípios no país)`,
     `Os ${tiposDetalhados(g)} tipos de benefício do INSS em ${mes}, das aposentadorias ao BPC da pessoa idosa e da pessoa com deficiência, com quantidade, valor médio e a divisão entre clientela urbana e rural`,
+    `O ano inteiro, ${anosAeps}, pelo Anuário Estatístico da Previdência Social: quanto o INSS pagou em cada ano, separado entre Regime Geral, assistenciais e encargos da União, e os benefícios novos concedidos em ${num(tiposConcedidos)} tipos e nos ${num(a.concessoes_uf.ufs.length)} estados`,
     `Como o Regime Geral fecha a conta: arrecadação, despesa com benefícios e necessidade de financiamento coberta pelo Tesouro, ano a ano de ${r.anos[0]} a ${r.anos[r.anos.length - 1]}, em reais e em % do PIB, com a divisão urbana e rural desde ${r.inicio_divisao_urbana_rural}`,
     `Os ${g.ufs_mes.ufs.length} estados lado a lado em ${mes}: benefícios do Regime Geral, valor médio urbano e rural e a parte da clientela rural; e os grupos de benefício de cada estado em dezembro de cada ano desde ${anos[0]}`,
+    `O atendimento nas unidades do INSS mês a mês em ${a.atendimento.ano}, em cada estado, e a rede de ${num(a.rede.brasil[a.rede.colunas.indexOf("aps_fixas")])} agências fixas`,
     `Quantos benefícios o INSS paga mês a mês desde ${mesExtenso(serieMensal)}, e cada dezembro desde ${g.serie.meses[0].slice(0, 4)}, com o valor médio`,
-    "Os arquivos para baixar (CSV): benefícios por município e por estado, o Brasil mês a mês e o resultado do Regime Geral",
+    "Os arquivos para baixar (CSV): benefícios por município e por estado, o Brasil mês a mês, o resultado do Regime Geral e as tabelas do Anuário usadas no painel",
   ];
 }
 

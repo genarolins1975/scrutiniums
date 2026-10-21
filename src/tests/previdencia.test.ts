@@ -163,10 +163,10 @@ describe("previdência: painel completo (com sessão)", () => {
     expect(t).toContain("RTN");
   });
 
-  it("todas as seções por pergunta, o método recolhido e os quatro arquivos", async () => {
+  it("todas as seções por pergunta, o método recolhido e os cinco arquivos", async () => {
     const html = await painel();
-    for (const id of ["municipio", "tipos", "resultado", "estados", "evolucao", "metodo"]) expect(html, id).toContain(`id="${id}"`);
-    for (const a of ["beneficios-por-municipio.csv", "beneficios-por-estado.csv", "beneficios-brasil-mensal.csv", "resultado-rgps.csv"]) {
+    for (const id of ["municipio", "tipos", "anuario", "resultado", "estados", "atendimento", "evolucao", "metodo"]) expect(html, id).toContain(`id="${id}"`);
+    for (const a of ["beneficios-por-municipio.csv", "beneficios-por-estado.csv", "beneficios-brasil-mensal.csv", "resultado-rgps.csv", "anuario-inss.csv"]) {
       expect(html).toContain(`/contas-publicas/previdencia/${a}`);
       expect(existsSync(join(raiz, "src/app/contas-publicas/previdencia", a, "route.ts")), a).toBe(true);
     }
@@ -189,6 +189,92 @@ describe("previdência: painel completo (com sessão)", () => {
     expect(i0).toBeGreaterThan(0);
     expect(gold.rgps.resultado_urbano.slice(0, i0).every((x) => x === null)).toBe(true);
     expect(textoDe(html)).toContain("Sem dado");
+  });
+});
+
+describe("previdência: o ano inteiro e o atendimento, pelo Anuário (AEPS)", () => {
+  const a = gold.aeps;
+  const esp = Object.fromEntries(a.especies.map((e) => [e.id, e]));
+  const k = a.anos.length - 1;
+
+  it("seção do ano: valor emitido, concessões e a divisão Regime Geral, assistenciais e encargos da União, com os três anos", async () => {
+    const html = await painel();
+    expect(html).toContain('id="anuario"');
+    const t = textoDe(html);
+    expect(t).toContain("Quanto o INSS paga e concede em um ano?");
+    expect(t).toContain(`R$ ${fmt(esp.total.valor_ano[k]! / 1e6, 1)} bilhões`);
+    expect(t).toContain(`${fmt(esp.total.concedidos[k]! / 1e6, 2)} milhões`);
+    for (const ano of a.anos) expect(t).toContain(String(ano));
+    for (const nome of ["Regime Geral (RGPS)", "Assistenciais", "Encargos previdenciários da União (EPU)"]) expect(t).toContain(nome);
+    // a tabela por grupo traz o valor do ano em R$ bilhões de cada grupo
+    expect(t).toContain(fmt(esp.rgps.valor_ano[0]! / 1e6, 1));
+    expect(t).toContain(fmt(esp.assistenciais.valor_ano[k]! / 1e6, 1));
+    // as concessões dos 27 estados somam o Brasil
+    expect(a.concessoes_uf.ufs.reduce((s, u) => s + u.v[k]!, 0)).toBe(esp.total.concedidos[k]);
+    expect(t).toContain("Anuário Estatístico da Previdência Social");
+    expect(t).toMatch(/tabelas atualizadas no portal em \d{2}\/\d{2}\/\d{4}, capturadas em \d{2}\/\d{2}\/\d{4}/);
+  });
+
+  it("traço da fonte é ausência: salário família não aparece como zero nem como linha da tabela de concessões", async () => {
+    expect(esp.salario_familia.concedidos.every((v) => v === null)).toBe(true);
+    const t = textoDe(await painel());
+    expect(t).toContain("salário família");
+    expect(t).toContain("traço nos três anos");
+  });
+
+  it("seção do atendimento: total do ano (soma dos meses), mês de maior movimento e a rede por estado", async () => {
+    const html = await painel();
+    expect(html).toContain('id="atendimento"');
+    const t = textoDe(html);
+    expect(a.atendimento.total).toBe(a.atendimento.brasil.reduce((s, v) => s + v, 0));
+    expect(t).toContain(`${fmt(a.atendimento.total / 1e6, 2)} milhões de atendimentos`);
+    expect(t).toContain(fmt(a.rede.brasil[a.rede.colunas.indexOf("aps_fixas")]!));
+    expect(t).toContain("Atendimentos, não pessoas");
+    expect(t).toContain("não informa o tempo de espera");
+    for (const u of a.atendimento.ufs) expect(t).toContain(fmt(u.total));
+  });
+
+  it("ordem das seções: o ano depois dos tipos, o atendimento depois dos estados", async () => {
+    const html = await painel();
+    const pos = (id: string) => html.indexOf(`id="${id}"`);
+    expect(pos("tipos")).toBeLessThan(pos("anuario"));
+    expect(pos("anuario")).toBeLessThan(pos("resultado"));
+    expect(pos("estados")).toBeLessThan(pos("atendimento"));
+    expect(pos("atendimento")).toBeLessThan(pos("evolucao"));
+  });
+
+  it("o Regime Geral do Anuário é o do BEPS em cada dezembro", () => {
+    for (const c of a.conferencia_beps) {
+      expect(c.rgps_aeps).toBe(c.rgps_beps);
+      expect(c.pmv_epu_aeps).toBe(c.ble_beps);
+      const i = gold.serie.meses.indexOf(`${c.ano}-12`);
+      expect(gold.serie.q.rgps[i]).toBe(c.rgps_aeps);
+    }
+  });
+
+  it("o aperitivo não mostra o Anuário, mas o convite diz o que o painel tem a mais, com os anos e a rede", async () => {
+    const html = await aperitivo(SP);
+    expect(html).not.toContain('id="anuario"');
+    expect(html).not.toContain('id="atendimento"');
+    const t = textoDe(html);
+    expect(t).not.toContain(`${fmt(a.atendimento.total / 1e6, 2)} milhões de atendimentos`);
+    expect(t).toContain(`O ano inteiro, de ${a.anos[0]} a ${a.anos[k]}, pelo Anuário Estatístico da Previdência Social`);
+    expect(t).toContain(`O atendimento nas unidades do INSS mês a mês em ${a.atendimento.ano}`);
+    expect(t).toContain(`${fmt(a.rede.brasil[a.rede.colunas.indexOf("aps_fixas")]!)} agências fixas`);
+  });
+
+  it("arquivo do Anuário: uma linha por célula usada, traço vazio com observação, com conta", async () => {
+    const { exigeConta } = await import("@/lib/rotasPublicas");
+    expect(exigeConta("/contas-publicas/previdencia/anuario-inss.csv")).toBe(true);
+    expect(existsSync(join(raiz, "src/app/contas-publicas/previdencia/anuario-inss.csv/route.ts"))).toBe(true);
+    const { csvAnuario } = await import("@/lib/previdencia/csv");
+    const linhas = (await csvAnuario().text()).replace(/^﻿/, "").trim().split("\n");
+    const n = a.anos.length;
+    expect(linhas).toHaveLength(1 + 4 * a.especies.length * 3 * n + 28 * 3 * n + 28 * a.rede.colunas.length + 28 * 12);
+    const tracos = linhas.filter((l) => l.includes(";traço na fonte;"));
+    expect(tracos.length).toBeGreaterThan(0);
+    for (const l of tracos.slice(0, 20)) expect(l.split(";")[6]).toBe("");
+    expect(linhas[1]).toContain("https://www.gov.br/previdencia/");
   });
 });
 
