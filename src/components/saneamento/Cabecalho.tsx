@@ -76,6 +76,10 @@ export function Cabecalho({ atual }: { atual: string }) {
               </Link>
             </li>
             <li className="ml-auto flex items-center gap-4 sm:gap-5">
+              {/* a parceria entra na linha dos atalhos, que em tela larga já fica abaixo dos eixos: o cabeçalho perde uma faixa */}
+              <div className="pr-3">
+                <ParceriaTecnica variante="linha" />
+              </div>
               <Atalhos atual={atual} />
             </li>
           </ul>
@@ -126,8 +130,10 @@ export function Cabecalho({ atual }: { atual: string }) {
           </div>
         </div>
       </nav>
-      {/* parceria técnica com o FGV CERI: a marca fecha o cabeçalho de todos os painéis de infraestrutura */}
-      <ParceriaTecnica variante="faixa" />
+      {/* parceria técnica com o FGV CERI: a marca fecha o cabeçalho de todos os painéis de infraestrutura; abaixo de 1024 px, numa faixa própria */}
+      <div className="lg:hidden">
+        <ParceriaTecnica variante="faixa" />
+      </div>
     </header>
   );
 }
