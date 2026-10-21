@@ -3,6 +3,9 @@
 - previdencia.json: o mês mais recente do BEPS (tipos de benefício no Brasil e RGPS por UF), a série mensal por grandes
   grupos, os dezembros do arquivo municipal somados por UF e no Brasil, o resultado do RGPS por ano (RTN) e as fontes.
 - municipios/{UF}.json: cada município da UF, dezembro a dezembro desde 2019, por grupo de espécie.
+- previdencia.json, bloco aeps: a edição mais recente do Anuário Estatístico da Previdência Social (três anos): benefícios
+  concedidos, emitidos em dezembro e valor emitido no ano por grupo de espécie (Regime Geral, assistenciais e encargos
+  da União), concessões por UF, rede de unidades do INSS por UF e atendimentos mês a mês nas unidades, por UF.
 
 Nada aqui estima nem interpola. O que a gold calcula, sempre a partir de números publicados e marcado como cálculo da
 Scrutiniums: valor médio (valor ÷ quantidade), somas por UF dos municípios (pelo prefixo do código IBGE), resultado do
@@ -16,7 +19,7 @@ import hashlib
 import json
 
 from . import fontes as F
-from .validacoes import validar_beps, validar_cruzado, validar_municipios, validar_rtn
+from .validacoes import validar_aeps, validar_beps, validar_cruzado, validar_cruzado_aeps, validar_municipios, validar_rtn
 
 VERSAO = "previdencia-1.0.0"
 
@@ -168,7 +171,56 @@ def _rgps(rtn: dict) -> dict:
     return out
 
 
-def _fontes(beps: dict, mun: dict, rtn: dict) -> dict:
+def _por_territorio(tabela: dict) -> tuple[list, list[dict]]:
+    """Linha do Brasil e uma linha por UF (na ordem do IBGE) de uma tabela do AEPS por território."""
+    linhas = {l["id"]: l["v"] for l in tabela["linhas"]}
+    return linhas["brasil"], [{"uf": s, "nome": F.NOME_UF[s], "regiao": F.REGIAO_UF[s], "v": linhas[s]} for s in F.SIGLAS]
+
+
+def _aeps(aeps: dict, beps: dict) -> dict:
+    t = aeps["tabelas"]
+    por = {tid: {l["id"]: l for l in t[tid]["linhas"]} for tid in ("a.1", "b.1", "b.2", "b.3")}
+    especies = [
+        {
+            "id": i, "pai": pai, "rotulo_fonte": por["a.1"][i]["rotulo"],
+            "concedidos": por["a.1"][i]["v"], "emitidos": por["b.1"][i]["v"],
+            "valor_dez": por["b.2"][i]["v"], "valor_ano": por["b.3"][i]["v"],
+        }
+        for i, _r, pai in F.ESPECIES_AEPS
+    ]
+    br_conc, ufs_conc = _por_territorio(t["a.14"])
+    br_rede, ufs_rede = _por_territorio(t["43.1"])
+    br_atend, ufs_atend = _por_territorio(t["43.2"])
+    serie = {x["mes"]: x for x in beps["tabela14"]["serie"]}
+    conferencia = []
+    for k, ano in enumerate(aeps["anos"]):
+        x = serie[f"{ano}-12"]
+        b1 = por["b.1"]
+        conferencia.append({
+            "ano": ano,
+            "total_aeps": b1["total"]["v"][k], "total_beps": int(x["q"]["total"]),
+            "rgps_aeps": b1["rgps"]["v"][k], "rgps_beps": int(x["q"]["rgps"]),
+            "pmv_epu_aeps": (b1["pmv"]["v"][k] or 0) + (b1["epu"]["v"][k] or 0), "ble_beps": int(x["q"]["ble"]),
+        })
+    return {
+        "edicao": aeps["edicao"],
+        "anos": aeps["anos"],
+        "colunas": "total dos três anos, depois clientela urbana dos três anos, depois clientela rural dos três anos",
+        "unidade_valor": "R$ mil correntes",
+        "especies": especies,
+        "concessoes_uf": {"brasil": br_conc, "ufs": ufs_conc},
+        "rede": {"referencia": f"{aeps['edicao']}-12", "colunas": [i for i, _r in F.REDE_AEPS], "brasil": br_rede, "ufs": ufs_rede},
+        "atendimento": {
+            "ano": aeps["edicao"],
+            "brasil": br_atend,
+            "total": sum(br_atend),
+            "ufs": [{**u, "total": sum(u["v"])} for u in ufs_atend],
+        },
+        "conferencia_beps": conferencia,
+    }
+
+
+def _fontes(beps: dict, mun: dict, rtn: dict, aeps: dict) -> dict:
     return {
         "beps": {
             "orgao": F.ORGAO_MPS, "nome": F.NOME_BEPS, "edicao": beps.get("edicao"), "referencia": beps["referencia"],
@@ -187,6 +239,18 @@ def _fontes(beps: dict, mun: dict, rtn: dict) -> dict:
             "capturado_em": rtn.get("capturado_em"), "tabela": rtn.get("titulo"), "unidade": rtn.get("unidade"),
             "metodo_resultado": F.PAGINA_RESULTADO_RGPS,
         },
+        "aeps": {
+            "orgao": F.ORGAO_MPS, "nome": F.NOME_AEPS, "edicao": aeps["edicao"], "pagina": aeps.get("pagina", F.PAGINA_AEPS),
+            "raiz": aeps.get("raiz"), "capturado_em": aeps.get("capturado_em"),
+            "atualizado_em": max(x["atualizado_em"] for x in aeps["tabelas"].values() if x.get("atualizado_em")),
+            "tabelas": {
+                tid: {
+                    "titulo": x["titulo"], "url": x["url"], "unidade": x["unidade"], "fonte": x["fonte"], "notas": x["notas"],
+                    "atualizado_em": x.get("atualizado_em"), "sha256": x.get("sha256"), "sha256_tabela": x["sha256_tabela"],
+                }
+                for tid, x in aeps["tabelas"].items()
+            },
+        },
     }
 
 
@@ -200,12 +264,14 @@ def _sem_captura(obj):
 
 
 def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
-    beps, mun, rtn = seeds["beps"], seeds["municipios"], seeds["rtn"]
+    beps, mun, rtn, aeps = seeds["beps"], seeds["municipios"], seeds["rtn"], seeds["aeps"]
     problemas = (
         [f"BEPS: {x}" for x in validar_beps(beps)]
         + [f"municípios: {x}" for x in validar_municipios(mun)]
         + [f"RTN: {x}" for x in validar_rtn(rtn)]
         + [f"cruzada: {x}" for x in validar_cruzado(beps, mun)]
+        + [f"AEPS: {x}" for x in validar_aeps(aeps)]
+        + [f"cruzada AEPS e BEPS: {x}" for x in validar_cruzado_aeps(beps, aeps)]
     )
     if problemas:
         raise GoldInvalida("gold não publicada:\n- " + "\n- ".join(problemas[:40]))
@@ -213,15 +279,16 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
     gold = {
         "versao": VERSAO,
         "gerado_por": "pipeline/previdencia",
-        "capturado_em": max(x for x in (beps.get("capturado_em"), mun.get("capturado_em"), rtn.get("capturado_em")) if x),
+        "capturado_em": max(x for x in (beps.get("capturado_em"), mun.get("capturado_em"), rtn.get("capturado_em"), aeps.get("capturado_em")) if x),
         "referencia": beps["referencia"],
-        "fontes": _fontes(beps, mun, rtn),
+        "fontes": _fontes(beps, mun, rtn, aeps),
         "brasil_mes": _brasil_mes(beps),
         "ufs_mes": _ufs_mes(beps),
         "serie": _serie(beps),
         "anual": anual,
         "municipios": {"anos": anual["anos"], "por_uf": {s: len(por_uf[s]["municipios"]) for s in F.SIGLAS}, "total": sum(len(por_uf[s]["municipios"]) for s in F.SIGLAS)},
         "rgps": _rgps(rtn),
+        "aeps": _aeps(aeps, beps),
     }
     corpo = json.dumps({"gold": _sem_captura(gold), "ufs": por_uf}, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     gold["hash_dados"] = hashlib.sha256(corpo.encode("utf-8")).hexdigest()

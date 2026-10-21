@@ -1,17 +1,19 @@
 name: Atualizar dados da Previdência e INSS
 
-# Observatório das Contas Públicas, painel Previdência e INSS: recoleta das três fontes e publicação pelo motor comum
+# Observatório das Contas Públicas, painel Previdência e INSS: recoleta das quatro fontes e publicação pelo motor comum
 # por grupo (scripts/atualizacao_por_grupo.py, config/atualizacao/previdencia.json). A gold
 # (public/previdencia/gold/previdencia.json e um arquivo por UF em public/previdencia/gold/municipios) é reconstruída
 # dos seeds e só é publicada com os testes verdes: série mensal do BEPS contínua e fechando com os grupos, tipos de
 # benefício com as linhas esperadas, 27 UFs que somam o Brasil, cada município fechando por grupo, soma dos municípios
 # igual ao BEPS em cada dezembro, divisão urbana e rural do RTN somando o total, % do PIB conferindo com a do Tesouro e
-# nenhuma revisão de ano fechado acima do limite. Reprovado, a publicação anterior continua no ar, a issue é aberta ou
+# nenhuma revisão de ano fechado acima do limite; do Anuário (AEPS), grupos de benefício e estados fechando e o Regime
+# Geral de cada dezembro igual ao do BEPS. Reprovado, a publicação anterior continua no ar, a issue é aberta ou
 # comentada e a execução fica vermelha.
 #
 # Cadência pela fonte: o Ministério da Previdência publica o BEPS do mês cerca de quatro semanas depois (o de agosto de
 # 2026 foi gravado em 29/09/2026); o Tesouro publica o RTN no fim do mês seguinte; o arquivo municipal sai uma vez por
-# ano, no meio do ano. Duas execuções por mês, nos dias 2 e 18, cobrem as duas publicações mensais; dado igual não gera
+# ano, no meio do ano; o Anuário, uma vez por ano, em outubro (o coletor procura a edição seguinte e, sem ela, recoleta a
+# publicada, o que não muda nenhum número). Duas execuções por mês, nos dias 2 e 18, cobrem as duas publicações mensais; dado igual não gera
 # commit (o sinal é o hash_dados da gold).
 on:
   schedule:
