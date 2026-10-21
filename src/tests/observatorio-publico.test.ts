@@ -145,7 +145,8 @@ describe("metadados por rota", () => {
 
   it("o HTML servido injeta title, description, OG, canônico e JSON-LD", () => {
     const html = montarHtml(resolverMeta("/financial-fraud"));
-    expect(html).toContain("<title>Golpes e fraudes · Observatório Brasileiro de Crédito</title>");
+    // Iniciativa 1 do parecer de UX (21/10/2026): "Página · Coleção · Scrutiniums", com a coleção dona da aba no registro
+    expect(html).toContain("<title>Golpes e fraudes · Dívida e crédito das famílias · Scrutiniums</title>");
     expect(html).toContain('<link rel="canonical" href="https://scrutiniums.com/observatorio/financial-fraud">');
     expect(html).toContain('<meta property="og:url" content="https://scrutiniums.com/observatorio/financial-fraud">');
     expect(html).toContain('"@type":"Dataset"');

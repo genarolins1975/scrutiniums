@@ -16,6 +16,7 @@
  */
 import { OBSERVATORIOS, OBSERVATORIO_PRINCIPAL, destinoObservatorio } from "@/lib/observatorios/lista";
 import { paineis } from "@/lib/observatorios/registro";
+import { resolverContexto, type IndiceContexto } from "@/lib/observatorios/contextoPuro";
 
 export const MARCADOR_INICIO = "<!-- barra-plataforma:inicio (gerada por scripts/barra-spa.mjs a partir de src/lib/observatorios/barraSpa.ts; não editar à mão) -->";
 export const MARCADOR_FIM = "<!-- barra-plataforma:fim -->";
@@ -39,13 +40,38 @@ export function indiceTrilhaSpa() {
   };
 }
 
-/** Trilha da entrada da coleção, a que o HTML traz antes do app.js: Observatórios / Economia / Crédito e sistema financeiro. */
-function htmlTrilhaInicial(): string {
-  const o = OBSERVATORIOS.find((x) => x.id === OBSERVATORIO_PRINCIPAL[DOMINIO_DA_SPA])!;
-  const c = o.colecoes.find((x) => x.dominio === DOMINIO_DA_SPA)!;
-  const porta = `/perguntas/${o.id}`;
+/**
+ * Trilha de um endereço da SPA, em HTML puro, com as mesmas peças da trilha das páginas Next (NavegacaoContexto.tsx). O
+ * index.html traz a da entrada da coleção; o route handler da SPA (src/lib/observatorioHead.ts) troca pela da aba pedida,
+ * e o app.js a refaz a cada navegação. Sem sessão, raiz e observatório levam à página aberta do observatório.
+ */
+function indiceSpa(): IndiceContexto {
+  return {
+    observatorios: OBSERVATORIOS.map((o) => ({ id: o.id, nome: o.nome, nomeCurto: o.nomeCurto, entrada: o.entrada, metodo: o.metodo, colecoes: o.colecoes.map((c) => ({ id: c.id, nome: c.nome, href: c.href })) })),
+    paineis: paineis().filter((p) => p.rota === "/observatorio" || p.rota.startsWith("/observatorio/")).map((p) => [p.rota, p.titulo, p.observatorio, p.colecao] as const),
+  };
+}
+
+/** Coleção dona de um endereço da SPA no registro (Consignado é de "Dívida e crédito das famílias"), para o título da aba. */
+export function colecaoDaRotaSpa(caminho: string): string {
+  const indice = indiceSpa();
+  const ctx = resolverContexto(caminho, indice) ?? resolverContexto("/observatorio", indice)!;
+  return ctx.colecao?.nome ?? ctx.observatorio.nome;
+}
+
+export function htmlTrilhaSpa(caminho: string): string {
+  const indice = indiceSpa();
+  const ctx = resolverContexto(caminho, indice) ?? resolverContexto("/observatorio", indice)!;
+  const porta = `/perguntas/${ctx.observatorio.id}`;
+  const pecas: [string, string][] = [["Observatórios", porta], [ctx.observatorio.nomeCurto, porta]];
+  if (ctx.colecao) pecas.push([ctx.colecao.nome, ctx.colecao.href]);
+  if (ctx.pagina) pecas.push([ctx.pagina.titulo, ctx.pagina.rota]);
   const sep = '<span aria-hidden="true">/</span>';
-  return `<nav aria-label="Você está em" class="bp-trilha obs-trilha" id="obsTrilha" data-trilha=""><ol><li><a href="${porta}">Observatórios</a></li><li>${sep}<a href="${porta}">${esc(o.nomeCurto)}</a></li><li>${sep}<span aria-current="page">${esc(c.nome)}</span></li></ol></nav>`;
+  const itens = pecas.map(([t, h], i) => {
+    const antes = i ? sep : "";
+    return i === pecas.length - 1 && ctx.exato ? `<li>${antes}<span aria-current="page">${esc(t)}</span></li>` : `<li>${antes}<a href="${h}">${esc(t)}</a></li>`;
+  });
+  return `<nav aria-label="Você está em" class="bp-trilha obs-trilha" id="obsTrilha" data-trilha=""><ol>${itens.join("")}</ol></nav>`;
 }
 
 export function htmlBarraSpa(): string {
@@ -77,7 +103,7 @@ export function htmlBarraSpa(): string {
     "  </div>",
     `  <div class="bp-abas"><div class="bp-abas-linha"><nav aria-label="Observatórios da Scrutiniums" class="obs-dominios">${abas}</nav></div></div>`,
     "</header>",
-    htmlTrilhaInicial(),
+    htmlTrilhaSpa("/observatorio"),
     `<script type="application/json" id="obsTrilhaIndice">${JSON.stringify(indiceTrilhaSpa()).replace(/</g, "\\u003c")}</script>`,
     MARCADOR_FIM,
   ].join("\n");

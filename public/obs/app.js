@@ -237,8 +237,9 @@ const fmt = {
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
 const APP_VERSION = "0.121.0";
-/* nome da coleção no registro dos seis observatórios (src/lib/observatorios/lista.ts): os títulos da aba seguem "Página · Coleção · Scrutiniums" (Iniciativa 1 do parecer de UX, 21/10/2026) */
-const TITULO_COLECAO = "Crédito e sistema financeiro · Scrutiniums";
+/* nome da coleção no registro dos seis observatórios (src/lib/observatorios/lista.ts): os títulos da aba seguem "Página · Coleção · Scrutiniums" (Iniciativa 1 do parecer de UX, 21/10/2026),
+   com a coleção dona da aba, que refazTrilha() acerta a cada navegação (Consignado é de "Dívida e crédito das famílias") */
+let TITULO_COLECAO = "Crédito e sistema financeiro · Scrutiniums";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -12849,6 +12850,7 @@ function refazTrilha() {
   const porta = "/perguntas/" + o.id;
   const pecas = [["Observatórios", TRILHA_LOGADO ? "/app/observatorios" : porta], [o.nomeCurto, TRILHA_LOGADO ? o.entrada : porta]];
   if (col) pecas.push([col.nome, col.href]);
+  TITULO_COLECAO = (col ? col.nome : "Crédito e sistema financeiro") + " · Scrutiniums";
   if (!col || dono[0] !== col.href) pecas.push([dono[1], dono[0]]);
   const ultimaAtual = exato === dono[0];
   nav.firstElementChild.innerHTML = pecas.map(([t, h], i) => {
