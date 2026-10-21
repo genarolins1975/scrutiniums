@@ -6,6 +6,9 @@ import {PainelMobilidade} from '@/components/eficiencia/mobilidade/PainelMobilid
 import {PAGINAS_MOBILIDADE,ROTA_MOBILIDADE,primeiro,type Parametros} from '@/lib/eficiencia/mobilidade/modelo';
 import s from '@/components/eficiencia/mobilidade/mobilidade.module.css';
 export const dynamic='force-dynamic';
+const ACOES=['comparar','metodos'];
+/** Subcabeçalho comum da Eficiência Estatal (item 10 do diagnóstico de 20/10/2026); o recorte territorial acompanha a troca de visão. */
+const TEMA={nome:'Mobilidade e transporte',rota:ROTA_MOBILIDADE,abas:PAGINAS_MOBILIDADE.filter(x=>!ACOES.includes(x.slug)).map(x=>[x.slug,x.nome] as const),acoes:PAGINAS_MOBILIDADE.filter(x=>ACOES.includes(x.slug)).map(x=>[x.slug,x.slug==='comparar'?'Comparar territórios':x.nome] as const),levar:['uf','busca','nivel','ordem','territorio']};
 export const dynamicParams=false;
 export const runtime='nodejs';
 /** A lista finita rejeita slugs inexistentes antes de iniciar o streaming. */
@@ -18,5 +21,5 @@ export default function Pagina({params,searchParams}:Props){
  // Navegação por Link preserva controles não controlados. Uma nova seleção na
  // URL precisa remontá-los para que defaultValue reflita o recorte servido.
  const chaveOportunidades=JSON.stringify(['indicador','modo','cidade','pico'].map(k=>primeiro(searchParams[k])));
- return <><CabecalhoEntrada/><main id="conteudo" aria-labelledby="titulo-mobilidade" className={'mx-auto max-w-page px-4 pb-20 pt-7 sm:px-6 '+s.painel}>{p.slug==='oportunidades'?<PainelOportunidades key={chaveOportunidades} p={searchParams}/>:<PainelMobilidade slug={p.slug} p={searchParams}/>}</main></>;
+ return <><CabecalhoEntrada tema={TEMA}/><main id="conteudo" aria-labelledby="titulo-mobilidade" className={'mx-auto max-w-page px-4 pb-20 pt-7 sm:px-6 '+s.painel}>{p.slug==='oportunidades'?<PainelOportunidades key={chaveOportunidades} p={searchParams}/>:<PainelMobilidade slug={p.slug} p={searchParams}/>}</main></>;
 }
