@@ -232,8 +232,8 @@ def entrada_revisor(revisor, nota_final, pacote, gold_dir):
 
 
 ITEM_GRAVE = re.compile(r"^\s*ITEM\s*\[?\s*grave\s*\]?\s*:", re.M | re.I)
-CRITERIO_FALHA = re.compile(r"^\s*C\d\s*:\s*falha", re.M | re.I)
-CRITERIO_OK = re.compile(r"^\s*C\d\s*:\s*ok", re.M | re.I)
+CRITERIO_FALHA = re.compile(r"^\s*C\d\s*:\s*falha", re.M | re.I)  # "falha grave:" e o formato antigo "falha:"
+CRITERIO_OK = re.compile(r"^\s*C\d\s*:\s*(ok|observa)", re.M | re.I)
 ITEM_QUALQUER = re.compile(r"^\s*ITEM\s*\[?\s*(grave|moderada|leve)\s*\]?\s*:", re.M | re.I)
 
 
@@ -248,7 +248,7 @@ def decisao_do_parecer(texto, papel=None):
     Revisores no formato ITEM (revisor independente e terceiro revisor): a decisão é derivada
     dos itens por código, não da linha DECISÃO. Devolve se e só se houver item grave;
     moderadas e leves são sugestões registradas que não bloqueiam (constituição v2, art. 6.5).
-    Validador constitucional (formato C1 a C5): qualquer falha devolve, todas ok aprovam.
+    Validador constitucional (formato C1 a C5): falha grave devolve; ok e observação não.
     Sem papel informado: vale a linha DECISÃO."""
     declarada = decisao_declarada(texto)
     if papel == "validador_constitucional":
@@ -399,7 +399,15 @@ def executar(ciclo, backend=backend_manual, gold_dir=fc.GOLD_PUBLICADA):
                 estado["decisao_final"] = "aprovada"
             else:
                 estado["devolucoes"] += 1
-                if estado["rodada_revisao"] + 1 >= cfg["max_rodadas_revisao"]:
+                # Orçamentos separados (constituição v2, art. 6.5): bloqueio do validador mecânico
+                # por formato não consome rodada lida pelos revisores, e vice-versa.
+                if reg["validador_mecanico"] != "aprovar":
+                    estado["bloqueios_mecanicos"] = estado.get("bloqueios_mecanicos", 0) + 1
+                    esgotou = estado["bloqueios_mecanicos"] >= cfg["max_bloqueios_mecanicos"]
+                else:
+                    estado["rodadas_lidas"] = estado.get("rodadas_lidas", 0) + 1
+                    esgotou = estado["rodadas_lidas"] >= cfg["max_rodadas_revisao"]
+                if esgotou:
                     estado["decisao_final"] = "rejeitada"
                 else:
                     estado["rodada_revisao"] += 1
@@ -412,7 +420,9 @@ def executar(ciclo, backend=backend_manual, gold_dir=fc.GOLD_PUBLICADA):
             nt.gravar_pacote_reprodutibilidade(ciclo, pacote, texto, v, papeis, gold_dir)
             _gravar(ciclo, "decisao.json", {
                 "decisao": estado["decisao_final"], "rodadas": estado["rodadas"],
-                "regra": "aprovada só com validador mecânico e os três revisores aprovando (constituição v2, art. 6.5)",
+                "regra": ("aprovada só com validador mecânico e os três revisores aprovando; até "
+                          f"{cfg['max_rodadas_revisao']} rodadas lidas pelos revisores e até "
+                          f"{cfg['max_bloqueios_mecanicos']} bloqueios mecânicos (constituição v2, art. 6.5)"),
                 "revisores": caracteristicas(cfg), "revisao_humana": False,
                 "publicacao": "degrau 1: nota aprovada fica só no repositório" if estado["decisao_final"] == "aprovada"
                               else "rejeitada: não é publicada"})

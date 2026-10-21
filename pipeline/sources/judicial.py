@@ -24,6 +24,7 @@ import time
 import urllib.request
 
 from pipeline import common
+from pipeline.sources.datajud import exige_resposta_completa
 
 # ---------------------------------------------------------------- taxonomia TPU
 # Códigos descobertos por agregação nos índices reais (nunca presumidos).
@@ -96,7 +97,7 @@ def _es(base, key, tribunal, payload, timeout=60, retries=2):
                                          headers={"Authorization": f"APIKey {key}", "Content-Type": "application/json",
                                                   "User-Agent": common.USER_AGENT})
             with urllib.request.urlopen(req, timeout=timeout) as r:
-                return json.loads(r.read())
+                return exige_resposta_completa(json.loads(r.read()))
         except Exception as e:
             last = e
             time.sleep(1.5 * (i + 1))
