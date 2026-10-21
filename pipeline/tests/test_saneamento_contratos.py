@@ -152,6 +152,29 @@ class TestSeedVersionado(unittest.TestCase):
         self.assertGreater(px["municipios"], 0)
         self.assertLessEqual(px["municipios"], sum(px["vinculos_por_ano"].values()))
 
+    def test_posicao_e_sua_referencia_entram_no_hash_e_na_publicacao(self):
+        # a página rotula a posição com o ano gravado na própria gold, nunca com a gold municipal corrente
+        r = self.g["referencia_posicao"]
+        self.assertIsInstance(r["sinisa_ano"], int)
+        self.assertEqual(r["sinisa_ano"], int(gold.ler_meta()["sinisa"]["ano_referencia"]))
+        # o hash é o sinal de mudança do motor: uma edição nova do SINISA (indicadores ou ano) tem de mudá-lo
+        original_mun, original_meta = gold.ler_municipios, gold.ler_meta
+        try:
+            def municipios_alterados(*a, **k):
+                ms = original_mun(*a, **k)
+                cod = next(c for c, m in ms.items() if m.get("IAG0001") is not None and any(c in {str(x["ibge"]) for x in b["municipios"]} for b in self.s["abrangencia"]["blocos"]))
+                ms[cod] = {**ms[cod], "IAG0001": (ms[cod]["IAG0001"] + 1) % 100}
+                return ms
+            gold.ler_municipios = municipios_alterados
+            self.assertNotEqual(gold.construir(copy.deepcopy(self.s))["hash_dados"], self.g["hash_dados"])
+            gold.ler_municipios = original_mun
+            gold.ler_meta = lambda *a, **k: {**original_meta(*a, **k), "sinisa": {**original_meta(*a, **k)["sinisa"], "ano_referencia": 2025}}
+            g2 = gold.construir(copy.deepcopy(self.s))
+            self.assertNotEqual(g2["hash_dados"], self.g["hash_dados"])
+            self.assertEqual(g2["referencia_posicao"]["sinisa_ano"], 2025)
+        finally:
+            gold.ler_municipios, gold.ler_meta = original_mun, original_meta
+
     def test_resumo_confere_com_a_gold(self):
         r = gold.resumo(self.g)
         self.assertEqual(r["hash_dados"], self.g["hash_dados"])

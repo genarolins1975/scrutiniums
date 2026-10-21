@@ -5,7 +5,7 @@ import { Abertura, Fonte, Indisponivel, NestaPagina, Nota, Numeros, Ressalva, Se
 import { CurvaMetas, LabContratado, type AreaLab, type TrajetoriaBr } from "@/components/saneamento/Contratado";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
-import { agregado, meta } from "@/lib/saneamento/gold";
+import { agregado } from "@/lib/saneamento/gold";
 import { data, inteiro, numero } from "@/lib/saneamento/formato";
 import { razaoPct } from "@/lib/saneamento/municipios";
 import {
@@ -83,7 +83,6 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
   const semDocumento = g.contratos.filter((c) => c.situacao !== "transcrito");
   const anoLegal = g.marco.meta_legal.ano;
   const br = agregado("BR");
-  const mt = meta();
   const c22 = br?.censo2022.moradores;
   const c10 = br?.censo2010;
   const brasil: TrajetoriaBr | null =
@@ -110,7 +109,7 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
   });
   const custoUniversalizacao = g.custos.filter((e) => e.natureza === "custo_universalizacao");
   const contratado = g.custos.filter((e) => e.natureza === "contratado");
-  const sinisaAno = mt?.sinisa.ano_referencia ?? 2024;
+  const sinisaAno = g.referencia_posicao.sinisa_ano;
 
   return (
     <>

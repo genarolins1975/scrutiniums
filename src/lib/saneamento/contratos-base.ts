@@ -141,6 +141,8 @@ export type GoldContratado = {
   contratos: Contrato[];
   nao_lidos: NaoLido[];
   abrangencia: Bloco[];
+  /** Ano e edição do SINISA usados ao gerar a posição por bloco: a página rotula com isto, nunca com a gold municipal corrente. */
+  referencia_posicao: { sinisa_ano: number; sinisa_edicao: string | null; sinisa_capturado_em: string | null; censo_anos: number[] };
   posicao_2024: Posicao[];
   /** Blocos cuja composição municipal não foi localizada em documento público, ou sem contrato adjudicado: fora da posição. */
   abrangencia_nao_localizada: { id: string; contrato: string; declarado_municipios: number | null; motivo: string; fonte: { url: string; titulo?: string | null; grau: "oficial" | "secundaria"; acessado_em: string } }[];

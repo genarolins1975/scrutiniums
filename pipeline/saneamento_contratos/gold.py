@@ -121,8 +121,9 @@ def _razao(ms: list[dict], num: str, den: str) -> float | None:
     return round(100 * n / d, 2) if d else None
 
 
-def posicao_blocos(blocos: list[dict], municipios: dict[str, dict], contratos: dict[str, dict]) -> list[dict]:
-    """Posição 2024 do SINISA e Censos por bloco com abrangência: médias ponderadas pela população, nunca selo de cumprimento."""
+def posicao_blocos(blocos: list[dict], municipios: dict[str, dict], contratos: dict[str, dict], ano_sinisa: int = 2024) -> list[dict]:
+    """Posição do SINISA (ano de referência da gold municipal) e dos Censos por bloco com abrangência: médias ponderadas
+    pela população, nunca selo de cumprimento. A meta contratual comparada é a última vencida até esse mesmo ano."""
     out = []
     for b in blocos:
         ms = [municipios[str(m["ibge"])] for m in b.get("municipios") or [] if str(m["ibge"]) in municipios]
@@ -131,8 +132,8 @@ def posicao_blocos(blocos: list[dict], municipios: dict[str, dict], contratos: d
         meta_2024 = {}
         if c and c.get("calendario") == "civil":
             for m in c.get("metas") or []:
-                if m.get("ano") is not None and m["ano"] <= 2024:
-                    meta_2024[m["indicador"]] = m["valor"]  # a última meta até 2024 (série ordenada abaixo)
+                if m.get("ano") is not None and m["ano"] <= ano_sinisa:
+                    meta_2024[m["indicador"]] = m["valor"]  # a última meta até o ano de referência (série ordenada abaixo)
         out.append({
             "bloco": b["id"],
             "rotulo": b.get("rotulo") or b["id"],
@@ -185,6 +186,14 @@ def construir(seed: dict) -> dict:
     for b in blocos:
         blocos_por_contrato.setdefault(b["contrato"], []).append(b["id"])
     meta_sinisa = ler_meta()
+    # a referência temporal da posição fica gravada na própria publicação: a página nunca a lê da gold municipal corrente,
+    # que pode mudar de edição antes de esta gold ser refeita
+    referencia_posicao = {
+        "sinisa_ano": int(meta_sinisa["sinisa"]["ano_referencia"]),
+        "sinisa_edicao": meta_sinisa["sinisa"].get("edicao"),
+        "sinisa_capturado_em": meta_sinisa["sinisa"].get("capturado_em"),
+        "censo_anos": [2010, 2022],
+    }
     g = {
         "versao": 1,
         "capturado_em": max([l["fonte"].get("acessado_em", "") for l in leiloes] + [(c.get("documento") or {}).get("capturado_em", "") for c in contratos]),
@@ -207,13 +216,16 @@ def construir(seed: dict) -> dict:
              "municipios": [{"ibge": str(m["ibge"]), "nome": municipios[str(m["ibge"])]["nome"], "uf": municipios[str(m["ibge"])]["uf"], "parcial": m.get("parcial")} for m in b.get("municipios") or []]}
             for b in blocos
         ],
-        "posicao_2024": posicao_blocos(blocos, municipios, por_contrato),
+        "referencia_posicao": referencia_posicao,
+        "posicao_2024": posicao_blocos(blocos, municipios, por_contrato, referencia_posicao["sinisa_ano"]),
         "abrangencia_nao_localizada": seed["abrangencia"].get("nao_localizadas", []),
         "em_estruturacao": seed["leiloes"].get("em_estruturacao", []),
         "custos": custos,
         "custos_nao_localizados": seed["custos"].get("nao_localizadas", []),
     }
-    g["hash_dados"] = _hash({**{k: g[k] for k in ("leiloes", "contratos", "abrangencia", "custos", "proxy_sinisa", "abrangencia_nao_localizada", "em_estruturacao", "custos_nao_localizados")}, "metas_municipios": linhas_mun})
+    # o hash é o sinal de mudança do motor de atualização: cobre também o que deriva da gold municipal (posição por bloco
+    # e sua referência), senão uma edição nova do SINISA seria revertida como "nada mudou"
+    g["hash_dados"] = _hash({**{k: g[k] for k in ("leiloes", "contratos", "abrangencia", "custos", "proxy_sinisa", "referencia_posicao", "posicao_2024", "abrangencia_nao_localizada", "em_estruturacao", "custos_nao_localizados")}, "metas_municipios": linhas_mun})
     g["_metas_municipios"] = linhas_mun  # só para o CSV; run.py retira antes de gravar o JSON
     return g
 
