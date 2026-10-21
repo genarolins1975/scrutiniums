@@ -116,6 +116,9 @@ def _acessos_comuns(seed: dict, campos, partes_a, partes_b, nome: str) -> list[s
     negativos = [m for m, a in zip(tm["meses"], tm["acessos"]) if a is not None and a < 0]
     if negativos:
         p.append(f"{nome}: o arquivo de totais tem acessos negativos em {', '.join(negativos[:5])}")
+    # o arquivo de totais à frente do CSV municipal (atualização parcial da fonte) publicaria um mês adiante da referência validada
+    if tm["meses"] and tm["meses"][-1] > ref:
+        p.append(f"{nome}: o arquivo de totais vai até {tm['meses'][-1]}, depois da referência {ref}; a fonte fica retida até os municípios alcançarem o mês")
     if ref not in tm["meses"]:
         p.append(f"{nome}: o arquivo de totais não tem o mês {ref}")
     else:
@@ -262,6 +265,10 @@ def validar_cobertura(seed: dict, anterior: dict | None = None, hoje: date | Non
     if erros > 5:
         p.append(f"cobertura: {erros} municípios com inconsistência interna")
     br = seed["brasil"]
+    # a evolução nacional à frente dos arquivos municipais misturaria períodos: o agregado por operadora é do último trimestre nacional
+    ultimo_nacional = max(br.get("serie") or {}, default=None)
+    if ultimo_nacional is not None and ultimo_nacional > ref:
+        p.append(f"cobertura: o arquivo de evolução do Brasil vai até {ultimo_nacional}, depois do trimestre municipal {ref}; a fonte fica retida até os municípios alcançarem o trimestre")
     if ref not in br.get("serie", {}) or "todas" not in br["serie"][ref]:
         p.append(f"cobertura: o arquivo de evolução do Brasil não tem o trimestre {ref}")
     else:

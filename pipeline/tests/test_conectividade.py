@@ -279,6 +279,11 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.fixa)
         s["total_mensal"]["acessos"][-1] = 200
         self.assertTrue(any("arquivo da Anatel" in p for p in V.validar_fixa(s)))
+        # arquivo de totais à frente do CSV municipal retém (27ª revisão do Codex)
+        s = copy.deepcopy(self.fixa)
+        s["total_mensal"]["meses"].append("2026-09")
+        s["total_mensal"]["acessos"].append(120)
+        self.assertTrue(any("depois da referência 2026-08" in p for p in V.validar_fixa(s)))
         # mês antigo negativo na série de totais retém (24ª revisão do Codex); mês vazio (None) segue lacuna legítima
         s = copy.deepcopy(self.fixa)
         s["total_mensal"]["acessos"][0] = -5
@@ -396,6 +401,11 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.cob)
         s["municipios"]["2207777"][8][0] = (s["municipios"]["2207777"][7][0] or 0) + 1
         self.assertEqual([p for p in V.validar_cobertura(s) if "2207777" in p], [])
+        # evolução nacional à frente do trimestre municipal retém (27ª revisão do Codex)
+        s = copy.deepcopy(self.cob)
+        s["brasil"]["serie"]["2026-12"] = copy.deepcopy(s["brasil"]["serie"][ref])
+        s["brasil"]["populacao"]["2026-12"] = copy.deepcopy(s["brasil"]["populacao"][ref])
+        self.assertTrue(any("vai até 2026-12, depois do trimestre municipal" in p for p in V.validar_cobertura(s)))
         # operadora no município: "4G ou 5G" acima de "todas" retém (24ª revisão do Codex)
         s = copy.deepcopy(self.cob)
         s["municipios"]["2207777"][6]["CLARO"] = [99.0, 1.0]
