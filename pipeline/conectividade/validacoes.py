@@ -208,8 +208,9 @@ def validar_cobertura(seed: dict, anterior: dict | None = None, hoje: date | Non
     erros = 0
     for cod, v in mun.items():
         nomem, uf, mor, dom, _area, tec, ops, s4, s5 = v
-        # população vazia não é zero: a soma do Brasil e as médias ponderadas sairiam incompletas sem ressalva
-        if mor is None or dom is None:
+        # população vazia não é zero, e contagem negativa não é população: a soma do Brasil e as médias ponderadas sairiam
+        # erradas sem ressalva
+        if mor is None or dom is None or mor < 0 or dom < 0:
             erros += 1
             if erros <= 5:
                 p.append(f"cobertura: município {cod} ({nomem}) sem moradores ou domicílios")

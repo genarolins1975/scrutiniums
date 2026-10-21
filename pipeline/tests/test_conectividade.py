@@ -327,6 +327,14 @@ class TestValidacoesRetem(unittest.TestCase):
         self.assertEqual(sp[i["vel_ate_10"]], 0)                      # e em faixa nenhuma, nem na mais baixa
         self.assertEqual(sp[i["vel_10_25"]] + sp[i["vel_25_100"]] + sp[i["vel_100_mais"]], 70)
         self.assertTrue(any("somam 70, acessos 100" in p for p in V.validar_fixa(s)))
+        # velocidade negativa não vira a faixa mais baixa: a coleta retém a fonte (26ª revisão do Codex)
+        with self.assertRaises(ValueError):
+            coleta._faixa_velocidade(-1)
+        z = zipfile.ZipFile(zip_fixa())
+        membros = {n: z.read(n).decode("utf-8-sig") for n in z.namelist()}
+        membros["Acessos_Banda_Larga_Fixa_2026.csv"] = membros["Acessos_Banda_Larga_Fixa_2026.csv"].replace("2Mbps a 12Mbps;10,000000;HFC", "2Mbps a 12Mbps;-10,000000;HFC")
+        with self.assertRaises(ValueError):
+            coleta.coletar_fixa("memoria://fixa.zip", _zip(membros))
 
     def test_revisao_acima_do_limite(self):
         anterior = copy.deepcopy(self.fixa)
@@ -356,6 +364,9 @@ class TestValidacoesRetem(unittest.TestCase):
         self.assertTrue(any("somam" in p for p in V.validar_movel(s)))
 
     def test_cobertura(self):
+        s = copy.deepcopy(self.cob)
+        s["municipios"]["2207777"][3] = -1                             # domicílios negativos retêm (26ª revisão do Codex)
+        self.assertTrue(any("sem moradores ou domicílios" in p for p in V.validar_cobertura(s)))
         s = copy.deepcopy(self.cob)
         s["municipios"]["2207777"][2] = None                           # moradores vazios retêm a fonte
         self.assertTrue(any("sem moradores ou domicílios" in p for p in V.validar_cobertura(s)))

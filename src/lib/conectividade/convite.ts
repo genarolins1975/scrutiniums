@@ -25,8 +25,12 @@ export function comConta(g: GoldConectividade, uf: string | null, m?: MunicipioG
   const tem4g = !m || m.cobertura?.tecnologias.g4?.[0] != null;
   const tem5g = !m || m.cobertura?.tecnologias.g5?.[0] != null;
   const cob = [tem4g ? "a colocação estadual em cobertura 4G" : "", tem5g ? "a faixa nacional em cobertura 5G" : ""].filter(Boolean).join(" e ");
+  // o arquivo de densidade pode omitir até três municípios: sem densidade publicada não há posição em acessos fixos
+  const semDensidade = !!m && !!m.fixa && m.fixa.densidade == null;
   const posicoes = semFixa
     ? `A Anatel não registra acessos de banda larga fixa neste município, então as posições em acessos fixos e em fibra ficam sem dado${cob ? `; o painel mostra ${cob}` : ""}`
+    : semDensidade
+    ? `A Anatel não publica a densidade de acessos fixos deste município, então a posição em acessos fixos por 100 habitantes fica sem dado; o painel mostra a faixa em que ele cai, entre os municípios do país, em fibra${cob ? ` e ${cob}` : ""}`
     : `${n ? `A posição do município entre os ${num(n)} do estado e os ${num(g.destaques.ranqueados.fixa_densidade)} do país com acessos fixos` : `A posição do município entre os do estado e os ${num(g.destaques.ranqueados.fixa_densidade)} do país com acessos fixos`} em acessos fixos por 100 habitantes e a faixa em que ele cai, entre os municípios do país, em fibra${cob ? `, ${cob}` : ""}`;
   // município publicado sem uma das fontes (Boa Esperança do Norte, instalado depois do Censo 2022, não tem telefonia
   // móvel nem cobertura): o convite diz a ausência em vez de prometer o que o painel não mostra

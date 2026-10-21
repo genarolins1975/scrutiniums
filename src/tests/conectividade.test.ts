@@ -204,6 +204,12 @@ describe("versão aperitivo: só o município, com os números da gold", () => {
     expect(cf[0]).not.toContain("velocidade contratada por faixa");
     expect(cf[1]).toContain("as posições em acessos fixos e em fibra ficam sem dado");
     expect(cf[1]).toContain("colocação estadual em cobertura 4G");
+    // fixa sem densidade publicada: o convite não promete a posição em acessos fixos por 100 habitantes (26ª revisão do Codex)
+    const semDens = { ...municipioComTudo(), fixa: { ...municipioComTudo().fixa!, densidade: null } };
+    const cd = comConta(g, "SP", semDens);
+    expect(cd[1]).toContain("não publica a densidade de acessos fixos deste município");
+    expect(cd[1]).not.toContain("A posição do município entre os");
+    expect(cd[1]).toContain("em fibra e a colocação estadual em cobertura 4G");
     // registro de cobertura sem o valor de 5G: o convite não promete a faixa nacional em 5G (25ª revisão do Codex)
     const base = municipioComTudo();
     const semG5 = { ...base, cobertura: { ...base.cobertura!, tecnologias: { ...base.cobertura!.tecnologias, g5: null } } };

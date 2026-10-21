@@ -267,6 +267,8 @@ def _faixa_velocidade(v: float | None) -> str | None:
     total e não nas faixas, e a validação retém a fonte quando as faixas deixam de somar o total."""
     if v is None:
         return None
+    if v < 0:
+        raise ValueError(f"velocidade contratada negativa ({v}); a fonte fica retida")
     campo = F.FAIXAS_VELOCIDADE[0][1]
     for limite, nome in F.FAIXAS_VELOCIDADE:
         if v >= limite:
