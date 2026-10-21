@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useMemo, type ReactNode } from "react";
+import { createContext, useContext, useMemo, type ReactNode } from "react";
 import { Nome } from "@/components/i18n/Nome";
 import { useSessao } from "@/components/acesso/sessao";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
@@ -18,6 +18,24 @@ import type { ObservatorioId } from "@/lib/observatorios/lista";
  * não se refaz ao navegar entre páginas irmãs, e a coleção atual tem de seguir a página aberta. No HTML do servidor valem o
  * mesmo índice e o endereço da renderização (`caminho`), então a primeira tela já sai certa, inclusive sem JavaScript.
  */
+type Base = { indice: IndiceContexto; caminho: string | null };
+const ContextoBase = createContext<Base | null>(null);
+
+/**
+ * Provedor do índice para as peças de um cabeçalho (CabecalhoPlataforma): o índice vai uma vez só no fluxo RSC da página,
+ * em vez de uma por peça. Fora dele, cada peça recebe o índice pelas props.
+ */
+export function ProvedorContexto({ indice, caminho, children }: Base & { children: ReactNode }) {
+  return <ContextoBase.Provider value={{ indice, caminho }}>{children}</ContextoBase.Provider>;
+}
+
+const VAZIO: IndiceContexto = { observatorios: [], paineis: [] };
+
+function useBase(props: Partial<Base>): Base {
+  const doProvedor = useContext(ContextoBase);
+  return { indice: props.indice ?? doProvedor?.indice ?? VAZIO, caminho: props.caminho !== undefined ? props.caminho : doProvedor?.caminho ?? null };
+}
+
 function useContexto(indice: IndiceContexto, caminho: string | null, rotaFixa?: string): ContextoRota | null {
   const navegador = usePathname();
   const atual = rotaFixa ?? navegador ?? caminho;
@@ -32,29 +50,26 @@ const entradaDe = (o: ObservatorioResumo) => o.entrada ?? `/app/observatorios#ob
 // ------------------------------------------------------------------ seletor
 
 export function SeletorColecoes({
-  indice,
-  caminho,
   padrao,
   idioma,
   onDark = false,
-  menu,
-}: {
-  indice: IndiceContexto;
-  caminho: string | null;
+  children: menu,
+  ...props
+}: Partial<Base> & {
   /** Coleção a marcar quando o endereço não está no registro (o domínio que a página declarou). */
   padrao: { observatorio: ObservatorioId; colecao: string } | null;
   idioma: Idioma;
   onDark?: boolean;
   /** O fim do menu ("Escolher na minha conta"), igual em toda página. */
-  menu: ReactNode;
+  children: ReactNode;
 }) {
+  const { indice, caminho } = useBase(props);
   const ctx = useContexto(indice, caminho);
   const obsPadrao = padrao ? indice.observatorios.find((o) => o.id === padrao.observatorio) ?? null : null;
   const observatorioAtual = ctx?.observatorio ?? obsPadrao;
   const colecaoAtual = ctx ? ctx.colecao : obsPadrao?.colecoes.find((c) => c.id === padrao?.colecao) ?? null;
   const rotulo = colecaoAtual?.nome ?? observatorioAtual?.nomeCurto ?? null;
   const cor = onDark ? "text-marfim" : "text-carvao";
-  const item = "flex min-h-[36px] items-center px-3 py-1.5 [@media(pointer:coarse)]:min-h-[44px]";
   return (
     <>
       <summary
@@ -77,12 +92,12 @@ export function SeletorColecoes({
       <div className="fixed inset-x-4 z-40 mt-1 hidden max-h-[80vh] overflow-y-auto border border-linha bg-superficie p-2 shadow-[0_8px_24px_rgba(26,29,33,0.12)] group-open:block sm:absolute sm:inset-x-auto sm:left-0 sm:w-[34rem]">
         <div className="sm:columns-2 sm:gap-2">
           {indice.observatorios.map((o) => (
-            <div key={o.id} className="break-inside-avoid border-b border-linha pb-1 last:border-b-0 sm:border-b-0">
+            <div key={o.id} className="break-inside-avoid pb-1">
               <Link
                 href={entradaDe(o)}
                 prefetch={false}
                 aria-current={!colecaoAtual && observatorioAtual?.id === o.id ? "true" : undefined}
-                className={`rotulo ${item} text-mineral hover:text-carvao aria-[current=true]:text-carvao`}
+                className="rotulo sel-item sel-obs"
               >
                 <Nome>{o.nomeCurto}</Nome>
               </Link>
@@ -95,7 +110,7 @@ export function SeletorColecoes({
                         href={hrefNoIdioma(c.href, idioma)}
                         prefetch={false}
                         aria-current={eAtual ? "true" : undefined}
-                        className={`${item} text-sm text-carvao hover:bg-papel aria-[current=true]:bg-papel aria-[current=true]:font-semibold`}
+                        className="sel-item sel-col"
                       >
                         <Nome>{c.nome}</Nome>
                         {eAtual && <span className="sr-only">{tx(" (atual)", " (current)", idioma)}</span>}
@@ -116,18 +131,16 @@ export function SeletorColecoes({
 // -------------------------------------------------------------------- abas
 
 export function AbasObservatorios({
-  indice,
-  caminho,
   padrao,
   abas,
   rotulo,
-}: {
-  indice: IndiceContexto;
-  caminho: string | null;
+  ...props
+}: Partial<Base> & {
   padrao: ObservatorioId | null;
   abas: { id: ObservatorioId; href: string; rotulo: string }[];
   rotulo: string;
 }) {
+  const { indice, caminho } = useBase(props);
   const ctx = useContexto(indice, caminho);
   const corrente = ctx?.observatorio.id ?? padrao;
   return (
@@ -152,20 +165,18 @@ export type ItemExtra = { titulo: string; href?: string };
  * fora do registro que pertencem a ela (os dados abertos do Crédito).
  */
 export function TrilhaCliente({
-  indice,
-  caminho,
   rota,
   extras = [],
   idioma,
   className,
-}: {
-  indice: IndiceContexto;
-  caminho: string | null;
+  ...props
+}: Partial<Base> & {
   rota?: string;
   extras?: ItemExtra[];
   idioma: Idioma;
   className?: string;
 }) {
+  const { indice, caminho } = useBase(props);
   const ctx = useContexto(indice, caminho, rota);
   const logado = useSessao();
   if (!ctx) return null;

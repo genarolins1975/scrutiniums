@@ -17,11 +17,14 @@ export function SwitcherObservatorio({
   atual = null,
   caminho,
   onDark = false,
+  doProvedor = false,
 }: {
   atual?: DominioId | null;
   /** Endereço a resolver (testes); sem ele, o da renderização. */
   caminho?: string | null;
   onDark?: boolean;
+  /** Dentro de um ProvedorContexto (CabecalhoPlataforma): o índice vem dele e não se repete nas props. */
+  doProvedor?: boolean;
 }) {
   // idioma pelo endereço (vale em qualquer observatório); nomes de observatório e coleção são nomes próprios e ficam em português, marcados
   const idioma = idiomaEnergia();
@@ -30,17 +33,15 @@ export function SwitcherObservatorio({
   return (
     <DetalhesFechaveis className="group relative">
       <SeletorColecoes
-        indice={indiceDoCaminho(endereco)}
-        caminho={endereco}
+        {...(doProvedor ? {} : { indice: indiceDoCaminho(endereco), caminho: endereco })}
         padrao={doDominio ? { observatorio: doDominio.observatorio.id, colecao: doDominio.colecao.id } : null}
         idioma={idioma}
         onDark={onDark}
-        menu={
-          <Link href="/app/observatorios" className="rotulo mt-1 flex min-h-[36px] items-center border-t border-linha px-3 py-1.5 text-mineral hover:text-carvao [@media(pointer:coarse)]:min-h-[44px]">
-            {tx("Escolher na minha conta →", "Choose in my account →", idioma)}
-          </Link>
-        }
-      />
+      >
+        <Link href="/app/observatorios" className="rotulo sel-item sel-obs mt-1 border-t border-linha">
+          {tx("Escolher na minha conta →", "Choose in my account →", idioma)}
+        </Link>
+      </SeletorColecoes>
     </DetalhesFechaveis>
   );
 }

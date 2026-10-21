@@ -10,7 +10,7 @@ import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { FerramentasConta } from "@/components/conta/FerramentasConta";
 import { origemDoCabecalho } from "@/lib/conta/origens";
 import { caminhoAtual, indiceDoCaminho } from "@/lib/observatorios/contexto";
-import { TrilhaCliente } from "@/components/layout/NavegacaoContexto";
+import { ProvedorContexto, TrilhaCliente } from "@/components/layout/NavegacaoContexto";
 import type { DominioFrescorId } from "@/lib/frescor";
 
 /**
@@ -52,20 +52,20 @@ export function CabecalhoPlataforma({
   const marcado = observatorio ?? (colecao ? OBSERVATORIO_PRINCIPAL[colecao] : null);
   const origem = origemDoCabecalho(colecao, observatorio, fontes);
   return (
-    <>
+    <ProvedorContexto indice={indice} caminho={caminho}>
       <BarraPlataforma
         marca={{ href: hrefNoIdioma("/", idioma), rotulo: tx("Scrutiniums: página inicial", "Scrutiniums: home page", idioma) }}
-        seletor={<SwitcherObservatorio atual={colecao} caminho={caminho} />}
+        seletor={<SwitcherObservatorio atual={colecao} caminho={caminho} doProvedor />}
         acoes={<AcessoConta destino={destinoConta} />}
         abas={
           <div className="bp-abas-linha">
-            <NavegacaoObservatorios observatorio={marcado} indice={indice} caminho={caminho} />
+            <NavegacaoObservatorios observatorio={marcado} />
             {complementos}
             {origem && <FerramentasConta origem={origem.id} observatorio={origem.nome} dominios={origem.dominios} />}
           </div>
         }
       />
-      <TrilhaCliente indice={indice} caminho={caminho} idioma={idioma} className="bp-trilha" />
-    </>
+      <TrilhaCliente idioma={idioma} className="bp-trilha" />
+    </ProvedorContexto>
   );
 }

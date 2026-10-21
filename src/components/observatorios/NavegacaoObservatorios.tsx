@@ -21,13 +21,14 @@ export const ABAS_OBSERVATORIOS: { id: ObservatorioId; href: string; rotulo: str
 
 export function NavegacaoObservatorios({
   observatorio,
-  indice = { observatorios: [], paineis: [] },
-  caminho = null,
+  indice,
+  caminho,
 }: {
   observatorio: ObservatorioId | null;
+  /** Sem índice nas props, as abas o leem do ProvedorContexto do cabeçalho; sem nenhum dos dois, vale `observatorio`. */
   indice?: IndiceContexto;
   caminho?: string | null;
 }) {
   const idioma = idiomaEnergia();
-  return <AbasObservatorios indice={indice} caminho={caminho} padrao={observatorio} abas={ABAS_OBSERVATORIOS} rotulo={tx("Observatórios da Scrutiniums", "Scrutiniums observatories", idioma)} />;
+  return <AbasObservatorios {...(indice ? { indice, caminho: caminho ?? null } : {})} padrao={observatorio} abas={ABAS_OBSERVATORIOS} rotulo={tx("Observatórios da Scrutiniums", "Scrutiniums observatories", idioma)} />;
 }

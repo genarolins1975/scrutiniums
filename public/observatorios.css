@@ -43,6 +43,14 @@
 /* Trilha "Você está em" logo abaixo da barra comum (Iniciativa 1 do parecer de UX, 21/10/2026): mesma largura e margens da
    barra, sem caixa nem regra própria, para não somar mais uma faixa de cromo ao cabeçalho. */
 .bp-trilha { box-sizing:border-box; width:100%; max-width:var(--bp-largura,77.5rem); margin-inline:auto; padding-inline:var(--bp-margem,clamp(1rem,4vw,2.5rem)); padding-block:4px; }
+/* Itens do seletor de coleção (SwitcherObservatorio): 34 itens por página, então classes curtas em vez das utilitárias */
+.sel-item { display:flex; align-items:center; min-height:36px; padding:6px 12px; }
+@media (pointer:coarse) { .sel-item { min-height:44px; } }
+.sel-col { font-size:.875rem; line-height:1.25rem; color:var(--cor-carvao); }
+.sel-col:hover, .sel-col[aria-current="true"] { background:var(--cor-papel); }
+.sel-col[aria-current="true"] { font-weight:600; }
+.sel-obs { color:var(--cor-mineral); }
+.sel-obs:hover, .sel-obs[aria-current="true"] { color:var(--cor-carvao); }
 /* a mesma trilha na SPA do Crédito, que não carrega o Tailwind das páginas Next */
 .observatorio-credito .obs-trilha ol { display:flex; flex-wrap:wrap; align-items:center; gap:0 8px; margin:0; padding:0; list-style:none; font-size:13px; line-height:20px; color:var(--bp-suave); }
 .observatorio-credito .obs-trilha li { display:inline-flex; align-items:center; gap:8px; }
