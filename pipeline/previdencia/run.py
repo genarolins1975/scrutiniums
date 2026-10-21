@@ -8,7 +8,8 @@
 
 Fontes de coleta: beps (Boletim Estatístico da Previdência Social, mensal), municipios (benefícios emitidos por
 município, anual), rtn (Resultado do Tesouro Nacional, série histórica) e aeps (Anuário Estatístico da Previdência
-Social, anual: concessões, valor do ano, rede e atendimento), ou todas. A coleta valida o que trouxe antes
+Social, anual: concessões, valor do ano, rede e atendimento, com a rede e o atendimento das edições anteriores desde a
+de 2022), ou todas. A coleta valida o que trouxe antes
 de gravar o seed: planilha trocada, tabela que não fecha ou revisão acima do limite não substituem o seed anterior
 (saída 1). A construção da gold valida de novo, com a conferência cruzada entre o arquivo municipal e o BEPS, e não
 grava nada se reprovar; nesse caso a saída é 1 e a publicação anterior continua no ar.

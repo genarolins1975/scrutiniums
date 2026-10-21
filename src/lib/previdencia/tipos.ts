@@ -59,6 +59,8 @@ export type FonteAeps = {
   capturado_em: string;
   atualizado_em: string;
   tabelas: Record<IdTabelaAeps, TabelaAeps>;
+  /** Edições anteriores à principal, só com o atendimento e a rede (43.1 e 43.2): um ano por edição. */
+  anteriores: { edicao: number; raiz: string | null; capturado_em: string; atualizado_em: string | null; tabelas: Partial<Record<"43.1" | "43.2", TabelaAeps>> }[];
 };
 
 export type IdTabelaAeps = "a.1" | "a.14" | "b.1" | "b.2" | "b.3" | "43.1" | "43.2";
@@ -91,6 +93,12 @@ export type EspecieAeps = {
 
 export type UfAeps = { uf: string; nome: string; regiao: string; v: (number | null)[] };
 
+/** Atendimentos nas unidades do INSS num ano (tabela 43.2): os doze meses do Brasil e de cada UF; o total é a soma. */
+export type AtendimentoAno = { ano: number; edicao?: number; brasil: number[]; total: number; ufs: (UfAeps & { total: number })[] };
+
+/** Rede de unidades do INSS em dezembro de um ano (tabela 43.1), nas colunas de Aeps["rede"]["colunas"]. */
+export type RedeAno = { ano: number; edicao: number; referencia: string; brasil: (number | null)[]; ufs: UfAeps[] };
+
 export type IdRedeAeps =
   | "superintendencias" | "gerencias" | "aps_fixas" | "aps_adj" | "aps_ai" | "aps_tel" | "aps_moveis" | "prevcidade"
   | "auditorias" | "procuradorias_regionais" | "procuradorias_seccionais" | "corregedorias";
@@ -102,8 +110,12 @@ export type Aeps = {
   unidade_valor: string;
   especies: EspecieAeps[];
   concessoes_uf: { brasil: NoveValores; ufs: UfAeps[] };
-  rede: { referencia: string; colunas: IdRedeAeps[]; brasil: (number | null)[]; ufs: UfAeps[] };
-  atendimento: { ano: number; brasil: number[]; total: number; ufs: (UfAeps & { total: number })[] };
+  /** Rede em dezembro do último ano e a série por edição (o último ano se repete na série). */
+  rede: { referencia: string; colunas: IdRedeAeps[]; brasil: (number | null)[]; ufs: UfAeps[]; anos: number[]; serie: RedeAno[] };
+  /** Atendimento no último ano e a série por edição (o último ano se repete na série). */
+  atendimento: AtendimentoAno & { anos: number[]; serie: AtendimentoAno[] };
+  /** Tabela de uma edição anterior que ficou fora da série, com o motivo: o ano fica sem ela, nada é estimado. */
+  fora_da_serie: { edicao: number; tabela: "43.1" | "43.2"; motivo: string }[];
   conferencia_beps: { ano: number; total_aeps: number; total_beps: number; rgps_aeps: number; rgps_beps: number; pmv_epu_aeps: number; ble_beps: number }[];
 };
 

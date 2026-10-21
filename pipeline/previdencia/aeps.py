@@ -5,6 +5,9 @@ só a biblioteca padrão (html.parser) e é estrita: cabeçalho com outros anos,
 renomeada ou número em formato inesperado levantam ValueError, e a coleta reprova sem tocar no seed. O traço da fonte
 ("-") vira None: o Anuário não define se é zero ou dado ausente, e a ausência nunca vira zero aqui.
 
+As tabelas 43.1 (rede) e 43.2 (atendimento) trazem um único ano por edição: a série vem das edições anteriores, guardadas
+em "anteriores" no seed só com essas duas tabelas e os mesmos metadados (fontes.PRIMEIRA_EDICAO_ATENDIMENTO_AEPS).
+
 Cada tabela guarda no seed o endereço, o sha256 e o tamanho da página capturada, o sha256 só da tabela (o da página muda
 quando o portal troca menus e sugestões de busca, o da tabela só muda se um número ou rótulo mudar), as datas de
 publicação e de atualização declaradas na página, a linha de fonte e as notas.
@@ -218,33 +221,76 @@ def ler_tabela(html: str, tid: str, edicao: int) -> dict:
 
 
 def url_tabela(tid: str, edicao: int) -> str:
-    return F.BASE_AEPS.format(edicao=edicao) + "/" + F.TABELAS_AEPS[tid][0]
+    return F.raiz_aeps(edicao) + "/" + F.TABELAS_AEPS[tid][0]
 
 
-def coletar_edicao(edicao: int) -> dict:
-    """Baixa e lê as tabelas de uma edição. Falta de qualquer tabela levanta RuntimeError (a edição não está completa)."""
+def _coletar_tabelas(edicao: int, tids) -> dict:
     tabelas = {}
-    for tid in F.TABELAS_AEPS:
+    for tid in tids:
         url = url_tabela(tid, edicao)
         corpo, meta = baixar(url)
         t = ler_tabela(corpo.decode("utf-8"), tid, edicao)
         t.update({"url": url, "sha256": meta["sha256"], "bytes": meta["bytes"], "capturado_em": agora_utc()})
         tabelas[tid] = t
+    return tabelas
+
+
+def coletar_edicao(edicao: int) -> dict:
+    """Baixa e lê as tabelas de uma edição. Falta de qualquer tabela levanta RuntimeError (a edição não está completa)."""
+    tabelas = _coletar_tabelas(edicao, F.TABELAS_AEPS)
     return {
         "edicao": edicao,
         "anos": [edicao - 2, edicao - 1, edicao],
         "pagina": F.PAGINA_AEPS,
-        "raiz": F.BASE_AEPS.format(edicao=edicao),
+        "raiz": F.raiz_aeps(edicao),
         "capturado_em": agora_utc(),
         "tabelas": tabelas,
     }
 
 
+def coletar_atendimento(edicao: int) -> dict:
+    """Só as tabelas de atendimento e rede (43.1 e 43.2) de uma edição anterior: cada edição traz um único ano delas. A
+    tabela declarada fora da série naquela edição (fontes.FORA_DA_SERIE_AEPS) não é coletada."""
+    return {
+        "edicao": edicao,
+        "anos": [edicao],
+        "pagina": F.PAGINA_AEPS,
+        "raiz": F.raiz_aeps(edicao),
+        "capturado_em": agora_utc(),
+        "tabelas": _coletar_tabelas(edicao, F.tabelas_atendimento_aeps(edicao)),
+    }
+
+
+def _anteriores(edicao: int, anterior: dict | None) -> list[dict]:
+    """Atendimento e rede das edições anteriores à principal, da primeira integrada até a véspera, recoletados. Se uma
+    edição já publicada não responder, a captura anterior dela fica (com a data de captura original); se nunca foi
+    capturada, fica de fora e a validação reprova a lacuna."""
+    guardadas = {a["edicao"]: a for a in (anterior or {}).get("anteriores") or []}
+    if anterior and isinstance(anterior.get("edicao"), int) and anterior["edicao"] < edicao:
+        guardadas[anterior["edicao"]] = {  # a edição principal de antes passa a anterior, com as duas tabelas
+            "edicao": anterior["edicao"], "anos": [anterior["edicao"]], "pagina": anterior.get("pagina", F.PAGINA_AEPS),
+            "raiz": anterior.get("raiz"), "capturado_em": anterior.get("capturado_em"),
+            "tabelas": {tid: anterior["tabelas"][tid] for tid in F.tabelas_atendimento_aeps(anterior["edicao"]) if tid in (anterior.get("tabelas") or {})},
+        }
+    out = []
+    for e in range(F.PRIMEIRA_EDICAO_ATENDIMENTO_AEPS, edicao):
+        try:
+            out.append(coletar_atendimento(e))
+        except RuntimeError as erro:
+            print(f"AEPS {e} (atendimento) indisponível ({erro})", flush=True)
+            if e in guardadas:
+                out.append(guardadas[e])
+    return out
+
+
 def coletar_aeps(anterior: dict | None = None) -> dict:
-    """Procura a edição seguinte à publicada; se ela ainda não existe no mesmo desenho, recoleta a publicada."""
+    """Procura a edição seguinte à publicada; se ela ainda não existe no mesmo desenho, recoleta a publicada. Junta o
+    atendimento e a rede das edições anteriores (43.1 e 43.2), que formam a série desses dois quadros."""
     atual = (anterior or {}).get("edicao") or F.PRIMEIRA_EDICAO_AEPS
     try:
-        return coletar_edicao(atual + 1)
+        novo = coletar_edicao(atual + 1)
     except RuntimeError as e:  # 404 ou rede: a edição seguinte não está no ar nesse endereço
         print(f"AEPS {atual + 1} indisponível ({e}); recoletando a edição {atual}", flush=True)
-    return coletar_edicao(atual)
+        novo = coletar_edicao(atual)
+    novo["anteriores"] = _anteriores(novo["edicao"], anterior)
+    return novo

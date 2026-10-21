@@ -155,7 +155,10 @@
 .pv-tabela-media { min-width: 560px; max-width: 980px; }
 .pv-figura-media { max-width: 760px; }
 .pv-rede { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin-top: 24px; border-block: 1px solid var(--cor-linha); }
-.pv-rede > div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 4px; padding: 16px 20px 18px; border-right: 1px solid var(--cor-linha); min-width: 0; }
+/* o número em cima, o rótulo embaixo e, por último, o mesmo número nos dezembros anteriores */
+.pv-rede > div { display: flex; flex-direction: column; gap: 4px; padding: 16px 20px 18px; border-right: 1px solid var(--cor-linha); min-width: 0; }
+.pv-rede > div > .pv-valor { order: -1; }
+.pv-rede .pv-prova { margin-top: 2px; font-variant-numeric: tabular-nums; }
 .pv-rede > div:first-child { padding-left: 0; }
 .pv-rede > div:last-child { border-right: 0; }
 .pv-rede dt { font-size: 14px; line-height: 1.45; color: var(--cor-carvao-muted); }
