@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.119.0";
+const APP_VERSION = "0.120.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -4306,6 +4306,47 @@ function blocoProtocolo() {
 }
 
 /* ---------- SETORES ---------- */
+/* Diagnóstico de layout de 20/10/2026, item 4: a aba tinha o primeiro gráfico a 5 mil px. Esta régua mostra todas as
+   atividades de uma vez, uma linha por pesquisa, cada ponto um score. A referência é o 50 do próprio método (score =
+   50 + 20 × Σ peso × z: a média da história da atividade). Sem faixas coloridas: os cortes das faixas não vêm na gold,
+   e cor de juízo por ponto não entra. */
+function setorRegua(sectors) {
+  const st = (sectors.setores || []).filter(x => x.score != null);
+  if (st.length < 5) return "";
+  const PESQ = [["industria", "Indústria"], ["servicos", "Serviços"], ["comercio", "Comércio"]];
+  const linhas = PESQ.map(([p, rot]) => ({ p, rot, pts: st.filter(x => (x.pesquisa || "industria") === p) })).filter(l => l.pts.length);
+  const v = st.map(x => x.score);
+  const lo = Math.max(0, Math.floor(Math.min(...v, 50) / 10) * 10), hi = Math.min(100, Math.ceil(Math.max(...v, 50) / 10) * 10);
+  const W = 760, esq = 112, dir = 16, passo = 46, topo = 22, H = topo + linhas.length * passo + 30;
+  const x = s => esq + (s - lo) / (hi - lo) * (W - esq - dir);
+  const refMax = st.map(s => s.ref).filter(Boolean).sort().pop();
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" style="min-width:600px;max-width:none;height:auto" aria-label="Score de estresse de ${st.length} atividades, de ${lo} a ${hi}, por pesquisa do IBGE">`;
+  for (let t = lo; t <= hi; t += 10) {
+    svg += `<line x1="${x(t)}" x2="${x(t)}" y1="${topo}" y2="${H - 26}" style="stroke:var(--border)" stroke-width="1"/>`;
+    svg += `<text x="${x(t)}" y="${H - 8}" font-size="12" text-anchor="middle" style="fill:var(--text-2)">${t}</text>`;
+  }
+  svg += `<line x1="${x(50)}" x2="${x(50)}" y1="${topo - 4}" y2="${H - 26}" style="stroke:var(--text)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+  svg += `<text x="${x(50) + 6}" y="${topo - 8}" font-size="12" style="fill:var(--text)">50 = média da própria história</text>`;
+  linhas.forEach((l, k) => {
+    const cy = topo + k * passo + passo / 2;
+    svg += `<text x="0" y="${cy - 2}" font-size="13" style="fill:var(--text)">${l.rot}</text>`;
+    svg += `<text x="0" y="${cy + 13}" font-size="12" style="fill:var(--text-2)">${l.pts.length} atividades</text>`;
+    l.pts.forEach(s => {
+      const tip = encodeURIComponent(`<div class="tt-date">${s.nome}</div><div class="tt-row"><span class="tt-lbl">score · ${s.tendencia}</span><span class="tt-val">${fmt.n(s.score, 1)}</span></div>`);
+      svg += `<circle cx="${x(s.score)}" cy="${cy}" r="4.5" data-tip="${tip}" style="fill:color-mix(in srgb, var(--accent) 72%, transparent);stroke:var(--surface)" stroke-width="1"/>`;
+    });
+  });
+  svg += `</svg>`;
+  const tabela = `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap" style="max-height:320px"><table class="data compact"><thead><tr><th>Atividade</th><th>Pesquisa</th><th style="text-align:right">Score</th><th>Tendência em 3 meses</th></tr></thead><tbody>` +
+    linhas.flatMap(l => l.pts.slice().sort((a, b) => b.score - a.score).map(s => `<tr><td><a href="/observatorio/sectors/${s.codigo}" onclick="nav('sector',{sectorCod:'${s.codigo}'});return false">${s.nome}</a></td><td>${l.rot}</td><td style="text-align:right">${fmt.n(s.score, 1)}</td><td>${s.tendencia}</td></tr>`)).join("") +
+    `</tbody></table></div></details>`;
+  return `<div class="card" id="setor-regua" style="margin-top:8px">
+    <h4>Onde cada atividade está no score de estresse</h4>
+    <p class="src">Score de 0 a 100${refMax ? `, IBGE até ${fmt.my(refMax)}` : ""}. Cada ponto é uma atividade; acima de 50, mais estresse que a média da sua própria história. Compare posições dentro de cada pesquisa: os universos são distintos, e o score compara cada atividade com o próprio passado, não os níveis entre pesquisas.</p>
+    <div class="tblwrap" style="overflow-x:auto">${svg}</div>
+    ${tabela}
+  </div>`;
+}
 function renderSectors() {
   const el = document.getElementById("view-sectors");
   const { sectors, pulse } = state.data;
@@ -4318,12 +4359,12 @@ function renderSectors() {
                 ["comercio", "Comércio varejista ampliado — volume de vendas (PMC)"]];
   const linhaSetor = s => `
     <tr>
-      <td>${s.nome} ${favStar("sectors", s.codigo, s.nome)}<br><button class="btn ghost small" onclick="openSectorPage('${s.codigo}')">ficha do setor →</button></td>
+      <td><a href="/observatorio/sectors/${s.codigo}" onclick="nav('sector',{sectorCod:'${s.codigo}'});return false">${s.nome}</a> ${favStar("sectors", s.codigo, s.nome)}</td>
       <td><span class="scorebar"><i style="left:${s.score * 0.9}px"></i></span> <b>${s.score}</b><div class="src">${s.faixa}</div></td>
-      <td class="${s.tendencia === "piorando" ? "up" : s.tendencia === "melhorando" ? "down good" : "neutral"}">${s.tendencia} <span class="src">(${fmt.pp(s.tendencia_valor_pp)} p.p./3m)</span></td>
-      <td class="${s.velocidade === "momento piorando" ? "up" : s.velocidade === "momento melhorando" ? "down good" : "neutral"}">${s.velocidade} <span class="src">(${fmt.pp(s.velocidade_valor_pp)} p.p.)</span></td>
+      <td>${s.tendencia} <span class="src">(${fmt.pp(s.tendencia_valor_pp)} p.p./3m)</span></td>
+      <td>${s.velocidade} <span class="src">(${fmt.pp(s.velocidade_valor_pp)} p.p.)</span></td>
       <td>${fmt.n(s.yoy_producao_pct, 1)}% <span class="src">(${fmt.my(s.ref)})</span></td>
-      <td><details class="decomp"><summary>ficha</summary>
+      <td><details class="decomp"><summary>abrir</summary>
         <h5>Contribuições para o score (waterfall)</h5>
         ${Object.entries(s.contribuicoes).map(([k, v]) => contribBar(k.replace(/_/g, " ") + (s.componentes[k].status === "demonstrativo" ? " ⚠demo" : ""), v, 6)).join("")}
         <h5>Componentes</h5>
@@ -4335,12 +4376,12 @@ function renderSectors() {
     const lista = sectors.setores.filter(s => (s.pesquisa || "industria") === p);
     if (!lista.length) return "";
     return `<h3>${titulo} <span class="src">${lista.length} atividades</span></h3>
-  <div class="tblwrap"><table class="data"><thead><tr><th>Atividade</th><th>Nível</th><th>Tendência</th><th>Velocidade</th><th>Volume a/a</th><th>Ficha</th></tr></thead><tbody>${lista.map(linhaSetor).join("")}</tbody></table></div>`;
+  <div class="tblwrap"><table class="data"><thead><tr><th>Atividade</th><th>Score</th><th>Tendência</th><th>Velocidade</th><th>Volume a/a</th><th>Composição</th></tr></thead><tbody>${lista.map(linhaSetor).join("")}</tbody></table></div>`;
   }).join("");
   const papel = pulse && pulse.series.papelao;
   el.innerHTML = `
   ${pageHead({ title: "Risco setorial",
-    desc: "Score de estresse por atividade a partir do volume real de cada setor — indústria (PIM), serviços (PMS) e comércio (PMC) —, das condições de crédito PJ e do emprego formal da seção CNAE (Novo Caged). Não é inadimplência setorial (indisponível nas fontes públicas). Cada setor abre uma ficha completa.",
+    desc: "Score de estresse por atividade a partir do volume real de cada setor — indústria (PIM), serviços (PMS) e comércio (PMC) —, das condições de crédito PJ e do emprego formal da seção CNAE (Novo Caged). Não é inadimplência setorial (indisponível nas fontes públicas). O nome de cada atividade abre a sua ficha completa.",
     fontes: "IBGE PIM-PF · PMS · PMC, BCB/SGS (crédito PJ), MTE/Novo Caged via BCB/SGS (emprego), BCB IF.data (exposições)" })}
   ${(() => {
     const st = sectors.setores || [];
@@ -4364,8 +4405,11 @@ function renderSectors() {
       ref: `IBGE ${refMax ? fmt.my(refMax) : "–"} · emprego ${sectors.emprego_ref || "–"} · regras em Metodologia`,
     });
   })()}
-  <div class="note warn"><b>Transparência:</b> ${sectors.aviso_demo}<br>Método: ${sectors.metodo}<br>Limitações: ${sectors.limitacoes}</div>
+  ${setorRegua(sectors)}
+  <div class="note warn"><b>Transparência:</b> ${sectors.aviso_demo}</div>
   ${blocos}
+  <details class="decomp" style="margin:8px 0 14px"><summary>método do score e limitações</summary>
+    <div class="note" style="margin-top:6px"><b>Método:</b> ${sectors.metodo}<br><b>Limitações:</b> ${sectors.limitacoes}</div></details>
   ${renderExposuresSection()}
   ${papel ? `<h3>Indicador antecedente em triagem</h3>
   <div class="grid g2"><div class="card"><h4>${papel.meta.name} ${badge("observado")} <span class="seal aprox">ANTECEDENTE EM TRIAGEM</span></h4>

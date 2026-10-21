@@ -241,8 +241,9 @@ describe("2.2/2.3 — sem alert(), fontes do meta derivadas, uma metodologia", (
     // 0.117.0: barra comum da plataforma (marca, seletor, os seis observatórios e a conta), gerada do registro (achado A7)
     // 0.118.0: molde de abertura (diagnóstico de 20/10/2026, item 2): limite à vista, como ler recolhido
     // 0.119.0: Instituições (item 3): nome como link, lista de quem ficou fora do corte recolhida, régua da Basileia
-    expect(app).toContain('const APP_VERSION = "0.119.0";');
-    expect(html).toContain("app.min.js?v=0.119.0");
+    // 0.120.0: Risco setorial (item 4): nome como link, régua do score, sem cor de juízo, método recolhido
+    expect(app).toContain('const APP_VERSION = "0.120.0";');
+    expect(html).toContain("app.min.js?v=0.120.0");
     expect(html).not.toContain("?v=0.106.0");
     expect(html).not.toContain("?v=0.86.0");
   });
