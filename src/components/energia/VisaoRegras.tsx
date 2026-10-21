@@ -90,7 +90,7 @@ export function VisaoRegraResumo({
         )}
       </p>
       {nota && (
-        <p className="text-xs leading-relaxed text-carvao" data-nota-regra={o.id}>
+        <p data-nivel="analisar" className="text-xs leading-relaxed text-carvao" data-nota-regra={o.id}>
           <span className="rotulo mr-2 text-mineral">{tx("Para ler junto", "Read together")}</span>
           {nota}
         </p>
@@ -114,8 +114,9 @@ export function VisaoRegraResumo({
           {tx("Evidência do número não publicada:", "Evidence for the number not published:")} {goldNoBloco(o.evidencia_problemas.join("; "), idioma, `visao-regra-problemas-${o.id}`)}
         </p>
       ) : null}
+      {/* diagnóstico de layout de 20/10/2026, item 7: a linha de 365 dias e as pontes descem para Analisar; o estado, o fato, o valor e a prova ficam */}
       {le?.inicio && fim && trechos.length > 0 && (
-        <div className="pt-1">
+        <div data-nivel="analisar" className="pt-1">
           <VisaoFaixaEstados
             trechos={trechos}
             inicio={le.inicio}

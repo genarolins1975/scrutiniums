@@ -68,6 +68,7 @@ function Cartao({
   ocultas,
   onOcultas,
   notas,
+  largo = false,
 }: {
   p: PainelLeve;
   d: DeterminantesLeves;
@@ -78,6 +79,8 @@ function Cartao({
   onOcultas?: (ids: string[]) => void;
   /** Pontes entre este número e o da mesma grandeza em outro corte ou em outro módulo, escritas a partir da gold (visao.ts). */
   notas?: readonly string[];
+  /** Último cartão de uma quantidade ímpar: ocupa as duas colunas, para a grade não terminar com metade vazia. */
+  largo?: boolean;
 }) {
   const idioma = useIdioma();
   const tx = useTx();
@@ -91,7 +94,7 @@ function Cartao({
   // o valor das séries extras (a mediana da data) no dia de referência do painel, lido da mesma linha do gráfico
   const doDia = extras.map((e) => ({ rotulo: e.rotulo, valor: valorNoDia(todas, p.dataReferencia, e.id) })).filter((x) => x.valor !== null);
   return (
-    <section id={ancoras?.id} aria-labelledby={`p005-${p.id}-titulo`} className="scroll-mt-28 min-w-0 border border-linha bg-superficie p-4">
+    <section id={ancoras?.id} aria-labelledby={`p005-${p.id}-titulo`} className={`scroll-mt-28 min-w-0 border border-linha bg-superficie p-4 ${largo ? "lg:col-span-2" : ""}`}>
       <div id={ancoras?.painel} className="scroll-mt-28">
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-0">
           <h3 id={`p005-${p.id}-titulo`} className="ed-h3 font-serif text-carvao">
@@ -139,12 +142,12 @@ function Cartao({
       </div>
       <p className="mt-2 text-sm leading-relaxed text-carvao">{p.leitura}</p>
       {doDia.length > 0 && (
-        <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-referencia-do-dia={p.id}>
+        <p data-nivel="analisar" className="mt-1 text-xs leading-relaxed text-carvao-muted" data-referencia-do-dia={p.id}>
           {doDia.map((x) => `${x.rotulo}: ${fmt(x.valor)}`).join("; ")}.
         </p>
       )}
       {p.id === "preco" && (
-        <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-precos-do-dia="">
+        <p data-nivel="analisar" className="mt-1 text-xs leading-relaxed text-carvao-muted" data-precos-do-dia="">
           {tx(
             <>
               Mesmo dia nos quatro submercados: {p.colunas.map((c) => `${c.rotulo} ${fmt(valorNoDia(todas, p.dataReferencia, c.id))}`).join("; ")}. Quando os preços coincidem, as linhas se sobrepõem: a do Norte é tracejada para a do
@@ -161,7 +164,9 @@ function Cartao({
         {p.defasagem}
       </p>
       {notas && notas.length > 0 && (
-        <div className="mt-3 space-y-1.5 border-t border-linha pt-3 text-xs leading-relaxed text-carvao" data-nota-determinante={p.id}>
+        // diagnóstico de layout de 20/10/2026, item 7: no Entender o cartão é número, gráfico, leitura, referência e o link; os valores do dia
+        // e as pontes com outros cortes descem para Analisar (seguem no HTML)
+        <div data-nivel="analisar" className="mt-3 space-y-1.5 border-t border-linha pt-3 text-xs leading-relaxed text-carvao" data-nota-determinante={p.id}>
           {notas.map((n, i) => (
             <p key={n}>
               {i === 0 && <span className="rotulo mr-2 text-mineral">{tx("Para ler junto", "Read together")}</span>}
@@ -247,9 +252,10 @@ export function VisaoDeterminantes({
       </div>
       <CursorSincronizado>
         <div className="grid gap-4 lg:grid-cols-2">
-          {d.paineis.map((p) => (
+          {d.paineis.map((p, i) => (
             <Cartao
               key={p.id}
+              largo={d.paineis.length % 2 === 1 && i === d.paineis.length - 1}
               p={p}
               d={d}
               todas={todas}
