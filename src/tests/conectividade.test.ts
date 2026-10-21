@@ -235,7 +235,7 @@ describe("painel completo", () => {
     expect(semFixaUf.fixa).toBeNull();
     expect(semFixaUf.movel).toBeNull();
     expect(linhaEstado(g, null).fixa).toBe(g.brasil.fixa);
-    expect(t).toContain("se as bases diferirem entre si em mais de três municípios");
+    expect(t).toContain("se duas das bases diferirem entre si em mais de três municípios (fixa e móvel, fixa e cobertura, móvel e cobertura");
     expect(t).not.toContain("se faltar município");
     // densidade móvel rotulada como acessos (o numerador exclui M2M e pontos de serviço) e a coluna de 5G por estado com o seu universo (16ª revisão do Codex)
     expect(t).not.toContain("Linhas móveis por 100");

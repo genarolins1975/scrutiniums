@@ -635,8 +635,8 @@ function Metodo({ g, logos }: { g: GoldConectividade; logos: Logos }) {
               publicados. Nada é estimado nem interpolado; trimestre ou mês sem publicação fica em branco.
             </li>
             <li>
-              A publicação é retida se alguma fonte vier com estrutura diferente, se a contagem de municípios sair de 5.565 a 5.575, se as bases diferirem entre si em mais de
-              três municípios (a diferença tolerada fica declarada acima, em municípios sem dado), se as partes de um município não somarem o total, se o Brasil do mês não for
+              A publicação é retida se alguma fonte vier com estrutura diferente, se a contagem de municípios sair de 5.565 a 5.575, se duas das bases diferirem entre si em mais de
+              três municípios (fixa e móvel, fixa e cobertura, móvel e cobertura; a diferença tolerada fica declarada acima, em municípios sem dado), se as partes de um município não somarem o total, se o Brasil do mês não for
               o do arquivo de totais da Anatel, se a cobertura passar de 100% ou se o 5G passar do 4G, no município ou na série nacional (pipeline/conectividade/validacoes.py).
               Hash dos dados: <code>{g.hash_dados.slice(0, 16)}</code>.
             </li>

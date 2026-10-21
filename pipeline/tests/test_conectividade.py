@@ -358,6 +358,10 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.cob)
         s["brasil"]["serie"][ref]["g4"][0] = s["brasil"]["serie"][ref]["todas"][0] + 1
         self.assertTrue(any("Brasil em" in p and "4G" in p for p in V.validar_cobertura(s)))
+        # as três medidas da série nacional ficam em 0 a 100: área negativa retém (18ª revisão do Codex)
+        s = copy.deepcopy(self.cob)
+        s["brasil"]["serie"][ref]["g4"][2] = -5
+        self.assertTrue(any("Brasil em" in p and "g4 fora de 0 a 100" in p for p in V.validar_cobertura(s)))
         s = copy.deepcopy(self.cob)
         pi = s["municipios"]["2207777"][5]
         pi["g4"][0] = pi["g5"][0] - 1                                  # só o 4G abaixo do 5G; 4G ou 5G e todas seguem acima
@@ -389,6 +393,15 @@ class TestValidacoesRetem(unittest.TestCase):
         s = copy.deepcopy(self.movel)
         s["municipios"]["3550308"][1] = "RJ"
         self.assertTrue(any("UF diferente" in p for p in V.validar_cruzado(self.fixa, s, self.cob)))
+        # móvel e cobertura com três municípios a mais, diferentes entre si: cada uma passa contra a fixa (três diferenças),
+        # mas o par entre elas difere em seis e retém (18ª revisão do Codex)
+        m2, c2 = copy.deepcopy(self.movel), copy.deepcopy(self.cob)
+        for cod in ("9900001", "9900002", "9900003"):
+            m2["municipios"][cod] = ["X", "SP", m2["municipios"]["3509502"][2]]
+        for cod in ("9900004", "9900005", "9900006"):
+            c2["municipios"][cod] = copy.deepcopy(c2["municipios"]["3509502"])
+        self.assertEqual([p for p in V.validar_cruzado(self.fixa, m2, self.cob) if "diferem" in p], [])
+        self.assertTrue(any("telefonia móvel e cobertura diferem em 6" in p for p in V.validar_cruzado(self.fixa, m2, c2)))
         # a unidade da densidade: acessos ÷ densidade tem de reproduzir a população do Censo nos municípios grandes
         f = copy.deepcopy(self.fixa)
         i = f["campos"].index("acessos")

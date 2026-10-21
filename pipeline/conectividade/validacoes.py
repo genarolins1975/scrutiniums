@@ -260,18 +260,21 @@ def validar_cobertura(seed: dict, anterior: dict | None = None, hoje: date | Non
             p.append(f"cobertura: Brasil em {t} com 5G ({g5}) acima do 4G ({g4}), do 4G ou 5G ({g45}) ou de todas ({todas})")
         if g4 is not None and todas is not None and g4 > todas + 0.05:
             p.append(f"cobertura: Brasil em {t} com 4G ({g4}) acima de todas ({todas})")
-        if any(x is not None and not 0 <= x <= 100 for x in (g5, g4, g45, todas)):
-            p.append(f"cobertura: Brasil em {t} com cobertura fora de 0 a 100")
+        # as três medidas (moradores, domicílios e área) de cada tecnologia, como nos registros municipais
+        for campo, vals in tec.items():
+            if vals is not None and any(x is not None and not 0 <= x <= 100 for x in vals):
+                p.append(f"cobertura: Brasil em {t} com {campo} fora de 0 a 100: {vals}")
     return p
 
 
 def validar_cruzado(fixa: dict, movel: dict, cobertura: dict) -> list[str]:
     p = []
     a, b, c = set(fixa["municipios"]), set(movel["municipios"]), set(cobertura["municipios"])
-    for nome, outro in (("telefonia móvel", b), ("cobertura", c)):
-        dif = a ^ outro
+    # os três pares: cada base pode diferir de cada outra em até três municípios
+    for nome, um, outro in (("banda larga fixa e telefonia móvel", a, b), ("banda larga fixa e cobertura", a, c), ("telefonia móvel e cobertura", b, c)):
+        dif = um ^ outro
         if len(dif) > 3:
-            p.append(f"cruzado: banda larga fixa e {nome} diferem em {len(dif)} municípios")
+            p.append(f"cruzado: {nome} diferem em {len(dif)} municípios")
     for cod in a & b:
         if fixa["municipios"][cod][1] != movel["municipios"][cod][1]:
             p.append(f"cruzado: município {cod} com UF diferente entre banda larga fixa e telefonia móvel")
