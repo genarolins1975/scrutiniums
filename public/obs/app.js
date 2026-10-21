@@ -788,14 +788,14 @@ function chartFooter(opts) {
 function citacaoGrafico(o) {
   const hoje = o.acesso || new Date();
   const dd = String(hoje.getDate()).padStart(2, "0"), mm = String(hoje.getMonth() + 1).padStart(2, "0");
-  return `${o.titulo}. In: Observatório Brasileiro de Crédito. Scrutiniums, ${hoje.getFullYear()}. `
+  return `${o.titulo}. In: Crédito e sistema financeiro. Scrutiniums, ${hoje.getFullYear()}. `
     + `Fonte primária: ${o.fonte || "não declarada"}. Período: ${o.periodo || "não declarado"}. `
     + (o.processado ? `Processado em ${o.processado}. ` : "")
     + `Disponível em: ${o.url}. Acesso em: ${dd}/${mm}/${hoje.getFullYear()}.`;
 }
 function embedSnippet(src, voltar, titulo) {
   return `<iframe src="${src}" width="720" height="520" loading="lazy" style="border:1px solid #ccc;border-radius:8px" title="${attr(titulo)}"></iframe>`
-    + `<p style="font:12px/1.4 sans-serif;margin:4px 0 0">Gráfico: <a href="${voltar}">${attr(titulo)}</a>, Observatório Brasileiro de Crédito (Scrutiniums). Fonte e período no rodapé do gráfico.</p>`;
+    + `<p style="font:12px/1.4 sans-serif;margin:4px 0 0">Gráfico: <a href="${voltar}">${attr(titulo)}</a>, Crédito e sistema financeiro (Scrutiniums). Fonte e período no rodapé do gráfico.</p>`;
 }
 window.grafLink = (el, modo) => {
   const sec = el.closest("section[id]");
@@ -12853,6 +12853,22 @@ function refazTrilha() {
   TITULO_COLECAO = (col ? col.nome : "Crédito e sistema financeiro") + " · Scrutiniums";
   if (!col || dono[0] !== col.href) pecas.push([dono[1], dono[0]]);
   const ultimaAtual = exato === dono[0];
+  // seletor e abas da barra comum: a coleção e o observatório donos da aba, como no HTML que o servidor manda
+  const nomeCol = col ? col.nome : o.nomeCurto;
+  const sum = document.querySelector("#obsTrocar summary");
+  if (sum) {
+    sum.setAttribute("aria-label", `Coleção atual: ${nomeCol}. Trocar de coleção ou de observatório`);
+    const nome = sum.querySelector(".obs-trocar-nome"); if (nome) nome.textContent = nomeCol;
+  }
+  document.querySelectorAll("#obsTrocar .obs-trocar-menu a:not(.obs-trocar-obs):not(.obs-trocar-conta)").forEach(a => {
+    const atualA = col && a.getAttribute("href") === col.href;
+    const sr = a.querySelector(".sr-only"); if (sr) sr.remove();
+    if (atualA) { a.setAttribute("aria-current", "true"); a.insertAdjacentHTML("beforeend", '<span class="sr-only"> (atual)</span>'); }
+    else a.removeAttribute("aria-current");
+  });
+  document.querySelectorAll(".obs-dominios a").forEach(a => {
+    if (a.getAttribute("href") === o.entrada) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current");
+  });
   nav.firstElementChild.innerHTML = pecas.map(([t, h], i) => {
     const sep = i ? '<span aria-hidden="true">/</span>' : "";
     return i === pecas.length - 1 && ultimaAtual ? `<li>${sep}<span aria-current="page">${attr(t)}</span></li>` : `<li>${sep}<a href="${h}">${attr(t)}</a></li>`;

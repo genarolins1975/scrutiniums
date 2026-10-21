@@ -90,7 +90,7 @@ const TARIFA: Evidencia = {
 // mesmo exemplo e mesmo texto de pipeline/tests/test_energia_evidencia.py
 const CITACAO_TARIFA =
   "SCRUTINIUMS. Tarifa residencial mediana: R$ 0,8123/kWh, distribuidoras com tarifa B1 vigente, 30/09/2026. " +
-  "Observatório Brasileiro do Setor Elétrico, 2026. " +
+  "Setor Elétrico, 2026. " +
   "Dados primários: ANEEL, Tarifas de aplicação (recurso tarifas-vigentes.csv, capturado em 30/09/2026). " +
   "Versão energia-0.1.0, código abc123def456, publicada em 31/12/2026. " +
   "Disponível em: https://scrutiniums.com/setor-eletrico.";
@@ -109,7 +109,7 @@ const CARGA: Evidencia = {
 
 const CITACAO_CARGA =
   "SCRUTINIUMS. Carga média: 123,46 MWmed, SIN, 30/09/2026 10:00 a 30/09/2026 18:00. " +
-  "Observatório Brasileiro do Setor Elétrico, 2026. " +
+  "Setor Elétrico, 2026. " +
   "Dados primários: ONS, Carga horária (recurso não identificado, capturado em 30/09/2026). " +
   "Versão energia-0.1.0, código não registrado, publicada em 31/12/2026. " +
   "Disponível em: https://scrutiniums.com/setor-eletrico/carga#media.";

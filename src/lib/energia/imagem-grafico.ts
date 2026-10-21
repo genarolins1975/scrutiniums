@@ -24,7 +24,7 @@ import type { Idioma } from "@/lib/idioma";
 export const FONTE_SISTEMA = "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif";
 
 /** Identificação impressa no rodapé de toda imagem (forma portuguesa; identificacao() escolhe o idioma). */
-export const IDENTIFICACAO = "Scrutiniums, Observatório Brasileiro do Setor Elétrico"; // i18n: dado
+export const IDENTIFICACAO = "Scrutiniums, Setor Elétrico"; // i18n: dado (nome da coleção, igual nas duas línguas)
 
 /** Identificação no idioma da imagem. */
 export function identificacao(idioma: Idioma = idiomaEnergia()): string {

@@ -24,7 +24,7 @@ describe("citação dos indicadores", () => {
       new Date(2026, 9, 13),
     );
     expect(c).toBe(
-      "Inadimplência do crédito no Brasil. In: Observatório Brasileiro de Crédito. Scrutiniums, 2026. Fonte primária: BCB/SGS, série 21082. " +
+      "Inadimplência do crédito no Brasil. In: Crédito e sistema financeiro. Scrutiniums, 2026. Fonte primária: BCB/SGS, série 21082. " +
         "Referência: jul/2026. Natureza: dado observado. Processado em 2026-09-24. Disponível em: https://scrutiniums.com/dados/inadimplencia. Acesso em: 13/10/2026.",
     );
   });
@@ -49,7 +49,7 @@ describe("citação dos indicadores", () => {
     const html = codigoIncorporar("inad_pf", "Inadimplência das famílias", "/dados/inadimplencia-familias");
     expect(html).toMatch(/^<iframe src="https:\/\/scrutiniums\.com\/obs\/embed\.html\?g=pulse\.pu-inad&amp;seg=pf"/);
     expect(html).toContain('<a href="https://scrutiniums.com/dados/inadimplencia-familias">');
-    expect(html).toContain("Observatório Brasileiro de Crédito (Scrutiniums)");
+    expect(html).toContain("Crédito e sistema financeiro (Scrutiniums)");
   });
 
   it("as páginas de indicador e do IBCC oferecem os dois botões", () => {

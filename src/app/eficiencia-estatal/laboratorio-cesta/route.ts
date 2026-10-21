@@ -23,6 +23,7 @@ export async function GET() {
   // O modelo congelado da v3 ainda aponta para a entrada e para a âncora do piloto v2. O índice v4 saiu da entrada
   // para o próprio painel (decisão do dono de 19/10/2026): o retorno leva o par de capitais para lá.
   const page = html.replace('</header><main>', `</header>${navigation}<main>`)
+    .replace(/<title>[^<]*<\/title>/, '<title>Laboratório do índice (revisão v3) · Síntese das capitais · Scrutiniums</title>')
     .replaceAll("'/eficiencia-estatal?visao=cidades&territorio='", "'/eficiencia-estatal/indice-de-resultados?territorio='")
     .replaceAll('#atlas-piloto', '#atlas-indice');
   return new Response(page, {

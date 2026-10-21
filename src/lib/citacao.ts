@@ -24,7 +24,7 @@ const ddmmaaaa = (d: Date) =>
 export function citacao(c: DadosCitacao, acesso: Date): string {
   const fonte = c.serie ? `${c.fonte}, série ${c.serie}` : c.fonte;
   return (
-    `${c.titulo}. In: Observatório Brasileiro de Crédito. Scrutiniums, ${acesso.getFullYear()}. ` +
+    `${c.titulo}. In: Crédito e sistema financeiro. Scrutiniums, ${acesso.getFullYear()}. ` +
     `Fonte primária: ${fonte}. Referência: ${c.referencia}. Natureza: ${c.natureza}. ` +
     (c.processadoEm ? `Processado em ${c.processadoEm.slice(0, 10)}. ` : "") +
     `Disponível em: ${BASE}${c.caminho}. Acesso em: ${ddmmaaaa(acesso)}.`
@@ -50,6 +50,6 @@ export function codigoIncorporar(chave: string, titulo: string, caminho: string)
   return (
     `<iframe src="${escAttr(src)}" width="720" height="520" loading="lazy" style="border:1px solid #ccc;border-radius:8px" title="${escAttr(titulo)}"></iframe>` +
     `<p style="font:12px/1.4 sans-serif;margin:4px 0 0">Gráfico: <a href="${BASE}${caminho}">${escAttr(titulo)}</a>, ` +
-    `Observatório Brasileiro de Crédito (Scrutiniums). Fonte e período no rodapé do gráfico.</p>`
+    `Crédito e sistema financeiro (Scrutiniums). Fonte e período no rodapé do gráfico.</p>`
   );
 }

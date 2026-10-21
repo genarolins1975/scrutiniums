@@ -361,14 +361,14 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     view: "sugestoes",
     caminho: "/suggestions",
     titulo: "Sugestões",
-    descricao: "Canal aberto de sugestões e correções do Observatório Brasileiro de Crédito.",
+    descricao: "Canal aberto de sugestões e correções da coleção Crédito e sistema financeiro.",
   },
   {
     view: "sobre",
     caminho: "/about",
     titulo: "Sobre o Observatório",
     descricao:
-      "O que é o Observatório Brasileiro de Crédito, quem o mantém, a licença dos dados e como citar.",
+      "O que é a coleção Crédito e sistema financeiro, quem a mantém, a licença dos dados e como citar.",
   },
 ];
 

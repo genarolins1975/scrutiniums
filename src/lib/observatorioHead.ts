@@ -1,7 +1,7 @@
 import { LINKEDIN_URL } from "@/lib/contato";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { colecaoDaRotaSpa, htmlTrilhaSpa } from "@/lib/observatorios/barraSpa";
+import { MARCADOR_FIM, MARCADOR_INICIO, colecaoDaRotaSpa, htmlBarraSpa } from "@/lib/observatorios/barraSpa";
 import {
   abaPorCaminho,
   PREFIXOS_DINAMICOS,
@@ -270,9 +270,12 @@ export function montarHtml(meta: MetaObservatorio, html = shell()): string {
     .replace(/<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="${t}">`)
     .replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${d}">`)
     .replace(/<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="${c}">`)
-    .replace(/<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${c}">`)
-    // a trilha da aba pedida, já no HTML do servidor (o index.html traz a da entrada da coleção)
-    .replace(/<nav aria-label="Você está em"[^>]*id="obsTrilha"[^>]*>.*?<\/nav>/, htmlTrilhaSpa(meta.canonico.replace(BASE, "")));
+    .replace(/<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${c}">`);
+  // a barra da aba pedida, já no HTML do servidor: seletor, abas e trilha com a coleção e o observatório donos dela no
+  // registro (o index.html traz a da entrada da coleção)
+  const ini = out.indexOf(MARCADOR_INICIO);
+  const fim = out.indexOf(MARCADOR_FIM);
+  if (ini >= 0 && fim > ini) out = out.slice(0, ini) + htmlBarraSpa(meta.canonico.replace(BASE, "")) + out.slice(fim + MARCADOR_FIM.length);
   const extras = [
     meta.indexavel ? "" : `<meta name="robots" content="noindex">`,
     meta.indexavel ? jsonLd(meta) : "",

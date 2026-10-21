@@ -74,9 +74,17 @@ export function htmlTrilhaSpa(caminho: string): string {
   return `<nav aria-label="Você está em" class="bp-trilha obs-trilha" id="obsTrilha" data-trilha=""><ol>${itens.join("")}</ol></nav>`;
 }
 
-export function htmlBarraSpa(): string {
-  const observatorioAtual = OBSERVATORIO_PRINCIPAL[DOMINIO_DA_SPA];
-  const corrente = OBSERVATORIOS.find((o) => o.id === observatorioAtual)!.colecoes.find((c) => c.dominio === DOMINIO_DA_SPA)!;
+/**
+ * Barra da SPA para um endereço: o index.html traz a da entrada (/observatorio); o route handler da SPA
+ * (src/lib/observatorioHead.ts) troca pela da aba pedida, com a coleção e o observatório donos dela no registro
+ * (Consignado é das Famílias), e o app.js os acerta a cada navegação.
+ */
+export function htmlBarraSpa(caminho = "/observatorio"): string {
+  const indice = indiceSpa();
+  const ctx = resolverContexto(caminho, indice) ?? resolverContexto("/observatorio", indice)!;
+  const observatorioAtual = ctx.observatorio.id;
+  const corrente = OBSERVATORIOS.find((o) => o.id === observatorioAtual)!.colecoes.find((c) => c.id === ctx.colecao?.id) ??
+    OBSERVATORIOS.find((o) => o.id === OBSERVATORIO_PRINCIPAL[DOMINIO_DA_SPA])!.colecoes.find((c) => c.dominio === DOMINIO_DA_SPA)!;
   const seletor = OBSERVATORIOS.map((o) => {
     const colecoes = o.colecoes
       .map((c) =>
@@ -103,7 +111,7 @@ export function htmlBarraSpa(): string {
     "  </div>",
     `  <div class="bp-abas"><div class="bp-abas-linha"><nav aria-label="Observatórios da Scrutiniums" class="obs-dominios">${abas}</nav></div></div>`,
     "</header>",
-    htmlTrilhaSpa("/observatorio"),
+    htmlTrilhaSpa(caminho),
     `<script type="application/json" id="obsTrilhaIndice">${JSON.stringify(indiceTrilhaSpa()).replace(/</g, "\\u003c")}</script>`,
     MARCADOR_FIM,
   ].join("\n");

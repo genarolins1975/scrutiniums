@@ -324,12 +324,12 @@ export function citacaoBase(ev: Evidencia, endereco: string = SITE, idioma: Idio
   const publicada = dataRef(pub, false, idioma) ?? tx("data não registrada", "date not recorded", idioma);
   return tx(
     `SCRUTINIUMS. ${ev.indicador}: ${valor}, ${ev.entidade}, ${textoPeriodo(ev.periodo, idioma)}. ` +
-      `Observatório Brasileiro do Setor Elétrico, ${ano}. ` +
+      `Setor Elétrico, ${ano}. ` +
       `Dados primários: ${ev.fonte?.orgao}, ${ev.fonte?.conjunto} (${recurso}${captura}). ` +
       `Versão ${ev.versao?.pipeline}, ${codigo}, publicada em ${publicada}. ` +
       `Disponível em: ${endereco}.`,
     `SCRUTINIUMS. ${rotuloFicha(ev.indicador, "en") ?? ev.indicador}: ${valorFichaNoIdioma(valor, "en")}, ${rotuloFicha(ev.entidade, "en") ?? ev.entidade}, ${textoPeriodo(ev.periodo, idioma)}. ` +
-      `Brazilian Power Sector Observatory, ${ano}. ` +
+      `Setor Elétrico, ${ano}. ` +
       `Primary data: ${ev.fonte?.orgao}, ${ev.fonte?.conjunto} (${recurso}${captura}). ` +
       `Version ${ev.versao?.pipeline}, ${codigo}, published on ${publicada}. ` +
       `Available at: ${enderecoEmIngles(endereco)}.`,
