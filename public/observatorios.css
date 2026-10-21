@@ -315,3 +315,8 @@ html[data-theme="dark"] .observatorio-credito .obs-hero .obs-primary { color:var
   white-space:normal; max-width:36ch; min-height:44px; text-align:left; line-height:1.4;
 }
 .observatorio-credito #view-products .card h4 a { color:inherit; text-underline-offset:4px; }
+/* Diagnóstico de 20/10/2026, item 4: a barrinha do score no Crédito deixa o degradê verde-amarelo-vermelho (cor de juízo)
+   e vira um trilho neutro com o 50 marcado, a média da própria história no método do score. */
+.observatorio-credito .scorebar { background:var(--surface-3); }
+.observatorio-credito .scorebar::after { content:""; position:absolute; left:50%; top:-2px; width:1px; height:11px; background:var(--text-2); }
+

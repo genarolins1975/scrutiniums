@@ -37,8 +37,71 @@ describe("molde de abertura do Crédito: contrato no código", () => {
   });
 
   it("os ativos alterados sobem de versão (cache imutável)", () => {
-    expect(html).toContain("/observatorios.css?v=7");
+    expect(html).toContain("/observatorios.css?v=8");
     expect(html).toContain("/obs/editorial.js?v=6");
+  });
+});
+
+describe("Instituições (item 3 do diagnóstico): busca antes, exclusões depois, régua da Basileia", () => {
+  const i0 = app.indexOf("function renderInstitutions() {");
+  const aba = app.slice(i0, app.indexOf("\n}\n", i0));
+  it("o nome de cada linha é o link para a ficha, sem um botão por linha", () => {
+    expect(aba).toContain('<a class="inst-nome" href="/observatorio/institutions/${i.cod_inst}"');
+    expect(aba).not.toContain("página completa →</button>");
+  });
+  it("a síntese não lista mais as exclusões nome a nome; a lista fica num recolhível depois da tabela", () => {
+    expect(aba).not.toContain("semBalGrandes.slice(0, 6)");
+    const tabela = aba.indexOf("<tbody>${rows}</tbody></table></div>");
+    expect(aba.indexOf("${instForaDoCorte(inst)}")).toBeGreaterThan(tabela);
+    expect(app).toContain("function instForaDoCorte(inst)");
+    // a ressalva continua: ausência na data-base não é saída nem zero
+    expect(app).toContain("Não é saída nem zero.");
+    // quem nunca entregou balanço não tem ficha: a nota diz isso em vez de prometer a última entrega (achado do Codex no #315)
+    expect(app).toContain("nunca entregou balanço e não tem ficha");
+  });
+  it("a régua da Basileia lê a faixa e a mediana do próprio grupo e diz quantos ficam fora", () => {
+    expect(aba.indexOf("${instReguaBasileia(inst)}")).toBeGreaterThan(aba.indexOf("${instForaDoCorte(inst)}"));
+    const regua = app.slice(app.indexOf("function instReguaBasileia(inst)"), app.indexOf("function renderInstitutions() {"));
+    expect(regua).toContain("(inst.grupos[g].stats || {}).basileia_pct");
+    expect(regua).toContain("pool_fallback");
+    expect(regua).toContain("não reportam Basileia e ficam fora do gráfico");
+    expect(regua).toContain('<details class="charttable">');
+    // a tabela equivalente traz cada conglomerado, não só os agregados (achado do Codex no #315)
+    expect(regua).toContain("Cada conglomerado com Basileia reportada");
+  });
+});
+
+describe("Risco setorial (item 4 do diagnóstico): sem cor de juízo, régua do score perto do topo", () => {
+  const i0 = app.indexOf("function renderSectors() {");
+  const aba = app.slice(i0, app.indexOf("\nfunction renderExposuresSection", i0));
+  it("o nome da atividade é o link para a ficha, sem botão por linha", () => {
+    expect(aba).toContain(`<a href="/observatorio/sectors/\${s.codigo}"`);
+    expect(aba).not.toContain("ficha do setor →</button>");
+  });
+  it("tendência e velocidade não pintam a célula de vermelho ou verde", () => {
+    expect(aba).not.toMatch(/s\.tendencia === "piorando" \? "up"/);
+    expect(aba).not.toMatch(/s\.velocidade === "momento piorando" \? "up"/);
+  });
+  it("a régua vem antes das tabelas e o método desce para depois delas", () => {
+    expect(aba.indexOf("${setorRegua(sectors)}")).toBeLessThan(aba.indexOf("${blocos}"));
+    expect(aba.indexOf("método do score e limitações")).toBeGreaterThan(aba.indexOf("${blocos}"));
+    const regua = app.slice(app.indexOf("function setorRegua(sectors)"), i0);
+    expect(regua).toContain("50 = média da própria história");
+    expect(regua).toContain('<details class="charttable">');
+  });
+  it("atividades com o mesmo score não se encobrem na régua", () => {
+    const fn = app.slice(app.indexOf("function setorRegua(sectors)"), i0);
+    const fmt = { n: (v: number) => String(v), my: (v: string) => v };
+    const setorRegua = new Function("fmt", `${fn}; return setorRegua;`)(fmt) as (s: unknown) => string;
+    const setores = [57.2, 57.2, 57.2, 40, 70].map((score, i) => ({ codigo: String(i), nome: `A${i}`, score, tendencia: "estável", pesquisa: "industria", ref: "2026-08" }));
+    const pontos = [...setorRegua({ setores }).matchAll(/<circle cx="([\d.]+)" cy="([\d.]+)"/g)].map((m) => [Number(m[1]), Number(m[2])]);
+    expect(pontos).toHaveLength(5);
+    for (let i = 0; i < pontos.length; i++)
+      for (let j = i + 1; j < pontos.length; j++)
+        expect(Math.hypot(pontos[i][0] - pontos[j][0], pontos[i][1] - pontos[j][1])).toBeGreaterThanOrEqual(9);
+  });
+  it("a barrinha do score não usa o degradê verde-amarelo-vermelho no Crédito", () => {
+    expect(css).toMatch(/\.observatorio-credito \.scorebar \{ background:var\(--surface-3\); \}/);
   });
 });
 
