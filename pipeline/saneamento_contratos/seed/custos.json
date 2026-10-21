@@ -39,7 +39,7 @@
     "grau": "V",
     "acessado_em": "2026-10-21"
    },
-   "observacoes": "agua total R$ 142.2 bi; agua expansao R$ 79.4 bi; agua reposicao R$ 62.8 bi; esgoto total R$ 215.0 bi; esgoto expansao R$ 172.4 bi; esgoto reposicao R$ 42.6 bi; subperiodo 2019 2023 R$ 67.9 bi"
+   "observacoes": "agua total R$ 142,2 bi; agua expansao R$ 79,4 bi; agua reposicao R$ 62,8 bi; esgoto total R$ 215,0 bi; esgoto expansao R$ 172,4 bi; esgoto reposicao R$ 42,6 bi; subperiodo 2019 2023 R$ 67,9 bi"
   },
   {
    "id": "kpmg-abcon-2020",
@@ -59,7 +59,7 @@
     "grau": "V",
     "acessado_em": "2026-10-21"
    },
-   "observacoes": "grau declarado na pesquisa: V (R$ 753 bi e R$ 498 bi via IPEA); S (composição e base de preços); expansao total R$ 498.0 bi; expansao agua R$ 144.0 bi (S); expansao esgoto R$ 354.0 bi (S); reposicao total R$ 255.0 bi (S); reposicao ativos existentes R$ 145.0 bi (S); reposicao novos ativos R$ 110.0 bi (S)"
+   "observacoes": "grau declarado na pesquisa: V (R$ 753 bi e R$ 498 bi via IPEA); S (composição e base de preços); expansao total R$ 498,0 bi; expansao agua R$ 144,0 bi (S); expansao esgoto R$ 354,0 bi (S); reposicao total R$ 255,0 bi (S); reposicao ativos existentes R$ 145,0 bi (S); reposicao novos ativos R$ 110,0 bi (S)"
   },
   {
    "id": "pilpi-2021",
@@ -79,7 +79,7 @@
     "grau": "V",
     "acessado_em": "2026-10-21"
    },
-   "observacoes": "grau declarado na pesquisa: V (via IPEA); expansao R$ 429.0 bi; reposicao R$ 110.0 bi"
+   "observacoes": "grau declarado na pesquisa: V (via IPEA); expansao R$ 429,0 bi; reposicao R$ 110,0 bi"
   },
   {
    "id": "plansab-mcid-511bi-dez2021",
@@ -119,7 +119,7 @@
     "grau": "V",
     "acessado_em": "2026-10-21"
    },
-   "observacoes": "total atualizado jun2022 R$ 551.0 bi; investido 2021 R$ 19.2 bi; investido 2022 R$ 22.5 bi; media 2018 2022 anual R$ 20.9 bi; necessidade anual R$ 46.3 bi"
+   "observacoes": "total atualizado jun2022 R$ 551,0 bi; investido 2021 R$ 19,2 bi; investido 2022 R$ 22,5 bi; media 2018 2022 anual R$ 20,9 bi; necessidade anual R$ 46,3 bi"
   },
   {
    "id": "trata-brasil-2025",
@@ -139,7 +139,7 @@
     "grau": "V",
     "acessado_em": "2026-10-21"
    },
-   "observacoes": "A expressão 'mais que dobrar' aparece no estudo de 2024 (R$ 20,9 bi/ano investidos vs R$ 46,3 bi necessários), não na matéria de 2025. O Ranking do Saneamento 2025 (100 maiores cidades) usa o mesmo referencial de R$ 223,82/hab/ano (S).; necessidade anual R$ 45.1 bi; necessidade por habitante ano R$ 0.0 bi; investimento atual por habitante ano R$ 0.0 bi; municipios com contratos irregulares 363; investimento por habitante em municipios irregulares R$ 0.0 bi"
+   "observacoes": "A expressão 'mais que dobrar' aparece no estudo de 2024 (R$ 20,9 bi/ano investidos vs R$ 46,3 bi necessários), não na matéria de 2025. O Ranking do Saneamento 2025 (100 maiores cidades) usa o mesmo referencial de R$ 223,82/hab/ano (S).; necessidade anual R$ 45,1 bi; necessidade por habitante ano R$ 223,82; investimento atual por habitante ano R$ 126,00; municipios com contratos irregulares 363; investimento por habitante em municipios irregulares R$ 53,63"
   },
   {
    "id": "bndes-2023-anual",
@@ -179,7 +179,7 @@
     "grau": "V",
     "acessado_em": "2026-10-21"
    },
-   "observacoes": "grau declarado na pesquisa: V (via Brasil 247, 10/08/2026; site da ABCON retornou 403); projetos em estruturacao 31; investimento em estruturacao R$ 32.0 bi; municipios com operacao privada 2720; % municipios 48.8; participacao privada investimentos 2020 % 15.1; participacao privada investimentos 2024 % 32.4; investimento total setor 2024 R$ 29.1 bi; esgoto tratado 2024 % 51.8"
+   "observacoes": "grau declarado na pesquisa: V (via Brasil 247, 10/08/2026; site da ABCON retornou 403); projetos em estruturacao 31; investimento em estruturacao R$ 32,0 bi; municipios com operacao privada 2720; pct municipios 48,8; participacao privada investimentos 2020 (%) 15,1; participacao privada investimentos 2024 (%) 32,4; investimento total setor 2024 R$ 29,1 bi; esgoto tratado 2024 (%) 51,8"
   },
   {
    "id": "mcid-jader-filho-2026",
