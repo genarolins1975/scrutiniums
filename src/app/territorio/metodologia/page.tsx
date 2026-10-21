@@ -62,11 +62,6 @@ export default function MetodologiaTerritorio() {
     <main className="bg-papel">
       <section aria-labelledby="metodo-titulo" className="border-b border-linha bg-marfim">
         <div className="mx-auto max-w-page px-6 pb-10 pt-10 md:pt-12">
-          <nav aria-label="Trilha" className="text-sm text-carvao-muted">
-            <Link href="/perguntas/territorio-e-clima" className={link}>Território e Clima</Link>
-            <span aria-hidden="true" className="mx-2 text-mineral">/</span>
-            <span aria-current="page">Método</span>
-          </nav>
           <RotuloContexto rota="/territorio/metodologia" className="mt-8 flex flex-wrap items-center gap-x-3 text-mineral" marca={<span aria-hidden="true" className="h-[3px] w-8 bg-obee" />} />
           <h1 id="metodo-titulo" className="mt-5 max-w-4xl font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.12] text-carvao [text-wrap:balance]">
             Como o observatório mede o fogo, os desastres e as emissões

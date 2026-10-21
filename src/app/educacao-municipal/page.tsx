@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { CabecalhoEducacao } from "@/components/educacao/CabecalhoEducacao";
 import { PainelEducacao } from "@/components/educacao/PainelEducacao";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -35,10 +34,6 @@ export default function Page({ searchParams }: Busca) {
       <MarcaVisita secao={SECAO_PAINEL} />
       <CabecalhoEducacao />
       <main id="conteudo-educacao" className="ed-pagina edm-main" data-painel="educacao-municipal">
-        <nav className="edm-trilha" aria-label="Você está em">
-          <Link href="/observatorios/servicos-publicos">Observatório dos Serviços Públicos</Link>
-          <span>Coleção Educação</span>
-        </nav>
         <header className="edm-cabeca">
           <RotuloContexto rota="/educacao-municipal" className="text-mineral" />
           <h1>{PERGUNTA_PAINEL}</h1>

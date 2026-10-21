@@ -38,11 +38,6 @@ export default function PaginaEmissoes() {
     <main className="bg-papel">
       <section aria-labelledby="emissoes-titulo" className="border-b border-linha bg-marfim">
         <div className="mx-auto max-w-page px-6 pb-12 pt-10 md:pb-14 md:pt-14">
-          <nav aria-label="Trilha" className="text-sm text-carvao-muted">
-            <Link href="/territorio" className="underline decoration-linha underline-offset-4 hover:text-carvao">Território e Clima</Link>
-            <span aria-hidden="true" className="mx-2 text-mineral">/</span>
-            <span aria-current="page">Emissões</span>
-          </nav>
           <RotuloContexto rota="/territorio/emissoes" className="mt-8 flex flex-wrap items-center gap-x-3 text-mineral" marca={<span aria-hidden="true" className="h-[3px] w-8 bg-obee" />} />
           <h1 id="emissoes-titulo" className="mt-5 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.1] text-carvao [text-wrap:balance]">
             Quanto o Brasil emite de gases de efeito estufa?

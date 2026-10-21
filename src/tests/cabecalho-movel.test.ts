@@ -10,6 +10,7 @@ import { APERITIVOS, ehRotaPublica } from "@/lib/rotasPublicas";
 import { MARCADOR_FIM, MARCADOR_INICIO, htmlBarraSpa } from "@/lib/observatorios/barraSpa";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Cabecalho as CabecalhoSaneamento } from "@/components/saneamento/Cabecalho";
 import { CabecalhoGas } from "@/components/gas/CabecalhoGas";
@@ -17,9 +18,11 @@ import { CabecalhoEntrada } from "@/components/eficiencia/CabecalhoEntrada";
 import { CabecalhoAgro } from "@/components/agro/Cabecalho";
 import { EstadoConta } from "@/components/energia/AcessoConta";
 
+// endereço que o navegador vê; o seletor, as abas e a trilha resolvem o contexto por ele (NavegacaoContexto.tsx)
+const navegador = vi.hoisted(() => ({ caminho: "/sobre" }));
 vi.mock("next/navigation", async () => ({
   ...await vi.importActual<typeof import("next/navigation")>("next/navigation"),
-  usePathname: () => "/sobre",
+  usePathname: () => navegador.caminho,
 }));
 vi.mock("next/headers", () => ({ cookies: () => ({ has: () => false }) }));
 vi.mock("@/lib/session", () => ({ getSessionUser: vi.fn() }));
@@ -274,9 +277,16 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
 
   // Iniciativa 1 (21/10/2026): o seletor lista as coleções do registro (o.colecoes), não mais os oito domínios
   it("o seletor lista as 28 coleções agrupadas pelos seis observatórios do registro", () => {
-    const c = ler("src/components/layout/SwitcherObservatorio.tsx");
-    expect(c).toContain("OBSERVATORIOS.map");
-    expect(c).toContain("o.colecoes.map");
+    // marca a coleção dona do endereço no registro, não a do domínio que a página declara
+    navegador.caminho = "/eficiencia-estatal/trabalho-renda/emprego-formal";
+    const html = renderToStaticMarkup(createElement(SwitcherObservatorio, { atual: "eficiencia", caminho: navegador.caminho }));
+    navegador.caminho = "/sobre";
+    for (const o of OBSERVATORIOS) for (const c of o.colecoes) expect(html, `${o.id}/${c.id}`).toContain(`href="${c.href}"`);
+    expect(html).toContain('aria-label="Coleção atual: Renda e trabalho.');
+    expect(html.match(/aria-current="true"/g)).toHaveLength(1);
+    expect(html).toMatch(/aria-current="true"[^>]*href="\/eficiencia-estatal\/trabalho-renda"/);
+    // fora do registro, vale o domínio declarado: a coleção que o apresenta inteiro
+    expect(renderToStaticMarkup(createElement(SwitcherObservatorio, { atual: "eficiencia", caminho: "/fora-do-registro" }))).toContain('aria-label="Coleção atual: Síntese das capitais.');
     expect(OBSERVATORIOS.flatMap((o) => o.colecoes)).toHaveLength(28);
     expect(DOMINIOS).toHaveLength(8);
     for (const d of DOMINIOS) expect(OBSERVATORIOS.some((o) => o.id === OBSERVATORIO_PRINCIPAL[d.id]), d.id).toBe(true);

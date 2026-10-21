@@ -1,44 +1,20 @@
 /**
  * Onde o leitor está: observatório, coleção e página de um endereço, lidos do registro (registro.ts). É a fonte do seletor
- * da barra (SwitcherObservatorio), do rótulo acima do H1 (RotuloContexto) e da trilha (Trilha), para que os três digam
- * sempre a mesma coisa. Iniciativa 1 do parecer de UX de 21/10/2026: uma só hierarquia, Observatório → Coleção → Página.
+ * da barra (SwitcherObservatorio), das abas dos observatórios, do rótulo acima do H1 (RotuloContexto) e da trilha (Trilha),
+ * para que todos digam sempre a mesma coisa. Iniciativa 1 do parecer de UX de 21/10/2026: uma só hierarquia,
+ * Observatório → Coleção → Página.
  *
- * Só servidor (ou componente de cliente renderizado no servidor): o registro lê os catálogos de todos os domínios.
+ * Só servidor: o registro lê os catálogos de todos os domínios. Para o navegador vai o índice (indiceDoCaminho), que
+ * contextoPuro.ts resolve sem os catálogos.
  */
 import { staticGenerationAsyncStorage } from "next/dist/client/components/static-generation-async-storage.external";
-import { APERITIVOS } from "@/lib/rotasPublicas";
-import { donoDaRota, observatorio as observatorioPorId, OBSERVATORIOS, type Colecao, type Observatorio } from "./registro";
+import { observatorio as observatorioPorId, OBSERVATORIOS, paineis, type Colecao, type Observatorio } from "./registro";
 import type { DominioId } from "@/lib/dominios";
 import { OBSERVATORIO_PRINCIPAL } from "./lista";
+import { resolverContexto, segmentoDe, type ContextoRota, type IndiceContexto } from "./contextoPuro";
 
-export type ContextoRota = {
-  observatorio: Observatorio;
-  /** null nas páginas do próprio observatório (entrada com conta, página aberta, método). */
-  colecao: Colecao | null;
-  /** Página dentro da coleção; null quando o endereço é a entrada da coleção ou do observatório. */
-  pagina: { titulo: string; rota: string } | null;
-  /** O endereço é exatamente o da última peça (coleção ou página), que a trilha marca como atual. */
-  exato: boolean;
-};
-
-function normalizar(caminho: string): string {
-  const semConsulta = caminho.split(/[?#]/)[0] || "/";
-  return semConsulta.length > 1 && semConsulta.endsWith("/") ? semConsulta.slice(0, -1) : semConsulta;
-}
-
-/**
- * Endereço público de um caminho de renderização: a irmã inglesa (/en/...) vale pela portuguesa e a versão aperitivo,
- * servida por rewrite no endereço do tema, vale pelo endereço do tema (APERITIVOS).
- */
-export function caminhoPublico(caminho: string): string {
-  let c = normalizar(caminho);
-  if (c === "/en") c = "/";
-  else if (c.startsWith("/en/")) c = c.slice(3);
-  const aperitivo = APERITIVOS.find((a) => a.versaoAberta && (c === a.versaoAberta || c.startsWith(`${a.versaoAberta}/`)));
-  if (aperitivo) c = aperitivo.rota;
-  else if (c.startsWith("/aperitivo/")) c = `/${c.slice("/aperitivo/".length)}`;
-  return c;
-}
+export { caminhoPublico } from "./contextoPuro";
+export type { ContextoRota, IndiceContexto } from "./contextoPuro";
 
 /** Endereço da página em renderização (servidor) ou da janela (navegador); null fora de render. */
 export function caminhoAtual(): string | null {
@@ -48,27 +24,33 @@ export function caminhoAtual(): string | null {
   return null;
 }
 
+function resumoDosObservatorios(): IndiceContexto["observatorios"] {
+  return OBSERVATORIOS.map((o) => ({
+    id: o.id, nome: o.nome, nomeCurto: o.nomeCurto, entrada: o.entrada, metodo: o.metodo,
+    colecoes: o.colecoes.map((c) => ({ id: c.id, nome: c.nome, href: c.href })),
+  }));
+}
+
+/** Índice inteiro: os seis observatórios, as 28 coleções e todos os painéis do registro. */
+export function indiceCompleto(): IndiceContexto {
+  return { observatorios: resumoDosObservatorios(), paineis: paineis().map((p) => [p.rota, p.titulo, p.observatorio, p.colecao] as const) };
+}
+
+/**
+ * Índice para o navegador, a partir do endereço em renderização: os observatórios e só os painéis do mesmo primeiro
+ * segmento (os únicos que podem ser donos de um endereço desse segmento). Um layout cobre um segmento só, então o índice
+ * vale para toda navegação que não troca de layout; ao trocar de segmento, o novo layout traz o seu índice.
+ */
+export function indiceDoCaminho(caminho: string | null): IndiceContexto {
+  const completo = indiceCompleto();
+  if (!caminho) return { observatorios: completo.observatorios, paineis: [] };
+  const seg = segmentoDe(caminho);
+  return { observatorios: completo.observatorios, paineis: completo.paineis.filter((p) => p[0] === seg || p[0].startsWith(`${seg}/`)) };
+}
+
 /** Contexto de um endereço; null fora dos observatórios (home, conta, institucionais). */
 export function contextoDaRota(caminho: string): ContextoRota | null {
-  const c = caminhoPublico(caminho);
-  const dono = donoDaRota(c);
-  if (dono) {
-    const o = observatorioPorId(dono.observatorio);
-    const colecao = o.colecoes.find((x) => x.id === dono.colecao) ?? null;
-    if (colecao && dono.rota === colecao.href) return { observatorio: o, colecao, pagina: null, exato: c === colecao.href };
-    return { observatorio: o, colecao, pagina: { titulo: dono.titulo, rota: dono.rota }, exato: c === dono.rota };
-  }
-  // páginas do próprio observatório: entrada com conta, página aberta (/perguntas/<id>) e método
-  for (const o of OBSERVATORIOS) {
-    if (c === o.entrada || c === `/perguntas/${o.id}`) return { observatorio: o, colecao: null, pagina: null, exato: true };
-    if (o.metodo && (c === o.metodo || c.startsWith(`${o.metodo}/`))) return { observatorio: o, colecao: null, pagina: { titulo: "Método", rota: o.metodo }, exato: c === o.metodo };
-  }
-  // coleção cuja porta está acima do endereço, sem painel registrado entre os dois (ex.: método das Contas Estaduais)
-  for (const o of OBSERVATORIOS) {
-    const colecao = o.colecoes.find((x) => c.startsWith(`${x.href}/`));
-    if (colecao) return { observatorio: o, colecao, pagina: null, exato: false };
-  }
-  return null;
+  return resolverContexto(caminho, indiceCompleto());
 }
 
 /** Contexto da página em renderização. */

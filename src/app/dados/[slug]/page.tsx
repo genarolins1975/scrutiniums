@@ -8,6 +8,7 @@ import { SeloFrescor } from "@/components/dados/SeloFrescor";
 import { ChamadaObservatorio } from "@/components/dados/ChamadaObservatorio";
 import { CitarIncorporar } from "@/components/dados/CitarIncorporar";
 import { codigoIncorporar } from "@/lib/citacao";
+import { Trilha } from "@/components/layout/Trilha";
 import {
   INDICADORES,
   fmtDelta,
@@ -64,9 +65,8 @@ export default function IndicadorPage({ params }: { params: { slug: string } }) 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <PublicHeaderView />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
-        <nav aria-label="Trilha" className="rotulo text-mineral">
-          <Link href="/dados" className="hover:text-bronze">Dados abertos</Link> / {i.tituloCurto}
-        </nav>
+        {/* os dados abertos são do Crédito e sistema financeiro: a trilha segue o registro e continua por eles */}
+        <Trilha rota="/observatorio" extras={[{ titulo: "Dados abertos", href: "/dados" }, { titulo: i.tituloCurto }]} />
         <h1 className="mt-4 max-w-3xl font-serif text-3xl text-carvao md:text-4xl">{i.titulo}</h1>
         <SeloFrescor geradoEm={geradoEmPublicado()} className="mt-4" />
 

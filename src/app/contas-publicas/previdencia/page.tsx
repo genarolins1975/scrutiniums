@@ -32,7 +32,6 @@ export default function Page({ searchParams }: { searchParams: Record<string, st
     <main id="conteudo-contas" className="cp-wrap cp-main pv-root" data-painel="previdencia">
       <MarcaVisita secao={SECAO_PAINEL} />
       <div className="cp-breadcrumb">
-        <Link href="/contas-publicas#capitulos">← Todos os temas</Link>
         <span>
           Complemento do capítulo&nbsp;<Link href="/contas-publicas/panorama">Panorama das contas</Link>
         </span>

@@ -84,7 +84,7 @@ describe("registro de domínios", () => {
     const rota = DOMINIOS[2].rotaRaiz;
     expect(ler("src/components/home/SecaoObservatorios.tsx")).toContain("DOMINIOS.map");
     // o seletor lista as coleções do registro; a Síntese das capitais é a coleção da Eficiência Estatal (Iniciativa 1, 21/10/2026)
-    expect(ler("src/components/layout/SwitcherObservatorio.tsx")).toContain("o.colecoes.map");
+    expect(ler("src/components/layout/NavegacaoContexto.tsx")).toContain("o.colecoes.map");
     // a escolha pós login agrupa os cartões das coleções pelos seis observatórios
     expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("OBSERVATORIOS.map");
     expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("OPCOES_OBSERVATORIOS.filter");
