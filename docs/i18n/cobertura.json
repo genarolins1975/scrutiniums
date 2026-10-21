@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
-    "arquivos_analisados": 1478,
-    "fontes_sha256": "47b4a2991b451a5896e04268d138a5d3e4b8a4eac828b95f696b4eea22346d89",
+    "arquivos_analisados": 1484,
+    "fontes_sha256": "dffe98039e90da96a1af8e24e69c0bd5bce3963b8888d2a26f1be15837d3bf59",
     "pendencias_sha256": "44341fc4a1ef91fb8b35461aeeba4a4a031ea49284045a3db9dc84c6f9d59b67",
     "nao_classificadas": [
       {
@@ -366,20 +366,20 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 235,
+        "arquivos": 241,
         "candidatos": {
-          "jsx_text": 3120,
-          "atributos": 1071,
-          "props": 1339,
-          "outros_literais": 7777,
-          "templates": 800,
-          "expressoes_nao_resolvidas": 8028,
-          "chaves_objetos": 4783
+          "jsx_text": 3266,
+          "atributos": 1097,
+          "props": 1500,
+          "outros_literais": 7990,
+          "templates": 850,
+          "expressoes_nao_resolvidas": 8409,
+          "chaves_objetos": 4866
         },
         "exclusoes": {
-          "importacoes": 923,
-          "atributos_tecnicos": 3368,
-          "tipos": 467
+          "importacoes": 958,
+          "atributos_tecnicos": 3613,
+          "tipos": 510
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -388,7 +388,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 26918,
+        "candidatos_nao_catalogados": 27978,
         "percentual_traduzido": null
       },
       "rotas": {
