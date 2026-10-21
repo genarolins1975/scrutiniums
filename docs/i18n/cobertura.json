@@ -12,7 +12,7 @@
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
     "arquivos_analisados": 1478,
-    "fontes_sha256": "bc23defb85b202a5f50d21cd41b79a8be623c89168bcec2b98b19988fa0999f5",
+    "fontes_sha256": "47b4a2991b451a5896e04268d138a5d3e4b8a4eac828b95f696b4eea22346d89",
     "pendencias_sha256": "44341fc4a1ef91fb8b35461aeeba4a4a031ea49284045a3db9dc84c6f9d59b67",
     "nao_classificadas": [
       {
@@ -225,16 +225,16 @@
         "arquivos": 576,
         "candidatos": {
           "jsx_text": 7674,
-          "atributos": 2903,
-          "props": 18871,
-          "outros_literais": 51149,
+          "atributos": 2915,
+          "props": 18872,
+          "outros_literais": 51150,
           "templates": 12780,
-          "expressoes_nao_resolvidas": 55615,
+          "expressoes_nao_resolvidas": 55623,
           "chaves_objetos": 36036
         },
         "exclusoes": {
           "importacoes": 4998,
-          "atributos_tecnicos": 8697,
+          "atributos_tecnicos": 8699,
           "tipos": 3734
         },
         "scripts_embutidos": {},
@@ -244,7 +244,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 185028,
+        "candidatos_nao_catalogados": 185050,
         "percentual_traduzido": null
       },
       "rotas": {
