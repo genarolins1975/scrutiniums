@@ -2319,11 +2319,12 @@ export function textoSaldoLiquidoRede(
     : "";
   const outroDia = a.diaModulo ? dataBR(a.diaModulo, idioma) : "";
   const modulo = a.diaModulo && a.diaModulo !== a.dia ? tx(` A página Rede traz também ${outroDia}.`, ` The Grid page also shows ${outroDia}.`, idioma) : "";
-  // a Visão geral já aponta um dia que o módulo Rede ainda não detalha hora a hora: o saldo é do último dia detalhado, e isso fica dito
+  // a Visão geral já aponta um dia que o módulo Rede ainda não detalha hora a hora: o cartão fica com o saldo da própria data
+  // (sintese.json) e só as horas contra o saldo listadas nesta nota são as do último dia detalhado; a nota diz as duas datas
   const visao = a.diaVisao
     ? tx(
-        ` O cartão desta página aponta ${dataBR(a.diaVisao, "pt")}, dia que a página Rede ainda não detalha hora a hora; o saldo acima é o do último dia detalhado.`,
-        ` The card on this page points to ${dataBR(a.diaVisao, "en")}, a day the Grid page does not yet detail hour by hour; the balance above is for the last detailed day.`,
+        ` O cartão desta página mostra o saldo de ${dataBR(a.diaVisao, "pt")}, dia que a página Rede ainda não detalha hora a hora; as horas contra o saldo listadas aqui são as de ${dataBR(a.dia, "pt")}, último dia detalhado.`,
+        ` The card on this page shows the balance of ${dataBR(a.diaVisao, "en")}, a day the Grid page does not yet detail hour by hour; the hours against the balance listed here are those of ${dataBR(a.dia, "en")}, the last detailed day.`,
         idioma,
       )
     : "";

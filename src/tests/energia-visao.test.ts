@@ -26,6 +26,7 @@ import {
   textoDecApurado,
   textoJanelaTermica,
   textoMudouDeterminantes,
+  textoSaldoLiquidoRede,
   textoUniversoDec,
   vereditoDeterminantes,
   textoDenominadorPerdas,
@@ -755,8 +756,11 @@ describe("r10: DEC apurado, perdas, tarifa de referência e EAR com a ressalva j
     expect(ctx.saldoRede).toContain(`Saldo líquido do dia ${dia.split("-").reverse().join("/")}`);
     expect(ctx.saldoRede).toContain(`Sul → Sudeste/Centro-Oeste, ${num(contra, 0)} de ${num(sul.horas[i], 0)}`);
     expect(ctx.saldoRede).toContain("Saldo líquido do dia");
-    if (dia !== diaVisao) expect(ctx.saldoRede).toContain(`aponta ${diaVisao.split("-").reverse().join("/")}, dia que a página Rede ainda não detalha hora a hora`);
-    else expect(ctx.saldoRede).not.toContain("ainda não detalha hora a hora");
+    if (dia !== diaVisao) {
+      // o cartão continua com o saldo da data da síntese; só as horas listadas na nota são do último dia detalhado
+      expect(ctx.saldoRede).toContain(`mostra o saldo de ${diaVisao.split("-").reverse().join("/")}, dia que a página Rede ainda não detalha hora a hora`);
+      expect(ctx.saldoRede).toContain(`listadas aqui são as de ${dia.split("-").reverse().join("/")}, último dia detalhado`);
+    } else expect(ctx.saldoRede).not.toContain("ainda não detalha hora a hora");
     const rede = leituraDeterminante(M.paineis.find((p) => p.id === "rede")!, M);
     expect(rede).toContain("saldo líquido do dia");
     expect(html).toContain('data-nota-determinante="rede"');
@@ -770,6 +774,19 @@ describe("r10: DEC apurado, perdas, tarifa de referência e EAR com a ressalva j
     expect(diaDoSaldoRede("2026-09-20", dias)).toBeNull();
     expect(diaDoSaldoRede(null, dias)).toBeNull();
     expect(diaDoSaldoRede("2026-09-28", [])).toBeNull();
+  });
+
+  it("a nota do saldo da Rede nunca atribui o valor do cartão ao dia detalhado: o cartão fica com a data da síntese, as horas com a do módulo", () => {
+    const fronteiras = [{ rotulo: "Sul → Sudeste/Centro-Oeste", horasContra: 3, horas: 24 }];
+    const t = textoSaldoLiquidoRede({ dia: "2026-09-29", fronteiras, diaModulo: "2026-09-29", diaVisao: "2026-09-30" }, "pt");
+    expect(t).toContain("Saldo líquido do dia 29/09/2026");
+    expect(t).toContain("O cartão desta página mostra o saldo de 30/09/2026, dia que a página Rede ainda não detalha hora a hora");
+    expect(t).toContain("as horas contra o saldo listadas aqui são as de 29/09/2026, último dia detalhado");
+    expect(t).not.toContain("o saldo acima");
+    const semNota = textoSaldoLiquidoRede({ dia: "2026-09-29", fronteiras, diaModulo: "2026-09-29", diaVisao: null }, "pt");
+    expect(semNota).not.toContain("ainda não detalha");
+    const en = textoSaldoLiquidoRede({ dia: "2026-09-29", fronteiras, diaModulo: "2026-09-29", diaVisao: "2026-09-30" }, "en");
+    expect(en).toContain("shows the balance of Sep 30, 2026");
   });
 
   it("siglas no primeiro uso e valores de enumeração em palavras comuns", () => {
