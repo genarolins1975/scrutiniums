@@ -40,7 +40,7 @@ const RECURSOS = [
     descricao: "Verbetes com fonte oficial e trilhas de leitura sobre os conceitos do setor.",
   },
   {
-    escopo: "Contas Públicas Federais",
+    escopo: "Contas Federais",
     titulo: "Dados e cobertura",
     href: "/contas-publicas/dados",
     descricao: "Matriz de cobertura, catálogo de indicadores pesquisável e downloads em JSON.",

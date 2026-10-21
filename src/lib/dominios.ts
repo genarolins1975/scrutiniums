@@ -10,9 +10,17 @@ export type DominioId = "credito" | "energia" | "eficiencia" | "contas" | "estad
 
 export type Dominio = {
   id: DominioId;
-  /** Nome completo, como aparece em títulos. */
+  /**
+   * Nome da coleção, igual ao do registro dos seis observatórios (src/lib/observatorios/lista.ts): é o que a tela mostra.
+   * Desde a Iniciativa 1 do parecer de UX de 21/10/2026, nenhum domínio se apresenta como "Observatório Brasileiro de X".
+   */
   nome: string;
-  /** Rótulo curto do switcher: "Crédito", "Setor Elétrico", "Eficiência Estatal". */
+  /**
+   * Nome antigo do domínio ("Observatório Brasileiro de Crédito"), de antes do reagrupamento de 17/10/2026. Só para os
+   * testes de regressão (src/tests/vocabulario.test.ts) e para a história contada em /sobre; nunca para rótulo de tela.
+   */
+  nomeLegado: string;
+  /** Rótulo curto do domínio de origem, usado onde a tela diz de onde vem um painel: "Crédito", "Setor Elétrico", "Eficiência Estatal". */
   nomeCurto: string;
   /** Pergunta editorial que o observatório responde. */
   pergunta: string;
@@ -35,7 +43,8 @@ export type Dominio = {
 export const DOMINIOS: Dominio[] = [
   {
     id: "credito",
-    nome: "Observatório Brasileiro de Crédito",
+    nome: "Crédito e sistema financeiro",
+    nomeLegado: "Observatório Brasileiro de Crédito",
     nomeCurto: "Crédito",
     pergunta:
       "Onde o crédito cresce, onde o risco aparece e como instituições, produtos e regiões se comparam?",
@@ -52,7 +61,8 @@ export const DOMINIOS: Dominio[] = [
   },
   {
     id: "energia",
-    nome: "Observatório Brasileiro do Setor Elétrico",
+    nome: "Setor Elétrico",
+    nomeLegado: "Observatório Brasileiro do Setor Elétrico",
     nomeCurto: "Setor Elétrico",
     pergunta:
       "Como água, geração, consumo, rede e mercado se combinam para determinar as condições do sistema elétrico brasileiro?",
@@ -69,7 +79,8 @@ export const DOMINIOS: Dominio[] = [
   },
   {
     id: "eficiencia",
-    nome: "Observatório Brasileiro de Eficiência Estatal",
+    nome: "Síntese das capitais",
+    nomeLegado: "Observatório Brasileiro de Eficiência Estatal",
     nomeCurto: "Eficiência Estatal",
     pergunta:
       "Quanto o Estado aplica, que atendimento oferece e que resultados a fonte registra, com a mesma régua para cada ente?",
@@ -86,35 +97,38 @@ export const DOMINIOS: Dominio[] = [
   },
   {
     id: "contas",
-    nome: "Observatório Brasileiro de Contas Públicas Federais",
-    nomeCurto: "Contas Públicas Federais",
+    nome: "Contas Federais",
+    nomeLegado: "Observatório Brasileiro de Contas Públicas Federais",
+    nomeCurto: "Contas Federais",
     pergunta: "Como o orçamento federal é executado, onde estão os maiores custos e quais entregas foram registradas?",
     descricao: "Da autorização ao pagamento, acompanhe o orçamento federal, o resultado fiscal, os restos a pagar, as metas físicas e os custos da União. Explore composição e variações no tempo, com fontes oficiais e limites de comparação explícitos.",
     descricaoCurta: "Orçamento e entregas físicas do SIOP, resultado fiscal e custos do Tesouro Nacional. Cada painel identifica período, fonte e cobertura; execução do gasto não comprova eficiência.",
     chips: ["Orçamento", "Resultado fiscal", "Custos", "Entregas"],
     rotaRaiz: "/contas-publicas",
     rotaApresentacao: "/contas-publicas",
-    cta: "Explorar Contas Públicas Federais",
+    cta: "Explorar Contas Federais",
     acento: "energia",
     prefixosTelemetria: ["contas:"],
   },
   {
     id: "estados",
-    nome: "Observatório Brasileiro de Contas Públicas Estaduais",
-    nomeCurto: "Contas Públicas Estaduais",
+    nome: "Contas Estaduais",
+    nomeLegado: "Observatório Brasileiro de Contas Públicas Estaduais",
+    nomeCurto: "Contas Estaduais",
     pergunta: "Como os estados executam o orçamento, financiam suas despesas e se comparam?",
     descricao: "Execução orçamentária, composição de receitas e despesas, margem corrente e dívida das 27 unidades da Federação. Compare estados e regiões, consulte valores exatos e acesse as respostas originais do Tesouro. Execução financeira não comprova eficiência ou entrega de serviços.",
     descricaoCurta: "Tesouro Nacional / Siconfi: RREO Anexo 01 e RGF Anexo 02. Execução e composição no encerramento de 2025; dívida também com recorte parcial de 2026.",
     chips: ["27 UFs", "Execução", "Receitas e despesas", "Dívida"],
     rotaRaiz: "/contas-publicas-estaduais",
     rotaApresentacao: "/contas-publicas-estaduais",
-    cta: "Explorar Contas Públicas Estaduais",
+    cta: "Explorar Contas Estaduais",
     acento: "obee",
     prefixosTelemetria: ["estados:"],
   },
   {
     id: "saneamento",
-    nome: "Observatório Brasileiro do Saneamento",
+    nome: "Saneamento",
+    nomeLegado: "Observatório Brasileiro do Saneamento",
     nomeCurto: "Saneamento",
     pergunta: "Quem ainda está sem água e esgoto adequados, quanto custa o serviço, quem o presta e se o planejamento vira atendimento?",
     descricao:
@@ -130,7 +144,8 @@ export const DOMINIOS: Dominio[] = [
   },
   {
     id: "gas",
-    nome: "Observatório Brasileiro de Gás Natural",
+    nome: "Gás Natural",
+    nomeLegado: "Observatório Brasileiro de Gás Natural",
     nomeCurto: "Gás Natural",
     pergunta: "Quanto gás o Brasil produz, quanto chega ao mercado, de onde vem o que é importado e quanto custa em cada elo até o consumidor?",
     descricao:
@@ -146,7 +161,8 @@ export const DOMINIOS: Dominio[] = [
   },
   {
     id: "agro",
-    nome: "Observatório do Agronegócio Brasileiro",
+    nome: "Agronegócio",
+    nomeLegado: "Observatório do Agronegócio Brasileiro",
     nomeCurto: "Agronegócio",
     pergunta: "Como está o agronegócio brasileiro e o que ele representa para o país?",
     descricao: "Oito perguntas sobre o setor com dados oficiais atualizados automaticamente: peso na economia, safra, insumos importados, exportações, produtores e trabalho, juros e subsídios, desmatamento e emissões, preço da comida. Doze cadeias, com produção por estado e exportação, e cenários de margem e orçamento completam o observatório. A cobertura de cada medição e as limitações aparecem junto do conteúdo.",
