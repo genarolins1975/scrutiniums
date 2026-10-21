@@ -2286,6 +2286,20 @@ export function horasContraOSaldo(c: { liquido_mwh: readonly (number | null)[]; 
   return liq >= 0 ? inv : h - inv;
 }
 
+/**
+ * Dia cujo saldo líquido a Visão geral mostra. O módulo Rede só detalha hora a hora os dias com as 24 horas verificadas
+ * (`dias`, em ordem crescente). Se o dia apontado pela Visão geral está detalhado, é ele. Se a Visão geral já aponta um dia
+ * posterior ao último detalhado (21/10/2026: gold retida com o saldo vazio), o saldo é o do último dia detalhado, dito com as
+ * duas datas pelo chamador. Se o dia apontado é anterior ao último detalhado e não está na lista (síntese retida mais antiga
+ * que a janela do módulo), não há saldo honesto a mostrar: o retorno é nulo, nunca o saldo de um dia posterior ao cartão.
+ */
+export function diaDoSaldoRede(diaVisao: string | null, dias: readonly string[]): string | null {
+  if (!diaVisao || dias.length === 0) return null;
+  if (dias.includes(diaVisao)) return diaVisao;
+  const ultimo = dias[dias.length - 1];
+  return diaVisao > ultimo ? ultimo : null;
+}
+
 /** Saldo líquido do dia e as horas contra o saldo em cada fronteira, com a ligação para a página Rede escrita pelo componente. */
 export function textoSaldoLiquidoRede(
   a: { dia: string; fronteiras: readonly { rotulo: string; horasContra: number | null; horas: number }[]; diaModulo: string | null; diaVisao?: string | null },

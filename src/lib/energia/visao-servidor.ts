@@ -26,6 +26,7 @@ import {
   coberturaTarifa,
   decDoAno,
   denominadorPerdas,
+  diaDoSaldoRede,
   horasContraOSaldo,
   serieEarSin,
   textoCapacidadeAgua,
@@ -211,10 +212,10 @@ export function contextoVisao(g: SinteseVisaoGold): ContextoVisao {
   /* rede: horas contra o saldo no dia de referência da Visão geral */
   const diaRede = painel("rede")?.data_referencia ?? null;
   const dias = redeDet?.circulacao.diario.dias ?? [];
-  // o módulo Rede só detalha hora a hora os dias com as 24 horas verificadas: quando a Visão geral já aponta um dia que o
-  // módulo ainda não traz (21/10/2026: gold retida com o saldo vazio), o saldo é o do último dia do módulo, dito com as duas datas
-  const iVisao = diaRede ? dias.indexOf(diaRede) : -1;
-  const diaSaldo = iVisao >= 0 ? diaRede : dias.length ? dias[dias.length - 1] : null;
+  // o módulo Rede só detalha hora a hora os dias com as 24 horas verificadas: quando a Visão geral já aponta um dia posterior
+  // ao último do módulo (21/10/2026: gold retida com o saldo vazio), o saldo é o do último dia detalhado, dito com as duas
+  // datas; dia anterior ausente (síntese retida mais antiga que o módulo) fica sem saldo (diaDoSaldoRede)
+  const diaSaldo = diaDoSaldoRede(diaRede, dias);
   const i = diaSaldo ? dias.indexOf(diaSaldo) : -1;
   const saldoRede =
     diaSaldo && redeDet && i >= 0

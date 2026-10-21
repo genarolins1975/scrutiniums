@@ -18,6 +18,7 @@ import {
   colunasMultiplos,
   corteEpisodios,
   determinantesDaPagina,
+  diaDoSaldoRede,
   expandeSiglas,
   linhasDeColunas,
   periodoDaJanela,
@@ -740,8 +741,14 @@ describe("r10: DEC apurado, perdas, tarifa de referência e EAR com a ressalva j
     const r = JSON.parse(ler("public/energia/gold/rede_detalhe.json"));
     const d = r.circulacao.diario;
     const diaVisao = M.paineis.find((p) => p.id === "rede")!.data_referencia;
-    // dia da Visão geral ainda sem as 24 horas no módulo Rede (gold retida em 21/10/2026): o saldo é o do último dia detalhado, com as duas datas ditas
-    const dia = d.dias.includes(diaVisao) ? diaVisao : d.dias[d.dias.length - 1];
+    // dia da Visão geral posterior ao último detalhado pelo módulo Rede (gold retida em 21/10/2026): o saldo é o do último dia
+    // detalhado, com as duas datas ditas; dia anterior ausente fica sem saldo
+    const dia = diaDoSaldoRede(diaVisao, d.dias);
+    if (!dia) {
+      expect(diaVisao < d.dias[d.dias.length - 1]).toBe(true);
+      expect(ctx.saldoRede).toBeNull();
+      return;
+    }
     const i = d.dias.indexOf(dia);
     const sul = d.por_par.S_SE;
     const contra = sul.liquido_mwh[i] >= 0 ? sul.horas_inverso[i] : sul.horas[i] - sul.horas_inverso[i];
@@ -753,6 +760,16 @@ describe("r10: DEC apurado, perdas, tarifa de referência e EAR com a ressalva j
     const rede = leituraDeterminante(M.paineis.find((p) => p.id === "rede")!, M);
     expect(rede).toContain("saldo líquido do dia");
     expect(html).toContain('data-nota-determinante="rede"');
+  });
+
+  it("o dia do saldo da Rede: o apontado quando detalhado, o último detalhado só quando o apontado é posterior, nenhum quando é anterior", () => {
+    const dias = ["2026-09-27", "2026-09-28", "2026-09-29"];
+    expect(diaDoSaldoRede("2026-09-28", dias)).toBe("2026-09-28");
+    expect(diaDoSaldoRede("2026-09-30", dias)).toBe("2026-09-29");
+    // síntese retida mais antiga que a janela do módulo: nunca o saldo de um dia posterior ao cartão
+    expect(diaDoSaldoRede("2026-09-20", dias)).toBeNull();
+    expect(diaDoSaldoRede(null, dias)).toBeNull();
+    expect(diaDoSaldoRede("2026-09-28", [])).toBeNull();
   });
 
   it("siglas no primeiro uso e valores de enumeração em palavras comuns", () => {
