@@ -29,6 +29,7 @@ type Regra = "hexadecimal" | "redefine --cor-*" | "corpo abaixo de 12 px" | "!te
 const EXCECOES: Record<string, { regras: Regra[]; ate: string }> = {
   "src/components/LiteralFonte.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/components/agro/Agro.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
+  "src/components/fluxo/DiagramaFluxo.module.css": { regras: ["hexadecimal"], ate: "PR 2 da Iniciativa 5 (entrou no main com o fluxo do dinheiro público, PR #342)" },
   "src/components/conectividade/PainelConectividade.tsx": { regras: ["hexadecimal"], ate: "PR 2 da Iniciativa 5 (redefinições por coleção)" },
   "src/components/conectividade/conectividade.css": { regras: ["hexadecimal", "redefine --cor-*"], ate: "PR 2 da Iniciativa 5 (redefinições por coleção)" },
   "src/components/conta/FerramentasConta.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
