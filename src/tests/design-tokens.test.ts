@@ -79,7 +79,7 @@ const EXCECOES: Record<string, { regras: Regra[]; ate: string }> = {
   "src/app/setor-eletrico/atlas-inicial.css": { regras: ["hexadecimal", "redefine --cor-*", "corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
   "src/app/territorio/metodologia/page.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "public/observatorios.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
-  "public/observatorios-gravuras.css": { regras: ["hexadecimal", "corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
+  "public/observatorios-gravuras.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
   "public/obs/styles.css": { regras: ["hexadecimal", "corpo abaixo de 12 px"], ate: "PR 4 da Iniciativa 5 (aplicação do Crédito)" },
   "public/obs/atlas.css": { regras: ["hexadecimal", "corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
 };
