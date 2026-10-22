@@ -46,16 +46,16 @@ const capLink = (slug: string, rotulo: string) => (
 
 /**
  * Cores da escada: dois tons de petróleo para os degraus de pelo menos básico (o limiar do ODS 1.4.1) e três de
- * bronze para os abaixo dele. Conferidas com o validador de paleta da skill de visualização sobre o papel
- * (#faf8f2): separação entre vizinhos ΔE 14,1 para daltonismo e 17,4 para visão normal. O bronze claro fica
+ * bronze para os abaixo dele (--escala-jmp-*, em globals.css). Conferidas com o validador de paleta da skill de visualização
+ * sobre o papel: separação entre vizinhos ΔE 14,1 para daltonismo e 17,4 para visão normal. O bronze claro fica
  * abaixo de 3:1 contra o papel: por isso cada segmento tem rótulo, borda e a tabela equivalente.
  */
 const ESCADA = [
-  { id: "gerenciada", agua: "Gerenciada com segurança", esgoto: "Gerenciado com segurança", legenda: "Gerenciado com segurança", cor: "#0a4a56", texto: "#ffffff" },
-  { id: "basica_so", agua: "Básica", esgoto: "Básico", legenda: "Básico", cor: "#5e98a3", texto: "#1a1d21" },
-  { id: "limitada", agua: "Limitada", esgoto: "Limitado", legenda: "Limitado", cor: "#d6b892", texto: "#1a1d21" },
-  { id: "nao_melhorada", agua: "Não melhorada", esgoto: "Não melhorado", legenda: "Não melhorado", cor: "#a87a50", texto: "#1a1d21" },
-  { id: "ruim", agua: "Água superficial", esgoto: "Defecação a céu aberto", legenda: "Água superficial ou defecação a céu aberto", cor: "#6e4a2e", texto: "#ffffff" },
+  { id: "gerenciada", agua: "Gerenciada com segurança", esgoto: "Gerenciado com segurança", legenda: "Gerenciado com segurança", cor: "var(--escala-jmp-1)", texto: "var(--cor-superficie)" },
+  { id: "basica_so", agua: "Básica", esgoto: "Básico", legenda: "Básico", cor: "var(--escala-jmp-2)", texto: "var(--cor-carvao)" },
+  { id: "limitada", agua: "Limitada", esgoto: "Limitado", legenda: "Limitado", cor: "var(--escala-jmp-3)", texto: "var(--cor-carvao)" },
+  { id: "nao_melhorada", agua: "Não melhorada", esgoto: "Não melhorado", legenda: "Não melhorado", cor: "var(--escala-jmp-4)", texto: "var(--cor-carvao)" },
+  { id: "ruim", agua: "Água superficial", esgoto: "Defecação a céu aberto", legenda: "Água superficial ou defecação a céu aberto", cor: "var(--escala-jmp-5)", texto: "var(--cor-superficie)" },
 ] as const;
 type Degrau = (typeof ESCADA)[number]["id"];
 

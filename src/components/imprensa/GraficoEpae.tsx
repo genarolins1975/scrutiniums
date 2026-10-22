@@ -14,14 +14,13 @@ import Link from "next/link";
  * como tal, ao lado do observado, para que a diferença entre medição e modelo
  * fique explícita para o jornalista.
  *
- * Cores em hexadecimal literal porque atributos SVG não herdam tokens do
- * Tailwind — mesma exceção já adotada em components/dados/GraficoSerie.tsx.
+ * Cores lidas dos tokens da plataforma (src/app/globals.css): o SVG é inline, e o atributo de apresentação aceita var().
  */
 
-const CARVAO = "#1A1D21";
-const MINERAL = "#6B6D6A";
-const BRONZE = "#966B48";
-const LINHA = "#D8D2C6";
+const CARVAO = "var(--cor-carvao)";
+const MINERAL = "var(--cor-mineral)";
+const BRONZE = "var(--cor-bronze)";
+const LINHA = "var(--cor-linha)";
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- leitura de gold JSON sem tipos gerados */
 type ObsEpae = {

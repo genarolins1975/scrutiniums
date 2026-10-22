@@ -137,6 +137,14 @@
   --san-div-centro: #e4e1da;
   --san-div-pos-1: #7fb0b8;
   --san-div-pos-2: #0e6170;
+  /* Saneamento: escada de serviço da OMS/Unicef (JMP), do degrau gerenciado com segurança ao pior. Dois petróleos para os degraus de
+     pelo menos básico e três bronzes abaixo; vizinhos com ΔE 14,1 para daltonismo. O bronze claro fica abaixo de 3:1 sobre o papel:
+     cada segmento tem rótulo, borda e tabela equivalente (Ilustracoes.tsx). */
+  --escala-jmp-1: #0a4a56;
+  --escala-jmp-2: #5e98a3;
+  --escala-jmp-3: #d6b892;
+  --escala-jmp-4: #a87a50;
+  --escala-jmp-5: #6e4a2e;
   --cor-selecao: color-mix(in srgb, var(--cor-energia) 12%, transparent);
   /* Comparação de até quatro entidades (distribuidoras, empresas, usinas): mesmos tons
      validados das séries de submercado, com semântica própria dada pelo rótulo. */
