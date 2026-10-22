@@ -88,7 +88,7 @@ export function PrevisoesArquivo({
   const rodadas = resumoRodadas(noDia, idioma);
   const visiveis = v.rod ? noDia.filter((l) => l.run_id === v.rod) : noDia;
   const reg = visiveis.find((l) => l.forecast_id === v.reg) ?? null;
-  const grafico = linhasGraficoRodadas(rodadas);
+  const grafico = linhasGraficoRodadas(rodadas, idioma);
 
   return (
     <div className="space-y-6">
