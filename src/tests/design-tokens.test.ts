@@ -59,7 +59,6 @@ const EXCECOES: Record<string, { regras: Regra[]; ate: string }> = {
   "src/app/app/(foco)/observatorios/escolha.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
   "src/app/contas-publicas/contas.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
   "src/app/contas-publicas-estaduais/estados.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
-  "src/app/eficiencia-estatal/trabalho-renda/trabalho-renda.css": { regras: ["hexadecimal"], ate: "PR 2 da Iniciativa 5 (redefinições por coleção)" },
   "src/app/saneamento/municipio/[id]/page.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/app/saneamento/prestadores/divida/page.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/app/setor-eletrico/atlas-inicial.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
