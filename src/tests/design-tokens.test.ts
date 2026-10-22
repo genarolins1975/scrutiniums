@@ -66,7 +66,7 @@ const EXCECOES: Record<string, { regras: Regra[]; ate: string }> = {
   "public/observatorios.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
   "public/observatorios-gravuras.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
   "public/obs/styles.css": { regras: ["hexadecimal", "corpo abaixo de 12 px"], ate: "PR 4 da Iniciativa 5 (aplicação do Crédito)" },
-  "public/obs/atlas.css": { regras: ["hexadecimal", "corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
+  "public/obs/atlas.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
 };
 
 // ---------------------------------------------------------------------------------------------------- leitura dos arquivos
