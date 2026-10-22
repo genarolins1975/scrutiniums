@@ -5,7 +5,7 @@ import { RodapeEnergia } from "@/components/energia/RodapeEnergia";
 
 export const metadata: Metadata = {
   title: {
-    default: "Observatório Brasileiro do Setor Elétrico",
+    default: "Setor Elétrico",
     template: "%s · Setor Elétrico · Scrutiniums",
   },
   description:

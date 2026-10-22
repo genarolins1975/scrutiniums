@@ -15,10 +15,11 @@ import { razaoPct } from "@/lib/saneamento/municipios";
 import { CAPITULOS_SEM_MANCHETE_FINANCEIRA, respostasDosCapitulos } from "@/lib/saneamento/respostas";
 import { AUTODECLARADO } from "@/lib/saneamento/autodeclarado";
 import { data, inteiro, numero } from "@/lib/saneamento/formato";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
-  title: { absolute: "Observatório Brasileiro do Saneamento · Scrutiniums" },
+  title: { absolute: "Saneamento · Scrutiniums" },
   description:
     "Quem ainda está sem água e esgoto, quanto custa o serviço, quem o presta e fiscaliza, onde o dinheiro é investido e se o planejamento vira atendimento, município a município.",
   alternates: { canonical: ROTA },
@@ -60,7 +61,7 @@ export default function Pagina() {
         <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/saneamento"]} conteiner="ed-pagina" />
         <section className="ed-pagina grid grid-cols-1 gap-10 pb-12 pt-10 lg:grid-cols-12 lg:gap-12 lg:pt-14">
           <div className="lg:col-span-7">
-            <p className="rotulo text-obee-dark">Observatório Brasileiro do Saneamento</p>
+            <RotuloContexto rota="/saneamento" className="text-obee-dark" />
             <h1 className="mt-4 font-serif text-[2.1rem] leading-[1.12] text-carvao [text-wrap:balance] md:text-[3rem]">
               Quem ainda está sem água e esgoto, quanto custa o serviço e se o planejamento vira atendimento.
             </h1>

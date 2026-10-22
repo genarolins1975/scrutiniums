@@ -14,6 +14,7 @@ import { integra, lerGold } from "@/lib/energia/gold";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import type { ContaGold } from "@/lib/energia/tipos-conta";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 /**
  * Versão aperitivo da Conta de luz (princípio do aperitivo, decisão do dono de 20/10/2026). Quem acessa
@@ -166,7 +167,7 @@ export default function ContaDeLuzAperitivo() {
       <CabecalhoEnergia atual="conta-de-luz" comSelo rotaPublica={ROTA_PUBLICA} />
       <MarcaVisita secao="energia:conta-de-luz:aperitivo" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina flex-1 pb-6 pt-8 sm:pt-12">
-        <p className="rotulo text-mineral">{tx("Setor Elétrico · Conta de luz", "Setor Elétrico · Electricity bill")}</p>
+        <RotuloContexto rota="/setor-eletrico/conta-de-luz" className="text-mineral" />
         <h1 className="ed-h1 mt-2 max-w-[22ch] font-serif text-carvao">{tx("Quanto custa a conta de luz na minha cidade?", "How much does the electricity bill cost in my city?")}</h1>
         <p className="mt-3 max-w-prose2 text-base leading-relaxed text-carvao-muted">
           {tx(

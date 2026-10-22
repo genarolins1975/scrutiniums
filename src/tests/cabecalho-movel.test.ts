@@ -6,10 +6,11 @@ import { join } from "node:path";
 import { DOMINIOS } from "@/lib/dominios";
 import { OBSERVATORIOS } from "@/lib/observatorios/registro";
 import { OBSERVATORIO_PRINCIPAL, destinoObservatorio, type ObservatorioId } from "@/lib/observatorios/lista";
-import { ehRotaPublica } from "@/lib/rotasPublicas";
+import { APERITIVOS, ehRotaPublica } from "@/lib/rotasPublicas";
 import { MARCADOR_FIM, MARCADOR_INICIO, htmlBarraSpa } from "@/lib/observatorios/barraSpa";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Cabecalho as CabecalhoSaneamento } from "@/components/saneamento/Cabecalho";
 import { CabecalhoGas } from "@/components/gas/CabecalhoGas";
@@ -17,9 +18,11 @@ import { CabecalhoEntrada } from "@/components/eficiencia/CabecalhoEntrada";
 import { CabecalhoAgro } from "@/components/agro/Cabecalho";
 import { EstadoConta } from "@/components/energia/AcessoConta";
 
+// endereço que o navegador vê; o seletor, as abas e a trilha resolvem o contexto por ele (NavegacaoContexto.tsx)
+const navegador = vi.hoisted(() => ({ caminho: "/sobre" }));
 vi.mock("next/navigation", async () => ({
   ...await vi.importActual<typeof import("next/navigation")>("next/navigation"),
-  usePathname: () => "/sobre",
+  usePathname: () => navegador.caminho,
 }));
 vi.mock("next/headers", () => ({ cookies: () => ({ has: () => false }) }));
 vi.mock("@/lib/session", () => ({ getSessionUser: vi.fn() }));
@@ -224,9 +227,12 @@ describe("com e sem sessão: a barra não aponta para o login de quem entrou nem
     const semIdioma = (h: string) => h.replace(/<div role="group" aria-label="Idioma"[\s\S]*?<\/div>/g, "");
     for (const e of ENTRADAS) for (const a of ancoras(semIdioma(barra(e.render())))) destinos.add(a.href.split(/[?#]/)[0]);
     for (const a of ancoras(barra(barraSpa))) destinos.add(a.href.split(/[?#]/)[0]);
-    // a marca leva à home, que é aberta; todo o resto da barra (observatórios, coleções, escolha e conta) pede sessão
-    expect([...destinos].filter((d) => ehRotaPublica(d)).sort()).toEqual(["/", ...ENTRADAS_ABERTAS].sort());
-    expect(destinos.size).toBeGreaterThanOrEqual(1 + OBSERVATORIOS.length + DOMINIOS.length + 2);
+    // a marca leva à home, que é aberta; desde a Iniciativa 1 (21/10/2026) o seletor lista as 28 coleções, e as portas de
+    // coleção que são a página única de um tema (APERITIVOS: sem sessão, a versão aperitivo; com sessão, o painel completo)
+    // também são abertas; todo o resto da barra (observatórios, coleções, escolha e conta) pede sessão
+    const aperitivos = new Set(APERITIVOS.map((a) => a.rota));
+    for (const d of destinos) if (ehRotaPublica(d)) expect(d === "/" || ENTRADAS_ABERTAS.includes(d) || aperitivos.has(d), d).toBe(true);
+    expect(destinos.size).toBeGreaterThanOrEqual(1 + OBSERVATORIOS.length + OBSERVATORIOS.flatMap((o) => o.colecoes).length + 2);
   });
 });
 
@@ -269,21 +275,31 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
     expect(celular).toContain(".bp-marca--compacta .bp-marca-nome { display:none; }");
   });
 
-  it("o seletor lista as oito coleções agrupadas pelos seis observatórios do registro", () => {
-    const c = ler("src/components/layout/SwitcherObservatorio.tsx");
-    expect(c).toContain("OBSERVATORIOS.map");
-    expect(c).toContain("OBSERVATORIO_PRINCIPAL[d.id] === o.id");
+  // Iniciativa 1 (21/10/2026): o seletor lista as coleções do registro (o.colecoes), não mais os oito domínios
+  it("o seletor lista as 28 coleções agrupadas pelos seis observatórios do registro", () => {
+    // marca a coleção dona do endereço no registro, não a do domínio que a página declara
+    navegador.caminho = "/eficiencia-estatal/trabalho-renda/emprego-formal";
+    const html = renderToStaticMarkup(createElement(SwitcherObservatorio, { atual: "eficiencia", caminho: navegador.caminho }));
+    navegador.caminho = "/sobre";
+    for (const o of OBSERVATORIOS) for (const c of o.colecoes) expect(html, `${o.id}/${c.id}`).toContain(`href="${c.href}"`);
+    expect(html).toContain('aria-label="Coleção atual: Renda e trabalho.');
+    expect(html.match(/aria-current="true"/g)).toHaveLength(1);
+    expect(html).toMatch(/aria-current="true"[^>]*href="\/eficiencia-estatal\/trabalho-renda"/);
+    // fora do registro, vale o domínio declarado: a coleção que o apresenta inteiro
+    expect(renderToStaticMarkup(createElement(SwitcherObservatorio, { atual: "eficiencia", caminho: "/fora-do-registro" }))).toContain('aria-label="Coleção atual: Síntese das capitais.');
+    expect(OBSERVATORIOS.flatMap((o) => o.colecoes)).toHaveLength(28);
     expect(DOMINIOS).toHaveLength(8);
     for (const d of DOMINIOS) expect(OBSERVATORIOS.some((o) => o.id === OBSERVATORIO_PRINCIPAL[d.id]), d.id).toBe(true);
   });
 
-  it("na SPA do Crédito, o seletor da barra lista os seis observatórios e as oito coleções com os nomes do registro", () => {
+  // Iniciativa 1 do parecer de UX (21/10/2026): o seletor lista as 28 coleções do registro, não mais os oito domínios antigos
+  it("na SPA do Crédito, o seletor da barra lista os seis observatórios e as 28 coleções com os nomes do registro", () => {
     const trocar = bloco(spa, 'class="obs-trocar"', "</details>");
-    for (const o of OBSERVATORIOS) expect(trocar, o.id).toContain(`<a class="obs-trocar-obs" href="${destinoObservatorio(o)}">${o.nomeCurto}</a>`);
-    for (const d of DOMINIOS) {
-      expect(trocar, d.id).toContain(`<a href="${d.rotaRaiz}"`);
-      expect(trocar, d.id).toContain(d.nomeCurto);
+    for (const o of OBSERVATORIOS) {
+      expect(trocar, o.id).toContain(`<a class="obs-trocar-obs" href="${destinoObservatorio(o)}">${o.nomeCurto}</a>`);
+      for (const c of o.colecoes) expect(trocar, `${o.id}/${c.id}`).toMatch(new RegExp(`<a href="${c.href}"[^>]*>${c.nome}<`));
     }
+    expect(trocar).toContain('aria-current="true">Crédito e sistema financeiro<');
     // um só seletor: o da barra lateral repetia o da barra comum
     expect(spa).not.toContain('class="obs-switcher"');
     // fecha com Esc, toque fora e perda de foco

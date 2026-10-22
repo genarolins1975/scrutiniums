@@ -24,14 +24,13 @@ import {FichaIndicador} from '@/components/contas-publicas/FichaIndicador';
  */
 export const dynamicParams=false;
 export function generateStaticParams(){return CAPITULOS_PUBLICADOS.map(c=>({capitulo:c.id}))}
-export function generateMetadata({params}:{params:{capitulo:string}}):Metadata{const c=CAPITULOS_PUBLICADOS.find(c=>c.id===params.capitulo);return {title:c?`${c.titulo} · Contas Públicas`:'Capítulo não encontrado',alternates:{canonical:`/contas-publicas/${params.capitulo}`}}}
+export function generateMetadata({params}:{params:{capitulo:string}}):Metadata{const c=CAPITULOS_PUBLICADOS.find(c=>c.id===params.capitulo);return {title:c?c.titulo:'Capítulo não encontrado',alternates:{canonical:`/contas-publicas/${params.capitulo}`}}}
 export default function Page({params}:{params:{capitulo:string}}){
  const c=CAPITULOS_PUBLICADOS.find(c=>c.id===params.capitulo);if(!c)notFound();
  const cobertura=coberturaCapitulo(c.id),indicadores=INDICADORES.filter(i=>i.capitulo===c.id);
  // os complementos saíram do topo (diagnóstico de 20/10/2026, item 9): viram links depois do painel, onde a leitura pede o próximo passo
  const complementos=cobertura.complementares.filter(p=>!p.href.startsWith(`/contas-publicas/${c.id}`));
  return <main id="conteudo-contas" className="cp-wrap cp-main">
-  <div className="cp-breadcrumb"><Link href="/contas-publicas#capitulos">← Todos os temas</Link><span>{c.titulo}</span></div>
   <header className="cp-chapter-header"><p className="cp-eyebrow">{c.etapa} · Dados disponíveis · recorte parcial</p><h1>{c.pergunta}</h1><p className="cp-lead">{c.entrega}</p><p className="cp-note cp-chapter-limit">{c.limite}</p></header>
   {c.id==='panorama'&&<ResumoFiscalAbertura/>}
   <div className="cp-chapter-tools"><nav className="cp-panel-nav" aria-label="Painéis com dados">{PAINEIS_NAVEGACAO.map(([href,nome])=><Link key={href} href={href} aria-current={href===`/contas-publicas/${c.id}`?'page':undefined}>{nome}</Link>)}</nav><RecorteCompartilhavel/></div>

@@ -6,7 +6,7 @@ import { MarcaRolagem } from "@/components/energia/MarcaRolagem";
 
 export const metadata: Metadata = {
   title: {
-    default: "Observatório Brasileiro do Saneamento",
+    default: "Saneamento",
     template: "%s · Saneamento · Scrutiniums",
   },
   description:

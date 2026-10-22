@@ -95,7 +95,7 @@ export const COPIAS: Copia[] = [
     rota: "/eficiencia-estatal/trabalho-renda/emprego-formal",
     principal: "/observatorio/formal-employment",
     titulo: "Emprego formal",
-    onde: "na coleção Crédito",
+    onde: "na coleção Crédito e sistema financeiro",
     texto:
       "Mesma fonte (Novo Caged, Banco Central), com série mais longa, ajuste sazonal, admissões e desligamentos, as 21 seções de atividade e as 27 UFs. As capturas podem diferir em um mês.",
   },

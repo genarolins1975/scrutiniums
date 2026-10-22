@@ -481,8 +481,8 @@
     },
     "nome.observatorio_contas": {
       "tipo": "nome_proprio_produto",
-      "pt": "Contas Públicas Federais",
-      "en": "Contas Públicas Federais",
+      "pt": "Contas Federais",
+      "en": "Contas Federais",
       "origem_nome": {
         "arquivo": "src/lib/dominios.ts",
         "id": "contas",
@@ -575,8 +575,8 @@
     },
     "nome.observatorio_estados": {
       "tipo": "nome_proprio_produto",
-      "pt": "Contas Públicas Estaduais",
-      "en": "Contas Públicas Estaduais",
+      "pt": "Contas Estaduais",
+      "en": "Contas Estaduais",
       "origem_nome": {
         "arquivo": "src/lib/dominios.ts",
         "id": "estados",

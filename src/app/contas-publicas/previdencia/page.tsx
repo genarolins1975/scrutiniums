@@ -7,6 +7,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { PAINEIS_NAVEGACAO } from "@/lib/contas-publicas/catalogo";
 import { consultarMunicipio, goldPrevidencia } from "@/lib/previdencia/dados";
 import { PERGUNTA_PAINEL, ROTA_PREVIDENCIA, SECAO_PAINEL } from "@/lib/previdencia/paginas";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 /**
  * Painel "Previdência e INSS" (aprovado pelo dono em 20/10/2026), com conta. O endereço é público, mas sem sessão o
@@ -18,7 +19,7 @@ export const dynamic = "force-dynamic";
 export function generateMetadata(): Metadata {
   const g = goldPrevidencia();
   return {
-    title: `${PERGUNTA_PAINEL} · Previdência e INSS · Contas Públicas`,
+    title: `${PERGUNTA_PAINEL} · Previdência e INSS`,
     description: `Benefícios do INSS por tipo, por estado e por município, com a série desde ${g.serie.meses[0].slice(0, 4)} e o resultado do Regime Geral desde ${g.rgps.anos[0]}, pelos dados do Ministério da Previdência Social e do Tesouro Nacional.`,
     alternates: { canonical: ROTA_PREVIDENCIA },
   };
@@ -31,12 +32,12 @@ export default function Page({ searchParams }: { searchParams: Record<string, st
     <main id="conteudo-contas" className="cp-wrap cp-main pv-root" data-painel="previdencia">
       <MarcaVisita secao={SECAO_PAINEL} />
       <div className="cp-breadcrumb">
-        <Link href="/contas-publicas#capitulos">← Todos os temas</Link>
         <span>
           Complemento do capítulo&nbsp;<Link href="/contas-publicas/panorama">Panorama das contas</Link>
         </span>
       </div>
       <header className="cp-chapter-header pv-cabeca">
+        <RotuloContexto rota="/contas-publicas/previdencia" className="text-mineral" />
         <h1>{PERGUNTA_PAINEL}</h1>
         <p className="pv-lead">
           Os benefícios do INSS por tipo, por estado e no seu município, e quanto o Regime Geral arrecada e paga a cada ano. Dados do Ministério da Previdência Social e do Tesouro Nacional.

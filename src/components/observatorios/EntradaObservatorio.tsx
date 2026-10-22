@@ -50,9 +50,10 @@ function ListaPaineis({ paineis }: Readonly<{ paineis: ColecaoEntrada["paineis"]
  * pergunta e método recolhido no fim.
  */
 export function EntradaObservatorio({
-  nomeCurto, nomeCompleto, acento, pergunta, descricao, escala, paraVoce = null, colecoes, artefato, caminhos, metodo, frescor = null, frescorMetodo = null, parceria = null,
+  nomeCompleto, acento, pergunta, descricao, escala, paraVoce = null, colecoes, artefato, caminhos, metodo, frescor = null, frescorMetodo = null, parceria = null,
 }: Readonly<{
-  nomeCurto: string;
+  /** Nome curto do observatório; a trilha que o mostrava passou à barra comum (Trilha, 21/10/2026). */
+  nomeCurto?: string;
   nomeCompleto: string;
   acento: Dominio["acento"];
   pergunta: string;
@@ -77,14 +78,7 @@ export function EntradaObservatorio({
       <section aria-labelledby="entrada-titulo" className="border-b border-linha bg-marfim">
         {frescor}
         <div className="mx-auto max-w-page px-6 pb-12 pt-10 md:pb-16 md:pt-14">
-          <nav aria-label="Trilha" className="text-sm text-carvao-muted">
-            <Link href="/app/observatorios" className="underline decoration-linha underline-offset-4 hover:text-carvao">
-              Observatórios
-            </Link>
-            <span aria-hidden="true" className="mx-2 text-mineral">/</span>
-            <span aria-current="page">{nomeCurto}</span>
-          </nav>
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
             <p className="rotulo flex items-center gap-3 text-mineral">
               <span aria-hidden="true" className={`h-[3px] w-8 ${a.filete}`} />
               {nomeCompleto}

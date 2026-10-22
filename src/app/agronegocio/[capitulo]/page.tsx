@@ -15,6 +15,7 @@ import { CreditoNacionalAgro, ProgramasAgro, TrabalhoNacionalAgro, AlimentacaoOb
 import { PerfilTrabalhoAgro } from '@/components/agro/PerfilTrabalho';
 import { PoderCompraAgro } from '@/components/agro/PoderCompra';
 import s from '@/components/agro/Agro.module.css';
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 export const dynamic = 'force-static';
 export const dynamicParams = false;
 export function generateStaticParams() { return CAPITULOS_AGRO.map(c => ({ capitulo: c.id })); }
@@ -22,7 +23,7 @@ export function generateMetadata({ params }: {
     params: {
         capitulo: string;
     };
-}): Metadata { const c = capituloAgro(params.capitulo); return { title: c?.nome ?? 'Capítulo não encontrado', description: c?.pergunta, alternates: { canonical: '/agronegocio/' + params.capitulo } }; }
+}): Metadata { const c = capituloAgro(params.capitulo); return { title: c ? tituloNaColecao(c.nome, '/agronegocio/' + params.capitulo) : 'Capítulo não encontrado', description: c?.pergunta, alternates: { canonical: '/agronegocio/' + params.capitulo } }; }
 function Artefatos({ ids, primeiroAberto = false }: {
     ids: string[];
     primeiroAberto?: boolean;

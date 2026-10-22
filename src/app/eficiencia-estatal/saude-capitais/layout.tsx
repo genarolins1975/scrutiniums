@@ -2,6 +2,11 @@ import { EscoresServicos } from "@/components/eficiencia/EscoresServicos";
 import { CabecalhoSaude } from "@/components/eficiencia/saude/CabecalhoSaude";
 import { LiberaRecorte } from "@/components/eficiencia/LiberaRecorte";
 import { SCRIPT_RECORTE_SAUDE } from "@/lib/eficiencia/saude/rotas";
+import type { Metadata } from "next";
+import { modeloDeTitulo } from "@/lib/observatorios/contexto";
+
+/** Títulos "Página · Coleção · Scrutiniums", com a coleção dona do tema no registro. */
+export const metadata: Metadata = { title: modeloDeTitulo("/eficiencia-estatal/saude-capitais") };
 
 /** Casca do módulo Saúde nas capitais: cabeçalho com a navegação e o conteúdo da visão. Cada visão é uma rota estática. */
 export default function LayoutSaudeCapitais({ children }: { children: React.ReactNode }) {

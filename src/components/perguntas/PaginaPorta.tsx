@@ -5,6 +5,7 @@ import { ConviteConta } from "@/components/perguntas/ConviteConta";
 import { ehRotaPublica, prefetchDoLink } from "@/lib/rotasPublicas";
 import { rotaPorta } from "@/lib/perguntas/rotas";
 import type { Porta } from "@/lib/perguntas/tipos";
+import { Trilha } from "@/components/layout/Trilha";
 
 function aberto(href: string): boolean {
   return ehRotaPublica(href.split(/[?#]/)[0] || "/");
@@ -40,13 +41,7 @@ export function PaginaPorta({ porta, outras, colecoes, entrada, artefato }: Read
     <main className="bg-papel">
       <section aria-labelledby="porta-titulo" className="border-b border-linha bg-marfim">
         <div className="mx-auto max-w-page px-6 pb-12 pt-10 md:pb-16 md:pt-14">
-          <nav aria-label="Trilha" className="text-sm text-carvao-muted">
-            <Link href="/#perguntas" className="underline decoration-linha underline-offset-4 hover:text-carvao">
-              Os seis observatórios
-            </Link>
-            <span aria-hidden="true" className="mx-2 text-mineral">/</span>
-            <span aria-current="page">{porta.nome}</span>
-          </nav>
+          <Trilha rota={`/perguntas/${porta.id}`} />
           <p className="rotulo mt-8 flex items-center gap-3 text-mineral">
             <span aria-hidden="true" className={`h-[3px] w-8 ${a.filete}`} />
             {porta.nomeCompleto}

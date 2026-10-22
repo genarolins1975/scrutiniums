@@ -236,7 +236,10 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.120.0";
+const APP_VERSION = "0.121.0";
+/* nome da coleção no registro dos seis observatórios (src/lib/observatorios/lista.ts): os títulos da aba seguem "Página · Coleção · Scrutiniums" (Iniciativa 1 do parecer de UX, 21/10/2026),
+   com a coleção dona da aba, que refazTrilha() acerta a cada navegação (Consignado é de "Dívida e crédito das famílias") */
+let TITULO_COLECAO = "Crédito e sistema financeiro · Scrutiniums";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -785,14 +788,14 @@ function chartFooter(opts) {
 function citacaoGrafico(o) {
   const hoje = o.acesso || new Date();
   const dd = String(hoje.getDate()).padStart(2, "0"), mm = String(hoje.getMonth() + 1).padStart(2, "0");
-  return `${o.titulo}. In: Observatório Brasileiro de Crédito. Scrutiniums, ${hoje.getFullYear()}. `
+  return `${o.titulo}. In: Crédito e sistema financeiro. Scrutiniums, ${hoje.getFullYear()}. `
     + `Fonte primária: ${o.fonte || "não declarada"}. Período: ${o.periodo || "não declarado"}. `
     + (o.processado ? `Processado em ${o.processado}. ` : "")
     + `Disponível em: ${o.url}. Acesso em: ${dd}/${mm}/${hoje.getFullYear()}.`;
 }
 function embedSnippet(src, voltar, titulo) {
   return `<iframe src="${src}" width="720" height="520" loading="lazy" style="border:1px solid #ccc;border-radius:8px" title="${attr(titulo)}"></iframe>`
-    + `<p style="font:12px/1.4 sans-serif;margin:4px 0 0">Gráfico: <a href="${voltar}">${attr(titulo)}</a>, Observatório Brasileiro de Crédito (Scrutiniums). Fonte e período no rodapé do gráfico.</p>`;
+    + `<p style="font:12px/1.4 sans-serif;margin:4px 0 0">Gráfico: <a href="${voltar}">${attr(titulo)}</a>, Crédito e sistema financeiro (Scrutiniums). Fonte e período no rodapé do gráfico.</p>`;
 }
 window.grafLink = (el, modo) => {
   const sec = el.closest("section[id]");
@@ -3154,7 +3157,7 @@ function linhaObservatorio(view) {
   const id = VIEW_OBSERVATORIO[view];
   if (!id) return "";
   const [nome, href] = OBSERVATORIOS_DESTINO[id];
-  return `<p class="ph-obs">Este painel faz parte do <a href="${href}">${nome}</a>, além da coleção Crédito.</p>`;
+  return `<p class="ph-obs">Este painel faz parte do <a href="${href}">${nome}</a>; quem o mantém é a coleção Crédito e sistema financeiro.</p>`;
 }
 function pageHead(o) {
   ULTIMO_HEAD = o || {};
@@ -8871,7 +8874,7 @@ function renderEstados() {
   const cbB = bloco("uf-cobranca", "Bancos cobrando na Justiça", `CNJ/DataJud · 12 meses até ${cb.mes || U.datas.cobranca || "–"}`, cb.casos_12m == null ? `<p class="src">tribunal ainda não coletado.</p>` : `
     <dl class="ppgrid">${linha("Ações de cobrança bancária (12 m)", n0(cb.casos_12m), `${cb.var_12m_pct != null ? fmt.pp(cb.var_12m_pct) + "% vs. 12 m anteriores" : ""} · ${n0(cb.casos_12m_todos)} com qualquer credor`)}${linha("Por mil habitantes", cb.por_mil_hab != null ? fmt.n(cb.por_mil_hab, 2) : "–", pos(u, "cobranca.por_mil_hab"))}${linha("Por R$ bilhão de carteira", cb.por_bi_carteira != null ? fmt.n(cb.por_bi_carteira, 1) : "–", pos(u, "cobranca.por_bi_carteira"))}</dl>`,
     "cobranca", "cb-ufs", `Execuções, busca e apreensão e monitórias mês a mês, por classe e UF — Bancos cobrando na Justiça`);
-  document.title = `Crédito ${u.prep} (${u.uf}) · ${state.data.meta ? state.data.meta.plataforma.name : "Observatório Brasileiro de Crédito"}`;
+  document.title = `Crédito ${u.prep} (${u.uf}) · ${TITULO_COLECAO}`;
   el.innerHTML = head + sintese + placarHtml
     + subnavFixa([["#uf-scr", "Carteira"], ["#uf-prazo", "Prazo"], ["#uf-penetracao", "Penetração"], ["#uf-presenca", "Presença"], ["#uf-pix", "Pix"], ["#uf-moradia", "Moradia"], ["#uf-consignado", "Consignado"], ["#uf-rural", "Rural"], ["#uf-bndes", "BNDES"], ["#uf-emprego", "Emprego"], ["#uf-consorcios", "Consórcios"], ["#uf-cobranca", "Cobrança"], ["#uf-pgfn", "Dívida ativa"], ["#uf-subnacional", "Setor público"]])
     + scr + pzB + pen + pres + pixB + morB + conB + rurB + bnB + emB + csB + cbB + pgB + snB
@@ -12827,7 +12830,52 @@ document.addEventListener("DOMContentLoaded", () => {
   if (alvo && window.MutationObserver) new MutationObserver(agendaAcessibilidade).observe(alvo, { childList: true, subtree: true });
 });
 
+/* Trilha "Você está em" da barra comum (gerada em index.html por src/lib/observatorios/barraSpa.ts, com o índice dos
+   painéis do registro sob /observatorio). A cada aba, refaz Observatórios / observatório / coleção / página pelo dono do
+   endereço no registro: abas como Consignado são das Famílias, não da Economia. Sem sessão, raiz e observatório levam à
+   página aberta do observatório; com sessão, à escolha pós login e à entrada. Mesmas peças de NavegacaoContexto.tsx. */
+let TRILHA_LOGADO = false;
+function refazTrilha() {
+  const nav = document.getElementById("obsTrilha"), dados = document.getElementById("obsTrilhaIndice");
+  if (!nav || !dados) return;
+  let ind; try { ind = JSON.parse(dados.textContent); } catch (e) { return; }
+  const rotas = new Map(ind.paineis.map(p => [p[0], p]));
+  let atual = (PATH_MODE ? location.pathname : BASE + (ROUTES[currentView()] || "")).replace(/\/+$/, "") || BASE, dono = null;
+  const exato = atual;
+  while (atual && !dono) { dono = rotas.get(atual) || null; if (!dono) { const c = atual.lastIndexOf("/"); if (c <= 0) break; atual = atual.slice(0, c); } }
+  if (!dono) dono = rotas.get(BASE);
+  if (!dono) return;
+  const o = ind.observatorios.find(x => x.id === dono[2]); if (!o) return;
+  const col = o.colecoes.find(x => x.id === dono[3]);
+  const porta = "/perguntas/" + o.id;
+  const pecas = [["Observatórios", TRILHA_LOGADO ? "/app/observatorios" : porta], [o.nomeCurto, TRILHA_LOGADO ? o.entrada : porta]];
+  if (col) pecas.push([col.nome, col.href]);
+  TITULO_COLECAO = (col ? col.nome : "Crédito e sistema financeiro") + " · Scrutiniums";
+  if (!col || dono[0] !== col.href) pecas.push([dono[1], dono[0]]);
+  const ultimaAtual = exato === dono[0];
+  // seletor e abas da barra comum: a coleção e o observatório donos da aba, como no HTML que o servidor manda
+  const nomeCol = col ? col.nome : o.nomeCurto;
+  const sum = document.querySelector("#obsTrocar summary");
+  if (sum) {
+    sum.setAttribute("aria-label", `Coleção atual: ${nomeCol}. Trocar de coleção ou de observatório`);
+    const nome = sum.querySelector(".obs-trocar-nome"); if (nome) nome.textContent = nomeCol;
+  }
+  document.querySelectorAll("#obsTrocar .obs-trocar-menu a:not(.obs-trocar-obs):not(.obs-trocar-conta)").forEach(a => {
+    const atualA = col && a.getAttribute("href") === col.href;
+    const sr = a.querySelector(".sr-only"); if (sr) sr.remove();
+    if (atualA) { a.setAttribute("aria-current", "true"); a.insertAdjacentHTML("beforeend", '<span class="sr-only"> (atual)</span>'); }
+    else a.removeAttribute("aria-current");
+  });
+  document.querySelectorAll(".obs-dominios a").forEach(a => {
+    if (a.getAttribute("href") === o.entrada) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current");
+  });
+  nav.firstElementChild.innerHTML = pecas.map(([t, h], i) => {
+    const sep = i ? '<span aria-hidden="true">/</span>' : "";
+    return i === pecas.length - 1 && ultimaAtual ? `<li>${sep}<span aria-current="page">${attr(t)}</span></li>` : `<li>${sep}<a href="${h}">${attr(t)}</a></li>`;
+  }).join("");
+}
 function showViewSilent(v) {
+  refazTrilha();
   try { navPrepara(); navSincroniza(); } catch (e) {}
   pingView(v);
   document.querySelectorAll("nav.tabs button").forEach(b => b.classList.toggle("active", b.dataset.view === v || (v === "inst" && b.dataset.view === "institutions") || (v === "sector" && b.dataset.view === "sectors") || (v === "product" && b.dataset.view === "products") || (v === "presmun" && b.dataset.view === "operacional") || (v === "estado" && b.dataset.view === "estados")));
@@ -12838,8 +12886,7 @@ function showViewSilent(v) {
     if (sec && !sec.innerHTML) sec.innerHTML = loadingCard("dados desta página");
     Promise.all([ensureData(v), ensureChunk(v)]).then(() => { if (currentView() === v) { renderView(v); posRender(v); } });
   } else ensureChunk(v).then(() => { if (currentView() === v) { renderView(v); posRender(v); } });
-  const plat = state.data.meta ? state.data.meta.plataforma.name : "Observatório Brasileiro de Crédito";
-  document.title = (VIEW_TITLES[v] ? VIEW_TITLES[v] + " · " : "") + plat;
+  document.title = (VIEW_TITLES[v] ? VIEW_TITLES[v] + " · " : "") + TITULO_COLECAO;
   closeSidebar();
   hideTip();
   window.scrollTo(0, 0);
@@ -12894,6 +12941,8 @@ function applyTheme(t) {
         conta.textContent = "Entrar";
       }
       conta.hidden = false;
+      TRILHA_LOGADO = logado;
+      refazTrilha();
     });
 })();
 /* Seletor de observatório (details) da barra comum. Fecha com Esc (foco volta ao
@@ -14011,8 +14060,7 @@ function renderCompare() {
   await loadAll();
   const m = state.data.meta;
   if (m) {
-    document.getElementById("brandName").textContent = m.plataforma.name;
-    document.title = m.plataforma.name;
+    // a marca da barra lateral é o nome da coleção, escrito em index.html; o nome da gold (meta.plataforma.name) fica nos dados
     document.getElementById("updatedAt").textContent = "publicação mais antiga: " + (m.gerado_em || "").slice(0, 16).replace("T", " ") + " UTC";
     document.getElementById("footDisclaimer").textContent = m.plataforma.disclaimer;
   }

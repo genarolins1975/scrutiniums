@@ -1200,7 +1200,7 @@ export function dicionarioExportacoes(): string[][] {
     ...arquivo("série ao longo dos anos", CABECALHO_CSV_SERIE),
     ["todos", "(leia antes de usar)", "Os valores descrevem o gasto, o atendimento e os resultados observados; não classificam governos, não indicam meta e não demonstram causa. Mediana e média descrevem o grupo de capitais e não são referência de desempenho. Células vazias não são zero."],
     ["todos", "(universo e período)", "As 26 capitais estaduais, na rede municipal de ensino; a despesa de total e por habitante é do orçamento do município na função Educação, exceto operações intraorçamentárias. Gasto anual, Censo Escolar e Ideb têm períodos próprios e não devem ser alinhados sem cuidado."],
-    ["todos", "(como citar)", "Scrutiniums, Observatório Brasileiro de Eficiência Estatal, Educação nas capitais. Indique a data de geração (dados_gerados_em) e o hash_dados da linha utilizada."],
+    ["todos", "(como citar)", "Scrutiniums, Observatório dos Serviços Públicos, Educação nas capitais. Indique a data de geração (dados_gerados_em) e o hash_dados da linha utilizada."],
   ];
 }
 

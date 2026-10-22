@@ -1,81 +1,47 @@
 import Link from "next/link";
-import { DOMINIOS, type DominioId } from "@/lib/dominios";
+import type { DominioId } from "@/lib/dominios";
 import { DetalhesFechaveis } from "@/components/layout/DetalhesFechaveis";
-import { Nome } from "@/components/i18n/Nome";
+import { SeletorColecoes } from "@/components/layout/NavegacaoContexto";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { hrefNoIdioma } from "@/lib/i18n-href";
-import { OBSERVATORIOS, OBSERVATORIO_PRINCIPAL, destinoObservatorio } from "@/lib/observatorios/lista";
-
-const PONTO: Record<(typeof DOMINIOS)[number]["acento"], string> = { bronze: "bg-bronze", energia: "bg-energia", obee: "bg-obee", gas: "bg-gas" };
+import { caminhoAtual, colecaoDoDominio, indiceDoCaminho } from "@/lib/observatorios/contexto";
 
 /**
- * Seletor discreto da coleção corrente ("Crédito ▾" / "Setor Elétrico ▾"), com
- * as coleções agrupadas pelos seis observatórios (src/lib/observatorios).
- * <details> nativo: funciona sem JavaScript e abre por teclado e toque; com
- * JavaScript, fecha com Esc, com clique fora e quando o foco sai do menu. Troca de observatório sem novo login: a
- * sessão e as preferências são da plataforma.
+ * Seletor discreto da coleção corrente ("Setor Elétrico ▾"), com as 28 coleções do registro agrupadas pelos seis
+ * observatórios (src/lib/observatorios/lista.ts). A coleção atual é a dona do endereço no registro (contextoPuro.ts),
+ * a mesma que o rótulo acima do H1 (RotuloContexto) e a trilha (Trilha) mostram, resolvida também no navegador a cada
+ * navegação (SeletorColecoes); `atual` só vale quando o endereço não está no registro. <details> nativo: funciona sem
+ * JavaScript e abre por teclado e toque; com JavaScript, fecha com Esc, com clique fora e quando o foco sai do menu. Troca
+ * de observatório sem novo login: a sessão e as preferências são da plataforma.
  */
 export function SwitcherObservatorio({
-  atual,
+  atual = null,
+  caminho,
   onDark = false,
+  doProvedor = false,
 }: {
-  atual: DominioId | null;
+  atual?: DominioId | null;
+  /** Endereço a resolver (testes); sem ele, o da renderização. */
+  caminho?: string | null;
   onDark?: boolean;
+  /** Dentro de um ProvedorContexto (CabecalhoPlataforma): o índice vem dele e não se repete nas props. */
+  doProvedor?: boolean;
 }) {
-  // idioma pelo endereço (vale em qualquer observatório); nomes de observatório são nomes próprios e ficam em português, marcados
+  // idioma pelo endereço (vale em qualquer observatório); nomes de observatório e coleção são nomes próprios e ficam em português, marcados
   const idioma = idiomaEnergia();
-  const corrente = DOMINIOS.find((d) => d.id === atual);
-  const rotulo = corrente ? corrente.nomeCurto : tx("Observatórios", "Observatories", idioma);
-  const cor = onDark ? "text-marfim" : "text-carvao";
+  const endereco = caminho !== undefined ? caminho : caminhoAtual();
+  const doDominio = atual ? colecaoDoDominio(atual) : null;
   return (
     <DetalhesFechaveis className="group relative">
-      <summary
-        className={`rotulo flex min-h-[44px] cursor-pointer list-none items-center gap-1.5 ${cor} hover:text-energia-dark [&::-webkit-details-marker]:hidden`}
-        aria-label={corrente ? tx(`Coleção atual: ${rotulo}. Trocar de coleção ou de observatório`, `Current collection: ${rotulo}. Switch collection or observatory`, idioma) : tx("Trocar de observatório", "Switch observatory", idioma)}
+      <SeletorColecoes
+        {...(doProvedor ? {} : { indice: indiceDoCaminho(endereco), caminho: endereco })}
+        padrao={doDominio ? { observatorio: doDominio.observatorio.id, colecao: doDominio.colecao.id } : null}
+        idioma={idioma}
+        onDark={onDark}
       >
-        {corrente ? <Nome>{rotulo}</Nome> : rotulo}
-        <span aria-hidden="true" className="text-[0.7em] transition-transform group-open:rotate-180">
-          ▾
-        </span>
-      </summary>
-      {/* no celular o menu ocupa a largura útil (fixo, 1rem de margem) para não sair da tela */}
-      <div className="fixed inset-x-4 z-40 mt-1 hidden max-h-[80vh] overflow-y-auto border sm:absolute sm:inset-x-auto sm:left-0 sm:w-[18rem] border-linha bg-superficie p-2 shadow-[0_8px_24px_rgba(26,29,33,0.12)] group-open:block">
-        {OBSERVATORIOS.map((o) => {
-          const colecoes = DOMINIOS.filter((d) => OBSERVATORIO_PRINCIPAL[d.id] === o.id);
-          return (
-            <div key={o.id} className="border-b border-linha pb-1 last:border-b-0">
-              <Link href={destinoObservatorio(o)} prefetch={false} className="rotulo flex min-h-[44px] items-center px-3 text-mineral hover:text-carvao">
-                <Nome>{o.nomeCurto}</Nome>
-              </Link>
-              {colecoes.length > 0 && (
-                <ul>
-                  {colecoes.map((d) => (
-                    <li key={d.id}>
-                      <Link
-                        href={hrefNoIdioma(d.rotaRaiz, idioma)}
-                        aria-current={d.id === atual ? "true" : undefined}
-                        className="flex min-h-[44px] flex-col justify-center px-3 py-2 hover:bg-papel"
-                      >
-                        <span className="flex items-center gap-2 text-sm text-carvao">
-                          <span
-                            aria-hidden="true"
-                            className={`inline-block h-2 w-2 ${PONTO[d.acento]}`}
-                          />
-                          <Nome>{d.nomeCurto}</Nome>
-                          {d.id === atual && <span className="sr-only">{tx(" (atual)", " (current)", idioma)}</span>}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          );
-        })}
-        <Link href="/app/observatorios" className="rotulo mt-1 flex min-h-[44px] items-center border-t border-linha px-3 text-mineral hover:text-carvao">
+        <Link href="/app/observatorios" className="rotulo sel-item sel-obs mt-1 border-t border-linha">
           {tx("Escolher na minha conta →", "Choose in my account →", idioma)}
         </Link>
-      </div>
+      </SeletorColecoes>
     </DetalhesFechaveis>
   );
 }

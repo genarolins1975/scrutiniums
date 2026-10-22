@@ -379,7 +379,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                   {tx(
                     <>
                       Dados abertos, {/^licen/i.test(paraCitar) ? "" : "licença "}
-                      {paraCitar === "não informada" ? "informada na fonte" : paraCitar.replace(/\.$/, "")}. Integrado e processado por Scrutiniums, Observatório Brasileiro do Setor Elétrico, captura de {ultimaCaptura ? diaEmBrasilia(ultimaCaptura) : "data não informada"}
+                      {paraCitar === "não informada" ? "informada na fonte" : paraCitar.replace(/\.$/, "")}. Integrado e processado por Scrutiniums, coleção Setor Elétrico, captura de {ultimaCaptura ? diaEmBrasilia(ultimaCaptura) : "data não informada"}
                     </>,
                     <>
                       Open data, {/^licen/i.test(paraCitar) ? "" : "license "}

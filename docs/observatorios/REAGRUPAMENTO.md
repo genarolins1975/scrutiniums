@@ -179,7 +179,7 @@ tratam do mesmo tema; precisa de comparação de conteúdo antes de decidir).
 6. **Menu interno do Crédito** dividido entre Famílias e Economia.
 7. **Blocos "Para ir além"** no fim de cada painel, lidos do registro.
 
-## Situação da implementação (18/10/2026)
+## Situação da implementação (atualizada em 21/10/2026)
 
 | Etapa | Situação |
 |---|---|
@@ -191,6 +191,7 @@ tratam do mesmo tema; precisa de comparação de conteúdo antes de decidir).
 | 6. Menu interno do Crédito | Em produção (PR #272): o menu de oito grupos fica; cada aba de Famílias ou Contas Públicas diz a que observatório pertence, com link para a entrada |
 | 7. Blocos "Para ir além" | Em produção (PR #272), no layout de toda coleção com páginas Next; barras dos painéis e rodapé pelos seis observatórios |
 | Território e Clima, adensamento | Queimadas com pipeline e gold próprios (`/territorio/queimadas`, `docs/territorio/README.md`); desastres (Atlas Digital) e emissões oficiais (MCTI) nos próximos PRs |
+| Um só vocabulário (Iniciativa 1 do parecer de UX de 21/10/2026) | Em PR (branch `claude/iniciativa-1-vocabulario`). Os oito domínios de `src/lib/dominios.ts` passam a se chamar como a coleção do registro (o nome antigo fica em `nomeLegado`, só para testes e `/sobre`); `lista.ts` é a única fonte de coleções (`dominio`, `metodo` e `glossario` por coleção). O seletor da barra e a barra da aplicação do Crédito listam as 28 coleções; o rodapé tem uma coluna por observatório; `RotuloContexto` escreve "Observatório X · Coleção Y · Página Z" acima do H1; a trilha "Você está em" (`Trilha`) vem logo abaixo da barra comum em toda página de coleção, inclusive em cada aba da aplicação do Crédito; seletor, abas e trilha resolvem a coleção pelo endereço também no navegador (`contextoPuro.ts`), porque o cabeçalho mora em layouts. Navegações de módulo com aria-label "Navegação da coleção X" e títulos "Página · Coleção · Scrutiniums". Teste `src/tests/vocabulario.test.ts`. Fica para a Iniciativa 4 o H1 de `/observatorio-do-credito` |
 
 ## Duplicatas: decisões de 18/10/2026
 

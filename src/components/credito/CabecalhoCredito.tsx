@@ -20,7 +20,7 @@ export function CabecalhoCredito({ atual }: { atual: PaginaCredito["slug"] }) {
   return (
     <header className="border-b border-linha bg-superficie">
       <CabecalhoPlataforma colecao="credito" destinoConta={pagina?.href ?? "/observatorio-do-credito"} />
-      <nav aria-label="Navegação do Observatório de Crédito">
+      <nav aria-label="Navegação da coleção Crédito e sistema financeiro">
         <div className="ed-pagina">
           <ul className="-mx-1 flex gap-x-1 overflow-x-auto py-1 [scrollbar-width:thin] lg:flex-wrap lg:overflow-visible">
             {itens.map((i) => (

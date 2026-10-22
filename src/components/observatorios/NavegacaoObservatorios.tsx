@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { Nome } from "@/components/i18n/Nome";
+import { AbasObservatorios } from "@/components/layout/NavegacaoContexto";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
+import type { IndiceContexto } from "@/lib/observatorios/contextoPuro";
 import { OBSERVATORIOS, destinoObservatorio, type ObservatorioId } from "@/lib/observatorios/lista";
 
 /**
@@ -8,9 +8,10 @@ import { OBSERVATORIOS, destinoObservatorio, type ObservatorioId } from "@/lib/o
  * os mesmos rótulos e a mesma ordem do cabeçalho público e da barra da
  * aplicação do Crédito (public/obs/index.html). Dentro dos painéis, quem tem
  * conta vai à entrada do observatório ou à sua seção na escolha pós login. A
- * aba destacada é o observatório da página (o do núcleo da coleção corrente,
- * ou o próprio, nas entradas). Os nomes são nomes próprios: em inglês ficam em
- * português, marcados com Nome.
+ * aba destacada é o observatório dono do endereço no registro, resolvido também
+ * no navegador a cada navegação (AbasObservatorios); fora do registro, o que a
+ * página declarou. Os nomes são nomes próprios: em inglês ficam em português,
+ * marcados com Nome.
  */
 export const ABAS_OBSERVATORIOS: { id: ObservatorioId; href: string; rotulo: string }[] = OBSERVATORIOS.map((o) => ({
   id: o.id,
@@ -18,10 +19,16 @@ export const ABAS_OBSERVATORIOS: { id: ObservatorioId; href: string; rotulo: str
   rotulo: o.nomeCurto,
 }));
 
-export function NavegacaoObservatorios({ observatorio }: { observatorio: ObservatorioId | null }) {
+export function NavegacaoObservatorios({
+  observatorio,
+  indice,
+  caminho,
+}: {
+  observatorio: ObservatorioId | null;
+  /** Sem índice nas props, as abas o leem do ProvedorContexto do cabeçalho; sem nenhum dos dois, vale `observatorio`. */
+  indice?: IndiceContexto;
+  caminho?: string | null;
+}) {
   const idioma = idiomaEnergia();
-  const corrente = observatorio;
-  return <nav aria-label={tx("Observatórios da Scrutiniums", "Scrutiniums observatories", idioma)} className="obs-dominios">
-    {ABAS_OBSERVATORIOS.map(({ id, href, rotulo }) => <Link key={id} href={href} prefetch={false} aria-current={corrente === id ? "true" : undefined}><Nome>{rotulo}</Nome></Link>)}
-  </nav>;
+  return <AbasObservatorios {...(indice ? { indice, caminho: caminho ?? null } : {})} padrao={observatorio} abas={ABAS_OBSERVATORIOS} rotulo={tx("Observatórios da Scrutiniums", "Scrutiniums observatories", idioma)} />;
 }

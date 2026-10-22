@@ -17,10 +17,13 @@ export async function GET() {
     return new Response('Not found', {status: 404, headers});
   }
   const html = await readFile(join(process.cwd(), 'docs/obee/resultados/revisao-interativa-v3.html'), 'utf8');
-  const navigation = '<nav aria-label="Voltar ao OBEE" style="max-width:1240px;margin:auto;padding:16px 40px 0"><a id="backlink" href="/eficiencia-estatal/indice-de-resultados#atlas-indice">← Voltar ao índice de resultados das capitais</a></nav>';
+  // trilha "Você está em" da plataforma (Iniciativa 1 do parecer de UX, 21/10/2026), em HTML puro: o modelo congelado não
+  // passa pelo React. A página é do painel Síntese das capitais; o retorno ao índice continua como peça da trilha.
+  const navigation = '<nav aria-label="Você está em" data-trilha="" style="max-width:1240px;margin:auto;padding:16px 40px 0;font-size:13px;line-height:2"><a href="/app/observatorios">Observatórios</a> / <a href="/observatorios/servicos-publicos">Serviços Públicos</a> / <a href="/eficiencia-estatal">Síntese das capitais</a> / <a id="backlink" href="/eficiencia-estatal/indice-de-resultados#atlas-indice">Índice de resultados das capitais</a> / <span aria-current="page">Laboratório do índice (revisão v3)</span></nav>';
   // O modelo congelado da v3 ainda aponta para a entrada e para a âncora do piloto v2. O índice v4 saiu da entrada
   // para o próprio painel (decisão do dono de 19/10/2026): o retorno leva o par de capitais para lá.
   const page = html.replace('</header><main>', `</header>${navigation}<main>`)
+    .replace(/<title>[^<]*<\/title>/, '<title>Laboratório do índice (revisão v3) · Síntese das capitais · Scrutiniums</title>')
     .replaceAll("'/eficiencia-estatal?visao=cidades&territorio='", "'/eficiencia-estatal/indice-de-resultados?territorio='")
     .replaceAll('#atlas-piloto', '#atlas-indice');
   return new Response(page, {

@@ -8,7 +8,7 @@ import {indiceSnapshot} from '@/lib/eficiencia/indice-v4';
 
 export const dynamic = 'force-static';
 export const metadata: Metadata = {
-  title: 'Índice de resultados das capitais · Eficiência Estatal',
+  title: 'Índice de resultados das capitais · Síntese das capitais',
   description: 'Edição experimental: posição média de cada capital estadual em sete resultados de 2022, com faixa nos testes de sensibilidade, contribuições e estabilidade de cada par.',
   alternates: {canonical: '/eficiencia-estatal/indice-de-resultados'},
 };

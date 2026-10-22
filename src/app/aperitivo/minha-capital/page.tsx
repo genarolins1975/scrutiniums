@@ -1,6 +1,8 @@
 import type {Metadata} from 'next';
 import {CabecalhoEntrada} from '@/components/eficiencia/CabecalhoEntrada';
 import {MinhaCapitalAperitivo} from '@/components/eficiencia/entrada/MinhaCapitalAperitivo';
+import {RotuloContexto} from '@/components/layout/RotuloContexto';
+import entradaStyles from '@/components/eficiencia/entrada/MinhaCapitalAperitivo.module.css';
 import {Footer} from '@/components/layout/Footer';
 import {montarRetrato} from '@/lib/eficiencia/entrada';
 import {montarAperitivoCapital} from '@/lib/eficiencia/aperitivo-capital';
@@ -18,7 +20,7 @@ import {montarAperitivoCapital} from '@/lib/eficiencia/aperitivo-capital';
  */
 export const dynamic = 'force-static';
 export const metadata: Metadata = {
-  title: 'Como está a minha capital? · Eficiência Estatal',
+  title: 'Minha capital · Síntese das capitais',
   description: 'Escolha uma das 26 capitais estaduais e veja quatro resultados na vida dos moradores em 2022: renda por pessoa, crianças de 4 e 5 anos na escola, tempo até o trabalho e homicídios, cada um com fonte, ano e posição entre as capitais.',
   alternates: {canonical: '/eficiencia-estatal'},
 };
@@ -40,7 +42,7 @@ export default function AperitivoMinhaCapital() {
     <div className="flex-1"><CabecalhoEntrada/>
       <main id="conteudo" className="pb-12">
         {/* fecho obrigatório: ConviteAperitivo com rota="/eficiencia-estatal", dentro do componente cliente */}
-        <MinhaCapitalAperitivo dados={dados} comConta={COM_CONTA}/>
+        <MinhaCapitalAperitivo dados={dados} comConta={COM_CONTA} rotulo={<RotuloContexto rota="/eficiencia-estatal" pagina="Minha capital" className={entradaStyles.kicker}/>}/>
       </main>
     </div>
     <Footer/>

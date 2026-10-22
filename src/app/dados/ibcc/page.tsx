@@ -9,6 +9,7 @@ import { CitarIncorporar } from "@/components/dados/CitarIncorporar";
 import { codigoIncorporar } from "@/lib/citacao";
 import { fmtPercentil, fmtRefMes, fmtSinal, geradoEmPublicado } from "@/lib/dadosPublicos";
 import { ROTULOS_COMPONENTES, REGRAS_NOTA, ibccPublico, notaMensalIbcc } from "@/lib/ibcc";
+import { Trilha } from "@/components/layout/Trilha";
 
 /**
  * Página estável do IBCC, o indicador bandeira do resumo: valor, percentil,
@@ -42,9 +43,7 @@ export default function IbccPage() {
     <div className="flex min-h-screen flex-col bg-marfim">
       <PublicHeaderView />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
-        <nav aria-label="Trilha" className="rotulo text-mineral">
-          <Link href="/dados" className="hover:text-bronze">Dados abertos</Link> / IBCC
-        </nav>
+        <Trilha rota="/observatorio" extras={[{ titulo: "Dados abertos", href: "/dados" }, { titulo: "IBCC" }]} />
         <h1 className="mt-4 max-w-3xl font-serif text-3xl text-carvao md:text-4xl">Índice Brasileiro de Condições de Crédito (IBCC)</h1>
         <SeloFrescor geradoEm={geradoEmPublicado()} className="mt-4" />
 

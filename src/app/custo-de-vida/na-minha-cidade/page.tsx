@@ -9,6 +9,7 @@ import { goldInflacao, primeiraTela } from "@/lib/inflacao/dados";
 import { dataBr, mesExtenso } from "@/lib/inflacao/formato";
 import { ROTA_INFLACAO, paginaInflacao } from "@/lib/inflacao/paginas";
 import { leva2Aprovada, prefetchDoLink } from "@/lib/rotasPublicas";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 export const dynamic = "force-static";
 
@@ -46,7 +47,7 @@ export default function ConsultaCustoDeVidaPagina() {
       )}
       <main id="conteudo" className="ed-pagina pb-12">
         <div className="cab-modulo familias-abertura">
-          <p className="rotulo text-bronze-dark">Custo de vida · {pagina.rotulo}</p>
+          <RotuloContexto rota={pagina.href} pagina={pagina.rotulo} className="text-bronze-dark" />
           <h1 className="ed-h1 mt-3 max-w-4xl font-serif text-carvao">{pagina.pergunta}</h1>
           <div className="ed-lead mt-4 max-w-prose2 text-carvao-muted">
             <p>

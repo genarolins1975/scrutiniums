@@ -3,11 +3,12 @@ import { PanoramaSaude } from "@/components/eficiencia/saude/PanoramaSaude";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { contextosSaude } from "@/lib/eficiencia/saude/contexto";
 import { dadosSaude, goldSaude } from "@/lib/eficiencia/saude/dados";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Saúde nas capitais",
+  title: tituloNaColecao("Saúde nas capitais", "/eficiencia-estatal/saude-capitais"),
   description: "Recursos aplicados pelo município, estrutura e atenção primária registradas e resultados observados entre os moradores das 26 capitais estaduais, com referências e limites de cada número.",
   alternates: { canonical: "/eficiencia-estatal/saude-capitais" },
 };

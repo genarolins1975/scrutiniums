@@ -17,9 +17,10 @@ import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { goldJuros, rotuloModalidade } from "@/lib/credito/juros";
 import { janela as janelaJuros, num as numJuros } from "@/lib/credito/formato";
 import { paginaCredito } from "@/lib/credito/navegacao";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 /**
- * Vitrine pública do Observatório Brasileiro de Crédito.
+ * Vitrine pública da coleção Crédito e sistema financeiro.
  *
  * Com os painéis atrás da conta gratuita, esta página é a vitrine aberta
  * do Crédito e a porta de entrada editorial: números reais da última data-base, as
@@ -33,12 +34,13 @@ import { paginaCredito } from "@/lib/credito/navegacao";
 export const dynamic = "force-static";
 
 const metadadosOriginais: Metadata = {
-  title: "Observatório Brasileiro de Crédito",
+  // "Página · Coleção · Scrutiniums" (Iniciativa 1 do parecer de UX, 21/10/2026); o H1 da página muda na Iniciativa 4
+  title: "Apresentação · Crédito e sistema financeiro",
   description:
     "Crédito, instituições financeiras, Pix, juros e litigiosidade em uma plataforma gratuita: dados oficiais do Banco Central, CVM, IBGE e CNJ com metodologia declarada, distinguindo dado observado de indicador calculado.",
   alternates: { canonical: "/observatorio-do-credito" },
   openGraph: {
-    title: "Observatório Brasileiro de Crédito",
+    title: "Crédito e sistema financeiro · Scrutiniums",
     description:
       "O mercado de crédito brasileiro explicado com rigor: fontes oficiais, metodologia declarada e acesso gratuito.",
     type: "website",
@@ -222,7 +224,7 @@ export default function ObservatorioPublicoPage() {
         {/* ---------------- proposta ---------------- */}
         <section aria-labelledby="titulo" className="border-b border-linha bg-marfim">
           <div className="mx-auto max-w-page px-6 pb-16 pt-14 md:pb-20 md:pt-20">
-            <p className="rotulo text-mineral">Plataforma pública · gratuita</p>
+            <RotuloContexto rota="/observatorio" className="text-mineral" />
             <h1
               id="titulo"
               className="mt-6 max-w-4xl font-serif text-[clamp(2.2rem,5.4vw,3.9rem)] leading-[1.07] tracking-[-0.015em] text-carvao"

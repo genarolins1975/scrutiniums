@@ -12,7 +12,7 @@ import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
 
 /**
- * Cabeçalho do Observatório Brasileiro do Setor Elétrico: a barra comum da plataforma (CabecalhoPlataforma: marca, seletor de
+ * Cabeçalho da coleção Setor Elétrico: a barra comum da plataforma (CabecalhoPlataforma: marca, seletor de
  * observatório, as abas dos seis observatórios, idioma e conta) e, abaixo dela, a navegação do observatório em seis grupos
  * (seção 5.1), com os atalhos de dados e método à direita. Estático (sem leitura de sessão no servidor): a conta é resolvida no
  * cliente. O nome do observatório inteiro mora no seletor e no título da aba, e não numa linha própria em serifa.
@@ -41,7 +41,7 @@ export function CabecalhoEnergia({ atual, comSelo = false, rotaPublica }: { atua
   return (
     <header className="obs-identidade border-b border-linha bg-superficie">
       <CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" complementos={<SeletorIdiomaPublico idioma={tx("pt", "en")} rotaPublica={rotaPublica} />} />
-      <nav aria-label={tx("Navegação do Observatório do Setor Elétrico", "Setor Elétrico observatory navigation")}>
+      <nav aria-label={tx("Navegação da coleção Setor Elétrico", "Setor Elétrico collection navigation")}>
         <div className="ed-pagina relative">
           {/* tela larga: os seis grupos numa linha */}
           <ul className="hidden flex-wrap gap-x-1 xl:flex">

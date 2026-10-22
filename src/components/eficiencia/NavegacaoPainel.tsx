@@ -39,7 +39,7 @@ export function NavegacaoPainel() {
       ativa ? "font-semibold text-obee-tinta underline" : "text-obee-dark hover:underline"
     }`;
   return (
-    <nav aria-label="Visões do painel" className="mx-auto max-w-page px-4 sm:px-6">
+    <nav aria-label="Navegação da coleção Educação" className="mx-auto max-w-page px-4 sm:px-6">
       <div className="flex flex-col gap-x-6 sm:flex-row sm:items-end sm:justify-between">
         <ul className="grid grid-cols-4 sm:flex sm:gap-1">
           {ROTULO_NAVEGACAO.map((a) => (

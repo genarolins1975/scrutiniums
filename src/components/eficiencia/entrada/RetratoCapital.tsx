@@ -36,7 +36,9 @@ function Regua({m, a, b, capitais}: {m: Medida; a: CapitalRetrato; b: CapitalRet
  * (decisão do dono de 19/10/2026). Fundo marfim como o resto da plataforma e régua no lugar das pétalas (decisão do dono de 21/10/2026,
  * diagnóstico de layout de 20/10/2026, item 8): as pétalas pediam legenda, a régua se lê sozinha.
  */
-export function RetratoCapital({a, b, condicoes, capitais, onSelect, fonteContornos, fontePopulacao}: {
+export function RetratoCapital({a, b, condicoes, capitais, onSelect, fonteContornos, fontePopulacao, rotulo}: {
+  /** Rótulo de contexto acima do H1 (RotuloContexto), montado pela página no servidor. */
+  rotulo?: React.ReactNode;
   a: CapitalRetrato; b: CapitalRetrato; condicoes: Medida[]; capitais: CapitalRetrato[];
   onSelect: (campo: 'territorio' | 'comparador', id: string) => void;
   fonteContornos: {fonte: string; url: string; capturadoEm: string; tratamento: string}; fontePopulacao: string;
@@ -51,7 +53,7 @@ export function RetratoCapital({a, b, condicoes, capitais, onSelect, fonteContor
   return <section className={styles.hero} aria-labelledby="titulo-eficiencia">
     <div className={styles.heroInner}>
       <div className={styles.heroText}>
-        <p className={styles.kicker}>Eficiência Estatal · Retrato das capitais</p>
+        {rotulo}
         <h1 id="titulo-eficiencia" className={styles.heroTitle}>Como se vive {naCapital(a.nome).split(' ')[0]} <em>{a.nome}</em>?</h1>
         <p className={styles.heroLead}>Sete resultados na vida dos moradores, o que a prefeitura aplica em educação e saúde, e o que ainda não se sabe. Cada número com fonte, período e limites.</p>
         <div className={styles.selectors}>

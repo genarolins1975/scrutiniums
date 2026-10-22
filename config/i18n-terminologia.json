@@ -48,49 +48,8 @@
     },
     "home.hero.introducao": {
       "classificacao": "vinculada",
-      "sha256_revisado": "015bb894e7f165db572f4a301997bff0080687e6875905a014651bc4cc6a2bab",
+      "sha256_revisado": "1e33906191ecf3516d5b28e7d668a81fafa79700ed33abb1dbd26ddc7d5c6c97",
       "referencias": [
-        {
-          "id": "credito.credito",
-          "forma": "canonica",
-          "ocorrencias": 1
-        },
-        {
-          "id": "energia.setor_eletrico",
-          "forma": "canonica",
-          "ocorrencias": 1
-        },
-        {
-          "id": "gas.gas_natural",
-          "forma": "canonica",
-          "ocorrencias": 1
-        },
-        {
-          "id": "saneamento.saneamento_basico",
-          "forma": "home_curta",
-          "ocorrencias": 1
-        },
-        {
-          "id": "servicos.servicos_publicos",
-          "forma": "canonica",
-          "ocorrencias": 1
-        },
-        {
-          "id": "fiscal.contas_publicas",
-          "forma": "home_curta",
-          "ocorrencias": 1
-        },
-        {
-          "id": "nome.uniao",
-          "forma": "canonica",
-          "ocorrencias": 1,
-          "explicacao": "na_mensagem"
-        },
-        {
-          "id": "federativo.estado",
-          "forma": "plural",
-          "ocorrencias": 1
-        },
         {
           "id": "estatistica.base_dados",
           "forma": "home_oficiais_plural",

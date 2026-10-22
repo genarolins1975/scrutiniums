@@ -5,8 +5,9 @@ import { AberturaAgro, SecaoAgro } from '@/components/agro/Editorial';
 import { PerguntasAgro } from '@/components/agro/Economia';
 import { AmbienteAgro } from '@/components/agro/Sociedade';
 import { PainelPrincipal } from '@/components/observatorios/PainelPrincipal';
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 export const dynamic = 'force-static';
-export const metadata: Metadata = { title: 'Quanto se desmata e quanto o campo emite?', description: 'Desmatamento PRODES por bioma, emissões do SEEG e uso da terra do MapBiomas.', alternates: { canonical: '/agronegocio/ambiente' } };
+export const metadata: Metadata = { title: tituloNaColecao('Quanto se desmata e quanto o campo emite?', '/agronegocio/ambiente'), description: 'Desmatamento PRODES por bioma, emissões do SEEG e uso da terra do MapBiomas.', alternates: { canonical: '/agronegocio/ambiente' } };
 export default function PaginaAmbienteAgro() {
     const e = dadosAgro.economia;
     if (!e)

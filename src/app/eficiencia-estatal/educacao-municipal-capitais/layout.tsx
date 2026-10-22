@@ -1,6 +1,11 @@
 import { EscoresServicos } from "@/components/eficiencia/EscoresServicos";
 import { CabecalhoObee } from "@/components/eficiencia/CabecalhoObee";
 import { LiberaRecorte, SCRIPT_RECORTE } from "@/components/eficiencia/LiberaRecorte";
+import type { Metadata } from "next";
+import { modeloDeTitulo } from "@/lib/observatorios/contexto";
+
+/** Títulos "Página · Coleção · Scrutiniums", com a coleção dona do tema no registro. */
+export const metadata: Metadata = { title: modeloDeTitulo("/eficiencia-estatal/educacao-municipal-capitais") };
 
 /** Casca do painel: cabeçalho com a navegação e o conteúdo da visão. Cada visão é uma rota estática. */
 export default function LayoutPainelEducacao({ children }: { children: React.ReactNode }) {

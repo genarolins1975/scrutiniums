@@ -7,7 +7,7 @@ import { RodapeGas } from "@/components/gas/RodapeGas";
 
 export const metadata: Metadata = {
   title: {
-    default: "Observatório Brasileiro de Gás Natural",
+    default: "Gás Natural",
     template: "%s · Gás Natural · Scrutiniums",
   },
   description:

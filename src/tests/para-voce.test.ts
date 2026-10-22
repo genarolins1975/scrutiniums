@@ -129,7 +129,7 @@ describe("posição em cada entrada: logo depois dos números de abertura", () =
     "/gas-natural": ["src/app/gas-natural/page.tsx", "<h1", "<SecaoGas"],
     "/saneamento": ["src/app/saneamento/page.tsx", "Brasil, em uma leitura", 'aria-labelledby="como-funciona"'],
     "/eficiencia-estatal": ["src/app/eficiencia-estatal/page.tsx", "<AtlasCidadao", "<FaixaFrescor dominios={FRESCOR_DAS_COLECOES['/eficiencia-estatal']} variante"],
-    "/contas-publicas": ["src/app/contas-publicas/page.tsx", "<AberturaFederal/>", "<RespostasIniciais"],
+    "/contas-publicas": ["src/app/contas-publicas/page.tsx", "<AberturaFederal", "<RespostasIniciais"],
     "/agronegocio": ["src/app/agronegocio/page.tsx", "<DestaquesAgro", "<PerguntasAgro"],
     "/territorio": ["src/app/territorio/page.tsx", "O tema em números", 'aria-labelledby="paineis-titulo"'],
   };

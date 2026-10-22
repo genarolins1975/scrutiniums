@@ -1,5 +1,5 @@
 'use client';
-import {useState} from 'react';
+import {useState,type ReactNode} from 'react';
 import Link from 'next/link';
 import {DADOS,ESTAGIOS,type Estagio} from '@/lib/contas-publicas/dados';
 import {moeda} from '@/lib/contas-publicas/formato';
@@ -12,7 +12,8 @@ import styles from '@/components/observatorios/EntradaEstado.module.css';
 const PARADA=['não empenhados','empenhados e não liquidados','liquidados e não pagos'];
 const porcento=(r:number)=>`${(r*100).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})}%`;
 
-export function AberturaFederal(){
+/** `rotulo`: o rótulo de contexto acima do H1 (RotuloContexto), montado pela página no servidor. */
+export function AberturaFederal({rotulo}:{rotulo?:ReactNode}){
  const [ano,setAno]=useState(2025);
  const base=DADOS.orcamento.find(b=>b.ano===ano)!;
  const origem=origemSIOP(ano);
@@ -23,7 +24,7 @@ export function AberturaFederal(){
  const encaixados=dot>0&&dot>=emp&&emp>=liq&&liq>=pag&&pag>=0;
  const camadas=[{id:'atualizada' as Estagio,valor:dot,classe:styles.camadaDotacao},{id:'empenhado' as Estagio,valor:emp,classe:styles.camadaEmpenho},{id:'liquidado' as Estagio,valor:liq,classe:styles.camadaLiquidado},{id:'pago' as Estagio,valor:pag,classe:styles.camadaPago}];
  return <section className={styles.opening} aria-labelledby="titulo-federal">
-  <div><p className={styles.eyebrow}>Contas Públicas / Governo Federal</p><h1 id="titulo-federal" className={`${styles.title} ${styles.tituloPergunta}`}>Quanto do orçamento federal vira <em>pagamento</em>?</h1><p className={styles.lead}>O que foi autorizado, empenhado, liquidado e pago no ano, e quais entregas o governo informa.</p><div className={styles.actions}><Link className={styles.primary} href="/contas-publicas/execucao">Explorar o orçamento <span aria-hidden="true">→</span></Link><a href="#capitulos">Escolher uma pergunta ↓</a></div><div className={styles.readingKey}><IconeEstado tipo="recursos"/><p><strong>Recursos, entregas e resultados</strong>Três perspectivas para ler a gestão. Cada uma tem suas medidas e seus limites.</p></div></div>
+  <div>{rotulo}<h1 id="titulo-federal" className={`${styles.title} ${styles.tituloPergunta}`}>Quanto do orçamento federal vira <em>pagamento</em>?</h1><p className={styles.lead}>O que foi autorizado, empenhado, liquidado e pago no ano, e quais entregas o governo informa.</p><div className={styles.actions}><Link className={styles.primary} href="/contas-publicas/execucao">Explorar o orçamento <span aria-hidden="true">→</span></Link><a href="#capitulos">Escolher uma pergunta ↓</a></div><div className={styles.readingKey}><IconeEstado tipo="recursos"/><p><strong>Recursos, entregas e resultados</strong>Três perspectivas para ler a gestão. Cada uma tem suas medidas e seus limites.</p></div></div>
   <figure className={styles.panel} aria-labelledby="federal-estagios"><figcaption className={styles.panelHead}><div><p className={styles.eyebrow}>O orçamento em movimento</p><h2 id="federal-estagios">Da autorização ao pagamento</h2><p className={styles.period}>União · {ano} · R$ nominais</p></div><label>Exercício da abertura<select value={ano} onChange={e=>setAno(Number(e.target.value))}><option value={2025}>2025 · encerrado</option><option value={2026}>2026 · parcial</option></select></label></figcaption>
   {encaixados?<div className={styles.plot}>
    {/* diagnóstico de layout de 20/10/2026, item 9: uma cascata só no lugar das quatro barras quase cheias. Os estágios são encaixados

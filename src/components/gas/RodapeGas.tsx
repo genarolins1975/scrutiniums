@@ -9,7 +9,7 @@ export function RodapeGas() {
   const lista = orgaos.length > 1 ? `${orgaos.slice(0, -1).join(", ")} e ${orgaos.at(-1)}` : orgaos.join("");
   const link = "inline-flex min-h-[44px] items-center text-carvao underline-offset-4 hover:underline";
   return (
-    <aside aria-label="Observatório Brasileiro de Gás Natural: fontes e método" className="border-t border-linha bg-papel">
+    <aside aria-label="Gás Natural: fontes e método" className="border-t border-linha bg-papel">
       <div className="ed-pagina py-4">
         <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
           {meta.fontes.length} conjuntos de dados abertos de {lista}. Cada número traz fonte, período e natureza; as fórmulas, as validações e

@@ -5,6 +5,8 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { consultarMunicipio, goldConectividade } from "@/lib/conectividade/dados";
 import { mesAcessos, mesExtenso } from "@/lib/conectividade/formato";
 import { PERGUNTA_PAINEL, ROTA_CONECTIVIDADE, SECAO_PAINEL } from "@/lib/conectividade/paginas";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 /**
  * Painel "Conectividade", com conta. O endereço é público, mas sem sessão o middleware serve ali a versão aperitivo
@@ -16,7 +18,7 @@ export const dynamic = "force-dynamic";
 export function generateMetadata(): Metadata {
   const g = goldConectividade();
   return {
-    title: `${PERGUNTA_PAINEL} · Conectividade · Energia e Infraestrutura`,
+    title: tituloNaColecao(PERGUNTA_PAINEL, "/conectividade"),
     description: `Banda larga fixa, linhas móveis e cobertura 4G e 5G por município e estado, cada medida só onde a Anatel a publica, com ${mesAcessos(g.referencia)} e cobertura de ${mesExtenso(g.referencia.cobertura)}, pelos dados abertos da Anatel.`,
     alternates: { canonical: ROTA_CONECTIVIDADE },
   };
@@ -31,6 +33,7 @@ export default function Page({ searchParams }: { searchParams: Record<string, st
       <main id="conteudo" className="cn-wrap cn-main" data-painel="conectividade">
         <MarcaVisita secao={SECAO_PAINEL} />
         <header className="cn-cabeca">
+          <RotuloContexto rota="/conectividade" className="text-mineral" />
           <h1>{PERGUNTA_PAINEL}</h1>
           <p className="cn-lead">
             Quantos acessos de internet há em cada cidade, por fibra ou não, quantas empresas disputam o cliente, e quem está dentro da cobertura 4G e 5G. Dados abertos da Anatel,

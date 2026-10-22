@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { GRUPOS, ROTULO_CURTO, lerDesastres, serieReconhecida } from "@/lib/territorio/desastres";
 import { NOME_UF } from "@/lib/territorio/queimadas";
 import { Figura, dataBr, n } from "@/components/territorio/Queimadas";
 import { DoDesastreAoReconhecimento, SerieEmpilhada, TabelaDanos, TabelaSerie, TabelaUFDesastres } from "@/components/territorio/Desastres";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Desastres reconhecidos",
+  title: tituloNaColecao("Desastres reconhecidos", "/territorio/desastres"),
   description: "Registros municipais de desastre com reconhecimento federal, de 2003 a 2025, por tipo e por estado, e os danos humanos registrados desde 2013, a partir do Atlas Digital de Desastres no Brasil.",
 };
 
@@ -42,12 +43,7 @@ export default function PaginaDesastres() {
     <main className="bg-papel">
       <section aria-labelledby="desastres-titulo" className="border-b border-linha bg-marfim">
         <div className="mx-auto max-w-page px-6 pb-12 pt-10 md:pb-14 md:pt-14">
-          <nav aria-label="Trilha" className="text-sm text-carvao-muted">
-            <Link href="/territorio" className="underline decoration-linha underline-offset-4 hover:text-carvao">Território e Clima</Link>
-            <span aria-hidden="true" className="mx-2 text-mineral">/</span>
-            <span aria-current="page">Desastres</span>
-          </nav>
-          <p className="rotulo mt-8 flex items-center gap-3 text-mineral"><span aria-hidden="true" className="h-[3px] w-8 bg-obee" />Desastres</p>
+          <RotuloContexto rota="/territorio/desastres" className="mt-8 flex flex-wrap items-center gap-x-3 text-mineral" marca={<span aria-hidden="true" className="h-[3px] w-8 bg-obee" />} />
           <h1 id="desastres-titulo" className="mt-5 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.1] text-carvao [text-wrap:balance]">
             Onde os desastres atingem os municípios?
           </h1>

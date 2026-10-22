@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { lerQueimadas, lerQueimadasMunicipios, municipiosDeFocos, municipiosParaMetade, recorte, NOME_UF, PISO_FOCOS_DENSIDADE } from "@/lib/territorio/queimadas";
 import { FocosNoMunicipio } from "@/components/territorio/FocosNoMunicipio";
 import { BarrasComparadas, DoSateliteAoFoco, Figura, MesAMes, SerieAnual, TabelaAnual, TabelaMensal, TabelaMunicipios, TabelaUF, dataBr, mesAno, n } from "@/components/territorio/Queimadas";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Queimadas e focos de calor",
+  title: tituloNaColecao("Queimadas e focos de calor", "/territorio/queimadas"),
   description: "Focos de calor do satélite de referência do INPE desde 2003, o ano em curso contra o mesmo período do ano anterior, estados e biomas, e a área queimada mapeada.",
 };
 
@@ -67,12 +68,7 @@ export default function PaginaQueimadas() {
     <main className="bg-papel">
       <section aria-labelledby="queimadas-titulo" className="border-b border-linha bg-marfim">
         <div className="mx-auto max-w-page px-6 pb-12 pt-10 md:pb-14 md:pt-14">
-          <nav aria-label="Trilha" className="text-sm text-carvao-muted">
-            <Link href="/territorio" className="underline decoration-linha underline-offset-4 hover:text-carvao">Território e Clima</Link>
-            <span aria-hidden="true" className="mx-2 text-mineral">/</span>
-            <span aria-current="page">Fogo e queimadas</span>
-          </nav>
-          <p className="rotulo mt-8 flex items-center gap-3 text-mineral"><span aria-hidden="true" className="h-[3px] w-8 bg-obee" />Fogo e queimadas</p>
+          <RotuloContexto rota="/territorio/queimadas" className="mt-8 flex flex-wrap items-center gap-x-3 text-mineral" marca={<span aria-hidden="true" className="h-[3px] w-8 bg-obee" />} />
           <h1 id="queimadas-titulo" className="mt-5 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.1] text-carvao [text-wrap:balance]">
             Onde e quanto o fogo aparece no Brasil?
           </h1>

@@ -6,7 +6,9 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { dadosBotijaoNoEstado } from "@/lib/gas/botijaoNoEstado";
 import { carimbo, mesExtenso } from "@/lib/gas/formato";
 import { fontesPorId, goldGas } from "@/lib/gas/gold";
-import { GRUPOS_GAS, paginaGas } from "@/lib/gas/navegacao";
+import { paginaGas } from "@/lib/gas/navegacao";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 
@@ -14,7 +16,7 @@ const pagina = paginaGas("gas-de-cozinha");
 const PERGUNTA = "Quanto custa o botijão de gás no meu estado?";
 
 export const metadata: Metadata = {
-  title: PERGUNTA,
+  title: tituloNaColecao(PERGUNTA, "/gas-natural/gas-de-cozinha"),
   description: "Preço médio do botijão de 13 kg de gás de cozinha no seu estado, no último mês da pesquisa da ANP, comparado com a média do Brasil.",
   alternates: { canonical: pagina.href },
 };
@@ -35,7 +37,6 @@ export default function AperitivoGasDeCozinhaPagina() {
   const orgao = fontes[0]?.orgao ?? "ANP";
   const conjunto = (fontes[0]?.conjunto ?? "Levantamento de Preços de Combustíveis").split(":")[0];
   const captura = fontes.map((f) => f.capturado_em).filter((c): c is string => Boolean(c)).sort().at(-1) ?? g.dados_capturados_em;
-  const grupo = GRUPOS_GAS.find((x) => x.id === pagina.grupo);
   const inicioUf = typeof g.serie_uf[0]?.mes === "string" ? mesExtenso(g.serie_uf[0].mes) : null;
   const inicioIpca = mesExtenso(g.ipca.doze_meses.find((x) => x.botijao !== null)?.mes);
   const inicioAcumulado = mesExtenso(g.ipca.indicadores.botijao_acumulado?.periodo.slice(0, 7));
@@ -45,7 +46,7 @@ export default function AperitivoGasDeCozinhaPagina() {
       <CabecalhoGas atual="gas-de-cozinha" />
       <main id="conteudo" className="ed-pagina pb-12">
         <div className="cab-modulo gas-abertura">
-          <p className="rotulo text-gas-dark">{grupo?.rotulo} · {pagina.rotulo}</p>
+          <RotuloContexto rota="/gas-natural/gas-de-cozinha" pagina={pagina.rotulo} className="text-gas-dark" />
           <h1 className="ed-h1 mt-3 max-w-4xl font-serif text-carvao">{PERGUNTA}</h1>
           <div className="ed-lead mt-4 max-w-prose2 text-carvao-muted">
             <p>Escolha o estado para ver o preço médio do botijão de 13 kg de gás de cozinha em {mes}, comparado com a média do Brasil.</p>

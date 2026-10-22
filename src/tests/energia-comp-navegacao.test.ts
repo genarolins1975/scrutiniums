@@ -192,7 +192,7 @@ describe("cabeçalho renderizado no servidor", () => {
 
   it("nav nomeada, seis grupos como disclosure e o botão Menu", () => {
     const h = html("geracao");
-    expect(h).toMatch(/<nav[^>]*aria-label="Navegação do Observatório do Setor Elétrico"/);
+    expect(h).toMatch(/<nav[^>]*aria-label="Navegação da coleção Setor Elétrico"/);
     for (const g of GRUPOS_NAVEGACAO) expect(h, g.rotulo).toMatch(new RegExp(`<summary[^>]*>${g.rotulo}`));
     expect(h).toMatch(/<summary[^>]*>Menu/);
     // só o grupo da página atual é anunciado como tal

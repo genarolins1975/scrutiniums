@@ -1,6 +1,7 @@
 import { LINKEDIN_URL } from "@/lib/contato";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { MARCADOR_FIM, MARCADOR_INICIO, colecaoDaRotaSpa, htmlBarraSpa } from "@/lib/observatorios/barraSpa";
 import {
   abaPorCaminho,
   PREFIXOS_DINAMICOS,
@@ -14,7 +15,10 @@ import {
  */
 
 const BASE = "https://scrutiniums.com";
-const NOME_PLATAFORMA = "Observatório Brasileiro de Crédito";
+/** Nome da coleção no registro dos seis observatórios (src/lib/observatorios/lista.ts). */
+const NOME_COLECAO = "Crédito e sistema financeiro";
+/** Fim dos títulos de aba: "Página · Coleção · Scrutiniums" (Iniciativa 1 do parecer de UX, 21/10/2026). */
+const NOME_PLATAFORMA = `${NOME_COLECAO} · Scrutiniums`;
 
 let shellCache: string | null = null;
 function shell(): string {
@@ -142,7 +146,17 @@ export type MetaObservatorio = {
   status: number;
 };
 
+/**
+ * Metadados de um caminho da SPA. O título termina na coleção dona do endereço no registro: as abas que o Crédito mantém
+ * para as Famílias e as Contas Públicas dizem a coleção delas ("Consignado e aposentados · Dívida e crédito das famílias").
+ */
 export function resolverMeta(caminho: string): MetaObservatorio {
+  const meta = resolverMetaDaAba(caminho);
+  const colecao = colecaoDaRotaSpa(meta.canonico.replace(BASE, ""));
+  return colecao === NOME_COLECAO ? meta : { ...meta, titulo: meta.titulo.replace(` · ${NOME_PLATAFORMA}`, ` · ${colecao} · Scrutiniums`) };
+}
+
+function resolverMetaDaAba(caminho: string): MetaObservatorio {
   const padrao = {
     titulo: NOME_PLATAFORMA,
     descricao:
@@ -208,7 +222,7 @@ export function resolverMeta(caminho: string): MetaObservatorio {
     }
     return {
       titulo: `${humanizarSlug(slug)} — ${d.rotulo} · ${NOME_PLATAFORMA}`,
-      descricao: `Análise de ${humanizarSlug(slug)} na área ${d.rotulo} do ${NOME_PLATAFORMA}, com dados oficiais e metodologia aberta.`,
+      descricao: `Análise de ${humanizarSlug(slug)} na área ${d.rotulo} da coleção ${NOME_COLECAO}, com dados oficiais e metodologia aberta.`,
       canonico: `${BASE}/observatorio${d.prefixo}${slug}`,
       indexavel: true,
       status: 200,
@@ -257,6 +271,11 @@ export function montarHtml(meta: MetaObservatorio, html = shell()): string {
     .replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${d}">`)
     .replace(/<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="${c}">`)
     .replace(/<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${c}">`);
+  // a barra da aba pedida, já no HTML do servidor: seletor, abas e trilha com a coleção e o observatório donos dela no
+  // registro (o index.html traz a da entrada da coleção)
+  const ini = out.indexOf(MARCADOR_INICIO);
+  const fim = out.indexOf(MARCADOR_FIM);
+  if (ini >= 0 && fim > ini) out = out.slice(0, ini) + htmlBarraSpa(meta.canonico.replace(BASE, "")) + out.slice(fim + MARCADOR_FIM.length);
   const extras = [
     meta.indexavel ? "" : `<meta name="robots" content="noindex">`,
     meta.indexavel ? jsonLd(meta) : "",

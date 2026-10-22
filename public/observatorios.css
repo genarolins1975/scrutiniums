@@ -40,6 +40,36 @@
 .bp-acoes { margin-left:auto; display:flex; flex-shrink:0; align-items:center; gap:12px 20px; }
 .bp-abas { border-top:1px solid var(--bp-regra); }
 .bp-abas-linha { flex-wrap:wrap; gap:0 20px; }
+/* Trilha "Você está em" logo abaixo da barra comum (Iniciativa 1 do parecer de UX, 21/10/2026): mesma largura e margens da
+   barra, sem caixa nem regra própria, para não somar mais uma faixa de cromo ao cabeçalho. */
+.bp-trilha { box-sizing:border-box; width:100%; max-width:var(--bp-largura,77.5rem); margin-inline:auto; padding-inline:var(--bp-margem,clamp(1rem,4vw,2.5rem)); padding-block:4px; }
+/* Celular: a trilha fica numa linha só, para não somar duas faixas de cromo antes do título. Ficam as duas últimas peças
+   (observatório e coleção, ou coleção e página); o observatório segue nas abas e no rótulo acima do H1, e o seletor ao
+   lado da marca leva a todos. A primeira peça visível encurta com reticências se preciso; a última fica inteira. */
+@media (max-width:639px) {
+  .trilha ol { flex-wrap:nowrap; }
+  .trilha li, .observatorio-credito .obs-trilha li { min-width:0; flex:0 1 auto; }
+  .trilha li:not(:nth-last-child(-n+2)), .observatorio-credito .obs-trilha li:not(:nth-last-child(-n+2)) { display:none; }
+  .trilha li:nth-last-child(2) > [aria-hidden="true"] { display:none; }
+  .trilha li:last-child { flex-shrink:0; max-width:70%; }
+  .trilha li > a, .trilha li > [aria-current] { display:block; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; line-height:32px; }
+}
+@media (max-width:639px) and (pointer:coarse) { .trilha li > a, .trilha li > [aria-current] { line-height:44px; } }
+/* Itens do seletor de coleção (SwitcherObservatorio): 34 itens por página, então classes curtas em vez das utilitárias */
+.sel-item { display:flex; align-items:center; min-height:36px; padding:6px 12px; }
+@media (pointer:coarse) { .sel-item { min-height:44px; } }
+.sel-col { font-size:.875rem; line-height:1.25rem; color:var(--cor-carvao); }
+.sel-col:hover, .sel-col[aria-current="true"] { background:var(--cor-papel); }
+.sel-col[aria-current="true"] { font-weight:600; }
+.sel-obs { color:var(--cor-mineral); }
+.sel-obs:hover, .sel-obs[aria-current="true"] { color:var(--cor-carvao); }
+/* a mesma trilha na SPA do Crédito, que não carrega o Tailwind das páginas Next */
+.observatorio-credito .obs-trilha ol { display:flex; flex-wrap:wrap; align-items:center; gap:0 8px; margin:0; padding:0; list-style:none; font-size:13px; line-height:20px; color:var(--bp-suave); }
+.observatorio-credito .obs-trilha li { display:inline-flex; align-items:center; gap:8px; }
+.observatorio-credito .obs-trilha a { display:inline-flex; align-items:center; min-height:32px; color:inherit; text-decoration:underline; text-decoration-color:var(--bp-regra); text-underline-offset:4px; }
+.observatorio-credito .obs-trilha a:hover { color:var(--bp-tinta); text-decoration-color:currentColor; }
+.observatorio-credito .obs-trilha [aria-current] { display:inline-flex; align-items:center; min-height:32px; color:var(--bp-tinta); }
+@media (pointer:coarse) { .observatorio-credito .obs-trilha a, .observatorio-credito .obs-trilha [aria-current] { min-height:44px; } }
 .bp .obs-dominios a, .bp a.bp-aba { min-height:44px; display:inline-flex; align-items:center; padding:4px 0; border-bottom:2px solid transparent; font-size:13px; line-height:1.35; white-space:nowrap; color:var(--bp-tinta); text-decoration:none; }
 .bp .obs-dominios a:hover, .bp a.bp-aba:hover { color:var(--bp-destaque); text-decoration:none; }
 .bp .obs-dominios a[aria-current] { border-color:var(--bp-destaque); font-weight:600; }
@@ -149,12 +179,15 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
    (z 50) para o painel aberto não ficar por baixo dela, e fica abaixo do véu da barra lateral (z 55). */
 .observatorio-credito .obs-trocar { display:block; position:relative; }
 .observatorio-credito .obs-trocar summary { list-style:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; min-height:44px; font-family:var(--font-label,"Archivo Narrow"),system-ui,sans-serif; font-size:.75rem; font-weight:400; line-height:1.3; letter-spacing:.14em; text-transform:uppercase; color:var(--bp-tinta); white-space:nowrap; }
-.observatorio-credito .obs-trocar summary>span { display:inline-block; font-size:.7em; }
-.observatorio-credito .obs-trocar[open] summary>span { transform:rotate(180deg); }
+.observatorio-credito .obs-trocar summary>span[aria-hidden] { display:inline-block; font-size:.7em; }
+.observatorio-credito .obs-trocar[open] summary>span[aria-hidden] { transform:rotate(180deg); }
+/* nome da coleção ("Crédito e sistema financeiro") cortado com reticências no celular, para a conta caber na linha da marca */
+.observatorio-credito .obs-trocar-nome { display:inline-block; max-width:11rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+@media(min-width:640px) { .observatorio-credito .obs-trocar-nome { max-width:none; } }
 .observatorio-credito .obs-trocar summary:hover { color:var(--bp-destaque); }
 .observatorio-credito .obs-trocar summary::-webkit-details-marker { display:none; }
 .observatorio-credito .obs-trocar-menu { position:fixed; left:16px; right:16px; z-index:52; margin-top:4px; padding:8px; display:flex; flex-direction:column; max-height:80vh; overflow-y:auto; background:var(--surface); border:1px solid var(--border); box-shadow:0 8px 24px rgba(26,29,33,.12); }
-@media(min-width:640px) { .observatorio-credito .obs-trocar-menu { position:absolute; left:0; right:auto; width:18rem; } }
+@media(min-width:640px) { .observatorio-credito .obs-trocar-menu { position:absolute; left:0; right:auto; width:20rem; } .observatorio-credito .obs-trocar-menu a { min-height:36px; padding:6px 12px; } }
 .observatorio-credito .obs-trocar-menu p { margin:0; padding:8px 12px 4px; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
 .observatorio-credito .obs-trocar-menu a { display:flex; align-items:center; min-height:44px; padding:8px 12px; font-size:14px; line-height:1.35; color:var(--text); text-decoration:none; }
 .observatorio-credito .obs-trocar-menu a[aria-current] { font-weight:600; }

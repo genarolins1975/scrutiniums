@@ -9,7 +9,7 @@ import { tx } from "@/lib/energia/idioma";
 /* Casca só da versão portuguesa: a inglesa tem a sua (src/app/en/setor-eletrico/layout.tsx), e estes textos nunca chegam a /en. */
 export const metadata: Metadata = {
   title: {
-    default: "Observatório Brasileiro do Setor Elétrico", // i18n: dado
+    default: "Setor Elétrico", // i18n: dado
     template: "%s · Setor Elétrico · Scrutiniums", // i18n: dado
   },
   description: // i18n: dado

@@ -1,4 +1,9 @@
 import {CabecalhoEntrada} from '@/components/eficiencia/CabecalhoEntrada';
+import type { Metadata } from "next";
+import { modeloDeTitulo } from "@/lib/observatorios/contexto";
+
+/** Títulos "Página · Coleção · Scrutiniums", com a coleção dona do tema no registro. */
+export const metadata: Metadata = { title: modeloDeTitulo("/eficiencia-estatal/seguranca-publica") };
 
 const BASE = '/eficiencia-estatal/seguranca-publica';
 /** Navegação do painel, na ordem da procura: a comparação por estado logo depois da visão geral. */

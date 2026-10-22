@@ -47,7 +47,7 @@ export function ehOrigem(valor: unknown): valor is OrigemId {
   return typeof valor === "string" && ORIGENS.has(valor);
 }
 
-/** Nome completo da origem ("Observatório Brasileiro do Setor Elétrico"); id desconhecido volta como está. */
+/** Nome da origem: a coleção ("Setor Elétrico") ou o observatório ("Observatório das Famílias"); id desconhecido volta como está. */
 export function nomeOrigem(id: string): string {
   return DOMINIOS.find((d) => d.id === id)?.nome ?? OBSERVATORIOS.find((o) => o.id === id)?.nome ?? id;
 }

@@ -3,6 +3,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import sitemap from "@/app/sitemap";
 import { DOMINIOS, dominioDaSecao, dominioDoCaminho } from "@/lib/dominios";
+import { OBSERVATORIOS } from "@/lib/observatorios/lista";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
 import { isViewSection } from "@/lib/telemetry";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
@@ -82,7 +83,8 @@ describe("registro de domínios", () => {
   it("a Eficiência Estatal está na home, no seletor, na escolha pós login, no cabeçalho, no rodapé e na SPA do Crédito", () => {
     const rota = DOMINIOS[2].rotaRaiz;
     expect(ler("src/components/home/SecaoObservatorios.tsx")).toContain("DOMINIOS.map");
-    expect(ler("src/components/layout/SwitcherObservatorio.tsx")).toContain("DOMINIOS.filter");
+    // o seletor lista as coleções do registro; a Síntese das capitais é a coleção da Eficiência Estatal (Iniciativa 1, 21/10/2026)
+    expect(ler("src/components/layout/NavegacaoContexto.tsx")).toContain("o.colecoes.map");
     // a escolha pós login agrupa os cartões das coleções pelos seis observatórios
     expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("OBSERVATORIOS.map");
     expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("OPCOES_OBSERVATORIOS.filter");
@@ -91,7 +93,9 @@ describe("registro de domínios", () => {
     expect(ler("src/components/layout/navCabecalho.ts")).toContain("OBSERVATORIOS");
     // a barra dos painéis lista os seis observatórios; a coleção chega pelo seletor
     expect(ler("src/components/observatorios/NavegacaoObservatorios.tsx")).toContain("OBSERVATORIOS.map");
-    expect(ler("src/components/layout/Footer.tsx")).toContain(rota);
+    // o rodapé lista as coleções do registro, coluna por observatório (Iniciativa 1, 21/10/2026); a Síntese das capitais leva à rota
+    expect(ler("src/components/layout/Footer.tsx")).toContain("o.colecoes.map");
+    expect(OBSERVATORIOS.flatMap((o) => o.colecoes).some((c) => c.href === rota)).toBe(true);
     expect(ler("public/obs/index.html")).toContain(`href="${rota}"`);
   });
 

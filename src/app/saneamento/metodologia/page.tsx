@@ -13,7 +13,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Método, fontes e conferências",
   description:
-    "Fontes com data e sha256, matriz de viabilidade por pergunta, contrato metodológico, conferências entre bases, downloads e limitações do Observatório Brasileiro do Saneamento.",
+    "Fontes com data e sha256, matriz de viabilidade por pergunta, contrato metodológico, conferências entre bases, downloads e limitações da coleção Saneamento.",
   alternates: { canonical: "/saneamento/metodologia" },
 };
 

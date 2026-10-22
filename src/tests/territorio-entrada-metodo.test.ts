@@ -54,9 +54,12 @@ describe("Território e Clima: rotas da entrada e do método", () => {
   });
 
   it("os painéis linkam a entrada nova, e nenhuma página aponta para o endereço antigo", () => {
+    // desde a Iniciativa 1 (21/10/2026) a trilha dos painéis é a da barra comum, no layout do Território, e leva quem tem
+    // conta à entrada do observatório (o.entrada); as páginas não repetem mais a trilha em linha
+    expect(readFileSync(join(process.cwd(), "src", "app", "territorio", "layout.tsx"), "utf-8")).toContain("<CabecalhoPlataforma");
+    expect(OBSERVATORIOS.find((o) => o.id === "territorio-e-clima")?.entrada).toBe("/territorio");
     for (const f of ["queimadas", "desastres", "emissoes"]) {
       const fonte = readFileSync(join(process.cwd(), "src", "app", "territorio", f, "page.tsx"), "utf-8");
-      expect(fonte, f).toContain('href="/territorio"');
       expect(fonte, f).not.toContain("/observatorios/territorio-e-clima");
     }
     expect(OBSERVATORIOS.some((o) => o.entrada === "/observatorios/territorio-e-clima")).toBe(false);

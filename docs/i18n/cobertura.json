@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
-    "arquivos_analisados": 1509,
-    "fontes_sha256": "fc38454606a581b7bb94fbc61c29c8e22083d43fb52ff4b9bb136a9b5460fd03",
+    "arquivos_analisados": 1517,
+    "fontes_sha256": "c0b2e033093309de9e693ae75722235cbfe691e09582881c46901eb77f3407d2",
     "pendencias_sha256": "0cdc6c6642dc03c74e808c26f2e4bf952a9a5a4455bcef2bd340a2c7cfa5265c",
     "nao_classificadas": [
       {
@@ -178,19 +178,19 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 409,
+        "arquivos": 414,
         "candidatos": {
-          "jsx_text": 2462,
-          "atributos": 525,
-          "props": 1114,
-          "outros_literais": 8577,
-          "templates": 1199,
-          "expressoes_nao_resolvidas": 7609,
-          "chaves_objetos": 6775
+          "jsx_text": 2403,
+          "atributos": 500,
+          "props": 1033,
+          "outros_literais": 8632,
+          "templates": 1220,
+          "expressoes_nao_resolvidas": 7592,
+          "chaves_objetos": 6886
         },
         "exclusoes": {
-          "importacoes": 1778,
-          "atributos_tecnicos": 3871,
+          "importacoes": 1825,
+          "atributos_tecnicos": 3804,
           "tipos": 567
         },
         "scripts_embutidos": {},
@@ -200,7 +200,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 28261,
+        "candidatos_nao_catalogados": 28266,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -229,17 +229,17 @@
       "interface": {
         "arquivos": 577,
         "candidatos": {
-          "jsx_text": 7675,
+          "jsx_text": 7671,
           "atributos": 2918,
-          "props": 18873,
-          "outros_literais": 51212,
+          "props": 18876,
+          "outros_literais": 51209,
           "templates": 12789,
-          "expressoes_nao_resolvidas": 55668,
+          "expressoes_nao_resolvidas": 55666,
           "chaves_objetos": 36047
         },
         "exclusoes": {
-          "importacoes": 5003,
-          "atributos_tecnicos": 8706,
+          "importacoes": 5004,
+          "atributos_tecnicos": 8704,
           "tipos": 3735
         },
         "scripts_embutidos": {},
@@ -249,7 +249,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 185182,
+        "candidatos_nao_catalogados": 185176,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -277,17 +277,17 @@
       "interface": {
         "arquivos": 29,
         "candidatos": {
-          "jsx_text": 301,
+          "jsx_text": 300,
           "atributos": 26,
-          "props": 711,
+          "props": 713,
           "outros_literais": 555,
           "templates": 78,
           "expressoes_nao_resolvidas": 749,
           "chaves_objetos": 830
         },
         "exclusoes": {
-          "importacoes": 164,
-          "atributos_tecnicos": 320,
+          "importacoes": 165,
+          "atributos_tecnicos": 319,
           "tipos": 30
         },
         "scripts_embutidos": {},
@@ -297,7 +297,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 3250,
+        "candidatos_nao_catalogados": 3251,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -325,17 +325,17 @@
       "interface": {
         "arquivos": 74,
         "candidatos": {
-          "jsx_text": 1564,
+          "jsx_text": 1563,
           "atributos": 386,
-          "props": 1951,
+          "props": 1953,
           "outros_literais": 3667,
           "templates": 546,
           "expressoes_nao_resolvidas": 3840,
           "chaves_objetos": 4744
         },
         "exclusoes": {
-          "importacoes": 516,
-          "atributos_tecnicos": 2036,
+          "importacoes": 517,
+          "atributos_tecnicos": 2035,
           "tipos": 264
         },
         "scripts_embutidos": {},
@@ -345,7 +345,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 16698,
+        "candidatos_nao_catalogados": 16699,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -371,19 +371,19 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 241,
+        "arquivos": 244,
         "candidatos": {
-          "jsx_text": 3344,
-          "atributos": 1086,
-          "props": 1481,
-          "outros_literais": 8151,
+          "jsx_text": 3331,
+          "atributos": 1085,
+          "props": 1479,
+          "outros_literais": 8162,
           "templates": 862,
-          "expressoes_nao_resolvidas": 8545,
-          "chaves_objetos": 4944
+          "expressoes_nao_resolvidas": 8547,
+          "chaves_objetos": 4958
         },
         "exclusoes": {
-          "importacoes": 955,
-          "atributos_tecnicos": 3734,
+          "importacoes": 984,
+          "atributos_tecnicos": 3714,
           "tipos": 537
         },
         "scripts_embutidos": {},
@@ -393,7 +393,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 28413,
+        "candidatos_nao_catalogados": 28424,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -421,17 +421,17 @@
       "interface": {
         "arquivos": 78,
         "candidatos": {
-          "jsx_text": 972,
+          "jsx_text": 968,
           "atributos": 203,
           "props": 107,
-          "outros_literais": 1839,
+          "outros_literais": 1840,
           "templates": 156,
-          "expressoes_nao_resolvidas": 1676,
-          "chaves_objetos": 988
+          "expressoes_nao_resolvidas": 1677,
+          "chaves_objetos": 990
         },
         "exclusoes": {
-          "importacoes": 278,
-          "atributos_tecnicos": 761,
+          "importacoes": 281,
+          "atributos_tecnicos": 760,
           "tipos": 67
         },
         "scripts_embutidos": {},
@@ -469,16 +469,16 @@
       "interface": {
         "arquivos": 29,
         "candidatos": {
-          "jsx_text": 418,
+          "jsx_text": 417,
           "atributos": 97,
-          "props": 6,
+          "props": 7,
           "outros_literais": 699,
           "templates": 21,
-          "expressoes_nao_resolvidas": 580,
+          "expressoes_nao_resolvidas": 583,
           "chaves_objetos": 401
         },
         "exclusoes": {
-          "importacoes": 67,
+          "importacoes": 70,
           "atributos_tecnicos": 329,
           "tipos": 5
         },
@@ -489,7 +489,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 2222,
+        "candidatos_nao_catalogados": 2225,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -517,16 +517,16 @@
       "interface": {
         "arquivos": 54,
         "candidatos": {
-          "jsx_text": 468,
+          "jsx_text": 467,
           "atributos": 266,
-          "props": 834,
+          "props": 835,
           "outros_literais": 2897,
           "templates": 230,
           "expressoes_nao_resolvidas": 2141,
           "chaves_objetos": 1760
         },
         "exclusoes": {
-          "importacoes": 278,
+          "importacoes": 279,
           "atributos_tecnicos": 78,
           "tipos": 97
         },
@@ -565,18 +565,18 @@
       "interface": {
         "arquivos": 14,
         "candidatos": {
-          "jsx_text": 153,
-          "atributos": 211,
-          "props": 170,
-          "outros_literais": 12982,
-          "templates": 2667,
-          "expressoes_nao_resolvidas": 9307,
+          "jsx_text": 152,
+          "atributos": 213,
+          "props": 172,
+          "outros_literais": 12991,
+          "templates": 2669,
+          "expressoes_nao_resolvidas": 9313,
           "chaves_objetos": 5094,
-          "textos": 158
+          "textos": 183
         },
         "exclusoes": {
-          "importacoes": 55,
-          "atributos_tecnicos": 654,
+          "importacoes": 56,
+          "atributos_tecnicos": 683,
           "tipos": 4,
           "estilos": 1,
           "comentarios": 3
@@ -584,7 +584,7 @@
         "scripts_embutidos": {
           "inlinePendentes": 7,
           "externos": 4,
-          "dadosPendentes": 0
+          "dadosPendentes": 1
         },
         "chaves_catalogadas": {
           "traduzidas": 0,
@@ -592,7 +592,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 30742,
+        "candidatos_nao_catalogados": 30787,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -618,7 +618,7 @@
   },
   "glossario": {
     "path": "config/glossario-en.json",
-    "sha256": "f4ed12518809fd6b8043ee342b627e491b0d04fd771a83bf0520e7c0d4632e84",
+    "sha256": "fc2bcd9a1ee260ab4599afcc2cf13f37f1058b3afa8b18d0a79a52c859b2fbc8",
     "fontes": 8,
     "termos": 28,
     "nomes_preservados": 17,
@@ -759,11 +759,11 @@
     "arquivos": {
       "pt": {
         "path": "src/i18n/pt.ts",
-        "sha256": "188c9ad6224a2c1c58987d3520fbaf885e55a15662bb5038684f192e905701b9"
+        "sha256": "f85df08e3a5c84c4b9ca79bdaad43f9638e3662bfd07a873401717a57a9c33b8"
       },
       "en": {
         "path": "src/i18n/en.ts",
-        "sha256": "8703cc0f6e2679e53f9621e77f798f16e10fb9cbdc2511d3f291325b62dd2e72"
+        "sha256": "9ab539b44696899d387c577954701043700bad6971c4b0054f9f801bb80a73f1"
       }
     },
     "chaves": 22,
@@ -773,16 +773,16 @@
   },
   "terminologia_catalogo": {
     "path": "config/i18n-terminologia.json",
-    "sha256": "4157c9c20d5a0f0d550caf7fb37a13a68a5a5071fa042d86e36a6bb809f648d0",
+    "sha256": "1fcd52bf93b125ff62f6c8bfba09f5150a1f0dca9c8d4cc85ae31125fadec4e4",
     "schema_version": 1,
     "mensagens": 22,
     "mensagens_vinculadas": 3,
     "mensagens_sem_termos_tecnicos": 19,
-    "referencias": 14,
-    "ids_distintos": 12,
-    "formas_contextuais_usadas": 7,
-    "referencias_pt_verificadas": 14,
-    "referencias_en_verificadas": 14,
+    "referencias": 6,
+    "ids_distintos": 4,
+    "formas_contextuais_usadas": 4,
+    "referencias_pt_verificadas": 6,
+    "referencias_en_verificadas": 6,
     "referencias_en_pendentes": 0,
     "uso_na_interface_verificado": false
   },

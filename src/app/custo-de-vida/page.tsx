@@ -12,13 +12,15 @@ import { dataBr, mesAno, mesExtenso, pct, pp } from "@/lib/inflacao/formato";
 import { ROTA_COMIDA, paginaInflacao } from "@/lib/inflacao/paginas";
 import { BRASIL } from "@/lib/inflacao/tipos";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 
 const pagina = paginaInflacao("painel");
 
 export const metadata: Metadata = {
-  title: "Quanto subiu o custo de vida na minha cidade?",
+  title: tituloNaColecao("Quanto subiu o custo de vida na minha cidade?", "/custo-de-vida"),
   description: pagina.descricao,
   alternates: { canonical: pagina.href },
 };
@@ -49,7 +51,7 @@ export default function InflacaoPage() {
       <CabecalhoCustoDeVida atual="painel" />
       <main id="conteudo" className="ed-pagina pb-12">
         <div className="cab-modulo familias-abertura">
-          <p className="rotulo text-bronze-dark">Custo de vida · {pagina.rotulo}</p>
+          <RotuloContexto rota={pagina.href} pagina={pagina.rotulo} className="text-bronze-dark" />
           <h1 className="ed-h1 mt-3 max-w-4xl font-serif text-carvao">{pagina.pergunta}</h1>
           <div className="ed-lead mt-4 max-w-prose2 space-y-3 text-carvao-muted">
             <p>

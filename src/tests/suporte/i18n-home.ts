@@ -19,9 +19,10 @@ const REGIOES_PT = ["home-cabecalho", "home-perguntas", "home-secoes", "home-rod
 const REGIOES_EN = ["home-titulo", "home-acoes", "home-rotulo", "home-introducao", "home-beneficios", "home-indice"];
 
 /** Esperados integrais independentes do formatador e do adaptador do Hero. */
+// Iniciativa 1 do parecer de UX (21/10/2026): a abertura nomeia os seis observatórios
 export const INTRODUCAO_HOME = {
-  pt: "Seis observatórios sobre crédito, setor elétrico, agronegócio, gás natural, saneamento, serviços públicos e contas da União e dos estados, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o que o dado não permite afirmar.",
-  en: "Six observatories on credit, the power sector, agribusiness, natural gas, basic sanitation, public services and the public accounts of the União (Brazil's federal government) and the states, built on official databases. Each dashboard identifies the data source, the reference period and what the data cannot establish.",
+  pt: "Seis observatórios, das Famílias aos Serviços Públicos, das Contas Públicas à Energia e Infraestrutura, da Economia ao Território e Clima, construídos sobre bases oficiais. Cada painel informa a fonte, o período de referência e o que o dado não permite afirmar.",
+  en: "Six observatories on families, public services, public accounts, energy and infrastructure, the economy, and territory and climate, built on official databases. Each dashboard identifies the data source, the reference period and what the data cannot establish.",
 } as const;
 const CHAVES = {
   titulo: ["home.hero.titulo_inicio", "home.hero.titulo_destaque"],

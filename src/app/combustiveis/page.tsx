@@ -11,13 +11,15 @@ import { carimbo, mesAno, mesExtenso, num, reais, sinal } from "@/lib/gas/format
 import { brasilNoUltimoMes, dadosDoEstado, dataNota, goldCombustiveis, marcosDaPesquisa, mediasPorUf, serieCom, serieUfDuasCasas } from "@/lib/combustiveis/dados";
 import { paginaCombustiveis } from "@/lib/combustiveis/paginas";
 import type { IdCombustivel } from "@/lib/gas/gold";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 
 const pagina = paginaCombustiveis("painel");
 
 export const metadata: Metadata = {
-  title: "Preço da gasolina, do etanol e do diesel por estado",
+  title: tituloNaColecao("Preço da gasolina, do etanol e do diesel por estado", "/combustiveis"),
   description: pagina.descricao,
   alternates: { canonical: pagina.href },
 };
@@ -52,7 +54,7 @@ export default function CombustiveisPage() {
       <CabecalhoCombustiveis atual="painel" />
       <main id="conteudo" className="ed-pagina pb-12">
         <div className="cab-modulo gas-abertura">
-          <p className="rotulo text-gas-dark">Combustíveis · {pagina.rotulo}</p>
+          <RotuloContexto rota={pagina.href} pagina={pagina.rotulo} className="text-gas-dark" />
           <h1 className="ed-h1 mt-3 max-w-4xl font-serif text-carvao">{pagina.pergunta}</h1>
           <div className="ed-lead mt-4 max-w-prose2 space-y-3 text-carvao-muted">
             <p>

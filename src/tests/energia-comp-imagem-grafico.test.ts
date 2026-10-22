@@ -287,7 +287,7 @@ describe("montarSvgImagem", () => {
     ]) {
       expect(svg, t).toContain(escaparXml(t));
     }
-    expect(IDENTIFICACAO).toBe("Scrutiniums, Observatório Brasileiro do Setor Elétrico");
+    expect(IDENTIFICACAO).toBe("Scrutiniums, Setor Elétrico");
     expect(svg).not.toContain("var(");
     expect(svg).toContain('stroke="rgb(37 106 191)"');
     expect(svg).toContain('fill="rgb(255 255 255)"');
@@ -325,7 +325,7 @@ describe("montarSvgImagem", () => {
   });
 
   it("gráfico estreito (celular) é ampliado e o largo é reduzido, com texto e desenho na mesma proporção (o viewBox faz a conta)", () => {
-    const estreito = montarSvgImagem(entrada(358), { tokens: TOKENS });
+    const estreito = montarSvgImagem(entrada(240), { tokens: TOKENS });
     const largo = montarSvgImagem(entrada(1160), { tokens: TOKENS });
     const vb = (s: string) => (s.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/) ?? []).slice(1).map(Number);
     const [vbE] = vb(estreito.svg);
@@ -362,7 +362,9 @@ describe("montarSvgImagem", () => {
     const largo = montarSvgImagem(entrada(1160), { tokens: TOKENS }).svg;
     expect(y(largo, "Gerado em 09/10/2026")).toBe(y(largo, IDENTIFICACAO));
     expect(largo).toMatch(/<text [^>]*text-anchor="end"[^>]*>Gerado em 09\/10\/2026<\/text>/);
-    const estreito = montarSvgImagem(entrada(358), { tokens: TOKENS }).svg;
+    // identificação mais longa que a largura útil comporta ao lado da data (a da coleção, "Scrutiniums, Setor Elétrico", cabe
+    // desde 21/10/2026): o medidor alarga o texto para exercitar a quebra que impede uma linha de escrever por cima da outra
+    const estreito = montarSvgImagem(entrada(358), { tokens: TOKENS, medir: (t, tam, negrito) => larguraTexto(t, tam, negrito) * 1.8 }).svg;
     expect(y(estreito, "Gerado em 09/10/2026")).toBeGreaterThan(y(estreito, IDENTIFICACAO) + 10);
     expect(estreito).not.toMatch(/<text [^>]*text-anchor="end"[^>]*>Gerado em/);
   });
