@@ -71,6 +71,8 @@
   /* Neutros frios das barras não focais e das categorias de apoio (Contas Estaduais): marcação, nunca texto. */
   --cor-neutro-frio: #607e80;
   --cor-neutro-frio-claro: #c4cccb;
+  /* Valor negativo sem vermelho (déficit e saldo negativo nas Contas Federais): 6,7:1 sobre o papel, serve de texto e de barra. */
+  --cor-negativo: #65516f;
   /* Conectividade: acento petróleo próprio (5,9:1 sobre o papel, dark 8,2:1), distinto do OBEE e do Gás; soft só marcação. */
   --cor-conect: #0f6b74;
   --cor-conect-dark: #0b535a;
