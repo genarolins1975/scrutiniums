@@ -1,7 +1,7 @@
 import { semCodigosDePergunta } from "@/lib/energia/bastidor";
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
@@ -40,7 +40,7 @@ export default function PerdasRegulatorioPage() {
   if (!integra(g)) {
     return (
       <>
-        <CabecalhoEnergia atual="perdas" />
+        <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
         <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
           <Indisponivel
             titulo={tx("Perdas indisponíveis", "Losses unavailable")}
@@ -198,7 +198,7 @@ export default function PerdasRegulatorioPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="perdas" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:perdas:regulatorio" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo

@@ -1,6 +1,6 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { Numero } from "@/components/energia/Numero";
@@ -134,7 +134,7 @@ export default function RedeBalancoPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="rede" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:rede" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo

@@ -194,7 +194,8 @@ export function ConteudoFaixaFrescor({ dados, variante, idioma = "pt", conteiner
         {/* no celular: a data e a situação; a fonte, a referência e a cadência ficam em "Fontes e referência" */}
         <details className="group/frescor border-b border-linha sm:hidden">
           <summary className={`${linhaBase} cursor-pointer list-none [&::-webkit-details-marker]:hidden`}>
-            <span>
+            {/* com atraso, só a frase do atraso; a data fica em "Fontes e referência" */}
+            <span className={situacoes[0] && situacoes[0].estado !== "em-dia" ? "hidden" : undefined}>
               <span className="text-mineral">{t.atualizadoEm}</span> <span className="tabular-nums text-carvao">{dataPublicacao(d.publicadoEm, idioma) ?? t.naoInformada}</span>
             </span>
             {situacoes[0] && <Situacao s={situacoes[0]} idioma={idioma} />}
@@ -202,6 +203,11 @@ export function ConteudoFaixaFrescor({ dados, variante, idioma = "pt", conteiner
           </summary>
           <p className={`${linhaBase} pt-0`}>
             <span className="text-carvao">{x.rotulo}</span>
+            {situacoes[0] && situacoes[0].estado !== "em-dia" && (
+              <span>
+                <span className="text-mineral">{t.atualizadoEm}</span> <span className="tabular-nums text-carvao">{dataPublicacao(d.publicadoEm, idioma) ?? t.naoInformada}</span>
+              </span>
+            )}
             <span>
               <span className="text-mineral">{t.referencia}</span> <span className="tabular-nums text-carvao">{ref ?? t.refNaoInformada}</span>
               {ref && <span className="text-carvao-muted"> ({x.referencia})</span>}

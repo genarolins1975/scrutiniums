@@ -242,7 +242,10 @@ const NAVS_DE_MODULO = [
 
 describe("5. toda navegação de módulo se chama \"Navegação da coleção X\"", () => {
   it("cabeçalhos e navegações de domínio, com X uma das 28 coleções", () => {
-    expect(NAVS_DE_MODULO.length).toBeGreaterThan(10);
+    // Iniciativa 2: as navegações de domínio deram lugar à navegação da coleção, que monta o rótulo com o nome do registro;
+    // a lista abaixo fica com o que restar de navegação própria (hoje, as casas das Contas, que já usam a navegação comum)
+    expect(ler("src/components/layout/NavegacaoColecaoCliente.tsx")).toContain("tx(`Navegação da coleção ${nav.nome}`");
+    expect(NAVS_DE_MODULO.length).toBeGreaterThanOrEqual(2);
     const achados: string[] = [];
     for (const f of NAVS_DE_MODULO) {
       for (const m of ler(f).matchAll(/<nav\b[^>]*?aria-label=(\{?)(?:tx\()?["'`]([^"'`]+)["'`]/g)) {

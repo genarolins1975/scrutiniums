@@ -1,6 +1,6 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { ExpansaoCarteiraUf } from "@/components/energia/ExpansaoCarteira";
 import { ExpansaoMapaUsinas } from "@/components/energia/ExpansaoMapas";
@@ -162,7 +162,7 @@ export default function CarteiraPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="expansao" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:expansao-carteira" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <ExpansaoNavegacao atual="p040" />

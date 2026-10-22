@@ -1,6 +1,6 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { AbreDetalhesAoImprimir } from "@/components/energia/AbreDetalhesAoImprimir";
 import { AprendaIndice } from "@/components/energia/AprendaIndice";
@@ -32,7 +32,7 @@ export default function AprendaPage() {
   const resumo = resumoDoAcervo();
   return (
     <>
-      <CabecalhoEnergia atual="aprenda" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:aprenda" />
       <AbreDetalhesAoImprimir />
       <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16" data-tipo-pagina="indice">

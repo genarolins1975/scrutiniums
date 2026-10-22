@@ -82,6 +82,11 @@ import {
 } from "@/lib/energia/transicao";
 import type { GoldTransicao, MunicipiosMmgdArquivo } from "@/lib/energia/tipos-transicao";
 import { lerEstado } from "@/lib/energia/estadoUrl";
+// Iniciativa 2: a navegação da coleção (NavegacaoColecao) marca a página atual pelo endereço; as páginas daqui são do módulo /setor-eletrico/transicao
+vi.mock("next/navigation", async () => ({
+  ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
+  usePathname: () => "/setor-eletrico/transicao",
+}));
 
 const raiz = process.cwd();
 const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");

@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
 import { MarcaRolagem } from "@/components/energia/MarcaRolagem";
 import { RodapeEnergia } from "@/components/energia/RodapeEnergia";
+import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
+import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
+import { RetornoContexto } from "@/components/energia/RetornoContexto";
+import { rotulosRetorno } from "@/lib/energia/conteudo/rotulos-retorno";
 
 export const metadata: Metadata = {
   title: {
@@ -28,7 +32,10 @@ export default function SetorEletricoLayoutIngles({ children }: { children: Reac
       </a>
       <MarcaRolagem />
       <div className="flex-1">{children}</div>
+      {/* quem chega de um verbete ou de uma trilha do Aprenda (?volta=) ganha o botão fixo de volta ao contexto */}
+      <RetornoContexto rotulos={rotulosRetorno()} />
       <RodapeEnergia />
+      <ParaIrAlem mapa={mapaParaIrAlem()} />
       <Footer compacto idioma="en" />
     </div>
   );

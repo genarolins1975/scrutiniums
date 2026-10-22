@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "@/components/energia/LinkSemPrefetch";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { TerritorioLinkPainel } from "@/components/energia/TerritorioLinkPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { TextoEnergia } from "@/components/energia/TextoEnergia";
@@ -19,7 +19,7 @@ import { tx } from "@/lib/energia/idioma";
 export function TerritorioIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
-      <CabecalhoEnergia atual="territorio" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo={tx("Minha região indisponível nesta publicação", "My region unavailable in this release")}

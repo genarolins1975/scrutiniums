@@ -87,9 +87,12 @@ describe("onde a marca aparece", () => {
 
   // Iniciativa 2 do parecer de UX de 21/10/2026 (recomendação seguida, decisão pendente do dono): a marca sai das linhas de
   // navegação e vai para o rodapé da coleção, sem deixar de aparecer em todos os painéis de infraestrutura, com e sem sessão.
-  // Gás Natural, Combustíveis e Saneamento já migraram; o Setor Elétrico ainda a leva no cabeçalho até o bloco 4.
+  // As quatro coleções de infraestrutura já levam a marca no rodapé da coleção; nenhum cabeçalho a leva.
   it("a marca aparece em todos os painéis de infraestrutura, com e sem sessão", () => {
-    expect(ler("src/components/energia/CabecalhoEnergia.tsx")).toContain('<ParceriaTecnica variante="faixa" />');
+    // o rodapé do Setor Elétrico monta-se sobre o rodapé da coleção, que traz a marca
+    expect(ler("src/components/energia/RodapeEnergia.tsx")).toContain('<RodapeColecao\n      colecao="setor-eletrico"');
+    for (const f of ["src/app/setor-eletrico/layout.tsx", "src/app/en/setor-eletrico/layout.tsx"]) expect(ler(f), f).toContain("<RodapeEnergia />");
+    expect(ler("src/app/aperitivo/conta-de-luz/page.tsx")).toContain('<RodapeColecao colecao="setor-eletrico" />');
     expect(ler("src/app/saneamento/layout.tsx")).toContain('<RodapeColecao colecao="saneamento"');
     expect(ler("src/app/aperitivo/saneamento/page.tsx")).toContain('<RodapeColecao colecao="saneamento" />');
     // rodapé da coleção: no painel do Gás (RodapeGas, no layout), no aperitivo do gás de cozinha e na casca dos Combustíveis
@@ -109,14 +112,6 @@ describe("onde a marca aparece", () => {
     }
   });
 
-  it("no Setor Elétrico, em tela larga, a marca entra na faixa das páginas do grupo e a faixa própria só existe abaixo de 1280 px", () => {
-    const c = ler("src/components/energia/CabecalhoEnergia.tsx");
-    expect(c).toMatch(/<div className="hidden [^"]*xl:block">\s*<ParceriaTecnica variante="linha" \/>/);
-    expect(c).toMatch(/<div className="xl:hidden">\s*<ParceriaTecnica variante="faixa" \/>/);
-    // a variante em linha fica antes dos atalhos de dados e método, na mesma faixa
-    expect(c.indexOf('variante="linha"')).toBeLessThan(c.indexOf("<Atalhos atual="));
-  });
-
   it("na entrada e no mapa do Observatório de Energia e Infraestrutura, e só nele", () => {
     const entrada = ler("src/app/observatorios/[id]/page.tsx");
     expect(entrada).toContain('id === "energia-e-infraestrutura" ? <ParceriaTecnica variante="compacto" />');
@@ -128,7 +123,6 @@ describe("onde a marca aparece", () => {
   it("nenhum outro cabeçalho de observatório leva a marca", () => {
     for (const f of [
       "src/app/agronegocio/layout.tsx",
-      "src/components/eficiencia/CabecalhoEntrada.tsx",
       "src/components/layout/NavegacaoColecao.tsx",
       "src/components/layout/NavegacaoColecaoCliente.tsx",
       "src/components/layout/CabecalhoPlataforma.tsx",

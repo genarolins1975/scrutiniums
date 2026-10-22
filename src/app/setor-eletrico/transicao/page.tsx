@@ -2,7 +2,7 @@ import { AtalhoLeitura } from "@/components/energia/LeiturasIntegradas";
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/i18n/LinkIdioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -141,7 +141,7 @@ export default function TransicaoPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="transicao" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:transicao" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo

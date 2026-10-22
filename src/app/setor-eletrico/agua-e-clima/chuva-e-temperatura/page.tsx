@@ -4,7 +4,7 @@ import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { AguaClima } from "@/components/energia/AguaClima";
 import { AguaPontes } from "@/components/energia/AguaPontes";
 import { AguaAviso, AguaDatas, AguaFontes, AguaIndisponivel, AguaNavegacao, AguaParteAusente, AguaRegras, AguaSeguir } from "@/components/energia/AguaPagina";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
@@ -124,7 +124,7 @@ export default function ClimaPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="agua-e-clima" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:agua-e-clima" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <AguaNavegacao atual="p019" />

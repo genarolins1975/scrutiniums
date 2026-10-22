@@ -440,8 +440,11 @@ describe("P066: volta do painel ao contexto", () => {
     expect(destinoDaVolta("trilha:outra:x", r)).toBeNull();
   });
 
-  it("o cabeçalho de toda página do observatório carrega o botão de volta só com rótulos curtos", () => {
-    expect(ler("src/components/energia/CabecalhoEnergia.tsx")).toContain("<RetornoContexto rotulos={rotulosRetorno()} />");
+  it("toda página do observatório carrega o botão de volta só com rótulos curtos", () => {
+    // Iniciativa 2: o botão de volta sai do cabeçalho próprio e fica nas cascas do Setor Elétrico (português e inglês) e no aperitivo
+    for (const f of ["src/app/setor-eletrico/layout.tsx", "src/app/en/setor-eletrico/layout.tsx", "src/app/aperitivo/conta-de-luz/page.tsx"]) {
+      expect(ler(f), f).toContain("<RetornoContexto rotulos={rotulosRetorno()} />");
+    }
     expect(Buffer.byteLength(JSON.stringify(r), "utf-8")).toBeLessThan(2 * 1024);
   });
 });

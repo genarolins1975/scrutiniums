@@ -1,6 +1,6 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { marcarNomes } from "@/lib/energia/i18n/qualidade-perdas";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
@@ -126,7 +126,7 @@ export default function CompararDistribuidorasPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="qualidade" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:qualidade" />
       <QualidadeLevaEscolha />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">

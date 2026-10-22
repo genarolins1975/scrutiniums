@@ -22,7 +22,8 @@ const SLOGANS = ['Criar. Preservar. Participar.', 'Chegar aonde precisa', 'Energ
 describe('temas da Eficiência Estatal: um só subcabeçalho', () => {
   it.each(TEMAS)('%s usa o cabeçalho comum com o tema, sem voltar ao link solto nem a uma barra de abas própria', (_tema, arquivo) => {
     const fonte = ler(arquivo);
-    expect(fonte).toContain('<CabecalhoEntrada tema=');
+    // Iniciativa 2: a barra comum com a navegação da coleção dona do tema (as abas vêm de src/lib/eficiencia/temas.ts)
+    expect(fonte).toMatch(/<CabecalhoPlataforma colecao="eficiencia" destinoConta="[^"]+" navegacao="[a-z-]+" \/>/);
     expect(fonte).not.toMatch(/Panorama do OBEE|Todas as áreas do OBEE/);
     expect(fonte).not.toMatch(/<nav aria-label=/);
   });
@@ -31,10 +32,10 @@ describe('temas da Eficiência Estatal: um só subcabeçalho', () => {
       expect(ler(f), f).not.toMatch(/Panorama do OBEE|<nav /);
     }
   });
-  it('as abas marcam a visão atual por aria-current e levam o selo "com conta"', () => {
-    const nav = ler('src/components/eficiencia/NavegacaoTemaObee.tsx');
-    expect(nav).toContain('aria-current={atual(c) ? "page" : undefined}');
-    expect(nav.match(/<SeloComConta href=\{href\(c\)\} \/>/g)).toHaveLength(2);
+  it('as abas marcam a visão atual por aria-current e levam o selo "com conta" (navegação da coleção)', () => {
+    const nav = ler('src/components/layout/NavegacaoColecaoCliente.tsx');
+    expect(nav).toContain('"aria-current": ativo ? ("page" as const) : undefined');
+    expect(nav).toContain('<SeloComConta href={p.href} />');
   });
 });
 

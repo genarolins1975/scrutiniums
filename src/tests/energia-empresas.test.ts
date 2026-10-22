@@ -8,7 +8,7 @@
  * pontos do mapa fora da UF que o SIGA declara; páginas que deixam de renderizar, perdem um item
  * da anatomia da seção 7.2, passam de 600 KB ou escrevem número à mão.
  */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
@@ -92,6 +92,11 @@ import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { buscarEntidades, gerarCsv, matrizExportacao } from "@/lib/energia/tabela";
 import { num, pct } from "@/lib/energia/formato";
 import type { AtivosMapa, CadeiaSocietaria, EmpresasGold, SeriesFinanceiras } from "@/lib/energia/tipos-empresas";
+// Iniciativa 2: a navegação da coleção (NavegacaoColecao) marca a página atual pelo endereço; as páginas daqui são do módulo /setor-eletrico/empresas
+vi.mock("next/navigation", async () => ({
+  ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
+  usePathname: () => "/setor-eletrico/empresas",
+}));
 
 const raiz = process.cwd();
 const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");

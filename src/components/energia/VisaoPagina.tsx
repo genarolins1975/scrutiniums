@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "@/components/energia/LinkSemPrefetch";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { dataBR } from "@/lib/energia/formato";
@@ -196,7 +196,7 @@ export function VisaoControles({ controles }: { controles: ControleVisao[] }) {
 export function VisaoIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
-      <CabecalhoEnergia atual="visao-geral" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo={tx("Visão geral indisponível nesta publicação", "Overview unavailable in this publication")}

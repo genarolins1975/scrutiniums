@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { createContext, useContext, type ComponentProps, type MouseEvent, type ReactNode } from "react";
 import { ACENTO } from "@/components/home/acentos";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { AtivoVisivel } from "@/components/layout/AtivoVisivel";
@@ -13,6 +13,9 @@ import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { destinoAtual, dividirItens, type AtalhosNav, type NavegacaoDaColecao, type PaginaNav } from "@/lib/observatorios/navegacaoPura";
 
 const tx = (pt: string, en: string, idioma: Idioma) => (idioma === "en" ? en : pt);
+
+/** Parâmetros do recorte que um clique leva à página seguinte (`levar` do catálogo); vazio quando a coleção não tem. */
+const LevarContexto = createContext<readonly string[]>([]);
 
 const ROTULO_ATALHO: Record<keyof AtalhosNav, [string, string]> = {
   dados: ["Dados", "Data"],
@@ -58,11 +61,21 @@ export function NavegacaoColecaoCliente({
   const atalho = (k: keyof AtalhosNav, extra = "") => {
     const href = nav.atalhos[k] as string;
     return (
-      <Destino key={k} p={{ rotulo: tx(ROTULO_ATALHO[k][0], ROTULO_ATALHO[k][1], idioma), href, publicado: true }} href={h(href)} ativo={atual.atalho === k} filete={filete} className={extra} />
+      <Destino
+        key={k}
+        p={{ rotulo: tx(ROTULO_ATALHO[k][0], ROTULO_ATALHO[k][1], idioma), href, publicado: true }}
+        href={h(href)}
+        ativo={atual.atalho === k && !atual.abaixoDoAtalho}
+        grupoAtivo={atual.atalho === k && !!atual.abaixoDoAtalho}
+        filete={filete}
+        idioma={idioma}
+        className={extra}
+      />
     );
   };
 
   return (
+    <LevarContexto.Provider value={nav.levar ?? []}>
     <nav aria-label={rotulo} className="nav-colecao border-b border-linha bg-superficie" data-nav-colecao={nav.id}>
       {/* -ml-3: o texto do primeiro item fica na margem da barra e da trilha (o item tem 12 px de respiro) */}
       <div className="nav-colecao-caixa flex items-stretch gap-x-2">
@@ -83,6 +96,8 @@ export function NavegacaoColecaoCliente({
               {atalho(k)}
             </li>
           ))}
+          {/* as ações (o "Sair" da conta) também vêm no fim da faixa no celular, sem uma linha só para elas */}
+          {acoes && <li className="flex shrink-0 sm:hidden">{acoes}</li>}
           {nav.estado && (
             <li className="flex shrink-0 items-center sm:hidden">
               <span className="rotulo px-3 text-mineral">{nav.estado}</span>
@@ -114,7 +129,6 @@ export function NavegacaoColecaoCliente({
           </div>
         )}
       </div>
-      {acoes && <div className="nav-colecao-caixa flex justify-end border-t border-linha sm:hidden">{acoes}</div>}
       {subpaginas && corrente && (
         <div className="border-t border-linha bg-papel">
           <div className="nav-colecao-caixa">
@@ -131,6 +145,7 @@ export function NavegacaoColecaoCliente({
       )}
       <AtivoVisivel alvo={idLinha1} chave={`${atual.item}:${atual.atalho}`} />
     </nav>
+    </LevarContexto.Provider>
   );
 }
 
@@ -156,6 +171,7 @@ function Destino({
   menor?: boolean;
   className?: string;
 }) {
+  const levar = useContext(LevarContexto);
   const altura = menor ? "min-h-[44px] sm:min-h-[40px]" : "min-h-[44px]";
   const base = noMenu ? `flex ${altura} w-full items-center gap-2 px-4 text-sm` : `relative flex ${altura} items-center gap-1 whitespace-nowrap px-3 text-sm`;
   if (!p.publicado)
@@ -166,18 +182,47 @@ function Destino({
       </span>
     );
   const marcado = ativo || grupoAtivo;
-  return (
-    <Link
-      href={href}
-      prefetch={prefetchDoLink(p.href)}
-      aria-current={ativo ? "page" : undefined}
-      data-atual={marcado ? "" : undefined}
-      className={`${base} motion-safe:transition-colors motion-safe:duration-150 ${marcado ? "text-carvao" : "text-carvao-muted hover:text-carvao"} ${noMenu && ativo ? "bg-papel" : noMenu ? "hover:bg-papel" : ""} ${className}`}
-    >
+  const props = {
+    href,
+    prefetch: prefetchDoLink(p.href),
+    "aria-current": ativo ? ("page" as const) : undefined,
+    "data-atual": marcado ? "" : undefined,
+    className: `${base} motion-safe:transition-colors motion-safe:duration-150 ${marcado ? "text-carvao" : "text-carvao-muted hover:text-carvao"} ${noMenu && ativo ? "bg-papel" : noMenu ? "hover:bg-papel" : ""} ${className}`,
+  };
+  const corpo = (
+    <>
       {p.rotulo}
       {grupoAtivo && <span className="sr-only">{tx(" (grupo da página atual)", " (group of the current page)", idioma)}</span>}
       <SeloComConta href={p.href} />
       {marcado && !noMenu && <span aria-hidden="true" className={`absolute inset-x-3 bottom-0 h-0.5 ${filete}`} />}
-    </Link>
+    </>
   );
+  return levar.length ? (
+    <LinkComRecorte levar={levar} {...props}>
+      {corpo}
+    </LinkComRecorte>
+  ) : (
+    <Link {...props}>{corpo}</Link>
+  );
+}
+
+/**
+ * Link de uma coleção com `levar`: o recorte (capital, UF, nível) acompanha o leitor de uma aba a outra. Sem JavaScript, ou
+ * com Ctrl/Cmd, o link leva à página sem recorte, que abre no padrão dela.
+ */
+function LinkComRecorte({ levar, href, ...resto }: { levar: readonly string[]; href: string; children: ReactNode } & Omit<ComponentProps<typeof Link>, "href">) {
+  const router = useRouter();
+  const comRecorte = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const agora = new URLSearchParams(window.location.search);
+    const q = new URLSearchParams();
+    for (const k of levar) {
+      const v = agora.get(k);
+      if (v) q.set(k, v);
+    }
+    if (!q.size) return;
+    e.preventDefault();
+    router.push(`${href}?${q.toString()}`);
+  };
+  return <Link href={href} onClick={comRecorte} {...resto} />;
 }

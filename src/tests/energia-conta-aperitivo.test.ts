@@ -49,7 +49,10 @@ describe("Conta de luz, versão aperitivo: código", () => {
     const fonte = ler(PAGINA);
     expect(fonte).toMatch(/<ConviteAperitivo rota=\{rota\} comConta=/);
     expect(fonte).toMatch(/const ROTA_PUBLICA = "\/setor-eletrico\/conta-de-luz"/);
-    expect(fonte).toMatch(/<CabecalhoEnergia atual="conta-de-luz" comSelo rotaPublica=\{ROTA_PUBLICA\} \/>/);
+    // Iniciativa 2: a barra comum com a navegação da coleção (o selo "com conta" vem do próprio link numa página aberta) e o
+    // rodapé da coleção com a marca do FGV CERI
+    expect(fonte).toContain('<CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas />');
+    expect(fonte).toContain('<RodapeColecao colecao="setor-eletrico" />');
     expect(fonte).toMatch(/canonical: ROTA_PUBLICA/);
     const tudo = fonte + ler(COMPONENTE);
     for (const proibido of [

@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { OBSERVATORIOS } from "@/lib/observatorios/lista";
-import { idsDasColecoes, navegacaoDaColecao, navegacaoDoObservatorio } from "@/lib/observatorios/navegacaoColecao";
+import { idsDasColecoes, navegacaoDaColecao, navegacaoDaConta, navegacaoDoObservatorio } from "@/lib/observatorios/navegacaoColecao";
 import { MAX_A_VISTA, destinoAtual, dividirItens, type NavegacaoDaColecao } from "@/lib/observatorios/navegacaoPura";
 import { NavegacaoColecaoCliente } from "@/components/layout/NavegacaoColecaoCliente";
 import { leva2Aprovada } from "@/lib/rotasPublicas";
@@ -197,6 +197,28 @@ describe("componente NavegacaoColecao", () => {
     expect(marcado(h, "/contas-publicas/glossario")).toBe(true);
   });
 
+  it("nas páginas abaixo de um atalho, o atalho fica destacado e Início não é anunciado como atual", () => {
+    const nav = navegacaoDaColecao("setor-eletrico");
+    for (const r of ["/setor-eletrico/dados/reproducao", "/setor-eletrico/dados/saude", "/en/setor-eletrico/dados/reproducao"])
+      expect(destinoAtual(nav, r), r).toEqual({ item: -1, sub: null, atalho: "dados", abaixoDoAtalho: true });
+    expect(destinoAtual(nav, "/setor-eletrico/metodologia/avaliacao")).toMatchObject({ item: -1, atalho: "metodo" });
+    // o próprio atalho continua sendo a página atual; um destino mais próximo do endereço ganha do atalho acima dele
+    expect(destinoAtual(nav, "/setor-eletrico/dados")).toEqual({ item: -1, sub: null, atalho: "dados" });
+    expect(destinoAtual(nav, "/setor-eletrico/conta-de-luz")).toMatchObject({ item: 1, atalho: null });
+    const h = render(nav, "/setor-eletrico/dados/reproducao");
+    expect(h).not.toContain('aria-current="page"');
+    expect((h.match(/<a [^>]*>/g) ?? []).some((a) => a.includes('href="/setor-eletrico/dados"') && a.includes("data-atual"))).toBe(true);
+  });
+
+  it("tema da Eficiência dentro de outra coleção leva para a linha 2 também as ações dele (dados, métodos, comparar)", () => {
+    const subs = (id: string, rotulo: string) => navegacaoDaColecao(id).itens.find((i) => i.rotulo === rotulo)?.subpaginas?.map((s) => s.href) ?? [];
+    expect(subs("protecao", "Segurança alimentar")).toEqual(expect.arrayContaining(["/eficiencia-estatal/seguranca-alimentar/dados", "/eficiencia-estatal/seguranca-alimentar/metodos"]));
+    expect(subs("justica", "Acesso à Justiça")).toContain("/eficiencia-estatal/acesso-justica/dados");
+    expect(subs("saneamento", "Nas capitais")).toContain("/eficiencia-estatal/saneamento/dados");
+    expect(subs("conectividade", "Energia e conectividade nas capitais")).toContain("/eficiencia-estatal/energia-conectividade/metodos");
+    expect(destinoAtual(navegacaoDaColecao("protecao"), "/eficiencia-estatal/seguranca-alimentar/dados")).toMatchObject({ sub: expect.any(Number), atalho: null });
+  });
+
   it("'Mais' é um details fechável no desktop; no celular os mesmos itens entram no fim da faixa", () => {
     const nav = navegacaoDaColecao("saneamento");
     expect(nav.itens.length).toBeGreaterThan(MAX_A_VISTA);
@@ -228,5 +250,55 @@ describe("componente NavegacaoColecao", () => {
     const src = ler("src/components/layout/NavegacaoColecaoCliente.tsx");
     expect((src.match(/<DetalhesFechaveis/g) ?? []).length).toBe(1);
     expect(src).not.toMatch(/>\s*\{?tx\("Menu"/);
+  });
+});
+
+describe("uma só navegação de módulo e um só cabeçalho em toda superfície (critério de conclusão da Iniciativa 2)", () => {
+  const fontes = (dir: string): string[] =>
+    readdirSync(join(raiz, dir), { withFileTypes: true }).flatMap((e) =>
+      e.isDirectory() ? fontes(join(dir, e.name)) : /\.tsx?$/.test(e.name) ? [join(dir, e.name)] : [],
+    );
+
+  it("FocoHeader não existe nem é importado; /app usa a barra comum com a navegação da conta", () => {
+    expect(existsSync(join(raiz, "src/components/layout/FocoHeader.tsx"))).toBe(false);
+    expect(fontes("src").filter((f) => !f.includes("/tests/") && /FocoHeader/.test(ler(f)))).toEqual([]);
+    const foco = ler("src/app/app/(foco)/layout.tsx");
+    expect(foco).toContain('<CabecalhoPlataforma observatorio={null} destinoConta="/app/conta" />');
+    expect(foco).toContain("nav={navegacaoDaConta(isAdmin(user))}");
+    expect(foco).toMatch(/<form action="\/api\/auth\/sair" method="post"[^>]*>[\s\S]*?Sair[\s\S]*?<\/form>/);
+  });
+
+  it("navegação da conta: Encontre o painel e Conta; Admin só para quem administra", () => {
+    const comum = navegacaoDaConta(false);
+    expect(comum.itens.map((i) => [i.rotulo, i.href])).toEqual([["Encontre o painel", "/app/observatorios"], ["Conta", "/app/conta"]]);
+    expect(navegacaoDaConta(true).itens.map((i) => i.rotulo)).toEqual(["Encontre o painel", "Conta", "Admin"]);
+    for (const i of navegacaoDaConta(true).itens) expect(existsSync(join(raiz, "src/app/app/(foco)", i.href.replace("/app/", ""), "page.tsx")), i.href).toBe(true);
+    navegador.caminho = "/app/conta";
+    const h = renderToStaticMarkup(createElement(NavegacaoColecaoCliente, { nav: comum, caminho: "/app/conta", idioma: "pt" }));
+    expect(h).toContain('aria-label="Navegação da conta"');
+    expect(marcado(h, "/app/conta")).toBe(true);
+  });
+
+  it("nenhum componente de navegação de domínio além da navegação da coleção, e nenhum menu suspenso nos cabeçalhos", () => {
+    // os componentes que desenham navegação de módulo: só os comuns de src/components/layout
+    const restantes = fontes("src/components")
+      .filter((f) => !f.startsWith("src/components/layout/") && /\/(Cabecalho|Navegacao)[A-Za-z]*\.tsx$/.test(f))
+      .filter((f) => /<nav\b/.test(ler(f)));
+    // ficam as abas dos seis observatórios (barra comum) e a NavegacaoLocal do Setor Elétrico, que não é navegação de módulo:
+    // mora no conteúdo e lista os capítulos de uma página (ex.: "Capítulos de geração"), um nível abaixo da linha 2
+    expect(restantes.filter((f) => !/NavegacaoObservatorios|energia\/NavegacaoLocal/.test(f))).toEqual([]);
+    expect(ler("src/components/energia/NavegacaoLocal.tsx")).not.toMatch(/Navegação da coleção|DetalhesFechaveis/);
+    for (const d of ["src/components/energia", "src/components/saneamento", "src/components/agro"])
+      expect(fontes(d).filter((f) => /DetalhesFechaveis/.test(ler(f))), d).toEqual([]);
+  });
+
+  it("o bloco 'Para ir além' vem no HTML do servidor, sem esperar o navegador", async () => {
+    const { ParaIrAlem } = await import("@/components/observatorios/ParaIrAlem");
+    const { mapaParaIrAlem } = await import("@/lib/observatorios/mapaParaIrAlem");
+    navegador.caminho = "/conectividade";
+    const h = renderToStaticMarkup(createElement(ParaIrAlem, { mapa: mapaParaIrAlem() }));
+    expect(h).toContain('id="para-ir-alem"');
+    expect(h).toContain("Para ir além");
+    expect(ler("src/components/observatorios/ParaIrAlem.tsx")).not.toMatch(/useEffect|useState/);
   });
 });

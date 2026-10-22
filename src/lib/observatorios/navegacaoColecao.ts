@@ -29,6 +29,7 @@ import { ROTA_CAPITAIS, ROTA_EDUCACAO, TITULO_CAPITAIS } from "@/lib/educacao/pa
 import { CAPITULOS as CAPITULOS_CONTAS, PAINEL_AREAS, PAINEL_PREVIDENCIA } from "@/lib/contas-publicas/catalogo";
 import { CADEIAS, CAPITULOS_AGRO, PERGUNTAS_AGRO, ROTA_AGRO } from "@/lib/agro/modelo";
 import { PAGINAS_CREDITO, PAINEL_JUROS } from "@/lib/credito/navegacao";
+import { TEMAS_EFICIENCIA, hrefDoTema, type TemaEficiencia } from "@/lib/eficiencia/temas";
 import type { ItemNav, NavegacaoDaColecao, PaginaNav } from "./navegacaoPura";
 
 export type { ItemNav, NavegacaoDaColecao, PaginaNav } from "./navegacaoPura";
@@ -57,10 +58,12 @@ function setorEletrico(): Montagem {
       ...(conta ? [pagina(conta.rotulo, conta.href, conta.publicado)] : []),
       // "Comece aqui" sem a própria entrada: a visão geral e a minha região
       grupo(tx("Visão geral", "Overview"), doGrupo("comece-aqui", ["mapa"])),
-      grupo(rotuloGrupo("operacao"), doGrupo("operacao")),
+      // rótulos curtos dos grupos longos, para os oito itens e os atalhos caberem numa linha a 1440 px; o nome inteiro do grupo
+      // continua no índice da entrada
+      grupo(tx("Operação", "Operation"), doGrupo("operacao")),
       grupo(rotuloGrupo("precos-e-mercado"), doGrupo("precos-e-mercado")),
       // a conta de luz já é o segundo item: o grupo começa nas perdas
-      grupo(rotuloGrupo("consumidor-e-territorio"), doGrupo("consumidor-e-territorio", ["conta-de-luz"])),
+      grupo(tx("Consumidor", "Consumers"), doGrupo("consumidor-e-territorio", ["conta-de-luz"])),
       grupo(rotuloGrupo("empresas-e-futuro"), doGrupo("empresas-e-futuro")),
       // dados e metodologia viram atalhos; ficam a regulação e o Aprenda
       grupo(tx("Regras e conceitos", "Rules and concepts"), doGrupo("conhecimento-e-evidencia", ["dados", "metodologia"])),
@@ -121,6 +124,8 @@ function saneamento(): Montagem {
       ...eixos,
       ...(comparar ? [pagina(comparar.rotulo, `${ROTA_SANEAMENTO}/comparar`)] : []),
       ...(mundo ? [pagina(mundo.rotulo, `${ROTA_SANEAMENTO}/internacional`)] : []),
+      // o saneamento nas 26 capitais (Eficiência Estatal), com as abas dele na segunda linha
+      temaComoGrupo(TEMAS_EFICIENCIA.saneamento, "Nas capitais"),
     ],
     atalhos: { metodo: `${ROTA_SANEAMENTO}/metodologia` },
   };
@@ -220,13 +225,16 @@ function custoDeVida(): Montagem {
 // ----------------------------------------------------------------- Educação
 
 function educacao(): Montagem {
+  const capitais = TEMAS_EFICIENCIA.educacao;
   return {
     itens: [
       pagina("Início", ROTA_EDUCACAO),
-      // o tema da Eficiência Estatal se chama só "Educação" no registro; ao lado dos municípios, o nome diz o recorte
-      ...paineisDaColecao("servicos-publicos", "educacao", [ROTA_EDUCACAO]).map((p) => (p.href === ROTA_CAPITAIS ? { ...p, rotulo: TITULO_CAPITAIS } : p)),
+      // o painel das capitais (Eficiência Estatal), com as abas dele na segunda linha
+      temaComoGrupo(capitais, TITULO_CAPITAIS, [`${ROTA_CAPITAIS}/metodos`]),
+      ...paineisDaColecao("servicos-publicos", "educacao", [ROTA_EDUCACAO, ROTA_CAPITAIS]),
     ],
     atalhos: { metodo: `${ROTA_CAPITAIS}/metodos` },
+    levar: capitais.levar ? [...capitais.levar] : undefined,
   };
 }
 
@@ -257,6 +265,73 @@ function territorio(): Montagem {
   };
 }
 
+// ------------------------------------------------------- Eficiência Estatal
+
+/** Páginas de um tema da Eficiência Estatal (src/lib/eficiencia/temas.ts): a entrada e as abas; as ações à parte. */
+const paginasDoTema = (t: TemaEficiencia, entrada = "Panorama") =>
+  t.abas.map(([c, rotulo]) => pagina(c === "" ? entrada : rotulo, hrefDoTema(t, c)));
+const acaoDoTema = (t: TemaEficiencia, slug: string) => {
+  const a = t.acoes.find(([c]) => c.replace(/^\//, "") === slug);
+  return a ? hrefDoTema(t, a[0]) : undefined;
+};
+/** "Comparar", quando o tema tem: é uma página do tema, não atalho. */
+const compararDoTema = (t: TemaEficiencia) => t.acoes.filter(([c]) => c.replace(/^\//, "") === "comparar").map(([c, rotulo]) => pagina(rotulo, hrefDoTema(t, c)));
+
+/** Coleção feita de um tema da Eficiência: Início é a entrada do tema; as abas e o comparar vêm em seguida. */
+function doTema(t: TemaEficiencia, extras: PaginaNav[] = []): Montagem {
+  const [, ...abas] = paginasDoTema(t);
+  const vistos = new Set([t.rota, ...abas.map((a) => a.href)]);
+  return {
+    itens: [pagina("Início", t.rota), ...abas, ...compararDoTema(t), ...extras.filter((e) => !vistos.has(e.href))],
+    atalhos: { dados: acaoDoTema(t, "dados"), metodo: acaoDoTema(t, "metodos") },
+    levar: t.levar ? [...t.levar] : undefined,
+  };
+}
+
+/**
+ * Um tema como grupo de outra coleção: leva à entrada dele e expõe na segunda linha as abas e todas as ações (comparar, dados,
+ * métodos), porque os atalhos da linha 1 são os da coleção dona, não os do tema. `fora`: ação que já é atalho da coleção dona.
+ */
+const temaComoGrupo = (t: TemaEficiencia, rotulo = t.nome, fora: (string | undefined)[] = []) =>
+  grupo(rotulo, [...paginasDoTema(t), ...t.acoes.map(([c, r]) => pagina(r, hrefDoTema(t, c))).filter((p) => !fora.includes(p.href))]);
+
+const levarDe = (...ts: TemaEficiencia[]) => {
+  const l = Array.from(new Set(ts.flatMap((t) => t.levar ?? [])));
+  return l.length ? l : undefined;
+};
+
+function eficiencia(id: string): Montagem | null {
+  const T = TEMAS_EFICIENCIA;
+  const extras = (obs: Parameters<typeof colecoesDe>[0], col: string, fora: string[]) => paineisDaColecao(obs, col, fora);
+  switch (id) {
+    case "renda":
+      return doTema(T.trabalho, extras("familias", "renda", [T.trabalho.rota]));
+    case "protecao": {
+      const base = doTema(T.assistencia);
+      const fora = [T.assistencia.rota, T.alimentacao.rota, ...base.itens.map((i) => i.href)];
+      return { ...base, itens: [...base.itens, temaComoGrupo(T.alimentacao), ...extras("familias", "protecao", fora)], levar: levarDe(T.assistencia, T.alimentacao) };
+    }
+    case "moradia":
+      return doTema(T.habitacao, extras("familias", "moradia", [T.habitacao.rota]));
+    case "saude":
+      return doTema(T.saude, extras("servicos-publicos", "saude", [T.saude.rota]));
+    case "seguranca":
+      return doTema(T.seguranca, extras("servicos-publicos", "seguranca", [T.seguranca.rota]));
+    case "cultura":
+      return doTema(T.cultura);
+    case "mobilidade":
+      return doTema(T.mobilidade);
+    case "justica": {
+      const base = doTema(T.judiciario);
+      return { ...base, itens: [...base.itens, temaComoGrupo(T.justica)], levar: undefined };
+    }
+    case "cidades-clima":
+      return doTema(T.ambiente, extras("territorio-e-clima", "cidades-clima", [T.ambiente.rota]));
+    default:
+      return null;
+  }
+}
+
 // ---------------------------------------------------------- demais coleções
 
 /** Painéis de uma coleção no registro (os próprios e os atalhos para os de outro observatório), sem os já listados. */
@@ -277,6 +352,12 @@ function doRegistro(obs: Parameters<typeof colecoesDe>[0], id: string): Montagem
   return { itens: [pagina("Início", c.href), ...paineisDaColecao(obs, id, [c.href, ...(c.metodo ? [c.metodo] : [])])], atalhos: { metodo: c.metodo, glossario: c.glossario } };
 }
 
+function conectividade(): Montagem {
+  const base = doRegistro("energia-e-infraestrutura", "conectividade");
+  const tema = TEMAS_EFICIENCIA.energia;
+  return { ...base, itens: [...base.itens.filter((i) => i.href !== tema.rota), temaComoGrupo(tema, "Energia e conectividade nas capitais")] };
+}
+
 const MONTAGENS: Record<string, () => Montagem> = {
   "setor-eletrico": setorEletrico,
   gas,
@@ -289,6 +370,7 @@ const MONTAGENS: Record<string, () => Montagem> = {
   "custo-de-vida": custoDeVida,
   educacao,
   divida: dividaDasFamilias,
+  conectividade,
 };
 
 /** Navegação de uma coleção do registro (id de lista.ts). */
@@ -296,7 +378,7 @@ export function navegacaoDaColecao(id: string): NavegacaoDaColecao {
   const o = OBSERVATORIOS.find((x) => x.colecoes.some((c) => c.id === id));
   const c = o?.colecoes.find((x) => x.id === id);
   if (!o || !c) throw new Error(`coleção desconhecida: ${id}`);
-  const m = MONTAGENS[id]?.() ?? doRegistro(o.id, id);
+  const m = MONTAGENS[id]?.() ?? eficiencia(id) ?? doRegistro(o.id, id);
   return { id, nome: c.nome, tipo: "colecao", acento: c.dominio ? dominio(c.dominio).acento : o.acento, ...m };
 }
 
@@ -304,6 +386,21 @@ export function navegacaoDaColecao(id: string): NavegacaoDaColecao {
 export function navegacaoDoObservatorio(id: "territorio-e-clima"): NavegacaoDaColecao {
   const o = observatorioPorId(id);
   return { id, nome: o.nomeCurto, tipo: "observatorio", acento: o.acento, ...territorio() };
+}
+
+/**
+ * Navegação da conta (/app: a escolha do painel, a conta e a administração), no lugar do antigo cabeçalho de foco. Não é
+ * coleção: não tem "Início" nem consulta pessoal; o "Sair" vem como ação, porque é um formulário, não um link.
+ */
+export function navegacaoDaConta(admin: boolean): NavegacaoDaColecao {
+  return {
+    id: "conta",
+    nome: "Conta",
+    tipo: "conta",
+    acento: "bronze",
+    itens: [pagina("Encontre o painel", "/app/observatorios"), pagina("Conta", "/app/conta"), ...(admin ? [pagina("Admin", "/app/admin")] : [])],
+    atalhos: {},
+  };
 }
 
 /** Os ids das 28 coleções, na ordem do registro. */

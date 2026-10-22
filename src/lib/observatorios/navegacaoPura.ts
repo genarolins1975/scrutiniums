@@ -29,6 +29,8 @@ export type NavegacaoDaColecao = {
   consulta?: string;
   /** Estado da coleção inteira que o leitor precisa saber antes do clique (ex.: "Piloto"), escrito à direita da linha 1. */
   estado?: string;
+  /** Parâmetros do endereço que acompanham o leitor de uma página a outra da coleção (o recorte: capital, UF, nível). */
+  levar?: string[];
 };
 
 /** Destinos de primeiro nível à vista; o que passar vai para o menu "Mais", nunca para uma terceira linha. */
@@ -47,21 +49,29 @@ function casamento(href: string, caminho: string): number {
   return caminho.startsWith(`${h}/`) ? h.length : -1;
 }
 
-export type Atual = { item: number; sub: number | null; atalho: keyof AtalhosNav | null };
+/** `abaixoDoAtalho`: o endereço está abaixo do atalho, não é ele (o atalho fica destacado, sem aria-current). */
+export type Atual = { item: number; sub: number | null; atalho: keyof AtalhosNav | null; abaixoDoAtalho?: true };
 
 /**
  * Destino atual para um endereço: o item (ou a subpágina de um item) cujo caminho mais longo casa com ele. Empate entre itens
  * fica com o primeiro da lista, então a consulta pessoal (segundo item) ganha da mesma página repetida num grupo; dentro de um
  * grupo, a subpágina ganha do próprio grupo, que leva a ela. Um atalho que é o
- * próprio endereço marca o atalho e nenhum item.
+ * próprio endereço marca o atalho e nenhum item; nas páginas abaixo de um atalho (o catálogo de um conjunto sob Dados), o
+ * atalho continua marcado, a menos que um destino mais próximo do endereço case.
  */
 export function destinoAtual(nav: Pick<NavegacaoDaColecao, "itens" | "atalhos">, endereco: string | null): Atual {
   const nenhum: Atual = { item: -1, sub: null, atalho: null };
   if (!endereco) return nenhum;
   const caminho = semConsulta(caminhoPublico(endereco));
+  // o atalho que é o próprio endereço ganha de tudo; o que está acima dele (ex.: /dados/reproducao sob Dados) só ganha do item
+  // que casa menos (a entrada), nunca de um destino mais próximo
+  let atalho: { k: keyof AtalhosNav; nota: number } | null = null;
   for (const k of ["dados", "metodo", "glossario"] as const) {
     const h = nav.atalhos[k];
-    if (h && semConsulta(h) === caminho && !h.includes("#")) return { ...nenhum, atalho: k };
+    if (!h || h.includes("#")) continue;
+    if (semConsulta(h) === caminho) return { ...nenhum, atalho: k };
+    const n = casamento(h, caminho);
+    if (n >= 0 && (!atalho || n > atalho.nota)) atalho = { k, nota: n };
   }
   let melhor = nenhum;
   let nota = -1;
@@ -83,6 +93,7 @@ export function destinoAtual(nav: Pick<NavegacaoDaColecao, "itens" | "atalhos">,
       }
     });
   });
+  if (atalho && atalho.nota > nota) return { ...nenhum, atalho: atalho.k, abaixoDoAtalho: true };
   return melhor;
 }
 

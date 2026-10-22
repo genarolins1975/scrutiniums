@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "@/components/i18n/LinkIdioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
 import { SeguirPainel } from "@/components/energia/SeguirPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
@@ -41,7 +41,7 @@ export function AguaNavegacao({ atual }: { atual: PainelAgua }) {
 export function AguaIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
-      <CabecalhoEnergia atual="agua-e-clima" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo={tx("Água e clima indisponível nesta publicação", "Water and climate unavailable in this release")}

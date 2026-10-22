@@ -3,7 +3,7 @@ import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { AguaAviso, AguaDatas, AguaFontes, AguaIndisponivel, AguaNavegacao, AguaParteAusente, AguaRegras, AguaSeguir } from "@/components/energia/AguaPagina";
 import { AguaPontes } from "@/components/energia/AguaPontes";
 import { AguaReservatorios } from "@/components/energia/AguaReservatorios";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { Numero } from "@/components/energia/Numero";
@@ -143,7 +143,7 @@ export default function ReservatoriosPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="agua-e-clima" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:agua-e-clima" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <AguaNavegacao atual="p020" />

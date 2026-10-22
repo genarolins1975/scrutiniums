@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { Nome } from "@/components/i18n/Nome";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { EmpresasControle } from "@/components/energia/EmpresasControle";
 import {
@@ -148,7 +148,7 @@ export default function PaginaP039() {
 
   return (
     <>
-      <CabecalhoEnergia atual="empresas" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:empresas-controle" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <EmpresasNavegacao atual="p039" />
