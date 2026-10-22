@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
-    "arquivos_analisados": 1515,
-    "fontes_sha256": "0116e578d52815ffd5038c8cfed26cd25aef175b597eea403c7adf5300acc153",
-    "pendencias_sha256": "0be8b028eabe50a849497ab065df8457c9e02c91ead965aa0f1bd6a674b46486",
+    "arquivos_analisados": 1516,
+    "fontes_sha256": "354cdabaee8bda6929f1c13117d2110528c9698463c73b5b49eb5cd2a2f6e9fc",
+    "pendencias_sha256": "7dca6caec5dbcce4de16069cecf3da1dcf7075777bb58110a4f7f118cb58092d",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -22,6 +22,11 @@
       },
       {
         "path": "public/obs/styles.css",
+        "dominio": "credito",
+        "motivo": "Arquivo textual em raiz observada sem extrator declarado."
+      },
+      {
+        "path": "public/obs/tokens.css",
         "dominio": "credito",
         "motivo": "Arquivo textual em raiz observada sem extrator declarado."
       },
@@ -178,15 +183,15 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 429,
+        "arquivos": 430,
         "candidatos": {
           "jsx_text": 2425,
           "atributos": 524,
           "props": 1062,
-          "outros_literais": 9107,
+          "outros_literais": 9222,
           "templates": 1301,
           "expressoes_nao_resolvidas": 7977,
-          "chaves_objetos": 7286
+          "chaves_objetos": 7395
         },
         "exclusoes": {
           "importacoes": 1963,
@@ -200,7 +205,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 29682,
+        "candidatos_nao_catalogados": 29906,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -576,7 +581,7 @@
         },
         "exclusoes": {
           "importacoes": 60,
-          "atributos_tecnicos": 699,
+          "atributos_tecnicos": 703,
           "tipos": 4,
           "estilos": 1,
           "comentarios": 3
