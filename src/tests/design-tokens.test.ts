@@ -29,8 +29,6 @@ type Regra = "hexadecimal" | "redefine --cor-*" | "corpo abaixo de 12 px" | "!te
 const EXCECOES: Record<string, { regras: Regra[]; ate: string }> = {
   "src/components/LiteralFonte.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/components/agro/Agro.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/conectividade/PainelConectividade.tsx": { regras: ["hexadecimal"], ate: "PR 2 da Iniciativa 5 (redefinições por coleção)" },
-  "src/components/conectividade/conectividade.css": { regras: ["hexadecimal", "redefine --cor-*"], ate: "PR 2 da Iniciativa 5 (redefinições por coleção)" },
   "src/components/conta/FerramentasConta.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/components/contas-estaduais/PainelEstadual.tsx": { regras: ["hexadecimal"], ate: "PR 2 da Iniciativa 5 (redefinições por coleção)" },
   "src/components/contas-publicas/IndiceFederal.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
@@ -71,9 +69,7 @@ const EXCECOES: Record<string, { regras: Regra[]; ate: string }> = {
   "src/app/app/(foco)/observatorios/escolha.module.css": { regras: ["hexadecimal", "corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
   "src/app/contas-publicas/contas.css": { regras: ["hexadecimal", "corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
   "src/app/contas-publicas-estaduais/estados.css": { regras: ["hexadecimal", "corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
-  "src/app/custo-de-vida/custo-de-vida.css": { regras: ["hexadecimal"], ate: "PR 2 da Iniciativa 5 (redefinições por coleção)" },
   "src/app/eficiencia-estatal/trabalho-renda/trabalho-renda.css": { regras: ["hexadecimal"], ate: "PR 2 da Iniciativa 5 (redefinições por coleção)" },
-  "src/app/gas-natural/gas.css": { regras: ["hexadecimal", "redefine --cor-*"], ate: "PR 2 da Iniciativa 5 (redefinições por coleção)" },
   "src/app/saneamento/municipio/[id]/page.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/app/saneamento/prestadores/divida/page.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/app/setor-eletrico/atlas-inicial.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },

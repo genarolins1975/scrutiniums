@@ -208,9 +208,11 @@ body {
 .dominio-energia :focus-visible {
   outline-color: var(--cor-energia);
 }
-.dominio-gas :focus-visible {
-  outline-color: var(--cor-gas);
-}
+/* Gás, Inflação por cidade (Famílias) e Conectividade: anel no tom escuro do acento, um pouco afastado do controle. */
+.dominio-gas :focus-visible { outline-color: var(--cor-gas); }
+.dominio-gas :is(a, button, select, input, summary, [tabindex]):focus-visible { outline: 2px solid var(--cor-gas-dark); outline-offset: 4px; }
+.dominio-familias :is(a, button, select, input, summary, [tabindex]):focus-visible { outline: 2px solid var(--cor-bronze-dark); outline-offset: 4px; }
+.dominio-conectividade :is(a, button, select, input, summary, [tabindex]):focus-visible { outline: 2px solid var(--cor-conect-dark); outline-offset: 4px; }
 .dominio-gas table { font-variant-numeric: tabular-nums; }
 
 ::selection {
