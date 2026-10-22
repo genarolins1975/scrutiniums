@@ -52,8 +52,12 @@ for (const largura of [1440, 390]) {
         const main = document.querySelector("main");
         const topoConteudo = (main ?? h1)?.getBoundingClientRect().top ?? null;
         const topoH1 = h1?.getBoundingClientRect().top ?? null;
-        // o número da escala do molde (EntradaColecao, data-numero-escala) quando há; senão, o primeiro número tabular do <main>
-        const numero = document.querySelector("[data-numero-escala]") ?? document.querySelector("h1 ~ dl dd, h1 ~ * dl dd");
+        // o número da escala do molde (EntradaColecao, data-numero-escala) quando há; senão, a abertura antiga do Setor Elétrico
+        // (.energia-abertura-medidas) ou o primeiro número tabular do <main>, para medir o antes das entradas ainda fora do molde
+        const numero =
+          document.querySelector("[data-numero-escala]") ??
+          document.querySelector(".energia-abertura-medidas strong") ??
+          document.querySelector("h1 ~ dl dd, h1 ~ * dl dd");
         const primeiroNumero = numero ? Math.round(numero.getBoundingClientRect().top) : null;
         return {
           altura: document.documentElement.scrollHeight,
