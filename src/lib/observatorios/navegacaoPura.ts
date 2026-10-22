@@ -29,6 +29,8 @@ export type NavegacaoDaColecao = {
   consulta?: string;
   /** Estado da coleção inteira que o leitor precisa saber antes do clique (ex.: "Piloto"), escrito à direita da linha 1. */
   estado?: string;
+  /** Parâmetros do endereço que acompanham o leitor de uma página a outra da coleção (o recorte: capital, UF, nível). */
+  levar?: string[];
 };
 
 /** Destinos de primeiro nível à vista; o que passar vai para o menu "Mais", nunca para uma terceira linha. */

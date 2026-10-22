@@ -1,6 +1,6 @@
+import {CabecalhoPlataforma} from '@/components/layout/CabecalhoPlataforma';
 import type {Metadata} from 'next';
 import Link from 'next/link';
-import {CabecalhoEntrada} from '@/components/eficiencia/CabecalhoEntrada';
 import {PainelIndice} from '@/components/eficiencia/PainelIndice';
 import {EscoresServicos} from '@/components/eficiencia/EscoresServicos';
 import {DisponibilidadeEscores} from '@/components/eficiencia/DisponibilidadeEscores';
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
  * composição dos escores ficam aqui, com conta.
  */
 export default function PaginaIndiceResultados() {
-  return <><CabecalhoEntrada/><main id="conteudo" className="mx-auto max-w-page px-4 pb-20 pt-6 sm:px-6">
+  return <><header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal" navegacao="sintese" /></header><main id="conteudo" className="mx-auto max-w-page px-4 pb-20 pt-6 sm:px-6">
     <Link href="/eficiencia-estatal" className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline">← Retrato das capitais</Link>
     <header className="border-b border-linha py-7">
       <p className="font-label text-xs uppercase tracking-label text-obee-dark">Eficiência Estatal · Edição experimental</p>

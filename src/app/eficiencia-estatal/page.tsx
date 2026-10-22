@@ -1,7 +1,7 @@
+import {CabecalhoPlataforma} from '@/components/layout/CabecalhoPlataforma';
 import type {Metadata} from 'next';
 import {readFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {CabecalhoEntrada} from '@/components/eficiencia/CabecalhoEntrada';
 import {goldSaude} from '@/lib/eficiencia/saude/dados';
 import {metaEducacao} from '@/lib/eficiencia/dados';
 import {AtlasCidadao} from '@/components/eficiencia/AtlasCidadao';
@@ -47,7 +47,7 @@ export default function PaginaEntradaEficiencia(){
     {id:"justica",titulo:"Justiça: acesso e funcionamento",pergunta:"Onde há assistência jurídica, quanto tempo leva a resposta e que recursos são mobilizados?",escopo:"Cobertura das Defensorias por comarca; Judiciário com 57 tribunais, custo por habitante, filas, tempos de 2021 a 2025, execução, recorribilidade, Justiça criminal e indicadores oficiais; comparação internacional WJP de acesso, demora, cumprimento e garantias; conciliação e atividade declarada das Defensorias.",naoInclui:"Demanda elegível, satisfação, pessoas únicas, efetividade individual ou escore de eficiência.",cobertura:"2.563 comarcas em abril de 2025; Defensorias de 27 UFs em 2024; Judiciário em 2025.",fontes:"Pesquisa Nacional da Defensoria Pública 2025; CNJ, Justiça em Números 2026; WJP, edição 2025.",entradas:[{href:"/eficiencia-estatal/acesso-justica",rotulo:"Acesso e Defensorias"},{href:"/eficiencia-estatal/judiciario",rotulo:"Judiciário: filas e tempos"},{href:"/eficiencia-estatal/judiciario/internacional",rotulo:"Brasil e outros países"},{href:"/eficiencia-estatal/judiciario/comparar",rotulo:"Comparar tribunais"},{href:"/eficiencia-estatal/judiciario/metodos",rotulo:"Método e cobertura do Judiciário"}],niveis:['ufs'],outros:'comarcas, tribunais e países/jurisdições',atualizacao:"17/10/2026"},
  ];
  const retrato=montarRetrato();
- return <div><CabecalhoEntrada/>
+ return <div><header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal" navegacao="sintese" /></header>
  <AvisoConsultaAberta className="mx-auto max-w-page px-4 sm:px-6" comConta="A nota do índice de resultados, os painéis de cada tema e os arquivos para baixar"/>
  <main id="conteudo" className="pb-20">
  <FaixaFrescor dominios={FRESCOR_DAS_COLECOES['/eficiencia-estatal']} conteiner="mx-auto max-w-page px-4 sm:px-6"/>

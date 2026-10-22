@@ -1,5 +1,5 @@
+import {CabecalhoPlataforma} from '@/components/layout/CabecalhoPlataforma';
 import { EscoresServicos } from "@/components/eficiencia/EscoresServicos";
-import { CabecalhoObee } from "@/components/eficiencia/CabecalhoObee";
 import { LiberaRecorte, SCRIPT_RECORTE } from "@/components/eficiencia/LiberaRecorte";
 import type { Metadata } from "next";
 import { modeloDeTitulo } from "@/lib/observatorios/contexto";
@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: modeloDeTitulo("/eficiencia-estatal/e
 export default function LayoutPainelEducacao({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <CabecalhoObee />
+      <header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal/educacao-municipal-capitais" navegacao="educacao" /></header>
       <script dangerouslySetInnerHTML={{ __html: SCRIPT_RECORTE }} />
       <main id="conteudo" className="mx-auto max-w-page px-4 pb-20 pt-8 sm:px-6 md:pt-12">
         {children}<EscoresServicos capitulo="education"/>

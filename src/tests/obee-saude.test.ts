@@ -434,7 +434,7 @@ describe("neutralidade do texto público de Saúde", () => {
     ...arquivos(join(process.cwd(), "src/app/eficiencia-estatal/saude-capitais")),
     ...arquivos(join(process.cwd(), "src/lib/eficiencia/saude")),
     join(process.cwd(), "src/app/eficiencia-estatal/page.tsx"),
-    join(process.cwd(), "src/components/eficiencia/CabecalhoEntrada.tsx"),
+    join(process.cwd(), "src/lib/eficiencia/temas.ts"),
   ];
   for (const f of fontes) {
     it(`sem linguagem avaliativa em ${f.replace(process.cwd() + "/", "")}`, () => {
