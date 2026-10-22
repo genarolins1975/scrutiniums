@@ -4,11 +4,11 @@ import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { PrecoNoEstado } from "@/components/combustiveis/PrecoNoEstado";
 import { ComparacaoUfs, HistoricoBrasil, SerieDoEstado } from "@/components/combustiveis/Graficos";
 import { ComoAnpMede } from "@/components/combustiveis/ComoAnpMede";
-import { DownloadsGas, FaixaMedidas, FonteFigura, MedidaGas, NotaGas, ProximasPerguntas, SecaoGas, TabelaGas, valorComUnidade } from "@/components/gas/Blocos";
+import { DownloadsGas, FaixaMedidas, FonteFigura, MedidaGas, NotaGas, ProximasPerguntas, SecaoGas, TabelaGas, numeroDoIndicador } from "@/components/gas/Blocos";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { COR } from "@/lib/gas/cores";
-import { carimbo, mesAno, mesExtenso, num, periodoLegivel, reais, sinal } from "@/lib/gas/formato";
+import { carimbo, mesAno, mesExtenso, num, reais, sinal } from "@/lib/gas/formato";
 import { brasilNoUltimoMes, dadosDoEstado, dataNota, goldCombustiveis, marcosDaPesquisa, mediasPorUf, serieCom, serieUfDuasCasas } from "@/lib/combustiveis/dados";
 import { paginaCombustiveis } from "@/lib/combustiveis/paginas";
 import type { IdCombustivel } from "@/lib/gas/gold";
@@ -19,8 +19,6 @@ import { Recolhido } from "@/components/observatorios/Recolhido";
 import { ParaVoce } from "@/components/observatorios/ParaVoce";
 import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
-import { fontesPorId, type Indicador } from "@/lib/gas/gold";
-import type { NumeroPorta } from "@/lib/perguntas/tipos";
 import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
@@ -32,20 +30,6 @@ export const metadata: Metadata = {
   description: pagina.descricao,
   alternates: { canonical: pagina.href },
 };
-
-/** Um indicador da gold como número da entrada (escala ou caminho): valor, unidade, período e fonte, lidos da mesma gold do painel. */
-function numeroDoIndicador(ind: Indicador | undefined, rotulo: string, href: string, casas = 2): NumeroPorta {
-  const v = ind && typeof ind.valor === "number" ? valorComUnidade(ind.valor, ind.unidade, casas) : null;
-  const fontes = ind ? fontesPorId(ind.fontes) : [];
-  return {
-    rotulo,
-    valor: v?.valor ?? null,
-    unidade: v?.unidade ?? "",
-    periodo: periodoLegivel(ind?.periodo),
-    fonte: fontes.length ? fontes.map((f) => `${f.orgao}, ${f.conjunto}`).join("; ") : "ANP",
-    href,
-  };
-}
 
 /**
  * Painel "Combustíveis nos postos" (coleção Combustíveis, Observatório de Energia e Infraestrutura), com conta. Arquétipo

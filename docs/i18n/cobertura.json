@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
-    "arquivos_analisados": 1520,
-    "fontes_sha256": "3d216cdc17d71248ee2a44d2da14c74dd677de74c3732c3d0f87ca25ab747f96",
-    "pendencias_sha256": "6b71cdfbada7c0c4a686ce71d10aac1e4fb31521638a559637a5309a1a80a14c",
+    "arquivos_analisados": 1522,
+    "fontes_sha256": "98b1c0e833c4bfddb01c703fdf3619f9da8609c6c754a4398a712e2bd74a1082",
+    "pendencias_sha256": "753411c35bf499ba70df9750abb13ea59de7418d521e9ce94166ecce350e1d69",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -183,13 +183,13 @@
           "jsx_text": 2360,
           "atributos": 536,
           "props": 1363,
-          "outros_literais": 9194,
-          "templates": 1339,
-          "expressoes_nao_resolvidas": 8182,
-          "chaves_objetos": 7545
+          "outros_literais": 9193,
+          "templates": 1338,
+          "expressoes_nao_resolvidas": 8180,
+          "chaves_objetos": 7541
         },
         "exclusoes": {
-          "importacoes": 2025,
+          "importacoes": 2023,
           "atributos_tecnicos": 3798,
           "tipos": 615
         },
@@ -200,7 +200,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 30519,
+        "candidatos_nao_catalogados": 30511,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -277,17 +277,17 @@
       "interface": {
         "arquivos": 28,
         "candidatos": {
-          "jsx_text": 295,
-          "atributos": 24,
-          "props": 723,
-          "outros_literais": 554,
-          "templates": 76,
-          "expressoes_nao_resolvidas": 731,
-          "chaves_objetos": 832
+          "jsx_text": 296,
+          "atributos": 23,
+          "props": 750,
+          "outros_literais": 547,
+          "templates": 80,
+          "expressoes_nao_resolvidas": 733,
+          "chaves_objetos": 860
         },
         "exclusoes": {
-          "importacoes": 172,
-          "atributos_tecnicos": 308,
+          "importacoes": 176,
+          "atributos_tecnicos": 305,
           "tipos": 30
         },
         "scripts_embutidos": {},
@@ -297,7 +297,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 3235,
+        "candidatos_nao_catalogados": 3289,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -325,17 +325,17 @@
       "interface": {
         "arquivos": 73,
         "candidatos": {
-          "jsx_text": 1544,
+          "jsx_text": 1535,
           "atributos": 385,
-          "props": 1981,
-          "outros_literais": 3652,
-          "templates": 524,
-          "expressoes_nao_resolvidas": 3738,
-          "chaves_objetos": 4746
+          "props": 2000,
+          "outros_literais": 3659,
+          "templates": 523,
+          "expressoes_nao_resolvidas": 3761,
+          "chaves_objetos": 4755
         },
         "exclusoes": {
-          "importacoes": 541,
-          "atributos_tecnicos": 2000,
+          "importacoes": 544,
+          "atributos_tecnicos": 1986,
           "tipos": 264
         },
         "scripts_embutidos": {},
@@ -345,7 +345,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 16570,
+        "candidatos_nao_catalogados": 16618,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -419,19 +419,19 @@
     "contas_federais": {
       "nome": "Contas Públicas Federais",
       "interface": {
-        "arquivos": 78,
+        "arquivos": 79,
         "candidatos": {
-          "jsx_text": 955,
+          "jsx_text": 941,
           "atributos": 196,
-          "props": 103,
-          "outros_literais": 1814,
-          "templates": 154,
-          "expressoes_nao_resolvidas": 1654,
-          "chaves_objetos": 984
+          "props": 122,
+          "outros_literais": 1836,
+          "templates": 160,
+          "expressoes_nao_resolvidas": 1678,
+          "chaves_objetos": 1012
         },
         "exclusoes": {
-          "importacoes": 280,
-          "atributos_tecnicos": 748,
+          "importacoes": 282,
+          "atributos_tecnicos": 740,
           "tipos": 67
         },
         "scripts_embutidos": {},
@@ -441,7 +441,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 5860,
+        "candidatos_nao_catalogados": 5945,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -467,19 +467,19 @@
     "contas_estaduais": {
       "nome": "Contas Públicas Estaduais",
       "interface": {
-        "arquivos": 29,
+        "arquivos": 30,
         "candidatos": {
-          "jsx_text": 410,
-          "atributos": 96,
-          "props": 8,
+          "jsx_text": 393,
+          "atributos": 97,
+          "props": 53,
           "outros_literais": 699,
-          "templates": 21,
-          "expressoes_nao_resolvidas": 583,
-          "chaves_objetos": 401
+          "templates": 26,
+          "expressoes_nao_resolvidas": 594,
+          "chaves_objetos": 424
         },
         "exclusoes": {
-          "importacoes": 71,
-          "atributos_tecnicos": 321,
+          "importacoes": 80,
+          "atributos_tecnicos": 311,
           "tipos": 5
         },
         "scripts_embutidos": {},
@@ -489,7 +489,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 2218,
+        "candidatos_nao_catalogados": 2286,
         "percentual_traduzido": null
       },
       "rotas": {

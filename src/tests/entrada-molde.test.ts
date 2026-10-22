@@ -27,14 +27,15 @@ const NO_MOLDE: string[] = [
   "/custo-de-vida",
   "/contas-publicas/previdencia",
   "/agronegocio",
+  // Grupo B (22/10/2026)
+  "/gas-natural",
+  "/saneamento",
+  "/contas-publicas",
+  "/contas-publicas-estaduais",
 ];
 
 /** Entradas ainda fora do molde, com o grupo do PR que as migra (a aplicação do Crédito é a Iniciativa 8). */
 const A_MIGRAR: Record<string, string> = {
-  "/gas-natural": "Grupo B",
-  "/saneamento": "Grupo B",
-  "/contas-publicas": "Grupo B",
-  "/contas-publicas-estaduais": "Grupo B",
   "/eficiencia-estatal": "Grupo C",
   "/setor-eletrico": "Grupo C",
   "/observatorio-do-credito": "Grupo C",

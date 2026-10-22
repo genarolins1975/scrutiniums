@@ -110,6 +110,8 @@ export const PARA_VOCE = {
   "/educacao-municipal": ["educacao-capital", "capital"],
   "/custo-de-vida": ["comida", "botijao", "luz"],
   "/contas-publicas/previdencia": ["estado-contas", "custo-de-vida"],
+  // Contas Estaduais (Iniciativa 4): as bandeiras do estado vêm embutidas no bloco; os cartões levam ao gasto federal por área e à capital
+  "/contas-publicas-estaduais": ["previdencia", "capital"],
   // o custo de vida (painel novo das Famílias, 20/10/2026) abre o bloco; a água saiu para manter três perguntas e continua a
   // um clique em "Para o seu caso" da camada aberta das Famílias e no elo "Gás, luz e água" do orçamento da família
   "/observatorios/familias": ["custo-de-vida", "luz", "botijao"],
