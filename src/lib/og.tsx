@@ -1,23 +1,21 @@
 import { ImageResponse } from "next/og";
-import config from "../../tailwind.config";
+import { TOKENS } from "./tokens.gerado";
 
 /**
  * Imagem social (Open Graph e summary_large_image) das páginas públicas do
- * crédito. Cores lidas dos tokens do tailwind.config.ts: nenhum hexadecimal solto.
+ * crédito. Cores lidas dos tokens da plataforma (src/app/globals.css, derivados em tokens.gerado.ts): nenhum hexadecimal solto.
  * Todo cartão leva fonte e data, como qualquer número da plataforma.
  */
 export const OG_TAMANHO = { width: 1200, height: 630 };
 export const OG_TIPO = "image/png";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- leitura dos tokens do tema
-const cores = (config.theme?.extend as any).colors;
 const C = {
-  fundo: cores.marfim as string,
-  texto: cores.carvao.DEFAULT as string,
-  suave: cores.carvao.muted as string,
-  bronze: cores.bronze.DEFAULT as string,
-  mineral: cores.mineral.DEFAULT as string,
-  linha: cores.linha as string,
+  fundo: TOKENS["cor-marfim"],
+  texto: TOKENS["cor-carvao"],
+  suave: TOKENS["cor-carvao-muted"],
+  bronze: TOKENS["cor-bronze"],
+  mineral: TOKENS["cor-mineral"],
+  linha: TOKENS["cor-linha"],
 };
 
 export function cartaoSocial({
