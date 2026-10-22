@@ -60,7 +60,8 @@ npm run --silent "$alvo_preparar" >>"$LOG" 2>&1 || { echo "npm run $alvo_prepara
 passo "derivados" "materializados e app.min.js gerado (npm run $alvo_preparar)"
 
 # 3. Chromium do Playwright
-revisao="$(node -p 'require("playwright-core/browsers.json").browsers.find(b => b.name === "chromium-headless-shell").revision')"
+# o pacote não exporta browsers.json para require: lê o arquivo
+revisao="$(node -p 'JSON.parse(require("fs").readFileSync("node_modules/playwright-core/browsers.json", "utf8")).browsers.find(b => b.name === "chromium-headless-shell").revision')"
 pasta_nav="${PLAYWRIGHT_BROWSERS_PATH:-$HOME/.cache/ms-playwright}"
 abre() { node -e 'require("playwright").chromium.launch({ executablePath: process.argv[1] }).then(b => b.close()).then(() => process.exit(0), () => process.exit(1))' "$1" >/dev/null 2>&1; }
 if [ -d "$pasta_nav/chromium_headless_shell-$revisao" ]; then
