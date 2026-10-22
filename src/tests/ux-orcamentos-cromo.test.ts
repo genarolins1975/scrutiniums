@@ -27,11 +27,19 @@ const ENTRADAS: Record<string, string> = {
   federais: "/contas-publicas",
   fogo: "/territorio/queimadas",
   desastres: "/territorio/desastres",
+  // bloco 2
+  gas: "/gas-natural",
+  combustiveis: "/combustiveis",
+  "custo-de-vida": "/custo-de-vida",
+  educacao: "/educacao-municipal",
+  // a apresentação do Crédito (/observatorio-do-credito) tem casca própria até a Iniciativa 4; a navegação mora nas páginas Next
+  credito: "/observatorio-do-credito/quanto-meu-banco-cobra",
+  estaduais: "/contas-publicas-estaduais",
 };
 /** Subpáginas e superfícies da mesma navegação. */
-const OUTRAS = ["/territorio", "/territorio/emissoes", "/contas-publicas/execucao", "/contas-publicas/previdencia"];
+const OUTRAS = ["/territorio", "/territorio/emissoes", "/contas-publicas/execucao", "/contas-publicas/previdencia", "/gas-natural/importacao", "/gas-natural/metodologia", "/observatorio-do-credito/simulador-da-parcela"];
 /** Páginas aperitivo das mesmas coleções, sem sessão. */
-const ABERTAS = ["/conectividade", "/contas-publicas/previdencia", "/contas-publicas/metodologia", "/territorio/metodologia"];
+const ABERTAS = ["/conectividade", "/contas-publicas/previdencia", "/contas-publicas/metodologia", "/territorio/metodologia", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado", "/educacao-municipal"];
 
 describe("orçamento de cromo", () => {
   it("o build existe quando o CI exige", () => {

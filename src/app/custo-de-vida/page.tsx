@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CabecalhoCustoDeVida } from "@/components/inflacao/CabecalhoCustoDeVida";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { InflacaoNaArea } from "@/components/inflacao/InflacaoNaArea";
 import { ComoPesa } from "@/components/inflacao/ComoPesa";
 import { ComparacaoAreas, Destaques, SerieArea } from "@/components/inflacao/Graficos";
@@ -48,7 +49,10 @@ export default function InflacaoPage() {
   return (
     <>
       <MarcaVisita secao={pagina.secao} />
-      <CabecalhoCustoDeVida atual="painel" />
+      <header>
+        <CabecalhoPlataforma observatorio="familias" destinoConta="/custo-de-vida" fontes={["inflacao"]} />
+        <NavegacaoColecao colecao="custo-de-vida" />
+      </header>
       <main id="conteudo" className="ed-pagina pb-12">
         <div className="cab-modulo familias-abertura">
           <RotuloContexto rota={pagina.href} pagina={pagina.rotulo} className="text-bronze-dark" />

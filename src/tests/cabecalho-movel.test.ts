@@ -13,7 +13,6 @@ import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Cabecalho as CabecalhoSaneamento } from "@/components/saneamento/Cabecalho";
-import { CabecalhoGas } from "@/components/gas/CabecalhoGas";
 import { CabecalhoEntrada } from "@/components/eficiencia/CabecalhoEntrada";
 import { CabecalhoAgro } from "@/components/agro/Cabecalho";
 import { EstadoConta } from "@/components/energia/AcessoConta";
@@ -102,7 +101,7 @@ const ABAS = OBSERVATORIOS.map((o) => ({ href: destinoObservatorio(o), texto: o.
 const ENTRADAS: { rota: string; arquivo: string; uso: string; observatorio: ObservatorioId; render: () => string }[] = [
   { rota: "/setor-eletrico", arquivo: "src/app/setor-eletrico/page.tsx", uso: '<CabecalhoEnergia atual="mapa" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoEnergia, { atual: "mapa" })) },
   { rota: "/saneamento", arquivo: "src/app/saneamento/page.tsx", uso: '<Cabecalho atual="" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoSaneamento, { atual: "" })) },
-  { rota: "/gas-natural", arquivo: "src/app/gas-natural/page.tsx", uso: '<CabecalhoGas atual="inicial" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoGas, { atual: "inicial" })) },
+  { rota: "/gas-natural", arquivo: "src/app/gas-natural/page.tsx", uso: '<CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoPlataforma, { colecao: "gas", destinoConta: "/gas-natural" })) },
   { rota: "/eficiencia-estatal", arquivo: "src/app/eficiencia-estatal/page.tsx", uso: "<CabecalhoEntrada/>", observatorio: "servicos-publicos", render: () => html(createElement(CabecalhoEntrada)) },
   { rota: "/contas-publicas", arquivo: "src/app/contas-publicas/layout.tsx", uso: '<CabecalhoPlataforma colecao="contas" destinoConta="/contas-publicas"/>', observatorio: "contas-publicas", render: () => html(createElement(CabecalhoPlataforma, { colecao: "contas", destinoConta: "/contas-publicas" })) },
   { rota: "/agronegocio", arquivo: "src/app/agronegocio/layout.tsx", uso: "<CabecalhoAgro />", observatorio: "economia", render: () => html(createElement(CabecalhoAgro)) },
@@ -253,7 +252,11 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
     const cabecalhos = [
       "src/components/energia/CabecalhoEnergia.tsx",
       "src/components/saneamento/Cabecalho.tsx",
-      "src/components/gas/CabecalhoGas.tsx",
+      "src/app/gas-natural/page.tsx",
+      "src/app/combustiveis/page.tsx",
+      "src/app/custo-de-vida/page.tsx",
+      "src/app/educacao-municipal/page.tsx",
+      "src/components/credito/Blocos.tsx",
       "src/components/eficiencia/CabecalhoEntrada.tsx",
       "src/components/eficiencia/CabecalhoObee.tsx",
       "src/components/eficiencia/saude/CabecalhoSaude.tsx",

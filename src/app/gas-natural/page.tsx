@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CabecalhoGas } from "@/components/gas/CabecalhoGas";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { FaixaMedidas, MedidaGas, NotaGas, SecaoGas } from "@/components/gas/Blocos";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
@@ -100,7 +101,10 @@ export default function InicialGasPage() {
   return (
     <>
       <MarcaVisita secao="gas:inicial" />
-      <CabecalhoGas atual="inicial" />
+      <header>
+        <CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />
+        <NavegacaoColecao colecao="gas" />
+      </header>
       <main id="conteudo" className="ed-pagina pb-12">
         <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/gas-natural"]} />
         <div className="cab-modulo">

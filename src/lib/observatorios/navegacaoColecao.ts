@@ -197,6 +197,8 @@ function contasEstaduais(): Montagem {
       pagina("Os 48 indicadores", `${r}#catalogo`),
     ],
     atalhos: { metodo: `${r}#metodo` },
+    // etapa piloto (catálogo, cobertura e seis fichas de prova): dito na navegação, como antes no cabeçalho próprio
+    estado: "Piloto",
   };
 }
 

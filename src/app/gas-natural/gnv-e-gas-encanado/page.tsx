@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { CabecalhoGas } from "@/components/gas/CabecalhoGas";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { AberturaGas, DownloadsGas, FaixaMedidas, FonteFigura, MedidaGas, NotaGas, ProximasPerguntas, SecaoGas, TabelaGas } from "@/components/gas/Blocos";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { MapaUf } from "@/components/gas/MapaUf";
@@ -32,7 +33,10 @@ export default function GnvPage() {
   return (
     <>
       <MarcaVisita secao="gas:gnv-e-gas-encanado" />
-      <CabecalhoGas atual="gnv-e-gas-encanado" />
+      <header>
+        <CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />
+        <NavegacaoColecao colecao="gas" />
+      </header>
       <main id="conteudo" className="ed-pagina pb-12">
         <AberturaGas pagina={pagina} dadosAte={<>Preços da ANP até {mesExtenso(g.ultimo_mes)}; IPCA do IBGE até {mesExtenso(g.ipca.ultimo_mes)}.</>}>
           <p>

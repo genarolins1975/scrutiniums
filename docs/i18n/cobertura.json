@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
-    "arquivos_analisados": 1521,
-    "fontes_sha256": "41e8acff99517dddaf6394f0a2f6f4e4eac312235e87c0d4736c24a0249509c0",
-    "pendencias_sha256": "68854ef2a4c620c29a7fc10c1c7785bf1bcc3ebab6d99d1c2a9eeb49b75dd491",
+    "arquivos_analisados": 1517,
+    "fontes_sha256": "be264c4c391446e4ae4e7c57ab0b8fa55f0c0c5f7f08e7fa8508229f283f87eb",
+    "pendencias_sha256": "e41992b602a32cdb85a980e1533a15cf804e66144dfba3f4b7217b6cc158c6bf",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -178,20 +178,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 419,
+        "arquivos": 416,
         "candidatos": {
-          "jsx_text": 2408,
-          "atributos": 504,
-          "props": 1045,
-          "outros_literais": 8812,
-          "templates": 1258,
-          "expressoes_nao_resolvidas": 7753,
-          "chaves_objetos": 7011
+          "jsx_text": 2406,
+          "atributos": 500,
+          "props": 1048,
+          "outros_literais": 8805,
+          "templates": 1256,
+          "expressoes_nao_resolvidas": 7733,
+          "chaves_objetos": 7003
         },
         "exclusoes": {
-          "importacoes": 1872,
-          "atributos_tecnicos": 3853,
-          "tipos": 579
+          "importacoes": 1865,
+          "atributos_tecnicos": 3838,
+          "tipos": 576
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -200,7 +200,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 28791,
+        "candidatos_nao_catalogados": 28751,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -275,19 +275,19 @@
     "gas": {
       "nome": "Gás Natural",
       "interface": {
-        "arquivos": 29,
+        "arquivos": 28,
         "candidatos": {
-          "jsx_text": 300,
-          "atributos": 26,
-          "props": 713,
-          "outros_literais": 555,
-          "templates": 78,
-          "expressoes_nao_resolvidas": 749,
-          "chaves_objetos": 830
+          "jsx_text": 295,
+          "atributos": 24,
+          "props": 723,
+          "outros_literais": 554,
+          "templates": 76,
+          "expressoes_nao_resolvidas": 731,
+          "chaves_objetos": 832
         },
         "exclusoes": {
-          "importacoes": 165,
-          "atributos_tecnicos": 319,
+          "importacoes": 172,
+          "atributos_tecnicos": 308,
           "tipos": 30
         },
         "scripts_embutidos": {},
@@ -297,7 +297,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 3251,
+        "candidatos_nao_catalogados": 3235,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -469,17 +469,17 @@
       "interface": {
         "arquivos": 29,
         "candidatos": {
-          "jsx_text": 417,
-          "atributos": 97,
-          "props": 7,
+          "jsx_text": 410,
+          "atributos": 96,
+          "props": 8,
           "outros_literais": 699,
           "templates": 21,
           "expressoes_nao_resolvidas": 583,
           "chaves_objetos": 401
         },
         "exclusoes": {
-          "importacoes": 70,
-          "atributos_tecnicos": 329,
+          "importacoes": 71,
+          "atributos_tecnicos": 321,
           "tipos": 5
         },
         "scripts_embutidos": {},
@@ -489,7 +489,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 2225,
+        "candidatos_nao_catalogados": 2218,
         "percentual_traduzido": null
       },
       "rotas": {

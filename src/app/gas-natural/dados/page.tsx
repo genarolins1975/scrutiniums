@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { CabecalhoGas } from "@/components/gas/CabecalhoGas";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { AberturaGas, SecaoGas } from "@/components/gas/Blocos";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -43,7 +44,10 @@ export default function DadosPage() {
   return (
     <>
       <MarcaVisita secao="gas:dados" />
-      <CabecalhoGas atual="dados" />
+      <header>
+        <CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />
+        <NavegacaoColecao colecao="gas" />
+      </header>
       <main id="conteudo" className="ed-pagina pb-12">
         <AberturaGas pagina={pagina} dadosAte={meta.dados_capturados_em ? <>Captura mais recente: {carimbo(meta.dados_capturados_em)}. Versão {meta.versao_pipeline}, {meta.versao_codigo}.</> : undefined}>
           <p>

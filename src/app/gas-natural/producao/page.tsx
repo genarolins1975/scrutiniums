@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { CabecalhoGas } from "@/components/gas/CabecalhoGas";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { AberturaGas, DownloadsGas, FaixaMedidas, FonteFigura, MedidaGas, NotaGas, ProximasPerguntas, SecaoGas, TabelaGas } from "@/components/gas/Blocos";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -27,7 +28,10 @@ export default function ProducaoPage() {
   return (
     <>
       <MarcaVisita secao="gas:producao" />
-      <CabecalhoGas atual="producao" />
+      <header>
+        <CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />
+        <NavegacaoColecao colecao="gas" />
+      </header>
       <main id="conteudo" className="ed-pagina pb-12">
         <AberturaGas pagina={pagina} dadosAte={<>Dados da ANP até {mesExtenso(g.ultimo_mes)}.</>}>
           <p>

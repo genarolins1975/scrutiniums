@@ -64,8 +64,12 @@ describe("inflação por cidade: lugar no registro e acesso", () => {
   });
 
   it("o cabeçalho é o comum, com as Famílias marcadas e a fonte de frescor do IPCA", () => {
-    const cab = readFileSync(join(raiz, "src", "components", "inflacao", "CabecalhoCustoDeVida.tsx"), "utf-8");
-    expect(cab).toContain('<CabecalhoPlataforma observatorio="familias" destinoConta={ROTA_INFLACAO} fontes={["inflacao"]} />');
+    // Iniciativa 2: as duas páginas montam a barra comum e a navegação da coleção, sem cabeçalho próprio
+    for (const f of ["page.tsx", "na-minha-cidade/page.tsx"]) {
+      const cab = readFileSync(join(raiz, "src", "app", "custo-de-vida", f), "utf-8");
+      expect(cab, f).toContain('<CabecalhoPlataforma observatorio="familias" destinoConta="/custo-de-vida" fontes={["inflacao"]} />');
+      expect(cab, f).toContain('<NavegacaoColecao colecao="custo-de-vida" />');
+    }
     const layout = readFileSync(join(raiz, "src", "app", "custo-de-vida", "layout.tsx"), "utf-8");
     expect(layout).toContain("<ParaIrAlem mapa={mapaParaIrAlem()} />");
   });

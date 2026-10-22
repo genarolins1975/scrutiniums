@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
 import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { Footer } from "@/components/layout/Footer";
+import { RodapeColecao } from "@/components/layout/RodapeColecao";
 
 export const metadata: Metadata = {
   title: {
@@ -28,6 +29,8 @@ export default function CombustiveisLayout({ children }: { children: React.React
         Pular para o conteúdo
       </a>
       <div className="flex-1">{children}</div>
+      {/* rodapé da coleção, com a parceria técnica com o FGV CERI (Iniciativa 2: a marca saiu do cabeçalho) */}
+      <RodapeColecao colecao="combustiveis" />
       <ParaIrAlem mapa={mapaParaIrAlem()} />
       <Footer />
     </div>

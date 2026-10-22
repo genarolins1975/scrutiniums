@@ -27,6 +27,8 @@ export type NavegacaoDaColecao = {
   atalhos: AtalhosNav;
   /** A consulta pessoal da coleção (o destino mais procurado), quando existe: sempre o segundo item. */
   consulta?: string;
+  /** Estado da coleção inteira que o leitor precisa saber antes do clique (ex.: "Piloto"), escrito à direita da linha 1. */
+  estado?: string;
 };
 
 /** Destinos de primeiro nível à vista; o que passar vai para o menu "Mais", nunca para uma terceira linha. */
