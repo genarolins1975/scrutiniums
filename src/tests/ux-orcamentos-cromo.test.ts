@@ -40,11 +40,22 @@ const ENTRADAS: Record<string, string> = {
   agro: "/agronegocio",
   // bloco 4
   "setor-eletrico": "/setor-eletrico",
+  // bloco 5: as coleções da Eficiência Estatal
+  renda: "/eficiencia-estatal/trabalho-renda",
+  protecao: "/eficiencia-estatal/assistencia-social",
+  moradia: "/eficiencia-estatal/habitacao",
+  saude: "/eficiencia-estatal/saude-capitais",
+  seguranca: "/eficiencia-estatal/seguranca-publica",
+  justica: "/eficiencia-estatal/judiciario",
+  cultura: "/eficiencia-estatal/cultura",
+  sintese: "/eficiencia-estatal",
+  mobilidade: "/eficiencia-estatal/mobilidade-transporte",
+  "cidades-clima": "/eficiencia-estatal/meio-ambiente-clima",
 };
 /** Subpáginas e superfícies da mesma navegação. */
-const OUTRAS = ["/territorio", "/territorio/emissoes", "/contas-publicas/execucao", "/contas-publicas/previdencia", "/gas-natural/importacao", "/gas-natural/metodologia", "/observatorio-do-credito/simulador-da-parcela", "/saneamento/esgoto", "/saneamento/prestadores/divida", "/agronegocio/producao", "/agronegocio/ambiente", "/setor-eletrico/geracao", "/setor-eletrico/pld", "/setor-eletrico/dados", "/en/setor-eletrico", "/en/setor-eletrico/geracao"];
+const OUTRAS = ["/territorio", "/territorio/emissoes", "/contas-publicas/execucao", "/contas-publicas/previdencia", "/gas-natural/importacao", "/gas-natural/metodologia", "/observatorio-do-credito/simulador-da-parcela", "/saneamento/esgoto", "/saneamento/prestadores/divida", "/agronegocio/producao", "/agronegocio/ambiente", "/setor-eletrico/geracao", "/setor-eletrico/pld", "/setor-eletrico/dados", "/en/setor-eletrico", "/en/setor-eletrico/geracao", "/eficiencia-estatal/seguranca-alimentar", "/eficiencia-estatal/saude-capitais/gastos", "/eficiencia-estatal/educacao-municipal-capitais/gastos", "/eficiencia-estatal/acesso-justica", "/eficiencia-estatal/saneamento", "/eficiencia-estatal/energia-conectividade"];
 /** Páginas aperitivo das mesmas coleções, sem sessão. */
-const ABERTAS = ["/conectividade", "/contas-publicas/previdencia", "/contas-publicas/metodologia", "/territorio/metodologia", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado", "/educacao-municipal", "/saneamento/municipio", "/saneamento/metodologia", "/agronegocio/metodologia", "/setor-eletrico/conta-de-luz", "/setor-eletrico/metodologia", "/setor-eletrico/aprenda", "/en/setor-eletrico/conta-de-luz"];
+const ABERTAS = ["/conectividade", "/contas-publicas/previdencia", "/contas-publicas/metodologia", "/territorio/metodologia", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado", "/educacao-municipal", "/saneamento/municipio", "/saneamento/metodologia", "/agronegocio/metodologia", "/setor-eletrico/conta-de-luz", "/setor-eletrico/metodologia", "/setor-eletrico/aprenda", "/en/setor-eletrico/conta-de-luz", "/eficiencia-estatal"];
 
 describe("orçamento de cromo", () => {
   it("o build existe quando o CI exige", () => {
@@ -110,6 +121,9 @@ describe.skipIf(!temBuild)("orçamento de cromo no navegador (build de produçã
         const resp = await page.goto(origem + rota, { waitUntil: "load", timeout: 60_000 });
         expect(resp?.status(), rota).toBe(200);
         expect(new URL(page.url()).pathname, `${rota} não pode cair no login`).toBe(rota);
+        // como scripts/ux-cromo.mjs: mede depois de a rede assentar, quando o navegador já resolveu a sessão (a faixa de
+        // consulta aberta, que vem no HTML, some para quem tem conta)
+        await page.waitForLoadState("networkidle", { timeout: 15_000 }).catch(() => undefined);
         await page.evaluate(() => document.fonts.ready.then(() => undefined));
         const m = await page.evaluate(medirCromo);
         if (m.cromo > ORCAMENTO[largura]) fora.push(`${rota}: cromo ${m.cromo} px (máximo ${ORCAMENTO[largura]})`);

@@ -291,7 +291,7 @@ describe("cromo global (L-20, L-37, F15, F17, F18, F21) e painel de Mercado (F19
     expect(css).toMatch(/#modulos-energia \{\s*-webkit-mask-image: [^;]*calc\(var\(--fade-esq\) \* 0\.5rem\)/);
     // Iniciativa 2: a faixa de módulos é a navegação da coleção, sem prefetch dos destinos que pedem conta
     const cab = ler("src/components/layout/NavegacaoColecaoCliente.tsx");
-    expect(cab).toContain("prefetch={prefetchDoLink(p.href)}");
+    expect(cab).toContain("prefetch: prefetchDoLink(p.href),");
     expect(css).toMatch(/\.nav-colecao-faixa,\s*#modulos-energia \{\s*-webkit-mask-image: [^;]*calc\(var\(--fade-esq\) \* 0\.5rem\)/);
   });
 

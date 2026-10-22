@@ -1,7 +1,6 @@
 import type {Metadata} from 'next';
 import Link from 'next/link';
 import {consultaCursos,type RecorteCursos} from '@/lib/eficiencia/trabalho-renda/cursos';
-import {NavegacaoTrabalho} from '@/components/eficiencia/trabalho-renda/NavegacaoTrabalho';
 export const metadata:Metadata={title:'Qualificação: cursos autorizados de aprendizagem',description:'Explore os registros de cursos de aprendizagem profissional autorizados pelo MTE, por localidade, entidade, modalidade e prazo de validade.'};
 export const dynamic='force-dynamic';
 const BASE='/eficiencia-estatal/trabalho-renda/qualificacao';
@@ -13,7 +12,7 @@ export default function Qualificacao({searchParams={}}:{searchParams?:RecorteCur
  const exibidos=selecionados.slice((pag-1)*30,pag*30);const filtro=new URLSearchParams();if(uf)filtro.set('uf',uf);if(recorte.q)filtro.set('q',recorte.q.slice(0,200));if(recorte.modalidade)filtro.set('modalidade',recorte.modalidade);if(recorte.status)filtro.set('status',recorte.status);
  const urlPagina=(n:number)=>{const q=new URLSearchParams(filtro);q.set('pagina',String(n));return BASE+'?'+q.toString();};
  const modalidades=Array.from(new Set(selecionados.map(c=>c.modalidade))).map(m=>({nome:m,n:selecionados.filter(c=>c.modalidade===m).length}));const maior=Math.max(1,...modalidades.map(m=>m.n));
- return <><p className="tr-kicker">Formação e oportunidades · Cadastro Nacional da Aprendizagem Profissional</p><h1>Onde encontrar cursos de aprendizagem?</h1><p className="tr-lead">Consulte autorizações de cursos por localidade, instituição e modalidade. A fonte informa aprovação e validade; disponibilidade de turmas, matrículas e vagas precisa ser confirmada com a entidade.</p><NavegacaoTrabalho/>
+ return <><p className="tr-kicker">Formação e oportunidades · Cadastro Nacional da Aprendizagem Profissional</p><h1>Onde encontrar cursos de aprendizagem?</h1><p className="tr-lead">Consulte autorizações de cursos por localidade, instituição e modalidade. A fonte informa aprovação e validade; disponibilidade de turmas, matrículas e vagas precisa ser confirmada com a entidade.</p>
  <form key={JSON.stringify([uf,recorte.q,recorte.modalidade,recorte.status])} action={BASE} method="get" className="tr-controls" aria-label="Filtrar cursos de aprendizagem">
  <label>Buscar curso, ocupação ou cidade<input type="search" name="q" defaultValue={recorte.q??''} maxLength={200} placeholder="Ex.: logística, Recife, 411005"/></label>
  <label>Unidade da Federação<select name="uf" defaultValue={uf}><option value="">Todas as UFs</option>{indice.porUF.map(r=><option value={r.uf} key={r.uf}>{r.uf}</option>)}</select></label>

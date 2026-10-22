@@ -122,7 +122,6 @@ describe("onde a marca aparece", () => {
   it("nenhum outro cabeçalho de observatório leva a marca", () => {
     for (const f of [
       "src/app/agronegocio/layout.tsx",
-      "src/components/eficiencia/CabecalhoEntrada.tsx",
       "src/components/layout/NavegacaoColecao.tsx",
       "src/components/layout/NavegacaoColecaoCliente.tsx",
       "src/components/layout/CabecalhoPlataforma.tsx",

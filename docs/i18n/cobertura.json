@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
-    "arquivos_analisados": 1513,
-    "fontes_sha256": "4b8557d9cc9d51a823b9dd7ed42b774fb80000a13e2a3da2080a0e8b9efb83cd",
+    "arquivos_analisados": 1502,
+    "fontes_sha256": "f9be4c743ddd77d6a3aa0af565aa1de5dd2d6f718627171bf24bc6ca4cadd937",
     "pendencias_sha256": "5d9a9b5f91cb3dcd46e88dcb44660ca8ff3970e20d0c853a76be8cd4b759b625",
     "nao_classificadas": [
       {
@@ -182,16 +182,16 @@
         "candidatos": {
           "jsx_text": 2406,
           "atributos": 503,
-          "props": 1054,
-          "outros_literais": 8816,
-          "templates": 1258,
-          "expressoes_nao_resolvidas": 7763,
-          "chaves_objetos": 7003
+          "props": 1049,
+          "outros_literais": 8856,
+          "templates": 1259,
+          "expressoes_nao_resolvidas": 7771,
+          "chaves_objetos": 7019
         },
         "exclusoes": {
-          "importacoes": 1876,
+          "importacoes": 1877,
           "atributos_tecnicos": 3844,
-          "tipos": 576
+          "tipos": 577
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -200,7 +200,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 28803,
+        "candidatos_nao_catalogados": 28863,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -371,19 +371,19 @@
     "eficiencia": {
       "nome": "Eficiência Estatal",
       "interface": {
-        "arquivos": 244,
+        "arquivos": 233,
         "candidatos": {
-          "jsx_text": 3331,
-          "atributos": 1085,
-          "props": 1479,
-          "outros_literais": 8169,
-          "templates": 862,
-          "expressoes_nao_resolvidas": 8547,
-          "chaves_objetos": 4958
+          "jsx_text": 3322,
+          "atributos": 1078,
+          "props": 1478,
+          "outros_literais": 8176,
+          "templates": 847,
+          "expressoes_nao_resolvidas": 8431,
+          "chaves_objetos": 4942
         },
         "exclusoes": {
-          "importacoes": 990,
-          "atributos_tecnicos": 3714,
+          "importacoes": 950,
+          "atributos_tecnicos": 3689,
           "tipos": 537
         },
         "scripts_embutidos": {},
@@ -393,7 +393,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 28431,
+        "candidatos_nao_catalogados": 28274,
         "percentual_traduzido": null
       },
       "rotas": {

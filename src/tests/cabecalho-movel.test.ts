@@ -11,7 +11,6 @@ import { MARCADOR_FIM, MARCADOR_INICIO, htmlBarraSpa } from "@/lib/observatorios
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
-import { CabecalhoEntrada } from "@/components/eficiencia/CabecalhoEntrada";
 import { EstadoConta } from "@/components/energia/AcessoConta";
 import { NavegacaoColecaoCliente } from "@/components/layout/NavegacaoColecaoCliente";
 import { PaginaAberta } from "@/components/acesso/PaginaAberta";
@@ -22,6 +21,8 @@ const navegador = vi.hoisted(() => ({ caminho: "/sobre" }));
 vi.mock("next/navigation", async () => ({
   ...await vi.importActual<typeof import("next/navigation")>("next/navigation"),
   usePathname: () => navegador.caminho,
+  // as coleções que levam o recorte de uma aba a outra (Educação, Saúde, Mobilidade) usam o roteador no clique
+  useRouter: () => ({ push: () => undefined }),
 }));
 vi.mock("next/headers", () => ({ cookies: () => ({ has: () => false }) }));
 vi.mock("@/lib/session", () => ({ getSessionUser: vi.fn() }));
@@ -99,7 +100,7 @@ const ENTRADAS: { rota: string; arquivo: string; uso: string; observatorio: Obse
   { rota: "/setor-eletrico", arquivo: "src/app/setor-eletrico/page.tsx", uso: '<CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoPlataforma, { colecao: "energia", destinoConta: "/setor-eletrico", idiomas: true })) },
   { rota: "/saneamento", arquivo: "src/app/saneamento/page.tsx", uso: '<CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoPlataforma, { colecao: "saneamento", destinoConta: "/saneamento" })) },
   { rota: "/gas-natural", arquivo: "src/app/gas-natural/page.tsx", uso: '<CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoPlataforma, { colecao: "gas", destinoConta: "/gas-natural" })) },
-  { rota: "/eficiencia-estatal", arquivo: "src/app/eficiencia-estatal/page.tsx", uso: "<CabecalhoEntrada/>", observatorio: "servicos-publicos", render: () => html(createElement(CabecalhoEntrada)) },
+  { rota: "/eficiencia-estatal", arquivo: "src/app/eficiencia-estatal/page.tsx", uso: '<CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal" navegacao="sintese" />', observatorio: "servicos-publicos", render: () => html(createElement(CabecalhoPlataforma, { colecao: "eficiencia", destinoConta: "/eficiencia-estatal" })) },
   { rota: "/contas-publicas", arquivo: "src/app/contas-publicas/layout.tsx", uso: '<CabecalhoPlataforma colecao="contas" destinoConta="/contas-publicas"/>', observatorio: "contas-publicas", render: () => html(createElement(CabecalhoPlataforma, { colecao: "contas", destinoConta: "/contas-publicas" })) },
   { rota: "/agronegocio", arquivo: "src/app/agronegocio/layout.tsx", uso: '<CabecalhoPlataforma colecao="agro" destinoConta="/agronegocio" />', observatorio: "economia", render: () => html(createElement(CabecalhoPlataforma, { colecao: "agro", destinoConta: "/agronegocio" })) },
   { rota: "/observatorios/territorio-e-clima", arquivo: "src/app/observatorios/[id]/page.tsx", uso: "<CabecalhoPlataforma observatorio={id}", observatorio: "territorio-e-clima", render: () => html(createElement(CabecalhoPlataforma, { observatorio: "territorio-e-clima", destinoConta: "/observatorios/territorio-e-clima" })) },
@@ -254,10 +255,10 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
       "src/app/custo-de-vida/page.tsx",
       "src/app/educacao-municipal/page.tsx",
       "src/components/credito/Blocos.tsx",
-      "src/components/eficiencia/CabecalhoEntrada.tsx",
-      "src/components/eficiencia/CabecalhoObee.tsx",
-      "src/components/eficiencia/saude/CabecalhoSaude.tsx",
-      "src/components/eficiencia/judiciario/Cabecalho.tsx",
+      "src/app/eficiencia-estatal/page.tsx",
+      "src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx",
+      "src/app/eficiencia-estatal/saude-capitais/layout.tsx",
+      "src/app/eficiencia-estatal/judiciario/layout.tsx",
       "src/app/agronegocio/layout.tsx",
       "src/app/contas-publicas/layout.tsx",
       "src/app/contas-publicas-estaduais/layout.tsx",
