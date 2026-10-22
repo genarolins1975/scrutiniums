@@ -1,4 +1,6 @@
-import {describe,it,expect} from 'vitest';
+import {describe,it,expect,vi} from 'vitest';
+// a página importa módulos marcados com server-only; no teste, o marcador não tem efeito
+vi.mock('server-only',()=>({}));
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {readFileSync} from 'node:fs';
@@ -6,8 +8,8 @@ import {join} from 'node:path';
 import {createHash} from 'node:crypto';
 import {indice,indiceSnapshot,boxExtremes,STATUS_LABELS,RESSALVA_FAIXA} from '@/lib/eficiencia/indice-v4';
 import {IndiceResultados} from '@/components/eficiencia/IndiceResultados';
-import {AtlasCidadao} from '@/components/eficiencia/AtlasCidadao';
-import {montarRetrato} from '@/lib/eficiencia/entrada';
+// a entrada é montada pela página no molde único (Iniciativa 4, 22/10/2026): o teste renderiza a página inteira
+import PaginaEntradaEficiencia from '@/app/eficiencia-estatal/page';
 import PaginaIndiceResultados from '@/app/eficiencia-estatal/indice-de-resultados/page';
 import {indiceNumber as fmtNota} from '@/lib/eficiencia/indice-v4-nucleo';
 
@@ -111,7 +113,7 @@ describe('Índice de resultados v4: apresentação',()=>{
  });
 
  it('a abertura mostra só as posições e leva ao painel do índice com o par escolhido (decisão de 19/10/2026)',()=>{
-  const html=renderToStaticMarkup(createElement(AtlasCidadao,{retrato:montarRetrato()}));
+  const html=renderToStaticMarkup(createElement(PaginaEntradaEficiencia));
   const abertura=html.slice(0,html.indexOf('id="perguntas"'));
   const fmt=(v:number)=>v.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1});
   for(const id of ['2611606','4106902'])expect(abertura).not.toContain(fmt(indiceSnapshot.rows.find(r=>r.id===id)!.score));

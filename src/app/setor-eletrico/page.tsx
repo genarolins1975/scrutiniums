@@ -11,6 +11,7 @@ import Link from "@/components/energia/LinkSemPrefetch";
 import type { ReactNode } from "react";
 import { BuscaObservatorio } from "@/components/energia/BuscaObservatorio";
 import { BuscaPlataforma } from "@/components/busca/BuscaPlataforma";
+import { SeloProntidao } from "@/components/observatorios/SeloProntidao";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
@@ -55,6 +56,7 @@ import {
   type FiguraReferencia,
   type SinalAusente,
   type SinalDisponivel,
+  type IdDoSinal,
   type SinalHome,
 } from "@/lib/energia/home-sinais";
 import {
@@ -90,6 +92,10 @@ import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { ORGAOS_EN, comNomesProprios, legendaDeOrgaosEn, listaEn, traduzDaGold, traduzModeloDaGold } from "@/lib/energia/i18n/entrada-visao";
 import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { DestinosColecao, EntradaColecao } from "@/components/observatorios/EntradaColecao";
+import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
+import { Recolhido } from "@/components/observatorios/Recolhido";
+import type { NumeroPorta } from "@/lib/perguntas/tipos";
 
 export const dynamic = "force-static";
 
@@ -175,17 +181,35 @@ function nomesEReguas(): [string, ReactNode][] {
   ];
 }
 
+/**
+ * O órgão que publica a base de cada número da entrada (a sigla; a página a escreve por extenso): ANEEL nas tarifas, na continuidade,
+ * nas perdas, na carteira de usinas e na Tarifa Social; ONS nos reservatórios; CCEE no PLD; IBGE no acesso dos domicílios.
+ */
+const ORGAO_DO_SINAL: Record<IdDoSinal, string> = {
+  conta: "ANEEL",
+  qualidade: "ANEEL",
+  perdas: "ANEEL",
+  agua: "ONS",
+  pld: "CCEE",
+  expansao: "ANEEL",
+  "tarifa-social": "ANEEL",
+  acesso: "IBGE",
+};
+
 /* ------------------------------------------------------------------ peças da página */
 
-/** Seção da página: linha fina em cima, título em serifa e o conteúdo. O id é a âncora que outras páginas usam. */
-function Secao({ id, titulo, subtitulo, children }: { id: string; titulo: string; subtitulo?: ReactNode; children: ReactNode }) {
+/**
+ * Seção da página: linha fina em cima, título em serifa e o conteúdo. O id é a âncora que outras páginas usam. Dentro de um bloco
+ * recolhido do molde (Iniciativa 4), o título visível é o do <summary>: o h2 fica só para o leitor de tela e a seção perde a linha.
+ */
+function Secao({ id, titulo, subtitulo, recolhida = false, children }: { id: string; titulo: string; subtitulo?: ReactNode; recolhida?: boolean; children: ReactNode }) {
   return (
-    <section id={id} aria-labelledby={`${id}-h`} className="scroll-mt-24 border-t border-linha py-8 md:py-10">
-      <h2 id={`${id}-h`} className="ed-h2 max-w-3xl font-serif text-carvao">
+    <section id={id} aria-labelledby={`${id}-h`} className={recolhida ? "scroll-mt-24" : "scroll-mt-24 border-t border-linha py-8 md:py-10"}>
+      <h2 id={`${id}-h`} className={recolhida ? "sr-only" : "ed-h2 max-w-3xl font-serif text-carvao"}>
         {titulo}
       </h2>
-      {subtitulo && <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{subtitulo}</p>}
-      <div className="mt-6">{children}</div>
+      {subtitulo && <p className={`${recolhida ? "" : "mt-2 "}max-w-prose2 text-sm leading-relaxed text-carvao-muted`}>{subtitulo}</p>}
+      <div className={recolhida ? "mt-5" : "mt-6"}>{children}</div>
     </section>
   );
 }
@@ -429,7 +453,7 @@ function DetalhesDoDestino({ d, c }: { d: DestinoNavegacao; c: CartaoDaPagina })
           </div>
         ) : (
           <p>
-            <span className="rotulo mr-1 text-mineral">{tx("Em integração", "Being integrated")}</span>{" "}
+            <SeloProntidao valor="parcial" idioma={idiomaEnergia()} className="mr-1" />{" "}
             {tx("A página mostra o escopo, as perguntas e as fontes catalogadas, ainda sem números publicados.", "The page shows the scope, the questions and the cataloged sources, with no published numbers yet.")}
           </p>
         )}
@@ -457,17 +481,13 @@ function ItemDoIndice({ d }: { d: DestinoNavegacao }) {
       <span className="flex flex-wrap items-baseline gap-x-2">
         <span className={estado === "preparacao" ? "text-base text-carvao" : "text-base text-energia-dark underline underline-offset-4 group-hover:text-carvao"}>{d.rotulo}</span>
         {estado === "integracao" && (
-          <span className="rotulo text-mineral">
-            {tx("Em integração", "Being integrated")}
-            <span className="sr-only">{tx(": a página mostra o escopo e as fontes catalogadas, sem números publicados", ": the page shows the scope and the cataloged sources, with no published numbers")}</span>
-          </span>
+          <SeloProntidao
+            valor="parcial"
+            idioma={idiomaEnergia()}
+            detalhe={tx("a página mostra o escopo e as fontes catalogadas, sem números publicados", "the page shows the scope and the cataloged sources, with no published numbers")}
+          />
         )}
-        {estado === "preparacao" && (
-          <span className="rotulo text-mineral">
-            {tx("Em preparação", "In preparation")}
-            <span className="sr-only">{tx(": ainda sem página", ": no page yet")}</span>
-          </span>
-        )}
+        {estado === "preparacao" && <SeloProntidao valor="preparacao" idioma={idiomaEnergia()} detalhe={tx("ainda sem página", "no page yet")} />}
       </span>
       <span className="mt-0.5 block text-sm leading-snug text-carvao-muted">{d.pergunta}</span>
       {c && d.integrado && <span className="mt-2 block text-xs leading-relaxed text-mineral">{c.recorte}</span>}
@@ -798,44 +818,287 @@ export default function MapaDoObservatorio() {
   // o nome de um órgão por extenso, com a sigla: "Operador Nacional do Sistema Elétrico (ONS)" ("National Electric System Operator (ONS)")
   const orgaoPorExtenso = (o: string) => tx(SIGLAS[o] ? `${SIGLAS[o]} (${o})` : o, ORGAOS_EN[o] ? (/^[A-Z]{2,}$/.test(o) ? `${ORGAOS_EN[o]} (${o})` : `${o} (${ORGAOS_EN[o]})`) : o);
 
+  // os números da entrada (escala e caminhos) são os sinais das perguntas, lidos da gold de cada módulo, com o órgão que publica a base
+  const idioma = idiomaEnergia();
+  const todasAsPerguntas = [...PERGUNTAS_PRIORITARIAS, ...PERGUNTAS_DE_INCLUSAO];
+  const sinal = (id: IdDoSinal) => [...sinais, ...sinaisInclusao].find((x) => x.id === id)!;
+  const pergunta = (id: IdDoSinal) => todasAsPerguntas.find((q) => q.id === id)!;
+  const numeroDoSinal = (id: IdDoSinal): NumeroPorta => {
+    const s = sinal(id);
+    return {
+      rotulo: s.medida,
+      valor: s.estado === "disponivel" ? s.valorTexto : null,
+      unidade: s.estado === "disponivel" ? s.unidade : "",
+      periodo: s.periodo ?? tx("Período indisponível", "Period unavailable"),
+      fonte: orgaoPorExtenso(ORGAO_DO_SINAL[id]),
+      nota: s.estado === "disponivel" ? undefined : s.motivo,
+      href: pergunta(id).link.href,
+    };
+  };
+
   return (
     <>
       <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:mapa" />
       <RedirecionaAncoraAntiga ancoras={ANCORAS_VISAO_GERAL} destino="/setor-eletrico/visao-geral" />
-      <main id="conteudo" tabIndex={-1} className="ed-pagina energia-atlas-inicial pb-12">
-        {/* frescor dos dados diários na primeira tela: em 19/10/2026 a entrada mostrava o PLD de 30/09 sem dizer que a publicação estava parada */}
-        <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/setor-eletrico"]} idioma={idiomaEnergia()} />
-        {/* abertura (20/10/2026): a pergunta do observatório e, ao lado, os três números de entrada com fonte e período, tudo na
-            primeira tela; a gravura do sistema saiu daqui e abre o percurso da usina à tomada, depois do "Para você" */}
-        <header id="proposito" className="scroll-mt-24 pb-6 pt-6 md:pb-8 md:pt-10">
-          <div className="energia-abertura">
-            <div className="energia-abertura-texto">
-              <RotuloContexto rota="/setor-eletrico" />
-              <h1>{tx("De onde vem a energia e quanto ela custa?", "Where does power come from, at what cost?")}</h1>
-              <p>
+      {/* Molde único de entrada (Iniciativa 4 do parecer de UX, 22/10/2026): a pergunta e os três números de abertura com a gravura do
+          sistema; o "Para você"; os seis grupos de páginas, com o índice completo em "Todas as páginas"; o percurso da usina à tomada;
+          o laboratório "Potência não é energia" como modelo didático; as perguntas que faltam, com o número; e o resto da página de
+          antes (as perguntas com a prova, sobre o observatório, duas camadas e leituras, mapa conceitual, trilhas, conhecimento, como
+          conferir) recolhido, com o conteúdo inteiro no HTML. Fontes e atualidade vão para o método. */}
+      <EntradaColecao
+        tipo="colecao"
+        rota="/setor-eletrico"
+        acento="energia"
+        idioma={idioma}
+        idTitulo="proposito"
+        classe="energia-atlas-inicial"
+        metodoLargo
+        titulo={tx("De onde vem a energia e quanto ela custa?", "Where does power come from, at what cost?")}
+        frase={tx(
+          "Preço, reservatórios, geração, consumo e rede do sistema elétrico, e o que chega à sua conta de luz. Cada número traz fonte, período e referência.",
+          "Price, reservoirs, generation, consumption and the grid of the power system, and what reaches your electricity bill. Every number carries its source, period and reference.",
+        )}
+        frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/setor-eletrico"]} idioma={idioma} conteiner="mx-auto max-w-page px-6" />}
+        escala={(["agua", "pld", "qualidade"] as const).map(numeroDoSinal)}
+        notaEscala={tx(
+          "Cada indicador tem seu período. PLD não é tarifa; armazenamento não mede sozinho o risco de falta de energia.",
+          "Each indicator has its own period. The spot price (PLD) is not a tariff; storage alone does not measure the risk of an energy shortage.",
+        )}
+        // a gravura do sistema abre o percurso: as quatro etapas levam a cada trecho dele
+        figuraEscala={
+          <figure className="energia-cenario" aria-label={tx("Da geração ao consumo, em quatro etapas", "From generation to consumption, in four stages")}>
+          {/* a coluna de texto que a folha de gravuras prevê ao lado da paisagem (vazia desde que o H1 saiu da gravura, em 20/10/2026);
+              no celular a paisagem ocupa a largura toda e o texto sai, porque as quatro etapas já vêm logo abaixo dela */}
+          <div className="energia-cenario-texto">
+            <p className="rotulo">{tx("Da usina à tomada", "From the plant to the socket")}</p>
+            <div className="mt-4 max-w-[22ch] font-serif text-[clamp(1.5rem,2.4vw,2rem)] leading-tight">
+              {tx("Quatro etapas levam a energia até a sua casa.", "Four stages bring power to your home.")}
+            </div>
+            <div className="mt-3">
+              <p className="text-base leading-relaxed">
                 {tx(
-                  "Preço, reservatórios, geração, consumo e rede do sistema elétrico, e o que chega à sua conta de luz. Cada número traz fonte, período e referência.",
-                  "Price, reservoirs, generation, consumption and the grid of the power system, and what reaches your electricity bill. Every number carries its source, period and reference.",
+                  "Geração, transmissão, distribuição e consumo. Escolha uma etapa para ver o que acontece nela e em que página estão os números.",
+                  "Generation, transmission, distribution and consumption. Choose a stage to see what happens in it and which page has the numbers.",
                 )}
               </p>
-              <a className="energia-explorar" href="#percurso-energia">{tx("Explorar o sistema", "Explore the system")} <span aria-hidden="true">↓</span></a>
-            </div>
-            <div className="energia-abertura-medidas" aria-label={tx("Três medidas de entrada, com períodos próprios", "Three opening measures, each with its own period")}>
-              {["agua", "pld", "qualidade"].map(id => { const s = sinais.find(x => x.id === id)!; return <a href={`#pergunta-${id}`} key={id}>
-                <span>{s.medida}</span><strong>{s.estado === "disponivel" ? s.valorTexto : tx("Sem dado", "No data")}</strong>
-                <span>{s.estado === "disponivel" ? s.unidade : s.motivo}</span><small>{s.periodo ?? tx("Período indisponível", "Period unavailable")} · {orgaoPorExtenso(id === "agua" ? "ONS" : id === "pld" ? "CCEE" : "ANEEL")}</small>
-                <span className="energia-abertura-link">{tx("Ver universo, referência e fonte ↓", "See universe, reference and source ↓")}</span>
-              </a>; })}
             </div>
           </div>
-          <p className="energia-medidas-nota">
+          <Image
+            className="energia-cenario-imagem"
+            src="/energia/arte/sistema-gravura-v1.webp"
+            alt={tx(
+              "Gravura conceitual de uma paisagem imaginária com reservatório, hidrelétrica, eólicas, painéis solares, linhas de transmissão, subestação e cidade.",
+              "Conceptual engraving of an imaginary landscape with a reservoir, a hydropower plant, wind turbines, solar panels, transmission lines, a substation and a city.",
+            )}
+            width={1440}
+            height={720}
+            sizes="(max-width: 1240px) 100vw, 1240px"
+          />
+          <nav className="energia-cenario-pontos" aria-label={tx("Explore as etapas do sistema elétrico", "Explore the stages of the power system")}>
+            {ETAPAS_ENERGIA_IDIOMAS[idiomaEnergia()].map((e) => (
+              <a key={e.id} href={`#etapa-${e.id}`} data-etapa={e.id}>
+                <span>{e.numero}</span>
+                {e.nome}
+              </a>
+            ))}
+          </nav>
+          <figcaption className="energia-cenario-legenda">{tx("Ilustração conceitual gerada por IA · sem escala geográfica", "AI-generated conceptual illustration · not to geographic scale")}</figcaption>
+        </figure>
+        }
+        // "Para você" (Onda 2): as perguntas do leitor sobre o próprio caso, a um clique, logo depois dos números de abertura
+        paraVoce={
+          <ParaVoce
+          entrada="/setor-eletrico"
+          idioma={idiomaEnergia()}
+          artes={{ luz: <ArteFoto src="/energia/arte/conta-gravura-v1.webp" />, "falta-luz": <ArtePrancha etapa="distribuicao" />, "tarifa-social-luz": <ArtePrancha etapa="consumo" /> }}
+        />
+        }
+        destinos={
+          <DestinosColecao
+            id="destinos"
+            idioma={idioma}
+            titulo={tx("As páginas do observatório, por tema", "The observatory pages, by topic")}
+            descricao={tx(
+              "Seis grupos, do sistema à vida das pessoas. Cada cartão abre a primeira página do grupo; o índice completo traz a pergunta de cada página e o que se encontra nela.",
+              "Six groups, from the system to people's lives. Each card opens the group's first page; the full index has the question of each page and what you find in it.",
+            )}
+            extra={
+              <div className="obs-home-search mt-6">
+          <div>
+            {/* em português, a busca da plataforma só nesta coleção; em inglês, a busca própria do observatório, porque o
+                índice da plataforma é só em português e levaria o leitor a páginas em outro idioma */}
+            {idiomaEnergia() === "pt" ? (
+              <>
+                <p className="rotulo mb-2 text-mineral">Busque por pergunta, assunto, página, conceito ou distribuidora</p>
+                <BuscaPlataforma
+                  variante="pagina"
+                  exemplo="preço da luz, falta de energia, reservatórios…"
+                  filtro={{ colecao: "setor-eletrico", nome: "Setor Elétrico" }}
+                  municipio={{ href: destino("territorio").href, rotulo: destino("territorio").rotulo }}
+                  rotulo="Buscar no Setor Elétrico"
+                />
+              </>
+            ) : (
+              <BuscaObservatorio
+                itens={busca}
+                exemplos={tx(["preço da luz", "falta de energia", "reservatórios", "Tarifa Social"], ["electricity bill", "power outage", "reservoirs", "Tarifa Social"])}
+                regiao={{ href: destino("territorio").href, rotulo: destino("territorio").rotulo }}
+              />
+            )}
+          </div>
+        </div>
+            }
+            itens={GRUPOS_NAVEGACAO.flatMap((g) => {
+              const [primeiro] = destinosDoIndice(g.destinos);
+              return primeiro ? [{ titulo: g.rotulo, href: primeiro.href, pergunta: g.resumo }] : [];
+            })}
+            mais={{
+              n: todos.length,
+              rotulo: tx("Todas as páginas, por tema", "All pages, by topic"),
+              conteudo: (
+                <>
+                  <p className="mb-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+                    {tx(
+                      `Seis grupos e a pergunta que cada página responde. Cada página mostra sua pergunta e recorte. O ▾ abre os conteúdos e conceitos disponíveis. ${estadoDoIndice}`,
+                      `Six groups and the question each page answers. Each page shows its question and scope. The ▾ opens the available contents and concepts. ${estadoDoIndice}`,
+                    )}
+                  </p>
+                  <div className="obs-catalogo grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {GRUPOS_NAVEGACAO.map((g) => {
+              const ds = destinosDoIndice(g.destinos);
+              if (!ds.length) return null;
+              return (
+                <div key={g.id}>
+                  <h3 className="ed-h3 font-serif text-carvao">{g.rotulo}</h3>
+                  <p className="mt-1 border-b border-linha pb-2 text-sm leading-snug text-carvao-muted">{g.resumo}</p>
+                  <ul className="divide-y divide-linha">
+                    {ds.map((d) => (
+                      <li key={d.slug}>
+                        <ItemDoIndice d={d} />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+                </>
+              ),
+            }}
+          />
+        }
+        secaoPropria={
+          <div className="mx-auto max-w-page px-6 pt-10 md:pt-16">
+            <PercursoVisualEnergia />
+          </div>
+        }
+        artefato={
+          <ModeloDidatico
+            id="laboratorio-energia"
+            idioma={idioma}
+            titulo={tx("Potência não é energia", "Capacity is not energy")}
+            descricao={tx(
+              "Experimente: a altura representa a potência; a largura, o tempo de uso. A área revela a energia consumida em um dia. Cenário ilustrativo, com hipóteses de uso e sem dados de uma residência.",
+              "Try it: the height represents power; the width, the time of use. The area shows the energy consumed in one day. An illustrative scenario, with usage assumptions and no data from an actual household.",
+            )}
+            deixaDeFora={[
+              tx("Os ciclos de funcionamento dos aparelhos: a potência fica constante durante o uso", "Appliance operating cycles: power stays constant during use"),
+              tx("A fatura: tarifa, tributos, bandeira e iluminação pública não entram na conta", "The bill: tariff, taxes, tariff flag and public lighting are not part of the calculation"),
+              tx("O despacho das usinas e o Preço de Liquidação das Diferenças (PLD)", "Plant dispatch and the spot price (PLD)"),
+            ]}
+          >
+            <LaboratorioEnergia embutido />
+          </ModeloDidatico>
+        }
+        caminhos={(["conta", "perdas", "expansao", "acesso"] as const).map((id) => {
+          const q = pergunta(id);
+          return { pergunta: q.pergunta, resumo: q.importa, href: q.link.href, numero: numeroDoSinal(id) };
+        })}
+        recolhidos={
+          <>
+            <Recolhido
+              id="recolhido-perguntas"
+              titulo={tx("Cada pergunta com a medida, a referência e a prova", "Each question with its measure, reference and proof")}
+              resumo={tx(
+                "Cada número com período, universo, figura de referência, natureza do dado e a ficha Comprove; a escolha da sua distribuidora e outras perguntas do dia a dia.",
+                "Each number with its period, universe, reference figure, data type and the Check record; the choice of your distribution utility and other everyday questions.",
+              )}
+            >
+              <Secao
+          recolhida
+          id="perguntas"
+          titulo={tx("Seis perguntas para começar", "Six questions to start with")}
+          subtitulo={tx(
+            "Cada resposta abre com uma medida, o período e a referência; a página de destino traz o resto. Escolha a sua distribuidora uma vez: as perguntas sobre a conta, a falta de energia e as perdas abrem a página dela já com a distribuidora selecionada.",
+            "Each answer opens with a measure, its period and its reference; the destination page has the rest. Choose your distribution utility once: the questions about the bill, power outages and losses open its page with the utility already selected.",
+          )}
+        >
+          <SuaDistribuidora opcoes={escolhas.opcoes} descricao={descricaoDaEscolha} />
+          <p className="mb-6 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-como-ler="">
+            <span className="font-medium text-carvao">{tx("Como ler. ", "How to read. ")}</span>
             {tx(
-              "Cada indicador tem seu período. PLD não é tarifa; armazenamento não mede sozinho o risco de falta de energia.",
-              "Each indicator has its own period. The spot price (PLD) is not a tariff; storage alone does not measure the risk of an energy shortage.",
+              "O losango marca o valor destacado. A linha mostra a faixa observada; a caixa reúne a metade central dos casos; o traço dentro dela é a mediana (o ponto que divide os casos em duas metades). Compare apenas medidas com a mesma unidade e período. MW mede potência; MWh mede energia; MWmed é a energia em MWh dividida pelas horas do período.",
+              "The diamond marks the highlighted value. The line shows the observed range; the box holds the middle half of the cases; the mark inside it is the median (the point that splits the cases into two halves). Compare only measures with the same unit and period. MW measures power; MWh measures energy; MWavg (average megawatts) is the energy in MWh divided by the hours in the period.",
             )}
           </p>
-          <details className="energia-contexto"><summary>{tx("Sobre o observatório, caminhos e fontes", "About the observatory, paths and sources")} <span aria-hidden="true">+</span></summary>
+          <section aria-label={tx("Seis perguntas, cada uma com a medida de abertura, o período e a referência", "Six questions, each with its opening measure, period and reference")} data-seis-perguntas="">
+            <PerguntasExploraveis resumos={PERGUNTAS_PRIORITARIAS.map(p => { const s = sinais.find(x => x.id === p.id)!; return { id: p.id, titulo: s.medida, valor: s.estado === "disponivel" ? s.valorTexto : tx("Sem dado", "No data"), unidade: s.estado === "disponivel" ? s.unidade : s.motivo, periodo: s.periodo ?? tx("Período indisponível", "Period unavailable") }; })}>
+            {PERGUNTAS_PRIORITARIAS.map((p) => (
+              <BlocoPergunta key={p.id} p={p} sinal={sinais.find((s) => s.id === p.id)!} escolhas={escolhas} />
+            ))}
+            </PerguntasExploraveis>
+          </section>
+          <section aria-label={tx("Acesso e desigualdade, duas perguntas, cada uma com a medida de abertura", "Access and inequality, two questions, each with its opening measure")} className="mt-6" data-inclusao="">
+            <p className="rotulo text-mineral">{tx("Acesso e desigualdade", "Access and inequality")}</p>
+            <div className="grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+              {PERGUNTAS_DE_INCLUSAO.map((p) => (
+                <BlocoPergunta key={p.id} p={{ ...p, slug: "inclusao-energetica" }} sinal={sinaisInclusao.find((s) => s.id === p.id)!} escolhas={escolhas} />
+              ))}
+              <div className="border-t border-linha pt-4 text-sm leading-relaxed text-carvao-muted sm:col-span-2 lg:col-span-1" data-nota-inclusao="">
+                <p>
+                  {tx(
+                    "Estes dois números vêm da página Inclusão energética, que mostra também o peso da conta no orçamento das famílias, a cobertura por município e os sistemas isolados.",
+                    "These two numbers come from the Energy inclusion page, which also shows the weight of the bill in household budgets, coverage by municipality and the isolated systems.",
+                  )}
+                </p>
+                <Link href="/setor-eletrico/inclusao-energetica" className={link}>
+                  {tx("Ver Inclusão energética", "See Energy inclusion")}
+                </Link>
+              </div>
+            </div>
+          </section>
+          <div className="mt-6">
+            <Recolhivel id="mais-perguntas" titulo={tx("Outras perguntas do dia a dia", "Other everyday questions")} dica={tx("Nove perguntas comuns e a página que responde a cada uma", "Nine common questions and the page that answers each one")}>
+              <ul className="grid gap-x-10 gap-y-5 md:grid-cols-2">
+                {PERGUNTAS_COTIDIANAS.map((p) => (
+                  <li key={p.pergunta}>
+                    <p className="font-serif text-base leading-snug text-carvao">{p.pergunta}</p>
+                    <p className="mt-1">{p.resposta}</p>
+                    <p className="mt-1 flex flex-wrap gap-x-5">
+                      {p.destinos.map((d) => (
+                        <Link key={d.href} href={d.href} className={link}>
+                          {d.rotulo}
+                        </Link>
+                      ))}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </Recolhivel>
+          </div>
+        </Secao>
+            </Recolhido>
+            <Recolhido
+              id="recolhido-sobre"
+              titulo={tx("Sobre o observatório, caminhos e fontes", "About the observatory, paths and sources")}
+              resumo={tx(
+                "O que o observatório acompanha, o que as medidas nacionais não permitem concluir e por onde começar.",
+                "What the observatory follows, what national measures do not allow concluding and where to start.",
+              )}
+            >
+              <div className="energia-contexto energia-contexto-recolhido">
+                
           <div className="obs-hero grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
             <div className="min-w-0">
               <RotuloContexto rota="/setor-eletrico" className="text-mineral" />
@@ -952,68 +1215,26 @@ export default function MapaDoObservatorio() {
               ["3", tx("níveis de leitura", "reading levels"), tx("Entender, analisar e auditar", "Understand, analyze and audit")],
             ].map(([valor, rotulo, detalhe]) => <div key={rotulo}><dd>{valor}</dd><dt>{rotulo}</dt><dd>{detalhe}</dd></div>)}
           </dl>
-          </details>
-        </header>
-        {/* "Para você" (Onda 2): as perguntas do leitor sobre o próprio caso, a um clique, logo depois das medidas de abertura; substitui os dois cartões "Qual pergunta você quer responder?" */}
-        <ParaVoce
-          entrada="/setor-eletrico"
-          idioma={idiomaEnergia()}
-          conteiner=""
-          artes={{ luz: <ArteFoto src="/energia/arte/conta-gravura-v1.webp" />, "falta-luz": <ArtePrancha etapa="distribuicao" />, "tarifa-social-luz": <ArtePrancha etapa="consumo" /> }}
-        />
-        {/* a gravura do sistema abre o percurso: as quatro etapas levam a cada trecho dele */}
-        <figure className="energia-cenario" aria-label={tx("Da geração ao consumo, em quatro etapas", "From generation to consumption, in four stages")}>
-          <Image
-            className="energia-cenario-imagem"
-            src="/energia/arte/sistema-gravura-v1.webp"
-            alt={tx(
-              "Gravura conceitual de uma paisagem imaginária com reservatório, hidrelétrica, eólicas, painéis solares, linhas de transmissão, subestação e cidade.",
-              "Conceptual engraving of an imaginary landscape with a reservoir, a hydropower plant, wind turbines, solar panels, transmission lines, a substation and a city.",
-            )}
-            width={1440}
-            height={720}
-            sizes="(max-width: 1240px) 100vw, 1240px"
-          />
-          <nav className="energia-cenario-pontos" aria-label={tx("Explore as etapas do sistema elétrico", "Explore the stages of the power system")}>
-            {ETAPAS_ENERGIA_IDIOMAS[idiomaEnergia()].map((e) => (
-              <a key={e.id} href={`#etapa-${e.id}`} data-etapa={e.id}>
-                <span>{e.numero}</span>
-                {e.nome}
-              </a>
-            ))}
-          </nav>
-          <figcaption className="energia-cenario-legenda">{tx("Ilustração conceitual gerada por IA · sem escala geográfica", "AI-generated conceptual illustration · not to geographic scale")}</figcaption>
-        </figure>
-        <PercursoVisualEnergia />
-        <DuasCamadasEnergia compacto />
-        <LeiturasIntegradas />
-        <div className="obs-home-search">
-          <div>
-            {/* em português, a busca da plataforma só nesta coleção; em inglês, a busca própria do observatório, porque o
-                índice da plataforma é só em português e levaria o leitor a páginas em outro idioma */}
-            {idiomaEnergia() === "pt" ? (
-              <>
-                <p className="rotulo mb-2 text-mineral">Busque por pergunta, assunto, página, conceito ou distribuidora</p>
-                <BuscaPlataforma
-                  variante="pagina"
-                  exemplo="preço da luz, falta de energia, reservatórios…"
-                  filtro={{ colecao: "setor-eletrico", nome: "Setor Elétrico" }}
-                  municipio={{ href: destino("territorio").href, rotulo: destino("territorio").rotulo }}
-                  rotulo="Buscar no Setor Elétrico"
-                />
-              </>
-            ) : (
-              <BuscaObservatorio
-                itens={busca}
-                exemplos={tx(["preço da luz", "falta de energia", "reservatórios", "Tarifa Social"], ["electricity bill", "power outage", "reservoirs", "Tarifa Social"])}
-                regiao={{ href: destino("territorio").href, rotulo: destino("territorio").rotulo }}
-              />
-            )}
-          </div>
-        </div>
-
-        {/* mapa conceitual: o desenho a partir de md, a versão em texto no celular (e para o leitor de tela no desktop) */}
-        <Secao
+              </div>
+            </Recolhido>
+            <Recolhido
+              id="recolhido-camadas"
+              titulo={tx("Físico e comercial: duas camadas que se cruzam", "Physical and commercial: two layers that intersect")}
+              resumo={tx(
+                "Como a energia circula pela rede e como ela é contratada e paga, e as leituras que ligam os módulos.",
+                "How energy flows through the grid and how it is contracted and paid for, and the readings that connect the modules.",
+              )}
+            >
+              <DuasCamadasEnergia compacto />
+              <LeiturasIntegradas />
+            </Recolhido>
+            <Recolhido
+              id="recolhido-mapa"
+              titulo={tx("Como as partes do setor elétrico se ligam", "How the parts of the power sector connect")}
+              resumo={tx("Sete elos, da água à vida das pessoas, e o tipo de cada ligação.", "Seven nodes, from water to people's lives, and the type of each connection.")}
+            >
+              <Secao
+          recolhida
           id="mapa-conceitual"
           titulo={tx("Como as partes do setor elétrico se ligam", "How the parts of the power sector connect")}
           subtitulo={
@@ -1038,8 +1259,7 @@ export default function MapaDoObservatorio() {
             </>
           }
         >
-          <details className="energia-mapa-completo"><summary>{tx("Abrir o mapa completo de relações", "Open the full map of relationships")} <span aria-hidden="true">+</span></summary>
-          <div className="hidden md:block">
+                    <div className="hidden md:block">
             <MapaConceitual
               rotulo={tx("Mapa conceitual do setor elétrico: escolha um elo para ver a explicação e as ligações", "Conceptual map of the power sector: choose a node to see the explanation and the connections")}
               inicial="recursos"
@@ -1086,107 +1306,15 @@ export default function MapaDoObservatorio() {
               </ul>
             </div>
           </div>
-          </details>
         </Secao>
-
-        {/* as seis perguntas, cada uma com a medida real, o período, a figura de referência e o link; a escolha da distribuidora é uma só */}
-        <Secao
-          id="perguntas"
-          titulo={tx("Seis perguntas para começar", "Six questions to start with")}
-          subtitulo={tx(
-            "Cada resposta abre com uma medida, o período e a referência; a página de destino traz o resto. Escolha a sua distribuidora uma vez: as perguntas sobre a conta, a falta de energia e as perdas abrem a página dela já com a distribuidora selecionada.",
-            "Each answer opens with a measure, its period and its reference; the destination page has the rest. Choose your distribution utility once: the questions about the bill, power outages and losses open its page with the utility already selected.",
-          )}
-        >
-          <SuaDistribuidora opcoes={escolhas.opcoes} descricao={descricaoDaEscolha} />
-          <p className="mb-6 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-como-ler="">
-            <span className="font-medium text-carvao">{tx("Como ler. ", "How to read. ")}</span>
-            {tx(
-              "O losango marca o valor destacado. A linha mostra a faixa observada; a caixa reúne a metade central dos casos; o traço dentro dela é a mediana (o ponto que divide os casos em duas metades). Compare apenas medidas com a mesma unidade e período. MW mede potência; MWh mede energia; MWmed é a energia em MWh dividida pelas horas do período.",
-              "The diamond marks the highlighted value. The line shows the observed range; the box holds the middle half of the cases; the mark inside it is the median (the point that splits the cases into two halves). Compare only measures with the same unit and period. MW measures power; MWh measures energy; MWavg (average megawatts) is the energy in MWh divided by the hours in the period.",
-            )}
-          </p>
-          <section aria-label={tx("Seis perguntas, cada uma com a medida de abertura, o período e a referência", "Six questions, each with its opening measure, period and reference")} data-seis-perguntas="">
-            <PerguntasExploraveis resumos={PERGUNTAS_PRIORITARIAS.map(p => { const s = sinais.find(x => x.id === p.id)!; return { id: p.id, titulo: s.medida, valor: s.estado === "disponivel" ? s.valorTexto : tx("Sem dado", "No data"), unidade: s.estado === "disponivel" ? s.unidade : s.motivo, periodo: s.periodo ?? tx("Período indisponível", "Period unavailable") }; })}>
-            {PERGUNTAS_PRIORITARIAS.map((p) => (
-              <BlocoPergunta key={p.id} p={p} sinal={sinais.find((s) => s.id === p.id)!} escolhas={escolhas} />
-            ))}
-            </PerguntasExploraveis>
-          </section>
-          <section aria-label={tx("Acesso e desigualdade, duas perguntas, cada uma com a medida de abertura", "Access and inequality, two questions, each with its opening measure")} className="mt-6" data-inclusao="">
-            <p className="rotulo text-mineral">{tx("Acesso e desigualdade", "Access and inequality")}</p>
-            <div className="grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
-              {PERGUNTAS_DE_INCLUSAO.map((p) => (
-                <BlocoPergunta key={p.id} p={{ ...p, slug: "inclusao-energetica" }} sinal={sinaisInclusao.find((s) => s.id === p.id)!} escolhas={escolhas} />
-              ))}
-              <div className="border-t border-linha pt-4 text-sm leading-relaxed text-carvao-muted sm:col-span-2 lg:col-span-1" data-nota-inclusao="">
-                <p>
-                  {tx(
-                    "Estes dois números vêm da página Inclusão energética, que mostra também o peso da conta no orçamento das famílias, a cobertura por município e os sistemas isolados.",
-                    "These two numbers come from the Energy inclusion page, which also shows the weight of the bill in household budgets, coverage by municipality and the isolated systems.",
-                  )}
-                </p>
-                <Link href="/setor-eletrico/inclusao-energetica" className={link}>
-                  {tx("Ver Inclusão energética", "See Energy inclusion")}
-                </Link>
-              </div>
-            </div>
-          </section>
-          <div className="mt-6">
-            <Recolhivel id="mais-perguntas" titulo={tx("Outras perguntas do dia a dia", "Other everyday questions")} dica={tx("Nove perguntas comuns e a página que responde a cada uma", "Nine common questions and the page that answers each one")}>
-              <ul className="grid gap-x-10 gap-y-5 md:grid-cols-2">
-                {PERGUNTAS_COTIDIANAS.map((p) => (
-                  <li key={p.pergunta}>
-                    <p className="font-serif text-base leading-snug text-carvao">{p.pergunta}</p>
-                    <p className="mt-1">{p.resposta}</p>
-                    <p className="mt-1 flex flex-wrap gap-x-5">
-                      {p.destinos.map((d) => (
-                        <Link key={d.href} href={d.href} className={link}>
-                          {d.rotulo}
-                        </Link>
-                      ))}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </Recolhivel>
-          </div>
-        </Secao>
-
-        <LaboratorioEnergia />
-
-        {/* índice completo, agrupado nos seis grupos de navegação: um só, com o detalhe de cada página aberto no próprio item */}
-        <Secao
-          id="destinos"
-          titulo={tx("Todas as páginas, por tema", "All pages, by topic")}
-          subtitulo={tx(
-            `Seis grupos e a pergunta que cada página responde. Cada página mostra sua pergunta e recorte. O ▾ abre os conteúdos e conceitos disponíveis. ${estadoDoIndice}`,
-            `Six groups and the question each page answers. Each page shows its question and scope. The ▾ opens the available contents and concepts. ${estadoDoIndice}`,
-          )}
-        >
-          <div className="obs-catalogo grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {GRUPOS_NAVEGACAO.map((g) => {
-              const ds = destinosDoIndice(g.destinos);
-              if (!ds.length) return null;
-              return (
-                <div key={g.id}>
-                  <h3 className="ed-h3 font-serif text-carvao">{g.rotulo}</h3>
-                  <p className="mt-1 border-b border-linha pb-2 text-sm leading-snug text-carvao-muted">{g.resumo}</p>
-                  <ul className="divide-y divide-linha">
-                    {ds.map((d) => (
-                      <li key={d.slug}>
-                        <ItemDoIndice d={d} />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-          </div>
-        </Secao>
-
-        {/* trilhas de leitura: a sequência de paradas à vista, o que se aprende em cada uma recolhido */}
-        <Secao
+            </Recolhido>
+            <Recolhido
+              id="recolhido-trilhas"
+              titulo={tx("Trilhas de leitura", "Learning paths")}
+              resumo={tx("Percursos curtos, em ordem, que ligam os temas.", "Short routes, in order, that connect the topics.")}
+            >
+              <Secao
+          recolhida
           id="trilhas"
           titulo={tx("Trilhas de leitura", "Learning paths")}
           subtitulo={tx(
@@ -1227,16 +1355,30 @@ export default function MapaDoObservatorio() {
             ))}
           </div>
         </Secao>
-
-        <nav aria-label={tx("Conhecimento e fontes", "Knowledge and sources")} className="mb-8 grid gap-4 sm:grid-cols-2">
+            </Recolhido>
+            <Recolhido
+              id="recolhido-conhecimento"
+              titulo={tx("Conhecimento e fontes", "Knowledge and sources")}
+              resumo={tx("Os verbetes do Aprenda, os dados e a metodologia.", "The Learn entries, the data and the methodology.")}
+            >
+              <nav aria-label={tx("Conhecimento e fontes", "Knowledge and sources")} className="grid gap-4 sm:grid-cols-2">
           {CAMINHOS_INTENCAO.slice(3).map(c => <div key={c.id} data-caminho={c.id} className="border-l-4 border-obee bg-superficie p-5">
             <Link href={destino(c.slugs[0]).href} className="inline-flex min-h-[44px] items-center font-serif text-xl text-obee-tinta underline underline-offset-4">{c.titulo} →</Link>
             <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{c.descricao}</p>
             {c.slugs.slice(1).map(slug => <Link key={slug} href={destino(slug).href} className={link}>{destino(slug).rotulo}</Link>)}
           </div>)}
         </nav>
-        {/* como ler e conferir: blocos recolhíveis de uma linha, com o conteúdo inteiro no HTML */}
-        <Secao
+            </Recolhido>
+            <Recolhido
+              id="recolhido-confiar"
+              titulo={tx("Como ler e conferir", "How to read and check")}
+              resumo={tx(
+                "O que cada selo significa, por que cada número tem várias datas e como provar um número.",
+                "What each label means, why each number has several dates and how to prove a number.",
+              )}
+            >
+              <Secao
+          recolhida
           id="como-confiar"
           titulo={tx("Como ler e conferir", "How to read and check")}
           subtitulo={tx(
@@ -1511,9 +1653,11 @@ export default function MapaDoObservatorio() {
             </div>
           </div>
         </Secao>
-
-        {/* fontes e atualidade em resumo, com acesso à lista completa */}
-        <Secao
+            </Recolhido>
+          </>
+        }
+        metodo={
+          <Secao
           id="aprofundar"
           titulo={tx("Fontes e atualidade", "Sources and timeliness")}
           subtitulo={tx(
@@ -1794,8 +1938,8 @@ export default function MapaDoObservatorio() {
             </Recolhivel>
           </div>
         </Secao>
-      </main>
+        }
+      />
     </>
   );
 }
-

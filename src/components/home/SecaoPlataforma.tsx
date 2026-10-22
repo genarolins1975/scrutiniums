@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { registroErros } from "@/lib/sobre";
-import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/home/Recolhido";
+import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/observatorios/Recolhido";
 
 type Item = { titulo: string; descricao: string; link?: { href: string; rotulo: string } };
 

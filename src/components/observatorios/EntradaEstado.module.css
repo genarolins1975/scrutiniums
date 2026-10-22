@@ -171,3 +171,7 @@
   .illustrated small, .illustratedHeading p, .illustratedHeading > span,
   .journeyIndex, .illustrationNote { color: var(--cor-carvao); }
 }
+
+/* SeletorEstado (Iniciativa 4): o título do painel é h3 dentro do "Para você", e o nome do estado é parágrafo */
+.panelHead h3{font-size:25px}
+.stateName{margin:0;font-size:25px;font-family:var(--font-serif),Georgia,serif}

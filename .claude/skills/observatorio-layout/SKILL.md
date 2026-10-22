@@ -112,6 +112,22 @@ Preservar o logotipo e os ativos oficiais. Não redesenhá-los por aproximação
 6. **Imagens finais**: nenhuma gravura provisória; ilustração estilizada só quando acrescenta reconhecimento (ex.: a capital, o tema), nunca fotografia decorativa.
 7. **Home e cards atualizados** quando um painel novo entra: a página não logada, os cards da home e o mapa do observatório citam o painel novo.
 
+**Molde único (Iniciativa 4 do parecer de UX de 21/10/2026).** Toda entrada de observatório e de coleção, e toda versão aperitivo, é `EntradaColecao` (`src/components/observatorios/EntradaColecao.tsx`), renderizada no servidor, com as fatias nesta ordem (cada uma marcada `data-fatia`, conferida por `src/tests/entrada-molde.test.ts`):
+
+1. **Abertura**: `RotuloContexto`, H1 pergunta com até 60 caracteres (duas linhas a 1440, três a 390) e uma frase com até 220. Nada mais antes dos números.
+2. **Escala**: de um a quatro números com `NumeroEscala` (`src/components/observatorios/NumeroEscala.tsx`), cada um com rótulo, valor, unidade, período, fonte, nota opcional e "Ver no painel"; o topo do primeiro número abaixo de 900 px a 1440. Valor ausente é "Indisponível nesta publicação", nunca zero. Não criar outro componente de número (a Iniciativa 6 funde este no kit).
+3. **ParaVoce**.
+4. **Destinos**: as coleções (entrada de observatório) ou os destinos de primeiro nível de `navegacaoDaColecao` (entrada de coleção, `DestinosColecao`), cada um com a pergunta que responde e, quando há, o número lido da mesma base; até oito à vista e o resto em "Mais destinos".
+5. **Artefato**: um modelo didático, sempre no envelope `ModeloDidatico` (`src/components/observatorios/ModeloDidatico.tsx`): rótulo fixo "Modelo didático", título, corpo e a lista obrigatória "O que este modelo deixa de fora" (o tipo exige a lista). "Laboratório ilustrativo", "cenário hipotético" e afins vêm nesse envelope.
+6. **Caminhos**: "Perguntas para começar", cada uma com resposta curta e, quando o destino tem número, o número lido dele (regra do `paraVoce.ts`: nunca escrito à mão).
+7. **Método**: um único `<details>` no fim, com método, fontes, downloads (`SeloComConta` na versão aberta, `ExportacaoComConta` para exportação do navegador) e `FaixaFrescor` variante método.
+
+Entre os destinos e o artefato cabe **uma** seção própria da coleção (`secaoPropria`: o percurso da Energia, a régua das capitais). O resto do conteúdo vai para `Recolhido` (`src/components/observatorios/Recolhido.tsx`, o único jeito de recolher seção longa: título e resumo de uma linha no `<summary>`, conteúdo inteiro no HTML) ou para a página "Visão geral" da coleção; nunca é apagado. A versão aperitivo (`tipo="aperitivo"`) usa abertura, a consulta do leitor no lugar da escala, `ConviteAperitivo` e método.
+
+**Estados de prontidão** têm forma única, `SeloProntidao` (`src/components/observatorios/SeloProntidao.tsx`): glifo e texto, nunca só cor, em quatro valores (publicado, cobertura parcial, em preparação, piloto). Destino em preparação nunca é link. Nada de "Versão em desenvolvimento", "Em desenvolvimento", "(previsto)" ou "Estados · Piloto" escritos à mão; o teste do molde reprova as formas antigas no código.
+
+**Orçamento de comprimento** (medido por `scripts/ux-medidas.mjs`): entrada de observatório e de coleção até 6.500 px a 1440 e 11.000 a 390; página aperitivo até 2.500 e 4.500; porta `/perguntas/*` até 3.500 e 7.000; página aberta do Crédito até 3.500 e 7.000. Acima disso, recolher, nunca apagar.
+
 Na entrada de um observatório inteiro, combinar: identidade e promessa curta → explicação visual do tema → amostra equilibrada de indicadores com referências → caminhos por perguntas → índice temático completo → fontes e atualidade acessíveis.
 
 Garantir informação substantiva cedo. Evitar hero de marketing que consuma a primeira tela, fotografia decorativa, manifesto longo e mosaico interminável de KPI.

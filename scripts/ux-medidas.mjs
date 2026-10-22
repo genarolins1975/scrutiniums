@@ -52,7 +52,13 @@ for (const largura of [1440, 390]) {
         const main = document.querySelector("main");
         const topoConteudo = (main ?? h1)?.getBoundingClientRect().top ?? null;
         const topoH1 = h1?.getBoundingClientRect().top ?? null;
-        const primeiroNumero = document.querySelector(".tabular-nums, [class*=numero], dl")?.getBoundingClientRect().top ?? null;
+        // o número da escala do molde (EntradaColecao, data-numero-escala) quando há; senão, a abertura antiga do Setor Elétrico
+        // (.energia-abertura-medidas) ou o primeiro número tabular do <main>, para medir o antes das entradas ainda fora do molde
+        const numero =
+          document.querySelector("[data-numero-escala]") ??
+          document.querySelector(".energia-abertura-medidas strong") ??
+          document.querySelector("h1 ~ dl dd, h1 ~ * dl dd");
+        const primeiroNumero = numero ? Math.round(numero.getBoundingClientRect().top) : null;
         return {
           altura: document.documentElement.scrollHeight,
           scrollX: document.documentElement.scrollWidth > vw + 1,
@@ -75,6 +81,6 @@ await browser.close();
 writeFileSync(`${saida}/medidas.json`, JSON.stringify(resultados, null, 2));
 for (const r of resultados) {
   console.log(
-    `${r.rota} @${r.largura} → ${r.final || ""} | ${r.status ?? r.erro} | alt ${r.altura ?? "?"} | h1 "${r.h1 ?? ""}" (${r.linhasH1 ?? "?"} linhas, topo ${r.topoH1 ?? "?"}) | <12px ${r.pequenos ?? "?"} | fora ${r.fora ?? "?"} | scrollX ${r.scrollX ?? "?"} | imgs ${r.imgs ?? "?"} quebradas ${JSON.stringify(r.quebradas ?? [])} | links ${r.links ?? "?"} | navs ${JSON.stringify(r.navs ?? [])} | falhas ${JSON.stringify(r.falhas)}`,
+    `${r.rota} @${r.largura} → ${r.final || ""} | ${r.status ?? r.erro} | alt ${r.altura ?? "?"} | h1 "${r.h1 ?? ""}" (${r.linhasH1 ?? "?"} linhas, topo ${r.topoH1 ?? "?"}) | 1º número ${r.primeiroNumero ?? "?"} | <12px ${r.pequenos ?? "?"} | fora ${r.fora ?? "?"} | scrollX ${r.scrollX ?? "?"} | imgs ${r.imgs ?? "?"} quebradas ${JSON.stringify(r.quebradas ?? [])} | links ${r.links ?? "?"} | navs ${JSON.stringify(r.navs ?? [])} | falhas ${JSON.stringify(r.falhas)}`,
   );
 }

@@ -13,7 +13,13 @@ import { dataBr, mesAno, mesExtenso, pct, pp } from "@/lib/inflacao/formato";
 import { ROTA_COMIDA, paginaInflacao } from "@/lib/inflacao/paginas";
 import { BRASIL } from "@/lib/inflacao/tipos";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
-import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { EntradaColecao } from "@/components/observatorios/EntradaColecao";
+import { destinosDaColecao } from "@/components/observatorios/DestinosDaColecao";
+import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
+import { Recolhido } from "@/components/observatorios/Recolhido";
+import { ParaVoce } from "@/components/observatorios/ParaVoce";
+import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
@@ -53,130 +59,162 @@ export default function InflacaoPage() {
         <CabecalhoPlataforma observatorio="familias" destinoConta="/custo-de-vida" fontes={["inflacao"]} />
         <NavegacaoColecao colecao="custo-de-vida" />
       </header>
-      <main id="conteudo" className="ed-pagina pb-12">
-        <div className="cab-modulo familias-abertura">
-          <RotuloContexto rota={pagina.href} pagina={pagina.rotulo} className="text-bronze-dark" />
-          <h1 className="ed-h1 mt-3 max-w-4xl font-serif text-carvao">{pagina.pergunta}</h1>
-          <div className="ed-lead mt-4 max-w-prose2 space-y-3 text-carvao-muted">
-            <p>
-              A inflação oficial, o IPCA do IBGE, em cada uma das 16 áreas onde o IBGE pesquisa preços e no Brasil: no índice geral e nos nove grupos de
-              despesa, com o peso de cada grupo no orçamento, mês a mês desde janeiro de 2020.
+      <EntradaColecao
+        tipo="colecao"
+        rota={pagina.href}
+        acento="bronze"
+        titulo={pagina.pergunta}
+        frase="A inflação oficial, o IPCA do IBGE, nas 16 áreas onde o IBGE pesquisa preços e no Brasil: índice geral e nove grupos de despesa, com o peso de cada grupo, mês a mês desde janeiro de 2020."
+        frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/custo-de-vida"]} conteiner="mx-auto max-w-page px-6" />}
+        escala={[
+          { rotulo: "IPCA do Brasil em 12 meses", valor: pct(br.geral.doze), unidade: "índice geral", periodo: `12 meses até ${mes}`, fonte: `IBGE, IPCA, tabela ${g.fonte.tabela}`, href: "#serie" },
+          { rotulo: "IPCA do Brasil no mês", valor: pct(br.geral.mensal), unidade: "índice geral", periodo: mes, fonte: `IBGE, IPCA, tabela ${g.fonte.tabela}`, href: "#serie" },
+          { rotulo: `Maior variação em 12 meses: ${maior.nome}`, valor: pct(g.ultimo[maior.id].geral.doze), unidade: "índice geral", periodo: `12 meses até ${mes}`, fonte: `IBGE, IPCA, tabela ${g.fonte.tabela}`, href: "#areas" },
+          { rotulo: `Menor variação em 12 meses: ${menor.nome}`, valor: pct(g.ultimo[menor.id].geral.doze), unidade: "índice geral", periodo: `12 meses até ${mes}`, fonte: `IBGE, IPCA, tabela ${g.fonte.tabela}`, href: "#areas" },
+        ]}
+        paraVoce={
+          <ParaVoce entrada="/custo-de-vida">
+            <section aria-label="Inflação na sua cidade">
+              <InflacaoNaArea dados={tela} />
+            </section>
+          </ParaVoce>
+        }
+        destinos={destinosDaColecao("custo-de-vida")}
+        artefato={
+          <ModeloDidatico
+            id="como-pesa"
+            titulo="Como o IPCA pesa o seu orçamento"
+            descricao={<>A fatia de cada grupo no orçamento das famílias da pesquisa e quanto cada um contribuiu, em pontos percentuais, para a inflação de 12 meses até {mes}.</>}
+            deixaDeFora={[
+              "O orçamento de uma família específica: o peso é o do orçamento médio das famílias da pesquisa",
+              "A mudança dos pesos ao longo da janela: a contribuição usa o peso do primeiro mês",
+              "O INPC, das famílias com renda de 1 a 5 salários mínimos, com outros pesos",
+            ]}
+          >
+            <ComoPesa grupos={g.grupos} areas={artefato(g)} nomes={nomes} referencia={ref} />
+            <FonteIpca g={g} extra="Contribuição calculada pela Scrutiniums: peso do grupo no primeiro mês da janela × variação do grupo em 12 meses ÷ 100." />
+          </ModeloDidatico>
+        }
+        caminhos={[
+          { pergunta: "Como a inflação mudou desde 2020?", resumo: "O IPCA em 12 meses ou no mês, na área escolhida e no Brasil.", href: "#serie" },
+          {
+            pergunta: "Como as 16 áreas se comparam?",
+            resumo: "A variação em 12 meses de cada área, no índice geral e nos nove grupos, com a diferença para o Brasil.",
+            href: "#areas",
+            numero: { rotulo: `Diferença de ${maior.nome} para o Brasil`, valor: pp(g.ultimo[maior.id].geral.dif_brasil_pp, 2, true), unidade: "em 12 meses", periodo: mes, fonte: `IBGE, IPCA, tabela ${g.fonte.tabela}`, href: "#areas" },
+          },
+          { pergunta: "Que produtos e serviços mais subiram e caíram?", resumo: "Os subitens do IPCA, com o peso no orçamento e a contribuição para a inflação.", href: "#itens" },
+          { pergunta: "Por que a comida subiu?", resumo: "A inflação dos alimentos item por item, a cesta e a segurança alimentar, no painel Comida no prato.", href: ROTA_COMIDA },
+        ]}
+        recolhidos={
+          <>
+            <Recolhido id="recolhido-serie" titulo="A inflação mês a mês desde 2020" resumo="A série da área escolhida e do Brasil.">
+                <SecaoInflacao
+                  id="serie"
+                  titulo="A inflação mês a mês desde 2020"
+                  subtitulo={<>Variação percentual do IPCA índice geral, em 12 meses ou no mês, na área escolhida e no Brasil, desde o início da tabela 7060 até {mes}.</>}
+                >
+                  <SerieArea meses={g.meses} porArea={series(g).porArea} areas={nomes} primeiroDoze={g.primeiro_mes_doze} />
+                  <FonteIpca g={g} />
+                </SecaoInflacao>
+            </Recolhido>
+            <Recolhido id="recolhido-areas" titulo="As 16 áreas lado a lado" resumo="A tabela das áreas, dos grupos e da diferença para o Brasil.">
+                <SecaoInflacao
+                  id="areas"
+                  titulo="As 16 áreas lado a lado"
+                  subtitulo={
+                    <>
+                      Variação em 12 meses até {mes} ({janela}), da maior para a menor, com o Brasil ({pct(br.geral.doze)} no índice geral) como referência. A ordem não diz
+                      se a inflação de uma área é alta ou baixa para quem mora nela.
+                    </>
+                  }
+                >
+                  <ComparacaoAreas areas={tela.areas} grupos={g.grupos} ultimoMes={g.ultimo_mes} />
+                  <figure className="min-w-0">
+                    <figcaption className="mb-2 text-sm text-carvao">
+                      Variação em 12 meses até {mesAno(g.ultimo_mes)}, em %, no índice geral e nos nove grupos, e a diferença do índice geral para o Brasil, em pontos percentuais
+                    </figcaption>
+                    <div className="relative overflow-x-auto border-y border-linha" tabIndex={0} role="region" aria-label="Tabela das 16 áreas e do Brasil">
+                      <table className="w-full min-w-[64rem] border-collapse text-sm [font-variant-numeric:tabular-nums]">
+                        <thead>
+                          <tr className="border-b border-linha text-left align-bottom">
+                            <th scope="col" className="px-2 py-2 font-normal text-carvao-muted">Área</th>
+                            <th scope="col" className="px-2 py-2 text-right font-normal text-carvao-muted">Índice geral</th>
+                            <th scope="col" className="px-2 py-2 text-right font-normal text-carvao-muted">Diferença para o Brasil</th>
+                            {g.grupos.map((gr) => (
+                              <th key={gr.id} scope="col" className="px-2 py-2 text-right font-normal text-carvao-muted">{gr.nome}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {[g.areas.find((a) => a.id === BRASIL)!, ...ordenadas].map((a) => {
+                            const u = g.ultimo[a.id];
+                            return (
+                              <tr key={a.id} className={`border-b border-linha last:border-b-0 ${a.id === BRASIL ? "bg-marfim" : ""}`}>
+                                <th scope="row" className="px-2 py-2 text-left font-normal text-carvao">{a.id === BRASIL ? "Brasil" : `${a.nome} (${a.uf})`}</th>
+                                <td className="px-2 py-2 text-right text-carvao">{pct(u.geral.doze)}</td>
+                                <td className="px-2 py-2 text-right text-carvao">{a.id === BRASIL ? "referência" : pp(u.geral.dif_brasil_pp, 2, true)}</td>
+                                {g.grupos.map((gr) => (
+                                  <td key={gr.id} className="px-2 py-2 text-right text-carvao">{pct(u.grupos[gr.id].doze)}</td>
+                                ))}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                    <p className="mt-2 text-xs leading-relaxed text-mineral">
+                      Em {mes}, a variação em 12 meses foi de {pct(g.ultimo[menor.id].geral.doze)} ({menor.nome}) a {pct(g.ultimo[maior.id].geral.doze)} ({maior.nome}). Regiões
+                      metropolitanas e municípios não são a mesma unidade: em Rio Branco, São Luís, Aracaju, Campo Grande, Goiânia e Brasília, o IBGE pesquisa só o município.
+                    </p>
+                  </figure>
+                  <FonteIpca g={g} extra="Diferença para o Brasil: variação da área menos a do Brasil, em pontos percentuais." />
+                </SecaoInflacao>
+            </Recolhido>
+            <Recolhido id="recolhido-itens" titulo="Os produtos e serviços que mais subiram e mais caíram" resumo="Os subitens com peso de pelo menos o mínimo da regra.">
+                <SecaoInflacao
+                  id="itens"
+                  titulo="Os produtos e serviços que mais subiram e mais caíram"
+                  subtitulo={
+                    <>
+                      Subitens do IPCA, a unidade mais detalhada da pesquisa, com a variação em 12 meses até {mes}, o peso no orçamento da área e a contribuição para a
+                      inflação dela, em pontos percentuais. Só entram os que pesam pelo menos {pct(g.regras.peso_minimo_destaque)} do orçamento, para que um item quase
+                      ausente das compras não apareça como destaque.
+                    </>
+                  }
+                >
+                  <Destaques porArea={destaques(g)} areas={nomes} grupos={g.grupos} ultimoMes={g.ultimo_mes} pesoMinimo={g.regras.peso_minimo_destaque} />
+                  <NotaInflacao>
+                    <p>
+                      Um item que subiu muito pode pesar pouco na inflação, e um item com alta pequena pode pesar muito: a contribuição ao lado de cada item mostra isso. Os
+                      alimentos item por item, com a cesta e a segurança alimentar, estão no painel{" "}
+                      <Link href={ROTA_COMIDA} prefetch={prefetchDoLink(ROTA_COMIDA)} className={link}>
+                        Comida no prato
+                        <SeloComConta href={ROTA_COMIDA} />
+                      </Link>
+                      .
+                    </p>
+                  </NotaInflacao>
+                  <FonteIpca g={g} extra="Contribuição: peso do subitem no primeiro mês da janela × variação em 12 meses ÷ 100." />
+                </SecaoInflacao>
+            </Recolhido>
+            <Recolhido id="recolhido-proximas" titulo="Para continuar" resumo="A comida, a conta de luz e o tanque.">
+                <SecaoInflacao id="proximas" titulo="Para continuar">
+                  <ProximasInflacao itens={[
+                    { href: ROTA_COMIDA, pergunta: "Por que a comida subiu?", motivo: "A inflação dos alimentos item por item, a cesta e a segurança alimentar dos domicílios, no painel principal da comida." },
+                    { href: "/setor-eletrico/conta-de-luz", pergunta: "Quanto custa a minha conta de luz?", motivo: "A tarifa da sua distribuidora e do que ela é feita; a energia elétrica é um dos itens de maior peso no IPCA." },
+                    { href: "/combustiveis", pergunta: "Quanto custa encher o tanque no meu estado?", motivo: "O preço médio do litro de gasolina, etanol e diesel por estado, pela pesquisa de preços da ANP." },
+                  ]} />
+                </SecaoInflacao>
+            </Recolhido>
+          </>
+        }
+        metodo={
+          <div id="metodo" className="space-y-8">
+            <p className="text-sm text-mineral">
+              IPCA até {mes}, divulgado pelo IBGE em {dataBr(g.fonte.divulgado_em)}
+              {proxima && <>; próxima divulgação em {dataBr(proxima.data)}, com {mesExtenso(proxima.referencia)}</>}. Captura em {dataBr(g.capturado_em)}.
             </p>
-          </div>
-          <p className="mt-4 text-sm text-mineral">
-            IPCA até {mes}, divulgado pelo IBGE em {dataBr(g.fonte.divulgado_em)}
-            {proxima && <>; próxima divulgação em {dataBr(proxima.data)}, com {mesExtenso(proxima.referencia)}</>}. Captura em {dataBr(g.capturado_em)}.
-          </p>
-        </div>
-
-        <section aria-label="Inflação na sua cidade" className="pb-8">
-          <InflacaoNaArea dados={tela} />
-        </section>
-
-        <SecaoInflacao
-          id="como-pesa"
-          rotulo="Artefato didático"
-          titulo="Como o IPCA pesa o seu orçamento"
-          subtitulo={<>A fatia de cada grupo no orçamento das famílias da pesquisa e quanto cada um contribuiu, em pontos percentuais, para a inflação de 12 meses até {mes}.</>}
-        >
-          <ComoPesa grupos={g.grupos} areas={artefato(g)} nomes={nomes} referencia={ref} />
-          <FonteIpca g={g} extra="Contribuição calculada pela Scrutiniums: peso do grupo no primeiro mês da janela × variação do grupo em 12 meses ÷ 100." />
-        </SecaoInflacao>
-
-        <SecaoInflacao
-          id="serie"
-          titulo="A inflação mês a mês desde 2020"
-          subtitulo={<>Variação percentual do IPCA índice geral, em 12 meses ou no mês, na área escolhida e no Brasil, desde o início da tabela 7060 até {mes}.</>}
-        >
-          <SerieArea meses={g.meses} porArea={series(g).porArea} areas={nomes} primeiroDoze={g.primeiro_mes_doze} />
-          <FonteIpca g={g} />
-        </SecaoInflacao>
-
-        <SecaoInflacao
-          id="areas"
-          titulo="As 16 áreas lado a lado"
-          subtitulo={
-            <>
-              Variação em 12 meses até {mes} ({janela}), da maior para a menor, com o Brasil ({pct(br.geral.doze)} no índice geral) como referência. A ordem não diz
-              se a inflação de uma área é alta ou baixa para quem mora nela.
-            </>
-          }
-        >
-          <ComparacaoAreas areas={tela.areas} grupos={g.grupos} ultimoMes={g.ultimo_mes} />
-          <figure className="min-w-0">
-            <figcaption className="mb-2 text-sm text-carvao">
-              Variação em 12 meses até {mesAno(g.ultimo_mes)}, em %, no índice geral e nos nove grupos, e a diferença do índice geral para o Brasil, em pontos percentuais
-            </figcaption>
-            <div className="relative overflow-x-auto border-y border-linha" tabIndex={0} role="region" aria-label="Tabela das 16 áreas e do Brasil">
-              <table className="w-full min-w-[64rem] border-collapse text-sm [font-variant-numeric:tabular-nums]">
-                <thead>
-                  <tr className="border-b border-linha text-left align-bottom">
-                    <th scope="col" className="px-2 py-2 font-normal text-carvao-muted">Área</th>
-                    <th scope="col" className="px-2 py-2 text-right font-normal text-carvao-muted">Índice geral</th>
-                    <th scope="col" className="px-2 py-2 text-right font-normal text-carvao-muted">Diferença para o Brasil</th>
-                    {g.grupos.map((gr) => (
-                      <th key={gr.id} scope="col" className="px-2 py-2 text-right font-normal text-carvao-muted">{gr.nome}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {[g.areas.find((a) => a.id === BRASIL)!, ...ordenadas].map((a) => {
-                    const u = g.ultimo[a.id];
-                    return (
-                      <tr key={a.id} className={`border-b border-linha last:border-b-0 ${a.id === BRASIL ? "bg-marfim" : ""}`}>
-                        <th scope="row" className="px-2 py-2 text-left font-normal text-carvao">{a.id === BRASIL ? "Brasil" : `${a.nome} (${a.uf})`}</th>
-                        <td className="px-2 py-2 text-right text-carvao">{pct(u.geral.doze)}</td>
-                        <td className="px-2 py-2 text-right text-carvao">{a.id === BRASIL ? "referência" : pp(u.geral.dif_brasil_pp, 2, true)}</td>
-                        {g.grupos.map((gr) => (
-                          <td key={gr.id} className="px-2 py-2 text-right text-carvao">{pct(u.grupos[gr.id].doze)}</td>
-                        ))}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-            <p className="mt-2 text-xs leading-relaxed text-mineral">
-              Em {mes}, a variação em 12 meses foi de {pct(g.ultimo[menor.id].geral.doze)} ({menor.nome}) a {pct(g.ultimo[maior.id].geral.doze)} ({maior.nome}). Regiões
-              metropolitanas e municípios não são a mesma unidade: em Rio Branco, São Luís, Aracaju, Campo Grande, Goiânia e Brasília, o IBGE pesquisa só o município.
-            </p>
-          </figure>
-          <FonteIpca g={g} extra="Diferença para o Brasil: variação da área menos a do Brasil, em pontos percentuais." />
-        </SecaoInflacao>
-
-        <SecaoInflacao
-          id="itens"
-          titulo="Os produtos e serviços que mais subiram e mais caíram"
-          subtitulo={
-            <>
-              Subitens do IPCA, a unidade mais detalhada da pesquisa, com a variação em 12 meses até {mes}, o peso no orçamento da área e a contribuição para a
-              inflação dela, em pontos percentuais. Só entram os que pesam pelo menos {pct(g.regras.peso_minimo_destaque)} do orçamento, para que um item quase
-              ausente das compras não apareça como destaque.
-            </>
-          }
-        >
-          <Destaques porArea={destaques(g)} areas={nomes} grupos={g.grupos} ultimoMes={g.ultimo_mes} pesoMinimo={g.regras.peso_minimo_destaque} />
-          <NotaInflacao>
-            <p>
-              Um item que subiu muito pode pesar pouco na inflação, e um item com alta pequena pode pesar muito: a contribuição ao lado de cada item mostra isso. Os
-              alimentos item por item, com a cesta e a segurança alimentar, estão no painel{" "}
-              <Link href={ROTA_COMIDA} prefetch={prefetchDoLink(ROTA_COMIDA)} className={link}>
-                Comida no prato
-                <SeloComConta href={ROTA_COMIDA} />
-              </Link>
-              .
-            </p>
-          </NotaInflacao>
-          <FonteIpca g={g} extra="Contribuição: peso do subitem no primeiro mês da janela × variação em 12 meses ÷ 100." />
-        </SecaoInflacao>
-
-        <section id="metodo" aria-labelledby="metodo-h" className="familias-secao scroll-mt-24 border-t border-linha py-8 md:py-10">
-          <details className="group">
-            <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
-              <h2 id="metodo-h" className="ed-h2 font-serif text-carvao">Método, fontes, notas e downloads</h2>
-              <span aria-hidden="true" className="text-mineral transition-transform group-open:rotate-180">▾</span>
-            </summary>
-            <div className="mt-6 space-y-8">
               <div className="max-w-prose2 space-y-3 text-sm leading-relaxed text-carvao">
                 <h3 className="font-serif text-xl">Como ler cada número</h3>
                 <p><strong className="font-medium">IPCA:</strong> Índice Nacional de Preços ao Consumidor Amplo, a inflação oficial do país, calculada pelo IBGE. Mede a variação dos preços de uma cesta de produtos e serviços consumidos pelas famílias com renda de 1 a 40 salários mínimos que moram nas áreas urbanas pesquisadas.</p>
@@ -230,17 +268,9 @@ export default function InflacaoPage() {
                 <p className="max-w-prose2 text-xs leading-relaxed text-mineral">Separador ponto e vírgula, vírgula decimal, codificação UTF-8. Códigos de área e de categoria como no SIDRA.</p>
               </div>
             </div>
-          </details>
-        </section>
-
-        <SecaoInflacao id="proximas" titulo="Para continuar">
-          <ProximasInflacao itens={[
-            { href: ROTA_COMIDA, pergunta: "Por que a comida subiu?", motivo: "A inflação dos alimentos item por item, a cesta e a segurança alimentar dos domicílios, no painel principal da comida." },
-            { href: "/setor-eletrico/conta-de-luz", pergunta: "Quanto custa a minha conta de luz?", motivo: "A tarifa da sua distribuidora e do que ela é feita; a energia elétrica é um dos itens de maior peso no IPCA." },
-            { href: "/combustiveis", pergunta: "Quanto custa encher o tanque no meu estado?", motivo: "O preço médio do litro de gasolina, etanol e diesel por estado, pela pesquisa de preços da ANP." },
-          ]} />
-        </SecaoInflacao>
-      </main>
+        }
+        frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/custo-de-vida"]} variante="metodo" />}
+      />
     </>
   );
 }
