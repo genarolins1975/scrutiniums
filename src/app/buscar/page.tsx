@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { PublicHeader } from "@/components/layout/PublicHeader";
+import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { ListaResultados } from "@/components/busca/ListaResultados";
 import { MedeBusca } from "@/components/busca/MedeBusca";
@@ -42,7 +42,8 @@ export default async function BuscarPage({ searchParams }: { searchParams: { q?:
 
   return (
     <div className="flex min-h-screen flex-col bg-marfim">
-      <PublicHeader />
+      {/* a sessão já lida acima vale para o cabeçalho: uma consulta ao banco por página */}
+      <PublicHeaderView authenticated={comSessao} />
       <main id="conteudo" className="mx-auto w-full max-w-page flex-1 px-4 py-10 sm:px-6 md:py-14">
         <h1 className="font-serif text-3xl leading-tight text-carvao md:text-4xl">{q ? <>Resultados para <q>{q}</q></> : "Buscar na Scrutiniums"}</h1>
         <form action="/buscar" method="get" role="search" className="mt-6 flex max-w-2xl border border-carvao bg-superficie">
