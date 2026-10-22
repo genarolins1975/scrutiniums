@@ -417,9 +417,9 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         const trechos = filhos(anchor).filter((e): e is Elemento => "tagName" in e);
         expect(trechos).toHaveLength(4);
         const spans = filhos(trechos[3]).filter((e): e is Elemento => "tagName" in e);
-        expect(spans).toHaveLength(3);
-        const valor = unico(spans[2], (e) => e !== spans[2] && e.tagName === "span", "valor da contagem");
-        return { anchor, imagem: trechos[0], nome: spans[1], contagem: spans[2], valor };
+        expect(spans, "nome e contagem; sem numeração desde 22/10/2026").toHaveLength(2);
+        const valor = unico(spans[1], (e) => e !== spans[1] && e.tagName === "span", "valor da contagem");
+        return { anchor, imagem: trechos[0], nome: spans[0], contagem: spans[1], valor };
       };
       const substituirTexto = (no: Elemento, transformar: (valor: string) => string) => {
         const partes = filhos(no).filter((filho) => "value" in filho && filho.value.trim() !== "");
