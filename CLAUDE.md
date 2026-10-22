@@ -25,6 +25,7 @@ Neste projeto, todo trabalho de interface usa sempre, além da skill de layout, 
 - Testes do pipeline: `python3 -m unittest discover -s pipeline/tests -t .`.
 - Inventário de tradução (arquivo gerado, regenerar em todo conflito): `node scripts/cobertura-i18n.mjs`.
 - Golds derivadas do Setor Elétrico (`public/energia/gold/{metricas,arquivos,manifesto}.json`): `python3 pipeline/energia/executar_modulo.py <módulo> --sem-coleta`.
+- Evidências de página para o PR, sobre o build existente: `npm run evidencias -- --rotas /a /b --saida docs/ux-AAAA-MM-DD/<tema>` (capturas a 390, 768 e 1440 px com e sem sessão, cromo, axe, erros de console e requisições que caíram no login, com a tabela em `evidencias.md`).
 
 ## Idioma e tom
 

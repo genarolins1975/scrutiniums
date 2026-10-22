@@ -8,6 +8,7 @@
     "prebuild": "node scripts/materializar-assistencia.mjs && node scripts/materializar-seguranca-alimentar.mjs && node scripts/minify-obs.mjs",
     "build": "next build",
     "start": "next start",
+    "evidencias": "node scripts/evidencias.mjs",
     "lint": "next lint",
     "pretest": "node scripts/materializar-assistencia.mjs && node scripts/materializar-seguranca-alimentar.mjs && node scripts/materializar-trabalho-renda.mjs",
     "test": "vitest run",
