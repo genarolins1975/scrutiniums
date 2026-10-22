@@ -127,9 +127,25 @@ describe("fecho de importações", () => {
   });
 });
 
+/** Caminhos montados em pedaços, como em pipeline/tests/test_podar_cache.py e test_energia_meta.py. */
+const MONTADOS: Arvore = {
+  "pipeline/tests/test_montados.py": [
+    `SCRIPT = os.path.join(RAIZ, "scripts", "podar_cache.sh")`,
+    `WF = os.path.join(os.path.dirname(__file__), "..", "..", ".github", "workflows")`,
+    `texto = (RAIZ / ".github/workflows" / workflow).read_text()`,
+    `DOC = RAIZ / "docs" / "observatorios" / "energia" / nome`,
+    `PAG = os.path.join(raiz, "src", "app", rota, "page.tsx")`,
+    `FIX = os.path.join(RAIZ, "src", "tests", "x.test.ts")`,
+    `SNAP = os.path.join(RAIZ, "src", "lib", "contas", f"{nome}.json")`,
+  ].join("\n"),
+};
+
 describe("literais de caminho nos arquivos Python", () => {
   it("colhe src/, config/ e docs/ só de .py, descartando reticências e fixtures em src/tests/", () => {
     expect(literaisPython(arvore(REPO))).toEqual(["config/atualizacao", "docs/obee/resultados", "src/lib/frescor/limiares.json"]);
+  });
+  it("colhe também caminhos montados com os.path.join e Path, sem prefixo largo em src/", () => {
+    expect(literaisPython(arvore(MONTADOS))).toEqual([".github/workflows", "docs/observatorios/energia", "scripts/podar_cache.sh", "src/lib/contas"]);
   });
 });
 
@@ -161,6 +177,24 @@ describe("classificação", () => {
   });
   it("arquivo de src/ citado por um teste Python liga Python além da interface", () => {
     expect(saidas(["src/lib/frescor/limiares.json"])).toEqual({ ...NADA, interface: true, i18n: true, python: true, judiciario: true });
+  });
+  it("script de shell, workflow e documento lidos por teste Python em caminho montado ligam Python", () => {
+    const ctx = contexto({ ...REPO, ...MONTADOS });
+    expect(saidas(["scripts/podar_cache.sh"], ctx)).toEqual({ ...NADA, python: true });
+    expect(saidas([".github/workflows/atualizar-dados.yml"], ctx)).toEqual({ ...NADA, python: true });
+    expect(saidas(["docs/observatorios/energia/modulos/pld.md"], ctx)).toEqual({ ...NADA, python: true });
+    expect(saidas(["src/app/saneamento/page.tsx"], ctx)).toEqual({ ...NADA, interface: true, i18n: true });
+  });
+  it("arquivo implícito do Next removido de um segmento do tema liga a verificação, mesmo fora do checkout", () => {
+    // nenhum destes existe na árvore: é o caso de um PR que só os remove
+    expect(saidas(["src/app/agronegocio/layout.tsx"])).toEqual({ ...NADA, interface: true, i18n: true, agro: true });
+    expect(saidas(["src/app/agronegocio/error.tsx"])).toEqual({ ...NADA, interface: true, i18n: true, agro: true });
+    expect(saidas(["src/app/api/agro/antigo/route.ts"])).toEqual({ ...NADA, interface: true, i18n: true, agro: true });
+    expect(saidas(["src/app/eficiencia-estatal/judiciario/loading.tsx"])).toEqual({ ...NADA, interface: true, i18n: true, judiciario: true });
+    // layout da raiz: está acima de tudo o que as duas verificações abrem
+    expect(saidas(["src/app/template.tsx"])).toEqual({ ...NADA, interface: true, i18n: true, judiciario: true, agro: true });
+    // segmento de outro tema continua fora
+    expect(saidas(["src/app/setor-eletrico/layout.tsx"])).toEqual({ ...NADA, interface: true, i18n: true });
   });
   it("mudança só de documentação de tradução liga só i18n; outra documentação não liga nada", () => {
     expect(saidas(["docs/i18n/PLANO.md", "config/i18n-inventario.json"])).toEqual({ ...NADA, i18n: true, python: true });
@@ -220,6 +254,16 @@ describe("no repositório real", () => {
     const total = fechoDeImportacoes(["src/app", "src/components", "src/lib", "src/i18n", "src/middleware.ts"], fs).size;
     expect(fechos.judiciario.size).toBeLessThan(total / 2);
     expect(fechos.agro.size).toBeLessThan(total / 2);
+  });
+  it("scripts, workflows e páginas que os testes Python leem por caminho montado ligam o job Python", () => {
+    const literais = literaisPython(fs);
+    for (const l of ["scripts/podar_cache.sh", "scripts/estado_duravel.sh", ".github/workflows", "docs/observatorios/energia/avaliacao"]) {
+      expect(literais, l).toContain(l);
+    }
+    const ctx = { fechos, literais };
+    // test_energia_visao confere âncoras nas páginas do Setor Elétrico
+    expect(classificar(["src/app/setor-eletrico/pld/page.tsx"], ctx).saidas.python).toBe(true);
+    expect(classificar(["src/app/saneamento/page.tsx"], ctx).saidas.python).toBe(false);
   });
   it("os caminhos de src/ que os testes Python leem de verdade estão entre os literais colhidos", () => {
     // Alguns literais são fixtures sintéticas (src/lib/leitor.ts em test_publicar_gold): colher a mais só liga o job a mais.

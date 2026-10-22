@@ -17,9 +17,10 @@
  *   barra comum e a política de acesso das raízes). Um componente novo importado pelo
  *   cabeçalho entra no fecho sozinho; uma lista escrita à mão ficaria velha em silêncio.
  * - `python`: pipeline, pesquisa, dados, config, docs/obee e qualquer `.py`; dados em
- *   public/ (os testes Python conferem a gold publicada); e os caminhos de src/, config/
- *   e docs/ citados literalmente pelos próprios testes Python (test_vigilancia_frescor lê
- *   src/lib/frescor/limiares.json, test_eficiencia lê src/lib/eficiencia/indice-v4.ts).
+ *   public/ (os testes Python conferem a gold publicada); e os caminhos que os próprios
+ *   arquivos Python leem, citados por inteiro ou montados com os.path.join e Path
+ *   (test_vigilancia_frescor lê src/lib/frescor/limiares.json, test_podar_cache lê
+ *   scripts/podar_cache.sh e os workflows).
  * - `interface` e `i18n`: informativas por enquanto (os jobs estático e Vitest sempre
  *   rodam); ficam no resumo do job para leitura e para uso futuro.
  * - Mudança no próprio workflow, em scripts/ci ou nos arquivos de que o build depende
@@ -176,20 +177,73 @@ export function fechoDeImportacoes(raizes, fs) {
   return fecho;
 }
 
+/** Pastas da raiz do repositório que um arquivo Python pode ler. */
+const RAIZES_LIDAS_POR_PYTHON = ["src", "config", "docs", "scripts", "seed", "public", "data", ".github"];
+
+/** Argumentos de nível superior de uma chamada, a partir do parêntese de abertura. */
+function argumentosDaChamada(texto, abre) {
+  const args = [];
+  let nivel = 0, atual = "", aspas = null;
+  for (let i = abre + 1; i < texto.length; i++) {
+    const c = texto[i];
+    if (aspas) { atual += c; if (c === aspas && texto[i - 1] !== "\\") aspas = null; continue; }
+    if (c === '"' || c === "'") { aspas = c; atual += c; continue; }
+    if (c === "(" || c === "[" || c === "{") nivel++;
+    if (c === ")" || c === "]" || c === "}") { if (nivel === 0) { args.push(atual.trim()); return args; } nivel--; }
+    if (c === "," && nivel === 0) { args.push(atual.trim()); atual = ""; continue; }
+    atual += c;
+  }
+  return args;
+}
+
+/** Junta os segmentos literais do começo de uma cadeia; para no primeiro que não é literal fixo. */
+function juntarSegmentos(partes) {
+  const segmentos = [];
+  for (const parte of partes) {
+    const m = parte.match(/^[rb]?(["'])([^"'{}\n]+)\1$/);
+    if (!m) break;
+    segmentos.push(...m[2].split("/").filter((s) => s && s !== "." && s !== ".."));
+  }
+  return segmentos.join("/");
+}
+
 /**
- * Caminhos de src/, config/ e docs/ citados literalmente pelos arquivos Python do repositório.
- * Nomes em src/tests/ ficam de fora: nos testes Python eles são fixtures sintéticas
+ * Caminhos do repositório que os arquivos Python leem: os citados por inteiro ("src/lib/x.json") e os montados em
+ * pedaços, com os.path.join(RAIZ, "scripts", "podar_cache.sh") ou RAIZ / "docs" / "observatorios". Um caminho montado
+ * entra quando tem ao menos pasta e subpasta (ou arquivo) numa das raízes lidas, e três níveis em src/: "src" ou
+ * "src/app" sozinhos ligariam o job Python em toda mudança de interface. Nomes em src/tests/ ficam de fora: nos testes Python eles são fixtures sintéticas
  * (test_publicar_gold, test_testes_reprovados), e o job Python não executa o Vitest.
+ *
+ * Até 22/10/2026 só os literais inteiros de src/, config/ e docs/ eram colhidos, e uma mudança só em
+ * scripts/podar_cache.sh, lido por pipeline/tests/test_podar_cache.py pelo os.path.join, não ligava o job Python
+ * (achado de revisão no PR do CI em paralelo).
  */
 export function literaisPython(fs) {
   const literais = new Set();
-  const re = /['"]((?:src|config|docs)\/[A-Za-z0-9_][A-Za-z0-9_./-]*)/g;
+  const raizes = RAIZES_LIDAS_POR_PYTHON.map((r) => r.replace(".", "\\.")).join("|");
+  const inteiro = new RegExp(`['"]((?:${raizes})\\/[A-Za-z0-9_][A-Za-z0-9_./-]*)`, "g");
+  const cadeiaPath = /((?:\/\s*[rb]?["'][^"'{}\n]+["']\s*)+)/g;
+  const aceitar = (caminho) => {
+    const [primeiro, segundo, terceiro] = caminho.split("/");
+    if (!segundo || !RAIZES_LIDAS_POR_PYTHON.includes(primeiro)) return;
+    // os.path.join(raiz, "src", "app", rota) só diz "src/app": ligaria o job Python em toda página. As rotas que
+    // test_energia_visao abre ficam em src/app/setor-eletrico, colhido por inteiro de scripts/energia_inventario_visoes.py.
+    if (primeiro === "src" && !terceiro) return;
+    if (caminho.includes("...") || caminho.startsWith("src/tests/") || caminho === "src/tests") return;
+    literais.add(caminho);
+  };
   for (const pasta of PASTAS_PYTHON) {
     if (!fs.ehPasta(pasta)) continue;
     for (const arquivo of arquivosDaPasta(pasta, fs)) {
       if (!arquivo.endsWith(".py")) continue;
-      for (const m of fs.ler(arquivo).matchAll(re)) {
-        if (!m[1].includes("...") && !m[1].startsWith("src/tests/")) literais.add(m[1]);
+      const texto = fs.ler(arquivo);
+      for (const m of texto.matchAll(inteiro)) aceitar(m[1]);
+      for (const m of texto.matchAll(/os\.path\.join\(/g)) {
+        const args = argumentosDaChamada(texto, m.index + m[0].length - 1);
+        aceitar(juntarSegmentos(args.slice(1)));
+      }
+      for (const m of texto.matchAll(cadeiaPath)) {
+        aceitar(juntarSegmentos(m[1].split("/").map((p) => p.trim()).filter(Boolean)));
       }
     }
   }
@@ -197,6 +251,22 @@ export function literaisPython(fs) {
 }
 
 const comecaCom = (arquivo, prefixos) => prefixos.some((p) => (p.endsWith("/") ? arquivo.startsWith(p) : arquivo === p));
+
+/**
+ * O Next liga layout, template, loading, error, not-found e default ao segmento pelo lugar, sem import, e um handler
+ * de rota vale por existir na pasta. Removidos, não estão no checkout do head nem no fecho, mas mudam o que a
+ * verificação percorre. Por isso um arquivo de src/app dentro de uma raiz da verificação, ou um arquivo de segmento
+ * numa pasta que contém arquivos do fecho, liga a verificação mesmo que não exista mais (achado de revisão no PR do
+ * CI em paralelo, 22/10/2026).
+ */
+function alcancaPeloLugar(arquivo, nome, fecho) {
+  if (!arquivo.startsWith("src/app/")) return false;
+  if (VERIFICACOES[nome].raizes.some((r) => arquivo === r || arquivo.startsWith(r + "/"))) return true;
+  if (!SEGMENTO_NEXT.includes(posix.basename(arquivo).replace(/\.[^.]+$/, ""))) return false;
+  const pasta = posix.dirname(arquivo) + "/";
+  for (const f of fecho) if (f.startsWith(pasta)) return true;
+  return false;
+}
 const ehDadoPublico = (arquivo) => arquivo.startsWith("public/") && !EXTENSOES_APRESENTACAO.has(posix.extname(arquivo).toLowerCase());
 
 /**
@@ -218,7 +288,8 @@ export function classificar(alterados, contexto) {
       || arquivo.startsWith("docs/obee/") || arquivo.startsWith("config/") || ehDadoPublico(arquivo)
       || contexto.literais.some((l) => arquivo.startsWith(l))) liga("python", arquivo);
     for (const nome of ["judiciario", "agro"]) {
-      if (contexto.fechos[nome].has(arquivo) || comecaCom(arquivo, VERIFICACOES[nome].caminhos)) liga(nome, arquivo);
+      if (contexto.fechos[nome].has(arquivo) || comecaCom(arquivo, VERIFICACOES[nome].caminhos)
+        || alcancaPeloLugar(arquivo, nome, contexto.fechos[nome])) liga(nome, arquivo);
     }
   }
   const saidas = Object.fromEntries(nomes.map((n) => [n, motivos[n].length > 0]));
