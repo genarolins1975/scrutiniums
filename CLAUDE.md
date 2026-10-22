@@ -23,7 +23,7 @@ Neste projeto, todo trabalho de interface usa sempre, além da skill de layout, 
 
 - Testes da interface: `npx vitest run` (os de navegador dependem do Chromium do Playwright); tipos: `npx tsc --noEmit`; lint: `npm run lint`; build: `npm run build`.
 - Testes do pipeline: `python3 -m unittest discover -s pipeline/tests -t .`.
-- Inventário de tradução (arquivo gerado, regenerar em todo conflito): `node scripts/cobertura-i18n.mjs`.
+- Inventário de tradução: `node scripts/cobertura-i18n.mjs --check` (gera e valida; o relatório não é versionado desde 22/10/2026; em conflito "modificado contra apagado" de `docs/i18n/cobertura.json`, apagar).
 - Golds derivadas do Setor Elétrico (`public/energia/gold/{metricas,arquivos,manifesto}.json`): `python3 pipeline/energia/executar_modulo.py <módulo> --sem-coleta`.
 
 ## Idioma e tom

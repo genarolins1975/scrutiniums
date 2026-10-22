@@ -103,7 +103,7 @@ O relatório versionado agrupa fontes de código da plataforma e de cada observa
 
 O estado de rota `parcialmente_traduzido` reúne regiões com chaves inglesas declaradas e regiões portuguesas marcadas. Não equivale a uma página totalmente traduzida. A declaração de uso não é contada como verificação de HTML pelo gerador; a prova de DOM é uma etapa separada do CI.
 
-Campos técnicos como IDs, códigos, datas de máquina e valores não são traduções; a classificação precisa justificar sua exclusão. Uma área não catalogada não pode aparecer como 100% traduzida. Rotas têm estado próprio de existência, acesso e tradução, incluindo rotas dinâmicas e a SPA. O CI deve rejeitar diferença entre `docs/i18n/cobertura.json` e a saída atual do script.
+Campos técnicos como IDs, códigos, datas de máquina e valores não são traduções; a classificação precisa justificar sua exclusão. Uma área não catalogada não pode aparecer como 100% traduzida. Rotas têm estado próprio de existência, acesso e tradução, incluindo rotas dinâmicas e a SPA. O CI deve rejeitar inventário que o script não consiga gerar e validar (`--check`); o relatório deixou de ser versionado em 22/10/2026 e sai como artefato do CI.
 
 ## Pendências e condições de avanço
 

@@ -1,6 +1,17 @@
 /** Inventário inicial: candidatos textuais não são traduções nem chaves catalogadas.
- * Uso: node scripts/cobertura-i18n.mjs [--check | --stdout | --gold]
- * --check só lê fontes de código; --gold inspeciona os dados sem gravar o relatório versionado.
+ * Uso: node scripts/cobertura-i18n.mjs [--check | --stdout | --gold | --comparar <arquivo>]
+ *   sem argumento  grava o relatório de código em docs/i18n/cobertura.json (local, gitignorado)
+ *   --check        gera o relatório em memória e aplica todas as validações; não lê nem grava arquivo
+ *   --stdout       imprime o relatório de código
+ *   --comparar     falha se o relatório atual diferir, byte a byte, do arquivo informado
+ *   --gold         diagnóstico dos dados, sem gravar nada
+ *
+ * Até 22/10/2026 o relatório era versionado e o --check comparava os bytes com ele. Toda mudança
+ * de texto em src/ exigia regenerá-lo, e todo merge entre branches conflitava nele: 34 dos 300
+ * últimos commits do main eram só "Inventário de tradução regenerado". As validações (fonte nova
+ * sem domínio, sintaxe não analisável, catálogo, glossário, rotas, terminologia e uso declarados)
+ * moram na geração e continuam no CI pelo --check; o relatório para leitura sai como artefato do
+ * CI e pelo --stdout.
  */
 import { createHash } from "node:crypto";
 import { existsSync, lstatSync, mkdirSync, readFileSync, realpathSync, statSync, writeFileSync } from "node:fs";
@@ -320,23 +331,31 @@ export function serializarRelatorio(relatorio) {
   return JSON.stringify(relatorio, null, 2) + "\n";
 }
 
+const USO = "Uso: node scripts/cobertura-i18n.mjs [--check | --stdout | --gold | --comparar <arquivo>]";
+
 export function executar(argumentos, raiz = RAIZ) {
-  if (argumentos.length > 1 || argumentos.some((a) => !["--check", "--stdout", "--gold"].includes(a))) {
-    throw new Error("Uso: node scripts/cobertura-i18n.mjs [--check | --stdout | --gold]");
+  const [modo, ...resto] = argumentos;
+  const simples = argumentos.length <= 1 && (modo === undefined || ["--check", "--stdout", "--gold"].includes(modo));
+  const comparar = modo === "--comparar" && resto.length === 1 && !resto[0].startsWith("--");
+  if (!simples && !comparar) throw new Error(USO);
+  if (modo === "--gold") return serializarRelatorio(gerarCoberturaGold(raiz));
+  const relatorio = gerarCobertura(raiz);
+  const texto = serializarRelatorio(relatorio);
+  if (modo === "--stdout") return texto;
+  if (modo === "--check") {
+    return `Cobertura i18n gerada e validada a partir de ${relatorio.escopo.arquivos_analisados} fontes de código.\n`;
   }
-  if (argumentos.includes("--gold")) return serializarRelatorio(gerarCoberturaGold(raiz));
-  const texto = serializarRelatorio(gerarCobertura(raiz));
-  const destino = join(raiz, RELATORIO);
-  if (argumentos.includes("--stdout")) return texto;
-  if (argumentos.includes("--check")) {
-    if (!existsSync(destino) || readFileSync(destino, "utf8") !== texto) {
-      throw new Error("Cobertura desatualizada. Execute node scripts/cobertura-i18n.mjs e versione docs/i18n/cobertura.json.");
+  if (comparar) {
+    const alvo = resolve(raiz, resto[0]);
+    if (!existsSync(alvo) || readFileSync(alvo, "utf8") !== texto) {
+      throw new Error(`Cobertura desatualizada em relação a ${resto[0]}. Para regravar o relatório local: node scripts/cobertura-i18n.mjs.`);
     }
-    return "Cobertura i18n confere com o inventário atual.\n";
+    return `Cobertura i18n confere com ${resto[0]}.\n`;
   }
+  const destino = join(raiz, RELATORIO);
   mkdirSync(dirname(destino), { recursive: true });
   writeFileSync(destino, texto);
-  return `Relatório gravado em ${RELATORIO}.\n`;
+  return `Relatório gravado em ${RELATORIO} (local, fora do git).\n`;
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

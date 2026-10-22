@@ -137,8 +137,20 @@ jobs:
           if-no-files-found: ignore
 
       - name: Cobertura bilíngue confere com as fontes de código
-        # Não depende da gold nem de saídas dos materializadores.
+        # Não depende da gold nem de saídas dos materializadores. Gera o inventário e aplica
+        # todas as validações; desde 22/10/2026 não compara com arquivo versionado.
         run: node scripts/cobertura-i18n.mjs --check
+
+      - name: Relatório de cobertura bilíngue para leitura
+        # O relatório deixou de ser versionado (conflitava em quase todo merge) e sai como artefato.
+        run: node scripts/cobertura-i18n.mjs --stdout > "$RUNNER_TEMP/cobertura-i18n.json"
+
+      - name: Publicar o relatório de cobertura bilíngue
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-i18n
+          path: ${{ runner.temp }}/cobertura-i18n.json
+          if-no-files-found: error
 
       - name: Testes (inclui a verificação obrigatória do HTML gerado)
         # EXIGIR_BUILD_HTML=1 faz src/tests/html-gerado.test.ts reprovar se o build, uma rota

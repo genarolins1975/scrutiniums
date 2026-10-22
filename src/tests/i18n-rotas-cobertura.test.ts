@@ -160,18 +160,18 @@ describe("irmãs literais declaradas no inventário", () => {
     expect(() => gerarCobertura(raiz)).toThrow("precisa integrar o catálogo");
   });
 
-  it("assina mudanças em cada irmã sem regravar o relatório durante --check", () => {
+  it("assina mudanças em cada irmã sem regravar o relatório durante --comparar", () => {
     const raiz = fixture();
     executar([], raiz);
     const original = readFileSync(join(raiz, RELATORIO));
     for (const path of [PT, EN]) {
       const fonte = readFileSync(join(raiz, path), "utf8");
       escrever(raiz, path, fonte + "\n// alteração sintética\n");
-      expect(() => executar(["--check"], raiz)).toThrow("desatualizada");
+      expect(() => executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toThrow("desatualizada");
       expect(readFileSync(join(raiz, RELATORIO))).toEqual(original);
       escrever(raiz, path, fonte);
     }
-    expect(executar(["--check"], raiz)).toContain("confere");
+    expect(executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toContain("confere");
   });
 
   it("mantém runtime e inventário com os mesmos pares e estados", () => {

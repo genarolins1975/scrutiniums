@@ -8,6 +8,10 @@ node_modules
 # Dados do pipeline (gerados em CI; não versionados na raiz)
 /data/
 
+# Inventário de tradução: gerado das fontes por scripts/cobertura-i18n.mjs. Versionado até 22/10/2026,
+# conflitava em quase todo merge; o CI o gera e valida (--check) e o publica como artefato.
+/docs/i18n/cobertura.json
+
 # Gerado no prebuild (scripts/minify-obs.mjs) a partir do app.js canônico
 /public/obs/app.min.js
 /public/obs/app-municipal.min.js
