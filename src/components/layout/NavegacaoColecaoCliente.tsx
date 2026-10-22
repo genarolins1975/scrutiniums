@@ -96,6 +96,8 @@ export function NavegacaoColecaoCliente({
               {atalho(k)}
             </li>
           ))}
+          {/* as ações (o "Sair" da conta) também vêm no fim da faixa no celular, sem uma linha só para elas */}
+          {acoes && <li className="flex shrink-0 sm:hidden">{acoes}</li>}
           {nav.estado && (
             <li className="flex shrink-0 items-center sm:hidden">
               <span className="rotulo px-3 text-mineral">{nav.estado}</span>
@@ -127,7 +129,6 @@ export function NavegacaoColecaoCliente({
           </div>
         )}
       </div>
-      {acoes && <div className="nav-colecao-caixa flex justify-end border-t border-linha sm:hidden">{acoes}</div>}
       {subpaginas && corrente && (
         <div className="border-t border-linha bg-papel">
           <div className="nav-colecao-caixa">

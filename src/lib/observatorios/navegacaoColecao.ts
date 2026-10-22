@@ -388,6 +388,21 @@ export function navegacaoDoObservatorio(id: "territorio-e-clima"): NavegacaoDaCo
   return { id, nome: o.nomeCurto, tipo: "observatorio", acento: o.acento, ...territorio() };
 }
 
+/**
+ * Navegação da conta (/app: a escolha do painel, a conta e a administração), no lugar do antigo cabeçalho de foco. Não é
+ * coleção: não tem "Início" nem consulta pessoal; o "Sair" vem como ação, porque é um formulário, não um link.
+ */
+export function navegacaoDaConta(admin: boolean): NavegacaoDaColecao {
+  return {
+    id: "conta",
+    nome: "Conta",
+    tipo: "conta",
+    acento: "bronze",
+    itens: [pagina("Encontre o painel", "/app/observatorios"), pagina("Conta", "/app/conta"), ...(admin ? [pagina("Admin", "/app/admin")] : [])],
+    atalhos: {},
+  };
+}
+
 /** Os ids das 28 coleções, na ordem do registro. */
 export function idsDasColecoes(): string[] {
   return OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => c.id));

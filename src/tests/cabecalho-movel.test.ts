@@ -147,8 +147,7 @@ describe("barra comum da plataforma nas entradas dos observatórios", () => {
     const permitidos = [
       "src/components/ui/Logo.tsx",
       "src/components/layout/BarraPlataforma.tsx",
-      // páginas de foco da conta, rodapé, acesso e cadastro: fora dos observatórios
-      "src/components/layout/FocoHeader.tsx",
+      // rodapé, acesso e cadastro: fora dos observatórios (as páginas da conta usam a barra comum desde a Iniciativa 2)
       "src/components/layout/Footer.tsx",
       "src/components/home/SecaoAcesso.tsx",
       "src/app/entrar/page.tsx",
