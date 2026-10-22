@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Numero } from "@/components/observatorios/EntradaObservatorio";
+import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
+import { NumeroEscala } from "@/components/observatorios/NumeroEscala";
 import type { EstagioServico, TemaServico } from "@/lib/observatorios/entradas/servicos";
 
 const ESTAGIOS = [
@@ -15,7 +16,7 @@ function Estagio({ e }: Readonly<{ e: EstagioServico }>) {
       {e.numero && (
         <div className="mt-3 border-t border-linha pt-3">
           <span className="block text-xs leading-snug text-carvao-muted">{e.numero.rotulo}</span>
-          <span className="mt-1 block"><Numero n={e.numero} /></span>
+          <span className="mt-1 block"><NumeroEscala n={e.numero} /></span>
           {e.numero.nota && <span className="mt-1 block text-xs leading-relaxed text-mineral">{e.numero.nota}</span>}
         </div>
       )}
@@ -30,18 +31,8 @@ function Estagio({ e }: Readonly<{ e: EstagioServico }>) {
  */
 export function RecursoResultado({ temas }: Readonly<{ temas: TemaServico[] }>) {
   return (
-    <section aria-labelledby="recurso-titulo" className="border-y border-linha bg-marfim">
-      <div className="mx-auto max-w-page px-6 py-14 md:py-16">
-        <p className="rotulo text-mineral">Modelo didático</p>
-        <h2 id="recurso-titulo" className="mt-3 max-w-3xl font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao">
-          Do recurso ao resultado
-        </h2>
-        <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          Cada serviço é lido em três estágios: quanto se aplica, quem o atendimento alcança e o que a fonte registra
-          como resultado. A sequência organiza a leitura; ela não prova que um estágio causa o seguinte, e a plataforma
-          não calcula nota de eficiência. Onde um estágio ainda não tem número publicado, fica só a descrição.
-        </p>
-        <div role="table" aria-label="Do recurso ao resultado, por serviço" className="mt-10">
+    <ModeloDidatico id="recurso" titulo={<>Do recurso ao resultado</>} descricao={<>Cada serviço é lido em três estágios: quanto se aplica, quem o atendimento alcança e o que a fonte registra como resultado. A sequência organiza a leitura; ela não prova que um estágio causa o seguinte, e a plataforma não calcula nota de eficiência. Onde um estágio ainda não tem número publicado, fica só a descrição.</>} deixaDeFora={["Causa: a sequência organiza a leitura e não prova que um estágio causa o seguinte", "Nota de eficiência, que a plataforma não calcula", "Os estágios ainda sem número publicado, que ficam só com a descrição"]}>
+        <div role="table" aria-label="Do recurso ao resultado, por serviço">
           <div role="rowgroup" className="hidden lg:block">
             <div role="row" className="grid grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,3fr))] gap-px">
               <span role="columnheader" className="rotulo pb-3 text-mineral">Serviço</span>
@@ -72,8 +63,7 @@ export function RecursoResultado({ temas }: Readonly<{ temas: TemaServico[] }>) 
             ))}
           </div>
         </div>
-      </div>
-    </section>
+      </ModeloDidatico>
   );
 }
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Numero } from "@/components/observatorios/EntradaObservatorio";
+import { NumeroEscala } from "@/components/observatorios/NumeroEscala";
 import { FocosNoMunicipio } from "@/components/territorio/FocosNoMunicipio";
 import { DoSateliteAoFoco } from "@/components/territorio/Queimadas";
 import { TextoReadme } from "@/components/territorio/TextoReadme";
@@ -68,7 +68,7 @@ export default function EntradaTerritorio() {
             {escala.map((n) => (
               <div key={n.rotulo} className="flex flex-col bg-papel p-5">
                 <dt className="text-sm leading-snug text-carvao-muted">{n.rotulo}</dt>
-                <dd className="mt-2"><Numero n={n} grande /></dd>
+                <dd className="mt-2"><NumeroEscala n={n} grande /></dd>
                 {n.nota && <dd className="mt-3 border-l-2 border-linha pl-3 text-xs leading-relaxed text-carvao-muted">{n.nota}</dd>}
                 <dd className="mt-auto pt-3">
                   <Link href={n.href} prefetch={false} className={`inline-flex min-h-[44px] items-center text-sm text-carvao ${link}`}>Ver no painel</Link>
@@ -126,7 +126,7 @@ export default function EntradaTerritorio() {
                   <Link href={c.href} prefetch={false} className="hover:underline">{c.pergunta}</Link>
                 </h3>
                 <p className="mt-4 text-xs leading-snug text-carvao-muted">{c.numero.rotulo}</p>
-                <div className="mt-1"><Numero n={c.numero} grande /></div>
+                <div className="mt-1"><NumeroEscala n={c.numero} grande /></div>
                 {c.numero.nota && <p className="mt-2 text-xs leading-relaxed text-carvao-muted">{c.numero.nota}</p>}
                 {c.lista && (
                   <div className="mt-5">
@@ -204,7 +204,7 @@ export default function EntradaTerritorio() {
                   {c.numero && (
                     <span className="mt-4 block border-t border-linha pt-3">
                       <span className="block text-xs leading-snug text-carvao-muted">{c.numero.rotulo}</span>
-                      <span className="mt-1 block"><Numero n={c.numero} /></span>
+                      <span className="mt-1 block"><NumeroEscala n={c.numero} /></span>
                     </span>
                   )}
                 </Link>
