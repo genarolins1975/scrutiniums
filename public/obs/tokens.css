@@ -38,8 +38,7 @@
   --cor-destaque: var(--cor-obee);
   --cor-painel-escuro: #102e36;
   --cor-painel-escuro-texto: #f8f7f2;
-  --gravura-fundo: var(--cor-painel-escuro);
-  --gravura-legenda: #c4d7d7;
+  --cor-painel-escuro-legenda: #c4d7d7;
   --cor-conect: #0f6b74;
   --cor-conect-dark: #0b535a;
   --cor-conect-soft: #7fb2b7;

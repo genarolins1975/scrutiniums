@@ -316,7 +316,7 @@ describe("fundos de domínio: texto só em carvão, carvão-muted e o acento do 
 });
 
 describe("painel escuro", () => {
-  for (const nome of ["painel-escuro-texto", "gravura-legenda"]) {
+  for (const nome of ["painel-escuro-texto", "painel-escuro-legenda"]) {
     it(`${nome} sobre o painel escuro ≥ 4,5:1`, () => expect(contraste(tom(nome), tom("painel-escuro"))).toBeGreaterThanOrEqual(4.5));
   }
 });

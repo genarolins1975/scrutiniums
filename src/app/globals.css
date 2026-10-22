@@ -54,8 +54,7 @@
      e #14243a na tinta do OBEE; o painel fica com #102e36, o valor de todos os fundos escuros existentes. */
   --cor-painel-escuro: #102e36;
   --cor-painel-escuro-texto: #f8f7f2; /* texto sobre o painel escuro (13,4:1) */
-  --gravura-fundo: var(--cor-painel-escuro); /* fundo das gravuras de entrada */
-  --gravura-legenda: #c4d7d7; /* legenda e crédito sobre a gravura (9,6:1 sobre o painel escuro) */
+  --cor-painel-escuro-legenda: #c4d7d7; /* texto secundário, legenda e crédito sobre o painel escuro e as gravuras (9,6:1) */
   /* Conectividade: acento petróleo próprio (5,9:1 sobre o papel, dark 8,2:1), distinto do OBEE e do Gás; soft só marcação. */
   --cor-conect: #0f6b74;
   --cor-conect-dark: #0b535a;
