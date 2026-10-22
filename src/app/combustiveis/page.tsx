@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { CabecalhoCombustiveis } from "@/components/combustiveis/CabecalhoCombustiveis";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { PrecoNoEstado } from "@/components/combustiveis/PrecoNoEstado";
 import { ComparacaoUfs, HistoricoBrasil, SerieDoEstado } from "@/components/combustiveis/Graficos";
 import { ComoAnpMede } from "@/components/combustiveis/ComoAnpMede";
@@ -51,7 +52,11 @@ export default function CombustiveisPage() {
   return (
     <>
       <MarcaVisita secao={pagina.secao} />
-      <CabecalhoCombustiveis atual="painel" />
+      <header>
+        {/* a gold é do pipeline do Gás: as fontes do "Citar" e do "Avisar" são as dele */}
+        <CabecalhoPlataforma observatorio="energia-e-infraestrutura" destinoConta="/combustiveis" fontes={["gas"]} />
+        <NavegacaoColecao colecao="combustiveis" />
+      </header>
       <main id="conteudo" className="ed-pagina pb-12">
         <div className="cab-modulo gas-abertura">
           <RotuloContexto rota={pagina.href} pagina={pagina.rotulo} className="text-gas-dark" />

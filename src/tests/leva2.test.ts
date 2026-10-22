@@ -476,7 +476,8 @@ describe("leva 2: a consulta \"Quanto custa encher o tanque no meu estado?\"", (
     const pagina = ler("src/app/combustiveis/no-meu-estado/page.tsx");
     expect(pagina).toMatch(/const aberta = leva2Aprovada\("quanto-custa-encher-o-tanque"\)/);
     expect(pagina).toMatch(/\{aberta && \(\s*<AvisoConsultaAberta/);
-    expect(ler("src/components/combustiveis/CabecalhoCombustiveis.tsx")).toContain('leva2Aprovada("quanto-custa-encher-o-tanque")');
+    // a navegação da coleção sai do catálogo único (Iniciativa 2), que prende a consulta à aprovação
+    expect(ler("src/lib/observatorios/navegacaoColecao.ts")).toContain('leva2Aprovada("quanto-custa-encher-o-tanque")');
     // modo de consulta: o último mês vai no HTML; a página não busca a gold nem as séries no navegador
     for (const p of ["src/components/combustiveis/PrecoNoEstado.tsx", "src/app/combustiveis/no-meu-estado/page.tsx"]) {
       expect(ler(p), p).not.toMatch(/fetch\(|["`]\/gas\/(gold|series)|DownloadsGas|GraficoLinhas/);
@@ -505,7 +506,7 @@ describe("leva 2: a consulta \"Quanto subiu o custo de vida na minha cidade?\"",
     const pagina = ler("src/app/custo-de-vida/na-minha-cidade/page.tsx");
     expect(pagina).toMatch(/const aberta = leva2Aprovada\("quanto-subiu-o-custo-de-vida"\)/);
     expect(pagina).toMatch(/\{aberta && \(\s*<AvisoConsultaAberta/);
-    expect(ler("src/components/inflacao/CabecalhoCustoDeVida.tsx")).toContain('leva2Aprovada("quanto-subiu-o-custo-de-vida")');
+    expect(ler("src/lib/observatorios/navegacaoColecao.ts")).toContain('leva2Aprovada("quanto-subiu-o-custo-de-vida")');
     // modo de consulta: o último mês vai no HTML; a página não busca a gold nem as séries no navegador, nem desenha série
     for (const p of ["src/components/inflacao/InflacaoNaArea.tsx", "src/app/custo-de-vida/na-minha-cidade/page.tsx"]) {
       expect(ler(p), p).not.toMatch(/fetch\(|["`]\/inflacao\/(gold|series)|DownloadsInflacao|GraficoLinhas|SerieArea|ComparacaoAreas|Destaques|ComoPesa/);

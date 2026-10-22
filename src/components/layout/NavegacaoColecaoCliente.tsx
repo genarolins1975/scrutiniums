@@ -83,6 +83,11 @@ export function NavegacaoColecaoCliente({
               {atalho(k)}
             </li>
           ))}
+          {nav.estado && (
+            <li className="flex shrink-0 items-center sm:hidden">
+              <span className="rotulo px-3 text-mineral">{nav.estado}</span>
+            </li>
+          )}
         </ul>
         {mais.length > 0 && (
           <DetalhesFechaveis className="group relative hidden shrink-0 sm:block">
@@ -101,6 +106,7 @@ export function NavegacaoColecaoCliente({
             </ul>
           </DetalhesFechaveis>
         )}
+        {nav.estado && <span className="rotulo hidden shrink-0 self-center text-mineral sm:inline">{nav.estado}</span>}
         {(atalhos.length > 0 || acoes) && (
           <div className="-mr-3 hidden shrink-0 items-stretch gap-x-1 border-l border-linha pl-2 sm:flex">
             {atalhos.map((k) => atalho(k))}

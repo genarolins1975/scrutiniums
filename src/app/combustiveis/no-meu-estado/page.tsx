@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
 import { ConviteAperitivo } from "@/components/acesso/ConviteAperitivo";
-import { CabecalhoCombustiveis } from "@/components/combustiveis/CabecalhoCombustiveis";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { PrecoNoEstado } from "@/components/combustiveis/PrecoNoEstado";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, mesExtenso } from "@/lib/gas/formato";
@@ -36,7 +37,11 @@ export default function ConsultaTanquePagina() {
   return (
     <>
       <MarcaVisita secao={pagina.secao} />
-      <CabecalhoCombustiveis atual="no-meu-estado" />
+      <header>
+        {/* a gold é do pipeline do Gás: as fontes do "Citar" e do "Avisar" são as dele */}
+        <CabecalhoPlataforma observatorio="energia-e-infraestrutura" destinoConta="/combustiveis" fontes={["gas"]} />
+        <NavegacaoColecao colecao="combustiveis" />
+      </header>
       {aberta && (
         <AvisoConsultaAberta
           className="ed-pagina"

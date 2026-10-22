@@ -1,6 +1,7 @@
 import "../../gas-natural/gas.css";
 import type { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
+import { RodapeColecao } from "@/components/layout/RodapeColecao";
 
 export const metadata: Metadata = {
   title: { default: "Gás de cozinha", template: "%s · Gás Natural · Scrutiniums" },
@@ -9,7 +10,8 @@ export const metadata: Metadata = {
 /**
  * Casca da versão aperitivo do Gás de cozinha, servida a quem não tem sessão no endereço público
  * /gas-natural/gas-de-cozinha (princípio do aperitivo, 20/10/2026). Mesmos tokens e acabamento do Gás Natural (gas.css),
- * sem o rodapé do observatório nem o bloco "Para ir além": a página aperitivo não leva a outras páginas.
+ * sem o bloco "Para ir além". O rodapé da coleção fica, porque leva a marca da parceria técnica com o FGV CERI, presente com e
+ * sem sessão; os destinos dele que pedem conta levam o selo "com conta".
  */
 export default function AperitivoGasLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -21,6 +23,7 @@ export default function AperitivoGasLayout({ children }: { children: React.React
         Pular para o conteúdo
       </a>
       <div className="flex-1">{children}</div>
+      <RodapeColecao colecao="gas" />
       <Footer />
     </div>
   );

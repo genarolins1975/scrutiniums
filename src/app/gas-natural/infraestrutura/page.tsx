@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { CabecalhoGas } from "@/components/gas/CabecalhoGas";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { AberturaGas, FaixaMedidas, FonteFigura, MedidaGas, NotaGas, ProximasPerguntas, SecaoGas, TabelaGas } from "@/components/gas/Blocos";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -34,7 +35,10 @@ export default function InfraestruturaPage() {
   return (
     <>
       <MarcaVisita secao="gas:infraestrutura" />
-      <CabecalhoGas atual="infraestrutura" />
+      <header>
+        <CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />
+        <NavegacaoColecao colecao="gas" />
+      </header>
       <main id="conteudo" className="ed-pagina pb-12">
         <AberturaGas pagina={pagina} dadosAte={<>Movimentação nos gasodutos até {mesExtenso(g.ultimo_mes)}; registro de autorizações até {dataBR(i.atos_ultimo.valor as string)}.</>}>
           <p>

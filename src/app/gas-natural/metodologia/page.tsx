@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { CabecalhoGas } from "@/components/gas/CabecalhoGas";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { AberturaGas, NotaGas, SecaoGas } from "@/components/gas/Blocos";
 import { NATUREZAS } from "@/components/evidencia/SeloNatureza";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -61,7 +62,10 @@ export default function MetodologiaPage() {
   return (
     <>
       <MarcaVisita secao="gas:metodologia" />
-      <CabecalhoGas atual="metodologia" />
+      <header>
+        <CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />
+        <NavegacaoColecao colecao="gas" />
+      </header>
       <main id="conteudo" className="ed-pagina pb-12">
         <AberturaGas pagina={pagina}>
           <p>

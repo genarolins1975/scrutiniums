@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { CabecalhoGas } from "@/components/gas/CabecalhoGas";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { AberturaGas, DownloadsGas, FaixaMedidas, FonteFigura, MedidaGas, NotaGas, ProximasPerguntas, SecaoGas } from "@/components/gas/Blocos";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -27,7 +28,10 @@ export default function MercadoPage() {
   return (
     <>
       <MarcaVisita secao="gas:mercado" />
-      <CabecalhoGas atual="mercado" />
+      <header>
+        <CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />
+        <NavegacaoColecao colecao="gas" />
+      </header>
       <main id="conteudo" className="ed-pagina pb-12">
         <AberturaGas pagina={pagina} dadosAte={<>Movimentação nos gasodutos até {mesExtenso(g.ultimo_mes)}; vendas entre agentes até {mesExtenso(i.vendas_comercializadores_mes.periodo)}.</>}>
           <p>

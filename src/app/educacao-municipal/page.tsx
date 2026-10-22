@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { CabecalhoEducacao } from "@/components/educacao/CabecalhoEducacao";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { PainelEducacao } from "@/components/educacao/PainelEducacao";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { consultarMunicipio, goldEducacao } from "@/lib/educacao/dados";
@@ -33,7 +34,10 @@ export default function Page({ searchParams }: Busca) {
   return (
     <>
       <MarcaVisita secao={SECAO_PAINEL} />
-      <CabecalhoEducacao />
+      <header>
+        <CabecalhoPlataforma observatorio="servicos-publicos" destinoConta="/educacao-municipal" fontes={["educacao"]} />
+        <NavegacaoColecao colecao="educacao" />
+      </header>
       <main id="conteudo-educacao" className="ed-pagina edm-main" data-painel="educacao-municipal">
         <header className="edm-cabeca">
           <RotuloContexto rota="/educacao-municipal" className="text-mineral" />

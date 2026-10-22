@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { ConviteAperitivo } from "@/components/acesso/ConviteAperitivo";
 import { BotijaoNoEstado } from "@/components/gas/BotijaoNoEstado";
-import { CabecalhoGas } from "@/components/gas/CabecalhoGas";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { dadosBotijaoNoEstado } from "@/lib/gas/botijaoNoEstado";
 import { carimbo, mesExtenso } from "@/lib/gas/formato";
@@ -43,7 +44,10 @@ export default function AperitivoGasDeCozinhaPagina() {
   return (
     <>
       <MarcaVisita secao={pagina.secao} />
-      <CabecalhoGas atual="gas-de-cozinha" />
+      <header>
+        <CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />
+        <NavegacaoColecao colecao="gas" />
+      </header>
       <main id="conteudo" className="ed-pagina pb-12">
         <div className="cab-modulo gas-abertura">
           <RotuloContexto rota="/gas-natural/gas-de-cozinha" pagina={pagina.rotulo} className="text-gas-dark" />
