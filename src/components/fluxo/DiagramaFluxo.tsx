@@ -61,7 +61,10 @@ export function DiagramaFluxo(p: DiagramaFluxoProps) {
     passoRotulo: 36,
   }), [p.nos, p.elos, largura, largo]);
 
-  const ativo = fixo ?? foco;
+  // Seleção de um diagrama anterior (outra UF) não vale para o atual.
+  useEffect(() => { setFixo(null); setFoco(null); }, [p.nos]);
+  const existe = (id: string | null) => id !== null && p.nos.some(n => n.id === id);
+  const ativo = existe(fixo) ? fixo : existe(foco) ? foco : null;
   const ligados = useMemo(() => {
     if (!ativo) return null;
     const ids = new Set([ativo]);

@@ -1,7 +1,9 @@
 """Fluxo do dinheiro estadual: da arrecadação ao gasto por área, RREO do 6º bimestre.
 
 Coleta (rede, sem credenciais), arquivando os bytes como as demais capturas:
-    python3 -m pipeline.contas_estaduais.fluxo coletar --ano 2025
+    python3 -m pipeline.contas_estaduais.fluxo coletar --ano 2025 [--destino PASTA]
+A captura nova vai para uma pasta própria (padrão: data/contas-estaduais/raw/<instante>-fluxo); promovê-la
+à base publicada é decisão revisada: copiar para public/contas-estaduais/evidencias e apontar RAW para ela.
 Consolidação, só a partir dos bytes arquivados (Anexo 01 da captura nacional e Anexos 02 e 03 desta):
     python3 -m pipeline.contas_estaduais.fluxo consolidar [--check]
 
@@ -17,6 +19,7 @@ Regras de leitura (declaradas também na página):
 Conferência significa identidade do ente, integridade dos bytes e aritmética; não é auditoria.
 """
 import argparse
+import datetime as dt
 import json
 import math
 from pathlib import Path
@@ -296,11 +299,15 @@ def main():
     c = sub.add_parser("coletar")
     c.add_argument("--ano", type=int, default=2025)
     c.add_argument("--ufs", nargs="+", choices=sorted(UFS))
+    c.add_argument("--destino", type=Path)
     k = sub.add_parser("consolidar")
     k.add_argument("--check", action="store_true")
     args = p.parse_args()
     if args.acao == "coletar":
-        coletar(args.ano, RAW, args.ufs)
+        destino = args.destino or ROOT / "data/contas-estaduais/raw" / (
+            dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-fluxo")
+        coletar(args.ano, destino, args.ufs)
+        print("Manifesto:", destino / "manifesto.json")
         return
     texto = json.dumps(consolidar(), ensure_ascii=False, indent=1) + "\n"
     if args.check:
