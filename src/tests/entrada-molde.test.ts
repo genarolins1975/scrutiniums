@@ -32,14 +32,14 @@ const NO_MOLDE: string[] = [
   "/saneamento",
   "/contas-publicas",
   "/contas-publicas-estaduais",
+  // Grupo C (22/10/2026)
+  "/eficiencia-estatal",
+  "/observatorio-do-credito",
+  "/setor-eletrico",
 ];
 
-/** Entradas ainda fora do molde, com o grupo do PR que as migra (a aplicação do Crédito é a Iniciativa 8). */
-const A_MIGRAR: Record<string, string> = {
-  "/eficiencia-estatal": "Grupo C",
-  "/setor-eletrico": "Grupo C",
-  "/observatorio-do-credito": "Grupo C",
-};
+/** Entradas ainda fora do molde, com o grupo do PR que as migra (a aplicação do Crédito é a Iniciativa 8). Vazia desde o Grupo C. */
+const A_MIGRAR: Record<string, string> = {};
 
 /**
  * Coleções cuja porta é o próprio painel (os temas da Eficiência Estatal e do Território e Clima): não são páginas de entrada e

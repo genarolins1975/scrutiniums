@@ -97,9 +97,12 @@ describe("página inicial: mapa didático (P001)", () => {
     const t = ler(HOME);
     // a ordem em que as seções aparecem; cada id é a âncora que outras páginas e links antigos usam
     // o mapa vem antes das seis perguntas, antes do índice: a resposta a "como o sistema se liga" não fica telas abaixo
-    expect(SECOES_HOME.map((s) => s.id)).toEqual(["proposito", "mapa-conceitual", "perguntas", "destinos", "trilhas", "como-confiar", "aprofundar"]);
-    for (const s of SECOES_HOME) expect(t, s.id).toContain(`id="${s.id}"`);
-    const posicoes = SECOES_HOME.map((s) => t.indexOf(`id="${s.id}"`));
+    // molde único (Iniciativa 4, 22/10/2026): o título leva a âncora "proposito" (idTitulo do molde); os destinos vêm à vista, e as
+    // perguntas com a prova, o mapa, as trilhas e "como conferir" nos blocos recolhidos, com as fontes no método
+    expect(SECOES_HOME.map((s) => s.id)).toEqual(["proposito", "destinos", "perguntas", "mapa-conceitual", "trilhas", "como-confiar", "aprofundar"]);
+    const ancora = (id: string) => Math.max(t.indexOf(`id="${id}"`), t.indexOf(`idTitulo="${id}"`));
+    for (const s of SECOES_HOME) expect(ancora(s.id), s.id).toBeGreaterThan(0);
+    const posicoes = SECOES_HOME.map((s) => ancora(s.id));
     expect([...posicoes].sort((a, b) => a - b)).toEqual(posicoes);
     expect(t).toContain("Energia, do sistema à sua conta");
     expect("Energia, do sistema à sua conta".split(" ")).toHaveLength(6);

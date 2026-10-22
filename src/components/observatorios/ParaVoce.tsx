@@ -91,7 +91,7 @@ export function ParaVoce({
                   <span aria-hidden="true" className="text-mineral transition-transform group-hover:translate-x-0.5">
                     →
                   </span>
-                  <SeloComConta href={p.href} />
+                  <SeloComConta href={p.href} idioma={idioma} />
                 </span>
               </Link>
             </li>

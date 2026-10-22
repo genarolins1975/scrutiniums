@@ -1,10 +1,12 @@
-import Link from "next/link";
+import Link from "@/components/i18n/LinkIdioma";
 import type { ReactNode } from "react";
 import { ACENTO } from "@/components/home/acentos";
 import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { NumeroEscala } from "@/components/observatorios/NumeroEscala";
 import { SeloProntidao, type Prontidao } from "@/components/observatorios/SeloProntidao";
 import type { Dominio } from "@/lib/dominios";
+import type { Idioma } from "@/lib/idioma";
 import type { NumeroPorta } from "@/lib/perguntas/tipos";
 
 /**
@@ -37,6 +39,9 @@ export type DestinoEntrada = { titulo: string; href: string; pergunta?: string; 
 
 /** Até oito destinos à vista; o resto em "Mais destinos", no HTML. */
 export const DESTINOS_A_VISTA = 8;
+
+/** Texto fixo do molde nos dois idiomas: só o Setor Elétrico tem irmã inglesa (/en/setor-eletrico), que usa o mesmo componente. */
+const t = (idioma: Idioma, pt: string, en: string) => (idioma === "en" ? en : pt);
 
 const H2 = "font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao";
 
@@ -77,6 +82,8 @@ export function EntradaColecao({
   idPrincipal = "conteudo",
   classe,
   principal = true,
+  idioma = "pt",
+  metodoLargo = false,
 }: Readonly<{
   tipo: TipoEntrada;
   /** Endereço público da página: o RotuloContexto lê o observatório e a coleção do registro por ele. */
@@ -113,6 +120,10 @@ export function EntradaColecao({
   classe?: string;
   /** false quando o layout da coleção já abre o <main> (Agronegócio): a entrada vira um <div> dentro dele, com o mesmo data-entrada. */
   principal?: boolean;
+  /** Idioma dos textos fixos do molde; os links internos seguem o idioma da página (LinkIdioma). */
+  idioma?: Idioma;
+  /** Método sem a largura de leitura: quando ele traz grade ou tabela (fontes e atualidade do Setor Elétrico). */
+  metodoLargo?: boolean;
 }>) {
   const a = ACENTO[acento];
   return (
@@ -128,7 +139,7 @@ export function EntradaColecao({
             {titulo}
           </h1>
           <p className="mt-6 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">{frase}</p>
-          {escala && escala.length > 0 && <Escala escala={escala} nota={notaEscala} />}
+          {escala && escala.length > 0 && <Escala escala={escala} nota={notaEscala} idioma={idioma} />}
           {figuraEscala}
         </div>
       </section>
@@ -138,7 +149,7 @@ export function EntradaColecao({
       {destinos && <div data-fatia="destinos">{destinos}</div>}
       {secaoPropria && <div data-fatia="secao-propria">{secaoPropria}</div>}
       {artefato && <div data-fatia="artefato">{artefato}</div>}
-      {caminhos && caminhos.length > 0 && <Caminhos caminhos={caminhos} hover={a.hover} />}
+      {caminhos && caminhos.length > 0 && <Caminhos caminhos={caminhos} hover={a.hover} idioma={idioma} />}
       {recolhidos && (
         <div data-fatia="recolhidos" className="mx-auto max-w-page px-6 pt-6">
           {recolhidos}
@@ -148,8 +159,8 @@ export function EntradaColecao({
 
       <div className="mx-auto max-w-page px-6 pb-14 pt-6 md:pb-16">
         <details className="border-t border-linha pt-4" data-fatia="metodo">
-          <summary className="rotulo flex min-h-[44px] cursor-pointer items-center text-carvao-muted hover:text-carvao">Método e fontes</summary>
-          <div className="mt-2 max-w-prose2 space-y-3 text-sm leading-relaxed text-carvao-muted">{metodo}</div>
+          <summary className="rotulo flex min-h-[44px] cursor-pointer items-center text-carvao-muted hover:text-carvao">{t(idioma, "Método e fontes", "Method and sources")}</summary>
+          <div className={`mt-2 space-y-3 text-sm leading-relaxed text-carvao-muted ${metodoLargo ? "" : "max-w-prose2"}`}>{metodo}</div>
           {frescorMetodo && <div className="mt-6">{frescorMetodo}</div>}
         </details>
       </div>
@@ -158,21 +169,22 @@ export function EntradaColecao({
 }
 
 /** Fatia 2: de um a quatro números de escala, cada um com a sua prova e o painel de onde vem. */
-export function Escala({ escala, nota }: Readonly<{ escala: readonly NumeroPorta[]; nota?: string | null }>) {
+export function Escala({ escala, nota, idioma = "pt" }: Readonly<{ escala: readonly NumeroPorta[]; nota?: string | null; idioma?: Idioma }>) {
   return (
     <div data-fatia="escala">
-      <h2 className="sr-only">O tema em números</h2>
+      <h2 className="sr-only">{t(idioma, "O tema em números", "The topic in numbers")}</h2>
       <dl className={`mt-6 grid md:mt-10 gap-px border border-linha bg-linha sm:grid-cols-2 ${escala.length >= 4 ? "lg:grid-cols-4" : escala.length === 3 ? "lg:grid-cols-3" : ""}`}>
         {escala.map((n) => (
           <div key={n.rotulo} className="flex flex-col bg-papel p-4 sm:p-5" data-numero-escala="">
             <dt className="text-sm leading-snug text-carvao-muted">{n.rotulo}</dt>
             <dd className="mt-2">
-              <NumeroEscala n={n} grande />
+              <NumeroEscala n={n} grande idioma={idioma} />
             </dd>
             {n.nota && <dd className="mt-3 border-l-2 border-linha pl-3 text-xs leading-relaxed text-carvao-muted">{n.nota}</dd>}
             <dd className="mt-auto pt-1 sm:pt-3">
               <Link href={n.href} prefetch={false} className="inline-flex min-h-[44px] items-center text-sm text-carvao underline decoration-linha underline-offset-4">
-                Ver no painel
+                {t(idioma, "Ver no painel", "See in the panel")}
+                <SeloComConta href={n.href} idioma={idioma} />
               </Link>
             </dd>
           </div>
@@ -184,28 +196,33 @@ export function Escala({ escala, nota }: Readonly<{ escala: readonly NumeroPorta
 }
 
 /** Fatia 7: perguntas para começar, cada uma com a resposta curta e o número do destino, quando ele tem. */
-function Caminhos({ caminhos, hover }: Readonly<{ caminhos: readonly CaminhoEntrada[]; hover: string }>) {
+function Caminhos({ caminhos, hover, idioma }: Readonly<{ caminhos: readonly CaminhoEntrada[]; hover: string; idioma: Idioma }>) {
   const n = caminhos.length;
+  const quatro = n === 4 || n === 8;
   return (
     <section aria-labelledby="caminhos-titulo" className="mx-auto max-w-page px-6 py-10 md:py-16" data-fatia="caminhos">
       <h2 id="caminhos-titulo" className={H2}>
-        Perguntas para começar
+        {t(idioma, "Perguntas para começar", "Questions to start with")}
       </h2>
-      <ul className="mt-6 grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-3">
+      {/* quatro ou oito perguntas fecham linhas de quatro no desktop; as demais quantidades, linhas de três */}
+      <ul className={`mt-6 grid gap-px border border-linha bg-linha sm:grid-cols-2 ${quatro ? "lg:grid-cols-4" : "lg:grid-cols-3"}`}>
         {caminhos.map((c, i) => (
           // o último item ocupa o que sobra da linha, em duas e em três colunas, para não deixar célula vazia
           <li
             key={c.href + c.pergunta}
-            className={`bg-papel ${i === n - 1 ? `${n % 2 === 1 ? "sm:col-span-2" : ""} ${n % 3 === 2 ? "lg:col-span-2" : n % 3 === 1 ? "lg:col-span-3" : "lg:col-span-1"}` : ""}`}
+            className={`bg-papel ${i === n - 1 && !quatro ? `${n % 2 === 1 ? "sm:col-span-2" : ""} ${n % 3 === 2 ? "lg:col-span-2" : n % 3 === 1 ? "lg:col-span-3" : "lg:col-span-1"}` : ""}`}
           >
             <Link href={c.href} prefetch={false} className="group flex h-full min-h-[44px] flex-col p-4 sm:p-5">
               {c.rotulo && <span className="rotulo text-mineral">{c.rotulo}</span>}
-              <span className={`mt-2 font-serif text-lg leading-snug text-carvao ${hover}`}>{c.pergunta}</span>
+              <span className={`mt-2 font-serif text-lg leading-snug text-carvao ${hover}`}>
+                {c.pergunta}
+                <SeloComConta href={c.href} idioma={idioma} className="font-sans" />
+              </span>
               <span className="mt-1 text-sm leading-relaxed text-carvao-muted">{c.resumo}</span>
               {c.numero && (
                 <span className="mt-3 block border-t border-linha pt-3">
                   <span className="block text-xs text-carvao-muted">{c.numero.rotulo}</span>
-                  <NumeroEscala n={c.numero} />
+                  <NumeroEscala n={c.numero} idioma={idioma} />
                 </span>
               )}
             </Link>
@@ -216,36 +233,61 @@ function Caminhos({ caminhos, hover }: Readonly<{ caminhos: readonly CaminhoEntr
   );
 }
 
-/** Fatia 4 numa entrada de coleção: os destinos de primeiro nível, até oito à vista e o resto em "Mais destinos". */
+/**
+ * Fatia 4 numa entrada de coleção: os destinos de primeiro nível, até oito à vista e o resto em "Mais destinos". `extra` vai entre o
+ * título e a grade (a busca da coleção). `mais` troca a lista do resto por um conteúdo próprio da coleção, dentro do mesmo <details>
+ * (o índice completo do Setor Elétrico, com o detalhe de cada página), com `n` destinos no rótulo.
+ */
 export function DestinosColecao({
   itens,
-  titulo = "Por onde seguir",
+  titulo,
   descricao,
-}: Readonly<{ itens: readonly DestinoEntrada[]; titulo?: string; descricao?: ReactNode }>) {
+  extra,
+  mais,
+  id,
+  idioma = "pt",
+}: Readonly<{
+  itens: readonly DestinoEntrada[];
+  titulo?: string;
+  descricao?: ReactNode;
+  extra?: ReactNode;
+  mais?: { n: number; rotulo?: string; conteudo: ReactNode };
+  /** id da seção, quando a coleção já tem uma âncora para os destinos. */
+  id?: string;
+  idioma?: Idioma;
+}>) {
   const aVista = itens.slice(0, DESTINOS_A_VISTA);
   const resto = itens.slice(DESTINOS_A_VISTA);
+  const nMais = mais ? mais.n : resto.length;
   return (
-    <section aria-labelledby="destinos-titulo" className="mx-auto max-w-page px-6 py-10 md:py-16">
+    <section id={id} aria-labelledby="destinos-titulo" className="mx-auto max-w-page scroll-mt-24 px-6 py-10 md:py-16">
       <h2 id="destinos-titulo" className={H2}>
-        {titulo}
+        {titulo ?? t(idioma, "Por onde seguir", "Where to go next")}
       </h2>
       {descricao && <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{descricao}</p>}
+      {extra}
       <ul className="mt-6 grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-4">
         {aVista.map((d, i) => (
-          <CartaoDestino key={d.href + d.titulo} d={d} classe={i === aVista.length - 1 ? fechaLinha(aVista.length) : ""} />
+          <CartaoDestino key={d.href + d.titulo} d={d} classe={i === aVista.length - 1 ? fechaLinha(aVista.length) : ""} idioma={idioma} />
         ))}
       </ul>
-      {resto.length > 0 && (
+      {nMais > 0 && (
         <details className="group/mais mt-4">
           <summary className="flex min-h-[44px] cursor-pointer items-center text-sm text-carvao-muted hover:text-carvao">
-            <span className="group-open/mais:hidden">Mais destinos ({resto.length})</span>
-            <span className="hidden group-open/mais:inline">Menos destinos</span>
+            <span className="group-open/mais:hidden">
+              {mais?.rotulo ?? t(idioma, "Mais destinos", "More destinations")} ({nMais})
+            </span>
+            <span className="hidden group-open/mais:inline">{t(idioma, "Menos destinos", "Fewer destinations")}</span>
           </summary>
-          <ul className="mt-2 grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-4">
-            {resto.map((d, i) => (
-              <CartaoDestino key={d.href + d.titulo} d={d} classe={i === resto.length - 1 ? fechaLinha(resto.length) : ""} />
-            ))}
-          </ul>
+          {mais ? (
+            <div className="mt-2">{mais.conteudo}</div>
+          ) : (
+            <ul className="mt-2 grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-4">
+              {resto.map((d, i) => (
+                <CartaoDestino key={d.href + d.titulo} d={d} classe={i === resto.length - 1 ? fechaLinha(resto.length) : ""} idioma={idioma} />
+              ))}
+            </ul>
+          )}
         </details>
       )}
     </section>
@@ -259,18 +301,19 @@ function fechaLinha(n: number): string {
   return `${sm} ${lg}`;
 }
 
-function CartaoDestino({ d, classe = "" }: Readonly<{ d: DestinoEntrada; classe?: string }>) {
+function CartaoDestino({ d, classe = "", idioma }: Readonly<{ d: DestinoEntrada; classe?: string; idioma: Idioma }>) {
   const corpo = (
     <>
       <span className="flex flex-wrap items-baseline gap-x-2 font-serif text-lg leading-snug text-carvao">
         {d.titulo}
+        {d.prontidao !== "preparacao" && <SeloComConta href={d.href} idioma={idioma} className="font-sans" />}
         {d.prontidao && d.prontidao !== "publicado" && <SeloProntidao valor={d.prontidao} />}
       </span>
       {d.pergunta && <span className="mt-1 block text-sm leading-relaxed text-carvao-muted">{d.pergunta}</span>}
       {d.numero && (
         <span className="mt-3 block border-t border-linha pt-3">
           <span className="block text-xs text-carvao-muted">{d.numero.rotulo}</span>
-          <NumeroEscala n={d.numero} />
+          <NumeroEscala n={d.numero} idioma={idioma} />
         </span>
       )}
     </>

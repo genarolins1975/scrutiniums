@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { Idioma } from "@/lib/idioma";
 
 /** Ao menos um item: o tipo não deixa um modelo didático sair sem dizer o que ele não representa. */
 export type ListaDeFora = readonly [ReactNode, ...ReactNode[]];
@@ -17,6 +18,7 @@ export function ModeloDidatico({
   children,
   fundo = "marfim",
   largo = false,
+  idioma = "pt",
 }: Readonly<{
   /** Base dos ids (título e lista), única na página. */
   id: string;
@@ -28,11 +30,14 @@ export function ModeloDidatico({
   fundo?: "marfim" | "papel";
   /** Corpo sem o contêiner de página (o artefato já traz a própria grade). */
   largo?: boolean;
+  /** Idioma do rótulo e do título da lista (só o Setor Elétrico tem irmã inglesa). */
+  idioma?: Idioma;
 }>) {
+  const en = idioma === "en";
   const cabeca = (
     <>
       <p className="rotulo text-mineral" data-modelo-rotulo="">
-        Modelo didático
+        {en ? "Teaching model" : "Modelo didático"}
       </p>
       <h2 id={`${id}-titulo`} className="mt-3 max-w-3xl font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao">
         {titulo}
@@ -43,7 +48,7 @@ export function ModeloDidatico({
   const fora = (
     <div className="mt-8 max-w-prose2 border-t border-linha pt-5 md:mt-10" data-deixa-de-fora="">
       <h3 id={`${id}-fora`} className="rotulo text-mineral">
-        O que este modelo deixa de fora
+        {en ? "What this model leaves out" : "O que este modelo deixa de fora"}
       </h3>
       <ul aria-labelledby={`${id}-fora`} className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-carvao-muted">
         {deixaDeFora.map((item, i) => (

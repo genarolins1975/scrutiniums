@@ -4,11 +4,12 @@ import {readFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {goldSaude} from '@/lib/eficiencia/saude/dados';
 import {metaEducacao} from '@/lib/eficiencia/dados';
-import {AtlasCidadao} from '@/components/eficiencia/AtlasCidadao';
-import {RotuloContexto} from '@/components/layout/RotuloContexto';
-import entradaStyles from '@/components/eficiencia/entrada/Entrada.module.css';
+import {EducacaoDaCapital, ModeloDoEscore, PerguntasDaCapital, ProvedorCapital, RecursosDaCapital, ReguaCapital, SeletorCapital, TituloCapital} from '@/components/eficiencia/AtlasCidadao';
+import {EntradaColecao} from '@/components/observatorios/EntradaColecao';
+import {ModeloDidatico} from '@/components/observatorios/ModeloDidatico';
+import {Recolhido} from '@/components/observatorios/Recolhido';
 import {MapaCobertura, type TemaCobertura} from '@/components/eficiencia/entrada/MapaCobertura';
-import {montarRetrato} from '@/lib/eficiencia/entrada';
+import {escalaEntrada, montarRetrato} from '@/lib/eficiencia/entrada';
 import {dadosAssistencia} from '@/lib/eficiencia/assistencia/dados';
 import {dadosComplementares} from '@/lib/eficiencia/alimentar/complementos';
 import {dadosMobilidade} from '@/lib/eficiencia/mobilidade/dados';
@@ -47,15 +48,46 @@ export default function PaginaEntradaEficiencia(){
     {id:"justica",titulo:"Justiça: acesso e funcionamento",pergunta:"Onde há assistência jurídica, quanto tempo leva a resposta e que recursos são mobilizados?",escopo:"Cobertura das Defensorias por comarca; Judiciário com 57 tribunais, custo por habitante, filas, tempos de 2021 a 2025, execução, recorribilidade, Justiça criminal e indicadores oficiais; comparação internacional WJP de acesso, demora, cumprimento e garantias; conciliação e atividade declarada das Defensorias.",naoInclui:"Demanda elegível, satisfação, pessoas únicas, efetividade individual ou escore de eficiência.",cobertura:"2.563 comarcas em abril de 2025; Defensorias de 27 UFs em 2024; Judiciário em 2025.",fontes:"Pesquisa Nacional da Defensoria Pública 2025; CNJ, Justiça em Números 2026; WJP, edição 2025.",entradas:[{href:"/eficiencia-estatal/acesso-justica",rotulo:"Acesso e Defensorias"},{href:"/eficiencia-estatal/judiciario",rotulo:"Judiciário: filas e tempos"},{href:"/eficiencia-estatal/judiciario/internacional",rotulo:"Brasil e outros países"},{href:"/eficiencia-estatal/judiciario/comparar",rotulo:"Comparar tribunais"},{href:"/eficiencia-estatal/judiciario/metodos",rotulo:"Método e cobertura do Judiciário"}],niveis:['ufs'],outros:'comarcas, tribunais e países/jurisdições',atualizacao:"17/10/2026"},
  ];
  const retrato=montarRetrato();
+ // molde único de entrada (Iniciativa 4 do parecer de UX, 22/10/2026): a escala são quatro condições pela mediana das 26 capitais,
+ // nunca a nota composta (decisão do dono de 19/10/2026); a capital escolhida fica no "Para você"; a régua das sete posições é a
+ // seção própria; os dezesseis temas, os destinos; o modelo do escore, o artefato; as perguntas, os recursos e a educação, recolhidos
  return <div><header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal" navegacao="sintese" /></header>
  <AvisoConsultaAberta className="mx-auto max-w-page px-4 sm:px-6" comConta="A nota do índice de resultados, os painéis de cada tema e os arquivos para baixar"/>
- <main id="conteudo" className="pb-20">
- <FaixaFrescor dominios={FRESCOR_DAS_COLECOES['/eficiencia-estatal']} conteiner="mx-auto max-w-page px-4 sm:px-6"/>
- {/* Página aberta desde 19/10/2026 (estratégia "aberto e com conta", leva 1): o retrato vai por prop e fica no HTML aberto, só com as posições, os valores das sete condições e dos três recursos das 26 capitais, população e contorno; nenhuma nota composta. A nota experimental fica em /eficiencia-estatal/indice-de-resultados e o CSV das 26 capitais na rota fechada /eficiencia-estatal/retrato-26-capitais.csv, ambos com conta. */}
- <AtlasCidadao rotulo={<RotuloContexto rota="/eficiencia-estatal" pagina="Retrato das capitais" className={entradaStyles.kicker}/>} retrato={retrato} cobertura={<MapaCobertura temas={temas}/>} paraVoce={<ParaVoce entrada="/eficiencia-estatal" conteiner="mx-auto max-w-page px-4 sm:px-6"/>}/>
- <div className="mx-auto max-w-page px-4 sm:px-6">
- <aside className="mt-8 grid gap-5 border-l-4 border-obee bg-obee-fundo p-5 md:grid-cols-2"><div><h2 className="font-serif text-xl">Quem financia, quem entrega, quem responde?</h2><p className="mt-2 text-sm leading-relaxed">A análise completa precisa distinguir recursos da União, dos estados e dos municípios, transferências e a instituição responsável pelo atendimento.</p></div><div><h3 className="text-sm font-semibold">Estrutura e funcionamento do Estado</h3><p className="mt-2 text-sm leading-relaxed">Administração, arrecadação, pessoal e Legislativo atravessam essas dimensões. O Judiciário tem recorte próprio de recursos, filas e tempos; a comparação de despesas entre esferas e poderes ainda não está publicada.</p></div></aside>
- <FaixaFrescor dominios={FRESCOR_DAS_COLECOES['/eficiencia-estatal']} variante="metodo" className="mt-10"/>
- </div>
- </main></div>;
+ <ProvedorCapital retrato={retrato}>
+ <EntradaColecao
+  tipo="colecao"
+  rota="/eficiencia-estatal"
+  acento="obee"
+  titulo={<TituloCapital/>}
+  frase="Sete resultados na vida dos moradores, o que a prefeitura aplica em educação e saúde, e o que ainda não se sabe. Cada número com fonte, período e limites."
+  frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES['/eficiencia-estatal']} conteiner="mx-auto max-w-page px-6"/>}
+  escala={escalaEntrada(retrato)}
+  notaEscala="Mediana simples das 26 capitais estaduais, sem o Distrito Federal. Precisão municipal não quantificada nas medidas amostrais."
+  paraVoce={<ParaVoce entrada="/eficiencia-estatal"><SeletorCapital/></ParaVoce>}
+  destinos={<div className="mx-auto max-w-page px-6"><MapaCobertura temas={temas}/></div>}
+  secaoPropria={<ReguaCapital/>}
+  artefato={
+   <ModeloDidatico
+    id="escore"
+    titulo="Uma nota precisa ser explicável"
+    descricao="Acesso, resposta e qualidade: as três perguntas do modelo dos serviços, que ainda não produz nota."
+    deixaDeFora={[
+     "Uma nota composta: o modelo dos serviços ainda não produz nota, e a do índice de resultados fica no painel do índice",
+     "Quem financia e quem presta o serviço, que pede separar União, estados, municípios e transferências",
+     "Causa: a posição de uma capital não mostra o efeito da gestão pública",
+    ]}
+   >
+    <ModeloDoEscore/>
+   </ModeloDidatico>
+  }
+  recolhidos={<>
+   <Recolhido id="recolhido-perguntas" titulo="Sete perguntas sobre a vida na capital" resumo="Os sete resultados de 2022 entre os moradores, cada capital um ponto."><PerguntasDaCapital/></Recolhido>
+   <Recolhido id="recolhido-recursos" titulo="Quanto a prefeitura aplica, e que capacidade registra" resumo="Despesa por habitante e capacidade da atenção primária."><RecursosDaCapital/></Recolhido>
+   <Recolhido id="recolhido-educacao" titulo="Escola por idade e aprendizagem" resumo="Frequência escolar e Saeb, entre as duas capitais."><EducacaoDaCapital/></Recolhido>
+  </>}
+  metodo={<aside className="grid gap-5 border-l-4 border-obee bg-obee-fundo p-5 md:grid-cols-2"><div><h3 className="font-serif text-xl">Quem financia, quem entrega, quem responde?</h3><p className="mt-2 text-sm leading-relaxed">A análise completa precisa distinguir recursos da União, dos estados e dos municípios, transferências e a instituição responsável pelo atendimento.</p></div><div><h3 className="text-sm font-semibold">Estrutura e funcionamento do Estado</h3><p className="mt-2 text-sm leading-relaxed">Administração, arrecadação, pessoal e Legislativo atravessam essas dimensões. O Judiciário tem recorte próprio de recursos, filas e tempos; a comparação de despesas entre esferas e poderes ainda não está publicada.</p></div></aside>}
+  frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES['/eficiencia-estatal']} variante="metodo"/>}
+ />
+ </ProvedorCapital>
+ </div>;
 }
