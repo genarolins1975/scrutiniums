@@ -65,6 +65,7 @@ const EXCECOES: Record<string, { regras: Regra[]; ate: string }> = {
   "src/app/territorio/metodologia/page.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "public/observatorios.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
   "public/observatorios-gravuras.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
+  "src/components/fluxo/DiagramaFluxo.module.css": { regras: ["hexadecimal"], ate: "PR 2 da Iniciativa 5 (entrou no main com o fluxo do dinheiro público, PR #342)" },
   "public/obs/styles.css": { regras: ["hexadecimal", "corpo abaixo de 12 px"], ate: "PR 4 da Iniciativa 5 (aplicação do Crédito)" },
   "public/obs/atlas.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
 };

@@ -1,0 +1,452 @@
+{
+ "versao": 1,
+ "ano": 2025,
+ "unidade": "R$ milhões correntes",
+ "tabela": "RTN, tabela 2.2 (anual)",
+ "referenciaRTN": "2026-07",
+ "fonte": "https://www.tesourotransparente.gov.br/ckan/dataset/ab56485b-9c40-4efb-8563-9ce3e1973c4b/resource/527ccdb1-3059-42f3-bf23-b5e3ab4c6dc6/download/seriehistoricajul26.xlsx",
+ "sha256": "35899d771fc487db1ca17a6a1fb3fc0cc293230b8c5ad98287b69db2a7d0843c",
+ "captura": "2026-10-22",
+ "criterio": "Receita pelo ingresso efetivo na Conta Única (caixa); despesa pelo pagamento efetivo; resultado primário acima da linha, sem juros.",
+ "fontes": [
+  {
+   "id": "ir",
+   "nome": "Imposto de Renda",
+   "valor": 867312.07580692,
+   "partes": [
+    [
+     "Retido na fonte",
+     495026.77249824
+    ],
+    [
+     "Pessoa jurídica",
+     294203.39762472996
+    ],
+    [
+     "Pessoa física",
+     78081.90568395
+    ]
+   ]
+  },
+  {
+   "id": "inss",
+   "nome": "Contribuição ao INSS",
+   "valor": 709714.2887337101,
+   "partes": [
+    [
+     "Urbana",
+     696507.4221023901
+    ],
+    [
+     "Rural",
+     13206.86663132
+    ]
+   ]
+  },
+  {
+   "id": "cofins",
+   "nome": "Cofins e PIS/Pasep",
+   "valor": 497413.07283983997,
+   "partes": [
+    [
+     "Cofins",
+     391530.71978511
+    ],
+    [
+     "PIS/Pasep",
+     105882.35305473
+    ]
+   ]
+  },
+  {
+   "id": "iof",
+   "nome": "IOF, IPI e importação",
+   "valor": 265139.25220585,
+   "partes": [
+    [
+     "Imposto de importação",
+     90395.23605360999
+    ],
+    [
+     "IPI",
+     88363.57696765
+    ],
+    [
+     "IOF",
+     86380.43918458998
+    ]
+   ]
+  },
+  {
+   "id": "csll",
+   "nome": "CSLL",
+   "valor": 177799.14225965,
+   "partes": []
+  },
+  {
+   "id": "outras_rfb",
+   "nome": "Outras receitas federais",
+   "valor": 52178.93340728,
+   "partes": [
+    [
+     "Outras administradas pela Receita",
+     48868.581517629995
+    ],
+    [
+     "CIDE-Combustíveis",
+     3311.7829672999997
+    ],
+    [
+     "Incentivos fiscais",
+     -1.43107765
+    ]
+   ]
+  },
+  {
+   "id": "nao_adm",
+   "nome": "Royalties, dividendos e outras",
+   "valor": 332717.79881135,
+   "partes": [
+    [
+     "Exploração de recursos naturais",
+     139345.76147445
+    ],
+    [
+     "Dividendos e participações",
+     49796.61851945
+    ],
+    [
+     "Salário-educação",
+     35980.64130471
+    ],
+    [
+     "Receitas próprias",
+     24231.88541172
+    ],
+    [
+     "Contribuição dos servidores (CPSS)",
+     18982.50609644
+    ],
+    [
+     "Concessões e permissões",
+     7199.18607659
+    ],
+    [
+     "Complemento do FGTS",
+     260.24987153
+    ],
+    [
+     "Demais",
+     56920.95005646001
+    ]
+   ]
+  }
+ ],
+ "arrecadacao": 2902274.5640645996,
+ "repasse": {
+  "valor": 569719.2626331123,
+  "partes": [
+   [
+    "FPM, FPE e IPI-Exportação",
+    454682.34288675996
+   ],
+   [
+    "Royalties e exploração de recursos naturais",
+    70207.80709976
+   ],
+   [
+    "Salário-educação",
+    21369.905735610002
+   ],
+   [
+    "Fundos constitucionais (líquido)",
+    18681.505651082305
+   ],
+   [
+    "CIDE-Combustíveis",
+    917.8630216600001
+   ],
+   [
+    "Demais",
+    3859.8382382400005
+   ]
+  ]
+ },
+ "receita_liquida": 2332555.301431488,
+ "gasto": 2394249.6104124766,
+ "resultado": -61694.308980989066,
+ "usos": [
+  {
+   "id": "inss",
+   "nome": "Aposentadorias e pensões (INSS)",
+   "natureza": "obrigatória",
+   "valor": 1026872.53793049,
+   "partes": [
+    [
+     "Urbano",
+     808101.2570179735
+    ],
+    [
+     "Rural",
+     218771.2809125165
+    ]
+   ]
+  },
+  {
+   "id": "pessoal",
+   "nome": "Servidores ativos e inativos",
+   "natureza": "obrigatória",
+   "valor": 402553.13783286,
+   "partes": []
+  },
+  {
+   "id": "saude",
+   "nome": "Saúde (parte obrigatória)",
+   "natureza": "obrigatória",
+   "valor": 170481.44412594714,
+   "partes": []
+  },
+  {
+   "id": "bolsa",
+   "nome": "Bolsa Família",
+   "natureza": "obrigatória",
+   "valor": 158125.72492194542,
+   "partes": []
+  },
+  {
+   "id": "bpc",
+   "nome": "BPC (idosos e PcD)",
+   "natureza": "obrigatória",
+   "valor": 127236.02353976002,
+   "partes": []
+  },
+  {
+   "id": "abono",
+   "nome": "Abono e seguro-desemprego",
+   "natureza": "obrigatória",
+   "valor": 87843.46728032001,
+   "partes": [
+    [
+     "Seguro-desemprego",
+     56924.445305320005
+    ],
+    [
+     "Abono salarial",
+     30919.021975
+    ]
+   ]
+  },
+  {
+   "id": "fundeb",
+   "nome": "Fundeb (complemento da União)",
+   "natureza": "obrigatória",
+   "valor": 59727.56100878,
+   "partes": []
+  },
+  {
+   "id": "outras",
+   "nome": "Outras obrigatórias",
+   "natureza": "obrigatória",
+   "valor": 156491.32672500834,
+   "partes": [
+    [
+     "Sentenças judiciais e precatórios",
+     42774.63346832
+    ],
+    [
+     "Subsídios, subvenções e Proagro",
+     25488.905553290002
+    ],
+    [
+     "Benefícios a servidores públicos",
+     21301.777492518584
+    ],
+    [
+     "Legislativo, Judiciário, MPU e DPU",
+     19843.928679880002
+    ],
+    [
+     "Demais obrigatórias com controle de fluxo",
+     10911.11801225734
+    ],
+    [
+     "Educação (obrigatória com controle de fluxo)",
+     8532.825993905766
+    ],
+    [
+     "Créditos extraordinários",
+     6362.37455193
+    ],
+    [
+     "Apoio financeiro a estados e municípios",
+     5604.415421109999
+    ],
+    [
+     "Fundo Constitucional do DF",
+     4908.45657843
+    ],
+    [
+     "Lei Kandir e LC 176/2020",
+     3984.731139310001
+    ],
+    [
+     "Impacto primário do FIES",
+     2190.285308236667
+    ],
+    [
+     "Transferências de multas da ANEEL",
+     1958.96338578
+    ],
+    [
+     "Fabricação de cédulas e moedas",
+     1146.981633
+    ],
+    [
+     "Benefícios de legislação especial e indenizações",
+     919.59730453
+    ],
+    [
+     "Complemento do FGTS",
+     260.24630976000003
+    ],
+    [
+     "Anistiados",
+     212.78463427
+    ],
+    [
+     "Transferências à ANA",
+     89.30125848
+    ]
+   ]
+  },
+  {
+   "id": "discricionarias",
+   "nome": "Gastos discricionários",
+   "natureza": "discricionária",
+   "valor": 204918.38704736574,
+   "partes": [
+    [
+     "Saúde",
+     58091.42600800028
+    ],
+    [
+     "Educação",
+     32694.666631367643
+    ],
+    [
+     "Transporte",
+     14889.031369921053
+    ],
+    [
+     "Defesa",
+     14205.655918421955
+    ],
+    [
+     "Ciência e tecnologia",
+     10102.927793689902
+    ],
+    [
+     "Assistência social",
+     9491.134923060166
+    ],
+    [
+     "Administração",
+     9318.269398386143
+    ],
+    [
+     "Segurança pública",
+     3963.953813077459
+    ],
+    [
+     "Demais",
+     52161.321191441115
+    ]
+   ]
+  }
+ ],
+ "juros_nominais": -891879.89015513,
+ "linhas_usadas": [
+  "1",
+  "1.1",
+  "1.1.01",
+  "1.1.02",
+  "1.1.03",
+  "1.1.03.1",
+  "1.1.03.2",
+  "1.1.03.3",
+  "1.1.04",
+  "1.1.05",
+  "1.1.06",
+  "1.1.07",
+  "1.1.08",
+  "1.1.09",
+  "1.1.10",
+  "1.2",
+  "1.3",
+  "1.3.1",
+  "1.3.2",
+  "1.4",
+  "1.4.1",
+  "1.4.2",
+  "1.4.3",
+  "1.4.4",
+  "1.4.5",
+  "1.4.6",
+  "1.4.7",
+  "1.4.8",
+  "2",
+  "2.1",
+  "2.2",
+  "2.3",
+  "2.4",
+  "2.5",
+  "2.6",
+  "3",
+  "4",
+  "4.1",
+  "4.1.1",
+  "4.1.2",
+  "4.2",
+  "4.3",
+  "4.3.01",
+  "4.3.01.1",
+  "4.3.01.2",
+  "4.3.02",
+  "4.3.03",
+  "4.3.04",
+  "4.3.05",
+  "4.3.06",
+  "4.3.07",
+  "4.3.08",
+  "4.3.09",
+  "4.3.10",
+  "4.3.11",
+  "4.3.12",
+  "4.3.13",
+  "4.3.14",
+  "4.3.15",
+  "4.3.16",
+  "4.3.17",
+  "4.3.18",
+  "4.3.19",
+  "4.3.20",
+  "4.4.1",
+  "4.4.1.1",
+  "4.4.1.2",
+  "4.4.1.3",
+  "4.4.1.4",
+  "4.4.1.5",
+  "4.4.2",
+  "4.4.2.1",
+  "4.4.2.2",
+  "4.4.2.3",
+  "4.4.2.4",
+  "4.4.2.5",
+  "4.4.2.6",
+  "4.4.2.7",
+  "4.4.2.8",
+  "4.4.2.9",
+  "5",
+  "9"
+ ]
+}
