@@ -48,8 +48,9 @@ function casamento(href: string, caminho: string): number {
 export type Atual = { item: number; sub: number | null; atalho: keyof AtalhosNav | null };
 
 /**
- * Destino atual para um endereço: o item (ou a subpágina de um item) cujo caminho mais longo casa com ele. Empate fica com o
- * primeiro da lista, então a consulta pessoal (segundo item) ganha da mesma página repetida num grupo. Um atalho que é o
+ * Destino atual para um endereço: o item (ou a subpágina de um item) cujo caminho mais longo casa com ele. Empate entre itens
+ * fica com o primeiro da lista, então a consulta pessoal (segundo item) ganha da mesma página repetida num grupo; dentro de um
+ * grupo, a subpágina ganha do próprio grupo, que leva a ela. Um atalho que é o
  * próprio endereço marca o atalho e nenhum item.
  */
 export function destinoAtual(nav: Pick<NavegacaoDaColecao, "itens" | "atalhos">, endereco: string | null): Atual {
@@ -72,7 +73,9 @@ export function destinoAtual(nav: Pick<NavegacaoDaColecao, "itens" | "atalhos">,
     (it.subpaginas ?? []).forEach((s, j) => {
       if (!s.publicado) return;
       const m = casamento(s.href, caminho);
-      if (m > nota) {
+      // o grupo leva à primeira página dele (mesmo endereço): no empate dentro do próprio item, ganha a subpágina, que é a página
+      // aberta; o empate com outro item continua do primeiro da lista (a consulta pessoal antes do grupo que a repete)
+      if (m > nota || (m === nota && melhor.item === i && melhor.sub === null)) {
         nota = m;
         melhor = { item: i, sub: j, atalho: null };
       }
