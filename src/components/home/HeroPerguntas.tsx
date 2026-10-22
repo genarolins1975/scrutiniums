@@ -34,17 +34,14 @@ export function HeroPerguntas({ portas, rodape = null }: Readonly<{ portas: Port
         </div>
 
         <ol className="mt-10 grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-3 md:mt-12">
-          {portas.map((p, i) => {
+          {portas.map((p) => {
             const n = p.numeros[0];
             const a = ACENTO[p.acento];
             return (
               <li key={p.id} className="bg-papel">
                 <Link href={rotaPorta(p.id)} className="group relative flex h-full min-h-[44px] flex-col p-5 md:p-6">
                   <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-[3px] ${a.filete}`} />
-                  <span className="rotulo flex items-baseline gap-3 text-mineral">
-                    <span className="tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                    {p.nome}
-                  </span>
+                  <span className="rotulo text-mineral">{p.nome}</span>
                   <span className={`mt-3 font-serif text-xl leading-snug text-carvao transition-colors ${a.hover} [text-wrap:balance]`}>
                     {p.pergunta}
                   </span>

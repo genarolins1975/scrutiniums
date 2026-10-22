@@ -6,7 +6,7 @@
 .heroInner{max-width:76rem;margin:0 auto;padding:48px 32px 40px;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:start}
 .kicker{font-size:14px;color:var(--cor-obee-atlas-texto-secundario)}
 .heroTitle{font-family:"Playfair Display Variable",Georgia,serif;font-weight:400;font-size:clamp(36px,4.2vw,56px)!important;line-height:1.08!important;letter-spacing:-.02em;margin-top:10px!important;color:var(--cor-obee-atlas-tinta)}
-.heroTitle em{font-style:italic;color:var(--cor-obee-atlas-serie-territorio)}
+
 .heroLead{margin-top:18px!important;max-width:34rem;font-size:18px;line-height:1.6;color:var(--cor-obee-atlas-texto-secundario)}
 .selectors{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px;max-width:34rem}
 .selectors label{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--cor-obee-atlas-texto-secundario)}

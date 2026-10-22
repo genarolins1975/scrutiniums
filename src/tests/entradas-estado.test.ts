@@ -70,7 +70,8 @@ describe('Aberturas editoriais: números e perímetros preservados',()=>{
  it.each(retrato.capitais)('OBEE retrata $nome com os sete valores originais, contorno oficial e população do Censo',city=>{
   const reference=city.id==='4106902'?'2611606':'4106902';
   const html=retratoDe(city.id,reference);
-  expect(html).toContain(`Como se vive ${naCapital(city.nome).split(" ")[0]} <em>${city.nome}</em>?`);
+  // destaque colorido no título só no H1 da página inicial (decisão do dono de 22/10/2026)
+  expect(html).toContain(`Como se vive ${naCapital(city.nome).split(" ")[0]} ${city.nome}?`);
   for(const m of retrato.condicoes)expect(html).toContain(numero(m.valores[city.id].valor,m.unidade));
   expect(city.contorno).not.toBeNull();expect(html).toContain('retrato-hachura');
   expect(city.populacao).toBeGreaterThan(0);expect(html).toContain(Math.round(city.populacao!).toLocaleString('pt-BR'));

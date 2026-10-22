@@ -52,7 +52,7 @@ export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, V
           </div>
 
           <div className="mt-8 md:mt-10">
-            {DOMINIOS.map((d, i) => {
+            {DOMINIOS.map((d) => {
               const v = vitrines[d.id];
               const a = ACENTO[d.acento];
               const at = atualizacaoObservatorio(d.id);
@@ -67,7 +67,7 @@ export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, V
                   <div className="lg:col-span-4 lg:pr-4">
                     <p className="rotulo flex items-center gap-3 text-mineral">
                       <span aria-hidden="true" className={`h-[3px] w-8 ${a.filete}`} />
-                      Coleção {String(i + 1).padStart(2, "0")}
+                      Coleção
                     </p>
                     <h3
                       id={`obs-${d.id}-titulo`}

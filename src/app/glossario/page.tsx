@@ -44,21 +44,16 @@ export default function GlossarioPage() {
         </nav>
 
         <div className="mt-12 space-y-12">
-          {GLOSSARIO.map((entry, index) => (
+          {GLOSSARIO.map((entry) => (
             <section
               key={entry.slug}
               id={entry.slug}
               aria-labelledby={`${entry.slug}-titulo`}
               className="scroll-mt-24 border border-linha bg-papel p-8"
             >
-              <div className="mb-2 flex items-baseline gap-4">
-                <span className="font-serif text-xl text-bronze" aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h2 id={`${entry.slug}-titulo`} className="font-serif text-2xl text-carvao md:text-3xl">
-                  {entry.nome}
-                </h2>
-              </div>
+              <h2 id={`${entry.slug}-titulo`} className="mb-2 font-serif text-2xl text-carvao md:text-3xl">
+                {entry.nome}
+              </h2>
               <p className="rotulo mb-6 text-mineral">{entry.unidade}</p>
               <dl className="grid gap-x-10 gap-y-5 md:grid-cols-[14rem_1fr]">
                 <dt className="rotulo pt-0.5 text-mineral">Definição</dt>

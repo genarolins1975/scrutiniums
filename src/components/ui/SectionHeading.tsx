@@ -1,28 +1,19 @@
 /**
- * Cabeçalho editorial de seção: número serifado em bronze,
- * rótulo em caixa alta e título serifado.
+ * Cabeçalho editorial de seção: rótulo em caixa alta e título serifado. Sem numeração 01, 02, 03 (decisão do dono de 22/10/2026:
+ * a ordem é dada pela posição).
  */
 export function SectionHeading({
-  number,
   label,
   title,
   onDark = false,
 }: {
-  number?: string;
   label: string;
   title: string;
   onDark?: boolean;
 }) {
   return (
     <div className="mb-10">
-      <div className="mb-3 flex items-baseline gap-4">
-        {number && (
-          <span className="font-serif text-xl text-bronze" aria-hidden="true">
-            {number}
-          </span>
-        )}
-        <span className={`rotulo ${onDark ? "text-mineral-soft" : "text-mineral"}`}>{label}</span>
-      </div>
+      <p className={`mb-3 rotulo ${onDark ? "text-mineral-soft" : "text-mineral"}`}>{label}</p>
       <h2
         className={`font-serif text-3xl leading-snug md:text-4xl ${
           onDark ? "text-marfim" : "text-carvao"
