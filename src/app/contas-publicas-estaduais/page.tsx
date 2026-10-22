@@ -51,7 +51,10 @@ export default function Page({ searchParams }: { searchParams: { uf?: string; an
               "A efetividade: o exercício não mede os resultados para a população",
             ]}
           >
-            <LaboratorioOrcamentario embutido />
+            {/* o laboratório usa o estilo próprio da coleção (.ce-main), como antes */}
+            <div className="ce-main" style={{ padding: 0 }}>
+              <LaboratorioOrcamentario embutido />
+            </div>
           </ModeloDidatico>
         }
         recolhidos={

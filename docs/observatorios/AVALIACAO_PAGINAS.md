@@ -134,6 +134,10 @@ Rodada de 22/10/2026 da Iniciativa 4 do parecer de UX (`EntradaColecao`, `Numero
 | `/custo-de-vida` | 2 | 10.065 → 7.586 / 15.970 → 12.873 | 569 / 549 | 0 · 0 / 0 | 8 · 7 · 8 · 7 · 9 · 8 · 8 · 7 | Acima do orçamento de entrada (6.500 / 11.000): o modelo didático (2.669 px a 1440) e a consulta com os nove grupos (1.649 px) são a maior parte; decisão do dono pendente |
 | `/contas-publicas/previdencia` | 2 | 16.962 → 5.546 / 23.314 → 8.111 | 504 / 526 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 8 · 8 · 8 · 8 | Nenhuma nova |
 | `/agronegocio` | 2 | 6.463 → 4.833 / 12.036 → 8.420 | 513 / 488 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 8 · 8 · 8 · 8 | Nenhuma nova |
+| `/gas-natural` | 3 | 5.309 → 4.795 / 10.635 → 8.575 | 512 / 557 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 9 · 8 · 8 · 8 | Nenhuma nova |
+| `/saneamento` | 3 | 8.388 → 6.687 / 16.682 → 12.442 | 570 / 567 | 0 · 0 / 0 | 8 · 8 · 8 · 7 · 9 · 8 · 8 · 7 | Acima do orçamento de entrada; o diagrama do sistema (1.814 px a 1440, 3.633 a 390) e os quinze capítulos à vista são a maior parte |
+| `/contas-publicas` | 3 | 7.284 → 6.298 / 13.656 → 11.557 | 530 / 510 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 9 · 8 · 8 · 7 | A 390 px, 557 px acima do orçamento; os cartões do "Para você" com gravura e os oito capítulos à vista são a maior parte |
+| `/contas-publicas-estaduais` | 3 | 11.172 → 6.244 / 19.529 → 10.571 | 484 / 505 | 0 (antes 2) · 0 / 0 | 8 · 8 · 8 · 8 · 8 · 8 · 8 · 8 | A escolha do estado passou a navegar pelo endereço; a ficha, as provas, a cobertura e o catálogo ficam em blocos recolhidos |
 
 No Grupo A (PR 2), as entradas que eram o próprio painel encolheram porque as seções longas foram para blocos recolhidos na mesma página; o primeiro número de antes não tem medida porque a marcação antiga não o identificava. A 1440 px as cinco entradas de observatório ganharam cerca de 200 px com a lista "O que este modelo deixa de fora", que o molde torna obrigatória; a 390 px, as listas de painéis das coleções passaram a duas colunas e o respiro vertical do molde ficou mais justo, sem retirar conteúdo.
 
