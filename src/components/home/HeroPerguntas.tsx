@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ACENTO } from "@/components/home/acentos";
-import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/home/Recolhido";
+import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/observatorios/Recolhido";
 import { DOMINIOS } from "@/lib/dominios";
 import type { Porta } from "@/lib/perguntas/tipos";
 import { rotaPorta } from "@/lib/perguntas/rotas";

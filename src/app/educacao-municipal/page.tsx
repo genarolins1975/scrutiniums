@@ -4,9 +4,8 @@ import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { PainelEducacao } from "@/components/educacao/PainelEducacao";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { consultarMunicipio, goldEducacao } from "@/lib/educacao/dados";
-import { dataBr, num } from "@/lib/educacao/formato";
+import { num } from "@/lib/educacao/formato";
 import { PERGUNTA_PAINEL, ROTA_EDUCACAO, SECAO_PAINEL, TITULO_PAINEL } from "@/lib/educacao/paginas";
-import { RotuloContexto } from "@/components/layout/RotuloContexto";
 import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 /**
@@ -38,17 +37,7 @@ export default function Page({ searchParams }: Busca) {
         <CabecalhoPlataforma observatorio="servicos-publicos" destinoConta="/educacao-municipal" fontes={["educacao"]} />
         <NavegacaoColecao colecao="educacao" />
       </header>
-      <main id="conteudo-educacao" className="ed-pagina edm-main" data-painel="educacao-municipal">
-        <header className="edm-cabeca">
-          <RotuloContexto rota="/educacao-municipal" className="text-mineral" />
-          <h1>{PERGUNTA_PAINEL}</h1>
-          <p className="edm-lead">
-            O Ideb, a aprendizagem e a aprovação das escolas municipais e públicas de cada cidade, com as matrículas e as escolas da rede. Dados do INEP: Ideb {g.ideb.ano}, divulgado em{" "}
-            {dataBr(g.fontes.ideb.publicado_em)}, e Censo Escolar {g.censo.ano}.
-          </p>
-        </header>
-        <PainelEducacao g={g} consulta={consulta} />
-      </main>
+      <PainelEducacao g={g} consulta={consulta} />
     </>
   );
 }

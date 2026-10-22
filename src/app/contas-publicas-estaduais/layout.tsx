@@ -3,6 +3,7 @@ import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
 import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
+import { Footer } from "@/components/layout/Footer";
 import "./estados.css";
 export const metadata: Metadata = {
  title: "Contas Estaduais (piloto)",
@@ -16,6 +17,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
  <header className="ce-cabecalho"><CabecalhoPlataforma colecao="estados" destinoConta="/contas-publicas-estaduais" /><NavegacaoColecao colecao="estaduais" /></header>
  {children}
  <ParaIrAlem mapa={mapaParaIrAlem()} />
- <footer className="ce-footer"><span>Scrutiniums · Evidências para decisões melhores</span><a href="#metodo">Versão, origem e limites desta etapa ↑</a><a href="/sobre">Sobre a Scrutiniums</a></footer>
+ {/* rodapé comum da plataforma (Iniciativa 4, 22/10/2026): a versão, a origem e os limites desta etapa estão no método da entrada */}
+ <Footer compacto />
  </div>;
 }

@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
 import { useState } from "react";
-import { Numero } from "@/components/observatorios/EntradaObservatorio";
+import { NumeroEscala } from "@/components/observatorios/NumeroEscala";
 import type { Cadeia } from "@/lib/observatorios/entradas/energia";
 
 /**
@@ -20,17 +21,7 @@ export function CadeiasInfra({ cadeias }: Readonly<{ cadeias: Cadeia[] }>) {
     document.getElementById(`aba-cadeia-${prox.id}`)?.focus();
   };
   return (
-    <section aria-labelledby="cadeias-titulo" className="border-y border-linha bg-marfim">
-      <div className="mx-auto max-w-page px-6 py-14 md:py-16">
-        <p className="rotulo text-mineral">Modelo didático</p>
-        <h2 id="cadeias-titulo" className="mt-3 max-w-3xl font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao">
-          Da origem à sua casa
-        </h2>
-        <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          Luz, gás e água chegam por cadeias diferentes, cada uma com quem produz, quem transporta, quem entrega e quem
-          regula. Os quatro elos vão da origem ao consumidor, com um número publicado em cada um. Os números têm unidades e
-          períodos próprios: não se somam nem se comparam entre os elos.
-        </p>
+    <ModeloDidatico id="cadeias" titulo={<>Da origem à sua casa</>} descricao={<>Luz, gás e água chegam por cadeias diferentes, cada uma com quem produz, quem transporta, quem entrega e quem regula. Os quatro elos vão da origem ao consumidor, com um número publicado em cada um. Os números têm unidades e períodos próprios: não se somam nem se comparam entre os elos.</>} deixaDeFora={["Preço e qualidade de cada serviço, que o modelo não avalia", "Soma ou comparação entre os elos: cada número tem unidade e período próprios", "Mobilidade, que ainda não tem cadeia descrita aqui", "A internet de cada município, que está no painel Conectividade"]}>
 
         <div role="tablist" aria-label="Serviço" className="mt-8 flex flex-wrap gap-2">
           {cadeias.map((c) => (
@@ -69,7 +60,7 @@ export function CadeiasInfra({ cadeias }: Readonly<{ cadeias: Cadeia[] }>) {
                     <div className="mt-auto pt-4">
                       <div className="border-t border-linha pt-3">
                         <span className="block text-xs leading-snug text-carvao-muted">{e.numero.rotulo}</span>
-                        <span className="mt-1 block"><Numero n={e.numero} /></span>
+                        <span className="mt-1 block"><NumeroEscala n={e.numero} /></span>
                         {e.numero.nota && <span className="mt-1 block text-xs leading-relaxed text-mineral">{e.numero.nota}</span>}
                       </div>
                     </div>
@@ -87,11 +78,10 @@ export function CadeiasInfra({ cadeias }: Readonly<{ cadeias: Cadeia[] }>) {
           </div>
         ))}
         <p className="mt-6 text-xs leading-relaxed text-mineral">
-          Modelo didático: descreve o caminho de cada serviço, não avalia preço nem qualidade. Mobilidade ainda não tem
+          Descreve o caminho de cada serviço, não avalia preço nem qualidade. Mobilidade ainda não tem
           cadeia descrita aqui; a conectividade está no painel Conectividade, com a internet de cada município.
         </p>
-      </div>
-    </section>
+      </ModeloDidatico>
   );
 }
 

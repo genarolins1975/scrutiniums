@@ -49,9 +49,14 @@ describe("vitrine pública do Observatório", () => {
   });
 
   it("cada número exibido declara fonte e data-base", () => {
-    const notas = pagina.match(/nota: `[^`]+`/g) ?? [];
-    expect(notas.length).toBeGreaterThanOrEqual(4);
-    for (const n of notas) expect(n).toMatch(/\$\{/); // sempre interpolando a data-base real
+    // molde único (Iniciativa 4, 22/10/2026): os números da escala são NumeroPorta, com a fonte e o período em campos próprios
+    // (antes, uma nota em texto); o período sempre lido da gold, nunca escrito à mão
+    const numeros = pagina.match(/out\.push\(\{[\s\S]*?\}\);/g) ?? [];
+    expect(numeros.length).toBeGreaterThanOrEqual(4);
+    for (const n of numeros) {
+      expect(n).toMatch(/fonte: "[^"]+"/);
+      expect(n).toMatch(/periodo: ([a-z]|`[^`]*\$\{)/);
+    }
   });
 
   it("o gold que alimenta a vitrine existe e está disponível", () => {

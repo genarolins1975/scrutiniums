@@ -1,3 +1,4 @@
+import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
 import type { ReactNode } from "react";
 import type { FocosMunicipio, GoldQueimadas } from "@/lib/territorio/queimadas";
 import { NOME_UF } from "@/lib/territorio/queimadas";
@@ -227,7 +228,6 @@ export function TabelaUF({ g, linhas }: Readonly<{ g: GoldQueimadas; linhas: { i
   );
 }
 
-/** Modelo didático: o que um foco de calor é e o que ele deixa de ver. */
 /**
  * Modelo didático do foco de calor. No painel, a introdução fala "deste painel"; na
  * entrada do observatório, ela recebe outro texto (introducao) e a ligação ao painel.
@@ -239,19 +239,26 @@ export function DoSateliteAoFoco({ introducao }: Readonly<{ introducao?: ReactNo
     { id: "invisivel", titulo: "O que fica de fora", texto: "Fogo pequeno, rasteiro sob a copa, sob nuvem ou apagado entre duas passagens do satélite não é detectado: zero focos não prova ausência de fogo.", pixels: [[1, 1]], nuvem: true, focos: 0 },
   ];
   return (
-    <section aria-labelledby="didatico-titulo" className="border-y border-linha bg-marfim">
-      <div className="mx-auto max-w-page px-6 py-12 md:py-14">
-        <p className="rotulo text-mineral">Modelo didático</p>
-        <h2 id="didatico-titulo" className="mt-3 max-w-3xl font-serif text-[clamp(1.5rem,2.8vw,2rem)] leading-tight text-carvao">Do satélite ao foco de calor</h2>
-        <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+    <ModeloDidatico
+      id="didatico"
+      titulo="Do satélite ao foco de calor"
+      descricao={
+        <>
           {introducao ?? (
             <>
               Os números deste painel contam focos: pixels com fogo ativo vistos pelo satélite de referência do INPE. O esquema mostra
               por que foco não é área queimada nem número de incêndios. É uma ilustração, sem escala nem dado real.
             </>
           )}
-        </p>
-        <ol className="mt-8 grid gap-px border border-linha bg-linha md:grid-cols-3">
+        </>
+      }
+      deixaDeFora={[
+        "Fogo pequeno, rasteiro sob a copa, sob nuvem ou apagado entre duas passagens do satélite: zero focos não prova ausência de fogo.",
+        "Área queimada e número de incêndios: o foco é um pixel com fogo ativo, e um incêndio grande soma vários.",
+        "Escala e dado real: é uma ilustração.",
+      ]}
+    >
+        <ol className="grid gap-px border border-linha bg-linha md:grid-cols-3">
           {casos.map((c, i) => (
             <li key={c.id} className="flex flex-col bg-papel p-5">
               <p className="rotulo flex items-baseline gap-2 text-mineral"><span className="tabular-nums text-carvao">{String(i + 1).padStart(2, "0")}</span>{c.titulo}</p>
@@ -273,8 +280,7 @@ export function DoSateliteAoFoco({ introducao }: Readonly<{ introducao?: ReactNo
           Ponto marrom: fogo no terreno. Quadrado escuro: pixel que o satélite registra como foco. Comparar anos exige sempre o mesmo
           satélite: a soma de todos os satélites conta o mesmo fogo várias vezes e muda com a quantidade de satélites em órbita.
         </p>
-      </div>
-    </section>
+    </ModeloDidatico>
   );
 }
 

@@ -6,12 +6,20 @@
  * gold; nenhum número escrito à mão.
  */
 import type { ReactNode } from "react";
+import { EntradaColecao } from "@/components/observatorios/EntradaColecao";
+import { destinosDaColecao } from "@/components/observatorios/DestinosDaColecao";
+import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
+import { Recolhido } from "@/components/observatorios/Recolhido";
+import { ParaVoce } from "@/components/observatorios/ParaVoce";
+import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
+import type { NumeroPorta } from "@/lib/perguntas/tipos";
 import { BuscaPrevidencia } from "./BuscaPrevidencia";
 import { GraficoColunas, GraficoLinhas, marcasAnos } from "./Graficos";
 import { SecaoAnuario, SecaoAtendimento } from "./SecoesAnuario";
 import { grupos, maioresDoBrasil, manchete, municipioNoAno, rankingUf, tiposPorId, type ConsultaMunicipio, type GruposAno } from "@/lib/previdencia/dados";
 import { bilhoesDeMilhoes, dataBr, mesCurto, mesExtenso, milhoes, num, pct, razao, reais, reaisGrandes, SEM_DADO } from "@/lib/previdencia/formato";
-import { DO_ESTADO, DOWNLOADS, NOME_GRUPO_Q, NOME_TIPO, ROTA_PREVIDENCIA, hrefMunicipio } from "@/lib/previdencia/paginas";
+import { DO_ESTADO, DOWNLOADS, NOME_GRUPO_Q, NOME_TIPO, PERGUNTA_PAINEL, ROTA_PREVIDENCIA, hrefMunicipio } from "@/lib/previdencia/paginas";
 import type { ArquivoUf, CampoQ, CampoV, GoldPrevidencia, IdTipo, MunicipioGold } from "@/lib/previdencia/tipos";
 
 const medio = (v: number | null | undefined, q: number | null | undefined) => razao(v, q);
@@ -22,58 +30,129 @@ const parte = (a: number | null | undefined, total: number | null | undefined) =
 };
 
 export function PainelPrevidencia({ g, consulta, ferramentas }: { g: GoldPrevidencia; consulta: ConsultaMunicipio; ferramentas?: ReactNode }) {
+  const m = manchete(g);
+  const r = g.rgps;
+  const k = r.anos.length - 1;
+  const u = g.ufs_mes;
+  // molde único de entrada (Iniciativa 4 do parecer de UX, 22/10/2026): as seções de sempre, nas fatias do molde; as longas, recolhidas
   return (
-    <>
-      <Abertura g={g} />
-      {ferramentas}
-      <SecaoMunicipio g={g} c={consulta} />
-      <SecaoTipos g={g} />
-      <SecaoAnuario g={g} />
-      <SecaoResultado g={g} />
-      <SecaoEstados g={g} />
-      <SecaoAtendimento g={g} />
-      <SecaoEvolucao g={g} />
-      <Metodo g={g} />
-    </>
+    <EntradaColecao
+      tipo="colecao"
+      rota={ROTA_PREVIDENCIA}
+      acento="obee"
+      idPrincipal="conteudo-contas"
+      classe="pv-root"
+      titulo={PERGUNTA_PAINEL}
+      frase="Os benefícios do INSS por tipo, por estado e no seu município, e quanto o Regime Geral arrecada e paga a cada ano. Dados do Ministério da Previdência Social e do Tesouro Nacional."
+      frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/contas-publicas/previdencia"]} conteiner="mx-auto max-w-page px-6" />}
+      escala={escalaPrevidencia(g)}
+      paraVoce={
+        <ParaVoce entrada={ROTA_PREVIDENCIA}>
+          {ferramentas}
+          <SecaoMunicipio g={g} c={consulta} />
+        </ParaVoce>
+      }
+      destinos={destinosDaColecao("federais", { proprio: ROTA_PREVIDENCIA, titulo: "Nas contas públicas federais" })}
+      artefato={
+        <ModeloDidatico
+          id="mecanismo-rgps"
+          titulo="Como o Regime Geral fecha a conta"
+          descricao={`As contribuições de quem trabalha hoje pagam os benefícios de hoje. Cada faixa é a despesa com benefícios de ${r.anos[k]}; a parte cheia é a arrecadação líquida, a hachurada é o que o Tesouro cobriu.`}
+          deixaDeFora={[
+            "O BPC e a renda mensal vitalícia, assistência sem contribuição que o Tesouro paga à parte",
+            "Os regimes próprios dos servidores públicos, que não passam pelo INSS",
+            "A compensação do Tesouro pelas desonerações da folha, que entra somada na arrecadação líquida",
+          ]}
+        >
+          <MecanismoRgps g={g} />
+        </ModeloDidatico>
+      }
+      caminhos={[
+        { pergunta: "Que benefícios o INSS paga?", resumo: "Aposentadorias, pensões, auxílios e o BPC, com a quantidade e o valor médio de cada tipo.", href: "#tipos" },
+        {
+          pergunta: "Como o Regime Geral fecha a conta?",
+          resumo: "Arrecadação e benefícios em % do PIB, ano a ano, com a divisão urbana e rural.",
+          href: "#resultado",
+          numero: {
+            rotulo: "Parte dos benefícios do Regime Geral coberta pela arrecadação",
+            valor: m.cobertura === null ? null : semDado(pct(m.cobertura)),
+            unidade: "da despesa com benefícios",
+            periodo: String(m.ano),
+            fonte: `${g.fontes.rtn.orgao}, RTN`,
+            href: "#resultado",
+          },
+        },
+        { pergunta: "Como se compara cada estado?", resumo: `Benefícios, valor médio e a parte assistencial de cada estado em ${mesExtenso(u.referencia)}.`, href: "#estados" },
+        { pergunta: "Quanto o INSS paga e concede em um ano?", resumo: "O valor do ano e as concessões pelo Anuário Estatístico da Previdência Social.", href: "#anuario" },
+        { pergunta: "Quanto o INSS atende nas suas unidades?", resumo: "Atendimentos, perícias e a rede de unidades, por estado.", href: "#atendimento" },
+        { pergunta: "Como o número de benefícios mudou?", resumo: "A série mensal do Regime Geral e dos assistenciais, com o valor médio de cada dezembro.", href: "#evolucao" },
+      ]}
+      recolhidos={
+        <>
+          <Recolhido id="recolhido-retrato" titulo="O retrato do tema" resumo="Os números de abertura numa frase.">
+            <Achado g={g} />
+          </Recolhido>
+          <Recolhido id="recolhido-tipos" titulo="Que benefícios o INSS paga?" resumo="Os tipos de benefício, com quantidade e valor médio.">
+            <SecaoTipos g={g} />
+          </Recolhido>
+          <Recolhido id="recolhido-anuario" titulo="Quanto o INSS paga e concede em um ano?" resumo="O ano inteiro pelo Anuário.">
+            <SecaoAnuario g={g} />
+          </Recolhido>
+          <Recolhido id="recolhido-resultado" titulo="Como o Regime Geral fecha a conta?" resumo="Arrecadação, benefícios e a necessidade de financiamento, ano a ano.">
+            <SecaoResultado g={g} />
+          </Recolhido>
+          <Recolhido id="recolhido-estados" titulo="Como se compara cada estado?" resumo="A tabela dos estados.">
+            <SecaoEstados g={g} />
+          </Recolhido>
+          <Recolhido id="recolhido-atendimento" titulo="Quanto o INSS atende nas suas unidades?" resumo="Atendimento e rede por estado.">
+            <SecaoAtendimento g={g} />
+          </Recolhido>
+          <Recolhido id="recolhido-evolucao" titulo="Como o número de benefícios mudou?" resumo="A série desde o primeiro mês publicado.">
+            <SecaoEvolucao g={g} />
+          </Recolhido>
+        </>
+      }
+      metodo={<Metodo g={g} />}
+      frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/contas-publicas/previdencia"]} variante="metodo" />}
+    />
   );
+}
+
+/** Valor ausente na gold vira null: a escala escreve "Indisponível nesta publicação", nunca "Sem dado" como se fosse número. */
+const semDado = (x: string) => (x === SEM_DADO ? null : x);
+
+/** Os quatro números da abertura, lidos da gold (os mesmos da frase do retrato do tema). */
+function escalaPrevidencia(g: GoldPrevidencia): NumeroPorta[] {
+  const m = manchete(g);
+  const f = g.fontes;
+  return [
+    { rotulo: "Benefícios pagos pelo INSS no mês", valor: semDado(num(m.beneficios / 1e6, 2)), unidade: "milhões", periodo: `${mesExtenso(m.mes)}, todos os grupos`, fonte: `${f.beps.orgao}, BEPS, tabela 15`, href: "#tipos" },
+    { rotulo: "Valor médio de um benefício do Regime Geral", valor: semDado(reais(m.rgps.medio)), unidade: "por benefício", periodo: `${mesExtenso(m.mes)}, líquido, no mês`, fonte: "BEPS, tabela 15", href: "#tipos" },
+    { rotulo: "Despesa com benefícios do Regime Geral no ano", valor: semDado(bilhoesDeMilhoes(m.despesa)), unidade: "no ano", periodo: `${m.ano}, valores nominais`, fonte: `${f.rtn.orgao}, RTN, tabela 2.2`, href: "#resultado" },
+    {
+      rotulo: "Necessidade de financiamento do Regime Geral",
+      valor: semDado(bilhoesDeMilhoes(-m.resultado)),
+      unidade: "no ano",
+      periodo: String(m.ano),
+      fonte: "RTN",
+      nota: `${pct(-m.resultadoPib, 2)} do PIB; benefícios menos arrecadação líquida.`,
+      href: "#resultado",
+    },
+  ];
 }
 
 /* --------------------------------------------------------------------------------------------- abertura */
 
-function Abertura({ g }: { g: GoldPrevidencia }) {
+/** A frase do retrato do tema (os quatro números estão na escala da entrada). */
+function Achado({ g }: { g: GoldPrevidencia }) {
   const m = manchete(g);
   const t = tiposPorId(g);
-  const f = g.fontes;
   return (
-    <>
-      <p className="pv-achado">
-        Em {mesExtenso(m.mes)}, o INSS pagou <strong>{milhoes(m.beneficios)} de benefícios</strong>: {milhoes(t.rgps.q)} do Regime Geral, que exige contribuição, e{" "}
-        {milhoes(t.assistenciais.q)} assistenciais, como o BPC, que não exigem. Em {m.ano}, a arrecadação do Regime Geral cobriu{" "}
-        <strong>{pct(m.cobertura)}</strong> da despesa com os benefícios dele; a diferença, {bilhoesDeMilhoes(-m.resultado)}, veio do Tesouro.
-      </p>
-      <dl className="pv-numeros" aria-label="O tema em quatro números">
-        <div className="pv-lider">
-          <dt>Benefícios pagos pelo INSS no mês</dt>
-          <dd className="pv-valor">{num(m.beneficios / 1e6, 2)}<span className="pv-unidade">milhões</span></dd>
-          <dd className="pv-prova">{mesExtenso(m.mes)} · todos os grupos · {f.beps.orgao}, BEPS, tabela 15</dd>
-        </div>
-        <div>
-          <dt>Valor médio de um benefício do Regime Geral</dt>
-          <dd className="pv-valor">{reais(m.rgps.medio)}</dd>
-          <dd className="pv-prova">{mesExtenso(m.mes)} · líquido, no mês · BEPS, tabela 15</dd>
-        </div>
-        <div>
-          <dt>Despesa com benefícios do Regime Geral no ano</dt>
-          <dd className="pv-valor">{bilhoesDeMilhoes(m.despesa)}</dd>
-          <dd className="pv-prova">{m.ano} · valores nominais · {f.rtn.orgao}, RTN, tabela 2.2</dd>
-        </div>
-        <div>
-          <dt>Necessidade de financiamento do Regime Geral</dt>
-          <dd className="pv-valor">{bilhoesDeMilhoes(-m.resultado)}</dd>
-          <dd className="pv-prova">{m.ano} · {pct(-m.resultadoPib, 2)} do PIB · benefícios menos arrecadação líquida · RTN</dd>
-        </div>
-      </dl>
-    </>
+    <p className="pv-achado">
+      Em {mesExtenso(m.mes)}, o INSS pagou <strong>{milhoes(m.beneficios)} de benefícios</strong>: {milhoes(t.rgps.q)} do Regime Geral, que exige contribuição, e{" "}
+      {milhoes(t.assistenciais.q)} assistenciais, como o BPC, que não exigem. Em {m.ano}, a arrecadação do Regime Geral cobriu <strong>{pct(m.cobertura)}</strong> da despesa com os
+      benefícios dele; a diferença, {bilhoesDeMilhoes(-m.resultado)}, veio do Tesouro.
+    </p>
   );
 }
 
@@ -412,6 +491,27 @@ function Fluxo({ rotulo, entra, sai, ano }: { rotulo: string; entra: number; sai
   );
 }
 
+/** O mecanismo do resultado: quanto entra e quanto sai do Regime Geral no último ano, em proporções reais (vai no ModeloDidatico da entrada). */
+function MecanismoRgps({ g }: { g: GoldPrevidencia }) {
+  const r = g.rgps;
+  const k = r.anos.length - 1;
+  const ano = r.anos[k];
+  return (
+    <div className="pv-mecanismo">
+      <div className="pv-fluxo" aria-label={`Quanto entra e quanto sai do Regime Geral em ${ano}`}>
+        <Fluxo rotulo="Regime Geral" entra={r.arrecadacao[k]} sai={r.beneficios[k]} ano={ano} />
+        {r.arrecadacao_urbana[k] !== null && r.beneficios_urbano[k] !== null && <Fluxo rotulo="Clientela urbana" entra={r.arrecadacao_urbana[k] as number} sai={r.beneficios_urbano[k] as number} ano={ano} />}
+        {r.arrecadacao_rural[k] !== null && r.beneficios_rural[k] !== null && <Fluxo rotulo="Clientela rural" entra={r.arrecadacao_rural[k] as number} sai={r.beneficios_rural[k] as number} ano={ano} />}
+        <p className="pv-fluxo-nota">
+          Proporções reais de {ano}: cada faixa é a despesa com benefícios daquela clientela; a parte cheia é a arrecadação líquida, a hachurada é o que o Tesouro cobriu. A clientela rural
+          contribui sobre a venda da produção, por isso arrecada pouco perto do que recebe. Além disso, {bilhoesDeMilhoes(r.bpc_rmv[k])} em BPC e renda mensal vitalícia, assistência sem
+          contribuição, fora do Regime Geral.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function SecaoResultado({ g }: { g: GoldPrevidencia }) {
   const r = g.rgps;
   const k = r.anos.length - 1;
@@ -426,19 +526,6 @@ function SecaoResultado({ g }: { g: GoldPrevidencia }) {
         O Regime Geral funciona por repartição: as contribuições de quem trabalha hoje pagam os benefícios de hoje. Quando a arrecadação líquida não alcança a despesa com benefícios, a diferença é a
         necessidade de financiamento, coberta pelo Tesouro com os demais tributos. O BPC é pago pelo Tesouro à parte, porque não tem contribuição.
       </p>
-      <div className="pv-mecanismo">
-        <div className="pv-fluxo" aria-label={`Quanto entra e quanto sai do Regime Geral em ${ano}`}>
-          <Fluxo rotulo="Regime Geral" entra={r.arrecadacao[k]} sai={r.beneficios[k]} ano={ano} />
-          {r.arrecadacao_urbana[k] !== null && r.beneficios_urbano[k] !== null && <Fluxo rotulo="Clientela urbana" entra={r.arrecadacao_urbana[k] as number} sai={r.beneficios_urbano[k] as number} ano={ano} />}
-          {r.arrecadacao_rural[k] !== null && r.beneficios_rural[k] !== null && <Fluxo rotulo="Clientela rural" entra={r.arrecadacao_rural[k] as number} sai={r.beneficios_rural[k] as number} ano={ano} />}
-          <p className="pv-fluxo-nota">
-            Proporções reais de {ano}: cada faixa é a despesa com benefícios daquela clientela; a parte cheia é a arrecadação líquida, a hachurada é o que o Tesouro cobriu. A clientela rural
-            contribui sobre a venda da produção, por isso arrecada pouco perto do que recebe. Além disso, {bilhoesDeMilhoes(r.bpc_rmv[k])} em BPC e renda mensal vitalícia, assistência sem
-            contribuição, fora do Regime Geral.
-          </p>
-        </div>
-      </div>
-
       <div className="pv-graficos-dois">
         <figure className="pv-figura">
           <GraficoLinhas
@@ -663,9 +750,7 @@ function Metodo({ g }: { g: GoldPrevidencia }) {
   const f = g.fontes;
   const anos = g.anual.anos;
   return (
-    <details className="pv-metodo" id="metodo">
-      <summary>Método, fontes e arquivos para baixar</summary>
-      <div className="pv-metodo-corpo">
+    <div className="pv-metodo-corpo" id="metodo">
         <div>
           <h3>O que cada número mede</h3>
           <ul>
@@ -766,7 +851,6 @@ function Metodo({ g }: { g: GoldPrevidencia }) {
           </div>
           <p className="pv-fonte">CSV com ponto e vírgula, codificação UTF-8, valores com ponto decimal. Ausência fica vazia, nunca zero. Cada arquivo traz a fonte e o período em colunas.</p>
         </div>
-      </div>
-    </details>
+    </div>
   );
 }
