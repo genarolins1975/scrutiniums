@@ -1,0 +1,1463 @@
+{
+  "versao": "0.1.0",
+  "registros": [
+    {
+      "uf": "AC",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 12,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:58:31.622215+00:00",
+      "status": "capturado",
+      "linhas": 2033,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=12&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:58:31.623260+00:00",
+          "sha256": "1de639a5899b7f7f915b7c1c98cfe085e5dc4ea286def838790e428b97cc3267",
+          "arquivo": "1de639a5899b7f7f915b7c1c98cfe085e5dc4ea286def838790e428b97cc3267.json",
+          "linhas": 2033,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "AC",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 12,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:58:34.315592+00:00",
+      "status": "capturado",
+      "linhas": 396,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=12&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:58:34.315983+00:00",
+          "sha256": "404eae01e0f917b56e36f726b431d7370dfa636fad59e37b3a3c2c537d25beb7",
+          "arquivo": "404eae01e0f917b56e36f726b431d7370dfa636fad59e37b3a3c2c537d25beb7.json",
+          "linhas": 396,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "AL",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 27,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:58:36.277432+00:00",
+      "status": "capturado",
+      "linhas": 1709,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=27&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:58:36.277611+00:00",
+          "sha256": "dfcaead1fde9e13c67cdd5758f0d93832694360f370cb17a5eda56308268ebd4",
+          "arquivo": "dfcaead1fde9e13c67cdd5758f0d93832694360f370cb17a5eda56308268ebd4.json",
+          "linhas": 1709,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "AL",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 27,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:58:38.834008+00:00",
+      "status": "capturado",
+      "linhas": 384,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=27&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:58:38.834222+00:00",
+          "sha256": "656ad46f59bf9ede326f920fd53a18ce4acbfb84cfa46011ba065560d89f31a6",
+          "arquivo": "656ad46f59bf9ede326f920fd53a18ce4acbfb84cfa46011ba065560d89f31a6.json",
+          "linhas": 384,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "AM",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 13,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:58:40.565289+00:00",
+      "status": "capturado",
+      "linhas": 1963,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=13&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:58:40.565453+00:00",
+          "sha256": "36826d0ea0c55b4ed70cef482e259c4723392b6568d2c172d3da0e9bc4e80dcc",
+          "arquivo": "36826d0ea0c55b4ed70cef482e259c4723392b6568d2c172d3da0e9bc4e80dcc.json",
+          "linhas": 1963,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "AM",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 13,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:58:43.287153+00:00",
+      "status": "capturado",
+      "linhas": 414,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=13&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:58:43.287328+00:00",
+          "sha256": "220792043cd4f717f1b930daa6066b6920f7a94551dab9bdf6bc786f841aa8a7",
+          "arquivo": "220792043cd4f717f1b930daa6066b6920f7a94551dab9bdf6bc786f841aa8a7.json",
+          "linhas": 414,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "AP",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 16,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:58:45.245940+00:00",
+      "status": "capturado",
+      "linhas": 1511,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=16&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:58:45.246141+00:00",
+          "sha256": "7b8da4aec67122f686aff7e65e9c8d8a5252d8cf7f64d71048a3c891e9cc1bb9",
+          "arquivo": "7b8da4aec67122f686aff7e65e9c8d8a5252d8cf7f64d71048a3c891e9cc1bb9.json",
+          "linhas": 1511,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "AP",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 16,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:58:47.841191+00:00",
+      "status": "capturado",
+      "linhas": 375,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=16&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:58:47.841360+00:00",
+          "sha256": "e99475fbd150c9cb4e2da75aa389f9dfe6ba286406992cfbe64a817090161865",
+          "arquivo": "e99475fbd150c9cb4e2da75aa389f9dfe6ba286406992cfbe64a817090161865.json",
+          "linhas": 375,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "BA",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 29,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:58:50.281422+00:00",
+      "status": "capturado",
+      "linhas": 2311,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=29&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:58:50.281592+00:00",
+          "sha256": "3fb12b30e24fcbbc1c43fdee401d27e547a87baf8e4ee71e7b31055c837afa02",
+          "arquivo": "3fb12b30e24fcbbc1c43fdee401d27e547a87baf8e4ee71e7b31055c837afa02.json",
+          "linhas": 2311,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "BA",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 29,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:58:52.615017+00:00",
+      "status": "capturado",
+      "linhas": 401,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=29&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:58:52.615250+00:00",
+          "sha256": "845e5116701185ad921f28dd6c7303a4841baea758d89507b9ed9e933e8b65cc",
+          "arquivo": "845e5116701185ad921f28dd6c7303a4841baea758d89507b9ed9e933e8b65cc.json",
+          "linhas": 401,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "CE",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 23,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:58:54.607219+00:00",
+      "status": "capturado",
+      "linhas": 2437,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=23&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:58:54.607502+00:00",
+          "sha256": "809b8c60d00c5588b7ad8583f6fefdafd4f6a650fc5725360c590b652f984e5b",
+          "arquivo": "809b8c60d00c5588b7ad8583f6fefdafd4f6a650fc5725360c590b652f984e5b.json",
+          "linhas": 2437,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "CE",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 23,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:58:57.145166+00:00",
+      "status": "capturado",
+      "linhas": 392,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=23&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:58:57.145432+00:00",
+          "sha256": "c6e992f4adf0f6b3471fe7afaba24a18f2fae731c2a4fd8d7ce6acf01c031a78",
+          "arquivo": "c6e992f4adf0f6b3471fe7afaba24a18f2fae731c2a4fd8d7ce6acf01c031a78.json",
+          "linhas": 392,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "DF",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 53,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:58:59.501311+00:00",
+      "status": "capturado",
+      "linhas": 2119,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=53&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:58:59.501581+00:00",
+          "sha256": "50ef942f54f7411e110280384472071de03290f034e2fe1ed41e6451b6e9e364",
+          "arquivo": "50ef942f54f7411e110280384472071de03290f034e2fe1ed41e6451b6e9e364.json",
+          "linhas": 2119,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "DF",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 53,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:01.729179+00:00",
+      "status": "capturado",
+      "linhas": 494,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=53&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:01.729392+00:00",
+          "sha256": "f016cb542aeb4a9da89c28b2ed9e91eeb8912625be0a661e330d0fdca2a18e3b",
+          "arquivo": "f016cb542aeb4a9da89c28b2ed9e91eeb8912625be0a661e330d0fdca2a18e3b.json",
+          "linhas": 494,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "ES",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 32,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:03.692222+00:00",
+      "status": "capturado",
+      "linhas": 2115,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=32&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:03.692399+00:00",
+          "sha256": "305827abed248cf2bf96d41eb7f4a507c5f38e8f99b8dbf68e46e6f673d66426",
+          "arquivo": "305827abed248cf2bf96d41eb7f4a507c5f38e8f99b8dbf68e46e6f673d66426.json",
+          "linhas": 2115,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "ES",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 32,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:06.078260+00:00",
+      "status": "capturado",
+      "linhas": 420,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=32&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:06.078520+00:00",
+          "sha256": "956bb229635895031012575682195344977852c51b0a04a711315be206c15e42",
+          "arquivo": "956bb229635895031012575682195344977852c51b0a04a711315be206c15e42.json",
+          "linhas": 420,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "GO",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 52,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:08.493477+00:00",
+      "status": "capturado",
+      "linhas": 1875,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=52&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:08.493716+00:00",
+          "sha256": "a68ddccab73e1322d2c4b92314ddd58c1e43f111f01c666df988529fe560d727",
+          "arquivo": "a68ddccab73e1322d2c4b92314ddd58c1e43f111f01c666df988529fe560d727.json",
+          "linhas": 1875,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "GO",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 52,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:10.977710+00:00",
+      "status": "capturado",
+      "linhas": 398,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=52&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:10.977975+00:00",
+          "sha256": "a78c037d46ded3aaf483311741027a53db757f524dbbc942059f26e96db97759",
+          "arquivo": "a78c037d46ded3aaf483311741027a53db757f524dbbc942059f26e96db97759.json",
+          "linhas": 398,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "MA",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 21,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:12.930176+00:00",
+      "status": "capturado",
+      "linhas": 1768,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=21&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:12.930377+00:00",
+          "sha256": "bb787caed68a428db591f622940908a464fc7a0d50498524680bb463771050ca",
+          "arquivo": "bb787caed68a428db591f622940908a464fc7a0d50498524680bb463771050ca.json",
+          "linhas": 1768,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "MA",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 21,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:15.123502+00:00",
+      "status": "capturado",
+      "linhas": 388,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=21&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:15.123783+00:00",
+          "sha256": "080c4604ae496454a41fd26e2c9f2b36e40942dcaa7385f820381a3591850cae",
+          "arquivo": "080c4604ae496454a41fd26e2c9f2b36e40942dcaa7385f820381a3591850cae.json",
+          "linhas": 388,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "MG",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 31,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:16.840159+00:00",
+      "status": "capturado",
+      "linhas": 2182,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=31&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:16.840439+00:00",
+          "sha256": "df054c7af3db2a444b7dd16e2b5e045cef2c375d419e9d3092905a27d408ee5b",
+          "arquivo": "df054c7af3db2a444b7dd16e2b5e045cef2c375d419e9d3092905a27d408ee5b.json",
+          "linhas": 2182,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "MG",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 31,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:19.415905+00:00",
+      "status": "capturado",
+      "linhas": 420,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=31&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:19.416116+00:00",
+          "sha256": "3afed9a0fed1635f8c2a8b48a6173268ee8a7ba9846392bc074dbffbc53102b1",
+          "arquivo": "3afed9a0fed1635f8c2a8b48a6173268ee8a7ba9846392bc074dbffbc53102b1.json",
+          "linhas": 420,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "MS",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 50,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:21.386713+00:00",
+      "status": "capturado",
+      "linhas": 1830,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=50&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:21.386950+00:00",
+          "sha256": "ae631c135865f8e790f8382ff5b07b8640a4e67751cf1b415767ad4445aeea2c",
+          "arquivo": "ae631c135865f8e790f8382ff5b07b8640a4e67751cf1b415767ad4445aeea2c.json",
+          "linhas": 1830,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "MS",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 50,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:23.445212+00:00",
+      "status": "capturado",
+      "linhas": 393,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=50&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:23.445423+00:00",
+          "sha256": "89a29bbce486ebca750b9854bfc250b7331a2f7a589252ce7a2837239f93c043",
+          "arquivo": "89a29bbce486ebca750b9854bfc250b7331a2f7a589252ce7a2837239f93c043.json",
+          "linhas": 393,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "MT",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 51,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:25.238767+00:00",
+      "status": "capturado",
+      "linhas": 2005,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=51&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:25.238952+00:00",
+          "sha256": "2b5084a063610c62955414ce09dd16ac2b1a6e5c61fc2aa34a74d34134780eee",
+          "arquivo": "2b5084a063610c62955414ce09dd16ac2b1a6e5c61fc2aa34a74d34134780eee.json",
+          "linhas": 2005,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "MT",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 51,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:27.994354+00:00",
+      "status": "capturado",
+      "linhas": 461,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=51&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:27.994524+00:00",
+          "sha256": "b886f690a3e263b288a915316462e5ba2b51abf17668d5320e7ed888cdf8e335",
+          "arquivo": "b886f690a3e263b288a915316462e5ba2b51abf17668d5320e7ed888cdf8e335.json",
+          "linhas": 461,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "PA",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 15,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:30.112000+00:00",
+      "status": "capturado",
+      "linhas": 2150,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=15&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:30.112284+00:00",
+          "sha256": "f78dfeed28f14f768cd6ff61ef905ce3143ff8cc67a51b6df4fdd8c4a101725b",
+          "arquivo": "f78dfeed28f14f768cd6ff61ef905ce3143ff8cc67a51b6df4fdd8c4a101725b.json",
+          "linhas": 2150,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "PA",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 15,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:32.898472+00:00",
+      "status": "capturado",
+      "linhas": 415,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=15&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:32.898651+00:00",
+          "sha256": "72318949de189d7fe47a4f29f26d9350b0fdd7b932bafe2c1903f1ecabc05849",
+          "arquivo": "72318949de189d7fe47a4f29f26d9350b0fdd7b932bafe2c1903f1ecabc05849.json",
+          "linhas": 415,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "PB",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 25,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:35.014852+00:00",
+      "status": "capturado",
+      "linhas": 2036,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=25&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:35.015043+00:00",
+          "sha256": "cf9ac2ec7123abdcf071f9842968190c7d264fb33df7addb755490193255a730",
+          "arquivo": "cf9ac2ec7123abdcf071f9842968190c7d264fb33df7addb755490193255a730.json",
+          "linhas": 2036,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "PB",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 25,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:37.789668+00:00",
+      "status": "capturado",
+      "linhas": 390,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=25&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:37.789857+00:00",
+          "sha256": "9876cdf785c3f08129275a89d41b3b6bd04e8e9fb32d466727983f4c23ba2918",
+          "arquivo": "9876cdf785c3f08129275a89d41b3b6bd04e8e9fb32d466727983f4c23ba2918.json",
+          "linhas": 390,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "PE",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 26,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:39.614578+00:00",
+      "status": "capturado",
+      "linhas": 1804,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=26&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:39.614747+00:00",
+          "sha256": "02887a4290fd68bc6f71ba1798db0c0bb5a473ae7703342319b5778da9c119ba",
+          "arquivo": "02887a4290fd68bc6f71ba1798db0c0bb5a473ae7703342319b5778da9c119ba.json",
+          "linhas": 1804,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "PE",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 26,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:41.989155+00:00",
+      "status": "capturado",
+      "linhas": 414,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=26&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:41.989323+00:00",
+          "sha256": "90accc0cd014b469aa4bbed1b2d9372072f18725e691bbe77f92e26ac48e3b0c",
+          "arquivo": "90accc0cd014b469aa4bbed1b2d9372072f18725e691bbe77f92e26ac48e3b0c.json",
+          "linhas": 414,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "PI",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 22,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:43.961114+00:00",
+      "status": "capturado",
+      "linhas": 1809,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=22&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:43.961454+00:00",
+          "sha256": "0aba2681d907bf0704c07706fa8fd2411e25519ac0d9735eea178a73ca95c53b",
+          "arquivo": "0aba2681d907bf0704c07706fa8fd2411e25519ac0d9735eea178a73ca95c53b.json",
+          "linhas": 1809,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "PI",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 22,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:46.330552+00:00",
+      "status": "capturado",
+      "linhas": 391,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=22&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:46.330979+00:00",
+          "sha256": "43194e8ec36530cbd04400a6457c2dc5e5a986ec2092517f30c55e39827d207c",
+          "arquivo": "43194e8ec36530cbd04400a6457c2dc5e5a986ec2092517f30c55e39827d207c.json",
+          "linhas": 391,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "PR",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 41,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:48.106760+00:00",
+      "status": "capturado",
+      "linhas": 1866,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=41&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:48.107056+00:00",
+          "sha256": "6e0fc1e1a4899ea89066676217be5595608d69776fa79bdb33ba7281fc76bfc9",
+          "arquivo": "6e0fc1e1a4899ea89066676217be5595608d69776fa79bdb33ba7281fc76bfc9.json",
+          "linhas": 1866,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "PR",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 41,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:50.524391+00:00",
+      "status": "capturado",
+      "linhas": 418,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=41&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:50.524570+00:00",
+          "sha256": "b0750a1f2560cffa530d79308aa08e61afddb8829c0f3a45aa06fe2201f777e8",
+          "arquivo": "b0750a1f2560cffa530d79308aa08e61afddb8829c0f3a45aa06fe2201f777e8.json",
+          "linhas": 418,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "RJ",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 33,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:52.745616+00:00",
+      "status": "capturado",
+      "linhas": 2043,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=33&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:52.746278+00:00",
+          "sha256": "f7b5def6872ce9a4bdf90704e53d5227beeba77429c8dee06287c9cc71f5f13b",
+          "arquivo": "f7b5def6872ce9a4bdf90704e53d5227beeba77429c8dee06287c9cc71f5f13b.json",
+          "linhas": 2043,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "RJ",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 33,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:55.178413+00:00",
+      "status": "capturado",
+      "linhas": 412,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=33&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:55.178669+00:00",
+          "sha256": "b5fdee35a023408ce99ba420aae76cae15ca4e88eb29ddc7e904356365ae00ea",
+          "arquivo": "b5fdee35a023408ce99ba420aae76cae15ca4e88eb29ddc7e904356365ae00ea.json",
+          "linhas": 412,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "RN",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 24,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:57.172376+00:00",
+      "status": "capturado",
+      "linhas": 1686,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=24&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:57.172606+00:00",
+          "sha256": "2c351b3a3e7d34830f7c4efc007a56bfe38622e07b087f228de5302fb2c16c8a",
+          "arquivo": "2c351b3a3e7d34830f7c4efc007a56bfe38622e07b087f228de5302fb2c16c8a.json",
+          "linhas": 1686,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "RN",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 24,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T16:59:59.507548+00:00",
+      "status": "capturado",
+      "linhas": 417,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=24&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T16:59:59.507906+00:00",
+          "sha256": "98af57af4c93a8583bfd51ae3ecb6c2d368953f7ac4b1afab9754c637869a335",
+          "arquivo": "98af57af4c93a8583bfd51ae3ecb6c2d368953f7ac4b1afab9754c637869a335.json",
+          "linhas": 417,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "RO",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 11,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T17:00:01.537577+00:00",
+      "status": "capturado",
+      "linhas": 1754,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=11&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T17:00:01.537934+00:00",
+          "sha256": "75c06882c0d14701299a62b25e8342e8dfd02ec440f4a4bcbd74b68fc89bdcc4",
+          "arquivo": "75c06882c0d14701299a62b25e8342e8dfd02ec440f4a4bcbd74b68fc89bdcc4.json",
+          "linhas": 1754,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "RO",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 11,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T17:00:04.273907+00:00",
+      "status": "capturado",
+      "linhas": 383,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=11&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T17:00:04.274083+00:00",
+          "sha256": "98957adbe6768fdda9695af54c1b389dd33349a3740e601923e3d3ac24d26601",
+          "arquivo": "98957adbe6768fdda9695af54c1b389dd33349a3740e601923e3d3ac24d26601.json",
+          "linhas": 383,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "RR",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 14,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T17:00:06.286883+00:00",
+      "status": "capturado",
+      "linhas": 1659,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=14&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T17:00:06.287088+00:00",
+          "sha256": "415cf0dbc1d918423a0fe1a088e3f52d56e0ae0a4f2e36991dc632691384f995",
+          "arquivo": "415cf0dbc1d918423a0fe1a088e3f52d56e0ae0a4f2e36991dc632691384f995.json",
+          "linhas": 1659,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "RR",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 14,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T17:00:08.582352+00:00",
+      "status": "capturado",
+      "linhas": 387,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=14&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T17:00:08.582561+00:00",
+          "sha256": "3ec50cb55b3bdf54a534e45f56778f248a55f1a6a67418391cf5ed471c90603f",
+          "arquivo": "3ec50cb55b3bdf54a534e45f56778f248a55f1a6a67418391cf5ed471c90603f.json",
+          "linhas": 387,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "RS",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 43,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T17:00:10.404611+00:00",
+      "status": "capturado",
+      "linhas": 1759,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=43&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T17:00:10.404854+00:00",
+          "sha256": "900cbf32f91cb754b1bc0f9c92f448e5c43bde7b01f99a8e68bcd3e7c80b1521",
+          "arquivo": "900cbf32f91cb754b1bc0f9c92f448e5c43bde7b01f99a8e68bcd3e7c80b1521.json",
+          "linhas": 1759,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "RS",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 43,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T17:00:12.443734+00:00",
+      "status": "capturado",
+      "linhas": 410,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=43&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T17:00:12.443909+00:00",
+          "sha256": "1301b496da242724dc5c35284eaebc9d93aba503a9fff0225ade79a3e988e878",
+          "arquivo": "1301b496da242724dc5c35284eaebc9d93aba503a9fff0225ade79a3e988e878.json",
+          "linhas": 410,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "SC",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 42,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T17:00:14.392679+00:00",
+      "status": "capturado",
+      "linhas": 1985,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=42&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T17:00:14.392863+00:00",
+          "sha256": "c773e7cd5a1c4436c8567d6af3aa5c0b4f89b476379db0ad79cb06528fbc5dd8",
+          "arquivo": "c773e7cd5a1c4436c8567d6af3aa5c0b4f89b476379db0ad79cb06528fbc5dd8.json",
+          "linhas": 1985,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "SC",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 42,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T17:00:17.202427+00:00",
+      "status": "capturado",
+      "linhas": 417,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=42&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T17:00:17.202662+00:00",
+          "sha256": "45c1b882ecc444a4ed2ce7316c41874bd0d190d4fc4964830b9c1bfe9fd37c54",
+          "arquivo": "45c1b882ecc444a4ed2ce7316c41874bd0d190d4fc4964830b9c1bfe9fd37c54.json",
+          "linhas": 417,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "SE",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 28,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T17:00:19.450762+00:00",
+      "status": "capturado",
+      "linhas": 1878,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=28&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T17:00:19.450994+00:00",
+          "sha256": "566eefee5a0d6b99dcc4b1d454cd1e377cb70ea89e419870c834ee8c730cc70e",
+          "arquivo": "566eefee5a0d6b99dcc4b1d454cd1e377cb70ea89e419870c834ee8c730cc70e.json",
+          "linhas": 1878,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "SE",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 28,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T17:00:21.627571+00:00",
+      "status": "capturado",
+      "linhas": 394,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=28&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T17:00:21.627807+00:00",
+          "sha256": "552666ccd7d1b447815814838b5447968efa68c8bccfff4d924d071cbacaf2fd",
+          "arquivo": "552666ccd7d1b447815814838b5447968efa68c8bccfff4d924d071cbacaf2fd.json",
+          "linhas": 394,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "SP",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 35,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T17:00:23.906620+00:00",
+      "status": "capturado",
+      "linhas": 1999,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=35&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T17:00:23.906807+00:00",
+          "sha256": "e430df0c0a7b4ea5b5b2c9880288279ede486fb9e929c6aeafef62877de14166",
+          "arquivo": "e430df0c0a7b4ea5b5b2c9880288279ede486fb9e929c6aeafef62877de14166.json",
+          "linhas": 1999,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "SP",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 35,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T17:00:26.671325+00:00",
+      "status": "capturado",
+      "linhas": 423,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=35&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T17:00:26.671506+00:00",
+          "sha256": "160950c4dfc07327a1351356178aa1363b8574dd89a77f44ecc01634c3c68031",
+          "arquivo": "160950c4dfc07327a1351356178aa1363b8574dd89a77f44ecc01634c3c68031.json",
+          "linhas": 423,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "TO",
+      "ano": 2025,
+      "fonte": "rreo02",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 02",
+        "co_esfera": "E",
+        "id_ente": 17,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T17:00:28.634643+00:00",
+      "status": "capturado",
+      "linhas": 1888,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=17&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T17:00:28.634811+00:00",
+          "sha256": "b131964dc7a80dc43db4f90ff901a6133b8affef85967f2ef6b03bc77b306e57",
+          "arquivo": "b131964dc7a80dc43db4f90ff901a6133b8affef85967f2ef6b03bc77b306e57.json",
+          "linhas": 1888,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "uf": "TO",
+      "ano": 2025,
+      "fonte": "rreo03",
+      "parametros": {
+        "an_exercicio": 2025,
+        "nr_periodo": 6,
+        "co_tipo_demonstrativo": "RREO",
+        "no_anexo": "RREO-Anexo 03",
+        "co_esfera": "E",
+        "id_ente": 17,
+        "limit": 5000
+      },
+      "iniciado_em": "2026-10-22T17:00:31.002646+00:00",
+      "status": "capturado",
+      "linhas": 393,
+      "paginas": [
+        {
+          "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=17&limit=5000&offset=0",
+          "capturado_em": "2026-10-22T17:00:31.002831+00:00",
+          "sha256": "652b1b02832ef9508c6337e405cd3c2cedcd7a6e5101f9f11cd043f133902d86",
+          "arquivo": "652b1b02832ef9508c6337e405cd3c2cedcd7a6e5101f9f11cd043f133902d86.json",
+          "linhas": 393,
+          "offset": 0
+        }
+      ]
+    }
+  ]
+}
