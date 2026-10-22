@@ -27,8 +27,13 @@ function comandosRun(yaml: string): string[] {
   return cmds;
 }
 
-/** Comandos que verificam algo (não instalação, cache ou orquestração do próprio CI). */
-const ehVerificacao = (c: string) => /^(npm run |npx tsc|npx vitest|node scripts\/|python3 |git diff --exit-code docs\/)/.test(c) && !c.startsWith("node scripts/ci/");
+/**
+ * Comandos que verificam algo (não instalação, cache ou orquestração do próprio CI). Um comando que só grava um arquivo em
+ * $RUNNER_TEMP para upload publica um artefato; a verificação dele é outro passo (caso do relatório de cobertura bilíngue,
+ * que sai como artefato desde 22/10/2026, enquanto a validação continua no `--check`).
+ */
+const ehVerificacao = (c: string) =>
+  /^(npm run |npx tsc|npx vitest|node scripts\/|python3 |git diff --exit-code docs\/)/.test(c) && !c.startsWith("node scripts/ci/") && !/>\s*"\$RUNNER_TEMP\//.test(c);
 /** O shard é paralelismo do CI: localmente a suíte inteira roda numa invocação. */
 const normaliza = (c: string) => c.replace(/\s+--shard=\$\{\{\s*matrix\.shard\s*\}\}/, "");
 const locais = (etapas: { cmds: string[] }[]) => new Set(etapas.flatMap((e) => e.cmds));
