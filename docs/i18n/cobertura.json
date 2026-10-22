@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
-    "arquivos_analisados": 1501,
-    "fontes_sha256": "9db11519d5d8ee0c252b25eedf6dbceb248813cba05454d163d3dee6d0506b8b",
+    "arquivos_analisados": 1508,
+    "fontes_sha256": "39768039ecd533070a9fb655c15aff9c34bcd92be35e060e524811bd4840f572",
     "pendencias_sha256": "5d9a9b5f91cb3dcd46e88dcb44660ca8ff3970e20d0c853a76be8cd4b759b625",
     "nao_classificadas": [
       {
@@ -178,20 +178,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 415,
+        "arquivos": 422,
         "candidatos": {
-          "jsx_text": 2400,
-          "atributos": 503,
-          "props": 1043,
-          "outros_literais": 8878,
-          "templates": 1260,
-          "expressoes_nao_resolvidas": 7783,
-          "chaves_objetos": 7029
+          "jsx_text": 2412,
+          "atributos": 506,
+          "props": 1047,
+          "outros_literais": 9039,
+          "templates": 1287,
+          "expressoes_nao_resolvidas": 7901,
+          "chaves_objetos": 7241
         },
         "exclusoes": {
-          "importacoes": 1881,
-          "atributos_tecnicos": 3839,
-          "tipos": 577
+          "importacoes": 1921,
+          "atributos_tecnicos": 3886,
+          "tipos": 599
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -200,17 +200,17 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 28896,
+        "candidatos_nao_catalogados": 29433,
         "percentual_traduzido": null
       },
       "rotas": {
-        "paginas_pt": 50,
+        "paginas_pt": 51,
         "paginas_en": 13,
-        "handlers": 44,
+        "handlers": 45,
         "templates_com_parametros": 6,
-        "paginas_pt_literais": 43,
+        "paginas_pt_literais": 44,
         "paginas_pt_fora_do_adaptador": 7,
-        "paginas_pt_literais_sem_irma": 30,
+        "paginas_pt_literais_sem_irma": 31,
         "pares_estruturais": 13,
         "fallbacks_declarados": 5,
         "paridade_verificada": false,
@@ -520,9 +520,9 @@
           "jsx_text": 464,
           "atributos": 265,
           "props": 835,
-          "outros_literais": 2884,
+          "outros_literais": 2888,
           "templates": 230,
-          "expressoes_nao_resolvidas": 2117,
+          "expressoes_nao_resolvidas": 2118,
           "chaves_objetos": 1760
         },
         "exclusoes": {
@@ -537,7 +537,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 8555,
+        "candidatos_nao_catalogados": 8560,
         "percentual_traduzido": null
       },
       "rotas": {
