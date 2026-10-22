@@ -7,14 +7,16 @@ import { listaEmPortugues, orgaosDasFontes } from "@/lib/energia/dados";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
 import { catalogoDados } from "@/lib/energia/datasets";
 import { conciliarCatalogoEIntegracoes, textoRodapeDasFontes } from "@/lib/energia/dados-leitor";
-import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
+import { RodapeColecao } from "@/components/layout/RodapeColecao";
 
 /**
  * Rodapé do domínio: os órgãos das fontes, a data da última publicação e o caminho para
  * o catálogo e a metodologia. Os órgãos e a data vêm de publicacao.json (a mesma fonte que o
  * cabeçalho das páginas de dados); o meta.json é de um processamento completo anterior e
- * só entra quando a publicação não existe. No fim, a marca da parceria técnica com o FGV CERI (a do rodapé de toda coleção de
- * infraestrutura, RodapeColecao). O rodapé institucional da plataforma vem depois.
+ * só entra quando a publicação não existe. Monta-se sobre o rodapé da coleção (RodapeColecao, Iniciativa 2 do parecer de UX de
+ * 21/10/2026): a entrada, os dados, o método e a marca da parceria técnica com o FGV CERI vêm dele, como no Gás, no Saneamento e
+ * nos Combustíveis; aqui ficam as fontes, a data da publicação e os caminhos próprios do Setor Elétrico (modelos e previsões
+ * do PLD, Aprenda). O rodapé institucional da plataforma vem depois.
  */
 export function RodapeEnergia() {
   const pub = publicacaoDados();
@@ -35,65 +37,57 @@ export function RodapeEnergia() {
     : orgaos.length > 0
       ? tx(`${orgaos.length} órgãos, ${pub!.conjuntos.length} integrações`, `${orgaos.length} agencies, ${pub!.conjuntos.length} integrations`)
       : tx("CCEE, ONS e ANEEL", "CCEE, ONS and ANEEL");
-  const link = "inline-flex min-h-[44px] items-center text-carvao underline-offset-4 hover:underline";
   return (
-    <aside aria-label={tx("Setor Elétrico: mapa e fontes", "Setor Elétrico: map and sources")} className="border-t border-linha bg-papel">
-      <div className="ed-pagina py-4">
-        <details className="border-b border-linha pb-1">
-          <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
-            <span className="rotulo text-mineral">{tx("Fontes deste observatório", "Sources for this observatory")}</span>
-            <span className="text-xs text-carvao-muted">
-              {resumo} <span aria-hidden="true">▾</span>
-            </span>
-          </summary>
-          <div className="pb-3 pt-1">
-            <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-              {textos ? `${textos.detalhe} ` : orgaos.length > 0
-                ? tx(
-                    `Dados abertos de ${listaEmPortugues(siglas)}, em ${pub!.conjuntos.length} integrações de conjuntos. `,
-                    `Open data from ${listaPorExtenso(siglas)}, in ${pub!.conjuntos.length} dataset integrations. `,
-                  )
-                : tx("Dados abertos da CCEE, do ONS e da ANEEL. ", "Open data from CCEE, ONS and ANEEL. ")}
-              {tx(
-                <>
-                  Licença, frequência e estado de cada conjunto estão no catálogo; cada número tem natureza, fonte, período e
-                  limitações no painel &quot;Sobre este dado&quot;.
-                </>,
-                <>
-                  License, frequency and status of each dataset are in the catalog; every number has its data type, source, period and
-                  limitations in the &quot;About this data&quot; panel.
-                </>,
-              )}
-            </p>
-          </div>
-        </details>
-        {meta && (
-          <p className="max-w-prose2 py-1 text-xs leading-relaxed text-mineral">
-            {pub ? tx("Catálogo e saúde processados em ", "Catalog and health processed on ") : tx("Dados processados em ", "Data processed on ")}
-            {carimbo(meta.gerado_em)}
+    <RodapeColecao
+      colecao="setor-eletrico"
+      extras={[
+        { rotulo: tx("Registro de modelos do PLD", "PLD model register"), href: "/setor-eletrico/pld/modelos" },
+        { rotulo: tx("Histórico de previsões", "Forecast history"), href: "/setor-eletrico/pld/previsoes" },
+        { rotulo: tx("Aprenda: base de conhecimento", "Learn: knowledge base"), href: "/setor-eletrico/aprenda" },
+      ]}
+    >
+      <details className="border-b border-linha pb-1">
+        <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
+          <span className="rotulo text-mineral">{tx("Fontes deste observatório", "Sources for this observatory")}</span>
+          <span className="text-xs text-carvao-muted">
+            {resumo} <span aria-hidden="true">▾</span>
+          </span>
+        </summary>
+        <div className="pb-3 pt-1">
+          <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+            {textos ? `${textos.detalhe} ` : orgaos.length > 0
+              ? tx(
+                  `Dados abertos de ${listaEmPortugues(siglas)}, em ${pub!.conjuntos.length} integrações de conjuntos. `,
+                  `Open data from ${listaPorExtenso(siglas)}, in ${pub!.conjuntos.length} dataset integrations. `,
+                )
+              : tx("Dados abertos da CCEE, do ONS e da ANEEL. ", "Open data from CCEE, ONS and ANEEL. ")}
             {tx(
-              ". Cada painel traz a data de referência dos próprios dados. A versão técnica da publicação está em ",
-              ". Each panel shows the reference date of its own data. The technical version of the release is in ",
+              <>
+                Licença, frequência e estado de cada conjunto estão no catálogo; cada número tem natureza, fonte, período e
+                limitações no painel &quot;Sobre este dado&quot;.
+              </>,
+              <>
+                License, frequency and status of each dataset are in the catalog; every number has its data type, source, period and
+                limitations in the &quot;About this data&quot; panel.
+              </>,
             )}
-            <Link href="/setor-eletrico/dados/reproducao" className="underline underline-offset-4">
-              {tx("Download e reprodução", "Download and reproduction")}
-            </Link>
-            .
           </p>
-        )}
-        <ul className="flex flex-wrap gap-x-6 text-sm">
-          <li><Link prefetch={false} href="/setor-eletrico" className={link}>{tx("Mapa do Observatório: por onde começar", "Observatory map: where to start")}</Link></li>
-          <li><Link prefetch={false} href="/setor-eletrico/dados" className={link}>{tx("Catálogo de dados e downloads", "Data catalog and downloads")}</Link></li>
-          <li><Link prefetch={false} href="/setor-eletrico/metodologia" className={link}>{tx("Metodologia e regras publicadas", "Methodology and published rules")}</Link></li>
-          <li><Link prefetch={false} href="/setor-eletrico/pld/modelos" className={link}>{tx("Registro de modelos do PLD", "PLD model register")}</Link></li>
-          <li><Link prefetch={false} href="/setor-eletrico/pld/previsoes" className={link}>{tx("Histórico de previsões", "Forecast history")}</Link></li>
-          <li><Link prefetch={false} href="/setor-eletrico/aprenda" className={link}>{tx("Aprenda: base de conhecimento", "Learn: knowledge base")}</Link></li>
-        </ul>
-        {/* parceria técnica com o FGV CERI: saiu do cabeçalho (Iniciativa 2) e fecha o rodapé da coleção, com e sem sessão */}
-        <div className="mt-2 flex justify-end">
-          <ParceriaTecnica variante="compacto" />
         </div>
-      </div>
-    </aside>
+      </details>
+      {meta && (
+        <p className="max-w-prose2 py-1 text-xs leading-relaxed text-mineral">
+          {pub ? tx("Catálogo e saúde processados em ", "Catalog and health processed on ") : tx("Dados processados em ", "Data processed on ")}
+          {carimbo(meta.gerado_em)}
+          {tx(
+            ". Cada painel traz a data de referência dos próprios dados. A versão técnica da publicação está em ",
+            ". Each panel shows the reference date of its own data. The technical version of the release is in ",
+          )}
+          <Link href="/setor-eletrico/dados/reproducao" className="underline underline-offset-4">
+            {tx("Download e reprodução", "Download and reproduction")}
+          </Link>
+          .
+        </p>
+      )}
+    </RodapeColecao>
   );
 }

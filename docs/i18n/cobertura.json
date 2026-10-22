@@ -11,8 +11,8 @@
   },
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
-    "arquivos_analisados": 1502,
-    "fontes_sha256": "352f1fcd016bd55e8445df63f3b5080be64433564024799ed6f53f15d5a9e387",
+    "arquivos_analisados": 1501,
+    "fontes_sha256": "9db11519d5d8ee0c252b25eedf6dbceb248813cba05454d163d3dee6d0506b8b",
     "pendencias_sha256": "5d9a9b5f91cb3dcd46e88dcb44660ca8ff3970e20d0c853a76be8cd4b759b625",
     "nao_classificadas": [
       {
@@ -178,19 +178,19 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 416,
+        "arquivos": 415,
         "candidatos": {
-          "jsx_text": 2406,
+          "jsx_text": 2400,
           "atributos": 503,
-          "props": 1049,
-          "outros_literais": 8856,
+          "props": 1043,
+          "outros_literais": 8878,
           "templates": 1260,
-          "expressoes_nao_resolvidas": 7775,
-          "chaves_objetos": 7023
+          "expressoes_nao_resolvidas": 7783,
+          "chaves_objetos": 7029
         },
         "exclusoes": {
-          "importacoes": 1877,
-          "atributos_tecnicos": 3844,
+          "importacoes": 1881,
+          "atributos_tecnicos": 3839,
           "tipos": 577
         },
         "scripts_embutidos": {},
@@ -200,7 +200,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 28872,
+        "candidatos_nao_catalogados": 28896,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -230,16 +230,16 @@
         "arquivos": 575,
         "candidatos": {
           "jsx_text": 7666,
-          "atributos": 2913,
-          "props": 19060,
-          "outros_literais": 51179,
+          "atributos": 2911,
+          "props": 19063,
+          "outros_literais": 51166,
           "templates": 12784,
-          "expressoes_nao_resolvidas": 55585,
-          "chaves_objetos": 36046
+          "expressoes_nao_resolvidas": 55573,
+          "chaves_objetos": 36052
         },
         "exclusoes": {
           "importacoes": 4994,
-          "atributos_tecnicos": 8669,
+          "atributos_tecnicos": 8665,
           "tipos": 3733
         },
         "scripts_embutidos": {},
@@ -249,7 +249,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 185233,
+        "candidatos_nao_catalogados": 185215,
         "percentual_traduzido": null
       },
       "rotas": {

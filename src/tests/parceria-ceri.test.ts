@@ -89,7 +89,8 @@ describe("onde a marca aparece", () => {
   // navegação e vai para o rodapé da coleção, sem deixar de aparecer em todos os painéis de infraestrutura, com e sem sessão.
   // As quatro coleções de infraestrutura já levam a marca no rodapé da coleção; nenhum cabeçalho a leva.
   it("a marca aparece em todos os painéis de infraestrutura, com e sem sessão", () => {
-    expect(ler("src/components/energia/RodapeEnergia.tsx")).toContain('<ParceriaTecnica variante="compacto" />');
+    // o rodapé do Setor Elétrico monta-se sobre o rodapé da coleção, que traz a marca
+    expect(ler("src/components/energia/RodapeEnergia.tsx")).toContain('<RodapeColecao\n      colecao="setor-eletrico"');
     for (const f of ["src/app/setor-eletrico/layout.tsx", "src/app/en/setor-eletrico/layout.tsx"]) expect(ler(f), f).toContain("<RodapeEnergia />");
     expect(ler("src/app/aperitivo/conta-de-luz/page.tsx")).toContain('<RodapeColecao colecao="setor-eletrico" />');
     expect(ler("src/app/saneamento/layout.tsx")).toContain('<RodapeColecao colecao="saneamento"');
