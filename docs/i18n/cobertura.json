@@ -12,8 +12,8 @@
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
     "arquivos_analisados": 1525,
-    "fontes_sha256": "8cf6f7d587bf9651fb4562bf481ed950c41e411273774ccdfed49ba69371fa66",
-    "pendencias_sha256": "17981b783ffe5d0403fe84e7b6cc0219b9eed228ca61585f9e116eb8a3008e0b",
+    "fontes_sha256": "4ca1afe32797186a1432b484248b02aeadd15d6e5c2361fb104a0f1677dc58f5",
+    "pendencias_sha256": "15b1a04fdfc2d3584cacbb840fafa2d3faf533fe6ccafbc463f5d33ec614b59f",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -193,10 +193,10 @@
           "jsx_text": 2433,
           "atributos": 539,
           "props": 1045,
-          "outros_literais": 9278,
+          "outros_literais": 9319,
           "templates": 1325,
           "expressoes_nao_resolvidas": 8176,
-          "chaves_objetos": 7446
+          "chaves_objetos": 7487
         },
         "exclusoes": {
           "importacoes": 1967,
@@ -210,7 +210,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 30242,
+        "candidatos_nao_catalogados": 30324,
         "percentual_traduzido": null
       },
       "rotas": {
