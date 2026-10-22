@@ -4,7 +4,7 @@ import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/energia/LinkSemPrefetch";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { EmpresasLeitura } from "@/components/energia/EmpresasLeitura";
 import { EmpresasIndisponivel } from "@/components/energia/EmpresasPagina";
 import { lerGold, integra } from "@/lib/energia/gold";
@@ -36,7 +36,7 @@ export default function AnaliseEmpresas() {
   const cadeia = lerSerie<CadeiaSocietaria>(g.series.cadeia);
   const empresas = prepararEmpresas(g.financas.companhias, series?.series ?? {}, cadeia);
   const limites = temTraducao(ESTUDO_COPEL_EN, copel.limites) ? traduzir(ESTUDO_COPEL_EN, copel.limites) : <TrechoPortugues regiao="copel-limites">{copel.limites}</TrechoPortugues>;
-  return <><CabecalhoEnergia atual="empresas" /><main id="conteudo" tabIndex={-1} className="ed-pagina">
+  return <><header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header><main id="conteudo" tabIndex={-1} className="ed-pagina">
     <header className={s.section}><Link className={s.link} href="/setor-eletrico/empresas">{tx("← Empresas do setor", "← Companies in the sector")}</Link><p className={s.eyebrow}>{tx("Análise empresarial com dados públicos", "Company analysis with public data")}</p><h1 className={s.title}>{tx("Quem controla. Onde ganha. Onde investe.", "Who controls. Where it earns. Where it invests.")}</h1><p className={s.intro}>{tx(
       "Combine estrutura societária, resultado e caixa. Depois avance aos segmentos e aos planos declarados pela administração: cada dimensão responde a uma pergunta diferente.",
       "Combine shareholding structure, earnings and cash. Then move on to the segments and the plans declared by management: each dimension answers a different question.",

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { Fonte, Numeros } from "@/components/saneamento/Editorial";
 import { ConviteAperitivo } from "@/components/acesso/ConviteAperitivo";
 import { Footer } from "@/components/layout/Footer";
+import { RodapeColecao } from "@/components/layout/RodapeColecao";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { fichaMunicipio, meta, municipio, prestadores } from "@/lib/saneamento/gold";
 import { CAPITULOS, EIXOS, ROTA } from "@/lib/saneamento/capitulos";
@@ -120,7 +122,10 @@ export default function Pagina({ searchParams }: Busca) {
         Pular para o conteúdo
       </a>
       <div className="flex-1">
-        <Cabecalho atual="municipio" />
+        <header>
+          <CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />
+          <NavegacaoColecao colecao="saneamento" />
+        </header>
         <MarcaVisita secao="saneamento:municipio-aperitivo" />
         <main id="conteudo" className="ed-pagina pb-16 pt-8" data-aperitivo="saneamento">
           <header className="mb-8 border-b border-linha pb-6">
@@ -162,6 +167,7 @@ export default function Pagina({ searchParams }: Busca) {
           <ConviteAperitivo rota={c.estado === "ok" ? `${ROTA_PUBLICA}?ibge=${c.m.id}` : ROTA_PUBLICA} comConta={comConta()} className="mt-14" />
         </main>
       </div>
+      <RodapeColecao colecao="saneamento" />
       <Footer compacto />
     </div>
   );

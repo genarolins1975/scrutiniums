@@ -10,7 +10,7 @@ import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/energia/LinkSemPrefetch";
 import type { ReactNode } from "react";
 import { BuscaObservatorio } from "@/components/energia/BuscaObservatorio";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
 import { LinkPorDistribuidora, SuaDistribuidora } from "@/components/energia/EscolhaDistribuidora";
@@ -799,7 +799,7 @@ export default function MapaDoObservatorio() {
 
   return (
     <>
-      <CabecalhoEnergia atual="mapa" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:mapa" />
       <RedirecionaAncoraAntiga ancoras={ANCORAS_VISAO_GERAL} destino="/setor-eletrico/visao-geral" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina energia-atlas-inicial pb-12">

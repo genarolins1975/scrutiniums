@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { Abertura, Fonte, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
@@ -149,7 +150,10 @@ export default function Pagina() {
 
   return (
     <>
-      <Cabecalho atual="tarifa-social" />
+      <header>
+        <CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />
+        <NavegacaoColecao colecao="saneamento" />
+      </header>
       <MarcaVisita secao="saneamento:tarifa-social" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">
         <Abertura

@@ -35,11 +35,33 @@ const ENTRADAS: Record<string, string> = {
   // a apresentação do Crédito (/observatorio-do-credito) tem casca própria até a Iniciativa 4; a navegação mora nas páginas Next
   credito: "/observatorio-do-credito/quanto-meu-banco-cobra",
   estaduais: "/contas-publicas-estaduais",
+  // bloco 3
+  saneamento: "/saneamento",
+  agro: "/agronegocio",
+  // bloco 4
+  "setor-eletrico": "/setor-eletrico",
+  // bloco 5: as coleções da Eficiência Estatal
+  renda: "/eficiencia-estatal/trabalho-renda",
+  protecao: "/eficiencia-estatal/assistencia-social",
+  moradia: "/eficiencia-estatal/habitacao",
+  saude: "/eficiencia-estatal/saude-capitais",
+  seguranca: "/eficiencia-estatal/seguranca-publica",
+  justica: "/eficiencia-estatal/judiciario",
+  cultura: "/eficiencia-estatal/cultura",
+  sintese: "/eficiencia-estatal",
+  mobilidade: "/eficiencia-estatal/mobilidade-transporte",
+  "cidades-clima": "/eficiencia-estatal/meio-ambiente-clima",
+  // bloco 6: o Desmatamento e emissões entra pela página ambiental do Agro; ficam fora as quatro coleções servidas pela
+  // aplicação do Crédito (Dívida das famílias, Dívida dos governos, Pagamentos, Empresas e risco), cuja barra lateral é a
+  // Iniciativa 8
+  desmatamento: "/agronegocio/ambiente",
 };
+/** Entradas dos seis observatórios e as páginas da conta, com a mesma barra comum. */
+const SUPERFICIES = ["/observatorios/familias", "/observatorios/servicos-publicos", "/observatorios/contas-publicas", "/observatorios/energia-e-infraestrutura", "/observatorios/economia", "/app/observatorios", "/app/conta"];
 /** Subpáginas e superfícies da mesma navegação. */
-const OUTRAS = ["/territorio", "/territorio/emissoes", "/contas-publicas/execucao", "/contas-publicas/previdencia", "/gas-natural/importacao", "/gas-natural/metodologia", "/observatorio-do-credito/simulador-da-parcela"];
+const OUTRAS = ["/territorio", "/territorio/emissoes", "/contas-publicas/execucao", "/contas-publicas/previdencia", "/gas-natural/importacao", "/gas-natural/metodologia", "/observatorio-do-credito/simulador-da-parcela", "/saneamento/esgoto", "/saneamento/prestadores/divida", "/agronegocio/producao", "/agronegocio/ambiente", "/setor-eletrico/geracao", "/setor-eletrico/pld", "/setor-eletrico/dados", "/en/setor-eletrico", "/en/setor-eletrico/geracao", "/eficiencia-estatal/seguranca-alimentar", "/eficiencia-estatal/saude-capitais/gastos", "/eficiencia-estatal/educacao-municipal-capitais/gastos", "/eficiencia-estatal/acesso-justica", "/eficiencia-estatal/saneamento", "/eficiencia-estatal/energia-conectividade"];
 /** Páginas aperitivo das mesmas coleções, sem sessão. */
-const ABERTAS = ["/conectividade", "/contas-publicas/previdencia", "/contas-publicas/metodologia", "/territorio/metodologia", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado", "/educacao-municipal"];
+const ABERTAS = ["/conectividade", "/contas-publicas/previdencia", "/contas-publicas/metodologia", "/territorio/metodologia", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado", "/educacao-municipal", "/saneamento/municipio", "/saneamento/metodologia", "/agronegocio/metodologia", "/setor-eletrico/conta-de-luz", "/setor-eletrico/metodologia", "/setor-eletrico/aprenda", "/en/setor-eletrico/conta-de-luz", "/eficiencia-estatal"];
 
 describe("orçamento de cromo", () => {
   it("o build existe quando o CI exige", () => {
@@ -105,6 +127,9 @@ describe.skipIf(!temBuild)("orçamento de cromo no navegador (build de produçã
         const resp = await page.goto(origem + rota, { waitUntil: "load", timeout: 60_000 });
         expect(resp?.status(), rota).toBe(200);
         expect(new URL(page.url()).pathname, `${rota} não pode cair no login`).toBe(rota);
+        // como scripts/ux-cromo.mjs: mede depois de a rede assentar, quando o navegador já resolveu a sessão (a faixa de
+        // consulta aberta, que vem no HTML, some para quem tem conta)
+        await page.waitForLoadState("networkidle", { timeout: 15_000 }).catch(() => undefined);
         await page.evaluate(() => document.fonts.ready.then(() => undefined));
         const m = await page.evaluate(medirCromo);
         if (m.cromo > ORCAMENTO[largura]) fora.push(`${rota}: cromo ${m.cromo} px (máximo ${ORCAMENTO[largura]})`);
@@ -120,7 +145,7 @@ describe.skipIf(!temBuild)("orçamento de cromo no navegador (build de produçã
 
   for (const largura of [1440, 390] as const) {
     it(`${largura} px, com sessão: entradas das coleções na navegação única e suas subpáginas`, async () => {
-      expect(await medir(largura, [...Object.values(ENTRADAS), ...OUTRAS], true)).toEqual([]);
+      expect(await medir(largura, [...new Set([...Object.values(ENTRADAS), ...OUTRAS, ...SUPERFICIES])], true)).toEqual([]);
     }, 300_000);
 
     it(`${largura} px, sem sessão: páginas abertas das mesmas coleções`, async () => {

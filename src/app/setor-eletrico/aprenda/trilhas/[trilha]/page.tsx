@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { AprendaCabecalho, AprendaNavegacao, ROTA_APRENDA, ROTA_TRILHAS } from "@/components/energia/AprendaPagina";
 import { AprendaProva } from "@/components/energia/AprendaProva";
 import { SimulacaoConta, SimulacaoLiquidacao } from "@/components/energia/AprendaSimulacao";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { destinoNoPainel } from "@/lib/energia/conteudo/aprenda-indice";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
@@ -149,7 +149,7 @@ export default function TrilhaPage({ params }: { params: { trilha: string } }) {
   const depois = t.passos.slice(idxSimulacao + 1);
   return (
     <>
-      <CabecalhoEnergia atual="aprenda" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:aprenda:trilhas" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16" data-tipo-pagina="trilha">
         <AprendaNavegacao atual="trilhas" neta />

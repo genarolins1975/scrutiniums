@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { Abertura } from "@/components/saneamento/Editorial";
 import { BuscaMunicipio } from "@/components/saneamento/BuscaMunicipio";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -24,7 +25,10 @@ export default function Pagina() {
   const capitais = CAPITAIS.map((id) => lista.find((x) => x.id === id)).filter(Boolean).sort((a, b) => a!.nome.localeCompare(b!.nome, "pt-BR"));
   return (
     <>
-      <Cabecalho atual="municipio" />
+      <header>
+        <CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />
+        <NavegacaoColecao colecao="saneamento" />
+      </header>
       <AvisoConsultaAberta className="ed-pagina" comConta="A comparação entre municípios, o atlas, as fichas dos prestadores e os demais capítulos do observatório" />
       <MarcaVisita secao="saneamento:municipio-busca" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { Abertura, Fonte, Indisponivel, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
@@ -112,7 +113,10 @@ export default function Pagina() {
 
   return (
     <>
-      <Cabecalho atual="saude-ambiente" />
+      <header>
+        <CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />
+        <NavegacaoColecao colecao="saneamento" />
+      </header>
       <MarcaVisita secao="saneamento:saude-ambiente" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">
         <Abertura

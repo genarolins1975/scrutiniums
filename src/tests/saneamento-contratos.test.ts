@@ -14,7 +14,8 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import Pagina from "@/app/saneamento/contratado/page";
 import Aperitivo from "@/app/aperitivo/saneamento/page";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { NavegacaoColecaoCliente } from "@/components/layout/NavegacaoColecaoCliente";
+import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 import { cenario2033, type AreaLab, type TrajetoriaBr } from "@/components/saneamento/Contratado";
 import { CAPITULOS, capituloPorSlug } from "@/lib/saneamento/capitulos";
 import { APERITIVOS, ehRotaPublica } from "@/lib/rotasPublicas";
@@ -115,7 +116,8 @@ describe("página /saneamento/contratado", () => {
       expect(ehRotaPublica(`/saneamento/contratos/${a}`), a).toBe(false);
     }
     expect(APERITIVOS.some((a) => a.rota === ROTA_CONTRATADO || a.painelCompleto === ROTA_CONTRATADO)).toBe(false);
-    const cab = renderToStaticMarkup(createElement(Cabecalho, { atual: "contratado" }));
+    // navegação da coleção (Iniciativa 2): o capítulo está no eixo dele e, aberto, aparece na segunda linha
+    const cab = renderToStaticMarkup(createElement(NavegacaoColecaoCliente, { nav: navegacaoDaColecao("saneamento"), caminho: ROTA_CONTRATADO, atual: ROTA_CONTRATADO, idioma: "pt" }));
     expect(cab).toContain('href="/saneamento/contratado"');
   });
 

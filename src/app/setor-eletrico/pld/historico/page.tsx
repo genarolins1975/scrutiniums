@@ -1,6 +1,6 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { PldHistorico } from "@/components/energia/PldHistorico";
 import { PldAviso, PldControles, PldIndisponivel, PldNavegacao, PldSeguir } from "@/components/energia/PldPagina";
@@ -124,7 +124,7 @@ export default function PldHistoricoPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="pld" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:pld" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo

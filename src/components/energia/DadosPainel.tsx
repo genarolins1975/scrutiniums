@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "@/components/i18n/LinkIdioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoLocal, type ItemLocal } from "@/components/energia/NavegacaoLocal";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
@@ -183,10 +183,10 @@ export function DadosSeguir({ ancora, proximo, downloads, extra }: { ancora: str
 }
 
 /** Gold ausente: a página diz o que falta, nunca mostra número de reserva. */
-export function DadosIndisponivel({ atual, motivo }: { atual: "dados" | "metodologia"; motivo?: string | null }) {
+export function DadosIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
-      <CabecalhoEnergia atual={atual} />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo={tx("Dados indisponíveis nesta publicação", "Data unavailable in this publication")}

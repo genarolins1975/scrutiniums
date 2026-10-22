@@ -2,7 +2,7 @@
  * gráfico, tabela e exportação, textos derivados dos números e renderização das
  * páginas no servidor. As conferências numéricas releem os CSV publicados (outro
  * artefato, outro código), não repetem a fórmula de src/lib/energia/rede.ts. */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
@@ -20,6 +20,11 @@ import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import * as R from "@/lib/energia/rede";
 import { gerarCsv, matrizExportacao } from "@/lib/energia/tabela";
 import type { FronteiraRede, GoldRedeDetalhe, JanelaHorariaRede, ResumoFronteira30d } from "@/lib/energia/tipos-rede";
+// Iniciativa 2: a navegação da coleção (NavegacaoColecao) marca a página atual pelo endereço; as páginas daqui são do módulo /setor-eletrico/rede
+vi.mock("next/navigation", async () => ({
+  ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
+  usePathname: () => "/setor-eletrico/rede",
+}));
 
 const raiz = process.cwd();
 const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");

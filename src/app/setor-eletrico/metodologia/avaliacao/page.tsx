@@ -2,7 +2,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { AvaliacaoPaginas } from "@/components/energia/AvaliacaoPaginas";
 import { AvaliacaoEvolucao, AvaliacaoJornadas, AvaliacaoMatriz, AvaliacaoMetodo, AvaliacaoRevisao, AvaliacaoRubrica } from "@/components/energia/AvaliacaoPartes";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { DadosAviso, DadosIndisponivel, DadosLimitacoes, DadosNavegacao, DadosRecorte, DadosResposta, DadosSeguir, ReferenciaDados } from "@/components/energia/DadosPainel";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -40,7 +40,6 @@ export default function AvaliacaoPage() {
   if (!a)
     return (
       <DadosIndisponivel
-        atual="metodologia"
         motivo={tx(
           "A avaliação dos painéis (P071) ainda não foi publicada nesta versão: sem o arquivo avaliacao.json não há nota, e a página não mostra nenhuma.",
           "The panel evaluation (P071) has not yet been published in this version: without the avaliacao.json file there is no score, and the page shows none.",
@@ -93,7 +92,7 @@ export default function AvaliacaoPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="metodologia" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:dados:avaliacao" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <DadosNavegacao atual="avaliacao" />

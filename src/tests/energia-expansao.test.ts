@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- varredura genérica da gold publicada */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
@@ -73,6 +73,11 @@ import { PAGINAS_MAPA } from "@/lib/energia/mapa";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { matrizExportacao } from "@/lib/energia/tabela";
 import type { ExpansaoGold, LinhasRedeEpe, PontosUsinas } from "@/lib/energia/tipos-expansao";
+// Iniciativa 2: a navegação da coleção (NavegacaoColecao) marca a página atual pelo endereço; as páginas daqui são do módulo /setor-eletrico/expansao
+vi.mock("next/navigation", async () => ({
+  ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
+  usePathname: () => "/setor-eletrico/expansao",
+}));
 
 /**
  * Páginas da Expansão (P040 a P043): contrato da gold, equivalência entre gráfico,

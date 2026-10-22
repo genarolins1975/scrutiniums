@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { Fonte, MarcaAutodeclarado, NestaPagina, Nota, Ressalva, RessalvaAutodeclarado, Secao } from "@/components/saneamento/Editorial";
 import { QuadroSocietario } from "@/components/saneamento/QuadroSocietario";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
@@ -58,7 +59,10 @@ export default function Pagina({ params }: { params: { id: string } }) {
   const nome = p.nome ?? p.id;
   return (
     <>
-      <Cabecalho atual="prestadores" />
+      <header>
+        <CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />
+        <NavegacaoColecao colecao="saneamento" />
+      </header>
       <MarcaVisita secao="saneamento:prestador" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">
         <header className="mb-2">

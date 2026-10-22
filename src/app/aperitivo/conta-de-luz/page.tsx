@@ -1,9 +1,12 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { ConviteAperitivo } from "@/components/acesso/ConviteAperitivo";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { ContaLuzNaMinhaCidade, type DistribuidoraAperitivo } from "@/components/energia/ContaLuzNaMinhaCidade";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { Footer } from "@/components/layout/Footer";
+import { RodapeColecao } from "@/components/layout/RodapeColecao";
+import { RetornoContexto } from "@/components/energia/RetornoContexto";
+import { rotulosRetorno } from "@/lib/energia/conteudo/rotulos-retorno";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { infoDasDistribuidoras } from "@/app/setor-eletrico/conta-de-luz/dados";
 import { mesCorrenteBrasilia } from "@/lib/energia/bandeira-do-mes";
@@ -164,7 +167,7 @@ export default function ContaDeLuzAperitivo() {
       >
         {tx("Pular para o conteúdo", "Skip to content")}
       </a>
-      <CabecalhoEnergia atual="conta-de-luz" comSelo rotaPublica={ROTA_PUBLICA} />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:conta-de-luz:aperitivo" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina flex-1 pb-6 pt-8 sm:pt-12">
         <RotuloContexto rota="/setor-eletrico/conta-de-luz" className="text-mineral" />
@@ -178,6 +181,8 @@ export default function ContaDeLuzAperitivo() {
         <div className="mt-8">{corpo}</div>
         <ConviteAperitivo rota={rota} comConta={comConta(integra(g) ? g : null)} className="mt-10" />
       </main>
+      <RetornoContexto rotulos={rotulosRetorno()} />
+      <RodapeColecao colecao="setor-eletrico" />
       <Footer compacto />
     </div>
   );

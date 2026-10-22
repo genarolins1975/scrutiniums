@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { Abertura, Fonte, Nota, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { Documentos, QuadroLinhas, SubnavPreco } from "@/components/saneamento/PrecoRegulado";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -107,7 +108,10 @@ export default function Pagina() {
   const w = (e: Estudo, rot: string) => e.wacc.find((l) => l.rotulo.startsWith(rot))?.valor ?? null;
   return (
     <>
-      <Cabecalho atual="preco-regulado/formacao" />
+      <header>
+        <CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />
+        <NavegacaoColecao colecao="saneamento" />
+      </header>
       <MarcaVisita secao="saneamento:preco-formacao" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">
         <Abertura

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { BuscaMunicipio } from "@/components/saneamento/BuscaMunicipio";
 import { DiagramaSistema } from "@/components/saneamento/DiagramaSistema";
 import { FaixaMundo } from "@/components/saneamento/ReferenciaMundial";
@@ -55,7 +56,10 @@ export default function Pagina() {
 
   return (
     <>
-      <Cabecalho atual="" />
+      <header>
+        <CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />
+        <NavegacaoColecao colecao="saneamento" />
+      </header>
       <MarcaVisita secao="saneamento:inicio" />
       <main id="conteudo" className="pb-20">
         <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/saneamento"]} conteiner="ed-pagina" />

@@ -3,7 +3,8 @@ import { SeloComConta } from "@/components/acesso/SeloComConta";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { Fonte, MarcaAutodeclarado, NestaPagina, Nota, Secao } from "@/components/saneamento/Editorial";
 import { PosicaoMunicipio } from "@/components/saneamento/PosicaoMunicipio";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -184,7 +185,10 @@ export default function Pagina({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <Cabecalho atual="municipio" />
+      <header>
+        <CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />
+        <NavegacaoColecao colecao="saneamento" />
+      </header>
       <AvisoConsultaAberta className="ed-pagina" comConta="A comparação entre municípios, o atlas, as fichas dos prestadores e os demais capítulos do observatório" />
       <MarcaVisita secao="saneamento:municipio" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">

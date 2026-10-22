@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { Abertura, Fonte, Indisponivel, NestaPagina, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { LabAlavancagem, SerieDivida, type Preset, type SerieCompanhia } from "@/components/saneamento/Divida";
 import { ListadasLogo } from "@/components/energia/ListadasLogo";
@@ -59,7 +60,10 @@ export default function Pagina() {
   const g = goldDivida();
   return (
     <>
-      <Cabecalho atual="prestadores/divida" />
+      <header>
+        <CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />
+        <NavegacaoColecao colecao="saneamento" />
+      </header>
       <MarcaVisita secao="saneamento:divida" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">
         {g ? (

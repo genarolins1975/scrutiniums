@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- varredura genérica da gold publicada */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
@@ -83,6 +83,11 @@ import { matrizExportacao } from "@/lib/energia/tabela";
 const diasAntes = (d: string, n: number) => new Date(Date.parse(`${d}T00:00:00Z`) - n * 86_400_000).toISOString().slice(0, 10);
 import type { CargaGold } from "@/lib/energia/tipos";
 import type { CargaDetalheGold } from "@/lib/energia/tipos-carga";
+// Iniciativa 2: a navegação da coleção (NavegacaoColecao) marca a página atual pelo endereço; as páginas daqui são do módulo /setor-eletrico/carga
+vi.mock("next/navigation", async () => ({
+  ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
+  usePathname: () => "/setor-eletrico/carga",
+}));
 
 /**
  * Páginas de Carga (P025, P026 e P027): contrato da gold de detalhe, equivalência entre

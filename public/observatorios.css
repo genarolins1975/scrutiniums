@@ -43,6 +43,9 @@
 /* Trilha "Você está em" logo abaixo da barra comum (Iniciativa 1 do parecer de UX, 21/10/2026): mesma largura e margens da
    barra, sem caixa nem regra própria, para não somar mais uma faixa de cromo ao cabeçalho. */
 .bp-trilha { box-sizing:border-box; width:100%; max-width:var(--bp-largura,77.5rem); margin-inline:auto; padding-inline:var(--bp-margem,clamp(1rem,4vw,2.5rem)); padding-block:2px; }
+/* Trilha com o seletor de idioma à direita (Setor Elétrico): a trilha encolhe, o seletor não. */
+.bp-trilha-linha { display:flex; align-items:center; gap:12px; }
+.bp-trilha-linha > .trilha { flex:1 1 auto; min-width:0; }
 /* Navegação da coleção (NavegacaoColecao, Iniciativa 2): a mesma caixa da barra e da trilha, para o texto do primeiro item cair na margem delas. */
 .nav-colecao-caixa { box-sizing:border-box; width:100%; max-width:var(--bp-largura,77.5rem); margin-inline:auto; padding-inline:var(--bp-margem,clamp(1rem,4vw,2.5rem)); }
 /* Celular: a trilha fica numa linha só, para não somar duas faixas de cromo antes do título. Ficam as duas últimas peças

@@ -308,7 +308,7 @@ describe("interface do PLD: rotas e anatomia das páginas", () => {
       const t = ler(arq);
       expect(t, arq).toContain('export const dynamic = "force-static"');
       expect(t, arq).toContain('lerGold<PldDetalheGold>("pld_detalhe.json")');
-      expect(t, arq).toContain('<CabecalhoEnergia atual="pld" />');
+      expect(t, arq).toContain('<CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas />');
       expect(t, arq).toContain(`<PldNavegacao atual="${p.id}" />`);
     }
     expect(proximoPainel("p008").href).toBe(`${rotaPainel("p009")}#p009`);

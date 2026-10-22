@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
 import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { Footer } from "@/components/layout/Footer";
+import { RodapeColecao } from "@/components/layout/RodapeColecao";
 import { MarcaRolagem } from "@/components/energia/MarcaRolagem";
 
 export const metadata: Metadata = {
@@ -14,8 +15,8 @@ export const metadata: Metadata = {
 };
 
 /**
- * Casca do domínio Saneamento. O cabeçalho é de cada página (marca o capítulo
- * ativo). A classe dominio-energia reaproveita o contrato visual dos
+ * Casca do domínio Saneamento. O cabeçalho (barra comum e NavegacaoColecao) é de
+ * cada página; o rodapé da coleção, com a marca do FGV CERI, é daqui. A classe dominio-energia reaproveita o contrato visual dos
  * componentes de gráfico, mapa e tabela do Setor Elétrico (foco, bordas de
  * controle, rolagem de tabela); dominio-saneamento recebe os ajustes próprios.
  */
@@ -30,6 +31,8 @@ export default function SaneamentoLayout({ children }: { children: React.ReactNo
       </a>
       <MarcaRolagem />
       <div className="flex-1">{children}</div>
+      {/* rodapé da coleção, com a parceria técnica com o FGV CERI (Iniciativa 2: a marca saiu do cabeçalho) */}
+      <RodapeColecao colecao="saneamento" extras={[{ rotulo: "Meu município", href: "/saneamento/municipio" }]} />
       <ParaIrAlem mapa={mapaParaIrAlem()} />
       <Footer compacto />
     </div>

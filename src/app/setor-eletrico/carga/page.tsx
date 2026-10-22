@@ -1,7 +1,7 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import type { ReactNode } from "react";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { CargaHistorico } from "@/components/energia/CargaHistorico";
 import { ModeloDidatico, ParaLer } from "@/components/energia/Didatica";
@@ -211,7 +211,7 @@ export default function CargaPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="carga" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:carga" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo

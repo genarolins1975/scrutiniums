@@ -125,12 +125,13 @@ describe('Segurança pública: o que a página mostra', () => {
 
 describe('Segurança pública: navegação e acesso', () => {
   it('a comparação por estado vem logo depois do panorama, segue com conta e está no registro', () => {
-    const layout = ler('src/app/eficiencia-estatal/seguranca-publica/layout.tsx');
-    expect(layout.indexOf("['estados', 'Por estado']")).toBeGreaterThan(layout.indexOf("['', 'Panorama']"));
-    expect(layout.indexOf("['estados', 'Por estado']")).toBeLessThan(layout.indexOf("['letalidade'"));
-    // as abas moram no subcabeçalho comum da Eficiência Estatal (item 10 do diagnóstico de 20/10/2026), que leva o selo em cada destino
-    expect(layout).toContain('<CabecalhoEntrada tema=');
-    expect(ler('src/components/eficiencia/NavegacaoTemaObee.tsx')).toContain('<SeloComConta href={href(c)} />');
+    // Iniciativa 2: as abas moram na lista única dos temas (src/lib/eficiencia/temas.ts) e chegam à navegação da coleção, que leva
+    // o selo "com conta" em cada destino numa página aberta
+    const temas = ler('src/lib/eficiencia/temas.ts');
+    expect(temas.indexOf('["estados", "Por estado"]')).toBeGreaterThan(temas.indexOf('seguranca: separar('));
+    expect(temas.indexOf('["estados", "Por estado"]')).toBeLessThan(temas.indexOf('["letalidade"'));
+    expect(ler('src/app/eficiencia-estatal/seguranca-publica/layout.tsx')).toContain('navegacao="seguranca"');
+    expect(ler('src/components/layout/NavegacaoColecaoCliente.tsx')).toContain('<SeloComConta href={p.href} />');
     expect(ehRotaPublica('/eficiencia-estatal/seguranca-publica/estados')).toBe(false);
     expect(ehRotaPublica('/eficiencia-estatal/seguranca-publica')).toBe(false);
     expect(ehRotaPublica('/eficiencia-estatal/seguranca-publica/metodos')).toBe(true);
