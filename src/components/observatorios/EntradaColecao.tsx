@@ -40,6 +40,18 @@ export const DESTINOS_A_VISTA = 8;
 
 const H2 = "font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao";
 
+function Raiz({ principal, id, className, tipo, children }: { principal: boolean; id?: string; className: string; tipo: TipoEntrada; children: ReactNode }) {
+  return principal ? (
+    <main id={id} className={className} data-entrada={tipo}>
+      {children}
+    </main>
+  ) : (
+    <div className={className} data-entrada={tipo}>
+      {children}
+    </div>
+  );
+}
+
 export function EntradaColecao({
   tipo,
   rota,
@@ -62,6 +74,9 @@ export function EntradaColecao({
   metodo,
   frescorMetodo,
   idTitulo = "entrada-titulo",
+  idPrincipal = "conteudo",
+  classe,
+  principal = true,
 }: Readonly<{
   tipo: TipoEntrada;
   /** Endereço público da página: o RotuloContexto lê o observatório e a coleção do registro por ele. */
@@ -92,18 +107,21 @@ export function EntradaColecao({
   metodo: ReactNode;
   frescorMetodo?: ReactNode;
   idTitulo?: string;
+  /** id do <main>, o alvo do link "Ir para o conteúdo" do layout da coleção. */
+  idPrincipal?: string;
+  /** Classe extra do <main>, para as variáveis de estilo da coleção (por exemplo, pv-root). */
+  classe?: string;
+  /** false quando o layout da coleção já abre o <main> (Agronegócio): a entrada vira um <div> dentro dele, com o mesmo data-entrada. */
+  principal?: boolean;
 }>) {
   const a = ACENTO[acento];
   return (
-    <main id="conteudo" className="bg-papel" data-entrada={tipo}>
+    <Raiz principal={principal} id={principal ? idPrincipal : undefined} className={classe ? `bg-papel ${classe}` : "bg-papel"} tipo={tipo}>
       <section aria-labelledby={idTitulo} className="border-b border-linha bg-marfim" data-fatia="abertura">
         {frescor}
         <div className="mx-auto max-w-page px-6 pb-12 pt-10 md:pb-14 md:pt-12">
           <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
-            <div className="flex items-center gap-3">
-              <span aria-hidden="true" className={`h-[3px] w-8 shrink-0 ${a.filete}`} />
-              <RotuloContexto rota={rota} className="text-mineral" />
-            </div>
+            <RotuloContexto rota={rota} className="flex items-center gap-3 text-mineral" marca={<span aria-hidden="true" className={`h-[3px] w-8 shrink-0 ${a.filete}`} />} />
             {aoLadoDoRotulo}
           </div>
           <h1 id={idTitulo} className="mt-5 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.1] text-carvao [text-wrap:balance]">
@@ -135,7 +153,7 @@ export function EntradaColecao({
           {frescorMetodo && <div className="mt-6">{frescorMetodo}</div>}
         </details>
       </div>
-    </main>
+    </Raiz>
   );
 }
 

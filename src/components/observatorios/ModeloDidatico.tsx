@@ -53,7 +53,7 @@ export function ModeloDidatico({
     </div>
   );
   return (
-    <section aria-labelledby={`${id}-titulo`} data-modelo-didatico="" className={`border-y border-linha ${fundo === "marfim" ? "bg-marfim" : "bg-papel"}`}>
+    <section id={id} aria-labelledby={`${id}-titulo`} data-modelo-didatico="" className={`border-y border-linha ${fundo === "marfim" ? "bg-marfim" : "bg-papel"}`}>
       {largo ? (
         <>
           <div className="mx-auto max-w-page px-6 pt-14 md:pt-16">{cabeca}</div>

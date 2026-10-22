@@ -230,17 +230,19 @@ describe("painel completo", () => {
   it("abre com a pergunta, quatro números com fonte e período, e as seções por pergunta", () => {
     const html = renderToStaticMarkup(createElement(PainelPage, { searchParams: {} }));
     const t = texto(html);
-    expect(html).toContain('data-painel="conectividade"');
+    // molde único de entrada (Iniciativa 4, 22/10/2026): os quatro números são a escala do EntradaColecao, não mais o cn-numeros
+    expect(html).toContain('data-entrada="colecao"');
     expect(t).toContain(PERGUNTA_PAINEL);
-    expect(html.match(/class="cn-numeros"/g)).toHaveLength(1);
+    expect(html.match(/data-numero-escala/g)).toHaveLength(4);
     expect(t).toContain(`${num(g.brasil.fixa.densidade, 1)}`);
     expect(t).toContain(`${num(g.destaques.sem_5g)}`);
     // o cartão dos municípios sem 5G usa o universo da cobertura publicada, não o das três fontes (12ª revisão do Codex)
     const d = g.destaques;
     expect(d.municipios_com_5g_publicado).toBeLessThanOrEqual(d.municipios - d.sem_dado.cobertura.length);
     expect(d.municipios_com_5g_publicado).toBe(g.ufs.reduce((t, u) => t + u.cobertura.municipios_com_5g_publicado, 0));
-    expect(html).toContain(`<span class="cn-unidade">de ${num(d.municipios_com_5g_publicado)}</span>`);
-    expect(html).not.toContain(`<span class="cn-unidade">de ${num(d.municipios)}</span>`);
+    const escala = html.slice(html.indexOf('data-fatia="escala"'), html.indexOf('data-fatia="para-voce"'));
+    expect(escala).toMatch(new RegExp(`<span[^>]*>de ${num(d.municipios_com_5g_publicado).replace(".", "\\.")}</span>`));
+    expect(escala).not.toContain(`>de ${num(d.municipios)}</span>`);
     expect(t).toContain(`${num(d.sem_5g)} dos ${num(d.municipios_com_5g_publicado)} municípios com cobertura 5G publicada`);
     expect(t).toContain(`${num(d.g4_abaixo_50)} dos ${num(d.municipios_com_4g_publicado)} com cobertura 4G publicada`);
     // distribuição: o universo de cada linha é o seu próprio n (24ª revisão do Codex)

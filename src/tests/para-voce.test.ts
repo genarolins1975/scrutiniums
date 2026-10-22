@@ -130,8 +130,9 @@ describe("posição em cada entrada: logo depois dos números de abertura", () =
     "/saneamento": ["src/app/saneamento/page.tsx", "Brasil, em uma leitura", 'aria-labelledby="como-funciona"'],
     "/eficiencia-estatal": ["src/app/eficiencia-estatal/page.tsx", "<AtlasCidadao", "<FaixaFrescor dominios={FRESCOR_DAS_COLECOES['/eficiencia-estatal']} variante"],
     "/contas-publicas": ["src/app/contas-publicas/page.tsx", "<AberturaFederal", "<RespostasIniciais"],
-    "/agronegocio": ["src/app/agronegocio/page.tsx", "<DestaquesAgro", "<PerguntasAgro"],
-    "/territorio": ["src/app/territorio/page.tsx", "O tema em números", 'aria-labelledby="paineis-titulo"'],
+    // no molde único (Iniciativa 4, 22/10/2026), o EntradaColecao põe o bloco entre a escala e os destinos (conferido no componente acima)
+    "/agronegocio": ["src/app/agronegocio/page.tsx", "escala={", "destinos={"],
+    "/territorio": ["src/app/territorio/page.tsx", "escala={", "destinos={"],
   };
 
   it.each(Object.entries(PAGINAS))("%s", (rota, [arquivo, antes, depois]) => {

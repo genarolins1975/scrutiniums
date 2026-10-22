@@ -113,17 +113,13 @@ describe("inflação por cidade: o painel", () => {
 
   it("seções na ordem da pergunta, com o método recolhido no fim", async () => {
     const html = await painel();
-    const ordem = [
-      "Inflação em 12 meses: Brasil",
-      "Como o IPCA pesa o seu orçamento",
-      "A inflação mês a mês desde 2020",
-      "As 16 áreas lado a lado",
-      "Os produtos e serviços que mais subiram e mais caíram",
-      "Método, fontes, notas e downloads",
-    ].map((t) => html.indexOf(t));
+    // molde único de entrada (Iniciativa 4, 22/10/2026): a consulta, o modelo didático, as seções recolhidas e o método no
+    // <details> único do molde; a ordem pelas âncoras, porque os títulos também aparecem nos caminhos por pergunta
+    const ordem = ["Inflação em 12 meses: Brasil", 'id="como-pesa"', 'id="serie"', 'id="areas"', 'id="itens"', 'data-fatia="metodo"'].map((t) => html.indexOf(t));
     expect(ordem.every((p) => p > 0)).toBe(true);
     expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
-    expect(html).toMatch(/<details class="group"><summary[^>]*><h2 id="metodo-h"/);
+    for (const t of ["Como o IPCA pesa o seu orçamento", "A inflação mês a mês desde 2020", "As 16 áreas lado a lado", "Os produtos e serviços que mais subiram e mais caíram", "Método e fontes"]) expect(html).toContain(t);
+    expect(html).toMatch(/<details[^>]*data-fatia="metodo"/);
     expect(html).not.toMatch(/NaN|undefined|Infinity/);
   });
 

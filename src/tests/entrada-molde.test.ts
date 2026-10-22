@@ -19,17 +19,18 @@ const NO_MOLDE: string[] = [
   "/observatorios/contas-publicas",
   "/observatorios/energia-e-infraestrutura",
   "/observatorios/economia",
+  // Grupo A (22/10/2026)
+  "/territorio",
+  "/combustiveis",
+  "/conectividade",
+  "/educacao-municipal",
+  "/custo-de-vida",
+  "/contas-publicas/previdencia",
+  "/agronegocio",
 ];
 
 /** Entradas ainda fora do molde, com o grupo do PR que as migra (a aplicação do Crédito é a Iniciativa 8). */
 const A_MIGRAR: Record<string, string> = {
-  "/territorio": "Grupo A",
-  "/combustiveis": "Grupo A",
-  "/conectividade": "Grupo A",
-  "/educacao-municipal": "Grupo A",
-  "/custo-de-vida": "Grupo A",
-  "/contas-publicas/previdencia": "Grupo A",
-  "/agronegocio": "Grupo A",
   "/gas-natural": "Grupo B",
   "/saneamento": "Grupo B",
   "/contas-publicas": "Grupo B",
@@ -66,11 +67,14 @@ const ORDEM = ["abertura", "escala", "consulta", "para-voce", "destinos", "secao
 
 const texto = (h: string) => h.replace(/<[^>]+>/g, "").replace(/&nbsp;|\s+/g, " ").replace(/&amp;/g, "&").trim();
 
-/** O <main> do molde (data-entrada), do começo ao fecho correspondente. */
+/**
+ * O elemento do molde (data-entrada): o primeiro <main> da página, ou um <div> logo dentro do <main> do layout da coleção (o
+ * Agronegócio abre o <main> no layout), do começo ao fecho do <main>.
+ */
 function principal(html: string): string {
   const ini = html.indexOf("<main");
-  const m = html.slice(ini).match(/^<main[^>]*data-entrada="[a-z]+"/);
-  expect(m, "o <main> do molde (data-entrada)").not.toBeNull();
+  const m = html.slice(ini).match(/^<main[^>]*data-entrada="[a-z]+"|^<main[^>]*>\s*<div[^>]*data-entrada="[a-z]+"/);
+  expect(m, "o elemento do molde (data-entrada)").not.toBeNull();
   return html.slice(ini, html.lastIndexOf("</main>") + 7);
 }
 
