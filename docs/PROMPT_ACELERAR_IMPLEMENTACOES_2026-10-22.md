@@ -40,7 +40,7 @@ Fonte: run 1196 do workflow CI, job "testes", 19:02:13 a 19:22:52 UTC, PR da bra
 | Build de produção | 4 min 16 s | 365 rotas de página e 80 de API; sem cache de `.next/cache` entre runs |
 | Fluxos e telas do Judiciário | 3 min 43 s | roda em todo PR, mesmo sem tocar no Judiciário |
 | Cobertura bilíngue `--check` | 4 s | |
-| Vitest completo | 5 min 30 s | 364 arquivos, sem shard |
+| Vitest completo | 5 min 30 s | 361 arquivos, sem shard |
 
 Tudo é sequencial num job só. Lint, tipos, Python e OBEE não dependem do build; Vitest e Judiciário dependem do build e são independentes entre si.
 
@@ -65,13 +65,13 @@ Fonte: contagens no repositório em 22/10/2026.
 
 | Medida | Valor |
 |---|---|
-| Arquivos de teste em `src/tests` | 364 (80.705 linhas) |
+| Arquivos de teste em `src/tests` | 361 (80.705 linhas) |
 | Só o Setor Elétrico | 84 arquivos, 40.466 linhas |
 | Maior arquivo | `energia-conta.test.ts`: 2.614 linhas, 610 asserções literais em 132 casos |
 | Arquivos que renderizam páginas React no teste (`renderToStaticMarkup`) | 124 |
 | Arquivos que leem `public/` | 165 (22 varrem pastas recursivamente) |
 | Arquivos que leem o build em `.next` | 25 |
-| Arquivos com PGlite (banco em memória) | 15, mas `pool: "forks"` vale para todos os 364 |
+| Arquivos com PGlite (banco em memória) | 15, mas `pool: "forks"` vale para todos os 361 |
 | Arquivos que abrem o Chromium | 10 |
 | Arquivos com timeout ampliado à mão | 14 |
 
@@ -95,9 +95,31 @@ Máquina: contêiner de sessão em nuvem, 4 vCPU, 15 GB de memória, clone limpo
 | `npm ci` | 29 s | com cache de proxy; primeiro `npm ci` da sessão |
 | `npx tsc --noEmit` | 2 min 24 s | 1.898 arquivos TS/TSX, 363 mil linhas; no CI, 67 s |
 | `npm run lint` | 1 min 08 s | no CI, 35 s |
-| `npx vitest run` sem build | em medição | resultado anexado no próximo commit deste arquivo |
+| `npx vitest run` sem build e sem `pretest` | 3 min 56 s de parede, 12 min 00 s de CPU | 361 arquivos, 7.941 testes coletados, 7.595 passaram, 345 pulados por falta do build (comportamento previsto), 1 falha em `energia-inicial` com erro opaco (verde no CI do main, logo ambiental), 3 arquivos sem Chromium, 3 com ENOENT em `app.min.js` |
 
 Leitura: um agente que roda "lint + tipos" antes de cada push gasta 3 min 30 s só nisso, por push, em 4 vCPU. Sem seleção de testes afetados, a suíte inteira vem por cima.
+
+Dois achados da suíte local que orientam P4 e P5:
+
+- **62 % da CPU da suíte fica fora dos corpos de teste.** O relatório JSON do Vitest soma 272 s de execução dos 361 arquivos; a CPU total foi 720 s. A diferença (448 s) é subir um processo por arquivo, transformar e importar React, Next e os módulos da página, e coletar os testes. É o custo do `pool: "forks"` com isolamento para todos os arquivos, quando só 15 precisam dele.
+- **Os erros de ambiente são exatamente os documentados no repositório.** Três arquivos falharam por `ENOENT` em `public/obs/app.min.js` (a suíte foi chamada com `npx vitest run`, sem o `pretest`) e três porque o Playwright 1.64.1 procura a revisão 1248 do Chromium headless, que não é a instalada em `PLAYWRIGHT_BROWSERS_PATH`. Um agente novo tropeça nos dois no primeiro teste.
+
+Dez arquivos mais lentos pelo corpo de teste (sem contar a subida do processo):
+
+| Arquivo | Tempo | Testes |
+|---|---|---|
+| `obee-mobilidade.test.ts` | 9,6 s | 14 |
+| `saneamento-entrada.test.ts` | 9,2 s | 21 |
+| `energia-inicial.test.ts` | 7,5 s | 44 |
+| `git-worktree-guard.test.ts` | 7,4 s | 4 |
+| `cadastro-perfil-uso.test.ts` | 6,6 s | 30 |
+| `educacao.test.ts` | 6,1 s | 21 |
+| `energia-territorio.test.ts` | 6,0 s | 65 |
+| `saneamento-mundo.test.ts` | 5,4 s | 21 |
+| `previdencia.test.ts` | 5,4 s | 26 |
+| `trabalho-renda-dados.test.ts` | 5,1 s | 6 |
+
+Nenhum arquivo domina: o ganho está na sobrecarga por arquivo e no paralelismo, não em um teste isolado.
 
 ## 3. Metas mensuráveis
 
@@ -161,7 +183,7 @@ Critério de aceite: integrar o `main` numa branch que alterou textos de duas p�
 ### P4. Suíte Vitest mais rápida, com os mesmos testes
 
 1. Medir primeiro com `npm run testes:lentos` (P2) e colar no PR a tabela dos 30 arquivos mais lentos, com o total de arquivos, testes e tempo de parede. Referência: 8.905 testes em 359 arquivos passaram no PR #338 em 22/10/2026.
-2. Alavancas, para medir uma a uma e manter só o que paga:
+2. Alavancas, para medir uma a uma e manter só o que paga (a seção 2.6 mostra que 62 % da CPU é subida de processo e importação, não corpo de teste):
    - `projects` do Vitest: um projeto `banco` (os 15 arquivos com PGlite, `pool: "forks"`, isolados) e um projeto `interface` (os demais, `pool: "threads"`); um projeto `navegador` (os 10 com Chromium), que só roda quando `.next` existe ou no CI.
    - `maxWorkers` e `fileParallelism` ajustados aos 4 vCPU do runner.
    - Cache de JSON por worker: um helper `src/tests/support/dados.ts` com `lerJson(caminho)` memoizado, aplicado aos 22 arquivos que varrem `public/` recursivamente e aos 30 mais lentos. Sem alterar o que é verificado.
@@ -173,7 +195,7 @@ Critério de aceite: tempo de parede da suíte completa local reduzido em pelo m
 
 ### P5. Sessão nova pronta com um comando
 
-1. `scripts/preparar-sessao.sh`, idempotente: `npm ci --prefer-offline --no-audit --no-fund` só se `node_modules` faltar ou o lockfile tiver mudado (guardar o hash em `node_modules/.lockfile-hash`); `npm run preparar`; conferir o Chromium (`PLAYWRIGHT_BROWSERS_PATH` ou `CHROMIUM_PATH`) e dizer como instalar se faltar; configurar o merge driver se o P3 adotou (b); imprimir os três comandos do P2.
+1. `scripts/preparar-sessao.sh`, idempotente: `npm ci --prefer-offline --no-audit --no-fund` só se `node_modules` faltar ou o lockfile tiver mudado (guardar o hash em `node_modules/.lockfile-hash`); `npm run preparar`; conferir se a revisão do Chromium que o Playwright do lockfile espera existe (`npx playwright install chromium` quando faltar, ou `CHROMIUM_PATH` apontando para um binário compatível), porque em 22/10/2026 a sessão tinha um Chromium de outra revisão e três arquivos de teste caíram por isso; configurar o merge driver se o P3 adotou (b); imprimir os três comandos do P2.
 2. `.claude/settings.json` com hook `SessionStart` chamando o script (tipo `command`, `timeout` de 300 s). A pasta `.claude/` está no `.gitignore`, mas as skills já são versionadas à força; adicione o arquivo com `git add -f` e explique no PR.
 3. Uma linha em `CLAUDE.md` e em `AGENTS.md` para agentes que não leem hooks: "rode `bash scripts/preparar-sessao.sh` antes de qualquer teste".
 
