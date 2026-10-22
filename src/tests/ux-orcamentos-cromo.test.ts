@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, type ExpectStatic } from "vitest";
 import { spawn, type ChildProcess } from "node:child_process";
 import { createHash, createHmac, randomBytes } from "node:crypto";
 import { existsSync } from "node:fs";
@@ -117,7 +117,7 @@ describe.skipIf(!temBuild)("orçamento de cromo no navegador (build de produçã
     if (temporario) await rm(temporario, { recursive: true, force: true });
   });
 
-  async function medir(largura: 1440 | 390, rotas: string[], comSessao: boolean) {
+  async function medir(expect: ExpectStatic, largura: 1440 | 390, rotas: string[], comSessao: boolean) {
     const ctx = await navegador!.newContext({ viewport: { width: largura, height: largura === 1440 ? 900 : 844 } });
     if (comSessao) await ctx.addCookies([{ name: "scrutiniums_session", value: cookie, url: origem, httpOnly: true, sameSite: "Lax", secure: false }]);
     const fora: string[] = [];
@@ -143,13 +143,16 @@ describe.skipIf(!temBuild)("orçamento de cromo no navegador (build de produçã
     return fora;
   }
 
+  // Os quatro casos só leem o que o beforeAll preparou (servidor, navegador e cookie) e cada um abre o seu contexto: rodam ao
+  // mesmo tempo. Até 22/10/2026 corriam em série, 134 páginas uma depois da outra, e o arquivo levava 162 s, o mais lento da
+  // suíte. O expect de cada caso vem do contexto do teste, como o Vitest pede em testes concorrentes.
   for (const largura of [1440, 390] as const) {
-    it(`${largura} px, com sessão: entradas das coleções na navegação única e suas subpáginas`, async () => {
-      expect(await medir(largura, [...new Set([...Object.values(ENTRADAS), ...OUTRAS, ...SUPERFICIES])], true)).toEqual([]);
+    it.concurrent(`${largura} px, com sessão: entradas das coleções na navegação única e suas subpáginas`, async ({ expect }) => {
+      expect(await medir(expect, largura, [...new Set([...Object.values(ENTRADAS), ...OUTRAS, ...SUPERFICIES])], true)).toEqual([]);
     }, 300_000);
 
-    it(`${largura} px, sem sessão: páginas abertas das mesmas coleções`, async () => {
-      expect(await medir(largura, ABERTAS, false)).toEqual([]);
+    it.concurrent(`${largura} px, sem sessão: páginas abertas das mesmas coleções`, async ({ expect }) => {
+      expect(await medir(expect, largura, ABERTAS, false)).toEqual([]);
     }, 300_000);
   }
 });
