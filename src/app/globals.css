@@ -19,6 +19,7 @@
   --cor-bronze-soft: #b08a67;
   --cor-mineral: #6b6d6a; /* escurecido p/ contraste AA sobre marfim/papel */
   --cor-mineral-soft: #a6a8a4;
+  --cor-mineral-dark: #626762; /* texto terciário sobre o contexto suave, onde o mineral fica em 4,43:1 (4,9:1 sobre --cor-contexto) */
   --cor-linha: #d8d2c6;
   --cor-linha-escura: #33373d; /* filete sobre fundo carvão (rodapé institucional) */
   --cor-erro: #8c3b2e;

@@ -11,6 +11,7 @@ export const TOKENS = {
   "cor-bronze-soft": "#b08a67",
   "cor-mineral": "#6b6d6a",
   "cor-mineral-soft": "#a6a8a4",
+  "cor-mineral-dark": "#626762",
   "cor-linha": "#d8d2c6",
   "cor-linha-escura": "#33373d",
   "cor-erro": "#8c3b2e",
