@@ -217,10 +217,11 @@ jobs:
             npx --no-install playwright install --with-deps chromium
           fi
       - name: Restaurar o cache do compilador do Next (.next/cache)
-        # O cache tem 1,2 GB (medido em 22/10/2026). Se cada PR gravasse o seu, o limite de
-        # 10 GB do repositório expulsaria o cache do npm e o do Chromium. Por isso o PR só
-        # restaura (o mais recente do mesmo lockfile, gravado pelo main) e só o shard 1 grava,
-        # fora de pull_request.
+        # O cache tem 1,2 GB (medido em 22/10/2026). Se cada push de PR gravasse o seu, o
+        # limite de 10 GB do repositório viveria em rotação. Por isso o PR restaura o mais
+        # recente do mesmo lockfile (gravado pelo main) e só grava quando não achou nenhum,
+        # o que acontece até o main gravar o primeiro ou quando o lockfile muda.
+        id: cache_next
         uses: actions/cache/restore@v4
         with:
           path: .next/cache
@@ -233,13 +234,8 @@ jobs:
         # workflow não gerava build, e o teste que inspeciona o HTML (undefined, NaN, data
         # ISO crua) retornava cedo por falta do diretório: passava sem verificar nada.
         # O prebuild materializa os derivados e gera app.min.js.
+        id: build
         run: npm run build
-      - name: Gravar o cache do compilador do Next
-        if: github.event_name != 'pull_request' && matrix.shard == '1/2'
-        uses: actions/cache/save@v4
-        with:
-          path: .next/cache
-          key: next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
       - name: Testes (inclui a verificação obrigatória do HTML gerado)
         # EXIGIR_BUILD_HTML=1 faz src/tests/html-gerado.test.ts reprovar se o build, uma rota
         # esperada ou as páginas a inspecionar não existirem. O log mostra "HTML verificado
@@ -253,6 +249,13 @@ jobs:
           git diff --exit-code
           git diff --cached --exit-code
           test -z "$(git status --porcelain --untracked-files=normal)"
+      - name: Gravar o cache do compilador do Next
+        # No fim do job, para não atrasar os testes do shard; um só gravador por run.
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && matrix.shard == '1/2' && (github.event_name != 'pull_request' || steps.cache_next.outputs.cache-matched-key == '') }}
+        uses: actions/cache/save@v4
+        with:
+          path: .next/cache
+          key: next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
 
   judiciario:
     name: Fluxos e telas do Judiciário
