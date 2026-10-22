@@ -50,8 +50,9 @@ jobs:
         id: contratos
         continue-on-error: true
         run: |
-          python3 -m unittest pipeline.contas_estaduais.test_contratos pipeline.contas_estaduais.test_primarios pipeline.contas_estaduais.test_educacao pipeline.contas_estaduais.test_capturar_educacao pipeline.contas_estaduais.test_transporte pipeline.contas_estaduais.test_financiamento pipeline.contas_estaduais.test_despesas pipeline.tests.test_contas_estaduais_conferir -v
+          python3 -m unittest pipeline.contas_estaduais.test_contratos pipeline.contas_estaduais.test_primarios pipeline.contas_estaduais.test_educacao pipeline.contas_estaduais.test_capturar_educacao pipeline.contas_estaduais.test_transporte pipeline.contas_estaduais.test_financiamento pipeline.contas_estaduais.test_despesas pipeline.contas_estaduais.test_fluxo pipeline.tests.test_contas_estaduais_conferir -v
           python3 -m pipeline.contas_estaduais.consolidar --check
+          python3 -m pipeline.contas_estaduais.fluxo consolidar --check
 
       - name: Conferir contra o Siconfi
         id: conferir
