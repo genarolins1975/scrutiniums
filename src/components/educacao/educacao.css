@@ -36,7 +36,7 @@
 .edm-numeros > div:last-child { border-right: 0; }
 .edm-numeros dt { font-size: 14px; line-height: 1.4; }
 .edm-numeros dd { margin: 0; }
-.edm-valor { font-family: var(--font-serif), Georgia, serif; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.15; font-variant-numeric: tabular-nums lining-nums; letter-spacing: -0.01em; }
+.edm-valor {font-family:var(--font-serif),Georgia,serif;font-weight:400; font-size:2.25rem; line-height: 1.15; font-variant-numeric:lining-nums tabular-nums; letter-spacing: -0.01em; }
 .edm-unidade { font-family: var(--font-sans), system-ui, sans-serif; font-size: 14px; color: var(--cor-carvao-muted); letter-spacing: 0; margin-left: 6px; }
 .edm-prova { font-size: 13px; line-height: 1.5; color: var(--cor-carvao-muted); }
 .edm-numeros > div.edm-lider .edm-valor { color: var(--edm-acento-escuro); }
@@ -62,7 +62,7 @@
 .edm-extrato dt { font-size: 15px; font-weight: 500; }
 .edm-extrato dt small { display: block; font-weight: 400; font-size: 13px; color: var(--cor-carvao-muted); margin-top: 2px; }
 .edm-extrato dd { margin: 6px 0 0; }
-.edm-extrato .edm-valor { font-size: clamp(36px, 4.4vw, 48px); color: var(--edm-acento-escuro); }
+.edm-extrato .edm-valor { font-size:2.25rem; color: var(--edm-acento-escuro); }
 .edm-extrato .edm-valor .edm-unidade { color: var(--cor-carvao-muted); }
 .edm-extrato .edm-detalhe { margin-top: 6px; font-size: 13px; line-height: 1.55; color: var(--cor-carvao-muted); }
 .edm-extrato .edm-sem { font-size: 15px; line-height: 1.55; color: var(--cor-carvao); max-width: 46ch; }
@@ -170,7 +170,7 @@
 .edm-mecanismo { margin-top: 24px; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr); align-items: start; gap: 12px 20px; max-width: 1000px; }
 .edm-mecanismo > div { display: grid; gap: 4px; }
 .edm-mecanismo > span { font-family: var(--font-serif), Georgia, serif; font-size: 32px; line-height: 1.2; color: var(--cor-carvao-muted); padding-top: 18px; }
-.edm-mecanismo .edm-valor { font-size: clamp(30px, 3vw, 40px); }
+.edm-mecanismo .edm-valor { font-size:2.25rem; }
 .edm-mecanismo .edm-mecanismo-ideb .edm-valor { color: var(--edm-acento-escuro); }
 .edm-mecanismo p { font-size: 13px; line-height: 1.55; color: var(--cor-carvao-muted); }
 .edm-mecanismo h4 { font-size: 15px; font-weight: 600; }

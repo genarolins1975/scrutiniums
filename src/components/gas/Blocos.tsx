@@ -64,7 +64,7 @@ export function MedidaGas({ ind, casas = 1, rotulo, comparacao, variacao = false
   return (
     <div className="min-w-0 border-t-2 border-gas pt-3">
       <p className="text-sm leading-snug text-carvao-muted">{rotulo ?? ind.rotulo}</p>
-      <p className="mt-1 font-sans text-[1.75rem] tracking-tight leading-tight text-carvao [font-variant-numeric:tabular-nums]">
+      <p className="mt-1 numero-m leading-tight text-carvao">
         {valor} {unidade && <span className="text-base text-carvao-muted">{unidade}</span>}
       </p>
       <p className="mt-1 text-xs leading-relaxed text-mineral">
