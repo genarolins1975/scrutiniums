@@ -2,8 +2,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { availableParallelism } from "node:os";
-import config, { PesadosPrimeiro, WORKERS, ehPesado } from "../../vitest.config";
+import config, { PesadosPrimeiro, ehPesado } from "../../vitest.config";
 
 /**
  * A ordem dos arquivos não muda o que é verificado, só quando cada um começa. Sem histórico de durações (todo run de CI),
@@ -72,13 +71,11 @@ describe("sequenciador", () => {
     expect((ordem as unknown as Spec[]).map((s) => s.moduleId.slice(-9))).toEqual(["c.test.ts", "a.test.ts", "b.test.ts"]);
   });
 
-  it("a configuração usa o sequenciador, forks e uma vez e meia os núcleos (até 8)", () => {
-    const t = (config as { test: { sequence: { sequencer: unknown }; pool: string; maxWorkers: number } }).test;
+  it("a configuração usa o sequenciador, forks e o número de workers padrão do Vitest", () => {
+    const t = (config as { test: { sequence: { sequencer: unknown }; pool: string; maxWorkers?: number } }).test;
     expect(t.sequence.sequencer).toBe(PesadosPrimeiro);
     expect(t.pool).toBe("forks");
-    expect(t.maxWorkers).toBe(WORKERS);
-    expect(WORKERS).toBe(Math.min(8, Math.max(2, Math.round(availableParallelism() * 1.5))));
-    // no runner de 4 vCPU do CI e numa sessão de 4 vCPU, 6 workers (o Vitest sozinho usaria 3)
-    if (availableParallelism() === 4) expect(WORKERS).toBe(6);
+    // mais workers que núcleos fez testes de dados estourarem 5 s no runner de 4 vCPU do CI (run 1228, 22/10/2026)
+    expect(t.maxWorkers).toBeUndefined();
   });
 });

@@ -2,7 +2,6 @@ import { defineConfig } from "vitest/config";
 import { BaseSequencer, type TestSpecification } from "vitest/node";
 import react from "@vitejs/plugin-react";
 import { readFileSync } from "node:fs";
-import { availableParallelism } from "node:os";
 import { dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -36,14 +35,6 @@ export class PesadosPrimeiro extends BaseSequencer {
   }
 }
 
-/**
- * Uma vez e meia os núcleos, até 8. Sem isto o Vitest usa núcleos menos um: 3 workers no runner de 4 vCPU do CI. Os testes
- * de navegador passam boa parte do tempo esperando servidor e rede, e com poucos workers a CPU ficava ociosa. Medido em
- * 22/10/2026 (4 vCPU, sem histórico de durações, pesados primeiro): 4 workers 255 s, 6 workers 229 s, 8 workers 236 s.
- * Porcentagem não serve: o Vitest a limita ao número de núcleos.
- */
-export const WORKERS = Math.min(8, Math.max(2, Math.round(availableParallelism() * 1.5)));
-
 export default defineConfig({
   plugins: [react()],
   test: {
@@ -56,7 +47,10 @@ export default defineConfig({
     // O primeiro boot do PGlite (WASM + migração) passa de 10s quando vários
     // forks competem por CPU; sem isto, beforeAll de testes de banco flakeia.
     hookTimeout: 60_000,
-    maxWorkers: WORKERS,
+    // Sem maxWorkers: vale o padrão do Vitest, núcleos menos um. Em 22/10/2026, seis workers num contêiner de 4 vCPU cortaram
+    // a parede de 255 s para 229 s, mas no runner de 4 vCPU do CI (run 1228) dobraram o tempo de CPU dos testes de dados:
+    // obee-mobilidade e trabalho-renda-dados foram de 2,9 s para 5,5 s e estouraram os 5 s, e a parede caiu só 3 %.
+    // Quatro workers não ganharam nada no contêiner (255 s contra 254,8 s com três).
     sequence: { sequencer: PesadosPrimeiro },
   },
   resolve: {
