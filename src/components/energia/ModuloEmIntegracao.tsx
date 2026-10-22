@@ -1,3 +1,4 @@
+import { SeloProntidao } from "@/components/observatorios/SeloProntidao";
 import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
@@ -47,11 +48,14 @@ export function ModuloEmIntegracao({
       <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao={secao} />
       <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16">
-        <CabecalhoModulo recolher={false} rotulo={tx(`${rotulo} · em integração`, `${rotulo} · in integration`)} titulo={titulo}>
+        <CabecalhoModulo recolher={false} rotulo={rotulo} titulo={titulo}>
           {escopo}
         </CabecalhoModulo>
         <div role="status" className="border border-dashed border-mineral bg-papel p-6">
-          <p className="rotulo text-carvao">{tx("Módulo em integração", "Module in integration")}</p>
+          <p className="text-carvao">
+            {/* "em preparação", não "cobertura parcial": a página só traz o escopo e as fontes, nenhum dado integrado */}
+            <SeloProntidao valor="preparacao" idioma={idiomaEnergia()} detalhe={tx("módulo em integração, ainda sem dados integrados", "module being integrated, no integrated data yet")} />
+          </p>
           <p className="mt-2 max-w-prose2 text-carvao">
             {tx(
               <>

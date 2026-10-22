@@ -1,12 +1,10 @@
 import "@/components/previdencia/previdencia.css";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { RecorteCompartilhavel } from "@/components/contas-publicas/RecorteCompartilhavel";
 import { PainelPrevidencia } from "@/components/previdencia/PainelPrevidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { consultarMunicipio, goldPrevidencia } from "@/lib/previdencia/dados";
 import { PERGUNTA_PAINEL, ROTA_PREVIDENCIA, SECAO_PAINEL } from "@/lib/previdencia/paginas";
-import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 /**
  * Painel "Previdência e INSS" (aprovado pelo dono em 20/10/2026), com conta. O endereço é público, mas sem sessão o
@@ -28,20 +26,8 @@ export default function Page({ searchParams }: { searchParams: Record<string, st
   const g = goldPrevidencia();
   const consulta = consultarMunicipio(searchParams.ibge);
   return (
-    <main id="conteudo-contas" className="cp-wrap cp-main pv-root" data-painel="previdencia">
+    <>
       <MarcaVisita secao={SECAO_PAINEL} />
-      <div className="cp-breadcrumb">
-        <span>
-          Complemento do capítulo&nbsp;<Link href="/contas-publicas/panorama">Panorama das contas</Link>
-        </span>
-      </div>
-      <header className="cp-chapter-header pv-cabeca">
-        <RotuloContexto rota="/contas-publicas/previdencia" className="text-mineral" />
-        <h1>{PERGUNTA_PAINEL}</h1>
-        <p className="pv-lead">
-          Os benefícios do INSS por tipo, por estado e no seu município, e quanto o Regime Geral arrecada e paga a cada ano. Dados do Ministério da Previdência Social e do Tesouro Nacional.
-        </p>
-      </header>
       <PainelPrevidencia
         g={g}
         consulta={consulta}
@@ -52,6 +38,6 @@ export default function Page({ searchParams }: { searchParams: Record<string, st
           </div>
         }
       />
-    </main>
+    </>
   );
 }

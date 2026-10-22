@@ -630,39 +630,81 @@ const texto = (h: string) =>
     .replace(/&quot;/g, '"')
     .replace(/\s+/g, " ");
 const hrefs = new Set(Array.from(html.matchAll(/<a [^>]*?href="([^"]+)"/g)).map((m) => m[1].replace(/&amp;/g, "&")));
-const SECOES = ["perguntas", "destinos", "mapa-conceitual", "trilhas", "como-confiar", "aprofundar"];
-/** O HTML de uma seção de primeiro nível: do início dela ao início da seguinte (ou ao fim do <main>). */
+/**
+ * O HTML de uma seção: do início dela ao </section> que a fecha. No molde único (Iniciativa 4, 22/10/2026) as seções deixaram de ser
+ * vizinhas no <main> (estão nos destinos, nos blocos recolhidos e no método), e a fatia "até a próxima seção" passava a engolir o que há
+ * entre elas.
+ */
 const secao = (id: string) => {
   const i = html.indexOf(`<section id="${id}"`);
-  const proximas = SECOES.map((x) => html.indexOf(`<section id="${x}"`)).filter((j) => j > i);
-  const fim = proximas.length ? Math.min(...proximas) : html.indexOf("</main>");
+  const re = /<\/?section[\s>]/g;
+  re.lastIndex = i;
+  let fundo = 0;
+  let fim = html.length;
+  for (let m = re.exec(html); m; m = re.exec(html)) {
+    fundo += m[0][1] === "/" ? -1 : 1;
+    if (fundo === 0) {
+      fim = m.index + "</section>".length;
+      break;
+    }
+  }
   return { i, html: html.slice(i, fim) };
+};
+/** O que fica à vista sem abrir nada: tira cada <details> inteiro, também os que estão dentro de outro (blocos recolhidos do molde). */
+const semRecolhidos = (h: string) => {
+  let out = "";
+  let fundo = 0;
+  let k = 0;
+  const re = /<details[\s>]|<\/details>/g;
+  for (let m = re.exec(h); m; m = re.exec(h)) {
+    if (m[0] === "</details>") {
+      fundo--;
+      if (fundo === 0) k = m.index + m[0].length;
+    } else {
+      if (fundo === 0) out += h.slice(k, m.index) + " ";
+      fundo++;
+    }
+  }
+  return out + h.slice(k);
 };
 
 describe("a página renderizada", () => {
-  it("a abertura preserva título, contexto e cinco caminhos: orientação, cobertura, busca, mapa e perguntas antes da referência", () => {
+  it("a abertura segue o molde único: a pergunta, três números com fonte e período e a gravura; o contexto e os caminhos de intenção ficam recolhidos", () => {
     const h1 = /<h1[^>]*>([^<]+)<\/h1>/.exec(html)![1];
     // redesenho de 20/10/2026: o título é a pergunta do observatório, não um slogan (checklist da página de entrada, item 1)
     expect(h1).toBe("De onde vem a energia e quanto ela custa?");
     expect(h1.endsWith("?")).toBe(true);
-    // os três números de abertura vêm logo depois do título, antes da gravura do sistema, que abre o percurso
-    expect(html.indexOf('class="energia-abertura-medidas"')).toBeGreaterThan(html.indexOf("<h1"));
-    expect(html.indexOf('class="energia-abertura-medidas"')).toBeLessThan(html.indexOf('class="energia-cenario"'));
-    expect(html.indexOf('class="energia-cenario"')).toBeLessThan(html.indexOf('id="percurso-energia"'));
     expect(h1.split(/\s+/).length).toBeGreaterThanOrEqual(5);
     expect(h1.split(/\s+/).length).toBeLessThanOrEqual(9);
-    const ordem = [html.indexOf("<h1"), html.indexOf('aria-label="Por onde começar"'), html.indexOf('class="obs-metrics"'), html.indexOf("bp-busca--pagina"), html.indexOf('<section id="perguntas"'), html.indexOf('aria-label="Conhecimento e fontes"')];
+    // molde único (Iniciativa 4, 22/10/2026): os três números de abertura (reservatórios, PLD e continuidade) são a escala, logo depois do
+    // título; a gravura do sistema fecha a abertura e abre caminho ao percurso, que é a seção própria da coleção
+    expect(html.match(/data-numero-escala=""/g)).toHaveLength(3);
+    const ordem = [
+      html.indexOf("<h1"),
+      html.indexOf('data-fatia="escala"'),
+      html.indexOf('class="energia-cenario"'),
+      html.indexOf('data-fatia="para-voce"'),
+      html.indexOf('<section id="destinos"'),
+      html.indexOf("bp-busca--pagina"),
+      html.indexOf('id="percurso-energia"'),
+      html.indexOf('data-fatia="artefato"'),
+      html.indexOf('data-fatia="caminhos"'),
+      html.indexOf('<section id="perguntas"'),
+      html.indexOf('aria-label="Por onde começar"'),
+      html.indexOf('class="obs-metrics"'),
+      html.indexOf('aria-label="Conhecimento e fontes"'),
+      html.indexOf('data-fatia="metodo"'),
+    ];
     expect(ordem.every((x) => x > 0)).toBe(true);
     expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
     // a busca é real: o campo e o índice vêm do mesmo conteúdo que a página publica (o teste da busca confere o índice)
     expect(html).toContain("Busque por pergunta");
-    // a abertura diz por que importa (na frase) e o que ela não permite concluir (no mesmo formato do CabecalhoModulo)
-    // a busca da coleção (a da barra, no alto, é a da plataforma inteira)
-    const abertura = texto(html.slice(0, html.indexOf("bp-busca--pagina")));
-    expect(abertura).toContain("Acompanhe preços, geração e reservatórios. Compare tarifas, interrupções e perdas por região.");
-    expect(html).toContain('data-limite=""');
-    expect(abertura).toContain("Não permite concluir");
-    expect(abertura).toContain("As medidas nacionais não estimam a fatura de uma casa nem o risco de falta de luz. Para conhecer o serviço local, selecione a sua distribuidora.");
+    // o que a abertura antiga dizia (por que importa e o que não permite concluir) continua no bloco "Sobre o observatório", recolhido
+    const sobre = html.slice(html.indexOf('id="recolhido-sobre"'), html.indexOf('id="recolhido-camadas"'));
+    expect(texto(sobre)).toContain("Acompanhe preços, geração e reservatórios. Compare tarifas, interrupções e perdas por região.");
+    expect(sobre).toContain('data-limite=""');
+    expect(texto(sobre)).toContain("Não permite concluir");
+    expect(texto(sobre)).toContain("As medidas nacionais não estimam a fatura de uma casa nem o risco de falta de luz. Para conhecer o serviço local, selecione a sua distribuidora.");
   });
 
   it("os cinco caminhos têm link real: Visão geral, Território, o mapa desta página, Aprenda e Dados e Metodologia", () => {
@@ -674,7 +716,8 @@ describe("a página renderizada", () => {
     // o atalho do alto leva ao mapa do sistema, que vem antes das seis perguntas e do índice
     expect(CAMINHOS_INTENCAO.find((c) => c.id === "sistema")).toMatchObject({ slugs: [], ancora: "#mapa-conceitual" });
     expect(hrefs.has("#mapa-conceitual")).toBe(true);
-    const ordem = [html.indexOf('<section id="mapa-conceitual"'), html.indexOf('<section id="perguntas"'), html.indexOf('<section id="destinos"'), html.indexOf('<section id="trilhas"')];
+    // molde único (Iniciativa 4): os destinos vêm à vista; as perguntas com a prova, o mapa e as trilhas, nos blocos recolhidos, nesta ordem
+    const ordem = [html.indexOf('<section id="destinos"'), html.indexOf('<section id="perguntas"'), html.indexOf('<section id="mapa-conceitual"'), html.indexOf('<section id="trilhas"')];
     expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
     expect(ordem.every((x) => x > 0)).toBe(true);
   });
@@ -714,8 +757,8 @@ describe("a página renderizada", () => {
     expect(html).toContain('<div aria-hidden="true" class="relative h-6">');
     // as seis cartões alinham as linhas entre as colunas: cada cartão é um subgrid de nove linhas da grade
     expect(html.match(/sm:row-span-9 sm:grid-rows-subgrid/g)).toHaveLength(8);
-    // uma linha só de unidades e de leitura das figuras, à vista (não escondida no bloco recolhível)
-    const aVista = texto(html.replace(/<details[\s\S]*?<\/details>/g, " "));
+    // uma linha só de unidades e de leitura das figuras, à vista assim que se abre o bloco das perguntas (não escondida num recolhível dentro dele)
+    const aVista = texto(semRecolhidos(secao("perguntas").html));
     expect(aVista).toContain("MW mede potência; MWh mede energia; MWmed é a energia em MWh dividida pelas horas do período.");
     expect(aVista).toContain("O losango marca o valor destacado. A linha mostra a faixa observada; a caixa reúne a metade central dos casos; o traço dentro dela é a mediana (o ponto que divide os casos em duas metades).");
   });
@@ -751,7 +794,7 @@ describe("a página renderizada", () => {
     for (const g of ["Comece aqui", "Operação do sistema", "Preços e mercado", "Consumidor e território", "Empresas e futuro", "Conhecimento e evidência"]) expect(texto(indice), g).toContain(g);
     // sem módulo em integração nesta publicação, a página não escreve "Em integração" no índice (só no cartão condicional, que não aparece)
     const emIntegracao = destinos.filter((d) => d.publicado && !d.integrado).length;
-    expect(texto(indice.replace(/<details[\s\S]*?<\/details>/g, " ")).includes("Em integração")).toBe(emIntegracao > 0);
+    expect(texto(semRecolhidos(indice)).includes("Em integração")).toBe(emIntegracao > 0);
     expect(texto(indice)).toContain(emIntegracao === 0 ? "As 22 páginas publicam números." : "em integração");
     // o resumo de cada grupo, que antes ficava no bloco "Detalhe de cada página", abre o grupo
     for (const g of GRUPOS_NAVEGACAO) expect(texto(indice), g.id).toContain(g.resumo);
@@ -778,16 +821,27 @@ describe("a página renderizada", () => {
     expect(indice).not.toMatch(/<details[^>]* open/);
   });
 
-  it("o índice não repete o mesmo destino: cada link de destino aparece uma vez no índice visível", () => {
+  it("os destinos mostram os seis grupos, cada um levando à primeira página dele, sem repetir link; o índice completo fica em \"Todas as páginas\"", () => {
+    // molde único (Iniciativa 4): até oito destinos à vista; aqui os seis grupos de navegação, e as 22 páginas no <details> do índice
     const indice = secao("destinos").html;
-    const visivel = indice.replace(/<details[\s\S]*?<\/details>/g, " ");
-    for (const d of DESTINOS_NAVEGACAO.filter((x) => x.slug !== "mapa")) expect(visivel.split(`href="${d.href}"`).length - 1, d.slug).toBe(1);
+    const visivel = semRecolhidos(indice);
+    expect(visivel.match(/<li /g)).toHaveLength(GRUPOS_NAVEGACAO.length);
+    for (const g of GRUPOS_NAVEGACAO) {
+      const primeiro = g.destinos.find((d) => d.slug !== "mapa")!;
+      expect(visivel.split(`href="${primeiro.href}"`).length - 1, g.id).toBe(1);
+      expect(texto(visivel), g.id).toContain(g.rotulo);
+    }
+    for (const d of DESTINOS_NAVEGACAO.filter((x) => x.slug !== "mapa")) expect(visivel.split(`href="${d.href}"`).length - 1, d.slug).toBeLessThanOrEqual(1);
+    expect(texto(indice)).toContain(`Todas as páginas, por tema (${DESTINOS_NAVEGACAO.filter((x) => x.slug !== "mapa").length})`);
   });
 
   it("o mapa completo abre em disclosure nativo e preserva desenho, versão mobile, tipos e limites", () => {
-    const secaoMapa = secao("mapa-conceitual").html;
-    expect(secaoMapa).toContain('<details class="energia-mapa-completo"><summary>Abrir o mapa completo de relações');
-    const mapa = secaoMapa.replace('<details class="energia-mapa-completo">', "");
+    // molde único (Iniciativa 4): o mapa inteiro está no bloco recolhido "Como as partes do setor elétrico se ligam"; o segundo
+    // disclosure ("Abrir o mapa completo de relações") saiu, porque abrir o bloco já é abrir o mapa
+    const mapa = secao("mapa-conceitual").html;
+    expect(mapa).not.toContain("energia-mapa-completo");
+    expect(html.indexOf('id="recolhido-mapa"')).toBeLessThan(secao("mapa-conceitual").i);
+    expect(html.slice(html.indexOf('id="recolhido-mapa"'), secao("mapa-conceitual").i)).toContain("Como as partes do setor elétrico se ligam");
     // Após abrir o mapa completo, fora dos blocos recolhíveis (só a linha do <summary> de cada elo fica): o sistema inteiro já está à vista, com o desenho, as faixas, os elos,
     // o tipo e o destino de cada ligação e os tipos
     const aVista = mapa.replace(/<details[^>]*>([\s\S]*?)<\/details>/g, (_m, dentro: string) => /<summary[\s\S]*?<\/summary>/.exec(dentro)?.[0] ?? "");
@@ -905,18 +959,21 @@ describe("a página renderizada", () => {
 
 describe("a página renderizada: siglas, mapa no celular, atualidade e busca", () => {
   /** O texto que o leitor vê sem abrir nada: fora dos blocos recolhíveis. */
-  const aVista = texto(html.replace(/<details[\s\S]*?<\/details>/g, " "));
+  const aVista = texto(semRecolhidos(html));
   const padrao = (s: string) => new RegExp(`(?<![\\p{L}\\p{N}_])${s}(?![\\p{L}\\p{N}_])`, "u");
 
   it("ANEEL, ONS, CCEE e SIN saem por extenso na primeira ocorrência à vista, e o CNPJ também", () => {
+    // ANEEL, ONS e CCEE estão à vista nas fontes dos números (escala e caminhos); SIN e CNPJ, desde o molde único (Iniciativa 4), só
+    // aparecem nos blocos recolhidos: quando aparecerem à vista, a primeira vez é por extenso
     for (const s of ["ANEEL", "ONS", "CCEE", "SIN", "CNPJ"]) {
       const i = aVista.search(padrao(s));
-      expect(i, s).toBeGreaterThan(0);
+      if (["ANEEL", "ONS", "CCEE"].includes(s)) expect(i, s).toBeGreaterThan(0);
+      if (i < 0) continue;
       const antes = aVista.slice(Math.max(0, i - SIGLAS[s].length - 2), i + s.length + 1);
       expect(antes, s).toBe(`${SIGLAS[s]} (${s})`);
     }
-    // a primeira à vista é a do alto: a linha de fontes da abertura
-    expect(aVista.indexOf("Operador Nacional do Sistema Elétrico (ONS)")).toBeLessThan(aVista.indexOf("Seis perguntas para começar"));
+    // a primeira à vista é a do alto: a fonte dos números da escala
+    expect(aVista.indexOf("Operador Nacional do Sistema Elétrico (ONS)")).toBeLessThan(aVista.indexOf("Perguntas para começar"));
   });
 
   it("os órgãos que a tabela de atualidade cita (EPE, IBGE, CVM, MCTI e os demais) vêm com o nome por extenso logo abaixo dela", () => {

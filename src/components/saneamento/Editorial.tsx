@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { SeloProntidao } from "@/components/observatorios/SeloProntidao";
 import { ROTA, ROTULO_SITUACAO, eixoDoCapitulo, type Situacao } from "@/lib/saneamento/capitulos";
 import { MARCA_AUTODECLARADO, RESSALVA_AUTODECLARADO } from "@/lib/saneamento/autodeclarado";
 
@@ -165,9 +166,8 @@ export function Fonte({ children, metodo = true }: { children: ReactNode; metodo
 }
 
 export function SeloSituacao({ situacao }: { situacao: Situacao }) {
-  const cor =
-    situacao === "publicado" ? "border-obee text-obee-dark" : situacao === "parcial" ? "border-aviso text-aviso" : "border-linha text-carvao-muted";
-  return <span className={`rotulo inline-flex items-center border px-2 py-0.5 ${cor}`}>{ROTULO_SITUACAO[situacao]}</span>;
+  // a forma única da plataforma (SeloProntidao): glifo e texto, nunca só cor
+  return <SeloProntidao valor={situacao === "em_preparacao" ? "preparacao" : situacao} />;
 }
 
 /** Bloco para estado indisponível: diz o que falta e o que continua utilizável. */

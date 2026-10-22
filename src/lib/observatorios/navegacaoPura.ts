@@ -3,10 +3,11 @@
  * cada um e os três atalhos fixos. Sem catálogo: o servidor monta a lista (navegacaoColecao.ts) e o navegador só decide,
  * a cada navegação, qual destino é o atual. Iniciativa 2 do parecer de UX de 21/10/2026.
  */
+import type { Prontidao } from "@/components/observatorios/SeloProntidao";
 import type { Dominio } from "@/lib/dominios";
 import { caminhoPublico } from "./contextoPuro";
 
-/** Página da navegação. `publicado: false` aparece como texto "em preparação", nunca como link. */
+/** Página da navegação. `publicado: false` aparece como texto com o selo "em preparação" (SeloProntidao), nunca como link. */
 export type PaginaNav = { rotulo: string; href: string; publicado: boolean };
 
 export type ItemNav = PaginaNav & {
@@ -27,8 +28,8 @@ export type NavegacaoDaColecao = {
   atalhos: AtalhosNav;
   /** A consulta pessoal da coleção (o destino mais procurado), quando existe: sempre o segundo item. */
   consulta?: string;
-  /** Estado da coleção inteira que o leitor precisa saber antes do clique (ex.: "Piloto"), escrito à direita da linha 1. */
-  estado?: string;
+  /** Estado da coleção inteira que o leitor precisa saber antes do clique, com o SeloProntidao à direita da linha 1. */
+  estado?: Prontidao;
   /** Parâmetros do endereço que acompanham o leitor de uma página a outra da coleção (o recorte: capital, UF, nível). */
   levar?: string[];
 };

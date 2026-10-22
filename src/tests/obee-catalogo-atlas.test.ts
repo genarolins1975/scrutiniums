@@ -11,8 +11,11 @@ describe('Matriz de cobertura da entrada',()=>{
   it('traz os 16 temas, com ficha para cada painel publicado',()=>{
     for(const d of DIMENSOES)expect(html).toContain(`id="cobertura-${d.id}"`);
     // Previdência (21/10/2026) aponta para o painel Previdência e INSS das Contas Públicas
-    expect(html.match(/Painel publicado/g)).toHaveLength(14);
-    expect(html.match(/Em desenvolvimento/g)).toHaveLength(2);
+    // estado de cada tema pelo selo de prontidão (Iniciativa 4, 22/10/2026): antes "Painel publicado" e "Em desenvolvimento"
+    const cobertura=html.slice(html.indexOf('id="cobertura-'));
+    expect(cobertura.match(/data-prontidao="publicado"/g)).toHaveLength(14);
+    expect(cobertura.match(/data-prontidao="preparacao"/g)).toHaveLength(2);
+    expect(html).not.toMatch(/Em desenvolvimento/);
     expect(html).toContain('href="/contas-publicas/previdencia"');
     for(const t of ['O que não inclui','Última captura de dados','Até onde cada tema chega.','Aprendizagem · Saeb'])expect(html).toContain(t);
     expect(html).toContain('href="/eficiencia-estatal/saude-capitais/comparar"');
