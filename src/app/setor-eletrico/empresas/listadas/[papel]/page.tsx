@@ -5,7 +5,7 @@ import { caminhoComParametros, metadadosEnergia } from "@/lib/energia/metadados-
 import Link from "@/components/energia/LinkSemPrefetch";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { EmpresasIndisponivel, EmpresasNavegacao } from "@/components/energia/EmpresasPagina";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -139,7 +139,7 @@ export default function FichaListada({ params }: { params: { papel: string } }) 
 
   return (
     <>
-      <CabecalhoEnergia atual="empresas" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:empresas-listadas" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <EmpresasNavegacao atual="listadas" />

@@ -93,8 +93,8 @@ try{
  for(const width of [320,390,768,1440]){
   await page.setViewportSize({width,height:width===390?844:1000});
   await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
-  const card=page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true});
-  check('Cartão próprio do Judiciário '+width+'px',await card.isVisible()&&await card.getByRole('button',{name:/Explorar Judiciário/}).isVisible());
+  const card=page.getByRole('article',{name:'Justiça',exact:true});
+  check('Cartão próprio do Judiciário '+width+'px',await card.isVisible()&&await card.getByRole('button',{name:/Explorar Justiça/}).isVisible());
   check('Oito observatórios e Judiciário no seletor '+width+'px',await page.locator('input[name="d"]').count()===observatoryRoots.length+1);
   await card.locator('summary').click();
   check('Fonte e cobertura reais no cartão '+width+'px',(await card.innerText()).includes('57 tribunais')&&(await card.innerText()).includes('2009–2025'));
@@ -105,8 +105,8 @@ try{
   screens.push({slug:'seletor-observatorios',width,status:200,overflow,violations});
   await captura({path:join(out,'seletor-'+width+'.png'),fullPage:true});
  }
- const choice=page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true});
- await choice.getByRole('button',{name:/Explorar Judiciário/}).focus();
+ const choice=page.getByRole('article',{name:'Justiça',exact:true});
+ await choice.getByRole('button',{name:/Explorar Justiça/}).focus();
  const navigation=page.waitForNavigation({waitUntil:'networkidle',timeout:20000});
  await page.keyboard.press('Enter');await navigation;
  await captura({path:join(out,'seletor-destino.png'),fullPage:true});
@@ -114,7 +114,7 @@ try{
  check('Escolha preserva a sessão',(await context.request.get(origin+'/api/auth/eu')).status()===204);
  check('Cookie guarda o Judiciário',(await context.cookies()).some(c=>c.name==='scrutiniums_observatorio'&&c.value==='judiciario'&&c.httpOnly));
  await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
- check('Último acesso identifica o cartão do Judiciário',await page.getByRole('article',{name:'Observatório Brasileiro do Judiciário',exact:true}).getByText('Último acesso',{exact:true}).isVisible());
+ check('Último acesso identifica o cartão do Judiciário',await page.getByRole('article',{name:'Justiça',exact:true}).getByText('Último acesso',{exact:true}).isVisible());
  const slugs=['','panorama','internacional','recursos','tempo','filas','entrega','consistencia','criminal','acesso','comparar','metodos','tribunais/tjsp','tribunais/tjdft','tribunais/trf3','tribunais/trt3'];
  for(const width of [320,390,768,1440]){
   await page.setViewportSize({width,height:width===390?844:1000});

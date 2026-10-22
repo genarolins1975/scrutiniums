@@ -8,7 +8,7 @@ import type { MunicipiosTerritorio } from "@/lib/energia/tipos-territorio";
 import type { Metadata, ResolvingMetadata } from "next";
 import type { ReactNode } from "react";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { Numero } from "@/components/energia/Numero";
 import { TerritorioExplorador } from "@/components/energia/TerritorioExplorador";
@@ -230,7 +230,7 @@ export default function TerritorioPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="territorio" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:territorio" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo

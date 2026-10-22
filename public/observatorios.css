@@ -42,7 +42,12 @@
 .bp-abas-linha { flex-wrap:wrap; gap:0 20px; }
 /* Trilha "Você está em" logo abaixo da barra comum (Iniciativa 1 do parecer de UX, 21/10/2026): mesma largura e margens da
    barra, sem caixa nem regra própria, para não somar mais uma faixa de cromo ao cabeçalho. */
-.bp-trilha { box-sizing:border-box; width:100%; max-width:var(--bp-largura,77.5rem); margin-inline:auto; padding-inline:var(--bp-margem,clamp(1rem,4vw,2.5rem)); padding-block:4px; }
+.bp-trilha { box-sizing:border-box; width:100%; max-width:var(--bp-largura,77.5rem); margin-inline:auto; padding-inline:var(--bp-margem,clamp(1rem,4vw,2.5rem)); padding-block:2px; }
+/* Trilha com o seletor de idioma à direita (Setor Elétrico): a trilha encolhe, o seletor não. */
+.bp-trilha-linha { display:flex; align-items:center; gap:12px; }
+.bp-trilha-linha > .trilha { flex:1 1 auto; min-width:0; }
+/* Navegação da coleção (NavegacaoColecao, Iniciativa 2): a mesma caixa da barra e da trilha, para o texto do primeiro item cair na margem delas. */
+.nav-colecao-caixa { box-sizing:border-box; width:100%; max-width:var(--bp-largura,77.5rem); margin-inline:auto; padding-inline:var(--bp-margem,clamp(1rem,4vw,2.5rem)); }
 /* Celular: a trilha fica numa linha só, para não somar duas faixas de cromo antes do título. Ficam as duas últimas peças
    (observatório e coleção, ou coleção e página); o observatório segue nas abas e no rótulo acima do H1, e o seletor ao
    lado da marca leva a todos. A primeira peça visível encurta com reticências se preciso; a última fica inteira. */
@@ -95,10 +100,17 @@
 .bp button.bp-ferramenta:focus-visible { outline:2px solid var(--bp-destaque); outline-offset:2px; }
 .bp-painel { position:absolute; top:100%; right:0; z-index:45; box-sizing:border-box; width:min(30rem, calc(100vw - 32px)); max-height:min(70vh, 40rem); overflow-y:auto; padding:20px; background:var(--bp-fundo); border:1px solid var(--bp-regra); box-shadow:0 8px 24px rgba(24,43,54,.12); color:var(--bp-tinta); font-size:14px; line-height:1.5; text-align:left; text-transform:none; letter-spacing:normal; white-space:normal; }
 .bp-painel h2, .bp-painel h3, .bp-painel p, .bp-painel ul { margin:0; }
+/* Celular (Iniciativa 2 do parecer de UX de 21/10/2026): as ferramentas saem da linha das abas, que deixaria a barra com uma linha
+   só para elas, e entram com a conta num só botão "Conta ▾" na linha da marca, no lugar do link "Minha conta". */
+.bp-ferramentas-menu { display:none; position:relative; }
+.bp-menu-conta { list-style:none; width:min(18rem, calc(100vw - 32px)); padding:8px 16px; }
 @media(max-width:639px) {
+  .bp-abas .bp-ferramentas { display:none; }
+  .bp-ferramentas-menu { display:block; }
+  .bp-acoes:has(.bp-ferramentas-menu) .bp-conta { display:none; }
   .bp-ferramentas { margin-left:0; }
   .bp-ferramenta-resto { display:none; }
-  .bp-painel { left:0; right:auto; }
+  .bp-painel { left:auto; right:0; }
 }
 @media print { .bp-abas, .bp-acoes, .bp-divisor, .bp details { display:none!important; } }
 @media print { .bp-ferramentas { display:none!important; } }

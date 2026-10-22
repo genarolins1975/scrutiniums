@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { Abertura, Fonte, Indisponivel, MarcaAutodeclarado, NestaPagina, Nota, Numeros, Ressalva, RessalvaAutodeclarado, Secao } from "@/components/saneamento/Editorial";
 import { AUTODECLARADO, QUEM_DECLARA_INVESTIMENTO } from "@/lib/saneamento/autodeclarado";
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
@@ -97,7 +98,10 @@ export default function Pagina() {
 
   return (
     <>
-      <Cabecalho atual="investimento" />
+      <header>
+        <CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />
+        <NavegacaoColecao colecao="saneamento" />
+      </header>
       <MarcaVisita secao="saneamento:investimento" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">
         <Abertura

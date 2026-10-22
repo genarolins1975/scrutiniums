@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "@/components/i18n/LinkIdioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoLocal, type ItemLocal } from "@/components/energia/NavegacaoLocal";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
@@ -78,7 +78,7 @@ export function RegulacaoCapitulos() {
 export function RegulacaoIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
-      <CabecalhoEnergia atual="regulacao" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo={tx("Regulação indisponível nesta publicação", "Regulation unavailable in this publication")}

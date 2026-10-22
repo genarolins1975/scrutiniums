@@ -15,7 +15,7 @@ import {ResumoFiscalAbertura} from '@/components/contas-publicas/ResumoFiscalAbe
 import type {Metadata} from 'next';
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
-import {CAPITULOS_PUBLICADOS,INDICADORES,PAINEIS_NAVEGACAO} from '@/lib/contas-publicas/catalogo';
+import {CAPITULOS_PUBLICADOS,INDICADORES} from '@/lib/contas-publicas/catalogo';
 import {FichaIndicador} from '@/components/contas-publicas/FichaIndicador';
 /**
  * Só os capítulos com dados têm página (Onda 3, critério "nenhum capítulo 'Em desenvolvimento' na navegação"): os
@@ -33,7 +33,7 @@ export default function Page({params}:{params:{capitulo:string}}){
  return <main id="conteudo-contas" className="cp-wrap cp-main">
   <header className="cp-chapter-header"><p className="cp-eyebrow">{c.etapa} · Dados disponíveis · recorte parcial</p><h1>{c.pergunta}</h1><p className="cp-lead">{c.entrega}</p><p className="cp-note cp-chapter-limit">{c.limite}</p></header>
   {c.id==='panorama'&&<ResumoFiscalAbertura/>}
-  <div className="cp-chapter-tools"><nav className="cp-panel-nav" aria-label="Painéis com dados">{PAINEIS_NAVEGACAO.map(([href,nome])=><Link key={href} href={href} aria-current={href===`/contas-publicas/${c.id}`?'page':undefined}>{nome}</Link>)}</nav><RecorteCompartilhavel/></div>
+  {/* os outros painéis estão na navegação da coleção (NavegacaoColecao), acima do título */}<div className="cp-chapter-tools"><RecorteCompartilhavel/></div>
   {c.id==='panorama'&&<PainelFiscal/>}{c.id==='execucao'&&<PainelOrcamento/>}{c.id==='restos-a-pagar'&&<PainelRAP/>}{c.id==='custos'&&<PainelCustos/>}{c.id==='metas'&&<PainelMetas inicial={consultarMetas({busca:'',orgao:'',estado:'calculavel'})} info={META_INFO}/>}
   {c.id==='planejamento'&&<PainelPlanejamento anos={seriePlano()}/>}
   {c.id==='beneficios'&&<PainelBeneficios/>}

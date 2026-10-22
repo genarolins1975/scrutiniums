@@ -335,6 +335,7 @@ html[data-recorte="pendente"] #conteudo {
 /* Lista de módulos e faixas de seções que rolam na horizontal: a borda com itens fora da vista esmaece (AtivoVisivel e FaixasDeSecao
    ligam --fade-esq e --fade-dir). O esmaecimento de 2 rem não deixa dúvida de que o último rótulo cortado é rolagem. */
 #modulos-energia,
+.nav-colecao-faixa,
 .nav-faixa,
 .nav-faixa-barra {
   --fade-esq: 0;
@@ -345,6 +346,7 @@ html[data-recorte="pendente"] #conteudo {
 
 /* Faixa de módulos do cabeçalho: o item atual fica rente à borda esquerda, então o esmaecimento daquele lado é estreito (8 px, menos que o
    respiro interno do rótulo) para não apagar a primeira letra dele. */
+.nav-colecao-faixa,
 #modulos-energia {
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 0.5rem), #000 calc(100% - var(--fade-dir) * 2rem), transparent 100%);
   mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 0.5rem), #000 calc(100% - var(--fade-dir) * 2rem), transparent 100%);

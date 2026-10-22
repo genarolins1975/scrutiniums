@@ -1,5 +1,5 @@
+import {CabecalhoPlataforma} from '@/components/layout/CabecalhoPlataforma';
 import { EscoresServicos } from "@/components/eficiencia/EscoresServicos";
-import { CabecalhoSaude } from "@/components/eficiencia/saude/CabecalhoSaude";
 import { LiberaRecorte } from "@/components/eficiencia/LiberaRecorte";
 import { SCRIPT_RECORTE_SAUDE } from "@/lib/eficiencia/saude/rotas";
 import type { Metadata } from "next";
@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: modeloDeTitulo("/eficiencia-estatal/s
 export default function LayoutSaudeCapitais({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <CabecalhoSaude />
+      <header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal/saude-capitais" navegacao="saude" /></header>
       <script dangerouslySetInnerHTML={{ __html: SCRIPT_RECORTE_SAUDE }} />
       <main id="conteudo" className="mx-auto max-w-page px-4 pb-20 pt-8 sm:px-6 md:pt-10">
         {children}<EscoresServicos capitulo="health"/>

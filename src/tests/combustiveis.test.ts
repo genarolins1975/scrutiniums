@@ -51,8 +51,12 @@ describe("combustíveis: lugar no registro e acesso", () => {
   });
 
   it("o cabeçalho é o comum, com o observatório marcado e as fontes do domínio gas", () => {
-    const cab = readFileSync(join(raiz, "src", "components", "combustiveis", "CabecalhoCombustiveis.tsx"), "utf-8");
-    expect(cab).toContain('<CabecalhoPlataforma observatorio="energia-e-infraestrutura" destinoConta="/combustiveis" fontes={["gas"]} />');
+    // Iniciativa 2: as duas páginas montam a barra comum e a navegação da coleção, sem cabeçalho próprio
+    for (const f of ["page.tsx", "no-meu-estado/page.tsx"]) {
+      const cab = readFileSync(join(raiz, "src", "app", "combustiveis", f), "utf-8");
+      expect(cab, f).toContain('<CabecalhoPlataforma observatorio="energia-e-infraestrutura" destinoConta="/combustiveis" fontes={["gas"]} />');
+      expect(cab, f).toContain('<NavegacaoColecao colecao="combustiveis" />');
+    }
     const layout = readFileSync(join(raiz, "src", "app", "combustiveis", "layout.tsx"), "utf-8");
     expect(layout).toContain("<ParaIrAlem mapa={mapaParaIrAlem()} />");
   });

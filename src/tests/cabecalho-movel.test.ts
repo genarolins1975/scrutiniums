@@ -11,18 +11,18 @@ import { MARCADOR_FIM, MARCADOR_INICIO, htmlBarraSpa } from "@/lib/observatorios
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
-import { Cabecalho as CabecalhoSaneamento } from "@/components/saneamento/Cabecalho";
-import { CabecalhoGas } from "@/components/gas/CabecalhoGas";
-import { CabecalhoEntrada } from "@/components/eficiencia/CabecalhoEntrada";
-import { CabecalhoAgro } from "@/components/agro/Cabecalho";
 import { EstadoConta } from "@/components/energia/AcessoConta";
+import { NavegacaoColecaoCliente } from "@/components/layout/NavegacaoColecaoCliente";
+import { PaginaAberta } from "@/components/acesso/PaginaAberta";
+import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 
 // endereço que o navegador vê; o seletor, as abas e a trilha resolvem o contexto por ele (NavegacaoContexto.tsx)
 const navegador = vi.hoisted(() => ({ caminho: "/sobre" }));
 vi.mock("next/navigation", async () => ({
   ...await vi.importActual<typeof import("next/navigation")>("next/navigation"),
   usePathname: () => navegador.caminho,
+  // as coleções que levam o recorte de uma aba a outra (Educação, Saúde, Mobilidade) usam o roteador no clique
+  useRouter: () => ({ push: () => undefined }),
 }));
 vi.mock("next/headers", () => ({ cookies: () => ({ has: () => false }) }));
 vi.mock("@/lib/session", () => ({ getSessionUser: vi.fn() }));
@@ -97,12 +97,12 @@ const ABAS = OBSERVATORIOS.map((o) => ({ href: destinoObservatorio(o), texto: o.
  * rota, o trecho que ele precisa conter e o cabeçalho renderizado. O Crédito é a SPA estática, conferida à parte.
  */
 const ENTRADAS: { rota: string; arquivo: string; uso: string; observatorio: ObservatorioId; render: () => string }[] = [
-  { rota: "/setor-eletrico", arquivo: "src/app/setor-eletrico/page.tsx", uso: '<CabecalhoEnergia atual="mapa" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoEnergia, { atual: "mapa" })) },
-  { rota: "/saneamento", arquivo: "src/app/saneamento/page.tsx", uso: '<Cabecalho atual="" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoSaneamento, { atual: "" })) },
-  { rota: "/gas-natural", arquivo: "src/app/gas-natural/page.tsx", uso: '<CabecalhoGas atual="inicial" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoGas, { atual: "inicial" })) },
-  { rota: "/eficiencia-estatal", arquivo: "src/app/eficiencia-estatal/page.tsx", uso: "<CabecalhoEntrada/>", observatorio: "servicos-publicos", render: () => html(createElement(CabecalhoEntrada)) },
+  { rota: "/setor-eletrico", arquivo: "src/app/setor-eletrico/page.tsx", uso: '<CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoPlataforma, { colecao: "energia", destinoConta: "/setor-eletrico", idiomas: true })) },
+  { rota: "/saneamento", arquivo: "src/app/saneamento/page.tsx", uso: '<CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoPlataforma, { colecao: "saneamento", destinoConta: "/saneamento" })) },
+  { rota: "/gas-natural", arquivo: "src/app/gas-natural/page.tsx", uso: '<CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoPlataforma, { colecao: "gas", destinoConta: "/gas-natural" })) },
+  { rota: "/eficiencia-estatal", arquivo: "src/app/eficiencia-estatal/page.tsx", uso: '<CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal" navegacao="sintese" />', observatorio: "servicos-publicos", render: () => html(createElement(CabecalhoPlataforma, { colecao: "eficiencia", destinoConta: "/eficiencia-estatal" })) },
   { rota: "/contas-publicas", arquivo: "src/app/contas-publicas/layout.tsx", uso: '<CabecalhoPlataforma colecao="contas" destinoConta="/contas-publicas"/>', observatorio: "contas-publicas", render: () => html(createElement(CabecalhoPlataforma, { colecao: "contas", destinoConta: "/contas-publicas" })) },
-  { rota: "/agronegocio", arquivo: "src/app/agronegocio/layout.tsx", uso: "<CabecalhoAgro />", observatorio: "economia", render: () => html(createElement(CabecalhoAgro)) },
+  { rota: "/agronegocio", arquivo: "src/app/agronegocio/layout.tsx", uso: '<CabecalhoPlataforma colecao="agro" destinoConta="/agronegocio" />', observatorio: "economia", render: () => html(createElement(CabecalhoPlataforma, { colecao: "agro", destinoConta: "/agronegocio" })) },
   { rota: "/observatorios/territorio-e-clima", arquivo: "src/app/observatorios/[id]/page.tsx", uso: "<CabecalhoPlataforma observatorio={id}", observatorio: "territorio-e-clima", render: () => html(createElement(CabecalhoPlataforma, { observatorio: "territorio-e-clima", destinoConta: "/observatorios/territorio-e-clima" })) },
 ];
 
@@ -147,8 +147,7 @@ describe("barra comum da plataforma nas entradas dos observatórios", () => {
     const permitidos = [
       "src/components/ui/Logo.tsx",
       "src/components/layout/BarraPlataforma.tsx",
-      // páginas de foco da conta, rodapé, acesso e cadastro: fora dos observatórios
-      "src/components/layout/FocoHeader.tsx",
+      // rodapé, acesso e cadastro: fora dos observatórios (as páginas da conta usam a barra comum desde a Iniciativa 2)
       "src/components/layout/Footer.tsx",
       "src/components/home/SecaoAcesso.tsx",
       "src/app/entrar/page.tsx",
@@ -248,14 +247,18 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
     expect(readFileSync(usam[0], "utf-8")).toContain("<SwitcherObservatorio");
     // e a barra comum é a dos cabeçalhos de todos os observatórios e painéis
     const cabecalhos = [
-      "src/components/energia/CabecalhoEnergia.tsx",
-      "src/components/saneamento/Cabecalho.tsx",
-      "src/components/gas/CabecalhoGas.tsx",
-      "src/components/eficiencia/CabecalhoEntrada.tsx",
-      "src/components/eficiencia/CabecalhoObee.tsx",
-      "src/components/eficiencia/saude/CabecalhoSaude.tsx",
-      "src/components/eficiencia/judiciario/Cabecalho.tsx",
-      "src/components/agro/Cabecalho.tsx",
+      "src/app/setor-eletrico/page.tsx",
+      "src/app/saneamento/page.tsx",
+      "src/app/gas-natural/page.tsx",
+      "src/app/combustiveis/page.tsx",
+      "src/app/custo-de-vida/page.tsx",
+      "src/app/educacao-municipal/page.tsx",
+      "src/components/credito/Blocos.tsx",
+      "src/app/eficiencia-estatal/page.tsx",
+      "src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx",
+      "src/app/eficiencia-estatal/saude-capitais/layout.tsx",
+      "src/app/eficiencia-estatal/judiciario/layout.tsx",
+      "src/app/agronegocio/layout.tsx",
       "src/app/contas-publicas/layout.tsx",
       "src/app/contas-publicas-estaduais/layout.tsx",
       "src/app/observatorios/[id]/page.tsx",
@@ -316,5 +319,29 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
     const nav = bloco(html, 'aria-label="Navegação principal"', "</nav>");
     expect(nav).toContain('href="/imprensa"');
     expect(nav).toContain('href="/entrar"');
+  });
+});
+
+describe("navegação da coleção sob a barra comum, nas 28 coleções, com e sem sessão (Iniciativa 2)", () => {
+  const colecoes = OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => ({ ...c, observatorio: o.nomeCurto })));
+
+  it.each(colecoes)("$observatorio · $nome: o mesmo componente, o rótulo padrão, o Início marcado na entrada e o selo só na página aberta", (c) => {
+    const nav = navegacaoDaColecao(c.id);
+    const entrada = nav.itens[0].href;
+    navegador.caminho = entrada;
+    const painel = html(createElement(NavegacaoColecaoCliente, { nav, caminho: entrada, idioma: "pt" }));
+    const aberta = html(createElement(PaginaAberta, null, createElement(NavegacaoColecaoCliente, { nav, caminho: entrada, idioma: "pt" })));
+    for (const h of [painel, aberta]) {
+      expect(h).toContain(`aria-label="Navegação da coleção ${c.nome}"`);
+      expect(h).toContain(`data-nav-colecao="${c.id}"`);
+      expect(h, "a navegação não desenha marca própria").not.toContain("bp-marca");
+      const atuais = ancoras(h).filter((a) => a.atual);
+      expect(atuais.map((a) => a.href)).toEqual([entrada]);
+    }
+    // com sessão (painel), nenhum selo; sem sessão numa página aberta, todo destino que pede conta leva o selo antes do clique
+    // (a entrada que é ela mesma página aberta, como a apresentação do Crédito, já se comporta como aberta)
+    if (!ehRotaPublica(entrada)) expect(painel).not.toContain("com conta");
+    const fechados = nav.itens.filter((i) => i.publicado && !ehRotaPublica(i.href.split(/[?#]/)[0]));
+    if (fechados.length) expect(aberta).toContain("com conta");
   });
 });

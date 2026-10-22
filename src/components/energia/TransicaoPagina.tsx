@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { TextoEnergia } from "@/components/energia/TextoEnergia";
 import Link from "@/components/i18n/LinkIdioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { SeguirPainel } from "@/components/energia/SeguirPainel";
@@ -108,7 +108,7 @@ export function TransicaoCapitulos({ itens }: { itens: CapituloTransicao[] }) {
 export function TransicaoIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
-      <CabecalhoEnergia atual="transicao" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo={tx("Transição e ambiente indisponível nesta publicação", "Transition and environment unavailable in this release")}

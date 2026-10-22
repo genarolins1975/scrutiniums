@@ -138,7 +138,7 @@ describe("lista que quebra linha não ganha respiro de rolagem", () => {
   // (a borda direita do item coincide com a da lista, e a regra pede 8 px de folga), a função gravava padding-right inline de até 175 px,
   // e os itens ficavam com 80 px em vez de metade da linha: "Armazenamento" cortado e "Limites e regras de preço" em 5 linhas.
   it("só alinha quando a lista tem rolagem horizontal, antes de medir o item atual", () => {
-    const av = ler("src/components/energia/AtivoVisivel.tsx");
+    const av = ler("src/components/layout/AtivoVisivel.tsx");
     const alinha = av.slice(av.indexOf("const alinha = () => {"), av.indexOf("const bordas = () => {"));
     expect(alinha).toContain("if (lista.scrollWidth <= lista.clientWidth + 1) return;");
     expect(alinha.indexOf("if (lista.scrollWidth <= lista.clientWidth + 1) return;")).toBeLessThan(alinha.indexOf("getBoundingClientRect"));

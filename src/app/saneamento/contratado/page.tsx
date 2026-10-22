@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { Abertura, Fonte, Indisponivel, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { CurvaMetas, LabContratado, type AreaLab, type TrajetoriaBr } from "@/components/saneamento/Contratado";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -59,7 +60,10 @@ export default function Pagina() {
   const g = goldContratado();
   return (
     <>
-      <Cabecalho atual="contratado" />
+      <header>
+        <CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />
+        <NavegacaoColecao colecao="saneamento" />
+      </header>
       <MarcaVisita secao="saneamento:contratado" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">
         {g ? (

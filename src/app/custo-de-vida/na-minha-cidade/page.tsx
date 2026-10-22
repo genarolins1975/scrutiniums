@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
-import { CabecalhoCustoDeVida } from "@/components/inflacao/CabecalhoCustoDeVida";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { InflacaoNaArea } from "@/components/inflacao/InflacaoNaArea";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { goldInflacao, primeiraTela } from "@/lib/inflacao/dados";
@@ -38,7 +39,10 @@ export default function ConsultaCustoDeVidaPagina() {
   return (
     <>
       <MarcaVisita secao={pagina.secao} />
-      <CabecalhoCustoDeVida atual="na-minha-cidade" />
+      <header>
+        <CabecalhoPlataforma observatorio="familias" destinoConta="/custo-de-vida" fontes={["inflacao"]} />
+        <NavegacaoColecao colecao="custo-de-vida" />
+      </header>
       {aberta && (
         <AvisoConsultaAberta
           className="ed-pagina"

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoLocal } from "@/components/energia/NavegacaoLocal";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
@@ -40,7 +40,7 @@ export function QualidadeNavegacao({ atual }: { atual: PaginaQualidade }) {
 export function QualidadeIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
-      <CabecalhoEnergia atual="qualidade" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo={tx("Qualidade do serviço indisponível nesta publicação", "Quality of supply unavailable in this release")}

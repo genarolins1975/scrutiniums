@@ -15,7 +15,8 @@ import { join } from "node:path";
 import Pagina from "@/app/saneamento/prestadores/divida/page";
 import Entrada from "@/app/saneamento/page";
 import Aperitivo from "@/app/aperitivo/saneamento/page";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { NavegacaoColecaoCliente } from "@/components/layout/NavegacaoColecaoCliente";
+import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
 import { APERITIVOS, ehRotaPublica } from "@/lib/rotasPublicas";
 import { comPonto, fotografia, goldDivida, mediana, periodoPorExtenso, reaisDeMil, resumoDivida, ROTA_DIVIDA, vezes } from "@/lib/saneamento/divida";
@@ -84,7 +85,8 @@ describe("página /saneamento/prestadores/divida", () => {
     expect(sub.numero).toBe("7.1");
     expect(sub.naNavegacao).toBe(true);
     expect(`${ROTA}/prestadores/${sub.slug}`).toBe(ROTA_DIVIDA);
-    const menu = renderToStaticMarkup(createElement(Cabecalho, { atual: "prestadores/divida" }));
+    // navegação da coleção (Iniciativa 2): a dívida é página do eixo dos prestadores, marcada como atual na segunda linha
+    const menu = renderToStaticMarkup(createElement(NavegacaoColecaoCliente, { nav: navegacaoDaColecao("saneamento"), caminho: ROTA_DIVIDA, atual: ROTA_DIVIDA, idioma: "pt" }));
     expect(menu).toContain(`href="${ROTA_DIVIDA}"`);
     expect(menu).toContain('aria-current="page"');
     expect(renderToStaticMarkup(createElement(Entrada))).toContain(`href="${ROTA_DIVIDA}"`);

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { ListadasLogo } from "@/components/energia/ListadasLogo";
 import { Nome } from "@/components/i18n/Nome";
@@ -14,7 +14,7 @@ import type { LeiloesGold } from "@/lib/energia/tipos-leiloes";
 export function LeiloesIndisponivel({ motivo }: { motivo?: string | null }) {
   return (
     <>
-      <CabecalhoEnergia atual="leiloes" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
         <Indisponivel
           titulo={tx("Leilões indisponíveis nesta publicação", "Auctions unavailable in this release")}

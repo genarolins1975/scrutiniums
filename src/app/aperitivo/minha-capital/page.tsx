@@ -1,5 +1,5 @@
+import {CabecalhoPlataforma} from '@/components/layout/CabecalhoPlataforma';
 import type {Metadata} from 'next';
-import {CabecalhoEntrada} from '@/components/eficiencia/CabecalhoEntrada';
 import {MinhaCapitalAperitivo} from '@/components/eficiencia/entrada/MinhaCapitalAperitivo';
 import {RotuloContexto} from '@/components/layout/RotuloContexto';
 import entradaStyles from '@/components/eficiencia/entrada/MinhaCapitalAperitivo.module.css';
@@ -39,7 +39,7 @@ export default function AperitivoMinhaCapital() {
   const dados = montarAperitivoCapital(montarRetrato());
   return <div className="dominio-obee flex min-h-screen flex-col bg-papel text-obee-tinta">
     <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:inline-flex focus:min-h-[44px] focus:items-center focus:border focus:border-obee focus:bg-superficie focus:px-4 focus:text-sm focus:text-obee-tinta">Pular para o conteúdo</a>
-    <div className="flex-1"><CabecalhoEntrada/>
+    <div className="flex-1"><header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal" /></header>
       <main id="conteudo" className="pb-12">
         {/* fecho obrigatório: ConviteAperitivo com rota="/eficiencia-estatal", dentro do componente cliente */}
         <MinhaCapitalAperitivo dados={dados} comConta={COM_CONTA} rotulo={<RotuloContexto rota="/eficiencia-estatal" pagina="Minha capital" className={entradaStyles.kicker}/>}/>

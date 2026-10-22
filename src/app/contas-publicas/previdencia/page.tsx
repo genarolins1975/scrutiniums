@@ -4,7 +4,6 @@ import Link from "next/link";
 import { RecorteCompartilhavel } from "@/components/contas-publicas/RecorteCompartilhavel";
 import { PainelPrevidencia } from "@/components/previdencia/PainelPrevidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { PAINEIS_NAVEGACAO } from "@/lib/contas-publicas/catalogo";
 import { consultarMunicipio, goldPrevidencia } from "@/lib/previdencia/dados";
 import { PERGUNTA_PAINEL, ROTA_PREVIDENCIA, SECAO_PAINEL } from "@/lib/previdencia/paginas";
 import { RotuloContexto } from "@/components/layout/RotuloContexto";
@@ -47,14 +46,8 @@ export default function Page({ searchParams }: { searchParams: Record<string, st
         g={g}
         consulta={consulta}
         ferramentas={
+          // os outros painéis estão na navegação da coleção (NavegacaoColecao), acima do título
           <div className="cp-chapter-tools">
-            <nav className="cp-panel-nav" aria-label="Painéis com dados">
-              {PAINEIS_NAVEGACAO.map(([href, nome]) => (
-                <Link key={href} href={href} aria-current={href === ROTA_PREVIDENCIA ? "page" : undefined}>
-                  {nome}
-                </Link>
-              ))}
-            </nav>
             <RecorteCompartilhavel />
           </div>
         }

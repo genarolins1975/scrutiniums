@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- varredura genérica da gold publicada */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
@@ -86,6 +86,11 @@ import type { InclusaoGold, SerieCdeUf, SerieCoberturaMensal } from "@/lib/energ
 import type { GoldRegulacao } from "@/lib/energia/tipos-regulacao";
 import { InclusaoPorBasePof } from "@/components/energia/InclusaoPorEstado";
 import { AcessoCartaoIndicador, AcessoResposta, InclusaoBaseLegal, OrcamentoFaixa, OrcamentoResposta, TarifaSocialResposta } from "@/components/energia/InclusaoTextos";
+// Iniciativa 2: a navegação da coleção (NavegacaoColecao) marca a página atual pelo endereço; as páginas daqui são do módulo /setor-eletrico/inclusao-energetica
+vi.mock("next/navigation", async () => ({
+  ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
+  usePathname: () => "/setor-eletrico/inclusao-energetica",
+}));
 
 /**
  * Página Inclusão energética (P059 a P062): contrato da gold, equivalência entre

@@ -1,7 +1,7 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/i18n/LinkIdioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { AprendaNavegacao, ROTA_TRILHAS } from "@/components/energia/AprendaPagina";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -31,7 +31,7 @@ export default function TrilhasPage() {
   const passos = TRILHAS_APRENDA.reduce((n, t) => n + t.passos.length, 0);
   return (
     <>
-      <CabecalhoEnergia atual="aprenda" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:aprenda:trilhas" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16" data-tipo-pagina="trilhas">
         <AprendaNavegacao atual="trilhas" />

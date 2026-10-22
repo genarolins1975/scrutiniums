@@ -85,33 +85,31 @@ describe("onde a marca aparece", () => {
     expect(ler("src/components/home/HeroPerguntas.tsx")).toContain("{rodape}");
   });
 
-  it("no cabeçalho dos quatro módulos de infraestrutura, que servem painel e aperitivo", () => {
-    for (const f of [
-      "src/components/energia/CabecalhoEnergia.tsx",
-      "src/components/gas/CabecalhoGas.tsx",
-      "src/components/saneamento/Cabecalho.tsx",
-      "src/components/combustiveis/CabecalhoCombustiveis.tsx",
-    ]) expect(ler(f), f).toContain('<ParceriaTecnica variante="faixa" />');
+  // Iniciativa 2 do parecer de UX de 21/10/2026 (recomendação seguida, decisão pendente do dono): a marca sai das linhas de
+  // navegação e vai para o rodapé da coleção, sem deixar de aparecer em todos os painéis de infraestrutura, com e sem sessão.
+  // As quatro coleções de infraestrutura já levam a marca no rodapé da coleção; nenhum cabeçalho a leva.
+  it("a marca aparece em todos os painéis de infraestrutura, com e sem sessão", () => {
+    // o rodapé do Setor Elétrico monta-se sobre o rodapé da coleção, que traz a marca
+    expect(ler("src/components/energia/RodapeEnergia.tsx")).toContain('<RodapeColecao\n      colecao="setor-eletrico"');
+    for (const f of ["src/app/setor-eletrico/layout.tsx", "src/app/en/setor-eletrico/layout.tsx"]) expect(ler(f), f).toContain("<RodapeEnergia />");
+    expect(ler("src/app/aperitivo/conta-de-luz/page.tsx")).toContain('<RodapeColecao colecao="setor-eletrico" />');
+    expect(ler("src/app/saneamento/layout.tsx")).toContain('<RodapeColecao colecao="saneamento"');
+    expect(ler("src/app/aperitivo/saneamento/page.tsx")).toContain('<RodapeColecao colecao="saneamento" />');
+    // rodapé da coleção: no painel do Gás (RodapeGas, no layout), no aperitivo do gás de cozinha e na casca dos Combustíveis
+    expect(ler("src/components/gas/RodapeGas.tsx")).toContain('<RodapeColecao colecao="gas"');
+    expect(ler("src/app/gas-natural/layout.tsx")).toContain("<RodapeGas />");
+    expect(ler("src/app/aperitivo/gas-de-cozinha/layout.tsx")).toContain('<RodapeColecao colecao="gas" />');
+    expect(ler("src/app/combustiveis/layout.tsx")).toContain('<RodapeColecao colecao="combustiveis" />');
   });
 
-  it("no Setor Elétrico, em tela larga, a marca entra na faixa das páginas do grupo e a faixa própria só existe abaixo de 1280 px", () => {
-    const c = ler("src/components/energia/CabecalhoEnergia.tsx");
-    expect(c).toMatch(/<div className="hidden [^"]*xl:block">\s*<ParceriaTecnica variante="linha" \/>/);
-    expect(c).toMatch(/<div className="xl:hidden">\s*<ParceriaTecnica variante="faixa" \/>/);
-    // a variante em linha fica antes dos atalhos de dados e método, na mesma faixa
-    expect(c.indexOf('variante="linha"')).toBeLessThan(c.indexOf("<Atalhos atual="));
-  });
-
-  it("no Saneamento e em Combustíveis a marca entra numa linha que o cabeçalho já tem; a faixa própria só existe abaixo dela", () => {
-    const san = ler("src/components/saneamento/Cabecalho.tsx");
-    // a linha dos atalhos só existe de 1024 px em diante (lista hidden lg:flex): a faixa própria some no mesmo ponto
-    expect(san.indexOf('variante="linha"')).toBeLessThan(san.indexOf("<Atalhos atual={atual} />"));
-    expect(san).toMatch(/<div className="lg:hidden">\s*<ParceriaTecnica variante="faixa" \/>/);
-    const comb = ler("src/components/combustiveis/CabecalhoCombustiveis.tsx");
-    expect(comb).toMatch(/<div className="hidden shrink-0 md:block">\s*<ParceriaTecnica variante="linha" \/>/);
-    expect(comb).toMatch(/<div className="md:hidden">\s*<ParceriaTecnica variante="faixa" \/>/);
-    // no Gás a navegação ocupa duas linhas cheias: a marca ali pareceria mais um grupo do menu, e a faixa própria fica
-    expect(ler("src/components/gas/CabecalhoGas.tsx")).not.toContain('variante="linha"');
+  it("o rodapé da coleção leva a marca nas quatro coleções de infraestrutura e em nenhuma outra", async () => {
+    const { RodapeColecao, COLECOES_COM_PARCERIA } = await import("@/components/layout/RodapeColecao");
+    const { idsDasColecoes } = await import("@/lib/observatorios/navegacaoColecao");
+    expect([...COLECOES_COM_PARCERIA]).toEqual(["setor-eletrico", "gas", "saneamento", "combustiveis"]);
+    for (const id of idsDasColecoes()) {
+      const h = renderToStaticMarkup(createElement(RodapeColecao, { colecao: id }));
+      expect(h.includes(`data-parceria="${CERI.id}"`), id).toBe((COLECOES_COM_PARCERIA as readonly string[]).includes(id));
+    }
   });
 
   it("na entrada e no mapa do Observatório de Energia e Infraestrutura, e só nele", () => {
@@ -124,10 +122,9 @@ describe("onde a marca aparece", () => {
 
   it("nenhum outro cabeçalho de observatório leva a marca", () => {
     for (const f of [
-      "src/components/credito/CabecalhoCredito.tsx",
-      "src/components/agro/Cabecalho.tsx",
-      "src/components/eficiencia/CabecalhoEntrada.tsx",
-      "src/components/inflacao/CabecalhoCustoDeVida.tsx",
+      "src/app/agronegocio/layout.tsx",
+      "src/components/layout/NavegacaoColecao.tsx",
+      "src/components/layout/NavegacaoColecaoCliente.tsx",
       "src/components/layout/CabecalhoPlataforma.tsx",
       "src/components/layout/PublicHeader.tsx",
       "src/components/layout/Footer.tsx",

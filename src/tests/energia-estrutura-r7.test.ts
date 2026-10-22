@@ -37,7 +37,7 @@ describe("abas de seção: marcação comum às duas versões", () => {
   });
 
   it("a aba atual é trazida à vista só quando está cortada, pelo mesmo componente que cuida da faixa de módulos", () => {
-    const av = ler("src/components/energia/AtivoVisivel.tsx");
+    const av = ler("src/components/layout/AtivoVisivel.tsx");
     expect(av).toContain("export function FaixasDeSecao()");
     expect(av).toContain('document.querySelectorAll<HTMLElement>(".nav-faixa")');
     expect(av).toContain("if (a.left >= l.left && a.right <= l.right - 8) return;");

@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { CabecalhoCredito } from "@/components/credito/CabecalhoCredito";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { paginaCredito, type PaginaCredito } from "@/lib/credito/navegacao";
 
@@ -21,7 +22,10 @@ export function CascaCredito({ atual, children }: { atual: PaginaCredito["slug"]
         Pular para o conteúdo
       </a>
       <MarcaVisita secao={pagina.secao} />
-      <CabecalhoCredito atual={atual} />
+      <header>
+        <CabecalhoPlataforma colecao="credito" destinoConta={pagina.href} />
+        <NavegacaoColecao colecao="credito" />
+      </header>
       <main id="conteudo" className="ed-pagina flex-1 pb-16">
         {children}
       </main>

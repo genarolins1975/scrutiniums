@@ -56,7 +56,8 @@ describe("aperitivo da Eficiência Estatal: Como está a minha capital?", () => 
     expect(fonte).toContain("canonical: '/eficiencia-estatal'");
     expect(componente).toMatch(/<ConviteAperitivo rota="\/eficiencia-estatal" comConta=\{comConta\}/);
     expect(fonte).toContain("comConta={COM_CONTA}");
-    expect(fonte).toContain("<CabecalhoEntrada/>");
+    // barra comum sem a navegação da coleção, como antes: a página aperitivo não leva às páginas do painel
+    expect(fonte).toContain('<CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal" />');
     for (const proibido of ["AtlasCidadao", "MapaCobertura", "ParaVoce", "PerguntasCapital", "RetratoCapital", "indice-de-resultados", ".csv", "download"]) {
       expect(fonte + componente, proibido).not.toContain(proibido);
     }

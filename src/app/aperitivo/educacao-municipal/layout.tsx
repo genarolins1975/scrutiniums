@@ -1,6 +1,6 @@
 import "@/components/educacao/educacao.css";
 import type { ReactNode } from "react";
-import { CabecalhoEducacao } from "@/components/educacao/CabecalhoEducacao";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Footer } from "@/components/layout/Footer";
 
 /**
@@ -13,7 +13,9 @@ export default function LayoutAperitivoEducacao({ children }: { children: ReactN
   return (
     <div className="dominio-obee edm-raiz flex min-h-screen flex-col">
       <a className="edm-pular" href="#conteudo-educacao">Ir para o conteúdo</a>
-      <CabecalhoEducacao navegacao={false} />
+      <header>
+        <CabecalhoPlataforma observatorio="servicos-publicos" destinoConta="/educacao-municipal" fontes={["educacao"]} />
+      </header>
       <div className="flex-1">{children}</div>
       <Footer />
     </div>

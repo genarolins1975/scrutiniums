@@ -53,6 +53,8 @@ const TEXTOS = {
     entre: (a: string, b: string) => (a === b ? `Atualizadas em ${a}` : `Atualizadas entre ${a} e ${b}`),
     todas: "Todas em dia",
     porFonte: "Por fonte",
+    fontesReferencia: "Fontes e referência",
+    atrasadasDe: (k: number, n: number) => (k === 1 ? `Atualização atrasada em 1 de ${n} fontes` : `Atualização atrasada em ${k} de ${n} fontes`),
     fechar: "Fechar",
   },
   en: {
@@ -66,6 +68,8 @@ const TEXTOS = {
     entre: (a: string, b: string) => (a === b ? `Updated on ${a}` : `Updated between ${a} and ${b}`),
     todas: "All up to date",
     porFonte: "By source",
+    fontesReferencia: "Sources and reference",
+    atrasadasDe: (k: number, n: number) => `Update late in ${k} of ${n} sources`,
     fechar: "Close",
   },
 };
@@ -165,17 +169,54 @@ export function ConteudoFaixaFrescor({ dados, variante, idioma = "pt", conteiner
     );
   }
 
-  const linhaBase = "flex flex-wrap items-baseline gap-x-4 gap-y-1 py-2.5 text-[0.8125rem] leading-snug text-carvao-muted";
+  // uma linha só, logo abaixo da navegação: entra no orçamento de cromo (Iniciativa 2 do parecer de UX de 21/10/2026)
+  const linhaBase = "flex flex-wrap items-baseline gap-x-4 gap-y-1 py-2 text-[0.8125rem] leading-snug text-carvao-muted";
+  const alternar = (rotulo: string) => (
+    // a linha inteira é o alvo de toque do <summary>; o rótulo não aumenta a altura da linha
+    <span className="inline-flex items-center text-carvao underline decoration-linha underline-offset-4">
+      <span className="group-open/frescor:hidden">{rotulo} +</span>
+      <span className="hidden group-open/frescor:inline">{t.fechar} −</span>
+    </span>
+  );
 
   if (dados.length === 1) {
     const d = dados[0];
+    const ref = rotuloReferencia(d.referencia, idioma);
+    const x = textosDominio(d.id, idioma);
     return (
       <div className={`${conteiner} ${className}`} data-frescor-faixa="linha" data-frescor-geral={estadoGeral}>
-        <p className={`border-b border-linha ${linhaBase}`}>
+        {/* de 640 px em diante: os quatro campos numa linha */}
+        <p className={`hidden border-b border-linha sm:flex ${linhaBase}`}>
           <span className="rotulo text-mineral">{t.rotulo}</span>
-          <span className="text-carvao">{textosDominio(d.id, idioma).rotulo}</span>
+          <span className="text-carvao">{x.rotulo}</span>
           <Campos d={d} s={situacoes[0]} idioma={idioma} />
         </p>
+        {/* no celular: a data e a situação; a fonte, a referência e a cadência ficam em "Fontes e referência" */}
+        <details className="group/frescor border-b border-linha sm:hidden">
+          <summary className={`${linhaBase} cursor-pointer list-none [&::-webkit-details-marker]:hidden`}>
+            {/* com atraso, só a frase do atraso; a data fica em "Fontes e referência" */}
+            <span className={situacoes[0] && situacoes[0].estado !== "em-dia" ? "hidden" : undefined}>
+              <span className="text-mineral">{t.atualizadoEm}</span> <span className="tabular-nums text-carvao">{dataPublicacao(d.publicadoEm, idioma) ?? t.naoInformada}</span>
+            </span>
+            {situacoes[0] && <Situacao s={situacoes[0]} idioma={idioma} />}
+            {alternar(t.fontesReferencia)}
+          </summary>
+          <p className={`${linhaBase} pt-0`}>
+            <span className="text-carvao">{x.rotulo}</span>
+            {situacoes[0] && situacoes[0].estado !== "em-dia" && (
+              <span>
+                <span className="text-mineral">{t.atualizadoEm}</span> <span className="tabular-nums text-carvao">{dataPublicacao(d.publicadoEm, idioma) ?? t.naoInformada}</span>
+              </span>
+            )}
+            <span>
+              <span className="text-mineral">{t.referencia}</span> <span className="tabular-nums text-carvao">{ref ?? t.refNaoInformada}</span>
+              {ref && <span className="text-carvao-muted"> ({x.referencia})</span>}
+            </span>
+            <span>
+              <span className="text-mineral">{t.cadencia}</span> <span className="text-carvao">{x.cadencia}</span>
+            </span>
+          </p>
+        </details>
       </div>
     );
   }
@@ -194,17 +235,26 @@ export function ConteudoFaixaFrescor({ dados, variante, idioma = "pt", conteiner
     <div className={`${conteiner} ${className}`} data-frescor-faixa="linha" data-frescor-geral={estadoGeral}>
       <details className="group/frescor border-b border-linha">
         <summary className={`${linhaBase} cursor-pointer list-none [&::-webkit-details-marker]:hidden`}>
-          <span className="rotulo text-mineral">{t.rotulo}</span>
-          <span className="text-carvao">{t.fontes(dados.length)}</span>
-          {maisAntiga && maisRecente ? <span className="tabular-nums">{t.entre(maisAntiga, maisRecente)}</span> : <span>{t.naoInformada}</span>}
+          {/* no celular ficam só as datas e a situação; o rótulo e a contagem de fontes voltam de 640 px em diante */}
+          <span className="rotulo hidden text-mineral sm:inline">{t.rotulo}</span>
+          <span className="hidden text-carvao sm:inline">{t.fontes(dados.length)}</span>
+          {/* com atraso, o celular mostra só a frase do atraso (as datas de cada fonte estão na lista); sem atraso, as datas e "Todas em dia" */}
+          <span className={fora.length > 0 ? "hidden tabular-nums sm:inline" : "tabular-nums"}>{maisAntiga && maisRecente ? t.entre(maisAntiga, maisRecente) : t.naoInformada}</span>
           {agora && fora.length === 0 && <span data-frescor-estado="em-dia">{t.todas}</span>}
           {fora.map(({ d, s }) => (
-            <Situacao key={d.id} s={s} idioma={idioma} prefixo={textosDominio(d.id, idioma).nome} />
+            <span key={d.id} className="hidden sm:contents">
+              <Situacao s={s} idioma={idioma} prefixo={textosDominio(d.id, idioma).nome} />
+            </span>
           ))}
-          <span className="inline-flex min-h-[24px] items-center text-carvao underline decoration-linha underline-offset-4">
-            <span className="group-open/frescor:hidden">{t.porFonte} +</span>
-            <span className="hidden group-open/frescor:inline">{t.fechar} −</span>
-          </span>
+          {/* no celular, uma frase só para os atrasos; quais e há quanto tempo ficam na lista por fonte */}
+          {fora.length > 0 && (
+            <span data-frescor-estado="resumo" className="inline-flex items-baseline gap-1.5 font-medium text-carvao sm:hidden">
+              <Marcador />
+              <span>{t.atrasadasDe(fora.length, dados.length)}</span>
+            </span>
+          )}
+          <span className="hidden sm:contents">{alternar(t.porFonte)}</span>
+          <span className="contents sm:hidden">{alternar(t.fontesReferencia)}</span>
         </summary>
         <div className="pb-4 pt-1">
           <ListaPorFonte dados={dados} situacoes={situacoes} idioma={idioma} />

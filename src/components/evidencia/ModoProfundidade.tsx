@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { AbreDetalhesAoImprimir } from "@/components/energia/AbreDetalhesAoImprimir";
-import { FaixasDeSecao } from "@/components/energia/AtivoVisivel";
+import { FaixasDeSecao } from "@/components/layout/AtivoVisivel";
 import { useTx } from "@/lib/energia/useIdioma";
 
 /**

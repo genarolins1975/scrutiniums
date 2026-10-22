@@ -3,7 +3,6 @@ import Link from 'next/link';
 import {PainelAreas} from '@/components/contas-publicas/areas/PainelAreas';
 import {RecorteCompartilhavel} from '@/components/contas-publicas/RecorteCompartilhavel';
 import {MarcaVisita} from '@/components/telemetria/MarcaVisita';
-import {PAINEIS_NAVEGACAO} from '@/lib/contas-publicas/catalogo';
 import {ROTA_AREAS,lerRecorte} from '@/lib/contas-publicas/areas';
 
 /**
@@ -20,7 +19,7 @@ export default function Page({searchParams}:{searchParams:Record<string,string|s
   <MarcaVisita secao="contas:por-area"/>
   <div className="cp-breadcrumb"><span>Complemento do capítulo&nbsp;<Link href="/contas-publicas/panorama">Panorama das contas</Link></span></div>
   <header className="cp-chapter-header"><p className="cp-eyebrow">Planejar · Dados disponíveis · SIOP, {r.ano}</p><h1>Para onde vai o dinheiro federal, por área?</h1><p className="cp-lead">Cada R$ 100 que o orçamento da União pagou, repartidos pelas áreas de governo: previdência, assistência social, saúde, educação e as demais. A dívida pública aparece à parte, porque não é uma área.</p><p className="cp-note cp-chapter-limit">A área é a função orçamentária, definida pela competência do órgão que gasta. O valor mostra para onde o dinheiro foi, não o que ele entregou.</p></header>
-  <div className="cp-chapter-tools"><nav className="cp-panel-nav" aria-label="Painéis com dados">{PAINEIS_NAVEGACAO.map(([href,nome])=><Link key={href} href={href} aria-current={href===ROTA_AREAS?'page':undefined}>{nome}</Link>)}</nav><RecorteCompartilhavel/></div>
+  {/* os outros painéis estão na navegação da coleção (NavegacaoColecao), acima do título */}<div className="cp-chapter-tools"><RecorteCompartilhavel/></div>
   <PainelAreas r={r}/>
  </main>;
 }

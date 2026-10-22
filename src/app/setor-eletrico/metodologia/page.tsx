@@ -4,7 +4,7 @@ import Link from "@/components/i18n/LinkIdioma";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import type { ReactNode } from "react";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { DadosAviso, DadosCapitulos, DadosLimitacoes, DadosResposta, DadosSeguir, ReferenciaDados } from "@/components/energia/DadosPainel";
 import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
@@ -227,7 +227,7 @@ export default function MetodologiaEnergia() {
 
   return (
     <>
-      <CabecalhoEnergia atual="metodologia" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:metodologia" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16">
         <CabecalhoModulo
