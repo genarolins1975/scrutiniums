@@ -49,14 +49,11 @@ const NOMES_OBSERVATORIO = OBSERVATORIOS.map((o) => o.nome);
 // ------------------------------------------------------------------------------------------------- 1. nomes antigos
 
 const LEGADO = /Observatório Brasileiro d|Observatório do Agronegócio Brasileiro/g;
-/** Exceções com motivo: cada uma é um trecho exato, num arquivo exato, e conta uma vez só. */
-const EXCECOES = [
-  {
-    arquivo: "src/app/observatorio-do-credito/page.tsx",
-    trecho: 'Observatório Brasileiro de <span className="text-bronze">Crédito</span>',
-    motivo: "H1 da apresentação do Crédito: muda na Iniciativa 4 do parecer, com o molde de entrada (decisão do pedido de 21/10/2026)",
-  },
-];
+/**
+ * Exceções com motivo: cada uma é um trecho exato, num arquivo exato, e conta uma vez só. Vazia desde o Grupo C da Iniciativa 4
+ * (22/10/2026): o H1 da apresentação do Crédito, a única exceção, passou à pergunta aprovada pelo dono.
+ */
+const EXCECOES: { arquivo: string; trecho: string; motivo: string }[] = [];
 const fora = (f: string) => f.startsWith("src/app/sobre/") || /src\/components\/institucional\/Sobre/.test(f);
 
 describe("1. o nome antigo dos domínios não volta à interface", () => {

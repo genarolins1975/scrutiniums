@@ -112,6 +112,8 @@ export const PARA_VOCE = {
   "/contas-publicas/previdencia": ["estado-contas", "custo-de-vida"],
   // Contas Estaduais (Iniciativa 4): as bandeiras do estado vêm embutidas no bloco; os cartões levam ao gasto federal por área e à capital
   "/contas-publicas-estaduais": ["previdencia", "capital"],
+  // Crédito (Iniciativa 4): a taxa do seu banco e os atrasos das famílias; o simulador da parcela vem embutido no bloco
+  "/observatorio-do-credito": ["banco-cobra", "credito-atraso"],
   // o custo de vida (painel novo das Famílias, 20/10/2026) abre o bloco; a água saiu para manter três perguntas e continua a
   // um clique em "Para o seu caso" da camada aberta das Famílias e no elo "Gás, luz e água" do orçamento da família
   "/observatorios/familias": ["custo-de-vida", "luz", "botijao"],

@@ -126,10 +126,10 @@ describe("posição em cada entrada: logo depois dos números de abertura", () =
   /** [arquivo, marca dos números de abertura, marca do que vem depois do bloco] */
   const PAGINAS: Record<string, [string, string, string]> = {
     // nas entradas no molde único (Iniciativa 4, 22/10/2026), o EntradaColecao põe o bloco entre a escala e os destinos
-    "/setor-eletrico": ["src/app/setor-eletrico/page.tsx", "energia-abertura-medidas", "<PercursoVisualEnergia"],
+    "/setor-eletrico": ["src/app/setor-eletrico/page.tsx", "escala={", "destinos={"],
     "/gas-natural": ["src/app/gas-natural/page.tsx", "escala={", "destinos={"],
     "/saneamento": ["src/app/saneamento/page.tsx", "escala={", "destinos={"],
-    "/eficiencia-estatal": ["src/app/eficiencia-estatal/page.tsx", "<AtlasCidadao", "<FaixaFrescor dominios={FRESCOR_DAS_COLECOES['/eficiencia-estatal']} variante"],
+    "/eficiencia-estatal": ["src/app/eficiencia-estatal/page.tsx", "escala={", "destinos={"],
     "/contas-publicas": ["src/app/contas-publicas/page.tsx", "escala={", "destinos={"],
     "/agronegocio": ["src/app/agronegocio/page.tsx", "escala={", "destinos={"],
     "/territorio": ["src/app/territorio/page.tsx", "escala={", "destinos={"],
@@ -145,10 +145,12 @@ describe("posição em cada entrada: logo depois dos números de abertura", () =
     expect(uso).toBeLessThan(s.indexOf(depois));
   });
 
-  it("na Eficiência Estatal, o bloco vem logo depois do retrato da capital", () => {
-    const a = ler("src/components/eficiencia/AtlasCidadao.tsx");
-    expect(a.indexOf("{paraVoce}")).toBeGreaterThan(a.indexOf("<RetratoCapital"));
-    expect(a.indexOf("{paraVoce}")).toBeLessThan(a.indexOf("<PerguntasCapital"));
+  it("na Eficiência Estatal, o bloco traz a escolha da capital, e a régua do retrato é a seção própria logo depois", () => {
+    // molde único (Iniciativa 4, 22/10/2026): os seletores da capital vão para o "Para você"; a régua das sete posições é a seção própria
+    const p = ler("src/app/eficiencia-estatal/page.tsx");
+    expect(p).toContain('paraVoce={<ParaVoce entrada="/eficiencia-estatal"><SeletorCapital/></ParaVoce>}');
+    expect(p).toContain("secaoPropria={<ReguaCapital/>}");
+    expect(p.indexOf("<PerguntasDaCapital/>")).toBeGreaterThan(p.indexOf("recolhidos={"));
   });
 
   it("as entradas que reúnem coleções recebem o bloco pela entrada do registro, entre os números e as coleções", () => {
@@ -197,7 +199,8 @@ describe("componente", () => {
     // tem conta; a página aberta é a versão aperitivo, que se declara aberta pelo layout de src/app/aperitivo
     // desde a Iniciativa 4 (22/10/2026), as entradas de Conectividade, Educação nos municípios e Previdência (painéis de uma coleção
     // só, com versão aperitivo no mesmo endereço) também têm o bloco, e seguem a mesma regra
-    expect(ENTRADAS.filter((e) => ehRotaPublica(e)).sort()).toEqual(["/conectividade", "/contas-publicas/previdencia", "/educacao-municipal", "/eficiencia-estatal"]);
+    // e a apresentação do Crédito, aberta, que ganhou o bloco no Grupo C
+    expect(ENTRADAS.filter((e) => ehRotaPublica(e)).sort()).toEqual(["/conectividade", "/contas-publicas/previdencia", "/educacao-municipal", "/eficiencia-estatal", "/observatorio-do-credito"]);
     caminho.atual = "/eficiencia-estatal";
     expect(html("/eficiencia-estatal" as EntradaParaVoce)).not.toContain("data-selo-conta");
     for (const e of ENTRADAS) {
@@ -224,7 +227,8 @@ describe("componente", () => {
   it("destino fechado não é pré-carregado", () => {
     const c = ler("src/components/observatorios/ParaVoce.tsx");
     expect(c).toContain("prefetch={prefetchDoLink(p.href)}");
-    expect(c).toContain("<SeloComConta href={p.href} />");
+    // o selo segue o idioma do bloco (a irmã inglesa do Crédito é conteúdo português marcado: o selo não pode sair em inglês)
+    expect(c).toContain("<SeloComConta href={p.href} idioma={idioma} />");
   });
 });
 

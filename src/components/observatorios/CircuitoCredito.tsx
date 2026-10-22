@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
 import { NumeroEscala } from "@/components/observatorios/NumeroEscala";
 import type { CircuitoCredito as Circuito } from "@/lib/observatorios/entradas/economia";
@@ -37,6 +38,7 @@ export function CircuitoCredito({ circuito }: Readonly<{ circuito: Circuito }>) 
               </div>
               <Link href={p.href} prefetch={false} className="mt-3 inline-flex min-h-[44px] items-center text-sm text-carvao underline decoration-linha underline-offset-4">
                 Ver no painel
+                <SeloComConta href={p.href} idioma="pt" />
               </Link>
             </li>
           ))}
