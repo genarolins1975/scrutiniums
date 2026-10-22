@@ -58,7 +58,16 @@ export function NavegacaoColecaoCliente({
   const atalho = (k: keyof AtalhosNav, extra = "") => {
     const href = nav.atalhos[k] as string;
     return (
-      <Destino key={k} p={{ rotulo: tx(ROTULO_ATALHO[k][0], ROTULO_ATALHO[k][1], idioma), href, publicado: true }} href={h(href)} ativo={atual.atalho === k} filete={filete} className={extra} />
+      <Destino
+        key={k}
+        p={{ rotulo: tx(ROTULO_ATALHO[k][0], ROTULO_ATALHO[k][1], idioma), href, publicado: true }}
+        href={h(href)}
+        ativo={atual.atalho === k && !atual.abaixoDoAtalho}
+        grupoAtivo={atual.atalho === k && !!atual.abaixoDoAtalho}
+        filete={filete}
+        idioma={idioma}
+        className={extra}
+      />
     );
   };
 

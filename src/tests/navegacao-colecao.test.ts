@@ -197,6 +197,19 @@ describe("componente NavegacaoColecao", () => {
     expect(marcado(h, "/contas-publicas/glossario")).toBe(true);
   });
 
+  it("nas páginas abaixo de um atalho, o atalho fica destacado e Início não é anunciado como atual", () => {
+    const nav = navegacaoDaColecao("setor-eletrico");
+    for (const r of ["/setor-eletrico/dados/reproducao", "/setor-eletrico/dados/saude", "/en/setor-eletrico/dados/reproducao"])
+      expect(destinoAtual(nav, r), r).toEqual({ item: -1, sub: null, atalho: "dados", abaixoDoAtalho: true });
+    expect(destinoAtual(nav, "/setor-eletrico/metodologia/avaliacao")).toMatchObject({ item: -1, atalho: "metodo" });
+    // o próprio atalho continua sendo a página atual; um destino mais próximo do endereço ganha do atalho acima dele
+    expect(destinoAtual(nav, "/setor-eletrico/dados")).toEqual({ item: -1, sub: null, atalho: "dados" });
+    expect(destinoAtual(nav, "/setor-eletrico/conta-de-luz")).toMatchObject({ item: 1, atalho: null });
+    const h = render(nav, "/setor-eletrico/dados/reproducao");
+    expect(h).not.toContain('aria-current="page"');
+    expect((h.match(/<a [^>]*>/g) ?? []).some((a) => a.includes('href="/setor-eletrico/dados"') && a.includes("data-atual"))).toBe(true);
+  });
+
   it("'Mais' é um details fechável no desktop; no celular os mesmos itens entram no fim da faixa", () => {
     const nav = navegacaoDaColecao("saneamento");
     expect(nav.itens.length).toBeGreaterThan(MAX_A_VISTA);
