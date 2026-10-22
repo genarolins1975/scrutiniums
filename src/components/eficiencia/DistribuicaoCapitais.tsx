@@ -54,7 +54,7 @@ export function DistribuicaoCapitais({
   const [ref, w, medido] = useLargura<HTMLDivElement>(640);
   const [ativo, setAtivo] = useState<number | null>(null);
   const estreito = w < 520;
-  const fonte = estreito ? 11.5 : 12.5;
+  const fonte = estreito ? 12 : 12.5;
   const larg = (t: string, f: number) => t.length * f * 0.56;
   const maiorValor = Math.max(...linhas.map((l) => formata(l.valor).length), 1);
   const margemDireita = Math.max(w < 360 ? 50 : estreito ? 58 : 84, Math.ceil(maiorValor * fonte * 0.6) + 16);
@@ -136,7 +136,7 @@ export function DistribuicaoCapitais({
           {ticks.map(({ t, ancora }) => (
             <g key={t}>
               <line x1={x(t)} x2={x(t)} y1={m.t - 2} y2={base} stroke={COR.grade} strokeWidth={1} />
-              <text x={x(t)} y={base + 16} textAnchor={ancora} fontSize={11.5} fill={COR.eixo}>
+              <text x={x(t)} y={base + 16} textAnchor={ancora} fontSize={12} fill={COR.eixo}>
                 {formataEixo(t)}
               </text>
             </g>
@@ -160,7 +160,7 @@ export function DistribuicaoCapitais({
           {externa && (
             <g>
               <line x1={x(externa.valor)} x2={x(externa.valor)} y1={m.t - 2} y2={base + 22} stroke={COR.referencia} strokeWidth={1.5} strokeDasharray="2 3" strokeLinecap="round" />
-              <text x={x(externa.valor)} y={base + 38} textAnchor={x(externa.valor) > w - m.r - 90 ? "end" : "middle"} fontSize={11.5} fill={COR.referencia}>
+              <text x={x(externa.valor)} y={base + 38} textAnchor={x(externa.valor) > w - m.r - 90 ? "end" : "middle"} fontSize={12} fill={COR.referencia}>
                 {externa.rotulo} {formata(externa.valor)}
               </text>
             </g>

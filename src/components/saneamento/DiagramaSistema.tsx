@@ -124,7 +124,7 @@ function CicloLargo() {
       ))}
       <line x1={55} y1={140} x2={55} y2={186} stroke={AZ} strokeWidth={1.5} />
       <Seta x={55} y={188} dir="baixo" cor={AZ} />
-      <text x={64} y={168} fontSize={11} fill={SUAVE}>
+      <text x={64} y={168} fontSize={12} fill={SUAVE}>
         rio abaixo
       </text>
 

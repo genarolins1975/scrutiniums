@@ -156,7 +156,7 @@ export function GraficoEpae({ dados }: { dados: DadosEpae }) {
         {marcas.map((v) => (
           <g key={v}>
             <line x1={M.l} x2={W - M.r} y1={y(v)} y2={y(v)} stroke={LINHA} strokeWidth="0.8" />
-            <text x={M.l - 7} y={y(v) + 3.5} fontSize="11" fill={MINERAL} textAnchor="end">
+            <text x={M.l - 7} y={y(v) + 3.5} fontSize="12" fill={MINERAL} textAnchor="end">
               {n1(v)}
             </text>
           </g>
@@ -165,7 +165,7 @@ export function GraficoEpae({ dados }: { dados: DadosEpae }) {
           <line x1={M.l} x2={W - M.r} y1={y(0)} y2={y(0)} stroke={MINERAL} strokeWidth="0.9" />
         )}
         {anos.map(({ o, i }) => (
-          <text key={o.ref} x={x(i)} y={H - 9} fontSize="11" fill={MINERAL} textAnchor="middle">
+          <text key={o.ref} x={x(i)} y={H - 9} fontSize="12" fill={MINERAL} textAnchor="middle">
             {o.ref.slice(0, 4)}
           </text>
         ))}
@@ -180,7 +180,7 @@ export function GraficoEpae({ dados }: { dados: DadosEpae }) {
           />
         ))}
         {fins.map((l) => (
-          <text key={l.chave} x={W - M.r + 8} y={l.py + 3.5} fontSize="11.5" fill={l.cor}>
+          <text key={l.chave} x={W - M.r + 8} y={l.py + 3.5} fontSize="12" fill={l.cor}>
             {l.rotulo}
           </text>
         ))}
