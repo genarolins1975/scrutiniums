@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
 import { useState } from "react";
-import { Numero } from "@/components/observatorios/EntradaObservatorio";
+import { NumeroEscala } from "@/components/observatorios/NumeroEscala";
 import type { EtapaImposto, FluxoImposto } from "@/lib/observatorios/entradas/contas";
 
 const TONS_PARTES = ["bg-carvao-soft", "bg-carvao-muted", "bg-mineral", "bg-mineral-soft"];
@@ -35,30 +36,16 @@ export function ImpostoResultado({ fluxo }: Readonly<{ fluxo: FluxoImposto | nul
   const [modo, setModo] = useState<"cem" | "bi">("cem");
   if (!fluxo) {
     return (
-      <section aria-labelledby="imposto-titulo" className="border-y border-linha bg-marfim">
-        <div className="mx-auto max-w-page px-6 py-14">
-          <p className="rotulo text-mineral">Modelo didático</p>
-          <h2 id="imposto-titulo" className="mt-3 font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao">Do imposto ao resultado</h2>
-          <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-            Indisponível nesta publicação: as contas do demonstrativo não fecharam na leitura e o modelo não é exibido com números parciais.
-          </p>
-        </div>
-      </section>
+      <ModeloDidatico id="imposto" titulo={<>Do imposto ao resultado</>} deixaDeFora={["Os juros da dívida, que vêm de outra base", "Valores corrigidos pela inflação: os números são nominais, pelo regime de caixa", "Avaliação do gasto: o modelo mostra o desenho do demonstrativo, não se o gasto foi alto ou baixo"]}>
+        <p className="max-w-prose2 text-sm leading-relaxed text-carvao">
+          Indisponível nesta publicação: as contas do demonstrativo não fecharam na leitura e o modelo não é exibido com números parciais.
+        </p>
+      </ModeloDidatico>
     );
   }
   const despesa = fluxo.etapas.find((e) => e.id === "despesa");
   return (
-    <section aria-labelledby="imposto-titulo" className="border-y border-linha bg-marfim">
-      <div className="mx-auto max-w-page px-6 py-14 md:py-16">
-        <p className="rotulo text-mineral">Modelo didático</p>
-        <h2 id="imposto-titulo" className="mt-3 max-w-3xl font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao">
-          Do imposto ao resultado
-        </h2>
-        <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          O caminho do dinheiro arrecadado pelo governo central em {fluxo.ano}: parte vai para estados e municípios, o
-          restante paga a despesa primária, e a diferença é o resultado primário. Valores nominais, pelo regime de caixa
-          do demonstrativo. Os juros da dívida ficam fora dessa conta.
-        </p>
+    <ModeloDidatico id="imposto" titulo={<>Do imposto ao resultado</>} descricao={<>O caminho do dinheiro arrecadado pelo governo central em {fluxo.ano}: parte vai para estados e municípios, o restante paga a despesa primária, e a diferença é o resultado primário. Valores nominais, pelo regime de caixa do demonstrativo. Os juros da dívida ficam fora dessa conta.</>} deixaDeFora={["Os juros da dívida, que vêm de outra base", "Valores corrigidos pela inflação: os números são nominais, pelo regime de caixa", "Avaliação do gasto: o modelo mostra o desenho do demonstrativo, não se o gasto foi alto ou baixo"]}>
 
         <div role="group" aria-label="Unidade do modelo" className="mt-8 inline-flex border border-linha bg-superficie">
           {([["cem", "A cada R$ 100 arrecadados"], ["bi", "Em bilhões de reais"]] as const).map(([m, r]) => (
@@ -129,7 +116,7 @@ export function ImpostoResultado({ fluxo }: Readonly<{ fluxo: FluxoImposto | nul
             </p>
             <div className="mt-3">
               <span className="block text-xs leading-snug text-carvao-muted">{fluxo.juros.rotulo}</span>
-              <span className="mt-1 block"><Numero n={fluxo.juros} /></span>
+              <span className="mt-1 block"><NumeroEscala n={fluxo.juros} /></span>
             </div>
           </div>
           <div className="text-xs leading-relaxed text-mineral lg:col-span-5">
@@ -138,14 +125,13 @@ export function ImpostoResultado({ fluxo }: Readonly<{ fluxo: FluxoImposto | nul
               primária é o resultado primário, conferidos antes da publicação.
               {despesa && " Despesas sujeitas à programação financeira incluem as discricionárias, as que o governo pode adiar ou cortar no ano."}
             </p>
-            <p className="mt-2">Modelo didático: mostra o desenho do demonstrativo, não avalia se o gasto foi alto ou baixo.</p>
+            <p className="mt-2">Mostra o desenho do demonstrativo, não avalia se o gasto foi alto ou baixo.</p>
             <Link href="/contas-publicas/panorama" prefetch={false} className="mt-2 inline-flex min-h-[44px] items-center text-sm text-carvao underline decoration-linha underline-offset-4">
               Série completa no Panorama das Contas Federais
             </Link>
           </div>
         </div>
-      </div>
-    </section>
+      </ModeloDidatico>
   );
 }
 

@@ -11,6 +11,7 @@ import Link from "@/components/energia/LinkSemPrefetch";
 import type { ReactNode } from "react";
 import { BuscaObservatorio } from "@/components/energia/BuscaObservatorio";
 import { BuscaPlataforma } from "@/components/busca/BuscaPlataforma";
+import { SeloProntidao } from "@/components/observatorios/SeloProntidao";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
@@ -429,7 +430,7 @@ function DetalhesDoDestino({ d, c }: { d: DestinoNavegacao; c: CartaoDaPagina })
           </div>
         ) : (
           <p>
-            <span className="rotulo mr-1 text-mineral">{tx("Em integração", "Being integrated")}</span>{" "}
+            <SeloProntidao valor="parcial" idioma={idiomaEnergia()} className="mr-1" />{" "}
             {tx("A página mostra o escopo, as perguntas e as fontes catalogadas, ainda sem números publicados.", "The page shows the scope, the questions and the cataloged sources, with no published numbers yet.")}
           </p>
         )}
@@ -457,17 +458,13 @@ function ItemDoIndice({ d }: { d: DestinoNavegacao }) {
       <span className="flex flex-wrap items-baseline gap-x-2">
         <span className={estado === "preparacao" ? "text-base text-carvao" : "text-base text-energia-dark underline underline-offset-4 group-hover:text-carvao"}>{d.rotulo}</span>
         {estado === "integracao" && (
-          <span className="rotulo text-mineral">
-            {tx("Em integração", "Being integrated")}
-            <span className="sr-only">{tx(": a página mostra o escopo e as fontes catalogadas, sem números publicados", ": the page shows the scope and the cataloged sources, with no published numbers")}</span>
-          </span>
+          <SeloProntidao
+            valor="parcial"
+            idioma={idiomaEnergia()}
+            detalhe={tx("a página mostra o escopo e as fontes catalogadas, sem números publicados", "the page shows the scope and the cataloged sources, with no published numbers")}
+          />
         )}
-        {estado === "preparacao" && (
-          <span className="rotulo text-mineral">
-            {tx("Em preparação", "In preparation")}
-            <span className="sr-only">{tx(": ainda sem página", ": no page yet")}</span>
-          </span>
-        )}
+        {estado === "preparacao" && <SeloProntidao valor="preparacao" idioma={idiomaEnergia()} detalhe={tx("ainda sem página", "no page yet")} />}
       </span>
       <span className="mt-0.5 block text-sm leading-snug text-carvao-muted">{d.pergunta}</span>
       {c && d.integrado && <span className="mt-2 block text-xs leading-relaxed text-mineral">{c.recorte}</span>}

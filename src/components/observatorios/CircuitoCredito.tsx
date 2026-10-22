@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Numero } from "@/components/observatorios/EntradaObservatorio";
+import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
+import { NumeroEscala } from "@/components/observatorios/NumeroEscala";
 import type { CircuitoCredito as Circuito } from "@/lib/observatorios/entradas/economia";
 import type { NumeroPorta } from "@/lib/perguntas/tipos";
 
@@ -7,7 +8,7 @@ function Medida({ n }: Readonly<{ n: NumeroPorta }>) {
   return (
     <div className="border-t border-linha pt-3">
       <span className="block text-xs leading-snug text-carvao-muted">{n.rotulo}</span>
-      <span className="mt-1 block"><Numero n={n} /></span>
+      <span className="mt-1 block"><NumeroEscala n={n} /></span>
       {n.nota && <span className="mt-1 block text-xs leading-relaxed text-mineral">{n.nota}</span>}
     </div>
   );
@@ -21,18 +22,8 @@ function Medida({ n }: Readonly<{ n: NumeroPorta }>) {
  */
 export function CircuitoCredito({ circuito }: Readonly<{ circuito: Circuito }>) {
   return (
-    <section aria-labelledby="circuito-titulo" className="border-y border-linha bg-marfim">
-      <div className="mx-auto max-w-page px-6 py-14 md:py-16">
-        <p className="rotulo text-mineral">Modelo didático</p>
-        <h2 id="circuito-titulo" className="mt-3 max-w-3xl font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao">
-          Do juro básico ao atraso
-        </h2>
-        <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          O crédito liga a política do Banco Central ao bolso de famílias e empresas em quatro passos: o juro básico, o juro
-          cobrado, o volume emprestado e o atraso. A ordem segue as definições do Banco Central; o modelo não mede quanto
-          da Selic chega às taxas, nem em que prazo, e não explica por que alguém atrasa.
-        </p>
-        <ol className="mt-10 grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-4">
+    <ModeloDidatico id="circuito" titulo={<>Do juro básico ao atraso</>} descricao={<>O crédito liga a política do Banco Central ao bolso de famílias e empresas em quatro passos: o juro básico, o juro cobrado, o volume emprestado e o atraso. A ordem segue as definições do Banco Central; o modelo não mede quanto da Selic chega às taxas, nem em que prazo, e não explica por que alguém atrasa.</>} deixaDeFora={["Quanto da Selic chega às taxas, e em que prazo", "Por que alguém atrasa", "Causa entre os passos: a ordem segue as definições do Banco Central"]}>
+        <ol className="grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-4">
           {circuito.passos.map((p, i) => (
             <li key={p.id} className="flex flex-col bg-papel p-5">
               <p className="rotulo flex items-baseline gap-2 text-mineral">
@@ -67,11 +58,10 @@ export function CircuitoCredito({ circuito }: Readonly<{ circuito: Circuito }>) 
           </div>
         </div>
         <p className="mt-6 text-xs leading-relaxed text-mineral">
-          Modelo didático: os números têm fontes e períodos próprios e não se somam. Indústria e serviços ainda não têm painel
+          Os números têm fontes e períodos próprios e não se somam. Indústria e serviços ainda não têm painel
           na plataforma.
         </p>
-      </div>
-    </section>
+      </ModeloDidatico>
   );
 }
 

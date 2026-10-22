@@ -190,7 +190,8 @@ describe("página inicial: mapa didático (P001)", () => {
       if (!d.integrado) continue;
       for (const e of CARTOES[d.slug].encontra) confereDestino(e.href);
     }
-    expect(ler(HOME)).toContain("Em integração");
+    // desde a Iniciativa 4 (22/10/2026), o destino em integração leva o selo de prontidão "cobertura parcial", com o detalhe para leitor de tela
+    expect(ler(HOME)).toMatch(/estado === "integracao" && \(\s*<SeloProntidao\s+valor="parcial"/);
   });
 
   it("perguntas do dia a dia: as nove da especificação, cada uma com destino existente", () => {

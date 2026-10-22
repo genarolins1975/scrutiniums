@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { BotaoLink } from "@/components/home/BotaoLink";
-import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/home/Recolhido";
+import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/observatorios/Recolhido";
 import { ACENTO } from "@/components/home/acentos";
 import { pt } from "@/i18n/pt";
 import { en } from "@/i18n/en";

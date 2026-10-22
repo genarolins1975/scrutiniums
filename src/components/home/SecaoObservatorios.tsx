@@ -7,7 +7,7 @@ import type { Vitrine } from "@/lib/vitrine";
 import { observatoriosDaOrigem } from "@/lib/observatorios/registro";
 import { rotaPorta } from "@/lib/perguntas/rotas";
 import { AbrirDestinoDaAncora } from "@/components/home/AbrirDestinoDaAncora";
-import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/home/Recolhido";
+import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/observatorios/Recolhido";
 
 /**
  * Um capítulo por coleção (os oito domínios, que desde 17/10/2026 vivem dentro

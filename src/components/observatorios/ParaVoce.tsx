@@ -43,7 +43,7 @@ export function ParaVoce({
   const colunas = perguntas.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2";
   return (
     <section aria-labelledby="para-voce-titulo" data-para-voce={entrada} className={`para-voce ${className}`}>
-      <div className={`${conteiner} py-10 md:py-12`}>
+      <div className={`${conteiner} py-8 md:py-12`}>
         <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
           <h2 id="para-voce-titulo" className="font-serif text-[clamp(1.5rem,2.6vw,1.9rem)] leading-tight text-carvao">
             {t("Para você", "For you")}

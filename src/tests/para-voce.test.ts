@@ -153,9 +153,11 @@ describe("posição em cada entrada: logo depois dos números de abertura", () =
   it("as entradas que reúnem coleções recebem o bloco pela entrada do registro, entre os números e as coleções", () => {
     const p = ler("src/app/observatorios/[id]/page.tsx");
     expect(p).toMatch(/paraVoce=\{o\.entrada && ehEntradaParaVoce\(o\.entrada\) \? <ParaVoce entrada=\{o\.entrada\} \/> : null\}/);
-    const e = ler("src/components/observatorios/EntradaObservatorio.tsx");
-    expect(e.indexOf("{paraVoce}")).toBeGreaterThan(e.indexOf("O tema em números"));
-    expect(e.indexOf("{paraVoce}")).toBeLessThan(e.indexOf('aria-labelledby="colecoes-titulo"'));
+    // a entrada de observatório é o molde EntradaColecao (Iniciativa 4): o bloco vem depois da escala e antes dos destinos
+    expect(ler("src/components/observatorios/EntradaObservatorio.tsx")).toContain("paraVoce={paraVoce}");
+    const e = ler("src/components/observatorios/EntradaColecao.tsx");
+    expect(e.indexOf('data-fatia="para-voce"')).toBeGreaterThan(e.indexOf("<Escala "));
+    expect(e.indexOf('data-fatia="para-voce"')).toBeLessThan(e.indexOf('data-fatia="destinos"'));
   });
 
   it("substitui os blocos equivalentes em vez de somar", () => {

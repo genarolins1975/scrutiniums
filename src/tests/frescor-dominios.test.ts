@@ -225,7 +225,9 @@ describe("entradas com conta: faixa na primeira tela e no método", () => {
     const s = ler("src/app/observatorios/[id]/page.tsx");
     expect(s).toMatch(/frescor=\{<FaixaFrescor dominios=\{FRESCOR_DOS_OBSERVATORIOS\[id\]\}/);
     expect(s).toMatch(/frescorMetodo=\{<FaixaFrescor dominios=\{FRESCOR_DOS_OBSERVATORIOS\[id\]\} variante="metodo"/);
-    const e = ler("src/components/observatorios/EntradaObservatorio.tsx");
+    // a entrada do observatório é uma chamada do molde único (Iniciativa 4): a ordem da linha e da lista está no EntradaColecao
+    expect(ler("src/components/observatorios/EntradaObservatorio.tsx")).toMatch(/frescor=\{frescor\}[\s\S]*frescorMetodo=\{frescorMetodo\}/);
+    const e = ler("src/components/observatorios/EntradaColecao.tsx");
     expect(e.indexOf("{frescor}")).toBeGreaterThan(0);
     expect(e.indexOf("{frescor}")).toBeLessThan(e.indexOf("<h1"));
     expect(e.indexOf("{frescorMetodo")).toBeGreaterThan(e.indexOf("Método e fontes"));
