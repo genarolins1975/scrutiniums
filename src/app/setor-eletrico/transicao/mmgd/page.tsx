@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -166,7 +166,7 @@ export default function MmgdPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="transicao" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:transicao-mmgd" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <TransicaoNavegacao atual="p063" />

@@ -16,8 +16,11 @@ type LeituraUrl = { pathname: string | null; href: string | null };
  * `rotaPublica`: na versão aperitivo, gerada no caminho interno (/aperitivo/..., /en/aperitivo/...) e servida por rewrite no endereço
  * público, o HTML estático vê o caminho interno e o navegador vê o público. Com ela, o caminho interno é lido como o endereço público
  * do mesmo idioma, para os links nunca apontarem o caminho interno e o servidor e o navegador desenharem o mesmo seletor.
+ *
+ * `compacto`: "PT" e "EN" à vista, com o nome do idioma no nome acessível de cada link e o rótulo "Idioma" só para leitor de
+ * tela; cabe na linha da trilha dos painéis (CabecalhoPlataforma), sem acrescentar uma linha à barra comum.
  */
-export function SeletorIdiomaPublico({ idioma = "pt", rotaPublica }: { idioma?: Idioma; rotaPublica?: string } = {}) {
+export function SeletorIdiomaPublico({ idioma = "pt", rotaPublica, compacto = false }: { idioma?: Idioma; rotaPublica?: string; compacto?: boolean } = {}) {
   const lido = usePathname();
   const pathname = rotaPublica && lido && /^(\/en)?\/aperitivo(\/|$)/.test(lido) ? (lido.startsWith("/en/") ? `/en${rotaPublica}` : rotaPublica) : lido;
   const linkPt = useRef<HTMLAnchorElement>(null);
@@ -79,6 +82,37 @@ export function SeletorIdiomaPublico({ idioma = "pt", rotaPublica }: { idioma?: 
     { idioma: "pt", href: destinos.pt, ref: linkPt, rotulo: rotulos.portugues },
     { idioma: "en", href: destinos.en, ref: linkEn, rotulo: rotulos.ingles },
   ] as const;
+
+  if (compacto)
+    return (
+      <div role="group" aria-label={rotulos.seletor} className="flex shrink-0 items-center gap-x-1">
+        {links.map(({ idioma: lingua, href, ref, rotulo }) => (
+          <a
+            key={lingua}
+            ref={ref}
+            href={href}
+            hrefLang={lingua === "pt" ? "pt-BR" : "en"}
+            aria-label={rotulo}
+            aria-current={lingua === idioma ? "true" : undefined}
+            className={`rotulo inline-flex min-h-[32px] min-w-[32px] items-center justify-center px-1 underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-carvao [@media(pointer:coarse)]:min-h-[44px] [@media(pointer:coarse)]:min-w-[44px] ${lingua === idioma ? "text-carvao underline" : "text-carvao-muted hover:text-carvao"}`}
+            onFocus={sincronizar}
+            onPointerEnter={sincronizar}
+            onPointerDown={sincronizar}
+            onContextMenu={sincronizar}
+            onClick={(evento) => {
+              if (evento.button === 0) escolher(lingua);
+              else sincronizar();
+            }}
+            onAuxClick={(evento) => {
+              if (evento.button === 1) escolher(lingua);
+              else sincronizar();
+            }}
+          >
+            {lingua.toUpperCase()}
+          </a>
+        ))}
+      </div>
+    );
 
   return (
     <div role="group" aria-label={rotulos.seletor} className="flex min-w-0 max-w-full basis-full flex-wrap items-center gap-x-3 sm:ml-auto sm:basis-auto">

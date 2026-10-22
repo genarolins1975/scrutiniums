@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
@@ -65,6 +65,11 @@ import {
   valoresDoPeriodo,
   type PeriodoPerdas,
 } from "@/lib/energia/perdas";
+// Iniciativa 2: a navegação da coleção (NavegacaoColecao) marca a página atual pelo endereço; as páginas daqui são do módulo /setor-eletrico/perdas
+vi.mock("next/navigation", async () => ({
+  ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
+  usePathname: () => "/setor-eletrico/perdas",
+}));
 
 /**
  * Módulo Perdas, fase de interface (P055 a P058). Os testes leem os arquivos publicados

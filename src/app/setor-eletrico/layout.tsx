@@ -4,6 +4,8 @@ import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { Footer } from "@/components/layout/Footer";
 import { MarcaRolagem } from "@/components/energia/MarcaRolagem";
 import { RodapeEnergia } from "@/components/energia/RodapeEnergia";
+import { RetornoContexto } from "@/components/energia/RetornoContexto";
+import { rotulosRetorno } from "@/lib/energia/conteudo/rotulos-retorno";
 import { tx } from "@/lib/energia/idioma";
 
 /* Casca só da versão portuguesa: a inglesa tem a sua (src/app/en/setor-eletrico/layout.tsx), e estes textos nunca chegam a /en. */
@@ -32,6 +34,8 @@ export default function SetorEletricoLayout({ children }: { children: React.Reac
       </a>
       <MarcaRolagem />
       <div className="flex-1">{children}</div>
+      {/* quem chega de um verbete ou de uma trilha do Aprenda (?volta=) ganha o botão fixo de volta ao contexto */}
+      <RetornoContexto rotulos={rotulosRetorno()} />
       <RodapeEnergia />
       <ParaIrAlem mapa={mapaParaIrAlem()} />
       <Footer compacto />

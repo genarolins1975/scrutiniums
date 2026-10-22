@@ -2,7 +2,7 @@ import { fraseDeRecusa } from "@/lib/energia/bastidor";
 import { TextoDoLeitor } from "@/components/energia/TextoDoLeitor";
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { EmpresasEvolucaoFinancas, EmpresasTabelaCompanhias } from "@/components/energia/EmpresasFinancas";
 import {
@@ -131,7 +131,7 @@ export default function PaginaP038() {
 
   return (
     <>
-      <CabecalhoEnergia atual="empresas" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:empresas-financas" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <EmpresasNavegacao atual="p038" />

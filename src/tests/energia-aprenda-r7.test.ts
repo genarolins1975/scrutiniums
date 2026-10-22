@@ -289,8 +289,10 @@ describe("cromo global (L-20, L-37, F15, F17, F18, F21) e painel de Mercado (F19
     expect(av).toContain("acompanhaFaixa(lista, 0)");
     expect(av).toContain("if (alvo > maximo) lista.style.paddingRight");
     expect(css).toMatch(/#modulos-energia \{\s*-webkit-mask-image: [^;]*calc\(var\(--fade-esq\) \* 0\.5rem\)/);
-    const cab = ler("src/components/energia/CabecalhoEnergia.tsx");
-    expect(cab).toMatch(/<Link\s+href=\{d\.href\}\s+prefetch=\{false\}/);
+    // Iniciativa 2: a faixa de módulos é a navegação da coleção, sem prefetch dos destinos que pedem conta
+    const cab = ler("src/components/layout/NavegacaoColecaoCliente.tsx");
+    expect(cab).toContain("prefetch={prefetchDoLink(p.href)}");
+    expect(css).toMatch(/\.nav-colecao-faixa,\s*#modulos-energia \{\s*-webkit-mask-image: [^;]*calc\(var\(--fade-esq\) \* 0\.5rem\)/);
   });
 
   it("F15: rótulos de campo e selo de natureza com corpo maior; a ficha explica o +alterado (F21)", () => {

@@ -1,7 +1,7 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import type { ReactNode } from "react";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
@@ -308,7 +308,7 @@ export default function PrevisoesPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="pld-modelos" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:pld-previsoes" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo

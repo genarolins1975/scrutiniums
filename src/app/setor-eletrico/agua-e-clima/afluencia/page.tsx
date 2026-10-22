@@ -3,7 +3,7 @@ import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { AguaAfluencia } from "@/components/energia/AguaAfluencia";
 import { AguaPontes } from "@/components/energia/AguaPontes";
 import { AguaAviso, AguaDatas, AguaFontes, AguaIndisponivel, AguaNavegacao, AguaRegras, AguaSeguir } from "@/components/energia/AguaPagina";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
@@ -137,7 +137,7 @@ export default function AfluenciaPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="agua-e-clima" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:agua-e-clima" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <AguaNavegacao atual="p018" />

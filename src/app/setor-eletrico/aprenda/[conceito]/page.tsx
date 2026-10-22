@@ -3,7 +3,7 @@ import { caminhoComParametros, metadadosEnergia } from "@/lib/energia/metadados-
 import { notFound } from "next/navigation";
 import { AbreDetalhesAoImprimir } from "@/components/energia/AbreDetalhesAoImprimir";
 import { AprendaVerbete } from "@/components/energia/AprendaVerbete";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { CONCEITOS, conceito } from "@/lib/energia/conteudo/conceitos";
 import { tx } from "@/lib/energia/idioma";
@@ -43,7 +43,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
   if (!c) notFound();
   return (
     <>
-      <CabecalhoEnergia atual="aprenda" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:aprenda" />
       <AbreDetalhesAoImprimir />
       <AprendaVerbete c={c} />

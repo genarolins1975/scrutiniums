@@ -5,7 +5,7 @@ import Link from "@/components/i18n/LinkIdioma";
 import { ModeloDidatico, ParaLer } from "@/components/energia/Didatica";
 import { HorasDoDia, type SerieHoras } from "@/components/energia/HorasDoDia";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
@@ -177,7 +177,7 @@ export default function RedePage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="rede" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:rede" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <CabecalhoModulo

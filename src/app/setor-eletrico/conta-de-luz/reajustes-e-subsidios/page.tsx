@@ -1,6 +1,6 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { BandeiraDoMes } from "@/components/energia/BandeiraDoMes";
 import { ContaBandeiras } from "@/components/energia/ContaBandeiras";
@@ -175,7 +175,7 @@ export default function ContaReajustesPage() {
   if (!integra(g)) {
     return (
       <>
-        <CabecalhoEnergia atual="conta-de-luz" />
+        <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
         <main id="conteudo" tabIndex={-1} className="ed-pagina py-14">
           <Indisponivel
             titulo={tx("Reajustes, bandeiras e subsídios indisponíveis nesta publicação", "Adjustments, tariff flags and subsidies unavailable in this publication")}
@@ -410,7 +410,7 @@ export default function ContaReajustesPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="conta-de-luz" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:conta-de-luz:reajustes" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <Navegacao atual="reajustes" />

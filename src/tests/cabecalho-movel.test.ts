@@ -11,7 +11,6 @@ import { MARCADOR_FIM, MARCADOR_INICIO, htmlBarraSpa } from "@/lib/observatorios
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoEntrada } from "@/components/eficiencia/CabecalhoEntrada";
 import { EstadoConta } from "@/components/energia/AcessoConta";
 import { NavegacaoColecaoCliente } from "@/components/layout/NavegacaoColecaoCliente";
@@ -97,7 +96,7 @@ const ABAS = OBSERVATORIOS.map((o) => ({ href: destinoObservatorio(o), texto: o.
  * rota, o trecho que ele precisa conter e o cabeçalho renderizado. O Crédito é a SPA estática, conferida à parte.
  */
 const ENTRADAS: { rota: string; arquivo: string; uso: string; observatorio: ObservatorioId; render: () => string }[] = [
-  { rota: "/setor-eletrico", arquivo: "src/app/setor-eletrico/page.tsx", uso: '<CabecalhoEnergia atual="mapa" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoEnergia, { atual: "mapa" })) },
+  { rota: "/setor-eletrico", arquivo: "src/app/setor-eletrico/page.tsx", uso: '<CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoPlataforma, { colecao: "energia", destinoConta: "/setor-eletrico", idiomas: true })) },
   { rota: "/saneamento", arquivo: "src/app/saneamento/page.tsx", uso: '<CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoPlataforma, { colecao: "saneamento", destinoConta: "/saneamento" })) },
   { rota: "/gas-natural", arquivo: "src/app/gas-natural/page.tsx", uso: '<CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoPlataforma, { colecao: "gas", destinoConta: "/gas-natural" })) },
   { rota: "/eficiencia-estatal", arquivo: "src/app/eficiencia-estatal/page.tsx", uso: "<CabecalhoEntrada/>", observatorio: "servicos-publicos", render: () => html(createElement(CabecalhoEntrada)) },
@@ -248,7 +247,7 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
     expect(readFileSync(usam[0], "utf-8")).toContain("<SwitcherObservatorio");
     // e a barra comum é a dos cabeçalhos de todos os observatórios e painéis
     const cabecalhos = [
-      "src/components/energia/CabecalhoEnergia.tsx",
+      "src/app/setor-eletrico/page.tsx",
       "src/app/saneamento/page.tsx",
       "src/app/gas-natural/page.tsx",
       "src/app/combustiveis/page.tsx",

@@ -57,10 +57,12 @@ function setorEletrico(): Montagem {
       ...(conta ? [pagina(conta.rotulo, conta.href, conta.publicado)] : []),
       // "Comece aqui" sem a própria entrada: a visão geral e a minha região
       grupo(tx("Visão geral", "Overview"), doGrupo("comece-aqui", ["mapa"])),
-      grupo(rotuloGrupo("operacao"), doGrupo("operacao")),
+      // rótulos curtos dos grupos longos, para os oito itens e os atalhos caberem numa linha a 1440 px; o nome inteiro do grupo
+      // continua no índice da entrada
+      grupo(tx("Operação", "Operation"), doGrupo("operacao")),
       grupo(rotuloGrupo("precos-e-mercado"), doGrupo("precos-e-mercado")),
       // a conta de luz já é o segundo item: o grupo começa nas perdas
-      grupo(rotuloGrupo("consumidor-e-territorio"), doGrupo("consumidor-e-territorio", ["conta-de-luz"])),
+      grupo(tx("Consumidor", "Consumers"), doGrupo("consumidor-e-territorio", ["conta-de-luz"])),
       grupo(rotuloGrupo("empresas-e-futuro"), doGrupo("empresas-e-futuro")),
       // dados e metodologia viram atalhos; ficam a regulação e o Aprenda
       grupo(tx("Regras e conceitos", "Rules and concepts"), doGrupo("conhecimento-e-evidencia", ["dados", "metodologia"])),

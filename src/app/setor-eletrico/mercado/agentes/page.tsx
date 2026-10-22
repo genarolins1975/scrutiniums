@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -138,7 +138,7 @@ export default function MercadoAgentesPage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="mercado" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:mercado:agentes" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <MercadoNavegacao atual="agentes" />

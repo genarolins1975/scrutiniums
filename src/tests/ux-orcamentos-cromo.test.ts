@@ -38,11 +38,13 @@ const ENTRADAS: Record<string, string> = {
   // bloco 3
   saneamento: "/saneamento",
   agro: "/agronegocio",
+  // bloco 4
+  "setor-eletrico": "/setor-eletrico",
 };
 /** Subpáginas e superfícies da mesma navegação. */
-const OUTRAS = ["/territorio", "/territorio/emissoes", "/contas-publicas/execucao", "/contas-publicas/previdencia", "/gas-natural/importacao", "/gas-natural/metodologia", "/observatorio-do-credito/simulador-da-parcela", "/saneamento/esgoto", "/saneamento/prestadores/divida", "/agronegocio/producao", "/agronegocio/ambiente"];
+const OUTRAS = ["/territorio", "/territorio/emissoes", "/contas-publicas/execucao", "/contas-publicas/previdencia", "/gas-natural/importacao", "/gas-natural/metodologia", "/observatorio-do-credito/simulador-da-parcela", "/saneamento/esgoto", "/saneamento/prestadores/divida", "/agronegocio/producao", "/agronegocio/ambiente", "/setor-eletrico/geracao", "/setor-eletrico/pld", "/setor-eletrico/dados", "/en/setor-eletrico", "/en/setor-eletrico/geracao"];
 /** Páginas aperitivo das mesmas coleções, sem sessão. */
-const ABERTAS = ["/conectividade", "/contas-publicas/previdencia", "/contas-publicas/metodologia", "/territorio/metodologia", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado", "/educacao-municipal", "/saneamento/municipio", "/saneamento/metodologia", "/agronegocio/metodologia"];
+const ABERTAS = ["/conectividade", "/contas-publicas/previdencia", "/contas-publicas/metodologia", "/territorio/metodologia", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado", "/educacao-municipal", "/saneamento/municipio", "/saneamento/metodologia", "/agronegocio/metodologia", "/setor-eletrico/conta-de-luz", "/setor-eletrico/metodologia", "/setor-eletrico/aprenda", "/en/setor-eletrico/conta-de-luz"];
 
 describe("orçamento de cromo", () => {
   it("o build existe quando o CI exige", () => {

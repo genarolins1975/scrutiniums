@@ -4,7 +4,7 @@ import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/i18n/LinkIdioma";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { DadosArquivos, itensDeArquivos } from "@/components/energia/DadosArquivos";
 import { DadosCalendario, DadosSaudeTabela } from "@/components/energia/DadosSaude";
@@ -66,7 +66,7 @@ function DaGold({ texto, regiao }: { texto: string; regiao: string }) {
 
 export default function DadosSaudePage() {
   const pub = publicacaoDados();
-  if (!pub) return <DadosIndisponivel atual="dados" />;
+  if (!pub) return <DadosIndisponivel />;
 
   const idioma = idiomaEnergia();
   const r = resumoSaude(pub);
@@ -124,7 +124,7 @@ export default function DadosSaudePage() {
 
   return (
     <>
-      <CabecalhoEnergia atual="dados" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:dados:saude" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <DadosNavegacao atual="saude" />

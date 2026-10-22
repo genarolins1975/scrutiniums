@@ -3,7 +3,8 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { NavegacaoColecaoCliente } from "@/components/layout/NavegacaoColecaoCliente";
+import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 import {
   DESTINOS_NAVEGACAO,
   GRUPOS_NAVEGACAO,
@@ -166,64 +167,65 @@ describe("estrutura do menu", () => {
   });
 });
 
-describe("cabeçalho renderizado no servidor", () => {
-  const html = (atual: string) => renderToStaticMarkup(createElement(CabecalhoEnergia, { atual }));
+// Iniciativa 2 do parecer de UX de 21/10/2026: o cabeçalho próprio (seis grupos em menus suspensos, botão "Menu" e faixa do
+// grupo) deu lugar à navegação única de coleção (NavegacaoColecao), lida deste mesmo registro (navegacaoColecao.ts). Os
+// invariantes continuam: destino publicado é link, destino sem página nunca é link, só a página atual é marcada e a segunda
+// linha traz as páginas do grupo atual.
+describe("navegação da coleção renderizada no servidor", () => {
+  const nav = navegacaoDaColecao("setor-eletrico");
+  const html = (caminho: string) => renderToStaticMarkup(createElement(NavegacaoColecaoCliente, { nav, caminho, atual: caminho, idioma: "pt" }));
   const ancoras = (h: string) => Array.from(h.matchAll(/<a\b[^>]*>/g)).map((m) => m[0]);
   const hrefDe = (tag: string) => tag.match(/\bhref="([^"]*)"/)?.[1] ?? null;
   const faixa = (h: string) => {
-    const i = h.indexOf('id="modulos-energia"');
+    const i = h.indexOf('aria-label="Páginas de ');
     return i < 0 ? "" : h.slice(h.lastIndexOf("<ul", i), h.indexOf("</ul>", i));
   };
 
-  it("todo destino publicado é link, e nenhum destino sem página é link, mas o tema continua nomeado", () => {
-    const h = html("geracao");
-    const hrefs = ancoras(h).map(hrefDe);
+  it("todo destino publicado é link na navegação (na primeira linha ou na do grupo), e nenhum destino sem página é link", () => {
+    const hrefs = new Set<string>();
+    for (const d of DESTINOS_NAVEGACAO) for (const a of ancoras(html(d.publicado ? d.href : "/setor-eletrico"))) hrefs.add(hrefDe(a) ?? "");
     for (const d of DESTINOS_NAVEGACAO) {
-      if (d.publicado) expect(hrefs, d.href).toContain(d.href);
-      else {
-        expect(hrefs, d.href).not.toContain(d.href);
-        expect(h, d.rotulo).toContain(d.rotulo);
-      }
+      if (d.publicado) expect([...hrefs], d.href).toContain(d.href);
+      else expect([...hrefs], d.href).not.toContain(d.href);
     }
-    // o aviso só existe enquanto houver destino sem página; com todos publicados, não pode sobrar
-    if (DESTINOS_NAVEGACAO.some((d) => !d.publicado)) expect(h).toContain("Em preparação, ainda sem página:");
-    else expect(h).not.toContain("Em preparação, ainda sem página:");
   });
 
-  it("nav nomeada, seis grupos como disclosure e o botão Menu", () => {
-    const h = html("geracao");
+  it("nav nomeada, Início e Conta de luz primeiro, grupos como itens sem menu suspenso e sem botão Menu", () => {
+    const h = html("/setor-eletrico/geracao");
     expect(h).toMatch(/<nav[^>]*aria-label="Navegação da coleção Setor Elétrico"/);
-    for (const g of GRUPOS_NAVEGACAO) expect(h, g.rotulo).toMatch(new RegExp(`<summary[^>]*>${g.rotulo}`));
-    expect(h).toMatch(/<summary[^>]*>Menu/);
+    expect(nav.itens.slice(0, 2).map((i) => i.href)).toEqual(["/setor-eletrico", "/setor-eletrico/conta-de-luz"]);
+    expect(h).not.toMatch(/<summary[^>]*>Menu/);
+    for (const g of GRUPOS_NAVEGACAO) expect(h, g.rotulo).not.toMatch(new RegExp(`<summary[^>]*>${g.rotulo}`));
     // só o grupo da página atual é anunciado como tal
     expect(h.match(/\(grupo da página atual\)/g)).toHaveLength(1);
-    expect(h).toMatch(/<summary[^>]*>Operação do sistema<span class="sr-only"> \(grupo da página atual\)/);
+    expect(h).toMatch(/Operação<span class="sr-only"> \(grupo da página atual\)/);
   });
 
-  it("aria-current só nos links da página atual; a faixa do grupo ativo traz os irmãos e o id de AtivoVisivel", () => {
-    for (const atual of ["geracao", "metodologia", "mapa"]) {
-      const h = html(atual);
+  it("aria-current só no link da página atual; a segunda linha traz as páginas do grupo", () => {
+    for (const atual of ["geracao", "pld", "perdas"]) {
+      const d = destino(atual);
+      const h = html(d.href);
       const atuais = ancoras(h).filter((a) => a.includes('aria-current="page"'));
-      expect(atuais.length, atual).toBeGreaterThan(0);
-      for (const a of atuais) expect(hrefDe(a), atual).toBe(destino(atual).href);
-      const f = faixa(h);
+      expect(atuais.map(hrefDe), atual).toEqual([d.href]);
       const grupo = menuNavegacao(atual).grupoAtual!;
-      expect(f, atual).toContain(`aria-label="Páginas do grupo ${grupo.grupo.rotulo}"`);
-      expect(ancoras(f).map(hrefDe), atual).toEqual(grupo.links.map((d) => d.href));
-      expect(ancoras(f).filter((a) => a.includes('aria-current="page"')), atual).toHaveLength(1);
+      const f = faixa(h);
+      expect(ancoras(f).map(hrefDe), atual).toEqual(grupo.links.filter((x) => x.slug !== "conta-de-luz").map((x) => x.href));
     }
+    // dados e metodologia são atalhos fixos à direita, marcados quando abertos
+    const metodo = html("/setor-eletrico/metodologia");
+    // (o atalho existe em duas formas, a do celular e a do desktop, uma sempre escondida)
+    expect([...new Set(ancoras(metodo).filter((a) => a.includes('aria-current="page"')).map(hrefDe))]).toEqual(["/setor-eletrico/metodologia"]);
   });
 
-  it("nas páginas do PLD a faixa mostra previsões, o mercado e os leilões, já integrados (sem a marca de módulo em integração)", () => {
-    const f = faixa(html("pld"));
+  it("nas páginas do PLD a segunda linha mostra previsões, o mercado e os leilões", () => {
+    const f = faixa(html("/setor-eletrico/pld"));
     expect(ancoras(f).map(hrefDe)).toEqual(["/setor-eletrico/pld", "/setor-eletrico/pld/modelos", "/setor-eletrico/mercado", "/setor-eletrico/leiloes"]);
-    expect(f).not.toContain("(em integração)");
   });
 
-  it("página fora do registro: sem faixa e sem aria-current, mas com o menu completo", () => {
-    const h = html("pagina-inexistente");
+  it("página fora do registro: sem segunda linha e sem aria-current, com a navegação inteira", () => {
+    const h = html("/sobre");
     expect(faixa(h)).toBe("");
     expect(h).not.toContain('aria-current="page"');
-    expect(h).toMatch(/<summary[^>]*>Menu/);
+    for (const i of nav.itens) expect(ancoras(h).map(hrefDe), i.href).toContain(i.href);
   });
 });

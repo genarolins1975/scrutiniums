@@ -5,7 +5,7 @@ import Link from "@/components/i18n/LinkIdioma";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { notFound } from "next/navigation";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { DadosArquivos, itensDeArquivos } from "@/components/energia/DadosArquivos";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
@@ -164,7 +164,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
 
   return (
     <>
-      <CabecalhoEnergia atual="dados" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:dados" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16">
         <nav aria-label={tx("Trilha", "Breadcrumb")} className="pt-8 text-sm text-mineral">

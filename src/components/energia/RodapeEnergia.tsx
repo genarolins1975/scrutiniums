@@ -7,12 +7,14 @@ import { listaEmPortugues, orgaosDasFontes } from "@/lib/energia/dados";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
 import { catalogoDados } from "@/lib/energia/datasets";
 import { conciliarCatalogoEIntegracoes, textoRodapeDasFontes } from "@/lib/energia/dados-leitor";
+import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
 
 /**
  * Rodapé do domínio: os órgãos das fontes, a data da última publicação e o caminho para
  * o catálogo e a metodologia. Os órgãos e a data vêm de publicacao.json (a mesma fonte que o
  * cabeçalho das páginas de dados); o meta.json é de um processamento completo anterior e
- * só entra quando a publicação não existe. O rodapé institucional da plataforma vem depois.
+ * só entra quando a publicação não existe. No fim, a marca da parceria técnica com o FGV CERI (a do rodapé de toda coleção de
+ * infraestrutura, RodapeColecao). O rodapé institucional da plataforma vem depois.
  */
 export function RodapeEnergia() {
   const pub = publicacaoDados();
@@ -87,6 +89,10 @@ export function RodapeEnergia() {
           <li><Link prefetch={false} href="/setor-eletrico/pld/previsoes" className={link}>{tx("Histórico de previsões", "Forecast history")}</Link></li>
           <li><Link prefetch={false} href="/setor-eletrico/aprenda" className={link}>{tx("Aprenda: base de conhecimento", "Learn: knowledge base")}</Link></li>
         </ul>
+        {/* parceria técnica com o FGV CERI: saiu do cabeçalho (Iniciativa 2) e fecha o rodapé da coleção, com e sem sessão */}
+        <div className="mt-2 flex justify-end">
+          <ParceriaTecnica variante="compacto" />
+        </div>
       </div>
     </aside>
   );

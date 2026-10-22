@@ -1,5 +1,5 @@
 import Link from "@/components/i18n/LinkIdioma";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold } from "@/lib/energia/gold";
@@ -13,7 +13,6 @@ import { idiomaEnergia, tx } from "@/lib/energia/idioma";
  * gráfico de exemplo: ausência declarada.
  */
 export function ModuloEmIntegracao({
-  atual,
   secao,
   rotulo,
   titulo,
@@ -25,7 +24,6 @@ export function ModuloEmIntegracao({
   destaque,
   conceitos,
 }: {
-  atual: string;
   secao: string;
   rotulo: string;
   titulo: string;
@@ -46,7 +44,7 @@ export function ModuloEmIntegracao({
     .slice(0, 14);
   return (
     <>
-      <CabecalhoEnergia atual={atual} />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao={secao} />
       <main id="conteudo" tabIndex={-1} className="ed-pagina pb-16">
         <CabecalhoModulo recolher={false} rotulo={tx(`${rotulo} · em integração`, `${rotulo} · in integration`)} titulo={titulo}>

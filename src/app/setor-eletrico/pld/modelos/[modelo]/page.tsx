@@ -3,7 +3,7 @@ import type { Idioma } from "@/lib/idioma";
 import type { Metadata, ResolvingMetadata } from "next";
 import { caminhoComParametros, metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import { notFound } from "next/navigation";
-import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { SituacaoDoModelo } from "@/components/energia/EstadoModelo";
 import { PrevisoesCoeficientes } from "@/components/energia/PrevisoesCoeficientes";
@@ -185,7 +185,7 @@ export default function FichaModelo({ params }: { params: { modelo: string } }) 
 
   return (
     <>
-      <CabecalhoEnergia atual="pld-modelos" />
+      <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:pld-modelos" />
       <main id="conteudo" tabIndex={-1} className="ed-pagina">
         <PrevisoesFaixaFichas atual={slugModelo(f.codigo)} fichas={fichas} />
