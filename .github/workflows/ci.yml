@@ -182,8 +182,8 @@ jobs:
   testes:
     name: Build e Vitest ${{ matrix.shard }}
     runs-on: ubuntu-latest
-    # cada shard: build (4 min 27 s frio no run 1198, a compilação de 2 min 08 s cai com cache)
-    # mais metade da suíte (5 min 39 s inteira)
+    # cada shard: build (4 min 34 s frio, 3 min 25 s com cache) mais metade da suíte (5 min 39 s
+    # inteira no run 1198); medido em 22/10/2026
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -206,21 +206,21 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.versao }}
-      - name: Chromium para verificar o DOM das páginas dinâmicas
+      - name: Chromium para verificar o DOM das páginas dinâmicas, em segundo plano
         # A home consulta sessão e usa Suspense: o HTML de transporte sozinho
         # não comprova os textos que o leitor recebe. Versão fixada no lockfile.
-        # Com o navegador em cache, só as bibliotecas do sistema são instaladas.
+        # Corre junto do build e só os testes esperam: o apt do runner já levou mais de um
+        # minuto por pacote e 10 minutos no passo (runs 1204 e 1207, 22/10/2026), contra 18 s
+        # no normal. Com o navegador em cache, só as bibliotecas do sistema são instaladas.
         run: |
-          if [ "${{ steps.chromium.outputs.cache-hit }}" = "true" ]; then
-            npx --no-install playwright install-deps chromium
-          else
-            npx --no-install playwright install --with-deps chromium
-          fi
+          if [ "${{ steps.chromium.outputs.cache-hit }}" = "true" ]; then ALVO="install-deps chromium"; else ALVO="install --with-deps chromium"; fi
+          # sessão própria e saídas redirecionadas: o passo termina na hora e a instalação segue
+          setsid bash -c "npx --no-install playwright $ALVO; echo \$? > \"\$RUNNER_TEMP/chromium.status\"" > "$RUNNER_TEMP/chromium.log" 2>&1 < /dev/null &
       - name: Restaurar o cache do compilador do Next (.next/cache)
-        # O cache tem 1,2 GB (medido em 22/10/2026). Se cada push de PR gravasse o seu, o
-        # limite de 10 GB do repositório viveria em rotação. Por isso o PR restaura o mais
-        # recente do mesmo lockfile (gravado pelo main) e só grava quando não achou nenhum,
-        # o que acontece até o main gravar o primeiro ou quando o lockfile muda.
+        # O cache tem cerca de 80 MB comprimido (run 1205, 22/10/2026) e tira cerca de 1 min 10 s
+        # do build (4 min 34 s frio, 3 min 25 s quente, runs 1205 e 1207). Para não gravar uma
+        # entrada por push, o PR restaura a mais recente do mesmo lockfile (gravada pelo main) e
+        # só grava quando não achou nenhuma: até o main gravar a primeira ou quando o lockfile muda.
         id: cache_next
         uses: actions/cache/restore@v4
         with:
@@ -236,6 +236,11 @@ jobs:
         # O prebuild materializa os derivados e gera app.min.js.
         id: build
         run: npm run build
+      - name: Esperar o Chromium
+        run: |
+          while [ ! -f "$RUNNER_TEMP/chromium.status" ]; do sleep 2; done
+          tail -3 "$RUNNER_TEMP/chromium.log"
+          exit "$(cat "$RUNNER_TEMP/chromium.status")"
       - name: Testes (inclui a verificação obrigatória do HTML gerado)
         # EXIGIR_BUILD_HTML=1 faz src/tests/html-gerado.test.ts reprovar se o build, uma rota
         # esperada ou as páginas a inspecionar não existirem. O log mostra "HTML verificado
@@ -283,13 +288,11 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.versao }}
-      - name: Chromium
+      - name: Chromium, em segundo plano (mesmo motivo do job testes)
         run: |
-          if [ "${{ steps.chromium.outputs.cache-hit }}" = "true" ]; then
-            npx --no-install playwright install-deps chromium
-          else
-            npx --no-install playwright install --with-deps chromium
-          fi
+          if [ "${{ steps.chromium.outputs.cache-hit }}" = "true" ]; then ALVO="install-deps chromium"; else ALVO="install --with-deps chromium"; fi
+          # sessão própria e saídas redirecionadas: o passo termina na hora e a instalação segue
+          setsid bash -c "npx --no-install playwright $ALVO; echo \$? > \"\$RUNNER_TEMP/chromium.status\"" > "$RUNNER_TEMP/chromium.log" 2>&1 < /dev/null &
       - name: Restaurar o cache do compilador do Next (.next/cache)
         uses: actions/cache/restore@v4
         with:
@@ -299,6 +302,11 @@ jobs:
             next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
       - name: Build de produção
         run: npm run build
+      - name: Esperar o Chromium
+        run: |
+          while [ ! -f "$RUNNER_TEMP/chromium.status" ]; do sleep 2; done
+          tail -3 "$RUNNER_TEMP/chromium.log"
+          exit "$(cat "$RUNNER_TEMP/chromium.status")"
       - name: Fluxos e telas do Judiciário com sessão local
         run: node scripts/obee/judiciario-verificacao.mjs
       - name: Evidência funcional do Judiciário
