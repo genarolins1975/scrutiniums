@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-21T16:18:46+00:00",
+ "gerado_em": "2026-10-22T15:48:28+00:00",
  "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
  "datas": {
   "scr": "2026-08",
@@ -1766,7 +1766,7 @@
     "saldo_medio_op": 7819,
     "prod_dominante": "Imobiliário",
     "renda_dominante": "Mais de 5 a 10 salários mínimos",
-    "z_inad": 1.45
+    "z_inad": 1.46
    },
    "produtos": [
     {
@@ -5389,7 +5389,7 @@
     "mes": "2026-07",
     "casos_12m": 30274,
     "var_12m_pct": -23.57,
-    "casos_12m_todos": 48591,
+    "casos_12m_todos": 68372,
     "por_mil_hab": 1.76,
     "por_bi_carteira": 52.3
    },
@@ -6546,10 +6546,10 @@
    },
    "subnacional": {
     "mes": "2026-09",
-    "liberado_12m_valor": 2821578174.23,
-    "liberado_12m_n": 191,
-    "entes": 153,
-    "valor_hab": 251.18,
+    "liberado_12m_valor": 2821081021.74,
+    "liberado_12m_n": 190,
+    "entes": 152,
+    "valor_hab": 251.14,
     "credor_principal": "Caixa Econômica Federal",
     "share_valor_pct": 3.91,
     "dcl": 115015930564.27,

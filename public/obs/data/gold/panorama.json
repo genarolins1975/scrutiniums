@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-21T16:18:34+00:00",
+ "gerado_em": "2026-10-22T15:48:16+00:00",
  "fonte": "BCB SCR.data v2 (dados abertos) — agregados públicos protegidos pelo BCB",
  "data_base": "2026-08",
  "data_base_anterior": "2026-07",
@@ -347,12 +347,12 @@
   },
   {
    "p": "2026-06",
-   "saldo": 7642246607252,
+   "saldo": 7642270139771,
    "inad": 4.63,
    "atraso15_90": 1.03,
    "ap": 8.21,
-   "pf": 4690377035969,
-   "pj": 2951869571284
+   "pf": 4690382188973,
+   "pj": 2951887950798
   },
   {
    "p": "2026-07",
@@ -538,7 +538,7 @@
    "cresc12": 12.51,
    "d_inad_3m": -0.03,
    "d_inad_12m": 0.15,
-   "z_inad": 1.45,
+   "z_inad": 1.46,
    "prod_dominante": "Imobiliário",
    "renda_dominante": "Mais de 5 a 10 salários mínimos"
   },
