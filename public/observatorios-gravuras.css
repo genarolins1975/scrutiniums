@@ -23,7 +23,7 @@
 }
 #view-mapa.has-credit-atlas .atlas-city-copy .atlas-eyebrow,
 .energia-atlas-inicial .energia-cenario-texto .rotulo {
-  grid-column:1/-1; margin:0; font-size:12px; line-height:1.6; letter-spacing:.12em;
+  grid-column:1/-1; margin:0; font-size:12px; line-height:1.6; letter-spacing:.14em;
   max-width:none; color:var(--gravura-fundo);
 }
 #view-mapa.has-credit-atlas .atlas-city-copy h1,
