@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { NumeroPorta } from '@/lib/perguntas/tipos';
 import type { EconomiaAgro, PaisesAgro, SnapshotAgro } from '@/lib/agro/tipos';
 import { numeroAgro, mesAgro, PERGUNTAS_AGRO } from '@/lib/agro/modelo';
 import { concentracaoAgro, mesCurtoAgro, mesesAgro, safraComparada, trimestreAgro, variacaoPctAgro } from '@/lib/agro/economia';
@@ -49,6 +50,21 @@ export function respostasAgro(e: EconomiaAgro): Record<(typeof PERGUNTAS_AGRO)[n
         ...respostasSociedade(e),
         ...respostasPolitica(e),
     };
+}
+
+/**
+ * Os quatro números da abertura da entrada (molde único, Iniciativa 4), os mesmos de DestaquesAgro, com fonte e período
+ * separados para a escala. Valor ausente vira null ("Indisponível nesta publicação").
+ */
+export function escalaAgro(e: EconomiaAgro): NumeroPorta[] {
+    const c = e.comercio, ult = c.exportacoes.anual.at(-1)!, safra = safraComparada(e, 'graos')!, m = c.insumos.mesmoPeriodo, cresc = e.pib.crescimento.acumulado4.at(-1)!;
+    const ou = (v: number | null | undefined, t: string) => (v == null ? null : t);
+    return [
+        { rotulo: 'Agropecuária no valor adicionado do país', valor: ou(e.pib.ultimos4.participacaoVa, pct(e.pib.ultimos4.participacaoVa)), unidade: 'em quatro trimestres', periodo: `${trimestreAgro(e.pib.ultimos4.inicio)} a ${trimestreAgro(e.pib.ultimos4.fim)}`, fonte: 'IBGE, Contas Nacionais', nota: `Cresceu ${sinalAgro(cresc.agro)} em volume, contra ${sinalAgro(cresc.pib)} do PIB. Dentro da porteira, não o agronegócio ampliado.`, href: '/agronegocio/tamanho' },
+        { rotulo: 'Exportações de base agropecuária', valor: ou(ult.participacao, pct(ult.participacao)), unidade: 'do total exportado', periodo: String(ult.ano), fonte: 'MDIC, Comex Stat', nota: `US$ ${bi(ult.agro)} bi de US$ ${bi(ult.total)} bi exportados; recorte por capítulo do Sistema Harmonizado.`, href: '/agronegocio/mercados' },
+        { rotulo: `Safra de grãos estimada para ${safra.atual.ano}`, valor: ou(safra.atual.producao, mi(safra.atual.producao)), unidade: 'milhões de toneladas', periodo: `LSPA de ${mesAgro(safra.atual.mesEstimativa)}`, fonte: 'IBGE, LSPA', nota: `${sinalAgro(safra.variacao)} sobre a estimativa de dezembro de ${safra.atual.ano - 1}; cereais, leguminosas e oleaginosas.`, href: '/agronegocio/conjuntura' },
+        { rotulo: 'Toneladas de soja exportada por tonelada de fertilizante importado', valor: ou(m.relacao.at(-1), numeroAgro(m.relacao.at(-1), 2)), unidade: 't de soja por t de fertilizante', periodo: mesesAgro(m.soja.at(-1)!.ano, m.soja.at(-1)!.meses), fonte: 'MDIC, Comex Stat', nota: `${numeroAgro(m.relacao.at(-2), 2)} no mesmo período de ${m.soja.at(-2)!.ano}; valores unitários de comércio, não preços na fazenda.`, href: '/agronegocio/insumos' },
+    ];
 }
 
 export function DestaquesAgro({ e }: { e: EconomiaAgro }) {

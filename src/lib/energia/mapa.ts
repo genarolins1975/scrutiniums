@@ -974,9 +974,9 @@ export const ANCORAS_VISAO_GERAL = [
  */
 export const SECOES_HOME = [
   { id: "proposito", get rotulo() { return tx("Para que serve", "What it is for"); } },
-  { id: "mapa-conceitual", get rotulo() { return tx("Como as partes se ligam", "How the parts fit together"); } },
-  { id: "perguntas", get rotulo() { return tx("Seis perguntas para começar", "Six questions to start with"); } },
   { id: "destinos", get rotulo() { return tx("Todas as páginas, por tema", "All pages, by topic"); } },
+  { id: "perguntas", get rotulo() { return tx("Seis perguntas para começar", "Six questions to start with"); } },
+  { id: "mapa-conceitual", get rotulo() { return tx("Como as partes se ligam", "How the parts fit together"); } },
   { id: "trilhas", get rotulo() { return tx("Trilhas de leitura", "Reading paths"); } },
   { id: "como-confiar", get rotulo() { return tx("Como ler e conferir", "How to read and check"); } },
   { id: "aprofundar", get rotulo() { return tx("Fontes e atualidade", "Sources and timeliness"); } },

@@ -43,7 +43,7 @@ export function ParaVoce({
   const colunas = perguntas.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2";
   return (
     <section aria-labelledby="para-voce-titulo" data-para-voce={entrada} className={`para-voce ${className}`}>
-      <div className={`${conteiner} py-10 md:py-12`}>
+      <div className={`${conteiner} py-8 md:py-12`}>
         <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
           <h2 id="para-voce-titulo" className="font-serif text-[clamp(1.5rem,2.6vw,1.9rem)] leading-tight text-carvao">
             {t("Para você", "For you")}
@@ -58,9 +58,9 @@ export function ParaVoce({
         <ul className={`mt-6 grid gap-px border border-linha bg-linha ${colunas}`}>
           {perguntas.map((p) => (
             <li key={p.id} data-para-voce-pergunta={p.id} className="min-w-0 bg-papel">
-              <Link href={p.href} prefetch={prefetchDoLink(p.href)} className="group flex h-full min-h-[44px] flex-col p-5 md:p-6">
+              <Link href={p.href} prefetch={prefetchDoLink(p.href)} className="group flex h-full min-h-[44px] flex-col p-4 sm:p-5 md:p-6">
                 {artes?.[p.id] && (
-                  <span aria-hidden="true" className={`${styles.arte} -mx-5 -mt-5 mb-5 md:-mx-6 md:-mt-6 md:mb-6`} data-para-voce-arte="">
+                  <span aria-hidden="true" className={`${styles.arte} -mx-4 -mt-4 mb-4 sm:-mx-5 sm:-mt-5 sm:mb-5 md:-mx-6 md:-mt-6 md:mb-6`} data-para-voce-arte="">
                     {artes[p.id]}
                   </span>
                 )}
@@ -91,7 +91,7 @@ export function ParaVoce({
                   <span aria-hidden="true" className="text-mineral transition-transform group-hover:translate-x-0.5">
                     →
                   </span>
-                  <SeloComConta href={p.href} />
+                  <SeloComConta href={p.href} idioma={idioma} />
                 </span>
               </Link>
             </li>

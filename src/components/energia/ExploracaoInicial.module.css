@@ -17,6 +17,7 @@
 .resposta [data-medida] { display:block }.resposta [data-medida]>p:nth-child(2) { text-align:left;font-size:44px;margin:12px 0 }.resposta [data-faixa] { max-width:700px }
 .todas { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px }.todas article h3 { font-size:23px }
 .laboratorio { background:var(--atlas-fundo);color:var(--atlas-texto);padding:40px;margin:24px 0 48px;scroll-margin-top:100px }
+.embutido { margin:0 }.simulador a { min-height:44px;display:inline-flex;align-items:center;text-decoration:underline;text-underline-offset:4px;color:var(--atlas-link);font-size:14px }
 .labCabecalho { display:flex;justify-content:space-between;gap:40px;align-items:start;border-bottom:1px solid var(--atlas-separador);padding-bottom:24px }.labCabecalho>div { max-width:660px }.labCabecalho h2 { font-family:var(--font-serif),Georgia,serif;font-size:36px;line-height:1.2;margin:10px 0 16px }.labCabecalho p { line-height:1.65 }.labCabecalho a { min-height:44px;display:inline-flex;align-items:center;text-decoration:underline;color:var(--atlas-link);max-width:220px;line-height:1.6;font-size:14px }
 .sobretitulo { text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:var(--atlas-texto-secundario) }
 .labGrade { display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:64px;margin-top:32px }

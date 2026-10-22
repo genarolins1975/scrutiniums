@@ -95,8 +95,7 @@ export default function EntradaObservatorioPage({ params }: { params: { id: stri
         <CabecalhoPlataforma observatorio={id} destinoConta={`/observatorios/${id}`} />
       </header>
       <EntradaObservatorio
-        nomeCurto={o.nomeCurto}
-        nomeCompleto={o.nome}
+        rota={`/observatorios/${id}`}
         acento={o.acento}
         pergunta={o.pergunta}
         descricao={c.descricao}
