@@ -42,7 +42,8 @@ try{
  page=await browser.newPage({viewport:{width:390,height:1000}});
  await step('Filtros, renda, tabela e CSV do mesmo recorte',async()=>{
   await page.goto(base+root,{waitUntil:'networkidle'});
-  writeFileSync(output+'/oportunidades-form-aria.txt',await page.locator('form').ariaSnapshot());
+  // o formulário da página, no <main>: a busca da barra (Iniciativa 3) é outro <form>
+  writeFileSync(output+'/oportunidades-form-aria.txt',await page.locator('main form').ariaSnapshot());
   await page.getByRole('combobox',{name:'Cidade',exact:true}).selectOption('2611606');
   await page.getByRole('combobox',{name:'Modo de transporte',exact:true}).selectOption('public_transport');
   await page.getByRole('combobox',{name:'Oportunidade e tempo',exact:true}).selectOption('CMATT60');

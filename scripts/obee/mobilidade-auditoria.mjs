@@ -69,7 +69,8 @@ try{
   await page.getByLabel('Tarifa por embarque (R$)',{exact:true}).fill('5');
   await page.getByLabel('Dias no mês',{exact:true}).fill('22');
   await page.getByLabel('Embarques pagos por dia',{exact:true}).fill('2');
-  await page.waitForFunction(()=>document.querySelector('[aria-live=polite]')?.textContent.includes('220,00'));
+  // dentro do <main>: a busca da barra (Iniciativa 3) também tem uma região aria-live, e vem antes do simulador
+  await page.waitForFunction(()=>document.querySelector('main [aria-live=polite]')?.textContent.includes('220,00'));
   await page.screenshot({path:output+'/simulador-390.png',fullPage:true});
  });
  await passo('limpar filtros e estado vazio',async()=>{
