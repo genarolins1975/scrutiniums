@@ -893,12 +893,13 @@ export function respostaP015(linhas: readonly LinhaArquivo[], dia: string, total
 
 /** Linhas do gráfico de rodadas: células com e sem número, e atraso (minutos). */
 /**
- * O eixo do gráfico mostra só a data da rodada (o título já diz que cada barra é uma rodada): "Rodada de 27/09/2026" não cabe na
- * barra e era cortado em lugares diferentes em cada idioma ("27/09/…" e "Sep 27, 2…"), o que fazia o inglês exibir um número que
- * o português não tinha.
+ * O eixo do gráfico mostra só o dia e o mês da rodada (o título já diz que cada barra é uma rodada, e o arquivo guarda só as
+ * rodadas recentes): "Rodada de 27/09/2026" não cabia na barra e era cortado em lugares diferentes em cada idioma ("27/09/…" e
+ * "Sep 27, 2…"), o que fazia o inglês exibir um número que o português não tinha. A data inteira ("Oct 22, 2026") também era
+ * cortada de 9 a 11 rodadas; "22/10" e "Oct 22" cabem inteiros de 1 a 14 rodadas (teste energia-rodadas-rotulo).
  */
 export function linhasGraficoRodadas(rs: readonly ResumoRodada[], idioma: Idioma = idiomaEnergia()): Record<string, string | number | null>[] {
-  return rs.map((r) => ({ id: r.id, rotulo: dataBR(r.origem, idioma), com_numero: r.com_numero, sem_numero: r.sem_numero, atraso_min: r.atraso_min }));
+  return rs.map((r) => ({ id: r.id, rotulo: dataCurta(r.origem, idioma), com_numero: r.com_numero, sem_numero: r.sem_numero, atraso_min: r.atraso_min }));
 }
 
 /* ---------------------------------------------------------------- P014: registro de modelos */

@@ -11,8 +11,9 @@ const semAncora = (href: string) => href.split(/[?#]/)[0] || "/";
  * Fatia "Destinos" de uma entrada de coleção (EntradaColecao): os destinos de primeiro nível da navegação da coleção
  * (navegacaoDaColecao, Iniciativa 2), cada um com o que ele responde, lido do índice da busca (os resumos dos catálogos), e,
  * quando a página passa, o número lido da mesma base do destino. Nada é escrito à mão aqui: entra destino novo pelo catálogo.
- * Destino sem página leva o selo "em preparação" e nunca é link. O que o "Para você" da mesma entrada já oferece (com número)
- * não se repete aqui. Sem destino além da própria página, devolve null.
+ * Destino sem página leva o selo "em preparação" e nunca é link. O que o "Para você" da mesma entrada já oferece não se repete
+ * aqui: o cartão dele é link com ou sem número (o Atlas do Agronegócio, sem número, continua a um clique no "Para você"). Sem
+ * destino além da própria página, devolve null.
  */
 export function destinosDaColecao(
   colecao: string,
