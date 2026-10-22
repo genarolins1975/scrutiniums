@@ -12,9 +12,9 @@ export default function PercursoOrcamentario() {
   const [atual, setAtual] = useState(0);
   const etapa = etapas[atual];
   return <section className="ce-journey" aria-labelledby="ce-journey-title">
-    <div className="ce-journey-intro"><p className="ce-kicker">Guia de leitura / quatro perguntas</p><h2 id="ce-journey-title">O dinheiro percorre etapas.<br/>A análise também.</h2><p>Explore o caminho entre a autorização do gasto e os resultados dos serviços públicos.</p></div>
+    <div className="ce-journey-intro"><p className="rotulo ce-kicker">Guia de leitura / quatro perguntas</p><h2 id="ce-journey-title">O dinheiro percorre etapas.<br/>A análise também.</h2><p>Explore o caminho entre a autorização do gasto e os resultados dos serviços públicos.</p></div>
     <div className="ce-journey-grid"><ol className="ce-journey-steps" aria-label="Etapas da análise">{etapas.map((e, i) => <li key={e.titulo}><button type="button" aria-pressed={atual === i} aria-controls="ce-journey-answer" onClick={() => setAtual(i)}><span className="ce-step-number">0{i + 1}</span><span><strong>{e.titulo}</strong><small>{e.pergunta}</small></span><span aria-hidden="true">↗</span></button></li>)}</ol>
-      <div className="ce-journey-answer" id="ce-journey-answer"><p className="ce-kicker">0{atual + 1} / {etapa.palavra}</p><h3>{etapa.pergunta}</h3><p>{etapa.descricao}</p><div className="ce-journey-evidence"><span>O que procurar na evidência</span><p>{etapa.evidencia}</p></div><a href={etapa.destino}>{etapa.link} ↓</a></div>
+      <div className="ce-journey-answer" id="ce-journey-answer"><p className="rotulo ce-kicker">0{atual + 1} / {etapa.palavra}</p><h3>{etapa.pergunta}</h3><p>{etapa.descricao}</p><div className="ce-journey-evidence"><span>O que procurar na evidência</span><p>{etapa.evidencia}</p></div><a href={etapa.destino}>{etapa.link} ↓</a></div>
     </div><p className="ce-journey-note">Percurso conceitual, não fluxo financeiro medido. Qualidade, equidade e sustentabilidade atravessam todas as etapas.</p>
   </section>;
 }

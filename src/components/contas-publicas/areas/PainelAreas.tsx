@@ -82,7 +82,7 @@ function Abertura({r, c}: {r: Recorte; c: Composicao | null}) {
     <section className="cp-section cp-data-section" id="cem" aria-labelledby="cem-titulo">
       <div className="cp-section-head">
         <div>
-          <p className="cp-eyebrow">01 · Cada R$ 100 · {r.ano}{encerrado(r.ano) ? ' · exercício encerrado' : ' · exercício em andamento'}</p>
+          <p className="rotulo cp-eyebrow">01 · Cada R$ 100 · {r.ano}{encerrado(r.ano) ? ' · exercício encerrado' : ' · exercício em andamento'}</p>
           <h2 id="cem-titulo">De cada R$ 100 {plural} em {r.ano}, quanto foi para cada área?</h2>
           <p>{r.base === 'total'
             ? 'Todos os pagamentos do orçamento federal, inclusive a dívida pública, que aparece em bronze e à parte: ela não é uma área de governo.'
@@ -170,7 +170,7 @@ function DoOrcamentoAoPagamento({r}: {r: Recorte}) {
     <section className="cp-section cp-data-section" id="estagios" aria-labelledby="estagios-titulo">
       <div className="cp-section-head">
         <div>
-          <p className="cp-eyebrow">02 · Artefato didático · dados reais do SIOP · {r.ano}</p>
+          <p className="rotulo cp-eyebrow">02 · Artefato didático · dados reais do SIOP · {r.ano}</p>
           <h2 id="estagios-titulo">Do orçamento ao pagamento: quanto do autorizado chegou a ser pago em cada área?</h2>
           <p>Modelo didático do caminho de cada real, com os valores registrados no SIOP. Deixa de fora os restos a pagar, os bloqueios e os remanejamentos dentro do ano; mostra só a posição do fim do exercício{encerrado(r.ano) ? '' : ' (ou da última atualização, no ano em curso)'}.</p>
         </div>
@@ -228,7 +228,7 @@ function Serie({r}: {r: Recorte}) {
     <section className="cp-section cp-data-section" id="serie" aria-labelledby="serie-titulo">
       <div className="cp-section-head">
         <div>
-          <p className="cp-eyebrow">03 · Série · {FONTE_AREAS.primeiroAno} a {ANO_CORRENTE}</p>
+          <p className="rotulo cp-eyebrow">03 · Série · {FONTE_AREAS.primeiroAno} a {ANO_CORRENTE}</p>
           <h2 id="serie-titulo">Como mudou a parte de {nome} desde {FONTE_AREAS.primeiroAno}?</h2>
           <p>{NOME_ESTAGIO[r.estagio]} em cada exercício, {r.base === 'total' ? 'sobre todos os pagamentos, com a dívida' : 'sobre a despesa primária'}. A parte de cada R$ 100 compara anos sem depender da inflação; o valor em reais está em R$ correntes da época.</p>
         </div>
@@ -283,7 +283,7 @@ function Subfuncoes({r}: {r: Recorte}) {
     <section className="cp-section cp-data-section" id="subfuncoes" aria-labelledby="sub-titulo">
       <div className="cp-section-head">
         <div>
-          <p className="cp-eyebrow">04 · Detalhe · {r.ano}{encerrado(r.ano) ? '' : ' parcial'}</p>
+          <p className="rotulo cp-eyebrow">04 · Detalhe · {r.ano}{encerrado(r.ano) ? '' : ' parcial'}</p>
           <h2 id="sub-titulo">Dentro de {nome}: em que o dinheiro foi aplicado?</h2>
           <p>Cada <Termo id="subfuncao">subfunção</Termo> detalha a natureza da atuação dentro da área. Uma subfunção pode aparecer em outra área (por exemplo, Administração Geral em quase todas): o valor é o da combinação com {nome}.</p>
         </div>

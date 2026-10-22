@@ -27,22 +27,7 @@ const globals = ler("src/app/globals.css");
 type Regra = "hexadecimal" | "redefine --cor-*" | "corpo abaixo de 12 px" | "!text-[" | "text-[…] abaixo de 0,75 rem";
 // Lista de 22/10/2026 (PR 1 da Iniciativa 5).
 const EXCECOES: Record<string, { regras: Regra[]; ate: string }> = {
-  "src/components/agro/Agro.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/contas-publicas/IndiceFederal.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/eficiencia/AtlasCidadao.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/eficiencia/entrada/Entrada.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/eficiencia/entrada/MinhaCapitalAperitivo.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/eficiencia/judiciario/Internacional.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/eficiencia/judiciario/Judiciario.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/energia/ExploracaoInicial.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/energia/PercursoVisualEnergia.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/observatorios/EntradaEstado.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/app/app/(foco)/observatorios/escolha.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
-  "src/app/contas-publicas/contas.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
-  "src/app/contas-publicas-estaduais/estados.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
-  "src/app/setor-eletrico/atlas-inicial.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
   "public/obs/styles.css": { regras: ["hexadecimal", "corpo abaixo de 12 px"], ate: "PR 4 da Iniciativa 5 (aplicação do Crédito)" },
-  "public/obs/atlas.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
 };
 
 // ---------------------------------------------------------------------------------------------------- leitura dos arquivos

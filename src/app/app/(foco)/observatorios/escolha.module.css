@@ -1,7 +1,7 @@
 /* Mapa da área logada: lugar do leitor, diretório com filtro (DiretorioPaineis.module.css) e fontes recolhidas. */
 .pagina{background:var(--obs-papel);color:var(--obs-tinta);min-height:calc(100vh - 150px)}
 .conteudo{max-width:1320px;margin:0 auto;padding:0 32px 32px}
-.rotulo{font-family:var(--font-label),var(--font-sans),sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:400;line-height:1.6;color:var(--cor-mineral)}
+.legenda{line-height:1.6;color:var(--cor-mineral)}
 
 /* faixa "seu lugar": continuar, recortes, avisos */
 .lugar{max-width:1320px;margin:0 auto;padding:6px 32px;gap:4px 24px;border-bottom:1px solid var(--obs-regra);font-size:14px;line-height:1.5;color:var(--cor-carvao-muted)}
@@ -25,7 +25,7 @@
 .fontesLista>div{break-inside:avoid;margin-bottom:22px}
 .ficha{display:flex;align-items:flex-start;gap:8px 16px;border-top:1px solid var(--obs-regra)}
 .ficha details{flex:1;min-width:0}
-.selo{align-self:center;flex-shrink:0;font-family:var(--font-label),var(--font-sans),sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cor-bronze-dark);border:1px solid var(--cor-bronze-dark);padding:2px 7px;line-height:1.6}
+.selo{align-self:center;flex-shrink:0;font-family:var(--font-label),var(--font-sans),sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--cor-bronze-dark);border:1px solid var(--cor-bronze-dark);padding:2px 7px;line-height:1.6}
 .explorar{font:inherit;cursor:pointer;background:none;border:0;padding:0;display:inline-flex;align-items:center;gap:6px;min-height:44px;white-space:nowrap;font-size:13px;font-weight:600;color:var(--obs-tinta);text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--obs-regra)}
 .explorar:hover{color:var(--cor-bronze-dark);text-decoration-color:currentColor}
 .explorar:focus-visible{outline:3px solid var(--cor-energia);outline-offset:3px}
@@ -35,7 +35,7 @@
 .fontesLista details[open] summary span{transform:rotate(45deg)}
 .fontesLista summary:focus-visible{outline:3px solid var(--cor-energia);outline-offset:3px}
 .fontesLista details>div{padding:0 0 16px;font-size:13px;line-height:1.65;color:var(--cor-carvao-muted)}
-.fontesLista details .rotulo{margin:12px 0 6px;font-size:11px}
+.fontesLista details .legenda{margin:12px 0 6px;}
 .fontesLista ul{list-style:none;padding:0;margin:0;display:grid;gap:6px}
 
 @media (max-width:1100px){.fontesLista{columns:2}}

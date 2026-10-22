@@ -31,7 +31,7 @@ export default function ComparacaoEstadual({ano,uf,selecionar,inicial}:{ano:numb
  const pos=(v:number)=>(v-minimo)/amplitude*100;
  const linhas=c.linhas.slice().sort((a,b)=>ordem==='valor' ? a.valor===null ? b.valor===null?a.uf.localeCompare(b.uf):1 : b.valor===null?-1 : b.valor-a.valor||a.uf.localeCompare(b.uf) : a.uf.localeCompare(b.uf));
  const exportacao='/contas-publicas-estaduais/comparacao.csv?'+new URLSearchParams({ano:String(ano),indicador,regiao,df:df?'1':'0'});
- return <section id="comparacao" tabIndex={-1} className="ce-section ce-comparison"><div className="ce-section-heading"><div><p className="ce-kicker">01 / Panorama comparativo</p><h2>Uma pergunta. Os estados lado a lado.</h2></div><a className="ce-download" href={exportacao}>Baixar este recorte · CSV ↓</a></div>
+ return <section id="comparacao" tabIndex={-1} className="ce-section ce-comparison"><div className="ce-section-heading"><div><p className="rotulo ce-kicker">01 / Panorama comparativo</p><h2>Uma pergunta. Os estados lado a lado.</h2></div><a className="ce-download" href={exportacao}>Baixar este recorte · CSV ↓</a></div>
  <p>Compare a mesma medida e período. A linha de referência é a mediana das observações conferidas no recorte, com o mesmo peso para cada ente; não é uma meta ou um limite legal.</p>
  <div className="ce-question-grid" role="group" aria-label="Escolha a pergunta do panorama">{PERGUNTAS.map((p,i)=><button type="button" key={p.indicador} aria-pressed={indicador===p.indicador} aria-controls="ce-panorama-resultados" onClick={()=>alterar({indicador:p.indicador})}><span className="ce-question-index">0{i+1}<span aria-hidden="true">↗</span></span><strong>{p.titulo}</strong><small>{p.detalhe}</small></button>)}</div>
  <div id="ce-panorama-resultados">

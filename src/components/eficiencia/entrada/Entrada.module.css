@@ -29,7 +29,7 @@
 .hatch{stroke:var(--cor-obee-atlas-serie-territorio);opacity:.45}
 .outline{stroke:var(--cor-obee-atlas-serie-territorio);stroke-width:1.4;stroke-linejoin:round}
 .scaleBar line{stroke:var(--cor-obee-atlas-tinta);stroke-width:1.5}
-.scaleBar text{fill:var(--cor-obee-atlas-texto-secundario);font:11px var(--font-sans),system-ui,sans-serif}
+.scaleBar text{fill:var(--cor-obee-atlas-texto-secundario);font:12px var(--font-sans),system-ui,sans-serif}
 .retratoTitulo{font-family:"Playfair Display Variable",Georgia,serif;font-weight:400;font-size:22px;line-height:1.25;color:var(--cor-obee-atlas-tinta)}
 .retratoSub{margin-top:4px!important;font-size:14px;line-height:1.5;color:var(--cor-obee-atlas-texto-secundario)}
 .retratoChave{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:8px!important;font-size:14px;color:var(--cor-obee-atlas-tinta)}
@@ -62,7 +62,7 @@
 .coverage{padding-top:56px}
 .sectionHead{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:end;padding-bottom:28px;border-bottom:1px solid var(--line)}
 .sectionHead h2{font-size:clamp(28px,3.2vw,40px)!important;line-height:1.15!important;margin-top:10px!important}
-.eyebrow{font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--cor-obee-atlas-serie-territorio)}
+.eyebrow{color:var(--cor-obee-atlas-serie-territorio)}
 .sectionAside>p{font-size:15px;line-height:1.6;color:var(--muted);max-width:36rem}
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px!important;font-size:13px!important;color:var(--ink)!important}
 .legend span{display:inline-flex;align-items:center;gap:7px}
@@ -114,7 +114,7 @@
 .matrix{margin-top:8px}
 .matrixHead,.matrixRow summary{display:grid;grid-template-columns:minmax(0,1fr) repeat(6,minmax(44px,76px));align-items:center;gap:0}
 .matrixHead{position:sticky;top:0;z-index:1;background:var(--paper);padding:14px 0 10px;border-bottom:1px solid var(--ink);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.matrixHead span+span{text-align:center;font-size:11px;letter-spacing:.03em}
+.matrixHead span+span{text-align:center;font-size:12px;letter-spacing:.03em}
 .matrixGroupTitle{padding:22px 0 8px;font-size:12px!important;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .matrixRow{border-bottom:1px solid var(--line);scroll-margin-top:72px}
 .matrixRow summary{list-style:none;cursor:pointer;min-height:56px;padding:6px 0}
@@ -167,7 +167,7 @@
   .rowStrip{grid-column:auto}
   .sectionFoot{flex-direction:column;align-items:flex-start}
   .matrixHead,.matrixRow summary{grid-template-columns:minmax(0,1fr) repeat(6,30px)}
-  .matrixHead{font-size:10px;letter-spacing:0}
+  .matrixHead{font-size:12px;letter-spacing:0}
   .matrixHead span+span{writing-mode:vertical-rl;transform:rotate(180deg);justify-self:center;height:72px;text-align:left}
   .matrixName strong{font-size:15px}
   .matrixDetail dl div{grid-template-columns:1fr;gap:2px}

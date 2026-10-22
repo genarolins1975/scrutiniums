@@ -4,10 +4,10 @@
 .opcoes button[aria-pressed=true] { background:var(--atlas-fundo);color:var(--atlas-texto);box-shadow:inset 0 3px var(--atlas-acento) }
 .opcoes button:hover { box-shadow:inset 0 3px var(--atlas-borda-ativa) }
 .indice { display:flex;justify-content:space-between;width:100%;font-size:12px;letter-spacing:.08em;margin-bottom:6px }
-.rotulo { font-size:14px;min-height:42px;line-height:1.5 }
+.titulo {min-height:42px;line-height:1.5}
 .opcoes strong { font-family:var(--font-serif),Georgia,serif;font-size:34px;font-weight:400;line-height:1.2;font-variant-numeric:tabular-nums }
 .opcoes small { margin-top:6px;font-size:12px }
-.opcoes button>span:not(.rotulo):not(.indice) { font-size:13px }
+.opcoes button>span:not(.titulo):not(.indice) { font-size:13px }
 .barra { display:flex;gap:24px;align-items:center;justify-content:space-between;margin:16px 0 24px;font-size:13px;line-height:1.6 }
 .barra p { max-width:650px }.barra button { min-height:44px;flex-shrink:0;text-decoration:underline;text-underline-offset:4px }
 .respostas { padding:24px 32px;background:var(--cor-superficie);border-left:3px solid var(--atlas-borda-ativa) }
@@ -18,7 +18,7 @@
 .todas { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px }.todas article h3 { font-size:23px }
 .laboratorio { background:var(--atlas-fundo);color:var(--atlas-texto);padding:40px;margin:24px 0 48px;scroll-margin-top:100px }
 .labCabecalho { display:flex;justify-content:space-between;gap:40px;align-items:start;border-bottom:1px solid var(--atlas-separador);padding-bottom:24px }.labCabecalho>div { max-width:660px }.labCabecalho h2 { font-family:var(--font-serif),Georgia,serif;font-size:36px;line-height:1.2;margin:10px 0 16px }.labCabecalho p { line-height:1.65 }.labCabecalho a { min-height:44px;display:inline-flex;align-items:center;text-decoration:underline;color:var(--atlas-link);max-width:220px;line-height:1.6;font-size:14px }
-.sobretitulo { text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:var(--atlas-texto-secundario) }
+.sobretitulo {color:var(--atlas-texto-secundario)}
 .labGrade { display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:64px;margin-top:32px }
 .controles { padding-top:10px }.controles label { display:flex;justify-content:space-between;gap:10px;font-size:14px }.controles output { color:var(--atlas-link);font-variant-numeric:tabular-nums }.controles input { width:100%;height:44px;accent-color:var(--atlas-acento);margin:10px 0 24px }
 .presets { display:flex;flex-wrap:wrap;gap:10px }.presets button { border:1px solid var(--atlas-borda-controle);min-height:44px;padding:10px 14px;color:var(--atlas-texto);font-size:13px }
@@ -27,12 +27,12 @@
 .nota { font-size:12px;color:var(--atlas-texto-secundario);line-height:1.7;margin-top:28px;border-top:1px solid var(--atlas-separador);padding-top:18px }
 .explorador button:focus-visible,.laboratorio button:focus-visible,.laboratorio input:focus-visible,.laboratorio a:focus-visible { outline:3px solid var(--atlas-foco);outline-offset:4px }
 @media(max-width:760px) { .opcoes { grid-template-columns:repeat(2,minmax(0,1fr)) }.opcoes button { padding:16px }.opcoes strong { font-size:28px }.barra { display:block }.respostas { padding:20px }.todas { grid-template-columns:1fr }.labCabecalho { display:block }.labCabecalho a { margin-top:12px;max-width:none }.labGrade { grid-template-columns:1fr;gap:20px }.laboratorio { padding:24px }.labCabecalho h2 { font-size:30px } }
-@media(max-width:380px) { .opcoes { grid-template-columns:1fr }.rotulo { min-height:0 }.laboratorio { padding:18px }.resultado strong { font-size:34px } }
+@media(max-width:380px) { .opcoes { grid-template-columns:1fr }.titulo { min-height:0 }.laboratorio { padding:18px }.resultado strong { font-size:34px } }
 @media(prefers-reduced-motion:reduce) { .opcoes button { transition:none } }
 @media print { .opcoes,.barra,.controles { display:none }.resposta[hidden] { display:block }.resposta { margin-bottom:24px }.laboratorio { break-inside:avoid;background:white;color:black }.labGrade { display:block }.grafico { color:black }.nota,.resultado p { color:black } }
 
 .resposta { scroll-margin-top:120px }
-@media(min-width:381px) and (max-width:760px) { .rotulo { min-height:84px } }
+@media(min-width:381px) and (max-width:760px) { .titulo { min-height:84px } }
 
 .legendaGrafico { display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-size:13px;color:var(--atlas-texto-grafico) }
 @media(max-width:760px) { .grafico text { font-size:22px } }
