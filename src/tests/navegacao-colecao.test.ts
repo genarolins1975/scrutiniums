@@ -214,6 +214,16 @@ describe("componente NavegacaoColecao", () => {
     expect(destinoAtual(nav, "/aperitivo/saneamento")).toMatchObject({ item: 1 });
   });
 
+  it("na primeira página de um grupo, que tem o mesmo endereço do grupo, a subpágina é a atual e o grupo só fica destacado", () => {
+    const nav = navegacaoDaColecao("federais");
+    const capitulos = nav.itens.findIndex((i) => i.rotulo === "Capítulos");
+    expect(destinoAtual(nav, "/contas-publicas/panorama")).toMatchObject({ item: capitulos, sub: 0 });
+    const h = render(nav, "/contas-publicas/panorama");
+    const atuais = (h.match(/<a [^>]*aria-current="page"[^>]*>[\s\S]*?<\/a>/g) ?? []).map((a) => a.replace(/<[^>]+>/g, ""));
+    expect(atuais).toEqual(["Panorama das contas"]);
+    expect(h).toContain("(grupo da página atual)");
+  });
+
   it("nenhum menu suspenso por grupo nem botão 'Menu' no componente", () => {
     const src = ler("src/components/layout/NavegacaoColecaoCliente.tsx");
     expect((src.match(/<DetalhesFechaveis/g) ?? []).length).toBe(1);
