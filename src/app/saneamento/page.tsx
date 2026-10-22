@@ -1,5 +1,6 @@
 // Medida do caminho mínimo do CI (PR do Ciclo P1, 22/10/2026): comentário sem efeito no HTML; esta branch não entra no main.
 // Segundo push da medida: mede o build com o cache do .next gravado pelo primeiro.
+// Terceiro push da medida: Chromium em segundo plano.
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
