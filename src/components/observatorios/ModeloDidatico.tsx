@@ -41,7 +41,7 @@ export function ModeloDidatico({
     </>
   );
   const fora = (
-    <div className="mt-10 max-w-prose2 border-t border-linha pt-5" data-deixa-de-fora="">
+    <div className="mt-8 max-w-prose2 border-t border-linha pt-5 md:mt-10" data-deixa-de-fora="">
       <h3 id={`${id}-fora`} className="rotulo text-mineral">
         O que este modelo deixa de fora
       </h3>
@@ -56,14 +56,14 @@ export function ModeloDidatico({
     <section id={id} aria-labelledby={`${id}-titulo`} data-modelo-didatico="" className={`border-y border-linha ${fundo === "marfim" ? "bg-marfim" : "bg-papel"}`}>
       {largo ? (
         <>
-          <div className="mx-auto max-w-page px-6 pt-14 md:pt-16">{cabeca}</div>
+          <div className="mx-auto max-w-page px-6 pt-10 md:pt-16">{cabeca}</div>
           {children}
-          <div className="mx-auto max-w-page px-6 pb-14 md:pb-16">{fora}</div>
+          <div className="mx-auto max-w-page px-6 pb-10 md:pb-16">{fora}</div>
         </>
       ) : (
-        <div className="mx-auto max-w-page px-6 py-14 md:py-16">
+        <div className="mx-auto max-w-page px-6 py-10 md:py-16">
           {cabeca}
-          <div className="mt-10">{children}</div>
+          <div className="mt-8 md:mt-10">{children}</div>
           {fora}
         </div>
       )}

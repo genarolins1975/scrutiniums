@@ -119,7 +119,7 @@ export function EntradaColecao({
     <Raiz principal={principal} id={principal ? idPrincipal : undefined} className={classe ? `bg-papel ${classe}` : "bg-papel"} tipo={tipo}>
       <section aria-labelledby={idTitulo} className="border-b border-linha bg-marfim" data-fatia="abertura">
         {frescor}
-        <div className="mx-auto max-w-page px-6 pb-12 pt-10 md:pb-14 md:pt-12">
+        <div className="mx-auto max-w-page px-6 pb-10 pt-8 md:pb-14 md:pt-12">
           <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
             <RotuloContexto rota={rota} className="flex items-center gap-3 text-mineral" marca={<span aria-hidden="true" className={`h-[3px] w-8 shrink-0 ${a.filete}`} />} />
             {aoLadoDoRotulo}
@@ -162,9 +162,9 @@ export function Escala({ escala, nota }: Readonly<{ escala: readonly NumeroPorta
   return (
     <div data-fatia="escala">
       <h2 className="sr-only">O tema em números</h2>
-      <dl className={`mt-10 grid gap-px border border-linha bg-linha sm:grid-cols-2 ${escala.length >= 4 ? "lg:grid-cols-4" : escala.length === 3 ? "lg:grid-cols-3" : ""}`}>
+      <dl className={`mt-6 grid md:mt-10 gap-px border border-linha bg-linha sm:grid-cols-2 ${escala.length >= 4 ? "lg:grid-cols-4" : escala.length === 3 ? "lg:grid-cols-3" : ""}`}>
         {escala.map((n) => (
-          <div key={n.rotulo} className="flex flex-col bg-papel p-5" data-numero-escala="">
+          <div key={n.rotulo} className="flex flex-col bg-papel p-4 sm:p-5" data-numero-escala="">
             <dt className="text-sm leading-snug text-carvao-muted">{n.rotulo}</dt>
             <dd className="mt-2">
               <NumeroEscala n={n} grande />
@@ -187,7 +187,7 @@ export function Escala({ escala, nota }: Readonly<{ escala: readonly NumeroPorta
 function Caminhos({ caminhos, hover }: Readonly<{ caminhos: readonly CaminhoEntrada[]; hover: string }>) {
   const n = caminhos.length;
   return (
-    <section aria-labelledby="caminhos-titulo" className="mx-auto max-w-page px-6 py-14 md:py-16" data-fatia="caminhos">
+    <section aria-labelledby="caminhos-titulo" className="mx-auto max-w-page px-6 py-10 md:py-16" data-fatia="caminhos">
       <h2 id="caminhos-titulo" className={H2}>
         Perguntas para começar
       </h2>
@@ -225,14 +225,14 @@ export function DestinosColecao({
   const aVista = itens.slice(0, DESTINOS_A_VISTA);
   const resto = itens.slice(DESTINOS_A_VISTA);
   return (
-    <section aria-labelledby="destinos-titulo" className="mx-auto max-w-page px-6 py-14 md:py-16">
+    <section aria-labelledby="destinos-titulo" className="mx-auto max-w-page px-6 py-10 md:py-16">
       <h2 id="destinos-titulo" className={H2}>
         {titulo}
       </h2>
       {descricao && <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">{descricao}</p>}
       <ul className="mt-6 grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-4">
-        {aVista.map((d) => (
-          <CartaoDestino key={d.href + d.titulo} d={d} />
+        {aVista.map((d, i) => (
+          <CartaoDestino key={d.href + d.titulo} d={d} classe={i === aVista.length - 1 ? fechaLinha(aVista.length) : ""} />
         ))}
       </ul>
       {resto.length > 0 && (
@@ -242,8 +242,8 @@ export function DestinosColecao({
             <span className="hidden group-open/mais:inline">Menos destinos</span>
           </summary>
           <ul className="mt-2 grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-4">
-            {resto.map((d) => (
-              <CartaoDestino key={d.href + d.titulo} d={d} />
+            {resto.map((d, i) => (
+              <CartaoDestino key={d.href + d.titulo} d={d} classe={i === resto.length - 1 ? fechaLinha(resto.length) : ""} />
             ))}
           </ul>
         </details>
@@ -252,7 +252,14 @@ export function DestinosColecao({
   );
 }
 
-function CartaoDestino({ d }: Readonly<{ d: DestinoEntrada }>) {
+/** O último cartão ocupa o que sobra da linha, em duas e em quatro colunas, para a grade não deixar célula vazia. */
+function fechaLinha(n: number): string {
+  const sm = n % 2 === 1 ? "sm:col-span-2" : "";
+  const lg = ["lg:col-span-1", "lg:col-span-4", "lg:col-span-3", "lg:col-span-2"][n % 4];
+  return `${sm} ${lg}`;
+}
+
+function CartaoDestino({ d, classe = "" }: Readonly<{ d: DestinoEntrada; classe?: string }>) {
   const corpo = (
     <>
       <span className="flex flex-wrap items-baseline gap-x-2 font-serif text-lg leading-snug text-carvao">
@@ -270,7 +277,7 @@ function CartaoDestino({ d }: Readonly<{ d: DestinoEntrada }>) {
   );
   // destino em preparação nunca é link
   return (
-    <li className="bg-papel">
+    <li className={`bg-papel ${classe}`}>
       {d.prontidao === "preparacao" ? (
         <span className="flex h-full flex-col p-5">{corpo}</span>
       ) : (

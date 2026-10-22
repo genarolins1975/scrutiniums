@@ -6,7 +6,7 @@ import type { EtapaOrcamento } from "@/lib/observatorios/entradas/familias";
 /** Modelo didático do orçamento doméstico: quatro etapas ligadas aos painéis do Observatório das Famílias. */
 export function OrcamentoFamilia({ orcamento }: Readonly<{ orcamento: EtapaOrcamento[] }>) {
   return (
-    <ModeloDidatico id="orcamento" titulo={<>Como o dinheiro circula no orçamento de uma família</>} descricao={<>Quatro etapas que ligam os painéis do observatório: o que entra, o essencial, o crédito quando falta e os riscos. O modelo mostra relações entre as partes, não a conta de uma família real. Ele deixa de fora poupança, impostos e gastos não essenciais, que a plataforma ainda não mede.</>} deixaDeFora={["Poupança", "Impostos", "Gastos não essenciais, que a plataforma ainda não mede", "A conta de uma família real: o modelo mostra relações entre as partes"]}>
+    <ModeloDidatico id="orcamento" titulo={<>Como o dinheiro circula no orçamento de uma família</>} descricao={<>Quatro etapas que ligam os painéis do observatório: o que entra, o essencial, o crédito quando falta e os riscos.</>} deixaDeFora={["Poupança", "Impostos", "Gastos não essenciais, que a plataforma ainda não mede", "A conta de uma família real: o modelo mostra relações entre as partes"]}>
         <ol className="grid gap-6 md:grid-cols-2 xl:grid-cols-4 xl:gap-0">
           {orcamento.map((etapa, i) => (
             <li key={etapa.id} className="relative xl:pr-10">
