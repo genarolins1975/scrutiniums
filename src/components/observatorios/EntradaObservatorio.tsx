@@ -12,10 +12,11 @@ const VISIVEIS = 8;
 
 function ListaPaineis({ paineis }: Readonly<{ paineis: ColecaoEntrada["paineis"] }>) {
   return (
-    <ul className="mt-3 space-y-1">
+    // no celular, duas colunas (a origem desce para baixo do nome); de 640 px em diante, uma lista por coleção, com a origem à direita
+    <ul className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 sm:grid-cols-1">
       {paineis.map((p) => (
-        <li key={p.href}>
-          <Link href={p.href} prefetch={false} className="group flex min-h-[44px] items-baseline justify-between gap-3 border-t border-linha py-2 text-sm text-carvao">
+        <li key={p.href} className="min-w-0">
+          <Link href={p.href} prefetch={false} className="group flex min-h-[44px] flex-col justify-center gap-0.5 border-t border-linha py-2 text-sm text-carvao sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
             <span className="group-hover:underline">{p.titulo}</span>
             {p.origem && <span className="shrink-0 text-xs text-mineral">{p.origem}</span>}
           </Link>
@@ -76,7 +77,7 @@ export function EntradaObservatorio({
 /** Fatia "Destinos" de uma entrada de observatório: as coleções, cada uma com os seus painéis. */
 function ColecoesDoObservatorio({ colecoes }: Readonly<{ colecoes: ColecaoEntrada[] }>) {
   return (
-    <section aria-labelledby="colecoes-titulo" className="mx-auto max-w-page px-6 py-14 md:py-16">
+    <section aria-labelledby="colecoes-titulo" className="mx-auto max-w-page px-6 py-10 md:py-16">
       <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-4">
           <h2 id="colecoes-titulo" className="font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao">As coleções</h2>

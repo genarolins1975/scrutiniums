@@ -116,6 +116,20 @@ Critério de aceite: atendido na autoavaliação (nenhuma página abaixo de 8 em
 
 **Capturas.** Antes e depois em `/tmp/claude-0/-home-user-scrutiniums/edbbf738-1d91-5b76-9c6e-d438c08d2fb4/scratchpad/onda3-energia/` (`antes/` e `depois/`, dobra e página inteira a 1440 e 390 px), fora do repositório.
 
+## Molde único de entrada, Iniciativa 4
+
+Rodada de 22/10/2026 da Iniciativa 4 do parecer de UX (`EntradaColecao`, `NumeroEscala`, `ModeloDidatico`, `SeloProntidao`, `Recolhido`), uma linha por entrada migrada. Medido no build de produção (`next start`) com sessão de teste: altura total e topo do primeiro número por `scripts/ux-medidas.mjs`, axe-core 4.12 (WCAG 2.0 e 2.1, A e AA) a 1440 px e rolagem horizontal a 1440 e 390 px. Notas da rubrica (seção 10 da skill observatorio-layout) na ordem: direção de arte, hierarquia, tipografia, densidade, didática, comparabilidade, interação e acessibilidade, responsividade. Autoavaliação, não revisão independente; leitor de tela não verificado.
+
+| Entrada | PR | Altura 1440 / 390 (antes → depois) | 1º número 1440 / 390 | axe · rolagem | Rubrica | Limitação remanescente |
+|---|---|---|---|---|---|---|
+| `/observatorios/familias` | 1 | 5.802 → 6.003 / 11.390 → 10.988 | 580 / 582 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 9 · 8 · 8 · 8 | A 390 px fica a 12 px do orçamento de 11.000; o modelo didático é a fatia mais alta (cerca de 3.000 px) |
+| `/observatorios/servicos-publicos` | 1 | 4.953 → 5.147 / 10.624 → 10.503 | 580 / 617 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 8 · 8 · 8 · 8 | O título ocupa quatro linhas a 390 px |
+| `/observatorios/contas-publicas` | 1 | 5.231 → 5.446 / 10.283 → 10.214 | 552 / 556 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 9 · 8 · 8 · 8 | Nenhuma nova |
+| `/observatorios/energia-e-infraestrutura` | 1 | 5.067 → 5.279 / 10.218 → 9.745 | 551 / 590 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 9 · 8 · 8 · 8 | Nenhuma nova |
+| `/observatorios/economia` | 1 | 5.219 → 5.414 / 10.879 → 10.517 | 524 / 504 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 8 · 8 · 8 · 8 | Nenhuma nova |
+
+A 1440 px as cinco entradas ganharam cerca de 200 px com a lista "O que este modelo deixa de fora", que o molde torna obrigatória; a 390 px, as listas de painéis das coleções passaram a duas colunas e o respiro vertical do molde ficou mais justo, sem retirar conteúdo.
+
 ## Pendências
 
 - Teste com leitor de tela nas seis entradas e nas cinco consultas abertas.
