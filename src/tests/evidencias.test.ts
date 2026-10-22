@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { lerArgumentos, linhaTabela, nomeArquivo, tabelaMarkdown } from "../../scripts/evidencias.mjs";
+import { caiuNoLogin, lerArgumentos, linhaTabela, nomeArquivo, nomesDasRotas, tabelaMarkdown } from "../../scripts/evidencias.mjs";
 
 /** `npm run evidencias` gera a tabela que vai para o PR: o que ela diz precisa ser o que foi medido. */
 
@@ -26,6 +26,11 @@ describe("argumentos", () => {
     expect(nomeArquivo("/", 390, "sem")).toBe("inicio-390-sem-sessao.jpg");
     expect(nomeArquivo("/", 390, "sem", "-primeira-tela")).toBe("inicio-390-sem-sessao-primeira-tela.jpg");
   });
+  it("rotas que dariam o mesmo nome de captura recebem nomes distintos", () => {
+    const nomes = nomesDasRotas(["/a-b", "/a/b", "/", "/a-b", "/a_b"]);
+    expect([...nomes]).toEqual([["/a-b", "a_b"], ["/a/b", "a_b-2"], ["/", "inicio"], ["/a_b", "a_b-3"]]);
+    expect(nomeArquivo("/a/b", 390, "com", "", nomes.get("/a/b"))).toBe("a_b-2-390-com-sessao.jpg");
+  });
 });
 
 describe("tabela", () => {
@@ -39,8 +44,24 @@ describe("tabela", () => {
   });
   it("mostra o endereço final quando a rota redireciona e o erro quando não carrega", () => {
     expect(linhaTabela({ ...base, final: "/entrar?proximo=%2Fx" })).toContain("| `/entrar?proximo=%2Fx` |");
-    expect(linhaTabela({ rota: "/x", modo: "com", largura: 390, erro: "Timeout | 120000 ms" })).toContain("| erro |");
+    const erro = linhaTabela({ rota: "/x", modo: "com", largura: 390, erro: "Timeout | 120000 ms" });
+    expect(erro).toContain("| **erro**: Timeout / 120000 ms |");
     expect(linhaTabela({ rota: "/x", modo: "com", largura: 390, erro: "a | b" })).not.toContain("a | b");
+    // mesma quantidade de colunas do cabeçalho: o erro não pode cair na coluna Login
+    const colunas = (linha: string) => linha.split("|").length - 2;
+    expect(colunas(erro)).toBe(12);
+    expect(colunas(linhaTabela(base))).toBe(12);
+    expect(erro.trimEnd().endsWith("|  |  |  |  |  |  |  |  |")).toBe(true);
+  });
+  it("conta uma vez a requisição que caiu no login", () => {
+    // o 3xx que manda para /entrar conta; a requisição a /entrar que o segue, não
+    expect(caiuNoLogin({ status: 302, location: "/entrar?de=%2Fenergia%2Fa.json", caminho: "/energia/a.json", redirecionada: false })).toBe(true);
+    expect(caiuNoLogin({ status: 200, location: undefined, caminho: "/entrar", redirecionada: true })).toBe(false);
+    expect(caiuNoLogin({ status: 307, location: "http://localhost:3000/entrar", caminho: "/api/x", redirecionada: false })).toBe(true);
+    // pedido direto a /entrar conta; redirecionamento para outro lugar e resposta comum, não
+    expect(caiuNoLogin({ status: 200, location: undefined, caminho: "/entrar", redirecionada: false })).toBe(true);
+    expect(caiuNoLogin({ status: 301, location: "/saneamento", caminho: "/saneamento/", redirecionada: false })).toBe(false);
+    expect(caiuNoLogin({ status: 200, location: undefined, caminho: "/entrarx", redirecionada: false })).toBe(false);
   });
   it("traz cabeçalho com build, máquina, comando e o detalhe de console e login", () => {
     const md = tabelaMarkdown([{ ...base, console: ["TypeError: x"], login: ["/energia/gold/a.json"] }], { data: "2026-10-22", build: "abc", maquina: "4 vCPU, 16 GB", comando: "npm run evidencias -- --rotas /x", tempo: "1 min 00 s" });

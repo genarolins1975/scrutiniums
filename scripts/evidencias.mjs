@@ -45,12 +45,40 @@ export function lerArgumentos(argv) {
   return opcoes;
 }
 
-export const nomeArquivo = (rota, largura, modo, sufixo = "") =>
-  `${rota === "/" ? "inicio" : rota.replace(/^\//, "").replace(/[^a-z0-9]+/gi, "_")}-${largura}-${modo}-sessao${sufixo}.jpg`;
+const nomeDaRota = (rota) => (rota === "/" ? "inicio" : rota.replace(/^\//, "").replace(/[^a-z0-9]+/gi, "_"));
+
+/**
+ * Nome base das capturas de cada rota, no padrão de docs/ux-2026-10-21. Rotas que dariam o mesmo nome (/a-b e /a/b)
+ * ganham sufixo pela ordem pedida, para uma captura não sobrescrever a outra.
+ */
+export function nomesDasRotas(rotas) {
+  const usados = new Map();
+  const nomes = new Map();
+  for (const rota of rotas) {
+    if (nomes.has(rota)) continue;
+    const nome = nomeDaRota(rota);
+    const vez = (usados.get(nome) ?? 0) + 1;
+    usados.set(nome, vez);
+    nomes.set(rota, vez === 1 ? nome : `${nome}-${vez}`);
+  }
+  return nomes;
+}
+
+export const nomeArquivo = (rota, largura, modo, sufixo = "", base = nomeDaRota(rota)) => `${base}-${largura}-${modo}-sessao${sufixo}.jpg`;
+
+/**
+ * Requisição da página (arquivo, dado, API) que caiu no login: a resposta 3xx que manda para /entrar, ou um pedido
+ * direto a /entrar. A requisição a /entrar que segue um redirecionamento já contado não conta de novo.
+ */
+export function caiuNoLogin({ status, location, caminho, redirecionada }) {
+  if (status >= 300 && status < 400) return /\/entrar(\?|$)/.test(location ?? "");
+  return caminho === "/entrar" && !redirecionada;
+}
 
 /** Uma linha da tabela por página medida. */
 export function linhaTabela(r) {
-  if (r.erro) return `| \`${r.rota}\` | ${r.modo} | ${r.largura} | erro | | | | | | | ${r.erro.replace(/\|/g, "/")} |`;
+  // as 12 colunas do cabeçalho; o erro fica na coluna HTTP, e as medidas que não existiram ficam vazias
+  if (r.erro) return `| ${[`\`${r.rota}\``, r.modo, r.largura, `**erro**: ${r.erro.replace(/\|/g, "/")}`, ...Array(8).fill("")].join(" | ")} |`;
   const orc = ORCAMENTO[r.largura];
   const cromo = !r.barra ? "sem barra comum" : `${r.cromo}${orc ? (r.cromo <= orc ? ` (até ${orc})` : ` **acima de ${orc}**`) : ""}`;
   const h1 = r.topoH1 === null ? "**sem H1**" : r.topoH1 <= (TOPO_H1_MAXIMO[r.largura] ?? ALTURAS[r.largura]) ? "sim" : "**não**";
@@ -83,7 +111,7 @@ function chromiumExecutavel() {
   return candidato && existsSync(candidato) ? candidato : undefined;
 }
 
-async function medirPagina(contexto, origem, rota, largura, modo, saida) {
+async function medirPagina(contexto, origem, rota, largura, modo, saida, base) {
   const pagina = await contexto.newPage();
   const consoleErros = [];
   const login = [];
@@ -92,8 +120,9 @@ async function medirPagina(contexto, origem, rota, largura, modo, saida) {
   pagina.on("response", (r) => {
     // a navegação da própria página fica de fora: o redirecionamento dela aparece no endereço final
     if (r.request().isNavigationRequest() && r.frame() === pagina.mainFrame()) return;
-    const destino = r.headers().location ?? "";
-    if ((r.status() >= 300 && r.status() < 400 && /\/entrar(\?|$)/.test(destino)) || new URL(r.url()).pathname === "/entrar") login.push(r.url().replace(origem, ""));
+    if (caiuNoLogin({ status: r.status(), location: r.headers().location, caminho: new URL(r.url()).pathname, redirecionada: !!r.request().redirectedFrom() })) {
+      login.push(r.url().replace(origem, ""));
+    }
   });
   try {
     const resposta = await pagina.goto(origem + rota, { waitUntil: "networkidle", timeout: 120_000 });
@@ -105,8 +134,8 @@ async function medirPagina(contexto, origem, rota, largura, modo, saida) {
       const r = await window.axe.run(document, { runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"] } });
       return r.violations.map((v) => ({ id: v.id, impacto: v.impact, nos: v.nodes.length, alvos: v.nodes.slice(0, 3).map((n) => n.target.join(" ")) }));
     });
-    const captura = nomeArquivo(rota, largura, modo);
-    const primeiraTela = nomeArquivo(rota, largura, modo, "-primeira-tela");
+    const captura = nomeArquivo(rota, largura, modo, "", base);
+    const primeiraTela = nomeArquivo(rota, largura, modo, "-primeira-tela", base);
     await pagina.screenshot({ path: join(saida, primeiraTela), type: "jpeg", quality: 80 });
     await pagina.screenshot({ path: join(saida, captura), fullPage: true, type: "jpeg", quality: 70 });
     return { rota, modo, largura, status: resposta?.status() ?? null, final: pagina.url().replace(origem, ""), barra, cromo: cromo.cromo, topoH1: cromo.topoH1,
@@ -124,22 +153,25 @@ export async function executar(argv) {
   mkdirSync(saida, { recursive: true });
   const inicio = Date.now();
   const servidor = await subirServidorLocal();
-  const navegador = await chromium.launch({ executablePath: chromiumExecutavel() });
+  const nomes = nomesDasRotas(opcoes.rotas);
   const resultados = [];
+  let navegador;
   try {
+    // dentro do try: se o Chromium não abrir, o next start e as pastas temporárias são encerrados do mesmo jeito
+    navegador = await chromium.launch({ executablePath: chromiumExecutavel() });
     for (const modo of opcoes.modos) for (const largura of opcoes.larguras) {
       const contexto = await navegador.newContext({ viewport: { width: largura, height: ALTURAS[largura] }, deviceScaleFactor: 1, reducedMotion: "reduce" });
       await contexto.addInitScript({ path: require.resolve("axe-core/axe.min.js") });
       if (modo === "com") await contexto.addCookies([servidor.cookie]);
       for (const rota of opcoes.rotas) {
-        const r = await medirPagina(contexto, servidor.origem, rota, largura, modo, saida);
+        const r = await medirPagina(contexto, servidor.origem, rota, largura, modo, saida, nomes.get(rota));
         resultados.push(r);
         console.log(`${modo} sessão ${String(largura).padStart(4)} ${rota}  ${r.erro ? "ERRO " + r.erro : `HTTP ${r.status} cromo=${r.cromo} axe=${r.axe.length} console=${r.console.length} login=${r.login.length}`}`);
       }
       await contexto.close();
     }
   } finally {
-    await navegador.close();
+    await navegador?.close();
     await servidor.encerrar();
   }
   const ordem = (r) => [opcoes.rotas.indexOf(r.rota), opcoes.modos.indexOf(r.modo), opcoes.larguras.indexOf(r.largura)];
