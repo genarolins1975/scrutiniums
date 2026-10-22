@@ -210,6 +210,15 @@ describe("componente NavegacaoColecao", () => {
     expect((h.match(/<a [^>]*>/g) ?? []).some((a) => a.includes('href="/setor-eletrico/dados"') && a.includes("data-atual"))).toBe(true);
   });
 
+  it("tema da Eficiência dentro de outra coleção leva para a linha 2 também as ações dele (dados, métodos, comparar)", () => {
+    const subs = (id: string, rotulo: string) => navegacaoDaColecao(id).itens.find((i) => i.rotulo === rotulo)?.subpaginas?.map((s) => s.href) ?? [];
+    expect(subs("protecao", "Segurança alimentar")).toEqual(expect.arrayContaining(["/eficiencia-estatal/seguranca-alimentar/dados", "/eficiencia-estatal/seguranca-alimentar/metodos"]));
+    expect(subs("justica", "Acesso à Justiça")).toContain("/eficiencia-estatal/acesso-justica/dados");
+    expect(subs("saneamento", "Nas capitais")).toContain("/eficiencia-estatal/saneamento/dados");
+    expect(subs("conectividade", "Energia e conectividade nas capitais")).toContain("/eficiencia-estatal/energia-conectividade/metodos");
+    expect(destinoAtual(navegacaoDaColecao("protecao"), "/eficiencia-estatal/seguranca-alimentar/dados")).toMatchObject({ sub: expect.any(Number), atalho: null });
+  });
+
   it("'Mais' é um details fechável no desktop; no celular os mesmos itens entram no fim da faixa", () => {
     const nav = navegacaoDaColecao("saneamento");
     expect(nav.itens.length).toBeGreaterThan(MAX_A_VISTA);

@@ -230,7 +230,7 @@ function educacao(): Montagem {
     itens: [
       pagina("Início", ROTA_EDUCACAO),
       // o painel das capitais (Eficiência Estatal), com as abas dele na segunda linha
-      temaComoGrupo(capitais, TITULO_CAPITAIS),
+      temaComoGrupo(capitais, TITULO_CAPITAIS, [`${ROTA_CAPITAIS}/metodos`]),
       ...paineisDaColecao("servicos-publicos", "educacao", [ROTA_EDUCACAO, ROTA_CAPITAIS]),
     ],
     atalhos: { metodo: `${ROTA_CAPITAIS}/metodos` },
@@ -288,8 +288,12 @@ function doTema(t: TemaEficiencia, extras: PaginaNav[] = []): Montagem {
   };
 }
 
-/** Um tema como grupo de outra coleção: leva à entrada dele e expõe as abas (e o comparar) na segunda linha. */
-const temaComoGrupo = (t: TemaEficiencia, rotulo = t.nome) => grupo(rotulo, [...paginasDoTema(t), ...compararDoTema(t)]);
+/**
+ * Um tema como grupo de outra coleção: leva à entrada dele e expõe na segunda linha as abas e todas as ações (comparar, dados,
+ * métodos), porque os atalhos da linha 1 são os da coleção dona, não os do tema. `fora`: ação que já é atalho da coleção dona.
+ */
+const temaComoGrupo = (t: TemaEficiencia, rotulo = t.nome, fora: (string | undefined)[] = []) =>
+  grupo(rotulo, [...paginasDoTema(t), ...t.acoes.map(([c, r]) => pagina(r, hrefDoTema(t, c))).filter((p) => !fora.includes(p.href))]);
 
 const levarDe = (...ts: TemaEficiencia[]) => {
   const l = Array.from(new Set(ts.flatMap((t) => t.levar ?? [])));
