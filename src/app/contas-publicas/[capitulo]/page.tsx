@@ -10,6 +10,7 @@ import {META_INFO,consultarMetas} from '@/lib/contas-publicas/metas-dados';
 import {seriePlano} from '@/lib/contas-publicas/planejamento';
 import {FONTE_RIGIDEZ,serieRigidez} from '@/lib/contas-publicas/riscos';
 import {PainelFiscal,PainelOrcamento} from '@/components/contas-publicas/PaineisDados';
+import {FluxoFederal} from '@/components/contas-publicas/artefatos/FluxoFederal';
 import {RecorteCompartilhavel} from '@/components/contas-publicas/RecorteCompartilhavel';
 import {ResumoFiscalAbertura} from '@/components/contas-publicas/ResumoFiscalAbertura';
 import type {Metadata} from 'next';
@@ -34,7 +35,7 @@ export default function Page({params}:{params:{capitulo:string}}){
   <header className="cp-chapter-header"><p className="rotulo cp-eyebrow">{c.etapa} · Dados disponíveis · recorte parcial</p><h1>{c.pergunta}</h1><p className="cp-lead">{c.entrega}</p><p className="cp-note cp-chapter-limit">{c.limite}</p></header>
   {c.id==='panorama'&&<ResumoFiscalAbertura/>}
   {/* os outros painéis estão na navegação da coleção (NavegacaoColecao), acima do título */}<div className="cp-chapter-tools"><RecorteCompartilhavel/></div>
-  {c.id==='panorama'&&<PainelFiscal/>}{c.id==='execucao'&&<PainelOrcamento/>}{c.id==='restos-a-pagar'&&<PainelRAP/>}{c.id==='custos'&&<PainelCustos/>}{c.id==='metas'&&<PainelMetas inicial={consultarMetas({busca:'',orgao:'',estado:'calculavel'})} info={META_INFO}/>}
+  {c.id==='panorama'&&<><FluxoFederal/><PainelFiscal/></>}{c.id==='execucao'&&<PainelOrcamento/>}{c.id==='restos-a-pagar'&&<PainelRAP/>}{c.id==='custos'&&<PainelCustos/>}{c.id==='metas'&&<PainelMetas inicial={consultarMetas({busca:'',orgao:'',estado:'calculavel'})} info={META_INFO}/>}
   {c.id==='planejamento'&&<PainelPlanejamento anos={seriePlano()}/>}
   {c.id==='beneficios'&&<PainelBeneficios/>}
   {c.id==='riscos'&&<><PainelRigidez anos={serieRigidez()} fonte={FONTE_RIGIDEZ}/><PainelDivida/></>}
