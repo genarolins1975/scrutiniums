@@ -195,7 +195,9 @@ describe("componente", () => {
   it("numa página aberta (versão aperitivo, marcada por PaginaAberta), todo destino fechado leva o selo, e o aberto não", () => {
     // princípio do aperitivo (20/10/2026): a entrada da Eficiência Estatal no endereço público é o painel completo de quem
     // tem conta; a página aberta é a versão aperitivo, que se declara aberta pelo layout de src/app/aperitivo
-    expect(ENTRADAS.filter((e) => ehRotaPublica(e))).toEqual(["/eficiencia-estatal"]);
+    // desde a Iniciativa 4 (22/10/2026), as entradas de Conectividade, Educação nos municípios e Previdência (painéis de uma coleção
+    // só, com versão aperitivo no mesmo endereço) também têm o bloco, e seguem a mesma regra
+    expect(ENTRADAS.filter((e) => ehRotaPublica(e)).sort()).toEqual(["/conectividade", "/contas-publicas/previdencia", "/educacao-municipal", "/eficiencia-estatal"]);
     caminho.atual = "/eficiencia-estatal";
     expect(html("/eficiencia-estatal" as EntradaParaVoce)).not.toContain("data-selo-conta");
     for (const e of ENTRADAS) {

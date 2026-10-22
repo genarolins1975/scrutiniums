@@ -180,7 +180,8 @@ describe("educação nos municípios: painel completo (com sessão)", () => {
     expect(t).toContain(`${gold.cobertura.ai.municipal.com_ideb.toLocaleString("pt-BR")} de ${gold.municipios.total.toLocaleString("pt-BR")} municípios`);
     expect(t).toContain(fmt(gold.censo.brasil.mat_municipal / 1e6, 2));
     expect(t).toContain(`INEP, Ideb ${gold.ideb.ano}`);
-  });
+    // a primeira renderização do painel monta o índice da busca uma vez (os destinos da coleção leem os resumos dele)
+  }, 30_000);
 
   it("todas as seções por pergunta, o método recolhido e os quatro arquivos; nenhum selo no painel completo", async () => {
     const html = await painel();
