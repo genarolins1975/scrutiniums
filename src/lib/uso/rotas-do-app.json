@@ -30,6 +30,7 @@
   "/app/conta",
   "/app/observatorios",
   "/boletim/sair",
+  "/buscar",
   "/cadastro",
   "/cadastro/acesso",
   "/cadastro/perfil",
