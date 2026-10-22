@@ -27,44 +27,20 @@ const globals = ler("src/app/globals.css");
 type Regra = "hexadecimal" | "redefine --cor-*" | "corpo abaixo de 12 px" | "!text-[" | "text-[…] abaixo de 0,75 rem";
 // Lista de 22/10/2026 (PR 1 da Iniciativa 5).
 const EXCECOES: Record<string, { regras: Regra[]; ate: string }> = {
-  "src/components/LiteralFonte.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/components/agro/Agro.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/conta/FerramentasConta.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/components/contas-publicas/IndiceFederal.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/components/eficiencia/AtlasCidadao.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/eficiencia/ExploradorTema.tsx": { regras: ["!text-[", "text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/eficiencia/ReferenciasPainel.tsx": { regras: ["!text-[", "text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/eficiencia/TabelaComparativa.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/components/eficiencia/entrada/Entrada.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/components/eficiencia/entrada/MinhaCapitalAperitivo.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/eficiencia/estados.tsx": { regras: ["!text-[", "text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/components/eficiencia/judiciario/Internacional.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/components/eficiencia/judiciario/Judiciario.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/energia/AprendaVerbete.tsx": { regras: ["!text-[", "text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/energia/BarrasMix.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/energia/ComproveNumero.tsx": { regras: ["!text-[", "text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/components/energia/ExploracaoInicial.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/energia/ListaConsultavel.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/components/energia/PercursoVisualEnergia.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/energia/TabelaInterativa.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/evidencia/SobreEsteDado.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/layout/NavegacaoContexto.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/layout/PublicHeader.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/components/observatorios/EntradaEstado.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/saneamento/PrecoRegulado.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/territorio/Desastres.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/territorio/Emissoes.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/components/territorio/Queimadas.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
-  "src/app/aperitivo/saneamento/page.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/app/app/(foco)/observatorios/escolha.module.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
   "src/app/contas-publicas/contas.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
   "src/app/contas-publicas-estaduais/estados.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
-  "src/app/saneamento/municipio/[id]/page.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "src/app/saneamento/prestadores/divida/page.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
   "src/app/setor-eletrico/atlas-inicial.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
-  "src/app/territorio/metodologia/page.tsx": { regras: ["text-[…] abaixo de 0,75 rem"], ate: "PR 3 da Iniciativa 5 (escala tipográfica)" },
-  "public/observatorios.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
-  "public/observatorios-gravuras.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
   "public/obs/styles.css": { regras: ["hexadecimal", "corpo abaixo de 12 px"], ate: "PR 4 da Iniciativa 5 (aplicação do Crédito)" },
   "public/obs/atlas.css": { regras: ["corpo abaixo de 12 px"], ate: "PR 2 (cor) e PR 3 (corpo) da Iniciativa 5" },
 };
@@ -136,9 +112,10 @@ function corposAbaixoDoPiso(css: string) {
   return achados;
 }
 
+// em é relativo ao pai (a sigla do estado dentro de um H1 a 0,6 em tem 24 px): fica para o teste de navegador, que mede o corpo calculado.
 function textoArbitrarioAbaixo(tsx: string) {
   const achados: string[] = [];
-  for (const m of tsx.matchAll(/\btext-\[([\d.]+)(rem|px|em)\]/g)) {
+  for (const m of tsx.matchAll(/\btext-\[([\d.]+)(rem|px)\]/g)) {
     const px = parseFloat(m[1]) * (m[2] === "px" ? 1 : PX_POR_REM);
     if (px < 12) achados.push(m[0]);
   }

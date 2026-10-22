@@ -13,10 +13,10 @@ export function LiteralFonte({ classe, origem, children, bloco = false }: { clas
   const Valor = def.papel === "citacao" ? "q" : "code";
   return (
     <span data-literal-fonte={classe} data-origem={origem} className={bloco ? "block" : "inline"}>
-      <span data-literal-rotulo="" className="rotulo mr-1 text-[0.62rem] text-mineral">
+      <span data-literal-rotulo="" className="rotulo mr-1 text-xs text-mineral">
         {ROTULO_PAPEL[def.papel]} · {def.fonteCurta}
       </span>
-      <Valor data-literal-valor="" className="[overflow-wrap:anywhere] bg-papel px-1 font-mono text-[0.8rem] font-normal not-italic text-carvao">
+      <Valor data-literal-valor="" className="[overflow-wrap:anywhere] bg-papel px-1 font-mono t-meta font-normal not-italic text-carvao">
         {children}
       </Valor>
     </span>

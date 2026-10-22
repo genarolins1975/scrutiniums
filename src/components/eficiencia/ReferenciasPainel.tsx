@@ -37,7 +37,7 @@ export function ReferenciasNacionais({ externas, valor, m, nomeCapital }: { exte
         const d = e.tipo === "nacional_mesmo_universo" && valor !== null ? diferenca(m, valor, e.valor, "referência nacional") : null;
         return (
           <li key={e.id} className="border-l-2 border-obee-neutro pl-3 text-sm leading-relaxed text-obee-tinta">
-            <p className="rotulo !text-[0.66rem] text-mineral">{classeDaReferencia(e.origem, e.comparabilidade)}</p>
+            <p className="rotulo text-mineral">{classeDaReferencia(e.origem, e.comparabilidade)}</p>
             <p>
               <span className="font-semibold">{e.rotulo}:</span> {formataExterna(m, e.valor)} <span className="text-carvao-muted">({e.unidade})</span>
             </p>
@@ -90,7 +90,7 @@ export function ReferenciaNacionalCalculadaBloco({ referencia, valor, elegivel, 
   }
   return (
     <div className="border-l-2 border-obee-neutro pl-3 text-sm leading-relaxed text-obee-tinta">
-      <p className="rotulo !text-[0.66rem] text-mineral">Calculado pelo OBEE com fontes oficiais</p>
+      <p className="rotulo text-mineral">Calculado pelo OBEE com fontes oficiais</p>
       <p>
         <span className="font-semibold">Despesa municipal em Educação por habitante, municípios com dados elegíveis, {referencia.ano}:</span> mediana {reaisInteiro(g.mediana ?? 0)}, média simples {reaisInteiro(g.media ?? 0)}, razão agregada{" "}
         {reaisInteiro(g.razao_agregada ?? 0)}.
@@ -220,7 +220,7 @@ export function ContextoInternacionalBloco({ grupos, anoPainel }: { grupos: Cont
 export function SemReferencia({ medida, motivo }: { medida: MedidaId; motivo: string }) {
   return (
     <p className="border border-dashed border-mineral bg-papel px-3 py-2 text-sm leading-relaxed text-obee-tinta" role="note">
-      <span className="rotulo !text-[0.66rem] text-carvao-muted">Sem referência externa para {MEDIDA[medida].rotulo.toLowerCase()}</span>
+      <span className="rotulo text-carvao-muted">Sem referência externa para {MEDIDA[medida].rotulo.toLowerCase()}</span>
       <br />
       {motivo}
     </p>

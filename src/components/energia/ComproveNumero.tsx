@@ -416,7 +416,7 @@ export function ConteudoEvidencia({ evidencia: ev, acesso, endereco }: { evidenc
         <dl>
           <Linha rotulo={tx("Pipeline", "Pipeline")}>{ev.versao.pipeline}</Linha>
           <Linha rotulo={tx("Código", "Code")}>
-            {ev.versao.codigo ? <span className="font-mono text-[0.8rem]">{ev.versao.codigo}</span> : tx("não registrado", "not recorded")}
+            {ev.versao.codigo ? <span className="font-mono t-meta">{ev.versao.codigo}</span> : tx("não registrado", "not recorded")}
             {ev.versao.codigo?.endsWith("+alterado") && ( // i18n: dado
               <span className="mt-1 block text-carvao-muted">
                 {tx(
@@ -500,7 +500,7 @@ function Secao({ n, titulo, children }: { n: number; titulo: string; children: R
   return (
     <section aria-labelledby={id} className="border-b border-linha py-5 last:border-b-0">
       <h3 id={id} className="flex items-baseline gap-3 font-serif text-lg leading-snug text-carvao">
-        <span className="rotulo w-6 shrink-0 tabular-nums !text-[0.8rem] text-energia-dark">{n}.</span>
+        <span className="rotulo w-6 shrink-0 tabular-nums text-energia-dark">{n}.</span>
         <span>{titulo}</span>
       </h3>
       <div className="mt-2 text-sm leading-relaxed text-carvao sm:pl-9">{children}</div>
@@ -529,7 +529,7 @@ function Lista({ itens, vazio, idioma = "pt" }: { itens: string[]; vazio: string
 }
 
 function Codigo({ children }: { children: ReactNode }) {
-  return <code className="mt-1 block whitespace-pre-wrap break-words bg-papel px-2 py-1.5 font-mono text-[0.8rem] text-carvao">{children}</code>;
+  return <code className="mt-1 block whitespace-pre-wrap break-words bg-papel px-2 py-1.5 font-mono t-meta text-carvao">{children}</code>;
 }
 
 /** Ausência com padrão visual próprio (hachura) e texto: nunca zero, nunca traço solto. */
@@ -597,7 +597,7 @@ function Arquivo({ a }: { a: ArquivoEvidencia }) {
       )}
       {a.arquivo && a.arquivo !== a.recurso && <span className="block font-mono text-xs text-carvao-muted">{a.arquivo}</span>}
       {!a.recurso && !a.arquivo && <span className="block text-carvao-muted">{tx("arquivo não identificado", "file not identified")}</span>}
-      <span className="mt-1 block break-all font-mono text-[0.72rem] text-mineral">{a.sha256 ? `sha256 ${a.sha256}` : tx("sha256 não registrado", "sha256 not recorded")}</span>
+      <span className="mt-1 block break-all font-mono text-xs text-mineral">{a.sha256 ? `sha256 ${a.sha256}` : tx("sha256 não registrado", "sha256 not recorded")}</span>
       <span className="mt-1 block text-xs text-carvao-muted">
         {tx(
           <>
@@ -658,7 +658,7 @@ function BlocoCopiavel({ rotulo, texto, rotuloBotao }: { rotulo: string; texto: 
       <pre
         ref={pre}
         aria-labelledby={rotuloId}
-        className="mt-1.5 whitespace-pre-wrap break-words border border-linha bg-papel px-3 py-2.5 font-mono text-[0.78rem] leading-relaxed text-carvao [overflow-wrap:anywhere]"
+        className="mt-1.5 whitespace-pre-wrap break-words border border-linha bg-papel px-3 py-2.5 font-mono t-meta leading-relaxed text-carvao [overflow-wrap:anywhere]"
       >
         {texto}
       </pre>

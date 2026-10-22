@@ -296,7 +296,7 @@ export function ListaConsultavel(p: PropsListaConsultavel) {
               className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao"
             >
               {open ? tx("Ocultar o detalhe", "Hide the details") : p.rotuloDetalhe}
-              <span aria-hidden="true" className="ml-1.5 text-[0.7em]">
+              <span aria-hidden="true" className="ml-1.5 text-xs">
                 {open ? "▴" : "▾"}
               </span>
             </button>
@@ -592,7 +592,7 @@ function FiltroPopover({
       >
         <span>{rotulo}</span>
         {ativo && <span className="tabular-nums">({marcadosNoGrupo})</span>}
-        <span aria-hidden="true" className="text-[0.7em]">
+        <span aria-hidden="true" className="text-xs">
           {aberto ? "▴" : "▾"}
         </span>
       </summary>

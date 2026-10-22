@@ -72,7 +72,7 @@ export function BarrasMix({
                       style={{ width: `${p}%`, background: COR_FONTE[f] }}
                     >
                       {p >= 6 && (
-                        <span className={`px-1.5 text-[0.7rem] font-medium tabular-nums ${TEXTO_SOBRE[f]}`}>
+                        <span className={`px-1.5 text-xs font-medium tabular-nums ${TEXTO_SOBRE[f]}`}>
                           {parte(l.mix!, f).toLocaleString(loc, { maximumFractionDigits: 0 })}%
                         </span>
                       )}

@@ -230,13 +230,29 @@ body {
   color: var(--cor-marfim);
 }
 
-/* Utilitário de rótulo editorial em caixa alta */
-.rotulo {
-  font-family: var(--font-label), system-ui, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 0.72rem;
+/* Escala tipográfica única da plataforma (Iniciativa 5 do parecer de UX de 21/10/2026; referência em
+   docs/observatorios/DESIGN_SYSTEM_OBSERVATORIOS.md). Classes de papel, não de domínio; piso de 12 px para todo texto.
+   Em @layer components para aceitarem as variantes do Tailwind (sm:numero-g). */
+@layer components {
+  /* títulos em serifa, peso 400; H1 de 32 px no celular a 51 px no desktop */
+  .t-h1 { font-family: var(--font-serif), Georgia, serif; font-weight: 400; font-size: clamp(2rem, 1.4rem + 2.2vw, 3.2rem); line-height: 1.1; letter-spacing: -0.012em; text-wrap: balance; }
+  .t-h2 { font-family: var(--font-serif), Georgia, serif; font-weight: 400; font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem); line-height: 1.2; letter-spacing: -0.008em; text-wrap: balance; }
+  .t-h3 { font-family: var(--font-serif), Georgia, serif; font-weight: 400; font-size: 1.25rem; line-height: 1.25; }
+  /* abertura: 16 px no celular, 17 px a partir de 768 px */
+  .t-lead { font-size: 1rem; line-height: 1.55; }
+  .t-corpo { font-size: 1rem; line-height: 1.55; }
+  .t-tabela { font-size: 0.875rem; line-height: 1.45; }
+  /* metadados, notas, fontes e ressalvas: 13 px */
+  .t-meta { font-size: 0.8125rem; line-height: 1.5; }
+  /* rótulo editorial em caixa alta: 12 px, o piso (decisão do dono de 22/10/2026: a caixa alta espaçada fica como identidade) */
+  .rotulo { font-family: var(--font-label), system-ui, sans-serif; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.75rem; }
+  /* números de destaque: três tamanhos só, sempre em serifa com algarismos alinhados e tabulares */
+  .numero-g, .numero-m, .numero-p { font-family: var(--font-serif), Georgia, serif; font-weight: 400; line-height: 1.1; font-variant-numeric: lining-nums tabular-nums; }
+  .numero-g { font-size: 2.25rem; }
+  .numero-m { font-size: 1.75rem; }
+  .numero-p { font-size: 1.35rem; }
 }
+@media (min-width: 768px) { .t-lead { font-size: 1.0625rem; } }
 
 /* Skeleton pulsante discreto */
 @keyframes skeleton-pulse {
@@ -360,7 +376,7 @@ html:has(.modo-profundidade) { scroll-padding-top: 4.5rem; }
   font-family: var(--font-label), system-ui, sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
 }
 .tabela-recolher-btn:hover { border-color: var(--cor-energia); }
 .modo-profundidade[data-modo="entender"] .tabela-recolher { display: block; }
@@ -402,12 +418,6 @@ html:has(.modo-profundidade) { scroll-padding-top: 4.5rem; }
 /* Domínio Energia: algarismos alinhados na serifa (Playfair usa estilo antigo
    por padrão, ruim para ler números de dados). */
 .dominio-energia .font-serif { font-variant-numeric: lining-nums; }
-/* Metadados do domínio Energia não ficam abaixo de 12 px (o utilitário global .rotulo é de 11,5 px e serve aos outros observatórios). */
-.dominio-energia .rotulo { font-size: 0.75rem; }
-/* Texto de apoio (notas, fontes, legendas, ressalvas) tem 13 px no domínio Energia: com 12 px ele era de 35% a 65% do texto das páginas nas avaliações
-   independentes, inclusive ressalvas que mudam a leitura do número. Quem declara a própria altura de linha (leading-*) a mantém. */
-.dominio-energia .text-xs { font-size: 0.8125rem; }
-.dominio-energia .text-xs:not([class*="leading-"]) { line-height: 1.2rem; }
 /* hashes, ids e URLs longos nunca empurram a página para o lado no celular */
 .dominio-energia { overflow-wrap: break-word; }
 
@@ -474,9 +484,9 @@ html[data-recorte="pendente"] #conteudo {
    ========================================================================================================================== */
 .ed-pagina { width: 100%; max-width: 77.5rem; margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2.5rem); }
 
-/* H1 de 30 px no celular a 44 px no desktop; título curto, no máximo duas linhas na largura de leitura. */
-.ed-h1 { font-weight: 400; font-size: clamp(1.875rem, 1.35rem + 2.1vw, 2.75rem); line-height: 1.1; letter-spacing: -0.012em; text-wrap: balance; }
-.ed-h2 { font-weight: 400; font-size: clamp(1.375rem, 1.15rem + 0.9vw, 1.75rem); line-height: 1.2; letter-spacing: -0.008em; text-wrap: balance; }
+/* Aliases da escala única (.t-h1, .t-h2, .t-h3, .t-lead), até a Iniciativa 6 migrar os componentes. */
+.ed-h1 { font-weight: 400; font-size: clamp(2rem, 1.4rem + 2.2vw, 3.2rem); line-height: 1.1; letter-spacing: -0.012em; text-wrap: balance; }
+.ed-h2 { font-weight: 400; font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem); line-height: 1.2; letter-spacing: -0.008em; text-wrap: balance; }
 .ed-h3 { font-weight: 400; font-size: 1.25rem; line-height: 1.25; }
 .ed-lead { font-size: 1rem; line-height: 1.55; }
 @media (min-width: 768px) { .ed-lead { font-size: 1.0625rem; } }

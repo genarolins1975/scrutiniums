@@ -133,7 +133,7 @@ function Ferramentas({ menu = false, origem, observatorio, dominios }: Props) {
             {tx("Conta", "Account")}
             <span className="sr-only">{tx(": ferramentas e minha conta", ": tools and my account")}</span>
           </span>
-          <span aria-hidden="true" className="ml-1 text-[0.7em]">
+          <span aria-hidden="true" className="ml-1 text-xs">
             ▾
           </span>
         </button>

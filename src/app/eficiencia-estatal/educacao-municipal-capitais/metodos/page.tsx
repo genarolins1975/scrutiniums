@@ -463,7 +463,7 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
               <li key={v.id} className="py-3">
                 <details>
                   <summary className="flex min-h-[44px] cursor-pointer items-center text-sm text-obee-tinta">
-                    <span className="font-mono text-[0.8rem]">{v.id}</span> <span className="font-semibold">{v.titulo}</span>
+                    <span className="font-mono t-meta">{v.id}</span> <span className="font-semibold">{v.titulo}</span>
                     <span className="ml-2 text-carvao-muted">· {RESULTADO[v.resultado]}</span>
                   </summary>
                   <p className="mt-2 text-sm leading-relaxed text-obee-tinta">{v.detalhe}</p>
@@ -509,26 +509,26 @@ function Metodos({ g, ctx }: { g: GoldEducacao; ctx: ReturnType<typeof contextos
             <h3 id="reproduzir" className="mt-8 scroll-mt-24 font-serif text-xl text-obee-tinta">Como reproduzir</h3>
             <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-sm leading-relaxed text-obee-tinta">
               <li>
-                Reconstruir a gold a partir dos recortes versionados, sem rede: <code className="break-all font-mono text-[0.8rem]">python3 -m pipeline.eficiencia.run</code>.
+                Reconstruir a gold a partir dos recortes versionados, sem rede: <code className="break-all font-mono t-meta">python3 -m pipeline.eficiencia.run</code>.
               </li>
               <li>
-                Recoletar o Siconfi e o IPCA: <code className="break-all font-mono text-[0.8rem]">python3 -m pipeline.eficiencia.run --coleta-siconfi</code>.
+                Recoletar o Siconfi e o IPCA: <code className="break-all font-mono t-meta">python3 -m pipeline.eficiencia.run --coleta-siconfi</code>.
               </li>
               <li>
-                Reextrair os recortes do INEP a partir dos pacotes oficiais baixados: <code className="break-all font-mono text-[0.8rem]">--inep &lt;pasta&gt;</code>; as referências nacionais, de{" "}
-                <code className="break-all font-mono text-[0.8rem]">--inep-nacional &lt;pasta&gt;</code>.
+                Reextrair os recortes do INEP a partir dos pacotes oficiais baixados: <code className="break-all font-mono t-meta">--inep &lt;pasta&gt;</code>; as referências nacionais, de{" "}
+                <code className="break-all font-mono t-meta">--inep-nacional &lt;pasta&gt;</code>.
               </li>
               <li>
-                Ao baixar os pacotes do INEP, o servidor <code className="break-all font-mono text-[0.8rem]">download.inep.gov.br</code> entrega a cadeia de certificados
+                Ao baixar os pacotes do INEP, o servidor <code className="break-all font-mono t-meta">download.inep.gov.br</code> entrega a cadeia de certificados
                 incompleta (falta o intermediário da RNP). A coleta do OBEE obtém o intermediário pelo endereço do próprio certificado e nunca desliga a verificação TLS;
-                quem reproduzir por conta própria pode baixar o pacote pelo navegador, na página do INEP, e apontar a pasta com <code className="font-mono text-[0.8rem]">--inep</code>.
+                quem reproduzir por conta própria pode baixar o pacote pelo navegador, na página do INEP, e apontar a pasta com <code className="font-mono t-meta">--inep</code>.
               </li>
               <li>
-                Recoletar a MSC, a população, a OCDE e o SIOPE examinado: <code className="break-all font-mono text-[0.8rem]">--coleta-msc</code>, <code className="break-all font-mono text-[0.8rem]">--coleta-populacao</code>,{" "}
-                <code className="break-all font-mono text-[0.8rem]">--coleta-ocde</code> e <code className="break-all font-mono text-[0.8rem]">--coleta-siope</code>.
+                Recoletar a MSC, a população, a OCDE e o SIOPE examinado: <code className="break-all font-mono t-meta">--coleta-msc</code>, <code className="break-all font-mono t-meta">--coleta-populacao</code>,{" "}
+                <code className="break-all font-mono t-meta">--coleta-ocde</code> e <code className="break-all font-mono t-meta">--coleta-siope</code>.
               </li>
               <li>
-                Testes: <code className="break-all font-mono text-[0.8rem]">python3 -m unittest pipeline.tests.test_eficiencia pipeline.tests.test_eficiencia_comparacoes</code>.
+                Testes: <code className="break-all font-mono t-meta">python3 -m unittest pipeline.tests.test_eficiencia pipeline.tests.test_eficiencia_comparacoes</code>.
               </li>
               <li>
                 Arquivos públicos para quem reproduz fora do site:{" "}
