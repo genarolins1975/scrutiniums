@@ -35,10 +35,11 @@ describe("Instituições: detalhe de linha sob demanda", () => {
   });
 });
 
-describe("eixos e rótulos de SVG a 11 px", () => {
-  it("nenhum font-size abaixo de 11 no app.js e o eixo do CSS está em 11 px", () => {
-    expect(app).not.toMatch(/font-size="(8|9|10|10\.5)"/);
-    expect(read("public/obs/styles.css")).toContain(".axis text { font-size: 11px;");
+describe("eixos e rótulos de SVG a 12 px (piso da plataforma, Iniciativa 5)", () => {
+  it("nenhum font-size abaixo de 12 no app.js e o eixo do CSS está em 12 px", () => {
+    expect(app).not.toMatch(/font-size="(8|9|10|11)(\.\d+)?"/);
+    expect(app).not.toMatch(/font-size:\s*(8|9|10|11)(\.\d+)?px/);
+    expect(read("public/obs/styles.css")).toContain(".axis text { font-size: 12px;"); // piso de 12 px (Iniciativa 5)
   });
 });
 

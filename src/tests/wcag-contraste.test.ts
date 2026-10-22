@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { TOKENS } from "../lib/tokens.gerado";
 
 /**
  * Contraste WCAG 2.1 AA, calculado sobre os tokens do design system.
@@ -42,18 +43,45 @@ function mistura(x: string, y: string, p: number) {
   return "#" + a.map((v, i) => Math.round(v * p + b[i] * (1 - p)).toString(16).padStart(2, "0")).join("");
 }
 
-/* ---------- tokens dos dois temas ---------- */
-function tokens(bloco: string): Record<string, string> {
+/* ---------- tokens dos dois temas ----------
+   Desde a Iniciativa 5 a SPA lê os valores dos tokens da plataforma (src/app/globals.css, servidos em public/obs/tokens.css):
+   var(--x) é resolvido primeiro no próprio bloco e depois em TOKENS; color-mix(in srgb, A p%, B) é calculado. */
+function brutos(bloco: string): Record<string, string> {
   const out: Record<string, string> = {};
-  for (const m of bloco.match(/--[\w-]+:\s*#[0-9a-fA-F]{3,8}/g) ?? []) {
-    const [nome, valor] = m.split(":");
-    out[nome.trim()] = valor.trim().slice(0, 7);
+  for (const m of bloco.matchAll(/(--[\w-]+):\s*([^;]+);/g)) out[m[1]] = m[2].replace(/\/\*[\s\S]*?\*\//g, "").trim();
+  return out;
+}
+function resolver(mapa: Record<string, string>): Record<string, string> {
+  const plataforma = TOKENS as Record<string, string>;
+  const valor = (expr: string, visto: Set<string>): string | null => {
+    expr = expr.trim();
+    if (/^#[0-9a-f]{3,8}$/i.test(expr)) return expr.slice(0, 7);
+    const ref = expr.match(/^var\((--[\w-]+)\)$/);
+    if (ref) {
+      const nome = ref[1];
+      if (visto.has(nome)) return null;
+      visto.add(nome);
+      if (mapa[nome]) return valor(mapa[nome], visto);
+      return plataforma[nome.slice(2)] ?? null;
+    }
+    const mix = expr.match(/^color-mix\(in srgb,\s*(.+?)\s+(\d+(?:\.\d+)?)%,\s*(.+)\)$/);
+    if (mix) {
+      const [x, y] = [valor(mix[1], new Set(visto)), valor(mix[3], new Set(visto))];
+      return x && y ? mistura(x, y, parseFloat(mix[2]) / 100) : null;
+    }
+    return null;
+  };
+  const out: Record<string, string> = {};
+  for (const nome of Object.keys(mapa)) {
+    const v = valor(mapa[nome], new Set([nome]));
+    if (v) out[nome] = v;
   }
   return out;
 }
-const claro = tokens(css.slice(css.indexOf(":root {"), css.indexOf("}", css.indexOf(":root {"))));
+const brutoClaro = brutos(css.slice(css.indexOf(":root {"), css.indexOf("}", css.indexOf(":root {"))));
 const iEscuro = css.indexOf('[data-theme="dark"] {');
-const escuro = { ...claro, ...tokens(css.slice(iEscuro, css.indexOf("}", iEscuro))) };
+const claro = resolver(brutoClaro);
+const escuro = resolver({ ...brutoClaro, ...brutos(css.slice(iEscuro, css.indexOf("}", iEscuro))) });
 
 /**
  * Pares realmente usados na interface. Vêm da auditoria com axe: cada linha
@@ -118,7 +146,9 @@ describe("contraste: os tokens de gráfico usados como texto seguem os semântic
     });
 
   it("o tom do Pix passa em AA sobre a própria tinta", () => {
-    const pix = (css.match(/--pix:\s*(#[0-9a-f]{6})/i) ?? [])[1];
+    // valor de --pix lido do token da plataforma (--cor-credito-pix, src/app/globals.css)
+    const iPix = css.indexOf(":root { --pix:");
+    const pix = resolver(brutos(css.slice(iPix, css.indexOf("}", iPix))))["--pix"];
     expect(pix).toBeTruthy();
     expect(contraste(pix, mistura(pix, claro["--surface"], 0.12))).toBeGreaterThanOrEqual(AA);
   });
