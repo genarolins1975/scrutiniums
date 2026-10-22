@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
-    "arquivos_analisados": 1517,
-    "fontes_sha256": "b2a10d16c0da208fb27cc7a6184c4c9b6ff546b0582df63b15a6e1fdf13887e8",
-    "pendencias_sha256": "e41992b602a32cdb85a980e1533a15cf804e66144dfba3f4b7217b6cc158c6bf",
+    "arquivos_analisados": 1514,
+    "fontes_sha256": "cbaa7aa8adf214dc5a8d47a651dee03d44a1cbceecd1950a1b0a91179ce96e57",
+    "pendencias_sha256": "5d9a9b5f91cb3dcd46e88dcb44660ca8ff3970e20d0c853a76be8cd4b759b625",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -182,14 +182,14 @@
         "candidatos": {
           "jsx_text": 2406,
           "atributos": 500,
-          "props": 1048,
+          "props": 1051,
           "outros_literais": 8805,
           "templates": 1256,
           "expressoes_nao_resolvidas": 7733,
           "chaves_objetos": 7003
         },
         "exclusoes": {
-          "importacoes": 1865,
+          "importacoes": 1867,
           "atributos_tecnicos": 3838,
           "tipos": 576
         },
@@ -200,7 +200,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 28751,
+        "candidatos_nao_catalogados": 28754,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -323,19 +323,19 @@
     "saneamento": {
       "nome": "Saneamento",
       "interface": {
-        "arquivos": 74,
+        "arquivos": 73,
         "candidatos": {
-          "jsx_text": 1563,
-          "atributos": 386,
-          "props": 1953,
-          "outros_literais": 3667,
-          "templates": 546,
-          "expressoes_nao_resolvidas": 3840,
-          "chaves_objetos": 4744
+          "jsx_text": 1544,
+          "atributos": 385,
+          "props": 1979,
+          "outros_literais": 3657,
+          "templates": 524,
+          "expressoes_nao_resolvidas": 3739,
+          "chaves_objetos": 4746
         },
         "exclusoes": {
-          "importacoes": 517,
-          "atributos_tecnicos": 2035,
+          "importacoes": 540,
+          "atributos_tecnicos": 2001,
           "tipos": 264
         },
         "scripts_embutidos": {},
@@ -345,7 +345,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 16699,
+        "candidatos_nao_catalogados": 16574,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -515,18 +515,18 @@
     "agro": {
       "nome": "Agronegócio",
       "interface": {
-        "arquivos": 54,
+        "arquivos": 52,
         "candidatos": {
-          "jsx_text": 467,
-          "atributos": 266,
+          "jsx_text": 464,
+          "atributos": 265,
           "props": 835,
-          "outros_literais": 2900,
+          "outros_literais": 2884,
           "templates": 230,
-          "expressoes_nao_resolvidas": 2141,
+          "expressoes_nao_resolvidas": 2117,
           "chaves_objetos": 1760
         },
         "exclusoes": {
-          "importacoes": 282,
+          "importacoes": 275,
           "atributos_tecnicos": 78,
           "tipos": 97
         },
@@ -537,7 +537,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 8599,
+        "candidatos_nao_catalogados": 8555,
         "percentual_traduzido": null
       },
       "rotas": {

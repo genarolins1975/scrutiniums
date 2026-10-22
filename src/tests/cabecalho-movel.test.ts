@@ -12,9 +12,7 @@ import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
-import { Cabecalho as CabecalhoSaneamento } from "@/components/saneamento/Cabecalho";
 import { CabecalhoEntrada } from "@/components/eficiencia/CabecalhoEntrada";
-import { CabecalhoAgro } from "@/components/agro/Cabecalho";
 import { EstadoConta } from "@/components/energia/AcessoConta";
 import { NavegacaoColecaoCliente } from "@/components/layout/NavegacaoColecaoCliente";
 import { PaginaAberta } from "@/components/acesso/PaginaAberta";
@@ -100,11 +98,11 @@ const ABAS = OBSERVATORIOS.map((o) => ({ href: destinoObservatorio(o), texto: o.
  */
 const ENTRADAS: { rota: string; arquivo: string; uso: string; observatorio: ObservatorioId; render: () => string }[] = [
   { rota: "/setor-eletrico", arquivo: "src/app/setor-eletrico/page.tsx", uso: '<CabecalhoEnergia atual="mapa" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoEnergia, { atual: "mapa" })) },
-  { rota: "/saneamento", arquivo: "src/app/saneamento/page.tsx", uso: '<Cabecalho atual="" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoSaneamento, { atual: "" })) },
+  { rota: "/saneamento", arquivo: "src/app/saneamento/page.tsx", uso: '<CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoPlataforma, { colecao: "saneamento", destinoConta: "/saneamento" })) },
   { rota: "/gas-natural", arquivo: "src/app/gas-natural/page.tsx", uso: '<CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />', observatorio: "energia-e-infraestrutura", render: () => html(createElement(CabecalhoPlataforma, { colecao: "gas", destinoConta: "/gas-natural" })) },
   { rota: "/eficiencia-estatal", arquivo: "src/app/eficiencia-estatal/page.tsx", uso: "<CabecalhoEntrada/>", observatorio: "servicos-publicos", render: () => html(createElement(CabecalhoEntrada)) },
   { rota: "/contas-publicas", arquivo: "src/app/contas-publicas/layout.tsx", uso: '<CabecalhoPlataforma colecao="contas" destinoConta="/contas-publicas"/>', observatorio: "contas-publicas", render: () => html(createElement(CabecalhoPlataforma, { colecao: "contas", destinoConta: "/contas-publicas" })) },
-  { rota: "/agronegocio", arquivo: "src/app/agronegocio/layout.tsx", uso: "<CabecalhoAgro />", observatorio: "economia", render: () => html(createElement(CabecalhoAgro)) },
+  { rota: "/agronegocio", arquivo: "src/app/agronegocio/layout.tsx", uso: '<CabecalhoPlataforma colecao="agro" destinoConta="/agronegocio" />', observatorio: "economia", render: () => html(createElement(CabecalhoPlataforma, { colecao: "agro", destinoConta: "/agronegocio" })) },
   { rota: "/observatorios/territorio-e-clima", arquivo: "src/app/observatorios/[id]/page.tsx", uso: "<CabecalhoPlataforma observatorio={id}", observatorio: "territorio-e-clima", render: () => html(createElement(CabecalhoPlataforma, { observatorio: "territorio-e-clima", destinoConta: "/observatorios/territorio-e-clima" })) },
 ];
 
@@ -251,7 +249,7 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
     // e a barra comum é a dos cabeçalhos de todos os observatórios e painéis
     const cabecalhos = [
       "src/components/energia/CabecalhoEnergia.tsx",
-      "src/components/saneamento/Cabecalho.tsx",
+      "src/app/saneamento/page.tsx",
       "src/app/gas-natural/page.tsx",
       "src/app/combustiveis/page.tsx",
       "src/app/custo-de-vida/page.tsx",
@@ -261,7 +259,7 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
       "src/components/eficiencia/CabecalhoObee.tsx",
       "src/components/eficiencia/saude/CabecalhoSaude.tsx",
       "src/components/eficiencia/judiciario/Cabecalho.tsx",
-      "src/components/agro/Cabecalho.tsx",
+      "src/app/agronegocio/layout.tsx",
       "src/app/contas-publicas/layout.tsx",
       "src/app/contas-publicas-estaduais/layout.tsx",
       "src/app/observatorios/[id]/page.tsx",

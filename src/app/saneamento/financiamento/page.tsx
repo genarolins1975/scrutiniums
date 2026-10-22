@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { Abertura, Fonte, Indisponivel, MarcaAutodeclarado, NestaPagina, Nota, Numeros, Ressalva, RessalvaAutodeclarado, Secao } from "@/components/saneamento/Editorial";
 import { AUTODECLARADO } from "@/lib/saneamento/autodeclarado";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -69,7 +70,10 @@ export default function Pagina() {
 
   return (
     <>
-      <Cabecalho atual="financiamento" />
+      <header>
+        <CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />
+        <NavegacaoColecao colecao="saneamento" />
+      </header>
       <MarcaVisita secao="saneamento:financiamento" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">
         <Abertura

@@ -35,11 +35,14 @@ const ENTRADAS: Record<string, string> = {
   // a apresentação do Crédito (/observatorio-do-credito) tem casca própria até a Iniciativa 4; a navegação mora nas páginas Next
   credito: "/observatorio-do-credito/quanto-meu-banco-cobra",
   estaduais: "/contas-publicas-estaduais",
+  // bloco 3
+  saneamento: "/saneamento",
+  agro: "/agronegocio",
 };
 /** Subpáginas e superfícies da mesma navegação. */
-const OUTRAS = ["/territorio", "/territorio/emissoes", "/contas-publicas/execucao", "/contas-publicas/previdencia", "/gas-natural/importacao", "/gas-natural/metodologia", "/observatorio-do-credito/simulador-da-parcela"];
+const OUTRAS = ["/territorio", "/territorio/emissoes", "/contas-publicas/execucao", "/contas-publicas/previdencia", "/gas-natural/importacao", "/gas-natural/metodologia", "/observatorio-do-credito/simulador-da-parcela", "/saneamento/esgoto", "/saneamento/prestadores/divida", "/agronegocio/producao", "/agronegocio/ambiente"];
 /** Páginas aperitivo das mesmas coleções, sem sessão. */
-const ABERTAS = ["/conectividade", "/contas-publicas/previdencia", "/contas-publicas/metodologia", "/territorio/metodologia", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado", "/educacao-municipal"];
+const ABERTAS = ["/conectividade", "/contas-publicas/previdencia", "/contas-publicas/metodologia", "/territorio/metodologia", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado", "/educacao-municipal", "/saneamento/municipio", "/saneamento/metodologia", "/agronegocio/metodologia"];
 
 describe("orçamento de cromo", () => {
   it("o build existe quando o CI exige", () => {

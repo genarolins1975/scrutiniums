@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Cabecalho } from "@/components/saneamento/Cabecalho";
+import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { Abertura, Fonte, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { AmostraTarifas, FichasTabelas, SubnavPreco } from "@/components/saneamento/PrecoRegulado";
 import { SimuladorConta } from "@/components/saneamento/SimuladorConta";
@@ -18,7 +19,10 @@ export const metadata: Metadata = {
 export default function Pagina() {
   return (
     <>
-      <Cabecalho atual="preco-regulado/simulador" />
+      <header>
+        <CabecalhoPlataforma colecao="saneamento" destinoConta="/saneamento" />
+        <NavegacaoColecao colecao="saneamento" />
+      </header>
       <AvisoConsultaAberta className="ed-pagina" comConta="Os capítulos 5.2 a 5.5, o CSV com todas as tabelas e os demais capítulos do observatório" />
       <MarcaVisita secao="saneamento:preco-simulador" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">
