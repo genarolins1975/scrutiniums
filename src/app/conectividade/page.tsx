@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PainelConectividade } from "@/components/conectividade/PainelConectividade";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
+import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { consultarMunicipio, goldConectividade } from "@/lib/conectividade/dados";
 import { mesAcessos, mesExtenso } from "@/lib/conectividade/formato";
@@ -29,7 +30,10 @@ export default function Page({ searchParams }: { searchParams: Record<string, st
   const consulta = consultarMunicipio(searchParams.ibge);
   return (
     <>
-      <CabecalhoPlataforma observatorio="energia-e-infraestrutura" destinoConta={ROTA_CONECTIVIDADE} fontes={["conectividade"]} />
+      <header>
+        <CabecalhoPlataforma observatorio="energia-e-infraestrutura" destinoConta={ROTA_CONECTIVIDADE} fontes={["conectividade"]} />
+        <NavegacaoColecao colecao="conectividade" />
+      </header>
       <main id="conteudo" className="cn-wrap cn-main" data-painel="conectividade">
         <MarcaVisita secao={SECAO_PAINEL} />
         <header className="cn-cabeca">

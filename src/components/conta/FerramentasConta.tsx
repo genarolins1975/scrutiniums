@@ -24,6 +24,12 @@ import {
  * do servidor, igual para todos, também não traz a barra. A SPA do Crédito (public/obs/app.js) não usa esta barra.
  */
 type Props = {
+  /**
+   * "menu": a forma do celular (abaixo de 640 px), na linha da marca, no lugar do link "Minha conta": um só botão "Conta ▾"
+   * com as três ferramentas e a conta, para a barra não ganhar uma linha só para elas (Iniciativa 2 do parecer de UX de
+   * 21/10/2026). O CSS (public/observatorios.css) mostra uma forma ou a outra conforme a largura.
+   */
+  menu?: boolean;
   /** Coleção ou observatório da página (src/lib/conta/origens.ts), gravado com o recorte. */
   origem: string;
   /** Nome completo do observatório, para a citação. */
@@ -45,22 +51,29 @@ export function BarraFerramentasConta({ logado, ...props }: Props & { logado: bo
 
 type Ferramenta = "salvar" | "citar" | "avisar";
 
-function Ferramentas({ origem, observatorio, dominios }: Props) {
+function Ferramentas({ menu = false, origem, observatorio, dominios }: Props) {
   const tx = useTx();
   const id = useId();
   const [aberta, setAberta] = useState<Ferramenta | null>(null);
+  const [lista, setLista] = useState(false);
   const caixa = useRef<HTMLDivElement>(null);
   const gatilhos = useRef<Partial<Record<Ferramenta, HTMLButtonElement | null>>>({});
+  const botaoMenu = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (!aberta) return;
+    if (!aberta && !lista) return;
     const fora = (e: MouseEvent) => {
-      if (caixa.current && !caixa.current.contains(e.target as Node)) setAberta(null);
+      if (caixa.current && !caixa.current.contains(e.target as Node)) {
+        setAberta(null);
+        setLista(false);
+      }
     };
     const tecla = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
-      gatilhos.current[aberta]?.focus();
+      // no menu do celular o foco volta ao botão "Conta"; na barra, ao botão da ferramenta
+      (menu ? botaoMenu.current : aberta ? gatilhos.current[aberta] : null)?.focus();
       setAberta(null);
+      setLista(false);
     };
     document.addEventListener("mousedown", fora);
     document.addEventListener("keydown", tecla);
@@ -68,7 +81,7 @@ function Ferramentas({ origem, observatorio, dominios }: Props) {
       document.removeEventListener("mousedown", fora);
       document.removeEventListener("keydown", tecla);
     };
-  }, [aberta]);
+  }, [aberta, lista, menu]);
 
   const itens: { chave: Ferramenta; curto: string; resto: string; titulo: string }[] = [
     { chave: "salvar", curto: tx("Salvar", "Save"), resto: tx(" recorte", " view"), titulo: tx("Salvar este recorte", "Save this view") },
@@ -80,6 +93,76 @@ function Ferramentas({ origem, observatorio, dominios }: Props) {
       titulo: tx("Avisar quando atualizar", "Notify me on update"),
     },
   ];
+
+  const painel = aberta && (
+    <section id={`${id}-${aberta}`} className="bp-painel" aria-label={itens.find((i) => i.chave === aberta)!.titulo}>
+      <div className="flex items-start justify-between gap-4">
+        <h2 className="font-serif text-lg leading-snug text-carvao">{itens.find((i) => i.chave === aberta)!.titulo}</h2>
+        <button
+          type="button"
+          className="rotulo -mr-2 -mt-2 inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-carvao-muted hover:text-carvao"
+          onClick={() => {
+            (menu ? botaoMenu.current : gatilhos.current[aberta])?.focus();
+            setAberta(null);
+          }}
+        >
+          {tx("Fechar", "Close")}
+        </button>
+      </div>
+      {aberta === "salvar" && <PainelSalvar origem={origem} />}
+      {aberta === "citar" && <PainelCitar observatorio={observatorio} dominios={dominios} />}
+      {aberta === "avisar" && <PainelAvisar dominios={dominios} />}
+    </section>
+  );
+
+  if (menu)
+    return (
+      <div ref={caixa} className="bp-ferramentas-menu" data-ferramentas-conta="menu">
+        <button
+          ref={botaoMenu}
+          type="button"
+          className="bp-ferramenta"
+          aria-expanded={lista || aberta !== null}
+          aria-controls={`${id}-lista`}
+          onClick={() => {
+            setAberta(null);
+            setLista((l) => !l);
+          }}
+        >
+          <span>
+            {tx("Conta", "Account")}
+            <span className="sr-only">{tx(": ferramentas e minha conta", ": tools and my account")}</span>
+          </span>
+          <span aria-hidden="true" className="ml-1 text-[0.7em]">
+            ▾
+          </span>
+        </button>
+        {lista && (
+          <ul id={`${id}-lista`} className="bp-painel bp-menu-conta">
+            {itens.map((it) => (
+              <li key={it.chave}>
+                <button
+                  type="button"
+                  className="flex min-h-[44px] w-full items-center text-left text-sm text-carvao hover:text-energia-dark"
+                  onClick={() => {
+                    setLista(false);
+                    setAberta(it.chave);
+                  }}
+                >
+                  {it.titulo}
+                </button>
+              </li>
+            ))}
+            <li className="mt-1 border-t border-linha pt-1">
+              <Link href="/app/conta" className="flex min-h-[44px] items-center text-sm text-carvao hover:text-energia-dark">
+                {tx("Minha conta", "My account")}
+              </Link>
+            </li>
+          </ul>
+        )}
+        {painel}
+      </div>
+    );
 
   return (
     <div ref={caixa} className="bp-ferramentas" role="group" aria-label={tx("Ferramentas da conta", "Account tools")} data-ferramentas-conta="">
@@ -108,26 +191,7 @@ function Ferramentas({ origem, observatorio, dominios }: Props) {
           </button>
         </span>
       ))}
-      {aberta && (
-        <section id={`${id}-${aberta}`} className="bp-painel" aria-label={itens.find((i) => i.chave === aberta)!.titulo}>
-          <div className="flex items-start justify-between gap-4">
-            <h2 className="font-serif text-lg leading-snug text-carvao">{itens.find((i) => i.chave === aberta)!.titulo}</h2>
-            <button
-              type="button"
-              className="rotulo -mr-2 -mt-2 inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-carvao-muted hover:text-carvao"
-              onClick={() => {
-                gatilhos.current[aberta]?.focus();
-                setAberta(null);
-              }}
-            >
-              {tx("Fechar", "Close")}
-            </button>
-          </div>
-          {aberta === "salvar" && <PainelSalvar origem={origem} />}
-          {aberta === "citar" && <PainelCitar observatorio={observatorio} dominios={dominios} />}
-          {aberta === "avisar" && <PainelAvisar dominios={dominios} />}
-        </section>
-      )}
+      {painel}
     </div>
   );
 }

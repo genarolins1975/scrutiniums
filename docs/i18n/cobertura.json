@@ -11,9 +11,9 @@
   },
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
-    "arquivos_analisados": 1517,
-    "fontes_sha256": "c0b2e033093309de9e693ae75722235cbfe691e09582881c46901eb77f3407d2",
-    "pendencias_sha256": "0cdc6c6642dc03c74e808c26f2e4bf952a9a5a4455bcef2bd340a2c7cfa5265c",
+    "arquivos_analisados": 1521,
+    "fontes_sha256": "2012282814d4e138d621a2a8120b770dfb8c7b1014c4fc32a2907eee99b607f1",
+    "pendencias_sha256": "68854ef2a4c620c29a7fc10c1c7785bf1bcc3ebab6d99d1c2a9eeb49b75dd491",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
@@ -178,20 +178,20 @@
     "plataforma": {
       "nome": "Plataforma, conta e comunicações",
       "interface": {
-        "arquivos": 414,
+        "arquivos": 419,
         "candidatos": {
-          "jsx_text": 2403,
-          "atributos": 500,
-          "props": 1033,
-          "outros_literais": 8632,
-          "templates": 1220,
-          "expressoes_nao_resolvidas": 7592,
-          "chaves_objetos": 6886
+          "jsx_text": 2408,
+          "atributos": 504,
+          "props": 1045,
+          "outros_literais": 8812,
+          "templates": 1258,
+          "expressoes_nao_resolvidas": 7753,
+          "chaves_objetos": 7011
         },
         "exclusoes": {
-          "importacoes": 1825,
-          "atributos_tecnicos": 3804,
-          "tipos": 567
+          "importacoes": 1872,
+          "atributos_tecnicos": 3854,
+          "tipos": 579
         },
         "scripts_embutidos": {},
         "chaves_catalogadas": {
@@ -200,7 +200,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 28266,
+        "candidatos_nao_catalogados": 28791,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -227,18 +227,18 @@
     "energia": {
       "nome": "Setor Elétrico",
       "interface": {
-        "arquivos": 577,
+        "arquivos": 576,
         "candidatos": {
           "jsx_text": 7671,
           "atributos": 2918,
           "props": 18876,
-          "outros_literais": 51209,
+          "outros_literais": 51197,
           "templates": 12789,
           "expressoes_nao_resolvidas": 55666,
-          "chaves_objetos": 36047
+          "chaves_objetos": 36046
         },
         "exclusoes": {
-          "importacoes": 5004,
+          "importacoes": 5003,
           "atributos_tecnicos": 8704,
           "tipos": 3735
         },
@@ -249,7 +249,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 185176,
+        "candidatos_nao_catalogados": 185163,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -376,13 +376,13 @@
           "jsx_text": 3331,
           "atributos": 1085,
           "props": 1479,
-          "outros_literais": 8162,
+          "outros_literais": 8169,
           "templates": 862,
           "expressoes_nao_resolvidas": 8547,
           "chaves_objetos": 4958
         },
         "exclusoes": {
-          "importacoes": 984,
+          "importacoes": 990,
           "atributos_tecnicos": 3714,
           "tipos": 537
         },
@@ -393,7 +393,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 28424,
+        "candidatos_nao_catalogados": 28431,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -421,17 +421,17 @@
       "interface": {
         "arquivos": 78,
         "candidatos": {
-          "jsx_text": 968,
-          "atributos": 203,
-          "props": 107,
+          "jsx_text": 961,
+          "atributos": 199,
+          "props": 98,
           "outros_literais": 1840,
-          "templates": 156,
-          "expressoes_nao_resolvidas": 1677,
+          "templates": 154,
+          "expressoes_nao_resolvidas": 1660,
           "chaves_objetos": 990
         },
         "exclusoes": {
-          "importacoes": 281,
-          "atributos_tecnicos": 760,
+          "importacoes": 280,
+          "atributos_tecnicos": 756,
           "tipos": 67
         },
         "scripts_embutidos": {},
@@ -441,7 +441,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 5941,
+        "candidatos_nao_catalogados": 5902,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -520,13 +520,13 @@
           "jsx_text": 467,
           "atributos": 266,
           "props": 835,
-          "outros_literais": 2897,
+          "outros_literais": 2900,
           "templates": 230,
           "expressoes_nao_resolvidas": 2141,
           "chaves_objetos": 1760
         },
         "exclusoes": {
-          "importacoes": 279,
+          "importacoes": 282,
           "atributos_tecnicos": 78,
           "tipos": 97
         },
@@ -537,7 +537,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 8596,
+        "candidatos_nao_catalogados": 8599,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -568,14 +568,14 @@
           "jsx_text": 152,
           "atributos": 213,
           "props": 172,
-          "outros_literais": 12991,
-          "templates": 2669,
-          "expressoes_nao_resolvidas": 9313,
-          "chaves_objetos": 5094,
+          "outros_literais": 13011,
+          "templates": 2673,
+          "expressoes_nao_resolvidas": 9318,
+          "chaves_objetos": 5095,
           "textos": 183
         },
         "exclusoes": {
-          "importacoes": 56,
+          "importacoes": 60,
           "atributos_tecnicos": 683,
           "tipos": 4,
           "estilos": 1,
@@ -592,7 +592,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 30787,
+        "candidatos_nao_catalogados": 30817,
         "percentual_traduzido": null
       },
       "rotas": {

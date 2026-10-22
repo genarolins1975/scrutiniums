@@ -37,7 +37,7 @@ describe("molde de abertura do Crédito: contrato no código", () => {
   });
 
   it("os ativos alterados sobem de versão (cache imutável)", () => {
-    expect(html).toContain("/observatorios.css?v=11");
+    expect(html).toContain("/observatorios.css?v=12");
     expect(html).toContain("/obs/editorial.js?v=6");
   });
 });

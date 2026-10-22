@@ -49,10 +49,12 @@ describe("previdência: lugar no registro, navegação e acesso", () => {
     expect(donoDaRota("/contas-publicas/previdencia")).toMatchObject({ observatorio: "contas-publicas", colecao: "federais", titulo: "Previdência e INSS" });
     expect(colecoesDe("contas-publicas").find((c) => c.id === "federais")!.paineis.map((p) => p.href)).toContain("/contas-publicas/previdencia");
     expect(PAINEIS_NAVEGACAO[0]).toEqual(["/contas-publicas/previdencia", "Previdência e INSS"]);
-    // navegação do módulo: logo depois da visão geral
-    const layout = ler("src/app/contas-publicas/layout.tsx");
-    expect(layout.indexOf('href="/contas-publicas/previdencia"')).toBeGreaterThan(layout.indexOf('href="/contas-publicas">Visão geral'));
-    expect(layout.indexOf('href="/contas-publicas/previdencia"')).toBeLessThan(layout.indexOf('href="/contas-publicas/por-area"'));
+    // navegação da coleção (NavegacaoColecao, Iniciativa 2): logo depois do Início, como consulta pessoal, e antes da despesa por área
+    expect(ler("src/app/contas-publicas/layout.tsx")).toContain('<NavegacaoColecao colecao="federais"/>');
+    const { navegacaoDaColecao } = await import("@/lib/observatorios/navegacaoColecao");
+    const nav = navegacaoDaColecao("federais");
+    expect(nav.itens.map((i) => i.href).slice(0, 3)).toEqual(["/contas-publicas", "/contas-publicas/previdencia", "/contas-publicas/por-area"]);
+    expect(nav.consulta).toBe("/contas-publicas/previdencia");
   });
 
   it("um endereço público para o tema: aperitivo sem sessão, painel com sessão; gold, arquivos e caminho interno fechados", async () => {

@@ -163,8 +163,18 @@ describe("faixa renderizada", () => {
     expect(h).toContain("<details");
     expect(h).toContain('data-frescor-dominio="credito"');
     expect(h).toContain('data-frescor-regra=""');
-    expect(html([CREDITO], AGORA, { variante: "linha" })).not.toContain("<details");
+    // uma fonte (Iniciativa 2): de 640 px em diante, a linha inteira sem recolhimento; no celular, a data e a situação, e o resto
+    // (fonte, referência, cadência) em "Fontes e referência", para a faixa caber numa linha do orçamento de cromo
+    const uma = html([CREDITO], AGORA, { variante: "linha" });
+    expect(uma).toMatch(/<p class="hidden border-b border-linha sm:flex[^"]*"><span class="rotulo text-mineral">Atualização dos dados/);
+    expect(uma).toMatch(/<details class="group\/frescor border-b border-linha sm:hidden">/);
+    expect(uma).toContain("Fontes e referência +");
+    expect(uma.match(/data-frescor-estado="em-dia"/g)).toHaveLength(2);
     expect(html([CREDITO, { ...CREDITO, id: "agro", publicadoEm: "2026-10-17" }], AGORA)).toContain("Todas em dia");
+    // no celular, uma frase só para os atrasos, sem o rótulo e a contagem de fontes, que voltam de 640 px em diante
+    expect(h).toMatch(/<span data-frescor-estado="resumo" class="[^"]*sm:hidden"><svg[\s\S]*?<span>Atualização atrasada em 1 de 2 fontes<\/span>/);
+    expect(h).toMatch(/<span class="rotulo hidden text-mineral sm:inline">Atualização dos dados<\/span>/);
+    expect(h).toContain("Fontes e referência +");
   });
 
   it("método: lista por fonte com nota e regra", () => {

@@ -203,7 +203,9 @@ describe('acesso, navegação e coleta', () => {
   });
 
   it('entra na navegação do módulo, no registro, na vitrine, na busca e na telemetria; a lacuna vira caminho', async () => {
-    expect(ler('src/app/contas-publicas/layout.tsx')).toContain('href="/contas-publicas/por-area"');
+    // navegação da coleção (NavegacaoColecao, Iniciativa 2): a lista sai do catálogo único, não do layout
+    const {navegacaoDaColecao} = await import('@/lib/observatorios/navegacaoColecao');
+    expect(navegacaoDaColecao('federais').itens.map((i) => i.href)).toContain(ROTA_AREAS);
     const {paineis} = await import('@/lib/observatorios/registro');
     expect(paineis().some((p) => p.rota === ROTA_AREAS && p.observatorio === 'contas-publicas')).toBe(true);
     expect(ler('src/lib/vitrine.ts')).toContain('PAINEL_AREAS.href');

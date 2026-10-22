@@ -385,6 +385,21 @@ describe("barra de ferramentas da conta", () => {
     expect(h.match(/aria-expanded="false"/g)).toHaveLength(3);
   });
 
+  it("no celular, as ferramentas e a conta viram um só botão na linha da marca (Iniciativa 2): a barra não ganha linha", async () => {
+    const { BarraFerramentasConta } = await import("@/components/conta/FerramentasConta");
+    const props = { origem: "energia", observatorio: "Setor Elétrico", dominios: ["energia"] as const };
+    expect(renderToStaticMarkup(createElement(BarraFerramentasConta, { ...props, menu: true, logado: false }))).toBe("");
+    const h = renderToStaticMarkup(createElement(BarraFerramentasConta, { ...props, menu: true, logado: true }));
+    expect(h).toContain('data-ferramentas-conta="menu"');
+    expect(h.match(/aria-expanded="false"/g)).toHaveLength(1);
+    expect(h).toMatch(/Conta<span class="sr-only">: ferramentas e minha conta<\/span>/);
+    const css = readFileSync(join(process.cwd(), "public/observatorios.css"), "utf-8");
+    const movel = css.slice(css.indexOf(".bp-ferramentas-menu { display:none"));
+    expect(movel).toMatch(/@media\(max-width:639px\) \{[^}]*\.bp-abas \.bp-ferramentas \{ display:none; \}[^}]*\.bp-ferramentas-menu \{ display:block; \}[^}]*\.bp-acoes:has\(\.bp-ferramentas-menu\) \.bp-conta \{ display:none; \}/);
+    const cab = readFileSync(join(process.cwd(), "src/components/layout/CabecalhoPlataforma.tsx"), "utf-8");
+    expect(cab).toContain("<FerramentasConta menu origem={origem.id}");
+  });
+
   it("numa rota aberta, sem sessão, o cabeçalho comum sai sem a barra (o HTML do servidor é igual para todos)", async () => {
     const { ehRotaPublica } = await import("@/lib/rotasPublicas");
     expect(ehRotaPublica("/setor-eletrico/conta-de-luz")).toBe(true);

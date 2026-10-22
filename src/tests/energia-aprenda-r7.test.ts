@@ -284,7 +284,7 @@ describe("cromo global (L-20, L-37, F15, F17, F18, F21) e painel de Mercado (F19
   });
 
   it("L-37: a faixa de módulos fica rente à borda, com esmaecimento estreito daquele lado; F18: sem prefetch dos módulos do grupo", () => {
-    const av = ler("src/components/energia/AtivoVisivel.tsx");
+    const av = ler("src/components/layout/AtivoVisivel.tsx");
     expect(av).toContain("if (a.left >= l.left && a.right <= l.right - 8) return;");
     expect(av).toContain("acompanhaFaixa(lista, 0)");
     expect(av).toContain("if (alvo > maximo) lista.style.paddingRight");

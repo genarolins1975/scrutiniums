@@ -61,7 +61,8 @@ export function EstadoConta({
   const classe = "rotulo inline-flex min-h-[44px] items-center whitespace-nowrap text-carvao-muted hover:text-energia-dark";
   if (logado === null) return <span aria-hidden="true" className="inline-block min-h-[44px] w-20" />;
   return logado ? (
-    <Link href="/app/conta" className={classe}>
+    // bp-conta: no celular, o botão "Conta ▾" das ferramentas toma o lugar deste link (public/observatorios.css)
+    <Link href="/app/conta" className={`bp-conta ${classe}`}>
       {rotulos.conta}
     </Link>
   ) : (

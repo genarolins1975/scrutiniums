@@ -17,6 +17,9 @@ import { CabecalhoGas } from "@/components/gas/CabecalhoGas";
 import { CabecalhoEntrada } from "@/components/eficiencia/CabecalhoEntrada";
 import { CabecalhoAgro } from "@/components/agro/Cabecalho";
 import { EstadoConta } from "@/components/energia/AcessoConta";
+import { NavegacaoColecaoCliente } from "@/components/layout/NavegacaoColecaoCliente";
+import { PaginaAberta } from "@/components/acesso/PaginaAberta";
+import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 
 // endereço que o navegador vê; o seletor, as abas e a trilha resolvem o contexto por ele (NavegacaoContexto.tsx)
 const navegador = vi.hoisted(() => ({ caminho: "/sobre" }));
@@ -316,5 +319,29 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
     const nav = bloco(html, 'aria-label="Navegação principal"', "</nav>");
     expect(nav).toContain('href="/imprensa"');
     expect(nav).toContain('href="/entrar"');
+  });
+});
+
+describe("navegação da coleção sob a barra comum, nas 28 coleções, com e sem sessão (Iniciativa 2)", () => {
+  const colecoes = OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => ({ ...c, observatorio: o.nomeCurto })));
+
+  it.each(colecoes)("$observatorio · $nome: o mesmo componente, o rótulo padrão, o Início marcado na entrada e o selo só na página aberta", (c) => {
+    const nav = navegacaoDaColecao(c.id);
+    const entrada = nav.itens[0].href;
+    navegador.caminho = entrada;
+    const painel = html(createElement(NavegacaoColecaoCliente, { nav, caminho: entrada, idioma: "pt" }));
+    const aberta = html(createElement(PaginaAberta, null, createElement(NavegacaoColecaoCliente, { nav, caminho: entrada, idioma: "pt" })));
+    for (const h of [painel, aberta]) {
+      expect(h).toContain(`aria-label="Navegação da coleção ${c.nome}"`);
+      expect(h).toContain(`data-nav-colecao="${c.id}"`);
+      expect(h, "a navegação não desenha marca própria").not.toContain("bp-marca");
+      const atuais = ancoras(h).filter((a) => a.atual);
+      expect(atuais.map((a) => a.href)).toEqual([entrada]);
+    }
+    // com sessão (painel), nenhum selo; sem sessão numa página aberta, todo destino que pede conta leva o selo antes do clique
+    // (a entrada que é ela mesma página aberta, como a apresentação do Crédito, já se comporta como aberta)
+    if (!ehRotaPublica(entrada)) expect(painel).not.toContain("com conta");
+    const fechados = nav.itens.filter((i) => i.publicado && !ehRotaPublica(i.href.split(/[?#]/)[0]));
+    if (fechados.length) expect(aberta).toContain("com conta");
   });
 });

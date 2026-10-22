@@ -1,7 +1,7 @@
 import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { DetalhesFechaveis } from "@/components/layout/DetalhesFechaveis";
-import { AtivoVisivel } from "@/components/energia/AtivoVisivel";
+import { AtivoVisivel } from "@/components/layout/AtivoVisivel";
 import { RetornoContexto } from "@/components/energia/RetornoContexto";
 import { rotulosRetorno } from "@/lib/energia/conteudo/rotulos-retorno";
 import { listaPorExtenso, menuNavegacao, type DestinoNavegacao, type ItemMenu } from "@/lib/energia/navegacao";

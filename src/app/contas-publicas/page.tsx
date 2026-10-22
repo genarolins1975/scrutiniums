@@ -30,7 +30,8 @@ const CICLO = ([
   destino: CAPITULOS_PUBLICADOS.find((c) => c.id === preferido && comDados(c.id)) ?? CAPITULOS_PUBLICADOS.find((c) => c.etapa === t && comDados(c.id)) ?? null,
 }));
 export default function Page(){return <main id="conteudo-contas" className="cp-wrap cp-main cp-home">
- <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/contas-publicas"]} className="-mt-2 mb-6"/>
+ {/* a faixa é a primeira linha do conteúdo, rente à navegação da coleção: anula o respiro de cima do .cp-main (24 px; 32 px acima de 760 px) */}
+ <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/contas-publicas"]} className="-mt-6 mb-6 min-[761px]:-mt-8"/>
  <AberturaFederal rotulo={<RotuloContexto rota="/contas-publicas" className={aberturaStyles.eyebrow}/>}/>
  {/* "Para você" (Onda 2): substitui o tríptico de caminhos, com os mesmos destinos (panorama e metas) e o do estado do leitor, cada um com o número que a página mostra */}
  <ParaVoce entrada="/contas-publicas" conteiner="" artes={{previdencia:<ArteTriptico tema="federal" cena={0}/>,metas:<ArteTriptico tema="federal" cena={1}/>,"estado-contas":<ArteTriptico tema="federal" cena={2}/>}}/>

@@ -30,7 +30,7 @@ import type { DominioFrescorId } from "@/lib/frescor";
  * painéis do Território e Clima). `complementos`: o que vem à direita das abas (o seletor de idioma onde há tradução).
  *
  * À direita das abas, só para quem tem sessão, as ferramentas da conta (FerramentasConta): salvar o recorte, citar e
- * avisar quando atualizar. `fontes` troca as fontes de dados que o "Citar" e o "Avisar" oferecem quando as do
+ * avisar quando atualizar. Abaixo de 640 px elas saem dali e entram, com a conta, num só botão "Conta ▾" na linha da marca. `fontes` troca as fontes de dados que o "Citar" e o "Avisar" oferecem quando as do
  * observatório não são as da página (os painéis do Território e Clima usam só a do próprio Território).
  */
 export function CabecalhoPlataforma({
@@ -56,7 +56,13 @@ export function CabecalhoPlataforma({
       <BarraPlataforma
         marca={{ href: hrefNoIdioma("/", idioma), rotulo: tx("Scrutiniums: página inicial", "Scrutiniums: home page", idioma) }}
         seletor={<SwitcherObservatorio atual={colecao} caminho={caminho} doProvedor />}
-        acoes={<AcessoConta destino={destinoConta} />}
+        acoes={
+          <>
+            {/* no celular, as ferramentas e a conta num só botão nesta linha (a barra não ganha uma linha só para elas) */}
+            {origem && <FerramentasConta menu origem={origem.id} observatorio={origem.nome} dominios={origem.dominios} />}
+            <AcessoConta destino={destinoConta} />
+          </>
+        }
         abas={
           <div className="bp-abas-linha">
             <NavegacaoObservatorios observatorio={marcado} />

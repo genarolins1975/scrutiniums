@@ -13,11 +13,12 @@ import { useEffect } from "react";
  * lugar de "REGULAÇÃO", parecia erro). Nas bordas em que ainda há itens fora da vista, um
  * esmaecimento mostra que o corte é rolagem.
  */
-export function AtivoVisivel({ alvo }: { alvo: string }) {
+export function AtivoVisivel({ alvo, chave }: { alvo: string; chave?: string }) {
+  // `chave` muda quando o item atual muda sem a lista sair da tela (navegação entre páginas irmãs num layout)
   useEffect(() => {
     const lista = document.getElementById(alvo);
     return lista ? acompanhaFaixa(lista, 0) : undefined;
-  }, [alvo]);
+  }, [alvo, chave]);
   return null;
 }
 
@@ -34,7 +35,8 @@ export function FaixasDeSecao() {
 }
 
 function acompanhaFaixa(lista: HTMLElement, folga: number): () => void {
-  const ativo = lista.querySelector<HTMLElement>('[aria-current="page"]');
+  // o atual é a página aberta (aria-current) ou, na navegação de coleção, o grupo que a contém (data-atual)
+  const ativo = lista.querySelector<HTMLElement>('[aria-current="page"], [data-atual]');
   const respiroBase = parseFloat(getComputedStyle(lista).paddingRight) || 0;
   const alinha = () => {
     if (!ativo) return;
