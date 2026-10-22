@@ -8,6 +8,8 @@ import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import Home from "@/app/setor-eletrico/page";
+import { indiceDeBusca } from "@/lib/busca/indice";
+import { buscar } from "@/lib/busca/buscar";
 import { lerCaminho } from "@/lib/energia/carregaJson";
 import {
   denominadorDePerdas,
@@ -649,13 +651,14 @@ describe("a página renderizada", () => {
     expect(html.indexOf('class="energia-cenario"')).toBeLessThan(html.indexOf('id="percurso-energia"'));
     expect(h1.split(/\s+/).length).toBeGreaterThanOrEqual(5);
     expect(h1.split(/\s+/).length).toBeLessThanOrEqual(9);
-    const ordem = [html.indexOf("<h1"), html.indexOf('aria-label="Por onde começar"'), html.indexOf('class="obs-metrics"'), html.indexOf('type="search"'), html.indexOf('<section id="perguntas"'), html.indexOf('aria-label="Conhecimento e fontes"')];
+    const ordem = [html.indexOf("<h1"), html.indexOf('aria-label="Por onde começar"'), html.indexOf('class="obs-metrics"'), html.indexOf("bp-busca--pagina"), html.indexOf('<section id="perguntas"'), html.indexOf('aria-label="Conhecimento e fontes"')];
     expect(ordem.every((x) => x > 0)).toBe(true);
     expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
     // a busca é real: o campo e o índice vêm do mesmo conteúdo que a página publica (o teste da busca confere o índice)
     expect(html).toContain("Busque por pergunta");
     // a abertura diz por que importa (na frase) e o que ela não permite concluir (no mesmo formato do CabecalhoModulo)
-    const abertura = texto(html.slice(0, html.indexOf('type="search"')));
+    // a busca da coleção (a da barra, no alto, é a da plataforma inteira)
+    const abertura = texto(html.slice(0, html.indexOf("bp-busca--pagina")));
     expect(abertura).toContain("Acompanhe preços, geração e reservatórios. Compare tarifas, interrupções e perdas por região.");
     expect(html).toContain('data-limite=""');
     expect(abertura).toContain("Não permite concluir");
@@ -1001,13 +1004,20 @@ describe("a página renderizada: siglas, mapa no celular, atualidade e busca", (
     expect(Buffer.byteLength(html, "utf-8")).toBeLessThan(400 * 1024);
   });
 
-  it("a busca do alto está no padrão combobox, sugere o vocabulário de quem não conhece a sigla e aponta para Minha região", () => {
-    expect(html).toContain('role="combobox"');
-    expect(html).toContain('aria-autocomplete="list"');
-    expect(html).toContain('role="listbox"');
-    expect(texto(html)).toContain("Sugestões: preço da luz, falta de energia, reservatórios, Tarifa Social.");
-    expect(html).toContain('placeholder="Ex.: preço da luz, DEC, CEMIG"');
-    // o vocabulário leigo vai no índice que a busca recebe
-    expect(html).toContain("preço da luz");
+  it("a busca da coleção é a da plataforma (Iniciativa 3): padrão combobox, vocabulário de quem não conhece a sigla e Minha região", () => {
+    const local = html.slice(html.indexOf("bp-busca--pagina"));
+    expect(local).toContain('role="combobox"');
+    expect(local).toContain('aria-autocomplete="list"');
+    expect(local).toContain('role="listbox"');
+    expect(local).toContain('placeholder="preço da luz, falta de energia, reservatórios…"');
+    expect(local).toContain('action="/buscar"');
+    // só nesta coleção, com a busca por cidade de Minha região levando o que foi digitado
+    const fonte = readFileSync(join(process.cwd(), "src/app/setor-eletrico/page.tsx"), "utf-8");
+    expect(fonte).toContain('filtro={{ colecao: "setor-eletrico", nome: "Setor Elétrico" }}');
+    expect(fonte).toContain('municipio={{ href: destino("territorio").href, rotulo: destino("territorio").rotulo }}');
+    expect(readFileSync(join(process.cwd(), "src/components/busca/BuscaPlataforma.tsx"), "utf-8")).toContain("?busca=${encodeURIComponent(termo.trim().slice(0, 80))}");
+    // o vocabulário leigo do Setor Elétrico entra no índice da plataforma, nas páginas a que aponta
+    expect(indiceDeBusca().entradas.find((e) => e.href === "/setor-eletrico/conta-de-luz" && e.tipo === "consulta")?.termos).toContain("preço da luz");
+    expect(buscar(indiceDeBusca(), "apagão", { colecao: "setor-eletrico" }).resultados[0].href).toBe("/setor-eletrico/qualidade");
   });
 });

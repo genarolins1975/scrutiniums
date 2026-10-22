@@ -22,7 +22,8 @@ const exigir = process.env.EXIGIR_BUILD_HTML === "1";
 
 const PORTAS = OBSERVATORIOS.map((o) => `/perguntas/${o.id}`);
 const ENTRADAS = OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => navegacaoDaColecao(c.id).itens[0].href.split(/[?#]/)[0]));
-const COM_BARRA = [...new Set(["/", ...PORTAS, ...ENTRADAS, "/app/observatorios"])];
+// com sessão, a home leva ao mapa da conta (/app/observatorios); ela é conferida sem sessão, logo abaixo
+const COM_BARRA = [...new Set([...PORTAS, ...ENTRADAS, "/app/observatorios"])];
 const CAMPO = "[data-barra-plataforma] form[role=search][action='/buscar']";
 
 describe("busca na barra", () => {
@@ -85,22 +86,29 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
     return ctx;
   }
 
-  /** Abre a rota e devolve a página e os endereços pedidos depois do carregamento. */
-  async function abrir(ctx: BrowserContext, rota: string): Promise<{ page: Page; pedidos: string[] }> {
+  /**
+   * Abre a rota e devolve a página, os endereços pedidos e os que responderam com o login (redirecionamento para /entrar):
+   * pré-carregar o link "Entrar", que é aberto, não é cair no login.
+   */
+  async function abrir(ctx: BrowserContext, rota: string): Promise<{ page: Page; pedidos: string[]; noLogin: string[] }> {
     const page = await ctx.newPage();
     const pedidos: string[] = [];
+    const noLogin: string[] = [];
     page.on("request", (r) => pedidos.push(new URL(r.url()).pathname));
+    page.on("response", (r) => {
+      if ((r.headers()["location"] ?? "").includes("/entrar")) noLogin.push(new URL(r.url()).pathname);
+    });
     const resp = await page.goto(origem + rota, { waitUntil: "load", timeout: 60_000 });
     expect(resp?.status(), rota).toBe(200);
-    return { page, pedidos };
+    return { page, pedidos, noLogin };
   }
 
-  it("com sessão, o campo está na barra da home, das seis portas, das 28 entradas e do mapa da conta, e na aplicação do Crédito", async () => {
+  it("com sessão, o campo está na barra das seis portas, das 28 entradas e do mapa da conta, e na aplicação do Crédito", async () => {
     expect(ENTRADAS).toHaveLength(28);
     const ctx = await contexto(1440, true);
     const sem: string[] = [];
     try {
-      for (const rota of [...COM_BARRA, "/observatorio/mapa"]) {
+      for (const rota of [...COM_BARRA, "/observatorio/map"]) {
         const { page } = await abrir(ctx, rota);
         expect(new URL(page.url()).pathname, `${rota} não pode cair no login`).toBe(rota);
         const campo = page.locator(`${CAMPO} input[name=q]`);
@@ -113,7 +121,7 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
     expect(sem).toEqual([]);
   }, 600_000);
 
-  it("sem sessão, entrar e cadastro não têm a busca; a home e /buscar têm", async () => {
+  it("sem sessão, entrar e cadastro não têm a busca; a home, uma porta e /buscar têm, visível", async () => {
     const ctx = await contexto(1440, false);
     try {
       for (const rota of ["/entrar", "/cadastro"]) {
@@ -121,9 +129,10 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
         expect(await page.locator("form[role=search]").count(), rota).toBe(0);
         await page.close();
       }
-      for (const rota of ["/", "/buscar"]) {
+      for (const rota of ["/", "/perguntas/familias", "/buscar"]) {
         const { page } = await abrir(ctx, rota);
         expect(await page.locator(CAMPO).count(), rota).toBe(1);
+        expect(await page.locator(`${CAMPO} input[name=q]`).isVisible(), rota).toBe(true);
         await page.close();
       }
     } finally {
@@ -134,7 +143,7 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
   it("teclado, sem sessão: o índice desce no foco, '/' leva ao campo, o selo marca o fechado, Esc devolve o foco e Enter abre o primeiro", async () => {
     const ctx = await contexto(1440, false);
     try {
-      const { page, pedidos } = await abrir(ctx, "/");
+      const { page, pedidos, noLogin } = await abrir(ctx, "/");
       await page.waitForLoadState("networkidle", { timeout: 15_000 }).catch(() => undefined);
       expect(pedidos, "o índice não desce antes do foco").not.toContain("/busca/indice.json");
       const campo = page.locator(`${CAMPO} input[name=q]`);
@@ -146,8 +155,10 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
       await expect.poll(() => lista.count(), { timeout: 15_000 }).toBeGreaterThan(1);
       expect(pedidos).toContain("/busca/indice.json");
       // o painel das capitais é fechado e leva o selo; o aperitivo da escola é aberto e não leva
+      // (a pergunta e a consulta das capitais levam ao mesmo painel: cada uma com o seu selo)
       const fechado = page.locator("[data-barra-plataforma] [role=option]", { has: page.locator("a[href='/eficiencia-estatal/educacao-municipal-capitais']") });
-      await expect.poll(() => fechado.locator("[data-selo-conta]").count()).toBe(1);
+      expect(await fechado.count()).toBeGreaterThan(0);
+      await expect.poll(() => fechado.locator("[data-selo-conta]").count()).toBe(await fechado.count());
       const aberto = page.locator("[data-barra-plataforma] [role=option]", { has: page.locator("a[href='/educacao-municipal']") });
       expect(await aberto.locator("[data-selo-conta]").count()).toBe(0);
       // setas: a opção ativa é a apontada pelo campo
@@ -165,7 +176,7 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
       await page.keyboard.type("GLP");
       await expect.poll(() => lista.count()).toBeGreaterThan(0);
       await Promise.all([page.waitForURL((u) => u.pathname === "/gas-natural/gas-de-cozinha", { timeout: 30_000 }), page.keyboard.press("Enter")]);
-      expect(pedidos.filter((p) => p.startsWith("/entrar"))).toEqual([]);
+      expect(noLogin).toEqual([]);
       await page.close();
     } finally {
       await ctx.close();
@@ -175,13 +186,13 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
   it("sem sessão, digitar não dispara requisição a página fechada (nenhum pré-carregamento cai no login)", async () => {
     const ctx = await contexto(1440, false);
     try {
-      const { page, pedidos } = await abrir(ctx, "/buscar?q=ideb");
+      const { page, noLogin } = await abrir(ctx, "/buscar?q=ideb");
       const campo = page.locator(`${CAMPO} input[name=q]`);
       await campo.click();
       await page.keyboard.type("conta de luz");
       await expect.poll(() => page.locator("[data-barra-plataforma] [role=option]").count(), { timeout: 15_000 }).toBeGreaterThan(0);
       await page.waitForLoadState("networkidle", { timeout: 15_000 }).catch(() => undefined);
-      expect(pedidos.filter((p) => p.startsWith("/entrar"))).toEqual([]);
+      expect(noLogin).toEqual([]);
       expect(new URL(page.url()).pathname).toBe("/buscar");
       // a página de resultados é servida pelo servidor, com o selo nos fechados
       expect(await page.locator("main [data-selo-conta]").count()).toBeGreaterThan(0);

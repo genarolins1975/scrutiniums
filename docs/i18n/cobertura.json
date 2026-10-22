@@ -12,7 +12,7 @@
   "escopo": {
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
     "arquivos_analisados": 1515,
-    "fontes_sha256": "daf78a1b9fe2da99d271d884cf5fb94670d48516da81be52c2662cc25d57e64c",
+    "fontes_sha256": "e7c444dea848201645cad86867b5cc3372c17e0255b9d8ba30df9e2fc44b8988",
     "pendencias_sha256": "0be8b028eabe50a849497ab065df8457c9e02c91ead965aa0f1bd6a674b46486",
     "nao_classificadas": [
       {
@@ -180,17 +180,17 @@
       "interface": {
         "arquivos": 429,
         "candidatos": {
-          "jsx_text": 2422,
+          "jsx_text": 2424,
           "atributos": 524,
           "props": 1062,
-          "outros_literais": 9098,
-          "templates": 1299,
-          "expressoes_nao_resolvidas": 7970,
+          "outros_literais": 9104,
+          "templates": 1300,
+          "expressoes_nao_resolvidas": 7975,
           "chaves_objetos": 7285
         },
         "exclusoes": {
-          "importacoes": 1960,
-          "atributos_tecnicos": 3933,
+          "importacoes": 1961,
+          "atributos_tecnicos": 3934,
           "tipos": 601
         },
         "scripts_embutidos": {},
@@ -200,7 +200,7 @@
           "sem_traducao": null,
           "nomes_preservados": null
         },
-        "candidatos_nao_catalogados": 29660,
+        "candidatos_nao_catalogados": 29674,
         "percentual_traduzido": null
       },
       "rotas": {
@@ -229,17 +229,17 @@
       "interface": {
         "arquivos": 575,
         "candidatos": {
-          "jsx_text": 7671,
+          "jsx_text": 7667,
           "atributos": 2911,
-          "props": 19072,
-          "outros_literais": 51169,
+          "props": 19070,
+          "outros_literais": 51167,
           "templates": 12784,
-          "expressoes_nao_resolvidas": 55577,
-          "chaves_objetos": 36054
+          "expressoes_nao_resolvidas": 55576,
+          "chaves_objetos": 36056
         },
         "exclusoes": {
           "importacoes": 4995,
-          "atributos_tecnicos": 8667,
+          "atributos_tecnicos": 8666,
           "tipos": 3733
         },
         "scripts_embutidos": {},
@@ -249,7 +249,7 @@
           "sem_traducao": 0,
           "nomes_preservados": 0
         },
-        "candidatos_nao_catalogados": 185238,
+        "candidatos_nao_catalogados": 185231,
         "percentual_traduzido": null
       },
       "rotas": {

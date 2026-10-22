@@ -404,6 +404,8 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
       expect(serialize(pt), "reconstrução não altera o DOM português original").toBe(originalPt);
     });
 
+    // cada adulteração clona e compara os dois documentos inteiros; com a busca da plataforma no cabeçalho (Iniciativa 3) o caso
+    // passou de 4 para 5 s numa máquina local, no limite padrão: o limite próprio evita falha por lentidão do executor
     it("recusa números, nomes, destinos, imagens e estrutura adulterados no índice traduzido", (ctx) => {
       const { pt, en } = documentosDoPar(ctx, par);
       if (!("childNodes" in en) || !("childNodes" in pt)) throw new Error("Documentos da home sem árvore DOM");
@@ -517,7 +519,7 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
       }
       expect(serialize(en), "negativos preservam o documento EN original").toBe(original);
       expect(serialize(pt), "prova do índice preserva o documento PT original").toBe(originalPt);
-    });
+    }, 30_000);
   }
 });
 

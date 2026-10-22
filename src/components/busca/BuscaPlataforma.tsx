@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { buscar, emOrdemDeTela, type Resultado } from "@/lib/busca/buscar";
 import type { IndiceBusca } from "@/lib/busca/tipos";
 import { medirBusca } from "@/lib/busca/medir";
@@ -52,12 +52,14 @@ function Lupa({ className }: { className?: string }) {
  *
  * `variante="barra"` (BarraPlataforma): campo compacto na linha da marca; abaixo de 640 px, uma lupa de 44 px que abre a busca
  * em tela cheia; "/" e Ctrl K levam ao campo, sem animação. `variante="pagina"`: o campo dentro de uma página (entrada de uma
- * coleção, mapa da conta), que com `filtro` procura só na coleção e oferece a busca em toda a plataforma.
+ * coleção, mapa da conta), que com `filtro` procura só na coleção e oferece a busca em toda a plataforma, e com `municipio`
+ * aponta para a busca por cidade da coleção.
  */
 export function BuscaPlataforma({
   variante = "barra",
   exemplo,
   filtro,
+  municipio,
   rotulo = ROTULO,
 }: {
   variante?: "barra" | "pagina";
@@ -66,8 +68,13 @@ export function BuscaPlataforma({
   /** Só os destinos de uma coleção do registro, com o nome dela para o aviso. */
   filtro?: { colecao: string; nome: string };
   rotulo?: string;
+  /** A busca por cidade da coleção (o índice não tem municípios): com termo, o painel aponta para ela levando o que foi digitado. */
+  municipio?: { href: string; rotulo: string };
 }) {
-  const id = useId();
+  const barra = variante === "barra";
+  // ids fixos (um campo da barra e no máximo um na página): o HTML sai igual nas irmãs em português e em inglês, que os
+  // testes de tradução comparam elemento a elemento; useId mudaria com a posição na árvore
+  const id = barra ? "bp-busca" : "busca-local";
   const sessao = useSessao();
   const [termo, setTermo] = useState("");
   const [indice, setIndice] = useState<IndiceBusca | null>(null);
@@ -77,7 +84,6 @@ export function BuscaPlataforma({
   const campo = useRef<HTMLInputElement>(null);
   const lupa = useRef<HTMLButtonElement>(null);
   const voltarPara = useRef<HTMLElement | null>(null);
-  const barra = variante === "barra";
 
   const resposta = useMemo(() => (indice && termo.trim() ? buscar(indice, termo, { colecao: filtro?.colecao }) : null), [indice, termo, filtro?.colecao]);
   const lista = useMemo(() => (resposta ? emOrdemDeTela(resposta.grupos) : []), [resposta]);
@@ -261,10 +267,21 @@ export function BuscaPlataforma({
               .
             </p>
           )}
+          {termo.trim() && municipio && (
+            <p className="bp-busca-vazio">
+              Procura um município? A busca por cidade está em{" "}
+              <Link href={`${municipio.href}?busca=${encodeURIComponent(termo.trim().slice(0, 80))}`} prefetch={false}>
+                {municipio.rotulo}
+              </Link>
+              .
+            </p>
+          )}
           {termo.trim() && indice && (
             <p className="bp-busca-rodape">
               <Link href={paraTudo} prefetch={false} onClick={() => fechar(false)}>
-                {filtro ? "Buscar em toda a plataforma" : "Ver na página de busca"} <span aria-hidden="true">→</span>
+                {filtro ? "Buscar em toda a plataforma" : "Ver na página de busca"}
+                {"\u00a0"}
+                <span aria-hidden="true">→</span>
               </Link>
             </p>
           )}

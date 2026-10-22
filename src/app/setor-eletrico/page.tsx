@@ -994,14 +994,13 @@ export default function MapaDoObservatorio() {
             {idiomaEnergia() === "pt" ? (
               <>
                 <p className="rotulo mb-2 text-mineral">Busque por pergunta, assunto, página, conceito ou distribuidora</p>
-                <BuscaPlataforma variante="pagina" exemplo="preço da luz, falta de energia, reservatórios…" filtro={{ colecao: "setor-eletrico", nome: "Setor Elétrico" }} rotulo="Buscar no Setor Elétrico" />
-                <p className="mt-2 text-xs text-carvao-muted">
-                  Procura um município? A busca por cidade está em{" "}
-                  <Link href={destino("territorio").href} className="text-energia-dark underline underline-offset-4 hover:text-carvao">
-                    {destino("territorio").rotulo}
-                  </Link>
-                  . <Link href="/buscar" className="text-energia-dark underline underline-offset-4 hover:text-carvao">Buscar em toda a plataforma</Link>.
-                </p>
+                <BuscaPlataforma
+                  variante="pagina"
+                  exemplo="preço da luz, falta de energia, reservatórios…"
+                  filtro={{ colecao: "setor-eletrico", nome: "Setor Elétrico" }}
+                  municipio={{ href: destino("territorio").href, rotulo: destino("territorio").rotulo }}
+                  rotulo="Buscar no Setor Elétrico"
+                />
               </>
             ) : (
               <BuscaObservatorio
