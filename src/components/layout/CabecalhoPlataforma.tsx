@@ -14,10 +14,12 @@ import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
 import { ProvedorContexto, TrilhaCliente } from "@/components/layout/NavegacaoContexto";
 import type { DominioFrescorId } from "@/lib/frescor";
+import { BuscaPlataforma } from "@/components/busca/BuscaPlataforma";
+import { EXEMPLO_DO_CAMPO } from "@/lib/busca/exemplos";
 
 /**
- * Barra comum dos observatórios e painéis (BarraPlataforma): marca, seletor da coleção corrente ("Setor Elétrico ▾"), as
- * abas dos seis observatórios com o atual marcado e a conta. Estática: a conta é resolvida no navegador (AcessoConta), que
+ * Barra comum dos observatórios e painéis (BarraPlataforma): marca, seletor da coleção corrente ("Setor Elétrico ▾"), a busca
+ * da plataforma (BuscaPlataforma, em português), as abas dos seis observatórios com o atual marcado e a conta. Estática: a conta é resolvida no navegador (AcessoConta), que
  * mostra "Minha conta" a quem tem sessão e "Entrar" (com volta a esta página) a quem não tem; nunca as duas.
  *
  * Abaixo de 640 px as abas saem (public/observatorios.css) e os mesmos destinos ficam no seletor, na linha da marca, com a
@@ -67,6 +69,8 @@ export function CabecalhoPlataforma({
       <BarraPlataforma
         marca={{ href: hrefNoIdioma("/", idioma), rotulo: tx("Scrutiniums: página inicial", "Scrutiniums: home page", idioma) }}
         seletor={<SwitcherObservatorio atual={colecao} caminho={caminho} doProvedor />}
+        // o índice da busca é só em português: nas páginas em inglês o campo não aparece, para não levar a resultados em outro idioma
+        busca={idioma === "pt" ? <BuscaPlataforma exemplo={EXEMPLO_DO_CAMPO} /> : undefined}
         acoes={
           <>
             {/* no celular, as ferramentas e a conta num só botão nesta linha (a barra não ganha uma linha só para elas) */}

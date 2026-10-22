@@ -15,6 +15,7 @@ import { EstadoConta } from "@/components/energia/AcessoConta";
 import { NavegacaoColecaoCliente } from "@/components/layout/NavegacaoColecaoCliente";
 import { PaginaAberta } from "@/components/acesso/PaginaAberta";
 import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
+import { EXEMPLO_DO_CAMPO } from "@/lib/busca/exemplos";
 
 // endereço que o navegador vê; o seletor, as abas e a trilha resolvem o contexto por ele (NavegacaoContexto.tsx)
 const navegador = vi.hoisted(() => ({ caminho: "/sobre" }));
@@ -163,13 +164,15 @@ describe("barra comum da plataforma nas entradas dos observatórios", () => {
     expect(usam.filter((f) => !permitidos.includes(f))).toEqual([]);
   });
 
-  it("o cabeçalho público usa a mesma barra e a mesma marca, com o nome à vista também no celular", () => {
+  it("o cabeçalho público usa a mesma barra e a mesma marca; no celular, o nome só fica à vista onde não há a lupa da busca", () => {
     const h = html(createElement(PublicHeaderView, { authenticated: false }));
     expect(h.match(/data-barra-plataforma=""/g)).toHaveLength(1);
     const m = marca(h);
     expect({ ...m, classes: undefined, rotulo: undefined }).toEqual({ ...marcaReferencia, classes: undefined, rotulo: undefined });
-    // sem seletor ao lado, o nome cabe no celular: a marca não é a compacta
-    expect(m.classes).toBe("bp-marca");
+    // em português a linha da marca leva a lupa da busca (Iniciativa 3): no celular, o monograma, como nas páginas dos
+    // observatórios, para "Criar acesso" seguir na mesma linha; em inglês, sem busca, o nome cabe e fica à vista
+    expect(m.classes).toBe("bp-marca bp-marca--compacta");
+    expect(marca(html(createElement(PublicHeaderView, { authenticated: false, idioma: "en" }))).classes).toBe("bp-marca");
     // as abas abertas têm os mesmos rótulos e a mesma ordem dos observatórios, e levam às páginas abertas
     const abas = ancoras(bloco(h, 'aria-label="Navegação principal"', "</nav>")).filter((a) => a.href.startsWith("/perguntas/") && !a.href.includes("#"));
     expect(abas.slice(-OBSERVATORIOS.length).map((a) => a.texto)).toEqual(OBSERVATORIOS.map((o) => o.nomeCurto));
@@ -230,7 +233,8 @@ describe("com e sem sessão: a barra não aponta para o login de quem entrou nem
     // coleção que são a página única de um tema (APERITIVOS: sem sessão, a versão aperitivo; com sessão, o painel completo)
     // também são abertas; todo o resto da barra (observatórios, coleções, escolha e conta) pede sessão
     const aperitivos = new Set(APERITIVOS.map((a) => a.rota));
-    for (const d of destinos) if (ehRotaPublica(d)) expect(d === "/" || ENTRADAS_ABERTAS.includes(d) || aperitivos.has(d), d).toBe(true);
+    // a busca da plataforma (Iniciativa 3): a lupa da SPA leva à página /buscar, aberta e só com títulos
+    for (const d of destinos) if (ehRotaPublica(d)) expect(d === "/" || d === "/buscar" || ENTRADAS_ABERTAS.includes(d) || aperitivos.has(d), d).toBe(true);
     expect(destinos.size).toBeGreaterThanOrEqual(1 + OBSERVATORIOS.length + OBSERVATORIOS.flatMap((o) => o.colecoes).length + 2);
   });
 });
@@ -343,5 +347,59 @@ describe("navegação da coleção sob a barra comum, nas 28 coleções, com e s
     if (!ehRotaPublica(entrada)) expect(painel).not.toContain("com conta");
     const fechados = nav.itens.filter((i) => i.publicado && !ehRotaPublica(i.href.split(/[?#]/)[0]));
     if (fechados.length) expect(aberta).toContain("com conta");
+  });
+});
+
+describe("busca da plataforma na barra comum (Iniciativa 3 do parecer de UX)", () => {
+  /** O campo da barra: formulário GET para /buscar com o campo q, rotulado, com o exemplo dos sinônimos. */
+  function campoDaBusca(h: string) {
+    const f = h.match(/<form\b[^>]*role="search"[^>]*>/)?.[0] ?? "";
+    return {
+      form: f,
+      acao: f.match(/action="([^"]*)"/)?.[1],
+      metodo: f.match(/method="([^"]*)"/)?.[1],
+      rotulo: f.match(/aria-label="([^"]*)"/)?.[1],
+      campo: /<input\b[^>]*name="q"[^>]*type="search"/.test(h),
+      exemplo: h.includes(`placeholder="${EXEMPLO_DO_CAMPO}"`),
+    };
+  }
+
+  it.each(ENTRADAS)("$rota: a barra traz o campo, à esquerda da conta, e a lupa do celular", ({ render }) => {
+    const h = barra(render());
+    expect(campoDaBusca(h)).toMatchObject({ acao: "/buscar", metodo: "get", rotulo: "Buscar na Scrutiniums", campo: true, exemplo: true });
+    expect(h.indexOf("data-busca-plataforma")).toBeLessThan(h.indexOf('class="bp-acoes"'));
+    expect(h).toMatch(/<button[^>]*class="bp-busca-lupa"[^>]*aria-label="Buscar na Scrutiniums"/);
+  });
+
+  it("o cabeçalho público traz o mesmo campo; em inglês, nenhum (o índice é só em português)", () => {
+    const pt = html(createElement(PublicHeaderView, { authenticated: false }));
+    expect(campoDaBusca(pt)).toMatchObject({ acao: "/buscar", metodo: "get", campo: true, exemplo: true });
+    const en = html(createElement(PublicHeaderView, { authenticated: false, idioma: "en" }));
+    expect(en).not.toContain('role="search"');
+  });
+
+  it("a SPA do Crédito traz o mesmo formulário GET, com as mesmas classes, e a lupa leva a /buscar", () => {
+    expect(campoDaBusca(barraSpa)).toMatchObject({ acao: "/buscar", metodo: "get", rotulo: "Buscar na Scrutiniums", campo: true, exemplo: true });
+    expect(barraSpa).toContain('<a class="bp-busca-lupa" href="/buscar" aria-label="Buscar na Scrutiniums">');
+    expect(barraSpa.indexOf('class="bp-busca"')).toBeLessThan(barraSpa.indexOf('class="bp-acoes"'));
+  });
+
+  it("só a barra comum desenha a barra, e os dois usos dela passam a busca; entrar e cadastro não usam a barra", () => {
+    const usam = fontes(join(raiz, "src"))
+      .filter((f) => !f.includes("/tests/") && /<BarraPlataforma\b/.test(readFileSync(f, "utf-8")))
+      .map((f) => f.slice(raiz.length + 1))
+      .sort();
+    expect(usam).toEqual(["src/components/layout/CabecalhoPlataforma.tsx", "src/components/layout/PublicHeader.tsx"]);
+    for (const f of usam) expect(ler(f), f).toMatch(/busca=\{idioma === "pt" \? <BuscaPlataforma exemplo=\{EXEMPLO_DO_CAMPO\} \/> : undefined\}/);
+    for (const f of ["src/app/entrar/page.tsx", "src/components/onboarding/PaginasEntrar.tsx", "src/app/cadastro/layout.tsx", "src/app/cadastro/page.tsx"]) {
+      expect(ler(f), f).not.toMatch(/PublicHeader|CabecalhoPlataforma|BarraPlataforma|BuscaPlataforma/);
+    }
+  });
+
+  it("no celular, o campo dá lugar à lupa de 44 px, que abre a busca em tela cheia", () => {
+    const css = ler("public/observatorios.css").replace(/\s+/g, " ");
+    expect(css).toMatch(/@media\(max-width:639px\) \{[^@]*\.bp \.bp-busca-lupa \{[^}]*width:44px; height:44px;/);
+    expect(css).toMatch(/\.bp \.bp-busca:not\(\[data-folha\]\) \.bp-busca-caixa \{ display:none; \}/);
+    expect(css).toMatch(/\.bp-busca\[data-folha\] \.bp-busca-caixa \{ position:fixed; inset:0;/);
   });
 });

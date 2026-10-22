@@ -206,7 +206,7 @@ Vintages: SGS 2026-07, SCR 2026-07, txjuros 2026-08, B3 2026-09, DataJud 2026-07
 | **Referência** | Regulação · Metodologia e fontes · Conceitos · Sobre | Sugestões e Perguntas rápidas saem do menu |
 
 Complementos:
-- **Busca global** no topo (o `navQ` atual só filtra nomes de aba): índice de abas, seções ancoradas, conceitos, instituições, produtos e municípios, que hoje exigem entrar na aba certa para buscar. As "8 intenções" das Perguntas rápidas viram sugestões dessa busca.
+- **Busca global** no topo (feita na Iniciativa 3 do parecer de UX, 22/10/2026: `BuscaPlataforma` na barra comum e na SPA, índice único em `src/lib/busca`; o `navQ`, que só filtrava nomes de aba, saiu): índice de abas, seções ancoradas, conceitos, instituições, produtos e municípios, que hoje exigem entrar na aba certa para buscar. As "8 intenções" das Perguntas rápidas viram sugestões dessa busca.
 - **Rodapé de cada aba com "continue por"**: as pontes já existem em 5 lugares; padronizar em todas (Produto → Juros da modalidade → Instituições que a oferecem, etc.).
 - Ordem dentro de cada aba: **número, depois gráfico, depois método**, sem exceção. Hoje Desenrola, Penetração e Instituições invertem.
 

@@ -19,8 +19,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%23966b48'/%3E%3Cpath d='M16 6l8 10-8 10-8-10z' fill='%23f3efe5'/%3E%3C/svg%3E">
 <link rel="preload" href="/obs/fonts/playfair-display.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/obs/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/obs/styles.css?v=0.110.0">
-<link rel="stylesheet" href="/observatorios.css?v=13">
+  <link rel="stylesheet" href="/obs/styles.css?v=0.111.0">
+<link rel="stylesheet" href="/observatorios.css?v=14">
 <link rel="stylesheet" href="/obs/atlas.css?v=4">
 <link rel="stylesheet" href="/observatorios-gravuras.css?v=1">
 </head>
@@ -31,6 +31,10 @@
     <a class="bp-marca bp-marca--compacta" href="/" aria-label="Scrutiniums: página inicial"><svg width="20" height="25" viewBox="0 0 40 50" fill="none" aria-hidden="true" focusable="false"><path d="M28 0 L10 0 C4 4 2 8 2 14 C2 20 6 24 13 26 L21 28 L21 14 C21 8 23 3 28 0 Z" fill="currentColor"/><path d="M12 50 L30 50 C36 46 38 42 38 36 C38 30 34 26 27 24 L19 22 L19 36 C19 42 17 47 12 50 Z" fill="#966B48"/></svg><span class="bp-marca-nome">Scrutiniums</span></a>
     <span aria-hidden="true" class="bp-divisor"></span>
     <details class="obs-trocar" id="obsTrocar"><summary aria-label="Coleção atual: Crédito e sistema financeiro. Trocar de coleção ou de observatório"><span class="obs-trocar-nome">Crédito e sistema financeiro</span> <span aria-hidden="true">▾</span></summary><div class="obs-trocar-menu"><a class="obs-trocar-obs" href="/observatorios/familias">Famílias</a><a href="/eficiencia-estatal/trabalho-renda">Renda e trabalho</a><a href="/observatorio/payroll-lending-aging">Dívida e crédito das famílias</a><a href="/eficiencia-estatal/assistencia-social">Proteção social</a><a href="/eficiencia-estatal/habitacao">Moradia</a><a href="/custo-de-vida">Custo de vida</a><a class="obs-trocar-obs" href="/observatorios/servicos-publicos">Serviços Públicos</a><a href="/educacao-municipal">Educação</a><a href="/eficiencia-estatal/saude-capitais">Saúde</a><a href="/eficiencia-estatal/seguranca-publica">Segurança pública</a><a href="/eficiencia-estatal/judiciario">Justiça</a><a href="/eficiencia-estatal/cultura">Cultura</a><a href="/eficiencia-estatal">Síntese das capitais</a><a class="obs-trocar-obs" href="/observatorios/contas-publicas">Contas Públicas</a><a href="/contas-publicas">Contas Federais</a><a href="/contas-publicas-estaduais">Contas Estaduais</a><a href="/observatorio/subnational-credit">Dívida e crédito dos governos</a><a class="obs-trocar-obs" href="/observatorios/energia-e-infraestrutura">Energia e Infraestrutura</a><a href="/setor-eletrico">Setor Elétrico</a><a href="/gas-natural">Gás Natural</a><a href="/combustiveis">Combustíveis</a><a href="/saneamento">Saneamento</a><a href="/eficiencia-estatal/mobilidade-transporte">Mobilidade</a><a href="/conectividade">Conectividade</a><a class="obs-trocar-obs" href="/observatorios/economia">Economia</a><a href="/observatorio" aria-current="true">Crédito e sistema financeiro<span class="sr-only"> (atual)</span></a><a href="/observatorio/pix">Pagamentos</a><a href="/observatorio/sectors">Empresas e risco</a><a href="/agronegocio">Agronegócio</a><a class="obs-trocar-obs" href="/territorio">Território e Clima</a><a href="/agronegocio/ambiente">Desmatamento e emissões</a><a href="/eficiencia-estatal/meio-ambiente-clima">Cidades e clima</a><a href="/territorio/queimadas">Fogo e queimadas</a><a href="/territorio/desastres">Desastres</a><a class="obs-trocar-conta" href="/app/observatorios">Escolher na minha conta →</a></div></details>
+    <form class="bp-busca" action="/buscar" method="get" role="search" aria-label="Buscar na Scrutiniums">
+      <a class="bp-busca-lupa" href="/buscar" aria-label="Buscar na Scrutiniums"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.75" cy="6.75" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg></a>
+      <div class="bp-busca-caixa"><div class="bp-busca-form"><label class="sr-only" for="bpBuscaQ">Buscar na Scrutiniums</label><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" class="bp-busca-icone"><circle cx="6.75" cy="6.75" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg><input id="bpBuscaQ" class="bp-busca-campo" name="q" type="search" placeholder="conta de luz, Ideb, dívida dos estados…" autocomplete="off" spellcheck="false" enterkeyhint="search" maxlength="120"></div></div>
+    </form>
     <div class="bp-acoes"><a id="barraConta" class="bp-conta" href="/app/conta" hidden>Minha conta</a></div>
   </div>
   <div class="bp-abas"><div class="bp-abas-linha"><nav aria-label="Observatórios da Scrutiniums" class="obs-dominios"><a href="/observatorios/familias">Famílias</a><a href="/observatorios/servicos-publicos">Serviços Públicos</a><a href="/observatorios/contas-publicas">Contas Públicas</a><a href="/observatorios/energia-e-infraestrutura">Energia e Infraestrutura</a><a href="/observatorios/economia" aria-current="true">Economia</a><a href="/territorio">Território e Clima</a></nav></div></div>
@@ -54,8 +58,6 @@
       <span class="brandtext"><span id="brandName">Crédito e sistema financeiro</span>
       <span class="tagline">monitoramento · diagnóstico · previsão</span></span>
     </div>
-    <div class="navbusca"><input id="navQ" type="search" placeholder="buscar página…" aria-label="Buscar página"
-        oninput="navFiltra(this.value)" autocomplete="off"></div>
     <nav class="tabs" id="tabs" aria-label="Navegação da coleção Crédito e sistema financeiro">
       <div class="navgroup">
         <span class="navlabel">Começar</span>
@@ -123,7 +125,6 @@
         <button data-view="method">Metodologia e fontes</button>
         <button data-view="sobre">Sobre o Observatório</button>
       </div>
-      <p id="navVazio" class="navvazio" hidden>nenhuma página com esse nome</p>
     </nav>
     <div class="sidefoot">
       <span class="updated" id="updatedAt"></span>
@@ -209,7 +210,7 @@
   </div>
 </div>
 <div class="tooltip" id="tooltip" role="tooltip" aria-hidden="true"></div>
-<script src="/obs/app.min.js?v=0.121.0"></script>
+<script src="/obs/app.min.js?v=0.122.0"></script>
 <script src="/obs/atlas.js?v=4" defer></script>
 <script src="/obs/editorial.js?v=6" defer></script>
 </body>

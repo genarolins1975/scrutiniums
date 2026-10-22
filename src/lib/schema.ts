@@ -170,4 +170,16 @@ export const usoPaginasDia = pgTable(
   (t) => [primaryKey({ columns: [t.dia, t.rota, t.comConta] })],
 );
 
+/** Medição agregada da busca da plataforma: buscas por dia, termo normalizado e presença de conta (src/lib/uso/busca.ts). */
+export const usoBuscaDia = pgTable(
+  "uso_busca_dia",
+  {
+    dia: date("dia", { mode: "string" }).notNull(),
+    termo: text("termo").notNull(),
+    comConta: boolean("com_conta").notNull(),
+    buscas: integer("buscas").notNull().default(0),
+  },
+  (t) => [primaryKey({ columns: [t.dia, t.termo, t.comConta] })],
+);
+
 export type User = typeof users.$inferSelect;

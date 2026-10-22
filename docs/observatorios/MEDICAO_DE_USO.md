@@ -136,9 +136,24 @@ Depois da decisão do dono e da política publicada:
 
 Para desligar, apagar a variável (ou trocar para `0`) e fazer novo deploy. Os números sem conta já gravados continuam no painel, com a nota de que são do trecho em que a contagem esteve ligada.
 
+## 8a. Busca da plataforma (desde 22/10/2026)
+
+A busca da plataforma (Iniciativa 3 do parecer de UX) soma 1 por busca feita na tabela `uso_busca_dia`:
+
+| Coluna | Conteúdo |
+|---|---|
+| `dia` | Dia civil no fuso de Brasília |
+| `termo` | O termo normalizado (`src/lib/busca/normalizar.ts`: minúsculas, sem acento, sem pontuação) |
+| `com_conta` | Verdadeiro se o pedido trouxe sessão válida |
+| `buscas` | Número de buscas no dia, termo e presença de conta |
+
+Chave primária `(dia, termo, com_conta)`, upsert como em `uso_paginas_dia`. Uma busca feita é o resultado aberto pelo campo (`medirBusca` em `src/lib/busca/medir.ts`) ou a página `/buscar` com termo (`MedeBusca`); digitar não conta. O envio vai para `POST /api/uso/busca` com as mesmas regras de `/api/uso`: DNT e GPC nunca contam, sem conta só com `USO_ANONIMO_ATIVO=1`, limite de taxa em memória, resposta 204. Por decisão registrada no PR da Iniciativa 3 (recomendação do parecer, §8 item 6), os termos de quem não tem conta ficam desligados pela mesma chave da contagem de páginas.
+
+O termo é texto livre e pode trazer dado pessoal; `termoParaContagem` (`src/lib/uso/busca.ts`) não grava termo com `@`, com cinco algarismos seguidos ou nove no total (CPF, telefone, CEP), com mais de seis palavras ou mais de 60 letras.
+
 ## 9. O painel
 
-`/app/admin`, seção 03, mostra:
+`/app/admin`, seção 03, mostra (a seção 04 mostra a busca: "Termos mais buscados, últimos 30 dias" e "Buscas sem resultado", este pelo índice de hoje, para achar destino que falta ou sinônimo a acrescentar):
 
 - o período exato (30 dias civis no fuso de Brasília, hoje incluído) e, quando a medição começou dentro dele, a data de início, com a nota de que os dias anteriores não têm registro (o que não equivale a zero);
 - o estado das duas contagens (com conta ligada; sem conta ligada ou desligada);
@@ -158,4 +173,5 @@ Com a contagem sem conta desligada e sem registro anterior, a coluna sem conta m
 | `src/lib/uso/rotas.ts` | Lista fechada, normalização e atribuição ao observatório |
 | `src/lib/uso/varredura.ts`, `scripts/rotas-do-app.mjs`, `src/lib/uso/rotas-do-app.json` | Geração e versão da lista de páginas |
 | `src/lib/uso/painel.ts`, `src/components/admin/UsoPaginas.tsx` | Leitura e seção do painel |
+| `src/lib/busca/medir.ts`, `src/components/busca/MedeBusca.tsx`, `src/app/api/uso/busca/route.ts`, `src/lib/uso/busca.ts`, `src/components/admin/UsoBusca.tsx` | Medição da busca: envio, recebimento, filtro do termo e seção do painel |
 | `src/tests/uso-paginas.test.ts` | Testes |

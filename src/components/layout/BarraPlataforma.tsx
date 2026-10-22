@@ -5,7 +5,7 @@ import { LogoMark } from "@/components/ui/Logo";
 /**
  * Barra superior comum da Scrutiniums (achado A7 da banca de 19/10/2026: eram cinco cabeçalhos diferentes). Duas linhas:
  *
- *  1. a marca, o seletor de observatório (quando há) e, à direita, a conta;
+ *  1. a marca, o seletor de observatório (quando há) e, à direita, a busca da plataforma (BuscaPlataforma) e a conta;
  *  2. as abas dos seis observatórios, na ordem e com os rótulos do registro (src/lib/observatorios/lista.ts), e o que a página
  *     acrescenta à direita (o seletor de idioma onde há tradução).
  *
@@ -19,12 +19,15 @@ import { LogoMark } from "@/components/ui/Logo";
 export function BarraPlataforma({
   marca,
   seletor,
+  busca,
   acoes,
   abas,
 }: {
   marca: { href: string; rotulo: string; nomeNoCelular?: boolean };
   /** Seletor ao lado da marca (coleção corrente ▾); com ele, no celular, o nome escrito dá lugar ao monograma. */
   seletor?: ReactNode;
+  /** Linha da marca, à esquerda da conta: o campo da busca da plataforma (no celular, a lupa que abre a busca em tela cheia). */
+  busca?: ReactNode;
   /** Linha da marca, à direita: conta e acesso. */
   acoes: ReactNode;
   /** Segunda linha: as abas dos observatórios e o que vem à direita delas. */
@@ -40,6 +43,7 @@ export function BarraPlataforma({
             {seletor}
           </>
         )}
+        {busca}
         <div className="bp-acoes">{acoes}</div>
       </div>
       <div className="bp-abas">{abas}</div>
