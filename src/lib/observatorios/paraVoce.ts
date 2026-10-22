@@ -103,6 +103,13 @@ export const PARA_VOCE = {
   // navegação dos painéis e no índice dos capítulos
   "/contas-publicas": ["inss", "estado-contas", "previdencia"],
   "/agronegocio": ["comida", "atlas-agro"],
+  // as coleções de um painel só (Iniciativa 4 do parecer de UX, 22/10/2026): a consulta da própria página vem embutida no
+  // bloco; os cartões levam às perguntas vizinhas do mesmo bolso (preço do que se compra, serviço da cidade), nunca à própria página
+  "/combustiveis": ["gnv", "botijao", "luz"],
+  "/conectividade": ["capital", "luz", "municipio"],
+  "/educacao-municipal": ["educacao-capital", "capital"],
+  "/custo-de-vida": ["comida", "botijao", "luz"],
+  "/contas-publicas/previdencia": ["estado-contas", "custo-de-vida"],
   // o custo de vida (painel novo das Famílias, 20/10/2026) abre o bloco; a água saiu para manter três perguntas e continua a
   // um clique em "Para o seu caso" da camada aberta das Famílias e no elo "Gás, luz e água" do orçamento da família
   "/observatorios/familias": ["custo-de-vida", "luz", "botijao"],

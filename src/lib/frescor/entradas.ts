@@ -14,6 +14,11 @@ export const FRESCOR_DAS_COLECOES = {
   "/eficiencia-estatal": ["eficiencia"],
   "/contas-publicas": ["contas-federais", "previdencia"],
   "/agronegocio": ["agro"],
+  "/combustiveis": ["gas"],
+  "/conectividade": ["conectividade"],
+  "/educacao-municipal": ["educacao"],
+  "/custo-de-vida": ["inflacao"],
+  "/contas-publicas/previdencia": ["previdencia"],
 } as const satisfies Record<string, readonly DominioFrescorId[]>;
 
 export const FRESCOR_DOS_OBSERVATORIOS = {

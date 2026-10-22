@@ -85,14 +85,18 @@ describe("combustíveis: o painel", () => {
     }
     expect(html).toContain(`${gold.indicadores.gasolina_postos_mes.valor.toLocaleString("pt-BR")} postos pesquisados`);
     expect(html).toContain("ANP, Levantamento de Preços de Combustíveis");
-    // a ordem das seções: primeira tela, mecanismo, série, estados, etanol, método recolhido no fim
-    const ordem = ["Preço médio do litro: Brasil", "Como a ANP mede o preço nos postos", "O preço do litro desde 2013", "Como os estados se comparam",
-      "Quanto o litro de etanol custa em relação ao de gasolina", "Método, fontes, notas da planilha e downloads"].map((t) => html.indexOf(t));
+    // a ordem das seções no molde único de entrada (Iniciativa 4, 22/10/2026): primeira tela, mecanismo (modelo didático),
+    // série, estados e etanol (recolhidos), método recolhido no fim, no <details> único do molde
+    // (pelas âncoras das seções: os títulos também aparecem nos caminhos por pergunta, antes dos blocos recolhidos)
+    const ordem = ["Preço médio do litro: Brasil", 'id="como-mede"', 'id="historico"', 'id="estados"', 'id="etanol-gasolina"', 'data-fatia="metodo"'].map((t) => html.indexOf(t));
+    for (const t of ["Como a ANP mede o preço nos postos", "O preço do litro desde 2013", "Como os estados se comparam", "Quanto o litro de etanol custa em relação ao de gasolina", "Método e fontes"]) expect(html).toContain(t);
     expect(ordem.every((p) => p > 0)).toBe(true);
     expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
-    expect(html).toMatch(/<details class="group"><summary[^>]*><h2 id="metodo-h"/);
+    expect(html).toMatch(/<details[^>]*data-fatia="metodo"/);
+    expect(html).toContain("Notas da própria planilha da ANP");
     expect(html).not.toMatch(/NaN|undefined|Infinity/);
-  });
+    // a primeira renderização monta o índice da busca uma vez (os destinos da coleção leem os resumos dele): passa de 5 s no CI
+  }, 30_000);
 
   it("a lacuna de 2020, as notas da planilha e a ausência por UF aparecem como estão", async () => {
     const { default: Painel } = await import("@/app/combustiveis/page");

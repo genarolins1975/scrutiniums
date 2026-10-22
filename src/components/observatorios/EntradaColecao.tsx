@@ -40,6 +40,18 @@ export const DESTINOS_A_VISTA = 8;
 
 const H2 = "font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao";
 
+function Raiz({ principal, id, className, tipo, children }: { principal: boolean; id?: string; className: string; tipo: TipoEntrada; children: ReactNode }) {
+  return principal ? (
+    <main id={id} className={className} data-entrada={tipo}>
+      {children}
+    </main>
+  ) : (
+    <div className={className} data-entrada={tipo}>
+      {children}
+    </div>
+  );
+}
+
 export function EntradaColecao({
   tipo,
   rota,
@@ -62,6 +74,9 @@ export function EntradaColecao({
   metodo,
   frescorMetodo,
   idTitulo = "entrada-titulo",
+  idPrincipal = "conteudo",
+  classe,
+  principal = true,
 }: Readonly<{
   tipo: TipoEntrada;
   /** Endereço público da página: o RotuloContexto lê o observatório e a coleção do registro por ele. */
@@ -92,18 +107,21 @@ export function EntradaColecao({
   metodo: ReactNode;
   frescorMetodo?: ReactNode;
   idTitulo?: string;
+  /** id do <main>, o alvo do link "Ir para o conteúdo" do layout da coleção. */
+  idPrincipal?: string;
+  /** Classe extra do <main>, para as variáveis de estilo da coleção (por exemplo, pv-root). */
+  classe?: string;
+  /** false quando o layout da coleção já abre o <main> (Agronegócio): a entrada vira um <div> dentro dele, com o mesmo data-entrada. */
+  principal?: boolean;
 }>) {
   const a = ACENTO[acento];
   return (
-    <main id="conteudo" className="bg-papel" data-entrada={tipo}>
+    <Raiz principal={principal} id={principal ? idPrincipal : undefined} className={classe ? `bg-papel ${classe}` : "bg-papel"} tipo={tipo}>
       <section aria-labelledby={idTitulo} className="border-b border-linha bg-marfim" data-fatia="abertura">
         {frescor}
         <div className="mx-auto max-w-page px-6 pb-10 pt-8 md:pb-14 md:pt-12">
           <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
-            <div className="flex items-center gap-3">
-              <span aria-hidden="true" className={`h-[3px] w-8 shrink-0 ${a.filete}`} />
-              <RotuloContexto rota={rota} className="text-mineral" />
-            </div>
+            <RotuloContexto rota={rota} className="flex items-center gap-3 text-mineral" marca={<span aria-hidden="true" className={`h-[3px] w-8 shrink-0 ${a.filete}`} />} />
             {aoLadoDoRotulo}
           </div>
           <h1 id={idTitulo} className="mt-5 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.1] text-carvao [text-wrap:balance]">
@@ -135,7 +153,7 @@ export function EntradaColecao({
           {frescorMetodo && <div className="mt-6">{frescorMetodo}</div>}
         </details>
       </div>
-    </main>
+    </Raiz>
   );
 }
 
@@ -152,7 +170,7 @@ export function Escala({ escala, nota }: Readonly<{ escala: readonly NumeroPorta
               <NumeroEscala n={n} grande />
             </dd>
             {n.nota && <dd className="mt-3 border-l-2 border-linha pl-3 text-xs leading-relaxed text-carvao-muted">{n.nota}</dd>}
-            <dd className="mt-auto pt-3">
+            <dd className="mt-auto pt-1 sm:pt-3">
               <Link href={n.href} prefetch={false} className="inline-flex min-h-[44px] items-center text-sm text-carvao underline decoration-linha underline-offset-4">
                 Ver no painel
               </Link>
@@ -180,7 +198,7 @@ function Caminhos({ caminhos, hover }: Readonly<{ caminhos: readonly CaminhoEntr
             key={c.href + c.pergunta}
             className={`bg-papel ${i === n - 1 ? `${n % 2 === 1 ? "sm:col-span-2" : ""} ${n % 3 === 2 ? "lg:col-span-2" : n % 3 === 1 ? "lg:col-span-3" : "lg:col-span-1"}` : ""}`}
           >
-            <Link href={c.href} prefetch={false} className="group flex h-full min-h-[44px] flex-col p-5">
+            <Link href={c.href} prefetch={false} className="group flex h-full min-h-[44px] flex-col p-4 sm:p-5">
               {c.rotulo && <span className="rotulo text-mineral">{c.rotulo}</span>}
               <span className={`mt-2 font-serif text-lg leading-snug text-carvao ${hover}`}>{c.pergunta}</span>
               <span className="mt-1 text-sm leading-relaxed text-carvao-muted">{c.resumo}</span>
@@ -261,9 +279,9 @@ function CartaoDestino({ d, classe = "" }: Readonly<{ d: DestinoEntrada; classe?
   return (
     <li className={`bg-papel ${classe}`}>
       {d.prontidao === "preparacao" ? (
-        <span className="flex h-full flex-col p-5">{corpo}</span>
+        <span className="flex h-full flex-col p-4 sm:p-5">{corpo}</span>
       ) : (
-        <Link href={d.href} prefetch={false} className="group flex h-full min-h-[44px] flex-col p-5 hover:bg-marfim">
+        <Link href={d.href} prefetch={false} className="group flex h-full min-h-[44px] flex-col p-4 hover:bg-marfim sm:p-5">
           {corpo}
         </Link>
       )}
