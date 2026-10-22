@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-21T16:18:43+00:00",
+ "gerado_em": "2026-10-22T15:48:26+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,48 +24,48 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1275 processos sancionadores em 1ª instância, com 1344 decisões por apenado: 1286 multas somando R$ 71.8 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 150 apenados recorreram. 383 pessoas seguem inabilitadas. A CVM abriu 65 processos sancionadores em 12 meses (165 acusados); 253 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1278 processos sancionadores em 1ª instância, com 1347 decisões por apenado: 1289 multas somando R$ 71.9 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 383 pessoas seguem inabilitadas. A CVM abriu 65 processos sancionadores em 12 meses (165 acusados); 253 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
  "bcb": {
   "disponivel": true,
-  "ultima_decisao": "2026-10-20",
+  "ultima_decisao": "2026-10-21",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 16972,
-   "processos": 13061,
-   "apenados_distintos": 11397
+   "decisoes": 16980,
+   "processos": 13069,
+   "apenados_distintos": 11400
   },
   "janela_12m": {
-   "ini": "2025-10-21",
-   "decisoes": 1344,
-   "processos": 1275,
-   "multas_n": 1286,
-   "multas_valor": 71810500.0,
+   "ini": "2025-10-22",
+   "decisoes": 1347,
+   "processos": 1278,
+   "multas_n": 1289,
+   "multas_valor": 71873000.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 3,
    "sem_penalidade": 51,
-   "recursos": 150,
-   "pj": 391,
-   "pf": 953
+   "recursos": 149,
+   "pj": 392,
+   "pf": 955
   },
   "janela_12m_anterior": {
-   "decisoes": 911,
-   "processos": 673,
-   "multas_n": 720,
-   "multas_valor": 27178763.9,
+   "decisoes": 835,
+   "processos": 663,
+   "multas_n": 700,
+   "multas_valor": 25412883.9,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
-   "inabilitacoes": 36,
-   "sem_penalidade": 153,
-   "recursos": 149,
-   "pj": 286,
-   "pf": 625
+   "inabilitacoes": 34,
+   "sem_penalidade": 100,
+   "recursos": 136,
+   "pj": 272,
+   "pf": 563
   },
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1286,
-    "share": 95.68
+    "n": 1289,
+    "share": 95.69
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
@@ -91,33 +91,33 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 864,
-    "share": 64.29
+    "n": 862,
+    "share": 63.99
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 136,
-    "share": 10.12
-   },
-   {
-    "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 118,
-    "share": 8.78
+    "n": 137,
+    "share": 10.17
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 114,
-    "share": 8.48
+    "share": 8.46
+   },
+   {
+    "situacao": "MULTA VENCIDA E NÃO PAGA",
+    "n": 114,
+    "share": 8.46
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
     "n": 46,
-    "share": 3.42
+    "share": 3.41
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 27,
-    "share": 2.01
+    "n": 34,
+    "share": 2.52
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
@@ -126,8 +126,8 @@
    },
    {
     "situacao": "PENALIDADE EXTINTA",
-    "n": 6,
-    "share": 0.45
+    "n": 7,
+    "share": 0.52
    },
    {
     "situacao": "AGUARDANDO INÍCIO DO CUMPRIMENTO",
@@ -153,17 +153,17 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11944,
-    "share": 87.81
+    "n": 11947,
+    "share": 87.78
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 893,
-    "share": 6.57
+    "n": 895,
+    "share": 6.58
    },
    {
     "situacao": "PENALIDADE EXTINTA",
-    "n": 314,
+    "n": 315,
     "share": 2.31
    },
    {
@@ -173,8 +173,8 @@
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 121,
-    "share": 0.89
+    "n": 116,
+    "share": 0.85
    },
    {
     "situacao": "PENALIDADE ESTÁ SUSPENSA",
@@ -188,8 +188,8 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 41,
-    "share": 0.3
+    "n": 48,
+    "share": 0.35
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
@@ -200,7 +200,7 @@
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
    "p90": 30.5,
-   "n": 3104
+   "n": 3112
   },
   "anual": [
    {
@@ -400,21 +400,101 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1189,
-    "processos": 1124,
-    "multas_n": 1137,
-    "multas_valor": 68473000.0,
+    "decisoes": 1197,
+    "processos": 1132,
+    "multas_n": 1145,
+    "multas_valor": 68660500.0,
     "inabilitacoes": 3,
     "sem_penalidade": 45,
     "recursos": 134,
-    "pf": 853,
-    "pj": 336,
+    "pf": 855,
+    "pj": 342,
     "incompleto": true,
-    "recurso_share": 11.27,
-    "sem_penalidade_share": 3.78
+    "recurso_share": 11.19,
+    "sem_penalidade_share": 3.76
    }
   ],
   "recentes": [
+   {
+    "pas": "312862",
+    "nome": "ALSTOM BRASIL ENERGIA E TRANSPORTE LTDA",
+    "pessoa": "PJ",
+    "decisao": "2026-10-21",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "313063",
+    "nome": "ALSTOM BRASIL ENERGIA E TRANSPORTE LTDA",
+    "pessoa": "PJ",
+    "decisao": "2026-10-21",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "312017",
+    "nome": "APPNOVATION TECHNOLOGIES (BRAZIL) LTDA",
+    "pessoa": "PJ",
+    "decisao": "2026-10-21",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316014",
+    "nome": "IGOR KONOVALOV",
+    "pessoa": "PF",
+    "decisao": "2026-10-21",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "311439",
+    "nome": "MARTHA MERIWETHER SORENSON",
+    "pessoa": "PF",
+    "decisao": "2026-10-21",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "312869",
+    "nome": "NETFLIX ENTRETENIMENTO BRASIL LTDA.",
+    "pessoa": "PJ",
+    "decisao": "2026-10-21",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "312940",
+    "nome": "NETFLIX ENTRETENIMENTO BRASIL LTDA.",
+    "pessoa": "PJ",
+    "decisao": "2026-10-21",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "313066",
+    "nome": "NETFLIX ENTRETENIMENTO BRASIL LTDA.",
+    "pessoa": "PJ",
+    "decisao": "2026-10-21",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
    {
     "pas": "312871",
     "nome": "ALUBAR METAIS E CABOS S/A",
@@ -734,86 +814,6 @@
     "multa": 25000.0,
     "recurso": "NÃO",
     "situacao": "MULTA PAGA"
-   },
-   {
-    "pas": "312198",
-    "nome": "SHIH LI CHUNG",
-    "pessoa": "PF",
-    "decisao": "2026-09-14",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "300727",
-    "nome": "FABIO SENDODA YAMATE",
-    "pessoa": "PF",
-    "decisao": "2026-09-03",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
-   },
-   {
-    "pas": "312216",
-    "nome": "SLC AGRICOLA CENTRO OESTE S.A.",
-    "pessoa": "PJ",
-    "decisao": "2026-09-03",
-    "pena": "MULTA",
-    "multa": 12500.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
-   },
-   {
-    "pas": "300724",
-    "nome": "WALDOMIRO TADEU TEIXEIRA WEISSHAUPT",
-    "pessoa": "PF",
-    "decisao": "2026-09-03",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
-   },
-   {
-    "pas": "312949",
-    "nome": "MARGOT KATZ DE CASTRO",
-    "pessoa": "PF",
-    "decisao": "2026-09-02",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
-   },
-   {
-    "pas": "312199",
-    "nome": "MARTHA MERIWETHER SORENSON",
-    "pessoa": "PF",
-    "decisao": "2026-09-02",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
-   },
-   {
-    "pas": "311433",
-    "nome": "DANIELE CESANO",
-    "pessoa": "PF",
-    "decisao": "2026-08-27",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
-   },
-   {
-    "pas": "311444",
-    "nome": "JOAO BATISTA DE OLIVEIRA FILHO",
-    "pessoa": "PF",
-    "decisao": "2026-08-27",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
    }
   ],
   "inabilitados": {
@@ -933,7 +933,7 @@
  "cvm": {
   "disponivel": true,
   "ultima_abertura": "2026-10-09",
-  "ultima_movimentacao": "2026-10-20",
+  "ultima_movimentacao": "2026-10-21",
   "acervo": {
    "processos": 581,
    "acusados": 2070,
@@ -941,7 +941,7 @@
    "finalizados": 328
   },
   "abertos_12m": {
-   "ini": "2025-10-21",
+   "ini": "2025-10-22",
    "processos": 65,
    "acusados": 165
   },
@@ -1338,7 +1338,7 @@
     "area": "GEA-3",
     "fase": "Citação e envio de defesas",
     "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-07-27",
+    "ultima_mov": "2026-10-21",
     "acusados": 5,
     "objeto": "O presente termo de acusação se originou dos Processos nº 19957.001770/2025-65, 19957.002950/2025-64, 19957.004133/2025-41 e 19957.008464/2025-50, instaurados em 18.02.2025, 27.03.2025, 30.04.2025 e 10.07.2025, respectiv"
    },
@@ -1348,7 +1348,7 @@
     "area": "GEA-4",
     "fase": "Citação e envio de defesas",
     "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-09-08",
+    "ultima_mov": "2026-10-20",
     "acusados": 5,
     "objeto": "O presente Termo de Acusação originou-se dos Processos Administrativos CVM no 19957.003516/2025-00 e 19957.010677/2025-41, instaurados pela Superintendência de Relações com Empresas - SEP para apurar possíveis irregulari"
    },
