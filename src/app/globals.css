@@ -54,7 +54,22 @@
      e #14243a na tinta do OBEE; o painel fica com #102e36, o valor de todos os fundos escuros existentes. */
   --cor-painel-escuro: #102e36;
   --cor-painel-escuro-texto: #f8f7f2; /* texto sobre o painel escuro (13,4:1) */
-  --cor-painel-escuro-legenda: #c4d7d7; /* texto secundário, legenda e crédito sobre o painel escuro e as gravuras (9,6:1) */
+  /* Demais papéis sobre o painel escuro. Antes eram cerca de 40 tons próximos em atlas-inicial.css, estados.css, public/obs/atlas.css
+     e observatorios-gravuras.css; cada grupo virou o tom já usado pela maioria. */
+  --cor-painel-escuro-legenda: #c4d7d7; /* texto secundário, legenda e rótulo (9,6:1) */
+  --cor-painel-escuro-acento: #a3e3d7; /* link, número em destaque e estado ativo (9,9:1) */
+  --cor-painel-escuro-controle: #87a9af; /* borda de botão e campo (5,7:1, acima dos 3:1 de controle) */
+  --cor-painel-escuro-linha: #557278; /* filete e separador, só decorativo */
+  --cor-painel-escuro-superficie: #214650; /* cartão ou item realçado sobre o painel (o texto segue a 9,5:1) */
+  --cor-painel-escuro-selecao: #37616b; /* item selecionado sobre o painel (texto a 6,4:1) */
+  --cor-painel-escuro-foco: #e5bf76; /* anel de foco sobre o painel escuro (8,2:1) */
+  /* Contexto suave: faixa de referência, seleção discreta e cabeçalho de tabela (o mesmo tom do estado ativo do Setor Elétrico). */
+  --cor-contexto: var(--cor-energia-fundo);
+  /* Comparação: série de referência quando é preciso uma segunda cor (4,9:1 sobre o papel; como marcação, nunca texto pequeno). */
+  --cor-comparacao: #806a45;
+  /* Neutros frios das barras não focais e das categorias de apoio (Contas Estaduais): marcação, nunca texto. */
+  --cor-neutro-frio: #607e80;
+  --cor-neutro-frio-claro: #c4cccb;
   /* Conectividade: acento petróleo próprio (5,9:1 sobre o papel, dark 8,2:1), distinto do OBEE e do Gás; soft só marcação. */
   --cor-conect: #0f6b74;
   --cor-conect-dark: #0b535a;
@@ -135,6 +150,28 @@
   --serie-4: #4a5158;
   --serie-5: #b0a894;
   --serie-6: #6b5d4f;
+}
+
+/* Painel escuro com componentes de gráfico dentro (mapa conceitual do Setor Elétrico): os tokens de texto, linha e superfície
+   passam aos do painel, para os componentes compartilhados lerem bem sobre o fundo escuro. As triplas RGB acompanham, porque as
+   classes do Tailwind com opacidade as leem. Só na tela: no papel, o mapa sai em fundo branco com os tokens de sempre. */
+@media screen {
+  .contexto-escuro {
+    --cor-carvao: var(--cor-painel-escuro-texto);
+    --cor-carvao-rgb: 248 247 242;
+    --cor-carvao-muted: var(--cor-painel-escuro-legenda);
+    --cor-mineral: var(--cor-painel-escuro-legenda);
+    --cor-linha: var(--cor-painel-escuro-linha);
+    --cor-linha-rgb: 85 114 120;
+    --cor-superficie: var(--cor-painel-escuro-superficie);
+    --cor-superficie-rgb: 33 70 80;
+    --cor-energia: var(--cor-painel-escuro-acento);
+    --cor-energia-rgb: 163 227 215;
+    --cor-energia-dark: var(--cor-painel-escuro-acento);
+    --cor-energia-fundo: var(--cor-painel-escuro-selecao);
+    background: var(--cor-painel-escuro);
+    color: var(--cor-painel-escuro-texto);
+  }
 }
 
 html {

@@ -39,6 +39,16 @@
   --cor-painel-escuro: #102e36;
   --cor-painel-escuro-texto: #f8f7f2;
   --cor-painel-escuro-legenda: #c4d7d7;
+  --cor-painel-escuro-acento: #a3e3d7;
+  --cor-painel-escuro-controle: #87a9af;
+  --cor-painel-escuro-linha: #557278;
+  --cor-painel-escuro-superficie: #214650;
+  --cor-painel-escuro-selecao: #37616b;
+  --cor-painel-escuro-foco: #e5bf76;
+  --cor-contexto: var(--cor-energia-fundo);
+  --cor-comparacao: #806a45;
+  --cor-neutro-frio: #607e80;
+  --cor-neutro-frio-claro: #c4cccb;
   --cor-conect: #0f6b74;
   --cor-conect-dark: #0b535a;
   --cor-conect-soft: #7fb2b7;
