@@ -880,18 +880,11 @@ hr.sep { border: 0; border-top: 1px solid var(--border); margin: 22px 0 18px; }
 .guiabody h5 { margin: 12px 0 4px; font-size: var(--fs-xs); font-weight: var(--fw-bold); letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--text-3); }
 .guiabody p { margin: 0; font-size: var(--fs-sm); line-height: var(--lh-normal); color: var(--text-2); }
 
-/* ---------- navegação: busca e acordeão ---------- */
-.navbusca { padding: 0 14px 8px; }
-.navbusca input { width: 100%; padding: 6px 10px; font-size: var(--fs-sm); border: 1px solid var(--border); border-radius: var(--r-lg);
-  background: var(--surface); color: var(--text); font-family: inherit; }
-.navbusca input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+/* ---------- navegação: acordeão (a busca é a da plataforma, na barra) ---------- */
 nav.tabs .navlabel { cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; }
 nav.tabs .navlabel::after { content: "▾"; font-size: var(--fs-2xs); opacity: 0.5; transition: transform var(--t-fast) var(--ease); }
 nav.tabs .navgroup.aberto .navlabel::after { transform: rotate(180deg); }
 nav.tabs .navgroup:not(.aberto) button[data-view] { display: none; }
-nav.tabs.buscando .navgroup button[data-view] { display: block !important; }
-nav.tabs.buscando .navgroup .navlabel::after { content: none; }
-.navvazio { font-size: var(--fs-xs); color: var(--text-3); padding: 4px 16px; margin: 0; }
 
 /* central de alertas: o seletor de estado é um item do cabeçalho do cartão, não
    um float — flutuando, o texto do alerta se enrolava em volta dele. */

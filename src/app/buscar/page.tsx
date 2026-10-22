@@ -4,9 +4,11 @@ import { cookies } from "next/headers";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { ListaResultados } from "@/components/busca/ListaResultados";
+import { MedeBusca } from "@/components/busca/MedeBusca";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { buscar } from "@/lib/busca/buscar";
 import { indiceDeBusca } from "@/lib/busca/indice";
+import { EXEMPLO_DO_CAMPO } from "@/lib/busca/exemplos";
 import { inventario } from "@/lib/observatorios/inventario";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { getSessionUser } from "@/lib/session";
@@ -53,7 +55,7 @@ export default async function BuscarPage({ searchParams }: { searchParams: { q?:
             name="q"
             type="search"
             defaultValue={q}
-            placeholder={`${indice.exemplos.join(", ")}…`}
+            placeholder={EXEMPLO_DO_CAMPO}
             autoComplete="off"
             spellCheck={false}
             enterKeyHint="search"
@@ -66,6 +68,7 @@ export default async function BuscarPage({ searchParams }: { searchParams: { q?:
 
         {resposta ? (
           <section aria-live="polite" className="mt-8 max-w-3xl">
+            <MedeBusca termo={q} />
             {resposta.resultados.length === 0 ? (
               <p className="text-base text-carvao">
                 Nenhum resultado para <q>{q}</q>. Tente outra palavra, o nome de uma fonte (ONS, IBGE, ANP) ou{" "}

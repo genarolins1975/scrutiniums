@@ -10,6 +10,7 @@ import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/energia/LinkSemPrefetch";
 import type { ReactNode } from "react";
 import { BuscaObservatorio } from "@/components/energia/BuscaObservatorio";
+import { BuscaPlataforma } from "@/components/busca/BuscaPlataforma";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { DetalheDoNivel } from "@/components/energia/DetalheDoNivel";
@@ -986,13 +987,30 @@ export default function MapaDoObservatorio() {
         <PercursoVisualEnergia />
         <DuasCamadasEnergia compacto />
         <LeiturasIntegradas />
-        <div className="obs-home-search">              <div>
-                <BuscaObservatorio
-                  itens={busca}
-                  exemplos={tx(["preço da luz", "falta de energia", "reservatórios", "Tarifa Social"], ["electricity bill", "power outage", "reservoirs", "Tarifa Social"])}
-                  regiao={{ href: destino("territorio").href, rotulo: destino("territorio").rotulo }}
+        <div className="obs-home-search">
+          <div>
+            {/* em português, a busca da plataforma só nesta coleção; em inglês, a busca própria do observatório, porque o
+                índice da plataforma é só em português e levaria o leitor a páginas em outro idioma */}
+            {idiomaEnergia() === "pt" ? (
+              <>
+                <p className="rotulo mb-2 text-mineral">Busque por pergunta, assunto, página, conceito ou distribuidora</p>
+                <BuscaPlataforma
+                  variante="pagina"
+                  exemplo="preço da luz, falta de energia, reservatórios…"
+                  filtro={{ colecao: "setor-eletrico", nome: "Setor Elétrico" }}
+                  municipio={{ href: destino("territorio").href, rotulo: destino("territorio").rotulo }}
+                  rotulo="Buscar no Setor Elétrico"
                 />
-              </div></div>
+              </>
+            ) : (
+              <BuscaObservatorio
+                itens={busca}
+                exemplos={tx(["preço da luz", "falta de energia", "reservatórios", "Tarifa Social"], ["electricity bill", "power outage", "reservoirs", "Tarifa Social"])}
+                regiao={{ href: destino("territorio").href, rotulo: destino("territorio").rotulo }}
+              />
+            )}
+          </div>
+        </div>
 
         {/* mapa conceitual: o desenho a partir de md, a versão em texto no celular (e para o leitor de tela no desktop) */}
         <Secao

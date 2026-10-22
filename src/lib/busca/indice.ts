@@ -30,6 +30,8 @@ import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { NOME_UF } from "@/lib/energia/expansao";
 import capitais from "@/lib/eficiencia/contornos-capitais.json";
 import sinonimos from "./sinonimos.json";
+import { EXEMPLOS_BUSCA } from "./exemplos";
+import { sinonimosDe } from "@/lib/energia/busca-sinonimos";
 import { normalizar } from "./normalizar";
 import type { EntradaBusca, IndiceBusca, SituacaoEntrada, TipoEntrada, TipoLugar } from "./tipos";
 
@@ -163,6 +165,19 @@ function lugaresDaConsulta(titulo: string, href: string): TipoLugar[] {
 
 /* ------------------------------------------------------------------ montagem */
 
+/**
+ * O vocabulário leigo do Setor Elétrico ("preço da luz", "apagão", "congestionamento"), que a busca própria da coleção usava
+ * (src/lib/energia/busca-sinonimos.ts), entra nos termos das páginas a que ele aponta: a busca da plataforma acha o que a antiga
+ * achava, sem uma segunda lista.
+ */
+function comVocabularioDoSetorEletrico(entradas: EntradaBusca[]): EntradaBusca[] {
+  for (const e of entradas) {
+    if (!e.href || e.colecao !== "setor-eletrico") continue;
+    for (const t of sinonimosDe(e.href, "pt")) if (!e.termos.includes(t)) e.termos.push(t);
+  }
+  return entradas;
+}
+
 /** Observatório e coleção donos de um endereço; quando o registro não o conhece, o dono dado pelo catálogo. */
 function dono(href: string, padrao: { observatorio: ObservatorioId; colecao: string | null }) {
   const p = donoDaRota(semAncora(href));
@@ -286,10 +301,10 @@ export function indiceDeBusca(): IndiceBusca {
     versao: 1,
     observatorios: obs.map((o) => ({ id: o.id, nome: o.nomeCurto })),
     colecoes,
-    exemplos: (sinonimos as { _exemplos: string[] })._exemplos,
+    exemplos: [...EXEMPLOS_BUSCA],
     // nomes com sinônimo (Nu Financeira → Nubank) levam o grupo junto: a lista do cabeçalho já sai expandida
     lugares: Object.fromEntries(Object.entries(lugares).map(([k, v]) => [k, Array.from(new Set(comSinonimos(v)))])) as Record<TipoLugar, string[]>,
-    entradas: m.entradas(),
+    entradas: comVocabularioDoSetorEletrico(m.entradas()),
   };
   return cache;
 }

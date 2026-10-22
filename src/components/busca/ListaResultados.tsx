@@ -33,11 +33,19 @@ export function ListaResultados({
   opcao?: { id: (n: number) => string; ativa: number; aoEscolher?: (r: Resultado) => void };
 }) {
   let n = -1;
+  // ids dos títulos únicos na página: o campo da barra e o de /buscar podem listar o mesmo observatório ao mesmo tempo
+  const prefixo = opcao ? opcao.id(0).replace(/-op-0$/, "") : "busca";
   return (
     <div className="busca-resultados">
       {grupos.map((g) => (
-        <section key={g.observatorio.id} aria-labelledby={`busca-obs-${g.observatorio.id}`} className="border-t border-linha pt-4 first:border-t-0 first:pt-0">
-          <h3 id={`busca-obs-${g.observatorio.id}`} className="rotulo text-mineral">
+        // na listbox do campo, cada observatório é um grupo de opções (o título não vira cabeçalho dentro da lista)
+        <section
+          key={g.observatorio.id}
+          role={opcao ? "group" : undefined}
+          aria-labelledby={`${prefixo}-obs-${g.observatorio.id}`}
+          className="border-t border-linha pt-4 first:border-t-0 first:pt-0"
+        >
+          <h3 id={`${prefixo}-obs-${g.observatorio.id}`} role={opcao ? "presentation" : undefined} className="rotulo text-mineral">
             {g.observatorio.nome}
           </h3>
           {g.colecoes.map((c) => (

@@ -211,6 +211,52 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
 .bp a.bp-conta { display:inline-flex; align-items:center; min-height:44px; white-space:nowrap; font-family:var(--font-label,"Archivo Narrow"),system-ui,sans-serif; font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; color:var(--bp-suave); text-decoration:none; }
 .bp a.bp-conta:hover { color:var(--bp-destaque); }
 .bp a.bp-conta[hidden] { display:none; }
+/* Busca da plataforma (src/components/busca/BuscaPlataforma.tsx e a barra da SPA, barraSpa.ts): na linha da marca, à esquerda
+   da conta; abaixo de 640 px, uma lupa de 44 px abre a busca em tela cheia (na SPA, leva a /buscar). Sem animação: o campo
+   atende a atalho de teclado ("/" e Ctrl K). A variante --pagina é o mesmo campo dentro de uma página. */
+.bp-busca { position:relative; margin-left:auto; flex:0 1 21.5rem; min-width:9rem; }
+.bp-busca + .bp-acoes { margin-left:0; }
+.bp-busca-lupa { display:none; }
+.bp-busca-form { position:relative; display:flex; align-items:center; margin:0; }
+.bp-busca-icone { position:absolute; left:10px; color:var(--bp-suave,#3d4147); pointer-events:none; }
+.bp-busca input.bp-busca-campo { box-sizing:border-box; width:100%; min-height:40px; margin:0; padding:0 30px 0 34px; border:1px solid var(--bp-regra,#d8d2c6); border-radius:0; background:var(--bp-fundo,#fff); color:var(--bp-tinta,#1a1d21); font-family:var(--font-sans,"Inter"),system-ui,sans-serif; font-size:14px; line-height:1.3; -webkit-appearance:none; appearance:none; }
+.bp-busca input.bp-busca-campo::placeholder { color:var(--bp-suave,#3d4147); opacity:.85; }
+.bp-busca input.bp-busca-campo:hover { border-color:var(--bp-suave,#3d4147); }
+.bp-busca input.bp-busca-campo:focus-visible { outline:2px solid var(--bp-destaque,#09697a); outline-offset:-1px; border-color:var(--bp-destaque,#09697a); box-shadow:none; }
+/* o "x" nativo do campo de busca sai: Esc fecha a lista, e o campo segue a paleta */
+.bp-busca input.bp-busca-campo::-webkit-search-cancel-button { -webkit-appearance:none; appearance:none; }
+/* o título de cada observatório na lista é rótulo, não cabeçalho da página que hospeda o campo */
+.bp-busca .busca-resultados h3 { margin:0; font-family:var(--font-label,"Archivo Narrow"),system-ui,sans-serif; font-size:.75rem; font-weight:400; line-height:1.4; letter-spacing:.14em; text-transform:uppercase; color:var(--cor-mineral,#58666b); }
+.bp-busca .busca-resultados p, .bp-busca .busca-resultados ul { margin:0; padding:0; list-style:none; }
+.bp-busca-tecla { position:absolute; right:8px; min-width:18px; padding:0 4px; border:1px solid var(--bp-regra,#d8d2c6); font-family:var(--font-sans,"Inter"),system-ui,sans-serif; font-size:11px; line-height:16px; text-align:center; color:var(--bp-suave,#3d4147); pointer-events:none; }
+.bp-busca-campo:focus ~ .bp-busca-tecla, .bp-busca-campo:not(:placeholder-shown) ~ .bp-busca-tecla { display:none; }
+.bp-busca-painel { position:absolute; top:calc(100% + 4px); right:0; z-index:46; box-sizing:border-box; width:min(36rem, calc(100vw - 32px)); max-height:min(70vh, 40rem); overflow-y:auto; padding:16px 20px; background:var(--bp-fundo,#fff); border:1px solid var(--bp-regra,#d8d2c6); box-shadow:0 8px 24px rgba(24,43,54,.12); color:var(--bp-tinta,#1a1d21); font-size:14px; line-height:1.5; text-align:left; text-transform:none; letter-spacing:normal; }
+.bp-busca-painel[hidden] { display:none; }
+.bp-busca-estado { margin:0 0 8px; font-size:12px; color:var(--bp-suave,#3d4147); }
+.bp-busca-estado:empty { display:none; }
+.bp-busca-lista [data-ativa] > a { box-shadow:inset 3px 0 0 var(--bp-destaque,#09697a); }
+.bp-busca-vazio, .bp-busca-rodape { margin:8px 0 0; font-size:14px; }
+.bp-busca-rodape { border-top:1px solid var(--bp-regra,#d8d2c6); }
+.bp-busca-vazio a, .bp-busca-rodape a { display:inline-flex; align-items:center; min-height:44px; color:var(--bp-destaque,#09697a); text-decoration:underline; text-underline-offset:4px; }
+.bp-busca-fechar { flex-shrink:0; min-height:44px; margin-left:8px; padding:0 4px; border:0; background:none; cursor:pointer; font-family:var(--font-label,"Archivo Narrow"),system-ui,sans-serif; font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; color:var(--bp-tinta,#1a1d21); }
+.bp-busca--pagina { margin-left:0; flex:none; width:100%; max-width:42rem; }
+.bp-busca--pagina input.bp-busca-campo { min-height:48px; font-size:16px; }
+.bp-busca--pagina .bp-busca-painel { left:0; right:auto; width:100%; }
+@media(max-width:639px) {
+  .bp .bp-busca { flex:none; min-width:0; }
+  .bp .bp-busca-lupa { display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; padding:0; border:0; background:none; cursor:pointer; color:var(--bp-tinta,#1a1d21); }
+  .bp .bp-busca:not([data-folha]) .bp-busca-caixa { display:none; }
+  .bp-busca[data-folha] .bp-busca-caixa { position:fixed; inset:0; z-index:70; display:flex; flex-direction:column; padding:12px 16px; background:var(--bp-fundo,#fff); }
+  .bp-busca[data-folha] .bp-busca-painel { position:static; flex:1 1 auto; width:auto; max-height:none; padding:12px 0; border:0; box-shadow:none; }
+  .bp-busca input.bp-busca-campo { min-height:44px; font-size:16px; }
+  .bp-busca-tecla { display:none; }
+  /* com a lupa, a linha da marca não quebra: o nome da coleção no seletor encurta com reticências */
+  .bp-linha:has(.bp-busca) { flex-wrap:nowrap; }
+  .bp-linha:has(.bp-busca) > details { min-width:0; flex:0 1 auto; }
+  .bp-linha:has(.bp-busca) > details > summary { max-width:100%; }
+  .bp-linha:has(.bp-busca) > details > summary > span:not([aria-hidden]):not(.sr-only) { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+}
+@media print { .bp-busca { display:none!important; } }
 @media print { .obs-index-search, .obs-dominios, .obs-primary { display:none!important; } .obs-hero { background:white; color:black; padding:0; } .obs-hero a, .obs-hero p, .obs-credit-hero>div>p:not(.obs-eyebrow) { color:black; } }
 .obs-hero h1 { font-family:var(--serif, var(--font-serif, Georgia)); }
 .observatorio-credito .sidefoot { flex-wrap:wrap; gap:8px; }

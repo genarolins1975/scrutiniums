@@ -1,4 +1,5 @@
-node_modules/
+# sem a barra final: cobre também um link simbólico para as dependências
+node_modules
 .next/
 .pglite/
 .env

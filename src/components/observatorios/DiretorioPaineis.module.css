@@ -1,15 +1,6 @@
-/* Diretório das coleções com filtro vivo. Tokens do mapa (public/observatorios.css) e fontes do layout raiz. */
+/* Diretório das coleções, abaixo da busca da plataforma. Tokens do mapa (public/observatorios.css) e fontes do layout raiz. */
 .filtro{padding:34px 0 20px;border-bottom:1px solid var(--obs-regra)}
 .filtro h1{font-family:var(--font-serif),Georgia,serif;font-weight:400;font-size:clamp(28px,2.6vw,36px);line-height:1.1;letter-spacing:-.015em;margin:0 0 14px}
-.campo{display:flex;max-width:880px;border:1px solid var(--obs-tinta);background:var(--cor-superficie)}
-.campo input{flex:1;min-width:0;width:0;border:0;background:transparent;padding:15px 18px;font:inherit;font-size:19px;color:var(--obs-tinta);outline:none}
-.campo input::placeholder{color:#6b6d6a}
-.campo input:focus-visible{box-shadow:inset 0 0 0 2px #0e6170}
-.campo input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
-.campo button{border:0;background:var(--obs-tinta);color:#fff;padding:0 22px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;min-width:44px;transition:transform .16s cubic-bezier(.23,1,.32,1)}
-.campo button:active{transform:scale(.97)}
-.campo button:disabled{cursor:default;opacity:.55}
-.campo button:focus-visible{outline:3px solid #0e6170;outline-offset:-3px}
 .estado{margin:12px 0 0;font-size:14px;line-height:1.55;color:#3d4147;max-width:72ch}
 .estado b{font-weight:600;font-variant-numeric:tabular-nums;color:var(--obs-tinta)}
 .legenda{display:flex;flex-wrap:wrap;gap:4px 22px;margin:10px 0 0;font-size:12.5px;line-height:1.5;color:#6b6d6a}
@@ -42,15 +33,10 @@
 .sep{margin:0 3px;color:#b8b2a6}
 .parcial a{color:#5d6063}
 .previsto>span{color:#6b6d6a;font-style:italic;cursor:help}
-.bate a,.bate>span{color:var(--obs-tinta);text-decoration:underline;text-decoration-color:#0e6170;text-underline-offset:4px}
-.nada{padding:28px 0;font-size:15px;color:#3d4147;max-width:60ch}
-.nada q{font-style:italic}
 
 @media (max-width:1100px){.diretorio{columns:2;column-gap:40px}}
 @media (max-width:700px){
 .filtro{padding:26px 0 18px}
-.campo input{font-size:17px;padding:13px 14px}
-.campo button{padding:0 14px}
 .diretorio{columns:1}
 .legenda{gap:2px 16px}
 }

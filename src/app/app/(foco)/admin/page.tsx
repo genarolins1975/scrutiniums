@@ -10,7 +10,8 @@ import { PageTitle, SectionHeading } from "@/components/ui/SectionHeading";
 import { EmptyState } from "@/components/ui/States";
 import { BarrasRanking, ColunasDiarias, Funil, Indicador } from "@/components/admin/Graficos";
 import { UsoPaginas } from "@/components/admin/UsoPaginas";
-import { getUsoDoPeriodo } from "@/lib/uso/painel";
+import { getBuscasDoPeriodo, getUsoDoPeriodo } from "@/lib/uso/painel";
+import { UsoBusca } from "@/components/admin/UsoBusca";
 
 /**
  * A checagem de admin também roda aqui: generateMetadata resolve antes do
@@ -75,7 +76,7 @@ export default async function AdminPage() {
   if (!user) redirect("/entrar");
   if (!isAdmin(user)) notFound();
 
-  const [stats, uso] = await Promise.all([getAdminStats(), getUsoDoPeriodo()]);
+  const [stats, uso, busca] = await Promise.all([getAdminStats(), getUsoDoPeriodo(), getBuscasDoPeriodo()]);
   const vg = stats.visaoGeral;
 
   return (
@@ -155,8 +156,10 @@ export default async function AdminPage() {
 
         <UsoPaginas uso={uso} numero="03" />
 
+        <UsoBusca busca={busca} numero="04" />
+
         <section aria-label="Seções mais visitadas" className="border border-linha bg-papel p-8">
-          <SectionHeading number="04" label="Navegação" title="Seções mais visitadas" />
+          <SectionHeading number="05" label="Navegação" title="Seções mais visitadas" />
           {stats.ranking.length === 0 ? (
             <EmptyState
               title="Ainda não há visitas registradas"
@@ -181,7 +184,7 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Funil de onboarding" className="border border-linha bg-papel p-8">
-          <SectionHeading number="05" label="Aquisição" title="Funil de onboarding" />
+          <SectionHeading number="06" label="Aquisição" title="Funil de onboarding" />
           <Funil etapas={stats.funil} />
           <p className="mt-6 text-xs text-mineral">
             Eventos acumulados desde o lançamento. {fmtNumber(stats.falhasVerificacao30d)} falha
@@ -191,7 +194,7 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Usuários recentes" className="border border-linha bg-papel p-8">
-          <SectionHeading number="06" label="Contas" title="Usuários recentes" />
+          <SectionHeading number="07" label="Contas" title="Usuários recentes" />
           {stats.perfisUso.length > 0 && (
             <div className="mb-10">
               <h3 className="mb-4 font-serif text-xl text-carvao">Perfil de uso das contas completas</h3>
@@ -283,7 +286,7 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Sugestões" className="border border-linha bg-papel p-8">
-          <SectionHeading number="07" label="Feedback" title="Sugestões dos usuários" />
+          <SectionHeading number="08" label="Feedback" title="Sugestões dos usuários" />
           {stats.sugestoesRecentes.length === 0 ? (
             <EmptyState
               title="Nenhuma sugestão ainda"
@@ -314,7 +317,7 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Auditoria" className="border border-linha bg-papel p-8">
-          <SectionHeading number="08" label="Segurança" title="Auditoria de mudanças sensíveis" />
+          <SectionHeading number="09" label="Segurança" title="Auditoria de mudanças sensíveis" />
           {stats.auditoria.length === 0 ? (
             <EmptyState
               title="Nenhum registro de auditoria"
