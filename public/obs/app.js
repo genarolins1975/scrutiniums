@@ -359,58 +359,58 @@ function marcosRegulatorios(painel) {
 const IG = {
   basileia: () => `<svg viewBox="0 0 340 150" class="cdlg-ig" role="img" aria-label="capital como colchão sobre os ativos ponderados pelo risco">
     <rect x="20" y="90" width="190" height="40" fill="var(--c-line1,#1d4e89)" opacity=".25" rx="4"/>
-    <text x="115" y="114" text-anchor="middle" font-size="12" fill="var(--ink,#333)">ativos ponderados pelo risco (RWA)</text>
+    <text x="115" y="114" text-anchor="middle" font-size="12" fill="var(--text)">ativos ponderados pelo risco (RWA)</text>
     <rect x="20" y="58" width="190" height="26" fill="var(--c-line2,#0e7c7b)" opacity=".8" rx="4"/>
     <text x="115" y="75" text-anchor="middle" font-size="12" fill="#fff">capital próprio (PR)</text>
-    <path d="M225 71 h30" stroke="var(--ink,#333)" stroke-dasharray="3,3"/>
-    <text x="262" y="66" font-size="12" fill="var(--ink,#333)">Basileia =</text>
-    <text x="262" y="80" font-size="12" fill="var(--ink,#333)">capital ÷ RWA</text>
-    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">quanto do risco é bancado com dinheiro próprio?</text>
-    <text x="20" y="40" font-size="12" fill="var(--ink-soft,#666)">mínimo regulatório: 8% + colchões (ACP) por cima</text></svg>`,
+    <path d="M225 71 h30" stroke="var(--text)" stroke-dasharray="3,3"/>
+    <text x="262" y="66" font-size="12" fill="var(--text)">Basileia =</text>
+    <text x="262" y="80" font-size="12" fill="var(--text)">capital ÷ RWA</text>
+    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--text)">quanto do risco é bancado com dinheiro próprio?</text>
+    <text x="20" y="40" font-size="12" fill="var(--text-2)">mínimo regulatório: 8% + colchões (ACP) por cima</text></svg>`,
   lcr: () => `<svg viewBox="0 0 340 150" class="cdlg-ig" role="img" aria-label="caixa de alta qualidade contra trinta dias de saídas em estresse">
     <rect x="20" y="45" width="120" height="80" fill="var(--c-line2,#0e7c7b)" opacity=".8" rx="6"/>
     <text x="80" y="80" text-anchor="middle" font-size="12" fill="#fff">ativos líquidos</text>
     <text x="80" y="95" text-anchor="middle" font-size="12" fill="#fff">de alta qualidade</text>
     <rect x="200" y="70" width="120" height="55" fill="var(--c-line3,#b45309)" opacity=".55" rx="6"/>
-    <text x="260" y="94" text-anchor="middle" font-size="12" fill="var(--ink,#333)">saídas líquidas em</text>
-    <text x="260" y="108" text-anchor="middle" font-size="12" fill="var(--ink,#333)">30 dias de estresse</text>
-    <path d="M148 85 h44" stroke="var(--ink,#333)" marker-end="url(#seta)"/>
-    <text x="170" y="78" text-anchor="middle" font-size="12" fill="var(--ink,#333)">≥</text>
-    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">o caixa aguenta um mês de pânico?</text>
-    <text x="20" y="139" font-size="12" fill="var(--ink-soft,#666)">LCR 100% = aguenta exatamente; 200% = aguenta dois meses</text></svg>`,
+    <text x="260" y="94" text-anchor="middle" font-size="12" fill="var(--text)">saídas líquidas em</text>
+    <text x="260" y="108" text-anchor="middle" font-size="12" fill="var(--text)">30 dias de estresse</text>
+    <path d="M148 85 h44" stroke="var(--text)" marker-end="url(#seta)"/>
+    <text x="170" y="78" text-anchor="middle" font-size="12" fill="var(--text)">≥</text>
+    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--text)">o caixa aguenta um mês de pânico?</text>
+    <text x="20" y="139" font-size="12" fill="var(--text-2)">LCR 100% = aguenta exatamente; 200% = aguenta dois meses</text></svg>`,
   aging: () => `<svg viewBox="0 0 340 130" class="cdlg-ig" role="img" aria-label="linha do tempo do atraso de uma parcela">
     <line x1="25" y1="70" x2="320" y2="70" stroke="var(--c-grid,#ccc)" stroke-width="2"/>
     ${[[25, "dia 0", "vencimento"], [115, "15 dias", "vira ATRASO"], [230, "90 dias", "vira INADIMPLÊNCIA"]].map(([x, t, s]) => `
       <circle cx="${x}" cy="70" r="5" fill="var(--c-line1,#1d4e89)"/>
-      <text x="${x}" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--ink,#333)">${t}</text>
-      <text x="${x}" y="92" text-anchor="middle" font-size="12" fill="var(--ink-soft,#666)">${s}</text>`).join("")}
-    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">os dois relógios do não-pagamento</text>
-    <text x="20" y="118" font-size="12" fill="var(--ink-soft,#666)">atraso ≥15d = sinal cedo e sensível · ≥90d = padrão internacional de inadimplência</text></svg>`,
+      <text x="${x}" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text)">${t}</text>
+      <text x="${x}" y="92" text-anchor="middle" font-size="12" fill="var(--text-2)">${s}</text>`).join("")}
+    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--text)">os dois relógios do não-pagamento</text>
+    <text x="20" y="118" font-size="12" fill="var(--text-2)">atraso ≥15d = sinal cedo e sensível · ≥90d = padrão internacional de inadimplência</text></svg>`,
   acp: () => `<svg viewBox="0 0 340 160" class="cdlg-ig" role="img" aria-label="pilha de colchões de capital sobre o mínimo">
     ${[[118, 26, "var(--c-line1,#1d4e89)", "mínimo de capital (8%)"], [88, 26, "var(--c-line2,#0e7c7b)", "colchão de conservação"],
        [66, 18, "#6b46a3", "colchão contracíclico"], [44, 18, "#b45309", "colchão sistêmico (só os grandes)"]].map(([y, h, c, t]) => `
       <rect x="30" y="${y}" width="130" height="${h}" fill="${c}" opacity=".8" rx="3"/>
-      <text x="172" y="${Number(y) + Number(h) / 2 + 4}" font-size="12" fill="var(--ink,#333)">${t}</text>`).join("")}
-    <path d="M30 150 h130" stroke="var(--ink,#333)"/>
-    <text x="95" y="158" text-anchor="middle" font-size="12" fill="var(--ink-soft,#666)">quanto mais alto, mais protegido</text>
-    <text x="20" y="18" font-size="12" font-weight="bold" fill="var(--ink,#333)">capital mínimo + colchões (ACP)</text></svg>`,
+      <text x="172" y="${Number(y) + Number(h) / 2 + 4}" font-size="12" fill="var(--text)">${t}</text>`).join("")}
+    <path d="M30 150 h130" stroke="var(--text)"/>
+    <text x="95" y="158" text-anchor="middle" font-size="12" fill="var(--text-2)">quanto mais alto, mais protegido</text>
+    <text x="20" y="18" font-size="12" font-weight="bold" fill="var(--text)">capital mínimo + colchões (ACP)</text></svg>`,
   eficiencia: () => `<svg viewBox="0 0 340 140" class="cdlg-ig" role="img" aria-label="despesas comparadas às receitas">
     <rect x="30" y="40" width="200" height="30" fill="var(--c-line2,#0e7c7b)" opacity=".8" rx="4"/>
     <text x="130" y="59" text-anchor="middle" font-size="12" fill="#fff">receitas (intermediação + serviços)</text>
     <rect x="30" y="85" width="110" height="30" fill="var(--c-line3,#b45309)" opacity=".7" rx="4"/>
     <text x="85" y="104" text-anchor="middle" font-size="12" fill="#fff">despesas</text>
-    <text x="250" y="104" font-size="12" fill="var(--ink,#333)">eficiência = 55%</text>
-    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">de cada R$ 1 de receita, quanto vai embora em despesa?</text>
-    <text x="30" y="132" font-size="12" fill="var(--ink-soft,#666)">QUANTO MENOR, MELHOR — 55% é sólido; acima de 100% a operação não se paga</text></svg>`,
+    <text x="250" y="104" font-size="12" fill="var(--text)">eficiência = 55%</text>
+    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--text)">de cada R$ 1 de receita, quanto vai embora em despesa?</text>
+    <text x="30" y="132" font-size="12" fill="var(--text-2)">QUANTO MENOR, MELHOR — 55% é sólido; acima de 100% a operação não se paga</text></svg>`,
   spread: () => `<svg viewBox="0 0 340 150" class="cdlg-ig" role="img" aria-label="do custo de captar à taxa cobrada">
     <rect x="30" y="95" width="280" height="24" fill="var(--c-line1,#1d4e89)" opacity=".35" rx="4"/>
-    <text x="170" y="111" text-anchor="middle" font-size="12" fill="var(--ink,#333)">custo de captar o dinheiro</text>
+    <text x="170" y="111" text-anchor="middle" font-size="12" fill="var(--text)">custo de captar o dinheiro</text>
     <rect x="30" y="62" width="280" height="28" fill="var(--c-line3,#b45309)" opacity=".55" rx="4"/>
-    <text x="170" y="80" text-anchor="middle" font-size="12" fill="var(--ink,#333)">SPREAD: inadimplência esperada + impostos + custos + margem</text>
-    <path d="M30 50 h280" stroke="var(--ink,#333)" stroke-dasharray="4,3"/>
-    <text x="170" y="42" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--ink,#333)">taxa cobrada do cliente</text>
-    <text x="20" y="20" font-size="12" font-weight="bold" fill="var(--ink,#333)">a taxa é o custo do dinheiro + o spread</text>
-    <text x="30" y="140" font-size="12" fill="var(--ink-soft,#666)">no Brasil, a inadimplência esperada é o maior pedaço do spread</text></svg>`,
+    <text x="170" y="80" text-anchor="middle" font-size="12" fill="var(--text)">SPREAD: inadimplência esperada + impostos + custos + margem</text>
+    <path d="M30 50 h280" stroke="var(--text)" stroke-dasharray="4,3"/>
+    <text x="170" y="42" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text)">taxa cobrada do cliente</text>
+    <text x="20" y="20" font-size="12" font-weight="bold" fill="var(--text)">a taxa é o custo do dinheiro + o spread</text>
+    <text x="30" y="140" font-size="12" fill="var(--text-2)">no Brasil, a inadimplência esperada é o maior pedaço do spread</text></svg>`,
 };
 
 const CONCEITOS = {
