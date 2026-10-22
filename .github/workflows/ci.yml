@@ -68,15 +68,16 @@ jobs:
             /pipeline/**/*.py
             /docs/obee/**/*.py
           sparse-checkout-cone-mode: false
-      - name: Base do pull request para o diff
-        if: github.event_name == 'pull_request'
-        run: git fetch --no-tags --depth=1 --filter=blob:none origin ${{ github.event.pull_request.base.sha }}
+          # o primeiro pai do commit de merge do PR é a base usada no merge
+          fetch-depth: 2
       - name: Classificar
         id: classificar
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        # Em qualquer evento que não seja pull_request o script devolve tudo verdadeiro.
-        run: node scripts/ci/classificar-mudancas.mjs
+        # Em pull_request, o checkout é o commit de merge com a base atual, e o diff vai do primeiro pai (a base usada
+        # no merge) a ele: só o que o PR traz. O base.sha do evento envelhece quando a base anda e trazia para o diff o
+        # que entrou nela depois (achado na medida de 22/10/2026). Fora de pull_request, o script devolve tudo verdadeiro.
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then export BASE_SHA="$(git rev-parse HEAD^1)"; fi
+          node scripts/ci/classificar-mudancas.mjs
 
   estatico:
     name: Lint, tipos, cobertura e contratos
