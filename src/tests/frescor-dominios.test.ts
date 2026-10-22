@@ -214,6 +214,7 @@ describe("entradas com conta: faixa na primeira tela e no método", () => {
     "/educacao-municipal": "src/components/educacao/PainelEducacao.tsx",
     "/custo-de-vida": "src/app/custo-de-vida/page.tsx",
     "/contas-publicas/previdencia": "src/components/previdencia/PainelPrevidencia.tsx",
+    "/contas-publicas-estaduais": "src/app/contas-publicas-estaduais/page.tsx",
   };
 
   it.each(Object.entries(PAGINAS))("%s: linha antes do conteúdo e lista no rodapé de método", (rota, arquivo) => {

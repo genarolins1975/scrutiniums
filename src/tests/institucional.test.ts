@@ -79,8 +79,9 @@ describe("/sobre e rodapés", () => {
     expect(ler("src/app/setor-eletrico/layout.tsx")).toContain("<Footer compacto />");
     expect(ler("src/app/eficiencia-estatal/layout.tsx")).toContain("<Footer />");
     expect(ler("src/app/gas-natural/layout.tsx")).toContain("<Footer />");
-    expect(ler("src/app/contas-publicas/layout.tsx")).toContain('href="/sobre"');
-    expect(ler("src/app/contas-publicas-estaduais/layout.tsx")).toContain('href="/sobre"');
+    // as Contas Federais e as Estaduais trocaram o rodapé próprio pelo rodapé comum (molde único, Iniciativa 4, 22/10/2026)
+    expect(ler("src/app/contas-publicas/layout.tsx")).toContain("<Footer compacto/>");
+    expect(ler("src/app/contas-publicas-estaduais/layout.tsx")).toContain("<Footer compacto />");
     expect(ler("public/obs/index.html")).toContain('<a href="/sobre">Sobre a Scrutiniums</a>');
     expect(footer).toContain("<ContatoItens");
     expect(footer).not.toContain("Contato · LinkedIn");

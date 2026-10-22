@@ -125,12 +125,12 @@ describe("lista central", () => {
 describe("posição em cada entrada: logo depois dos números de abertura", () => {
   /** [arquivo, marca dos números de abertura, marca do que vem depois do bloco] */
   const PAGINAS: Record<string, [string, string, string]> = {
+    // nas entradas no molde único (Iniciativa 4, 22/10/2026), o EntradaColecao põe o bloco entre a escala e os destinos
     "/setor-eletrico": ["src/app/setor-eletrico/page.tsx", "energia-abertura-medidas", "<PercursoVisualEnergia"],
-    "/gas-natural": ["src/app/gas-natural/page.tsx", "<h1", "<SecaoGas"],
-    "/saneamento": ["src/app/saneamento/page.tsx", "Brasil, em uma leitura", 'aria-labelledby="como-funciona"'],
+    "/gas-natural": ["src/app/gas-natural/page.tsx", "escala={", "destinos={"],
+    "/saneamento": ["src/app/saneamento/page.tsx", "escala={", "destinos={"],
     "/eficiencia-estatal": ["src/app/eficiencia-estatal/page.tsx", "<AtlasCidadao", "<FaixaFrescor dominios={FRESCOR_DAS_COLECOES['/eficiencia-estatal']} variante"],
-    "/contas-publicas": ["src/app/contas-publicas/page.tsx", "<AberturaFederal", "<RespostasIniciais"],
-    // no molde único (Iniciativa 4, 22/10/2026), o EntradaColecao põe o bloco entre a escala e os destinos (conferido no componente acima)
+    "/contas-publicas": ["src/app/contas-publicas/page.tsx", "escala={", "destinos={"],
     "/agronegocio": ["src/app/agronegocio/page.tsx", "escala={", "destinos={"],
     "/territorio": ["src/app/territorio/page.tsx", "escala={", "destinos={"],
   };
