@@ -41,7 +41,7 @@ export default async function BuscarPage({ searchParams }: { searchParams: { q?:
   const resposta = q ? buscar(indice, q) : null;
 
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       {/* a sessão já lida acima vale para o cabeçalho: uma consulta ao banco por página */}
       <PublicHeaderView authenticated={comSessao} />
       <main id="conteudo" className="mx-auto w-full max-w-page flex-1 px-4 py-10 sm:px-6 md:py-14">

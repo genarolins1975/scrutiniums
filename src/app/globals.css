@@ -185,8 +185,9 @@
   }
 }
 
+/* Fundo de página: o papel em todo main (Iniciativa 5); o marfim fica para faixas e superfícies que pedem um degrau de tom. */
 html {
-  background-color: var(--cor-marfim);
+  background-color: var(--cor-papel);
   color: var(--cor-carvao);
   scroll-behavior: smooth;
 }

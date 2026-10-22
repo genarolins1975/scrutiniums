@@ -22,7 +22,7 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <MolduraIdioma><main className="bg-marfim">
+    <MolduraIdioma><main className="bg-papel">
       <div className="mx-auto max-w-page px-6 py-24 md:py-32">
         <p className="rotulo text-mineral">Erro inesperado</p>
         <p className="mt-4 font-serif text-6xl text-erro md:text-7xl" aria-hidden="true">

@@ -29,7 +29,7 @@ export function GovernancaConteudo({ idioma }: { idioma: Idioma }) {
   const h = (href: string) => hrefNoIdioma(href, idioma);
   const corpo = (idioma === "pt" ? constituicaoPublica() : constituicaoPublicaEn()).filter((b) => b.tipo !== "titulo");
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       <PublicHeaderView idioma={idioma} />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
         <nav aria-label={t.trilha} className="rotulo text-mineral">

@@ -48,7 +48,7 @@ export function SobreConteudo({ idioma }: { idioma: Idioma }) {
   const licenca = textosInstitucionais(INSTITUCIONAL, idioma).licenca_derivados;
   let n = 0;
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       <PublicHeaderView idioma={idioma} />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
         <PageTitle label={t.rotulo} title={t.titulo} description={t.descricao(listaObservatorios(idioma))} />

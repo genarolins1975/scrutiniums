@@ -23,7 +23,7 @@ export default function SairBoletimPage({
 }) {
   const token = typeof searchParams.token === "string" ? searchParams.token : "";
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       <PublicHeaderView />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
         <PageTitle

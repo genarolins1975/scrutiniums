@@ -102,7 +102,7 @@ const TERMOS: { numero: string; titulo: string; paragrafos: string[] }[] = [
 
 export default function TermosPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       <PublicHeader />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
         <PageTitle

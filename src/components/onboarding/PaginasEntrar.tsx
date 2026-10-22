@@ -25,7 +25,7 @@ import { TEXTOS_ENTRAR } from "@/i18n/paginas/entrar";
 function Moldura({ idioma, children }: { idioma: Idioma; children: ReactNode }) {
   const t = TEXTOS_ENTRAR[idioma];
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       <header className="border-b border-linha">
         <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-x-6 px-6 py-5">
           <Link href={hrefNoIdioma("/", idioma)} aria-label={t.marcaRotulo}>
