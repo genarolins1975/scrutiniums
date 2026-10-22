@@ -1,3 +1,4 @@
+import { SeloProntidao } from "@/components/observatorios/SeloProntidao";
 import Link from 'next/link';
 import {DIMENSOES, GRUPOS} from '@/lib/eficiencia/dimensoes';
 import {Siglas} from '@/components/eficiencia/Siglas';
@@ -36,7 +37,7 @@ export function MapaCobertura({temas}: {temas: TemaCobertura[]}) {
         {DIMENSOES.filter(d => d.grupo === g).map(d => { const t = porId.get(d.id);
           return <details key={d.id} id={`cobertura-${d.id}`} className={styles.matrixRow}>
             <summary className="list-none">
-              <span className={styles.matrixName}><strong>{t?.titulo ?? d.titulo}</strong><small>{t ? 'Painel publicado' : 'Em desenvolvimento'}</small></span>
+              <span className={styles.matrixName}><strong>{t?.titulo ?? d.titulo}</strong><small><SeloProntidao valor={t ? 'publicado' : 'preparacao'} /></small></span>
               {COLUNAS.map(c => { const tem = !!t?.niveis.includes(c.id); return <span key={c.id} className={styles.matrixCell}><i className={tem ? (c.id === 'indice' ? styles.cellIndex : styles.cellOn) : styles.cellOff} aria-hidden="true"/><span className="sr-only">{c.ajuda}: {tem ? 'sim' : 'não'}.</span></span>; })}
             </summary>
             <div className={styles.matrixDetail}>

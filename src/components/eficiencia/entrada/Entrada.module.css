@@ -8,9 +8,9 @@
 .heroTitle{font-family:"Playfair Display Variable",Georgia,serif;font-weight:400;font-size:clamp(36px,4.2vw,56px)!important;line-height:1.08!important;letter-spacing:-.02em;margin-top:10px!important;color:var(--cor-obee-atlas-tinta)}
 
 .heroLead{margin-top:18px!important;max-width:34rem;font-size:18px;line-height:1.6;color:var(--cor-obee-atlas-texto-secundario)}
-.selectors{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px;max-width:34rem}
+.selectors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:28px;max-width:34rem}
 .selectors label{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--cor-obee-atlas-texto-secundario)}
-.selectors select{min-height:48px;padding:0 12px;border:1px solid var(--cor-obee-atlas-texto-secundario);background:var(--cor-obee-atlas-superficie);color:var(--cor-obee-atlas-tinta);font-size:16px;border-radius:0}
+.selectors select{width:100%;min-width:0;min-height:48px;padding:0 12px;border:1px solid var(--cor-obee-atlas-texto-secundario);background:var(--cor-obee-atlas-superficie);color:var(--cor-obee-atlas-tinta);font-size:16px;border-radius:0}
 .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:28px!important;max-width:34rem;border-top:1px solid var(--cor-obee-atlas-linha)}
 .facts div{padding:14px 12px 0 0}
 .facts div+div{padding-left:14px;border-left:1px solid var(--cor-obee-atlas-linha)}

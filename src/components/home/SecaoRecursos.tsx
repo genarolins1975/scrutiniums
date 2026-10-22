@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ehRotaPublica, prefetchDoLink } from "@/lib/rotasPublicas";
-import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/home/Recolhido";
+import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/observatorios/Recolhido";
 
 const RECURSOS = [
   {

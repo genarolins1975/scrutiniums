@@ -2,15 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
-import { FaixaMedidas, MedidaGas, NotaGas, SecaoGas } from "@/components/gas/Blocos";
+import { NotaGas, numeroDoIndicador } from "@/components/gas/Blocos";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import { ParaVoce } from "@/components/observatorios/ParaVoce";
 import { goldGas } from "@/lib/gas/gold";
 import { carimbo, mesExtenso, num, periodoLegivel } from "@/lib/gas/formato";
+import { EntradaColecao } from "@/components/observatorios/EntradaColecao";
+import { destinosDaColecao } from "@/components/observatorios/DestinosDaColecao";
+import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
+import { Recolhido } from "@/components/observatorios/Recolhido";
 import { GRUPOS_GAS, PAGINAS_GAS } from "@/lib/gas/navegacao";
-import { RotuloContexto } from "@/components/layout/RotuloContexto";
 
 export const dynamic = "force-static";
 
@@ -98,6 +101,11 @@ export default function InicialGasPage() {
 
   const fluxoCompleto = mesmaJanela && [p12, somaParcelas, totalOferta].every((v) => typeof v === "number" && Number.isFinite(v) && v > 0) && [...producao, ...oferta].every((x) => Number.isFinite(x.valor) && Number.isFinite(x.percentual));
   const escala = fluxoCompleto ? Math.max(p12!, somaParcelas, totalOferta) : 1;
+  const pg = (slug: string) => PAGINAS_GAS.find((p) => p.slug === slug)!;
+  const ind = { prod: prod.indicadores, glp: glp.indicadores, gnv: gnv.indicadores, imp: imp.indicadores, pr: pr.indicadores, merc: merc.indicadores };
+  // molde único de entrada (Iniciativa 4 do parecer de UX, 22/10/2026): dos oito números de antes, quatro na escala e quatro nos
+  // caminhos, cada um lido da gold da página de destino; o fluxo do gás é o modelo didático; a lista de todas as páginas e o
+  // calendário das fontes ficam recolhidos e no método
   return (
     <>
       <MarcaVisita secao="gas:inicial" />
@@ -105,111 +113,102 @@ export default function InicialGasPage() {
         <CabecalhoPlataforma colecao="gas" destinoConta="/gas-natural" />
         <NavegacaoColecao colecao="gas" />
       </header>
-      <main id="conteudo" className="ed-pagina pb-12">
-        <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/gas-natural"]} />
-        <div className="cab-modulo">
-          <RotuloContexto rota="/gas-natural" className="text-gas-dark" />
-          <h1 className="ed-h1 mt-3 max-w-4xl font-serif text-carvao">Do poço ao consumidor: produção, oferta e preços do gás</h1>
-          <div className="ed-lead mt-4 max-w-prose2 space-y-3 text-carvao-muted">
-            <p>
-              Produção, aproveitamento, importação, preços na cadeia, botijão, GNV e transporte, em páginas que respondem a uma pergunta cada. Os números vêm de{" "}
-              {meta.fontes.length} conjuntos de dados abertos da ANP, do IBGE, do Banco Central, do Comex Stat e do Banco Mundial, com fonte, período e fórmula ao lado.
-            </p>
+      <EntradaColecao
+        tipo="colecao"
+        rota="/gas-natural"
+        acento="gas"
+        titulo="De onde vem o gás e quanto ele custa?"
+        frase="Produção, aproveitamento, importação, preços, botijão, GNV e transporte, com dados abertos da ANP, do IBGE, do Banco Central, do Comex Stat e do Banco Mundial; fonte, período e fórmula ao lado de cada número."
+        frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/gas-natural"]} conteiner="mx-auto max-w-page px-6" />}
+        escala={[
+          numeroDoIndicador(ind.prod.producao_mes, ind.prod.producao_mes?.rotulo ?? "Produção de gás natural", pg("producao").href, 1),
+          numeroDoIndicador(ind.glp.medio_mes, "Botijão de 13 kg, preço médio", pg("gas-de-cozinha").href),
+          numeroDoIndicador(ind.gnv.medio_mes, "GNV, preço médio", pg("gnv-e-gas-encanado").href),
+          numeroDoIndicador(ind.imp.participacao_12m, "Importado na oferta, 12 meses", pg("importacao").href, 1),
+        ]}
+        paraVoce={<ParaVoce entrada="/gas-natural" />}
+        destinos={destinosDaColecao("gas")}
+        artefato={
+          <ModeloDidatico
+            id="fluxo"
+            titulo="O que acontece com o gás produzido"
+            descricao={<>Milhões de m³ por dia, média de {periodo}. A mesma escala nas duas barras: a de baixo soma o que sobrou da produção nacional ao gás importado.</>}
+            deixaDeFora={[
+              "O processamento: parte do gás disponível é consumida e convertida em líquidos, como o GLP, nas unidades de processamento",
+              "Para onde o gás vai depois, por mercado, que está em Preços na cadeia",
+              "A variação de um mês para outro: as barras são a média dos 12 meses",
+            ]}
+          >
+            <div className="space-y-6">
+              {fluxoCompleto ? (
+                <>
+                  <BarraFluxo titulo="Produção nacional" partes={producao} escala={escala} periodo={periodo} totalPublicado={p12!} somaPublicada={somaParcelas} />
+                  <BarraFluxo titulo="Importado mais disponível nacional" partes={oferta} escala={escala} periodo={periodo} totalPublicado={totalOferta} somaPublicada={totalOferta} />
+                </>
+              ) : (
+                <p className="text-sm text-carvao-muted">Composição indisponível: as janelas diferem ou falta um valor válido nos conjuntos da ANP. Os detalhes estão em Aproveitamento e Importação.</p>
+              )}
+              <p className="max-w-prose2 text-xs leading-relaxed text-mineral">
+                Fonte: ANP, produção, reinjeção, queima, consumo próprio, gás disponível e importação de gás natural. Médias diárias dos 12 meses calculadas pela
+                Scrutiniums{mesmaJanela ? "" : "; produção e importação em janelas diferentes, ver cada página"}.
+              </p>
+              <NotaGas>
+                <p>
+                  Oferta aqui é volume, antes do processamento. Parte do gás disponível é consumida e convertida em líquidos, como o GLP, nas unidades de processamento.
+                  Para onde o gás vai depois, por mercado, está em <Link href="/gas-natural/precos#mercados" className="text-gas-dark underline underline-offset-4">Preços na cadeia</Link>.
+                </p>
+              </NotaGas>
+            </div>
+          </ModeloDidatico>
+        }
+        caminhos={[
+          { pergunta: pg("mercado").pergunta, resumo: pg("mercado").descricao, href: pg("mercado").href, numero: numeroDoIndicador(ind.merc.carregadores_mes, ind.merc.carregadores_mes?.rotulo ?? "Carregadores", pg("mercado").href, 0) },
+          { pergunta: pg("precos").pergunta, resumo: pg("precos").descricao, href: pg("precos").href, numero: numeroDoIndicador(ind.pr.brasil_usd_mes, "Gás vendido às distribuidoras, em dólar", pg("precos").href) },
+          { pergunta: "Como o preço daqui se compara ao dos Estados Unidos?", resumo: "A referência Henry Hub ao lado do preço pago pelas distribuidoras, em dólar por milhão de BTU.", href: `${pg("precos").href}#internacional`, numero: numeroDoIndicador(ind.pr.henry_hub_mes, ind.pr.henry_hub_mes?.rotulo ?? "Henry Hub", `${pg("precos").href}#internacional`) },
+          { pergunta: "Como o preço daqui se compara ao da Europa?", resumo: "A referência TTF ao lado do preço pago pelas distribuidoras, em dólar por milhão de BTU.", href: `${pg("precos").href}#internacional`, numero: numeroDoIndicador(ind.pr.ttf_mes, ind.pr.ttf_mes?.rotulo ?? "TTF", `${pg("precos").href}#internacional`) },
+        ]}
+        recolhidos={
+          <Recolhido id="perguntas" titulo="Todas as páginas, no caminho do gás" resumo="Da produção ao preço e ao mercado, uma pergunta por página.">
+            <p className="max-w-prose2 text-sm text-carvao-muted">Comece pela produção e seus destinos. Depois, acompanhe a oferta e os preços. O botijão contém GLP, um produto diferente do gás natural.</p>
+            <div className="mt-6 grid gap-x-10 gap-y-8 md:grid-cols-2">
+              {GRUPOS_GAS.map((g) => (
+                <div key={g.id}>
+                  <h3 className="rotulo text-gas-dark">{g.rotulo}</h3>
+                  <ul className="mt-2">
+                    {PAGINAS_GAS.filter((p) => p.grupo === g.id).map((p) => (
+                      <li key={p.slug} className="border-t border-linha py-3">
+                        <Link href={p.href} prefetch={false} className="font-serif text-lg leading-snug text-carvao underline decoration-linha underline-offset-4 hover:decoration-gas">
+                          {p.pergunta}
+                        </Link>
+                        <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{p.descricao}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Recolhido>
+        }
+        metodo={
+          <div id="atualidade" className="space-y-4">
+            <h3 className="font-serif text-xl text-carvao">Até quando vão os dados</h3>
+            <p className="text-sm text-carvao-muted">Cada fonte tem calendário próprio; as páginas mostram o período de cada número.</p>
+            <ul className="grid gap-x-8 gap-y-2 text-sm md:grid-cols-2">
+              <li className="border-t border-linha pt-2"><span className="text-carvao">Produção (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(prod.ultimo_mes)}</span></li>
+              <li className="border-t border-linha pt-2"><span className="text-carvao">Preço do botijão (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(glp.ultimo_mes)}</span></li>
+              <li className="border-t border-linha pt-2"><span className="text-carvao">Aproveitamento (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(ap.ultimo_mes)}</span></li>
+              <li className="border-t border-linha pt-2"><span className="text-carvao">Importação (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(imp.ultimo_mes)}</span></li>
+              <li className="border-t border-linha pt-2"><span className="text-carvao">Preço do GNV (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(gnv.ultimo_mes)}</span></li>
+              <li className="border-t border-linha pt-2"><span className="text-carvao">Venda às distribuidoras (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(pr.ultimo_mes)}</span></li>
+              <li className="border-t border-linha pt-2"><span className="text-carvao">Origem das importações (Comex Stat):</span> <span className="text-carvao-muted">até {mesExtenso(imp.ultimo_mes_comex)}</span></li>
+              <li className="border-t border-linha pt-2"><span className="text-carvao">IPCA do gás (IBGE):</span> <span className="text-carvao-muted">até {mesExtenso(glp.ipca.ultimo_mes)}</span></li>
+              <li className="border-t border-linha pt-2"><span className="text-carvao">Movimentação nos gasodutos (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(goldGas.infraestrutura().ultimo_mes)}</span></li>
+            </ul>
+            {meta.dados_capturados_em && <p className="text-xs text-mineral">Captura mais recente das fontes: {carimbo(meta.dados_capturados_em)}. Os {meta.fontes.length} conjuntos de dados, com o método e o glossário, estão em <Link href="/gas-natural/metodologia" className="underline underline-offset-2">Método e glossário</Link>.</p>}
           </div>
-        </div>
-
-        {/* "Para você" (Onda 2): o botijão e o GNV no estado do leitor, com o preço médio do país, a um clique */}
-        <ParaVoce entrada="/gas-natural" conteiner="" />
-
-        <nav aria-label="Percurso de aprendizagem" className="border-b border-linha py-5">
-          <p className="rotulo text-gas-dark">Siga o caminho do gás</p>
-          <p className="mt-2 max-w-prose2 text-sm text-carvao-muted">Comece pela produção e seus destinos. Depois, acompanhe a oferta e os preços. O botijão contém GLP, um produto diferente do gás natural.</p>
-          <ol className="mt-3 grid gap-x-6 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              ["producao", "Produção e destinos"], ["importacao", "Importação e oferta"],
-              ["precos", "Preços em cada elo"], ["gnv-e-gas-encanado", "GNV e inflação residencial"],
-            ].map(([slug, texto]) => <li key={slug}><Link href={`/gas-natural/${slug}`} className="inline-flex min-h-[44px] items-center text-sm text-gas-dark underline underline-offset-4">{texto}</Link></li>)}
-          </ol>
-        </nav>
-
-        <SecaoGas
-          id="fluxo"
-          titulo="O que acontece com o gás produzido"
-          subtitulo={<>Milhões de m³ por dia, média de {periodo}. A mesma escala nas duas barras: a de baixo soma o que sobrou da produção nacional ao gás importado.</>}
-        >
-          {fluxoCompleto ? (
-            <>
-              <BarraFluxo titulo="Produção nacional" partes={producao} escala={escala} periodo={periodo} totalPublicado={p12!} somaPublicada={somaParcelas} />
-              <BarraFluxo titulo="Importado mais disponível nacional" partes={oferta} escala={escala} periodo={periodo} totalPublicado={totalOferta} somaPublicada={totalOferta} />
-            </>
-          ) : (
-            <p className="text-sm text-carvao-muted">Composição indisponível: as janelas diferem ou falta um valor válido nos conjuntos da ANP. Os detalhes estão em Aproveitamento e Importação.</p>
-          )}
-          <p className="max-w-prose2 text-xs leading-relaxed text-mineral">
-            Fonte: ANP, produção, reinjeção, queima, consumo próprio, gás disponível e importação de gás natural. Médias diárias dos 12 meses calculadas pela
-            Scrutiniums{mesmaJanela ? "" : "; produção e importação em janelas diferentes, ver cada página"}.
-          </p>
-          <NotaGas>
-            <p>
-              Oferta aqui é volume, antes do processamento. Parte do gás disponível é consumida e convertida em líquidos, como o GLP, nas unidades de processamento.
-              Para onde o gás vai depois, por mercado, está em <Link href="/gas-natural/precos#mercados" className="text-gas-dark underline underline-offset-4">Preços na cadeia</Link>.
-            </p>
-          </NotaGas>
-        </SecaoGas>
-
-        <SecaoGas id="numeros" titulo="Números para começar" subtitulo="O valor mais recente de cada página, com período e natureza. A fórmula fica em Como este número é obtido.">
-          <FaixaMedidas>
-            <MedidaGas ind={prod.indicadores.producao_mes} />
-            <MedidaGas ind={glp.indicadores.medio_mes} casas={2} rotulo="Botijão de 13 kg, preço médio" />
-            <MedidaGas ind={gnv.indicadores.medio_mes} casas={2} rotulo="GNV, preço médio" />
-            <MedidaGas ind={merc.indicadores.carregadores_mes} casas={0} />
-          </FaixaMedidas>
-          {pr.indicadores.brasil_usd_mes && (
-            <FaixaMedidas>
-              <MedidaGas ind={pr.indicadores.brasil_usd_mes} casas={2} rotulo="Gás vendido às distribuidoras, em dólar" />
-              <MedidaGas ind={pr.indicadores.henry_hub_mes} casas={2} />
-              <MedidaGas ind={pr.indicadores.ttf_mes} casas={2} />
-              <MedidaGas ind={imp.indicadores.participacao_12m} rotulo="Importado na oferta, 12 meses" />
-            </FaixaMedidas>
-          )}
-        </SecaoGas>
-
-        <SecaoGas id="perguntas" titulo="Por onde começar" subtitulo="Cada página responde a uma pergunta. Os grupos seguem o caminho do gás.">
-          <div className="grid gap-x-10 gap-y-8 md:grid-cols-2">
-            {GRUPOS_GAS.map((g) => (
-              <div key={g.id}>
-                <h3 className="rotulo text-gas-dark">{g.rotulo}</h3>
-                <ul className="mt-2">
-                  {PAGINAS_GAS.filter((p) => p.grupo === g.id).map((p) => (
-                    <li key={p.slug} className="border-t border-linha py-3">
-                      <Link href={p.href} prefetch={false} className="font-serif text-lg leading-snug text-carvao underline decoration-linha underline-offset-4 hover:decoration-gas">
-                        {p.pergunta}
-                      </Link>
-                      <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{p.descricao}</p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </SecaoGas>
-
-        <SecaoGas id="atualidade" titulo="Até quando vão os dados" subtitulo="Cada fonte tem calendário próprio; as páginas mostram o período de cada número.">
-          <ul className="grid gap-x-8 gap-y-2 text-sm md:grid-cols-2">
-            <li className="border-t border-linha pt-2"><span className="text-carvao">Produção (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(prod.ultimo_mes)}</span></li>
-            <li className="border-t border-linha pt-2"><span className="text-carvao">Preço do botijão (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(glp.ultimo_mes)}</span></li>
-            <li className="border-t border-linha pt-2"><span className="text-carvao">Aproveitamento (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(ap.ultimo_mes)}</span></li>
-            <li className="border-t border-linha pt-2"><span className="text-carvao">Importação (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(imp.ultimo_mes)}</span></li>
-            <li className="border-t border-linha pt-2"><span className="text-carvao">Preço do GNV (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(gnv.ultimo_mes)}</span></li>
-            <li className="border-t border-linha pt-2"><span className="text-carvao">Venda às distribuidoras (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(pr.ultimo_mes)}</span></li>
-            <li className="border-t border-linha pt-2"><span className="text-carvao">Origem das importações (Comex Stat):</span> <span className="text-carvao-muted">até {mesExtenso(imp.ultimo_mes_comex)}</span></li>
-            <li className="border-t border-linha pt-2"><span className="text-carvao">IPCA do gás (IBGE):</span> <span className="text-carvao-muted">até {mesExtenso(glp.ipca.ultimo_mes)}</span></li>
-            <li className="border-t border-linha pt-2"><span className="text-carvao">Movimentação nos gasodutos (ANP):</span> <span className="text-carvao-muted">até {mesExtenso(goldGas.infraestrutura().ultimo_mes)}</span></li>
-          </ul>
-          {meta.dados_capturados_em && <p className="text-xs text-mineral">Captura mais recente das fontes: {carimbo(meta.dados_capturados_em)}.</p>}
-          <FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/gas-natural"]} variante="metodo" className="mt-4" />
-        </SecaoGas>
-      </main>
+        }
+        frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/gas-natural"]} variante="metodo" />}
+      />
     </>
   );
 }

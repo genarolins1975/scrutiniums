@@ -95,3 +95,9 @@
 @media print { .energia-cenario { display:none }.energia-explorar { display:none }.energia-porta>img { display:none }.energia-porta>div { width:100% } }
 
 .energia-porta small { display:block;font-size:12px;line-height:1.6;margin-top:12px;color:var(--cor-carvao-muted) }
+
+/* molde único de entrada (Iniciativa 4, 22/10/2026): a gravura fecha a abertura, alinhada ao texto da página; o "Sobre o
+   observatório" fica num bloco recolhido, sem a linha e o rótulo de quando era um <details> próprio */
+.energia-atlas-inicial [data-fatia=abertura] .energia-cenario { margin:32px 0 0 }
+.energia-contexto-recolhido { border-top:0 }
+@media(max-width:760px) { .energia-atlas-inicial [data-fatia=abertura] .energia-cenario-texto { display:none } }
