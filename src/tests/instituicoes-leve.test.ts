@@ -47,7 +47,10 @@ describe("bundles fora do git", () => {
     const gi = read(".gitignore");
     for (const f of ["/public/obs/app.min.js", "/public/obs/app-municipal.min.js", "/public/obs/app-emergentes.min.js"]) expect(gi).toContain(f);
     const scripts = JSON.parse(read("package.json")).scripts as Record<string, string>;
-    expect(scripts.prebuild.split(/\s*&&\s*/)).toContain("node scripts/minify-obs.mjs");
+    // o prebuild chama o minificador direto ou, desde 22/10/2026, pelo scripts/preparar.mjs, que o importa
+    const passos = scripts.prebuild.split(/\s*&&\s*/);
+    const viaPreparar = passos.includes("node scripts/preparar.mjs") && /import\("\.\/minify-obs\.mjs"\)/.test(read("scripts/preparar.mjs"));
+    expect(passos.includes("node scripts/minify-obs.mjs") || viaPreparar).toBe(true);
     expect(read(".github/workflows/ci.yml")).toContain("run: node scripts/minify-obs.mjs");
   });
 });
