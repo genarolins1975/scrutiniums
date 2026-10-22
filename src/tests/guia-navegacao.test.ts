@@ -57,10 +57,11 @@ describe("guia didático das páginas", () => {
 });
 
 describe("navegação simplificada", () => {
-  it("busca de páginas presente e acessível", () => {
-    expect(html).toMatch(/id="navQ"/);
-    expect(html).toMatch(/aria-label="Buscar página"/);
-    expect(app).toMatch(/window\.navFiltra/);
+  it("a busca é a da plataforma, na barra (Iniciativa 3 do parecer de UX): formulário GET para /buscar; o filtro local da barra lateral saiu", () => {
+    expect(html).toMatch(/<form class="bp-busca" action="\/buscar" method="get" role="search" aria-label="Buscar na Scrutiniums">/);
+    expect(html).toMatch(/<input id="bpBuscaQ" class="bp-busca-campo" name="q" type="search"/);
+    expect(html).not.toMatch(/id="navQ"/);
+    expect(app).not.toMatch(/window\.navFiltra/);
   });
 
   it("grupos colapsam e o grupo da página ativa abre", () => {

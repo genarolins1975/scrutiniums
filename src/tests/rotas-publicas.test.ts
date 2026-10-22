@@ -77,6 +77,16 @@ describe("rotas públicas", () => {
     expect(urls.length).toBeGreaterThan(5);
     for (const u of urls) expect(ehRotaPublica(u), u).toBe(true);
   });
+
+  // Iniciativa 3 do parecer de UX de 21/10/2026: a busca da plataforma abre em toda página, com ou sem conta
+  it("abre a página de resultados da busca e o índice que o campo baixa, pelo caminho exato e fora do sitemap", () => {
+    for (const p of ["/buscar", "/buscar/", "/busca/indice.json"]) expect(ehRotaPublica(p), p).toBe(true);
+    for (const p of ["/buscar/outra", "/busca", "/busca/", "/busca/indice.jsonx", "/busca/outro.json", "/en/buscar", "/en/busca/indice.json"]) expect(ehRotaPublica(p), p).toBe(false);
+    expect(exigeConta("/buscar?q=ideb")).toBe(false);
+    const urls = sitemap().map((u) => new URL(u.url).pathname);
+    expect(urls).not.toContain("/buscar");
+    expect(urls).not.toContain("/busca/indice.json");
+  });
 });
 
 /**

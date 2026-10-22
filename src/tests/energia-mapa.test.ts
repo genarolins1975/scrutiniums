@@ -103,6 +103,8 @@ describe("página inicial: mapa didático (P001)", () => {
     expect([...posicoes].sort((a, b) => a - b)).toEqual(posicoes);
     expect(t).toContain("Energia, do sistema à sua conta");
     expect("Energia, do sistema à sua conta".split(" ")).toHaveLength(6);
+    // em português, a busca da plataforma só nesta coleção; em inglês, a busca própria (o índice da plataforma é só em português)
+    expect(t).toContain('<BuscaPlataforma\n                  variante="pagina"');
     expect(t).toContain("<BuscaObservatorio");
     expect(t).toContain('canonical: "/setor-eletrico"');
     expect(t).toContain('<MarcaVisita secao="energia:mapa" />');

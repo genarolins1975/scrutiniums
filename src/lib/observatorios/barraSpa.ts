@@ -6,7 +6,8 @@
  * confere que o arquivo publicado é igual ao gerado: mudou o registro, muda a SPA.
  *
  * Mesmas classes da barra React (bp-*, public/observatorios.css), mesma marca, mesma ordem, mesmos rótulos e a mesma
- * regra do celular (abaixo de 640 px as abas saem e o seletor da linha da marca guarda os mesmos destinos). A conta
+ * regra do celular (abaixo de 640 px as abas saem e o seletor da linha da marca guarda os mesmos destinos), e a mesma busca
+ * da plataforma, aqui como formulário GET para /buscar (a SPA não renderiza React). A conta
  * começa oculta e o app.js a mostra pela sessão (/api/auth/eu): "Minha conta" com sessão, "Entrar" sem ela.
  *
  * Logo abaixo da barra, a trilha "Você está em" (Iniciativa 1 do parecer de UX, 21/10/2026), com as mesmas peças da
@@ -17,6 +18,7 @@
 import { OBSERVATORIOS, OBSERVATORIO_PRINCIPAL, destinoObservatorio } from "@/lib/observatorios/lista";
 import { paineis } from "@/lib/observatorios/registro";
 import { resolverContexto, type IndiceContexto } from "@/lib/observatorios/contextoPuro";
+import { EXEMPLO_DO_CAMPO } from "@/lib/busca/exemplos";
 
 export const MARCADOR_INICIO = "<!-- barra-plataforma:inicio (gerada por scripts/barra-spa.mjs a partir de src/lib/observatorios/barraSpa.ts; não editar à mão) -->";
 export const MARCADOR_FIM = "<!-- barra-plataforma:fim -->";
@@ -29,6 +31,24 @@ const MONOGRAMA =
   '<svg width="20" height="25" viewBox="0 0 40 50" fill="none" aria-hidden="true" focusable="false">' +
   '<path d="M28 0 L10 0 C4 4 2 8 2 14 C2 20 6 24 13 26 L21 28 L21 14 C21 8 23 3 28 0 Z" fill="currentColor"/>' +
   '<path d="M12 50 L30 50 C36 46 38 42 38 36 C38 30 34 26 27 24 L19 22 L19 36 C19 42 17 47 12 50 Z" fill="#966B48"/></svg>';
+
+/** Lupa da busca, os mesmos traços de BuscaPlataforma.tsx. */
+const LUPA =
+  '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none"%CLASSE%><circle cx="6.75" cy="6.75" r="5" stroke="currentColor" stroke-width="1.5"/>' +
+  '<path d="M10.5 10.5L14.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>';
+
+/**
+ * Busca da plataforma na barra da SPA: o mesmo formulário GET para /buscar que o campo das páginas Next manda sem JavaScript,
+ * com as mesmas classes (bp-busca*, public/observatorios.css). Abaixo de 640 px fica a lupa, que leva à página /buscar.
+ */
+const BUSCA = [
+  '    <form class="bp-busca" action="/buscar" method="get" role="search" aria-label="Buscar na Scrutiniums">',
+  `      <a class="bp-busca-lupa" href="/buscar" aria-label="Buscar na Scrutiniums">${LUPA.replace("%CLASSE%", "")}</a>`,
+  '      <div class="bp-busca-caixa"><div class="bp-busca-form"><label class="sr-only" for="bpBuscaQ">Buscar na Scrutiniums</label>' +
+    LUPA.replace("%CLASSE%", ' class="bp-busca-icone"') +
+    `<input id="bpBuscaQ" class="bp-busca-campo" name="q" type="search" placeholder="${EXEMPLO_DO_CAMPO}" autocomplete="off" spellcheck="false" enterkeyhint="search" maxlength="120"></div></div>`,
+  "    </form>",
+];
 
 const esc = (t: string) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -107,6 +127,7 @@ export function htmlBarraSpa(caminho = "/observatorio"): string {
     `    <a class="bp-marca bp-marca--compacta" href="/" aria-label="Scrutiniums: página inicial">${MONOGRAMA}<span class="bp-marca-nome">Scrutiniums</span></a>`,
     '    <span aria-hidden="true" class="bp-divisor"></span>',
     `    <details class="obs-trocar" id="obsTrocar"><summary aria-label="Coleção atual: ${corrente.nome}. Trocar de coleção ou de observatório"><span class="obs-trocar-nome">${corrente.nome}</span> <span aria-hidden="true">▾</span></summary><div class="obs-trocar-menu">${seletor}<a class="obs-trocar-conta" href="/app/observatorios">Escolher na minha conta →</a></div></details>`,
+    ...BUSCA,
     '    <div class="bp-acoes"><a id="barraConta" class="bp-conta" href="/app/conta" hidden>Minha conta</a></div>',
     "  </div>",
     `  <div class="bp-abas"><div class="bp-abas-linha"><nav aria-label="Observatórios da Scrutiniums" class="obs-dominios">${abas}</nav></div></div>`,

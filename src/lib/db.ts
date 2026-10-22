@@ -172,6 +172,15 @@ export async function migrate(db: Db): Promise<void> {
       visitas INTEGER NOT NULL DEFAULT 0,
       PRIMARY KEY (dia, rota, com_conta)
     )`,
+    // Busca da plataforma (Iniciativa 3 do parecer de UX): buscas por dia, termo
+    // normalizado e presença de conta, sem coluna que identifique pessoa.
+    `CREATE TABLE IF NOT EXISTS uso_busca_dia (
+      dia DATE NOT NULL,
+      termo TEXT NOT NULL,
+      com_conta BOOLEAN NOT NULL,
+      buscas INTEGER NOT NULL DEFAULT 0,
+      PRIMARY KEY (dia, termo, com_conta)
+    )`,
     // Fim do acesso antecipado por código: contas paradas na etapa do código
     // ou na lista de espera são promovidas a acesso completo (idempotente).
     `UPDATE users SET onboarding_status = 'COMPLETE'

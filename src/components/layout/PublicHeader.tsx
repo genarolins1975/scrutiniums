@@ -9,6 +9,8 @@ import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
 import { TEXTOS_LAYOUT } from "@/i18n/paginas/layout";
 import { hrefNoIdioma } from "@/lib/i18n-href";
 import type { Idioma } from "@/lib/idioma";
+import { BuscaPlataforma } from "@/components/busca/BuscaPlataforma";
+import { EXEMPLO_DO_CAMPO } from "@/lib/busca/exemplos";
 
 // A barra é a comum da plataforma (BarraPlataforma): a mesma marca, a mesma ordem e os mesmos
 // rótulos dos observatórios. Aqui, na camada aberta, as abas (os seis observatórios do registro
@@ -50,7 +52,11 @@ export function PublicHeaderView({ authenticated = false, idioma = "pt" }: { aut
   return (
     <header className="grade-pagina">
       <BarraPlataforma
-        marca={{ href: hrefNoIdioma("/", idioma), rotulo: t.inicio, nomeNoCelular: true }}
+        // no celular, com a lupa da busca na linha, a marca fica no monograma, como nas páginas dos observatórios; em inglês
+        // (sem busca) o nome segue à vista
+        marca={{ href: hrefNoIdioma("/", idioma), rotulo: t.inicio, nomeNoCelular: idioma !== "pt" }}
+        // a busca da plataforma, só em português (o índice não tem tradução); sem JavaScript, um formulário para /buscar
+        busca={idioma === "pt" ? <BuscaPlataforma exemplo={EXEMPLO_DO_CAMPO} /> : undefined}
         acoes={
           <>
             <LinkConta

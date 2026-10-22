@@ -26,6 +26,9 @@ const EXATAS = new Set([
   "/imprensa",
   "/glossario",
   "/observatorio-do-credito",
+  // busca da plataforma (Iniciativa 3 do parecer de UX de 21/10/2026): a página de resultados mostra títulos, resumos e o selo
+  // "com conta", nunca dado; fica fora do sitemap e não é indexada
+  "/buscar",
   "/robots.txt",
   "/sitemap.xml",
   "/favicon.ico",
@@ -121,11 +124,14 @@ const PREFIXO_APERITIVO = "/aperitivo";
  * busca da Conta de luz (ContaBuscaMunicipio) e o índice de nomes da busca de
  * município do Saneamento (BuscaMunicipio). As pastas de cada um seguem
  * fechadas. A malha das UFs saiu em 20/10/2026: o aperitivo do botijão não
- * desenha mapa.
+ * desenha mapa. O índice da busca da plataforma (src/lib/busca/indice.ts) leva
+ * só títulos, resumos, endereços e termos, e o campo de busca o baixa em toda
+ * página, aberta ou não.
  */
 const ARQUIVOS_DAS_CONSULTAS = new Set([
   "/setor-eletrico/conta-de-luz/municipios.json",
   "/saneamento/gold/indice.json",
+  "/busca/indice.json",
 ]);
 
 /**

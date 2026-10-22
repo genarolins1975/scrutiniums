@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.121.0";
+const APP_VERSION = "0.122.0";
 /* nome da coleção no registro dos seis observatórios (src/lib/observatorios/lista.ts): os títulos da aba seguem "Página · Coleção · Scrutiniums" (Iniciativa 1 do parecer de UX, 21/10/2026),
    com a coleção dona da aba, que refazTrilha() acerta a cada navegação (Consignado é de "Dívida e crédito das famílias") */
 let TITULO_COLECAO = "Crédito e sistema financeiro · Scrutiniums";
@@ -2983,25 +2983,6 @@ window.navToggleGrupo = ev => {
   const g = ev.currentTarget.closest(".navgroup");
   g.classList.toggle("aberto");
   ev.stopPropagation();
-};
-window.navFiltra = termo => {
-  const t = (termo || "").trim().toLowerCase();
-  const tabs = document.getElementById("tabs");
-  tabs.classList.toggle("buscando", !!t);
-  let achou = 0;
-  tabs.querySelectorAll(".navgroup").forEach(g => {
-    let visiveis = 0;
-    g.querySelectorAll("button[data-view]").forEach(b => {
-      const ok = !t || b.textContent.toLowerCase().includes(t);
-      b.style.display = ok ? "" : "none";
-      if (ok) visiveis++;
-    });
-    g.style.display = visiveis ? "" : "none";
-    achou += visiveis;
-  });
-  if (!t) navSincroniza();
-  const vazio = document.getElementById("navVazio");
-  if (vazio) vazio.hidden = achou > 0;
 };
 function navPrepara() {
   const tabs = document.getElementById("tabs");

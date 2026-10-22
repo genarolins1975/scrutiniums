@@ -15,6 +15,7 @@ import styles from "./escolha.module.css";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
 import { DiretorioPaineis } from "@/components/observatorios/DiretorioPaineis";
+import { EXEMPLO_DO_CAMPO } from "@/lib/busca/exemplos";
 
 export const metadata: Metadata = {
   title: "Encontre o painel",
@@ -29,8 +30,8 @@ const OBSERVATORIO_DO_CARTAO = (id: OpcaoObservatorioId): ObservatorioId =>
 const ehDominioFrescor = (id: string): id is DominioFrescorId => (IDS_DOMINIOS as string[]).includes(id);
 
 /**
- * Mapa da área logada: um diretório de todas as coleções e páginas, com
- * filtro enquanto digita (DiretorioPaineis). Acima, o lugar do leitor na
+ * Mapa da área logada: a busca da plataforma e o diretório de todas as
+ * coleções e páginas (DiretorioPaineis). Acima, o lugar do leitor na
  * plataforma: onde parou, recortes salvos e avisos. No fim, fontes e
  * atualização de cada coleção, recolhidas.
  */
@@ -96,7 +97,7 @@ export default async function EscolhaObservatorioPage() {
       </div>
 
       <div className={styles.conteudo}>
-        <DiretorioPaineis observatorios={obs} totais={totais(obs)} extras={extras} />
+        <DiretorioPaineis observatorios={obs} totais={totais(obs)} extras={extras} exemplo={EXEMPLO_DO_CAMPO} />
 
         {/* método recolhido no fim: fontes, cobertura e atualização de cada coleção com pipeline próprio, com a sua entrada
             direta (POST com `d`, como nos cartões de antes: guarda o último acesso e registra a escolha) */}
