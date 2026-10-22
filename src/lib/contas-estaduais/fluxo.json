@@ -1,0 +1,7534 @@
+{
+ "versao": "0.1.0",
+ "captura": "2026-10-22",
+ "exercicio": 2025,
+ "perimetro": "RREO do 6º bimestre de 2025, esfera estadual. Arrecadação pelas receitas correntes brutas do Anexo 03 (janeiro a dezembro) e pelas receitas de capital do Anexo 01; receita disponível e gasto pelo Anexo 01, exceto intra-orçamentárias (receita realizada, despesa empenhada); áreas pela despesa empenhada por função do Anexo 02. Valores nominais declarados por cada ente.",
+ "escopo_conferencia": "Identidade do ente, período, integridade dos bytes e aritmética. Não constitui auditoria nem certificação do Tesouro.",
+ "ufs": [
+  {
+   "uf": "RO",
+   "nome": "Rondônia",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 8125984783.1,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 648419923.68,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 1406833087.77,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       1101577845.12
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       45702757.11
+      ],
+      [
+       "Taxas e outros tributos",
+       259552485.54
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 5901175522.38,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 2532020482.5,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       1714904835.24
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       774896097.58
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       42219549.68
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 639893852.24,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 2197033852.0099998,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       1071610999.78
+      ],
+      [
+       "Serviços",
+       533948536.32
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       591474315.91
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 71183740.4,
+     "partes": [
+      [
+       "Alienação de bens",
+       6236473.11
+      ],
+      [
+       "Transferências de capital",
+       43845809.03
+      ],
+      [
+       "Outras receitas de capital",
+       21101458.260000005
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 21522545244.08,
+   "repasse": 2358289623.82,
+   "fundeb": 2481637065.61,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 16682618554.65,
+   "gasto": 16517766812.97,
+   "resultado": 164851741.6800003,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 1458414014.15,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 2891055691.38,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 2791912027.0,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 2315043305.71,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 3001173367.4,
+     "partes": [
+      [
+       "Judiciária",
+       1413767725.13
+      ],
+      [
+       "Essencial à Justiça",
+       780537532.51
+      ],
+      [
+       "Legislativa",
+       806868109.76
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 878458916.78,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 862944979.41,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 537926205.22,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 336801668.58,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 1523911642.51,
+     "partes": [
+      [
+       "Direitos da Cidadania",
+       497650304.11
+      ],
+      [
+       "Agricultura",
+       439134987.44
+      ],
+      [
+       "Urbanismo",
+       116954175.6
+      ],
+      [
+       "Comércio e Serviços",
+       94791065.68
+      ],
+      [
+       "Gestão Ambiental",
+       90759888.92
+      ],
+      [
+       "Saneamento",
+       71092324.66
+      ],
+      [
+       "Cultura",
+       69069426.33
+      ],
+      [
+       "Desporto e Lazer",
+       64825789.96
+      ],
+      [
+       "Habitação",
+       26045658.52
+      ],
+      [
+       "Indústria",
+       25074159.45
+      ],
+      [
+       "Ciência e Tecnologia",
+       21412796.7
+      ],
+      [
+       "Trabalho",
+       7101065.14
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": -79875005.17000008,
+   "totais_fonte": {
+    "receita_anexo01": 16682618554.65,
+    "despesa_anexo01": 16517766812.97,
+    "despesa_anexo02": 16597641818.14,
+    "receitas_correntes_anexo03": 21451361503.68
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=11&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:48.058786+00:00",
+     "sha256": "1c6facc31062cb674c353f030480229a444bd3a06750bdafd3c68bee3fe92f86",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/RO-rreo/1c6facc31062cb674c353f030480229a444bd3a06750bdafd3c68bee3fe92f86.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=11&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T17:00:01.537934+00:00",
+     "sha256": "75c06882c0d14701299a62b25e8342e8dfd02ec440f4a4bcbd74b68fc89bdcc4",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/RO-rreo02/75c06882c0d14701299a62b25e8342e8dfd02ec440f4a4bcbd74b68fc89bdcc4.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=11&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T17:00:04.274083+00:00",
+     "sha256": "98957adbe6768fdda9695af54c1b389dd33349a3740e601923e3d3ac24d26601",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/RO-rreo03/98957adbe6768fdda9695af54c1b389dd33349a3740e601923e3d3ac24d26601.json"
+    }
+   ]
+  },
+  {
+   "uf": "AC",
+   "nome": "Acre",
+   "ano": 2025,
+   "registro_repasse": "despesa",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 2220306998.18,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 157312868.39,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 978761372.45,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       820396667.88
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       9550865.61
+      ],
+      [
+       "Taxas e outros tributos",
+       148813838.96
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 7699187827.42,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 2256321722.96,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       1377557503.89
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       877199211.87
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       1565007.2
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 349322022.05,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 609846441.74,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       231968421.9
+      ],
+      [
+       "Serviços",
+       59096810.05
+      ],
+      [
+       "Agropecuária",
+       470676.12
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       318310533.67
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 272529941.36,
+     "partes": [
+      [
+       "Alienação de bens",
+       624436.55
+      ],
+      [
+       "Transferências de capital",
+       179989499.59
+      ],
+      [
+       "Outras receitas de capital",
+       91916005.22
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 14543589194.550001,
+   "repasse": 635840898.96,
+   "fundeb": 1890838379.49,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 12016909916.099998,
+   "gasto": 11946707251.900002,
+   "resultado": 70202664.19999695,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 1163327964.57,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 2916859746.87,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 2250445462.71,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 1314636212.71,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 1509595487.02,
+     "partes": [
+      [
+       "Judiciária",
+       570540814.11
+      ],
+      [
+       "Essencial à Justiça",
+       447870173.6
+      ],
+      [
+       "Legislativa",
+       491184499.31
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 695820077.1700001,
+     "partes": [
+      [
+       "Encargos Especiais, sem a cota dos municípios",
+       695820077.1700001
+      ]
+     ]
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 529707429.22,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 448850120.95,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 75745210.22,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 1041719540.46,
+     "partes": [
+      [
+       "Agricultura",
+       206028089.64
+      ],
+      [
+       "Urbanismo",
+       180772842.46
+      ],
+      [
+       "Saneamento",
+       109604374.56
+      ],
+      [
+       "Comércio e Serviços",
+       82242930.44
+      ],
+      [
+       "Direitos da Cidadania",
+       78065984.79
+      ],
+      [
+       "Gestão Ambiental",
+       69655968.71
+      ],
+      [
+       "Ciência e Tecnologia",
+       64637739.26
+      ],
+      [
+       "Cultura",
+       63631574.21
+      ],
+      [
+       "Habitação",
+       46502312.42
+      ],
+      [
+       "Organização Agrária",
+       41462943.25
+      ],
+      [
+       "Desporto e Lazer",
+       33964977.68
+      ],
+      [
+       "Comunicações",
+       32811182.09
+      ],
+      [
+       "Trabalho",
+       24945817.35
+      ],
+      [
+       "Indústria",
+       7364920.24
+      ],
+      [
+       "Energia",
+       27883.36
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 12652750815.06,
+    "despesa_anexo01": 12582548150.86,
+    "despesa_anexo02": 12582548150.86,
+    "receitas_correntes_anexo03": 14271059253.19
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=12&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T09:59:43.858613+00:00",
+     "sha256": "ed89f480f9810eea36e9578b2a54de87ec073311ea65016150bcd0f60c2fb8a0",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/AC-rreo/ed89f480f9810eea36e9578b2a54de87ec073311ea65016150bcd0f60c2fb8a0.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=12&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:58:31.623260+00:00",
+     "sha256": "1de639a5899b7f7f915b7c1c98cfe085e5dc4ea286def838790e428b97cc3267",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/AC-rreo02/1de639a5899b7f7f915b7c1c98cfe085e5dc4ea286def838790e428b97cc3267.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=12&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:58:34.315983+00:00",
+     "sha256": "404eae01e0f917b56e36f726b431d7370dfa636fad59e37b3a3c2c537d25beb7",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/AC-rreo03/404eae01e0f917b56e36f726b431d7370dfa636fad59e37b3a3c2c537d25beb7.json"
+    }
+   ]
+  },
+  {
+   "uf": "AM",
+   "nome": "Amazonas",
+   "ano": 2025,
+   "registro_repasse": "despesa",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 16924101052.28,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 1072173574.81,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 2009109862.5900002,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       1668162132.69
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       56959604.65
+      ],
+      [
+       "Taxas e outros tributos",
+       283988125.25
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 7117990587.32,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 4865895163.93,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       3154679522.57
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       1662798926.31
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       48416715.05
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 4514244139.57,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 2188726587.0099998,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       938871672.91
+      ],
+      [
+       "Serviços",
+       386551479.07
+      ],
+      [
+       "Industrial",
+       2146683.4
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       861156751.63
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 1320969299.08,
+     "partes": [
+      [
+       "Alienação de bens",
+       8275939.12
+      ],
+      [
+       "Transferências de capital",
+       92750411.14
+      ],
+      [
+       "Outras receitas de capital",
+       1219942948.82
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 40013210266.590004,
+   "repasse": 4781698972.0,
+   "fundeb": 4098383558.09,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 31133127736.5,
+   "gasto": 30733447153.4,
+   "resultado": 399680583.0999985,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 3518231123.94,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 6276931362.19,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 5379829791.87,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 3409428830.14,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 3142165459.69,
+     "partes": [
+      [
+       "Judiciária",
+       1355349889.22
+      ],
+      [
+       "Essencial à Justiça",
+       623617496.46
+      ],
+      [
+       "Legislativa",
+       1163198074.01
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 3558032754.4700003,
+     "partes": [
+      [
+       "Encargos Especiais, sem a cota dos municípios",
+       3558032754.4700003
+      ]
+     ]
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 804911665.97,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 82774059.96,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 771093422.2,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 3790048682.97,
+     "partes": [
+      [
+       "Direitos da Cidadania",
+       998173049.29
+      ],
+      [
+       "Cultura",
+       659660446.37
+      ],
+      [
+       "Urbanismo",
+       631412294.57
+      ],
+      [
+       "Saneamento",
+       299012564.2
+      ],
+      [
+       "Agricultura",
+       264560842.12
+      ],
+      [
+       "Comércio e Serviços",
+       233769189.73
+      ],
+      [
+       "Comunicações",
+       223990796.22
+      ],
+      [
+       "Habitação",
+       152524940.14
+      ],
+      [
+       "Gestão Ambiental",
+       100269545.9
+      ],
+      [
+       "Ciência e Tecnologia",
+       96960239.56
+      ],
+      [
+       "Desporto e Lazer",
+       84261857.11
+      ],
+      [
+       "Organização Agrária",
+       31617874.64
+      ],
+      [
+       "Energia",
+       12358917.59
+      ],
+      [
+       "Trabalho",
+       1476125.53
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 35914826708.5,
+    "despesa_anexo01": 35515146125.4,
+    "despesa_anexo02": 35515146125.4,
+    "receitas_correntes_anexo03": 38692240967.51
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=13&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T09:59:49.335629+00:00",
+     "sha256": "46255e072422ed0629233b8948b872c98783e7fb515ce09110ea5fa76490eefd",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/AM-rreo/46255e072422ed0629233b8948b872c98783e7fb515ce09110ea5fa76490eefd.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=13&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:58:40.565453+00:00",
+     "sha256": "36826d0ea0c55b4ed70cef482e259c4723392b6568d2c172d3da0e9bc4e80dcc",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/AM-rreo02/36826d0ea0c55b4ed70cef482e259c4723392b6568d2c172d3da0e9bc4e80dcc.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=13&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:58:43.287328+00:00",
+     "sha256": "220792043cd4f717f1b930daa6066b6920f7a94551dab9bdf6bc786f841aa8a7",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/AM-rreo03/220792043cd4f717f1b930daa6066b6920f7a94551dab9bdf6bc786f841aa8a7.json"
+    }
+   ]
+  },
+  {
+   "uf": "RR",
+   "nome": "Roraima",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 2142489273.26,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 139184707.69,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 790371313.45,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       655602702.12
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       7204117.81
+      ],
+      [
+       "Taxas e outros tributos",
+       127564493.52
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 5997313902.83,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 1436146529.02,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       900071981.0
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       528255130.85
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       7819417.17
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 295662031.68,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 607058442.76,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       567225593.54
+      ],
+      [
+       "Serviços",
+       8203907.11
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       31628942.11
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 694023287.0,
+     "partes": [
+      [
+       "Alienação de bens",
+       13163875.44
+      ],
+      [
+       "Transferências de capital",
+       89946962.28
+      ],
+      [
+       "Outras receitas de capital",
+       590912449.28
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 12102249487.69,
+   "repasse": 609079497.17,
+   "fundeb": 1537368378.13,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 9955801612.39,
+   "gasto": 8777398960.61,
+   "resultado": 1178402651.7799988,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 369103291.02,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 1549166621.43,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 1679300522.63,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 1022756117.05,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 1305294261.28,
+     "partes": [
+      [
+       "Judiciária",
+       463828032.32
+      ],
+      [
+       "Essencial à Justiça",
+       210694199.95
+      ],
+      [
+       "Legislativa",
+       630772029.01
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 633392101.16,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 538508348.36,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 451590260.05,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 129031906.63,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 1099255531.0,
+     "partes": [
+      [
+       "Direitos da Cidadania",
+       268595992.23
+      ],
+      [
+       "Agricultura",
+       198930307.52
+      ],
+      [
+       "Urbanismo",
+       151136328.05
+      ],
+      [
+       "Cultura",
+       115098679.41
+      ],
+      [
+       "Trabalho",
+       102731322.07
+      ],
+      [
+       "Energia",
+       70338757.69
+      ],
+      [
+       "Habitação",
+       41401935.4
+      ],
+      [
+       "Gestão Ambiental",
+       38460751.03
+      ],
+      [
+       "Comunicações",
+       33499197.04
+      ],
+      [
+       "Organização Agrária",
+       31308190.44
+      ],
+      [
+       "Comércio e Serviços",
+       21047429.56
+      ],
+      [
+       "Desporto e Lazer",
+       11293468.87
+      ],
+      [
+       "Saneamento",
+       8610487.88
+      ],
+      [
+       "Ciência e Tecnologia",
+       6502683.81
+      ],
+      [
+       "Indústria",
+       300000.0
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 9955801612.39,
+    "despesa_anexo01": 8777398960.61,
+    "despesa_anexo02": 8777398960.61,
+    "receitas_correntes_anexo03": 11408226200.69
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=14&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:49.816572+00:00",
+     "sha256": "53949f57d7d98ba92c2334b69db7944763b956550219c5b9e57c1e08c7ded106",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/RR-rreo/53949f57d7d98ba92c2334b69db7944763b956550219c5b9e57c1e08c7ded106.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=14&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T17:00:06.287088+00:00",
+     "sha256": "415cf0dbc1d918423a0fe1a088e3f52d56e0ae0a4f2e36991dc632691384f995",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/RR-rreo02/415cf0dbc1d918423a0fe1a088e3f52d56e0ae0a4f2e36991dc632691384f995.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=14&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T17:00:08.582561+00:00",
+     "sha256": "3ec50cb55b3bdf54a534e45f56778f248a55f1a6a67418391cf5ed471c90603f",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/RR-rreo03/3ec50cb55b3bdf54a534e45f56778f248a55f1a6a67418391cf5ed471c90603f.json"
+    }
+   ]
+  },
+  {
+   "uf": "PA",
+   "nome": "Pará",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 25079145957.84,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 1483067667.8,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 6918832729.51,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       3293822657.14
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       85226317.61
+      ],
+      [
+       "Taxas e outros tributos",
+       3539783754.76
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 12518567378.21,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 9298052264.14,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       4314705559.89
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       4376121957.79
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       607224746.46
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 1751328724.17,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 3826671259.5299997,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       2325715191.33
+      ],
+      [
+       "Serviços",
+       834082833.18
+      ],
+      [
+       "Agropecuária",
+       32661.3
+      ],
+      [
+       "Industrial",
+       6785106.17
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       660055467.55
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 3272495246.16,
+     "partes": [
+      [
+       "Alienação de bens",
+       13823748.15
+      ],
+      [
+       "Transferências de capital",
+       665248262.4
+      ],
+      [
+       "Outras receitas de capital",
+       2593423235.6099997
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 64148161227.36,
+   "repasse": 7225367863.9,
+   "fundeb": 6554769111.14,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 50368024252.32,
+   "gasto": 48889815187.6,
+   "resultado": 1478209064.7200012,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 5452118684.14,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 8960962693.09,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 6560210246.84,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 5493707209.06,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 6670075701.46,
+     "partes": [
+      [
+       "Judiciária",
+       2554325877.66
+      ],
+      [
+       "Essencial à Justiça",
+       2398989503.8
+      ],
+      [
+       "Legislativa",
+       1716760320.0
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 5382817763.71,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 1594461324.24,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 3359867902.32,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 1805199754.02,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 3610393908.72,
+     "partes": [
+      [
+       "Urbanismo",
+       536631213.38
+      ],
+      [
+       "Saneamento",
+       471384374.07
+      ],
+      [
+       "Agricultura",
+       397561358.11
+      ],
+      [
+       "Comércio e Serviços",
+       376687625.72
+      ],
+      [
+       "Cultura",
+       359479844.09
+      ],
+      [
+       "Gestão Ambiental",
+       327062189.17
+      ],
+      [
+       "Direitos da Cidadania",
+       317753258.31
+      ],
+      [
+       "Comunicações",
+       266754760.16
+      ],
+      [
+       "Ciência e Tecnologia",
+       140030895.04
+      ],
+      [
+       "Desporto e Lazer",
+       114324730.73
+      ],
+      [
+       "Habitação",
+       103589969.8
+      ],
+      [
+       "Indústria",
+       102377162.06
+      ],
+      [
+       "Trabalho",
+       53723269.07
+      ],
+      [
+       "Organização Agrária",
+       42021768.35
+      ],
+      [
+       "Energia",
+       1011490.66
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 50368024252.32,
+    "despesa_anexo01": 48889815187.6,
+    "despesa_anexo02": 48889815187.6,
+    "receitas_correntes_anexo03": 60875665981.2
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=15&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:26.252623+00:00",
+     "sha256": "9e4426347b28301f59d98b9b880aa6c945e5eb2bf431c53c548ddce37f6afa7a",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/PA-rreo/9e4426347b28301f59d98b9b880aa6c945e5eb2bf431c53c548ddce37f6afa7a.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=15&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:30.112284+00:00",
+     "sha256": "f78dfeed28f14f768cd6ff61ef905ce3143ff8cc67a51b6df4fdd8c4a101725b",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/PA-rreo02/f78dfeed28f14f768cd6ff61ef905ce3143ff8cc67a51b6df4fdd8c4a101725b.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=15&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:32.898651+00:00",
+     "sha256": "72318949de189d7fe47a4f29f26d9350b0fdd7b932bafe2c1903f1ecabc05849",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/PA-rreo03/72318949de189d7fe47a4f29f26d9350b0fdd7b932bafe2c1903f1ecabc05849.json"
+    }
+   ]
+  },
+  {
+   "uf": "AP",
+   "nome": "Amapá",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 1702927683.38,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 148727277.37,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 892938929.8699999,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       777854369.56
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       3675193.15
+      ],
+      [
+       "Taxas e outros tributos",
+       111409367.16
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 6716290595.37,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 2094352997.43,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       1098628226.78
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       993009164.82
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       2715605.83
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 602948748.71,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 1491070630.87,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       1439593821.85
+      ],
+      [
+       "Serviços",
+       24480617.34
+      ],
+      [
+       "Industrial",
+       698.0
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       26995493.68
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 485722414.95,
+     "partes": [
+      [
+       "Alienação de bens",
+       163764.0
+      ],
+      [
+       "Transferências de capital",
+       163850453.68
+      ],
+      [
+       "Outras receitas de capital",
+       321708197.27
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 14134979277.95,
+   "repasse": 502110324.15,
+   "fundeb": 1614700621.91,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 12018168331.89,
+   "gasto": 11245306213.0,
+   "resultado": 772862118.8899994,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 979870456.29,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 2242656315.45,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 2331159234.42,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 1168300960.04,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 1310077034.28,
+     "partes": [
+      [
+       "Judiciária",
+       567257928.17
+      ],
+      [
+       "Essencial à Justiça",
+       379735317.66
+      ],
+      [
+       "Legislativa",
+       363083788.45
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 686031947.76,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 1062719855.17,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 288520516.35,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 198834140.49,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 977135752.75,
+     "partes": [
+      [
+       "Urbanismo",
+       355550286.17
+      ],
+      [
+       "Direitos da Cidadania",
+       137785208.3
+      ],
+      [
+       "Comércio e Serviços",
+       111469695.83
+      ],
+      [
+       "Cultura",
+       96153113.98
+      ],
+      [
+       "Agricultura",
+       66483061.08
+      ],
+      [
+       "Comunicações",
+       55227180.54
+      ],
+      [
+       "Desporto e Lazer",
+       44217491.11
+      ],
+      [
+       "Saneamento",
+       40597105.7
+      ],
+      [
+       "Ciência e Tecnologia",
+       27227347.18
+      ],
+      [
+       "Habitação",
+       21958993.37
+      ],
+      [
+       "Trabalho",
+       14756685.35
+      ],
+      [
+       "Gestão Ambiental",
+       3873322.54
+      ],
+      [
+       "Indústria",
+       1332621.6
+      ],
+      [
+       "Organização Agrária",
+       416040.0
+      ],
+      [
+       "Energia",
+       87600.0
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 12018168331.89,
+    "despesa_anexo01": 11245306213.0,
+    "despesa_anexo02": 11245306213.0,
+    "receitas_correntes_anexo03": 13649256863.0
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=16&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T09:59:51.531092+00:00",
+     "sha256": "a67e5594f52411db4323a4a2422a1ecc7910cd301134d954e65f998bdc4f41e2",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/AP-rreo/a67e5594f52411db4323a4a2422a1ecc7910cd301134d954e65f998bdc4f41e2.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=16&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:58:45.246141+00:00",
+     "sha256": "7b8da4aec67122f686aff7e65e9c8d8a5252d8cf7f64d71048a3c891e9cc1bb9",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/AP-rreo02/7b8da4aec67122f686aff7e65e9c8d8a5252d8cf7f64d71048a3c891e9cc1bb9.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=16&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:58:47.841360+00:00",
+     "sha256": "e99475fbd150c9cb4e2da75aa389f9dfe6ba286406992cfbe64a817090161865",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/AP-rreo03/e99475fbd150c9cb4e2da75aa389f9dfe6ba286406992cfbe64a817090161865.json"
+    }
+   ]
+  },
+  {
+   "uf": "TO",
+   "nome": "Tocantins",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 6400909146.71,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 607550984.29,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 1804264961.17,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       1299591296.22
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       105545182.31
+      ],
+      [
+       "Taxas e outros tributos",
+       399128482.64
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 7785400367.91,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 2373947523.09,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       1485700110.38
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       867177454.04
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       21069958.67
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 1173394651.41,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 991843434.84,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       767669079.07
+      ],
+      [
+       "Serviços",
+       50928525.99
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       173245829.78
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 674995601.68,
+     "partes": [
+      [
+       "Alienação de bens",
+       42409365.87
+      ],
+      [
+       "Transferências de capital",
+       127169732.64
+      ],
+      [
+       "Outras receitas de capital",
+       505416503.16999996
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 21812306671.1,
+   "repasse": 1903637223.99,
+   "fundeb": 2604333045.95,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 17304336401.16,
+   "gasto": 17341884251.55,
+   "resultado": -37547850.38999939,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 2713553734.63,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 2553325557.55,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 3993772954.26,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 1524204661.47,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 2468337691.66,
+     "partes": [
+      [
+       "Judiciária",
+       1331423011.18
+      ],
+      [
+       "Essencial à Justiça",
+       527436596.33
+      ],
+      [
+       "Legislativa",
+       609478084.15
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 1021180057.8,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 997411684.63,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 692994464.15,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 60232528.92,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 1316870916.48,
+     "partes": [
+      [
+       "Direitos da Cidadania",
+       363016450.35
+      ],
+      [
+       "Agricultura",
+       348322467.4
+      ],
+      [
+       "Comércio e Serviços",
+       215108771.96
+      ],
+      [
+       "Gestão Ambiental",
+       103086428.44
+      ],
+      [
+       "Comunicações",
+       60444786.13
+      ],
+      [
+       "Saneamento",
+       49698215.58
+      ],
+      [
+       "Trabalho",
+       49389752.61
+      ],
+      [
+       "Indústria",
+       40947223.51
+      ],
+      [
+       "Ciência e Tecnologia",
+       26240944.43
+      ],
+      [
+       "Cultura",
+       22020006.36
+      ],
+      [
+       "Desporto e Lazer",
+       17929825.56
+      ],
+      [
+       "Organização Agrária",
+       11187320.02
+      ],
+      [
+       "Habitação",
+       6453400.67
+      ],
+      [
+       "Urbanismo",
+       2269723.96
+      ],
+      [
+       "Energia",
+       755599.5
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 17304336401.16,
+    "despesa_anexo01": 17341884251.55,
+    "despesa_anexo02": 17341884251.55,
+    "receitas_correntes_anexo03": 21137311069.42
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=17&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:01:02.749429+00:00",
+     "sha256": "95856c9162c115faf1b3db80e11062db1f51426480ce83620062a9fff0affebd",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/TO-rreo/95856c9162c115faf1b3db80e11062db1f51426480ce83620062a9fff0affebd.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=17&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T17:00:28.634811+00:00",
+     "sha256": "b131964dc7a80dc43db4f90ff901a6133b8affef85967f2ef6b03bc77b306e57",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/TO-rreo02/b131964dc7a80dc43db4f90ff901a6133b8affef85967f2ef6b03bc77b306e57.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=17&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T17:00:31.002831+00:00",
+     "sha256": "652b1b02832ef9508c6337e405cd3c2cedcd7a6e5101f9f11cd043f133902d86",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/TO-rreo03/652b1b02832ef9508c6337e405cd3c2cedcd7a6e5101f9f11cd043f133902d86.json"
+    }
+   ]
+  },
+  {
+   "uf": "MA",
+   "nome": "Maranhão",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 15813244157.58,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 1103499166.99,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 2529803228.63,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       1612517552.08
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       99256893.01
+      ],
+      [
+       "Taxas e outros tributos",
+       818028783.54
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 14365220921.51,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 6896975030.69,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       3199543690.87
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       3591048687.6
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       106382652.22
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 1050261045.43,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 1515227873.0500002,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       845346776.94
+      ],
+      [
+       "Serviços",
+       33704623.4
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       636176472.71
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 973373901.87,
+     "partes": [
+      [
+       "Alienação de bens",
+       1875340.74
+      ],
+      [
+       "Transferências de capital",
+       76070585.53
+      ],
+      [
+       "Outras receitas de capital",
+       895427975.6
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 44247605325.75,
+   "repasse": 4449097650.13,
+   "fundeb": 5409219825.14,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 34389287850.48,
+   "gasto": 33539478477.42,
+   "resultado": 849809373.0600052,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 4068047141.76,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 6054574539.79,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 5511344681.55,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 2455979260.09,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 4541902552.1,
+     "partes": [
+      [
+       "Judiciária",
+       2156076504.58
+      ],
+      [
+       "Essencial à Justiça",
+       1372677950.33
+      ],
+      [
+       "Legislativa",
+       1013148097.19
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 2621306917.13,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 2388465660.07,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 2122066684.11,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 896582851.99,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 3620918495.86,
+     "partes": [
+      [
+       "Urbanismo",
+       1658771475.71
+      ],
+      [
+       "Direitos da Cidadania",
+       785252559.09
+      ],
+      [
+       "Cultura",
+       536817276.82
+      ],
+      [
+       "Agricultura",
+       243621396.06
+      ],
+      [
+       "Ciência e Tecnologia",
+       90952792.34
+      ],
+      [
+       "Trabalho",
+       77125206.72
+      ],
+      [
+       "Indústria",
+       70995223.74
+      ],
+      [
+       "Comércio e Serviços",
+       45704605.55
+      ],
+      [
+       "Gestão Ambiental",
+       40402432.33
+      ],
+      [
+       "Organização Agrária",
+       32551606.31
+      ],
+      [
+       "Desporto e Lazer",
+       28218087.63
+      ],
+      [
+       "Habitação",
+       9389693.17
+      ],
+      [
+       "Saneamento",
+       1113830.39
+      ],
+      [
+       "Energia",
+       2310.0
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": -741710307.0300026,
+   "totais_fonte": {
+    "receita_anexo01": 34389287850.48,
+    "despesa_anexo01": 33539478477.42,
+    "despesa_anexo02": 34281188784.45,
+    "receitas_correntes_anexo03": 43274231423.88
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=21&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:13.680281+00:00",
+     "sha256": "96559e9fe94fa001d2c2ddeaa6f042404fa625be499419b751755c0e7ba2f37c",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/MA-rreo/96559e9fe94fa001d2c2ddeaa6f042404fa625be499419b751755c0e7ba2f37c.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=21&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:12.930377+00:00",
+     "sha256": "bb787caed68a428db591f622940908a464fc7a0d50498524680bb463771050ca",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/MA-rreo02/bb787caed68a428db591f622940908a464fc7a0d50498524680bb463771050ca.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=21&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:15.123783+00:00",
+     "sha256": "080c4604ae496454a41fd26e2c9f2b36e40942dcaa7385f820381a3591850cae",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/MA-rreo03/080c4604ae496454a41fd26e2c9f2b36e40942dcaa7385f820381a3591850cae.json"
+    }
+   ]
+  },
+  {
+   "uf": "PI",
+   "nome": "Piauí",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 8476783762.62,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 598890019.31,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 1797037057.11,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       1016091928.1
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       40099024.09
+      ],
+      [
+       "Taxas e outros tributos",
+       740846104.92
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 8680357294.52,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 3330255462.3199997,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       2143845099.28
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       1183864032.58
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       2546330.46
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 1265729454.09,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 906187893.92,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       723192290.13
+      ],
+      [
+       "Serviços",
+       58561673.27
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       124433930.52
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 3340052671.24,
+     "partes": [
+      [
+       "Alienação de bens",
+       5224246.55
+      ],
+      [
+       "Transferências de capital",
+       437583410.28
+      ],
+      [
+       "Outras receitas de capital",
+       2897245014.41
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 28395293615.129997,
+   "repasse": 2405237064.43,
+   "fundeb": 3081352352.17,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 22908704198.53,
+   "gasto": 23538673483.17,
+   "resultado": -629969284.6399994,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 3246480064.6,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 3317481116.69,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 3722590414.89,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 1968856754.64,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 2430538365.56,
+     "partes": [
+      [
+       "Judiciária",
+       1165715958.67
+      ],
+      [
+       "Essencial à Justiça",
+       452641860.48
+      ],
+      [
+       "Legislativa",
+       812180546.41
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 8674174263.3,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 1218639496.19,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 1718892625.46,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 232711324.96,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 1935918484.78,
+     "partes": [
+      [
+       "Agricultura",
+       568226393.35
+      ],
+      [
+       "Urbanismo",
+       543242426.26
+      ],
+      [
+       "Comércio e Serviços",
+       218384992.82
+      ],
+      [
+       "Comunicações",
+       129647006.98
+      ],
+      [
+       "Cultura",
+       105543590.59
+      ],
+      [
+       "Energia",
+       72549250.31
+      ],
+      [
+       "Gestão Ambiental",
+       67033580.92
+      ],
+      [
+       "Direitos da Cidadania",
+       55487730.09
+      ],
+      [
+       "Desporto e Lazer",
+       46812897.23
+      ],
+      [
+       "Ciência e Tecnologia",
+       40037023.94
+      ],
+      [
+       "Saneamento",
+       36432307.73
+      ],
+      [
+       "Organização Agrária",
+       26606934.46
+      ],
+      [
+       "Habitação",
+       20268098.77
+      ],
+      [
+       "Trabalho",
+       5646251.33
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": -4927609427.900002,
+   "totais_fonte": {
+    "receita_anexo01": 22908704198.53,
+    "despesa_anexo01": 23538673483.17,
+    "despesa_anexo02": 28466282911.07,
+    "receitas_correntes_anexo03": 25055240943.89
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=22&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:34.401015+00:00",
+     "sha256": "4b0869236169fa4e5c0846d37c04ef38c8826fc55f860b02e84600f796090c41",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/PI-rreo/4b0869236169fa4e5c0846d37c04ef38c8826fc55f860b02e84600f796090c41.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=22&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:43.961454+00:00",
+     "sha256": "0aba2681d907bf0704c07706fa8fd2411e25519ac0d9735eea178a73ca95c53b",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/PI-rreo02/0aba2681d907bf0704c07706fa8fd2411e25519ac0d9735eea178a73ca95c53b.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=22&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:46.330979+00:00",
+     "sha256": "43194e8ec36530cbd04400a6457c2dc5e5a986ec2092517f30c55e39827d207c",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/PI-rreo03/43194e8ec36530cbd04400a6457c2dc5e5a986ec2092517f30c55e39827d207c.json"
+    }
+   ]
+  },
+  {
+   "uf": "CE",
+   "nome": "Ceará",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 21447585488.26,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 2158781991.83,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 4336027170.2300005,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       2845430986.65
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       247312036.59
+      ],
+      [
+       "Taxas e outros tributos",
+       1243284146.99
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 14548443334.09,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 6536437205.58,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       3663755870.39
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       2825145677.56
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       47535657.63
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 1799106407.71,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 3612799573.7,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       1456101251.13
+      ],
+      [
+       "Serviços",
+       643329678.76
+      ],
+      [
+       "Agropecuária",
+       1300.0
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       1513367343.81
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 4393363453.09,
+     "partes": [
+      [
+       "Alienação de bens",
+       15912.51
+      ],
+      [
+       "Transferências de capital",
+       522621809.2
+      ],
+      [
+       "Outras receitas de capital",
+       3870725731.38
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 58832544624.490005,
+   "repasse": 6427472248.2,
+   "fundeb": 6438668858.96,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 45966403517.33,
+   "gasto": 44848523255.88,
+   "resultado": 1117880261.4500046,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 6079359110.63,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 7270117791.8,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 7572662812.46,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 5405560379.25,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 4617371939.65,
+     "partes": [
+      [
+       "Judiciária",
+       2415876548.21
+      ],
+      [
+       "Essencial à Justiça",
+       1002858633.89
+      ],
+      [
+       "Legislativa",
+       1198636757.55
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 6105248688.33,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 1689304134.72,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 2699625537.88,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 823098767.34,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 5253583255.08,
+     "partes": [
+      [
+       "Gestão Ambiental",
+       1322102362.44
+      ],
+      [
+       "Agricultura",
+       901035007.95
+      ],
+      [
+       "Ciência e Tecnologia",
+       666018187.93
+      ],
+      [
+       "Direitos da Cidadania",
+       606380268.38
+      ],
+      [
+       "Urbanismo",
+       359660858.8
+      ],
+      [
+       "Cultura",
+       357675929.55
+      ],
+      [
+       "Saneamento",
+       356306300.01
+      ],
+      [
+       "Habitação",
+       170210640.92
+      ],
+      [
+       "Trabalho",
+       143848717.58
+      ],
+      [
+       "Desporto e Lazer",
+       116049984.6
+      ],
+      [
+       "Comércio e Serviços",
+       105222970.0
+      ],
+      [
+       "Energia",
+       56199735.46
+      ],
+      [
+       "Organização Agrária",
+       46542593.09
+      ],
+      [
+       "Indústria",
+       33614946.14
+      ],
+      [
+       "Comunicações",
+       12714752.23
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": -2667409161.260002,
+   "totais_fonte": {
+    "receita_anexo01": 45966403517.33,
+    "despesa_anexo01": 44848523255.88,
+    "despesa_anexo02": 47515932417.14,
+    "receitas_correntes_anexo03": 54439181171.4
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=23&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T09:59:59.560870+00:00",
+     "sha256": "61d5701474dd657721426c4b67dd9aba4050feefdf39b43b7f939957a44309a8",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/CE-rreo/61d5701474dd657721426c4b67dd9aba4050feefdf39b43b7f939957a44309a8.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=23&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:58:54.607502+00:00",
+     "sha256": "809b8c60d00c5588b7ad8583f6fefdafd4f6a650fc5725360c590b652f984e5b",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/CE-rreo02/809b8c60d00c5588b7ad8583f6fefdafd4f6a650fc5725360c590b652f984e5b.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=23&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:58:57.145432+00:00",
+     "sha256": "c6e992f4adf0f6b3471fe7afaba24a18f2fae731c2a4fd8d7ce6acf01c031a78",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/CE-rreo03/c6e992f4adf0f6b3471fe7afaba24a18f2fae731c2a4fd8d7ce6acf01c031a78.json"
+    }
+   ]
+  },
+  {
+   "uf": "RN",
+   "nome": "Rio Grande do Norte",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 9448358870.57,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 664948795.19,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 2524174866.62,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       1810765025.72
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       46086165.55
+      ],
+      [
+       "Taxas e outros tributos",
+       667323675.35
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 8430642458.13,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 3439484499.81,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       1618548707.6
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       1780830516.8
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       40105275.41
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 1120584186.33,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 1028503188.2900001,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       248692954.79
+      ],
+      [
+       "Serviços",
+       105984363.38
+      ],
+      [
+       "Agropecuária",
+       891662.64
+      ],
+      [
+       "Industrial",
+       1928430.9
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       671005776.58
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 318362312.73,
+     "partes": [
+      [
+       "Alienação de bens",
+       38159275.74
+      ],
+      [
+       "Transferências de capital",
+       192765255.85
+      ],
+      [
+       "Outras receitas de capital",
+       87437781.14000002
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 26975059177.67,
+   "repasse": 2733005621.51,
+   "fundeb": 3175469290.58,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 21066584265.58,
+   "gasto": 21209089460.89,
+   "resultado": -142505195.30999756,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 6625399212.88,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 3441547353.06,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 2997815607.9,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 1964047706.45,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 2679648376.93,
+     "partes": [
+      [
+       "Judiciária",
+       1462157673.26
+      ],
+      [
+       "Essencial à Justiça",
+       551372724.89
+      ],
+      [
+       "Legislativa",
+       666117978.78
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 1298319869.89,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 651087267.64,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 416373421.28,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 164572081.3,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 970278563.5600001,
+     "partes": [
+      [
+       "Direitos da Cidadania",
+       371450278.61
+      ],
+      [
+       "Gestão Ambiental",
+       265322013.77
+      ],
+      [
+       "Agricultura",
+       144133345.07
+      ],
+      [
+       "Cultura",
+       70160088.22
+      ],
+      [
+       "Comércio e Serviços",
+       60831019.26
+      ],
+      [
+       "Comunicações",
+       32473286.19
+      ],
+      [
+       "Ciência e Tecnologia",
+       10266476.6
+      ],
+      [
+       "Indústria",
+       5247887.4
+      ],
+      [
+       "Desporto e Lazer",
+       4603393.89
+      ],
+      [
+       "Habitação",
+       4424710.48
+      ],
+      [
+       "Trabalho",
+       1128564.07
+      ],
+      [
+       "Energia",
+       237500.0
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 21066584265.58,
+    "despesa_anexo01": 21209089460.89,
+    "despesa_anexo02": 21209089460.89,
+    "receitas_correntes_anexo03": 26656696864.94
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=24&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:46.295859+00:00",
+     "sha256": "8f632fa044bc781db3f78e1b06dd4d7cbcdb78716c43e076bfc0b0d8850950f3",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/RN-rreo/8f632fa044bc781db3f78e1b06dd4d7cbcdb78716c43e076bfc0b0d8850950f3.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=24&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:57.172606+00:00",
+     "sha256": "2c351b3a3e7d34830f7c4efc007a56bfe38622e07b087f228de5302fb2c16c8a",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/RN-rreo02/2c351b3a3e7d34830f7c4efc007a56bfe38622e07b087f228de5302fb2c16c8a.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=24&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:59.507906+00:00",
+     "sha256": "98af57af4c93a8583bfd51ae3ecb6c2d368953f7ac4b1afab9754c637869a335",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/RN-rreo03/98af57af4c93a8583bfd51ae3ecb6c2d368953f7ac4b1afab9754c637869a335.json"
+    }
+   ]
+  },
+  {
+   "uf": "PB",
+   "nome": "Paraíba",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 10554097792.24,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 789330496.37,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 2210354421.75,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       1348994683.33
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       70577270.49
+      ],
+      [
+       "Taxas e outros tributos",
+       790782467.93
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 9533591780.03,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 2990038827.06,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       1852572949.75
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       1133889495.51
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       3576381.8
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 730561807.57,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 1873694559.0300002,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       1430805835.39
+      ],
+      [
+       "Serviços",
+       58023320.79
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       384865402.85
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 971432735.55,
+     "partes": [
+      [
+       "Alienação de bens",
+       3775868.18
+      ],
+      [
+       "Transferências de capital",
+       135193398.47
+      ],
+      [
+       "Outras receitas de capital",
+       832463468.9
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 29653102419.6,
+   "repasse": 3004128667.2,
+   "fundeb": 3590298516.51,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 23058675235.89,
+   "gasto": 23101195583.33,
+   "resultado": -42520347.44000244,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 4185554875.88,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 3960935615.78,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 4027567913.05,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 2456630800.78,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 2909789543.63,
+     "partes": [
+      [
+       "Judiciária",
+       1876521276.2
+      ],
+      [
+       "Essencial à Justiça",
+       461089040.33
+      ],
+      [
+       "Legislativa",
+       572179227.1
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 993755652.13,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 951804318.17,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 1041475436.74,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 579021903.51,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 1994659523.66,
+     "partes": [
+      [
+       "Agricultura",
+       426300427.78
+      ],
+      [
+       "Direitos da Cidadania",
+       331694696.67
+      ],
+      [
+       "Gestão Ambiental",
+       320934719.99
+      ],
+      [
+       "Urbanismo",
+       196386502.4
+      ],
+      [
+       "Habitação",
+       135301885.29
+      ],
+      [
+       "Saneamento",
+       135117659.38
+      ],
+      [
+       "Cultura",
+       109324652.47
+      ],
+      [
+       "Ciência e Tecnologia",
+       74139108.86
+      ],
+      [
+       "Comunicações",
+       61506009.44
+      ],
+      [
+       "Comércio e Serviços",
+       59547221.97
+      ],
+      [
+       "Desporto e Lazer",
+       48771721.08
+      ],
+      [
+       "Indústria",
+       46032333.3
+      ],
+      [
+       "Trabalho",
+       45069939.06
+      ],
+      [
+       "Energia",
+       4413008.5
+      ],
+      [
+       "Organização Agrária",
+       119637.47
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 23058675235.89,
+    "despesa_anexo01": 23101195583.33,
+    "despesa_anexo02": 23101195583.33,
+    "receitas_correntes_anexo03": 28681669684.05
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=25&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:30.296100+00:00",
+     "sha256": "23b53850a6b3d1dd906ab20f0830aa5c0781936dd58fbb42aca363b3fa3e5ba7",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/PB-rreo/23b53850a6b3d1dd906ab20f0830aa5c0781936dd58fbb42aca363b3fa3e5ba7.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=25&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:35.015043+00:00",
+     "sha256": "cf9ac2ec7123abdcf071f9842968190c7d264fb33df7addb755490193255a730",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/PB-rreo02/cf9ac2ec7123abdcf071f9842968190c7d264fb33df7addb755490193255a730.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=25&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:37.789857+00:00",
+     "sha256": "9876cdf785c3f08129275a89d41b3b6bd04e8e9fb32d466727983f4c23ba2918",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/PB-rreo03/9876cdf785c3f08129275a89d41b3b6bd04e8e9fb32d466727983f4c23ba2918.json"
+    }
+   ]
+  },
+  {
+   "uf": "PE",
+   "nome": "Pernambuco",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 27634962927.91,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 2013838139.91,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 5299188045.320001,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       3364829415.13
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       207500553.77
+      ],
+      [
+       "Taxas e outros tributos",
+       1726858076.42
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 14150289995.26,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 8907195069.33,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       4483768751.72
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       4344097350.98
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       79328966.63
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 2520864914.36,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 3781878227.7000003,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       2217434733.57
+      ],
+      [
+       "Serviços",
+       199697464.57
+      ],
+      [
+       "Agropecuária",
+       598703.35
+      ],
+      [
+       "Industrial",
+       179094.94
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       1363968231.27
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 3315993345.36,
+     "partes": [
+      [
+       "Alienação de bens",
+       6721986.86
+      ],
+      [
+       "Transferências de capital",
+       115036789.67
+      ],
+      [
+       "Outras receitas de capital",
+       3194234568.83
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 67624210665.15,
+   "repasse": 7831053372.2,
+   "fundeb": 7252515306.9,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 52540641986.05,
+   "gasto": 52375113809.86,
+   "resultado": 165528176.19000244,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 10119812880.66,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 8713923146.08,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 11019883935.33,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 4042854306.18,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 4871337821.41,
+     "partes": [
+      [
+       "Judiciária",
+       3311297565.2
+      ],
+      [
+       "Legislativa",
+       1560040256.21
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 3862392801.85,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 2097347604.98,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 1724257640.85,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 516622839.32,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 5526987655.92,
+     "partes": [
+      [
+       "Direitos da Cidadania",
+       2118130386.94
+      ],
+      [
+       "Urbanismo",
+       836347777.76
+      ],
+      [
+       "Habitação",
+       556114831.72
+      ],
+      [
+       "Saneamento",
+       548469611.97
+      ],
+      [
+       "Agricultura",
+       456756496.61
+      ],
+      [
+       "Cultura",
+       310456934.25
+      ],
+      [
+       "Comércio e Serviços",
+       253056487.38
+      ],
+      [
+       "Gestão Ambiental",
+       168642982.96
+      ],
+      [
+       "Ciência e Tecnologia",
+       165419632.32
+      ],
+      [
+       "Desporto e Lazer",
+       45854201.24
+      ],
+      [
+       "Trabalho",
+       27709069.12
+      ],
+      [
+       "Indústria",
+       19643454.49
+      ],
+      [
+       "Organização Agrária",
+       10878326.75
+      ],
+      [
+       "Comunicações",
+       9507462.41
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": -120306822.72000122,
+   "totais_fonte": {
+    "receita_anexo01": 52540641986.05,
+    "despesa_anexo01": 52375113809.86,
+    "despesa_anexo02": 52495420632.58,
+    "receitas_correntes_anexo03": 64308217319.79
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=26&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:31.812578+00:00",
+     "sha256": "ea531794d506cb2e9b3ea9ce2f289be9ea8bceacfae4de8d5148177333a09513",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/PE-rreo/ea531794d506cb2e9b3ea9ce2f289be9ea8bceacfae4de8d5148177333a09513.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=26&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:39.614747+00:00",
+     "sha256": "02887a4290fd68bc6f71ba1798db0c0bb5a473ae7703342319b5778da9c119ba",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/PE-rreo02/02887a4290fd68bc6f71ba1798db0c0bb5a473ae7703342319b5778da9c119ba.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=26&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:41.989323+00:00",
+     "sha256": "90accc0cd014b469aa4bbed1b2d9372072f18725e691bbe77f92e26ac48e3b0c",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/PE-rreo03/90accc0cd014b469aa4bbed1b2d9372072f18725e691bbe77f92e26ac48e3b0c.json"
+    }
+   ]
+  },
+  {
+   "uf": "AL",
+   "nome": "Alagoas",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 9008104970.86,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 773894090.58,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 1534429125.22,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       1248308662.33
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       72545891.56
+      ],
+      [
+       "Taxas e outros tributos",
+       213574571.33
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 8842637649.16,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 3441837025.78,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       1630583431.88
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       1801416656.29
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       9836937.61
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 686276916.12,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 1201989765.08,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       570836550.21
+      ],
+      [
+       "Serviços",
+       411638100.75
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       219515114.12
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 1227294788.98,
+     "partes": [
+      [
+       "Alienação de bens",
+       18047014.92
+      ],
+      [
+       "Transferências de capital",
+       30994320.51
+      ],
+      [
+       "Outras receitas de capital",
+       1178253453.55
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 26716464331.78,
+   "repasse": 2496939501.02,
+   "fundeb": 3244850522.08,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 20974674308.68,
+   "gasto": 22141474745.94,
+   "resultado": -1166800437.2599983,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 3508690264.95,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 3096606273.25,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 3114076053.5,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 2585869315.3,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 2170133457.59,
+     "partes": [
+      [
+       "Judiciária",
+       1127783781.74
+      ],
+      [
+       "Essencial à Justiça",
+       337883889.96
+      ],
+      [
+       "Legislativa",
+       704465785.89
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 3913870339.99,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 932840225.01,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 1198647055.44,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 293964801.5,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 1326776959.41,
+     "partes": [
+      [
+       "Direitos da Cidadania",
+       403560259.04
+      ],
+      [
+       "Saneamento",
+       210198445.22
+      ],
+      [
+       "Agricultura",
+       129006790.67
+      ],
+      [
+       "Gestão Ambiental",
+       122999325.1
+      ],
+      [
+       "Comunicações",
+       92395683.48
+      ],
+      [
+       "Ciência e Tecnologia",
+       86529965.47
+      ],
+      [
+       "Cultura",
+       76542422.32
+      ],
+      [
+       "Comércio e Serviços",
+       44843618.68
+      ],
+      [
+       "Urbanismo",
+       39639422.26
+      ],
+      [
+       "Habitação",
+       37548530.95
+      ],
+      [
+       "Desporto e Lazer",
+       35105197.51
+      ],
+      [
+       "Indústria",
+       33824189.52
+      ],
+      [
+       "Trabalho",
+       10976934.0
+      ],
+      [
+       "Organização Agrária",
+       3606175.19
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 20974674308.68,
+    "despesa_anexo01": 22141474745.94,
+    "despesa_anexo02": 22141474745.94,
+    "receitas_correntes_anexo03": 25489169542.8
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=27&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T09:59:47.548560+00:00",
+     "sha256": "f6b309279cbaf0684c1261a38d39fc99e15472b9809ce43ee98cac2e11391cce",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/AL-rreo/f6b309279cbaf0684c1261a38d39fc99e15472b9809ce43ee98cac2e11391cce.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=27&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:58:36.277611+00:00",
+     "sha256": "dfcaead1fde9e13c67cdd5758f0d93832694360f370cb17a5eda56308268ebd4",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/AL-rreo02/dfcaead1fde9e13c67cdd5758f0d93832694360f370cb17a5eda56308268ebd4.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=27&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:58:38.834222+00:00",
+     "sha256": "656ad46f59bf9ede326f920fd53a18ce4acbfb84cfa46011ba065560d89f31a6",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/AL-rreo03/656ad46f59bf9ede326f920fd53a18ce4acbfb84cfa46011ba065560d89f31a6.json"
+    }
+   ]
+  },
+  {
+   "uf": "SE",
+   "nome": "Sergipe",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 6095788956.69,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 530890446.1,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 1725243310.29,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       1113317813.86
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       70425210.54
+      ],
+      [
+       "Taxas e outros tributos",
+       541500285.89
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 8428934915.54,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 2576706431.8199997,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       1385355739.77
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       1176520305.81
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       14830386.24
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 533723430.91,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 1581059188.68,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       942307808.62
+      ],
+      [
+       "Serviços",
+       479390051.65
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       159361328.41
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 981697629.48,
+     "partes": [
+      [
+       "Alienação de bens",
+       15683208.28
+      ],
+      [
+       "Transferências de capital",
+       152798352.53
+      ],
+      [
+       "Outras receitas de capital",
+       813216068.6700001
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 22454044309.51,
+   "repasse": 1748032121.85,
+   "fundeb": 2681359452.18,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 18024652735.48,
+   "gasto": 17677625591.56,
+   "resultado": 347027143.91999817,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 3333364458.22,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 2325305927.31,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 3375195702.99,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 2021518150.93,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 1859760876.8,
+     "partes": [
+      [
+       "Judiciária",
+       899176552.91
+      ],
+      [
+       "Essencial à Justiça",
+       445195835.64
+      ],
+      [
+       "Legislativa",
+       515388488.25
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 1297453699.37,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 1623196903.81,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 581926907.2,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 235899740.74,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 1024003224.19,
+     "partes": [
+      [
+       "Agricultura",
+       226061305.61
+      ],
+      [
+       "Cultura",
+       203942673.67
+      ],
+      [
+       "Urbanismo",
+       198729753.36
+      ],
+      [
+       "Habitação",
+       104215840.14
+      ],
+      [
+       "Desporto e Lazer",
+       58628990.4
+      ],
+      [
+       "Indústria",
+       54171260.45
+      ],
+      [
+       "Ciência e Tecnologia",
+       51927301.28
+      ],
+      [
+       "Gestão Ambiental",
+       46688749.81
+      ],
+      [
+       "Trabalho",
+       24206325.45
+      ],
+      [
+       "Saneamento",
+       23021661.25
+      ],
+      [
+       "Comércio e Serviços",
+       21864037.29
+      ],
+      [
+       "Comunicações",
+       6323568.96
+      ],
+      [
+       "Organização Agrária",
+       4165097.63
+      ],
+      [
+       "Direitos da Cidadania",
+       56658.89
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 18024652735.48,
+    "despesa_anexo01": 17677625591.56,
+    "despesa_anexo02": 17677625591.56,
+    "receitas_correntes_anexo03": 21472346680.03
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=28&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:58.127453+00:00",
+     "sha256": "a2e31aaa0d06b5eebf2c6c22ae363d06aa8ae0942971990290b8af6c08ac7e9c",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/SE-rreo/a2e31aaa0d06b5eebf2c6c22ae363d06aa8ae0942971990290b8af6c08ac7e9c.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=28&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T17:00:19.450994+00:00",
+     "sha256": "566eefee5a0d6b99dcc4b1d454cd1e377cb70ea89e419870c834ee8c730cc70e",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/SE-rreo02/566eefee5a0d6b99dcc4b1d454cd1e377cb70ea89e419870c834ee8c730cc70e.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=28&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T17:00:21.627807+00:00",
+     "sha256": "552666ccd7d1b447815814838b5447968efa68c8bccfff4d924d071cbacaf2fd",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/SE-rreo03/552666ccd7d1b447815814838b5447968efa68c8bccfff4d924d071cbacaf2fd.json"
+    }
+   ]
+  },
+  {
+   "uf": "BA",
+   "nome": "Bahia",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 41998968646.68,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 2756999314.42,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 7831772860.49,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       4720138720.34
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       387072453.02
+      ],
+      [
+       "Taxas e outros tributos",
+       2724561687.13
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 18844170157.42,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 13092575199.77,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       6091414577.71
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       6694408839.9
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       306751782.16
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 4583209358.14,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 5768952019.38,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       2324972538.24
+      ],
+      [
+       "Serviços",
+       263229778.82
+      ],
+      [
+       "Agropecuária",
+       100600.96
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       3180649101.36
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 5657516876.44,
+     "partes": [
+      [
+       "Alienação de bens",
+       22067708.75
+      ],
+      [
+       "Transferências de capital",
+       592596256.49
+      ],
+      [
+       "Outras receitas de capital",
+       5042852911.2
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 100534164432.74,
+   "repasse": 11902579163.23,
+   "fundeb": 10535359199.19,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 78096226070.32,
+   "gasto": 77602108074.11,
+   "resultado": 494117996.2100067,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 13722726055.19,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 13152710092.3,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 14894848570.12,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 7633866508.61,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 7280670668.22,
+     "partes": [
+      [
+       "Judiciária",
+       3818737139.56
+      ],
+      [
+       "Essencial à Justiça",
+       1921987692.47
+      ],
+      [
+       "Legislativa",
+       1539945836.19
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 7782624788.3,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 2103048505.26,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 2036024233.83,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 332755706.67,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 8662832945.61,
+     "partes": [
+      [
+       "Urbanismo",
+       2973942953.82
+      ],
+      [
+       "Direitos da Cidadania",
+       1175089172.55
+      ],
+      [
+       "Agricultura",
+       924309201.98
+      ],
+      [
+       "Comércio e Serviços",
+       814298372.32
+      ],
+      [
+       "Saneamento",
+       687117353.59
+      ],
+      [
+       "Cultura",
+       455565122.45
+      ],
+      [
+       "Desporto e Lazer",
+       326842228.27
+      ],
+      [
+       "Comunicações",
+       307823842.4
+      ],
+      [
+       "Gestão Ambiental",
+       245717812.28
+      ],
+      [
+       "Trabalho",
+       243445213.62
+      ],
+      [
+       "Indústria",
+       218680367.91
+      ],
+      [
+       "Ciência e Tecnologia",
+       139356739.32
+      ],
+      [
+       "Habitação",
+       122340751.68
+      ],
+      [
+       "Energia",
+       19958299.7
+      ],
+      [
+       "Organização Agrária",
+       8345513.72
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 78096226070.32,
+    "despesa_anexo01": 77602108074.11,
+    "despesa_anexo02": 77602108074.11,
+    "receitas_correntes_anexo03": 94876647556.3
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=29&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T09:59:55.203584+00:00",
+     "sha256": "519b3be97233bec56ebe417cee5b79183f68d350dd216b44e26d21c9354c1d72",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/BA-rreo/519b3be97233bec56ebe417cee5b79183f68d350dd216b44e26d21c9354c1d72.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=29&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:58:50.281592+00:00",
+     "sha256": "3fb12b30e24fcbbc1c43fdee401d27e547a87baf8e4ee71e7b31055c837afa02",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/BA-rreo02/3fb12b30e24fcbbc1c43fdee401d27e547a87baf8e4ee71e7b31055c837afa02.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=29&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:58:52.615250+00:00",
+     "sha256": "845e5116701185ad921f28dd6c7303a4841baea758d89507b9ed9e933e8b65cc",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/BA-rreo03/845e5116701185ad921f28dd6c7303a4841baea758d89507b9ed9e933e8b65cc.json"
+    }
+   ]
+  },
+  {
+   "uf": "MG",
+   "nome": "Minas Gerais",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 87712076044.45,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 12952303213.53,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 15855834977.11,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       8328974794.32
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       2258916942.65
+      ],
+      [
+       "Taxas e outros tributos",
+       5267943240.14
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 9126462739.75,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 17778616894.17,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       12609358775.83
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       4034498707.05
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       1134759411.29
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 6302304614.1,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 12611390907.09,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       8339593246.49
+      ],
+      [
+       "Serviços",
+       1562747798.51
+      ],
+      [
+       "Agropecuária",
+       10754996.39
+      ],
+      [
+       "Industrial",
+       511490093.67
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       2186804772.03
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 2124382266.99,
+     "partes": [
+      [
+       "Alienação de bens",
+       26508074.53
+      ],
+      [
+       "Transferências de capital",
+       218378789.28
+      ],
+      [
+       "Outras receitas de capital",
+       1879495403.18
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 164463371657.19,
+   "repasse": 28649074174.45,
+   "fundeb": 17082224692.15,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 118732072790.59,
+   "gasto": 117541012321.92,
+   "resultado": 1191060468.6699982,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 25574861941.25,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 19119769088.97,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 15454548863.01,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 21663885679.73,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 16133096360.19,
+     "partes": [
+      [
+       "Judiciária",
+       9623956376.16
+      ],
+      [
+       "Essencial à Justiça",
+       4274314887.13
+      ],
+      [
+       "Legislativa",
+       2234825096.9
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 8399061666.57,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 4932452348.02,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 2219024115.44,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 173450822.3,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 3870861436.44,
+     "partes": [
+      [
+       "Agricultura",
+       1075477062.57
+      ],
+      [
+       "Ciência e Tecnologia",
+       618508146.24
+      ],
+      [
+       "Gestão Ambiental",
+       587557058.16
+      ],
+      [
+       "Saneamento",
+       389561775.56
+      ],
+      [
+       "Urbanismo",
+       381693195.55
+      ],
+      [
+       "Cultura",
+       373146562.25
+      ],
+      [
+       "Direitos da Cidadania",
+       124768309.56
+      ],
+      [
+       "Comércio e Serviços",
+       119195588.41
+      ],
+      [
+       "Habitação",
+       81532177.4
+      ],
+      [
+       "Desporto e Lazer",
+       72727547.35
+      ],
+      [
+       "Trabalho",
+       26483751.3
+      ],
+      [
+       "Energia",
+       12335624.83
+      ],
+      [
+       "Organização Agrária",
+       7414127.73
+      ],
+      [
+       "Relações Exteriores",
+       245440.71
+      ],
+      [
+       "Indústria",
+       215068.82
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 118732072790.59,
+    "despesa_anexo01": 117541012321.92,
+    "despesa_anexo02": 117541012321.92,
+    "receitas_correntes_anexo03": 162338989390.2
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=31&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:14.836673+00:00",
+     "sha256": "d8eae4d00c3ff75c48375c450766efd6cfac6d571f93e0bb59a6e6c6b8ed9f2b",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/MG-rreo/d8eae4d00c3ff75c48375c450766efd6cfac6d571f93e0bb59a6e6c6b8ed9f2b.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=31&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:16.840439+00:00",
+     "sha256": "df054c7af3db2a444b7dd16e2b5e045cef2c375d419e9d3092905a27d408ee5b",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/MG-rreo02/df054c7af3db2a444b7dd16e2b5e045cef2c375d419e9d3092905a27d408ee5b.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=31&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:19.416116+00:00",
+     "sha256": "3afed9a0fed1635f8c2a8b48a6173268ee8a7ba9846392bc074dbffbc53102b1",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/MG-rreo03/3afed9a0fed1635f8c2a8b48a6173268ee8a7ba9846392bc074dbffbc53102b1.json"
+    }
+   ]
+  },
+  {
+   "uf": "ES",
+   "nome": "Espírito Santo",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 22615846716.82,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 1354748783.85,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 3147552735.52,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       1623176346.4
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       239520015.94
+      ],
+      [
+       "Taxas e outros tributos",
+       1284856373.18
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 3472805675.36,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 5602442937.78,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       2125251810.4
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       3201085743.12
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       276105384.26
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 783309143.9,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 3378630246.4300003,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       1995129646.71
+      ],
+      [
+       "Serviços",
+       97470293.8
+      ],
+      [
+       "Agropecuária",
+       2983.0
+      ],
+      [
+       "Industrial",
+       5134843.25
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       1280892479.67
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 1958532958.67,
+     "partes": [
+      [
+       "Alienação de bens",
+       35481311.41
+      ],
+      [
+       "Transferências de capital",
+       1214362148.21
+      ],
+      [
+       "Outras receitas de capital",
+       708689499.05
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 42313869198.33,
+   "repasse": 6524829157.68,
+   "fundeb": 4343754398.49,
+   "diferenca_receita": -50983439.36999512,
+   "receita_disponivel": 31496269081.53,
+   "gasto": 30523020771.09,
+   "resultado": 973248310.4399986,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 5140403007.11,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 3910034565.13,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 5666668009.38,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 3036398823.76,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 2814639673.84,
+     "partes": [
+      [
+       "Judiciária",
+       1485826576.03
+      ],
+      [
+       "Essencial à Justiça",
+       847283723.17
+      ],
+      [
+       "Legislativa",
+       481529374.64
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 2691400494.89,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 1018420366.17,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 2669615758.37,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 204871967.35,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 3494586821.63,
+     "partes": [
+      [
+       "Direitos da Cidadania",
+       1246065598.98
+      ],
+      [
+       "Agricultura",
+       491338365.75
+      ],
+      [
+       "Ciência e Tecnologia",
+       370049955.45
+      ],
+      [
+       "Gestão Ambiental",
+       332549249.13
+      ],
+      [
+       "Comércio e Serviços",
+       190835366.84
+      ],
+      [
+       "Desporto e Lazer",
+       187347223.67
+      ],
+      [
+       "Cultura",
+       181916534.67
+      ],
+      [
+       "Urbanismo",
+       168470057.11
+      ],
+      [
+       "Saneamento",
+       136252694.83
+      ],
+      [
+       "Comunicações",
+       102110099.67
+      ],
+      [
+       "Habitação",
+       55594775.93
+      ],
+      [
+       "Indústria",
+       30332606.3
+      ],
+      [
+       "Trabalho",
+       1724293.3
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": -124018716.54000092,
+   "totais_fonte": {
+    "receita_anexo01": 31496269081.53,
+    "despesa_anexo01": 30523020771.09,
+    "despesa_anexo02": 30647039487.63,
+    "receitas_correntes_anexo03": 40355336239.66
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=32&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:04.758712+00:00",
+     "sha256": "499a70fb4492d4f63e59fb305ddd17880ea941d419d8c862404917690e01cfd9",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/ES-rreo/499a70fb4492d4f63e59fb305ddd17880ea941d419d8c862404917690e01cfd9.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=32&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:03.692399+00:00",
+     "sha256": "305827abed248cf2bf96d41eb7f4a507c5f38e8f99b8dbf68e46e6f673d66426",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/ES-rreo02/305827abed248cf2bf96d41eb7f4a507c5f38e8f99b8dbf68e46e6f673d66426.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=32&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:06.078520+00:00",
+     "sha256": "956bb229635895031012575682195344977852c51b0a04a711315be206c15e42",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/ES-rreo03/956bb229635895031012575682195344977852c51b0a04a711315be206c15e42.json"
+    }
+   ]
+  },
+  {
+   "uf": "RJ",
+   "nome": "Rio de Janeiro",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 62386507272.83,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 5518142880.67,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 15052571058.54,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       8536430372.71
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       1876414680.96
+      ],
+      [
+       "Taxas e outros tributos",
+       4639726004.87
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 3383574669.79,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 8987104574.08,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       4263977527.38
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       2967158177.25
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       1755968869.45
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 4504476983.65,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 37750825285.2,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       34382468682.0
+      ],
+      [
+       "Serviços",
+       526584800.87
+      ],
+      [
+       "Agropecuária",
+       423253.25
+      ],
+      [
+       "Industrial",
+       182298.24
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       2841166250.84
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 2680976302.81,
+     "partes": [
+      [
+       "Alienação de bens",
+       7768903.79
+      ],
+      [
+       "Transferências de capital",
+       44215964.44
+      ],
+      [
+       "Outras receitas de capital",
+       2628991434.58
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 140264179027.57,
+   "repasse": 19832542896.82,
+   "fundeb": 11686270083.44,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 108745366047.31,
+   "gasto": 105860546082.09,
+   "resultado": 2884819965.220001,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 27482247162.29,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 10753230621.83,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 10933436117.15,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 17371602410.36,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 16163969988.93,
+     "partes": [
+      [
+       "Judiciária",
+       8879508927.99
+      ],
+      [
+       "Essencial à Justiça",
+       5219510440.89
+      ],
+      [
+       "Legislativa",
+       2064950620.05
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 6895700879.13,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 6405684604.18,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 3173743031.27,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 889225954.45,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 7346997765.23,
+     "partes": [
+      [
+       "Urbanismo",
+       2024261765.18
+      ],
+      [
+       "Gestão Ambiental",
+       1271853949.36
+      ],
+      [
+       "Ciência e Tecnologia",
+       891209690.2
+      ],
+      [
+       "Agricultura",
+       774222382.12
+      ],
+      [
+       "Cultura",
+       457437165.3
+      ],
+      [
+       "Habitação",
+       413363072.89
+      ],
+      [
+       "Direitos da Cidadania",
+       409298235.81
+      ],
+      [
+       "Comércio e Serviços",
+       400984260.58
+      ],
+      [
+       "Indústria",
+       213230620.81
+      ],
+      [
+       "Desporto e Lazer",
+       184077560.23
+      ],
+      [
+       "Organização Agrária",
+       125425550.15
+      ],
+      [
+       "Saneamento",
+       120826396.9
+      ],
+      [
+       "Energia",
+       31377634.36
+      ],
+      [
+       "Trabalho",
+       29429481.34
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": -1555292452.730011,
+   "totais_fonte": {
+    "receita_anexo01": 108745366047.31,
+    "despesa_anexo01": 105860546082.09,
+    "despesa_anexo02": 107415838534.82,
+    "receitas_correntes_anexo03": 137583202724.76
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=33&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:42.235910+00:00",
+     "sha256": "388bbc60d0dbb78ae65a422bb051f57253f59bd7e5ca34cbcc6434930a8dd6e5",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/RJ-rreo/388bbc60d0dbb78ae65a422bb051f57253f59bd7e5ca34cbcc6434930a8dd6e5.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=33&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:52.746278+00:00",
+     "sha256": "f7b5def6872ce9a4bdf90704e53d5227beeba77429c8dee06287c9cc71f5f13b",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/RJ-rreo02/f7b5def6872ce9a4bdf90704e53d5227beeba77429c8dee06287c9cc71f5f13b.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=33&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:55.178669+00:00",
+     "sha256": "b5fdee35a023408ce99ba420aae76cae15ca4e88eb29ddc7e904356365ae00ea",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/RJ-rreo03/b5fdee35a023408ce99ba420aae76cae15ca4e88eb29ddc7e904356365ae00ea.json"
+    }
+   ]
+  },
+  {
+   "uf": "SP",
+   "nome": "São Paulo",
+   "ano": 2025,
+   "registro_repasse": "despesa",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 238061225357.02,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 31876947927.41,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 38879592748.67,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       17280029618.49
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       7356323453.8
+      ],
+      [
+       "Taxas e outros tributos",
+       14243239676.38
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 2198843536.87,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 42889618859.22,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       27741681885.26
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       13391968104.51
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       1755968869.45
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 8303068964.51,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 29561354360.629997,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       15803581635.72
+      ],
+      [
+       "Serviços",
+       6650170489.73
+      ],
+      [
+       "Agropecuária",
+       59549803.34
+      ],
+      [
+       "Industrial",
+       210823061.86
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       6837229369.98
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 8224059747.51,
+     "partes": [
+      [
+       "Alienação de bens",
+       836841448.95
+      ],
+      [
+       "Transferências de capital",
+       260561244.65
+      ],
+      [
+       "Outras receitas de capital",
+       7126657053.91
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 399994711501.84,
+   "repasse": 75807149250.02,
+   "fundeb": 41120790900.41,
+   "diferenca_receita": -72597535.27996826,
+   "receita_disponivel": 283139368886.69,
+   "gasto": 295363294385.07996,
+   "resultado": -12223925498.389954,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 30900329431.14,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 71636064726.89,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 44215007472.1,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 18377269473.16,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 36850156614.43,
+     "partes": [
+      [
+       "Judiciária",
+       24294846628.75
+      ],
+      [
+       "Essencial à Justiça",
+       8986022617.08
+      ],
+      [
+       "Legislativa",
+       3569287368.6
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 40991759754.65999,
+     "partes": [
+      [
+       "Encargos Especiais, sem a cota dos municípios",
+       40991759754.65999
+      ]
+     ]
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 8906596081.3,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 20726914748.92,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 1819281138.31,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 20939914944.170002,
+     "partes": [
+      [
+       "Direitos da Cidadania",
+       7329467799.43
+      ],
+      [
+       "Gestão Ambiental",
+       3216066451.7
+      ],
+      [
+       "Habitação",
+       3154705314.56
+      ],
+      [
+       "Ciência e Tecnologia",
+       3112927951.02
+      ],
+      [
+       "Cultura",
+       1512720445.24
+      ],
+      [
+       "Agricultura",
+       952739826.2
+      ],
+      [
+       "Saneamento",
+       591021584.84
+      ],
+      [
+       "Comércio e Serviços",
+       345095538.64
+      ],
+      [
+       "Desporto e Lazer",
+       307428994.9
+      ],
+      [
+       "Comunicações",
+       227388651.39
+      ],
+      [
+       "Organização Agrária",
+       102607211.01
+      ],
+      [
+       "Trabalho",
+       74840595.0
+      ],
+      [
+       "Energia",
+       12904580.24
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 358946518136.71,
+    "despesa_anexo01": 371170443635.1,
+    "despesa_anexo02": 371170443635.1,
+    "receitas_correntes_anexo03": 391770651754.33
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=35&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:59.533937+00:00",
+     "sha256": "e8fb24d693058fababe7df4ad33b1c3579ec27b1e45510eaa7f3f726cd6b1046",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/SP-rreo/e8fb24d693058fababe7df4ad33b1c3579ec27b1e45510eaa7f3f726cd6b1046.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=35&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T17:00:23.906807+00:00",
+     "sha256": "e430df0c0a7b4ea5b5b2c9880288279ede486fb9e929c6aeafef62877de14166",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/SP-rreo02/e430df0c0a7b4ea5b5b2c9880288279ede486fb9e929c6aeafef62877de14166.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=35&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T17:00:26.671506+00:00",
+     "sha256": "160950c4dfc07327a1351356178aa1363b8574dd89a77f44ecc01634c3c68031",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/SP-rreo03/160950c4dfc07327a1351356178aa1363b8574dd89a77f44ecc01634c3c68031.json"
+    }
+   ]
+  },
+  {
+   "uf": "PR",
+   "nome": "Paraná",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 53382822594.19,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 7362640612.51,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 7022722978.78,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       5028169820.94
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       1621194818.58
+      ],
+      [
+       "Taxas e outros tributos",
+       373358339.26
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 5848107291.88,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 13941002146.33,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       8458656965.03
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       4706225993.27
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       776119188.03
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 3228378976.95,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 12086726153.43,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       6352322225.62
+      ],
+      [
+       "Serviços",
+       4013884652.3
+      ],
+      [
+       "Agropecuária",
+       6080811.26
+      ],
+      [
+       "Industrial",
+       7421801.86
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       1707016662.39
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 1199452746.14,
+     "partes": [
+      [
+       "Alienação de bens",
+       31862257.72
+      ],
+      [
+       "Transferências de capital",
+       272355605.88
+      ],
+      [
+       "Outras receitas de capital",
+       895234882.5400001
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 104071853500.21,
+   "repasse": 17152419716.29,
+   "fundeb": 10465377212.49,
+   "diferenca_receita": 1121948684.6099854,
+   "receita_disponivel": 75332107886.82,
+   "gasto": 75804338821.01,
+   "resultado": -472230934.1899872,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 15252834314.14,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 16752743099.89,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 9827698626.11,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 7365459707.15,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 8696732305.24,
+     "partes": [
+      [
+       "Judiciária",
+       4976924585.94
+      ],
+      [
+       "Essencial à Justiça",
+       2522591283.39
+      ],
+      [
+       "Legislativa",
+       1197216435.91
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 5836243494.04,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 2228068921.84,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 3484611258.92,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 733069318.93,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 5995373490.91,
+     "partes": [
+      [
+       "Agricultura",
+       1602236234.73
+      ],
+      [
+       "Urbanismo",
+       1044333816.54
+      ],
+      [
+       "Ciência e Tecnologia",
+       788066289.0
+      ],
+      [
+       "Habitação",
+       612478453.39
+      ],
+      [
+       "Gestão Ambiental",
+       545664827.79
+      ],
+      [
+       "Direitos da Cidadania",
+       408084555.53
+      ],
+      [
+       "Comércio e Serviços",
+       336115824.22
+      ],
+      [
+       "Cultura",
+       215279129.65
+      ],
+      [
+       "Comunicações",
+       178522198.68
+      ],
+      [
+       "Desporto e Lazer",
+       174770271.97
+      ],
+      [
+       "Trabalho",
+       79795332.07
+      ],
+      [
+       "Indústria",
+       10026557.34
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": -368495716.16000366,
+   "totais_fonte": {
+    "receita_anexo01": 75332107886.82,
+    "despesa_anexo01": 75804338821.01,
+    "despesa_anexo02": 76172834537.17,
+    "receitas_correntes_anexo03": 102872400754.07
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=41&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:38.073274+00:00",
+     "sha256": "ea2a6a2f7c39b7073ba251108af294c0bb5b9d04570f52f3cae246a3bef50ca9",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/PR-rreo/ea2a6a2f7c39b7073ba251108af294c0bb5b9d04570f52f3cae246a3bef50ca9.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=41&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:48.107056+00:00",
+     "sha256": "6e0fc1e1a4899ea89066676217be5595608d69776fa79bdb33ba7281fc76bfc9",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/PR-rreo02/6e0fc1e1a4899ea89066676217be5595608d69776fa79bdb33ba7281fc76bfc9.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=41&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:50.524570+00:00",
+     "sha256": "b0750a1f2560cffa530d79308aa08e61afddb8829c0f3a45aa06fe2201f777e8",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/PR-rreo03/b0750a1f2560cffa530d79308aa08e61afddb8829c0f3a45aa06fe2201f777e8.json"
+    }
+   ]
+  },
+  {
+   "uf": "SC",
+   "nome": "Santa Catarina",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 45161068246.31,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 4532232360.39,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 6781143375.219999,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       3341325959.92
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       1084040968.81
+      ],
+      [
+       "Taxas e outros tributos",
+       2355776446.49
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 2816707367.07,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 9666404228.529999,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       4694204158.96
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       4457984955.4
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       514215114.17
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 1999951593.36,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 4150606845.79,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       2637216216.97
+      ],
+      [
+       "Serviços",
+       770549662.14
+      ],
+      [
+       "Agropecuária",
+       1976928.0
+      ],
+      [
+       "Industrial",
+       108000.55
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       740756038.13
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 826162554.96,
+     "partes": [
+      [
+       "Alienação de bens",
+       47725688.89
+      ],
+      [
+       "Transferências de capital",
+       175312553.61
+      ],
+      [
+       "Outras receitas de capital",
+       603124312.46
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 75934276571.63,
+   "repasse": 13768247700.58,
+   "fundeb": 8129719102.88,
+   "diferenca_receita": 28247254.460006714,
+   "receita_disponivel": 54008062513.71,
+   "gasto": 54030090199.86,
+   "resultado": -22027686.150001526,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 11084952993.77,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 8913213173.19,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 8768014556.08,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 4080223672.4,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 7521664828.9,
+     "partes": [
+      [
+       "Judiciária",
+       4264718374.98
+      ],
+      [
+       "Essencial à Justiça",
+       1933442355.46
+      ],
+      [
+       "Legislativa",
+       1323504098.46
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 2777541563.16,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 3369323213.32,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 3506669076.89,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 146346727.8,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 3862140394.35,
+     "partes": [
+      [
+       "Direitos da Cidadania",
+       1688089652.78
+      ],
+      [
+       "Agricultura",
+       1318245072.08
+      ],
+      [
+       "Ciência e Tecnologia",
+       196339175.38
+      ],
+      [
+       "Gestão Ambiental",
+       177351442.76
+      ],
+      [
+       "Desporto e Lazer",
+       159865419.89
+      ],
+      [
+       "Comércio e Serviços",
+       146136079.38
+      ],
+      [
+       "Cultura",
+       69844589.39
+      ],
+      [
+       "Trabalho",
+       42606255.26
+      ],
+      [
+       "Saneamento",
+       39280084.76
+      ],
+      [
+       "Habitação",
+       24272222.67
+      ],
+      [
+       "Urbanismo",
+       110400.0
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 54008062513.71,
+    "despesa_anexo01": 54030090199.86,
+    "despesa_anexo02": 54030090199.86,
+    "receitas_correntes_anexo03": 75108114016.67
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=42&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:54.588057+00:00",
+     "sha256": "48a587ca5b6f7fe89429a22c0f29e8bd950a5744a0432763638dd5abaa7e744d",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/SC-rreo/48a587ca5b6f7fe89429a22c0f29e8bd950a5744a0432763638dd5abaa7e744d.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=42&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T17:00:14.392863+00:00",
+     "sha256": "c773e7cd5a1c4436c8567d6af3aa5c0b4f89b476379db0ad79cb06528fbc5dd8",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/SC-rreo02/c773e7cd5a1c4436c8567d6af3aa5c0b4f89b476379db0ad79cb06528fbc5dd8.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=42&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T17:00:17.202662+00:00",
+     "sha256": "45c1b882ecc444a4ed2ce7316c41874bd0d190d4fc4964830b9c1bfe9fd37c54",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/SC-rreo03/45c1b882ecc444a4ed2ce7316c41874bd0d190d4fc4964830b9c1bfe9fd37c54.json"
+    }
+   ]
+  },
+  {
+   "uf": "RS",
+   "nome": "Rio Grande do Sul",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 53696398855.02,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 5905572156.13,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 9189173700.23,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       4431679403.53
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       1776575046.62
+      ],
+      [
+       "Taxas e outros tributos",
+       2980919250.08
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 4443177562.26,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 9688072480.39,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       6039934094.28
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       3025258562.6
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       622879823.51
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 6242072056.21,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 6708260402.809999,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       4619790689.95
+      ],
+      [
+       "Serviços",
+       714262711.82
+      ],
+      [
+       "Agropecuária",
+       794778.51
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       1373412222.53
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 2741595749.77,
+     "partes": [
+      [
+       "Alienação de bens",
+       98116820.2
+      ],
+      [
+       "Transferências de capital",
+       205528578.67
+      ],
+      [
+       "Outras receitas de capital",
+       2437950350.9
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 98614322962.82,
+   "repasse": 16337944723.45,
+   "fundeb": 9946113660.0,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 72330264579.37,
+   "gasto": 69642519301.52,
+   "resultado": 2687745277.849991,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 19982940059.69,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 8519039651.38,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 10896130977.55,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 8573991422.28,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 7430548606.02,
+     "partes": [
+      [
+       "Judiciária",
+       4152469253.44
+      ],
+      [
+       "Essencial à Justiça",
+       2320245350.19
+      ],
+      [
+       "Legislativa",
+       957834002.39
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 4658207940.36,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 2201555000.84,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 2894567627.3,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 577133331.71,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 3908404684.39,
+     "partes": [
+      [
+       "Agricultura",
+       1282873962.8
+      ],
+      [
+       "Habitação",
+       541134257.67
+      ],
+      [
+       "Urbanismo",
+       317340471.04
+      ],
+      [
+       "Cultura",
+       267369111.86
+      ],
+      [
+       "Gestão Ambiental",
+       259044852.85
+      ],
+      [
+       "Indústria",
+       229097179.23
+      ],
+      [
+       "Comércio e Serviços",
+       213201692.96
+      ],
+      [
+       "Ciência e Tecnologia",
+       201977707.88
+      ],
+      [
+       "Comunicações",
+       169718470.98
+      ],
+      [
+       "Energia",
+       132518529.89
+      ],
+      [
+       "Trabalho",
+       119998956.83
+      ],
+      [
+       "Desporto e Lazer",
+       85901230.68
+      ],
+      [
+       "Direitos da Cidadania",
+       74976191.82
+      ],
+      [
+       "Saneamento",
+       13252067.9
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 72330264579.37,
+    "despesa_anexo01": 69642519301.52,
+    "despesa_anexo02": 69642519301.52,
+    "receitas_correntes_anexo03": 95872727213.05
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=43&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:51.329575+00:00",
+     "sha256": "439ef6ab648b532b7577d64c32bfb00ef8ca45a01eeec83ebc10d15169eddc0f",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/RS-rreo/439ef6ab648b532b7577d64c32bfb00ef8ca45a01eeec83ebc10d15169eddc0f.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=43&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T17:00:10.404854+00:00",
+     "sha256": "900cbf32f91cb754b1bc0f9c92f448e5c43bde7b01f99a8e68bcd3e7c80b1521",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/RS-rreo02/900cbf32f91cb754b1bc0f9c92f448e5c43bde7b01f99a8e68bcd3e7c80b1521.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=43&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T17:00:12.443909+00:00",
+     "sha256": "1301b496da242724dc5c35284eaebc9d93aba503a9fff0225ade79a3e988e878",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/RS-rreo03/1301b496da242724dc5c35284eaebc9d93aba503a9fff0225ade79a3e988e878.json"
+    }
+   ]
+  },
+  {
+   "uf": "MS",
+   "nome": "Mato Grosso do Sul",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 17621634610.85,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 1279484748.93,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 3165379258.54,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       1869912901.11
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       762386732.25
+      ],
+      [
+       "Taxas e outros tributos",
+       533079625.18
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 2846080816.82,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 4181407108.63,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       1918921666.58
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       2054914820.05
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       207570622.0
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 1214941338.81,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 2016260357.9,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       724159466.83
+      ],
+      [
+       "Serviços",
+       923553385.55
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       368547505.52
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 778549055.36,
+     "partes": [
+      [
+       "Alienação de bens",
+       32541190.81
+      ],
+      [
+       "Transferências de capital",
+       267651921.72
+      ],
+      [
+       "Outras receitas de capital",
+       478355942.83000004
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 33103737295.84,
+   "repasse": 5344905683.78,
+   "fundeb": 3528097539.06,
+   "diferenca_receita": -261936156.45000076,
+   "receita_disponivel": 24492670229.45,
+   "gasto": 24519869603.1,
+   "resultado": -27199373.64999771,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 4333935269.05,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 3668430710.77,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 2817326546.06,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 2198697107.84,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 3845034874.51,
+     "partes": [
+      [
+       "Judiciária",
+       1633397474.22
+      ],
+      [
+       "Essencial à Justiça",
+       1458876983.18
+      ],
+      [
+       "Legislativa",
+       752760417.11
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 2056171186.68,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 1601669716.46,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 1809891367.47,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 432097423.38,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 1756615400.88,
+     "partes": [
+      [
+       "Direitos da Cidadania",
+       499636279.72
+      ],
+      [
+       "Saneamento",
+       401591060.8
+      ],
+      [
+       "Agricultura",
+       238325511.28
+      ],
+      [
+       "Cultura",
+       146269971.01
+      ],
+      [
+       "Gestão Ambiental",
+       108206307.04
+      ],
+      [
+       "Comércio e Serviços",
+       106079260.51
+      ],
+      [
+       "Habitação",
+       101319455.6
+      ],
+      [
+       "Ciência e Tecnologia",
+       69384045.32
+      ],
+      [
+       "Desporto e Lazer",
+       58851240.44
+      ],
+      [
+       "Trabalho",
+       17485724.85
+      ],
+      [
+       "Energia",
+       5404964.4
+      ],
+      [
+       "Organização Agrária",
+       3819579.91
+      ],
+      [
+       "Indústria",
+       242000.0
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 24492670229.45,
+    "despesa_anexo01": 24519869603.1,
+    "despesa_anexo02": 24519869603.1,
+    "receitas_correntes_anexo03": 32325188240.48
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=50&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:17.589631+00:00",
+     "sha256": "a37ebfd0a8492434a46c58c0cc5cf5c803791176a532a70685925acbabd502f3",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/MS-rreo/a37ebfd0a8492434a46c58c0cc5cf5c803791176a532a70685925acbabd502f3.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=50&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:21.386950+00:00",
+     "sha256": "ae631c135865f8e790f8382ff5b07b8640a4e67751cf1b415767ad4445aeea2c",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/MS-rreo02/ae631c135865f8e790f8382ff5b07b8640a4e67751cf1b415767ad4445aeea2c.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=50&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:23.445423+00:00",
+     "sha256": "89a29bbce486ebca750b9854bfc250b7331a2f7a589252ce7a2837239f93c043",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/MS-rreo03/89a29bbce486ebca750b9854bfc250b7331a2f7a589252ce7a2837239f93c043.json"
+    }
+   ]
+  },
+  {
+   "uf": "MT",
+   "nome": "Mato Grosso",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 26030429022.27,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 2013655309.01,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 4191443693.45,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       2399548092.13
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       331790915.47
+      ],
+      [
+       "Taxas e outros tributos",
+       1460104685.85
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 4356556001.94,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 5161530115.0,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       3265738364.17
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       1718810019.02
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       176981731.81
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 5703408599.9,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 4318646093.13,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       2312216708.29
+      ],
+      [
+       "Serviços",
+       822826982.28
+      ],
+      [
+       "Agropecuária",
+       223295.76
+      ],
+      [
+       "Industrial",
+       1684058.48
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       1181695048.32
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 508466588.16,
+     "partes": [
+      [
+       "Alienação de bens",
+       62532840.85
+      ],
+      [
+       "Transferências de capital",
+       141180313.87
+      ],
+      [
+       "Outras receitas de capital",
+       304753433.44000006
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 52284135422.86,
+   "repasse": 7602087685.72,
+   "fundeb": 5118209971.17,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 39563837765.97,
+   "gasto": 39404676616.35,
+   "resultado": 159161149.62000275,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 5732731075.9,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 5649661077.11,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 5424197726.71,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 3916386173.0,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 5892784932.02,
+     "partes": [
+      [
+       "Judiciária",
+       2871318338.46
+      ],
+      [
+       "Essencial à Justiça",
+       1295842820.18
+      ],
+      [
+       "Legislativa",
+       1725623773.38
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 2375789502.22,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 2936152552.32,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 3353707329.11,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 364077612.31,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 3759188635.65,
+     "partes": [
+      [
+       "Direitos da Cidadania",
+       887391063.14
+      ],
+      [
+       "Agricultura",
+       712089042.62
+      ],
+      [
+       "Urbanismo",
+       699602524.55
+      ],
+      [
+       "Gestão Ambiental",
+       395543356.31
+      ],
+      [
+       "Cultura",
+       301299158.01
+      ],
+      [
+       "Ciência e Tecnologia",
+       184839297.67
+      ],
+      [
+       "Comércio e Serviços",
+       166456549.45
+      ],
+      [
+       "Desporto e Lazer",
+       117440750.83
+      ],
+      [
+       "Energia",
+       102591256.5
+      ],
+      [
+       "Indústria",
+       94968210.8
+      ],
+      [
+       "Organização Agrária",
+       48296064.43
+      ],
+      [
+       "Habitação",
+       30433243.61
+      ],
+      [
+       "Trabalho",
+       15299302.79
+      ],
+      [
+       "Saneamento",
+       2938814.94
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 39563837765.97,
+    "despesa_anexo01": 39404676616.35,
+    "despesa_anexo02": 39404676616.35,
+    "receitas_correntes_anexo03": 51775668834.7
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=51&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:21.428223+00:00",
+     "sha256": "8a6bced3b0f9834e75bb54c1463bcfe8fc3bb452182f168d752ddab4d2b3d2db",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/MT-rreo/8a6bced3b0f9834e75bb54c1463bcfe8fc3bb452182f168d752ddab4d2b3d2db.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=51&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:25.238952+00:00",
+     "sha256": "2b5084a063610c62955414ce09dd16ac2b1a6e5c61fc2aa34a74d34134780eee",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/MT-rreo02/2b5084a063610c62955414ce09dd16ac2b1a6e5c61fc2aa34a74d34134780eee.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=51&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:27.994524+00:00",
+     "sha256": "b886f690a3e263b288a915316462e5ba2b51abf17668d5320e7ed888cdf8e335",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/MT-rreo03/b886f690a3e263b288a915316462e5ba2b51abf17668d5320e7ed888cdf8e335.json"
+    }
+   ]
+  },
+  {
+   "uf": "GO",
+   "nome": "Goiás",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 30532863822.63,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 3546885462.65,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 7719009250.4,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       3438397065.43
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       908926399.36
+      ],
+      [
+       "Taxas e outros tributos",
+       3371685785.61
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 5509330490.0,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 6271324742.88,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       4172779907.44
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       1890315462.05
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       208229373.39
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 2132041033.63,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 7700087331.549999,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       2794404856.75
+      ],
+      [
+       "Serviços",
+       196763912.5
+      ],
+      [
+       "Agropecuária",
+       95693.9
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       4708822868.4
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 131822870.28,
+     "partes": [
+      [
+       "Alienação de bens",
+       18134995.0
+      ],
+      [
+       "Transferências de capital",
+       91732271.22
+      ],
+      [
+       "Outras receitas de capital",
+       21955604.060000002
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 63543365004.02,
+   "repasse": 9459024994.26,
+   "fundeb": 6323059579.4,
+   "diferenca_receita": 0.0,
+   "receita_disponivel": 47761280430.36,
+   "gasto": 52990524310.67,
+   "resultado": -5229243880.309998,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 9554622292.45,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 7313502795.24,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 6275752066.93,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 5052444307.04,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 6910922016.59,
+     "partes": [
+      [
+       "Judiciária",
+       3921564300.18
+      ],
+      [
+       "Essencial à Justiça",
+       1690551367.75
+      ],
+      [
+       "Legislativa",
+       1298806348.66
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 5531874469.63,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 2716384532.73,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 3894544021.02,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 1145045544.54,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 4595432264.5,
+     "partes": [
+      [
+       "Urbanismo",
+       946835381.54
+      ],
+      [
+       "Direitos da Cidadania",
+       870702955.74
+      ],
+      [
+       "Habitação",
+       848308741.25
+      ],
+      [
+       "Agricultura",
+       498506243.96
+      ],
+      [
+       "Desporto e Lazer",
+       442162737.43
+      ],
+      [
+       "Ciência e Tecnologia",
+       313992631.25
+      ],
+      [
+       "Trabalho",
+       310231879.65
+      ],
+      [
+       "Cultura",
+       107251378.52
+      ],
+      [
+       "Comércio e Serviços",
+       98084505.84
+      ],
+      [
+       "Indústria",
+       63043452.72
+      ],
+      [
+       "Gestão Ambiental",
+       45643770.57
+      ],
+      [
+       "Comunicações",
+       30002218.36
+      ],
+      [
+       "Saneamento",
+       20666367.67
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 47761280430.36,
+    "despesa_anexo01": 52990524310.67,
+    "despesa_anexo02": 52990524310.67,
+    "receitas_correntes_anexo03": 63411542133.74
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=52&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:08.884087+00:00",
+     "sha256": "ecd58be5af1ede03099ce7dd5f210c489aac3d7fea42656014794a37ee638761",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/GO-rreo/ecd58be5af1ede03099ce7dd5f210c489aac3d7fea42656014794a37ee638761.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=52&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:08.493716+00:00",
+     "sha256": "a68ddccab73e1322d2c4b92314ddd58c1e43f111f01c666df988529fe560d727",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/GO-rreo02/a68ddccab73e1322d2c4b92314ddd58c1e43f111f01c666df988529fe560d727.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=52&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:10.977975+00:00",
+     "sha256": "a78c037d46ded3aaf483311741027a53db757f524dbbc942059f26e96db97759",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/GO-rreo03/a78c037d46ded3aaf483311741027a53db757f524dbbc942059f26e96db97759.json"
+    }
+   ]
+  },
+  {
+   "uf": "DF",
+   "nome": "Distrito Federal",
+   "ano": 2025,
+   "registro_repasse": "deducao",
+   "fontes": [
+    {
+     "id": "icms",
+     "nome": "ICMS",
+     "valor": 12598092679.95,
+     "partes": []
+    },
+    {
+     "id": "ipva",
+     "nome": "IPVA",
+     "valor": 1978479506.29,
+     "partes": []
+    },
+    {
+     "id": "outros_tributos",
+     "nome": "Outros impostos e taxas",
+     "valor": 12450926043.51,
+     "partes": [
+      [
+       "Imposto de renda retido dos servidores",
+       5653319280.03
+      ],
+      [
+       "ITCMD (heranças e doações)",
+       396938998.97
+      ],
+      [
+       "ISS",
+       3862618982.16
+      ],
+      [
+       "IPTU",
+       1370229388.43
+      ],
+      [
+       "ITBI",
+       478757017.98
+      ],
+      [
+       "Taxas e outros tributos",
+       689062375.94
+      ]
+     ]
+    },
+    {
+     "id": "fpe",
+     "nome": "FPE (repasse da União)",
+     "valor": 1401061527.03,
+     "partes": []
+    },
+    {
+     "id": "transferencias",
+     "nome": "Fundeb, SUS e convênios",
+     "valor": 10064139305.32,
+     "partes": [
+      [
+       "Transferências do Fundeb",
+       3403360416.31
+      ],
+      [
+       "Outras transferências correntes (SUS, convênios)",
+       6233998899.24
+      ],
+      [
+       "IPI-Exportação (LC 61/1989)",
+       9115504.3
+      ],
+      [
+       "Cota-parte do FPM",
+       416130528.82
+      ],
+      [
+       "Cota-parte do ITR",
+       1533956.65
+      ]
+     ]
+    },
+    {
+     "id": "contribuicoes",
+     "nome": "Contribuições",
+     "valor": 3005087394.5,
+     "partes": []
+    },
+    {
+     "id": "outras_correntes",
+     "nome": "Rendimentos e outras",
+     "valor": 4804429293.27,
+     "partes": [
+      [
+       "Receita patrimonial (aplicações, royalties)",
+       1818049476.88
+      ],
+      [
+       "Serviços",
+       1788619229.49
+      ],
+      [
+       "Agropecuária",
+       3521.09
+      ],
+      [
+       "Industrial",
+       4073847.79
+      ],
+      [
+       "Outras receitas correntes (multas, dívida ativa)",
+       1193683218.02
+      ]
+     ]
+    },
+    {
+     "id": "capital",
+     "nome": "Empréstimos e capital",
+     "valor": 605259059.22,
+     "partes": [
+      [
+       "Alienação de bens",
+       88974766.74
+      ],
+      [
+       "Transferências de capital",
+       187550462.65
+      ],
+      [
+       "Outras receitas de capital",
+       328733829.83000004
+      ]
+     ]
+    }
+   ],
+   "arrecadacao": 46907474809.090004,
+   "repasse": 0.0,
+   "fundeb": 3378160052.62,
+   "diferenca_receita": 4384260441.540001,
+   "receita_disponivel": 39145054314.93,
+   "gasto": 40435010686.89,
+   "resultado": -1289956371.959999,
+   "usos": [
+    {
+     "id": "previdencia",
+     "nome": "Aposentadorias de servidores",
+     "valor": 6466674984.47,
+     "partes": []
+    },
+    {
+     "id": "educacao",
+     "nome": "Educação",
+     "valor": 7898024128.29,
+     "partes": []
+    },
+    {
+     "id": "saude",
+     "nome": "Saúde",
+     "valor": 6275197925.81,
+     "partes": []
+    },
+    {
+     "id": "seguranca",
+     "nome": "Segurança pública",
+     "valor": 1707115713.59,
+     "partes": []
+    },
+    {
+     "id": "poderes",
+     "nome": "Judiciário, MP e Legislativo",
+     "valor": 1794525630.14,
+     "partes": [
+      [
+       "Judiciária",
+       50099.11
+      ],
+      [
+       "Essencial à Justiça",
+       581111379.89
+      ],
+      [
+       "Legislativa",
+       1213364151.14
+      ]
+     ]
+    },
+    {
+     "id": "encargos",
+     "nome": "Dívida e encargos especiais",
+     "valor": 2279677565.97,
+     "partes": []
+    },
+    {
+     "id": "administracao",
+     "nome": "Administração",
+     "valor": 3802346958.77,
+     "partes": []
+    },
+    {
+     "id": "transporte",
+     "nome": "Transporte",
+     "valor": 2774874540.24,
+     "partes": []
+    },
+    {
+     "id": "assistencia",
+     "nome": "Assistência social",
+     "valor": 1181221902.94,
+     "partes": []
+    },
+    {
+     "id": "demais",
+     "nome": "Demais áreas",
+     "valor": 6255351336.67,
+     "partes": [
+      [
+       "Urbanismo",
+       3351513285.3
+      ],
+      [
+       "Cultura",
+       456335034.19
+      ],
+      [
+       "Desporto e Lazer",
+       374991965.36
+      ],
+      [
+       "Trabalho",
+       367606996.05
+      ],
+      [
+       "Direitos da Cidadania",
+       325885056.97
+      ],
+      [
+       "Saneamento",
+       298170571.43
+      ],
+      [
+       "Gestão Ambiental",
+       258352256.11
+      ],
+      [
+       "Ciência e Tecnologia",
+       252161793.29
+      ],
+      [
+       "Agricultura",
+       231112396.26
+      ],
+      [
+       "Comércio e Serviços",
+       192391721.88
+      ],
+      [
+       "Habitação",
+       143356943.21
+      ],
+      [
+       "Comunicações",
+       3470208.55
+      ],
+      [
+       "Energia",
+       3108.07
+      ]
+     ]
+    }
+   ],
+   "diferenca_gasto": 0.0,
+   "totais_fonte": {
+    "receita_anexo01": 39145054314.93,
+    "despesa_anexo01": 40435010686.89,
+    "despesa_anexo02": 40435010686.89,
+    "receitas_correntes_anexo03": 46302215749.87
+   },
+   "evidencias": [
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+01&co_esfera=E&id_ente=53&limit=5000&offset=0",
+     "capturado_em": "2026-10-12T10:00:01.024293+00:00",
+     "sha256": "aa87cf8737e731d0e07159651016163c7f7926816a23443590f2c3a1b6538acc",
+     "arquivo": "/contas-estaduais/evidencias/20261012-nacional/anual/DF-rreo/aa87cf8737e731d0e07159651016163c7f7926816a23443590f2c3a1b6538acc.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+02&co_esfera=E&id_ente=53&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:58:59.501581+00:00",
+     "sha256": "50ef942f54f7411e110280384472071de03290f034e2fe1ed41e6451b6e9e364",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/DF-rreo02/50ef942f54f7411e110280384472071de03290f034e2fe1ed41e6451b6e9e364.json"
+    },
+    {
+     "url": "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo+03&co_esfera=E&id_ente=53&limit=5000&offset=0",
+     "capturado_em": "2026-10-22T16:59:01.729392+00:00",
+     "sha256": "f016cb542aeb4a9da89c28b2ed9e91eeb8912625be0a661e330d0fdca2a18e3b",
+     "arquivo": "/contas-estaduais/evidencias/20261022-fluxo/anual/DF-rreo03/f016cb542aeb4a9da89c28b2ed9e91eeb8912625be0a661e330d0fdca2a18e3b.json"
+    }
+   ]
+  }
+ ]
+}
