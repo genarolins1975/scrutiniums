@@ -19,8 +19,9 @@ export function UsoBusca({ busca, numero }: { busca: BuscasDoPeriodo; numero: st
       <SectionHeading number={numero} label="Busca" title="Busca da plataforma, últimos 30 dias" />
       <p className="text-sm text-carvao">
         {diaBr(busca.inicio)} a {diaBr(busca.fim)}, fuso de Brasília. Cada busca feita (resultado aberto pelo campo ou página de
-        resultados) soma 1 ao termo do dia, sem associar a busca a ninguém. Termo com email ou sequência longa de algarismos não é
-        gravado. {busca.anonimoAtivo ? "Buscas sem conta: contagem ligada (USO_ANONIMO_ATIVO=1)." : "Buscas sem conta: não medidas (USO_ANONIMO_ATIVO desligado)."}
+        resultados) soma 1 ao termo do dia, sem associar a busca a ninguém. Só é gravado o termo cujas palavras existem no
+        vocabulário do índice; os demais (um nome, um endereço, um email, algarismos) somam num contador sem o texto
+        {busca.foraDoIndice > 0 ? `, ${fmtNumber(busca.foraDoIndice)} no período` : ""}. {busca.anonimoAtivo ? "Buscas sem conta: contagem ligada (USO_ANONIMO_ATIVO=1)." : "Buscas sem conta: não medidas (USO_ANONIMO_ATIVO desligado)."}
       </p>
       {busca.primeiroRegistro !== null && busca.primeiroRegistro > busca.inicio && (
         <p className="mt-2 text-sm text-mineral">
@@ -37,7 +38,8 @@ export function UsoBusca({ busca, numero }: { busca: BuscasDoPeriodo; numero: st
           <div>
             <Quadro titulo="Buscas sem resultado" termos={semResultado.slice(0, LINHAS)} anonimo={busca.anonimoAtivo} dado="sem-resultado" />
             <p className="mt-3 text-xs text-mineral">
-              Termos que o índice de hoje não acha: destino que falta ou sinônimo a acrescentar em src/lib/busca/sinonimos.json.
+              Termos com palavras do índice cuja combinação o índice de hoje não acha: destino que falta ou sinônimo a acrescentar
+              em src/lib/busca/sinonimos.json.
             </p>
           </div>
         </div>

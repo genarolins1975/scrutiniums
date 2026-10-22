@@ -149,7 +149,7 @@ A busca da plataforma (Iniciativa 3 do parecer de UX) soma 1 por busca feita na 
 
 Chave primária `(dia, termo, com_conta)`, upsert como em `uso_paginas_dia`. Uma busca feita é o resultado aberto pelo campo (`medirBusca` em `src/lib/busca/medir.ts`) ou a página `/buscar` com termo (`MedeBusca`); digitar não conta. O envio vai para `POST /api/uso/busca` com as mesmas regras de `/api/uso`: DNT e GPC nunca contam, sem conta só com `USO_ANONIMO_ATIVO=1`, limite de taxa em memória, resposta 204. Por decisão registrada no PR da Iniciativa 3 (recomendação do parecer, §8 item 6), os termos de quem não tem conta ficam desligados pela mesma chave da contagem de páginas.
 
-O termo é texto livre e pode trazer dado pessoal; `termoParaContagem` (`src/lib/uso/busca.ts`) não grava termo com `@`, com cinco algarismos seguidos ou nove no total (CPF, telefone, CEP), com mais de seis palavras ou mais de 60 letras.
+O termo é texto livre e pode trazer dado pessoal (um nome, um endereço). `termoParaContagem` (`src/lib/uso/busca.ts`) só grava o texto quando cada palavra dele começa uma palavra do próprio índice da busca (títulos, resumos, termos, lugares, nomes de coleções e observatórios), com anos de até quatro algarismos aceitos. Todo outro termo, inclusive o que traz `@`, cinco algarismos seguidos ou nove no total (CPF, telefone, CEP), mais de seis palavras ou mais de 60 letras, soma num contador único (`#fora-do-indice`), sem o texto. No painel, ele aparece só como número.
 
 ## 9. O painel
 

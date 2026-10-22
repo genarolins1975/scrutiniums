@@ -12,7 +12,7 @@ delete process.env.USO_ANONIMO_ATIVO;
 const sessao = vi.hoisted(() => ({ usuario: null as null | { id: string; email: string } }));
 vi.mock("@/lib/session", () => ({ getSessionUser: vi.fn(async () => sessao.usuario) }));
 
-import { termoParaContagem } from "@/lib/uso/busca";
+import { FORA_DO_INDICE, termoParaContagem } from "@/lib/uso/busca";
 import { UsoBusca } from "@/components/admin/UsoBusca";
 import type { BuscasDoPeriodo } from "@/lib/uso/painel";
 
@@ -25,16 +25,20 @@ vi.setConfig({ testTimeout: 60_000 });
 const RAIZ = fileURLToPath(new URL("../../", import.meta.url));
 
 describe("termo que entra no contador", () => {
-  it("normaliza acento, caixa e pontuação", () => {
+  it("grava normalizado o termo feito de palavras do índice (e anos)", () => {
     expect(termoParaContagem("  Dívida dos Estados! ")).toBe("divida dos estados");
     expect(termoParaContagem("Ideb 2023")).toBe("ideb 2023");
     expect(termoParaContagem("pld 2023 2024")).toBe("pld 2023 2024");
+    // palavra começada (o campo conta o que foi digitado até a escolha) e nome de capital, que está no índice
+    expect(termoParaContagem("inadimpl")).toBe("inadimpl");
+    expect(termoParaContagem("Recife")).toBe("recife");
   });
 
-  it("recusa o que parece dado de alguém ou não é termo", () => {
-    for (const x of ["joao@exemplo.com", "123.456.789-00", "01310-100", "(11) 98765-4321", "12345", "a", "", "um dois tres quatro cinco seis sete", "x".repeat(61), 42, null, undefined]) {
-      expect(termoParaContagem(x), String(x)).toBeNull();
+  it("nome, endereço, email e algarismos nunca vão para o banco: somam no contador sem texto", () => {
+    for (const x of ["Maria Silva", "Rua das Flores 12", "joao@exemplo.com", "123.456.789-00", "01310-100", "(11) 98765-4321", "12345", "um dois tres quatro cinco seis sete", "x".repeat(61)]) {
+      expect(termoParaContagem(x), String(x)).toBe(FORA_DO_INDICE);
     }
+    for (const x of ["a", "", "  ", 42, null, undefined]) expect(termoParaContagem(x), String(x)).toBeNull();
   });
 });
 
@@ -88,11 +92,13 @@ describe("tabela uso_busca_dia", () => {
     await POST(pedido({ termo: "Ideb" }, { DNT: "1" }));
     await POST(pedido({ termo: "Ideb" }, { "Sec-GPC": "1" }));
     await POST(pedido({ termo: "123.456.789-00" }));
+    await POST(pedido({ termo: "Maria Silva" }));
     await POST(pedido("isto não é json"));
     const r = await linhas();
-    expect(r).toHaveLength(1);
-    expect(r[0]).toMatchObject({ termo: "conta de luz", comConta: true, buscas: 2 });
-    expect(JSON.stringify(r)).not.toMatch(/u-123|pessoa@|198\.51\.100/);
+    expect(r).toHaveLength(2);
+    expect(r.find((l) => l.termo === "conta de luz")).toMatchObject({ comConta: true, buscas: 2 });
+    expect(r.find((l) => l.termo === FORA_DO_INDICE)).toMatchObject({ comConta: true, buscas: 2 });
+    expect(JSON.stringify(r)).not.toMatch(/u-123|pessoa@|198\.51\.100|maria|silva|456/);
   });
 
   it("sem conta e com a contagem ligada, grava como sem conta", async () => {
@@ -104,25 +110,29 @@ describe("tabela uso_busca_dia", () => {
   it("painel: mais buscados e sem resultado pela busca de hoje, sem conta não medido com a contagem desligada", async () => {
     const agora = new Date("2026-10-21T15:00:00Z");
     for (let i = 0; i < 3; i++) await registrarBusca("ideb", true, agora);
-    await registrarBusca("xyzabc", true, agora);
+    // "conta pld ideb" tem só palavras do índice e nenhum resultado que reúna as três
+    await registrarBusca("conta pld ideb", true, agora);
+    await registrarBusca(FORA_DO_INDICE, true, agora);
     await registrarBusca("ideb", true, new Date("2026-09-01T15:00:00Z"));
     const b = await getBuscasDoPeriodo(agora, {});
     expect(b.inicio).toBe("2026-09-22");
-    expect(b.termos.map((t) => [t.termo, t.comConta])).toEqual([["ideb", 3], ["xyzabc", 1]]);
-    expect(b.termos.find((t) => t.termo === "xyzabc")?.resultados).toBe(0);
+    expect(b.termos.map((t) => [t.termo, t.comConta])).toEqual([["ideb", 3], ["conta pld ideb", 1]]);
+    expect(b.termos.find((t) => t.termo === "conta pld ideb")?.resultados).toBe(0);
+    expect(b.foraDoIndice).toBe(1);
     expect(b.termos.find((t) => t.termo === "ideb")?.resultados).toBeGreaterThan(0);
     const html = renderToStaticMarkup(createElement(UsoBusca, { busca: b, numero: "04" }));
     expect(html).toContain("Termos mais buscados, últimos 30 dias");
     expect(html).toContain("Buscas sem resultado");
     const semResultado = html.slice(html.indexOf('data-uso="sem-resultado"'));
-    expect(semResultado).toContain("xyzabc");
+    expect(semResultado).toContain("conta pld ideb");
+    expect(html).not.toContain(FORA_DO_INDICE);
     expect(semResultado).not.toContain(">ideb<");
     expect(html).toContain("não medido");
   });
 });
 
 describe("ligações", () => {
-  const vazio: BuscasDoPeriodo = { inicio: "2026-09-22", fim: "2026-10-21", anonimoAtivo: false, primeiroRegistro: null, total: 0, termos: [] };
+  const vazio: BuscasDoPeriodo = { inicio: "2026-09-22", fim: "2026-10-21", anonimoAtivo: false, primeiroRegistro: null, total: 0, foraDoIndice: 0, termos: [] };
 
   it("sem registro declara a ausência em vez de tabela de zeros", () => {
     const html = renderToStaticMarkup(createElement(UsoBusca, { busca: vazio, numero: "04" }));

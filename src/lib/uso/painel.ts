@@ -10,6 +10,7 @@ import { diaDeBrasilia, usoAnonimoAtivo } from "./coleta";
 import { FORA_DOS_OBSERVATORIOS, nomeDoGrupo } from "./rotas";
 import { buscar } from "@/lib/busca/buscar";
 import { indiceDeBusca } from "@/lib/busca/indice";
+import { FORA_DO_INDICE } from "./busca";
 
 export const DIAS_USO = 30;
 
@@ -132,6 +133,8 @@ export type BuscasDoPeriodo = {
   /** Primeiro dia com qualquer busca registrada (null: nenhuma ainda). */
   primeiroRegistro: string | null;
   total: number;
+  /** Buscas cujo texto não foi gravado (fora do vocabulário do índice ou com cara de dado pessoal; src/lib/uso/busca.ts). */
+  foraDoIndice: number;
   /** Termos da janela, do mais para o menos buscado; `resultados` é o que a busca devolve hoje para o termo. */
   termos: TermoBuscado[];
 };
@@ -154,7 +157,12 @@ export async function getBuscasDoPeriodo(agora = new Date(), env: Record<string,
     db.select({ dia: sql<string | null>`min(${t.dia})` }).from(t),
   ]);
   const porTermo = new Map<string, TermoBuscado>();
+  let foraDoIndice = 0;
   for (const l of linhas) {
+    if (l.termo === FORA_DO_INDICE) {
+      foraDoIndice += Number(l.buscas);
+      continue;
+    }
     const x = porTermo.get(l.termo) ?? { termo: l.termo, comConta: 0, semConta: 0, resultados: 0 };
     if (l.comConta) x.comConta += Number(l.buscas);
     else x.semConta += Number(l.buscas);
@@ -170,7 +178,8 @@ export async function getBuscasDoPeriodo(agora = new Date(), env: Record<string,
     fim,
     anonimoAtivo: usoAnonimoAtivo(env),
     primeiroRegistro: primeiroDia ? String(primeiroDia).slice(0, 10) : null,
-    total: termos.reduce((s, x) => s + x.comConta + x.semConta, 0),
+    total: termos.reduce((s, x) => s + x.comConta + x.semConta, 0) + foraDoIndice,
+    foraDoIndice,
     termos,
   };
 }
