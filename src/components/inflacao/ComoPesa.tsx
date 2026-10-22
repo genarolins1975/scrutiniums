@@ -124,12 +124,11 @@ function Simulador({ grupos, area, onde }: { grupos: Grupo[]; area: AreaNoArtefa
   const mudou = grupos.some((g) => fatias[g.id] !== iniciais[g.id]);
   return (
     <div className="space-y-4" data-modelo-didatico>
-      <p className="rotulo inline-block border border-bronze-dark px-2 py-1 text-bronze-dark">Modelo didático</p>
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao">
         Mova as fatias para parecer com o seu orçamento. A variação de cada grupo continua a do IPCA {onde}; muda só quanto cada grupo pesa. As fatias não
         precisam somar 100: a conta divide pela soma.
       </p>
-      <div className="grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-x-5 gap-y-3 sm:gap-x-8 lg:grid-cols-3">
         {grupos.map((g) => (
           <div key={g.id} className="min-w-0">
             <label htmlFor={`${id}-${g.id}`} className="flex items-baseline justify-between gap-2 text-sm text-carvao">

@@ -170,7 +170,7 @@ export function Escala({ escala, nota }: Readonly<{ escala: readonly NumeroPorta
               <NumeroEscala n={n} grande />
             </dd>
             {n.nota && <dd className="mt-3 border-l-2 border-linha pl-3 text-xs leading-relaxed text-carvao-muted">{n.nota}</dd>}
-            <dd className="mt-auto pt-3">
+            <dd className="mt-auto pt-1 sm:pt-3">
               <Link href={n.href} prefetch={false} className="inline-flex min-h-[44px] items-center text-sm text-carvao underline decoration-linha underline-offset-4">
                 Ver no painel
               </Link>
@@ -198,7 +198,7 @@ function Caminhos({ caminhos, hover }: Readonly<{ caminhos: readonly CaminhoEntr
             key={c.href + c.pergunta}
             className={`bg-papel ${i === n - 1 ? `${n % 2 === 1 ? "sm:col-span-2" : ""} ${n % 3 === 2 ? "lg:col-span-2" : n % 3 === 1 ? "lg:col-span-3" : "lg:col-span-1"}` : ""}`}
           >
-            <Link href={c.href} prefetch={false} className="group flex h-full min-h-[44px] flex-col p-5">
+            <Link href={c.href} prefetch={false} className="group flex h-full min-h-[44px] flex-col p-4 sm:p-5">
               {c.rotulo && <span className="rotulo text-mineral">{c.rotulo}</span>}
               <span className={`mt-2 font-serif text-lg leading-snug text-carvao ${hover}`}>{c.pergunta}</span>
               <span className="mt-1 text-sm leading-relaxed text-carvao-muted">{c.resumo}</span>
@@ -279,9 +279,9 @@ function CartaoDestino({ d, classe = "" }: Readonly<{ d: DestinoEntrada; classe?
   return (
     <li className={`bg-papel ${classe}`}>
       {d.prontidao === "preparacao" ? (
-        <span className="flex h-full flex-col p-5">{corpo}</span>
+        <span className="flex h-full flex-col p-4 sm:p-5">{corpo}</span>
       ) : (
-        <Link href={d.href} prefetch={false} className="group flex h-full min-h-[44px] flex-col p-5 hover:bg-marfim">
+        <Link href={d.href} prefetch={false} className="group flex h-full min-h-[44px] flex-col p-4 hover:bg-marfim sm:p-5">
           {corpo}
         </Link>
       )}

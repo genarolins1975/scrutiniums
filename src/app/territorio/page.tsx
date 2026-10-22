@@ -95,7 +95,7 @@ export default function EntradaTerritorio() {
       destinos={
         <>
       <section aria-labelledby="paineis-titulo" className="border-t border-linha">
-            <div className="mx-auto max-w-page px-6 py-14 md:py-16">
+            <div className="mx-auto max-w-page px-6 py-10 md:py-16">
               <h2 id="paineis-titulo" className="font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao">Os painéis do observatório</h2>
               <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
                 Os três painéis que o observatório mantém, com dados próprios. Cada cartão já traz o número mais recente e uma lista; o
@@ -103,7 +103,7 @@ export default function EntradaTerritorio() {
               </p>
               <ul className="mt-8 grid gap-px border border-linha bg-linha lg:grid-cols-3">
                 {cartoes.map((c) => (
-                  <li key={c.id} className="flex min-w-0 flex-col bg-papel p-5 md:p-6">
+                  <li key={c.id} className="flex min-w-0 flex-col bg-papel p-4 sm:p-5 md:p-6">
                     <p className="rotulo text-mineral">{c.titulo}</p>
                     <h3 className="mt-2 font-serif text-xl leading-snug text-carvao">
                       <Link href={c.href} prefetch={false} className="hover:underline">{c.pergunta}</Link>
@@ -137,7 +137,7 @@ export default function EntradaTerritorio() {
                 ))}
               </ul>
 
-              <h3 className="mt-14 font-serif text-xl leading-snug text-carvao">Todos os painéis, por coleção</h3>
+              <h3 className="mt-10 font-serif text-xl leading-snug text-carvao md:mt-14">Todos os painéis, por coleção</h3>
               <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
                 Os marcados com a origem são mantidos por outro observatório e aparecem aqui como atalho.
               </p>
@@ -145,10 +145,11 @@ export default function EntradaTerritorio() {
                 {colecoes.map((c) => (
                   <section key={c.id} aria-labelledby={`colecao-${c.id}`} className="min-w-0">
                     <h4 id={`colecao-${c.id}`} className="rotulo text-mineral">{c.nome}</h4>
-                    <ul className="mt-2">
+                    {/* no celular, duas colunas (a origem desce para baixo do nome), como nas entradas dos outros observatórios */}
+                    <ul className="mt-2 grid grid-cols-2 gap-x-4 sm:grid-cols-1">
                       {c.paineis.map((p) => (
-                        <li key={p.href}>
-                          <Link href={p.href} prefetch={false} className="group flex min-h-[44px] items-baseline justify-between gap-3 border-t border-linha py-2 text-sm text-carvao">
+                        <li key={p.href} className="min-w-0">
+                          <Link href={p.href} prefetch={false} className="group flex min-h-[44px] flex-col justify-center gap-0.5 border-t border-linha py-2 text-sm text-carvao sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
                             <span className="group-hover:underline">{p.titulo}</span>
                             {p.origem && <span className="shrink-0 text-xs text-mineral">{p.origem}</span>}
                           </Link>

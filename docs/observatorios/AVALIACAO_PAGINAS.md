@@ -127,8 +127,15 @@ Rodada de 22/10/2026 da Iniciativa 4 do parecer de UX (`EntradaColecao`, `Numero
 | `/observatorios/contas-publicas` | 1 | 5.231 → 5.446 / 10.283 → 10.214 | 552 / 556 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 9 · 8 · 8 · 8 | Nenhuma nova |
 | `/observatorios/energia-e-infraestrutura` | 1 | 5.067 → 5.279 / 10.218 → 9.745 | 551 / 590 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 9 · 8 · 8 · 8 | Nenhuma nova |
 | `/observatorios/economia` | 1 | 5.219 → 5.414 / 10.879 → 10.517 | 524 / 504 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 8 · 8 · 8 · 8 | Nenhuma nova |
+| `/territorio` | 2 | 5.607 → 5.574 / 11.733 → 10.998 | 569 / 549 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 8 · 8 · 8 · 8 | A 390 px fica 2 px abaixo do orçamento; o H1 tem 53 caracteres e ocupa três linhas no celular |
+| `/combustiveis` | 2 | 9.377 → 6.045 / 14.901 → 10.852 | 569 / 531 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 8 · 8 · 8 · 8 | Nenhuma nova |
+| `/conectividade` | 2 | 10.292 → 5.714 / 16.067 → 9.901 | 569 / 531 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 9 · 8 · 8 · 8 | Nenhuma nova |
+| `/educacao-municipal` | 2 | 7.178 → 4.923 / 10.659 → 8.016 | 533 / 539 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 9 · 8 · 8 · 8 | O laboratório do Ideb usa os números das redes municipais do Brasil; o do município continua no resultado da consulta |
+| `/custo-de-vida` | 2 | 10.065 → 7.586 / 15.970 → 12.873 | 569 / 549 | 0 · 0 / 0 | 8 · 7 · 8 · 7 · 9 · 8 · 8 · 7 | Acima do orçamento de entrada (6.500 / 11.000): o modelo didático (2.669 px a 1440) e a consulta com os nove grupos (1.649 px) são a maior parte; decisão do dono pendente |
+| `/contas-publicas/previdencia` | 2 | 16.962 → 5.546 / 23.314 → 8.111 | 504 / 526 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 8 · 8 · 8 · 8 | Nenhuma nova |
+| `/agronegocio` | 2 | 6.463 → 4.833 / 12.036 → 8.420 | 513 / 488 | 0 · 0 / 0 | 8 · 8 · 8 · 8 · 8 · 8 · 8 · 8 | Nenhuma nova |
 
-A 1440 px as cinco entradas ganharam cerca de 200 px com a lista "O que este modelo deixa de fora", que o molde torna obrigatória; a 390 px, as listas de painéis das coleções passaram a duas colunas e o respiro vertical do molde ficou mais justo, sem retirar conteúdo.
+No Grupo A (PR 2), as entradas que eram o próprio painel encolheram porque as seções longas foram para blocos recolhidos na mesma página; o primeiro número de antes não tem medida porque a marcação antiga não o identificava. A 1440 px as cinco entradas de observatório ganharam cerca de 200 px com a lista "O que este modelo deixa de fora", que o molde torna obrigatória; a 390 px, as listas de painéis das coleções passaram a duas colunas e o respiro vertical do molde ficou mais justo, sem retirar conteúdo.
 
 ## Pendências
 

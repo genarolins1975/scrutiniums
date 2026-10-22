@@ -109,7 +109,8 @@ describe("inflação por cidade: o painel", () => {
     // as 16 áreas e o Brasil no seletor
     for (const a of gold.areas) expect(html, a.nome).toContain(a.nome);
     expect(gold.areas).toHaveLength(17);
-  });
+    // a primeira renderização do painel monta o índice da busca uma vez (os destinos da coleção leem os resumos dele)
+  }, 30_000);
 
   it("seções na ordem da pergunta, com o método recolhido no fim", async () => {
     const html = await painel();

@@ -58,9 +58,9 @@ export function ParaVoce({
         <ul className={`mt-6 grid gap-px border border-linha bg-linha ${colunas}`}>
           {perguntas.map((p) => (
             <li key={p.id} data-para-voce-pergunta={p.id} className="min-w-0 bg-papel">
-              <Link href={p.href} prefetch={prefetchDoLink(p.href)} className="group flex h-full min-h-[44px] flex-col p-5 md:p-6">
+              <Link href={p.href} prefetch={prefetchDoLink(p.href)} className="group flex h-full min-h-[44px] flex-col p-4 sm:p-5 md:p-6">
                 {artes?.[p.id] && (
-                  <span aria-hidden="true" className={`${styles.arte} -mx-5 -mt-5 mb-5 md:-mx-6 md:-mt-6 md:mb-6`} data-para-voce-arte="">
+                  <span aria-hidden="true" className={`${styles.arte} -mx-4 -mt-4 mb-4 sm:-mx-5 sm:-mt-5 sm:mb-5 md:-mx-6 md:-mt-6 md:mb-6`} data-para-voce-arte="">
                     {artes[p.id]}
                   </span>
                 )}
