@@ -501,7 +501,7 @@
   },
   "S4": {
    "label": "S4 — porte inferior a 0,1% do PIB",
-   "n": 155,
+   "n": 154,
    "mediana": 5.08,
    "quartis": {
     "q1": 3.65,
@@ -621,7 +621,6 @@
     7.32,
     7.47,
     7.89,
-    8.0,
     8.05,
     8.16,
     8.27,
@@ -668,7 +667,7 @@
   },
   "S?": {
    "label": "S?",
-   "n": 134,
+   "n": 135,
    "mediana": 5.08,
    "quartis": {
     "q1": 2.28,
@@ -772,6 +771,7 @@
     7.73,
     7.82,
     7.99,
+    8.0,
     8.04,
     8.07,
     8.26,
@@ -1050,7 +1050,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 37.6,
+   "percentil_pares": 37.3,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -1112,7 +1112,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 26.3,
+   "percentil_pares": 26.1,
    "quadrante": "crescimento abaixo da mediana + inadimplência estável",
    "alertas": [
     {
@@ -1174,7 +1174,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 55.6,
+   "percentil_pares": 55.2,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -1241,7 +1241,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 40.6,
+   "percentil_pares": 40.3,
    "quadrante": "crescimento acima da mediana + inadimplência estável",
    "alertas": [
     {
@@ -1477,7 +1477,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 61.7,
+   "percentil_pares": 61.2,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -1544,7 +1544,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 21.8,
+   "percentil_pares": 21.6,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -1600,7 +1600,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 38.3,
+   "percentil_pares": 38.1,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -1739,7 +1739,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 45.9,
+   "percentil_pares": 45.5,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -1801,7 +1801,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 27.8,
+   "percentil_pares": 27.6,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": [
     {
@@ -1863,7 +1863,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 57.1,
+   "percentil_pares": 56.7,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -2385,7 +2385,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 36.1,
+   "percentil_pares": 35.8,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -2512,7 +2512,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 35.3,
+   "percentil_pares": 35.1,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -2692,7 +2692,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 23.3,
+   "percentil_pares": 23.1,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -2754,7 +2754,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 11.3,
+   "percentil_pares": 11.2,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -2883,7 +2883,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 20.3,
+   "percentil_pares": 20.1,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -2939,7 +2939,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 33.8,
+   "percentil_pares": 33.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -3001,7 +3001,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 41.4,
+   "percentil_pares": 41.0,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -3068,7 +3068,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 88.0,
+   "percentil_pares": 88.1,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -3325,7 +3325,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 72.2,
+   "percentil_pares": 72.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -3397,7 +3397,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 17.3,
+   "percentil_pares": 17.2,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -3520,7 +3520,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 39.8,
+   "percentil_pares": 39.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -3659,7 +3659,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 34.6,
+   "percentil_pares": 34.3,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -3906,7 +3906,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 78.2,
+   "percentil_pares": 78.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -4040,7 +4040,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 13.5,
+   "percentil_pares": 13.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -4096,7 +4096,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 65.6,
+   "percentil_pares": 66.0,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -4230,7 +4230,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 15.0,
+   "percentil_pares": 14.9,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -4408,7 +4408,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 0.8,
+   "percentil_pares": 0.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência estável",
    "alertas": []
   },
@@ -4520,7 +4520,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 46.1,
+   "percentil_pares": 46.4,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": [
     {
@@ -4582,7 +4582,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 63.2,
+   "percentil_pares": 62.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -4649,7 +4649,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 47.4,
+   "percentil_pares": 47.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -4778,7 +4778,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 21.1,
+   "percentil_pares": 20.9,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -4890,7 +4890,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 47.4,
+   "percentil_pares": 47.0,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -4946,7 +4946,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 37.0,
+   "percentil_pares": 37.3,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -5085,7 +5085,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 70.7,
+   "percentil_pares": 70.1,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -5347,7 +5347,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 45.1,
+   "percentil_pares": 44.8,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -5414,7 +5414,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 96.2,
+   "percentil_pares": 96.3,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -5424,7 +5424,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 96.2,
+     "valor": 96.3,
      "severidade": "atencao"
     }
    ]
@@ -5481,7 +5481,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 42.2,
+   "percentil_pares": 42.5,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -5553,7 +5553,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 39.6,
+   "percentil_pares": 39.9,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -5620,7 +5620,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 54.1,
+   "percentil_pares": 53.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -5676,7 +5676,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 39.0,
+   "percentil_pares": 39.2,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -5753,7 +5753,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 14.3,
+   "percentil_pares": 14.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -5820,7 +5820,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 18.2,
+   "percentil_pares": 18.3,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -5892,7 +5892,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 86.4,
+   "percentil_pares": 86.3,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -5959,7 +5959,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 30.1,
+   "percentil_pares": 29.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -6021,7 +6021,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 68.8,
+   "percentil_pares": 69.3,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -6053,7 +6053,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 7.1,
+   "percentil_pares": 7.2,
    "alertas": [
     {
      "regra": "Δ trimestral > 0,50 p.p.",
@@ -6370,7 +6370,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 97.7,
+   "percentil_pares": 97.8,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -6380,7 +6380,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 97.7,
+     "valor": 97.8,
      "severidade": "atencao"
     },
     {
@@ -6436,7 +6436,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 60.9,
+   "percentil_pares": 60.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -6498,7 +6498,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 58.6,
+   "percentil_pares": 58.2,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -6565,7 +6565,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 22.7,
+   "percentil_pares": 22.9,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -6632,7 +6632,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 48.7,
+   "percentil_pares": 49.0,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -6699,7 +6699,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 75.3,
+   "percentil_pares": 75.2,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -6828,7 +6828,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 58.4,
+   "percentil_pares": 58.8,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -7085,7 +7085,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 48.1,
+   "percentil_pares": 47.8,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -7157,7 +7157,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 43.5,
+   "percentil_pares": 43.8,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -7229,7 +7229,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 12.0,
+   "percentil_pares": 11.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência estável",
    "alertas": []
   },
@@ -7285,7 +7285,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 31.2,
+   "percentil_pares": 31.4,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -7347,7 +7347,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 35.1,
+   "percentil_pares": 35.3,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -7409,7 +7409,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 77.9,
+   "percentil_pares": 77.8,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -7557,7 +7557,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 63.9,
+   "percentil_pares": 63.4,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -7619,7 +7619,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 78.6,
+   "percentil_pares": 78.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -7681,7 +7681,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 62.3,
+   "percentil_pares": 62.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -7753,7 +7753,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 83.1,
+   "percentil_pares": 83.0,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -7815,7 +7815,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 42.1,
+   "percentil_pares": 41.8,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -7882,7 +7882,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 19.5,
+   "percentil_pares": 19.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -7992,7 +7992,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 18.8,
+   "percentil_pares": 18.7,
    "alertas": [
     {
      "regra": "cobertura caiu com inadimplência subindo",
@@ -8120,7 +8120,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 60.4,
+   "percentil_pares": 60.8,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -8182,7 +8182,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 60.2,
+   "percentil_pares": 59.7,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -8238,7 +8238,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 40.3,
+   "percentil_pares": 40.5,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -8305,7 +8305,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 74.4,
+   "percentil_pares": 74.6,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -8428,7 +8428,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 50.4,
+   "percentil_pares": 50.0,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": [
     {
@@ -8460,7 +8460,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 86.5,
+   "percentil_pares": 86.6,
    "alertas": []
   },
   {
@@ -8515,7 +8515,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 49.4,
+   "percentil_pares": 49.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -8571,7 +8571,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 53.2,
+   "percentil_pares": 53.6,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -8777,7 +8777,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 25.3,
+   "percentil_pares": 25.5,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -8849,7 +8849,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 51.1,
+   "percentil_pares": 50.7,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -8916,7 +8916,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 54.5,
+   "percentil_pares": 54.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -8972,7 +8972,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 56.5,
+   "percentil_pares": 56.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência estável",
    "alertas": []
   },
@@ -9028,7 +9028,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 33.1,
+   "percentil_pares": 33.3,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -9162,7 +9162,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 25.3,
+   "percentil_pares": 25.5,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -9296,7 +9296,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 79.7,
+   "percentil_pares": 79.9,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -9363,7 +9363,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 77.3,
+   "percentil_pares": 77.1,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -9625,7 +9625,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 69.5,
+   "percentil_pares": 69.9,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -9836,7 +9836,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 24.0,
+   "percentil_pares": 24.2,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -9975,7 +9975,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 29.2,
+   "percentil_pares": 29.4,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -10114,7 +10114,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 17.5,
+   "percentil_pares": 17.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -10176,7 +10176,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 24.7,
+   "percentil_pares": 24.8,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -10300,7 +10300,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 22.1,
+   "percentil_pares": 22.2,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -10356,7 +10356,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 51.3,
+   "percentil_pares": 51.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -10412,7 +10412,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 28.6,
+   "percentil_pares": 28.8,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -10545,7 +10545,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 82.5,
+   "percentil_pares": 82.4,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -10607,7 +10607,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 29.3,
+   "percentil_pares": 29.1,
    "quadrante": "crescimento acima da mediana + inadimplência estável",
    "alertas": [
     {
@@ -10674,7 +10674,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 49.6,
+   "percentil_pares": 49.3,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -10746,7 +10746,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 15.6,
+   "percentil_pares": 15.7,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -10885,7 +10885,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 36.4,
+   "percentil_pares": 36.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -11013,7 +11013,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 42.2,
+   "percentil_pares": 42.5,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -11147,7 +11147,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 59.1,
+   "percentil_pares": 59.5,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -11209,7 +11209,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 64.3,
+   "percentil_pares": 64.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -11271,7 +11271,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 69.9,
+   "percentil_pares": 69.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -11343,7 +11343,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 71.4,
+   "percentil_pares": 70.9,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -11405,7 +11405,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 98.1,
+   "percentil_pares": 98.0,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -11415,7 +11415,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 98.1,
+     "valor": 98.0,
      "severidade": "atencao"
     },
     {
@@ -11549,7 +11549,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 76.6,
+   "percentil_pares": 76.5,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -11678,7 +11678,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 72.1,
+   "percentil_pares": 72.5,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -11796,7 +11796,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 44.8,
+   "percentil_pares": 45.1,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -11924,7 +11924,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 27.9,
+   "percentil_pares": 28.1,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -11991,7 +11991,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 56.4,
+   "percentil_pares": 56.0,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -12119,7 +12119,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 50.0,
+   "percentil_pares": 50.3,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -12181,7 +12181,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 90.9,
+   "percentil_pares": 90.8,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -12196,7 +12196,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 90.9,
+     "valor": 90.8,
      "severidade": "atencao"
     },
     {
@@ -12308,7 +12308,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 64.9,
+   "percentil_pares": 65.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -12370,7 +12370,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 38.3,
+   "percentil_pares": 38.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -12437,7 +12437,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 66.2,
+   "percentil_pares": 66.7,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -12555,7 +12555,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 10.5,
+   "percentil_pares": 10.4,
    "quadrante": "crescimento acima da mediana + inadimplência estável",
    "alertas": []
   },
@@ -12611,7 +12611,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 25.6,
+   "percentil_pares": 25.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -12874,7 +12874,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 8.3,
+   "percentil_pares": 8.2,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -13075,7 +13075,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 48.1,
+   "percentil_pares": 48.4,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -13214,7 +13214,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 73.7,
+   "percentil_pares": 73.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -13281,7 +13281,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 57.8,
+   "percentil_pares": 58.2,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -13393,7 +13393,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 30.8,
+   "percentil_pares": 30.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -13505,7 +13505,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 70.1,
+   "percentil_pares": 70.6,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -13823,7 +13823,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 26.6,
+   "percentil_pares": 26.8,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -13941,7 +13941,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 18.8,
+   "percentil_pares": 19.0,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -13997,7 +13997,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 76.0,
+   "percentil_pares": 75.8,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -14059,7 +14059,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 33.8,
+   "percentil_pares": 34.0,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -14244,7 +14244,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 50.6,
+   "percentil_pares": 51.0,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -14372,7 +14372,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 34.4,
+   "percentil_pares": 34.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -14434,7 +14434,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 23.4,
+   "percentil_pares": 23.5,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -14490,7 +14490,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 14.3,
+   "percentil_pares": 14.2,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -14613,7 +14613,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 13.0,
+   "percentil_pares": 13.1,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -14685,7 +14685,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 16.2,
+   "percentil_pares": 16.3,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -14747,7 +14747,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 46.1,
+   "percentil_pares": 46.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -14819,7 +14819,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 44.2,
+   "percentil_pares": 44.4,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -15076,7 +15076,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 21.4,
+   "percentil_pares": 21.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -15138,7 +15138,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 67.5,
+   "percentil_pares": 68.0,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -15210,7 +15210,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 16.5,
+   "percentil_pares": 16.4,
    "quadrante": "crescimento acima da mediana + inadimplência estável",
    "alertas": [
     {
@@ -15272,7 +15272,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 42.9,
+   "percentil_pares": 42.5,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -15395,7 +15395,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 52.6,
+   "percentil_pares": 52.9,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -15650,7 +15650,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 83.8,
+   "percentil_pares": 83.7,
    "alertas": []
   },
   {
@@ -15905,7 +15905,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 85.7,
+   "percentil_pares": 85.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -16094,7 +16094,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 76.7,
+   "percentil_pares": 76.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -16407,7 +16407,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 61.0,
+   "percentil_pares": 61.4,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -16598,7 +16598,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 85.1,
+   "percentil_pares": 85.0,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -17117,7 +17117,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 22.6,
+   "percentil_pares": 22.4,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -17291,7 +17291,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 91.7,
+   "percentil_pares": 91.8,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -17306,7 +17306,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 91.7,
+     "valor": 91.8,
      "severidade": "atencao"
     },
     {
@@ -17486,7 +17486,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 20.1,
+   "percentil_pares": 20.3,
    "quadrante": "crescimento abaixo da mediana + inadimplência estável",
    "alertas": [
     {
@@ -17954,7 +17954,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 9.7,
+   "percentil_pares": 9.8,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": [
     {
@@ -18083,7 +18083,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 40.3,
+   "percentil_pares": 40.5,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -18273,7 +18273,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 45.5,
+   "percentil_pares": 45.8,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -18453,7 +18453,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 75.9,
+   "percentil_pares": 76.1,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -18762,7 +18762,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 54.9,
+   "percentil_pares": 54.5,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -18806,7 +18806,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 31.6,
+   "percentil_pares": 31.3,
    "alertas": []
   },
   {
@@ -19061,7 +19061,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 53.9,
+   "percentil_pares": 54.2,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -19128,7 +19128,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 13.6,
+   "percentil_pares": 13.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -19564,7 +19564,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 35.1,
+   "percentil_pares": 35.3,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -19682,7 +19682,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 31.8,
+   "percentil_pares": 32.0,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -20190,7 +20190,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 18.8,
+   "percentil_pares": 18.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -20302,7 +20302,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 41.6,
+   "percentil_pares": 41.8,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -20441,7 +20441,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 67.7,
+   "percentil_pares": 67.2,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -20813,7 +20813,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 75.2,
+   "percentil_pares": 75.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -21009,7 +21009,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 80.5,
+   "percentil_pares": 80.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -21127,7 +21127,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 63.6,
+   "percentil_pares": 64.1,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -21199,7 +21199,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 36.8,
+   "percentil_pares": 36.6,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": [
     {
@@ -21261,7 +21261,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 46.6,
+   "percentil_pares": 46.3,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -21379,7 +21379,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 51.9,
+   "percentil_pares": 52.3,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": [
     {
@@ -21446,7 +21446,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 70.8,
+   "percentil_pares": 71.2,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -21518,7 +21518,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 37.7,
+   "percentil_pares": 37.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -21780,7 +21780,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 74.7,
+   "percentil_pares": 74.5,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -21919,7 +21919,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 55.8,
+   "percentil_pares": 56.2,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -22530,7 +22530,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 81.8,
+   "percentil_pares": 81.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -22586,7 +22586,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 48.9,
+   "percentil_pares": 48.5,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -23064,7 +23064,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 80.5,
+   "percentil_pares": 80.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -23136,7 +23136,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 11.7,
+   "percentil_pares": 11.8,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -23464,7 +23464,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 93.2,
+   "percentil_pares": 93.3,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -23474,7 +23474,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 93.2,
+     "valor": 93.3,
      "severidade": "atencao"
     }
    ]
@@ -23922,7 +23922,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 43.6,
+   "percentil_pares": 43.3,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -24066,7 +24066,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 51.9,
+   "percentil_pares": 51.5,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -24205,7 +24205,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 53.4,
+   "percentil_pares": 53.0,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -24377,7 +24377,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 65.4,
+   "percentil_pares": 64.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -24751,7 +24751,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 95.5,
+   "percentil_pares": 95.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -24766,7 +24766,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 95.5,
+     "valor": 95.4,
      "severidade": "atencao"
     }
    ]
@@ -25393,7 +25393,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 10.4,
+   "percentil_pares": 10.5,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -25839,7 +25839,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 2.3,
+   "percentil_pares": 2.2,
    "quadrante": "crescimento acima da mediana + inadimplência estável",
    "alertas": []
   },
@@ -26084,7 +26084,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 12.0,
+   "percentil_pares": 11.9,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": [
     {
@@ -26573,7 +26573,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 88.3,
+   "percentil_pares": 88.2,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -26712,7 +26712,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 28.6,
+   "percentil_pares": 28.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência estável",
    "alertas": []
   },
@@ -26930,7 +26930,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 99.2,
+   "percentil_pares": 99.3,
    "quadrante": "crescimento acima da mediana + inadimplência estável",
    "alertas": [
     {
@@ -26940,7 +26940,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 99.2,
+     "valor": 99.3,
      "severidade": "atencao"
     }
    ]
@@ -27053,7 +27053,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 11.0,
+   "percentil_pares": 11.1,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": [
     {
@@ -27120,7 +27120,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 29.9,
+   "percentil_pares": 30.1,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -27429,7 +27429,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 24.8,
+   "percentil_pares": 24.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -28156,7 +28156,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 12.3,
+   "percentil_pares": 12.4,
    "alertas": [
     {
      "regra": "Δ trimestral > 0,50 p.p.",
@@ -28216,7 +28216,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 71.4,
+   "percentil_pares": 71.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -28467,7 +28467,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 57.9,
+   "percentil_pares": 57.5,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -28873,7 +28873,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 62.4,
+   "percentil_pares": 61.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -29360,7 +29360,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 89.0,
+   "percentil_pares": 88.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -30664,7 +30664,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 82.7,
+   "percentil_pares": 82.8,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -30993,7 +30993,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 88.7,
+   "percentil_pares": 88.8,
    "quadrante": "crescimento acima da mediana + inadimplência estável",
    "alertas": [
     {
@@ -31055,7 +31055,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 31.6,
+   "percentil_pares": 31.3,
    "quadrante": "crescimento abaixo da mediana + inadimplência estável",
    "alertas": []
   },
@@ -32037,7 +32037,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 44.4,
+   "percentil_pares": 44.0,
    "quadrante": "crescimento acima da mediana + inadimplência estável",
    "alertas": [
     {
@@ -32259,7 +32259,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 87.7,
+   "percentil_pares": 87.6,
    "alertas": []
   },
   {
@@ -32509,7 +32509,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 81.2,
+   "percentil_pares": 81.3,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -32725,7 +32725,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 81.2,
+   "percentil_pares": 81.0,
    "alertas": []
   },
   {
@@ -33770,7 +33770,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 16.9,
+   "percentil_pares": 17.0,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -33903,7 +33903,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 57.1,
+   "percentil_pares": 57.5,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -34339,7 +34339,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 66.9,
+   "percentil_pares": 67.3,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -34467,7 +34467,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 69.2,
+   "percentil_pares": 68.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -34714,7 +34714,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 8.4,
+   "percentil_pares": 8.5,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": [
     {
@@ -34893,7 +34893,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 66.2,
+   "percentil_pares": 65.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -35022,7 +35022,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 73.4,
+   "percentil_pares": 73.2,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -35094,7 +35094,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 66.9,
+   "percentil_pares": 66.4,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -35156,7 +35156,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 68.2,
+   "percentil_pares": 68.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -35290,7 +35290,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 74.0,
+   "percentil_pares": 73.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -35749,7 +35749,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 59.4,
+   "percentil_pares": 59.0,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -35888,7 +35888,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 79.2,
+   "percentil_pares": 79.1,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -35955,7 +35955,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 78.9,
+   "percentil_pares": 79.1,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -36319,7 +36319,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 87.2,
+   "percentil_pares": 87.3,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -36663,7 +36663,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 31.6,
+   "percentil_pares": 31.3,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -36730,7 +36730,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 83.5,
+   "percentil_pares": 83.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -37109,7 +37109,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 63.0,
+   "percentil_pares": 63.4,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": [
     {
@@ -37248,7 +37248,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 96.8,
+   "percentil_pares": 96.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -37258,7 +37258,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 96.8,
+     "valor": 96.7,
      "severidade": "atencao"
     }
    ]
@@ -37285,7 +37285,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 79.9,
+   "percentil_pares": 79.7,
    "alertas": []
   },
   {
@@ -37586,7 +37586,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 31.8,
+   "percentil_pares": 32.0,
    "quadrante": "crescimento acima da mediana + inadimplência estável",
    "alertas": [
     {
@@ -37981,7 +37981,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 85.0,
+   "percentil_pares": 85.1,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -39419,7 +39419,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 61.7,
+   "percentil_pares": 62.1,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -39486,7 +39486,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 52.6,
+   "percentil_pares": 52.2,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -39625,7 +39625,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 89.5,
+   "percentil_pares": 89.6,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -39799,7 +39799,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 30.5,
+   "percentil_pares": 30.7,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -41347,7 +41347,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 18.0,
+   "percentil_pares": 17.9,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -41543,7 +41543,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 20.8,
+   "percentil_pares": 20.9,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -41599,7 +41599,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 77.4,
+   "percentil_pares": 77.6,
    "quadrante": "crescimento acima da mediana + inadimplência estável",
    "alertas": []
   },
@@ -41716,7 +41716,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 9.1,
+   "percentil_pares": 9.2,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -41896,7 +41896,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 39.1,
+   "percentil_pares": 38.8,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -42582,7 +42582,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 64.7,
+   "percentil_pares": 64.2,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -42721,7 +42721,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 4.5,
+   "percentil_pares": 4.6,
    "quadrante": "crescimento acima da mediana + inadimplência em queda",
    "alertas": [
     {
@@ -42783,7 +42783,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 99.4,
+   "percentil_pares": 99.3,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -42798,7 +42798,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 99.4,
+     "valor": 99.3,
      "severidade": "atencao"
     },
     {
@@ -43194,7 +43194,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 89.6,
+   "percentil_pares": 89.5,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -43368,7 +43368,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 5.8,
+   "percentil_pares": 5.9,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": []
   },
@@ -43624,7 +43624,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 3.8,
+   "percentil_pares": 3.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": [
     {
@@ -43848,7 +43848,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 90.3,
+   "percentil_pares": 90.2,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -43858,7 +43858,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 90.3,
+     "valor": 90.2,
      "severidade": "atencao"
     }
    ]
@@ -44348,7 +44348,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 27.3,
+   "percentil_pares": 27.5,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -44545,7 +44545,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 9.8,
+   "percentil_pares": 9.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -44601,7 +44601,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 1.9,
+   "percentil_pares": 2.0,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -44836,7 +44836,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 68.4,
+   "percentil_pares": 67.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": [
     {
@@ -45037,7 +45037,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 72.9,
+   "percentil_pares": 73.1,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -45465,7 +45465,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 14.9,
+   "percentil_pares": 15.0,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -45712,7 +45712,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 90.2,
+   "percentil_pares": 90.3,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -45727,7 +45727,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 90.2,
+     "valor": 90.3,
      "severidade": "atencao"
     }
    ]
@@ -45855,7 +45855,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 55.2,
+   "percentil_pares": 55.6,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -45917,7 +45917,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 3.2,
+   "percentil_pares": 3.3,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -45979,7 +45979,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 82.0,
+   "percentil_pares": 82.1,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -46211,7 +46211,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 84.2,
+   "percentil_pares": 84.3,
    "alertas": []
   },
   {
@@ -46316,7 +46316,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 84.4,
+   "percentil_pares": 84.3,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": [
     {
@@ -46512,7 +46512,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 91.6,
+   "percentil_pares": 91.5,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -46527,7 +46527,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 91.6,
+     "valor": 91.5,
      "severidade": "atencao"
     },
     {
@@ -46924,7 +46924,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 59.7,
+   "percentil_pares": 60.1,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -47071,11 +47071,11 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 99.2,
+   "percentil_pares": 99.3,
    "alertas": [
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 99.2,
+     "valor": 99.3,
      "severidade": "atencao"
     }
    ]
@@ -47170,7 +47170,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 0.6,
+   "percentil_pares": 0.7,
    "alertas": []
   },
   {
@@ -48278,7 +48278,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 27.1,
+   "percentil_pares": 26.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -48392,7 +48392,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 5.3,
+   "percentil_pares": 5.2,
    "alertas": []
   },
   {
@@ -48447,7 +48447,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 87.0,
+   "percentil_pares": 86.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -48617,7 +48617,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 15.8,
+   "percentil_pares": 15.7,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -48924,7 +48924,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 24.1,
+   "percentil_pares": 23.9,
    "quadrante": "crescimento abaixo da mediana + inadimplência em queda",
    "alertas": []
   },
@@ -49160,7 +49160,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 92.9,
+   "percentil_pares": 92.8,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -49175,7 +49175,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 92.9,
+     "valor": 92.8,
      "severidade": "atencao"
     },
     {
@@ -49411,7 +49411,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 85.7,
+   "percentil_pares": 85.8,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -49473,7 +49473,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 94.7,
+   "percentil_pares": 94.8,
    "quadrante": "crescimento acima da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -49483,7 +49483,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 94.7,
+     "valor": 94.8,
      "severidade": "atencao"
     },
     {
@@ -49759,7 +49759,7 @@
   {
    "cod_inst": "C0052656",
    "nome": "BARU",
-   "grupo": "S4",
+   "grupo": "S?",
    "inad_pct": 8.0,
    "d_tri_pp": -4.91,
    "d_ano_pp": null,
@@ -49790,7 +49790,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 72.7,
+   "percentil_pares": 71.6,
    "alertas": []
   },
   {
@@ -50091,7 +50091,7 @@
     }
    ],
    "mediana_pares": 5.08,
-   "percentil_pares": 94.2,
+   "percentil_pares": 94.1,
    "quadrante": "crescimento abaixo da mediana + inadimplência em alta",
    "alertas": [
     {
@@ -50106,7 +50106,7 @@
     },
     {
      "regra": "percentil >= 90 no grupo de pares",
-     "valor": 94.2,
+     "valor": 94.1,
      "severidade": "atencao"
     },
     {

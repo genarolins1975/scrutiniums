@@ -9,7 +9,7 @@
   "sede": "São Paulo/SP",
   "segmento": "S?",
   "grupo_pares": "S?",
-  "n_pares": 386,
+  "n_pares": 387,
   "conglomerado_prudencial": "C0084576",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-21T16:18:21+00:00",
+  "atualizado_em": "2026-10-22T15:48:01+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 23.903.068"
  },
@@ -70,7 +70,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 386,
+  "quantidade": 387,
   "maiores_membros": [
    {
     "cod": "C0010069",
@@ -134,7 +134,7 @@
    }
   ],
   "quartis_basileia": {
-   "q1": 16.2,
+   "q1": 16.3,
    "mediana": 28.5,
    "q3": 81.0
   },
@@ -255,8 +255,8 @@
    "unit": "%",
    "d_tri": 15.18,
    "vs_pares": "acima",
-   "mediana_grupo": 28.49,
-   "percentil": 53.4
+   "mediana_grupo": 28.51,
+   "percentil": 53.2
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -264,8 +264,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 3.68,
-   "percentil": 47.8
+   "mediana_grupo": 3.66,
+   "percentil": 47.9
   },
   {
    "indicador": "ROE do período",
@@ -273,8 +273,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.1,
-   "percentil": 50.9
+   "mediana_grupo": 3.96,
+   "percentil": 51.0
   }
  ],
  "carteira": {
@@ -1162,6 +1162,7 @@
     39.71,
     2.32,
     6.72,
+    -6.67,
     0.0,
     12.04,
     18.52,
@@ -1230,7 +1231,7 @@
     55.04
    ],
    "meu": 4.26,
-   "mediana": 4.1
+   "mediana": 3.96
   },
   "basileia": {
    "valores": [
@@ -1535,6 +1536,7 @@
     27.77,
     331.71,
     69.54,
+    46.08,
     -8.19,
     89.95,
     -31.07,
@@ -1591,7 +1593,7 @@
     50.43
    ],
    "meu": 32.62,
-   "mediana": 28.49
+   "mediana": 28.51
   },
   "alav": {
    "valores": [
@@ -1915,6 +1917,7 @@
     2.22,
     1.5,
     15.99,
+    1.34,
     114.62,
     3.89,
     1.44,
@@ -1983,7 +1986,7 @@
     9.56
    ],
    "meu": 3.27,
-   "mediana": 3.68
+   "mediana": 3.66
   }
  },
  "comparacao_pares": {

@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-21T16:18:11+00:00",
+ "gerado_em": "2026-10-22T15:47:49+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,8 +131,8 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 189,
-  "total_editais": 538,
+  "total_contratos_if": 190,
+  "total_editais": 703,
   "backfill_completo": false,
   "ranking": [
    {
@@ -152,9 +152,9 @@
    {
     "cnpj8": "90400888",
     "banco": "BANCO SANTANDER (BRASIL) S.A.",
-    "contratos": 17,
+    "contratos": 18,
     "ufs": 7,
-    "como_receita": 6
+    "como_receita": 7
    },
    {
     "cnpj8": "00000000",
@@ -447,6 +447,21 @@
     "banco": "CAIXA ECONOMICA FEDERAL",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/87366159000102/2026/474"
+   },
+   {
+    "controle": "68020916000147-2-000054/2026",
+    "ente": "MUNICIPIO DE BERTIOGA",
+    "esfera": "Municipal",
+    "municipio": "Bertioga",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-10-06",
+    "vig_fim": "2031-10-05",
+    "valor": 4080400.0,
+    "receita": true,
+    "banco": "BANCO SANTANDER S/A",
+    "cnpj8": "90400888",
+    "url": "https://pncp.gov.br/contratos/68020916000147/2026/54"
    },
    {
     "controle": "01612483000148-2-000057/2026",
@@ -987,24 +1002,27 @@
     "banco": "ITAU UNIBANCO S/A",
     "cnpj8": "60701190",
     "url": "https://pncp.gov.br/contratos/46668596000101/2026/29"
-   },
-   {
-    "controle": "18307496000106-2-000043/2026",
-    "ente": "MUNICIPIO DE SARDOA",
-    "esfera": "Municipal",
-    "municipio": "Sardoá",
-    "uf": "MG",
-    "modalidade": "Credenciamento",
-    "assinatura": "2026-08-06",
-    "vig_fim": "2031-08-06",
-    "valor": 0.0,
-    "receita": false,
-    "banco": "COOPERATIVA DE POUPANCA E CREDITO DO VALE DO RIO DOCE LTDA. - SICOOB CREDIRIODOCE",
-    "cnpj8": "25606237",
-    "url": "https://pncp.gov.br/contratos/18307496000106/2026/43"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE COTIA",
+    "municipio": "Cotia",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-22",
+    "url": "https://pncp.gov.br/compras/46523049000120/2026/183"
+   },
+   {
+    "ente": "MUNICIPIO DE FAXINAL DOS GUEDES",
+    "municipio": "Faxinal dos Guedes",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-21",
+    "url": "https://pncp.gov.br/compras/83009910000162/2026/133"
+   },
    {
     "ente": "CENTRO UNIVERSITARIO MUNICIPAL DE FRANCA",
     "municipio": "Franca",
@@ -1094,24 +1112,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-15",
     "url": "https://pncp.gov.br/compras/46634531000137/2026/320"
-   },
-   {
-    "ente": "MUNICIPIO DE ITUBERA",
-    "municipio": "Ituberá",
-    "uf": "BA",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-15",
-    "url": "https://pncp.gov.br/compras/14195333000128/2026/112"
-   },
-   {
-    "ente": "MUNICIPIO DE VERTENTE DO LERIO",
-    "municipio": "Vertente do Lério",
-    "uf": "PE",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-15",
-    "url": "https://pncp.gov.br/compras/40893646000160/2026/48"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",
