@@ -18,7 +18,8 @@ export function Footer({ compacto = false, idioma = "pt" }: { compacto?: boolean
   return (
     <footer className="border-t border-linha-escura bg-carvao text-marfim">
       <div className="mx-auto grid max-w-page grid-cols-1 gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="min-w-0 sm:col-span-2 lg:col-span-1 [overflow-wrap:anywhere] [&>span>span]:min-w-0">
+        {/* marca, seis observatórios e Institucional: oito peças que fecham em linhas completas de duas e de quatro colunas */}
+        <div className="min-w-0 [overflow-wrap:anywhere] [&>span>span]:min-w-0">
           <LogoWordmark onDark />
           <p className="mt-4 max-w-sm text-sm text-mineral-soft">
             {t.plataforma}
@@ -119,7 +120,7 @@ function FooterCompacto() {
   return (
     <footer className="border-t border-linha-escura bg-carvao text-marfim">
       <div className="ed-pagina grid gap-x-10 gap-y-8 py-8 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="sm:col-span-2 lg:col-span-1">
+        <div>
           <LogoWordmark onDark />
           <p className="mt-2 text-xs text-mineral-soft">
             {tx("Informação aberta, método verificável. 100% gratuito, sem assinatura.", "Open information, verifiable method. 100% free, no subscription.", idioma)}
