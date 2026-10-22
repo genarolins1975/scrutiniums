@@ -13,7 +13,7 @@
     "inventario_sha256": "086a6763ad89ef9b03a51a8d93d4903f97a89cfd9f35a2e91b62a56e72f93b47",
     "arquivos_analisados": 1525,
     "fontes_sha256": "a10cb6230575571d7d115858b17e0ee8f5c22f70c2989cd244699a3a59e02e50",
-    "pendencias_sha256": "00f8788354d605e83dbb8faa7af54742d74680fea75ca95eaa645cbe22e78556",
+    "pendencias_sha256": "87c45d1eacac8da5bf8c796598e3b374890c1e20cec8ed166806c6ce17c7bfb4",
     "nao_classificadas": [
       {
         "path": "public/obs/atlas.css",
