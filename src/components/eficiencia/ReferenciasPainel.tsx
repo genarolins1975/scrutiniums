@@ -13,6 +13,7 @@ import {
   type RefGrupo,
 } from "@/lib/eficiencia/consulta";
 import { decimal, inteiro, percentual, reaisCurto, reaisInteiro } from "@/lib/eficiencia/formato";
+import { TabelaDados } from "@/components/painel/TabelaDados";
 
 /**
  * Referências visíveis junto de cada número: o grupo de capitais (média simples, mediana, extremos, faixa central quando o grupo
@@ -179,32 +180,24 @@ export function ContextoInternacionalBloco({ grupos, anoPainel }: { grupos: Cont
             </p>
             <details className="mt-2">
               <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver os {g.paises_com_dado} países com dado (membros da OCDE marcados)</summary>
-              <div className="tabela-scroll mt-2 max-h-72 overflow-y-auto border border-linha" tabIndex={0} role="region" aria-label={`Países, ${g.nome}, ${g.ano} (role na vertical se necessário)`}>
-                <table className="w-full min-w-[18rem] border-collapse text-xs">
-                  <caption className="sr-only">
-                    {g.nome}, {ROTULO_ISCED[g.nivel] ?? g.nivel}, {g.ano}, todos os países com dado na fonte, em ordem alfabética
-                  </caption>
-                  <thead className="sticky top-0 bg-superficie">
-                    <tr>
-                      <th scope="col" className="border-b border-carvao-muted px-2 py-1.5 text-left font-semibold">País</th>
-                      <th scope="col" className="border-b border-carvao-muted px-2 py-1.5 text-left font-semibold">OCDE</th>
-                      <th scope="col" className="border-b border-carvao-muted px-2 py-1.5 text-right font-semibold">{usd ? "US$ PPC por estudante" : "Alunos por turma"}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[...g.paises, ...(g.brasil !== null ? [{ codigo: "BRA", nome: "Brazil (Brasil)", valor: g.brasil }] : [])]
-                      .sort((a, b) => a.nome.localeCompare(b.nome, "en"))
-                      .map((p) => ({ membro: false, ...p }))
-                      .map((p) => (
-                        <tr key={p.codigo} className={`border-b border-linha ${p.codigo === "BRA" ? "font-semibold" : ""}`}>
-                          <th scope="row" className="px-2 py-1 text-left font-normal">{p.nome}</th>
-                          <td className="px-2 py-1">{p.codigo === "BRA" ? "não" : p.membro ? "membro" : "não"}</td>
-                          <td className="px-2 py-1 text-right tabular-nums">{fmt(p.valor)}</td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
+              {/* molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): a lista dos países é a tabela do kit, à vista dentro do bloco
+                  que a pessoa abre; o Brasil continua na lista, em destaque de contexto (antes, em negrito) */}
+              {(() => {
+                const paises = [...g.paises, ...(g.brasil !== null ? [{ codigo: "BRA", nome: "Brazil (Brasil)", valor: g.brasil }] : [])]
+                  .sort((a, b) => a.nome.localeCompare(b.nome, "en"))
+                  .map((p) => ({ membro: false, ...p }));
+                return (
+                  <TabelaDados
+                    recolhida={false}
+                    idioma="pt"
+                    titulo={`${g.nome}, ${ROTULO_ISCED[g.nivel] ?? g.nivel}, ${g.ano}, todos os países com dado na fonte, em ordem alfabética`}
+                    colunas={["País", "OCDE", usd ? "US$ PPC por estudante" : "Alunos por turma"]}
+                    linhas={paises.map((p) => [p.nome, p.codigo === "BRA" ? "não" : p.membro ? "membro" : "não", fmt(p.valor)])}
+                    limite={paises.length}
+                    linhasDestacadas={paises.flatMap((p, i) => (p.codigo === "BRA" ? [i] : []))}
+                  />
+                );
+              })()}
             </details>
           </div>
         );

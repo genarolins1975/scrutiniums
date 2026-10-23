@@ -1,8 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
+import Link from "next/link";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
+import { Controles, FaixaNumeros, FiguraAnalitica, LeituraGuiada, NumeroIndicador, type NumeroProps } from "@/components/painel";
 import {
   CABECALHO_CSV_COMPARACAO,
   CABECALHO_CSV_SERIE,
@@ -43,30 +45,35 @@ import {
 } from "@/lib/eficiencia/consulta";
 import { fraseAmplitude, fraseCapital, fraseCobertura, fraseEvolucao } from "@/lib/eficiencia/frases";
 import { inteiro } from "@/lib/eficiencia/formato";
+import { provenienciaDaFicha, type FonteFicha } from "@/lib/eficiencia/proveniencia";
 import type { EtapaId, IndicadorId } from "@/lib/eficiencia/tipos";
-import { avisoDoGrupo, NAO_MOSTRA, DEFINICAO_CURTA, DEFINICAO_TEMA, SEM_NACIONAL, universoDaMedida, anoValido, etapaEfetiva, temEtapa, type Tema } from "@/lib/eficiencia/visao";
+import { avisoDoGrupo, href, CAMINHO_COMPARAR, NAO_MOSTRA, DEFINICAO_CURTA, DEFINICAO_TEMA, SEM_NACIONAL, universoDaMedida, anoValido, etapaEfetiva, temEtapa, type Tema } from "@/lib/eficiencia/visao";
 import { ComposicaoDespesa, MatriculasPorEtapa, PonteDaRazao } from "./DetalhesMedida";
 import { DistribuicaoCapitais } from "./DistribuicaoCapitais";
 import type { ContextoFicha } from "./FichaConteudo";
 import { ContextoInternacionalBloco, ReferenciaNacionalCalculadaBloco, ReferenciasDoGrupo, ReferenciasNacionais, SemReferencia } from "./ReferenciasPainel";
 import { Siglas } from "./Siglas";
 import { SobreEsteDado } from "./SobreEsteDado";
-import { TabelaSimples } from "./TabelaSimples";
 import { Alternancia, Selecao } from "./controles";
 import { ForaDaComparacao, NotasMateriais, ForaDoEscopo, Ressalva, SemValor } from "./estados";
 import { MiniSerie, type Anotacao } from "./graficos";
+import { Recolhido } from "@/components/observatorios/Recolhido";
 
 /**
- * Exploração de um tema (gastos, atendimento ou resultados): uma pergunta e uma visualização predominante por vez. A
- * família de medidas do tema fica lado a lado e legível; o gráfico, a tabela, a evolução e o detalhe mostram o mesmo
- * conjunto de dados, a escolha da pessoa. Controles só aparecem onde alteram o indicador. Tudo vive na URL.
+ * Exploração de um tema (gastos, atendimento ou resultados) no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026). A página
+ * do tema (PaginaTemaEducacao) monta a abertura no servidor; aqui ficam as ilhas de cliente que seguem o recorte da URL (capital, medida,
+ * ano, etapa, valores, disciplina, grupo, ordem e escala): a capital na abertura, a família de medidas na faixa de números, o caminho para
+ * comparar, os controles logo antes das figuras, a distribuição das capitais, a evolução, o detalhe da medida e as referências. As ilhas
+ * leem o mesmo recorte (useEstadoUrl avisa as outras a cada mudança) e a base vem uma vez só, pelo ProvedorEducacao.
+ *
+ * Antes, uma alternância "Forma de ver" mostrava gráfico, tabela, evolução ou detalhe, um por vez; no molde, as quatro leituras ficam na
+ * página ao mesmo tempo: a tabela é a equivalente da distribuição, e a evolução e o detalhe são figuras próprias. O parâmetro ?vis= dos
+ * links antigos continua aceito e é ignorado.
  */
 
 const ETAPAS: EtapaId[] = ["total", "creche", "pre_escola", "anos_iniciais", "anos_finais", "ensino_medio", "eja", "profissional"];
 const PANDEMIA_IDEB: Anotacao = { ano: 2021, texto: "edição afetada pela pandemia de covid-19 (nota informativa do INEP sobre o Ideb 2021)." };
 const PANDEMIA_APROVACAO: Anotacao = { ano: 2021, texto: "ano letivo afetado pela pandemia de covid-19, com regras excepcionais de avaliação em muitas redes." };
-
-type Visao = "grafico" | "tabela" | "evolucao" | "detalhe";
 
 function esquema(ids: string[], tema: Tema) {
   const def = DEFINICAO_TEMA[tema];
@@ -77,7 +84,8 @@ function esquema(ids: string[], tema: Tema) {
     etapa: campo(tiposUrl.opcao(ETAPAS), def.etapaInicial),
     moeda: campo(tiposUrl.opcao(["nominal", "real"] as const), "nominal" as Moeda),
     disc: campo(tiposUrl.opcao(["matematica", "portugues"] as const), "matematica" as Disciplina),
-    vis: campo(tiposUrl.opcao(["grafico", "tabela", "evolucao", "detalhe"] as const), "grafico" as Visao),
+    // links antigos com ?vis= continuam válidos: a forma de ver não muda mais nada, porque as leituras ficam todas na página
+    vis: campo(tiposUrl.opcao(["grafico", "tabela", "evolucao", "detalhe"] as const), "grafico" as "grafico" | "tabela" | "evolucao" | "detalhe"),
     ord: campo(tiposUrl.opcao(["alfabetica", "valor", "valor_desc"] as const), "alfabetica" as Ordem),
     eixo: campo(tiposUrl.opcao(["linear", "log"] as const), "linear" as "linear" | "log"),
     grp: campo(tiposUrl.opcao(["todas", "regiao"] as const), "todas" as Grupo),
@@ -99,18 +107,32 @@ const pontoVazio = (): Ponto => ({ valor: null, status: "AUSENTE_NA_COLETA", not
 
 const NOME_DETALHE: Partial<Record<MedidaId, string>> = { despesa: "Composição", despesa_mat: "Do total ao numerador", matriculas: "Por etapa" };
 
-export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: DadosPainel; contextos: Record<string, ContextoFicha> }) {
+/**
+ * A base do tema vai ao navegador uma vez só: a capital da abertura, a faixa, o caminho para comparar e o explorador são ilhas de cliente que
+ * leem o mesmo recorte, e cada uma recebendo a base por prop a serializava de novo no HTML (lição do PR 1 do molde).
+ */
+const ContextoEducacao = createContext<DadosPainel | null>(null);
+
+export function ProvedorEducacao({ dados, children }: { dados: DadosPainel; children: ReactNode }) {
+  return <ContextoEducacao.Provider value={dados}>{children}</ContextoEducacao.Provider>;
+}
+
+export function useBaseEducacao(dados?: DadosPainel): DadosPainel {
+  const doContexto = useContext(ContextoEducacao);
+  const base = dados ?? doContexto;
+  if (!base) throw new Error("Base da Educação ausente: passe `dados` ou use ProvedorEducacao.");
+  return base;
+}
+
+/** O recorte em vigor e o que dele se calcula: a mesma regra para a capital, a faixa, os gráficos, as tabelas e os CSV. */
+function useRecorteTema(tema: Tema, dados: DadosPainel) {
   const def = DEFINICAO_TEMA[tema];
   const ix = useMemo(() => new Indice(dados), [dados]);
   const ids = useMemo(() => dados.capitais.map((c) => c.id), [dados]);
   const esq = useMemo(() => esquema(ids, tema), [ids, tema]);
   const [s, definir] = useEstadoUrl(esq);
-  const [aviso, setAviso] = useState("");
   const cap = dados.capitais.find((c) => c.id === s.cap) ?? null;
-  const ficha = (id: IndicadorId) => dados.fichas.find((f) => f.id === id)!;
-
   const medida = s.med;
-  const md = MEDIDA[medida];
   const etapa = etapaEfetiva(medida, s.etapa, def.etapaInicial);
   const anos = anosDaMedida(dados, medida);
   const ano = s.ano ? anoValido(dados, medida, s.ano) : anos[anos.length - 1];
@@ -118,6 +140,112 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
   const grupo: Grupo = cap && s.grp === "regiao" ? "regiao" : "todas";
   const grupoRef = grupo === "regiao" && cap ? cap.regiao : "todas";
   const nomeGrupo = grupo === "regiao" && cap ? `capitais da região ${dados.regioes[cap.regiao]}` : "capitais na comparação";
+  return { def, ix, s, definir, cap, medida, etapa, anos, ano, grupo, grupoRef, nomeGrupo };
+}
+
+/** A capital opcional, na abertura: mostra o valor dela na faixa e a destaca nos gráficos (?cap=). */
+export function SeletorCapitalTema({ tema, dados: dadosProp }: { tema: Tema; dados?: DadosPainel }) {
+  const dados = useBaseEducacao(dadosProp);
+  const { cap, definir } = useRecorteTema(tema, dados);
+  return (
+    <div className="max-w-sm">
+      <Selecao
+        id="cap"
+        rotulo="Capital"
+        ajuda="Opcional. Mostra o valor da capital ao lado do conjunto e a destaca nos gráficos."
+        valor={cap?.id ?? ""}
+        opcoes={[{ v: "", t: "Nenhuma: ver o conjunto" }, ...dados.capitais.map((c) => ({ v: c.id, t: `${c.nome} (${c.uf})` }))]}
+        aoMudar={(v) => definir({ cap: v })}
+      />
+    </div>
+  );
+}
+
+/**
+ * A família de medidas do tema na faixa de números (antes, cartões que também escolhiam a medida): a mediana das capitais em cada medida,
+ * ou o valor da capital escolhida com a mediana ao lado, no ano mais próximo do pedido. A escolha da medida passou para os controles.
+ */
+export function FaixaTemaEducacao({ tema, dados: dadosProp }: { tema: Tema; dados?: DadosPainel }) {
+  const dados = useBaseEducacao(dadosProp);
+  const { def, ix, s, cap, grupoRef } = useRecorteTema(tema, dados);
+  const nomeCap = cap ? `${cap.nome} (${cap.uf})` : "";
+  const numeros: NumeroProps[] = def.medidas.map((m) => {
+    const mm = MEDIDA[m];
+    const et = etapaEfetiva(m, s.etapa, def.etapaInicial);
+    const an = s.ano ? anoValido(dados, m, s.ano) : (() => { const a = anosDaMedida(dados, m); return a[a.length - 1]; })();
+    const kk = componente(m, s.moeda, s.disc);
+    const ee = etapaDaMedida(m, et);
+    const r = ix.referencia(mm.indicador, kk, ee, an, grupoRef);
+    const p = cap ? ix.ponto(mm.indicador, cap.cod, an, ee, kk) : null;
+    const ficha = dados.fichas.find((f) => f.id === mm.indicador);
+    const fonte = ficha ? (dados.fontes[ficha.fontes[0]]?.instituicao ?? ficha.fontes[0]) : "OBEE";
+    const formato = ehDespesa(m) ? ("reais" as const) : m === "aprovacao" ? ("percentual" as const) : ("decimal" as const);
+    const base = { unidade: unidade(m, s.moeda), periodo: mm.anos === "ideb" ? `edição ${an}` : String(an), recorte: mm.etapas ? nomeEtapa(dados, et) : undefined, fonte, formato };
+    const mediana = r?.mediana ?? null;
+    if (cap) {
+      const rotulo = `${DEFINICAO_CURTA[m].titulo} · ${nomeCap}`;
+      const nota = (
+        <>
+          {p && p.valor !== null && !p.elegivel ? "Fora da comparação. " : ""}Mediana das capitais: {mediana !== null ? formata(m, mediana) : "sem valor"}. {DEFINICAO_CURTA[m].texto}
+        </>
+      );
+      return p && p.valor !== null
+        ? { ...base, rotulo, valor: p.valor, valorTexto: formata(m, p.valor), natureza: ficha?.natureza ?? "OBSERVADO", nota }
+        : { ...base, rotulo, valor: null, motivoAusencia: `${ROTULO_STATUS[(p ?? pontoVazio()).status]}. ${p?.nota ?? "Sem valor para este recorte."}`, natureza: ficha?.natureza ?? "OBSERVADO", nota };
+    }
+    const rotulo = `${DEFINICAO_CURTA[m].titulo}: mediana das capitais`;
+    const nota = (
+      <>
+        {r && r.minimo !== null && r.maximo !== null ? `Mediana de ${r.n} capitais · de ${formata(m, r.minimo)} a ${formata(m, r.maximo)}. ` : ""}
+        {DEFINICAO_CURTA[m].texto}
+      </>
+    );
+    return mediana !== null
+      ? { ...base, rotulo, valor: mediana, valorTexto: formata(m, mediana), natureza: "CALCULADO" as const, nota }
+      : { ...base, rotulo, valor: null, motivoAusencia: "Nenhuma capital com dado comparável nesta medida e neste período.", natureza: "CALCULADO" as const, nota };
+  });
+  return (
+    <FaixaNumeros
+      rotulo={tema === "gastos" ? "Três escalas do gasto" : tema === "atendimento" ? "Três medidas do atendimento" : "Três medidas de resultado"}
+      nota="Os números seguem o recorte escolhido: capital, ano, etapa, valores e disciplina. A medida mostrada nos gráficos se escolhe logo abaixo."
+      idioma="pt"
+    >
+      {numeros.map((n, i) => (
+        <NumeroIndicador key={`${n.rotulo}-${i}`} {...n} tamanho={def.medidas[i] === s.med ? "g" : "m"} idioma="pt" />
+      ))}
+    </FaixaNumeros>
+  );
+}
+
+/** O caminho para comparar as capitais na mesma medida, com o recorte da página. */
+export function CaminhoCompararEducacao({ tema, dados: dadosProp }: { tema: Tema; dados?: DadosPainel }) {
+  const dados = useBaseEducacao(dadosProp);
+  const { medida, ano, etapa, s, cap } = useRecorteTema(tema, dados);
+  return (
+    <p className="mt-6">
+      <Link
+        href={href(CAMINHO_COMPARAR, { med: medida, ano, etapa: MEDIDA[medida].etapas ? etapa : undefined, moeda: s.moeda !== "nominal" ? s.moeda : undefined, disc: medida === "saeb" ? s.disc : undefined, cap: cap?.id })}
+        className="inline-flex min-h-[44px] items-center text-[0.9375rem] text-obee-dark underline underline-offset-4"
+      >
+        Comparar capitais nesta medida <span aria-hidden="true" className="ml-1">→</span>
+      </Link>
+    </p>
+  );
+}
+
+const botao = "rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-linha underline-offset-4 hover:text-obee-tinta";
+
+export function ExploradorTema({ tema, dados: dadosProp, contextos }: { tema: Tema; dados?: DadosPainel; contextos: Record<string, ContextoFicha> }) {
+  const dados = useBaseEducacao(dadosProp);
+  const { def, ix, s, definir, cap, medida, etapa, anos, ano, grupo, nomeGrupo } = useRecorteTema(tema, dados);
+  const [aviso, setAviso] = useState("");
+  const ficha = (id: IndicadorId) => dados.fichas.find((f) => f.id === id)!;
+  const fontes: Record<string, FonteFicha> = useMemo(
+    () => Object.fromEntries(Object.entries(dados.fontes).map(([id, f]) => [id, { nome: `${f.instituicao}, ${f.conjunto}`, orgao: f.instituicao, conjunto: f.conjunto, url: f.pagina, capturado_em: f.capturado_em }])),
+    [dados],
+  );
+
+  const md = MEDIDA[medida];
   const comp = comparar(ix, medida, ano, etapa, s.moeda, s.disc, grupo, cap ?? dados.capitais[0], s.ord);
   const itensFora = comp.excluidas.map((x) => ({ nome: x.cap.nome, uf: x.cap.uf, status: x.comValor ? "Fora da comparação" : ROTULO_STATUS[x.status], motivo: x.motivo }));
   const linhasForaDoGrafico = comp.excluidas.map((x) => ({
@@ -134,27 +262,24 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
   const fmt = (v: number) => formata(medida, v);
   const fmtEixo = (v: number) => formataEixo(medida, v);
   const nomeCap = cap ? `${cap.nome} (${cap.uf})` : "";
-
-  const opcoesDetalhe = NOME_DETALHE[medida] ?? null;
-  const visao: Visao = s.vis === "detalhe" && !opcoesDetalhe ? "grafico" : s.vis;
+  const nomeDetalhe = NOME_DETALHE[medida] ?? null;
 
   // título comunicativo e subtítulo técnico, do recorte e só dos dados elegíveis
   const itensFrase = comp.incluidas.map((i) => ({ nome: i.cap.nome, uf: i.cap.uf, valor: i.valor }));
   const periodo = rotuloPeriodoMedida(medida, ano);
-  const subtitulo = [
-    md.rotulo,
-    unidade(medida, s.moeda),
-    md.etapas ? nomeEtapa(dados, etapa) : null,
-    medida === "saeb" ? (s.disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null,
-    visao === "evolucao" ? `série de ${anos[0]} a ${anos[anos.length - 1]}` : periodo,
-    `capitais estaduais${grupo === "regiao" && cap ? `, região ${dados.regioes[cap.regiao]}` : ""}, ${universoDaMedida(medida)}`,
-  ]
-    .filter(Boolean)
-    .join(" · ");
+  const partesSubtitulo = (serieInteira: boolean) =>
+    [
+      md.rotulo,
+      unidade(medida, s.moeda),
+      md.etapas ? nomeEtapa(dados, etapa) : null,
+      medida === "saeb" ? (s.disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null,
+      serieInteira ? `série de ${anos[0]} a ${anos[anos.length - 1]}` : periodo,
+      `capitais estaduais${grupo === "regiao" && cap ? `, região ${dados.regioes[cap.regiao]}` : ""}, ${universoDaMedida(medida)}`,
+    ]
+      .filter(Boolean)
+      .join(" · ");
   const titulo = fraseAmplitude(itensFrase, { medida, ano, etapa, disciplina: s.disc === "matematica" ? "Matemática" : "Língua Portuguesa" });
-  const fraseCap = cap
-    ? fraseCapital(cap.nome, cap.uf, ptCap?.valor ?? null, comp.ref?.mediana ?? null, comp.ref?.n ?? 0, medida, !!ptCap && ptCap.valor !== null && !incluidaCap)
-    : null;
+  const fraseCap = cap ? fraseCapital(cap.nome, cap.uf, ptCap?.valor ?? null, comp.ref?.mediana ?? null, comp.ref?.n ?? 0, medida, !!ptCap && ptCap.valor !== null && !incluidaCap) : null;
 
   // referências externas válidas
   const extComp = referenciasExternas(dados, medida, ano, etapa, k);
@@ -198,7 +323,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
 
   const linhasTabela = [
     ...comp.incluidas.map((i) => [`${i.cap.nome} (${i.cap.uf})`, fmt(i.valor), i.ponto.nota ? "Incluída, com nota" : "Incluída"]),
-    ...comp.excluidas.map((x) => [`${x.cap.nome} (${x.cap.uf})`, x.comValor && x.ponto.valor !== null ? fmt(x.ponto.valor) : "", x.comValor ? "Fora da comparação" : ROTULO_STATUS[x.status]]),
+    ...comp.excluidas.map((x) => [`${x.cap.nome} (${x.cap.uf})`, x.comValor && x.ponto.valor !== null ? fmt(x.ponto.valor) : null, x.comValor ? "Fora da comparação" : ROTULO_STATUS[x.status]]),
   ];
 
   const copiar = async () => {
@@ -213,348 +338,285 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
     baixar(`obee_${tema}_${medida}_serie_${cap ? cap.id : "mediana"}${md.etapas ? `_${etapa}` : ""}${ehDespesa(medida) ? `_${s.moeda}` : ""}${medida === "saeb" ? `_${s.disc}` : ""}.csv`, csv(CABECALHO_CSV_SERIE, linhasCsvSerie(dados, medida, etapa, s.moeda, s.disc, cap ?? null, pontosSerie, medianaPorAno)));
   const baixarCsv = () =>
     baixar(`obee_${tema}_${medida}_${ano}${md.etapas ? `_${etapa}` : ""}${ehDespesa(medida) ? `_${s.moeda}` : ""}${medida === "saeb" ? `_${s.disc}` : ""}${grupo === "regiao" && cap ? `_regiao_${cap.regiao}` : ""}.csv`, csv(CABECALHO_CSV_COMPARACAO, linhasCsvComparacao(dados, comp, medida, ano, etapa, s.moeda, s.disc)));
+  const baixarDicionario = () => baixar("obee_dicionario_das_colunas.csv", csv(["arquivo", "coluna", "descricao"], dicionarioExportacoes()));
 
-  const opcoesVisao: { v: Visao; t: string }[] = [
-    { v: "grafico", t: "Gráfico" },
-    { v: "tabela", t: "Tabela" },
-    { v: "evolucao", t: "Evolução" },
-    ...(opcoesDetalhe ? [{ v: "detalhe" as Visao, t: opcoesDetalhe }] : []),
-  ];
+  const prov = provenienciaDaFicha(ficha(md.indicador), fontes, { inicio: String(anos[0]), fim: String(ano) });
+  const zero = ehDespesa(medida) || medida === "matriculas" || medida === "conveniadas" || medida === "atu";
+  const padrao = !s.cap && s.med === def.medidaInicial && !s.ano && s.etapa === def.etapaInicial && s.moeda === "nominal" && s.disc === "matematica" && s.ord === "alfabetica" && s.eixo === "linear" && s.grp === "todas";
+  const resumo = [
+    DEFINICAO_CURTA[medida].titulo,
+    md.etapas ? nomeEtapa(dados, etapa) : null,
+    medida === "saeb" ? (s.disc === "matematica" ? "Matemática" : "Língua Portuguesa") : null,
+    periodo,
+    ehDespesa(medida) ? (s.moeda === "real" ? "reais de 2025" : "valores nominais") : null,
+    cap ? nomeCap : null,
+    grupo === "regiao" && cap ? `região ${dados.regioes[cap.regiao]}` : null,
+    s.ord !== "alfabetica" ? (s.ord === "valor" ? "ordem crescente" : "ordem decrescente") : null,
+    medida === "despesa" && s.eixo === "log" ? "escala logarítmica" : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
-  /* ---------- família de medidas do tema ---------- */
-  const familia = def.medidas.map((m) => {
-    const mm = MEDIDA[m];
-    const et = etapaEfetiva(m, s.etapa, def.etapaInicial);
-    const an = s.ano ? anoValido(dados, m, s.ano) : (() => { const a = anosDaMedida(dados, m); return a[a.length - 1]; })();
-    const kk = componente(m, s.moeda, s.disc);
-    const ee = etapaDaMedida(m, et);
-    const r = ix.referencia(mm.indicador, kk, ee, an, grupoRef);
-    const p = cap ? ix.ponto(mm.indicador, cap.cod, an, ee, kk) : null;
-    return { m, mm, an, et, r, p };
-  });
+  const acoes = (
+    <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
+      <SobreEsteDado f={ficha(md.indicador)} ctx={contextos[md.indicador]} />
+      <button type="button" onClick={copiar} className={botao}>
+        Copiar link deste recorte
+      </button>
+      <button type="button" onClick={() => baixarDicionario()} className={botao}>
+        Dicionário das colunas (CSV)
+      </button>
+    </div>
+  );
 
   return (
-    <div>
-      {/* abertura do tema */}
-      <header>
-        <p className="rotulo text-obee-dark">Educação nas capitais</p>
-        <h1 className="mt-3 font-serif text-[2.2rem] leading-[1.1] text-obee-tinta md:text-[3rem]">{def.rotulo}</h1>
-        <p className="mt-3 max-w-[38rem] text-lg leading-relaxed text-obee-tinta">{def.abertura}</p>
-        <div className="mt-5 max-w-sm">
+    <>
+      {/* controles locais, logo antes das figuras que eles afetam */}
+      <Controles rotulo="Recorte da exploração" resumo={`Mostrando: ${resumo}.`} limpar={padrao ? undefined : { href: href(`/${tema}`) }} idioma="pt">
+        <div className="w-full min-w-0">
+          <Alternancia rotulo="Medida" valor={medida} opcoes={def.medidas.map((m) => ({ v: m, t: DEFINICAO_CURTA[m].titulo }))} aoMudar={(v) => definir({ med: v })} />
+        </div>
+        <div className="w-full min-w-0 sm:w-44">
           <Selecao
-            id="cap"
-            rotulo="Capital"
-            ajuda="Opcional. Mostra o valor da capital ao lado do conjunto e a destaca nos gráficos."
-            valor={cap?.id ?? ""}
-            opcoes={[{ v: "", t: "Nenhuma: ver o conjunto" }, ...dados.capitais.map((c) => ({ v: c.id, t: `${c.nome} (${c.uf})` }))]}
-            aoMudar={(v) => definir({ cap: v })}
+            id="f-ano"
+            rotulo={md.anos === "ideb" ? "Edição" : "Ano"}
+            ajuda={md.anos === "financeiros" ? "Exercício financeiro." : md.anos === "ideb" ? "Edição bienal." : medida === "aprovacao" ? "Ano letivo." : "Ano do Censo Escolar."}
+            valor={String(ano)}
+            opcoes={[...anos].reverse().map((a) => ({ v: String(a), t: String(a) }))}
+            aoMudar={(v) => definir({ ano: Number(v) })}
           />
         </div>
-      </header>
-
-      {/* família de medidas, lado a lado */}
-      <section aria-labelledby="familia-titulo" className="mt-10 md:mt-12">
-        <h2 id="familia-titulo" className="rotulo text-mineral">
-          {tema === "gastos" ? "Três escalas do gasto" : tema === "atendimento" ? "Três medidas do atendimento" : "Três medidas de resultado"}
-          {cap ? ` · ${nomeCap}` : " · mediana das capitais"}
-        </h2>
-        <fieldset className="mt-3 min-w-0">
-          <legend className="sr-only">Escolha a medida que o gráfico mostra</legend>
-          <div className="grid gap-px border border-linha bg-linha md:grid-cols-3">
-            {familia.map((f) => {
-              const ativa = f.m === medida;
-              const valor = cap ? f.p : null;
-              return (
-                <label
-                  key={f.m}
-                  className={`relative flex min-h-[44px] cursor-pointer flex-col px-4 py-4 focus-within:outline focus-within:outline-2 focus-within:outline-obee ${ativa ? "bg-obee-fundo" : "bg-superficie hover:bg-papel"}`}
-                >
-                  <input type="radio" className="sr-only" name="medida-do-tema" value={f.m} checked={ativa} onChange={() => definir({ med: f.m, vis: "grafico" })} />
-                  <span className="flex items-baseline justify-between gap-3">
-                    <span className={`text-sm ${ativa ? "font-semibold" : ""} text-obee-tinta`}>
-                      <span aria-hidden="true">{ativa ? "● " : "○ "}</span>
-                      {DEFINICAO_CURTA[f.m].titulo}
-                    </span>
-                    <span className="rotulo text-carvao-muted">{f.mm.anos === "ideb" ? `edição ${f.an}` : f.an}</span>
-                  </span>
-                  <span className="mt-2 font-serif text-2xl tabular-nums text-obee-tinta">
-                    {valor ? (valor.valor !== null ? formata(f.m, valor.valor) : "sem valor") : f.r?.mediana != null ? formata(f.m, f.r.mediana) : "sem valor"}
-                  </span>
-                  <span className="mt-0.5 text-xs leading-snug text-carvao-muted">
-                    {valor
-                      ? valor.valor === null
-                        ? ROTULO_STATUS[valor.status]
-                        : `${!valor.elegivel ? "Fora da comparação. " : ""}Mediana das capitais: ${f.r?.mediana != null ? formata(f.m, f.r.mediana) : "sem valor"}`
-                      : f.r && f.r.minimo !== null && f.r.maximo !== null
-                        ? `Mediana de ${f.r.n} capitais · de ${formata(f.m, f.r.minimo)} a ${formata(f.m, f.r.maximo)}`
-                        : "Nenhuma capital com dado comparável"}
-                  </span>
-                  <span className="mt-2 text-xs leading-snug text-obee-tinta">{DEFINICAO_CURTA[f.m].texto}</span>
-                </label>
-              );
-            })}
-          </div>
-        </fieldset>
-      </section>
-
-      {/* visualização principal */}
-      <section aria-labelledby="visao-titulo" className="mt-14 border-t border-linha pt-10 md:mt-16 md:pt-12" id="visao">
-        <p className="rotulo text-obee-dark">{def.pergunta}</p>
-        <h2 id="visao-titulo" className="mt-3 max-w-[42rem] font-serif text-[1.55rem] leading-[1.2] text-obee-tinta md:text-[2rem]">
-          {visao === "evolucao" ? fraseSerie : visao === "detalhe" ? `${DEFINICAO_CURTA[medida].titulo}: ${opcoesDetalhe?.toLowerCase()}${cap ? `, ${nomeCap}` : ""}` : titulo}
-        </h2>
-        <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          {subtitulo}.{visao === "evolucao" ? "" : ` ${fraseCobertura(comp.incluidas.length, comp.universo.length)}`}
-        </p>
-        {ehDespesa(medida) && (
-          <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-obee-tinta" role="note">
-            <span className="font-semibold">Perímetro.</span> <Siglas texto={`${textoPerimetroIntra(perimetroIntra(dados, ano), ano, medida)} A parcela de cada capital está na tabela completa de Comparar capitais e no CSV.`} />
-          </p>
-        )}
-        {fraseCap && visao !== "evolucao" && visao !== "detalhe" && <p className="mt-3 max-w-prose2 text-[0.95rem] leading-relaxed text-obee-tinta">{fraseCap}</p>}
-
-        {/* controles locais, junto do gráfico */}
-        <div className="mt-6 flex flex-wrap items-end gap-x-6 gap-y-4">
-          <div className={`w-full min-w-0 sm:w-44 ${visao === "evolucao" ? "hidden" : ""}`}>
-            <Selecao
-              id="f-ano"
-              rotulo={md.anos === "ideb" ? "Edição" : "Ano"}
-              ajuda={md.anos === "financeiros" ? "Exercício financeiro." : md.anos === "ideb" ? "Edição bienal." : medida === "aprovacao" ? "Ano letivo." : "Ano do Censo Escolar."}
-              valor={String(ano)}
-              opcoes={[...anos].reverse().map((a) => ({ v: String(a), t: String(a) }))}
-              aoMudar={(v) => definir({ ano: Number(v) })}
-            />
-          </div>
+        <div className="w-full min-w-0 sm:w-72">
+          <Selecao
+            id="f-grupo"
+            rotulo="Grupo de comparação"
+            ajuda="Define a mediana, a média e os extremos do recorte."
+            valor={grupo}
+            opcoes={[
+              { v: "todas", t: `Todas as capitais estaduais (${dados.capitais.length})` },
+              {
+                v: "regiao",
+                t: cap ? `Capitais da região ${dados.regioes[cap.regiao]} (${regioesDoPainel(dados).find((r) => r.id === cap.regiao)?.n ?? 0})` : "Região da capital escolhida (escolha uma capital)",
+                desab: !cap,
+              },
+            ]}
+            aoMudar={(v) => definir({ grp: v as Grupo })}
+          />
+        </div>
+        {temEtapa(medida) && (
           <div className="w-full min-w-0 sm:w-72">
             <Selecao
-              id="f-grupo"
-              rotulo="Grupo de comparação"
-              ajuda="Define a mediana, a média e os extremos do recorte."
-              valor={grupo}
-              opcoes={[
-                { v: "todas", t: `Todas as capitais estaduais (${dados.capitais.length})` },
-                {
-                  v: "regiao",
-                  t: cap ? `Capitais da região ${dados.regioes[cap.regiao]} (${regioesDoPainel(dados).find((r) => r.id === cap.regiao)?.n ?? 0})` : "Região da capital escolhida (escolha uma capital)",
-                  desab: !cap,
-                },
-              ]}
-              aoMudar={(v) => definir({ grp: v as Grupo })}
+              id="f-etapa"
+              rotulo="Etapa de ensino"
+              ajuda="Só as etapas em que esta medida existe."
+              valor={etapa}
+              opcoes={dados.etapas.filter((x) => md.etapas?.includes(x.id)).map((x) => ({ v: x.id, t: x.nome }))}
+              aoMudar={(v) => definir({ etapa: v as EtapaId })}
             />
-          </div>
-          {temEtapa(medida) && visao !== "detalhe" && (
-            <div className="w-full min-w-0 sm:w-72">
-              <Selecao
-                id="f-etapa"
-                rotulo="Etapa de ensino"
-                ajuda="Só as etapas em que esta medida existe."
-                valor={etapa}
-                opcoes={dados.etapas.filter((x) => md.etapas?.includes(x.id)).map((x) => ({ v: x.id, t: x.nome }))}
-                aoMudar={(v) => definir({ etapa: v as EtapaId })}
-              />
-            </div>
-          )}
-          {ehDespesa(medida) && visao !== "detalhe" && (
-            <Alternancia
-              rotulo="Valores"
-              valor={s.moeda}
-              opcoes={[
-                { v: "nominal", t: "Nominais" },
-                { v: "real", t: "Reais de 2025 (IPCA)" },
-              ]}
-              aoMudar={(v) => definir({ moeda: v })}
-            />
-          )}
-          {medida === "saeb" && (
-            <Alternancia
-              rotulo="Disciplina"
-              valor={s.disc}
-              opcoes={[
-                { v: "matematica", t: "Matemática" },
-                { v: "portugues", t: "Língua Portuguesa" },
-              ]}
-              aoMudar={(v) => definir({ disc: v })}
-            />
-          )}
-        </div>
-        <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
-          <Alternancia rotulo="Forma de ver" rotuloVisivel={false} valor={visao} opcoes={opcoesVisao} aoMudar={(v) => definir({ vis: v })} />
-          {visao === "grafico" && (
-            <Alternancia
-              rotulo="Ordem das capitais"
-                            valor={s.ord}
-              opcoes={[
-                { v: "alfabetica", t: "Alfabética" },
-                { v: "valor", t: "Crescente" },
-                { v: "valor_desc", t: "Decrescente" },
-              ]}
-              aoMudar={(v) => definir({ ord: v })}
-            />
-          )}
-          {visao === "grafico" && s.ord !== "alfabetica" && <p className="max-w-xs text-xs leading-snug text-carvao-muted">A ordem por valor organiza a leitura; não classifica as capitais.</p>}
-          {visao === "grafico" && medida === "despesa" && (
-            <Alternancia
-              rotulo="Escala do eixo"
-              rotuloVisivel={false}
-              valor={s.eixo}
-              opcoes={[
-                { v: "linear", t: "Escala linear" },
-                { v: "log", t: "Escala logarítmica" },
-              ]}
-              aoMudar={(v) => definir({ eixo: v })}
-            />
-          )}
-        </div>
-
-        <div className="mt-6" aria-live="polite">
-          {visao === "grafico" &&
-            (comp.incluidas.length === 0 ? (
-              <ForaDoEscopo texto={`Nenhuma capital tem dado comparável para ${md.rotulo.toLowerCase()} neste recorte. O motivo de cada capital está abaixo.`} />
-            ) : (
-              <DistribuicaoCapitais
-                titulo={`${md.rotulo}, ${periodo}`}
-                linhas={comp.incluidas.map((i) => ({ chave: i.cap.id, rotulo: `${i.cap.nome} (${i.cap.uf})`, valor: i.valor, destacada: i.cap.id === cap?.id }))}
-                referencias={{
-                  mediana: comp.ref?.mediana ?? null,
-                  media: comp.ref?.media ?? null,
-                  faixa: comp.ref && comp.ref.quartisExibicao && comp.ref.q1 !== null && comp.ref.q3 !== null ? { q1: comp.ref.q1, q3: comp.ref.q3 } : null,
-                  externa: externaGrafico,
-                }}
-                formata={fmt}
-                formataEixo={fmtEixo}
-                zero={ehDespesa(medida) || medida === "matriculas" || medida === "conveniadas" || medida === "atu"}
-                escala={medida === "despesa" ? s.eixo : "linear"}
-                rotuloGrupo={nomeGrupo}
-                fora={linhasForaDoGrafico}
-              />
-            ))}
-          {visao === "grafico" && comp.excluidas.length > 0 && (
-            <div className="mt-4">
-              <ForaDaComparacao itens={itensFora} />
-            </div>
-          )}
-          {visao === "grafico" && comp.incluidas.length > 0 && notas.length > 0 && (
-            <div className="mt-4">
-              <NotasMateriais notas={notas} n={comp.incluidas.length} />
-            </div>
-          )}
-          {visao === "tabela" &&
-            (linhasTabela.length === 0 ? null : (
-              <TabelaSimples legenda={`${md.rotulo}, ${periodo}: valor de cada capital e situação na comparação`} cabecalho={["Capital", unidade(medida, s.moeda), "Situação"]} linhas={linhasTabela} />
-            ))}
-          {visao === "evolucao" && (
-            <div className="max-w-3xl">
-              <MiniSerie
-                titulo={`${md.rotulo}${cap ? `, ${nomeCap}` : ", mediana das capitais"}`}
-                pontos={pontosSerie}
-                formata={fmt}
-                formataEixo={fmtEixo}
-                zero={ehDespesa(medida) || medida === "matriculas" || medida === "conveniadas" || medida === "atu"}
-                anotacoes={anotacoes}
-                referencia={cap ? medianaPorAno : undefined}
-                rotuloReferencia="Mediana das capitais"
-                altura={260}
-              />
-              {ehDespesa(medida) && s.moeda === "nominal" && (
-                <p className="mt-3 max-w-prose2 text-xs leading-snug text-carvao-muted" role="note">
-                  Valores em reais correntes: cada ano a preços do próprio ano, o que inclui o efeito da inflação. Para ler a mudança em termos reais, escolha “Reais de 2025 (IPCA)” em Valores.
-                </p>
-              )}
-              {!cap && <p className="mt-3 text-xs leading-snug text-carvao-muted">Sem capital escolhida, a linha é a mediana das capitais em cada ano; o número de capitais na comparação pode mudar de um ano para outro.</p>}
-              <details className="mt-2 text-sm">
-                <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Ver tabela</summary>
-                <TabelaSimples
-                  legenda={`${md.rotulo}${cap ? `, ${nomeCap}` : ", mediana das capitais"}`}
-                  cabecalho={["Ano", "Valor", "Estado do dado"]}
-                  linhas={pontosSerie.map((p) => [String(p.ano), p.valor !== null ? fmt(p.valor) : "", ROTULO_STATUS[p.status]])}
-                />
-              </details>
-            </div>
-          )}
-          {visao === "detalhe" &&
-            (!cap ? (
-              <p className="max-w-prose2 text-[0.95rem] leading-relaxed text-obee-tinta">Escolha uma capital no campo “Capital”, no alto da página, para ver este detalhe.</p>
-            ) : medida === "despesa" ? (
-              <ComposicaoDespesa ix={ix} cap={cap} ano={ano} ficha={ficha("edu.despesa.subfuncao")} ctx={contextos["edu.despesa.subfuncao"]} />
-            ) : medida === "despesa_mat" ? (
-              <PonteDaRazao ix={ix} cap={cap} ano={ano} razao={ptCap ?? pontoVazio()} ficha={ficha("edu.despesa.ponte_matricula")} ctx={contextos["edu.despesa.ponte_matricula"]} />
-            ) : (
-              <MatriculasPorEtapa ix={ix} cap={cap} ano={ano} ficha={ficha("edu.matriculas.rede_municipal")} ctx={contextos["edu.matriculas.rede_municipal"]} />
-            ))}
-        </div>
-
-        {/* ressalva da capital escolhida, junto do dado */}
-        {ptCap && ptCap.valor !== null && visao !== "detalhe" && <Ressalva ponto={ptCap} />}
-        {cap && ptCap && ptCap.valor === null && visao !== "detalhe" && <SemValor ponto={ptCap} />}
-
-        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-1">
-          <SobreEsteDado f={ficha(md.indicador)} ctx={contextos[md.indicador]} />
-          <button type="button" onClick={copiar} className="rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">
-            Copiar link deste recorte
-          </button>
-          {visao === "grafico" || visao === "tabela" ? (
-            <button type="button" onClick={baixarCsv} className="rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">
-              Baixar estes valores (CSV)
-            </button>
-          ) : null}
-          {visao === "evolucao" ? (
-            <button type="button" onClick={baixarCsvSerie} className="rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">
-              Baixar esta série (CSV)
-            </button>
-          ) : null}
-          {visao === "grafico" || visao === "tabela" || visao === "evolucao" ? (<button type="button" onClick={() => baixar("obee_dicionario_das_colunas.csv", csv(["arquivo", "coluna", "descricao"], dicionarioExportacoes()))} className="rotulo inline-flex min-h-[44px] items-center text-obee-dark underline decoration-obee/40 underline-offset-4 hover:text-obee-tinta">
-              Dicionário das colunas (CSV)
-            </button>
-          ) : null}
-        </div>
-        <p role="status" aria-live="polite" className="min-h-[1.25rem] text-sm text-obee-dark">
-          {aviso}
-        </p>
-
-        {comp.excluidas.length > 0 && visao !== "detalhe" && visao !== "grafico" && (
-          <div className="mt-4">
-            <ForaDaComparacao itens={itensFora} />
           </div>
         )}
-      </section>
+        {ehDespesa(medida) && (
+          <Alternancia
+            rotulo="Valores"
+            valor={s.moeda}
+            opcoes={[
+              { v: "nominal", t: "Nominais" },
+              { v: "real", t: "Reais de 2025 (IPCA)" },
+            ]}
+            aoMudar={(v) => definir({ moeda: v })}
+          />
+        )}
+        {medida === "saeb" && (
+          <Alternancia
+            rotulo="Disciplina"
+            valor={s.disc}
+            opcoes={[
+              { v: "matematica", t: "Matemática" },
+              { v: "portugues", t: "Língua Portuguesa" },
+            ]}
+            aoMudar={(v) => definir({ disc: v })}
+          />
+        )}
+        <div>
+          <Alternancia
+            rotulo="Ordem das capitais"
+            valor={s.ord}
+            opcoes={[
+              { v: "alfabetica", t: "Alfabética" },
+              { v: "valor", t: "Crescente" },
+              { v: "valor_desc", t: "Decrescente" },
+            ]}
+            aoMudar={(v) => definir({ ord: v })}
+          />
+          {s.ord !== "alfabetica" && <p className="mt-1 max-w-xs text-xs leading-snug text-carvao-muted">A ordem por valor organiza a leitura; não classifica as capitais.</p>}
+        </div>
+        {medida === "despesa" && (
+          <Alternancia
+            rotulo="Escala do eixo"
+            valor={s.eixo}
+            opcoes={[
+              { v: "linear", t: "Escala linear" },
+              { v: "log", t: "Escala logarítmica" },
+            ]}
+            aoMudar={(v) => definir({ eixo: v })}
+          />
+        )}
+      </Controles>
 
-      {/* referências do grupo, nacionais e internacionais */}
-      <section aria-labelledby="refs-titulo" className="mt-14 border-t border-linha pt-10 md:mt-16 md:pt-12">
-        <h2 id="refs-titulo" className="font-serif text-2xl text-obee-tinta md:text-[1.75rem]">
-          Referências para ler o número
-        </h2>
-        <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          {visao === "evolucao" ? `As referências valem para ${periodo}. ` : ""}
-          {avisoDoGrupo(medida)}
-        </p>
-        <div className="mt-6">
-          {comp.ref ? <ReferenciasDoGrupo r={comp.ref} m={medida} textoRazao={textoRazao} /> : <SemReferencia medida={medida} motivo="Escolha uma etapa e um ano em que a medida exista para ver as referências do grupo." />}
-        </div>
-        <div className="mt-8 grid gap-8 lg:grid-cols-2">
-          <div className="min-w-0">
-            <h3 className="font-semibold text-obee-tinta">Referência nacional</h3>
-            <div className="mt-3 space-y-4">
-              {extComp.length > 0 && <ReferenciasNacionais externas={extComp} valor={incluidaCap?.valor ?? null} m={medida} nomeCapital={nomeCap || "A capital"} />}
-              {nacCalc && <ReferenciaNacionalCalculadaBloco referencia={nacCalc} valor={incluidaCap?.valor ?? null} elegivel={!!incluidaCap} nomeCapital={nomeCap || "A capital"} completo />}
-              {extComp.length === 0 && !nacCalc && <SemReferencia medida={medida} motivo={SEM_NACIONAL[medida]} />}
+      <FiguraAnalitica
+        id="visao"
+        idioma="pt"
+        pergunta={titulo}
+        subtitulo={`${partesSubtitulo(false)}. ${fraseCobertura(comp.incluidas.length, comp.universo.length)}`}
+        natureza={ficha(md.indicador).natureza}
+        proveniencia={prov}
+        leitura={fraseCap ? <LeituraGuiada>{fraseCap}</LeituraGuiada> : undefined}
+        ressalva={ehDespesa(medida) ? <Siglas texto={`${textoPerimetroIntra(perimetroIntra(dados, ano), ano, medida)} A parcela de cada capital está na tabela completa de Comparar capitais e no CSV.`} /> : undefined}
+        tabela={{ colunas: ["Capital", unidade(medida, s.moeda), "Situação"], linhas: linhasTabela, titulo: `${md.rotulo}, ${periodo}: valor de cada capital e situação na comparação`, limite: linhasTabela.length }}
+        comoInterpretar={
+          <>
+            <Siglas texto={DEFINICAO_CURTA[medida].texto} />
+            {medida === "despesa" && s.eixo === "log" ? " Escala logarítmica: distâncias iguais no eixo são multiplicações iguais, não somas." : ""}
+          </>
+        }
+        naoConcluir={avisoDoGrupo(medida)}
+        complemento={
+          <>
+            {comp.excluidas.length > 0 && <ForaDaComparacao itens={itensFora} />}
+            {comp.incluidas.length > 0 && notas.length > 0 && <NotasMateriais notas={notas} n={comp.incluidas.length} />}
+            {ptCap && ptCap.valor !== null && <Ressalva ponto={ptCap} />}
+            {cap && ptCap && ptCap.valor === null && <SemValor ponto={ptCap} />}
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
+              {acoes}
+              <button type="button" onClick={baixarCsv} className={botao}>
+                Baixar estes valores (CSV)
+              </button>
             </div>
-          </div>
-          <div className="min-w-0">
-            <h3 className="font-semibold text-obee-tinta">Contexto internacional (outro universo, sem comparação direta)</h3>
-            <div className="mt-3">
-              {intl.length ? (
-                <ContextoInternacionalBloco grupos={intl} anoPainel={ano} />
-              ) : (
-                <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">Não há contexto internacional comparável para esta medida: país e município são escalas diferentes e os conceitos não coincidem.</p>
-              )}
+            <p role="status" aria-live="polite" className="min-h-[1.25rem] text-sm text-obee-dark">
+              {aviso}
+            </p>
+          </>
+        }
+        depois={
+          <section aria-labelledby="refs-titulo">
+            <h3 id="refs-titulo" className="t-h3 text-carvao">
+              Referências para ler o número
+            </h3>
+            <p className="t-meta mt-2 max-w-prose2 text-carvao-muted">{avisoDoGrupo(medida)}</p>
+            <div className="mt-6">
+              {comp.ref ? <ReferenciasDoGrupo r={comp.ref} m={medida} textoRazao={textoRazao} /> : <SemReferencia medida={medida} motivo="Escolha uma etapa e um ano em que a medida exista para ver as referências do grupo." />}
             </div>
+            <div className="mt-8 grid gap-8 lg:grid-cols-2">
+              <div className="min-w-0">
+                <h4 className="font-semibold text-obee-tinta">Referência nacional</h4>
+                <div className="mt-3 space-y-4">
+                  {extComp.length > 0 && <ReferenciasNacionais externas={extComp} valor={incluidaCap?.valor ?? null} m={medida} nomeCapital={nomeCap || "A capital"} />}
+                  {nacCalc && <ReferenciaNacionalCalculadaBloco referencia={nacCalc} valor={incluidaCap?.valor ?? null} elegivel={!!incluidaCap} nomeCapital={nomeCap || "A capital"} completo />}
+                  {extComp.length === 0 && !nacCalc && <SemReferencia medida={medida} motivo={SEM_NACIONAL[medida]} />}
+                </div>
+              </div>
+              <div className="min-w-0">
+                <h4 className="font-semibold text-obee-tinta">Contexto internacional (outro universo, sem comparação direta)</h4>
+                <div className="mt-3">
+                  {intl.length ? (
+                    <ContextoInternacionalBloco grupos={intl} anoPainel={ano} />
+                  ) : (
+                    <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">Não há contexto internacional comparável para esta medida: país e município são escalas diferentes e os conceitos não coincidem.</p>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="mt-10 max-w-prose2 border-t border-linha pt-5" role="note">
+              <h4 className="font-semibold text-obee-tinta">O que este painel não mostra</h4>
+              <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{NAO_MOSTRA[tema]}</p>
+            </div>
+          </section>
+        }
+      >
+        {comp.incluidas.length === 0 ? (
+          <div data-grafico="sem-comparacao">
+            <ForaDoEscopo texto={`Nenhuma capital tem dado comparável para ${md.rotulo.toLowerCase()} neste recorte. O motivo de cada capital está abaixo.`} />
           </div>
+        ) : (
+          // a distribuição das capitais tem mediana, média, faixa central, referência externa e escala logarítmica, formas que o kit não tem:
+          // fica a de domínio, marcada como figura legada
+          <div data-figura-legado="distribuicao-capitais">
+            <DistribuicaoCapitais
+              titulo={`${md.rotulo}, ${periodo}`}
+              linhas={comp.incluidas.map((i) => ({ chave: i.cap.id, rotulo: `${i.cap.nome} (${i.cap.uf})`, valor: i.valor, destacada: i.cap.id === cap?.id }))}
+              referencias={{
+                mediana: comp.ref?.mediana ?? null,
+                media: comp.ref?.media ?? null,
+                faixa: comp.ref && comp.ref.quartisExibicao && comp.ref.q1 !== null && comp.ref.q3 !== null ? { q1: comp.ref.q1, q3: comp.ref.q3 } : null,
+                externa: externaGrafico,
+              }}
+              formata={fmt}
+              formataEixo={fmtEixo}
+              zero={zero}
+              escala={medida === "despesa" ? s.eixo : "linear"}
+              rotuloGrupo={nomeGrupo}
+              fora={linhasForaDoGrafico}
+            />
+          </div>
+        )}
+      </FiguraAnalitica>
+
+      <FiguraAnalitica
+        id="evolucao"
+        idioma="pt"
+        pergunta={fraseSerie}
+        subtitulo={`${partesSubtitulo(true)}${cap ? ` · ${nomeCap}` : " · mediana das capitais"}`}
+        natureza={cap ? ficha(md.indicador).natureza : "CALCULADO"}
+        proveniencia={prov}
+        tabela={{
+          colunas: ["Ano", "Valor", "Estado do dado"],
+          linhas: pontosSerie.map((p) => [String(p.ano), p.valor !== null ? fmt(p.valor) : null, ROTULO_STATUS[p.status]]),
+          titulo: `${md.rotulo}${cap ? `, ${nomeCap}` : ", mediana das capitais"}`,
+          limite: pontosSerie.length,
+        }}
+        comoInterpretar={
+          <>
+            {!cap && "Sem capital escolhida, a linha é a mediana das capitais em cada ano; o número de capitais na comparação pode mudar de um ano para outro. "}
+            {ehDespesa(medida) && s.moeda === "nominal" && "Valores em reais correntes: cada ano a preços do próprio ano, o que inclui o efeito da inflação. Para ler a mudança em termos reais, escolha “Reais de 2025 (IPCA)” em Valores."}
+          </>
+        }
+        naoConcluir="A variação entre anos descreve o valor registrado: quando a base do dado muda, a linha se interrompe e a variação não mede mudança do serviço; nenhuma variação identifica a causa."
+        complemento={
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
+            <button type="button" onClick={baixarCsvSerie} className={botao}>
+              Baixar esta série (CSV)
+            </button>
+          </div>
+        }
+      >
+        {/* a série interrompe a linha na quebra de base e isola o valor fora das comparações, formas que a linha do kit não tem */}
+        <div data-figura-legado="serie" className="max-w-3xl">
+          <MiniSerie
+            titulo={`${md.rotulo}${cap ? `, ${nomeCap}` : ", mediana das capitais"}`}
+            pontos={pontosSerie}
+            formata={fmt}
+            formataEixo={fmtEixo}
+            zero={zero}
+            anotacoes={anotacoes}
+            referencia={cap ? medianaPorAno : undefined}
+            rotuloReferencia="Mediana das capitais"
+            altura={260}
+          />
         </div>
-        <div className="mt-10 max-w-prose2 border-t border-linha pt-5" role="note">
-          <h3 className="font-semibold text-obee-tinta">O que este painel não mostra</h3>
-          <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{NAO_MOSTRA[tema]}</p>
-        </div>
-      </section>
-    </div>
+      </FiguraAnalitica>
+
+      {nomeDetalhe &&
+        (!cap ? (
+          <Recolhido id="detalhe" aberto nivelTitulo={2} titulo={`${DEFINICAO_CURTA[medida].titulo}: ${nomeDetalhe.toLowerCase()}`} resumo="O detalhe é de uma capital por vez.">
+            <p className="t-corpo max-w-prose2 text-carvao">Escolha uma capital no campo “Capital”, no alto da página, para ver este detalhe.</p>
+          </Recolhido>
+        ) : medida === "despesa" ? (
+          <ComposicaoDespesa ix={ix} cap={cap} ano={ano} ficha={ficha("edu.despesa.subfuncao")} ctx={contextos["edu.despesa.subfuncao"]} fontes={fontes} />
+        ) : medida === "despesa_mat" ? (
+          <PonteDaRazao ix={ix} cap={cap} ano={ano} razao={ptCap ?? pontoVazio()} ficha={ficha("edu.despesa.ponte_matricula")} ctx={contextos["edu.despesa.ponte_matricula"]} fontes={fontes} />
+        ) : (
+          <MatriculasPorEtapa ix={ix} cap={cap} ano={ano} ficha={ficha("edu.matriculas.rede_municipal")} ctx={contextos["edu.matriculas.rede_municipal"]} fontes={fontes} />
+        ))}
+    </>
   );
 }

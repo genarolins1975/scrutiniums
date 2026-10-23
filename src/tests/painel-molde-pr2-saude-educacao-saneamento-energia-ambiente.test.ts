@@ -14,6 +14,14 @@ import PaginaDrenagem from "@/app/eficiencia-estatal/saneamento/drenagem/page";
 import PaginaRecursos from "@/app/eficiencia-estatal/saneamento/recursos/page";
 import PaginaAmbiente from "@/app/eficiencia-estatal/meio-ambiente-clima/[[...painel]]/page";
 import PaginaEnergia from "@/app/eficiencia-estatal/energia-conectividade/[[...painel]]/page";
+import PaginaEduGastos from "@/app/eficiencia-estatal/educacao-municipal-capitais/gastos/page";
+import PaginaEduAtendimento from "@/app/eficiencia-estatal/educacao-municipal-capitais/atendimento/page";
+import PaginaEduResultados from "@/app/eficiencia-estatal/educacao-municipal-capitais/resultados/page";
+import PaginaEduComparar from "@/app/eficiencia-estatal/educacao-municipal-capitais/comparar/page";
+import { ComposicaoDespesa, MatriculasPorEtapa, PonteDaRazao } from "@/components/eficiencia/DetalhesMedida";
+import { Indice, anosDaMedida } from "@/lib/eficiencia/consulta";
+import { contextos } from "@/lib/eficiencia/contexto";
+import { dadosPainelTema, goldEducacao } from "@/lib/eficiencia/dados";
 
 /**
  * Molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026), PR 2 do Grupo 2, frente de saúde, educação, saneamento, energia e meio
@@ -64,6 +72,71 @@ describe("molde de painel: saneamento no OBEE", () => {
     expect(h).toContain("O que os municípios informaram?");
     expect(h).toContain('data-bloco-tabela=""');
     expect(h).not.toContain("overflow-x-auto");
+  });
+});
+
+describe("molde de painel: educação nas capitais", () => {
+  const TEMAS: [string, () => unknown][] = [
+    ["gastos", PaginaEduGastos],
+    ["atendimento", PaginaEduAtendimento],
+    ["resultados", PaginaEduResultados],
+  ];
+  // os três temas têm o mesmo corpo (PaginaTemaEducacao): o molde vale para os três
+  it.each(TEMAS)("/eficiencia-estatal/educacao-municipal-capitais/%s", (tema, P) => {
+    const h = pagina(P);
+    conferirPainel(`/eficiencia-estatal/educacao-municipal-capitais/${tema}`, h);
+    // a família de medidas é a faixa de números (três), a capital é a primeira ação e o caminho para comparar continua
+    expect(h.match(/data-numero-indicador=""/g)).toHaveLength(3);
+    expect(h).toMatch(/data-acao=""[\s\S]*Capital/);
+    expect(h).toContain("Comparar capitais nesta medida");
+    // as leituras que antes se alternavam ficam todas na página: a distribuição (legada), a tabela equivalente e a evolução (legada)
+    expect(h).toContain('data-figura-legado="distribuicao-capitais"');
+    expect(h).toContain('data-figura-legado="serie"');
+    for (const t of ["Copiar link deste recorte", "Baixar estes valores (CSV)", "Baixar esta série (CSV)", "Dicionário das colunas (CSV)", "Referências para ler o número", "O que este painel não mostra"]) {
+      expect(h).toContain(t);
+    }
+  });
+  it("/eficiencia-estatal/educacao-municipal-capitais/comparar", () => {
+    const h = pagina(PaginaEduComparar);
+    conferirPainel("/eficiencia-estatal/educacao-municipal-capitais/comparar", h);
+    // a figura e a tabela completa ficam as duas na página; a tabela das capitais e o resumo do grupo são do kit, à vista
+    expect(h).toContain('data-figura-legado="distribuicao-capitais"');
+    for (const t of ["Destacar capitais", "Colunas em exibição", "Ordenar a tabela por", "Baixar esta tabela (CSV)", "Baixar estes valores (CSV)", "Copiar link deste recorte", "Dicionário das colunas (CSV)", "Mediana do grupo", "Capitais com valor e na comparação", "Ressalvas"]) {
+      expect(h).toContain(t);
+    }
+    expect(h.match(/data-bloco-tabela=""/g)).toHaveLength(2);
+    expect(h).not.toContain("max-h-[40rem]");
+  });
+  it("o detalhe de uma capital (composição, ponte e matrículas por etapa) é uma figura do kit, com a tabela equivalente e sem tabela à mão", () => {
+    const g = goldEducacao()!;
+    const todos = contextos(g);
+    const caso = (tema: "gastos" | "atendimento") => {
+      const d = dadosPainelTema(g, tema);
+      const fontes = Object.fromEntries(Object.entries(d.fontes).map(([id, f]) => [id, { nome: `${f.instituicao}, ${f.conjunto}`, orgao: f.instituicao, conjunto: f.conjunto, url: f.pagina, capturado_em: f.capturado_em }]));
+      return { d, ix: new Indice(d), fontes, ficha: (id: string) => d.fichas.find((x) => x.id === id)! };
+    };
+    const gastos = caso("gastos");
+    const atend = caso("atendimento");
+    const cap = gastos.d.capitais[0];
+    const anoGasto = anosDaMedida(gastos.d, "despesa").at(-1)!;
+    const anoCenso = anosDaMedida(atend.d, "matriculas").at(-1)!;
+    const figuras = [
+      html(createElement(ComposicaoDespesa, { ix: gastos.ix, cap, ano: anoGasto, ficha: gastos.ficha("edu.despesa.subfuncao"), ctx: todos["edu.despesa.subfuncao"], fontes: gastos.fontes })),
+      html(createElement(PonteDaRazao, { ix: gastos.ix, cap, ano: anoGasto, razao: gastos.ix.ponto("edu.despesa.aplicacao_direta_por_matricula", cap.cod, anoGasto, null, "nominal"), ficha: gastos.ficha("edu.despesa.ponte_matricula"), ctx: todos["edu.despesa.ponte_matricula"], fontes: gastos.fontes })),
+      html(createElement(MatriculasPorEtapa, { ix: atend.ix, cap: atend.d.capitais[0], ano: anoCenso, ficha: atend.ficha("edu.matriculas.rede_municipal"), ctx: todos["edu.matriculas.rede_municipal"], fontes: atend.fontes })),
+    ];
+    for (const h of figuras) {
+      expect(h).toContain("data-figura-analitica");
+      expect(h).toMatch(/data-grafico="(barras|sem-composicao)"/);
+      expect(h).toContain("data-nao-concluir");
+      // toda <table> é a do kit
+      expect((h.match(/<table/g) ?? []).length).toBe((h.match(/<table[^>]*data-tabela-dados/g) ?? []).length);
+    }
+  });
+  it("gastos: as três escalas do gasto na faixa e na escolha da medida, os valores reais e o perímetro da despesa", () => {
+    const h = pagina(PaginaEduGastos);
+    for (const t of ["Três escalas do gasto", "Por habitante", "Por matrícula", "Reais de 2025 (IPCA)", "Grupo de comparação", "Ordem das capitais"]) expect(h).toContain(t);
+    expect(h).toContain('data-ressalva=""');
   });
 });
 
