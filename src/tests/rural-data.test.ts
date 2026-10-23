@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * Crédito rural (MDCR/Sicor). O que se trava:
@@ -170,7 +171,8 @@ describe("SPA: aba registrada em todos os mapas", () => {
     expect(app).toContain('rural: ["sicor"]');
     expect(app).toContain('rural: "municipal"');
     expect(app).toMatch(/\n  rural: \{ q: "[^"]+\?"/);
-    expect(html).toContain('data-view="rural">Crédito rural</button>');
+    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(rotuloNaNavegacao("/observatorio/rural-credit")).toBe("Crédito rural");
     expect(html).toContain('id="view-rural"');
   });
 

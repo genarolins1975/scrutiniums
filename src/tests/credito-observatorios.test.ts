@@ -1,32 +1,19 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { DESTINO_ABAS_CREDITO } from "@/lib/observatorios/registro";
-import { OBSERVATORIOS, destinoObservatorio } from "@/lib/observatorios/lista";
+import { OBSERVATORIOS } from "@/lib/observatorios/lista";
+import { htmlRotuloSpa } from "@/lib/observatorios/barraSpa";
 
-const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
-const objeto = (nome: string): Record<string, string> => {
-  const m = app.match(new RegExp(`const ${nome} = \\{([\\s\\S]*?)\\};`));
-  if (!m) throw new Error(nome);
-  return Object.fromEntries(Array.from(m[1].matchAll(/"?([\w-]+)"?: "([^"]+)"/g)).map((x) => [x[1], x[2]]));
-};
-
+/**
+ * Abas do Crédito que pertencem a outro observatório. Até 23/10/2026 o cabeçalho da SPA escrevia à mão "Este painel faz parte
+ * do Observatório X" (VIEW_OBSERVATORIO no app.js); desde a Iniciativa 2 do parecer de UX de 23/10/2026 (o Crédito na mesma
+ * casca) é o rótulo de contexto da plataforma, lido do registro, que diz o observatório e a coleção donos de cada aba.
+ */
 describe("abas do Crédito que pertencem a outro observatório", () => {
-  it("o cabeçalho da SPA marca exatamente as abas que o registro atribui a Famílias e a Contas Públicas", () => {
-    const rotas = objeto("ROUTES");
-    const marcadas = objeto("VIEW_OBSERVATORIO");
-    for (const [view, caminho] of Object.entries(rotas)) {
-      const destino = DESTINO_ABAS_CREDITO[caminho];
-      if (!destino) continue;
-      const esperado = destino[0] === "economia" ? undefined : destino[0];
-      expect(marcadas[view], `${view} (${caminho})`).toBe(esperado);
-    }
-  });
-
-  it("o destino de cada observatório marcado é o mesmo do registro", () => {
-    for (const id of ["familias", "contas-publicas"] as const) {
-      const o = OBSERVATORIOS.find((x) => x.id === id)!;
-      expect(app).toContain(`["${o.nome}", "${destinoObservatorio(o)}"]`);
+  it("o rótulo acima do título diz o observatório e a coleção que o registro atribui a cada aba", () => {
+    for (const [caminho, [obs, col]] of Object.entries(DESTINO_ABAS_CREDITO)) {
+      const o = OBSERVATORIOS.find((x) => x.id === obs)!;
+      const c = o.colecoes.find((x) => x.id === col)!;
+      expect(htmlRotuloSpa(`/observatorio${caminho}`), caminho).toContain(`<span>${o.nome} · ${c.nome}`);
     }
   });
 });

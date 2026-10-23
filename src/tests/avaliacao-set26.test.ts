@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
+import { GRUPOS_CREDITO } from "@/lib/credito/navegacao";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * Travas das correções da avaliação de 05/09/2026 (docs/AVALIACAO_PAINEIS_2026-09.md,
@@ -111,11 +113,12 @@ describe("E9/E10 — guia em toda aba, um nome por aba", () => {
   });
 
   it("rótulo do menu = título do catálogo = VIEW_TITLES, para toda aba no menu", () => {
+    // o menu é a navegação da coleção dona (Iniciativa 2 do parecer de UX de 23/10/2026); a barra lateral saiu
     const titulos = mapa("VIEW_TITLES");
-    const nav = Array.from(html.matchAll(/data-view="(\w+)"[^>]*>([^<]+)</g));
+    const nav = ABAS_OBSERVATORIO.map((a) => [a.view, rotuloNaNavegacao(`/observatorio${a.caminho}`)] as const).filter(([, r]) => r && r !== "Início");
     expect(nav.length).toBeGreaterThanOrEqual(25);
-    for (const [, view, rotulo] of nav) {
-      expect(rotulo.replace(/&amp;/g, "&").trim(), view).toBe(titulos[view]);
+    for (const [view, rotulo] of nav) {
+      expect(rotulo, view).toBe(titulos[view]);
       const aba = ABAS_OBSERVATORIO.find((a) => a.view === view);
       expect(aba?.titulo, view).toBe(titulos[view]);
     }
@@ -134,13 +137,12 @@ describe("E9/E10 — guia em toda aba, um nome por aba", () => {
     }
   });
 
-  it("o menu tem seis grupos pela pergunta do leitor; Perguntas e Sugestões saem do menu, ficam no rodapé", () => {
-    const grupos = Array.from(html.matchAll(/<span class="navlabel">([^<]+)<\/span>/g)).map((m) => m[1]);
-    expect(grupos).toEqual(["Começar", "Ciclo do crédito", "Instituições e funding", "Produtos e preços", "Território e pessoas", "Risco, cobrança e recuperação", "Pagamentos, conduta e fronteiras", "Referência"]);
-    expect(html).not.toMatch(/data-view="research"/);
-    expect(html).not.toMatch(/data-view="sugestoes"/);
-    expect(html).toContain('href="/observatorio/research"');
-    expect(html).toContain('href="/observatorio/suggestions"');
+  it("o menu tem os grupos pela pergunta do leitor; Perguntas, Sobre e Sugestões saem do menu, ficam no fim da página", () => {
+    expect(GRUPOS_CREDITO.map((g) => g.rotulo)).toEqual(["Começar", "Ciclo do crédito", "Instituições e funding", "Produtos e preços", "Território e pessoas", "Risco, cobrança e recuperação", "Pagamentos, conduta e fronteiras", "Referência"]);
+    for (const h of ["/observatorio/research", "/observatorio/suggestions", "/observatorio/about"]) {
+      expect(rotuloNaNavegacao(h), h).toBeNull();
+      expect(html).toContain(`href="${h}"`);
+    }
   });
 });
 
@@ -244,8 +246,10 @@ describe("2.2/2.3 — sem alert(), fontes do meta derivadas, uma metodologia", (
     // 0.120.0: Risco setorial (item 4): nome como link, régua do score, sem cor de juízo, método recolhido
     // 0.121.0: Iniciativa 1 do parecer de UX (21/10/2026): marca da barra lateral e título da aba com o nome da coleção
     // 0.122.0: Iniciativa 3 do parecer de UX (21/10/2026): busca da plataforma na barra; sai o filtro local da barra lateral
-    expect(app).toContain('const APP_VERSION = "0.122.0";');
-    expect(html).toContain("app.min.js?v=0.122.0");
+    // 0.123.0: Iniciativa 2 do parecer de UX (23/10/2026): navegação, rótulo e fim de página da plataforma; sai a barra lateral
+    expect(app).toContain('const APP_VERSION = "0.123.0";');
+    expect(html).toContain("app.min.js?v=0.123.0");
+    expect(html).toContain("casca.min.js?v=0.123.0");
     expect(html).not.toContain("?v=0.106.0");
     expect(html).not.toContain("?v=0.86.0");
   });

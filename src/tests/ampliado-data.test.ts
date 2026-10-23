@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * Bancos e mercado de capitais. O que se trava:
@@ -129,7 +130,8 @@ describe("SPA: aba registrada em todos os mapas", () => {
     expect(app).toContain('ampliado: "emergentes"');
     expect(app).toMatch(/\n  ampliado: \{ q: "[^"]+\?"/);
     expect(app).toContain("state.amp = {");
-    expect(html).toContain('data-view="ampliado">Bancos e mercado de capitais</button>');
+    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(rotuloNaNavegacao("/observatorio/broad-credit")).toBe("Bancos e mercado de capitais");
     expect(html).toContain('id="view-ampliado"');
   });
   it("o renderizador vive no chunk emergentes e declara as três réguas", () => {

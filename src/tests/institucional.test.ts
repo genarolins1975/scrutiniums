@@ -82,7 +82,8 @@ describe("/sobre e rodapés", () => {
     // as Contas Federais e as Estaduais trocaram o rodapé próprio pelo rodapé comum (molde único, Iniciativa 4, 22/10/2026)
     expect(ler("src/app/contas-publicas/layout.tsx")).toContain("<Footer compacto/>");
     expect(ler("src/app/contas-publicas-estaduais/layout.tsx")).toContain("<Footer compacto />");
-    expect(ler("public/obs/index.html")).toContain('<a href="/sobre">Sobre a Scrutiniums</a>');
+    // a aplicação do Crédito traz o rodapé da plataforma, renderizado do próprio Footer (Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(ler("public/obs/index.html")).toMatch(/<a class="[^"]*" href="\/sobre">Sobre a Scrutiniums<\/a>/);
     expect(footer).toContain("<ContatoItens");
     expect(footer).not.toContain("Contato · LinkedIn");
   });

@@ -254,7 +254,9 @@ describe("5. toda navegação de módulo se chama \"Navegação da coleção X\"
     expect(achados).toEqual([]);
   });
 
-  it("na aplicação do Crédito, a barra lateral é a navegação da coleção Crédito e sistema financeiro", () => {
-    expect(ler("public/obs/index.html")).toContain('<nav class="tabs" id="tabs" aria-label="Navegação da coleção Crédito e sistema financeiro">');
+  // desde a Iniciativa 2 do parecer de UX de 23/10/2026 a aplicação não tem barra lateral: a navegação é a da plataforma, da
+  // coleção dona do endereço (Consignado mostra a de "Dívida e crédito das famílias"; teste credito-casca)
+  it("na aplicação do Crédito, a navegação é a da coleção Crédito e sistema financeiro", () => {
+    expect(ler("public/obs/index.html")).toContain('<nav aria-label="Navegação da coleção Crédito e sistema financeiro" class="nav-colecao');
   });
 });

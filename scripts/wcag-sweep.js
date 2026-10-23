@@ -1,5 +1,4 @@
-/* Varredura WCAG 2.1 AA com axe-core sobre todas as páginas do Observatório,
-   nos dois temas. Cole no console do navegador com a SPA aberta.
+/* Varredura WCAG 2.1 AA com axe-core sobre todas as páginas do Observatório. Cole no console do navegador com a SPA aberta.
    Preparação e servidor: node scripts/auditoria-wcag.mjs
 
    Por que no navegador e não no CI: contraste depende de layout renderizado,
@@ -19,11 +18,13 @@
     });
   }
 
-  const views = [...document.querySelectorAll("nav.tabs [data-view]")].map((e) => e.dataset.view);
+  // as páginas dos grupos do Crédito (o índice que o servidor embute desde a Iniciativa 2 do parecer de UX de 23/10/2026, que
+  // tirou a barra lateral); só o tema claro, desde que o tema escuro saiu da aplicação (decisão do dono de 23/10/2026)
+  const porRota = Object.fromEntries(Object.entries(ROUTES).map(([v, r]) => [BASE + r, v]));
+  const views = JSON.parse(document.getElementById("navColecaoIndice").textContent).grupos.flatMap((g) => g.paginas.map((h) => porRota[h]).filter(Boolean));
   const R = { axe: axe.version, quando: new Date().toISOString(), paginas: views.length, temas: {}, achados: [] };
 
-  for (const tema of ["claro", "escuro"]) {
-    applyTheme(tema === "escuro" ? "dark" : "light");
+  for (const tema of ["claro"]) {
     R.temas[tema] = {};
     for (const v of views) {
       nav(v);
@@ -42,12 +43,11 @@
       }
     }
   }
-  applyTheme("light");
 
   const sujas = Object.entries(R.temas).flatMap(([t, p]) =>
     Object.entries(p).filter(([, v]) => v !== "limpo").map(([k, v]) => `${t}/${k}: ${v}`));
   R.resumo = sujas.length ? sujas : "nenhuma violação nas páginas varridas";
-  console.log(`axe ${R.axe} · ${views.length} páginas × 2 temas · ${R.achados.length} nós reprovados`);
+  console.log(`axe ${R.axe} · ${views.length} páginas · ${R.achados.length} nós reprovados`);
   console.table(R.achados.slice(0, 50));
   window.__wcagResultado = R;
   console.log("resultado completo em window.__wcagResultado — copy(JSON.stringify(__wcagResultado, null, 1)) para exportar");
