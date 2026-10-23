@@ -28,6 +28,9 @@ export type PaginaInventario = {
   situacao: SituacaoPagina;
   /** O que falta, quando o catálogo declara (só para "previsto"). */
   pendencia?: string;
+  /** A pergunta ou o resumo da página e os termos que levam a ela na busca, lidos do catálogo do domínio (Painel). */
+  resumo?: string;
+  termos?: readonly string[];
 };
 
 export type ColecaoInventario = {
@@ -55,14 +58,14 @@ const TERMOS: Record<string, string> = {
   "familias/protecao": "bolsa família bpc cadúnico assistência tarifa social fome",
   "familias/moradia": "aluguel déficit habitacional casa financiamento imobiliário",
   "familias/custo-de-vida": "inflação ipca preço cesta comida botijão conta de luz água",
-  "servicos-publicos/educacao": "escola ideb matrícula creche capitais",
+  "servicos-publicos/educacao": "escola ideb anos iniciais anos finais matrícula creche capitais",
   "servicos-publicos/saude": "hospital sus atenção primária internação capitais",
   "servicos-publicos/seguranca": "homicídio violência polícia estados",
   "servicos-publicos/justica": "tribunal processo cnj judiciário fila defensoria",
   "servicos-publicos/cultura": "biblioteca museu acervo",
   "servicos-publicos/sintese": "retrato capitais minha capital índice ranking",
   "contas-publicas/federais": "orçamento federal união impostos r$ 100 previdência inss despesa por área restos a pagar dívida pública",
-  "contas-publicas/estaduais": "estados uf dívida receita siconfi tesouro",
+  "contas-publicas/estaduais": "estados uf dívida receita icms siconfi tesouro",
   "contas-publicas/divida-governos": "municípios crédito subnacional união dívida pública",
   "energia-e-infraestrutura/setor-eletrico": "luz tarifa pld reservatório ons aneel eólica solar hidrelétrica apagão",
   "energia-e-infraestrutura/gas": "botijão glp gnv encanado anp petrobras",
@@ -115,12 +118,12 @@ export function inventario(): ObservatorioInventario[] {
     colecoes: o.colecoes.map((c) => {
       const proprias = todos
         .filter((p) => p.observatorio === o.id && p.colecao === c.id && p.rota !== c.href)
-        .map((p): PaginaInventario => ({ titulo: p.titulo, rota: p.rota, situacao: situacaoDaRota(p.rota) }));
+        .map((p): PaginaInventario => ({ titulo: p.titulo, rota: p.rota, situacao: situacaoDaRota(p.rota), resumo: p.resumo, termos: p.termos }));
       // atalhos: painéis de outro observatório que esta coleção também apresenta
       const atalhos = ATALHOS.filter((a) => a.observatorio === o.id && a.colecao === c.id)
         .map((a) => porRota.get(a.rota) ?? donoDaRota(a.rota))
         .filter((p): p is NonNullable<typeof p> => !!p && !proprias.some((x) => x.rota === p.rota))
-        .map((p): PaginaInventario => ({ titulo: p.titulo, rota: p.rota, situacao: situacaoDaRota(p.rota) }));
+        .map((p): PaginaInventario => ({ titulo: p.titulo, rota: p.rota, situacao: situacaoDaRota(p.rota), resumo: p.resumo, termos: p.termos }));
       return { id: c.id, nome: c.nome, href: c.href, termos: TERMOS[`${o.id}/${c.id}`] ?? "", paginas: [...proprias, ...atalhos, ...previstas(o.id, c.id)] };
     }),
   }));

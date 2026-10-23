@@ -103,6 +103,10 @@ function montarSinonimosBusca(tx: TxIdioma): readonly GrupoDeSinonimos[] {
     { alvos: [`${S}/mercado`, `${S}/mercado#livre-regulado`, `${S}/mercado/agentes#agentes`], termos: [tx("migrar para o mercado livre", "switch to the free market"), tx("mercado livre de energia", "free energy market"), tx("escolher o fornecedor de energia", "choose the energy supplier")] },
     { alvos: [`${S}/regulacao/consultas-e-agenda#p046`], termos: [tx("audiência pública", "public hearing"), tx("consulta da ANEEL", "ANEEL consultation")] },
     { alvos: [`${S}/regulacao/linha-do-tempo#p045`], termos: [tx("mudanças nas regras", "rule changes"), tx("histórico das regras", "history of the rules"), tx("decisão da ANEEL", "ANEEL decision")] },
+    // as três páginas que só tinham vocabulário nas subpáginas: a página em si também é achada (ciclo 2 da busca, bloco 3)
+    { alvos: [`${S}/inclusao-energetica`], termos: [tx("tarifa social de energia", "electricity social tariff"), tx("baixa renda", "low income"), tx("acesso à energia", "access to electricity"), tx("sistemas isolados", "isolated systems")] }, // i18n: dado
+    { alvos: [`${S}/empresas`], termos: [tx("distribuidoras", "distribution utilities"), tx("grupos econômicos", "economic groups"), tx("concessões", "concessions"), tx("quem controla as empresas", "who controls the companies")] }, // i18n: dado
+    { alvos: [`${S}/regulacao`], termos: [tx("ANEEL", "ANEEL"), tx("regras do setor", "sector rules"), tx("resoluções", "resolutions"), tx("agência reguladora", "regulatory agency")] }, // i18n: dado
     // território, visão geral, aprenda e dados
     { alvos: [`${S}/territorio`], termos: [tx("meu estado", "my state"), tx("minha cidade", "my city"), tx("meu município", "my municipality"), tx("por estado", "by state"), tx("por município", "by municipality"), tx("mapa do Brasil", "map of Brazil")] },
     { alvos: [`${S}/visao-geral`], termos: [tx("resumo do setor", "sector summary"), tx("situação do sistema", "state of the system"), tx("panorama", "overview"), tx("como está o setor elétrico", "how is the power sector doing")] },

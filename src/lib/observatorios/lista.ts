@@ -48,6 +48,13 @@ export type Painel = {
   origem: DominioId | null;
   /** Painel principal do mesmo tema (copias.ts); a página avisa com <PainelPrincipal>. */
   duplicataDe?: string;
+  /**
+   * Uma frase, até 140 caracteres, de preferência a pergunta que a página responde, e de 3 a 12 termos (siglas, fontes,
+   * indicadores e o vocabulário leigo que o título não diz). Vêm do catálogo do domínio, ao lado do título e da rota, e levam
+   * a página à busca da plataforma (ciclo 2 da busca, bloco 3, 23/10/2026; teste busca-cobertura).
+   */
+  resumo?: string;
+  termos?: readonly string[];
 };
 
 export type Atalho = { rota: string; observatorio: ObservatorioId; colecao: string };

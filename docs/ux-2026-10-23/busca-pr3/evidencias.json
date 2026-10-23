@@ -1,0 +1,297 @@
+{
+ "data": "2026-10-23",
+ "build": "lXx_riA24VBDBgmE4EQYp",
+ "maquina": "4 vCPU, 16 GB",
+ "comando": "npm run evidencias -- --rotas /buscar?q=Importação /buscar?q=Regulação /buscar?q=superávit /buscar?q=SNIS --saida docs/ux-2026-10-23/busca-pr3 --larguras 390,1440",
+ "tempo": "0 min 47 s",
+ "resultados": [
+  {
+   "rota": "/buscar?q=Importação",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=Importa%C3%A7%C3%A3o",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_Importa_o-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_Importa_o-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=Importação",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=Importa%C3%A7%C3%A3o",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_Importa_o-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_Importa_o-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=Importação",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=Importa%C3%A7%C3%A3o",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_Importa_o-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_Importa_o-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=Importação",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=Importa%C3%A7%C3%A3o",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_Importa_o-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_Importa_o-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=Regulação",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=Regula%C3%A7%C3%A3o",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_Regula_o-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_Regula_o-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=Regulação",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=Regula%C3%A7%C3%A3o",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_Regula_o-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_Regula_o-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=Regulação",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=Regula%C3%A7%C3%A3o",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_Regula_o-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_Regula_o-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=Regulação",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=Regula%C3%A7%C3%A3o",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_Regula_o-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_Regula_o-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=superávit",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=super%C3%A1vit",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_super_vit-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_super_vit-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=superávit",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=super%C3%A1vit",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_super_vit-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_super_vit-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=superávit",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=super%C3%A1vit",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_super_vit-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_super_vit-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=superávit",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=super%C3%A1vit",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_super_vit-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_super_vit-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=SNIS",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=SNIS",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_SNIS-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_SNIS-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=SNIS",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=SNIS",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_SNIS-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_SNIS-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=SNIS",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=SNIS",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_SNIS-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_SNIS-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=SNIS",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=SNIS",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_SNIS-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_SNIS-1440-com-sessao-primeira-tela.jpg"
+  }
+ ]
+}

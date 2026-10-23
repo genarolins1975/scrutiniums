@@ -69,7 +69,7 @@ type Preparada = {
   titulo: string[];
   tituloInteiro: string;
   /**
-   * Siglas do próprio destino: o primeiro termo, quando é só a sigla ("ANEEL" no verbete da agência), a sigla entre parênteses no
+   * Siglas do próprio destino: o primeiro termo do verbete, quando é só a sigla ("ANEEL" no verbete da agência), a sigla entre parênteses no
    * título ("Preço de curto prazo (PLD)") ou o título que é a sigla. A sigla solta no meio do título não conta: em "Agenda
    * Regulatória da ANEEL" ela qualifica o assunto, que é a agenda.
    */
@@ -107,9 +107,10 @@ const SIGLA = /^(?=.*[A-Z])[A-Z0-9]{2,6}$/;
 
 function siglasDe(e: EntradaBusca): Set<string> {
   const s = new Set<string>();
-  // só o primeiro termo: é onde o catálogo põe a sigla do destino (os verbetes do Aprenda); as siglas que vêm depois chegam
-  // pelos grupos de sinônimos e são de outro destino ("PLD" nos termos do verbete Mercado de Curto Prazo, ou da coleção)
-  const primeiro = e.termos[0]?.trim() ?? "";
+  // só no verbete e só o primeiro termo: é onde o glossário põe a sigla do conceito (os verbetes do Aprenda); as siglas que vêm
+  // depois chegam pelos grupos de sinônimos e são de outro destino ("PLD" nos termos do verbete Mercado de Curto Prazo), e a
+  // sigla nos termos de uma página é fonte ou indicador que ela usa ("LOA" na Qualidade do planejamento), não o nome dela
+  const primeiro = e.tipo === "verbete" ? (e.termos[0]?.trim() ?? "") : "";
   if (SIGLA.test(primeiro)) s.add(normalizar(primeiro));
   for (const m of e.titulo.matchAll(/\(([A-Z0-9]{2,6})\)/g)) if (SIGLA.test(m[1])) s.add(normalizar(m[1]));
   if (SIGLA.test(e.titulo.trim())) s.add(normalizar(e.titulo));
