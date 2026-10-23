@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { chromium, type Browser } from "playwright";
+import { aguardarSessaoResolvida } from "../../scripts/ux-cromo-medida.mjs";
 import { NO_MOLDE } from "./suporte/entradas-molde";
 import { exigirBuild, subirServidor, temBuild, type ServidorProducao } from "./suporte/servidor-producao";
 
@@ -51,6 +52,9 @@ describe.skipIf(!temBuild)("orçamento de comprimento no navegador (build de pro
         expect(resp?.status(), rota).toBe(200);
         expect(new URL(page.url()).pathname, `${rota} não pode cair no login`).toBe(rota);
         await page.waitForLoadState("networkidle", { timeout: 15_000 }).catch(() => undefined);
+        // com sessão, mede depois de o navegador resolvê-la, como o orçamento de cromo: a faixa de consulta aberta vem no HTML e só
+        // sai então (a espera por rede ociosa pode estourar sob carga)
+        await aguardarSessaoResolvida(page, comSessao);
         await page.evaluate(() => document.fonts.ready.then(() => undefined));
         const m = await page.evaluate(() => {
           const n = document.querySelector("[data-entrada] [data-numero-escala]");
