@@ -431,6 +431,50 @@ class AgendaEProcedimentos(unittest.TestCase):
         self.assertEqual(pr["Submódulo 2.1 A"]["ato"], "Resolução Normativa nº 1.114/2025")  # arquivo 'ren2025...' sem o 'a'
         self.assertIn("terá vigência a partir de 1º/1/2027", pr["Submódulo 2.5"]["observacao"])
 
+    def test_portal_volto_le_o_estado_inicial(self):
+        # 22/10/2026: o gov.br da ANEEL passou ao portal Volto; o HTML do servidor traz os blocos vazios e o
+        # texto só existe em window.__data. Sem ler o estado, a revisão da Agenda saiu nula e o PRODIST, vazio.
+        pagina = _ler("govbr_agenda_volto.html", "rb")
+        self.assertNotIn(b"atualizada pela", pagina.split(b"<script>")[0])
+        rev = ar.revisao_da_agenda(pagina)
+        self.assertEqual(rev["aprovada_por"], "Portaria ANEEL nº 7.030, de 2 de dezembro de 2025")
+        self.assertEqual(rev["atualizada_por"], "Portaria nº 7.157, de 8 de setembro de 2026")
+        self.assertTrue(ar.link_revisao_agenda(pagina).startswith("https://leis.org/aneel/lei/portaria/2026/7157/"))
+        pd = {i["modulo"]: i for i in ar.procedimentos_da_pagina(_ler("govbr_prodist_volto.html", "rb"), "PRODIST")}
+        self.assertEqual(len(pd), 11)
+        self.assertEqual((pd["Módulo 8"]["versao"], pd["Módulo 8"]["ato"]), ("v14", "Resolução Normativa nº 1.137/2025"))
+        self.assertEqual(pd["Módulo 7"]["ato"], "Resolução Normativa nº 956/2021")
+        # página sem estado Volto segue pelo recorte clássico; estado corrompido não vira conteúdo
+        self.assertIsNone(ar.conteudo_volto(_ler("govbr_agenda.html", "rb")))
+        self.assertIsNone(ar.conteudo_volto(b"<script>window.__data={\"content\": </script>"))
+
+    def test_reprocessar_pagina_substitui_a_leitura_antiga(self):
+        # a vintage de 22/10/2026 foi lida pelo leitor antigo, que gravou a revisão da Agenda como apagada
+        # pela fonte (''); o reprocessamento da mesma vintage na versão nova precisa trocar essa leitura
+        from unittest import mock
+        con = base.conecta(":memory:")
+        classica, volto = _ler("govbr_agenda.html", "rb"), _ler("govbr_agenda_volto.html", "rb")
+        vids = {}
+        for quando, corpo in (("2026-10-02T03:08:12Z", classica), ("2026-10-22T01:49:01Z", volto)):
+            vids[quando], _ = base.registra_vintage(con, m.DS_PAG, "agenda", m.PAGINAS["agenda"], quando, None,
+                                                    base.sha256_bytes(corpo), len(corpo), "teste", f"teste/{quando}")
+            with mock.patch.object(m, "_bytes_bronze", return_value=corpo):
+                m._processa_pagina(con, "agenda", {"vintage_id": vids[quando], "arquivo": f"teste/{quando}"})
+        rev = base.registros_como_estavam_em(con, m.DS_PAG)["agenda"]
+        self.assertEqual(rev["atualizada_por"], "Portaria nº 7.157, de 8 de setembro de 2026")
+        # leitura antiga simulada: os três campos como '' na vintage de 22/10
+        con.execute("DELETE FROM registros WHERE vintage_id=?", (vids["2026-10-22T01:49:01Z"],))
+        base.grava_registros(con, m.DS_PAG, vids["2026-10-22T01:49:01Z"],
+                             [("agenda", k, None) for k in ("aprovada_por", "atualizada_por", "trecho")])
+        self.assertNotIn("atualizada_por", base.registros_como_estavam_em(con, m.DS_PAG)["agenda"])
+        with mock.patch.object(m, "_bytes_bronze", return_value=volto):
+            m._processa_pagina(con, "agenda", {"vintage_id": vids["2026-10-22T01:49:01Z"], "arquivo": "x"})
+        rev = base.registros_como_estavam_em(con, m.DS_PAG)["agenda"]
+        self.assertEqual(rev.get("atualizada_por"), "Portaria nº 7.157, de 8 de setembro de 2026")
+        self.assertEqual(base.historico_registro(con, m.DS_PAG, "agenda", "atualizada_por"),
+                         [("2026-10-02T03:08:12Z", "Portaria nº 7.157, de 8 de setembro de 2026")])
+        con.close()
+
 
 class BandeirasEParticipacao(unittest.TestCase):
     def _vig(self, com_acionamento=True):

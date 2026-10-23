@@ -54,6 +54,7 @@ import {
   linhasValoresFrases,
   linhasVersoes,
   pedeAtencao,
+  REGRAS_DA_FRASE,
   periodoCurto,
   posicaoDeterminante,
   recorteMultiplos,
@@ -799,15 +800,27 @@ describe("r10: DEC apurado, perdas, tarifa de referência e EAR com a ressalva j
     expect(e).toContain("Alcance da Tarifa Social, mai/2025");
   });
 
-  it("o topo cita as regras em observação, a frase leva a marca da regra e as regras normais ficam recolhidas", () => {
-    const obs = G.observar.filter((o) => o.tipo !== "evento" && o.estado === "em_observacao");
-    expect(obs.length).toBeGreaterThan(0);
+  it("o topo cita as regras em alerta sobre o sistema e as em observação, a frase leva a marca da regra e as regras normais ficam recolhidas", () => {
+    // qual regra pede atenção muda com o dado (na gold de 01/10/2026 a afluência estava em observação; na de 22/10/2026, em alerta, com o
+    // piso do PLD): o teste confere o comportamento no estado publicado, qualquer que seja, em vez de exigir uma regra em observação
+    const regras = G.observar.filter((o) => o.tipo !== "evento");
+    const noTopo = regras.filter((o) => (o.ativo && o.assunto === "sistema") || o.estado === "em_observacao");
     const topo = bloco("data-atencao");
-    for (const o of obs) {
+    for (const o of noTopo) {
       expect(topo).toContain(o.titulo);
       expect(html).toContain(`href="#regra-${o.id}"`);
     }
-    expect(html).toContain('data-marca-regra="ena_faixa"');
+    if (noTopo.length === 0) expect(topo).toContain("Nenhuma regra sobre o sistema está em alerta nem em observação.");
+    // cada frase publicada leva a marca das regras que avaliam o seu indicador e pedem atenção; regra normal não marca a frase
+    const pedem = new Set(["ativo", "em_retorno", "em_observacao"]);
+    for (const [frase, ids] of Object.entries(REGRAS_DA_FRASE)) {
+      if (!html.includes(`id="frase-${frase}"`)) continue;
+      for (const id of ids) {
+        const o = regras.find((r) => r.id === id);
+        if (o && pedem.has(o.estado)) expect(html, id).toContain(`data-marca-regra="${id}"`);
+        else expect(html, id).not.toContain(`data-marca-regra="${id}"`);
+      }
+    }
     expect(html).toContain("data-regras-normais");
     // a ligação entre as partes (da geração ao consumidor) fica à vista na abertura, e o bloco recolhido "Por que isso importa" saiu dos painéis
     expect(html).toContain("mapa do sistema");

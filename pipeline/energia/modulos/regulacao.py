@@ -240,8 +240,9 @@ def _processados(con):
 # entram as linhas que citam consulta só na decisão ("consolidada com os aprimoramentos
 # decorrentes da Consulta Pública nº 30/2023") e a numeração dos atos deliberados por tipo e ano
 # (conferência de plausibilidade do número do ato). Páginas v2: nome de arquivo com "v" sem
-# sublinhado, sufixo de letra e prefixo "adsp" (despacho).
-VERSAO_PROC = {DS_ATAS: "3", DS_BAND: "1", DS_PAG: "2", DS_PART: "1", DS_IPCA: "1", DS_CURADORIA: "1"}
+# sublinhado, sufixo de letra e prefixo "adsp" (despacho); v3: portal Volto do gov.br (22/10/2026),
+# conteúdo lido do estado inicial da página (a vintage de 22/10 tinha gravado a revisão da Agenda nula).
+VERSAO_PROC = {DS_ATAS: "3", DS_BAND: "1", DS_PAG: "3", DS_PART: "1", DS_IPCA: "1", DS_CURADORIA: "1"}
 
 
 def _ja(con, ds, vid):
@@ -403,12 +404,21 @@ def _processa_pagina(con, rec, v):
         itens = ar.procedimentos_da_pagina(corpo, rec.upper())
         reg = [(f"{i['conjunto']}|{i['modulo']}", k, i[k]) for i in itens
                for k in ("titulo", "versao", "ato", "url_vigente", "url_versoes", "observacao")]
-        return {"itens": len(itens), "registros": base.grava_registros(con, DS_PAG, v["vintage_id"], reg)}
-    if rec == "agenda":
+        res = {"itens": len(itens)}
+    elif rec == "agenda":
         rev = ar.revisao_da_agenda(corpo)
         reg = [("agenda", k, rev[k]) for k in ("aprovada_por", "atualizada_por", "trecho")]
-        return {"revisao": rev, "registros": base.grava_registros(con, DS_PAG, v["vintage_id"], reg)}
-    return {"guardada": True}
+        res = {"revisao": rev}
+    else:
+        return {"guardada": True}
+    # Só roda para vintage ainda não processada na versão vigente (VERSAO_PROC): linhas que uma versão
+    # anterior gravou para ela saem antes de gravar a leitura nova, e só depois de a leitura dar certo,
+    # como em expansao._limpa_integracao_antiga. Sem isso, o INSERT OR IGNORE com a vintage na chave
+    # manteria a leitura antiga (em 22/10/2026, a revisão da Agenda gravada como apagada pela fonte
+    # quando o defeito era do leitor).
+    con.execute("DELETE FROM registros WHERE dataset=? AND vintage_id=?", (DS_PAG, v["vintage_id"]))
+    res["registros"] = base.grava_registros(con, DS_PAG, v["vintage_id"], reg)
+    return res
 
 
 def _url_revisao_agenda(con):

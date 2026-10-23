@@ -45,8 +45,11 @@ jobs:
       - name: Dependências do pipeline de energia
         # pdftotext (poppler-utils): conferência de trechos dos atos da ANEEL (Regulação) e
         # da tabela de MLT do PMO (Água e clima); sem ele essas conferências ficam como
-        # "não executada" e a gold continua publicada
+        # "não executada" e a gold continua publicada.
+        # Índice do apt atualizado antes: em 23/10/2026 a imagem do runner apontava para
+        # libpoppler134 já retirada do espelho (404) e a execução morreu antes da coleta.
         run: |
+          sudo apt-get update -qq
           sudo apt-get install -y -qq poppler-utils >/dev/null
           pip install -r pipeline/energia/requirements.txt
 
@@ -444,6 +447,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
+          # A gold reprovada e os relatórios dos testes vão para o artefato antes de a gold ser descartada: em
+          # 23/10/2026 o diagnóstico das retenções de 20 a 22/10 precisou reconstruir a gold da cópia durável (3,3 GB).
+          mkdir -p "$RUNNER_TEMP/energia-retida"
+          tar -czf "$RUNNER_TEMP/energia-retida/gold-retida.tar.gz" public/energia || echo "::warning::gold retida não foi empacotada para o artefato"
+          cp vitest-resultado.json pipeline-testes.log testes-codigos.txt energia.log "$RUNNER_TEMP/energia-retida/" 2>/dev/null || true
           git checkout -- public/energia
           git clean -fdq public/energia
           echo "retida=1" >> "$GITHUB_OUTPUT"
@@ -456,6 +464,8 @@ jobs:
             echo
             echo "Testes reprovados nesta execução:"
             python3 scripts/testes_reprovados.py vitest-resultado.json testes-codigos.txt pipeline-testes.log
+            echo
+            echo "A gold reprovada e os relatórios dos testes ficam 7 dias no artefato \`energia-retida\` desta execução."
           } > /tmp/energia-retida.md
           TITULO="Setor Elétrico: testes reprovaram a gold do dia; publicação retida"
           EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
@@ -485,6 +495,15 @@ jobs:
             echo "::error::não foi possível publicar após 4 tentativas"
             exit 1
           fi
+
+      - name: Guardar a gold retida para diagnóstico
+        if: always() && steps.reter.outputs.retida == '1'
+        uses: actions/upload-artifact@v4
+        with:
+          name: energia-retida
+          path: ${{ runner.temp }}/energia-retida/
+          if-no-files-found: warn
+          retention-days: 7
 
       # A retenção deixa a execução VERMELHA. A issue já foi aberta ou comentada no
       # passo anterior.

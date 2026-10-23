@@ -934,7 +934,10 @@ def distribuicao_desvios(pg, vf, horas):
             "max_abs_mwmed": _r(max(ab), 1),
             "horas_materiais": {f"{int(l)}": sum(1 for d in desvios if material(d, l)) for l in LIMIARES_SENSIBILIDADE},
             "horas_inversao": sum(1 for h in hs if inversao(pg[h], vf[h])),
-            "programado_abs_mediano_mwmed": _r(c.quantil([abs(pg[h]) for h in hs], 0.5), 1),
+            # quatro casas guardam a mediana exata (média de dois valores de três casas): o veredito a mostra
+            # inteira e a tabela com uma casa, cada um arredondando uma vez. Com uma casa na gold, 2.612,48
+            # virava 2.612,5 e o veredito dizia 2.613 MWmed (22/10/2026).
+            "programado_abs_mediano_mwmed": _r(c.quantil([abs(pg[h]) for h in hs], 0.5), 4),
             "_desvios": desvios}
 
 
