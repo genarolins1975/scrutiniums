@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-22T15:48:00+00:00",
+  "atualizado_em": "2026-10-23T16:23:55+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas"
  },
@@ -1297,6 +1297,15 @@
   ]
  },
  "reclamacoes": [
+  {
+   "periodo": "2026-T3",
+   "indice": null,
+   "reclamacoes": 12,
+   "clientes": 18937.0,
+   "posicao_arquivo": 130,
+   "nome_fonte": "MERCEDES-BENZ (conglomerado)",
+   "casamento": "nome_identico_bcb"
+  },
   {
    "periodo": "2026-T2",
    "indice": null,

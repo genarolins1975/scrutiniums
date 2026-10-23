@@ -1,10 +1,10 @@
 {
- "gerado_em": "2026-10-22T15:48:29+00:00",
+ "gerado_em": "2026-10-23T16:24:24+00:00",
  "titulo": "Presença bancária física por município",
  "aviso": "Mapa de presença FÍSICA. Canais digitais não entram, e a ausência de ponto não equivale a ausência de acesso — assim como a presença de um correspondente não equivale à de uma agência.",
  "posicao": {
-  "dependencias": "14/10/2026",
-  "correspondentes": "14/10/2026"
+  "dependencias": "22/10/2026",
+  "correspondentes": "22/10/2026"
  },
  "fontes": [
   {
@@ -54,9 +54,9 @@
  ],
  "totais": {
   "municipios": 5571,
-  "agencia": 2891,
-  "posto": 2301,
-  "correspondente": 379,
+  "agencia": 2888,
+  "posto": 2303,
+  "correspondente": 380,
   "nenhum": 0
  },
  "por_uf": [
@@ -68,9 +68,9 @@
    "correspondente": 2,
    "nenhum": 0,
    "agencia_qtd": 46,
-   "posto_qtd": 49,
+   "posto_qtd": 48,
    "pae_qtd": 79,
-   "corresp_qtd": 628
+   "corresp_qtd": 627
   },
   {
    "uf": "AL",
@@ -92,9 +92,9 @@
    "correspondente": 0,
    "nenhum": 0,
    "agencia_qtd": 176,
-   "posto_qtd": 227,
+   "posto_qtd": 229,
    "pae_qtd": 284,
-   "corresp_qtd": 2377
+   "corresp_qtd": 2383
   },
   {
    "uf": "AP",
@@ -106,7 +106,7 @@
    "agencia_qtd": 36,
    "posto_qtd": 32,
    "pae_qtd": 57,
-   "corresp_qtd": 516
+   "corresp_qtd": 519
   },
   {
    "uf": "BA",
@@ -115,22 +115,22 @@
    "posto": 208,
    "correspondente": 5,
    "nenhum": 0,
-   "agencia_qtd": 737,
+   "agencia_qtd": 736,
    "posto_qtd": 896,
    "pae_qtd": 1240,
-   "corresp_qtd": 14362
+   "corresp_qtd": 14386
   },
   {
    "uf": "CE",
    "municipios": 184,
-   "agencia": 86,
-   "posto": 98,
+   "agencia": 85,
+   "posto": 99,
    "correspondente": 0,
    "nenhum": 0,
-   "agencia_qtd": 380,
-   "posto_qtd": 434,
+   "agencia_qtd": 379,
+   "posto_qtd": 435,
    "pae_qtd": 548,
-   "corresp_qtd": 8586
+   "corresp_qtd": 8602
   },
   {
    "uf": "DF",
@@ -139,10 +139,10 @@
    "posto": 0,
    "correspondente": 0,
    "nenhum": 0,
-   "agencia_qtd": 214,
+   "agencia_qtd": 213,
    "posto_qtd": 419,
    "pae_qtd": 459,
-   "corresp_qtd": 2718
+   "corresp_qtd": 2725
   },
   {
    "uf": "ES",
@@ -151,10 +151,10 @@
    "posto": 10,
    "correspondente": 0,
    "nenhum": 0,
-   "agencia_qtd": 296,
-   "posto_qtd": 491,
+   "agencia_qtd": 294,
+   "posto_qtd": 493,
    "pae_qtd": 729,
-   "corresp_qtd": 4763
+   "corresp_qtd": 4772
   },
   {
    "uf": "GO",
@@ -163,10 +163,10 @@
    "posto": 106,
    "correspondente": 19,
    "nenhum": 0,
-   "agencia_qtd": 471,
-   "posto_qtd": 744,
+   "agencia_qtd": 469,
+   "posto_qtd": 746,
    "pae_qtd": 719,
-   "corresp_qtd": 7959
+   "corresp_qtd": 7973
   },
   {
    "uf": "MA",
@@ -175,10 +175,10 @@
    "posto": 125,
    "correspondente": 12,
    "nenhum": 0,
-   "agencia_qtd": 263,
-   "posto_qtd": 290,
+   "agencia_qtd": 260,
+   "posto_qtd": 292,
    "pae_qtd": 496,
-   "corresp_qtd": 5728
+   "corresp_qtd": 5741
   },
   {
    "uf": "MG",
@@ -187,10 +187,10 @@
    "posto": 419,
    "correspondente": 35,
    "nenhum": 0,
-   "agencia_qtd": 1300,
-   "posto_qtd": 2796,
+   "agencia_qtd": 1290,
+   "posto_qtd": 2799,
    "pae_qtd": 3092,
-   "corresp_qtd": 22360
+   "corresp_qtd": 22473
   },
   {
    "uf": "MS",
@@ -199,10 +199,10 @@
    "posto": 25,
    "correspondente": 0,
    "nenhum": 0,
-   "agencia_qtd": 186,
-   "posto_qtd": 403,
+   "agencia_qtd": 185,
+   "posto_qtd": 404,
    "pae_qtd": 300,
-   "corresp_qtd": 4149
+   "corresp_qtd": 4148
   },
   {
    "uf": "MT",
@@ -211,10 +211,10 @@
    "posto": 63,
    "correspondente": 2,
    "nenhum": 0,
-   "agencia_qtd": 238,
-   "posto_qtd": 637,
+   "agencia_qtd": 237,
+   "posto_qtd": 638,
    "pae_qtd": 355,
-   "corresp_qtd": 4885
+   "corresp_qtd": 4886
   },
   {
    "uf": "PA",
@@ -223,10 +223,10 @@
    "posto": 0,
    "correspondente": 0,
    "nenhum": 0,
-   "agencia_qtd": 470,
-   "posto_qtd": 420,
+   "agencia_qtd": 468,
+   "posto_qtd": 421,
    "pae_qtd": 647,
-   "corresp_qtd": 5077
+   "corresp_qtd": 5085
   },
   {
    "uf": "PB",
@@ -235,10 +235,10 @@
    "posto": 110,
    "correspondente": 68,
    "nenhum": 0,
-   "agencia_qtd": 186,
-   "posto_qtd": 250,
+   "agencia_qtd": 185,
+   "posto_qtd": 251,
    "pae_qtd": 376,
-   "corresp_qtd": 4657
+   "corresp_qtd": 4658
   },
   {
    "uf": "PE",
@@ -247,10 +247,10 @@
    "posto": 91,
    "correspondente": 2,
    "nenhum": 0,
-   "agencia_qtd": 412,
-   "posto_qtd": 490,
+   "agencia_qtd": 411,
+   "posto_qtd": 491,
    "pae_qtd": 643,
-   "corresp_qtd": 7175
+   "corresp_qtd": 7182
   },
   {
    "uf": "PI",
@@ -261,20 +261,20 @@
    "nenhum": 0,
    "agencia_qtd": 144,
    "posto_qtd": 134,
-   "pae_qtd": 251,
-   "corresp_qtd": 4270
+   "pae_qtd": 250,
+   "corresp_qtd": 4276
   },
   {
    "uf": "PR",
    "municipios": 399,
-   "agencia": 218,
-   "posto": 176,
+   "agencia": 217,
+   "posto": 177,
    "correspondente": 5,
    "nenhum": 0,
-   "agencia_qtd": 847,
-   "posto_qtd": 2155,
-   "pae_qtd": 1217,
-   "corresp_qtd": 17093
+   "agencia_qtd": 845,
+   "posto_qtd": 2156,
+   "pae_qtd": 1216,
+   "corresp_qtd": 17115
   },
   {
    "uf": "RJ",
@@ -283,10 +283,10 @@
    "posto": 1,
    "correspondente": 0,
    "nenhum": 0,
-   "agencia_qtd": 1009,
-   "posto_qtd": 1308,
+   "agencia_qtd": 1005,
+   "posto_qtd": 1311,
    "pae_qtd": 1421,
-   "corresp_qtd": 9954
+   "corresp_qtd": 9967
   },
   {
    "uf": "RN",
@@ -295,10 +295,10 @@
    "posto": 82,
    "correspondente": 46,
    "nenhum": 0,
-   "agencia_qtd": 164,
+   "agencia_qtd": 163,
    "posto_qtd": 151,
    "pae_qtd": 273,
-   "corresp_qtd": 4281
+   "corresp_qtd": 4284
   },
   {
    "uf": "RO",
@@ -309,8 +309,8 @@
    "nenhum": 0,
    "agencia_qtd": 107,
    "posto_qtd": 294,
-   "pae_qtd": 157,
-   "corresp_qtd": 1743
+   "pae_qtd": 156,
+   "corresp_qtd": 1750
   },
   {
    "uf": "RR",
@@ -320,9 +320,9 @@
    "correspondente": 0,
    "nenhum": 0,
    "agencia_qtd": 24,
-   "posto_qtd": 39,
+   "posto_qtd": 38,
    "pae_qtd": 71,
-   "corresp_qtd": 498
+   "corresp_qtd": 499
   },
   {
    "uf": "RS",
@@ -331,10 +331,10 @@
    "posto": 148,
    "correspondente": 1,
    "nenhum": 0,
-   "agencia_qtd": 1296,
-   "posto_qtd": 2132,
-   "pae_qtd": 2316,
-   "corresp_qtd": 15559
+   "agencia_qtd": 1294,
+   "posto_qtd": 2134,
+   "pae_qtd": 2332,
+   "corresp_qtd": 15575
   },
   {
    "uf": "SC",
@@ -343,10 +343,10 @@
    "posto": 130,
    "correspondente": 0,
    "nenhum": 0,
-   "agencia_qtd": 611,
-   "posto_qtd": 1909,
-   "pae_qtd": 994,
-   "corresp_qtd": 12393
+   "agencia_qtd": 606,
+   "posto_qtd": 1915,
+   "pae_qtd": 997,
+   "corresp_qtd": 12312
   },
   {
    "uf": "SE",
@@ -357,20 +357,20 @@
    "nenhum": 0,
    "agencia_qtd": 174,
    "posto_qtd": 94,
-   "pae_qtd": 305,
-   "corresp_qtd": 2277
+   "pae_qtd": 304,
+   "corresp_qtd": 2280
   },
   {
    "uf": "SP",
    "municipios": 645,
-   "agencia": 412,
+   "agencia": 411,
    "posto": 201,
-   "correspondente": 32,
+   "correspondente": 33,
    "nenhum": 0,
-   "agencia_qtd": 3640,
-   "posto_qtd": 5903,
-   "pae_qtd": 4658,
-   "corresp_qtd": 47367
+   "agencia_qtd": 3628,
+   "posto_qtd": 5910,
+   "pae_qtd": 4659,
+   "corresp_qtd": 47268
   },
   {
    "uf": "TO",
@@ -379,10 +379,10 @@
    "posto": 73,
    "correspondente": 39,
    "nenhum": 0,
-   "agencia_qtd": 100,
-   "posto_qtd": 136,
+   "agencia_qtd": 99,
+   "posto_qtd": 137,
    "pae_qtd": 191,
-   "corresp_qtd": 1869
+   "corresp_qtd": 1874
   }
  ],
  "municipios": [
@@ -432,8 +432,8 @@
    "regiao": "N",
    "agencia": 5,
    "posto": 18,
-   "pae": 4,
-   "corresp": 98,
+   "pae": 3,
+   "corresp": 99,
    "ifs_dep": 15,
    "ifs_corresp": 23,
    "classe": "agencia"
@@ -511,7 +511,7 @@
    "agencia": 4,
    "posto": 1,
    "pae": 3,
-   "corresp": 32,
+   "corresp": 33,
    "ifs_dep": 5,
    "ifs_corresp": 11,
    "classe": "agencia"
@@ -537,7 +537,7 @@
    "agencia": 8,
    "posto": 20,
    "pae": 7,
-   "corresp": 134,
+   "corresp": 135,
    "ifs_dep": 14,
    "ifs_corresp": 25,
    "classe": "agencia"
@@ -550,7 +550,7 @@
    "agencia": 2,
    "posto": 6,
    "pae": 2,
-   "corresp": 36,
+   "corresp": 37,
    "ifs_dep": 7,
    "ifs_corresp": 11,
    "classe": "agencia"
@@ -563,9 +563,9 @@
    "agencia": 1,
    "posto": 4,
    "pae": 5,
-   "corresp": 20,
+   "corresp": 22,
    "ifs_dep": 6,
-   "ifs_corresp": 6,
+   "ifs_corresp": 7,
    "classe": "agencia"
   },
   {
@@ -602,7 +602,7 @@
    "agencia": 27,
    "posto": 61,
    "pae": 37,
-   "corresp": 451,
+   "corresp": 452,
    "ifs_dep": 22,
    "ifs_corresp": 41,
    "classe": "agencia"
@@ -1250,7 +1250,7 @@
    "uf": "AC",
    "regiao": "N",
    "agencia": 18,
-   "posto": 26,
+   "posto": 25,
    "pae": 24,
    "corresp": 310,
    "ifs_dep": 13,
@@ -1291,7 +1291,7 @@
    "agencia": 2,
    "posto": 1,
    "pae": 4,
-   "corresp": 18,
+   "corresp": 17,
    "ifs_dep": 4,
    "ifs_corresp": 8,
    "classe": "agencia"
@@ -1835,11 +1835,11 @@
    "uf": "AM",
    "regiao": "N",
    "agencia": 91,
-   "posto": 175,
+   "posto": 177,
    "pae": 174,
-   "corresp": 1333,
+   "corresp": 1338,
    "ifs_dep": 31,
-   "ifs_corresp": 56,
+   "ifs_corresp": 55,
    "classe": "agencia"
   },
   {
@@ -2019,7 +2019,7 @@
    "agencia": 2,
    "posto": 1,
    "pae": 5,
-   "corresp": 25,
+   "corresp": 26,
    "ifs_dep": 3,
    "ifs_corresp": 4,
    "classe": "agencia"
@@ -2190,7 +2190,7 @@
    "pae": 39,
    "corresp": 355,
    "ifs_dep": 15,
-   "ifs_corresp": 41,
+   "ifs_corresp": 40,
    "classe": "agencia"
   },
   {
@@ -2264,10 +2264,10 @@
    "uf": "RR",
    "regiao": "N",
    "agencia": 1,
-   "posto": 1,
+   "posto": 0,
    "pae": 3,
-   "corresp": 7,
-   "ifs_dep": 3,
+   "corresp": 8,
+   "ifs_dep": 2,
    "ifs_corresp": 3,
    "classe": "agencia"
   },
@@ -2471,7 +2471,7 @@
    "nome": "Ananindeua",
    "uf": "PA",
    "regiao": "N",
-   "agencia": 14,
+   "agencia": 13,
    "posto": 16,
    "pae": 53,
    "corresp": 289,
@@ -2487,9 +2487,9 @@
    "agencia": 1,
    "posto": 2,
    "pae": 0,
-   "corresp": 11,
+   "corresp": 12,
    "ifs_dep": 3,
-   "ifs_corresp": 3,
+   "ifs_corresp": 4,
    "classe": "agencia"
   },
   {
@@ -2591,7 +2591,7 @@
    "agencia": 80,
    "posto": 113,
    "pae": 199,
-   "corresp": 964,
+   "corresp": 965,
    "ifs_dep": 29,
    "ifs_corresp": 47,
    "classe": "agencia"
@@ -2617,7 +2617,7 @@
    "agencia": 4,
    "posto": 2,
    "pae": 5,
-   "corresp": 38,
+   "corresp": 39,
    "ifs_dep": 7,
    "ifs_corresp": 9,
    "classe": "agencia"
@@ -3046,7 +3046,7 @@
    "agencia": 6,
    "posto": 1,
    "pae": 3,
-   "corresp": 21,
+   "corresp": 22,
    "ifs_dep": 7,
    "ifs_corresp": 5,
    "classe": "agencia"
@@ -3202,7 +3202,7 @@
    "agencia": 16,
    "posto": 20,
    "pae": 16,
-   "corresp": 257,
+   "corresp": 258,
    "ifs_dep": 15,
    "ifs_corresp": 33,
    "classe": "agencia"
@@ -3384,7 +3384,7 @@
    "agencia": 4,
    "posto": 4,
    "pae": 3,
-   "corresp": 43,
+   "corresp": 44,
    "ifs_dep": 7,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -3449,7 +3449,7 @@
    "agencia": 1,
    "posto": 0,
    "pae": 2,
-   "corresp": 14,
+   "corresp": 15,
    "ifs_dep": 2,
    "ifs_corresp": 2,
    "classe": "agencia"
@@ -3654,8 +3654,8 @@
    "nome": "Redenção",
    "uf": "PA",
    "regiao": "N",
-   "agencia": 6,
-   "posto": 12,
+   "agencia": 5,
+   "posto": 13,
    "pae": 4,
    "corresp": 121,
    "ifs_dep": 13,
@@ -3709,7 +3709,7 @@
    "agencia": 3,
    "posto": 0,
    "pae": 5,
-   "corresp": 31,
+   "corresp": 32,
    "ifs_dep": 5,
    "ifs_corresp": 7,
    "classe": "agencia"
@@ -3826,7 +3826,7 @@
    "agencia": 12,
    "posto": 23,
    "pae": 11,
-   "corresp": 259,
+   "corresp": 260,
    "ifs_dep": 13,
    "ifs_corresp": 38,
    "classe": "agencia"
@@ -3930,7 +3930,7 @@
    "agencia": 2,
    "posto": 2,
    "pae": 2,
-   "corresp": 20,
+   "corresp": 19,
    "ifs_dep": 5,
    "ifs_corresp": 5,
    "classe": "agencia"
@@ -4333,7 +4333,7 @@
    "agencia": 23,
    "posto": 22,
    "pae": 31,
-   "corresp": 335,
+   "corresp": 338,
    "ifs_dep": 15,
    "ifs_corresp": 33,
    "classe": "agencia"
@@ -4359,7 +4359,7 @@
    "agencia": 3,
    "posto": 1,
    "pae": 2,
-   "corresp": 26,
+   "corresp": 27,
    "ifs_dep": 4,
    "ifs_corresp": 4,
    "classe": "agencia"
@@ -4424,7 +4424,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 1,
-   "corresp": 13,
+   "corresp": 12,
    "ifs_dep": 1,
    "ifs_corresp": 4,
    "classe": "posto"
@@ -4580,7 +4580,7 @@
    "agencia": 9,
    "posto": 19,
    "pae": 17,
-   "corresp": 189,
+   "corresp": 190,
    "ifs_dep": 14,
    "ifs_corresp": 29,
    "classe": "agencia"
@@ -5773,8 +5773,8 @@
    "nome": "Porto Nacional",
    "uf": "TO",
    "regiao": "N",
-   "agencia": 4,
-   "posto": 6,
+   "agencia": 3,
+   "posto": 7,
    "pae": 4,
    "corresp": 40,
    "ifs_dep": 9,
@@ -5945,9 +5945,9 @@
    "agencia": 0,
    "posto": 0,
    "pae": 0,
-   "corresp": 2,
+   "corresp": 3,
    "ifs_dep": 0,
-   "ifs_corresp": 2,
+   "ifs_corresp": 3,
    "classe": "correspondente"
   },
   {
@@ -6153,7 +6153,7 @@
    "agencia": 27,
    "posto": 39,
    "pae": 33,
-   "corresp": 344,
+   "corresp": 346,
    "ifs_dep": 19,
    "ifs_corresp": 46,
    "classe": "agencia"
@@ -6179,7 +6179,7 @@
    "agencia": 4,
    "posto": 2,
    "pae": 3,
-   "corresp": 27,
+   "corresp": 28,
    "ifs_dep": 6,
    "ifs_corresp": 6,
    "classe": "agencia"
@@ -6491,7 +6491,7 @@
    "agencia": 6,
    "posto": 5,
    "pae": 3,
-   "corresp": 69,
+   "corresp": 70,
    "ifs_dep": 9,
    "ifs_corresp": 18,
    "classe": "agencia"
@@ -6569,7 +6569,7 @@
    "agencia": 4,
    "posto": 3,
    "pae": 6,
-   "corresp": 81,
+   "corresp": 82,
    "ifs_dep": 7,
    "ifs_corresp": 14,
    "classe": "agencia"
@@ -6686,7 +6686,7 @@
    "agencia": 0,
    "posto": 2,
    "pae": 1,
-   "corresp": 19,
+   "corresp": 20,
    "ifs_dep": 2,
    "ifs_corresp": 6,
    "classe": "posto"
@@ -6725,7 +6725,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 0,
-   "corresp": 13,
+   "corresp": 14,
    "ifs_dep": 0,
    "ifs_corresp": 3,
    "classe": "correspondente"
@@ -6764,7 +6764,7 @@
    "agencia": 2,
    "posto": 0,
    "pae": 3,
-   "corresp": 30,
+   "corresp": 31,
    "ifs_dep": 2,
    "ifs_corresp": 10,
    "classe": "agencia"
@@ -6868,7 +6868,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 1,
-   "corresp": 17,
+   "corresp": 16,
    "ifs_dep": 1,
    "ifs_corresp": 4,
    "classe": "posto"
@@ -6998,7 +6998,7 @@
    "agencia": 4,
    "posto": 5,
    "pae": 4,
-   "corresp": 63,
+   "corresp": 65,
    "ifs_dep": 8,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -8012,7 +8012,7 @@
    "agencia": 1,
    "posto": 2,
    "pae": 2,
-   "corresp": 10,
+   "corresp": 11,
    "ifs_dep": 2,
    "ifs_corresp": 3,
    "classe": "agencia"
@@ -8022,7 +8022,7 @@
    "nome": "Pedreiras",
    "uf": "MA",
    "regiao": "NE",
-   "agencia": 4,
+   "agencia": 3,
    "posto": 2,
    "pae": 3,
    "corresp": 43,
@@ -8090,9 +8090,9 @@
    "agencia": 1,
    "posto": 1,
    "pae": 3,
-   "corresp": 13,
+   "corresp": 12,
    "ifs_dep": 2,
-   "ifs_corresp": 4,
+   "ifs_corresp": 3,
    "classe": "agencia"
   },
   {
@@ -8168,7 +8168,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 1,
-   "corresp": 7,
+   "corresp": 8,
    "ifs_dep": 1,
    "ifs_corresp": 3,
    "classe": "posto"
@@ -8298,7 +8298,7 @@
    "agencia": 3,
    "posto": 3,
    "pae": 3,
-   "corresp": 38,
+   "corresp": 39,
    "ifs_dep": 5,
    "ifs_corresp": 7,
    "classe": "agencia"
@@ -8347,8 +8347,8 @@
    "nome": "Santa Inês",
    "uf": "MA",
    "regiao": "NE",
-   "agencia": 6,
-   "posto": 5,
+   "agencia": 5,
+   "posto": 6,
    "pae": 5,
    "corresp": 76,
    "ifs_dep": 9,
@@ -8623,7 +8623,7 @@
    "agencia": 5,
    "posto": 4,
    "pae": 6,
-   "corresp": 80,
+   "corresp": 81,
    "ifs_dep": 8,
    "ifs_corresp": 21,
    "classe": "agencia"
@@ -8649,7 +8649,7 @@
    "agencia": 66,
    "posto": 66,
    "pae": 89,
-   "corresp": 913,
+   "corresp": 914,
    "ifs_dep": 27,
    "ifs_corresp": 50,
    "classe": "agencia"
@@ -8675,7 +8675,7 @@
    "agencia": 2,
    "posto": 1,
    "pae": 2,
-   "corresp": 32,
+   "corresp": 33,
    "ifs_dep": 3,
    "ifs_corresp": 11,
    "classe": "agencia"
@@ -8880,10 +8880,10 @@
    "nome": "Timon",
    "uf": "MA",
    "regiao": "NE",
-   "agencia": 4,
-   "posto": 9,
+   "agencia": 3,
+   "posto": 10,
    "pae": 3,
-   "corresp": 70,
+   "corresp": 71,
    "ifs_dep": 11,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -8922,7 +8922,7 @@
    "agencia": 1,
    "posto": 3,
    "pae": 4,
-   "corresp": 39,
+   "corresp": 40,
    "ifs_dep": 4,
    "ifs_corresp": 3,
    "classe": "agencia"
@@ -9090,9 +9090,9 @@
    "regiao": "NE",
    "agencia": 3,
    "posto": 0,
-   "pae": 4,
+   "pae": 3,
    "corresp": 58,
-   "ifs_dep": 5,
+   "ifs_dep": 4,
    "ifs_corresp": 8,
    "classe": "agencia"
   },
@@ -9715,7 +9715,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 0,
-   "corresp": 9,
+   "corresp": 10,
    "ifs_dep": 0,
    "ifs_corresp": 3,
    "classe": "correspondente"
@@ -10105,7 +10105,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 1,
-   "corresp": 16,
+   "corresp": 17,
    "ifs_dep": 1,
    "ifs_corresp": 3,
    "classe": "posto"
@@ -10404,7 +10404,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 1,
-   "corresp": 5,
+   "corresp": 6,
    "ifs_dep": 1,
    "ifs_corresp": 3,
    "classe": "posto"
@@ -11132,9 +11132,9 @@
    "agencia": 7,
    "posto": 5,
    "pae": 6,
-   "corresp": 130,
+   "corresp": 132,
    "ifs_dep": 9,
-   "ifs_corresp": 23,
+   "ifs_corresp": 24,
    "classe": "agencia"
   },
   {
@@ -11795,7 +11795,7 @@
    "agencia": 1,
    "posto": 1,
    "pae": 2,
-   "corresp": 14,
+   "corresp": 15,
    "ifs_dep": 3,
    "ifs_corresp": 4,
    "classe": "agencia"
@@ -12341,7 +12341,7 @@
    "agencia": 1,
    "posto": 1,
    "pae": 2,
-   "corresp": 36,
+   "corresp": 37,
    "ifs_dep": 2,
    "ifs_corresp": 5,
    "classe": "agencia"
@@ -12406,7 +12406,7 @@
    "agencia": 4,
    "posto": 3,
    "pae": 4,
-   "corresp": 63,
+   "corresp": 64,
    "ifs_dep": 7,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -12601,7 +12601,7 @@
    "agencia": 0,
    "posto": 2,
    "pae": 3,
-   "corresp": 24,
+   "corresp": 25,
    "ifs_dep": 2,
    "ifs_corresp": 4,
    "classe": "posto"
@@ -12729,9 +12729,9 @@
    "uf": "CE",
    "regiao": "NE",
    "agencia": 134,
-   "posto": 145,
+   "posto": 146,
    "pae": 150,
-   "corresp": 2347,
+   "corresp": 2352,
    "ifs_dep": 40,
    "ifs_corresp": 65,
    "classe": "agencia"
@@ -12965,9 +12965,9 @@
    "agencia": 6,
    "posto": 6,
    "pae": 4,
-   "corresp": 125,
+   "corresp": 124,
    "ifs_dep": 9,
-   "ifs_corresp": 18,
+   "ifs_corresp": 17,
    "classe": "agencia"
   },
   {
@@ -13238,7 +13238,7 @@
    "agencia": 1,
    "posto": 1,
    "pae": 2,
-   "corresp": 25,
+   "corresp": 26,
    "ifs_dep": 2,
    "ifs_corresp": 6,
    "classe": "agencia"
@@ -13573,13 +13573,13 @@
    "nome": "Novo Oriente",
    "uf": "CE",
    "regiao": "NE",
-   "agencia": 1,
+   "agencia": 0,
    "posto": 2,
    "pae": 2,
    "corresp": 37,
    "ifs_dep": 2,
    "ifs_corresp": 4,
-   "classe": "agencia"
+   "classe": "posto"
   },
   {
    "cod": "2309458",
@@ -13615,7 +13615,7 @@
    "agencia": 4,
    "posto": 3,
    "pae": 3,
-   "corresp": 56,
+   "corresp": 58,
    "ifs_dep": 7,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -13693,7 +13693,7 @@
    "agencia": 2,
    "posto": 1,
    "pae": 3,
-   "corresp": 37,
+   "corresp": 38,
    "ifs_dep": 3,
    "ifs_corresp": 8,
    "classe": "agencia"
@@ -13745,7 +13745,7 @@
    "agencia": 0,
    "posto": 3,
    "pae": 1,
-   "corresp": 61,
+   "corresp": 64,
    "ifs_dep": 2,
    "ifs_corresp": 7,
    "classe": "posto"
@@ -14135,7 +14135,7 @@
    "agencia": 10,
    "posto": 13,
    "pae": 9,
-   "corresp": 188,
+   "corresp": 190,
    "ifs_dep": 11,
    "ifs_corresp": 29,
    "classe": "agencia"
@@ -14681,7 +14681,7 @@
    "agencia": 2,
    "posto": 1,
    "pae": 2,
-   "corresp": 25,
+   "corresp": 26,
    "ifs_dep": 2,
    "ifs_corresp": 6,
    "classe": "agencia"
@@ -15497,10 +15497,10 @@
    "nome": "Mossoró",
    "uf": "RN",
    "regiao": "NE",
-   "agencia": 12,
+   "agencia": 11,
    "posto": 19,
    "pae": 18,
-   "corresp": 339,
+   "corresp": 338,
    "ifs_dep": 15,
    "ifs_corresp": 33,
    "classe": "agencia"
@@ -15513,7 +15513,7 @@
    "agencia": 58,
    "posto": 51,
    "pae": 63,
-   "corresp": 1047,
+   "corresp": 1050,
    "ifs_dep": 27,
    "ifs_corresp": 42,
    "classe": "agencia"
@@ -15682,7 +15682,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 1,
-   "corresp": 15,
+   "corresp": 16,
    "ifs_dep": 1,
    "ifs_corresp": 4,
    "classe": "posto"
@@ -16059,7 +16059,7 @@
    "agencia": 8,
    "posto": 7,
    "pae": 5,
-   "corresp": 65,
+   "corresp": 64,
    "ifs_dep": 9,
    "ifs_corresp": 12,
    "classe": "agencia"
@@ -17125,7 +17125,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 0,
-   "corresp": 15,
+   "corresp": 16,
    "ifs_dep": 0,
    "ifs_corresp": 3,
    "classe": "correspondente"
@@ -17148,8 +17148,8 @@
    "nome": "Cajazeiras",
    "uf": "PB",
    "regiao": "NE",
-   "agencia": 5,
-   "posto": 5,
+   "agencia": 4,
+   "posto": 6,
    "pae": 4,
    "corresp": 114,
    "ifs_dep": 9,
@@ -17567,7 +17567,7 @@
    "agencia": 3,
    "posto": 3,
    "pae": 3,
-   "corresp": 24,
+   "corresp": 23,
    "ifs_dep": 6,
    "ifs_corresp": 9,
    "classe": "agencia"
@@ -17606,7 +17606,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 0,
-   "corresp": 9,
+   "corresp": 10,
    "ifs_dep": 0,
    "ifs_corresp": 3,
    "classe": "correspondente"
@@ -17775,7 +17775,7 @@
    "agencia": 65,
    "posto": 76,
    "pae": 78,
-   "corresp": 925,
+   "corresp": 926,
    "ifs_dep": 28,
    "ifs_corresp": 40,
    "classe": "agencia"
@@ -17944,7 +17944,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 0,
-   "corresp": 6,
+   "corresp": 5,
    "ifs_dep": 0,
    "ifs_corresp": 3,
    "classe": "correspondente"
@@ -18542,9 +18542,9 @@
    "agencia": 2,
    "posto": 3,
    "pae": 3,
-   "corresp": 29,
+   "corresp": 28,
    "ifs_dep": 6,
-   "ifs_corresp": 9,
+   "ifs_corresp": 8,
    "classe": "agencia"
   },
   {
@@ -18841,7 +18841,7 @@
    "agencia": 3,
    "posto": 2,
    "pae": 3,
-   "corresp": 35,
+   "corresp": 36,
    "ifs_dep": 5,
    "ifs_corresp": 10,
    "classe": "agencia"
@@ -19504,7 +19504,7 @@
    "agencia": 1,
    "posto": 3,
    "pae": 2,
-   "corresp": 44,
+   "corresp": 45,
    "ifs_dep": 2,
    "ifs_corresp": 6,
    "classe": "agencia"
@@ -20000,7 +20000,7 @@
    "pae": 7,
    "corresp": 97,
    "ifs_dep": 10,
-   "ifs_corresp": 20,
+   "ifs_corresp": 19,
    "classe": "agencia"
   },
   {
@@ -20180,7 +20180,7 @@
    "agencia": 5,
    "posto": 2,
    "pae": 4,
-   "corresp": 48,
+   "corresp": 49,
    "ifs_dep": 7,
    "ifs_corresp": 12,
    "classe": "agencia"
@@ -20542,7 +20542,7 @@
    "uf": "PE",
    "regiao": "NE",
    "agencia": 1,
-   "posto": 1,
+   "posto": 2,
    "pae": 4,
    "corresp": 5,
    "ifs_dep": 1,
@@ -20918,11 +20918,11 @@
    "nome": "Palmares",
    "uf": "PE",
    "regiao": "NE",
-   "agencia": 5,
+   "agencia": 4,
    "posto": 4,
    "pae": 4,
    "corresp": 72,
-   "ifs_dep": 9,
+   "ifs_dep": 8,
    "ifs_corresp": 18,
    "classe": "agencia"
   },
@@ -21012,7 +21012,7 @@
    "agencia": 6,
    "posto": 13,
    "pae": 11,
-   "corresp": 125,
+   "corresp": 126,
    "ifs_dep": 10,
    "ifs_corresp": 24,
    "classe": "agencia"
@@ -21064,7 +21064,7 @@
    "agencia": 9,
    "posto": 26,
    "pae": 10,
-   "corresp": 339,
+   "corresp": 342,
    "ifs_dep": 14,
    "ifs_corresp": 33,
    "classe": "agencia"
@@ -21116,7 +21116,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 2,
-   "corresp": 20,
+   "corresp": 21,
    "ifs_dep": 2,
    "ifs_corresp": 4,
    "classe": "posto"
@@ -21142,7 +21142,7 @@
    "agencia": 125,
    "posto": 159,
    "pae": 153,
-   "corresp": 1319,
+   "corresp": 1318,
    "ifs_dep": 43,
    "ifs_corresp": 68,
    "classe": "agencia"
@@ -21168,7 +21168,7 @@
    "agencia": 4,
    "posto": 2,
    "pae": 4,
-   "corresp": 26,
+   "corresp": 27,
    "ifs_dep": 5,
    "ifs_corresp": 8,
    "classe": "agencia"
@@ -21870,7 +21870,7 @@
    "agencia": 8,
    "posto": 16,
    "pae": 11,
-   "corresp": 263,
+   "corresp": 264,
    "ifs_dep": 13,
    "ifs_corresp": 30,
    "classe": "agencia"
@@ -22169,7 +22169,7 @@
    "agencia": 4,
    "posto": 2,
    "pae": 3,
-   "corresp": 83,
+   "corresp": 82,
    "ifs_dep": 6,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -22442,7 +22442,7 @@
    "agencia": 57,
    "posto": 64,
    "pae": 84,
-   "corresp": 866,
+   "corresp": 867,
    "ifs_dep": 23,
    "ifs_corresp": 52,
    "classe": "agencia"
@@ -22910,7 +22910,7 @@
    "agencia": 4,
    "posto": 2,
    "pae": 3,
-   "corresp": 57,
+   "corresp": 56,
    "ifs_dep": 5,
    "ifs_corresp": 12,
    "classe": "agencia"
@@ -23195,8 +23195,8 @@
    "regiao": "NE",
    "agencia": 63,
    "posto": 43,
-   "pae": 136,
-   "corresp": 724,
+   "pae": 135,
+   "corresp": 725,
    "ifs_dep": 20,
    "ifs_corresp": 46,
    "classe": "agencia"
@@ -23365,7 +23365,7 @@
    "agencia": 1,
    "posto": 1,
    "pae": 1,
-   "corresp": 25,
+   "corresp": 26,
    "ifs_dep": 2,
    "ifs_corresp": 6,
    "classe": "agencia"
@@ -23404,7 +23404,7 @@
    "agencia": 5,
    "posto": 3,
    "pae": 7,
-   "corresp": 67,
+   "corresp": 68,
    "ifs_dep": 9,
    "ifs_corresp": 14,
    "classe": "agencia"
@@ -23586,9 +23586,9 @@
    "agencia": 5,
    "posto": 6,
    "pae": 8,
-   "corresp": 129,
+   "corresp": 128,
    "ifs_dep": 11,
-   "ifs_corresp": 21,
+   "ifs_corresp": 20,
    "classe": "agencia"
   },
   {
@@ -23898,7 +23898,7 @@
    "agencia": 1,
    "posto": 0,
    "pae": 3,
-   "corresp": 20,
+   "corresp": 21,
    "ifs_dep": 3,
    "ifs_corresp": 3,
    "classe": "agencia"
@@ -24795,7 +24795,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 1,
-   "corresp": 23,
+   "corresp": 25,
    "ifs_dep": 1,
    "ifs_corresp": 4,
    "classe": "posto"
@@ -24847,7 +24847,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 1,
-   "corresp": 32,
+   "corresp": 33,
    "ifs_dep": 1,
    "ifs_corresp": 5,
    "classe": "posto"
@@ -25185,7 +25185,7 @@
    "agencia": 2,
    "posto": 0,
    "pae": 3,
-   "corresp": 23,
+   "corresp": 24,
    "ifs_dep": 3,
    "ifs_corresp": 5,
    "classe": "agencia"
@@ -25289,9 +25289,9 @@
    "agencia": 2,
    "posto": 0,
    "pae": 3,
-   "corresp": 40,
+   "corresp": 41,
    "ifs_dep": 3,
-   "ifs_corresp": 9,
+   "ifs_corresp": 10,
    "classe": "agencia"
   },
   {
@@ -25341,7 +25341,7 @@
    "agencia": 3,
    "posto": 3,
    "pae": 3,
-   "corresp": 27,
+   "corresp": 28,
    "ifs_dep": 6,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -25796,7 +25796,7 @@
    "agencia": 6,
    "posto": 10,
    "pae": 6,
-   "corresp": 142,
+   "corresp": 143,
    "ifs_dep": 14,
    "ifs_corresp": 23,
    "classe": "agencia"
@@ -25991,7 +25991,7 @@
    "agencia": 5,
    "posto": 8,
    "pae": 6,
-   "corresp": 120,
+   "corresp": 121,
    "ifs_dep": 13,
    "ifs_corresp": 21,
    "classe": "agencia"
@@ -26056,7 +26056,7 @@
    "agencia": 1,
    "posto": 3,
    "pae": 3,
-   "corresp": 30,
+   "corresp": 31,
    "ifs_dep": 3,
    "ifs_corresp": 7,
    "classe": "agencia"
@@ -26225,7 +26225,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 2,
-   "corresp": 13,
+   "corresp": 14,
    "ifs_dep": 2,
    "ifs_corresp": 6,
    "classe": "posto"
@@ -26264,7 +26264,7 @@
    "agencia": 8,
    "posto": 10,
    "pae": 14,
-   "corresp": 137,
+   "corresp": 138,
    "ifs_dep": 12,
    "ifs_corresp": 21,
    "classe": "agencia"
@@ -26433,7 +26433,7 @@
    "agencia": 9,
    "posto": 19,
    "pae": 16,
-   "corresp": 189,
+   "corresp": 191,
    "ifs_dep": 13,
    "ifs_corresp": 31,
    "classe": "agencia"
@@ -26550,7 +26550,7 @@
    "agencia": 4,
    "posto": 6,
    "pae": 5,
-   "corresp": 73,
+   "corresp": 74,
    "ifs_dep": 10,
    "ifs_corresp": 15,
    "classe": "agencia"
@@ -26862,7 +26862,7 @@
    "agencia": 2,
    "posto": 1,
    "pae": 7,
-   "corresp": 31,
+   "corresp": 32,
    "ifs_dep": 4,
    "ifs_corresp": 6,
    "classe": "agencia"
@@ -27135,9 +27135,9 @@
    "agencia": 15,
    "posto": 21,
    "pae": 18,
-   "corresp": 225,
+   "corresp": 226,
    "ifs_dep": 14,
-   "ifs_corresp": 35,
+   "ifs_corresp": 36,
    "classe": "agencia"
   },
   {
@@ -27746,9 +27746,9 @@
    "agencia": 0,
    "posto": 0,
    "pae": 1,
-   "corresp": 15,
+   "corresp": 16,
    "ifs_dep": 1,
-   "ifs_corresp": 4,
+   "ifs_corresp": 5,
    "classe": "posto"
   },
   {
@@ -28019,7 +28019,7 @@
    "agencia": 1,
    "posto": 0,
    "pae": 1,
-   "corresp": 38,
+   "corresp": 39,
    "ifs_dep": 1,
    "ifs_corresp": 5,
    "classe": "agencia"
@@ -28188,7 +28188,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 1,
-   "corresp": 20,
+   "corresp": 21,
    "ifs_dep": 1,
    "ifs_corresp": 5,
    "classe": "posto"
@@ -28498,9 +28498,9 @@
    "uf": "BA",
    "regiao": "NE",
    "agencia": 170,
-   "posto": 186,
+   "posto": 185,
    "pae": 243,
-   "corresp": 1563,
+   "corresp": 1566,
    "ifs_dep": 55,
    "ifs_corresp": 59,
    "classe": "agencia"
@@ -28604,7 +28604,7 @@
    "agencia": 4,
    "posto": 2,
    "pae": 4,
-   "corresp": 26,
+   "corresp": 25,
    "ifs_dep": 7,
    "ifs_corresp": 8,
    "classe": "agencia"
@@ -28679,10 +28679,10 @@
    "nome": "Santo Antônio de Jesus",
    "uf": "BA",
    "regiao": "NE",
-   "agencia": 7,
-   "posto": 6,
+   "agencia": 6,
+   "posto": 7,
    "pae": 5,
-   "corresp": 119,
+   "corresp": 120,
    "ifs_dep": 11,
    "ifs_corresp": 22,
    "classe": "agencia"
@@ -28851,7 +28851,7 @@
    "agencia": 3,
    "posto": 1,
    "pae": 4,
-   "corresp": 28,
+   "corresp": 29,
    "ifs_dep": 4,
    "ifs_corresp": 9,
    "classe": "agencia"
@@ -29176,7 +29176,7 @@
    "agencia": 8,
    "posto": 15,
    "pae": 6,
-   "corresp": 174,
+   "corresp": 175,
    "ifs_dep": 15,
    "ifs_corresp": 30,
    "classe": "agencia"
@@ -29592,7 +29592,7 @@
    "agencia": 1,
    "posto": 3,
    "pae": 5,
-   "corresp": 22,
+   "corresp": 21,
    "ifs_dep": 4,
    "ifs_corresp": 8,
    "classe": "agencia"
@@ -29761,7 +29761,7 @@
    "agencia": 6,
    "posto": 13,
    "pae": 14,
-   "corresp": 127,
+   "corresp": 128,
    "ifs_dep": 14,
    "ifs_corresp": 25,
    "classe": "agencia"
@@ -29917,7 +29917,7 @@
    "agencia": 4,
    "posto": 6,
    "pae": 6,
-   "corresp": 47,
+   "corresp": 48,
    "ifs_dep": 10,
    "ifs_corresp": 14,
    "classe": "agencia"
@@ -30047,7 +30047,7 @@
    "agencia": 5,
    "posto": 14,
    "pae": 9,
-   "corresp": 129,
+   "corresp": 130,
    "ifs_dep": 12,
    "ifs_corresp": 22,
    "classe": "agencia"
@@ -30148,8 +30148,8 @@
    "nome": "Arcos",
    "uf": "MG",
    "regiao": "SE",
-   "agencia": 4,
-   "posto": 6,
+   "agencia": 3,
+   "posto": 7,
    "pae": 3,
    "corresp": 56,
    "ifs_dep": 9,
@@ -30203,7 +30203,7 @@
    "agencia": 2,
    "posto": 2,
    "pae": 4,
-   "corresp": 20,
+   "corresp": 21,
    "ifs_dep": 5,
    "ifs_corresp": 9,
    "classe": "agencia"
@@ -30346,9 +30346,9 @@
    "agencia": 6,
    "posto": 14,
    "pae": 14,
-   "corresp": 106,
+   "corresp": 107,
    "ifs_dep": 13,
-   "ifs_corresp": 22,
+   "ifs_corresp": 23,
    "classe": "agencia"
   },
   {
@@ -30409,11 +30409,11 @@
    "uf": "MG",
    "regiao": "SE",
    "agencia": 220,
-   "posto": 369,
+   "posto": 368,
    "pae": 419,
-   "corresp": 2969,
+   "corresp": 2998,
    "ifs_dep": 97,
-   "ifs_corresp": 70,
+   "ifs_corresp": 71,
    "classe": "agencia"
   },
   {
@@ -30489,7 +30489,7 @@
    "agencia": 12,
    "posto": 41,
    "pae": 45,
-   "corresp": 286,
+   "corresp": 290,
    "ifs_dep": 22,
    "ifs_corresp": 38,
    "classe": "agencia"
@@ -30541,7 +30541,7 @@
    "agencia": 4,
    "posto": 7,
    "pae": 5,
-   "corresp": 74,
+   "corresp": 75,
    "ifs_dep": 9,
    "ifs_corresp": 20,
    "classe": "agencia"
@@ -30567,7 +30567,7 @@
    "agencia": 5,
    "posto": 7,
    "pae": 7,
-   "corresp": 61,
+   "corresp": 62,
    "ifs_dep": 12,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -30580,7 +30580,7 @@
    "agencia": 4,
    "posto": 8,
    "pae": 12,
-   "corresp": 60,
+   "corresp": 62,
    "ifs_dep": 8,
    "ifs_corresp": 18,
    "classe": "agencia"
@@ -30723,9 +30723,9 @@
    "agencia": 2,
    "posto": 2,
    "pae": 5,
-   "corresp": 20,
+   "corresp": 21,
    "ifs_dep": 5,
-   "ifs_corresp": 6,
+   "ifs_corresp": 7,
    "classe": "agencia"
   },
   {
@@ -31009,9 +31009,9 @@
    "agencia": 2,
    "posto": 2,
    "pae": 6,
-   "corresp": 17,
+   "corresp": 18,
    "ifs_dep": 5,
-   "ifs_corresp": 7,
+   "ifs_corresp": 8,
    "classe": "agencia"
   },
   {
@@ -31451,7 +31451,7 @@
    "agencia": 5,
    "posto": 9,
    "pae": 12,
-   "corresp": 85,
+   "corresp": 86,
    "ifs_dep": 12,
    "ifs_corresp": 18,
    "classe": "agencia"
@@ -31477,7 +31477,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 1,
-   "corresp": 11,
+   "corresp": 12,
    "ifs_dep": 2,
    "ifs_corresp": 6,
    "classe": "posto"
@@ -31867,7 +31867,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 1,
-   "corresp": 16,
+   "corresp": 17,
    "ifs_dep": 2,
    "ifs_corresp": 6,
    "classe": "posto"
@@ -32137,11 +32137,11 @@
    "nome": "Congonhas",
    "uf": "MG",
    "regiao": "SE",
-   "agencia": 5,
+   "agencia": 4,
    "posto": 6,
    "pae": 6,
    "corresp": 32,
-   "ifs_dep": 10,
+   "ifs_dep": 9,
    "ifs_corresp": 12,
    "classe": "agencia"
   },
@@ -32179,7 +32179,7 @@
    "agencia": 4,
    "posto": 20,
    "pae": 11,
-   "corresp": 100,
+   "corresp": 101,
    "ifs_dep": 14,
    "ifs_corresp": 25,
    "classe": "agencia"
@@ -32215,10 +32215,10 @@
    "nome": "Contagem",
    "uf": "MG",
    "regiao": "SE",
-   "agencia": 25,
-   "posto": 68,
+   "agencia": 24,
+   "posto": 67,
    "pae": 62,
-   "corresp": 617,
+   "corresp": 621,
    "ifs_dep": 27,
    "ifs_corresp": 46,
    "classe": "agencia"
@@ -32306,10 +32306,10 @@
    "nome": "Coromandel",
    "uf": "MG",
    "regiao": "SE",
-   "agencia": 3,
-   "posto": 5,
+   "agencia": 2,
+   "posto": 6,
    "pae": 5,
-   "corresp": 41,
+   "corresp": 40,
    "ifs_dep": 9,
    "ifs_corresp": 15,
    "classe": "agencia"
@@ -32322,7 +32322,7 @@
    "agencia": 5,
    "posto": 14,
    "pae": 8,
-   "corresp": 74,
+   "corresp": 75,
    "ifs_dep": 13,
    "ifs_corresp": 18,
    "classe": "agencia"
@@ -32725,7 +32725,7 @@
    "agencia": 2,
    "posto": 3,
    "pae": 4,
-   "corresp": 40,
+   "corresp": 41,
    "ifs_dep": 6,
    "ifs_corresp": 10,
    "classe": "agencia"
@@ -32764,9 +32764,9 @@
    "agencia": 11,
    "posto": 39,
    "pae": 20,
-   "corresp": 302,
+   "corresp": 304,
    "ifs_dep": 16,
-   "ifs_corresp": 35,
+   "ifs_corresp": 34,
    "classe": "agencia"
   },
   {
@@ -33440,7 +33440,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 1,
-   "corresp": 10,
+   "corresp": 11,
    "ifs_dep": 1,
    "ifs_corresp": 4,
    "classe": "posto"
@@ -33518,7 +33518,7 @@
    "agencia": 5,
    "posto": 12,
    "pae": 9,
-   "corresp": 90,
+   "corresp": 91,
    "ifs_dep": 10,
    "ifs_corresp": 22,
    "classe": "agencia"
@@ -33648,9 +33648,9 @@
    "agencia": 14,
    "posto": 29,
    "pae": 36,
-   "corresp": 271,
+   "corresp": 270,
    "ifs_dep": 18,
-   "ifs_corresp": 39,
+   "ifs_corresp": 38,
    "classe": "agencia"
   },
   {
@@ -33687,9 +33687,9 @@
    "agencia": 5,
    "posto": 6,
    "pae": 3,
-   "corresp": 55,
+   "corresp": 56,
    "ifs_dep": 10,
-   "ifs_corresp": 17,
+   "ifs_corresp": 18,
    "classe": "agencia"
   },
   {
@@ -33791,7 +33791,7 @@
    "agencia": 3,
    "posto": 8,
    "pae": 11,
-   "corresp": 80,
+   "corresp": 82,
    "ifs_dep": 10,
    "ifs_corresp": 21,
    "classe": "agencia"
@@ -33999,7 +33999,7 @@
    "agencia": 3,
    "posto": 3,
    "pae": 7,
-   "corresp": 44,
+   "corresp": 43,
    "ifs_dep": 7,
    "ifs_corresp": 11,
    "classe": "agencia"
@@ -34051,7 +34051,7 @@
    "agencia": 0,
    "posto": 3,
    "pae": 2,
-   "corresp": 18,
+   "corresp": 19,
    "ifs_dep": 3,
    "ifs_corresp": 8,
    "classe": "posto"
@@ -34191,10 +34191,10 @@
    "nome": "Ipatinga",
    "uf": "MG",
    "regiao": "SE",
-   "agencia": 15,
-   "posto": 42,
+   "agencia": 14,
+   "posto": 43,
    "pae": 19,
-   "corresp": 248,
+   "corresp": 249,
    "ifs_dep": 17,
    "ifs_corresp": 32,
    "classe": "agencia"
@@ -34246,7 +34246,7 @@
    "agencia": 5,
    "posto": 10,
    "pae": 9,
-   "corresp": 78,
+   "corresp": 79,
    "ifs_dep": 11,
    "ifs_corresp": 20,
    "classe": "agencia"
@@ -35013,7 +35013,7 @@
    "agencia": 34,
    "posto": 75,
    "pae": 45,
-   "corresp": 543,
+   "corresp": 548,
    "ifs_dep": 26,
    "ifs_corresp": 44,
    "classe": "agencia"
@@ -35091,7 +35091,7 @@
    "agencia": 5,
    "posto": 5,
    "pae": 7,
-   "corresp": 54,
+   "corresp": 56,
    "ifs_dep": 10,
    "ifs_corresp": 15,
    "classe": "agencia"
@@ -35231,7 +35231,7 @@
    "nome": "Lavras",
    "uf": "MG",
    "regiao": "SE",
-   "agencia": 5,
+   "agencia": 4,
    "posto": 19,
    "pae": 11,
    "corresp": 114,
@@ -35520,9 +35520,9 @@
    "agencia": 0,
    "posto": 3,
    "pae": 1,
-   "corresp": 14,
+   "corresp": 15,
    "ifs_dep": 4,
-   "ifs_corresp": 5,
+   "ifs_corresp": 6,
    "classe": "posto"
   },
   {
@@ -35546,7 +35546,7 @@
    "agencia": 5,
    "posto": 8,
    "pae": 4,
-   "corresp": 41,
+   "corresp": 44,
    "ifs_dep": 11,
    "ifs_corresp": 11,
    "classe": "agencia"
@@ -35741,9 +35741,9 @@
    "agencia": 3,
    "posto": 4,
    "pae": 5,
-   "corresp": 22,
+   "corresp": 23,
    "ifs_dep": 7,
-   "ifs_corresp": 10,
+   "ifs_corresp": 11,
    "classe": "agencia"
   },
   {
@@ -36014,7 +36014,7 @@
    "agencia": 3,
    "posto": 11,
    "pae": 6,
-   "corresp": 75,
+   "corresp": 77,
    "ifs_dep": 11,
    "ifs_corresp": 19,
    "classe": "agencia"
@@ -36053,7 +36053,7 @@
    "agencia": 15,
    "posto": 40,
    "pae": 45,
-   "corresp": 346,
+   "corresp": 349,
    "ifs_dep": 19,
    "ifs_corresp": 40,
    "classe": "agencia"
@@ -36144,7 +36144,7 @@
    "agencia": 4,
    "posto": 19,
    "pae": 15,
-   "corresp": 151,
+   "corresp": 155,
    "ifs_dep": 13,
    "ifs_corresp": 22,
    "classe": "agencia"
@@ -36313,7 +36313,7 @@
    "agencia": 9,
    "posto": 17,
    "pae": 11,
-   "corresp": 74,
+   "corresp": 76,
    "ifs_dep": 14,
    "ifs_corresp": 18,
    "classe": "agencia"
@@ -36339,9 +36339,9 @@
    "agencia": 1,
    "posto": 3,
    "pae": 4,
-   "corresp": 11,
+   "corresp": 12,
    "ifs_dep": 4,
-   "ifs_corresp": 7,
+   "ifs_corresp": 8,
    "classe": "agencia"
   },
   {
@@ -36703,7 +36703,7 @@
    "agencia": 5,
    "posto": 16,
    "pae": 4,
-   "corresp": 96,
+   "corresp": 97,
    "ifs_dep": 11,
    "ifs_corresp": 22,
    "classe": "agencia"
@@ -36768,7 +36768,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 1,
-   "corresp": 4,
+   "corresp": 3,
    "ifs_dep": 1,
    "ifs_corresp": 3,
    "classe": "posto"
@@ -36846,7 +36846,7 @@
    "agencia": 9,
    "posto": 19,
    "pae": 9,
-   "corresp": 234,
+   "corresp": 235,
    "ifs_dep": 11,
    "ifs_corresp": 34,
    "classe": "agencia"
@@ -37002,9 +37002,9 @@
    "agencia": 1,
    "posto": 1,
    "pae": 3,
-   "corresp": 19,
+   "corresp": 20,
    "ifs_dep": 3,
-   "ifs_corresp": 6,
+   "ifs_corresp": 7,
    "classe": "agencia"
   },
   {
@@ -37236,7 +37236,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 1,
-   "corresp": 7,
+   "corresp": 8,
    "ifs_dep": 2,
    "ifs_corresp": 3,
    "classe": "posto"
@@ -37340,7 +37340,7 @@
    "agencia": 5,
    "posto": 5,
    "pae": 4,
-   "corresp": 53,
+   "corresp": 54,
    "ifs_dep": 10,
    "ifs_corresp": 19,
    "classe": "agencia"
@@ -37454,11 +37454,11 @@
    "nome": "Ponte Nova",
    "uf": "MG",
    "regiao": "SE",
-   "agencia": 4,
+   "agencia": 3,
    "posto": 9,
    "pae": 9,
-   "corresp": 84,
-   "ifs_dep": 11,
+   "corresp": 85,
+   "ifs_dep": 10,
    "ifs_corresp": 23,
    "classe": "agencia"
   },
@@ -37574,9 +37574,9 @@
    "agencia": 3,
    "posto": 6,
    "pae": 4,
-   "corresp": 29,
+   "corresp": 30,
    "ifs_dep": 8,
-   "ifs_corresp": 11,
+   "ifs_corresp": 12,
    "classe": "agencia"
   },
   {
@@ -37834,7 +37834,7 @@
    "agencia": 6,
    "posto": 10,
    "pae": 16,
-   "corresp": 105,
+   "corresp": 107,
    "ifs_dep": 12,
    "ifs_corresp": 20,
    "classe": "agencia"
@@ -38120,9 +38120,9 @@
    "agencia": 5,
    "posto": 11,
    "pae": 7,
-   "corresp": 43,
+   "corresp": 42,
    "ifs_dep": 9,
-   "ifs_corresp": 15,
+   "ifs_corresp": 14,
    "classe": "agencia"
   },
   {
@@ -38143,8 +38143,8 @@
    "nome": "Sacramento",
    "uf": "MG",
    "regiao": "SE",
-   "agencia": 3,
-   "posto": 1,
+   "agencia": 2,
+   "posto": 2,
    "pae": 7,
    "corresp": 22,
    "ifs_dep": 6,
@@ -38965,7 +38965,7 @@
    "agencia": 3,
    "posto": 5,
    "pae": 14,
-   "corresp": 55,
+   "corresp": 56,
    "ifs_dep": 7,
    "ifs_corresp": 20,
    "classe": "agencia"
@@ -39430,11 +39430,11 @@
    "nome": "São Sebastião do Paraíso",
    "uf": "MG",
    "regiao": "SE",
-   "agencia": 4,
+   "agencia": 3,
    "posto": 12,
    "pae": 13,
    "corresp": 100,
-   "ifs_dep": 12,
+   "ifs_dep": 11,
    "ifs_corresp": 24,
    "classe": "agencia"
   },
@@ -39446,9 +39446,9 @@
    "agencia": 0,
    "posto": 0,
    "pae": 0,
-   "corresp": 6,
+   "corresp": 5,
    "ifs_dep": 0,
-   "ifs_corresp": 3,
+   "ifs_corresp": 2,
    "classe": "correspondente"
   },
   {
@@ -39823,7 +39823,7 @@
    "agencia": 11,
    "posto": 26,
    "pae": 24,
-   "corresp": 224,
+   "corresp": 226,
    "ifs_dep": 13,
    "ifs_corresp": 32,
    "classe": "agencia"
@@ -39875,9 +39875,9 @@
    "agencia": 1,
    "posto": 2,
    "pae": 4,
-   "corresp": 16,
+   "corresp": 17,
    "ifs_dep": 4,
-   "ifs_corresp": 5,
+   "ifs_corresp": 6,
    "classe": "agencia"
   },
   {
@@ -40031,7 +40031,7 @@
    "agencia": 5,
    "posto": 14,
    "pae": 7,
-   "corresp": 49,
+   "corresp": 50,
    "ifs_dep": 12,
    "ifs_corresp": 16,
    "classe": "agencia"
@@ -40122,7 +40122,7 @@
    "agencia": 6,
    "posto": 12,
    "pae": 11,
-   "corresp": 62,
+   "corresp": 63,
    "ifs_dep": 14,
    "ifs_corresp": 17,
    "classe": "agencia"
@@ -40252,7 +40252,7 @@
    "agencia": 17,
    "posto": 47,
    "pae": 24,
-   "corresp": 421,
+   "corresp": 424,
    "ifs_dep": 18,
    "ifs_corresp": 33,
    "classe": "agencia"
@@ -40262,10 +40262,10 @@
    "nome": "Uberlândia",
    "uf": "MG",
    "regiao": "SE",
-   "agencia": 45,
-   "posto": 85,
+   "agencia": 44,
+   "posto": 86,
    "pae": 61,
-   "corresp": 976,
+   "corresp": 985,
    "ifs_dep": 35,
    "ifs_corresp": 59,
    "classe": "agencia"
@@ -40434,7 +40434,7 @@
    "agencia": 1,
    "posto": 2,
    "pae": 3,
-   "corresp": 28,
+   "corresp": 29,
    "ifs_dep": 3,
    "ifs_corresp": 5,
    "classe": "agencia"
@@ -40512,7 +40512,7 @@
    "agencia": 4,
    "posto": 9,
    "pae": 7,
-   "corresp": 57,
+   "corresp": 58,
    "ifs_dep": 11,
    "ifs_corresp": 18,
    "classe": "agencia"
@@ -40525,7 +40525,7 @@
    "agencia": 5,
    "posto": 11,
    "pae": 6,
-   "corresp": 68,
+   "corresp": 69,
    "ifs_dep": 12,
    "ifs_corresp": 16,
    "classe": "agencia"
@@ -40616,9 +40616,9 @@
    "agencia": 3,
    "posto": 5,
    "pae": 5,
-   "corresp": 41,
+   "corresp": 43,
    "ifs_dep": 8,
-   "ifs_corresp": 12,
+   "ifs_corresp": 13,
    "classe": "agencia"
   },
   {
@@ -40850,7 +40850,7 @@
    "agencia": 11,
    "posto": 25,
    "pae": 18,
-   "corresp": 290,
+   "corresp": 291,
    "ifs_dep": 17,
    "ifs_corresp": 28,
    "classe": "agencia"
@@ -40863,7 +40863,7 @@
    "agencia": 12,
    "posto": 29,
    "pae": 64,
-   "corresp": 263,
+   "corresp": 264,
    "ifs_dep": 13,
    "ifs_corresp": 30,
    "classe": "agencia"
@@ -40889,7 +40889,7 @@
    "agencia": 9,
    "posto": 14,
    "pae": 9,
-   "corresp": 197,
+   "corresp": 198,
    "ifs_dep": 14,
    "ifs_corresp": 24,
    "classe": "agencia"
@@ -41201,7 +41201,7 @@
    "agencia": 10,
    "posto": 17,
    "pae": 21,
-   "corresp": 207,
+   "corresp": 208,
    "ifs_dep": 14,
    "ifs_corresp": 33,
    "classe": "agencia"
@@ -41385,7 +41385,7 @@
    "pae": 4,
    "corresp": 32,
    "ifs_dep": 6,
-   "ifs_corresp": 12,
+   "ifs_corresp": 11,
    "classe": "agencia"
   },
   {
@@ -41500,7 +41500,7 @@
    "agencia": 2,
    "posto": 6,
    "pae": 5,
-   "corresp": 51,
+   "corresp": 52,
    "ifs_dep": 10,
    "ifs_corresp": 15,
    "classe": "agencia"
@@ -41526,9 +41526,9 @@
    "agencia": 7,
    "posto": 11,
    "pae": 17,
-   "corresp": 121,
+   "corresp": 122,
    "ifs_dep": 13,
-   "ifs_corresp": 23,
+   "ifs_corresp": 24,
    "classe": "agencia"
   },
   {
@@ -41549,8 +41549,8 @@
    "nome": "Serra",
    "uf": "ES",
    "regiao": "SE",
-   "agencia": 20,
-   "posto": 35,
+   "agencia": 19,
+   "posto": 36,
    "pae": 92,
    "corresp": 565,
    "ifs_dep": 15,
@@ -41601,8 +41601,8 @@
    "nome": "Viana",
    "uf": "ES",
    "regiao": "SE",
-   "agencia": 5,
-   "posto": 6,
+   "agencia": 4,
+   "posto": 7,
    "pae": 14,
    "corresp": 49,
    "ifs_dep": 10,
@@ -41656,9 +41656,9 @@
    "agencia": 54,
    "posto": 88,
    "pae": 133,
-   "corresp": 481,
+   "corresp": 484,
    "ifs_dep": 28,
-   "ifs_corresp": 46,
+   "ifs_corresp": 47,
    "classe": "agencia"
   },
   {
@@ -41812,9 +41812,9 @@
    "agencia": 10,
    "posto": 16,
    "pae": 15,
-   "corresp": 184,
+   "corresp": 185,
    "ifs_dep": 13,
-   "ifs_corresp": 33,
+   "ifs_corresp": 32,
    "classe": "agencia"
   },
   {
@@ -41825,9 +41825,9 @@
    "agencia": 3,
    "posto": 5,
    "pae": 6,
-   "corresp": 35,
+   "corresp": 34,
    "ifs_dep": 7,
-   "ifs_corresp": 11,
+   "ifs_corresp": 10,
    "classe": "agencia"
   },
   {
@@ -41835,11 +41835,11 @@
    "nome": "Cambuci",
    "uf": "RJ",
    "regiao": "SE",
-   "agencia": 2,
+   "agencia": 1,
    "posto": 0,
    "pae": 1,
    "corresp": 10,
-   "ifs_dep": 2,
+   "ifs_dep": 1,
    "ifs_corresp": 3,
    "classe": "agencia"
   },
@@ -41877,7 +41877,7 @@
    "agencia": 16,
    "posto": 38,
    "pae": 35,
-   "corresp": 296,
+   "corresp": 299,
    "ifs_dep": 14,
    "ifs_corresp": 38,
    "classe": "agencia"
@@ -42005,7 +42005,7 @@
    "uf": "RJ",
    "regiao": "SE",
    "agencia": 2,
-   "posto": 4,
+   "posto": 5,
    "pae": 3,
    "corresp": 26,
    "ifs_dep": 6,
@@ -42046,7 +42046,7 @@
    "agencia": 5,
    "posto": 7,
    "pae": 7,
-   "corresp": 70,
+   "corresp": 71,
    "ifs_dep": 9,
    "ifs_corresp": 19,
    "classe": "agencia"
@@ -42137,7 +42137,7 @@
    "agencia": 16,
    "posto": 24,
    "pae": 23,
-   "corresp": 153,
+   "corresp": 154,
    "ifs_dep": 10,
    "ifs_corresp": 26,
    "classe": "agencia"
@@ -42280,7 +42280,7 @@
    "agencia": 44,
    "posto": 71,
    "pae": 59,
-   "corresp": 393,
+   "corresp": 395,
    "ifs_dep": 23,
    "ifs_corresp": 40,
    "classe": "agencia"
@@ -42306,7 +42306,7 @@
    "agencia": 18,
    "posto": 39,
    "pae": 29,
-   "corresp": 394,
+   "corresp": 396,
    "ifs_dep": 16,
    "ifs_corresp": 37,
    "classe": "agencia"
@@ -42319,7 +42319,7 @@
    "agencia": 3,
    "posto": 5,
    "pae": 3,
-   "corresp": 19,
+   "corresp": 18,
    "ifs_dep": 7,
    "ifs_corresp": 9,
    "classe": "agencia"
@@ -42332,7 +42332,7 @@
    "agencia": 3,
    "posto": 3,
    "pae": 5,
-   "corresp": 35,
+   "corresp": 36,
    "ifs_dep": 7,
    "ifs_corresp": 12,
    "classe": "agencia"
@@ -42342,8 +42342,8 @@
    "nome": "Paraty",
    "uf": "RJ",
    "regiao": "SE",
-   "agencia": 5,
-   "posto": 5,
+   "agencia": 4,
+   "posto": 6,
    "pae": 3,
    "corresp": 14,
    "ifs_dep": 7,
@@ -42371,7 +42371,7 @@
    "agencia": 20,
    "posto": 20,
    "pae": 20,
-   "corresp": 234,
+   "corresp": 235,
    "ifs_dep": 14,
    "ifs_corresp": 28,
    "classe": "agencia"
@@ -42421,10 +42421,10 @@
    "uf": "RJ",
    "regiao": "SE",
    "agencia": 2,
-   "posto": 3,
+   "posto": 4,
    "pae": 2,
    "corresp": 10,
-   "ifs_dep": 4,
+   "ifs_dep": 5,
    "ifs_corresp": 4,
    "classe": "agencia"
   },
@@ -42488,7 +42488,7 @@
    "agencia": 5,
    "posto": 4,
    "pae": 5,
-   "corresp": 59,
+   "corresp": 60,
    "ifs_dep": 9,
    "ifs_corresp": 14,
    "classe": "agencia"
@@ -42537,10 +42537,10 @@
    "nome": "Rio de Janeiro",
    "uf": "RJ",
    "regiao": "SE",
-   "agencia": 545,
-   "posto": 689,
+   "agencia": 543,
+   "posto": 687,
    "pae": 776,
-   "corresp": 3869,
+   "corresp": 3868,
    "ifs_dep": 127,
    "ifs_corresp": 70,
    "classe": "agencia"
@@ -42603,11 +42603,11 @@
    "uf": "RJ",
    "regiao": "SE",
    "agencia": 20,
-   "posto": 22,
+   "posto": 23,
    "pae": 28,
-   "corresp": 412,
+   "corresp": 411,
    "ifs_dep": 10,
-   "ifs_corresp": 37,
+   "ifs_corresp": 36,
    "classe": "agencia"
   },
   {
@@ -42670,7 +42670,7 @@
    "agencia": 6,
    "posto": 3,
    "pae": 6,
-   "corresp": 68,
+   "corresp": 69,
    "ifs_dep": 8,
    "ifs_corresp": 17,
    "classe": "agencia"
@@ -42696,7 +42696,7 @@
    "agencia": 1,
    "posto": 2,
    "pae": 3,
-   "corresp": 25,
+   "corresp": 26,
    "ifs_dep": 3,
    "ifs_corresp": 8,
    "classe": "agencia"
@@ -42709,7 +42709,7 @@
    "agencia": 4,
    "posto": 4,
    "pae": 3,
-   "corresp": 72,
+   "corresp": 74,
    "ifs_dep": 8,
    "ifs_corresp": 16,
    "classe": "agencia"
@@ -42798,11 +42798,11 @@
    "uf": "RJ",
    "regiao": "SE",
    "agencia": 6,
-   "posto": 6,
+   "posto": 7,
    "pae": 8,
-   "corresp": 81,
-   "ifs_dep": 9,
-   "ifs_corresp": 18,
+   "corresp": 80,
+   "ifs_dep": 10,
+   "ifs_corresp": 17,
    "classe": "agencia"
   },
   {
@@ -42852,7 +42852,7 @@
    "agencia": 19,
    "posto": 28,
    "pae": 22,
-   "corresp": 314,
+   "corresp": 315,
    "ifs_dep": 12,
    "ifs_corresp": 34,
    "classe": "agencia"
@@ -42891,7 +42891,7 @@
    "agencia": 3,
    "posto": 3,
    "pae": 3,
-   "corresp": 38,
+   "corresp": 36,
    "ifs_dep": 7,
    "ifs_corresp": 11,
    "classe": "agencia"
@@ -43060,7 +43060,7 @@
    "agencia": 3,
    "posto": 2,
    "pae": 2,
-   "corresp": 30,
+   "corresp": 29,
    "ifs_dep": 5,
    "ifs_corresp": 11,
    "classe": "agencia"
@@ -43099,7 +43099,7 @@
    "agencia": 17,
    "posto": 40,
    "pae": 20,
-   "corresp": 422,
+   "corresp": 420,
    "ifs_dep": 17,
    "ifs_corresp": 34,
    "classe": "agencia"
@@ -43164,7 +43164,7 @@
    "agencia": 5,
    "posto": 10,
    "pae": 3,
-   "corresp": 106,
+   "corresp": 105,
    "ifs_dep": 10,
    "ifs_corresp": 27,
    "classe": "agencia"
@@ -43346,7 +43346,7 @@
    "agencia": 7,
    "posto": 17,
    "pae": 5,
-   "corresp": 139,
+   "corresp": 140,
    "ifs_dep": 15,
    "ifs_corresp": 27,
    "classe": "agencia"
@@ -43463,7 +43463,7 @@
    "agencia": 6,
    "posto": 22,
    "pae": 11,
-   "corresp": 179,
+   "corresp": 178,
    "ifs_dep": 13,
    "ifs_corresp": 32,
    "classe": "agencia"
@@ -43473,8 +43473,8 @@
    "nome": "Atibaia",
    "uf": "SP",
    "regiao": "SE",
-   "agencia": 11,
-   "posto": 14,
+   "agencia": 10,
+   "posto": 15,
    "pae": 12,
    "corresp": 224,
    "ifs_dep": 10,
@@ -43528,7 +43528,7 @@
    "agencia": 6,
    "posto": 19,
    "pae": 4,
-   "corresp": 172,
+   "corresp": 173,
    "ifs_dep": 13,
    "ifs_corresp": 31,
    "classe": "agencia"
@@ -43604,12 +43604,12 @@
    "uf": "SP",
    "regiao": "SE",
    "agencia": 0,
-   "posto": 1,
+   "posto": 0,
    "pae": 0,
    "corresp": 5,
-   "ifs_dep": 1,
+   "ifs_dep": 0,
    "ifs_corresp": 4,
-   "classe": "posto"
+   "classe": "correspondente"
   },
   {
    "cod": "3505203",
@@ -43619,7 +43619,7 @@
    "agencia": 4,
    "posto": 3,
    "pae": 4,
-   "corresp": 37,
+   "corresp": 34,
    "ifs_dep": 6,
    "ifs_corresp": 11,
    "classe": "agencia"
@@ -43671,7 +43671,7 @@
    "agencia": 9,
    "posto": 21,
    "pae": 8,
-   "corresp": 197,
+   "corresp": 195,
    "ifs_dep": 13,
    "ifs_corresp": 34,
    "classe": "agencia"
@@ -43684,7 +43684,7 @@
    "agencia": 2,
    "posto": 2,
    "pae": 4,
-   "corresp": 26,
+   "corresp": 25,
    "ifs_dep": 4,
    "ifs_corresp": 8,
    "classe": "agencia"
@@ -43697,7 +43697,7 @@
    "agencia": 48,
    "posto": 62,
    "pae": 52,
-   "corresp": 456,
+   "corresp": 455,
    "ifs_dep": 34,
    "ifs_corresp": 58,
    "classe": "agencia"
@@ -43723,7 +43723,7 @@
    "agencia": 5,
    "posto": 10,
    "pae": 4,
-   "corresp": 76,
+   "corresp": 77,
    "ifs_dep": 12,
    "ifs_corresp": 24,
    "classe": "agencia"
@@ -43736,7 +43736,7 @@
    "agencia": 26,
    "posto": 62,
    "pae": 40,
-   "corresp": 612,
+   "corresp": 611,
    "ifs_dep": 23,
    "ifs_corresp": 46,
    "classe": "agencia"
@@ -43749,7 +43749,7 @@
    "agencia": 6,
    "posto": 16,
    "pae": 8,
-   "corresp": 135,
+   "corresp": 134,
    "ifs_dep": 10,
    "ifs_corresp": 25,
    "classe": "agencia"
@@ -43788,7 +43788,7 @@
    "agencia": 3,
    "posto": 6,
    "pae": 7,
-   "corresp": 40,
+   "corresp": 39,
    "ifs_dep": 8,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -43801,7 +43801,7 @@
    "agencia": 2,
    "posto": 7,
    "pae": 2,
-   "corresp": 11,
+   "corresp": 10,
    "ifs_dep": 3,
    "ifs_corresp": 5,
    "classe": "agencia"
@@ -43840,7 +43840,7 @@
    "agencia": 1,
    "posto": 2,
    "pae": 2,
-   "corresp": 19,
+   "corresp": 18,
    "ifs_dep": 3,
    "ifs_corresp": 4,
    "classe": "agencia"
@@ -43853,7 +43853,7 @@
    "agencia": 1,
    "posto": 2,
    "pae": 2,
-   "corresp": 16,
+   "corresp": 15,
    "ifs_dep": 3,
    "ifs_corresp": 5,
    "classe": "agencia"
@@ -43905,7 +43905,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 1,
-   "corresp": 7,
+   "corresp": 6,
    "ifs_dep": 1,
    "ifs_corresp": 3,
    "classe": "posto"
@@ -43983,7 +43983,7 @@
    "agencia": 8,
    "posto": 19,
    "pae": 12,
-   "corresp": 246,
+   "corresp": 247,
    "ifs_dep": 14,
    "ifs_corresp": 33,
    "classe": "agencia"
@@ -43996,7 +43996,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 1,
-   "corresp": 13,
+   "corresp": 12,
    "ifs_dep": 1,
    "ifs_corresp": 3,
    "classe": "posto"
@@ -44123,7 +44123,7 @@
    "nome": "Cachoeira Paulista",
    "uf": "SP",
    "regiao": "SE",
-   "agencia": 3,
+   "agencia": 2,
    "posto": 3,
    "pae": 4,
    "corresp": 27,
@@ -44139,7 +44139,7 @@
    "agencia": 2,
    "posto": 4,
    "pae": 6,
-   "corresp": 19,
+   "corresp": 18,
    "ifs_dep": 6,
    "ifs_corresp": 6,
    "classe": "agencia"
@@ -44152,7 +44152,7 @@
    "agencia": 2,
    "posto": 0,
    "pae": 2,
-   "corresp": 18,
+   "corresp": 17,
    "ifs_dep": 2,
    "ifs_corresp": 5,
    "classe": "agencia"
@@ -44230,7 +44230,7 @@
    "agencia": 1,
    "posto": 2,
    "pae": 2,
-   "corresp": 15,
+   "corresp": 14,
    "ifs_dep": 3,
    "ifs_corresp": 6,
    "classe": "agencia"
@@ -44243,7 +44243,7 @@
    "agencia": 4,
    "posto": 3,
    "pae": 4,
-   "corresp": 37,
+   "corresp": 36,
    "ifs_dep": 6,
    "ifs_corresp": 11,
    "classe": "agencia"
@@ -44267,11 +44267,11 @@
    "uf": "SP",
    "regiao": "SE",
    "agencia": 115,
-   "posto": 212,
+   "posto": 213,
    "pae": 120,
-   "corresp": 1359,
+   "corresp": 1362,
    "ifs_dep": 53,
-   "ifs_corresp": 58,
+   "ifs_corresp": 59,
    "classe": "agencia"
   },
   {
@@ -44386,7 +44386,7 @@
    "agencia": 4,
    "posto": 7,
    "pae": 4,
-   "corresp": 50,
+   "corresp": 48,
    "ifs_dep": 8,
    "ifs_corresp": 19,
    "classe": "agencia"
@@ -44425,7 +44425,7 @@
    "agencia": 7,
    "posto": 12,
    "pae": 10,
-   "corresp": 136,
+   "corresp": 137,
    "ifs_dep": 13,
    "ifs_corresp": 28,
    "classe": "agencia"
@@ -44490,9 +44490,9 @@
    "agencia": 2,
    "posto": 1,
    "pae": 3,
-   "corresp": 17,
+   "corresp": 18,
    "ifs_dep": 4,
-   "ifs_corresp": 8,
+   "ifs_corresp": 9,
    "classe": "agencia"
   },
   {
@@ -44503,7 +44503,7 @@
    "agencia": 9,
    "posto": 24,
    "pae": 10,
-   "corresp": 207,
+   "corresp": 208,
    "ifs_dep": 11,
    "ifs_corresp": 31,
    "classe": "agencia"
@@ -44607,7 +44607,7 @@
    "agencia": 2,
    "posto": 4,
    "pae": 3,
-   "corresp": 25,
+   "corresp": 26,
    "ifs_dep": 6,
    "ifs_corresp": 9,
    "classe": "agencia"
@@ -44646,7 +44646,7 @@
    "agencia": 1,
    "posto": 2,
    "pae": 2,
-   "corresp": 30,
+   "corresp": 31,
    "ifs_dep": 3,
    "ifs_corresp": 10,
    "classe": "agencia"
@@ -44657,9 +44657,9 @@
    "uf": "SP",
    "regiao": "SE",
    "agencia": 3,
-   "posto": 5,
+   "posto": 4,
    "pae": 4,
-   "corresp": 22,
+   "corresp": 21,
    "ifs_dep": 7,
    "ifs_corresp": 9,
    "classe": "agencia"
@@ -44711,7 +44711,7 @@
    "agencia": 3,
    "posto": 8,
    "pae": 3,
-   "corresp": 47,
+   "corresp": 45,
    "ifs_dep": 9,
    "ifs_corresp": 14,
    "classe": "agencia"
@@ -44737,7 +44737,7 @@
    "agencia": 11,
    "posto": 29,
    "pae": 26,
-   "corresp": 197,
+   "corresp": 193,
    "ifs_dep": 13,
    "ifs_corresp": 31,
    "classe": "agencia"
@@ -44747,11 +44747,11 @@
    "nome": "Cravinhos",
    "uf": "SP",
    "regiao": "SE",
-   "agencia": 4,
+   "agencia": 3,
    "posto": 6,
    "pae": 4,
    "corresp": 31,
-   "ifs_dep": 10,
+   "ifs_dep": 9,
    "ifs_corresp": 10,
    "classe": "agencia"
   },
@@ -44789,7 +44789,7 @@
    "agencia": 4,
    "posto": 11,
    "pae": 4,
-   "corresp": 77,
+   "corresp": 75,
    "ifs_dep": 11,
    "ifs_corresp": 16,
    "classe": "agencia"
@@ -44802,7 +44802,7 @@
    "agencia": 7,
    "posto": 11,
    "pae": 15,
-   "corresp": 40,
+   "corresp": 39,
    "ifs_dep": 10,
    "ifs_corresp": 16,
    "classe": "agencia"
@@ -44838,8 +44838,8 @@
    "nome": "Diadema",
    "uf": "SP",
    "regiao": "SE",
-   "agencia": 20,
-   "posto": 36,
+   "agencia": 19,
+   "posto": 37,
    "pae": 30,
    "corresp": 191,
    "ifs_dep": 10,
@@ -44867,7 +44867,7 @@
    "agencia": 1,
    "posto": 4,
    "pae": 3,
-   "corresp": 24,
+   "corresp": 23,
    "ifs_dep": 5,
    "ifs_corresp": 9,
    "classe": "agencia"
@@ -44893,7 +44893,7 @@
    "agencia": 3,
    "posto": 1,
    "pae": 3,
-   "corresp": 25,
+   "corresp": 24,
    "ifs_dep": 4,
    "ifs_corresp": 7,
    "classe": "agencia"
@@ -45088,7 +45088,7 @@
    "agencia": 4,
    "posto": 7,
    "pae": 6,
-   "corresp": 68,
+   "corresp": 66,
    "ifs_dep": 9,
    "ifs_corresp": 18,
    "classe": "agencia"
@@ -45270,7 +45270,7 @@
    "agencia": 21,
    "posto": 55,
    "pae": 21,
-   "corresp": 464,
+   "corresp": 465,
    "ifs_dep": 21,
    "ifs_corresp": 39,
    "classe": "agencia"
@@ -45439,7 +45439,7 @@
    "agencia": 4,
    "posto": 8,
    "pae": 4,
-   "corresp": 50,
+   "corresp": 49,
    "ifs_dep": 10,
    "ifs_corresp": 20,
    "classe": "agencia"
@@ -45450,7 +45450,7 @@
    "uf": "SP",
    "regiao": "SE",
    "agencia": 2,
-   "posto": 1,
+   "posto": 0,
    "pae": 3,
    "corresp": 28,
    "ifs_dep": 3,
@@ -45569,7 +45569,7 @@
    "agencia": 9,
    "posto": 16,
    "pae": 10,
-   "corresp": 137,
+   "corresp": 138,
    "ifs_dep": 13,
    "ifs_corresp": 29,
    "classe": "agencia"
@@ -45580,7 +45580,7 @@
    "uf": "SP",
    "regiao": "SE",
    "agencia": 0,
-   "posto": 3,
+   "posto": 2,
    "pae": 2,
    "corresp": 12,
    "ifs_dep": 3,
@@ -45608,9 +45608,9 @@
    "agencia": 10,
    "posto": 21,
    "pae": 16,
-   "corresp": 199,
+   "corresp": 197,
    "ifs_dep": 11,
-   "ifs_corresp": 26,
+   "ifs_corresp": 25,
    "classe": "agencia"
   },
   {
@@ -45621,7 +45621,7 @@
    "agencia": 59,
    "posto": 121,
    "pae": 109,
-   "corresp": 1043,
+   "corresp": 1042,
    "ifs_dep": 24,
    "ifs_corresp": 51,
    "classe": "agencia"
@@ -45777,7 +45777,7 @@
    "agencia": 5,
    "posto": 6,
    "pae": 4,
-   "corresp": 72,
+   "corresp": 70,
    "ifs_dep": 10,
    "ifs_corresp": 19,
    "classe": "agencia"
@@ -45790,7 +45790,7 @@
    "agencia": 4,
    "posto": 5,
    "pae": 4,
-   "corresp": 77,
+   "corresp": 75,
    "ifs_dep": 8,
    "ifs_corresp": 14,
    "classe": "agencia"
@@ -45829,7 +45829,7 @@
    "agencia": 3,
    "posto": 0,
    "pae": 2,
-   "corresp": 22,
+   "corresp": 21,
    "ifs_dep": 3,
    "ifs_corresp": 8,
    "classe": "agencia"
@@ -45917,8 +45917,8 @@
    "nome": "Indaiatuba",
    "uf": "SP",
    "regiao": "SE",
-   "agencia": 17,
-   "posto": 32,
+   "agencia": 16,
+   "posto": 33,
    "pae": 16,
    "corresp": 288,
    "ifs_dep": 19,
@@ -45959,7 +45959,7 @@
    "agencia": 0,
    "posto": 2,
    "pae": 2,
-   "corresp": 6,
+   "corresp": 5,
    "ifs_dep": 3,
    "ifs_corresp": 3,
    "classe": "posto"
@@ -46128,7 +46128,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 2,
-   "corresp": 4,
+   "corresp": 3,
    "ifs_dep": 2,
    "ifs_corresp": 3,
    "classe": "posto"
@@ -46190,8 +46190,8 @@
    "nome": "Itapeva",
    "uf": "SP",
    "regiao": "SE",
-   "agencia": 5,
-   "posto": 14,
+   "agencia": 4,
+   "posto": 15,
    "pae": 4,
    "corresp": 126,
    "ifs_dep": 13,
@@ -46206,7 +46206,7 @@
    "agencia": 6,
    "posto": 19,
    "pae": 16,
-   "corresp": 106,
+   "corresp": 107,
    "ifs_dep": 10,
    "ifs_corresp": 20,
    "classe": "agencia"
@@ -46219,7 +46219,7 @@
    "agencia": 5,
    "posto": 7,
    "pae": 5,
-   "corresp": 80,
+   "corresp": 79,
    "ifs_dep": 9,
    "ifs_corresp": 16,
    "classe": "agencia"
@@ -46297,7 +46297,7 @@
    "agencia": 9,
    "posto": 14,
    "pae": 14,
-   "corresp": 168,
+   "corresp": 169,
    "ifs_dep": 11,
    "ifs_corresp": 24,
    "classe": "agencia"
@@ -46323,7 +46323,7 @@
    "agencia": 1,
    "posto": 2,
    "pae": 2,
-   "corresp": 10,
+   "corresp": 11,
    "ifs_dep": 3,
    "ifs_corresp": 6,
    "classe": "agencia"
@@ -46336,9 +46336,9 @@
    "agencia": 5,
    "posto": 14,
    "pae": 11,
-   "corresp": 133,
+   "corresp": 132,
    "ifs_dep": 12,
-   "ifs_corresp": 22,
+   "ifs_corresp": 21,
    "classe": "agencia"
   },
   {
@@ -46401,7 +46401,7 @@
    "agencia": 12,
    "posto": 20,
    "pae": 18,
-   "corresp": 208,
+   "corresp": 209,
    "ifs_dep": 15,
    "ifs_corresp": 32,
    "classe": "agencia"
@@ -46414,7 +46414,7 @@
    "agencia": 5,
    "posto": 10,
    "pae": 4,
-   "corresp": 55,
+   "corresp": 54,
    "ifs_dep": 10,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -46427,7 +46427,7 @@
    "agencia": 4,
    "posto": 5,
    "pae": 5,
-   "corresp": 68,
+   "corresp": 67,
    "ifs_dep": 7,
    "ifs_corresp": 22,
    "classe": "agencia"
@@ -46466,7 +46466,7 @@
    "agencia": 10,
    "posto": 26,
    "pae": 18,
-   "corresp": 213,
+   "corresp": 214,
    "ifs_dep": 13,
    "ifs_corresp": 31,
    "classe": "agencia"
@@ -46505,7 +46505,7 @@
    "agencia": 6,
    "posto": 14,
    "pae": 7,
-   "corresp": 72,
+   "corresp": 71,
    "ifs_dep": 12,
    "ifs_corresp": 22,
    "classe": "agencia"
@@ -46557,7 +46557,7 @@
    "agencia": 4,
    "posto": 6,
    "pae": 3,
-   "corresp": 29,
+   "corresp": 28,
    "ifs_dep": 9,
    "ifs_corresp": 10,
    "classe": "agencia"
@@ -46583,7 +46583,7 @@
    "agencia": 8,
    "posto": 25,
    "pae": 9,
-   "corresp": 192,
+   "corresp": 189,
    "ifs_dep": 12,
    "ifs_corresp": 28,
    "classe": "agencia"
@@ -46674,7 +46674,7 @@
    "agencia": 36,
    "posto": 98,
    "pae": 48,
-   "corresp": 667,
+   "corresp": 666,
    "ifs_dep": 27,
    "ifs_corresp": 47,
    "classe": "agencia"
@@ -46700,7 +46700,7 @@
    "agencia": 2,
    "posto": 1,
    "pae": 4,
-   "corresp": 12,
+   "corresp": 11,
    "ifs_dep": 4,
    "ifs_corresp": 3,
    "classe": "agencia"
@@ -46801,10 +46801,10 @@
    "nome": "Limeira",
    "uf": "SP",
    "regiao": "SE",
-   "agencia": 17,
-   "posto": 41,
+   "agencia": 16,
+   "posto": 42,
    "pae": 21,
-   "corresp": 348,
+   "corresp": 349,
    "ifs_dep": 20,
    "ifs_corresp": 39,
    "classe": "agencia"
@@ -46843,9 +46843,9 @@
    "agencia": 5,
    "posto": 13,
    "pae": 5,
-   "corresp": 97,
+   "corresp": 98,
    "ifs_dep": 9,
-   "ifs_corresp": 23,
+   "ifs_corresp": 24,
    "classe": "agencia"
   },
   {
@@ -46882,7 +46882,7 @@
    "agencia": 3,
    "posto": 2,
    "pae": 4,
-   "corresp": 21,
+   "corresp": 20,
    "ifs_dep": 5,
    "ifs_corresp": 12,
    "classe": "agencia"
@@ -47012,7 +47012,7 @@
    "agencia": 4,
    "posto": 3,
    "pae": 4,
-   "corresp": 43,
+   "corresp": 41,
    "ifs_dep": 6,
    "ifs_corresp": 16,
    "classe": "agencia"
@@ -47077,7 +47077,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 2,
-   "corresp": 6,
+   "corresp": 5,
    "ifs_dep": 2,
    "ifs_corresp": 3,
    "classe": "posto"
@@ -47090,7 +47090,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 1,
-   "corresp": 4,
+   "corresp": 3,
    "ifs_dep": 1,
    "ifs_corresp": 3,
    "classe": "posto"
@@ -47103,7 +47103,7 @@
    "agencia": 18,
    "posto": 51,
    "pae": 39,
-   "corresp": 288,
+   "corresp": 287,
    "ifs_dep": 20,
    "ifs_corresp": 39,
    "classe": "agencia"
@@ -47129,7 +47129,7 @@
    "agencia": 4,
    "posto": 3,
    "pae": 3,
-   "corresp": 47,
+   "corresp": 46,
    "ifs_dep": 6,
    "ifs_corresp": 12,
    "classe": "agencia"
@@ -47142,7 +47142,7 @@
    "agencia": 5,
    "posto": 14,
    "pae": 4,
-   "corresp": 119,
+   "corresp": 112,
    "ifs_dep": 12,
    "ifs_corresp": 21,
    "classe": "agencia"
@@ -47155,7 +47155,7 @@
    "agencia": 14,
    "posto": 23,
    "pae": 29,
-   "corresp": 210,
+   "corresp": 208,
    "ifs_dep": 10,
    "ifs_corresp": 29,
    "classe": "agencia"
@@ -47259,7 +47259,7 @@
    "agencia": 3,
    "posto": 2,
    "pae": 4,
-   "corresp": 42,
+   "corresp": 41,
    "ifs_dep": 5,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -47285,7 +47285,7 @@
    "agencia": 5,
    "posto": 19,
    "pae": 5,
-   "corresp": 93,
+   "corresp": 91,
    "ifs_dep": 10,
    "ifs_corresp": 18,
    "classe": "agencia"
@@ -47324,7 +47324,7 @@
    "agencia": 26,
    "posto": 44,
    "pae": 26,
-   "corresp": 464,
+   "corresp": 463,
    "ifs_dep": 17,
    "ifs_corresp": 41,
    "classe": "agencia"
@@ -47350,7 +47350,7 @@
    "agencia": 7,
    "posto": 14,
    "pae": 7,
-   "corresp": 120,
+   "corresp": 119,
    "ifs_dep": 11,
    "ifs_corresp": 28,
    "classe": "agencia"
@@ -47389,7 +47389,7 @@
    "agencia": 4,
    "posto": 5,
    "pae": 3,
-   "corresp": 46,
+   "corresp": 47,
    "ifs_dep": 9,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -47415,7 +47415,7 @@
    "agencia": 5,
    "posto": 8,
    "pae": 3,
-   "corresp": 86,
+   "corresp": 85,
    "ifs_dep": 10,
    "ifs_corresp": 23,
    "classe": "agencia"
@@ -47584,9 +47584,9 @@
    "agencia": 1,
    "posto": 2,
    "pae": 1,
-   "corresp": 18,
+   "corresp": 19,
    "ifs_dep": 3,
-   "ifs_corresp": 5,
+   "ifs_corresp": 6,
    "classe": "agencia"
   },
   {
@@ -47610,7 +47610,7 @@
    "agencia": 3,
    "posto": 4,
    "pae": 2,
-   "corresp": 25,
+   "corresp": 24,
    "ifs_dep": 4,
    "ifs_corresp": 9,
    "classe": "agencia"
@@ -47753,7 +47753,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 1,
-   "corresp": 8,
+   "corresp": 7,
    "ifs_dep": 1,
    "ifs_corresp": 3,
    "classe": "posto"
@@ -47792,7 +47792,7 @@
    "agencia": 1,
    "posto": 2,
    "pae": 2,
-   "corresp": 12,
+   "corresp": 11,
    "ifs_dep": 4,
    "ifs_corresp": 5,
    "classe": "agencia"
@@ -47883,7 +47883,7 @@
    "agencia": 5,
    "posto": 9,
    "pae": 4,
-   "corresp": 89,
+   "corresp": 88,
    "ifs_dep": 11,
    "ifs_corresp": 25,
    "classe": "agencia"
@@ -47896,7 +47896,7 @@
    "agencia": 104,
    "posto": 68,
    "pae": 80,
-   "corresp": 675,
+   "corresp": 674,
    "ifs_dep": 30,
    "ifs_corresp": 46,
    "classe": "agencia"
@@ -47922,7 +47922,7 @@
    "agencia": 4,
    "posto": 9,
    "pae": 3,
-   "corresp": 46,
+   "corresp": 44,
    "ifs_dep": 8,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -48117,7 +48117,7 @@
    "agencia": 1,
    "posto": 1,
    "pae": 2,
-   "corresp": 16,
+   "corresp": 15,
    "ifs_dep": 2,
    "ifs_corresp": 3,
    "classe": "agencia"
@@ -48143,7 +48143,7 @@
    "agencia": 4,
    "posto": 4,
    "pae": 3,
-   "corresp": 22,
+   "corresp": 21,
    "ifs_dep": 6,
    "ifs_corresp": 10,
    "classe": "agencia"
@@ -48195,7 +48195,7 @@
    "agencia": 7,
    "posto": 18,
    "pae": 5,
-   "corresp": 97,
+   "corresp": 98,
    "ifs_dep": 12,
    "ifs_corresp": 27,
    "classe": "agencia"
@@ -48286,7 +48286,7 @@
    "agencia": 5,
    "posto": 3,
    "pae": 3,
-   "corresp": 39,
+   "corresp": 38,
    "ifs_dep": 8,
    "ifs_corresp": 16,
    "classe": "agencia"
@@ -48338,7 +48338,7 @@
    "agencia": 3,
    "posto": 3,
    "pae": 4,
-   "corresp": 40,
+   "corresp": 39,
    "ifs_dep": 5,
    "ifs_corresp": 12,
    "classe": "agencia"
@@ -48366,7 +48366,7 @@
    "pae": 6,
    "corresp": 61,
    "ifs_dep": 9,
-   "ifs_corresp": 16,
+   "ifs_corresp": 17,
    "classe": "agencia"
   },
   {
@@ -48403,7 +48403,7 @@
    "agencia": 2,
    "posto": 2,
    "pae": 3,
-   "corresp": 51,
+   "corresp": 50,
    "ifs_dep": 4,
    "ifs_corresp": 14,
    "classe": "agencia"
@@ -48416,7 +48416,7 @@
    "agencia": 9,
    "posto": 16,
    "pae": 7,
-   "corresp": 127,
+   "corresp": 125,
    "ifs_dep": 14,
    "ifs_corresp": 26,
    "classe": "agencia"
@@ -48429,7 +48429,7 @@
    "agencia": 1,
    "posto": 2,
    "pae": 4,
-   "corresp": 19,
+   "corresp": 18,
    "ifs_dep": 3,
    "ifs_corresp": 8,
    "classe": "agencia"
@@ -48478,8 +48478,8 @@
    "nome": "Piracaia",
    "uf": "SP",
    "regiao": "SE",
-   "agencia": 4,
-   "posto": 2,
+   "agencia": 3,
+   "posto": 3,
    "pae": 2,
    "corresp": 20,
    "ifs_dep": 6,
@@ -48494,7 +48494,7 @@
    "agencia": 34,
    "posto": 77,
    "pae": 40,
-   "corresp": 460,
+   "corresp": 459,
    "ifs_dep": 24,
    "ifs_corresp": 35,
    "classe": "agencia"
@@ -48520,7 +48520,7 @@
    "agencia": 3,
    "posto": 0,
    "pae": 3,
-   "corresp": 30,
+   "corresp": 29,
    "ifs_dep": 3,
    "ifs_corresp": 9,
    "classe": "agencia"
@@ -48572,7 +48572,7 @@
    "agencia": 8,
    "posto": 16,
    "pae": 5,
-   "corresp": 104,
+   "corresp": 102,
    "ifs_dep": 14,
    "ifs_corresp": 24,
    "classe": "agencia"
@@ -48689,7 +48689,7 @@
    "agencia": 3,
    "posto": 2,
    "pae": 4,
-   "corresp": 32,
+   "corresp": 31,
    "ifs_dep": 5,
    "ifs_corresp": 12,
    "classe": "agencia"
@@ -48767,7 +48767,7 @@
    "agencia": 5,
    "posto": 12,
    "pae": 4,
-   "corresp": 84,
+   "corresp": 82,
    "ifs_dep": 11,
    "ifs_corresp": 22,
    "classe": "agencia"
@@ -48897,7 +48897,7 @@
    "agencia": 20,
    "posto": 51,
    "pae": 20,
-   "corresp": 332,
+   "corresp": 333,
    "ifs_dep": 17,
    "ifs_corresp": 40,
    "classe": "agencia"
@@ -48949,9 +48949,9 @@
    "agencia": 3,
    "posto": 2,
    "pae": 3,
-   "corresp": 20,
+   "corresp": 19,
    "ifs_dep": 5,
-   "ifs_corresp": 8,
+   "ifs_corresp": 7,
    "classe": "agencia"
   },
   {
@@ -49014,7 +49014,7 @@
    "agencia": 3,
    "posto": 5,
    "pae": 4,
-   "corresp": 36,
+   "corresp": 35,
    "ifs_dep": 5,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -49194,11 +49194,11 @@
    "uf": "SP",
    "regiao": "SE",
    "agencia": 77,
-   "posto": 120,
+   "posto": 122,
    "pae": 66,
-   "corresp": 1021,
+   "corresp": 1019,
    "ifs_dep": 37,
-   "ifs_corresp": 54,
+   "ifs_corresp": 53,
    "classe": "agencia"
   },
   {
@@ -49209,7 +49209,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 1,
-   "corresp": 10,
+   "corresp": 11,
    "ifs_dep": 2,
    "ifs_corresp": 4,
    "classe": "posto"
@@ -49274,7 +49274,7 @@
    "agencia": 2,
    "posto": 4,
    "pae": 4,
-   "corresp": 22,
+   "corresp": 20,
    "ifs_dep": 6,
    "ifs_corresp": 7,
    "classe": "agencia"
@@ -49599,7 +49599,7 @@
    "agencia": 2,
    "posto": 3,
    "pae": 3,
-   "corresp": 39,
+   "corresp": 38,
    "ifs_dep": 6,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -49755,7 +49755,7 @@
    "agencia": 2,
    "posto": 3,
    "pae": 3,
-   "corresp": 29,
+   "corresp": 28,
    "ifs_dep": 5,
    "ifs_corresp": 8,
    "classe": "agencia"
@@ -49794,7 +49794,7 @@
    "agencia": 2,
    "posto": 1,
    "pae": 3,
-   "corresp": 28,
+   "corresp": 27,
    "ifs_dep": 4,
    "ifs_corresp": 8,
    "classe": "agencia"
@@ -49908,12 +49908,12 @@
    "nome": "Santos",
    "uf": "SP",
    "regiao": "SE",
-   "agencia": 46,
-   "posto": 69,
+   "agencia": 45,
+   "posto": 70,
    "pae": 52,
-   "corresp": 471,
+   "corresp": 470,
    "ifs_dep": 24,
-   "ifs_corresp": 43,
+   "ifs_corresp": 42,
    "classe": "agencia"
   },
   {
@@ -49935,10 +49935,10 @@
    "uf": "SP",
    "regiao": "SE",
    "agencia": 55,
-   "posto": 104,
+   "posto": 105,
    "pae": 77,
-   "corresp": 765,
-   "ifs_dep": 25,
+   "corresp": 766,
+   "ifs_dep": 26,
    "ifs_corresp": 43,
    "classe": "agencia"
   },
@@ -49950,7 +49950,7 @@
    "agencia": 24,
    "posto": 38,
    "pae": 28,
-   "corresp": 243,
+   "corresp": 240,
    "ifs_dep": 17,
    "ifs_corresp": 40,
    "classe": "agencia"
@@ -49963,7 +49963,7 @@
    "agencia": 19,
    "posto": 45,
    "pae": 23,
-   "corresp": 324,
+   "corresp": 322,
    "ifs_dep": 17,
    "ifs_corresp": 38,
    "classe": "agencia"
@@ -49989,7 +49989,7 @@
    "agencia": 5,
    "posto": 13,
    "pae": 8,
-   "corresp": 128,
+   "corresp": 126,
    "ifs_dep": 12,
    "ifs_corresp": 24,
    "classe": "agencia"
@@ -50041,7 +50041,7 @@
    "agencia": 5,
    "posto": 7,
    "pae": 2,
-   "corresp": 86,
+   "corresp": 85,
    "ifs_dep": 9,
    "ifs_corresp": 19,
    "classe": "agencia"
@@ -50093,7 +50093,7 @@
    "agencia": 41,
    "posto": 87,
    "pae": 39,
-   "corresp": 871,
+   "corresp": 872,
    "ifs_dep": 28,
    "ifs_corresp": 53,
    "classe": "agencia"
@@ -50106,7 +50106,7 @@
    "agencia": 54,
    "posto": 108,
    "pae": 62,
-   "corresp": 709,
+   "corresp": 710,
    "ifs_dep": 36,
    "ifs_corresp": 50,
    "classe": "agencia"
@@ -50145,7 +50145,7 @@
    "agencia": 4,
    "posto": 4,
    "pae": 4,
-   "corresp": 56,
+   "corresp": 55,
    "ifs_dep": 8,
    "ifs_corresp": 18,
    "classe": "agencia"
@@ -50169,9 +50169,9 @@
    "uf": "SP",
    "regiao": "SE",
    "agencia": 1297,
-   "posto": 1647,
-   "pae": 1474,
-   "corresp": 10550,
+   "posto": 1644,
+   "pae": 1475,
+   "corresp": 10553,
    "ifs_dep": 405,
    "ifs_corresp": 91,
    "classe": "agencia"
@@ -50210,7 +50210,7 @@
    "agencia": 5,
    "posto": 11,
    "pae": 7,
-   "corresp": 90,
+   "corresp": 91,
    "ifs_dep": 11,
    "ifs_corresp": 22,
    "classe": "agencia"
@@ -50249,7 +50249,7 @@
    "agencia": 3,
    "posto": 2,
    "pae": 3,
-   "corresp": 20,
+   "corresp": 21,
    "ifs_dep": 5,
    "ifs_corresp": 8,
    "classe": "agencia"
@@ -50259,8 +50259,8 @@
    "nome": "São Vicente",
    "uf": "SP",
    "regiao": "SE",
-   "agencia": 13,
-   "posto": 16,
+   "agencia": 12,
+   "posto": 17,
    "pae": 17,
    "corresp": 163,
    "ifs_dep": 11,
@@ -50353,7 +50353,7 @@
    "agencia": 8,
    "posto": 16,
    "pae": 8,
-   "corresp": 154,
+   "corresp": 153,
    "ifs_dep": 11,
    "ifs_corresp": 22,
    "classe": "agencia"
@@ -50418,9 +50418,9 @@
    "agencia": 47,
    "posto": 93,
    "pae": 60,
-   "corresp": 953,
+   "corresp": 954,
    "ifs_dep": 30,
-   "ifs_corresp": 53,
+   "ifs_corresp": 54,
    "classe": "agencia"
   },
   {
@@ -50431,7 +50431,7 @@
    "agencia": 1,
    "posto": 1,
    "pae": 1,
-   "corresp": 17,
+   "corresp": 16,
    "ifs_dep": 2,
    "ifs_corresp": 5,
    "classe": "agencia"
@@ -50457,7 +50457,7 @@
    "agencia": 11,
    "posto": 18,
    "pae": 17,
-   "corresp": 299,
+   "corresp": 300,
    "ifs_dep": 11,
    "ifs_corresp": 31,
    "classe": "agencia"
@@ -50470,7 +50470,7 @@
    "agencia": 0,
    "posto": 0,
    "pae": 1,
-   "corresp": 10,
+   "corresp": 9,
    "ifs_dep": 1,
    "ifs_corresp": 4,
    "classe": "posto"
@@ -50496,9 +50496,9 @@
    "agencia": 2,
    "posto": 2,
    "pae": 2,
-   "corresp": 22,
+   "corresp": 23,
    "ifs_dep": 4,
-   "ifs_corresp": 5,
+   "ifs_corresp": 6,
    "classe": "agencia"
   },
   {
@@ -50574,7 +50574,7 @@
    "agencia": 3,
    "posto": 3,
    "pae": 5,
-   "corresp": 26,
+   "corresp": 25,
    "ifs_dep": 5,
    "ifs_corresp": 9,
    "classe": "agencia"
@@ -50639,7 +50639,7 @@
    "agencia": 4,
    "posto": 9,
    "pae": 5,
-   "corresp": 80,
+   "corresp": 77,
    "ifs_dep": 10,
    "ifs_corresp": 19,
    "classe": "agencia"
@@ -50688,13 +50688,13 @@
    "nome": "Tarumã",
    "uf": "SP",
    "regiao": "SE",
-   "agencia": 1,
-   "posto": 2,
+   "agencia": 0,
+   "posto": 3,
    "pae": 2,
    "corresp": 16,
    "ifs_dep": 4,
    "ifs_corresp": 6,
-   "classe": "agencia"
+   "classe": "posto"
   },
   {
    "cod": "3554003",
@@ -50717,7 +50717,7 @@
    "agencia": 22,
    "posto": 44,
    "pae": 27,
-   "corresp": 416,
+   "corresp": 417,
    "ifs_dep": 21,
    "ifs_corresp": 44,
    "classe": "agencia"
@@ -50756,7 +50756,7 @@
    "agencia": 1,
    "posto": 2,
    "pae": 1,
-   "corresp": 21,
+   "corresp": 20,
    "ifs_dep": 4,
    "ifs_corresp": 7,
    "classe": "agencia"
@@ -50769,7 +50769,7 @@
    "agencia": 3,
    "posto": 10,
    "pae": 3,
-   "corresp": 42,
+   "corresp": 41,
    "ifs_dep": 9,
    "ifs_corresp": 14,
    "classe": "agencia"
@@ -50808,7 +50808,7 @@
    "agencia": 1,
    "posto": 1,
    "pae": 1,
-   "corresp": 10,
+   "corresp": 9,
    "ifs_dep": 2,
    "ifs_corresp": 4,
    "classe": "agencia"
@@ -51016,7 +51016,7 @@
    "agencia": 3,
    "posto": 2,
    "pae": 2,
-   "corresp": 36,
+   "corresp": 35,
    "ifs_dep": 5,
    "ifs_corresp": 12,
    "classe": "agencia"
@@ -51130,8 +51130,8 @@
    "nome": "Vinhedo",
    "uf": "SP",
    "regiao": "SE",
-   "agencia": 6,
-   "posto": 17,
+   "agencia": 5,
+   "posto": 18,
    "pae": 8,
    "corresp": 103,
    "ifs_dep": 10,
@@ -51198,9 +51198,9 @@
    "agencia": 8,
    "posto": 17,
    "pae": 8,
-   "corresp": 189,
+   "corresp": 190,
    "ifs_dep": 10,
-   "ifs_corresp": 29,
+   "ifs_corresp": 30,
    "classe": "agencia"
   },
   {
@@ -51315,7 +51315,7 @@
    "agencia": 2,
    "posto": 3,
    "pae": 3,
-   "corresp": 33,
+   "corresp": 34,
    "ifs_dep": 6,
    "ifs_corresp": 9,
    "classe": "agencia"
@@ -51471,9 +51471,9 @@
    "agencia": 5,
    "posto": 17,
    "pae": 4,
-   "corresp": 172,
+   "corresp": 171,
    "ifs_dep": 13,
-   "ifs_corresp": 28,
+   "ifs_corresp": 27,
    "classe": "agencia"
   },
   {
@@ -51523,9 +51523,9 @@
    "agencia": 7,
    "posto": 20,
    "pae": 13,
-   "corresp": 153,
+   "corresp": 155,
    "ifs_dep": 12,
-   "ifs_corresp": 23,
+   "ifs_corresp": 24,
    "classe": "agencia"
   },
   {
@@ -51757,9 +51757,9 @@
    "agencia": 0,
    "posto": 3,
    "pae": 1,
-   "corresp": 15,
+   "corresp": 16,
    "ifs_dep": 3,
-   "ifs_corresp": 8,
+   "ifs_corresp": 9,
    "classe": "posto"
   },
   {
@@ -51863,7 +51863,7 @@
    "pae": 3,
    "corresp": 32,
    "ifs_dep": 6,
-   "ifs_corresp": 8,
+   "ifs_corresp": 9,
    "classe": "agencia"
   },
   {
@@ -51965,7 +51965,7 @@
    "agencia": 1,
    "posto": 6,
    "pae": 3,
-   "corresp": 64,
+   "corresp": 65,
    "ifs_dep": 6,
    "ifs_corresp": 18,
    "classe": "agencia"
@@ -52030,7 +52030,7 @@
    "agencia": 8,
    "posto": 18,
    "pae": 6,
-   "corresp": 205,
+   "corresp": 206,
    "ifs_dep": 13,
    "ifs_corresp": 24,
    "classe": "agencia"
@@ -52134,7 +52134,7 @@
    "agencia": 22,
    "posto": 77,
    "pae": 20,
-   "corresp": 611,
+   "corresp": 612,
    "ifs_dep": 26,
    "ifs_corresp": 44,
    "classe": "agencia"
@@ -52160,7 +52160,7 @@
    "agencia": 1,
    "posto": 3,
    "pae": 1,
-   "corresp": 12,
+   "corresp": 13,
    "ifs_dep": 4,
    "ifs_corresp": 4,
    "classe": "agencia"
@@ -52225,7 +52225,7 @@
    "agencia": 6,
    "posto": 13,
    "pae": 7,
-   "corresp": 125,
+   "corresp": 126,
    "ifs_dep": 13,
    "ifs_corresp": 27,
    "classe": "agencia"
@@ -52458,8 +52458,8 @@
    "regiao": "S",
    "agencia": 200,
    "posto": 303,
-   "pae": 249,
-   "corresp": 3027,
+   "pae": 248,
+   "corresp": 3031,
    "ifs_dep": 83,
    "ifs_corresp": 71,
    "classe": "agencia"
@@ -52522,7 +52522,7 @@
    "uf": "PR",
    "regiao": "S",
    "agencia": 4,
-   "posto": 16,
+   "posto": 17,
    "pae": 5,
    "corresp": 109,
    "ifs_dep": 13,
@@ -52639,7 +52639,7 @@
    "uf": "PR",
    "regiao": "S",
    "agencia": 3,
-   "posto": 5,
+   "posto": 4,
    "pae": 4,
    "corresp": 28,
    "ifs_dep": 7,
@@ -52664,13 +52664,13 @@
    "nome": "Fênix",
    "uf": "PR",
    "regiao": "S",
-   "agencia": 1,
+   "agencia": 0,
    "posto": 3,
    "pae": 0,
    "corresp": 5,
-   "ifs_dep": 4,
+   "ifs_dep": 3,
    "ifs_corresp": 3,
-   "classe": "agencia"
+   "classe": "posto"
   },
   {
    "cod": "4107736",
@@ -52927,9 +52927,9 @@
    "agencia": 0,
    "posto": 3,
    "pae": 0,
-   "corresp": 13,
+   "corresp": 14,
    "ifs_dep": 3,
-   "ifs_corresp": 6,
+   "ifs_corresp": 7,
    "classe": "posto"
   },
   {
@@ -52990,11 +52990,11 @@
    "uf": "PR",
    "regiao": "S",
    "agencia": 9,
-   "posto": 35,
+   "posto": 36,
    "pae": 14,
    "corresp": 349,
-   "ifs_dep": 18,
-   "ifs_corresp": 41,
+   "ifs_dep": 19,
+   "ifs_corresp": 40,
    "classe": "agencia"
   },
   {
@@ -53018,9 +53018,9 @@
    "agencia": 4,
    "posto": 4,
    "pae": 3,
-   "corresp": 43,
+   "corresp": 44,
    "ifs_dep": 8,
-   "ifs_corresp": 13,
+   "ifs_corresp": 14,
    "classe": "agencia"
   },
   {
@@ -53538,9 +53538,9 @@
    "agencia": 0,
    "posto": 3,
    "pae": 1,
-   "corresp": 11,
+   "corresp": 10,
    "ifs_dep": 3,
-   "ifs_corresp": 6,
+   "ifs_corresp": 5,
    "classe": "posto"
   },
   {
@@ -53549,7 +53549,7 @@
    "uf": "PR",
    "regiao": "S",
    "agencia": 1,
-   "posto": 4,
+   "posto": 3,
    "pae": 3,
    "corresp": 19,
    "ifs_dep": 5,
@@ -53694,7 +53694,7 @@
    "agencia": 3,
    "posto": 3,
    "pae": 3,
-   "corresp": 32,
+   "corresp": 33,
    "ifs_dep": 6,
    "ifs_corresp": 14,
    "classe": "agencia"
@@ -53720,9 +53720,9 @@
    "agencia": 46,
    "posto": 102,
    "pae": 56,
-   "corresp": 829,
+   "corresp": 830,
    "ifs_dep": 29,
-   "ifs_corresp": 47,
+   "ifs_corresp": 48,
    "classe": "agencia"
   },
   {
@@ -53824,7 +53824,7 @@
    "agencia": 2,
    "posto": 5,
    "pae": 4,
-   "corresp": 25,
+   "corresp": 26,
    "ifs_dep": 5,
    "ifs_corresp": 5,
    "classe": "agencia"
@@ -53954,7 +53954,7 @@
    "agencia": 33,
    "posto": 80,
    "pae": 37,
-   "corresp": 663,
+   "corresp": 665,
    "ifs_dep": 23,
    "ifs_corresp": 58,
    "classe": "agencia"
@@ -54251,7 +54251,7 @@
    "uf": "PR",
    "regiao": "S",
    "agencia": 4,
-   "posto": 3,
+   "posto": 4,
    "pae": 4,
    "corresp": 43,
    "ifs_dep": 8,
@@ -54812,7 +54812,7 @@
    "agencia": 23,
    "posto": 51,
    "pae": 35,
-   "corresp": 580,
+   "corresp": 579,
    "ifs_dep": 22,
    "ifs_corresp": 46,
    "classe": "agencia"
@@ -54927,10 +54927,10 @@
    "uf": "PR",
    "regiao": "S",
    "agencia": 0,
-   "posto": 1,
+   "posto": 0,
    "pae": 1,
    "corresp": 5,
-   "ifs_dep": 2,
+   "ifs_dep": 1,
    "ifs_corresp": 4,
    "classe": "posto"
   },
@@ -55017,10 +55017,10 @@
    "nome": "Quedas do Iguaçu",
    "uf": "PR",
    "regiao": "S",
-   "agencia": 4,
+   "agencia": 3,
    "posto": 5,
    "pae": 4,
-   "corresp": 51,
+   "corresp": 52,
    "ifs_dep": 8,
    "ifs_corresp": 11,
    "classe": "agencia"
@@ -55109,7 +55109,7 @@
    "uf": "PR",
    "regiao": "S",
    "agencia": 3,
-   "posto": 7,
+   "posto": 8,
    "pae": 3,
    "corresp": 52,
    "ifs_dep": 7,
@@ -55787,7 +55787,7 @@
    "agencia": 15,
    "posto": 40,
    "pae": 21,
-   "corresp": 403,
+   "corresp": 404,
    "ifs_dep": 19,
    "ifs_corresp": 35,
    "classe": "agencia"
@@ -55917,9 +55917,9 @@
    "agencia": 5,
    "posto": 7,
    "pae": 5,
-   "corresp": 105,
+   "corresp": 104,
    "ifs_dep": 8,
-   "ifs_corresp": 20,
+   "ifs_corresp": 19,
    "classe": "agencia"
   },
   {
@@ -56255,7 +56255,7 @@
    "agencia": 2,
    "posto": 6,
    "pae": 3,
-   "corresp": 53,
+   "corresp": 54,
    "ifs_dep": 8,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -56268,7 +56268,7 @@
    "agencia": 6,
    "posto": 24,
    "pae": 13,
-   "corresp": 309,
+   "corresp": 310,
    "ifs_dep": 13,
    "ifs_corresp": 35,
    "classe": "agencia"
@@ -56281,7 +56281,7 @@
    "agencia": 5,
    "posto": 12,
    "pae": 3,
-   "corresp": 105,
+   "corresp": 107,
    "ifs_dep": 13,
    "ifs_corresp": 25,
    "classe": "agencia"
@@ -56450,7 +56450,7 @@
    "agencia": 2,
    "posto": 6,
    "pae": 3,
-   "corresp": 40,
+   "corresp": 41,
    "ifs_dep": 9,
    "ifs_corresp": 16,
    "classe": "agencia"
@@ -56593,7 +56593,7 @@
    "agencia": 1,
    "posto": 3,
    "pae": 1,
-   "corresp": 11,
+   "corresp": 12,
    "ifs_dep": 4,
    "ifs_corresp": 7,
    "classe": "agencia"
@@ -56632,9 +56632,9 @@
    "agencia": 0,
    "posto": 4,
    "pae": 2,
-   "corresp": 15,
+   "corresp": 14,
    "ifs_dep": 5,
-   "ifs_corresp": 11,
+   "ifs_corresp": 10,
    "classe": "posto"
   },
   {
@@ -56658,9 +56658,9 @@
    "agencia": 2,
    "posto": 7,
    "pae": 4,
-   "corresp": 34,
+   "corresp": 33,
    "ifs_dep": 7,
-   "ifs_corresp": 13,
+   "ifs_corresp": 12,
    "classe": "agencia"
   },
   {
@@ -56775,9 +56775,9 @@
    "agencia": 13,
    "posto": 32,
    "pae": 16,
-   "corresp": 186,
+   "corresp": 189,
    "ifs_dep": 22,
-   "ifs_corresp": 31,
+   "ifs_corresp": 30,
    "classe": "agencia"
   },
   {
@@ -56801,9 +56801,9 @@
    "agencia": 0,
    "posto": 1,
    "pae": 2,
-   "corresp": 19,
+   "corresp": 20,
    "ifs_dep": 3,
-   "ifs_corresp": 7,
+   "ifs_corresp": 8,
    "classe": "posto"
   },
   {
@@ -56892,9 +56892,9 @@
    "agencia": 3,
    "posto": 9,
    "pae": 6,
-   "corresp": 67,
+   "corresp": 66,
    "ifs_dep": 13,
-   "ifs_corresp": 26,
+   "ifs_corresp": 25,
    "classe": "agencia"
   },
   {
@@ -56905,9 +56905,9 @@
    "agencia": 38,
    "posto": 95,
    "pae": 50,
-   "corresp": 532,
+   "corresp": 522,
    "ifs_dep": 31,
-   "ifs_corresp": 48,
+   "ifs_corresp": 47,
    "classe": "agencia"
   },
   {
@@ -57009,7 +57009,7 @@
    "agencia": 3,
    "posto": 5,
    "pae": 4,
-   "corresp": 74,
+   "corresp": 75,
    "ifs_dep": 9,
    "ifs_corresp": 17,
    "classe": "agencia"
@@ -57048,9 +57048,9 @@
    "agencia": 9,
    "posto": 30,
    "pae": 16,
-   "corresp": 162,
+   "corresp": 160,
    "ifs_dep": 19,
-   "ifs_corresp": 26,
+   "ifs_corresp": 25,
    "classe": "agencia"
   },
   {
@@ -57061,9 +57061,9 @@
    "agencia": 7,
    "posto": 7,
    "pae": 5,
-   "corresp": 164,
+   "corresp": 162,
    "ifs_dep": 12,
-   "ifs_corresp": 27,
+   "ifs_corresp": 26,
    "classe": "agencia"
   },
   {
@@ -57165,9 +57165,9 @@
    "agencia": 3,
    "posto": 8,
    "pae": 4,
-   "corresp": 93,
+   "corresp": 92,
    "ifs_dep": 11,
-   "ifs_corresp": 22,
+   "ifs_corresp": 21,
    "classe": "agencia"
   },
   {
@@ -57191,9 +57191,9 @@
    "agencia": 4,
    "posto": 12,
    "pae": 5,
-   "corresp": 123,
+   "corresp": 122,
    "ifs_dep": 11,
-   "ifs_corresp": 26,
+   "ifs_corresp": 25,
    "classe": "agencia"
   },
   {
@@ -57204,9 +57204,9 @@
    "agencia": 2,
    "posto": 4,
    "pae": 2,
-   "corresp": 53,
+   "corresp": 52,
    "ifs_dep": 6,
-   "ifs_corresp": 18,
+   "ifs_corresp": 17,
    "classe": "agencia"
   },
   {
@@ -57230,9 +57230,9 @@
    "agencia": 2,
    "posto": 4,
    "pae": 3,
-   "corresp": 21,
+   "corresp": 20,
    "ifs_dep": 7,
-   "ifs_corresp": 10,
+   "ifs_corresp": 9,
    "classe": "agencia"
   },
   {
@@ -57292,12 +57292,12 @@
    "nome": "Chapecó",
    "uf": "SC",
    "regiao": "S",
-   "agencia": 25,
-   "posto": 68,
+   "agencia": 24,
+   "posto": 69,
    "pae": 17,
-   "corresp": 551,
+   "corresp": 548,
    "ifs_dep": 28,
-   "ifs_corresp": 48,
+   "ifs_corresp": 47,
    "classe": "agencia"
   },
   {
@@ -57321,9 +57321,9 @@
    "agencia": 7,
    "posto": 27,
    "pae": 5,
-   "corresp": 163,
+   "corresp": 157,
    "ifs_dep": 21,
-   "ifs_corresp": 29,
+   "ifs_corresp": 28,
    "classe": "agencia"
   },
   {
@@ -57396,12 +57396,12 @@
    "nome": "Criciúma",
    "uf": "SC",
    "regiao": "S",
-   "agencia": 18,
-   "posto": 41,
+   "agencia": 17,
+   "posto": 42,
    "pae": 23,
    "corresp": 454,
    "ifs_dep": 22,
-   "ifs_corresp": 45,
+   "ifs_corresp": 43,
    "classe": "agencia"
   },
   {
@@ -57412,9 +57412,9 @@
    "agencia": 2,
    "posto": 3,
    "pae": 3,
-   "corresp": 43,
+   "corresp": 42,
    "ifs_dep": 6,
-   "ifs_corresp": 8,
+   "ifs_corresp": 7,
    "classe": "agencia"
   },
   {
@@ -57438,7 +57438,7 @@
    "agencia": 3,
    "posto": 8,
    "pae": 4,
-   "corresp": 119,
+   "corresp": 120,
    "ifs_dep": 9,
    "ifs_corresp": 23,
    "classe": "agencia"
@@ -57565,12 +57565,12 @@
    "nome": "Florianópolis",
    "uf": "SC",
    "regiao": "S",
-   "agencia": 76,
-   "posto": 116,
-   "pae": 104,
-   "corresp": 740,
+   "agencia": 75,
+   "posto": 117,
+   "pae": 105,
+   "corresp": 723,
    "ifs_dep": 56,
-   "ifs_corresp": 59,
+   "ifs_corresp": 58,
    "classe": "agencia"
   },
   {
@@ -57607,9 +57607,9 @@
    "agencia": 3,
    "posto": 6,
    "pae": 3,
-   "corresp": 77,
+   "corresp": 76,
    "ifs_dep": 8,
-   "ifs_corresp": 23,
+   "ifs_corresp": 22,
    "classe": "agencia"
   },
   {
@@ -57672,9 +57672,9 @@
    "agencia": 4,
    "posto": 16,
    "pae": 5,
-   "corresp": 66,
+   "corresp": 64,
    "ifs_dep": 10,
-   "ifs_corresp": 19,
+   "ifs_corresp": 18,
    "classe": "agencia"
   },
   {
@@ -57802,9 +57802,9 @@
    "agencia": 0,
    "posto": 1,
    "pae": 2,
-   "corresp": 9,
+   "corresp": 8,
    "ifs_dep": 2,
-   "ifs_corresp": 5,
+   "ifs_corresp": 4,
    "classe": "posto"
   },
   {
@@ -57880,9 +57880,9 @@
    "agencia": 7,
    "posto": 8,
    "pae": 9,
-   "corresp": 82,
+   "corresp": 81,
    "ifs_dep": 14,
-   "ifs_corresp": 21,
+   "ifs_corresp": 20,
    "classe": "agencia"
   },
   {
@@ -57908,7 +57908,7 @@
    "pae": 5,
    "corresp": 90,
    "ifs_dep": 12,
-   "ifs_corresp": 22,
+   "ifs_corresp": 23,
    "classe": "agencia"
   },
   {
@@ -57997,9 +57997,9 @@
    "agencia": 0,
    "posto": 5,
    "pae": 2,
-   "corresp": 9,
+   "corresp": 8,
    "ifs_dep": 5,
-   "ifs_corresp": 6,
+   "ifs_corresp": 5,
    "classe": "posto"
   },
   {
@@ -58062,9 +58062,9 @@
    "agencia": 18,
    "posto": 51,
    "pae": 15,
-   "corresp": 416,
+   "corresp": 415,
    "ifs_dep": 24,
-   "ifs_corresp": 54,
+   "ifs_corresp": 52,
    "classe": "agencia"
   },
   {
@@ -58077,7 +58077,7 @@
    "pae": 6,
    "corresp": 98,
    "ifs_dep": 14,
-   "ifs_corresp": 25,
+   "ifs_corresp": 24,
    "classe": "agencia"
   },
   {
@@ -58101,9 +58101,9 @@
    "agencia": 2,
    "posto": 5,
    "pae": 4,
-   "corresp": 28,
+   "corresp": 27,
    "ifs_dep": 7,
-   "ifs_corresp": 14,
+   "ifs_corresp": 13,
    "classe": "agencia"
   },
   {
@@ -58114,9 +58114,9 @@
    "agencia": 3,
    "posto": 9,
    "pae": 3,
-   "corresp": 47,
+   "corresp": 46,
    "ifs_dep": 8,
-   "ifs_corresp": 16,
+   "ifs_corresp": 15,
    "classe": "agencia"
   },
   {
@@ -58166,9 +58166,9 @@
    "agencia": 12,
    "posto": 47,
    "pae": 17,
-   "corresp": 248,
+   "corresp": 247,
    "ifs_dep": 20,
-   "ifs_corresp": 29,
+   "ifs_corresp": 28,
    "classe": "agencia"
   },
   {
@@ -58203,9 +58203,9 @@
    "uf": "SC",
    "regiao": "S",
    "agencia": 46,
-   "posto": 113,
+   "posto": 114,
    "pae": 63,
-   "corresp": 866,
+   "corresp": 861,
    "ifs_dep": 33,
    "ifs_corresp": 44,
    "classe": "agencia"
@@ -58257,7 +58257,7 @@
    "agencia": 9,
    "posto": 35,
    "pae": 19,
-   "corresp": 322,
+   "corresp": 323,
    "ifs_dep": 18,
    "ifs_corresp": 40,
    "classe": "agencia"
@@ -58309,9 +58309,9 @@
    "agencia": 2,
    "posto": 3,
    "pae": 4,
-   "corresp": 21,
+   "corresp": 20,
    "ifs_dep": 7,
-   "ifs_corresp": 11,
+   "ifs_corresp": 10,
    "classe": "agencia"
   },
   {
@@ -58361,9 +58361,9 @@
    "agencia": 1,
    "posto": 4,
    "pae": 2,
-   "corresp": 12,
+   "corresp": 11,
    "ifs_dep": 6,
-   "ifs_corresp": 11,
+   "ifs_corresp": 10,
    "classe": "agencia"
   },
   {
@@ -58413,9 +58413,9 @@
    "agencia": 3,
    "posto": 12,
    "pae": 4,
-   "corresp": 108,
+   "corresp": 107,
    "ifs_dep": 11,
-   "ifs_corresp": 27,
+   "ifs_corresp": 26,
    "classe": "agencia"
   },
   {
@@ -58556,9 +58556,9 @@
    "agencia": 2,
    "posto": 3,
    "pae": 4,
-   "corresp": 27,
+   "corresp": 26,
    "ifs_dep": 6,
-   "ifs_corresp": 12,
+   "ifs_corresp": 11,
    "classe": "agencia"
   },
   {
@@ -58595,7 +58595,7 @@
    "agencia": 1,
    "posto": 5,
    "pae": 4,
-   "corresp": 39,
+   "corresp": 38,
    "ifs_dep": 5,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -58618,8 +58618,8 @@
    "nome": "Navegantes",
    "uf": "SC",
    "regiao": "S",
-   "agencia": 5,
-   "posto": 12,
+   "agencia": 4,
+   "posto": 13,
    "pae": 2,
    "corresp": 87,
    "ifs_dep": 11,
@@ -58634,9 +58634,9 @@
    "agencia": 1,
    "posto": 3,
    "pae": 1,
-   "corresp": 6,
+   "corresp": 7,
    "ifs_dep": 4,
-   "ifs_corresp": 5,
+   "ifs_corresp": 6,
    "classe": "agencia"
   },
   {
@@ -58776,8 +58776,8 @@
    "regiao": "S",
    "agencia": 10,
    "posto": 18,
-   "pae": 32,
-   "corresp": 368,
+   "pae": 33,
+   "corresp": 367,
    "ifs_dep": 15,
    "ifs_corresp": 40,
    "classe": "agencia"
@@ -58829,9 +58829,9 @@
    "agencia": 2,
    "posto": 3,
    "pae": 3,
-   "corresp": 35,
+   "corresp": 34,
    "ifs_dep": 6,
-   "ifs_corresp": 16,
+   "ifs_corresp": 15,
    "classe": "agencia"
   },
   {
@@ -58868,9 +58868,9 @@
    "agencia": 0,
    "posto": 2,
    "pae": 1,
-   "corresp": 8,
+   "corresp": 7,
    "ifs_dep": 3,
-   "ifs_corresp": 5,
+   "ifs_corresp": 4,
    "classe": "posto"
   },
   {
@@ -58957,7 +58957,7 @@
    "uf": "SC",
    "regiao": "S",
    "agencia": 3,
-   "posto": 5,
+   "posto": 6,
    "pae": 4,
    "corresp": 28,
    "ifs_dep": 7,
@@ -59102,7 +59102,7 @@
    "agencia": 2,
    "posto": 4,
    "pae": 4,
-   "corresp": 33,
+   "corresp": 34,
    "ifs_dep": 8,
    "ifs_corresp": 11,
    "classe": "agencia"
@@ -59245,9 +59245,9 @@
    "agencia": 1,
    "posto": 3,
    "pae": 2,
-   "corresp": 10,
+   "corresp": 11,
    "ifs_dep": 5,
-   "ifs_corresp": 7,
+   "ifs_corresp": 8,
    "classe": "agencia"
   },
   {
@@ -59258,9 +59258,9 @@
    "agencia": 7,
    "posto": 22,
    "pae": 9,
-   "corresp": 176,
+   "corresp": 172,
    "ifs_dep": 15,
-   "ifs_corresp": 31,
+   "ifs_corresp": 30,
    "classe": "agencia"
   },
   {
@@ -59286,7 +59286,7 @@
    "pae": 3,
    "corresp": 68,
    "ifs_dep": 8,
-   "ifs_corresp": 18,
+   "ifs_corresp": 17,
    "classe": "agencia"
   },
   {
@@ -59427,9 +59427,9 @@
    "agencia": 0,
    "posto": 2,
    "pae": 1,
-   "corresp": 6,
+   "corresp": 5,
    "ifs_dep": 2,
-   "ifs_corresp": 4,
+   "ifs_corresp": 3,
    "classe": "posto"
   },
   {
@@ -59492,9 +59492,9 @@
    "agencia": 3,
    "posto": 3,
    "pae": 3,
-   "corresp": 60,
+   "corresp": 59,
    "ifs_dep": 6,
-   "ifs_corresp": 16,
+   "ifs_corresp": 15,
    "classe": "agencia"
   },
   {
@@ -59544,9 +59544,9 @@
    "agencia": 1,
    "posto": 3,
    "pae": 4,
-   "corresp": 23,
+   "corresp": 22,
    "ifs_dep": 6,
-   "ifs_corresp": 9,
+   "ifs_corresp": 8,
    "classe": "agencia"
   },
   {
@@ -59580,12 +59580,12 @@
    "nome": "São Francisco do Sul",
    "uf": "SC",
    "regiao": "S",
-   "agencia": 5,
-   "posto": 6,
+   "agencia": 4,
+   "posto": 7,
    "pae": 3,
-   "corresp": 37,
+   "corresp": 35,
    "ifs_dep": 9,
-   "ifs_corresp": 14,
+   "ifs_corresp": 13,
    "classe": "agencia"
   },
   {
@@ -59609,7 +59609,7 @@
    "agencia": 2,
    "posto": 6,
    "pae": 3,
-   "corresp": 55,
+   "corresp": 56,
    "ifs_dep": 7,
    "ifs_corresp": 16,
    "classe": "agencia"
@@ -59660,10 +59660,10 @@
    "regiao": "S",
    "agencia": 17,
    "posto": 37,
-   "pae": 47,
-   "corresp": 594,
+   "pae": 48,
+   "corresp": 589,
    "ifs_dep": 25,
-   "ifs_corresp": 54,
+   "ifs_corresp": 53,
    "classe": "agencia"
   },
   {
@@ -59702,7 +59702,7 @@
    "pae": 4,
    "corresp": 48,
    "ifs_dep": 7,
-   "ifs_corresp": 16,
+   "ifs_corresp": 15,
    "classe": "agencia"
   },
   {
@@ -59752,9 +59752,9 @@
    "agencia": 3,
    "posto": 11,
    "pae": 4,
-   "corresp": 128,
+   "corresp": 126,
    "ifs_dep": 10,
-   "ifs_corresp": 24,
+   "ifs_corresp": 23,
    "classe": "agencia"
   },
   {
@@ -59804,9 +59804,9 @@
    "agencia": 2,
    "posto": 6,
    "pae": 3,
-   "corresp": 31,
+   "corresp": 30,
    "ifs_dep": 7,
-   "ifs_corresp": 11,
+   "ifs_corresp": 10,
    "classe": "agencia"
   },
   {
@@ -59843,9 +59843,9 @@
    "agencia": 2,
    "posto": 6,
    "pae": 5,
-   "corresp": 74,
+   "corresp": 73,
    "ifs_dep": 10,
-   "ifs_corresp": 20,
+   "ifs_corresp": 19,
    "classe": "agencia"
   },
   {
@@ -59882,9 +59882,9 @@
    "agencia": 2,
    "posto": 4,
    "pae": 2,
-   "corresp": 15,
+   "corresp": 14,
    "ifs_dep": 6,
-   "ifs_corresp": 7,
+   "ifs_corresp": 6,
    "classe": "agencia"
   },
   {
@@ -59908,7 +59908,7 @@
    "agencia": 4,
    "posto": 10,
    "pae": 3,
-   "corresp": 99,
+   "corresp": 98,
    "ifs_dep": 11,
    "ifs_corresp": 21,
    "classe": "agencia"
@@ -59934,9 +59934,9 @@
    "agencia": 3,
    "posto": 16,
    "pae": 3,
-   "corresp": 55,
+   "corresp": 54,
    "ifs_dep": 11,
-   "ifs_corresp": 18,
+   "ifs_corresp": 17,
    "classe": "agencia"
   },
   {
@@ -59986,9 +59986,9 @@
    "agencia": 1,
    "posto": 3,
    "pae": 1,
-   "corresp": 8,
+   "corresp": 7,
    "ifs_dep": 4,
-   "ifs_corresp": 6,
+   "ifs_corresp": 5,
    "classe": "agencia"
   },
   {
@@ -60051,9 +60051,9 @@
    "agencia": 2,
    "posto": 2,
    "pae": 3,
-   "corresp": 34,
+   "corresp": 35,
    "ifs_dep": 4,
-   "ifs_corresp": 11,
+   "ifs_corresp": 12,
    "classe": "agencia"
   },
   {
@@ -60101,11 +60101,11 @@
    "uf": "SC",
    "regiao": "S",
    "agencia": 2,
-   "posto": 5,
+   "posto": 4,
    "pae": 2,
-   "corresp": 31,
-   "ifs_dep": 7,
-   "ifs_corresp": 12,
+   "corresp": 30,
+   "ifs_dep": 6,
+   "ifs_corresp": 11,
    "classe": "agencia"
   },
   {
@@ -60168,7 +60168,7 @@
    "agencia": 5,
    "posto": 15,
    "pae": 5,
-   "corresp": 120,
+   "corresp": 121,
    "ifs_dep": 14,
    "ifs_corresp": 24,
    "classe": "agencia"
@@ -60207,9 +60207,9 @@
    "agencia": 3,
    "posto": 10,
    "pae": 9,
-   "corresp": 130,
+   "corresp": 129,
    "ifs_dep": 15,
-   "ifs_corresp": 25,
+   "ifs_corresp": 24,
    "classe": "agencia"
   },
   {
@@ -60233,9 +60233,9 @@
    "agencia": 3,
    "posto": 6,
    "pae": 5,
-   "corresp": 64,
+   "corresp": 63,
    "ifs_dep": 8,
-   "ifs_corresp": 20,
+   "ifs_corresp": 19,
    "classe": "agencia"
   },
   {
@@ -60414,7 +60414,7 @@
    "regiao": "S",
    "agencia": 6,
    "posto": 8,
-   "pae": 28,
+   "pae": 29,
    "corresp": 101,
    "ifs_dep": 10,
    "ifs_corresp": 25,
@@ -60480,7 +60480,7 @@
    "agencia": 3,
    "posto": 4,
    "pae": 4,
-   "corresp": 30,
+   "corresp": 31,
    "ifs_dep": 7,
    "ifs_corresp": 11,
    "classe": "agencia"
@@ -60648,7 +60648,7 @@
    "regiao": "S",
    "agencia": 9,
    "posto": 15,
-   "pae": 39,
+   "pae": 40,
    "corresp": 148,
    "ifs_dep": 13,
    "ifs_corresp": 22,
@@ -61064,7 +61064,7 @@
    "regiao": "S",
    "agencia": 8,
    "posto": 10,
-   "pae": 40,
+   "pae": 41,
    "corresp": 100,
    "ifs_dep": 10,
    "ifs_corresp": 29,
@@ -61296,8 +61296,8 @@
    "nome": "Canoas",
    "uf": "RS",
    "regiao": "S",
-   "agencia": 27,
-   "posto": 34,
+   "agencia": 26,
+   "posto": 35,
    "pae": 79,
    "corresp": 299,
    "ifs_dep": 20,
@@ -61337,7 +61337,7 @@
    "regiao": "S",
    "agencia": 6,
    "posto": 6,
-   "pae": 28,
+   "pae": 29,
    "corresp": 62,
    "ifs_dep": 13,
    "ifs_corresp": 24,
@@ -61493,9 +61493,9 @@
    "regiao": "S",
    "agencia": 2,
    "posto": 3,
-   "pae": 1,
+   "pae": 2,
    "corresp": 23,
-   "ifs_dep": 5,
+   "ifs_dep": 6,
    "ifs_corresp": 9,
    "classe": "agencia"
   },
@@ -61507,7 +61507,7 @@
    "agencia": 53,
    "posto": 83,
    "pae": 108,
-   "corresp": 686,
+   "corresp": 687,
    "ifs_dep": 28,
    "ifs_corresp": 53,
    "classe": "agencia"
@@ -61520,9 +61520,9 @@
    "agencia": 1,
    "posto": 3,
    "pae": 1,
-   "corresp": 4,
+   "corresp": 5,
    "ifs_dep": 4,
-   "ifs_corresp": 3,
+   "ifs_corresp": 4,
    "classe": "agencia"
   },
   {
@@ -62183,7 +62183,7 @@
    "agencia": 13,
    "posto": 30,
    "pae": 20,
-   "corresp": 184,
+   "corresp": 186,
    "ifs_dep": 18,
    "ifs_corresp": 34,
    "classe": "agencia"
@@ -62311,7 +62311,7 @@
    "uf": "RS",
    "regiao": "S",
    "agencia": 6,
-   "posto": 12,
+   "posto": 13,
    "pae": 20,
    "corresp": 80,
    "ifs_dep": 13,
@@ -62324,7 +62324,7 @@
    "uf": "RS",
    "regiao": "S",
    "agencia": 3,
-   "posto": 8,
+   "posto": 7,
    "pae": 4,
    "corresp": 53,
    "ifs_dep": 10,
@@ -62651,9 +62651,9 @@
    "agencia": 0,
    "posto": 2,
    "pae": 0,
-   "corresp": 4,
+   "corresp": 5,
    "ifs_dep": 2,
-   "ifs_corresp": 3,
+   "ifs_corresp": 4,
    "classe": "posto"
   },
   {
@@ -62676,8 +62676,8 @@
    "regiao": "S",
    "agencia": 13,
    "posto": 26,
-   "pae": 54,
-   "corresp": 228,
+   "pae": 55,
+   "corresp": 229,
    "ifs_dep": 14,
    "ifs_corresp": 41,
    "classe": "agencia"
@@ -62702,7 +62702,7 @@
    "regiao": "S",
    "agencia": 5,
    "posto": 8,
-   "pae": 14,
+   "pae": 17,
    "corresp": 95,
    "ifs_dep": 12,
    "ifs_corresp": 23,
@@ -62885,9 +62885,9 @@
    "agencia": 11,
    "posto": 13,
    "pae": 15,
-   "corresp": 136,
+   "corresp": 137,
    "ifs_dep": 14,
-   "ifs_corresp": 31,
+   "ifs_corresp": 30,
    "classe": "agencia"
   },
   {
@@ -63431,9 +63431,9 @@
    "agencia": 4,
    "posto": 13,
    "pae": 5,
-   "corresp": 72,
+   "corresp": 71,
    "ifs_dep": 14,
-   "ifs_corresp": 21,
+   "ifs_corresp": 20,
    "classe": "agencia"
   },
   {
@@ -63912,7 +63912,7 @@
    "agencia": 3,
    "posto": 8,
    "pae": 4,
-   "corresp": 54,
+   "corresp": 55,
    "ifs_dep": 9,
    "ifs_corresp": 12,
    "classe": "agencia"
@@ -63990,7 +63990,7 @@
    "agencia": 24,
    "posto": 43,
    "pae": 50,
-   "corresp": 420,
+   "corresp": 421,
    "ifs_dep": 20,
    "ifs_corresp": 38,
    "classe": "agencia"
@@ -64223,7 +64223,7 @@
    "regiao": "S",
    "agencia": 25,
    "posto": 32,
-   "pae": 35,
+   "pae": 39,
    "corresp": 332,
    "ifs_dep": 19,
    "ifs_corresp": 49,
@@ -64276,7 +64276,7 @@
    "agencia": 1,
    "posto": 2,
    "pae": 1,
-   "corresp": 9,
+   "corresp": 8,
    "ifs_dep": 3,
    "ifs_corresp": 5,
    "classe": "agencia"
@@ -64302,7 +64302,7 @@
    "agencia": 24,
    "posto": 40,
    "pae": 67,
-   "corresp": 355,
+   "corresp": 354,
    "ifs_dep": 17,
    "ifs_corresp": 44,
    "classe": "agencia"
@@ -64496,8 +64496,8 @@
    "regiao": "S",
    "agencia": 227,
    "posto": 235,
-   "pae": 368,
-   "corresp": 1379,
+   "pae": 369,
+   "corresp": 1382,
    "ifs_dep": 84,
    "ifs_corresp": 72,
    "classe": "agencia"
@@ -64743,7 +64743,7 @@
    "regiao": "S",
    "agencia": 3,
    "posto": 3,
-   "pae": 9,
+   "pae": 10,
    "corresp": 29,
    "ifs_dep": 8,
    "ifs_corresp": 12,
@@ -64991,9 +64991,9 @@
    "agencia": 15,
    "posto": 21,
    "pae": 30,
-   "corresp": 240,
+   "corresp": 242,
    "ifs_dep": 14,
-   "ifs_corresp": 42,
+   "ifs_corresp": 43,
    "classe": "agencia"
   },
   {
@@ -65003,8 +65003,8 @@
    "regiao": "S",
    "agencia": 28,
    "posto": 42,
-   "pae": 74,
-   "corresp": 350,
+   "pae": 75,
+   "corresp": 352,
    "ifs_dep": 19,
    "ifs_corresp": 40,
    "classe": "agencia"
@@ -65069,7 +65069,7 @@
    "agencia": 7,
    "posto": 18,
    "pae": 14,
-   "corresp": 210,
+   "corresp": 209,
    "ifs_dep": 13,
    "ifs_corresp": 23,
    "classe": "agencia"
@@ -65108,7 +65108,7 @@
    "agencia": 4,
    "posto": 10,
    "pae": 11,
-   "corresp": 106,
+   "corresp": 107,
    "ifs_dep": 12,
    "ifs_corresp": 25,
    "classe": "agencia"
@@ -65342,9 +65342,9 @@
    "agencia": 0,
    "posto": 2,
    "pae": 1,
-   "corresp": 2,
+   "corresp": 3,
    "ifs_dep": 3,
-   "ifs_corresp": 2,
+   "ifs_corresp": 3,
    "classe": "posto"
   },
   {
@@ -65524,7 +65524,7 @@
    "agencia": 2,
    "posto": 2,
    "pae": 2,
-   "corresp": 21,
+   "corresp": 20,
    "ifs_dep": 5,
    "ifs_corresp": 6,
    "classe": "agencia"
@@ -65703,8 +65703,8 @@
    "nome": "Sapiranga",
    "uf": "RS",
    "regiao": "S",
-   "agencia": 6,
-   "posto": 10,
+   "agencia": 5,
+   "posto": 11,
    "pae": 13,
    "corresp": 107,
    "ifs_dep": 13,
@@ -65719,9 +65719,9 @@
    "agencia": 9,
    "posto": 5,
    "pae": 21,
-   "corresp": 143,
+   "corresp": 142,
    "ifs_dep": 10,
-   "ifs_corresp": 27,
+   "ifs_corresp": 26,
    "classe": "agencia"
   },
   {
@@ -65732,7 +65732,7 @@
    "agencia": 3,
    "posto": 9,
    "pae": 4,
-   "corresp": 40,
+   "corresp": 41,
    "ifs_dep": 8,
    "ifs_corresp": 17,
    "classe": "agencia"
@@ -66057,7 +66057,7 @@
    "agencia": 3,
    "posto": 3,
    "pae": 4,
-   "corresp": 42,
+   "corresp": 43,
    "ifs_dep": 8,
    "ifs_corresp": 10,
    "classe": "agencia"
@@ -66070,9 +66070,9 @@
    "agencia": 1,
    "posto": 2,
    "pae": 2,
-   "corresp": 19,
+   "corresp": 20,
    "ifs_dep": 5,
-   "ifs_corresp": 8,
+   "ifs_corresp": 9,
    "classe": "agencia"
   },
   {
@@ -66967,9 +66967,9 @@
    "agencia": 1,
    "posto": 3,
    "pae": 2,
-   "corresp": 17,
+   "corresp": 16,
    "ifs_dep": 4,
-   "ifs_corresp": 6,
+   "ifs_corresp": 5,
    "classe": "agencia"
   },
   {
@@ -66980,7 +66980,7 @@
    "agencia": 57,
    "posto": 132,
    "pae": 86,
-   "corresp": 1421,
+   "corresp": 1419,
    "ifs_dep": 37,
    "ifs_corresp": 58,
    "classe": "agencia"
@@ -67006,7 +67006,7 @@
    "agencia": 3,
    "posto": 3,
    "pae": 3,
-   "corresp": 37,
+   "corresp": 36,
    "ifs_dep": 5,
    "ifs_corresp": 11,
    "classe": "agencia"
@@ -67133,10 +67133,10 @@
    "nome": "Dourados",
    "uf": "MS",
    "regiao": "CO",
-   "agencia": 15,
-   "posto": 35,
+   "agencia": 14,
+   "posto": 36,
    "pae": 15,
-   "corresp": 407,
+   "corresp": 406,
    "ifs_dep": 19,
    "ifs_corresp": 39,
    "classe": "agencia"
@@ -67409,9 +67409,9 @@
    "agencia": 4,
    "posto": 7,
    "pae": 5,
-   "corresp": 91,
+   "corresp": 92,
    "ifs_dep": 9,
-   "ifs_corresp": 20,
+   "ifs_corresp": 21,
    "classe": "agencia"
   },
   {
@@ -67487,7 +67487,7 @@
    "agencia": 3,
    "posto": 2,
    "pae": 3,
-   "corresp": 86,
+   "corresp": 89,
    "ifs_dep": 5,
    "ifs_corresp": 17,
    "classe": "agencia"
@@ -67786,7 +67786,7 @@
    "agencia": 4,
    "posto": 12,
    "pae": 4,
-   "corresp": 99,
+   "corresp": 100,
    "ifs_dep": 11,
    "ifs_corresp": 19,
    "classe": "agencia"
@@ -68059,7 +68059,7 @@
    "agencia": 3,
    "posto": 7,
    "pae": 3,
-   "corresp": 52,
+   "corresp": 53,
    "ifs_dep": 8,
    "ifs_corresp": 16,
    "classe": "agencia"
@@ -68098,7 +68098,7 @@
    "agencia": 3,
    "posto": 5,
    "pae": 3,
-   "corresp": 28,
+   "corresp": 27,
    "ifs_dep": 7,
    "ifs_corresp": 13,
    "classe": "agencia"
@@ -68254,7 +68254,7 @@
    "agencia": 48,
    "posto": 95,
    "pae": 58,
-   "corresp": 914,
+   "corresp": 912,
    "ifs_dep": 39,
    "ifs_corresp": 60,
    "classe": "agencia"
@@ -68290,8 +68290,8 @@
    "nome": "Diamantino",
    "uf": "MT",
    "regiao": "CO",
-   "agencia": 3,
-   "posto": 4,
+   "agencia": 2,
+   "posto": 5,
    "pae": 4,
    "corresp": 30,
    "ifs_dep": 6,
@@ -68332,9 +68332,9 @@
    "agencia": 0,
    "posto": 2,
    "pae": 1,
-   "corresp": 4,
+   "corresp": 3,
    "ifs_dep": 3,
-   "ifs_corresp": 4,
+   "ifs_corresp": 3,
    "classe": "posto"
   },
   {
@@ -68579,7 +68579,7 @@
    "agencia": 8,
    "posto": 14,
    "pae": 6,
-   "corresp": 113,
+   "corresp": 114,
    "ifs_dep": 15,
    "ifs_corresp": 27,
    "classe": "agencia"
@@ -68839,7 +68839,7 @@
    "agencia": 0,
    "posto": 2,
    "pae": 0,
-   "corresp": 8,
+   "corresp": 9,
    "ifs_dep": 2,
    "ifs_corresp": 3,
    "classe": "posto"
@@ -68917,9 +68917,9 @@
    "agencia": 3,
    "posto": 15,
    "pae": 4,
-   "corresp": 29,
+   "corresp": 30,
    "ifs_dep": 10,
-   "ifs_corresp": 7,
+   "ifs_corresp": 8,
    "classe": "agencia"
   },
   {
@@ -69385,7 +69385,7 @@
    "agencia": 15,
    "posto": 31,
    "pae": 10,
-   "corresp": 305,
+   "corresp": 306,
    "ifs_dep": 19,
    "ifs_corresp": 32,
    "classe": "agencia"
@@ -69398,7 +69398,7 @@
    "agencia": 6,
    "posto": 15,
    "pae": 5,
-   "corresp": 157,
+   "corresp": 156,
    "ifs_dep": 11,
    "ifs_corresp": 24,
    "classe": "agencia"
@@ -69426,7 +69426,7 @@
    "pae": 6,
    "corresp": 168,
    "ifs_dep": 15,
-   "ifs_corresp": 28,
+   "ifs_corresp": 29,
    "classe": "agencia"
   },
   {
@@ -69801,7 +69801,7 @@
    "agencia": 21,
    "posto": 48,
    "pae": 31,
-   "corresp": 404,
+   "corresp": 405,
    "ifs_dep": 15,
    "ifs_corresp": 39,
    "classe": "agencia"
@@ -70178,7 +70178,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 2,
-   "corresp": 11,
+   "corresp": 10,
    "ifs_dep": 2,
    "ifs_corresp": 5,
    "classe": "posto"
@@ -70828,7 +70828,7 @@
    "agencia": 112,
    "posto": 205,
    "pae": 171,
-   "corresp": 1832,
+   "corresp": 1837,
    "ifs_dep": 50,
    "ifs_corresp": 71,
    "classe": "agencia"
@@ -70841,7 +70841,7 @@
    "agencia": 2,
    "posto": 3,
    "pae": 1,
-   "corresp": 39,
+   "corresp": 40,
    "ifs_dep": 5,
    "ifs_corresp": 11,
    "classe": "agencia"
@@ -70893,7 +70893,7 @@
    "agencia": 2,
    "posto": 0,
    "pae": 2,
-   "corresp": 12,
+   "corresp": 13,
    "ifs_dep": 3,
    "ifs_corresp": 6,
    "classe": "agencia"
@@ -70956,7 +70956,7 @@
    "uf": "GO",
    "regiao": "CO",
    "agencia": 2,
-   "posto": 4,
+   "posto": 5,
    "pae": 2,
    "corresp": 19,
    "ifs_dep": 5,
@@ -71259,7 +71259,7 @@
    "pae": 12,
    "corresp": 164,
    "ifs_dep": 11,
-   "ifs_corresp": 30,
+   "ifs_corresp": 31,
    "classe": "agencia"
   },
   {
@@ -71449,10 +71449,10 @@
    "nome": "Minaçu",
    "uf": "GO",
    "regiao": "CO",
-   "agencia": 4,
-   "posto": 1,
+   "agencia": 3,
+   "posto": 2,
    "pae": 4,
-   "corresp": 37,
+   "corresp": 38,
    "ifs_dep": 5,
    "ifs_corresp": 9,
    "classe": "agencia"
@@ -71465,7 +71465,7 @@
    "agencia": 4,
    "posto": 4,
    "pae": 6,
-   "corresp": 95,
+   "corresp": 96,
    "ifs_dep": 8,
    "ifs_corresp": 22,
    "classe": "agencia"
@@ -71595,7 +71595,7 @@
    "agencia": 0,
    "posto": 1,
    "pae": 1,
-   "corresp": 5,
+   "corresp": 6,
    "ifs_dep": 1,
    "ifs_corresp": 3,
    "classe": "posto"
@@ -71762,10 +71762,10 @@
    "uf": "GO",
    "regiao": "CO",
    "agencia": 4,
-   "posto": 4,
+   "posto": 3,
    "pae": 3,
    "corresp": 41,
-   "ifs_dep": 9,
+   "ifs_dep": 8,
    "ifs_corresp": 15,
    "classe": "agencia"
   },
@@ -71995,8 +71995,8 @@
    "nome": "Pirenópolis",
    "uf": "GO",
    "regiao": "CO",
-   "agencia": 4,
-   "posto": 1,
+   "agencia": 3,
+   "posto": 2,
    "pae": 3,
    "corresp": 18,
    "ifs_dep": 5,
@@ -72050,7 +72050,7 @@
    "agencia": 4,
    "posto": 6,
    "pae": 3,
-   "corresp": 76,
+   "corresp": 77,
    "ifs_dep": 9,
    "ifs_corresp": 18,
    "classe": "agencia"
@@ -72544,9 +72544,9 @@
    "agencia": 0,
    "posto": 0,
    "pae": 1,
-   "corresp": 9,
+   "corresp": 10,
    "ifs_dep": 1,
-   "ifs_corresp": 4,
+   "ifs_corresp": 5,
    "classe": "posto"
   },
   {
@@ -72622,7 +72622,7 @@
    "agencia": 5,
    "posto": 14,
    "pae": 6,
-   "corresp": 111,
+   "corresp": 113,
    "ifs_dep": 11,
    "ifs_corresp": 19,
    "classe": "agencia"
@@ -72801,12 +72801,12 @@
    "nome": "Brasília",
    "uf": "DF",
    "regiao": "CO",
-   "agencia": 214,
+   "agencia": 213,
    "posto": 419,
    "pae": 459,
-   "corresp": 2718,
+   "corresp": 2725,
    "ifs_dep": 62,
-   "ifs_corresp": 66,
+   "ifs_corresp": 67,
    "classe": "agencia"
   }
  ]

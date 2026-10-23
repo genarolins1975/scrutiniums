@@ -9,7 +9,7 @@
   "sede": "Presidente Prudente/SP",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 281,
+  "n_pares": 282,
   "conglomerado_prudencial": "C0085630",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-22T15:48:01+00:00",
+  "atualizado_em": "2026-10-23T16:23:56+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 35.551.187"
  },
@@ -41,7 +41,7 @@
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "Basileia de 14.6% (abaixo da mediana do grupo S4: 21.1%).",
+    "texto": "Basileia de 14.6% (abaixo da mediana do grupo S4: 21.2%).",
     "base": "BCB IF.data (Informações de Capital)"
    }
   ],
@@ -71,7 +71,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 281,
+  "quantidade": 282,
   "maiores_membros": [
    {
     "cod": "18189547",
@@ -136,7 +136,7 @@
   ],
   "quartis_basileia": {
    "q1": 16.1,
-   "mediana": 21.1,
+   "mediana": 21.2,
    "q3": 32.1
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
@@ -235,7 +235,7 @@
  "destaques": [
   {
    "tipo": "warn",
-   "texto": "Basileia de 14.6% (abaixo da mediana do grupo S4: 21.1%).",
+   "texto": "Basileia de 14.6% (abaixo da mediana do grupo S4: 21.2%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -256,7 +256,7 @@
    "unit": "%",
    "d_tri": 1.19,
    "vs_pares": "abaixo",
-   "mediana_grupo": 21.13,
+   "mediana_grupo": 21.15,
    "percentil": 16.5
   },
   {
@@ -266,7 +266,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 6.6,
-   "percentil": 50.4
+   "percentil": 50.5
   },
   {
    "indicador": "ROE do período",
@@ -275,7 +275,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 3.91,
-   "percentil": 35.4
+   "percentil": 35.6
   }
  ],
  "carteira": {
@@ -873,6 +873,7 @@
     -19.35,
     1.12,
     -24.46,
+    -6.67,
     -0.33,
     -10.75,
     1.88,
@@ -1138,6 +1139,7 @@
     21.47,
     73.51,
     24.12,
+    46.08,
     10.9,
     23.4,
     190.38,
@@ -1145,7 +1147,7 @@
     20.99
    ],
    "meu": 14.62,
-   "mediana": 21.13
+   "mediana": 21.15
   },
   "alav": {
    "valores": [
@@ -1421,6 +1423,7 @@
     5.06,
     1.22,
     3.36,
+    1.34,
     4.09,
     1.13,
     4.61,

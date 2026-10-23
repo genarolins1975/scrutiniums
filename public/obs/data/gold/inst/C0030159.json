@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-22T15:48:00+00:00",
+  "atualizado_em": "2026-10-23T16:23:54+00:00",
   "aviso_pares": null,
   "cnpj": "28.127.603/0001-78 (companhia listada/holding)"
  },
@@ -46,7 +46,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Índice de reclamações 64.9 (acima da mediana do ranking 61.1) — indicador operacional, não de solvência.",
+    "texto": "Índice de reclamações 67.5 (acima da mediana do ranking 66.1) — indicador operacional, não de solvência.",
     "base": "BCB rdrweb"
    }
   ],
@@ -251,7 +251,7 @@
   },
   {
    "tipo": "warn",
-   "texto": "Índice de reclamações 64.9 (acima da mediana do ranking 61.1) — indicador operacional, não de solvência.",
+   "texto": "Índice de reclamações 67.5 (acima da mediana do ranking 66.1) — indicador operacional, não de solvência.",
    "base": "BCB rdrweb"
   }
  ],
@@ -1535,6 +1535,15 @@
  },
  "reclamacoes": [
   {
+   "periodo": "2026-T3",
+   "indice": 67.52,
+   "reclamacoes": 300,
+   "clientes": 1548628.0,
+   "posicao_arquivo": 30,
+   "nome_fonte": "BANESTES (conglomerado)",
+   "casamento": "nome_identico_bcb"
+  },
+  {
    "periodo": "2026-T2",
    "indice": 64.86,
    "reclamacoes": 289,
@@ -1558,15 +1567,6 @@
    "reclamacoes": 288,
    "clientes": 1514890.0,
    "posicao_arquivo": 26,
-   "nome_fonte": "BANESTES (conglomerado)",
-   "casamento": "nome_identico_bcb"
-  },
-  {
-   "periodo": "2025-T3",
-   "indice": 51.33,
-   "reclamacoes": 262,
-   "clientes": 1502524.0,
-   "posicao_arquivo": 30,
    "nome_fonte": "BANESTES (conglomerado)",
    "casamento": "nome_identico_bcb"
   }
