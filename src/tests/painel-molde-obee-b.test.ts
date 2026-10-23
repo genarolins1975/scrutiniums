@@ -7,6 +7,7 @@ import { conferirPainel } from "./suporte/molde-painel";
 import PaginaDeficit from "@/app/eficiencia-estatal/habitacao/deficit/page";
 import PaginaAmbiente from "@/app/eficiencia-estatal/meio-ambiente-clima/[[...painel]]/page";
 import PaginaJudiciario from "@/app/eficiencia-estatal/judiciario/[capitulo]/page";
+import PaginaCultura from "@/app/eficiencia-estatal/cultura/[[...painel]]/page";
 import PaginaSeguranca from "@/app/eficiencia-estatal/seguranca-publica/[[...painel]]/page";
 
 /**
@@ -26,6 +27,10 @@ describe("molde de painel: Eficiência Estatal, frente obee-b", () => {
   });
   it("/eficiencia-estatal/seguranca-publica/estados", () => {
     conferirPainel("/eficiencia-estatal/seguranca-publica/estados", html(createElement(PaginaSeguranca, { params: { painel: ["estados"] } })));
+  });
+  // os quatro capítulos da TIC Cultura têm o mesmo corpo (o explorador das estimativas): o molde vale para os quatro
+  it.each(["rede", "acesso", "atividades", "acervos"])("/eficiencia-estatal/cultura/%s", (slug) => {
+    conferirPainel(`/eficiencia-estatal/cultura/${slug}`, html(createElement(PaginaCultura, { params: { painel: [slug] } })));
   });
   // o corpo dos capítulos de medida do meio ambiente é um só (riscos, prevenção e pressões ambientais): o molde vale para os três
   it.each(["riscos", "prevencao", "residuos"])("/eficiencia-estatal/meio-ambiente-clima/%s", (slug) => {
@@ -54,6 +59,15 @@ describe("molde de painel: o conteúdo de antes continua na página", () => {
     }
     // a âncora antiga da seção polícia e saúde continua valendo
     expect(h).toContain('id="policia-e-saude"');
+  });
+  it("cultura: o gráfico de estimativa e margem fica, marcado como legado, e a tabela de precisão é a do kit", () => {
+    const h = html(createElement(PaginaCultura, { params: { painel: ["rede"] } }));
+    for (const t of ["Quem mantém os espaços culturais?", "Estimativas e precisão, lado a lado.", "valor ± margem publicada", "Fonte: aba · linha · coluna", "Baixar este recorte · CSV"]) {
+      expect(h).toContain(t);
+    }
+    expect(h).toContain("data-figura-legado");
+    // recursos e métodos seguem fora do molde
+    expect(html(createElement(PaginaCultura, { params: { painel: ["recursos"] } }))).not.toContain("data-painel");
   });
   it("déficit: os três números, a comparação e os três conceitos", () => {
     const h = html(createElement(PaginaDeficit));
