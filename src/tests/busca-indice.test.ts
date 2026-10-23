@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { indiceDeBusca } from "@/lib/busca/indice";
+import { indiceDeBusca, nomesDasListas } from "@/lib/busca/indice";
+import { buscar } from "@/lib/busca/buscar";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
 import { OBSERVATORIOS } from "@/lib/observatorios/lista";
 import { normalizar } from "@/lib/busca/normalizar";
@@ -86,6 +87,49 @@ describe("índice da busca", () => {
     expect(grupos.length).toBeGreaterThanOrEqual(40);
     expect(grupos.length).toBeLessThanOrEqual(70);
     for (const [k, v] of grupos) expect(Array.isArray(v) && v.length > 0, k).toBe(true);
+  });
+
+  const arquivo = () => JSON.parse(readFileSync(join(raiz, "src/lib/busca/sinonimos.json"), "utf-8")) as Record<string, unknown> & { _nomes: Record<string, string[]>; _exemplos: string[] };
+  const temas = () => Object.entries(arquivo()).filter(([k]) => !k.startsWith("_")) as [string, string[]][];
+
+  it("todo grupo temático alcança ao menos um destino (diagnóstico da busca de 23/10/2026, achado A3: seis grupos estavam mortos)", () => {
+    const destinos = indice().entradas.map((e) => new Set([e.titulo, ...e.termos].map(normalizar)));
+    const mortos = temas()
+      .filter(([chave, lista]) => !destinos.some((d) => [chave, ...lista].some((x) => d.has(normalizar(x)))))
+      .map(([chave]) => chave);
+    expect(mortos).toEqual([]);
+  });
+
+  it("as listas de bancos e distribuidoras só levam os nomes das bases e os apelidos de _nomes, nunca os grupos temáticos", () => {
+    const i = indice();
+    const brutas = nomesDasListas();
+    const apelidos = new Set(Object.values(arquivo()._nomes).flat().map(normalizar));
+    const tematicas = new Set(temas().flatMap(([chave, lista]) => [chave, ...lista]).map(normalizar));
+    for (const tipo of ["banco", "distribuidora"] as const) {
+      const base = new Set(brutas[tipo].map(normalizar));
+      const intrusos = i.lugares[tipo].filter((n) => !base.has(normalizar(n)) && !apelidos.has(normalizar(n)));
+      expect(intrusos, tipo).toEqual([]);
+      // nenhum apelido é expressão de grupo temático (o grupo voltaria a entrar pela porta dos nomes)
+      expect(i.lugares[tipo].filter((n) => !base.has(normalizar(n)) && tematicas.has(normalizar(n))), tipo).toEqual([]);
+    }
+  });
+
+  it("todo apelido de _nomes aponta para um nome que existe na lista de bancos ou de distribuidoras", () => {
+    const brutas = nomesDasListas();
+    const existentes = new Set([...brutas.banco, ...brutas.distribuidora].map(normalizar));
+    expect(brutas.distribuidora.length).toBeGreaterThan(50);
+    expect(brutas.banco.length).toBeGreaterThan(50);
+    const soltos = Object.keys(arquivo()._nomes).filter((nome) => !existentes.has(normalizar(nome)));
+    expect(soltos).toEqual([]);
+  });
+
+  it("os três exemplos do campo continuam entre os termos fortes: resultado completo no título ou nos termos e mais de dois destinos", () => {
+    for (const t of arquivo()._exemplos) {
+      const r = buscar(indice(), t);
+      expect(r.parcial, t).toBeUndefined();
+      expect(r.resultados.length, t).toBeGreaterThan(2);
+      expect(r.resultados[0].nivel, t).toBeLessThanOrEqual(2);
+    }
   });
 
   it("a busca entra pelo registro: nenhuma lista de destinos escrita em src/lib/busca", () => {

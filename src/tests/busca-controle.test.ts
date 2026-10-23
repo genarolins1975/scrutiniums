@@ -64,18 +64,18 @@ describe("bloco 1: casar como o leitor escreve", () => {
     expect(rotuloDoParcial(r)).toBe("Nenhuma página tem todas as palavras. O mais próximo, por “conta” e “luz”:");
   });
 
-  it("parcial: 'juros do cartão' traz Juros por instituição e Pagamentos, o mais próximo por cada palavra", () => {
+  // bloco 2: o grupo "cartão de crédito" ganhou gancho no Crédito, e a frase deixou de ser parcial (era, no bloco 1, Pagamentos e
+  // Juros por instituição pelo mais próximo de cada palavra)
+  it("'juros do cartão' é completo desde o bloco 2: Crédito e sistema financeiro primeiro", () => {
     const r = b("juros do cartão");
-    expect(r.parcial).toBe(true);
-    // a palavra rara ("cartão", um destino) antes da comum ("juros")
-    expect(r.resultados[0].href).toBe("/observatorio/pix");
-    const h = r.resultados.map((x) => x.href);
-    expect(h).toContain("/observatorio/interest-rates");
-    expect(h).toContain("/observatorio/pix");
-    expect(rotuloDoParcial(r)).toBe("Nenhuma página tem todas as palavras. O mais próximo, por “juros” e “cartão”:");
+    expect(r.parcial).toBeUndefined();
+    expect(r.resultados[0].href).toBe("/observatorio");
   });
 
-  it.todo("bloco 2: 'cartão de crédito rotativo' completo, com Pagamentos ou Juros por instituição");
+  it("parcial: o mais próximo por cada palavra, a rara antes da comum", () => {
+    const r = b("orçamento da ANEEL");
+    expect(rotuloDoParcial(r)).toBe("Nenhuma página tem todas as palavras. O mais próximo, por “orçamento” e “ANEEL”:");
+  });
 
   it("sigla: 'ANEEL' abre o verbete da agência antes da Agenda Regulatória da ANEEL", () => {
     const r = b("ANEEL");
@@ -277,20 +277,88 @@ describe("bloco 1: tela", () => {
 });
 
 describe("bloco 2: sinônimos com alcance certo", () => {
-  it.todo("'Amazônia': Desmatamento e emissões ou Fogo e queimadas primeiro; banco fora dos três primeiros");
-  it.todo("'pecuária', 'safra', 'exportação': Agronegócio primeiro");
-  it.todo("'Anatel', '5G', 'fibra': só Conectividade entre os três primeiros");
-  it.todo("'Banco da Amazônia', 'Safra', 'Itaú', 'Nubank', 'BB': consulta de bancos");
-  it.todo("'Celpe', 'Coelba': Conta de luz");
-  it.todo("'LOA', 'SIOP', 'gasto do governo': Contas Federais");
-  it.todo("'rotativo': Pagamentos ou Juros por instituição");
-  it.todo("'dívida pública': Dívida e crédito dos governos ou Contas Federais primeiro");
-  it.todo("'agências reguladoras': Regulação (Setor Elétrico e Gás), Marcos regulatórios e verbete ANEEL entre os cinco primeiros");
-  it.todo("'PGFN': Quem deve à União?");
-  it.todo("'LRF': Contas Estaduais");
-  it.todo("'salário mínimo': Renda e trabalho");
-  it.todo("'feminicídio': Segurança pública");
-  it.todo("'Pantanal': Fogo e queimadas");
+  const primeiros = (termo: string, n = 3) => b(termo).resultados.slice(0, n);
+  const BANCOS = "/observatorio-do-credito/quanto-meu-banco-cobra";
+
+  it("'Amazônia': Desmatamento e emissões ou Fogo e queimadas primeiro; banco fora dos três primeiros", () => {
+    const r = primeiros("Amazônia");
+    expect(["desmatamento", "fogo"]).toContain(r[0].colecao);
+    expect(r.map((x) => x.href)).not.toContain(BANCOS);
+  });
+
+  it("'pecuária', 'safra', 'exportação': Agronegócio primeiro", () => {
+    for (const t of ["pecuária", "safra", "exportação"]) expect(b(t).resultados[0].colecao, t).toBe("agro");
+  });
+
+  it("'Anatel', '5G', 'fibra': Conectividade antes de qualquer outro destino; o banco só depois", () => {
+    for (const t of ["Anatel", "5G", "fibra"]) {
+      const r = b(t).resultados;
+      const fora = r.findIndex((x) => x.colecao !== "conectividade");
+      expect(r.slice(0, 2).every((x) => x.colecao === "conectividade"), t).toBe(true);
+      // "fibra" também é o Banco Fibra: aparece, mas depois da Conectividade
+      if (fora >= 0) expect(r.slice(fora).every((x) => x.colecao !== "conectividade"), t).toBe(true);
+    }
+    expect(primeiros("Anatel").map((x) => x.href)).not.toContain(BANCOS);
+    expect(primeiros("5G").map((x) => x.href)).not.toContain(BANCOS);
+  });
+
+  it("'Banco da Amazônia', 'Safra', 'Itaú', 'Nubank', 'BB': mantém a consulta de bancos", () => {
+    for (const t of ["Banco da Amazônia", "Itaú", "Nubank", "BB"]) expect(b(t).resultados[0].href, t).toBe(BANCOS);
+    // "Safra" é também a safra do Agronegócio, que vem primeiro; o Banco Safra continua na lista
+    expect(b("Safra").resultados.map((x) => x.href)).toContain(BANCOS);
+  });
+
+  it("'Celpe', 'Coelba': Conta de luz, pelo nome antigo das distribuidoras", () => {
+    for (const t of ["Celpe", "Coelba", "Coelce", "Cemar", "Escelsa"]) expect(b(t).resultados[0].href, t).toBe("/setor-eletrico/conta-de-luz");
+    expect(b("Celpe").resultados[0].via).toBe("Celpe");
+  });
+
+  it("'LOA', 'SIOP', 'gasto do governo': Contas Federais", () => {
+    for (const t of ["LOA", "SIOP", "gasto do governo"]) expect(b(t).resultados[0].href, t).toBe("/contas-publicas");
+  });
+
+  it("'rotativo' e 'cartão de crédito rotativo': Crédito e sistema financeiro, onde estão as taxas por modalidade", () => {
+    // a coleção Pagamentos trata do Pix e dos meios de pagamento, não da taxa do rotativo: o gancho fica no Crédito (PR do bloco 2)
+    for (const t of ["rotativo", "cartão de crédito rotativo"]) {
+      const r = b(t);
+      expect(r.parcial, t).toBeUndefined();
+      expect(r.resultados[0].href, t).toBe("/observatorio");
+    }
+  });
+
+  it("'dívida pública': Dívida e crédito dos governos ou Contas Federais primeiro", () => {
+    expect(["/observatorio/subnational-credit", "/contas-publicas"]).toContain(b("dívida pública").resultados[0].href);
+  });
+
+  it("'agências reguladoras': Regulação (Setor Elétrico e Gás), Marcos regulatórios e verbete ANEEL entre os cinco primeiros", () => {
+    const h = primeiros("agências reguladoras", 5).map((x) => x.href);
+    for (const d of ["/setor-eletrico/regulacao", "/gas-natural/regulacao", "/observatorio/regulacao", "/setor-eletrico/aprenda/aneel"]) expect(h, d).toContain(d);
+  });
+
+  it("'PGFN': Quem deve à União?", () => {
+    expect(b("PGFN").resultados[0].href).toBe("/observatorio/federal-tax-debt");
+  });
+
+  it("'LRF': Contas Estaduais", () => {
+    expect(b("LRF").resultados[0].href).toBe("/contas-publicas-estaduais");
+  });
+
+  it("'feminicídio': Segurança pública", () => {
+    expect(b("feminicídio").resultados[0].colecao).toBe("seguranca");
+  });
+
+  it("'Pantanal': Fogo e queimadas (focos por bioma)", () => {
+    expect(b("Pantanal").resultados[0].href).toBe("/territorio/queimadas");
+  });
+
+  it("'banco central': Crédito e sistema financeiro, que usa as séries do BCB", () => {
+    const r = b("banco central");
+    expect(r.parcial).toBeUndefined();
+    expect(r.resultados[0].href).toBe("/observatorio");
+  });
+
+  // nenhuma página trata do salário mínimo: o termo espera o estado "ainda não cobre" (bloco 4), sem gancho inventado
+  it.todo("bloco 4: 'salário mínimo' cai no estado 'ainda não cobre'");
 });
 
 describe("bloco 3: toda página com pergunta e termos", () => {
@@ -351,8 +419,8 @@ const TERMOS: [string, number][] = [
   ["leilão de transmissão", 1], ["distribuidora", 13], ["Neoenergia", 1], ["bandeira vermelha", 1], ["tarifa branca", 0],
   ["conta de luz cara", 1], ["por que a conta de luz subiu", 0], ["desconto na conta de luz", 2],];
 
-/** Termos sem resultado depois do bloco 1 (eram 79 em 23/10/2026): só pode cair. */
-const SEM_RESULTADO_MAXIMO = 55;
+/** Termos sem resultado (79 em 23/10/2026; 55 depois do bloco 1; 43 depois do bloco 2): só pode cair. */
+const SEM_RESULTADO_MAXIMO = 43;
 
 describe("conjunto completo (catraca)", () => {
   it("são os 234 termos dos dois lotes", () => {
