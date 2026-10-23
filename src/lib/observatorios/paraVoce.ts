@@ -36,6 +36,12 @@ import { respostasDosCapitulos } from "@/lib/saneamento/respostas";
 import { periodoConsultaTarifas } from "@/lib/saneamento/tarifas";
 import { desastres, focos } from "@/lib/observatorios/entradas/territorio";
 import { goldJuros, resolverConsulta, rotuloModalidade } from "@/lib/credito/juros";
+import { dadosDoEstado, goldCombustiveis } from "@/lib/combustiveis/dados";
+import { dadosBotijaoNoEstado } from "@/lib/gas/botijaoNoEstado";
+import { goldGas } from "@/lib/gas/gold";
+import { goldSeguranca, indicador, pacoteEstados, ultimoIndice } from "@/lib/eficiencia/seguranca/dados";
+import { recorte, snapshot as snapshotEstadual } from "@/lib/contas-estaduais/dados";
+import { escalaEstadual } from "@/lib/contas-estaduais/entrada";
 
 /** Número do cartão: o mesmo do destino, com a prova ao lado. */
 export type NumeroParaVoce = {
@@ -51,7 +57,7 @@ export type NumeroParaVoce = {
 };
 
 export type PerguntaParaVoce = {
-  id: IdPergunta;
+  id: IdPergunta | IdPerguntaMapa;
   pergunta: string;
   /** A resposta curta: o que o leitor encontra sobre o caso dele, em uma frase. */
   resposta: string;
@@ -450,4 +456,164 @@ export function paraVoce(entrada: EntradaParaVoce, idioma: Idioma = "pt"): Pergu
 /** Todas as perguntas do catálogo, para os testes. */
 export function todasAsPerguntas(): PerguntaParaVoce[] {
   return IDS.map((id) => pergunta(id, "pt"));
+}
+
+/* ------------------------------------------------------------- mapa da conta */
+
+/**
+ * Decisão 1 da seção 8 do parecer de UX de 23/10/2026, pendente do dono: usar a UF informada no cadastro para mostrar, no mapa
+ * da conta, os números do estado do leitor. Enquanto for false, o mapa chama `paraVoceDoMapa(null)`: os quatro cartões do estado
+ * saem sem número e sem parâmetro. Ligar é trocar a constante e publicar a linha na política de privacidade ("a UF informada no
+ * cadastro escolhe os números do seu estado nas páginas iniciais"); os leitores abaixo já estão prontos e testados.
+ */
+export const PARA_VOCE_POR_UF = false;
+
+export type IdPerguntaMapa =
+  | "tanque-uf" | "botijao-uf" | "violencia-uf" | "contas-uf"
+  | "cidade-luz" | "cidade-saneamento" | "cidade-internet" | "cidade-inss" | "cidade-escola" | "cidade-fogo" | "cidade-custo-de-vida";
+
+/** As 27 siglas que as bases por estado publicam (a lista das Contas Estaduais, a mesma do cadastro). */
+const UFS = new Set<string>(snapshotEstadual.ufs.map((u) => u.uf));
+
+/** Sigla válida em caixa alta, ou null. */
+export function ufValida(uf: string | null | undefined): string | null {
+  const u = typeof uf === "string" ? uf.trim().toUpperCase() : "";
+  return UFS.has(u) ? u : null;
+}
+
+const comUf = (href: string, uf: string | null) => (uf ? `${href}?uf=${uf}` : href);
+const indisponivel = (rotulo: string, fonte: string, origem: string): NumeroParaVoce => ({ rotulo, valor: null, unidade: "", periodo: "indisponível nesta publicação", fonte, origem });
+
+/** Gasolina comum na UF, no último mês: o mesmo dadosDoEstado da consulta /combustiveis/no-meu-estado. */
+export function numeroTanqueNaUf(uf: string): NumeroParaVoce {
+  const origem = comUf("/combustiveis/no-meu-estado", uf);
+  const fonte = "ANP, Levantamento de Preços de Combustíveis";
+  try {
+    const d = dadosDoEstado(goldCombustiveis());
+    const linha = d.ufs.find((u) => u.uf === uf);
+    const g = linha?.gasolina;
+    if (!linha || !g) throw new Error(`sem gasolina em ${uf}`);
+    return { rotulo: `Litro da gasolina comum, ${linha.nome}`, valor: `R$ ${num(g.medio, 2)}`, unidade: "por litro", periodo: mesAno(d.ultimoMes), fonte, nota: "Média dos postos pesquisados no mês.", origem };
+  } catch {
+    return indisponivel("Litro da gasolina comum", fonte, origem);
+  }
+}
+
+/** Botijão de 13 kg na UF, no último mês: o mesmo dadosBotijaoNoEstado da consulta do gás de cozinha. */
+export function numeroBotijaoNaUf(uf: string): NumeroParaVoce {
+  const origem = comUf("/gas-natural/gas-de-cozinha", uf);
+  const fonte = "ANP, Levantamento de Preços de Combustíveis";
+  try {
+    const d = dadosBotijaoNoEstado(goldGas.glp());
+    const linha = d.ufs.find((u) => u.uf === uf);
+    if (!linha) throw new Error(`sem botijão em ${uf}`);
+    return { rotulo: `Botijão de gás de 13 kg, ${linha.nome}`, valor: `R$ ${num(linha.medio, 2)}`, unidade: "por botijão", periodo: mesAno(d.ultimoMes), fonte, nota: "Média das revendas pesquisadas no mês.", origem };
+  } catch {
+    return indisponivel("Botijão de gás de 13 kg", fonte, origem);
+  }
+}
+
+/** O indicador principal do painel "Por estado" da Segurança (homicídio doloso), no último ano completo, do mesmo pacoteEstados. */
+export function numeroViolenciaNaUf(uf: string): NumeroParaVoce {
+  const origem = comUf("/eficiencia-estatal/seguranca-publica/estados", uf);
+  try {
+    const g = goldSeguranca();
+    const p = pacoteEstados(g, (i) => i.grupo !== "recursos");
+    const k = ultimoIndice(g, "homicidio");
+    const serie = p.series.homicidio?.[uf] as { taxa?: (number | null)[] | null } | undefined;
+    const taxa = serie?.taxa?.[k] ?? null;
+    const nome = p.ufs.find((u) => u.sigla === uf)?.nome ?? uf;
+    const ind = indicador(g, "homicidio");
+    return {
+      rotulo: `${ind.titulo}, ${nome}`,
+      valor: taxa === null ? null : num(taxa, 1),
+      unidade: "por 100 mil habitantes",
+      periodo: String(p.anos[k]),
+      fonte: p.rotuloFonte.sinesp,
+      nota: "Registros da polícia de cada estado; a classificação muda entre estados.",
+      origem,
+    };
+  } catch {
+    return indisponivel("Homicídio doloso por 100 mil habitantes", "Sinesp VDE (MJSP)", origem);
+  }
+}
+
+/**
+ * As contas do estado: a dívida líquida sobre a receita corrente líquida do ano padrão da ficha (recorte), lida por
+ * escalaEstadual, o mesmo leitor da entrada das Contas Estaduais. Não há leitor pronto do resultado primário por estado; a dívida
+ * é o número que a ficha mostra para a UF escolhida.
+ */
+export function numeroContasNaUf(uf: string): NumeroParaVoce {
+  const origem = comUf("/contas-publicas-estaduais", uf);
+  try {
+    const { ano } = recorte(uf, null);
+    const n = escalaEstadual(uf, ano)[1];
+    return { rotulo: n.rotulo, valor: n.valor, unidade: n.unidade, periodo: n.periodo, fonte: n.fonte, nota: n.nota, origem };
+  } catch {
+    return indisponivel("Dívida líquida sobre a RCL ajustada", "Tesouro / Siconfi, RGF", origem);
+  }
+}
+
+/** Pergunta sem número, com o motivo. */
+function semNumero(id: IdPerguntaMapa, pergunta: string, resposta: string, href: string, motivo: string): PerguntaParaVoce {
+  return { id, pergunta, resposta, href, numero: null, semNumero: motivo };
+}
+
+/**
+ * "Para você" do mapa da conta (Iniciativa M1 do parecer de UX de 23/10/2026): os quatro cartões do estado do leitor e as
+ * consultas por cidade. Com a UF, os números saem dos mesmos leitores das consultas por estado e o destino leva `?uf=`; sem ela
+ * (contas anteriores à obrigatoriedade, ou com PARA_VOCE_POR_UF desligado), os cartões saem sem número, com o motivo, e o destino
+ * sem parâmetro. As consultas por cidade saem sempre sem número: o município ainda não está na conta (Iniciativa I3).
+ */
+export function paraVoceDoMapa(ufBruta: string | null): { estado: PerguntaParaVoce[]; cidade: PerguntaParaVoce[] } {
+  const uf = ufValida(ufBruta);
+  const noEstado = uf ? `em ${uf}` : "no meu estado";
+  const escolher = "A página mostra os números depois de escolher o estado.";
+  const estado: PerguntaParaVoce[] = [
+    {
+      id: "tanque-uf",
+      pergunta: `Quanto custa encher o tanque ${noEstado}?`,
+      resposta: "O preço médio do litro de gasolina, etanol e diesel no estado e a distância para a média do Brasil.",
+      href: comUf("/combustiveis/no-meu-estado", uf),
+      numero: uf ? numeroTanqueNaUf(uf) : null,
+      semNumero: uf ? undefined : escolher,
+    },
+    {
+      id: "botijao-uf",
+      pergunta: `Quanto custa o botijão ${noEstado}?`,
+      resposta: "O preço médio do botijão de 13 kg no estado, mês a mês, comparado com a média do Brasil.",
+      href: comUf("/gas-natural/gas-de-cozinha", uf),
+      numero: uf ? numeroBotijaoNaUf(uf) : null,
+      semNumero: uf ? undefined : escolher,
+    },
+    {
+      id: "violencia-uf",
+      pergunta: `Como está a violência ${noEstado}?`,
+      resposta: "Homicídios e outros registros de violência por 100 mil habitantes no estado, ao lado da taxa do Brasil.",
+      href: comUf("/eficiencia-estatal/seguranca-publica/estados", uf),
+      numero: uf ? numeroViolenciaNaUf(uf) : null,
+      semNumero: uf ? undefined : escolher,
+    },
+    {
+      id: "contas-uf",
+      pergunta: uf ? `Como estão as contas do estado ${uf === "DF" ? "do DF" : `de ${uf}`}?` : "Como estão as contas do meu estado?",
+      resposta: "Execução do orçamento, receitas, despesas e dívida, como o estado declara ao Tesouro.",
+      href: comUf("/contas-publicas-estaduais", uf),
+      numero: uf ? numeroContasNaUf(uf) : null,
+      semNumero: uf ? undefined : "A ficha mostra os números depois de escolher o estado.",
+    },
+  ];
+  const cidade = "O número aparece depois de escolher a cidade.";
+  return {
+    estado,
+    cidade: [
+      semNumero("cidade-luz", CONSULTAS.luz.pergunta, CONSULTAS.luz.resumo, CONSULTAS.luz.href, cidade),
+      semNumero("cidade-saneamento", CONSULTAS.municipio.pergunta, CONSULTAS.municipio.resumo, CONSULTAS.municipio.href, cidade),
+      semNumero("cidade-internet", CONSULTAS.internet.pergunta, CONSULTAS.internet.resumo, CONSULTAS.internet.href, cidade),
+      semNumero("cidade-inss", CONSULTAS.inss.pergunta, CONSULTAS.inss.resumo, CONSULTAS.inss.href, cidade),
+      semNumero("cidade-escola", CONSULTAS.escola.pergunta, CONSULTAS.escola.resumo, CONSULTAS.escola.href, cidade),
+      semNumero("cidade-fogo", "Teve fogo perto de mim?", "Focos de calor por município, o ano em curso contra os mesmos meses do ano anterior.", "/territorio/queimadas", cidade),
+      semNumero("cidade-custo-de-vida", "Quanto subiu o custo de vida na minha cidade?", "A inflação do IPCA na sua cidade ou região metropolitana, comparada com a do Brasil.", "/custo-de-vida", cidade),
+    ],
+  };
 }

@@ -5,6 +5,7 @@ import { COOKIE_DESTINO, desvioDoAperitivo, ehApiDeDados, ehRotaPublica, fichaCo
 import { analisarUrlPagina } from "@/lib/i18n-url";
 import { parDeIdioma } from "@/lib/i18n-rotas";
 import type { Idioma } from "@/lib/idioma";
+import { COOKIE_OBSERVATORIO, VALIDADE_ULTIMO_ACESSO, ultimoAcessoDoCaminho } from "@/lib/observatorios/ultimoAcesso";
 
 /**
  * Proteção de rotas com validação forte na borda: o cookie de sessão é
@@ -62,7 +63,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (ehRotaPublica(pathname)) return NextResponse.next();
+  if (ehRotaPublica(pathname)) {
+    // página aberta de uma coleção (método, aperitivo com sessão): com sessão, também é o último acesso
+    const valor = paginaHtml(request) ? ultimoAcessoDoCaminho(caminhoPolitica) : null;
+    const comSessao = valor !== null && (desvio ? sessaoAperitivo : await verifySessionCookie(request.cookies.get("scrutiniums_session")?.value));
+    return comSessao ? marcarUltimoAcesso(request, NextResponse.next(), valor) : NextResponse.next();
+  }
 
   const verified = await verifySessionCookie(
     request.cookies.get("scrutiniums_session")?.value,
@@ -93,7 +99,8 @@ export async function middleware(request: NextRequest) {
   if (pagina?.idioma === "en") {
     // O Next também procura rotas estáticas pela grafia decodificada. O parser
     // já validou os escapes; decodificar aqui não muda a URL nem abre a rota.
-    return protegerAdmin(request, decodeURIComponent(pagina.caminhoPt), "en");
+    const res = await protegerAdmin(request, decodeURIComponent(pagina.caminhoPt), "en");
+    return marcarUltimoAcesso(request, res, paginaHtml(request) ? ultimoAcessoDoCaminho(pagina.caminhoPt) : null);
   }
   if (!pagina) {
     try {
@@ -107,8 +114,37 @@ export async function middleware(request: NextRequest) {
       // Escape inválido não fornece um caminho de política alternativo.
     }
   }
-  if (!pathname.startsWith("/app")) return NextResponse.next();
+  if (!pathname.startsWith("/app")) return marcarUltimoAcesso(request, NextResponse.next(), paginaHtml(request) ? ultimoAcessoDoCaminho(pathname) : null);
   return protegerAdmin(request, pathname, "pt");
+}
+
+/**
+ * Navegação de página de verdade: GET que pede HTML. Requisição RSC (navegação no cliente e pré-carregamento do Next, que
+ * pedem text/x-component) não conta: um link pré-carregado no mapa não pode virar "último acesso" sem clique.
+ */
+function paginaHtml(request: NextRequest): boolean {
+  if (request.method !== "GET" || request.headers.get("rsc") === "1" || request.headers.has("next-router-prefetch")) return false;
+  return request.headers.get("accept")?.includes("text/html") ?? false;
+}
+
+/**
+ * Último acesso (Iniciativa M1 do parecer de UX de 23/10/2026): com sessão válida, a página de uma coleção ou a entrada de um
+ * observatório grava o cookie que o mapa da conta lê para o cartão "Continuar em …" (valores em
+ * src/lib/observatorios/ultimoAcesso.ts). Só regrava quando o valor muda, para não pôr Set-Cookie em toda resposta. Custo: uma
+ * busca numa lista estática, sem banco.
+ */
+function marcarUltimoAcesso(request: NextRequest, res: NextResponse, valor: string | null): NextResponse {
+  if (!valor || request.cookies.get(COOKIE_OBSERVATORIO)?.value === valor) return res;
+  // rewrite para 404 (admin sem permissão, endereço inexistente) não é visita a uma coleção
+  if (res.headers.get("x-middleware-rewrite")) return res;
+  res.cookies.set(COOKIE_OBSERVATORIO, valor, {
+    path: "/",
+    maxAge: VALIDADE_ULTIMO_ACESSO,
+    sameSite: "lax",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  });
+  return res;
 }
 
 async function protegerAdmin(request: NextRequest, caminhoPolitica: string, idioma: Idioma): Promise<NextResponse> {

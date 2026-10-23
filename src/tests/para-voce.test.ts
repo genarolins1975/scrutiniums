@@ -14,7 +14,12 @@ import { ParaVoce } from "@/components/observatorios/ParaVoce";
 import { PaginaAberta } from "@/components/acesso/PaginaAberta";
 import { FRESCOR_DAS_COLECOES, FRESCOR_DOS_OBSERVATORIOS } from "@/lib/frescor/entradas";
 import { observatorio, type ObservatorioId } from "@/lib/observatorios/registro";
-import { PARA_VOCE, ehEntradaParaVoce, paraVoce, todasAsPerguntas, type EntradaParaVoce, type PerguntaParaVoce } from "@/lib/observatorios/paraVoce";
+import { PARA_VOCE, PARA_VOCE_POR_UF, ehEntradaParaVoce, paraVoce, paraVoceDoMapa, todasAsPerguntas, type EntradaParaVoce, type PerguntaParaVoce } from "@/lib/observatorios/paraVoce";
+import { dadosDoEstado, goldCombustiveis } from "@/lib/combustiveis/dados";
+import { dadosBotijaoNoEstado } from "@/lib/gas/botijaoNoEstado";
+import { goldGas } from "@/lib/gas/gold";
+import { recorte } from "@/lib/contas-estaduais/dados";
+import { escalaEstadual } from "@/lib/contas-estaduais/entrada";
 import { ehRotaPublica, exigeConta } from "@/lib/rotasPublicas";
 import { hrefNoIdioma } from "@/lib/i18n-href";
 
@@ -251,5 +256,58 @@ describe("Setor Elétrico em inglês", () => {
     const valoresPt = paraVoce("/setor-eletrico").map((p) => p.numero?.valor ?? null);
     for (const v of valoresEn) expect(en).toContain(v!);
     expect(valoresEn.map((v) => v?.replace(/[^\d]/g, ""))).toEqual(valoresPt.map((v) => v?.replace(/[^\d]/g, "")));
+  });
+});
+
+describe("mapa da conta (Iniciativa M1 do parecer de UX de 23/10/2026)", () => {
+  it("sem UF: os quatro cartões do estado e as consultas por cidade saem sem número, com o motivo e o destino sem parâmetro", () => {
+    const { estado, cidade } = paraVoceDoMapa(null);
+    expect(estado).toHaveLength(4);
+    expect(cidade.length).toBeGreaterThanOrEqual(5);
+    for (const p of [...estado, ...cidade]) {
+      expect(problemas(p), p.id).toEqual([]);
+      expect(p.numero, p.id).toBeNull();
+      expect(p.href, p.id).not.toContain("?");
+    }
+    // UF inválida é o mesmo que nenhuma
+    expect(paraVoceDoMapa("ZZ").estado.map((p) => p.href)).toEqual(estado.map((p) => p.href));
+  });
+
+  it("com UF: número, fonte e período lidos dos mesmos leitores das consultas por estado, e o destino com ?uf=", () => {
+    const { estado } = paraVoceDoMapa("sp");
+    for (const p of estado) {
+      expect(problemas(p), p.id).toEqual([]);
+      expect(p.href, p.id).toMatch(/\?uf=SP$/);
+      expect(p.numero?.valor, p.id).not.toBeNull();
+    }
+    const [tanque, botijao, violencia, contas] = estado;
+    const sp = dadosDoEstado(goldCombustiveis()).ufs.find((u) => u.uf === "SP")!;
+    expect(tanque.numero!.valor).toBe(`R$ ${sp.gasolina!.medio.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    const glp = dadosBotijaoNoEstado(goldGas.glp()).ufs.find((u) => u.uf === "SP")!;
+    expect(botijao.numero!.valor).toBe(`R$ ${glp.medio.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    expect(violencia.numero!.unidade).toBe("por 100 mil habitantes");
+    expect(contas.numero!.valor).toBe(escalaEstadual("SP", recorte("SP", null).ano)[1].valor);
+    // os destinos aceitam o parâmetro: a escolha de UF dessas páginas lê ?uf= da URL
+    for (const [arquivo, marca] of [
+      ["src/components/combustiveis/PrecoNoEstado.tsx", 'useSelecaoGas("uf"'],
+      ["src/components/gas/SeriePorUf.tsx", 'useSelecaoGas("uf"'],
+      ["src/components/eficiencia/seguranca/PorEstado.tsx", 'useSelecaoGas("uf"'],
+      ["src/app/contas-publicas-estaduais/page.tsx", "searchParams.uf"],
+    ] as const) expect(ler(arquivo), arquivo).toContain(marca);
+  });
+
+  it("o mapa só usa a UF da conta com a decisão do dono (decisão 1 da seção 8 do parecer)", () => {
+    expect(PARA_VOCE_POR_UF).toBe(false);
+    expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("PARA_VOCE_POR_UF ? ufValida(user.uf) : null");
+  });
+
+  it("o componente aceita a lista do mapa e marca a prova de cada cartão", () => {
+    const { estado } = paraVoceDoMapa("SP");
+    const h = renderToStaticMarkup(createElement(ParaVoce, { perguntas: estado }));
+    expect(h).toContain('data-para-voce="mapa"');
+    expect(h.match(/data-prova-numero="[^"]+ · [^"]+"/g)).toHaveLength(4);
+    const sem = renderToStaticMarkup(createElement(ParaVoce, { perguntas: paraVoceDoMapa(null).estado }));
+    expect(sem.match(/data-sem-numero="[^"]+"/g)).toHaveLength(4);
+    expect(sem).toContain("A página mostra os números depois de escolher o estado.");
   });
 });

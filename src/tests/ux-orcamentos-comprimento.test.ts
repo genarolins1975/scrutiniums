@@ -9,6 +9,8 @@ import { exigirBuild, subirServidor, temBuild, type ServidorProducao } from "./s
  * sempre o padrão). No build de produção, a altura total da página (do topo da barra comum ao fim do rodapé):
  *  - entrada de coleção ou de observatório (e a irmã inglesa do Setor Elétrico), com sessão: até 6.500 px a 1440 e 11.000 px a 390;
  *  - o Crédito aberto (/observatorio-do-credito sem sessão, a apresentação pública do tema): até 3.500 px a 1440 e 7.000 px a 390;
+ *  - o mapa da conta (/app/observatorios, com sessão; Iniciativa M1 do parecer de UX de 23/10/2026): até 3.500 px a 1440 e 7.000 px
+ *    a 390, o mesmo orçamento das portas, e o primeiro cartão do "Para você" começa acima de 900 px a 1440;
  *  - o primeiro número da escala começa acima de 900 px a 1440, na primeira tela.
  * O que não cabe vai para blocos recolhidos na mesma página, com o conteúdo inteiro no HTML; nada é apagado para caber.
  * Sem build (.next/BUILD_ID) o teste não roda; com EXIGIR_BUILD_HTML=1 (CI), a falta do build reprova.
@@ -16,6 +18,7 @@ import { exigirBuild, subirServidor, temBuild, type ServidorProducao } from "./s
 const ORCAMENTO = {
   entrada: { 1440: 6500, 390: 11000 },
   creditoAberto: { 1440: 3500, 390: 7000 },
+  mapa: { 1440: 3500, 390: 7000 },
 } as const;
 const TOPO_PRIMEIRO_NUMERO = 900;
 /** As entradas no molde e a irmã inglesa do Setor Elétrico, a mesma entrada com o texto em inglês (que quebra em mais linhas). */
@@ -59,7 +62,7 @@ describe.skipIf(!temBuild)("orçamento de comprimento no navegador (build de pro
         await aguardarHidratacao(page);
         await page.evaluate(() => document.fonts.ready.then(() => undefined));
         const m = await page.evaluate(() => {
-          const n = document.querySelector("[data-entrada] [data-numero-escala]");
+          const n = document.querySelector("[data-entrada] [data-numero-escala], [data-mapa-conta] [data-para-voce-pergunta]");
           return { altura: document.documentElement.scrollHeight, numero: n ? Math.round(n.getBoundingClientRect().top + window.scrollY) : null };
         });
         if (m.altura > teto) fora.push(`${rota}: ${m.altura} px (máximo ${teto})`);
@@ -76,6 +79,10 @@ describe.skipIf(!temBuild)("orçamento de comprimento no navegador (build de pro
     it(`${largura} px, com sessão: as ${ENTRADAS.length} entradas no molde cabem em ${ORCAMENTO.entrada[largura]} px`, async () => {
       expect(await medir(largura, ENTRADAS, true, ORCAMENTO.entrada[largura])).toEqual([]);
     }, 300_000);
+
+    it(`${largura} px, com sessão: o mapa da conta cabe em ${ORCAMENTO.mapa[largura]} px`, async () => {
+      expect(await medir(largura, ["/app/observatorios"], true, ORCAMENTO.mapa[largura])).toEqual([]);
+    }, 120_000);
 
     it(`${largura} px, sem sessão: o Crédito aberto cabe em ${ORCAMENTO.creditoAberto[largura]} px`, async () => {
       expect(await medir(largura, ["/observatorio-do-credito"], false, ORCAMENTO.creditoAberto[largura])).toEqual([]);

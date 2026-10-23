@@ -3,6 +3,8 @@
  *
  *   npm run evidencias -- --rotas /setor-eletrico/conta-de-luz /saneamento/municipio --saida docs/ux-AAAA-MM-DD/minha-mudanca
  *   opções: --larguras 390,768,1440 (padrão)   --modos sem,com (padrão: os dois)
+ *           --conta nova|volta (padrão: nova). "volta" é a conta que já usou a plataforma: um recorte salvo, um aviso de
+ *           atualização e o último acesso no Setor Elétrico (cookie do middleware), para o mapa da conta com a fatia "retomar".
  *
  * Para cada rota, sem sessão e com sessão, em cada largura: captura da página inteira, medida de
  * cromo (scripts/ux-cromo-medida.mjs, o mesmo contrato de src/tests/ux-orcamentos-cromo.test.ts),
@@ -36,12 +38,14 @@ export function lerArgumentos(argv) {
     else if (a === "--saida") opcoes.saida = argv[++i];
     else if (a === "--larguras") opcoes.larguras = argv[++i].split(",").map(Number);
     else if (a === "--modos") opcoes.modos = argv[++i].split(",");
+    else if (a === "--conta") opcoes.conta = argv[++i];
     else throw new Error(`Opção desconhecida: ${a}`);
   }
   if (!opcoes.rotas.length || !opcoes.saida) throw new Error("Uso: npm run evidencias -- --rotas /a /b --saida <pasta> [--larguras 390,768,1440] [--modos sem,com]");
   if (opcoes.rotas.some((r) => !r.startsWith("/"))) throw new Error("Cada rota começa com /.");
   if (opcoes.larguras.some((l) => !ALTURAS[l])) throw new Error(`Larguras aceitas: ${Object.keys(ALTURAS).join(", ")}.`);
   if (opcoes.modos.some((m) => !["sem", "com"].includes(m))) throw new Error("Modos aceitos: sem, com.");
+  if (opcoes.conta !== undefined && !["nova", "volta"].includes(opcoes.conta)) throw new Error("Contas aceitas: nova, volta.");
   return opcoes;
 }
 
@@ -149,12 +153,19 @@ async function medirPagina(contexto, origem, rota, largura, modo, saida, base) {
   }
 }
 
+/** A conta que volta: um recorte salvo e um aviso de atualização (o último acesso vai no cookie, como o middleware grava). */
+async function contaQueVolta(db, schema, usuario) {
+  const agora = new Date();
+  await db.insert(schema.recortesSalvos).values({ id: `${usuario}-r1`, userId: usuario, titulo: "PLD do Sudeste", caminho: "/setor-eletrico/pld?submercado=SE", observatorio: "energia", criadoEm: agora });
+  await db.insert(schema.alertasAtualizacao).values({ id: `${usuario}-a1`, userId: usuario, dominio: "energia", referenciaAvisada: null, criadoEm: agora });
+}
+
 export async function executar(argv) {
   const opcoes = lerArgumentos(argv);
   const saida = resolve(opcoes.saida);
   mkdirSync(saida, { recursive: true });
   const inicio = Date.now();
-  const servidor = await subirServidorLocal();
+  const servidor = await subirServidorLocal(opcoes.conta === "volta" ? { preparar: contaQueVolta } : {});
   const nomes = nomesDasRotas(opcoes.rotas);
   const resultados = [];
   let navegador;
@@ -165,6 +176,7 @@ export async function executar(argv) {
       const contexto = await navegador.newContext({ viewport: { width: largura, height: ALTURAS[largura] }, deviceScaleFactor: 1, reducedMotion: "reduce" });
       await contexto.addInitScript({ path: require.resolve("axe-core/axe.min.js") });
       if (modo === "com") await contexto.addCookies([servidor.cookie]);
+      if (modo === "com" && opcoes.conta === "volta") await contexto.addCookies([{ ...servidor.cookie, name: "scrutiniums_observatorio", value: "c:setor-eletrico" }]);
       for (const rota of opcoes.rotas) {
         const r = await medirPagina(contexto, servidor.origem, rota, largura, modo, saida, nomes.get(rota));
         resultados.push(r);

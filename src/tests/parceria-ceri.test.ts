@@ -115,7 +115,9 @@ describe("onde a marca aparece", () => {
   it("na entrada e no mapa do Observatório de Energia e Infraestrutura, e só nele", () => {
     const entrada = ler("src/app/observatorios/[id]/page.tsx");
     expect(entrada).toContain('id === "energia-e-infraestrutura" ? <ParceriaTecnica variante="compacto" />');
-    const mapa = ler("src/app/app/(foco)/observatorios/page.tsx");
+    // o mapa da conta passou a ser montado por MapaDaConta (Iniciativa M1 do parecer de UX de 23/10/2026): a regra é a mesma, o
+    // arquivo é outro
+    const mapa = ler("src/components/observatorios/MapaDaConta.tsx");
     expect(mapa).toContain('o.id === "energia-e-infraestrutura" && (');
     expect(mapa.match(/<ParceriaTecnica/g)).toHaveLength(1);
   });

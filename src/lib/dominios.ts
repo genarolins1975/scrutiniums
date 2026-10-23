@@ -176,7 +176,8 @@ export const DOMINIOS: Dominio[] = [
   },
 ];
 
-export const COOKIE_OBSERVATORIO = "scrutiniums_observatorio";
+// o cookie de último acesso mora com quem o lê e o grava (Iniciativa M1, 23/10/2026); reexportado para os usos antigos
+export { COOKIE_OBSERVATORIO } from "@/lib/observatorios/ultimoAcesso";
 
 export function dominio(id: DominioId): Dominio {
   const d = DOMINIOS.find((x) => x.id === id);

@@ -54,6 +54,9 @@ function Lupa({ className }: { className?: string }) {
  * em tela cheia; "/" e Ctrl K levam ao campo, sem animação. `variante="pagina"`: o campo dentro de uma página (entrada de uma
  * coleção, mapa da conta), que com `filtro` procura só na coleção e oferece a busca em toda a plataforma, e com `municipio`
  * aponta para a busca por cidade da coleção.
+ *
+ * Na página (mapa da conta e entradas, Iniciativa M1 de 23/10/2026), o primeiro resultado com página já aparece marcado como
+ * ativo enquanto o leitor não usa as setas: é o que o Enter vai abrir. `rotuloVisivel` mostra o rótulo do campo acima dele.
  */
 export function BuscaPlataforma({
   variante = "barra",
@@ -61,6 +64,7 @@ export function BuscaPlataforma({
   filtro,
   municipio,
   rotulo = ROTULO,
+  rotuloVisivel = false,
 }: {
   variante?: "barra" | "pagina";
   /** Texto de exemplo do campo (EXEMPLO_DO_CAMPO, lido no servidor). */
@@ -68,6 +72,8 @@ export function BuscaPlataforma({
   /** Só os destinos de uma coleção do registro, com o nome dela para o aviso. */
   filtro?: { colecao: string; nome: string };
   rotulo?: string;
+  /** O rótulo do campo à vista, acima dele (só na variante "pagina"); sem isso, só para leitor de tela. */
+  rotuloVisivel?: boolean;
   /** A busca por cidade da coleção (o índice não tem municípios): com termo, o painel aponta para ela levando o que foi digitado. */
   municipio?: { href: string; rotulo: string };
 }) {
@@ -88,6 +94,8 @@ export function BuscaPlataforma({
   const resposta = useMemo(() => (indice && termo.trim() ? buscar(indice, termo, { colecao: filtro?.colecao }) : null), [indice, termo, filtro?.colecao]);
   const lista = useMemo(() => (resposta ? emOrdemDeTela(resposta.grupos) : []), [resposta]);
   const mostra = aberta && !!resposta;
+  // na página, sem escolha pelas setas, o ativo é o primeiro resultado com página (o que o Enter abre); na barra, só pelas setas
+  const ativoVisivel = mostra && lista.length > 0 ? (ativo >= 0 ? ativo : barra ? -1 : lista.findIndex((r) => r.href)) : -1;
   const opcao = (n: number) => `${id}-op-${n}`;
   const paraTudo = `/buscar${termo.trim() ? `?q=${encodeURIComponent(termo.trim())}` : ""}`;
 
@@ -162,7 +170,7 @@ export function BuscaPlataforma({
   function aoEnviar(e: FormEvent<HTMLFormElement>) {
     // com resultado à vista, Enter abre o ativo ou o primeiro com página; sem ele, o formulário segue para /buscar
     if (!mostra || lista.length === 0) return;
-    const alvo = ativo >= 0 ? ativo : lista.findIndex((r) => r.href);
+    const alvo = ativoVisivel >= 0 ? ativoVisivel : lista.findIndex((r) => r.href);
     if (alvo >= 0 && abrir(alvo)) e.preventDefault();
   }
 
@@ -171,7 +179,8 @@ export function BuscaPlataforma({
       if (!lista.length) return;
       e.preventDefault();
       setAberta(true);
-      setAtivo((a) => (e.key === "ArrowDown" ? Math.min(a + 1, lista.length - 1) : a <= 0 ? lista.length - 1 : a - 1));
+      const a = ativoVisivel;
+      setAtivo(e.key === "ArrowDown" ? Math.min(a + 1, lista.length - 1) : a <= 0 ? lista.length - 1 : a - 1);
     } else if (e.key === "Escape") {
       e.preventDefault();
       fechar(true);
@@ -179,8 +188,14 @@ export function BuscaPlataforma({
   }
 
   const classe = barra ? "bp-busca" : "bp-busca bp-busca--pagina";
+  const comRotulo = rotuloVisivel && !barra;
   return (
     <div className={classe} data-busca-plataforma="" data-folha={folha ? "" : undefined}>
+      {comRotulo && (
+        <label htmlFor={`${id}-q`} className="rotulo mb-2 block text-carvao-muted">
+          {rotulo}
+        </label>
+      )}
       {barra && (
         <button ref={lupa} type="button" className="bp-busca-lupa" aria-label={rotulo} aria-haspopup="dialog" aria-expanded={folha} onClick={abrirFolha}>
           <Lupa />
@@ -197,9 +212,11 @@ export function BuscaPlataforma({
         }}
       >
         <form action="/buscar" method="get" role="search" aria-label={rotulo} className="bp-busca-form" onSubmit={aoEnviar}>
-          <label htmlFor={`${id}-q`} className="sr-only">
-            {rotulo}
-          </label>
+          {!comRotulo && (
+            <label htmlFor={`${id}-q`} className="sr-only">
+              {rotulo}
+            </label>
+          )}
           <Lupa className="bp-busca-icone" />
           <input
             ref={campo}
@@ -210,7 +227,7 @@ export function BuscaPlataforma({
             aria-autocomplete="list"
             aria-expanded={mostra}
             aria-controls={`${id}-lista`}
-            aria-activedescendant={mostra && ativo >= 0 ? opcao(ativo) : undefined}
+            aria-activedescendant={ativoVisivel >= 0 ? opcao(ativoVisivel) : undefined}
             aria-describedby={`${id}-estado`}
             value={termo}
             onChange={(e) => {
@@ -254,7 +271,7 @@ export function BuscaPlataforma({
           </p>
           <div id={`${id}-lista`} role="listbox" aria-label="Resultados da busca" className="bp-busca-lista">
             {resposta && (
-              <ListaResultados grupos={resposta.grupos} comSessao={sessao} opcao={{ id: opcao, ativa: ativo, aoEscolher: escolheu }} />
+              <ListaResultados grupos={resposta.grupos} comSessao={sessao} opcao={{ id: opcao, ativa: ativoVisivel, aoEscolher: escolheu }} />
             )}
           </div>
           {resposta && lista.length === 0 && (
