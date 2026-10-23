@@ -109,19 +109,25 @@ export function contagemDoTermo(bruto: unknown, comConta: boolean): { termo: str
   return { termo: normal, foraDoVocabulario: true };
 }
 
-let ultimaLimpeza: string | null = null;
-
 /**
  * Apaga o texto de termo fora do vocabulário com mais de 30 dias. Não há rotina de retenção em uso_paginas_dia (só contadores
- * sem texto), então a limpeza roda no caminho de escrita, no máximo uma vez por dia em cada processo.
+ * sem texto), então a limpeza roda a cada escrita no contador e a cada leitura do painel do admin, qualquer que seja o termo: a
+ * linha vencida some mesmo que nenhuma palavra nova apareça depois dela. A tabela é agregada por dia e a chave começa pelo dia,
+ * então o DELETE é barato.
  */
 async function limparForaDoVocabulario(db: Awaited<ReturnType<typeof getDb>>, agora: Date): Promise<void> {
-  const hoje = diaDeBrasilia(agora);
-  if (ultimaLimpeza === hoje) return;
   const limite = diaDeBrasilia(new Date(agora.getTime() - RETENCAO_FORA_DO_VOCABULARIO_DIAS * 86_400_000));
   const t = schema.usoBuscaDia;
   await db.delete(t).where(and(eq(t.foraDoVocabulario, true), lt(t.dia, limite)));
-  ultimaLimpeza = hoje;
+}
+
+/** A mesma limpeza, para o painel do admin chamar antes de ler. Falha de banco não derruba a leitura. */
+export async function apagarTermosVencidos(agora = new Date()): Promise<void> {
+  try {
+    await limparForaDoVocabulario(await getDb(), agora);
+  } catch {
+    // a leitura segue; a próxima escrita tenta de novo
+  }
 }
 
 /** Soma uma busca ao contador agregado. Falha de banco nunca derruba a requisição: devolve false. */
@@ -142,7 +148,7 @@ export async function registrarBusca(
       .insert(t)
       .values({ dia: diaDeBrasilia(agora), termo, comConta, evento, foraDoVocabulario: conta.foraDoVocabulario, buscas: 1 })
       .onConflictDoUpdate({ target: [t.dia, t.termo, t.comConta, t.evento], set: { buscas: sql`${t.buscas} + 1` } });
-    if (conta.foraDoVocabulario) await limparForaDoVocabulario(db, agora);
+    await limparForaDoVocabulario(db, agora);
     return true;
   } catch {
     return false;

@@ -143,6 +143,17 @@ describe("tabela uso_busca_dia", () => {
     expect(r.map((l) => l.termo).sort()).toEqual(["ideb", "xyzabc"]);
   });
 
+  // revisão do PR do bloco 4: a limpeza não pode depender de aparecer outra palavra desconhecida
+  it("a retenção roda também quando a busca nova é conhecida, e na leitura do painel sem busca nova", async () => {
+    await registrarBusca("autonomia financeira", true, new Date("2026-09-01T15:00:00Z"));
+    await registrarBusca("ideb", true, new Date("2026-10-21T15:00:00Z"));
+    expect((await linhas()).map((l) => l.termo)).toEqual(["ideb"]);
+    await registrarBusca("xyzabc", true, new Date("2026-09-01T15:00:00Z"));
+    expect(await linhas()).toHaveLength(2);
+    await getBuscasDoPeriodo(new Date("2026-10-21T15:00:00Z"), {});
+    expect((await linhas()).map((l) => l.termo)).toEqual(["ideb"]);
+  });
+
   it("sem conta e com a contagem ligada, grava como sem conta", async () => {
     process.env.USO_ANONIMO_ATIVO = "1";
     await POST(pedido({ termo: "GLP" }));
@@ -210,6 +221,8 @@ describe("ligações", () => {
     const campo = readFileSync(RAIZ + "src/components/busca/BuscaPlataforma.tsx", "utf8");
     expect(campo).toContain("medirBusca(termo)");
     expect(campo).toContain('medirBusca(t, "sem_resultado")');
+    // só a busca de toda a plataforma conta "sem resultado": na busca local o termo pode estar em outra coleção
+    expect(campo).toContain("if (filtro?.colecao || !t || !resposta");
     expect(readFileSync(RAIZ + "src/components/busca/MedeBusca.tsx", "utf8")).toContain("medirBusca(termo)");
   });
 });

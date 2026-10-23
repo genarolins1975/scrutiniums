@@ -216,6 +216,15 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
       await expect.poll(() => naoCobre.count(), { timeout: 15_000 }).toBe(1);
       expect(await naoCobre.textContent()).toContain("A Scrutiniums ainda não cobre");
       expect(await naoCobre.locator("li").count()).toBe(6);
+      // versão aberta (achado A7): sem sessão, o primeiro resultado de "PLD" pede conta e a linha aparece fora da listbox, num
+      // link que o Tab alcança (dentro de uma opção, nem as setas nem o Tab chegariam a ele)
+      await page.keyboard.press("Control+a");
+      await page.keyboard.type("PLD");
+      const versao = page.locator("[data-barra-plataforma] [data-versao-aberta]");
+      await expect.poll(() => versao.count(), { timeout: 15_000 }).toBe(1);
+      expect(await page.locator("[data-barra-plataforma] [role=listbox] [data-versao-aberta]").count()).toBe(0);
+      expect(await versao.getAttribute("tabindex")).toBeNull();
+      expect(await versao.getAttribute("href")).toBe("/setor-eletrico/conta-de-luz");
       expect(noLogin).toEqual([]);
       await page.close();
     } finally {

@@ -10,7 +10,7 @@ import type { VersaoAberta as Versao } from "@/lib/busca/tipos";
  * 23/10/2026, achado A7 do diagnóstico da busca): a ordem não muda, o leitor sem conta só fica sabendo onde o tema abre. Segue a
  * regra do selo "com conta": some com sessão e nas páginas fechadas, onde todos já têm conta.
  */
-export function VersaoAberta({ destino, versao, foco }: { destino: string; versao: Versao; foco?: number }) {
+export function VersaoAberta({ destino, versao }: { destino: string; versao: Versao }) {
   const pagina = usePaginaAberta();
   const logado = useSessao() === true;
   if (logado || !pagina || !exigeConta(destino) || exigeConta(versao.href)) return null;
@@ -18,7 +18,6 @@ export function VersaoAberta({ destino, versao, foco }: { destino: string; versa
     <Link
       href={versao.href}
       prefetch={prefetchDoLink(versao.href)}
-      tabIndex={foco}
       data-versao-aberta=""
       className="-mx-2 flex min-h-[44px] items-center px-2 text-sm text-carvao-muted hover:text-carvao"
     >

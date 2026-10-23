@@ -468,6 +468,13 @@ describe("bloco 4: estado vazio", () => {
     expect(html("conta de luz", false)).not.toContain("data-versao-aberta");
   });
 
+  it("versão aberta: na listbox do campo a linha não entra numa opção (fica na BuscaPlataforma, fora da lista)", () => {
+    const naListbox = renderToStaticMarkup(
+      createElement(ListaResultados, { grupos: b("PLD").grupos, comSessao: false, opcao: { id: (n: number) => `t-op-${n}`, ativa: -1 } }),
+    );
+    expect(naListbox).not.toContain("data-versao-aberta");
+  });
+
   it("conjunto completo: todo termo sem resultado cai num dos estados vazios (sugestão de correção ou 'ainda não cobre')", () => {
     const i = indiceDeBusca();
     const semEstado = TERMOS.map(([t]) => [t, buscar(i, t)] as const)

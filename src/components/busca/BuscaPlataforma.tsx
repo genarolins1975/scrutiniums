@@ -10,6 +10,7 @@ import { normalizar } from "@/lib/busca/normalizar";
 import { useSessao } from "@/components/acesso/sessao";
 import { ListaResultados } from "./ListaResultados";
 import { NaoCobre } from "./NaoCobre";
+import { VersaoAberta } from "./VersaoAberta";
 
 // um só download por página, compartilhado pelos campos dela; falha de rede libera uma nova tentativa no próximo foco
 let carga: Promise<IndiceBusca | null> | null = null;
@@ -108,6 +109,8 @@ export function BuscaPlataforma({
     [indice, termo, filtro?.colecao, exato],
   );
   const lista = useMemo(() => (resposta ? emOrdemDeTela(resposta.grupos) : []), [resposta]);
+  // a coleção do primeiro resultado é a primeira do primeiro grupo (os grupos seguem a ordem dos resultados)
+  const versaoDoPrimeiro = resposta?.grupos[0]?.colecoes[0]?.colecao?.aberta;
   // a opção que o Enter abre: a ativa ou, antes de qualquer seta, a primeira com página
   const destacada = ativo >= 0 ? ativo : lista.findIndex((r) => r.href);
   const mostra = aberta && !!resposta;
@@ -141,10 +144,11 @@ export function BuscaPlataforma({
   }
 
   // a busca da barra sem resultado completo conta uma vez por termo, depois de 1,5 s sem digitar (decisão do dono de 23/10/2026):
-  // é o que o painel precisa ver para achar destino ou sinônimo que falta; digitar e apagar antes da pausa não conta
+  // é o que o painel precisa ver para achar destino ou sinônimo que falta; digitar e apagar antes da pausa não conta. Só a busca
+  // de toda a plataforma: na busca local (filtro), o termo pode ter resultado em outra coleção, e o painel não guarda a coleção
   useEffect(() => {
     const t = termo.trim();
-    if (!t || !resposta || (lista.length > 0 && !resposta.parcial)) return;
+    if (filtro?.colecao || !t || !resposta || (lista.length > 0 && !resposta.parcial)) return;
     const chave = normalizar(t);
     if (semResultadoMedidos.has(chave)) return;
     const espera = setTimeout(() => {
@@ -152,7 +156,7 @@ export function BuscaPlataforma({
       medirBusca(t, "sem_resultado");
     }, PAUSA_MEDICAO_MS);
     return () => clearTimeout(espera);
-  }, [termo, resposta, lista.length]);
+  }, [filtro?.colecao, termo, resposta, lista.length]);
 
   // a folha em tela cheia recebe o foco ao abrir; a página atrás não rola
   useEffect(() => {
@@ -316,6 +320,9 @@ export function BuscaPlataforma({
               <ListaResultados grupos={resposta.grupos} comSessao={sessao} opcao={{ id: opcao, ativa: ativo, destacada, aoEscolher: escolheu }} />
             )}
           </div>
+          {/* a linha "versão aberta" do primeiro resultado fechado fica fora da listbox: dentro de uma opção, o link não seria
+              alcançável pelas setas nem pelo Tab (decisão do dono de 23/10/2026, achado A7) */}
+          {lista[0]?.href && versaoDoPrimeiro && !sessao && <VersaoAberta destino={lista[0].href} versao={versaoDoPrimeiro} />}
           {resposta?.sugestoes && (
             <p className="bp-busca-vazio">
               Você quis dizer{" "}

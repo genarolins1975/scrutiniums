@@ -10,7 +10,7 @@ import { diaDeBrasilia, usoAnonimoAtivo } from "./coleta";
 import { FORA_DOS_OBSERVATORIOS, nomeDoGrupo } from "./rotas";
 import { buscar } from "@/lib/busca/buscar";
 import { indiceDeBusca } from "@/lib/busca/indice";
-import { FORA_DO_INDICE } from "./busca";
+import { FORA_DO_INDICE, apagarTermosVencidos } from "./busca";
 
 export const DIAS_USO = 30;
 
@@ -152,6 +152,8 @@ export type BuscasDoPeriodo = {
  * termo sem resultado é um destino que o leitor procura e a plataforma não tem, ou um sinônimo que falta (sinonimos.json).
  */
 export async function getBuscasDoPeriodo(agora = new Date(), env: Record<string, string | undefined> = process.env): Promise<BuscasDoPeriodo> {
+  // o texto fora do vocabulário vencido sai antes da leitura, mesmo sem busca nova desde então (retenção de 30 dias)
+  await apagarTermosVencidos(agora);
   const db = await getDb();
   const t = schema.usoBuscaDia;
   const fim = diaDeBrasilia(agora);
