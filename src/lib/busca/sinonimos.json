@@ -34,7 +34,7 @@
   "dívida das famílias": ["endividamento", "inadimplência", "atraso", "nome sujo", "Desenrola"],
   "juros": ["taxa de juros", "spread", "CET", "custo do crédito"],
   "banco": ["instituição financeira", "fintech", "cooperativa de crédito"],
-  "Banco Central": ["BCB", "Bacen", "Banco Central do Brasil"],
+  "Banco Central": ["BCB", "Bacen"],
   "cartão de crédito": ["rotativo", "parcelado"],
   "consignado": ["crédito consignado", "empréstimo consignado", "aposentado"],
   "golpe": ["fraude", "golpe financeiro", "golpe do pix"],

@@ -303,7 +303,8 @@ describe("bloco 2: sinônimos com alcance certo", () => {
   });
 
   it("'Banco da Amazônia', 'Safra', 'Itaú', 'Nubank', 'BB': mantém a consulta de bancos", () => {
-    for (const t of ["Banco da Amazônia", "Itaú", "Nubank", "BB"]) expect(b(t).resultados[0].href, t).toBe(BANCOS);
+    // "Banco do Brasil" também: a forma extensa "Banco Central do Brasil" no grupo do BCB levava ao Crédito (revisão do PR 367)
+    for (const t of ["Banco da Amazônia", "Banco do Brasil", "Itaú", "Nubank", "BB"]) expect(b(t).resultados[0].href, t).toBe(BANCOS);
     // "Safra" é também a safra do Agronegócio, que vem primeiro; o Banco Safra continua na lista
     expect(b("Safra").resultados.map((x) => x.href)).toContain(BANCOS);
   });
