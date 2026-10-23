@@ -207,8 +207,8 @@ export function DistribuicaoCapitais({
                     </tspan>
                   )}
                 </text>
-                <text x={m.l + 8} y={yc(i)} dy="0.32em" fontSize={fonte - 0.5} fontStyle="italic" fill="var(--cor-carvao-muted)">
-                  {larg(l.texto, fonte - 0.5) <= w - m.l - 14 ? l.texto : l.texto.replace(/ \(.*\)$/, "")}
+                <text x={m.l + 8} y={yc(i)} dy="0.32em" fontSize={fonte} fontStyle="italic" fill="var(--cor-carvao-muted)">
+                  {larg(l.texto, fonte) <= w - m.l - 14 ? l.texto : l.texto.replace(/ \(.*\)$/, "")}
                 </text>
               </g>
             );
