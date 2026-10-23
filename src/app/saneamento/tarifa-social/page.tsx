@@ -454,14 +454,6 @@ export default function Pagina() {
                   <div data-mapa-legado="atlas-tarifa-social">
                     <AtlasMunicipal semTabela ids={ATLAS} referencias={refs} nomesUf={nomesUf} titulo="Atlas municipal do alcance da tarifa social" />
                   </div>
-                  {/* a tabela municipal do kit não leva link por célula: a ficha de cada município se abre pela busca de Meu município */}
-                  <p className="text-sm text-carvao">
-                    A ficha de cada município, com a tarifa social de cada prestador:{" "}
-                    <Link className="text-obee-dark underline underline-offset-2" href={`${ROTA}/municipio`}>
-                      buscar em Meu município
-                    </Link>
-                    .
-                  </p>
                 </>
               }
             >
@@ -486,6 +478,8 @@ export default function Pagina() {
             titulo="Alcance da tarifa social por município"
             colunas={["Município", "UF", "Tarifa social declarada", `Famílias elegíveis (${mesAno(mesRef)})`, "Economias com tarifa social (2024)", "Por 100 famílias"]}
             linhas={porFamilias.map((x) => [x.municipio, x.uf, x.estado, x.familias, x.economias, x.razao])}
+            links={{ Município: porFamilias.map((x) => x.href) }}
+            nomeArquivo="saneamento-tarifa-social-cadunico"
             casas={[null, null, null, 0, 0, 1]}
             ordenavel
             recolhida={false}
@@ -507,7 +501,7 @@ export default function Pagina() {
           <>
             <Fonte>{fonteCobertura}</Fonte>
             <p>
-              A tabela municipal tem busca, ordenação e exportação do recorte exibido. A ficha de cada município fica em{" "}
+              A tabela municipal tem busca, ordenação e exportação do recorte exibido; o nome de cada município abre a ficha dele em{" "}
               <Link className="text-obee-dark underline underline-offset-2" href={`${ROTA}/municipio`}>
                 Meu município
               </Link>

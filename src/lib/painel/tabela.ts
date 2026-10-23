@@ -66,6 +66,8 @@ export type ColunaTabela = {
   idiomaTexto?: "nome" | "portugues" | "codigo";
   /** O rótulo da coluna é um nome próprio (uma coluna por usina, por exemplo): o cabeçalho sai marcado com <Nome>. */
   rotuloEhNome?: boolean;
+  /** Campo da linha com o endereço interno para o qual a célula aponta (a ficha do município, por exemplo); fica fora da exportação. */
+  link?: string;
 };
 
 export type Ordem = { coluna: string; direcao: Direcao } | null;
