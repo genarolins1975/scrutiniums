@@ -1,7 +1,7 @@
 import type {Metadata} from 'next';
 import Link from 'next/link';
 import {PaginaPainel, TabelaDados, type NumeroProps} from '@/components/painel';
-import {FiguraSuasDoPainel} from '@/components/eficiencia/assistencia/PainelSuas';
+import {FiguraSuasDoPainel, MetodoSuas} from '@/components/eficiencia/assistencia/PainelSuas';
 import {dadosAssistencia} from '@/lib/eficiencia/assistencia/dados';
 import {TEMAS_EFICIENCIA} from '@/lib/eficiencia/temas';
 import {dataBr} from '@/lib/eficiencia/formato';
@@ -65,13 +65,6 @@ export default function Page(){
         <Link href="/eficiencia-estatal/trabalho-renda/protecao-da-renda" className="ml-4 inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Proteção da renda →</Link>
       </>}
     />}
-    metodo={<>
-      {IDS.map(id=>{const f=ficha(id);return <div key={id}>
-        <p className="font-medium text-carvao">{f.kind} · {f.name}</p>
-        <p>{f.definition}{/[.?!]$/.test(f.definition)?'':'.'} Universo: {f.universe}. Período: {f.period}. Fórmula: {f.formula}. Ausências: {f.missing}. Série: {f.breaks}. Registro: {f.record}.</p>
-      </div>;})}
-      <p>Arquivos oficiais lidos: {g.manifest.sources.map(s=><a key={s.file} href={s.url} className="mr-3 text-obee-dark underline underline-offset-4">{s.file}</a>)} Capturados em {dataBr(g.manifest.captured_at)}.</p>
-      <p>Todas as observações de todas as unidades e o dicionário completo estão em <Link href="/eficiencia-estatal/assistencia-social/metodos" className="text-obee-dark underline underline-offset-4">Dados e métodos</Link> e na <Link href="/eficiencia-estatal/assistencia-social/dados" className="text-obee-dark underline underline-offset-4">consulta por unidade</Link>.</p>
-    </>}
+    metodo={<MetodoSuas ids={IDS}/>}
   />;
 }
