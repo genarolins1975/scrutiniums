@@ -3277,7 +3277,7 @@ function fontesEmPane(view) {
 function fontePane(view) {
   const ks = fontesEmPane(view);
   if (!ks.length) return "";
-  const gerado = ((metaDaPagina()).gerado_em || "").slice(0, 10);
+  const gerado = dataTela(((metaDaPagina()).gerado_em || "").slice(0, 10));
   return `<div class="note warn pane" role="status"><b>Fonte em pane:</b> a coleta de <b>${ks.join(", ")}</b> falhou na execução de ${gerado}. Os números desta aba são os da última coleta íntegra (data-base declarada em cada bloco); a recoleta é diária. <a href="/observatorio/methodology" onclick="nav('method');return false">estado das fontes</a></div>`;
 }
 const dica = txt => `<span class="src" title="${attr(txt)}" style="cursor:help">ⓘ</span>`;
@@ -12819,6 +12819,33 @@ function ajustaFonteSvg(raiz) {
     }
   });
 }
+/* Datas na forma da plataforma também no texto que vem do dado (Iniciativa 2 do parecer de UX de 23/10/2026): data-base, janela e
+   frases determinísticas das golds chegam como "2026-08" ou "2026-10-22", em dezenas de lugares. Em vez de lembrar de formatar em
+   cada um, a camada de apresentação converte o texto visível da página: "AAAA-MM" vira mmm/aaaa, "AAAA-MM-DD" vira dd/mm/aaaa e um
+   carimbo com hora vira o horário de Brasília. O dado, os atributos, as exportações e os campos de formulário não mudam.
+   "2011-12" fica como está quando pode ser um intervalo de anos (o mês é o ano seguinte), e nada fora de 1900 a 2099 é data. */
+const DATA_ISO_TELA = /(?<![\d-])((?:19|20)\d{2})-(0[1-9]|1[0-2])(?:-(0[1-9]|[12]\d|3[01])(?:[T ]([01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?)?)?(?![\d-])/g;
+function dataIsoNoTexto(t) {
+  return t.replace(DATA_ISO_TELA, (m, ano, mes, dia, hora) => {
+    if (hora) return dataHoraBrasilia(m.replace(" ", "T")) || m;
+    if (dia) return fmt.d(m);
+    return +mes === (+ano + 1) % 100 ? m : fmt.my(m);
+  });
+}
+function datasNaTela(raiz) {
+  if (!raiz || typeof document.createTreeWalker !== "function") return;
+  const tem = /(?:19|20)\d{2}-(?:0[1-9]|1[0-2])/;
+  const w = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT, {
+    acceptNode: n => tem.test(n.nodeValue) && !(n.parentElement && n.parentElement.closest("script, style, code, pre, textarea"))
+      ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
+  });
+  const nos = [];
+  while (w.nextNode()) nos.push(w.currentNode);
+  for (const n of nos) {
+    const novo = dataIsoNoTexto(n.nodeValue);
+    if (novo !== n.nodeValue) n.nodeValue = novo;
+  }
+}
 function agendaAcessibilidade() {
   clearTimeout(_rolagemAgendada);
   _rolagemAgendada = setTimeout(() => {
@@ -12826,6 +12853,7 @@ function agendaAcessibilidade() {
     acessibilizaRolagem(ativa);
     adaptaTabelasMoveis(ativa);
     ajustaFonteSvg(ativa);
+    datasNaTela(ativa);
     aplicaCapitulos();
   }, 120);
 }

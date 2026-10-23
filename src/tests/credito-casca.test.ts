@@ -394,6 +394,19 @@ describe("6. tipografia, números, selos, datas e tokens da plataforma (PR 2 da 
     expect(datas.dataTela("2T2026")).toBe("2T2026");
   });
 
+  it("a data que vem do dado também chega à tela na forma da plataforma, sem mexer em intervalo de anos, CNPJ ou código", () => {
+    const fmtSrc = `const fmt = { d: ${trecho("d: iso =>", "\n").replace(/^d: /, "").replace(/,$/, "")}, my: ${trecho("my: iso =>", "\n").replace(/^my: /, "").replace(/,$/, "")} };`;
+    const conv = new Function(`${fmtSrc} ${trecho("function dataTela(v)", "function rerenderCurrent")}; ${trecho("const DATA_ISO_TELA", "function datasNaTela(")}; return dataIsoNoTexto;`)() as (t: string) => string;
+    expect(conv("SCR.data 2026-08 · janela 2025-08 a 2026-07")).toBe("SCR.data ago/2026 · janela ago/2025 a jul/2026");
+    expect(conv("status até 2026-10-22.")).toBe("status até 22/10/2026.");
+    expect(conv("execução de 2026-10-22T15:47:03+00:00")).toBe("execução de 22/10/2026 às 12:47 (horário de Brasília)");
+    // intervalo de anos, CNPJ, código de série e ano fora de 1900 a 2099 ficam como estão
+    expect(conv("quebra em 2020-21 e safra 2011-12")).toBe("quebra em 2020-21 e safra 2011-12");
+    expect(conv("15.124.464/0001-87 · SGS 21082 · 2100-01")).toBe("15.124.464/0001-87 · SGS 21082 · 2100-01");
+    // roda a cada página e a cada re-render, junto com os outros ajustes da camada de apresentação
+    expect(trecho("function agendaAcessibilidade()", "window.addEventListener(\"resize\"")).toContain("datasNaTela(ativa);");
+  });
+
   it("o app.js não escreve carimbo ISO nem UTC na tela; a hora do processamento fica em Fontes, datas e siglas", () => {
     const codigo = semComentarios(app).replace(/(^|[\s;{}(),])\/\/[^\n]*/g, "$1");
     expect(codigo).not.toContain("UTC");
