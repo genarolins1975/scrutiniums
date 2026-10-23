@@ -23,11 +23,11 @@ describe('contrato de cobertura versionada somente de código',()=>{
     f.put('gold/base.json','{"titulo":"Novo texto","valor":999,"aviso":"Outro campo"}');
     f.put('gold/novo.json','{"titulo":"Nova publicação"}');
     f.put('gold/report.html','<h2>Novo relatório e novos números: 100</h2>');
-    expect(executar(['--check'],f.root)).toContain('confere');
+    expect(executar(['--comparar','docs/i18n/cobertura.json'],f.root)).toContain('confere');
     f.put('gold/base.json','{JSON incompleto');
-    expect(executar(['--check'],f.root)).toContain('confere');
+    expect(executar(['--comparar','docs/i18n/cobertura.json'],f.root)).toContain('confere');
     rmSync(join(f.root,'gold'),{recursive:true});
-    expect(executar(['--check'],f.root)).toContain('confere');
+    expect(executar(['--comparar','docs/i18n/cobertura.json'],f.root)).toContain('confere');
     expect(f.report()).toBe(before);
     expect(JSON.parse(before).dominios.plataforma).not.toHaveProperty('gold');
   });
@@ -43,15 +43,15 @@ describe('contrato de cobertura versionada somente de código',()=>{
   it('continua rejeitando alteração da interface e de modelos de frase',()=>{
     const f=fixture();executar([],f.root);
     f.put('src/page.tsx','export default () => <h1>Outro título</h1>;');
-    expect(()=>executar(['--check'],f.root)).toThrow('desatualizada');
+    expect(()=>executar(['--comparar','docs/i18n/cobertura.json'],f.root)).toThrow('desatualizada');
     executar([],f.root);
     f.put('pipeline/i18n/templates/plataforma.json','{"mensagem":"Dados de {ano}"}');
-    expect(()=>executar(['--check'],f.root)).toThrow('desatualizada');
+    expect(()=>executar(['--comparar','docs/i18n/cobertura.json'],f.root)).toThrow('desatualizada');
   });
   it('não exige materializações para conferir código, mas diagnostica sua ausência no --gold',()=>{
     const f=fixture();const path=join(f.root,'config/i18n-inventario.json');
     const m=JSON.parse(readFileSync(path,'utf8'));m.materializados=[{dominio:'plataforma',origem:'seed-ausente.gz'}];writeFileSync(path,JSON.stringify(m));
-    executar([],f.root);expect(executar(['--check'],f.root)).toContain('confere');
+    executar([],f.root);expect(executar(['--comparar','docs/i18n/cobertura.json'],f.root)).toContain('confere');
     expect(()=>executar(['--gold'],f.root)).toThrow();
   });
 });

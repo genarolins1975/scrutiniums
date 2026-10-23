@@ -213,7 +213,7 @@ describe("terminologia do catálogo no relatório de cobertura", () => {
     const { raiz } = fixture({ ...opcoes, comTerminologia: false });
     expect(gerarCobertura(raiz)).not.toHaveProperty("terminologia_catalogo");
     executar([], raiz);
-    expect(executar(["--check"], raiz)).toContain("confere");
+    expect(executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toContain("confere");
   });
 
   it("encaminha os bytes originais do contrato e rejeita chaves JSON duplicadas", () => {
@@ -232,7 +232,7 @@ describe("terminologia do catálogo no relatório de cobertura", () => {
     const novoTexto = JSON.stringify(contrato) + "\n\n";
     escrever(raiz, CONTRATO, novoTexto);
 
-    expect(() => executar(["--check"], raiz)).toThrow("desatualizada");
+    expect(() => executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toThrow("desatualizada");
     expect(readFileSync(join(raiz, RELATORIO))).toEqual(relatorio);
     expect(readFileSync(join(raiz, CONTRATO), "utf8")).toBe(novoTexto);
     expect(JSON.parse(novoTexto)).toEqual(contrato);
@@ -244,7 +244,7 @@ describe("terminologia do catálogo no relatório de cobertura", () => {
     for (const { path, bytes } of intactos) expect(readFileSync(join(raiz, path))).toEqual(bytes);
 
     executar([], raiz);
-    expect(executar(["--check"], raiz)).toContain("confere");
+    expect(executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toContain("confere");
     expect(readFileSync(join(raiz, CONTRATO), "utf8")).toBe(novoTexto);
   });
 

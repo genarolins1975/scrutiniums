@@ -92,7 +92,7 @@ Mudanças materiais de privacidade para titulares fora do Brasil e transferênci
 
 ## 6. Cobertura, testes e ordem de entrega
 
-`scripts/cobertura-i18n.mjs` gera `docs/i18n/cobertura.json` deterministicamente a partir das fontes de código: interface, dicionários, glossário, inventário de rotas e modelos de frase. O CI exige igualdade desse relatório com o arquivo versionado. A situação dos campos da gold é calculada separadamente por `--gold`, sem arquivo versionado e sem condicionar a publicação de dados. Ausência de catálogo semântico não conta como cobertura completa; campos candidatos não são traduções comprovadas.
+`scripts/cobertura-i18n.mjs` gera o relatório de cobertura deterministicamente a partir das fontes de código: interface, dicionários, glossário, inventário de rotas e modelos de frase. O CI o gera e valida em todo PR (`--check`) e o publica como artefato; desde 22/10/2026 ele não é versionado, porque conflitava em quase todo merge (`docs/i18n/COBERTURA.md`). A situação dos campos da gold é calculada separadamente por `--gold`, sem arquivo versionado e sem condicionar a publicação de dados. Ausência de catálogo semântico não conta como cobertura completa; campos candidatos não são traduções comprovadas.
 
 O adaptador inicial de rotas aceita apenas pares literais declarados, com fontes PT e EN presentes e observadas. Rejeita páginas inglesas extras, handlers e templates ainda sem integração; classifica a irmã pelo domínio da fonte portuguesa. O relatório separa pares estruturais, fallbacks declarados e fontes ainda sem irmã. Não lê `.next`: presença de arquivo não comprova HTML, acesso ou tradução. Os testes do build comprovam separadamente o par entregue, e a paridade global continua pendente.
 

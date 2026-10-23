@@ -3,15 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/materializar-assistencia.mjs && node scripts/materializar-seguranca-alimentar.mjs && node scripts/minify-obs.mjs",
+    "predev": "node scripts/preparar.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/materializar-assistencia.mjs && node scripts/materializar-seguranca-alimentar.mjs && node scripts/minify-obs.mjs",
+    "prebuild": "node scripts/preparar.mjs",
     "build": "next build",
     "start": "next start",
+    "evidencias": "node scripts/evidencias.mjs",
     "lint": "next lint",
-    "pretest": "node scripts/materializar-assistencia.mjs && node scripts/materializar-seguranca-alimentar.mjs && node scripts/materializar-trabalho-renda.mjs",
+    "pretest": "node scripts/preparar.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
+    "preparar": "node scripts/preparar.mjs",
+    "verificar:rapido": "node scripts/verificar.mjs rapido",
+    "verificar:pr": "node scripts/verificar.mjs pr",
+    "testes:lentos": "node scripts/testes-lentos.mjs",
     "wcag": "node scripts/auditoria-wcag.mjs"
   },
   "dependencies": {
