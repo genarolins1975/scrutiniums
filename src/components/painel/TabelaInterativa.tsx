@@ -1,5 +1,6 @@
 "use client";
 
+import { TextoDaColuna } from "@/components/painel/TextoDaColuna";
 import { ExportacaoComConta } from "@/components/acesso/ExportacaoComConta";
 import { comNomes } from "@/components/i18n/comNomes";
 import { useDeferredValue, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
@@ -11,7 +12,6 @@ import { defLiteral } from "@/lib/literais-fonte";
 import { FUSO_SEM_OFFSET_ENERGIA, formatos } from "@/lib/painel/formato";
 import { useIdioma, useTx } from "@/lib/painel/useIdioma";
 import { Nome } from "@/components/i18n/Nome";
-import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import type { Idioma } from "@/lib/idioma";
 import {
   CHAVE_SEM_DADO,
@@ -137,22 +137,8 @@ function baixar(nome: string, conteudo: string | Uint8Array<ArrayBuffer>, tipo: 
   window.setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
 
-/**
- * Conteúdo de célula (ou de opção de filtro) de uma coluna com `idiomaTexto`: na página inglesa, nome próprio em <Nome> e texto livre
- * da fonte em <TrechoPortugues>; em português, o conteúdo como está. Exportado para a ListaConsultavel usar a mesma regra.
- */
-export function TextoDaColuna({ coluna, children }: { coluna: Pick<ColunaTabela, "id" | "idiomaTexto">; children: ReactNode }) {
-  if (coluna.idiomaTexto === "nome") return <Nome>{children}</Nome>;
-  if (coluna.idiomaTexto === "portugues") return <TrechoPortugues regiao={`tabela-${coluna.id}`}>{children}</TrechoPortugues>;
-  if (coluna.idiomaTexto === "codigo") return <CodigoNoIngles>{children}</CodigoNoIngles>;
-  return <>{children}</>;
-}
-
-/** Identificador técnico: <code> na página inglesa (não é prosa de nenhum idioma); em português, como sempre foi. */
-function CodigoNoIngles({ children }: { children: ReactNode }) {
-  const idioma = useIdioma();
-  return idioma === "en" ? <code className="text-[0.95em]">{children}</code> : <>{children}</>;
-}
+/** TextoDaColuna mora em arquivo próprio (a TabelaDados do kit o usa sem carregar a tabela interativa); reexportado aqui. */
+export { TextoDaColuna } from "@/components/painel/TextoDaColuna";
 
 function SemDado({ sobreFundoAtivo }: { sobreFundoAtivo: boolean }) {
   const idioma = useIdioma();

@@ -2,7 +2,6 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
-import { Bloco } from "@/components/energia/CabecalhoModulo";
 import { LegendaDeSiglas } from "@/components/energia/LegendaSiglas";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { FaixaNumeros, FiguraAnalitica, NumeroIndicador, PaginaPainel } from "@/components/painel";
@@ -489,6 +488,7 @@ export default function ContaDeLuzPage() {
                 colunas: [tx("Distribuidora", "Distribution utility"), tx("Tarifa (R$/MWh)", "Tariff (R$/MWh)"), tx("100 kWh (R$/mês)", "100 kWh (R$/month)"), tx("200 kWh (R$/mês)", "200 kWh (R$/month)"), tx("300 kWh (R$/mês)", "300 kWh (R$/month)")],
                 linhas: [...t.vigentes].sort((a, b) => a.posicao - b.posicao).map((v) => [rotuloDistribuidora(v.sigla, v.cnpj), v.total, v.perfis["100"], v.perfis["200"], v.perfis["300"]]),
                 casas: [null, 2, 2, 2, 2],
+                idiomaTexto: ["nome", null, null, null, null],
                 limite: t.vigentes.length,
                 csv: downloadsDoPainel(g.downloads, ["conta_tarifas_b1_vigentes.csv"])[0]?.url,
               }}
@@ -1076,7 +1076,7 @@ export default function ContaDeLuzPage() {
           </>
         }
         metodo={
-          <Bloco nivel="auditar" id="auditoria-conta">
+          <div data-nivel="auditar" id="auditoria-conta" className="scroll-mt-28 py-5">
             <section aria-labelledby="auditoria-conta-titulo" className="space-y-5 border-t border-dashed border-linha pt-6">
               <h2 id="auditoria-conta-titulo" className="ed-h2 font-serif text-carvao">
                 {tx("Validação, tarifa média avaliada e arquivos", "Validation, average tariff assessed and files")}
@@ -1182,7 +1182,7 @@ export default function ContaDeLuzPage() {
                 </p>
               </div>
             </section>
-          </Bloco>
+          </div>
         }
         frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/setor-eletrico"]} variante="metodo" idioma={idioma} />}
       />

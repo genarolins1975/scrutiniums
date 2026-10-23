@@ -155,6 +155,8 @@ export type TabelaEquivalente = {
   casas?: (number | null)[];
   /** Linhas à vista; o resto fica no CSV (padrão: 30, as últimas). */
   limite?: number;
+  /** Por coluna: nome próprio ("nome") ou texto da fonte em português ("portugues"), marcados na página inglesa. */
+  idiomaTexto?: ("nome" | "portugues" | null)[];
 };
 
 /**

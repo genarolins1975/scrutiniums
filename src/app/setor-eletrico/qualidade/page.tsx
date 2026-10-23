@@ -10,7 +10,6 @@ import {
   PARCELAS_ROTULOS_EN,
   marcarNomes,
 } from "@/lib/energia/i18n/qualidade-perdas";
-import { Bloco } from "@/components/energia/CabecalhoModulo";
 import { LegendaDeSiglas } from "@/components/energia/LegendaSiglas";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { FaixaNumeros, FiguraAnalitica, NumeroIndicador, PaginaPainel, type CelulaTabela, type NumeroProps } from "@/components/painel";
@@ -1381,7 +1380,7 @@ export default function QualidadePage() {
           </>
         }
         metodo={
-          <Bloco id="auditoria-qualidade" nivel="auditar">
+          <div id="auditoria-qualidade" data-nivel="auditar" className="scroll-mt-28 py-5">
             <section aria-labelledby="auditoria-qualidade-titulo" className="space-y-4 border-t border-dashed border-linha pt-6">
               <h2 id="auditoria-qualidade-titulo" className="ed-h2 font-serif text-carvao">
                 {tx("Controles executados nesta publicação e arquivos de origem", "Checks run in this release and source files")}
@@ -1447,7 +1446,7 @@ export default function QualidadePage() {
                 .
               </p>
             </section>
-          </Bloco>
+          </div>
         }
         frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/setor-eletrico"]} variante="metodo" idioma={idioma} />}
       />

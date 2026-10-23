@@ -157,6 +157,7 @@ export function FiguraAnalitica({
             casas={tabela.casas}
             csv={tabela.csv}
             limite={tabela.limite}
+            idiomaTexto={tabela.idiomaTexto}
             idioma={idioma}
           />
         </div>

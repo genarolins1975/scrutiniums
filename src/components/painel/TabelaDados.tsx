@@ -1,9 +1,14 @@
 import type { ReactNode } from "react";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
-import { TabelaInterativa, TextoDaColuna } from "@/components/painel/TabelaInterativa";
+import dynamic from "next/dynamic";
+import { TextoDaColuna } from "@/components/painel/TextoDaColuna";
 import { idiomaDaPagina, tx } from "@/lib/painel/idioma";
 import type { ColunaTabela, LinhaTabela } from "@/lib/painel/tabela";
 import type { CelulaTabela, TabelaDadosProps } from "@/lib/painel/tipos";
+
+/** A tabela ordenável (TabelaInterativa) só chega ao navegador quando alguma página pede `ordenavel`: a TabelaDados estática, usada também
+ * dentro de componentes de cliente, não leva o explorador inteiro no pacote da página. */
+const TabelaInterativa = dynamic(() => import("@/components/painel/TabelaInterativa").then((m) => m.TabelaInterativa));
 
 /**
  * Tabela do kit de painel (Iniciativa 1 do parecer de UX de 23/10/2026), generalizada da tabela equivalente do Setor Elétrico. Duas

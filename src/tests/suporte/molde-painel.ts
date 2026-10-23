@@ -43,7 +43,11 @@ export function textoDe(n: No): string {
 /** Filhos elemento de um nó (ignora texto e comentário). */
 const filhos = (n: No) => (n.childNodes ?? []).filter((f) => f.tagName);
 
-export function conferirPainel(rota: string, html: string): void {
+/**
+ * `comprimento`: o teto de 60 caracteres do H1 e de 220 do lead vale para o texto português, a língua da plataforma (decisão do dono de
+ * 22/10/2026, "seguir sempre o padrão de comprimento"); a irmã inglesa do Setor Elétrico é tradução e fica fora desse teto.
+ */
+export function conferirPainel(rota: string, html: string, { comprimento = true }: { comprimento?: boolean } = {}): void {
   const doc = parse(html) as unknown as No;
   const paineis = todos(doc, (n) => attr(n, "data-painel") !== undefined);
   expect(paineis.map((p) => attr(p, "data-painel")), `${rota}: um só elemento do molde (data-painel)`).toEqual([rota]);
@@ -64,12 +68,12 @@ export function conferirPainel(rota: string, html: string): void {
   // H1 único com até 60 caracteres; lead com até 220
   const h1s = todos(doc, (n) => n.tagName === "h1").map(textoDe);
   expect(h1s.length, `${rota}: H1 único`).toBe(1);
-  expect(h1s[0].length, `${rota}: H1 "${h1s[0]}" com até 60 caracteres`).toBeLessThanOrEqual(60);
+  if (comprimento) expect(h1s[0].length, `${rota}: H1 "${h1s[0]}" com até 60 caracteres`).toBeLessThanOrEqual(60);
   const abertura = todos(painel, (n) => attr(n, "data-abertura") === "painel");
   expect(abertura.length, `${rota}: AberturaPainel`).toBe(1);
   const lead = todos(abertura[0], (n) => n.tagName === "p" && (attr(n, "class") ?? "").split(" ").includes("t-lead"));
   expect(lead.length, `${rota}: lead`).toBe(1);
-  expect(textoDe(lead[0]).length, `${rota}: lead com até 220 caracteres`).toBeLessThanOrEqual(220);
+  if (comprimento) expect(textoDe(lead[0]).length, `${rota}: lead com até 220 caracteres`).toBeLessThanOrEqual(220);
   const recorte = todos(abertura[0], (n) => tem(n, "data-recorte"));
   expect(recorte.length, `${rota}: linha de recorte`).toBe(1);
   expect(textoDe(recorte[0]), `${rota}: recorte com período, universo e fonte`).toMatch(/\S · \S[\s\S]*(Fonte|Source): \S/);

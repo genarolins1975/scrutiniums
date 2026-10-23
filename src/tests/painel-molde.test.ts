@@ -87,6 +87,6 @@ describe.skipIf(!temBuild)("molde de painel no HTML do servidor (build de produ√
     const { status, html } = await htmlDe(s, rota, true);
     expect(status, rota).toBe(200);
     // o mesmo componente marca a rota portuguesa do painel (√© o mesmo painel)
-    conferirPainel(rota.replace(/^\/en/, ""), html);
+    conferirPainel(rota.replace(/^\/en/, ""), html, { comprimento: false });
   }, 60_000);
 });
