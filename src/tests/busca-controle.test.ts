@@ -12,6 +12,7 @@ import { ehRotaPublica } from "@/lib/rotasPublicas";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { buscarVerbetes } from "@/lib/energia/aprenda-busca";
+import { buscar as buscarNaEnergia, type ItemBusca } from "@/lib/energia/busca";
 import { gruposDoIndice } from "@/lib/energia/conteudo/aprenda-indice";
 
 vi.mock("next/navigation", async () => ({
@@ -508,6 +509,17 @@ describe("bloco 5: um motor só", () => {
     expect(aprenda).toContain('from "@/lib/busca/normalizar"');
     expect(legado).toContain('from "@/lib/busca/normalizar"');
     expect(legado).not.toMatch(/function formasDe/);
+    // as palavras vazias portuguesas também são as da plataforma; a busca inglesa só acrescenta as inglesas (revisão do PR)
+    expect(legado).toContain("...VAZIAS,");
+  });
+
+  it("busca inglesa do Setor Elétrico: 'São' conta como palavra e acha a distribuidora de São Paulo; 'the' continua vazia", () => {
+    const itens: ItemBusca[] = [
+      { tipo: "Distribuidora", titulo: "EDP SAO PAULO", href: "/setor-eletrico/conta-de-luz?d=edp-sp" },
+      { tipo: "Página", titulo: "Electricity price", href: "/en/setor-eletrico/pld" },
+    ];
+    expect(buscarNaEnergia(itens, "São").itens.map((i) => i.titulo)).toEqual(["EDP SAO PAULO"]);
+    expect(buscarNaEnergia(itens, "the price").itens.map((i) => i.titulo)).toEqual(["Electricity price"]);
   });
 });
 

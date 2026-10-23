@@ -22,7 +22,7 @@
  * Só frases de três palavras úteis ou mais entram nesse caso: com duas, a metade é uma palavra só
  * ("Belo Horizonte" trazia a cooperativa de Novo Horizonte), e o nome de lugar vai para Minha região.
  */
-import { PERGUNTA as PERGUNTA_PLATAFORMA, formasDe } from "@/lib/busca/normalizar";
+import { PERGUNTA as PERGUNTA_PLATAFORMA, VAZIAS, formasDe } from "@/lib/busca/normalizar";
 
 export type ItemBusca = {
   tipo: "Página" | "Painel" | "Pergunta" | "Conceito" | "Distribuidora";
@@ -55,11 +55,12 @@ export function normalizarBusca(t: string): string {
 }
 
 /**
- * Palavras de ligação: nunca decidem se um item casa. As inglesas servem à página inglesa ("the price of energy") e nenhuma delas é
- * palavra portuguesa com sentido próprio, então a busca portuguesa não muda.
+ * Palavras de ligação: nunca decidem se um item casa. As portuguesas são as do motor da plataforma (VAZIAS em
+ * src/lib/busca/normalizar.ts), uma lista só; "são" fica de fora dela de propósito, porque é começo de "São Paulo". As inglesas
+ * servem à página inglesa ("the price of energy") e nenhuma delas é palavra portuguesa com sentido próprio.
  */
 const LIGACAO = new Set([
-  "a", "o", "as", "os", "de", "da", "do", "das", "dos", "e", "em", "no", "na", "nos", "nas", "um", "uma", "para", "por", "pelo", "pela", "que", "com", "se", "ao", "aos", "sao", // i18n: dado
+  ...VAZIAS,
   "the", "of", "in", "on", "at", "to", "for", "and", "an", "is", "are", "by", "with", "my", "its", "it", // i18n: dado
 ]);
 

@@ -12,8 +12,14 @@ export function normalizar(s: string): string {
     .trim();
 }
 
-/** Palavras curtas que não distinguem nada numa pergunta ("quanto pesa a dívida"): ficam fora da correspondência. */
-const VAZIAS = new Set(["a", "o", "e", "as", "os", "de", "da", "do", "das", "dos", "em", "na", "no", "nas", "nos", "um", "uma", "para", "por", "com", "que", "se"]);
+/**
+ * Palavras curtas que não distinguem nada numa pergunta ("quanto pesa a dívida"): ficam fora da correspondência. Lista única da
+ * plataforma: a busca inglesa do Setor Elétrico (src/lib/energia/busca.ts) usa esta e só acrescenta as inglesas.
+ */
+export const VAZIAS = new Set([
+  "a", "o", "e", "as", "os", "de", "da", "do", "das", "dos", "em", "na", "no", "nas", "nos", "um", "uma", "para", "por", "com", "que", "se",
+  "ao", "aos", "pelo", "pela",
+]);
 
 /** As palavras que contam numa busca: normalizadas, sem as vazias (se só houver vazias, ficam elas). */
 export function palavrasDaBusca(termo: string): string[] {
