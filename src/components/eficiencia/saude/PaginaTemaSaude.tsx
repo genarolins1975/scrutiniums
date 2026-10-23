@@ -9,7 +9,7 @@ import { CAMINHO_METODOS, CAMINHO_TEMA, ROTA_SAUDE, hrefSaude } from "@/lib/efic
 import { dataBr } from "@/lib/eficiencia/formato";
 import { TEMAS_EFICIENCIA } from "@/lib/eficiencia/temas";
 import { PERIMETRO_DO_TEMA, SIGLAS_POR_TEMA } from "./AvisosSaude";
-import { CaminhoCompararSaude, ExploradorSaude, FaixaTemaSaude } from "./ExploradorSaude";
+import { CaminhoCompararSaude, ExploradorSaude, FaixaTemaSaude, ProvedorSaude } from "./ExploradorSaude";
 import { TITULO_TEMA } from "@/lib/eficiencia/saude/molde";
 
 /** O que cada tema não permite concluir, com as palavras do perímetro do tema (PERIMETRO_DO_TEMA e os blocos de detalhe). */
@@ -45,6 +45,8 @@ export function PaginaTemaSaude({ tema }: { tema: TemaSaude }) {
   const p = PERIMETRO_DO_TEMA[tema];
   const link = "text-obee-dark underline underline-offset-4";
   return (
+    // a base vai ao navegador uma vez, pelo provedor; as três ilhas de cliente a leem dele (ver ProvedorSaude)
+    <ProvedorSaude dados={dados}>
     <PaginaPainel
       rota={`${ROTA_SAUDE}${CAMINHO_TEMA[tema]}`}
       principal={false}
@@ -74,9 +76,9 @@ export function PaginaTemaSaude({ tema }: { tema: TemaSaude }) {
           </>
         ),
       }}
-      faixaNumeros={<FaixaTemaSaude tema={tema} dados={dados} />}
-      navegacaoLocal={<CaminhoCompararSaude tema={tema} dados={dados} />}
-      figuras={<ExploradorSaude tema={tema} dados={dados} contextos={contextosSaude(g)} />}
+      faixaNumeros={<FaixaTemaSaude tema={tema} />}
+      navegacaoLocal={<CaminhoCompararSaude tema={tema} />}
+      figuras={<ExploradorSaude tema={tema} contextos={contextosSaude(g)} />}
       notas={{ id: `siglas-${tema}`, titulo: "Siglas desta página", itens: SIGLAS_POR_TEMA[tema].map(([s, d]) => ({ termo: s, definicao: d })) }}
       metodo={
         <>
@@ -94,5 +96,6 @@ export function PaginaTemaSaude({ tema }: { tema: TemaSaude }) {
         </>
       }
     />
+    </ProvedorSaude>
   );
 }

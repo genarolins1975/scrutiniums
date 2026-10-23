@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { createContext, useContext, useEffect, useMemo, type ReactNode } from "react";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { ExportacaoComConta } from "@/components/acesso/ExportacaoComConta";
@@ -116,7 +116,25 @@ function useRecorteSaude(tema: TemaSaude, dados: DadosSaude) {
 const formatoDe = (unidade: string): "reais" | "percentual" | "decimal" => (unidade.startsWith("R$") ? "reais" : unidade.startsWith("%") ? "percentual" : "decimal");
 
 /** A faixa de números do tema: a mediana do grupo, a capital escolhida (ou quantas capitais entram) e a referência externa direta. */
-export function FaixaTemaSaude({ tema, dados }: { tema: TemaSaude; dados: DadosSaude }) {
+/**
+ * A base do tema vai ao navegador uma vez só: a faixa de números, o caminho para comparar e o explorador são ilhas de cliente que leem o
+ * mesmo recorte, e cada uma recebendo a base por prop a serializava de novo no HTML.
+ */
+const ContextoSaude = createContext<DadosSaude | null>(null);
+
+export function ProvedorSaude({ dados, children }: { dados: DadosSaude; children: ReactNode }) {
+  return <ContextoSaude.Provider value={dados}>{children}</ContextoSaude.Provider>;
+}
+
+function useBaseSaude(dados?: DadosSaude): DadosSaude {
+  const doContexto = useContext(ContextoSaude);
+  const base = dados ?? doContexto;
+  if (!base) throw new Error("Base da Saúde ausente: passe `dados` ou use ProvedorSaude.");
+  return base;
+}
+
+export function FaixaTemaSaude({ tema, dados: dadosProp }: { tema: TemaSaude; dados?: DadosSaude }) {
+  const dados = useBaseSaude(dadosProp);
   const { cap, m, s, c, pt, ficha, periodo, nomeGrupo, externaGrafico, ano } = useRecorteSaude(tema, dados);
   const unidade = m.unidade(s.moeda);
   const formato = formatoDe(unidade);
@@ -156,7 +174,8 @@ export function FaixaTemaSaude({ tema, dados }: { tema: TemaSaude; dados: DadosS
 }
 
 /** O caminho para comparar capitais na mesma medida, com o recorte da página. */
-export function CaminhoCompararSaude({ tema, dados }: { tema: TemaSaude; dados: DadosSaude }) {
+export function CaminhoCompararSaude({ tema, dados: dadosProp }: { tema: TemaSaude; dados?: DadosSaude }) {
+  const dados = useBaseSaude(dadosProp);
   const { m, ano, cap } = useRecorteSaude(tema, dados);
   return (
     <p className="mt-6">
@@ -167,7 +186,8 @@ export function CaminhoCompararSaude({ tema, dados }: { tema: TemaSaude; dados: 
   );
 }
 
-export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; dados: DadosSaude; contextos: Record<string, ContextoFicha> }) {
+export function ExploradorSaude({ tema, dados: dadosProp, contextos }: { tema: TemaSaude; dados?: DadosSaude; contextos: Record<string, ContextoFicha> }) {
+  const dados = useBaseSaude(dadosProp);
   const def = TEMAS_SAUDE[tema];
   const r = useRecorteSaude(tema, dados);
   const { ix, s, definir, cap, m, o, anos, ano, grupo, nomeGrupo, c, pt, ficha, periodo, externas, externaGrafico, regiao } = r;

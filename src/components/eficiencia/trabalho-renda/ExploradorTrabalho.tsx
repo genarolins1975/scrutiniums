@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState, type ReactNode } from "react";
+import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
 import { useLargura } from "@/components/eficiencia/graficos";
 import Link from "next/link";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -195,7 +195,25 @@ const NAO_DEMONSTRA = "Não identifica causas, qualidade da gestão ou trajetór
 const PERMITE = "Comparar a mesma medida no tempo ou entre territórios compatíveis. O recorte por população altera o universo e deve acompanhar qualquer comparação.";
 
 /** A faixa de números: o valor do recorte, a diferença para o período anterior e a cobertura da comparação estadual. */
-export function FaixaTrabalho({ dados, ids }: { dados: Snapshot; ids: string[] }) {
+/**
+ * A base da página vai ao navegador uma vez só: a faixa de números, o explorador e o método são ilhas de cliente que leem o mesmo
+ * recorte, e cada uma recebendo a base por prop a serializava de novo no HTML (de 1,7 MB para 3,6 MB na página de acesso ao trabalho).
+ */
+const ContextoTrabalho = createContext<Snapshot | null>(null);
+
+export function ProvedorTrabalho({ dados, children }: { dados: Snapshot; children: ReactNode }) {
+  return <ContextoTrabalho.Provider value={dados}>{children}</ContextoTrabalho.Provider>;
+}
+
+function useBaseTrabalho(dados?: Snapshot): Snapshot {
+  const doContexto = useContext(ContextoTrabalho);
+  const base = dados ?? doContexto;
+  if (!base) throw new Error("Base de Trabalho e renda ausente: passe `dados` ou use ProvedorTrabalho.");
+  return base;
+}
+
+export function FaixaTrabalho({ dados: dadosProp, ids }: { dados?: Snapshot; ids: string[] }) {
+  const dados = useBaseTrabalho(dadosProp);
   const r = useRecorteTrabalho(dados, ids);
   const { med, ter, estado, selecionado, anterior, fonte, estrutural, formal, diferenca, porcentagem, pares, ufsElegiveis, nomePeriodo, periodos, periodo } = r;
   if (!med || !ter) return null;
@@ -244,7 +262,8 @@ export function FaixaTrabalho({ dados, ids }: { dados: Snapshot; ids: string[] }
 }
 
 /** O método da medida escolhida: fonte, captura, universo e limitações (antes em "Fonte, captura e método da medida"). */
-export function MetodoTrabalhoMedida({ dados, ids }: { dados: Snapshot; ids: string[] }) {
+export function MetodoTrabalhoMedida({ dados: dadosProp, ids }: { dados?: Snapshot; ids: string[] }) {
+  const dados = useBaseTrabalho(dadosProp);
   const { med, fonte } = useRecorteTrabalho(dados, ids);
   if (!med) return null;
   return (
@@ -299,7 +318,8 @@ function tabelaDe(itens: { nome: string; valor: number | null; status: string }[
 /** Casas decimais do gráfico, as mesmas de `formato`: uma em percentuais, até duas em reais e contagens, até três no índice. */
 const casasDe = (unidade: string) => (unidade.includes("%") ? 1 : unidade === "índice" ? 3 : unidade.includes("R$") ? 2 : 0);
 
-export function ExploradorTrabalho({ dados, ids, rota }: { dados: Snapshot; ids: string[]; rota: string }) {
+export function ExploradorTrabalho({ dados: dadosProp, ids, rota }: { dados?: Snapshot; ids: string[]; rota: string }) {
+  const dados = useBaseTrabalho(dadosProp);
   const r = useRecorteTrabalho(dados, ids);
   const { indicadores, territorios, grupos, nacional, estado, definir, med, ter, elegiveis, gruposMed, sexosMed, estrutural, formal, periodos, periodo, serie, selecionado, fonte, quebraVisita, pares, disponiveis, nomePeriodo, foraDaCobertura, csv } = r;
   if (!med || !ter)

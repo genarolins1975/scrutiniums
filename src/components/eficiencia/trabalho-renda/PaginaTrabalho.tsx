@@ -2,7 +2,7 @@ import {readFile} from 'node:fs/promises';
 import path from 'node:path';
 import type {ReactNode} from 'react';
 import {PaginaPainel} from '@/components/painel';
-import {ExploradorTrabalho, FaixaTrabalho, MetodoTrabalhoMedida} from './ExploradorTrabalho';
+import {ExploradorTrabalho, FaixaTrabalho, MetodoTrabalhoMedida, ProvedorTrabalho} from './ExploradorTrabalho';
 import {PanoramaTrabalho} from './PanoramaTrabalho';
 import {MetodosTrabalho} from './MetodosTrabalho';
 import {BASE, type Snapshot} from './modelo';
@@ -38,7 +38,8 @@ export async function PaginaTrabalho({visao='explorador',titulo='',pergunta='',i
   const fontes=Array.from(new Set([...porFonte.keys()].map(n=>n.split(', ')[0]))).join(', ');
   // o endereço público da página (o molde marca o painel por ele): a página passa o próprio trecho do caminho
   const rota=slug?`${BASE}/${slug}`:BASE;
-  return <PaginaPainel
+  // a base vai ao navegador uma vez, pelo provedor; as três ilhas de cliente a leem dele (ver ProvedorTrabalho)
+  return <ProvedorTrabalho dados={filtrado}><PaginaPainel
     rota={rota}
     principal={false}
     idioma="pt"
@@ -54,8 +55,8 @@ export async function PaginaTrabalho({visao='explorador',titulo='',pergunta='',i
         {filtrado.fontes.map(f=><p key={f.id}><span className="font-medium">{f.nome}.</span> {f.universo} Captura: {new Date(f.capturadoEm).toLocaleDateString('pt-BR',{timeZone:'America/Sao_Paulo'})}.</p>)}
       </>,
     }}
-    faixaNumeros={<FaixaTrabalho dados={filtrado} ids={indicadores}/>}
-    figuras={<ExploradorTrabalho dados={filtrado} ids={indicadores} rota={rota}/>}
-    metodo={<MetodoTrabalhoMedida dados={filtrado} ids={indicadores}/>}
-  />;
+    faixaNumeros={<FaixaTrabalho ids={indicadores}/>}
+    figuras={<ExploradorTrabalho ids={indicadores} rota={rota}/>}
+    metodo={<MetodoTrabalhoMedida ids={indicadores}/>}
+  /></ProvedorTrabalho>;
 }
