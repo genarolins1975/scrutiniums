@@ -58,7 +58,7 @@ export function NumeroIndicador(props: NumeroProps & { idioma?: Idioma }) {
   const ausente = props.valor === null;
   const valor = props.valorTexto ?? (typeof props.valor === "number" ? valorIndicador(props.valor, formato, casas, idioma) : null);
   const u = unidadeIndicador(unidade, formato);
-  const vari = variacao ? textoVariacao(variacao, u || unidade, casas, idioma) : null;
+  const vari = variacao ? textoVariacao(variacao, unidade, casas, idioma) : null;
   return (
     <div
       id={id}

@@ -60,6 +60,8 @@ export type CriterioPontos = "valor" | "diferenca" | "nome";
 export type OrdemPontos = { por: CriterioPontos; direcao: Direcao };
 
 export type GraficoPontosProps = {
+  /** Dentro da FiguraAnalitica, que traz a tabela equivalente do servidor: o gráfico não repete a sua. */
+  semTabela?: boolean;
   titulo: string;
   itens: ParEntidade[];
   unidade: string;
@@ -130,6 +132,7 @@ function textoDirecao(o: OrdemPontos, tx: <T>(pt: T, en: T) => T): string {
 }
 
 function GraficoPontosLargo({
+  semTabela = false,
   titulo,
   itens,
   unidade,
@@ -570,6 +573,7 @@ function GraficoPontosLargo({
       <p className="sr-only" aria-live="polite">
         {anuncio}
       </p>
+      {!semTabela && (
       <details className="mt-3 text-xs">
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
           {tx(
@@ -622,6 +626,7 @@ function GraficoPontosLargo({
           </table>
         </div>
       </details>
+      )}
     </div>
   );
 }
@@ -647,6 +652,7 @@ export function GraficoPontos(props: GraficoPontosProps | GraficoPontosContrato)
   return (
     <div data-grafico="pontos" className="min-w-0">
       <GraficoPontosLargo
+        semTabela
         {...resto}
         itens={(valor?.pontos ?? []).map((p) => ({ id: String(p.x), rotulo: String(p.x), valor: p.y, referencia: refPorX.get(String(p.x)) ?? null }))}
         unidade={eixoY.unidade}

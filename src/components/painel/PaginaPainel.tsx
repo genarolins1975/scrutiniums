@@ -1,5 +1,6 @@
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { AberturaPainel } from "@/components/painel/AberturaPainel";
+import { DetalheDoNivel } from "@/components/painel/DetalheDoNivel";
 import { FaixaNumeros } from "@/components/painel/FaixaNumeros";
 import { NumeroIndicador } from "@/components/painel/NumeroIndicador";
 import { ParaLer } from "@/components/painel/ParaLer";
@@ -58,11 +59,17 @@ export function PaginaPainel({
           <ParaLer {...notas} />
         </div>
       )}
-      <details data-fatia="metodo" className="mt-12 border-t border-linha pt-4">
-        <summary className="rotulo flex min-h-[44px] cursor-pointer items-center text-carvao-muted hover:text-carvao">{tx("Método e fontes", "Method and sources", lingua)}</summary>
-        <div className="mt-2 space-y-3 t-meta text-carvao-muted">{metodo}</div>
+      {/* aberto sozinho em Auditar: as regras, as tabelas de conferência e os documentos citados moram aqui */}
+      <DetalheDoNivel
+        resumo={tx("Método e fontes", "Method and sources", lingua)}
+        abreEm={profundidade ? "auditar" : "nunca"}
+        className="mt-12 border-t border-linha pt-4"
+        classeResumoBase="rotulo flex min-h-[44px] cursor-pointer items-center text-carvao-muted hover:text-carvao"
+        dados={{ "data-fatia": "metodo" }}
+      >
+        <div className="mt-2 space-y-6 t-meta text-carvao-muted">{metodo}</div>
         {frescorMetodo && <div className="mt-6">{frescorMetodo}</div>}
-      </details>
+      </DetalheDoNivel>
       {/* a posição do fim de página: Para ir além e o rodapé da coleção vêm do layout logo depois do <main> */}
       <div data-fatia="fim" aria-hidden="true" />
     </>

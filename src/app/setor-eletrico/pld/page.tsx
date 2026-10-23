@@ -1,25 +1,24 @@
 import { linhasArquivo, resumoRodadas, rotuloTipo, textoMotivo } from "@/lib/energia/previsoes";
 import { lerCsvPrevisoes } from "@/lib/energia/previsoes-arquivos";
-import { fraseDeRecusa, semCaminhosDeArquivo } from "@/lib/energia/bastidor";
+import { fonteLegivel, fraseDeRecusa, semCaminhosDeArquivo } from "@/lib/energia/bastidor";
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/i18n/LinkIdioma";
 import type { ReactNode } from "react";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
-import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
-import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
-import { Numero } from "@/components/energia/Numero";
+import { LegendaDeSiglas } from "@/components/energia/LegendaSiglas";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
-import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { FiguraAnalitica, GraficoBarras, GraficoLinhas, PaginaPainel, TabelaDados, type CelulaTabela, type CorSerie, type NumeroProps } from "@/components/painel";
+import { Recolhido } from "@/components/observatorios/Recolhido";
+import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
+import { provenienciaLegivel } from "@/lib/energia/mercado";
+import { rotuloDoGrupo } from "@/lib/energia/navegacao";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { Termo } from "@/components/evidencia/Termo";
 import { Conferido } from "@/components/evidencia/Conferido";
-import { CartoesPld } from "@/components/energia/CartoesPld";
-import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import type { NoComEstado } from "@/components/energia/DiagramaFormacao";
-import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { PldFormacao } from "@/components/energia/PldFormacao";
 import { PldAviso, PldCapitulos, PldDatas, PldNavegacao, PldPassagem, PldRecorte, PldSeguir, PldTextoGold } from "@/components/energia/PldPagina";
 import { Nome } from "@/components/i18n/Nome";
@@ -27,10 +26,10 @@ import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { MapaSubmercados } from "@/components/energia/MapaSubmercados";
 import { PldPeriodos, type PeriodoPld } from "@/components/energia/PldPeriodos";
 import { IlustracaoDistribuicao } from "@/components/energia/IlustracaoDistribuicao";
-import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
 import { carimbo, dataBR, dataCurta, horaLocal, num, reais, rotuloRegra } from "@/lib/energia/formato";
+import { semUtc } from "@/lib/painel/formato";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { identificador, marcadoMercado } from "@/lib/energia/i18n/mercado-preco";
 import type { Idioma } from "@/lib/idioma";
@@ -92,21 +91,6 @@ export async function generateMetadata(_props: unknown, anterior: ResolvingMetad
     ),
     alternates: { canonical: "/setor-eletrico/pld" },
   }, anterior);
-}
-
-/** Capítulo da abertura que não é painel de evidência: linha fina, rótulo, título em serifa e o conteúdo; a âncora fica no bloco. */
-function Capitulo({ id, rotulo, titulo, children }: { id: string; rotulo: string; titulo: string; children: ReactNode }) {
-  return (
-    <Bloco id={id}>
-      <section aria-labelledby={`${id}-h`} className="border-t border-linha pt-6">
-        <p className="rotulo text-mineral">{rotulo}</p>
-        <h2 id={`${id}-h`} className="ed-h2 mt-1 max-w-3xl font-serif text-carvao">
-          {titulo}
-        </h2>
-        <div className="mt-6 space-y-6">{children}</div>
-      </section>
-    </Bloco>
-  );
 }
 
 function periodos(p: PldGold): PeriodoPld[] {
@@ -301,55 +285,54 @@ export default function PldPage() {
   const diarioDoFluxo = integra(pld) && diaDoFluxo ? pld.diario.find((x) => x.d === diaDoFluxo) : undefined;
   const sentidosNoDia = recHorario && diaDoFluxo ? horasPorSentidoNoDia(recHorario, diaDoFluxo) : [];
 
-  const faixaAbertura =
-    integra(pld) && extremos ? (
-      <FaixaMetricas
-        colunas={3}
-        rotulo={tx("Média diária do PLD: menor e maior entre os submercados e a distância entre elas", "Daily PLD average: lowest and highest among the submarkets and the distance between them")}
-        nota={
-          <>
-            <span className="font-medium text-carvao">{tx("Média diária:", "Daily average:")}</span> <PldTextoGold texto={pld.regras.media_diaria} regiao="pld-regra" />{" "}
-            {tx(
-              "Não existe um PLD único do Brasil: cada submercado tem o seu preço, e a média simples dos quatro não é publicada pela CCEE.",
-              "There is no single PLD for Brazil: each submarket has its own price, and CCEE does not publish the simple average of the four.",
-            )}
-          </>
-        }
-      >
-        {[
-          [tx("Menor média diária", "Lowest daily average"), extremos.menor] as const,
-          [tx("Maior média diária", "Highest daily average"), extremos.maior] as const,
-        ].map(([rotulo, e]) => {
-          const variacao = variacaoComumDoGrupo(medias, e.submercados);
-          return (
-            <Numero
-              key={rotulo}
-              variante="faixa"
-              rotulo={rotulo}
-              natureza="CALCULADO"
-              valor={e.valor}
-              formato="reais"
-              casas={2}
-              unidade="R$/MWh"
-              periodo={`${nomesDosSubmercados(e.submercados)}${e.submercados.length > 1 && extremos.distancia > 0 ? tx(" (mesmo valor)", " (same value)") : ""} · ${dataBR(pld.dia_referencia)}`}
-              cor={e.submercados.length === 1 ? COR_SM[e.submercados[0]] : undefined}
-              variacao={variacao === null ? undefined : { valor: variacao, casas: 2, sufixo: " R$/MWh", referencia: tx("em relação ao dia anterior", "relative to the previous day") }}
-            />
-          );
-        })}
-        <Numero
-          variante="faixa"
-          rotulo={tx("Distância entre regiões", "Distance between regions")}
-          natureza="CALCULADO"
-          valor={extremos.distancia}
-          formato="reais"
-          casas={2}
-          unidade="R$/MWh"
-          periodo={tx(`maior menos menor · ${dataBR(pld.dia_referencia)}`, `highest minus lowest · ${dataBR(pld.dia_referencia)}`)}
-          nota={referenciaDistancia ?? undefined}
-        />
-      </FaixaMetricas>
-    ) : null;
+  // abertura: a média diária do menor e do maior submercado (com os empates) e a distância entre eles, todos da mesma lista do gráfico
+  const fontePld = tx("CCEE, PLD horário", "CCEE, hourly PLD");
+  const numerosAbertura: NumeroProps[] =
+    integra(pld) && extremos
+      ? [
+          ...([
+            [tx("Menor média diária", "Lowest daily average"), extremos.menor] as const,
+            [tx("Maior média diária", "Highest daily average"), extremos.maior] as const,
+          ].map(([rotulo, e]): NumeroProps => {
+            const variacao = variacaoComumDoGrupo(medias, e.submercados);
+            return {
+              rotulo,
+              natureza: "CALCULADO",
+              valor: e.valor,
+              formato: "reais",
+              casas: 2,
+              unidade: "R$/MWh",
+              recorte: `${nomesDosSubmercados(e.submercados)}${e.submercados.length > 1 && extremos.distancia > 0 ? tx(" (mesmo valor)", " (same value)") : ""}`,
+              periodo: dataBR(pld.dia_referencia),
+              fonte: fontePld,
+              marcador: e.submercados.length === 1 ? (COR_SM[e.submercados[0]] as CorSerie) : undefined,
+              variacao: variacao === null ? undefined : { valor: variacao, casas: 2, unidade: "absoluta", base: tx("em relação ao dia anterior", "relative to the previous day") },
+            };
+          })),
+          {
+            rotulo: tx("Distância entre regiões", "Distance between regions"),
+            natureza: "CALCULADO",
+            valor: extremos.distancia,
+            formato: "reais",
+            casas: 2,
+            unidade: "R$/MWh",
+            recorte: tx("maior menos menor", "highest minus lowest"),
+            periodo: dataBR(pld.dia_referencia),
+            fonte: fontePld,
+            nota: referenciaDistancia ?? undefined,
+          },
+        ]
+      : [
+          {
+            rotulo: tx("Média diária do PLD", "Daily PLD average"),
+            natureza: "CALCULADO",
+            valor: null,
+            unidade: "R$/MWh",
+            periodo: tx("último dia publicado", "latest published day"),
+            fonte: fontePld,
+            motivoAusencia: tx("Sem dia com as 24 horas publicadas nos quatro submercados nesta publicação.", "No day with all 24 hours published in the four submarkets in this publication."),
+          },
+        ];
 
   // notas do painel de abertura: o que mudou (dia anterior e histórico da distância), como interpretar (regra e limites vigentes) e o que não concluir
   const oQueMudouPrecos = integra(pld) ? (
@@ -386,74 +369,123 @@ export default function PldPage() {
     </>
   );
 
+  // tabelas equivalentes e de conferência: as mesmas listas do gráfico, da faixa e do mapa, nunca outra conta
+  const colunasDia = [tx("Submercado", "Submarket"), tx("Média do dia (R$/MWh)", "Day average (R$/MWh)"), tx("Mínimo horário", "Hourly minimum"), tx("Máximo horário", "Hourly maximum"), tx("Vs. dia anterior (R$/MWh)", "Vs. previous day (R$/MWh)"), tx("Posição desde 2021", "Position since 2021")];
+  const linhasDia: CelulaTabela[][] = integra(pld)
+    ? pld.cartoes.map((c) => [
+        tx(c.nome, nomeSm(c.sm, "en")),
+        c.media_dia,
+        c.min_hora,
+        c.max_hora,
+        c.variacao_dia_anterior ? c.variacao_dia_anterior.abs : null,
+        c.posicao.percentil !== null ? tx(`percentil ${num(c.posicao.percentil, 1)} de ${num(c.posicao.n_dias, 0)} dias`, `percentile ${num(c.posicao.percentil, 1)} of ${num(c.posicao.n_dias, 0)} days`) : null,
+      ])
+    : [];
+  const curvaDoDia = integra(pld) ? pld.curva_horaria.horas : [];
+  const linhasFormacao: CelulaTabela[][] = ligacoes
+    ? nos.flatMap((n) =>
+        (ligacoes[n.id] ?? []).map((l) => [
+          n.titulo,
+          nos.find((x) => x.id === l.para)?.titulo ?? l.para,
+          TIPOS_RELACAO[l.tipo]?.rotulo ?? l.tipo,
+          l.estado === "CONFERIDO" ? tx("conferida em documento", "checked in a document") : tx("conferência documental pendente", "documentary check pending"),
+        ]),
+      )
+    : [];
+
   return (
     <>
       <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:pld" />
-      <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo
-          siglas={["CCEE", "CMO", "MWmed", "ENA", "EAR", "CVU", "ONS", "ANEEL", "REN"]}
-          titulo={tx("Quanto custa a energia no curto prazo?", "How much does energy cost in the short term?")}
-          lead={tx(
+      <PaginaPainel
+        rota="/setor-eletrico/pld"
+        idioma={idioma}
+        profundidade
+        // na abertura do PLD as páginas irmãs entram como capítulos dentro da primeira figura (PldCapitulos); a faixa só existe nas filhas
+        navegacaoLocal={<PldNavegacao atual="p008" />}
+        abertura={{
+          grupo: rotuloDoGrupo("precos-e-mercado"),
+          acento: "energia",
+          titulo: tx("Quanto custa a energia no curto prazo?", "How much does energy cost in the short term?"),
+          lead: tx(
             "O Preço de Liquidação das Diferenças (PLD), calculado pela CCEE para cada hora e para cada submercado: a média do último dia publicado e a distância entre as regiões.",
             "The spot price (PLD), calculated by CCEE for each hour and each submarket: the average for the latest published day and the distance between regions.",
-          )}
-          recorte={
-            integra(pld)
-              ? tx(`${dataBR(pld.dia_referencia)} · quatro submercados · médias diárias · R$/MWh nominais`, `${dataBR(pld.dia_referencia)} · four submarkets · daily averages · nominal R$/MWh`)
-              : undefined
-          }
-          fonte={tx("CCEE, PLD horário por submercado", "CCEE, hourly PLD by submarket")}
-          referencia={
-            integra(pld)
-              ? tx(
-                  `CCEE (PLD horário até ${horaLocal(pld.ultima_hora)})${integra(rede) ? `, ONS (intercâmbio entre subsistemas até ${dataBR(rede.dia_referencia)})` : ""}${limDet ? " e ANEEL (atos anuais dos limites do PLD)" : ""}; processado em ${carimbo(pld.gerado_em)}.`,
-                  `CCEE (hourly PLD through ${horaLocal(pld.ultima_hora)})${integra(rede) ? `, ONS (interchange between subsystems through ${dataBR(rede.dia_referencia)})` : ""}${limDet ? " and ANEEL (annual PLD limits acts)" : ""}; processed on ${carimbo(pld.gerado_em)}.`,
-                )
-              : undefined
-          }
-          datas={
-            integra(pld) ? (
-              <PldDatas
-                itens={[
-                  { rotulo: tx("PLD horário", "Hourly PLD"), ate: tx(`até ${horaLocal(pld.ultima_hora)}`, `through ${horaLocal(pld.ultima_hora)}`), natureza: "OBSERVADO" },
-                  { rotulo: tx("Média diária", "Daily average"), ate: dataBR(pld.dia_referencia), natureza: "CALCULADO" },
-                  {
-                    rotulo: tx("Intercâmbio entre subsistemas (mapa)", "Interchange between subsystems (map)"),
-                    ate: integra(rede) ? tx(`até ${dataBR(rede.dia_referencia)}`, `through ${dataBR(rede.dia_referencia)}`) : null,
-                    natureza: "OBSERVADO",
-                  },
-                  ...(integra(detalhe)
-                    ? [
-                        {
-                          rotulo: tx("CMO semanal (DECOMP)", "Weekly CMO (DECOMP)"),
-                          ate: tx(`até a semana de ${dataBR(detalhe.referencia.ultima_semana_decomp)}`, `through the week of ${dataBR(detalhe.referencia.ultima_semana_decomp)}`),
-                          natureza: "ESTIMADO" as const,
-                        },
-                      ]
-                    : []),
-                  ...(regimeVigente
-                    ? [{ rotulo: tx("Limites vigentes", "Limits in force"), ate: tx(`desde ${dataBR(regimeVigente.inicio)}`, `since ${dataBR(regimeVigente.inicio)}`), natureza: "OBSERVADO" as const }]
-                    : []),
-                ]}
-              />
-            ) : undefined
-          }
-          metricas={faixaAbertura}
-        />
-        <PldNavegacao atual="p008" />
-
-        <ModoProfundidade>
-          {/* 1. Os preços: a média do dia em cada submercado, a série horária, o dia em detalhe e a separação entre as regiões */}
-          <Bloco id="hoje">
+          ),
+          recorte: {
+            periodo: integra(pld) ? dataBR(pld.dia_referencia) : tx("dia não publicado nesta publicação", "day not published in this release"),
+            universo: tx("quatro submercados · médias diárias", "four submarkets · daily averages"),
+            unidade: tx("R$/MWh nominais", "nominal R$/MWh"),
+            fonte: tx("CCEE, PLD horário por submercado", "CCEE, hourly PLD by submarket"),
+          },
+          limite: tx(
+            "para onde o preço vai, nem quanto vem na conta de luz: o PLD não é a tarifa, e a média do dia esconde a variação das horas.",
+            "where the price is heading, nor how much comes on the electricity bill: the PLD is not the tariff, and the day's average hides the variation across hours.",
+          ),
+          fontesDatasSiglas: (
+            <>
+              {integra(pld) && (
+                <p className="t-meta text-mineral">
+                  <span className="font-medium text-carvao-muted">{tx("Fontes e datas de referência: ", "Sources and reference dates: ")}</span>
+                  {tx(
+                    `CCEE (PLD horário até ${horaLocal(pld.ultima_hora)})${integra(rede) ? `, ONS (intercâmbio entre subsistemas até ${dataBR(rede.dia_referencia)})` : ""}${limDet ? " e ANEEL (atos anuais dos limites do PLD)" : ""}; processado em ${carimbo(pld.gerado_em)}.`,
+                    `CCEE (hourly PLD through ${horaLocal(pld.ultima_hora)})${integra(rede) ? `, ONS (interchange between subsystems through ${dataBR(rede.dia_referencia)})` : ""}${limDet ? " and ANEEL (annual PLD limits acts)" : ""}; processed on ${carimbo(pld.gerado_em)}.`,
+                  )}
+                </p>
+              )}
+              {integra(pld) && (
+                <PldDatas
+                  itens={[
+                    { rotulo: tx("PLD horário", "Hourly PLD"), ate: tx(`até ${horaLocal(pld.ultima_hora)}`, `through ${horaLocal(pld.ultima_hora)}`), natureza: "OBSERVADO" },
+                    { rotulo: tx("Média diária", "Daily average"), ate: dataBR(pld.dia_referencia), natureza: "CALCULADO" },
+                    {
+                      rotulo: tx("Intercâmbio entre subsistemas (mapa)", "Interchange between subsystems (map)"),
+                      ate: integra(rede) ? tx(`até ${dataBR(rede.dia_referencia)}`, `through ${dataBR(rede.dia_referencia)}`) : null,
+                      natureza: "OBSERVADO",
+                    },
+                    ...(integra(detalhe)
+                      ? [
+                          {
+                            rotulo: tx("CMO semanal (DECOMP)", "Weekly CMO (DECOMP)"),
+                            ate: tx(`até a semana de ${dataBR(detalhe.referencia.ultima_semana_decomp)}`, `through the week of ${dataBR(detalhe.referencia.ultima_semana_decomp)}`),
+                            natureza: "ESTIMADO" as const,
+                          },
+                        ]
+                      : []),
+                    ...(regimeVigente
+                      ? [{ rotulo: tx("Limites vigentes", "Limits in force"), ate: tx(`desde ${dataBR(regimeVigente.inicio)}`, `since ${dataBR(regimeVigente.inicio)}`), natureza: "OBSERVADO" as const }]
+                      : []),
+                  ]}
+                />
+              )}
+              <LegendaDeSiglas siglas={["CCEE", "CMO", "MWmed", "ENA", "EAR", "CVU", "ONS", "ANEEL", "REN"]} />
+            </>
+          ),
+        }}
+        rotuloNumeros={tx("Média diária do PLD: menor e maior entre os submercados e a distância entre elas", "Daily PLD average: lowest and highest among the submarkets and the distance between them")}
+        numeros={numerosAbertura}
+        notaNumeros={
+          integra(pld) ? (
+            <>
+              <span className="font-medium text-carvao">{tx("Média diária:", "Daily average:")}</span> <PldTextoGold texto={pld.regras.media_diaria} regiao="pld-regra" />{" "}
+              {tx(
+                "Não existe um PLD único do Brasil: cada submercado tem o seu preço, e a média simples dos quatro não é publicada pela CCEE.",
+                "There is no single PLD for Brazil: each submarket has its own price, and CCEE does not publish the simple average of the four.",
+              )}
+            </>
+          ) : undefined
+        }
+        figuras={
+          <>
             {integra(pld) && extremos ? (
-              <PainelEvidencia
-                id="precos"
+              <FiguraAnalitica
+                id="hoje"
                 pergunta={tx("A média do dia em cada submercado, na mesma escala", "The day's average in each submarket, on the same scale")}
                 subtitulo={tx(
                   "Média das 24 horas de cada submercado no último dia publicado · R$/MWh nominais",
                   "Average of the 24 hours of each submarket on the latest published day · nominal R$/MWh",
                 )}
+                natureza="CALCULADO"
+                legivel={fonteLegivel}
                 porQueImporta={tx(
                   "O PLD valora as diferenças entre a energia contratada e a verificada; quando os submercados têm preços diferentes, a mesma diferença vale mais em uma região do que em outra. A média diária resume as 24 horas de cada região e permite compará-las na mesma escala, mas não substitui o perfil horário, que vem logo abaixo.",
                   "The PLD values the differences between contracted and verified energy; when submarkets have different prices, the same difference is worth more in one region than in another. The daily average summarizes the 24 hours of each region and allows them to be compared on the same scale, but it does not replace the hourly profile, which comes right below.",
@@ -461,8 +493,7 @@ export default function PldPage() {
                 oQueMudou={oQueMudouPrecos}
                 comoInterpretar={comoInterpretarPrecos}
                 naoConcluir={naoConcluirPrecos}
-                naoConcluirNoCorpo
-                proveniencia={provenienciaSemRessalvaObsoleta(pld.proveniencia.diario)}
+                proveniencia={provenienciaLegivel(provenienciaSemRessalvaObsoleta(pld.proveniencia.diario))}
                 extraFonte={<>{tx(`Captura primária de ${carimbo(pld.proveniencia.horario.capturado_em)}.`, `Primary capture of ${carimbo(pld.proveniencia.horario.capturado_em)}.`)}</>}
                 complementares={[
                   { rotulo: tx("Sobre o PLD horário", "On the hourly PLD"), p: provenienciaSemRessalvaObsoleta(pld.proveniencia.horario) },
@@ -477,27 +508,14 @@ export default function PldPage() {
                         { rotulo: tx("Sobre a diferença entre o maior e o menor PLD médio", "On the difference between the highest and the lowest average PLD"), p: rede.proveniencia.amplitude },
                       ]
                     : []),
-                ]}
-              >
-                <div className="space-y-6">
-                  {/* a faixa de métricas já traz a resposta em números: o gráfico vem primeiro e a resposta em palavras logo depois dele */}
-                  <div className="space-y-3">
-                    <GraficoBarras
-                      titulo={tx(`Média diária do PLD por submercado, ${dataBR(pld.dia_referencia)}`, `Daily PLD average by submarket, ${dataBR(pld.dia_referencia)}`)}
-                      dados={medias.map((m) => ({ id: m.id, rotulo: nomeSm(m.id), media: m.media }))}
-                      chaveCategoria="id"
-                      chaveRotulo="rotulo"
-                      series={[{ id: "media", rotulo: tx("Média diária", "Daily average"), cor: "var(--cor-energia)" }]} // i18n: dado
-                      unidade="R$/MWh"
-                      casas={2}
-                      orientacao="horizontal"
-                      rotulosValor
-                    />
-                    <p className="text-xs leading-relaxed text-carvao-muted" data-texto="empates-media-diaria">
-                      {tx("Escala iniciada em zero e igual para os quatro submercados.", "Scale starting at zero and the same for the four submarkets.")} {empates}
-                    </p>
-                  </div>
-
+                ].map((c) => ({ ...c, p: provenienciaLegivel(c.p) }))}
+                tabela={{
+                  titulo: tx(`Média diária do PLD por submercado, ${dataBR(pld.dia_referencia)} (R$/MWh)`, `Daily PLD average by submarket, ${dataBR(pld.dia_referencia)} (R$/MWh)`),
+                  colunas: [tx("Submercado", "Submarket"), tx("Média diária (R$/MWh)", "Daily average (R$/MWh)")],
+                  linhas: medias.map((m) => [nomeSm(m.id), m.media]),
+                  casas: [null, 2],
+                }}
+                leitura={
                   <RespostaCurta id="hoje" depois veredito={vereditoMediaDiaria(pld.dia_referencia, extremos)}>
                     <p>
                       <PldTextoGold texto={pld.regras.dia_referencia} regiao="pld-regra" />
@@ -512,74 +530,32 @@ export default function PldPage() {
                       )}
                     </p>
                   </RespostaCurta>
-
-                  <NotasDoPainel oQueMudou={oQueMudouPrecos} comoInterpretar={comoInterpretarPrecos} naoConcluir={naoConcluirPrecos} />
-
-                  <PldCapitulos />
-
-                  <SecaoDoPainel
-                    id="periodos"
-                    titulo={tx("Em que horas o preço sobe, e as regiões se separam?", "At what hours does the price rise, and do the regions diverge?")}
-                    lead={tx("PLD por submercado · R$/MWh nominais · hora local de Brasília.", "PLD by submarket · nominal R$/MWh · Brasília local time.")}
-                  >
-                    <PldPeriodos
-                      periodos={periodos(pld)}
-                      limiar={pld.limiar_diferenca}
-                      ponte={pontes}
-                      regimes={limDet?.regimes ?? []}
-                      fonte={tx("CCEE, PLD horário por submercado", "CCEE, hourly PLD by submarket")}
-                      versao={pld.dia_referencia}
-                      notaMenorValor={notaMenorValor}
-                    />
-                    <NotasDoPainel
-                      oQueMudou={
+                }
+                complemento={
+                  <>
+                    <TabelaDados
+                      id="dia-em-detalhe"
+                      recolhida={false}
+                      tituloVisivel={tx("O dia em detalhe, por submercado", "The day in detail, by submarket")}
+                      lead={tx(
+                        "Faixa horária observada, variação contra o dia anterior e posição da média entre as médias diárias desde 2021.",
+                        "Observed hourly range, change against the previous day and position of the average among the daily averages since 2021.",
+                      )}
+                      titulo={tx(`O dia em detalhe por submercado, ${dataBR(pld.dia_referencia)}`, `The day in detail by submarket, ${dataBR(pld.dia_referencia)}`)}
+                      colunas={colunasDia}
+                      linhas={linhasDia}
+                      casas={[null, 2, 2, 2, 2, null]}
+                      fixarPrimeiraColuna
+                      nota={
                         <>
-                          {tx(
-                            `Nos últimos 30 dias, ${pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença acima de ${reais(pld.limiar_diferenca)}/MWh entre submercados.`,
-                            `In the last 30 days, ${pld.periodos["30d"].diferenca.horas_acima_limiar} hours had a difference above ${reais(pld.limiar_diferenca)}/MWh between submarkets.`,
-                          )}
-                        </>
-                      }
-                      comoInterpretar={
-                        <>
-                          {tx(
-                            "Alterne os períodos. O dia de referência, 7 e 30 dias mostram horas; 12 meses mostra médias diárias; o histórico, médias mensais desde 2021.",
-                            "Switch between periods. The reference day, 7 and 30 days show hours; 12 months shows daily averages; the history, monthly averages since 2021.",
-                          )}
-                        </>
-                      }
-                      naoConcluir={
-                        <>
-                          {tx(
-                            "Uma posição alta ou baixa no histórico não diz para onde o preço vai. Anos diferentes têm limites regulatórios diferentes (piso e tetos de cada ano, com o ato da ANEEL, no modo Auditar e na página de limites).",
-                            "A high or low position in the history does not say where the price is heading. Different years have different regulatory limits (each year's floor and caps, with the ANEEL act, in Audit mode and on the limits page).",
-                          )}
-                        </>
-                      }
-                    />
-                    <p className="text-sm">
-                      <Link href={`${rotaPainel("p010")}#p010`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                        {perguntaPainel("p010")} {tx("Calendário e permanência no piso e nos tetos", "Calendar and time at the floor and caps")}
-                      </Link>
-                    </p>
-                  </SecaoDoPainel>
-
-                  <SecaoDoPainel
-                    id="dia-em-detalhe"
-                    titulo={tx("O dia em detalhe, por submercado", "The day in detail, by submarket")}
-                    lead={tx(
-                      "Faixa horária observada, variação contra o dia anterior e posição da média entre as médias diárias desde 2021.",
-                      "Observed hourly range, change against the previous day and position of the average among the daily averages since 2021.",
-                    )}
-                  >
-                    <CartoesPld pld={pld} />
-                    <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted">
                       <span className="rotulo mr-1 text-mineral">{tx("O que não é possível concluir:", "What cannot be concluded:")}</span>
                       {tx(
                         "a posição no histórico não diz para onde o preço vai, e a faixa horária mostra os extremos de um único dia. Faixa horária: valores observados; média, variação e percentil: calculados.",
                         "the position in the history does not say where the price is heading, and the hourly range shows the extremes of a single day. Hourly range: observed values; average, change and percentile: calculated.",
                       )}
-                    </p>
+                        </>
+                      }
+                    />
                     {textoRegimes && (
                       <p className="max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-nota="nominal-e-regimes">
                         <span className="rotulo mr-1 text-mineral">{tx("Percentil e faixas:", "Percentile and bands:")}</span>
@@ -607,13 +583,131 @@ export default function PldPage() {
                         {perguntaPainel("p011")} {tx("Percentis da mesma época e médias ponderadas", "Percentiles for the same time of year and weighted averages")}
                       </Link>
                     </p>
-                  </SecaoDoPainel>
+                    <PldCapitulos />
+                  </>
+                }
+                seguir={<PldSeguir ancora="hoje" proximo={proximoPainel("p008")} downloads={pld.downloads} />}
+              >
+                <GraficoBarras
+                  titulo={tx(`Média diária do PLD por submercado, ${dataBR(pld.dia_referencia)}`, `Daily PLD average by submarket, ${dataBR(pld.dia_referencia)}`)}
+                  series={[{ id: "media", nome: tx("Média diária", "Daily average"), cor: "var(--cor-energia)", pontos: medias.map((m) => ({ x: m.id, rotulo: nomeSm(m.id), y: m.media })) }]} // i18n: dado
+                  eixoY={{ unidade: "R$/MWh", zero: true, casas: 2 }}
+                  orientacao="horizontal"
+                  rotulosValor
+                />
+                <p className="t-meta mt-3 text-carvao-muted" data-texto="empates-media-diaria">
+                  {tx("Escala iniciada em zero e igual para os quatro submercados.", "Scale starting at zero and the same for the four submarkets.")} {empates}
+                </p>
+              </FiguraAnalitica>
+            ) : (
+              <Recolhido id="hoje" aberto nivelTitulo={2} titulo={tx("PLD indisponível", "PLD unavailable")} resumo={tx("Os preços do último dia não estão nesta publicação.", "The latest day's prices are not in this release.")}>
+                <Indisponivel
+                  titulo={tx("PLD indisponível", "PLD unavailable")}
+                  motivo={pld?.motivo ? <TrechoPortugues regiao="pld-motivo">{pld.motivo}</TrechoPortugues> : tx("Os dados processados do PLD não foram gerados.", "The processed PLD data were not generated.")}
+                />
+                <div className="mt-6">
+                  <PldCapitulos />
+                </div>
+              </Recolhido>
+            )}
 
-                  {/* a separação entre as regiões: o mapa, o texto que a explica e a série da distância entre o maior e o menor PLD médio */}
-                  <SecaoDoPainel id="submercados" titulo={tx("Por que os preços dos submercados podem diferir?", "Why can submarket prices differ?")}>
-                    {integra(rede) ? (
-                      <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-                        <div className="min-w-0">
+            {integra(pld) && (
+              <FiguraAnalitica
+                id="periodos"
+                pergunta={tx("Em que horas o preço sobe, e as regiões se separam?", "At what hours does the price rise, and do the regions diverge?")}
+                subtitulo={tx("PLD por submercado · R$/MWh nominais · hora local de Brasília", "PLD by submarket · nominal R$/MWh · Brasília local time")}
+                natureza="OBSERVADO"
+                legivel={fonteLegivel}
+                proveniencia={provenienciaLegivel(provenienciaSemRessalvaObsoleta(pld.proveniencia.horario))}
+                complementares={pld.proveniencia.mensal ? [{ rotulo: tx("Sobre as médias mensais", "On the monthly averages"), p: provenienciaLegivel(provenienciaSemRessalvaObsoleta(pld.proveniencia.mensal)) }] : []}
+                oQueMudou={
+                        <>
+                          {tx(
+                            `Nos últimos 30 dias, ${pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença acima de ${reais(pld.limiar_diferenca)}/MWh entre submercados.`,
+                            `In the last 30 days, ${pld.periodos["30d"].diferenca.horas_acima_limiar} hours had a difference above ${reais(pld.limiar_diferenca)}/MWh between submarkets.`,
+                          )}
+                        </>
+                }
+                comoInterpretar={
+                        <>
+                          {tx(
+                            "Alterne os períodos. O dia de referência, 7 e 30 dias mostram horas; 12 meses mostra médias diárias; o histórico, médias mensais desde 2021.",
+                            "Switch between periods. The reference day, 7 and 30 days show hours; 12 months shows daily averages; the history, monthly averages since 2021.",
+                          )}
+                        </>
+                }
+                naoConcluir={
+                        <>
+                          {tx(
+                            "Uma posição alta ou baixa no histórico não diz para onde o preço vai. Anos diferentes têm limites regulatórios diferentes (piso e tetos de cada ano, com o ato da ANEEL, no modo Auditar e na página de limites).",
+                            "A high or low position in the history does not say where the price is heading. Different years have different regulatory limits (each year's floor and caps, with the ANEEL act, in Audit mode and on the limits page).",
+                          )}
+                        </>
+                }
+                tabela={{
+                  titulo: tx(`PLD horário por submercado em ${dataBR(pld.curva_horaria.dia)} (R$/MWh; os outros períodos estão no arquivo)`, `Hourly PLD by submarket on ${dataBR(pld.curva_horaria.dia, "en")} (R$/MWh; the other periods are in the file)`),
+                  colunas: [tx("Hora", "Hour"), "SE/CO", tx("Sul", "South"), tx("Nordeste", "Northeast"), tx("Norte", "North")],
+                  linhas: curvaDoDia.map((r) => [`${r.h}h`, r.SE, r.S, r.NE, r.N]),
+                  casas: [null, 2, 2, 2, 2],
+                  limite: 24,
+                }}
+                complemento={
+                    <p className="text-sm">
+                      <Link href={`${rotaPainel("p010")}#p010`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
+                        {perguntaPainel("p010")} {tx("Calendário e permanência no piso e nos tetos", "Calendar and time at the floor and caps")}
+                      </Link>
+                    </p>
+                }
+              >
+                    <PldPeriodos
+                      periodos={periodos(pld)}
+                      limiar={pld.limiar_diferenca}
+                      ponte={pontes}
+                      regimes={limDet?.regimes ?? []}
+                      fonte={tx("CCEE, PLD horário por submercado", "CCEE, hourly PLD by submarket")}
+                      versao={pld.dia_referencia}
+                      notaMenorValor={notaMenorValor}
+                    />
+              </FiguraAnalitica>
+            )}
+
+            {integra(pld) && integra(rede) ? (
+              <FiguraAnalitica
+                id="submercados"
+                pergunta={tx("Por que os preços dos submercados podem diferir?", "Why can submarket prices differ?")}
+                subtitulo={tx(
+                  `PLD médio do dia por submercado e fluxo médio entre as regiões · R$/MWh e MWmed · ${dataBR(rede.dia_referencia)}`,
+                  `Day's average PLD by submarket and average flow between regions · R$/MWh and MWavg · ${dataBR(rede.dia_referencia)}`,
+                )}
+                natureza="OBSERVADO"
+                legivel={fonteLegivel}
+                proveniencia={provenienciaLegivel(rede.proveniencia.fluxo)}
+                complementares={[{ rotulo: tx("Sobre o PLD do dia", "On the day's PLD"), p: provenienciaLegivel(provenienciaSemRessalvaObsoleta(pld.proveniencia.diario)) }]}
+                naoConcluir={tx(
+                  "O mapa não mostra limites de transferência nem explica diferenças de preço.",
+                  "The map does not show transfer limits or explain price differences.",
+                )}
+                tabela={{
+                  titulo: tx("Dados do mapa: PLD médio por submercado e fluxo por fronteira", "Map data: average PLD by submarket and flow by border"),
+                  colunas: [tx("Item", "Item"), tx("Valor", "Value"), tx("Unidade", "Unit"), tx("Dia", "Day")],
+                  linhas: [
+                    ...pld.cartoes.map((c) => [tx(`PLD médio, ${c.nome}`, `Average PLD, ${nomeSm(c.sm)}`), c.media_dia, "R$/MWh", dataBR(pld.dia_referencia)] as CelulaTabela[]),
+                    ...rede.fronteiras.map(
+                      (f) =>
+                        [
+                          tx(`Fluxo ${f.nome}`, `Flow between ${nomeSm(f.de, idioma)} and ${nomeSm(f.para, idioma)}`),
+                          f.fluxo_dia === null ? null : num(f.fluxo_dia, 0),
+                          tx("MWmed", "MWavg"),
+                          dataBR(rede.dia_referencia),
+                        ] as CelulaTabela[],
+                    ),
+                  ],
+                  casas: [null, 2, null, null],
+                }}
+              >
+                <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                  <div className="min-w-0">
+                    <div data-mapa-legado="submercados">
                           <MapaSubmercados
                             fluxos={rede.fronteiras.map((f) => ({ de: f.de, para: f.para, fluxo: f.fluxo_dia }))}
                             precos={
@@ -624,6 +718,7 @@ export default function PldPage() {
                             diaFluxo={dataBR(rede.dia_referencia)}
                             diaPreco={diarioDoFluxo ? dataBR(rede.dia_referencia) : dataBR(pld.dia_referencia)}
                           />
+                    </div>
                           {diarioDoFluxo && rede.dia_referencia !== pld.dia_referencia && (
                             <p className="mt-2 text-xs leading-relaxed text-carvao-muted" data-texto="mapa-mesmo-dia">
                               {tx(
@@ -645,32 +740,7 @@ export default function PldPage() {
                               </ul>
                             </div>
                           )}
-                          <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-mineral">
-                            <span>
-                              {tx(
-                                "Fonte: CCEE (PLD) e ONS (intercâmbio). O mapa não mostra limites de transferência nem explica diferenças de preço.",
-                                "Source: CCEE (PLD) and ONS (interchange). The map does not show transfer limits or explain price differences.",
-                              )}
-                            </span>
-                          </div>
-                          <TabelaDados
-                            titulo={tx("Dados do mapa: PLD médio por submercado e fluxo por fronteira", "Map data: average PLD by submarket and flow by border")}
-                            colunas={[tx("Item", "Item"), tx("Valor", "Value"), tx("Unidade", "Unit"), tx("Dia", "Day")]}
-                            linhas={[
-                              ...pld.cartoes.map((c) => [tx(`PLD médio, ${c.nome}`, `Average PLD, ${nomeSm(c.sm)}`), c.media_dia, "R$/MWh", dataBR(pld.dia_referencia)] as (string | number | null)[]),
-                              ...rede.fronteiras.map(
-                                (f) =>
-                                  [
-                                    tx(`Fluxo ${f.nome}`, `Flow between ${nomeSm(f.de, idioma)} and ${nomeSm(f.para, idioma)}`),
-                                    f.fluxo_dia === null ? null : num(f.fluxo_dia, 0),
-                                    tx("MWmed", "MWavg"),
-                                    dataBR(rede.dia_referencia),
-                                  ] as (string | number | null)[],
-                              ),
-                            ]}
-                            casas={[null, 2, null, null]}
-                          />
-                        </div>
+                  </div>
                         <div className="min-w-0 space-y-4 leading-relaxed text-carvao">
                           <p>
                             {tx(
@@ -717,134 +787,67 @@ export default function PldPage() {
                             <SeloNatureza natureza="CALCULADO" />
                           </p>
                         </div>
-                      </div>
-                    ) : (
-                      <Indisponivel
-                        titulo={tx("Dados de rede indisponíveis", "Grid data unavailable")}
-                        motivo={tx("As golds de rede ou de PLD não foram geradas nesta publicação.", "The grid or PLD gold files were not generated in this publication.")}
-                      />
-                    )}
-                  </SecaoDoPainel>
+                </div>
+              </FiguraAnalitica>
+            ) : (
+              <Recolhido id="submercados" aberto nivelTitulo={2} titulo={tx("Por que os preços dos submercados podem diferir?", "Why can submarket prices differ?")} resumo={tx("Dados de rede indisponíveis nesta publicação.", "Grid data unavailable in this release.")}>
+                <Indisponivel
+                  titulo={tx("Dados de rede indisponíveis", "Grid data unavailable")}
+                  motivo={tx("As golds de rede ou de PLD não foram geradas nesta publicação.", "The grid or PLD gold files were not generated in this publication.")}
+                />
+              </Recolhido>
+            )}
 
-                  {integra(rede) && (
-                    <SecaoDoPainel id="amplitude" titulo={tx("Quando os submercados se separaram no último ano?", "When did the submarkets diverge in the last year?")}>
-                      <GraficoLinhas
-                        titulo={tx("Diferença entre o maior e o menor PLD médio diário", "Difference between the highest and the lowest daily average PLD")}
-                        dados={amplitude}
-                        chaveX="x"
-                        series={[{ id: "amp", rotulo: tx("Diferença máx.−mín.", "Max−min difference"), cor: "var(--cor-energia)" }]} // i18n: dado
-                        unidade="R$/MWh"
-                        casas={2}
-                        zeroNoEixo
-                      />
-                      <NotasDoPainel
-                        oQueMudou={<>{textoAmplitude(rede.resumo_amplitude)}</>}
-                        comoInterpretar={
+            {integra(rede) && (
+              <FiguraAnalitica
+                id="amplitude"
+                pergunta={tx("Quando os submercados se separaram no último ano?", "When did the submarkets diverge in the last year?")}
+                subtitulo={tx("Diferença entre o maior e o menor PLD médio diário · R$/MWh · quatro submercados", "Difference between the highest and the lowest daily average PLD · R$/MWh · four submarkets")}
+                natureza="CALCULADO"
+                legivel={fonteLegivel}
+                proveniencia={provenienciaLegivel(rede.proveniencia.amplitude)}
+                oQueMudou={<>{textoAmplitude(rede.resumo_amplitude)}</>}
+                comoInterpretar={
                           <>
                             {tx(
                               "Zero significa os quatro submercados com a mesma média diária. A série usa médias diárias; diferenças de poucas horas podem sumir na média.",
                               "Zero means the four submarkets had the same daily average. The series uses daily averages; differences lasting a few hours can vanish in the average.",
                             )}
                           </>
-                        }
-                        naoConcluir={
+                }
+                naoConcluir={
                           <>
                             {tx(
                               "A série não identifica qual fronteira ou linha causou a separação, nem se o limite de transferência foi atingido: os limites não estão integrados. A causa de uma separação não é atribuída.",
                               "The series does not identify which border or line was behind the divergence, nor whether the transfer limit was reached: the limits are not integrated. No reason is attributed to a divergence.",
                             )}
                           </>
-                        }
-                      />
+                }
+                tabela={{
+                  titulo: tx("Diferença entre o maior e o menor PLD médio diário (R$/MWh)", "Difference between the highest and the lowest daily average PLD (R$/MWh)"),
+                  colunas: [tx("Dia", "Day"), tx("Diferença (R$/MWh)", "Difference (R$/MWh)")],
+                  linhas: amplitude.map((a) => [dataBR(a.x), a.amp]),
+                  casas: [null, 2],
+                }}
+                complemento={
                       <p className="text-sm">
                         <Link href={`${rotaPainel("p012")}#p012`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
                           {perguntaPainel("p012")} {tx("Separação hora a hora, por par e com o fluxo na mesma hora", "Divergence hour by hour, by pair and with the flow in the same hour")}
                         </Link>
                       </p>
-                    </SecaoDoPainel>
-                  )}
-
-                  <SecaoDoPainel
-                    id="regras"
-                    titulo={tx("Como classificamos", "How we classify")}
-                    nivel="analisar"
-                    lead={tx(
-                      "Nenhuma classificação sem regra. Estas são as regras que produzem cada resposta desta seção.",
-                      "No classification without a rule. These are the rules that produce each answer in this section.",
-                    )}
-                  >
-                    <dl className="grid gap-4 md:grid-cols-2">
-                      {Object.entries(pld.regras).map(([k, v]) => (
-                        <div key={k}>
-                          <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
-                          <dd className="mt-1 text-sm leading-relaxed text-carvao">
-                            <PldTextoGold texto={semRessalvaDeLimitesNaoAuditados(v)} regiao="pld-regra" />
-                          </dd>
-                        </div>
-                      ))}
-                    </dl>
-                  </SecaoDoPainel>
-
-                  {limDet && (
-                    <SecaoDoPainel id="limites-por-vigencia" titulo={tx("Limites oficiais do PLD por vigência", "Official PLD limits by period in force")} nivel="auditar">
-                      <p className="max-w-prose2 text-sm text-carvao-muted">
-                        {tx(
-                          "Piso, teto horário e teto estrutural fixados nos atos anuais da ANEEL, em vigor em cada trecho; o último trecho vai até o dia de referência.",
-                          "Floor, hourly cap and structural cap set in the annual ANEEL acts, in force in each period; the last period runs until the reference day.",
-                        )}{" "}
-                        <TrechoPortugues regiao="pld-atos">{limDet.conferencia_atos.leitura}</TrechoPortugues>
-                      </p>
-                      <TabelaDados
-                        titulo={tx("Limites do PLD por trecho de vigência (R$/MWh)", "PLD limits by period in force (R$/MWh)")}
-                        colunas={[tx("Início", "Start"), tx("Fim", "End"), tx("Piso", "Floor"), tx("Teto horário", "Hourly cap"), tx("Teto estrutural", "Structural cap"), tx("Ato do piso", "Floor act")]}
-                        linhas={limDet.regimes.map((r) => [dataBR(r.inicio), dataBR(r.fim), r.pld_min, r.pld_max_horario, r.pld_max_estrutural, r.ato_pld_min])}
-                        casas={[null, null, 2, 2, 2, null]}
-                        idiomaTexto={[null, null, null, null, null, "nome"]}
-                      />
-                    </SecaoDoPainel>
-                  )}
-                  <SecaoDoPainel id="menor-valor-por-ano" titulo={tx("Menor valor horário observado por ano", "Lowest hourly value observed by year")} nivel="auditar">
-                    <p className="max-w-prose2 text-sm text-carvao-muted">
-                      {tx(
-                        `Referência descritiva, nunca usada como piso: o piso regulatório é o do ato vigente${limDet ? " (tabela acima)" : ""}.`,
-                        `Descriptive reference, never used as a floor: the regulatory floor is the one in the act in force${limDet ? " (table above)" : ""}.`,
-                      )}
-                    </p>
-                    <TabelaDados
-                      titulo={tx("Menor valor horário observado por ano e submercado", "Lowest hourly value observed by year and submarket")}
-                      colunas={[tx("Ano", "Year"), tx("Até", "Through"), tx("SE/CO", "SE/CW"), tx("Sul", "South"), tx("Nordeste", "Northeast"), tx("Norte", "North")]}
-                      linhas={pld.menor_valor_ano.map((m) => [m.ano, dataBR(m.ate), m.SE, m.S, m.NE, m.N])}
-                      casas={[null, null, 2, 2, 2, 2]}
-                    />
-                    <p className="text-xs text-mineral [overflow-wrap:anywhere]">
-                      {tx<ReactNode>(
-                        `Versão dos dados ${pld.snapshot.id ? snapshotLegivel(pld.snapshot.id) : "sem identificador"} · sha256 ${pld.snapshot.sha256} · série de ${horaLocal(pld.primeira_hora)} a ${horaLocal(pld.ultima_hora)} (horário de Brasília)`,
-                        <>
-                          Data version {pld.snapshot.id ? snapshotLegivel(pld.snapshot.id) : "no identifier"} · sha256 {identificador(pld.snapshot.sha256, idioma)} · series from {horaLocal(pld.primeira_hora)} to{" "}
-                          {horaLocal(pld.ultima_hora)} (Brasília time)
-                        </>,
-                      )}
-                    </p>
-                  </SecaoDoPainel>
-
-                  <PldSeguir ancora="hoje" proximo={proximoPainel("p008")} downloads={pld.downloads} />
-                </div>
-              </PainelEvidencia>
-            ) : (
-              <>
-                <Indisponivel
-                  titulo={tx("PLD indisponível", "PLD unavailable")}
-                  motivo={pld?.motivo ? <TrechoPortugues regiao="pld-motivo">{pld.motivo}</TrechoPortugues> : tx("Os dados processados do PLD não foram gerados.", "The processed PLD data were not generated.")}
+                }
+              >
+                <GraficoLinhas
+                  titulo={tx("Diferença entre o maior e o menor PLD médio diário", "Difference between the highest and the lowest daily average PLD")}
+                  series={[{ id: "amp", nome: tx("Diferença máx.−mín.", "Max−min difference"), cor: "var(--cor-energia)", pontos: amplitude.map((a) => ({ x: a.x, y: a.amp })) }]} // i18n: dado
+                  eixoY={{ unidade: "R$/MWh", zero: true, casas: 2 }}
                 />
-                <div className="mt-6">
-                  <PldCapitulos />
-                </div>
-              </>
+              </FiguraAnalitica>
             )}
-          </Bloco>
 
-          {/* 2. A aula: o que é o PLD, o que ele não é e as bases conferidas */}
-          <Capitulo id="o-que-e" rotulo={tx("Entenda em 90 segundos", "Understand it in 90 seconds")} titulo={tx("O que é o PLD, e o que ele não é", "What the PLD is, and what it is not")}>
+            {/* a aula: o que é o PLD, o que ele não é e as bases conferidas; capítulo aberto, que o leitor pode recolher */}
+            <Recolhido id="o-que-e" aberto nivelTitulo={2} titulo={tx("O que é o PLD, e o que ele não é", "What the PLD is, and what it is not")} resumo={tx("Entenda em 90 segundos", "Understand it in 90 seconds")}>
+              <div className="space-y-6">
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
               <div>
                 {/* Entender: a resposta curta. A norma, as citações e a leitura usual do setor estão em Analisar */}
@@ -1016,23 +1019,29 @@ export default function PldPage() {
                 </footer>
               </blockquote>
             )}
-          </Capitulo>
+              </div>
+            </Recolhido>
 
-          {/* 3. De onde vem o preço: painel P008 (conceito, formação e exemplo de liquidação) */}
-          <Bloco id="formacao">
-            {conceitoDet && ligacoes && resumoLig && docs && integra(pld) ? (
-              <PainelEvidencia
-                id="p008"
-                pergunta={perguntaPainel("p008")}
-                subtitulo={tx(
-                  "Conceito nas normas vigentes, formação do preço em etapas e exemplo sintético de liquidação · R$/MWh",
-                  "Concept in the rules in force, price formation in stages and a synthetic settlement example · R$/MWh",
-                )}
-                porQueImporta={tx(
-                  "O PLD não é tarifa nem cotação de bolsa: é o preço que valora as diferenças entre o contratado e o verificado no Mercado de Curto Prazo, calculado a partir do custo marginal dos modelos oficiais e limitado pela ANEEL. Saber de onde ele vem ajuda a não confundir regra com causa.",
-                  "The PLD is neither a tariff nor an exchange quote: it is the price that values the differences between contracted and verified energy in the Short-Term Market, calculated from the marginal cost of the official models and bounded by ANEEL. Knowing where it comes from helps avoid confusing a rule with a driver.",
-                )}
-                oQueMudou={
+            {/* de onde vem o preço: a formação em etapas (P008), o exemplo de liquidação e o CMO */}
+            <Recolhido id="formacao" aberto nivelTitulo={2} titulo={tx("De onde vem o preço", "Where the price comes from")} resumo={tx("A formação do preço em etapas, um exemplo sintético de liquidação e o CMO na mesma semana.", "Price formation in stages, a synthetic settlement example and the CMO in the same week.")}>
+              <div className="space-y-10">
+                {conceitoDet && ligacoes && resumoLig && docs && integra(pld) ? (
+                  <>
+                    <FiguraAnalitica
+                      id="p008"
+                      nivelTitulo={3}
+                      pergunta={perguntaPainel("p008")}
+                      subtitulo={tx(
+                        "Conceito nas normas vigentes, formação do preço em etapas e exemplo sintético de liquidação · R$/MWh",
+                        "Concept in the rules in force, price formation in stages and a synthetic settlement example · R$/MWh",
+                      )}
+                      natureza="OBSERVADO"
+                      legivel={fonteLegivel}
+                      porQueImporta={tx(
+                        "O PLD não é tarifa nem cotação de bolsa: é o preço que valora as diferenças entre o contratado e o verificado no Mercado de Curto Prazo, calculado a partir do custo marginal dos modelos oficiais e limitado pela ANEEL. Saber de onde ele vem ajuda a não confundir regra com causa.",
+                        "The PLD is neither a tariff nor an exchange quote: it is the price that values the differences between contracted and verified energy in the Short-Term Market, calculated from the marginal cost of the official models and bounded by ANEEL. Knowing where it comes from helps avoid confusing a rule with a driver.",
+                      )}
+                      oQueMudou={
                   <>
                     {tx(
                       `Passagens conferidas nos documentos baixados até ${dataBR(detalhe!.gerado_em.slice(0, 10))}: ${resumoLig.conferidas} de ${resumoLig.total} ligações do diagrama conferidas.`,
@@ -1045,7 +1054,7 @@ export default function PldPage() {
                         )
                       : ""}
                   </>
-                }
+                      }
                 comoInterpretar={tx(
                   "Toque em cada etapa do diagrama: o detalhe, ao lado do diagrama em tela larga e abaixo dele no celular, diz o que ela é, o último dado publicado quando há dado integrado e cada ligação com a etapa seguinte, com o tipo da relação e o trecho do documento que a sustenta. Ligação marcada como pendente tem só base editorial.",
                   "Tap each stage of the diagram: the detail, next to the diagram on a wide screen and below it on a phone, says what the stage is, the latest published data when data is integrated and each link to the next stage, with the type of relation and the document excerpt that supports it. A link marked as pending has only an editorial basis.",
@@ -1054,12 +1063,20 @@ export default function PldPage() {
                   "O exemplo de liquidação é sintético: não reproduz a contabilização de nenhum agente nem de nenhum mês, e a convenção de crédito e débito é do exemplo, porque as regras algébricas da CCEE estão inacessíveis. O diagrama descreve regras e entradas dos modelos; não mede quanto cada etapa pesou no preço de uma hora.",
                   "The settlement example is synthetic: it does not reproduce the accounting of any agent or any month, and the credit and debit convention belongs to the example, since the CCEE algebraic rules are inaccessible. The diagram describes rules and model inputs; it does not measure how much each stage weighed on the price of an hour.",
                 )}
-                proveniencia={pld.proveniencia.horario}
-              >
-                <div className="space-y-6">
+                      proveniencia={provenienciaLegivel(pld.proveniencia.horario)}
+                      tabela={{
+                        titulo: tx("Ligações do diagrama da formação do PLD e a conferência de cada uma", "Links in the PLD formation diagram and the check of each one"),
+                        colunas: [tx("Etapa", "Stage"), tx("Liga-se a", "Links to"), tx("Tipo de relação", "Type of relation"), tx("Conferência", "Check")],
+                        linhas: linhasFormacao,
+                        limite: Math.max(30, linhasFormacao.length),
+                      }}
+                      leitura={
                   <RespostaCurta id="p008" veredito={vereditoP008(conceitoDet)}>
                     {respostaP008(conceitoDet, ligacoes)}
                   </RespostaCurta>
+                      }
+                      complemento={
+                        <>
                   <PldRecorte
                     periodo={tx(
                       `Normas e procedimentos vigentes, conferidos nas capturas mais recentes; exemplo com o PLD de ${exemplo ? `${dataBR(exemplo.pld.hora)} às ${exemplo.pld.hora.slice(11, 13)}h` : "uma hora real"}`,
@@ -1074,10 +1091,16 @@ export default function PldPage() {
                       return f ? <PldPassagem key={id} p={f} compacta /> : null;
                     })}
                   </div>
-
-                  <SecaoDoPainel id="diagrama-formacao" titulo={tx("O PLD emerge de um sistema, não de uma variável", "The PLD emerges from a system, not from a single variable")}>
-                    <PldFormacao nos={nos} ligacoes={ligacoes} />
-                  </SecaoDoPainel>
+                        </>
+                      }
+                      seguir={<PldSeguir ancora="p008" proximo={proximoPainel("p008")} downloads={detalhe!.downloads.filter((d) => /cmo_horario/.test(d.url))} />}
+                    >
+                      <SecaoDoPainel id="diagrama-formacao" titulo={tx("O PLD emerge de um sistema, não de uma variável", "The PLD emerges from a system, not from a single variable")}>
+                        <div data-figura-legado="formacao">
+                          <PldFormacao nos={nos} ligacoes={ligacoes} />
+                        </div>
+                      </SecaoDoPainel>
+                    </FiguraAnalitica>
 
                   {exemplo && (
                     <SecaoDoPainel
@@ -1100,55 +1123,32 @@ export default function PldPage() {
                         <p className="text-sm text-carvao-muted">
                           {tx("Regra do exemplo:", "Example rule:")} <PldTextoGold texto={exemplo.formula} regiao="pld-exemplo" />.
                         </p>
-                        <div className="tabela-scroll" tabIndex={0} role="region" aria-label={tx("Exemplo sintético de liquidação (tabela rolável)", "Synthetic settlement example (scrollable table)")}>
-                          <table className="w-full min-w-[34rem] text-sm tabular-nums">
-                            <caption className="sr-only">
-                              {tx("Exemplo sintético de liquidação: quantidades hipotéticas e PLD real da hora", "Synthetic settlement example: hypothetical quantities and the real PLD of the hour")}
-                            </caption>
-                            <thead>
-                              <tr className="border-b border-linha text-left text-xs text-mineral">
-                                <th scope="col" className="py-2 pr-3 font-normal">
-                                  {tx("Agente hipotético", "Hypothetical agent")}
-                                </th>
-                                <th scope="col" className="py-2 pr-3 text-right font-normal">
-                                  {tx("Compras contratadas (MWh)", "Contracted purchases (MWh)")}
-                                </th>
-                                <th scope="col" className="py-2 pr-3 text-right font-normal">
-                                  {tx("Vendas contratadas (MWh)", "Contracted sales (MWh)")}
-                                </th>
-                                <th scope="col" className="py-2 pr-3 text-right font-normal">
-                                  {tx("Geração verificada (MWh)", "Verified generation (MWh)")}
-                                </th>
-                                <th scope="col" className="py-2 pr-3 text-right font-normal">
-                                  {tx("Consumo verificado (MWh)", "Verified consumption (MWh)")}
-                                </th>
-                                <th scope="col" className="py-2 pr-3 text-right font-normal">
-                                  {tx("Diferença (MWh)", "Difference (MWh)")}
-                                </th>
-                                <th scope="col" className="py-2 text-right font-normal">
-                                  {tx("Valor no MCP", "Value in the MCP")}
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {exemplo.agentes.map((a) => (
-                                <tr key={a.id} className="border-b border-linha">
-                                  <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao">
-                                    <PldTextoGold texto={a.rotulo} regiao="pld-exemplo" />
-                                  </th>
-                                  <td className="py-2 pr-3 text-right">{num(a.compras_contratadas_mwh, 0)}</td>
-                                  <td className="py-2 pr-3 text-right">{num(a.vendas_contratadas_mwh, 0)}</td>
-                                  <td className="py-2 pr-3 text-right">{num(a.geracao_verificada_mwh, 0)}</td>
-                                  <td className="py-2 pr-3 text-right">{num(a.consumo_verificado_mwh, 0)}</td>
-                                  <td className="py-2 pr-3 text-right">{num(a.diferenca_mwh, 0)}</td>
-                                  <td className="py-2 text-right">
-                                    {reais(a.valor_rs)} (<PldTextoGold texto={a.resultado} regiao="pld-exemplo" />)
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
+                        <TabelaDados
+                          recolhida={false}
+                          titulo={tx("Exemplo sintético de liquidação: quantidades hipotéticas e PLD real da hora", "Synthetic settlement example: hypothetical quantities and the real PLD of the hour")}
+                          colunas={[
+                            tx("Agente hipotético", "Hypothetical agent"),
+                            tx("Compras contratadas (MWh)", "Contracted purchases (MWh)"),
+                            tx("Vendas contratadas (MWh)", "Contracted sales (MWh)"),
+                            tx("Geração verificada (MWh)", "Verified generation (MWh)"),
+                            tx("Consumo verificado (MWh)", "Verified consumption (MWh)"),
+                            tx("Diferença (MWh)", "Difference (MWh)"),
+                            tx("Valor no MCP", "Value in the MCP"),
+                          ]}
+                          linhas={exemplo.agentes.map((a) => [
+                            <PldTextoGold key="r" texto={a.rotulo} regiao="pld-exemplo" />,
+                            a.compras_contratadas_mwh,
+                            a.vendas_contratadas_mwh,
+                            a.geracao_verificada_mwh,
+                            a.consumo_verificado_mwh,
+                            a.diferenca_mwh,
+                            <span key="v">
+                              {reais(a.valor_rs)} (<PldTextoGold texto={a.resultado} regiao="pld-exemplo" />)
+                            </span>,
+                          ])}
+                          casas={[null, 0, 0, 0, 0, 0, null]}
+                          limite={exemplo.agentes.length}
+                        />
                         <p className="text-sm leading-relaxed text-carvao">
                           <PldTextoGold texto={exemplo.leitura} regiao="pld-exemplo" />
                         </p>
@@ -1197,41 +1197,13 @@ export default function PldPage() {
                             `Operating week from ${dataBR(semanaRef.inicio)} to ${dataBR(semanaRef.fim)}: the weekly DECOMP marginal operating cost (CMO) (ONS), the average of the half hours of the DESSEM CMO (ONS) and the average of the PLD hours (CCEE), in R$/MWh. They are different products; the comparison only holds over the same interval.`,
                           )}
                         </p>
-                        <div className="tabela-scroll" tabIndex={0} role="region" aria-label={tx("CMO e PLD na semana de referência (tabela rolável)", "CMO and PLD in the reference week (scrollable table)")}>
-                          <table className="w-full min-w-[28rem] text-sm tabular-nums">
-                            <caption className="sr-only">
-                              {tx("CMO semanal do DECOMP, média do DESSEM e média do PLD na semana de referência, R$/MWh", "Weekly DECOMP CMO, DESSEM average and PLD average in the reference week, R$/MWh")}
-                            </caption>
-                            <thead>
-                              <tr className="border-b border-linha text-left text-xs text-mineral">
-                                <th scope="col" className="py-2 pr-3 font-normal">
-                                  {tx("Submercado", "Submarket")}
-                                </th>
-                                <th scope="col" className="py-2 pr-3 text-right font-normal">
-                                  {tx("CMO semanal (DECOMP)", "Weekly CMO (DECOMP)")}
-                                </th>
-                                <th scope="col" className="py-2 pr-3 text-right font-normal">
-                                  {tx("Média do DESSEM", "DESSEM average")}
-                                </th>
-                                <th scope="col" className="py-2 text-right font-normal">
-                                  {tx("Média do PLD", "PLD average")}
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {semanaRef.por_sm.map((x) => (
-                                <tr key={x.sm} className="border-b border-linha">
-                                  <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao">
-                                    {nomeSm(x.sm)}
-                                  </th>
-                                  <td className="py-2 pr-3 text-right">{reais(x.decomp)}</td>
-                                  <td className="py-2 pr-3 text-right">{reais(x.dessem)}</td>
-                                  <td className="py-2 text-right">{reais(x.pld)}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
+                        <TabelaDados
+                          recolhida={false}
+                          titulo={tx("CMO semanal do DECOMP, média do DESSEM e média do PLD na semana de referência, R$/MWh", "Weekly DECOMP CMO, DESSEM average and PLD average in the reference week, R$/MWh")}
+                          colunas={[tx("Submercado", "Submarket"), tx("CMO semanal (DECOMP)", "Weekly CMO (DECOMP)"), tx("Média do DESSEM", "DESSEM average"), tx("Média do PLD", "PLD average")]}
+                          linhas={semanaRef.por_sm.map((x) => [nomeSm(x.sm), reais(x.decomp), reais(x.dessem), reais(x.pld)])}
+                          limite={semanaRef.por_sm.length}
+                        />
                       </>
                     ) : (
                       <p className="text-sm text-carvao-muted">
@@ -1303,22 +1275,15 @@ export default function PldPage() {
                       {conceitoDet.bloqueios.map((b) => (
                         <li key={b.fonte} className="leading-relaxed [overflow-wrap:anywhere]">
                           <TrechoPortugues regiao="pld-bloqueio">
-                            <span className="text-carvao">{b.fonte}</span>: {datasLegiveis(b.evidencia.replace(/\.$/, ""), "pt")}. {datasLegiveis(b.consequencia, "pt")}
+                            <span className="text-carvao">{b.fonte}</span>: {semUtc(datasLegiveis(b.evidencia.replace(/\.$/, ""), "pt"), "pt")}. {semUtc(datasLegiveis(b.consequencia, "pt"), "pt")}
                           </TrechoPortugues>
                         </li>
                       ))}
                     </ul>
                   </SecaoDoPainel>
-
-                  <PldSeguir
-                    ancora="p008"
-                    proximo={proximoPainel("p008")}
-                    downloads={detalhe!.downloads.filter((d) => /cmo_horario/.test(d.url))}
-                  />
-                </div>
-              </PainelEvidencia>
-            ) : (
-              <>
+                  </>
+                ) : (
+                  <>
                 <PldAviso tipo="alerta">
                   {tx(
                     "As passagens normativas conferidas não estão nesta publicação: o diagrama abaixo mostra só as ligações do conteúdo editorial, com o estado de conferência de cada uma.",
@@ -1326,13 +1291,14 @@ export default function PldPage() {
                   )}
                 </PldAviso>
                 <PldFormacao nos={nos} ligacoes={Object.fromEntries(nos.map((n) => [n.id, n.relacaoSaida ? [{ de: n.id, para: n.relacaoSaida.para, tipo: n.relacaoSaida.tipo, texto: n.relacaoSaida.texto, estado: n.relacaoSaida.conferencia, bases: [], faltantes: [], baseTexto: n.relacaoSaida.fonte, origem: "conteudo" as const }] : []]))} />
-              </>
-            )}
-          </Bloco>
+                  </>
+                )}
+              </div>
+            </Recolhido>
 
-          {/* 4. Previsão */}
-          <Capitulo id="previsao" rotulo={tx("Previsão", "Forecast")} titulo={tx("Para onde o PLD pode ir?", "Where could the PLD go?")}>
-            <p className="ed-lead max-w-prose2 text-carvao">{tx("Previsão é distribuição de possibilidades, não um único número.", "A forecast is a distribution of possibilities, not a single number.")}</p>
+            {/* para onde o PLD pode ir: o estado real da previsão */}
+            <Recolhido id="previsao" aberto nivelTitulo={2} titulo={tx("Para onde o PLD pode ir?", "Where could the PLD go?")} resumo={tx("Previsão é distribuição de possibilidades, não um único número.", "A forecast is a distribution of possibilities, not a single number.")}>
+              <div className="space-y-6">
             <div className="grid items-start gap-8 lg:grid-cols-2">
               <IlustracaoDistribuicao />
               <div>
@@ -1455,9 +1421,107 @@ export default function PldPage() {
                 )}
               </p>
             </SecaoDoPainel>
-          </Capitulo>
-        </ModoProfundidade>
-      </main>
+              </div>
+            </Recolhido>
+          </>
+        }
+        tabelas={
+          <>
+            {limDet && (
+              <TabelaDados
+                id="limites-por-vigencia"
+                nivel="auditar"
+                recolhida={false}
+                tituloVisivel={tx("Limites oficiais do PLD por vigência", "Official PLD limits by period in force")}
+                lead={
+                  <>
+                        {tx(
+                          "Piso, teto horário e teto estrutural fixados nos atos anuais da ANEEL, em vigor em cada trecho; o último trecho vai até o dia de referência.",
+                          "Floor, hourly cap and structural cap set in the annual ANEEL acts, in force in each period; the last period runs until the reference day.",
+                        )}{" "}
+                        <TrechoPortugues regiao="pld-atos">{limDet.conferencia_atos.leitura}</TrechoPortugues>
+                  </>
+                }
+                titulo={tx("Limites do PLD por trecho de vigência (R$/MWh)", "PLD limits by period in force (R$/MWh)")}
+                colunas={[tx("Início", "Start"), tx("Fim", "End"), tx("Piso", "Floor"), tx("Teto horário", "Hourly cap"), tx("Teto estrutural", "Structural cap"), tx("Ato do piso", "Floor act")]}
+                linhas={limDet.regimes.map((r) => [dataBR(r.inicio), dataBR(r.fim), r.pld_min, r.pld_max_horario, r.pld_max_estrutural, r.ato_pld_min])}
+                casas={[null, null, 2, 2, 2, null]}
+                idiomaTexto={[null, null, null, null, null, "nome"]}
+                limite={limDet.regimes.length}
+              />
+            )}
+            {integra(pld) && (
+              <TabelaDados
+                id="menor-valor-por-ano"
+                nivel="auditar"
+                recolhida={false}
+                tituloVisivel={tx("Menor valor horário observado por ano", "Lowest hourly value observed by year")}
+                lead={
+                  <>
+                      {tx(
+                        `Referência descritiva, nunca usada como piso: o piso regulatório é o do ato vigente${limDet ? " (tabela acima)" : ""}.`,
+                        `Descriptive reference, never used as a floor: the regulatory floor is the one in the act in force${limDet ? " (table above)" : ""}.`,
+                      )}
+                  </>
+                }
+                titulo={tx("Menor valor horário observado por ano e submercado", "Lowest hourly value observed by year and submarket")}
+                colunas={[tx("Ano", "Year"), tx("Até", "Through"), tx("SE/CO", "SE/CW"), tx("Sul", "South"), tx("Nordeste", "Northeast"), tx("Norte", "North")]}
+                linhas={pld.menor_valor_ano.map((m) => [String(m.ano), dataBR(m.ate), m.SE, m.S, m.NE, m.N])}
+                casas={[null, null, 2, 2, 2, 2]}
+                limite={pld.menor_valor_ano.length}
+                nota={
+                  <span className="[overflow-wrap:anywhere]">
+                      {tx<ReactNode>(
+                        `Versão dos dados ${pld.snapshot.id ? semUtc(snapshotLegivel(pld.snapshot.id)) : "sem identificador"} · sha256 ${pld.snapshot.sha256} · série de ${horaLocal(pld.primeira_hora)} a ${horaLocal(pld.ultima_hora)} (horário de Brasília)`,
+                        <>
+                          Data version {pld.snapshot.id ? semUtc(snapshotLegivel(pld.snapshot.id)) : "no identifier"} · sha256 {identificador(pld.snapshot.sha256, idioma)} · series from {horaLocal(pld.primeira_hora)} to{" "}
+                          {horaLocal(pld.ultima_hora)} (Brasília time)
+                        </>,
+                      )}
+                  </span>
+                }
+              />
+            )}
+          </>
+        }
+        metodo={
+          <>
+            {integra(pld) && (
+                  <SecaoDoPainel
+                    id="regras"
+                    titulo={tx("Como classificamos", "How we classify")}
+                    nivel="analisar"
+                    lead={tx(
+                      "Nenhuma classificação sem regra. Estas são as regras que produzem cada resposta desta seção.",
+                      "No classification without a rule. These are the rules that produce each answer in this section.",
+                    )}
+                  >
+                    <dl className="grid gap-4 md:grid-cols-2">
+                      {Object.entries(pld.regras).map(([k, v]) => (
+                        <div key={k}>
+                          <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
+                          <dd className="mt-1 text-sm leading-relaxed text-carvao">
+                            <PldTextoGold texto={semRessalvaDeLimitesNaoAuditados(v)} regiao="pld-regra" />
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </SecaoDoPainel>
+            )}
+            <p>
+              {tx(
+                "Cada número desta página sai do PLD horário publicado pela CCEE, sem ajuste: as médias diárias são médias simples das 24 horas de cada submercado, a distância entre as regiões é a maior média menos a menor, e os limites vêm dos atos anuais da ANEEL, com a vigência de cada um.",
+                "Every number on this page comes from the hourly PLD published by CCEE, without adjustment: daily averages are simple averages of the 24 hours of each submarket, the distance between regions is the highest average minus the lowest, and the limits come from ANEEL's annual acts, with each one's period in force.",
+              )}{" "}
+              <Link href="/setor-eletrico/metodologia" className={ligacaoTexto}>
+                {tx("Metodologia do observatório", "Observatory methodology")}
+              </Link>
+              .
+            </p>
+          </>
+        }
+        frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/setor-eletrico"]} variante="metodo" idioma={idioma} />}
+      />
     </>
   );
 }

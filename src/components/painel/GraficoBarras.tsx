@@ -65,6 +65,8 @@ export type ReferenciaBarra = {
 export type LinhaBarras = Record<string, string | number | null | undefined>;
 
 export type GraficoBarrasProps = {
+  /** Dentro da FiguraAnalitica, que traz a tabela equivalente do servidor: o gráfico não repete a sua. */
+  semTabela?: boolean;
   titulo: string;
   /** Nomes próprios que aparecem no título (reservatório, bacia, usina): na página inglesa saem marcados e o gráfico passa a ser
    * nomeado pelo título visível (aria-labelledby) em vez de <title>. */
@@ -150,6 +152,7 @@ function pathBarra(x: number, y: number, w: number, h: number, lado: Lado): stri
 }
 
 function GraficoBarrasLargo({
+  semTabela = false,
   titulo,
   nomesNoTitulo,
   dados: dadosTodos,
@@ -945,6 +948,7 @@ function GraficoBarrasLargo({
       <p className="sr-only" aria-live="polite">
         {anuncio}
       </p>
+      {!semTabela && (
       <details className="mt-3 text-xs">
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
           {tx(
@@ -1002,6 +1006,7 @@ function GraficoBarrasLargo({
           </table>
         </div>
       </details>
+      )}
     </div>
   );
 }
@@ -1025,8 +1030,9 @@ export function GraficoBarras(props: GraficoBarrasProps | GraficoBarrasContrato)
   return (
     <div data-grafico="barras" className="min-w-0">
       <GraficoBarrasLargo
+        semTabela
         {...resto}
-        dados={paraFormaLarga(series).map((l) => ({ ...l, rotulo: String(l.x) }))}
+        dados={paraFormaLarga(series)}
         chaveCategoria="x"
         chaveRotulo="rotulo"
         series={series.map((s, i) => ({ id: s.id, rotulo: s.nome, cor: corDaSerie(i, s.cor) }))}

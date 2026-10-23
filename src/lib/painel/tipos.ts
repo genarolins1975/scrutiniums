@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 /**
  * Tipos do kit de painel (Iniciativa 1 do parecer de UX de 23/10/2026, docs/ux-2026-10-23/PARECER_UX_2026-10-23.md, seção 5).
@@ -142,7 +142,8 @@ export type NumeroProps =
 
 /* ------------------------------------------------------------------ figura */
 
-export type CelulaTabela = string | number | null;
+/** Célula: número (formatado pelo kit, à direita), texto, ausência (null, sempre em texto) ou nó com nome próprio marcado. */
+export type CelulaTabela = string | number | null | ReactElement;
 
 export type TabelaEquivalente = {
   colunas: string[];
@@ -183,6 +184,8 @@ export type FiguraProps = {
   nivelTitulo?: 2 | 3;
   /** Conteúdo que acompanha a figura e não é o gráfico (o detalhe de um dia, a nota de empates); fica abaixo da leitura. */
   complemento?: ReactNode;
+  /** Depois do rodapé de fonte: os arquivos, o link do painel e a próxima pergunta (SeguirPainel). */
+  seguir?: ReactNode;
 };
 
 /* ------------------------------------------------------------------ tabela */
@@ -209,6 +212,11 @@ export type TabelaDadosProps = {
   /** No celular a tabela rola dentro do próprio bloco; a página nunca rola na horizontal. */
   rolagem?: "tabela";
   idioma?: "pt" | "en";
+  /** Na fatia `tabelas`: título visível (h3), frase de abertura, âncora e nível mínimo de profundidade do bloco. */
+  tituloVisivel?: ReactNode;
+  lead?: ReactNode;
+  id?: string;
+  nivel?: "analisar" | "auditar";
 };
 
 /* --------------------------------------------------------------- controles */
@@ -250,7 +258,8 @@ export type ParaLerProps = {
 export type CorSerie = `var(--serie-${string})` | `var(--escala-${string})` | `var(--cor-${AcentoPainel})`;
 
 /** y: null é lacuna na linha, nunca zero nem interpolação. */
-export type PontoGrafico = { x: string | number; y: number | null };
+/** `x` é a chave do ponto (data, categoria); `rotulo`, quando há, é o nome exibido da categoria. */
+export type PontoGrafico = { x: string | number; y: number | null; rotulo?: string };
 
 export type SerieGrafico = {
   id: string;

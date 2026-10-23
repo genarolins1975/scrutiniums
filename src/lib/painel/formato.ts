@@ -350,3 +350,18 @@ export function formatos(idioma: Idioma) {
 }
 
 export type Formatos = ReturnType<typeof formatos>;
+
+const MESES_EN: Record<string, string> = { Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06", Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12" };
+
+/**
+ * Hora em UTC escrita num texto (identificador de captura, evidência de bloqueio) passada à hora de Brasília, no formato do carimbo da
+ * página: "01/10/2026 06:40 UTC" vira "01/10/2026, 03:40 (Brasília)". O instante é o mesmo; muda só a forma, porque o molde de painel
+ * não mostra hora em UTC (Iniciativa 1 do parecer de UX de 23/10/2026).
+ */
+export function semUtc(texto: string, idioma: Idioma = idiomaEnergia()): string {
+  return texto
+    .replace(/\b(\d{2})\/(\d{2})\/(\d{4}),? (\d{2}):(\d{2}) UTC\b/g, (_, d: string, m: string, a: string, h: string, mi: string) => carimbo(`${a}-${m}-${d}T${h}:${mi}:00Z`, idioma))
+    .replace(/\b([A-Z][a-z]{2}) (\d{1,2}), (\d{4}),? (\d{2}):(\d{2}) UTC\b/g, (todo, mes: string, d: string, a: string, h: string, mi: string) =>
+      MESES_EN[mes] ? carimbo(`${a}-${MESES_EN[mes]}-${d.padStart(2, "0")}T${h}:${mi}:00Z`, idioma) : todo,
+    );
+}

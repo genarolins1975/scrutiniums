@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { TabelaInterativa, TextoDaColuna } from "@/components/painel/TabelaInterativa";
 import { idiomaDaPagina, tx } from "@/lib/painel/idioma";
@@ -32,6 +33,10 @@ export function TabelaDados({
   recolhida = true,
   nota,
   idioma: idiomaFixo,
+  tituloVisivel,
+  lead,
+  id,
+  nivel,
 }: TabelaDadosProps) {
   const idioma = idiomaFixo ?? idiomaDaPagina();
   const locale = idioma === "en" ? "en-US" : "pt-BR";
@@ -50,7 +55,9 @@ export function TabelaDados({
       casas: casas?.[j] ?? undefined,
       idiomaTexto: idiomaTexto?.[j] ?? undefined,
     }));
-    const dados: LinhaTabela[] = linhas.map((l, i) => Object.fromEntries([["_id", String(i)], ...l.map((v, j) => [`c${j}`, v] as const)]));
+    // a tabela ordenável guarda valores (texto e número); nó marcado vira o próprio texto
+    const valor = (v: CelulaTabela) => (v === null || typeof v === "string" || typeof v === "number" ? v : null);
+    const dados: LinhaTabela[] = linhas.map((l, i) => Object.fromEntries([["_id", String(i)], ...l.map((v, j) => [`c${j}`, valor(v)] as const)]));
     return (
       <div data-tabela-ordenavel="">
         <TabelaInterativa titulo={titulo} colunas={cols} linhas={dados} chaveLinha="_id" fonte={titulo} versao="" nomeArquivo={titulo} recolher={recolhida} />
@@ -60,11 +67,13 @@ export function TabelaDados({
   }
 
   const visiveis = linhas.slice(-limite);
-  const celula = (v: CelulaTabela, j: number) =>
+  const celula = (v: CelulaTabela, j: number): ReactNode =>
     v === null || v === undefined ? (
       <span className="italic text-mineral">{semDado(j)}</span>
     ) : typeof v === "number" ? (
       formata(v, casas?.[j])
+    ) : typeof v !== "string" ? (
+      v
     ) : idiomaTexto?.[j] ? (
       <TextoDaColuna coluna={{ id: `dados-${j}`, idiomaTexto: idiomaTexto[j] ?? undefined }}>{v}</TextoDaColuna>
     ) : (
@@ -111,8 +120,8 @@ export function TabelaDados({
     </a>
   );
   if (!recolhida) {
-    return (
-      <div data-tabela-a-vista="">
+    const corpo = (
+      <>
         {tabela}
         {visiveis.length < linhas.length && (
           <p className="t-meta mt-2 text-carvao-muted">
@@ -121,6 +130,22 @@ export function TabelaDados({
         )}
         {nota && <p className="t-meta mt-2 max-w-prose2 text-carvao-muted">{nota}</p>}
         {arquivo}
+      </>
+    );
+    // na fatia `tabelas`, o bloco é a própria tabela: título, frase, a tabela e o arquivo, com a âncora e o nível
+    if (tituloVisivel)
+      return (
+        <section id={id} data-nivel={nivel} data-bloco-tabela="" aria-labelledby={id ? `${id}-titulo` : undefined} className="scroll-mt-28 space-y-3 border-t border-linha pt-6">
+          <h3 id={id ? `${id}-titulo` : undefined} className="t-h3 text-carvao">
+            {tituloVisivel}
+          </h3>
+          {lead && <div className="t-meta max-w-prose2 text-carvao-muted">{lead}</div>}
+          {corpo}
+        </section>
+      );
+    return (
+      <div data-tabela-a-vista="" id={id} data-nivel={nivel}>
+        {corpo}
       </div>
     );
   }

@@ -68,6 +68,8 @@ export type { IntervaloX };
 type Ponto = Record<string, string | number | null | undefined>;
 
 export type GraficoLinhasProps = {
+  /** Dentro da FiguraAnalitica, que traz a tabela equivalente do servidor: o gráfico não repete a sua. */
+  semTabela?: boolean;
   titulo: string;
   /** Nomes próprios que aparecem no título (reservatório, bacia, usina): na página inglesa saem marcados e o gráfico passa a ser
    * nomeado pelo título visível (aria-labelledby) em vez de <title>. */
@@ -170,6 +172,7 @@ function quebraEmLinhas(texto: string, maxChars: number, maxLinhas: number): str
 }
 
 function GraficoLinhasLargo({
+  semTabela = false,
   titulo,
   nomesNoTitulo,
   seriesSaoNomes = false,
@@ -854,6 +857,7 @@ function GraficoLinhasLargo({
           ? `${fmtX(String(pa[chaveX]), formatoX, true)}: ${seriesVis.map((s) => `${s.rotulo} ${fV(pa[s.id] as number | null, casas, unidade)}`).join("; ")}`
           : ""}
       </p>
+      {!semTabela && (
       <details className="mt-3 text-xs" open={tabelaAbertaInicial || undefined} onToggle={(e) => setTabelaAberta((e.currentTarget as HTMLDetailsElement).open)}>
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
           {ampliado
@@ -909,6 +913,7 @@ function GraficoLinhasLargo({
           </div>
         )}
       </details>
+      )}
     </div>
   );
 }
@@ -935,6 +940,7 @@ export function GraficoLinhas(props: GraficoLinhasProps | GraficoLinhasContrato)
   return (
     <div data-grafico="linhas" className="min-w-0">
       <GraficoLinhasLargo
+        semTabela
         {...resto}
         dados={paraFormaLarga(series)}
         chaveX="x"

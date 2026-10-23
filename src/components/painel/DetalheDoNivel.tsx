@@ -16,6 +16,7 @@ export function DetalheDoNivel({
   abreEm = "analisar",
   className = "",
   classeResumo = "",
+  classeResumoBase = "inline-flex min-h-[44px] cursor-pointer items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao",
   dados,
 }: {
   resumo: ReactNode;
@@ -23,6 +24,8 @@ export function DetalheDoNivel({
   abreEm?: "analisar" | "auditar" | "nunca";
   className?: string;
   classeResumo?: string;
+  /** Troca a forma do resumo inteira (o método do PaginaPainel usa o rótulo em caixa alta, como o das entradas). */
+  classeResumoBase?: string;
   /** Atributo data-* de identificação para testes e coleta (ex.: { "data-detalhe": "como-ler" }). */
   dados?: Record<string, string>;
 }) {
@@ -45,7 +48,7 @@ export function DetalheDoNivel({
   return (
     <details ref={ref} className={className} {...dados}>
       <summary
-        className={`inline-flex min-h-[44px] cursor-pointer items-center text-sm text-energia-dark underline underline-offset-4 hover:text-carvao ${classeResumo}`}
+        className={`${classeResumoBase} ${classeResumo}`}
       >
         {resumo}
       </summary>

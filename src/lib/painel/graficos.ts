@@ -17,12 +17,13 @@ export type LinhaLarga = Record<string, string | number | null>;
 /** Uma linha por x, na ordem da primeira aparição; cada série vira uma coluna com o próprio id. Ponto ausente fica null (lacuna). */
 export function paraFormaLarga(series: readonly SerieGrafico[]): LinhaLarga[] {
   const ordem: (string | number)[] = [];
+  // `rotulo` é a coluna do nome exibido de cada x (categoria das barras)
   const porX = new Map<string | number, LinhaLarga>();
   for (const s of series) {
     for (const p of s.pontos) {
       let linha = porX.get(p.x);
       if (!linha) {
-        linha = { x: p.x };
+        linha = { x: p.x, rotulo: p.rotulo ?? String(p.x) };
         porX.set(p.x, linha);
         ordem.push(p.x);
       }

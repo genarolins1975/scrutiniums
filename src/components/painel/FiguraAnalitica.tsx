@@ -49,6 +49,7 @@ export function FiguraAnalitica({
   nivel,
   nivelTitulo = 2,
   complemento,
+  seguir,
   legivel = (x: string) => x,
   extraFonte,
   idioma: idiomaFixo,
@@ -175,6 +176,7 @@ export function FiguraAnalitica({
           </ul>
         )}
       </footer>
+      {seguir}
     </section>
   );
 }
