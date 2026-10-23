@@ -111,7 +111,8 @@ export function TabelaDados({
   const fixa = fixarPrimeiraColuna ? "sticky left-0 z-10 bg-papel" : "";
   const tabela = (
     <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label={tx(`${titulo} (tabela rolável)`, `${titulo} (scrollable table)`, idioma)}>
-      <table className="t-tabela w-full min-w-[28rem] border-collapse tabular-nums" data-tabela-dados="">
+      {/* nota miúda numa célula (<small>, como "nesta área de 2004 a 2026") fica em 12 px, o piso da plataforma; sem isso o navegador a reduz */}
+      <table className="t-tabela w-full min-w-[28rem] border-collapse tabular-nums [&_small]:text-xs" data-tabela-dados="">
         <caption className="sr-only">{titulo}</caption>
         <thead>
           <tr>
