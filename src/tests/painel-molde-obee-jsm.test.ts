@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 // as páginas importam módulos marcados com server-only; no teste, o marcador não tem efeito
 vi.mock("server-only", () => ({}));
+// a busca da ficha na entrada do Judiciário usa o roteador do App Router, que o renderToStaticMarkup não monta
+vi.mock("next/navigation", async (original) => ({ ...(await original<typeof import("next/navigation")>()), useRouter: () => ({ push: () => undefined }) }));
 import { createElement, type ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { conferirPainel } from "./suporte/molde-painel";
@@ -13,6 +15,8 @@ import PaginaSeguranca from "@/app/eficiencia-estatal/seguranca-publica/[[...pai
 // a página da mobilidade é o cabeçalho comum e estes corpos: o teste renderiza o corpo
 import { PainelMobilidade } from "@/components/eficiencia/mobilidade/PainelMobilidade";
 import { PainelOportunidades } from "@/components/eficiencia/mobilidade/PainelOportunidades";
+import PaginaJudiciario from "@/app/eficiencia-estatal/judiciario/[capitulo]/page";
+import EntradaJudiciario from "@/app/eficiencia-estatal/judiciario/page";
 
 /**
  * Molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026), PR 2 do Grupo 2, frente de Judiciário, Acesso à Justiça, Segurança
@@ -81,5 +85,39 @@ describe("molde de painel: Mobilidade e transporte", () => {
     expect(h.match(/<figure\b/g)?.length ?? 0).toBe(figuras);
     expect(h.match(/<form\b/g)?.length).toBe(1);
     for (const t of ["Tabela equivalente: valores, cobertura e denominadores", "Aplicar oportunidades", "Limpar filtros", "Baixar recorte e grupos de renda (CSV)", "Chegar não é ser atendido"]) expect(h).toContain(t);
+  });
+});
+
+describe("molde de painel: Judiciário", () => {
+  // panorama veio no PR 1; metodos é página de método
+  const CAPITULOS = ["internacional", "recursos", "tempo", "filas", "entrega", "acesso", "consistencia", "criminal", "comparar"];
+  it.each(CAPITULOS)("/eficiencia-estatal/judiciario/%s", (capitulo) => {
+    conferirPainel(`/eficiencia-estatal/judiciario/${capitulo}`, html(createElement(PaginaJudiciario, { params: { capitulo } })));
+  });
+  it("/eficiencia-estatal/judiciario (entrada do tema)", () => {
+    const h = html(createElement(EntradaJudiciario));
+    conferirPainel("/eficiencia-estatal/judiciario", h);
+    // a verificação do Judiciário lê as halteres em #endereco (27 linhas), a busca pela sigla, os ramos, a jornada e a comparação internacional
+    const endereco = h.slice(h.indexOf('id="endereco"'), h.indexOf('id="do-conflito-ao-cumprimento"'));
+    expect(endereco.match(/<li\b/g)?.length).toBe(27);
+    for (const t of ['id="buscar-tribunal"', "Buscar tribunal pela sigla", "Abrir ficha", 'aria-label="Conhecer os ramos da Justiça"', 'id="ramo-em-foco"', 'aria-label="Explorar a jornada judicial"', "Explorar a comparação internacional", "Comparar os tribunais", "Todos os capítulos do Judiciário"]) expect(h).toContain(t);
+  });
+  it("o capítulo de método segue fora do molde", () => {
+    expect(html(createElement(PaginaJudiciario, { params: { capitulo: "metodos" } }))).not.toContain("data-painel");
+  });
+  it("o que a verificação do Judiciário lê continua: rótulos, resumos, regiões e âncoras", () => {
+    const pag = (capitulo: string) => html(createElement(PaginaJudiciario, { params: { capitulo } }));
+    const recursos = pag("recursos");
+    for (const t of ['aria-label="Preços da série"', "Ver tabela anual equivalente", 'aria-label="Tabela anual de despesas (tabela rolável)"', "Baixar série selecionada CSV", 'id="por-habitante"', 'id="juizes"', "Brasil e União Europeia"]) expect(recursos).toContain(t);
+    const tempo = pag("tempo");
+    for (const t of ['aria-label="Ramo"', 'id="execucao"', 'id="evolucao"', "Ver Tribunais Regionais Federais e do Trabalho", "Comparar os 57 tribunais"]) expect(tempo).toContain(t);
+    expect(pag("filas")).toContain('id="acervo"');
+    const comparar = pag("comparar");
+    for (const t of ['aria-label="Tribunal 1"', 'aria-label="Medida dos tribunais"', 'aria-label="Ramo dos tribunais"', "Baixar todos os pares CSV", "Limpar comparação"]) expect(comparar).toContain(t);
+    const internacional = pag("internacional");
+    for (const t of ["WJP · Rule of Law Index · edição", 'aria-label="Tabela internacional completa"', 'aria-label="Indicador internacional"', "Portugal, Espanha e Alemanha", "Explorar evolução histórica", "Restaurar comparação inicial"]) expect(internacional).toContain(t);
+    for (const t of ['id="laboratorio"', 'id="recorribilidade"', "Tratamento igual, na percepção medida pelo WJP."]) expect(pag("consistencia")).toContain(t);
+    for (const t of ["Mapa do Júri", "Como o Brasil se situa na Justiça criminal?"]) expect(pag("criminal")).toContain(t);
+    for (const t of ['id="gratuidade"', "A assistência jurídica permanece no capítulo de Acesso à Justiça."]) expect(pag("acesso")).toContain(t);
   });
 });
