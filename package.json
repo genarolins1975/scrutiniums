@@ -8,6 +8,7 @@
     "prebuild": "node scripts/preparar.mjs",
     "build": "next build",
     "start": "next start",
+    "evidencias": "node scripts/evidencias.mjs",
     "lint": "next lint",
     "pretest": "node scripts/preparar.mjs",
     "test": "vitest run",
