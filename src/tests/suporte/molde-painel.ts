@@ -9,7 +9,7 @@ import { expect } from "vitest";
  * só método no fim, nenhuma data crua nem forma antiga de prontidão.
  */
 
-type No = { nodeName: string; tagName?: string; attrs?: { name: string; value: string }[]; childNodes?: No[]; value?: string; content?: No };
+type No = { nodeName: string; tagName?: string; attrs?: { name: string; value: string }[]; childNodes?: No[]; value?: string; content?: No; parentNode?: No | null };
 
 /** Ordem das fatias; `controles` pode aparecer em qualquer ponto depois da abertura, antes do bloco que controla, e repetir. */
 export const ORDEM_FATIAS = ["abertura", "numeros", "figuras", "tabelas", "notas", "metodo", "fim"] as const;
@@ -121,9 +121,13 @@ export function conferirPainel(rota: string, html: string): void {
       }
     }
   }
-  // nenhuma <table> fora do kit
+  // nenhuma <table> fora do kit: a TabelaDados (data-tabela-dados) ou a tabela equivalente que o próprio gráfico monta (dentro de data-grafico)
   const tabelas = todos(painel, (n) => n.tagName === "table");
-  const fora = tabelas.filter((t) => !tem(t, "data-tabela-dados"));
+  const dentroDeGrafico = (t: No) => {
+    for (let p = t.parentNode; p; p = p.parentNode) if (tem(p, "data-grafico")) return true;
+    return false;
+  };
+  const fora = tabelas.filter((t) => !tem(t, "data-tabela-dados") && !dentroDeGrafico(t));
   expect(fora.map((t) => attr(t, "class") ?? "(sem classe)"), `${rota}: <table> fora de TabelaDados`).toEqual([]);
 
   // um só método, um <details>, antes do fim
