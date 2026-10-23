@@ -7,7 +7,8 @@ import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { FiguraAnalitica, GraficoBarras, LeituraGuiada } from "@/components/painel";
 import { IndiceSaude, anosDaMedida, comparar } from "@/lib/eficiencia/saude/consulta";
 import type { DadosSaude } from "@/lib/eficiencia/saude/payload";
-import { MEDIDAS_SAUDE, ROTULO_PERIODO, type MedidaSaudeId, type TemaSaude } from "@/lib/eficiencia/saude/medidas";
+import { MEDIDAS_SAUDE, ROTULO_PERIODO } from "@/lib/eficiencia/saude/medidas";
+import { CASAS, GRUPOS, OPCOES_PANORAMA } from "@/lib/eficiencia/saude/molde";
 import { CAMINHO_TEMA, hrefSaude } from "@/lib/eficiencia/saude/rotas";
 import { inteiro } from "@/lib/eficiencia/formato";
 import { provenienciaDaFicha } from "@/lib/eficiencia/proveniencia";
@@ -15,43 +16,6 @@ import type { ContextoFicha } from "../FichaConteudo";
 import { Selecao } from "../controles";
 import { SobreDadoSaude as SobreEsteDado } from "./SobreDadoSaude";
 import { Siglas } from "../Siglas";
-
-/** Os três perímetros do panorama: o que cada grupo de medidas permite mostrar e o que não permite presumir. */
-export const GRUPOS: { id: string; titulo: string; pergunta: string; mostra: string; naoPresume: string; tema: TemaSaude; medidas: MedidaSaudeId[] }[] = [
-  {
-    id: "recursos",
-    titulo: "Recursos executados pelo município",
-    pergunta: "Quanto o município aplica?",
-    mostra: "Orçamento municipal e despesa declarada em Saúde (DCA e SIOPS).",
-    naoPresume: "Gasto total de União, estado e município no território.",
-    tema: "gastos",
-    medidas: ["despesa_hab", "asps_pct"],
-  },
-  {
-    id: "servicos",
-    titulo: "Serviços localizados no território",
-    pergunta: "Que estrutura está registrada?",
-    mostra: "Estabelecimentos, equipes e cobertura potencial, conforme o CNES e o Relatório APS.",
-    naoPresume: "Que a rede pertença à prefeitura, funcione de fato ou atenda só seus moradores.",
-    tema: "rede",
-    medidas: ["ubs_10mil", "esf_10mil", "cobertura_aps"],
-  },
-  {
-    id: "residentes",
-    titulo: "População residente",
-    pergunta: "Que resultados são observados entre os moradores?",
-    mostra: "Eventos por município de residência, com o universo declarado (SUS, AIH tipo 1).",
-    naoPresume: "Que o resultado seja causado exclusivamente pela gestão municipal.",
-    tema: "resultados",
-    medidas: ["icsap_taxa", "icsap_part"],
-  },
-];
-
-/** Opções fixas do panorama: valores nominais e a população do Ministério da Saúde (as visões dos temas trocam as duas). */
-export const OPCOES_PANORAMA = { moeda: "nominal" as const, denominador: "ripsa" as const };
-
-/** Casas decimais do gráfico, as mesmas do formatador de cada medida (MEDIDAS_SAUDE[id].formata): o arredondamento não muda. */
-const CASAS: Partial<Record<MedidaSaudeId, number>> = { despesa_hab: 0, asps_pct: 1, ubs_10mil: 2, esf_10mil: 2, eap_10mil: 2, cobertura_aps: 1, icsap_taxa: 0, icsap_part: 1 };
 
 function esquema(ids: string[]) {
   return { cap: campo(tiposUrl.opcao(["", ...ids]), "") };

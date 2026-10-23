@@ -10,6 +10,9 @@ import PaginaNecessidades from "@/app/eficiencia-estatal/assistencia-social/nece
 import PaginaIndice from "@/app/eficiencia-estatal/indice-de-resultados/page";
 import PaginaSaude from "@/app/eficiencia-estatal/saude-capitais/page";
 import PaginaEducacao from "@/app/eficiencia-estatal/educacao-municipal-capitais/page";
+import PaginaSaudeGastos from "@/app/eficiencia-estatal/saude-capitais/gastos/page";
+import PaginaSaudeRede from "@/app/eficiencia-estatal/saude-capitais/rede-e-atencao-primaria/page";
+import PaginaSaudeResultados from "@/app/eficiencia-estatal/saude-capitais/atendimento-e-resultados/page";
 import PaginaEnergia from "@/app/eficiencia-estatal/energia-conectividade/[[...painel]]/page";
 
 /**
@@ -60,5 +63,16 @@ describe("molde de painel, Eficiência Estatal (frente obee-a)", () => {
     // os três capítulos do panorama, sem a numeração "01 /" de antes (decisão 7 pendente: padrão sem numeração)
     for (const c of ["gastos", "atendimento", "resultados"]) expect(h).toContain(`data-figura-analitica="capitulo-${c}"`);
     expect(h).toContain('href="/educacao-municipal"');
+  });
+
+  // modelo genérico (PaginaTemaSaude e ExploradorSaude): o mesmo corpo serve aos três temas da Saúde, e os três entram no molde juntos
+  it.each([
+    ["/eficiencia-estatal/saude-capitais/gastos", PaginaSaudeGastos, ["gastos-subfuncao", "gastos-natureza", "gastos-fonte"]],
+    ["/eficiencia-estatal/saude-capitais/rede-e-atencao-primaria", PaginaSaudeRede, []],
+    ["/eficiencia-estatal/saude-capitais/atendimento-e-resultados", PaginaSaudeResultados, ["res-grupos"]],
+  ] as const)("%s", (rota, P, composicoes) => {
+    const h = html(P);
+    conferirPainel(rota, h);
+    for (const id of ["distribuicao", "evolucao", ...composicoes]) expect(h).toContain(`data-figura-analitica="${id}"`);
   });
 });

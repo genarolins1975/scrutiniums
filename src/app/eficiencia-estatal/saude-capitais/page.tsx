@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PaginaPainel, type NumeroProps } from "@/components/painel";
-import { CaminhosSaude, FigurasPanoramaSaude, GRUPOS, OPCOES_PANORAMA, SeletorCapitalSaude } from "@/components/eficiencia/saude/PanoramaSaude";
+import { CaminhosSaude, FigurasPanoramaSaude, SeletorCapitalSaude } from "@/components/eficiencia/saude/PanoramaSaude";
+import { GRUPOS, OPCOES_PANORAMA } from "@/lib/eficiencia/saude/molde";
 import { SIGLAS_POR_TEMA } from "@/components/eficiencia/saude/AvisosSaude";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { contextosSaude } from "@/lib/eficiencia/saude/contexto";
