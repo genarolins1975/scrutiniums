@@ -40,6 +40,9 @@ const PAGINAS: [string, Carga, Record<string, unknown>?][] = [
   ["/agronegocio/tamanho", () => import("@/app/agronegocio/tamanho/page")],
   ["/agronegocio/prato", () => import("@/app/agronegocio/prato/page")],
   ["/agronegocio/atlas", () => import("@/app/agronegocio/atlas/page"), { searchParams: {} }],
+  // o recorte do Atlas vem da URL: crédito em reais (escala em bilhões), seleção vazia e uma UF sob sigilo continuam no molde
+  ["/agronegocio/atlas", () => import("@/app/agronegocio/atlas/page"), { searchParams: { medida: "credito", foco: "35" } }],
+  ["/agronegocio/atlas", () => import("@/app/agronegocio/atlas/page"), { searchParams: { medida: "producao-bovinos", u1: "", u2: "", u3: "", foco: "" } }],
   ["/agronegocio/clima-ambiente", () => import("@/app/agronegocio/[capitulo]/page"), { params: { capitulo: "clima-ambiente" } }],
 ];
 
