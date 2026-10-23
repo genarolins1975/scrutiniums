@@ -8,6 +8,7 @@ import { rotuloDoParcial } from "@/lib/busca/textos";
 import type { EntradaBusca, IndiceBusca } from "@/lib/busca/tipos";
 import { ListaResultados } from "@/components/busca/ListaResultados";
 import { NaoCobre } from "@/components/busca/NaoCobre";
+import { ehRotaPublica } from "@/lib/rotasPublicas";
 
 vi.mock("next/navigation", async () => ({
   ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
@@ -441,6 +442,30 @@ describe("bloco 4: estado vazio", () => {
       expect(r.some((x) => x.tipo === "colecao" && x.href === "/contas-publicas"), t).toBe(true);
       expect(r.some((x) => x.tipo === "observatorio" && x.href), t).toBe(true);
     }
+  });
+
+  // decisão do dono de 23/10/2026 (seção 7 do prompt da busca, item 3; achado A7): sem sessão, o primeiro resultado fechado ganha
+  // a linha "Versão aberta do tema" quando a coleção tem página aberta, sem mudar a ordem
+  it("versão aberta: cada página aberta dos aperitivos fica presa à sua coleção, e o endereço é público", () => {
+    const abertas = indiceDeBusca().colecoes.filter((c) => c.aberta);
+    expect(abertas.find((c) => c.id === "setor-eletrico")?.aberta).toEqual({ titulo: "Quanto custa a minha conta de luz?", href: "/setor-eletrico/conta-de-luz" });
+    expect(abertas.find((c) => c.id === "saneamento")?.aberta?.href).toBe("/saneamento/municipio");
+    for (const c of abertas) expect(ehRotaPublica(c.aberta!.href), c.id).toBe(true);
+  });
+
+  it("versão aberta: sem sessão, a linha aparece sob o primeiro resultado fechado, só nele; com sessão ou primeiro aberto, não", () => {
+    const html = (termo: string, comSessao: boolean) => renderToStaticMarkup(createElement(ListaResultados, { grupos: b(termo).grupos, comSessao }));
+    const r = b("PLD").resultados[0];
+    expect([r.colecao, r.aberta]).toEqual(["setor-eletrico", false]);
+    const sem = html("PLD", false);
+    expect(sem.split("data-versao-aberta").length - 1).toBe(1);
+    expect(sem).toContain('href="/setor-eletrico/conta-de-luz"');
+    expect(sem).toContain("Versão aberta do tema:");
+    // a ordem não muda: o primeiro item da lista continua sendo o primeiro resultado
+    expect(emOrdemDeTela(b("PLD").grupos)[0].id).toBe(r.id);
+    expect(html("PLD", true)).not.toContain("data-versao-aberta");
+    expect(b("conta de luz").resultados[0].aberta).toBe(true);
+    expect(html("conta de luz", false)).not.toContain("data-versao-aberta");
   });
 
   it("conjunto completo: todo termo sem resultado cai num dos estados vazios (sugestão de correção ou 'ainda não cobre')", () => {

@@ -17,7 +17,7 @@
  * partir de oito letras). O mesmo código roda no servidor (/buscar) e no navegador (BuscaPlataforma).
  */
 import { formasDe, normalizar, nucleoDaBusca, palavrasUteis } from "./normalizar";
-import type { EntradaBusca, IndiceBusca } from "./tipos";
+import type { EntradaBusca, IndiceBusca, VersaoAberta } from "./tipos";
 
 export const LIMITE_RESULTADOS = 30;
 /** O resultado parcial é uma aproximação: poucos itens, para não parecer resposta. */
@@ -34,7 +34,7 @@ export type Resultado = EntradaBusca & {
   via?: string;
 };
 
-export type GrupoColecao = { colecao: { id: string; nome: string; href: string } | null; resultados: Resultado[] };
+export type GrupoColecao = { colecao: { id: string; nome: string; href: string; aberta?: VersaoAberta } | null; resultados: Resultado[] };
 export type GrupoObservatorio = { observatorio: { id: string; nome: string }; colecoes: GrupoColecao[] };
 
 export type RespostaBusca = {
@@ -423,7 +423,7 @@ export function agrupar(indice: IndiceBusca, resultados: Resultado[]): GrupoObse
     const idCol = c?.id ?? null;
     let gc = g.colecoes.find((x) => (x.colecao?.id ?? null) === idCol);
     if (!gc) {
-      gc = { colecao: c ? { id: c.id, nome: c.nome, href: c.href } : null, resultados: [] };
+      gc = { colecao: c ? { id: c.id, nome: c.nome, href: c.href, ...(c.aberta ? { aberta: c.aberta } : {}) } : null, resultados: [] };
       g.colecoes.push(gc);
     }
     gc.resultados.push(r);
