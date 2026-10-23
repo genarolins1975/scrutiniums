@@ -19,6 +19,7 @@
   --cor-bronze-soft: #b08a67;
   --cor-mineral: #6b6d6a; /* escurecido p/ contraste AA sobre marfim/papel */
   --cor-mineral-soft: #a6a8a4;
+  --cor-mineral-dark: #626762; /* texto terciário sobre o contexto suave, onde o mineral fica em 4,43:1 (4,9:1 sobre --cor-contexto) */
   --cor-linha: #d8d2c6;
   --cor-linha-escura: #33373d; /* filete sobre fundo carvão (rodapé institucional) */
   --cor-erro: #8c3b2e;
@@ -54,7 +55,24 @@
      e #14243a na tinta do OBEE; o painel fica com #102e36, o valor de todos os fundos escuros existentes. */
   --cor-painel-escuro: #102e36;
   --cor-painel-escuro-texto: #f8f7f2; /* texto sobre o painel escuro (13,4:1) */
-  --cor-painel-escuro-legenda: #c4d7d7; /* texto secundário, legenda e crédito sobre o painel escuro e as gravuras (9,6:1) */
+  /* Demais papéis sobre o painel escuro. Antes eram cerca de 40 tons próximos em atlas-inicial.css, estados.css, public/obs/atlas.css
+     e observatorios-gravuras.css; cada grupo virou o tom já usado pela maioria. */
+  --cor-painel-escuro-legenda: #c4d7d7; /* texto secundário, legenda e rótulo (9,6:1) */
+  --cor-painel-escuro-acento: #a3e3d7; /* link, número em destaque e estado ativo (9,9:1) */
+  --cor-painel-escuro-controle: #87a9af; /* borda de botão e campo (5,7:1, acima dos 3:1 de controle) */
+  --cor-painel-escuro-linha: #557278; /* filete e separador, só decorativo */
+  --cor-painel-escuro-superficie: #214650; /* cartão ou item realçado sobre o painel (o texto segue a 9,5:1) */
+  --cor-painel-escuro-selecao: #37616b; /* item selecionado sobre o painel (texto a 6,4:1) */
+  --cor-painel-escuro-foco: #e5bf76; /* anel de foco sobre o painel escuro (8,2:1) */
+  /* Contexto suave: faixa de referência, seleção discreta e cabeçalho de tabela (o mesmo tom do estado ativo do Setor Elétrico). */
+  --cor-contexto: var(--cor-energia-fundo);
+  /* Comparação: série de referência quando é preciso uma segunda cor (4,9:1 sobre o papel; como marcação, nunca texto pequeno). */
+  --cor-comparacao: #806a45;
+  /* Neutros frios das barras não focais e das categorias de apoio (Contas Estaduais): marcação, nunca texto. */
+  --cor-neutro-frio: #607e80;
+  --cor-neutro-frio-claro: #c4cccb;
+  /* Valor negativo sem vermelho (déficit e saldo negativo nas Contas Federais): 6,7:1 sobre o papel, serve de texto e de barra. */
+  --cor-negativo: #65516f;
   /* Conectividade: acento petróleo próprio (5,9:1 sobre o papel, dark 8,2:1), distinto do OBEE e do Gás; soft só marcação. */
   --cor-conect: #0f6b74;
   --cor-conect-dark: #0b535a;
@@ -119,6 +137,14 @@
   --san-div-centro: #e4e1da;
   --san-div-pos-1: #7fb0b8;
   --san-div-pos-2: #0e6170;
+  /* Saneamento: escada de serviço da OMS/Unicef (JMP), do degrau gerenciado com segurança ao pior. Dois petróleos para os degraus de
+     pelo menos básico e três bronzes abaixo; vizinhos com ΔE 14,1 para daltonismo. O bronze claro fica abaixo de 3:1 sobre o papel:
+     cada segmento tem rótulo, borda e tabela equivalente (Ilustracoes.tsx). */
+  --escala-jmp-1: #0a4a56;
+  --escala-jmp-2: #5e98a3;
+  --escala-jmp-3: #d6b892;
+  --escala-jmp-4: #a87a50;
+  --escala-jmp-5: #6e4a2e;
   --cor-selecao: color-mix(in srgb, var(--cor-energia) 12%, transparent);
   /* Comparação de até quatro entidades (distribuidoras, empresas, usinas): mesmos tons
      validados das séries de submercado, com semântica própria dada pelo rótulo. */
@@ -135,6 +161,28 @@
   --serie-4: #4a5158;
   --serie-5: #b0a894;
   --serie-6: #6b5d4f;
+}
+
+/* Painel escuro com componentes de gráfico dentro (mapa conceitual do Setor Elétrico): os tokens de texto, linha e superfície
+   passam aos do painel, para os componentes compartilhados lerem bem sobre o fundo escuro. As triplas RGB acompanham, porque as
+   classes do Tailwind com opacidade as leem. Só na tela: no papel, o mapa sai em fundo branco com os tokens de sempre. */
+@media screen {
+  .contexto-escuro {
+    --cor-carvao: var(--cor-painel-escuro-texto);
+    --cor-carvao-rgb: 248 247 242;
+    --cor-carvao-muted: var(--cor-painel-escuro-legenda);
+    --cor-mineral: var(--cor-painel-escuro-legenda);
+    --cor-linha: var(--cor-painel-escuro-linha);
+    --cor-linha-rgb: 85 114 120;
+    --cor-superficie: var(--cor-painel-escuro-superficie);
+    --cor-superficie-rgb: 33 70 80;
+    --cor-energia: var(--cor-painel-escuro-acento);
+    --cor-energia-rgb: 163 227 215;
+    --cor-energia-dark: var(--cor-painel-escuro-acento);
+    --cor-energia-fundo: var(--cor-painel-escuro-selecao);
+    background: var(--cor-painel-escuro);
+    color: var(--cor-painel-escuro-texto);
+  }
 }
 
 html {
@@ -170,9 +218,11 @@ body {
 .dominio-energia :focus-visible {
   outline-color: var(--cor-energia);
 }
-.dominio-gas :focus-visible {
-  outline-color: var(--cor-gas);
-}
+/* Gás, Inflação por cidade (Famílias) e Conectividade: anel no tom escuro do acento, um pouco afastado do controle. */
+.dominio-gas :focus-visible { outline-color: var(--cor-gas); }
+.dominio-gas :is(a, button, select, input, summary, [tabindex]):focus-visible { outline: 2px solid var(--cor-gas-dark); outline-offset: 4px; }
+.dominio-familias :is(a, button, select, input, summary, [tabindex]):focus-visible { outline: 2px solid var(--cor-bronze-dark); outline-offset: 4px; }
+.dominio-conectividade :is(a, button, select, input, summary, [tabindex]):focus-visible { outline: 2px solid var(--cor-conect-dark); outline-offset: 4px; }
 .dominio-gas table { font-variant-numeric: tabular-nums; }
 
 ::selection {
@@ -552,30 +602,30 @@ body:has(nav[data-retorno]) { padding-bottom: 5.5rem; }
   }
 }
 
-/* Atlas OBEE: cores editoriais e de identidade territorial, sem juízo de desempenho.
-   Centralizadas para reutilização em CSS e SVG; a seleção também usa texto e estado acessível. */
+/* Atlas OBEE: cores editoriais e de identidade territorial, sem juízo de desempenho. Papel, tinta, linha, destaque, seleção e os
+   tons sobre a tinta passaram a ler os papéis da plataforma (Iniciativa 5); ficam com valor próprio só os tons da ilustração. */
 :root {
-  --cor-obee-atlas-tinta: #102e36;
-  --cor-obee-atlas-texto-secundario: #52666c;
-  --cor-obee-atlas-linha: #d4dedb;
-  --cor-obee-atlas-papel: #f8f7f2;
+  --cor-obee-atlas-tinta: var(--cor-painel-escuro);
+  --cor-obee-atlas-texto-secundario: var(--cor-mineral-dark);
+  --cor-obee-atlas-linha: var(--cor-linha);
+  --cor-obee-atlas-papel: var(--cor-papel);
   --cor-obee-atlas-foco: #b78639;
-  --cor-obee-atlas-selecao: #e5eeea;
-  --cor-obee-atlas-superficie: #fff;
+  --cor-obee-atlas-selecao: var(--cor-contexto);
+  --cor-obee-atlas-superficie: var(--cor-superficie);
   --cor-obee-atlas-contorno: var(--cor-mineral);
-  --cor-obee-atlas-rotulo-inverso: #bed8d6;
-  --cor-obee-atlas-texto-inverso: #c4d7d7;
-  --cor-obee-atlas-acento-inverso: #a3e3d7;
-  --cor-obee-atlas-linha-inversa: #557278;
+  --cor-obee-atlas-rotulo-inverso: var(--cor-painel-escuro-legenda);
+  --cor-obee-atlas-texto-inverso: var(--cor-painel-escuro-legenda);
+  --cor-obee-atlas-acento-inverso: var(--cor-painel-escuro-acento);
+  --cor-obee-atlas-linha-inversa: var(--cor-painel-escuro-linha);
   --cor-obee-atlas-marcador: #9caeac;
   --cor-obee-atlas-trilho: #e2e9e6;
-  --cor-obee-atlas-serie-territorio: #09697a;
-  --cor-obee-atlas-serie-par: #806a45;
+  --cor-obee-atlas-serie-territorio: var(--cor-destaque);
+  --cor-obee-atlas-serie-par: var(--cor-comparacao);
   --cor-obee-atlas-orbita: #38565e;
   --cor-obee-atlas-no: #173b44;
   --cor-obee-atlas-no-pendente: #7e969b;
   /* Retrato da capital na entrada: texto claro, comparador e disco sobre a tinta do Atlas. */
-  --cor-obee-atlas-texto-claro: #f3f1ea;
+  --cor-obee-atlas-texto-claro: var(--cor-painel-escuro-texto);
   --cor-obee-atlas-par-inverso: #d9ab5f;
   --cor-obee-atlas-disco-centro: #1f4a54;
   --cor-obee-atlas-disco-borda: #132f37;

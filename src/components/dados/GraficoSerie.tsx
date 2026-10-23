@@ -3,12 +3,12 @@ import type { PontoSerie } from "@/lib/dadosPublicos";
 /**
  * Gráficos SVG renderizados no servidor (build time): zero JavaScript no
  * cliente, essenciais para as páginas públicas leves. Cores da identidade
- * (bronze sobre marfim) em valores literais porque o SVG não herda tokens
- * do Tailwind em atributos.
+ * (bronze sobre marfim) lidas dos tokens da plataforma: o SVG é inline, e o
+ * atributo de apresentação aceita var().
  */
 
-const BRONZE = "#966b48";
-const MINERAL = "#8a8578";
+const BRONZE = "var(--cor-bronze)";
+const MINERAL = "var(--serie-referencia)";
 
 function escala(pts: PontoSerie[], w: number, h: number, pad: number) {
   const vs = pts.map((p) => p.v);

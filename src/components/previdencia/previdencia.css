@@ -127,7 +127,7 @@
 .pv-fluxo-linha > span:first-child { font-size: 14px; line-height: 1.4; }
 .pv-fluxo-trilho { display: flex; height: 32px; }
 .pv-fluxo-trilho > span { display: block; min-width: 0; }
-.pv-fluxo-entra { background: var(--pv-acento); color: #fff; }
+.pv-fluxo-entra { background: var(--pv-acento); color: var(--cor-superficie); }
 .pv-fluxo-falta { background: repeating-linear-gradient(135deg, var(--cor-papel) 0 5px, var(--cor-bronze-soft) 5px 7px); color: var(--cor-carvao); box-shadow: inset 0 0 0 1px var(--cor-bronze); }
 .pv-fluxo-valores { display: flex; flex-wrap: wrap; gap: 2px 18px; margin-top: 6px; font-size: 13px; font-variant-numeric: tabular-nums; color: var(--cor-carvao); }
 .pv-fluxo-valores i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; }

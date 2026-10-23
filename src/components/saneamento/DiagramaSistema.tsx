@@ -46,7 +46,7 @@ const FORMAS: Record<Icone, ReactNode> = {
   ),
   eta: (
     <>
-      <rect x={-36} y={-22} width={72} height={44} rx={3} fill="#fff" stroke={AZ} strokeWidth={2} />
+      <rect x={-36} y={-22} width={72} height={44} rx={3} fill="var(--cor-superficie)" stroke={AZ} strokeWidth={2} />
       <line x1={-36} y1={-12} x2={36} y2={-12} stroke={AZ} strokeWidth={1} />
       <circle cx={-14} cy={4} r={9} fill={AZ_FUNDO} stroke={AZ} strokeWidth={1.5} />
       <circle cx={14} cy={4} r={9} fill={AZ_FUNDO} stroke={AZ} strokeWidth={1.5} />
@@ -54,7 +54,7 @@ const FORMAS: Record<Icone, ReactNode> = {
   ),
   reservatorio: (
     <>
-      <path d="M-18 -16 v24 h36 v-24" fill="#fff" stroke={AZ} strokeWidth={2} />
+      <path d="M-18 -16 v24 h36 v-24" fill="var(--cor-superficie)" stroke={AZ} strokeWidth={2} />
       <ellipse cx={0} cy={-16} rx={18} ry={6} fill={AZ_FUNDO} stroke={AZ} strokeWidth={2} />
       <line x1={-13} y1={8} x2={-18} y2={26} stroke={AZ} strokeWidth={2} />
       <line x1={13} y1={8} x2={18} y2={26} stroke={AZ} strokeWidth={2} />
@@ -62,20 +62,20 @@ const FORMAS: Record<Icone, ReactNode> = {
   ),
   casa: (
     <>
-      <polygon points="-28,26 -28,-4 0,-26 28,-4 28,26" fill="#fff" stroke={TINTA} strokeWidth={2} strokeLinejoin="round" />
+      <polygon points="-28,26 -28,-4 0,-26 28,-4 28,26" fill="var(--cor-superficie)" stroke={TINTA} strokeWidth={2} strokeLinejoin="round" />
       <rect x={-6} y={8} width={12} height={18} fill={TINTA} />
     </>
   ),
   coleta: (
     <>
       <line x1={-34} y1={12} x2={34} y2={12} stroke={BR} strokeWidth={4} />
-      <circle cx={0} cy={-6} r={11} fill="#fff" stroke={BR} strokeWidth={2} />
+      <circle cx={0} cy={-6} r={11} fill="var(--cor-superficie)" stroke={BR} strokeWidth={2} />
       <path d="M-7 -6 h14 M0 -13 v14" stroke={BR} strokeWidth={1.5} />
     </>
   ),
   elevatoria: (
     <>
-      <rect x={-26} y={-22} width={52} height={44} rx={3} fill="#fff" stroke={BR} strokeWidth={2} />
+      <rect x={-26} y={-22} width={52} height={44} rx={3} fill="var(--cor-superficie)" stroke={BR} strokeWidth={2} />
       <circle cx={0} cy={0} r={10} fill={BR_FUNDO} stroke={BR} strokeWidth={1.5} />
       <path d="M-4 -6 L7 0 L-4 6 Z" fill={BR} />
     </>

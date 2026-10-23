@@ -1,10 +1,12 @@
 /* Direção comum das ilustrações. Não redefine cores ou escalas dos gráficos. */
+/* Aliases da paleta do painel escuro (src/app/globals.css), só nas superfícies que desenham gravura: fora delas a variável fica
+   indefinida e cada componente usa o próprio recuo. Somem quando a Iniciativa 6 migrar os componentes. */
 #view-mapa.has-credit-atlas, .energia-atlas-inicial, .observatorio-gravuras {
-  --gravura-fundo: #102e36;
-  --gravura-papel: #f8f7f2;
-  --gravura-legenda: #c4d7d7;
-  --gravura-linha: #557278;
-  --gravura-acento: #a3e3d7;
+  --gravura-fundo: var(--cor-painel-escuro);
+  --gravura-papel: var(--cor-painel-escuro-texto);
+  --gravura-legenda: var(--cor-painel-escuro-legenda);
+  --gravura-linha: var(--cor-painel-escuro-linha);
+  --gravura-acento: var(--cor-painel-escuro-acento);
 }
 .energia-atlas-inicial { --atlas-fundo:var(--gravura-fundo); --atlas-texto:var(--gravura-papel); --atlas-acento:var(--gravura-acento); }
 

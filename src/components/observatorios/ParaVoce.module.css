@@ -4,7 +4,7 @@
   display: block;
   overflow: hidden;
   aspect-ratio: 16 / 9;
-  background: var(--gravura-fundo, #e9e4d8);
+  background: var(--gravura-fundo, var(--cor-grade));
 }
 /* Foto única (ex.: conta de luz): cobre a faixa. */
 .arte img.cobre {

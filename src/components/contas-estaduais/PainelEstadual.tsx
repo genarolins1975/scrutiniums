@@ -38,10 +38,10 @@ function Trajetoria({ estado }: { estado: Estado }) {
  return <figure className="ce-figure">
  <figcaption><strong>A trajetória anual de {estado.uf}</strong><span>DCL/RCL · % · encerramento de cada exercício</span></figcaption>
  <svg ref={area} viewBox={"0 0 " + largura + " 235"} role="img" aria-label={"Série de " + estado.nome + ", 2015 a 2025. Valores completos na tabela abaixo. O período parcial de 2026 não integra a linha."}>
- {[minimo, maximo].filter((v,i,a) => a.indexOf(v) === i).map(v => <g key={v}><line x1="65" x2={largura-35} y1={y(v)} y2={y(v)} stroke="#aab5b6" strokeDasharray="3 5"/><text x="54" y={y(v)+4} textAnchor="end">{numero(v)}</text></g>)}
- {minimo < 0 && maximo > 0 && <g><line x1="65" x2={largura-35} y1={y(0)} y2={y(0)} stroke="#aab5b6"/><text x="54" y={y(0)+4} textAnchor="end">0</text></g>}
- {trechos.filter(t => t.length).map((t,i) => <polyline key={i} points={t.map(p => x(p.ano)+","+y(p.valor)).join(" ")} fill="none" stroke="#09697a" strokeWidth="2.5"/>)}
- {pontos.filter(p => p.valor !== null).map(p => <circle key={p.ano} cx={x(p.ano)} cy={y(p.valor!)} r="3.5" fill="#09697a"/>)}
+ {[minimo, maximo].filter((v,i,a) => a.indexOf(v) === i).map(v => <g key={v}><line x1="65" x2={largura-35} y1={y(v)} y2={y(v)} stroke="var(--cor-neutro-frio-claro)" strokeDasharray="3 5"/><text x="54" y={y(v)+4} textAnchor="end">{numero(v)}</text></g>)}
+ {minimo < 0 && maximo > 0 && <g><line x1="65" x2={largura-35} y1={y(0)} y2={y(0)} stroke="var(--cor-neutro-frio-claro)"/><text x="54" y={y(0)+4} textAnchor="end">0</text></g>}
+ {trechos.filter(t => t.length).map((t,i) => <polyline key={i} points={t.map(p => x(p.ano)+","+y(p.valor)).join(" ")} fill="none" stroke="var(--cor-destaque)" strokeWidth="2.5"/>)}
+ {pontos.filter(p => p.valor !== null).map(p => <circle key={p.ano} cx={x(p.ano)} cy={y(p.valor!)} r="3.5" fill="var(--cor-destaque)"/>)}
  {[2015,2020,2025].map(a => <text key={a} x={x(a)} y="219" textAnchor="middle">{a}</text>)}
  </svg>
  <p className="ce-note">Fonte: Siconfi / Scrutiniums. O ponto de 2025 das 27 UFs usa a resposta original conferida. Demais pontos: série herdada; comparabilidade histórica ainda não validada. Lacunas interrompem a linha.</p>

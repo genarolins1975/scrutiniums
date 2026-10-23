@@ -1,22 +1,23 @@
-/* Paleta compartilhada pelos artefatos da página inicial. */
+/* Paleta dos artefatos da página inicial: aliases da paleta do painel escuro (src/app/globals.css), até a Iniciativa 6 migrar
+   os componentes. Os 17 tons próprios de antes viraram os sete papéis do painel; o foco sobre o papel é o da plataforma (bronze). */
 .energia-atlas-inicial {
-  --atlas-fundo:#102e36;
-  --atlas-texto:#f8f7f2;
-  --atlas-acento:#a3e3d7;
-  --atlas-borda-ativa:#609d99;
-  --atlas-separador:#527078;
-  --atlas-link:#c0e4df;
-  --atlas-texto-secundario:#c0d8d8;
-  --atlas-borda-controle:#87a9af;
-  --atlas-texto-grafico:#d9e8e6;
-  --atlas-foco:#b08c51;
-  --atlas-texto-mapa:#d0dfdf;
-  --atlas-mineral:#b2ccce;
-  --atlas-linha:#55717a;
-  --atlas-superficie:#214650;
-  --atlas-selecao:#37616b;
-  --atlas-energia:#b0d8d2;
-  --atlas-foco-inverso:#e5bf76;
+  --atlas-fundo:var(--cor-painel-escuro);
+  --atlas-texto:var(--cor-painel-escuro-texto);
+  --atlas-acento:var(--cor-painel-escuro-acento);
+  --atlas-borda-ativa:var(--cor-painel-escuro-controle);
+  --atlas-separador:var(--cor-painel-escuro-linha);
+  --atlas-link:var(--cor-painel-escuro-acento);
+  --atlas-texto-secundario:var(--cor-painel-escuro-legenda);
+  --atlas-borda-controle:var(--cor-painel-escuro-controle);
+  --atlas-texto-grafico:var(--cor-painel-escuro-legenda);
+  --atlas-foco:var(--cor-bronze);
+  --atlas-texto-mapa:var(--cor-painel-escuro-legenda);
+  --atlas-mineral:var(--cor-painel-escuro-legenda);
+  --atlas-linha:var(--cor-painel-escuro-linha);
+  --atlas-superficie:var(--cor-painel-escuro-superficie);
+  --atlas-selecao:var(--cor-painel-escuro-selecao);
+  --atlas-energia:var(--cor-painel-escuro-acento);
+  --atlas-foco-inverso:var(--cor-painel-escuro-foco);
 }
 /* Apenas a porta de entrada; os painéis analíticos mantêm seus contratos. */
 .energia-atlas-inicial .obs-hero { padding-bottom:24px }
@@ -26,7 +27,8 @@
 .energia-abertura-medidas>a { display:flex;flex-direction:column;padding:24px;gap:6px;border-right:1px solid var(--cor-linha);color:var(--cor-carvao);font-size:13px }
 .energia-abertura-medidas>a:first-child { padding-left:0 }.energia-abertura-medidas>a:last-child { border:0 }.energia-abertura-medidas strong { font:400 40px/1.2 var(--font-serif),Georgia,serif;margin:6px 0 }.energia-abertura-medidas small { font-size:12px;color:var(--cor-carvao-muted) }.energia-abertura-link { text-decoration:underline;text-underline-offset:4px;margin-top:8px }
 .energia-atlas-inicial #mapa-conceitual { padding-top:28px }
-.energia-mapa-atlas { --cor-carvao:var(--atlas-texto);--cor-carvao-muted:var(--atlas-texto-mapa);--cor-mineral:var(--atlas-mineral);--cor-linha:var(--atlas-linha);--cor-superficie:var(--atlas-superficie);--cor-energia-dark:var(--atlas-link);--cor-energia-fundo:var(--atlas-selecao);--cor-energia:var(--atlas-energia);background:var(--atlas-fundo);padding:28px;color:var(--atlas-texto) }
+/* os tokens de texto e linha dentro do mapa trocam para os do painel pela classe .contexto-escuro (globals.css) */
+.energia-mapa-atlas { padding:28px }
 .energia-mapa-lentes { display:flex;flex-wrap:wrap;gap:8px;padding-bottom:12px }.energia-mapa-lentes button { min-height:44px;padding:8px 14px;border:1px solid var(--atlas-borda-controle);font-size:12px;line-height:1.5;color:var(--atlas-texto-grafico) }.energia-mapa-lentes button[aria-pressed=true] { background:var(--atlas-link);color:var(--atlas-fundo);border-color:var(--atlas-link) }
 .energia-mapa-instrucao { font-size:13px;line-height:1.6;color:var(--atlas-texto-mapa);min-height:44px;margin-bottom:24px }
 .energia-mapa-atlas #mapa-conceitual-detalhe { background:transparent;border:0;border-left:1px solid var(--atlas-linha);padding:8px 0 8px 28px }
@@ -36,7 +38,7 @@
 @media(max-width:1100px) { .energia-mapa-atlas { padding:20px }.energia-mapa-numero { display:none } }
 @media(max-width:1279px) { .energia-mapa-atlas #mapa-conceitual-detalhe { border-left:0;border-top:1px solid var(--atlas-linha);padding:24px 0 0 }.energia-mapa-atlas [id^=mapa-no-] { padding:8px }.energia-mapa-numero { display:block } }
 @media(max-width:639px) { .energia-abertura-medidas { grid-template-columns:1fr }.energia-abertura-medidas>a,.energia-abertura-medidas>a:first-child { padding:20px 0;border-right:0;border-bottom:1px solid var(--cor-linha) }.energia-abertura-medidas strong { font-size:34px } }
-@media print { .energia-mapa-lentes { display:none }.energia-mapa-atlas { background:white;--cor-carvao:#182b36;--cor-carvao-muted:#182b36;--cor-mineral:#58666b;--cor-superficie:white;--cor-energia-dark:#09697a }.energia-mapa-instrucao { color:#182b36 } }
+@media print { .energia-mapa-lentes { display:none }.energia-mapa-atlas { background:var(--cor-superficie) }.energia-mapa-instrucao { color:var(--cor-carvao) } }
 .energia-mapa-atlas .text-carvao { color:var(--cor-carvao) }
 .energia-mapa-atlas .text-carvao-muted { color:var(--cor-carvao-muted) }
 .energia-mapa-atlas .text-mineral { color:var(--cor-mineral) }
@@ -48,7 +50,7 @@
 .energia-mapa-atlas [id^=mapa-no-]>.font-serif { font-size:13px;line-height:1.25 }
 
 /* Direção visual aprovada: a paisagem ensina o percurso, os números seguem a gold. */
-.energia-atlas-inicial { --atlas-papel:#f8f7f2;--atlas-tinta:#182b36;--atlas-sombra:rgba(24,43,54,.16) }
+.energia-atlas-inicial { --atlas-papel:var(--cor-papel);--atlas-tinta:var(--cor-carvao);--atlas-sombra:rgb(var(--cor-carvao-rgb) / .16) }
 .energia-atlas-inicial #proposito { padding-top:0;padding-bottom:28px }
 .energia-cenario { position:relative;isolation:isolate;min-height:560px;margin:8px -40px 0;background:var(--atlas-papel);overflow:hidden }
 .energia-cenario-imagem { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-2 }

@@ -264,12 +264,12 @@ export function DoSateliteAoFoco({ introducao }: Readonly<{ introducao?: ReactNo
               <p className="rotulo flex items-baseline gap-2 text-mineral"><span className="tabular-nums text-carvao">{String(i + 1).padStart(2, "0")}</span>{c.titulo}</p>
               <svg viewBox="0 0 120 90" aria-hidden="true" className="mt-4 h-auto w-40">
                 {[0, 1, 2].map((cx) => [0, 1].map((cy) => (
-                  <rect key={`${cx}-${cy}`} x={10 + cx * 34} y={14 + cy * 34} width="32" height="32" className={c.pixels.some(([px, py]) => px === cx && py === cy) && !c.nuvem ? "fill-obee" : "fill-superficie"} stroke="#D8D2C6" />
+                  <rect key={`${cx}-${cy}`} x={10 + cx * 34} y={14 + cy * 34} width="32" height="32" className={c.pixels.some(([px, py]) => px === cx && py === cy) && !c.nuvem ? "fill-obee" : "fill-superficie"} stroke="var(--cor-linha)" />
                 )))}
                 {c.pixels.map(([px, py]) => (
                   <circle key={`${px}-${py}`} cx={26 + px * 34} cy={30 + py * 34} r="5" className="fill-bronze" />
                 ))}
-                {c.nuvem && <ellipse cx="60" cy="40" rx="46" ry="20" className="fill-marfim" stroke="#A6A8A4" strokeDasharray="3 3" />}
+                {c.nuvem && <ellipse cx="60" cy="40" rx="46" ry="20" className="fill-marfim" stroke="var(--cor-mineral-soft)" strokeDasharray="3 3" />}
               </svg>
               <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{c.texto}</p>
               <p className="mt-auto pt-3 text-sm text-carvao"><span className="font-label text-lg tabular-nums">{c.focos}</span> {c.focos === 1 ? "foco" : "focos"}</p>
