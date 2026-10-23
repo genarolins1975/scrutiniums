@@ -596,6 +596,37 @@ class LuzParaTodos(unittest.TestCase):
         self.assertEqual(fl.uf_do_estado("Paraiba"), "PB")
         self.assertEqual(fl.uf_do_estado("Amapá"), "AP")
 
+    def test_celula_que_sai_do_arquivo_nao_fica_vigente(self):
+        # 22/10/2026: 1 domicílio rural de 2025 passou de Porto Acre a Porto Walter. A observação de Porto Acre não vinha
+        # mais no arquivo e seguia vigente: a soma por município passava o total nacional em 1 e a ficha reprovava.
+        from pipeline.energia import base
+        con = base.conecta(":memory:")
+        leituras = [("2026-10-03T03:54:51Z", {("AC.rural", "2025-03"): 18.0, ("M|AC|PORTO ACRE|rural", "2025"): 1.0,
+                                              ("M|AC|PORTO WALTER|rural", "2025"): 13.0, ("M|AC|ACRELANDIA|rural", "2025"): 4.0,
+                                              ("M|AC|ACRELANDIA|recurso_distribuidora", "2016"): 0.0}),
+                    ("2026-10-22T02:48:39Z", {("AC.rural", "2025-03"): 18.0, ("M|AC|PORTO WALTER|rural", "2025"): 14.0,
+                                              ("M|AC|ACRELANDIA|rural", "2025"): 4.0,
+                                              ("M|AC|ACRELANDIA|recurso_distribuidora", "2016"): 0.0}),
+                    ("2026-11-05T03:00:00Z", {("AC.rural", "2025-03"): 18.0, ("M|AC|PORTO ACRE|rural", "2025"): 1.0,
+                                              ("M|AC|PORTO WALTER|rural", "2025"): 13.0, ("M|AC|ACRELANDIA|rural", "2025"): 4.0,
+                                              ("M|AC|ACRELANDIA|recurso_distribuidora", "2016"): 0.0})]
+        estados = []
+        for i, (quando, celulas) in enumerate(leituras):
+            vid, _ = base.registra_vintage(con, mod.DS_LPT, "domicilios_atendidos.csv", "https://exemplo", quando, None,
+                                           str(i + 1) * 64, 1, "teste", None)
+            base.grava_observacoes(con, mod.DS_LPT, vid, [(s, r, v) for (s, r), v in celulas.items()])
+            mod._marca_removidas_lpt(con, vid, set(celulas))
+            obs = mod._vigentes_lpt(con)
+            estados.append(obs)
+            municipal = sum(v for s, pts in obs.items() if s.startswith("M|") for v in pts.values())
+            self.assertEqual(municipal, sum(v for (s, _), v in celulas.items() if s.startswith("M|")), quando)
+        # saiu: Porto Acre deixa de existir na leitura vigente; o zero publicado pela fonte continua zero, não ausência
+        self.assertNotIn("M|AC|PORTO ACRE|rural", estados[1])
+        self.assertEqual(estados[1]["M|AC|ACRELANDIA|recurso_distribuidora"], {"2016": 0.0})
+        # voltou com o mesmo valor: a marca é apagada e o valor antigo volta a valer
+        self.assertEqual(estados[2]["M|AC|PORTO ACRE|rural"], {"2025": 1.0})
+        con.close()
+
 
 class Metricas(unittest.TestCase):
     def test_catalogo_valido(self):

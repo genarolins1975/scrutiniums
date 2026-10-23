@@ -144,7 +144,13 @@ describe("os seis sinais da inicial: o número é o da gold do módulo", () => {
     const w = medianaPonderadaPorUc(contaComUc, QUALIDADE)!;
     expect(w.valorMwh).toBe(esperada);
     expect(w.n).toBe(contaComUc.tarifas.vigentes.length);
-    expect(w.cobertura).toBeGreaterThan(0.99);
+    // a cobertura é a parte das unidades consumidoras do ano que está nas distribuidoras do arquivo, refeita aqui: com o arquivo completo
+    // passa de 99% (30/09/2026); com reajustes recentes ainda fora dele, cai (22/10/2026: Equatorial GO, EDP SP, CPFL Piratininga e
+    // Neoenergia Brasília de fora, 90,5%), e quem fica de fora é dito no universo do sinal
+    const ucsDoAno = Array.from(ucs.values()).reduce((a, b) => a + b, 0);
+    expect(w.cobertura).toBeCloseTo(total / ucsDoAno, 12);
+    const foraDoArquivo = Array.from(ucs.entries()).filter(([cnpj]) => !contaComUc.tarifas.vigentes.some((v) => v.cnpj === cnpj));
+    expect(1 - w.cobertura).toBeCloseTo(foraDoArquivo.reduce((a, [, u]) => a + u, 0) / ucsDoAno, 12);
     const frasePesada = `Pesada pelas unidades consumidoras de ${QUALIDADE.ano_referencia}, a mediana seria ${kwh(esperada)} por kWh`;
     expect(disponivel(sinalConta(contaComUc, QUALIDADE)).ressalva).toContain(frasePesada);
     if (todasComUc) {

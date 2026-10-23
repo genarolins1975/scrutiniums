@@ -829,7 +829,47 @@ def _coleta_caderno_pasi(con):
 
 
 ESTIMADOR_POF = "estimador2"  # 1: medidas originais; 2: sensibilidade da média das participações na renda
-LEITOR_LPT = "leitor3"  # versão do leitor do Luz para Todos (1: programas não reconhecidos por causa do hífen; 2: diagnóstico sem versão)
+# versão do leitor do Luz para Todos (1: programas não reconhecidos por causa do hífen; 2: diagnóstico sem versão;
+# 3: diagnóstico com versão; 4: célula que sai do arquivo fica marcada como removida, _marca_removidas_lpt)
+LEITOR_LPT = "leitor4"
+PREFIXO_REMOVIDA_LPT = "lpt_removida|"
+
+
+def _chave_removida_lpt(ch):
+    """'lpt_removida|2025|M|AC|PORTO ACRE|rural' → ('M|AC|PORTO ACRE|rural', '2025')."""
+    ref, serie = ch[len(PREFIXO_REMOVIDA_LPT):].split("|", 1)
+    return serie, ref
+
+
+def _marca_removidas_lpt(con, vintage_id, presentes):
+    """O arquivo de domicílios do Luz para Todos traz o histórico inteiro a cada geração: célula (série, referência)
+    conhecida até esta captura e ausente da leitura nova saiu da fonte. As observações só guardam valor novo ou
+    alterado (ausência não vira linha nem zero, e a fonte publica células com zero), então a saída fica registrada no
+    controle; a célula que volta tem a marca apagada. Em 22/10/2026, 1 domicílio rural de 2025 passou de Porto Acre a
+    Porto Walter e Porto Acre seguia com o valor antigo: a soma por município passava o total nacional em 1."""
+    # só as versões anteriores do mesmo arquivo contam: outro arquivo de domicílios não marca as células deste
+    cap, rec = con.execute("SELECT capturado_em, recurso FROM vintages WHERE vintage_id=?", (vintage_id,)).fetchone()
+    conhecidas = set(con.execute(
+        """SELECT DISTINCT o.serie, o.ref FROM observacoes o JOIN vintages v ON v.vintage_id=o.vintage_id
+           WHERE o.dataset=? AND v.recurso=? AND o.serie NOT LIKE 'R|%' AND v.capturado_em <= ?""",
+        (DS_LPT, rec, cap)).fetchall())
+    marcadas = [ch for ch, campos in base.registros_como_estavam_em(con, DS_CONTROLE, cap).items()
+                if ch.startswith(PREFIXO_REMOVIDA_LPT) and campos.get("removida")]
+    saidas = conhecidas - presentes
+    linhas = [(f"{PREFIXO_REMOVIDA_LPT}{r}|{s}", "removida", "1") for s, r in sorted(saidas)]
+    linhas += [(ch, "removida", None) for ch in marcadas if _chave_removida_lpt(ch) in presentes]
+    base.grava_registros(con, DS_CONTROLE, vintage_id, linhas)
+    return len(saidas)
+
+
+def _vigentes_lpt(con):
+    """Observações vigentes do Luz para Todos sem as células que saíram do arquivo (_marca_removidas_lpt)."""
+    obs = _vigentes(con, DS_LPT)
+    for ch, campos in base.registros_como_estavam_em(con, DS_CONTROLE).items():
+        if ch.startswith(PREFIXO_REMOVIDA_LPT) and campos.get("removida"):
+            serie, ref = _chave_removida_lpt(ch)
+            obs.get(serie, {}).pop(ref, None)
+    return {s: pts for s, pts in obs.items() if pts}
 
 
 def _coleta_lpt(con, ctx):
@@ -872,6 +912,7 @@ def _coleta_lpt(con, ctx):
             obs = [(f"{uf}.{prog}", ref, float(q)) for (uf, prog, ref), q in agg["mensal"].items()]
             obs += [(f"M|{uf}|{nn}|{prog}", ano, float(q)) for (uf, nn, prog, ano), q in agg["municipal"].items()]
             base.grava_observacoes(con, DS_LPT, v["vintage_id"], obs)
+            diag["celulas_removidas"] = _marca_removidas_lpt(con, v["vintage_id"], {(s, r) for s, r, _ in obs})
             base.grava_registros(con, DS_LPT, v["vintage_id"], [(f"{uf}|{nn}", "nome", nome) for (uf, nn), nome in agg["nomes"].items()])
         elif rec.startswith("recursos"):
             contratos, diag = fl.le_recursos(linhas)
@@ -2671,7 +2712,7 @@ def serie_anual_lpt(mensal, progs):
 def _bloco_luz_para_todos(con):
     """Atendimentos do Luz para Todos (domicílios ligados) por ano, programa, UF e
     município, e os recursos por contrato, a partir do conjunto aberto do MME."""
-    obs = _vigentes(con, DS_LPT)
+    obs = _vigentes_lpt(con)
     if not obs:
         return None
     progs = list(fl.PROGRAMA_ROTULO)

@@ -521,7 +521,12 @@ describe("r8 T1: Inclusão energética", () => {
     expect(Number(mai.uc_tsee)).toBe(t.kpis.uc_tsee.valor);
     const quadro = ENTENDER.tarifaSocial;
     expect(quadro).toContain("Fonte defasada, declarada. Um mês só entra nas comparações quando todas as distribuidoras enviaram o informe.");
-    expect(quadro).toContain("SCS (UC): arquivo gerado em 20/09/2026, publicado até jun/2025; o último mês com todas as distribuidoras é mai/2025, o dos números de UC.");
+    // a data de geração é a que a ANEEL escreve no próprio arquivo (DatGeracaoConjuntoDados) e muda a cada nova geração (20/09/2026,
+    // depois 20/10/2026, com os mesmos meses): o quadro cita a do arquivo publicado, que o pipeline guarda no diagnóstico do SCS
+    const geracao = t.diagnostico_scs!.data_geracao.at(-1)!;
+    expect(geracao).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    const [ga, gm, gd] = geracao.split("-");
+    expect(quadro).toContain(`SCS (UC): arquivo gerado em ${gd}/${gm}/${ga}, publicado até jun/2025; o último mês com todas as distribuidoras é mai/2025, o dos números de UC.`);
     expect(quadro).toContain("o último mês com todas as distribuidoras é mar/2026, o dos números de fatura e do mapa.");
     for (const x of ["arquivos sondados", "original guardado", "regra do mês do mapa"]) expect(quadro, x).not.toContain(x);
   });

@@ -115,8 +115,77 @@ def texto_html(dados):
     return normaliza(html_mod.unescape(t))
 
 
+_SLATE_TAG = {"p": "p", "h2": "h2", "h3": "h3", "h4": "h4", "ul": "ul", "ol": "ol", "li": "li", "blockquote": "blockquote"}
+
+
+def _slate_html(nos):
+    """Nós de um bloco slate do Volto → HTML (parágrafos, títulos, listas e links)."""
+    out = []
+    for n in nos or []:
+        if not isinstance(n, dict):
+            continue
+        if "text" in n and "children" not in n:
+            out.append(html_mod.escape(n.get("text") or "", quote=False))
+            continue
+        filhos = _slate_html(n.get("children"))
+        tipo = n.get("type")
+        if tipo == "link":
+            url = ((n.get("data") or {}).get("url") or "")
+            out.append(f'<a href="{html_mod.escape(url)}">{filhos}</a>')
+        elif tipo in _SLATE_TAG:
+            out.append(f"<{_SLATE_TAG[tipo]}>{filhos}</{_SLATE_TAG[tipo]}>")
+        else:
+            out.append(filhos)
+    return "".join(out)
+
+
+def _blocos_volto_html(no):
+    """HTML dos blocos de conteúdo de uma página Volto, na ordem do layout; contêineres
+    (colunas, seções) são percorridos por dentro. Título, descrição e compartilhamento ficam de fora."""
+    if not isinstance(no, dict):
+        return ""
+    partes = []
+    if isinstance(no.get("html"), str):
+        partes.append(no["html"])
+    elif no.get("@type") == "slate" and isinstance(no.get("value"), list):
+        partes.append(_slate_html(no["value"]))
+    blocos, layout = no.get("blocks"), no.get("blocks_layout")
+    if isinstance(blocos, dict):
+        ordem = (layout or {}).get("items") if isinstance(layout, dict) else None
+        for k in ordem if isinstance(ordem, list) else list(blocos):
+            partes.append(_blocos_volto_html(blocos.get(k)))
+    if isinstance(no.get("data"), dict):
+        partes.append(_blocos_volto_html(no["data"]))
+    return "\n".join(p for p in partes if p)
+
+
+def conteudo_volto(dados):
+    """Conteúdo de uma página gov.br no portal novo (Volto, desde 22/10/2026 na ANEEL): o HTML do
+    servidor traz os blocos vazios e o texto só existe no estado inicial (window.__data), que é
+    lido aqui. None quando a página não é Volto ou o estado não se decodifica."""
+    t = dados.decode("utf-8", "replace") if isinstance(dados, bytes) else (dados or "")
+    m = re.search(r"window\.__data\s*=\s*", t)
+    if not m:
+        return None
+    fim = t.find("</script>", m.end())
+    bruto = t[m.end():fim if fim > 0 else len(t)]
+    # o estado é um literal JavaScript: undefined fora das cadeias vira null para o JSON
+    bruto = re.sub(r'"(?:[^"\\]|\\.)*"|\bundefined\b', lambda x: x.group(0) if x.group(0)[0] == '"' else "null", bruto)
+    try:
+        estado, _ = json.JSONDecoder().raw_decode(bruto.lstrip())
+    except ValueError:
+        return None
+    pagina = ((estado.get("content") or {}).get("data") or {}) if isinstance(estado, dict) else {}
+    html = _blocos_volto_html(pagina)
+    return html or None
+
+
 def conteudo_govbr(dados):
-    """Trecho de uma página gov.br entre o início do conteúdo e o rodapé de navegação."""
+    """Trecho de uma página gov.br entre o início do conteúdo e o rodapé de navegação. No portal
+    novo (Volto), o conteúdo vem dos blocos do estado inicial (conteudo_volto)."""
+    volto = conteudo_volto(dados)
+    if volto is not None:
+        return volto
     t = dados.decode("utf-8", "replace") if isinstance(dados, bytes) else dados
     t = re.sub(r"(?is)<(script|style|noscript)\b.*?</\1>", " ", t)
     ini = t.find('id="content"')
@@ -1064,6 +1133,7 @@ def link_revisao_agenda(dados):
     ("atualizada pela <a href=...>Portaria nº 7.157, de 8 de setembro de 2026</a>"); None se a
     página não traz o link."""
     t = dados.decode("utf-8", "replace") if isinstance(dados, bytes) else (dados or "")
+    t = conteudo_volto(t) or t
     m = re.search(r'atualizada\s+pela\s*<a[^>]+href="([^"]+)"', t)
     return html_mod.unescape(m.group(1)) if m else None
 
