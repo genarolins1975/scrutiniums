@@ -10,6 +10,12 @@ import { conferirPainel } from "./suporte/molde-painel";
  * caminho é o da rota em teste.
  */
 
+// O Next instala o AsyncLocalStorage global no servidor dele; aqui o teste faz o mesmo antes dos imports, para a irmã inglesa ler o
+// idioma do endereço da renderização (como em energia-idioma.test.ts)
+vi.hoisted(async () => {
+  const { AsyncLocalStorage } = await import("node:async_hooks");
+  (globalThis as { AsyncLocalStorage?: unknown }).AsyncLocalStorage = AsyncLocalStorage;
+});
 const caminho = vi.hoisted(() => ({ atual: "/" }));
 vi.mock("next/navigation", async () => ({
   ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
@@ -100,4 +106,33 @@ describe("Crédito no molde de painel", () => {
       expect(h).toContain("data-aviso-cet");
     }
   });
+});
+
+describe("Setor Elétrico: Tarifa Social no molde de painel, nas duas línguas", () => {
+  const rota = "/setor-eletrico/inclusao-energetica/tarifa-social";
+  /** A irmã inglesa é o mesmo componente; o idioma vem do endereço da renderização (idiomaEnergia lê o armazenamento do Next). */
+  async function emIngles(): Promise<string> {
+    const { staticGenerationAsyncStorage } = await import("next/dist/client/components/static-generation-async-storage.external");
+    const { default: Pagina } = await import("@/app/en/setor-eletrico/inclusao-energetica/tarifa-social/page");
+    caminho.atual = `/en${rota}`;
+    return (staticGenerationAsyncStorage as unknown as { run: (store: unknown, cb: () => string) => string }).run({ urlPathname: `/en${rota}` }, () =>
+      renderToStaticMarkup((Pagina as () => ReactElement)()),
+    );
+  }
+
+  it("português e inglês passam no conferidor; o inglês fica fora do teto de comprimento, como no teste do build", async () => {
+    const pt = await html(rota, () => import("@/app/setor-eletrico/inclusao-energetica/tarifa-social/page"));
+    conferirPainel(rota, pt);
+    const en = await emIngles();
+    conferirPainel(rota, en, { comprimento: false });
+    expect(en).toContain("Tarifa Social (social electricity tariff)");
+    // os mesmos números e a mesma estrutura de títulos nas duas línguas (o teste do build confere de novo no HTML gerado)
+    const { parse } = await import("parse5");
+    const { numerosNormalizados, estruturaDeTitulos, vazamentosEnergia } = await import("./suporte/i18n-energia");
+    const dPt = parse(pt) as never;
+    const dEn = parse(en) as never;
+    expect(estruturaDeTitulos(dEn)).toEqual(estruturaDeTitulos(dPt));
+    expect(numerosNormalizados(dEn)).toEqual(numerosNormalizados(dPt));
+    expect([...new Set(vazamentosEnergia(dPt, dEn).en)], "português sem marca no inglês").toEqual([]);
+  }, 60_000);
 });
