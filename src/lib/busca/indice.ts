@@ -11,7 +11,8 @@
  *
  * `aberta` vem de ehRotaPublica. Os sinônimos vêm de um único arquivo (sinonimos.json). Destino novo entra na busca pelo
  * registro ou pelo catálogo, nunca por aqui. O índice não leva número, série nem arquivo: só títulos, resumos, endereços,
- * situação e termos; scripts/busca-indice.mjs o grava em public/busca/indice.json.
+ * situação e termos. A rota src/app/busca/indice.json/route.ts (force-static) o grava no build e o serve em
+ * /busca/indice.json, aberto sem conta pelo endereço exato (ARQUIVOS_DAS_CONSULTAS).
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -147,10 +148,29 @@ const nomesCapitais = (): string[] => capitais.capitais.map((c) => c.nome);
 const nomesUf = (): string[] => Object.values(NOME_UF);
 
 /** Distribuidoras com tarifa vigente (sigla e razão social da ANEEL), as mesmas da Conta de luz. */
+/**
+ * Razão social sem o que ninguém digita (S.A., LTDA, "DISTRIBUIDORA DE ENERGIA", "COOPERATIVA DE ELETRIFICAÇÃO RURAL DA REGIÃO
+ * DE"): sobram o nome de fantasia e o lugar. O índice desce inteiro no primeiro foco e tem peso alvo de 150 KB (bloco 3 do ciclo
+ * 2 da busca, 23/10/2026: com o resumo e os termos de cada página, encurtar os nomes vem antes de subir o teto).
+ */
+export function encurtarRazaoSocial(nome: string): string {
+  return nome
+    .replace(/\bCOOPERATIVA( REGIONAL)? DE (ELETRIFICACAO|ELETRIFICAO|ELETRIF|DISTRIBUICAO|ELETRICIDADE|ENERGIA|ELETR\.)( E GERACAO)?( RURAL)?( E (DESENVOLVIMENTO|DESENV\.)( RURAL)?)?( DE ENERGIA)?( ELETRICA)?( DA REGIAO)?( D[AEO]S?)?\b/gi, "COOPERATIVA ")
+    .replace(/\b(S\.?\/?A\.?|S A|LTDA\.?|LTD)(?=\s|$|-)/gi, " ")
+    .replace(/-?\s*\b(DISTRIBUIDORA|DISTRIBUICAO)( E GERACAO)?( DE (ENERGIA|ELETRICIDADE)( ELETRICA)?)?\b/gi, " ")
+    .replace(/\s+/g, " ")
+    .replace(/^[\s.\-]+|[\s.\-]+$/g, "")
+    .trim();
+}
+
 const distribuidoras = (): string[] =>
   lerPublico(
     "energia/gold/conta.json",
-    (j) => ((j as { tarifas: { vigentes: { sigla: string; nome: string }[] } }).tarifas.vigentes ?? []).flatMap((d) => [d.sigla, d.nome]),
+    (j) =>
+      ((j as { tarifas: { vigentes: { sigla: string; nome: string }[] } }).tarifas.vigentes ?? []).flatMap((d) => {
+        const nome = encurtarRazaoSocial(d.nome);
+        return normalizar(nome) === normalizar(d.sigla) ? [d.sigla] : [d.sigla, nome];
+      }),
     [] as string[],
   );
 
@@ -253,12 +273,13 @@ export function indiceDeBusca(): IndiceBusca {
         m.add({
           tipo: "pagina",
           titulo: p.titulo,
-          resumo: destino?.resumo ?? (p.situacao === "previsto" ? (p.pendencia ?? "") : ""),
+          // o Setor Elétrico tem resumo próprio no catálogo da navegação, mais descritivo que a pergunta
+          resumo: destino?.resumo ?? p.resumo ?? (p.situacao === "previsto" ? (p.pendencia ?? "") : ""),
           href: p.rota,
           observatorio: o.id,
           colecao: c.id,
           situacao: p.situacao as SituacaoEntrada,
-          termos: [destino?.pergunta, destino?.rotulo],
+          termos: [...(p.termos ?? []), destino?.pergunta, destino?.rotulo],
         });
       }
       // método, dados e glossário da coleção: os atalhos da navegação única

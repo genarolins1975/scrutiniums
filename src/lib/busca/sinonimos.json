@@ -17,7 +17,7 @@
   "conta de água": ["tarifa de água", "preço da água", "simulador da conta de água"],
   "tarifa social de água": ["desconto na conta de água"],
   "falta de água": ["racionamento", "torneira seca", "interrupção do abastecimento", "seca"],
-  "Ideb": ["escola", "educação", "nota das escolas", "ensino fundamental", "INEP"],
+  "Ideb": ["escola", "nota das escolas", "ensino fundamental", "INEP"],
   "creche": ["educação infantil", "pré-escola"],
   "saúde": ["SUS", "hospital", "posto de saúde", "atenção primária", "UBS"],
   "segurança pública": ["violência", "homicídio", "crime", "polícia", "letalidade", "feminicídio"],

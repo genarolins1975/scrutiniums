@@ -52,8 +52,13 @@ describe("bloco 1: casar como o leitor escreve", () => {
     expect(hrefs(r, 30)).toEqual(hrefs(b("tarifa social"), 30));
   });
 
-  // depende do índice: nenhuma página fala hoje em "governo" e "educação" juntas (Contas Federais ganham termos no bloco 3)
-  it.todo("bloco 3: 'quanto o governo gasta com educação' dá parcial com Educação e 'Para onde vai o dinheiro federal, por área?'");
+  // bloco 3: a despesa por área ganhou os termos do catálogo ("gasto federal", "educação"). A coleção Educação tem só uma das
+  // três palavras úteis ("governo", "gasta", "educação") e fica fora do parcial, que exige ao menos a metade
+  it("'quanto o governo gasta com educação' dá parcial com 'Para onde vai o dinheiro federal, por área?' primeiro", () => {
+    const r = b("quanto o governo gasta com educação");
+    expect(r.parcial).toBe(true);
+    expect(r.resultados[0].href).toBe("/contas-publicas/por-area");
+  });
 
   it("parcial: 'por que a conta de luz subiu' traz Conta de luz e Bandeira tarifária, rotulado", () => {
     const r = b("por que a conta de luz subiu");
@@ -122,8 +127,8 @@ describe("bloco 1: casar como o leitor escreve", () => {
   });
 
   it("via: o termo que trouxe o destino aparece quando a palavra não está no título nem no resumo", () => {
-    const gas = b("botijão").resultados.find((x) => x.titulo === "Gás de cozinha");
-    expect(gas?.via).toBe("botijão");
+    const saude = b("hospitais").resultados.find((x) => x.tipo === "colecao" && x.titulo === "Saúde");
+    expect(saude?.via).toBe("hospital");
     // a palavra no título não precisa de explicação
     expect(b("botijão").resultados[0].via).toBeUndefined();
   });
@@ -363,14 +368,54 @@ describe("bloco 2: sinônimos com alcance certo", () => {
 });
 
 describe("bloco 3: toda página com pergunta e termos", () => {
-  it.todo("'tarifa branca': só com verbete ou página; senão, estado 'ainda não cobre'");
-  it.todo("'Regulação': as duas páginas, cada uma com resumo e via");
-  it.todo("'Importação', 'Produção', 'Atlas', 'Panorama': cada uma com resumo no índice");
-  it.todo("'SNIS', 'SINISA', 'Siconfi', 'CAGED', 'PNAD', 'INEP', 'DataSUS': a coleção ou página que usa a fonte entre os três primeiros");
-  it.todo("conjunto completo: zero resultados em no máximo 10% dos 234 termos");
+  const pagina = (href: string) => indiceDeBusca().entradas.find((e) => e.href === href && (e.tipo === "pagina" || e.tipo === "pergunta"));
+
+  it("'Regulação': as duas páginas primeiro, cada uma com resumo no índice", () => {
+    const r = b("Regulação").resultados.slice(0, 2);
+    expect(r.map((x) => x.href).sort()).toEqual(["/gas-natural/regulacao", "/setor-eletrico/regulacao"]);
+    for (const x of r) expect(x.resumo, x.href ?? x.titulo).not.toBe("");
+  });
+
+  it("'Importação', 'Produção', 'Atlas', 'Panorama': a página de título igual vem primeiro, com resumo", () => {
+    for (const t of ["Importação", "Produção", "Atlas", "Panorama"]) {
+      const r = b(t).resultados[0];
+      expect([r.nivel, r.tipo], t).toEqual([0, "pagina"]);
+      expect(r.resumo, t).not.toBe("");
+    }
+    expect(pagina("/gas-natural/importacao")?.resumo).toBe("Quanto gás o Brasil importa e de onde ele vem?");
+  });
+
+  it("fontes: a coleção ou a página que usa a fonte vem entre os três primeiros", () => {
+    const esperado: Record<string, string[]> = {
+      SNIS: ["saneamento"],
+      SINISA: ["saneamento"],
+      Siconfi: ["estaduais"],
+      CAGED: ["renda"],
+      PNAD: ["renda", "protecao"],
+      INEP: ["educacao"],
+      DataSUS: ["saude"],
+    };
+    for (const [t, colecoes] of Object.entries(esperado)) {
+      const r = b(t).resultados.slice(0, 3);
+      expect(r.some((x) => colecoes.includes(x.colecao ?? "")), t).toBe(true);
+    }
+  });
+
+  it("termos dos catálogos: 'Selic', 'ICMS', 'superávit' e 'Ideb anos finais' acham o painel que mostra o assunto", () => {
+    expect(b("Selic").resultados[0].href).toBe("/observatorio/credit");
+    expect(b("ICMS").resultados[0].href).toBe("/contas-publicas-estaduais");
+    expect(b("superávit").resultados[0].href).toBe("/contas-publicas/panorama");
+    expect(b("Ideb anos finais").resultados[0].colecao).toBe("educacao");
+  });
+
+  // 35 dos 234 termos (15%) seguem sem resultado depois do bloco 3: são temas que a plataforma não cobre (eleição, covid,
+  // ANVISA, hidrogênio verde, salário dos juízes...), e ligar um sinônimo a eles anunciaria cobertura que não existe. O
+  // destino deles é o estado "ainda não cobre" do bloco 4, não a meta de 10% do prompt (decisão registrada no PR do bloco 3)
+  it.todo("conjunto completo: zero resultados em no máximo 10% dos 234 termos (não alcançado sem inventar cobertura; ver PR do bloco 3)");
 });
 
 describe("bloco 4: estado vazio", () => {
+  it.todo("'tarifa branca': sem verbete nem página, estado 'ainda não cobre'");
   it.todo("'autonomia financeira': estado 'ainda não cobre', com os seis observatórios");
   it.todo("'ações', 'transparência': a página prevista acompanhada do observatório e da coleção");
   it.todo("'xyzabc': estado 'ainda não cobre', sem resultado demonstrativo");
@@ -420,8 +465,8 @@ const TERMOS: [string, number][] = [
   ["leilão de transmissão", 1], ["distribuidora", 13], ["Neoenergia", 1], ["bandeira vermelha", 1], ["tarifa branca", 0],
   ["conta de luz cara", 1], ["por que a conta de luz subiu", 0], ["desconto na conta de luz", 2],];
 
-/** Termos sem resultado (79 em 23/10/2026; 55 depois do bloco 1; 43 depois do bloco 2): só pode cair. */
-const SEM_RESULTADO_MAXIMO = 43;
+/** Termos sem resultado (79 em 23/10/2026; 55 depois do bloco 1; 43 depois do bloco 2; 35 depois do bloco 3): só pode cair. */
+const SEM_RESULTADO_MAXIMO = 35;
 
 describe("conjunto completo (catraca)", () => {
   it("são os 234 termos dos dois lotes", () => {
