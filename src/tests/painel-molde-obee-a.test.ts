@@ -8,6 +8,7 @@ vi.mock("server-only", () => ({}));
 
 import PaginaNecessidades from "@/app/eficiencia-estatal/assistencia-social/necessidades/page";
 import PaginaIndice from "@/app/eficiencia-estatal/indice-de-resultados/page";
+import PaginaSaude from "@/app/eficiencia-estatal/saude-capitais/page";
 import PaginaEnergia from "@/app/eficiencia-estatal/energia-conectividade/[[...painel]]/page";
 
 /**
@@ -42,5 +43,13 @@ describe("molde de painel, Eficiência Estatal (frente obee-a)", () => {
     // o painel principal do tema continua avisado, e as quatro perguntas levam às visões do tema
     expect(h).toContain("data-painel-principal");
     for (const v of ["acesso", "continuidade", "custo", "internet"]) expect(h).toContain(`href="/eficiencia-estatal/energia-conectividade/${v}"`);
+  });
+
+  it("/eficiencia-estatal/saude-capitais", () => {
+    const h = html(PaginaSaude);
+    conferirPainel("/eficiencia-estatal/saude-capitais", h);
+    // uma figura por medida do panorama, cada uma com o caminho para a trilha da própria medida em Dados e métodos
+    expect(h.match(/data-figura-analitica="medida-/g)).toHaveLength(7);
+    expect(h).toContain('href="/eficiencia-estatal/saude-capitais/metodos#trilha-sau-despesa-por_habitante"');
   });
 });

@@ -1,3 +1,4 @@
+import type { FichaExibivel } from "@/lib/eficiencia/tipos";
 import type { Natureza, Proveniencia } from "@/lib/painel/tipos";
 
 /**
@@ -43,6 +44,47 @@ export type OrigemObee = {
   notas?: string | null;
   versao?: string;
 };
+
+/** Fonte como as bases das capitais (Saúde, Educação) a entregam ao navegador: nome legível, páginas oficiais e data da captura. */
+export type FonteFicha = { nome: string; url: string; capturado_em: string };
+
+/**
+ * Proveniência de uma medida das capitais a partir da ficha do catálogo (a mesma que o diálogo "Sobre este dado" do OBEE mostra) e
+ * das fontes da base: órgão e conjunto da primeira fonte citada pela ficha, a página oficial, a última captura, a fórmula, as
+ * transformações e as ressalvas. O período é o da medida mostrada pela figura.
+ */
+export function provenienciaDaFicha(
+  f: FichaExibivel,
+  fontes: Record<string, FonteFicha>,
+  periodo: { inicio: string; fim: string; cobertura?: { inicio: string; fim: string } },
+): Proveniencia {
+  const citadas = f.fontes.map((id) => fontes[id]).filter((x): x is FonteFicha => !!x);
+  const principal = citadas[0];
+  const capturas = citadas.map((x) => x.capturado_em).filter(Boolean).sort();
+  // o nome legível vem como "Órgão, conjunto" ("Siconfi, DCA Anexo I-E"): a figura agrupa a fonte por órgão
+  const nome = principal?.nome ?? f.fontes.join(", ");
+  const orgao = nome.split(", ")[0];
+  return provenienciaObee({
+    indicador: f.nome,
+    natureza: f.natureza,
+    orgao,
+    dataset: nome.slice(orgao.length + 2) || f.localizacao_registro,
+    recurso: [f.localizacao_registro, ...citadas.slice(1).map((x) => x.nome)].join("; "),
+    url: principal?.url.split(" ")[0] ?? "",
+    unidade: f.unidade,
+    frequencia: f.periodo,
+    inicio: periodo.inicio,
+    fim: periodo.fim,
+    cobertura: periodo.cobertura,
+    capturadoEm: capturas.at(-1) ?? null,
+    transformacoes: f.transformacoes,
+    formula: f.formula,
+    limitacoes: [...f.o_que_nao_mede, ...f.ressalvas],
+    download: f.download,
+    notas: f.o_que_mede,
+    versao: f.versao_metodologica,
+  });
+}
 
 export function provenienciaObee(o: OrigemObee): Proveniencia {
   return {

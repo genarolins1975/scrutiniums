@@ -14,7 +14,7 @@ export default function LayoutSaudeCapitais({ children }: { children: React.Reac
     <>
       <header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal/saude-capitais" navegacao="saude" /></header>
       <script dangerouslySetInnerHTML={{ __html: SCRIPT_RECORTE_SAUDE }} />
-      <main id="conteudo" className="mx-auto max-w-page px-4 pb-20 pt-8 sm:px-6 md:pt-10">
+      <main id="conteudo" className="mx-auto max-w-page px-4 pb-20 pt-8 sm:px-6 md:pt-10 [&>[data-painel]]:px-0">
         {children}<EscoresServicos capitulo="health"/>
         <LiberaRecorte />
         <noscript>
