@@ -210,10 +210,16 @@ function viaDe(p: Preparada, soNosTermos: Palavra[], prefixoCurto: boolean): str
 type Parcial = { r: Resultado; forca: number; indices: number[]; raridade: number };
 type Rodada = { completos: Resultado[]; parciais: Parcial[] };
 
+/**
+ * No mesmo nível, o destino que só as listas de lugares e nomes trouxeram vem depois do que os termos trouxeram: "Amazônia" é o
+ * Desmatamento antes do Banco da Amazônia, "safra" é o Agronegócio antes do Banco Safra (diagnóstico de 23/10/2026, achado A3).
+ */
+type Completo = { r: Resultado; soPorLugar: boolean };
+
 function rodar(pronto: Pronto, busca: Palavra[], termo: string, opcoes: OpcoesBusca, prefixoCurto: boolean): Rodada {
   const inteiro = normalizar(termo);
   const nucleo = nucleoDaBusca(termo);
-  const completos: Resultado[] = [];
+  const completos: Completo[] = [];
   const parciais: Parcial[] = [];
   const destinosDaPalavra = busca.map(() => 0);
   for (const p of pronto.lista) {
@@ -236,7 +242,8 @@ function rodar(pronto: Pronto, busca: Palavra[], termo: string, opcoes: OpcoesBu
     // o título igual e a sigla do próprio destino já explicam o resultado
     const via = igual || sigla ? undefined : viaDe(p, soNosTermos, prefixoCurto);
     if (nivel !== null) {
-      completos.push({ ...p.e, nivel, ...(via ? { via } : {}) });
+      const soPorLugar = nivel >= 2 && busca.some((_, k) => nosLugares[k] && !noTitulo[k] && !nosTermos[k] && !noResto[k]);
+      completos.push({ r: { ...p.e, nivel, ...(via ? { via } : {}) }, soPorLugar });
       continue;
     }
     // parcial: só título e termos contam; as listas de lugares ficam fora ("Belo Horizonte" não traz "Novo Horizonte")
@@ -250,7 +257,8 @@ function rodar(pronto: Pronto, busca: Palavra[], termo: string, opcoes: OpcoesBu
     }
   }
   for (const x of parciais) x.raridade = x.indices.reduce((t, k) => t + destinosDaPalavra[k], 0);
-  return { completos: completos.sort(ordem), parciais };
+  completos.sort((a, b) => a.r.nivel - b.r.nivel || Number(a.soPorLugar) - Number(b.soPorLugar) || ordem(a.r, b.r));
+  return { completos: completos.map((x) => x.r), parciais };
 }
 
 /**
