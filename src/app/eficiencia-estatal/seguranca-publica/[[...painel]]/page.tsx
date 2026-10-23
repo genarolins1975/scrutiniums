@@ -94,7 +94,7 @@ function Panorama({g}: {g: GoldSeguranca}) {
       {rotulo: 'Distância entre as UFs no homicídio doloso', valorTexto: `${numero(amp.min.taxa, 1)} a ${numero(amp.max.taxa, 1)}`, formato: 'texto', unidade: 'por 100 mil habitantes', periodo: String(g.anos[kH]), recorte: `de ${nomeUF(g, amp.min.uf)} a ${nomeUF(g, amp.max.uf)}`, fonte: `Sinesp VDE; ${amp.comparadas} UFs com dado no ano`, natureza: 'CALCULADO'},
     ]}
     notaNumeros="Os dois registros não se somam nem se substituem: contam a mesma realidade com regras diferentes. Bases revisadas pelas UFs depois da publicação."
-    navegacaoLocal={<nav aria-labelledby="caminhos-seguranca" className="mt-10 space-y-8">
+    navegacaoLocal={<section aria-labelledby="caminhos-seguranca" className="mt-10 space-y-8">
       <Link href={`${ROTA}/estados`} prefetch={prefetchDoLink(`${ROTA}/estados`)} className="group block border-y border-linha py-5">
         <span className="rotulo block text-mineral">O destino mais procurado</span>
         <span className="t-h2 mt-2 block text-carvao group-hover:underline">Compare os estados →<SeloComConta href={`${ROTA}/estados`}/></span>
@@ -109,7 +109,7 @@ function Panorama({g}: {g: GoldSeguranca}) {
           <span className="t-meta mt-2 block text-carvao-muted">{c.prova} →</span>
         </Link></li>)}</ul>
       </div>
-    </nav>}
+    </section>}
     figuras={<>
       <FiguraAnalitica id="faixa-ufs" pergunta="Onde cada UF está na taxa de homicídio doloso?" subtitulo={`Homicídio doloso · vítimas por 100 mil habitantes · 27 UFs, ${g.anos[kH]}`} natureza="CALCULADO" idioma="pt"
         proveniencia={f.sinesp} complementares={[{rotulo: 'Sobre a população', p: f.ibge}]}

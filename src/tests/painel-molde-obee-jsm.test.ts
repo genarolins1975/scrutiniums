@@ -10,6 +10,9 @@ import ConciliacaoJustica from "@/app/eficiencia-estatal/acesso-justica/concilia
 import RecursosJustica from "@/app/eficiencia-estatal/acesso-justica/recursos/page";
 import TempoJustica from "@/app/eficiencia-estatal/acesso-justica/tempo-resposta/page";
 import PaginaSeguranca from "@/app/eficiencia-estatal/seguranca-publica/[[...painel]]/page";
+// a página da mobilidade é o cabeçalho comum e estes corpos: o teste renderiza o corpo
+import { PainelMobilidade } from "@/components/eficiencia/mobilidade/PainelMobilidade";
+import { PainelOportunidades } from "@/components/eficiencia/mobilidade/PainelOportunidades";
 
 /**
  * Molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026), PR 2 do Grupo 2, frente de Judiciário, Acesso à Justiça, Segurança
@@ -57,5 +60,26 @@ describe("molde de painel: Segurança pública", () => {
     for (const t of ["O que esta despesa não mostra", "Fundo Constitucional do DF", "% da despesa do estado"]) expect(recursos).toContain(t);
     // a tabela do peso na despesa era uma região rolável sem foco (axe scrollable-region-focusable); a do kit recebe o foco
     expect(recursos).not.toMatch(/overflow-x-auto[^>]*>\s*<table/);
+  });
+});
+
+describe("molde de painel: Mobilidade e transporte", () => {
+  it("/eficiencia-estatal/mobilidade-transporte", () => {
+    const h = html(createElement(PainelMobilidade, { slug: "", p: {} }));
+    conferirPainel("/eficiencia-estatal/mobilidade-transporte", h);
+    for (const t of ["Explore por pergunta", "Explorar a medida →", "Uma pergunta, três perspectivas.", "Do deslocamento ao serviço", "Aplicar recorte"]) expect(h).toContain(t);
+  });
+  // a auditoria do workflow (scripts/obee/oportunidades-auditoria.mjs) conta as <figure> do <main> (uma sem cidade, duas com cidade, nenhuma
+  // sem estimativa no modo), lê um só formulário e abre o resumo "Tabela equivalente: valores, cobertura e denominadores"
+  it.each([
+    [{}, 1],
+    [{ cidade: "2611606", modo: "public_transport", indicador: "CMATT60" }, 2],
+    [{ cidade: "1501402", modo: "public_transport" }, 0],
+  ] as const)("/eficiencia-estatal/mobilidade-transporte/oportunidades com %j", (p, figuras) => {
+    const h = html(createElement(PainelOportunidades, { p: { ...p } }));
+    conferirPainel("/eficiencia-estatal/mobilidade-transporte/oportunidades", h);
+    expect(h.match(/<figure\b/g)?.length ?? 0).toBe(figuras);
+    expect(h.match(/<form\b/g)?.length).toBe(1);
+    for (const t of ["Tabela equivalente: valores, cobertura e denominadores", "Aplicar oportunidades", "Limpar filtros", "Baixar recorte e grupos de renda (CSV)", "Chegar não é ser atendido"]) expect(h).toContain(t);
   });
 });

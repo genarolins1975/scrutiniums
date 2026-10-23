@@ -88,8 +88,9 @@ describe("molde de painel: o conteúdo de antes continua na página", () => {
       expect(h).toContain(t);
     }
     expect(html(createElement(PainelMobilidade, { slug: "transporte", p: {} }))).toContain("Quanto custariam os embarques no mês?");
-    // panorama, métodos e oportunidades seguem fora do molde
-    expect(html(createElement(PainelMobilidade, { slug: "", p: {} }))).not.toContain("data-painel");
+    // o panorama e as oportunidades entraram no molde no PR 2 (molde de painel, Iniciativa 1 do parecer de UX de 23/10/2026); só o capítulo de
+    // método segue fora, como página de método
+    expect(html(createElement(PainelMobilidade, { slug: "metodos", p: {} }))).not.toContain("data-painel");
   });
   it("déficit: os três números, a comparação e os três conceitos", () => {
     const h = html(createElement(PaginaDeficit));

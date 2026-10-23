@@ -31,7 +31,9 @@ try{
    await p.addScriptTag({path:require.resolve('axe-core/axe.min.js')});
    const checks=await p.evaluate(async()=>{
     const main=document.querySelector('main'),axe=await window.axe.run(main,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}});
-    const small=[...main.querySelectorAll('button,select,input:not([type=hidden]),summary,nav a')].filter(e=>{const b=e.getBoundingClientRect();return b.width<43.5||b.height<43.5;}).map(e=>e.textContent?.trim().slice(0,80));
+    // controle não renderizado (dentro de <dialog> fechado, como o fechar da ficha "Sobre este dado" do molde de painel, ou de <details>
+    // fechado) não é alvo de toque: a mesma regra de scripts/obee/mobilidade-auditoria.mjs
+    const small=[...main.querySelectorAll('button,select,input:not([type=hidden]),summary,nav a')].filter(e=>{const b=e.getBoundingClientRect();if(!b.width&&!b.height)return false;return b.width<43.5||b.height<43.5;}).map(e=>e.textContent?.trim().slice(0,80));
     return {overflow:document.documentElement.scrollWidth>innerWidth+1,h1:main.querySelectorAll('h1').length,figures:main.querySelectorAll('figure').length,violations:axe.violations.map(v=>({id:v.id,nodes:v.nodes.length})),small};
    });
    results.push({width,status:res.status(),...checks,errors});
