@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * Consórcios (Panorama do BCB). O que se trava:
@@ -95,7 +96,8 @@ describe("SPA: aba registrada em todos os mapas", () => {
     expect(app).toContain('consorcios: "emergentes"');
     expect(app).toMatch(/\n  consorcios: \{ q: "[^"]+\?"/);
     expect(app).toContain("state.cs = {");
-    expect(html).toContain('data-view="consorcios">Consórcios</button>');
+    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(rotuloNaNavegacao("/observatorio/consortia")).toBe("Consórcios");
     expect(html).toContain('id="view-consorcios"');
     expect(app).toContain('["consorcios", "Consórcios", "consorcios"]');
     expect(app).toContain('["#uf-consorcios", "Consórcios"]');

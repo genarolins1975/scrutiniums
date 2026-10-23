@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * Prazo da carteira (SCR.data, seis faixas a vencer). O que se trava:
@@ -96,7 +97,8 @@ describe("SPA: aba Prazo da carteira registrada em todos os mapas", () => {
     expect(app).toMatch(/\n  prazo: \{ q: "[^"]+\?"/);
     expect(app).toContain("state.pz = {");
     expect(app).toContain('views: ["products", "prazo", "juros", "rural", "bndes", "consorcios"]');
-    expect(html).toContain('data-view="prazo">Prazo da carteira</button>');
+    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(rotuloNaNavegacao("/observatorio/loan-maturity")).toBe("Prazo da carteira");
     expect(html).toContain('id="view-prazo"');
   });
   it("o renderizador vive no chunk emergentes, abre com placar e síntese, e o pipeline registra builder e catálogo", () => {

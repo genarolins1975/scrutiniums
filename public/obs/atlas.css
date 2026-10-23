@@ -101,7 +101,7 @@
 #view-mapa .atlas-city-image { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:-1; }
 #view-mapa .atlas-city-copy { width:47%; padding:32px 24px; position:relative; }
 #view-mapa .atlas-city-copy h1 { font:400 clamp(34px,3.4vw,52px)/1.07 var(--serif,Georgia,serif); letter-spacing:-.04em; margin:14px 0 18px; color:var(--atlas-petrol); }
-#view-mapa .obs-credit-hero .atlas-city-copy p:not(.atlas-eyebrow) { color:var(--atlas-petrol); font-size:15px; line-height:1.6; }
+#view-mapa .obs-credit-hero .atlas-city-copy p:not(.atlas-eyebrow):not([data-rotulo-contexto]) { color:var(--atlas-petrol); font-size:15px; line-height:1.6; }
 #view-mapa .atlas-city-copy .obs-primary { margin-top:12px; }
 #view-mapa .atlas-city nav.atlas-city-points { position:absolute; inset:0; border:0; padding:0; pointer-events:none; display:block; }
 #view-mapa .atlas-city-points a.atlas-city-point { position:absolute; pointer-events:auto; min-height:44px; padding:10px 16px; border:1px solid var(--atlas-mint); border-radius:28px; background:var(--atlas-petrol); color:var(--atlas-cream); font:13px/1.6 var(--sans,Inter,sans-serif); text-decoration:none; box-shadow:0 4px 14px color-mix(in srgb, var(--cor-painel-escuro) 12.5%, transparent); }

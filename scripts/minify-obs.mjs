@@ -61,3 +61,7 @@ for (const [nome, code] of Object.entries(chunks)) {
   linha += ` + ${nome} ${kb(cMin)} KB`;
 }
 console.log(linha);
+
+// a casca da plataforma (casca.min.js, de src/lib/observatorios/cascaPura.ts) sai junto: todo caminho que gera o app.min.js (o
+// CI, a publicação diária da energia, npm run preparar) gera também o script que o index.html carrega antes dele
+await import("./casca-spa.mjs");

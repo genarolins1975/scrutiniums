@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { montarHtml, resolverMeta } from "@/lib/observatorioHead";
 
 /**
  * Guia didático por página: toda página listada na navegação principal precisa
@@ -64,8 +65,15 @@ describe("navegação simplificada", () => {
     expect(app).not.toMatch(/window\.navFiltra/);
   });
 
-  it("grupos colapsam e o grupo da página ativa abre", () => {
-    expect(app).toMatch(/function navSincroniza/);
-    expect(app).toMatch(/classList\.toggle\("aberto"/);
+  // até 23/10/2026 os grupos da barra lateral colapsavam e o da página ativa abria; com a navegação da plataforma (Iniciativa 2
+  // do parecer de UX de 23/10/2026), a linha 2 mostra as páginas do grupo atual, e só dele
+  it("a linha 2 mostra as páginas do grupo atual", () => {
+    const h = montarHtml(resolverMeta("/leading-signals"));
+    const linha2 = h.slice(h.indexOf('id="nav-colecao-credito-paginas"'));
+    expect(h).toContain('id="nav-colecao-credito-paginas" aria-label="Páginas de Ciclo do crédito"');
+    const paginas = Array.from(linha2.slice(0, linha2.indexOf("</ul>")).matchAll(/href="([^"]+)"/g)).map((m) => m[1]);
+    expect(paginas).toEqual(["/observatorio/credit", "/observatorio/leading-signals", "/observatorio/scenarios", "/observatorio/search-trends"]);
+    expect(h.match(/nav-colecao-credito-paginas/g)).toHaveLength(1);
+    expect(app).not.toMatch(/function navSincroniza/);
   });
 });

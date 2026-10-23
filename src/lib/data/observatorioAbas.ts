@@ -25,7 +25,9 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "mapa",
     caminho: "/map",
-    titulo: "Mapa do Observatório",
+    // "Mapa do Observatório" até 23/10/2026: o dono decidiu "Início do painel", porque a linha 1 da navegação já tem "Início"
+    // (a entrada da coleção, /observatorio-do-credito) e dois rótulos iguais levariam a destinos diferentes
+    titulo: "Início do painel",
     descricao:
       "Por onde começar: o ciclo do crédito do funding à cobrança em sete passos, a pergunta que cada página responde, trilhas por perfil, como ler os selos e as réguas, e as fontes com a data de cada uma.",
     gold: "meta.json",

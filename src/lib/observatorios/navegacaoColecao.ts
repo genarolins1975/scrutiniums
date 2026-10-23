@@ -15,7 +15,7 @@
  *
  * Só servidor: lê os catálogos de todos os domínios (como registro.ts). O navegador recebe o resultado (navegacaoPura.ts).
  */
-import { observatorio as observatorioPorId, OBSERVATORIOS } from "./registro";
+import { DESTINO_ABAS_CREDITO, observatorio as observatorioPorId, OBSERVATORIOS } from "./registro";
 import { colecoesDe } from "./colecoes";
 import { dominio } from "@/lib/dominios";
 import { leva2Aprovada } from "@/lib/rotasPublicas";
@@ -28,7 +28,8 @@ import { ROTA_CONSULTA_CIDADE, ROTA_INFLACAO, paginaInflacao } from "@/lib/infla
 import { ROTA_CAPITAIS, ROTA_EDUCACAO, TITULO_CAPITAIS } from "@/lib/educacao/paginas";
 import { CAPITULOS as CAPITULOS_CONTAS, PAINEL_AREAS, PAINEL_PREVIDENCIA } from "@/lib/contas-publicas/catalogo";
 import { CADEIAS, CAPITULOS_AGRO, PERGUNTAS_AGRO, ROTA_AGRO } from "@/lib/agro/modelo";
-import { PAGINAS_CREDITO, PAINEL_JUROS } from "@/lib/credito/navegacao";
+import { GRUPOS_CREDITO, PAGINAS_CREDITO } from "@/lib/credito/navegacao";
+import { abaPorCaminho } from "@/lib/data/observatorioAbas";
 import { TEMAS_EFICIENCIA, hrefDoTema, type TemaEficiencia } from "@/lib/eficiencia/temas";
 import type { ItemNav, NavegacaoDaColecao, PaginaNav } from "./navegacaoPura";
 
@@ -154,16 +155,23 @@ function agro(): Montagem {
 
 function credito(): Montagem {
   const consulta = PAGINAS_CREDITO.find((p) => p.slug === "quanto-meu-banco-cobra");
-  const simulador = PAGINAS_CREDITO.find((p) => p.slug === "simulador-da-parcela");
   const metodo = PAGINAS_CREDITO.find((p) => p.slug === "metodologia");
+  // os grupos da aplicação (GRUPOS_CREDITO), só com as páginas que o Crédito mantém: as de outra coleção ficam na navegação dela.
+  // Grupo que fica vazio sai (decisão do dono de 23/10/2026); grupo com uma página só vira a própria página ("Marcos regulatórios")
+  const doCredito = (href: string) => {
+    if (!href.startsWith("/observatorio/")) return PAGINAS_CREDITO.some((p) => p.href === href);
+    const dono = DESTINO_ABAS_CREDITO[href.slice("/observatorio".length)];
+    return Boolean(dono && dono[0] === "economia" && dono[1] === "credito");
+  };
+  const rotuloDe = (href: string) =>
+    PAGINAS_CREDITO.find((p) => p.href === href)?.rotulo ?? abaPorCaminho(href.slice("/observatorio".length))?.titulo ?? href;
+  const grupos = GRUPOS_CREDITO.map((g) => ({ rotulo: g.curto ?? g.rotulo, paginas: g.paginas.filter(doCredito).map((h) => pagina(rotuloDe(h), h)) })).filter((g) => g.paginas.length);
   return {
     consulta: consulta?.href,
     itens: [
       pagina("Início", "/observatorio-do-credito"),
       ...(consulta ? [pagina(consulta.rotulo, consulta.href)] : []),
-      ...(simulador ? [pagina(simulador.rotulo, simulador.href)] : []),
-      pagina("Juros por instituição", PAINEL_JUROS),
-      pagina("Painel completo", "/observatorio"),
+      ...grupos.map((g) => (g.paginas.length === 1 ? g.paginas[0] : grupo(g.rotulo, g.paginas))),
     ],
     atalhos: { metodo: metodo?.href, glossario: "/glossario" },
   };

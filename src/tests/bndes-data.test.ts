@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * Crédito direcionado e BNDES. O que se trava:
@@ -103,7 +104,8 @@ describe("SPA: aba registrada em todos os mapas", () => {
     expect(app).toContain('bndes: "emergentes"');
     expect(app).toMatch(/\n  bndes: \{ q: "[^"]+\?"/);
     expect(app).toContain("state.bn = {");
-    expect(html).toContain('data-view="bndes">Crédito direcionado e BNDES</button>');
+    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(rotuloNaNavegacao("/observatorio/directed-credit-bndes")).toBe("Crédito direcionado e BNDES");
     expect(html).toContain('id="view-bndes"');
   });
   it("o renderizador vive no chunk emergentes e o pipeline registra coletor, gold e séries", () => {

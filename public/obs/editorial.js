@@ -12,7 +12,8 @@
     const faixa = document.createElement('dl');
     faixa.className = 'obs-metrics';
     const valores = [
-      [String(document.querySelectorAll('#tabs button[data-view]:not([data-view="mapa"])').length), 'páginas temáticas', 'Índice completo de análise'],
+      // o app.js conta as páginas dos grupos do Crédito ao desenhar o Início do painel (a barra lateral, de onde vinha a conta, saiu)
+      [mapa.dataset.paginas || String(mapa.querySelectorAll('#mp-perguntas .mapa-perg > div').length), 'páginas temáticas', 'Índice completo de análise'],
       [String(mapa.querySelectorAll('.mapa-no').length), 'etapas do ciclo', 'Do funding à cobrança'],
       [String(mapa.querySelectorAll('.mapa-trilha').length), 'trilhas de leitura', 'Percursos por perfil'],
       [String(mapa.querySelectorAll('#mp-fontes tbody tr').length), 'famílias de fontes', 'Período próprio em cada medida'],
@@ -22,6 +23,11 @@
       for (const [tag, text] of [['dd', n], ['dt', rotulo], ['dd', detalhe]]) { const node = document.createElement(tag); node.textContent = text; item.append(node); }
       faixa.append(item);
     }
+    // o rótulo de contexto da plataforma ("Observatório da Economia · Crédito e sistema financeiro · Início do painel"), que o
+    // app.js põe no cabeçalho da página, sobe para o lugar do rótulo escrito à mão acima do título (Iniciativa 2 do parecer de UX
+    // de 23/10/2026); sem ele (embed), fica o de sempre
+    const rotulo = mapa.querySelector('.pagehead [data-rotulo-contexto]');
+    if (rotulo) hero.querySelector('.obs-eyebrow').replaceWith(rotulo.closest('.casca') || rotulo);
     mapa.prepend(hero, faixa);
     mapa.querySelector('.pagehead').classList.add('obs-map-meta');
     const indice = mapa.querySelector('#mp-perguntas');

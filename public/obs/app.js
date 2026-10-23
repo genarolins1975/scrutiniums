@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.122.0";
+const APP_VERSION = "0.123.0";
 /* nome da coleção no registro dos seis observatórios (src/lib/observatorios/lista.ts): os títulos da aba seguem "Página · Coleção · Scrutiniums" (Iniciativa 1 do parecer de UX, 21/10/2026),
    com a coleção dona da aba, que refazTrilha() acerta a cada navegação (Consignado é de "Dívida e crédito das famílias") */
 let TITULO_COLECAO = "Crédito e sistema financeiro · Scrutiniums";
@@ -1610,6 +1610,7 @@ function renderSobre() {
   el.innerHTML = `
   <div class="pagehead">
     <div class="ph-left">
+      ${rotuloContexto()}
       <h2>Sobre o Observatório</h2>
     </div>
   </div>
@@ -2618,22 +2619,21 @@ function renderMapa() {
   const el = document.getElementById("view-mapa");
   const meta = metaDaPagina();
   const vs = meta.vintages || {};
-  const noMenu = Array.from(document.querySelectorAll("#tabs button[data-view]")).map(b => b.dataset.view);
+  // as páginas de cada grupo do Crédito, na ordem da jornada (GRUPOS_CREDITO, src/lib/credito/navegacao.ts, no índice que o
+  // servidor embute): todas as da aplicação, inclusive as que a navegação mostra na coleção dona (Famílias, Empresas...)
+  const grupos = gruposDoMenu();
+  const noMenu = grupos.flatMap(g => g.vistas);
   const abas = noMenu.filter(v => v !== "mapa");
+  el.dataset.paginas = String(abas.length);
   const head = pageHead({
-    title: "Mapa do Observatório",
+    title: "Início do painel",
     desc: "O crédito brasileiro do funding à cobrança, em sete passos: o que cada página responde, com que fonte e até quando. Comece por aqui e siga pela pergunta, pela trilha do seu perfil ou pelo ciclo.",
     fontes: `${Object.keys(vs).length} famílias de fontes oficiais e abertas · ${abas.length} páginas temáticas · 27 estados · 5.570 municípios · uma ficha por instituição`,
   });
   const ciclo = secWrap("mp-ciclo", `${sechead("O ciclo do crédito em sete passos", "cada passo liga às páginas que o respondem")}
   <div class="mapa-fluxo">${MAPA_CICLO.map(c => `<div class="mapa-no"><div class="mapa-num">${c.n}</div><h4>${c.titulo}</h4><p class="src">${c.pergunta}</p><ul>${c.views.map(v => `<li>${mapaLink(v)}</li>`).join("")}</ul></div>`).join("")}</div>
   <p class="src">O dinheiro entra pelo funding (1), passa pelas instituições (2), vira produto com preço (3), chega a famílias, empresas e territórios (4), o ciclo mede o que cresce, o que atrasa e o que vem (5), o atraso vira renegociação, cobrança ou recuperação (6), e tudo acontece sob regras, trilhos de pagamento e vigilância (7). As páginas de Referência explicam de onde vem cada número.</p>`);
-  const porGrupo = [];
-  document.querySelectorAll("#tabs .navgroup").forEach(g => {
-    const rot = g.querySelector(".navlabel").textContent;
-    const vistas = Array.from(g.querySelectorAll("button[data-view]")).map(b => b.dataset.view).filter(v => v !== "mapa" && GUIA[v]);
-    if (vistas.length) porGrupo.push({ rot, vistas });
-  });
+  const porGrupo = grupos.map(g => ({ rot: g.rotulo, vistas: g.vistas.filter(v => v !== "mapa" && GUIA[v]) })).filter(g => g.vistas.length);
   const perguntas = secWrap("mp-perguntas", `${sechead("Por pergunta", "a pergunta que cada página responde, na ordem do menu")}
   <div class="grid g2">${porGrupo.map(g => `<div class="card"><h4>${g.rot}</h4><dl class="mapa-perg">${g.vistas.map(v => `<div><dt>${GUIA[v].q}</dt><dd>${mapaLink(v)}</dd></div>`).join("")}</dl></div>`).join("")}</div>`);
   const trilhas = secWrap("mp-trilhas", `${sechead("Trilhas de entrada", "três perfis, cinco páginas cada")}
@@ -2965,39 +2965,6 @@ function guiaPagina(view) {
 }
 
 
-/* ---------- navegação: acordeão + busca ----------
-   Com 24 páginas, a lista inteira aberta vira ruído. Cada grupo agora colapsa e
-   só o grupo da página atual fica aberto; um campo de busca filtra por nome.
-   Nenhuma página foi removida e nenhuma rota mudou. */
-function navGrupoAtivo() {
-  const b = document.querySelector(`#tabs button[data-view="${currentView()}"]`);
-  return b ? b.closest(".navgroup") : null;
-}
-function navSincroniza() {
-  const ativo = navGrupoAtivo();
-  document.querySelectorAll("#tabs .navgroup").forEach(g => {
-    g.classList.toggle("aberto", g === ativo);
-  });
-}
-window.navToggleGrupo = ev => {
-  const g = ev.currentTarget.closest(".navgroup");
-  g.classList.toggle("aberto");
-  ev.stopPropagation();
-};
-function navPrepara() {
-  const tabs = document.getElementById("tabs");
-  if (!tabs || tabs.dataset.pronto) return;
-  tabs.dataset.pronto = "1";
-  tabs.querySelectorAll(".navgroup .navlabel").forEach(lb => {
-    lb.setAttribute("role", "button");
-    lb.setAttribute("tabindex", "0");
-    lb.addEventListener("click", window.navToggleGrupo);
-    lb.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); window.navToggleGrupo(e); } });
-  });
-  navSincroniza();
-}
-
-
 /* ---------- exportação universal ----------
    Toda página exporta o que está na tela, sem que cada uma precise implementar
    o seu próprio botão. Funciona porque cada gráfico já publica a alternativa
@@ -3122,23 +3089,15 @@ window.exportarPagina = () => {
   URL.revokeObjectURL(a.href);
 };
 
-/* Abas do Crédito que pertencem a outro observatório (src/lib/observatorios/registro.ts,
-   DESTINO_ABAS_CREDITO): o cabeçalho diz a que observatório a página pertence e leva à
-   entrada dele. As demais abas são do Observatório da Economia. */
-const VIEW_OBSERVATORIO = {
-  consignado: "familias", moradia: "familias", emprego: "familias", desenrola: "familias", cobranca: "familias",
-  conduta: "familias", judicial: "familias", bets: "familias", fraudes: "familias",
-  subnacional: "contas-publicas", pgfn: "contas-publicas",
-};
-const OBSERVATORIOS_DESTINO = {
-  familias: ["Observatório das Famílias", "/observatorios/familias"],
-  "contas-publicas": ["Observatório das Contas Públicas", "/observatorios/contas-publicas"],
-};
-function linhaObservatorio(view) {
-  const id = VIEW_OBSERVATORIO[view];
-  if (!id) return "";
-  const [nome, href] = OBSERVATORIOS_DESTINO[id];
-  return `<p class="ph-obs">Este painel faz parte do <a href="${href}">${nome}</a>; quem o mantém é a coleção Crédito e sistema financeiro.</p>`;
+/* Rótulo de contexto acima do título ("Observatório X · Coleção Y · Página Z"), no lugar da frase "Este painel faz parte
+   do ...": o mesmo RotuloContexto das páginas da plataforma, desenhado por casca.min.js (src/lib/observatorios/cascaPura.ts)
+   com o índice que o servidor embute no HTML (Iniciativa 2 do parecer de UX de 23/10/2026). Fora da aplicação (embed),
+   sem índice, não desenha nada. */
+function rotuloContexto() {
+  const ind = indiceCasca();
+  // dentro de .casca: as classes do rótulo são as da plataforma (public/obs/casca.css)
+  const h = ind && window.CascaCredito ? window.CascaCredito.htmlRotulo(ind, caminhoDaVista(), "text-mineral") : "";
+  return h ? `<div class="casca">${h}</div>` : "";
 }
 function pageHead(o) {
   ULTIMO_HEAD = o || {};
@@ -3146,8 +3105,8 @@ function pageHead(o) {
   const upd = meta.gerado_em ? meta.gerado_em.slice(0, 16).replace("T", " ") + " UTC" : "–";
   return `<div class="pagehead">
     <div class="ph-left">
+      ${rotuloContexto()}
       <h2>${o.title}${o.seals ? " " + o.seals : ""}</h2>
-      ${linhaObservatorio(currentView())}
       ${o.desc ? `<p class="viewdesc">${o.desc}</p>` : ""}
       <div class="ph-meta">${(o.vintage || pageVintage(currentView())) ? `Dados até <b>${o.vintage || pageVintage(currentView())}</b> · processado em ${upd}` : `Última atualização: ${upd}`}${o.fontes ? " · fontes: " + o.fontes : ""} · <a href="/observatorio/methodology" onclick="nav('method');return false">metodologia e fontes</a></div>
     </div>
@@ -3539,6 +3498,7 @@ function renderOverview() {
   const pagehead = `
   <div class="pagehead">
     <div class="ph-left">
+      ${rotuloContexto()}
       <h2>Visão geral</h2>
       <p class="viewdesc">Panorama do mercado de crédito no Brasil com dados públicos rastreáveis — monitoramento, diagnóstico e previsão.</p>
       <div class="ph-meta">${pageVintage("overview") ? `Dados até <b>${pageVintage("overview")}</b> · processado em ` : "Última atualização: "}${meta.gerado_em ? meta.gerado_em.slice(0, 16).replace("T", " ") + " UTC" : "–"} · fontes: BCB (SGS, IF.data, txjuros), IBGE, CNJ, Open Finance Brasil · <a href="/observatorio/methodology" onclick="nav('method');return false">metodologia e fontes</a></div>${filterBar("overview")}${guiaPagina("overview")}
@@ -7473,6 +7433,7 @@ function renderBets() {
   const head = `
   <div class="pagehead">
     <div class="ph-left">
+      ${rotuloContexto()}
       <h2>${B.titulo}</h2>
       <p class="viewdesc">${B.subtitulo}</p>
       <div class="ph-meta">Última atualização: <b>${fmt.d(B.gerado_em.slice(0, 10))}</b> · Período coberto: ${B.periodo_coberto} · Corte da pesquisa: ${fmt.d(B.corte_pesquisa)} (verificação de atualizações posteriores registrada em FONTES_BETS.md) · <span class="seal aprox" title="Todo este painel investiga associações. Nenhum gráfico aqui demonstra causalidade.">${B.aviso}</span></div>
@@ -7865,6 +7826,7 @@ function renderFraudes() {
   const head = `
   <div class="pagehead">
     <div class="ph-left">
+      ${rotuloContexto()}
       <h2>${F.titulo}</h2>
       <p class="viewdesc">${F.subtitulo}</p>
       <div class="ph-meta">Última atualização: <b>${fmt.d(F.gerado_em.slice(0, 10))}</b> · Período coberto: ${F.periodo_coberto} · Corte da pesquisa: ${fmt.d(F.corte_pesquisa)} (registro em FONTES_FRAUDES.md) · <span class="seal aprox" title="Todo este painel investiga associações. Nenhum gráfico aqui demonstra causalidade.">${F.aviso}</span></div>
@@ -8145,6 +8107,7 @@ function renderJuros() {
   const head = `
   <div class="pagehead">
     <div class="ph-left">
+      ${rotuloContexto()}
       <h2>Juros por instituição</h2>
       <p class="viewdesc">Quanto cada instituição cobra em cada modalidade de crédito: distribuição completa, evolução, quem é persistentemente mais barato e a carteira associada — nas 20 modalidades divulgadas pelo BC.</p>
       <div class="ph-meta">Fonte: BCB txjuros (operações contratadas, janelas de ~5 dias úteis) · Selic meta vigente: <b>${fmt.n(J.selic_meta, 2)}% a.a.</b> · atualizado ${fmt.d((J.gerado_em || "").slice(0, 10))} · <span title="${attr(J.conceitos.taxa)}">o que é esta taxa ⓘ</span></div>
@@ -10431,6 +10394,7 @@ function renderSugestoes() {
   const el = document.getElementById("view-sugestoes");
   el.innerHTML = `
   <div class="pagehead"><div class="ph-left">
+    ${rotuloContexto()}
     <h2>Sugestões</h2>
     <p class="viewdesc">Diga o que falta, o que está confuso ou o que merece correção. Cada sugestão vai direto para a administração da plataforma, identificada pela sua conta.</p>
   </div></div>
@@ -12697,8 +12661,15 @@ function renderRegulacao() {
   <div class="card"><p class="src">${badge("observado")} ${R.fonte.nome} · nível ${R.fonte.nivel} — ${R.fonte.nota}. Atualizado ${(R.gerado_em || "").slice(0, 10)}.</p></div>`;
 }
 
+/* "22/10/2026 às 15:48 (horário de Brasília)" a partir de um carimbo ISO em UTC; nunca o carimbo cru na tela */
+function dataHoraBrasilia(iso) {
+  const d = iso ? new Date(iso.length <= 19 && !/[zZ]|[+-]\d\d:?\d\d$/.test(iso) ? iso + "Z" : iso) : null;
+  if (!d || isNaN(d)) return "";
+  const p = Object.fromEntries(new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(d).map(x => [x.type, x.value]));
+  return `${p.day}/${p.month}/${p.year} às ${p.hour}:${p.minute} (horário de Brasília)`;
+}
 function rerenderCurrent() { const v = currentView(); renderView(v); }
-const VIEW_TITLES = { mapa: "Mapa do Observatório", overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Marcos regulatórios", method: "Metodologia e fontes", products: "Produtos de crédito", product: "Produto", compare: "Comparar instituições", market: "Bancos na bolsa", leading: "Sinais antecedentes", trends: "Buscas no Google", panorama: "Quem toma crédito e onde", bets: "Apostas e crédito das famílias", fraudes: "Golpes e fraudes", juros: "Juros por instituição", sugestoes: "Sugestões", pix: "Pix e pagamentos", sobre: "Sobre o Observatório", judicial: "Clientes contra bancos na Justiça", pgfn: "Dívida com a União", desenrola: "Desenrola Brasil", penetracao: "Crédito por município", moradia: "Crédito imobiliário e moradia", consignado: "Consignado e aposentados", operacional: "Rede, pessoas e auditoria", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Bancos e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Quem entra e quem sai do SFN", conduta: "Sanções e reclamações", emprego: "Emprego formal", funding: "Captação dos bancos", consorcios: "Consórcios", cobranca: "Bancos cobrando na Justiça" , prazo: "Prazo da carteira", fidc: "FIDCs por lastro e cota", subnacional: "Crédito a estados e municípios" };
+const VIEW_TITLES = { mapa: "Início do painel", overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Marcos regulatórios", method: "Metodologia e fontes", products: "Produtos de crédito", product: "Produto", compare: "Comparar instituições", market: "Bancos na bolsa", leading: "Sinais antecedentes", trends: "Buscas no Google", panorama: "Quem toma crédito e onde", bets: "Apostas e crédito das famílias", fraudes: "Golpes e fraudes", juros: "Juros por instituição", sugestoes: "Sugestões", pix: "Pix e pagamentos", sobre: "Sobre o Observatório", judicial: "Clientes contra bancos na Justiça", pgfn: "Dívida com a União", desenrola: "Desenrola Brasil", penetracao: "Crédito por município", moradia: "Crédito imobiliário e moradia", consignado: "Consignado e aposentados", operacional: "Rede, pessoas e auditoria", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Bancos e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Quem entra e quem sai do SFN", conduta: "Sanções e reclamações", emprego: "Emprego formal", funding: "Captação dos bancos", consorcios: "Consórcios", cobranca: "Bancos cobrando na Justiça" , prazo: "Prazo da carteira", fidc: "FIDCs por lastro e cota", subnacional: "Crédito a estados e municípios" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
@@ -12720,19 +12691,24 @@ function pingView(v) {
    às colunas da direita, porque o contêiner não recebia foco. O tabindex só
    entra onde há rolagem de fato — pôr foco em contêiner que não rola criaria
    paradas de tabulação vazias, que é o defeito oposto. */
+/* Abaixo de 640 px a tabela solta num cartão rola sozinha (display:block, styles.css "transbordos a 390 px"): ela mesma
+   recebe o foco e o nome, sem trocar o papel de tabela por região (três nós reprovados em payroll-lending-aging a 390 px na
+   medição de 23/10/2026, Iniciativa 2 do parecer de UX). */
+const TABELA_QUE_ROLA = ".card > table.data, .view > table.data, details > table.data";
 function acessibilizaRolagem(raiz) {
-  (raiz || document).querySelectorAll(".tblwrap, .heatwrap, .cmpwrap, .tblwrap-x").forEach(el => {
+  (raiz || document).querySelectorAll(".tblwrap, .heatwrap, .cmpwrap, .tblwrap-x, " + TABELA_QUE_ROLA).forEach(el => {
     const rola = el.scrollWidth > el.clientWidth + 2 || el.scrollHeight > el.clientHeight + 2;
+    const tabela = el.tagName === "TABLE";
     if (rola && !el.hasAttribute("tabindex")) {
       el.setAttribute("tabindex", "0");
-      el.setAttribute("role", "region");
+      if (!tabela) el.setAttribute("role", "region");
       el.dataset.rolavel = "1";
       if (!el.getAttribute("aria-label")) {
         const t = el.querySelector("table caption, th");
         el.setAttribute("aria-label", `área rolável${t ? ": " + attr(t.textContent).slice(0, 60) : ""} — use as setas para percorrer`);
       }
     } else if (!rola && el.dataset.rolavel === "1") {
-      el.removeAttribute("tabindex"); el.removeAttribute("role"); delete el.dataset.rolavel;
+      el.removeAttribute("tabindex"); if (!tabela) el.removeAttribute("role"); delete el.dataset.rolavel;
     }
   });
 }
@@ -12857,9 +12833,8 @@ function refazTrilha() {
 }
 function showViewSilent(v) {
   refazTrilha();
-  try { navPrepara(); navSincroniza(); } catch (e) {}
+  refazCasca();
   pingView(v);
-  document.querySelectorAll("nav.tabs button").forEach(b => b.classList.toggle("active", b.dataset.view === v || (v === "inst" && b.dataset.view === "institutions") || (v === "sector" && b.dataset.view === "sectors") || (v === "product" && b.dataset.view === "products") || (v === "presmun" && b.dataset.view === "operacional") || (v === "estado" && b.dataset.view === "estados")));
   document.querySelectorAll("section.view").forEach(s => s.classList.toggle("active", s.id === "view-" + v));
   const pend = (VIEW_DATA[v] || []).some(f => state.data[f] === undefined);
   if (pend) {
@@ -12868,44 +12843,17 @@ function showViewSilent(v) {
     Promise.all([ensureData(v), ensureChunk(v)]).then(() => { if (currentView() === v) { renderView(v); posRender(v); } });
   } else ensureChunk(v).then(() => { if (currentView() === v) { renderView(v); posRender(v); } });
   document.title = (VIEW_TITLES[v] ? VIEW_TITLES[v] + " · " : "") + TITULO_COLECAO;
-  closeSidebar();
   hideTip();
   window.scrollTo(0, 0);
   agendaAcessibilidade();
 }
 
-/* ---------- shell: tema, menu móvel, badge de alertas ---------- */
-function applyTheme(t) {
-  if (t) document.documentElement.dataset.theme = t;
-  else delete document.documentElement.dataset.theme;
-}
-(function initTheme() {
-  const saved = loadLS("obc_theme", null);
-  if (saved) applyTheme(saved);
-  else if (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) applyTheme("dark");
-})();
-/* Atalho de administração: só aparece se a sessão atual é de admin
-   (checagem no servidor via /api/admin/eu; para os demais, nada muda). */
-(function initAdminShortcut() {
-  const btn = document.getElementById("adminBtn");
-  if (!btn) return;
-  fetch("/api/admin/eu", { credentials: "same-origin" })
-    .then(r => { if (r.ok) btn.hidden = false; })
-    .catch(() => {});
-})();
-/* Observatório público: o padrão do rodapé é o visitante (botão "Entrar").
-   Se a sessão existir (/api/auth/eu → 204), troca para "Minha conta"/"Sair". */
-(function initSessionFoot() {
-  const login = document.getElementById("loginBtn");
-  const account = document.getElementById("accountBtn");
-  const logout = document.getElementById("logoutBtn");
-  if (!login || !account || !logout) return;
-  fetch("/api/auth/eu", { credentials: "same-origin" })
-    .then(r => {
-      if (r.status === 204) { login.hidden = true; account.hidden = false; logout.hidden = false; }
-    })
-    .catch(() => {});
-})();
+/* ---------- shell ----------
+   Desde a Iniciativa 2 do parecer de UX de 23/10/2026 (o Crédito na mesma casca) a aplicação não tem barra lateral, barra de
+   celular, marca nem rodapé próprios: a navegação é a da coleção dona do endereço, gerada no servidor, e a conta fica na
+   barra comum. Saíram com a barra lateral o alternador de tema (decisão do dono de 23/10/2026: a plataforma não tem tema
+   escuro; a página ficaria metade clara, metade escura), o atalho de administração (a consulta de administração respondia
+   403 a quem não administra, e o link vive na navegação da conta, /app) e o par Entrar/Minha conta/Sair do rodapé. */
 /* Conta na barra comum da plataforma (public/obs/index.html): começa oculta e só
    aparece com a resposta da sessão, para quem entrou não ver "Entrar" piscar.
    Com sessão (/api/auth/eu → 204), "Minha conta"; sem ela, "Entrar", com volta a
@@ -12939,37 +12887,6 @@ function applyTheme(t) {
     el.addEventListener("focusout", e => { if (el.open && !el.contains(e.relatedTarget)) el.open = false; });
   });
 })();
-const _themeBtn = document.getElementById("themeToggle"); // ausente na página de embed
-if (_themeBtn) _themeBtn.addEventListener("click", () => {
-  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-  saveLS("obc_theme", next);
-  applyTheme(next);
-});
-const sidebarEl = document.getElementById("sidebar"), scrimEl = document.getElementById("scrim"), menuBtnEl = document.getElementById("menuBtn");
-/* sidebar recolhível (desktop): iniciais + tooltip nativo; persistida */
-(function initCollapse() {
-  document.querySelectorAll("nav.tabs button").forEach(b => {
-    const label = b.textContent.trim();
-    b.title = label;
-    b.dataset.initial = label.split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase();
-  });
-  if (loadLS("obc_sb_collapsed", false)) document.body.classList.add("sb-collapsed");
-  const t = document.getElementById("sbToggle");
-  if (t) t.addEventListener("click", () => {
-    const on = document.body.classList.toggle("sb-collapsed");
-    saveLS("obc_sb_collapsed", on);
-  });
-})();
-function closeSidebar() { if (!sidebarEl) return; sidebarEl.classList.remove("open"); scrimEl.hidden = true; menuBtnEl.setAttribute("aria-expanded", "false"); }
-// os três elementos não existem na página de embed — null-guard obrigatório
-if (menuBtnEl) menuBtnEl.addEventListener("click", () => {
-  const open = !sidebarEl.classList.contains("open");
-  sidebarEl.classList.toggle("open", open);
-  scrimEl.hidden = !open;
-  menuBtnEl.setAttribute("aria-expanded", String(open));
-});
-if (scrimEl) scrimEl.addEventListener("click", closeSidebar);
-document.addEventListener("keydown", e => { if (e.key === "Escape") closeSidebar(); });
 function updateAlertBadge() {
   const el = document.getElementById("alertCount");
   const a = state.data.alertas_central;
@@ -12994,8 +12911,66 @@ window.showView = v => {
   }
   showViewSilent(v);
 };
-const _tabsEl = document.getElementById("tabs"); // ausente na página de embed
-if (_tabsEl) _tabsEl.addEventListener("click", e => { if (e.target.dataset.view) showView(e.target.dataset.view); });
+
+/* ---------- casca da plataforma: navegação da coleção, rótulo e fim de página ----------
+   O servidor (src/lib/observatorios/barraSpa.ts) manda, para o endereço pedido, a navegação da coleção dona, "Para ir além"
+   e o rodapé da coleção, e embute o índice (#navColecaoIndice) com que casca.min.js (src/lib/observatorios/cascaPura.ts)
+   refaz as mesmas peças a cada troca de página dentro da aplicação: o atual marcado, a segunda linha do grupo e, quando a
+   página é de outra coleção (Consignado é das Famílias), a navegação e o rodapé dela. */
+let _indiceCasca;
+function indiceCasca() {
+  if (_indiceCasca !== undefined) return _indiceCasca;
+  const el = document.getElementById("navColecaoIndice");
+  try { _indiceCasca = el ? JSON.parse(el.textContent) : null; } catch (e) { _indiceCasca = null; }
+  return _indiceCasca;
+}
+/* grupos do Crédito com as vistas de cada um (para o "Início do painel"), na ordem da jornada */
+function gruposDoMenu() {
+  const ind = indiceCasca();
+  if (!ind || !ind.grupos) return [];
+  const porRota = Object.fromEntries(Object.entries(ROUTES).map(([v, r]) => [BASE + r, v]));
+  return ind.grupos.map(g => ({ rotulo: g.rotulo, vistas: g.paginas.map(h => porRota[h]).filter(Boolean) }));
+}
+/* endereço canônico da vista aberta: a raiz da aplicação é o "Início do painel" */
+function caminhoDaVista() {
+  const v = currentView();
+  if (PATH_MODE && location.pathname !== BASE && location.pathname !== BASE + "/") return location.pathname.replace(/\/+$/, "");
+  return BASE + (ROUTES[v] || "/map");
+}
+function refazCasca() {
+  const C = window.CascaCredito, ind = indiceCasca();
+  if (!C || !ind) return;
+  const caminho = caminhoDaVista();
+  const col = C.contexto(ind, caminho);
+  const nav = ind.navs[(col && col.colecao && col.colecao.id) || "credito"] || ind.navs.credito;
+  const caixa = document.getElementById("cascaNav");
+  if (caixa && nav) {
+    caixa.innerHTML = C.htmlNavegacao(nav, caminho);
+    C.ligarNavegacao(caixa.firstElementChild);
+  }
+  const fim = document.getElementById("cascaFim");
+  if (fim && nav) {
+    // as fontes e a data (preenchidas no início) atravessam a troca: o rodapé muda de coleção, o texto delas não
+    const fontes = Array.from(fim.querySelectorAll("[data-rodape-colecao] .min-w-0 > p")).map(p => p.outerHTML).join("");
+    fim.innerHTML = C.htmlParaIrAlem(ind, caminho) + C.htmlRodapeColecao(nav, fontes, ind.extrasRodape || []);
+  }
+}
+/* Os links da casca (navegação, fim de página) que levam a outra página da aplicação abrem pelo roteador interno, sem
+   recarregar; os demais, o clique com tecla modificadora ou outro botão seguem como link comum. Sem JavaScript, cada link
+   abre a página pelo servidor (o route handler serve qualquer endereço da aplicação). */
+document.addEventListener("click", e => {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const a = e.target instanceof Element ? e.target.closest("a[href]") : null;
+  if (!a || !a.closest(".casca") || a.target || a.hasAttribute("download")) return;
+  const url = new URL(a.href, location.href);
+  if (!PATH_MODE || url.origin !== location.origin || !(url.pathname === BASE || url.pathname.startsWith(BASE + "/"))) return;
+  e.preventDefault();
+  if (url.pathname + url.search === location.pathname + location.search) return;
+  history.pushState(null, "", url.pathname + url.search + url.hash);
+  const v = parseHash();
+  if (RENDER[v]) showViewSilent(v);
+  else location.assign(url.href);
+});
 
 /* ---------- acessibilidade: teclado para clicáveis não nativos (padrão tabindex+keydown da SPA) ---------- */
 const A11Y_NATIVE = ["BUTTON", "A", "INPUT", "SELECT", "TEXTAREA", "SUMMARY", "OPTION", "LABEL"];
@@ -14029,6 +14004,7 @@ function renderCompare() {
 
   el.innerHTML = `
   <div class="pagehead"><div class="ph-left">
+    ${rotuloContexto()}
     <h2>Comparar instituições</h2>
     <div class="ph-meta">data-base <b>${fmtTri(latest)}</b> · nível: <b>${nivel}</b> · <b>${cmp.insts.length}</b> instituições · grupo de referência: <b>${gdef.label}</b>${gdef.n ? ` (${gdef.n})` : ""} · referência: <b>${datas[refCod] ? datas[refCod].nome.slice(0, 24) : "–"}</b> · <a href="/observatorio/methodology" onclick="nav('method');return false">metodologia e fontes</a></div>
   </div></div>
@@ -14041,9 +14017,11 @@ function renderCompare() {
   await loadAll();
   const m = state.data.meta;
   if (m) {
-    // a marca da barra lateral é o nome da coleção, escrito em index.html; o nome da gold (meta.plataforma.name) fica nos dados
-    document.getElementById("updatedAt").textContent = "publicação mais antiga: " + (m.gerado_em || "").slice(0, 16).replace("T", " ") + " UTC";
-    document.getElementById("footDisclaimer").textContent = m.plataforma.disclaimer;
+    // no rodapé da coleção (antes na barra lateral): a data da publicação mais antiga, no horário de Brasília, e o aviso da gold
+    const quando = dataHoraBrasilia(m.gerado_em);
+    const upd = document.getElementById("updatedAt"), aviso = document.getElementById("footDisclaimer");
+    if (upd && quando) upd.textContent = "Publicação mais antiga dos dados desta aplicação: " + quando + ".";
+    if (aviso) aviso.textContent = m.plataforma.disclaimer;
   }
   updateAlertBadge();
   let v = parseHash();
