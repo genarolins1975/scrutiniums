@@ -24,7 +24,7 @@ export function MapaCobertura({temas}: {temas: TemaCobertura[]}) {
   const porId = new Map(temas.map(t => [t.id, t]));
   return <section id="cobertura" className={styles.coverage} aria-labelledby="titulo-cobertura">
     <header className={styles.sectionHead}>
-      <div><p className={styles.eyebrow}>04 · O que ainda não se sabe</p><h2 id="titulo-cobertura">Até onde cada tema chega.</h2></div>
+      <div><p className={`rotulo ${styles.eyebrow}`}>04 · O que ainda não se sabe</p><h2 id="titulo-cobertura">Até onde cada tema chega.</h2></div>
       <div className={styles.sectionAside}>
         <p>Comparar capitais exige a mesma medida, no mesmo ano, para todas. Esta matriz mostra em que nível territorial cada tema tem dados publicados. Dos 16 temas, {DIMENSOES.filter(d => (porId.get(d.id)?.niveis ?? []).some(n => n === 'indice' || n === 'capitais' || n === 'municipios')).length} têm algum dado por município ou capital; {DIMENSOES.filter(d => !porId.has(d.id)).length} ainda não têm painel.</p>
         <p className={styles.small}>Abra um tema para ver o que mostra, o que não inclui, fontes, cobertura e acessos. Os anos de referência variam entre temas e não devem ser tratados como contemporâneos.</p>

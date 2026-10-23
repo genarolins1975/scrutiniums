@@ -5,6 +5,17 @@ name: CI
 # um teste quebrado em clone limpo (moradia-data) ficou semanas mascarando a
 # cor real da suíte. O CI é o que transforma "testado na minha máquina" em
 # propriedade do repositório.
+#
+# Até 22/10/2026 tudo rodava num único job serial de 20 a 21 minutos (run 1198 do
+# main: build 4 min 33 s, Judiciário 3 min 46 s, Vitest 5 min 39 s, Python 3 min 46 s,
+# um atrás do outro), e um terço dos runs em PR era cancelado por novo push durante a
+# espera. Desde então os passos estão em jobs paralelos: o que não depende do build
+# (lint, tipos, cobertura, Python) corre ao lado dele; o Vitest corre em dois shards,
+# cada um com o seu build (cache de .next/cache entre runs); as verificações de
+# navegador por tema (Judiciário aqui, Agronegócio em agro-interface.yml) só rodam
+# em pull_request quando a mudança as alcança (job `mudancas`). Nenhum passo foi
+# retirado: a tabela de equivalência está no PR "Ciclo: CI em paralelo" e, em
+# push no main, workflow_run, cron e dispatch, todos os jobs rodam sempre.
 on:
   pull_request:
   push:
@@ -30,56 +41,115 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+
 jobs:
-  testes:
+  mudancas:
+    name: Classificar mudanças
     runs-on: ubuntu-latest
-    # build, pipeline e Vitest completos levavam cerca de 19 minutos; com o painel da Educação passaram de 20
-    timeout-minutes: 30
+    timeout-minutes: 5
+    outputs:
+      interface: ${{ steps.classificar.outputs.interface }}
+      python: ${{ steps.classificar.outputs.python }}
+      judiciario: ${{ steps.classificar.outputs.judiciario }}
+      agro: ${{ steps.classificar.outputs.agro }}
+      i18n: ${{ steps.classificar.outputs.i18n }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Só o que o classificador lê: src/ para o fecho de importações e os .py para os
+          # caminhos que os testes Python citam. Sem os 549 MB de public/, o checkout cai de
+          # 30 s para poucos segundos.
+          sparse-checkout: |
+            /src/
+            /scripts/
+            /pesquisa/
+            /pipeline/**/*.py
+            /docs/obee/**/*.py
+          sparse-checkout-cone-mode: false
+          # o primeiro pai do commit de merge do PR é a base usada no merge
+          fetch-depth: 2
+      - name: Classificar
+        id: classificar
+        # Em pull_request, o checkout é o commit de merge com a base atual, e o diff vai do primeiro pai (a base usada
+        # no merge) a ele: só o que o PR traz. O base.sha do evento envelhece quando a base anda e trazia para o diff o
+        # que entrou nela depois (achado na medida de 22/10/2026). Fora de pull_request, o script devolve tudo verdadeiro.
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then export BASE_SHA="$(git rev-parse HEAD^1)"; fi
+          node scripts/ci/classificar-mudancas.mjs
 
+  estatico:
+    name: Lint, tipos, cobertura e contratos
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: npm
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
       - name: Dependências
         run: npm ci
-
-      - name: Chromium para verificar o DOM das páginas dinâmicas
-        # A home consulta sessão e usa Suspense: o HTML de transporte sozinho
-        # não comprova os textos que o leitor recebe. Versão fixada no lockfile.
-        run: npx --no-install playwright install --with-deps chromium
-
       - name: Gerar app.min.js
         # o minificado é gitignorado (artefato de build) e os testes de
         # exportação o comparam com o fonte — num clone limpo ele não existe.
         # Primeira captura real do CI: run nº 2 falhou exatamente aqui (ENOENT).
+        # Aqui prova que o minificador roda; nos shards do Vitest ele nasce no prebuild.
         run: node scripts/minify-obs.mjs
-
       - name: Lint
         run: npm run lint
-
       - name: Tipos
         run: npx tsc --noEmit
-
+      - name: Cobertura bilíngue confere com as fontes de código
+        # Não depende da gold nem de saídas dos materializadores. Gera o inventário e aplica
+        # todas as validações; desde 22/10/2026 não compara com arquivo versionado.
+        run: node scripts/cobertura-i18n.mjs --check
+      - name: Relatório de cobertura bilíngue para leitura
+        # O relatório deixou de ser versionado (conflitava em quase todo merge) e sai como artefato.
+        run: node scripts/cobertura-i18n.mjs --stdout > "$RUNNER_TEMP/cobertura-i18n.json"
+      - name: Publicar o relatório de cobertura bilíngue
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-i18n
+          path: ${{ runner.temp }}/cobertura-i18n.json
+          if-no-files-found: error
       - name: Contrato de grupos e publicação seletiva da gold
         # Stdlib, fixtures sintéticas; um arquivo novo sem grupo bloqueia o PR.
         run: python3 -m unittest pipeline.tests.test_publicar_gold
-
       - name: Módulos Python compilam
         # sem instalar dependências: o pipeline é stdlib + pypdf, e aqui só
         # interessa pegar erro de sintaxe/import antes do agendamento das 6h
         run: python3 -m compileall -q pipeline
+      - name: Árvore versionada permanece limpa
+        run: |
+          git diff --exit-code
+          git diff --cached --exit-code
+          test -z "$(git status --porcelain --untracked-files=normal)"
 
+  python:
+    name: Testes Python e OBEE
+    needs: mudancas
+    # Em pull_request só quando a mudança alcança pipeline, pesquisa, dados, config,
+    # docs/obee, um .py ou um caminho de src/ que os testes Python leem; fora disso, sempre.
+    if: needs.mudancas.outputs.python == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        # pipeline/assistencia/gold.py chama node scripts/materializar-assistencia.mjs (só biblioteca padrão)
+        with:
+          node-version: "22"
       - name: Dependências do pipeline de energia
         # pyarrow: leitura dos Parquet da ANEEL nos módulos de energia
         run: pip install -r pipeline/energia/requirements.txt
-
       - name: Testes Python (pipeline e camada de pesquisa)
         # stdlib, sem rede: regra nominal, relatório automático, pacote de fatos,
         # validador e casos sentinela, conferidos contra a gold publicada; nada
@@ -88,7 +158,6 @@ jobs:
           python3 -m unittest discover -s pipeline/tests -t .
           python3 -m unittest discover -s pesquisa/tests -t .
           python3 -m unittest pipeline.eficiencia_resultados.test_motor pipeline.eficiencia_resultados.test_expansao pipeline.eficiencia_resultados.test_saude_municipal pipeline.eficiencia_resultados.test_precisao_saude pipeline.eficiencia_resultados.test_captura_recaptura pipeline.eficiencia_resultados.test_habitacao pipeline.eficiencia_resultados.test_habitacao_cenarios pipeline.eficiencia_resultados.test_conectividade pipeline.eficiencia_resultados.test_cesta_conjunta pipeline.eficiencia_resultados.test_precisao_candidatas pipeline.eficiencia_resultados.test_revisao_v3
-
       - name: Reconciliação aritmética alternativa do OBEE
         run: |
           python3 -m unittest scripts.test_auditar_cesta_obee_v3
@@ -98,14 +167,12 @@ jobs:
           # a prévia versionada precisa ser a saída do gerador (dados, robustez e ressalva)
           python3 docs/obee/resultados/review-ui/generate.py
           git diff --exit-code docs/obee/resultados/revisao-interativa-v3.html
-
       - name: Precisão complementar da cesta OBEE
         run: |
           python3 -m unittest scripts.test_obee_precisao_cesta
           python3 scripts/obee_precisao_cesta.py --check
           python3 -m unittest scripts.test_obee_renda_sensibilidade
           python3 scripts/obee_renda_sensibilidade.py --check
-
       - name: Índice de resultados v4 do OBEE
         run: |
           python3 -m unittest pipeline.eficiencia_resultados.test_indice_v4
@@ -117,17 +184,142 @@ jobs:
           python3 scripts/obee_interface_v4.py --check
           # os contornos da entrada são os do recorte versionado da malha do IBGE
           python3 scripts/obee_contornos_capitais.py --check
+      - name: Árvore versionada permanece limpa
+        run: |
+          git diff --exit-code
+          git diff --cached --exit-code
+          test -z "$(git status --porcelain --untracked-files=normal)"
 
+  testes:
+    name: Build e Vitest ${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    # cada shard: build (4 min 34 s frio, 3 min 25 s com cache) mais metade da suíte (5 min 39 s
+    # inteira no run 1198); medido em 22/10/2026
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ["1/2", "2/2"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Dependências
+        run: npm ci
+      - name: Versão do Playwright fixada no lockfile
+        id: playwright
+        run: echo "versao=$(node -p "require('playwright/package.json').version")" >> "$GITHUB_OUTPUT"
+      - name: Cache do Chromium do Playwright
+        id: chromium
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.versao }}
+      - name: Chromium para verificar o DOM das páginas dinâmicas, em segundo plano
+        # A home consulta sessão e usa Suspense: o HTML de transporte sozinho
+        # não comprova os textos que o leitor recebe. Versão fixada no lockfile.
+        # Corre junto do build e só os testes esperam: o apt do runner já levou mais de um
+        # minuto por pacote e 10 minutos no passo (runs 1204 e 1207, 22/10/2026), contra 18 s
+        # no normal. Com o navegador em cache, só as bibliotecas do sistema são instaladas.
+        run: |
+          if [ "${{ steps.chromium.outputs.cache-hit }}" = "true" ]; then ALVO="install-deps chromium"; else ALVO="install --with-deps chromium"; fi
+          # sessão própria e saídas redirecionadas: o passo termina na hora e a instalação segue
+          setsid bash -c "npx --no-install playwright $ALVO; echo \$? > \"\$RUNNER_TEMP/chromium.status\"" > "$RUNNER_TEMP/chromium.log" 2>&1 < /dev/null &
+      - name: Restaurar o cache do compilador do Next (.next/cache)
+        # O cache tem cerca de 80 MB comprimido (run 1205, 22/10/2026) e tira cerca de 1 min 10 s
+        # do build (4 min 34 s frio, 3 min 25 s quente, runs 1205 e 1207). Para não gravar uma
+        # entrada por push, o PR restaura a mais recente do mesmo lockfile (gravada pelo main) e
+        # só grava quando não achou nenhuma: até o main gravar a primeira ou quando o lockfile muda.
+        id: cache_next
+        uses: actions/cache/restore@v4
+        with:
+          path: .next/cache
+          key: next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
       - name: Build de produção
         # gera o HTML pré-renderizado (.next/server/app) do MESMO commit testado, no mesmo
         # job, sem credenciais de produção: as páginas são estáticas. Até 08/10/2026 este
         # workflow não gerava build, e o teste que inspeciona o HTML (undefined, NaN, data
         # ISO crua) retornava cedo por falta do diretório: passava sem verificar nada.
+        # O prebuild materializa os derivados e gera app.min.js.
+        id: build
         run: npm run build
+      - name: Esperar o Chromium
+        run: |
+          while [ ! -f "$RUNNER_TEMP/chromium.status" ]; do sleep 2; done
+          tail -3 "$RUNNER_TEMP/chromium.log"
+          exit "$(cat "$RUNNER_TEMP/chromium.status")"
+      - name: Testes (inclui a verificação obrigatória do HTML gerado)
+        # EXIGIR_BUILD_HTML=1 faz src/tests/html-gerado.test.ts reprovar se o build, uma rota
+        # esperada ou as páginas a inspecionar não existirem. O log mostra "HTML verificado
+        # (...): N páginas" quando a asserção realmente rodou. O shard que recebe esse arquivo
+        # é o que mostra a linha; a partição dos arquivos é determinística.
+        env:
+          EXIGIR_BUILD_HTML: "1"
+        run: npx vitest run --shard=${{ matrix.shard }}
+      - name: Árvore versionada permanece limpa após build e testes
+        run: |
+          git diff --exit-code
+          git diff --cached --exit-code
+          test -z "$(git status --porcelain --untracked-files=normal)"
+      - name: Gravar o cache do compilador do Next
+        # No fim do job, para não atrasar os testes do shard; um só gravador por run.
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && matrix.shard == '1/2' && (github.event_name != 'pull_request' || steps.cache_next.outputs.cache-matched-key == '') }}
+        uses: actions/cache/save@v4
+        with:
+          path: .next/cache
+          key: next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
 
+  judiciario:
+    name: Fluxos e telas do Judiciário
+    needs: mudancas
+    # Em pull_request só quando a mudança alcança as rotas que o script percorre (Judiciário,
+    # Acesso à Justiça, entrada da Eficiência, home, seletor, barra comum, acesso); fora disso, sempre.
+    if: needs.mudancas.outputs.judiciario == 'true'
+    runs-on: ubuntu-latest
+    # build mais 3 min 46 s de verificação
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Dependências
+        run: npm ci
+      - name: Versão do Playwright fixada no lockfile
+        id: playwright
+        run: echo "versao=$(node -p "require('playwright/package.json').version")" >> "$GITHUB_OUTPUT"
+      - name: Cache do Chromium do Playwright
+        id: chromium
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.versao }}
+      - name: Chromium, em segundo plano (mesmo motivo do job testes)
+        run: |
+          if [ "${{ steps.chromium.outputs.cache-hit }}" = "true" ]; then ALVO="install-deps chromium"; else ALVO="install --with-deps chromium"; fi
+          # sessão própria e saídas redirecionadas: o passo termina na hora e a instalação segue
+          setsid bash -c "npx --no-install playwright $ALVO; echo \$? > \"\$RUNNER_TEMP/chromium.status\"" > "$RUNNER_TEMP/chromium.log" 2>&1 < /dev/null &
+      - name: Restaurar o cache do compilador do Next (.next/cache)
+        uses: actions/cache/restore@v4
+        with:
+          path: .next/cache
+          key: next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+      - name: Build de produção
+        run: npm run build
+      - name: Esperar o Chromium
+        run: |
+          while [ ! -f "$RUNNER_TEMP/chromium.status" ]; do sleep 2; done
+          tail -3 "$RUNNER_TEMP/chromium.log"
+          exit "$(cat "$RUNNER_TEMP/chromium.status")"
       - name: Fluxos e telas do Judiciário com sessão local
         run: node scripts/obee/judiciario-verificacao.mjs
-
       - name: Evidência funcional do Judiciário
         if: always()
         uses: actions/upload-artifact@v4
@@ -135,33 +327,29 @@ jobs:
           name: judiciario-verificacao
           path: /tmp/judiciario-qa/resultado.json
           if-no-files-found: ignore
-
-      - name: Cobertura bilíngue confere com as fontes de código
-        # Não depende da gold nem de saídas dos materializadores. Gera o inventário e aplica
-        # todas as validações; desde 22/10/2026 não compara com arquivo versionado.
-        run: node scripts/cobertura-i18n.mjs --check
-
-      - name: Relatório de cobertura bilíngue para leitura
-        # O relatório deixou de ser versionado (conflitava em quase todo merge) e sai como artefato.
-        run: node scripts/cobertura-i18n.mjs --stdout > "$RUNNER_TEMP/cobertura-i18n.json"
-
-      - name: Publicar o relatório de cobertura bilíngue
-        uses: actions/upload-artifact@v4
-        with:
-          name: cobertura-i18n
-          path: ${{ runner.temp }}/cobertura-i18n.json
-          if-no-files-found: error
-
-      - name: Testes (inclui a verificação obrigatória do HTML gerado)
-        # EXIGIR_BUILD_HTML=1 faz src/tests/html-gerado.test.ts reprovar se o build, uma rota
-        # esperada ou as páginas a inspecionar não existirem. O log mostra "HTML verificado
-        # (...): N páginas" quando a asserção realmente rodou.
-        env:
-          EXIGIR_BUILD_HTML: "1"
-        run: npx vitest run
-
-      - name: Árvore versionada permanece limpa após build e testes
+      - name: Árvore versionada permanece limpa após build e verificação
         run: |
           git diff --exit-code
           git diff --cached --exit-code
           test -z "$(git status --porcelain --untracked-files=normal)"
+
+  verde:
+    name: CI verde
+    # Um só nome de verificação para a proteção de branch, independente de quantos jobs
+    # rodaram: falha se algum job precisado falhou ou foi cancelado; "skipped" é o filtro
+    # de caminho em ação, não um erro.
+    needs: [mudancas, estatico, python, testes, judiciario]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Resultado dos jobs
+        env:
+          RESULTADOS: ${{ toJSON(needs) }}
+        run: |
+          echo "$RESULTADOS" | node -e '
+            const r = JSON.parse(require("fs").readFileSync(0, "utf8"));
+            for (const [job, { result }] of Object.entries(r)) console.log(job.padEnd(12), result);
+            const ruins = Object.entries(r).filter(([, { result }]) => result === "failure" || result === "cancelled");
+            if (ruins.length) { console.error("Jobs com problema:", ruins.map(([j]) => j).join(", ")); process.exit(1); }
+          '

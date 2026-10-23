@@ -124,7 +124,7 @@ export function MapaSubmercados({
             <g key={`${f.de}-${f.para}`}>
               <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="var(--cor-energia-soft)" strokeWidth={larg} strokeLinecap="round" markerEnd={f.fluxo === null ? undefined : "url(#seta)"} opacity={f.fluxo === null ? 0.3 : 0.9} />
               <rect x={mx - 40} y={my - 10} width="80" height="19" fill="var(--cor-superficie)" stroke="var(--cor-linha)" rx="2" />
-              <text x={mx} y={my + 3} textAnchor="middle" fontSize="10.5" fill="var(--cor-carvao)" className="tabular-nums">
+              <text x={mx} y={my + 3} textAnchor="middle" fontSize="12" fill="var(--cor-carvao)" className="tabular-nums">
                 {f.fluxo === null ? semDado : `${fmt(Math.abs(v))} ${mw}`}
               </text>
             </g>

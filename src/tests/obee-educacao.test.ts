@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import config from "../../tailwind.config";
+import { TOKENS } from "../lib/tokens.gerado";
 import { dadosPainel, goldEducacao } from "@/lib/eficiencia/dados";
 import {
   Indice,
@@ -349,12 +349,8 @@ describe("neutralidade do texto público", () => {
 
 /* ------------------------------------------------------------------ tokens */
 
-type Cores = Record<string, string | Record<string, string>>;
-const cores = (config.theme?.extend?.colors ?? {}) as Cores;
-const tom = (nome: string, passo = "DEFAULT") => {
-  const c = cores[nome];
-  return typeof c === "string" ? c : c[passo];
-};
+// valores dos tokens em src/app/globals.css (derivados em tokens.gerado.ts; o Tailwind lê var(), não o hexadecimal)
+const tom = (nome: string, passo = "DEFAULT") => (TOKENS as Record<string, string>)[`cor-${nome}${passo === "DEFAULT" ? "" : `-${passo}`}`];
 function luminancia(hex: string) {
   const [r, gg, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
   return 0.2126 * r + 0.7152 * gg + 0.0722 * b;

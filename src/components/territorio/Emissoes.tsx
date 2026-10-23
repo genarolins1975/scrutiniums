@@ -39,7 +39,7 @@ function Grafico({ g, compacto = false }: Readonly<{ g: GoldEmissoes; compacto?:
   const ultimo = g.anos[g.anos.length - 1];
   const ref = g.anos.find((a) => a.ano === g.derivados.anoReferenciaNdc)!;
   const passo = compacto ? 8 : 4;
-  const fonte = compacto ? "text-[11px]" : "text-[12px]";
+  const fonte = compacto ? "text-xs" : "text-xs";
   return (
     <svg viewBox={`0 0 ${L} ${A}`} role="img" aria-label={`Emissões líquidas de gases de efeito estufa por ano, ${g.anoInicial} a ${g.anoFinal}, por setor, em milhões de toneladas de CO2 equivalente. ${ref.ano}: ${n(mt(ref.totalLiquido), 0)}. ${ultimo.ano}: ${n(mt(ultimo.totalLiquido), 0)}. Valores na tabela.`} className="h-auto w-full">
       <line x1="0" x2={L} y1={base} y2={base} className="stroke-linha" strokeWidth="1" />

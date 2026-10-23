@@ -57,6 +57,8 @@ Prioridade declarada por ele: **clareza > narrativa > didatismo > credibilidade 
 
 ## 3. Identidade visual de referência
 
+**Tokens e tipografia da plataforma (Iniciativa 5, 22/10/2026):** a referência é `docs/observatorios/DESIGN_SYSTEM_OBSERVATORIOS.md`: cor só em `src/app/globals.css` (nenhum hexadecimal nem `--cor-*` fora dele, `src/tests/design-tokens.test.ts`), escala única (`.t-h1` a `.t-meta`, `.rotulo` a 12 px), três tamanhos de número em serifa (`.numero-g`, `.numero-m`, `.numero-p`), papel em todo `main` e piso de 12 px conferido no navegador (`src/tests/ux-texto-minimo.test.ts`). Decisão do dono de 22/10/2026: rótulos em caixa alta ficam, a 12 px; a numeração 01, 02, 03 sai dos cartões da home e das portas; destaque colorido no título só no H1 da home; filetes de 3 px na cor do observatório ficam. A tabela abaixo é a referência de origem; os valores em uso são os do documento.
+
 Adotar a paleta abaixo como ponto de partida quando o projeto não possuir tokens equivalentes. Mapear para os tokens existentes e verificar contraste em cada uso. Não afirmar que uma cor isolada garante acessibilidade.
 
 | Papel | Referência | Aplicação |

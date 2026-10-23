@@ -65,7 +65,7 @@ export function FichaConteudo({ f, ctx, codigo = CODIGO_PADRAO }: { f: FichaExib
       <Campo n={1} rotulo="Nome e identificador">
         <strong className="font-semibold">{f.nome}</strong>
         <br />
-        <code className="break-all font-mono text-[0.8rem] text-carvao-muted">{f.id}</code>
+        <code className="break-all font-mono t-meta text-carvao-muted">{f.id}</code>
         <span className="ml-2 text-carvao-muted">· {ESTADO_PUBLICACAO[f.estado]}</span>
       </Campo>
       <Campo n={2} rotulo="O que mede">
@@ -76,7 +76,7 @@ export function FichaConteudo({ f, ctx, codigo = CODIGO_PADRAO }: { f: FichaExib
         <Lista itens={f.o_que_nao_mede} />
       </Campo>
       <Campo n={4} rotulo="Fórmula">
-        <code className="block whitespace-pre-wrap break-words bg-papel px-2 py-1.5 font-mono text-[0.8rem]">{f.formula}</code>
+        <code className="block whitespace-pre-wrap break-words bg-papel px-2 py-1.5 font-mono t-meta">{f.formula}</code>
         {(f.numerador || f.denominador) && (
           <p className="mt-2">
             {f.numerador && <>Numerador: {f.numerador} </>}
@@ -153,8 +153,8 @@ export function FichaConteudo({ f, ctx, codigo = CODIGO_PADRAO }: { f: FichaExib
             <a href={f.download} download className="text-obee-dark underline underline-offset-2">
               Série completa em CSV
             </a>
-            , com estado, nota e registro de cada valor. Código: <code className="font-mono text-[0.8rem]">{codigo.pasta}</code> no
-            repositório; reconstrução com <code className="font-mono text-[0.8rem]">{codigo.comando}</code>.
+            , com estado, nota e registro de cada valor. Código: <code className="font-mono t-meta">{codigo.pasta}</code> no
+            repositório; reconstrução com <code className="font-mono t-meta">{codigo.comando}</code>.
           </>
         ) : (
           "Sem série publicada."
@@ -165,7 +165,7 @@ export function FichaConteudo({ f, ctx, codigo = CODIGO_PADRAO }: { f: FichaExib
           <ul className="space-y-1">
             {ctx.validacoes.map((v) => (
               <li key={v.id}>
-                <span className="font-mono text-[0.8rem]">{v.id}</span> {v.titulo}: {RESULTADO[v.resultado] ?? v.resultado}.
+                <span className="font-mono t-meta">{v.id}</span> {v.titulo}: {RESULTADO[v.resultado] ?? v.resultado}.
               </li>
             ))}
           </ul>

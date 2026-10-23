@@ -64,7 +64,7 @@ export default function ResumoPage() {
   const inds = indicadoresPublicos();
   if (!r) {
     return (
-      <div className="flex min-h-screen flex-col bg-marfim">
+      <div className="flex min-h-screen flex-col bg-papel">
         <PublicHeaderView />
         <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
           <PageTitle label="Resumo diário" title="Resumo indisponível" description="O diagnóstico do dia não pôde ser gerado. Os números-síntese seguem disponíveis em Dados abertos." />
@@ -76,7 +76,7 @@ export default function ResumoPage() {
     );
   }
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       <PublicHeaderView />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
         <PageTitle

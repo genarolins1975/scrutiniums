@@ -437,7 +437,7 @@ function SecaoFibra({ g }: { g: GoldConectividade }) {
       <Barras itens={ufs.map((x) => ({ rotulo: x.u.nome, v: x.v }))} max={100} referencia={f.fibra_pct} />
       <div className="cn-legenda" aria-hidden="true">
         <span><i className="cn-bloco" style={{ background: "var(--cn-acento)" }} />parte dos acessos do estado por fibra</span>
-        <span><i style={{ background: "#182B36", height: 12, width: 2 }} />Brasil, {pct(f.fibra_pct)}</span>
+        <span><i style={{ background: "var(--cor-carvao)", height: 12, width: 2 }} />Brasil, {pct(f.fibra_pct)}</span>
       </div>
       <p className="cn-fonte">
         Em {mesExtenso(g.referencia.fixa)}, {g.destaques.sem_fibra ? `${plural(g.destaques.sem_fibra, "município não tinha", "municípios não tinham")} nenhum acesso por fibra` : "todos os municípios tinham algum acesso por fibra"}
@@ -500,7 +500,7 @@ function SecaoCobertura({ g, logos }: { g: GoldConectividade; logos: Logos }) {
       <Barras itens={ufs5.map((x) => ({ rotulo: x.u.nome, v: x.v }))} max={100} referencia={c.tecnologias.g5?.[0] ?? null} />
       <div className="cn-legenda" aria-hidden="true">
         <span><i className="cn-bloco" style={{ background: "var(--cn-acento)" }} />moradores do estado dentro da cobertura 5G</span>
-        <span><i style={{ background: "#182B36", height: 12, width: 2 }} />Brasil, {pct(c.tecnologias.g5?.[0])}</span>
+        <span><i style={{ background: "var(--cor-carvao)", height: 12, width: 2 }} />Brasil, {pct(c.tecnologias.g5?.[0])}</span>
       </div>
       <p className="cn-fonte">
         Média dos municípios de cada estado ponderada pelos moradores (cálculo da Scrutiniums). Em {mesExtenso(g.referencia.cobertura)}, dos {num(g.destaques.municipios_com_5g_publicado)} municípios com cobertura 5G publicada, {num(g.destaques.sem_5g)} tinham

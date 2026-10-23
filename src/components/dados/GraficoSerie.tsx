@@ -3,12 +3,12 @@ import type { PontoSerie } from "@/lib/dadosPublicos";
 /**
  * Gráficos SVG renderizados no servidor (build time): zero JavaScript no
  * cliente, essenciais para as páginas públicas leves. Cores da identidade
- * (bronze sobre marfim) em valores literais porque o SVG não herda tokens
- * do Tailwind em atributos.
+ * (bronze sobre marfim) lidas dos tokens da plataforma: o SVG é inline, e o
+ * atributo de apresentação aceita var().
  */
 
-const BRONZE = "#966b48";
-const MINERAL = "#8a8578";
+const BRONZE = "var(--cor-bronze)";
+const MINERAL = "var(--serie-referencia)";
 
 function escala(pts: PontoSerie[], w: number, h: number, pad: number) {
   const vs = pts.map((p) => p.v);
@@ -77,12 +77,12 @@ export function GraficoLinha({
     >
       <line x1={pad} y1={y(max)} x2={w - pad} y2={y(max)} stroke={MINERAL} strokeWidth="0.5" strokeDasharray="2,4" />
       <line x1={pad} y1={y(min)} x2={w - pad} y2={y(min)} stroke={MINERAL} strokeWidth="0.5" strokeDasharray="2,4" />
-      <text x={pad} y={y(max) - 5} fontSize="11" fill={MINERAL}>{fmt(max)}</text>
-      <text x={pad} y={y(min) + 14} fontSize="11" fill={MINERAL}>{fmt(min)}</text>
+      <text x={pad} y={y(max) - 5} fontSize="12" fill={MINERAL}>{fmt(max)}</text>
+      <text x={pad} y={y(min) + 14} fontSize="12" fill={MINERAL}>{fmt(min)}</text>
       {anos.map(({ p, i }) => (
         <g key={p.ref}>
           <line x1={x(i)} y1={h - pad} x2={x(i)} y2={h - pad + 4} stroke={MINERAL} strokeWidth="0.7" />
-          <text x={x(i)} y={h + 14} fontSize="11" fill={MINERAL} textAnchor="middle">{p.ref.slice(0, 4)}</text>
+          <text x={x(i)} y={h + 14} fontSize="12" fill={MINERAL} textAnchor="middle">{p.ref.slice(0, 4)}</text>
         </g>
       ))}
       <path d={caminho(pts, x, y)} fill="none" stroke={BRONZE} strokeWidth="2" />

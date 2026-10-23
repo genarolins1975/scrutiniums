@@ -1117,7 +1117,7 @@ describe("revisão de interface: nada de data, contagem ou afirmação sobre os 
 });
 
 describe("componentes do módulo", () => {
-  it("sem hexadecimal solto (o uso de energia-soft como texto é conferido por design-tokens-energia)", () => {
+  it("sem hexadecimal solto (o uso de energia-soft como texto é conferido por design-tokens)", () => {
     const dir = join(raiz, "src/components/energia");
     const arquivos = [
       ...readdirSync(dir).filter((x) => x.startsWith("Carga")).map((f) => join(dir, f)),

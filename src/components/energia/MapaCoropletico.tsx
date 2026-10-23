@@ -191,7 +191,7 @@ type Rotulo = { id: string; texto: string; p: Ponto; largura: number };
 
 const CamadaRotulos = memo(function CamadaRotulos({ rotulos, upx }: { rotulos: readonly Rotulo[]; upx: number }) {
   return (
-    <g pointerEvents="none" aria-hidden="true" fontSize={11 * upx} textAnchor="middle" fill="var(--cor-carvao)">
+    <g pointerEvents="none" aria-hidden="true" fontSize={12 * upx} textAnchor="middle" fill="var(--cor-carvao)">
       {rotulos
         // só onde a sigla cabe dentro da região na escala atual
         .filter((r) => r.largura / upx >= 26)

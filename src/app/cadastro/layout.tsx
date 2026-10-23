@@ -9,7 +9,7 @@ import { SeletorIdiomaPublico } from "@/components/i18n/SeletorIdiomaPublico";
  */
 export default function CadastroLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       <header className="border-b border-linha">
         <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-x-6 px-6 py-5">
           <Link href="/" aria-label="Scrutiniums — página inicial">

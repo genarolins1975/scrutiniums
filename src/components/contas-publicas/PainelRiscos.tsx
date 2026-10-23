@@ -28,7 +28,7 @@ export function PainelRigidez({anos, fonte}: {anos: AnoRigidez[]; fonte: {fonte:
     <section className="cp-section cp-data-section" aria-labelledby="rigidez-titulo">
       <div className="cp-section-head">
         <div>
-          <p className="cp-eyebrow">01 · Rigidez do orçamento · SIOP</p>
+          <p className="rotulo cp-eyebrow">01 · Rigidez do orçamento · SIOP</p>
           <h2 id="rigidez-titulo">Quanto da despesa já nasce obrigatória?</h2>
           <p>Parte da despesa primária da União que a lei obriga a pagar: benefícios da previdência e assistência, salários, pisos de saúde e educação, transferências constitucionais. O restante é discricionário. Sem a dívida e sem a reserva de contingência.</p>
         </div>

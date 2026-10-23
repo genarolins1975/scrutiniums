@@ -29,7 +29,7 @@ export default function ApiPage() {
   const aviso = INSTITUCIONAL.api.aviso_previo_quebra_dias;
   const licenca = INSTITUCIONAL.dados.licenca_derivados;
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       <PublicHeaderView />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
         <PageTitle
