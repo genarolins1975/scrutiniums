@@ -16,6 +16,7 @@ import type { ContextoFicha } from "../FichaConteudo";
 import { Selecao } from "../controles";
 import { SobreDadoSaude as SobreEsteDado } from "./SobreDadoSaude";
 import { Siglas } from "../Siglas";
+import { useBaseSaude } from "./ExploradorSaude";
 
 function esquema(ids: string[]) {
   return { cap: campo(tiposUrl.opcao(["", ...ids]), "") };
@@ -38,7 +39,8 @@ const primeiraFrase = (texto: string) => {
 };
 
 /** A primeira ação do panorama (abertura do molde): a capital opcional, que aparece ao lado do conjunto em cada medida. */
-export function SeletorCapitalSaude({ dados }: { dados: DadosSaude }) {
+export function SeletorCapitalSaude({ dados: dadosProp }: { dados?: DadosSaude }) {
+  const dados = useBaseSaude(dadosProp);
   const { valor, definir } = useCapital(dados);
   return (
     <div className="max-w-sm">
@@ -48,7 +50,8 @@ export function SeletorCapitalSaude({ dados }: { dados: DadosSaude }) {
 }
 
 /** Os caminhos para as visões do módulo, levando a capital escolhida. */
-export function CaminhosSaude({ dados }: { dados: DadosSaude }) {
+export function CaminhosSaude({ dados: dadosProp }: { dados?: DadosSaude }) {
+  const dados = useBaseSaude(dadosProp);
   const { cap } = useCapital(dados);
   const p = cap ? { cap: cap.id } : {};
   const link = "inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4";
@@ -73,7 +76,8 @@ export function CaminhosSaude({ dados }: { dados: DadosSaude }) {
  * barras do kit, a tabela equivalente, a ficha de origem e o que o perímetro não permite presumir. Os números e as frases são os do
  * panorama de antes (PanoramaFaixa): extremos nomeados, metade central, capitais fora da comparação e referências externas diretas.
  */
-export function FigurasPanoramaSaude({ dados, contextos }: { dados: DadosSaude; contextos: Record<string, ContextoFicha> }) {
+export function FigurasPanoramaSaude({ dados: dadosProp, contextos }: { dados?: DadosSaude; contextos: Record<string, ContextoFicha> }) {
+  const dados = useBaseSaude(dadosProp);
   const ix = useMemo(() => new IndiceSaude(dados), [dados]);
   const { cap } = useCapital(dados);
   const o = OPCOES_PANORAMA;

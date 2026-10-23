@@ -126,7 +126,7 @@ export function ProvedorSaude({ dados, children }: { dados: DadosSaude; children
   return <ContextoSaude.Provider value={dados}>{children}</ContextoSaude.Provider>;
 }
 
-function useBaseSaude(dados?: DadosSaude): DadosSaude {
+export function useBaseSaude(dados?: DadosSaude): DadosSaude {
   const doContexto = useContext(ContextoSaude);
   const base = dados ?? doContexto;
   if (!base) throw new Error("Base da Saúde ausente: passe `dados` ou use ProvedorSaude.");

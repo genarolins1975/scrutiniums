@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PaginaPainel, type NumeroProps } from "@/components/painel";
 import { CaminhosSaude, FigurasPanoramaSaude, SeletorCapitalSaude } from "@/components/eficiencia/saude/PanoramaSaude";
+import { ProvedorSaude } from "@/components/eficiencia/saude/ExploradorSaude";
 import { GRUPOS, OPCOES_PANORAMA } from "@/lib/eficiencia/saude/molde";
 import { SIGLAS_POR_TEMA } from "@/components/eficiencia/saude/AvisosSaude";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
@@ -59,6 +60,8 @@ export default function PaginaPanoramaSaude() {
   });
   const anos = Array.from(new Set(GRUPOS.flatMap((x) => x.medidas).flatMap((id) => anosDaMedida(ix, MEDIDAS_SAUDE[id], OPCOES_PANORAMA)))).sort();
   return (
+    // a base vai ao navegador uma vez, pelo provedor; as três ilhas de cliente a leem dele (ver ProvedorSaude)
+    <ProvedorSaude dados={dados}>
     <PaginaPainel
       rota={ROTA_SAUDE}
       principal={false}
@@ -68,7 +71,7 @@ export default function PaginaPanoramaSaude() {
         acento: "obee",
         titulo: "Quanto se aplica em Saúde e o que se observa nas capitais?",
         lead: "Quanto as capitais aplicam em Saúde, que estrutura e atendimento são registrados e quais resultados são observados entre seus moradores, em três perímetros diferentes.",
-        acao: <SeletorCapitalSaude dados={dados} />,
+        acao: <SeletorCapitalSaude />,
         recorte: {
           periodo: `${anos[0]} a ${anos[anos.length - 1]}, o ano de cada medida ao lado dela`,
           universo: `${dados.capitais.length} capitais estaduais, sem o Distrito Federal`,
@@ -88,8 +91,8 @@ export default function PaginaPanoramaSaude() {
       }}
       numeros={numeros}
       notaNumeros="Três perímetros diferentes: o que o município executa, o que está registrado no território e o que se observa entre os moradores. Os números não se somam nem formam uma nota."
-      navegacaoLocal={<CaminhosSaude dados={dados} />}
-      figuras={<FigurasPanoramaSaude dados={dados} contextos={contextosSaude(g)} />}
+      navegacaoLocal={<CaminhosSaude />}
+      figuras={<FigurasPanoramaSaude contextos={contextosSaude(g)} />}
       notas={{ id: "siglas-panorama-saude", titulo: "Siglas desta página", itens: SIGLAS_POR_TEMA.panorama.map(([s, t]) => ({ termo: s, definicao: t })) }}
       metodo={
         <>
@@ -108,5 +111,6 @@ export default function PaginaPanoramaSaude() {
         </>
       }
     />
+    </ProvedorSaude>
   );
 }
