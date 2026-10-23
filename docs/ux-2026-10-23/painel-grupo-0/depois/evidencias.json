@@ -1,9 +1,9 @@
 {
  "data": "2026-10-23",
- "build": "CUv15MreEFKnntqj-s-q2",
+ "build": "Ee6pM-ydB8uMTgViGfsgG",
  "maquina": "4 vCPU, 16 GB",
  "comando": "npm run evidencias -- --rotas /setor-eletrico/pld /setor-eletrico/qualidade /setor-eletrico/conta-de-luz /en/setor-eletrico/pld --saida docs/ux-2026-10-23/painel-grupo-0/depois --larguras 390,1440 --modos com",
- "tempo": "0 min 42 s",
+ "tempo": "0 min 43 s",
  "resultados": [
   {
    "rota": "/setor-eletrico/pld",

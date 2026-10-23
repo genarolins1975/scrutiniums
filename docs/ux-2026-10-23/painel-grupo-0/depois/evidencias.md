@@ -1,6 +1,6 @@
 ### Evidências de página (2026-10-23)
 
-Build CUv15MreEFKnntqj-s-q2, `next start` local com banco temporário e sessão de teste. Máquina: 4 vCPU, 16 GB. Comando: `npm run evidencias -- --rotas /setor-eletrico/pld /setor-eletrico/qualidade /setor-eletrico/conta-de-luz /en/setor-eletrico/pld --saida docs/ux-2026-10-23/painel-grupo-0/depois --larguras 390,1440 --modos com`. Tempo: 0 min 42 s.
+Build Ee6pM-ydB8uMTgViGfsgG, `next start` local com banco temporário e sessão de teste. Máquina: 4 vCPU, 16 GB. Comando: `npm run evidencias -- --rotas /setor-eletrico/pld /setor-eletrico/qualidade /setor-eletrico/conta-de-luz /en/setor-eletrico/pld --saida docs/ux-2026-10-23/painel-grupo-0/depois --larguras 390,1440 --modos com`. Tempo: 0 min 43 s.
 
 Cromo: do topo da barra comum ao início do conteúdo, em px, com o orçamento da Iniciativa 2 a 390 e 1440 px. Axe: violações WCAG 2.1 A e AA (regra e número de nós). Login: requisições feitas pela página (arquivos, dados, APIs) que caíram em /entrar; o redirecionamento da própria página aparece na coluna Endereço final.
 
